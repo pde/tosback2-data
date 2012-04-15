@@ -1,4 +1,3 @@
-(function(){ if(!window.__gapi_jstiming__){ function Timer(b){this.t={};this.tick=function(b,c,a){a=void 0!=a?a:(new Date).getTime();this.t[b]=[a,c]};this.tick("start",null,b)}var loadTimer=new Timer;window.__gapi_jstiming__={Timer:Timer,load:loadTimer};try{var pageT=null;window.chrome&&window.chrome.csi&&(pageT=Math.floor(window.chrome.csi().pageT));null==pageT&&window.gtbExternal&&(pageT=window.gtbExternal.pageT());null==pageT&&window.external&&(pageT=window.external.pageT);pageT&&(window.__gapi_jstiming__.pt=pageT)}catch(e){}; }})()
 window.___jsl=window.___jsl||{};
 window.___jsl.h=window.___jsl.h||'m;\/_\/apps-static\/_\/js\/gapi\/__features__\/rt=j\/ver=APFQGAQnwxA.en_US.\/sv=1\/am=!-SXmuOx1_3GIepEFVA\/d=1\/rs=AItRSTMlfm3bL-ILx7qCdIEu6V-RmTkDAQ';
 window.___jsl.l=[];

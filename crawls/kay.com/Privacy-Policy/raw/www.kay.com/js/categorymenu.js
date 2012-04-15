@@ -17,6 +17,7 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|2213
 document.writeln('<ul>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22138|22137|22137.22138|Y">&nbsp; The Leo Diamond&reg;</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22181|22137|22137.22181|Y">&nbsp; Neil Lane Bridal&#x2122;</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|23059|22137|22137.23059|Y">&nbsp; Neil Lane Designs</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22422|22137|22137.22422|Y">&nbsp; Tolkowsky</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22142|22137|22137.22142|Y">&nbsp; Open Hearts by Jane Seymour&reg;</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22157|22137|22137.22157|Y">&nbsp; Love\'s Embrace&#x2122;</a></li>');
@@ -44,6 +45,7 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|1506
 document.writeln('<ul>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15117|15064|15064.15117|Y">&nbsp; The Leo Diamond&reg;</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|21828|15064|15064.21828|Y">&nbsp; Neil Lane Bridal&#x2122;</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|23071|15064|15064.23071|Y">&nbsp; Neil Lane Designs</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|21962|15064|15064.21962|Y">&nbsp; Tolkowsky</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|19002|15064|15064.19002|Y">&nbsp; Open Hearts by Jane Seymour&reg;</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15603|15064|15064.15603|Y">&nbsp; Love\'s Embrace&#x2122;</a></li>');
@@ -90,6 +92,7 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|1505
 document.writeln('<ul>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15089|15055|15055.15089|Y">&nbsp; The Leo Diamond&reg;</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|21830|15055|15055.21830|Y">&nbsp; Neil Lane Bridal&#x2122;</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|23067|15055|15055.23067|Y">&nbsp; Neil Lane Designs</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|21964|15055|15055.21964|Y">&nbsp; Tolkowsky</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22048|15055|15055.22048|Y">&nbsp; Charmed Memories&reg;</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|20512|15055|15055.20512|Y">&nbsp; Collections</a></li>');
@@ -113,6 +116,7 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|1509
 document.writeln('<ul>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15468|0|1|Category|15468|15095|15095.15468">&nbsp; Men\'s</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15469|0|1|Category|15469|15095|15095.15469">&nbsp; Women\'s</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|23055|0|1|Category|23055|15095|15095.23055">&nbsp; Citizen Signature</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|18153|15095|15095.18153|Y">&nbsp; Movado</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15471|15095|15095.15471|Y">&nbsp; Citizen</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15470|15095|15095.15470|Y">&nbsp; Bulova</a></li>');

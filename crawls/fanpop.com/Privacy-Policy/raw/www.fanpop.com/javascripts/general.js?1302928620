@@ -1,0 +1,87 @@
+function stopProp(event)
+{
+	var event = event || window.event
+	event.cancelBubble = true;
+	if (event.stopPropagation) event.stopPropagation();
+}
+
+/* Search Hint JS START */
+var search_hint_selected = -1;
+var search_hints_max_num = 10;
+function search_hint_keymove(event) {
+	if (window.event) {
+		key = window.event.keyCode; //IE
+	} else {
+		key = event.which; // !IE
+	}
+	if (key == 38 || key == 40 || key == 13) {
+		switch (key) {
+			case 13:
+				if (search_hint_selected >= 0 && search_hint_selected < search_hints_max_num ) {
+					obj = document.getElementById("search_club_hint_row_"+search_hint_selected);
+					if (obj) {
+						obj.onclick();
+					}
+				} else {
+					obj = document.getElementById("nav_bar_search");
+					if (obj) {
+						obj.submit();
+					}
+				}
+				break;
+			case 38:
+				if (search_hint_selected > 0) {
+					search_hint_highlight_hint(search_hint_selected - 1);
+				} else {
+					search_hint_highlight_hint(0);
+				}
+				break;
+			case 40:
+				if (search_hint_selected < search_hints_max_num) {
+					search_hint_highlight_hint(search_hint_selected + 1);
+				} else {
+					search_hint_highlight_hint(search_hints_max_num);
+				}
+				break;
+		}
+	}
+	return (key != 13 && key != 38 && key != 40);
+}
+function search_hint_unhighlight_all_hints() {
+	search_hint_selected = -1;
+	for (i=0; i<search_hints_max_num; i++) {
+		if (document.getElementById("search_club_hint_row_"+i)) {
+			document.getElementById("search_club_hint_row_"+i).style.backgroundColor="#FFFFFF";
+		}
+	}
+}
+function search_hint_highlight_hint(num) {
+	obj = document.getElementById("search_club_hint_row_"+num);
+	if (obj) {
+		search_hint_unhighlight_all_hints();
+		obj.style.backgroundColor="#F0F0FF";
+		search_hint_selected = num;
+	}
+}
+function search_hint_hide() {
+	obj = document.getElementById("search_hints");
+	if (obj) {
+		obj.style.display="none";
+	}
+	obj = document.getElementById("leaderad_unit");
+	if (obj) {
+		obj.style.display="block";
+	}
+}
+var prevent_search_hint_blur = false;
+function search_hint_onblur() {
+	if (prevent_search_hint_blur==false) {
+		search_hint_hide();
+	}
+	prevent_search_hint_blur = false;
+}
+function prevent_sh_blur() {
+	prevent_search_hint_blur = true;
+}
+/* Search Hint JS END */
+

@@ -7,9 +7,7 @@ if (typeof blueKai === "undefined") {
 	blueKai = {};
 }
 var KRUXSetup = {
-	pubid:"1c6ac852-8938-481a-84b8-4806affc8c13", 
-    async: true
-
+	pubid:"1c6ac852-8938-481a-84b8-4806affc8c13"
 };
 blueKai.blueKai = {
 	dataJson :{},
@@ -63,7 +61,7 @@ blueKai.blueKai = {
 		KRUXSetup['section'] = this.dataJson['section'];
 		KRUXSetup['subSection'] = this.dataJson['articleType'];
 
-		this.include("http://sj.wsj.net/internal/krux.js");
+		this.include("http://cdn.krxd.net/krux.js");
 		
 	},
 	getSiteId:function(siteIds){
@@ -94,8 +92,7 @@ blueKai.blueKai = {
 			"edition" : s?s.prop24:"",
 			"referrer" : document.referrer!=""?document.referrer.split('/')[2]:""
 				};
-		 if(typeof this.dataJson.subsection=="undefined" || this.dataJson.subsection=="")this.dataJson.subsection=this.dataJson.section;
-		return this.getAdsData();
+			return this.getAdsData();
 	},
 	getAdsData:function(){
 		if(this.adDivs.length>0){		
@@ -135,6 +132,7 @@ blueKai.blueKai = {
 						}
 					}
 				}else{
+					console.info('Calling getAdDetails in 1 sec...'+this.timercounter);
 					this.timercounter++;
 					window.setTimeout('blueKai.blueKai.getAdsData()',1000);
 					return false;

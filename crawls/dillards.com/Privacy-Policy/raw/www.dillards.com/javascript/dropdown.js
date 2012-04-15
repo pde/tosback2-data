@@ -36,7 +36,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/content/women-dress-trends?cm_sp=womens-_-ddf-_-springs+best+dresses+4+032312">Spring\'s Best Dresses</a></li>');
 	document.writeln('<li><a href="/content/women-white-trend?cm_sp=womens-_-ddf-_-little+white+dresses+5+040712">The Little White Dress</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Gianni-Bini/Women/_/N-17302Zlfx6/Ns-p_best_sellers_rank%7C1/Ntk-all/Nty-1/Rpp-2?cm_sp=womens-_-ddpromo-_-gianni+bini+GWP+041512" >FREE LOGO UMBRELLA WITH YOUR GIANNI BINI PURCHASE ></a></div>');
+	document.writeln('<div class="promo"><a href="/content/women-bridge-lifestyle-week?cm_sp=womens-_-ddpromo-_-bridge+lifestyle+week+041612" >BRIDGE LIFESTYLE EVENT: RECEIVE A $50 REWARD ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Gianni-Bini/Women/_/N-17302Zlfx6/Ns-p_best_sellers_rank%7C1/Ntk-all/Nty-1/Rpp-2?cm_sp=womens-_-ddimg-_-gianni+bini+GWP+041512"><img src="/images/endeca/banners/120413_womensDD_GB.jpg"></a>');

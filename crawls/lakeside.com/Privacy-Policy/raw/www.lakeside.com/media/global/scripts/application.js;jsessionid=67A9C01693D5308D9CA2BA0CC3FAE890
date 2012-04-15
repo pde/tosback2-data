@@ -1,0 +1,78 @@
+/*
+--------------------------------------------------
+
+LTD Commodities
+Site-Wide Scripts [application.js]
+
+Joe Morrow [joe.morrow@acquitygroup.com]
+7/21/2010
+
+Copyright (c) 2008-2010 Acquity Group LLC
+
+--------------------------------------------------
+*/
+
+
+$(document).ready(function() {
+
+	// Gives each field a title tag with the text from the label
+	// Custom titles set for month/year fields
+	$('.inline-prompt').each(function() {
+		$(this).attr("title", $("label[for='" + $(this).attr('id') + "']").html());
+/*
+		if ($(this).attr('id') == 'birth-month') {
+			$(this).attr("title", 'mm');
+		}
+		if ($(this).attr('id') == 'birth-day') {
+			$(this).attr("title", 'dd');
+		}
+		if ($(this).attr('id') == 'birth-year') {
+			$(this).attr("title", 'yyyy');
+		}
+		if ($(this).attr('id') == 'license-month') {
+			$(this).attr("title", 'mm');
+		}
+		if ($(this).attr('id') == 'license-year') {
+			$(this).attr("title", 'yy');
+		}
+		if ($(this).attr('id') == 'graduation-month') {
+			$(this).attr("title", 'mm');
+		}
+		if ($(this).attr('id') == 'graduation-year') {
+			$(this).attr("title", 'yy');
+		}
+		if ($(this).attr('id') == 'phone-area') {
+			$(this).attr("title", '123');
+		}
+		if ($(this).attr('id') == 'phone-exchange') {
+			$(this).attr("title", '456');
+		}
+		if ($(this).attr('id') == 'phone-number') {
+			$(this).attr("title", '7890');
+		}
+		if ($(this).attr('id') == 'comments') {
+			$(this).attr("title", 'Please use this space to provide your comments');
+		}
+*/
+	}).focus(function() {
+		if ($(this).val() == $(this).attr("title"))
+			$(this).val("").removeClass("inline-prompt");
+	}).blur(function() {
+		if ($(this).val() == "")
+			$(this).val($(this).attr("title")).addClass("inline-prompt");
+	});
+
+/*
+	// Home page carousel paging
+	$('a.prev').click(function() {
+	    var selected = $('div.carousel.selected');
+	    if (selected.prev('div.carousel').length != 0)
+	        selected.addClass('hidden').removeClass('selected').prev().addClass('selected').removeClass('hidden');
+	});
+	$('a.next').click(function() {
+	    var selected = $('div.carousel.selected');
+	    if (selected.next('div.carousel').length != 0)
+	        selected.addClass('hidden').removeClass('selected').next().addClass('selected').removeClass('hidden');
+	});
+*/
+});

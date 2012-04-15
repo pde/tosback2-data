@@ -694,7 +694,7 @@ HDM.registration = {
 		fbLinkText = (hdmLoggedIn) ? 'Connect with Facebook' : 'Sign In with Facebook';
 		$fbLink = $('<li><a class="fbLink trackSender" href="#">' + fbLinkText + '</a></li>');
 		$fbLink.click(function(){
-			FB.login(null,{scope:'email'});
+			FB.login(null,{perms:'email'});
 			return false;
 		});
 		if ( hdmLoggedIn ){
@@ -950,7 +950,7 @@ HDM.registration = {
 				HDM.utils.eraseData('hdm_forceMagUserUpdate');
 			}
 			HDM.utils.buildScriptTag('//connect.facebook.net/en_US/all.js',function(){
-				//init the facebook api..
+				//init the facebook api
 				FB.init({
 					appId: fbAppID, //pass in the Site object's app id
 					status: true, //we want status

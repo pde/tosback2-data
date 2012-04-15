@@ -105,7 +105,7 @@ function chatActive(dateStamp) {
 		checkoutExclusionPages: 'yourorder,shippinginfo,paymentinfo,revieworder,orderconf,orderconfprnt,kioskexpresscheckout,kioskrevieworder,checkoutenteraddress,checkoutreviewandpay',
 		
 		
-	isChatOpen: chatActive('Apr 15, 2012 11:32:17'),
+	isChatOpen: chatActive('Apr 15, 2012 12:16:27'),
 		masterChatSwitch: 'ON',
 		showChatOnSku: 'ON',
 		showChatOnHome: 'ON',
