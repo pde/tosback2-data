@@ -1,0 +1,150 @@
+
+
+
+function FeatureThrottle(){
+    var baseValue = 0;
+    var packedCookie = "";
+    var c_name = "FEATURE_THROTTLE";
+    var ftrThresholds = [];
+    var ftrGrps = [];
+    var enableLogging = false;
+    
+    ftrThresholds = ["1:100","2:100","3:0","4:0","5:0","6:100","7:50","8:100"];
+    
+   
+    //init: 
+    {
+        packedCookie = getCookie();
+       	if (packedCookie == null || packedCookie == "") {
+            setBaseValue();
+            setupGroups();
+            prepareCookie();
+        	setCookie();
+        }
+        loadGroupsFromCookie();
+    }
+
+    //public instance functions
+    this.getGrp = function(feature){
+        log("<br>Testing this.getGrp()");
+        var grp = ftrGrps[feature];
+		
+        
+        {
+			log(ftrGrps["1"]);
+            log("getGrp()<br>");
+            log("grp = " + grp);
+        }
+        
+        log("<br>-------------------------");
+        return grp;
+    };
+    
+    function getCookie(){
+        log("<br>Testing getCookie()");
+        
+        var returnVal = cookieManager.readCookie("FEATURE_THROTTLE");
+        
+        log("<br>-------------------------");
+        return returnVal;
+    };
+    
+	function setBaseValue(){
+        var ms = new Date().getMilliseconds()
+        var percent = ms / 10;
+        baseValue = percent;
+        
+        {
+            log("<br>Testing setBaseValue()");
+            log("<br>ms = " + ms);
+            log("<br>Precent = " + percent);
+            log("<br>-------------------------");
+        }
+    };
+	
+	 function setupGroups(){
+        log("<br>Testing setGroups()");
+        log("<br>BaseValue=" + baseValue);
+        for (var i = 0; i < ftrThresholds.length; i++) {
+            var feature = ftrThresholds[i].substr(0, ftrThresholds[i].indexOf(":"));
+            var threshold = ftrThresholds[i].substr(ftrThresholds[i].indexOf(":") + 1);
+            log("<br>feature-" + feature);
+            log("<br>threshold-" + threshold);
+            //perform evaluation
+            
+            log("<br>Is Base value (" + baseValue + ") < Threshold (" + threshold + ")? ");
+            log("<br>Should the feature be turned on? ");
+            log(baseValue < threshold);
+            basevalue = 30;
+            if (baseValue < threshold) {
+                ftrGrps[i] = feature + ".1";
+                
+            }
+            else {
+                ftrGrps[i] = feature + ".0";
+            }
+            log("<br>Setting Feature Group as: " + ftrGrps[i]);
+			log("<br>--");
+        }
+        log("<br>-------------------------");
+    };
+	
+	function prepareCookie(){
+      		log("<br>Testing packedCookie(value)");
+			packedCookie = "";
+			for (var i = 0; i < ftrGrps.length; i++) {
+				 packedCookie = packedCookie + ftrGrps[i];
+				if (i < ftrGrps.length-1){
+					packedCookie = packedCookie +"-";
+				}
+			}            
+            log("<br>Set packedCookie to: " + packedCookie);
+			log("<br>-------------------------");
+	}
+	
+	
+    function setCookie(){
+        log("<br>Testing setCookie(value)");
+        var exdays; //null = session cookie
+        var value=packedCookie;
+		
+        var exdate = new Date();
+        exdate.setDate(exdate.getDate() + exdays);
+        var c_value = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+        
+		cookieManager.createCookie(c_name, c_value);
+        log("<br>Cookie set to: " +  c_name + "=" + c_value);
+		log("<br>-------------------------");
+    }
+    
+    function loadGroupsFromCookie(){
+		log("<br>Testing loadGroupsFromCookie");
+ 
+		ftrGrps=new Array();
+		log("<br>packedCookie="+packedCookie);
+		packedCookie = getCookie();
+		log("<br>packedCookie="+packedCookie);
+	
+        var partialUnpackedFtrs = packedCookie.split("-");
+        for (var i = 0; i < partialUnpackedFtrs.length; i++) {
+            var ftrKey = partialUnpackedFtrs[i].substr(0, partialUnpackedFtrs[i].indexOf("."));
+			
+			log("<br>ftrKey=" +ftrKey);
+			
+            var ftrVal = partialUnpackedFtrs[i].substr(partialUnpackedFtrs[i].indexOf(".") + 1);
+			log("<br>ftrVal=" +ftrVal);
+			ftrGrps[ftrKey]=ftrVal;
+			log("ftrGrps["+ftrKey+"]="+ftrVal);
+        }
+		log("<br>-------------------------");
+    };
+       
+	function log(string){
+		if (enableLogging) {
+			document.write(string);
+		}
+	}
+    
+    }
+
+var FeatureThrottle = new FeatureThrottle();

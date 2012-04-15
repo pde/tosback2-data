@@ -1,0 +1,202 @@
+
+function noErrorMessages () { return true; }
+
+function bookmark(anchor){
+   if(window.external)
+   {
+	   window.external.AddFavorite(anchor.getAttribute('href'), anchor.getAttribute('title'));
+	   return false;
+   }
+   return true;
+}
+
+function gotoURL(url) {
+	document.location.href = url;
+}
+
+function changeThumb(index, i, path)
+{
+	if (changing_thumbs[index])
+	{
+		var src = path + i + '.jpg';
+
+		if (path.indexOf("{index}") != -1)
+		{
+			src = path.replace("{index}", i);
+		}
+
+		$j('#'+index).attr('src', src);
+
+		var maxcnt = 16;
+
+		if($j('#' + index).attr('maxnum'))
+		{
+			maxcnt = parseInt($j('#' + index).attr('maxnum'));
+		}
+
+		if (++i > maxcnt) i=1;
+		changing_thumbs[index] = setTimeout("changeThumb('" + index + "'," + i + ",'" + path + "')", 600);
+	}
+}
+
+//check and uncheck all inputs in the filter menu
+function checkall(on){
+	 $j("input.delete_cb").each(function(cb, el){ el.checked = on; });
+}
+
+function endThumbChange(index)
+{
+	clearTimeout(changing_thumbs[index]);
+	$j('#'+index).attr('src', first_thumbs[index]);
+	changing_thumbs[index] = false;
+}
+
+function toggleDisplay (elId) {
+	var cover_layer_h = $j('body').outerHeight() + 20;
+	cover_layer_h = Math.max(cover_layer_h, $j(document).height()-10);
+
+	$j('div.cover_layer').css("height" , cover_layer_h + "px");
+	var p = ['share_link', 'logindiv', 'reportdiv'];
+	for (n in p)
+	{
+		if (elId != p[n]) {
+			$j('#' + p[n]).hide();
+		}
+	}
+	if ($j('#' + elId)) {
+		if ($j('#' + elId).css('display') == 'none') {
+			$j('#' + elId).show();
+		}
+		else {
+			$j('#' + elId).hide();
+		}
+	}
+}
+
+function goToSexual(changedValue, site_url) {
+	segmentCookie(changedValue.value);
+	if(changedValue.value == 0)
+		window.location = site_url;
+	if(changedValue.value == 1)
+		window.location = site_url + "gay/";
+	if(changedValue.value == 2)
+		window.location = site_url + "shemale/";
+}
+
+function needLogin(run, msg)
+{
+	if (loggedin)
+	{
+		eval(run);
+	}
+	else
+	{
+		showLogin(run, msg);
+	}
+}
+
+function segmentCookie(segm)
+{
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate()+ 7);
+	document.cookie="t8segm="+segm+";expires="+exdate.toUTCString() + ";path=/";
+}
+
+function showLogin(run, msg, ifurl)
+{
+	goUrl = ifurl ? ifurl: false;
+
+	var dv = $j('#logindiv');
+
+	$j('#loginmsg').html(msg);
+
+	if (dv.css('display') == 'none')
+	{
+		runal=run;
+		toggleDisplay(); // hide all other boxes
+		dv.show();
+		dv.focus();
+	}
+	else
+	{
+		runal=false;
+		dv.hide();
+	}
+}
+
+function startThumbChange(index, path)
+{
+	changing_thumbs[index] = true;
+	changeThumb(index, 2, path);
+}
+
+function tryLogin(ajax_url)
+{
+	$j('#logindiv').hide();
+	user = $j('input[name$="username"]').val();
+	pass = $j('input[name$="password"]').val();
+	
+	$j.post(ajax_url + "login.php",
+		{ username : user, password : pass },
+		function(response) {
+			
+			var rts=response.split('|');
+			if (rts[0]==0)
+			{
+				showLogin(runal, rts[1], goUrl);
+			}
+			else
+			{
+				loggedin=1;
+
+				if (runal)
+				{
+					eval(runal);
+				}
+				else if(goUrl)
+				{
+					gotoURL(goUrl);
+				}
+			}
+		}
+	);
+}
+
+
+// Function is needed because using the desktop login function won't work.
+function ipadMenuLogin(ajax_url)
+{
+	user = $j('input[name$="menuUsername"]').val();
+	pass = $j('input[name$="menuPassword"]').val();
+	
+	$j.post(ajax_url + "login.php",
+		{ username : user, password : pass },
+		function(response) {
+			
+			var rts=response.split('|');
+			if (rts[0]==0)
+			{
+				showLogin(runal, rts[1], '/menu.html');
+			}
+			else
+			{
+				loggedin=1;
+				gotoURL('/menu.html');
+			}
+		}
+	);
+}
+
+// Remove HTML5 video controls when you display a popup with inputs in ipad.
+function toggleVideoControls()
+{
+	var video = document.getElementById('player-html5');
+	
+	if(video) {
+		if (video.hasAttribute("controls")) {
+			video.removeAttribute("controls")   
+		} else {
+			video.setAttribute("controls","controls")   
+		}
+	}
+}

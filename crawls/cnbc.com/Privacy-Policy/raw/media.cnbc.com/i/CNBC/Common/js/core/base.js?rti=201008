@@ -1,0 +1,166 @@
+/////////////////////////////////////////////////////////////////////////////////////////
+//Base Object Model
+/////////////////////////////////////////////////////////////////////////////////////////
+BaseModel = Class.create();
+	BaseModel.prototype =  {
+		initialize: function(views) {
+		  this.views = views || [];
+		},
+		
+		addView : function(id,view){
+	      //Add/Replace view from the collection		  
+		  this.views[id]=view;
+
+		},
+		
+		deleteView : function(id){
+		  var deletedView = this.views.id;		  
+
+		  //Remove view from the collection
+		  delete this.views[id];
+		  
+		  //Return deleted view
+		  return deletedView;		  
+		},
+		
+		update : function(event,data){		  
+		  //Transfer data to new object -- This prevents any data synchronization issues...
+		  var updateModel  = this.applyData(event,data);
+
+		  //Notify any listener of data state change..	
+		  for(var id in this.views)
+		  {
+			if( (typeof this.views[id])=='object')
+			{				
+				this.views[id].onDataEvent(event,updateModel);
+			}
+		  }
+		},
+		isNull: function(obj) {
+		    return ( (obj == null) || ((typeof obj) == 'undefined') );
+		},
+		
+		/**
+		* Override Abstract Methods Below For Your Model Specific Implementation
+		*/
+		applyData: function(event,data){
+			  //TO-DO: Add the specific object update based on submitted data
+		}
+};
+
+BaseModelParser= Class.create();
+	BaseModelParser.prototype =  {
+		initialize: function() {					
+	  	},
+		
+		/**
+		* Override Abstract Methods Below For Your Parser Specific Implementation
+		*/
+		load: function(request){			
+			return null;
+		},
+		isNull: function(obj) {
+		    return ( (obj == null) || ((typeof obj) == 'undefined') );
+		}
+};
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//Base Object View
+/////////////////////////////////////////////////////////////////////////////////////////
+BaseView = Class.create();
+	BaseView.prototype =  {
+	  initialize: function() {
+	  },
+	  
+	  /**
+		* Override Abstract Methods Below For Your View Specific Implementation
+		*/
+	  onDataEvent: function(event,data){		  		  		 
+	  },
+	  isNull : function(obj) {
+	    return ( (obj == null) || ((typeof obj) == 'undefined') );
+	  }		
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//Base Object Controller
+/////////////////////////////////////////////////////////////////////////////////////////
+BaseController= Class.create();
+	BaseController.prototype =  {
+	  initialize: function(data,requestor,parser) {
+  		this.data		= data;
+		this.requestor	= requestor
+		this.parser		= parser;
+	  },	
+	  
+	  execute : function( URL, params, options ) {
+		    if( (!isNull(this.requestor))  && (!this.isNull(this.parser)) )
+			{
+				var obj = this;
+		  		this.requestor.execute(URL,params, {executing : true,
+   													controller : obj,
+												    event: options.event,
+													method : options.method,
+													onSuccessEvent : options.onSuccessEvent,
+													onInitializeEvent: options.onInitializeEvent,
+													onErrorEvent : options.onErrorEvent,
+													onTimeoutEvent : options.onTimeoutEvent,
+													onTimeoutLength : options.onTimeoutLength });
+			}
+	  },
+	  
+	  onRequestEvent : function (type, state,responsedata){	
+		  if(!this.isNull(this.data))
+		  {
+			  var event = new  Event(type, state);
+			  this.data.update(event, responsedata);
+		  }
+	  },
+	  
+	  fromArrayToString : function (collection, delimeter){ 
+	  	   var value	= "";
+		   var separator= delimeter || ",";
+		   if(!this.isNull(collection))
+		   {
+			   if(!this.isNull(collection.length))
+			   {
+			   		for(var i=0;i<collection.length;++i)
+					{
+						if(value!="") { 
+							value+= separator;
+						}
+						value += collection[i];
+					}
+			   }
+		   }
+		   
+		   return value;
+	  },  
+	  isNull: function(obj) {
+	    return ( (obj == null) || ((typeof obj) == 'undefined') );
+	  }	
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//Generic Event
+/////////////////////////////////////////////////////////////////////////////////////////
+Event = Class.create();
+	Event.prototype = {
+		initialize: function(type,state) {						
+			this.type	= type;
+			this.state	= state;
+	  	},
+	  	getType:function() {
+			return this.type;
+		},
+		getState:function() {
+			return this.state;
+		},		
+		setType:function(type) {
+			this.type=type;
+		},
+		setState:function(state) {
+			this.state=state;
+		}	
+};

@@ -1,0 +1,1281 @@
+if(!window.itw){window.itw={}};
+itw.app_id="0"; 
+itw.app_url=null;
+itw.country="us";
+itw.partner_id="30";
+
+itw.tvar="";
+itw.dvar="";
+
+itw.gotBackBtn=false;
+itw.widget_height=300;
+itw.widget_width=250;
+itw.widgettype=0;
+itw.playlist=[];
+itw.all_iph_ipad=0;
+itw.album_artist_song=0;
+itw.tv_movie=99;
+itw.searching=false;
+itw.aff_wrapper="";
+itw.showcents=true;
+itw.strings={ "view_more":"View More","total_songs_pre":"Total: ","total_items_post":" Items","total_songs_post":" Songs","pre_currency":"$","post_currency":"","currency_decimal":".","currency_free":"Free","rating":"Rating: ","no_result":"No Result"};
+
+
+itw.includeLocCss= function includeLocCss() {
+    try {
+    var lnk = document.createElement('link');
+    lnk.type='text/css';
+    lnk.href='/lib/widget_lang_'+itw.country+'.css?serial=9999999';
+    lnk.rel='stylesheet';
+    document.getElementsByTagName('head')[0].appendChild(lnk);
+    } catch (e) {};
+}
+
+itw.redrawHeight=  function redrawHeight() {
+       if (itw.widgettype==0) {
+          $('#description_payload').css({"height":(itw.widget_height-170)+"px"});
+          $('#load_screen').addClass("hide");
+       }
+
+       if (itw.widgettype==1) {
+          $('#description_payload').css({"height":(itw.widget_height-190)+"px"});
+          $('#search_results').css({"height":(itw.widget_height-116)+"px"});
+          $('#description_scrollbar').css({"top":"180px"});
+          $('#load_screen').addClass("hide");
+       }
+
+       if (itw.widgettype==2) {
+          $('#track_payload').css({"height":(itw.widget_height-140)+"px"});
+          $('#track_payload_viewport').css({"height":(itw.widget_height-140)+"px"});
+          $('#scrollbar_album_tracks').css({"top":"115px"});
+	  $('#load_screen').addClass("hide");
+       }
+
+       if (itw.widgettype==4 || itw.widgettype==10 || itw.widgettype==11 || itw.widgettype==12) {
+	   	$('#playlist_payload').css({"height":(itw.widget_height-116)+"px"});
+	   	$('#description_payload').css({"height":(itw.widget_height-190)+"px"});
+       }
+
+       if (itw.widgettype==5) {
+          $('#description_payload').css({"height":(itw.widget_height-190)+"px"});
+          $('#search_results').css({"height":(itw.widget_height-106)+"px"});
+           $('#footer').addClass("hide");
+          $('#description_scrollbar').css({"top":"170px"});
+          $('#load_screen').addClass("hide");
+       }
+
+       if (itw.widgettype==6) {
+          $('#description_payload').css({"height":(itw.widget_height-170)+"px"});
+           $('#description_scrollbar').removeClass("hide");
+           $('#footer').removeClass("hide");
+       };
+
+       if (itw.widgettype==7) {
+          $('#description_payload').css({"height":(itw.widget_height-170)+"px"});
+
+          $('#description_scrollbar').css({"top":"160px"});
+          $('#load_screen').addClass("hide");
+          $('#footer').removeClass("hide");
+
+       }
+
+       if (itw.widgettype==8) {
+          $('#description_payload').css({"height":(itw.widget_height-170)+"px"});
+          $('#description_scrollbar').css({"top":"160px"});
+          $('#load_screen').addClass("hide");
+          $('#footer').removeClass("hide");
+
+       }
+       if (itw.widgettype==9) {
+          $('#description_payload').css({"height":(itw.widget_height-170)+"px"});
+          $('#description_scrollbar').css({"top":"165px"});
+          $('#load_screen').addClass("hide");
+		  $('#search_results').css({"height":(itw.widget_height-100)+"px"});
+
+       }
+	   if (itw.widgettype==3) {
+          $('#track_payload_viewport').css({"height":(itw.widget_height-160)+"px"});
+          $('#track_payload').css({"height":(itw.widget_height-156)+"px"});
+          $('#scrollbar_album_tracks').css({"top":"138px"});
+          $('#search_results').css({"height":(itw.widget_height-104)+"px"});
+          $('#search_field').val("");
+		  $('#load_screen').addClass("hide");
+	  }
+      if ( $('#btn_back').hasClass("hide") ) {
+         $('#container').css({"height":itw.widget_height+"px"});
+         $('#payload_background').css({"height":(itw.widget_height-26)+"px"});
+      } else {
+		  $('#container').css({"height":(itw.widget_height-10)+"px"});
+          $('#payload_background').css({"height":(itw.widget_height-36)+"px"});
+      };
+  }
+
+itw.redrawWidth=  function redrawWidth() {
+     $('#container').css({"width":itw.widget_width+"px"});
+     $('#top_payload').css({"width":(itw.widget_width-32)+"px"});
+     $('#description_payload').css({"width":(itw.widget_width-40)+"px"});
+     $('#fade_bar').css({"width":(itw.widget_width-40)+"px"});
+     $('#search_box_bg').css({"width":(itw.widget_width-20)+"px"});
+     $('.payload').css({"width":itw.widget_width+"px"});
+    if (((itw.widgettype>1) && (itw.widgettype<5))||(itw.widgettype==9)) {
+       $('#frm_background').css({"width":(itw.widget_width-120)+"px"});
+	if (itw.widgettype==9) { $('#frm_background').css({"width":(itw.widget_width-130)+"px"});  } ;
+       $('#search_form').css({"width":(itw.widget_width-20)+"px"});
+       $('#search_field').css({"width":(itw.widget_width-160)+"px"});
+       $('#track_payload_viewport').css({"width":(itw.widget_width-20)+"px"});
+       $('#track_payload').css({"width":(itw.widget_width-20)+"px"});
+       $('#playlist_payload').css({"width":(itw.widget_width-20)+"px"});
+     } else {
+       $('#frm_background').css({"width":(itw.widget_width-40)+"px"});
+       $('#search_form').css({"width":(itw.widget_width-20)+"px"});
+       $('#search_field').css({"width":(itw.widget_width-80)+"px"});
+     };
+
+		if(itw.widgettype == 11 || itw.widgettype == 10 || itw.widgettype == 12) {
+			$('#playlist_payload').css({"width":(itw.widget_width-20)+"px"});
+		}
+
+  }
+
+itw.dummyEtype= function dummyEtype() {
+     which=13;
+};
+
+itw.hashify= function hashify(inp) {
+    var ret=inp.toUpperCase();
+    ret=ret.replace(/^\s+/,'').replace(/\s+$/,'');
+    if (ret.substring(0,1) !== "#") { ret="#"+ret };
+    return ret;
+};
+
+itw.dummyE=new itw.dummyEtype;
+
+itw.populateMe=  function populateMe() {
+
+	itw.app_id=itw.get_param('app_id');
+	itw.partner_id=itw.get_param('partnerId');
+	itw.aff_wrapper=unescape(itw.get_param('affiliate_id'));
+
+	itw.country=itw.get_param('country');
+	if (itw.country=="0") {itw.country="us"};
+	itw.country=itw.country.toLowerCase();
+	itw.includeLocCss();
+
+	if (itw.aff_wrapper.substring(itw.aff_wrapper.length-1)!="=") { itw.aff_wrapper=itw.aff_wrapper+"="};
+
+	itw.widgettype=itw.get_param('wtype');
+
+     
+	$('#search_field').keydown( function(e) {
+		if(e.which == 13)
+		return false;
+		else
+		itw.performSearch(e);
+	});
+
+	$('#search_field').keyup( function(e) {
+		var v=$('#search_field').val(); 
+		if (v.length<1) { $('#reset').addClass("hide") } else {$('#reset').removeClass("hide")} 
+	});
+
+
+	$('#btn_view_app').click( function() { itw.openiTunes();} );
+	$('#btn_view_album').click( function() { itw.openiTunes();} );
+
+	if (itw.widgettype==1) {
+		$('#filter_all').click( function() { 
+			$('#filter_all').removeClass("highlight");
+			$('#filter_ipad').removeClass("highlight");
+			$('#filter_iphone').removeClass("highlight");
+			$('#filter_all').addClass("highlight");
+			itw.all_iph_ipad=0;
+			itw.performSearch(itw.dummyE);
+		});
+		$('#filter_iphone').click( function() { 
+			$('#filter_all').removeClass("highlight");
+			$('#filter_ipad').removeClass("highlight");
+			$('#filter_iphone').removeClass("highlight");
+			$('#filter_iphone').addClass("highlight");
+			itw.all_iph_ipad=1;
+			itw.performSearch(itw.dummyE);
+		});
+		$('#filter_ipad').click( function() { 
+			$('#filter_all').removeClass("highlight");
+			$('#filter_ipad').removeClass("highlight");
+			$('#filter_iphone').removeClass("highlight");
+			$('#filter_ipad').addClass("highlight");
+			itw.all_iph_ipad=2;
+			itw.performSearch(itw.dummyE);
+		});
+	};
+
+	if ( itw.widgettype==1 )   {
+		$('#reset').click( function() { 
+			$("#search_field").val("");
+			$('#reset').addClass("hide");
+			$('#footer').addClass("hide");
+			$('#results_list').addClass("hide");
+			$('#scrollbar_search_results').addClass("hide");
+			$('#search_results').addClass("hide");
+			$("#app_empty_search_results").removeClass("hide");
+			$("#scrollbar").addClass('hide');
+		});
+	} else {
+		$('#reset').click( function() { 
+			$('#footer').addClass("hide");
+			$("#search_field").val("");
+			$('#results_list').addClass("hide");
+			$('#scrollbar_search_results').addClass("hide");
+			$('#search_results').addClass("hide");
+			$('#app_empty_search_results').removeClass("hide");
+			$('#reset').addClass("hide");
+			$("#scrollbar").addClass('hide');
+		});
+	};
+	
+	if ((itw.widgettype==2) || (itw.widgettype==3)|| (itw.widgettype==5)  ) {
+		$('#selector_type').change( function(e) { 
+			itw.album_artist_song=$('#selector_type option:selected').val();
+			itw.performSearch(itw.dummyE);
+		});
+	}
+
+
+	if (itw.widgettype==9) {
+	  itw.tv_movie=0;
+	  $('#selector_type').change( function(e) { 
+		  itw.tv_movie=$('#selector_type option:selected').val();
+		  itw.performSearch(itw.dummyE);
+	  });
+	}
+	
+	var v=itw.get_param('ww');
+	if (v>325) {v=325};
+	if (v<250) {v=250};
+	if (v>100) {
+		itw.widget_width=v;
+	}
+	itw.redrawWidth();
+	
+	v=itw.get_param('wh');
+	if (v>370) {v=370};
+	if (v<300) {v=300};
+	if (v>100) {
+		itw.widget_height=v;
+	}
+
+	itw.redrawHeight();
+
+  if (itw.widgettype==0) {
+    $('#footer').removeClass("hide");
+  };
+
+
+  v=itw.get_param('cul');
+  if (v!="0") {
+    v=itw.hashify(v);
+    $('#bg_top_left').css({"background-color": v });
+  };
+  v=itw.get_param('cur');
+  if (v!="0") {
+    v=itw.hashify(v);
+    $('#bg_top_right').css({"background-color":v});
+  };
+  v=itw.get_param('cll');
+  if (v!="0") {
+    v=itw.hashify(v);
+    $('#bg_bottom_left').css({"background-color":v});
+  };
+  v=itw.get_param('clr');
+  if (v!="0") {
+    v=itw.hashify(v);
+    $('#bg_bottom_right').css({"background-color":v});
+  };
+
+  itw.tvar=itw.get_param('t').replace("<","").replace("%3C","").replace("%253C","");
+	//  itw.tvar = unescape(unescape(itw.tvar)).replace(/[-[\]{}()*+?.,\\^$|#>]/g, "");
+  itw.tvar = unescape(unescape(itw.tvar)).replace(/[>]/g, "");
+  itw.dvar=itw.get_param('d').replace("<","").replace("%3C","").replace("%253C","");
+        // itw.dvar = unescape(unescape(itw.dvar)).replace(/[-[\]{}()*+?.,\\^$|#>]/g, "");
+  itw.dvar = unescape(unescape(itw.dvar)).replace(/[>]/g, "");
+							
+
+  switch(itw.widgettype)
+      {
+      case "0":
+        $('#container').removeClass("search").addClass("item");
+         break;
+      case "1":
+         $('#container').removeClass("item").addClass("search");
+         break;
+      case "2":
+	        $('#container').removeClass("search").addClass("item");
+      break;
+      case "3":
+           $('#itunes_search').removeClass("hide");
+           $('#album_view').addClass("hide");
+           $('#results_list').addClass("hide");
+           $('#scrollbar_search_results').addClass("hide");
+           $('#search_results').addClass("hide");
+	   // $('#itunes_empty_search_results').addClass("hide");
+           break;
+      case "4":
+          $('#album_view').addClass("hide");
+          itw.fetchPlaylist(itw.get_param('pl'));
+          $('#playlist_view').removeClass("hide");
+	  $('#load_screen').addClass("hide");
+          $('#footer').removeClass("hide");
+          $('#playlist_title').html(itw.tvar);
+          $('#playlist_description').html(itw.dvar);
+
+          break;
+      case "5":
+          $('#container').removeClass("item").addClass("search");
+          break;
+      case "6":
+          $('#container').removeClass("search").addClass("item");
+          break;
+      case "7":
+          $('#container').removeClass("search").addClass("item").addClass("tv");
+          break;
+      case "8":
+          $('#container').removeClass("search").addClass("item").addClass("movie");
+          break;
+      case "9":
+          break;
+      case "10":
+	  $('#container').removeClass("item").removeClass("search").addClass('playlist');
+	  itw.fetchBookPlaylist(itw.get_param('pl'));
+	  $('#playlist_view').removeClass("hide");
+	  $('#load_screen').addClass("hide");
+	  $('#footer').removeClass("hide");
+		$('#trackcount').removeClass("hide");
+	  $('#playlist_title').html(itw.tvar);
+	  $('#playlist_description').html(itw.dvar);
+	  
+	  break;
+      case "11":
+	  $('#container').removeClass("item").removeClass("search").addClass('playlist');
+	  itw.fetchAppPlaylist(itw.get_param('pl'));
+	  $('#playlist_view').removeClass("hide");
+	  $('#load_screen').addClass("hide");
+	  $('#footer').removeClass("hide");
+		$('#trackcount').removeClass("hide");
+	  $('#playlist_title').html(itw.tvar);
+	  $('#playlist_description').html(itw.dvar);
+	  
+	  break;
+	  case "12":
+	  $('#container').removeClass("item").removeClass("search").addClass('playlist');
+	  itw.fetchPodcastPlaylist(itw.get_param('pl'));
+	  $('#playlist_view').removeClass("hide");
+	  $('#load_screen').addClass("hide");
+	  $('#footer').removeClass("hide");
+		$('#trackcount').removeClass("hide");
+	  $('#playlist_title').html(itw.tvar);
+	  $('#playlist_description').html(itw.dvar);
+
+	  break;
+	
+
+      default:
+      }
+
+itw.internationalize();
+
+  if ((itw.app_id!="0") && (itw.app_id!="null")) {
+     itw.getItem(itw.app_id);
+  }
+}
+
+itw.internationalize = function internationalize() {
+
+    url="lib/widget_lang_"+itw.country+".js";
+    $.ajax({
+	    url: url,
+		dataType: 'json',
+		data: {},
+		success: function(data) {
+	    lang=data;
+	    var ldata=null;
+	    try { ldata=  lang[itw.country]; } catch (e) {;};
+
+	    if (ldata!=null) {
+		if (ldata['tv_search']!=undefined) {
+		    if (itw.widgettype==9) {
+			var tvmv_m_count=0;
+			$("#selector_type").html("");
+			if (ldata['tv_search']==true) { 
+			    tvmv_m_count=tvmv_m_count+1;
+			    $("#selector_type").html(  '<option id="lng_tv_shows" value="0">TV Shows</option>' );
+			};
+			if (ldata['movie_search']==true) { 
+			    tvmv_m_count=tvmv_m_count+1;
+			    $("#selector_type").append(  '<option id="lng_movies" value="2">Movies</option>');
+			    if (ldata['tv_search']==false) {itw.tv_movie=2 };
+			};
+			if (tvmv_m_count=tvmv_m_count<2 ) {		    
+			};
+		    };
+		};
+		$.each(ldata['innerHtml'],  function(key, value) {
+			$(key).html(unescape(unescape(value)));
+		    });
+		$.each(ldata['strings'],  function(key, value) {
+			itw.strings[key]=unescape(unescape(value));
+		    });
+ 
+		$.each(ldata['placeholder'],  function(key, value) {
+			$(key).attr("placeholder",unescape(unescape(value)));
+		    });
+                $.each(['#home'],  function(ndx, value) {
+			$(value).addClass("lng_"+itw.country);
+		    });
+		$("#home").css({"display":"block"});
+	    } else {
+		$("#home").css({"display":"block"});
+	    };
+	    }, 
+		error : function() {
+		$("#home").css({"display":"block"});
+	    }
+	});
+
+    /*
+        $.getJSON(url,  function(data) {
+	    lang=data;
+	    var ldata=null;
+	    try {  ldata=  lang[itw.country]; } catch (e) {;};
+	    if (ldata!=null) {
+		$.each(ldata['innerHtml'],  function(key, value) {
+			$(key).html(unescape(unescape(value)));
+		    });
+		$.each(ldata['strings'],  function(key, value) {
+			itw.strings[key]=unescape(unescape(value));
+		    });
+ 
+		$.each(ldata['placeholder'],  function(key, value) {
+			//console.log(value);
+			$(key).attr("placeholder",unescape(unescape(value)));
+		    });
+                $.each(['#home'],  function(ndx, value) {
+			$(value).addClass("lng_"+itw.country);
+		    });
+		$("#home").css({"display":"block"});
+	    }
+	  });
+    */
+}
+
+itw.fetchPlaylist = function fetchPlaylist(plids) {
+    url="http://itunes.apple.com/lookup?country="+itw.country+"&id="+plids+'&callback=?';
+    if (plids!="0") {
+      $.getJSON(url,
+		function(json) {
+                    itw.playlist=json['results'];
+		    var tb="<table class=\"playlist-table\"><tbody>";
+		    var i=0;
+		    $.each(itw.playlist , function(index, value) {
+			    var elem=itw.buildSongRow(index,value);
+			    if ( value['kind']=="music-video") {elem="";};
+			    tb=tb+elem;
+			    i=i+1;
+			});
+                    tb=tb+"</tbody></table>";
+        $("#trackcount").html(itw.strings['total_songs_pre']+i+itw.strings['total_songs_post']);
+		    $('#playlist_container').html(tb);
+      	if (i>3) {
+			$('#scrollbar_playlist_tracks').removeClass('hide');
+		};
+		    $('#playlist_view').tinyscrollbar( { size: ( itw.widget_height-116 )  } );
+		    $('#playlist_view table td.meta div.meta').css({"width": (itw.widget_width-136)+"px" });
+		    its.registerElementBinding(ITSPlayMusicController, "table.playlist-table tbody tr[audio-preview-url] td div.circular-preview-control", { click: "togglePlayState", mousedown: "mousePressed" });
+
+				its.registerElementBinding(ITSPlayMusicController,"table.playlist-table tbody tr[audio-preview-url]",{mouseover:"rowMouseIn",mouseout:"rowMouseOut"},true)
+		});
+    }
+}
+
+itw.fetchBookPlaylist = function fetchBookPlaylist(plids) {
+    url="http://itunes.apple.com/lookup?country="+itw.country+"&id="+plids+'&callback=?';
+    if (plids!="0") {
+      $.getJSON(url,
+		function(json) {
+                    itw.playlist=json['results'];
+		    var tb="<table class=\"playlist-table\"><tbody>";
+		    var i=0;
+		    $.each(itw.playlist , function(index, value) {
+			    var elem=itw.buildBookRow(index,value);
+			    tb=tb+elem;
+			    i=i+1;
+			});
+            tb=tb+"</tbody></table>";
+            $("#trackcount").html(itw.strings['total_songs_pre']+i+itw.strings['total_items_post']);
+		    $('#playlist_container').html(tb);
+           	if (i>3) {
+		      $('#scrollbar_playlist_tracks').removeClass('hide');
+		    };
+		    $('#playlist_view').tinyscrollbar( { size: ( itw.widget_height-116 )  } );
+		    $('#playlist_view table td.meta div.meta').css({"width": (itw.widget_width-100)+"px" });
+		});
+    }
+}
+
+itw.fetchPodcastPlaylist = function fetchPodcastPlaylist(plids) {
+    url="http://itunes.apple.com/lookup?country="+itw.country+"&id="+plids+'&callback=?';
+    if (plids!="0") {
+      $.getJSON(url,
+		function(json) {
+                    itw.playlist=json['results'];
+		    var tb="<table class=\"playlist-table\"><tbody>";
+		    var i=0;
+		    $.each(itw.playlist , function(index, value) {
+			    var elem=itw.buildPodcastRow(index,value);
+			    tb=tb+elem;
+			    i=i+1;
+			});
+            tb=tb+"</tbody></table>";
+            $("#trackcount").html(itw.strings['total_songs_pre']+i+itw.strings['total_items_post']);
+		    $('#playlist_container').html(tb);
+           	if (i>3) {
+		      $('#scrollbar_playlist_tracks').removeClass('hide');
+		    };
+		    $('#playlist_view').tinyscrollbar( { size: ( itw.widget_height-116 )  } );
+		    $('#playlist_view table td.meta div.meta').css({"width": (itw.widget_width-100)+"px" });
+		});
+    }
+}
+
+itw.buildPodcastRow = function buildPodcastRow(index,value) {
+    var ret="";
+    var collection_id=value['collectionId'];
+    if (collection_id==null) { collection_id=value['trackId'] };
+    ret="<tr role=\"row\" metrics-loc=\"Track_\" adam-id=\""+value.trackId+"\"  audio-preview-url=\""+value['previewUrl']+"\"   >";
+    ret=ret+"<td class=\"icon\"><div class=\"list_icon\"><img src=\""+value['artworkUrl100']+"\" class=\"podcast\"></div></td>";
+    //ret=ret+"<td  role=\"gridcell\" class=\"index ascending\" sort-value=\""+(index+1)+"\" >";
+    ret=ret+"<td class=\"meta\"><div class=\"meta\"><h1 onClick=\"itw.app_url='"+value['trackViewUrl']+"';itw.openiTunes();\" >"+value['trackName']+"</h1><h2 onClick=\"itw.app_url='"+value['trackViewUrl']+"';itw.openiTunes();\"  >"+value['artistName']+"</h2><div class=\"btn_view\" onClick=\"itw.app_url='"+value['trackViewUrl']+"';itw.openiTunes();\"  ></div></div></td></tr>"; 
+    return(ret);  
+}
+
+itw.fetchAppPlaylist = function fetchAppPlaylist(plids) {
+    url="http://itunes.apple.com/lookup?country="+itw.country+"&id="+plids+'&callback=?';
+    if (plids!="0") {
+
+      $.getJSON(url,
+		function(json) {
+            itw.playlist=json['results'];
+		    var tb="<table class=\"playlist-table\"><tbody>";
+		    var i=0;
+		    $.each(itw.playlist , function(index, value) {
+			    var elem=itw.buildAppRow(index,value);
+			    tb=tb+elem;
+			    i=i+1;
+			});
+            tb=tb+"</tbody></table>";
+            $("#trackcount").html(itw.strings['total_songs_pre']+i+itw.strings['total_items_post']);
+		    $('#playlist_container').html(tb);
+           	if (i>3) {
+		      $('#scrollbar_playlist_tracks').removeClass('hide');
+		    };
+		    $('#playlist_view').tinyscrollbar( { size: ( itw.widget_height-116 )  } );
+		    $('#playlist_view table td.meta div.meta').css({"width": (itw.widget_width-100)+"px" });
+		});
+    }
+}
+
+
+itw.buildBookRow= function buildBookRow(index,value) {
+    var ret="";
+    var collection_id=value['collectionId'];
+    if (collection_id==null) { collection_id=value['trackId'] };
+    ret="<tr role=\"row\" metrics-loc=\"Track_\" adam-id=\""+value.trackId+"\"  audio-preview-url=\""+value['previewUrl']+"\"   >";
+    ret=ret+"<td class=\"icon\"><div class=\"list_icon\"><img src=\""+value['artworkUrl100']+"\"></div></td>";
+    //ret=ret+"<td  role=\"gridcell\" class=\"index ascending\" sort-value=\""+(index+1)+"\" >";
+    ret=ret+"<td class=\"meta\"><div class=\"meta\"><h1 onClick=\"iTunesWidget.showBackAndGetItem("+collection_id+")\" >"+value['trackName']+"</h1><h2 onClick=\"iTunesWidget.showBackAndGetItem("+collection_id+")\"  >"+value['artistName']+"</h2><h1 class=\""+(value['price'] == null ? 'hide' : '') +"\" onClick=\"iTunesWidget.showBackAndGetItem("+collection_id+")\" >"+itw.formatCurrency(value['price'],value['currency'] )+"</h1><div class=\"btn_view\" onClick=\"iTunesWidget.showBackAndGetItem("+collection_id+")\"  ></div></div></td></tr>"; 
+    return(ret);  
+}
+
+itw.buildAppRow= function buildAppRow(index,value) {
+    var ret="";
+    var collection_id=value['collectionId'];
+    if (collection_id==null) { collection_id=value['trackId'] };
+    ret="<tr role=\"row\" metrics-loc=\"Track_\" adam-id=\""+value.trackId+"\"  audio-preview-url=\""+value['previewUrl']+"\"   >";
+    ret=ret+"<td class=\"icon\"><div class=\"list_icon\"><img src=\""+value['artworkUrl60']+"\"></div></td>";
+    ret=ret+"<td class=\"meta\"><div class=\"meta\"><h1 onClick=\"iTunesWidget.showBackAndGetItem("+collection_id+")\" >"+value['trackName']+"</h1><h2 onClick=\"iTunesWidget.showBackAndGetItem("+collection_id+")\" >"+value['genres'][0]+"</h2><div class=\"btn_view\" onClick=\"itw.app_url='"+value['trackViewUrl']+"';itw.openiTunes();\"></div></div></td></tr>"; 
+    return(ret);  
+}
+
+itw.buildSongRow= function buildSongRow(index,value) {
+    var ret="";
+    var collection_id=value['collectionId'];
+    if (collection_id==null) { collection_id=value['trackId'] };
+    ret="<tr role=\"row\" metrics-loc=\"Track_\" adam-id=\""+value.trackId+"\"  audio-preview-url=\""+value['previewUrl']+"\"   >";
+    ret=ret+"<td class=\"icon\"><div class=\"list_icon\"><img src=\""+value['artworkUrl60']+"\"></div></td>";
+    ret=ret+"<td  role=\"gridcell\" class=\"index ascending\" sort-value=\""+(index+1)+"\" >";
+    ret=ret+"<span class=\"index\"><div class=\"circular-preview-control\"><div class=\"center-control-state\"></div></div></span></td><td class=\"meta\"><div class=\"meta\"><div class=\"play_widget\"></div><h1 onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\" >"+value['artistName']+"</h1><h2 onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\"  >"+value['trackName']+"</h2><div class=\"btn_itunes_gray\" onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\"  ></div></div></td></tr>"; 
+    return(ret);  
+}
+
+itw.openiTunes= function openiTunes() {
+ /*@param url the url to open if iTunes is installed
+ * @param downloadUrl the url to go to to download iTunes
+ * @param overridePanelId the id to unhide if the browser is firefox/opera.
+ * @param noClose if true, don't close the browser window after opening iTunes.
+ */
+ 
+    //   itmsOpen(itw.app_url, "http://www.apple.com/itunes/download/", "null" , true );
+    if (itw.app_url!=null) {
+    if(itw.aff_wrapper.length<30) {
+    winRef = window.open( itw.app_url , '_new' );
+    } else {
+    winRef = window.open( itw.aff_wrapper+escape(itw.app_url+"&partnerId="+itw.partner_id ) , '_new' );
+    }
+    }
+}
+
+
+itw.showBackAndGetItem= function showBackAndGetItem(app_id) {
+	console.log("now");
+   itw.getItem(app_id);
+}
+
+itw.getItem= function getItem(app_id) {
+    switch( itw.widgettype ) {
+	    case 0:
+	    case 1:
+	    case "0":
+	    case "1":
+		itw.getApp(app_id);
+	    break;
+	    case 2:
+	    case 3:
+	    case "2":
+	    case "3":
+		itw.getTune(app_id);
+	    break;
+	    case 5:
+	    case 6:
+	    case "5":
+	    case "6":
+		itw.getBook(app_id);
+	    break;
+	    case 7:
+	    case "7":
+		itw.getTvShow(app_id);
+	    break;
+	    case 8:
+	    case "8":
+		itw.getTvShow(app_id);
+	    break;
+	    case 9:
+	    case "9":
+		itw.getTvShow(app_id);
+	    break;
+		case 10:
+		case "10":
+		itw.getBook(app_id);
+		break;
+		case 11:
+		case "11":
+		itw.getApp(app_id);
+		break;
+		case 12:
+		case "12":
+		itw.getTune(app_id);
+    };
+}
+
+// TNX to http://javascriptsource.com, The JavaScript Source 
+
+itw.currTable = {"USD":"$","GBP":"&pound;", "EUR":"%u20AC"  };
+
+itw.getCurrency =function getCurrency(curr) {
+	var r=itw.currTable[curr];
+        if (r==undefined) 
+	    {r="$"} 
+	else 
+	    {r=unescape(r);}
+        return(r);
+    }
+
+itw.formatCurrency= function formatCurrency(num,curr) {
+	if(isNaN(num))
+	    num = "0";
+	sign = (num == (num = Math.abs(num)));
+	num = Math.floor(num*100+0.50000000001);
+	cents = num%100;
+	num = Math.floor(num/100).toString();
+	if(cents<10)
+	    cents = "0" + cents;
+	for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	    num = num.substring(0,num.length-(4*i+3))+','+
+		num.substring(num.length-(4*i+3));
+        if ((num<1) && (cents<1) )
+	    return itw.strings['currency_free'];
+        else
+	    {
+		try {
+		    if ($('#app_price').attr('placeholder')=="nocent") { itw.showcents=false; };
+		    if ($('#album_price').attr('placeholder')=="nocent") { itw.showcents=false; };
+		} catch (e) {};
+		var currval= ((sign)?'':'-') + itw.strings['pre_currency']  + num ;
+		if (itw.showcents) currval=currval + itw.strings['currency_decimal'] + cents+itw.strings['post_currency'];
+                return currval;
+	    };
+        end
+}
+
+itw.getApp= function getApp(app_id) {
+	url='http://itunes.apple.com/lookup?id='+app_id+'&country='+itw.country+'&callback=?';
+	
+    if (itw.widgettype==0) $('#load_screen').removeClass("hide");
+	
+    $.getJSON(url,
+    function(json) {
+	$('#app_price').html( itw.formatCurrency(json.results[0]['price'],json.results[0]['currency'] ) );
+        $('#app_name').html(json.results[0]['trackName']);
+        $('#app_category').html(json.results[0]['genres'][0]);
+        itw.app_url=json.results[0]['trackViewUrl'];
+	
+        var icn=json.results[0]['artworkUrl100'];
+        if (icn.indexOf(".tif")  >10 ) { icn=json.results[0]['artworkUrl60'];  };
+        $('#app_item .icon').html("<img src='" + icn + "'>");
+        $('#app_description').html(json.results[0]['description']+"<br />\n<br />\n");
+	$("#search_results").addClass("hide");
+          $("#app_empty_search_results").addClass("hide");
+	  $("#scrollbar").removeClass('hide');
+          $('#container').removeClass("search").addClass("item");
+          if (itw.widgettype==1 || itw.widgettype==11) {
+	          $('#container').removeClass("search").removeClass("playlist").addClass("item");
+		  		$('#btn_back').removeClass('hide');
+				$('#trackcount').addClass("hide");
+				$('#description_scrollbar').addClass('back_option');
+          }
+	  var v=$("#description_payload").css('height');
+	  v=parseInt(v.substring(0,v.length-2));
+	  if (itw.widgettype < 1) {v=v+4;};
+    	  $("#app_item").tinyscrollbar({ size: (v-20) });
+    	  $("#description_scrollbar").removeClass("hide");
+	  var ad=$('#app_description').css('height');
+          ad=ad.substring(0,ad.length-2);
+          if (parseInt(ad)<(parseInt(v)-12)) {  $("#description_scrollbar").addClass("hide"); };
+          $('#load_screen').addClass("hide");
+    }
+    );
+}
+
+itw.getTvShow= function getTvShow(app_id) {
+    $('#thetbody').html("");
+    if (itw.widgettype==7) {
+	$('#load_screen').removeClass("hide");
+    }
+    url='http://itunes.apple.com/lookup?id='+app_id+'&country='+itw.country+'&callback=?';
+    $.getJSON(url,
+    function(json) {
+		  $.each(json['results'] , function(index, value) {
+			  if (index==0) {
+			      if (value['kind']=="tv-episode") { 
+				  $("#search_results").addClass("tv");  
+				  $("#app_item").addClass("tv");  
+			      } else {
+				  $("#search_results").addClass("movie");  
+				  $("#app_item").addClass("movie");  
+			      } ;
+			      
+
+			      var descr=value['longDescription'];
+			      if (descr==undefined) { descr=""; };
+
+			      if (itw.widgettype==7) {
+				  $('#app_description').html(descr.replace(/<\/?[^>]+(>|$)/g, "")+"\n<br>\n<br>");
+				  var collection=value['collectionName'].split(",",2);
+				  $('#movie_name').html(collection[0]);
+				  $('#movie_category').html(collection[1]);
+				  var v=$("#description_payload").css('height');
+				  v=parseInt(v.substring(0,v.length-2));
+    				  $("#app_item").tinyscrollbar({ size: (v-20) });
+				  $("#container").addClass("tv").removeClass("movie");
+				  $("#tvmvtxt").css({"width": (itw.widget_width-150)+"px"});
+
+			      };
+
+			      if (itw.widgettype==8) {
+				  //trackName
+				  $('#app_description').html(descr.replace(/<\/?[^>]+(>|$)/g, "")+"\n<br>\n<br>");
+
+				  var name=value['collectionName'];
+				  var tvid=value['collectionId'];
+				  if (name==undefined) {name=value['trackName']} ;
+				  if (tvid==undefined) {tvid=value['trackId']} ;
+				  itw.app_id=tvid;
+				  $('#movie_name').html(name);
+				  $('#movie_category').html(value['primaryGenreName']);
+				  $("#container").addClass("movie").removeClass("tv");
+				  $("#tvmvtxt").css({"width": (itw.widget_width-120)+"px"});
+
+				  var v=$("#description_payload").css('height');
+				  v=parseInt(v.substring(0,v.length-2));
+    				  $("#app_item").tinyscrollbar({ size: (v-20) });
+			      };
+
+			      if (itw.widgettype==9) {
+				  $('#app_description').html(descr.replace(/<\/?[^>]+(>|$)/g, "")+"\n<br>\n<br>\n<br>\n<br>");
+				  var name=value['collectionName'];
+				  var tvid=value['collectionId'];
+				  if (name==undefined) {name=value['trackName']} ;
+				  if (tvid==undefined) {tvid=value['trackId']} ;
+				  itw.app_id=tvid;
+			          $('#container').removeClass("search").addClass("item");
+				  $('#btn_back').removeClass('hide');
+				  $('#movie_category').html(value['primaryGenreName']);
+				  var v=$("#description_payload").css('height');
+				  v=parseInt(v.substring(0,v.length-2));
+    				  $("#app_item").tinyscrollbar({ size: (v-20) });
+				  $('#movie_name').html(name);
+			      if (itw.tv_movie<1){
+				  $("#container").addClass("tv").removeClass("movie");
+				  $("#tvmvtxt").css({"width": (itw.widget_width-150)+"px"});
+			      }else{	
+				  $("#container").addClass("movie").removeClass("tv");
+				  $("#tvmvtxt").css({"width": (itw.widget_width-120)+"px"});
+			      };
+
+			      } 
+			      $('#description_scrollbar').removeClass('hide');
+
+			      v=$("#app_description").css('height');
+			      v=parseInt(v.substring(0,v.length-2));
+			      v2=$("#description_payload").css('height');
+			      v2=parseInt(v2.substring(0,v2.length-2));
+
+			      if (v<v2){ $('#description_scrollbar').addClass("hide"); } ;
+			      $('#footer').removeClass('hide');
+			      $('#load_screen').addClass("hide");
+			      var movie_rating=value['contentAdvisoryRating'];
+			      if (movie_rating==undefined){movie_rating="";};
+			      $('#movie_rating').html(itw.strings['rating']+movie_rating);
+			      $('span.icon img').attr("src",value['artworkUrl100']);
+			      itw.app_url=value['trackViewUrl'];
+			      if ( itw.app_url==undefined ) { itw.app_url=value['collectionViewUrl'] };
+			  };
+		      });
+	      });
+}
+
+
+itw.getBook= function getBook(app_id) {
+    $('#thetbody').html("");
+	
+    if (itw.widgettype==6) $('#load_screen').removeClass("hide");
+	
+    url='http://itunes.apple.com/lookup?id='+app_id+'&country='+itw.country+'&callback=?';
+    $.getJSON(url,
+    function(json) {
+		
+		  $.each(json['results'] , function(index, value) {
+			  if (index==0) {
+			      $('#load_screen').addClass("hide");
+			      $('#book_name').html(value['trackName']);
+			      $('#book_author').html(value['artistName']);
+			      value['price'] == null ? $('#app_price').hide() : $('#app_price').show().html( itw.formatCurrency(value['price'],value['currency'] ) );
+			      var descr=value['description'];
+			      if (descr==undefined) {descr=""};
+			      $('#app_description').html(descr.replace(/<\/?[^>]+(>|$)/g, "")+"\n<br>\n<br>");
+			      $('#book_cover_image').attr("src",value['artworkUrl100']);
+			      itw.app_url=value['trackViewUrl'];
+			      if (itw.widgettype==5 || itw.widgettype==10 ) {
+			          $('#container').removeClass("search").removeClass("playlist").addClass("item");
+				  		$('#btn_back').removeClass('hide');
+						$('#trackcount').addClass("hide");;
+						$('#description_scrollbar').addClass('back_option');
+			      }
+			      var v=$("#description_payload").css('height');
+			      $('#description_scrollbar').removeClass("hide");
+			      v=parseInt(v.substring(0,v.length-2));
+			      $("#app_item").tinyscrollbar({ size: (v-10) });
+			      v=$("#app_description").css('height');
+			      v=parseInt(v.substring(0,v.length-2));
+			      if (v<135){ $('#description_scrollbar').addClass("hide"); } ;
+			  };
+		      });
+	      });
+}
+
+
+itw.getTune= function getTune(app_id) {
+
+    $('#thetbody').html("");
+    if (itw.widgettype==2) {
+	$('#load_screen').removeClass("hide");
+    }
+
+	url='http://itunes.apple.com/lookup?id='+app_id+'&entity=song&country='+itw.country+'&callback=?';
+
+    $.getJSON(url, function(json) {
+		  var ldata="";
+		  $.each(json['results'] , function(index, value) {
+			  if (index==0) {
+			      $('#album_name').html(value['artistName']);
+			      $('#album_price').html(  itw.formatCurrency( value['collectionPrice'],json.results[0]['currency'] ));
+			      $('#artist_category').html(value['collectionCensoredName']);
+			      itw.app_url=value['collectionViewUrl'];
+			      $('.icon').html("<img src='" + value['artworkUrl100'] + "'>");
+				  $('#trackcount').html(itw.strings['total_songs_pre'] + value['trackCount'] + itw.strings['total_songs_post']);
+			  } else {
+                               var ret=itw.buildRow(index,value);
+                               $('#thetbody').append(ret);
+			  };
+		      });
+		  $('#thetbody').append("<tr><td> </td></tr>");
+
+                  if (itw.widgettype==3) {
+                     $('#btn_back').removeClass('hide');
+                  }
+
+		  $("#itunes_search").addClass("hide");
+		  $("#search_results").addClass("hide");
+		  $("#album_view").removeClass("hide");
+		  $("#album_empty_search_results").addClass("hide");
+		  $("#scrollbar").removeClass('hide');
+		  $("#trackcount").removeClass('hide');
+                  $('#footer').removeClass("hide");
+		  v=$('#track_payload').css('height');
+		  v=v.substring(0,v.length-2);
+		  v=v-10;
+                  x=$('#tracklist_container').css('height');
+                  x=x.substring(0,x.length-2);
+                  $("#scrollbar_album_tracks").removeClass("hide");
+                  if (x<v) {
+                     $("#scrollbar_album_tracks").addClass("hide") 
+		      $('#track_payload_viewport').css({"width":(itw.widget_width-2)+"px"});
+		      $('#track_payload').css({"width":(itw.widget_width-2)+"px"});
+			 }else {
+		      $('#track_payload_viewport').css({"width":(itw.widget_width-20)+"px"});
+		      $('#track_payload').css({"width":(itw.widget_width-20)+"px"});
+		  };
+		  
+		  its.registerElementBinding(ITSPlayMusicController, "table.tracklist-table tbody tr[audio-preview-url] td div.circular-preview-control", { click: "togglePlayState", mousedown: "mousePressed" });
+          its.registerElementBinding(ITSPlayMusicController,"table.tracklist-table tbody tr[audio-preview-url]",{mouseover:"rowMouseIn",mouseout:"rowMouseOut"},true)
+
+          detectAndOpenItunes();
+		  
+		  $('#album_view').tinyscrollbar({ size: v });
+
+		  if (itw.widgettype==2) {
+		      $('#load_screen').addClass("hide");
+		  }
+
+	      });
+};
+	      
+
+itw.backToSearch= function backToSearch() {
+    if (itw.widgettype<2) {
+       $("#search_results").removeClass("hide");
+       $("#scrollbar").removeClass('hide');
+       $('#container').addClass("search").removeClass("item");
+       $('#footer').removeClass("hide");
+    } else if (itw.widgettype==3) {
+	    ITSMediaPlayer.stop();
+	    $("#trackcount").addClass('hide');
+	    $('#footer').removeClass("hide");
+	    $("#itunes_search").removeClass("hide");
+	    $("#search_results").removeClass("hide");
+	    $("#album_view").addClass("hide");
+	    $("#scrollbar").addClass('hide');
+	    $("#trackcount").html("");	    
+    } else if (itw.widgettype==5) {
+       $("#search_results").removeClass("hide");
+       $("#scrollbar").removeClass('hide');
+       $('#container').addClass("search").removeClass("item");
+       $('#footer').removeClass("hide");
+    } else if (itw.widgettype==9) {
+       $("#search_results").removeClass("hide");
+       $("#scrollbar").removeClass('hide');
+       $('#container').addClass("search").removeClass("item");
+       $('#footer').removeClass("hide");
+    } else if (itw.widgettype == 10) {
+		$('#container').addClass("playlist").removeClass("item");
+		$('#trackcount').removeClass("hide");
+		$('#description_scrollbar').removeClass('back_option');
+    } else if (itw.widgettype == 11) {
+		$('#container').addClass("playlist").removeClass("item");
+		$('#trackcount').removeClass("hide");
+		$('#description_scrollbar').removeClass('back_option');
+    };
+   $('#btn_back').addClass('hide');
+}
+
+
+itw.hndlKey= function hndlKey(e)
+{
+     var key;
+     if(window.event)
+          key = window.event.keyCode;     //IE
+     else
+          key = e.which;     //firefox
+     itw.performSearch(key);
+     if(key == 13) {
+          return false;
+     }
+     else
+          return true;
+}
+
+
+itw.performSearch= function performSearch(e, appendmode ) {
+ var c ="";
+   if (e.which>40) {
+     c = String.fromCharCode(e.which);
+   };
+   var v=$("#search_field").val()+c;
+
+   if ((c=="") && (e.which!=8) && (e.which!=undefined)) {v=""};
+
+   if ((v.length>1) && (!itw.searching)) {
+     itw.searching=true;
+     if ((e.which==9) && (v.length>3) ) {
+       v=v.substring(0,v.length-1);
+     };    
+	 
+     var entity="&entity=software";
+     var media="&country="+itw.country+"&media=software";
+     var searchlimit="15";
+
+       if (((itw.widgettype>2)&&(itw.widgettype<5))||(itw.widgettype==9)) { 
+           media="&country="+itw.country;
+
+           switch (itw.album_artist_song) {
+	   case 0:
+	   case "0":
+	       entity="&entity=album";
+	       break;
+	   case 1:
+	   case "1":
+	       entity="&entity=musicArtist";
+	       break;
+	   case 2:
+	   case "2":
+               searchlimit="35";
+               media="&country="+itw.country+"&media=song";
+	       entity="&entity=song&version=2";
+	       break;
+	   };
+	   switch (itw.tv_movie) {
+		   case 0:
+		   case "0":
+		   	media="&country="+itw.country+"&media=tvShow";
+			entity="&entity=tvSeason";
+			itw.album_artist_song=99;
+			break;
+		case 2:
+		case "2":
+	       media="&country="+itw.country+"&media=movie";
+	       entity="";
+	       itw.album_artist_song=99;
+	       itw.all_iph_ipad=99;
+	       break;
+	   };
+
+
+     };
+     if (itw.all_iph_ipad==2) {
+       entity="&entity=iPadSoftware";
+     };
+
+     if (itw.widgettype==5) { 
+	 media="&country="+itw.country;
+	 entity="&entity=ebook";
+	 itw.album_artist_song=99;
+     };
+
+     if (itw.widgettype==1) { searchlimit = 5 };
+     
+     if ( appendmode == 1 ) { entity="&entity=iPadSoftware";  };
+
+
+     url="http://itunes.apple.com/search?limit="+searchlimit+media+entity+"&term="+v+"&callback=?";
+	 
+     var sr="";
+     if (itw.album_artist_song ==2) { sr="<li class=\"song_search\"><table class=\"songtable\"><tbody>"};
+
+     $('#loading').removeClass('hide');
+
+     $.getJSON( url,
+		function(json){
+		  
+		    $.each(json['results'] , function(index, value) {
+			    var elem="";
+			    if (itw.widgettype>2) {
+				elem="";
+				switch (itw.album_artist_song) {
+				case 0:
+				case "0":
+				    elem="<li><div class=\"list_icon\"><img src=\""+value['artworkUrl60']+"\"></div><div class=\"meta\"><a href=\"#\" onClick=\"iTunesWidget.showBackAndGetItem("+value['collectionId']+")\" ><h1>"+value['artistName']+"</h1><h2>"+value['collectionName']+"</h2></a><div class=\"btn_itunes_gray\" onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\"  ></div></div></li>";
+				    break;
+				case 2:
+				case "2":                                
+				    elem=itw.buildSongRow(index,value);
+				    if ( value['kind']=="music-video") {elem="";};
+				    break;
+				};
+
+				if (itw.widgettype==5) { 
+				    var price = value['price'] == null ? null : itw.formatCurrency(value['price'],value['currency'] );
+				    elem="<li><div class=\"list_icon\"><img src=\""+value['artworkUrl60']+"\"></div><div class=\"meta\"><a href=\"#\" onClick=\"iTunesWidget.showBackAndGetItem('"+value['trackId']+"')\" ><h1>"+value['trackCensoredName']+"</h1><h2>"+value['artistName']+"</h2><h1 class=\""+ (price == null ? "hide" : "") + "\">"+price+"</h1></a><div class=\"btn_itunes_gray\" onClick=\"itw.app_url='"+value['trackViewUrl']+"';itw.openiTunes();\"  ></div></div></li>";
+				};
+				
+				if (itw.widgettype==9) { 
+				    var name=value['collectionName'];
+				    var tvid=value['collectionId'];
+				    var genre=value['primaryGenreName'];
+				    if (name==undefined) {name=value['trackName']} ;
+				    if (tvid==undefined) {tvid=value['trackId']} ;
+				    if (itw.tv_movie<1) {
+					elem="<li><div class=\"list_icon\"><img src=\""+value['artworkUrl60']+"\"></div><div class=\"meta\"><a href=\"#\" onClick=\"iTunesWidget.showBackAndGetItem("+tvid+")\" ><h1>"+value['artistName']+"</h1><h2>"+name+"</h2></a><div class=\"btn_itunes_gray\" onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\"  ></div></div></li>";
+				    } else {
+					elem="<li class=\"movie\"><div class=\"list_icon\"><img src=\""+value['artworkUrl60']+"\"></div><div class=\"meta\"><a href=\"#\" onClick=\"iTunesWidget.showBackAndGetItem("+tvid+")\" ><h1>"+name+"</h1><h2>"+genre+"</h2></a><div class=\"btn_itunes_gray\" onClick=\"itw.app_url='"+value['trackViewUrl']+"';itw.openiTunes();\"  ></div></div></li>";
+				    };
+				};
+				
+				
+			    } else {
+				elem="<li><img src='"+value['artworkUrl60']+"' /><div class=\"meta\"><a href=\"#\" onClick=\"iTunesWidget.showBackAndGetItem('"+value['trackId']+"')\"><h1>"+value['trackName']+"</h1><h2>"+value['genres'][0]+"</h2></a><div class=\"btn_view_app_gray\" onClick=\"itw.app_url='"+value['trackViewUrl']+"';itw.openiTunes();\"  ></a></div></div></li>";
+			    };
+			    sr=sr+elem;
+			});
+	            itw.searching=false;
+
+		    if (!( (itw.widgettype==1) && (itw.all_iph_ipad==0) )) {
+
+                    if (sr.length<40 ) { sr="<li><div class=\"meta\"><h1>"+itw.strings['no_result']+"</h1></div></li>"};
+		    };
+                    if (itw.album_artist_song ==2) {
+			sr=sr+"</tbody></table><div style=\"height: 25px;padding-top: 7px;\"><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?term="+$('#search_field').val()+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></div></li>";
+			
+
+	                $("#results_list").html(sr);
+			its.registerElementBinding(ITSPlayMusicController, "table.songtable tbody tr[audio-preview-url] td div.circular-preview-control", { click: "togglePlayState", mousedown: "mousePressed" });
+			its.registerElementBinding(ITSPlayMusicController,"table.songtable tbody tr[audio-preview-url]",{mouseover:"rowMouseIn",mouseout:"rowMouseOut"},true);
+		    } else {
+			if ((itw.widgettype==1) && (itw.all_iph_ipad==0)) {
+			    if (appendmode == 1) {
+				sr=sr+"<li><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?term="+$('#search_field').val()+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></li>"
+				    $("#results_list").html($("#results_list").html()+sr);
+			    } else {
+				$("#results_list").html(sr);
+			    };
+			} else {
+			    sr=sr+"<li><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?term="+$('#search_field').val()+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></li>"
+				$("#results_list").html(sr);
+			};
+		    };
+
+           $('#results_list').removeClass("hide");
+           $('#scrollbar_search_results').removeClass("hide");
+           $('#search_results').removeClass("hide");
+
+	            $("#search_results").removeClass("hide");
+                $("#app_empty_search_results").addClass("hide");
+		if ((itw.widgettype>1) &&  $("#album_view").hasClass("hide")) {
+		    $('#itunes_search').removeClass("hide");
+		    $("#scrollbar_search_results").removeClass('hide');
+		    var v=$('#search_results').css('height');
+		    v=v.substring(0,v.length-2);
+		    v=v-14;
+		    $('#itunes_search').tinyscrollbar( { size: v } );
+		    var rl=$('#results_list').css('height');
+		    if (itw.album_artist_song ==2) {
+			rl=$('#songtable').css('height');
+			$('ul.results_list li td.meta div.meta').css({"width": (itw.widget_width-136)+"px" });
+		    }
+		    if (parseInt(rl)<parseInt(v)) {
+			$("#scrollbar_search_results").addClass('hide');
+			$('#results_list').css({ 'width': (itw.widget_width)+ "px" });
+		    } else {
+			$('#results_list').css({ 'width': (itw.widget_width-20)+ "px" });
+		    };
+		    $('#itunes_empty_search_results').addClass("hide");
+                    $('#footer').removeClass("hide");
+	            $("#trackcount").html("");
+		} else {
+		    var v=$('#search_results').css('height');
+		    v=v.substring(0,v.length-2);
+		    v=v-8;
+                    $('#footer').removeClass("hide");
+		    $("#scrollbar").removeClass('hide');
+		    var rl=$('#results_list').css('height');
+		    if (parseInt(rl)<parseInt(v)) {
+			$("#scrollbar").addClass('hide');
+			$('#results_list').css({ 'width': (itw.widget_width)+ "px" });
+		    } else {
+			$('#results_list').css({ 'width': (itw.widget_width-20)+ "px" });
+		    };
+		    $('#app_search').tinyscrollbar( { size: v });
+		};
+		$('#loading').addClass('hide');
+		if ( (appendmode == undefined ) && (itw.widgettype==1) && (itw.all_iph_ipad==0)  ) {
+		    itw.performSearch(e, 1 );
+		};
+
+		}
+		)
+
+	 } else 
+     if (itw.searching) {
+        setTimeout('itw.performSearch(itw.dummyE)',300) 
+        };
+}
+
+
+
+
+itw.get_param= function get_param(name){
+          var qstring=document.location.href.toString();
+          var qstart = qstring.indexOf("?");
+          if (qstart == -1) return "0";
+      
+          var idx;
+          while ((idx = qstring.indexOf(name + "=", qstart))>=0 && 
+                (!(qstring.substr(idx-1,1)=="?" || qstring.substr(idx-1,1)=="&")))
+          {
+              qstart += name.length + 1;
+          }
+
+          if (idx<0) return "0";
+
+          idx += name.length + 1;           
+          var endidx = qstring.indexOf("&", idx);
+          if (endidx < 0) endidx = qstring.length;
+          return qstring.substr(idx, endidx-idx);
+ }
+
+    /* Conversion Config */ 
+    //omniture.currencyCode="USD"
+    
+    
+itw.buildSongRow= function buildSongRow(index,value) {
+    var ret="";
+    var collection_id=value['collectionId'];
+    if (collection_id==null) { collection_id=value['trackId'] };
+    ret="<tr role=\"row\" metrics-loc=\"Track_\" adam-id=\""+value.trackId+"\"  audio-preview-url=\""+value['previewUrl']+"\"   >";
+    ret=ret+"<td class=\"icon\"><div class=\"list_icon\"><img src=\""+value['artworkUrl60']+"\"></div></td>";
+    ret=ret+"<td  role=\"gridcell\" class=\"index ascending\" sort-value=\""+(index+1)+"\" >";
+    ret=ret+"<span class=\"index\"><div class=\"circular-preview-control\"><div class=\"center-control-state\"></div></div></span></td><td class=\"meta\"><div class=\"meta\"><div class=\"play_widget\"></div><h1 onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\" >"+value['artistName']+"</h1><h2 onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\"  >"+value['trackName']+"</h2><div class=\"btn_itunes_gray\" onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\"  ></div></div></td></tr>"; 
+    return(ret);  
+}
+
+itw.buildRow= function buildRow(i,s) {
+    var ret="";
+	 ret=ret+'<tr role="row" metrics-loc="Track_" adam-id="'+s.trackId+'" audio-preview-url="'+s.previewUrl+'" dnd-clipboard-id="__dnd_135132421" preview-album="'+s.collectionName+'" preview-artist="'+s.artistName+'" class="song music" preview-title="'+s.trackName+'" preview-duration="'+s.trackTimeMillis+'" row-number="'+i+'" >';
+	 ret=ret+'<td role="gridcell" class="index ascending" sort-value="'+(i+1)+'"><span class="index"><span>'+i+'.</span><div class="circular-preview-control"><div class="center-control-state"></div></div></span></td>';
+    ret=ret+'<td role="gridcell" class="name" sort-value="'+s.trackName+'"><span><a href="#" onClick="itw.openiTunes();">'+s.trackName+'</a></span></td>';
+         ret=ret+'</tr>';
+
+
+    return(ret);  
+}
+
+//   itmsOpen(itw.app_url, "http://www.apple.com/itunes/download/", "null" , true );
+
+iTunesWidget=itw;

@@ -1,0 +1,189 @@
+/*
+Title:		print.css
+Author: 	vsa partners
+--
+Notes:
+	= Controlling stylesheet for print rendering; imports other sheets;
+		defines rules for the highest-level layout containers
+*/
+@import url("lib/baseline.css");
+@import url("lib/common.css");
+@import url("lib/shell.css");
+@import url("lib/blocks.css");
+@import url("lib/brands.css");
+
+@page { size:8.5in 11in; margin:.75in }
+
+/* GLOBAL OVERRIDES */
+/* undos */ 
+#logo img.move_, #footer p.tagline img.move_ { position: static; left: 0; }
+div.hide_ { display: block !important; }
+span.hide_ { display: inline !important; }
+.flash-enabled .noflash_ { display: block; }
+.flash-enabled .flash_ { display: none; }
+object { display: none; }
+/* hide */
+.class-name, #site-search, .nav, .active-box ul, .subscribe { display: none !important; }
+
+/* ELEMENTS */
+/* basic */
+* { border:0; } 
+body { 
+	color: #000; 
+	font-size: 8pt; 
+	font-family: Arial, Helvetica, clean, sans-serif !important; 
+	background: #fff; 
+}
+abbr, img { border:0;  } 
+abbr, acronym { font-style:normal;  } 
+sup, sub { font-size:75%;  } 
+a:link, a:visited { color:#0046AD; background:#fff; text-decoration:none;  } 
+h1, h2, h3, h4, h5, h6, dt { margin:0 0 0.5em 0; font-size:10pt; font-weight:bold; page-break-after:avoid; } 
+h1 { font-size:20pt; } 
+h2 { font-size:16pt; }
+h2.page-title { font-size: 12pt !important; margin-bottom: 0.25in; }
+h3 { font-size:12pt; } 
+p, ul, ol, dl { margin-bottom:1em; line-height:1.5;  } 
+ul ul, ul ul ul, ul p, ol ol, ol ol ol, ol p, ol ul, ol ul ol, ol ul ul, ul ol, ul ol ul, ul ol ol, dl ul, dl ol, dl p {  } 
+li ul, li ol, li dl, li p { margin-top:1em; }
+ol.body-list li, ul.body-list li { padding-left: 0; padding-bottom: 3px; background: none !important;  }
+ul.body-list li { list-style: disc; }
+table { width:100%; border-collapse:collapse;  } 
+em, cite { font-style:italic;  } 
+strong { font-weight:bold; } 
+strong.corporate { font-weight:normal; text-transform:uppercase; }
+
+/* SHELL COMPONENTS */
+body, #wrapper, #body {
+	margin: 0 !important;
+	padding: 0 !important;	
+	display: block !important;
+	position: static !important;
+	float: none !important;
+	width: 100%;
+	background: 0 !important;
+	text-align: left !important;
+}
+/* header and footer */
+#header, #footer { width: 100% !important; margin: 0; padding: 0; background: none !important; }
+#header { padding: 0 0 0.25in 0 !important; }
+
+#logo, #logo * { padding: 0 !important; width: auto !important; height: auto !important; }
+#logo a { display: inline; }
+
+#footer { 
+	background: none; 
+	margin: 0 !important; 
+	padding: 0; 
+	color: #666666; 
+	text-align: left;
+	padding-top: 0.125in;
+	position: static;
+}
+
+#footer * { float: none !important; } 
+#footer p.tagline { margin: 0 0 6pt 0; padding: 0; width: 100%; }
+/* IE fixes (add extra space) */ 
+* html #footer p.tagline img { margin-top: 0.125in !important; }
+*+html #footer p.tagline img { margin-top: 0.125in !important; }
+
+#footer p.copyright { margin: 0 0 0 0; padding: 0; color: gray !important; -moz-opacity:.1; filter:alpha(opacity=100); opacity:1; }
+/* nav */ 
+#site-navigation, #sidebar-content, #section-navigation { display: none !important; }
+
+/* ARTICLE COMPONENTS */
+#content, #main-content  {
+	margin: 0 !important;
+	padding: 0 !important;	
+	display: block !important;
+	position: static !important;
+	float: none !important;
+	width: 100% !important;
+	background: 0 !important;
+	text-align: left !important;
+}
+
+/* sidebars */
+.related-content-teaser, .related-links { display: none; }
+
+.pages-in-this-section .grouping-title { padding-left: 0; }
+.pages-in-this-section ul li { border-top: 0; }
+
+
+/* content */
+.page-intro { margin-bottom: 0.125in !important; }
+.page-intro .small-header { font-size: 1.4em; font-weight: bold; }
+.page-intro .medium-header { font-size: 2.1em; font-weight: normal; }
+.page-intro .large-header { font-size: 4.4em; font-weight: bold; line-height: 1; }
+
+.page-intro .small-header, .page-intro .medium-header, .page-intro .large-header { margin-bottom: 0 !important; }
+
+body.category .category-intro { margin-top: 25px; font-size: 1.4em; }
+
+
+/* LAYOUT MODULES */
+/* cols */
+.col_ { float: left; }
+
+/* two-col_ */
+.two-col_ { clear: both; }
+.two-col_ .col_ { width: 45%; margin-right: 21px; }
+.two-col_ .last_ { margin-right: 0 !important; }
+
+/* three-col_ */
+.three-col_ { clear: both; }
+.three-col_ .col_ { width: 30%; margin-right: 11px; padding-right: 10px; }
+.three-col_ .last_ { margin-right: 0; }
+
+/* four-col_ is spaced for the full width of the page by default.
+	Individual sections explicitly determine other sizes. */
+.four-col_ { clear: both; }
+.four-col_ .col_ { width: 22%; margin-right: 11px; margin-bottom: 0; padding-left: 10px; }
+.four-col_ .last_ { margin-right: 0; }
+
+
+
+/* BLOCK COMPONENTS */
+.box-container, .box-container * { background: none !important; border: 0 !important; }
+.box-container .container-content { width: 100% !important; float: none !important;  padding-left: 0; padding-right: 0; }
+.box-container .container-content .featured, .box-container .content-title { padding-left: 0; padding-right: 0; }
+
+
+/* expanders */
+.expander h4 { background-image: none !important; }
+
+/* minis */
+.mf-controls { display: none; }
+
+
+
+/* blocks overrides */
+.icon-block .text {
+	float: left;
+	width: 348px;
+	margin-left: 20px;
+}
+
+
+
+
+
+/* PAGE-SPECIFIC OVERRIDES */
+
+.news-and-views-landing #lead { height: 3in !important; }
+.news-and-views-landing #page-intro { width: 100%; position: static; }
+.news-and-views-landing #page-intro br { display: none; }
+.news-and-views-landing .bubble-controls li { display: none; }
+.news-and-views-landing .bubble hr { display: none; }
+
+body.heritage .page-intro .medium-header { font-size: 1.4em; }
+body.heritage .page-intro .video-promo { position: static; margin-top: 3in; clear: both; }
+body.heritage .page-intro .video-promo img { display: none; }
+body.heritage .page-section { margin-top: 0.5in; clear: both; }
+body.heritage .page-section .mf-text { padding-top: 20px; padding-left: 20px; }
+
+.worldwide-operations .content-sidebar { float: none; }
+.worldwide-operations .content-sidebar .sidebar-box { width: 100%; }
+
+#brands .brand-intro { margin-top: -110px; }
+

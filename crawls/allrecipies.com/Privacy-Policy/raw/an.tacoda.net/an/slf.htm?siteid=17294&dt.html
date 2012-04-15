@@ -1,0 +1,52 @@
+<html>
+   <script type=text/javascript language=javascript>
+      var url = unescape(document.location.href).toLowerCase();
+      if (url.indexOf('?') > 0)
+      {
+         var siteid = 0;
+         var tcdacmd = '';
+         var vname = '';
+         var parms = url.substr(url.indexOf('?') + 1,10000).split('&');
+         for (parmno = 0; parmno < parms.length; parmno++)
+         {
+            if (parms[parmno] != '')
+            {
+               if (parms[parmno].indexOf('=') > 0)
+               {
+                  vname = parms[parmno].substr(0,parms[parmno].indexOf('='));
+               }
+               else
+               {
+                  vname = parms[parmno];
+               }
+               switch (vname)
+               {
+                  case 'sz':
+                  case 'sa':
+                  case 'dt':
+                  case 'cc':
+                  case 'sc':
+                  case 'rd':
+                  case 'nd':
+                  case 'da':
+                  case 'ad':
+                     if (tcdacmd != '')
+                     {
+                        tcdacmd = (tcdacmd + ';');
+                     }
+                     tcdacmd = (tcdacmd + parms[parmno]);
+                     break;
+
+                  case 'siteid':
+                     siteid = parms[parmno].substr(parms[parmno].indexOf('=') + 1,255);
+                     break;
+               }
+            }
+         }
+      }
+      if (siteid != 0)
+      {
+         document.write("<SCR"+"IPT SRC=\"http://an.tacoda.net/an/" + siteid + "/slf.js\" LANGUAGE=\"JavaScript\"></SCR"+"IPT>");
+      }
+   </script>
+</html>

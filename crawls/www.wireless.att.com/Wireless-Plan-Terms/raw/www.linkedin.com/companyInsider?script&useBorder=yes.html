@@ -1,0 +1,388 @@
+(function() {
+
+// Set up LinkedIn Global Namespace
+if (typeof(LinkedIn) == 'undefined') {
+  LinkedIn = {};
+}
+
+// Utility functions
+function $(element) { 
+  return (typeof element == 'string') ? 
+         document.getElementById(element) : element; 
+}
+
+function getDOMEventName(eventName) {
+  if (eventName && eventName.match(/:/)) return "dataavailable";
+  return { keypress: "keydown" }[eventName] || eventName;
+}
+
+var $A = function(iterable) {
+  if (!iterable) return [];
+  var results = [];
+  for (var i = 0, length = iterable.length; i < length; i++)
+    results.push(iterable[i]);
+  return results;
+};
+
+Function.prototype.bind = function() {
+  var __method = this, args = $A(arguments), object = args.shift();
+  return function() {
+    return __method.apply(object, args.concat($A(arguments)));
+  }
+};
+
+Function.prototype.bindAsEventListener = function(object) {
+  var __method = this, args = $A(arguments), object = args.shift();
+  return function(event) {
+    return __method.apply(object, [event || window.event].concat(args));
+  }
+}
+
+function getViewportWidth() {
+  return self['innerWidth'] || 
+        (document.documentElement['clientWidth'] || document.body['clientWidth']);
+}
+
+function getViewportHeight() {
+  return self['innerHeight'] || 
+        (document.documentElement['clientHeight'] || document.body['clientHeight']);
+}
+
+function getOffsetX() {
+  return window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
+}
+
+function getOffsetY() {
+  return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+}
+
+function cumulativeOffsetX(element) {
+  var valueL = 0;
+  do {
+    valueL += element.offsetLeft || 0;
+    valueL += element.style.paddingLeft || 0;
+    element = element.offsetParent;
+  } while (element);
+  return valueL;
+}
+
+function cumulativeOffsetY(element) {
+  var valueT = 0;
+  do {
+    valueT += element.offsetTop  || 0;
+    element = element.offsetParent;
+  } while (element);
+  return valueT;
+}
+
+function cumulativeScrollOffsetX(element) {
+  var valueL = 0;
+  do {
+    valueL += element.scrollLeft || 0;
+    element = element.parentNode;
+  } while (element);
+  return valueL;
+}
+
+function cumulativeScrollOffsetY(element) {
+  var valueT = 0;
+  do {
+    valueT += element.scrollTop  || 0;
+    element = element.parentNode;
+  } while (element);
+  return valueT;
+}
+
+function positionedOffsetX(element) {
+  var valueL = 0;
+  do {
+    valueL += element.offsetLeft || 0;
+    element = element.offsetParent;
+    if (element) {
+      if (element.tagName == 'BODY') break;
+      var p = Element.getStyle(element, 'position');
+      if (p == 'relative' || p == 'absolute') break;
+    }
+  } while (element);
+  return valueL;
+}
+
+function positionedOffsetY(element) {
+  var valueT = 0;
+  do {
+    valueT += element.offsetTop  || 0;
+    element = element.offsetParent;
+    if (element) {
+      if (element.tagName == 'BODY') break;
+      var p = Element.getStyle(element, 'position');
+      if (p == 'relative' || p == 'absolute') break;
+    }
+  } while (element);
+  return valueT;
+}
+
+var Class = {
+  create: function() {
+    return function() {
+      this.initialize.apply(this, arguments);
+    }
+  }
+}
+
+var Event = {
+  observe: function(element, eventName, handler) {
+    element = $(element);
+    var name = getDOMEventName(eventName);
+
+    if (element.addEventListener) {
+      element.addEventListener(name, handler, false);
+    } else {
+      element.attachEvent("on" + name, handler);
+    }
+
+    return element;
+  }
+}
+
+// Company Insider Properties
+LinkedIn.CompanyInsider = {
+  infoWindowWidth: 220,
+  infoWindowHeight: 250,
+  infoIframeHeight: 250,
+  infoIframeWidth: 220,
+  iconUrl: 'http://www.linkedin.com/img/icon/icon_company_insider_in_12x12.gif',
+  iconWidth: 12,
+  iconHeight: 12,
+  infoWindowId: 'company-insider-info-window',
+  boxClassName: 'company-insider-box',
+  popUpClassName: 'company-insider-pop-up',
+  
+  urlFor: function(companyName, popupFlag) {
+    if (!companyName) {
+      companyName = "";
+    }
+    return 'http://www.linkedin.com/companyInsider?data' +
+           '&companyName=' + encodeURIComponent(companyName) +
+           '&backgroundColor=FFFFFF' +
+           '&titleBackgroundColor=FFFFFF' +
+           '&textColor=4c4c4c' +
+           '&trackinginfo=' + encodeURIComponent(window.location) +
+           '&isPopup=' + popupFlag;
+  }
+};
+
+// Classes
+LinkedIn.CompanyInsiderBox = Class.create();
+LinkedIn.CompanyInsiderBox.prototype = {
+  initialize: function(element, companyName, options) {
+    this._element = $(element);
+    this._element.className = this._element.className + " " + LinkedIn.CompanyInsider.boxClassName;
+    this._companyName = companyName;
+    this._options = options || {};
+    this._createIFrame();
+    return this;
+  },
+  
+  _createIFrame: function() {    
+    var iframe = document.createElement("iframe");
+    iframe.src = LinkedIn.CompanyInsider.urlFor(this._companyName, 'no');
+    iframe.width = LinkedIn.CompanyInsider.infoIframeWidth;
+    iframe.height = LinkedIn.CompanyInsider.infoIframeHeight;
+    iframe.frameBorder = "yes";
+    iframe.scrolling = "no";
+    this._element.appendChild(iframe);
+    this._iframe = iframe;
+  }
+};
+
+LinkedIn.CompanyInsiderInfoWindow = Class.create();
+LinkedIn.CompanyInsiderInfoWindow.prototype = {
+  initialize: function() {
+    this.marker = null;
+    this._createWindow();
+    LinkedIn.CompanyInsider.infoWindow = this;
+    return this;
+  },
+
+  open: function(marker) {
+    if (this._marker) {
+      this._marker.infoWindow = null;
+    }
+    this._marker = marker;
+    this._marker.infoWindow = this;
+    this._iframe.src = LinkedIn.CompanyInsider.urlFor(this._marker.companyName, 'yes');
+    this._window.style.display = "inline";
+    var windowOffset = this._calculateWindowOffset();
+    this._window.style.top = windowOffset.top + "px";
+    this._window.style.left = windowOffset.left + "px";
+  },
+
+  close: function() {
+    if (this._marker) {
+      this._marker.infoWindow = null;
+    }
+    this._marker = null;
+    this._window.style.display = "none";
+    return false;
+  },
+
+  _createWindow: function() {
+    var win = document.createElement("div");
+    win.id = LinkedIn.CompanyInsider.infoWindowId;
+    win.style.position = "absolute";
+    win.style.top = "";
+    win.style.left = "";
+    win.style.width = LinkedIn.CompanyInsider.infoWindowWidth  + "px";
+    win.style.height = LinkedIn.CompanyInsider.infoWindowHeight + "px";
+    win.style.display = "none";
+    var header = document.createElement("div");
+    var closeLink = document.createElement("a");
+    closeLink.innerHTML = "close";
+    closeLink.href = "#";
+    closeLink.onclick = this.close.bind(this);
+    header.appendChild(closeLink);
+    win.appendChild(header);
+    var iframe = document.createElement("iframe");
+    iframe.width = LinkedIn.CompanyInsider.infoWindowWidth;
+    iframe.height = LinkedIn.CompanyInsider.infoIframeHeight;
+    iframe.frameBorder = "no";
+    iframe.scrolling = "no";
+    iframe.allowTransparency = false;
+    win.appendChild(iframe);
+    document.body.appendChild(win);
+    this._window = win;
+    this._iframe = iframe;
+  },
+  
+  _calculateWindowOffset: function() {
+    var markerOffset = this._marker.markerOffset();
+    var windowOffset = {};
+    var pageWidth = getViewportWidth();
+    var pageHeight = getViewportHeight();
+    var markerLeft = markerOffset.left - getOffsetX();
+    var markerTop = markerOffset.top - getOffsetY();
+    if (markerTop < pageHeight / 2) {
+        windowOffset.top = markerOffset.top + LinkedIn.CompanyInsider.iconHeight + 2;
+      if (markerLeft < pageWidth /2) {
+        // top-left
+        windowOffset.left = markerOffset.left - 27;
+        this._window.className = "top-left";
+      } else {
+        // top-right
+        windowOffset.left = markerOffset.left - LinkedIn.CompanyInsider.infoWindowWidth + LinkedIn.CompanyInsider.iconWidth + 30;
+        this._window.className = "top-right";
+      }
+    } else {
+        windowOffset.top = markerOffset.top - LinkedIn.CompanyInsider.infoWindowHeight - LinkedIn.CompanyInsider.iconHeight - 15;
+      if (markerLeft < pageWidth /2) {
+        // bottom-left
+        windowOffset.left = markerOffset.left - 27;
+        this._window.className = "bottom-left";
+      } else {
+        // bottom-right
+        windowOffset.left = markerOffset.left - LinkedIn.CompanyInsider.infoWindowWidth + LinkedIn.CompanyInsider.iconWidth + 30;
+        this._window.className = "bottom-right";
+      }
+    }
+    return windowOffset;
+  }
+};
+
+LinkedIn.CompanyInsiderPopup = Class.create();
+LinkedIn.CompanyInsiderPopup.prototype = {
+  initialize: function(element, companyName, options) {
+    this._element = $(element);
+    this._element.className = this._element.className + " " + LinkedIn.CompanyInsider.popUpClassName;
+    this.companyName = companyName;
+    this._options = options || {};
+    this.infoWindow = null;
+    this._createIcon();
+    this._attachEventHandlers();
+    return this;
+  },
+  
+  _createIcon: function() {
+    var imageElement = document.createElement("img");
+    imageElement.src = LinkedIn.CompanyInsider.iconUrl;
+    imageElement.width = LinkedIn.CompanyInsider.iconWidth;
+    imageElement.height = LinkedIn.CompanyInsider.iconHeight;
+    this._element.appendChild(imageElement);
+  },
+  
+  _attachEventHandlers: function() {
+    this._element.onclick = this._toggleInfoWindow.bindAsEventListener(this);
+  },
+   
+  markerOffset: function() {
+   return { top: cumulativeOffsetY(this._element.lastChild), left: cumulativeOffsetX(this._element.lastChild) };
+   // return { top: this._element.offsetTop, left: this._element.offsetLeft };
+  },
+  
+  _toggleInfoWindow: function(event) {
+    if (this.infoWindow) {
+      this._closeInfoWindow(event);
+    } else {   
+      this._openInfoWindow(event);
+    }
+  },
+  
+  _openInfoWindow: function(event) {
+    if (!LinkedIn.CompanyInsider.infoWindow) {
+      new LinkedIn.CompanyInsiderInfoWindow();
+    }
+
+    var infoWindow = LinkedIn.CompanyInsider.infoWindow;
+    // If there is a marker owns that window, release and close it
+    if (infoWindow.marker) {
+      infoWindow.close();
+    }
+    infoWindow.open(this);
+  
+  },
+  
+  _closeInfoWindow: function(event) {
+    this.infoWindow.close();    
+  }
+};
+
+LinkedIn.CompanyInsiderStylesheet = Class.create();
+LinkedIn.CompanyInsiderStylesheet.prototype = {
+  initialize: function() {
+    css = this._createStylesheet();
+    styleNode = document.createElement("style");
+    styleNode.type = "text/css";
+    if (styleNode.styleSheet) {
+      styleNode.styleSheet.cssText = css; 
+    } else { 
+      var cssText = document.createTextNode(css); 
+      styleNode.appendChild(cssText);
+    }
+
+    document.getElementsByTagName("head")[0].appendChild(styleNode);
+    return this;
+  },
+  
+  _createStylesheet: function() {  
+    var css = '#company-insider-info-window { position: relative; text-align:right; padding-top:30px; }'
+    + '#company-insider-info-window div a { color:#ccc; display:block; text-decoration:none; font:11px arial; position:absolute; top:25px; right:25px; -right:15px; width:10px; }'
+    + '#company-insider-info-window div { display:block;width:15px; } '
+    + '#company-insider-info-window iframe {padding: 0; margin: 0; width: 210px; height: 220px; position: absolute; left: 3px; }'
+    + 'div.bottom-right div a, div.bottom-left div a {  margin-top:-20px; }'
+    + 'div.bottom-right iframe, div.bottom-left iframe { top:25px; }'
+    + 'div.top-right iframe, div.top-left iframe { top:40px; }'
+    + 'div.bottom-right { background:url(http://www.linkedin.com/img/bg/bg_co_btm_rt.png) no-repeat;  -background:url(http://www.linkedin.com/img/bg/bg_co_btm_rt.gif) no-repeat;}'
+    + 'div.bottom-left { background:url(http://www.linkedin.com/img/bg/bg_co_btm_lt.png) no-repeat;  -background:url(http://www.linkedin.com/img/bg/bg_co_btm_lft2.gif) no-repeat;}'
+    + 'div.top-right {background:url(http://www.linkedin.com/img/bg/bg_co_top_rt.png) no-repeat;  -background:url(http://www.linkedin.com/img/bg/bg_co_top_rt.gif) no-repeat;}'
+    + 'div.top-left {background:url(http://www.linkedin.com/img/bg/bg_co_top_lt.png) no-repeat;  -background:url(http://www.linkedin.com/img/bg/bg_co_top_lt.gif) no-repeat;}';
+    return css;
+  }
+};
+
+// To create the window and cache it in the DOM
+Event.observe(window, "load", function() { 
+new LinkedIn.CompanyInsiderInfoWindow(); 
+new LinkedIn.CompanyInsiderStylesheet();
+
+});
+
+})();

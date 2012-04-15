@@ -1,0 +1,368 @@
+﻿function SignupService() {
+    this.ErrorInfo = '';
+    this.DefaultErrorInfo = "Please correct the following error(s):~";
+    this.Email;
+    this.IsValidateEmail = false;
+    this.Airport = null;
+    this.IsValidateAirport = false;
+    this.DefaultEmail;
+    this.DefaultAirport = '';
+    this.FavoriteDeals = '';
+    this.IsValidateFavoriteDeals = false;
+    this.DestinationCity = '';
+    this.OriginCity = '';
+    this.Destination = '';
+    this.IsValidateDestination = false;
+    this.BaseAppPath;
+    this.FlowType;
+    this.PageName;
+    this.FPAffiliate;
+    this.FirstName = 'Anonymous';
+    this.LastName = 'Anonymous';
+    this.Address1;
+    this.Address2;
+    this.State;
+    this.Zip;
+    this.City;
+    this.Country;
+    this.Phone;
+    this.Fax;
+    this.DOB;
+    this.SignupForPartner;
+    this.Gender;
+    this.IsSignupSuccessful = false;
+    this.EmailRegex = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+    //this.PageReferrer = parent.location.href;
+    this.PageComponent = 'Others';
+    this.CampaignId;
+    this.ResponseFPAffiliate;
+    this.AdditionInfo;
+    this.PageCategory;
+    //for farealert
+    this.FromDate;
+    this.ToDate;
+
+    this.GetDataForSignUp = function () {        
+        return "{'email_':'" + this.Email + "','currentAffCode_':'" + this.FPAffiliate + "','signupForPartner_':'" + this.SignupForPartner + "','pageComponent_':'" + this.PageComponent + "','firstName_':'" + this.FirstName + "','lastName_':'" + this.LastName + "','flowType_':'" + this.FlowType + "','address1_':'" + this.Address1 + "','address2_':'" + this.Address2 + "','city_':'" + this.City + "','state_':'" + this.State + "','zip_':'" + this.Zip + "','country_':'" + this.Country + "','phone_':'" + this.Phone + "','fax_':'" + this.Fax + "','originCity_':'" + this.OriginCity + "','dob_':'" + this.DOB + "','gender_':'" + this.Gender + "','favoriteDeals_':'" + this.FavoriteDeals + "','destinationCity_':'" + this.DestinationCity + "','destination_':'" + this.Destination + "','compaignId_':'" + this.CampaignId + "'}";
+    };
+
+    this.GetDataForSignUpV2 = function () {
+        return "{'email_':'" + this.Email + "','currentAffCode_':'" + this.FPAffiliate + "','signupForPartner_':'" + this.SignupForPartner + "','pageComponent_':'" + this.PageComponent + "','firstName_':'" + this.FirstName + "','lastName_':'" + this.LastName + "','flowType_':'" + this.FlowType + "','address1_':'" + this.Address1 + "','address2_':'" + this.Address2 + "','city_':'" + this.City + "','state_':'" + this.State + "','zip_':'" + this.Zip + "','country_':'" + this.Country + "','phone_':'" + this.Phone + "','fax_':'" + this.Fax + "','originCity_':'" + this.OriginCity + "','dob_':'" + this.DOB + "','gender_':'" + this.Gender + "','favoriteDeals_':'" + this.FavoriteDeals + "','destinationCity_':'" + this.DestinationCity + "','destination_':'" + this.Destination + "','compaignId_':'" + this.CampaignId + "','additionInfo_':'" + this.AdditionInfo + "'}";
+    };
+
+
+    this.GetDataForUpdateSignUp = function () {
+        return "{'emailAddress_':'" + this.Email + "','firstName_':'" + this.FirstName + "','lastName_':'" + this.LastName + "','address1_':'" + this.Address1 + "','address2_':'" + this.Address2 + "','city_':'" + this.City + "','state_':'" + this.State + "','zip_':'" + this.Zip + "','country_':'" + this.Country + "','phone_':'" + this.Phone + "','fax_':'" + this.Fax + "','originCity_':'" + this.Airport + "','dob_':'" + this.DOB + "','gender_':'" + this.Gender + "','favoriteDeals_':'" + this.FavoriteDeals + "','destinationCity_':'" + this.DestinationCity + "','destination_':'" + this.Destination + "','compaignId_':'" + this.CampaignId + "'}";
+    };
+
+    this.GetDataForSignUpV3 = function () {
+        return "{'email_':'" + this.Email + "','currentAffCode_':'" + this.FPAffiliate + "','signupForPartner_':'" + this.SignupForPartner + "','pageComponent_':'" + this.PageComponent + "','firstName_':'" + this.FirstName + "','lastName_':'" + this.LastName + "','flowType_':'" + this.FlowType + "','address1_':'" + this.Address1 + "','address2_':'" + this.Address2 + "','city_':'" + this.City + "','state_':'" + this.State + "','zip_':'" + this.Zip + "','country_':'" + this.Country + "','phone_':'" + this.Phone + "','fax_':'" + this.Fax + "','originCity_':'" + this.OriginCity + "','dob_':'" + this.DOB + "','gender_':'" + this.Gender + "','favoriteDeals_':'" + this.FavoriteDeals + "','destinationCity_':'" + this.DestinationCity + "','destination_':'" + this.Destination + "','compaignId_':'" + this.CampaignId + "','additionInfo_':'" + this.AdditionInfo + "','pageCategory_':'" + this.PageCategory + "'}";
+    };
+
+    this.GetDataForFareAlert = function () {
+        var FareAlertFlowType;
+        switch (FareAlertFlowType) {
+            case 'H':
+                FareAlertFlowType = '3';
+                break;
+            case 'C':
+                FareAlertFlowType = '2';
+                break;
+            default:
+                FareAlertFlowType = '1';
+                break;
+        }
+        return "{'emailAddress':'" + this.Email + "','pagerefferrer':'" + this.PageComponent + "','origin':'" + this.OriginCity + "','destination':'" +
+             this.Destination + "','fromDate':'" + '' + "','toDate':'" + '' + "','lowestPrice':'" +
+             '0' + "','tax':'" + '0' + "','isCheckBoxChecked':'" + true + "','flowType':'" + FareAlertFlowType +
+             "','hotelRating':'" + '' + "'}";
+    };
+
+}
+function DTSignupReference(referenceeEmail_, referenceeName_, campaignId_, name_, email_) {
+    this.ReferenceeEmail = referenceeEmail_;
+    this.ReferenceeName = referenceeName_;
+    this.CampaignID = campaignId_;
+    this.FriendName = name_;
+    this.FriendEmail = email_;
+}
+function DTSignupReferenceResponse() {
+    this.FriendEmail;
+    this.ErrorMessage;
+}
+
+SignupService.prototype.SignUp = function () {
+    if (this.IsValidateEmail)
+        this.IsNullOrEmpty("Email", this.Email, '')
+    if (!this.IsErrorFound()) {
+        var currentObj = this;
+        var dataForSignUp = this.GetDataForSignUp();        
+        jQuery.ajax({
+            type: "POST",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/DesktopModules/Misc/signupservice.asmx/SignUp",
+            data: dataForSignUp,
+            success: function (response) {
+                var jSonResponse = eval(" (" + response.d + ") ");
+                currentObj.IsSignupSuccessful = jSonResponse.IsSucceed;
+                if (jSonResponse.IsSucceed == false && jSonResponse.ErrorInfo != '') {
+                    currentObj.ErrorInfo += "~" + jSonResponse.ErrorInfo;
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+}
+
+SignupService.prototype.FareAlertDataSave = function () {
+    var currentObj = this;
+    var DataForFareAlert = this.GetDataForFareAlert();
+    jQuery.ajax({
+        type: "POST",
+        async: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: "/DesktopModules/TravelerProfile/TravelerService.asmx/PriceDropAlertDataSave",
+        data: DataForFareAlert,
+        success: function (response) {
+            var jSonResponse = eval(" (" + response.d + ") ");
+            if (jSonResponse.IsSucceed == false && jSonResponse.ErrorInfo != '') {
+                currentObj.FareAlertDataResponse = jSonResponse.ErrorInfo;
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        }
+    });
+}
+
+
+
+SignupService.prototype.SignUpV2 = function () {
+    if (this.IsValidateEmail)
+        this.IsNullOrEmpty("Email", this.Email, '')
+    if (!this.IsErrorFound()) {
+        var currentObj = this;
+        var dataForSignUp = this.GetDataForSignUpV2();
+        jQuery.ajax({
+            type: "POST",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/DesktopModules/Misc/signupservice.asmx/SignUp2",
+            data: dataForSignUp,
+			beforeSend: function (request)
+            {
+                request.setRequestHeader("SOAPAction", "http://www.fp.com/SignUp2");
+            },
+            success: function (response) {
+                var jSonResponse = eval(" (" + response.d + ") ");
+                currentObj.IsSignupSuccessful = jSonResponse.IsSucceed;
+                if (jSonResponse.IsSucceed == false && jSonResponse.ErrorInfo != '') {
+                    currentObj.ErrorInfo += "~" + jSonResponse.ErrorInfo;
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+}
+
+SignupService.prototype.SignUpV3 = function () {
+    if (this.IsValidateEmail)
+        this.IsNullOrEmpty("Email", this.Email, '')
+    if (!this.IsErrorFound()) {
+        var currentObj = this;
+        var dataForSignUp = this.GetDataForSignUpV3();
+        jQuery.ajax({
+            type: "POST",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/DesktopModules/Misc/signupservice.asmx/SignUpV3",
+            data: dataForSignUp,
+            beforeSend: function (request) {
+                request.setRequestHeader("SOAPAction", "http://www.fp.com/SignUpV3");
+            },
+            success: function (response) {
+                var jSonResponse = eval(" (" + response.d + ") ");
+                currentObj.IsSignupSuccessful = jSonResponse.IsSucceed;
+                if (jSonResponse.IsSucceed == false && jSonResponse.ErrorInfo != '') {
+                    currentObj.ErrorInfo += "~" + jSonResponse.ErrorInfo;
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+}
+
+
+SignupService.prototype.ReferToFriend = function (postDataString_) {
+    var currentObj = this;  
+    jQuery.ajax({
+        type: "POST",
+        async: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: "/DesktopModules/Misc/signupservice.asmx/ReferToFriend",
+        data: "{'signupReferences_':'" + postDataString_ + "'}",      
+        error: function (response) {
+        },
+        success: function (response) {
+            var jSonResponse = eval(" (" + response.d + ") ");
+            if (jSonResponse.IsSucceed == false && jSonResponse.ErrorInfo != '') {
+                currentObj.ReferToFriendResponse = jSonResponse.ErrorInfo;
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        }
+    });
+}
+
+SignupService.prototype.IsNullOrEmpty = function (type_, input_, messageToShow_) {
+    switch (type_) {
+        case "Email":
+            if (input_ == 'undefined' || input_ == null || input_ == '' || input_ == this.DefaultEmail) {
+                this.ErrorInfo += this.DefaultErrorInfo;
+                this.ErrorInfo += 'Email address is missing.~';
+                return false;
+            }
+            else if (this.EmailRegex.test(input_) == false || input_.split(/[A-Z]/gi).length - 1 < 1) {
+                this.ErrorInfo += this.DefaultErrorInfo;
+                this.ErrorInfo += 'Email address incorrect.~';
+                return false;
+            }
+            break;
+        default:
+            if (input_ == 'undefined' || input_ == null || input_ == '') {
+                if (this.ErrorInfo.indexOf(this.DefaultErrorInfo) == -1) {
+                    this.ErrorInfo += this.DefaultErrorInfo;
+                }
+                this.ErrorInfo += messageToShow_;
+                return false;
+            }
+            break;
+    }
+    return true;
+}
+
+SignupService.prototype.IsNullOrEmptyOrNoChange = function (tempVal_, defaultValue_, messageToShow_) {
+
+    if (tempVal_ == null || tempVal_ == '' || (defaultValue_ != null && tempVal_.toLowerCase() == defaultValue_.toLowerCase())) {
+        this.ErrorInfo += this.DefaultErrorInfo;
+        this.ErrorInfo += messageToShow_;
+        return false;
+    }
+    return true;
+}
+
+
+SignupService.prototype.CleanDefault = function () {
+    if (this.Email == this.DefaultEmail) {
+        this.TxtEmail.val('');
+    }
+}
+SignupService.prototype.IsErrorFound = function () {
+    if (this.ErrorInfo != null && this.ErrorInfo != this.DefaultErrorInfo && this.ErrorInfo.length > 0) {
+        return true;
+    }
+    return false;
+}
+SignupService.prototype.SignUpOnEnter = function (keyEvent) {
+    var keyPressedCode = (keyEvent != null ? keyEvent.keyCode : event.keyCode);
+    if (keyPressedCode == 13) {
+        if (blockSrch != undefined && blockSrch != null)
+            blockSrch = true; //This is added for AutoSuggest on Flight/Car/Hotel to block search in enter pressed on Email textbox
+        this.SignUp();
+        keyEvent.preventDefault(); //stop further events causing page submit from widget
+    }
+}
+function MM_openBrWindow(theURL, winName, features) { //v2.0
+    window.open(theURL, winName, features);
+}
+var _locations = '';
+function SetLocation(obj_, loc_) {
+    var id = obj_.id;
+    if (jQuery('#' + id).attr('checked')) {
+        _locations += loc_ + ",";
+    }
+    else {
+        _locations = _locations.replace(loc_ + ",", "");
+    }
+}
+function GetAct() {
+    return "F";
+}
+
+function disableEnterKey(e_) {
+    if (blockSrch == undefined || blockSrch == null)
+        return true;
+    var key;
+    if (window.event)
+        key = window.event.keyCode; //IE
+    else
+        key = e_.which; //firefox     
+
+    if (key == 13) {
+        return (blockSrch == false);
+    }
+    else {
+        return true;
+    }
+}
+
+SignupService.prototype.GetAffiliate = function () {
+    var currentObj = this;
+    $.ajax({
+        type: "POST",
+        async: true,
+        timeout: 10000,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: "/DesktopModules/Misc/signupservice.asmx/GetAffiliate",
+        data: "{}",
+        success: function (response) {
+            currentObj.ResponseFPAffiliate = response.d;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        }
+    });
+}
+
+SignupService.prototype.UpdateSignUp = function () {
+    if (this.IsValidateAirport)
+        this.IsNullOrEmptyOrNoChange(this.Airport, this.DefaultAirport, 'Please enter valid City/Airport.~');
+    if (this.IsValidateFavoriteDeals)
+        this.IsNullOrEmpty("", this.FavoriteDeals, 'Please select your favorite deals.~')
+    if (this.IsValidateDestination)
+        this.IsNullOrEmpty("", this.Destination, 'Please select your preferred destination.~')
+    if (!this.IsErrorFound()) {
+        var currentObj = this;
+        var dataForUpdateSignUp = this.GetDataForUpdateSignUp();
+        jQuery.ajax({
+            type: "POST",
+            async: true,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/DesktopModules/Misc/signupservice.asmx/UpdateSignUp",
+            data: dataForUpdateSignUp,
+            success: function (response) {
+                var jSonResponse = eval(" (" + response.d + ") ");
+                currentObj.IsSignupSuccessful = jSonResponse.IsSucceed;
+                if (jSonResponse.IsSucceed == false && jSonResponse.ErrorInfo != '') {
+                    currentObj.ErrorInfo += "~" + jSonResponse.ErrorInfo;
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+}
+
+
+
+
+

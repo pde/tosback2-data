@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<PUBLIC:COMPONENT LIGHTWEIGHT="true">
+<PUBLIC:ATTACH EVENT="ondocumentready" ONEVENT="onDocumentReady()" />
+<PUBLIC:ATTACH EVENT="ondetach" ONEVENT="onDetach()" />
+
+<SCRIPT type="text/javascript">
+//<![CDATA[
+
+var nLastSelectedIndex;
+var fOnChangeOriginal;
+
+// event handlers
+
+function onDocumentReady() {
+  var sTag = element.tagName.toLowerCase();
+  if (sTag == "select") {
+    attachEvent("onchange", onChangeSelect);
+    attachEvent("onpropertychange", onPropertyChangeSelect);
+    nLastSelectedIndex = element.selectedIndex;
+    hackOnChange();
+  } else if (sTag == "option") {
+    attachEvent("onpropertychange", onPropertyChangeOption);
+    emulateOption();
+  }
+}
+
+function onDetach() {
+  var sTag = element.tagName.toLowerCase();
+  if (sTag == "select") {
+    detachEvent("onchange", onChangeSelect);
+    detachEvent("onpropertychange", onPropertyChangeSelect);
+  } else if (sTag == "option") {
+    detachEvent("onpropertychange", onPropertyChangeOption);
+  }
+}
+
+//
+
+function onChangeSelect() {
+  if (element.options[element.selectedIndex].disabled) {
+    element.selectedIndex = nLastSelectedIndex;
+  } else {
+    nLastSelectedIndex = element.selectedIndex;
+    if (fOnChangeOriginal != undefined) {
+      fOnChangeOriginal();
+    }
+  }
+}
+
+function onPropertyChangeSelect() {
+  var sChangedPropertyName = event.propertyName.toLowerCase();
+  if (sChangedPropertyName == "onchange") {
+    hackOnChange();
+  } else if (sChangedPropertyName == "selectedindex") { // contributed by Zecc
+    nLastSelectedIndex = element.selectedIndex;
+  }
+}
+
+function onPropertyChangeOption() {
+  var sChangedPropertyName = event.propertyName.toLowerCase();
+  if (sChangedPropertyName == "disabled") {
+    emulateOption();
+  }
+}
+
+// hack onChange attribute of select tag
+
+function hackOnChange() {
+  detachEvent("onpropertychange", onPropertyChangeSelect);
+  fOnChangeOriginal = element.onchange;
+  element.onchange = null;
+  attachEvent("onpropertychange", onPropertyChangeSelect);
+}
+
+// emulate disabled option
+
+function emulateOption() {
+  if (element.disabled) {
+    element.style.color = "graytext";
+  } else {
+    element.style.color = "menutext";
+  }
+}
+
+//]]>
+</SCRIPT>
+</PUBLIC:COMPONENT>

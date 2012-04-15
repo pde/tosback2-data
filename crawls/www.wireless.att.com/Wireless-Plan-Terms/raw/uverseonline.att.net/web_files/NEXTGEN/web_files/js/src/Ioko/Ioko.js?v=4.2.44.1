@@ -1,0 +1,703 @@
+/**
+ * Ioko class
+ * 
+ * Base functionality class
+ * 		Handles:
+ * 				- namespacing
+ * 				- cross browser logging
+ * 				- loading various asset types (script, stylesheet, images)
+ * 				- lazy loading and keeping track of modules and their dependencies
+ * 
+ * 
+ * @author Alec Hill
+ */
+var Ioko = (function(){
+	
+	// PRIVATE /////////////////
+	
+	var _major = '1';
+	var _minor = '0';
+	
+	var _date = new Date();
+	
+	// track what modules are loaded and events set on their load
+	var _modules = {};
+	var _module_load_events = {};
+	var _module_load_listeners = [];
+	var _module_load_poller = false;
+	var _module_ready_events = {};
+	var _module_ready_listeners = [];
+	var _module_ready_poller = false;
+	
+	var _preloaded = [];
+	
+	// track window load and events to run on it
+	var _window_loaded = false;
+	var _window_load_events = [];
+	
+	// track page load events
+	var _page_load_events = [];
+	
+	/**
+     * Called when the window / dom has loaded. <br />
+     * Executes the functions that have been added to the _window_load_events array
+     */
+    var _onWindowLoad = function(){
+        for( var i = 0, len = _window_load_events.length; i < len; i++ ){
+            var obj = _window_load_events[i];
+            obj.func.apply( obj.bind, obj.args );
+			// remove it now it has run
+			_window_load_events.splice(i, 1);
+			i--;
+			len--;
+        }
+		_onPageLoad();
+		_window_loaded = true;
+    }
+	
+	/**
+     * Executes the functions that have been added to the _page_load_events array
+     */
+    var _onPageLoad = function(){
+        for( var i = 0, len = _page_load_events.length; i < len; i++ ){
+            var obj = _page_load_events[i];
+            obj.func.apply( obj.bind, obj.args );
+			// if not persistant remove it
+			if( !obj.persist ){
+				_page_load_events.splice(i, 1);
+				i--;
+				len--;
+			}
+        }
+    }
+	
+	// start listening for the dom ready / window load events ///////////////////////////////////
+    if(window.MooTools){
+		window.addEvent('domready', _onWindowLoad);
+	}else if(window.jQuery){
+		window.jQuery( function($){ _onWindowLoad(); } );
+	}else if(window.Prototype){
+		document.observe('dom:loaded', _onWindowLoad );
+	}else if(window.YAHOO){
+		YAHOO.util.Event.onDOMReady(_onWindowLoad);
+    }else{
+		if( window.addEventListener ){
+			window.addEventListener('load', _onWindowLoad, false);
+		}else if( window.attachEvent ){
+			window.attachEvent('onload', _onWindowLoad);
+		}else{
+			var old_onload = (window.onload) ? window.onload : function(){};
+	        window.onload = function(){
+				old_onload();
+				_onWindowLoad();
+			}
+		}
+    }
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * normalizes names of modules for using as object property names ( replaces dot notation with underscores )
+	 *
+	 * @param name {String} - name of the module
+	 * @return {String}
+	 */
+	var _namealize = function(name){
+		return name.replace(/\./g, '_');
+	}
+	
+	/**
+	 * changes namespace of module into a path to a module file / directory
+	 *
+	 * @param name {String} - name of the module
+	 * @param name {String} - extension of the file
+	 * @param path_to_dir {Boolean} - if true will return the path to the module's directory only
+	 * @return {String}
+	 */
+	var _pathalize = function(name, extension, path_to_dir){
+		var short_name = name.match(/(\w+)$/)[1];
+		return name.replace(/\./g, '/') + '/' + ((path_to_dir) ? '' : short_name + '.' + (extension||'js'));
+	}
+	
+	/**
+	 * checks if a module has been asked to load yet
+	 *
+	 * @param name {String} - name of the module
+	 * @return {Boolean}
+	 */
+	var _isModuleRequested = function(name){
+		return _modules[_namealize(name)] != undefined;
+	}
+	
+	/**
+	 * checks if a module has been registered (ie script loaded - but the code may not have been executed yet)
+	 *
+	 * @param name {String} - name of the module
+	 * @return {Boolean}
+	 */
+	var _isModuleRegistered = function(name){
+		var name = _namealize(name);
+		return _modules[name] && _modules[name].registered;
+	}
+	
+	/**
+	 * checks if a module is ready to have its code executed (all dependencies are fully loaded)
+	 *
+	 * @param name {String} - name of the module
+	 * @return {Boolean}
+	 */
+	var _isModuleReady = function(name){
+		var name = _namealize(name);
+		if( _modules[name] && _modules[name].registered ){
+			for (var i = 0, len = _modules[name].dependencies.length; i < len; i++) {
+				if( !_isModuleLoaded(_modules[name].dependencies[i]) ) return false;
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * checks if a module is fully loaded
+	 *
+	 * @param name {String} - name of the module
+	 * @return {Boolean}
+	 */
+	var _isModuleLoaded = function(name){
+		var name = _namealize(name);
+		return _modules[name] && _modules[name].loaded;
+	}
+	
+	/**
+	 * adds a listener for a module event, starts / clears an interval that polls for that particular event type
+	 *
+	 * @param event_type {String} - type of the event
+	 * @param name {String} - name of the module
+	 */
+	var _pollForModuleEvent = function(event_type, name){
+		// select listeners, poller, and method for checking status of module - depending upon event type
+		switch(event_type){
+			case 'load':
+				var listeners = _module_load_listeners;
+				var poller = _module_load_poller;
+				var checkStatus = _isModuleLoaded;
+				break;
+			case 'ready':
+				var listeners = _module_ready_listeners;
+				var poller = _module_ready_poller;
+				var checkStatus = _isModuleReady;
+				break;
+			default:
+				return;
+		} 
+		//add to listeners array if not already there
+		var found = false;
+		for (var i = 0, len = listeners.length; i < len; i++) {
+			if (listeners[i] == name) {
+				found = true;
+				break;
+			}
+		}
+		if(!found) listeners.push(name);
+		// check if module poller is already running
+		if(poller) return;
+		// module poller not started yet so start it up...
+		poller = setInterval( function(){
+			// must run in reverse so we can remove listeners along the way
+			for (var i = listeners.length - 1; i >= 0; i--) {
+				var name = listeners[i];
+				if(checkStatus(name)){
+					// remove from listeners array
+					listeners.splice(i, 1);
+					_doModuleEvents(event_type, name);
+				}
+			}
+			// if nothing to listen for load any more, clear the poller
+			if (!listeners.length) {
+				clearInterval(poller);
+				poller = false;
+			}
+		}, 50);
+	}
+	
+	/**
+	 * calls the functions that have been set to be run on a module event
+	 * 
+	 * @param event_type {String} - type of the event
+	 * @param name {String} - name of the module
+	 */
+	var _doModuleEvents = function( event_type, name ){
+		switch(event_type){
+			case 'load': var events = _module_load_events; break;
+			case 'ready': var events = _module_ready_events; break;
+			default: return;
+		}
+		var name = _namealize(name);
+		for( var i = 0, len = events[name].length; i < len; i++ ){
+            var obj = events[name][i];
+            obj.func.apply( obj.bind, obj.args );
+			// remove it now it has run
+			events[name].splice(i, 1);
+			i--;
+			len--;
+        }
+	}
+	
+	/**
+	 * generic event subscriber for modules
+	 *
+	 * @param event_type {String} - type of the event
+	 * @param name {String} - name of the module
+	 * @param func {Function} - reference to function to add
+	 * @param args {Array} - an array of arguments to be passed to the function
+	 * @param bind {Object} - the object to to which 'this' will refer to within the scope of the function
+	 * @return {String}
+	 */
+	var _onModuleEvent = function( event_type, name, func, args, bind ){
+		switch(event_type){
+			case 'load': var events = _module_load_events; break;
+			case 'ready': var events = _module_ready_events; break;
+			default: return;
+		} 
+		var name = _namealize(name);
+		events[name] = events[name] || [];
+		events[name].push( { func: func, args: args || [], bind: bind || window } );
+		_pollForModuleEvent(event_type, name);
+	}
+	
+	// PUBLIC ///////////////////
+	
+	return {
+		
+		/**
+		 * constant to indicate production environment
+		 */
+		PRODUCTION: 'PRODUCTION',
+		
+		/**
+		 * constant to indicate staging environment
+		 */
+		STAGING: 'STAGING',
+		
+		/**
+		 * constant to indicate test environment
+		 */
+		TEST: 'TEST',
+		
+		/**
+		 * constant to indicate development environment
+		 */
+		DEVELOPMENT: 'DEVELOPMENT',
+		
+		/**
+		 * returns the version
+		 *
+		 * @return {String}
+		 */
+		version: function(){
+			return _major + '.' + _minor
+		},
+		
+		/**
+		 * outputs a log message / object for inspection to console if available - if not creates a logging pane
+		 * 
+		 * @param something {Mixed} - something to inspect / log
+		 * @param tag {String} - tag to log for
+		 */
+		log: function(something, tag) {
+			
+			if (!Ioko.namespace('config').logging) return;
+			if (Ioko.namespace('config').loggingExcludes.indexOf(tag) != -1) return;
+			
+			var inspect = false;
+			var date = new Date();
+			var time_info = date.toLocaleTimeString() + ' (' + (date.valueOf() - _date.valueOf()) + 'ms)';
+			var tag_info = tag ? '[' + tag + ']' : '';
+			
+			if (typeof something == typeof '' || typeof something == typeof 1 || typeof something == typeof true || !window['console']) {
+				var something = time_info + ' ' + tag_info + ' ' + something;
+			}else{
+				inspect = something;
+				var something = time_info + ' ' + tag_info + ':';
+			}
+			if( window['console'] ){
+				console.log(something);
+				if(inspect) console.log(inspect);
+			}else{
+				if(!document.body || !Ioko.namespace('config').logging_pane) return this;
+				var pane = document.getElementById('iokoLog');
+				if( !pane ){
+					pane = document.createElement('div');
+					pane.id = 'iokoLog';
+					var s = pane.style;
+					s.display = 'none';
+					s.position = 'fixed';
+					s.left = pane.style.bottom = 0;
+					s.width = '100%';
+					s.height = '100px';
+					s.backgroundColor = '#eeeeee';
+					s.borderTop = '3px solid #666666';
+					s.color = '#000000';
+					s.zIndex = '9999';
+					s.overflow = 'auto';
+					document.body.appendChild(pane);
+					// Ctrl + Alt + l toggles the logging pane
+					document.onkeydown = function(e){
+						var e = e || window.event;
+						if(e.ctrlKey && e.altKey && e.keyCode == 76){
+							pane.style.display = (pane.style.display == 'block') ? 'none' : 'block';
+							return false;
+						}
+					}
+				}
+				var item = document.createElement('div');
+				item.style.borderBottom = '1px solid #cccccc';
+				pane.appendChild(item);
+				var top = item.offsetTop; // ie7 likes this here or makes pane shrink
+				item.appendChild( document.createTextNode(something) );
+				pane.scrollTop = top;
+			}
+			return this;
+		},
+		
+		/**
+		 * creates / fetches a namespace
+		 *
+		 * @param ns {String} - string representation of name space (i.e. first.second)
+		 * @param base {Mixed} - the base object to add the namespaces to (defaults to this) OR a string name of the base object
+		 * @return {Object}
+		 */
+		namespace: function( ns, base ){
+			var namespaces = ns.split('.');
+			if( typeof base == typeof ''){
+				if(window[base] == undefined) window[base] = {};
+				base = window[base];
+			} 
+			var ret = base || this;
+			for( var i = 0, len = namespaces.length; i < len; i++ ){
+				var name = namespaces[i];
+				if( ret[name] ){
+					if( typeof ret[name] == typeof {} || typeof ret[name] == typeof function(){} ){
+						ret = ret[name];
+					}else{
+						throw new Error("namespace - cannot use '" + name + "' as part of '" + ns + "' namespace as it is already being used for other purposes");
+					}
+				}else{
+					ret = ret[name] = {};
+				}
+			}
+			return ret;
+		},
+		
+		/**
+		 * resolves a namespace (e.g. Ioko.widgets.mootools.Fields) to the actual object
+		 * 
+		 * @param ns {String} namespace as a string
+		 * @return {Object}
+		 */
+		resolve: function(ns) {
+			var namespaces = ns.split('.');
+			var obj = window;
+			for (var i = 0; i < namespaces.length; i++) {
+				obj = obj[namespaces[i]];
+			}
+			return obj;
+		},
+		
+		/**
+		 * attempts to work out the base path to the javascript source code being used by testing Ioko.js script tag
+		 * 
+		 * @param root {Boolean} - return the path to the js root, rather than to the source directory
+		 * @return {Mixed} - String if found, false if not
+		 */
+		getBasePath: function(root){
+			var root = root || false;
+			var scripts = document.getElementsByTagName('script');
+			var match;
+			for (var i = 0, len = scripts.length; i < len; i++) {
+				var src = scripts[i].getAttribute('src');
+				if (src) match = src.match( root ? /(.+)\/[^\/]+\/Ioko\/Ioko\.js/ : /(.+)\/Ioko\/Ioko\.js/);
+				if (!match) continue;
+				return match[1] + '/';
+			}
+			return false;
+		},
+		
+		/**
+		 * returns whether the window has loaded or not
+		 *
+		 * @return {String}
+		 */
+		isWindowLoaded: function(){
+			return _window_loaded;
+		},
+		
+		/**
+		 * adds a function to run on the window.onload / dom ready event
+		 *
+		 * @param func {Function} - reference to function to add
+		 * @param args {Array} - an array of arguments to be passed to the function
+		 * @param bind {Object} - the object to to which 'this' will refer to within the scope of the function
+		 * @return {Object}
+		 */
+		onWindowLoad: function(func, args, bind){
+			if( this.isWindowLoaded() ){
+				func.apply( bind || window, args || [] );
+				return this;
+			}
+		    _window_load_events.push( { func: func, args: args || [], bind: bind || window } );
+			return this;
+		},
+		
+		/**
+		 * adds a function to run on page load (a made up event that is run on window load and can be forced to happen on ajax load)
+		 *
+		 * @param func {Function} - reference to function to add
+		 * @param args {Array} - an array of arguments to be passed to the function
+		 * @param bind {Object} - the object to to which 'this' will refer to within the scope of the function
+		 * @param persist {Boolean} - should this only happen the next page load or persist - defaults to false
+		 * @return {Object}
+		 */
+		onPageLoad: function(func, args, bind, persist){
+		    _page_load_events.push( { func: func, args: args || [], bind: bind || window, persist: persist || false } );
+			return this;
+		},
+		
+		/**
+	     * will execute all the events that have been added to page load
+	     * use this to hook into with your ajax load
+	     */
+	    executePageLoad: function(){
+			_onPageLoad();
+	    },
+		
+		/**
+		 * checks if a module is fully loaded
+		 *
+		 * @param name {String} - name of the module
+		 * @return {String}
+		 */
+		isModuleLoaded: function(name){
+			return _isModuleLoaded(name);
+		},
+		
+		/**
+		 * getModuleImagePath
+		 * 
+		 * public method of getting web accessible path to the directory an image asset of a module
+		 * 
+		 * @param name {String} - name of the module
+		 * @param src {String} - file name of image
+		 * @return {String}
+		 */
+		getModuleImagePath: function(name, src){
+			return this.namespace('config').base_code_path + _pathalize(name, null, true) + src;
+		},
+		
+		/**
+		 * registers a module to be used and starts up fetching its dependencies
+		 *
+		 * @param props {Object} - properties object: <br />
+		 * 								- name {String}: the namespace of the module, should match the path to its file
+		 * 								- uses {Array}: an array of string names of modules this one depends on
+		 * 								- module_styles {Boolean}: is there a stylesheet defined in this module 
+		 * 								- module_images {Array}: array of images that are packaged in this module 
+		 * 								- extra_styles {Array}: an array of strings hrefs of stylesheets to be included for use in module 
+		 * 								- extra_images {Array}: an array of strings srcs of images to be preloaded for use in module 
+		 * 								- code {Function}: a function containing the module's code, this will be run when the dependencies are all loaded
+		 */
+		registerModule: function( props ){
+			var name = props.name;
+			var uses = props.uses || [];
+			var module_styles = props.module_styles || false;
+			var module_images = props.module_images || [];
+			var extra_styles = props.extra_styles || [];
+			var extra_images = props.extra_images || [];
+			var code = props.code || function(){};
+			// register it
+			_modules[_namealize(name)] = { 
+				registered: true,
+				loaded: false,
+				dependencies: uses 
+			}
+			var base_path = this.namespace('config').base_code_path;
+			var load_module_assets = (Ioko.namespace('config').load_module_assets == false) ? false : true;
+			// module stylesheet
+			if( load_module_assets && module_styles ) this.loadStylesheet( base_path + _pathalize(name, 'css') );
+			// load extra stylesheets
+			for( var i = 0, len = extra_styles.length; i < len; i++ ){
+				this.loadStylesheet(extra_styles[i]);
+			}
+			// load js dependencies
+			for( i = 0, len = uses.length; i < len; i++ ){
+				this.loadModule(uses[i]);
+			}
+			// preload images
+			var srcs = [];
+			// module images
+			for( i = 0, len = module_images.length; i < len; i++ ){
+				if( load_module_assets ) srcs.push( base_path + _pathalize(name, null, true) + module_images[i] );
+			}
+			// extra images
+			for( i = 0, len = extra_images.length; i < len; i++ ){
+				srcs.push(extra_images[i]);
+			}
+			if(srcs.length) this.loadImages(srcs);
+			// run the module code after all the dependencies have been made ready
+			_onModuleEvent('ready', name, this.executeModule, [name, code], this);
+		},
+		
+		/**
+		 * executes the code for the loaded module
+		 * 
+		 * @param {String} name - name of the module
+		 * @param {Function} code - code of the module
+		 * @return {Boolean} - whether or not the code was executed
+		 */
+		executeModule: function( name, code ){
+			if (!_isModuleReady(name) || this.isModuleLoaded(name)) return false;
+			code.call(window);
+			_modules[_namealize(name)].loaded = true;
+			return true;
+		},
+		
+		/**
+		 * loads a module script
+		 *
+		 * @param name {String} - name of the module
+		 * @return {Boolean} - whether the module has been successfully queued
+		 */
+		loadModule: function(name) {
+			if ( _isModuleRequested(name) ) return false;
+			_modules[_namealize(name)] = {
+				registered: false,
+				loaded: false,
+				dependencies: []
+			};
+			this.loadScript( this.namespace('config').base_code_path + _pathalize(name) );
+			if( this.namespace('config').test ) this.loadScript( this.namespace('config').base_code_path + _pathalize(name).replace(/\/\w+\.js$/, '/spec.js'));
+			return true;
+		},
+		
+		/**
+		 * adds a function to run when the module is fully loaded and can be used
+		 *
+		 * @param name {String} - name of the module
+		 * @param func {Function} - reference to function to add
+		 * @param args {Array} - an array of arguments to be passed to the function
+		 * @param bind {Object} - the object to to which 'this' will refer to within the scope of the function
+		 * @return {Object}
+		 */
+		onModuleLoad: function(name, func, args, bind){
+			_onModuleEvent('load', name, func, args, bind);
+			return this;
+		},
+		
+		/**
+		 * includes an external script element in the head
+		 *
+		 * @param src {String} - the src of the script
+		 * @param callback {Function} - a function to be executed on load
+		 * @param synchronous {Boolean} - should it be loaded synchronously?
+		 */
+		loadScript: function(src, callback, synchronous) {
+			var el = document.createElement('script');
+			var src = src + (/\.js$/.test(src) ? '' : '.js') + '?v=' + this.namespace('config').version;
+			el.setAttribute('type', 'text/javascript');
+			if(synchronous){
+				var request, loaded = false;
+				if (window.XMLHttpRequest) {
+					request = new XMLHttpRequest();
+				}else if(window.ActiveXObject) {
+					try {
+						request = new ActiveXObject('MSXML2.XMLHTTP');
+					}catch(e){
+						try{
+							request = new ActiveXObject('Microsoft.XMLHTTP');
+						}catch(e){}
+					}
+				}
+				if(request){
+					request.open('GET', src, false);
+					request.send(null);
+					// synchronous so dont need to check ready state
+					if (request.status == 200) {
+						el.text = request.responseText;
+						document.getElementsByTagName('head')[0].appendChild(el);
+						if (callback) callback.call(window);
+					}
+				}
+			}else{
+				el.setAttribute('src', src);
+				if (callback) {
+					if (document.all) {
+						// ie only
+						el.onreadystatechange = function(){
+							if (/(complete|loaded)/.test(this.readyState)) 
+								callback.call(window);
+						}
+					}else{
+						el.onload = function(){
+							callback.call(window);
+						};
+					}
+				}
+				document.getElementsByTagName('head')[0].appendChild(el);	
+			}
+			return this;
+		},
+		
+		/**
+		 * includes an external script element in the head
+		 * 
+		 * @param href {String} - the href of the stylesheet
+		 * @param media {String} - the media stylesheet should apply to - defaults to screen
+		 */
+		loadStylesheet: function(href, media) {
+			var el = document.createElement('link');
+			el.setAttribute('href', href + (/\.css$/.test(href) ? '' : '.css'));
+			el.setAttribute('type', 'text/css');
+			el.setAttribute('rel', 'stylesheet');
+			el.setAttribute('media', media || 'screen');
+			document.getElementsByTagName('head')[0].appendChild(el);
+			return this;
+		},
+		
+		/**
+		 * preloads images
+		 * 
+		 * @param src {Mixed} - string src of image to preload, or an array of string srcs
+		 */
+		loadImages: function(src){
+			var src = ( typeof src == typeof [] ) ? src : [src];
+			for( var i = 0, len = src.length; i < len; i++ ){
+				_preloaded.push( new Image() );
+		        _preloaded[_preloaded.length - 1].src = src[i];
+		    }
+			return this;
+		},
+		
+		/**
+		 * loads a library script from the lib directory
+		 *
+		 * @param name {String} - name of library file (with or without .js) 
+		 * @param callback {Function} - a function to be executed on load
+		 * @param synchronous {Boolean} - should it be loaded synchronously?
+		 */
+		loadLibrary: function(name, callback, synchronous) {
+			var name = Ioko.namespace('config').use_minified_libs ? name : name.match(/^(.+)(?:\.js)?$/)[1] + '-uncompressed';
+			this.loadScript( this.namespace('config').base_js_path + 'lib/' + name, callback || false, synchronous || false );
+			return this;
+		}
+		
+	}
+
+})();
+
+if (!Array.indexOf) {
+	Array.prototype.indexOf = function(obj){
+		for(var i=0; i<this.length; i++){
+			if(this[i]==obj) return i;
+		}
+		return -1;
+	}
+}

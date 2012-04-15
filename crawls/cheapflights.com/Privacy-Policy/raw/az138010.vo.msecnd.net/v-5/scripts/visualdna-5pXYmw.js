@@ -1,0 +1,1 @@
+(function(){var d,c;d=document.createElement("script");d.src="//a1.vdna-assets.com/analytics.js";d.async=true;c=document.getElementsByTagName("head")[0];c.insertBefore(d,c.firstChild);this.VDNA=this.VDNA||{};this.VDNA.queue=this.VDNA.queue||[]}());VDNA.queue.push({apiKey:"cheapflights",method:"reportPageView"});

@@ -1,0 +1,36 @@
+/**
+ * @author Nathan Derksen
+ * Copyright 2008 IBM Corp
+ * Copyright 2008 Tiffany Corp
+ */
+
+function trimString(inputString)
+{
+	return trimStringRight(trimStringLeft(inputString));
+}
+
+function trimStringLeft(inputString)
+{
+	var numChars = inputString.length;
+	for (var i = 0; i < numChars; i++)
+	{
+		if (inputString.charCodeAt(i) > 32)
+		{
+			return inputString.substr(i, numChars);
+		}
+	}
+	return "";
+}
+
+function trimStringRight(inputString)
+{
+	var numChars = inputString.length;
+	for (var i = numChars-1; i >= 0; i--)
+	{
+		if (inputString.charCodeAt(i) > 32)
+		{
+			return inputString.substring(0, i + 1);
+		}
+	}
+	return "";
+}

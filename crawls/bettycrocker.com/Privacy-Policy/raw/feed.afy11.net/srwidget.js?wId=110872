@@ -1,0 +1,473 @@
+(function()
+{
+var undef="undefined";
+var _Math=Math;
+var _window=window;
+var _document=document;
+
+var httpPrefix=(location.protocol.indexOf('https')>-1?"https://":"http://");
+var isIE=_document.all ? true : false;
+
+if (typeof(sr_feedserver)==undef)
+	sr_feedserver=httpPrefix+"feed.afy11.net/feed?";
+
+srValidate();
+srConstructGraphicAd();   
+
+function srGetRand()
+{
+	return _Math.round(_Math.random() * 100000000);
+}
+
+function srValidate()
+{
+	// srad.js
+	if (typeof(sr_widget_id)==undef)
+		sr_widget_id = 0;
+	if (typeof(sr_widget_width)==undef)
+		sr_widget_width = 120;
+	if (typeof(sr_widget_height)==undef)
+		sr_widget_height = 60;
+	if (typeof(sr_mode)==undef)
+		sr_mode = 1;
+
+	if (navigator.appVersion.indexOf("MSIE 6")!=-1)
+	{
+		// if already in an iframe, only use iframes to serve the ad
+		try
+		{	
+			if (window.frameElement!=null)
+				sr_mode = 0;
+		}
+		catch (e)
+		{
+			// if the frame is cross-domain an access denied error will occur
+			sr_mode=0;
+		}
+	}
+}
+
+function srConstructGraphicAd()
+{
+	var mode=sr_mode;	
+	var randomNumber = srGetRand();
+	var _encodeURIComponent = (typeof(encodeURIComponent)==undef ? encodeURIComponent2 : encodeURIComponent);
+
+	var source = sr_feedserver +
+		'wId='+sr_widget_id+
+		'&ct='+srTestCapabilities()+
+		'&enc='+mode+
+		'&rand='+randomNumber;
+		
+	if (typeof(sr_custom0)!=undef)
+		source+='&c0='+_encodeURIComponent(sr_custom0);
+	if (typeof(sr_custom1)!=undef)
+		source+='&c1='+_encodeURIComponent(sr_custom1);
+	if (typeof(sr_custom2)!=undef)
+		source+='&c2='+_encodeURIComponent(sr_custom2);
+	if (typeof(sr_custom3)!=undef)
+		source+='&c3='+_encodeURIComponent(sr_custom3);
+	if (typeof(sr_custom4)!=undef)
+		source+='&c4='+_encodeURIComponent(sr_custom4);
+
+	if (mode==0)
+		_document.write('<iframe height="'+sr_widget_height+'" width="'+sr_widget_width+'" border="0"  noresize scrolling="no" src="'+source+'" frameborder="0" marginheight="0" marginwidth="0" ></iframe>');
+	else 
+		_document.write('<scr'+'ipt src="'+source+'"></scr'+'ipt>');
+}
+
+function srTestCapabilities()
+{
+	function srControlVersion()
+	{
+		function newActiveXObject(ver)
+		{
+			return new ActiveXObject("ShockwaveFlash.ShockwaveFlash"+ver);
+		}
+		
+		var version;
+		var axo;
+		var e;
+
+		function partialTest(ver)
+		{
+			if (!version)
+			{
+				try {
+					axo = newActiveXObject(ver);
+					version = axo.GetVariable("$version");
+				} catch (e) {
+				}
+			}
+		}
+
+		function partialTest2(ver, verLong)
+		{
+			if (!version)
+			{
+				try {
+					axo = newActiveXObject(ver);
+					version = verLong;
+				} catch (e) {
+				}
+			}
+		}
+		
+		// NOTE : new ActiveXObject(strFoo) throws an exception if strFoo isn't in the registry
+
+		partialTest(".7");
+
+		if (!version)
+		{
+			try {
+				axo = newActiveXObject(".6");
+				version = "WIN 6,0,21,0";
+				axo.AllowScriptAccess = "always";
+				version = axo.GetVariable("$version");
+
+			} catch (e) {
+			}
+		}
+
+		partialTest(".3");
+		partialTest2(".3", "WIN 3,0,18,0");
+		partialTest2("", "WIN 2,0,0,11");
+
+		if (!version)
+			version = -1;
+		
+		return version;
+	}
+
+	// JavaScript helper required to detect Flash Player PlugIn version information
+	function srGetSwfVer()
+	{
+		var _navigator=navigator;
+		var navigatorAppVersion=_navigator.appVersion;
+		var navigatorPlugins=_navigator.plugins;
+		var navigatorUserAgent=_navigator.userAgent.toLowerCase();
+		// NS/Opera version >= 3 check for Flash plugin in plugin array
+		var isIE  = (navigatorAppVersion.indexOf("MSIE") != -1) ? true : false;
+		var isWin = (navigatorAppVersion.toLowerCase().indexOf("win") != -1) ? true : false;
+		var isOpera = (navigatorUserAgent.indexOf("opera") != -1) ? true : false;
+		var flashVer = -1;
+		var sf="Shockwave Flash";
+
+		
+		if (navigatorPlugins != null && navigatorPlugins.length > 0) 
+		{
+			if (navigatorPlugins[sf+" 2.0"] || navigatorPlugins[sf]) 
+			{
+				var swVer2 = navigatorPlugins[sf+" 2.0"] ? " 2.0" : "";
+				var flashDescription = navigatorPlugins[sf + swVer2].description;			
+				flashVer = flashDescription.split(" ")[2].split(".")[0];
+			}
+		}
+		// MSN/WebTV 2.6 supports Flash 4
+		//else if (navigatorUserAgent.indexOf("webtv/2.6") != -1) flashVer = 4;
+		// WebTV 2.5 supports Flash 3
+		//else if (navigatorUserAgent.indexOf("webtv/2.5") != -1) flashVer = 3;
+		// older WebTV supports Flash 2
+		//else if (navigatorUserAgent.indexOf("webtv") != -1) flashVer = 2;
+		else if ( isIE && isWin && !isOpera ) 
+		{
+			 flashVer = srControlVersion();
+			 flashVer=flashVer.split(" ")[1].split(",")[0];
+		}	
+		return flashVer;
+	}
+	
+	var flashVer=srGetSwfVer();
+	if (flashVer>4)
+		return 15;
+	else
+		return 7;
+}
+
+
+function encodeURIComponent2(str)
+{
+	var outStr="";
+	for (i=0;i<str.length;i++)
+	{
+		var code=str.charCodeAt(i);
+		if (code==32 || code>33 && code<39 || code>42 && code<48 || code>57 && code<65 || code==91 || code==93 || code==94 || code==96 || code>122 && code<126)
+			outStr+=escape(str.charAt(i));
+		else if (code>127)
+			outStr+="%20";
+		else
+			outStr+=str.charAt(i);
+	}
+	return outStr;
+}
+
+})()
+
+function srDocumentWrite(string)
+{
+	document.write(string);
+}
+
+function srGetAnchor(sourceObj)
+{
+	var i=0;
+	if (sourceObj.childNodes[i].nodeType==3)
+		i++;
+	
+	return sourceObj.childNodes[i].firstChild;
+}
+
+function srNavigate(sourceObj, url)
+{
+	if (srGetAnchor(sourceObj).target=="_new")
+	{
+		window.open(url);
+	}
+	else
+	{
+		window.top.location=url;
+	}
+}
+
+function srShowStatusI(url) 
+{
+	window.status = url;
+	return true;
+}
+
+function srShowStatus(sourceObj) 
+{
+	window.status = sourceObj.friendlyURL
+	return true;
+}
+
+function srClearStatus()
+{
+	window.status='';
+}
+
+
+srRssWidget=function(feedData, baseName, width, height, clickUrl, tickerStyle, previewStyle, widgetFrameStyle, adSource)
+{
+	var obj=this;
+	obj.rssTickerPaused=0;
+	obj.baseName=baseName;
+	obj.tapeHeight=0;
+	obj.feedData=feedData;
+	obj.widgetFrameName="srWidgetFrame"+obj.baseName;
+	obj.tickerName="srTicker"+obj.baseName;
+	obj.previewDivName="srPreviewDiv"+obj.baseName;
+	obj.tickerStyle=tickerStyle;
+	obj.previewStyle=previewStyle;
+	obj.widgetFrameStyle=widgetFrameStyle;
+	obj.height=height;
+	obj.width=width;
+	obj.clickUrl=clickUrl;
+	obj.adSource=adSource;
+	obj.adDivName="srAd"+obj.baseName;
+
+	obj.pauseTape = function()
+	{
+		obj.rssTickerPaused = 1;
+	}
+
+	obj.unpauseTape = function()
+	{
+		obj.rssTickerPaused = 0;
+	}
+
+	obj.initialize = function()
+	{
+		var hasAd=false;
+		if (obj.adSource.length>0)
+			hasAd=true;
+
+		var isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+
+		obj.applyStyle(obj.widgetFrameName, obj.widgetFrameStyle, "", width, height);
+		obj.applyStyle(obj.tickerName, obj.tickerStyle, (isIE ? 0 : 1), width-4-(isIE? 0 : 2), height-50-4-(isIE? 0 : 2)-(hasAd? 31 : 0));  // height shouldn't change for IE
+		obj.applyStyle(obj.previewDivName, obj.previewStyle);
+
+		var ticker=document.getElementById(obj.tickerName);
+		var fontColor=ticker.style.color;
+		var backgroundColor=ticker.style.backgroundColor;
+		
+		var body="";
+		for (var i=0;i<feedData.feedItems.length;i++)
+		{
+			var feedItem=feedData.feedItems[i];
+			var styleText="text-align: left;text-decoration: none;background-color: "+backgroundColor+";color:" +fontColor+";font-family:"+obj.tickerStyle.fontFamily+";font-size:"+obj.tickerStyle.fontSize+";"
+
+			var text="<a style='"+ styleText +"' target='_new' + href='"+obj.clickUrl+feedItem.link+"' onmouseover='document.getElementById(\""+obj.tickerName+"\").widget.showPreview(event, "+i+", this)' onmouseout='document.getElementById(\""+obj.tickerName+"\").widget.hidePreview(event, "+i+", this)' onmousemove='document.getElementById(\""+obj.tickerName+"\").widget.movePreview(event)'>" + feedItem.title + "</a><div style='height: 5px'></div>";
+			body+=text;
+		}
+
+		ticker.widget = obj;
+		ticker.onmouseover = obj.pauseTape;
+		ticker.onmouseout = obj.unpauseTape;
+		var tapeOne=obj.createTickerTape("srTapeOne"+obj.baseName, 0, body);
+		var tapeTwo=obj.createTickerTape("srTapeTwo"+obj.baseName, tapeOne.offsetHeight, body);
+
+		obj.calcTickerHeight();
+
+		var adDiv=document.getElementById(obj.adDivName);
+
+		if (hasAd)
+		{
+			adDiv.style.display="";
+			adDiv.innerHTML=adSource;
+		}
+		else
+		{
+			adDiv.style.display="none";
+		}
+
+	}
+
+	obj.calcTickerHeight=function()
+	{
+		var isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+		var tapeOne=document.getElementById("srTapeOne"+obj.baseName);
+		var tapeTwo=document.getElementById("srTapeTwo"+obj.baseName);
+
+		var tapeHeight=tapeOne.offsetHeight;
+		var ticker=document.getElementById(obj.tickerName);
+
+		if (tapeHeight==0)
+		{
+			setTimeout(obj.calcTickerHeight, 10);
+			return;
+		}	
+
+		tapeOne.style.width=ticker.offsetWidth+"px";
+		tapeTwo.style.width=ticker.offsetWidth+"px";
+		tapeHeight=tapeOne.offsetHeight;
+		tapeTwo.style.top=tapeHeight+"px";
+
+
+		if (tapeHeight>ticker.offsetHeight)
+			setTimeout(obj.moveTickers, 50);
+		else
+			tapeTwo.innerHTML="";
+			
+	}
+
+	obj.applyStyle=function (divName, styles, margin, width, height)
+	{
+		var divObj=document.getElementById(divName);
+		var style=divObj.style;
+	
+		try
+		{	
+		if (typeof(styles.fontFamily)!="undefined" && styles.fontFamily!=="")
+			style.fontFamily=styles.fontFamily;
+		if (typeof(styles.fontSize)!="undefined" && styles.fontSize!="")
+			style.fontSize=styles.fontSize;
+		if (typeof(styles.color)!="undefined" && styles.color!="")
+			style.color=styles.color;
+		if (typeof(styles.backgroundColor)!="undefined" && styles.backgroundColor!="")
+			style.backgroundColor=styles.backgroundColor;
+		if (typeof(styles.borderColor)!="undefined")
+		{
+			if (styles.borderColor=="" || styles.borderColor=="none")
+				style.border="";
+			else
+				style.border="solid 1px "+styles.borderColor;		
+		}
+
+			style.textAlign="left";
+		}
+		catch(e)
+		{
+		}
+		if (typeof(width)!="undefined" && styles.width!="")
+			style.width=width+"px";		
+		if (typeof(height)!="undefined" && styles.height!="")
+			style.height=height+"px";		
+		if (typeof(margin)!="undefined" && margin!="")
+			style.margin=margin+"px";		
+		}
+	
+	obj.createTickerTape=function (name, offset, body)
+	{
+		var ticker=document.getElementById(obj.tickerName);
+		var tape=document.createElement("div");
+		tape.id=name;
+		ticker.appendChild(tape);
+		tape=document.getElementById(name);
+		var style=tape.style;
+
+		style.position="absolute";
+		style.width=ticker.offsetWidth+"px";
+		style.top=offset+"px";
+		tape.innerHTML=body;
+		
+		return tape;
+	}
+	
+	obj.moveTickers=function()
+	{
+		if (!obj.rssTickerPaused)
+		{
+			var tapeOne=document.getElementById("srTapeOne"+obj.baseName);
+			var tapeTwo=document.getElementById("srTapeTwo"+obj.baseName);
+		
+			var tapeOneTop=parseInt(tapeOne.style.top);
+			var tapeTwoTop=parseInt(tapeTwo.style.top);
+			
+			tapeOneTop-=1;
+			tapeTwoTop-=1;
+			
+			if (tapeOneTop<=-tapeOne.offsetHeight)
+				tapeOneTop=tapeTwo.offsetHeight+tapeTwoTop;
+
+			if (tapeTwoTop<=-tapeTwo.offsetHeight)
+				tapeTwoTop=tapeOne.offsetHeight+tapeOneTop;
+				
+			tapeOne.style.top=tapeOneTop+"px";
+			tapeTwo.style.top=tapeTwoTop+"px";
+		}
+		setTimeout(obj.moveTickers, 125);
+	}
+
+	obj.showPreview=function(evt, i, element)
+	{
+		var e = (window.event) ? window.event : evt;
+		var previewDiv=document.getElementById(obj.previewDivName);
+		var previewStyle=previewDiv.style;
+
+		previewStyle.height="";
+		previewDiv.innerHTML=feedData.feedItems[i].description;
+		previewStyle.display="block";
+		//previewStyle.overflow="";
+
+		if (previewDiv.offsetHeight>150)
+			previewStyle.height="150px";
+		else
+			previewStyle.height="";
+
+		previewStyle.left=e.clientX+document.documentElement.scrollLeft+5+"px";
+		previewStyle.top=e.clientY+document.documentElement.scrollTop+5+"px";
+		
+		element.style.textDecoration="underline";
+	}
+
+	obj.hidePreview=function(evt, i, element)
+	{
+		var previewDiv=document.getElementById(obj.previewDivName);
+		previewDiv.style.display="none";
+		element.style.textDecoration="none";
+	}
+
+	obj.movePreview=function(evt)
+	{
+	
+		var e = (window.event) ? window.event : evt;
+		var previewDiv=document.getElementById(obj.previewDivName);
+		var previewStyle=previewDiv.style;
+		previewStyle.left=e.clientX+document.documentElement.scrollLeft+5+"px";
+		previewStyle.top=e.clientY+document.documentElement.scrollTop+5+"px";
+	}
+
+	setTimeout(obj.initialize, 10);
+}

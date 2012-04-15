@@ -1,0 +1,449 @@
+var playerName;
+isPlayerAdded = false;
+
+var tabNum = 0;
+var timer;
+var idleTimer;
+var timer_is_on=0;
+
+var bc_test;
+var getPageProtocol = window.location.protocol;
+var getSecurceBCLib = 'https://sadmin.brightcove.com/js\/BrightcoveExperiences_all.js';
+var getNonSecureBCLib = 'http://admin.brightcove.com/js\/BrightcoveExperiences_all.js';
+
+if(getPageProtocol == "http:"){
+document.write("<script src='http://admin.brightcove.com/js/BrightcoveExperiences_all.js' type='text/javascript'><\/script>");
+var bc_test = "http:";
+}
+else{
+document.write("<script src='https://sadmin.brightcove.com/js/BrightcoveExperiences_all.js' type='text/javascript'><\/script>");
+var bc_test = "https:";
+}
+
+// A simple flag to tell if we are in IE6
+isIE6 = (jQuery.browser.msie && jQuery.browser.version < 7 && !window.XMLHttpRequest);
+
+function includeJS(file){ document.write('<scr'+'ipt src='+'"'+file+'" type="text/javascript"'+'></sc'+'ript>'+"\n"); }
+
+/* ----- Custom BrightCove functions ---------------------------------------------------------- */
+
+// BC.Write override to use new playVideo() method
+var BC = {
+    Write: function(videoId, playerId, altContent, options) {
+        var vidLink = [];
+        var imgMatch = options.thumb.match(/<img(.*)\/>/);
+        vidLink.push(
+            '<a href="javascript:playVideo('+videoId+');">',
+            '<img' + imgMatch[1] + ' border="0" class="pngfix" alt="">',
+            '</a>'
+        );
+        document.write(vidLink.join(''));
+    }
+}        
+
+/* ----- Video Player Functions --------------------------------------------------------------- */
+                
+function addPlayer(vidID) {
+        
+    if(isPlayerAdded == false) {
+        isPlayerAdded = true;
+
+        playerName = "myExperience" + vidID;
+        var params = {};
+        params.playerID = "671100694001";
+        params.playerKey = "AQ%2E%2E,AAAAD2AZimE%2E,cuHgoGQ9jPmKtd0i5FDrRRXaQ1PXD6vT";
+        params.autoStart = "true";
+        params.bgcolor = "#FFFFFF";
+        params.width = "640";
+        params.height = "360";
+        params.isVid = "true";
+        params.isUI = "true";
+        params.dynamicStreaming = "true";
+
+        params["@videoPlayer"] = vidID;
+
+        var player = brightcove.createElement("object");
+        player.id = playerName;
+        var parameter;
+        for (var i in params) {
+            parameter = brightcove.createElement("param");
+            parameter.name = i;
+            parameter.value = params[i];
+            player.appendChild(parameter);
+        }
+
+        var playerContainer = document.getElementById("videoPlaceHolder");
+        brightcove.createExperience(player, playerContainer, true);
+    }
+}
+        
+        
+function removePlayer() {
+        
+    if(isPlayerAdded == true) {
+        isPlayerAdded = false;
+        brightcove.removeExperience(playerName);
+        animateOut("#shadowOverlay");  //launch background
+        $('#videoPlaceHolder').remove();
+    }
+}
+
+function playVideo(vidID){
+        $('<div id="shadowOverlay" class="fulloverlay"></div>').appendTo('body');
+        $('<div id="videoPlaceHolder"><span class="dojoxDialogCloseIcon" onclick="removePlayer();"></span></div>').appendTo('body');
+        addPlayer(vidID);
+        winY = $(window).scrollTop();
+        $("#videoPlaceHolder").css('top' , winY+202).fadeIn(650);
+        var bodyH = $('body').height();
+        $("#shadowOverlay").css('height',bodyH); //change height of shadow overlay to match page size
+        animateIn("#shadowOverlay");  //launch background
+        centerPlayer();
+}
+
+//NEW DYNAMIC POPUP FUNCTION
+function HD_lightbox(openFile,newWidth,newHeight) {
+        var winH = $(window).height();      //center vertically
+        var newTop = winH/2-newHeight/2;
+        $("#galleryPlaceHolder").css({'height' : newHeight+"px", 'width' : newWidth+"px"}).load(openFile);//resize container div and update css based on parameters
+        $("#gallery_wrapper").css({'top':newTop, 'margin-left':-newWidth/2}).fadeIn(650);  //fade in popup
+        $("#shadowOverlay").show();  //launch background
+        $(body).css('overflow','hidden');
+}
+
+function centerPlayer(){
+    var $scrollingDiv = $("#videoPlaceHolder");
+        $(window).scroll(function(){            
+            $scrollingDiv
+                .css('top','0')
+                .stop()
+                .animate(
+                    {"marginTop": ($(window).scrollTop() + 202) + "px"},
+                    "slow",
+                    "swing"
+                    );          
+        });
+}
+
+function animateIn(item){
+    $(item).show();
+}
+
+function animateOut(item){
+    $(item).hide();
+
+} 
+/* ----- BOPiS 2 Magic ---------------------------------------------------------- */
+
+// BOPiS Phase 2 FancyBox Configuration Object
+active_BOPISFBConfig = 'No fancybox called';
+
+var bopisFBConfig = {
+    "padding":0,
+    "margin":0,
+    "onComplete": bopis_overlay_init,
+    "scrolling":"no",
+    "titleShow":false,
+    "showCloseButton":false,
+    "showNavArrows": false,
+    "modal":true,
+    "autoScale":false,
+    //"overlayColor": "#333",
+    "overlayOpacity":"0",
+    "transitionIn": "none",
+    "transitionOut":"none",
+    "speedIn":1,
+    "speedOut":1,
+    "autoDimensions":true
+}
+
+// This just adds the fancybox events to the page.
+// This should be rolled up into some lib somewhere so it is included on all pages.
+$('document').ready(function() {
+    attachBopis();
+})
+
+function attachBopis() {
+    // This is to add the BOPiS fancybox functionality
+    // The link must have a class of "modal_overlay" and a rel of "bopis"
+    // example:
+    // <a href="path/to/bopis/overlay/for/this/product.html" class="modal_overlay" rel="bopis">Check Store availability!</a>
+    $('.modal_overlay').each(function(i,ele) {
+        $thisEle = $(ele);
+        if ($thisEle.attr("rel").toLowerCase() == 'bopis') {
+            $thisEle.fancybox(bopisFBConfig);
+            $thisEle.css({"visibility":"visible"});
+        }
+    });
+
+}
+
+// This function is called every time the bopis overlay is created.
+function bopis_overlay_init(currentArray, currentIndex, currentOpts) {
+
+    active_BOPISFBConfig = currentOpts;
+
+    // Re-attach the FB for needed links
+    $('#bopis2 .modal_overlay').each(function(i,ele) {
+        $thisEle = $(ele);
+        if ($thisEle.attr("rel").toLowerCase() == 'bopis') { $thisEle.fancybox(bopisFBConfig) }
+    });
+
+
+    if (isIE6 ) {
+        // weird ie6 issue with the iframe getting a height and causing a blank overlay.
+        $("#fancybox-hide-sel-frame").css({"z-index":"4999"});
+        $("#fancybox-inner").css({"z-index":"5000"});
+        $("#fancybox-content").css({"z-index":"5000"});
+        $("#fancybox-content div:first").css({"zoom":"1"});
+        $("#fancybox-left-ico").hide();
+    }
+    
+
+    // Add the show / hide store info toggle.
+    $('#bopis2 .store_info_toggle').click(function(e) {
+        e.preventDefault();
+        mom = $(this).parent();
+        if (mom.hasClass('single')) {
+            mom.removeClass('single').addClass('double');
+            $(this).text('Hide Store Info');
+        } else {
+            $(this).text('Show Store Info');
+            mom.addClass('single').removeClass('double');
+        }
+        $('#bopis2 .bopis_store.double').not(mom).addClass('single').removeClass('double').find('.store_info_toggle').text('Show Store Info');
+        if(jQuery.fancybox) jQuery.fancybox.resize();
+    });
+
+    // Toggle between Multi-store input and single store.
+    $('#bopis2 .multistore_toggle').toggle(function() { /* first click, need to show multistore */
+            $('#bopis2 .bopis_store.double').addClass('single').removeClass('double');
+            $('#bopis_one_store').hide();
+            $('#bopis_multi_store').show();
+            $(this).text("Don't Split the Order");
+            if(jQuery.fancybox) jQuery.fancybox.resize();
+        }, function() { /* Second click, need to show single Store */
+            $('#bopis2 .bopis_store.double').addClass('single').removeClass('double');
+            $('#bopis_multi_store').hide();
+            $('#bopis_one_store').show();
+            $(this).text("Split this order among multiple stores");
+            if(jQuery.fancybox) jQuery.fancybox.resize();
+        }
+    );
+
+
+    // ZipCode Search
+    $('#bopis2 #bopis_middle form').submit(function (e){
+
+        var curParams, $zipCodetxt, myURL, new_zip, new_url;
+
+        e.preventDefault();
+
+        // Grab the URL of the current BOPiS FB. 
+        myURL = active_BOPISFBConfig.href.split('?',2);
+
+        // Kill the function if we do not have a URL.
+        if (!myURL) {
+            $('#bopis_error').text('Failed to grab URL for current BOPiS Page!');
+            return;
+        }
+
+        // Get the new zipcode, validate, and reload
+        $zipCodetxt = $('#tb_zipcode');
+        new_zip = $zipCodetxt.val();
+
+        if (f_isOnlyNumChars(new_zip) && new_zip.length == 5) {
+
+            // Now, get the URL params of the current page, alter them and reload the page.
+            curParams = f_getUrlParamsObj(myURL[1]);
+
+            if (curParams) {
+                curParams.mode = 'zipcode';
+                curParams.searchSessionId = '';
+                curParams.searchOriginId = '';
+                curParams.zipcode = new_zip;
+                new_url = myURL[0]+"?"+f_makeUrlParamsFromObj(curParams);
+
+                if(jQuery.fancybox) {
+                    active_BOPISFBConfig.href=new_url;
+                    $.fancybox(active_BOPISFBConfig);
+                }
+            } else {
+                $('#bopis_error').text("Failed to get FancyBox parameters.");
+            }
+        } else {
+            $('#bopis_error').text("You must enter a valid zip code.");
+        }
+    })
+    // /Zip Code Search
+
+    // Multi-store validation
+    /*
+    $('#bopis_multi_store form').submit(function(){
+        var $qtyBoxes = $('#bopis_multi_store .quantity_box'),
+            retVal = true,
+            totalQuantity = 0;
+
+        // reset previous errors
+        $qtyBoxes.removeClass('error');
+        retVal = $qtyBoxes.each(function(index,ele){
+        $ele = $(ele);
+            var testVal,tvLen;
+            testVal = $ele.val();
+            if (!testVal) {
+                testVal = 0;
+                $ele.val(0);
+            }
+            tvLen = testVal.length;
+            if ( tvLen > 3 || tvLen < 0 || f_isOnlyNumChars(testVal)){
+                $ele.addClass('error');
+                return false;
+            } else {
+                totalQuantity += (testVal*1);
+            }
+        });
+        return retVal;
+    });
+    */
+
+    // Add the close functionality
+    $('#bopis2 .close').click(function() {
+        if(jQuery.fancybox) { $.fancybox.close() }
+    });
+
+    // Unbind the MouseWheel
+    $("#fancybox-wrap").unbind('mousewheel.fb');
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// This is the start of what should be in a lib.js file.
+// This is a standalone js lib for basic catch all functions.
+// The functions here should not rely on any functions that are not in this file.
+// No jQuery, Prototype, Dojo, MooTools, etc.
+//
+// For now, we are designating the functions as FED controled with a prefix of "f_" 
+//
+
+/*
+ * bool f_isOnlyNumChars( val [, (bool) allowExtras] )
+ * 
+ * Tests if val consists of only numeric characters.
+ * +   An optional 2nd param allows dash(-), comma(,) and decimal(.)
+ * +   Any non-false value will allow the extras. Leave out completely to avoid extras
+ * +   This does not test that the number is a real number.
+ * Ex:
+ *    f_isOnlyNumChars("67.09") = false
+ *    f_isOnlyNumChars("67.09", 1) = true
+ *    f_isOnlyNumChars("-67.09") = false
+ *    f_isOnlyNumChars("-67.09", 1) = true
+ *    f_isOnlyNumChars("67.09", "no") = true (2nd is a non-false)
+ *    f_isOnlyNumChars("ah2j", 1) = false
+ *    f_isOnlyNumChars("ah2j") = false
+ *    f_isOnlyNumChars("ahja") = false
+ *    f_isOnlyNumChars("-.-,", 1) = false
+ *    f_isOnlyNumChars("0x89f") = false (Real HEX Number, but not all num characters)
+ *    f_isOnlyNumChars("0x89f", 1) = false (Real HEX Number, but not all num characters)
+ *
+ * Author: John Jimenez (johnajimenez_at_gmail_dot_com)
+ */
+function f_isOnlyNumChars(val, allowExtras) {
+    if (allowExtras) { val = val.replace(/[-\.,]/g, '') }
+    return Boolean(!(val.replace(/\d/g,'')));
+}
+
+/*
+ * bool f_isNumeric( val )
+ * 
+ * Tests if val is a number.
+ * Ex:
+ *    f_isNumeric("67.09") = true
+ *    f_isNumeric("-67.09") = true
+ *    f_isNumeric("ahja") = false
+ *    f_isNumeric("ah2j") = false
+ *    f_isNumeric("0x89f") = true (Real HEX Number)
+ *    f_isNumeric("10e3") = true (Real SN Number)
+ *
+ * Author: John Jimenez (johnajimenez_at_gmail_dot_com)
+ */
+function f_isNumeric(val) {return Boolean(((val-0)==val)&&(val.length>0));}
+
+/*
+ * bool f_isAlpha( val [, (bool) allowSpaces] )
+ * 
+ * Tests if val consists of only alphabetic characters.
+ * +   An optional 2nd param allows spaces, tabs, and new lines characters
+ * +   Any non-false value will allow spaces. Leave out completely to avoid extras
+ * Ex:
+ *    f_isAlpha("Sample") = true
+ *    f_isAlpha("I Pass", 1) = true
+ *    f_isAlpha("I pass", "no") = true (2nd is a non-false)
+ *    f_isAlpha("Sam-ple") = false
+ *    f_isAlpha("I fail") = false
+ *    f_isAlpha("ah2j") = false
+ *
+ * Author: John Jimenez (johnajimenez_at_gmail_dot_com)
+ */
+function f_isAlpha(val, allowSpaces) {
+    if (allowSpaces) { val = val.replace(/\s/g, '') }
+    return Boolean(!(val.replace(/[a-z]/ig,'')));
+}
+
+/*
+ * obj f_getUrlParamsObj ( inStr )
+ *
+ * Returns an object with properties set to the values based on a url paramater formated string.
+ * Ex:
+ *   f_getUrlParamsObj('?bob=val1&name2=val3') = {"bob":"val2", "name2":"val3"} *
+ *
+ * Notes: Automatically unescapes characters
+ * 
+ * Author: John Jimenez (johnajimenez_at_gmail_dot_com)
+ */
+function f_getUrlParamsObj( inStr ) {
+    var p, n, tmpOP, retObj = false;
+    if (inStr) {
+        retObj = {};
+        // First remove the leading '?' if needed.
+        inStr = inStr.replace(/^\?/,'');
+
+        // Explode the string into "name=val" portions.
+        p = inStr.split('&');
+        tmpOP = "{";
+        for (var i=0; i<p.length; i++) {
+            if (i>0) { tmpOP += ', '; }
+            n = p[i].split('=');
+            tmpOP += '"'+n[0]+'":"'+unescape(n[1]).replace(/\\/g,'\\\\').replace(/\"/g,"\\\"").replace(/\'/g,"\\'")+'"';
+        }
+        tmpOP += '}'
+        retObj = eval("("+tmpOP+")");
+    }
+    return retObj;
+}
+
+/*
+ * str f_makeUrlParamsFromObj ( inObj )
+ *
+ * Returns string 
+ * Ex:
+ *   f_getUrlParamsObj({"bob":"val2", "name2":"val3"}) = 'bob=val1&name2=val3'
+ *
+ * Notes: Automatically escapes characters
+ * 
+ * Author: John Jimenez (johnajimenez_at_gmail_dot_com)
+ */
+function f_makeUrlParamsFromObj( inObj ) {
+
+    var retStr = false;
+
+    if (inObj) {
+        retStr = '';
+        for (var i in inObj) {
+            if (inObj.hasOwnProperty(i)) {
+                if (retStr) { retStr+='&'; }
+                retStr += escape(i)+'='+escape(inObj[i])
+            }
+        }
+    }
+    return retStr;
+}

@@ -1,0 +1,237 @@
+﻿var fbiLibSLD = {};
+var fbiLibversion = {};
+
+fbiLibSLD.minorVersion = -1;
+fbiLibSLD.majorVersion = -1;
+fbiLibversion.minor = -1;
+fbiLibversion.major = -1;
+
+var fbiLibQueue = [];
+var fbiLibQueueBusy = false;
+var fbiLibDomainName;
+var fbiLibResolution;
+
+fbiLibResolution = "cDepth=" + screen.colorDepth;
+fbiLibResolution += "&resX=" + screen.width;
+fbiLibResolution += "&resY=" + screen.height;
+fbiLibResolution += "&fMajorVer=" + fbiLibversion.minor;
+fbiLibResolution += "&fMinorVer=" + fbiLibversion.major;
+fbiLibResolution += "&slMajorVer=" + fbiLibSLD.majorVersion;
+fbiLibResolution += "&slMinorVer=" + fbiLibSLD.minorVersion;
+
+function fbiLibSetCookie(c, e, a, g, d, f) {
+    var b = c + "=" + e +
+        ((a) ? "; expires=" + a.toGMTString() : "") +
+        ((g) ? "; path=" + g : "") +
+        ((d) ? "; domain=" + d : "") +
+        ((f) ? "; secure" : "");
+    document.cookie = b
+}
+
+function fbiLibGetDomainName() 
+{
+    if (fbiLibDomainName != null) 
+    {
+        fbiLibDomainName = fbiLibDomainName;
+    }
+    else 
+    {
+        var a = window.location.hostname;
+
+        a = a.replace(/-tv/i, "-com");
+        a = a.replace(/\.tv/i, ".com");
+        a = a.replace(/-me/i, "-com");
+        a = a.replace(/\.me/i, ".com");
+
+        if (a.indexOf(".") < a.lastIndexOf(".")) 
+        {
+            fbiLibDomainName = a.substr(a.indexOf(".") + 1);
+        }
+        else 
+        {
+            fbiLibDomainName = a;
+        }
+    }
+}
+
+function fbiUserInput(a, b) 
+{
+    this.key = a;
+    this.value = b;
+}
+
+function fbiEventObject(d, c, b, f) 
+{
+    this.inputArray = [];
+    if (c == null) {c = ""; }
+    this.type = c.length > 10 ? c.substr(0, 10) : c;
+    this.ciCode = isNaN(parseInt(b, 10)) ? 0 : b;
+    this.ciImprList = f;
+    this.relX = 0;
+    this.relY = 0;
+    this.absX = 0;
+    this.absY = 0;
+
+    if (!d) {d = window.event; }
+
+    if (d) {
+        try {
+            if (d.type != "load") {
+                if (d.pageX || d.pageY) {
+                    this.absX = d.pageX;
+                    this.absY = d.pageY;
+                    this.relX = d.clientX;
+                    this.relY = d.clientY
+                }
+                else {
+                    if (d.clientX || d.clientY) {
+                        this.absX = d.clientX + document.body.scrollLeft;
+                        this.absY = d.clientY + document.body.scrollTop;
+                        this.relX = d.clientX;
+                        this.relY = d.clientY;
+                    }
+                }
+            }
+        } catch (a) { }
+    }
+
+    this.toString = function() { return this._type };
+    this.AddUserInput = function(e, g) { this.inputArray.push(new fbiUserInput(e, g)); } 
+}
+
+function fbiLibSetDomainName(a) {
+    fbiLibDomainName = a;
+}
+
+function fbiLibInsertIntoQueue(a) {
+    fbiLibGetDomainName();
+    fbiLibQueue.push(window.location.protocol + "//img." + fbiLibDomainName + "/pageevents.aspx?" + a);
+}
+
+function fbiRecordFastballEvent(c) {
+    var b = location.pathname;
+    var d; d = "page_name=" + b;
+    d = d + "&ci=" + c.ciCode;
+    d = d + "&eventtype=" + c.type;
+    d = d + "&ciimpressions=" + c.ciImprList;
+
+    if (c.inputArray) {
+        d = d + "&usrin=";
+        for (var a = 0; a < c.inputArray.length; a++) {
+            if (a > 0) {
+                d = d + "^";
+            }
+            d = d + c.inputArray[a].key + "," + c.inputArray[a].value;
+        }
+    }
+    else {
+        d = d + "&usrin=";
+    }
+
+    if (c.relX !== 0) {d = d + "&relativeX=" + c.relX;}
+    if (c.relY !== 0) {d = d + "&relativeY=" + c.relY;}
+    if (c.absX !== 0) {d = d + "&absoluteX=" + c.absX; }
+    if (c.absY !== 0) {d = d + "&absoluteY=" + c.absY; }
+
+    d = d + "&r=" + Math.random();
+    d = d + "&comview=0";
+
+    if (document.getElementById("logarea")) {
+        document.getElementById("logarea").value += d + "\r\n";
+    }
+
+    fbiLibInsertIntoQueue(d)
+}
+
+function FastballEvent_MouseClick(f, b, d, c, i) {
+    var h = "";
+    var g = f;
+    var a = "";
+    if (isIE6 = navigator.userAgent.toLowerCase().indexOf("msie 6") == -1) {
+        if (g != null) {a = f.type; }
+        fbiRecordFastballEvent(new fbiEventObject(g, a, b, h));
+    }
+}
+
+function fbiLibDoVoid() { return }
+
+function fbiLibCheckQueue() {
+    if (!fbiLibQueueBusy && fbiLibQueue.length > 0) {
+        fbiLibQueueBusy = true;
+        var b = fbiLibQueue.shift();
+        fbiLoadImage(b);
+        fbiLibQueueBusy = false; 
+    }
+    }
+
+    function fbiLoadImage(src, onCompleteFunction) {
+      var a = new Image(1, 1);
+      a.onload = function () {
+        if (onCompleteFunction != null && onCompleteFunction != undefined) {
+          onCompleteFunction(a);
+        }
+        else {
+          fbiLibDoVoid();
+        }
+      };
+      a.src = src; 
+      a = null;
+    }
+
+fbiLibGetDomainName();
+fbiLibSetCookie("fbiTrafficSettings", fbiLibResolution, "", "/", fbiLibDomainName);
+var fbiLibQueueWatch = setInterval(fbiLibCheckQueue, 20);
+/*
+function fbiLoadImage(src) {
+  var a = new Image(1, 1);
+  a.onload = function () { fbiLibDoVoid() };
+  a.src = src;
+  a = null;
+}
+*/
+
+/*******************************************************/
+// Offer Events: Note REQUIRES JQUERY
+/*******************************************************/
+function fbiRecordFastballOfferClick(offerid, redirectUrlOrOnCompleteFunction) {
+  var onCompleteFunction = null;
+  if (redirectUrlOrOnCompleteFunction != null && redirectUrlOrOnCompleteFunction != undefined) {
+    if(typeof redirectUrlOrOnCompleteFunction == 'function'){
+      onCompleteFunction = redirectUrlOrOnCompleteFunction;
+    }
+    else{
+      onCompleteFunction = function () {
+        window.location = redirectUrl;
+      };
+    }
+  }
+
+  fbiRecordFastballOfferEvent("c", offerid, onCompleteFunction);
+}
+
+function fbiRecordFastballOfferImpression(offerid) {
+  fbiRecordFastballOfferEvent("i", offerid, null);
+}
+
+function fbiRecordFastballOfferEvent(offevt /*i=impression, c=click*/, offerid, onCompleteFunction) {
+  var _fastballServicesBaseUrl = "https://img." + fbiLibDomainName + "/";
+  var fbiRecordFastballOfferEventUrl = _fastballServicesBaseUrl + "offerevent.aspx?offevt=" + offevt
+    + "&appid=" + _fastballOffers.AppID
+    + "&offid=" + offerid + "&shopper=" + _fastballOffers.ShopperID
+    + "&visit=" + fbiReadCookie("pathway") + "&seq="
+    + fbiReadCookie("pagecount") 
+    + "&rep=1&imptype=1";
+  fbiLoadImage(fbiRecordFastballOfferEventUrl, onCompleteFunction);
+}
+
+var fbiReadCookie = function (name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+};
+

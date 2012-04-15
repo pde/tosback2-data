@@ -1,0 +1,76 @@
+function getLoginTemplate(){
+	/* this function will return the Login template
+	 *
+	 */
+	var output = '';
+	
+	output += '<div class="fbc_nCOLContainer" id="fbc_loginPopup">';
+	output += '	<div class="fbc_containerBg">';
+	output += '        <div class="fbc_topRgtClose"><a href="#" onclick="closePopup(\'fbc_loginPopup\');return false;"><img src="<#= imgURL #>Btn_Close.jpg" /></a></div>';
+	output += '        <div class="fbc_loginContainer"><span class="fbc_loginHD">Please login to post your rating.</span></div>';
+	output += '        <div class="fbc_clickContainer"><span class="fbc_clickHD">Click to login using your Facebook account.</span></div>';
+	output += '        <div class="fbc_fConnectContainer"><fb:login-button size="medium" background="dark" length="long" onclick="facebook_onlogin_ready();"></fb:login-button></div>';
+	output += '        <div class="fbc_starLineTopContainer"><img src="<#= imgURL #>starlineTop.jpg" /></div>';
+	output += '        <div class="fbc_orLoginContainer"><span class="fbc_orLoginHD">Or login using your accesshollywood.com account.</span></div>';
+    
+	output += '      <div class="fbc_innerContentContainer">';
+	output += '       	<div class="fbc_textContainer">Email Address*</div>';
+	output += '                <div class="fbc_fieldContainer"><input type="text" name="user_email" id="user_email" class="fbc_textFlied" />';
+	output += '        </div>';
+	output += '                <div class="fbc_clearFloat"></div>';
+	output += '      </div>';
+            
+	output += '            <div class="fbc_innerContentContainer">';
+	output += '            	<div class="fbc_textContainer">Password*</div>';
+	output += '                <div class="fbc_fieldContainer">';
+	output += '                  <input type="password" name="user_password" id="user_password"  value="" class="fbc_textFlied" />';
+	output += '                </div>';
+	output += '                <div class="fbc_clearFloat"></div>';
+	output += '      </div>';
+	output += '    	<div class="fbc_topRgtLogin"><img src="<#= imgURL #>Btn_Login.jpg" width="84" height="24" onclick=""></img></div>';
+	output += '    	<div class="fbc_starLineBottomContainer"><img src="<#= imgURL #>starlineBottom.jpg" /></div>';
+	output += '        <div class="fbc_topRgtLogin"><span class="fbc_signUp">Sign Up with accesshollywood.com</span></div>';
+	output += '    </div>';
+    
+	output += '</div>';
+	
+	output += getMergeBoxTemplate();
+	
+	return output;	
+}
+
+function getMergeBoxTemplate(){
+	var output = '';
+	
+	output += '<div id="fbc_popUpMergeBox">';
+	output += '	<div class="fbc_innerTopMBBgContainer">';
+	output += '		<span class="fbc_welcomeToAH">Welcome to the AccessHollywood.com</span> <span class="fbc_network">NETWORK!</span>';
+	output += '        <span class="fbc_topRgtCloseMB" onclick="closePopup(\'fbc_popUpMergeBox\');return false;"><img src="<#= imgURL #>Btn_Close.jpg" /></span>';
+	output += '	</div>';
+	output += '	<div id="fbc_mergeBoxMessageContent">';
+	output += '		<p><span onclick="popUpMergeForm();" class="fbc_boldBlueFontUL">Already a member of AccessHollywood.com?</span></p>';
+	output += '		<p><span>Or click to proceed to AccessHollywood.com <br><br> <input type="button" class="fbc_orangeButton" onclick="trigger_facebook_onload_function();" value="Continue" id="continueToAH"></span></p>';
+	output += '	</div>';
+	output += '	<div id="fbc_mergeBoxFormContent">';
+	output += '		<div class="fbc_mergeBoxFormNote fbc_blueFont">Please login and we\'ll link your Facebook and AccessHollywood.com accounts</div>';
+	output += '		<div id="fbc_snasFailedErrMsg" class="fbc_mergeBoxFormNote fbc_blueFont">* Your username / password does not match a known account</div>';
+	output += '      <div class="fbc_innerContentContainer">';
+	output += '       	<div class="fbc_textContainer fbc_blueFont">Email Address*</div>';
+	output += '                <div class="fbc_fieldContainer"><input type="text" name="merge_email" id="merge_email" class="fbc_textFlied" />';
+	output += '        </div>';
+	output += '                <div class="fbc_clearFloat"></div>';
+	output += '      </div>';
+            
+	output += '            <div class="fbc_innerContentContainer">';
+	output += '            	<div class="fbc_textContainer fbc_blueFont">Password*</div>';
+	output += '                <div class="fbc_fieldContainer">';
+	output += '                  <input type="password" name="merge_password" id="merge_password"  value="" class="fbc_textFlied" /><span class="fbc_forgotPassword fbc_blueFontUL">Forgot Password?</span>';
+	output += '                </div>';
+	output += '                <div class="fbc_clearFloat"></div>';
+	output += '      </div>';
+	output += '    	<div class="fbc_buttonsMB"><input type="button" class="fbc_orangeButton" onclick="authenticateUser();" value="Login and Link My Accounts">&nbsp;&nbsp;<input type="button" class="fbc_orangeButton" onclick="popUpMergeBox();" value="Back"></div>';
+	output += '	</div>';
+	output += '</div>';
+	
+	return output;
+}

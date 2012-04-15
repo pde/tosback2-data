@@ -1,0 +1,275 @@
+/*
+Title:		shell.css
+Author:		vsa partners
+--
+Notes:
+	= Controlling stylesheet for top-level containers - dimensions and positioning;
+		defines styles for persistent branding elements.
+*/
+
+/*	====================================
+	BODY
+		contains #wrapper
+*/
+body { background: #0046AD; margin: 15px auto 0 auto; padding: 0 0 24px 0; }
+	/* overrides (default is blue) */
+	body#brands { background: #F06900; }
+	body#sustainability { background: #6EB820; }
+	/* body#news-and-views { background: #A31A7E; } */
+	/* WRAPPER - holds main background image */
+	#wrapper {
+		margin: 0; 
+		padding: 0 0 50px 0;
+		background-image: url('http://www.pg.com/en_US/_images/skin/bg-wrapper-blue.png');
+		background-position: 50% 100%;
+		background-repeat: no-repeat;
+	}
+	/* overrides (default is blue) */
+	#brands #wrapper { background-image: url('http://www.pg.com/en_US/_images/skin/bg-wrapper-orange.png'); }
+	#sustainability #wrapper { background-image: url('http://www.pg.com/en_US/_images/skin/bg-wrapper-green.png'); }
+	/* #news-and-views #wrapper { background-image: url('/en_US/_images/skin/bg-wrapper-purple.png'); } */
+
+/*	====================================
+	#HEADER
+		contains #logo, #skip-link, #site-tools, #corporate-navigation
+			(see ie.css for non-transparent image overrides)
+*/
+#header {
+	width: 945px;
+	position: relative;
+	z-index: 9;
+	margin: 0 auto; 
+	text-align: left;
+	padding: 0 0 25px 0;
+	background: url('http://www.pg.com/en_US/_images/skin/bg-content-top.png') 0 100% no-repeat; 
+}
+	/* LOGO - uses background image for screen rendering */
+	#logo {
+		width: 62px; 
+		height: 29px;
+		margin: 0;
+		padding: 0 30px 10px 15px;
+		background: url('http://www.pg.com/en_US/_images/skin/logo.png') no-repeat 25px 5px;
+	}
+		#logo a {
+			display: block;
+			width: 62px; 
+			height: 29px;
+			margin: 0; 
+			padding: 5px 20px 5px 0;
+		}
+		
+	/* SKIP LINK - hidden until receives focus */	
+	#skip-link { 
+		position: absolute;
+		left: -9999px; 
+		top: 11px;
+		color: white; 
+		font-size: 0.9em;
+		font-weight: bold;
+		line-height: 16px;
+	}
+		#skip-link:focus { 
+			left: 100px;
+		}
+		
+	/* SITE TOOLS - removed */
+	#site-tools {}
+	
+	/* SITE SEARCH */
+	#site-search {
+		margin: 0; 
+		padding: 0;
+		position: absolute;
+		top: 7px; 
+		right: 25px;
+		width: 250px; height: 25px;
+		/*float: right;*/
+	}
+		#site-search label { display: none; }
+		#site-search input.text {
+			margin: 0 0 0 0; padding: 5px 0 3px 22px;
+			width: 170px; height: 15px;
+			background: 0;
+			background-image: url('http://www.pg.com/en_US/_images/skin/ico-search.png');
+			background-position: 4px 3px;
+			background-repeat: no-repeat;
+			border: 1px solid #4D7EC6;
+			color: #fff;
+			font-family: Arial;
+			font-size: 13px;
+			font-weight: bold;
+			float: left;
+		}
+			/* overrides (default is blue) */
+			#brands #site-search input.text { border-color: #F5964D; }
+			#sustainability #site-search input.text { border-color: #9ACD63; }
+			/* #news-and-views #site-search input.text { border-color: #BF5FA5; } */
+
+		#site-search input.submit {
+			margin: 4px 0 0 0; padding: 0;
+			width: auto; height: 16px; line-height: 16px;
+			background: 0;
+			border: 0;
+			color: white;
+			font-family: Arial;
+			font-size: .9em;
+			font-weight: bold;
+			line-height: 16px;
+			text-decoration: none;
+			text-transform: uppercase;
+			float: right;
+		}
+			#site-search input.submit:hover { text-decoration: underline; }
+			#site-search input.text:focus { outline: 0; }
+	
+	/* CORPORATE NAV - investor relations, careers, partners & suppliers, worldwide sites
+	 	(see navigation.css for inner content styling) */
+	#corporate-navigation {
+		height: 16px;
+		position: absolute;
+		top: 10px;
+		right: 275px;	
+		margin: 0; 
+		padding: 1px 0;
+	}
+			
+
+/*sits after site tools, before secondary navigation*/
+#worldwide-navigation {
+	margin: 15px 5px 0 5px; 
+	padding: 30px 20px;
+	background: #ccc;
+	display: none;
+}
+
+
+/*	====================================
+	#BODY
+		contains #site-navigation, #content
+*/
+#body {
+	margin: 0 auto;
+	padding-top: 14px; 
+	width: 945px;
+	background: url('http://www.pg.com/en_US/_images/skin/bg-content.png') 0 0 repeat-y;
+	min-height: 400px;
+	position: relative;
+	z-index: 10;
+}
+	/* SITE NAVIGATION (see navigation.css for inner content styling) */
+	#site-navigation {
+		left: 25px;
+		position: absolute;
+		z-index: 11;
+		height: 50px;
+		width: 895px;
+	}
+	
+/*	====================================
+	#CONTENT - wrapper for non-shell content
+		margin offset fills entire white space.
+		use padding to create interior space. 
+*/
+#content {
+	margin: -20px 5px -4px 5px; 
+	padding: 0 20px 20px 20px; /*width: 895px;*/
+	position: relative;
+	z-index: 1;
+	background-image: none; /*set in layout.css to display phase graphics*/
+	background-position: 100% 0;
+	background-repeat: no-repeat;
+}
+
+#careers #content {
+	margin: -20px 5px -4px 5px; 
+	/*background-image:url('/en_US/_images/content/careers/career_index.jpg'); */
+	padding: /*0 old code */ /*updated by corbus on 20 Dec 2010*/80px /* updation end*/ 20px 20px 20px; /*width: 895px;*/
+	position: relative;
+	
+	z-index: 1;
+	/*background-image: none; /*set in layout.css to display phase graphics*/
+	background-position: 100% 0;
+	background-repeat: no-repeat;
+}
+
+	* html #content { top: -20px; margin-top: 0; margin-bottom: -24px; } /*IE6*/
+	*+html #content { top: -20px; margin-top: 0; margin-bottom: -24px; } /*IE7*/
+
+/*	====================================
+	FOOTER
+		(see ie.css for non-transparent image overrides)
+*/
+#footer {
+	background: url('http://www.pg.com/en_US/_images/skin/bg-content-bottom.png') 0 0 no-repeat;
+	margin: 0 auto; 
+	padding: 10px 5px 10px 5px;
+	width: 935px; 
+	height: auto;
+	color: #fff;
+	text-align: right;
+}
+	#footer .follow {
+		float: left;
+		overflow: hidden;
+	}
+	#footer h4.follow {
+		display: block;
+		text-indent: -9999em;
+		margin: 23px 10px 0 0;
+		width: 69px;
+		height: 0px;
+		background: url('http://www.pg.com/en_US/_images/skin/hd_follow.png') left top no-repeat;
+		padding-top:13px;
+	}
+	#footer ul.follow {
+		list-style-type: none;
+	}
+		#footer ul.follow li {
+			float: left;
+			width: 21px;
+			height: 21px;
+			margin: 20px 10px 0 0;
+		}
+		#footer ul.follow li a {
+			display: block;
+			padding-top: 21px;
+			width: 21px;
+			height: 0px;
+		}
+			li.nav-facebook a {
+				background: url('http://www.pg.com/en_US/_images/skin/icon_fb.png') left top no-repeat;
+			}
+			li.nav-twitter a {
+				background: url('http://www.pg.com/en_US/_images/skin/icon_twitter.png') left top no-repeat;
+			}
+			li.nav-youtube a {
+				background: url('http://www.pg.com/en_US/_images/skin/icon_yt.png') left top no-repeat;
+			}
+			li.nav-subscriptions a {
+				background: url('http://www.pg.com/en_US/_images/skin/icon_rss.png') left top no-repeat;
+			}
+	#footer p { color: #fff; }
+	#footer p.tagline {
+		margin: 24px 0 14px 0;
+		padding: 0 4px 0 0;
+		font-size: 1.125em; 
+		line-height: 1.2;
+		background: url('http://www.pg.com/en_US/_images/skin/tagline.png') 0 0 no-repeat;
+		width: 269px; height: 19px;
+		display: block;
+		float: right;
+	}
+	#footer p.copyright {
+		margin: 0; padding: 0 20px 0 0;
+		clear: right;
+		float: right;
+		color: #fff;
+		font-size: .875em;
+		/* -moz-opacity:.60; filter:alpha(opacity=60); opacity:.60; */
+		color: #99B5DE;
+	}
+		/* overrides (default is blue) */
+		#brands #footer p.copyright { color: #F9C399; }
+		#sustainability #footer p.copyright { color: #C5E3A6; }
+		/* #news-and-views #footer p.copyright { color: #DAA3CB; } */

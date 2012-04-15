@@ -1,0 +1,357 @@
+// JavaScript Document
+
+/* GVP Player script starts*/
+
+var defaultTitle="";
+var defaultDesc="";
+var defaultImage="//www.att.com/media/gvp/global_resources/defaultMedia/relatedVideosThumb.jpg";
+var defaultVideo=""; //gvp_LG_Neon2_edit_512x288.xml
+var gvpPromo="gvpCat";
+
+var videoParams = "&gvpEnv=//www.att.com/media/gvp/&gvpLgFormat";  //&gvpEnv=http://www.att.com/media/gvp/&gvpLgFormat;
+
+//Object to be passed to custom JSON request
+function gvpObjectCreation(gvpIds,gvpLanguage){
+	this.gvpIds = gvpIds;
+	this.gvpLanguage = gvpLanguage;
+}
+
+//Main function to retrieve metadata information - to be used when sending custom JSON request
+function getGvpMetaDataCustom(gvpLanguage,gvpUrl){
+
+	var gvpIds="";
+	var videoLinkList = jQuery(".GVPVideoIcon");
+	var carouselVideos = jQuery(".carouselVideo");
+	
+	//Retrieve Video IDs from VideoIcon
+	videoLinkList.each(function(i)
+	{		
+		gvpIds+=splitVideoPromo(this.id)[0]+",";				
+	});
+	
+	//Retrieve Video IDs from Carousel
+	carouselVideos.each(function(i)
+	{		
+		gvpIds+=splitVideoPromo(this.id)[0]+",";				
+	});	
+	
+	//Remove last comma from list
+	gvpIds=gvpIds.substring(0,gvpIds.length-1);
+	//alert(gvpIds);
+			
+	/* Creation of the object to be passed to custom JSON request */
+	gvpObject = new Object(); 
+	gvpObject = new gvpObjectCreation(gvpIds,gvpLanguage);
+	
+	//gvpUrl = "http://portalmigration.att.net/MyATT_3.0/GVP_json.txt";
+	gvpUrl = "scripts/GVP_json.txt";
+	
+	if(jQuery('.tooltips').length == 0 && !jQuery.browser.opera){
+		jQuery.getScript('/scripts/jquery.poshytip.js', function(){}, true);				
+	}		
+
+	//Send JSON request to retrieve metadata information
+	/* If a page contains both VideoIcon and Carousel Videos, only one request is sent 
+	   with the consolidated list of videos.
+	*/
+	jQuery.getJSON(gvpUrl,gvpObject, function(gvpData)
+	{
+		showVideos(gvpData,videoLinkList,carouselVideos);			
+	});
+}
+
+//Main function to retrieve metadata information
+function getGvpMetaData(gvpLanguage,gvpUrl){
+
+	var videoLinkList = jQuery(".GVPVideoIcon");
+	var carouselVideos = jQuery(".carouselVideo");
+	var idsArray = new Array();
+	//gvpUrl="";
+
+	if(jQuery('.tooltips').length == 0 && !jQuery.browser.opera){
+		jQuery.getScript('/scripts/jquery.poshytip.js', function(){}, true);				
+
+	}	
+	
+	//Retrieve Video IDs from VideoIcon
+	videoLinkList.each(function(i)
+	{		
+		if (this.id!=null && this.id!=""){
+			idsArray[idsArray.length] = splitVideoPromo(this.id)[0];
+		}
+	});
+	
+	//Retrieve Video IDs from Carousel
+	carouselVideos.each(function(i)
+	{		
+		if (this.id!=null && this.id!=""){
+			idsArray[idsArray.length] = splitVideoPromo(this.id)[0];
+		}
+	});	
+
+	//Call function from gvputils to retrieve metadata information
+	/* If a page contains both VideoIcon and Carousel Videos, only one request is sent 
+	   with the consolidated list of videos.
+	*/	
+	if (idsArray.length!=0){
+		gvp.getMetaData( idsArray, function(gvpData)
+		{
+			showVideos(gvpData,videoLinkList,carouselVideos);
+		}, gvpLanguage,gvpUrl);		
+	}
+}
+
+
+//Callback function to handle JSON response 
+function showVideos(gvpData,videoLinkList,carouselVideos)
+{	
+	//Parse retrieved metadata information for VideoIcon	
+	parseVideoList(gvpData,videoLinkList, "link",0);
+	//parseSortedVideoList(gvpData,videoLinkList, "link",0);
+	
+	
+	//Parse retrieved metadata information for Carousel
+	/* The response contains VideoIcon and Carousel Videos. Carousel videos occur after VideoIcon videos in the list. 
+	   Hence videoLinkList.length (which gives the number of VideoIcon videos) is passed as starting index for Carousel videos. 
+	*/
+	parseVideoList(gvpData,carouselVideos, "carousel",videoLinkList.length); 
+	//parseSortedVideoList(gvpData,carouselVideos, "carousel",videoLinkList.length);	
+	
+}
+
+//Use when metadata for videos are NOT returned in same order as requested
+function parseVideoList(gvpData, mylist, mytype)
+{
+	for (i=0; i<mylist.length; i++)
+	{	
+		var videoId=mylist[i].id;		
+		var videoIdNoParam = splitVideoPromo(videoId)[0];
+		var elementFound=false;	
+		
+		jQuery.each(gvpData.gvpResponse.videoData,function(j,gvpData)
+		{
+			if (videoIdNoParam == gvpData.id && gvpData.status=="ok")
+			{
+				if (mytype=="link"){
+					videoPath=gvpData.xmlFileName;
+					myHtml=getVideoLinkHtml(gvpData.title,gvpData.description,gvpData.videoLength,videoId,videoPath);
+					jQuery("#"+videoId).append(myHtml);
+				}
+				else if (mytype=="carousel"){
+					imagePath=gvpData.thumbFilePath;
+					videoPath=gvpData.xmlFileName;					
+					if (imagePath==null || imagePath==""){
+						imagePath=defaultImage;
+					}
+					if (videoPath==null || videoPath==""){
+						videoPath=defaultVideo;
+					}
+					videoHtml = getCarouselVideoHtml(videoId,gvpData.title,gvpData.description,gvpData.videoLength,videoPath,imagePath);
+					jQuery("#"+videoId).html(videoHtml);
+				}				
+				elementFound=true;
+				return false;
+			}				
+		});			
+		if (!elementFound)
+		{
+			if (mytype=="link"){
+				jQuery("#"+videoId).css("visibility","hidden");
+			}
+			else if (mytype=="carousel"){
+				videoHtml = getCarouselVideoHtml(videoId,defaultTitle,defaultDesc,"",defaultVideo,defaultImage);
+				jQuery("#"+videoId).html(videoHtml);
+			}
+		}
+	}		
+}
+
+//Use when metadata for videos are returned in same order as requested
+function parseSortedVideoList(gvpData, mylist, mytype, start)
+{
+	for (i=0; i<mylist.length; i++)
+	{	
+		var videoId=mylist[i].id;	
+		var videoIdNoParam = splitVideoPromo(videoId)[0];
+		var element = gvpData.gvpResponse.videoData[i+start];
+
+		if (videoIdNoParam == element.id && element.status=="ok")
+		{//ELEMENT FOUND
+			if (mytype=="link"){
+				videoPath=gvpData.xmlFileName;
+				myHtml=getVideoLinkHtml(gvpData.title,gvpData.description,gvpData.videoLength,videoId,videoPath);
+				jQuery("#"+videoId).append(myHtml);
+			}
+			else if (mytype=="carousel"){
+				imagePath=element.thumbFilePath;
+				videoPath=element.xmlFileName;					
+				if (imagePath==null || imagePath==""){
+					imagePath=defaultImage;
+				}
+				if (videoPath==null || videoPath==""){
+					videoPath=defaultVideo;
+				}
+				videoHtml = getCarouselVideoHtml(videoId,element.title,element.description,element.videoLength,videoPath,imagePath);
+				jQuery("#"+videoId).html(videoHtml);
+			}	
+		}	
+		else
+		{
+			if (mytype=="link"){
+				jQuery("#"+videoId).css("visibility","hidden");
+			}
+			else if (mytype=="carousel"){
+				videoHtml = getCarouselVideoHtml(videoId,defaultTitle,defaultDesc,"",defaultVideo,defaultImage);
+				jQuery("#"+videoId).html(videoHtml);
+			}
+		}		
+	}		
+}
+
+//Set metadata data information retrieved to page variables - For VideoIcon
+function getVideoLinkHtml(title,description,videoLength,videoId,videoPath){
+	jQuery("#"+videoId).click(function() {
+		videoPath=videoPath.replace("/media/gvp/video_resources/xml/", "/video_resources/xml/");
+		videoIdSplit=splitVideoPromo(videoId);	
+		otherParameters = videoIdSplit.length == 1 ? "" : "&"+gvpPromo+"="+videoIdSplit[1];
+		//alert(videoPath+videoParams+otherParameters);
+		gvp.showPopUp('', true, true, 'gvp', videoPath+videoParams+otherParameters);
+	});
+	jQuery("#"+videoId).addClass("tooltips");
+	jQuery("#"+videoId).poshytip({
+		content: "<p class='Marbot10'><b>" +title+"</b></p><p class='Marbot10'>"+description+"</p><p class='MarBot0'>"+videoLength+"</p>",				  
+		className: 'tip-white',
+		showTimeout: 0.2,
+		alignTo: 'target',
+		alignX: 'center',
+		offsetX: 10,
+		allowTipHover: false,
+		bgImageFrameSize: 6,
+		backgroundGradient: '//www.att.com/images/global/tooltip/tip-white/backgroundwhite.gif',
+		fade: true,
+		slide: false
+	});		
+	return "<img src='https://www.att.com/olam/images/brand30/video-camera-icon.gif'/>";	
+}
+
+//Set metadata data information retrieved to page variables - For Carousel
+function getCarouselVideoHtml(videoId,title,description,videoLength,videoPath,imagePath){
+	jQuery("#"+videoId).addClass("tooltips");
+	jQuery("#"+videoId).poshytip({
+		content: "<p class='Marbot10'><b>" +title+"</b></p><p class='Marbot10'>"+description+"</p><p class='MarBot0'>"+videoLength+"</p>",				  
+		className: 'tip-white',
+		showTimeout: 0.2,
+		alignTo: 'target',
+		alignX: 'center',
+		offsetX: 10,
+		allowTipHover: false,
+		bgImageFrameSize: 6,
+		backgroundGradient: '//www.att.com/images/global/tooltip/tip-white/backgroundwhite.gif',
+		fade: true,
+		slide: false
+	});		
+	videoPath=videoPath.replace("/media/gvp/video_resources/xml/", "/video_resources/xml/");
+	videoIdSplit=splitVideoPromo(videoId);	
+	otherParameters = videoIdSplit.length == 1 ? "" : "&"+gvpPromo+"="+videoIdSplit[1];
+	return "<div><h4><a class=\"tooltips\" href="https://www.att.com/olam/js/\&quot;#tipVideo"+videoId+"\"" onClick=\"gvp.showPopUp('', true, true, 'gvp', '"+videoPath+videoParams+otherParameters+"'); return false;\"><div class='box center'><img src="https://www.att.com/olam/js/\&quot;&quot;+imagePath+&quot;\&quot;/"></div>"+title+"</a></h4><h5>"+videoLength+"</h5></div>";	
+}
+
+//INIT CAROUSEL
+function initCarousel(carouselId)
+{
+		jQuery(carouselId).jcarousel({
+		scroll:1,
+		itemFirstInCallback: {
+			onAfterAnimation: function(carousel){
+				jQuery("#"+carousel.list[0].id+" .jcarousel-item-"+carousel.first).addClass("noBorderLeft");
+				jQuery("#"+carousel.list[0].id+" .jcarousel-item-"+(carousel.first+1)).removeClass("noBorderLeft");
+			}
+		}
+	});
+}
+
+//For Embedded Video Player on Intercept Page - If Video ID is provided as input
+function showGVPVideoFromIDCustom(videoId,gvpLanguage,gvpUrl)
+{	
+	var width = 644;
+	var height = 488;
+	var callbackPtr = function(){};
+	
+	/* Creation of the object to be passed to JSON request*/
+	var gvpObject = new Object(); 
+	var gvpObject = new gvpObjectCreation(videoId,gvpLanguage);
+	
+	//gvpUrl = "http://portalmigration.att.net/MyATT_3.0/GVP_json.txt";
+	var gvpUrl = "scripts/GVP_json.txt";
+	
+	//Use to Send cutom JSON request to retrieve metadata information
+	jQuery.getJSON(gvpUrl,gvpObject, function(gvpData)
+	{
+		jQuery.each(gvpData.gvpResponse.videoData,function(j,gvpData)
+		{			
+			if (videoId == gvpData.id && gvpData.status=="ok"){
+				var fileName=gvpData.xmlFileName;
+				fileName=fileName.replace("/media/gvp/video_resources/xml/", "/video_resources/xml/");
+				showGVPVideoFromXMLFile(fileName);
+				return false;
+			}
+		});					
+	});
+	
+}
+
+//For Embedded Video Player on Intercept Page - If Video ID is provided as input
+function showGVPVideoFromID(videoId,gvpLanguage,gvpUrl)
+{	
+	var width = 644;
+	var height = 488;
+	var callbackPtr = function(){};
+	//gvpUrl="";
+	
+	var videoIdSplit=splitVideoPromo(videoId);	
+	var videoIdNoParam = videoIdSplit[0];
+	gvp.getMetaData(videoIdNoParam, function(gvpData)
+	{
+		jQuery.each(gvpData.gvpResponse.videoData,function(j,gvpData)
+		{			
+			if (videoIdNoParam == gvpData.id && gvpData.status=="ok"){
+				var fileName=gvpData.xmlFileName;
+				fileName=fileName.replace("/media/gvp/video_resources/xml/", "/video_resources/xml/");				
+				otherParameters = videoIdSplit.length == 1 ? "" : "?"+gvpPromo+"="+videoIdSplit[1];
+				showGVPVideoFromXMLFile(fileName+otherParameters);
+				return false;
+			}
+		});	
+	}, gvpLanguage,gvpUrl);		
+			
+}
+
+//For Embedded Video Player on Intercept Page - If XML name is provided as input or after retrieving XML name
+function showGVPVideoFromXMLFile(videoPath)
+{	
+	var width = 644;
+	var height = 488;
+	var callbackPtr = function(){};	
+	
+	//Implementation provided by GVP
+	new GVP(GVP_UTILS.VIEW.embed,{divId:'gvpEmbed',videoId:videoPath,width:644,height:488,callback:function(){}});
+	
+	//Alternate implementation
+	//swfobject.embedSWF('http://www.att.com/media/gvp/ATT_GlobalVideoPlayer_640x480_2.1.3.swf?configXml='+videoPath+videoParams, 'gvpEmbed', width, height, '9.0.0', "http://www.att.com/media/en_US/swf/expressInstall.swf", {}, {'wmode':'transparent','allowFullscreen':true,'allowScriptAccess':'always'}, {'style':'position:relative;'}, callbackPtr );	
+	
+}
+
+function splitVideoPromo(videoId){
+	var gvpPromoSeparator="_";
+	var separatorIndex = videoId.indexOf(gvpPromoSeparator);
+	var splitReturn = new Array();
+	if (separatorIndex==-1){
+		splitReturn[0]=videoId;
+	}
+	else{
+		splitReturn[0]=videoId.substring(0,separatorIndex);
+		splitReturn[1]=videoId.substring(separatorIndex+1,videoId.length);
+	}
+	return splitReturn;
+}
+/* GVP Player script ends*/	

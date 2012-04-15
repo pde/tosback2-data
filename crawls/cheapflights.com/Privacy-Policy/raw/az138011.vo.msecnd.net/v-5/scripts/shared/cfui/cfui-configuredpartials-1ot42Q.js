@@ -1,0 +1,5 @@
+/*
+* webTicker 1.3
+* 
+*/
+(function(c){c.configuredpartials={};c.configuredpartials.events={};c.configuredpartials.events={onListShown:function(){},onItemSelect:function(){}};var b=new Array();var a={init:function(f){function g(h){if(h.Type==="HTML"){e(h.Html,h.Element,h.Placement)}else{if(h.Type==="AJAX"){d(h.Name,h.Link,function(i){e(i,h.Element,h.Placement)})}}}function e(i,j,h){if(h==="top"){c(j).prepend(i)}else{if(h==="bottom"){c(j).append(i)}}}function d(j,h,i){c.ajax({url:"/layout.aspx/partial/?name="+j+"&link="+h,cache:false,dataType:"HTML",success:function(k){i(k)}})}c.ajax({url:"/layout.aspx/partialconfiguration/",cache:false,dataType:"JSON",success:function(h){if(h.isenabled==true){for(var i=0;i<h.partials.length;i++){g(h.partials[i])}}}})}};c.fn.configuredpartials=function(d){if(a[d]){return a[d].apply(this,Array.prototype.slice.call(arguments,1))}else{if(typeof d==="object"||!d){return a.init.apply(this,arguments)}else{c.error("Method "+d+" does not exist on jQuery.configuredpartials")}}}})(jQuery);

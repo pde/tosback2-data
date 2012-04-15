@@ -1,0 +1,17 @@
+
+var hp_cookie_path='/';var hp_cookie_expiration=90;var hp_cookie_domain='.hp.com';var hmpg_segments=new Array();var customerSegment;var hmpg_expacc=new Array();var default_expacc=0;window.addEvent('domready',function(){$('hnl_l2_p1_accordion').getElements('.hnl_l2_p1_link').each(function(item,index){hmpg_segments[index]=item.id.replace(/^hnl_/g,"").toUpperCase();window[item.id.replace(/^hnl_/g,"").toUpperCase()]=index;item.getElements('a').each(function(acc_lnk){acc_lnk.onclick=function(){if(this.className!="")Cookie.write('hp_cust_seg_sel',this.className.toUpperCase(),{duration:hp_cookie_expiration,domain:hp_cookie_domain,path:hp_cookie_path});try{trackMetrics('linkClick',{type:'link',id:this.get('name')});}catch(err){};};});});$('hnl_l2_p2_accordion').getElements('.hnl_l2_p2_link').each(function(item,index){hmpg_expacc[index]=item.id.replace(/^hnl_/g,"").toUpperCase();window[item.id.replace(/^hnl_/g,"").toUpperCase()]=index;});if(Cookie.read("hp_cust_seg_sel")==null){customerSegment=defaultSegment;}
+else{if(window[Cookie.read("hp_cust_seg_sel")]==undefined)
+customerSegment=defaultSegment;else
+customerSegment=Cookie.read("hp_cust_seg_sel");}
+if(customerSegment=="HHO")
+if(window['ATH']!=undefined)default_expacc=ATH;else default_expacc=0;else
+if(window['ATW']!=undefined)default_expacc=ATW;else default_expacc=0;new Accordion($('hnl_l2_p1_accordion'),'a.hnl_l2_p1_toggler','div.hnl_l2_p1_link',{opacity:false,onActive:function(toggler,element){toggler.setStyles({'color':'#9EF39E','background':'#1e1e1e','background':'url(/us/en/images/i/green_triangle_down_462697.png) no-repeat 0px 4px','padding-left':'14px'});toggler.removeClass('green_arrow');element.removeClass('gone');},onBackground:function(toggler,element){if(Browser.Engine.trident4){toggler.setStyles({'color':'#FFFFFF','background':'#1e1e1e','background':'url(/us/en/images/i/white_triangle_462697.png) no-repeat 0px 4px'});}
+else{toggler.setStyles({'color':'#FFFFFF','background':'#1e1e1e','background':'url(/us/en/images/i/white_triangle_462697.png) no-repeat 0px -2px'});}
+toggler.addClass('green_arrow');(function(){element.addClass('gone');}).delay(500);},display:0,show:window[customerSegment],alwaysHide:true});new Accordion($('hnl_l2_p2_accordion'),'a.hnl_l2_p2_toggler','div.hnl_l2_p2_link',{opacity:false,onActive:function(toggler,element){toggler.setStyles({'color':'#9EF39E','background':'#1e1e1e','background':'url(/us/en/images/i/green_triangle_down_462697.png) no-repeat 0px 4px','padding-left':'14px'});toggler.removeClass('green_arrow');element.removeClass('gone');},onBackground:function(toggler,element){if(Browser.Engine.trident4){toggler.setStyles({'color':'#FFFFFF','background':'#1e1e1e','background':'url(/us/en/images/i/white_triangle_462697.png) no-repeat 0px 4px'});}
+else{toggler.setStyles({'color':'#FFFFFF','background':'#1e1e1e','background':'url(/us/en/images/i/white_triangle_462697.png) no-repeat 0px -2px'});}
+toggler.addClass('green_arrow');(function(){element.addClass('gone');}).delay(500);},display:0,show:default_expacc,alwaysHide:true});new Accordion($('header_rightnav_accordion'),'a.togglerrn','div.elementrn',{opacity:false,onActive:function(toggler,element){toggler.setStyle('color','#9EF39E');element.removeClass('gone');},onBackground:function(toggler,element){toggler.setStyle('color','#FFFFFF');(function(){element.addClass('gone');}).delay(500);},display:-1,alwaysHide:true});});
+
+/* Publish Info (JS)
+Date: 9/13/2010 8:13:34 AM
+Images: Published all
+*/

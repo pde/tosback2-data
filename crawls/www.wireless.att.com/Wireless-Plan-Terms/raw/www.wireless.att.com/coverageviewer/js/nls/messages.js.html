@@ -1,0 +1,47 @@
+/**
+ * @author eric5946
+ */
+var currentLanguage = en;
+
+function message(key) {
+	var msg = currentLanguage[key];
+	return msg;
+}
+
+function setLanguage() {
+	currentLanguage = en;
+	var nameEQ = "colam_ctn=";
+	var ca = document.cookie.split(';');
+	for ( var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ')
+			c = c.substring(1, c.length);
+		if (c.indexOf(nameEQ) == 0 && c.indexOf("es_US") != -1) {
+			currentLanguage = es;
+		}
+	}
+}
+
+function updateMessage(msg, results) {
+	updateMsgDivByID(UIConfig.errorDivID, msg, false);
+	updateMsgDivByID(UIConfig.messageHeadDivID, message(msg + ".heading"), true);
+	updateMsgDivByID(UIConfig.messageBodyDivID, message(msg + ".body"), true);
+	updateMsgDivByID(UIConfig.locateResultDivID, results, true);
+}
+
+function updateMsgDivByID(divID, msg, setHtml) {
+	var div = dojo.byId(divID);
+	if (div != null) {
+		if (msg == null) {
+			msg = "";
+		}
+		if (setHtml) {
+			div.innerHTML = msg;
+		}
+		if (msg.length > 0) {
+			dojo.style(div, "display", "");
+		} else {
+			dojo.style(div, "display", "none");
+		}
+	}
+}

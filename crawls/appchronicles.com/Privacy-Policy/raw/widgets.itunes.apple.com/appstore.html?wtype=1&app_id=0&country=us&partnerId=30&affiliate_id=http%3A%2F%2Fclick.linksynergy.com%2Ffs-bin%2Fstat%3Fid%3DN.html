@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+	<link href="lib/app_store.css%3Fserial=9999999.css" type="text/css" rel="stylesheet" media="screen" />
+	<!--[if lte IE 7]>
+	<link href="lib/ie_app_store.css?serial=9999999" type="text/css" rel="stylesheet" media="screen" />
+	<![endif]-->
+	<!--[if lte IE 8]>
+	<link href="lib/ie_app_store.css?serial=9999999" type="text/css" rel="stylesheet" media="screen" />
+	<![endif]-->
+	
+  <script type="text/javascript" src="lib/jquery-1.5.1.min.js%3Fserial=9999999"></script>
+  <script type="text/javascript" src="lib/reflection.js%3Fserial=9999999"></script>
+  <script type="text/javascript" src="lib/jquery.tinyscrollbar.min.js%3Fserial=9999999"></script>
+  <script type="text/javascript" src="lib/itmsCheck.js%3Fserial=9999999"></script>
+  <script type="text/javascript" src="lib/itaffill.js%3Fserial=9999999"></script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		iTunesWidget.populateMe() ;
+	});
+</script>
+</head>
+<body id="home" class="hide">
+<div id="main"><div id="content"><div class="center-stack"><a class="name"></a></div></div></div>
+<div id="container" class="app_store search ie">
+
+	<!-- widget background start -->
+	<div id="background">
+		<div class="header">
+			<div id="bg_top_left" class="left" style="background-color: #FFFFFF"></div><div id="bg_top_right" class="right" style="background-color: #FFFFFF"></div>
+		</div>
+		<div id="payload_background" class="p_background" style="height: 274px"> <!-- need to set height to (widget height - 26px) -->
+			<div id="bg_bottom_left" class="left" style="background-color: #FFFFFF"></div><div id="bg_bottom_right" class="right" style="background-color: #FFFFFF"></div>
+		</div>
+	</div>
+	<!-- widget background end -->
+	
+		<div class="payload" style="height: 274px;width: 300px; "> <!-- height widget height - 26 CLAES! set width to widget width-->
+			
+				<div id="load_screen" class="hide">
+					<img class="load_screen_spinner" src="images/ajax-loader.gif" />
+				</div>
+			
+			<div id="btn_back" onClick="iTunesWidget.backToSearch();" class="hide">Back</div>
+
+		<!-- Start app item -->
+		<div id="app_item">
+			<div id="top_payload" class="top_payload clearfix" style="width: 218px;"> <!-- need to calc width in JS based on widget width -->
+<img src="images/mask175.png" id="appicon_mask"  style="position :absolute;top:16px;z-index:30;left:14px;width:92px;height:94px;">
+				<div class="icon" ><img style="" src="images/icon_generic.jpg"  /></div>
+				<div class="meta">
+					<h1 id="app_name">App Name</h1>
+					<h2 id="app_category">Genre</h2>
+					<h1 id="app_price">$0.99</h1>
+					<div id="btn_view_app" class="btn_view_app" ></div>
+				</div>
+			</div>
+			<div id="description_payload" class="description viewport" style="width: 218px; height: 102px;"> <!-- need to calc width in JS based on widget width -->
+				<div class="overview"><h1 id="lng_description">Description</h1>
+				<p id="app_description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				</div>
+			</div>
+			<div id="fade_bar" style="width: 218px"></div>
+			<div id="description_scrollbar" class="scrollbar hide">
+				<div class="top"></div><div class="bottom"></div>
+				<div class="thumb"><div class="bottom"></div></div>
+			</div>
+		</div>
+		<!-- end app item -->
+
+		<!-- Start app Search -->
+		<div id="app_search" style="">
+		
+			<div id="search_box" class="clearfix">
+				<div id="search_box_bg" style="width: 230px;">
+					<div class="left"></div><div class="right"></div>
+				</div>
+				<div id="search_box_form">
+					<div id="form_payload">
+						<div id="frm_background" style="width: 210px;">
+							<div class="left"></div><div class="right"></div>
+						</div>
+						<form id="search_form" style="width: 230px;">
+							<!-- input type="text" id="search_field" onKeyPress="return hndlKey(event)" / -->
+							<input type="text" id="search_field" style="width: 170px;" />
+						</form>
+						<div class="reset hide" id="reset"></div>
+						<div class="hide" id="loading"></div>
+						</div>
+				</div>
+			</div>
+			
+			
+			<div class="filter"><span id="filter_all" class="highlight">All</span> | <span id="filter_iphone">iPhone</span> | <span id="filter_ipad">iPad</span></div>
+		
+		<div id="search_results" class="viewport hide" style="height: 180px;">
+		<ul class="results_list overview" id="results_list">
+		</ul>
+		</div>
+		<div id="scrollbar" class="scrollbar hide">
+			<div class="top"></div><div class="bottom"></div>
+			<div class="thumb"><div class="bottom"></div></div>
+		</div>	
+		
+		<div id="app_empty_search_results" class=""></div>
+		</div>
+		
+		<!-- End app Search -->
+		
+			<!-- playlist view Start-->
+			<div id="playlist_view"  class="hide" >
+				<div id="playlist_content">
+				<div class="top_payload">
+					<div class="meta">
+						<h1 id="playlist_title">Play Title</h1>
+						<h2 id="playlist_description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h2>
+					</div>
+				</div>
+				<div id="playlist_payload" class="track_payload" style="height: 166px;width:228px">
+				<div id="playlist_viewport" class="viewport" style="height: 100%; overflow:hidden" > <!-- set width to widget width - 20px to accommodate scrollbar -->
+	        <div id="playlist_container" class="overview"></div>
+		</div>
+				</div>
+				<div id="scrollbar_playlist_tracks" class="scrollbar hide">
+					<div class="top"></div><div class="bottom"></div>
+					<div class="thumb"><div class="bottom"></div></div>
+				</div>
+			</div>
+			</div>
+			<!-- playlist view End-->	
+	</div>
+	<div id="footer" class="hide"><div class="left"></div><div class="right"></div><div id="trackcount" class="no_music hide">Total: 0 Items</div></div> <!-- need to unhide on search list view -->
+</div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" >
+<head>
+	<title></title>
+<style type="text/css">
+.fb_edge_widget_with_comment span.fb_edge_comment_widget iframe.fb_ltr {
+display: none !important;}
+</style>	
+</head>
+<body style="margin:0px;padding:0px">
+<div id="fb-root"></div>
+<script src="scripts/jquery-latest.js"></script>
+<script type="text/javascript">
+
+ $(document).ready(function(){
+	var localeInfo = window.parent.document.getElementById('localeInfo').value;
+	var fbAppId = '139745982760837';//PDC-US
+	var fbLikeUrlEle = window.parent.document.getElementById('fbLikeURL');
+	var fbLikeURL;
+	var fbLikeFooterUrlEle = window.parent.document.getElementById('fbLikeFooterURL');
+	var myRegExp = /birthday|downloads/;
+
+	if (fbLikeUrlEle != null)
+	{
+		fbLikeURL = fbLikeUrlEle.value;
+	}
+	else
+	{
+		fbLikeURL = fbLikeFooterUrlEle.value;
+	}
+
+	if (localeInfo != null && localeInfo == "ja_JP")
+	{
+		if (fbLikeURL.search(myRegExp) >= 0)
+		{
+			fbAppId = '151499504913970';
+		}
+		else
+		{
+			fbAppId = '196164783756501';//PDC-JP
+		}
+	} 
+
+	window.fbAsyncInit = function() {
+		FB.init({appId: fbAppId, status: true, cookie: true, xfbml: true, channelUrl: '/wcsstore/Coach_US/channel.html'});
+		FB.Event.subscribe('edge.create', function (href, widget, response){
+				trackOmniture(localeInfo, fbLikeURL);
+			});
+	};
+	(function() {
+		var e = document.createElement('script'); e.async = true;
+		e.src = document.location.protocol + '//connect.facebook.net/'+localeInfo+'/all.js';
+		document.getElementById('fb-root').appendChild(e);
+	}());
+	function trackOmniture(locale, fbLikeInfoUrl) {
+		if (locale != null)
+		{
+			if (locale == "en_US")
+			{
+				if (fbLikeInfoUrl.search("facebook") >= 0) // Coach US footer
+				{
+					window.parent.s.linkTrackEvents = "event43";
+					window.parent.s.events = "event43";
+					window.parent.s.tl(true,"o","Facebook Like");
+				}
+				else
+				{
+					var fbLikeProductInfo = window.parent.document.getElementById('productLikeInfoStr').value;
+					
+					window.parent.s.linkTrackVars = 'products,pageName'; 
+					window.parent.s.products = fbLikeProductInfo;
+					window.parent.s.pageName="product detail";
+					window.parent.s.linkTrackEvents = "event43";
+					window.parent.s.events = "event43";
+					window.parent.s.tl(true,"o","Facebook Like");
+				}
+			}
+			else if (locale == "ja_JP")
+			{
+				if (fbLikeInfoUrl.search("birthday") >= 0)
+				{
+				// Shunsuke Izumi: Added "window.parent" instead of using window.parent.s_gi('coachjpprod');	
+					// var s = window.parent.s_gi('coachjpprod');
+					window.parent.s.linkTrackVars = 'eVar72, events, products';
+					window.parent.s.linkTrackEvents = 'event72';
+					window.parent.s.eVar72 = ' Facebook Birthday Like ';
+					window.parent.s.events = 'event72';
+					//s.products = fbLikeProductInfo; 
+					window.parent.s.tl(this,'o','Facebook Birthday Like');
+
+				}
+				else if (fbLikeInfoUrl.search("downloads") >= 0)
+				{
+					// var s = window.parent.s_gi('coachjpprod');
+					window.parent.s.linkTrackVars = 'eVar72, events, products';
+					window.parent.s.linkTrackEvents = 'event72';
+					window.parent.s.eVar72 = ' Facebook Downloads Like';
+					window.parent.s.events = 'event72';
+					//s.products = fbLikeProductInfo;
+					window.parent.s.tl(this,'o','Facebook Downloads Like');
+				}
+				else
+				{
+					//var s = window.parent.s_gi('coachjpprod');
+					//s.linkTrackEvents = "event43";
+					//s.events = "event43";
+					//s.tl(this,"o","Facebook Product Like");
+					var fbLikeProductInfo = window.parent.document.getElementById('productLikeInfoStr').value;
+					window.parent.s.linkTrackVars = 'eVar72, events, products';
+					window.parent.s.linkTrackEvents = 'event72';
+					window.parent.s.eVar72 = 'Facebook Product Like';
+					window.parent.s.events = 'event72';
+					window.parent.s.products = fbLikeProductInfo;
+					window.parent.s.tl(this,'o','Facebook Product Like');
+				}
+			}
+		} 
+	}
+	
+        var fbLikeUrlEle = window.parent.document.getElementById('fbLikeURL');
+        var fbLikeURL;
+        var fbLikeFooterUrlEle = window.parent.document.getElementById('fbLikeFooterURL');
+        if (fbLikeUrlEle != null)
+        {
+                fbLikeURL = fbLikeUrlEle.value;
+        }
+        else
+        {
+                fbLikeURL = fbLikeFooterUrlEle.value;
+        }
+        document.getElementById("fbLike").setAttribute("href", fbLikeURL);
+
+
+});
+</script>
+
+<fb:like id="fbLike" class="fb_edge_widget fb_iframe_widget" layout="button_count" show_faces="false" font="Arial" width="115"></fb:like>
+</body>
+</html>
+
+
+

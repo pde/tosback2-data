@@ -1,0 +1,262 @@
+﻿@charset "utf-8";
+
+* { margin:0; padding:0; }
+@font-face {
+	font-family: 'PFSquareSansProLight';
+	src: url('http://www.samsung.com/us/font/pfsquaresanspro-light-webfont.eot');
+}
+@font-face {
+	font-family: 'PFSquareSansProLight';
+	src: url('http://www.samsung.com/us/font/PFSquareSansPro-Light.otf');
+}
+@font-face {
+	font-family: 'PFSquareSansProMedium';
+	src: url('http://www.samsung.com/us/font/pfsquaresanspro-medium-webfont.eot');
+}
+@font-face {
+	font-family: 'PFSquareSansProMedium';
+	src: url('http://www.samsung.com/us/font/PFSquareSansPro-Medium.otf');
+}
+@font-face {
+	font-family: 'PFSquareSansProRegular';
+	src: url('http://www.samsung.com/us/font/pfsquaresanspro-regular-webfont.eot');
+}
+@font-face {
+	font-family: 'PFSquareSansProRegular';
+	src: url('http://www.samsung.com/us/font/PFSquareSansPro-Regular.otf');
+}
+@font-face {
+	font-family: 'PFSquareSansProBold';
+	src: url('http://www.samsung.com/us/font/pfsquaresanspro-bold-webfont.eot');
+}
+@font-face {
+	font-family: 'PFSquareSansProBold';
+	src: url('http://www.samsung.com/us/font/PFSquareSansPro-Bold.otf');
+}
+
+html, body { width:100%; height:100%; }
+body { background-color:#fff; }
+body, input, button { font-size:12px; line-height:16px; font-family:Arial, Helvetica, sans-serif; color:#666; }
+h1, h2, h3, h4, h5, h6 { font-size:12px; text-align:left; }
+img, fieldset, iframe { border:0 none; }
+hr { display:none; }
+li { list-style:none; }
+a { text-decoration:none; color:#00A9E0 }
+a:hover { text-decoration:underline; }
+em, address { font-style:normal; }
+textarea { overflow:auto; font-family:Arial, Helvetica, sans-serif; color:#666; font-size:12px; }
+option { padding-right:6px; }
+legend { display:none; }
+table {empty-cells:show; border-collapse:collapse; }
+ul, ol { list-style:none; }
+
+.no_bg { background-image:none !important; }
+.no_border { border:none !important; }
+
+
+/*
+드롭다운 박스 넓이 조정
+드롭다운이 들어가는 부분엔 div, dl, dd, dt, ul, li, input, label 이 어떤 css의 영향도 받지 않아야한다
+.dropdown,
+.dropdown div,
+.dropdown dd { } <- 디자인 넓이보다 10px 작게
+.dropdown dl,
+.dropdown dt { } <- 디자인 넓이보다 30px 작게
+.dropdown ul,
+.dropdown li { } <- 디자인 넓이보다 25px 작게
+.dropdown .scroll li { } <- 디자인 넓이보다 42px 작게
+*/
+.dropdown { background:url(http://www.samsung.com/us/images/common/bg_drop_left.png) no-repeat left top !important; padding:0 0 0 10px !important; /*position:relative !important; */}
+.dropdown dl { background:url(http://www.samsung.com/us/images/common/bg_drop_right.png) no-repeat right top !important; padding:0 20px 0 0 !important; cursor:pointer !important; border:none !important; }
+.dropdown dl dt { display:block !important; font-weight:bold !important; color:#666666 !important; font-size:11px !important; line-height:14px !important; height:20px !important; padding:7px 0 0 0 !important; overflow:hidden !important; background:none !important; text-indent:0 !important; white-space:nowrap; }
+.dropdown dl dd { position:absolute !important; left:0 !important; top:32px !important; display:none; background:url(http://www.samsung.com/us/images/common/bg_drop_left1.png) no-repeat left bottom !important; margin:0 !important; padding:0 0 0 10px !important; overflow:hidden !important; float:none !important; }
+.dropdown dl dd div { background:url(http://www.samsung.com/us/images/common/bg_drop_right1.png) no-repeat right bottom; overflow:auto !important; padding:0 0 5px 0 !important; }
+.dropdown dl dd ul { padding:0 10px 0 0 !important; overflow:auto !important; position:relative; }
+.dropdown dl dd ul li { overflow:hidden !important; font-size:11px !important; padding:1px 0 3px 0 !important; position:relative !important; margin:0 !important; }
+.dropdown dl dd ul li input { position:absolute !important; left:-100px !important; }
+.dropdown dl dd ul li label { position:relative !important; cursor:pointer !important; font-size:11px !important; color:#666666 !important; vertical-align:top; }
+.dropdown .on dd { display:block; }
+.dropdown .on dt { height:25px !important; }
+.dropdown dl dd .scroll { height:160px; }
+
+/* 드롭다운 비활성화 */
+.dropdown.inert { background:url(http://www.samsung.com/us/images/common/bg_drop_left_g.png) no-repeat left top !important; padding:0 0 0 10px !important; position:relative !important; }
+.dropdown.inert dl { background:url(http://www.samsung.com/us/images/common/bg_drop_right_g.png) no-repeat right top !important; padding:0 20px 0 0 !important; cursor:pointer !important; border:none !important; }
+.dropdown.inert dl dt { color:#ccc !important; }
+.dropdown.inert dl dd { position:absolute !important; left:0 !important; top:32px !important; display:none; background:url(http://www.samsung.com/us/images/common/bg_drop_left1_g.png) no-repeat left bottom !important; margin:0 !important; padding:0 0 0 10px !important; overflow:hidden !important; float:none !important; }
+.dropdown.inert dl dd div { background:url(http://www.samsung.com/us/images/common/bg_drop_right1_g.png) no-repeat right bottom; overflow:auto !important; padding:0 0 5px 0 !important; }
+/* 드롭다운 비활성화 */
+
+.function { width:100%; overflow:hidden;}
+.function li { float:right; line-height:90%; margin-left:9px; display:inline; padding-left:9px; background:url(http://www.samsung.com/us/images/common/bg_division_3.gif) no-repeat left top; }
+.function li a { float:left; display:block; overflow:hidden; color:#00a9e0; font-size:11px; font-weight:bold; }
+.function li.print { margin-left:0; padding-left:0; background:none; }
+
+.list_paging { font-size:10px; font-weight:bold; line-height:100%; text-align:center; margin-top:7px; }
+.list_paging strong,
+.list_paging a { display:inline-block; padding:0 6px 0 8px; color:#00a9e0; text-decoration:none; background:url(http://www.samsung.com/us/images/common/paging_division.gif) no-repeat 0 2px; }
+.list_paging .btn_prev { margin-right:11px; background:none; }
+.list_paging .btn_next { margin-left:6px; background:none; }
+.list_paging .num_1st { padding:0 6px 0 0;  background:none; }
+.list_paging strong { color:#666; }
+
+/* layer popup */
+#callProductSupport.layer_wrap {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #00A9E0;
+    display: none;
+    left: 20%;
+    position: absolute;
+    top: 40px;
+    z-index: 102;
+}
+#layer_transparency { display:none; position:absolute; top:0; left:0; z-index:100; width:100%; height:4000px; background:#000; filter:alpha(opacity=80);opacity:0.8; }
+.layer_wrap { display:none; position:absolute; left:50%; top:15px; z-index:102; }
+.layer_wrap .btn_close_layer { display:block; position:absolute; right:-16px; top:-17px; z-index:102; width:33px; height:33px; cursor:pointer; text-indent:-1000px; overflow:hidden; background:url(http://www.samsung.com/us/images/common/btn_layer_close.png) no-repeat; }
+
+.hidden_info { position:relative; display:inline-block; z-index:1000000; }
+.hidden_info span { border-bottom:1px dotted #717171; }
+.hidden_info .more_info { display:none; position:absolute; left:50%; bottom:13px; width:201px; margin-left:-100px; }
+.hidden_info .more_info .layer_top { width:201px; height:8px; font-size:1px; background:url(http://www.samsung.com/us/images/products/bg_compare_layer_special_top.png) no-repeat; }
+.hidden_info .more_info .layer_body { padding:8px 18px 12px; text-align:left; line-height:17px; background:url(http://www.samsung.com/us/images/products/bg_compare_layer_special.png) repeat-y; }
+.hidden_info .more_info .layer_body strong { color:#333; font-size:16px; font-weight:bold; }
+.hidden_info .more_info .layer_body p { padding:9px 0 3px; color:#666; line-height:16px; }
+.hidden_info .more_info .layer_body a { padding-right:12px; color:#00a3e3; font-size:11px; font-weight:bold; background:url(http://www.samsung.com/us/images/common/arrow_right.gif) no-repeat right 3px; }
+.hidden_info .more_info .layer_bottom { width:201px; height:26px; background:url(http://www.samsung.com/us/images/products/bg_compare_layer_special_bottom.png) no-repeat; }
+
+.product_title .img_title { background-repeat:no-repeat; background-position:center 30px; text-indent:-2000px; width:100%; height:79px; overflow:hidden; text-align:center; }
+.product_title .model_name { width:100%; text-align:center; font-size:18px; line-height:20px; color:#333333; padding:0 0 4px 0; margin-top:-2px; }
+.product_title strong { display:block; width:100%; height:25px; text-align: center; overflow:hidden; text-indent:-2000px; background-position:center top; background-repeat:no-repeat; }
+
+
+/* search_layer */
+.search_layer { z-index:10; position:absolute; display:none;}
+.search_layer .search_layer_body ul li { font-weight:bold; color:#999;}
+.search_layer .search_layer_body ul li a { display:block; color:#999; text-decoration:none;}
+.search_layer .search_layer_body ul li a .search_on { color:#00a9e0;}
+.search_layer .search_layer_body ul li a:hover { background:#d7f0fc;}
+.search_layer .search_layer_body ul.scroll { overflow:auto;}
+
+/* window 7 */
+.formobilecomputing { width:960px; height:19px; padding:4px 0 0 0; position:relative; font-weight:bold; font-size:14px; line-height:16px; color:#000000; z-index:11; }
+.formobilecomputing .win7_learnmore { position:absolute; right:185px; top:7px; width:160px; height:23px; display:block; overflow:hidden; }
+.formobilecomputing .win7_learnmore img,
+.formobilecomputing .cpu_intel img { position:absolute; top:-2000px; }
+.formobilecomputing .cpu_intel { position:absolute; right:90px; top:63px; width:77px; height:121px; background-repeat:no-repeat; background-position:left top;z-index:11; }
+.formobilecomputing .win7_business{position:absolute;right:185px;top:7px;margin:0;width:160px;}
+
+/* UCG layer */
+#layer_ucg { top:55px; width:960px; margin-left:-480px; background:#fff; }
+#layer_ucg .layer_contents { padding:0 0 58px; background:url(http://www.samsung.com/us/images/products/bg_layer_compare.gif) no-repeat right bottom; }
+#layer_ucg .layer_contents .layer_title { height:55px; padding:39px 0 0; color:#00a8e1; font-weight:bold; font-size:45px; line-height:45px; text-align:center;font-family:PFSquareSansProMedium  }
+#layer_ucg form { width:740px; margin:0 auto; padding:38px 0 0; }
+#layer_ucg form ul { position:relative; display:inline-block; width:100%; }
+#layer_ucg form li.input_cell_li { display:inline-block; position:relative; float:left; width:100%; padding-bottom:5px; }
+#layer_ucg form li.input_cell_li em { color:#666666; display:block; float:left; font-size:12px; font-weight:bold; margin-top:4px; width:162px; }
+#layer_ucg form li.input_cell_li em span { color:#f00; }
+#layer_ucg form li.input_cell_li .r_input { display:inline; float:left; width:233px; height:27px; background:url(http://www.samsung.com/us/images/support/bg_input_1.gif) no-repeat; }
+#layer_ucg form li.input_cell_li .r_input input { width:221px; height:17px; margin:5px 0 0 6px; border:0; }
+#layer_ucg form li.input_cell_li .dropdown_menu { left:162px; position:absolute; top:0; }
+#layer_ucg form li.input_cell_li .dropdown_menu .dropdown,
+#layer_ucg form li.input_cell_li .dropdown_menu .dropdown div,
+#layer_ucg form li.input_cell_li .dropdown_menu .dropdown dd { width:223px; }
+#layer_ucg form li.input_cell_li .dropdown_menu .dropdown dl,
+#layer_ucg form li.input_cell_li .dropdown_menu .dropdown dt { width:203px; }
+#layer_ucg form li.input_cell_li .dropdown_menu .dropdown ul,
+#layer_ucg form li.input_cell_li .dropdown_menu .dropdown li { width:208px; }
+#layer_ucg form li.input_cell_li .dropdown_menu .dropdown .scroll li { width:191px; }
+#layer_ucg form li.input_cell_li .txt_gray { color:#B4B4B4; }
+#layer_ucg form li.select_date { display:inline-block; position:relative; float:left; width:100%; height:27px; padding-bottom:5px; }
+#layer_ucg form li.select_date .drop1 { left:162px; }
+#layer_ucg form li.select_date .drop2 { left:268px; }
+#layer_ucg form li.select_date .drop3 { left:374px; }
+#layer_ucg form li.select_date .drop4 { left:480px; }
+#layer_ucg form li.select_date em { display:block; float:left; width:162px; margin-top:5px; color:#666666; font-size:12px; font-weight:bold; }
+#layer_ucg form li.select_date em span { color:#ff0000; font-size:12px; line-height:1; }
+#layer_ucg form li.select_date .dropdown_menu { position:absolute; top:0; }
+#layer_ucg form li.select_date .dropdown_menu .dropdown,
+#layer_ucg form li.select_date .dropdown_menu .dropdown div,
+#layer_ucg form li.select_date .dropdown_menu .dropdown dd { width:91px !important; }
+#layer_ucg form li.select_date .dropdown_menu .dropdown dl,
+#layer_ucg form li.select_date .dropdown_menu .dropdown dt { width:71px !important; }
+#layer_ucg form li.select_date .dropdown_menu .dropdown ul { width:76px !important; }
+#layer_ucg form li.select_date .dropdown_menu .dropdown li { width:76px !important; }
+#layer_ucg form li.select_date .dropdown_menu .dropdown .scroll li { width:59px !important; }
+#layer_ucg form li.select_date .dropdown_menu .dropdown.on dl {height:32px;}
+#layer_ucg form li.select_date .dropdown_menu .dropdown.on dd {display:block !important;}
+#layer_ucg form li .file_select { float:left; width:578px; }
+#layer_ucg form li .file_select em { display:block; width:100%; margin-bottom:3px; color:#666666; font-size:12px; font-weight:bold; }
+#layer_ucg form li .file_select .file_description { display:block; clear:both; color:#666666; float:none; font-size:11px; line-height:14px; padding:3px 0; }
+#layer_ucg form li .file_select .file_name {}
+#layer_ucg form li .file_select .buttons { position:relative; left:-3px; }
+#layer_ucg form li .file_select .buttons img { cursor:pointer; }
+#layer_ucg form li .hidden_info { float:left; margin:3px 0 0 3px; }
+#layer_ucg form li.input_cell_li .tags__cells { float:left; display:inline-block; width:500px; }
+#layer_ucg form li.input_cell_li .tags__cells .r_input { margin:0 4px 4px 0; }
+#layer_ucg form li.input_check_item { clear:both; padding:6px 0 0; }
+#layer_ucg form li.input_check_item em { font-weight:bold; }
+#layer_ucg form li.input_check_item ul { display:inline-block; width:740px; padding:14px 0 0; }
+#layer_ucg form li.input_check_item li { float:left; width:185px; height:30px; white-space:nowrap; overflow:hidden; color:#333; font-weight:bold; }
+#layer_ucg form li.input_check_item li input { vertical-align:middle; }
+#layer_ucg form li.textarea { display:inline-block; float:left; width:100%; padding-bottom:5px; }
+#layer_ucg form li.textarea em { display:block; float:left; width:162px; margin-top:5px; color:#666666; font-size:12px; font-weight:bold; }
+#layer_ucg form li.textarea .input_textarea { float:left; width:383px; height:97px; margin-top:5px; padding:5px; background:url(http://www.samsung.com/us/images/support/bg_textarea_1.gif) no-repeat; }
+#layer_ucg form li.textarea textarea { border:0 none; font-size:12px; height:97px; width:383px; }
+#layer_ucg form li.textarea .hidden_info { margin-top:8px; }
+#layer_ucg form li.in_drop { height:27px; }
+#layer_ucg form .btns { clear:both; width:100%; height:32px; padding-top:5px; border-top:1px solid #d0d0d0; overflow:hidden; }
+#layer_ucg form .btns li { float:right; }
+#layer_ucg form .agreement { padding:21px 0 16px 162px; }
+#layer_ucg form .agreement p { padding:0 0 18px; }
+#layer_ucg form .agreement div { font-weight:bold; }
+#layer_ucg form .agreement div input { vertical-align:middle; margin:0 3px 3px 0; }
+#layer_ucg form .img_progressbar { width:208px; height:12px; margin:2px 0 0; background:#95979a; }
+#layer_ucg form .img_progressbar span { display:block; height:12px; text-indent:-500px; overflow:hidden; background:url(http://www.samsung.com/us/images/common/progressbar.gif) 0 0; }
+#layer_ucg form .txt_progress { font-size:10px; line-height:18px; }
+#layer_ucg form .incorrect_direction { clear:both; padding:0 0 0 165px; color:#F81907; font-size:11px; }
+/* #layer_ucg form .incorrect_input { color:#F81907; } */
+#callProductSupport .gra_box_con .title .call_product_support{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:204px;overflow:hidden;}
+#callProductSupport .gra_box_con ul.compatible_cell{width:100%;padding:0 0 12px 0;}
+#callProductSupport .gra_box_con ul.compatible_cell:after{content:"";display:block;height:0;clear:both;}
+#callProductSupport .gra_box_con ul.compatible_cell li{float:left;margin:16px 20px 0 0;padding-bottom:5px;border-right:1px solid #d0d0d0;width:439px;}
+#callProductSupport .gra_box_con ul.compatible_cell li strong.consumer_products{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:144px;overflow:hidden;}
+#callProductSupport .gra_box_con ul.compatible_cell li strong.business_products{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:144px;overflow:hidden;}
+#callProductSupport .gra_box_con ul.compatible_cell li dl.consumer_products_list{float:left;width:195px;margin:0 25px 0 0;}
+#callProductSupport .gra_box_con ul.compatible_cell li dl.consumer_products_list.right{margin:0;}
+#callProductSupport .gra_box_con ul.compatible_cell li dl.consumer_products_list dt{font-weight:bold;line-height:17px;padding:15px 0 5px 0;}
+#callProductSupport .gra_box_con ul.compatible_cell li dl.consumer_products_list dd{line-height:18px;padding:1px 0 2px;}
+#callProductSupport .gra_box_con ul.compatible_cell li.right_con{width:418px;border:none;margin-right:0;}
+#callProductSupport .gra_box_con ul.compatible_cell li.right_con dl.consumer_products_list dt{padding-bottom:6px;}
+#callProductSupport .gra_box_con ul.compatible_cell li.right_con dl.consumer_products_list dd.pdb_19{padding-bottom:19px;}
+#callProductSupport .gra_box_con .title .corporate_affiliates{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:212px;overflow:hidden;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con{padding:0 0 18px 0;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li{width:272px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li dl.corporate_affiliates_list dt{margin-bottom:12px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li dl.corporate_affiliates_list dt strong{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:137px;overflow:hidden;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li dl.corporate_affiliates_list dt .samsung_elec_usa{width:137px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li dl.corporate_affiliates_list dt .samsung_affiliated_companies{width:222px;margin:25px 0 0 0;padding-bottom:1px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li dl.corporate_affiliates_list dd p{font-size:12px;color:#00a9e0;line-height:18px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li dl.corporate_affiliates_list dd p a{font-size:12px;color:#00a9e0;line-height:18px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li dl.corporate_affiliates_list dd p.first a{color:#00a9e0;font-weight:bold;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li .contact_information_for_samsung_electronics_america{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:401px;overflow:hidden;margin-top:1px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li .contact_information_for_samsung_telecommunication_america{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:470px;overflow:hidden;margin-top:1px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li .contact_information_for_samsung_information_systems_america{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:482px;overflow:hidden;margin-top:1px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li .contact_information_for_samsung_semiconductor_inc{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:404px;overflow:hidden;margin-top:1px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li .contact_information_for_samsung_austin_semiconductor{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:424px;overflow:hidden;margin-top:1px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li .contact_information_for_samsung_wireless_infrastructure{display:block;background-repeat:no-repeat;background-position:left top;text-indent:-1000px;width:433px;overflow:hidden;margin-top:1px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con{width:590px;display:none;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li#ElectronicsAmerica{display:block;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li#TelecommunicationAmerica dl.corporate_affiliates_list{margin-bottom:10px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li#TelecommunicationAmerica dl.corporate_affiliates_list dd.con_rbox .con_rbox_wrap{height:116px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li#InformationSystemsAmerica dl.corporate_affiliates_list dd.con_rbox .con_rbox_wrap{height:134px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list{float:left;margin:13px 10px 0 0;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list dt{font-weight:bold;color:#666;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list dd{margin-bottom:1px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list dd.con_rbox{background:url(http://www.samsung.com/us/images/support/bg_roundbox_2.gif) left top no-repeat;width:287px;margin-top:-5px;padding-top:5px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list dd.con_rbox .con_rbox_wrap{background:url(http://www.samsung.com/us/images/support/bg_roundbox_2_1.gif) left bottom no-repeat;width:287px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list dd.con_rbox dl{padding:0 15px 10px 15px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list dd.con_rbox dl dt{padding-top:6px;font-weight:bold;font-size:12px;margin-bottom:6px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list dd.con_rbox dl dd{padding-bottom:5px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list dd.con_rbox dl dd p{font-size:12px;line-height:18px;color:#666;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list dd.con_rbox dl dd p.ls-1{letter-spacing:-1px;}
+#callProductSupport .gra_box_con ul.compatible_cell.corporate_affiliates_con li.right_con dl.corporate_affiliates_list.last{margin-right:0;}

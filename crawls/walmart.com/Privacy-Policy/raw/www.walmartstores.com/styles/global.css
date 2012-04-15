@@ -1,0 +1,1149 @@
+/****Version 6.15****/
+/*v6.15
+Changed h2 margin, h3 line-height
+*/
+/*v6.14
+Changed h1-h6.  Added underlines to a tags in .content
+*/
+/*v6.13
+updatd the CSS for the gloabl search box area and global links 
+*/
+/*v6.12
+-- added bluedialog and sharethis css
+-- updated url paths; note - use relative paths pointing to
+   the image directory like so: url(../images/fileName.png);
+   this will ensure compatibility between the global.css
+   files in wmstores and rfiwalmart
+*/
+/*v6.10
+-- Move IE6 Hack to bottom for Safari compat.
+   span.button button, span.button input{
+	    _behavior:
+*/
+/*v6.9
+-- updated .globalNav input so it's appropriate height in all browsers
+-- moved online hiring center style above button style
+-- reduced padding for all primarynav li to try and fix firefox layout bug
+*/
+/*v6.8
+-- added 3rd party styles for backwards compatability
+-- udated footer so it doesn't wrap
+*/
+/*v6.7 changelog
+-- Tested in IE6, IE7, Safari (Win/Mac), Firefox (Win/Mac) and Opera
+-- Updated shortDesc and subclasses so it renders correctly. 
+   H2 tag must be outside of <div class="shortDesc"></div>
+-- Updated .noImage class so that it collapses where
+-- Added ul style for shortDesc
+   thumbnail would normally appear
+-- .content li line height was reduced   
+   */
+/****Version 6.6****/
+/* v6.6 changelog 
+-- updated shortDesc, images are positioned absolutly
+   and content appears 110px relative
+-- q&a rewritten from ul to divs or paragraphs
+   .q and .a created, .qa deleted
+-- moved .bkndGreen to be with .bkndGreen h2
+-- created new class "noImage" to be used with shortDesc 
+   that doesn't have images
+   example <div class="shortDesc noImg"></div>
+*/
+
+body {
+    background: #D5E3EF url(../images/layout/bg.png) repeat-x top;
+    margin: 0 0 15px 0;
+    padding: 0;
+    font: 0.75em Arial, Helvetica, sans-serif;
+    color: #333;
+    text-align: center;
+}
+
+textarea, input, a:active, a:focus{ outline:none;}
+
+
+/* Safari hack */
+textarea {
+    font: 1.1em/1.4em Arial, Helvetica, Sans-Serif;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    textarea {
+        font: 0.9em/1.4em Lucida Grande, Arial;
+    }
+}
+
+li, td {
+    color: #333;
+}
+
+a {
+    color: #1A75CF;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+    color: #d26716;
+}
+
+img {
+    border-width: 0px;
+}
+
+form {
+    margin: 0;
+    padding: 0;
+}
+.container {
+    text-align: left;
+    margin: 0px auto 0px auto; /*min-width: 990px; 	max-width: 1200px;*/ /*width:990px;*/
+    width: 82.50em;
+}
+.left {float:left;}
+.fsRight {float:right;}
+.rule {border-top:1px solid #CFCFCF;}
+/***wrappers and body***/
+
+.outerWrapper {
+    background: white url(../images/layout/bg_shadow_left.png) repeat-y top left;
+    padding-left: 21px;
+}
+.innerWrapper {
+    background: transparent url(../images/layout/bg_shadow_right.png) repeat-y top right;
+    padding-right: 21px;
+}
+/****header***/
+.header {
+    background: transparent url(../images/layout/bg_header_repeat.png) repeat-x top;
+    height: 95px;
+    margin: 0 -21px;
+}
+
+.headerLogo {
+    background: transparent url(../images/layout/bg_header_left.png) no-repeat top left;
+    height: 95px;
+    float: left;
+}
+.headerLogo img {
+    padding: 40px 0 0 40px;
+}
+.globalNav {
+    background: transparent url(../images/layout/bg_header_right.png) no-repeat top right;
+    float: right;
+    height: 95px;
+    padding-right: 22px;
+    _width: 307px; /*for ie6*/
+    overflow: hidden;
+}
+.globalLinks {
+    height: 24px;
+    font-size: 11px;
+    margin-top: 35px;
+    color: white;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.globalNav a {
+    color: #fff;
+    margin: 0;
+    padding: 0 4px 0 3px;
+}
+.globalNav a:hover {
+    color: white;
+}
+
+/***search box***/
+/*
+.globalNav input .searchText {
+	border:none;
+	float:left;
+	padding:0; 
+	margin: 0 5px 0 3px;
+	border:none;
+	font-size:12px;
+	color: #666;
+	width:11.75em;
+	height:20px;
+	*height:17px;
+}*/
+.searchText {
+    border: 1px solid #0360c0;
+    float: left;
+    padding: 2px 4px;
+    margin: 0 5px 0;
+    font-size: 11px;
+    color: #000;
+    width: 19em;
+    height: 14px;
+}
+
+
+.searchBox {
+    background: transparent url(../images/layout/searchbknd.gif) no-repeat top left;
+    height: 36px;
+    padding: 8px 8px 0 4px; /* margin-top:7px; 	 	 	padding: 8px 3px; 	width:300px; 	*/
+}
+.go {
+    border: 1px solid #0360c0;
+    cursor: pointer; /* 	margin:0; 	padding:0 0 5px 0; 	vertical-align: middle; 	border: 1px solid #0360c0 	*/
+}
+/****primary navigation****/
+.primaryNav {
+    background: #5dadfb url(../images/layout/bg_primary_nav_repeat.png) repeat-x bottom center;
+    min-height: 39px;
+    height: auto !important;
+    height: 39px;
+    margin: 0 0 .5em 0;
+    padding: 0;
+}
+.primaryNavContent {
+    background: transparent url(../images/layout/bg_primary_nav_right.png) no-repeat bottom right;
+}
+.primaryNav ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+    display: block;
+    background: transparent url(../images/layout/bg_primary_nav_left.png) no-repeat bottom left;
+}
+/*begin safari hack*/
+/*\*/
+html*.primaryNav li {
+    /*margin: 0 6px 0 6px;	 	_margin: 0 7px 0 6px;*/ /*ie sees this, need to reset*/
+    margin: 0 .42em 0 .42em;
+    _margin: 0 .50em 0 .42em; /*ie sees this, need to reset*/ /*margin: 0 .50em 0 .50em; 	_margin: 0 .58em 0 .50em;*/
+}
+/**/
+/*end safari hack*/
+
+/*for all other browsers*/
+.primaryNav li {
+    display: inline; /*margin: 0 7px 0 6px;*/
+    margin: 0 .50em 0 .50em; /*margin: 0 .58em 0 .50em;*/
+    line-height: 40px;
+}
+
+.primaryNav li a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0.92em 0.48em 0.92em 0.48em; /*padding: .92em .67em .92em  .67em;*/
+}
+
+.primaryNav a:hover {
+    text-decoration: underline;
+    color: white;
+}
+.primaryNav .active, .primaryNav .active a {
+    background: transparent url(../images/layout/bg_primary_active.png) no-repeat;
+}
+.primaryNav .active {
+    background-position: center right; /*padding: 11px 0 11px 0;*/
+    padding: .92em 0 .92em 0;
+}
+.primaryNav .active a {
+    background-position: center left;
+    margin-right: 5px;
+    _margin-right: 2px;
+    padding-left: 13px; /*margin-right: 0.42em; 	_margin-right:0.17em; 	padding-left: 1.08em;*/
+}
+.primaryNav .active a:hover {
+    /*color:lightblue;*/
+    text-decoration: none;
+}
+/***breadcrumb and login***/
+.breadcrumb {
+    margin-left: 0;
+    margin-top: 0.35em;
+    margin-bottom: 1em;
+    font-size: 0.95em;
+    padding: 0;
+}
+.breadcrumb p {
+    margin: 0;
+    padding: 0;
+}
+.login {
+    float: right;
+    text-align: right;
+    padding-left: 20px;
+}
+
+.clear {
+    clear: both;
+}
+/****content****/
+.content {
+    line-height: 1.4em;
+    padding: 0 10px 0 10px;
+}
+.content p {
+    margin-top: 0;
+}
+.content p a {
+    text-decoration: underline;
+}
+
+/*headings*/
+h1 {
+    color: #333;
+    font-weight: normal;
+    font-size: 1.75em;
+    line-height: 1.4em;
+    margin: 0;
+    margin-bottom: 1em;
+}
+/*sidebarDivQuote is for online hiring center compatibility*/
+.content h2, .content h3, .sidebarDivQuote {
+    color: #00338e;
+    line-height: 1.25em;
+    margin: 1em auto .5em;
+}
+.content h2, .sidebarDivQuote {
+    font-size: 1.5em;
+    font-weight: normal;
+}
+.content h3, .content h4, .content h5 {
+    color: black;
+}
+.content h3 {
+    font-size: 1.3em;
+    font-weight: normal;
+    margin: 10px 0 5px 0;
+}
+.content h4 {
+    font-size: 1.15em;
+    margin: 0;
+    font-weight: normal;
+}
+.content h5 {
+    font-size: 1em;
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+.content li {
+    margin-bottom: 5px;
+    line-height: 1.3em;
+}
+
+.content .moreLink {
+    font-weight: bold;
+}
+
+.content .tabs .active {
+    color: #d26716;
+    text-decoration: underline;
+}
+
+.roundedTools {
+    background: transparent url(../images/layout/rounded_corner_tl.gif) no-repeat top left;
+    padding: 0;
+    font-size: .96em;
+    line-height: 1.2em;
+    clear: both;
+}
+.roundedTools div.tr {
+    background: transparent url(../images/layout/rounded_corner_tr.gif) no-repeat top right;
+}
+.roundedTools div.tr div.bl {
+    background: transparent url(../images/layout/rounded_corner_bl.gif) no-repeat bottom left;
+}
+.roundedTools div.tr div.bl div.br {
+    background: transparent url(../images/layout/rounded_corner_br.gif) no-repeat bottom right; /*padding:10px;*/
+    margin: 0;
+}
+.roundedTools div.tr div.bl div.br table {
+    text-align: center;
+    margin: 0 auto 0 auto;
+}
+.roundedTools div.tr div.bl div.br table h2 {
+    text-align: left;
+}
+
+/****Callout box****/
+.callOutSizeSmall {
+    width:225px;
+}
+
+.calloutBox, .callOutSizeSmall {
+    border-color:#CFCFCF -moz-use-text-color;
+    border-style:solid none;
+    border-width:1px medium;
+    float:right;
+    font-size:0.96em;
+    line-height:1.2em;
+    margin:0 0 20px 40px;
+    max-width:215px;
+    min-width:100px;
+    padding:15px 5px;
+}
+
+.calloutBox h2, .callOutSizeSmall h2 {
+    background:none repeat scroll 0 0 transparent;
+    border:medium none;
+    color:#003896;
+    font-size:1.2em;
+    font-weight:normal;
+    margin-top:0;
+    padding:0;
+}
+
+.calloutBox p, .callOutSizeSmall p {
+    margin:0 0 0.5em;
+}
+
+.calloutBox ul, .callOutSizeSmall ul {
+    list-style:square inside none;
+    margin:0;
+    padding:0;
+}
+
+.calloutBox li, .callOutSizeSmall li {
+    line-height:1.3em;
+    margin-bottom:5px;
+}
+
+
+/****rounded box****/
+.roundedBox{
+	background: url(../images/layout/rounded_corner_tl.gif) no-repeat top left;
+	padding:0;
+	font-size: .96em;
+	line-height:1.2em;
+	float:right;
+	width:225px;
+}
+.roundedBox ul{
+	list-style-type:square;
+	margin:0;
+	padding: 0 0 0 20px;
+}
+.roundedBox p{
+	margin:0 0 .5em 0;
+}
+.roundedBox div {
+	background: url(../images/layout/rounded_corner_tr.gif) no-repeat top right;
+}
+.roundedBox div div{
+	background: url(../images/layout/rounded_corner_bl.gif) no-repeat bottom left;
+}
+.roundedBox div div div{
+	background: url(../images/layout/rounded_corner_br.gif) no-repeat bottom right;
+	padding:10px;
+	margin:0;
+}
+
+.roundedBox h2{
+	font-size:1.2em;
+	color:black;
+	margin: 0 0 .3em 0;
+	background: none;
+	border-bottom:1px dotted;
+	padding:0;
+	width: 95%;
+}
+.roundedBox li{
+	margin:0;
+}
+
+.blueRoundedBox{
+	background: transparent url(../images/layout/rounded_corner_tl.gif) no-repeat top left;
+	padding:0;
+	font-size: .96em;
+	line-height:1.2em;
+	float:right;
+	width:225px;
+}
+.blueRoundedBox p{
+	margin:0 0 .5em 0;
+}
+.blueRoundedBox div {
+	background: transparent url(../images/layout/rounded_corner_tr.gif) no-repeat top right;
+}
+.blueRoundedBox div div{
+	background: transparent url(../images/layout/rounded_corner_bl.gif) no-repeat bottom left;
+}
+.blueRoundedBox div div div{
+	background: transparent url(../images/layout/rounded_corner_br.gif) no-repeat bottom right;
+	padding:10px;
+	margin:0;
+}
+.blueRoundedBox ul{
+	list-style-type:square;
+	margin:0;
+	padding: 0 0 0 20px;
+}
+.blueRoundedBox h2{
+	font-size:1.2em;
+	color: black;
+	margin: 0 0 .3em 0;
+	background: none;
+	border-bottom:1px dotted;
+	padding:0;
+	width: 95%;
+}
+.blueRoundedBox li{
+	margin:0;
+}
+
+.blueBknd{background-color: #CDE5EE;}
+.blueBknd h2{color:navy;}
+
+/***footer***/
+.footer {
+    clear: both;
+    background: #fff url(../images/layout/bg_footer_right.png) no-repeat bottom right;
+    text-align: center;
+    height: 50px;
+    padding-right: 26px;
+    margin: 0 -21px;
+}
+.footerContent {
+    height: 50px;
+    background: transparent url(../images/layout/bg_footer_left.png) no-repeat bottom left;
+    padding-left: 26px;
+}
+.footerContent p {
+    margin: 0;
+    height: 35px;
+    background: transparent url(../images/layout/bg_footer_repeat.png) repeat-x bottom center;
+    padding-top: 15px;
+    color: #ccc;
+}
+.footerContent a {
+    padding: 0 5px;
+    font-size: 0.85em;
+}
+.social_media {
+    background-image: none;
+    background: #D5E3EF;
+    text-align: center;
+    padding: 5px 0;
+}
+.social_media a {
+    padding-left: 20px;
+    line-height: 16px;
+}
+.social_media .facebook {
+    background: url(../images/facebook.gif) no-repeat center left;
+    margin-right: 15px;
+    padding-top: 1px;
+}
+.social_media .twitter {
+    background: url(../images/icons/twitter-small.png) no-repeat center left;
+    margin-right: 15px;
+    padding-top: 1px;
+}
+.social_media .blogs {
+    background: url(../images/blogs.gif) no-repeat center left;    
+    padding-top: 1px;
+}
+.social_media .flickr {
+    background: url(../images/flickr-20.png) no-repeat 0px 2px;
+    margin-right: 15px;
+    padding-top: 4px;
+    padding-left:24px;
+    padding-bottom:4px;
+}
+.social_media .youtube {
+    background: url(../images/youtube-20.png) no-repeat 0px 2px;
+    margin-right: 15px;
+    padding-top: 4px;
+    padding-left:24px;
+    padding-bottom:4px;
+}
+.social_media .can {
+    background: url(../images/can.gif) no-repeat center left;
+    padding-top: 1px;
+    margin-right: 15px;
+}
+
+/****misc styles****/
+.hide { display:none; }
+.hidden { visibility:hidden; }
+
+/*quotes*/
+.quote {
+    background: transparent url(../images/layout/quote_left.png) no-repeat top left;
+    color: #3d8d0a;
+    font-family: verdana; /*width:245px;*/
+    float: right;
+    padding: 0 0 0 40px;
+    margin: 10px 0 10px 10px;
+    display: block;
+}
+.quote blockquote {
+    background: transparent url(../images/layout/quote_right.png) no-repeat bottom right;
+    padding: 0 35px 0 0;
+    margin: 0;
+    font-size: 1.25em;
+    line-height: 1.3em;
+    font-weight: bold;
+}
+.quote blockquote p {
+    margin-top: 0;
+}
+.quote p {
+    margin-top: -0.75em;
+}
+/*Question and Answer*/
+
+.q {
+    background: transparent url('../images/layout/q.gif') no-repeat;
+    font-weight: bold;
+}
+.a {
+    background: transparent url('../images/layout/a.gif') no-repeat;
+    padding-bottom: 1.3em;
+}
+.q, .a {
+    background-position: 0 2px;
+    padding-left: 18px;
+    margin: 0;
+}
+/*table*/
+.table {
+    margin-bottom: 10px;
+}
+/*listingSubhead is for backwards compatability with online hiring center*/
+.table th, .listingSubhead {
+    padding: 0 0 0 2px;
+    border-bottom: 2px solid #003399;
+    color: #039;
+}
+.table td {
+    border-bottom: 1px dashed #ccc;
+    padding: 0 0 0 2px;
+}
+
+/*tableFin - Financials table*/
+.tableFin {
+    margin-bottom: 10px;
+}
+.tableFin th {
+    background-color: #4899d3;
+    color: #fff;
+}
+.tableFin th.l {
+    background: #4899d3 url(http://www.walmartstores.com/images/tfin_hl.jpg) no-repeat top left;
+}
+.tableFin th.r {
+    background: #4899d3 url(http://www.walmartstores.com/images/tfin_hr.jpg) no-repeat top right;
+}
+
+.tableFin tr.break td {
+    height: 10px;
+    line-height: 10px;
+}
+
+.tableFin tr.alt td {
+    background-color: #e3eef9;
+}
+.tableFin tr.subh td {
+    margin-bottom: 12px;
+    background-color: #b4d2ef;
+    color: #039;
+    font-weight: bold;
+}
+
+/*short description*/
+.shortDesc {
+    display: block;
+    margin: 0;
+    padding-left: 110px;
+    min-height: 100px;
+    height: auto !important;
+    height: 100px;
+    padding-bottom: 1em;
+    position: relative;
+}
+.shortDesc img {
+    /*  float:left;*/ /*margin-right:10px;*/ /*	position: absolute;*/ /*margin-bottom:10px;*/ /*padding-bottom:10px;*/
+    position: absolute;
+    margin: 0 0 0 -110px;
+}
+.shortDesc p {
+    margin: 0;
+}
+.shortDesc a {
+    font-size: 1.15em;
+}
+.shortDesc p, .shortDesc a {
+    position: relative; /* left: 110px;*/
+}
+.shortDesc ul {
+    margin: 0;
+    padding-left: 20px;
+}
+/*used with .shortDesc for short descriptions that don't use image thumbnaile*/
+.noImage {
+    min-height: 0; /*reset*/
+    _height: 0; /*reset*/
+    padding-left: 0;
+}
+.noImage p, .noImage a {
+    left: auto;
+}
+/*short description w/ no image */
+.newsNoImage {
+    list-style-type: none;
+    display: block;
+    margin: 0 0 15px 0;
+    padding: 0;
+}
+.newsNoImage li {
+    background: url(../images/layout/line.png) no-repeat bottom left;
+    margin: 0 0 0 5px;
+    padding: 7px 0 7px 60px;
+}
+/*date for news */
+.newsDate {
+    float: left;
+    margin: 0 0px 0 -60px;
+}
+
+/*readmore link*/
+.readmore {
+    font-size: 0.95em;
+}
+
+.intro {
+    font-size: 1.5em;
+    line-height: 1.2em;
+}
+/*for online hiring center backwards compatability*/
+.feedbackformError {
+    color: red;
+}
+.feedbackformLabel {
+    font-weight: bold;
+}
+/*button*/
+.content p a.button {
+    text-decoration: none;
+}
+/*override underline in .content*/
+/* 	 http://www.hedgerwow.com/360/dhtml/css-round-button/demo.php 	*/
+a.button, span.button, del.button {
+    display: -moz-inline-box;
+    display: inline-block;
+    cursor: pointer;
+    border: none; /*font-size:0;     line-height:0;*/ /* 	for Safari, read this first 	http://creativebits.org/webdev/safari_background_repeat_bug_fix 	*/
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    height: 28px;
+    text-decoration: none; /*color:#2e523b;*/
+    color: white; /*font-style:normal;*/
+    margin: 0 6px 0px 0;
+    padding: 0 10px 0 0;
+    vertical-align: middle;
+    padding-top: -2px;
+    _position: relative;
+    _width: 10px;
+    _overflow-y: hidden;
+}
+
+a.button, span.button, a.button span, span.button button, span.button input, del.button, del.button span, del.button button {
+    background-image: url(../images/layout/bg_button.gif);
+}
+a.button span, span.button button, span.button input, del.button button, del.button span {
+    white-space: nowrap;
+    cursor: pointer;
+    color: white;
+    display: -moz-inline-box;
+    display: inline-block;
+    line-height: 1.2em;
+    letter-spacing: 0 !important;
+    font-family: "Arial" !important;
+    font-size: 1em !important;
+    font-weight: bold;
+    background-color: transparent;
+    background-position: 100% 0;
+    background-repeat: no-repeat;
+    height: 28px;
+    padding: 8px 20px 0 10px;
+    margin: 0 -16px 0 10px;
+    border: none;
+    _position: relative;
+    _padding-left: 0px;
+    _padding-right: 15px;
+    _margin-right: -10px;
+    _display: block;
+    _top: 0;
+    _right: -5px;
+}
+del.button {
+    /* cursor:not-allowed;	*/
+    background-position: 0 -120px;
+}
+
+del.button span, del.button button {
+    cursor: default;
+    color: #999 !important;
+    background-position: 100% -120px;
+}
+span.button button, del.button button {
+    line-height: 2.5; /*Opera*/
+    _padding-right: 5px;
+    _margin-left: 0px;
+}
+
+html.safari a.button span, html.safari del.button span, html.safari del.button button {
+    line-height: 1.3em;
+}
+
+html.safari span.button button, html.safari del.button button, html.safari del.button span {
+    line-height: 2.6em;
+}
+
+html.safari a.button:focus, html.safari span.button button:focus {
+    outline: none;
+}
+
+span.button button, span.button input, del.button button {
+    padding-top: 0px;
+    line-height: 2.5em; /*Opera need this*/
+}
+
+/*Hover Style*/
+a.button:hover, span.button:hover, a.button:focus, a.dom-button-focus, span.button-behavior-hover {
+    background-position: 0 -60px;
+    color: #222;
+    text-decoration: none;
+}
+
+a.button:hover span, span.button:hover button, a.button:focus span, span.button-behavior-hover button, span.button-behavior-hover input {
+    background-position: 100% -60px;
+}
+
+a.button:active, a.button:focus span {
+    color: #444;
+}
+
+
+/* BEGIN Icons */
+
+.pdf, .audio, .video, .external, .photo, .doc {
+    padding: 0 0 0 20px;
+    background-repeat: no-repeat;
+    background-position: top left;
+}
+.pdf {
+    background-image: url(../images/icon-pdf-small.gif);
+}
+.audio {
+    background-image: url(../images/icons/audio16.gif);
+}
+.video {
+    background-image: url(../images/icons/video.png);
+}
+.external {
+    background-image: url(../images/icons/external.png);
+}
+.photo {
+    background-image: url(../images/icons/photo.png);
+}
+.doc {
+    background-image: url(../images/icons/officeword16x16.png);
+}
+.iconRight {
+    padding: 2px 18px 0 0;
+    background-position: top right;
+}
+
+/* END Icons */
+
+/* BEGIN jQuery Tooltip Box */
+
+.tooltiparea {
+    margin: 8px;
+    width: 425px;
+    display: none;
+    position: absolute;
+}
+
+#captiontop {
+    background: url(../images/caption_box_top.gif) no-repeat left top;
+    height: 42px;
+}
+
+#captiontop h3 {
+    margin: 0;
+    padding: 7px 35px 0 35px;
+}
+
+#captionmid {
+    background: url(../images/caption_box_mid.gif) repeat-y left top;
+}
+
+#captionmid p {
+    margin: 0;
+    padding: 0 35px;
+}
+
+#captionbottom {
+    background: url(../images/caption_box_btm.gif) no-repeat left top;
+    height: 14px;
+}
+
+/* END jQuery Tooltip Box */
+
+/* BEGIN Blue Dialog Styles */
+.dlg {
+    font-family: Arial;
+    font-size: 11pt;
+    color: #222222;
+    background-color: #fff;
+}
+
+/* header styles */
+.dlgHeader {
+    position: relative;
+    color: #fff; /*cursor: move;  So the user knows they can drag the panel */
+}
+.dlgHeader .dlgOuter {
+    background: url(../images/bluedialog/top-right.png) right no-repeat;
+    padding-right: 40px;
+}
+.dlgHeader .dlgInner {
+    background: url(../images/bluedialog/top-left.png) left no-repeat;
+    padding-left: 9px;
+}
+.dlgHeader .dlgContent {
+    height: 35px;
+    background: url(../images/bluedialog/top-mid.png) repeat-x;
+}
+.dlgHeader .dlgContent h2 {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 12pt;
+    font-weight: bold;
+    color: #fff;
+    padding-left: 0;
+    padding-top: 10px;
+    line-height: normal;
+}
+
+.dlgHeader .dlgClose {
+    /* the image is 35x35 pixels wide */
+    height: 25px;
+    width: 35px; /* position the image */
+    position: absolute;
+    top: 4px;
+    right: 7px;
+    background: url(../images/bluedialog/close.png) no-repeat;
+    cursor: pointer;
+}
+.dlgHeader .dlgClose:hover {
+    /* set the hover image */
+    background: url(../images/bluedialog/close-hover.png) no-repeat;
+}
+
+/* dialog body styles */
+.dlgBody {
+}
+.dlgBody .dlgOuter {
+    background: url(../images/bluedialog/right.png) right repeat-y;
+    padding-right: 7px;
+}
+.dlgBody .dlgInner {
+    background: url(../images/bluedialog/left.png) left repeat-y;
+    padding-left: 7px;
+}
+.dlgBody .dlgContent {
+}
+.dlgBody .dlgContent {
+    margin: 0px;
+    font-weight: normal;
+}
+.dlgBody .dlgContent .dlgFooter {
+    /* footer image is 41 pixels tall */
+    background: url(../images/bluedialog/footer.gif) repeat-x bottom;
+    height: 41px;
+}
+.dlgBody .dlgContent .dlgFooter .dlgCommands {
+    text-align: right;
+    padding: 8px;
+}
+
+/* dialog footer styles */
+.dlgFooter {
+}
+.dlgFooter .dlgOuter {
+    background: url(../images/bluedialog/bottom-right.png) right top no-repeat;
+    padding-right: 9px;
+}
+.dlgFooter .dlgInner {
+    background: url(../images/bluedialog/bottom-left.png) left top no-repeat;
+    padding-left: 9px;
+}
+.dlgFooter .dlgContent {
+    height: 7px;
+    background: url(../images/bluedialog/bottom-mid.png) repeat-x;
+}
+/* END Blue Dialog Styles */
+
+/* BEGIN Share This */
+
+.ShareThis {
+    background-color: #222222;
+    font-style: normal;
+    color: #FFFFFF;
+}
+.ShareDesc {
+    color: #000000;
+}
+
+#tblSocial {
+    margin: auto;
+    text-align: center;
+}
+#tblSocial a {
+    background-repeat: no-repeat;
+    background-position: center left;
+    padding: 4px 0 0 22px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+#tblSocial td {
+    width: 165px;
+    padding: 5px;
+    text-align: left;
+}
+.Delicious {
+    background-image: url(../images/sharethis/delicious.gif);
+}
+.Digg {
+    background-image: url(../images/sharethis/digg.gif);
+}
+.StumbleUpon {
+    background-image: url(../images/sharethis/stumble.gif);
+}
+.Furl {
+    background-image: url(../images/sharethis/furl.gif);
+}
+.Netscape {
+    background-image: url(../images/sharethis/netscape.gif);
+}
+.Yahoo {
+    background-image: url(../images/sharethis/yahoo_myweb.gif);
+}
+.Technorati {
+    background-image: url(../images/sharethis/technorati.gif);
+}
+.Google {
+    background-image: url(../images/sharethis/google_bmarks.gif);
+}
+.Newsvine {
+    background-image: url(../images/sharethis/newsvine.gif);
+}
+.BlinkList {
+    background-image: url(../images/sharethis/blinklist.gif);
+}
+.Reddit {
+    background-image: url(../images/sharethis/reddit.gif);
+}
+.Blogmarks {
+    background-image: url(../images/sharethis/blogmarks.gif);
+}
+.Magnolia {
+    background-image: url(../images/sharethis/magnolia.gif);
+}
+.Live {
+    background-image: url(../images/sharethis/windows_live.gif);
+}
+.Tailrank {
+    background-image: url(../images/sharethis/tailrank.gif);
+}
+.Slashdot {
+    background-image: url(../images/sharethis/slashdot.gif);
+}
+.Facebook {
+    background-image: url(../images/sharethis/facebook.gif);
+}
+
+.SocialTabs .ajax__tab_header {
+    margin: 0px;
+    padding: 0px;
+}
+.SocialTabs .ajax__tab_outer {
+    margin: 0px 5px 5px 5px;
+}
+.SocialTabs .ajax__tab_inner {
+    padding: 3px 5px 3px 5px;
+}
+.SocialTabs .ajax__tab_tab {
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    text-align: center;
+    vertical-align: middle;
+}
+.SocialTabs .ajax__tab_hover {
+    border: solid 1px #D9252E;
+    color: #FFFFFF;
+    background-color: #F23A44;
+}
+.SocialTabs .ajax__tab_active {
+    border: solid 1px #FFFFFF;
+    margin: 5px 3px 3px 3px;
+    color: orange;
+}
+.SocialTabs .ajax__tab_body {
+    background-color: #FFFFFF;
+    background-repeat: repeat-x;
+    background-position: top;
+    margin: auto;
+    text-align: center;
+}
+.SocialTabs .ajax__tab_body a {
+    font-size: 12px;
+    margin: 0px;
+    text-align: left;
+}
+
+/* END Share This */
+
+.contactForm {
+    visibility: hidden;
+    display: none;
+    font-family: Arial, Helvetica, Sans-Serif;
+    font-size: 10pt;
+}
+
+.phoneCall {
+    width: 215px;
+    background-color: #efefef;
+    margin: 0 0 10px 10px;
+}
+.phoneCall h2 {
+    font-size: 1em;
+}
+
+/* BEGIN Errors */
+.validationError {
+    background: #ffe6e6 url(../images/errors-bg.png) repeat-x scroll left bottom;
+    border-top: solid 1px #fe5e5f;
+    padding: 5px;
+    color: #777777;
+}
+.validationError h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: #777777;
+}
+.validationError ul {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+/* END Errors */
+
+/* Optional hack for IE6 to simulate :hover selector
+Load this at the end - Safari stops processing CSS after this */
+span.button button, span.button input {
+    _behavior: expression( 		(function(el){ 			if( typeof( behavior_onMouseEnter) == 'undefined'){				 				behavior_onMouseEnter = function(el){					 					var dEl = this.parentNode;					 					var sClass = dEl.className ; 					dEl.__defaultClassName = sClass ; 					dEl.className = sClass + ' button-behavior-hover';	 					this.setCapture(); 				}; 				behavior_onMouseLeave = function(el) { 					var dEl = this.parentNode; 					dEl.className = dEl.__defaultClassName ; 					dEl.__defaultClassName = undefined; 					this.releaseCapture(); 				}; 			}; 			el.runtimeStyle.behavior = 'none'; 			el.onmouseenter = behavior_onMouseEnter; 			el.onmouseleave = behavior_onMouseLeave; 			 			 		})(this));
+}

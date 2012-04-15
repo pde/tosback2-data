@@ -1,0 +1,96 @@
+
+dj.cssrequire( '/includes/css/djdropdown.css' );
+(function(){var _p = new Image; _p.src=dj.media('/includes/images/arrow_dropdown.gif');})();
+
+dj.dropdown = function (dd,config) {
+
+    var drop = $(dd);
+    config   = config || {};
+
+    if (drop.length == 0) return alert( 'ERROR: dropdown not found!  ('+dd+')' );
+
+    var css_sel  = config.selected_class || 'selected';
+    var css_ohov = config.opt_hover      || 'djdd_hover';
+    var css_chov = config.curr_hover     || '';
+    var css_clck = config.curr_clicked   || 'djdd_clicked';
+    var b_width  = config.border_width   || 1;
+    var curr_cb  = config.current_cb     || function() { return true; };
+    var sel_cb   = config.select_cb      || function(o) { var href = o.attr( 'href' ) || $('a',o).attr( 'href' );
+							  if (href) document.location.href = href; else return true;
+							};
+
+    var opts = drop.children();
+
+    opts.addClass('djdd_opt').css('display','block');
+
+    // wrap the options in a menu container, add a current display div
+    var menu = dj.element( 'div', { 'class' : 'djdd_menu' } ).prependTo( drop ).hide();
+    var curr = dj.element( 'div', { 'class' : 'djdd_curr' } ).prependTo( drop );
+
+    curr.css({'display':'block','width':curr.outerWidth() - 2 * b_width});
+
+    opts.appendTo( menu );
+
+    drop.css('position','relative').blur(_hide);
+
+    var iopt = $('.'+css_sel,menu);
+    current( iopt.length == 1 ? iopt : opts[0], 'initial' );
+
+    // toggle menu display
+    curr.click( function (e) {
+	    e.stopPropagation();
+	    drop.css('z-index',2).siblings().css('z-index',1); //IE 6/7 z-index bug
+            if (menu.is(':hidden'))
+                _show();
+            else
+                _hide();
+        }).hover( hover_on, hover_off );
+
+    // menu option selection
+    opts.click( function (e) {
+            e.stopPropagation();
+            var o = $(this)
+            _hide();
+            if (sel_cb( o )) {
+                opts.removeClass( css_sel );
+                o.addClass( css_sel );
+                current( o );
+            }
+            return false;
+        }).hover( hilite_on, hilite_off );
+
+    // let the opt handle all clicks (todo: veneer opt instead)
+    $('a',opts).click( function(e) {
+            e.preventDefault();
+            return true;
+        });
+
+    // apply hovering styles on mouseovers
+    function hover_on  () { $(this).addClass( css_chov ) }
+    function hover_off () { $(this).removeClass( css_chov ) }
+
+    // apply hiliting styles on mouseovers
+    function hilite_on  () { $(this).addClass( css_ohov ) }
+    function hilite_off () { $(this).removeClass( css_ohov ) }
+
+    // which option to show in the current display
+    function current (o,initial) {
+	curr.html($(o).html());
+        curr.find('a').click( function (e) { e.preventDefault() });  // unresponsive links in display of current
+        curr_cb( $(o), curr, (initial ? true : false) );  // client can alter display of current
+    }
+
+    function _show () {
+	$('.djdd_curr').removeClass(css_clck);
+	$('.djdd_menu').hide();
+	curr.addClass(css_clck);
+        menu.css({'top':curr.outerHeight() - b_width,'width':Math.max(curr.outerWidth(),menu.outerWidth()) - 2 * b_width}).show();
+    }
+
+    function _hide () {
+	curr.removeClass(css_clck);
+        menu.hide();
+    }
+
+    $('body').click(_hide); $(window).blur(_hide);
+};

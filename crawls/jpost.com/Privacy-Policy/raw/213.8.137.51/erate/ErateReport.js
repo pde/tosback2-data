@@ -1,0 +1,1 @@
+function eRate_sendEvent(a,b){var c="http://213.8.137.51/erate/ReportJS.asp";var d=document.getElementsByTagName('body')[0];var e=document.createElement("img");e.style.display="none";d.appendChild(e);e.src=c+"?ToolId="+a+"&EventType="+b}

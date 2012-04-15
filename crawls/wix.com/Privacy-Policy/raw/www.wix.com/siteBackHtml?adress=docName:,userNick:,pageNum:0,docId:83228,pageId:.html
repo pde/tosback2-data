@@ -1,0 +1,26 @@
+<html>
+<head>
+    <meta name="robots" content="noindex" />
+<script language="JavaScript">
+    function sendStatus()
+    {
+        var urlHalves =  String(document.location).split('?');
+          urlHalves = urlHalves[1].split('&');
+        parent.onHistoryFrameLoaded(getUrlVar(urlHalves,'adress'),getUrlVar(urlHalves,'additionalInfo'));
+    };
+    function getUrlVar(urlHalves,varName)
+    {
+        for(var i=0;i<urlHalves.length;i++)
+        {
+            var nameValuePair = urlHalves[i].split('=');
+            if(nameValuePair[0] == varName)
+                return nameValuePair[1];
+        }
+        return '';
+    };
+    sendStatus();
+</script>
+
+</head>
+<body></body>
+</html>

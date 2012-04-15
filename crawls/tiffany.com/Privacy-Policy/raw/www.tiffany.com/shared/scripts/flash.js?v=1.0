@@ -1,0 +1,190 @@
+// Initialize vars for Flash detection
+// Set to the Flash Player version checking for
+var MM_contentVersion = 8;
+// Assume the user doesn't have the plugin
+var MM_FlashCanPlay = false;
+//
+// ------------------------------------------------------------------------------------------------------------
+// Main Flash Detection Function
+//
+// Checks if the Flash Player exists and if it is >= specified version in MM_contentVersion
+function flashDetection(width, height, swfName, swfSource) {		
+  var plugin = (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]) ? navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin : 0;
+  //alert(plugin);
+	// Determine which browser the user has, since NN and IE handle the Flash Player plugin differently
+  if (plugin) {
+		// Checks the Flash Player version for NN
+		//alert("NN");
+		MM_FlashCanPlay = NN_FlashChecker();
+  } else if (navigator.userAgent && navigator.userAgent.indexOf("MSIE")>=0 && (navigator.appVersion.indexOf("Win") != -1)) {
+		// Checks the Flash Player version for IE
+		//alert("IE");
+		MM_FlashCanPlay = IE_FlashChecker();
+	}
+	// Determines if the user has the correct Flash Player
+	if ( MM_FlashCanPlay ) {
+		// Display Flash
+		playFlash(width, height, swfName, swfSource);
+	} else{
+		// Error - Flash Player does not exist or wrong version
+		doNotPlayFlash();
+	}
+}
+//
+// ------------------------------------------------------------------------------------------------------------
+// Utility Funcitons for Flash Dectection
+//
+// Detects the Flash Player plugin for Internet Explorer
+function IE_FlashChecker() {
+	//alert("IE_FlashChecker");
+	document.write('<SCR' + 'IPT LANGUAGE=VBScript\> \n'); //FS hide this from IE4.5 Mac by splitting the tag
+	document.write('on error resume next \n');
+	document.write('MM_FlashCanPlay = ( IsObject(CreateObject("ShockwaveFlash.ShockwaveFlash." & MM_contentVersion)))\n');
+	document.write('</SCR' + 'IPT\> \n');
+	//alert("MM_FlashCanPlay = " + MM_FlashCanPlay);
+	return (MM_FlashCanPlay);
+}
+//
+// Detects the Flash Player plugin for Netscape
+function NN_FlashChecker() {
+	//alert("NN_FlashChecker");	
+	var words = navigator.plugins["Shockwave Flash"].description.split(" ");
+	for (var i = 0; i < words.length; ++i) {
+		if (isNaN(parseInt(words[i])))
+		continue;
+		var MM_PluginVersion = words[i]; 
+	}
+	var MM_FlashCanPlay = MM_PluginVersion >= MM_contentVersion;
+	//alert("MM_FlashCanPlay = " + MM_FlashCanPlay);
+	return (MM_FlashCanPlay);
+}
+//
+// The user has the correct Flash Player 
+// Writes the code for the Flash movie and allows the Flash movie to play
+function playFlash(width, height, swfName, swfSource) {
+	//alert("playFlash");
+	document.write('<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"');
+	document.write(' codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"');
+	document.write(' ID="' + swfName + '" WIDTH="' + width + '" HEIGHT="' + height + '" ALIGN="">');
+	document.write('<PARAM NAME=movie VALUE="' + swfSource + '"><PARAM NAME=quality VALUE=high><PARAM NAME=bgcolor VALUE=#FFFFFF>'); 
+	document.write('<EMBED src="' + swfSource + '" quality=high bgcolor=#FFFFFF');
+	document.write(' swLiveConnect=FALSE WIDTH="' + width + '" HEIGHT="' + height + '" NAME="' + swfName + '" ALIGN=""');
+	document.write(' TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer">');
+	document.write('</EMBED>');
+	document.write('</OBJECT>');
+}
+//
+// The user does not have the correct Flash Player 
+// Redirects the user to the error page for no Flash Player
+function doNotPlayFlash() {
+	window.location.replace("/error_flash.asp?<%=display_sid%>");
+}
+
+function flashSplash(flashSource,assetWidth,assetHeight,bgcolor,imageSource) {
+	if ( isCorrectFlash() ) {
+				  			document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"');
+				  			document.write(' codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" ');
+				  			document.write(' id="flashSplash" width="'+assetWidth+'" height="'+assetHeight+'" align="">');
+				  			document.write(' <param name="movie" value="'+ flashSource+'"> <param name="quality" value="high"> <param name="bgcolor" value="#FFFFFF">  <param name="WMode" value="Transparent" />');
+				  			document.write(' <embed wmode="transparent" src="'+ flashSource+'" quality="high" bgcolor="#FFFFFF"  ');
+				  			document.write(' swLiveConnect=FALSE width="'+assetWidth+'" height="'+assetHeight+'" name="flashSplash" align=""');
+				  			document.write(' type="application/x-shockwave-flash" pluginspage="'+flashPluginsPage+'">');
+				  			document.write(' </embed>');
+				  			document.write(' </object>');
+	} else{
+				  			document.write('<img src="'+imageSource+'" name="imgCategoryPhoto" width="'+assetWidth+'" height="'+assetHeight+'" border="0" id="imgCategoryPhoto" style="padding: 0px; margin: 0px; display:block;" galleryimg="no" />');
+	}
+			
+}
+
+function isCorrectFlash(){
+	return false;
+	}
+
+function isCorrectFlash2() {
+	// If the user has the correct vr of the Flash, then show flashSource
+	// Else, Show the imageSource
+	// Users can only see PMA Flash version if they have Flash 6 or higher installed.
+	MM_contentVersion = 8; 
+	var plugin = (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]) ? navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin : 0;
+
+	// Determine which browser the user has, since NN and IE handle the Flash Player plugin differently
+	if (plugin) {
+		// Checks the Flash Player version for NN
+		MM_FlashCanPlay = NN_FlashChecker();
+	} else if (navigator.userAgent && navigator.userAgent.indexOf("MSIE")>=0 && (navigator.appVersion.indexOf("Win") != -1)) {
+		// Checks the Flash Player version for IE
+		MM_FlashCanPlay = IE_FlashChecker();
+	}
+	if ( MM_FlashCanPlay ) {return true; }
+	else {return false; }
+}
+// ------------------------------------------------------------------------------------------------------------
+// Flash Version Detection Function
+//
+// Checks if the Flash Player exists. If exists, returns the flash player version number, otherwise returns -1.
+function GetFlashVersion() {		
+  
+  var flashVersion;
+  
+  //default to -1
+  flashVersion = -1;
+  
+  var plugin = (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]) ? navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin : 0;
+
+// Determine which browser the user has, since NN/Firefox and IE handle the Flash Player plugin differently
+  if (plugin) {
+		
+		// Checks the Flash Player version for NN
+		flashVersion = NN_GetFlashVersion();
+		
+  } else if (navigator.userAgent && navigator.userAgent.indexOf("MSIE")>=0 && (navigator.appVersion.indexOf("Win") != -1)) {
+		
+		// Checks the Flash Player version for IE
+		flashVersion = IE_GetFlashVersion();
+	}	
+	
+	return (flashVersion);
+
+}
+
+// Detects the Flash Player plugin for Netscape
+function NN_GetFlashVersion() {
+
+	var flashVersion;
+	
+	//Default to -1
+	MM_PluginVersion = -1;
+	
+	var words = navigator.plugins["Shockwave Flash"].description.split(" ");
+	for (var i = 0; i < words.length; ++i) {
+		if (isNaN(parseInt(words[i])))
+		continue;
+		flashVersion = words[i]; 
+	}
+	
+	return (flashVersion);
+}
+
+var IEFlashVersion;
+
+// Utility Funcitons for Flash Dectection
+//
+// Detects the Flash Player plugin for Internet Explorer
+function IE_GetFlashVersion() {
+
+	//Default to -1
+	IEFlashVersion = -1;
+	
+	document.write('<SCR' + 'IPT LANGUAGE=VBScript\> \n'); //FS hide this from IE4.5 Mac by splitting the tag
+	document.write('on error resume next \n');
+	document.write('For i = 2 to 15 \n');	
+	document.write('If Not(IsObject(CreateObject("ShockwaveFlash.ShockwaveFlash." & i))) Then \n');
+	document.write('Else \n');
+	document.write('IEFlashVersion = i \n');
+	document.write('End If \n');	
+	document.write('Next \n');	
+	document.write('</SCR' + 'IPT\> \n');
+		
+	return (IEFlashVersion);
+}

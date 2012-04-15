@@ -1,0 +1,97 @@
+﻿var ClientLogger = {
+    initialize: function() {
+    },
+
+    debug: function(message) {
+        ClientLogger.sendLogEntryToServer('debug', message);
+    },
+
+    info: function(message) {
+        ClientLogger.sendLogEntryToServer('info', message);
+    },
+
+    infoForced: function(message) {
+        //ClientLogger.sendLogEntryToServer('info', message, true);
+
+        var utmxCookie = (new CookieManager()).getValue('__utmx');
+        if (utmxCookie == null || utmxCookie == undefined) utmxCookie = '';
+        ClientLogger.sendRawLogEntryToServer('info', message, '1234554321', '{' + utmxCookie + '}', '', '', '', '', '', window.location.href, true);
+    },
+
+    warn: function(message) {
+        ClientLogger.sendLogEntryToServer('warn', message);
+    },
+
+    error: function(message) {
+        ClientLogger.sendLogEntryToServer('error', message);
+    },
+
+    fatal: function(message) {
+        ClientLogger.sendLogEntryToServer('fatal', message);
+    },
+
+    logAjaxError: function(callingContext, XMLHttpRequest, textStatus, errorThrown) {
+        var errorMessage = '';
+
+        errorMessage = errorMessage + 'callingContext: ' + callingContext + '|*|';
+
+        if (textStatus && typeof (textStatus) == 'string' && textStatus.length > 0) {
+            errorMessage = errorMessage + 'textStatus: ' + textStatus + '|*|';
+        }
+        if (XMLHttpRequest && XMLHttpRequest.responseText && typeof (XMLHttpRequest.responseText) == 'string' && XMLHttpRequest.responseText.length > 0) {
+            errorMessage = errorMessage + 'responseText: ' + XMLHttpRequest.responseText + '|*|';
+        }
+        if (XMLHttpRequest && XMLHttpRequest.statusText && typeof (XMLHttpRequest.statusText) == 'string' && XMLHttpRequest.statusText.length > 0) {
+            errorMessage = errorMessage + 'statusText: ' + XMLHttpRequest.statusText;
+        }
+
+        ClientLogger.error(errorMessage);
+    },
+
+    sendLogEntryToServer: function(level, message, forceLog) {
+        var loggerURL = forceLog ? '/WebServices/ClientLogging.asmx/WriteToLogForced' : '/WebServices/ClientLogging.asmx/WriteToLog';
+        var browserCodeName = navigator.appCodeName;
+        var browserAppName = navigator.appName;
+        var browserName = navigator.product;
+        var browserVersion = navigator.appVersion;
+        var browserLanguage = ((typeof (navigator.browserLanguage) != 'undefined') ? navigator.browserLanguage : navigator.language);
+        var userPlatform = navigator.platform;
+        var userAgent = navigator.userAgent;
+        var windowLocationUrl = window.location.href;
+
+        var requestParameters = '?level=' + encodeURIComponent(level) + '&message=' + encodeURIComponent(message) + '&browserCodeName=' + encodeURIComponent(browserCodeName) + '&browserAppName=' + encodeURIComponent(browserAppName) + '&browserName=' + encodeURIComponent(browserName) + '&browserVersion=' + encodeURIComponent(browserVersion) + '&browserLanguage=' + encodeURIComponent(browserLanguage) + '&userPlatform=' + encodeURIComponent(userPlatform) + '&userAgent=' + encodeURIComponent(userAgent) + '&windowLocationUrl=' + encodeURIComponent(windowLocationUrl);
+
+        var webServiceUrl = '' + loggerURL + requestParameters;
+        jQuery.ajax({
+            type: 'GET',
+            url: webServiceUrl,
+            dataType: 'text'
+        });
+    },
+
+    sendRawLogEntryToServer: function(level, message, browserCodeName, browserAppName, browserName, browserVersion, browserLanguage, userPlatform, userAgent, windowLocationUrl, forceLog) {
+        var loggerURL = forceLog ? '/WebServices/ClientLogging.asmx/WriteToLogForced' : '/WebServices/ClientLogging.asmx/WriteToLog';
+
+        if (forceLog) {
+            var sessionToken = ClientPageTracker.getUserSessionToken();
+            var checkoutToken = ClientPageTracker.getUserCheckoutToken();
+            var cm = new CookieManager();
+            var isCsr = typeof (cm.getValueIgnoreCase('CSR')) === 'undefined' ? 0 : 1
+            message += ' [session:' + sessionToken + '|checkout:' + checkoutToken + '|csr:' + isCsr + ']';
+
+            if (message.indexOf('OrderConfirmation') >= 0) {
+                ClientPageTracker.getUserCheckoutToken(true); //reset checkout token after recording the value
+            }
+        }
+
+        var requestParameters = '?level=' + encodeURIComponent(level) + '&message=' + encodeURIComponent(message) + '&browserCodeName=' + encodeURIComponent(browserCodeName) + '&browserAppName=' + encodeURIComponent(browserAppName) + '&browserName=' + encodeURIComponent(browserName) + '&browserVersion=' + encodeURIComponent(browserVersion) + '&browserLanguage=' + encodeURIComponent(browserLanguage) + '&userPlatform=' + encodeURIComponent(userPlatform) + '&userAgent=' + encodeURIComponent(userAgent) + '&windowLocationUrl=' + encodeURIComponent(windowLocationUrl);
+
+        var webServiceUrl = '' + loggerURL + requestParameters;
+        jQuery.ajax({
+            type: 'GET',
+            url: webServiceUrl,
+            dataType: 'text'
+        });
+    }
+};
+

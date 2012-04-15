@@ -1,0 +1,1283 @@
+
+// WebTrends SmartSource Data Collector Tag
+// Version: 8.6.0
+// Tag Builder Version: 2.1.0
+// Created: 11/17/2008 2:28:01 PM
+// Modified 05/20/2011
+// v2.7
+// test comment
+
+var LightRegCookie = "PWCLIGHTREG";
+var userID = getCookie(LightRegCookie);
+
+function getCookie(c_name)
+{
+if (document.cookie.length>0)
+  {
+  c_start=document.cookie.indexOf(c_name + "=");
+  if (c_start!=-1)
+    {
+    c_start=c_start + c_name.length+1;
+    c_end=document.cookie.indexOf(";",c_start);
+    if (c_end==-1) c_end=document.cookie.length;
+    return unescape(document.cookie.substring(c_start,c_end));
+    }
+  }
+return "";
+}
+
+function WebTrends(){
+	var that=this;
+	// begin: user modifiable
+	this.dcsid="dcs48je0gvievvzcevf30xglf_9p7l";
+        //If internal Domains, point to Test Datasource
+
+        var pwcDoms = ["pwcinternal","origin-pwc","pwc-stg"];
+        for(x=0; x<pwcDoms.length; x++){
+            if(window.location.hostname.indexOf(pwcDoms[x])!= -1 && window.location.hostname.indexOf("randqconnect") == -1){
+                this.dcsid="dcs823rmv10000oiqr9uq7jm8_7h6q";
+            }
+        }
+	this.domain="statse.webtrendslive.com";
+	this.trackedrefs=".pwc.com,cfodirect.com";
+	this.timezone=-5;
+	this.fpcdom="";
+	this.onsitedoms="www.cfodirect.com,pdf.pwc.co.uk,premium.pwc.co.uk,fraudacademy.pwc.co.uk,psrc.pwc.com,nedagenda.pwc.co.uk,tiag.pwc.com,firestation.pwc.co.uk,maforum.pwc.com";
+	this.downloadtypes="xls,doc,pdf,epub,txt,csv,zip,mp3,flv,wmv";
+	this.trackevents=true;
+	this.enabled=true;
+	this.i18n=false;
+	this.fpc="PWC_WOD";
+	this.adclickparam="WT.ac";
+	this.paidsearchparams="gclid";
+        this.preserve=true;
+	// end: user modifiable
+	this.DCS={};
+	this.WT={};
+	this.DCSext={};
+	this.images=[];
+	this.index=0;
+	this.exre=(function(){return(window.RegExp?new RegExp("dcs(uri)|(ref)|(aut)|(met)|(sta)|(sip)|(pro)|(byt)|(dat)|(p3p)|(cfg)|(redirect)|(cip)","i"):"");})();
+	this.re=(function(){return(window.RegExp?(that.i18n?{"%25":/\%/g}:{"%09":/\t/g,"%20":/ /g,"%23":/\#/g,"%26":/\&/g,"%2B":/\+/g,"%3F":/\?/g,"%5C":/\\/g,"%22":/\"/g,"%7F":/\x7F/g,"%A0":/\xA0/g}):"");})();
+	this.eventautotracked=false;
+	this.eventexplicittracked=false;
+	this.trackclickargs= new Array();
+	if (!this.fpcdom) this.fpcdom=window.location.hostname.match(/^[^\.]+(.+)/)[1];
+}
+WebTrends.prototype.dcsGetId=function(){
+	if (this.enabled&&(document.cookie.indexOf(this.fpc+"=")==-1)&&(document.cookie.indexOf("WTLOPTOUT=")==-1)){
+		document.write("<scr"+"ipt type='text/javascript' src='"+"http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+this.domain+"/"+this.dcsid+"/wtid.js"+"'><\/scr"+"ipt>");
+	}
+}
+WebTrends.prototype.dcsGetCookie=function(name){
+	var cookies=document.cookie.split("; ");
+	var cmatch=[];
+	var idx=0;
+	var i=0;
+	var namelen=name.length;
+	var clen=cookies.length;
+	for (i=0;i<clen;i++){
+		var c=cookies[i];
+		if ((c.substring(0,namelen+1))==(name+"=")){
+			cmatch[idx++]=c;
+		}
+	}
+	var cmatchCount=cmatch.length;
+	if (cmatchCount>0){
+		idx=0;
+		if ((cmatchCount>1)&&(name==this.fpc)){
+			var dLatest=new Date(0);
+			for (i=0;i<cmatchCount;i++){
+				var lv=parseInt(this.dcsGetCrumb(cmatch[i],"lv"));
+				var dLst=new Date(lv);
+				if (dLst>dLatest){
+					dLatest.setTime(dLst.getTime());
+					idx=i;
+				}
+			}
+		}
+		return unescape(cmatch[idx].substring(namelen+1));
+	}
+	else{
+		return null;
+	}
+}
+WebTrends.prototype.dcsGetCrumb=function(cval,crumb,sep){
+	var aCookie=cval.split(sep||":");
+	for (var i=0;i<aCookie.length;i++){
+		var aCrumb=aCookie[i].split("=");
+		if (crumb==aCrumb[0]){
+			return aCrumb[1];
+		}
+	}
+	return null;
+}
+WebTrends.prototype.dcsGetIdCrumb=function(cval,crumb){
+	var id=cval.substring(0,cval.indexOf(":lv="));
+	var aCrumb=id.split("=");
+	for (var i=0;i<aCrumb.length;i++){
+		if (crumb==aCrumb[0]){
+			return aCrumb[1];
+		}
+	}
+	return null;
+}
+WebTrends.prototype.dcsIsFpcSet=function(name,id,lv,ss){
+	var c=this.dcsGetCookie(name);
+	if (c){
+		return ((id==this.dcsGetIdCrumb(c,"id"))&&(lv==this.dcsGetCrumb(c,"lv"))&&(ss==this.dcsGetCrumb(c,"ss")))?0:3;
+	}
+	return 2;
+}
+WebTrends.prototype.dcsFPC=function(){
+	if (document.cookie.indexOf("WTLOPTOUT=")!=-1){
+		return;
+	}
+	var WT=this.WT;
+	var name=this.fpc;
+	var dCur=new Date();
+	var adj=(dCur.getTimezoneOffset()*60000)+(this.timezone*3600000);
+	dCur.setTime(dCur.getTime()+adj);
+	var dExp=new Date(dCur.getTime()+315360000000);
+	var dSes=new Date(dCur.getTime());
+	WT.co_f=WT.vtid=WT.vtvs=WT.vt_f=WT.vt_f_a=WT.vt_f_s=WT.vt_f_d=WT.vt_f_tlh=WT.vt_f_tlv="";
+	if (document.cookie.indexOf(name+"=")==-1){
+		if ((typeof(gWtId)!="undefined")&&(gWtId!="")){
+			WT.co_f=gWtId;
+		}
+		else if ((typeof(gTempWtId)!="undefined")&&(gTempWtId!="")){
+			WT.co_f=gTempWtId;
+			WT.vt_f="1";
+		}
+		else{
+			WT.co_f="2";
+			var curt=dCur.getTime().toString();
+			for (var i=2;i<=(32-curt.length);i++){
+				WT.co_f+=Math.floor(Math.random()*16.0).toString(16);
+			}
+			WT.co_f+=curt;
+			WT.vt_f="1";
+		}
+		if (typeof(gWtAccountRollup)=="undefined"){
+			WT.vt_f_a="1";
+		}
+		WT.vt_f_s=WT.vt_f_d="1";
+		WT.vt_f_tlh=WT.vt_f_tlv="0";
+	}
+	else{
+		var c=this.dcsGetCookie(name);
+		var id=this.dcsGetIdCrumb(c,"id");
+		var lv=parseInt(this.dcsGetCrumb(c,"lv"));
+		var ss=parseInt(this.dcsGetCrumb(c,"ss"));
+		if ((id==null)||(id=="null")||isNaN(lv)||isNaN(ss)){
+			return;
+		}
+		WT.co_f=id;
+		var dLst=new Date(lv);
+		WT.vt_f_tlh=Math.floor((dLst.getTime()-adj)/1000);
+		dSes.setTime(ss);
+		if ((dCur.getTime()>(dLst.getTime()+1800000))||(dCur.getTime()>(dSes.getTime()+28800000))){
+			WT.vt_f_tlv=Math.floor((dSes.getTime()-adj)/1000);
+			dSes.setTime(dCur.getTime());
+			WT.vt_f_s="1";
+		}
+		if ((dCur.getDay()!=dLst.getDay())||(dCur.getMonth()!=dLst.getMonth())||(dCur.getYear()!=dLst.getYear())){
+			WT.vt_f_d="1";
+		}
+	}
+	WT.co_f=escape(WT.co_f);
+	WT.vtid=(typeof(this.vtid)=="undefined")?WT.co_f:(this.vtid||"");
+	WT.vtvs=(dSes.getTime()-adj).toString();
+	var expiry="; expires="+dExp.toGMTString();
+	var cur=dCur.getTime().toString();
+	var ses=dSes.getTime().toString();
+	document.cookie=name+"="+"id="+WT.co_f+":lv="+cur+":ss="+ses+expiry+"; path=/"+(((this.fpcdom!=""))?("; domain="+this.fpcdom):(""));
+	var rc=this.dcsIsFpcSet(name,WT.co_f,cur,ses);
+	if (rc!=0){
+		WT.co_f=WT.vtvs=WT.vt_f_s=WT.vt_f_d=WT.vt_f_tlh=WT.vt_f_tlv="";
+		if (typeof(this.vtid)=="undefined"){
+			WT.vtid="";
+		}
+		WT.vt_f=WT.vt_f_a=rc;
+	}
+}
+WebTrends.prototype.dcsIsOnsite=function(host){
+	if (host.length>0){
+		host=host.toLowerCase();
+		if (host==window.location.hostname.toLowerCase()){
+			return true;
+		}
+		if (typeof(this.onsitedoms.test)=="function"){
+			return this.onsitedoms.test(host);
+		}
+		else if (this.onsitedoms.length>0){
+			var doms=this.dcsSplit(this.onsitedoms);
+			var len=doms.length;
+			for (var i=0;i<len;i++){
+				if (host==doms[i]){
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+// Code section for Generate an Ad View query parameter for every Ad Click link.
+WebTrends.prototype.dcsAdSearch=function(){
+	if (document.links){
+		var param=this.adclickparam+"=";
+		var paramlen=param.length;
+		var paramre=new RegExp(param,"i");
+		var len=document.links.length;
+		var pos=end=-1;
+		var anch=urlp=value="";
+		var urlpre;
+		var url=document.URL+"";
+		var start=url.search(paramre);
+		if (start!=-1){
+			end=url.indexOf("&",start);
+			urlp=url.substring(start,(end!=-1)?end:url.length);
+			urlpre=new RegExp(urlp+"(&|#)","i");
+		}
+		for (var i=0;i<len;i++){
+			if (document.links[i].href){
+				anch=document.links[i].href+"";
+				if (urlp.length>0){
+					anch=anch.replace(urlpre,"$1");
+				}
+				pos=anch.search(paramre);
+				if (pos!=-1){
+					start=pos+paramlen;
+					end=anch.indexOf("&",start);
+					value=anch.substring(start,(end!=-1)?end:anch.length);
+					this.WT.ad=this.WT.ad?(this.WT.ad+";"+value):value;
+				}
+			}
+		}
+	}
+}
+WebTrends.prototype.dcsTypeMatch=function(pth, typelist){
+	var type=pth.substring(pth.lastIndexOf(".")+1,pth.length);
+	var types=this.dcsSplit(typelist);
+	var tlen=types.length;
+	for (var i=0;i<tlen;i++){
+		if (type==types[i]){
+			return true;
+		}
+	}
+	return false;
+}
+WebTrends.prototype.dcsEvt=function(evt,tag){
+	var e=evt.target||evt.srcElement;
+	while (e&&e.tagName&&(e.tagName!=tag)){
+		e=e.parentElement||e.parentNode;
+	}
+	return e;
+}
+WebTrends.prototype.dcsNavigation=function(evt){
+	return "";
+}
+WebTrends.prototype.dcsBind=function(event,func){
+  if ((typeof(func)=="function")&&document.body){
+	if (document.body.addEventListener){
+
+	  document.body.addEventListener(event, func.wtbind(this), false);
+	}
+	else if(document.body.attachEvent){
+	  document.body.attachEvent("on"+event, func.wtbind(this));
+   }
+  }
+}
+WebTrends.prototype.dcsET=function(){
+// IE prefixes attached events, Moz post fixes event listeners
+//  var e=(navigator.appVersion.indexOf("MSIE")!=-1)?"click":"mousedown";
+	var e = "click";
+  this.dcsBind(e,this.dcsDownload);
+  //	this.dcsBind(e,this.dcsDynamic);
+  //this.dcsBind(e,this.dcsFormButton);
+  this.dcsBind(e,this.dcsOffsite);
+  //this.dcsBind(e,this.dcsAnchor);
+  //this.dcsBind(e,this.dcsImageMap);
+  this.dcsBind(e,this.doCompleteClick);
+}
+
+WebTrends.prototype.dcsMultiTrack=function(){
+	var args=dcsMultiTrack.arguments?dcsMultiTrack.arguments:arguments;
+	if (args.length%2==0){
+	    this.dcsSaveProps(args);
+		this.dcsSetProps(args);
+		//if any manual parameters have been set via wrs_trackclick, override
+		if (this.trackclickargs)
+		this.dcsSetProps(this.trackclickargs);
+		var dCurrent=new Date();
+		this.DCS.dcsdat=dCurrent.getTime();
+		this.dcsFPC();
+		this.dcsTag();
+		this.dcsRestoreProps();
+	}
+}
+
+//WebTrends.prototype.dcsMultiTrack=function(){
+//	var args=dcsMultiTrack.arguments?dcsMultiTrack.arguments:arguments;
+//	if (args.length%2==0){
+//		this.dcsSetProps(args);
+//		//if any manual parameters have been set via wrs_trackclick, override
+//		if (this.trackclickargs)
+//		this.dcsSetProps(this.trackclickargs);
+//		var dCurrent=new Date();
+//		this.DCS.dcsdat=dCurrent.getTime();
+//		this.dcsFPC();
+//		this.dcsTag();
+//	}
+//}
+WebTrends.prototype.dcsCleanUp=function(){
+	this.DCS={};
+	this.WT={};
+	this.DCSext={};
+	if (arguments.length%2==0){
+		this.dcsSetProps(arguments);
+	}
+}
+
+WebTrends.prototype.dcsSaveProps=function(args){
+	var i,x,key,param;
+	if (this.preserve){
+		this.args=[];
+		for (i=0,x=0;i<args.length;i+=2){
+			param=args[i];
+			if (param.indexOf('WT.')==0){
+				key=param.substring(3);
+				this.args[x]=param;
+				this.args[x+1]=this.WT[key]||"";
+				x+=2;
+			}
+			else if (param.indexOf('DCS.')==0){
+				key=param.substring(4);
+				this.args[x]=param;
+				this.args[x+1]=this.DCS[key]||"";
+				x+=2;
+			}
+			else if (param.indexOf('DCSext.')==0){
+				key=param.substring(7);
+				this.args[x]=param;
+				this.args[x+1]=this.DCSext[key]||"";
+				x+=2;
+			}
+		}
+	}
+}
+WebTrends.prototype.dcsRestoreProps=function(){
+	if (this.preserve){
+		this.dcsSetProps(this.args);
+		this.args=[];
+	}
+}
+
+WebTrends.prototype.dcsSetProps=function(args){
+	for (var i=0;i<args.length;i+=2){
+		if (args[i].indexOf('WT.')==0){
+			this.WT[args[i].substring(3)]=args[i+1];
+		}
+		else if (args[i].indexOf('DCS.')==0){
+			this.DCS[args[i].substring(4)]=args[i+1];
+		}
+		else if (args[i].indexOf('DCSext.')==0){
+			this.DCSext[args[i].substring(7)]=args[i+1];
+		}
+	}
+
+
+}
+WebTrends.prototype.dcsSplit=function(list){
+	var items=list.toLowerCase().split(",");
+	var len=items.length;
+	for (var i=0;i<len;i++){
+		items[i]=items[i].replace(/^\s*/,"").replace(/\s*$/,"");
+	}
+	return items;
+}
+// Code section for Track clicks to download links.
+WebTrends.prototype.dcsDownload=function(evt){
+  evt=evt||(window.event||"");
+  if (evt&&((typeof(evt.which)!="number")||(evt.which==1))){
+	var e=this.dcsEvt(evt,"A");
+	if (e && e.href){
+	  var hn=e.hostname?(e.hostname.split(":")[0]):"";
+	  if (this.dcsIsOnsite(hn)&&this.dcsTypeMatch(e.pathname,this.downloadtypes)){
+	var qry=e.search?e.search.substring(e.search.indexOf("?")+1,e.search.length):"";
+	var pth=e.pathname?((e.pathname.indexOf("/")!=0)?"/"+e.pathname:e.pathname):"/";
+	var ttl=document.title;
+	var text=document.all?e.innerText:e.textContent;
+	text=text.replace(/^\s*/,"").replace(/\s*$/,"")
+	var img=this.dcsEvt(evt,"IMG");
+	if (e.title) {
+	  ttl=e.title;
+	} else 	if (img.alt){
+	  ttl=img.alt;
+	} else if (text.length > 0){
+	  ttl=text;
+	}
+	ttl = ttl.replace(/^Download /,"");
+	// Check for trackclick
+	if (!this.eventexplicittracked) {
+	  this.trackclickcheck(e);
+	  if(userID==""){
+this.dcsMultiTrack("DCS.dcssip",hn,"DCS.dcsuri",pth,"DCS.dcsqry",e.search||"","WT.ti","Download:"+ttl,"WT.dl","20","WT.nv",this.dcsNavigation(evt));
+this.DCS.dcssip=this.DCS.dcsuri=this.DCS.dcsqry=this.WT.ti=this.WT.dl=this.WT.nv="";
+	}else{
+this.dcsMultiTrack("DCS.dcssip",hn,"DCS.dcsuri",pth,"DCS.dcsqry",e.search||"","WT.ti","Download:"+ttl,"WT.dl","20","WT.nv",this.dcsNavigation(evt),"DCSext.cookieid",userID);
+this.DCS.dcssip=this.DCS.dcsuri=this.DCS.dcsqry=this.WT.ti=this.WT.dl=this.WT.nv=this.DCSext.cookieid="";
+}
+	  this.eventautotracked=true;
+	}
+	  }
+	}
+  }
+}
+// Code section for Track clicks to dynamic links.
+WebTrends.prototype.dcsDynamic=function(evt){
+	evt=evt||(window.event||"");
+	if (evt&&((typeof(evt.which)!="number")||(evt.which==1))){
+		var e=this.dcsEvt(evt,"A");
+		if (e&&e.href&&e.protocol){
+			var qry=e.search?e.search.substring(e.search.indexOf("?")+1,e.search.length):"";
+			if (e.protocol=="javascript:"){
+			  if (!this.eventexplicittracked) {
+				// Check for trackclick
+				this.trackclickcheck(e);
+				this.dcsMultiTrack("DCS.dcssip","","DCS.dcsuri",e.href,"WT.ti","JavaScript:"+e.innerHTML,"WT.dl","22","WT.nv",this.dcsNavigation(evt));
+				this.DCS.dcssip=this.DCS.dcsuri=this.WT.ti=this.WT.cl=this.WT.nv="";
+			  }
+			}
+			else if (e.protocol=="mailto:"){
+			  if (!this.eventexplicittracked) {
+			  // Check for trackclick
+				this.trackclickcheck(e);
+				this.dcsMultiTrack("DCS.dcssip","","DCS.dcsuri",e.href,"WT.ti","MailTo:"+e.innerHTML,"WT.dl","23","WT.nv",this.dcsNavigation(evt));
+				this.DCS.dcssip=this.DCS.dcsuri=this.WT.ti=this.WT.dl=this.WT.nv="";
+			  }
+			}
+			this.eventautotracked=true;
+		}
+	}
+}
+// Code section for Track form button clicks.
+WebTrends.prototype.dcsFormButton=function(evt){
+	evt=evt||(window.event||"");
+	if (evt&&((typeof(evt.which)!="number")||(evt.which==1))){
+		var tags=["INPUT","BUTTON"];
+		for (var j=0;j<tags.length;j++){
+			var e=this.dcsEvt(evt,tags[j]);
+			var type=e.type||"";
+			if (type&&((type=="submit")||(type=="image")||(type=="button")||(type=="reset"))||((type=="text")&&((evt.which||evt.keyCode)==13))){
+				var uri="";
+				var ttl="";
+				var id=0;
+				if (e.form){
+					// begin: field capture
+					// end: field capture
+					uri=e.form.action||window.location.pathname;
+					ttl=e.form.id||e.form.name||e.form.className||"Unknown";
+					id=(e.form.method&&(e.form.method.toLowerCase()=="post"))?"27":"26";
+				}
+				else{
+					uri=window.location.pathname;
+					ttl=e.name||e.id||"Unknown";
+					id=(tags[j].toLowerCase()=="input")?"28":"29";
+				}
+				if (uri&&ttl&&(evt.keyCode!=9)){
+				  if (!this.eventexplicittracked) {
+					// Check for trackclick
+					this.trackclickcheck(e);
+					this.dcsMultiTrack("DCS.dcsuri",uri,"WT.ti","FormButton:"+ttl,"WT.dl",id,"WT.nv",this.dcsNavigation(evt));
+					this.eventautotracked=true;
+				  }
+				}
+				this.DCS.dcsuri=this.WT.ti=this.WT.dl=this.WT.nv="";
+				break;
+			}
+		}
+	}
+}
+// Code section for Track clicks to links leading offsite.
+WebTrends.prototype.dcsOffsite=function(evt){
+	evt=evt||(window.event||"");
+	if (evt&&((typeof(evt.which)!="number")||(evt.which==1))){
+		var e=this.dcsEvt(evt,"A");
+		if (e&&e.href){
+			var hn=e.hostname?(e.hostname.split(":")[0]):"";
+			var pr=e.protocol||"";
+			if ((hn.length>0)&&(pr.indexOf("http")==0)&&!this.dcsIsOnsite(hn)){
+				var qry=e.search?e.search.substring(e.search.indexOf("?")+1,e.search.length):"";
+				var pth=e.pathname?((e.pathname.indexOf("/")!=0)?"/"+e.pathname:e.pathname):"/";
+				var trim=true;
+				if (!this.eventexplicittracked) {
+				  // Check for trackclick
+				  this.trackclickcheck(e);
+				  this.dcsMultiTrack("DCS.dcssip",hn,"DCS.dcsuri",pth,"DCS.dcsqry",trim?"":qry,"WT.ti","Offsite:"+hn+pth+qry,"WT.dl","24","WT.nv",this.dcsNavigation(evt));
+				  this.DCS.dcssip=this.DCS.dcsuri=this.DCS.dcsqry=this.WT.ti=this.WT.dl=this.WT.nv="";
+				  this.eventautotracked=true;
+				}
+			}
+		}
+	}
+}
+
+// Code section for Track clicks to links that contain anchors.
+WebTrends.prototype.dcsAnchor=function(evt){
+	evt=evt||(window.event||"");
+	if (evt&&((typeof(evt.which)!="number")||(evt.which==1))){
+		var e=this.dcsEvt(evt,"A");
+		if (e.href){
+			var hn=e.hostname?(e.hostname.split(":")[0]):"";
+			if (this.dcsIsOnsite(hn)&&e.hash&&(e.hash!="")&&(e.hash!="#")){
+				var qry=e.search?e.search.substring(e.search.indexOf("?")+1,e.search.length):"";
+				var pth=e.pathname?((e.pathname.indexOf("/")!=0)?"/"+e.pathname:e.pathname):"/";
+				if (!this.eventexplicittracked) {
+				  // Check for trackclick
+				  this.trackclickcheck(e);
+				  this.dcsMultiTrack("DCS.dcssip",hn,"DCS.dcsuri",pth+e.hash,"WT.ti","Anchor:"+e.hash,"WT.dl","21","WT.nv",this.dcsNavigation(evt));
+				  this.DCS.dcssip=this.DCS.dcsuri=this.WT.ti=this.WT.dl=this.WT.nv="";
+				  this.eventautotracked=true;
+				}
+			}
+		}
+	}
+}
+// Code section for clicks to image maps.
+WebTrends.prototype.dcsImageMap=function(evt){
+	evt=evt||(window.event||"");
+	if (evt){
+		var e=this.dcsEvt(evt,"AREA");
+		if (e&&e.href){
+			var hn=e.hostname?(e.hostname.split(":")[0]):"";
+			if ((hn!="")&&e.protocol&&(e.protocol.indexOf("http")!=-1)){
+				var ttl="";
+				var map=this.dcsEvt(evt,"MAP");
+				if (map){
+					if (map.name){
+						ttl=map.name;
+					}
+					else if (map.id){
+						ttl=map.id;
+					}
+				}
+				var pth=e.pathname?((e.pathname.indexOf("/")!=0)?"/"+e.pathname:e.pathname):"/";
+				if (!this.eventexplicittracked) {
+				  // Check for trackclick
+				  this.trackclickcheck(e);
+				  this.dcsMultiTrack("DCS.dcssip",hn,"DCS.dcsuri",pth,"DCS.dcsqry",e.search||"","WT.ti","ImageMap:"+ttl,"WT.dl","30","WT.nv",this.dcsNavigation(evt));
+				  this.DCS.dcssip=this.DCS.dcsuri=this.DCS.dcsqry=this.WT.ti=this.WT.dl=this.WT.nv="";
+				  this.eventautotracked=true;
+				}
+			}
+		}
+	}
+}
+WebTrends.prototype.dcsAdv=function(){
+	if (this.trackevents&&(typeof(this.dcsET)=="function")){
+		if (window.addEventListener){
+			window.addEventListener("load",this.dcsET.wtbind(this),false);
+		}
+		else if (window.attachEvent){
+			window.attachEvent("onload",this.dcsET.wtbind(this));
+		}
+	}
+	this.dcsFPC();
+	this.dcsAdSearch();
+}
+WebTrends.prototype.dcsVar=function(){
+	var dCurrent=new Date();
+	var WT=this.WT;
+	var DCS=this.DCS;
+	WT.tz=parseInt(dCurrent.getTimezoneOffset()/60*-1)||"0";
+	WT.bh=dCurrent.getHours()||"0";
+	WT.ul=navigator.appName=="Netscape"?navigator.language:navigator.userLanguage;
+	if (typeof(screen)=="object"){
+		WT.cd=navigator.appName=="Netscape"?screen.pixelDepth:screen.colorDepth;
+		WT.sr=screen.width+"x"+screen.height;
+	}
+	if (typeof(navigator.javaEnabled())=="boolean"){
+		WT.jo=navigator.javaEnabled()?"Yes":"No";
+	}
+	if (document.title){
+		if (window.RegExp){
+			var tire=new RegExp("^"+window.location.protocol+"//"+window.location.hostname+"\\s-\\s");
+			WT.ti=document.title.replace(tire,"");
+		}
+		else{
+			WT.ti=document.title;
+		}
+	}
+	WT.js="Yes";
+	WT.jv=(function(){
+		var agt=navigator.userAgent.toLowerCase();
+		var major=parseInt(navigator.appVersion);
+		var mac=(agt.indexOf("mac")!=-1);
+		var ff=(agt.indexOf("firefox")!=-1);
+		var ff0=(agt.indexOf("firefox/0.")!=-1);
+		var ff10=(agt.indexOf("firefox/1.0")!=-1);
+		var ff15=(agt.indexOf("firefox/1.5")!=-1);
+		var ff20=(agt.indexOf("firefox/2.0")!=-1);
+		var ff3up=(ff&&!ff0&&!ff10&!ff15&!ff20);
+		var nn=(!ff&&(agt.indexOf("mozilla")!=-1)&&(agt.indexOf("compatible")==-1));
+		var nn4=(nn&&(major==4));
+		var nn6up=(nn&&(major>=5));
+		var ie=((agt.indexOf("msie")!=-1)&&(agt.indexOf("opera")==-1));
+		var ie4=(ie&&(major==4)&&(agt.indexOf("msie 4")!=-1));
+		var ie5up=(ie&&!ie4);
+		var op=(agt.indexOf("opera")!=-1);
+		var op5=(agt.indexOf("opera 5")!=-1||agt.indexOf("opera/5")!=-1);
+		var op6=(agt.indexOf("opera 6")!=-1||agt.indexOf("opera/6")!=-1);
+		var op7up=(op&&!op5&&!op6);
+		var jv="1.1";
+		if (ff3up){
+			jv="1.8";
+		}
+		else if (ff20){
+			jv="1.7";
+		}
+		else if (ff15){
+			jv="1.6";
+		}
+		else if (ff0||ff10||nn6up||op7up){
+			jv="1.5";
+		}
+		else if ((mac&&ie5up)||op6){
+			jv="1.4";
+		}
+		else if (ie5up||nn4||op5){
+			jv="1.3";
+		}
+		else if (ie4){
+			jv="1.2";
+		}
+		return jv;
+	})();
+	WT.ct="unknown";
+	if (document.body&&document.body.addBehavior){
+		try{
+			document.body.addBehavior("#default#clientCaps");
+			WT.ct=document.body.connectionType||"unknown";
+			document.body.addBehavior("#default#homePage");
+			WT.hp=document.body.isHomePage(location.href)?"1":"0";
+		}
+		catch(e){
+		}
+	}
+	if (document.all){
+		WT.bs=document.body?document.body.offsetWidth+"x"+document.body.offsetHeight:"unknown";
+	}
+	else{
+		WT.bs=window.innerWidth+"x"+window.innerHeight;
+	}
+	WT.fv=(function(){
+		var i,flash;
+		if (window.ActiveXObject){
+			for(i=10;i>0;i--){
+				try{
+					flash=new ActiveXObject("ShockwaveFlash.ShockwaveFlash."+i);
+					return i+".0";
+				}
+				catch(e){
+				}
+			}
+		}
+		else if (navigator.plugins&&navigator.plugins.length){
+			for (i=0;i<navigator.plugins.length;i++){
+				if (navigator.plugins[i].name.indexOf('Shockwave Flash')!=-1){
+					return navigator.plugins[i].description.split(" ")[2];
+				}
+			}
+		}
+		return "Not enabled";
+	})();
+	WT.slv=(function(){
+		var slv="Not enabled";
+		try{
+			if (navigator.userAgent.indexOf('MSIE')!=-1){
+				var sli = new ActiveXObject('AgControl.AgControl');
+				if (sli){
+					slv="Unknown";
+				}
+			}
+			else if (navigator.plugins["Silverlight Plug-In"]){
+				slv="Unknown";
+			}
+		}
+		catch(e){
+		}
+		if (slv!="Not enabled"){
+			var i,j,v;
+			if ((typeof(Silverlight)=="object")&&(typeof(Silverlight.isInstalled)=="function")){
+				for (j=9;j>=0;j--){
+					for(i=3;i>0;i--){
+						v=i+"."+j;
+						if (Silverlight.isInstalled(v)){
+							slv=v;
+							break;
+						}
+					}
+					if (slv==v){
+						break;
+					}
+				}
+			}
+		}
+		return slv;
+	})();
+	if (this.i18n){
+		if (typeof(document.defaultCharset)=="string"){
+			WT.le=document.defaultCharset;
+		}
+		else if (typeof(document.characterSet)=="string"){
+			WT.le=document.characterSet;
+		}
+		else{
+			WT.le="unknown";
+		}
+	}
+	WT.tv="8.6.0";
+//	WT.sp="@@SPLITVALUE@@";
+	WT.dl="0";
+	WT.ssl=(window.location.protocol.indexOf('https:')==0)?"1":"0";
+	DCS.dcsdat=dCurrent.getTime();
+	DCS.dcssip=window.location.hostname;
+//	DCS.dcsuri=window.location.pathname;
+	DCS.dcsuri=getCanonicalName();
+	WT.es=DCS.dcssip+DCS.dcsuri;
+	if (window.location.search){
+		DCS.dcsqry=window.location.search;
+	}
+	if (DCS.dcsqry){
+		var dcsqry=DCS.dcsqry.toLowerCase();
+		var params=this.paidsearchparams.length?this.paidsearchparams.toLowerCase().split(","):[];
+		for (var i=0;i<params.length;i++){
+			if (dcsqry.indexOf(params[i]+"=")!=-1){
+				WT.srch="1";
+				break;
+			}
+		}
+	}
+	if ((window.document.referrer!="")&&(window.document.referrer!="-")){
+		if (!(navigator.appName=="Microsoft Internet Explorer"&&parseInt(navigator.appVersion)<4)){
+			DCS.dcsref=window.document.referrer;
+		}
+	}
+	DCS.dcscfg=1;
+}
+WebTrends.prototype.dcsEscape=function(S, REL){
+	if (REL!=""){
+		S=S.toString();
+		for (var R in REL){
+			if (REL[R] instanceof RegExp){
+				S=S.replace(REL[R],R);
+			}
+		}
+		return S;
+	}
+	else{
+		return escape(S);
+	}
+}
+WebTrends.prototype.dcsA=function(N,V){
+	if (this.i18n&&(this.exre!="")&&!this.exre.test(N)){
+		if (N=="dcsqry"){
+			var newV="";
+			var params=V.substring(1).split("&");
+			for (var i=0;i<params.length;i++){
+				var pair=params[i];
+				var pos=pair.indexOf("=");
+				if (pos!=-1){
+					var key=pair.substring(0,pos);
+					var val=pair.substring(pos+1);
+					if (i!=0){
+						newV+="&";
+					}
+					newV+=key+"="+this.dcsEncode(val);
+				}
+			}
+			V=V.substring(0,1)+newV;
+		}
+		else{
+			V=this.dcsEncode(V);
+		}
+	}
+	return "&"+N+"="+this.dcsEscape(V, this.re);
+}
+WebTrends.prototype.dcsEncode=function(S){
+	return (typeof(encodeURIComponent)=="function")?encodeURIComponent(S):escape(S);
+}
+WebTrends.prototype.dcsCreateImage=function(dcsSrc){
+	if (document.images){
+		this.images[this.index]=new Image();
+		this.images[this.index].src=dcsSrc;
+		this.index++;
+	}
+	else{
+		document.write('<IMG ALT="" BORDER="0" NAME="DCSIMG" WIDTH="1" HEIGHT="1" SRC="http://www.pwc.com/WTS/'+dcsSrc+'">');
+	}
+}
+WebTrends.prototype.dcsMeta=function(theItem){
+
+	var elems;
+
+	if (document.all){
+		elems=document.all.tags("meta");
+
+	}
+	else if (document.documentElement){
+		elems=document.getElementsByTagName("meta");
+
+	}
+	if (typeof(elems)!="undefined"){
+		var length=elems.length;
+		for (var i=0;i<length;i++){
+			var name=elems.item(i).name;
+			var content=elems.item(i).content;
+			var equiv=elems.item(i).httpEquiv;
+			if (name.length>0){
+				if (name.toUpperCase().indexOf("WT.")==0){
+					this.WT[name.substring(3)]=content;
+				}
+				else if (name.indexOf("DCSext.")==0){
+
+					this.DCSext[name.substring(7)]=content;
+
+				}
+				else if (name.toUpperCase().indexOf("DCS.")==0){
+					this.DCS[name.substring(4)]=content;
+				}
+			}
+		}
+	}
+}
+WebTrends.prototype.dcsTag=function(){
+        _tag.WT.z_page=getCanonicalName();
+	if (document.cookie.indexOf("WTLOPTOUT=")!=-1){
+		return;
+	}
+	this.tlDoPre();
+	var WT=this.WT;
+	var DCS=this.DCS;
+	var DCSext=this.DCSext;
+	var i18n=this.i18n;
+	var P="http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+this.domain+(this.dcsid==""?'':'/'+this.dcsid)+"/dcs.gif?";
+	if (i18n){
+		WT.dep="";
+	}
+	for (var N in DCS){
+		if (DCS[N]&&(typeof DCS[N]!="function")){
+			P+=this.dcsA(N,DCS[N]);
+		}
+	}
+	var keys=["co_f","vtid","vtvs","vt_f_tlv"];
+	for (var i=0;i<keys.length;i++){
+		var key=keys[i];
+		if (WT[key]){
+			P+=this.dcsA("WT."+key,WT[key]);
+			delete WT[key];
+		}
+	}
+	for (N in WT){
+		if (WT[N]&&(typeof WT[N]!="function")){
+			P+=this.dcsA("WT."+N,WT[N]);
+		}
+	}
+	for (N in DCSext){
+		if (DCSext[N]&&(typeof DCSext[N]!="function")){
+			if (i18n){
+				WT.dep=(WT.dep.length==0)?N:(WT.dep+";"+N);
+			}
+			P+=this.dcsA(N,DCSext[N]);
+		}
+	}
+	if (i18n&&(WT.dep.length>0)){
+		P+=this.dcsA("WT.dep",WT.dep);
+	}
+	if (P.length>2048){					// modified to apply to all browsers per WT tech support advice on 7/15/10
+		P=P.substring(0,2040)+"&WT.tu=1";
+	}
+	this.dcsCreateImage(P);
+	this.WT.ad="";
+}
+WebTrends.prototype.dcsDebug=function(){
+	var t=this;
+	var i=t.images[0].src;
+	var q=i.indexOf("?");
+	var r=i.substring(0,q).split("/");
+	var m="<b>Protocol</b><br><code>"+r[0]+"<br></code>";
+	m+="<b>Domain</b><br><code>"+r[2]+"<br></code>";
+	m+="<b>Path</b><br><code>/"+r[3]+"/"+r[4]+"<br></code>";
+	m+="<b>Query Params</b><code>"+i.substring(q+1).replace(/\&/g,"<br>")+"</code>";
+	m+="<br><b>Cookies</b><br><code>"+document.cookie.replace(/\;/g,"<br>")+"</code>";
+	if (t.w&&!t.w.closed){
+		t.w.close();
+	}
+	t.w=window.open("","dcsDebug","width=500,height=650,scrollbars=yes,resizable=yes");
+	t.w.document.write(m);
+	t.w.focus();
+}
+WebTrends.prototype.dcsCollect=function(){
+	if (this.enabled){
+		this.dcsVar();
+		this.dcsMeta();
+		this.dcsAdv();
+		this.dcsTag();
+	}
+}
+
+//PWC backwards compatible function calls
+function dcsMultiTrack(){
+	if (typeof(_tag)!="undefined"){
+		return(_tag.dcsMultiTrack());
+	}
+}
+function dcsDebug(){
+	if (typeof(_tag)!="undefined"){
+		return(_tag.dcsDebug());
+	}
+}
+Function.prototype.wtbind = function(obj,evt){
+
+  var method=this;
+  var temp=function(){
+	if (typeof evt == 'function') {
+	  evt;
+	}
+	return method.apply(obj,arguments);
+  };
+  return temp;
+}
+//PWC legacy support functions
+//legacy wrapper for main page tracking function
+function wrs_trackpage(){
+  for (var i=0; i<wrs_trackpage.arguments.length; i++) {
+	var name = wrs_trackpage.arguments[i].substring(0, wrs_trackpage.arguments[i].indexOf("="));
+	var content = wrs_trackpage.arguments[i].substring(wrs_trackpage.arguments[i].indexOf('=')+1)
+	  addMeta(name, content);
+  }
+  _tag.dcsCollect();
+}
+//sets meta tags on page
+function addMeta(metaName,metaContent){
+		var meta = document.createElement('meta');
+			meta.name = metaName;
+			meta.content = metaContent;
+			document.getElementsByTagName('head')[0].appendChild(meta);
+}
+//legacy wrapper, copies off manually set arguments and waits for after autotracking to pass them
+function wrs_trackclick(){
+	var j=0;
+	var flash = false;
+		for (var i=0; i<wrs_trackclick.arguments.length; i++) {
+			args = wrs_trackclick.arguments[i].split('=');
+			_tag.trackclickargs[j] = args[0]; j++;
+			_tag.trackclickargs[j] = args[1]; j++;
+			if (args[0] == "DCS.dcsuri" && args[1].match("\.flv|.wmv|\.mp3|\.swf"))
+				flash = true;
+		}
+
+	if (flash) {
+		  if (!_tag.trackclickargs||_tag.trackclickargs.length==0) return;
+
+	  if (_tag.trackclickargs.length%2==0){
+			_tag.dcsSetProps(_tag.trackclickargs);
+			var dCurrent=new Date();
+			_tag.DCS.dcsdat=dCurrent.getTime();
+			_tag.dcsFPC();
+			_tag.dcsTag();
+			_tag.eventexplicittracked = true;
+	  }
+
+	  _tag.trackclickargs=new Array();
+	}
+}
+//Called to embed click tracking into the autotracking functions
+WebTrends.prototype.trackclickcheck=function(e) {
+  try{
+	for (var i =0;
+	 i<e.attributes.length;
+	 i++) {
+	   if (e.attributes[i].nodeName=="onclick") {
+		 var track = e.attributes[i].nodeValue;
+
+		 e.eval(track);
+		 break;
+	   }
+	 }
+  } catch(err) {
+	//  alert(err);
+  }
+
+}
+//called after all other onclick tracking
+//completes legacy wrs_trackclick if no autotracking took place
+WebTrends.prototype.doCompleteClick=function(evt){
+
+  evt=evt||(window.event||"");
+  if (evt&&((typeof(evt.which)!="number")||(evt.which==1))){
+	var e=this.dcsEvt(evt,"A");
+	if (e&&e.href&&e.protocol){
+
+	  if (!this.trackclickargs||this.trackclickargs.length==0) return;
+
+	  if (this.eventautotracked) {
+			this.eventautotracked=false;
+			this.trackclickargs=new Array();
+			return;
+	  }
+
+	  if (this.trackclickargs.length%2==0){
+			this.dcsSetProps(this.trackclickargs);
+			var dCurrent=new Date();
+			this.DCS.dcsdat=dCurrent.getTime();
+			this.dcsFPC();
+			this.dcsTag();
+			this.eventexplicittracked= true;
+	  }
+
+	  this.eventautotracked=false;
+	  this.trackclickargs=new Array();
+
+	}
+  }
+}
+//End legacy support functions
+
+//track bounced visits
+WebTrends.prototype.measureBounce=function(){
+  // check for first page bounce
+  if(typeof _tag.WT.vt_f_s == "undefined") {
+	_tag.WT.z_bounces = "0";
+  } else if (_tag.WT.vt_f_s == "1" ) {
+	_tag.WT.z_bounces = "1";
+			if(typeof this.DCS.dcsref != "undefined") {
+		var r = this.trackedrefs.split(",");
+		for (var i=0;i<r.length;i++)
+			if (this.DCS.dcsref.indexOf(r[i]) != -1)
+				this.WT.z_pwcref=1;
+	}
+  } else if (_tag.WT.vt_f_s == "" || _tag.WT.vt_f_s == 0 ) {
+	_tag.WT.z_bounces = "0";
+  }
+  if (typeof this.WT.vt_f != "undefined" && this.WT.vt_f == "1")
+	_tag.WT.z_newvisit=1;
+}
+WebTrends.prototype.getParam = function(name, source) {
+  //returns an arbitrary query paramter's value
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS,"i" );
+  var results = regex.exec(source);
+
+  if( results == null )
+	return "";
+  else
+	return results[1];
+}
+
+WebTrends.prototype.isSearchEngine = function (uri_stem) {
+  //detects search engine. if recognized,
+  //returns its search phrase query parameter
+
+  knownSE=[["google","q"],["yahoo","p"],["msn","q"],["bing","q"],["aol","query"],
+  ["aol","encquery"],["lycos","query"],["ask","q"],["altavista","q"],
+  ["netscape","query"],["cnn","query"],["looksmart","qt"],["about","terms"],
+  ["mamma","query"],["alltheweb","q"],["gigablast","q"],["voila","rdata"],
+  ["virgilio","qs"],["live","q"],["baidu","wd"],["alice","qs"],["yandex","text"],
+  ["najdi","q"],["aol","q"],["club-internet","query"],["mama","query"],["seznam","q"],
+  ["search","q"],["wp","szukaj"],["onet","qt"],["netsprint","q"],["google.interia","q"],
+  ["szukacz","q"],["yam","k"],["pchome","q"],["kvasir","searchExpr"],["sesam","q"],["ozu","q"],
+  ["terra","query"],["nostrum","query"],["mynet","q"],["ekolay","q"],
+  ["search.ilse","search_for"]];
+
+  for ( i=0; i < knownSE.length;i++) {
+	if (uri_stem.indexOf(knownSE[i][0]) != -1)
+  result = this.getParam(knownSE[i][1], this.DCS.dcsref);
+	  else
+  result = "";
+
+	if (result) return result;
+  //complete match only if both se and its parameters
+  //have been recognized
+  }
+  return result;
+}
+WebTrends.prototype.prepID = function(campID) {
+	//translates campaign type if abbreviated
+	campID = campID.replace(/cpc_/i, "Paid+Search_");
+	campID = campID.replace(/ba_/i, "Banner+Ad_");
+	campID = campID.replace(/cs_/i, "Content+Syndication_");
+	return campID;
+}
+WebTrends.prototype.consolidateTrafficSources = function () {
+// -- appends landing url to existing campaign ID
+// -- if absent, spoofs organic and referring sites campaigns
+// -- must be called after dcsVar and before dcsTag
+var campID = "";
+var campIDt = "";
+var campIDq = "";
+var results = "";
+var result = "";
+
+//try in WT object first
+if (typeof this.WT.mc_id != "undefined")
+	campIDt = this.WT.mc_id;
+//try in query string
+campIDq = this.getParam ("WT.mc_id", this.DCS.dcsqry);
+
+// If we don't have an mc_id in either source
+// begin spoof of organic and referring sites campaigns
+
+if(!campIDt && !campIDq) {
+if (typeof this.DCS.dcsref != "undefined") {
+
+		//referrer found
+		var regex = new RegExp ("\/\/([^\/:?#]+)");
+		//extract host from URL
+		results = regex.exec(this.DCS.dcsref.replace(/\_/g, "+"));
+		if (!results) return;
+
+		//first check if IP
+		var regex = new RegExp ("^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)$");
+		result = regex.exec(results[1]);
+		if (result) var isIP=results[1];
+
+		var regex = new RegExp ("^([^.]+\.[a-zA-Z]{3})$");
+		result = regex.exec(results[1]);
+		if (result) results[1]='www.'+results[1];
+
+		//do nothing if referrer is internal (self) or on-site
+		if (this.fpcdom && results[1].indexOf(this.fpcdom) != -1) return;
+		if (this.onsitedoms && this.onsitedoms.indexOf(results[1]) != -1) return;
+		if (results[1].indexOf(window.location.hostname) != -1) return;
+
+		//check if search engine
+		result = this.isSearchEngine(results[1]);
+		//strip prefix & suffixes
+		hostn = results[1].replace(/^[^\.]+\.|\.[^\.]+$|\.[^\.]+\.[^\.]+$/g, "");
+		//capitalize, store as company name
+		if (isIP) host = "Unknown+Domain_";
+		else
+		host = hostn.charAt(0).toUpperCase()+hostn.substr(1)+"_";
+
+		//add search phrase to id
+		if (result)
+			campID += "Organic+Search_"+host+result;
+		else { //add referrer url without query string
+			var regex = new RegExp ("(^[^?#]+)");
+			results = regex.exec(this.DCS.dcsref);
+			campID += "Referring+Sites_"+host+results[1].replace(/\_/g, "+");
+		}
+
+		if (typeof this.DCS.dcsuri != "undefined")
+			campID += "_"+this.DCS.dcsuri.replace(/\_/g, "+")+"_none"; //append landing url
+		else
+			campID += "_none_none"; //this shouldn't happen
+
+	//add the spoofed campaign ID to WT object
+	if (campID.length>512){					// trim to avoid VH bug per WT tech support advice on 7/15/10
+		campID=campID.substring(0,512);
+	}
+	this.WT.mc_id = campID;
+}
+else { } //no referrer--assume it's direct traffic
+}
+// -- If we have an mc_id, append landing url and overwrite it
+// -- Overwrites mc_id's in query and WT object independently
+// -- also append typed phrase if found in referrer
+else {
+
+	if (typeof this.DCS.dcsref != "undefined") {
+		//referrer found, look for phrase
+		var regex = new RegExp ("\/\/([^\/:]+)");
+		results = regex.exec(this.DCS.dcsref); //extract host
+		result = this.isSearchEngine(results[1]); //check if SE
+	}
+
+	if (campIDt) {
+
+		campIDt = this.prepID(campIDt);
+
+		if (typeof this.DCS.dcsuri != "undefined")
+			campIDt += '_'+this.DCS.dcsuri.replace(/\_/g, "+");
+		else
+			campIDt += "_none"; //this shouldn't happen
+
+		if (campIDt.match(/Paid+Search/i)!= null && result) //add typed search phrase for cpc
+			campIDt += "_"+result;
+		else
+			campIDt += "_none";
+
+		//overwrite mc_id in WT object
+		this.WT.mc_id = campIDt;
+	}
+
+	if (campIDq) {
+
+		campIDq = this.prepID(campIDq);
+
+		if (typeof this.DCS.dcsuri != "undefined")
+			campIDq += '_'+this.DCS.dcsuri.replace(/\_/g, "+");
+		else
+			campIDq += "_none"; //this shouldn't happen
+
+		if (campIDq.match(/Paid+Search/i) != null && result) //add typed search phrase for cpc
+			campIDq += "_" + result;
+		else
+			campIDq += "_none";
+
+		//overwrite mc_id in query string
+		this.DCS.dcsqry = this.DCS.dcsqry.replace(/WT\.mc_id=[^&#]*/ig, "WT.mc_id="+campIDq);
+	}
+
+}
+//social media site check
+if (this.WT.mc_id && this.WT.mc_id.match(/Referring+Sites/i)!= null) this.checkSM();
+}
+WebTrends.prototype.checkSM = function() {
+//checks if referrer is social media
+sm = "360.yahoo.com,adjix.com,adultfriendfinder.com,advogato.org,affluence.org,amiestreet.com,aniboom.com,anobii.com,asmallworld.net,athlinks.com,atom.com,avatarsunited.com,b23.ru,badoo.com,bahu.com,balatarin.com,bebo.com,bgvip.tv,biip.no,bit.ly,blackplanet.com,blinkx.com,blip.tv,blogcn.com,blogger.com,bloglines.com,blogtv.com,bluekaffee.com,break.com,broadcaster.com,budurl.com,buzznet.com,cafemom.com,cakefinancial.com,canurl.com,care2.com,citeulike.org,classmates.com,cli.gs,cloob.com,collegetonight.com,connotea.org,couchsurfing.com,cozycot.com,crackle.com,cynapse.comproductscynin ,dailymotion.com,decenturl.com,delicious.com,delivr.com,desimartini.com,deviantart.com,diary-x.com,digg.com,diigo.com,dol2day.com,dolop.com,dontstayin.com,dwarfurl.com,easyurl.net,elftown.com,elfurl.com,engagemedia.org ,eons.com,epernicus.com,espin.com,experienceproject.com,facebook.com,faceparty.com,faces.com,famecast.com,faves.com,favorites.live.com,fetlife.com,ff.im,filmaffinity.com,fire.to,flickr.com,flixster.com,flq.us,fotolog.com,freak.to,friendsreunited.co.uk,friendster.com,fruehstueckstreff.org,fubar.com,furl.net,fuseurl.com,g02.me,gaiaonline.com,gather.com,gawkk.com,geni.com,givealink.org,go2.me,gofishcorp.com,goodreads.com,gossipreport.com,grono.net,habbo.com,helium.com,hexurl.com,hi.baidu.com,hi5.com,home.spaces.live.com,hospitalityclub.org,http:twitter.com,https:oneview.v2020-sai.com,https:researchgate.net,hyves.nl,ibm.comlotusconnections,idek.net,ign.com,imeem.com,indabamusic.com,internations.org,ipernity.com,irc-galleria.net,is.gd,italki.com,itsmy.com,iwiw.hu,ix.lt,iyouit.eu,jaiku.com,jammerdirect.com,kaixin001.com,kewego.com,kissa.be,kl.am,korta.nu,krunchd.com,last.fm,librarything.com,lifechat.net,lifeknot.com,lifelogger.com,linkedin.com,linkwad.com,livejournal.com,liveleak.com,livemocha.com,ln-s.net,loopt.us,lunarstorm.se,ma.gnolia.com,meetin.org,meettheboss.com,meetup.com,memurl.com,metacafe.com,miklos.dk,minixr.com,mister-wong.com,mixi.jp,mixx.com,mocospace.com,mog.com,moourl.com,msdn.microsoft.com,multiply.com,muxlim.com,my.opera.com,myanimelist.net,mychurch.org,myheritage.com,mylol.net,myspace.com,myspace.com ,myurl.in,myvideo.co.za,mywebsearch.com,myyearbook.com,nanoref.com,nasza-klasa.pl,netlog.com,nettby.no,newsvine.com,nexopia.com,nofrag.com,notlong.com,odnoklassniki.ru,okcupid.com,omgpop.com,opendiary.com,orkut.com,ourmedia.org,outeverywhere.com,ow.ly,pajamasmedia.com,pandora.tv,passportstamp.com,photobucket.com,phpmotion.com,ping.fm,pingsta.com,piurl.com,plaxo.com,playahead.se,playboyu.com,plurk.com,poprl.com,pownce.com,propeller.com,qicute.com,qik.com,quarterlife.com,quickblog.com,qurlyq.com,radio.userland.com,ravelry.com,rayzz.net,reallytinyurl.com,reddit.com,redirx.com,reeltime.com,reunion.com,reverbnation.com,rubyurl.com,rurl.org,rutube.ru,ryze.com,sandbox.com,scienceblogs.com,scispace.net,sendables.jibjab.com,sevenload.com,share.ovi.com,shelfari.com,shorl.com,short.ie,shorterlink.com,shortlinks.co.uk,shorturl.com,shout.to,shrinkurl.us,shurl.net,shw.me,simpy.com,simurl.com,sitebar.org,skyrock.com,smallr.com,snipr.com,snipurl.com,snurl.com,soapbox.msn.com,socialvibe.com,sonico.com,soundpedia.com,spike.com,spoke.com,stage6.com,starturl.com,stickam.com,studivz.net,stumbleupon.com,stumpedia.com,surl.co.uk,sync2it.com,tagged.com,talkbiznow.com,taltopia.com,tangle.com,technet.microsoft.com,tighturl.com,tinylink.com,tinypic.com,tinyurl.com,tinyvh.com,tr.im,traceurl.com,travbuddy.com,travellerspoint.com,tribe.net,trombi.com,trooptube.tv,truveo.com,tudou.com,tuenti.com,tv.oneworld.net,twi.bz,twine.com,twitter.com,twurl.nl,typepad.com,u.mavrev.com,ucoz.com,ur1.ca,url.ie,url9.com,urlcut.com,urlhawk.com,urli.ca,urlpass.com,url-press.com,urlx.ie,vampirefreaks.com,vbox7.com,veoh.com,viadeo.com,video.google.com,video.yahoo.com,videos.sapo.pt,vidoosh.tv,vimeo.com,vision.rambler.ru,vkontakte.ru,vox.com,vuze.com,wasabi.com,wayn.com,webbiographies.com,westhost.com,wis.dm,wiserearth.org,wordpress.com,wretch.cc,www2.mkade.com,xaddr.com,xanga.com,xiaonei.com,xing.com,xrl.us,xt3.com,yammer.com,yelp.com,yep.it,youku.com,youmeo.com,youtube.com,yuarel.com,yweb.com,ziffdavis.com,zurl.ws";
+
+  sm=sm.split(",");
+  for (i=0;i<sm.length;i++)
+	if (this.DCS.dcsref.indexOf(sm[i])!=-1)
+		this.WT.mc_id=this.WT.mc_id.replace(/Referring+Sites/i, "Social+Media");
+
+}
+WebTrends.prototype.tlDoPre=function(){
+	this.measureBounce();
+	  //D.Montana, 24-FEB-10: Removed campaign modifications
+	  //this.consolidateTrafficSources();
+	  //normalize legacy locale URLs
+	  var uri = this.DCS.dcsuri.match(/^\/([A-Za-z]{2}_[A-Za-z]{2})/);
+		if (uri) {
+			this.DCS.dcsuri = this.DCS.dcsuri.replace(uri[0], uri[0].toLowerCase());
+			this.DCS.dcsuri = this.DCS.dcsuri.replace(/^\/([a-z]{2})_([a-z]{2})/, "\/$2\/$1");
+		}
+}
+function getCanonicalName(){
+    tlsip = window.location.protocol +"//" + window.location.hostname;
+    tlUrl = window.location.pathname;
+    arr = new Array();
+    arr = document.getElementsByTagName("LINK");
+    for(n=0;n<arr.length;n++){
+        tlRel = arr[n].rel;
+        switch(tlRel){
+            case 'canonical':
+                tlUrl = arr[n].href;  //overwrite tlUrl if a Link with rel=canonical  is found
+                break;
+            default:
+                break;
+        }
+    }
+    tlUri = tlUrl.replace(tlsip,"");
+    return tlUri;
+}
+
+//init WT object
+var _tag=new WebTrends();
+_tag.dcsGetId();
+
+

@@ -1,0 +1,450 @@
+/*
+Copyright (c) 2010,.reset  Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.com/yui/license.html
+version: 2.8.2r1
+*/
+.reset html{color:#000;background:#FFF;}.reset body,.reset div,.reset dl,.reset dt,.reset dd,.reset ul,.reset ol,.reset li,.reset h1,.reset h2,.reset h3,.reset h4,.reset h5,.reset h6,.reset pre,.reset code,.reset form,.reset fieldset,.reset legend,.reset input,.reset button,.reset textarea,.reset p,.reset blockquote,.reset th,.reset td{margin:0;padding:0;}.reset table{border-collapse:collapse;border-spacing:0;}.reset fieldset,.reset img{border:0;}.reset address,.reset caption,.reset cite,.reset code,.reset dfn,.reset em,.reset strong,.reset th,.reset var,.reset optgroup{font-style:inherit;font-weight:inherit;}.reset del,.reset ins{text-decoration:none;}.reset li{list-style:none;}.reset caption,.reset th{text-align:left;}.reset h1,.reset h2,.reset h3,.reset h4,.reset h5,.reset h6{font-size:100%;font-weight:normal;}.reset q:before,.reset q:after{content:'';}.reset abbr,.reset acronym{border:0;font-variant:normal;}.reset sup{vertical-align:baseline;}.reset sub{vertical-align:baseline;}.reset legend{color:#000;}.reset input,.reset button,.reset textarea,.reset select,.reset optgroup,.reset option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}.reset input,.reset button,.reset textarea,.reset select{*font-size:100%;}
+
+/************************************************
+Global
+************************************************/
+div.eol-modaldropshadow { position: absolute; left: 0; top: 0; z-index: 999999; width: 100%; height: 100%; background: #444 none;  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; filter: alpha(opacity=50); -moz-opacity: 0.5; -khtml-opacity: 0.5; opacity: 0.5; cursor: pointer; }
+div.eol-modalwrap { }
+
+
+/************************************************
+Overlays
+************************************************/
+div.tipline-wrap { position: absolute; left: 30%; top: 20%; z-index: 999999; width: 683px; height: 587px; padding: 0px; background: Transparent url(../../../static/uberblog/overlays/tipline/imgs/background.gif) no-repeat 0 0; }
+div.tipline-wrap a.tipline-close { float: right; height: 32px; width: 32px; background: Transparent url(../../../static/uberblog/overlays/tipline/imgs/btn.close.png) no-repeat 0 0; text-indent: -9999em; outline: 0;  display: block; z-index: 2; position: relative; cursor: pointer; right: -10px; top: -10px; }
+iframe.eol-tipline {  position: absolute; top: 15px; left: 0;  width: 95%; height: 95%; z-index: 1; }
+iframe.eol-survey { position: absolute; left: 30%; top: 20%; z-index: 999999; width: 500px; height: 175px; }
+
+
+
+/* some global stuff */
+body { margin: 0; font: 12px arial,sans-serif; }
+html body.nonBranded { background: #001d3b none top no-repeat; }
+html, body.eol { background: #001d3b url("../../../static/uberblog/images/flare.jpg") top no-repeat; }
+body.eol.the_soup { background: #0099cc url("../../../static/uberblog/images/flare_soup.jpg") top no-repeat; }
+h1, h2, h3, h4, h5, h6 { margin: 0; padding: 0; }
+h2 { font-size: 24px; font-weight: bold; letter-spacing: -.05em; }
+h3 { font-size: 18px; font-weight: bold; letter-spacing: -.05em; }
+h4 { font-size: 14px; font-weight: bold; letter-spacing: -.08em; }
+ol { margin: 0 0 0 30px; padding: 0; list-style: decimal outside; }
+ul { margin: 0; padding: 0; list-style: none; }
+li { margin: 0; padding: 0; }
+a { text-decoration: none; color: #1F5072; }
+a:hover { text-decoration: underline; }
+
+/* clear floats without extra markup (aka clearfix) */
+.clear:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.clear { display: inline-block; }
+
+/* Hides from IE-mac \*/
+* html .clear { height: 1%; }
+.clear { display: block; }
+/* End hide from IE-mac */
+
+/* some global page structure setup */
+#page { width: 980px; margin: 0 auto; z-index: 10; position: relative; }
+#content { position: relative; z-index: 1; }
+#content_interior { background: #fff; width: 980px; margin: 0 auto; background: #fff; }
+
+/* global header stuff (logo, account, edition selector, leaderboard) */
+#eol_header { position: relative; width: 944px; padding: 5px 0 1px 0; z-index: 99990; background: #001C39 url("../../../static/uberblog/images/flare_legacy.jpg") no-repeat; padding-bottom: 1px; overflow: visible; }
+body.eol #eol_header { width: 100%; margin: 0 auto; background: none; }
+
+
+
+#header_interior { position: relative; display: block; width: 934px; min-height: 158px; height: auto !important; height: 158px; margin: 0 auto; }
+body.main #header_interior { min-height: 25px; height: auto !important; height: 25px;}
+body.eol #header_interior { width: 980px; }
+
+/* Frontdoor Header */
+#header_mid {clear:both; height:35px; position:relative;}
+
+#eonline_logo { float: left; }
+#eonline_logo a { display: block; height: 128px; width: 66px; margin: 0; background: url("../../../static/uberblog/images/eonline_logo.png") no-repeat; text-indent: -10000px; cursor: pointer; }
+* html #eonline_logo a { background: url("../../../static/uberblog/images/spacer.gif"); filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/static/uberblog/images/eonline_logo.png",sizingMethod=crop); }
+
+#ad_leaderboard { background: Transparent none; z-index: 10; }
+
+/* global navigation */
+#eol_navigation { width: 100%; line-height: 29px; background: #fff; }
+
+
+/* this hides the site catalyst 1x1 which renders as one line of text in IE */
+#sitecatalyst, #stat_tracking_area { display: none; }
+
+#header_edition_selector { position: absolute; right: 738px; color: #fff; margin: 0; height: 92px; }
+
+/* edition selector */
+#edition_container { position: relative; background: #fff url("../../../static/uberblog/images/grey_arrow_dwn.gif") 100px no-repeat; height: 11px; width: 110px; line-height: 11px; text-align: left; padding: 2px; color: #333 !important; font-size: 11px !important; border: 1px solid #334A61; }
+#edition_container img { float: left; margin-right: 8px; border: none; }
+#edition_container p { float: left; margin: 0; }
+#edition_container ul { display: none; }
+#edition_container:hover ul { display: block; }
+* html #edition_container.sfhover ul { display: block; }
+#edition_selector { position: absolute; top: 0; left: 0; }
+.edition_selector { background: #fff; font-size: 11px !important; }
+.edition_selector a { padding: 2px; display: block; color: #333 !important; text-decoration: none !important; width: 80px; }
+a.edition_us { padding-left: 32px !important; background: url("../../../static/uberblog/images/flag_usa.gif") 2px no-repeat; }
+a:hover.edition_us { background: #E1EFF2 url("../../../static/uberblog/images/flag_usa.gif") 2px no-repeat; }
+a.edition_ca { padding-left: 32px !important; background: url("../../../static/uberblog/images/flag_canada.gif") 2px no-repeat; }
+a:hover.edition_ca { background: #E1EFF2 url("../../../static/uberblog/images/flag_canada.gif") 2px no-repeat; }
+a.edition_uk { padding-left: 32px !important; background: url("../../../static/uberblog/images/flag_uk.gif") 2px no-repeat; }
+a:hover.edition_uk { background: #E1EFF2 url("../../../static/uberblog/images/flag_uk.gif") 2px no-repeat; }
+a.edition_it { padding-left: 32px !important; background: url("../../../static/uberblog/images/flag_it.gif") 2px no-repeat; }
+a:hover.edition_it { background: #E1EFF2 url("../../../static/uberblog/images/flag_it.gif") 2px no-repeat; }
+a.edition_de { padding-left: 32px !important; background: url("../../../static/uberblog/images/flag_de.gif") 2px no-repeat; }
+a:hover.edition_de { background: #E1EFF2 url("../../../static/uberblog/images/flag_de.gif") 2px no-repeat; }
+a.edition_fr { padding-left: 32px !important; background: url("../../../static/uberblog/images/flag_fr.gif") 2px no-repeat; }
+a:hover.edition_fr { background: #E1EFF2 url("../../../static/uberblog/images/flag_fr.gif") 2px no-repeat; }
+a.edition_au { padding-left: 32px !important; background: url("../../../static/uberblog/images/flag_au.gif") 2px no-repeat; }
+a:hover.edition_au { background: #E1EFF2 url("../../../static/uberblog/images/flag_au.gif") 2px no-repeat; }
+
+/* account links */
+#eol_account { position: absolute; bottom: 39px; left: 70px; color: #fff; }
+
+a.eol-tipline {background:Transparent url(../../../static/uberblog/images/cta.tipline.gif) no-repeat 0 4px; height:27px; outline:0; position:absolute; top:0px; left:0px; text-indent:-99999em; width:323px; z-index:1;}
+
+/* auxiliary links */
+#aux_links { position: absolute; bottom: 39px; right: 145px; color: #fff; }
+.edition_de #aux_links { right: 160px; }
+body.eol #aux_links { right: 215px; }
+#aux_links a, #eol_account a { color: #fff; }
+#aux_links a:visited, #eol_account a:visited { color: #fff; }
+#aux_links li, #eol_account li { float: left; padding: 0 16px; border-right: 1px solid #666; }
+#aux_links li.last_child, #eol_account li.last_child { border-right: none; }
+#aux_links li a.rss { background: url("../../../static/uberblog/images/rss_14x14_transp.gif") no-repeat left; padding-left: 20px; position: static; }
+
+/* Search box */
+#header_search { position: absolute; bottom: 36px; right: 0px; z-index: 1; }
+#header_search form { margin: 0px; padding: 0px; }
+
+/* header promo image */
+#header_promo { position: absolute; top: 0; right: 738px; display: none; }
+#header_promo a { display: block; width: 110px; height: 65px; text-indent: -100000px; background: url("../../../../images.eonline.com/eol_images/Entire_Site/201061/Watch_video_110.gif") no-repeat; cursor: pointer; }
+body.eol #header_promo a { width: 157px; height: 91px; background: url("../../../../images.eonline.com/eol_images/Entire_Site/2010530/Watch_video_157x90.gif") no-repeat; }
+
+body.edition_it #header_promo a { background: url("../../../static/frontdoor/images/header_promo_110_it.png") no-repeat; }
+* html body.edition_it #header_promo a { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/static/frontdoor/images/header_promo_110_it.png',sizingMethod=crop); }
+
+body.eol.edition_it #header_promo a { background: url("../../../static/frontdoor/images/header_promo_it.png") no-repeat; }
+* html body.eol.edition_it #header_promo a { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/static/frontdoor/images/header_promo_it.png',sizingMethod=crop); }
+
+/* HTML place-holder video players */
+div.html_player * { background-color: transparent; margin: 0 !important; padding: 0 !important; }
+.html_player { background: #000 url(../../../../images.eonline.com/static/frontdoor/images/html_player_bg.gif) repeat-y scroll 0 0 !important; height: 618px !important; /*height: 628px !important !ie;*/ overflow: hidden !important; margin: 0 0 15px 0 !important; position: relative !important; }
+.html_player_loader { background: transparent url(../../../../images.eonline.com/static/frontdoor/images/html_player_loading.gif) no-repeat scroll center !important; display: none; height: 640px !important; position: absolute !important; left: 0 !important; top: 0 !important; width: 300px !important; z-index: 50 !important; }
+
+.html_player.html_player_loading div.html_player_loader, .html_player:hover div.html_player_loader, div.html_player .html_player_loading div.html_player_loader { background: #333 url(../../../../images.eonline.com/static/frontdoor/images/html_player_loading.gif) no-repeat scroll center !important; filter: alpha(opacity=50) !important; -moz-opacity: .50 !important; opacity: .50 !important; display: block !important; }
+
+.html_player h3 { color: #fff !important; font-variant: small-caps !important; font-size: 200% !important; font-weight: bolder !important; margin: 0 8px !important; padding: 7px 0 !important; text-transform: none !important; }
+
+div.html_player_video { background: transparent !important; height: 215px !important; margin: 0 8px !important; padding: 0 !important; }
+div.html_player_video img { height: 215px !important; }
+
+div.html_player_controls { background: transparent url(../../../../images.eonline.com/static/frontdoor/images/html_player_controls.gif) repeat-y scroll 0 0 !important; height: 29px !important; }
+
+div.html_player ul { background: transparent url(../../../../images.eonline.com/static/frontdoor/images/html_player_scrollbar.gif) no-repeat scroll right top !important; display: block !important; list-style: none !important; height: 340px !important; margin: 0 !important; padding: 0 !important; }
+
+div.html_player ul li { background: #2f2f2f !important; border: 1px solid #555 !important; display: block !important; height: 70px !important; margin: 0 21px 5px 4px !important; padding: 6px 0 0 5px !important; }
+
+
+.html_player ul li div.html_player_thumbnail { float: left !important; width: 92px !important; }
+
+.html_player ul li div.html_player_thumbnail img { height: 65px !important; width: 85px !important; }
+
+.html_player ul li div.html_player_content { height: 60px !important; float: left !important; overflow: hidden !important; width: 175px !important; }
+
+.html_player ul h5 { color: #fac501 !important; font-weight: bold !important; font-size: 11px !important; margin: 0 !important; padding: 0 !important; word-wrap: none !important; }
+
+.html_player ul p { color: #c2c2c2 !important; font-size: 9.4px !important; font-weight: bold !important; margin: 3px 0 0 0 !important; padding: 0 !important; }
+
+div.flash_player { height: 1px; overflow: hidden !important; }
+div.flash_player embed, div.flash_player object { height: 1px; }
+
+div.flash_player.flash_player_loaded { height: 618px; }
+div.flash_player.flash_player_loaded embed, div.flash_player.flash_player_loaded object { height: 618px; }
+
+/* these styles are for the eol sitemap */
+#content .sitemap#content_interior { padding: 20px; width: 940px; }
+.sitemap h2 { border-bottom: 5px solid #ccc; color: #b20204; font-size: 28px; letter-spacing: -0.03em; margin: 0 0 15px 0; }
+.sitemap h3 { border-bottom: 3px solid #ccc; color: #b20204; }
+.sitemap ul { clear: none; float: left; padding: 0 0 20px 0; width: 283px; }
+.sitemap ul.two_columns ul, .sitemap ul.three_columns ul { padding: 0; }
+.sitemap ul.two_columns { width: 566px; }
+.sitemap ul.three_columns { width: 850px; }
+.sitemap li { margin: 3px 0 2px 5px; }
+.sitemap li a:hover { background-color: #f00; color: #fff; text-decoration: none; }
+
+/* Twitter Feed Module */
+#twitter_module { height: 225px; width: 460px; }
+#twitter_module_tweets { position: relative; top: 30px; left: 30px; overflow: hidden; height: 150px; width: 400px; }
+#twitter_module .row { position: absolute; top: 150px; left: 0px; border-bottom: solid 2px #ccc; clear: both; height: 55px; padding: 10px 0px; overflow: hidden; }
+#twitter_module .row img { border: solid 1px #ccc; height: 48px; width: 48px; }
+#twitter_module .row p { color: #000; margin: 0px 0px 0px 58px; width: 342px; font-size: 10px; }
+#twitter_module .row span { font-size: 12px; font-weight: bold; }
+
+
+/************************************************
+Blog Entry
+************************************************/
+.blog_entry:after, #blog_roll:after, .blog_entry .entry_container:after, .blog_entry ul.social-links:after, .blog_entry ul.tool-links:after, .blog_entry div.catagories:after, #blog_roll div.pagination:after 
+    { display: block; clear: both; content: "."; visibility: hidden; height: 0px; }
+
+.blog_entry div.catagories { zoom: 1; }
+.blog_entry ul.social-links { zoom: 1; float: left; padding-bottom: 5px; width: 560px; }
+.blog_entry ul.social-links li, .blog_entry ul.tool-links li { float: left; }
+.blog_entry ul.social-links li { padding-right: 5px; height: 62px; position: relative; }
+.blog_entry ul.social-links li.google-plus { width: 50px; }
+.blog_entry ul.social-links li.google-plus div { position: absolute; bottom: 0; }
+.blog_entry ul.social-links li a, .blog_entry ul.tool-links li a { display: block; width: 24px; height: 22px; background: url('../../../static/uberblog/images/ico.social.22x32.gif') no-repeat 0 0; margin: 0; padding: 0 0 0 5px; cursor: pointer; }
+.blog_entry ul.social-links li a:hover { background-color: transparent; }
+.blog_entry ul.social-links li.facebook-like { width: 47px; }
+.blog_entry ul.social-links li.facebook-like div { position: absolute; bottom: 0; left: 0; height: 60px; }
+.blog_entry ul.social-links li.email { width: 55px; text-align: left; }
+.blog_entry ul.social-links li.email a { background-image: url('../../../static/uberblog/images/social-email-btn.jpg'); width: 55px; position: absolute; bottom: 0; height: 20px; }
+.blog_entry ul.social-links li.email a:hover { background-position: 0 -20px; }
+.blog_entry ul.social-links li.comments { float: right; width: 130px; }
+.blog_entry ul.social-links li.comments a { background-position: 0 -159px; width: auto; padding-left: 26px; line-height: 22px; position: absolute; bottom: 0; right: 0; }
+.blog_entry ul.social-links li.comments a span { display: block; float: left; *width:100px;text-align:left;padding:05px;line-height: 12px;}
+.blog_entry ul.social-links li.comments a:hover { background-color: #F00; }
+.blog_entry ul.social-links li.comments a:hover span { background-color: #F00; }
+.blog_entry .top-social-links { border-bottom: 1px solid #ccc; width: 560px; height: 30px; }
+
+ul.tool-links { zoom: 1; float: right; padding-bottom: 5px; }
+
+.blog_entry .categories { clear: both; }
+
+
+.ac_results { padding: 0px; border: 1px solid black; background-color: white; overflow: hidden; z-index: 99999; }
+.ac_results ul { width: 100%; list-style-position: outside; list-style: none; padding: 0; margin: 0; }
+.ac_results li { margin: 0px; padding: 2px 5px; cursor: default; display: block; /*  	if width will be 100% horizontal scrollbar will apear  	when scroll mode will be used 	*/ /*width: 100%;*/ font: menu; font-size: 12px; /*  	it is very important, if line-height not setted or setted  	in relative units scroll will be broken in firefox 	*/ line-height: 16px; overflow: hidden; }
+.ac_loading { background: white url('../../../static/uberblog/images/indicator.gif') right center no-repeat; }
+.ac_odd { background-color: #FFF; }
+.ac_over { background-color: #FFC; }
+
+
+
+
+
+/******* this is the current section tab indicator */
+body.news #nav_news, body.photogalleries #nav_photos, body.fashion #nav_fashion, body.videos #nav_video, body.redcarpet #nav_red_carpet, body.red_carpet #nav_red_carpet, body.the_awful_truth #nav_awful, body.watch_with_kristin #nav_kristin, body.shows #nav_shows, body.one #nav_shows, body.the_soup #nav_the_soup, body.chelsea #nav_chelsea, body.cat_fashion #nav_fashion, body.movie_reviews #nav_movies, body.schedule #nav_schedule { background: #8292a1; }
+body.news #nav_news a.tab, body.photogalleries #nav_photos a.tab, body.fashion #nav_fashion a.tab, body.videos #nav_video a.tab, body.redcarpet #nav_red_carpet a.tab, body.red_carpet #nav_red_carpet a.tab, body.the_awful_truth #nav_awful a.tab, body.watch_with_kristin #nav_kristin a.tab, body.shows #nav_shows a.tab, body.one #nav_shows a.tab, body.the_soup #nav_the_soup a.tab, body.chelsea #nav_chelsea a.tab, body.cat_fashion #nav_fashion a.tab, body.movie_reviews #nav_movies a.tab, body.schedule #nav_schedule a.tab { color: #fff; }
+
+/******* nav styles - Disenfranchise is highlighted instead of News when in a disenfranchise */
+body.news.the_awful_truth #nav_news, body.news.watch_with_kristin #nav_news, body.news.the_soup #nav_news, body.news.redcarpet #nav_news, body.news.red_carpet #nav_news, body.news.cat_fashion #nav_news, body.news.movie_reviews #nav_news { background: inherit; }
+body.news.the_awful_truth #nav_news a.tab, body.news.watch_with_kristin #nav_news a.tab, body.news.the_soup #nav_news a.tab, body.news.redcarpet #nav_news a.tab, body.news.red_carpet #nav_news a.tab, body.news.cat_fashion #nav_news a.tab, body.news.movie_reviews #nav_news a.tab { color: #666; background-color: #F5FCFE; }
+body.news.the_awful_truth #nav_news:hover a.tab, body.news.watch_with_kristin #nav_news:hover a.tab, body.news.the_soup #nav_news:hover a.tab, body.news.redcarpet #nav_news:hover a.tab, body.news.red_carpet #nav_news:hover a.tab, body.news.cat_fashion #nav_news:hover a.tab, body.news.movie_reviews #nav_news:hover a.tab { background-color: #cb0101; background-repeat: repeat-x; color: #fff; background-image: url("../../../static/uberblog/images/nav_bg.jpg"); }
+
+/******* nav styles - when multiple sections are highlighted (like fashion/photos, the soup/photos, etc) */
+body.photogalleries.fashion #nav_photos, body.photogalleries.the_soup #nav_photos, body.shows.chelsea_body #nav_shows, body.photogalleries.chelsea #nav_photos { background: inherit; }
+body.photogalleries.fashion #nav_photos a.tab, body.photogalleries.the_soup #nav_photos a.tab, body.shows.chelsea_body #nav_shows a.tab, body.photogalleries.chelsea #nav_photos a.tab { color: #666; background-image: url(../../../../images.eonline.com/static/uberblog/images/nav_divider.gif); background-position: right 1px; background-repeat: no-repeat; display: block; background-color: #F5FCFE; }
+body.photogalleries.fashion #nav_photos:hover a.tab, body.photogalleries.the_soup #nav_photos:hover a.tab { background-color: #cb0101; background-repeat: repeat-x; color: #fff; background-image: url(../../../../images.eonline.com/static/uberblog/images/nav_bg.jpg); }
+
+/******* nav styles */
+#top_navigation_links { background-color: #f5fcfe; color: #666666; float: left; font-size: 15px; font-weight: bold; height: 29px; line-height: 29px; overflow: hidden; width: 100%; }
+#top_navigation_links a.tab { padding: 0px 8px; display: block; background-image: url("../../../static/uberblog/images/nav_divider.gif"); background-repeat: no-repeat; background-position: right 1px; }
+#top_navigation_links a.tab.last { background-image: none; }
+
+#top_navigation_links #nav_kristin span { font-size: 10px; }
+#top_navigation_links #nav_shop a.tab { background-image: url("../../../static/uberblog/images/shop.gif"); background-repeat: no-repeat; background-position: 10px center; text-indent: -10000px; width: 30px; }
+#top_navigation_links #nav_shop a.tab:hover { background-color: #f5fcfe; }
+#top_navigation_links li:hover a.tab { background-color: #cb0101; background-repeat: repeat-x; color: #fff; background-image: url("../../../static/uberblog/images/nav_bg.jpg"); }
+* html #top_navigation_links li.sfhover a.tab { background-color: #cb0101; background-repeat: repeat-x; color: #fff; background-image: url("../../../static/uberblog/images/nav_bg.jpg"); }
+#top_navigation_links a { color: #666666; text-decoration: none; }
+#top_navigation_links .sub_nav { font-size: 13px; /* Approx 12pt */ display: none; position: absolute; border: 1px solid #cc0000; background-color: #fff; padding: 5px 10px 15px 10px; }
+#top_navigation_links li:hover .sub_nav { display: block; }
+* html #top_navigation_links .sfhover .sub_nav { display: block; }
+#top_navigation_links .sub_nav a { color: #333333; display: block; }
+#top_navigation_links .sub_nav a.fandango_link { color: #f0306f !important; }
+* html #top_navigation_links .sub_nav a { padding-right: 10px; /* IE 6 requires this */ }
+#top_navigation_links .sub_nav a:hover { color: #cc0000; }
+#top_navigation_links li { float: left; }
+#top_navigation_links .sub_nav li { clear: both; line-height: 18px; }
+#top_navigation_links .secondary_sub_nav { clear: both; font-weight: normal; margin-top: 15px; padding-top: 15px; }
+* html #top_navigation_links .secondary_sub_nav { padding-top: 0 !important; }
+* + html .secondary_sub_nav { /* IE 7 Only */ padding-top: 0 !important; }
+.multi_columnn { float: left; border-left: 1px solid #b2b2b2; padding-left: 10px; }
+.multi_columnn.first { float: left; padding: 0 10px 0 0; border: 0; }
+#eol_navigation form { margin: 3px 5px 0 0; font-size: 12px; line-height: 20px; }
+.search_box { background: transparent url("../../../static/search/images/searchbox_sm.png") no-repeat scroll left center; border: 0; color: #7A7A7A; height: 19px; padding: 3px 0 0 20px; width: 87px; font-size: 12px; color: #333; vertical-align: top; }
+* html .search_box { cursor: text; background: url("../../../static/uberblog/images/spacer.gif"); filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/static/search/images/searchbox_sm.png',sizingMethod=crop); }
+
+body.eol .search_box { background: transparent url("../../../static/search/images/searchbox.png") no-repeat scroll left center; width: 147px; }
+* html body.eol .search_box { background: url("../../../static/uberblog/images/spacer.gif"); filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/static/search/images/searchbox.png',sizingMethod=crop); }
+
+.search_box_submit { background-color: transparent; background: url("../../../static/search/images/searchbtn.png"); width: 30px; height: 20px; border: 0px; margin: 1px 0px 0px 5px; cursor: pointer; vertical-align: top; }
+
+* html .search_box_submit { background: url("../../../static/uberblog/images/spacer.gif"); filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/static/search/images/searchbtn.png',sizingMethod=crop); }
+.edition_de .search_box_submit { background-image: url("../../../static/search/images/de/searchbtn/suchen/white_matte.gif"); filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='',sizingMethod=crop); width: 44px; }
+.edition_fr .search_box_submit { background-image: url("../../../static/search/images/fr/searchbtn/ok/white_matte.gif"); filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='',sizingMethod=crop); }
+.edition_it .search_box_submit { background-image: url("../../../static/search/images/it/searchbtn/vai/white_matte.gif"); filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='',sizingMethod=crop); }
+
+#header_search #celebList { background: #fff; border: 1px solid #ccc; padding: 3px 0; }
+#header_search #celebList li { padding: 2px 5px; color: #333; font-family: 'Lucida Grande' , arial, helvetica, sans-serif; font-size: 11px; cursor: pointer; }
+#header_search #celebList li.selected { background: #ffc; }
+
+#top_navigation_links .sub_nav a.styleberry { color: #F02C6C; }
+
+#top_navigation_links .sub_nav a.upfronts { color: #cc0000; }
+#top_navigation_links .sub_nav li.upfronts { color: #cc0000; }
+
+#top_navigation_links #sub_nav_5 { margin-left: -290px; }
+.edition_de #top_navigation_links #sub_nav_5, .edition_fr #top_navigation_links #sub_nav_5, .edition_it #top_navigation_links #sub_nav_5 { margin-left: 0px; }
+*html #top_navigation_links #sub_nav_5 { width: 350px; }
+
+*html #sub_nav_5 .first .main_sub_nav li { width: auto !important; }
+*html #sub_nav_5 .multi_columnn .main_sub_nav li { width: 225px; }
+
+#top_navigation_links li a.tab .beta { font-size: 9px; font-weight: bold; color: #ff1100; }
+
+/* Red/ All New Styles */
+#top_navigation_links a.tab.red { background-color: #cb0101; background-repeat: repeat-x; color: #fff; background-image: url("../../../static/uberblog/images/nav_bg.jpg"); }
+#top_navigation_links .all_new { font-size: 8px; }
+
+#top_navigation_links a.tab { padding: 0px 6px; }
+body.eol #top_navigation_links a.tab { padding: 0px 8px; }
+
+
+/************************************************
+Advertisement
+************************************************/
+div.advertisement-pagewidth { }
+div.advertisement-pagewidth div#headerSpot { display: none; }
+
+
+
+#eol_footer { background: #fff; border: solid 10px #334a61; clear: both; font-size: 11px; margin: 0; position: relative; width: 927px; }
+body.eol #eol_footer { width: 960px; margin: 10px auto; }
+#eol_footer ul li { border-right: solid 1px #dbdbdb; display: inline; float: left; height: 175px; margin: 0 8px; padding-right: 12px; line-height: 1.3em; }
+#eol_footer ul li.footer_section_8 { border-right: none; }
+
+
+#eol_footer ul ul li { border: none !important; clear: both; color: #333; display: block; float: none; height: auto; list-style: outside; margin: 3px 0; padding: 0; }
+#eol_footer ul ul li a { color: #333; }
+#eol_footer ul ul li a.rss { background: url("../../../static/uberblog/images/footer_rss_logo.gif") no-repeat; padding: 0 0 0 14px; }
+#eol_footer ul ul li.title { font-weight: bold; text-transform: uppercase; }
+
+
+#eol_footer ul ul#footer_everywhere .title, #eol_footer ul ul#footer_everywhere a { color: #0066cc; }
+
+#eol_footer #section_1 { padding-left: 2px; }
+
+#eol_footer #section_2 {margin:20px auto 10px auto; width:550px;}
+#eol_footer #section_2 ul { display: block; text-align: center; }
+#eol_footer #section_2 ul li { display: inline; float: none; margin: 0px; padding: 0px; }
+#eol_footer #section_2 ul li.last { border-right: none !important; }
+#eol_footer #section_2 ul li.title { font-weight: bold; text-transform: uppercase; }
+#eol_footer #section_2 ul li a { color: #333333; padding: 0 10px; }
+
+#footer_search { padding: 15px 10px 10px 10px; }
+#footer_search form { float: right; }
+#footer_search .hidden { display: none; }
+#footer_search #keyword_footer { background: url("../../../static/uberblog/images/footer_search_box.gif") no-repeat; border: 0; color: #7a7a7a; font-size: 12px; height: 20px; line-height: 20px; padding: 2px 0 0 22px; _padding: 0 0 0 22px; vertical-align: top; width: 146px; }
+#footer_search #search_submit_footer { background: url("../../../static/uberblog/images/go_button.gif") no-repeat; border: none; cursor: pointer; height: 20px; width: 30px; }
+.edition_de #footer_search #search_submit_footer { background: url("../../../static/uberblog/images/go_button_de.jpg") no-repeat; width: 44px; }
+.edition_fr #footer_search #search_submit_footer { background: url("../../../static/uberblog/images/go_button_fr.jpg") no-repeat; }
+.edition_it #footer_search #search_submit_footer { background: url("../../../static/uberblog/images/go_button_it.jpg") no-repeat; }
+#footer_feedback {display:inline; float:left; margin:2px 0 0 10px;}
+#footer_feedback a { background: url("../../../static/uberblog/images/footer_feedback_btn.gif") no-repeat; color: #fff; display: block; font-weight: bold; height: 20px; line-height: 20px; text-align: center; width: 166px; }
+#footer_feedback a:hover { text-decoration: none; }
+
+#footer_legalese { color: #666; font-size: 10px; _font-size: 9px; letter-spacing: -.3px; margin: 0 auto 30px auto; text-align: center; width: 530px; }
+#footer_legalese a { color: #666; font-weight: bold; }
+
+#eonline_logo_footer {background: url("../../../static/uberblog/images/footer_eonline_logo_sm.gif") no-repeat; cursor: pointer;display:block; float:left; height:25px; text-indent:-9999px; width:55px;}
+
+#nbcu_logo_footer {background:transparent url("../../../static/uberblog/images/e_nbcu_logo_us.png") no-repeat; display:block; height:90px; position:absolute; bottom:10px; right:10px; width:210px;}
+* html #nbcu_logo_footer {background:url("../../../static/uberblog/images/spacer.gif"); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/static/uberblog/images/e_nbcu_logo_us.png",sizingMethod=crop);}
+.edition_de #nbcu_logo_footer {background-image:url("../../../static/uberblog/images/e_nbcu_logo_de.png");}
+* html .edition_de #nbcu_logo_footer {background:url("../../../static/uberblog/images/spacer.gif"); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/static/uberblog/images/e_nbcu_logo_de.png",sizingMethod=crop);}
+.edition_fr #nbcu_logo_footer {background-image:url("../../../static/uberblog/images/e_nbcu_logo_fr.png");}
+* html .edition_fr #nbcu_logo_footer {background:url("../../../static/uberblog/images/spacer.gif"); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/static/uberblog/images/e_nbcu_logo_fr.png",sizingMethod=crop);}
+.edition_it #nbcu_logo_footer {background-image:url("../../../static/uberblog/images/e_nbcu_logo_it.png");}
+* html .edition_it #nbcu_logo_footer {background:url("../../../static/uberblog/images/spacer.gif"); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/static/uberblog/images/e_nbcu_logo_it.png",sizingMethod=crop);}
+
+/* Legacy nbcu logo */
+#eonline_logo_footer_legacy {background:transparent url("../../../static/uberblog/images/footer_eonline_logo_sm.png") no-repeat; cursor: pointer;display:block; float:left; height:25px; text-indent:-9999px; width:55px;}
+* html #eonline_logo_footer_legacy {background:url("../../../static/uberblog/images/spacer.gif"); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/static/uberblog/images/footer_eonline_logo_sm.png",sizingMethod=crop);}
+
+#nbcu_logo_footer_legacy {background:transparent url("../../../static/uberblog/images/e_nbcu_logo_legacy_us.png") no-repeat; display:block; height:90px; position:absolute; bottom:0px; right:0px; width:193px;}
+* html #nbcu_logo_footer_legacy {background:url("../../../static/uberblog/images/spacer.gif"); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/static/uberblog/images/e_nbcu_logo_legacy_us.png",sizingMethod=crop);}
+.edition_de #nbcu_logo_footer_legacy {background-image:url("../../../static/uberblog/images/e_nbcu_logo_legacy_de.png");}
+* html .edition_de #nbcu_logo_footer_legacy {background:url("../../../static/uberblog/images/spacer.gif"); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/static/uberblog/images/e_nbcu_logo_legacy_de.png",sizingMethod=crop);}
+.edition_fr #nbcu_logo_footer_legacy {background-image:url("../../../static/uberblog/images/e_nbcu_logo_legacy_fr.png");}
+* html .edition_fr #nbcu_logo_footer_legacy {background:url("../../../static/uberblog/images/spacer.gif"); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/static/uberblog/images/e_nbcu_logo_legacy_fr.png",sizingMethod=crop);}
+.edition_it #nbcu_logo_footer_legacy {background-image:url("../../../static/uberblog/images/e_nbcu_logo_legacy_it.png");}
+* html .edition_it #nbcu_logo_footer_legacy {background:url("../../../static/uberblog/images/spacer.gif"); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/static/uberblog/images/e_nbcu_logo_legacy_it.png",sizingMethod=crop);}
+
+#footer_edition { background: #fff; border: solid 10px #334a61; border-top: none; font-size: 11px !important; height: 14px; line-height: 14px; margin: 0; padding: 10px 0; width: 927px; }
+body.eol #footer_edition { width: 960px; margin: 10px auto 0; border: solid 10px #334a61; }
+#footer_edition_container { width: 260px; margin: 0 auto; }
+#footer_edition_text { float: left; font-weight: bold; margin-right: 4px; text-align: right; width: 138px; }
+#footer_edition_dropdown { float: left; width: 100px; text-align: right; }
+#footer_edition_nav { background: #fff url("../../../static/uberblog/images/grey_arrow_dwn.gif") 100px no-repeat; color: #333 !important; font-size: 11px !important; height: 14px; line-height: 14px; position: relative; text-align: left; width: 110px; }
+#footer_edition_nav img { border: none; display: block; margin: 0 8px 0 0; float: left; width: 22px; }
+#footer_edition_nav img.navImg { display: inline; margin: 2px 8px 0 2px; }
+#footer_edition_nav p { display: block; float: left; margin: 0; width: 66px; }
+#footer_edition_nav ul { display: none; position: absolute; top: -110px; left: 0; }
+#footer_edition_nav:hover ul { display: block; }
+* html #footer_edition_container.sfhover ul { display: block; }
+
+/* Edition styles */
+.edition_ca #ceg_logos_footer a#style_logo_footer_sm { display: none; }
+.edition_ca #ceg_logos_footer a#g4_logo_footer_sm { display: none; }
+.edition_au #ceg_logos_footer a#style_logo_footer_sm { display: none; }
+.edition_au #ceg_logos_footer a#g4_logo_footer_sm { display: none; }
+.edition_de #ceg_logos_footer a#style_logo_footer_sm { display: none; }
+.edition_de #ceg_logos_footer a#g4_logo_footer_sm { display: none; }
+.edition_fr #ceg_logos_footer a#style_logo_footer_sm { display: none; }
+.edition_fr #ceg_logos_footer a#g4_logo_footer_sm { display: none; }
+.edition_it #ceg_logos_footer a#style_logo_footer_sm { display: none; }
+.edition_it #ceg_logos_footer a#g4_logo_footer_sm { display: none; }
+.edition_uk #ceg_logos_footer a#style_logo_footer_sm { display: none; }
+.edition_uk #ceg_logos_footer a#g4_logo_footer_sm { display: none; }
+
+.edition_au #eol_footer ul li.footer_section_5 { border-right: none; }
+.edition_de #eol_footer ul li.footer_section_5 { border-right: none; }
+.edition_fr #eol_footer ul li.footer_section_5 { border-right: none; }
+.edition_it #eol_footer ul li.footer_section_5 { border-right: none; }
+.edition_uk #eol_footer ul li.footer_section_5 { border-right: none; }
+
+
+/************************************************
+Advertisements
+************************************************/
+div.ad-960x50 iframe.advertisement-iframe { width: 960px; height: 50px; overflow: hidden; }
+div.ad-728x90 iframe.advertisement-iframe { width: 728px; height: 90px; overflow: hidden; }
+div.ad-728x90-900x250-960x50 { min-width: 728px; width: auto !important; width: 728px; min-height: 50px; height: auto !important; height: 50px; }
+div.ad-728x90-900x250-960x50 iframe.advertisement-iframe { width: 728px; height: 90px; overflow: hidden; }
+div.ad-728x90-900x250-960x50-728x250 { min-width: 728px; width: auto !important; width: 728px; min-height: 50px; height: auto !important; height: 50px; }
+div.ad-728x90-900x250-960x50-728x250 iframe.advertisement-iframe { width: 728px; height: 90px; overflow: hidden; }
+
+div.ad-300x250 { height: auto !important; min-height: 250px; width: 300px; }
+div.ad-300x250 iframe { width: 300px; min-height: 250px; height: auto !important; height: 250px; }
+div.ad-300x100 { width: 300px; height: 100px; overflow: hidden; }
+div.ad-300x100 iframe { width: 300px; height: 100px; }
+div.ad-120x60 { width: 120px; height: 60px; float: left; }
+div.ad-120x60 iframe { width: 120px; height: 60px; }
+div.ad-320x60 { width: 320px; height: 60px; overflow: hidden; }
+div.ad-320x60 iframe { width: 320px; height: 60px; }
+div.ad-234x60 { width: 234px; height: 60px; overflow: hidden; }
+div.ad-234x60 iframe { width: 234px; height: 60px; }
+div.sponsors { clear: both; padding: 0; height: 100px; padding: 0 0 25px; }
+
+iframe.ad-blogpost, a.ad-blogpost { position: absolute; right: 0; top: 0; width: 120px; height: 60px; }
+
+body.eol #header_interior:after, div#header_interior div#ad_leaderboard:after { clear: both; display: block; height: 1px; content: "."; visibility: hidden; }
+
+
+div#header_interior div#ad_leaderboard { position: relative; float: right; zoom: 1; padding: 0 0 0px; }
+html.de div.glam-advertisement, body.edition_de div.glam-advertisement { position: absolute; right: 3px; bottom: 3px; height: 24px; width: 160px; }
+html.de div.glam-advertisement a, body.edition_de div.glam-advertisement a { height: 24px; width: 160px; display: block; }
+body.eol #header_interior { zoom: 1; }
+
+body.takeover { }

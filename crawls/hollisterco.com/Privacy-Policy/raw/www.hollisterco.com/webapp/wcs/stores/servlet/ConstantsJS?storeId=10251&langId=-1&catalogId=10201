@@ -1,0 +1,204 @@
+
+
+
+var ANF = {
+	// constructor to reference ANF global functions
+	fn : function (){}, 
+	account : {},
+	catalog : {},
+	fitguide : {},
+	checkout : {},
+	checkoutsection : {},
+	storelocator : {},
+	casting : {},
+	unsubscribe : {},
+	customerservice : {},
+	speedexchange : {},
+	gclookup : {},
+	global : {},
+	contactus : {},	
+	home : {}, 
+	help : {},
+	content: {},
+	marketing: {},
+	analytics: {}
+};
+
+var ANF_helper = {};
+var af = new ANF.fn();
+
+ANF.params = {
+	image : {
+		"SWATCHIMG_SUFFIX" : "_sw.jpg",
+		"PRODUCTIMG_SUFFIX" : "_350.png",
+		"MODELIMG_SUFFIX" : "_340.png",
+		"ZOOMIMG_SUFFIX" : "_900.jpg",
+		"PRINTIMG_SUFFIX" :  "_350.jpg",
+		"CATIMG_SUFFIX" :  "_226.png",
+		"THUMBIMG_SUFFIX" :  "_100.png"
+	},
+	urls : {
+	    "SCENE7URL" : "//anf.scene7.com/is/image/",
+		"COLLECTION_URL" : "/hol/img/collection/",
+		"STATIC_DIR" : 	"hol",
+		"SELECT_SIZE" : "Select Size", 
+		"SUBSCRIBE" : "Subscribe?storeId=10251&amp;catalogId=10201&amp;langId=-1"
+	},
+	storeAttributes : {
+		"country" : "US",
+		"countryFromIP" : "US",
+		"locale" : "en_US",
+		"pasId" : "10352",
+		"anfPasId" : "10302",
+		"kidsPasId" : "18107",
+		"holPasId" : "10352",
+		"ghPasId" : "13557",
+		"storeId" : 10251,
+		"catalogId" : "10201",
+		"langId" : "-1",
+		"lang" : "en",
+		"QUERY_STR" : "storeId=10251&amp;catalogId=10201&amp;langId=-1",
+		"HasShippingAndHandlingBlurb" : "0",
+		"HasSubscribeSubmitBlurb" : "0",
+		"recaptchaKey" : "6LeDxgMAAAAAAJQWWu24CtVmcAYqslnDVlqtlwS7",
+		"hasActAsBrokerMsg" : false,
+		"hasAgeVerification" : "0",
+		"hasDisabledContextMenu" : false,
+		"hasMailToLinks" : true,
+		"hasSessionTimeout" : false,
+		"hasTargetBlankLinks" : true,
+		"isKioskStore" : false,
+		"siteDomains" : ['abercrombie', 'abercrombiekids', 'gillyhicks', 'hollisterco'],
+		"storeLocatorBrandCode" : "HOL",
+		"hasAVS" : true,
+		"hasStoreLocator" : true,
+		"checkoutABView" : "OrderShippingDisplayView",
+		"checkoutAjaxABUrl" : "/webapp/wcs/stores/servlet/ABSwitchView?abTest=checkoutABflag&storeId=10251&catalogId=10201&langId=-1",
+		"hasNewSiteModal" : "0",
+		"isMobile" : false,
+		"newCheckoutEnabled" : true,
+		"isUSSite" : true,
+		"facebookLikeUrl" : "http%3A%2F%2Fwww.facebook.com%2Fhollister%3Fref%3Dts",
+		"promoCodeCountryWhitelist": "US,CA,PR,VI,AS,FM,GU,MH,MP,PW".split(","),
+		"isEUSite" : false,
+		"isUKSite" : false
+	},
+	env : {
+		"type" : ""
+	}
+}
+
+ANF.messaging = {
+	account : {
+		"WISHLISTSENT" : "Your wish list has been sent."
+	},
+	status : {
+		"PROCESSING" : "Processing...",
+		"EMAIL_BANNER_GET_DEMO" : "Thank you! Your email has been added to our list.  Please tell us more about yourself (optional)"
+	},
+	payment : {
+		"STEP_4" : "Proceed to Step 4",
+		"PAYPAL" : "Proceed to Paypal"
+	},
+	required_errors: {
+		
+	}, 
+	error : {
+		required : {
+			
+			"firstnamefield" : "Please enter a first name.",
+			"lastnamefield" : "Please enter a last name.",
+			"countryfield" : "", 
+			"addressfield" : "Please enter an address.",
+			"address2field" : "Please enter an address.",
+			"address3field" : "Please enter an address.",
+			"cityfield" : "Please enter a city.",
+			"zipcodefield" : "Please enter a postal code.",
+			"giftbox" : "Please select at least one item to add to your gift box.",
+			"cardbrandfield" : "Please select a credit card type.",
+			"cardnumberfield" : "Please enter a credit card number.",
+			"csvfield" : "Please enter a security code.",
+			"payphonefield" : "Please enter a phone number.",
+			"payemailfield" : "Please enter an email address.",
+			"loginemailfield" : "Please enter an email address.",
+			"loginpasswordfield" : "Please enter a password.",
+			"promocodefield" : "This is not a valid promo code, please try again.",
+			"giftcardnumberfield" : "This is not a valid gift card number. Please check the number and try again.",
+			"cardexpmonth" : "Please enter an expiration date.",
+			"cardexpyear" : "Please enter an expiration date.",
+			"gbs" : "Please select an item(s) to be gift wrapped. ",
+			"termsandconditionscheck" : "Your order cannot be submitted until you tick the box to confirm that you have read and agree to the Terms & Conditions and Privacy Policy. "
+		}, 
+		format : {
+			"cardnumberfield" : "This is not a valid card number.",
+			"csvfield" : "Please enter a valid security code. ",
+			"payemailfield" : "Please use a valid email format.",
+			"payphonefield" : "Please enter a valid phone number."
+		}, 
+		match : {
+		
+		},
+		"REQUIRED" : "This field is required.",
+		"REQUIRED_ALL" : "Please make sure all required information is provided.",
+		"REQUIRED_SIZE" : "Please select a size.",
+		"REQUIRED_AMT" : "Please select an amount.",
+		"REQUIRED_QTY" : "Please select a quantity.",
+		"REQUIRED_GENERIC" : 'Please correct the highlighted fields.',
+		"INVALID_CHAR" : "The input contains invalid characters.",
+		"INVALID_EMAIL" : "Your e-mail address contains invalid characters.",
+		"INVALID_EMAIL_BANNER" : "Invalid e-mail address.",
+		"INVALID_PHONE" : "Your telephone number contains invalid characters.",
+		"INVALID_ZIP" : "Sorry, the postal code is not valid for your state/province.",
+		"INVALID_CC" : "The credit card number is invalid.",
+		"MISMATCH" : "The following fields do not match:",
+		"MISMATCH_EMAIL" : "The input e-mail addresses do not match.",
+		"UNAPPLIED_PROMOCODE" : "There is an un-applied code entered in the Promo Code field. Please either remove or apply the Promo Code before processing your order.",
+		"MUST_ACCEPT_TERMS" : "You must accept the terms and conditions before proceeding.", 
+		"INVALID_SHIPPING_COUNTRY" : "We do not ship from this site to the country you have chosen. Please select from the list of available ship-to countries in the address form below. "
+	},
+	speedex: {
+		"ERROR_01" : "Your Order Number could not be found because it is either invalid or is greater than 60 days from the original order date. Please try again.",
+		"ERROR_02" : "The Order Number you submitted is greater than 60 days from the original order date and is not valid.",
+		"ERROR_03" : "The Order Number you submitted currently has not been processed or shipped and cannot use Speed Exchange.",
+		"ERROR_04" : 'The Order Number you submitted has already used Speed Exchange and is no longer valid.',
+		"ERROR_05" : "The Order Number you submitted is not eligible for Speed Exchange.",
+		"ERROR_06" : "The Order Number you submitted contains only Gift Cards or E-Gift Cards and is not eligible for Speed Exchange.",
+		"ERROR_07" : "The Order Number you submitted is not eligible for Speed Exchange."
+	},
+	shoppingBagEdit: {
+		"UPDATE" : "Update",
+		"CANCEL" : "Cancel"
+	},
+	giftwrap: {
+		"MESSAGE" : "Message",
+		"CHOOSE_BOX" : "Choose Box",
+		"NEW_BOX" : "New Box",
+		"BOX" : "Box"
+	},
+	gclookup: {
+		"ERROR_01" : "Either the 16 digit card number or the validation code entered are incorrect.",
+		"ERROR_02" : "Balance Inquiry is unavailable at this time. Please try again later.",
+		"ERROR_03" : "We cannot process your request."
+	},
+	catalog: {
+		"GLB_SANDHANDOTHERCHARGES" : '<a class="shipping-link" href="CustomerService?storeId=10251&amp;catalogId=10201&amp;langId=-1&amp;textKey=HELP_SHIPPINGANDHANDLING&amp;pageName=shipping-handling">Shipping & Handling</a> rates and other charges may apply',
+		"ITEMADDEDTOWISHLIST" : "This item has been added to your wish list",
+		"QUICKSHOP" : "Quick Shop",
+		"VIEWFULLPRODUCT" : "View Full Product Information",
+		"EDIT_WISHLIST" : "Edit Wish List"
+	},
+	storelocator: {
+		"SL_ERROR01" : "We&#39;re sorry. There were no locations found.",
+		"SL_ERROR02" : "We&#39;re sorry. Your search could not be completed at this time.",
+		"SL_ERROR03" : "Please pick a valid location",
+		"SL_STORES_NEAR_YOU" : "Closest Stores Found Near You", 
+		"SL_FOUND_WITHIN" : "Closest stores found within {0} miles of {1}",
+		"SL_FOUND_IN" : "Stores Found In {0}"
+	},
+	unsubscribe: {
+		success : 'The following address has been removed from our mailing list'
+	},
+	search: {
+		"searchProducts" : 'Search Products'
+	}
+}

@@ -1,0 +1,312 @@
+<!-- // hide script
+var BIZRATE = {
+    init:function() {
+        this.mid = '198074';
+        this.type = 1;
+        if (typeof(this.type) != 'undefined' && this.type > 0 && this.type <= 3) {
+            this.inviteTypes = new Array('none', 'visitor', 'cart', 'pos');
+        } else {
+            return false;
+        }
+
+        this.pitchType = 3;
+        this.google = (navigator.userAgent.toLowerCase().match(/googlebot/) || document.referrer.toLowerCase().match(/[.]google[.]/)) ? true : false;
+        this.chrome = (navigator.userAgent.toLowerCase().match(/chrome/)) ? true : false;
+        if (this.google) { // If googlebot use DHTML invite
+            this.format = 3;
+        } else if (this.chrome && this.pitchType == 1) {
+            this.format = 3;
+        } else {
+            this.format = this.pitchType;
+        }
+        
+        /* Use the following to allow user to set the type of invite // [window, dhtml, inline]
+        else if (typeof(br_format) != 'undefined' && br_format >= 0 && br_format <= 3) {
+            this.format = br_format;
+        } else { // Default to popup window
+            this.format = 1;
+        }
+        */
+
+        this.windowName = (this.type == 3) ? 'bizrate_pos_survey' : 'bizrate_survey';
+
+        this.dhtml = 1;
+        // Use the following to allow user to control if DHTML is shown if pop-up is blocked
+        // this.dhtml = (typeof(br_dhtml) != 'undefined' && (br_dhtml == 0 || br_dhtml == 1)) ? br_dhtml : 1; // Default to displaying DHTML invite if popup is blocked
+        this.frequency = (typeof(br_frequency) != 'undefined' && !isNaN(br_frequency)) ? br_frequency : 30;
+        this.percentage = (typeof(br_percentage) != 'undefined' && !isNaN(br_percentage) && (br_percentage <= 100) && (br_percentage >= 0)) ? br_percentage : 100;
+        this.random = Math.round(Math.random() * 99);
+        this.invited = new Array();
+        this.invited['visitor'] = this.getCookie('invited_visitor');
+        this.invited['pos'] = this.getCookie('invited_pos');
+        this.invited['cart'] = this.getCookie('invited_cart');
+
+        this.blocked = new Array();
+        this.blocked['visitor'] = this.getCookie('blocked_visitor');
+        this.blocked['pos'] = this.getCookie('blocked_pos');
+        this.blocked['cart'] = this.getCookie('blocked_cart');
+        //this.cart = (typeof(br_cart) != 'undefined') ? br_cart : 0;
+        
+        if (typeof(br_domain) != 'undefined') {
+            this.domain = br_domain;
+        } else {
+            this.domain = '.' + document.location.hostname.replace(/^www\./,'');
+        }
+        
+        this.bizrateDomain = 'bizrate.com';
+        this.URLParameters = '';
+        this.imageParameters = '';
+
+        if (typeof(br_data) != 'undefined') {
+        	for (var key in br_data) {
+                	if(key.indexOf('Q')==0){
+                 		this.URLParameters += '&' + key + '=' + escape(String(br_data[key]).replace(/\x26/g,"%26").replace(/\x23/g,"%23").replace(/\x2B/g,"%2B"));
+                	}
+        	}
+        }
+ 
+        if (typeof(br_title) != 'undefined') {
+            this.pageTitle = br_title;
+        } else {
+            this.pageTitle = 'Tell Us What You Think!';
+        }
+
+        this.pageTitlePass = '&pageTitle=' + escape(this.pageTitle.replace(/\x26/g,"%26").replace(/\x23/g,"%23").replace(/\x2B/g,"%2B"));
+
+        this.dimensions = new Array(
+            {width: 300, height: 250, closeY: 215},
+            {width: 180, height: 150, closeY: 130},
+            {width: 300, height: 100, closeY: 85},
+            {width: 400, height: 135, closeY: 135}
+        );
+        
+        if (this.type == 3) {
+            this.size = 3;
+        } else if (typeof(br_size) != 'undefined' && br_size >= 0 && br_size <= 2) {
+            this.size = br_size;
+        } else {
+            this.size = 0;
+        }
+        this.width = this.dimensions[this.size].width;
+        this.height = this.dimensions[this.size].height;
+        this.closeY = this.dimensions[this.size].closeY;
+        
+        this.inviteImageURL = 'https://images.bizrate.com/invite_pos?mid=198074&product_id=7&flow=104&pitch_type=3' + this.imageParameters;
+        if (this.size < 3) {
+            this.inviteImageURL = this.inviteImageURL.replace(/_pos/, '_multi') + '&image_size=' + this.size;
+        }
+        this.inviteURL = 'https://eval.bizrate.com/surveyinvite?id=198074&surveyType=multi&multiType=1&imageSize=' + this.size;
+        this.surveyURL = 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13345037527046816996702010302010376&rid=1334503752020204209&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0';
+
+        if (typeof(br_pos_x) != 'undefined' && !isNaN(br_pos_x)) {
+            this.posX = br_pos_x;
+            this.winX = br_pos_x;
+        } else {
+            this.posX = (this.getWidth()-this.width)/2; // centered in browser window
+            this.winX = this.posX+this.getLeft();
+        }
+        if (typeof(br_pos_y) != 'undefined' && !isNaN(br_pos_y)) {
+            this.posY = br_pos_y;
+            this.winY = br_pos_y;
+        } else {
+            this.posY = 75;    // 1.5 inches from top of browser window
+            this.winY = this.posY+this.getTop()+80;
+        }
+
+        if (this.type == 2) { this.URLParameters += '&sc=1'; }
+        //if (typeof(br_zip) != 'undefined') { this.URLParameters += '&cartzip=' + br_zip; };
+        //if (typeof(br_cart) != 'undefined') { this.URLParameters += '&q113195=' + encode64(br_cart); };
+
+        this.winW = (15+this.width);
+        this.winH = (15+this.height);
+        this.windowParameters = 'width=' + this.winW + ',height=' + this.winH + ',top=' + this.winY + ',left=' + this.winX + ',screenY=' + this.winY + ',screenX=' + this.winX + ',directories=0,status=0,toolbar=0,location=0,menubar=0,resizable=0,scrollbars=0';
+
+        if (this.random < this.percentage) {
+            // Honor percentage but ignore frequency for POS inline invites
+            if ((this.type == 1 && !this.invited['visitor'] && !this.blocked['visitor'] && !this.invited['cart']) ||
+                (this.type == 2 && !this.invited['cart'] && !this.blocked['cart'] && !this.invited['visitor']) ||
+                (this.type == 3 && ((!this.invited['pos'] && !this.blocked['pos']) || this.format == 0)) ) {
+                    this.displayInvite();            
+            }
+        }
+    },
+    getWidth:function() {
+        return (self.innerWidth != null)? self.innerWidth : (document.documentElement && document.documentElement.clientWidth)? document.documentElement.clientWidth : (document.body != null)? document.body.clientWidth : 640;
+    },
+    getHeight:function() {
+        return (self.innerHeight != null)? self.innerHeight : (document.documentElement && document.documentElement.clientHeight)? document.documentElement.clientHeight : (document.body != null)? document.body.clientHeight : 480;
+    },
+    getLeft:function() {
+        return (document.all)? window.screenLeft : window.screenX;
+    }, 
+    getTop:function() {
+        return (document.all)? window.screenTop : window.screenY;
+    },
+    getCookie:function(name) {
+        var name_mid = name + "_" + this.mid + "=";
+        var cookies = document.cookie;
+        if (cookies.length > 0) {
+            var start = cookies.indexOf(name_mid);
+            if (start != -1) {
+                start += name_mid.length;
+                end = cookies.indexOf(";", start);
+                if (end == -1){ end = cookies.length; }
+                return unescape(cookies.substring(start, end));
+            }
+        }
+    },
+    setCookie:function(name, value, expires) {
+        var name_mid = name + "_" + this.mid;
+        var expiration = new Date();
+        if (expires) { expires = expires * 1000 * 60 * 60 * 24; } // Expiration in days
+        expiration.setTime(expiration.getTime() + expires);
+        document.cookie = name_mid + "=" + escape(value) + ";path=/;domain=" + this.domain + ';' + ((expires == null) ? "" : ";expires= " + expiration.toGMTString());
+    },
+    displayInvite:function() {
+        switch (this.format) {
+            case 0:
+                this.displayInline();
+                break;
+            case 3:
+                this.displayDHTML();
+                break;
+            default:
+                this.inviteWindow = window.open(this.inviteURL + this.URLParameters + this.pageTitlePass, 'br_invite', this.windowParameters);
+                if (this.inviteWindow) {
+                    this.inviteWindow.focus();
+                    this.setCookie('invited_' + this.inviteTypes[this.type], 1, this.frequency);
+                } else {
+                    this.setCookie('blocked_' + this.inviteTypes[this.type], 1, this.frequency);
+                    if (this.dhtml == 1) { this.displayDHTML(); }
+                }
+                break;
+        }
+    },
+    displayDHTML:function() {
+        this.pitchType = 99;
+        this.URLParameters += '&pitch_type=' + this.pitchType + this.pageTitlePass;
+        document.write('<style type="text/css" media="print">.noprint { position:absolute; display:none; }</style>');
+        document.write('<div id="showimage" class="noprint" style="position: absolute; z-index:1000000;display:inline; visibility:true; height:' + this.height + 'px; width:' + this.width + 'px; left:' + this.posX + 'px; top:' + this.posY + 'px">');
+        document.write('<table height="100%" width="100%" cellspacing="0" cellpadding="0" border="0"><tr style="background-color:#000066">');
+        document.write('<td colspan="2" height="20" id="dragbar" valign="middle" style="padding: 2px 0 2px 6px; border: solid #000060; background-color:#000066; border-width: 2px 2px 0px 2px; font-weight: bold; font-size: 12px; font-family: Arial, Helvetica, sans-serif; color: #FFFFFF; cursor: move; width: 100%;" onmousedown="initializedrag(event);"><div style="position: relative;"><ilayer width="100%" onselectstart="return false;"><layer width="100%" onmouseover="dragswitch = 1; if (ns4) { drag_dropns(showimage); }" onmouseout="dragswitch = 0;">' + this.pageTitle + '</layer></ilayer>');
+        document.write('<div style="padding: 0; font-weight: bold; font-size: 13px; font-family: Arial, Helvetica, sans-serif; color:#FFFFFF; cursor: pointer; position: absolute; top: 0; right: 5px;">');
+        document.write('<a href="" style="font-weight: bold; font-size: 9px; color: #CCCCCC; font-family: Arial, Helvetica, sans-serif; text-decoration: underline;" onclick="BIZRATE.closeInvite(); return false;">[close]</a></div>');
+        document.write('</div></td></tr><tr><td style="background-color: #FFFFFF; border: solid #000066; border-width: 0px 2px 2px 2px; padding: 0;" align="middle" colspan="2">');
+        document.write('<img src="' + this.inviteImageURL + '" alt="Customer Survey for Jones New York" border="0" width="' + this.width + '" height="' + this.height + '" usemap="#br_invite_map"/>');
+        document.write('<map name="br_invite_map"><area shape="rect" coords="0,0,' + this.width + ',' + this.closeY + '" href="" alt="" onclick="BIZRATE.openSurvey(); BIZRATE.closeInvite(); return false;"/><area shape="rect" coords="0,' + this.closeY + ',' + this.width + ',' + this.height + '" href="" alt="" onclick="BIZRATE.closeInvite(); return false;"/></map>');
+        document.write('</td></tr></table></div>');
+        this.setCookie('invited_' + this.inviteTypes[this.type], 1, this.frequency);
+        if (this.type == 1){
+        this.pitchType = 22;
+        }else if (this.type == 2){
+        this.pitchType = 32;
+        } else {
+        this.pitchType = 99;
+        }
+	this.logInvite(this.pitchType); 
+    },
+    displayInline: function() {
+       	this.pitchType = 0;
+        this.URLParameters += '&pitch_type=' + this.pitchType + this.pageTitlePass;
+        document.write('<img id="br_invite_inline" src="' + this.inviteImageURL + '" alt="Customer Survey for Jones New York" border="0" width="' + this.width + '" height="' + this.height + '" usemap="#br_invite_map"/>');
+        document.write('<map name="br_invite_map"><area shape="rect" coords="0,0,' + this.width + ',' + this.closeY + '" href="" alt="" onclick="BIZRATE.openSurvey(); BIZRATE.closeInvite(); return false;"/><area shape="rect" coords="0,' + this.closeY + ',' + this.width + ',' + this.height + '" href="" alt="" onclick="BIZRATE.closeInvite(); return false;"/></map>');
+        this.setCookie('invited_' + this.inviteTypes[this.type], 1, this.frequency);
+        if (this.type == 1){
+                this.pitchType = 20;
+        }else if (this.type == 2){
+                this.pitchType = 30;
+        } else {
+                this.pitchType = 0;
+        }
+	this.logInvite(this.pitchType);
+    },
+    logInvite: function(param) {
+        document.write('<script type="text/javascript" src="https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1334503752020204209&pitchType=' + param + '"> </script>');
+    },
+    minimizeInvite: function() {
+        this.inviteWindow = window.open(this.inviteURL + this.URLParameters, 'br_invite', this.windowParameters);
+        this.inviteWindow.blur();
+        self.focus();
+        this.closeInvite();
+    },
+    openSurvey:function() {
+        var sURL = this.surveyURL + this.URLParameters; 
+        if (typeof(sURL) != "undefined") { 
+            var surveyWindow = window.open(sURL + "&" + location.search, this.windowName, "menubar=yes, location=yes, status=yes, toolbar=yes, resizable=yes, scrollbars=yes, width=760, height=568, screenX=10, screenY=10, left=10, top=10"); 
+            if (surveyWindow) { 
+                if (this.type == 3) { surveyWindow.focus(); } else { surveyWindow.blur(); self.focus(); } 
+            } 
+        } 
+    },
+    closeInvite:function() { 
+        if (this.pitchType == 0) {
+            // Disable hiding for POS inline invites
+            if (this.type != 3) { document.getElementById('br_invite_inline').style.display = 'none'; }
+        } else {
+            hidebox();
+        } 
+    }
+};
+var br_keyStr="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+function encode64(C){C=escape(C);
+var A="";
+var J,H,F="";
+var I,G,E,D="";
+var B=0;
+do{J=C.charCodeAt(B++);
+H=C.charCodeAt(B++);
+F=C.charCodeAt(B++);
+I=J>>2;
+G=((J&3)<<4)|(H>>4);
+E=((H&15)<<2)|(F>>6);
+D=F&63;
+if(isNaN(H)){E=D=64
+}else{if(isNaN(F)){D=64
+}}A=A+br_keyStr.charAt(I)+br_keyStr.charAt(G)+br_keyStr.charAt(E)+br_keyStr.charAt(D);
+J=H=F="";
+I=G=E=D=""
+}while(B<C.length);
+return A
+};var ns4=document.layers;
+var ie4=document.all;
+var ns6=document.getElementById&&!document.all;
+var dragswitch=0;
+var nsx;
+var nsy;
+var temp;
+var crossobj;
+function drag_dropns(name){if(!ns4){return 
+}temp=eval(name);
+temp.captureEvents(Event.MOUSEDOWN|Event.MOUSEUP);
+temp.onmousedown=gons;
+temp.onmousemove=dragns;
+temp.onmouseup=stopns
+}function gons(A){temp.captureEvents(Event.MOUSEMOVE);
+nsx=A.x;
+nsy=A.y
+}function dragns(A){if(dragswitch==1){temp.moveBy(A.x-nsx,A.y-nsy);
+return false
+}}function stopns(){temp.releaseEvents(Event.MOUSEMOVE)
+}function drag_drop(A){if(ie4&&dragapproved){crossobj.style.left=tempx+event.clientX-offsetx;
+crossobj.style.top=tempy+event.clientY-offsety;
+return false
+}else{if(ns6&&dragapproved){crossobj.style.left=tempx+A.clientX-offsetx+"px";
+crossobj.style.top=tempy+A.clientY-offsety+"px";
+return false
+}}}function initializedrag(B){crossobj=ns6?document.getElementById("showimage"):document.all.showimage;
+var C=ns6?B.target:event.srcElement;
+var A=ns6?"html":document.compatMode!="BackCompat"?"documentElement":"body";
+while(C.tagName!=A.toUpperCase()&&C.id!="dragbar"){C=ns6?C.parentNode:C.parentElement
+}if(C.id=="dragbar"){offsetx=ie4?event.clientX:B.clientX;
+offsety=ie4?event.clientY:B.clientY;
+tempx=parseInt(crossobj.style.left);
+tempy=parseInt(crossobj.style.top);
+dragapproved=true;
+document.onmousemove=drag_drop
+}}document.onmouseup=new Function("dragapproved=false");
+function hidebox(){crossobj=ns6?document.getElementById("showimage"):document.all.showimage;
+if(ie4||ns6){crossobj.style.visibility="hidden"
+}else{if(ns4){document.showimage.visibility="hide"
+}}};
+BIZRATE.init();
+//-->

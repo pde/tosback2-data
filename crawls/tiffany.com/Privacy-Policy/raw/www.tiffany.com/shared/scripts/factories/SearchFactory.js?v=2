@@ -1,0 +1,176 @@
+﻿// ----------------------------------------------
+// File:		SearchFactory.js
+// Author:		Nathan Derksen
+// Description:	Class to handle extracting search info from search pre-check
+// Example:
+// var isEmpty = SearchFactory.getIsEmptyFromXML(result.documentElement);
+// ----------------------------------------------
+
+// ----------------------------------------------
+// Function:	SearchFactory()
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+function SearchFactory()
+{
+}
+
+// ----------------------------------------------
+// Function:	SearchFactory.getIsEmptyFromXML()
+// Author:		Nathan Derksen
+// Description:	Finds info around whether search result is empty
+// Inputs:		<XMLDOM> xmlData: A DOM handle to the root xml node returned by an Ajax call
+// Returns:		<Boolean>
+// ----------------------------------------------
+SearchFactory.getIsEmptyFromXML = function(xmlData)
+{
+	var currentNode;
+	var numHits = 0;
+
+	try
+	{
+		if (xmlData.attributes.getNamedItem("numHits") != null && typeof(xmlData.attributes.getNamedItem("numHits")) != "undefined")
+		{
+			numHits = Number(xmlData.attributes.getNamedItem("numHits").value);
+		}
+		if (numHits > 0)
+		{
+			return false;
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+	return true;
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+SearchFactory.getSearchParamsFromXML = function(xmlData)
+{
+	var searchParams = "";
+
+	try
+	{
+		if (this.getIsEmptyFromXML(xmlData) == false)
+		{
+			searchParams = XMLUtils.getNodeValue(xmlData, "searchParams");
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+	return searchParams;
+};
+
+// ----------------------------------------------
+// Function:	SearchFactory.getErrorMessageFromXML()
+// Author:		Nathan Derksen
+// Description:	Retrieves the error message associated with the empty result set, if any
+// Inputs:		<XMLDOM> xmlData: A DOM handle to the root xml node returned by an Ajax call
+// Returns:		<String>
+// ----------------------------------------------
+SearchFactory.getErrorMessageFromXML = function(xmlData)
+{
+	var errorMessage = "";
+
+	try
+	{
+		if (this.getIsEmptyFromXML(xmlData) == true)
+		{
+			if (XMLUtils.getNode(xmlData, "errorString") != null && typeof(XMLUtils.getNode(xmlData, "errorString")) != "undefined")
+			{
+				errorMessage = XMLUtils.getNodeValue(xmlData, "errorString");
+			}
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+	return errorMessage;
+};
+
+// ----------------------------------------------
+// Function:	SearchFactory.getRedirectFromXML()
+// Author:		Nathan Derksen
+// Description:	
+// Inputs:		<XMLDOM> xmlData: A DOM handle to the root xml node returned by an Ajax call
+// Returns:		<String>
+// ----------------------------------------------
+SearchFactory.getRedirectFromXML = function(xmlData)
+{
+	var redirectURL = "";
+	try
+	{
+		if (XMLUtils.getNode(xmlData, "redirectUrl") != null && typeof(XMLUtils.getNode(xmlData, "redirectUrl")) != "undefined")
+		{
+			redirectURL = XMLUtils.getNodeValue(xmlData, "redirectUrl");
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+	return redirectURL;
+};
+
+// ----------------------------------------------
+// Function:	SearchFactory.getRedirectFromXML()
+// Author:		Nathan Derksen
+// Description:	
+// Inputs:		<XMLDOM> xmlData: A DOM handle to the root xml node returned by an Ajax call
+// Returns:		<String>
+// ----------------------------------------------
+SearchFactory.getDidYouMeanFromXML = function(xmlData)
+{
+	var keyword = "";
+	var qs = "";
+	var didYouMeanNode;
+	
+	try
+	{
+		if (XMLUtils.getNode(xmlData, "didYouMean") != null && typeof(XMLUtils.getNode(xmlData, "didYouMean")) != "undefined")
+		{
+		
+			qs = XMLUtils.getNodeValue(xmlData, "didYouMean");
+			keyword = XMLUtils.getNodeAttribute(XMLUtils.getNode(xmlData, "didYouMean"), "keyword");
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+	return {keyword:keyword, qs:qs};
+};
+
+// ----------------------------------------------
+// Function:	SearchFactory.getIsEmptyFromXML()
+// Author:		Nathan Derksen
+// Description:	Finds info around whether search result is empty
+// Inputs:		<XMLDOM> xmlData: A DOM handle to the root xml node returned by an Ajax call
+// Returns:		<Boolean>
+// ----------------------------------------------
+SearchFactory.getItemSkuFromXML = function(xmlData)
+{
+	var currentNode;
+	var itemSku = "";
+
+	try
+	{
+		if (xmlData.attributes.getNamedItem("SKU") != null && typeof (xmlData.attributes.getNamedItem("SKU")) != "undefined")
+		{
+			itemSku = xmlData.attributes.getNamedItem("SKU").value;
+		}
+		return itemSku;
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+	return "";
+};

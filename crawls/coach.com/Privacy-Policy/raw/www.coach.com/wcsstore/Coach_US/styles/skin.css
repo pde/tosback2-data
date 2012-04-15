@@ -1,0 +1,714 @@
+/*
+       copyright 2008 Coach, Inc. All Rights Reserved
+       Client: Coach, Inc. 
+       Author: Maya Lindenmuth - Brulant, Inc. 
+       Date: 6/02/2008 
+*/ 
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { border: 0px; outline: 0px; }
+/* remember to define focus styles! */
+a:link { color: #666; }
+a:visited { color: #666;  }
+a:hover { color: #666; }
+a:focus { overflow: hidden; }
+body { background: #fff; color: #666; }
+/* tables still need 'cellspacing="0"' in the markup */
+table { border-collapse: separate; border-spacing: 0px; }
+.noBorder { border: none !important;}
+input, select, textarea { border: 1px solid #ccc; outline: 0px !important; }
+input[type="checkbox"] { border: none !important; outline: 0px !important; }
+h1{color: #666; }
+.error {border-top:solid 1px red;border-bottom:solid 1px red;}
+.formAlert{width:5px;height:10px;background: url(http://www.coach.com/wcsstore/Coach_US/images/forms/alert_dot.gif) top left no-repeat;}
+input.disabled { border: 1px solid #ccc; outline: 0px !important; background:#fff;}
+select, input, textarea { color: #666; }
+input.checkbox, input.radio { border: none; }
+
+/****************************** START :: page **********************/
+#wrapper {  }
+#container {  }
+
+.loading {
+  background: #fff url(http://www.coach.com/wcsstore/Coach_US/images/background/ajax-loader.gif) center no-repeat !important;
+}
+
+.news_header { background: #648c00; float: left; width: 100%;}
+.checkout { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/checkout_bg.gif) left top repeat;}
+.my_account { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/my_account_bg.gif) left top repeat;}
+/* #full_page { background: url(../images/background/checkout_bg.gif) left top repeat;} */
+
+
+#content_container_wrapper { border: 1px solid #d6d2cf; }
+#nav_supplementary  {/*border-top:1px solid #aba9a9;*/}
+#supplementary, #supplementary a, #modalWrapper a, #resetWrapper a { color: #666; }
+
+	#branding a:hover, #supplementary a:hover { color: #666; }
+
+/****************************** START :: branding **********************/
+#branding {  }
+	#branding_logo h1 a { background: url(http://www.coach.com/wcsstore/Coach_US/images/branding/coach_logo.gif) left top no-repeat; }
+	#nav_utility ul li a:link{color:#666; }
+	#nav_utility ul li, #nav_supplementary ul li  { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/divider1.gif) right 2px no-repeat;color:#aba9a9; }
+	#nav_supplementary ul li a, #nav_utility ul li a{color:#666;}
+		#nav_utility ul li.first, #nav_supplementary ul li.first { background: none; }
+			#nav_utility ul ul li { background: none; }
+			#nav_utility ul li.last, #nav_supplementary ul li.last{/*background-image:none;*/}
+				#nav_utility ul li#utility_shoppingBag a#shoppingBagLink, #nav_supplementary ul li#utility_shoppingBag a#shoppingBagLink {background:url(http://www.coach.com/wcsstore/Coach_US/images/home/shopping_bag.gif) no-repeat;}
+				#nav_utility ul ul .utility_pop_wrapper { background: url(http://www.coach.com/wcsstore/Coach_US/images/modal-elements/dropshadow_right.png) left top repeat-y !important; }
+				#nav_utility ul ul li .utility_pop .utility_pop_wrapper { background: url(http://www.coach.com/wcsstore/Coach_US/images/branding/utility_nav/dropdown_bg_bot.png) left bottom repeat-y; }
+				#nav_utility ul ul li .ut_bot { background: url(http://www.coach.com/wcsstore/Coach_US/images/modal-elements/drop_bot.png) left top no-repeat; }
+				#nav_utility .pop_top { background: #000; }
+				#nav_utility ul ul li .utility_pop table td { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/grid_td_bg.gif) left bottom repeat-x; }
+				#nav_utility .pop_frm fieldset.short { border-right: 1px solid #666; }
+				#nav_utility .pop_frm #sign_in_register_callout{border-top:1px solid;}
+				#nav_utility ul#justAList{list-style:disc;}
+	#email_campaign .utility_pop { background: url(http://www.coach.com/wcsstore/Coach_US/images/branding/utility_nav/dropdown_bg_top.png) left top no-repeat; }
+	#email_campaign .utility_pop .utility_pop_wrapper { background: url(http://www.coach.com/wcsstore/Coach_US/images/branding/utility_nav/dropdown_bg_bot.png) left bottom repeat-y; }
+	#email_campaign fieldset label{color:#666;}	
+	#nav_utility ul  li.unHighlight, #nav_utility ul li.unHighlight a{color:#666;}
+	#nav_main, #nav_main .nav_main_inner dl, #nav_main .nav_main_inner .nav_main_minimize { background: #040000; }
+	#nav_main .nav_main_inner .nav_main_minimize, #nav_main .nav_main_inner .nav_main_restore{background:#040000;}
+	#nav_main .nav_main_inner .nav_main_minimize img, #nav_main .nav_main_inner .nav_main_restore img{cursor: pointer;}
+		/* #nav_main dt, #nav_main dd { border-top: 1px solid #858484; } */
+		#nav_main dd#nm3, #nav_main dd#nm4 { border-top:0; }
+		#nav_main .nav_main_inner .nav_main_minimize { border-top:0; }
+
+			#nav_main dt a { background: url(http://www.coach.com/wcsstore/Coach_US/images/branding/left_nav/logo.png) left top no-repeat; }
+			/*
+				#nav_main dd#nm1 a { background: url(../images/branding/left_nav/nm1.gif) 0px 0px no-repeat; }
+					#nav_main dd#nm1 a:hover, #nav_main dd#nm1 a.over { background: url(../images/branding/left_nav/nm1.gif) 0px -26px no-repeat; }
+				/*Collections*
+				#nav_main dd.nm2 a { background: url(../images/branding/left_nav/nm2.gif) 0px 0px no-repeat; }
+					#nav_main dd.nm2 a:hover, #nav_main dd.nm2 a.over { background: url(../images/branding/left_nav/nm2.gif) 0px -26px no-repeat;color:#71c61e; }
+				
+					/*Accessories*
+				#nav_main dd.nm3 a { background: url(../images/branding/left_nav/nm3.gif) 0px 0px no-repeat; }
+					#nav_main dd.nm3 a:hover, #nav_main dd.nm3 a.over { background: url(../images/branding/left_nav/nm3.gif) 0px -44px no-repeat;color:#5b8fd4; }	
+					
+					/*Shoes*
+				#nav_main dd.nm4 a { background: url(../images/branding/left_nav/nm4.gif) 0px 0px no-repeat; }
+					#nav_main dd.nm4 a:hover, #nav_main dd.nm4 a.over { background: url(../images/branding/left_nav/nm4.gif) 0px -26px no-repeat; color:#9b73be; }
+						
+					/*Women*
+				#nav_main dd.nm5 a { background: url(../images/branding/left_nav/nm5.gif) 0px 0px no-repeat; }
+					#nav_main dd.nm5 a:hover, #nav_main dd.nm5 a.over { background: url(../images/branding/left_nav/nm5.gif) 0px -26px no-repeat;color:#e0ba07; }
+				
+					/*Men*
+				#nav_main dd.nm6 a { background: url(../images/branding/left_nav/nm6.gif) 0px 0px no-repeat; }
+					#nav_main dd.nm6 a:hover, #nav_main dd.nm6 a.over { background: url(../images/branding/left_nav/nm6.gif) 0px -26px no-repeat;color:#d17f0d; }
+							
+				#nav_main dd.nm7 a { background: url(../images/branding/left_nav/nm7.gif) 0px 0px no-repeat; }
+					#nav_main dd.nm7 a:hover, #nav_main dd.nm7 a.over { background: url(../images/branding/left_nav/nm7.gif) 0px -26px no-repeat; }	
+					
+				#nav_main dd.nm8 a { background: url(../images/branding/left_nav/nm8.gif) 0px 0px no-repeat; }
+					#nav_main dd.nm8 a:hover, #nav_main dd.nm8 a.over { background: url(../images/branding/left_nav/nm8.gif) 0px -26px no-repeat; }	
+				
+				#nav_main dd.nm9 a { background: url(../images/branding/left_nav/nm9.gif) 0px 0px no-repeat; }
+					#nav_main dd.nm9 a:hover, #nav_main dd.nm9 a.over { background: url(../images/branding/left_nav/nm9.gif) 0px -26px no-repeat; }	
+					
+				#nav_main dd.poppy a { background: url(../images/branding/left_nav/poppy.gif) 0px 0px no-repeat !important; display: block; float: left; }
+					#nav_main dd.poppy a:hover, #nav_main dd.poppy a.over { background: url(../images/branding/left_nav/poppy.gif) 0px -84px no-repeat; }	
+		*/
+										
+			
+			#nav_main dd li a { background: none !important; }			
+			/* #nav_main dd li a.hasSub {background:url(../images/branding/left_nav/colBorder.gif) no-repeat bottom left !important;} */
+			#nav_main .title {}
+			/* #nav_main .viewall .viewAllDot{background:url(../images/branding/left_nav/vaDot.gif) no-repeat 0 0 !important;}*/
+			#nav_main dd li a { background: none !important; }			
+			#nav_main dd li a.hasSub:hover { cursor: pointer !important;}
+		#nav_main select {  background: #000; color: #fdfdfd;}
+#prod_descript { background: #f1ede8; }
+	#prod_descript_container ul.item_descript li { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/bullet1.gif) 0px 4px no-repeat; }
+	#prod_descript_container p.actions a {background: url(http://www.coach.com/wcsstore/Coach_US/images/background/arrow4.gif) right 3px no-repeat;}
+	#prod_descript fieldset .color_options ul li a { border: 1px solid #f1ede8; }
+	#prod_descript fieldset .color_options ul li a:hover { border: 1px solid #aca7a7; }
+	#prod_descript .action_links ul li { background: #fff; }
+	#prod_descript .action_links ul li a { background: #fff; border: 1px solid #aca7a7; }	
+	#prod_descript .action_links ul li a strong { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/arrow2.gif) right 3px no-repeat; }
+	/*#prod_descript .action_links ul li a:hover { border: 1px solid #fff; background: #aca7a7; }
+		#prod_descript .action_links ul li a:hover strong { background: url(../images/background/arrow3.gif) right 3px no-repeat; }*/
+	#prod_descript .secondary_links ul li a { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/arrow4.gif) right 3px no-repeat; }
+#prod_more_info_overlay {border-left:solid 1px #d6d2cf;}
+#prod_more_info_overlay ul li {background:url(http://www.coach.com/wcsstore/Coach_US/images/background/more_info_bullet.gif) no-repeat center left;}	
+
+.popup_container .zoom .zoom_right .zoom_nav .zoom-box {border:solid 2px #ccc;}
+		
+#x_sells { background: #fff; border-left: 1px solid #f1ede8; }
+	
+.jp_emailSignIn .promo-form input[type="checkbox"] {border:none !important;}
+.jp_emailSignIn .jp_form input[type="checkbox"] {border:none !important;}
+
+#prod_img .prod_links ul li.up a { background: url(http://www.coach.com/wcsstore/Coach_US/images/products/navigation/up.gif) left top no-repeat; }	
+#prod_img .prod_links ul li.previous a { background: url(http://www.coach.com/wcsstore/Coach_US/images/products/navigation/previous.gif) left top no-repeat; }	
+#prod_img .prod_links ul li.next a { background: url(http://www.coach.com/wcsstore/Coach_US/images/products/navigation/next.gif) left top no-repeat; }
+
+#prod_img .product .zoom p a { background: url(http://www.coach.com/wcsstore/Coach_US/images/products/navigation/zoom.gif) left top no-repeat; }
+
+#prod_more_info_overlay ul li.back {background:none;}
+
+.frm_container .more_info a { }
+.frm_container .more_info a:hover { }
+
+.multi_col { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/coach_bg.gif) right top repeat-y; }
+	
+#search_main fieldset label, #search_main fieldset a.searchArrow{color:#666;}
+.formBG {}
+
+
+#giftCards .action_links ul li { background: #fff; }
+	#giftCards .action_links ul li a { background: #fff; border: 1px solid #aca7a7; }	
+	#giftCards .action_links ul li a strong { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/arrow2.gif) right 3px no-repeat; }
+	
+		
+
+#giftCards .exceptions li {background:url('http://www.coach.com/wcsstore/Coach_US/images/background/more_info_bullet.gif') no-repeat left 3px;list-style:none;}
+	#giftCards .exceptions li.title {background-image:none;}
+#giftCards .gcFPO img {border:solid 1px #ccc;}
+.wl_form { border: 1px solid #d7d7d7;}
+.wl_form h3 { color: #666;}
+.wl_form fieldset.your_info { background: url(http://www.coach.com/wcsstore/Coach_US/images/modal-elements/form/divider_frm.gif) left bottom repeat-x !important;}
+#register_left{background:gray;}
+/****************************** START :: SIGN IN PAGE ****************************/
+
+#sign_in .section_content_wrapper{background:#fff;}
+#sign_in .myAccount_header{background:#000;}
+	
+/****************************** END :: START MY ACCOUNT ********************/
+#myAccountPage .myAccount_header{background-color:#000;}
+#myAccountPage #account_right_column .myAccount_header{background-color:#5e5e5e;}
+#myAccountPage #account_right_column .active .myAccount_header {background-color:#246a00;}
+#myAccountPage #account_right_column .section_content_wrapper{background-color:#fff;color:#666;}
+#account_right_column .myAccount_minimized {background-color:#807e7e;}
+#myAccountPage h3{color:#666;}
+#myAccountPage .section_content_wrapper{border-right:1px solid #9C9C9C;border-left:1px solid #9C9C9C;border-bottom:1px solid #9C9C9C;}
+#myAccountPage #account_right_column .active .section_content_wrapper {border:1px solid #246a00;}
+#myAccountPage #account_left_column p{color:#000;}
+.myAccount_summary strong, .myAccount_minimized strong, .myAccount_summary span {color:#666;}
+
+#myOrdersTable tr td {border-top:solid 1px #ebebeb;}
+#myOrdersTable tr td a {color:#666;}
+#myOrdersTable tr td ul li .fn a {color:#666;}
+
+#account_right_column .myAccount_summary {background:#fff;}
+#account_right_column .myAccount_summary .vcard {color:#666;}
+#account_right_column .myAccount_minimized strong {color:#fff;}
+#account_right_column .myAccount_summary dl dd {border-bottom:solid 1px #ccc;}
+#account_right_column .myAccount_change {background:#fff;}
+#account_right_column .myAccount_change label {color:#666;}
+.prefBox {border-bottom:solid 1px #ddd9d6;}
+.prefBox.noBorder {border-bottom:0;}
+
+.wishListWrapper .maWishList li span {color:#666;}
+
+.wishListWrapper .maWishList li span.stockStatus.backOrder {color:#e15d05 !important;}
+.wlEndButtons {border-top:solid 1px #ddd9d6;}
+
+.noWishList p {color:#666 !important;}
+#modalWrapper .myaccount_login_modal ul{list-style-image:url(http://www.coach.com/wcsstore/Coach_US/images/my_account/bullet.gif);}
+.myaccount_login_modal .doubleRow span.reset_message {color:#000;}
+.myaccount_login_modal #sign_in_register_callout{border-top:1px solid #666;}
+/****************************** START :: Customer Service ***********************/
+#customerServ .orderInfo {color:#587f26;}
+	#customerServ .orderInfo a {color:#587f26;}
+#customerServ .productInfo {color:#b18943;}
+	#customerServ .productInfo a {color:#b18943;}
+#customerServ .storeInfo {color:#9c0966;}
+	#customerServ .storeInfo a {color:#9c0966;}
+#customerServ .myAccount {color:#87b2c1;}
+	#customerServ .myAccount a {color:#87b2c1;}
+#customerServ .giftServ {color:#14325c;}
+	#customerServ .giftServ a {color:#14325c;}	
+#customerServ .security {color:#4d3538;}
+	#customerServ .security a {color:#4d3538;}
+#customerServ .contactUs {color:#b18943;}
+	#customerServ .contactUs a {color:#b18943;}
+#customerServ dl dt {border-bottom:solid 1px;}
+
+/* Catalog Request */
+.catalogRequest .registerWrap {border-top:solid 1px #ccc;}
+
+
+/****************************** Start :: Modal Drop Shadow **********************/
+.popup_container{  }
+.popup_inner{background:#fff; border:solid 1px #ccc;}
+
+.modal_bg_corner{background:transparent url(http://www.coach.com/wcsstore/Coach_US/images/background/modal_bg_corner.gif) top left no-repeat;}
+.modal_bg_bottom{background:transparent url(http://www.coach.com/wcsstore/Coach_US/images/background/modal_bg_bottom.gif) top left no-repeat;}
+
+
+/****************************** End :: Modal Drop Shadow **********************/
+
+/****************************** Start :: non-transparent Drop Shadow **********************/
+.dropShadow_wrapper{background:url(http://www.coach.com/wcsstore/Coach_US/images/background/dropShadow_right.gif) top right no-repeat transparent;}
+.dropShadow_corner{background:transparent url(http://www.coach.com/wcsstore/Coach_US/images/background/dropShadow_corner.gif) top left no-repeat;}
+.dropShadow_bottom{background:transparent url(http://www.coach.com/wcsstore/Coach_US/images/background/dropShadow_bottom.gif) top left no-repeat;}
+
+.dropShadow_content{border:1px solid #D6D2CF;}
+/****************************** End :: non-transparent Drop Shadow **********************/
+/******************************* Start :: Browse Horizontal page ************************/
+.browse_horizontal .browseContent {border-top:solid 5px black;}
+.browseHTop .paginationWrapper .pagination {background:black;color:#fff;}
+	.browseHTop .paginationWrapper .pagination a {color:#fff;}
+	.browseHTop .paginationWrapper .pagination ul li {border-right:solid 1px #fff;}
+	.browseHTop .paginationWrapper .pagination ul li.prev, .browseHTop .paginationWrapper .pagination ul li.next {border:0;}
+	.browse_horizontal .browseContent .horizontalSection ul li a { border: 1px solid #fff; }
+		.browse_horizontal .browseContent .horizontalSection ul li a:hover {  border: 1px solid #000; }
+
+
+
+
+/****************************** Start :: Mail/Fax Form ******************/
+#mail_fax {border:solid 1px #ccc;background-color:#fff;}
+	#mail_fax .header {background:#000;}
+	#mail_fax .signature {background-color:#FFFFFF;border-bottom:1px solid #ccc;border-left:0;border-right:0;color:#FFFFFF;height:1em;vertical-align:bottom;border-top:0;}
+	
+	#mail_fax .mail_fax_table tr.line td {border-top:1px solid #ccc;}
+/****************************** END :: Mail/Fax Form ******************/
+
+/* Start :: Multi Product View. */
+.multiProduct .shadowInner .modal_header {background: #fff !important;}
+
+/************** START :: Generic styles for WWCM *****************/
+
+/************** Generic Left Nav ****************/
+.secondaryNav-wrapper {background:url('http://www.coach.com/wcsstore/Coach_US/images/background/generic-left.gif') repeat-y top left;}
+
+	#module-secondaryNav ul li {background:url(http://www.coach.com/wcsstore/Coach_US/images/background/more_info_bullet.gif) no-repeat center left;}
+/************** END Generic Left Nav ***************/
+/************** Generic Table ****************/
+.module-table-header {}
+.module-table {}
+	.module-table thead {background: #dbd7cc; }
+	.module-table tbody tr {background: url(http://www.coach.com/wcsstore/Coach_US/images/background/grid_td_bg.gif) left bottom repeat-x; }
+/************** END :: Generic styles for WWCM *****************/	
+	
+	
+/************** START :: Store Locator *****************/	
+.storeLocator #storeLocator_content .women-footwear {background:url('http://www.coach.com/wcsstore/Coach_US/images/forms/texticon_wfootwear.gif') no-repeat top left;}
+.storeLocator #storeLocator_content .men {background:url('http://www.coach.com/wcsstore/Coach_US/images/forms/texticon_menswear.gif') no-repeat top left;}
+.storeLocator #storeLocator_content .tabs {border-bottom:solid 1px #644c32;}
+
+.international .icons {border-right:solid 1px;}
+.international {border-top:solid 1px;}
+.international span.watches {background:url('http://www.coach.com/wcsstore/Coach_US/images/branding/store_locator/icon_sprite.gif') no-repeat top left;}
+.international span.menswear {background:url('http://www.coach.com/wcsstore/Coach_US/images/branding/store_locator/icon_sprite.gif') no-repeat left -85px;}
+.international span.womens {background:url('http://www.coach.com/wcsstore/Coach_US/images/branding/store_locator/icon_sprite.gif') no-repeat left -21px;}
+.international span.sunglasses {background:url('http://www.coach.com/wcsstore/Coach_US/images/branding/store_locator/icon_sprite.gif') no-repeat left -49px;}
+.coachStores {border-top:solid 1px;}
+	.departmentStores {border-top:solid 1px;}
+
+.sl_driving .sl_driving1_modal .buttons a {color:#666 !important;}
+.sl_driving .sl_driving1_modal label {color:#666;}
+.dirRed { font-weight: bold; color: #fff; background-color: red;}
+
+.map .map_modal {border-top:1px solid #D7D7D7;}
+
+#directionsDiv .vcard {color:#666; width: 49% ; float: left;}
+#directionsDiv .mapWrap {border-bottom:solid 1px #eee;}
+#directionsTable {border-bottom:solid 1px #eee;}
+#directionsTable tbody tr td {color:#666;}
+#directionsTable thead tr th {background:#797979;color:#fff;}
+#directionsTable tbody tr.alternateRow td {background:#f7f7f7;}
+#japanMap {margin-bottom:10px;}
+/****************************** START :: ADD ADDRESS MODAL PAGE **********************/
+
+.row-content{border:1px solid #533632; background: #edebe5;}
+
+		
+		.add_addresses .modal_content .address_row {background:#edebe5;}
+			.add_addresses .modal_content .address_row h3.header {color:#666;}
+			
+
+.popcontain .address_row { background: #edebe5; }	
+	.popcontain .address_row .row-content { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/modal_bg_right.gif) bottom right no-repeat; border: none; }
+	.popcontain .row-content div.background {  }		
+			
+/****************************** END :: ADD ADDRESS MODAL PAGE **********************/
+/****************************** START :: EMAIL PREF MODAL PAGE **********************/
+
+		.email_prefs .modal_header p {color:#666;}
+		.email_prefs .email_row {background:#edebe5;}
+	
+		.email_prefs .email_wrapper div.background {background:#fff;border:solid 1px #d3cfcc;}
+/****************************** END :: EMAIL PREF MODAL PAGE **********************/		
+/****************************** START :: Gift Reminders MODAL PAGE **********************/
+
+	.gift-reminders .gift-reminders-row {background:#edebe5;}
+	
+	.gift-reminders .gift-reminders-row h3.header {color:#666;}
+
+/****************************** END :: Gift Reminders MODAL PAGE **********************/
+/* Email a friend modal */
+
+.emailAFriend .emailAFriendContent {border:solid 1px #ccc;}
+#modalWrapper.wishlist {border-top: 1px solid #efefef; }
+
+/****************************** Start :: ORDER DETAIL/STATUS PAGE **********************/
+#orderDetailPage .orderDetailTable { color:#666;}
+	
+		#orderDetailPage .orderDetailTable thead tr th {background:#dbd7cc;}
+	#orderDetailPage .orderDetailTable tr {background:transparent;}
+	#orderDetailPage .orderDetailTable tr td {border-bottom:dotted 1px #a2a2a2;}
+		
+	#orderDetailPage .orderDetailTable tr td.tracking a {color:#666;}
+		
+	#orderDetailPage .orderStatus p.info {color:#ACA7A7;}
+	
+#myOrdersModal .orderDetailTable {color:#666;}	
+		#myOrdersModal .orderDetailTable thead tr th {background:#dbd7cc;}
+	#myOrdersModal .orderDetailTable tr {background:transparent;}
+	#myOrdersModal .orderDetailTable tr td {border-bottom:dotted 1px #a2a2a2;}
+		
+	#myOrdersModal .orderDetailTable tr td.tracking a {color:#666;}
+		
+/* email sign up confirmation modal*/
+.emailConf_modal ul li.left {border-left:solid 1px #D7D7D7;}
+.emailConf_modal strong {color:#000;}
+.emailConf_modal strong.header {color:#666;}
+/* END :: Email Sign up confirmation */
+
+/* START :: Static Table (shipping) */
+ .staticTable { color:#666;}
+	
+		 .staticTable thead tr th {background:#5A5A5A;color:#fff;}
+	 .staticTable tr {background:transparent;}
+	 .staticTable tr td, .staticTable tr th {border-bottom:dotted 1px #a2a2a2;}
+		
+	 .staticTable tr td.tracking a {color:#a2836f;}
+/* END :: Static Table (shipping) */
+
+/* START :: Shipping */
+.sectionStart th, .sectionStart td {background:#C0BEBE;color:#666;}
+/* END :: Shipping */
+
+/********************** news ***********************/
+
+#full_page .centered_content{background:#fff;}
+	#full_page .centered_content h2.coach_news_hdr { background: url(http://www.coach.com/wcsstore/Coach_US/images/content/hdrs/coach_news.gif) left top no-repeat;}
+
+#full_page .centered_content_section { background: #fff;}
+	#full_page .centered_content_section .madison { background: url(http://www.coach.com/wcsstore/Coach_US/images/news/madison.jpg) left top no-repeat; }
+		#full_page .centered_content_section .madison .madison_wrapper { background: url(http://www.coach.com/wcsstore/Coach_US/images/news/border_bg.gif) 0px 147px repeat-x; }
+			#full_page .centered_content_section .op_art { background: url(http://www.coach.com/wcsstore/Coach_US/images/news/border_bg.gif) 0px 0px repeat-x;}
+#full_page .centered_content_section .additional_news { background: url(http://www.coach.com/wcsstore/Coach_US/images/news/border_bg.gif) 0px 0px repeat-x;}
+			#full_page .centered_content_section .additional_news_wrapper { background: url(http://www.coach.com/wcsstore/Coach_US/images/news/additional_news_background.gif) right top repeat-y;}
+#full_page .add_news_content {border-top: 4px solid #333232;}
+#full_page .first { border: none; }
+/*************** Confirm Order ********************************/
+
+.order_confirm_wrapper .shipment_wrapper p { color:#000; }
+
+.order_confirm_wrapper #sub_header #sub_header_left {color:#666;}
+
+
+
+/************** checkout ***********************/
+#myAccountPage { border:1px solid #c1c1c1; background: #fff; }
+	h2.checkout_column_header { background: #000; }
+	#gwt_shop_bag {  background: transparent; }
+	#gwt_shop_bag, #gwt_checkout_process {  }
+	.shop_bag_wrapper .shop_bag_wrapper_container{ border-left:1px solid #9c9c9c; border-right:1px solid #9c9c9c; border-bottom: 1px solid #9c9c9c; }
+	.shop_bag_wrapper .bag_info, .shop_bag_wrapper .bag_info_2 {  }
+	div.last { border-bottom:1px solid #9c9c9c; }
+			.shipment_wrapper { background: #c0bebe; }
+				.shipment .ship1 { background:url(http://www.coach.com/wcsstore/Coach_US/images/checkout/shipment1.gif) 9px top no-repeat; }
+				.shipment .ship2 { background:url(http://www.coach.com/wcsstore/Coach_US/images/checkout/shipment2.gif) 9px top no-repeat; }
+				.shipment .ship3 { background:url(http://www.coach.com/wcsstore/Coach_US/images/checkout/shipment3.gif) 9px top no-repeat; }
+				.shipment .ship4 { background:url(http://www.coach.com/wcsstore/Coach_US/images/checkout/shipment4.gif) 9px top no-repeat; }
+				.shipment p a { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/arrow6.gif) center right no-repeat; }
+				.bag_grid .product_header {border-bottom:1px solid #666; }
+				.bag_grid .back_order { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/background.png) left top repeat; }
+				
+	
+		.x_sells h3 { background: #f8f6f3 url(http://www.coach.com/wcsstore/Coach_US/images/checkout/x_sell_hdr.gif) left top no-repeat; }	
+		
+		.privacy_returns {   }
+		
+
+		.step .step1 { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/step1.gif) left top no-repeat; }
+		.step .step2 { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/step2.gif) left top no-repeat; }
+		.step .step3 { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/step3.gif) left top no-repeat; }
+		.step .step4 { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/step4.gif) left top no-repeat; }
+		.check_body { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/check_divide.gif) left top repeat-x; }
+		h3.guest_checkout { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/guest_checkout.gif) left top no-repeat; }
+		h3.returning_account { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/returning_account_holders.gif) left top no-repeat; }
+		h3.signed_in { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/signed_in.gif) left top no-repeat; }
+		h3.ship_info { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/shipment_info.gif) left top no-repeat; }
+		.checkout_wrapper .stepHeader { background: #246a00;color:#fff; }
+		.checkout_wrapper .headerInactive {background-color:#5a5a5a;color:#fff;}
+		.checkout_wrapper .step {color:#1d5501;border-bottom:1px solid #fff; background:#71ab56; }
+		dd#order_review .pair_wrapper div {color:#fff; }
+		.checkout_wrapper #order_review{border-bottom: none;}
+			.checkout_wrapper #sign_in label {color:#fff;}
+			.checkout_wrapper #sign_in a {color:#fff;}
+			.checkout_wrapper #sign_in .divider {border-top:solid 1px #8dbc78;}
+			.checkout_wrapper #ship_to .summary { border-top: 1px solid #fff; }
+				.checkout_wrapper #ship_to .summary.first  { border-top: none; }
+		.checkout_wrapper #ship_to .summary p.header { color: #000; border-bottom: 1px solid #000 !important;}
+			.checkout_wrapper #ship_to .header {color:#1d5501;border-bottom:solid 1px #1d5501;}
+			.checkout_wrapper #ship_to label, .checkout_wrapper #billing label {color:#1d5501;}
+			.checkout_wrapper #ship_to .sectionDiv, .checkout_wrapper #billing .sectionDiv {border-top:3px solid #fff;}
+		.checkout_wrapper .headerFinished {background-color:#000;color:#fff;}
+			.checkout_wrapper .headerFinished a {background:url(http://www.coach.com/wcsstore/Coach_US/images/checkout/editMini.png) no-repeat top left;}
+			
+		.checkout_wrapper .stepFinished {background-color:#807e7e;color:#fff;}
+			.checkout_wrapper .stepFinished .header {color:#000;border-bottom:solid 1px #000;}
+			.checkout_wrapper fieldset .divided { border-top: 1px solid #1d5501; }
+			.checkout_wrapper p.pcheck input { border: none !important; }
+		h3.order_review { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/order_review.gif) left top no-repeat; }
+		
+		p.edit a { background: url(http://www.coach.com/wcsstore/Coach_US/images/checkout/edit.gif) left top no-repeat; }
+		
+		.check_content .field input, .check_content .field select { border: 1px solid #aca7a7; }
+		.check_content .field input.check, .check_content .field input.check_left { border: none !important; }
+		
+		.store_form { background: #f1ede8; }
+		
+		
+		.frm_error { border: 1px solid #fff; background: #cd6667; }
+		.error_field input, .error_field select, .error_field textarea { border: 1px solid #cd6667 !important; }
+		.error_field input.check {border:0px !important;}
+		.frm_error ul li, .frm_error ol li,  .frm_error p { background: url(http://www.coach.com/wcsstore/Coach_US/images/background/error.gif) 0px 3px no-repeat !important; }
+		
+		h2.order_conf {background:url('http://www.coach.com/wcsstore/Coach_US/images/checkout/order_conf.gif') no-repeat top left;}
+		.ubrand {background:url(http://www.coach.com/wcsstore/Coach_US/images/background/grid_td_bg.gif) repeat-x scroll left bottom;}
+		
+		.confirmation h2.b {background:none;height:auto;width:auto;}
+		.confirmation .ship1 { background:url(http://www.coach.com/wcsstore/Coach_US/images/checkout/shipment1.gif) 9px top no-repeat; }
+		 .confirmation  {border:solid 1px #DBD7CC;}
+		
+		
+		.checkout_wrapper dt.inactive { border-bottom: 1px solid #fff; }
+		.checkout_error { border:2px solid #d66d28; }
+		.checkout_error .checkout_error_header { background: #d66d28;color:#fff;}
+			
+			.checkout_error a:link, .checkout_error a:hover, .checkout_error a:visited { color:#fff !important; }
+		.checkout_error_content { background:#fff; filter:alpha(opacity=85);-moz-opacity:.85;opacity:.85; }
+		.checkout_error ul { list-style:disc; color:#cf5402; }
+		.suggest ul.swatch_list li a {border:1px solid #fff; }
+					.suggest ul.swatch_list li a:hover { border: 1px solid #000; }
+					.suggest ul.swatch_list li.selected a { border:1px solid #000; }
+		.checkout_wrapper #billing .form .sum { color: #fff; }
+.checkout_wrapper #billing .form .vcard { color: #fff; }
+/************** Order Confirmation *************************/
+.order_confirm_wrapper #order_confirm_padding{border-right:1px solid #e5e7e2;border-left:1px solid #e5e7e2;border-bottom:1px solid #e5e7e2;}
+.order_confirm_wrapper #order_confirm_padding #column_wrapper{border:1px solid #e5e7e2; background:url(http://www.coach.com/wcsstore/Coach_US/images/order_confirm/left_column_bg.gif) left top repeat; }
+	.order_confirm_wrapper #confirm_left_wrapper ul li#order_totals h3 {background:url(http://www.coach.com/wcsstore/Coach_US/images/order_confirm/order_totals.png) left top no-repeat;}	
+	.order_confirm_wrapper #confirm_left_wrapper ul li#payment h3 {background:url(http://www.coach.com/wcsstore/Coach_US/images/order_confirm/payment.png) left top no-repeat;}
+		.order_confirm_wrapper #confirm_left_wrapper ul strong{position:relative;top:-9999px;left:-9999px;}	
+		.order_confirm_wrapper .shipment_wrapper { background:#f3f4f2; }
+		.order_confirm_wrapper #confirm_right_wrapper .confirm_address { border-bottom: 1px solid #ddd9d6; }
+		.order_confirm_wrapper #confirm_right_wrapper .bag_grid { }
+			.order_confirm_wrapper #confirm_right_wrapper .bag_grid .product_header { border:none;}
+	.order_confirm_wrapper #sub_header h3 {background: url(http://www.coach.com/wcsstore/Coach_US/images/order_confirm/thank_you.png) left top no-repeat;height:9px;width:179px}
+	
+	#confirm_header{ background:#f60;  }
+
+/************** Estimate Shipping Modal ***********************/	
+
+	.estimateShipping .modalHeader {background:#000;}
+		.estimateShipping .modalHeader h3 {background:#000 url('http://www.coach.com/wcsstore/Coach_US/images/checkout/estimateModalHeader.png') no-repeat top left;}
+		.estimateShipping .modalHeader a {background:#000 url('http://www.coach.com/wcsstore/Coach_US/images/modal-elements/modalClose.png') no-repeat top left;}
+	.estimateShipping .modalContent {border:solid 1px #d7d7d7;background:#fff;}
+	.estimateShipping .modalContent dl dt#stepTwo { border-top:1px solid #ccc; }
+		.estimateShipping .modalContent dl dd .set .field label {color:#666;}
+		
+/************** Guest User Modal ***********************/	
+
+
+	.guestUser .modalHeader {background:#000;}
+		.guestUser .modalHeader h3 {background:#000 url('http://www.coach.com/wcsstore/Coach_US/images/modal-elements/save_info.png') no-repeat top left;}
+		.guestUser .modalHeader a {background:#000 url('http://www.coach.com/wcsstore/Coach_US/images/modal-elements/modalClose.png') no-repeat top left;}
+	.guestUser .modalContent {border:solid 1px #d7d7d7;background:#fff;}
+	.guestUser .modalContent dl dt#stepTwo { border-top:1px solid #ccc; }
+		.guestUser .modalContent dl dd .set .field label {color:#666 !important;}
+		
+/************** Edit Gift Options Modal ***********************/	
+
+.editGiftOptions {width:474px;height:309px;}
+	.editGiftOptions .modalHeader {background:#000;}
+		.editGiftOptions .modalHeader h3 {background:#000 url('http://www.coach.com/wcsstore/Coach_US/images/modal-elements/gift_options_header.png') no-repeat top left;}
+		.editGiftOptions .modalHeader a {background:#000 url('http://www.coach.com/wcsstore/Coach_US/images/modal-elements/modalClose.png') no-repeat top left;}
+	.editGiftOptions .modalContent {border:solid 1px #d7d7d7;background:#fff;}
+	.editGiftOptions .modalContent dl dt#stepTwo { border-top:1px solid #ccc;  }
+		.editGiftOptions .modalContent dl dd .set .field label {color:#666;}
+		
+		
+/********** START :: Global Modal settings *************************/
+#modalWrapper .modal_header, #resetWrapper .reset_header {background:#000;}
+#modalWrapper #modal_body {border-left:solid 1px #d7d7d7;border-right:solid 1px #d7d7d7;border-bottom:solid 1px #d7d7d7;background:#fff;}
+/*#modalWrapper.shadow {background:url('../images/modal-elements/shadowBg.png') no-repeat top left;}*/
+#modalWrapper .shadowInner {background:url('http://www.coach.com/wcsstore/Coach_US/images/modal-elements/modalShadowRight.png') no-repeat top right;}
+#modalWrapper .modalShadowBottom {background:url('http://www.coach.com/wcsstore/Coach_US/images/modal-elements/modalShadowBottom.png') no-repeat top left;}
+#modalWrapper .modalShadowBottom  .shadowCorner{background:url('http://www.coach.com/wcsstore/Coach_US/images/modal-elements/shadowModalCorner.png') no-repeat top left;}
+
+.add_all #modal_body { border: none !important; background: url(http://www.coach.com/wcsstore/Coach_US/images/background/modalOverlayBg.png) left top repeat !important; color: #fff !important; }
+.add_all .modal_top .close { padding: 9px 9px 0px 0px; }
+	.add_all #modal_body .added_items { border: 1px solid #fffcfc !important; float: left; margin: 40px 50px 15px; padding: 25px; }
+			.add_all #modal_body .added_prod { padding-top: 12px; }
+			.add_all #modal_body .add_actions { float: right; padding: 0px 54px 40px 0px; }
+				.add_all #modal_body .add_actions ul li { text-align: right; }
+					.add_all #modal_body .add_actions ul li a { color: #fff; text-decoration: underline; }
+					.add_all #modal_body .add_actions ul li a:hover { text-decoration: none; }
+		.add_all #modal_body .added_items h2, .add_all #modal_body .added_items h3 { text-transform: uppercase; }
+		.jqmOverlay {background:#fff;}
+/********** END :: Global Modal settings *************************/
+
+/********** START :: Product Detail Modal Overlay *************************/
+.overlay {background:url('http://www.coach.com/wcsstore/Coach_US/images/background/modalOverlayBg.png') repeat top left;}
+	.overlay .overlayHeader .overlayClose {background:url('http://www.coach.com/wcsstore/Coach_US/images/buttons/overlayClose.gif') no-repeat top left;}
+	.overlay ul li .prodName {color:#666;}
+.overlay .confBox {border:solid 1px #fff;}
+	.overlay .confBox a {color:#fff !important;}
+.overlay p, .overlay h3 {background:transparent;}
+/********** END :: Product Detail Modal Overlay *************************/
+
+/****************************** START :: CATEGORY LANDING ****************************/
+
+#panel_inner_wrapper{}
+
+
+/****************************** START :: VIEW ALL ****************************/
+#view_all_sorted_header, #view_all_sorted_header div{background:#3a3838;color:#fff;}
+#view_all_sorted_header div{}
+
+.view_all_header, .view_all_header div.header_wrapper{background:#3a3838;color:#fff;}
+
+
+.prod_det {background: #fff;}
+
+
+.productInfo { color:#707070; }
+
+
+
+/****************************** Start :: STATIC PAGE TEMPLATES **********************/
+
+.static_wrapper #graphic_panel .static_padding_wrapper{background:#fff;}
+.static_wrapper .static_content{border:1px solid #c1c1c1;}
+.static_wrapper .static_content #vertical_nav a{border-bottom:1px solid #adadad;color:#666;}
+.static_wrapper #static_2.static_content h2{color:#fff;}
+.static_wrapper #static_2.static_content p a{color:#fff;}
+.static_wrapper .static_content p a{color:#666; text-decoration: underline;}
+.static_wrapper #graphic_panel #static_8.static_content #content #content_padding label, .static_wrapper #graphic_panel #static_1 label{color:#666;font-weight:bold;}
+.static_wrapper #graphic_panel .static_content #static_hdr{background:#fff;}
+.static_wrapper #graphic_panel #static_2.static_content{background:#000;color:#fff;}
+.static_wrapper #static_2.static_content #vertical_nav a{border-bottom:1px solid #272727;color:#fff;}
+.static_wrapper .static_content #vertical_nav a.current{color:#ce8629;cursor:default;}
+.static_wrapper #static_2.static_content #vertical_nav ul ul li a{border:none;}
+.static_wrapper #graphic_panel .static_content #vertical_nav ul ul li a.current_sub{background-image:url(http://www.coach.com/wcsstore/Coach_US/images/static/nav_pointer.gif);}
+.static_wrapper #graphic_panel .static_content #vertical_nav ul ul li a.current_sub{background-repeat:no-repeat;}
+.static_wrapper #graphic_panel .static_content #vertical_nav ul ul li a.current_sub{background-position:9px 2px;}
+.static_wrapper #static_2.static_content h3{color:#666;}
+
+/******************************** START :: ERROR PAGES ****************************/
+#genericErrorWrapper{color:#ff0000;}
+
+
+/******************************* START :: STORE LOCATOR *****************/
+.static_wrapper .static_content .store_locator h2{color:#000;}
+.static_wrapper .static_content .store_locator p{color:#666;} 
+.static_wrapper .static_content ul#sl_tabs{border-bottom:1px solid #e8e8e8;}
+#us_wrapper fieldset{border-bottom:1px solid #E8E8E8;}
+.store_locator fieldset#search_gender{border:none;}
+.store_locator fieldset#search_gender p{border-bottom:1px solid #E8E8E8;}
+.store_locator div#locator_note{border:1px solid #e0e0e0;background:#f5f5f5;}
+.static_wrapper .static_content .store_locator .new_search{border-top:1px solid #E8E8E8;}		
+.static_wrapper .static_content .store_locator #ca_wrapper h2, .static_wrapper .static_content .store_locator #us_wrapper h2, .static_wrapper .static_content .store_locator #jp_wrapper h2, .static_wrapper .static_content .store_locator #in_wrapper h2{color:#000;background:#f2f2f2;}
+.static_wrapper .static_content .store_locator .sl_results_wrapper h2#legendBugs{border:1px solid #E0E0E0; background: #F5F5F5 none repeat scroll 0 0;}
+.static_wrapper .static_content .store_locator .sl_results_wrapper h2#legendBugs div#womenBug .bugPaddingWrapper{background: url(http://www.coach.com/wcsstore/Coach_US/images/store_locator/bug_women_grey.gif)top left no-repeat;}
+.static_wrapper .static_content .store_locator .sl_results_wrapper h2#legendBugs div#menBug .bugPaddingWrapper{background: url(http://www.coach.com/wcsstore/Coach_US/images/store_locator/bug_men_grey.gif)top left no-repeat;}
+.static_wrapper .static_content .store_locator .vcard .fn{color:#000;}
+.static_wrapper .static_content .store_locator .vcard .vcard_map a{color:#d68330;}
+#in_wrapper p, #jp_wrapper p{border-bottom:1px solid #e8e8e8;}
+/* .static_wrapper #graphic_panel #static_8.static_content #content.store_locator #content_padding label, .static_wrapper #graphic_panel #static_1 label{color:#666;} */
+.static_wrapper .static_content .store_locator #ca_wrapper .new_search{border-top:1px solid #e0e0e0;}
+
+/******************* START :: PRODUCT DETAIL ************************************/
+#modalWrapper .clear, #resetWrapper .reset_header{background:#fff;border-top:solid 1px #d7d7d7; border-left:solid 1px #d7d7d7;border-right:solid 1px #d7d7d7;width:auto;}
+#modalWrapper.productDetail #modal_body .view_wrapper #view_margin_wrapper_right{border:1px solid #d7d7d7;}
+#modalWrapper.productDetail #modal_body .view_wrapper #view_wrapper_right dd li{background: url(http://www.coach.com/wcsstore/Coach_US/images/product_detail/list_bullet.gif) 0px 4px no-repeat;}
+#modalWrapper.productDetail #modal_body .view_wrapper #view_wrapper_right fieldset label{border-bottom:1px solid #d7d7d7;}
+#modalWrapper.productDetail #modal_body #store_pick_up_1 #view_wrapper_right fieldset label, #modalWrapper.productDetail #modal_body #store_pick_up_2 #view_wrapper_right fieldset label{border:none;}
+#modalWrapper.productDetail #modal_body .view_wrapper#email_friend #view_wrapper_right fieldset label{border:none;}
+#modalWrapper.productDetail #modal_body .view_wrapper #view_wrapper_right span span#sign_in, #modalWrapper.productDetail #modal_body .view_wrapper #view_wrapper_right span span#sign_in a, #modalWrapper.productDetail #modal_body .view_wrapper #view_wrapper_right span.breaking_span {color:#666;}
+#modalWrapper.productDetail #modal_body .view_wrapper p.swatch_list a{border:1px solid #fff;}
+#modalWrapper.productDetail #modal_body .view_wrapper p.swatch_list a:hover{border:1px solid #000;}
+#modalWrapper.productDetail #modal_body #store_pick_up.view_wrapper #view_wrapper_right fieldset label{border:none;}
+#modalWrapper.productDetail #modal_body #store_pick_up_2.view_wrapper #view_wrapper_right fieldset{border-top:1px solid #d7d7d7;border-bottom:1px solid #d7d7d7;}
+#modalWrapper.productDetail #modal_body #store_pick_up_2.view_wrapper #view_wrapper_right fieldset .vcard .location_head{border-bottom:1px solid #d7d7d7;}
+#modalWrapper.productDetail #modal_body #store_pick_up_2.view_wrapper #view_wrapper_right p a{color:#b84404;}
+#modalWrapper.productDetail #modal_body #email_friend.view_wrapper #view_wrapper_right fieldset label{border:none;}
+#modalWrapper.productDetail #modal_body #email_friend.view_wrapper #view_wrapper_right fieldset#friendEmail #first{background:url(http://www.coach.com/wcsstore/Coach_US/images/product_detail/divider_dot.gif) repeat-x;}
+.moreViews.related .views .view .prodName {color:#666;}
+#modalWrapper.productDetail #modal_body .view_wrapper #pick_up_note, #modalWrapper.productDetail #modal_body .view_wrapper #view_wrapper_right p{color:#666;}
+#v_browse ul.swatch_list li {border:none;}
+
+
+#search_results_wrapper #search_filter #search_filter_inner .optionReset span{color:#000;}
+#search_results_wrapper .noResults_box{background:#f1f2f4 url(http://www.coach.com/wcsstore/Coach_US/images/search/noResults_divider.gif) 50% 38px no-repeat;color:#666;}
+#search_results_wrapper .noResults_box .noResults_suggest a{color:#666;}
+	#search_results_wrapper .noResults_box .searchAlert{color:#cd5403;}
+	#search_results_wrapper .noResults_box a{text-decoration:underline;}
+	
+/* Browse */
+.infoToggle { background: #ffffff;}
+
+/* SEARCH RESULTS */
+.prod_attributes {background: #ffffff;}
+
+#nav_utility ul li.first, #nav_supplementary ul li.first { margin-left:-28px; left:20px; }
+
+#nav_supplementary ul li.first { margin-left: 15px; }
+
+.checkoutWrapperTop { background:transparent url(http://www.coach.com/wcsstore/Coach_US/images/checkoutBGTop.gif) no-repeat scroll 0 0; }
+.checkoutWrapperBottom { background:transparent url(http://www.coach.com/wcsstore/Coach_US/images/checkoutBGBottom.gif) no-repeat scroll 0 0; }
+/*WCS-908*/
+.customMessageContainer .link1{
+      color: #B50E80 !important;
+      font-size: 12px !important;
+}
+
+customMessageContainer a .link1 {
+      color: #B50E80 !important;
+      font-size: 12px !important;
+text-decoration:none !important;
+}
+
+.customMessageContainer  a:link  .link1{
+      color: #B50E80 !important;
+      font-size: 12px !important;
+text-decoration:none !important;
+}
+
+
+
+.customMessageContainer .link1 a:hover{
+      color: #B50E80;
+      font-size: 12px;
+text-decoration:underline !important;
+}
+
+.customMessageContainer .link2{
+      color: #14325C !important;
+      font-size: 12px !important;
+}
+
+.customMessageContainer .link2 a{
+      color: #14325C !important;
+      font-size: 12px !important;
+text-decoration:none !important;
+}
+
+.customMessageContainer .link2 a:link{
+      color: #14325C !important;
+      font-size: 12px !important;
+text-decoration:none !important;
+}
+
+.customMessageContainer .link2 a:hover{
+      color: #14325C !important;
+      font-size: 12px !important;
+text-decoration:underline !important !important;
+}

@@ -1,0 +1,2000 @@
+if (typeof $ != 'undefined') { $(function() {
+
+ // Begin new story additions
+ $('#nbc-content .body .cbx').each(function() {
+   var $box= $(this);
+   var $subTable = $box.children('table');
+   if ($subTable && $subTable.attr('width')) {
+   $box.css('width', $subTable.attr('width'));
+   }
+ });
+
+ // Remove redundant byline name
+ var $byline= $('div.byline div.textMedBlackBold');
+ if ($byline.length > 0) {
+  var matches= $byline.html().match(/By (.*)/i);
+  $('table div.sitewrapperbox table.cbx-content td div.textMed b').each(function() {
+   if ($(this).html() == matches[1]) {
+    $byline.remove();
+   }
+  });
+ }
+ 
+ // Move the right side of the more-news area to the c-column (uses find to fix IE issue)
+ $('#nbc-content .more-news').find('#cell3').addClass('more-news-cell3').insertAfter('.wccol-inherit');
+ 
+ // Remove h2 art if nothing is in it for proper display on IE
+ // $('#nbc-content .content-right .h2art:empty').remove();
+ 
+ // Force 300px wide grids into 300 px divs on IE
+ $('#nbc-content .body table .grid .w2').parent().width(300);
+ // End new story additions 
+
+
+ /* ------------ */
+ /* Sport slices */
+ /* ------------ */
+ $boxes = $('#nbc-content .sport-slices, #nbc-content .boxes .w4, #nbc-content .box .w4');
+ $boxes.each(function(j) {
+  var $box = $(this);
+  var $els = $box.children('.sport-slice, .story');
+  //$box.css('border','1px solid green');
+  //$els.css('background','green');
+  //console.log('$box.innerWidth(' + $box.innerWidth() + ') / ' + '$els.outerWidth(' + $els.outerWidth(true) + ')');
+  var elsPerRow = Math.round($box.innerWidth() / $els.outerWidth(true));
+  var rows = Math.ceil($els.length / elsPerRow);
+  //console.log('*** found ' + $els.length + ' els, ' + rows + ' rows, ' + elsPerRow + ' els per row ***');
+  var maxHeight;
+  for (i=0; i<rows; i++) {
+   maxHeight = 0;
+   $els.slice((i*elsPerRow), (i*elsPerRow)+elsPerRow).each(function() {
+    var elHeight = $(this).height();
+    if (elHeight > maxHeight) maxHeight = elHeight;
+    //console.log('found box ' + j + ' row ' + i + ' elHeight ' + elHeight + ' maxheight ' + maxHeight);
+   }).height(maxHeight);
+   //console.log('setting box ' + j + ' row ' + i + ' maxheight ' + maxHeight);
+  }
+ });
+/* old code:
+ $slices = $('#nbc-content .sport-slices .sport-slice');
+ var slicesPerRow = Math.round($slices.parent().width() / $slices.width());
+ var rows = Math.ceil($slices.length / slicesPerRow);
+ var maxHeight;
+ for (i=0; i<=rows; i++) {
+  maxHeight = 0;
+  $slices.slice(i, i+slicesPerRow).each(function() {
+   var sliceHeight = $(this).height();
+   if (sliceHeight > maxHeight) maxHeight = sliceHeight;
+   //console.log('found row ' + i + ' sliceheight ' + sliceHeight + ' maxheight ' + maxHeight);
+  });
+  $slices.slice(i, i+slicesPerRow).height(maxHeight);
+  //console.log('setting row ' + i + ' maxheight ' + maxHeight);
+ }
+*/
+/* older code:
+ $('#nbc-content .sport-slices:not(.content-left.sport-slices) .sport-slice:nth-child(3n)').addClass('left-slice');
+ $('#nbc-content .content-left.sport-slices .sport-slice:even').addClass('left-slice');
+*/
+
+ /* --------------- */
+ /* Homepage tweaks */
+ /* --------------- */
+ /* tsm area ad */
+ $tsm = $('#nbc-content .tsm-area').css('overflow','hidden');
+ $tsmAd = $tsm.find('.ad');
+ var adHeight= $tsmAd.height();
+ if (adHeight == 0) {
+  // Ads that use a <center> tag need different processing
+  adHeight= $tsmAd.children('center').children().height();
+ }
+ tsmHeight = $tsmAd.parent().height() + adHeight;
+
+ if ($tsmAd.length > 0 && $tsm.height() < tsmHeight) {
+  $tsm.height(tsmHeight);
+ }
+
+ /* trim time from blog slice headlines */
+ $blogHeadlines = $('.blog-slice .grid .textMed');
+ $times = $blogHeadlines.find('.time');
+ $blogHeadlines.each(function() {
+  var $time = $(this).find('.time');
+  var $link = $(this).find('a');
+  var timeWidth = $time.outerWidth();
+  var $linkWidth = $link.outerWidth();
+  $time.hide();
+  if (!($link.outerWidth() > $linkWidth)) { /* if the headline did not wrap up, undo */
+   $time.show();
+  }
+ });
+
+ /* ------ */
+ /* Tables */
+ /* ------ */
+ // headline -> table
+ $tbl = $('#nbc-content .photo')
+ $tblJS = $tbl.find('script');
+ $tblTable = $tbl.find('.cbx table');
+ if (
+  ($tblJS.length > 0 && typeof $tblJS.attr('src') == 'undefined' && $tblJS.html().indexOf('getCSS') != -1 && $tblTable.attr('width') != '300')
+  ||
+  ($('#nbc-content .body').children().eq(1).is('table')) // FF/Chrome/Safari/IE8
+  ||
+  ($('#nbc-content .body').children().eq(0).filter('p').children('table').length > 0) // IE<8
+ ) {
+  //$tblJS.closest('#nbc-content').addClass('nbc-table').find('.v-center1').attr('class', 'table').html($('#nbc-content .photo .cbx'));
+  $('#nbc-content').addClass('nbc-table');
+  $('#nbc-content .body').prepend($('#nbc-content .photo .cbx'));
+
+  // move teases
+  $legacy = $('#nbc-content .legacy');
+  $('#nbc-content.nbc-table .headline .ad').append($legacy.children());
+
+  // alternate shading
+  $('#nbc-content.nbc-table .body .cbx table').each(function() {
+   $(this).find('tr:even').addClass('even');
+  });
+ }
+
+ /* ------------ */
+ /* Interactives */
+ /* ------------ */
+ // Do not do interactive processing for Trash Talk
+ if ($('table.appspt_trash_talk').length == 0) {
+  // headline -> interactive
+  $int = $('#nbc-content .photo > script');
+  if (typeof $int.attr('src') != 'undefined' && $int.attr('src').indexOf('/msnbc/components/interactives/') != -1) {
+   $int.parent().attr('class', 'interactive');
+   $int.closest('#nbc-content').addClass('nbc-int');
+  }
+  
+  $interactiveContainer = $('#nbc-content .interactive a');
+  $interactive = $interactiveContainer.children('table');
+  $interactive = $interactive.add($interactiveContainer.next('table')); // FF < 4
+
+  // 2nd nav -> interactive
+  $('#nbc-content .interactive td[class^="font1"]').appendTo($interactive.find('table.xpress-int tr')[0]);
+
+  // tweaks - interactives & tables
+  $interactive.find('td:empty, div:empty, img[height=1][width=1]').addClass('empty');
+  $interactive.find('td div:empty').parent().addClass('empty');
+
+  // restyle
+  var intName = [];
+  $interactiveContainer.each(function(i) {
+   intName[i] = $(this).attr('name');
+   intName[i] = intName[i].slice(4, intName[i].length);
+   //console.log('found ' + intName[i]);
+   $intContents = $interactive.find('*').andSelf();
+
+   $intContents.each(function () {
+    // strip styles
+    if ($(this).attr('style') != '') $(this).attr('style','');
+    $(this).attr('background','');
+
+    // strip classes
+    intClass = $(this).attr('class');
+    if (intClass.indexOf(intName[i]) != -1) {
+     $(this).attr('class', intClass.slice(0, (intClass.length-intName[i].length)));
+    }
+
+    // add generic classes from id's
+    intID = $(this).attr('id');
+    if (intID.indexOf(intName[i]) != -1) {
+     $(this).addClass(intID.slice(0, (intID.length-intName[i].length)));
+    }
+   });
+  });
+
+  // resize image if >630
+  $interactive.find('.deck_ table img').each(function() {
+   $imgSize = $(this).width();
+   if ($imgSize > 630) $(this).width(630);
+  });
+
+  /* h2art is no longer used
+  // move teases
+  $legacy = $('#nbc-content .legacy');
+  $wccol = $legacy.find('.wccol div:first');
+  if ($wccol.length > 0) $('#nbc-content .headline .feature').html($wccol);
+   $h2art = $legacy.find('.h2art:parent');
+  if ($h2art.find('*').length > 1) $('#nbc-content .headline .feature').html($h2art);
+   $('#nbc-content.nbc-int .headline .ad').append($legacy.children());
+  */
+
+  // images
+  $img = $interactive.find('img[src$=.jpg]');
+  $img.parent().addClass('img').closest('table').addClass('image');
+
+  // horizontal nav
+  $interactive.find('table.navCell tr td:first-child').hide();
+ }
+
+  /* h2art is no longer used
+ $h2art = $('.content-right .h2art:parent');
+ if ($h2art.find('*').length <= 1) $h2art.hide();
+  */
+ 
+ /* ----------------- */
+ /* Story page tweaks */
+ /* ----------------- */
+ // hide videos on (automated) stories without decks
+ if ($('#nbc-content .headline .v-center3 h2:empty').length > 0) {
+ $('#nbc-content .headline .feature').hide(); 
+// $('#nbc-content .content-right .h2art').hide();
+ }
+
+ // add icon to videos between headline and ad
+ $('#nbc-content .headline .feature .text a[href^="javascript:vPlayer"]').each(addVideoIcon)
+ 
+ // add icon to hq video links
+ $('#nbc-content .tbx .story a[href*="hqplayer.nbcsports.com"]').each(addVideoIcon)
+ $('#nbc-content .sport-slice .story a[href*="hqplayer.nbcsports.com"]').each(addVideoIcon)
+
+ // stage photo
+ $photo = $('#nbc-content div.photo > img');
+ if ($photo.length > 0) {
+  if ($photo.length > 1) {
+   $photo.filter(':not(:first)').remove();
+  }
+  if ($photo.height() >= $photo.width()) {
+   $photo.parent().addClass('photo-320w');
+   //$photo.attr('src', $photo.attr('src').replace('.widec.','.320w.'));
+   $photo.attr('src', $photo.attr('src').replace('.standard.','.320w.')); //316+6=322
+  }
+  else if ($photo.attr('src').match('.standard.')) {
+//    $photo.attr('src', $photo.attr('src').replace('.standard.','.nbcsports-grid-8x2.')).css('padding', 0);
+    $photo.attr('src', $photo.attr('src').replace('.standard.','.nbcsports-story-612.'));
+   } else if ($photo.attr('src').match('.aim640.')) {
+//    $photo.attr('src', $photo.attr('src').replace('.aim640.','.nbcsports-grid-8x2.')).css('padding', 0);
+    $photo.attr('src', $photo.attr('src').replace('.aim640.','.nbcsports-story-612.'));
+   }
+ }
+ 
+ // features
+ $features = $('#nbc-content .body table:not(#nbc-content .body table table):not(#nbc-content .interactive table)');
+ $features.each(function() {
+  if ($(this).attr('align') != '') {
+   $(this).addClass($(this).attr('align'));
+  }
+  else {
+   $(this).addClass('none');
+  }
+ });
+
+ // remove empty p's created by bumped out tables in standards mode
+ $('#nbc-content .body p:empty:not(:first)').addClass('empty');
+
+ // wrap top text
+ /*$('.body .ads').contents().filter(function() { return this.nodeType == 3; }).wrap('<span />');
+ $('.body .ads').children().filter('span:first, a:nth-child(3)').wrap('<div />');*/
+ // add pulse ads - top
+ $ads = $('#nbc-content .body #AdShowcase_F1 > div').addClass('ads');
+ $ad = $ads.children('div').addClass('ad');
+ $ads.append('<iframe frameborder="0" src="http://nbcsports.msnbc.com/id/39766486" allowtransparency="true" scrolling="no" class="pulse ad"></iframe>');
+ $ads.find('hr:last').insertAfter($ads.find('.pulse.ad'));
+
+ /* ----------------- */
+ /* Dropdown menu ads */
+ /* ----------------- */
+ if (String(window.location).indexOf('http') == -1) adURL = 'ad-iframe.html';
+ else adURL = 'http://nbcsports.msnbc.com/id/38693991';
+ $dropdown = $('#nbc-header #nav li');
+ $dropdown.mouseenter(function() {
+  $ad = $(this).find('ul .grid #cell3 div.ad iframe');
+  $ad.hover( // prevent IE disappearing dropdown on ad hover
+   function() { $ad.closest('ul').css({'left': '0', 'top': $dropdown.parent().height(), 'z-index': '99'}); },
+   function() { $ad.closest('ul').css({'left': '', 'top': '', 'z-index': ''}); }
+  );
+  if ($ad.length > 0) {
+   if ($ad.attr('src') == '') $ad.attr('src', adURL);
+  }
+ });
+
+ /* ---------------------- */
+ /* Cufon font replacement */
+ /* ---------------------- */
+ // nav
+ $nav = $('#nav li h2 a');
+ Cufon.replace($nav, {
+  fontSize: '16px',
+  textShadow: '#fbd56d 1px 1px',
+  fontWeight: 'normal',
+  hover: {
+   textShadow: '#333 -1px -1px'
+  }
+ });
+ $nav.find('span').addClass('cufon');
+ $('#nav').addClass('cufon');
+ // nav dropdown (do not process on IE)
+ if (!$.browser.msie || $.browser.version >= 9.0) {
+  Cufon.replace('#nav li ul #cell1 a', {
+   fontSize: '13px',
+   textShadow: '#000 -1px -1px',
+   hover: true
+  });
+ }
+ // nav
+ Cufon.replace('#nbc-header .subnav h1', {
+  fontSize: '17px',
+  fontWeight: 'normal'
+ });
+ // tsm headline - h1
+ Cufon.replace('.tsm-area .story:not(.textfx-up1, .textfx-up2, .textFX-up1, .textFX-up2) h1', {
+  fontSize: '42px',
+  textShadow: '#fff 1px 1px',
+  hover: true
+ });
+ Cufon.replace('.tsm-area .textfx-up1 h1, tsm-area .textFX-up1 h1', {
+  fontSize: '44px',
+  textShadow: '#fff 1px 1px',
+  hover: true
+ });
+ Cufon.replace('.tsm-area .textfx-up2 h1, .tsm-area .textFX-up2 h1', {
+  fontSize: '49px',
+  textShadow: '#fff 1px 1px',
+  hover: true
+ });
+ // tsm headline - h2
+ Cufon.replace('.tsm-area .story:not(.textfx-up1, .textfx-up2, .textFX-up1, .textFX-up2) h2', {
+  fontSize: '35px',
+  textShadow: '#fff 1px 1px',
+  hover: true
+ });
+ Cufon.replace('.tsm-area .textfx-up1 h2, .tsm-area .textFX-up1 h2', {
+  fontSize: '38px',
+  textShadow: '#fff 1px 1px',
+  hover: true
+ });
+ Cufon.replace('.tsm-area .textfx-up2 h2, .tsm-area .textFX-up2 h2', {
+  fontSize: '41px',
+  textShadow: '#fff 1px 1px',
+  hover: true
+ });
+ // tsm headline - h3
+ Cufon.replace('.tsm-area .story:not(.textfx-up1, .textfx-up2, .textFX-up1, .textFX-up2) h3', {
+  fontSize: '31px',
+  textShadow: '#fff 1px 1px',
+  hover: true
+ });
+ Cufon.replace('.tsm-area .textfx-up1 h3, .tsm-area .textFX-up1 h3', {
+  fontSize: '32px',
+  textShadow: '#fff 1px 1px',
+  hover: true
+ });
+ Cufon.replace('.tsm-area .textfx-up2 h3, .tsm-area .textFX-up2 h3', {
+  fontSize: '33px',
+  textShadow: '#fff 1px 1px',
+  hover: true
+ });
+ // headline stack
+ Cufon.replace('.tbx-stack h2', {
+  fontSize: '17px',
+  textShadow: '#eee 1px 1px'
+ });
+ // tsm label
+ Cufon.replace('.tsm-area .lbl-custom', {
+  fontSize: '13px',
+  textShadow: '#600 -1px -1px'
+ });
+ Cufon.replace('.tsm-area .label:not(.lbl-custom)', {
+  fontSize: '14px'
+ });
+ // blog slice
+ Cufon.replace('.blog-slice .header h3', {
+  textShadow: '-1px -1px rgba(0, 0, 0, 0.5)'
+ });
+ // sport slices
+ Cufon.replace('.sport-slices .sport-slice:not(.sponsor) .label:not(.lbl-custom)', {
+  fontSize: '17px',
+  textShadow: '#eee 1px 1px'
+ });
+ Cufon.replace('.sport-slices .sport-slice:not(.sponsor) .lbl-custom', {
+  fontSize: '17px',
+  textShadow: '-1px -1px rgba(0, 0, 0, 0.5)'
+ });
+ Cufon.replace('.sport-slices .label:not(.sport-slice .label), .box .label, #nbc-content .boxes .label', {
+  fontSize: '14px'
+ });
+ // footer
+ Cufon.replace('#nbc-footer .grid .label', {
+  fontSize: '17px'
+ });
+ Cufon.replace('#nbc-footer .grid .w1 .story a', {
+  fontSize: '12px',
+  textShadow: '#000 -1px -1px',
+  hover: 'true'
+ });
+ // story headline
+ Cufon.replace('#nbc-content .headline h1, ', {
+  fontSize: '44px'
+ });
+ // story more
+ Cufon.replace('.more-news .label', {
+  fontSize: '16px',
+  textShadow: '#eee 1px 1px'
+ });
+ // story features
+ Cufon.replace('#nbc-content .body table .grid .label, #nbc-content .cbx-header, #nbc-content .boxH_brl', {
+  fontSize: '16px',
+  textShadow: '#eee 1px 1px'
+ });
+ // rw box
+ Cufon.replace('.rw-box .cbx .cbx-header', {
+  fontSize: '17px',
+  textShadow: '-1px -1px #555'
+ });
+ // rw box for NHL playoffs
+ Cufon.replace('.rw-box.nhl-playoffs .cbx .cbx-header', {
+  fontSize: '16px',
+  textShadow: '-1px -1px #555'
+ });
+ // slideshows
+ $('#infoBody .component .header h4 span').livequery(
+  function() {
+   Cufon.replace($(this), {
+    fontSize: '14px'
+   });
+  }
+ );
+ // embedded slideshows
+ Cufon.replace('.embss .embheader', {
+  fontSize: '16px',
+  textShadow: '#eee 1px 1px'
+ });
+ // RSN slices
+ Cufon.replace('.rsn-slice #cell1 em', {
+  fontSize: '15px',
+  textShadow: '#eee 1px 1px',
+  hover: true
+ });
+ // TV Listings headers
+ Cufon.replace('.tv-listings-header', {
+  fontSize: '22px',
+  textShadow: '#333 1px 1px'
+ });
+ // Four-gridlet header
+ Cufon.replace('.four-gridlet-header', {
+  fontSize: '14px'
+ });
+
+ // Local RSN geolocation functionality
+ var rsnSlices = $('.rsn-slice');
+ for (var i = 0; i < rsnSlices.length; i++) {
+  var id = rsnSlices[i].id.substring(5);
+  $.getJSON('http://geo.nbcsports.com?callback=?', function(data) {
+   checkRSNGrid(id, data.dma);
+  });
+ }
+
+ /* ------- */
+ /* Twitter */
+ /* ------- */
+ /*$("#tweets").tweet({
+  username: "nbc_sports",
+  count: 3,
+  loading_text: "Loading tweets..."
+ });*/
+
+ /* -----clear form fields on focus----- */
+ $('.rw-box .search form input:text')
+ .css('color','#bbb')
+ .focus(function() {
+  $(this).css('color','#000').addClass('focus'); // add focus class for IE6
+  if ($(this).val() == $(this).attr('title')) {
+   $(this).val('');
+  }
+ })
+ .blur(function() {
+  $(this).removeClass('focus');
+  if ($(this).val() == '') {
+   $(this).css('color','#bbb').val($(this).attr('title'));
+  }
+ });
+
+ /*---form validation---*/
+ $('.rw-box .search form.searchname').RSV({
+  errorFieldClass: "error",
+  rules: [
+   "equals_original,searchname,Please enter a player's last name",
+   "required,searchname,Please enter a player's last name"
+  ]
+ });
+
+ /* US Bank ad */
+ $('.lbl-custom-2col').click(function() {
+  window.location.href = 'http://ad.doubleclick.net/clk;234509605;23698753;q?http://ad.doubleclick.net/clk;234419517;58025743;j?http://www.usbank.com/RedirectCentral.cfm?RedirectID=6796';
+ });
+
+ /* --- Hide league acronym for RW Top 10 - GC --- */
+ if($('span.leaguetext').length>0) {
+  $('span.searches').css('display', 'none');
+ }
+
+ // Handle UGC markup to allow CSS to work correctly
+ var components = $('#nbc-content #ugc > *');
+ if (components.length > 0) {
+  var slice = 0;
+  var leftSide= $('<div>').addClass('ugc-upload');
+  var rightSide= $('<div>').addClass('ugc-information');
+
+  $(components[slice++]).addClass('header');
+  $(components[slice++]).after($('<div>').append(leftSide).append(rightSide));
+  if ($(components[slice]).is('div')) {
+   if ($(components[slice]).hasClass('b') && $(components[slice]).hasClass('pt')) {
+    $(components[slice++]).appendTo(leftSide);
+   }
+  }
+  if ($(components[slice]).is('div')) {
+   if (!$(components[slice]).hasClass('pb')) {
+    $(components[slice++]).addClass('comment-box').appendTo(leftSide);
+   }
+  }
+  if ($(components[slice]).is('input')) {
+   slice++;
+  }
+  if ($(components[slice]).is('div')) {
+   if ($(components[slice]).hasClass('pb')) {
+    $(components[slice++]).addClass('comment-box').appendTo(leftSide);
+   }
+  }
+  if ($(components[slice]).is('input')) {
+   slice++;
+  }
+
+  if ($('#ugcF1').length > 0) {
+   $(components[slice++]).appendTo(leftSide);
+   $(components[slice++]).appendTo(leftSide);
+   $(components[slice++]).addClass('upload').appendTo(leftSide);
+   $(components[slice++]).addClass('upload').appendTo(leftSide);
+   $(components[slice++]).addClass('upload').appendTo(leftSide);
+   $(components[slice++]).addClass('upload').appendTo(leftSide);
+   $(components[slice++]).addClass('upload').appendTo(leftSide);
+   $(components[slice++]).addClass('add-upload').appendTo(leftSide);
+  }
+
+  $(components[slice++]).appendTo(rightSide);
+  $(components[slice++]).appendTo(rightSide);
+  $(components[slice++]).addClass('user-information').appendTo(rightSide);
+  $(components[slice++]).addClass('terms');
+ }
+
+ // Duplicate page controls for page 2+ of stories
+ var nav= $('span[cm="PageNavBot"]').parent().clone();
+ var div= nav.find('div.fL.pS').clone().css('margin-bottom', '10px');;
+ var text= div.children().slice(0, 1).html();
+ if (text && text.match('Prev')) {
+  nav.find('span[cm="PageNavBot"]').html('').append(div);
+  $('div.body div.headline').after(nav);
+ }
+
+ // Remove flash objects from main art if iPhone/iPad is detected
+ if ( navigator.userAgent.match('iPhone') || navigator.userAgent.match('iPod') || navigator.userAgent.match('iPad')) { 
+  $('.photo object').hide();
+ }
+
+ // Change wmode of non-iframe leaderboard flash ads so they don't overlay the dropdown
+ $("#nbc-header .leaderboard.ad embed").attr("wmode", "opaque");
+ var embedTag;
+ $("#nbc-header .leaderboard.ad embed").each(function(i) {
+  embedTag = $(this).attr("outerHTML");
+  if ((embedTag != null) && (embedTag.length > 0)) {
+   embedTag = embedTag.replace(/embed /gi, 'embed wmode="opaque" ');
+   $(this).attr("outerHTML", embedTag);
+  } else {
+   $(this).wrap("<div></div>");
+  }
+ });
+ // For IE
+ if ($("#nbc-header .leaderboard.ad object").length > 0 && $("#nbc-header .leaderboard.ad object").attr('outerHTML') != null && $("#nbc-header .leaderboard.ad object").attr('outerHTML').match('NAME="WMode" VALUE="Window"')) {
+  $("#nbc-header .leaderboard.ad object").attr('outerHTML', $("#nbc-header .leaderboard.ad object").attr('outerHTML').replace('NAME="WMode" VALUE="Window"', 'NAME="WMode" VALUE="Opaque"'));
+ }
+ 
+ var $golf = $('#grid_38995526 p.abstr');
+ $golf.html($golf.text());
+
+ showTvGrid();
+});
+
+function showTvGrid() {
+ var $tvGrid = $('#nbc-footer div.tsm.grid #cell4 div.cbx');
+ var $note = $('#nbc-footer div.tsm.grid #cell4 div.cbx table.boxF_3053751 td');
+ 
+ if ($tvGrid.length == 0 || $note.length == 0) {
+  return;
+ }
+ 
+ $tvGrid.width(280).children('table').width(280);
+ $note.html($note.html().replace('*', "<br />*"));
+ $('#nbc-footer div.tsm.grid #cell4 .label').prepend($('<a href="http://nbcsports.msnbc.com/id/30092015/ns/sports/" class="tv-listings-footer-link">View Full TV Listings<br />for NBC and NBCSN</a>'));
+ 
+ $tvGrid.find('tr').each(function() {
+  var $row = $(this);
+  $row.find('td:nth-child(5)').hide();
+  $row.find('td:nth-child(4)').hide();
+  $row.find('td:nth-child(2)').css('white-space', 'nowrap');
+  
+  var $day = $row.find('td:first-child');
+  $day.css('white-space', 'nowrap').html($day.html().replace(/,/, ',<br />'));
+ })
+ $tvGrid.show();
+}
+
+}
+
+function addVideoIcon() {
+ if ($(this).siblings('a.icoVid').length > 0 || $(this).find('img').length > 0) {
+  return; // Icon already exists or it is an image link
+ }
+ var height= $(this).height();
+ var original= $(this).html();
+ $(this).before('<a href="http://nbcsports.msnbc.com/id/'&#32;+&#32;$(this).attr('href')&#32;+&#32;'" title="Click to view video" class="icoVid">&nbsp;</a> ');
+ if ($(this).height() > height) {
+   $(this).siblings('a.icoVid').remove();
+ }
+};
+
+/* --- std.js legacy functions --- */
+function addGrid() { return; }
+function tabboxInit() { return; }
+function getCSS() { return; } // colorboxes?
+function swapbtn() { return; } // teases
+function WriteRatings() { return; } // story ratings
+function nextStory() { return; }
+MSNBC = new Object(); // story RSS
+MSNBC.RSS = new Object();
+MSNBC.RSS.showBtns = function() { return; }
+BrowserDetect = new Object(); // slideshow popup dependency
+
+/* --- create simpler function names --- */
+function showAd(width, height, dartADPara, needExpandableAds) {
+ return DisplayDartAdandRecordAdLoad(width, height, dartADPara, needExpandableAds);
+}
+function getAd(width, height, dartADPara, needExpandableAds) {
+ return getDartAdandRecordAdLoadLink(width, height, dartADPara, needExpandableAds)
+}
+
+/* --- std.js Omniture --- */
+var pd_me,defer_pd_om=false,cssList=new Array(),curDoc,PSTaxonomy,s_account,s_prop4_orig,s_prop5_orig,s_prop6_orig,s_prop16_orig;
+function pd_top(dt,dv,id,h,d,s,ss,sss,pn,pc,t,b,l,af,ep,sn,ps,pw,nd,tvc,adp,snm,olt,sc,ssss,sssss){if(pd_me==null)pd_me=new Object;pd_me.dt=dt;pd_me.dv=pd_str(dv);pd_me.id=curDoc=pd_str(id);pd_me.h=pd_str(h);pd_me.d=pd_str(d);pd_me.s=pd_str(s);pd_me.ss=pd_str(ss);pd_me.sss=pd_str(sss);if(ssss!=null)pd_me.ssss=pd_str(ssss);else pd_me.ssss='';if(sssss!=null)pd_me.sssss=pd_str(sssss);else pd_me.sssss='';if(snm!=null)pd_me.site=snm;else pd_me.site='';pd_me.pn=pd_str(pn);pd_me.pc=pd_str(pc);pd_me.t=pd_str(t);pd_me.b=pd_str(b);pd_me.l=pd_str(l);pd_me.af=pd_str(af);pd_me.ep=pd_str(ep);pd_me.sn=pd_str(sn);pd_me.ps=PSTaxonomy=pd_str(ps);pd_me.pw=pd_str(pw);pd_me.nd=pd_str(nd);pd_me.tvc=tvc;pd_me.olt=(olt=='true');pd_me.sc=pd_str(sc);if(null!=adp){pd_me.adp=adp;pd_me.adp.dap=
+function(adpS){var adpO=adp[adpS];if(adpO&&adpO.AdGroup&&(typeof(dap)=="function")){dap("&amp;PG="+adpO.AdGroup+"&amp;AP="+adpO.AdSizeCode,adpO.Width,adpO.Height);return true;}return false;};}var p1r=readCookie('P1');var p2r=readCookie('P2');pd_me.p1=(p1r+'|||||||||||').split('|');pd_me.zip=((p2r.length>8)&&(p2r.substring(0,4)=='pi6='))?p2r.substring(4,9):'';pd_me.nw=location.href.indexOf('/site/newsweek')>0;pd_me.su=(pd_me.nw)?'/site/newsweek':'';pd_me.isF=(pd_me.dt=='Front');pd_me.isS=((dt=='Story')||(dt=='ToolsHandbuilt'));pd_me.isRp=false;if(dv=='html40'){pop_tabBoxes=new Array();pd_me.onlNext=window.onload;window.onload=pd_onl;}if(pd_me.isS)add_history(pd_me.id,pd_me.sn);s_account='';if(location.href.indexOf('from=rss')>-1)SetCookie("FROMRSS","true");var ref=document.referrer;if(ref.indexOf('msn.com')>-1){if(ref.indexOf('msnbc')<0){SetCookie("FROMMSN","true","session");}}if(pd_me.olt){if(document.addEventListener)document.addEventListener('click',linkTrackHandler,false);else if(document.attachEvent)document.attachEvent('onclick',linkTrackHandler);}if(snm=="MSNBC"||(snm=="Today"&&s=="Related Photos"))BrowserDetect.init();pd_me.nsa=readCookie('STID');pd_me.nsl=(pd_me.nsa==''?'N':'Y');}
+function pd_rp(rsId,rsH,rsS,rsSs,rpId,phn,phc,layo){pd_me.rsId=rsId;pd_me.rsH=rsH;pd_me.rsS=rsS;pd_me.rsSs=rsSs;pd_me.rpId=rpId;pd_me.phn=phn;pd_me.phc=phc;pd_me.s="Related Photos";pd_me.l=(layo=='Photo-L')?layo:'Photo-R';pd_me.dt=(layo=='Photo-L')?layo:'Photo-R';pd_me.pw=phn+"|"+phc;pd_me.isRp=true;}
+function pd_om(a,s){s_account=a;if(typeof(s_msn)=="undefined"||s_msn==null){defer_pd_om=true;return;}s_msn.pageName='';s_msn.campaign='';s_msn.zip=pd_me.zip;s_msn.prop3=pd_nou(pd_me.b);s_msn.prop4=pd_nou(pd_me.s);s_prop4_orig=pd_nou(pd_me.s);s_msn.prop5=pd_nou(pd_me.ss);s_prop5_orig=pd_nou(pd_me.ss);s_msn.prop6=pd_nou(pd_me.sss);s_prop6_orig=pd_nou(pd_me.sss);s_msn.prop7=pd_me.l;if(s_account=="CNBCOmnitureAccount"){s_msn.prop8="cnbc";s_msn.prop9="cnbc.com";s_msn.prop10=pd_nou((pd_me.dt=='Cagle')?pd_me.dt:pd_me.s);s_msn.channel="free:CNBC.com";}else{s_msn.prop8=(pd_me.p1[0]!='')?'Y':'N';s_msn.prop9=pd_me.zip;s_msn.channel=pd_nou((pd_me.dt=='Cagle')?pd_me.dt:pd_me.s);}s_msn.prop11=pd_me.p1[6];s_msn.prop12=pd_me.p1[2];s_msn.prop13=pd_me.p1[5];s_msn.prop14="";s_msn.prop15=pd_me.id;s_msn.prop16=pd_me.dt;s_prop16_orig=pd_me.dt;s_msn.prop19=pd_me.af;s_msn.prop26=pd_me.sc;var tOREF=readCookie("OREF");document.cookie="OREF="+tOREF+";path=/;expires="+new Date(1900,1,1).toGMTString();s_msn.prop27=readCookie('lt');s_msn.prop28=pd_bet(location.href,'dst=','&','true');s_msn.prop31=pd_bet(location.href,'ocid=','&','true');s_msn.prop35=pd_me.pw;if(pd_me.site=="MSNBC"){s_msn.prop25=s_msn.getNewRepeat();}if(pd_me.site=="NBCSPORTS"){s_msn.prop13=readCookie('STID');s_msn.prop8=(s_msn.prop13!='')?'Y':'N';if(pd_me.sponsor){s_msn.prop33=pd_me.sponsor;}}var date=new Date();date.setTime(date.getTime()-120000);SetCookie('lt','',date.toGMTString());var nm=readCookie("NM");if(nm.length==0){s_msn.prop39=pd_me.nd=='1'?"ON":"OFF";}else{switch(nm){case'1':s_msn.prop39='ON';break;case'0':s_msn.prop39='OFF';break;case'1|0':s_msn.prop39='ON|OFF';break;case'0|1':s_msn.prop39='OFF|ON';break;default:break;}}var msnRefer=readCookie("FROMMSN");if(msnRefer=="true"){s_msn.eVar39="msn referrer";}var st='';var ref=location.href;if(ref.indexOf('11881780')>0){if(ref.indexOf('&st=1')>0){st='msnbc.com|';}else if(ref.indexOf('&st=2')>0){st='Web|';}else{st='External msnbc.com|';}if(ref.indexOf('/id/11881780')>0){st+='Editor|'+pd_bet(ref,'q=','&');}else if(ref.indexOf('&sm=user')>0){st+='User|'+pd_bet(ref,'&q=','&');}else{st+='External User|'+pd_bet(ref,'&q=','&');}if(st!=''){s_msn.prop17=pd_nou(st);}}var pt=pd_me.dt;if(pd_me.isRp)pt=(pd_me.l=='Photo-L')?pd_me.l:'Photo-R';switch(pt){case'Error':s_msn.pageType="errorPage";break;case'Photo-R':case'Photo-L':s_msn.pageName=pt+'|'+pd_nou(pd_me.rsS.substring(0,10))+(pd_me.site=="NBCSPORTS"?'|'+pd_nou(pd_me.rsSs.substring(0,10)):'')+(pd_me.rsS=="TODAY"&&pd_me.rsSs!=''&&pd_me.rsSs.toUpperCase()!="TODAY"?'|'+pd_nou(pd_me.rsSs.substring(0,10)):'')+'|'+pd_me.rsId+'|'+pd_nou(pd_me.rsH.substring(0,50));s_msn.prop16=pt;s_msn.prop35=pd_me.phn+'|'+pd_me.phc;break;case'Recipe':s_msn.pageName=pd_nou(pd_me.s.substring(0,10))+(pd_me.site=="NBCSPORTS"?'|'+pd_nou(pd_me.ss.substring(0,10)):'')+(pd_me.s=="TODAY"&&pd_me.ss!=''&&pd_me.ss.toUpperCase()!="TODAY"?'|'+pd_nou(pd_me.ss.substring(0,10)):'')+'|'+pd_me.id+'|'+'Recipe '+pd_nou(pd_me.h.substring(0,50));;break;case'Slideshow':if(parseInt(pd_me.pn)>0)s_msn.prop35='p'+pd_me.pn;else{var beginSlide=parseInt(GetUrlParameter('beginSlide'));if(isNaN(beginSlide)||beginSlide<=0)beginSlide=1;s_msn.prop35='#'+((pd_bet(location.href,'#','','true').length>0)?pd_une(pd_bet(location.href,'#','','true')):('slide='+beginSlide));}s_msn.pageName=setPageName();break;case'Fun':s_msn.channel='Fun';var sPage='';var FunP=new RegExp("sFile=(\\D*)(\\d*)");var nset={"ftr":"Trivia","fcx":"Crossword","uj":"Jigsaw","sudoc":"Sudoku","co":"Checkout","nt":"Nile Tiles","ps":"Poker Solitaire"};var result=FunP.exec(location.href);if(result!=null){s_msn.prop15=result[1]+result[2];if(nset[result[1]]!=null){s_msn.prop5=nset[result[1]];sPage=((s_msn.prop5!='Crossword')?(s_msn.prop5):'DailyCrossword');}else{s_msn.prop5='Comics';sPage='Entertainment '+s_msn.prop15;}}else{s_msn.prop15='';sPage='Comics,Sudoku,Puzzle front';}s_msn.prop35=s_msn.prop15+'|'+sPage;s_msn.pageName=pd_me.dt+'|'+s_msn.prop4+'|'+s_msn.prop5;break;case'SportsTools':s_msn.channel='SportsTools';s_msn.prop4='Sports';s_msn.prop5='Scores/Sched';var url=location.href;var SptRet=/([^/]*)\.(?:asp\?|html|asp)(?:frames=\w*)?/i.exec(url);if(SptRet!=null){var sport=/[&|?]sport=(\w*)/i.exec(url);var cat=/&cat=(\w*)/i.exec(url);var team=/&team=(\w*)/i.exec(url);var player=/&player=(\w*)/i.exec(url);var rank=/&rank=(\w*)/i.exec(url);var format=/&format=(\w*)/i.exec(url);s_msn.prop35=SptRet[1]+'|'+((sport==null)?'':sport[1])+'|'+((cat==null)?'':cat[1])+'|'+((team==null)?'':team[1])+'|'+((player==null)?'':player[1])+'|'+((rank==null)?'':rank[1])+((format==null)?'':format[1]);}s_msn.pageName=pd_me.dt+'|'+s_msn.prop4+'|'+s_msn.prop5;break;default:var pn='';if(parseInt(pd_me.pn)>0)pn='p'+pd_me.pn;else if(pd_me.dt=='Cagle')pn=pd_me.pn;s_msn.pageName=setPageName();s_msn.prop35=pn;break;}s_msn.pageName=s_msn.pageName.toLowerCase();var reg=/\|((.*_____.*)|(_+))\|/;if(reg.test(s_msn.pageName))s_msn.pageName=pt+"|Other";if(pd_me.site!="CNBC"){s_msn.pageName=formatPageName(s_msn.pageName);s_msn.eVar1=s_msn.pageName;s_msn.eVar2=s_msn.prop4;s_msn.eVar10=s_msn.prop5;s_msn.eVar8=s_msn.prop6;}}
+function formatPageName(pageName){var reg=/\s/ig;var reg1=/[^\w|]/ig;var reg2=/_+/ig;pageName=pageName.replace(reg,"_").replace(reg1,"");return pageName.replace(reg2,"_");}
+function setPageName(){var pageName=((pd_me.dt=='ToolsHandbuilt')?'HandTool':pd_me.dt)+'|'+pd_nou(pd_me.s.substring(0,10))+(pd_me.site=="NBCSPORTS"?'|'+pd_nou(pd_me.ss.substring(0,10)):'')+(pd_me.s=="TODAY"&&pd_me.ss!=''&&pd_me.ss.toUpperCase()!="TODAY"?'|'+pd_nou(pd_me.ss.substring(0,10)):'')+'|'+pd_me.id+((pd_me.id=='8903108')?('|'+pd_une(pd_bet(location.href,'qt=','&','true')).replace(/\|/g,' ')):'')+'|'+pd_nou(pd_me.h.substring(0,50));return pageName;}
+function pd_onl(){if(pd_me.isS)moveByline();pop_ShowTabs();boxMove("bba","bb1","bb2");boxMove("bbb","bb3","bb4");if(nm_nIE)nm_done();if(pd_me.onlNext!=null)pd_me.onlNext();HideAdFramesAndChangeTitles();renderTimestampIcon();}
+function boxMove(p,c1,c2){var b1=document.getElementById(c1);var b2=document.getElementById(c2);if(b1!=null&b2!=null){var re=/<table/i;if(b1.innerHTML.search(re)!=-1&&b2.innerHTML.search(re)!=-1){document.getElementById(p).style.display="inline";}}}
+function pd_bet(s,b,a,r){var i=s.indexOf(b);if(i<0)return'';s=s.substring(i+b.length,s.length);if(a=='')return s;i=s.indexOf(a);if(r=='true'){return(i>0)?s.substring(0,i):s;}else{return(i>0)?s.substring(0,i):'';}}
+function pd_str(o){return(typeof(o)=='undefined')?'':''+o;}
+function pd_une(s){return unescape(s.replace(/\+/g,' '));}
+function pd_esc(s){return escape(pd_nou(s));}
+function pd_noul(s){return s.replace(/\u2013/g,'-').replace(/\u2014/g,'-').replace(/\u2018/g,'\'').replace(/\u2019/g,'\'').replace(/\u201C/g,'"').replace(/\u201D/g,'"');}
+function pd_nou(s){return pd_noul(s).replace(/[^\x20-\x7F]/g,'_');}
+function pd_onc(area,module,linkType,linkPos,textVal,obj){if(typeof(s_account)!="undefined"&&s_account!=''&&typeof(s_msn)!="undefined"){s_msn.tl(this,linkType,area+'|'+s_msn.channel+'|'+module+'|'+linkPos+'|'+textVal);}}
+function GetUrlParameter(ParameterName){var regexS="[\\?&]"+ParameterName+"=([^&#]*)";var regex=new RegExp(regexS);var results=regex.exec(location.href);if(results==null)return"";else return results[1];}
+function readCookie(ck){var anyCookies=document.cookie;var pos=anyCookies.toUpperCase().indexOf(ck.toUpperCase()+"=");var value="";if(pos!=-1){var start=pos+ck.length+1;var end=anyCookies.indexOf(";",start);if(end==-1){end=anyCookies.length;}value=anyCookies.substring(start,end);value=unescape(value);}return value;}
+if(document.cookie.indexOf("TZM=")==-1){SetCookie("TZM",parseInt(0-(new Date().getTimezoneOffset())));}
+function SetCookie(sName,sValue,expDate){var sExpires;if(expDate=="session"){sExpires="";}else{sExpires=";expires="+(expDate?expDate:new Date(2021,10,4).toGMTString());}document.cookie=sName+"="+escape(sValue)+sExpires+";path=/"+((location.host.toLowerCase().indexOf("msnbc.msn.com")>=0)?";domain=msnbc.msn.com":"");}
+function linkTrackHandler(e){var target;var targetNodename;var doLinkTrack=false;if(!e)var e=window.event;if(e.target)target=e.target;else if(e.srcElement)target=e.srcElement;if(target){var bVideo=false;switch(target.nodeName.toUpperCase()){case"A":doLinkTrack=true;if(target.getAttribute('href').indexOf('msnvDwd(')!=-1){bVideo=true;}break;case"TD":if(target.firstChild){target=target.firstChild;}if(target.nodeName.toUpperCase()=='A'){doLinkTrack=true;if(target.getAttribute('href').indexOf('msnvDwd(')!=-1){bVideo=true;}}break;case"AREA":doLinkTrack=true;if(target.getAttribute('href').indexOf('msnvDwd(')!=-1){bVideo=true;}break;case"IMG":if(target.parentNode&&target.parentNode.nodeName.toUpperCase()=="A"){doLinkTrack=true;if(target.parentNode.getAttribute('href').indexOf('msnvDwd(')!=-1){bVideo=true;}}break;case"INPUT":if(target.getAttribute('type')&&target.getAttribute('type').toUpperCase()=="BUTTON"){doLinkTrack=true;if(target.getAttribute('onclick').toString().indexOf('msnvDwd(')!=-1){bVideo=true;}}break;default:doLinkTrack=false;}}if(doLinkTrack){var ltData=getLinkTrackData(target);if(ltData){bVideo?s_msn.prop27=ltData:SetCookie('lt',ltData);}}}
+function getLinkTrackData(target){var ct,cn,pn=null,node=target;var date=new Date();date.setTime(date.getTime()-120000);SetCookie('lt','',date.toGMTString());while(node){if(node.getAttribute&&node.getAttribute('ct')){if(ct&&!pn){pn=node.getAttribute('ct');break;}else if(!ct){ct=node.getAttribute('ct');cn=node.getAttribute('cn').substring(0,30);pn=node.getAttribute('pn');if(pn){pn=pn.substring(0,15);break;}}}node=node.parentNode;}if(ct)return Omni.LinkTrack.GetDoctype()+'|'+Omni.LinkTrack.GetSection()+'|'+pn+'|'+ct+'|'+cn;}var Omni={};Omni.NewsMenu={};Omni.NewsMenu.ProjectName='';Omni.NewsMenu.Top='';Omni.NewsMenu.FirstHeadline='';Omni.NewsMenu.FirstFront='';Omni.NewsMenu.SecondHeadline='';Omni.NewsMenu.ExpandFront='';Omni.NewsMenu.ExpandHeadline='';Omni.LinkTrack={};Omni.LinkTrack.OnclickHandler=
+function(e){if(e){linkTrackHandler(e);if(e.target){e.stopPropagation();}else if(e.srcElement){e.cancelBubble=true;}}};Omni.LinkTrack.GetDoctype=
+function(){if(s_prop16_orig){return s_prop16_orig.substring(0,15);}return'';};Omni.LinkTrack.GetSection=
+function(){
+function TrimSection(str){if(str){return str.substr(0,15);}return'';}if(s_prop6_orig){return TrimSection(s_prop6_orig);}else if(s_prop5_orig){return TrimSection(s_prop5_orig);}else{return TrimSection(s_prop4_orig);}};
+function pop_ShowTabs(){if(pop_tabBoxes!=null&&pop_tabBoxes!=undefined){for(var o in pop_tabBoxes){pop_displayTab(pop_tabBoxes[o],1);}}}
+var nm_bNM,nm_bFM,nm_bDis,nm_nIE,nm_nNN,nm_bWin,nm_aDlo,nm_cDlo,nm_iDlo,nm_raw,nm_as,nm_nD,nm_sBas,nm_tDis,nm_tNew,nm_nNew,nm_aDef,nm_sSuf,nm_bFla,nm_eNext,nm_fSet,nm_tDef,nwAdOps,nm_Enter;
+function HideAdFramesAndChangeTitles(){if(pd_me==null)return;if(pd_me.hasOwnProperty('AdsToHide')){var ads=pd_me.AdsToHide.split(' ');for(var i=0;i<ads.length;i++){HideAdFrame(ads[i]);}}var F=getObj('AdBrokerButtons_F');if(F!=null){var Has=false;for(var j=1;j<=10;j++){var adframe=getObj('AdBrokerButton'+j+'_F1');if(adframe!=null&&adframe.style.display!='none'){Has=true;break;}}if(!Has)F.style.display='none';}}
+function getObj(id){return document.getElementById(id);}
+function renderTimestampIcon(){var icon_U=document.getElementsByName("icon_U");for(var i=0;i<icon_U.length;i++){icon_U[i].title=getTimestampTitle(icon_U[i].getAttribute('ic_cd'));}}
+
+/* --- nbcsports.js --- */
+var RandNumber=Math.round(Math.random()*1000000000000);var AdPosition=0;PartialLocalize();function DisplayDartAdandRecordAdLoad(width,height,dartADPara,needExpandableAds){var src=getDartAdandRecordAdLoadLink(width,height,dartADPara,needExpandableAds);document.write('<script type="text/javascript" src="http://nbcsports.msnbc.com/id/'+src+'"><\/script>')}function getDartAdandRecordAdLoadLink(width,height,dartADPara,needExpandableAds){if(dartTags==null){return}var first="";if(AdPosition==0){first="ist"}AdPosition++;var sz="";if(width==null||width==""||height==null||height==""){sz="1x1"}else{sz=width+"x"+height}var nssect="";var nss="";var nssub="";if(dartTags.ss==""&&pd_me.dt=="Cover"){nss="nbcsports_home";nssect="home";nssub="home"}else{if(dartTags.ss==""){nss="nbcsports"}else{nss="nbcsports_"+dartTags.ss;nssect=dartTags.ss;nssub=dartTags.sss;if(dartTags.sss!=""){nss=nss+"_"+dartTags.sss}if(dartTags.ssss!=""){nss=nss+"_"+dartTags.ssss}if(dartTags.sssss!=""){nss=nss+"_"+dartTags.sssss}if(dartTags.sss==""&&pd_me.isF){nssub="home";nss=nss+"_home"}}}var sub=(nssub!="")?(";sub="+nssub):";sub=null";var sub2=(dartTags.ssss!="")?(";sub2="+dartTags.ssss):";sub2=null";var sub3=(dartTags.sssss!="")?(";sub3="+dartTags.sssss):";sub3=null";var nssect=(nssect!="")?nssect:"null";var cont=pd_me.dt;if(dartADPara&&dartADPara.cont&&dartADPara.cont!=""){cont=dartADPara.cont}var ucid=pd_me.id;if(dartADPara&&dartADPara.ucid&&dartADPara.ucid!=""){ucid=dartADPara.ucid}var category="category=nbcsports;";if(dartADPara&&dartADPara.category&&dartADPara.category=="notile"){category="!category=notile;"}var sectValue=nssect.replace(/ |(%20)/g,"_")+sub.replace(/ |(%20)/g,"_")+sub2.replace(/ |(%20)/g,"_")+sub3.replace(/ |(%20)/g,"_");var adsURL="http://"+AdServers.ns+"/adj/"+AdServers.nsz+"/"+nss.replace(/ |(%20)/g,"_")+";site=nbcsports;sect="+sectValue+";cont="+cont+";genre=sports;"+category+"ucid="+ucid+";loc="+pd_me.nsl+";aff="+pd_me.nsa;if(sz=="728x90"){var oldSize=sz;if(needExpandableAds==true){var comma=",";var expandAdSize="970x66";adsURL+=";sz="+oldSize+comma+expandAdSize}else{var noOPA="noopapd";adsURL+=";!category="+noOPA+";sz="+oldSize}}else{adsURL+=";sz="+sz}adsURL+=";dcopt="+first+";tile="+AdPosition+";pos="+AdPosition+";";if(top!=null){if(top.__nbcudigitaladops_dtparams){adsURL+=top.__nbcudigitaladops_dtparams}}adsURL+="ord="+RandNumber+"?";if(adsURL.indexOf("'")>0){var regExp=new RegExp("'","g");adsURL=adsURL.replace(regExp,escape("\\'"))}if(adsURL.indexOf('"')>0){var regExp2=new RegExp('"',"g");adsURL=adsURL.replace(regExp2,escape('\\"'))}return adsURL}function DisplayAndRecordAnyAd(AdJsUrl){AdJsUrl=AdJsUrl.replace('"','\\"');document.write('<script type="text/javascript" src="http://nbcsports.msnbc.com/id/'+AdJsUrl+'"><\/script>')}function PartialLocalize(){var aff=GetUrlParameter("aff");var currentCalls=readCookie("calls");if(aff!=""&&currentCalls==""){SetCookie("calls",aff.toUpperCase())}}function RemoveCookie(cName){SetCookie(cName,"",new Date(1900,1,1).toGMTString())}function Delocalize(){RemoveCookie("calls");RemoveCookie("stid");RemoveCookie("prvd");RemoveCookie("zip")}var dartTags;function setDartTags(s,ss,sss,ssss,sssss){dartTags={s:s,ss:ss,sss:sss,ssss:ssss,sssss:sssss}}var $O={};$O.flashOmniParams=function(){try{if(s_account&&s_msn){var r={};r.account=s_account;r.pageName=s_msn.pageName;r.pageURL=s_msn.pageURL;r.dc=s_msn.dc;r.visitorNamespace=s_msn.visitorNamespace;for(var i=1;i<=50;i++){var prop="prop"+i;var evar="eVar"+i;if(s_msn[prop]){r[prop]=s_msn[prop]}if(s_msn[evar]){r[evar]=s_msn[evar]}}return r}return null}catch(err){return null}};
+
+/* --- std.js brills --- */
+if(!window.sSelectedImg){var sSelectedImg=new Array();}
+function SwapImage(sImage,nState){if(document.images){if(parseInt(sImage)>=0){sImage="MenuImg"+sImage;}var oImage=document.images[sImage];if(oImage){var sMenu=(sImage.indexOf("_img")>0)?sImage.substring(0,sImage.indexOf("_img")):"x";if(!sSelectedImg[sMenu]){sSelectedImg[sMenu]="";}var oSelImg=sSelectedImg[sMenu];if(oSelImg!=oImage){var sNewState="_"+nState+".";if(nState==0){sNewState=".";}else if(nState==3){sNewState="_1.";}var sSrc=oImage.src;var sSrc1=sSrc.substring(0,sSrc.lastIndexOf(".")+1);var sSrc2=sSrc.substring(sSrc.lastIndexOf(".")+1);if(sSrc1.indexOf("_1.")>0){oImage.src=sSrc1.replace(/_1\.$/,sNewState)+sSrc2;}else if(sSrc!=oSelImg.src){oImage.src=sSrc1.replace(/\.$/,sNewState)+sSrc2;}if(nState>1){if(oSelImg){oSelImg.src=oSelImg.src.replace("_1.",".");oSelImg.src=oSelImg.src.replace("_2.",".");}sSelectedImg[sMenu]=oImage;}}}}}
+function add_history(docid,snid){if(docid.length>0&&snid.length>0){var h1=readCookie("H1");if(h1.length>0){if(h1=='X')return;var pos=h1.indexOf(snid+"x"+docid);if(pos!=-1)h1=search_delete_history(snid+"x"+docid);h1Set=h1.split("x");if(h1Set.length>=32){var secondLastDelim=h1.lastIndexOf("x",h1.lastIndexOf("x")-1);h1=h1.substr(0,secondLastDelim);}h1=snid+"x"+docid+"x"+h1;}else h1=snid+"x"+docid;SetCookie("H1",h1);}}
+function UberSniff(sUndefined){var ua=navigator.userAgent.toLowerCase();this.webtv=(ua.indexOf("webtv")>-1);this.ie=(parseFloat(ua.slice(ua.indexOf("msie")+5)));this.nn=(this.ie)?(-1):(parseFloat(ua.slice(ua.indexOf("mozilla/")+8)));this.mac=(ua.indexOf("mac")>-1);this.firefox=(ua.indexOf("firefox")>-1);this.safari=(ua.indexOf("safari")>-1);if(navigator.MSNBCFlashVer==sUndefined){if(this.nn<=0&&this.ie<5){navigator.MSNBCFlashVer=6;}else{if(!this.mac&&this.ie>4){var oTestVersion=new tryCatch("oWMPlayer=new ActiveXObject('ShockwaveFlash.ShockwaveFlash.'+s1);return s1;","return 0;");navigator.MSNBCFlashVer=-1;for(var nCheckVersion=9;nCheckVersion>2;--nCheckVersion){if(oTestVersion.trycatchV(nCheckVersion)){navigator.MSNBCFlashVer=nCheckVersion;break;}}}else{if(navigator.plugins['Shockwave Flash']){navigator.MSNBCFlashVer=(parseInt(navigator.plugins['Shockwave Flash'].description.substr(16)));}else{navigator.MSNBCFlashVer=-1;}}}}this.flash=navigator.MSNBCFlashVer;if(navigator.MSNBCMPlayer==sUndefined){if((this.nn<=0&&this.ie<5)||this.mac){navigator.MSNBCMPlayer=true;}else{if(!this.mac&&this.ie>4){var oTestVersion=new tryCatch("oWMPlayer=new ActiveXObject('WMPlayer.OCX');return oWMPlayer.versionInfo;","return 0;");if(oTestVersion.trycatch()){navigator.MSNBCMPlayer=oTestVersion.trycatch();}else{for(itest=0;itest<9;++itest){oTestVersion=new tryCatch("oWMPlayer=new ActiveXObject('MediaPlayer.MediaPlayer.'+itest);return 1;","return 0;");navigator.MSNBCMPlayer=(oTestVersion.trycatch());if(navigator.MSNBCMPlayer){itest=100;}}}}else{navigator.MSNBCMPlayer=!!(navigator.mimeTypes&&navigator.mimeTypes["video/x-ms-wm"]&&navigator.mimeTypes["video/x-ms-wm"].enabledPlugin);}}}this.mplayer=navigator.MSNBCMPlayer;this.screenHeight=screen.height;this.screenWidth=screen.width;this.colorDepth=(this.nn>=4)?screen.pixelDepth:screen.colorDepth;}
+function pd_rr(ct,ii,it,ai,key,hc,usrR,totalU){if(!pd_me)return;pd_me.ct=ct;pd_me.ii=ii;pd_me.it=it;pd_me.ai=ai;pd_me.key=key;pd_me.hc=hc;pd_me.rated=false;pd_me.usrRating=usrR;pd_me.totalUsers=totalU;if(typeof(s_msn)!="undefined"){s_msn.prop41=usrR+"|"+totalU;}}
+function moveByline(){if(!document.all){var elByline=document.getElementById("byLine");if(elByline){var byLineContent=elByline.innerHTML;if(byLineContent.length>0){var elStoryHead=document.getElementById("storyHead");if(elStoryHead){var storyHeadContent=elStoryHead.innerHTML;elStoryHead.innerHTML="";elByline.innerHTML="";var elFinalPos=document.getElementById("finalPos");byLineContent=byLineContent.replace("padding: 5px 15px 0pt 0pt;","padding: 15px 15px 0pt 0pt;");if(elFinalPos){elFinalPos.innerHTML=storyHeadContent+byLineContent;}}}}}}
+function search_delete_history(snid_docid){var h1=readCookie("H1");if(h1){if(h1=='X')return;var pos=h1.indexOf(snid_docid);if(pos==0){h1=h1.substr(snid_docid.length+1);}else if(pos+snid_docid.length==h1.length){h1=h1.substr(0,pos-1);}else{h1=h1.substr(0,pos)+h1.substr(pos+snid_docid.length+1);}}SetCookie("H1",h1);return h1;}
+function getTimestampTitle(currencyDate){var time=Math.floor((new Date().getTime()-new Date(parseInt((currencyDate-621355968000000000)/10000)).getTime())/(60*1000));var alt='Updated';if(time>0){alt+=' ';var d=Math.floor(time/1440);var h=Math.floor(time%1440/60);var m=Math.floor(time%60);if(d==1){alt+=d+' day';}else if(d>1){alt+=d+' days';}if(h==1){if(d>0){alt+=', ';}alt+=h+' hour';}else if(h>1){if(d>0){alt+=', ';}alt+=h+' hours';}if(m==0){if(d==0&&h==0){alt+='less than 1 minute ago';}else{alt+=' ago';}}else if(m==1){if(d>0||h>0){alt+=', ';}alt+=m+' minute ago';}else{if(d>0||h>0){alt+=', '}alt+=m+' minutes ago';}}return alt;}
+function tryCatch(sTry,sCatch){this.trycatch=new Function("try{"+sTry+"}catch(e){"+sCatch+"}");this.trycatchV=new Function("s1","try{"+sTry+"}catch(e){"+sCatch+"}");}
+function findObj(n,d){var p,i,x;if(!d)d=document;if((p=n.indexOf("?"))>0&&parent.frames.length){d=parent.frames[n.substring(p+1)].document;n=n.substring(0,p);}if(!(x=d[n])&&d.all)x=d.all[n];for(i=0;!x&&i<d.forms.length;i++){x=d.forms[i][n];}for(i=0;!x&&d.layers&&i<d.layers.length;i++){x=MM_findObj(n,d.layers[i].document);}if(!x&&d.getElementById){x=d.getElementById(n);}return x;}
+
+/* --- std.js slideshow & video --- */
+var siteDomainList={"MSNBC":"www.msnbc.msn.com","NBCSPORTS":"nbcsports.msnbc.com","Today":"today.msnbc.msn.com","CNBC":"www.cnbc.com"};var rssDomainList={"MSNBC":"rss.msnbc.msn.com","NBCSPORTS":"rss.nbcsports.msnbc.com","Today":"rss.msnbc.msn.com","CNBC":"www.cnbc.com"};if(pd_me==null){pd_me=new Object();pd_me.site="MSNBC";}
+function SSOpen2(nId,beginSlide,beginChapter,beginTab){if(!nId)return;oUser=new UberSniff();var nW=oUser.screenWidth;var sHost="";if(pd_me.dt=="ScriptSource")sHost=siteDomainList[pd_me.site]?"http://"+siteDomainList[pd_me.site]:"http://www.msnbc.msn.com";var sHref=sHost+"/id/"+nId+"/displaymode/1247/?";if(beginSlide==null)beginSlide=1;sHref+="beginSlide="+beginSlide;if(beginChapter!=null)sHref+="&beginChapter="+beginChapter;if(beginTab!=null)sHref+="&beginTab="+beginTab;var sOptions="resizable=no,top=0,left=0,screenx=0,screeny=0";var sizeSet={1:",width=960,height=660",2:",width=1160,height=860"};if(nId.indexOf('workarea')!=-1){for(var i=1;i<=2;i++){window.open(sHref,"_blank",sOptions+sizeSet[i]);}window.open(sHref,"_blank",sOptions);return;}if(nW>=1180){sOptions+=sizeSet[2];}else if(nW>=935){sOptions+=sizeSet[1];}else{window.open(sHref,"_blank");return;}var xwinopen=window.open(sHref,"_blank",sOptions);}
+function vPlayer(vDocId,sGuid,sFlavor){var bEmergency=false;var sHost="http://"+siteDomainList[pd_me.site];if(!siteDomainList[pd_me.site]){sHost="http://www.msnbc.msn.com";}var sDefaultFlavor="21134540";if(sHost.toLowerCase().indexOf("nbcsports.msnbc.com")>-1||(location.host.toLowerCase().indexOf("nbcsports.msnbc.com")>-1)){sDefaultFlavor="22825103";sHost="http://nbcsports.msnbc.com";}if(sHost.toLowerCase().indexOf("today.msnbc.msn.com")>-1){sDefaultFlavor="26184891";sHost="http://today.msnbc.msn.com";}if(!sFlavor){sFlavor=sDefaultFlavor;}var vUrl=sHost+"/id/"+sFlavor+"/vp/"+vDocId+"#"+vDocId;if(!bEmergency){var oUser=new UberSniff();var sLoc=",location=1";if(oUser.ie>6){sLoc=",location=0";}var w=window.open(vUrl,"MSNBCvplayer","width=996,height=633,status=1,scrollbars=0,resizable=0,toolbar=0,menubar=0,titlebar=0,directories=0"+sLoc);if(w.focus){w.focus();}}else{msnvDwd('00',sGuid,'us','','m5','msnbc','','','');}}
+function SSOpen(nId,nSize,sFrame,sVar1,sVar2){if(!nId)return;if(!nSize||nSize=='')nSize=0;oUser=new UberSniff();var nW=oUser.screenWidth;var sOptions="resizable=no,top=0,left=0,screenx=0,screeny=0";var sHref;if(nId.indexOf('workarea')!=-1){sHref="/id/"+nId+"/displaymode/1107/";}else{sHref="http://"+siteDomainList[pd_me.site]+"/id/"+nId+"/displaymode/1107/";}if(sFrame&&sFrame!='')sHref+="framenumber/"+sFrame+"/";if(sVar1&&sVar1!='')sHref+="var1/"+sVar1+"/";if(sVar2&&sVar2!='')sHref+="var2/"+sVar2+"/";var bNew=true;if(((nSize==0)||(nSize==2))&&nW>=935){sOptions+=",width=935,height=685";sHref+="s/2/";}else if(((nSize==0)||(nSize==1))&&nW>=780){sOptions+=",width=780,height=519";sHref+="s/1/";}else{bNew=false;}gEnabled=(new tryCatch("if (gEnabled!=undefined) return gEnabled; else return false;","return false;")).trycatch();if(gEnabled){var ua=window.navigator.userAgent;if(ua.indexOf('Win')!=-1){var ie=ua.indexOf('MSIE');if(ie!=-1){if(!(parseFloat(ua.slice(ie+5))<5)){if(liveEnv){destUrl="http://"+siteDomainList[pd_me.site];}else{destUrl=location.protocol+"//"+location.host;}var evSrc=window.document.activeElement;var cmNode=evSrc;while(cmNode!=null){if(cmNode.tagName=="SPAN"){if(cmNode.getAttribute("subCM")!=null)subCM=cmNode.getAttribute("subCM")+subCM;if(cmNode.getAttribute("CM")!=null)break;}cmNode=cmNode.parentElement;}var ceNode=evSrc;while(ceNode!=null){if(ceNode.getAttribute("CE")!=null)break;ceNode=ceNode.parentElement;}if(cmNode!=null&&ceNode!=null){var highlight="SLIDE SHOW",path=sHref,surl="";switch(evSrc.tagName){case"A":highlight=evSrc.innerText;break;case"IMG":var aTag=evSrc;while(aTag!=null){if(aTag.tagName=="A"){break;}aTag=aTag.parentElement;}highlight=evSrc.alt;break;}if(pd_me.id!='3053415')surl='id/'+pd_me.id+'/';if(highlight.length>0)highlight="&HL="+escape(highlight.substring(0,60));sHref=defaultG+destUrl+"/"+path+"&&PS="+pd_me.ps+"&SU="+escape(destUrl+'/'+surl)+highlight+"&CM="+escape(cmNode.getAttribute("CM")+subCM)+"&CE="+escape(ceNode.getAttribute("CE"));}}}}}if(!bNew){var xwinopen=window.open(sHref,"slideshow");}else{var xwinopen=window.open(sHref,"slideshow",sOptions);if(oUser.nn>3||oUser.ie>3){xwinopen.focus();}}}
+
+/* --- std.js marquee --- */
+function mq_write(sDivId){var oS=new UberSniff();mq=mq_a[sDivId];var oMqd=document.getElementById(sDivId);oMqd.innerHTML=mq.mq_as[mq.Current];if(mq.items>1){mq_timer(mq.Time,sDivId);mq.Current++;if(mq.Current>mq.items)mq.Current=1;}}
+function mq_timer(n,sDiv){if(mq_a[sDiv].Timer){clearTimeout(mq_a[sDiv].Timer);}mq_a[sDiv].Timer=0;if(n>0){mq_a[sDiv].Timer=setTimeout("mq_write('"+sDiv+"')",n);}}
+
+/* --- partner popups --- */
+function OpenChildWindow(sPath,sName,sOptions){var oUser=new UberSniff();if(self.name==''){self.name="cover";}if((sPath.indexOf("/c/")>=0&&sPath.toLowerCase().indexOf("ssmain")>=0)){var sQry=(sPath.indexOf("?")>=0)?"&":"?";var nW=oUser.screenWidth;sOptions="resizeable=yes,top=0,left=0,screenx=0,screeny=0,width=";sOptions+=(nW>=1024)?"935,height=700":"675,height=520";if(nW<800){location.href=sPath.replace(/fmt=child/i,"fmt=")+sQry+"res=inline";return;}else{sPath+=sQry+"res="+((nW>=1024)?"10x7":"8x6");}}var x=window.open(sPath,sName,sOptions);if(oUser.nn>3||oUser.ie>3){x.focus();}}
+function OCW(sPath,sName,sOptions){OpenChildWindow(sPath,sName,sOptions);}
+
+/* --- NBCSportsSlideShowConfig (28616392) --- */
+var ssDefaults = { container: 'photo', links: 'slide-numbers', prev: 'prevslide',next: 'nextslide',infoW:300,info2H:280,infoP:20,infoPV:13,photoP:30,chpW:191,scrollP:8,chpT:'Chapters',story:'Story',mdServer: 'http://msnbcmedia.msn.com/',sysDomain: 'http://www.msnbc.msn.com/', threshold:0};
+
+/* --- EmbeddedSlideshow.pack.js (32229516) --- */
+
+/*
+* Plugin for EmbeddedSlideshow
+*/
+
+/// <summary>
+/// constructor
+/// </summary>
+/// <param name="id">document id of Embedded Slideshow</param>
+/// <returns></returns>
+/// <remarks>
+///
+/// </remarks>
+function EmbeddedSlideshow(id) {
+ this.id = id;
+ this.sso = {};
+}
+
+/// <summary>
+/// setting
+/// </summary>
+/// <param name="options">setting from Embedded Slideshow Document</param>
+/// <returns></returns>
+/// <remarks>
+/// object initialization 
+/// </remarks>
+EmbeddedSlideshow.prototype.setConfig = function(options) {
+ var defaults = { baseI: 'http://msnbcmedia.msn.com/i', baseJ: 'http://msnbcmedia.msn.com/j', efffectDur: 300, adTimeout: 8000, firstloadCount: 3 };
+ this.sso.opts = $.extend({}, defaults, options);
+
+ this.sso.croppingFlavorList = { '300x250': { 'flavorW': 'embss_cropping_300x250_w', 'flavorH': 'embss_cropping_300x250_h' }, '450x312': { 'flavorW': 'embss_cropping_450x312_w', 'flavorH': 'embss_cropping_450x312_h' }, '312x179': { 'flavorW': 'embss_cropping_312x179_w', 'flavorH': 'embss_cropping_312x179_h' }, '400x230': { 'flavorW': 'embss_cropping_400x230_w', 'flavorH': 'embss_cropping_400x230_h' }, '475x273': { 'flavorW': 'embss_cropping_475x273_w', 'flavorH': 'embss_cropping_475x273_h' }, '566x325': { 'flavorW': 'embss_cropping_566x325_w', 'flavorH': 'embss_cropping_566x325_h' }, '644x370': { 'flavorW': 'embss_cropping_644x370_w', 'flavorH': 'embss_cropping_644x370_h' }, '312x262': { 'flavorW': 'embss_cropping_312x262_w', 'flavorH': 'embss_cropping_312x262_h' }, '400x336': { 'flavorW': 'embss_cropping_400x336_w', 'flavorH': 'embss_cropping_400x336_h' }, '475x399': { 'flavorW': 'embss_cropping_475x399_w', 'flavorH': 'embss_cropping_475x399_h' }, '425x339': { 'flavorW': 'embss_cropping_425x339_w', 'flavorH': 'embss_cropping_425x339_h' }, '414x275': { 'flavorW': 'embss_cropping_414x275_w', 'flavorH': 'embss_cropping_414x275_h' }, '474x258': { 'flavorW': 'embss_cropping_474x258_w', 'flavorH': 'embss_cropping_474x258_h'} };
+ this.sso.letterboxingFlavorList = { '300x250': 'embss_letterboxing_300x250', '450x312': 'embss_letterboxing_450x312', '312x179': 'embss_letterboxing_312x179', '400x230': 'embss_letterboxing_400x230', '475x273': 'embss_letterboxing_475x273', '566x325': 'embss_letterboxing_566x325', '644x370': 'embss_letterboxing_644x370', '312x262': 'embss_letterboxing_312x262', '400x336': 'embss_letterboxing_400x336', '475x399': 'embss_letterboxing_475x399', '425x339': 'embss_letterboxing_425x339', '414x275': 'embss_letterboxing_414x275', '474x258': 'embss_letterboxing_474x258' };
+
+ if (this.sso.opts.resizing == 'cropping')
+  this.sso.isCropping = true;
+ else
+  this.sso.isCropping = false;
+
+ //fade effect duration
+ this.sso.efffectDur = this.sso.opts.efffectDur;
+ this.sso.firstloadCount = this.sso.opts.firstloadCount;
+
+ this.sso.embssId = '#embedslideshow_' + this.id;
+ 
+ this.sso.launch = $(this.sso.embssId + ' .fullscreen');
+ this.sso.launchLink = $(this.sso.embssId + ' .fullscreen a');
+ this.sso.isShowLaunch = embedssIsShow(this.sso.launch) && embedssIsShow(this.sso.launchLink);
+
+ this.sso.credit = $(this.sso.embssId + ' .byline');
+ this.sso.caption = $(this.sso.embssId + ' .text');
+ this.sso.captionHolder = $(this.sso.embssId + ' .sscaption');
+ this.sso.mouseoverable = (this.sso.opts.mouseoverable == 1 ? true : false) && embedssIsShow(this.sso.captionHolder);
+
+ this.sso.slideHolder = $(this.sso.embssId + ' .slide');
+ this.sso.imgLink = $(this.sso.embssId + ' .link');
+ this.sso.imgBody = $(this.sso.embssId + ' .image #wrapper');
+ this.sso.imgHolder = $(this.sso.embssId + ' .image');
+ this.sso.flsBody = $(this.sso.embssId + ' .flash');
+
+ this.sso.width = (this.sso.imgHolder.width() > 0 ? this.sso.imgHolder.width() : (this.sso.imgLink.width() > 0 ? this.sso.imgLink.width() : this.sso.slideHolder.width()));
+ this.sso.height = (this.sso.imgHolder.height() > 0 ? this.sso.imgHolder.height() : (this.sso.imgLink.height() > 0 ? this.sso.imgLink.height() : this.sso.slideHolder.height()));
+
+
+ this.sso.adHolder = $(this.sso.embssId + ' .ad');
+ this.sso.adBodyId = 'embedslideshow_' + this.id + '_ad';
+ this.sso.adBody = $('#' + this.sso.adBodyId);
+ this.sso.adHolderWidth = (this.sso.adHolder.width() > 0 ? this.sso.adHolder.width() : this.sso.width);
+ this.sso.adHolderHeight = (this.sso.adHolder.height() > 0 ? this.sso.adHolder.height() : this.sso.height);
+
+ this.sso.skipAd = $(this.sso.embssId + ' #skipAd');
+ this.sso.skipAdLink = $(this.sso.embssId + ' #skipAd a');
+
+ this.sso.prev = $(this.sso.embssId + ' .prev');
+ this.sso.next = $(this.sso.embssId + ' .next');
+
+ this.sso.navWhich = $(this.sso.embssId + ' #which');
+ this.sso.navNumbers = $(this.sso.embssId + ' .numbers');
+ (this.sso.opts.navFormat == 'numbers') ? this.sso.navWhich.hide() : this.sso.navNumbers.hide();
+
+ //for autoplay
+ if (this.sso.width <= 500 && this.sso.opts.autoPlayInterval > 0) {
+  this.sso.interval = this.sso.opts.autoPlayInterval * 1000;
+  this.sso.autoplayable = true;
+ }
+ else {
+  this.sso.interval = 0;
+  this.sso.autoplayable = false;
+ }
+
+ //for ad
+ if (typeof (pd_me) != 'undefined' && pd_me.ads && pd_me.ads.adShowcaseJson && pd_me.ads.adShowcaseJson.adCallString)
+  this.sso.adShowcaseCallString = pd_me.ads.adShowcaseJson.adCallString;
+ else
+  this.sso.adShowcaseCallString = '';
+ this.sso.adFrequency = (this.sso.opts.adFrequency > 0) ? this.sso.opts.adFrequency : -1;
+ //prevent ad is always loading
+ this.sso.adTimeout = this.sso.opts.adTimeout;
+ this.sso.adIsShown = false;
+ this.sso.adIsTimeout = false;
+
+ //count user click, include next, prev, nav link, not include ad close click
+ this.sso.clickCount = 0;
+ //'r' means click next ,'l' means click prev,
+ this.sso.direction = 'r';
+
+ //Omniture tracking:whether tracking every click?
+ if (this.sso.width <= 500) {
+  this.sso.needTrackClick = false;
+ }
+ else {
+  this.sso.needTrackClick = true;
+ }
+ 
+ this.sso.customLinkEnabled = false;
+};
+
+/// <summary>
+/// judge DOM element whether show
+/// </summary>
+/// <param name="element">jQuery DOM element object</param>
+/// <returns>bool</returns>
+/// <remarks>
+///  
+/// </remarks>
+function embedssIsShow(element) {
+ if (element.css('display') == 'none' || element.css('visibility') == 'hidden')
+  return false;
+ else
+  return true;
+}
+
+/// <summary>
+/// Embedded Slideshow build entrance
+/// </summary>
+/// <param name="slides">JSON:all slides info</param>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.build = function(slides) {
+ if (slides.length > 0) {
+  if (slides[0].slide) {
+   this.sso.slides = slides;
+
+   this.customLinkInit();
+
+   this.sso.mediaParaArray = new Array(this.sso.slides.length);
+
+   if (this.sso.opts.navFormat == 'numbers')
+    this.buildNavNumbers();
+
+   this.buildImageList();
+   for (var i = 1; i <= this.sso.firstloadCount; i++) {
+    this.preLoad(i);
+   }
+
+   this.bindEvent();
+   this.goSlide(1, true);
+  }
+ }
+};
+
+/// <summary>
+/// custom link init
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.customLinkInit = function() {
+ for (var i = 0; i < this.sso.slides.length; i++) {
+  if (this.sso.slides[i].slide.link.uri != '') {
+   this.sso.customLinkEnabled = true;
+   break;
+  }
+ }
+};
+
+/// <summary>
+/// build individual navigation links
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.buildNavNumbers = function() {
+ var slideNav = '';
+ for (var i = 0; i < this.sso.slides.length; i++) {
+  indic = i + 1;
+  slideNav += '<li><a href="44073647.html#">' + indic + '</a></li>';
+ }
+ this.sso.navNumbers.append(slideNav);
+ this.sso.slideNav = $(this.sso.embssId + ' .numbers li');
+ this.sso.slideNavLinks = $(this.sso.embssId + ' .numbers a');
+ this.sso.slideNavLinks.bind('click', { embss: this }, embedssNavLinkClick);
+};
+
+/// <summary>
+/// build image item list
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.buildImageList = function() {
+ this.sso.imgBody.css({ "width": (this.sso.slides.length + 1) * this.sso.width + "px", "margin-left": this.sso.width + "px" });
+ var imageList = '';
+ var style = 'overflow: hidden; float: left; width: ' + this.sso.width + 'px; height: ' + this.sso.height + 'px;';
+ for (var i = 1; i <= this.sso.slides.length; i++) {
+  if (this.sso.slides[i - 1].slide.type == 'Image')
+   imageList += '<div id="item' + i + '" style="' + style + '"></div>';
+ }
+ this.sso.imgBody.append(imageList);
+};
+
+/// <summary>
+/// preload image
+/// </summary>
+/// <param name="preloadSlide">which slide</param>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.preLoad = function(preloadSlide) {
+ if (preloadSlide >= 1 && preloadSlide <= this.sso.slides.length) {
+  var mediaPara = this.sso.mediaParaArray[preloadSlide - 1];
+  if (!mediaPara) {
+   var preloadMedia = new Object();
+   preloadMedia.ssNode = this.sso.slides[preloadSlide - 1].slide;
+   this.setSize(preloadMedia);
+   this.setSrc(preloadMedia);
+   this.sso.mediaParaArray[preloadSlide - 1] = { src: preloadMedia.src, width: preloadMedia.width, height: preloadMedia.height };
+   if (preloadMedia.ssNode.type == 'Image') {
+    this.sso.mediaParaArray[preloadSlide - 1].img = new Image();
+    $(this.sso.mediaParaArray[preloadSlide - 1].img).bind('load', { slide: preloadSlide, embss: this }, embssImgLoad);
+    $(this.sso.mediaParaArray[preloadSlide - 1].img).attr('src', preloadMedia.src);
+//    $(this.sso.mediaParaArray[preloadSlide - 1].img).attr('height', preloadMedia.height);
+//    $(this.sso.mediaParaArray[preloadSlide - 1].img).attr('width', preloadMedia.width - 4); // Allow room for borders
+    $(this.sso.mediaParaArray[preloadSlide - 1].img).height(preloadMedia.height);
+    $(this.sso.mediaParaArray[preloadSlide - 1].img).width(preloadMedia.width - 4); // Allow room for borders
+   }
+  }
+ }
+};
+
+/// <summary>
+/// build slide
+/// </summary>
+/// <param name="slide">which slide</param>
+/// <param name="track">whether need omniture track?</param>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.goSlide = function(slide, track) {
+ this.sso.curslide = slide;
+ //show ad
+ if (this.sso.clickCount == this.sso.adFrequency) {
+  this.sso.clickCount = 0;
+  this.refreshAds();
+  return;
+ }
+
+ //show image or flash
+ this.sso.clickCount = this.sso.clickCount + 1;
+
+ if (track) {
+  this.omTrack();
+ }
+ this.launchSlide();
+ if (this.sso.autoplayable) {
+  this.autoPlay();
+ }
+};
+
+/// <summary>
+/// launch slide
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.launchSlide = function() {
+ this.sso.ssNode = this.sso.slides[this.sso.curslide - 1].slide;
+ this.slideShowing();
+ this.swapCont();
+ this.showSlideInfo();
+};
+
+/// <summary>
+/// do some configration before slide showing 
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.slideShowing = function() {
+ if (this.sso.curslide <= 1)
+  this.sso.prev.addClass('disabled');
+ else
+  this.sso.prev.removeClass('disabled');
+
+ this.sso.adHolder.hide();
+ //this.sso.adBody.empty();
+ this.sso.skipAd.hide();
+ this.sso.prev.show();
+ this.sso.next.show();
+
+ embedssSetVisibility(this.sso.imgLink, 1);
+
+ if (this.sso.ssNode.type == 'Image') {
+  this.sso.imgHolder.show();
+  this.sso.flsBody.hide().empty();
+ }
+ else {
+  this.sso.imgHolder.hide();
+  this.sso.flsBody.empty().show();
+ }
+
+ if (this.sso.opts.navFormat == 'which')
+  this.sso.navWhich.html(this.sso.curslide + ' of ' + this.sso.slides.length).show();
+ else {
+  var lnk = this.sso.slideNav.removeClass().get(this.sso.curslide - 1);
+  $(lnk).addClass('current');
+  this.sso.navNumbers.show();
+ }
+};
+
+/// <summary>
+/// swap Content 
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.swapCont = function() {
+ if (this.sso.ssNode.type == 'Image') {
+  if (!embedssIsShow(this.sso.adHolder) && !embedssIsShow(this.sso.flsBody)) {
+   this.showImage();
+  }
+ }
+ if (this.sso.ssNode.type == 'FlashAnimation') {
+  this.showFlash();
+ }
+};
+
+/// <summary>
+/// get size 
+/// </summary>
+/// <param name="mediaObj">JSON</param>
+/// <returns></returns>
+/// <remarks>
+/// configure out size preparing for resizing 
+/// </remarks>
+EmbeddedSlideshow.prototype.setSize = function(mediaObj) {
+ if (mediaObj.ssNode.type == 'Image') {
+  if (this.sso.isCropping)
+   return this.setSizeWithCropping(mediaObj, mediaObj.ssNode.width, mediaObj.ssNode.height);
+  else
+   return this.setSizeWithLetterboxing(mediaObj, mediaObj.ssNode.width, mediaObj.ssNode.height);
+ }
+ if (mediaObj.ssNode.type == 'FlashAnimation') {
+  return this.setSizeWithLetterboxing(mediaObj, mediaObj.ssNode.width, mediaObj.ssNode.height);
+ }
+};
+
+/// <summary>
+/// get URL
+/// </summary>
+/// <param name="mediaObj">JSON</param>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.setSrc = function(mediaObj) {
+ if (mediaObj.ssNode.type == 'Image') {
+  mediaObj.src = this.getUrl(mediaObj.ssNode.src, this.getImageFlavor(mediaObj));
+ }
+ if (mediaObj.ssNode.type == 'FlashAnimation') {
+  mediaObj.src = this.sso.opts.baseI + mediaObj.ssNode.src;
+ }
+};
+
+/// <summary>
+/// get Size using Cropping resizing technique
+/// </summary>
+/// <param name="mediaObj">JSON</param>
+/// <param name="mediaObj">width</param>
+/// <param name="mediaObj">height</param>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.setSizeWithCropping = function(mediaObj, objW, objH) {
+ var scale = objW / objH;
+ mediaObj.width = this.sso.width > objW ? objW : this.sso.width;
+ mediaObj.height = this.sso.height > objH ? objH : this.sso.height;
+ if (mediaObj.width > 0 && mediaObj.height > 0) {
+  if (scale < mediaObj.width / mediaObj.height) {
+   mediaObj.height = mediaObj.width / scale + 0.5;
+  }
+  else {
+   mediaObj.width = mediaObj.height * scale + 0.5;
+  }
+  return true;
+ }
+ else
+ { return false; }
+};
+
+/// <summary>
+/// get Size using Letterboxing resizing technique
+/// </summary>
+/// <param name="mediaObj">JSON</param>
+/// <param name="mediaObj">width</param>
+/// <param name="mediaObj">height</param>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.setSizeWithLetterboxing = function(mediaObj, objW, objH) {
+ var scale = objW / objH;
+ mediaObj.width = this.sso.width > objW ? objW : this.sso.width;
+ mediaObj.height = this.sso.height > objH ? objH : this.sso.height;
+ if (mediaObj.width > 0 && mediaObj.height > 0) {
+  if (scale > mediaObj.width / mediaObj.height) {
+   mediaObj.height = mediaObj.width / scale + 0.5;
+  }
+  else {
+   mediaObj.width = mediaObj.height * scale + 0.5;
+  }
+  return true;
+ }
+ else
+ { return false; }
+};
+
+/// <summary>
+/// get Image Flavor
+/// </summary>
+/// <param name="mediaObj">JSON</param>
+/// <returns>flavor</returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.getImageFlavor = function(mediaObj) {
+ if (this.sso.isCropping) {
+  return this.getCroppingFlavor(mediaObj);
+ }
+ else {
+  return this.getLetterBoxingFlavor(mediaObj.width, mediaObj.height);
+ }
+};
+
+/// <summary>
+/// get Image Flavor using Cropping resizing technique
+/// </summary>
+/// <param name="mediaObj">JSON</param>
+/// <returns>flavor</returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.getCroppingFlavor = function(mediaObj) {
+ var flavor = this.sso.croppingFlavorList[this.sso.width + 'x' + this.sso.height];
+ if (flavor) {
+  var objW = mediaObj.ssNode.width;
+  var objH = mediaObj.ssNode.height;
+  var scale = objW / objH;
+  var maxW = this.sso.width > objW ? objW : this.sso.width;
+  var maxH = this.sso.height > objH ? objH : this.sso.height;
+  if (maxW > 0 && maxH > 0) {
+   if (scale < maxW / maxH) {
+    return flavor.flavorW;
+   }
+   else {
+    return flavor.flavorH;
+   }
+  }
+ }
+ else {
+  return this.getLetterBoxingFlavor(mediaObj.width, mediaObj.height);
+ }
+};
+
+/// <summary>
+/// get Image Flavor using Letterboxing resizing technique
+/// </summary>
+/// <param name="width">width</param>
+/// <param name="height">height</param>
+/// <returns>flavor</returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.getLetterBoxingFlavor = function(width, height) {
+ var flavor = this.sso.letterboxingFlavorList[this.sso.width + 'x' + this.sso.height];
+ if (flavor)
+  return flavor;
+
+ width = width > height ? width : height;
+ if (width <= 100)
+  return 'embss100';
+ if (width > 100 && width <= 200)
+  return 'embss200';
+ if (width > 200 && width <= 300)
+  return 'embss300';
+ if (width > 300 && width <= 400)
+  return 'embss400';
+ if (width > 400 && width <= 500)
+  return 'embss500';
+ if (width > 500 && width <= 600)
+  return 'embss600';
+ if (width > 600 && width <= 700)
+  return 'embss700';
+ if (width > 700 && width <= 800)
+  return 'embss800';
+ if (width > 800 && width <= 900)
+  return 'embss900';
+ if (width > 900)
+  return 'embss1000';
+};
+
+/// <summary>
+/// show headline,credit,caption
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.showSlideInfo = function() {
+ this.sso.credit.html(this.sso.ssNode.credits);
+ this.sso.caption.html(embedssAppendString(this.sso.ssNode.caption, 110, '&nbsp;'));
+
+ if (this.sso.mouseoverable) {
+  this.sso.captionHolder.attr("style", "");
+  this.sso.captionHolder.h = this.sso.captionHolder.height();
+  this.sso.captionHolder.css({ "display": "none" });
+
+  if (this.sso.autoplayable && this.sso.captionHolder.isMouseIn) {
+   this.mouseOver();
+  }
+ }
+};
+
+function embedssSetVisibility(element, isVisible) {
+ if (isVisible == 0)
+  element.css('visibility', 'hidden');
+ else
+  element.css('visibility', '');
+}
+
+/// <summary>
+/// compose image URL
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.getUrl = function(src, flavor) {
+ if (src.substr(src.lastIndexOf('.'), 4).toLowerCase() == '.jpg') {
+  src = src.substr(0, src.lastIndexOf('.') + 1).concat(flavor) + '.jpg';
+ }
+ return this.sso.opts.baseJ + src;
+};
+
+/// <summary>
+/// showImage
+/// </summary>
+/// <param name="img">Image Object</param>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.showImage = function(img) {
+ if (this.sso.direction == 'r')
+  this.sso.imgBody.animate({
+   marginLeft: "-=" + this.sso.width + "px"
+  }, this.sso.efffectDur);
+ else
+  this.sso.imgBody.animate({
+   marginLeft: "+=" + this.sso.width + "px"
+  }, this.sso.efffectDur);
+};
+
+/// <summary>
+/// make image center aligned
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.setImageLayout = function(slide) {
+ this.setLayoutWithCropping($(this.sso.embssId + ' .image #item' + slide + ' img'), this.sso.width, this.sso.height, this.sso.mediaParaArray[slide - 1]);
+};
+
+/// <summary>
+/// make flash center aligned
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.setFlashLayout = function(slide) {
+ this.setLayoutWithLetterboxing(this.sso.flsBody, this.sso.width, this.sso.height, this.sso.mediaParaArray[slide - 1]);
+};
+
+/// <summary>
+/// make AD center aligned
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.setADLayout = function() {
+ this.setLayoutWithCroppingForAd(this.sso.adBody, $(this.sso.embssId + ' .slide').width(), $(this.sso.embssId + ' .slide').height());
+};
+
+/// <summary>
+/// make center aligned using Letterboxing resizing technique
+/// </summary>
+/// <param name="element">jQuery DOM element object</param>
+/// <param name="containerWidth">container Width</param>
+/// <param name="containerHeight">container Height</param>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.setLayoutWithLetterboxing = function(element, containerWidth, containerHeight, mediaPara) {
+ if (mediaPara.height < containerHeight) {
+  var margin_top = (containerHeight - mediaPara.height) / 2;
+  element.css({ 'margin-top': margin_top });
+ }
+ else
+  element.css({ 'margin-top': 0 });
+
+ if (mediaPara.width < containerWidth) {
+  var margin_left = (containerWidth - mediaPara.width) / 2;
+  element.css({ 'margin-left': margin_left, 'margin-right': margin_left });
+ }
+ else
+  element.css({ 'margin-left': 0, 'margin-right': 0 });
+};
+
+/// <summary>
+/// make center aligned using Cropping resizing technique
+/// </summary>
+/// <param name="element">jQuery DOM element object</param>
+/// <param name="containerWidth">container Width</param>
+/// <param name="containerHeight">container Height</param>
+/// <returns></returns>
+/// <remarks>
+/// can have negative margin value 
+/// </remarks>
+EmbeddedSlideshow.prototype.setLayoutWithCropping = function(element, containerWidth, containerHeight, mediaPara) {
+ var margin_top = (containerHeight - mediaPara.height) / 2;
+ element.css({ 'margin-top': margin_top, 'margin-bottom': margin_top });
+
+ var margin_left = (containerWidth - mediaPara.width) / 2;
+ element.css({ 'margin-left': margin_left, 'margin-right': margin_left });
+};
+
+EmbeddedSlideshow.prototype.setLayoutWithCroppingForAd = function(element, containerWidth, containerHeight) {
+ var margin_top = (containerHeight - 250) / 2 - 0.5;
+ if (Math.abs(margin_top) <= 1)
+  margin_top = 0;
+ element.css({ 'margin-top': margin_top });
+ if (margin_top < 0)
+  element.css({ 'margin-bottom': margin_top });
+
+ var margin_left = (containerWidth - 300) / 2 - 0.5;
+ if (Math.abs(margin_left) <= 1)
+  margin_left = 0;
+ element.css({ 'margin-left': margin_left, 'margin-right': margin_left });
+};
+
+/// <summary>
+/// showFlash
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.showFlash = function() {
+ this.setFlashLayout(this.sso.curslide);
+ var para = this.sso.mediaParaArray[this.sso.curslide - 1];
+ this.sso.flsBody.html('<object width="' + para.width + '" height="' + para.height + '"><param name="movie" value="' + para.src + '"/><embed src="http://nbcsports.msnbc.com/id/'&#32;+&#32;para.src&#32;+&#32;'" width="' + para.width + '" height="' + para.height + '"></embed></object>');
+};
+
+/// <summary>
+/// auto Play next slide
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.autoPlay = function() {
+ var self = this;
+ self.sso.play = setTimeout(function() { self.goNext() }, self.sso.interval);
+};
+
+/// <summary>
+/// stopAutoPlay
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.stopAutoPlay = function() {
+ if (this.sso.autoplayable) {
+  this.sso.autoplayable = false;
+  clearTimeout(this.sso.play);
+ }
+};
+
+/// <summary>
+/// show next slide
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.goNext = function() {
+ var slide = this.sso.curslide + 1;
+ if (this.sso.clickCount == 0)
+  slide = this.sso.curslide;
+ if (slide > this.sso.slides.length) {
+  return;
+ }
+ this.goSlide(slide, false);
+ this.preLoad(slide - 1 + this.sso.firstloadCount);
+};
+
+/// <summary>
+/// show AD
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// AD won't show In preview mode
+/// </remarks>
+EmbeddedSlideshow.prototype.refreshAds = function() {
+ this.adShowing();
+
+ this.setADLayout();
+
+ if (typeof (pd_me) != 'undefined' && pd_me != null) {
+  switch (pd_me.site) {
+   case 'MSNBC':
+   case 'Today':
+    if (this.sso.adShowcaseCallString != '' && typeof (dapMgr) != 'undefined' && dapMgr != null) {
+     dapMgr.enableACB(this.sso.adBodyId, false);
+     dapMgr.renderAd(this.sso.adBodyId, this.sso.adShowcaseCallString, 300, 250);
+    }
+    else {
+     if (this.sso.autoplayable)
+      this.autoPlay();
+     return;
+    }
+    break;
+   case 'NBCSPORTS':
+    if (typeof (dartTags) != 'undefined' && dartTags != null && typeof (AdServers) != 'undefined' && AdServers != null) {
+     var adsUrl = '/id/27936273?aff=null&ucid=' + this.id;
+     this.sso.adBody.html('<iframe style="height:' + 250 + 'px;width:' + 300 + 'px" frameborder="no" scrolling="no" id="nbcAds" src="http://nbcsports.msnbc.com/id/'&#32;+&#32;adsUrl&#32;+&#32;'"></iframe>');
+    }
+    else {
+     if (this.sso.autoplayable)
+      this.autoPlay();
+     return;
+    }
+    break;
+   default:
+    if (this.sso.autoplayable)
+     this.autoPlay();
+    return;
+    break;
+  }
+
+  var self = this;
+
+  //if error, escape ad when timeout
+  setTimeout(function() {
+   if (!self.sso.adIsShown && self.sso.autoplayable) {
+    self.sso.adIsTimeout = true;
+    self.autoPlay();
+   }
+  }, self.sso.adTimeout);
+
+  //MSN AD sometimes has two iframes, and ad is shown in second iframe
+  $('#' + self.sso.adBodyId + ' iframe').load(function() {
+   var iframes = $('#' + self.sso.adBodyId + ' iframe');
+   if (typeof (iframes) != 'undefined' && iframes != null) {
+    var size = iframes.size();
+    if (size <= 1) {
+     self.sso.adIsShown = true;
+     if (!self.sso.adIsTimeout && self.sso.autoplayable)
+      self.autoPlay();
+    }
+    else {
+     for (var i = 0; i < size; i++) {
+      if ($(iframes.get(i)).attr("width") > 0) {
+       $(iframes.get(i)).load(function() {
+        self.sso.adIsShown = true;
+        if (!self.sso.adIsTimeout && self.sso.autoplayable)
+         self.autoPlay();
+       });
+       break;
+      }
+     }
+    }
+   }
+  });
+ }
+ else {
+  if (this.sso.autoplayable)
+   this.autoPlay();
+ }
+};
+
+/// <summary>
+/// do some configration before ad showing 
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.adShowing = function() {
+ this.sso.prev.removeClass('disabled');
+
+ this.sso.adIsTimeout = false;
+ this.sso.adIsShown = false;
+
+ embedssSetVisibility(this.sso.imgLink, 0);
+ this.sso.adBody.empty();
+ this.sso.adHolder.show();
+ this.sso.skipAd.show();
+
+ if (this.sso.direction == 'r')
+  this.sso.prev.hide();
+ else
+  this.sso.next.hide();
+
+ if (this.sso.opts.navFormat == 'which')
+  this.sso.navWhich.hide();
+ else {
+  this.sso.navNumbers.hide();
+ }
+};
+
+/// <summary>
+/// closeAD
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+///  
+/// </remarks>
+EmbeddedSlideshow.prototype.closeAD = function() {
+ this.stopAutoPlay();
+ this.goSlide(this.sso.curslide, this.sso.needTrackClick);
+};
+
+/// <summary>
+/// Omniture tracking
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// when width > 500, track every click, when width <= 500, only track first load
+/// </remarks>
+EmbeddedSlideshow.prototype.omTrack = function() {
+ if (window.location.href.indexOf('workarea') == -1 && typeof (s_account) != 'undefined' && s_account != '' && typeof (s_msn) != 'undefined' && s_msn != null) {
+  var temp_pageName = s_msn.pageName;
+  var temp_prop15 = s_msn.prop15;
+  var temp_prop16 = s_msn.prop16;
+  var temp_prop36 = s_msn.prop36;
+  var temp_prop35 = s_msn.prop35;
+
+  s_msn.pageName = 'Slideshow|' + pd_nou(pd_me.s.substring(0, 10)) + '|' + pd_nou(pd_me.ss.substring(0, 10)) + '|' + this.id;
+  if (this.sso.opts.embssHeadline && this.sso.opts.embssHeadline != '')
+   s_msn.pageName += '|' + pd_nou(this.sso.opts.embssHeadline.substring(0, 50));
+  s_msn.pageName = s_msn.pageName.toLowerCase();
+  s_msn.prop15 = this.id;
+  s_msn.prop35 = '#slide=' + this.sso.curslide;
+  if (!this.sso.needTrackClick) {
+   s_msn.prop16 = 'Interactive';
+   s_msn.prop36 = this.sso.opts.embssHeadline;
+  }
+
+  s_msn.t();
+
+  s_msn.pageName = temp_pageName;
+  s_msn.prop15 = temp_prop15;
+  s_msn.prop35 = temp_prop35;
+  if (!this.sso.needTrackClick) {
+   s_msn.prop16 = temp_prop16;
+   s_msn.prop36 = temp_prop36;
+  }
+ }
+};
+
+/// <summary>
+/// bindEvent
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+EmbeddedSlideshow.prototype.bindEvent = function() {
+ this.sso.prev.bind('click', { embss: this }, embedssGoPrev);
+ this.sso.next.bind('click', { embss: this }, embedssGoNext);
+ this.sso.imgLink.bind('click', { embss: this }, embedssImgClick);
+
+ if (this.sso.isShowLaunch)
+  this.sso.launchLink.bind('click', { embss: this }, embedssLaunchClick);
+
+ this.sso.skipAdLink.bind('click', { embss: this }, embedssAdClose);
+
+ if (this.sso.mouseoverable) {
+  var self = this;
+  this.sso.imgLink.hover(function() {
+   self.mouseOver();
+  }, function() {
+   self.mouseOut();
+  });
+ }
+};
+
+/// <summary>
+/// mouse over caption container
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+EmbeddedSlideshow.prototype.mouseOver = function() {
+ this.sso.captionHolder.isMouseIn = true;
+ var self = this;
+ var from = ($.browser.msie) ? "1px" : "0px";
+ this.sso.captionHolder.css({ "height": from, 'display' : 'block' });
+ this.sso.captionHolder.animate({
+  height: this.sso.captionHolder.h + 'px'
+ }, { duration: 500, queue: false });
+};
+
+/// <summary>
+/// mouse out caption container
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+EmbeddedSlideshow.prototype.mouseOut = function() {
+ this.sso.captionHolder.isMouseIn = false;
+ var self = this;
+ var to = ($.browser.msie) ? "1px" : "0px";
+ this.sso.captionHolder.animate({
+  height: to
+ }, { duration: 500, queue: false, complete: function() { 
+   self.sso.captionHolder.hide(); 
+   self.sso.captionHolder.css({ "height": "" }); } 
+ });
+};
+
+/// <summary>
+/// image loaded event
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+function embssImgLoad(event) {
+ var slide = event.data.slide;
+ var embSlideshow = event.data.embss;
+ var mediaPara = embSlideshow.sso.mediaParaArray[slide - 1];
+ if ($(embSlideshow.sso.embssId + ' .image #item' + slide + ' img').length == 0) {
+  $(embSlideshow.sso.embssId + ' .image #item' + slide).append(mediaPara.img);
+  embSlideshow.setImageLayout(slide);
+ }
+}
+
+/// <summary>
+/// Click prev button
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+function embedssGoPrev(event) {
+ var embSlideshow = event.data.embss;
+
+ if (embSlideshow.sso.mouseoverable)
+  embSlideshow.sso.captionHolder.stop();
+
+ if (embSlideshow.sso.clickCount == 0) {
+  embSlideshow.closeAD();
+  return false;
+ }
+
+ var slide = embSlideshow.sso.curslide - 1;
+ if (slide < 1) {
+  return false;
+ }
+
+ embSlideshow.stopAutoPlay();
+ embSlideshow.sso.direction = 'l';
+ embSlideshow.goSlide(slide, embSlideshow.sso.needTrackClick);
+ return false;
+}
+
+/// <summary>
+/// Click next button
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+function embedssGoNext(event) {
+ var embSlideshow = event.data.embss;
+
+ if (embSlideshow.sso.mouseoverable)
+  embSlideshow.sso.captionHolder.stop();
+
+ if (embSlideshow.sso.clickCount == 0) {
+  embSlideshow.closeAD();
+  return false;
+ }
+ embSlideshow.stopAutoPlay();
+ var slide = embSlideshow.sso.curslide + 1;
+ if (slide > embSlideshow.sso.slides.length) {
+  if (!embSlideshow.sso.customLinkEnabled)
+   embSlideshow.showPopUpSlideshow(embSlideshow.id.toString(), slide.toString());
+  return false;
+ }
+ embSlideshow.sso.direction = 'r';
+ embSlideshow.goSlide(slide, embSlideshow.sso.needTrackClick);
+ embSlideshow.preLoad(slide - 1 + embSlideshow.sso.firstloadCount);
+ return false;
+}
+
+/// <summary>
+/// Click image
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+function embedssImgClick(event) {
+ var embSlideshow = event.data.embss;
+ embSlideshow.stopAutoPlay();
+
+ if (embSlideshow.sso.customLinkEnabled && embSlideshow.sso.ssNode.link.uri != '')
+  window.open(embSlideshow.sso.ssNode.link.uri, embSlideshow.sso.ssNode.link.target);
+ else
+  embSlideshow.showPopUpSlideshow(embSlideshow.id.toString(), embSlideshow.sso.curslide.toString());
+
+ return false;
+}
+
+/// <summary>
+/// Click Full slideshow
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+function embedssLaunchClick(event) {
+ var embSlideshow = event.data.embss;
+ embSlideshow.stopAutoPlay();
+ embSlideshow.showPopUpSlideshow(embSlideshow.id.toString(), embSlideshow.sso.curslide.toString());
+
+ return false;
+}
+
+/// <summary>
+/// Show pop up slideshow
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+EmbeddedSlideshow.prototype.showPopUpSlideshow = function(nId, beginSlide) {
+ if (window.location.href.indexOf('workarea') != -1) {
+  nId += '/s1/Multimedia/workarea/3';
+ }
+ SSOpen2(nId, beginSlide);
+};
+
+/// <summary>
+/// Click ad close 
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+function embedssAdClose(event) {
+ var embSlideshow = event.data.embss;
+ embSlideshow.closeAD();
+
+ return false;
+}
+
+/// <summary>
+/// Click individual navigation link 
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+function embedssNavLinkClick(event) {
+ var embSlideshow = event.data.embss;
+ var id = parseInt($(event.target || event.srcElement).text());
+ if (id == embSlideshow.sso.curslide)
+ { return false; }
+
+ embSlideshow.stopAutoPlay();
+ embSlideshow.goSlide(id, embSlideshow.sso.needTrackClick);
+
+ return false;
+}
+
+/// <summary>
+/// use specific character to append string 
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// 
+/// </remarks>
+function embedssAppendString(str, maxLen, c) {
+ while (str.length < maxLen)
+  str = str + c;
+
+ return str;
+}
+
+/// <summary>
+/// Embedded slideshow init entry
+/// </summary>
+/// <returns></returns>
+/// <remarks>
+/// When dragging in SectionSlice, can't get width and height on first load, need init again after SectionSlice is shown
+/// </remarks>
+function embedssInit(id) {
+ var json = eval('embssJson_' + id);
+ var embssObj = new EmbeddedSlideshow(id);
+ embssObj.setConfig(json.config);
+ if (embssObj.sso.width > 0 && embssObj.sso.height > 0)
+  embssObj.build(json.slides);
+ else {
+  if ($('#embedslideshow_' + id).parent('td').length > 0) {
+   setTimeout(function() { embedssInit(id); }, 200);
+  }
+  else
+   delayRenderArray.push('embedssInit(' + id + ')');
+ }
+}
+
+// RSN geolocation logic
+function checkRSNGrid(id, dma) 
+{
+ var regions = {
+  'chicago' :      {'mainid' : 44818610, 'url' : 'http://www.csnchicago.com/'},
+  'bayarea' :      {'mainid' : 44817675, 'url' : 'http://www.csnbayarea.com/'},
+  'philadelphia' : {'mainid' : 44818619, 'url' : 'http://www.csnphilly.com/'},
+  'washington' :   {'mainid' : 44818623, 'url' : 'http://www.csnwashington.com/'},
+  'newengland' :   {'mainid' : 44818615, 'url' : 'http://www.csnne.com/'}
+ };
+
+ var dmas = {
+  // Chicago DMAs
+  602 : 'chicago', // Chicago
+  602 : 'chicago', // Chicago
+  610 : 'chicago', // Rockford
+  682 : 'chicago', // Davenport â€“ R. Island â€“ Moline
+  675 : 'chicago', // Peoria â€“ Bloomington
+  648 : 'chicago', // Champaign & Sprngfld â€“ Decatur
+  527 : 'chicago', // Indianapolis
+  588 : 'chicago', // South Bend â€“ Elkhart
+  669 : 'chicago', // Madison
+  617 : 'chicago', // Milwaukee
+  679 : 'chicago', // Des Moines â€“ Ames
+  637 : 'chicago', // Cedar Rapids
+
+  // Bay Area DMAs
+  807 : 'bayarea', // San Francisco â€“ Oak â€“ San Jose
+  801 : 'bayarea', // Eugene
+  802 : 'bayarea', // Eureka
+  866 : 'bayarea', // Fresno â€“ Visalia
+  813 : 'bayarea', // Medford â€“ Klamath Falls 
+
+  // Philadelphia DMAs
+  504 : 'philadelphia', // Philadelphia
+  566 : 'philadelphia', // Harrisburg â€“ Lncstr â€“ Leb â€“ York
+  698 : 'philadelphia', // Montgomery (Selma)
+  574 : 'philadelphia', // Johnstown â€“ Altoona â€“ St Colge
+  576 : 'philadelphia', // Salisbury
+  577 : 'philadelphia', // Wilkes Barre â€“ Scranton â€“ Hztn
+
+  // Washington D.C. DMAs
+  511 : 'washington', // Washington, DC (Hagrstwn)
+  512 : 'washington', // Baltimore
+  584 : 'washington', // Charlottesville
+  556 : 'washington', // Richmond â€“ Petersburg
+  544 : 'washington', // Norfolk â€“ Portsmth â€“ Newpt Nws
+  573 : 'washington', // Roanoke â€“ Lynchburg
+  518 : 'washington', // Greensboro â€“ H. Point â€“ W. Salem
+  559 : 'washington', // Bluefield â€“ Beckley â€“ Oak Hill
+
+  // New England DMAs
+  506 : 'newengland', // Boston (Manchester)
+  533 : 'newengland', // Hartford & New Haven
+  521 : 'newengland', // Providence â€“ New Bedford
+  532 : 'newengland', // Albany â€“ Schenectady â€“ Troy
+  523 : 'newengland', // Burlington â€“ Plattsburgh
+  500 : 'newengland', // Portland â€“ Auburn
+  537 : 'newengland', // Bangor
+  552 : 'newengland' // Presque Isle
+ }
+ 
+ if (typeof(dmas[dma]) != 'undefined') {
+  var region = regions[dmas[dma]];
+  $("#grid_" + id).load('http://nbcsports.msnbc.com/id/' + region['mainid'] + ' #cell1', '', function() { 
+     var $grid = $(this);
+     $grid.find('div.story:empty').remove(); 
+     $grid.find('.label').replaceWith($('<a class="label" href="http://nbcsports.msnbc.com/id/'&#32;+&#32;region['url']&#32;+&#32;'">Comcast Sportsnet</a>')); 
+  }).addClass('csn-' + dmas[dma]);
+ }
+}
+
+setTimeout('runRailAd()',2000);
+function runRailAd()
+{
+if (document.getElementById('slide') != null) {
+ return;
+}
+if((typeof(railAdBg)!='undefined')&&(railAdBg))
+{
+// site specific custom background code.
+jQuery('body').css({'background-image':'url('+railAdBg+')','background-position':'center top'})
+}
+if((typeof(railAdBgColor)!='undefined')&&(railAdBgColor))
+{
+// site specific custom background color code.
+jQuery('body').css({'background-color':'#'+railAdBgColor.replace(/#/,'')});
+}
+if((typeof(railAdBgRepeat)!='undefined')&&(railAdBgRepeat))
+{
+// site specific custom background repeat code.
+jQuery('body').css({'background-repeat':railAdBgRepeat});
+}
+else
+{ 
+ //jQuery('body').css({'background-repeat':'no-repeat!important'}); //was this originally, threw a js error.
+// jQuery('body').css({'background-repeat':'no-repeat'});
+}
+
+if((typeof(railAdBgClickthru)!='undefined')&&(railAdBgClickthru))
+{
+  
+if(jQuery('body').attr('id')=='')
+{
+jQuery('body').attr('id','railAdBody'); 
+}
+
+jQuery('body').click(function (e) {
+
+ evt = e || window.event;
+ if (e.target) {
+        targ = e.target;
+    } else if (e.srcElement) {
+        targ = e.srcElement;
+    }
+ 
+    if (targ.nodeType == 3) // Safari bug
+  targ = targ.parentNode;
+            
+ if (targ.id.toLowerCase() == 'container' || (targ.id == jQuery('body').attr('id'))) {
+  window.open(railAdBgClickthru);
+ }
+});
+ 
+    
+    }
+}

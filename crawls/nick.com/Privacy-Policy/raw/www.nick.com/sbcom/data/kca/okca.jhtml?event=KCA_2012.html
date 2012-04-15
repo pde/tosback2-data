@@ -1,0 +1,398 @@
+(function(w) {
+var DOMContentLoaded;
+var isReady = false;
+var isNick = false;
+var currentOverlayStatus = "off";
+var currentOverlay = "http://www.nick.com/nick-assets/shows/images/kids-choice-awards-2012/overlays/stage6-dos-live/";
+var overlayHref = "http://www.nick.com/?navid=KCAdosPM";
+
+var isVoting = "off";
+var voteStage = "3";
+
+var showStage = "postShow";
+
+var showWinners = "on";
+var extraWinnersPath = "http://nick.mtvnimages.com/nick-assets/kca-2012/nominees/extra_awards_live_vC.png";
+var eventMode = "false";
+
+if ( document.addEventListener ) {
+DOMContentLoaded = function() {
+document.removeEventListener( "DOMContentLoaded", DOMContentLoaded, false );
+create();
+};
+
+} else if ( document.attachEvent ) {
+DOMContentLoaded = function() {
+if ( document.readyState === "complete" ) {
+document.detachEvent( "onreadystatechange", DOMContentLoaded );
+create();
+}
+};
+}
+
+function doScrollCheck() {
+if ( isReady ) {
+return;
+}
+
+try {
+document.documentElement.doScroll("left");
+} catch( error ) {
+setTimeout( doScrollCheck, 1 );
+return;
+}
+
+create();
+}
+
+function ready() {
+NickLog.debug(">Overlay>ready!");
+/*if(doMobileRedirects()) {
+return;
+}*/
+
+if(eventMode == "true") {
+if(typeof NICK === "undefined" || !NICK || NICK.login == null || NICK.login.setLoginStatus == null) {
+NickLog.debug(">Overlay>event mode: !nick");
+} else {
+NickLog.debug(">Overlay>event mode!");
+NICK.login.setLoginStatus("off");
+}
+} else {
+NickLog.debug(">Overlay>event mode: off?: "+eventMode);
+}
+
+if ( document.readyState === "complete" ) {
+return create();
+}
+if ( document.addEventListener ) {
+document.addEventListener( "DOMContentLoaded", DOMContentLoaded, false );
+window.addEventListener( "load", create, false );
+} else if ( document.attachEvent ) {
+document.attachEvent("onreadystatechange", DOMContentLoaded);
+window.attachEvent( "onload", create );
+if ( document.documentElement.doScroll ) {
+doScrollCheck();
+}
+}
+}
+
+function createCookie(name,value,days) {
+if (days) {
+var date = new Date();
+date.setTime(date.getTime()+(days*24*60*60*1000));
+var expires = "; expires="+date.toGMTString();
+}
+else var expires = "";
+document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function readCookie(name) {
+var nameEQ = name + "=";
+var ca = document.cookie.split(';');
+for(var i=0;i < ca.length;i++) {
+var c = ca[i];
+while (c.charAt(0)==' ') c = c.substring(1,c.length);
+if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+}
+return null;
+}
+
+function remove() {
+NickLog.debug(">Overlay>remove!");
+if ( !!w.KCA_OVERLAY_ID ) {
+if ( isNick ) {
+NICK.utils.showSwfs();
+}
+document.body.removeChild(document.getElementById('KCANoticeModal' + w.KCA_OVERLAY_ID));
+document.body.removeChild(document.getElementById('KCANoticeOverlay' + w.KCA_OVERLAY_ID));
+w.KCA_OVERLAY_ID = null;
+}
+return false;
+}
+
+function isAppleMobile() {
+var userAgent = navigator.userAgent;
+userAgent = userAgent == null ? "" : userAgent.toLowerCase();
+return ((userAgent.indexOf('iphone') != -1) || (userAgent.indexOf('ipod') != -1) || (userAgent.indexOf('ipad') != -1));
+}
+
+function doMobileRedirects() {
+if(showStage != "orange" && showStage != "show" ) {
+return;
+}
+
+NickLog.debug(">Overlay>doMobileRedirects!");
+if(isAppleMobile()) {
+document.location.href = "http://t.nick.com/";
+return true;
+}
+
+NickLog.debug(">Overlay>doMobileRedirects:none");
+return false;
+// add more?!
+}
+
+function isNickProper() {
+if(!isNick) return false;
+
+var domain = NICK.utils.getDomain();
+return (domain == "www.nick.com" || domain == "t.nick.com" || domain == "localhost" || domain == "www.nick-d.mtvi.com" || domain == "www.nick-q.mtvi.com" || domain == "origin-www.nick-q.mtvi.com" || domain == "origin.www.nick.com" || domain == "t.nick-q.mtvi.com");
+}
+
+function isAdFreeOverlay() {
+return (typeof NICK == "object" && NICK.get("adfree") == "true");
+}
+
+function go(e) {
+var targ;
+
+if(!e){// for ffd
+e = window.event
+}
+
+if (e.target){
+targ = e.target;
+}else if (e.srcElement){
+targ = e.srcElement;
+}
+if (targ.nodeType == 3) // defeat Safari bug
+targ = targ.parentNode;
+
+if(targ.id != 'close-button-overlay'){
+if ( typeof NICK == "object" && NICK.get("adfree") == "true" ) {
+NICK.utils.openBumper('fullPage', overlayHref, null, null, null, false);
+} else {
+document.location = overlayHref;
+}
+}
+return false;
+}
+
+function create() {
+NickLog.debug(">Overlay>create!");
+if ( isReady ) {
+NickLog.debug(">Overlay>create: exiting!");
+return false;
+}
+
+if ( !document.body ) {
+return setTimeout( create, 13 );
+}
+
+isNick = (typeof NICK == "object");
+isReady = true;
+
+// Expose the methods
+w.KCA_OVERLAY_DISPLAY = w.KCA_OVERLAY_OPEN = display;
+w.KCA_OVERLAY_CLOSE = remove;
+w.votingForceClosed = false;
+w.isOverlayOpen = function() {
+return !!w.KCA_OVERLAY_ID;
+}
+
+if ( showWinners == "on" && extraWinnersPath.length > 0 ) {
+showExtraWinners();
+}
+
+NickLog.debug(">Overlay>isNick: "+isNick);
+if ( isNick && (NICK.get("uri") == "/kids-choice-awards" || NICK.get("uri") == "/kca" || NICK.get("uri") == "/")) {
+// Used for emergency override code last year during DOS.
+NickLog.debug(">DOS>ER>CODE");
+}
+
+display();
+}
+
+function display( voting, phase ) {
+if ( !!w.KCA_OVERLAY_ID && !voting) {
+NickLog.debug(">Overlay>ID: OPEN (exiting): "+w.KCA_OVERLAY_ID+" | "+voting);
+return false;
+}
+
+isVoting = !!voting ? voting : isVoting;
+voteStage = !!phase ? phase : voteStage;
+/*var cookieStage = parseInt(readCookie('KCAVoteOverlay')) || 0;
+
+Remove comment here and below and remove var below to enable cookies on voting.
+*/
+var cookieStage = 1;
+
+if ( isVoting == "on" && cookieStage <= 1 && isNick && isNickProper() ) {
+if(!w.votingForceClosed) {
+NickLog.debug(">Overlay>vote: force closing overlays: "+w.votingForceClosed+" | "+voting);
+w.KCA_OVERLAY_CLOSE();
+w.votingForceClosed = true;
+} else {
+NickLog.debug(">Overlay>vote: force skipped: returning: "+w.votingForceClosed+" | "+voting);
+return false;
+}
+
+/*
+Remove comment here and above to enable cookies on voting 
+if ( cookieStage != voteStage ) {
+NickLog.debug(">Overlay>vote:show/create");
+createCookie('KCAVoteOverlay', voteStage);
+} else {
+NickLog.debug(">Overlay>vote:already shown");
+return false;
+}*/
+
+if(NICK.get("uri") == "/" && isNickProper()) {
+NickLog.debug(">Overlay>overlay: skipping live vote on homepage!");
+return false; 
+}
+
+} else if ( currentOverlayStatus == "on" ) {
+if(NICK.get("uri") == "/" && isNickProper() && currentOverlay != null && currentOverlay.indexOf("stage6-dos-live") >= 0) {
+NickLog.debug(">Overlay>overlay: skipping live overlay on homepage!");
+return false; 
+}
+
+/*if(isAdFreeOverlay()) {
+NickLog.debug(">Overlay>overlay: adfree!: exiting");
+return false;
+}*/
+
+if ( readCookie('KCANoticeOverlay') != currentOverlay ) {
+NickLog.debug(">Overlay>overlay:show/create");
+createCookie('KCANoticeOverlay', currentOverlay);
+} else {
+NickLog.debug(">Overlay>overlay:already shown");
+return false;
+}
+} else {
+NickLog.debug(">Overlay>none:exit");
+return false;
+}
+
+if ( isNick ) {
+NICK.utils.hideSwfs();
+}
+
+var wh = (window.innerHeight || document.body.offsetHeight);
+var ww = (window.innerWidth || document.body.offsetWidth);
+var ow = 860;
+var oh = 664;
+w.KCA_OVERLAY_ID = (new Date().getTime());
+
+// Modal overlay
+var modal = document.createElement('div');
+modal.id = 'KCANoticeModal' + w.KCA_OVERLAY_ID;
+modal.style.position = 'absolute';
+modal.style.top = 0;
+modal.style.left = 0;
+modal.style.width = '100%';
+modal.style.height = (Math.max(
+document.documentElement.clientHeight,
+document.body.scrollHeight, document.documentElement.scrollHeight,
+document.body.offsetHeight, document.documentElement.offsetHeight
+)) + 'px';
+modal.style.backgroundColor = '#fff';
+modal.style.zIndex = 2147483644;
+modal.style.opacity = 0.8;
+modal.style.filter = "alpha(opacity=80);";
+
+// Core overlay element
+var oel = document.createElement('div');
+oel.id = 'KCANoticeOverlay' + w.KCA_OVERLAY_ID;
+oel.style.position = 'fixed';
+oel.style.width = ow + 'px';
+oel.style.height = oh + 'px';
+oel.style.top = '50%';
+oel.style.left = '50%';
+oel.style.zIndex = 2147483645;
+
+if ( isVoting == "on" && isNickProper()) {
+NickLog.debug(">Overlay>create:vote!");
+oel.style.marginLeft = '-430px';
+oel.style.marginTop = '-332px';
+
+var iframe = document.createElement('div');
+iframe.style.position = 'absolute';
+iframe.style.top = 0;
+iframe.style.left = 0;
+iframe.style.width = '860px';
+iframe.style.height = '664px';
+iframe.style.zIndex = 2147483645;
+iframe.innerHTML = '<iframe src="http://www.nick.com/sbcom/data/kca/dosoverlay/?stage='&#32;+&#32;voteStage&#32;+&#32;'" style="border: 0;" frameborder="0" scrolling="no" allowtransparency="true" width="860" height="664"></iframe>';
+oel.appendChild(iframe);
+} else if(currentOverlayStatus == "on") {
+NickLog.debug(">Overlay>create:standard!");
+oel.style.marginLeft = '-' + Math.floor(ow / 2) + 'px';
+oel.style.marginTop = '-'+ Math.floor(oh / 2) + 'px';
+oel.onclick = go;
+oel.style.cursor = "pointer";
+
+// Close hitbox
+var close = document.createElement('div');
+close.style.position = 'absolute';
+close.style.width = '46px';
+close.style.height = '46px';
+close.style.left = '700px';
+close.style.top = '215px';
+close.style.zoom = 1;
+close.style.cursor = "pointer";
+close.style.zIndex = 2147483646;
+close.style.backgroundImage = "url('" + currentOverlay + "btn_close.png" + "')";
+close.id = 'close-button-overlay';
+close.onclick = remove;
+/*close.onmouseover = function(){
+this.style.backgroundPosition = "0 -96px";
+};
+close.onmouseout = function(){
+this.style.backgroundPosition = "0 0";
+};*/
+
+// Action hitbox
+/*
+var action = document.createElement('div');
+action.style.position = 'absolute';
+action.style.width = '296px';
+action.style.height = '71px';
+action.style.left = '67px';
+action.style.top = '314px';
+action.style.zoom = 1;
+action.style.cursor = "pointer";
+action.style.zIndex = 2147483646;
+action.style.backgroundImage = "url('" + currentOverlay + "btn_action.png" + "')";
+action.style.backgroundPosition = "center 0";
+action.style.backgroundRepeat = "no-repeat";
+action.onclick = go;
+action.onmouseover = function(){
+this.style.backgroundPosition = "center -71px";
+};
+action.onmouseout = function(){
+this.style.backgroundPosition = "center 0";
+};
+*/
+// Overylay design
+var img = document.createElement('img');
+img.src = currentOverlay + "background.png";
+img.style.position = 'absolute';
+img.style.top = 0;
+img.style.left = 0;
+img.border = 0;
+img.style.zIndex = 2147483645;
+img.style.width = ow;
+img.style.height = oh;
+
+oel.appendChild(img);
+/*oel.appendChild(action);*/1614388
+oel.appendChild(close);
+} else {
+NickLog.debug(">Overlay>create:skipping!");
+}
+
+// Append element
+document.body.appendChild(oel);
+document.body.appendChild(modal);
+}
+
+function showExtraWinners() {
+if ( !isNick || (isNick && NICK.get("uri") != "/kids-choice-awards/nominees") ) return false;
+$("#nominee-promo").html($("<img />").attr("src", extraWinnersPath));
+}
+
+ready();
+})(window);

@@ -1,0 +1,1 @@
+var onLoadFunction=[];function OnLoadFunctions(fct){onLoadFunction[onLoadFunction.length]=fct}function WindowOnLoad(){for(var i=0;i<onLoadFunction.length;i++)onLoadFunction[i]()}window.onload=WindowOnLoad;

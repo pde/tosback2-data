@@ -1,0 +1,449 @@
+﻿// ----------------------------------------------
+// File:		HistoryManager.js
+// Author:		Nathan Derksen
+// Description:	Singleton class used to keep track of what a person has been doing on the page
+// Example:
+// HistoryManager.getInstance().setState({productId:10001221, thumbnailIndex:5});
+// ----------------------------------------------
+
+
+// ----------------------------------------------
+// Function:	HistoryManager
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<none>
+// Returns:		<nothing>
+// ----------------------------------------------
+function HistoryManager()
+{
+	this.pInstance = null;
+	this.pCurrentIndex = -1;
+	this.pHistoryArray = new Array();
+	this.pInternalTrigger = true;
+	this.pSafariHistoryLength = 0;
+	this.pEnabled = true;
+	this.lastHistoryLength = 0; // Needed for Safari use
+	this.baseHistoryLength = 0;
+	this.lastHash;
+	this.pIntervalId = 0;
+	this.isIE = false;
+}
+
+// ----------------------------------------------
+// Function:	HistoryManager.getInstance()
+// Author:		Nathan Derksen
+// Description:	Singleton access method
+// Inputs:		<none>
+// Returns:		<ProductModel> Handle to a single HistoryManager instance
+// ----------------------------------------------
+HistoryManager.getInstance = function()
+{
+	if (!this.pInstance)
+	{
+		this.pInstance = new HistoryManager();
+	}
+	return this.pInstance;
+};
+
+// ----------------------------------------------
+// Function:	HistoryManager.initHistory()
+// Author:		Nathan Derksen
+// Description:	Set up the history manager, using a particular state snapshot as a starting point
+// Inputs:		<Object> baseState - A StateSnapshotVO instance holding the data to use for the base state snapshot
+// Returns:		<Nothing>
+// ----------------------------------------------
+HistoryManager.prototype.initHistory = function(initBaseState)
+{
+	var baseState;
+	if (initBaseState)
+	{
+		baseState = initBaseState;
+	}
+	else
+	{
+		if (typeof(StoreLocationsModel) != "undefined" && typeof(LocationsStateSnapshotVO != "undefined"))
+		{
+			baseState = new LocationsStateSnapshotVO();
+		}
+		else
+		{
+			baseState = new StateSnapshotVO();
+		}
+	}
+	
+	if (this.pHistoryArray.length == 0)
+	{
+		this.pHistoryArray = new Array(baseState);
+	}
+	this.pCurrentIndex = 0;	
+	this.lastHistoryLength = history.length;
+	this.baseHistoryLength = history.length;
+	this.lastHash = baseState;
+	
+	this.initForIE();
+	
+	if (this.isIE == false)
+	{
+		clearInterval(this.pIntervalId);
+		this.pIntervalId = setInterval("checkHash()", 500);
+	}
+//	this.printDebug();
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+HistoryManager.prototype.overrideBaseState = function(initBaseState)
+{
+	if (initBaseState)
+	{
+		if (this.pHistoryArray != null && this.pHistoryArray.length > 0)
+		{
+			this.pHistoryArray[0] = initBaseState;
+		}
+		else
+		{
+			this.pHistoryArray = new Array(initBaseState);
+		}
+		this.lastHash = initBaseState;
+	}
+}
+
+// ----------------------------------------------
+// Function:	HistoryManager.addHistoryItem()
+// Author:		Nathan Derksen
+// Description:	Add a new item to the end of the history list
+// Inputs:		<StateSnapshotVO> historyState: A StateSnapshotVO instance to use for this particular history step
+// Returns:		<Nothing>
+// ----------------------------------------------
+HistoryManager.prototype.addHistoryItem = function(historyState)
+{
+	if (historyState)
+	{
+		if (this.pEnabled == true)
+		{
+			currentHistoryItem = HistoryManager.getInstance().getCurrentHistoryItem();
+		
+			if (currentHistoryItem != historyState)
+			{
+				var scrollYPosition = 0;
+				if (this.pCurrentIndex < this.pHistoryArray.length)
+				{
+					this.pHistoryArray.splice(this.pCurrentIndex+1, this.pHistoryArray.length-this.pCurrentIndex-1);
+					this.pHistoryArray.push(historyState);
+					this.pCurrentIndex++;
+					this.lastHash = historyState;
+					this.pInternalTrigger = true;
+					this.lastHistoryLength++;
+
+
+					this.setHash(historyState);		
+					
+					if (this.isIE == true)
+					{
+						document.getElementById("historyIframe").src = "/shared/scripts/model/history.html?id=" + this.pCurrentIndex;
+					}
+						
+				}
+			}
+		}
+		else
+		{
+			this.setHash(historyState);
+		}
+	}
+//	this.printDebug();
+};
+
+// ----------------------------------------------
+// Function:	HistoryManager.getHistoryItem()
+// Author:		Nathan Derksen
+// Description:	Get the state for a particular step in the history
+// Inputs:		<Number> historyIndex: The index of the history state to retrieve
+// Returns:		<StateSnapshotVO>: An object containing the properties of that state
+// ----------------------------------------------
+HistoryManager.prototype.getHistoryItem = function(historyIndex)
+{
+	if (historyIndex < this.pHistoryArray.length)
+	{
+		return this.pHistoryArray[historyIndex];
+	}
+	return null;
+};
+
+// ----------------------------------------------
+// Function:	HistoryManager.getCurrentHistoryItem()
+// Author:		Nathan Derksen
+// Description:	Get the state for the current step in the history
+// Inputs:		<None>
+// Returns:		<StateSnapshotVO>: An object containing the properties of that state
+// ----------------------------------------------
+HistoryManager.prototype.getCurrentHistoryItem = function()
+{
+	if (this.pCurrentIndex >= 0 && this.pCurrentIndex < this.pHistoryArray.length)
+	{
+		return this.pHistoryArray[this.pCurrentIndex];
+	}
+	return null;
+};
+
+// ----------------------------------------------
+// Function:	HistoryManager.setHistoryPosition()
+// Author:		Nathan Derksen
+// Description:	Go back to a particular step in the history
+// Inputs:		<Number> historyPosition - The history index to set to
+// Returns:		<Nothing>
+// ----------------------------------------------
+HistoryManager.prototype.setHistoryPosition = function(historyPosition)
+{
+	this.pCurrentIndex = historyPosition;
+	var historyItem = this.getHistoryItem(historyPosition);
+
+	// Make sure that the onload event from the history iframe doesn't trigger a second
+	// call. The history onload manager will call regardless of whether it is triggered
+	// by pressing back/forward or by the history manager, so a flag is set when the trigger
+	// to change the history page comes from inside this history class which is then cleared
+	// when the onload method is called
+	if (historyItem == null)
+	{
+		// Do nothing
+	}
+	else if (this.pInternalTrigger == true)
+	{
+		this.pInternalTrigger = false;
+	}
+	else
+	{
+//		generateEvent("onHistoryChanged", historyPosition, URLFactory.convertHashToState(historyItem));
+		if (this.isIE == true)
+		{
+			this.setHash(historyItem);
+		}
+
+		if (typeof(StoreLocationsModel) != "undefined" && typeof(LocationsURLFactory != "undefined"))
+		{
+//			StoreLocationsModel.getInstance().setStateSnapshot(LocationsURLFactory.convertHashToState(hist.getHistoryItem(historyIndex)));
+		}
+		else
+		{
+			ProductModel.getInstance().setStateSnapshot(URLFactory.convertHashToState(historyItem));
+		}
+	}
+//	this.printDebug();
+};
+
+// ----------------------------------------------
+// Function:	HistoryManager.setHash()
+// Author:		Nathan Derksen
+// Description:	Set the hash shown in the URL based on the state snapshot
+// Inputs:		<String> newHash - URL encoded list of name/value pairs to place in the URL
+// Returns:		<Nothing>
+// ----------------------------------------------
+HistoryManager.prototype.setHash = function(newHash)
+{
+	if (document.body.scrollTop)
+	{
+		scrollYPosition = document.body.scrollTop;
+	}
+	else if (window.pageYOffset)
+	{
+		scrollYPosition = document.body.pageYOffset;
+	}
+
+	window.location.hash = newHash.split("#").join("");
+
+	if (document.body.scrollTop)
+	{
+		document.body.scrollTop = scrollYPosition;
+	}
+	else if (window.pageYOffset)
+	{
+		document.body.pageYOffset = scrollYPosition;
+	}
+	//	this.printDebug();
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+function setHashFollowup(newHash)
+{
+	window.location.hash = newHash;
+}
+
+// ----------------------------------------------
+// Function:	HistoryManager.initForIE()
+// Author:		Nathan Derksen
+// Description:	Perform IE specific setup to manage history (uses iframe implementation instead of hash tracking)
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+HistoryManager.prototype.initForIE = function()
+{
+	if (document.all)
+	{
+		this.isIE = true;
+		var histIframe = document.createElement("iframe");
+		histIframe.setAttribute("id", "historyIframe");
+		histIframe.name = "historyIframe";
+		histIframe.src = "/shared/scripts/model/history.html?id=0";
+		histIframe.style.display = "none";
+		document.body.appendChild(histIframe);
+	}
+};
+
+// ----------------------------------------------
+// Function:	HistoryManager.disableHistory()
+// Author:		Nathan Derksen
+// Description:	Disable the history manager's history tracking, but keep the deep links intact
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+HistoryManager.prototype.disableHistory = function()
+{
+	this.pEnabled = false;
+	clearInterval(this.pIntervalId);
+};
+
+
+// ----------------------------------------------
+// Function:	checkHash()
+// Author:		Nathan Derksen
+// Description:	Utility function called by setInterval used to track whether back button pressed through the current URL
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+function checkHash()
+{
+	var hist = HistoryManager.getInstance();
+	var lastHistoryLength = hist.lastHistoryLength;
+	var lastHash = hist.lastHash;
+	var currentHistoryLength = history.length;
+	var currentHash = window.location.hash.split("#").join("");
+	var currentHashEscaped = escape(window.location.hash.split("#").join(""));
+	var historyIndex = 0;
+	
+	if (currentHash == "" && hist.pHistoryArray.length > 0)
+	{
+		currentHash = hist.pHistoryArray[0];
+	}
+	
+	if (hist.pHistoryArray.length == 0)
+	{
+		// Do nothing
+	}
+	else if (hist.pInternalTrigger == true)
+	{
+		hist.pInternalTrigger = false;
+	}
+	else
+	{
+		
+		if (navigator.userAgent.indexOf("Safari") != -1 && !isSafari3Plus())
+		{
+			// Safari version 1 and 2 cannot detect changes to the hash. Get around these bugs
+			// by taking advantage of an error in history.length. It will decrease
+			// by one when hitting back, and increase by one when hitting next
+			if (lastHistoryLength != history.length)
+			{
+				historyIndex = history.length - hist.baseHistoryLength;
+				hist.lastHistoryLength = currentHistoryLength;
+				hist.pCurrentIndex = historyIndex;
+//				generateEvent("onHistoryChanged", historyIndex, URLFactory.convertHashToState(hist.getHistoryItem(historyIndex)));
+				if (typeof(StoreLocationsModel) != "undefined" && typeof(LocationsURLFactory != "undefined"))
+				{
+//					StoreLocationsModel.getInstance().setStateSnapshot(LocationsURLFactory.convertHashToState(hist.getHistoryItem(historyIndex)));
+				}
+				else
+				{
+					ProductModel.getInstance().setStateSnapshot(URLFactory.convertHashToState(hist.getHistoryItem(historyIndex)));
+				}
+			}
+		}
+		else
+		{
+			if (lastHash != currentHash && lastHash != currentHashEscaped)
+			{
+				var historyArray = hist.pHistoryArray;
+				for (var i=0; i < historyArray.length; i++)
+				{
+					if (currentHash == historyArray[i])
+					{
+						historyIndex = i;
+						hist.pCurrentIndex = i;
+						break;
+					}
+				}
+				hist.lastHash = currentHash;
+//				generateEvent("onHistoryChanged", historyIndex, URLFactory.convertHashToState(hist.getHistoryItem(historyIndex)));
+				if (typeof(StoreLocationsModel) != "undefined" && typeof(LocationsURLFactory != "undefined"))
+				{
+//					StoreLocationsModel.getInstance().setStateSnapshot(LocationsURLFactory.convertHashToState(hist.getHistoryItem(historyIndex)));
+				}
+				else
+				{
+					ProductModel.getInstance().setStateSnapshot(URLFactory.convertHashToState(hist.getHistoryItem(historyIndex)));
+				}
+			}
+		}
+
+	}
+//	HistoryManager.getInstance().printDebug();
+}
+
+// ----------------------------------------------
+// Function:	setHistory()
+// Author:		Nathan Derksen
+// Description:	Utility function called by iframe (for IE implementation) to set a new history position
+// Inputs:		<Number> id - The index of the history item to set
+// Returns:		<Nothing>
+// ----------------------------------------------
+function setHistory(id)
+{
+	HistoryManager.getInstance().setHistoryPosition(Number(id));
+}
+
+// ----------------------------------------------
+// ----------------------------------------------
+/* HistoryManager.prototype.printDebug = function()
+{
+	var htmlText = "";
+	
+	for (var i=0; i < this.pHistoryArray.length; i++)
+	{
+		if (i == this.pCurrentIndex)
+		{
+			htmlText += "<b>" + i + ") " + this.pHistoryArray[i] + "</b><br />";
+		}
+		else
+		{
+			htmlText += i + ") " + this.pHistoryArray[i] + "<br />";
+		}
+	}
+	if (document.getElementById("debug") == null)
+	{
+		var debugDiv = document.createElement("div");
+		debugDiv.setAttribute("id", "debug");
+		document.body.appendChild(debugDiv);
+	}
+	document.getElementById("debug").innerHTML = htmlText;
+} */
+
+function HistoryManager_setFlashHistory(historyState)
+{
+	var model = ProductModel.getInstance();
+	var currentHistoryItem;
+
+	if (typeof(StoreLocationsModel) != "undefined" && typeof(LocationsURLFactory != "undefined"))
+	{
+//		currentHistoryItem = LocationsURLFactory.convertHashToState(HistoryManager.getInstance().getCurrentHistoryItem());
+	}
+	else
+	{
+		currentHistoryItem = URLFactory.convertHashToState(HistoryManager.getInstance().getCurrentHistoryItem());
+	}
+
+	if (currentHistoryItem.flash != historyState)
+	{
+		model.setBrowseStatesNoSideEffects({flash:historyState});
+		HistoryManager.getInstance().addHistoryItem(URLFactory.convertStateToHash(model.getStateSnapshot()));
+	}
+}

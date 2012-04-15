@@ -1,0 +1,88 @@
+﻿// ----------------------------------------------
+// File:		XMLUtils.js
+// Author:		Nathan Derksen
+// Description:	Class to handle extracting search info from search pre-check
+// Example:
+// var isEmpty = SearchFactory.getIsEmptyFromXML(result.documentElement);
+// ----------------------------------------------
+
+// ----------------------------------------------
+// Function:	XMLUtils()
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+function XMLUtils()
+{
+}
+
+// ----------------------------------------------
+// ----------------------------------------------
+XMLUtils.getNode = function(nodeHandle, nodeName)
+{
+	try
+	{
+		if (nodeHandle)
+		{
+			for (var i = 0; i < nodeHandle.childNodes.length; i++)
+			{
+				if (nodeHandle.childNodes[i].nodeName.toLowerCase() == nodeName.toLowerCase())
+				{
+					return nodeHandle.childNodes[i];
+				}
+			}
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+	return null;
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+XMLUtils.getNodeValue = function(nodeHandle, nodeName)
+{
+	var node = this.getNode(nodeHandle, nodeName);
+	if (node != null)
+	{
+		if (node.firstChild != null)
+		{
+			if (node.firstChild.textContent)
+			{
+				// Firefox
+				return node.firstChild.textContent;
+			}
+			else if (node.firstChild.nodeValue)
+			{
+				// Safari
+				return node.firstChild.nodeValue;
+			}
+			else if (node.firstChild.text)
+			{
+				// IE
+				return node.firstChild.text;
+			}
+		}
+	}
+	return "";
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+XMLUtils.getNodeAttribute = function(nodeHandle, nodeAttribute)
+{
+	if (nodeHandle != null)
+	{
+		if (nodeHandle.attributes)
+		{
+			if (nodeHandle.attributes.getNamedItem(nodeAttribute))
+			{
+				return nodeHandle.attributes.getNamedItem(nodeAttribute).value;
+			}
+		}
+	}
+	return "";
+};

@@ -1,0 +1,4341 @@
+var clientParameters;
+/* extend jquery to parse html template */
+		//to parse the html templates
+		jQuery.fn.parseTemplate = function(str,data)
+		{    
+		    var _tmplCache = {}
+		    var err = "";
+		    try {
+		        var func = _tmplCache[str];
+		        if (!func) {
+		            var strFunc =
+		            "var p=[],print=function(){p.push.apply(p,arguments);};" +
+		                        "with(obj){p.push('" +
+		            //                        str
+		            //                  .replace(/[\r\t\n]/g, " ")
+		            //                  .split("<#").join("\t")
+		            //                  .replace(/((^|#>)[^\t]*)'/g, "$1\r")
+		            //                  .replace(/\t=(.*?)#>/g, "',$1,'")
+		            //                  .split("\t").join("');")
+		            //                  .split("#>").join("p.push('")
+		            //                  .split("\r").join("\\'") + "');}return p.join('');";
+		
+		            str.replace(/[\r\t\n]/g, " ")
+		               .replace(/'(?=[^#]*#>)/g, "\t")
+		               .split("'").join("\\'")
+		               .split("\t").join("'")
+		               .replace(/<#=(.+?)#>/g, "',$1,'")
+		               .split("<#").join("');")
+		               .split("#>").join("p.push('")
+		               + "');}return p.join('');";
+		
+		            //alert(strFunc);
+		            func = new Function("obj", strFunc);
+		            _tmplCache[str] = func;
+		        }
+		        return func(data);
+		    } catch (e) { err = e.message; }
+		    return "< # ERROR: " + err.toString() + " # >";
+		}
+		
+
+/*
+ * jQuery UI 1.7.2
+ *
+ * Copyright (c) 2009 AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT (MIT-LICENSE.txt)
+ * and GPL (GPL-LICENSE.txt) licenses.
+ *
+ * http://docs.jquery.com/UI
+ */
+;jQuery.ui || (function($) {
+
+var _remove = jQuery.fn.remove,
+	isFF2 = jQuery.browser.mozilla && (parseFloat(jQuery.browser.version) < 1.9);
+
+//Helper functions and ui object
+jQuery.ui = {
+	version: "1.7.2",
+
+	// $.ui.plugin is deprecated.  Use the proxy pattern instead.
+	plugin: {
+		add: function(module, option, set) {
+			var proto = jQuery.ui[module].prototype;
+			for(var i in set) {
+				proto.plugins[i] = proto.plugins[i] || [];
+				proto.plugins[i].push([option, set[i]]);
+			}
+		},
+		call: function(instance, name, args) {
+			var set = instance.plugins[name];
+			if(!set || !instance.element[0].parentNode) { return; }
+
+			for (var i = 0; i < set.length; i++) {
+				if (instance.options[set[i][0]]) {
+					set[i][1].apply(instance.element, args);
+				}
+			}
+		}
+	},
+
+	contains: function(a, b) {
+		return document.compareDocumentPosition
+			? a.compareDocumentPosition(b) & 16
+			: a !== b && a.contains(b);
+	},
+
+	hasScroll: function(el, a) {
+
+		//If overflow is hidden, the element might have extra content, but the user wants to hide it
+		if (jQuery(el).css('overflow') == 'hidden') { return false; }
+
+		var scroll = (a && a == 'left') ? 'scrollLeft' : 'scrollTop',
+			has = false;
+
+		if (el[scroll] > 0) { return true; }
+
+		// TODO: determine which cases actually cause this to happen
+		// if the element doesn't have the scroll set, see if it's possible to
+		// set the scroll
+		el[scroll] = 1;
+		has = (el[scroll] > 0);
+		el[scroll] = 0;
+		return has;
+	},
+
+	isOverAxis: function(x, reference, size) {
+		//Determines when x coordinate is over "b" element axis
+		return (x > reference) && (x < (reference + size));
+	},
+
+	isOver: function(y, x, top, left, height, width) {
+		//Determines when x, y coordinates is over "b" element
+		return jQuery.ui.isOverAxis(y, top, height) && jQuery.ui.isOverAxis(x, left, width);
+	},
+
+	keyCode: {
+		BACKSPACE: 8,
+		CAPS_LOCK: 20,
+		COMMA: 188,
+		CONTROL: 17,
+		DELETE: 46,
+		DOWN: 40,
+		END: 35,
+		ENTER: 13,
+		ESCAPE: 27,
+		HOME: 36,
+		INSERT: 45,
+		LEFT: 37,
+		NUMPAD_ADD: 107,
+		NUMPAD_DECIMAL: 110,
+		NUMPAD_DIVIDE: 111,
+		NUMPAD_ENTER: 108,
+		NUMPAD_MULTIPLY: 106,
+		NUMPAD_SUBTRACT: 109,
+		PAGE_DOWN: 34,
+		PAGE_UP: 33,
+		PERIOD: 190,
+		RIGHT: 39,
+		SHIFT: 16,
+		SPACE: 32,
+		TAB: 9,
+		UP: 38
+	}
+};
+
+// WAI-ARIA normalization
+if (isFF2) {
+	var attr = jQuery.attr,
+		removeAttr = jQuery.fn.removeAttr,
+		ariaNS = "http://www.w3.org/2005/07/aaa",
+		ariaState = /^aria-/,
+		ariaRole = /^wairole:/;
+
+	jQuery.attr = function(elem, name, value) {
+		var set = value !== undefined;
+
+		return (name == 'role'
+			? (set
+				? attr.call(this, elem, name, "wairole:" + value)
+				: (attr.apply(this, arguments) || "").replace(ariaRole, ""))
+			: (ariaState.test(name)
+				? (set
+					? elem.setAttributeNS(ariaNS,
+						name.replace(ariaState, "aaa:"), value)
+					: attr.call(this, elem, name.replace(ariaState, "aaa:")))
+				: attr.apply(this, arguments)));
+	};
+
+	jQuery.fn.removeAttr = function(name) {
+		return (ariaState.test(name)
+			? this.each(function() {
+				this.removeAttributeNS(ariaNS, name.replace(ariaState, ""));
+			}) : removeAttr.call(this, name));
+	};
+}
+
+//jQuery plugins
+jQuery.fn.extend({
+	remove: function() {
+		// Safari has a native remove event which actually removes DOM elements,
+		// so we have to use triggerHandler instead of trigger (#3037).
+		jQuery("*", this).add(this).each(function() {
+			jQuery(this).triggerHandler("remove");
+		});
+		return _remove.apply(this, arguments );
+	},
+
+	enableSelection: function() {
+		return this
+			.attr('unselectable', 'off')
+			.css('MozUserSelect', '')
+			.unbind('selectstart.ui');
+	},
+
+	disableSelection: function() {
+		return this
+			.attr('unselectable', 'on')
+			.css('MozUserSelect', 'none')
+			.bind('selectstart.ui', function() { return false; });
+	},
+
+	scrollParent: function() {
+		var scrollParent;
+		if((jQuery.browser.msie && (/(static|relative)/).test(this.css('position'))) || (/absolute/).test(this.css('position'))) {
+			scrollParent = this.parents().filter(function() {
+				return (/(relative|absolute|fixed)/).test(jQuery.curCSS(this,'position',1)) && (/(auto|scroll)/).test(jQuery.curCSS(this,'overflow',1)+jQuery.curCSS(this,'overflow-y',1)+jQuery.curCSS(this,'overflow-x',1));
+			}).eq(0);
+		} else {
+			scrollParent = this.parents().filter(function() {
+				return (/(auto|scroll)/).test(jQuery.curCSS(this,'overflow',1)+jQuery.curCSS(this,'overflow-y',1)+jQuery.curCSS(this,'overflow-x',1));
+			}).eq(0);
+		}
+
+		return (/fixed/).test(this.css('position')) || !scrollParent.length ? jQuery(document) : scrollParent;
+	}
+});
+
+
+//Additional selectors
+jQuery.extend(jQuery.expr[':'], {
+	data: function(elem, i, match) {
+		return !!jQuery.data(elem, match[3]);
+	},
+
+	focusable: function(element) {
+		var nodeName = element.nodeName.toLowerCase(),
+			tabIndex = jQuery.attr(element, 'tabindex');
+		return (/input|select|textarea|button|object/.test(nodeName)
+			? !element.disabled
+			: 'a' == nodeName || 'area' == nodeName
+				? element.href || !isNaN(tabIndex)
+				: !isNaN(tabIndex))
+			// the element and all of its ancestors must be visible
+			// the browser may report that the area is hidden
+			&& !jQuery(element)['area' == nodeName ? 'parents' : 'closest'](':hidden').length;
+	},
+
+	tabbable: function(element) {
+		var tabIndex = jQuery.attr(element, 'tabindex');
+		return (isNaN(tabIndex) || tabIndex >= 0) && jQuery(element).is(':focusable');
+	}
+});
+
+
+// $.widget is a factory to create jQuery plugins
+// taking some boilerplate code out of the plugin code
+function getter(namespace, plugin, method, args) {
+	function getMethods(type) {
+		var methods = jQuery[namespace][plugin][type] || [];
+		return (typeof methods == 'string' ? methods.split(/,?\s+/) : methods);
+	}
+
+	var methods = getMethods('getter');
+	if (args.length == 1 && typeof args[0] == 'string') {
+		methods = methods.concat(getMethods('getterSetter'));
+	}
+	return (jQuery.inArray(method, methods) != -1);
+}
+
+jQuery.widget = function(name, prototype) {
+	var namespace = name.split(".")[0];
+	name = name.split(".")[1];
+
+	// create plugin method
+	jQuery.fn[name] = function(options) {
+		var isMethodCall = (typeof options == 'string'),
+			args = Array.prototype.slice.call(arguments, 1);
+
+		// prevent calls to internal methods
+		if (isMethodCall && options.substring(0, 1) == '_') {
+			return this;
+		}
+
+		// handle getter methods
+		if (isMethodCall && getter(namespace, name, options, args)) {
+			var instance = jQuery.data(this[0], name);
+			return (instance ? instance[options].apply(instance, args)
+				: undefined);
+		}
+
+		// handle initialization and non-getter methods
+		return this.each(function() {
+			var instance = jQuery.data(this, name);
+
+			// constructor
+			(!instance && !isMethodCall &&
+				jQuery.data(this, name, new jQuery[namespace][name](this, options))._init());
+
+			// method call
+			(instance && isMethodCall && jQuery.isFunction(instance[options]) &&
+				instance[options].apply(instance, args));
+		});
+	};
+
+	// create widget constructor
+	jQuery[namespace] = jQuery[namespace] || {};
+	jQuery[namespace][name] = function(element, options) {
+		var self = this;
+
+		this.namespace = namespace;
+		this.widgetName = name;
+		this.widgetEventPrefix = jQuery[namespace][name].eventPrefix || name;
+		this.widgetBaseClass = namespace + '-' + name;
+
+		this.options = jQuery.extend({},
+			jQuery.widget.defaults,
+			jQuery[namespace][name].defaults,
+			jQuery.metadata && jQuery.metadata.get(element)[name],
+			options);
+
+		this.element = jQuery(element)
+			.bind('setData.' + name, function(event, key, value) {
+				if (event.target == element) {
+					return self._setData(key, value);
+				}
+			})
+			.bind('getData.' + name, function(event, key) {
+				if (event.target == element) {
+					return self._getData(key);
+				}
+			})
+			.bind('remove', function() {
+				return self.destroy();
+			});
+	};
+
+	// add widget prototype
+	jQuery[namespace][name].prototype = jQuery.extend({}, jQuery.widget.prototype, prototype);
+
+	// TODO: merge getter and getterSetter properties from widget prototype
+	// and plugin prototype
+	jQuery[namespace][name].getterSetter = 'option';
+};
+
+jQuery.widget.prototype = {
+	_init: function() {},
+	destroy: function() {
+		this.element.removeData(this.widgetName)
+			.removeClass(this.widgetBaseClass + '-disabled' + ' ' + this.namespace + '-state-disabled')
+			.removeAttr('aria-disabled');
+	},
+
+	option: function(key, value) {
+		var options = key,
+			self = this;
+
+		if (typeof key == "string") {
+			if (value === undefined) {
+				return this._getData(key);
+			}
+			options = {};
+			options[key] = value;
+		}
+
+		jQuery.each(options, function(key, value) {
+			self._setData(key, value);
+		});
+	},
+	_getData: function(key) {
+		return this.options[key];
+	},
+	_setData: function(key, value) {
+		this.options[key] = value;
+
+		if (key == 'disabled') {
+			this.element
+				[value ? 'addClass' : 'removeClass'](
+					this.widgetBaseClass + '-disabled' + ' ' +
+					this.namespace + '-state-disabled')
+				.attr("aria-disabled", value);
+		}
+	},
+
+	enable: function() {
+		this._setData('disabled', false);
+	},
+	disable: function() {
+		this._setData('disabled', true);
+	},
+
+	_trigger: function(type, event, data) {
+		var callback = this.options[type],
+			eventName = (type == this.widgetEventPrefix
+				? type : this.widgetEventPrefix + type);
+
+		event = jQuery.Event(event);
+		event.type = eventName;
+
+		// copy original event properties over to the new event
+		// this would happen if we could call $.event.fix instead of $.Event
+		// but we don't have a way to force an event to be fixed multiple times
+		if (event.originalEvent) {
+			for (var i = jQuery.event.props.length, prop; i;) {
+				prop = jQuery.event.props[--i];
+				event[prop] = event.originalEvent[prop];
+			}
+		}
+
+		this.element.trigger(event, data);
+
+		return !(jQuery.isFunction(callback) && callback.call(this.element[0], event, data) === false
+			|| event.isDefaultPrevented());
+	}
+};
+
+jQuery.widget.defaults = {
+	disabled: false
+};
+
+
+/** Mouse Interaction Plugin **/
+
+jQuery.ui.mouse = {
+	_mouseInit: function() {
+		var self = this;
+
+		this.element
+			.bind('mousedown.'+this.widgetName, function(event) {
+				return self._mouseDown(event);
+			})
+			.bind('click.'+this.widgetName, function(event) {
+				if(self._preventClickEvent) {
+					self._preventClickEvent = false;
+					event.stopImmediatePropagation();
+					return false;
+				}
+			});
+
+		// Prevent text selection in IE
+		if (jQuery.browser.msie) {
+			this._mouseUnselectable = this.element.attr('unselectable');
+			this.element.attr('unselectable', 'on');
+		}
+
+		this.started = false;
+	},
+
+	// TODO: make sure destroying one instance of mouse doesn't mess with
+	// other instances of mouse
+	_mouseDestroy: function() {
+		this.element.unbind('.'+this.widgetName);
+
+		// Restore text selection in IE
+		(jQuery.browser.msie
+			&& this.element.attr('unselectable', this._mouseUnselectable));
+	},
+
+	_mouseDown: function(event) {
+		// don't let more than one widget handle mouseStart
+		// TODO: figure out why we have to use originalEvent
+		event.originalEvent = event.originalEvent || {};
+		if (event.originalEvent.mouseHandled) { return; }
+
+		// we may have missed mouseup (out of window)
+		(this._mouseStarted && this._mouseUp(event));
+
+		this._mouseDownEvent = event;
+
+		var self = this,
+			btnIsLeft = (event.which == 1),
+			elIsCancel = (typeof this.options.cancel == "string" ? jQuery(event.target).parents().add(event.target).filter(this.options.cancel).length : false);
+		if (!btnIsLeft || elIsCancel || !this._mouseCapture(event)) {
+			return true;
+		}
+
+		this.mouseDelayMet = !this.options.delay;
+		if (!this.mouseDelayMet) {
+			this._mouseDelayTimer = setTimeout(function() {
+				self.mouseDelayMet = true;
+			}, this.options.delay);
+		}
+
+		if (this._mouseDistanceMet(event) && this._mouseDelayMet(event)) {
+			this._mouseStarted = (this._mouseStart(event) !== false);
+			if (!this._mouseStarted) {
+				event.preventDefault();
+				return true;
+			}
+		}
+
+		// these delegates are required to keep context
+		this._mouseMoveDelegate = function(event) {
+			return self._mouseMove(event);
+		};
+		this._mouseUpDelegate = function(event) {
+			return self._mouseUp(event);
+		};
+		jQuery(document)
+			.bind('mousemove.'+this.widgetName, this._mouseMoveDelegate)
+			.bind('mouseup.'+this.widgetName, this._mouseUpDelegate);
+
+		// preventDefault() is used to prevent the selection of text here -
+		// however, in Safari, this causes select boxes not to be selectable
+		// anymore, so this fix is needed
+		(jQuery.browser.safari || event.preventDefault());
+
+		event.originalEvent.mouseHandled = true;
+		return true;
+	},
+
+	_mouseMove: function(event) {
+		// IE mouseup check - mouseup happened when mouse was out of window
+		if (jQuery.browser.msie && !event.button) {
+			return this._mouseUp(event);
+		}
+
+		if (this._mouseStarted) {
+			this._mouseDrag(event);
+			return event.preventDefault();
+		}
+
+		if (this._mouseDistanceMet(event) && this._mouseDelayMet(event)) {
+			this._mouseStarted =
+				(this._mouseStart(this._mouseDownEvent, event) !== false);
+			(this._mouseStarted ? this._mouseDrag(event) : this._mouseUp(event));
+		}
+
+		return !this._mouseStarted;
+	},
+
+	_mouseUp: function(event) {
+		jQuery(document)
+			.unbind('mousemove.'+this.widgetName, this._mouseMoveDelegate)
+			.unbind('mouseup.'+this.widgetName, this._mouseUpDelegate);
+
+		if (this._mouseStarted) {
+			this._mouseStarted = false;
+			this._preventClickEvent = (event.target == this._mouseDownEvent.target);
+			this._mouseStop(event);
+		}
+
+		return false;
+	},
+
+	_mouseDistanceMet: function(event) {
+		return (Math.max(
+				Math.abs(this._mouseDownEvent.pageX - event.pageX),
+				Math.abs(this._mouseDownEvent.pageY - event.pageY)
+			) >= this.options.distance
+		);
+	},
+
+	_mouseDelayMet: function(event) {
+		return this.mouseDelayMet;
+	},
+
+	// These are placeholder methods, to be overriden by extending plugin
+	_mouseStart: function(event) {},
+	_mouseDrag: function(event) {},
+	_mouseStop: function(event) {},
+	_mouseCapture: function(event) { return true; }
+};
+
+jQuery.ui.mouse.defaults = {
+	cancel: null,
+	distance: 1,
+	delay: 0
+};
+
+})(jQuery);
+
+/*
+ * jQuery UI Dialog 1.7.2
+ *
+ * Copyright (c) 2009 AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT (MIT-LICENSE.txt)
+ * and GPL (GPL-LICENSE.txt) licenses.
+ *
+ * http://docs.jquery.com/UI/Dialog
+ *
+ * Depends:
+ *	ui.core.js
+ *	ui.draggable.js
+ *	ui.resizable.js
+ */
+(function(jQuery) {
+
+var setDataSwitch = {
+		dragStart: "start.draggable",
+		drag: "drag.draggable",
+		dragStop: "stop.draggable",
+		maxHeight: "maxHeight.resizable",
+		minHeight: "minHeight.resizable",
+		maxWidth: "maxWidth.resizable",
+		minWidth: "minWidth.resizable",
+		resizeStart: "start.resizable",
+		resize: "drag.resizable",
+		resizeStop: "stop.resizable"
+	},
+	
+	uiDialogClasses =
+		'ui-dialog ' +
+		'ui-widget ' +
+		'ui-widget-content ' +
+		'ui-corner-all ';
+
+jQuery.widget("ui.dialog", {
+
+	_init: function() {
+		this.originalTitle = this.element.attr('title');
+
+		var self = this,
+			options = this.options,
+
+			title = options.title || this.originalTitle || '&nbsp;',
+			titleId = jQuery.ui.dialog.getTitleId(this.element),
+
+			uiDialog = (this.uiDialog = jQuery('<div/>'))
+				.appendTo(document.body)
+				.hide()
+				.addClass(uiDialogClasses + options.dialogClass)
+				.css({
+					position: 'absolute',
+					overflow: 'hidden',
+					zIndex: options.zIndex
+				})
+				// setting tabIndex makes the div focusable
+				// setting outline to 0 prevents a border on focus in Mozilla
+				.attr('tabIndex', -1).css('outline', 0).keydown(function(event) {
+					(options.closeOnEscape && event.keyCode
+						&& event.keyCode == jQuery.ui.keyCode.ESCAPE && self.close(event));
+				})
+				.attr({
+					role: 'dialog',
+					'aria-labelledby': titleId
+				})
+				.mousedown(function(event) {
+					self.moveToTop(false, event);
+				}),
+
+			uiDialogContent = this.element
+				.show()
+				.removeAttr('title')
+				.addClass(
+					'ui-dialog-content ' +
+					'ui-widget-content')
+				.appendTo(uiDialog),
+
+			uiDialogTitlebar = (this.uiDialogTitlebar = jQuery('<div></div>'))
+				.addClass(
+					'ui-dialog-titlebar ' +
+					'ui-widget-header ' +
+					'ui-corner-all ' +
+					'ui-helper-clearfix'
+				)
+				.prependTo(uiDialog),
+
+			uiDialogTitlebarClose = jQuery('<a href="#"/>')
+				.addClass(
+					'ui-dialog-titlebar-close ' +
+					'ui-corner-all'
+				)
+				.attr('role', 'button')
+				.hover(
+					function() {
+						uiDialogTitlebarClose.addClass('ui-state-hover');
+					},
+					function() {
+						uiDialogTitlebarClose.removeClass('ui-state-hover');
+					}
+				)
+				.focus(function() {
+					uiDialogTitlebarClose.addClass('ui-state-focus');
+				})
+				.blur(function() {
+					uiDialogTitlebarClose.removeClass('ui-state-focus');
+				})
+				.mousedown(function(ev) {
+					ev.stopPropagation();
+				})
+				.click(function(event) {
+					self.close(event);
+					return false;
+				})
+				.appendTo(uiDialogTitlebar),
+
+			uiDialogTitlebarCloseText = (this.uiDialogTitlebarCloseText = jQuery('<span/>'))
+				.addClass(
+					'ui-icon ' +
+					'ui-icon-closethick'
+				)
+				.text(options.closeText)
+				.appendTo(uiDialogTitlebarClose),
+
+			uiDialogTitle = jQuery('<span/>')
+				.addClass('ui-dialog-title')
+				.attr('id', titleId)
+				.html(title)
+				.prependTo(uiDialogTitlebar);
+
+		uiDialogTitlebar.find("*").add(uiDialogTitlebar).disableSelection();
+
+		(options.draggable && jQuery.fn.draggable && this._makeDraggable());
+		(options.resizable && jQuery.fn.resizable && this._makeResizable());
+
+		this._createButtons(options.buttons);
+		this._isOpen = false;
+
+		(options.bgiframe && jQuery.fn.bgiframe && uiDialog.bgiframe());
+		(options.autoOpen && this.open());
+		
+	},
+
+	destroy: function() {
+		(this.overlay && this.overlay.destroy());
+		this.uiDialog.hide();
+		this.element
+			.unbind('.dialog')
+			.removeData('dialog')
+			.removeClass('ui-dialog-content ui-widget-content')
+			.hide().appendTo('body');
+		this.uiDialog.remove();
+
+		(this.originalTitle && this.element.attr('title', this.originalTitle));
+	},
+
+	close: function(event) {
+		var self = this;
+		
+		if (false === self._trigger('beforeclose', event)) {
+			return;
+		}
+
+		(self.overlay && self.overlay.destroy());
+		self.uiDialog.unbind('keypress.ui-dialog');
+
+		(self.options.hide
+			? self.uiDialog.hide(self.options.hide, function() {
+				self._trigger('close', event);
+			})
+			: self.uiDialog.hide() && self._trigger('close', event));
+
+		jQuery.ui.dialog.overlay.resize();
+
+		self._isOpen = false;
+		
+		// adjust the maxZ to allow other modal dialogs to continue to work (see #4309)
+		if (self.options.modal) {
+			var maxZ = 0;
+			jQuery('.ui-dialog').each(function() {
+				if (this != self.uiDialog[0]) {
+					maxZ = Math.max(maxZ, jQuery(this).css('z-index'));
+				}
+			});
+			jQuery.ui.dialog.maxZ = maxZ;
+		}
+	},
+
+	isOpen: function() {
+		return this._isOpen;
+	},
+
+	// the force parameter allows us to move modal dialogs to their correct
+	// position on open
+	moveToTop: function(force, event) {
+
+		if ((this.options.modal && !force)
+			|| (!this.options.stack && !this.options.modal)) {
+			return this._trigger('focus', event);
+		}
+		
+		if (this.options.zIndex > jQuery.ui.dialog.maxZ) {
+			jQuery.ui.dialog.maxZ = this.options.zIndex;
+		}
+		(this.overlay && this.overlay.$el.css('z-index', jQuery.ui.dialog.overlay.maxZ = ++jQuery.ui.dialog.maxZ));
+
+		//Save and then restore scroll since Opera 9.5+ resets when parent z-Index is changed.
+		//  http://ui.jquery.com/bugs/ticket/3193
+		var saveScroll = { scrollTop: this.element.attr('scrollTop'), scrollLeft: this.element.attr('scrollLeft') };
+		this.uiDialog.css('z-index', ++jQuery.ui.dialog.maxZ);
+		this.element.attr(saveScroll);
+		this._trigger('focus', event);
+	},
+
+	open: function() {
+		if (this._isOpen) { return; }
+
+		var options = this.options,
+			uiDialog = this.uiDialog;
+
+		this.overlay = options.modal ? new jQuery.ui.dialog.overlay(this) : null;
+		(uiDialog.next().length && uiDialog.appendTo('body'));
+		this._size();
+		this._position(options.position);
+		uiDialog.show(options.show);
+		this.moveToTop(true);
+
+		// prevent tabbing out of modal dialogs
+		(options.modal && uiDialog.bind('keypress.ui-dialog', function(event) {
+			if (event.keyCode != jQuery.ui.keyCode.TAB) {
+				return;
+			}
+
+			var tabbables = jQuery(':tabbable', this),
+				first = tabbables.filter(':first')[0],
+				last  = tabbables.filter(':last')[0];
+
+			if (event.target == last && !event.shiftKey) {
+				setTimeout(function() {
+					first.focus();
+				}, 1);
+			} else if (event.target == first && event.shiftKey) {
+				setTimeout(function() {
+					last.focus();
+				}, 1);
+			}
+		}));
+
+		// set focus to the first tabbable element in the content area or the first button
+		// if there are no tabbable elements, set focus on the dialog itself
+		jQuery([])
+			.add(uiDialog.find('.ui-dialog-content :tabbable:first'))
+			.add(uiDialog.find('.ui-dialog-buttonpane :tabbable:first'))
+			.add(uiDialog)
+			.filter(':first')
+			.focus();
+
+		this._trigger('open');
+		this._isOpen = true;
+	},
+
+	_createButtons: function(buttons) {
+		var self = this,
+			hasButtons = false,
+			uiDialogButtonPane = jQuery('<div></div>')
+				.addClass(
+					'ui-dialog-buttonpane ' +
+					'ui-widget-content ' +
+					'ui-helper-clearfix'
+				);
+
+		// if we already have a button pane, remove it
+		this.uiDialog.find('.ui-dialog-buttonpane').remove();
+
+		(typeof buttons == 'object' && buttons !== null &&
+			jQuery.each(buttons, function() { return !(hasButtons = true); }));
+		if (hasButtons) {
+			jQuery.each(buttons, function(name, fn) {
+				jQuery('<button type="button"></button>')
+					.addClass(
+						'ui-state-default ' +
+						'ui-corner-all'
+					)
+					.text(name)
+					.click(function() { fn.apply(self.element[0], arguments); })
+					.hover(
+						function() {
+							jQuery(this).addClass('ui-state-hover');
+						},
+						function() {
+							jQuery(this).removeClass('ui-state-hover');
+						}
+					)
+					.focus(function() {
+						jQuery(this).addClass('ui-state-focus');
+					})
+					.blur(function() {
+						jQuery(this).removeClass('ui-state-focus');
+					})
+					.appendTo(uiDialogButtonPane);
+			});
+			uiDialogButtonPane.appendTo(this.uiDialog);
+		}
+	},
+
+	_makeDraggable: function() {
+		var self = this,
+			options = this.options,
+			heightBeforeDrag;
+
+		this.uiDialog.draggable({
+			cancel: '.ui-dialog-content',
+			handle: '.ui-dialog-titlebar',
+			containment: 'document',
+			start: function() {
+				heightBeforeDrag = options.height;
+				jQuery(this).height(jQuery(this).height()).addClass("ui-dialog-dragging");
+				(options.dragStart && options.dragStart.apply(self.element[0], arguments));
+			},
+			drag: function() {
+				(options.drag && options.drag.apply(self.element[0], arguments));
+			},
+			stop: function() {
+				jQuery(this).removeClass("ui-dialog-dragging").height(heightBeforeDrag);
+				(options.dragStop && options.dragStop.apply(self.element[0], arguments));
+				jQuery.ui.dialog.overlay.resize();
+			}
+		});
+	},
+
+	_makeResizable: function(handles) {
+		handles = (handles === undefined ? this.options.resizable : handles);
+		var self = this,
+			options = this.options,
+			resizeHandles = typeof handles == 'string'
+				? handles
+				: 'n,e,s,w,se,sw,ne,nw';
+
+		this.uiDialog.resizable({
+			cancel: '.ui-dialog-content',
+			alsoResize: this.element,
+			maxWidth: options.maxWidth,
+			maxHeight: options.maxHeight,
+			minWidth: options.minWidth,
+			minHeight: options.minHeight,
+			start: function() {
+				jQuery(this).addClass("ui-dialog-resizing");
+				(options.resizeStart && options.resizeStart.apply(self.element[0], arguments));
+			},
+			resize: function() {
+				(options.resize && options.resize.apply(self.element[0], arguments));
+			},
+			handles: resizeHandles,
+			stop: function() {
+				jQuery(this).removeClass("ui-dialog-resizing");
+				options.height = jQuery(this).height();
+				options.width = jQuery(this).width();
+				(options.resizeStop && options.resizeStop.apply(self.element[0], arguments));
+				jQuery.ui.dialog.overlay.resize();
+			}
+		})
+		.find('.ui-resizable-se').addClass('ui-icon ui-icon-grip-diagonal-se');
+	},
+
+	_position: function(pos) {
+		var wnd = jQuery(window), doc = jQuery(document),
+			pTop = doc.scrollTop(), pLeft = doc.scrollLeft(),
+			minTop = pTop;
+
+		if (jQuery.inArray(pos, ['center','top','right','bottom','left']) >= 0) {
+			pos = [
+				pos == 'right' || pos == 'left' ? pos : 'center',
+				pos == 'top' || pos == 'bottom' ? pos : 'middle'
+			];
+		}
+		if (pos.constructor != Array) {
+			pos = ['center', 'middle'];
+		}
+		if (pos[0].constructor == Number) {
+			pLeft += pos[0];
+		} else {
+			switch (pos[0]) {
+				case 'left':
+					pLeft += 0;
+					break;
+				case 'right':
+					pLeft += wnd.width() - this.uiDialog.outerWidth();
+					break;
+				default:
+				case 'center':
+					pLeft += (wnd.width() - this.uiDialog.outerWidth()) / 2;
+			}
+		}
+		if (pos[1].constructor == Number) {
+			pTop += pos[1];
+		} else {
+			switch (pos[1]) {
+				case 'top':
+					pTop += 0;
+					break;
+				case 'bottom':
+					pTop += wnd.height() - this.uiDialog.outerHeight();
+					break;
+				default:
+				case 'middle':
+					pTop += (wnd.height() - this.uiDialog.outerHeight()) / 2;
+			}
+		}
+
+		// prevent the dialog from being too high (make sure the titlebar
+		// is accessible)
+		pTop = Math.max(pTop, minTop);
+		this.uiDialog.css({top: pTop, left: pLeft});
+	},
+
+	_setData: function(key, value){
+		(setDataSwitch[key] && this.uiDialog.data(setDataSwitch[key], value));
+		switch (key) {
+			case "buttons":
+				this._createButtons(value);
+				break;
+			case "closeText":
+				this.uiDialogTitlebarCloseText.text(value);
+				break;
+			case "dialogClass":
+				this.uiDialog
+					.removeClass(this.options.dialogClass)
+					.addClass(uiDialogClasses + value);
+				break;
+			case "draggable":
+				(value
+					? this._makeDraggable()
+					: this.uiDialog.draggable('destroy'));
+				break;
+			case "height":
+				this.uiDialog.height(value);
+				break;
+			case "position":
+				this._position(value);
+				break;
+			case "resizable":
+				var uiDialog = this.uiDialog,
+					isResizable = this.uiDialog.is(':data(resizable)');
+
+				// currently resizable, becoming non-resizable
+				(isResizable && !value && uiDialog.resizable('destroy'));
+
+				// currently resizable, changing handles
+				(isResizable && typeof value == 'string' &&
+					uiDialog.resizable('option', 'handles', value));
+
+				// currently non-resizable, becoming resizable
+				(isResizable || this._makeResizable(value));
+				break;
+			case "title":
+				jQuery(".ui-dialog-title", this.uiDialogTitlebar).html(value || '&nbsp;');
+				break;
+			case "width":
+				this.uiDialog.width(value);
+				break;
+		}
+
+		jQuery.widget.prototype._setData.apply(this, arguments);
+	},
+
+	_size: function() {
+		/* If the user has resized the dialog, the .ui-dialog and .ui-dialog-content
+		 * divs will both have width and height set, so we need to reset them
+		 */
+		var options = this.options;
+
+		// reset content sizing
+		this.element.css({
+			height: 0,
+			minHeight: 0,
+			width: 'auto'
+		});
+
+		// reset wrapper sizing
+		// determine the height of all the non-content elements
+		var nonContentHeight = this.uiDialog.css({
+				height: 'auto',
+				width: options.width
+			})
+			.height();
+
+		this.element
+			.css({
+				minHeight: Math.max(options.minHeight - nonContentHeight, 0),
+				height: options.height == 'auto'
+					? 'auto'
+					: Math.max(options.height - nonContentHeight, 0)
+			});
+	}
+});
+
+jQuery.extend(jQuery.ui.dialog, {
+	version: "1.7.2",
+	defaults: {
+		autoOpen: true,
+		bgiframe: false,
+		buttons: {},
+		closeOnEscape: true,
+		closeText: 'close',
+		dialogClass: '',
+		draggable: true,
+		hide: null,
+		height: 'auto',
+		maxHeight: false,
+		maxWidth: false,
+		minHeight: 150,
+		minWidth: 150,
+		modal: false,
+		position: 'center',
+		resizable: true,
+		show: null,
+		stack: true,
+		title: '',
+		width: 300,
+		zIndex: 1000
+	},
+
+	getter: 'isOpen',
+
+	uuid: 0,
+	maxZ: 0,
+
+	getTitleId: function($el) {
+		return 'ui-dialog-title-' + ($el.attr('id') || ++this.uuid);
+	},
+
+	overlay: function(dialog) {
+		this.$el = jQuery.ui.dialog.overlay.create(dialog);
+	}
+});
+
+jQuery.extend(jQuery.ui.dialog.overlay, {
+	instances: [],
+	maxZ: 0,
+	events: jQuery.map('focus,mousedown,mouseup,keydown,keypress,click'.split(','),
+		function(event) { return event + '.dialog-overlay'; }).join(' '),
+	create: function(dialog) {
+		if (this.instances.length === 0) {
+			// prevent use of anchors and inputs
+			// we use a setTimeout in case the overlay is created from an
+			// event that we're going to be cancelling (see #2804)
+			setTimeout(function() {
+				// handle $(el).dialog().dialog('close') (see #4065)
+				if (jQuery.ui.dialog.overlay.instances.length) {
+					jQuery(document).bind(jQuery.ui.dialog.overlay.events, function(event) {
+						var dialogZ = jQuery(event.target).parents('.ui-dialog').css('zIndex') || 0;
+						return (dialogZ > jQuery.ui.dialog.overlay.maxZ);
+					});
+				}
+			}, 1);
+
+			// allow closing by pressing the escape key
+			jQuery(document).bind('keydown.dialog-overlay', function(event) {
+				(dialog.options.closeOnEscape && event.keyCode
+						&& event.keyCode == jQuery.ui.keyCode.ESCAPE && dialog.close(event));
+			});
+
+			// handle window resize
+			jQuery(window).bind('resize.dialog-overlay', jQuery.ui.dialog.overlay.resize);
+		}
+
+		var $el = jQuery('<div></div>').appendTo(document.body)
+			.addClass('ui-widget-overlay').css({
+				width: this.width(),
+				height: this.height()
+			});
+
+		(dialog.options.bgiframe && jQuery.fn.bgiframe && $el.bgiframe());
+
+		this.instances.push($el);
+		return $el;
+	},
+
+	destroy: function($el) {
+		this.instances.splice(jQuery.inArray(this.instances, $el), 1);
+
+		if (this.instances.length === 0) {
+			jQuery([document, window]).unbind('.dialog-overlay');
+		}
+
+		$el.remove();
+		
+		// adjust the maxZ to allow other modal dialogs to continue to work (see #4309)
+		var maxZ = 0;
+		jQuery.each(this.instances, function() {
+			maxZ = Math.max(maxZ, this.css('z-index'));
+		});
+		this.maxZ = maxZ;
+	},
+
+	height: function() {
+		// handle IE 6
+		if (jQuery.browser.msie && jQuery.browser.version < 7) {
+			var scrollHeight = Math.max(
+				document.documentElement.scrollHeight,
+				document.body.scrollHeight
+			);
+			var offsetHeight = Math.max(
+				document.documentElement.offsetHeight,
+				document.body.offsetHeight
+			);
+
+			if (scrollHeight < offsetHeight) {
+				return jQuery(window).height() + 'px';
+			} else {
+				return scrollHeight + 'px';
+			}
+		// handle "good" browsers
+		} else {
+			return jQuery(document).height() + 'px';
+		}
+	},
+
+	width: function() {
+		// handle IE 6
+		if (jQuery.browser.msie && jQuery.browser.version < 7) {
+			var scrollWidth = Math.max(
+				document.documentElement.scrollWidth,
+				document.body.scrollWidth
+			);
+			var offsetWidth = Math.max(
+				document.documentElement.offsetWidth,
+				document.body.offsetWidth
+			);
+
+			if (scrollWidth < offsetWidth) {
+				return jQuery(window).width() + 'px';
+			} else {
+				return scrollWidth + 'px';
+			}
+		// handle "good" browsers
+		} else {
+			return jQuery(document).width() + 'px';
+		}
+	},
+
+	resize: function() {
+		/* If the dialog is draggable and the user drags it past the
+		 * right edge of the window, the document becomes wider so we
+		 * need to stretch the overlay. If the user then drags the
+		 * dialog back to the left, the document will become narrower,
+		 * so we need to shrink the overlay to the appropriate size.
+		 * This is handled by shrinking the overlay before setting it
+		 * to the full document size.
+		 */
+		var $overlays = jQuery([]);
+		jQuery.each(jQuery.ui.dialog.overlay.instances, function() {
+			$overlays = $overlays.add(this);
+		});
+
+		$overlays.css({
+			width: 0,
+			height: 0
+		}).css({
+			width: jQuery.ui.dialog.overlay.width(),
+			height: jQuery.ui.dialog.overlay.height()
+		});
+	}
+});
+
+jQuery.extend(jQuery.ui.dialog.overlay.prototype, {
+	destroy: function() {
+		jQuery.ui.dialog.overlay.destroy(this.$el);
+	}
+});
+
+})(jQuery);
+		
+
+/* Globals */
+
+var facebookFeatureLoaderURL = "http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php";
+var baseURL = "notset"
+var ajaxURL = "notset";
+var userParams = new Object();
+var apiKey = "";
+var ajaxBusyTag = "";
+var templateIds = new Object();
+var templateDataGlobal = new Object();
+var templateIdGlobal = "";
+var postCommentFeedId = "";
+var test;
+var oldFriendId = '';
+var invitelist = new Array();
+var globalCache = new Object();
+var FriendsVoteajaxCacheTime = 45000;
+var inviteFriendsajaxCacheTime = 45000;
+var FriendsCommentsajaxCacheTime = 45000;
+var fbconnectURL = "";
+var displayedCommentCount = "";
+var loggedInStateChecked = false;
+var serverLoggedInState = "false";
+var hasSubmittedVoteResults = false;
+var feedType='';
+var commentPageNumber=1;
+var commentSectionIsFriends='N';
+var notDrawingHTML = false;
+var template_data_for_rating = {};
+var template_data_for_comments = {};
+var template_id_for_rating = '';
+var disableRatingHover = 0;
+var browserType = '';
+var browserVersion = '';
+var mozillaVersion = '';
+var facebook_onload_function = 0;
+var mergeToSnasEnabled = 0;
+var g_refreshTimer = "";
+var refreshComments = 1;
+var loggedInContainerSite = 0;
+var user = {};
+var allowAnonPosting = 0;
+var overrideDefaultHeader = 0;
+var launchTime = '';
+var userProfileLoaded = false;
+var functionToCallbacks = {"getUserProfile" : []};
+var enablesnasidentity = 0;
+var batchSequencerSet = 0;
+var userid;
+var captchaEnabled = '';
+var captchaForPlatformUsers = '';
+var anonymousUserReporting = '';
+var totalCommentCount = 0
+var specialCharReplace = '  ';
+var editedCommentArray = new Object();
+var showBusyTag = "Y";
+var editCommentId = '';
+var isUserEditing = 0;
+var refreshingComments = "N";
+//var isNameValidation ='';
+/*
+ * All setup procedures and inits should go in here
+ */
+
+function fbc_init()
+{
+	if (document.domain.indexOf('video.syfy.com') == -1) {
+		if (!validateLaunchTime()) {
+			return;
+		}
+	}
+	if (isContentTitleBlackListed()) {
+		return;
+	}
+	// init our globals
+	// clearly hardcoding this is pretty sad_face. Although this version has the
+	// fbcClientId set
+	// within the script tag in the header, we could just make this dynamic off
+	// of the domain name
+	//getFBClientIdFromDomainName();
+	get_required_url();
+	// Make sure we're not conflicting anywhere. I've tested and verified that
+	// if there's already
+	// a noConflict() call to an existing jQuery implementation that this $
+	// reference will not
+	// interfere with it. However, it would probably be smarter to just change
+	// this file slightly if
+	// a client is already using jQuery and has setup a noConflict function
+	if (typeof $ == '' || typeof $ == 'undefined') {
+		$ = jQuery.noConflict();
+	}
+	
+	// Make sure this is the executed before any render calls can be fired to
+	// avoid any race conditions
+	processAuthenticationParams();
+	getUserProfile();
+	attachFBCFooter();
+	if (apiKey == null || apiKey == '' || templateIds == '') {
+		getAppParams();
+	}
+
+	FB.ensureInit( function()
+	{
+		refreshXFBML();
+		if (FB.XFBML.Host) {
+			FB.XFBML.Host.autoParseDomTree = false
+			processAuthenticationParams();
+		}		
+	});
+	validateTitle();
+	if (!facebook_onload_function) {
+		facebook_onload_functions();
+	}
+	
+	if (getFBconnectedState() == "Y") {
+		//to call the container site callback on page reload
+		if (typeof fbLoginCallback == "function") {
+			fbLoginCallback();
+		}	
+	}
+	//setInterval("getConnectStatus()",15000);
+}
+
+function getConnectStatus(){
+	FB.Connect.get_status().waitUntilReady(function(status) {
+		alert(status + getFBconnectedState());
+	});
+}
+
+function get_required_url(){
+	var fullDomainArray = new Array();
+	fullDomainArray = String(window.location).split("/");
+	fbconnectURL = fullDomainArray[0] + "//" + fullDomainArray[2];
+	//fbcClientId - defined in custom js
+	baseURL = viralappsURL + "public/fbconnect/" + fbcClientId + "/";
+	ajaxURL = baseURL + "index.php";
+	ajaxBusyTag = '<div style="width:300px;height:350px;margin-left:120px;padding-top:60px;"><img src="' + baseURL + 'img/ajax-loader.gif" ></div>';
+
+	baseURL = viralappsURL + "public/fbconnect/" + fbcClientId + "/";
+	ajaxURL = baseURL + "index.php";
+	ajaxBusyTag = '<div style="width:300px;height:350px;margin-left:120px;padding-top:60px;"><img src="' + baseURL + 'img/ajax-loader.gif" ></div>';
+}
+
+function attachFBCFooter()
+{
+	
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var date = new Date();
+	var queryParams =
+		{
+			"requestedController" :"Home",
+			"requestedMethod" :"getFBCFooter",
+			"loggedIn" :getLoggedInState(),
+			"fbconnectURL" :fbconnectURL,
+			"showName" :clientParams.showName
+		};
+
+	queryParams = appendJSObjects(queryParams, userParams);
+	
+	jQuery.jsonp({
+		"url" : fullURL,
+		"cache":false,
+		"pageCache" : "false",
+		"data" : queryParams,
+		"callback" : "getFBCFooterCallback",
+		"success" : function(data) {	
+				jQuery('body', document).append(data.html);	
+			},
+			error : function(request, textStatus, thrownError) {		
+			}
+	});
+}
+function getAppParams()
+{
+	if (ajaxURL == 'notset'){
+		get_required_url();
+	}
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var date = new Date();
+	var queryParams =
+		{
+			"requestedController" :"Account",
+			"requestedMethod" :"getAppParams",
+			"showName" :clientParams.showName,
+			"loggedIn" :getLoggedInState()
+		};
+	
+	jQuery.jsonp({
+		"url" : fullURL,
+		"cache":false,
+		"pageCache" : "false",
+		"data" : queryParams,
+		"callback" : "getAppParamsCallback",
+		"success" : function(data) {	
+				apiKey = data.apiKeyVal;
+				templateIds = data.templateIds;
+				displayedCommentCount = data.displayedCommentCount;
+				mergeToSnasEnabled = data.mergeToSnasEnabled;
+				allowAnonPosting = data.allowAnonPosting;
+				enablesnasidentity = data.enable_snas_identity;
+				captchaEnabled = data.captchaEnabled;
+				captchaForPlatformUsers = data.captchaForPlatformUsers;
+				anonymousUserReporting = data.anonymousUserReporting;
+				//isNameValidation = data.isNameValidation;
+			},
+			error : function(request, textStatus, thrownError) {		
+			}
+	});
+}
+
+
+function replaceSpecialChar(postedBy){
+  //if(isNameValidation == 'Y' || isNameValidation == 'y'){
+    var postedBy = postedBy.replace(/[^a-zA-Z0-9]/g,specialCharReplace);    
+  //}
+  return postedBy;
+}
+
+function isAlphaNumeric(val)
+{
+	if (val.match(/[^a-zA-Z0-9]/g))
+	{
+		return false;
+	}
+}
+
+
+function getProfileDetails(uids,fields)
+{   
+    var uids = new Array();
+    uids[0]=userid ;
+    //var attachment = {'media':[{'type':'image','src':'http://viralappsdev2.nbcuni.com/testapps/public/accesshollywood/igoogle/img/ah_icon.png','href':'http://viralappsdev2.nbcuni.com/testapps/public/accesshollywood/igoogle/img/ah_icon.png'}]}; 
+    //facebook_stream_publish('',attachment);
+    var fields = new Array();
+    fields=new Array('first_name','last_name ','pic_square');
+	if (batchSequencerSet) {
+		return '';
+	} 
+	var detailsArray = new Array();
+     var target = new Array();
+     var sql = "SELECT uid, first_name, last_name, pic_square  FROM user WHERE uid ="+uids[0];
+     FB.ensureInit( function(){
+     	var api = FB.Facebook; 
+		api.get_sessionState().waitUntilReady(function() { 
+			var sequencer = new FB.BatchSequencer(); 
+			batchSequencerSet = 1;
+			var pendingUserDetails = api.apiClient.fql_query(sql, sequencer); 
+			sequencer.execute(function() { 			
+         detailsArray=pendingUserDetails.result[0];
+         if(getLoggedInState() == 'Y'){
+         	loginState = true;
+         }else{
+          loginState = false;
+         }
+         user = {"externalPlatformId":detailsArray['uid'],"name":detailsArray['first_name']+detailsArray['last_name'],"loggedInUserName":detailsArray['first_name'],"profilePic":detailsArray['pic_square'],"loggedIn":loginState,"imgURL":baseURL+'img/'};
+         userProfileLoaded = true;
+         executeCallbackfunctions(functionToCallbacks.getUserProfile);
+			 });
+   		});
+	});
+}
+
+function getInfo(result,exception) {
+	detailsArray = result[0];
+     if(getLoggedInState() == 'Y'){
+      	loginState = true;
+      }else{
+       loginState = false;
+      }
+      
+      user = {"externalPlatformId":detailsArray['uid'],"name":detailsArray['first_name']+" "+detailsArray['last_name'],"loggedInUserName":detailsArray['first_name'],"profilePic":detailsArray['pic_square'],"loggedIn":loginState,"imgURL":baseURL+'img/'};
+      userProfileLoaded = true;
+      executeCallbackfunctions(functionToCallbacks.getUserProfile);
+}
+
+function facebook_stream_publish(user_message, attachment, action_links, target_id, user_message_prompt, callback, auto_publish, actor_id)
+{ 
+        // Handling undefined cases with default values 
+        if (typeof user_message == 'undefined') { 
+                user_message = ''; 
+        } 
+        
+        if (typeof attachment == 'undefined') { 
+                attachment = null; 
+        } 
+        
+        if (typeof action_links == 'undefined') { 
+                action_links = null; 
+        } 
+        
+        if (typeof target_id == 'undefined') { 
+                target_id = ''; 
+        } 
+        
+        if (typeof user_message_prompt == 'undefined') { 
+                user_message_prompt = "What do you think?"; 
+        } 
+        
+        if (typeof callback == 'undefined') { 
+                callback = null; 
+        } 
+        
+        if (typeof auto_publish == 'undefined') { 
+                auto_publish = false; 
+        } 
+        
+        if (typeof actor_id == 'undefined') { 
+                actor_id = ''; 
+        } 
+        
+      FB.ensureInit( function() 
+        { 
+        	FB.Facebook.get_sessionState().waitUntilReady( function()
+        		{
+                	FB.Connect.streamPublish(user_message, attachment, action_links, target_id, user_message_prompt, callback, auto_publish, actor_id);
+                });
+
+        }); 
+        
+} 
+
+function stripHTML(s){
+	var str = '';
+	var re1 = /<\S[^><]*>/g;	
+	var re2 = /<\S[^><]*/g;
+	str = s.replace(re1, "");
+	str = str.replace(re2, "");
+	return str;
+}
+
+function getUserProfile(){
+    var userid = getLoggedInUserId();
+	if (getLoggedInState() == 'N') {
+		return '';
+	}
+	var udata_uid = readCookie("udata_uid");
+	if (udata_uid != null) {
+		//user object is already set
+		var udata_name = readCookie("udata_name");
+		var udata_first_name = readCookie("udata_first_name");
+		var udata_pic_square = readCookie("udata_pic_square");
+		var loginState = (getFBconnectedState() == "Y") ? true : false;
+		loggedInContainerSite = readCookie("udata_loggedInContainerSite");
+		user = {"externalPlatformId":udata_uid,"name":udata_name,"loggedInUserName":udata_first_name,"profilePic":udata_pic_square,"loggedIn":loginState,"imgURL":baseURL+'img/',"loggedInContainerSite":loggedInContainerSite};
+	    userProfileLoaded = true;
+        executeCallbackfunctions(functionToCallbacks.getUserProfile);
+        functionToCallbacks.getUserProfile = [];
+		return '';
+	}
+
+	if (ajaxURL == 'notset'){
+		get_required_url();
+	}
+	var fullURL = ajaxURL + "?controller=Ajax";
+
+	var date = new Date();
+	var queryParams =
+		{
+			"requestedController" :"Account",
+			"requestedMethod" :"getUserProfile",
+			"loggedIn" :getLoggedInState(),
+			"showName" :clientParams.showName
+		};
+		
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+       			user = data;
+       			if (typeof data.loggedInContainerSite != "undefined" && data.loggedInContainerSite != "" && data.loggedInContainerSite != null) {
+       				loggedInContainerSite = data.loggedInContainerSite;
+       				createCookie("udata_loggedInContainerSite", loggedInContainerSite, 1);
+       			}
+       			if (typeof data.externalPlatformId != "undefined" && data.externalPlatformId != "" && data.externalPlatformId != null) {
+       				createCookie("udata_uid", data.externalPlatformId, 1);
+       			}
+       			if (typeof data.name != "undefined" && data.name != "" && data.name != null) {
+       				createCookie("udata_name", data.name, 1);
+       			}
+       			if (typeof data.loggedInUserName != "undefined" && data.loggedInUserName != "" && data.loggedInUserName != null) {
+       				createCookie("udata_first_name", data.loggedInUserName, 1);
+       			}
+       			if (typeof data.profilePic != "undefined" && data.profilePic != "" && data.profilePic != null) {
+       				createCookie("udata_pic_square", data.profilePic, 1);
+       			}
+       			if (typeof data.sn_nbc_a != "undefined" && data.sn_nbc_a != "" && data.sn_nbc_a != null) {
+					createCookie("sn_nbc_a", data.sn_nbc_a);
+				}
+       			if (typeof data.sn_nbc_b != "undefined" && data.sn_nbc_b != "" && data.sn_nbc_b != null) {
+					createCookie("sn_nbc_b", data.sn_nbc_b);
+				}
+	      		userProfileLoaded = true;
+        		executeCallbackfunctions(functionToCallbacks.getUserProfile);
+			},
+			error : function(request, textStatus, thrownError)
+			{
+				alert('An error has occured ' + textStatus);
+			}
+		});
+}
+
+function isNewUser()
+{
+	//the same copy which is used in processAuhtenticationParams
+	//copied here to avoid the Ajax call done in processAuthenticationParams
+	userParams = new Object();
+	var userCookies = document.cookie.split(';');
+	for ( var i = 0; i < userCookies.length; i++) {
+		if (userCookies[i].indexOf(apiKey) != -1 || userCookies[i].indexOf('sn_nbc') != -1) {
+			var attribute = userCookies[i].split('=');
+			var name = attribute[0];
+
+			var value = attribute[1];
+			userParams[name] = value;
+		}
+	}
+	
+	if (ajaxURL == 'notset'){
+		get_required_url();
+	}
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var date = new Date();
+	var queryParams =
+		{
+			"requestedController" :"Account",
+			"requestedMethod" :"isNewUser",
+			"loggedIn" :getLoggedInState(),
+			"showName" :clientParams.showName
+		};
+		
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+	
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				if (data.isNewUser) {
+					popUpMergeBox();
+				} else {
+					getUserProfile();
+					facebook_onload_functions();
+				}
+			},
+			error : function(request, textStatus, thrownError)
+			{
+				//alert('An error has occured ' + textStatus);
+			}
+		});
+
+}
+
+function validateTitle()
+{
+	if (typeof clientParams.content == 'undefined') {
+		return '';
+	}
+	if (typeof clientParams.content.contentTitle == 'undefined') {
+		return '';
+	}
+	var titleLength = clientParams.content.contentTitle.length;
+	var contentTitle = clientParams.content.contentTitle;
+	var pageURL = document.location.href;
+	if (titleLength > 90) {
+		if (ajaxURL == 'notset'){
+			get_required_url();
+		}
+		var fullURL = ajaxURL + "?controller=Ajax";
+		var date = new Date();
+		var queryParams =
+			{
+				"requestedController" :"Mail",
+				"requestedMethod" :"reportTitleIssue",
+				"loggedIn" :getLoggedInState(),
+				"showName" :clientParams.showName,
+				"pageURL"  :pageURL,
+				"titleLength" :titleLength,
+				"contentTitle" :contentTitle
+			};
+		
+		jQuery.ajax(
+			{
+				type :"GET",
+				url :fullURL,
+				data :queryParams,
+				dataType :"jsonp",
+				success : function(data)
+				{		
+					//alert(data.sendMailResponse);			
+				},
+				error : function(request, textStatus, thrownError)
+				{
+					//alert('An error has occured ' + textStatus);
+				}
+			});		
+	}
+}
+
+/*
+ * This function is a cross-browser solution to loading JS files dynamically. In
+ * our case, we're loading jQuery and then want to call noConflict to avoid any
+ * namespace collisions
+ * 
+ */
+function include_js(file, callback)
+{
+
+	var html_doc = document.getElementsByTagName('head')[0];
+	js = document.createElement('script');
+	js.setAttribute('type', 'text/javascript');
+	js.setAttribute('src', file);
+	html_doc.appendChild(js);
+
+	js.onreadystatechange = function()
+	{
+		if (js.readyState == 'complete' || js.readyState == 'loaded') {
+			callback();
+		}
+	}
+
+	js.onload = function()
+	{
+		callback();
+	}
+	return false;
+}
+
+/**
+ * Wrapper method around the FBC feed dialog. I'm hardcoding the templateId
+ * here. However, a better way to do this is delegate to our
+ * NotifiationAndFeedController to determine what was the requested event, what
+ * is the correct feed story id (all in config or DB, etc), make the AJAX call
+ * and then call showFeedDialog. Not sure about latency to and from on this call
+ * but it shouldn't be THAT bad.
+ * 
+ */
+function publishFeedStory(template_data)
+{
+
+	FB.ensureInit( function()
+	{
+		FB.Connect.showFeedDialog(55003499916, template_data, null, null, null);
+	});
+}
+
+/*
+ * Convienence function to refresh the dom whenever a new XFBML tag is placed
+ * onto the page
+ */
+function refreshXFBML()
+{
+	FB.ensureInit( function()
+	{
+		if (FB.XFBML.Host.parseDomTree) {
+			setTimeout(FB.XFBML.Host.parseDomTree, 0);
+		}
+	});
+
+}
+
+function refreshXFBMLElement(refreshElement)
+{
+	FB.ensureInit( function()
+	{
+		var fbElement = FB.XFBML.Element(refreshElement);
+		FB.XFBML.Host.addElement(fbElement);
+	});
+}
+
+function onConnected(user_id)
+{
+	FB.ensureInit( function()
+	{
+		if (loggedInStateChecked) {
+			return;
+		}
+		loggedInStateChecked = true;
+		FB.XFBML.Host.autoParseDomTree = false;
+		if (serverLoggedInState == 'true') {
+			//facebook_onlogin_ready();
+			getUserProfile();	
+			refreshXFBML();
+		} else {
+			facebook_onlogin_ready();
+		}
+	});
+	
+}
+
+function onNotConnected()
+{
+	FB.ensureInit( function()
+	{
+		if (loggedInStateChecked) {
+			return;
+		}
+		loggedInStateChecked = true;
+		FB.XFBML.Host.autoParseDomTree = false;
+		if (serverLoggedInState == 'true') {
+			if (!loggedInContainerSite){
+				//alert('You were logged out of Facebook.com');
+				clearAuthenticationCookies();
+				processAuthenticationParams();
+				clearServerSideCookies(false, true);
+			}
+		} else {
+			refreshXFBML();
+		}
+	});
+}
+
+/*
+ * If the user's logged in status has changed since the last page load, then
+ * refresh the page to pick up the change.
+ * 
+ * This helps enforce the concept of "single sign on", so that if a user is
+ * signed into Facebook when they visit your site, they will be automatically
+ * logged in - without any need to click the login button.
+ * 
+ * @param already_logged_into_facebook reports whether the server thinks the
+ * user is logged in, based on their cookies
+ * 
+ */
+function facebook_onload(already_logged_into_facebook)
+{
+	serverLoggedInState = already_logged_into_facebook;
+	// user state is either: has a session, or does not.
+	// if the state has changed, detect that and reload.
+
+}
+
+/*
+ * Our <fb:login-button> specifies this function in its onlogin attribute, which
+ * is triggered after the user authenticates the app in the Connect dialog and
+ * the Facebook session has been set in the cookies.
+ */
+function facebook_onlogin_ready() {
+	// In this app, we redirect the user back to index.php. The server will read
+	// the cookie and see that the user is logged in, and will deliver a new
+	// page
+	// with content appropriate for a logged-in user.
+	//
+	// However, a more complex app could use this function to do AJAX calls
+	// and/or in-place replacement of page contents to avoid a full page
+	// refresh.
+	var already_logged_into_facebook = true;
+	FB.ensureInit( function()
+	{
+		FB.XFBML.Host.autoParseDomTree = false;
+		FB.Facebook.get_sessionState().waitUntilReady( function(session)
+		{
+			// It is important to set this otherwise you'll re-run the checks in a
+				// moment
+				// and since the server hasn't gotten a request with the new cookies,
+				// you'll be out of sync!
+				loggedInStateChecked = true;
+				var is_now_logged_into_facebook = session ? true : false;
+				//to trigger the facebook_onload_functions
+				facebook_onload_function = 0;		
+				//to call the container site callback
+				if (typeof fbLoginCallback == "function") {
+					fbLoginCallback();
+				}
+				if (mergeToSnasEnabled == '1') {
+					 isNewUser();
+				} else {
+					processAuthenticationParams();
+					getUserProfile();
+					facebook_onload_functions();
+				}
+				refreshXFBML();
+
+			});
+	});
+
+}
+
+function closeButton() {
+	document.getElementById('balloon').style.display = 'none';
+	createCookie("disable_bubble_message",1,1);
+}
+/*
+ * Do a page refresh after login state changes. This is the easiest but not the
+ * only way to pick up changes. If you have a small amount of Facebook-specific
+ * content on a large page, then you could change it in Javascript without
+ * refresh.
+ */
+function processAuthenticationParams()
+{
+	userParams = new Object();
+	var attribute = '';
+	var name = '';
+	var value  = '';
+	var userCookies = document.cookie.split(';');
+	for ( var i = 0; i < userCookies.length; i++) {
+		if (userCookies[i].indexOf(apiKey) != -1 || userCookies[i].indexOf('sn_nbc') != -1) {
+			attribute = userCookies[i].split('=');
+			name = attribute[0];
+			value = attribute[1];
+			userParams[name] = value;
+		} else if (userCookies[i].indexOf("udata") != -1 ){		
+		    attribute = userCookies[i].split('=');
+		    name = jQuery.trim(attribute[0]);
+		    value = attribute[1];
+			switch (name){
+				case "udata_uid":
+				  user["externalPlatformId"] = value;
+				  break;
+				case "udata_name":
+				  user["name"] = value;
+				  break;
+				case "udata_first_name":
+				  user["loggedInUserName"] = value;
+				  break;
+				case "udata_pic_square":
+				  user["profilePic"] = value;
+				  break;
+			}
+		}
+	}
+}
+
+/*
+ * Prompts the user to grant a permission to the application.
+ */
+function facebook_prompt_permission(permission)
+{
+	FB.ensureInit( function()
+	{
+		FB.Connect.showPermissionDialog(permission);
+	});
+}
+
+/*
+ * Show the feed form. This would be typically called in response to the onclick
+ * handler of a "Publish" button, or in the onload event after the user submits
+ * a form with info that should be published.
+ * 
+ */
+function facebook_publish_feed_story(form_bundle_id, template_data, userMessege)
+{
+	var user_message_prompt = userMessege;
+	var user_message =
+		{
+			value :userMessege
+		};
+	FB.ensureInit( function()
+	{
+		FB.Connect.showFeedDialog(form_bundle_id, template_data, null, null,
+				FB.FeedStorySize.shortStory, FB.RequireConnect.promptConnect, setOmiture,
+				"What's on your mind?", null);
+		});
+}
+/*
+ * Show the feed form if user clicks on Post your vote and share with friends
+ */
+function postVote(templateId)
+{
+	feedType='poll';
+	if (clientParams.selectedOption == '') {
+		alert("Please submit your vote first");
+		return false;
+	}
+	facebook_publish_feed_story(templateIdGlobal, templateDataGlobal, '');
+}
+
+/*
+ * If a user is not connected, then the checkbox that says "Publish To Facebook"
+ * is hidden in the "add run" form.
+ * 
+ * This function detects whether the user is logged into facebook but just not
+ * connected, and shows the checkbox if that's true.
+ */
+function facebook_show_feed_checkbox()
+{
+	FB.ensureInit( function()
+	{
+		FB.Connect.get_status().waitUntilReady( function(status)
+		{
+			if (status != FB.ConnectState.userNotLoggedIn) {
+				// If the user is currently logged into Facebook, but has not
+				// authorized the app, then go ahead and show them the feed
+				// dialog + upsell
+				checkbox = ge('publish_fb_checkbox');
+				if (checkbox) {
+					checkbox.style.visibility = "visible";
+				}
+			}
+		});
+	});
+}
+
+/**
+ * Demonstration of using a 'rating module' from the viral apps team. There's no
+ * reason this couldn't just point to your own script. I'm hard-coding the
+ * videoURL but obviously that would just be the URL of the current page.
+ * 
+ */
+function rateContent(contentId, ratingIndex)
+{
+	var ratingValue = '';
+	if (ratingIndex > 1) {
+		ratingValue = ratingIndex + ' Stars';
+	} else {
+		ratingValue = ratingIndex + ' Star';
+	}
+	template_data_for_rating =
+		{
+			"ratedContentType" :clientParams.feed.rating.contentType,
+			"pageURL" :clientParams.feed.rating.contentURL,
+			"ratingValue" :ratingValue
+		};
+	if (typeof clientParams.feed.rating.contentImage != 'undefined' && clientParams.feed.rating.contentImage != '') {
+		template_data_for_rating.images = [{"src":clientParams.feed.rating.contentImage, "href":clientParams.feed.rating.contentURL}];
+	}
+	
+	//template_id_for_rating = templateIds['rateContentTemplateId'];
+	var timeStamp = new Date().getTime();
+	var fullURL = ajaxURL + "?controller=Rating&method=saveRating";
+	var queryParams =
+		{
+			"contentId" :contentId,
+			"contentTitle" :clientParams.content.contentTitle,
+			"ratingIndex" :ratingIndex,
+			"loggedIn" :getLoggedInState(),
+			"returnCurrentRating" :1,
+			"showName" :clientParams.showName,
+			"overrideCache" : timeStamp
+		};
+	queryParams = jQuery.extend(queryParams, userParams);
+	
+	var userid = getLoggedInUserId();
+
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				jQuery('#current_average_rating_' + contentId).text(
+						data.currentRating.AVGRATING);				
+				if (data.success) {
+					var ratingCount = ++data.currentRating.COMMENTRATINGCOUNT;
+					jQuery('#ratingCount').html(ratingCount);
+					//if (userid != ''){
+						jQuery('#thanksForRating').css({display:"block"});
+						jQuery('#shareRating').css({display:"block"});
+					//}				
+					if (typeof contentRatedCallback == "function") {
+						contentRatedCallback();
+					}	
+				} else {
+					jQuery('#thanksForRating').css({display:"none"});
+					jQuery('#shareRating').css({display:"none"});
+					jQuery('#ratingFailed').css({display:"block"});
+				}
+				refreshXFBML();
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+
+}
+
+/**
+ * Demonstration of using a 'rating module' from the viral apps team. This
+ * requests the interface to be returned and assigned to our placement area
+ * <div>. The contentId here expects a SNAS contentId to have already been
+ * created however, this integration point with the content on page can be
+ * handled in any manner (pass the video URL and we create a contentId for you
+ * etc)
+ */
+function renderFBCVideoRating()
+{
+	contentType = 'Rating';
+	//var contentId = '15242410';
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	//var fullURL = ajaxURL + "?contentId="+contentId+"&requestedController=Rating&requestedMethod=getFBCVideoRatingInterface&callback=?";
+	var timeStamp = new Date().getTime();
+	var queryParams =
+		{
+			"contentTitle" :clientParams.content.contentTitle,
+			"requestedController" :"Rating",
+			"loggedIn" :getLoggedInState(),
+			"requestedMethod" :"getFBCVideoRatingInterface",
+			"showName" :clientParams.showName,
+			"overrideCache" : timeStamp
+		};
+	queryParams = jQuery.extend(queryParams, userParams);
+	
+	jQuery.jsonp({
+		"url" : fullURL,
+		"cache":false,
+		"pageCache" : "false",
+		"data" : queryParams,
+		"callback" :"getFBCVideoRatingCallback",
+		"success" : function(data) {	
+				responseHandler(data,'Rating');
+			},
+			error : function(request, textStatus, thrownError) {		
+			}
+	});		
+
+}
+
+/**
+ * Requests and renders the HTML & XFBML to display the login area. Assigns the
+ * resulting interface code to our placeholder <div>
+ * 
+ */
+function renderFBCLoginButton()
+{
+	var fullURL = ajaxURL
+			+ "?controller=Account&method=renderLoginButton&callback=?";
+	var queryParams = {"showName" :clientParams.showName};
+	if (userParams != null) {
+		queryParams = appendJSObjects(queryParams, userParams);
+	}
+	
+	if (getLoggedInState() == 'N') {
+		var loginHTML = '<div id="login_button" style="margin:3px 0 0 330px;">';
+		loginHTML +=  '<fb:login-button size="medium" background="dark" length="long" onclick="facebook_onlogin_ready();"></fb:login-button>';
+		loginHTML += '</div>';
+		jQuery('#login_button').html(loginHTML);
+		refreshXFBML();
+	} else {
+
+		jQuery.ajax(
+			{
+				type :"GET",
+				url :fullURL,
+				data :queryParams,
+				dataType :"jsonp",
+				success : function(data)
+				{
+					jQuery('#login_button').html(data.html);
+	
+					// We've added a new XFBML element, lets make sure its rendered
+				refreshXFBML();
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+			});
+	}
+}
+
+function renderUserDetails()
+{
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var queryParams =
+		{
+			"requestedController" :"Home",
+			"requestedMethod" :"renderUserDetails",
+			"showName" :clientParams.showName
+		};
+
+	queryParams = jQuery.extend(queryParams, userParams);
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				jQuery('#login_button').html(data.html);
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+}
+
+function renderMainSection()
+{
+	jQuery('#display_comments').html(ajaxBusyTag);
+	PageNumber = 1;
+	filterByFriends = 'N';
+	commentPageNumber = PageNumber;
+    commentSectionIsFriends = filterByFriends;
+	jQuery("#commentCategory").val(filterByFriends);
+	if (ajaxURL == 'notset'){
+		get_required_url();
+	}
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var userid = getLoggedInUserId();
+	var timeStamp = new Date().getTime();
+	var queryParams =
+		{
+			"requestedController" :"Comment",
+			"requestedMethod" :"getPollComments",
+			"PageNumber" :PageNumber,
+			"loggedIn" :getLoggedInState(),
+			"filterByFriends" :filterByFriends,
+			"overrideCache" : timeStamp
+		};
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	jQuery.jsonp({
+		"url" : fullURL,
+		"cache":false,
+		"pageCache" : "false",
+		"data" : queryParams,
+		"callback" : "getPollCommentsCallbackForrenderMainSection",
+		"success" : function(data) {	
+				if ( typeof data.totalCommentCount == 'undefined' || data.totalCommentCount == '' || data.totalCommentCount == null) 	{
+					data.totalCommentCount = 0;
+				}		
+				totalCommentCount = data.totalCommentCount;
+				//alert(data.totalCommentCount);
+				htmlContent = '(<span id="'+clientParams.content.contentTitle+'_comments_total">'+totalCommentCount+'</span>) Comments';
+				jQuery('#'+clientParams.content.contentTitle+'_Comments').html(htmlContent);				
+				jQuery('#fbc_totalCommentsCount').html(totalCommentCount);
+				jQuery('#fbc_toggleCommentsLink').css({display:"block"});
+				responseHandler(data,'Comments');
+				if (userid != '') {
+					eval(data.script);
+				}
+				//setInterval("autoRefresh()",data.refreshInterval); 
+				//g_refreshTimer = setTimeout("autoRefresh()",data.refreshInterval);
+				refreshXFBML();
+			},
+			error : function(request, textStatus, thrownError) {		
+			}
+	});	
+}
+
+function renderTotalCommentsWithToggle() {
+	var displayOnLoad = 'false';
+	var htmlContent = '';
+	if (typeof clientParams.comments != "undefined" && typeof clientParams.comments.showOnLoad != "undefined") {
+		displayOnLoad = clientParams.comments.showOnLoad;
+	}
+	
+	switch (displayOnLoad) {
+		case 'true':
+			jQuery('#display_comments').css({display:"block"});
+			htmlContent += '<a id="fbc_toggleCommentsLink" class="fbc_arrow_right fbc_open" onclick="toggleComments();return false;" href="#">Comments (<span id="fbc_totalCommentsCount"></span>)</a>';		
+			break;
+		case 'false':
+			jQuery('#display_comments').css({display:"none"});
+			htmlContent += '<a id="fbc_toggleCommentsLink" class="fbc_arrow_right" onclick="toggleComments();return false;" href="#">Comments (<span id="fbc_totalCommentsCount"></span>)</a>';
+			break;
+		default:
+			jQuery('#display_comments').css({display:"none"});
+			htmlContent += '<a id="fbc_toggleCommentsLink" class="fbc_arrow_right" onclick="toggleComments();return false;" href="#">Comments (<span id="fbc_totalCommentsCount"></span>)</a>';
+			break;
+	}
+
+	
+	jQuery('#fbc_commentsLink').html(htmlContent);
+}
+
+function renderContentsCommentCount()
+{
+	var contentTitlesList = clientParams.contentTitlesArray.join(",");
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var queryParams =
+		{
+			"requestedController" :"Comment",
+			"loggedIn" :getLoggedInState(),
+			"requestedMethod" :"renderContentsCommentCount",
+			"contentTitlesList" :contentTitlesList
+		};
+
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+	
+	jQuery.jsonp({
+		"url" : fullURL,
+		"cache":false,
+		"pageCache" : "false",
+		"data" : queryParams,
+		"callback" : "renderContentsCommentCountCallback",
+		"success" : function(data) {	
+				var fieldName = '';
+				var countVal = '';
+				for (var name in data) {
+					var htmlContent = '';
+					if (typeof data[name].COMMENTS != 'undefined') {
+						countVal = data[name].COMMENTS; 
+					} else {
+						countVal = data[name];
+					}
+					//htmlContent = '<a href="#" onclick="return false;" class="CommentCount">(<span id="'+name+'_comments_total">'+countVal+'</span>) Comments</a>';
+					htmlContent = '(<span id="'+name+'_comments_total">'+countVal+'</span>) Comments';
+					jQuery('#'+name+'_Comments').html(htmlContent);
+				}
+			},
+			error : function(request, textStatus, thrownError) {		
+			}
+	});		
+	/*jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{	
+				var fieldName = '';
+				var countVal = '';
+				for (var name in data) {
+					if (typeof data[name].COMMENTS != 'undefined') {
+						countVal = data[name].COMMENTS; 
+					} else {
+						countVal = data[name];
+					}
+					jQuery('#'+name+'_comments_total').html(countVal);
+				}
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});*/
+	
+}
+
+function renderHeaderSection()
+{
+	FB.ensureInit( function() {
+	
+	var fullURL = ajaxURL + "?controller=Ajax";
+	/*var queryParams =
+		{
+			"requestedController" :"Account",
+			"loggedIn" :getLoggedInState(),
+			"requestedMethod" :"renderLoginButton"
+		};
+
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}*/
+	getBrowserType();
+	if (getLoggedInState() == 'N') {
+		fbc_loginButton = '';
+		if (typeof clientParams.fbc != "undefined" && typeof clientParams.fbc.loginButton != "undefined") {
+			fbc_loginButton = clientParams.fbc.loginButton;
+		}	
+		var isDisabled = readCookie("disable_bubble_message");
+		if(isDisabled == 1){
+			var output = '<div class="fbc_welcomeContainer"><div id="fbc_loginButton">';
+			if (fbc_loginButton == "small") {
+				output += '<a href="#" onclick="FB.Connect.requireSession(facebook_onlogin_ready); return false;" class="fbconnect_login_button FBConnectButton FBConnectButton_Small"> <span id="RES_ID_fb_login_text" class="FBConnectButton_Text">Connect</span> </a>';
+			} else {
+				output += '<a href="#" onclick="FB.Connect.requireSession(facebook_onlogin_ready); return false;" class="fbconnect_login_button FBConnectButton FBConnectButton_Medium"> <span id="RES_ID_fb_login_text" class="FBConnectButton_Text">Connect with Facebook</span> </a>';
+			}
+			output +=	'	</div></div>';
+		}else {
+			var output = '<div id="balloon" class="balloon balloon_margin' + browserType + '"><div class="close"><img onclick="closeButton();" src="'+baseURL+'img/Btn_cross.gif"></div><div id="fbc_balloon_text">Use Facebook to connect your friends and <span id="catchy_text">theGrio</span>community</div></div>';
+			output += '<div class="fbc_welcomeContainer"><div id="fbc_loginButton">';
+			//output += '<fb:login-button size="medium" background="dark" length="long" onclick="facebook_onlogin_ready();"></fb:login-button>';
+			if (fbc_loginButton == "small") {		
+				output += '<a href="#" onclick="FB.Connect.requireSession(facebook_onlogin_ready); return false;" class="fbconnect_login_button FBConnectButton FBConnectButton_Small"> <span id="RES_ID_fb_login_text" class="FBConnectButton_Text">Connect</span> </a>';
+			} else {				
+				output += '<a href="#" onclick="FB.Connect.requireSession(facebook_onlogin_ready); return false;" class="fbconnect_login_button FBConnectButton FBConnectButton_Medium"> <span id="RES_ID_fb_login_text" class="FBConnectButton_Text">Connect with Facebook</span> </a>';
+			}
+			output +=	'	</div></div>';
+		}
+		jQuery('#header_section').html(output);
+		refreshXFBML();
+	} else {
+		if (userProfileLoaded) {
+			responseHandler(user,'LoginHeader');
+			refreshXFBML();
+		} else {
+			functionToCallbacks.getUserProfile.push("renderHeaderSection");
+		}
+		/*jQuery.ajax(
+				{
+					type :"GET",
+					url :fullURL,
+					data :queryParams,
+					dataType :"jsonp",
+					success : function(data)
+					{
+						var headerObj = document.getElementById("header_section");
+						if (headerObj != null) {
+							responseHandler(data,'LoginHeader');
+						}
+					},
+					error : function(request, textStatus, thrownError)
+					{
+					}
+				});*/
+	}
+	
+	//refreshXFBML();	
+	
+	});
+
+}
+
+/* This method will send the request
+ * to authenticate the user Account in Snas
+ */
+
+function authenticateUser()
+{
+	var user_email = jQuery('#merge_email').val();
+	var user_password = jQuery('#merge_password').val();
+	//facebook_onload_functions();
+	//return false;
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var queryParams =
+		{
+			"requestedController" :"Account",
+			"requestedMethod" :"authenticateUser",
+			"user_email" :user_email,
+			"loggedIn" :getLoggedInState(),
+			"user_password" :user_password,
+			"showName" :clientParams.showName
+		};
+
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				if (data.error == 'no error'){
+					refreshComments = 1;
+					facebook_onload_function = 0;
+					facebook_onload_functions();
+				} else {
+					//alert(data.error);
+					jQuery('#fbc_snasFailedErrMsg').show();
+				}
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+
+}
+
+function renderComments(PageNumber, filterByFriends)
+{	
+	var htmlContent = '';
+	commentPageNumber=PageNumber;
+    commentSectionIsFriends=filterByFriends; 
+    if (showBusyTag == "Y") {
+		jQuery('#fbc_contentContainer').html(ajaxBusyTag);
+		//resetting the value of refreshingComments
+		refreshingComments = "N";
+	} else {
+		refreshingComments = "Y";
+		showBusyTag = "Y";
+	}
+	jQuery("#commentCategory").val(filterByFriends);
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var userid = getLoggedInUserId();
+	var timeStamp = new Date().getTime();
+
+	var queryParams =
+		{
+			"requestedController" :"Comment",
+			"requestedMethod" :"getPollComments",
+			"PageNumber" :PageNumber,
+			"loggedIn" :getLoggedInState(),
+			"filterByFriends" :filterByFriends,
+			"overrideCache" : timeStamp
+		};
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (PageNumber == 1) {
+		jQuery.jsonp({
+			"url" : fullURL,
+			"cache":false,
+			"pageCache" : "false",
+			"data" : queryParams,
+			"callback" : "getPollCommentsCallbackForrenderComments",
+			"success" : function(data) {
+					data.pageNumber = 1;
+					responseHandler(data,'Comments');
+					if ( typeof data.totalCommentCount == 'undefined' || data.totalCommentCount == '' || data.totalCommentCount == null) 	{
+						data.totalCommentCount = 0;
+					}		
+					totalCommentCount = data.totalCommentCount;
+					//alert(data.totalCommentCount);
+					htmlContent = '(<span id="'+clientParams.content.contentTitle+'_comments_total">'+totalCommentCount+'</span>) Comments';
+					jQuery('#'+clientParams.content.contentTitle+'_Comments').html(htmlContent);				
+					jQuery('#fbc_totalCommentsCount').html(totalCommentCount);
+					jQuery('#fbc_toggleCommentsLink').css({display:"block"});
+					if (userid != '') {
+						eval(data.script);
+					}
+
+					//if (g_refreshTimer != '') {
+					//	clearTimeout(g_refreshTimer);
+					//}
+					//g_refreshTimer = setTimeout("autoRefresh()",data.refreshInterval);//page Number and comment category check is made in that function
+				},
+				error : function(request, textStatus, thrownError) {		
+				}
+		});
+	} else {
+		jQuery.ajax(
+			{
+				type :"GET",
+				url :fullURL,
+				data :queryParams,
+				dataType :"jsonp",
+				success : function(data)
+				{
+					responseHandler(data,'Comments');
+					if (userid != '') {
+						eval(data.script);
+					}
+
+					//if (g_refreshTimer != '') {
+					//	clearTimeout(g_refreshTimer);
+					//}
+					//g_refreshTimer = setTimeout("autoRefresh()",data.refreshInterval);//page Number and comment category check is made in that function
+		},
+		error : function(request, textStatus, thrownError)
+		{
+		}
+			});
+	}
+}
+function savePoll(category)
+{
+
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var queryParams =
+		{
+			"sectionNumber" :sectionNumber,
+			"requestedController" :"Comment",
+			"requestedMethod" :"getPollComments",
+			"PageNumber" :PageNumber,
+			"FromAjax" :"Y",
+			"loggedIn" :getLoggedInState(),
+			"filterByFriends" :filterByFriends
+		};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				jQuery('#commentsSection').html(data.html);
+				refreshXFBML();
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+	refreshXFBML();
+}
+
+/*
+ * 
+ * jQuery('#display_comments').html(ajaxBusyTag); var fullURL = ajaxURL +
+ * "?controller=Ajax"; var queryParams = { "sectionNumber" :1,
+ * "requestedController" :"Comment", "requestedMethod"
+ * :"displayCommentsSection", "PageNumber":1, "filterByFriends":'N' }; if
+ * (userParams != null){ queryParams = appendJSObjects(queryParams,userParams); }
+ * if (clientParams != null){ queryParams =
+ * appendJSObjects(queryParams,clientParams ); }
+ * 
+ * jQuery.ajax( { type :"GET", url :fullURL, data :queryParams, dataType :"jsonp",
+ * success : function(data) { jQuery('#display_comments').html(data.html);
+ * refreshXFBML(); }, error : function(request, textStatus, thrownError) { } }); }
+ */
+
+function renderInviteFriendList(pageNumber)
+{
+	if (pageNumber == 1) {
+		var cacheValue = getFromCache('InviteFriendsList', 'script');
+		if (cacheValue != '') {
+			jQuery('#rightContentInner').html(cacheValue.value);
+			eval(cacheValue.script);
+			return false;
+		}
+	}
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var queryParams =
+		{
+			"requestedController" :"Friend",
+			"requestedMethod" :"getFriendsList",
+			"FromAjax" :"Y",
+			"PageNumber" :pageNumber
+		};
+	if (userParams != null) {
+		queryParams = appendJSObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				jQuery('#rightContentInner').html(data.html);
+				eval(data.script);
+				if(pageNumber==1)
+                {
+				saveToCache('InviteFriendsList', data.html, inviteFriendsajaxCacheTime,data.script);
+				}
+				refreshXFBML();
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+
+}
+function renderFriendsVotedList(pollId, pollText, PageNumber)
+{
+
+	if (PageNumber == 1) {
+		var cacheValue = getFromCache('friendsVotes', 'script');
+		if (cacheValue != '') {
+			jQuery('#rightContentInner').html(cacheValue.value);
+			eval(cacheValue.script);
+			return false;
+		}
+	}
+
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var queryParams =
+		{
+			"requestedController" :"Poll",
+			"requestedMethod" :"getFriendsVotes",
+			"pollId" :pollId,
+			"pollText" :pollText,
+			"PageNumber" :PageNumber
+
+		};
+
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				jQuery('#rightContentInner').html(data.html);
+				eval(data.script);
+				if (PageNumber == 1) {
+					saveToCache('friendsVotes', data.html, FriendsVoteajaxCacheTime,
+							data.script);
+				}
+				refreshXFBML();
+
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+
+}
+function getFromCache(key, type)
+{
+	var valueObject = new Object();
+	valueObject = globalCache[key];
+	if (valueObject != '' && valueObject != null && valueObject != 'undefined') {
+		timenow = new Date().getTime();
+		if (valueObject.expiresAtTime != 0) {
+			if (valueObject.expiresAtTime < timenow) {
+
+				return "";
+			}
+		}
+
+		// return valueObject.value;
+		return valueObject;
+	} else {
+		return "";
+	}
+}
+function saveToCache(key, value, secondsUntilExpires, scriptdata)
+{
+	var expriesAtTime = 0;
+	if (secondsUntilExpires) {
+		timenow = new Date().getTime();
+		expiresAtTime = timenow + secondsUntilExpires;
+	}
+	var valueObject =
+		{
+			"value" :value,
+			"expiresAtTime" :expiresAtTime,
+			"script" :scriptdata
+		};
+	globalCache[key] = valueObject;
+}
+function listFriendsRun(searchString)
+{
+	var fullURL = ajaxURL + "?controller=Ajax";
+
+	var queryParams =
+		{
+			"requestedController" :"Friend",
+			"requestedMethod" :"displayFilterResults",
+			"searchstring" :searchString
+		};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+
+				jQuery('#friendsdiv').html(data.html);
+				refreshXFBML();
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+
+}
+
+function listFriends()
+{
+
+	clearTimeout(window.listFriendsTimer);
+	var searchstring = jQuery("#friendsname").val();
+	window.listFriendsTimer = setTimeout("listFriendsRun('" + searchstring
+			+ "');", 300);
+
+	// new Dialog().showMessage('value',searchstring);
+}
+
+function saveComments(uid)
+{
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var commentCategory = jQuery("#commentCategory").val();
+	var commentText = jQuery("#fbc_userComment").val();
+	var oldCommentCount = jQuery("#totalCommentCount").val();
+
+	if (oldCommentCount == 0) {
+		//document.getElementById("noComments").style.display = 'none';
+	}
+	var oldContent = jQuery('#fbc_contentContainer').html();
+	commentText = trim(commentText);
+	commentSaved = "true";
+	if (commentText.length <= 0) {
+		alert('Your comment must include text');
+		jQuery("#notes").val("");
+		document.getElementById("notes").focus();
+		return false;
+	}
+
+	var comment_data =
+		{
+			"comment_text" :commentText
+		};
+	if (commentCategory != "Y") {
+		var divObj = document.getElementById("fbc_contentContainer");
+		var newDiv = document.createElement("div");
+		newDiv.className = "fbc_innerDetailContainer";
+		newDiv.innerHTML =  '<div class="fbc_innerDetailLftContainer">'
+        					+ '  <fb:profile-pic uid="'+ uid + '" size="square" height="40px" width="40px" linked="false"></fb:profile-pic>'        
+        					+ '</div>'
+         					+ '<div class="fbc_innerDetailRgtContainer">'          
+        					+ '  <div class="fbc_subLftContainer">'      
+         					+ '    <span class="fbc_subHead"><fb:name useyou="false" uid="'+ uid + '" linked="false"></fb:name></span>'          
+        					+ '  </div>'
+        					+ '  <div class="fbc_subRgtContainer">'           
+         					+ '    <span class="fbc_ddmmyy">wrote 1 minute ago</span>'          
+       						+ '  </div>'          
+       						+ '  <div class="fbc_clearFloat"></div>'          
+               				+ '  <div class="fbc_subDescription">'+ commentText +'</div>'         
+       						+ '</div>'
+       						+ '<div class="fbc_clearFloat"></div>'         
+       						+ '<div class="fbc_starLineContainer"></div>';  
+		divObj.insertBefore(newDiv, divObj.firstChild);
+		jQuery("#notes").val("");
+
+		if (clientParams.disableVoting == "true") {
+			postCommentFeedId = templateIds['commentsOnlyYesTemplateId'];
+		} else {
+			postCommentFeedId = templateIds['commentsOnlyNoTemplateId'];
+		}
+        feedType='';
+		handleFeeds(postCommentFeedId, comment_data, commentText);
+		refreshXFBML();
+	}
+
+	var queryParams =
+		{
+			"sectionNumber" :1,
+			"requestedController" :"Comment",
+			"requestedMethod" :"savePollComment",
+			"filterByFriends" :'N',
+			"Commenttext" :commentText,
+			"loggedIn" :getLoggedInState(),
+			"oldCommentCount" :oldCommentCount
+		};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				if (commentCategory == "Y") {
+					jQuery('#comments_container').html(data.html);
+					jQuery("#notes").val("");
+					if (data.commentCount > oldCommentCount) {
+						jQuery("#totalCommentCount").val(data.commentCount);
+						facebook_publish_feed_story(postCommentFeedId, comment_data,commentText);
+						refreshXFBML();
+					} else {
+						if (data.errorMsg != '' && data.errorMsg != null) {
+							// alert(data.errorMsg);
+						}
+					}
+					eval(data.script);
+					
+				} else {
+					if (data.commentCount > oldCommentCount) {
+						jQuery("#totalCommentCount").val(data.commentCount);
+					} else {
+					}
+				}
+				//alert(data.script1);
+				eval(data.script1);
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+
+}
+
+function inviteFriendsPopUp(id)
+{
+
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var queryParams =
+		{
+			"requestedController" :"Invite",
+			"requestedMethod" :"inviteFriend",
+			"selectedFriend" :id,
+			"actionUrl" :escape(document.location)
+		};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+
+	// FB.XFBML.Host.parseDomTree();
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				document.getElementById("friendRequest").innerHTML = data.html;
+				refreshXFBML();
+				showName = clientParams.showName;
+				//temporarily commented the 3 lines below
+			   //omigImgForPoll='<img src="http://oimg.nbcuni.com/b/ss/nbcufacebookglobal,nbcubravotvbu/1/H.2-pdv-2/RAND?pe=lnk_o&pev2=FBConnect&pageName='+escape('Bravo Facebook Connect')+'&v24='+escape('Bravo Facebook Invite')+'&v26='+escape(clientParams.content.title)+'&v28='+escape('Request')+'&v36='+escape(showName)+'&events=event34" width="1" height="1" border="0" />';
+			   //script='document.getElementById("OmigDiv").innerHTML=\''+omigImgForPoll+'\'';	
+			   //eval(script); 
+					},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+}
+
+function inviteFriends()
+{
+	//alert ('Invite Friends');
+	var invitees;
+
+	for (i = 0; i < invitelist.length; i++) {
+		if (i == 0) {
+			invitees = invitelist[i];
+		} else {
+			invitees += ',' + invitelist[i];
+		}
+	}
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var queryParams =
+		{
+			"requestedController" :"Invite",
+			"requestedMethod" :"sendInviteNotification",
+			"invitees" :invitees,
+			"inviteurl" :escape(window.location)
+		};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+	
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{			
+				if (invitelist.length == 1) {
+					alert("Your friend has been sent an invitation.");
+				} else {
+					alert("Your friends have been sent an invitation.");
+				}
+
+				unselectFriends();				
+				eval(data.script);
+			},
+
+			error : function(request, textStatus, thrownError)
+			{
+				 alert('Not invited');
+			}
+		});
+
+}
+
+function appendJSObjects(target, source)
+{
+	if (source != null) {
+		for ( var name in source) {
+			if (typeof(source[name]) == 'object') {
+				for ( var tempName in source[name]) {
+					if(target[tempName]==undefined){
+						if (typeof(source[name][tempName]) != 'object') {
+							target[tempName] = source[name][tempName];
+						}
+					}				
+				}
+			} else if (target[name]==undefined){
+				target[name] = source[name];
+			}
+		}
+	}
+	return target;
+}
+
+function loopparams(source)
+{
+	if (source != null) {
+		for ( var name in source) {
+alert(name+": "+source[name]);
+		}
+	}
+
+}
+function appendUserParamObjects(target, source) {
+	if (source != null) {
+		for ( var name in source) {
+			if ((name.indexOf(apiKey + '_expires') != -1)
+					|| (name.indexOf(apiKey + '_session_key') != -1)
+					|| (name.indexOf(apiKey + '_ss') != -1)
+					|| (name.indexOf(apiKey + '_user') != -1)
+					|| (name.indexOf(apiKey) != -1)
+					|| (name.indexOf('fbsetting_' + apiKey) != -1)
+					|| (name.indexOf('sn_nbc') != -1)) {
+				if (target[name] == undefined) {
+					if (typeof(source[name]) != 'object'){
+						target[name] = source[name];
+					}
+				}
+			}
+		}
+	}
+	return target;
+}
+function handleFacebookLogout()
+{
+	userParams = new Object();
+	clearAuthenticationCookies();
+	var url = window.location;
+	var domainArray = new Array();
+	var callback = "";
+	fullDomainArray = String(window.location).split("/");
+	for (i = 3; i < fullDomainArray.length; i++) {
+		if (fullDomainArray[i].indexOf('#') != -1) {
+			tempArray = fullDomainArray[i].split('#');
+			fullDomainArray[i] = tempArray[0];
+		}
+		callback += "/" + fullDomainArray[i];
+	}
+	clearServerSideCookies(false);
+	FB.Connect.logoutAndRedirect(callback);
+}
+
+function savePollResults()
+{
+	if (hasSubmittedVoteResults == true) {
+		return;
+	}
+	
+	hasSubmittedVoteResults = true;
+	var fullURL = ajaxURL + "?controller=Ajax";
+
+	var userid = '';
+	var selectedoptionValue = '';
+	var voteCount = 0;
+	var sessionVoteCount = '';
+	userid = getLoggedInUserId();
+	selectedoptionValue = clientParams.selectedOption;
+	correctOptionValue = clientParams.correctAnswer;
+	voteCount = readCookie(cookiePrefix + clientParams['contentTitle']
+			+ '_' + userid);
+	sessionVoteCount = readCookie(cookiePrefix+'session_'
+			+ clientParams['contentTitle'] + '_' + userid)
+	if (userid != null) {
+
+		if (userid != '') {
+			var queryParams =
+				{
+					"selectedValue" :selectedoptionValue,
+					"correctValue" :correctOptionValue,
+					"requestedController" :"Poll",
+					"requestedMethod" :"savePollResponse",
+					"showName" :clientParams.showName,
+					"loggedIn" :getLoggedInState(),
+					"selectedOptionImg" :fbconnectURL + "/"
+							+ clientParams.selectedOptionImage
+
+				};
+			if (userParams != null) {
+				queryParams = appendUserParamObjects(queryParams, userParams);
+			}
+			if (clientParams != null) {
+				queryParams = appendJSObjects(queryParams, clientParams);
+			}
+
+			if (voteCount < maxVote) {
+				jQuery.ajax(
+					{
+						type :"GET",
+						url :fullURL,
+						data :queryParams,
+						dataType :"jsonp",
+						success : function(data)
+						{
+							// facebook_publish_feed_story(data.templateId,data.templateData,
+						// '');
+						templateDataGlobal = data.templateData;
+						templateIdGlobal = data.templateId;
+						
+						if (voteCount == null) {
+							createCookie(cookiePrefix + queryParams['contentTitle']
+									+ '_' + userid, 1, 30);
+						} else {
+							createCookie(cookiePrefix + queryParams['contentTitle']
+									+ '_' + userid, parseInt(voteCount) + 1, 30);
+						}
+						if (sessionVoteCount == null || sessionVoteCount == 0) {
+							if (data.templateId != '') {
+								feedType='poll';
+								postVote('');
+								refreshXFBML();
+							}
+							createCookie(cookiePrefix+'session_'
+									+ queryParams['contentTitle'] + '_' + userid, 1, 0)
+						} else {
+							createCookie(cookiePrefix+'session_'
+									+ queryParams['contentTitle'] + '_' + userid,
+									parseInt(voteCount) + 1, 0);
+						}
+						
+						eval(data.script);
+					},
+					error : function(request, textStatus, thrownError)
+					{
+					}
+					});
+			}
+		}
+	}
+
+}
+function createCookie(name, value, days)
+{
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+		var expires = "; expires=" + date.toGMTString();
+	} else
+		var expires = "";
+	document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function readCookie(name)
+{
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for ( var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ')
+			c = c.substring(1, c.length);
+		if (c.indexOf(nameEQ) == 0)
+			return c.substring(nameEQ.length, c.length);
+	}
+	return null;
+}
+
+function clearAuthenticationCookies()
+{
+	var userCookies = document.cookie.split(';');
+	for ( var i = 0; i < userCookies.length; i++) {
+		if (userCookies[i].indexOf(apiKey) != -1 || userCookies[i].indexOf("udata") != -1 || userCookies[i].indexOf("sn_nbc") != -1) {
+			var attribute = userCookies[i].split('=');
+			var name = attribute[0];
+			eraseCookie(name);
+		}
+
+	}
+}
+
+function eraseCookie(name)
+{
+	createCookie(name, "", -1);
+}
+
+function clearServerSideCookies(refreshPage, refreshComponent)
+{
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var queryParams =
+		{
+			"requestedController" :"Account",
+			"requestedMethod" :"clearCookies"
+		};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+       if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+  
+	clearAuthenticationCookies();
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				if (refreshPage) {
+					window.location = document.location.href;
+				}
+
+				if (refreshComponent) {
+					//to trigger the facebook_onload_functions
+					facebook_onload_function = 0;
+					facebook_onload_functions();					
+					refreshXFBML();
+				}
+
+			},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+}
+
+function isContentTitleBlackListed() {
+	if (typeof clientParams.content == 'undefined') {
+		return '';
+	}
+	if (typeof clientParams.content.contentTitle == 'undefined') {
+		return '';
+	}
+	var currentTitle = clientParams.content.contentTitle;
+	var blackListedTitles = new Array("gallery_2189","gallery_1159");
+	
+	for (var i in blackListedTitles) {
+		if (currentTitle.indexOf(blackListedTitles[i]) != -1) {
+			return true;
+		}
+	}
+}
+
+function reportComment(commentId)
+{
+	var cookieName = "flag_anonymous"+commentId;
+	var flag_set = readCookie(cookieName);
+	if((getLoggedInState() != 'Y' && flag_set != 1) || getLoggedInState() == 'Y' ){
+		if((getLoggedInState() != 'Y' && flag_set != 1)){
+			createCookie(cookieName,1,1);
+		}
+		var username ='';
+		username = document.getElementById("fbc_postedBy"+commentId).innerHTML;
+		/*var userid = '';
+		userid = getLoggedInUserId();
+		if (userid != null && userid != '') {*/
+			var fullURL = ajaxURL + "?controller=Ajax";
+			var queryParams =
+				{
+					"requestedController" :"Comment",
+					"requestedMethod" :"reportthisComment",
+					"loggedIn" :getLoggedInState(),
+					"commentID" :commentId,
+					"reportedBy":username
+				};
+			if (userParams != null) {
+				queryParams = appendUserParamObjects(queryParams, userParams);
+			}
+			if (clientParams != null) {
+				queryParams = appendJSObjects(queryParams, clientParams);
+			}
+
+			jQuery.ajax(
+				{
+					type :"GET",
+					url :fullURL,
+					data :queryParams,
+					dataType :"jsonp",
+					success : function(data)
+					{
+						alert('Thanks for reporting. Your report has been sent to an administrator.');
+					},
+					error : function(request, textStatus, thrownError)
+					{
+					}
+				});
+
+	}else{
+		alert('Thanks for reporting. Your report has been sent to an administrator.');
+	}
+	
+	//}
+	
+}
+
+function deleteComment(commentId)
+{
+
+	var userid = '';
+	userid = getLoggedInUserId();
+	// No reason to proceed if the user isn't auth'd
+	if (userid != null && userid != '') {
+		var fullURL = ajaxURL + "?controller=Ajax";
+		var queryParams =
+			{
+				"requestedController" :"Comment",
+				"requestedMethod" :"deleteComment",
+				"commentID" :commentId
+			};
+
+		if (userParams != null) {
+			queryParams = appendUserParamObjects(queryParams, userParams);
+		}
+
+		if (clientParams != null) {
+			queryParams = appendJSObjects(queryParams, clientParams);
+		}
+
+		jQuery.ajax(
+			{
+				type :"GET",
+				url :fullURL,
+				data :queryParams,
+				dataType :"jsonp",
+				success : function(data)
+				{
+					if (data.error != ''){
+						alert(data.error);
+					} else {
+						alert('The comment has been deleted');
+						responseHandler(data,'Comments');
+					}
+				},
+
+				error : function(request, textStatus, thrownError)
+				{
+				}
+			});
+	}
+}
+
+function getLoggedInUserId()
+{
+	var userid = '';
+	for ( var name in userParams) {
+
+		if (name.indexOf('user') != -1) {
+			userid = userParams[name];
+		}
+	}
+
+	return userid;
+}
+
+function getLoggedInState(){
+	if (loggedInContainerSite) {
+		return 'Y';
+	}
+
+	for ( var name in userParams) {
+		if (name.indexOf('user') != -1 || name.indexOf('sn_nbc') != -1) {
+			if (userParams[name] != '' && userParams[name] != 'undefined'){
+				return 'Y';
+			}
+		}
+	}
+	
+	return 'N';
+}
+
+function getFBconnectedState() {
+	for ( var name in userParams) {
+		if (name.indexOf('user') != -1) {
+			if (userParams[name] != '' && userParams[name] != 'undefined'){
+				return 'Y';
+			}
+		}
+	}
+	
+	return 'N';
+}
+function trim(str)
+{
+	/*
+	 * var l = 0; var r = s.length - 1; while (l < s.length && s[l] == ' ') { l++; }
+	 * while (r > l && s[r] == ' ') { r -= 1; } return s.substring(l, r + 1);
+	 */
+	return jQuery.trim(str);
+}
+
+function processAndRenderFacebookData(facebookParams)
+{
+	var elements = new Object();
+	var i = 0;
+	for ( var name in facebookParams) {
+		switch (name)
+		{
+			case "Pic":
+				elements[i] = new FB.XFBML.ProfilePic(jQuery("#" + facebookParams[name]));
+				break;
+			case "Name":
+				elements[i] = new FB.XFBML.Name(jQuery("#" + facebookParams[name]));
+				break;
+
+		}
+		i++;
+	}
+	FB.XFBML.Host.addElements(elements);
+}
+
+function addSelectedFriend(friendId)
+{
+	var showFriendFlag = 'Y'
+	var totalInvitees = invitelist.length;
+	if (totalInvitees > 0) {
+		for (i = 0; i < totalInvitees; i++) {
+			if (invitelist[i] == friendId) {
+				showFriendFlag = 'N'
+				invitelist.splice(i, 1);
+				break;
+			}
+		}
+	}
+	if (showFriendFlag == 'Y') {
+		showFriendSelected(friendId);
+		invitelist[totalInvitees] = friendId;
+	} else {
+		unselectFriend(friendId);
+	}
+}
+
+function notficationConfirm()
+{
+	if (invitelist.length > 0) {
+		if (invitelist.length == 1) {
+			var answer = confirm("Are you sure you want to invite this friend?");
+		} else {
+			var answer = confirm("Are you sure you want to invite these friends?");
+		}
+
+		if (answer) {			
+			inviteFriends();
+		} else {
+			return false;
+		}
+	} else {
+		alert('Please select atleast one friend to invite');
+		return false;
+	}
+}
+
+ function refreshCommentsSection()
+ {
+ 	return;
+	 if(commentPageNumber==1&& commentSectionIsFriends=='N'&& trim(jQuery("#fbc_userComment").val())=='' && refreshComments == 1)
+	 {
+	   	renderComments('1', 'N');
+	 }	
+ } 
+ 
+ function autoRefresh(){
+  showBusyTag = "N";
+  refreshingComments = "Y";
+  var usercomments = trim(jQuery("#fbc_userComment").val());
+  var userName = trim(jQuery("#fbc_postedBy").val());
+  var userEmail = trim(jQuery("#fbc_postedUserEmailId").val());
+  var commentEditId = trim(jQuery("#fbc_editUserComment").val()); 
+  
+  if (getLoggedInState() == "Y") {
+	  if(commentPageNumber == 1 && usercomments == '' && commentEditId == ''){
+	    renderComments('1', 'N');
+	  }
+  } else {
+	  if(commentPageNumber == 1 && usercomments == '' && userName == '' && userEmail == ''){
+	    renderComments('1', 'N');
+	  }
+  }
+ }
+ 
+
+/*function checkAndReinstantiateJquery(){	
+	if($ == '' || $ == 'undefined' || $ == null ){		
+		$ = jQuery;
+	}
+}*/
+
+function facebook_onload_functions(){
+/* facebook_onload_functions are defined in clientParams
+ * Read the onload functions defined and call them
+ */
+ if (facebook_onload_function){
+ 	return;
+ }
+ facebook_onload_function = 1;
+ var loadFunction = '';
+ for (var i=0; i < clientParams.onLoginReadyFunctions.functions.length; i++){
+ 	loadFunction = eval(clientParams.onLoginReadyFunctions.functions[i].name+"()");
+ 	loadFunction;
+ }
+
+}
+
+function executeCallbackfunctions(functionArr) {
+	 var loadFunction = '';
+	 for (var i=0; i < functionArr.length; i++){
+	 	loadFunction = eval(functionArr[i]+"()");
+	 	loadFunction;
+	 }
+}
+
+ function displayEditTextBox(commentId){
+ editCommentId = commentId;
+     if(editedCommentArray[commentId] != '' && editedCommentArray[commentId] != null && editedCommentArray[commentId] != 'undefined' && typeof editedCommentArray[commentId] != 'undefined'){
+        commentText = editedCommentArray[commentId];
+     }else{
+        commentText = jQuery("#"+commentId).html();
+     }
+  var with_this = "<br>";
+  var replace = "\n";	
+  commentText = trim(commentText);
+  commentText = replaceAll(commentText,with_this,replace);
+  
+  var with_this = "<br />";
+  var replace = "\n";	
+  commentText = trim(commentText);
+  commentText = replaceAll(commentText,with_this,replace);
+  
+  var with_this = "<BR>";
+  var replace = "\n";	
+  commentText = trim(commentText);
+  commentText = replaceAll(commentText,with_this,replace);
+
+       output = '<textarea name="text" class="fbc_commentText" id="fbc_editUserComment" >'+commentText+'</textarea>'; 
+        jQuery("#"+commentId).html(output);
+        jQuery("#fbc_editComment"+commentId).css({display:"block"});
+        jQuery('#fbc_editTextBox'+commentId).css({display:"none"});
+ }
+ function editComment(commentId,contentId)
+  {
+  var userid = '';
+  var replace = "\\n";	
+  var with_this = "<br />";
+  isUserEditing = 1;
+  editCommentId = commentId;
+  userid = getLoggedInUserId();
+  fbConnectedState = getFBconnectedState();
+  var commentText = jQuery("#fbc_editUserComment").val();
+  commentText = trim(commentText);
+  commentText = replaceAll(commentText,replace,with_this);
+  commentText = replaceAll1(commentText,replace,with_this);
+
+   if (commentText.length <= 0) {
+   // alert('Please enter your comments');
+   dialogContent = "Please enter your comments";
+   openModal(dialogContent,fbConnectedState,editCommentId);
+   jQuery("#fbc_editUserComment").val("");
+   document.getElementById("fbc_editUserComment").focus();
+   isUserEditing = 0;
+   return false;
+  }
+          
+  // No reason to proceed if the user isn't auth'd
+  if (userid != null && userid != '') {
+    var fullURL = ajaxURL + "?controller=Ajax";
+    var queryParams =
+      {
+        "requestedController" :"Comment",
+        "requestedMethod" :"editthisComment",
+        "commentID" :commentId,
+        "commentText":commentText,
+        "contentID" : contentId,
+        "PageNumber" : commentPageNumber 
+      };
+
+    if (userParams != null) {
+      queryParams = appendUserParamObjects(queryParams, userParams);
+    }
+
+    if (clientParams != null) {
+      queryParams = appendJSObjects(queryParams, clientParams);
+    }
+
+    jQuery.ajax(
+      {
+        type :"GET",
+        url :fullURL,
+        data :queryParams,
+        dataType :"jsonp",
+        success : function(data)
+        {
+                                         if(data.isBadWord=='YES'){
+                                    dialogContent = "Hello - somewhere in your post is a less-than-nice word. Please remove it to have your post go live.";
+                                    openModal(dialogContent,fbConnectedState,editCommentId);                             
+                                   // closeModalObj = setTimeout("closeModal()",6000);
+                           }else {
+                                      
+                                      jQuery("#"+commentId).html(commentText);
+                                      editedCommentArray[commentId] = commentText;  
+                                      jQuery("#fbc_editComment"+commentId).css({display:"none"});
+                                      jQuery('#fbc_editTextBox'+commentId).css({display:"block"});
+                                      jQuery("#fbc_errorMsg").css({display:"none"});
+
+            //responseHandler(data,'Comments');
+          }
+                              
+          if (data.error != ''){
+            //alert(data.error);
+          } 
+        },
+
+        error : function(request, textStatus, thrownError)
+        {
+        }
+      });
+  }
+  isUserEditing = 0;
+}
+
+
+
+function setRating(elm) {
+ 	if (disableRatingHover) {
+ 		return false;
+ 	}
+	thisIndex = jQuery("div.rating ul li a").index(elm);
+	fbc_page['modules']['ratings']['current_item']['rating'] = thisIndex + 1;
+	jQuery("div.rating ul li a").unbind().css({"cursor":"default"});
+	disableRatingHover = 1;
+}
+
+function changeRating(elm) {
+/* this function is used to change the rating
+ * when user hovers over the stars
+ */
+ 	if (disableRatingHover) {
+ 		return false;
+ 	}
+	thisIndex = jQuery("div.rating ul li a").index(elm);
+	jQuery("div.rating ul li:lt(" + (thisIndex + 1) + ")").addClass("active");
+	jQuery("div.rating ul li:gt(" + thisIndex + ")").removeClass("active");
+}
+
+function resetRating() {
+/* this function will reset the ratings to original ratings
+ * based on the value stored in setRatingValue
+ */
+ 	if (disableRatingHover) {
+ 		return false;
+ 	}
+ 	jQuery("div.rating ul li").removeClass("active").slice(0,fbc_page['modules']['ratings']['current_item']['rating']).addClass("icon_rating_def");
+}
+
+function responseHandler(data,contentType) {
+/* this function will handle the response from AJAX
+ * this will return JSON or draw html
+ */
+ if (notDrawingHTML) {
+ 	return data;
+ }
+ getBrowserType();
+ data.pageName = clientParams.pageName;
+ data.userId = getLoggedInUserId();
+ data.browserType = browserType;
+ data.browserVersion = browserVersion;
+ data.mozillaVersion = mozillaVersion;
+ data.fbconnected = getFBconnectedState();
+ data.loggedInContainerSite = loggedInContainerSite;
+ data.loggedIn = getLoggedInState();
+ switch (contentType){
+ 	case "Comments":
+		displayComments(data);
+ 		break;
+ 	case "Rating":
+ 		var ratingTemplate = '';
+ 		if (data.ratingInfo.COMMENTRATINGCOUNT === null) {
+ 			data.ratingInfo.COMMENTRATINGCOUNT = 0;
+ 		}
+ 		if (data.pageName == 'video' && fbcClientId == "usa") {
+ 			ratingTemplate = getVideoStarRatingTemplate();
+ 		} else {
+ 			ratingTemplate = getStarRatingTemplate();
+ 		}
+ 		var ratingData = jQuery("#rating_area").parseTemplate(ratingTemplate,data);
+ 		jQuery("#rating_area").html(ratingData);
+		if (clientParams.showName.toLowerCase() == 'syfy.com') {
+			jQuery("#fbc_mainContainerBG").removeClass('fbc_mainContainerBG'+browserType);
+			jQuery("#fbc_mainContainerBG").addClass('fbc_mainContainerBG');
+			jQuery("#fbc_featured_video_rating").addClass('fbc_featured_video_ratingsyfy');
+			jQuery("#fbc_innercontentLeft_id").removeClass('fbc_innercontentLeft');
+			jQuery("#fbc_innercontentLeft_id").addClass('fbc_innercontentLeftsyfy');
+			if (typeof clientParams.pageName != 'undefined' && clientParams.pageName == 'default') {
+				if (browserVersion == 'msie6') {
+					jQuery("#fbc_mainContainerBG").addClass('fbc_mainContainerBGmsie6syfydefault');
+					jQuery("#fbc_featured_video_rating").css({margin:"8px 0 0 0 ! important"});
+				} else {
+					jQuery("#fbc_mainContainerBG").addClass('fbc_mainContainerBGsyfydefault');
+				}
+				jQuery("#rating_area").css({width:"132px"});
+				if (browserType == 'msie') {
+					jQuery("#rating_area").css({width:"685px", background:"#ffffff"});
+				}
+			}
+		} 		
+		if (clientParams.showName.toLowerCase() == 'visionsfortomorrow.net') {
+			jQuery("#fbc_mainContainerBG").removeClass('fbc_mainContainerBG'+browserType);
+			jQuery("#fbc_mainContainerBG").addClass('fbc_mainContainerBGvision'+browserType);
+			jQuery("#fbc_innercontentLeft_id").removeClass('fbc_innercontentLeft');
+			jQuery("#fbc_innercontentLeft_id").addClass('fbc_innercontentLeftvisions');
+		} 	
+		if (typeof clientParams.showName != 'undefined' && (clientParams.showName.toLowerCase() == 'dvice.com' || clientParams.showName.toLowerCase() == 'scifiwire.com' || clientParams.showName.toLowerCase() == 'fidgit.com')) {
+			if (browserVersion == 'msie6') {
+				jQuery("#fbc_mainContainerBG").removeClass('fbc_mainContainerBG'+browserType);
+				jQuery("#fbc_mainContainerBG").addClass('fbc_mainContainerBGmsie6');
+			}
+		}
+		break;
+ 	case "Poll":
+ 		break;
+ 	case "LoginHeader":
+ 		var headerTemplate = getLoginHeaderTemplate();
+ 		var headerData = jQuery("#header_section").parseTemplate(headerTemplate,data);
+ 		jQuery("#header_section").html(headerData);
+ 		refreshXFBML();
+		break;
+ 	case "LikeIt":
+ 		var likingTemplate = '';
+ 		if (data.ratingInfo.COMMENTRATINGCOUNT === null) {
+ 			data.ratingInfo.COMMENTRATINGCOUNT = 0;
+ 		}
+ 		
+ 		likingTemplate = getLikeItTemplate();
+ 		var likingData = jQuery("#likeIt").parseTemplate(likingTemplate,data);
+ 		jQuery("#likeIt").html(likingData);
+ 		refreshXFBML();
+ 		break;
+ }
+}
+
+function popUpMergeBox(){
+	jQuery('#fbc_mergeBoxFormContent').hide();
+	jQuery('#fbc_snasFailedErrMsg').hide();
+	jQuery('#fbc_mergeBoxMessageContent').show();
+	jQuery('#fbc_popUpMergeBox').show();
+	refreshComments = 0;
+}
+
+function popUpMergeForm(){
+	jQuery('#fbc_mergeBoxMessageContent').hide();
+	jQuery('#fbc_mergeBoxFormContent').show();
+}
+
+function popupLogin(e)
+{
+  refreshComments = 0;
+  //getting height and width of the message box
+  var height = jQuery('#fbc_loginPopup').height();
+  var width = jQuery('#fbc_loginPopup').width();
+  //calculating offset for displaying popup message
+  leftVal=e.pageX-(width/2)+"px";
+  topVal=e.pageY-(height/2)+"px";
+  //show the popup message and hide with fading effect
+  jQuery('#fbc_loginPopup').css({left:"350px",top:"10px"}).show();
+}
+
+function closePopup(elementId){
+	jQuery("#"+elementId).hide();
+	refreshComments = 1;
+}
+
+function toggleComments() {
+	switch(jQuery('#display_comments').css('display')) {
+		case 'none':
+			jQuery('#display_comments').css({display:"block"});
+			jQuery('#fbc_toggleCommentsLink').addClass('fbc_open');
+			
+		if (clientParams.showName.toLowerCase() == 'fidgit.com') {
+		if (browserType == 'msie' ) {			
+			jQuery("#fbc_toggleCommentsLink").removeClass("fbc_arrow_rightmsiefidgit");
+			jQuery('#fbc_toggleCommentsLink').removeClass('fbc_open');
+			jQuery("#fbc_toggleCommentsLink").addClass("fbc_arrow_rightmsiefidgitfbc_open");			
+		 }
+		}
+		if (clientParams.showName.toLowerCase() == 'dvice.com') {
+		if (browserType == 'msie' ) {			
+			jQuery("#fbc_toggleCommentsLink").removeClass("fbc_arrow_rightmsiedvice");
+			jQuery('#fbc_toggleCommentsLink').removeClass('fbc_open');
+			jQuery("#fbc_toggleCommentsLink").addClass("fbc_arrow_rightmsiedvicefbc_open");			
+		 }
+		}
+		if (clientParams.showName.toLowerCase() == 'scifiwire.com') {
+		if (browserType == 'msie' ) {			
+			jQuery("#fbc_toggleCommentsLink").removeClass("fbc_arrow_rightmsiewire");
+			jQuery('#fbc_toggleCommentsLink').removeClass('fbc_open');
+			jQuery("#fbc_toggleCommentsLink").addClass("fbc_arrow_rightmsiewirefbc_open");			
+		 }
+		}
+		if (clientParams.showName.toLowerCase() == 'caprican') {
+		if (browserType == 'msie' ) {			
+			jQuery("#fbc_toggleCommentsLink").removeClass("fbc_arrow_rightmsiecaprican");
+			jQuery('#fbc_toggleCommentsLink').removeClass('fbc_open');
+			jQuery("#fbc_toggleCommentsLink").addClass("fbc_arrow_rightmsiecapricanfbc_open");			
+		 }
+		}
+			break;
+		case 'block':
+			jQuery('#display_comments').css({display:"none"});
+			jQuery('#fbc_toggleCommentsLink').removeClass('fbc_open');
+
+		if (clientParams.showName.toLowerCase() == 'fidgit.com') {
+		if (browserType == 'msie' ) {
+			jQuery("#fbc_toggleCommentsLink").removeClass("fbc_arrow_rightmsiefidgitfbc_open");
+			jQuery("#fbc_toggleCommentsLink").addClass("fbc_arrow_rightmsiefidgit");			
+		 }
+		}
+		if (clientParams.showName.toLowerCase() == 'dvice.com') {
+		if (browserType == 'msie' ) {
+			jQuery("#fbc_toggleCommentsLink").removeClass("fbc_arrow_rightmsiedvicefbc_open");
+			jQuery("#fbc_toggleCommentsLink").addClass("fbc_arrow_rightmsiedvice");			
+		 }
+		}
+		if (clientParams.showName.toLowerCase() == 'scifiwire.com') {
+		if (browserType == 'msie' ) {
+			jQuery("#fbc_toggleCommentsLink").removeClass("fbc_arrow_rightmsiewirefbc_open");
+			jQuery("#fbc_toggleCommentsLink").addClass("fbc_arrow_rightmsiewire");			
+		 }
+		}
+		if (clientParams.showName.toLowerCase() == 'caprican') {
+		if (browserType == 'msie' ) {
+			jQuery("#fbc_toggleCommentsLink").removeClass("fbc_arrow_rightmsiecapricanfbc_open");
+			jQuery("#fbc_toggleCommentsLink").addClass("fbc_arrow_rightmsiecaprican");			
+		 }
+		}
+			break;
+		default:
+			jQuery('#display_comments').css({display:"none"});
+			jQuery('#fbc_toggleCommentsLink').removeClass('fbc_open');
+			break;
+	}
+}
+
+function getBrowserType(){
+	jQuery.each(jQuery.browser, function(i, val) {
+      if (val == true){
+      	browserType = i;
+      }
+    });	
+    if (browserType == 'msie' && jQuery.browser.version == '6.0'){
+    	browserVersion = 'msie6';
+    }
+    if (browserType == 'mozilla') { 
+    	browsername = navigator.userAgent.split(" ");  
+    	strLength = browsername.length;
+    	for (var i = 0; i < strLength; i++) {
+    		if (browsername[i].indexOf('firefox') != -1 || browsername[i].indexOf('Firefox') != -1) {
+		    	currentBrowser = browsername[i];
+		    	currBrowserArr = currentBrowser.split("/");
+	    	}
+    	}
+    	if (typeof currBrowserArr[1] != 'undefined') {
+    		mozillaVersion = currBrowserArr[1].substr(0,3);
+    	}
+    }
+}
+
+function trigger_facebook_onload_function(){
+	processAuthenticationParams();
+	getUserProfile();	
+	facebook_onload_function = 0;
+	facebook_onload_functions();
+}
+
+function reloadFBComponents(){
+	renderMainSection();
+	renderFBCVideoRating();
+}
+
+function publishFeeds() {
+	facebook_publish_feed_story(template_id_for_rating,template_data_for_rating);
+}
+
+function validateLaunchTime(){
+	return true;
+	var currentDate = new Date();
+	var cookieName = "user_has_enabled_cookie_set";
+	var cookieValue = getCookieValue(cookieName);
+	var returnValue = false;
+	if (cookieValue == 'Y'){
+		//alert ("User has cookie set");		
+		returnValue = true;
+	}else{	
+	  //alert ("User does not have launch enabled cookie set");
+	 //alert(currentDate.toGMTString());
+	 //alert(launchTime.toGMTString());
+	 var utcLaunchTime = Date.UTC(launchTime.getYear(),launchTime.getMonth(),launchTime.getDate(),launchTime.getHours(),launchTime.getMinutes(),launchTime.getSeconds()) ;
+	 var utcCurrentDate = Date.UTC(currentDate.getYear(),currentDate.getMonth(),currentDate.getDate(),currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds()) ;
+	 //alert('Launch time is '+utcLaunchTime);
+	 //alert('Current time is '+utcCurrentDate);
+	  if(utcCurrentDate  >= (utcLaunchTime + 1*40*60*1000)){
+		  returnValue = true;
+	  }else{		 
+		switch (getTimeZone(currentDate)){
+		case "EST":
+			//alert("EST")
+			if(isWinningUser()){
+				createCookie(cookieName,'Y','');
+				returnValue = true;
+			}
+			break;		 
+		case "PST":
+			//alert("PST")
+			if(isWinningUser() && (utcCurrentDate >= (utcLaunchTime + 3*60*60*1000))){
+				createCookie(cookieName,'Y','');
+				returnValue = true;
+			}
+			break;
+		case "CST":
+			//alert("CST")
+			if(isWinningUser() && (utcCurrentDate >= (utcLaunchTime + 1*60*60*1000))){
+				createCookie(cookieName,'Y','');
+				returnValue = true;
+			}
+			break;
+		case "MST":
+			//alert("MST")
+			if(isWinningUser && (utcCurrentDate >= (utcLaunchTime+ 1*60*60*1000))){
+				createCookie(cookieName,'Y','');
+				returnValue = true;
+			} 		
+		
+		}
+	  }
+	}
+	//alert (returnValue);
+	return returnValue;
+}
+
+function getCookieValue(cookieName){
+	var userCookies = document.cookie.split(';');
+	for ( var i = 0; i < userCookies.length; i++) {
+		if (userCookies[i].indexOf(cookieName) != -1 ) {
+			var attribute = userCookies[i].split('=');
+			return attribute[1];			
+		}
+	}
+}
+
+function getTimeZone(dateValue){
+	var offset = (dateValue.getTimezoneOffset()/ 60) +  getDayLightSavings();
+	if (offset == 5){
+		return "EST";
+	}else if(offset == 6){
+		return "CST";
+	}else if(offset == 7){
+		return "MST";
+	}else if(offset == 8){
+		return "PST";
+	}else{
+		return "";
+	}
+
+}
+
+function getDayLightSavings(){ 
+	var gmt = new Date;
+	var lsm = new Date;
+	var lso = new Date;
+	lsm.setMonth(2); // March
+	lsm.setDate(31);
+	var day = lsm.getDay();// day of week of 31st
+	lsm.setDate(31-day); // last Sunday
+	lso.setMonth(9); // October
+	lso.setDate(31);
+	day = lso.getDay();
+	lso.setDate(31-day);
+	if (gmt < lsm || gmt >= lso) 
+		return 0
+	else
+		return 1;
+}
+
+function isWinningUser(){
+	var randomNumber = Math.floor(Math.random()*100);
+    var winningNumber = 10;
+    var returnValue = false;
+	if(winningNumber == randomNumber){
+		returnValue = true;
+	}else{
+		returnValue = false;
+	}
+	//alert('Winning User statust' +returnValue);
+	return returnValue;
+	
+}
+function renderLikeItMainSection(){
+	var data = new Object();
+	data.userId = getLoggedInUserId();
+	data.clientParams = clientParams;
+    data.imgURL = baseURL+'img/';
+    //var templateContent = getLikeItTemplate();
+    //var likeItData = jQuery('#likeit_area').parseTemplate(templateContent,data);
+    //jQuery('#likeit_area').html(likeItData);
+	renderLikeIt();
+}
+
+function renderLikeIt()
+{   
+	contentType = 'Rating';
+	//var contentId = '15242410';
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	//var fullURL = ajaxURL + "?contentId="+contentId+"&requestedController=Rating&requestedMethod=getFBCVideoRatingInterface&callback=?";
+	var queryParams =
+		{
+			"contentTitle" :clientParams.content.contentTitle,
+			"requestedController" :"Rating",
+			"loggedIn" :getLoggedInState(),
+			"requestedMethod" :"getFBCVideoRatingInterface",
+			"showName" :clientParams.showName
+		};
+	queryParams = jQuery.extend(queryParams, userParams);
+	
+	jQuery.jsonp({
+		"url" : fullURL,
+		"cache":false,
+		"pageCache" : "false",
+		"data" : queryParams,
+		"callback" :"getFBCVideoRatingCallback",
+		"success" : function(data) {	
+				responseHandler(data,'LikeIt');
+			},
+			error : function(request, textStatus, thrownError) {		
+			}
+	});
+}
+/*
+ * jQuery JSONP Core Plugin 1.0.6 (2009-07-15)
+ * 
+ * http://code.google.com/p/jquery-jsonp/
+ *
+ * Copyright (c) 2009 Julian Aubourg
+ *
+ * This document is licensed as free software under the terms of the
+ * MIT License: http://www.opensource.org/licenses/mit-license.php
+ */
+(function(jQuery){
+	
+	// ###################### UTILITIES ##
+	// Test a value is neither undefined nor null
+	var defined = function(v) {
+		return v!==undefined && v!==null;
+	},
+	
+	// Head element (for faster use)
+	head = jQuery("head"),
+	// Page cache
+	pageCache = {},
+	
+	// ###################### DEFAULT OPTIONS ##
+	xOptionsDefaults = {
+		//beforeSend: undefined,
+		//cache: false,
+		callback: "C",
+		//callbackParameter: undefined,
+		//complete: undefined,
+		//data: ""
+		//dataFilter: undefined,
+		//error: undefined,
+		//pageCache: false,
+		//success: undefined,
+		//timeout: 0,		
+		url: location.href
+	},
+
+	// ###################### MAIN FUNCTION ##
+	jsonp = function(xOptions) {
+		
+		// Build data with default
+		xOptions = jQuery.extend({},xOptionsDefaults,xOptions);
+		
+		var beforeSendCallback = xOptions.beforeSend;
+
+		// Call beforeSend if provided
+		// (early abort if false returned)
+		if (defined(beforeSendCallback)) {
+			var aborted = 0;
+			xOptions.abort = function() { aborted = 1; };
+			if (beforeSendCallback(xOptions,xOptions)===false || aborted) return xOptions;
+		}
+		
+		// Control entries & data type
+		// + declare variables
+		var
+		empty="",
+		amp="&",
+		qMark="?",
+		success = "success",
+		error = "error",
+		
+		successCallback = xOptions.success,
+		completeCallback = xOptions.complete,
+		errorCallback = xOptions.error,
+		
+		dataFilter = xOptions.dataFilter,
+		
+		callbackParameter = xOptions.callbackParameter,
+		
+		successCallbackName = xOptions.callback,
+
+		cacheFlag = xOptions.cache,
+		pageCacheFlag = xOptions.pageCache,
+		
+		url = xOptions.url,
+		data = xOptions.data,
+		
+		timeout = xOptions.timeout,
+		
+		// Keep current thread running
+		later = function(functor) { setTimeout(functor,1); },
+		
+		// Various variable
+		splitUrl,splitData,i,j;
+
+		// Control entries
+		url = defined(url)?url:empty;
+		data = defined(data)?((typeof data)=="string"?data:jQuery.param(data)):empty;
+		
+		// Add callback parameter if provided as option
+		defined(callbackParameter)
+			&& (data += (data==empty?empty:amp)+escape(callbackParameter)+"=?");
+		
+		// Add anticache parameter if needed
+		!cacheFlag && !pageCacheFlag
+			&& (data += (data==empty?empty:amp)+"_"+(new Date()).getTime()+"=");
+		
+		// Search for ? in url
+		splitUrl = url.split(qMark);
+		// Also in parameters if provided
+		// (and merge array)
+		if (data!=empty) {
+			splitData = data.split(qMark);
+			j = splitUrl.length-1;
+			j && (splitUrl[j] += amp + splitData.shift());
+			splitUrl = splitUrl.concat(splitData);
+		}
+		// If more than 2 ? replace the last one by the callback
+		i = splitUrl.length-2;
+		i && (splitUrl[i] += successCallbackName + splitUrl.pop());
+		
+		// Build the final url
+		var finalUrl = splitUrl.join(qMark),
+		
+		// Utility function
+		notifySuccess = function(json) {
+			// Apply the data filter if provided
+			defined(dataFilter) && (json = dataFilter(json));
+			// Call success then complete
+			defined(successCallback) && successCallback(json,success);
+			defined(completeCallback) && completeCallback(xOptions,success);				
+		},
+	    notifyError = function(type) {
+			// Call error then complete
+			defined(errorCallback) && errorCallback(xOptions,type);
+			defined(completeCallback) && completeCallback(xOptions,type);
+	    },
+	    
+	    // Get from pageCache
+	    pageCached = pageCache[finalUrl];
+		
+		// Check page cache
+		if (pageCacheFlag && defined(pageCached)) {
+			later(function() {
+				// If an error was cached
+				if (defined(pageCached.e)) notifyError(error);
+				else notifySuccess(pageCached.s);
+			});
+			return xOptions;
+		}
+		
+		// Create an iframe & add it to the document
+		var frame = jQuery("<iframe />").appendTo(head),
+		
+		// Get the iframe's window and document objects
+		tmp = frame[0],
+		window = tmp.contentWindow || tmp.contentDocument,
+		document = window.document,
+		
+		// Flag to know if the request has been treated
+		done = 0,
+		
+		// Declaration of cleanup function
+		cleanUp,
+		
+		// Error function
+		errorFunction = function (_,type) {
+			// If pure error (not timeout), cache if needed
+			pageCacheFlag && !defined(type) && (pageCache[finalUrl] = {e: 1}); 
+			// Cleanup
+			cleanUp();
+			// Call error then complete
+			notifyError(defined(type)?type:error);
+		},
+		
+		// Cleaning function
+		removeVariable = function(varName) {
+			window[varName] = undefined;
+			try { delete window[varName]; } catch(_) {}
+		},
+		
+		// Error callback name
+		errorCallbackName = successCallbackName=="E"?"X":"E";
+		
+		// Control if we actually retrieved the document
+		if(!defined(document)) {
+			document = window;
+		    window = document.getParentNode();
+		}
+		
+		// We have to open the document before
+		// declaring variables in the iframe's window
+		// Don't ask me why, I have no clue
+		document.open();
+		
+		// Install callbacks
+		
+		window[successCallbackName] = function(json) {
+			// Set as treated
+			done = 1;
+			pageCacheFlag && (pageCache[finalUrl] = {s: json});
+			// Give hand back to frame
+			// To finish gracefully
+			later(function(){
+				// Cleanup
+				cleanUp();
+				// Call success then complete
+				notifySuccess(json);
+			});
+		};
+		
+		window[errorCallbackName] = function(state) {
+			// If not treated, mark
+			// then give hand back to iframe
+			// for it to finish gracefully
+			(!state || state=="complete") && !done++ && later(errorFunction);
+		};
+		
+		// Clean up function (declaration)
+		xOptions.abort = cleanUp = function() {
+			removeVariable(errorCallbackName);
+			removeVariable(successCallbackName);
+			document.open()
+			document.write(empty);
+			document.close();
+			frame.remove();
+		};
+		
+		// Write to the iframe (sends the request)
+		// We let the hand to current code to avoid
+		// pre-emptive callbacks
+		
+		// We also install the timeout here to avoid
+		// timeout before the code has been dumped to the frame
+		// (in case of insanely short timeout values)
+		later(function() {
+			// Write to the document
+			document.write([
+				'<html><head><script src="',
+				finalUrl,'" onload="',
+				errorCallbackName,'()" onreadystatechange="',
+				errorCallbackName,'(this.readyState)"></script></head><body onload="',
+				errorCallbackName,'()"></body></html>'
+			].join(empty)
+			);
+			// Close (makes some browsers happier)
+			document.close();
+			// If a timeout is needed, install it
+			timeout>0 && setTimeout(function(){
+					!done && errorFunction(empty,"timeout");
+			},timeout);
+		});
+		
+		return xOptions;
+	}
+	
+	// ###################### SETUP FUNCTION ##
+	jsonp.setup = function(xOptions) {
+		jQuery.extend(xOptionsDefaults,xOptions);
+	};
+
+	// ###################### INSTALL in jQuery ##
+	jQuery.jsonp = jsonp;
+	
+})(jQuery);
+

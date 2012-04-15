@@ -1,0 +1,28 @@
+
+
+jQuery(document).ready(function(){
+						   
+	var response = '';
+	
+	jQuery.ajax({ url: "/mapview/is_premium", type:'GET', async: false, cache: false, success: function(text) { response = text; } });
+
+	if (response == 'true') {
+		jQuery('.header_nav_logged_in').css({display: 'block'});	
+		jQuery('.header_nav_logged_out').css({display: 'none'});
+		jQuery('#header_search_friends').css({display: 'block'});
+		jQuery('#button_settings').css({display: 'block'});
+	}
+	
+	jQuery('.faq_list a').click(function(event){
+		event.preventDefault();
+		var full_url = this.href;
+		var parts = full_url.split("#");
+		var target = parts[1];
+		var target_position = jQuery('#'+target).position();
+		var target_top = target_position.top - 20;
+		jQuery('#main_panel_content').animate({scrollTop:target_top}, 800);		
+	});
+
+
+});
+

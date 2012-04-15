@@ -1,0 +1,1358 @@
+
+
+var hPriceWord = '300';
+var hPriceMax = '9999999';
+var hPriceMin = '600';
+var hExcludeLength = '0';
+var hExcludeChars = '$,#,&';
+
+
+var sPriceWord = '300';
+var sPriceMax = '9999999';
+var sPriceMin = '600';
+var sExcludeLength = '0';
+var sExcludeChars = '';
+
+var monogramInitial = '607665,562593,607652,562580,634340,634353,640062'.split(",");
+
+// the var: uiIsClearForImageUpdate is used to prevent widget/img js issues
+// when the onblur event of messageText is fired by the clicking to move to a different zone.
+// this causes a call to update the image when the html of the image area does not exist
+// function goToZone in persistent_cart.jsp sets this to false
+// function updateImage in personalization_message.jsp checks this before updating an image
+window.uiIsClearForImageUpdate = true;
+
+var monthNames=new Array(12);
+monthNames["January"] = "0";
+monthNames["February"] = "1";
+monthNames["March"] = "2";
+monthNames["April"] = "3";
+monthNames["May"] = "4";
+monthNames["June"] = "5";
+monthNames["July"] = "6";
+monthNames["August"] = "7";
+monthNames["September"] = "8";
+monthNames["October"] = "9";
+monthNames["November"] = "10";
+monthNames["December"] = "11";
+
+
+var persistentCartCommands = new Array(9);
+var csrfTokens = new Array(9);
+csrfTokens[0] = ''; // JSP
+csrfTokens[1] = 'q8WjtFOjWCBdjr3QKMAi29L4iVA=iTvW+HX+J88=';
+csrfTokens[2] = 'tWqRjz6dwwIvA+CQGFjJ1TeyfRQ=7e6VmyiF1eE=';
+csrfTokens[3] = 'ZTuPBDWOYxCF6wawhMcdV++jw0U=MKMEIiy/vys=';
+csrfTokens[4] = 'sjKOvWNrzHER1Z0XS3MRED72wCo=0hT6qn9Po0w=';
+csrfTokens[5] = 'BrI5UIJQ16SvYUAeIAuc/lktnWY=6E98by+7WSg=';
+csrfTokens[6] = '6yPN+Z1VqoxSWhChjocHybBPWho=6YCZd4tNGEY=';
+csrfTokens[7] = ''; // JSP
+csrfTokens[8] = 'M2UU3pkyyMC1Z+AEG0VxbxiWqBs=Gb/oaFrcuRo=';
+csrfTokens[9] = 'U6gBgZupIvtnwhZxD9OKHykjzKg=eAYFqpKZX6E=';
+
+persistentCartCommands[0] = '/checkout/universal_cart.jsp';
+persistentCartCommands[1] = '/checkout/add_item_pc.cmd';
+persistentCartCommands[2] = '/checkout/add_items_pc.cmd';
+persistentCartCommands[3] = '/checkout/delete_item_in_cart.cmd';
+persistentCartCommands[4] = '/checkout/add_catalog_order_item_pc.cmd';
+persistentCartCommands[5] = '/user/add_wishlist_item_to_basket_pc.cmd';
+persistentCartCommands[6] = '/user/add_all_wishlist_items_to_basket_pc.cmd';
+persistentCartCommands[7] = '/user/instore_pickup_zip_json_pc.jsp';
+persistentCartCommands[8] = '/checkout/save_personalization_pc.cmd';
+persistentCartCommands[9] = '/checkout/save_photo_pc.cmd';
+
+var persistentCartContainerId = "#widget-ucart";
+var persistentCartCloseButClass = ".widget-ucart-close-but";
+var hideTimeOuts= new Array();
+var zoneCodeArray = new Array();
+
+var ucartLoadingHTML = 	'<div id="widget-ucart">' +
+				 		'  <div id="glo-ucart-top" class="widget-ie6png"><!--  --></div>' +
+				  		'  <div id="glo-ucart-body" class="widget-ie6png">' +
+				  		'    <div id="glo-ucart-content">'+
+				  		'	   <div class="widget-ima-loader"><img src="http://www.thingsremembered.com/assets/images/common/loading.gif" alt="Loading..." /></div>' +
+				  		'    </div>' +
+				  		'  </div>' +
+				  		'  <div id="glo-ucart-bottom" class="widget-ie6png"><!--  --></div>' +
+  				  		'</div>';
+
+var ucartSimpleHTML = 	'<div id="widget-ucart"></div>';
+
+var persistentCartIsShowing = false;
+var submitAddToCartForm = true;
+var saveZoneInfo = false;
+var savePhotoInfo = false;
+
+/* Function(s) to Show the Basket Layer */
+function showBasket(action,params,refreshPage,refreshDelayTime) {
+	var csrfToken = '';
+	if( (action == "show") || (action == "showFromQuickview") ) {
+		showloading(ucartLoadingHTML); requestURL = persistentCartCommands[0];
+	} else if(action == "addProduct") {
+		showloading(ucartSimpleHTML);
+		requestURL = persistentCartCommands[1];
+		csrfToken = csrfTokens[1];
+	} else if(action == "editProduct") {
+		showloading(ucartSimpleHTML);
+		requestURL = persistentCartCommands[1];
+		csrfToken = csrfTokens[1];
+	} else if(action == "addEnsemble") {
+		showloading(ucartSimpleHTML);
+		requestURL = persistentCartCommands[2];
+		csrfToken = csrfTokens[2];
+	} else if(action == "remove") {
+		showloading(ucartLoadingHTML);
+		requestURL = persistentCartCommands[3];
+		csrfToken = csrfTokens[3];
+	} else if(action == "addCatalogItems") {
+		showloading(ucartSimpleHTML);
+		requestURL = persistentCartCommands[4];
+		csrfToken = csrfTokens[4];
+	} else if(action == "addProductWishlist") {
+		showloading(ucartSimpleHTML);
+		requestURL = persistentCartCommands[5];
+		csrfToken = csrfTokens[5];
+	} else if(action == "addAllProductsWishlist") {
+		showloading(ucartSimpleHTML);
+		requestURL = persistentCartCommands[6];
+		csrfToken = csrfTokens[6];
+	} else {
+		alert("missing action");
+	}
+
+	requestURL = requestURL;
+	params = "ts=" + timestamp() + "&action=" + action + "&" + params;
+	params = params + addCsrfToken(csrfToken);
+	$.ajax({
+		type: "POST",
+		url: requestURL,
+		data: params,
+		dataType: "html",
+		timeout: 15000,
+		success: function(data) {
+			hideloading();
+			$(persistentCartContainerId).append(data);
+			$(persistentCartContainerId).show();
+			if (refreshPage != undefined && refreshPage) {
+				setTimeout( function() { location.reload(true); }, (refreshDelayTime != undefined) ? refreshDelayTime : 0);
+			}
+			persistentCartIsShowing = true;
+			submitAddToCartForm = true;
+			return true;
+		},
+		error: function() {
+			hideloading();
+			return false;
+		}
+	});
+}
+
+function addCsrfToken(csrfToken) {
+	if (csrfToken != '') {
+		return "&CSRF_TOKEN=" + encodeURIComponent(csrfToken);
+	}
+	return;
+}
+
+function showNextStepsLayer(itemQuantity) {
+	var success = validateForm(".zoneBody");
+	if (success == false){
+		return false;
+	}else{
+   	lib.layer.create("#whatToDoNextLayer", {
+			defaultContent : "",
+			url : '/catalog/includes/personalization_next_steps.jsp' + "?itemQuantity=" + itemQuantity,
+			keepCentered : true
+		});
+		return true;
+	}
+}
+
+function showItemInCartLayer() {
+lib.layer.create("#itemInCartLayer", {
+		defaultContent : "",
+		keepCentered : true
+	});
+   // add modal to prevent clicking on other areas.
+	$('#itemInCartLayer').jqm({ajax: '/catalog/includes/personalization_warning.jsp', modal:true});
+	$('#itemInCartLayer').jqmShow();
+
+	return true;
+}
+
+function showDesignWarningLayer(messageType) {
+lib.layer.create("#designWarningLayer", {
+		defaultContent : "",
+		keepCentered : true
+	});
+   // add modal to prevent clicking on other areas.
+	$('#designWarningLayer').jqm({ajax: '/catalog/includes/design_warning.jsp?messageType=' + messageType, modal:true});
+	$('#designWarningLayer').jqmShow();
+
+	return false;
+}
+
+function showPhotoUploadWarningLayer(goToUrl) {
+lib.layer.create("#photoUploadWarningLayer", {
+		defaultContent : "",
+		keepCentered : true
+	});
+   // add modal to prevent clicking on other areas.
+	$('#photoUploadWarningLayer').jqm({ajax: '/catalog/includes/photo_upload_warning.jsp?goToUrl=' + goToUrl, modal:true});
+	$('#photoUploadWarningLayer').jqmShow();
+
+	return false;
+}
+function hidePhotoUploadWarningLayer(){
+//var myClose=function(hash) { hash.w.fadeOut('2000',function(){ hash.o.remove(); }); };
+//$('#photoUploadProgressLayer').jqm({onHide:myClose});
+$('#photoUploadWarningLayer').jqmHide();
+lib.layer.remove("#photoUploadProgressLayer");
+}
+
+function showPhotoUploadProgress() {
+	lib.layer.create("#photoUploadProgressLayer", {
+		defaultContent : "",
+		keepCentered : true
+	});
+   // add modal to prevent clicking on other areas.
+	$('#photoUploadProgressLayer').jqm({ajax: '/catalog/includes/photo_upload_progress.jsp', modal:true});
+	$('#photoUploadProgressLayer').jqmShow();
+
+	return true;
+}
+
+function hidePhotoUploadProgress(){
+var myClose=function(hash) { hash.w.fadeOut('2000',function(){ hash.o.remove(); }); };
+$('#photoUploadProgressLayer').jqm({onHide:myClose});
+$('#photoUploadProgressLayer').jqmHide();
+//lib.layer.remove("#photoUploadProgressLayer");
+}
+
+
+function validateNextSteps(action) {
+    if (!$("input[@name=nextStep]:checked").val()){
+		errorAppend("#error-nextStep","Please select an option below:<br />");
+	 }else{
+		//savePersonalization('.zoneBody',action, '', true,1000);
+		savePersonalization('.zoneBody',action);
+		lib.layer.remove("#whatToDoNextLayer");
+    }
+}
+
+function savePersonalization(prefix, nextAction, changedElement, refreshPage, refreshDelayTime) {
+	$('.links-search-container .cart-search-keyword-container').removeClass('bag-open');
+	var scope = $(prefix);
+	var isPhotoUploadAvaiable;
+	var msgSKUarr = $("select[@name=messageSku]", scope).val().split("|");
+	var msgSKU = msgSKUarr[0];
+	params =  "productName=" + $("input[@name=productName]", scope).val() +
+				 "&occasionCode=" + $("select[@name=occasionCode]", scope).val() +
+			    "&productId=" + $("input[@name=productId]", scope).val() +
+   	 		 "&zoneId=" + $("input[@name=zoneId]", scope).val() +
+				 "&nextZoneId=" + $("input[@name=nextZoneId]", scope).val() +
+				 "&backToZoneId=" + $("input[@name=fromZoneId]", scope).val() +
+			    "&messageSku=" + msgSKU +
+				 "&myOwnMessageCost=" + $("input[@name=myOwnMessageCost]", scope).val() +
+				 "&isPersPriceExpanded=" + $("input[@name=isPersPriceExpanded]", scope).val();
+   var messageTxt = "";
+	$(".messageText").each(function() {
+		params = params + "&" + $(this).attr("name") + "=" + encodeURIComponent($(this).val());
+      messageTxt = messageTxt + " " + $(this).val();
+	});
+   if( $("input[@name=defaultTextareaMessage]", scope).val() != undefined )
+      params = params + "&defaultTextareaMessage=" + encodeURIComponent($("input[@name=defaultTextareaMessage]", scope).val());
+
+	if (prefix != undefined)
+		params = params + "&prefix=" + prefix;
+	if (changedElement != undefined)
+		params = params + "&changedElement=" + changedElement;
+	if (nextAction != undefined)
+		params = params + "&nextAction=" + nextAction;
+   if ($("input[@name=nextStep]:checked").val() != undefined)
+		params = params +  "&nextStep=" + $("input[@name=nextStep]:checked").val();
+	if ($("select[@name=font]", scope).val() != undefined)
+		params = params + "&font=" + $("select[@name=font]", scope).val();
+	if ($("input[@name=color]", scope).val() != undefined)
+		params = params + "&color=" + $("input[@name=color]", scope).val();
+	if ($("input[@name=fontOption]", scope).val() != undefined)
+		params = params + "&fontOption=" + $("input[@name=fontOption]", scope).val();
+   if ($("input[@name=fontValueGroup]", scope).val() != undefined)
+		params = params + "&fontValueGroup=" + $("input[@name=fontValueGroup]", scope).val();
+	if ($("input[@name=colorOption]", scope).val() != undefined)
+		params = params + "&colorOption=" + $("input[@name=colorOption]", scope).val();
+   if ($("input[@name=colorValueGroup]", scope).val() != undefined)
+		params = params + "&colorValueGroup=" + $("input[@name=colorValueGroup]", scope).val();
+	if( $("input[@name=itemGUID]", scope).val() != undefined )
+      params = params + "&itemGUID=" + $("input[@name=itemGUID]", scope).val();
+	if( $("input[@name=editMainItem]", scope).val() != undefined )
+      params = params + "&editMainItem=" + $("input[@name=editMainItem]", scope).val();
+   if( $("input[@name=popularMessageSku]", scope).val() != undefined )
+      params = params + "&popularMessageSku=" + $("input[@name=popularMessageSku]", scope).val();
+	if ($("input[@name=isPhotoUploadAvailable]", scope).val() != undefined ) {
+	 isPhotoUploadAvaiable = $("input[@name=isPhotoUploadAvailable]", scope).val();
+      params = params + "&isPhotoUploadAvailable=" + isPhotoUploadAvaiable;
+	}
+	if ($('input:checkbox[name=notDesignCheck]:checked', scope).val() != undefined ) {
+      params = params + "&notDesignCheck=" + $("input:checkbox[@name=notDesignCheck]:checked", scope).val();
+	}
+	if ($("select[@name=designCat1]", scope).val() != undefined ) {
+      params = params + "&designCat1=" + $("select[@name=designCat1]", scope).val();
+	}
+	if ($("select[@name=designCat2]", scope).val() != undefined ) {
+      params = params + "&designCat2=" + $("select[@name=designCat2]", scope).val();
+	}
+	if ($("select[@name=designCat3]", scope).val() != undefined ) {
+      params = params + "&designCat3=" + $("select[@name=designCat3]", scope).val();
+	}
+	if ($("input[@name=designSku]", scope).val() != undefined ) {
+      params = params + "&designSku=" + $("input[@name=designSku]", scope).val();
+	}
+	if ($('input[name=designLocation]:checked', scope).val() != undefined ) {
+      params = params + "&designLocation=" + $("input[@name=designLocation]:checked", scope).val();
+	}
+
+
+	params = "ts=" + timestamp() + "&action=addProduct&" + params;
+	params = params + addCsrfToken(csrfTokens[8]);
+	// params = params + addCsrfToken($("input[@name=CSRF_TOKEN]", scope).val());
+
+	//Validate the form only in case of the following
+	if (nextAction == "addToBag" || nextAction == "goToNextZone" ||  nextAction == "goToNextItem"
+			||  nextAction == "updateZone" || nextAction == "switchZone" || (nextAction == "saveInfo" && $("input[@name=itemGUID]", scope).val() != "") ){
+		var success = validateForm(prefix);
+		if (success == false){
+			return false;
+		}else{
+         if ($("select[@name=messageSku]", scope).val() != ""){
+				s.eVar17 = messageTxt;
+         }
+		}
+	}
+
+	var dataType = "html";
+	if (nextAction == "updateCost" || nextAction == "updateImage" || nextAction == "updateCostAndImage" ||
+					  nextAction == "selectDesignLoc" || nextAction == "selectDesignSku" || nextAction == "confirmDesignLoc"){
+		dataType = "json";
+	}
+   showloading(ucartSimpleHTML);
+	$.ajax({
+		type: "POST",
+		url: persistentCartCommands[8],
+		data: params,
+		dataType: dataType,
+     	timeout: 15000,
+		success: function(data) {
+		  hideloading();
+
+		  if (nextAction == "addToBag"){
+				//line below was needed for entry of multi-step item with single ZONE
+				// in order for mini-cart to show
+				showloading(ucartSimpleHTML);
+				addToBag(data, refreshPage, refreshDelayTime);
+	         saveZoneInfo = false;
+	         savePhotoInfo = false;
+            setTimeout(function() {
+               $("#productTabs").tabs('select', 0);
+            }, 1000);
+		  }else if (nextAction == "goToNextZone"){
+					goToZone(data, isPhotoUploadAvaiable);
+		  }else if (nextAction == "goToNextItem"){
+				//lib.layer.remove("#whatToDoNextLayer");
+            goToNextItem(data, isPhotoUploadAvaiable);
+		  }else if (nextAction == "updateCost"){
+				updateProductCost(data);
+        }else if (nextAction == "updateImage"){
+				updateProductImage(data);
+        }else if (nextAction == "updateCostAndImage"){
+				updateProductCost(data);
+				updateProductImage(data);
+				updateMessageArea(data.messageUrl);
+        }else if (nextAction == "saveInfo"){
+				//Do nothing. This would be the case of switching b/n product detail tab
+				return true;
+		  }else if (nextAction == "switchZone"){
+				//Do nothing. This would be the case of switching zones
+				goToZone(data, isPhotoUploadAvaiable);
+		  }else if (nextAction == "updateZone"){
+				window.location = '/checkout/basket.jsp';
+		  }else if (nextAction == "selectDesignSku"){
+				updateSelectedDesignSku(data);
+		  }else if (nextAction == "selectDesignLoc"){
+				checkSelectedLocation(data);
+		  }else if (nextAction == "confirmDesignLoc"){
+				confirmDesignLoc(data);
+		  }
+		},
+		error: function() {
+			hideloading();
+			return false;
+		}
+	});
+}
+
+function savePhotoUpload(prefix, nextAction, showProgress, changedElement, refreshPage, refreshDelayTime) {
+ if(showProgress ){
+	  showPhotoUploadProgress();
+ }
+
+	//$('.links-search-container .cart-search-keyword-container').removeClass('bag-open');
+	var scope = $(prefix);
+	params =  "productName=" + $("input[@name=productName]", scope).val() +
+			    "&productId=" + $("input[@name=productId]", scope).val() +
+				 "&uploadImageName=" + $("input[@name=uploadImageName]", scope).val() +
+				 "&resolutionMessage=" + encodeURIComponent($("input[@name=resolutionMessage]", scope).val()) +
+				 "&resolutionAcceptable=" + $("input[@name=resolutionAcceptable]", scope).val() +
+             "&uniqueFileName=" + $("input[@name=uniqueFileName]", scope).val();
+	if (prefix != undefined)
+		params = params + "&prefix=" + prefix;
+	if (changedElement != undefined)
+		params = params + "&changedElement=" + changedElement;
+	if (nextAction != undefined)
+		params = params + "&nextAction=" + nextAction;
+	if( $("input[@name=itemGUID]", scope).val() != undefined )
+      params = params + "&itemGUID=" + $("input[@name=itemGUID]", scope).val();
+
+	params = "ts=" + timestamp() + "&action=addProduct&" + params;
+	params = params + addCsrfToken(csrfTokens[9]);
+
+	//Validate the form only in case of the following
+	if (nextAction == "personalize" || (nextAction == "saveInfo" && $("input[@name=itemGUID]", scope).val() != "") ){
+		var success = validatePhotoUploadForm(prefix);
+		if (success == false){
+         savePhotoInfo = true;
+         saveZoneInfo = false;
+			return false;
+		}
+	}
+	var dataType = "html";
+
+	$.ajax({
+		type: "POST",
+		url: persistentCartCommands[9],
+		data: params,
+		dataType: dataType,
+     	timeout: 15000,
+		success: function(data) {
+		 // hideloading();
+
+		if (nextAction == "personalize"){
+			setTimeout(function() {
+            if(showProgress){
+					hidePhotoUploadProgress();
+				}
+				$("#productTabs").tabs({ selected: 2,cache: false,ajaxOptions: { cache : false }});
+          }, 500);
+
+		}else if (nextAction == "edit"){
+				window.location = '/checkout/basket.jsp';
+      }else if (nextAction == "saveInfo"){
+				//Do nothing. This would be the case of switching b/n tabs
+				return true;
+		}else if (nextAction == "addToBag"){
+            if(showProgress){
+					hidePhotoUploadProgress();
+				}
+				showloading(ucartSimpleHTML);
+				addToBag(data, refreshPage, refreshDelayTime);
+            savePhotoInfo = false;
+				setTimeout(function() {
+               $("#productTabs").tabs('select', 0);
+				}, 1000);
+		}
+
+		},
+		error: function() {
+         hidePhotoUploadProgress();
+			return false;
+		}
+	});
+}
+function validatePhotoUploadForm(prefix){
+   var scope = $(prefix);
+	var success = true;
+   $("#error-photoUpload").html("");
+	if ($("input[@name=photoUploadMandatory]", scope).val() == "Y" && $("input[@name=uploadImageName]", scope).val() == ""){
+		$("#error-photoUpload").html("Please upload photo before continuing <br/>");
+		success = false;
+	}
+   return success;
+}
+
+function validateForm(prefix){
+	$(".common-error").each(function() {
+		$(".common-error").html("");
+	});
+   var scope = $(prefix);
+	var success = true;
+	if ($("select[@name=occasionCode]", scope).val() == ""){
+		$("#error-occasionCode").html("Please select an occasion <br/>");
+		success = false;
+	}else{
+		if ($("input[@name=isDesignAvailable]", scope).val() == "Y"){
+			var $radios = $('input:radio[name=designLocation]');
+         if (($("input[@name=designSku]", scope).val() == "" || ($radios.is(':checked') === false)) && ($("select[@name=designCat1]").val() != "noDesign") && (!$("div.design-body").is(":empty"))){
+				$("#error-generic").html("You have not completed your design selection. Please select a design and location or select 'No Thanks' in order to continue.<br/>");
+				success = false;
+			}
+		}
+	   if ($("select[@name=messageSku]", scope).val() != ""){
+			var messageSku =  $("select[@name=messageSku]", scope).val();
+			if ( messageSku == '194071' || messageSku == '219396'){
+				if ($.trim($("textarea[@name=myOwnMessage]", scope).val()) == "" || $('#defaultTextareaMessage').val() == 'Enter your message here.'){
+					//$("#error-myOwnMessage").html("Please enter a personal message <br/>");
+					$("#error-generic").html("You have not entered a message. Please enter your message in the fields provided or choose the 'Do Not Personalize this Area' option from the Personal Message drop down menu. <br/>");
+					success = false;
+				}
+			}else{
+				var showGenericMessage = false;
+            var noMessageEntered = true;
+			   var noMessagePresent = true;
+				$(".messageText").each(function() {
+					var label = "#" + $(this).attr("name") + "_label";
+					if ($.trim($(this).val()) != ""){
+						noMessageEntered = false;
+                  noMessagePresent = false;
+						var value = $.trim($(this).val());
+						if (validationTypes){
+                     var validationType = validationTypes[$(this).attr("name")];
+							if (validationType == 'DATE'){
+								if (!isValidDate(value)){
+									$("#error-" + $(this).attr("name")).html("Please enter a valid date. <br/>Valid formats - 10/11/03, 3/3/03, 10/11/2003, 3/3/2003, <br/>10-11-03, 3-3-03, 10-11-2003, 3-3-2003, 11 October 2003, <br/>3 October 2003, October 11, 2003, October 3, 2003, <br/>03/03/2003, 03/03/03, 03-03-2003, 03-03-03<br/>");
+									success = false;
+								}
+							}else if (validationType == 'SHORTDATE'){
+								if (!isValidShortDate(value)){
+									$("#error-" + $(this).attr("name")).html("Please enter a valid short date. <br/>Valid formats - 10/11/03, 10-11-03 <br/>");
+									success = false;
+								}
+							}else if (validationType == 'YEAR'){
+								if (!isValidYear(value)){
+									$("#error-" + $(this).attr("name")).html("Please enter a valid year <br/>");
+									success = false;
+								}
+							}else if (validationType == 'NUMERIC'){
+								if (!isValidNumeric(value)){
+									$("#error-" + $(this).attr("name")).html("Please enter a valid number <br/>");
+									success = false;
+								}
+							}else if (validationType == 'WORD'){
+								if (!isValidWord(value)){
+									$("#error-" + $(this).attr("name")).html("Please enter a valid word <br/>");
+									success = false;
+								}
+							}
+						}
+					}else{
+						if (requiredFields[$(this).attr("name")] == "Y"){
+							showGenericMessage = true;
+                     $("#error-" + $(this).attr("name")).html("Please enter " + $(label).text() + " <br/>");
+							success = false;
+						}
+					}
+				});
+            if (showGenericMessage){
+					$("#error-generic").html("Please review the errors below. If you do want to personalize this area, please choose the 'Do Not Personalize this Area' option from the Personal Message drop down menu. <br/>");
+				}else if (noMessageEntered && !noMessagePresent){
+					success = false;
+					$("#error-generic").html("You have not entered a message. Please enter your message in the fields provided or choose the 'Do Not Personalize this Area' option from the Personal Message drop down menu. <br/>");
+				}
+			}
+		}
+	}
+	return success;
+}
+
+function isValidShortDate(val){
+	return isValidNumericDate(val, "SHORTDATE");
+}
+
+function isValidDate(val){
+	var isValid = isValidNumericDate(val, "LONGDATE");
+	if (!isValid){
+		isValid = isValidNumericDate(val, "SHORTDATE");
+		if (!isValid){
+			isValid = isValidStringDate(val);
+		}
+   }
+	return isValid;
+}
+
+function isValidStringDate(txtDate){
+	//Valid values: 11 October 2003, October 11, 2003
+	var objDate;
+	var mSeconds;
+   var day, month, year;
+	if (txtDate.indexOf(",") > 0){
+		//This format - October 11, 2003
+		var dt = txtDate.split(" ");
+		if (dt.length == 3){
+         month   =  monthNames[dt[0]]  - 0;
+         day = dt[1].substring(0, dt[1].length-1)  - 0;
+         year  = dt[2] - 0;
+			if (dt[2].length != 4) return false;
+		}else{
+			return false;
+		}
+	}else{
+		//This format - 11 October 2003
+		var dt = txtDate.split(" ");
+		if (dt.length == 3){
+         day   = dt[0]  - 0;
+         month = monthNames[dt[1]]  - 0;
+         year  = dt[2] - 0;
+			if (dt[2].length != 4) return false;
+		}else{
+			return false;
+		}
+	}
+   // convert txtDate to the milliseconds
+   mSeconds = (new Date(year, month, day)).getTime();
+
+   // initialize Date() object from calculated milliseconds
+   objDate = new Date();
+   objDate.setTime(mSeconds);
+
+   // compare input parameter date and created Date() object, if difference exists then date isn't valid
+  	if (objDate.getFullYear() != year)  return false;
+   if (objDate.getMonth() != month) return false;
+   if (objDate.getDate() != day)   return false;
+
+   // otherwise return true
+   return true;
+}
+
+
+function isValidNumericDate(txtDate, type){
+   //Valid values: SHORTDATE - 10/11/03,10-11-03
+	//Valid values: LONGDATE - 10/11/2003,10-11-2003
+
+  var dt = txtDate.split("/");
+  if (dt.length != 3){
+		dt = txtDate.split("-");
+      if (dt.length != 3){
+			return false;
+		}
+  }
+
+  if (dt[0].length > 2 || dt[1].length > 2) return false;
+
+  var day   = dt[1] - 0;
+  var month = dt[0] - 1;
+  var year  = dt[2] - 0;
+
+  // convert txtDate to the milliseconds
+  mSeconds = (new Date(year, month, day)).getTime();
+
+  // initialize Date() object from calculated milliseconds
+  objDate = new Date();
+  objDate.setTime(mSeconds);
+
+  // compare input parameter date and created Date() object, if difference exists then date isn't valid
+  if (type == "LONGDATE"){
+		if (objDate.getFullYear() != year)  return false;
+  }else{
+		if (objDate.getYear() != year)  return false;
+  }
+
+  if (objDate.getMonth() != month) return false;
+  if (objDate.getDate() != day)   return false;
+
+  // otherwise return true
+  return true;
+}
+
+function isValidYear(val){
+	if(val.length != 4 || !isValidNumeric(val)) {
+		return false;
+	}
+	return true;
+}
+function isValidNumeric(val){
+	var ValidChars = "0123456789.";
+	var IsNumber=true;
+	var Char;
+
+	for (i = 0; i < val.length && IsNumber == true; i++){
+		Char = val.charAt(i);
+	   if (ValidChars.indexOf(Char) == -1){
+	      IsNumber = false;
+	   }
+	}
+	return IsNumber;
+}
+function isValidWord(val){
+	//No spaces should be allowed
+	var whiteSpaceExp=/\s/g;
+
+   if (whiteSpaceExp.test(val)) {
+      return false;
+   }
+	return true;
+}
+function addToBag(data, refreshPage, refreshDelayTime){
+	//Add to bag
+   $('#zoneAddToBag').hide();
+	$(persistentCartContainerId).append(data);
+	$(persistentCartContainerId).show();
+	if (refreshPage != undefined && refreshPage) {
+        setTimeout( function() { location.reload(true); }, (refreshDelayTime != undefined) ? refreshDelayTime : 0);
+   }
+	persistentCartIsShowing = true;
+	submitAddToCartForm = true;
+	return true;
+}
+
+function goToZone(data, isPhotoTabAvailable){
+	//Go to next zone
+	window.uiIsClearForImageUpdate = false;
+	if (isPhotoTabAvailable == "Y")
+		$("div#tabs-3").empty().html(data);
+	else
+		$("div#tabs-2").empty().html(data);
+
+	persistentCartIsShowing = false;
+	return true;
+}
+
+function goToNextItem(data, isPhotoTabAvailable){
+	//Go to next item
+   $('#zoneAddToBag').hide();
+	//line below was needed for entry of multi-step item with single ZONE
+	// in order for mini-cart to show
+	showloading(ucartSimpleHTML);
+
+	$(persistentCartContainerId).append(data);
+	$(persistentCartContainerId).show();
+   persistentCartIsShowing = true;
+	submitAddToCartForm = true;
+   setTimeout(function() {
+		if (isPhotoTabAvailable == "Y")
+         $("#productTabs").tabs({ selected: 2,cache: false,ajaxOptions: { cache : false }});
+		else
+			$("#productTabs").tabs({ selected: 1,cache: false,ajaxOptions: { cache : false }});
+    }, 2000);
+
+	return true;
+}
+
+function updateProductCost(data){
+	var znCodes = data.znCode.split("|");
+   var znCosts = data.znCost.split("|");
+	for (i=0; i < znCodes.length; i++){
+		var zoneCostId = "#zoneCost_"+ znCodes[i];
+      $(zoneCostId).text(znCosts[i]);
+	}
+	var zoneNameId = "#zoneName_"+ data.zoneCode;
+   $(zoneNameId).text(data.zoneName);
+
+	$("#fontSkuCost").text("");
+	$("#colorSkuCost").text("");
+	$("#messageSkuCost").text("");
+
+	//Display the cost only if it is non zero
+	if (data.fontCost != "$0.00"){
+		$("#fontSkuCost").text(data.fontCost);
+	}
+
+	if (data.colorCost != "$0.00"){
+		$("#colorSkuCost").text(data.colorCost);
+	}
+
+	if (data.messageCost != "$0.00"){
+		$("#messageSkuCost").text(data.messageCost);
+	}
+
+   $("#totalCost1").text(data.totalCost);
+	$("#totalCost2").text(data.totalCost);
+   $("#totalItemPrice").text(data.totalItemCost);
+   return true;
+}
+
+function confirmDesignLoc(data){
+	updateSelectedDesignSku(data, "N");
+
+	if (data.messageUrl != '' && data.messageUrl != undefined){
+		 $(".contentForm1").children().show();
+       $(".contentForm2").children().show();
+     // if ($("#messageSku").val() != ""){
+         $("#messageSku").val(data.messageSku);
+			jq14("select#messageSku").msDropDown();
+			updateMessageInfo();
+			updateMessageArea(data.messageUrl);
+		//}
+
+	}else{
+      $(".contentForm1").children().filter(":not(.contentForm2)").hide();
+		$(".contentForm2").children().filter(":not(#persPreviewImgDiv)").hide();
+		$(":input", ".contentForm1").each(function(){
+	      $(this).val("");
+		});
+		$("#messageSkuCost").text("");
+	}
+
+   setTimeout(function() {
+		//updateImage();
+		savePersonalization('.zoneBody','updateImage');
+	}, 500);
+}
+
+function updateSelectedDesignSku(data, updateMessage){
+	var znCodes = data.znCode.split("|");
+   var znCosts = data.znCost.split("|");
+	for (i=0; i < znCodes.length; i++){
+		var zoneCostId = "#zoneCost_"+ znCodes[i];
+      $(zoneCostId).text(znCosts[i]);
+	}
+	if (data.designName != ''){
+		$("#designName").text(data.designName);
+		$("input[@name=designName]").val(data.designName);
+	}
+	if (data.designCost != ''){
+		if (data.designCost == '$0.00'){
+			$("#designPrice").text("Free");
+		}else{
+			$("#designPrice").text(data.designCost);
+		}
+
+	   $("input[@name=designPrice]").val(data.designCost);
+	}
+	if (data.designCost != null && data.designCost != '' && data.designCost != '$0.00'){
+		$("#designCost").text(data.designCost);
+	}else{
+		$("#designCost").text("");
+	}
+
+	$("input[@name=topBottom]").val(data.topBottom);
+	$("input[@name=leftRight]").val(data.leftRight);
+	$("input[@name=center]").val(data.center);
+
+	if (data.topBottom != '' && data.topBottom > 0){
+		$("#designTop").removeAttr("disabled");
+		$("#designTopLabel").removeClass("disabledRadio");
+		$("#designBottom").removeAttr("disabled");
+		$("#designBottomLabel").removeClass("disabledRadio");
+	}else if (data.topBottom == 0){
+		$("#designTop").attr("disabled","disabled");
+		$("#designTopLabel").addClass("disabledRadio");
+		$("#designBottom").attr("disabled","disabled");
+		$("#designBottomLabel").addClass("disabledRadio");
+	}
+	if (data.leftRight != '' && data.leftRight > 0){
+		$("#designLeft").removeAttr("disabled");
+		$("#designLeftLabel").removeClass("disabledRadio");
+		$("#designRight").removeAttr("disabled");
+		$("#designRightLabel").removeClass("disabledRadio");
+	}else if (data.leftRight == 0){
+		$("#designLeft").attr("disabled","disabled");
+		$("#designLeftLabel").addClass("disabledRadio");
+		$("#designRight").attr("disabled","disabled");
+		$("#designRightLabel").addClass("disabledRadio");
+	}
+	if (data.center != '' && data.center > 0){
+		$("#designCenter").removeAttr("disabled");
+		$("#designCenterLabel").removeClass("disabledRadio");
+	}else if (data.center == 0){
+		$("#designCenter").attr("disabled","disabled");
+		$("#designCenterLabel").addClass("disabledRadio");
+	}
+	$("#totalCost1").text(data.totalCost);
+	$("#totalCost2").text(data.totalCost);
+	$("#totalItemPrice").text(data.totalItemCost);
+
+	if (data.messageUrl != '' && data.messageUrl != undefined && updateMessage != "N"){
+       $(".contentForm1").children().show();
+       $(".contentForm2").children().show();
+      $("#messageSku").val(data.messageSku);
+		jq14("select#messageSku").msDropDown();
+		updateMessageInfo();
+      updateMessageArea(data.messageUrl);
+      setTimeout(function() {
+		//updateImage();
+		savePersonalization('.zoneBody','updateImage');
+	}, 500);
+	}
+   return true;
+}
+
+
+function updateProductImage(data){
+	if (data.zoneImage != ''){
+		var zoneImageId = "#zoneImage";
+		$(".entity-zone-image img").attr("src", data.zoneImage);
+		// $(".entity-zone-image img").attr("src", 'testbadimage.jpg');
+
+		var notLoaded = false;
+		$(".entity-zone-image img").error(function(){
+		if (!notLoaded) {
+			// if s7 img does not load img then display preview not available message
+			$(".entity-zone-image img").attr("src", '/assets/images/text/english/preview-not-available.gif');
+			}
+			notLoaded = true;
+		});
+
+      if ($(zoneImageId).widgetState().zoomControl){
+	       $(zoneImageId).widgetState().zoomControl.reset();
+		}
+		//if ($(zoneImageId).widgetState().zoomControl){
+		//	$(zoneImageId).widgetState().zoomControl.zoomIn();
+		//}
+	}
+   return true;
+}
+
+
+function checkSelectedLocation(data) {
+	var showDlg = "";
+	if (data.showDialog != null && data.showDialog != '')
+		showDlg = data.showDialog;
+
+	if (showDlg == "") {
+		saveSelectedLocation();
+	}else {
+		showDesignWarningLayer(showDlg);
+	}
+
+}
+
+function removeCartOpenClass() {
+	//css class to highlight cart button area blue when active
+	$('.links-search-container .cart-search-keyword-container').removeClass('bag-open');
+}
+function addCartOpenClass() {
+	//css class to highlight cart button area blue when active
+	$('.links-search-container .cart-search-keyword-container').addClass('bag-open');
+}
+
+function showloading(htmlToShow) {
+	$(persistentCartContainerId).remove();
+
+	//load, position, show new cart
+	$("body").append(htmlToShow);
+	positionpersistentCart();
+	$(persistentCartContainerId).show();
+
+	// add an event for close layer.
+	//$(persistentCartCloseButClass).click(function() { hideBasket(); });
+}
+
+function hideloading() {
+	$(persistentCartContainerId + " *").remove();
+	$(persistentCartContainerId).html("");
+}
+
+
+//edit this function to position cart.
+function positionpersistentCart() {
+//	newLeft = 10 + ($("body").width() / 2) + ( $(".common-template-shell").width() / 2 ) - $(persistentCartContainerId).width();
+	var logoposleft = $(".common-template-standard").position().left;
+   newLeft = logoposleft + 409;
+
+   $(persistentCartContainerId).css("left", newLeft+"px");
+	$(persistentCartContainerId).css("top", "30px");
+}
+
+ //edit this function to update the setup
+function setupPersistentCartButtons() {
+	// draw focus near this
+	window.location = "#";
+
+	$(persistentCartCloseButClass).unbind("click").click(function() {
+		hideBasket();
+	});
+	$(persistentCartCloseButClass).attr("href","javascript:void(0)");
+	clearAllTimeouts();
+}
+
+//Edit this function if need to do something special on basket close.
+function hideBasket() {
+	$(persistentCartContainerId).hide();
+	$(persistentCartContainerId).remove();
+
+	// this is added in universal_cart.jsp docready
+	$('.links-search-container .cart-search-keyword-container').removeClass('bag-open');
+
+	shoppingBagBut = $("#widget-header-active-link").eq(0);
+	$(shoppingBagBut).attr("id","");
+	$(shoppingBagBut).mouseout();
+
+	persistentCartIsShowing = false;
+}
+
+function isShowingBasket() {
+	return persistentCartIsShowing;
+}
+
+function updateHeader(amt) {
+	if(amt == 1)
+	{ $("#widget-ucart-item-count").text(amt + " item(s)"); }
+	else
+	{ $("#widget-ucart-item-count").text(amt + " item(s)");}
+}
+
+
+function addToCart(prefix, container, refreshPage, refreshDelayTime) {
+ 	var scope = $(prefix);
+	if (container)
+		scope = $(container).parents(prefix);
+
+	var productVariantId = $("input[@name=productVariantId]", scope).val();
+	if (productVariantId == null || productVariantId == undefined)
+		productVariantId = $("input[@name=productVariantId2]", scope).val();
+
+if (refreshPage != undefined && refreshPage) {
+        setTimeout( function() { location.reload(true); }, (refreshDelayTime != undefined) ? refreshDelayTime : 0);
+   }
+	params ="productName=" + $("input[@name=productName]", scope).val() +
+			"&productStyle=" + $("input[@name=productStyle]", scope).val() +
+			"&productId=" + $("input[@name=productId]", scope).val() +
+			"&categoryId=" + $("input[@name=categoryId]", scope).val() +
+			"&parentCategoryId=" + $("input[@name=parentCategoryId]", scope).val() +
+			"&subCategoryId=" + $("input[@name=subCategoryId]", scope).val() +
+			"&quantity=" + $("input[@name=quantity]", scope).val() +
+			"&productType=" + $("input[@name=productType]", scope).val() +
+			"&bomKey=" + $("input[@name=bomKey]", scope).val() +
+			"&occasionFromBrowse=" + $("input[@name=occasionFromBrowse]", scope).val() +
+			"&goToReloadPage=" + $("input[@name=goToReloadPage]", scope).val() +
+			"&goToPersonalize=" + $("input[@name=goToPersonalize]", scope).val() +
+			"&goToPhotoUpload=" + $("input[@name=goToPhotoUpload]", scope).val() +
+			"&editMainItem=" + $("input[@name=editMainItem]", scope).val() +
+			"&photoUploadAvailable=" + $("input[@name=photoUploadAvailable]", scope).val() +
+			"&photoUploadMandatory=" + $("input[@name=photoUploadMandatory]", scope).val() +
+			"&includeBackorderCheck=" + $("input[@name=includeBackorderCheck]", scope).val() +
+			"&productVariantId=" + productVariantId +
+			"&shipLocation=" + $("input[@name=shipLocation]", scope).val();
+
+	$(".bomSelection").each(function() {
+		params = params + "&" + $(this).attr("name") + "=" + $(this).val();
+	});
+
+	var action = "addProduct";
+	//see if this is an update.
+  	if( $("input[@name=itemGUID]", scope).val() != "" ){
+		params = params + "&itemGUID=" + $("input[@name=itemGUID]", scope).val() + "&isUpdate=1";
+		action = "editProduct";
+	}
+
+   if( $("input[@name=onBasketPage]", scope).size() > 0 )
+  		{ params = params + "&onBasketPage=" + $("input[@name=onBasketPage]", scope).val(); }
+
+	if (prefix != undefined)
+		params = params + "&prefix=" + prefix;
+
+	  persistentCartIsShowing = false;
+	  submitAddToCartForm = false;
+	  showBasket(action,params);
+
+}
+
+
+function wishListAddToCart(params,refreshPage,refreshDelayTime) {
+	showBasket('addProductWishlist',params,refreshPage,refreshDelayTime);
+}
+
+function wishListAddAllToCart(params,refreshPage,refreshDelayTime) {
+	showBasket('addAllProductsWishlist',params,refreshPage,refreshDelayTime);
+}
+
+function addCatalogOrderItemsToCart() {
+    params = "productId=" + $("input[@name=productId]").val() +
+  		     "&itemNumber=" + $("input[@name=itemNumber]").val() +
+  			 "&productName=" + $("input[@name=productName]").val() +
+  			 "&productVariantId=" + $("input[@name=productVariantId]").val() +
+  			 "&quantity=" + $("input[@name=quantity]").val();
+    showBasket('addCatalogItems',params);
+}
+
+function addEnsembleToCart(type) {
+	params =  "productName=" + $("input[@name=productName]").val() +
+			  "&ensembleId=" + $("input[@name=ensembleId]").val() +
+			  "&categoryId=" + $("input[@name=categoryId]").val() +
+   	 		  "&parentCategoryId=" + $("input[@name=parentCategoryId]").val();
+
+	// iterate through products in the ensemble for variant id
+	$(".the-variant-ids").each(function() {
+		params = params + "&" + $(this).attr("name") + "=" + $(this).val();
+	});
+
+	// iterate through products for qty
+	$(".the-variant-qtys").each(function() {
+		if( type == 'all' )
+		{
+		  $(this).val("1");
+		  params = params + "&" + $(this).attr("name") + "=1";
+		}
+		else
+		{ params = params + "&" + $(this).attr("name") + "=" + $(this).val(); }
+	});
+
+	// iterate through products variant count
+	$(".the-variant-count").each(function() {
+		params = params + "&" + $(this).attr("name") + "=" + $(this).val();
+	});
+
+	params = params + "&productCount=" + $(".the-variant-ids").length;
+
+	persistentCartIsShowing = false;
+	showBasket('addEnsemble',params);
+}
+
+function setUserZipCodePC(refresh)  {
+    var params = "ts=" + timestamp() + "&action=updateUserZipCode" +
+                 "&storesListZipCode=" +  $("input[@name=storesListZipCodePC]").val() +
+                 "&storesListLatitude=" +  $("input[@name=storesListLatitudePC]").val() +
+                 "&storesListLongitude=" +  $("input[@name=storesListLongitudePC]").val();
+    var requestURL = persistentCartCommands[7];
+
+    $.ajax({
+		type: "GET",
+		url: requestURL,
+		data: params,
+		dataType: "json",
+      	timeout: 15000,
+		success: function(data) {
+			if(data.validZip){
+    			if (refresh) {
+					showBasket('show', '');
+				}
+				return true;
+			}else{
+				alert(data.result);
+				return false;
+			}
+		},
+		error: function() {
+			alert('There was an error trying to save your zip code.');
+			return false;
+		}
+	});
+
+}
+
+// Edit this per site to adjust location
+function adjustDivLocation(divToAdjust) {
+	var bWindowOffsets = getScrollXY();
+	var bWindowViewport = getViewportSize();
+	var qvTop = ((bWindowViewport[1] / 2) - ($(divToAdjust).height() / 2)) + bWindowOffsets[1];
+	qvTop = (qvTop < 0) ? 100 : qvTop;
+	$(divToAdjust).css("top",qvTop+"px");
+	$(divToAdjust).css("left","50%");
+	$(divToAdjust).css("margin-left",-($(divToAdjust).width()/2));
+}
+
+// Helper Function(s)
+function getScrollXY() {
+  var scrOfX = 0, scrOfY = 0;
+  if( typeof( window.pageYOffset ) == 'number' ) {
+    //Netscape compliant
+    scrOfY = window.pageYOffset;
+    scrOfX = window.pageXOffset;
+  } else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) {
+    //DOM compliant
+    scrOfY = document.body.scrollTop;
+    scrOfX = document.body.scrollLeft;
+  } else if( document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) {
+    //IE6 standards compliant mode
+    scrOfY = document.documentElement.scrollTop;
+    scrOfX = document.documentElement.scrollLeft;
+  }
+  return [ scrOfX, scrOfY ];
+}
+
+function getViewportSize() {
+  var vpW = 0, vpH = 0;
+  if (typeof window.innerWidth != 'undefined')
+  {
+    vpW = window.innerWidth,
+    vpH = window.innerHeight
+  }
+  else if (typeof document.documentElement != 'undefined' && typeof document.documentElement.clientWidth != 'undefined' && document.documentElement.clientWidth != 0)
+  {
+    vpW = document.documentElement.clientWidth,
+    vpH = document.documentElement.clientHeight
+  }
+  else
+  {
+    vpW = document.getElementsByTagName('body')[0].clientWidth,
+    vpH = document.getElementsByTagName('body')[0].clientHeight
+  }
+  return [  vpW, vpH ];
+}
+
+function errorAppend(area,msg) {
+	$(area).html(msg.replace(/&amp;/g, "&").replace(/&lt;/g,
+        "<").replace(/&gt;/g, ">").replace(/&#39;/g, "'"));
+	$(area).show();
+}
+
+function resetErrorFields() {
+	$(".glo-tex-error").hide();
+	$(".glo-tex-error").html("");
+}
+
+function messageAppend(area,msg) {
+	$(area).html(msg);
+	$(area).show();
+}
+
+function resetMessageFields() {
+	$(".glo-tex-info").hide();
+}
+
+function clearAllTimeouts() {
+	for(x = 0; x < hideTimeOuts.length; x++)
+	{ clearTimeout(hideTimeOuts[x]); }
+}
+
+function timestamp() {
+	return new Date().getTime();
+}
+
+function loadQuickView(overlayURL)
+{
+	if (typeof OverlayWidget != "undefined")
+ 		OverlayWidget.show("#headerOverlay", null, { sourceURL : overlayURL });
+}
+
+function hideQuickView()
+{
+	if (typeof OverlayWidget != "undefined") { OverlayWidget.hideAll(); }
+}
+
+function loadOverlay(overlay, overlayURL)
+{
+	if (typeof OverlayWidget != "undefined")
+ 		OverlayWidget.show(overlay, null, { sourceURL : overlayURL });
+}
+
+function containsChar(arr, value){
+	for (var i=0; i < arr.length; i++){
+		if (arr[i]==value) return true;
+	}
+	 return false;
+}
+
+function calcPrice(strTemp){
+	var messageCost = document.getElementById("myOwnMessageCost");
+	var messageCostDisplay = document.getElementById("messageSkuCost");
+	var zoneCostDisplay = document.getElementById("zoneCost_" + document.getElementById("zoneCode").value);
+	var fontCostDisplay = document.getElementById("fontSkuCost");
+	var colorCostDisplay = document.getElementById("colorSkuCost");
+	var designCostDisplay = document.getElementById("designCost");
+	var totalCostDisplay1 = document.getElementById("totalCost1");
+	var totalCostDisplay2 = document.getElementById("totalCost2");
+
+	var totalItemCost = getCostInCents(document.getElementById("totalItemPrice"));
+   var photoCost = getCostInCents(document.getElementById("photoCost"));
+	var fontCost = getCostInCents(fontCostDisplay);
+	var colorCost = getCostInCents(colorCostDisplay);
+	var designCost = getCostInCents(designCostDisplay);
+
+   if (fontCost == ''){
+		fontCost = 0;
+	}
+   if (colorCost == ''){
+		colorCost = 0;
+	}
+   if (designCost == ''){
+		designCost = 0;
+	}
+   if (strTemp != undefined && $('#defaultTextareaMessage').val() != 'Enter your message here.'){
+
+		//Hardline prices
+      var priceWord = hPriceWord;
+		var priceMax = hPriceMax;
+		var priceMin = hPriceMin;
+		var excludeLength = hExcludeLength;
+		var excludeChars = hExcludeChars;
+
+		var sku = $("#messageSku").val();
+		if (sku == '219396'){
+         priceWord = sPriceWord;
+			priceMax = sPriceMax;
+			priceMin = sPriceMin;
+			excludeLength = sExcludeLength;
+			excludeChars = sExcludeChars;
+		}
+
+      var excludeCharsArr = excludeChars.split(",");
+
+   	strTemp = trim(strTemp);
+		strTemp = replaceSubString(strTemp, /(\r\n|\r|\n)/g, "\n");
+		var myPrc = strTemp.split(' ');
+		var qCalc = 0;
+		for (i=0; i < myPrc.length; i++){
+			var myCarriagePrc = myPrc[i].split('\n');
+			for (t=0; t < myCarriagePrc.length; t++){
+				if (myCarriagePrc[t].length > excludeLength || (myCarriagePrc[t].length == excludeLength && containsChar(excludeCharsArr, myCarriagePrc[t]))){
+					qCalc++;
+				}
+         }
+		}
+
+	   // calculate # of usable words
+	   var curPr = (priceWord)*qCalc;
+		var mCost = 0;
+	   if (curPr>priceMin){
+			// display curPr as price.
+			if (curPr < priceMax){
+				mCost = curPr;
+			}else{
+				mCost = priceMax;
+			}
+		} else {
+			// display priceMin as price
+			mCost = priceMin;
+		}
+		messageCostDisplay.innerHTML = formatAmount(mCost/100);
+		messageCost.value=mCost/100;
+
+
+	}else if ($('#defaultTextareaMessage').val() == 'Enter your message here.'){
+		messageCostDisplay.innerHTML = "";
+		messageCost.value=0;
+		mCost = 0;
+	}
+		//Update zone cost
+		var zoneCost = fontCost + colorCost + designCost + parseFloat(mCost);
+		zoneCostDisplay.innerHTML = formatAmount(zoneCost/100);
+
+      var totalCost = totalItemCost + photoCost +  parseFloat(zoneCost);
+      for (k=0; k< zoneCodeArray.length; k++){
+			if (zoneCodeArray[k] != document.getElementById("zoneCode").value){
+				totalCost = totalCost + getCostInCents(document.getElementById("zoneCost_" + zoneCodeArray[k]));
+			}
+		}
+		totalCostDisplay1.innerHTML = formatAmount(totalCost/100);
+		totalCostDisplay2.innerHTML = totalCostDisplay1.innerHTML;
+}
+
+
+function formatAmount(value){
+	//if (value.toFixed)
+	value = value.toFixed(2);
+
+	value = new String(value);
+	myArr2 = value.split(".");
+
+	if (myArr2.length == 1){
+		value = "$"+value + ".00";
+	}else if(myArr2[1].length >1){
+	   value = "$"+value;
+	} else {
+		value = "$"+value + "0";
+	}
+
+	return value;
+}
+
+function getCostInCents(costElement){
+	var cost = 0;
+	if (costElement != undefined){
+		var cost = costElement.innerHTML.substring(1,costElement.innerHTML.length);
+      if (cost != ""){
+			cost = parseFloat(cost) * 100;
+		}
+	}
+	return cost;
+}

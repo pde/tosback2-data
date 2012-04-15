@@ -1,0 +1,71 @@
+﻿function CallbackPopulatedTree (varName, ajaxFunction, expandHtml, collapseHtml, loadingMarkup)
+{
+	this._variableName = varName;
+	this._ajaxFunction = ajaxFunction;
+	this._expandHtml = expandHtml;
+	this._collapseHtml = collapseHtml;
+	
+	this._loadingElement = null;
+	this._loadingPageId = null;
+
+    this._expand = function(pageId, element)
+    {
+        if (element.parentNode.parentNode.childNodes.length == 2)
+        {
+            element.parentNode.parentNode.childNodes[1].style.display = 'block';
+            element.onclick = new Function(this._variableName + '._collapse(\'' + pageId + '\', this); return false');
+            element.innerHTML = this._collapseHtml;
+        }
+        else if (!this._isProcessingCallback())
+        {
+            var le = document.createElement('div');
+            le.innerHTML = loadingMarkup;
+            element.parentNode.parentNode.appendChild(le);
+            element.onclick = new Function('return false');
+            this._loadingElement = element;
+            this._loadingPageId = pageId;
+
+            this._ajaxFunction('getchildren', pageId, new Function('result', 'window.' + this._variableName + '._expandCallback(result);'), new Function('window.' + this._variableName + '._resetCallback();'));
+        }
+    }
+
+    this._expandCallback = function(html) 
+    {
+    	if (html) 
+    	{
+    		if (this._loadingElement && this._loadingPageId) 
+    		{
+    			var element = this._loadingElement;
+    			var pageId = this._loadingPageId;
+
+    			element.parentNode.parentNode.childNodes[1].innerHTML = html;
+    			element.parentNode.parentNode.childNodes[1].style.display = 'block';
+    			element.onclick = new Function(this._variableName + '._collapse(\'' + pageId + '\', this); return false');
+    			element.innerHTML = this._collapseHtml;
+    		}
+    	}
+    	
+    	this._resetCallback();
+    }
+    
+    this._collapse = function(pageId, element)
+    {
+        if (element.parentNode.parentNode.childNodes.length == 2)
+        {
+            element.parentNode.parentNode.childNodes[1].style.display = 'none';
+            element.onclick = new Function(this._variableName + '._expand(\'' + pageId + '\', this); return false');
+            element.innerHTML = this._expandHtml;
+        }
+    }
+    
+    this._resetCallback = function()
+    {
+        this._loadingPageId = null;
+        this._loadingElement = null;
+    }
+    
+    this._isProcessingCallback = function()
+    {
+        return this._loadingPageId != null || this._loadingElement != null;
+    }
+}

@@ -1,0 +1,60 @@
+$j(document).ready(function() {
+if((navigator.userAgent.indexOf('iPad') != -1) || MTVN.Utils.Cookies.read('iPadExperience') != null){
+
+function updatePeekabooPosition(){
+var positionY = window.pageYOffset + window.innerHeight - $j(".ipadPeekaboo").height();
+$j(".ipadPeekabooContainer").css('top', (window.pageYOffset + window.innerHeight - $j(".ipadPeekaboo").height()));
+
+var newLeft = window.innerWidth - 422 + "px";
+$j(".ipadPeekabooContainer").css({"left": newLeft});
+}
+
+$j("body").append('<div class="ipadPeekabooContainer"><div class="ipadPeekaboo visibleState"><div class="control"> hide / show </div><div class="content_wrap"><div class="content"><div class="header"><p>You\'re on an iPad!</p></div><div class="deck"><p>Check out our new video site custom-made just for your iPad.</p></div><div class="btn">Take me there</div></div></div></div></div>');
+updatePeekabooPosition();
+
+$j(".ipadPeekaboo").css("position", "absolute");
+
+$j(".ipadPeekaboo .control").click(function() {
+if($j(".ipadPeekaboo").hasClass("openState")){
+$j(".ipadPeekaboo").removeClass("openState");
+//$j(".ipadPeekaboo").css({"right": "-388px","-webkit-transition": "right 0.5s ease-in"});
+//var newLeft = window.innerWidth - 34 + "px";
+//$j(".ipadPeekaboo").css({"left": newLeft,"-webkit-transition": "left 0.5s ease-in"});
+$j(".ipadPeekaboo").animate({"right": "-388px"}, "slow", "swing");
+MTVN.Utils.Cookies.create('iPodPeekabooState', 'hidden');
+} else{
+//$j(".ipadPeekaboo").animate({"right": "0px"}, "slow", "swing");
+$j(".ipadPeekaboo").addClass("openState");
+$j(".ipadPeekaboo").css({"right": "0px","-webkit-transition": "right 0.7s ease-out"});
+//var newLeft = window.innerWidth - 422 + "px";
+//$j(".ipadPeekaboo").css({"left": newLeft,"-webkit-transition": "left 0.7s ease-out"});
+MTVN.Utils.Cookies.erase('iPodPeekabooState');
+}
+});
+
+$j(".ipadPeekaboo .btn").click(function() {
+MTVN.Utils.Cookies.create('touchPeekabooReferral', 'true');
+window.location.href = '/touch/';
+});
+
+//if(MTVN.Utils.Cookies.read('iPodPeekabooState') != "hidden") {setTimeout( function () {$j(".ipadPeekaboo").animate({"right": "0px"}, "slow", "swing"); $j(".ipadPeekaboo .control").addClass("open"); },7000);}
+//if(MTVN.Utils.Cookies.read('iPodPeekabooState') != "hidden") {setTimeout( function () {updatePeekabooPosition(); $j(".ipadPeekaboo").addClass("openState"); $j(".ipadPeekaboo").css({"right": "0px","-webkit-transition": "right 0.7s ease-out"});},6000);}
+
+if(MTVN.Utils.Cookies.read('iPodPeekabooState') != "hidden") {
+//	var newLeft = window.innerWidth - 422 + "px";
+setTimeout( function () {updatePeekabooPosition(); $j(".ipadPeekaboo").addClass("openState"); $j(".ipadPeekaboo").css({"right": "0px","-webkit-transition": "right 0.7s ease-out"});},6000);}
+else {
+//	var newLeft = window.innerWidth - 44 + "px";
+$j(".ipadPeekaboo").css({"right": "-388px","-webkit-transition": "right 0.7s ease-out"});
+}
+//alert("window.pageXOffset:" + window.pageXOffset);
+//alert("window.innerWidth:" + window.innerWidth);
+//var winw = $j(window).width();
+//alert("winw" + winw);
+//alert("window.innerWidth" + window.innerWidth);
+window.onscroll = updatePeekabooPosition;
+window.onorientationchange = updatePeekabooPosition;
+window.addEventListener('touchmove', function(e){$j(".ipadPeekaboo").css({"opacity":"0", "visibility":"hidden"});}, false);
+window.addEventListener('touchend', function(e){updatePeekabooPosition(); $j(".ipadPeekaboo").css({"opacity": "1","-webkit-transition": "opacity 0.5s linear", "transition": "opacity 0.5s linear", "visibility": "visible"});}, false);
+}
+});

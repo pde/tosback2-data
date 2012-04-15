@@ -1,0 +1,140 @@
+function getCommentsTemplate(){
+	/* this function will return the comments template
+	 *
+	 */
+	var output = '';
+	/* Main Container Start */
+	//output += '<div class="fbc_mainContainer">';
+				/* Inner Top Back Ground Container Start */
+	output += ' <div class="fbc_innerTopBgContainer">';
+						/* Inner Content Container Start */
+	output += '  		<div class="fbc_innerTopContentContainer">';
+							/* Inner Top Left Container Start */
+	output += '   			<div class="fbc_innerTopLeftContainer">';
+	output += '   				<div class="fbc_innerTopHeadingContainer">';
+	output += '						<# if (loggedIn != "Y") { #>';
+	output += '   						<span class="fbc_rightTitle">comments</span>';
+	output += '						<# } else { #>';
+	output += '   						<span class="fbc_leftTitle">Post Your</span><span class="fbc_rightTitle">comment</span>';
+	output += '						<# } #>';
+	output += '    			</div>';
+	output += '   		</div>';
+						/* Inner Top Left Container End */
+	output += '			<# if (loggedIn != "Y") { #>';
+						/* Inner Top Right Container Start */
+	output += '   			<div class="fbc_innerTopRightContainer">';
+	output += '    			<div class="fbc_topRightContent">';
+	output += '    				<span class="fbc_topLogin">Login to Post Your Comment:</span>';
+	output += '    			</div>';
+	output += '    			<div id="fbc_loginConnectButton">';
+	output += '    				<span onclick="FB.Connect.requireSession();facebook_onlogin_ready();" class="fbc_topConnect">';
+	output += '    					Connect with Facebook</span>&nbsp;<span><fb:login-button size="small" background="dark" length="short" onclick="facebook_onlogin_ready();"></fb:login-button>';
+	output += '    				</span>';
+	//output += '					<fb:login-button size="medium" background="dark" length="long" onclick="facebook_onlogin_ready();"></fb:login-button><br><span class="fbc_topConnect">To Comment and Share With Friends</span>';
+	output += '				</div>';
+	output += '    			<div class="fbc_clearFloat"></div>';
+	output += '    			<div class="fbc_topAcc" id="fbc_topAcc">';
+	output += '    				<span class="fbc_topMyAccess"><a href="" onclick="containerLoginPopup();return false;" class="fbc_topAcc">My Access</a>&nbsp;<img src="<#= imgURL #>icon_ah.jpg" border="0" align="absmiddle" /></span>';
+	output += '    			</div>';
+	output += '    			<div class="fbc_clearFloat"></div>';
+	output += '   			</div>'; 
+							/* Inner Top Right Container End */
+	output += '			<# } #>'; /* logged in not equals true */
+	output += '  		</div>';
+						/* Inner Content Container End */
+					/* Inner Top Back Ground Container End */
+	output += '	<# if (loggedIn == "Y") { #>';
+	output += '	<div class="fbc_topCommentsPostLogin">';
+	output += '		<# if (browserType == "mozilla") { #>';
+	output += '			<textarea id="fbc_userComment" cols="82" rows="3"></textarea>';
+	output += '		<# } else { #>';
+	output += '			<textarea id="fbc_userComment" cols="80" rows="3"></textarea>';
+	output += '		<# } #>';
+	output += '	</div>';
+	output += ' <# } else { #>';
+	output += '	<div class="fbc_topComments<#= browserType #>">';
+	output += '	</div>';
+	output += ' <# } #>';
+	
+	output += '	<# if (loggedIn == "Y") { #>'; /* logged in equals true */
+	output += '	<div class="fbc_postCommentContainer"><img src="<#= imgURL #>Btn_Post_Comment.jpg" onclick="ahSaveComments(\'<#= userid #>\')" /></div>';
+	output += '	<div class="fbc_starLineWMContainer"><img src="<#= imgURL #>starlineWM.gif" /></div>';
+	output += '	<# if (fbconnected == "Y" && !loggedInContainerSite) { #> ';
+	output += '	<div class="fbc_tabButtonContainer">';
+	output += '		<div class="fbc_tabLftContainer"><span id="all" class="fbc_tabLftContainer" onclick="renderComments(1,\'N\');return false;"></span></div>';
+	output += '		<div class="fbc_tabRgtContainer"><span id="friends" class="fbc_tabRgtContainer" onclick="renderComments(1,\'Y\');return false;"></span></div> ';
+	output += '		<div class="fbc_clearFloat"></div>';
+	output += '	</div>';
+	output += '	<div class="fbc_tabBottomContainer"></div>';
+	
+	output += '   	<div class="fbc_contentContainerPostLogin" id="fbc_contentContainer">';
+	output += '	<# } else { #> ';
+	
+	output += '   	<div class="fbc_contentContainer" id="fbc_contentContainer">';
+	output += '	<# } } else {#>'; /* if not logged in */
+	
+	output += '   	<div class="fbc_contentContainer" id="fbc_contentContainer">';
+	output += '	<# } #>';
+	output += '					<# if (displayedCommentCount > 0) { #>';
+	output += '				<# jQuery.each(commentDetails, function(i,comments){ #>';
+	output += '		<div class="fbc_innerDetailContainer">';
+	output += '        	<div class="fbc_innerDetailLftContainer">';
+	output += '				<# if (typeof comments.pic_square == undefined ||  comments.pic_square == "" ||  comments.pic_square == null || comments.pic_square == "null" || typeof comments.pic_square == "undefined") {#>';
+	output += '					<img width="40px" height="40px" src="http://static.ak.fbcdn.net/pics/t_silhouette.gif"/>';
+	output += '				<# } else {#>';
+	output += '					<img width="40px" height="40px" src="<#= comments.pic_square #>"/>';
+	output += '				<# } #>';    
+	output += '				<# if (comments.noficon != "1") { #>';
+    output += '             <img class="fbc_commentprofilePicFlogo<#= browserType #>" src="<#= imgURL #>fLogo.jpg"></img>';
+    output += '				<# } #>';  	
+	output += '        	</div>';
+	output += '        	<div class="fbc_innerDetailRgtContainer">';
+	output += '        		<div class="fbc_subLftContainer">';
+	output += '        			<Span class="fbc_subHead"><#= comments.FIRSTNAME #> <#= comments.LASTNAME #></Span>';
+	output += '        		</div>';
+	output += '        		<div class="fbc_subRgtContainer">';
+	output += '        			<Span class="fbc_ddmmyy">Wrote at <#= comments.CREATEDATE #></Span>';
+	output += '        		</div>';
+	output += '        		<div class="fbc_clearFloat"></div>';
+	output += '        		<div class="fbc_subDescription"><#= comments.COMMENTTEXT #></div>';
+	output += '        	</div>';
+	output += '        	<div class="fbc_clearFloat"></div>';
+	output += '        	<# if (loggedIn == "Y") { #><div class="fbc_starLineContainer"><a href="#" class="fbc_starLineContainerA" onclick="reportComment(<#= comments.COMMENTID #>);return false;">Report</a><# if (isAdmin) { #>&nbsp;&nbsp;<a href="#" class="fbc_starLineContainerA" onclick="deleteComment(<#= comments.COMMENTID #>);return false;">Delete</a><# } #></div><# } else { #><div class="fbc_starLineContainer"></div><# } #>';
+	output += '		</div>';
+	output += '		<# }); #>'; 
+	output += '     <div class="fbc_fbPagination">';
+	output += '			<div class="fbc_fbPaginationContent">';
+	output += '				<ul>';
+	output += '					<# if (pageNumber > 1) { #>';
+	output += '						<li><a href="#" onclick="renderComments(<#= pageNumber-1 #>,\'<#= filterByfriends #>\'); return false;" class="fbc_fbPagePrev"><span>Prev</span></a></li>';	
+	output += '					<# } #>';
+	output += '					<# if (endIndex > 2) { ';
+	output += '						for (var j = startIndex; j < endIndex; j++) { ';
+	output += '							if (j == pageNumber) { #>';
+	output += '								<li><a href="#" class="fbc_fbPageSelected"><#= j #></a></li>';
+	output += '							<# } else { #>';
+	output += '								<li><a href="#" onclick="renderComments(<#= j #>,\'<#= filterByfriends #>\'); return false;" class="fbc_fbPageDefault"><#= j #></a></li>';
+	output += '							<# } ';
+	output += '						}';
+	output += '					} #>';
+	output += '					<# if (pageNumber < endIndex-1 || shownext == "Y") { #>';
+	output += '						<li><a href="#" onclick="renderComments(<#= ++pageNumber #>,\'<#= filterByfriends #>\'); return false;" class="fbc_fbPageNext"><span>Next</span></a></li>';
+	output += '					<# } #>';																														
+	output += '				</ul>';
+	output += '			</div>';
+	output += '			<div class="fbc_clearFloat"></div>';
+	output += '		</div>';
+	output += '		<# } else { #>';
+	output += '			<# if (filterByfriends == "N") { #> ';
+	output += '				<div id="noComments" class="fbc_subDescriptionNoComments">No comments posted yet.</div>';
+	output += '			<# } else { #>';
+	output += '				<div id="noComments" class="fbc_subDescriptionNoComments">Your friends have not posted any comments yet.</div>';
+	output += '			<# }  #>';
+	output += '		<# } #>';
+	output += '</div>';
+	output += '<input type="hidden" id="totalCommentCount"  name="totalCommentCount" value=<#= totalCommentCount #>>';
+	output += '<input type="hidden" id="commentCategory" value="N"></input>';
+	//output += '</div>';
+	/*Main Container End*/
+	return output;
+}

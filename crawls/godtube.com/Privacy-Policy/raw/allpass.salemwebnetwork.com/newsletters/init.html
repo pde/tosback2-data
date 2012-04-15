@@ -1,0 +1,175 @@
+
+var ShownTodayCookieName = "nlst";
+var BlockCookieName = "nlbd";
+var UniversalAllPassCookieName = "apu";
+var EmailLinkParam = "ref";
+var EmailLinkValue = "email";
+var InitialEndpointParam = "nlie";
+var InitialEndpointValueThankYou = "1";
+var InitialEndpointValueThankYouMessage = "2";
+var DebugRefValue  = "99";
+
+
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+
+function createCookie(name, value, path, expirationDate) {
+    var expires = "";
+    var expiration = "";
+
+    switch(name){
+    
+    case ShownTodayCookieName:
+        var date = new Date();
+        expiration = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+        break;
+    
+    
+    case BlockCookieName:
+        var date = new Date();
+        expiration = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()+1, date.getMinutes(), date.getSeconds());
+        break;
+    
+    default:
+        if (!expirationDate) 
+        { 
+            var date = new Date(); expiration = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59); 
+        } 
+        else 
+        { 
+            expiration = new Date(expirationDate); 
+        } 
+        break;
+    }
+
+    expires = "; expires=" + expiration.toGMTString();
+
+    if (!path) {
+        path = "/";
+    }
+    
+    document.cookie = name + "=" + value + expires + "; path=" + path;
+}
+
+
+function getQuerystring(key, default_)
+{
+  if (default_==null) default_=""; 
+  key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+  var qs = regex.exec(window.location.href);
+  if(qs == null)
+    return default_;
+  else
+    return qs[1];
+}
+
+
+$(function () {
+    
+    var refQuery = getQuerystring(InitialEndpointParam); 
+   
+    var protocol = window.siteProtocol || location.protocol + "//";
+    var domain = window.domain || location.host;
+    var siteRef =  location.href.replace(protocol + domain,"");
+    var path = window.path || encodeURIComponent(siteRef);;
+    var receiveFromUrl = window.receiveFromUrl || 'http://allpass.salemwebnetwork.com';
+
+    if(refQuery)
+    {
+        var messageType = refQuery.substring(0,refQuery.indexOf("|"));
+    
+        var dataArray = refQuery.split('|');
+        var userId = dataArray[1];
+        
+		if (userId && userId != 0) {
+            // set univ. allpass userid cookie for future takeover requests
+            createCookie(UniversalAllPassCookieName, userId, null);
+
+            var iFrameSourceBaseUrl = window.iFrameSourceBaseUrl ? window.iFrameSourceBaseUrl + "thankyouget" : "http://allpass.salemwebnetwork.com/newsletters/thankyouget"; 
+            var iFrameSourceUrl = iFrameSourceBaseUrl + "?u=" + userId + "&pr=" + protocol + "&d=" + domain + "&p=" + path;
+
+            switch (messageType)
+            {
+            case InitialEndpointValueThankYou:
+                $('body').append('<iframe src="http://allpass.salemwebnetwork.com/newsletters/'&#32;+&#32;iFrameSourceUrl&#32;+&#32;'" style="z-index: 1002; width:0%, height: 0%;" frameborder="0" allowtransparency="true" id="IFrameToAdjust"></iframe>');
+                break;
+
+            default:
+                break;
+            }
+        }
+    }
+    else if ((!readCookie(ShownTodayCookieName) && !readCookie(BlockCookieName)) ||getQuerystring(EmailLinkParam)=== DebugRefValue) {
+    
+        
+        var userId = window.userId || readCookie(UniversalAllPassCookieName) || ""; 
+        
+        
+        if(userId.substring(0,5) === "cb%3D")
+        {
+            userId = "";
+            var date = new Date();
+            var expirationDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+            createCookie(UniversalAllPassCookieName, userId, null, expirationDate);
+        }
+
+        var iFrameSourceBaseUrl = window.iFrameSourceBaseUrl || "http://allpass.salemwebnetwork.com/newsletters/"; 
+        var iFrameSourceUrl = iFrameSourceBaseUrl + "?u=" + userId + "&pr=" + protocol + "&d=" + domain + "&p=" + path;
+
+        getQuerystring(EmailLinkParam); 
+        if(refQuery === EmailLinkValue)
+        {
+            var path = "/";
+            document.cookie = BlockCookieName + " = true; path=" +path ;
+            return;
+        }
+        
+        else if (refQuery === DebugRefValue)
+        {
+            iFrameSourceUrl = iFrameSourceUrl + "&v=debug";
+        }
+
+        $('body').append('<iframe src="http://allpass.salemwebnetwork.com/newsletters/'&#32;+&#32;iFrameSourceUrl&#32;+&#32;'" style="z-index: 1002; width:0%, height: 0%;" frameborder="0" allowtransparency="true" id="IFrameToAdjust"></iframe>');
+    }   
+    
+
+    
+    $.receiveMessage(function (e) {
+        
+        if ('http://allpass.salemwebnetwork.com/newsletters/init'.indexOf("localhost") < 0 && e && e.origin && e.origin.toLowerCase().indexOf("allpass.salemwebnetwork.com") < 0) {
+            return;
+        }            
+
+        
+        var dataArray = e.data.split('|');
+        var userId = dataArray[0];
+        var expirationDate = dataArray[1];
+        var style = dataArray[2];
+        var blockDisplayCookieName = dataArray[3];
+
+        $('#IFrameToAdjust').attr("style", style);
+
+        if (userId && userId != 0) {
+            
+            createCookie(UniversalAllPassCookieName, userId, null, expirationDate);
+        }
+
+        if (blockDisplayCookieName && getQuerystring(EmailLinkParam)!= DebugRefValue) {
+            createCookie(blockDisplayCookieName, "true");
+        }
+    }, receiveFromUrl);
+
+});
+
+
+(function ($) { var g, d, j = 1, a, b = this, f = !1, h = "postMessage", e = "addEventListener", c, i = b[h] && !$.browser.opera; $[h] = function (k, l, m) { if (!l) { return } k = typeof k === "string" ? k : $.param(k); m = m || parent; if (i) { m[h](k, l.replace(/([^:]+:\/\/[^\/]+).*/, "$1")) } else { if (l) { m.location = l.replace(/#.*$/, "") + "#" + (+new Date) + (j++) + "&" + k } } }; $.receiveMessage = c = function (l, m, k) { if (i) { if (l) { a && c(); a = function (n) { if ((typeof m === "string" && n.origin !== m) || ($.isFunction(m) && m(n.origin) === f)) { return f } l(n) } } if (b[e]) { b[l ? e : "removeEventListener"]("message", a, f) } else { b[l ? "attachEvent" : "detachEvent"]("onmessage", a) } } else { g && clearInterval(g); g = null; if (l) { k = typeof m === "number" ? m : typeof k === "number" ? k : 100; g = setInterval(function () { var o = document.location.hash, n = /^#?\d+&/; if (o !== d && n.test(o)) { d = o; l({ data: o.replace(n, "") }) } }, k) } } } })(jQuery);

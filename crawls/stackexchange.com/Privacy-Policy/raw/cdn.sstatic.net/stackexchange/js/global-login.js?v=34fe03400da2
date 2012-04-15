@@ -1,0 +1,298 @@
+﻿// The javascript bits of Global Auth
+var gauth = function () {
+
+    return {
+        // Calls stackauth with a token to inform it of a new login session
+        //  StackAuth places a new cookie on the users browser, requiring this be a JSON request
+        //  done a proper page, and not by the SE site itself
+        informStackAuth: function (stackAuth, callback) {
+            if (!gauth.enabled()) return;
+
+            // Need to delete cookie from meta's as well
+            var domain = document.domain;
+            if (domain.substr(0, 5) == 'meta.') {
+                domain = domain.substr(4, domain.length - 4);
+            }
+
+            var token = $.cookie('gauth');
+            // if we see the cookie but somehow it has null data, just kill it
+            if (token == null) {
+                $.cookie('gauth', null, { path: '/', domain: domain });
+                return;
+            }
+
+            // we need the dot because the cookie is stored at the entire domain level
+            if (domain.charAt(0) != '.') domain = '.' + domain;
+
+            // remove this cookie
+            $.cookie('gauth', null, { path: '/', domain: domain });
+
+            // split our token and nonce
+            var colon = token.indexOf(':');
+            var authToken = token.substr(0, colon);
+            var nonce = token.substr(colon + 1);
+
+            var url = stackAuth + '/auth/global/write?authToken=' + encodeURIComponent(authToken) + '&nonce=' + encodeURIComponent(nonce) + '&referrer=' + encodeURIComponent(window.location.toString());
+
+            // write an iframe which will actually retrieve this URL
+            // this iframe is critical BECAUSE we want the HTML5 local storage op to occur in the REMOTE site context
+            $(document).ready(
+                function () {
+                    if (callback) {
+                        if (window.attachEvent) {
+                            // this is necessary for IE8 specifically
+                            window.attachEvent(
+                                "onmessage",
+                                function (e) { if (e.data == 'written') { callback(); } }
+                            );
+                        } else {
+                            window.addEventListener(
+                                "message",
+                                function (e) { if (e.data == 'written') { callback(); } },
+                                false
+                            );
+                        }
+
+                        // after 2 seconds, screw it and do the callback
+                        setTimeout(callback, 2 * 1000);
+                    }
+
+                    var iframe = $("<iframe style='display:none' src='" + url + "'></iframe>");
+                    $('#footer').append(iframe);
+                }
+            );
+
+            // this <iframe> returns something like:
+            //
+            // <html><head>
+            // <script type='text/javascript'>
+            //     localStorage.setItem('GlobalLogin', 'some-secret-random-string');
+            // <script type='text/javascript'>
+            // </head><body></body></html>
+        },
+
+        // WARNING: this happens on EVERY SINGLE PAGE 
+        // this the core global login function for every user, even the anonymous ones that have no login 
+        // the reason this stays sane is because we set this "gauthed" cookie on the first
+        // attempt to do global auth, and we don't ever try again FOR THE CURRENT BROWSER SESSION
+        checkStackAuth: function (stackAuth, success, failure) {
+            if (!gauth.enabled()) return;
+
+            // If we've got custom callback, we care to do the work, don't short circuit
+            var forceAuth = success || failure;
+
+            success = success || gauth.globallyAuthed;
+            failure = failure || function (data) { };
+
+            if (!forceAuth) {
+                // have we already done this per BROWSER SESSION? 
+                var hasAuthed = $.cookie('gauthed');
+                // if so then do nothing
+                if (hasAuthed != null) return;
+            }
+
+            // set the "yes, we've already done this" cookie
+            $.cookie('gauthed', '1', { 'path': '/' });
+
+            // this is fired from the RETURNED JavaScript in the embedded <iframe>
+            // because that JavaScript executes top.postMessage();
+            // when the HTML5 message is posted, anyone who subscribed gets notified of it
+            var messageCallback =
+                function (e) {
+                    var origin = e.origin;
+
+                    // make sure all messages come from frames loaded from StackAuth
+                    // stackAuth = 'http://example.com'
+                    if (origin != stackAuth) return;
+
+                    if (e.data == 'failure') {
+                        failure();
+                        return;
+                    }
+
+                    if (e.data == 'No Local Storage') {
+                        gauth.noGAuthStorage();
+                        failure();
+                        return;
+                    }
+
+                    if (e.data == 'No Session') {
+                        gauth.noGAuthSession();
+                        failure();
+                        return;
+                    }
+
+                    // split into token and nonce
+                    var token = e.data.substr(0, e.data.indexOf(','));
+                    var nonce = e.data.substr(e.data.indexOf(',') + 1);
+
+                    // the token we got back contains something that
+                    // uniquely indentifies this user; it can be used to 
+                    // log them in on this local site, so trigger that
+                    $.ajax({
+                        type: 'POST',
+                        url: '/users/login/global',
+                        data:
+                            {
+                                authToken: token,
+                                nonce: nonce
+                            },
+                        success:
+                            function (data, text, req) {
+                                success(data);
+                            },
+                        error:
+                            function (data, text, req) {
+                                failure(data);
+                            },
+                        dataType: 'json'
+                    });
+                };
+
+            // these are new HTML5 events specifically for messaging between <iframes>
+            if (window.attachEvent) {
+                // this is necessary for IE8 specifically
+                window.attachEvent(
+                    "onmessage",
+                    messageCallback);
+            } else {
+                window.addEventListener(
+                    "message",
+                    messageCallback,
+                    false);
+            }
+
+            // nothing is actually posted here, we just issue a POST request which results in a response
+            // for security reasons we need something only THIS site would know, and no other site on the internet could fake or return 
+            // the request token and nonce specifically
+            $.post(
+                '/users/login/global/request',
+                '',
+            // the unique token and nonce RETURNED from the local site are then written in an iframe which talks to global auth
+            // this iframe runs in the context of global auth so it can get to the HTML5 local storage for that site
+                function (reqToken, status, xmlHttpReq) {
+                    var url =
+                        stackAuth + '/auth/global/read?request=' + encodeURIComponent(reqToken.token) +
+                        '&nonce=' + encodeURIComponent(reqToken.nonce) +
+                        '&referer=' + encodeURIComponent(window.location.protocol + '//' + window.location.host + window.location.pathname);
+
+                    $(document).ready(function () { $('#footer').append("<iframe id='global-auth-frame' style='display:none' src='" + url + "'></iframe>"); });
+                },
+                'json'
+            );
+
+            // what gets returned from this iframe:
+            // 
+            // <html><head>
+            // <script type='text/javascript'>
+            // var data = {..stuff..}
+            // var obj = localStorage.getItem("GlobalLogin");
+            // if(obj != null) {
+            //     var req = new XMLHttpRequest();
+            //     req.open('POST', 
+            //         '/auth/global/read-session?request=' + encodeURIComponent(data.Request) + 
+            //         '&nonce=' + encodeURIComponent(data.Nonce) + '&seriesAndToken=' + encodeURIComponent(obj), false);
+            //     req.send(null);
+            //                  
+            //     if(req.status == 200)
+            //         top.postMessage(req.responseText, data.Referrer);
+            // }
+            // </script>
+            // </head><body></body></html>
+        },
+
+        // we must set a cookie to see if cookies are even working at all; 
+        // when we return we know definitively if we were able to set a cookie in 
+        // this user's browser AND if localStorage (HTML5 localStorage) is defined. 
+        // note that both must work for us to return true here
+        enabled: function () {
+            $.cookie('enabledCheck', '1');
+            if ($.cookie('enabledCheck') == null) return false;
+            $.cookie('enabledCheck', null);
+
+            if (typeof (localStorage) == 'undefined') return false;
+
+            return true;
+        },
+        // Called if StackAuth couldn't find any values in the user's localStorage
+        noGAuthStorage: function () { },
+
+        // Called if StackAuth found a session string, but couldn't find the actual session
+        noGAuthSession: function () { },
+
+        closeGAuthNotification: function () {
+            var overlay = $('#overlay-header');
+
+            overlay.animate({ opacity: '0', height: 'hide' }, 'fast', function () { overlay.css('z-index', -1); });
+        },
+
+        // After a global auth, we need to do something to notify the user
+        //  This function "does something"
+        globallyAuthed: function (returned) {
+            // Opera, at least, can call this method even if a 404 comes back
+            //  In which case returned will be undefined or empty, and returned.Message will definately be undefined
+            if (returned == undefined || returned.Message == undefined)
+                return;
+
+            var curLoc = '' + window.location;
+
+            var loginPath = '/users/login';
+
+            var returnImmediately = false;
+
+            var i = curLoc.indexOf('returnurl=');
+            var returnTo = null;
+
+            if (i != -1) {
+                var j = curLoc.indexOf('&', i);
+                if (j == -1) j = curLoc.length;
+
+                returnTo = decodeURIComponent(curLoc.substring(i + 'returnurl='.length, j));
+                if (!/^(?:https?:\/\/|\/)/.test(returnTo))
+                    returnTo = null;
+                else
+                    returnTo = returnTo.replace(/[^-a-z0-9+&@#\/%?=~_|!:,.;()]/g, "");
+            }
+
+            // Simple contains check should be sufficient
+            if (curLoc.indexOf(loginPath) != -1) {
+                returnImmediately = true;
+                if (returnTo == null) returnTo = '/';
+            }
+
+            var close = 'color: #999;cursor: pointer;font-size: 10px;font-weight: normal;line-height:10px;';
+
+            var message = returned.Message;
+
+            if (returnImmediately) {
+                message += ' <span id="ga_loaded">You are being redirected.</span>';
+            } else {
+                if (returnTo == null) {
+                    message += '  <a href="javascript:location.reload(true)">Click here</a> to refresh the page.';
+                } else {
+                    message += '  <a style="' + close + '" href="javascript:window.location=\'' + returnTo + '\'">Return</a>';
+                }
+            }
+
+            if (!returnImmediately)
+                message += '<br><a style="' + close + '" href="javascript:gauth.closeGAuthNotification()">close this message</a>';
+
+            if ($.browser.msie) {
+                $('#overlay-header').css('background', '#FFF').css('opacity', '0');
+            }
+
+            $('#overlay-header').html(message).css('z-index', 250).animate({
+                opacity: '1',
+                height: 'show'
+            },
+                {
+                    duration: 'slow',
+                    complete:
+                function () {
+                    if (returnImmediately)
+                        setTimeout(function () { window.location = returnTo; }, 1000);
+                }
+                });
+        }
+    };
+} ();

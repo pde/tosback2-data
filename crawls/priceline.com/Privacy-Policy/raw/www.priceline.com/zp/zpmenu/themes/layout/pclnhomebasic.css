@@ -1,0 +1,258 @@
+/* $Id: basic.css 5111 2006-11-14 16:35:04Z alex $ */
+/* Basic CSS for menus to be included by other CSS files */
+
+/* LAYOUT CSS -- this part should not be altered! */
+
+.zpMenuContainer * {
+  -moz-box-sizing: content-box;
+}
+
+/* This selector will activate on page load when the menue is displayed */
+.zpMenuContainer, .zpMenu {
+	float: left; /* IE fix */
+	position: relative;
+	color: #000000;
+}
+
+
+/* Top menu, horizontal */
+.zpMenu-horizontal-mode .zpMenu-level-1 {
+	float: left;
+	padding-left: 2px;
+	padding-right:2px;
+	height: 18px;
+}
+
+/* Anchor has NO style */
+.zpMenu-top a{
+	text-decoration:none;
+}
+
+/* All NON-Selected Labels font color black */
+.zpMenu-top .zpMenu-label,
+.zpMenu-top a{
+	color: #000000;
+}
+
+/* ALL Selected Labels font color black */
+.zpMenu-top .zpMenu-item-selected .zpMenu-label,
+.zpMenu-top .zpMenu-item-selected a {
+	color: #000000;
+}
+
+/* What to do if the LI has NO icon
+by default show NO icons
+-you css can override this
+*/
+.zpMenu-level-1  {
+	background: none;
+}
+
+/* Vertical: true */
+/* 
+class="zpMenu-top zpMenuContainer zpMenu-vertical-mode" 
+class="zpMenu-item-odd zpMenu-level-1 zpMenu-item zpMenu-item-first zpMenu-lines-c"
+*/
+.zpMenu-vertical-mode  .zpMenu-level-1 {
+	width: 10em;
+	position:relative;
+	/* override float:left in basic.css */
+	float:none;
+	margin:0;
+	padding-left: 5px;	/* Label 5px in */
+	/* If border then make sure HR css renders correctly 
+	border-bottom:1px solid black;
+	*/
+ }
+
+.zpMenu-vertical-mode .zpMenu-level-1 .zpMenu-item-last {
+	border-bottom: none;
+}
+
+/* FORMATTING CSS -- can be altered. */
+
+
+/* Menu containers */
+
+.zpMenu-item table.zpMenu-table {
+	font-size: 85%;
+}
+
+
+.zpMenu-item {
+	cursor: pointer;
+}
+
+
+/* Hide expansion indicators */
+
+/* These are indicators for items that have sub-menus, and are hidden cause they generate a
+   blank space in front of the content of those items */
+
+.zpMenu .zpMenu-item .minus,
+.zpMenuContainer .zpMenuContainer .zpMenu-item .minus,
+.zpMenu .zpMenu-item .plus,
+.zpMenuContainer .zpMenuContainer .zpMenu-item .plus {
+	display: none;
+}
+
+
+.zpMenuPclnhome #zpMenu0Item0 .icon, 
+.zpMenuPclnhome #zpMenu0Item3 .icon, 
+.zpMenuPclnhome #zpMenu0Item8 .icon, 
+.zpMenuPclnhome #zpMenu0Item15 .icon {
+	display: block;
+	margin-top: 2px;
+}
+
+/* Helper classes to hide the menu onload */
+/* To hide the menu before it is loaded */
+.zpHideOnLoad {
+	display:none;
+}
+.zpHideOnLoad ul {
+	display:none;
+}
+
+
+/*
+<div style="-moz-user-select: none;" class="zpMenu-item-even zpMenu-item zpMenu-level-1 zpMenu-item-hr zpMenu-lines-c">
+  <table cellspacing="0" cellpadding="0" style="-moz-user-select: none;" class="zpMenu-table">
+    <tbody style="-moz-user-select: none;">
+      <tr style="-moz-user-select: none;">
+        <td style="-moz-user-select: none;" class="zpMenu-label">
+          <hr>
+          </hr>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+*/
+/* Begin HR style */
+/* Controls the behavior of <hr>  it the menu
+Overide ALL element contained in a zpMenu-item-hr */
+/* zpMenu-item and zpMenu-item-hr are in same class level */
+
+.zpMenuContainer .zpMenu-item-hr,
+.zpMenuContainer .zpMenuContainer .zpMenu-item-hr {
+	margin:0;
+	padding:0;
+	border-top:none;
+	border-left:none;
+	border-right:none;
+	border-bottom:1px solid blue;
+	background:red;
+	/* note: width of 100% breaks in IE */
+	/* If you take out width:auto then FireFox does not pad right properly */
+	width:auto;
+}
+
+/* for CSS2 browsers */
+.zpMenuContainer .zpMenu-item-hr hr *,
+.zpMenuContainer .zpMenuContainer .zpMenu-item-hr hr *,
+/* for CSS1 browsers */
+.zpMenuContainer .zpMenu-item-hr hr,
+.zpMenuContainer .zpMenuContainer .zpMenu-item-hr hr {
+	display: none;
+}
+
+
+
+/* End HR style */
+
+/* Start - ICON Alignment */
+/* Controls the behavior of ALL left icons */
+.zpMenuContainer .zpMenuContainer .icon {
+	background: none;
+	padding: 0px 2px;
+}
+
+/* End - ICON Alignment */
+
+/* Sub-menu */
+.zpMenuContainer .zpMenuContainer {
+	position: absolute;
+	width: 10em;
+}
+
+/* General items that's not a top menu */
+.zpMenuContainer .zpMenuContainer .zpMenu-item {
+	width: 10em;
+	padding:0em;
+
+}
+
+/* TOP Menu - Set vertical align to center table */
+.zpMenu-vertical-mode .zpMenu-level-1,
+.zpMenu-horizontal-mode .zpMenu-level-1 {
+	vertical-align:middle;
+}
+
+/* TOP Menu - Have table use 100% of DIV so it can be vertical-align: middle */
+.zpMenu-horizontal-mode .zpMenu-level-1 .zpMenu-table {
+	height:100%;
+}
+
+.zpMenuContainer .zpMenuContainer  .zpMenu-label {
+	/* This scenario is needed when an Arrow image is over a menu item image */
+	/* Make the Menu label FILL the td so the Arrow will be right aligned */
+	/* zpMenu-item-collapsed, zpMenu-item-expanded */
+	width:1000px; 
+}
+
+
+/* Must include this CSS for Animation and Special Effects.  Fixes IE problems */
+.zpMenuContainer .zpMenuContainer .zpMenu {
+	filter: alpha(opacity=100);
+}
+
+.zpMenuDisabled {
+	cursor: default !important;
+}
+
+.zpMenuDisabled .zpMenu-table .zpMenu-label,
+.zpMenuDisabled .zpMenu-table .zpMenu-label a
+{
+	color: #aaa !important;
+	cursor: default !important;
+}
+
+.zpMenuPath,
+.zpMenuPath td,
+.zpMenuPath a
+{
+	background: orange !important;
+}
+
+.zpMenuScrollUpActive {
+	height: 10px;
+	margin: 0px !important;
+	padding: 0px !important;
+	/* fix for ie7 issue when width of this element appears 0 */
+	width: expression(this.parentNode.clientWidth + 'px');
+}
+
+.zpMenuScrollUpInactive {
+	height: 10px;
+	margin: 0px !important;
+	padding: 0px !important;
+	/* fix for ie7 issue when width of this element appears 0 */
+	width: expression(this.parentNode.clientWidth + 'px');
+}
+
+.zpMenuScrollDownActive {
+	height: 10px;
+	margin: 0px !important;
+	padding: 0px !important;
+	/* fix for ie7 issue when width of this element appears 0 */
+	width: expression(this.parentNode.clientWidth + 'px');
+}
+
+.zpMenuScrollDownInactive {
+	height: 10px;
+	margin: 0px !important;
+	padding: 0px !important;
+	/* fix for ie7 issue when width of this element appears 0 */
+	width: expression(this.parentNode.clientWidth + 'px');
+}

@@ -1,0 +1,412 @@
+// global namespace
+if (typeof(BCNTRY) == 'undefined') { BCNTRY = {} };
+// global ajax connection maintenance
+if (typeof(BCNTRY.connection) == 'undefined') { BCNTRY.connection = {} };
+// global (across all sites) events
+if (typeof(BCNTRY.event) == 'undefined') { BCNTRY.event = {} };
+// object library (/js/global/modules/.)
+if (typeof(BCNTRY.library) == 'undefined') { BCNTRY.library = {} };
+// per-site namespace (further defined in each site.js)
+if (typeof(BCNTRY.site) == 'undefined') { BCNTRY.site = {} };
+// global (across all sites) methods
+if (typeof(BCNTRY.util) == 'undefined') { BCNTRY.util = {} };
+
+if (typeof(BCNTRY.wall) == 'undefined') { BCNTRY.wall = {}; }
+
+// For any overlays that might be populated
+YAHOO.namespace('overlays');
+
+// old stuff
+
+function save_shipping_method(x, y) {
+	var f = document.forms[0];
+	var c;
+	for (var i = 0; i < f.mv_shipmode.length; i++) {
+		if (f.mv_shipmode[i].checked) {
+			c = f.mv_shipmode[i].value;
+		}
+	}
+	x.href += "&mv_shipmode=" + c;
+	if (y) {
+		x.href += "#cart";
+	}
+}
+if (typeof(BCNTRY.util.dom) != 'object') {
+    BCNTRY.util.dom = {};
+}
+
+// Easy and safe callback-based iterator for arrays and objects
+BCNTRY.util.foreach = function(obj, callback, scope) {
+	var i, useScope;
+	//short-circuit non-iterable objects
+	if (typeof(obj) === 'undefined' || obj === null) {
+		return;
+	}
+	useScope = typeof(scope) !== 'undefined';
+    if(typeof(obj.length) === 'undefined') {
+        for(i in obj) {
+            if(typeof(obj[i]) !== 'function') {
+				if (useScope) {
+					callback.apply(scope, [obj[i], i]);
+				} else {
+					callback(obj[i], i);
+				}
+            }
+        }
+    } else {
+        for(i = 0; i < obj.length; i++) {
+			if (useScope) {
+				callback.apply(scope, [obj[i], i]);
+			} else {
+				callback(obj[i], i);
+			}
+        }
+    }
+};
+
+// Given an array, returns a copy containing only unique values
+BCNTRY.util.unique = function(arr) {
+	var uniqMap = {};
+	var uniqArr = [];
+	for (var i = 0; i < arr.length; i++) {
+		uniqMap[arr[i]] = true;
+	}
+	for (var key in uniqMap) {
+		if (typeof(key) != 'function') {
+			uniqArr.push(key);
+		}
+	}
+	return uniqArr;
+};
+
+// Cross-browser implementation of el.scrollIntoView(true)
+BCNTRY.util.dom.scrollIntoView = function(el){
+	el = (typeof(el) == 'string') ? document.getElementById(el) : el;
+	try{
+		// This should work on most browsers
+		el.scrollIntoView(true);
+	}
+	catch(er){
+		// Safari 1.2
+		var T = 0;
+		var pa = el;
+		while (pa.parentNode){
+			if (pa.offsetTop) {
+                T += pa.offsetTop;
+			}
+            if (pa == document.body) {
+                break;
+            }
+			pa = pa.parentNode;
+		}
+		window.scrollTo(0, T);
+		try{ 
+			el.focus();
+		}
+		catch(err){
+			return true;
+		}
+	}
+};
+
+// Returns a stack trace (FF only). Other browsers return null
+if (typeof(BCNTRY.util.debug) != 'object') {
+    BCNTRY.util.debug = {};
+}
+
+BCNTRY.util.debug.stackTrace = function(el){
+    var stack;
+    try { throw new Error(); }
+    catch(e) { stack = e.stack; }
+
+	if (stack) { // Pretty much only FF supports this
+		stack = stack.split("\n");
+		stack.shift(); // Remove error generated with try/catch
+		stack.shift(); // Remove call to get_stack
+		stack = stack.join("\n");
+	}
+	return stack;
+};
+
+function newWindow(url, win_name, height, width, toolbar, menubar, scrollbars, 
+                   location, resizable, directories) {
+
+	// Assign Defaults
+	height		= (height !== null) ? height : 500;
+	width		= (width !== null) ? width : 525;
+	toolbar		= (toolbar !== null) ? toolbar: 'no';
+	menubar		= (menubar !== null) ? menubar: 'no';
+	scrollbars	= (scrollbars !== null) ? scrollbars: 'yes';
+	location	= (location !== null) ? location: 'no';
+	resizable	= (resizable !== null) ? resizable: 'no';
+	directories = (directories !== null) ? directories: 'no';
+
+	// Create features string
+	var features = "'toolbar=" + toolbar +
+                   ",menubar=" + menubar +
+                   ",scrollbars=" + scrollbars +
+                   ",location=" + location +
+                   ",resizable=" + resizable +
+                   ",directories=" + directories +
+                   ",height=" + height +
+                   ",width=" + width +
+                   "'";
+	// Intialize and display our new window
+	window.open(url, win_name, features);
+}
+
+// hide_hint(ELEMENT_NAME)- hides the element supplied to the function
+function hide_hint(element){
+	var overlay = YAHOO.overlays.overlay_manager.find(element);
+	if($(element + '_content')) {
+		yd.setStyle(element+'_content', 'display', 'none');
+	}
+	overlay.hide();
+}
+
+// show_hint(ELEMENT_NAME)- displays the element supplied to the function
+function show_hint(popup) {
+	if(!YAHOO.overlays.overlay_manager) {
+		YAHOO.overlays.overlay_manager = new YAHOO.widget.OverlayManager(null, {});
+	}
+	var paint_popup = function(p) {
+		p.show();
+		p.center();
+
+		YAHOO.overlays.overlay_manager.register(p);
+		YAHOO.overlays.overlay_manager.focus(p);
+	};
+
+	// Only create each overlay once
+	if(!YAHOO.overlays[popup]) {
+    // use YUI Panel widgets for the wm site to enable the modal effect
+		if (BCNTRY.site.catalog === 'wm') {
+			yd.setStyle(popup, 'display', 'block');
+			yd.setStyle(popup, 'position', 'relative');
+			YAHOO.overlays[popup] = new YAHOO.widget.Panel(popup, {
+				fixedcenter: true,
+				constraintoviewport: true,
+				visible: false,
+				modal: true,
+				underlay: "none",
+				effect:{effect:YAHOO.widget.ContainerEffect.FADE, duration: 0.5}
+			});
+			YAHOO.overlays[popup].render(document.body);
+			ye.addListener([popup, '_mask'].join(''), "click", function() { YAHOO.overlays[popup].hide(); });
+		}
+		// otherwise continue to use YUI Overlay widgets (modal effect is not an option)
+		else {
+			// Move the element off the screen (to reduce flicker)
+			yd.setStyle(popup, 'position', 'absolute');
+			yd.setStyle(popup, 'display', '');
+			yd.setX(popup, -1000);
+			YAHOO.overlays[popup] = new YAHOO.widget.Overlay(popup, {
+				fixedcenter: true,
+				constraintoviewport: true,
+				visible: false
+			});
+		}
+	}
+	if($(popup + '_content') && BCNTRY.site.catalog !== 'wm') {
+		yd.setStyle(popup + '_content', 'display', '');
+	}
+
+	paint_popup( YAHOO.overlays[popup] );
+}
+
+BCNTRY.util.readCookie = function (name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') {
+            c = c.substring(1,c.length);
+        }
+		if (c.indexOf(nameEQ) === 0) {
+            return unescape(c.substring(nameEQ.length,c.length));
+        }
+    }
+	return '';
+};
+var _readCookie = BCNTRY.util.readCookie; //deprecated. here for backwards compatibility.
+
+BCNTRY.util.setCookie = function (name, value, expires, path, domain, secure) {
+	var day = new Date();
+	day.setTime(day.getTime());
+	var expire_on;
+
+	if (expires == -1) {
+		expires_on = 'Mon, 1 Jan 1979 00:00:00 GMT';
+	}
+	else if (expires > 0) {
+		//expiration unit in days.
+		expires = expires * 1000 * 60 * 60 * 24;
+		var expires_date = new Date(day.getTime() + expires);
+		expires_on = expires_date.toGMTString();
+	}
+	else {
+		expires_on = null;
+	}
+
+	document.cookie = name + "=" +escape( value ) +
+	( ( expires ) ? ";expires=" + expires_on : "" ) + 
+	( ( path )    ? ";path=" + path          : "" ) + 
+	( ( domain )  ? ";domain=" + domain      : "" ) +
+	( ( secure )  ? ";secure"                : "" );
+
+};
+var _setCookie = BCNTRY.util.setCookie; //deprecated. here for backwards compatibility.
+
+// this deletes the cookie when called
+BCNTRY.util.deleteCookie = function (name, path, domain) {
+	if ( _readCookie(name) ) {
+		document.cookie = name + "=" +
+			( ( path ) ? ";path=" + path : "") +
+			( ( domain ) ? ";domain=" + domain : "" ) + 
+			";expires=Thu, 01-Jan-1970 00:00:01 GMT";
+    }
+	return;
+};
+var _deleteCookie = BCNTRY.util.deleteCookie; //deprecated. here for backwards compatibility.
+	
+
+function cookiesEnabled() {
+	_setCookie('cookies_enabled', 'true', '', '/');
+	if (_readCookie('cookies_enabled')) {
+		_deleteCookie('cookies_enabled', '/');
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+if (typeof(BCNTRY.reviews) == 'undefined') { BCNTRY.reviews = {} }
+
+BCNTRY.reviews.submit_loading = [];
+BCNTRY.reviews.submit_review_helpful = function(review_id, helpful) {
+	try {
+	if (BCNTRY.reviews.submit_loading['rev'+review_id]) {
+		alert("Please wait while your request is processed");
+		return;
+	}
+	BCNTRY.reviews.submit_loading['rev'+review_id] = 1;
+
+	var form = document.createElement("FORM");
+	form.setAttribute("method", "POST");
+	document.body.appendChild(form);
+
+	var t = '<input type="checkbox" name="review_helpful" /><input type="text" name="review_id" />';
+	form.innerHTML = t;
+	form.review_helpful.checked = helpful;
+	form.review_id.value = review_id;
+
+	form.submit();
+	}
+	catch(e) { alert("There was a problem rating this review.  Please refresh the page and try again.\n\n" + e.message)} 
+}
+
+if (navigator.userAgent.indexOf('MSIE 6.0') != -1) { yd.addClass(document.body, 'ie6'); }
+//if (YAHOO.env.ua.ie == 6) { yd.addClass(document.body, 'ie6'); };
+
+BCNTRY.checkBrowser = function () {
+    var browser = navigator.userAgent;
+    var version = "";
+    if (browser.indexOf('MSIE 9.0') != -1) {
+	yd.addClass(document.body, 'IE9');
+	} else if (browser.indexOf('MSIE 8.0') != -1) {	
+	yd.addClass(document.body, 'IE8');
+    } else if (browser.indexOf('MSIE 7.0') != -1) {	
+	yd.addClass(document.body, 'IE7');
+    } else if (browser.indexOf('MSIE 6.0') != -1) {
+	yd.addClass(document.body, 'IE6');
+    } else if (browser.indexOf('Firefox') != -1) {
+	version = browser.substring(browser.indexOf('Firefox')+8);
+	version = version.replace(/[^\d]/gi, "");
+	yd.addClass(document.body, 'FF'+version.substring(0,1));
+	yd.addClass(document.body, 'FF'+version.substring(0,2));
+	yd.addClass(document.body, 'FF'+version.substring(0,3));
+    } else if (browser.indexOf('Chrome') != -1) {
+	yd.addClass(document.body, 'Chrome');
+    } else if (browser.indexOf('AppleWebKit') != -1) {
+	yd.addClass(document.body, 'Safari');
+    } 
+
+    if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
+     	yd.addClass(document.body, 'iPhoneiPod');
+    }
+ 
+ 	if(typeof(browser.userAgent) !== 'undefined') {
+		if(browser.userAgent.indexOf('Win')) {
+			yd.addClass(document.body, 'Win');
+		}
+		if(browser.userAgent.indexOf('Mac OS')) {
+			yd.addClass(document.body, 'Mac');
+		}
+	}
+};
+
+
+(function() {
+	// This function marries any element with a checkbox so that you can style the element however
+	// you want and have it act like a checkbox. Here's what you need to make it work:
+	//		* A real checkbox element with an id ending in "_chk" (it should be hidden).
+	//		* Another element with an identical id except it should end in "_lbl" instead of "_chk".
+	//		* When the element is "checked" it will be assigned the "selected" class. Style accordingly.
+	//		* This function should be attached to the label element's onclick event.
+	//	Example:
+	//		<span id="a_lbl" onclick="BCNTRY.toggle_check(this)">Stuff</span>
+	//		<input id="a_chk" type="checkbox" style="display:none" />
+	BCNTRY.toggle_check = function(el) {
+		var chk_el = $(el.id.replace(/_lbl$/, "_chk"));
+		if (chk_el.checked) {
+			chk_el.checked = false;
+			yd.removeClass(el, 'selected');
+		}
+		else {
+			chk_el.checked = true;
+			yd.addClass(el, 'selected');
+		}
+		return false;
+	};
+})();
+
+ye.onDOMReady(function() {
+	BCNTRY.checkBrowser();
+	if ($('top_search')) {
+		ye.addListener("top_search", "submit", function (e) {
+			if (document.top_search.q.value.match(/^\s*$/)) {
+				ye.stopEvent(e);
+			}
+			return true;
+		});
+	}
+	//IE strips anchors from redirects
+	if ($('url_anchor') && $('url_anchor').value.length > 0) {
+		var a = '#' + $('url_anchor').value;
+		if (document.location.hash != a) {
+			document.location.hash = a;
+		}
+	}
+	if ($('affiliate_ref_id')) {
+		var affiliateRefId = _readCookie("affiliate_reference_id");
+		if (affiliateRefId.length == 0) {
+			affiliateRefId = 'R999';
+		}
+		$('affiliate_ref_id').innerHTML = affiliateRefId;
+	}
+	var mvSessionId = _readCookie("MV_SESSION_ID");
+	if ($('mv_session_id')) {
+		if (mvSessionId.length == 0) {
+			mvSessionId = '';
+		}
+		$('mv_session_id').innerHTML = mvSessionId;
+	}
+	if ($('session_id')) {
+		$('session_id').innerHTML = mvSessionId.split(':',1);
+	}
+    var likeBox = $('fb_likebox');
+    if (likeBox) {
+        likeBox.setAttribute('src', likeBox.getAttribute('data-src'));
+    }
+});

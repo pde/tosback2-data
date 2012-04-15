@@ -1,0 +1,2 @@
+var contextPath = document.getElementById('contextValue').value;
+document.write('<a href="http://print.coupons.com/alink.asp?go=14415oj9710" target="_blank"><img src="'+contextPath+'/images/promotions/slots/frontstore/fs09001_coupons/coupons_cvs_sqrA.jpg" alt="Save with In-store Coupons &gt;" width="240" height="240" border="0" /></a>');

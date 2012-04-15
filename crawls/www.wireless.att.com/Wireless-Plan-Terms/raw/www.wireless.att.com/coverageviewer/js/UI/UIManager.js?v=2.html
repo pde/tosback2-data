@@ -1,0 +1,864 @@
+var _selectedDataTypeID = ESRIConfig.defaultDataTypeID;
+var _usingDynamicMap = false;
+var _initialPageLoad = true;
+var _hasInputUrlParams = false;
+
+var theSlider = null;
+
+function initializeUIHandler(){
+	dojo.connect(_map, "onExtentChange", onExtentChangeHandler);
+	initializeGeoCoderListeners();
+	loadStaticMapZoomBar();
+}
+// --------------------------------------------------------------------------
+//
+// Address & Latitude\Longitude Methods
+//
+// --------------------------------------------------------------------------
+
+function addressKeyPressHandler(e){
+	var characterCode;
+	if(e && e.which) // NN4 specific code
+	{
+	    e = e;
+	    characterCode = e.which;
+	}else
+	{
+	    characterCode = e.keyCode; // IE specific code
+	}if (characterCode == 13) // // Enter key is 13
+	{
+
+		var address = dojo.byId(UIConfig.addressInputID).value;
+		var city = dojo.byId(UIConfig.cityInputID).value;
+		var state = dojo.byId(UIConfig.stateInputID).value;
+		var zip = dojo.byId(UIConfig.zipInputID).value;
+		locateByAddress(address, city, state, zip);
+	}
+}
+
+/**
+ * removes the message text and style of the: error, messageHeading,
+ * messageBody, and multiResultsContainer divs
+ */
+function clearMessage() {
+	dojo.byId('error').style.display = "none";
+	dojo.byId('messageHeading').innerHTML = "";
+	dojo.byId('messageBody').innerHTML = "";
+	dojo.byId('messageHeading').style.display = "none";
+	dojo.byId('messageBody').style.display = "none";
+	dojo.byId('multiResultsContainer').innerHTML = "";
+	dojo.byId('multiResultsContainer').style.display = "none";
+}
+
+/**
+ * removes the message text and style of the: error, messageHeading, and
+ * messageBody for the Latitude Longitude look up box
+ * 
+ * @return void
+ */
+function clearMessageLL() {
+	dojo.byId('errorLL').style.display = "none";
+	dojo.byId('messageHeadingLL').innerHTML = "";
+	dojo.byId('messageBodyLL').innerHTML = "";
+	dojo.byId('messageHeadingLL').style.display = "none";
+	dojo.byId('messageBodyLL').style.display = "none";
+}
+
+/**
+ * Displays an error message on the Latitude Longitude look up Tab
+ * 
+ * @param body
+ *            innerHTML to display in the messageBodyLL div
+ * @return void
+ */
+function displayMessageLL(body) {
+	dojo.byId('messageHeadingLL').innerHTML = message("error.latlong");
+	dojo.byId('messageBodyLL').innerHTML = body;
+	dojo.byId('messageHeadingLL').style.display = "";
+	dojo.byId('messageBodyLL').style.display = "";
+	dojo.byId('errorLL').style.display = "";
+}
+
+function initializeGeoCoderListeners(){
+	var streetInput = dojo.byId('streetAddress');
+	dojo.connect(streetInput, "onkeypress", addressKeyPressHandler);
+	var citInput = dojo.byId('city');
+	dojo.connect(citInput,"onkeypress", addressKeyPressHandler);
+	var stateInput =dojo.byId('state');
+	dojo.connect(stateInput, "onkeypress", addressKeyPressHandler);
+	var zipInput = dojo.byId('zipCode');
+	dojo.connect(zipInput, "onkeypress", addressKeyPressHandler);
+	
+	var latInput =dojo.byId('latitude');
+	dojo.connect(latInput, "onkeypress", latLonKeyPressHandler);
+	var lonInput = dojo.byId('longitude');
+	dojo.connect(lonInput, "onkeypress", latLonKeyPressHandler);
+}
+
+function latLonKeyPressHandler(e){
+	var characterCode;
+	if(e && e.which){ // NN4 specific code
+	    e = e;
+	    characterCode = e.which;
+	}
+	else{
+	    characterCode = e.keyCode; // IE specific code
+	}
+	
+	if (characterCode == 13){ // // Enter key is 13
+	
+		var lat = parseFloat(dojo.byId('latitude').value);
+		var lng = parseFloat(dojo.byId('longitude').value);
+
+		locateByLatLong(lat, lng);
+	}
+}
+
+/**
+ * Selects the Address Tab Un-selects the Latitude/Longitude Tab
+ * 
+ * @return void
+ */
+function showAddress() {
+	dojo.toggleClass(UIConfig.addressTabID, "current");
+	dojo.toggleClass(UIConfig.latLongTabID, "current");
+	dojo.byId(UIConfig.latLongInputContentDivID).style.display = "none";
+	dojo.byId(UIConfig.addressInputContentDivID).style.display = "block";
+}
+
+/**
+ * Selects the Latitude/Longitude Tab un-selects the Address Tab
+ * 
+ * @return
+ */
+function showLatLong() {
+	dojo.toggleClass(UIConfig.addressTabID, "current");
+	dojo.toggleClass(UIConfig.latLongTabID, "current");
+	dojo.byId(UIConfig.latLongInputContentDivID).style.display = "block";
+	dojo.byId(UIConfig.addressInputContentDivID).style.display = "none";
+}
+
+/**
+ * Performs Address Search
+ * 
+ * @return
+ */
+function viewMapAddressClickHandler() {
+	var address = dojo.byId(UIConfig.addressInputID).value;
+	var city = dojo.byId(UIConfig.cityInputID).value;
+	var state = dojo.byId(UIConfig.stateInputID).value;
+	var zip = dojo.byId(UIConfig.zipInputID).value;
+
+	locateByAddress(address, city, state, zip);
+}
+
+/**
+ * performs location by Latitude and Longitude
+ * 
+ * @return
+ */
+function viewMapLatLongClickHandler() {
+	var lat = parseFloat(dojo.byId('latitude').value);
+	var lng = parseFloat(dojo.byId('longitude').value);
+
+	locateByLatLong(lat, lng);
+}
+// --------------------------------------------------------------------------
+// END Address & Latitude\Longitude Methods
+// --------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------
+//
+// Coverage Type Links
+//
+// --------------------------------------------------------------------------
+/**
+ * Handles the click of the coverage type links -Sets the css to indicate
+ * selected link -displays the correct legend -configures the map data for
+ * coverage type
+ * 
+ */
+function dataTypeLinkClickHandler(dataTypeID) {
+	// set the currently selected dataTypeID
+	_selectedDataTypeID = dataTypeID;
+
+	configureUIByDataTypeID(dataTypeID);
+
+	// Set the Map Data to that of the selected Data Type
+	if (dataTypeID == ESRIConfig.voiceDataTypeID) {
+		// set data source of Map
+		setVisibleDataLayersByDataTypeID(dataTypeID);
+	} else if (dataTypeID == ESRIConfig.goPhoneDataTypeID) {
+		if (_usingDynamicMap) {
+			if (dojo.byId("payAsYouGoRadio").checked) {
+				setMapImage(ESRIConfig.goPhonePAYGDataTypeID);
+				setVisibleDataLayersByDataTypeID(ESRIConfig.goPhonePAYGDataTypeID);
+			} else if (dojo.byId("pickYourPlanRadio").checked) {
+				setVisibleDataLayersByDataTypeID(ESRIConfig.goPhonePYPDataTypeID);
+				setVisibleDataLayersByDataTypeID(ESRIConfig.goPhonePYPDataTypeID);
+			}
+		}
+		else {
+			if (dojo.byId("payAsYouGoRadioStatic").checked) {
+				setMapImage(ESRIConfig.goPhonePAYGDataTypeID);
+				setVisibleDataLayersByDataTypeID(ESRIConfig.goPhonePAYGDataTypeID);
+			} else if (dojo.byId("pickYourPlanRadioStatic").checked) {
+				setMapImage(ESRIConfig.goPhonePYPDataTypeID);
+				setVisibleDataLayersByDataTypeID(ESRIConfig.goPhonePYPDataTypeID);
+			}
+		}
+
+	} else {
+		setVisibleDataLayersByDataTypeID(dataTypeID);
+	}
+}
+
+/**
+ * Sets the CSS to indicate the selected coverage Type Link.
+ * 
+ * @param dataTypeID
+ *            ID corresponding to the clicked Link
+ * @return void
+ */
+function selectDataLink(dataTypeID) {
+	dojo.byId(UIConfig.dataTypeIDtoLinkID[ESRIConfig.voiceDataTypeID]).className = "";
+	dojo.byId(UIConfig.dataTypeIDtoLinkID[ESRIConfig.dataDataTypeID]).className = "";
+	dojo.byId(UIConfig.dataTypeIDtoLinkID[ESRIConfig.goPhoneDataTypeID]).className = "";
+	dojo.byId(UIConfig.dataTypeIDtoLinkID[ESRIConfig.smartLimitsFamilyMapLooptDataTypeID]).className = "";
+	//dojo.byId(UIConfig.dataTypeIDtoLinkID[ESRIConfig.mobileTVDataTypeID]).className = "";
+
+	dojo.byId(UIConfig.dataTypeIDtoLinkID[dataTypeID]).className = "currentSelection";
+}
+// --------------------------------------------------------------------------
+// END Coverage Type Link Handlers
+// --------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------
+//
+// Legend
+//
+// --------------------------------------------------------------------------
+/**
+ * sets the radio buttons for static and dynamic legends updates Map data for
+ * the goPhone coverage type
+ */
+function payAsYouGoRadioClickHandler() {
+	dojo.byId('payAsYouGoRadio').checked = true;
+	dojo.byId('payAsYouGoRadioStatic').checked = true;
+	dojo.byId('dynamicLegendGoPhonePayGo').style.display = "block";
+	dojo.byId('dynamicLegendGoPhonePYP').style.display = "none";
+	dojo.byId('staticLegendGoPhonePayGo').style.display = "block";
+	dojo.byId('staticLegendGoPhonePYP').style.display = "none";
+
+	setMapImage(ESRIConfig.goPhonePAYGDataTypeID);
+	setVisibleDataLayersByDataTypeID(ESRIConfig.goPhonePAYGDataTypeID);
+}
+
+/**
+ * sets the radio buttons for static and dynamic legends updates Map data for
+ * the goPhone coverage type
+ */
+function pickYourPlanRadioClickHandler() {
+	dojo.byId('pickYourPlanRadioStatic').checked = true;
+	dojo.byId('pickYourPlanRadio').checked = true;
+	dojo.byId('dynamicLegendGoPhonePYP').style.display = "block";
+	dojo.byId('dynamicLegendGoPhonePayGo').style.display = "none";
+	dojo.byId('staticLegendGoPhonePYP').style.display = "block";
+	dojo.byId('staticLegendGoPhonePayGo').style.display = "none";
+
+	setMapImage(ESRIConfig.goPhonePYPDataTypeID);
+	setVisibleDataLayersByDataTypeID(ESRIConfig.goPhonePYPDataTypeID);
+}
+
+function selectPayAsYouGoToggle(){
+	dojo.byId('payAsYouGoRadio').checked = true;
+	dojo.byId('payAsYouGoRadioStatic').checked = true;
+	
+	dojo.byId('pickYourPlanRadioStatic').checked = false;
+	dojo.byId('pickYourPlanRadio').checked = false;
+}
+
+function selectPickYourPlanToggle(){
+	dojo.byId('payAsYouGoRadio').checked = false;
+	dojo.byId('payAsYouGoRadioStatic').checked = false;
+	
+	dojo.byId('pickYourPlanRadioStatic').checked = true;
+	dojo.byId('pickYourPlanRadio').checked = true;
+}
+
+
+/**
+ * Updates the legend to match the dataTypeID
+ * 
+ * @param dataTypeID
+ *            dataTypeID of map data shown on map
+ * @param useDynamicLegend
+ *            if null static will be used if mapImage is displayed daynamic will
+ *            be used if map is displayed.
+ * @return void
+ */
+function showLegend(dataTypeID, useDynamicLegend) {
+
+	// Hide all legends then show the correct one
+	dojo.byId('dynamicMapLegendvoice').style.display = "none";
+	dojo.byId('dynamicMapLegenddata').style.display = "none";
+	dojo.byId('dynamicMapLegendgophone').style.display = "none";
+	dojo.byId('dynamicMapLegendsmartlimits').style.display = "none";
+	dojo.byId('dynamicMapLegendmobiletv').style.display = "none";
+	dojo.byId('staticMapLegendvoice').style.display = "none";
+	dojo.byId('staticMapLegenddata').style.display = "none";
+	dojo.byId('staticMapLegendgophone').style.display = "none";
+	dojo.byId('staticMapLegendsmartlimits').style.display = "none";
+	dojo.byId('staticMapLegendmobiletv').style.display = "none";
+
+	if (useDynamicLegend == null) {
+		useDynamicLegend = _usingDynamicMap;
+	}
+	if(!_initialPageLoad){
+		addURLParams();
+	}
+	if (dataTypeID == ESRIConfig.voiceDataTypeID) {
+		dojo.byId("legendTitle").innerHTML = 'Voice Coverage Legend';
+		if (useDynamicLegend) {
+			dojo.byId('dynamicMapLegendvoice').style.display = "";
+		} else {
+			dojo.byId('staticMapLegendvoice').style.display = "";
+		}
+	} else if (dataTypeID == ESRIConfig.dataDataTypeID) {
+		dojo.byId("legendTitle").innerHTML = 'Data Coverage Legend';
+		if (useDynamicLegend) {
+			dojo.byId('dynamicMapLegenddata').style.display = "";
+		} else {
+			dojo.byId('staticMapLegenddata').style.display = "";
+		}
+	} else if (dataTypeID == ESRIConfig.goPhoneDataTypeID
+			|| dataTypeID == ESRIConfig.goPhonePYPDataTypeID
+			|| dataTypeID == ESRIConfig.goPhonePAYGDataTypeID) {
+		dojo.byId("legendTitle").innerHTML = 'GoPhone Coverage Legend';
+		if (useDynamicLegend) {
+			dojo.byId('dynamicMapLegendgophone').style.display = "";
+		} else {
+			dojo.byId('staticMapLegendgophone').style.display = "";
+		}
+	} else if (dataTypeID == ESRIConfig.smartLimitsFamilyMapLooptDataTypeID) {
+		dojo.byId("legendTitle").innerHTML = 'AT&T Smart Limits and AT&T FamilyMap Coverage Legend';
+		if (useDynamicLegend) {
+			dojo.byId('dynamicMapLegendsmartlimits').style.display = "";
+		} else {
+			dojo.byId('staticMapLegendsmartlimits').style.display = "";
+		}
+	} 
+	/*else if (dataTypeID == ESRIConfig.mobileTVDataTypeID) {
+		dojo.byId("legendTitle").innerHTML = 'Mobile TV Coverage Legend';
+		if (useDynamicLegend) {
+			dojo.byId('dynamicMapLegendmobiletv').style.display = "";
+		} else {
+			dojo.byId('staticMapLegendmobiletv').style.display = "";
+		}
+	}*/
+
+}
+// --------------------------------------------------------------------------
+// END Legend
+// --------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------
+//
+// Map
+//
+// --------------------------------------------------------------------------
+
+function configureUIByDataTypeID(dataTypeID,show3GSelected){
+	
+	if(show3GSelected){
+		select3GToggle(true);
+	}else if(show3GSelected == false){
+		select3GToggle(false);
+	}
+	
+	selectDataLink(dataTypeID);
+	setMapImage(dataTypeID);
+	showLegend(dataTypeID);
+	
+	if(dataTypeID == ESRIConfig.goPhonePYPDataTypeID ){
+		selectPickYourPlanToggle();
+	}else if(dataTypeID == ESRIConfig.goPhonePAYGDataTypeID){
+		selectPayAsYouGoToggle();
+	}
+	
+}
+
+function hideMap() {
+	
+	// Show Image
+	dojo.style('imageMapDiv', 'visibility', 'visible');
+	// Show Image Slider
+	dojo.style(UIConfig.staticImageSliderID, 'visibility', 'visible');
+	// Hide Map
+	dojo.style(UIConfig.esriMapID, 'visibility', 'hidden');
+	
+	showLegend(_selectedDataTypeID, false);
+	
+	if(_usingDynamicMap || _initialPageLoad){
+		setTimeout('setStaticMapSettings()',10);
+	}
+}
+
+/**
+ * Map Image click handler when clicked it calls methods to update the legend
+ * and zoom to the click location
+ */
+function mapImgeClickHandler(event) {
+	var opt = getURLParam('opt');
+	if(_selectedDataTypeID == ESRIConfig.goPhoneDataTypeID && validOpt(opt)) {
+        	_selectedDataTypeID = opt;
+	}
+	var e = event ? event : window.event;
+	showMapOnClick(e);
+	showLegend(_selectedDataTypeID, true);	
+}
+
+function setStaticMapSettings(){
+	var lod = ESRIDefaults.mapZoneMinLODs[ESRIConfig.mapZoneContiguousUSA] -1;
+	centerMap(ESRIConfig.initialX, ESRIConfig.initialY, lod, false);
+	_currentMapZone = ESRIConfig.mapZoneContiguousUSA;	
+}
+
+function onExtentChangeHandler(extent, delta, levelChange, lod) {
+	dojo.style(UIConfig.esriMapID+'_layers', 'cursor', 'pointer');
+	if (ESRIDefaults.mapZoneMinLODs[_currentMapZone] > lod.level ) {		
+		hideMap();
+		_usingDynamicMap = false;
+	} else {
+		showMap();
+		_usingDynamicMap = true;
+	}
+	if(!_initialPageLoad){
+		addURLParams();
+	}
+	_initialPageLoad = false;
+}
+
+function panButtonClickHandler(direction){
+	if(_usingDynamicMap){
+		panMap(direction);
+	}
+	else{
+		xyLOD = ESRIDefaults.staticPanXYLODs[direction];
+		if(xyLOD){
+			var x = xyLOD[0];
+			var y = xyLOD[1];
+			var lod = xyLOD[2];
+			centerMap(x,y,lod,false);
+		}
+	}
+}
+
+function setMapImage(dataTypeID){
+	// Set Map Image source
+	var mapImage = dojo.byId('mapImage');
+	mapImage.src = ESRIConfig.mapImageSources[dataTypeID];
+	showLegend(_selectedDataTypeID, _usingDynamicMap);
+}
+
+function showMap() {
+	// Hide Image
+	dojo.style('imageMapDiv', 'visibility', 'hidden');
+	theSlider.reset();
+	
+	//Hide Image Slider
+	dojo.style(UIConfig.staticImageSliderID, 'visibility', 'hidden');
+	
+	// Show Map
+	dojo.style(UIConfig.esriMapID, 'visibility', 'visible');
+	showLegend(_selectedDataTypeID, true);
+}
+
+function loadStaticMapZoomBar(){	
+	
+    var node = dojo.byId("staticImageSlider");
+
+    // our rules are to be children of the slider
+    var rulesNode = document.createElement('div');
+    node.appendChild(rulesNode);
+
+    // setup the rules
+    var sliderRules = new dijit.form.VerticalRule(
+    		{
+    			count: ESRIDefaults.mapLODMaxIndex + 1,
+	            style:"width:0px"
+        	},
+        	rulesNode);
+			
+	// the labels are to be children of the slider
+	var rulesNodeLabels = document.createElement('div');
+	node.appendChild(rulesNodeLabels);
+			
+	// setup the labels
+	var sliderLabels = new dijit.form.VerticalRuleLabels(
+		{
+			count: ESRIDefaults.mapLODMaxIndex + 1,
+			style: ESRIConfig.mapSliderLabelStyle,					
+			labels: ESRIConfig.mapSliderLabels
+		},
+		rulesNodeLabels);
+
+    // and setup the slider
+    theSlider = new dijit.form.VerticalSlider(
+		{
+            value:0,
+            onChange: function(){staticSlideronChange(arguments);},
+            style:ESRIConfig.mapSliderStyle,
+            minimum:0,
+            maximum:ESRIDefaults.mapLODMaxIndex,
+            discreteValues:ESRIDefaults.mapLODMaxIndex + 1,
+            intermediateChanges:"true",
+            showButtons:"true"
+    	}
+		,node);
+
+    // and start them both
+    theSlider.startup();
+    sliderRules.startup();
+    sliderLabels.startup();
+
+};
+
+function staticSlideronChange(args){
+	if(!_usingDynamicMap){
+		centerMap(null, null, args[0], false);
+	}
+}
+
+// --------------------------------------------------------------------------
+// END Map
+// --------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------
+//
+// URL Parameter Handling
+//
+// --------------------------------------------------------------------------
+function addURLParams(){
+	if (! _hasInputUrlParams) {
+ 		window.location.hash = createURLParams();
+ 	}
+}
+
+function createURLParams(showDynamicMap){
+	if (showDynamicMap == null) {
+		showDynamicMap = _usingDynamicMap;
+	}
+	
+	var locationParam = "lat="+_map.extent.getCenter().y;
+	locationParam += "&lon="+_map.extent.getCenter().x;
+	var typeParam = "type="+ _selectedDataTypeID;
+	
+	if(_selectedDataTypeID == ESRIConfig.goPhoneDataTypeID){
+		if (dojo.byId("payAsYouGoRadio").checked && dojo.byId("payAsYouGoRadioStatic").checked){
+			typeParam +="&opt="+ESRIConfig.goPhonePAYGDataTypeID;
+		}
+		else{
+			typeParam +="&opt="+ESRIConfig.goPhonePYPDataTypeID;
+		}
+	}
+	var sciParam = "sci="+_map.getLevel();
+	var params = "?"+typeParam;
+	if(showDynamicMap){
+		params += "&"+ locationParam + "&" + sciParam;
+	}
+	
+	return params;
+}
+
+function getURLParam(strParamName){
+	var strHref = window.location.href;
+	var strReturn = "";
+
+	if ( _hasInputUrlParams) {
+		var strQueryString = strHref.substr(strHref.lastIndexOf("?")).toLowerCase();
+		var aQueryString = strQueryString.split("&");
+		
+		for ( var iParam = 0; iParam < aQueryString.length; iParam++ ){
+			if (aQueryString[iParam].indexOf(strParamName + "=") > -1 ){
+				var aParam = aQueryString[iParam].split("=");
+				strReturn = aParam[1];
+				break;
+			}
+		}
+	}
+	return strReturn;
+}
+
+function checkUrlParams(){ 
+	var strHref = window.location.href; 
+	if ( strHref.indexOf("?") > -1 ){ 
+		_hasInputUrlParams = true; 
+	} 
+}
+
+function handleUrlParams(){
+	checkUrlParams();
+	var latParam = getURLParam('lat');
+	var lonParam = getURLParam('lon');
+	var lod = getURLParam('sci');
+	var layer3gOnParam = getURLParam('3g');
+	var zip  = getURLParam('zip');
+	var type =getURLParam('type');
+	var opt = getURLParam('opt');
+	var biz = "false";
+	biz = getURLParam('biz');
+	
+	if (validZip(zip)) {
+		showAddress();
+		dojo.byId('zipCode').value = zip;
+		if(validLOD(lod)){
+			locateByAddress(null, null, null, zip, lod);
+		}
+		else{
+			locateByAddress(null, null, null, zip);
+		}
+	}
+	
+	if (validParam(latParam) && validParam(lonParam) ) {
+		showLatLong();
+		dojo.byId('latitude').value = latParam;
+		dojo.byId('longitude').value = lonParam;
+		
+		if(!validLOD(lod)){
+			lod = ESRIDefaults.searchTypeLODs[ESRIConfig.searchLatLong];
+		}
+		
+		centerMap(lonParam, latParam, lod, true);
+	}
+	
+	if (validDataTypeID(type)) {
+		_selectedDataTypeID = type;
+		
+		if(type == ESRIConfig.goPhoneDataTypeID && validOpt(opt)){
+			_selectedDataTypeID = opt;
+			
+			setVisibleDataLayersByDataTypeID(opt);
+		}
+		else{
+			setVisibleDataLayersByDataTypeID(type);
+		}
+	}
+	else{
+		setVisibleDataLayersByDataTypeID(ESRIConfig.defaultDataTypeID);
+		configureUIByDataTypeID(ESRIConfig.defaultDataTypeID);
+		return;
+	}
+	
+	configureUIByDataTypeID(_selectedDataTypeID);
+}
+
+function validParam(param){
+    return (null != param && param != '' && param != "");
+}
+
+function validDataTypeID(id){
+    if (id == ESRIConfig.voiceDataTypeID) {
+        return true;
+    }
+    else if (id == ESRIConfig.dataDataTypeID) {
+        return true;
+    }
+    else if (id == ESRIConfig.goPhoneDataTypeID) {
+        return true;
+    }
+    else if (id == ESRIConfig.smartLimitsFamilyMapLooptDataTypeID) {
+        return true;
+    }
+	/*else if (id == ESRIConfig.mobileTVDataTypeID) {
+        return true;
+    }*/
+    else {
+        return false;
+    }
+}
+
+function validLOD(lod){
+	lod = parseFloat(lod);
+	if(isNaN(lod)){
+		return false;
+	}else{
+		return ( (-1 < lod) && ( lod < (ESRIDefaults.mapLODMaxIndex+1)));
+	}
+}
+
+function validOpt(opt){
+    if (opt == ESRIConfig.goPhonePAYGDataTypeID) {
+        return true;
+    }
+    // ESRIConfig.goPhoneDataTypeID is not in the list
+    else if (opt == ESRIConfig.goPhonePYPDataTypeID) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function validZip(zip){
+
+	if(zip.length <5){
+		return false;
+	}
+		
+	var ValidChars = "0123456789";
+	var Char;
+	 
+	for (i = 0; i < zip.length; i++){ 
+		Char = zip.charAt(i); 
+		if (ValidChars.indexOf(Char) == -1) {
+			return false;
+		}
+	}
+	
+	return true;
+}
+	
+// --------------------------------------------------------------------------
+// END URL Parameter Handling
+// --------------------------------------------------------------------------
+
+
+// --------------------------------------------------------------------------
+//
+// Printing
+//
+// --------------------------------------------------------------------------
+function openPrintPage(){
+	var printPageURL = "print.jsp"+createURLParams();
+	printPageURL += "&xmax=" + _map.extent.xmax; 
+	printPageURL += "&xmin=" + _map.extent.xmin;
+	printPageURL += "&ymax=" + _map.extent.ymax; 
+	printPageURL += "&ymin=" + _map.extent.ymin;
+	
+	window3G = window.open(printPageURL, 'Print', 'scrollbars=yes,width=625,height=700,resizable=yes');
+}
+// --------------------------------------------------------------------------
+// END Printing
+// --------------------------------------------------------------------------
+
+
+/*
+ * ############################################################################### # #
+ * 3G WINDOW RELATED #
+ * ###############################################################################
+ */
+
+var window3G = "";
+
+function show3gWindow(url) {
+	if (!window3G.closed && window3G.location) {
+		window3G.location.href = url;
+	} else {
+		window3G = window.open(url, 'pop3g',
+				'scrollbars=yes,width=625,resizable=yes');
+		if (!window3G.opener)
+			window3G.opener = self;
+	}
+	if (window.focus) {
+		window3G.focus();
+	}
+	return false;
+}
+
+// NOTE: Global vars and setTimeout used as a work around for a Firefox Bug that
+// occurs
+// when using AJAX and calls between child and parent windows
+var X3G;
+var Y3G;
+var SCALEINDEX3G;
+var LAYER3GON3G;
+
+function show3G(x, y, scaleIndex) {
+	X3G = x;
+	Y3G = y;
+	SCALEINDEX3G = scaleIndex;
+	setTimeout("show3GTimeOut()", 10);
+	if (!window3G.closed && window3G.location)
+		window3G.close();
+}
+
+function show3GTimeOut() {
+	// hard code the data map
+	_selectedDataTypeID = ESRIConfig.dataDataTypeID;
+	showLegend(_selectedDataTypeID, true);
+	centerMap(X3G, Y3G, SCALEINDEX3G);
+}
+
+/*
+ * ############################################################################### # #
+ * STATE/TERRITORY WINDOW RELATED #
+ * ###############################################################################
+ */
+
+var stateWindow = '';
+
+function showStateWindow(url) {
+	if (!stateWindow.closed && stateWindow.location) {
+		stateWindow.location.href = url;
+	} else {
+		stateWindow = window.open(url, 'name',
+				'scrollbars=yes,width=610,resizable=yes');
+		if (!stateWindow.opener)
+			stateWindow.opener = self;
+	}
+	if (window.focus) {
+		stateWindow.focus();
+	}
+	return false;
+}
+
+function setStateField(state) {
+	dojo.byId('state').value = state;
+}
+
+/*
+ * ############################################################################## # #
+ * EXAMPLE WINDOW RELATED #
+ * ##############################################################################
+ */
+
+var exampleWindow = '';
+
+function showExampleWindow(url) {
+	if (!exampleWindow.closed && exampleWindow.location) {
+		exampleWindow.location.href = url;
+	} else {
+		exampleWindow = window.open(url, 'name',
+				'scrollbars=yes,width=620,height=450,resizable=yes');
+		if (!exampleWindow.opener)
+			exampleWindow.opener = self;
+	}
+	if (window.focus) {
+		exampleWindow.focus();
+	}
+	return false;
+}
+
+/*
+ * ############################################################################### # #
+ * LEGEND WINDOW RELATED #
+ * ###############################################################################
+ */
+
+var legendWindow = '';
+
+function showLegendWindow(url) {
+	if (!legendWindow.closed && legendWindow.location) {
+		legendWindow.location.href = url;
+	} else {
+		legendWindow = window.open(url, 'name',
+				'scrollbars=yes,width=610,height=710,resizable=yes');
+		if (!legendWindow.opener)
+			legendWindow.opener = self;
+	}
+	if (window.focus) {
+		legendWindow.focus();
+	}
+	return false;
+}

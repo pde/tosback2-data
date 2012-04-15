@@ -1,0 +1,89 @@
+var thumbs=new Array();
+var stat=new Array();
+var thumb=new Array();
+
+$(document).ready(function() {
+  $('.hSprite').bind('mouseover',hRotator.start).bind('mouseout',hRotator.stop);
+});
+
+var hRotator = {'timer':0,'cache':{},'id':0,'curr':false, 'stopped':true};
+
+hRotator.start2 = function(el) {
+    var t = $(el);
+    t.bind('mouseout',hRotator.stop);
+    hRotator.start.call(el);
+}
+ 
+hRotator.start = function(e) {
+    var t = $(this);
+    hRotator.stop();
+    hRotator.curr = t;
+    hRotator.id = t.attr('id');
+    hRotator.curr.css('background-position','0 0');
+    //console.log('start: '+hRotator.id);
+    if (!hRotator.cache[hRotator.id]) {
+        img = new Image();
+        img.loaded = false;
+        hRotator.cache[hRotator.id] = img;
+        img.vid = hRotator.id;
+    } else img = hRotator.cache[hRotator.id];
+    hRotator.stopped = false;
+    if (!img.loaded) {
+        t.parent().append('<span></span>');
+        hRotator.loader = $('span',t.parent());
+        $(img).bind('load',hRotator.onLoad);
+        img.src = t.attr('sprite');
+    } else {
+        hRotator.begin();
+    }
+    //console.log('start: done');
+}
+
+hRotator.stop = function() {
+    //console.log('stop: '+hRotator.id+' stopped('+hRotator.stopped+')');
+    hRotator.stopped = true;
+    clearTimeout(hRotator.timer);
+    if (hRotator.curr) {
+        hRotator.curr.css({'background-image':''});
+        if (hRotator.loader) {
+            hRotator.loader.remove();
+            hRotator.loader = false;
+        }
+    }
+    hRotator.id = false; hRotator.curr = false; hRotator.loader = false;
+}
+
+hRotator.onTime =  function(num) {
+    clearTimeout(hRotator.timer);
+    if (hRotator.stopped) {
+        hRotator.stop();
+        return true;
+    }
+    num++;
+    if (num>9) num=0;
+    //console.log('onTime: '+num);
+    pos = (num*-160)+'px 0px';
+    hRotator.curr.css({'background-position':pos});
+    hRotator.timer = setTimeout('hRotator.onTime('+num+')',500);
+}
+
+hRotator.onLoad = function(e) {
+    //console.log('onload: '+this.src);
+    this.loaded = true;
+    if (this.vid != hRotator.id) {
+        //console.log('onload error: id='+hRotator.id+' img.id='+this.vid);
+        return true;
+    }
+    hRotator.begin();
+}
+
+hRotator.begin = function() {
+    if (hRotator.loader) {
+        hRotator.loader.remove();
+        hRotator.loader = false;
+    }
+    hRotator.curr.css({'background-position': '0 0'});
+    hRotator.curr.css({'background-image':'url('+hRotator.curr.attr('sprite')+')'});
+    hRotator.onTime(-1);
+}
+

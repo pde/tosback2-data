@@ -1,0 +1,519 @@
+/* ----------------------------------------------------------------------------
+	Purpose:
+		Global CSS Styles for the HomeDepot.com website
+	$Last Updated: 18-May-2011 7:24:19AM $
+/*	----------------------------------------------------------------------------
+	Table Of Contents
+	1. Resets & Defaults
+		a. Resets
+		b. Defaults
+	2. Grid and Layout
+		a. Grid
+		b. Layout
+	3. Generics
+	4. Typography
+	5. Buttons
+	6. Cartridges
+*/
+
+/*	----------------------------------------------------------------------------
+	(1) Defaults & Resets */
+/*	----------------------------------------
+	(1a) Defaults & Resets - Resets */
+*, form{
+	margin: 0;
+	padding: 0;
+	/* font-weight: normal; <--- John J. told me to do it.  Defect #13906 */
+}
+
+a img { border: none; }
+img { -ms-interpolation-mode: bicubic; } /* Help IE resize ../images if needed. */
+ul, ol { list-style-type: none; }
+h1, h2, h3, h4, h5, h6, b, strong, b *, strong * { font-weight: bold; } /* QC# 13257 */
+
+/*	----------------------------------------
+	(1b) Defaults & Resets - Defaults */
+html, body {
+	background: #bbb none;
+}
+body {
+	color: #777;
+	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+a, a:visited { color: #000; text-decoration: none; }
+a:hover { text-decoration: underline; }
+p a{color: #f96302;}
+
+/*	----------------------------------------------------------------------------
+	(2) Grid and Layout */
+/*	----------------------------------------
+	(2a) Grid and Layout - Grid */
+	
+/* Main Container */
+.container_30 {
+	margin-left: auto;
+	margin-right: auto;
+	width: 960px;
+	background: none #fff;
+}
+
+/* POD Globals */
+/* Setting default border style/color here. */
+.row, .pod, .rail {
+	border: 0 solid #eee;
+}
+.grid_6,.grid_9,.grid_12,
+.grid_18,.grid_24,.grid_30 {
+	display:inline;
+	float: left;
+	position: relative;
+	border-width: 0 1px;
+}
+
+/* POD Widths */
+.container_30 .grid_6 { width:190px; }
+.container_30 .grid_9 { width:286px; }
+.container_30 .grid_12 { width:382px; }
+.container_30 .grid_18 { width:574px; }
+.container_30 .grid_24 { width:766px; }
+.container_30 .grid_30 { width:958px; }
+
+/*	----------------------------------------
+	(2b) Grid and Layout - Layout */
+
+/* Border Control */
+
+.container_30 .alpha { border-left: none; }
+.container_30 .omega { border-right: none; }
+
+/*.container_30 .rail .pod { border-left: none; border-right: none; } Removed per meeting re event css */
+
+/* add bottom border */
+.container_30 .withBorder { border-bottom-width: 2px; }
+
+/* Float all rows left so that the do not need clearfix */
+.container_30 .row { float:left; }
+.container_30 .mainContent .row { width:100%\9; } /* 14332 */
+
+/* add the required padding to the Row H3 Header */
+.container_30 h3.rowHeader { padding: 15px; }
+
+/* standard Padding */
+.container_30 .spad { padding: 15px }
+
+/* Row with Header Footer */
+.container_30 .row.withHeader { padding-bottom: 15px; }
+
+/* Rails */
+.container_30 .rail { background: #ddd; }
+.container_30 .rail ul.linkList { padding: 20px; }
+.container_30 .rail .spad { padding: 0; }
+
+/* Make sure the footer rail padding is there */
+.container_30 .footer .rail .spad { padding: 15px }
+
+
+/*	----------------------------------------------------------------------------
+	(3) Generics */
+.thdOrange { color:#f96302 !important; }
+.b { font-weight: bold; }
+.c { text-align: center; }
+.r { text-align: right; }
+.l { text-align: left; }
+.j { text-align: justify; }
+.hide { visibility: hidden; display: none !important; }
+.invisible { visibility: hidden; }
+.clearfix:after {
+	clear: both;
+	content: " ";
+	display: block;
+	font-size: 0;
+	height: 0;
+	visibility: hidden;
+}
+.clearfix {zoom: 1;} /* IE < 8 */
+.clear {
+	position: relative;
+	font-size: 0;
+	height: 0;
+	clear: both;
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+}
+.hasLayoutFix { zoom:1\9; } /* All IEs */
+
+/*	----------------------------------------------------------------------------
+	(4) Typography */
+
+.xlarge { font-size:20px; } /* BODY 0 */
+.large { font-size:14px; } /* BODY 1 */
+.normal { font-size: 12px; line-height: 15px;} /* BODY 2 */
+.small { font-size: 10px; } /* BODY 3 */
+.legal { font-size: 8px; } /* BODY 4 */
+
+/*Pod Paragraph  Bottom Margin with Link List */
+.pod .content p{margin-bottom:10px;}
+
+ul.linkList li { margin: 0 0 8px; }
+
+/* Title */
+h1.title, h1.title a { font-size: 21px; font-weight: bold; }
+h3.title, h3.title a { font-size: 14px; font-weight: bold;}
+
+/* Hero */
+h2.hero { font-size: 27px; font-weight: bold; text-transform: uppercase; }
+h4.hero, h3.hero_subtitle { font-size: 21px; }
+
+/* Row Header (typically paired with .large above) */
+.container_30 h3.rowHeader { font-weight: bold; text-transform: uppercase; font-size: 14px; }
+
+/* Rail linkList Header */
+.container_30 .linkList li.header
+{
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #333;
+}
+
+/*	----------------------------------------------------------------------------
+	(5) Buttons */
+.dynamic_btn {
+	cursor: pointer;
+	display : inline-block;
+	font-size : 12px;
+	font-weight : bold;
+	padding : 7px 15px;
+	text-decoration: none;
+	text-transform : uppercase;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	zoom: 1;
+}
+.dynamic_btn span { font-weight : bold; }
+
+/* Grey */
+.grey_btn {
+	background : url('../images/btns/CSS_sprite_button_primary_gray.png') repeat;
+	border : 1px solid  #eee;
+	color : #000;
+	text-shadow: none;
+}
+.grey_btn:hover {
+	background : url('../images/btns/CSS_sprite_button_primary_gray_over.png') repeat;
+	border : 1px solid #ccc;
+	text-decoration : none;
+}
+
+/* Orange */
+.orange_btn {
+	background : url('../images/btns/CSS_sprite_button_primary_orange.png') repeat;
+	border : 1px solid  #f96302;
+	color : #fff;
+	text-shadow: none;
+}
+.orange_btn:hover {
+	background : url('../images/btns/CSS_sprite_button_primary_orange_over.png') repeat;
+	border : 1px solid  #993300;
+	text-decoration : none;
+}
+
+/*icons*/
+.dynamic_btn .arrow { background : url('../images/btns/arrow.png') no-repeat right center; padding : 0 15px 0 0; }
+.dynamic_btn .carrot { background : url('../images/btns/caret.png') no-repeat right center; padding : 0 15px 0 0; }
+.dynamic_btn .plus { background : url('../images/btns/plus.png') no-repeat right center; padding : 0 15px 0 0; }
+
+.dynamic_btn.orange_btn .arrow { background : url('../images/btns/arrow_white.png') no-repeat right center; padding : 0 15px 0 0; }
+.dynamic_btn.orange_btn .carrot { background : url('../images/btns/caret_white.png') no-repeat right center; padding : 0 15px 0 0; }
+.dynamic_btn.orange_btn .plus { background : url('../images/btns/plus_white.png') no-repeat left center; padding : 0 0 0 15px; }
+
+.arrow {
+	background : url('../images/btns/arrow.png') no-repeat right center;
+	padding : 0 15px 0 0;
+	/* IE Only Multiline fix */
+	zoom:1;
+	background-position: right 90%\9;
+}
+.carrot {
+	background : url('../images/btns/caret.png') no-repeat right center;
+	padding : 0 15px 0 0;
+	/* IE Only Multiline fix */
+	zoom:1;
+	background-position: right 90%\9;
+}
+.plus {
+	background : url('../images/btns/plus.png') no-repeat right center;
+	padding : 0 15px 0 0;
+	/* IE Only Multiline fix */
+	zoom:1;
+	background-position: right 90%\9;
+}
+
+.pod_video_icon {
+	cursor: pointer;
+	position: absolute;
+	background: #000 url('../images/btns/PlayArrow.png') no-repeat center center;
+	height: 30px;
+	width: 45px;
+	top : 50px;
+	left: 0;
+
+	-web-kit-border-radius:0 4px 4px 0;
+	-moz-border-radius: 0 4px 4px 0;
+	border-radius: 0 4px 4px 0;
+
+	filter:alpha(opacity=50);
+	-moz-opacity:.50;
+	opacity:.50;
+
+}
+.pod_video_icon:hover {
+	width : 55px;
+	filter:alpha(opacity=80);
+	-moz-opacity:.80;
+	opacity:.80;
+}
+
+.value_icon {
+	position: absolute;
+	width : 45px;
+	height: 45px;
+	bottom : 0;
+	left: 0;
+	background: url('../images/icons/NLP.png') no-repeat;
+	text-indent: -9999px;
+}
+
+/*arrows*/
+.prev_btn {
+	background : url('../images/btns/ToggleArrows_States.png') no-repeat -10px -6px;
+	cursor : pointer;
+	display : block;
+	text-indent : -9999px;
+	width : 30px;
+	height : 31px;
+}
+.prev_btn:active { background : url('../images/btns/ToggleArrows_States.png') no-repeat -10px -42px; }
+.next_btn{
+	background : url('../images/btns/ToggleArrows_States.png') no-repeat -39px -6px;
+	cursor : pointer;
+	display : block;
+	text-indent : -9999px;
+	width : 30px;
+	height : 31px;
+}
+.next_btn:active { background : url('../images/btns/ToggleArrows_States.png') no-repeat -39px -42px; }
+
+
+/*	----------------------------------------------------------------------------
+	(6) Cartridges */
+
+/* gridNavigation */
+.gridNavigation { background: #eee; padding: 15px 0 20px; }
+.gridNavigation h3.title { padding: 0 20px; }
+.gridNavigation .parentLevels {
+	margin-top: 15px;
+	background: #ddd none;
+	border-top: 2px solid #bbb;
+}
+.gridNavigation .parentLevels a {
+	display:block;
+	padding: 10px 10px 10px 33px;
+	border-bottom:2px solid #bbb;
+	background: url("../images/layout/wcs7_rail_nav_arrow.gif") no-repeat scroll 20px 13px transparent;
+}
+.gridNavigation .activeLevel { padding: 20px 0 0; }
+.gridNavigation .activeLevel h3.title { padding:0; color: #333; }
+.gridNavigation .activeLevel li { padding: 4px 20px; }
+/* /gridNavigation */
+
+/*content cartridge*/
+.spad .content_image {
+	width : auto;
+	height : auto;
+	float : left;
+	margin : 0 10px 15px 0;
+	position: relative;
+}
+.content_image.right { margin : 0 0 15px 10px; float: right; }
+.pod h3.title {
+	margin : 0 0 15px;
+	display: inline-block\9; /* IE Hack to fix float issues */
+}
+.pod h3.title a {  }
+.linkListwrapper{width: auto;}
+.linkListwrapper td{width: 185px;}
+.lower_pod_cta{text-align: right; padding: 10px 0 0;}
+
+/*content dynamic*/
+.dynamic .content_image{
+	width : 145px;
+	height: 145px;
+	padding: 0 7px 0;
+	float: none;
+}
+.dynamic .content_image .dynamic_btn { position: absolute; top:58px; left : 25px; }
+.item_pricing_wrapper { width: auto; height: 34px; margin: 0 0 15px; display: block; }
+.xlarge.item_price { font-weight: bold; display: block; margin: 0 0 -3px 0; color:#000;}
+.item_stike_price { text-decoration:line-through; }
+.dynamic .item_description { margin: 0 0 15px; display:block; height: 30px;}
+.dynamic .item_description a{color: #000;}
+.dynamic .reviews { background : url('../images/certona_ratings.jpg') no-repeat; width: 70px; height: 15px; margin-bottom: 15px; cursor:pointer; display:block; float:left; margin-right:5px;}
+.dynamic .reviews .stars { background : url('../images/certona_ratings.jpg') 0px -31px no-repeat; width: 70px; height: 15px; margin-bottom: 15px; float: left;}
+.dynamic .reviews .review_count { float: left; }
+.dynamic .availibility { font-weight: bold; float:left; }
+.dynamic .savings_message {
+	position: absolute;
+	top : 15px;
+	left: -15px;
+	background: #f96302;
+	font-weight: bold;
+	color: #fff;
+	text-align: right;
+	padding: 4px 6px 3px 13px;
+	cursor: default;
+}
+
+/*brand slider cartdridge*/
+#explore_brands_wrapper{margin : 20px; }
+#explore_brands_wrapper .linkList{padding : 0; margin-top:15px;}
+#explore_brands_wrapper .prev_btn{ float:left;}
+#explore_brands_wrapper .next_btn{float : left;}
+#brand_image_wrapper{width:150px; height:90px; margin:15px 0 0; position: relative; overflow: hidden;}
+#brand_images{float: left; margin: 0; padding: 0; position: relative;}
+#brand_images li{float: left; display: inline;}
+#brand_slide_btns{width : 99%; height : 30px; margin-top:15px;}
+
+/* Fancybox Close Button */
+.fbClose {
+    margin: 5px 15px 0 0;
+    text-align: right;
+}
+
+/* Fancybox-ed Video Player */
+
+/* Close Button */
+.fbVideoClose {
+	position: absolute;
+	right: 39px;
+	top: 19px;
+}
+.fbVideoClose a { 
+	color: #fff;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-weight: bold;
+}
+.fbVideoClose a span {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+/* WCS 5.6 Lift & Shift */
+#videoPlaceHolder {
+	width: 640px;
+	height: 360px;
+	padding: 39px;
+	background: #000;
+	position: relative;
+}
+
+/* WCS7 per VDS */
+#videoContainer {
+	position: relative;
+}
+
+#videoContainer .videoTop {
+	background: #000;
+	padding: 15px 30px;
+}
+
+#videoContainer .fbVideoClose {
+	right: 30px;
+}
+
+#videoContainer .videoTop h1 {
+	text-transform: uppercase;
+	color: #fff;
+	margin: 0 0 15px;
+}
+
+#videoContainer #videoPlaceHolder { /* overwrite 5.6 #videoContainer */
+	padding: 0;
+}
+
+#videoContainer .videoTop p {
+	height: 50px;
+	margin: 15px 0 0;
+	color: #fff;
+}
+#videoContainer .videoTop p .carrot {
+	color: #fff;
+	font-weight: bold;
+}
+
+#videoContainer .videoBottom {
+	height: 140px;
+	background: #ddd none;
+}
+
+.videoBottom .videoRotatorContainer {
+	float: left;
+	margin: 15px 30px 30px;
+	width: 430px; 
+}
+
+.videoRotatorContainer h3 {
+	text-transform: uppercase;
+	margin: 0 0 15px; 
+}
+
+.videoBottom .videoSocialBox {
+	float: left;
+	width: 210px;
+	height: 140px;
+	background: #000 none;
+}
+/*Breadcrumb style*/
+#breadcrumb {zoom:1; overflow: hidden;}
+#breadcrumb #header-crumb{margin : 15px 0 0 20px;}
+#breadcrumb li{float:left !important; height: 15px; font-weight:bold; } /* QC-15604 */
+#breadcrumb li a.active{color : #777;}
+#breadcrumb .breadcrumbSeperator{background:url("../images/BreadCrumb_Caret.png") no-repeat; width : 5px; height:10px; display:block; margin : 2px 10px 0 10px; float:left;}
+.page-title{margin : 5px 0 0 20px; font-size: 21px; /* #15781 - color change */ color:#333; }
+
+
+
+/*Easter Eggs*/
+/*animate the playvideo icon in mordern browsers*/
+.pod_video_icon{
+	-moz-transition: all .15s linear;
+	-o-transition: all .15s linear;
+	-webkit-transition: all .15s linear;
+	transition: all .15s linear;
+}
+
+/*==================== Gallery Fix (QC 13990 * 11801) ====================*/
+#dctm_content_overlay {
+	width: 766px !important;
+}
+
+#dctm_content_overlay .pod {
+}
+
+#gallery_wrapper {
+	background: #fff;
+	padding: 30px;
+
+}
+#gallery_wrapper .close_btn {
+	position: absolute;
+	display: block;
+	top: 10px;
+	right: 30px;
+}
+

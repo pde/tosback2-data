@@ -1,0 +1,39 @@
+function cnbc_video_toDateString(gmtTime)
+{		
+	var month=new Array(12);
+	month[0]="Jan.";
+	month[1]="Feb.";
+	month[2]="Mar.";
+	month[3]="Apr.";
+	month[4]="May";
+	month[5]="Jun.";
+	month[6]="Jul.";
+	month[7]="Aug.";
+	month[8]="Sept.";
+	month[9]="Oct.";
+	month[10]="Nov.";
+	month[11]="Dec.";
+	
+	var weekday=new Array(7);
+	weekday[0]="Sun.";
+	weekday[1]="Mon.";
+	weekday[2]="Tues.";
+	weekday[3]="Wed.";
+	weekday[4]="Thurs.";
+	weekday[5]="Fri.";
+	weekday[6]="Sat.";
+	
+	var dateTime = new Date();
+	dateTime.setTime(gmtTime);	
+	var hour = dateTime.getHours();
+	var minute = dateTime.getMinutes();
+	if (minute < 10) { minute = "0" + minute; }
+	var ap = "AM";
+
+	if (hour   > 11) { ap = "PM";        }
+	if (hour   > 12) { hour = hour - 12; }
+	if (hour   == 0) { hour = 12;        }	
+
+	return	weekday[dateTime.getDay()] + " " + month[dateTime.getMonth()] + " " + 
+			dateTime.getDate() + " " + dateTime.getFullYear() + " | " + hour + ":" + minute + " " + ap;
+}

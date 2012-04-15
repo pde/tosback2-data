@@ -1,0 +1,365 @@
+﻿// ----------------------------------------------
+// File:		URLFactory.js
+// Author:		Nathan Derksen
+// Description:	Class to handle converting URL parameters to StateSnapshotVO
+// Example:
+// var stateObj = URLFactory.convertHashToState(window.location.href);
+// ----------------------------------------------
+
+
+// ----------------------------------------------
+// Function:	URLFactory()
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+function URLFactory()
+{
+}
+
+var intToExtStateMap = {
+	currentPage:"p",
+	currentProductGrid:"cg",
+	category:"c",
+	sortCriteria:"s",
+	refinement:"r",
+	pageSize:"n",
+	searchTerms:"t",
+	relatedItemSku:"ri",
+	onlyItems:"ni",
+	isNormalized:"x",
+	popup:"pu",
+	flash:"f",
+	id:"id",
+	selectedFilters:"k"
+};
+
+var extToIntStateMap = {
+	p:"currentPage",
+	cg:"currentProductGrid",
+	c:"category",
+	s:"sortCriteria",
+	r:"refinement",
+	n:"pageSize",
+	t:"searchTerms",
+	ri:"relatedItemSku",
+	ni:"onlyItems",
+	x:"isNormalized",
+	pu:"popup",
+	f:"flash",
+	id:"id",
+	k:"selectedFilters"
+};
+
+
+// ----------------------------------------------
+// Function:	ProductFactory.convertHashToState()
+// Author:		Nathan Derksen
+// Description:	Converts a URL with parameters in an anchor to fill a StateSnapshotVO object
+// Inputs:		<String> url: The URL from the address bar
+// Returns:		<StateSnapshotVO>: An object with properties to hold the state values
+// ----------------------------------------------
+URLFactory.convertHashToState = function(hash)
+{
+	var snapshot = new StateSnapshotVO();
+	var splitURL;
+	var anchor;
+	var hashArray;
+	var splitItem;
+	var mappedProperty;
+	var valueName;
+
+	if (hash)
+	{
+		hash = hash.split("#").join("");
+		hashArray = hash.split("-");
+		for (var i=0; i < hashArray.length; i++)
+		{
+			splitItem = hashArray[i].split("+");
+			valueName = splitItem[0];
+			if (splitItem.length >= 2)
+			{
+				mappedProperty = extToIntStateMap[valueName];
+				splitItem.shift();
+				
+				if (mappedProperty)
+				{
+					switch(mappedProperty.toLowerCase())
+					{
+						case "currentpage":
+							snapshot.currentPage = Number(unescape(splitItem.join("+"))) - 1;
+							break;							
+						case "currentproductgrid":
+							snapshot.currentProductGrid = unescape(splitItem.join("+"));
+							break;
+						case "category":
+							snapshot.category = unescape(splitItem.join("+"));
+							break;
+						case "sortcriteria":
+							snapshot.sortCriteria = unescape(splitItem.join("+"));
+							break;
+						case "refinement":
+							snapshot.refinement = unescape(splitItem.join("+"));
+							break;
+						case "pagesize":
+							snapshot.pageSize = unescape(splitItem.join("+"));
+							break;
+						case "searchterms":
+							snapshot.searchTerms = unescape(splitItem.join("+"));
+							break;
+						case "relateditemsku":
+							snapshot.relatedItemSku = unescape(splitItem.join("+"));
+							break;
+						case "onlyitems":
+							snapshot.onlyItems = unescape(splitItem.join("+"));
+							break;
+						case "isnormalized":
+							snapshot.isNormalized = unescape(splitItem.join("+"));
+							break;
+						case "popup":
+							snapshot.popup = unescape(splitItem.join("+"));
+							break;
+						case "flash":
+							snapshot.flash = unescape(splitItem.join("+"));
+							break;
+					}
+				}
+			}
+		}
+	}
+	return snapshot;
+};
+
+// ----------------------------------------------
+// Function:	ProductFactory.convertStateToHash()
+// Author:		Nathan Derksen
+// Description:	Converts a StateSnapshotVO object to a URL with parameters in an anchor
+// Inputs:		<StateSnapshotVO> stateSnapshot: An object with properties to hold the state values
+// Returns:		<String>: The URL from the address bar
+// ----------------------------------------------
+URLFactory.convertStateToHash = function(stateSnapshot)
+{
+	var stateArray = new Array();
+	var newStateStr = "";
+
+	var productGrid = ProductModel.getInstance().getProductsComplete();
+	var sortCriteria = "";
+	var sampleQueryString = "";
+	
+	if (productGrid.length > 0)
+	{
+		sampleQueryString = productGrid[0].qs;
+		sortCriteria = URLFactory.extractValue(sampleQueryString, "sortCriteria");
+	}
+
+	for (var item in stateSnapshot)
+	{
+		switch(item.toLowerCase())
+		{
+			case "currentproductgrid":
+			case "category":
+			case "refinement":
+			case "pagesize":
+			case "searchterms":
+			case "relateditemsku":
+			case "onlyitems":
+			case "isnormalized":
+			case "popup":
+			case "flash":
+				stateArray.push(intToExtStateMap[item] + "+" + escape(stateSnapshot[item]));
+				break;
+			case "currentpage":
+				var offsetNum = String(Number(stateSnapshot[item]) + 1);
+				stateArray.push(intToExtStateMap[item] + "+" + escape(offsetNum));
+				break;
+			case "sortcriteria":
+				if (stateSnapshot[item] == "9999" || stateSnapshot[item] == 9999)
+				{
+					stateArray.push(intToExtStateMap[item] + "+" + sortCriteria);
+				}
+				else
+				{
+					stateArray.push(intToExtStateMap[item] + "+" + escape(stateSnapshot[item]));
+				}
+				break;
+		}
+	}
+	
+	newStateStr = stateArray.join("-");
+	return newStateStr;
+};
+
+// ----------------------------------------------
+// Function:	ProductFactory.convertStateToServiceHash()
+// Author:		Nathan Derksen
+// Description:	Converts a StateSnapshotVO object to a hash that can be consumed by a service (eg: removes "currentProductGrid" and makes pages 1 based instead of 0 based)
+// Inputs:		<StateSnapshotVO> stateSnapshot: An object with properties to hold the state values
+// Returns:		<String>: The URL from the address bar
+// ----------------------------------------------
+URLFactory.convertStateToServiceHash = function(stateSnapshot)
+{
+	var stateArray = new Array();
+	var newStateStr = "";
+
+	var productGrid = ProductModel.getInstance().getProductsComplete();
+	var sortCriteria = "";
+	var sampleQueryString = "";
+	
+	if (productGrid.length > 0)
+	{
+		sampleQueryString = productGrid[0].qs;
+		sortCriteria = URLFactory.extractValue(sampleQueryString, "sortCriteria");
+	}
+	
+	for (var item in stateSnapshot)
+	{
+		switch(item.toLowerCase())
+		{
+			case "category":
+			case "refinement":
+			case "pagesize":
+			case "searchterms":
+			case "relateditemsku":
+			case "onlyitems":
+			case "isnormalized":
+				stateArray.push(intToExtStateMap[item] + "+" + escape(stateSnapshot[item]));
+				break;
+			case "currentpage":
+				var offsetNum = String(Number(stateSnapshot[item]) + 1);
+				stateArray.push(intToExtStateMap[item] + "+" + escape(offsetNum));
+				break;
+			case "sortcriteria":
+				if (stateSnapshot[item] == "9999" || stateSnapshot[item] == 9999)
+				{
+					stateArray.push(intToExtStateMap[item] + "+" + sortCriteria);
+				}
+				else
+				{
+					stateArray.push(intToExtStateMap[item] + "+" + escape(stateSnapshot[item]));
+				}
+				break;
+		}
+	}
+	
+	newStateStr = stateArray.join("-");
+	return newStateStr;
+};
+
+// ----------------------------------------------
+// Function:	ProductFactory.convertHashToServiceHash()
+// Author:		Nathan Derksen
+// Description:	Cleans up the hash contents for sending to a service (eg: removes "currentProductGrid" and makes pages 1 based instead of 0 based.
+// Inputs:		<StateSnapshotVO> stateSnapshot: An object with properties to hold the state values
+// Returns:		<String>: The URL from the address bar
+// ----------------------------------------------
+URLFactory.convertHashToServiceHash = function(hash)
+{
+	var tempState = URLFactory.convertHashToState(hash);
+	return URLFactory.convertStateToServiceHash(tempState);
+};
+
+
+// ----------------------------------------------
+// ----------------------------------------------
+URLFactory.updateHash = function(inputHash, criteria, value)
+{
+	var hashArray = inputHash.split("-");
+	var splitItem;
+	
+	for (var i=0; i < hashArray.length; i++)
+	{
+		splitItem = hashArray[i].split("+");
+		if (extToIntStateMap[splitItem[0]] == criteria)
+		{
+			hashArray[i] = splitItem[0] + "+" + value;
+		}
+	}
+	return hashArray.join("-");
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+URLFactory.updateQuery = function(inputQuery, criteria, value)
+{
+	var queryArray = inputQuery.split("&");
+	var splitItem;
+	var itemFound = false;
+	
+	for (var i=0; i < queryArray.length; i++)
+	{
+		splitItem = queryArray[i].split("=");
+		if (splitItem[0] == criteria)
+		{
+			queryArray[i] = splitItem[0] + "=" + value;
+			itemFound = true;
+		}
+	}
+	if (itemFound == false)
+	{
+		queryArray.push(criteria + "=" + value);
+	}
+	return queryArray.join("&");
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+URLFactory.extractValue = function(inputHash, criteria)
+{
+	var hashArray = inputHash.split("-");
+	var splitItem;
+	var valueName;
+	
+	for (var i=0; i < hashArray.length; i++)
+	{
+		splitItem = hashArray[i].split("+");
+		valueName = splitItem[0];
+		splitItem.shift();
+		if (extToIntStateMap[valueName] == criteria)
+		{
+//		alert("extractValue: " + criteria + ":" + splitItem.join("+"));
+			return splitItem.join("+");
+		}
+	}
+	return "";
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+URLFactory.extractQueryStringValue = function(inputQueryString, criteria)
+{
+	var queryStringArray = inputQueryString.split("?").join("").split("&");
+	var splitItem;
+	
+	for (var i=0; i < queryStringArray.length; i++)
+	{
+		splitItem = queryStringArray[i].split("=");
+		if (splitItem[0].toLowerCase() == criteria.toLowerCase())
+		{
+			return splitItem[1];
+		}
+	}
+	return "";
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+URLFactory.hashEscape = function(oldHash)
+{
+	var newHash = oldHash;
+	newHash = escape(newHash);
+	newHash = newHash.split("-").join("%45");
+	newHash = newHash.split("+").join("%43");
+	return newHash;
+}
+
+// ----------------------------------------------
+// ----------------------------------------------
+URLFactory.hashUnescape = function(oldHash)
+{
+	var newHash = oldHash;
+	newHash = newHash.split("%45").join("-");
+	newHash = newHash.split("%43").join("+");
+	newHash = unescape(newHash);
+	return newHash;
+}

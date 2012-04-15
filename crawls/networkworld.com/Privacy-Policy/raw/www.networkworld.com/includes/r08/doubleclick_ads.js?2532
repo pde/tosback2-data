@@ -1,0 +1,170 @@
+// $Id: doubleclick_ads.js 42739 2011-09-26 20:53:45Z bbuckman $
+// 2011-06-27 tkroon added dogfish
+// 2011-09-22 tkroon added dogfish v2
+// Doubleclick ad support
+
+// make sure global namespace exists
+OPG = window.OPG || {};
+
+// Doubleclick namespace
+OPG.Doubleclick = OPG.Doubleclick || {};
+
+// is this an article page? (use standard var for cross-compat)
+// doubleclick_article_page can be set to true before or after this file
+if (typeof(window.doubleclick_article_page)=='undefined') window.doubleclick_article_page = false;
+
+OPG.Doubleclick = function() {
+
+  // PUBLIC
+  return {
+    extraAdKeys: Array(),   // filled w/ demandbase, etc as needed
+    ord: Math.random()*10000000000000000,     // random # for ads, client-side to avoid caching
+    contenttypeprop: {"www.itworld.com" : "prop4","www.csoonline.com" : "prop5","blogs.csoonline.com" : "prop5","www.cio.com" : "prop5","blogs.cio.com" : "prop5","www.infoworld.com" : "prop2","www.networkworld.com" : "prop2", "www.computerworld.com" : "prop5", "vox.nww.com" : "prop2", "teamsite.computerworld.com" : "prop5", "blogs.computerworld.com" : "prop5"}, // omniture props
+	nsdr_auth: 'no',
+
+    // get user agent 
+    userAgentValue: function() {
+      var browser = "";
+      // TODO: make more generic when requirements are known
+      if (/(iPad|iPhone)/.test(navigator.userAgent)) { // test for iPad or iPhone
+        browser = RegExp.$1;
+      }
+    	return browser;
+    },
+    
+    // get any referrer
+    referrerValue: function() {
+       var domain = "";
+       var referrer = document.referrer;
+
+       if (referrer == "") return "";
+       if (referrer.indexOf("http://www.google.com/cse") > -1) return ""; // custom search - exception
+
+       rPieces = referrer.split("/");
+       dPieces = rPieces[2].split(".");
+
+       if(dPieces.length >= 2) {
+         domain = dPieces[dPieces.length-2];
+         return domain;
+       }
+       return "";
+    },
+    getQueryValue: function(source, name) {
+		if (name != "") {
+			var rPieces = source.split("?");
+			if (typeof(rPieces[1]) == "undefined") return "";
+			var qVars = rPieces[1].split("&");
+			for (var i=0;i<qVars.length;i++) {
+				var pair = qVars[i].split("=");
+				if (pair[0] == name) return pair[1];
+			}
+       	}
+		return "";	
+	},
+    searchTerms: function() {
+       var domain = "";
+       var referrer = document.referrer;
+	   var searchEngines = {"google" : "q", "yahoo" : "p", "bing" : "q", "nww" : "hpg1"};
+	
+       if (referrer == "") return "";
+       if (OPG.Doubleclick.referingDomain == "") return "";
+
+	   return OPG.Doubleclick.getQueryValue(referrer,searchEngines[OPG.Doubleclick.referingDomain])
+    },   
+    // add one-time conditional keys
+    extraKeysAdded: false,
+	referingDomain: "",
+	
+    addExtraKeys: function() {
+      try {
+        if (OPG.Doubleclick.extraKeysAdded==true) return;   // only once
+        OPG.Doubleclick.extraKeysAdded = true;
+
+        // get referrer separately (otherwise adds every time)
+        // but only on article pages
+        //if (window.doubleclick_article_page == true) {
+		  OPG.Doubleclick.referingDomain = OPG.Doubleclick.referrerValue();
+          OPG.Doubleclick.extraAdKeys[OPG.Doubleclick.extraAdKeys.length] = "referrer=" + OPG.Doubleclick.referingDomain;
+        //}
+        // get user agent
+        var browser_value = OPG.Doubleclick.userAgentValue();
+        if (browser_value != "") {
+          OPG.Doubleclick.extraAdKeys[OPG.Doubleclick.extraAdKeys.length] = "browser=" + browser_value;
+        }
+      } catch(e) {
+        //OPG.Doubleclick.extraAdKeys[OPG.Doubleclick.extraAdKeys.length] = "ERROR=addExtraKeys";   // so it's noticed
+        console.log(e);
+      }
+    },
+    
+    // add one-time conditional keys
+    dogfishKeysAdded: false,
+	sKeysAdded: false,
+
+    addDogfiskKeys: function(url) {
+	  try{
+		if (OPG.Doubleclick.sKeysAdded==false) {
+			if(typeof(dogfish_type) != "undefined" && dogfish_type != "(none)") {
+				OPG.Doubleclick.extraAdKeys[OPG.Doubleclick.extraAdKeys.length] = "contenttype=" + dogfish_type;
+				OPG.Doubleclick.sKeysAdded = true;
+			}
+			else if(typeof(s) != "undefined") {
+				OPG.Doubleclick.extraAdKeys[OPG.Doubleclick.extraAdKeys.length] = "contenttype=" + s[OPG.Doubleclick.contenttypeprop[document.location.host]];
+				OPG.Doubleclick.sKeysAdded = true;
+			}
+		}
+		if (OPG.Doubleclick.dogfishKeysAdded==true) return;
+		if(document.cookie.indexOf("nsdr") > -1) OPG.Doubleclick.nsdr_auth = 'yes';
+		OPG.Doubleclick.extraAdKeys[OPG.Doubleclick.extraAdKeys.length] = "insiderauth=" + OPG.Doubleclick.nsdr_auth;
+		squery = OPG.Doubleclick.searchTerms();
+		if (squery != "") OPG.Doubleclick.extraAdKeys[OPG.Doubleclick.extraAdKeys.length] = "squery=" + squery;
+		var nls = OPG.Doubleclick.getQueryValue(window.location.href,"source")
+		if (nls != "") OPG.Doubleclick.extraAdKeys[OPG.Doubleclick.extraAdKeys.length] = "nlsource=" + nls;
+		OPG.Doubleclick.dogfishKeysAdded = true;
+		
+      } catch(e) {
+        //OPG.Doubleclick.extraAdKeys[OPG.Doubleclick.extraAdKeys.length] = "ERROR=addDogFishKeys";   // so it's noticed
+        console.log(e);
+      }
+    },
+   
+    processAdUrl: function(url) {
+      var hasurl = (url.length > 0)?true:false;
+      // add extra keys (runs once)
+      OPG.Doubleclick.addExtraKeys();
+
+	  // add dogfish keys
+	  OPG.Doubleclick.addDogfiskKeys(url);
+	
+      // add ad keys
+      var adKeys = OPG.Doubleclick.extraAdKeys.join(';');
+      if (adKeys != '') {
+        if (url.charAt(url.length-1) != ";") url = url + ";"; // separator
+        url = url + adKeys;
+      }
+
+      // add 'ord' if not already
+      if (url.indexOf("ord=") == -1 && hasurl) {
+        if (url.charAt(url.length-1) != ";") url = url + ";"; // separator
+        url = url + "ord="+ OPG.Doubleclick.ord +"?";
+      }
+      return url;
+    },  
+    
+    processReferer: function(url) {    // legacy (remove?)
+      return OPG.Doubleclick.processAdUrl(url); 
+    }
+  };
+}();
+
+// for legacy (set by demandbase callback)
+window._rval = '';
+window.rval = '';   // always set both together
+
+// random # for ads, client-side to avoid caching
+window.ord = OPG.Doubleclick.ord;
+
+// for legacy/transition
+window.processAdUrl = function(url) {
+  return OPG.Doubleclick.processAdUrl(url);
+};

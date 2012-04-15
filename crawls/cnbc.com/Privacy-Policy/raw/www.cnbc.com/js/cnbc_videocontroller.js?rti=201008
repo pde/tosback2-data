@@ -1,0 +1,372 @@
+var cnbc_flvPlayer_Id="flashPlayer";function cnbc_getFlvPlayer(playerName)
+{var isIe=navigator.appName.indexOf("Microsoft")!=-1;if(isIe)
+return window[playerName];else
+return document[playerName];}
+function cnbc_video_pad(number,length,padChar)
+{var str=''+number;while(str.length<length)
+{str=padChar+str;}
+return str;}
+function cnbc_video_Browser(){var ua,s,i;this.isIE=false;this.isNS=false;this.version=null;ua=navigator.userAgent;s="MSIE";if((i=ua.indexOf(s))>=0){this.isIE=true;this.version=parseFloat(ua.substr(i+s.length));return;}
+s="Netscape6/";if((i=ua.indexOf(s))>=0){this.isNS=true;this.version=parseFloat(ua.substr(i+s.length));return;}
+s="Gecko";if((i=ua.indexOf(s))>=0){this.isNS=true;this.version=6.1;return;}
+cnbc_video_init();}
+var cnbc_video_browser=new cnbc_video_Browser();var cnbc_video_dragObj=new Object();var cnbc_video_isPlaying=false;var cnbc_video_isDragging=false;var cnbc_video_px,cnbc_video_pxe=0;var cnbc_video_progress=null;function cnbc_video_findXPos(obj){var curleft=0;if(obj.offsetParent){curleft=obj.offsetLeft
+while(obj=obj.offsetParent){curleft+=obj.offsetLeft}}
+return curleft;}
+function cnbc_video_init()
+{cnbc_video_dragObj.elNode=document.getElementById('sliderDrag');cnbc_video_dragObj.posNode=document.getElementById('sliderBg');cnbc_video_dragObj.prgNode=document.getElementById('sliderProgress');cnbc_video_progress=cnbc_video_dragObj.prgNode;}
+function cnbc_video_dragStart(event,id,posid){var el;var x;cnbc_video_px=0;cnbc_video_pxe=0;if(!cnbc_video_isPlaying){}else{if(id){cnbc_video_dragObj.elNode=document.getElementById(id);cnbc_video_dragObj.posNode=document.getElementById(posid);cnbc_video_dragObj.prgNode=document.getElementById('sliderProgress');cnbc_video_progress=cnbc_video_dragObj.prgNode;}else{if(cnbc_video_browser.isIE)
+cnbc_video_dragObj.elNode=window.event.srcElement;if(cnbc_video_browser.isNS)
+cnbc_video_dragObj.elNode=event.target;if(cnbc_video_dragObj.elNode.nodeType==3)
+cnbc_video_dragObj.elNode=cnbc_video_dragObj.elNode.parentNode;}
+if(cnbc_video_browser.isIE){x=window.event.clientX+document.documentElement.scrollLeft+document.body.scrollLeft;}
+if(cnbc_video_browser.isNS){x=event.clientX+window.scrollX;}
+cnbc_video_isDragging=true;cnbc_video_dragObj.cursorStartX=x;cnbc_video_dragObj.elStartLeft=parseInt(cnbc_video_dragObj.elNode.style.left,10);if(isNaN(cnbc_video_dragObj.elStartLeft))cnbc_video_dragObj.elStartLeft=0;if(cnbc_video_browser.isIE){document.attachEvent("onmousemove",cnbc_video_dragGo);document.attachEvent("onmouseup",cnbc_video_dragStop);window.event.cancelBubble=true;window.event.returnValue=false;}
+if(cnbc_video_browser.isNS){document.addEventListener("mousemove",cnbc_video_dragGo,true);document.addEventListener("mouseup",cnbc_video_dragStop,true);event.preventDefault();}}}
+function cnbc_video_dragGo(event){var x;var pNode=cnbc_video_dragObj.elNode.parentNode;if(cnbc_video_browser.isIE){x=window.event.clientX+document.documentElement.scrollLeft+document.body.scrollLeft;}
+if(cnbc_video_browser.isNS){x=event.clientX+window.scrollX;}
+cnbc_video_px=cnbc_video_findXPos(cnbc_video_dragObj.posNode);cnbc_video_pxe=cnbc_video_px+115;if(x>cnbc_video_px&&x<cnbc_video_pxe){var curpos=(cnbc_video_dragObj.elStartLeft+x-cnbc_video_dragObj.cursorStartX);cnbc_video_dragObj.elNode.style.left=curpos+"px";var perc=curpos/100;cnbc_video_progress.style.width=Math.round(perc*100)+"px";}
+if(cnbc_video_browser.isIE){window.event.cancelBubble=true;window.event.returnValue=false;}
+if(cnbc_video_browser.isNS)
+event.preventDefault();}
+function cnbc_video_dragStop(event){if(cnbc_video_browser.isIE){document.detachEvent("onmousemove",cnbc_video_dragGo);document.detachEvent("onmouseup",cnbc_video_dragStop);}
+if(cnbc_video_browser.isNS){document.removeEventListener("mousemove",cnbc_video_dragGo,true);document.removeEventListener("mouseup",cnbc_video_dragStop,true);}
+cnbc_video_isDragging=false;var wmpPlayer=document.getElementById('Player0');if(wmpPlayer!=null)
+{var vidCtrlTimer=document.getElementById('vidCtrlTimer');wmpPlayer.controls.currentPosition=(parseInt(cnbc_video_progress.style.width)/115)*wmpPlayer.currentMedia.duration;var seconds=parseInt((wmpPlayer.controls.currentPosition)%60);var minutes=parseInt((wmpPlayer.controls.currentPosition/60)%60);var hours=parseInt((wmpPlayer.controls.currentPosition/3600)%24);vidCtrlTimer.innerHTML='<p>'+cnbc_video_pad(minutes,2,'0')+':'+cnbc_video_pad(seconds,2,'0')+'/'+wmpPlayer.currentMedia.durationString+'</p>';}}
+function cnbc_video_setDragPos(pos)
+{if(cnbc_video_progress==null)
+{cnbc_video_progress=document.getElementById('sliderProgress');}
+if(cnbc_video_dragObj.elNode==null)
+{cnbc_video_dragObj.elNode=document.getElementById('sliderDrag');}
+if(cnbc_video_progress!=null)
+{var curpos=Math.round(pos*115);cnbc_video_progress.style.width=curpos+"px";cnbc_video_dragObj.elNode.style.left=Math.round((curpos/100)*100)+"px";}}
+var cnbc_video_isIE;var cnbc_video_playState="play";var cnbc_video_overState="play";var cnbc_video_isMuted=false;var cnbc_video_isVolumeOpen=true;var cnbc_video_currentPosTimerID=-1;var cnbc_video_volumeID=-1;var cnbc_breadcrumb_innerHTML=null;function cnbc_video_toDateString(gmtTime)
+{var month=new Array(12);month[0]="Jan.";month[1]="Feb.";month[2]="Mar.";month[3]="Apr.";month[4]="May";month[5]="Jun.";month[6]="Jul.";month[7]="Aug.";month[8]="Sept.";month[9]="Oct.";month[10]="Nov.";month[11]="Dec.";var weekday=new Array(7);weekday[0]="Sun.";weekday[1]="Mon.";weekday[2]="Tues.";weekday[3]="Wed.";weekday[4]="Thurs.";weekday[5]="Fri.";weekday[6]="Sat.";var dateTime=new Date();dateTime.setTime(gmtTime);var localeString=dateTime.toLocaleString();var date=localeString.slice(0,-11);var tmp_time=localeString.slice(-11);var am_pm=tmp_time.slice(-2);var time=tmp_time.slice(0,-6);return weekday[dateTime.getDay()]+" "+month[dateTime.getMonth()]+" "+
+dateTime.getDate()+" "+dateTime.getFullYear()+" | "+time+" "+am_pm;}
+function cnbc_video_toDurationString(length)
+{var milliseconds=parseInt(length%1000);var seconds=parseInt((length/1000)%60);var minutes=parseInt((length/60000)%60);var hours=parseInt((length/3600000)%24);var secondsStr="";secondsStr=secondsStr+seconds;var minutesStr="";minutesStr=minutesStr+minutes;var hoursStr="";hoursStr=hoursStr+hours;var retVal=new String();if(hours>0)
+{retVal=hoursStr+"h ";}
+if(minutes>0)
+{retVal=retVal+minutesStr+"m ";}
+if(seconds>0)
+{retVal=retVal+secondsStr+"sec";}
+return cnbc_video_pad(minutes,2,'0')+":"+cnbc_video_pad(seconds,2,'0');}
+function cnbc_video_checkBrowser()
+{var ua,s,i;this.version=null;ua=navigator.userAgent;s="MSIE";if((i=ua.indexOf(s))>=0)
+{cnbc_video_isIE=true;this.version=parseFloat(ua.substr(i+s.length));}
+else
+{cnbc_video_isIE=false;s="Firefox/";if((i=ua.indexOf(s))>=0)
+{this.version=parseFloat(ua.substr(i+s.length));}}
+return;}
+function cnbc_video_getXMLHTTPRequest()
+{if(window.XMLHttpRequest)
+{http_request=new XMLHttpRequest();if(http_request.overrideMimeType)
+{http_request.overrideMimeType('text/xml');}}
+else if(window.ActiveXObject)
+{try
+{http_request=new ActiveXObject("Msxml2.XMLHTTP");}
+catch(e)
+{try
+{http_request=new ActiveXObject("Microsoft.XMLHTTP");}
+catch(e){}}}
+return http_request;}
+function cnbc_video_setURL(id,url,image,tmptitle,exclusive,date,time,tmpdescription,tmpcategory,premium,play)
+{var plusURL=getURLByFormat(url);var WMPDiv=(isWMVFormat())?document.getElementById('WMPObject'):document.getElementById('SWFObject');var playDiv=document.getElementById('playVideo');var thumbDiv=document.getElementById('videoThumb');var vidCtrlPlay=document.getElementById('vidCtrlPlay');var curVidTitle=document.getElementById('curVidTitle');var curVidDateTime=document.getElementById('curVidDateTime');var curVidDescr=document.getElementById('curVidDescr');var vidCtrlTimer=document.getElementById('vidCtrlTimer');var curVidShare=document.getElementById('curVidShare');var fL_padL_author_info=document.getElementById('fL_padL_author_info');var padL_cnbc_headline_padR=document.getElementById('padL_cnbc_headline_padR');var padL_CNBC_Tools=document.getElementById('padL_CNBC_Tools');var fL_padL_CNBC_Tools=document.getElementById('fL_padL_CNBC_Tools');var URLField=document.getElementById('textfield3');var emailButton=document.getElementById('email_button');var categories=document.getElementById('categories');var videoid=document.getElementById('videoid');var showid=document.getElementById('showid');var compAd=document.getElementById('companionAd');var title=unescape(tmptitle);var description=unescape(tmpdescription);var category=unescape(tmpcategory);if(WMPDiv==null)
+{var index=plusURL.indexOf("player/main.do");if(index!=-1)
+{var vidPlayer=window.open(cnbc_videoPlusURL+'/'+plusURL.substring(index),"CNBCPlus","toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=600");if(window.focus)
+{vidPlayer.focus();}}}
+else
+{WMPDiv.style.display=(isWMVFormat())?'none':WMPDiv.style.display;if(compAd!=null)
+{compAd.style.display='none';}
+if(thumbDiv!=null)
+{thumbDiv.innerHTML='<img width="100%" src="'+image+'" />';}
+if(playDiv!=null)
+{playDiv.style.display='block';playDiv.innerHTML='<a href="#" onclick="javascript:cnbc_video_playURL(\''+url+'\');blur();return false;"><img style="border:0px;" src="http://media.cnbc.com/i/CNBC/CNBC_Images/video/play_video.jpg" /></a>';}
+if(vidCtrlPlay!=null)
+{vidCtrlPlay.innerHTML='<a href="#" onmouseover="javascript:cnbc_video_swapImage(\'playButton\',\'http://media.cnbc.com/i/CNBC/CNBC_Images/video/vid_control_\' + cnbc_video_overState + \'_over.gif\');" '+'onmouseout="javascript:cnbc_video_swapImage(\'playButton\',\'http://media.cnbc.com/i/CNBC/CNBC_Images/video/vid_control_\' + cnbc_video_overState + \'.gif\')" '+'onclick="javascript:cnbc_video_togglePlayPause(\''+url+'\');blur();return false;" >'+'<img name="playButton" style="border:0px;" src="http://media.cnbc.com/i/CNBC/CNBC_Images/video/vid_control_play.gif" /></a>';}
+if(vidCtrlTimer!=null)
+{if(!play)
+{vidCtrlTimer.innerHTML='<p>00:00/'+cnbc_video_toDurationString(time)+'</p>';}}
+if(curVidTitle!=null)
+{if(premium=='true')
+{curVidTitle.innerHTML='<p class="curVidTitle">'+title+'<img src="http://media.cnbc.com/i/CNBC/CNBC_Images/video/cnbcplusfeather.png" class="topVidCellExcl" width="39" height="10" style="behavior:url(\'/images/cnbc/pngbehavior.htc\');" /></p>';}
+else if(exclusive=='true')
+{curVidTitle.innerHTML='<p class="curVidTitle">'+title+'<img src="http://media.cnbc.com/i/CNBC/CNBC_Images/video/cnbc_exclus.jpg" width="100" height="13" /></p>';}
+else
+{curVidTitle.innerHTML='<p class="curVidTitle">'+title+'</p>';}}
+if(curVidDateTime!=null)
+{curVidDateTime.innerHTML='<p class="curVidDateTime">'+cnbc_video_toDateString(date)+' ['+cnbc_video_toDurationString(time)+']</p>';}
+if(curVidDescr!=null)
+{if((description!=null)&&(description.length>140))
+{description=description.substring(0,140);description+="...";}
+curVidDescr.innerHTML='<p class="curVidDescr">'+description+'</p>';}
+if(curVidShare!=null)
+{curVidShare.innerHTML='<a href="/id/'+cnbc_videoShareDocId+'?video='+id+'" onmouseover="javascript:cnbc_video_swapImage(\'shareVideo\',\'http://media.cnbc.com/i/CNBC/CNBC_Images/video/cur_video_share_over.jpg\')" onmouseout="javascript:cnbc_video_swapImage(\'shareVideo\',\'http://media.cnbc.com/i/CNBC/CNBC_Images/video/cur_video_share.jpg\');">'+'<img style="border:0px;" name="shareVideo" src="http://media.cnbc.com/i/CNBC/CNBC_Images/video/cur_video_share.jpg" /></a>';}
+if(categories!=null)
+{categories.innerHTML=category;}
+if(videoid!=null)
+{videoid.innerHTML=id;var topVideoCellShow=document.getElementById(id+"_topVidCellShow");if((showid!=null)&&(topVideoCellShow!=null))
+{showid.innerHTML=topVideoCellShow.innerHTML;}}
+if(fL_padL_author_info!=null)
+{fL_padL_author_info.innerHTML='Last Update: '+cnbc_video_toDateString(date);}
+if(padL_cnbc_headline_padR!=null)
+{padL_cnbc_headline_padR.innerHTML=title;if(premium=='true')
+{padL_cnbc_headline_padR.innerHTML+='    <img width="39" height="10" style="behavior:url(\'/images/cnbc/pngbehavior.htc\');" src="http://media.cnbc.com/i/CNBC/CNBC_Images/video/cnbcplusfeather.png" />';}
+var cnbc_breadcrumb=document.getElementById('cnbcbreadcrumb');if(cnbc_breadcrumb!=null)
+{if(cnbc_breadcrumb_innerHTML==null)
+{cnbc_breadcrumb_innerHTML=cnbc_breadcrumb.innerHTML;}
+cnbc_breadcrumb.innerHTML=cnbc_breadcrumb_innerHTML+" "+title;}}
+if(padL_CNBC_Tools!=null)
+{padL_CNBC_Tools.innerHTML='<span class="content">'+description+'</span>';}
+if(URLField!=null)
+{URLField.value='http://'+location.host+'/id/'+cnbc_videoShareDocId+'?video='+id;}
+if(emailButton!=null)
+{emailButton.innerHTML='<a href="#"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/video/email_video.png" border="0" onclick="cnbc_emailVideoShare('+id+',\''+escape(title)+'\',\''+escape(description)+'\');return false;"/></a><br /><br />';}
+if(!isWMVFormat())
+{var flashPlayer=cnbc_getFlvPlayer(cnbc_flvPlayer_Id);if((flashPlayer!=null)&&(flashPlayer.callPlayerReload!=undefined))
+{flashPlayer.callPlayerReload(url,image);}}
+else
+{cnbc_video_playState="play";cnbc_video_overState="play";cnbc_video_isPlaying=false;cnbc_video_setDragPos(0);cnbc_video_checkBrowser();if(!cnbc_video_isIE)
+{WMPDiv.innerHTML='<OBJECT ID="Player0" width="278" height="240" CLASSID="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" '+'standby="Loading Microsoft Windows Media Player components..." type="application/x-oleobject">'+'<PARAM name="enablecontextmenu" value="false">'+'<PARAM NAME="AllowChangeDisplaySize" value="TRUE">'+'<PARAM NAME="AutoStart" VALUE="false">'+'<PARAM NAME="InvokeURLS" Value="FALSE">'+'<PARAM name="windowlessVideo" value="true">'+'<PARAM name="stretchToFit" value="false">'+'<PARAM name="url" value="'+url+'" />'+'<PARAM name="uimode" value="full" />'+'<PARAM name="ShowStatusBar" value="0">'+'<PARAM name="ShowControls" value="true">'+'<PARAM name="mute" value="'+cnbc_video_isMuted+'">'+'<embed name="Player0" width="278" height="240"'+' type="application/x-mplayer2" '+' pluginspage="http://www.microsoft.com/Windows/Downloads/Contents/Products/MediaPlayer/" '+' enablecontextmenu="false" allowchangedisplaysize="True" autostart="false" invokeurls="FALSE" '+' windowlessVideo="true" stretchtofit="False" src="'+url+'" uimode="full" showcontrols="1" showstatusbar="0" mute="'+cnbc_video_isMuted+'"></embed></OBJECT>';}
+else
+{var wmpPlayer=document.getElementById('Player0');if(wmpPlayer!=null)
+{wmpPlayer.controls.stop();window.clearInterval(cnbc_video_currentPosTimerID);}}}
+if(play)
+{cnbc_video_playURL(url);}}}
+function cnbc_video_playURL(url)
+{url=getURLByFormat(url);var index=url.indexOf("player/main.do");if(index!=-1)
+{var vidPlayer=window.open(cnbc_videoPlusURL+'/'+url.substring(index),"CNBCPlus","toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=600");if(window.focus)
+{vidPlayer.focus();}}
+else
+{try
+{checkCNBCVideoRestriction();}
+catch(e){}
+var now=new Date();var sect=cnbc_sectionName.replace(/&amp;/g,"-");sect=sect.replace(/\s/g,"");sect=sect.toLowerCase();var adURL='http://ad.doubleclick.net/pfadx/'+cnbc_adsite+'/'+cnbc_getDartShowParam()+';!category=cnbc;site=cnbc;sect='+sect+';page='+cnbc_docid+';show='+cnbc_getDartShowParam()+';videoid='+cnbc_getDartVideoParam()+';symbol=;topics=;sectors=;companies=;'+((isWMVFormat())?'ver=wmv;':'ver=flv;')+'sz=300x240';var playlistURL="";if(isWMVFormat()||(url!=""))
+{playlistURL=cnbc_videoPlusURL+'/results/videoPlaylist.jsp'+'?ad='+escape(adURL)+'&url='+escape(url)+'&bumper='+escape(((isWMVFormat())?cnbc_bumperURL:cnbc_flashBumperURL))+'&prerollenabled='+cnbc_prerollenabled+'&t='+now.getTime();}
+else
+{playlistURL=cnbc_videoPlusURL+'/results/videoPlaylist.jsp?ad=&url='+'&bumper='+escape(cnbc_FlashNAURL)+'&loopbumper=true&prerollenabled=false&t='+now.getTime();}
+if(!isWMVFormat())
+{cnbc_getFlvPlayer(cnbc_flvPlayer_Id).callSetPlaylistUrl(playlistURL);}
+else
+{var WMPDiv=document.getElementById('WMPObject');cnbc_video_checkBrowser();if(!cnbc_video_isIE)
+{WMPDiv.innerHTML='<OBJECT ID="Player0" width="278" height="240" CLASSID="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" '+'standby="Loading Microsoft Windows Media Player components..." type="application/x-oleobject">'+'<PARAM name="enablecontextmenu" value="false">'+'<PARAM NAME="AllowChangeDisplaySize" value="TRUE">'+'<PARAM NAME="AutoStart" VALUE="true">'+'<PARAM NAME="InvokeURLS" Value="FALSE">'+'<PARAM name="windowlessVideo" value="true">'+'<PARAM name="stretchToFit" value="true">'+'<PARAM name="url" value="'+playlistURL+'" />'+'<PARAM name="uimode" value="full" />'+'<PARAM name="ShowStatusBar" value="0">'+'<PARAM name="ShowControls" value="true">'+'<PARAM name="mute" value="'+cnbc_video_isMuted+'">'+'<embed name="Player0" width="278" height="240"'+' type="application/x-mplayer2" '+' pluginspage="http://www.microsoft.com/Windows/Downloads/Contents/Products/MediaPlayer/" '+' enablecontextmenu="false" allowchangedisplaysize="True" autostart="true" invokeurls="FALSE" '+' windowlessVideo="true" stretchtofit="true" src="'+playlistURL+'" uimode="full" showcontrols="1" showstatusbar="0" mute="'+cnbc_video_isMuted+'"></embed></OBJECT><script>dartPlayer = new DartPlayer("Player0", DARTReady);</script>';WMPDiv.style.height="240px";WMPDiv.style.display='block';var playVideoDiv=document.getElementById('playVideo');if(playVideoDiv!=null)
+{playVideoDiv.style.display='none';}}
+else
+{WMPDiv.innerHTML='<OBJECT ID="Player0" width="278" height="209" '+'CLASSID="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" '+'standby="Loading Microsoft Windows Media Player components..." '+'type="application/x-oleobject">'+'<PARAM name="enablecontextmenu" value="false">'+'<PARAM NAME="AllowChangeDisplaySize" value="TRUE">'+'<PARAM NAME="AutoStart" VALUE="true">'+'<PARAM NAME="InvokeURLS" Value="FALSE">'+'<PARAM name="windowlessVideo" value="true">'+'<PARAM name="stretchToFit" value="true">'+'<PARAM name="url" value="'+playlistURL+'" />'+'<PARAM name="uimode" value="none" />'+'<PARAM name="ShowStatusBar" value="0">'+'<PARAM name="ShowControls" value="false">'+'<PARAM name="mute" value="'+cnbc_video_isMuted+'">'+'</OBJECT><script>dartPlayer = new DartPlayer("Player0", DARTReady);</script>';var thumbDiv=document.getElementById('videoThumb');if(thumbDiv!=null)
+{thumbDiv.innerHTML='<img width="100%" src="http://media.cnbc.com/i/CNBC/CNBC_Images/video/vp_loader.gif" />';}
+var playVideoDiv=document.getElementById('playVideo');if(playVideoDiv!=null)
+{playVideoDiv.style.display='none';}
+var vidControls=document.getElementById('videoControls');if(vidControls!=null)
+{vidControls.style.display="block";}
+WMPDiv.style.height="209px";window.clearInterval(cnbc_video_currentPosTimerID);cnbc_video_currentPosTimerID=window.setInterval(cnbc_video_checkCurrentPosition,333);}
+cnbc_video_swapImage('playButton','http://media.cnbc.com/i/CNBC/CNBC_Images/video/vid_control_pause_over.gif');cnbc_video_playState="play";cnbc_video_overState="pause";cnbc_video_isPlaying=true;}
+try
+{cnbc_video_omnitureReporting(url);}
+catch(e){}}}
+function cnbc_videoAdStarted()
+{try
+{var sect=(cnbc_trunc_sect)?cnbc_sectionName:cnbc_trunc_sect;var compAd=document.getElementById('companionAd');if(compAd!=null)
+{var dc_seed=new String('');if((dartPlayer!=null)&&(dartPlayer.getAd()!=null))
+{dc_seed='dc_seed='+dartPlayer.getAd().getDartId();}
+compAd.innerHTML='<iframe id="300x60" src="'+'http://iv.doubleclick.net/adi/'+cnbc_adsite+'/'+sect+'!category=cnbc;site=cnbc;sect='+sect+';page='+cnbc_docid+';show='+cnbc_getDartShowParam()+';videoid='+cnbc_getDartVideoParam()+';symbol=;topics=;sectors=;companies=;'+dc_seed+';sz=300x60;pos=5;tile=5;ord='+new Date().getTime()+'?" '+'width="300" height="60" marginwidth="0" marginheight="0"'+'hspace="0" vspace="0" frameborder="0" scrolling=no borderCOLOR="#000000"></iframe>';compAd.style.display='block';}}
+catch(e){}}
+function cnbc_videoAdStarted_FLV(dartVideoId)
+{try
+{var sect=(cnbc_trunc_sect)?cnbc_sectionName:cnbc_trunc_sect;var compAd=document.getElementById('companionAd');if(compAd!=null)
+{var dc_seed=new String('');if(dartVideoId!=null)
+{dc_seed='dc_seed='+dartVideoId;}
+compAd.innerHTML='<iframe id="300x60" src="'+'http://iv.doubleclick.net/adi/'+cnbc_adsite+'/'+cnbc_getDartShowParam()+';'+'!category=cnbc;site=cnbc;sect='+sect+';page='+cnbc_docid+';show='+cnbc_getDartShowParam()+';videoid='+cnbc_getDartVideoParam()+';symbol=;topics=;sectors=;companies=;'+dc_seed+';ver=flv;sz=300x60;pos=5;tile=5;ord='+new Date().getTime()+'?" '+'width="300" height="60" marginwidth="0" marginheight="0"'+'hspace="0" vspace="0" frameborder="0" scrolling=no borderCOLOR="#000000"></iframe>';compAd.style.display='block';}}
+catch(e){}}
+function cnbc_parseVideoShareResults(JSONText,verifyPremiumStatus,playVideo)
+{var results=JSONText.replace(/cnbc-global-video-response/g,"cnbc_global_video_response");results=results.replace(/video-assets/g,"video_assets");results=results.replace(/error-code/g,"error_code");results=results.replace(/error-message/g,"error_message");var parsedJSONResults=eval('('+results+')');var videos=parsedJSONResults.cnbc_global_video_response.data.video_assets;if(videos!=null)
+{var videos_length=parsedJSONResults.cnbc_global_video_response.data.video_assets.length;var valid_video=false;for(var i=0;i<videos_length;++i)
+{if(videos[i].ID)
+{valid_video=true;var title=videos[i].contentTitle.replace(/'/g,"\u0027");title=title.replace(/"/g,"\u0022");var descr=videos[i].contentDescription.replace(/'/g,"\u0027");descr=descr.replace(/"/g,"\u0022");var category=videos[i].Categories.replace(/'/g,"\u0027");category=category.replace(/"/g,"\u0022");var premiumFlag='false';if((verifyPremiumStatus==true)&&(videos[i].Premium==true))
+{premiumFlag='true';}
+var omnicontentTitle=document.getElementById('omnicontentTitle');var omnicontentDate=document.getElementById('omnicontentDate');var omnicontentTime=document.getElementById('omnicontentTime');var omnicontentID=document.getElementById('omnicontentID');var omnicontentShow=document.getElementById('omnicontentShow');if(omnicontentTitle!=null)
+{omnicontentTitle.innerHTML=title;}
+if(omnicontentDate!=null)
+{omnicontentDate.innerHTML=videos[i].contentAirdate;}
+if(omnicontentTime!=null)
+{omnicontentTime.innerHTML=videos[i].contentLength;}
+if(omnicontentID!=null)
+{omnicontentID.innerHTML=videos[i].ID;}
+if(omnicontentShow!=null)
+{omnicontentShow.innerHTML=videos[i].Program;}
+var URL=videos[i].protectedURL+';'+videos[i].additionalProtectedURLs;cnbc_video_setURL(videos[i].ID,getURLByFormat(URL),videos[i].contentThumbnailURL,title,'false',videos[i].contentAirdate,videos[i].contentLength,descr,category,premiumFlag,false);if(!isWMVFormat()&&((cnbc_getFlvPlayer(cnbc_flvPlayer_Id)==null)||(cnbc_getFlvPlayer(cnbc_flvPlayer_Id)==undefined)))
+{var cnbc_flv_releaseURL=escape(videos[i].protectedURL+';'+videos[i].additionalProtectedURLs);var cnbc_flv_thumbnailURL=escape(videos[i].contentThumbnailURL);var SWFObject=document.getElementById('SWFObject');if(SWFObject!=null)
+{SWFObject.innerHTML=AC_FL_GetContent('codebase','http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0','width','350','height','300','src',cnbc_FlashPlayer,'quality','high','pluginspage','http://www.macromedia.com/go/getflashplayer','align','left','wmode','transparent','id','flashPlayer','bgcolor','#ffffff','salign','tl','name',cnbc_flvPlayer_Id,'allowScriptAccess','always','movie',cnbc_FlashPlayer,'FlashVars','thumbnail='+cnbc_flv_thumbnailURL+'&preloadMovie='+cnbc_FlashLoaderURL+'&releaseUrl='+cnbc_flv_releaseURL+'&autoStart='+playVideo);SWFObject.style.position="absolute";SWFObject.style.top="30px";SWFObject.style.left="0px";SWFObject.style.right="0px";SWFObject.style.width="350px";SWFObject.style.height="300px";SWFObject.style.zindex="100";}}
+var playVideoDiv=document.getElementById('playVideo');var vidControls=document.getElementById('videoControls');if(playVideo==true)
+{if(playVideoDiv!=null)
+{playVideoDiv.style.display='none';}
+if(vidControls!=null)
+{vidControls.style.display="none";}
+try
+{checkCNBCVideoRestriction();}
+catch(e){}
+if(isWMVFormat())
+{window.setTimeout("cnbc_video_auto_play()",2500);}}
+else
+{if(playVideoDiv!=null)
+{playVideoDiv.style.display='block';}
+cnbc_video_checkBrowser();if(cnbc_video_isIE)
+{if((vidControls!=null)&&isWMVFormat())
+{vidControls.style.display="block";}}}}}}}
+function cnbc_emailVideoShare(ID,title,descr)
+{var toField=document.getElementById('textarea');var fromField=document.getElementById('textfield');var et='mailto:'+toField.innerHTML+'?subject='+'CNBC.com:%20VIDEO:%20'+escape(unescape(title))+'&body='+escape(unescape(title))+'%0D%0A'+escape(unescape(descr))+'%0D%0A%0D%0Ahttp://'+location.host+'/id/'+cnbc_videoShareDocId+'?video='+ID;location.href=et;var formField=document.getElementById('form');if(formField!=null)
+{formField.style.display='none';}
+var copyPaste=document.getElementById('copyPaste');if(copyPaste!=null)
+{if(isWMVFormat())
+{copyPaste.innerHTML='<br\><br\><p align="center"><b>This Video has been sent<br\><br\><br\></b><a href="#" onclick="javascript:restoreShareFields();return false;">Click Here</a> to send to more people</p>'+'<br\><br\> Copy and paste the url to share this video';}
+else
+{var vidShareCount=0;var displayTxt="<p id='innerTxt'><b>This Video has been sent</b><br\><br\><a href='#' onclick='javascript:restoreShareFields();return false;'>Click Here</a> to send to more people</p>"+"<br\><br\><span id='vidURL'>URL:</span> Copy and paste the url to share this video";function setInnerHTML(element,html,count)
+{element.innerHTML=html;if(!count)
+count=1;if(html!=''&&element.innerHTML==''&&count<5){++count;setTimeout(function(){setInnerHTML(element,html,count);},10);}}
+setInnerHTML(copyPaste,displayTxt,vidShareCount);}}}
+function restoreShareFields()
+{var formField=document.getElementById('form');var toField=document.getElementById('textarea');var fromField=document.getElementById('textfield');var copyPaste=document.getElementById('copyPaste');if(formField!=null)
+{formField.style.display='block';}
+if(toField)
+{toField.value="";}
+if(fromField!=null)
+{fromField.value="";}
+if(copyPaste!=null)
+{if(isWMVFormat())
+{copyPaste.innerHTML='Copy and paste the url to share this video';}
+else
+{copyPaste.innerHTML='<span id="vidURL">URL:</span>Copy and paste the url to share this video';}}}
+function cnbc_parseVideoRailResults(JSONText,verifyPremiumStatus,playVideo)
+{var results=JSONText.replace(/cnbc-global-video-response/g,"cnbc_global_video_response");results=results.replace(/video-assets/g,"video_assets");results=results.replace(/error-code/g,"error_code");results=results.replace(/error-message/g,"error_message");var parsedJSONResults=eval('('+results+')');var videos=parsedJSONResults.cnbc_global_video_response.data.video_assets;var videos_length=parsedJSONResults.cnbc_global_video_response.data.video_assets.length;var topVidCellBin=document.getElementById('topVidCellBin');if(topVidCellBin!=null)
+{var setCurrentVideo=false;for(var i=0;i<videos_length;++i)
+{if(videos[i].ID)
+{var title=videos[i].contentTitle.replace(/'/g,"\u0027");title=title.replace(/"/g,"\u0022");var descr=videos[i].contentDescription.replace(/'/g,"\u0027");descr=descr.replace(/"/g,"\u0022");var category=videos[i].Categories.replace(/'/g,"\u0027");category=category.replace(/"/g,"\u0022");var premiumFlag='false';var premiumImgDiv='';if((verifyPremiumStatus==true)&&(videos[i].Premium==true))
+{premiumFlag='true';premiumImgDiv='<img class="topVidCellExcl" width="39" height="10" style="behavior:url(\'/images/cnbc/pngbehavior.htc\');" src="http://media.cnbc.com/i/CNBC/CNBC_Images/video/cnbcplusfeather.png"/>';}
+if(!setCurrentVideo)
+{cnbc_video_setURL(videos[i].ID,videos[i].protectedURL+';'+videos[i].additionalProtectedURLs,videos[i].contentThumbnailURL,title,'false',videos[i].contentAirdate,videos[i].contentLength,descr,category,premiumFlag,playVideo);setCurrentVideo=true;topVidCellBin.innerHTML="";}
+topVidCellBin.innerHTML+='<div id="topVidCell_'+videos[i].ID+'" class="topVidCell" onmouseover="javascript:cnbc_video_cellOver(this.id)" onmouseout="javascript:cnbc_video_cellOver(this.id)">'+'<p>'+premiumImgDiv+'<a href="#" onclick="javascript:cnbc_video_setURL('+videos[i].ID+', \''+videos[i].protectedURL+';'+videos[i].additionalProtectedURLs+'\',\''+videos[i].contentThumbnailURL+'\',\''+escape(title)+'\', \'false\', \''+videos[i].contentAirdate+'\',\''+videos[i].contentLength+'\',\''+escape(descr)+'\', \''+escape(category)+'\', \''+premiumFlag+'\',true );blur();return false;">'+
+videos[i].contentTitle+'</a><br/>'+'<span class="topVidDateTime">'+cnbc_video_toDateString(videos[i].contentAirdate)+'['+cnbc_video_toDurationString(videos[i].contentLength)+']'+'</span>'+'</p>'+'<div style="visibility: hidden;">'+'<div id="'+videos[i].ID+'_topVidCellShow">'+videos[i].Program+'</div></div>'+'</div>';}}}}
+function cnbc_video_loadGalleryPage(parentdivid,defaultdocumentid)
+{var pageRequest=new String();var cnbc_srch_docid=cnbc_getURLParam('tabid');var activedocumentid=defaultdocumentid;if((cnbc_srch_docid!=null)&&(cnbc_srch_docid.length>0))
+{activedocumentid=cnbc_srch_docid;pageRequest='http://'+location.host+'?id='+cnbc_srch_docid+'&t='+Math.random();var page=cnbc_getURLParam('tabpage');if((page!=null)&&(page.length>0))
+{pageRequest+='&_cnbc_vidsearch_page='+page;}
+var sortfield=cnbc_getURLParam('tabsortfield');if((sortfield!=null)&&(sortfield.length>0))
+{pageRequest+='&_cnbc_vidsearch_sortfield='+sortfield;}
+var searchvalue=cnbc_getURLParam('tabsearchvalue');if((searchvalue!=null)&&(searchvalue.length>0))
+{pageRequest+='&_cnbc_vidsearch_value='+searchvalue;}
+var headervisible=cnbc_getURLParam('tabheader');if((headervisible!=null)&&(headervisible.length>0))
+{pageRequest+='&_cnbc_vidsearch_headervisible='+headervisible;}}
+else
+{pageRequest='http://'+location.host+'?id='+activedocumentid+'&_cnbc_vidsearch_headervisible=false&t='+Math.random();}
+var divs=document.getElementsByTagName("div")
+for(i=0;i<divs.length;i++)
+{if(divs[i].parentNode.id==parentdivid)
+{var id=divs[i].id;if(id==activedocumentid)
+{divs[i].className="fL comp_subnav_active";}
+else
+{if(id.indexOf("SearchPageData")!=-1)
+{divs[i].innerHTML="";divs[i].style.display='none';}
+else
+{divs[i].className="fL comp_subnav_tab";}}}}
+var activateSearchDIV=document.getElementById('SearchPageData'+activedocumentid);if(activateSearchDIV!=null)
+{activateSearchDIV.style.display='block';}
+var http_request=cnbc_video_getXMLHTTPRequest();http_request.open('GET',pageRequest,false);http_request.send(null);if(http_request.status==200)
+{eval(http_request.responseText);}}
+function cnbc_video_activateSearchTab(parentdocumentid,activedocumentid)
+{window.location='http://'+location.host+'?id='+parentdocumentid+'&tabid='+activedocumentid+'&tabheader=false&t='+Math.random();}
+function cnbc_video_getSearchPage(documentid,page,sortfield,contentvalue,headervisible)
+{var currentPage=window.location.href;var index=currentPage.indexOf(cnbc_videosectionid);if(index!=-1)
+{window.location='http://'+location.host+'?id='+cnbc_docid+'&tabid='+documentid+'&tabpage='+page+'&tabsortfield='+sortfield+'&tabheader='+headervisible+'&t='+Math.random()+'&tabsearchvalue='+contentvalue;}
+else
+{var pageRequest='/id/'+documentid+'/_cnbc_vidsearch_page/'+page+'/_cnbc_vidsearch_sortfield/'+sortfield+'/_cnbc_vidsearch_headervisible/'+headervisible+'/_cnbc_vidsearch_value/'+contentvalue+'/';var http_request=cnbc_video_getXMLHTTPRequest();http_request.open('GET',pageRequest,false);http_request.send(null);if(http_request.status==200)
+{eval(http_request.responseText);}}}
+function cnbc_video_displaySearchPage(documentid,html)
+{var searchPageDataDIV=document.getElementById('SearchPageData'+documentid);if(searchPageDataDIV!=null)
+{var htmlEncoded=html.replace(/&amp;/gi,'&');searchPageDataDIV.innerHTML=htmlEncoded;var startIndex=0;while(htmlEncoded.indexOf('fL_subtitle_w200',startIndex)!=-1)
+{var divindex=htmlEncoded.indexOf('fL_subtitle_w200',startIndex);var dateindex=htmlEncoded.indexOf('cnbc_video_toDateString(',divindex);var lengthindex=htmlEncoded.indexOf('cnbc_video_toDurationString(',dateindex);var date=parseInt(htmlEncoded.substring(dateindex+24));var length=parseInt(htmlEncoded.substring(lengthindex+28));var dateTimeDIV=document.getElementById('fL_subtitle_w200_'+date+"_"+length);if(dateTimeDIV!=null)
+{dateTimeDIV.innerHTML=cnbc_video_toDateString(date)+'['+cnbc_video_toDurationString(length)+']';}
+startIndex=lengthindex+28;}}}
+var cnbc_video_oldSrc;function cnbc_video_swapImage(x,y)
+{if(!y)
+{document.images[x].src=cnbc_video_oldSrc;}
+else
+{var newSrc=y;cnbc_video_oldSrc=document.images[x].src
+document.images[x].src=newSrc;}}
+var cnbc_video_oldBgClr=null;var cnbc_video_newBgClr="#38506c";function cnbc_video_cellOver(id){if(!cnbc_video_oldBgClr)
+{cnbc_video_oldBgClr="#476683";document.getElementById(id).style.backgroundColor=cnbc_video_newBgClr;}
+else
+{document.getElementById(id).style.backgroundColor=cnbc_video_oldBgClr;cnbc_video_oldBgClr=null;}}
+function cnbc_video_toggleSetVolume(){var vb="vidCtrlVolumeBar";clearInterval(cnbc_video_volumeID);if(!cnbc_video_isVolumeOpen||cnbc_video_isVolumeOpen==false){document.getElementById(vb).style.display="block";cnbc_video_isVolumeOpen=true;}else{document.getElementById(vb).style.display="none";cnbc_video_isVolumeOpen=false;}}
+function cnbc_video_toggleMute(){if(!cnbc_video_isMuted)
+{cnbc_video_swapImage('muteButton','http://media.cnbc.com/i/CNBC/CNBC_Images/video/vid_control_volume_off.gif');cnbc_video_isMuted=true;var wmpPlayer=document.getElementById('Player0');if(wmpPlayer!=null)
+{wmpPlayer.settings.mute=true;}}
+else
+{cnbc_video_swapImage('muteButton','http://media.cnbc.com/i/CNBC/CNBC_Images/video/vid_control_volume.gif');cnbc_video_isMuted=false;var wmpPlayer=document.getElementById('Player0');if(wmpPlayer!=null)
+{wmpPlayer.settings.mute=false;}}
+if(cnbc_video_isVolumeOpen)
+{cnbc_video_toggleSetVolume()}}
+function cnbc_video_togglePlayPause(url)
+{var plusURL=getURLByFormat(url);var index=plusURL.indexOf("player/main.do");if(index!=-1)
+{var vidPlayer=window.open(cnbc_videoPlusURL+'/'+plusURL.substring(index),"CNBCPlus","toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=600");if(window.focus)
+{vidPlayer.focus();}}
+else
+{if(cnbc_video_playState=="play")
+{cnbc_video_isPlaying=false;cnbc_video_isDragging=false;cnbc_video_swapImage('playButton','http://media.cnbc.com/i/CNBC/CNBC_Images/video/vid_control_pause_over.gif');cnbc_video_playState="pause";cnbc_video_overState="play";window.clearInterval(cnbc_video_currentPosTimerID);var wmpPlayer=document.getElementById('Player0');if(wmpPlayer!=null)
+{var currPos=wmpPlayer.controls.currentPosition;if(currPos==0)
+{cnbc_video_playURL(url);}
+else
+{wmpPlayer.controls.pause();}}
+else
+{cnbc_video_playURL(url);}}
+else if(cnbc_video_playState=="pause")
+{cnbc_video_isPlaying=true;cnbc_video_swapImage('playButton','http://media.cnbc.com/i/CNBC/CNBC_Images/video/vid_control_play_over.gif');cnbc_video_playState="play";cnbc_video_overState="pause";cnbc_video_currentPosTimerID=window.setInterval(cnbc_video_checkCurrentPosition,333);var wmpPlayer=document.getElementById('Player0');if(wmpPlayer!=null)
+{wmpPlayer.controls.play();}}}}
+function cnbc_video_rewind()
+{var wmpPlayer=document.getElementById('Player0');if(wmpPlayer!=null)
+{wmpPlayer.controls.currentPosition=0;cnbc_video_setDragPos(0);}}
+function cnbc_video_checkCurrentPosition()
+{var wmpPlayer=document.getElementById('Player0');if((wmpPlayer!=null)&&(cnbc_video_isDragging==false))
+{var WMPDiv=document.getElementById('WMPObject');var vidCtrlTimer=document.getElementById('vidCtrlTimer');var seconds=parseInt((wmpPlayer.controls.currentPosition)%60);var minutes=parseInt((wmpPlayer.controls.currentPosition/60)%60);var hours=parseInt((wmpPlayer.controls.currentPosition/3600)%24);if(wmpPlayer.currentMedia.duration>0)
+{vidCtrlTimer.style.display="block";vidCtrlTimer.innerHTML='<p>'+cnbc_video_pad(minutes,2,'0')+':'+cnbc_video_pad(seconds,2,'0')+'/'+wmpPlayer.currentMedia.durationString+'</p>';cnbc_video_setDragPos(wmpPlayer.controls.currentPosition/wmpPlayer.currentMedia.duration);if(cnbc_video_isPlaying)
+{cnbc_video_playState="play";cnbc_video_overState="pause";cnbc_video_swapImage('playButton','http://media.cnbc.com/i/CNBC/CNBC_Images/video/vid_control_pause_over.gif');WMPDiv.style.display='block';if(cnbc_video_isMuted)
+{wmpPlayer.settings.mute=true;}}}
+else
+{vidCtrlTimer.style.display="none";cnbc_video_playState="play";cnbc_video_overState="play";cnbc_video_swapImage('playButton','http://media.cnbc.com/i/CNBC/CNBC_Images/video/vid_control_play.gif');cnbc_video_setDragPos(0);}}}
+function isWMVFormat()
+{return(cnbc_globalvideoformat.indexOf("msmedia")!=-1);}
+function getURLByFormat(url)
+{var formatURL="";if(url!=null)
+{var globalvideoformat=cnbc_globalvideoformat.replace("&format=","");var formats=url.split(';');for(var i=0;i<formats.length;++i)
+{if(isWMVFormat()&&(formats[i].indexOf("\|")==-1))
+{formatURL=formats[i];break;}
+else if(formats[i].indexOf(globalvideoformat)!=-1)
+{var tokens=formats[i].split("\|");if(tokens.length>=2)
+{formatURL=tokens[1];}
+break;}}}
+var inx=formatURL.indexOf('&reporting');if(inx!=-1)
+{return formatURL.substring(0,inx);}
+else
+{return formatURL;}}
+function cnbc_resetFlashPlayer(thumbnail,url)
+{window.setTimeout("cnbc_processResetFlashPlayer('"+thumbnail+"','"+url+"')",0);}
+function cnbc_processResetFlashPlayer(thumbnail,url)
+{if(!isWMVFormat())
+{var cnbc_flv_releaseURL=escape(url);var cnbc_flv_thumbnailURL=escape(thumbnail);var SWFObject=document.getElementById('SWFObject');if(SWFObject!=null)
+{var width=350;var height=300;var flvPlayer=document.getElementById(cnbc_flvPlayer_Id);if(flvPlayer!=null)
+{width=flvPlayer.width;height=flvPlayer.height;}
+SWFObject.innerHTML=AC_FL_GetContent('codebase','http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0','width',width,'height',height,'src',cnbc_FlashPlayer,'quality','high','pluginspage','http://www.macromedia.com/go/getflashplayer','align','left','wmode','transparent','id','flashPlayer','bgcolor','#ffffff','salign','tl','name',cnbc_flvPlayer_Id,'allowScriptAccess','always','movie',cnbc_FlashPlayer,'FlashVars','thumbnail='+cnbc_flv_thumbnailURL+'&preloadMovie='+cnbc_FlashLoaderURL+'&releaseUrl='+cnbc_flv_releaseURL+'&autoStart=false');}}}
+function cnbc_resetFlashPlayer580(thumbnail,url,emailLink,vmode)
+{window.setTimeout("cnbc_processResetFlashPlayer580('"+thumbnail+"','"+url+"','"+emailLink+"','"+vmode+"')",0);}
+function cnbc_processResetFlashPlayer580(thumbnail,url,emailLink,vmode)
+{if(!isWMVFormat())
+{var cnbc_flv_releaseURL=escape(url);var cnbc_flv_thumbnailURL=escape(thumbnail);var cnbc_flv_emailLink=escape(emailLink);var cnbc_flv_vmode=escape(vmode);var SWFObject=document.getElementById('SWFObject');if(SWFObject!=null)
+{var width=580;var height=370;var flvPlayer=document.getElementById(cnbc_flvPlayer_Id);if(flvPlayer!=null)
+{width=flvPlayer.width;height=flvPlayer.height;}
+SWFObject.innerHTML=AC_FL_GetContent('codebase','http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=version=9,0,18,0','width',width,'height',height,'src',cnbc_FlashPlayer580,'quality','high','pluginspage','http://www.macromedia.com/go/getflashplayer','align','l','wmode','opaque','allowFullScreen','true','id','flashPlayer','bgcolor','#000000','salign','tl','name',cnbc_flvPlayer_Id,'allowScriptAccess','always','movie',cnbc_FlashPlayer580,'FlashVars','thumbnail='+cnbc_flv_thumbnailURL+'&preloadMovie='+cnbc_FlashLoaderURL+'&releaseUrl='+cnbc_flv_releaseURL+'&emailLink='+cnbc_flv_emailLink+'&vidMode='+cnbc_flv_vmode+'&autoStart=false');}}}
+function cnbc_resetFlashPlayerInline(thumbnail,url)
+{window.setTimeout("cnbc_processResetFlashPlayerInline('"+thumbnail+"','"+url+"')",0);}
+function cnbc_processResetFlashPlayerInline(thumbnail,url)
+{if(!isWMVFormat())
+{var cnbc_flv_releaseURL=escape(url);var cnbc_flv_thumbnailURL=escape(thumbnail);var SWFObject=document.getElementById('SWFObject');if(SWFObject!=null)
+{var width=320;var height=265;var flvPlayer=document.getElementById(cnbc_flvPlayer_Id);if(flvPlayer!=null)
+{width=flvPlayer.width;height=flvPlayer.height;}
+SWFObject.innerHTML=AC_FL_GetContent('codebase','http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=version=9,0,18,0','width',width,'height',height,'src',cnbc_FlashPlayerInline,'quality','high','pluginspage','http://www.macromedia.com/go/getflashplayer','align','l','wmode','opaque','allowFullScreen','true','id','flashPlayer','bgcolor','#000000','salign','tl','name',cnbc_flvPlayer_Id,'allowScriptAccess','always','movie',cnbc_FlashPlayerInline,'FlashVars','thumbnail='+cnbc_flv_thumbnailURL+'&preloadMovie='+cnbc_FlashLoaderURL+'&releaseUrl='+cnbc_flv_releaseURL+'&autoStart=false');}}}

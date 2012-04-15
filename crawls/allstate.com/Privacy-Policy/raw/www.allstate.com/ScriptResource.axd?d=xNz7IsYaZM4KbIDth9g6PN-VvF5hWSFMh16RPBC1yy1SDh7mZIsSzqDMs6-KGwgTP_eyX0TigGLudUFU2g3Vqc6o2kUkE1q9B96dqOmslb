@@ -1,0 +1,1457 @@
+document.write("<script type='text/javascript' src='/scripts/ProcessMetrics.js'></script>");
+
+var maxMoves;
+var moveCount = 0;
+var twoRows = false;
+var FrameInterval = 44;
+var LastFrameInterval = 8;
+var LastFrame = 18;
+var ListItemPx = 200;
+
+function moveLeft(element, toggleBtns)
+{
+  if (moveCount < maxMoves){
+        moveLeftGo(element, toggleBtns);
+    ProcessMetrics('AnimateMoveLeft');
+  }
+}
+
+function moveRight(element, toggleBtns)
+{
+    if (moveCount != 0) {
+     moveRightGo(element, toggleBtns);
+     ProcessMetrics('AnimateMoveRight');
+    }
+}
+
+function moveLeftGo(element, toggleBtns)
+{
+    var frame = 0;
+
+    if (moveCount >= maxMoves){
+      return;
+    }
+
+    var intervalId = setInterval(goLeft, 1);
+
+    function goLeft(){
+      if (frame > LastFrame){
+        clearInterval(intervalId);
+        return;
+      }
+      var leftpx = stripOutPx(element.style.left);     
+      element.style.left = (frame == LastFrame ? (leftpx - LastFrameInterval) : (leftpx - FrameInterval)) + "px";
+      if (twoRows) {
+        var secondRow = document.getElementById('ulContentsSecondRow');
+        secondRow.style.left = (frame == LastFrame ? (leftpx - LastFrameInterval) : (leftpx - FrameInterval)) + "px";
+      }
+      frame++;      
+    }
+   
+    moveCount++;
+    
+    changeToggleButtons(toggleBtns);
+ 
+}
+
+function moveRightGo(element, toggleBtns)
+{
+    var frame = 0;
+
+    if (moveCount == 0) {
+      return;
+    }
+    
+    var intervalId = setInterval(goRight, 1);
+
+    function goRight(){
+      if (frame > LastFrame){
+        clearInterval(intervalId);
+        return;
+      }
+      var leftpx = stripOutPx(element.style.left);    
+      element.style.left = (frame == LastFrame ? (leftpx + LastFrameInterval) : (leftpx + FrameInterval)) + "px";
+      if (twoRows) {
+        var secondRow = document.getElementById('ulContentsSecondRow');
+        secondRow.style.left = (frame == LastFrame ? (leftpx + LastFrameInterval) : (leftpx + FrameInterval)) + "px";
+      }
+      frame++;      
+    }
+    moveCount--;
+
+    changeToggleButtons(toggleBtns);
+   
+}
+
+
+function stripOutPx(pxValue){
+  var px = pxValue.split('p')[0];
+  return px == '' ? 0 : parseInt(px);
+}
+
+function interrogateContentList(element, toggleBtns){
+  var liCount = 0;
+  maxMoves = 0;
+  for (var i=0; i<element.childNodes.length; i++){
+    var node = element.childNodes[i];
+    if (node.nodeName == 'LI'){
+      liCount++;      
+    }    
+  }
+
+  element.style.width = (liCount * ListItemPx) + "px";
+  
+  if (liCount > 4){
+    var temp = liCount / 4;
+    maxMoves = parseInt(temp);
+    if (maxMoves > 1 && liCount % 4 == 0){
+      maxMoves--;
+    }
+  }
+  generateToggleButtons(toggleBtns);
+}
+
+function interrogateContentListTwoRow(firstRow, secondRow, toggleBtns){
+  twoRows = true;
+  var liCountFirstRow = 0;
+  var liCountSecondRow = 0;
+  maxMoves = 0;
+  maxLi = 0;
+  liCountFirstRow = firstRow.getElementsByTagName('li').length;
+  liCountSecondRow = secondRow.getElementsByTagName('li').length;
+  maxLi = Math.max(liCountFirstRow, liCountSecondRow);
+
+  firstRow.style.width = (maxLi * ListItemPx) + "px";
+  secondRow.style.width = (maxLi * ListItemPx) + "px";
+  
+  if (maxLi > 4){
+    var temp = maxLi / 4;
+    maxMoves = parseInt(temp);
+    if (maxMoves > 1 && maxLi % 4 == 0){
+      maxMoves--;
+    }
+  }
+  generateToggleButtons(toggleBtns);
+}
+
+function generateToggleButtons(togBtns)
+{  
+  for (i=0; i<=maxMoves; i++){
+    var togImg = document.createElement("img");
+    if (i==0){
+      togImg.setAttribute("src", "/Images/BoxCustOrg_8x8_Select.gif");
+    }
+    else{
+      togImg.setAttribute("src", "/Images/BoxCustGry_8x8_Up.gif");
+    }
+
+    togImg.setAttribute("id", i);
+    togImg.onclick = function() { togBtnClick(this); };
+    //togImg.setAttribute("onclick", "togBtnClick("+i+")");
+    
+    togImg.setAttribute("alt", "");
+
+    togBtns.appendChild(togImg);
+
+  }
+  
+  if (maxMoves > 0)
+  {
+    // 8px for each block; 4px for spacing between blocks; 16px for l/r margins
+    togBtns.style.width = (((maxMoves+1)*8) + (maxMoves*4) + 16) + "px";
+  }
+  else
+  { 
+    //If there is only 1 square add 8px for block; 16px for l/r margins
+    togBtns.style.width = "24px";
+  }
+
+}
+
+function changeToggleButtons(togBtns)
+{  
+  var children = togBtns.childNodes;
+  var imgCount = 0;
+
+  for (i=0; i<children.length; i++){
+    
+      if (children[i].nodeName == "IMG"){
+        imgCount++;
+        if (imgCount == moveCount + 1){
+          children[i].src = "/Images/BoxCustOrg_8x8_Select.gif";
+        }
+        else{
+          children[i].src = "/Images/BoxCustGry_8x8_Up.gif";
+        }
+      }
+    
+  }
+
+}
+
+function togBtnClick(imgId)
+{
+  var ulToMove = (twoRows ? 'ulContentsFirstRow' : 'ulContents');
+  var togBtns = imgId.parentNode;
+  var imgIndex = parseInt(imgId.id);
+  if (imgIndex == moveCount)
+    return;
+  if (imgIndex < moveCount){
+    var movesToMake = moveCount - imgIndex;
+    for (var i=0; i<movesToMake; i++) {
+      
+      moveRightGo(document.getElementById(ulToMove), togBtns);
+      ProcessMetrics('AnimateButtonClick', [imgIndex]);
+    }
+    return;
+  }
+  if (imgIndex > moveCount){
+    var movesToMake = imgIndex - moveCount;
+    for (var i=0; i<movesToMake; i++) {
+      
+      moveLeftGo(document.getElementById(ulToMove), togBtns);     
+      ProcessMetrics('AnimateButtonClick', [imgIndex]);
+    }
+    return;
+  }
+}
+document.write("<script type='text/javascript' src='/scripts/ProcessMetrics.js'></script>");
+
+function navItemOn(elementID)
+{
+    var menuElement = document.getElementById(elementID);
+    if (!menuElement.className.match("On"))
+    {
+     menuElement.className =  menuElement.className + "On";
+    }
+}
+
+function navItemOff(elementID, selectedID)
+{
+    if (elementID != selectedID)
+    {
+     var menuElement = document.getElementById(elementID);
+     menuElement.className = menuElement.className.replace("On", "");
+    }
+}
+
+function mouseHover(elementID, defaultID)
+{
+   if (defaultID != "")
+   {
+     var defaultElement = document.getElementById(defaultID);
+     defaultElement.className = "navOff";
+   }
+
+    var listElement = document.getElementById(elementID);
+    listElement.className = "navOn";
+    listElement.focus();
+}
+
+function mouseOut(elementID, defaultID)
+{
+    var listElement = document.getElementById(elementID);
+    listElement.className ="navOff";
+    
+    if (defaultID != "")
+    {
+       var defaultElement = document.getElementById(defaultID);
+       defaultElement.className = "navOn";
+    }
+
+}
+function hbURL(url, hb1, hb2) 
+{
+    ProcessMetrics('GUIhbURL', [hb1,hb2]);
+    this.location.href = url;
+}
+
+function hbTalk(num, hb1, hb2) 
+{
+    webVoicePop('Template='+num);
+    ProcessMetrics('GUIhbTalk', [hb1,hb2]);
+}
+
+function PopupWindow(sURL)
+{
+	window.open(   sURL,
+	'Allstate','width=482,height=630,toolbar=0,location=0,directories=0,status=1,menuBar=0,scrollBars=1,resizeable=1' );
+}
+//////////////////////////////////////////////////////////////
+// variables declared on the server for use in this js code //
+// var jsTxtZipCodeID                                       //
+// var jsDdInsuranceTypeID                                  //
+//                                                          //   
+// var jsTxtZipCodeAgentID                                  //
+// var jsTxtAddressAgentID                                  //
+// var jsTxtCityAgentID                                     //
+// var jsDdStateAgentID                                     //
+//                                                          //
+// var lblErrInvalidZipID                                   //
+// var isErrorOnID                                          //
+//////////////////////////////////////////////////////////////
+// variables declared on small quote control                //
+// var jsTxtZipCodeSQID                                     //
+// var jsDdInsuranceTypeSQID                                //
+//                                                          //   
+// var lblErrInvalidZipSQID                                //
+//////////////////////////////////////////////////////////////
+// variables declared in this file below                    //
+    document.write("<script type='text/javascript' src='/scripts/ProcessMetrics.js'></script>");
+    
+    var jsTxtZipCode
+    var jsDdInsuranceType
+  
+    var jsTxtZipCodeAgent
+    var jsTxtAddressAgent
+    var jsTxtCityAgent
+    var jsDdStateAgent
+    
+    var invalidZipError;
+    
+    var jsTxtZipCodeSQ
+    var jsDdInsuranceTypeSQ
+    
+    var invalidZipErrorSQ
+    
+    var zipPattern = /\d{5}/;
+    var ddInsurReplacement;
+    var insurPrompt;
+    
+    var ddInsurReplacementSQ;
+    var insurPromptSQ;
+   
+    var cityPattern = /[^\a-\z\A-\Z\s]/;
+    var ddStateReplacement;
+    var statePrompt;
+    
+    var zipQuoteErrorOn;
+    var zipAgentErrorOn;
+    var addressErrorOn;
+    var cityErrorOn;
+    
+    var zipQuoteErrorOnSQ;
+    
+    var enterZipVal;
+    var pleaseEnterZipVal;
+    var addressVal;
+    var unknownAddressVal;
+    var cityVal;
+    var cityNotFoundVal;
+//////////////////////////////////////////////////////////////
+
+function getBrowserType() 
+{
+	var agt = navigator.userAgent.toLowerCase();
+	
+	if (agt.indexOf("opera") != -1) return 'Opera';
+	if (agt.indexOf("staroffice") != -1) return 'Star Office';
+	if (agt.indexOf("webtv") != -1) return 'WebTV';
+	if (agt.indexOf("beonex") != -1) return 'Beonex';
+	if (agt.indexOf("chimera") != -1) return 'Chimera';
+	if (agt.indexOf("netpositive") != -1) return 'NetPositive';
+	if (agt.indexOf("phoenix") != -1) return 'Phoenix';
+	if (agt.indexOf("firefox") != -1) return 'Firefox';
+	if (agt.indexOf("safari") != -1) return 'Safari';
+	if (agt.indexOf("skipstone") != -1) return 'SkipStone';
+	if (agt.indexOf("msie") != -1) return 'Internet Explorer';
+	if (agt.indexOf("netscape") != -1) return 'Netscape';
+	if (agt.indexOf("mozilla/5.0") != -1) return 'Mozilla';
+	if (agt.indexOf('\/') != -1)
+	{
+		if (agt.substr(0,agt.indexOf('\/')) != 'mozilla')
+		{
+			return navigator.userAgent.substr(0,agt.indexOf('\/'));
+		}
+		else 
+			return 'Netscape';
+	}
+	else if (agt.indexOf(' ') != -1)
+		return navigator.userAgent.substr(0,agt.indexOf(' '));
+	else 
+		return navigator.userAgent;
+}
+
+
+
+function initVariables()
+{
+    jsTxtZipCode = document.getElementById(jsTxtZipCodeID);
+    jsDdInsuranceType = document.getElementById(jsDdInsuranceTypeID);    
+  
+    jsTxtZipCodeAgent = document.getElementById(jsTxtZipCodeAgentID);
+    jsTxtAddressAgent = document.getElementById(jsTxtAddressAgentID);
+    jsTxtCityAgent = document.getElementById(jsTxtCityAgentID);
+    jsDdStateAgent = document.getElementById(jsDdStateAgentID);       
+    
+    invalidZipError = document.getElementById(lblErrInvalidZipID);
+    
+    zipQuoteErrorOn = document.getElementById(zipQuoteErrorOnID);
+    zipAgentErrorOn = document.getElementById(zipAgentErrorOnID);
+    addressErrorOn = document.getElementById(addressErrorOnID);
+    cityErrorOn = document.getElementById(cityErrorOnID);
+       
+    enterZipVal = enterZip;
+    pleaseEnterZipVal = pleaseEnterZip;
+    addressVal = address;
+    unknownAddressVal = unknownAddress;
+    cityVal = city;
+    cityNotFoundVal = cityNotFound; 
+}
+
+function initVariablesSQ()
+{
+    jsTxtZipCodeSQ = document.getElementById(jsTxtZipCodeSQID);
+    jsDdInsuranceTypeSQ = document.getElementById(jsDdInsuranceTypeSQID);
+    
+    invalidZipErrorSQ = document.getElementById(lblErrInvalidZipSQID);
+    
+    zipQuoteErrorOnSQ = document.getElementById(zipQuoteErrorOnSQID);
+    
+    enterZipVal = enterZip;
+    pleaseEnterZipVal = pleaseEnterZip;
+}
+
+function showHideTextPrompt(textBox, prompt, error)
+{
+    if (textBox.value == prompt || textBox.value == error)
+	{
+	    if (textBox.value == error)
+	    {
+	        Sys.UI.DomElement.removeCssClass(textBox, 'error');	        
+	    }
+	    textBox.style.color='black';
+	    textBox.value = "";
+	}
+	else if (textBox.value == "")
+	{
+	    textBox.value = prompt;	    
+	}
+}
+
+function errorCheck()
+{
+    if (zipQuoteErrorOn.value == 'yes')
+    {
+        showZipQuoteErrorOn();
+    }
+    else
+    {
+        showZipQuoteErrorOff();
+    }
+    
+    if (zipAgentErrorOn.value == 'yes')
+    {
+        showZipAgentErrorOn();
+    }
+    else
+    {
+        showZipAgentErrorOff();
+    }
+    
+    if (cityErrorOn.value == 'yes')
+    {
+        showCityErrorOn();
+    }
+    else
+    {
+        showCityErrorOff();
+    }
+    
+    if (addressErrorOn.value == 'yes')
+    {
+        showAddressErrorOn();
+    }
+    else
+    {
+        showAddressErrorOff();
+    }
+}
+
+function errorCheckSQ()
+{
+    if (zipQuoteErrorOnSQ.value == 'yes')
+    {
+        showZipQuoteErrorOnSQ();
+    }
+    else
+    {
+        showZipQuoteErrorOffSQ();
+    }
+}
+
+function setupSelectStartQuoteInsuranceType()
+{
+    selectRestyle(jsDdInsuranceType);
+    ddInsurReplacement = jsDdInsuranceType.previousSibling;    
+    insurPrompt = jsDdInsuranceType.parentNode.previousSibling;
+    if (getBrowserType() == 'Firefox')
+    {
+			insurPrompt = insurPrompt.previousSibling;
+    }
+    insurancePromptOn(jsTxtZipCode, ddInsurReplacement, insurPrompt)
+
+}
+
+function setupSelectStartQuoteInsuranceTypeSQ()
+{
+    selectRestyle(jsDdInsuranceTypeSQ);
+    ddInsurReplacementSQ = jsDdInsuranceTypeSQ.previousSibling;
+    insurPromptSQ = jsDdInsuranceTypeSQ.parentNode.previousSibling;
+    if (getBrowserType() == 'Firefox')
+    {
+			insurPromptSQ = insurPromptSQ.previousSibling;
+    }
+    insurancePromptOn(jsTxtZipCodeSQ, ddInsurReplacementSQ, insurPromptSQ);
+}
+
+function insurancePromptOn(txtZip, ddSelectReplaced, prompt)
+{
+    if (txtZip.value == enterZipVal || txtZip.value == '' || txtZip.value ==  pleaseEnterZipVal)
+    {
+        prompt.className = 'promptInsur';   
+        ddSelectReplaced.style.display = 'none';
+        return true;
+    }
+    else
+    {
+        prompt.className = 'hidePrompt';     
+        ddSelectReplaced.style.display = 'block'; 
+        return false;       
+    }
+}
+
+function setupFindAgentAddress()
+{
+    if (jsTxtZipCodeAgent.value == enterZip || 
+        jsTxtZipCodeAgent.value == pleaseEnterZip ||
+        jsTxtZipCodeAgent.value == '')
+    {
+        jsTxtAddressAgent.className = 'smallDisabled';
+        jsTxtAddressAgent.disabled = true;
+    }
+    else
+    {
+        jsTxtAddressAgent.className = 'small';
+        jsTxtAddressAgent.disabled = false;
+    }
+}
+
+function getStatesAjax() {
+    if (document.getElementById(jsDdStateAgentID).length < 1) {
+        __doPostBack(jsDdStateAgentID, '');
+    }
+}
+
+function setupSelectFindAgentState() {
+    jsDdStateAgent = document.getElementById(jsDdStateAgentID);
+    selectRestyle(jsDdStateAgent);
+    ddStateReplacement = jsDdStateAgent.previousSibling;
+    statePrompt = jsDdStateAgent.parentNode.parentNode.previousSibling;
+    if (getBrowserType() == 'Firefox') {
+        statePrompt = statePrompt.previousSibling;
+    }
+    statePromptOn();
+}
+
+function statePromptOn()
+{
+    if (jsTxtCityAgent.value == city || jsTxtCityAgent.value == '')
+    {
+        statePrompt.className = 'promptState';     
+        ddStateReplacement.style.display = 'none';
+        return true;        	    
+	}
+	else
+	{
+	    statePrompt.className = 'hidePrompt';     
+        ddStateReplacement.style.display = 'block';
+        return false;	    
+	}
+}
+
+function validateTxtZipCode(txtZipCode)
+{     
+    if (!insurancePromptOn(jsTxtZipCode, ddInsurReplacement, insurPrompt)){                     
+        if (!txtZipCode.value.match(zipPattern))
+        {
+            // zip must be 5 numbers between 0-9        
+            disableSelectRestyle(ddInsurReplacement, jsDdInsuranceType);
+            jsDdInsuranceType.disabled = true; 
+        }
+        else
+        {
+            // zip pattern satisfied enable insurance dropdown                    
+            enableSelectRestyle(ddInsurReplacement, jsDdInsuranceType);
+            jsDdInsuranceType.disabled = false;
+        }
+    }
+	
+}
+
+function validateZipCode(e)
+{
+   var pattern = /[^\d]/g;
+   var zipCode;
+
+    if (e.keyCode != 0)
+    {
+        zipCode = e.keyCode;
+    }
+    else if (e.charCode != 0)
+    {
+       zipCode = e.charCode;
+    }
+
+    if (zipCode == 8)
+    {
+       return true;
+    } 
+   
+    return /^(\d)$/.test(String.fromCharCode(zipCode) );
+}
+
+function validateTxtZipCodeSQ(txtZipCode)
+{     
+    if (!insurancePromptOn(jsTxtZipCodeSQ, ddInsurReplacementSQ, insurPromptSQ)){                     
+        if (!txtZipCode.value.match(zipPattern))
+        {
+            // zip must be 5 numbers between 0-9       
+            disableSelectRestyle(ddInsurReplacementSQ, jsDdInsuranceTypeSQ);
+            jsDdInsuranceTypeSQ.disabled = true;           
+        }
+        else
+        {
+            // zip pattern satisfied enable insurance dropdown                    
+            enableSelectRestyle(ddInsurReplacementSQ, jsDdInsuranceTypeSQ);
+            jsDdInsuranceTypeSQ.disabled = false;
+        }
+    }
+	
+}
+
+function validateTxtZipCodeAgent(txtZipCode)
+{              
+    if (!txtZipCode.value.match(zipPattern))
+    {
+        // zip must be 5 numbers between 0-9
+        jsTxtAddressAgent.className = 'smallDisabled';
+        jsTxtAddressAgent.disabled = true;          
+    }
+    else
+    {
+        // zip pattern satisfied enable insurance dropdown                    
+        jsTxtAddressAgent.className = 'small';
+        jsTxtAddressAgent.disabled = false;   
+    }	
+}
+
+
+function validateCityAgent(txtCityAgent)
+{   
+    if (!statePromptOn()){                  
+        if (txtCityAgent.value == city || txtCityAgent.value == "" ||
+         txtCityAgent.value.match(cityPattern) || txtCityAgent.value == cityNotFound)
+        {	   
+            disableSelectRestyle(ddStateReplacement, jsDdStateAgent); 
+            jsDdStateAgent.disabled = true;
+        }
+        else
+        {	    
+            enableSelectRestyle(ddStateReplacement, jsDdStateAgent); 
+            jsDdStateAgent.disabled = false;
+        }
+    }
+}
+
+function showZipQuoteErrorOn()
+{ 
+    invalidZipError.className = 'zipError';
+}
+
+function showZipQuoteErrorOff()
+{
+    invalidZipError.className = 'zipErrorHide';
+}
+
+function showZipAgentErrorOn()
+{ 
+    jsTxtZipCodeAgent.className = 'error';
+}
+
+function showZipAgentErrorOff()
+{
+    jsTxtZipCodeAgent.className = '';
+}
+
+function showCityErrorOn()
+{ 
+    jsTxtCityAgent.className = 'error';
+    jsTxtCityAgent.value = cityNotFound;
+}
+
+function showCityErrorOff()
+{
+    Sys.UI.DomElement.removeCssClass(jsTxtCityAgent, 'error');
+}
+
+function showAddressErrorOn()
+{ 
+    jsTxtAddressAgent.className += ' error';
+    jsTxtAddressAgent.value = unknownAddress;
+}
+
+function showAddressErrorOff()
+{
+    Sys.UI.DomElement.removeCssClass(jsTxtAddressAgent, 'error');    
+}
+
+function showZipQuoteErrorOnSQ()
+{ 
+    invalidZipErrorSQ.className = 'zipError';
+}
+
+function showZipQuoteErrorOffSQ()
+{
+    invalidZipErrorSQ.className = 'zipErrorHide';
+}
+
+function StartAQuoteValidation(txtZip, error)
+{    
+    if (txtZip.value.match(zipPattern))
+    {  
+        error.className = 'zipErrorHide';
+        if (zipQuoteErrorOn != null)
+        {
+            zipQuoteErrorOn.value = 'no';
+        }
+        if (zipQuoteErrorOnSQ != null)
+        {
+            zipQuoteErrorOnSQ.value = 'no';
+        }
+        return true;
+    }
+    else
+    {
+        error.className = 'zipError';
+        return false;
+    }
+    
+}
+
+function FindAnAgentValidationZipStreet(txtZipAgent)
+{         	
+    // zip isn't 5 didgits, display error
+    if (!txtZipAgent.value.match(zipPattern))
+    {
+        txtZipAgent.value = pleaseEnterZip;
+        if (!Sys.UI.DomElement.containsCssClass(txtZipAgent, 'error'))
+            txtZipAgent.className = 'error';
+        return false;	        
+    }
+    zipAgentErrorOn.value = 'no'
+    return true;   
+}
+
+function FindAnAgentValidationCityState(txtCityAgent)
+{        
+    return (txtCityAgent.value != "" && txtCityAgent.value != city && !txtCityAgent.value.match(cityPattern));    
+}
+
+function Showbox(DivID,DivState)
+{
+	if (document.getElementById){
+		document.getElementById(DivID).style.display = DivState;
+	}
+	else {
+	document[DivID].style.display = DivState;
+	}
+}
+
+function setOpacity(elem, amount)
+{
+    elem.style.opacity = amount;
+    elem.style.filter  = "alpha(opacity=" + (amount*100) + ")";     
+}
+//A New change required for Online Marketing Enhancements.
+// New method added to read cookies
+//Included new boolean parameter to validate whether the URL has to open in new or the same window.
+function readCookie(strURL,strBool)
+{   
+    var aetURL = "";
+    //If query string is present in the URL just passing them to AET applciation without checking for cookie.
+    var strURLQuery = isQueryStringAvailable();
+    if(strURLQuery!="")
+    {   
+       aetURL = strURL + strURLQuery;
+    }
+    else
+    {
+         //If query string is not present in the URL checking for cookie.
+        var search = "AllTracker" + "="   
+        var splitter ='&';
+        var cookiestr = '';
+        
+        if (document.cookie.length > 0)
+        { 
+            //check for AllTracker Cookie
+            var offset = document.cookie.indexOf(search)       
+            if (offset != -1)
+            {
+                // if cookie exists          
+                offset += search.length          
+                // set index of beginning of value 
+                var end = document.cookie.indexOf(";", offset)          
+
+                // set index of end of cookie value         
+                if (end == -1)
+                {             
+                    end = document.cookie.length
+                }
+                //getting the full keys and values of the cookie
+                var str = unescape(document.cookie.substring(offset, end));
+                var arInfo =[5];
+                //splitting the kyes and values       
+                arInfo = str.split(splitter);
+                   
+                for (var i = 0; i <arInfo.length; i++)
+                {                        
+                   if(arInfo[i].toUpperCase().startsWith("QUOTE")
+                   ||arInfo[i].toUpperCase().startsWith("TFN")
+                   ||arInfo[i].toUpperCase().startsWith("CAMPAIGN"))
+                   {
+                       if(cookiestr.length>0)
+                       {
+                          cookiestr+="&";
+                       }
+                      cookiestr += arInfo[i];
+                   }                                                  
+                }
+                //appending cookie parameters to the AET URL.
+                aetURL = strURL + "?" + cookiestr;
+            }              
+        }
+    }
+    //if aetURL is empty, then there was no cookie or ad banner params in the querystring of the URL.
+    //redirect to AET without a querystring
+    if (aetURL == "")
+    {
+        aetURL = strURL;
+    }  
+    
+    //checking for boolean parameter to validate whether the URL has to open in new or the same window.
+    if(strBool)
+    {
+        window.open(aetURL);
+    }
+    else
+    {
+        location.href = aetURL;
+    }  
+}
+//A new change made for Online Marketign Enhancements project.
+//added new method to read the URL , to check for the query string. 
+function isQueryStringAvailable()
+{   
+    var strParams;
+    var strApplicationURL = window.location.href;
+
+    var indexstart = strApplicationURL.indexOf('?');
+    var strQuerystring = "";
+    var splitter = '&';
+    var arrList = [5];
+    //If indexstart does not equal -1, that means there's a querystring in the URL
+    if (indexstart != -1)
+    {   
+        strParams = strApplicationURL.substring(indexstart + 1);
+        
+        //if the length of the params is less than 0, then there was nothing after the ? in the querystring
+        if (strParams.length > 0)
+        {
+            //check for index of CID.  This is a unique identifier for ad banner metrix we need to capture and pass to AET
+            if(strParams.indexOf('cid=') != -1 || strParams.indexOf('CID=') != -1)
+            {
+                arrList = strParams.split(splitter);
+                for (var j = 0; j <arrList.length; j++)
+                {  
+                    //Metrix that need to be captured from the querystring and passed to AET
+                    if(arrList[j].toUpperCase().startsWith("QUOTE")
+                    ||arrList[j].toUpperCase().startsWith("TFN")
+                    ||arrList[j].toUpperCase().startsWith("CAMPAIGN"))
+                    {
+                        if(strQuerystring.length > 0)
+                        {      
+                            strQuerystring += "&" + arrList[j];
+                        }
+                        else
+                        {
+                            strQuerystring = "?" + arrList[j];
+                        }
+                    }                 
+                }
+            }
+        }        
+    }
+
+    //will return querystring params that associate with ad banner campaigns
+    //if return is an empty string, it will search for cookies
+    return strQuerystring;
+}
+//New check introduced for HBX piece of change 
+//Passing the values of cid, att values.
+function initHbxValues(strCID,strATT)
+{
+ try
+    {   
+        var hbxValue = strCID + '|' + strATT;
+       
+       ProcessMetrics('GetQuoteJS', [hbxValue]);                 
+    }
+ catch (err) {}   
+ 
+}
+function searchSubmit(buttonName,evt)
+{
+	if (document.forms[0].s_Text.value != "")
+	{
+	var searchURL = document.forms[0].s_URL.value;
+	var spA = document.forms[0].sp_a.value;
+	var spP = document.forms[0].sp_p.value;
+	var spQ = document.forms[0].sp_q.value;
+	var spT = document.forms[0].sp_t.value;	
+	
+	document.forms[0].action = searchURL + "?q=" + spQ;
+        document.location.href = searchURL + "?q=" + spQ;
+
+    document.forms[0].submit;
+    return true;
+	}
+    return false;
+	
+}
+
+function noPostBack(buttonName,evt)
+{	
+	if (window.event)
+	{
+		skeyCode = event.keyCode;
+	}
+	else
+	{
+		skeyCode = evt.which;
+	}
+	
+	if( skeyCode == 13)
+	{
+		if (buttonName == "Imagebutton2")
+		{
+           searchSubmit('Imagebutton2',evt);
+		}	
+		return false;    
+	}
+	
+}	
+function onCCC_Submit() {
+for (i=0; i <= document.forms.length - 1; i++)
+{
+	if( document.forms[i].id == "CustCareForm" )
+	{
+		document.forms[i].action = cccDomain + "/anon/login/login.aspx";
+		CheckCookies(document.forms[i]);
+		document.forms[i].submit();
+	}
+}
+}
+
+function CheckCookies(frm) {
+	var prefix = "";
+	if (frm.action.indexOf("?") <= 0)
+		prefix = "?";
+	else
+		prefix = "&";
+
+	document.cookie = "CheckCookies=Yes; path=/";
+	var is_tempcookie = (document.cookie.indexOf("CheckCookies=Yes")!=-1);
+	var hascookies;
+
+	if (is_tempcookie) {
+		var exp = new Date();
+		exp.setTime (exp.getTime() - 100);
+		document.cookie = "CheckCookies=Yes; path=/; expires=" + exp.toGMTString();
+		frm.action = frm.action + prefix + "CookiesEnabled=Yes";
+	}
+	else {
+		frm.action = frm.action + prefix + "CookiesEnabled=No";
+	}
+	return true;
+}
+
+function CCC_Login_KeyPress(buttonName, evt)
+{	
+	if (window.event)
+	{
+		skeyCode = event.keyCode;
+	}
+	else
+	{
+		skeyCode = evt.which;
+	}
+	
+	if (skeyCode == 13)
+	{
+		if ((buttonName == "cccLoginBtnHead") || (buttonName == "cccLoginBtnQuote"))
+		{
+	    var button = document.getElementById(buttonName);
+	    
+	    if (button)
+	    {
+	        button.click();
+	    }
+		}	
+		
+	  return false;
+	}	
+}	
+
+function CCC_Login_Submit(buttonName, evt)
+{
+	var frmLogin = document.forms["form1"];
+	
+	if (buttonName == "cccLoginBtnHead")
+	{
+		if (document.getElementById("usernamehead").value != "Enter User ID Here" && document.getElementById("passwordhead").value != "")
+		{
+		  if (document.getElementById("username2") == undefined)
+		  {
+		    var userName = document.createElement("input");
+
+		    userName.type = 'text';
+		    userName.name = 'username2';
+		    userName.id = 'username2';
+		    userName.style.display = 'none';
+
+		    frmLogin.appendChild(userName);
+		  }
+
+		  if (document.getElementById("password2") == undefined)
+		  {
+		    var password = document.createElement("input");
+		    
+		    password.type = 'password';
+		    password.name = 'password2';
+		    password.id = 'password2';
+		    password.style.display = 'none';
+		    
+		    frmLogin.appendChild(password);
+		  }
+
+		  document.getElementById("username2").value = document.getElementById("usernamehead").value;
+		  document.getElementById("password2").value = document.getElementById("passwordhead").value;
+			
+			CCC_Login();
+		}
+	}
+	else
+	{
+		if (document.getElementById("usernamequote").value != "Enter User ID Here" && document.getElementById("passwordquote").value != "")
+		{
+			var userName = document.createElement("input");
+			var password = document.createElement("input");
+
+			userName.type = 'text';
+			userName.name = 'username2';
+			userName.id = 'username2';
+			userName.style.display = 'none';
+			userName.value = document.getElementById("usernamequote").value;
+
+			password.type = 'password';
+			password.name = 'password2';
+			password.id = 'password2';
+			password.style.display = 'none';
+			password.value = document.getElementById("passwordquote").value;
+
+			frmLogin.appendChild(userName);
+			frmLogin.appendChild(password);
+
+			CCC_Login();
+		}
+	}
+}
+
+function CCC_Login()
+{
+  ProcessMetrics('CCCLogin');
+	var frmLogin = document.forms["form1"];
+
+	frmLogin.action = cccDomain + "/Anon/Handlers/ExternalLoginHandler.ashx";
+
+	CheckCookies(frmLogin);
+	frmLogin.submit();
+}
+
+function changeBox(location)
+{
+	if (location == 'head')
+	{
+		document.getElementById('passtempheaddiv').style.display = 'none';
+		document.getElementById('passwordheaddiv').style.display = '';
+		document.getElementById('passwordhead').focus();
+	}
+	else
+	{
+		document.getElementById('passtempquotediv').style.display = 'none';
+		document.getElementById('passwordquotediv').style.display = '';
+		document.getElementById('passwordquote').focus();
+	}
+}
+
+function restoreBox(location)
+{
+	if (location == 'head')
+	{
+		if (document.getElementById('passwordhead').value == '')
+		{
+			document.getElementById('passtempheaddiv').style.display = '';
+			document.getElementById('passwordheaddiv').style.display = 'none';
+		}
+	}
+	else
+	{
+		if (document.getElementById('passwordquote').value == '')
+		{
+			document.getElementById('passtempquotediv').style.display = '';
+			document.getElementById('passwordquotediv').style.display = 'none';
+		}
+	}
+}
+
+function showHideCustomerLoginPrompt(textBox, prompt, error)
+{
+ 	if (textBox.value == prompt || textBox.value == error)
+ 	{
+ 		if (textBox.value == error)
+ 		{
+ 			Sys.UI.DomElement.removeCssClass(textBox, 'error');
+ 		}
+ 		textBox.value = "";
+ 	}
+ 	else if (textBox.value == "")
+ 	{
+ 		textBox.value = prompt;
+ 	}
+}
+
+function toggleCustomerLoginBox(id)
+{
+ 	var e = document.getElementById(id);
+ 	var customerLogin = document.getElementById("customerLogin");
+ 	var customerLoginLink = document.getElementById("notLoggedIn");
+
+ 	if (e.style.display == 'block')
+ 	{
+ 		e.style.display = 'none';
+ 		customerLogin.className = "";
+ 		customerLoginLink.className = "";
+ 	}
+ 	else
+ 	{
+ 		e.style.display = 'block';
+ 		customerLogin.className = "customerLogin";
+ 		customerLoginLink.className = "notLoggedIn";
+ 	}
+}
+var defaultTextSize = 12;
+var textSizeCookieName = 'com.allstate.textsize';
+var textSizeCookieExpires = 90; //days
+
+function setTextSize(selectedSize) 
+{
+    // ensure valid size
+    if(selectedSize == undefined)
+    {
+        selectedSize = defaultTextSize;
+    }
+    
+    // apply to elements
+    var contentTextDiv = document.getElementById('contentText');
+    if (contentTextDiv != undefined)
+    {
+        var h3s = contentTextDiv.getElementsByTagName('p');
+
+        for(i=0; i<h3s.length; i++) 
+        {
+            h3s[i].style.fontSize = selectedSize + 'px';
+        }
+    
+        // set images
+        setTextSizeImages(selectedSize);
+    
+        // persist size
+        writeTextSizeToCookie(selectedSize);
+    }
+}
+
+function writeTextSizeToCookie(value) 
+{
+    var date = new Date();
+    date.setTime(date.getTime()+(textSizeCookieExpires*86400000)); // converts days to milliseconds
+	document.cookie = textSizeCookieName + '=' + value + '; expires=' + date.toGMTString() + '; path=/'; //; domain=allstate.com
+}
+
+function readTextSizeFromCookie() 
+{
+	var nameEQ = textSizeCookieName + '=';
+	var cookieValues = document.cookie.split(';');
+	for(var i=0; i<cookieValues.length; i++) 
+	{
+		var c = cookieValues[i];
+		while (c.charAt(0)==' ') 
+		{
+		    c = c.substring(1,c.length);
+		    if (c.indexOf(nameEQ) == 0) 
+		    {
+		        return c.substring(nameEQ.length,c.length);
+		    }
+		}
+	}
+	return defaultTextSize;
+}
+
+function setTextSizeImages(selectedSize)
+{
+    var textSizingDiv = document.getElementById('textSizing');
+    var buttons = textSizingDiv.getElementsByTagName('a');
+
+    for(i=0; i<buttons.length; i++) 
+    {
+        var buttonid = buttons[i].id;
+        if(buttonid.indexOf(selectedSize) > 0)
+        {
+            buttons[i].className = 'selected';
+        }
+        else
+        {
+            buttons[i].className = '';
+        }
+    }
+}
+
+
+function selectRestyle(originalSelect) {
+  originalSelect.className += ' replaced';  
+  var ul = document.createElement('ul');
+  ul.className = 'selectReplacement'; 
+  // collect the ul's options
+  var opts = originalSelect.options;
+  // check for selected option, if none
+  // found default to first
+  var selectedOpt = (originalSelect.selectedIndex != -1 ? originalSelect.selectedIndex : 0);  
+  // loop through and create the li's
+  for (var j=0; j<opts.length; j++){
+    var li = document.createElement('li');    
+    var txt = document.createTextNode(opts[j].text);
+    li.appendChild(txt);
+    li.selIndex = opts[j].index;
+    li.selectID = originalSelect.id;
+    li.onclick = function() {      
+      selectMe(this);
+    }
+    if (j == selectedOpt) {
+      li.className = 'selected';
+      li.onclick = '';
+      li.onclick = function() {
+        var spanLi = document.getElementById(originalSelect.id + 'SpanLi');
+        spanLi.innerHTML = this.innerHTML; 
+        spanLi.className = 'show';         
+        this.parentNode.className += ' selectOpen';        
+        this.onclick = function() {
+          selectMe(this);
+        }
+      }
+          
+    }    
+    if (window.attachEvent) {
+      li.onmouseover = function() {
+        this.className += ' selHover';
+      }
+      li.onmouseout = function() {
+        this.className =
+          this.className.replace(new RegExp(" selHover\\b"), '');
+      }
+    }
+    ul.appendChild(li);
+  }
+  // add a span tag to hold selected option
+  var spanLi = document.createElement('span');
+  spanLi.id = originalSelect.id + 'SpanLi';
+  spanLi.className = 'hide';
+  spanLi.onclick = function() {
+    // set the focus to hidden select for tabbing
+    originalSelect.focus();
+    
+    this.className = 'hide';
+    var ul = this.nextSibling;
+    ul.className =
+        ul.className.replace(new RegExp(" selectOpen\\b"), '');       
+    var opts = ul.childNodes;
+    var selectedOpt = (originalSelect.selectedIndex != -1 ? originalSelect.selectedIndex : 0);
+        
+    opts[selectedOpt].className = 'selected';
+    opts[selectedOpt].onclick = function() {                
+      this.parentNode.className += ' selectOpen';
+      this.parentNode.previousSibling.className = 'show';
+      this.onclick = function() {
+        selectMe(this);
+      }
+    } 
+  }
+  originalSelect.parentNode.insertBefore(spanLi, originalSelect) 
+
+  // add new ul to form just under orig select and spanLi
+  originalSelect.parentNode.insertBefore(ul, originalSelect);
+   
+  // add some logic for tab functionaliy
+  originalSelect.onfocus = function() {
+    ul.className += ' selectFocus';
+  }
+  
+  originalSelect.onblur = function() {
+    ul.className =
+        ul.className.replace(new RegExp(" selectFocus\\b"), '');  
+  }
+     
+  originalSelect.onchange = function(evnt) {
+    var selIndex = this.selectedIndex;
+    if (navigator.appName.indexOf('Netscape') != -1){
+        if (evnt.keyCode != undefined){
+            switch (evnt.keyCode) {
+                case 40: //down
+                    selIndex = selIndex < (this.length-1) ? ++selIndex : this.length-1;
+                    break;
+                case 38: //up
+                    selIndex = selIndex > 0 ? --selIndex : 0;
+                    break;
+                case 34: //page down
+                    selIndex = this.length-1;
+                    break;
+                case 33: //page down
+                    selIndex = 0;
+                    break;
+                default:
+                    return;
+            }
+        }
+    
+    }
+    updateReplacedSelect(ul.childNodes[selIndex]);
+  }
+  
+  originalSelect.onkeypress = originalSelect.onchange;
+  
+
+}
+
+function updateReplacedSelect(liToUpdate)
+{    
+    var spanLi = document.getElementById(liToUpdate.parentNode.previousSibling.id);
+
+    var lis = liToUpdate.parentNode.getElementsByTagName('li');
+    
+    for (var i=0; i<lis.length; i++) {        
+      // not select <li>, remove selected class
+        if (lis[i] != liToUpdate) {
+          lis[i].className='';
+          lis[i].onclick = function() {
+            selectMe(this);
+          }
+        } else {  // our selected <li>, add selected class
+          lis[i].className = 'selected';               
+          liToUpdate.onclick = function() {
+            var spanLi = this.parentNode.previousSibling;
+            spanLi.className = 'show';
+            this.parentNode.className += ' selectOpen';
+            this.onclick = function() {
+              selectMe(this);
+            }
+          }
+          spanLi.innerHTML = lis[i].innerHTML;        
+        }       
+    }
+    
+}
+
+function selectMe(elem) {
+  var spanLi = document.getElementById(elem.parentNode.previousSibling.id);
+  
+  // set the focus to hidden select for tabbing
+  var hidSelect = document.getElementById(elem.selectID);
+  hidSelect.focus();
+  
+  //get the <li>'s siblings
+  var lis = elem.parentNode.getElementsByTagName('li');
+  // loop through
+  for (var i=0; i<lis.length; i++) {
+    // not select <li>, remove selected class
+    if (lis[i] != elem) {
+      lis[i].className='';
+      lis[i].onclick = function() {
+        selectMe(this);
+      }
+    } else {  // our selected <li>, add selected class
+      setVal(elem.selectID, elem.selIndex);
+      lis[i].className = 'selected';
+      elem.parentNode.className =
+        elem.parentNode.className.replace(new RegExp(" selectOpen\\b"), '');      
+      elem.onclick = function() {
+        var spanLi = this.parentNode.previousSibling;        
+        spanLi.className = 'show';
+        this.parentNode.className += ' selectOpen';
+        this.onclick = function() {
+          selectMe(this);
+        }
+      }
+      spanLi.innerHTML = lis[i].innerHTML;        
+    }    
+  }
+  spanLi.className = 'hide'; 
+}
+
+function setVal(objId, selIndex) {
+  var obj = document.getElementById(objId);
+  obj.selectedIndex = selIndex;
+}
+
+function disableSelectRestyle(selectReplace, selectOriginal)
+{    
+    var visibleLi = selectReplace.childNodes[selectOriginal.selectedIndex];
+    visibleLi.onclick = '';
+    visibleLi.className = 'disabled';
+}
+
+function enableSelectRestyle(selectReplace, selectOriginal)
+{
+    var visibleLi = selectReplace.childNodes[selectOriginal.selectedIndex];
+    visibleLi.className = 'selected';
+    visibleLi.onclick = 
+        function() {
+            var spanLi = document.getElementById(selectOriginal.id + 'SpanLi');
+            spanLi.innerHTML = this.innerHTML; 
+            spanLi.className = 'show';         
+            this.parentNode.className += ' selectOpen';        
+            this.onclick = function() {
+              selectMe(this);
+            }
+        };
+}
+
+/*function setForm() {
+  var s = document.getElementsByTagName('select');
+  for (var i=0; i<s.length; i++){
+    selectRestyle(s[i]);
+  }
+}
+
+window.onload = function() {
+  setForm();
+}*/
+if(typeof(Sys)!=='undefined')Sys.Application.notifyScriptLoaded();

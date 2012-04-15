@@ -1,0 +1,694 @@
+<!-- Amsscript Start -->
+<!-- AMSFlash: AMSID=SCRIPT -->
+
+<!-- // Detect Client Browser type
+var isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
+var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
+var jsVersion = 1.1;
+// JavaScript helper required to detect Flash Player PlugIn version information
+function JSGetSwfVer(i){
+	// NS/Opera version >= 3 check for Flash plugin in plugin array
+	if (navigator.plugins != null && navigator.plugins.length > 0) {
+		if (navigator.plugins["Shockwave Flash 2.0"] || navigator.plugins["Shockwave Flash"]) {
+			var swVer2 = navigator.plugins["Shockwave Flash 2.0"] ? " 2.0" : "";
+      		var flashDescription = navigator.plugins["Shockwave Flash" + swVer2].description;
+			descArray = flashDescription.split(" ");
+			tempArrayMajor = descArray[2].split(".");
+			versionMajor = tempArrayMajor[0];
+			versionMinor = tempArrayMajor[1];
+			if ( descArray[3] != "" ) {
+				tempArrayMinor = descArray[3].split("r");
+			} else {
+				tempArrayMinor = descArray[4].split("r");
+			}
+      		versionRevision = tempArrayMinor[1] > 0 ? tempArrayMinor[1] : 0;
+            flashVer = versionMajor + "." + versionMinor + "." + versionRevision;
+      	} else {
+			flashVer = -1;
+		}
+	}
+	// MSN/WebTV 2.6 supports Flash 4
+	else if (navigator.userAgent.toLowerCase().indexOf("webtv/2.6") != -1) flashVer = 4;
+	// WebTV 2.5 supports Flash 3
+	else if (navigator.userAgent.toLowerCase().indexOf("webtv/2.5") != -1) flashVer = 3;
+	// older WebTV supports Flash 2
+	else if (navigator.userAgent.toLowerCase().indexOf("webtv") != -1) flashVer = 2;
+	// Can't detect in all other cases
+	else {
+		
+		flashVer = -1;
+	}
+	return flashVer;
+} 
+// If called with no parameters this function returns a floating point value 
+// which should be the version of the Flash Player or 0.0 
+// ex: Flash Player 7r14 returns 7.14
+// If called with reqMajorVer, reqMinorVer, reqRevision returns true if that version or greater is available
+function DetectFlashVer(reqMajorVer, reqMinorVer, reqRevision) 
+{
+ 	reqVer = parseFloat(reqMajorVer + "." + reqRevision);
+   	// loop backwards through the versions until we find the newest version	
+	for (i=25;i>0;i--) {	
+		if (isIE && isWin && !isOpera) {
+			versionStr = VBGetSwfVer(i);
+		} else {
+			versionStr = JSGetSwfVer(i);		
+		}
+		if (versionStr == -1 ) { 
+			return false;
+		} else if (versionStr != 0) {
+			if(isIE && isWin && !isOpera) {
+				tempArray         = versionStr.split(" ");
+				tempString        = tempArray[1];
+				versionArray      = tempString .split(",");				
+			} else {
+				versionArray      = versionStr.split(".");
+			}
+			versionMajor      = versionArray[0];
+			versionMinor      = versionArray[1];
+			versionRevision   = versionArray[2];
+			
+			versionString     = versionMajor + "." + versionRevision;   // 7.0r24 == 7.24
+			versionNum        = parseFloat(versionString);
+        	// is the major.revision >= requested major.revision AND the minor version >= requested minor
+			if ( (versionMajor > reqMajorVer) && (versionNum >= reqVer) ) {
+				return true;
+			} else {
+				return ((versionNum >= reqVer && versionMinor >= reqMinorVer) ? true : false );	
+			}
+		}
+	}	
+	return (reqVer ? false : 0.0);
+}
+// -->
+
+//v1.0
+//Copyright 2006 Adobe Systems, Inc. All rights reserved.
+function AC_AddExtension(src, ext)
+{
+  if (src.indexOf('?') != -1)
+    return src.replace(/\?/, ext+'?'); 
+  else
+    return src + ext;
+}
+
+function AC_Generateobj(objAttrs, params, embedAttrs) 
+{ 
+  var str = '<object ';
+  for (var i in objAttrs)
+    str += i + '="' + objAttrs[i] + '" ';
+  str += '>';
+  for (var i in params)
+    str += '<param name="' + i + '" value="' + params[i] + '" /> ';
+  str += '<embed ';
+  for (var i in embedAttrs)
+    str += i + '="' + embedAttrs[i] + '" ';
+  str += ' ></embed></object>';
+
+  document.write(str);
+}
+
+function AC_FL_RunContent(){
+  var ret = 
+    AC_GetArgs
+    (  arguments, ".swf", "movie", "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+     , "application/x-shockwave-flash"
+    );
+  AC_Generateobj(ret.objAttrs, ret.params, ret.embedAttrs);
+}
+
+function AC_SW_RunContent(){
+  var ret = 
+    AC_GetArgs
+    (  arguments, ".dcr", "src", "clsid:166B1BCA-3F9C-11CF-8075-444553540000"
+     , null
+    );
+  AC_Generateobj(ret.objAttrs, ret.params, ret.embedAttrs);
+}
+
+function AC_GetArgs(args, ext, srcParamName, classid, mimeType){
+  var ret = new Object();
+  ret.embedAttrs = new Object();
+  ret.params = new Object();
+  ret.objAttrs = new Object();
+  for (var i=0; i < args.length; i=i+2){
+    var currArg = args[i].toLowerCase();    
+
+    switch (currArg){	
+      case "classid":
+        break;
+      case "pluginspage":
+        ret.embedAttrs[args[i]] = args[i+1];
+        break;
+      case "src":
+      case "movie":	
+        args[i+1] = AC_AddExtension(args[i+1], ext);
+        ret.embedAttrs["src"] = args[i+1];
+        ret.params[srcParamName] = args[i+1];
+        break;
+      case "onafterupdate":
+      case "onbeforeupdate":
+      case "onblur":
+      case "oncellchange":
+      case "onclick":
+      case "ondblClick":
+      case "ondrag":
+      case "ondragend":
+      case "ondragenter":
+      case "ondragleave":
+      case "ondragover":
+      case "ondrop":
+      case "onfinish":
+      case "onfocus":
+      case "onhelp":
+      case "onmousedown":
+      case "onmouseup":
+      case "onmouseover":
+      case "onmousemove":
+      case "onmouseout":
+      case "onkeypress":
+      case "onkeydown":
+      case "onkeyup":
+      case "onload":
+      case "onlosecapture":
+      case "onpropertychange":
+      case "onreadystatechange":
+      case "onrowsdelete":
+      case "onrowenter":
+      case "onrowexit":
+      case "onrowsinserted":
+      case "onstart":
+      case "onscroll":
+      case "onbeforeeditfocus":
+      case "onactivate":
+      case "onbeforedeactivate":
+      case "ondeactivate":
+      case "type":
+      case "codebase":
+        ret.objAttrs[args[i]] = args[i+1];
+        break;
+      case "width":
+      case "height":
+      case "align":
+      case "vspace": 
+      case "hspace":
+      case "class":
+      case "title":
+      case "accesskey":
+      case "name":
+      case "id":
+      case "tabindex":
+        ret.embedAttrs[args[i]] = ret.objAttrs[args[i]] = args[i+1];
+        break;
+      default:
+        ret.embedAttrs[args[i]] = ret.params[args[i]] = args[i+1];
+    }
+  }
+  ret.objAttrs["classid"] = classid;
+  if (mimeType) ret.embedAttrs["type"] = mimeType;
+  return ret;
+}
+<!-- Amsscript End -->
+
+
+<!-- FlashCheck Start -->
+function createFlashCookie(name,value,hours) {
+	 if (hours) {
+	 var date = new Date();
+	 date.setTime(date.getTime()+(hours*60*60*1000));
+	 var expires = "; expires="+date.toGMTString();
+	 }
+	 else var expires = "";
+	 document.cookie = name+"="+value+expires+"; path=/";
+}
+ 
+function readFlashCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i<ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+function CheckPOSMode()
+{
+ var IsPOSCookie;
+ var DeviceType=null;
+var  Cookieval;
+ Cookieval=readFlashCookie('JCPSession');
+var nameEQ = 'DeviceType=P';
+ try
+ {
+ IsPOSCookie= (Cookieval.indexOf(nameEQ) > 0 ? true : false);
+ if(IsPOSCookie)
+ {
+ 	createFlashCookie("FlashCheck","", -1)
+	return true;
+ }
+ else
+ {
+	return false;
+ }
+ }
+catch(e)
+{
+	return true;
+}
+
+
+
+}
+
+var loc = window.location.href;
+loc = loc.toUpperCase();
+if (loc.indexOf("HTTP:") == 0)
+{
+	if (loc.indexOf("X6.ASPX") > 0 || loc.indexOf("X6E.ASPX") > 0 || loc.indexOf("PRODUCTSHOM.ASPX") > 0) 
+	{
+			createFlashCookie("HistCheck","1", 0.2);
+	}
+
+	if (CheckPOSMode() == false && !readFlashCookie("FlashCheck"))
+	{
+		// Version check for the Flash Player that has the ability to start Player Product Install (6.0r65)
+		var hasProdInstall = DetectFlashVer(6, 0, 65);
+		// Major version of Flash required
+		var reqMajorVersion = 9;
+		// Minor version of Flash required
+		var reqMinorVersion = 0;
+		// Minor version of Flash required
+		var reqRevision = 124;
+
+
+		// Version check based upon the values defined in globals
+		var hasReqVersion = DetectFlashVer(reqMajorVersion, reqMinorVersion, reqRevision);
+
+		if (hasProdInstall && hasReqVersion) {
+			createFlashCookie("FlashCheck","1", 0.5);
+		}
+		else {
+			createFlashCookie("FlashCheck","", -1);
+		}
+	}
+	else
+	{
+		createFlashCookie("FlashCheck","", -1);
+	}
+	//		createFlashCookie("FlashCheck","0", 0.5);
+
+
+	setTimeout("setShoppingInfo()",250);
+}
+
+function setShoppingInfo()
+{
+  var count = new Number(readCookieTest('DomainItemCount'));
+if (count != null && document.getElementById('itemCountAnchor') != null)
+  {
+    if (isNaN(count))
+    {
+      count = 0;
+    }
+	if (count != 1)
+    {
+      document.getElementById('itemCountAnchor').innerHTML = count.toFixed() + " items";
+	}
+    else
+    {
+      document.getElementById('itemCountAnchor').innerHTML = count.toFixed() + " item";	
+	}
+  }
+  var total = readCookieTest('DomainItemTotal');
+  if (total != null && document.getElementById('itemtotalAnchor') != null)
+  {
+    document.getElementById('itemtotalAnchor').innerHTML = total;
+  }
+}
+
+
+function readCookieTest(name){
+var nameEQ = name + "=";
+var ca = document.cookie.split(';');
+for(var i=0;i<ca.length;i++){
+var c = ca[i];
+while(c.charAt(0) == ' ') c = c.substring(1,c.length);
+if(c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+}
+return null;
+}
+
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i<ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+<!-- FlashCheck End -->
+
+
+function CheckForCookie()
+{
+	if ((document.cookie == undefined || document.cookie == "") && (document.getElementById('cookiesDisabledDiv') != null))
+	{
+		document.getElementById('cookiesDisabledDiv').style.display = 'block';    
+	}
+}
+<!-- PopupWindow Start -->
+function PopupWindow(pagename)
+{
+	var popWind;
+	
+	//Close the popup window if it's currently open
+  		if (popWind && (navigator.appName == "Microsoft Internet Explorer"))
+		{
+			popWind.close();
+		}
+			popWind=window.open(pagename, 'Site','width=520,height=400,toolbar=yes,directories=yes,menubar=yes,scrollbars=yes,resizable=yes,top=5,left=5');
+	
+	//If client is using Netscape Navigator 3.0 or higher, set the popup window as the focus.
+	if ( (navigator.appName != "Microsoft Internet Explorer") && (navigator.appVersion.substring(0,1) == "3" || "4") )
+		popWind.focus();
+}
+
+<!-- PopupWindow End -->
+
+
+
+<!-- Validation Start -->
+
+
+function ValidateEOBNum()
+{
+	/*	CSR: 12/07/2000
+		Added additional validation checking for the
+		EOB Number
+	*/
+	
+	var strCatNum;
+	var blnReturnFlag;
+	
+	// assign the cat number to a local variable
+	
+	strCatNum = document.frmEOB.CatNum.value;
+	document.frmEOB.JSEnabled.value = false;
+	document.frmEOB.hdnOnGo.value = true;
+	
+	
+	if (strCatNum == "") {
+		alert("Please specify a valid JCPenney catalog number!");
+		//document.frmEOB.CatNum.focus();
+		blnReturnFlag = false;
+	}
+	else {	
+	
+		if (strCatNum.search(/enter\s+item\s+#/i) != -1) {
+			alert("Please specify a valid JCPenney catalog number!");
+			//document.frmEOB.CatNum.focus();
+			blnReturnFlag = false;
+		}
+		else {
+			blnReturnFlag = true;
+		}
+	}
+	
+	return blnReturnFlag;
+	
+	/*	this is all old code that can be removed upon
+		successful use of the new code
+		
+	if (document.frmEOB.CatNum.value == "")
+		{
+		alert("Please specify a valid JCPenney catalog number");
+		document.frmEOB.CatNum.focus();
+		return false;
+		}
+	else
+		{
+		return true;
+		}
+		
+	*/
+}
+function ValidateSearchTxt()
+{
+
+	document.frmSearch.JSEnabled.value = false;
+	document.frmSearch.hdnOnGo.value = true;
+	if(document.frmSearch.SearchString.value == "")
+		{
+		alert("Please enter your search term in the search box.");
+		document.frmSearch.SearchString.focus();
+		return false;
+		}
+	else
+		{
+		if(document.frmSearch.SearchString.value == " Enter search term or item #")
+		    {
+		  	alert("Please enter your search term in the search box.");
+			document.frmSearch.SearchString.focus();
+			return false;
+		    }
+		else
+		    {
+		return true;
+		    }	
+		}	
+}
+
+function ValidateSearchTxt2()
+{
+
+	document.frmSearch2.JSEnabled.value = false;
+	if(document.frmSearch2.SearchString.value == "")
+		{
+		alert("Please enter your search term in the search box.");
+		document.frmSearch2.SearchString.focus();
+		return false;
+		}
+	else
+		{
+		return true;
+		}		
+}
+
+function SelectEOBText()
+{
+
+//document.frmEOB.CatNum.focus();
+//document.frmEOB.CatNum.select();
+
+}
+
+function SelectSearchText()
+{
+
+document.frmSearch.SearchString.focus();
+document.frmSearch.SearchString.select();
+
+}
+	
+		
+function keyHandler(e) {
+	var pressedKey;
+	if (document.all) { e = window.event; }
+	if (document.layers || e.which) { pressedKey = e.which; }
+	if (document.all) { pressedKey = e.keyCode; }
+ 
+	if (e.ctrlKey && pressedKey == 56) {
+		opensupportpage();
+	}
+}
+document.onkeydown = keyHandler;
+<!-- Validation End -->
+
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i<ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+	
+	function formatCookieInfo() {
+                var name = "";
+                if (readCookie("JCPSession") != null)
+                {
+                    name = readCookie('JCPSession');
+                }
+                else
+                {
+                    name = "";
+                }
+
+                var splitcookie = name.split("&");
+                var i = 0;
+                var jcpsessioncookie = "";
+                for (i = 0; i < splitcookie.length; i++) {
+				    if ((splitcookie[i].indexOf("PrimaryCluster") != -1) || (splitcookie[i].indexOf("SecondaryCluster") != -1))
+					{
+					    jcpsessioncookie += "<b><i>" + splitcookie[i] + "</i></b><br>";
+					}
+					else
+					{
+					    jcpsessioncookie += splitcookie[i] + "<br>";
+					}
+                    
+                }
+				var itemcountcookie = readCookie('ItemCount');
+				var domainitemcountcookie = readCookie('DomainItemCount');
+				var itemtotalcookie = readCookie('ItemTotal');
+				var domainitemtotalcookie = readCookie('DomainItemTotal');
+				var cookieresult;
+				
+				if (itemcountcookie == null)
+				{
+				itemcountcookie = 0 ;
+				}
+				if (domainitemcountcookie == null)
+				{
+				domainitemcountcookie = 0 ;
+				}
+				if (itemtotalcookie == null)
+				{
+				itemtotalcookie = 0 ;
+				}
+				if (domainitemtotalcookie == null)
+				{
+				domainitemtotalcookie = 0;
+				}
+				
+				cookieresult = jcpsessioncookie;
+				cookieresult = cookieresult + '<br><b>Item Count:&nbsp;</b> ' + itemcountcookie + '<br>';
+				cookieresult = cookieresult + '<b>Domain Item Count:&nbsp;</b> ' + domainitemcountcookie + '<br>';
+				cookieresult = cookieresult + '<b>Item Total:&nbsp;</b> ' + itemtotalcookie + '<br>';
+				cookieresult = cookieresult + '<b>Domain Item Total:&nbsp;</b> ' + domainitemtotalcookie + '<br>';
+				return cookieresult;
+
+}
+
+
+function opensupportpage()
+       {
+		
+        	var MyArgs;
+		//Close the popup window if it's currently open			
+  		if (MyArgs)
+		{
+			MyArgs.close();
+		}
+			var clustername;
+			if (document.getElementById("clustername") != null && document.getElementById("clustername") != "")
+				{
+				clustername = document.getElementById("clustername").innerHTML;
+				}			
+		
+		var splitservername;
+		var splitcookie;
+		var servername;		
+		var jcpclustercookie='';
+        	var name;		
+		if (readCookieTest("JcpCluster") != null)
+			{
+			name = readCookieTest("JcpCluster");
+			}
+			else
+			{
+			name = "";
+			}
+		splitcookie = name.split("&");
+        	for (i = 0; i < splitcookie.length; i++) {
+			jcpclustercookie += "<b><i>" + splitcookie[i] + "</i></b> ";
+        }
+		splitservername = clustername.split("|");
+		clustername = splitservername[0];
+		servername = splitservername[1];
+		var s="<body><table class=borders cellpadding=0 cellspacing=0 width=700>";
+		s+="<tr><td valign=top colspan=2 align=left><font size=4><b>Support Information</b></font></td></tr>";
+		s+="<tr><td colspan=2><hr></td></tr>";
+		s+="<tr><td colspan=2><b>Current URL: </b></td></tr>";
+		s+="<tr><td width=10>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		s+="<td>";
+		s+=window.location;
+		s+="</td></tr>";
+		s+="<tr><td width=10 colspan=2>&nbsp;</td></tr>";
+		s+="<tr><td  colspan=2><b>Referer URL: </b></td></tr>";
+		s+="<tr><td width=10>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		s+="<td>";
+		s+=document.referrer;
+		s+="</td></tr>";
+		s+="<tr><td width=10 colspan=2>&nbsp;</td></tr>";
+		s+="<tr><td  colspan=2><b>Cookies Information: </b></td></tr>";
+		s+="<tr><td width=10>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		s+="<td>";
+		s+=formatCookieInfo();
+		s+="</td></tr>";
+		s+="<tr><td width=10 colspan=2>&nbsp;</td></tr>";
+		s+="<tr><td colspan=2><b>Server Cluster: </b>&nbsp;";
+		s+=jcpclustercookie;
+		s+="</td></tr>";
+		s+="<tr><td width=10 colspan=2>&nbsp;</td></tr>";
+		s+="<tr><td colspan=2><b>Server Name: </b>&nbsp;";
+		s+=servername;
+		s+="</td></tr>";
+		s+="</table></body></html>";
+
+		MyArgs = window.open('support.html','Support','toolbar=no,status=no,location=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=500,left=330,top=200');
+		try
+		{
+			MyArgs.document.open();
+			MyArgs.document.write(s);
+			MyArgs.document.close();
+		}
+		catch(e)
+		{
+
+			MyArgs.location="javascript:document.write('" + "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n" + "<html><head><title>Support Information</title><script type=\"text/javascript\">document.domain=\"" + document.domain + "\"</script></head>" + s + "');document.close()";				
+		}
+			
+		if (window.focus) {MyArgs.focus()}
+	   }
+
+<!-- PopUp window for aegon Starts -->
+function showdiv(url)
+{
+	showAegonPopUp.style.visibility = 'visible';
+	setTimeout("open_win('" + url + "')", 5000);
+}
+
+function open_win(redirectUrl) 
+{
+var popWind;
+
+	
+	//Close the popup window if it's currently open
+  		if (popWind && (navigator.appName == "Microsoft Internet Explorer"))
+		{
+			popWind.close();
+		}
+			popWind=window.open(redirectUrl);
+
+	
+	//If client is using Netscape Navigator 3.0 or higher, set the popup window as the focus.
+	if ( (navigator.appName != "Microsoft Internet Explorer") && (navigator.appVersion.substring(0,1) == "3" || "4") )
+		popWind.focus();
+   	
+}
+
+function Exit_Popup()
+{
+
+    document.getElementById('showAegonPopUp').style.visibility = 'hidden';
+   
+}
+<!-- PopUp window for aegon End -->

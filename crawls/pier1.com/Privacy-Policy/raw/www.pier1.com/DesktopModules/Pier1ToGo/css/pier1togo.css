@@ -1,0 +1,2249 @@
+/* @override http://pier1.local/DesktopModules/Pier1ToGo/css/pier1togo.css */
+
+/* @group Non-semantic helper classes */
+/* for image replacement */
+.Pier1ToGo .ir { 
+    display: block; 
+    text-indent: -999em; 
+    overflow: hidden; 
+    background-repeat: no-repeat;
+    text-align: left; 
+    direction: ltr; 
+}
+
+/* Hide for both screenreaders and browsers
+   css-discuss.incutio.com/wiki/Screenreader_Visibility */
+.Pier1ToGo .hidden { 
+    display: none !important; 
+    visibility: hidden !important; 
+}
+
+/* Hide only visually, but have it available for screenreaders
+   www.webaim.org/techniques/css/invisiblecontent/  &  j.mp/visuallyhidden
+   !important needed to ensure no other style overrides the styles defined in this rule */
+.Pier1ToGo .visuallyHidden {
+    border: 0 !important;
+    clip: rect(0 0 0 0);
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+}
+
+/* Hide visually and from screenreaders, but maintain layout */
+.Pier1ToGo .invisible { visibility: hidden; }
+
+/* http://www.yuiblog.com/blog/2010/09/27/clearfix-reloaded-overflowhidden-demystified/ */
+.Pier1ToGo .clearfix:before,
+.Pier1ToGo .clearfix:after {
+  content: "\0020";    
+  display: block;    
+  height: 0;    
+  visibility: hidden;	
+}
+
+.Pier1ToGo .clearfix:after { 
+	clear: both; 
+}
+
+.Pier1ToGo .clearfix { 
+	zoom: 1; /* make sure margins work properly in versions of IE */ 
+}
+
+/* @end */
+
+/* @group Forms 
+	Using https://github.com/nathansmith/formalize, modified to remove HTML5 elements
+*/
+
+
+/* `Widths
+----------------------------------------------------------------------------------------------------*/
+.Pier1ToGo .inputTiny {
+	width: 30px;
+}
+
+.Pier1ToGo .inputSmall {
+	width: 100px;
+}
+
+.Pier1ToGo .inputMedium {
+	width: 190px;
+}
+
+.Pier1ToGo .inputLarge {
+	width: 280px;
+}
+
+.Pier1ToGo .inputXlarge {
+	width: 460px;
+}
+
+.Pier1ToGo .inputFull {
+	width: 100%;
+}
+
+.Pier1ToGo .findStore {
+	width: 150px;
+}
+
+
+/*
+	Added via JS to <textarea> and class="input_full".
+	Applies to IE6, IE7. Other browsers don't need it.
+*/
+.Pier1ToGo .input_full_wrap {
+	display: block;
+	padding-right: 8px;
+}
+
+/* `UI Consistency
+----------------------------------------------------------------------------------------------------*/
+
+.Pier1ToGo ::-moz-focus-inner {
+	border: 0;
+}
+
+.Pier1ToGo input,
+.Pier1ToGo button,
+.Pier1ToGo .fauxButton,
+.Pier1ToGo select,
+.Pier1ToGo textarea {
+	margin: 0;
+	vertical-align: middle;
+}
+
+.Pier1ToGo .fauxButton,
+.Pier1ToGo button,
+.Pier1ToGo input[type="reset"],
+.Pier1ToGo input[type="submit"],
+.Pier1ToGo input[type="button"] {
+	-webkit-appearance: none;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	background: #006ece url("../images/ico_rarr_yellow.png") no-repeat right center;
+	border: none;
+	cursor: pointer;
+	color: #fff !important;
+	font: bold 13px/1.2 Arial, sans-serif !important;
+	outline: 0;
+	overflow: visible;
+	padding: 3px 15px 4px 10px;
+	width: auto;
+
+	/* IE7 */
+	*padding-top: 2px;
+	*padding-bottom: 3px;
+}
+
+.Pier1ToGo .fauxButton {
+	display: inline-block;
+	text-decoration: none !important;
+	
+	/* IE7 */
+	*padding-top: 3px;
+	*padding-bottom: 4px;
+}
+
+.Pier1ToGo button {
+	/* IE7 */
+	*padding-top: 1px;
+	*padding-bottom: 1px;
+}
+
+.Pier1ToGo .fauxButton:hover,
+.Pier1ToGo button:hover,
+.Pier1ToGo input[type="reset"]:hover,
+.Pier1ToGo input[type="submit"]:hover,
+.Pier1ToGo input[type="button"]:hover {
+	background-color: #0058a5 !important;
+	color: #fff !important;
+	font-weight: bold  !important;
+}
+
+.Pier1ToGo .fauxButton.selected,
+.Pier1ToGo button.selected,
+.Pier1ToGo input[type="reset"].selected,
+.Pier1ToGo input[type="submit"].selected,
+.Pier1ToGo input[type="button"].selected {
+	background-color: #66bc29 !important; /* bright green */
+	background-image: none !important;
+	padding-right: 10px;
+}
+
+#pagedStoresWrap .fauxButton {
+    display: inline;
+}
+#pagedStoresWrap a.storeSelector {
+    text-decoration: none !important;
+}
+a.storeSelector img {
+    vertical-align: middle;
+}
+
+/* shopping widget gets a lighter background and strong border */
+.shoppingWidget .fauxButton,
+.shoppingWidget button,
+.shoppingWidget input[type="reset"],
+.shoppingWidget input[type="submit"],
+.shoppingWidget input[type="button"],
+.welcomeToBasketWidget .fauxButton,
+.welcomeToBasketWidget button,
+.welcomeToBasketWidget input[type="reset"],
+.welcomeToBasketWidget input[type="submit"],
+.welcomeToBasketWidget input[type="button"] {
+	background-color: #4d9cec !important;
+	border: 2px solid #fff;
+}
+
+.shoppingWidget .fauxButton:hover,
+.shoppingWidget button:hover,
+.shoppingWidget input[type="reset"]:hover,
+.shoppingWidget input[type="submit"]:hover,
+.shoppingWidget input[type="button"]:hover,
+.welcomeToBasketWidget .fauxButton:hover,
+.welcomeToBasketWidget button:hover,
+.welcomeToBasketWidget input[type="reset"]:hover,
+.welcomeToBasketWidget input[type="submit"]:hover,
+.welcomeToBasketWidget input[type="button"]:hover {
+	background-color: #5fa6ee !important;
+}
+
+.Pier1ToGo .fauxButton[disabled],
+.Pier1ToGo .fauxButton.disabled,
+.Pier1ToGo button[disabled],
+.Pier1ToGo input[type="reset"][disabled],
+.Pier1ToGo input[type="submit"][disabled],
+.Pier1ToGo input[type="submit"].disabled,
+.Pier1ToGo input[type="button"][disabled],
+.Pier1ToGo input[type="button"].disabled {
+	background-color: #80b7e7 !important;
+	color: #cce2f5 !important;
+}
+
+.Pier1ToGo textarea,
+.Pier1ToGo select,
+.Pier1ToGo input[type="password"],
+.Pier1ToGo input[type="text"] {
+	-webkit-appearance: none;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	background-color: #fff;
+	border: 1px solid;
+	border-color: #848484 #c1c1c1 #e1e1e1;
+	color: #000;
+	outline: 0;
+	padding: 2px 3px;
+	font-size: 13px;
+	font-family: Arial, sans-serif;
+	height: 1.8em;
+
+	/* IE7 */
+	*padding-top: 2px;
+	*padding-bottom: 1px;
+	*height: auto;
+}
+
+/*
+	Separate rule for Firefox.
+	Cannot stack with WebKit's.
+*/
+.Pier1ToGo input.placeholder_text,
+.Pier1ToGo textarea.placeholder_text {
+	color: #888;
+}
+
+.Pier1ToGo ::-webkit-input-placeholder {
+	color: #888;
+}
+
+.Pier1ToGo textarea[disabled],
+.Pier1ToGo select[disabled],
+.Pier1ToGo input[type="password"][disabled],
+.Pier1ToGo input[type="text"][disabled] {
+	background-color: #eee;
+	color: #888;
+}
+
+.Pier1ToGo .fauxButton:focus,
+.Pier1ToGo .fauxButton:active,
+.Pier1ToGo button:focus,
+.Pier1ToGo button:active,
+.Pier1ToGo input:focus,
+.Pier1ToGo input:active,
+.Pier1ToGo select:focus,
+.Pier1ToGo select:active,
+.Pier1ToGo textarea:focus,
+.Pier1ToGo textarea:active {
+	-moz-box-shadow: #06f 0 0 7px;
+	-webkit-box-shadow: #06f 0 0 7px;
+	box-shadow: #06f 0 0 7px;
+
+	/* for Opera */
+	z-index: 1;
+}
+
+.is_webkit .Pier1ToGo select {
+	/* Tweaks for Safari + Chrome. */
+	background-image: url(../images/select_arrow.gif);
+	background-repeat: no-repeat;
+	background-position: right center;
+	padding-right: 20px;
+}
+
+.Pier1ToGo textarea,
+.Pier1ToGo select[multiple] {
+	height: auto;
+}
+
+.Pier1ToGo select[multiple],
+.is_webkit .Pier1ToGo select[multiple] {
+	background-image: none;
+	padding: 0;
+}
+
+.Pier1ToGo textarea {
+	overflow: auto;
+	resize: vertical;
+	width: 100%;
+}
+
+.Pier1ToGo optgroup {
+	color: #000;
+	font-style: normal;
+	font-weight: normal;
+}
+
+.Pier1ToGo .checklist li {
+	margin-bottom: .25em;
+}
+
+.Pier1ToGo label {
+	padding: 0;
+}
+
+.Pier1ToGo .checklist label {
+	color: #333;
+	font-size: 12px;
+	vertical-align: middle;
+}
+
+.Pier1ToGo input[type="text"] ~ .help {
+	display: block;
+	margin-top: -0.9em;
+}
+
+.Pier1ToGo input[type="checkbox"] ~ .help {
+	margin-left: 15px;
+}
+/* @end */
+
+/* @group General Styles */
+.Pier1ToGo ul,
+.Pier1ToGo ol {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.Pier1ToGo li {
+	list-style-type: disc;
+	margin-left: 25px;
+}
+
+.Pier1ToGo ol li {
+	list-style-type: decimal;
+}
+
+.Pier1ToGo a {
+	color: #023467;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.Pier1ToGo a:hover {
+	color: #000;
+	text-decoration: none;
+}
+
+.Pier1ToGo h1 {
+	border: 0;
+	color: #000;
+	font: bold 14px/1.2 Arial, sans-serif;
+	margin: 0;
+	margin-bottom: 1em;
+	padding: 0;
+}
+
+.Pier1ToGo .noMarker,
+.Pier1ToGo .noMarker li,
+.ui-autocomplete li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.Pier1ToGo strong {
+    font-weight: bold;
+}
+
+.Pier1ToGo .finePrint {
+    color: #333;
+    font: normal 10px/1.1 Verdana, San-serif;
+    margin-bottom: .5em;
+}
+
+.Pier1ToGo .savedIndicator {
+	background-image: url("../images/ir_saved2.png");
+	display: inline-block;
+	height: 19px;
+	vertical-align: top;
+	width: 44px;
+}
+
+.Pier1ToGo .userMessage {
+	background-color: #ebebeb;
+	background-position: 10px 8px;
+	background-repeat: no-repeat;
+	border: solid 1px #ccc;
+	color: #222;
+	display: block;
+	font-size: 13px;
+	margin-bottom: 1em;
+	padding: 8px 10px;
+}
+
+.Pier1ToGo .userMessage.alert {
+	background-color: #feefb3;
+	background-image: url("../images/ico_alert.png");
+	border-color: #9f6000;
+	color: #9f6000 !important;
+	padding-left: 30px;
+}
+
+.Pier1ToGo .userMessage.info {
+	background-color: #bde5f8;
+	background-image: url("../images/ico_info.png");
+	border-color: #00529B;
+	color: #00529B;
+	padding-left: 30px;
+}
+
+.Pier1ToGo .userMessage.error {
+	background-color: #ffbaba;
+	background-image: url("../images/ico_error.png");
+	border-color: #d8000c;
+	color: #d8000c !important;
+	padding-left: 30px;
+}
+
+.Pier1ToGo .userMessage.success {
+	background-color: #dff2bf;
+	background-image: url("../images/ico_confirm.png");
+	border-color: #4f8a10;
+	color: #4f8a10;
+	padding-left: 30px;
+}
+
+.Pier1ToGo .inStock {
+    background: transparent url("../images/ico_check_confirm.png") no-repeat 0 2px;
+    color: #03970d;
+    display: inline-block;
+    font-size: 12px;
+    margin-bottom: 0.5em;
+    padding: 3px 0px 3px 22px;
+}
+
+.Pier1ToGo .limitedStock {
+	color: #633d0c;
+}
+
+.Pier1ToGo .deEmphasize {
+	color: #9d9d9d;
+}
+
+.Pier1ToGo .loud,
+.Pier1ToGo .loud label {
+	font-size: 16px;
+	font-style: normal;
+	color: #000;
+}
+
+.Pier1ToGo .help {
+	color: #9d9d9d;
+	display: inline-block;
+	font-size: 11px;
+	font-family: Verdana, Arial, sans-serif;
+	margin-bottom: 1em;
+}
+
+.Pier1ToGo .loader {
+	background: transparent url("../images/loading_animation.gif") no-repeat 0 0;
+	display: inline-block;
+	font-size: 12px;
+	height: 16px;
+	margin: 0px 5px;
+	padding-left: 20px;
+	vertical-align: middle;
+	width: 55px;
+}
+
+.Pier1ToGo .loader.ir {
+	padding-left: 0;
+	width: 16px;
+}
+
+.Pier1ToGo .inBasket,
+.Pier1ToGo .addToBasketButton {
+	color: #006ece;
+    font-weight: bold;
+}
+
+.Pier1ToGo .inBasket {
+    background-image: url("../images/ico_basket.png");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 4px;
+    padding-left: 25px;
+}
+
+.Pier1ToGo .notEligible {
+	color: #9f6000
+}
+
+.Pier1ToGo,
+.ui-autocomplete {
+	text-align:left;
+}
+
+.Pier1ToGo a.disabled,
+.Pier1ToGo a.disabled:hover {
+	color: #999 !important;
+	cursor: default !important;
+	text-decoration: none !important;
+}
+
+/* @group addThis */
+.Pier1ToGo .shareActions {
+	margin-bottom: 5px;
+	padding-top: 5px;
+}
+
+.Pier1ToGo .addthis_toolbox {
+	zoom: 1;
+}
+
+.Pier1ToGo .addthis_toolbox a {
+	float: left;
+	margin-left: 5px;
+	margin-bottom: 2px;
+}
+
+.Pier1ToGo .addthis_toolbox a:first-child {
+	margin-left: 0;
+}
+
+.Pier1ToGo .addthis_toolbox .more {
+	clear: both;
+}
+
+.Pier1ToGo .addthis_toolbox .more a.addthis_button_expanded {
+	color: #006ece;
+	float: none;
+	font-size: 11px;
+	font-weight: normal;
+	margin-left: 0;	
+	text-decoration: none;
+}
+
+.Pier1ToGo .addthis_toolbox .more a.addthis_button_expanded:hover {
+	text-decoration: underline;
+}
+
+.Pier1ToGo .addthis_toolbox .more a.addthis_button_expanded span {
+	display: none;
+}
+
+.Pier1ToGo .socialMedia.large .addthis_toolbox {
+	float: left;
+	margin-right: 10px;
+}
+
+/* @end */
+/* @end */
+
+/* @group Layout Grid */
+.Pier1ToGo .container {
+	margin-bottom: 2em;
+	text-align: left;
+	width: 950px;
+}
+
+.Pier1ToGo .column {
+	float: left;
+}
+
+.Pier1ToGo .row {
+	clear: both;
+}
+
+.Pier1ToGo .g50 {
+	width: 47%;
+	margin-right: 3%;
+}
+
+.Pier1ToGo .g30,
+.Pier1ToGo li.g30 {
+	margin-left: 5%;
+	width: 30%;
+}
+
+.Pier1ToGo .g30:first-child {
+	margin-left: 0;
+}
+/* @end */
+
+/* @group Data Tables */
+.Pier1ToGo .dataTable {
+	width: 100%;
+}
+
+/* @end */
+
+
+/* @group Module Specific Styles */
+/* @group Set Location Popup */
+.setLocationWrap {
+	text-align: left;
+}
+
+.setLocationWrap a {
+    color: #023467 !important;
+    text-decoration: underline !important;
+    font-weight: normal !important;
+}
+
+.setLocationWrap a:hover {
+    color: #000000 !important;
+    text-decoration: none !important;
+    font-weight: normal !important;
+}
+
+.setLocationWrap h1 {
+	border: 0;
+	color: #333;
+	font: normal 18px/1.2 Arial, Sans-serif;
+	margin: 0;
+	padding: 0;
+	
+	color: #302117;
+	float: left;
+	margin-right: 20px;
+	margin-bottom: 1em;
+}
+
+/* @group Store Lookup */
+.setLocationWrap .storeLookup {
+	margin-top: 15px;
+}
+
+.setLocationWrap .storeLookup label {
+	color: #444 !important;
+	font-size: 14px !important;
+	font-weight: bold !important;
+}
+
+.setLocationWrap .storeLookup input {
+	margin-right: 5px;
+}
+/* @end */
+
+/* @group Store Listing */
+.setLocationWrap .storeDetails {
+	clear: both;
+}
+
+.setLocationWrap .storeDetails ul {
+	border-bottom: 1px solid #a1a1a1;
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+}
+
+.setLocationWrap .storeDetails li.store {
+	border-left: 1px solid #a1a1a1;
+	margin-left: 2%;
+	padding-left: 2%;
+	padding-bottom: 1em;
+}
+
+.setLocationWrap .storeDetails li.store:first-child {
+	border-left: 0;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+.setLocationWrap h2 {
+	color: #222 !important;
+	font: bold 14px/1.1 Arial, sans-serif !important;
+	margin: 0;
+	margin-bottom: .5em;
+	padding: 0;
+}
+
+.setLocationWrap p {
+	margin-bottom: 1em;
+}
+
+.setLocationWrap .inStock,
+.setLocationWrap .limitedStock {
+	margin-right: 5px;	
+	margin-bottom: 0;
+}
+
+.Pier1ToGo.setLocationWrap .limitedStock {
+	font-weight: bold !important;
+	color: #9d9d9d !important;
+	display: inline-block;
+	padding: 3px 0;
+}
+
+.setLocationWrap .finePrint {
+	display: block;
+	margin-top: .25em;
+}
+
+.setLocationWrap .location {
+	margin-top: -0.5em;
+	margin-bottom: 1.5em;
+}
+
+.setLocationWrap .location a {
+	margin-right: 5px;
+}
+
+.setLocationWrap .store-hours-wrap {
+	zoom: 1;
+}
+
+.setLocationWrap .store-hours-toggle {
+	color: #000000 !important;
+	font-size: 11px !important;
+	text-transform: uppercase;
+}
+
+.setLocationWrap .store-hours {
+	margin-bottom: 1em;
+}
+
+.setLocationWrap .store-hours th,
+.setLocationWrap .store-hours td {
+	color: #9d9d9d !important;
+	font-weight: normal !important;
+	padding: 1px 5px 1px 0;
+}
+
+.setLocationWrap .store-hours td {
+	text-align: right;
+}
+
+.setLocationWrap a.storeSelector.selected {
+    float: left;
+}
+
+.setLocationWrap a.storeSelector.selected .fauxButtonContainer {
+    margin-bottom: 6px;
+}
+
+.setLocationWrap .clear-selection {
+    font-size: 10px;
+}
+
+.setLocationWrap .storeDetailsFooter {
+	margin-bottom: 1em;
+}
+
+.setLocationWrap .storeDetailsFooter input {
+	float: left;
+}
+
+.setLocationWrap .pager {
+	float: right;
+	font-size: 14px !important;
+	color: #9d9d9d !important;
+}
+
+
+.setLocationWrap .pager span,
+.setLocationWrap .pager ol {
+	float: left;
+}
+
+.setLocationWrap .pager li {
+	float: left;
+	font-size: 14px !important;
+	font-weight: bold !important;
+	margin-left: 8px;
+}
+
+.setLocationWrap .pager a {
+    font-weight: bold !important;
+}
+
+.setLocationWrap .pager .active {
+	color: #9d9d9d !important;
+	cursor: default;
+	text-decoration: none !important;
+}
+/* @end */
+/* @end */
+
+/* @group Share Product Popup */
+.shareProductWrap fieldset {
+	padding: 20px 25px;
+}
+
+.shareProductWrap p {
+	clear: both;
+	margin-bottom: 1em;
+}
+
+.shareProductWrap label {
+	float: left;
+	font-weight: bold;
+	width: 60px;
+	text-align: right;
+	margin-right: 10px;
+}
+
+.shareProductWrap input[type="text"] {
+	margin-bottom: 1em;
+}
+
+.shareProductWrap .help {
+	display: block;
+	margin-left: 70px;
+	margin-bottom: 2em;
+}
+
+.shareProductWrap .formActions {
+	margin-left: 70px;
+}
+
+.shareProductWrap .formActions input {
+	margin-right: 10px;
+}
+
+.shareProductWrap .formActions a {
+	vertical-align: middle;
+}
+/* @end */
+
+/* @group Shopping Widget */
+#dnn_footer {
+	padding-bottom: 60px; /* make room for the widget at the bottom of the page */
+}
+
+.shoppingWidget {
+    color: #fff !important;
+    position: fixed;
+	bottom: 0px;
+    text-align: left;
+    z-index: 1000;
+    display: none;
+}
+
+.shoppingListWidgetHeader,
+.shoppingListWidget {
+    background-color: #006ece;
+    padding: 6px 0;
+    position: relative;
+}
+
+.shoppingListWidgetHeader {
+    width: 175px;
+}
+
+.shoppingListWidget {
+    width: 950px;
+}
+
+.shoppingWidget .column {
+    float: left;
+    margin-right: 15px;
+}
+
+.shoppingWidget p {
+    font-size: 13px !important;
+    margin: 0 0 2px 0;
+    color: #fff !important;
+}
+
+.shoppingWidget a {
+    color: #fbce00 !important;
+    text-decoration: underline !important;
+    font-weight: normal !important;
+}
+
+.shoppingWidget a:hover {
+	color: #fbce00 !important;
+    text-decoration: none !important;
+}
+
+.shoppingWidget .logo {
+    font-size: 10px;
+    margin-left: 8px;
+    margin-right: 0px;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.shoppingWidget .showShoppingListWidget {
+    cursor: pointer;
+}
+
+.shoppingWidget .logo strong {
+    background-image: url("../images/ir_logo_p12go.png");
+    height: 41px;
+    width: 110px;
+}
+
+.shoppingWidget .widgetHelp {
+    background: transparent url("../images/shopping_basket.png") no-repeat center top;
+    font-size: 10px;
+    margin-right: 5px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.shoppingWidget .widgetHelp a {
+    display: block;
+    font-size: 9px;
+    margin-top: 32px;
+}
+
+.shoppingWidget .widgetDetails {
+    margin-top: 5px; 
+    margin-left: 10px;
+    width: 240px;
+}
+
+.shoppingWidget .widgetDetailsInner {
+    position: fixed;
+    bottom: 16px;
+}
+
+.shoppingWidget .widgetDetails li {
+    border-left: 1px solid #fff; 
+    display: inline;
+    float: left;
+    margin-left: 7px;
+    padding-left: 7px;
+}
+
+.shoppingWidget .widgetDetails li:first-child {
+    border: 0;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.shoppingWidget .widgetContent {
+	margin-top: 5px;
+    margin-right: 10px;
+}
+
+.shoppingWidget .widgetContent fieldset {
+    margin-top: 15px;
+}
+
+.shoppingWidget .widgetContent label {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 0;
+    padding-right: 5px;
+    vertical-align: middle;
+}
+
+.shoppingWidget .widgetContent input[type="text"] {
+    margin-right: 15px;
+}
+
+.shoppingWidget .inputMedium {
+    width: 190px;
+}
+
+.shoppingWidget .basketSlider ol {
+    float: left;
+    margin-right: 15px;
+}
+
+.shoppingWidget .basketSlider ol > li {
+    background-color: #a4cdea;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    color: #006ece;
+    float: left;
+    height: 50px;
+    line-height: 1.1;
+    margin-left: 5px;
+    position: relative;
+    text-align: center; 
+    width: 50px;  
+}
+
+.shoppingWidget .basketSlider ol > li:first-child {
+    margin-left: 0px;
+}
+
+.shoppingWidget .basketSlider .getStarted {
+    display: block;
+    padding-top: 10px;
+}
+
+.shoppingWidget .basketSlider ol > li.pager,
+.shoppingWidget .basketSlider ol > li.pager a {
+    background-color: transparent;
+    height: 22px;
+    width: 22px;
+}
+
+.shoppingWidget .basketSlider ol > li.pager a {
+    margin-top: 12px;
+}
+
+.shoppingWidget .basket_destinations {
+    float: left;
+    margin-top: 2px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    text-align: center;
+}
+
+.shoppingWidget .basket_destinations a.fauxButton {
+	margin-bottom: 5px;
+}
+
+.shoppingWidget .basketSlider li.pager a.previousItem {
+    background-image: url("../images/ir_pager.png");
+    background-position: 0 0;
+}
+
+.shoppingWidget .basketSlider li.pager a.nextItem {
+    background-image: url("../images/ir_pager.png");
+    background-position: -22px 0;
+}
+
+.shoppingWidget .basketSlider li.pager a.previousItem:hover {
+    background-position: 0 -22px;
+}
+
+.shoppingWidget .basketSlider li.pager a.nextItem:hover {
+    background-position: -22px -22px;
+}
+
+.shoppingWidget .basketSlider a {
+    display: block;
+    vertical-align: middle;
+}
+
+.shoppingWidget .closeWidget {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+}
+
+.shoppingWidget .close {
+    background-image: url("../images/ir_close.png");
+    height: 14px;
+    width: 14px;
+}
+
+.shoppingWidget .basketItemDetails {
+    background-color: #fff;
+    border: 1px solid #a0a0a0;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    color: #000;
+    padding: 10px;
+    text-align: left;
+    width: 335px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.shoppingWidget .basketItemDetails img {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.shoppingWidget .basketItemDetails .skuContent {
+	float: left;
+	width:  205px;
+}
+
+.shoppingWidget .basketItemDetails h2 {
+    color: #000;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 .5em;
+}
+
+.shoppingWidget .basketItemDetails p.itemName {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+
+.shoppingWidget .basketItemDetails .skuDetails {
+    margin-bottom: 1em;
+}
+
+.shoppingWidget .basketItemDetails .skuDetails li {
+    display: inline;
+    padding-left: 10px;
+}
+
+.shoppingWidget .basketItemDetails .skuDetails li:first-child {
+    padding-left: 0;
+}
+
+.shoppingWidget .basketItemDetails .skuDescription {
+    color: #a0a0a0;
+}
+
+.shoppingWidget .basketItemDetails .skuItems {
+    color: #333;
+}
+
+.shoppingWidget .basketItemDetails .skuDescription p,
+.shoppingWidget .basketItemDetails .skuItems li {
+    margin-bottom: .5em;
+}
+/* @end */
+
+/* @group Shopping List Welcome Header */
+.welcomeToBasketWidget {
+    background-color: #006ece;
+    color: #fff;
+    margin: 20px 0px 10px;
+    padding: 8px 10px 8px 10px;
+}
+
+.welcomeToBasketWidget h2 {
+    border: none;
+    color: #fbce00;
+    font: bold 16px/1.2 Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.welcomeToBasketWidget p {
+    margin: 0;
+}
+
+.welcomeToBasketWidget a,
+.welcomeToBasketWidget a:hover {
+    color: #fff;
+}
+
+.welcomeToBasketWidget .availability {
+    float: left;
+    margin-right: 15px;
+    padding-bottom: 6px;
+    text-align: left;
+}
+
+.welcomeToBasketWidget .userInfo {
+    float: right;
+    font-size: 13px;
+    margin-top: 5px;
+    text-align: right;
+}
+
+.welcomeToBasketWidget .userInfo .email-address {
+    padding-left: 6px;
+}
+
+.welcomeToBasketWidget .userInfo a {
+    font-weight: bold;
+}
+
+.welcomeToBasketWidget .userInfo a.logout {
+    background: transparent url("../images/ico_rarr_yellow.png") no-repeat right center;
+    font-size: 12px;
+    padding-right: 14px;
+}
+
+.welcomeToBasketWidget label {
+	margin-right: 4px;
+	text-align: left;
+}
+/* @end */
+
+/* @group Product Listing */
+.productListingWrap {
+    padding-top: 5px;
+}
+
+/* @group Module Header */
+.productListingHeader {
+    text-align: left;
+    margin: 0 0 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.productListingHeader h1 {
+    border: 0;
+    color: #333;
+    float: left;
+    font: bold 32px/1.2 Arial, sans-serif;
+    line-height: 1.1;
+    margin: 0;
+    margin-right: 20px;
+    padding: 0;
+    width: 415px;
+}
+
+.productListingHeader .productSortOrdering {
+    float: right;
+    white-space: nowrap;
+}
+
+.productListingHeader .productSortOrdering label {
+    margin-left: 8px;
+    padding: 0;
+}
+/* @end */
+
+/* @group Product List */
+.productListing {
+	margin-bottom: 20px;
+}
+
+.productListing .productListingRow,
+.productListing .productItem {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.productListing .productListingRow {
+	position: relative;
+}
+
+.productListing .productListingRow.onTop {
+	*z-index: 999; /* IE7 is stupid */
+}
+
+.productListing .productItem,
+.productListing .productItem h2,
+.productListing .productItem p {
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1.2;
+}
+
+.productListing .productItem {
+    color: #6d6d6d;
+    cursor: pointer;
+    display: inline;
+    float: left;
+    text-align: center;
+    width: 125px;
+    position: relative;
+    margin: 10px 15px;
+    z-index: 1;
+    zoom: 1;
+}
+
+/* make sure it sits above other list items */
+.productListing .productItem:hover {
+	z-index: 2000;
+}
+
+/* needed so we can use z-index to be sure 
+	it sits on top of the extended details */
+.productListing .productContent {
+	position: relative;
+}
+        
+.productListing  .productItem:hover .productContent {
+    z-index: 3000;
+}
+
+.productListing .productLink img {
+    border: none;
+    display: block;
+    height: 120px;
+    width: 120px;
+    margin: 0 auto;
+}
+
+.productListing h2 a {
+    color: #777;
+    text-decoration: none;
+}
+
+.productListing .productPricing {
+    color: #555555;
+    margin-bottom: .75em;
+}
+
+.productListing .alternatePrice {
+    color: #9b0000;
+    display: block;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.productListing .extendedDetails {
+    background-color: #fff;
+    border: 1px solid #c9a57b;
+    
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    
+    -moz-box-shadow: 0px 0px 5px #bebebe;
+	-webkit-box-shadow: 0px 0px 5px #bebebe;
+	box-shadow: 0px 0px 5px #bebebe;
+  	
+  	display: none; /* hide by default */
+  	
+  	padding: 205px 5px 10px;
+    text-align: left;
+    width:  145px;
+    
+    position: absolute;
+    top: -10px;
+    left: -15px;
+}
+
+.productListing .productItem:hover .extendedDetails {
+	display: block;
+}
+
+.productListing .availableStores {
+    text-align: center;
+}
+
+.productListing .storeCount {
+    color: #555;
+    margin-bottom: .75em;
+}
+
+.productListing .storeCount a,
+.productListing .storeCount .storeName {
+	color: #003366;
+    display: block;
+    font-size: 13px;
+}
+
+.productListing ul {
+    margin: 0;
+    padding: 0;
+}
+
+.productListing li {
+    list-style-type: disc;
+    margin-left: 20px;
+    margin-bottom: .5em;
+    padding: 0;
+}
+
+.productListing li.available {
+    background: transparent url("../images/ico_check_confirm_small.png") no-repeat 0 2px;
+    list-style-type: none;
+    margin-left: 2px;
+    margin-bottom: 0.25em;
+    padding: 0px 0px 3px 18px;
+}
+
+.productListing .moreLink {
+    color: #006ece;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-left: 15px;
+}
+/* @end */
+
+/* @group Paging */
+.productPaging {
+	clear: both;
+    color: #a0a0a0;
+    font-size: 12px;
+    margin: 5px 20px;
+    text-align: center;
+}
+
+.productPaging a,
+.productPaging span {
+    display: inline-block;
+    padding: 2px 4px;
+}
+
+.productPaging span {
+	margin-right: 20px;
+}
+
+.productPaging a[disabled] {
+    text-decoration: none;
+}
+/* @end */
+/* @end */
+
+/* @group Product Detail */
+.productDetailWrap {
+    color: #333;
+    text-align: left;
+    margin: 25px 10px 25px 25px;
+    *width: 735px; /* for IE7 */
+}
+
+.productDetailWrap .shareActions {
+    margin-top: 14px;
+}
+
+.productDetailWrap .productDetailsAvailabilityWrap {
+    float: right;
+    width: 100%;
+    margin-left: -385px;
+}
+
+.productDetailWrap .productDetailsAvailabilityContent {
+    margin-left: 400px;
+}
+
+.productDetailWrap .imagesWrap {
+    float: left;
+    margin-right: 5px;
+    width: 380px;
+}
+
+.productDetailWrap .productDetails {
+    margin-bottom: 20px;
+}
+
+.productDetailWrap .checkWrap {
+	margin-bottom: 30px;
+}
+
+.productDetailWrap a {
+    color: #023467;
+}
+
+.productDetailWrap h1 {
+    border: 0;
+    color: #333;
+    font: bold 24px/1.1 Arial, sans-serif;
+    margin: 0 0 5px;
+    padding: 0;
+}
+
+.productDetailWrap .productPricing {
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 1em;
+    font-weight: bold;
+}
+
+.productDetailWrap .alternatePrice {
+    color: #9b0000;
+    display: block;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.productDetailWrap .productDescription,
+.productDetailWrap .reservePurchaseMessage {
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.productDetailWrap h2 {
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.productDetailWrap .selectMarkets,
+.productDetailWrap .selectMarkets a {
+	color: #666;
+}
+
+.productDetailWrap .selectMarkets {
+	margin-top: 1em;
+	line-height: 1.5;
+}
+
+.productDetailWrap .availabilityActions {
+    float: right;
+    margin-bottom: 20px;
+}
+
+.productDetailWrap .availabilityActions li {
+    float: left;
+    margin-left: 5px;
+}
+
+.productDetailWrap .relatedSkus {
+    clear: both;
+}
+
+.productDetailWrap .relatedSkus > li {
+    border-bottom: 1px solid #999;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+}
+
+.productDetailWrap h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.productDetailWrap .relatedSkuDetails {
+    background-color: #f4ede1;
+    margin-bottom: 20px;
+    padding: 8px 8px 1px;
+}
+
+.productDetailWrap .relatedSkuDetails div.column {
+	text-align: center;
+	width: 65px;
+}
+
+.productDetailWrap .relatedSkuDetails ul.column:first-child {
+	text-align: left;
+	margin-right: 23px;
+	width: auto;
+}
+
+.productDetailWrap .relatedSkuDetails li {
+	margin-bottom: 3px;	
+}
+
+.productDetailWrap .relatedSkuDetails .quantityBox input {
+	display: block;
+	margin: 0 auto 3px;
+}
+
+.productDetailWrap .relatedSkuDetails .quantityBox label {
+	color: #000;
+	vertical-align: middle;
+}
+
+.productDetailWrap .relatedSkuDetails .quantityBox a {
+	color: #006ece;
+}
+
+.productDetailWrap .relatedSkuDetails .basketIndicator {
+    float: right;
+    font-size: 12px;
+    margin-bottom: 15px;
+    margin-right: 0;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.productDetailWrap .relatedSkuDetails .basketIndicator li {
+	margin-bottom: 0;
+}
+
+.productDetailWrap .relatedSkuDetails .basketIndicator a,
+.productDetailWrap .relatedSkuDetails .basketIndicator .inBasket{
+	display: inline-block;
+	padding-bottom: 3px;
+}
+
+.productDetailWrap .relatedSkuDetails .basketIndicator .notEligible {
+	display: block;
+	margin-bottom: 3px;
+}
+
+.productDetailWrap .relatedSkuDetails .basketIndicator .saveForLaterButton {
+	color: #444;
+}
+
+.productDetailWrap .relatedSkuDetails .basketIndicator .savedForLater {
+	color: #666;
+}
+
+/* @group Stock/Availability list */
+.productDetailWrap .stockList {
+    clear: both;
+    font-size: 12px;
+    margin-bottom: 1em;
+    *zoom: 1; /* For IE7 */
+}
+
+.productDetailWrap .stockList li {
+    display: inline-block;
+    margin-bottom: .5em;
+    width: 100%;
+}
+
+.productDetailWrap .stockList li span{
+    float: left;
+    margin-right: 10px;
+    width: 67px;
+}
+
+.productDetailWrap .inStock {
+    background-image: none;
+    display: inline;
+    color: #03970d;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.productDetailWrap .stockList .storeWrap {
+    float: left;
+    margin-left: -77px;
+    margin-right: 0;
+    width: 100%;
+}
+
+.productDetailWrap .stockList .storeContent {
+    float: left;
+    line-height: 1.3;
+    margin-left: 77px;
+}
+
+.productDetailWrap .stockList .stockWarning,
+.productDetailWrap .stockList .onDisplayWarning {	
+	display: block;
+	line-height: 1.5;	
+	width: 285px;
+	margin: 2px 0 .25em;
+}
+
+.productDetailWrap .stockList .stockWarning {
+    background: transparent url("../images/ico_stockWarning.png") no-repeat 0 0;
+    padding-left: 23px;
+}
+
+.productDetailWrap .stockList .stockWarning span,
+.productDetailWrap .stockList .onDisplayWarning span {
+	float: none;
+	margin-right: 0;
+}
+
+/* @end */
+.productDetailWrap .imagesWrap img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.productDetailWrap h4 {
+    border-top: 1px solid #555;
+    font-size: 16px;
+    margin-bottom: 15px; 
+    padding-top: 10px;
+}
+
+.productDetailWrap .relatedImgRow {
+    border-top: 1px solid #d5d5d5;
+    padding: 5px 0;
+}
+
+.productDetailWrap .imagesWrap .figure {
+    border-right: 1px solid #d5d5d5;
+    float: left;
+    width: 47.5%;
+    padding: 0 1%;
+    text-align: center;
+}
+
+.productDetailWrap .imagesWrap .figure.even {
+    border: none;
+}
+
+.productDetailWrap .imagesWrap .figure img {
+    margin-bottom: 5px;
+}
+/* @end */
+
+/* @group Place Order on Hold */
+.placeOrderOnHoldWrap {
+	text-align: left;
+	margin-bottom: 2em;
+	width: 950px;
+	background: #ffffff url("../images/pier1togo-tiling.png") repeat-y right top;
+}
+
+.placeOrderOnHoldWrap .content {
+	float: left;
+	width: 640px;
+}
+
+.placeOrderOnHoldWrap label {
+	color: #555;
+	font: normal 14px/1.3 Arial, sans-serif;
+	padding: 0;
+}
+
+.placeOrderOnHoldWrap .inputLarge {
+	width: 168px; /* IE7 */
+}
+
+.placeOrderOnHoldWrap input[type="text"],
+.placeOrderOnHoldWrap select {
+	margin-bottom: 1em;
+}
+
+.placeOrderOnHoldWrap input[type="submit"] + a {
+	margin-left: 20px;
+}
+
+.placeOrderOnHoldWrap .terms {
+	clear: both;
+	padding-top: 30px;
+}
+/* @end */
+
+
+
+/* @group Place Order On Hold Confirmation */
+.placeOrderOnHoldConfirmationWrap .orderConfirmationEn {
+	width: 65%;
+	background: #ffffff url("../images/en/yay_circle.png") no-repeat left top;
+	color: #128200;
+	padding-left: 80px;
+}
+
+.placeOrderOnHoldConfirmationWrap .orderConfirmationFr {
+	width: 65%;
+	background: #ffffff url("../images/fr/yay_circle.gif") no-repeat left top;
+	color: #128200;
+	padding-left: 80px;
+}
+
+.placeOrderOnHoldConfirmationWrap .dataTable {
+    border-bottom: 2px solid #666;
+    font-size: 12px;
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+.placeOrderOnHoldConfirmationWrap .dataTable.noBottom {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.placeOrderOnHoldConfirmationWrap .dataTable caption {
+    background-color: #006ece;
+    color: #fff;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 2px 5px 2px 150px;
+}
+
+.placeOrderOnHoldConfirmationWrap .dataTable th,
+.placeOrderOnHoldConfirmationWrap .dataTable td {
+    border-top: 1px solid #999;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.placeOrderOnHoldConfirmationWrap .dataTable tbody tr:first-child th,
+.placeOrderOnHoldConfirmationWrap .dataTable tbody tr:first-child td {
+    border-top: 0;
+}
+
+.placeOrderOnHoldConfirmationWrap .dataTable thead th {
+    border-top: 0;
+    border-bottom: 2px solid #006ece;
+    color: #006ece;
+    font: bold 15px/1.2 Arial, sans-serif;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    vertical-align: bottom;
+}
+
+.placeOrderOnHoldConfirmationWrap .dataTable tfoot th,
+.placeOrderOnHoldConfirmationWrap .dataTable tfoot td {
+    border-color: #666;
+    border-width: 2px;
+}
+
+.placeOrderOnHoldConfirmationWrap .dataTable thead .subTotal {
+    white-space: nowrap;
+}
+
+.placeOrderOnHoldConfirmationWrap .dataTable .productImg {
+    width: 120px;
+    text-align: center;
+}
+
+.placeOrderOnHoldConfirmationWrap .dataTable .lineActions {
+    width: 85px;
+}
+
+.Pier1ToGo .listActions {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    text-align: right;
+}
+
+.Pier1ToGo .listActions li {
+    display: inline;
+    margin-left: 20px;
+}
+
+.Pier1ToGo .listActions li:first-child {
+    margin-left: 0;
+    float: left;
+}
+
+.Pier1ToGo .listActions a {
+    color: #3a2213;
+    text-decoration: underline;
+}
+
+.Pier1ToGo .listActions a:hover {
+    text-decoration: none;
+}
+
+.Pier1ToGo .listActions .back,
+.Pier1ToGo .listActions .share,
+.Pier1ToGo .listActions .print {
+    background-repeat: no-repeat;
+    background-position: left center;
+}
+
+.Pier1ToGo .listActions .back {
+    background-image: url("../images/ico_larr_back.png");
+    padding-left: 19px;
+}
+
+.Pier1ToGo .listActions .share {
+    background-image: url("../images/ico_share.png");
+    padding-left: 23px;
+}
+
+.Pier1ToGo .listActions .print {
+    background-image: url("../images/ico_print.png");
+    padding-left: 23px;
+}
+
+.placeOrderOnHoldConfirmationWrap h2,
+.placeOrderOnHoldConfirmationWrap h3 {
+    color: #333;
+    font: bold 15px/1.3 Arial, sans-serif;
+    margin-bottom: 0.25em;
+}
+
+.placeOrderOnHoldConfirmationWrap .sku {
+    margin-bottom: 0.5em;
+}
+
+.placeOrderOnHoldConfirmationWrap h3 strong {
+    color: #006ece;
+}
+
+.placeOrderOnHoldConfirmationWrap .lineActions a {
+    color: #333;
+    text-decoration: underline;
+}
+
+.placeOrderOnHoldConfirmationWrap .lineActions a:hover {
+    text-decoration: none;
+}
+
+.placeOrderOnHoldConfirmationWrap div.socialMedia.large {
+	color: #006ece;
+	float: left;
+	font-weight: bold;
+	font-size: 13px;
+	margin-left: 144px;
+	margin-right: 20px;
+	width:  520px;
+}
+
+.placeOrderOnHoldConfirmationWrap div.subTotal {
+	float: left;
+    width: 150px;
+}
+
+.placeOrderOnHoldConfirmationWrap .formActions {
+    text-align: right;
+}
+
+/* @end */
+
+/* @group Manage Basket */
+.manageShoppingListWrap h2.savedForLaterHeader {
+    background-color: #006ece;
+    color: #fff;
+    font-weight: bold;
+    font-size: 15px;
+    margin: 0;
+    padding: 2px 5px 2px 150px;
+}
+
+.manageShoppingListWrap h2.savedForLaterHeader + .userMessage {
+	margin-top: 1em;
+}
+
+.manageShoppingListWrap .emptyListMessage {
+    color: #006ece;
+    font-size: 14px;
+    display: block;
+    padding: 30px 0 30px 80px;
+}
+.manageShoppingListWrap .emptyListMessage a {
+    color: #006ece;
+}
+
+.manageShoppingListWrap .emptyBasketMessageEn {
+    background: #ffffff url("../images/en/circle_uhoh.png") no-repeat left center;
+}
+
+.manageShoppingListWrap .emptyBasketMessageFr {
+    background: #ffffff url("../images/fr/circle_uhoh.gif") no-repeat left center;
+}
+
+.manageShoppingListWrap .emptyWishlistMessageEn {
+    background: #ffffff url("../images/en/circle_um.png") no-repeat left center;
+}
+
+.manageShoppingListWrap .emptyWishlistMessageFr {
+    background: #ffffff url("../images/fr/circle_um.gif") no-repeat left center;
+}
+
+.manageShoppingListWrap .dataTable {
+    border-bottom: 2px solid #666;
+    font-size: 12px;
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+.manageShoppingListWrap .dataTable.noBottom {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.manageShoppingListWrap .dataTable th,
+.manageShoppingListWrap .dataTable td {
+    border-top: 1px solid #999;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.manageShoppingListWrap .dataTable tbody tr:first-child th,
+.manageShoppingListWrap .dataTable tbody tr:first-child td {
+    border-top: 0;
+}
+
+.manageShoppingListWrap .dataTable thead th {
+    border-top: 0;
+    border-bottom: 2px solid #006ece;
+    color: #006ece;
+    font: bold 15px/1.2 Arial, sans-serif;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    vertical-align: bottom;
+}
+
+.manageShoppingListWrap .dataTable tfoot th,
+.manageShoppingListWrap .dataTable tfoot td {
+    border-color: #666;
+    border-width: 2px;
+}
+
+.manageShoppingListWrap .dataTable th.qty,
+.manageShoppingListWrap .dataTable td.qty {
+	width: 60px;
+}
+
+.manageShoppingListWrap .quantityBox input[type="text"] {
+	margin-bottom: 2px;
+}
+
+.manageShoppingListWrap .quantityBox a {
+	display: block;
+}
+
+.manageShoppingListWrap .dataTable thead .subTotal {
+    white-space: nowrap;
+}
+
+.manageShoppingListWrap .dataTable .productImg {
+    width: 120px;
+    text-align: center;
+}
+
+.manageShoppingListWrap .dataTable .lineActions {
+    width: 101px;
+}
+
+.manageShoppingListWrap {
+    text-align: left;
+    width: 930px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.manageShoppingListWrap h2,
+.manageShoppingListWrap h3 {
+    color: #333;
+    font: bold 15px/1.3 Arial, sans-serif;
+    margin-bottom: 0.25em;
+}
+
+.manageShoppingListWrap .sku {
+    margin-bottom: 0.5em;
+}
+
+.manageShoppingListWrap h3 strong {
+    color: #006ece;
+}
+
+.manageShoppingListWrap .stockList {
+    clear: both;
+    font-size: 12px;
+    margin-bottom: 1em;
+    *zoom: 1; /* For IE7 */
+}
+
+.manageShoppingListWrap .stockList li {
+    display: inline-block;
+    margin-bottom: .5em;
+    width: 100%;
+}
+
+.manageShoppingListWrap .stockList li span{
+    float: left;
+    margin-right: 10px;
+    width: 75px;
+}
+
+.manageShoppingListWrap .stockList span.inStock {
+	display: inline;
+	margin-bottom: 0;
+	width: 50px;
+}
+
+.manageShoppingListWrap .stockList span.inStock + .storeWrap {
+    padding-top: 3px;
+}
+
+.manageShoppingListWrap .stockList .storeWrap {
+    float: left;
+    margin-left: -85px;
+    margin-right: 0;
+    width: 100%;
+}
+
+.manageShoppingListWrap .stockList .storeContent {
+    float: left;
+    line-height: 1.3;
+    margin-left: 85px;
+}
+
+.manageShoppingListWrap .stockList .stockWarning,
+.manageShoppingListWrap .stockList .onDisplayWarning {
+	
+	display: block;
+	line-height: 1.5;	
+	width: 285px;
+	margin: 2px 0 .25em;
+}
+
+.manageShoppingListWrap .stockList .stockWarning {
+    background: transparent url("../images/ico_stockWarning.png") no-repeat 0 0;
+    padding-left: 23px;
+}
+
+.manageShoppingListWrap .stockList .stockWarning span,
+.manageShoppingListWrap .stockList .onDisplayWarning span {
+	float: none;
+	margin-right: 0;
+}
+
+.manageShoppingListWrap .lineActions li {
+	margin-bottom: 0.25em;
+}
+
+.manageShoppingListWrap .lineActions a {
+    color: #333;
+    text-decoration: underline;
+}
+
+.manageShoppingListWrap .lineActions a:hover {
+    text-decoration: none;
+}
+
+.manageShoppingListWrap div.disclaimer {
+    width: 400px;
+}
+
+.manageShoppingListWrap div.subTotal {
+    margin-left: 72%;
+    *margin-left: 665px;
+    width: 150px;
+}
+
+.manageShoppingListWrap .formActions {
+    text-align: right;
+}
+/* @end */
+
+/* @group Find a Store */
+.findStoreWrap {
+	margin-top: 10px;
+}
+
+.findStoreWrap .moduleHeader {
+	margin-bottom: 1em;
+}
+
+.findStoreWrap .sidebar {
+	width: 180px;
+	margin-right: 25px;
+}
+
+.findStoreWrap .content {
+	border: 1px solid #ccc;
+	float: right;
+	width: 733px;
+}
+
+.findStoreWrap #mapCanvas {
+	height: 530px;
+}
+
+.findStoreWrap h1 {
+	border: 0;
+	color: #333;
+	float: left;
+	font: bold 20px Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+.findStoreWrap .storeLookup {
+	float: right;
+	margin-top: 5px;
+}
+
+.findStoreWrap .storeLookup label {
+	color:#444444;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.findStoreWrap .storeLookup input {
+	margin-right: 5px;
+}
+
+.findStoreWrap .foundStores li {
+	margin-bottom: 1em;
+}
+
+.findStoreWrap .foundStores .storeMarker {
+	float: left;
+	margin-right: 10px;
+}
+
+.findStoreWrap .foundStores .address {
+	float: left;
+	width: 150px;
+}
+
+.findStoreWrap .foundStores .address a{
+	display: block;
+	font-size: 14px;
+}
+
+.findStoreWrap .mapInfoWindow h2,
+.findStoreWrap .mapInfoWindow h3 {
+	font: normal 16px/1.3 Arial, sans-serif;
+	margin-bottom: .25em;
+}
+
+.findStoreWrap .mapInfoWindow h3 {
+	font-size: 11px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.findStoreWrap .mapInfoWindow ul {
+	margin-bottom: .5em;
+}
+
+.findStoreWrap .mapInfoWindow li {
+	display: inline;
+	padding-left: 5px;
+}
+
+.findStoreWrap .mapInfoWindow li:first-child {
+	padding-left: 0;
+}
+
+.findStoreWrap .mapInfoWindow p {
+	color: #7e6339;
+	margin-bottom: .5em;
+}
+
+.findStoreWrap .mapInfoWindow p.holiday {
+	color: #555555;
+}
+
+.findStoreWrap .mapInfoWindow table {	
+	margin-bottom: 0.5em;
+	width: 100%;
+}
+
+.findStoreWrap .mapInfoWindow th,
+.findStoreWrap .mapInfoWindow td {
+	color: #5b4727;
+	font-family: Arial, sans-serif;
+	font-size: 11px;
+	padding: 2px 0;
+}
+
+.findStoreWrap .mapInfoWindow th {
+	font-weight: bold;
+}
+
+
+.findStoreWrap .paging li {
+	float: right;
+}
+
+.findStoreWrap .paging li:first-child {
+	float:left;
+}
+
+/* padding shennanigans to avoid scroll bar in Google map popups */
+.mapInfoWindow {
+    padding-top: 5px;
+    min-width: 230px;
+}
+#mapCanvas .mapInfoWindow {
+    padding: 0;
+}
+/* @end */
+/* @end */

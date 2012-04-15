@@ -1,0 +1,180 @@
+﻿// ----------------------------------------------
+// File:		CategoriesFactory.js
+// Author:		Nathan Derksen
+// Description:	Class to handle converting category menu contents information from one data format to another
+// Example:
+// var categoriesArray = CategoriesFactory.convertXMLToObjects(result.documentElement);
+// ----------------------------------------------
+
+
+// ----------------------------------------------
+// Function:	CategoriesFactory()
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+function CategoriesFactory()
+{
+}
+
+// ----------------------------------------------
+// Function:	convertXMLToObjects()
+// Author:		Nathan Derksen
+// Description:	Converts an XML based list of categories to an array of objects
+// Inputs:		<XMLDOM> xmlData: A DOM handle to the root xml node returned by an Ajax call
+// Returns:		<Array>: An array of CategoryMenuVO objects
+// ----------------------------------------------
+CategoriesFactory.convertXMLToObjects = function(xmlData)
+{
+	var currentNode;
+	var currentMenuItem;
+	var currentMenuItemObj;
+	var tempObject;
+	var returnArray = new Array();
+	var tempMenu;
+
+	var menusArray;
+
+	try
+	{
+		menusArray = xmlData.getElementsByTagName("menu");
+
+		for (var i = 0; i < menusArray.length; i++)
+		{
+			currentNode = menusArray[i];
+			tempMenu = new CategoryMenuVO();
+			tempMenu.name = currentNode.getAttribute("target");
+			tempMenu.id = tempMenu.name.split(" ").join(" ");
+			tempMenu.reset = "";
+
+			for (var j = 0; j < currentNode.childNodes.length; j++)
+			{
+				currentMenuItem = currentNode.childNodes[j];
+				if (currentMenuItem.firstChild != null)
+				{
+					if (currentMenuItem.firstChild.textContent)
+					{
+						// Moz
+						tempObject = { label: currentMenuItem.firstChild.textContent,
+							value: currentMenuItem.getAttribute("value"),
+							sub: currentMenuItem.getAttribute("sub"),
+							selected: false
+						};
+					}
+					else if (currentMenuItem.firstChild.nodeValue)
+					{
+						// Safari
+						tempObject = { label: currentMenuItem.firstChild.nodeValue,
+							value: currentMenuItem.getAttribute("value"),
+							sub: currentMenuItem.getAttribute("sub"),
+							selected: false
+						};
+					}
+					else
+					{
+						// IE
+						tempObject = { label: currentMenuItem.firstChild.text,
+							value: currentMenuItem.getAttribute("value"),
+							sub: currentMenuItem.getAttribute("sub"),
+							selected: false
+						};
+					}
+
+					if (currentMenuItem.getAttribute("sel") == "true")
+					{
+						tempObject.selected = true;
+						tempObject.value = currentMenuItem.getAttribute("resetQS");
+						tempMenu.reset = tempObject.value;
+					}
+
+					tempObject.id = tempObject.value;
+					if (tempObject.label != "" && typeof (tempObject.label) != "undefined")
+					{
+						tempMenu.items.push(tempObject);
+					}
+				}
+			}
+			returnArray.push(tempMenu);
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+
+	return returnArray;
+};
+
+// ----------------------------------------------
+// Function:	convertJSONToObjects()
+// Author:		Nathan Derksen
+// Description:	Converts an XML based list of categories to an array of objects
+// Inputs:		<XMLDOM> xmlData: A DOM handle to the root xml node returned by an Ajax call
+// Returns:		<Array>: An array of CategoryMenuVO objects
+// ----------------------------------------------
+CategoriesFactory.convertJSONToObjects = function(JSONData)
+{
+	var currentNode;
+	var currentMenuItem;
+	var currentMenuItemObj;
+	var tempObject;
+	var returnArray = new Array();
+	var tempMenu;
+	
+	var menusArray;
+		
+	try
+	{
+		menusArray = JSONData;
+	
+		for (var i = 0; i < menusArray.length; i++)
+		{
+			if (typeof(menusArray[i]) != "undefined")
+			{
+				currentNode = menusArray[i];
+				tempMenu = new CategoryMenuVO();
+				tempMenu.name = currentNode.target;
+				for (var j = 0; j < currentNode.items.length; j++)
+				{
+					currentMenuItem = currentNode.items[j];
+					tempObject = {label:currentMenuItem.name,
+						value:currentMenuItem.value,
+						sub:null,
+						selected:false};
+					
+					if (currentMenuItem.sel == "true" || currentMenuItem.sel == true)
+					{
+						tempObject.selected = true;
+						tempObject.value = currentMenuItem.resetQS;
+					}
+
+					if (tempObject.label != "" && typeof(tempObject.label) != "undefined")
+					{
+						tempMenu.items.push(tempObject);
+					}
+				}
+				returnArray.push(tempMenu);
+			}
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+    
+	return returnArray;
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+CategoriesFactory.getLayoutType = function(xmlData)
+{
+	if (xmlData.getAttribute("layout"))
+	{
+		return xmlData.getAttribute("layout");
+	}
+	return "1";
+};
+
+

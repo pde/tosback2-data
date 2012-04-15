@@ -1,0 +1,326 @@
+document.domain = "naver.com";
+
+/**
+ * GNB 영역 자바스크립트  by gony
+ * AJAXUI Team, 20071030
+ */
+
+var GNB_LAYER = {
+	align  : "left",
+	url    : "http://gn.naver.com/js/gnb_box.html",
+	width  : 208,
+	height : 76
+};
+
+
+
+
+var GNB = {
+	iframeId : "gnb_box",
+	searchDefaultText : "통합검색",
+	warnType : "",
+	isset : false,
+	init : function(frm) {
+		if(this.isset){
+			return;
+		}
+		this.iframe = parent.document.getElementById(this.iframeId);
+
+
+		var p = this.iframe.offsetParent;
+		var m = document.getElementById("more");
+		var f = this.gnbLayer = parent.document.createElement("iframe");
+		var d = parent.document.createElement("div");
+		var o = {id:"gnb_box_layer_gony",border:0, frameBorder:0, width:GNB_LAYER.width, height:GNB_LAYER.height,src:GNB_LAYER.url,scrolling:"no"};
+
+
+		for(var x in o) { f.setAttribute(x, o[x]); }
+
+		f.style.top      = "-500px";
+		f.style.border   = "0px";
+		f.style.position = "absolute";
+
+		d.style.height   = "0px";
+		//d.style.width    = "100%";
+		//d.style.position = "absolute";
+		d.style.zIndex   = 105;
+
+		d.style.top = "0px";
+		d.style.left = "-11px";
+		d.style.position = "relative";
+
+		d.appendChild(f);
+		this.iframe.parentNode.insertBefore(d, this.iframe);
+
+		var ow = f.offsetWidth;
+		var pos = this.offset(m);
+		var r  = this.iframe.offsetWidth - pos.left - f.offsetWidth;
+
+		if (GNB_LAYER.align == "right") {
+			r = (-21+r+f.offsetWidth-m.offsetWidth);
+		}
+
+
+		f.style.display  = "none";
+
+		f.style.top   = (d.offsetTop+pos.top+m.offsetHeight-1)+"px";
+
+		f.style.right = r+"px";
+		this.isset = true;
+		if(frm)	checkAlert();
+		try{
+			if(!GNB_USER.isset)
+				GNB_USER.init();
+		} catch(e) {}
+
+	},
+	showBox : function() {
+		try{
+			if( parent.document.getElementById('gnb_box_layer_gony').contentDocument.URL != GNB_LAYER.url)
+				parent.document.getElementById('gnb_box_layer_gony').contentDocument.URL = GNB_LAYER.url;
+		}
+		catch(e) {}
+		this.gnbLayer._hiding = false;
+		this.gnbLayer.style.display = "block";
+	},
+	hideBox : function() {
+		var layer = this.gnbLayer;
+		layer._hiding = true;
+		setTimeout(function(){if(layer._hiding)layer.style.display = "none";layer._hiding=false}, 200);
+	},
+	defaultText : function(box) {
+		var str = box.value.replace(/^\s+|\s+$/g, "");
+		if (str == "") {
+			box.value = this.searchDefaultText;
+		}
+	},
+	clearText : function(box) {
+		var str = box.value.replace(/^\s+|\s+$/g, "");
+		if (str == this.searchDefaultText) {
+			box.value = "";
+		}
+	},
+		go_search : function(box){
+				str = this.searchDefaultText;
+				if (document.search.query.value == str) {
+					document.search.query.value = "";
+				}
+
+				try {
+					 var obj = document.createElement("SCRIPT");
+					obj.src = 'http://www.naver.com/goSearch';
+				} catch (e) {
+				}
+
+		},
+	offset : function(obj) {
+		if (GNB_LAYER.align == "right") {
+			var top = 3, left = -300;
+		}
+		var top = 3, left = -9;
+
+		while(obj && obj.offsetParent) {
+			top += obj.offsetTop;
+			left += obj.offsetLeft;
+			obj = obj.offsetParent;
+		}
+
+		return {top:top, left:left};
+	}
+}
+
+var GNB_USER_LAYER = {
+	align  : "left",
+	url    : "http://gn.naver.com/js/gnb_usr.html",
+	width  : 89,
+	height : 60
+};
+
+var GNB_USER = {
+	iframeId : "gnb_box",
+	isset : false,
+	init : function() {
+		GNB.init();
+		checkAlert();
+		document.domain = "naver.com";
+		if(this.isset){
+			return;
+		}
+		this.iframe = parent.document.getElementById(this.iframeId);
+		var p = this.iframe.offsetParent;
+		var m = document.getElementById("nicknm");
+		var f = this.gnbLayer = parent.document.createElement("iframe");
+		var d = parent.document.createElement("div");
+		var o = {id:"gnb_user_layer",border:0, frameBorder:0, width:GNB_USER_LAYER.width, height:GNB_USER_LAYER.height,src:GNB_USER_LAYER.url,scrolling:"no"};
+		for(var x in o) { f.setAttribute(x, o[x]); }
+		f.style.top      = "-500px";
+		f.style.border   = "0px";
+		f.style.position = "absolute";
+		d.style.height   = "0px";
+		d.style.zIndex   = 105;
+		d.style.top = "0px";
+		d.style.left = "9px";
+		d.style.position = "relative";
+		d.appendChild(f);
+		this.iframe.parentNode.insertBefore(d, this.iframe);
+
+		var ow = f.offsetWidth;
+		var pos = this.offset(m);
+		var r  = this.iframe.offsetWidth - pos.left - f.offsetWidth;
+
+		if (GNB_USER_LAYER.align == "right") {
+			r = Math.max(0, -19+r+f.offsetWidth-m.offsetWidth);
+		}
+		f.style.display  = "none";
+		f.style.top   = (d.offsetTop+pos.top+m.offsetHeight-1)+"px";
+		r = r - (m.offsetWidth - 74);
+		f.style.right = r+"px";
+		this.isset = true;
+		try{            
+			if(!GNB.isset)
+				GNB.init();
+		} catch(e) {}   
+	},
+	showBox : function() {
+		try{
+			if( parent.document.getElementById('gnb_user_layer').contentDocument.URL != GNB_USER_LAYER.url)
+				parent.document.getElementById('gnb_user_layer').contentDocument.URL = GNB_USER_LAYER.url;
+		}
+		catch(e) {}
+		this.gnbLayer._hiding = false;
+		this.gnbLayer.style.display = "block";
+	},
+	hideBox : function() {
+		var layer = this.gnbLayer;
+		layer._hiding = true;
+		setTimeout(function(){if(layer._hiding)layer.style.display = "none";layer._hiding=false}, 200);
+	},
+	offset : function(obj) {
+		if (GNB_USER_LAYER.align == "right") {
+			var top = 3, left = -300;
+		}
+		var top = 3, left = -9;
+
+		while(obj && obj.offsetParent) {
+			top += obj.offsetTop;
+			left += obj.offsetLeft;
+			obj = obj.offsetParent;
+		}
+
+		return {top:top, left:left};
+	}
+}
+
+
+function checkAlert(){
+	switch(check_cookie('nid_pwa')) {
+		case '1' :
+			var alertimg = document.getElementById("alertGreen");
+			alertimg.style.display = 'inline';
+			break;
+		case '2'  :
+			var alertimg = document.getElementById("alertRed");
+			alertimg.style.display = 'inline';
+			break;
+		default   :
+			var alertimg = document.getElementById("alertGreen");
+			alertimg.style.display = 'none';
+			alertimg = document.getElementById("alertRed");
+			alertimg.style.display = 'none';
+			return;
+	}
+
+}
+
+
+
+function check_cookie(key) {
+	var cookie = document.cookie;
+	var first = cookie.indexOf(key+'=');
+	if(first >= 0){
+		var str = cookie.substring(first,cookie.length);
+		var last = str.indexOf(';');
+		if(last < 0 ) last = str.length;
+		str = str.substring(0,last).split('=');
+		return unescape(str[1]);
+	} else {
+		return null;
+	}
+}
+
+function getReturl(){
+		var loginAnchor = document.getElementById('login_b');
+		var cururl = decodeURIComponent(parent.document.location);
+		cururl = encodeURIComponent(cururl);
+		var returl = 'http://nid.naver.com/nidlogin.login?url=';
+		loginAnchor.href= returl+cururl;
+
+}
+
+
+
+
+function check_me2day(){
+        switch(check_cookie('NID_MATCH_M')) {
+                case '1' :
+                        parent.location.replace('http://nid.naver.com/new_me2day/me2day_sso.nhn');
+			break;
+                default   :
+                        target="https://nid.naver.com/new_me2day/new_me2day.nhn?consumer_name=me2day&service_name=commcast&ret_url=false";
+                        openWindow(target)
+                        return;
+        }
+
+}
+
+
+function openWindow(target) {
+
+	var centerWidth = (window.screen.width - 450) / 2;
+	var centerHeight = (window.screen.height - 500) / 2;
+
+	win = window.open(target, '_blank', 'width=440,height=400' + ',left=' + centerWidth + ',top=' + centerHeight + ',status=no,scrollbars=no,resizable=no,menubar=no,toolbar=no,location=no');
+	win.focus();
+}
+
+function isIE8()
+{
+  var agent = window.navigator.userAgent;
+  if(agent.indexOf("MSIE 8")!= -1)
+      return true;
+    else
+        return false;
+}
+
+function isIE9()
+{
+  var agent = window.navigator.userAgent;
+  if(agent.indexOf("MSIE 9")!= -1)
+      return true;
+    else
+        return false;
+}
+
+function ieFix(){
+	if( isIE8() ){
+		document.search.query.className="box_window box_window_fix";
+		document.getElementById('btn_image').className="btn_window btn_window_fix";	
+		GNB.clearText(document.search.query);
+		GNB.defaultText(document.search.query);
+	}
+	if( isIE9() && document.documentMode && document.documentMode == 8){
+                document.search.query.className="box_window box_window_fix";
+                GNB.clearText(document.search.query);
+                GNB.defaultText(document.search.query);	
+	}
+
+}
+
+function shortNick(fm){
+        var nicknm_str = document.getElementById(fm).childNodes[0].data;
+        if( nicknm_str.length > 10){
+                var shortened = nicknm_str.substr(0,10)+"...님";
+                document.getElementById(fm).childNodes[0].data = shortened;
+                
+        }
+}    

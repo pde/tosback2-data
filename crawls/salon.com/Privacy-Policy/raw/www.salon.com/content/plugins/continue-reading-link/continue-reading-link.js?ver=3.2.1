@@ -1,0 +1,150 @@
+var story_meta = [];
+jQuery(document).ready(function($) {
+	var cookie_array = [];
+	var cookie_name = 'expanded_stories';
+	
+	$.fn.loadCookie = function() {
+		var results = document.cookie.match ( '(^|;) ?'+ cookie_name +'=([^;]*)(;|$)' );
+        var cookie_value;
+        if (results) {
+            cookie_value = unescape(results[2]);
+        } else {
+            cookie_value = null;
+        }
+        if (cookie_value) {
+            cookie_array = JSON.parse(cookie_value);
+        }
+		return cookie_array;
+	};
+
+	$.fn.refreshFrames = function() {
+		$.each($("iframe"), function (){
+			$(this).attr({
+				src: $(this).attr("src")
+			});
+		});
+		return false;
+	};
+
+	$.each(cookie_array = $().loadCookie(), function (key,value) {
+		// test value?
+		try {
+			$('a#'+value).text('Close').removeClass('chunked');
+			$('div#fold-'+value).attr('status','visible').show();
+			var $related = $('div#fold-'+value).parents('.post-body').find('.related');
+			if ( $related.length ) {
+				$related.show();
+			}
+		} catch (e) { }
+	});
+
+	// Usage for trigger
+		// 1 = expand action
+		// 2 = collapse action 	
+	$.fn.cookieMgmt = function (trigger, post_id) {                                                             
+		cookie_array = $().loadCookie();
+		switch (trigger) {
+            case 1: 
+			    if (cookie_array.length > 9) {
+                    cookie_array.shift();
+			    }
+                cookie_array.push(post_id);
+			    break;
+            case 2:
+                var index = $.inArray(post_id, cookie_array);
+			    if (index > -1) {
+                    cookie_array.splice(index,1);
+			    }
+                break;
+ 		}
+        cookie_value = JSON.stringify(cookie_array);
+		document.cookie = cookie_name+'='+cookie_value+'; path=/;';
+    };
+
+	//function that catches the click event	
+	$('a.continue-reading').click(function (e) {
+		e.preventDefault();
+		var post_id = $(this).attr('id');
+		var fold = $('div#fold-'+post_id);
+		var $related = $(this).parents('.post-body').find('.related');
+
+		if (fold.attr('status') === 'invisible') {
+            try {
+			  _gaq.push(['_setCustomVar', 4, 'author', story_meta[post_id].author, 3]);
+			  _gaq.push(['_setCustomVar', 5, 'contentItem', story_meta[post_id].contentItem, 3]);
+			  _gaq.push(['_trackPageview']);
+            } catch(e) { }
+			fold.attr('status', 'visible').show().cookieMgmt(1,post_id);
+            $('#'+post_id).text('Close').removeClass('chunked');
+			if ( $related.length ) {
+				$related.show();
+			}
+            refreshAds();
+            return false;
+		} else {
+            fold.attr('status', 'invisible').hide().cookieMgmt(2,post_id);
+            $('#'+post_id).text('Continue Reading').addClass('chunked');
+			if ( $related.length && $related.filter(":visible") ) {
+				$related.hide();
+			}
+            this.scrollIntoView();
+        }
+	});
+
+	// some other folds (topic & writer "about" blocks) use a different mechanism; this initiates those. 
+	var $mask = jQuery('#writer_bio_crop, #topic_about_crop');
+	cropBlock($mask, {'height': '104px'}, {'id':'crop_control', 'href':'#', 'class': 'target_self', 'expandHTML':'Continue', 'collapseHTML':'Close'});
+});
+
+function cropBlock (block, size, control) {
+	var targetHeight, targetWidth;
+	if (0 == block.length) return;
+	for (prop in size) if (size.hasOwnProperty(prop)) { 
+		block.css(prop, 'auto');
+	}
+	// abstract list of dimensions into a loop
+	if (size.hasOwnProperty('height')) {
+		targetHeight = size.height.replace(/\s*px$/, '');
+	}
+	if (size.hasOwnProperty('width')) {
+		targetWidth = size.width.replace(/\s*px$/, '');
+	}
+	if ((( targetHeight > 0 && block.height() > targetHeight) 
+		|| targetWidth > 0 && block.width() > targetWidth)) { 
+			block.css(size);
+			jQuery('#'+control.id).remove();
+			expander = document.createElement('A');
+			jQuery(expander).attr(control).html(control.expandHTML);
+			block.after(expander);
+			jQuery(expander).click(function (e) { 
+				e.preventDefault();
+				revealBlock(block, size, control);
+				return false;
+			});
+	}
+}
+
+function revealBlock (block, size, control) { 
+	if (0 == block.length) return;
+	for (prop in size) if (size.hasOwnProperty(prop)) { 
+		block.css(prop, 'auto');
+	}
+	if (size.hasOwnProperty('height')) {
+		targetHeight = size.height.replace(/\s*px$/, '');
+	}
+	if (size.hasOwnProperty('width')) {
+		targetWidth = size.width.replace(/\s*px$/, '');
+	}
+	if (((typeof(targetHeight) != undefined) && block.height() > targetHeight) 
+		|| ((typeof(targetWidth) != undefined) && block.width() > targetWidth)) { 
+			jQuery('#'+control.id).remove();
+			collapser = document.createElement('A');
+			jQuery(collapser).attr(control).html(control.collapseHTML);
+			block.after(collapser);
+			jQuery(collapser).click(function (e) { 
+				e.preventDefault();
+				cropBlock(block, size, control);
+				return false;
+			});
+	}
+}

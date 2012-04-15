@@ -1,0 +1,88 @@
+// ----------------------------------------------
+// File:		flashCommBridge.js
+// Author:		Nathan Derksen
+// Description:	Wrapper class for sending Flash data through the Flash LocalConnection object.
+// Example:
+// ----------------------------------------------
+
+
+// ----------------------------------------------
+// Function:	FlashAPI()
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<String> id: The ID for the tag to hold the Flash content
+// Returns:		<Nothing>
+// ----------------------------------------------
+function FlashCommBridge()
+{
+	this.pInstance = null;
+	this.pShimHandle = null;
+	this.pConnectionName = "";
+}
+
+// ----------------------------------------------
+// Function:	FlashCommBridge.getInstance()
+// Author:		Nathan Derksen
+// Description:	Singleton access method
+// Inputs:		<none>
+// Returns:		<FlashCommBridge> Handle to a single ProductModel instance
+// ----------------------------------------------
+FlashCommBridge.getInstance = function()
+{
+	if (!this.pInstance)
+	{
+		this.pInstance = new FlashCommBridge();
+	}
+	return this.pInstance;
+};
+
+// ----------------------------------------------
+// Function:	setAttribute()
+// Author:		Nathan Derksen
+// Description:	Sets the various attributes to be used within the <object> and <embed> tags. 
+//				Certain attributes will automatically be put within certain tags (such as width 
+//				and height in the <object> and <embed> tags and flashvars in the <param> and <embed> tags.
+// Inputs:		<String> attName: The attribute name to set
+//				<String> attValue: Value to give the specified attribute
+// Returns:		<Nothing>
+// ----------------------------------------------
+FlashCommBridge.prototype.send = function(methodName, methodData)
+{
+    if (this.pShimHandle == null)
+    {
+        this.createShimContainer();
+    }
+    var flashShim = new FlashAPI(document.getElementById("flashCommBridgeContainer"));
+    flashShim.setAttribute("src", "/shared/flash/flashCommBridge.swf");
+    flashShim.setAttribute("width", "300");
+    flashShim.setAttribute("height", "20");
+    flashShim.setAttribute("wmode", "transparent");
+    flashShim.setAttribute("flashVars", "methodName=" + escape(methodName) + "&methodData=" + escape(methodData) + "&connectionName=" + this.requestConnectionName());
+    flashShim.setFlashVersion(8, 0, 0);
+    flashShim.generateFlash();
+   	flashShim.triggerBlur();
+};
+
+FlashCommBridge.prototype.requestConnectionName = function()
+{
+	if (this.pConnectionName == "")
+	{
+		this.pConnectionName = "comm" + Math.random().toString();
+	}
+	return this.pConnectionName;
+}
+
+FlashCommBridge.prototype.createShimContainer = function()
+{
+	if (document.getElementById("flashCommBridgeContainer") == null)
+	{
+		var debugDiv = document.createElement("div");
+		debugDiv.setAttribute("id", "flashCommBridgeContainer");
+		debugDiv.style.left = "10px";
+		debugDiv.style.top = "10px";
+		debugDiv.style.width = "300px";
+		debugDiv.style.height = "20px";
+		debugDiv.style.position = "absolute";
+		document.body.appendChild(debugDiv);
+	}
+}

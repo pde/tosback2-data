@@ -1,0 +1,1766 @@
+
+
+
+
+
+
+
+
+
+
+
+
+/* Plugin Widgets */
+/* +++++++++++++++++++++++++++++++++++++++++++ */
+// Plugin for slider control (widgetSlider)
+(function() {
+	jQuery.widgetSlider = function(settings) {
+
+		// define defaults and override with options, if available
+        // by extending the default settings, we don't modify the argument
+        settings = jQuery.extend({
+         viewport: "#widget-slider-viewport",
+         content: "#widget-slider-content",
+         next: "#widget-slider-next",
+         prev: "#widget-slider-prev",
+         item: "div",
+         direction: "vertical",
+         showAmount: 3
+        }, settings);
+
+        //if slider exists exist
+        if ( jQuery(settings.viewport).size() > 0 )
+        {
+        	//setup the buttons.
+        	jQuery(settings.next).hide().attr("href","#nextItem");
+        	jQuery(settings.prev).hide().attr("href","#prevItem");
+        	if( jQuery(settings.item).size() > settings.showAmount )
+        	{ jQuery(settings.next).show(); }
+
+        	if( settings.direction == "vertical" )
+        	{}
+        	else
+        	{
+        		//setup the vars.
+        		sliderInfo = new Object();
+        		sliderInfo.start = 0;
+        		sliderInfo.end = (jQuery(settings.item).size() - settings.showAmount) * jQuery(settings.item).eq(0).width() * -1;
+        		sliderInfo.itemSize = jQuery(settings.item).eq(0).width();
+        		sliderInfo.left = 0;
+
+        		//setup the events for navigation
+        		prevButton(settings.prev,settings);
+        		nextButton(settings.next,settings);
+         	}
+        }
+    };
+
+    prevButton = function(prevObj,settings) {
+    	$(prevObj).unbind("click");
+    	setTimeout(function() {
+    		$(prevObj).click(function(evt) {
+    			evt.preventDefault();
+    			sliderInfo.left = parseInt(jQuery(settings.content).css("left").split("px")[0]) + sliderInfo.itemSize;
+         		jQuery(settings.content).animate( { left:sliderInfo.left+"px"}, 350 );
+
+         		if( sliderInfo.left != sliderInfo.end )
+         		{ jQuery(settings.next).show(); }
+         		if( sliderInfo.left == 0 )
+         		{ jQuery(settings.prev).hide();  }
+
+         		prevButton(prevObj,settings);
+         	});
+        }, 351);
+    };
+
+    nextButton = function(nextObj,settings) {
+    	$(nextObj).unbind("click");
+    	setTimeout(function() {
+    		$(nextObj).click(function(evt) {
+    			evt.preventDefault();
+    			sliderInfo.left = parseInt(jQuery(settings.content).css("left").split("px")[0]) - sliderInfo.itemSize;
+         		jQuery(settings.content).animate( { left:sliderInfo.left+"px"}, 350 );
+
+         		if( sliderInfo.left == sliderInfo.end )
+         		{ jQuery(settings.next).hide(); }
+         		if( sliderInfo.left != 0 )
+         		{ jQuery(settings.prev).show();  }
+
+         		nextButton(nextObj,settings);
+         	});
+        }, 351);
+    };
+
+})(jQuery);
+/* ----------------------------------------- */
+
+/* make 2 containers equal */
+(function() {
+	jQuery.fn.widgetEqualHeight = function(settings) {
+		settings = jQuery.extend({
+         toHeight: "#box1"
+        }, settings);
+
+        return this.each(function(){
+        	if( jQuery(settings.toHeight).size() > 0 )
+        	{ jQuery(this).height( jQuery(settings.toHeight).height() ); }
+        });
+    };
+})(jQuery);
+/* ------------------------------------------ */
+
+/* button widget for buttons with hover states. */
+(function() {
+	jQuery.fn.widgetButton = function(settings) {
+		settings = jQuery.extend({
+         off: "but-off.gif",
+         on: "but-on.gif",
+         hover: "but-hover.gif",
+         hasClick: 0,
+         hasHover: 1,
+         activeId: "but-active",
+         cssButton: 0,
+         cssOff: "glo-but-css-off",
+         cssOn: "glo-but-css-on",
+         cssHover: "glo-but-css-hover",
+         buttonSelector: ".but-class"
+        }, settings);
+
+		return this.each(function() {
+			if(settings.cssButton)
+			{
+				if( jQuery(this).attr("id") != settings.activeId )
+				{ jQuery(this).addClass(settings.cssOff);}
+				else
+				{ jQuery(this).addClass(settings.cssOn); }
+
+				if(settings.hasHover)
+				{
+					jQuery(this).mouseover(function() {
+						if( jQuery(this).attr("id") != settings.activeId )
+						{
+							jQuery(this).removeClass(settings.cssOff);
+							jQuery(this).addClass(settings.cssHover);
+						}
+					});
+
+					jQuery(this).mouseout(function() {
+						if( jQuery(this).attr("id") != settings.activeId )
+						{
+							jQuery(this).removeClass(settings.cssHover);
+							jQuery(this).addClass(settings.cssOff);
+						}
+					});
+				}
+
+				if(settings.hasClick)
+				{
+					jQuery(this).click(function() {
+						if( jQuery(this).attr("id") != settings.activeId )
+					 	{
+							jQuery(settings.buttonSelector).attr("id","");
+							jQuery(settings.buttonSelector).removeClass(settings.cssHover);
+							jQuery(settings.buttonSelector).removeClass(settings.cssOn);
+							jQuery(this).addClass(settings.cssOn);
+							jQuery(this).attr("id",settings.activeId);
+						}
+					});
+				}
+			}
+			else
+			{
+				preload(settings.off);
+
+				// always have the mouseout
+				jQuery(this).mouseout(function() {
+					if( jQuery(this).attr("id") != settings.activeId )
+					{ jQuery(this).attr("src",settings.off); }
+				});
+
+				if(settings.hasHover)
+				{
+					preload(settings.hover);
+					jQuery(this).mouseover(function() {
+						if( jQuery(this).attr("id") != settings.activeId )
+						{ jQuery(this).attr("src",settings.hover); }
+					});
+				}
+
+				if(settings.hasClick)
+				{
+					preload(settings.on);
+					jQuery(this).click(function() {
+						if( jQuery(this).attr("id") != settings.activeId )
+						{
+							jQuery(settings.buttonSelector).attr("id","");
+							jQuery(settings.buttonSelector).mouseout();
+							jQuery(this).attr("src",settings.on);
+							jQuery(this).attr("id",settings.activeId);
+						}
+					});
+				}
+			}
+
+		});
+	};
+
+	function preload(path) {
+		var temp = new Image();
+  		temp.src=path;
+	};
+})(jQuery);
+/* ------------------ */
+
+/* ++++++++++++++++++++++++++++++++++++++++++++ */
+
+// Global Variables (bad)
+var resizingWidthWindow = 0;
+
+// set the express js library, built ontop of Jquery
+var exp = window.exp = function($) {
+	return {
+		data : {
+			headerHighlight : null,
+			footerHighlight : null,
+			showFooterCustomerService : false,
+			showSale : false
+		},
+		input : {
+			defaultText : function(selector, defaultText) {
+				return $(selector).each(function(){
+					$(this).focus( function() {
+						if( $(this).val() == defaultText )
+						{ $(this).val(""); }
+					});
+
+					$(this).blur(function() {
+						$(this).val( exp.utils.strTrim($(this).val()) );
+						if( $(this).val() == "" )
+						{ $(this).val( defaultText ); }
+					});
+					$(this).blur();
+				});
+			}
+		},
+		image : {
+			preload : function(images) {
+			  var tImageArr = [];
+			  var tImages = images.split(",");
+			  $(tImages).each(function(i) {
+			  	tImageArr[i] = new Image();
+			   	tImageArr[i].src = tImages[i];
+	 		  });
+			},
+			rotateImages : function(settings) {
+				exp.image.preload( settings.images );
+				images = settings.images.split(",");
+				imagesAlt = settings.imagesAlt.split(",");
+				imageIndex = 0;
+				setInterval(function() {
+					$(settings.selector).attr("src", images[imageIndex]);
+					$(settings.selector).attr("alt", imagesAlt[imageIndex]);
+					imageIndex++;
+					if( imageIndex == images.length )
+					{ imageIndex = 0; }
+				}, settings.interval);
+			}
+		},
+		layer : {
+			setup : function(selector, close) {
+				exp.layer.vCenter(selector);
+				$(close).unbind("click").click(function() { exp.layer.close(selector); });
+
+				if( exp.utils.isIE6() )
+				{ exp.utils.iframeFix.add(selector); }
+			},
+			close : function(selector) {
+				$(selector).remove();
+
+				if( exp.utils.isIE6() )
+				{ exp.utils.iframeFix.remove(selector); }
+			},
+			vCenter : function(selector) {
+				var windowOffsets = exp.utils.getViewportPosition();
+				var windowViewport = exp.utils.getViewportSize();
+				var top = ((windowViewport[1] / 2) - ($(selector).height() / 2)) + windowOffsets[1];
+				top = (top < 0) ? 100 : top;
+				$(selector).css("top",top+"px");
+			}
+		},
+		utils: {
+			isIE6 : function() {
+				if( $.browser.msie && (parseFloat($.browser.version) < 7))
+				{ return true;}
+				return false;
+			},
+			isIE7 : function() {
+				if( $.browser.msie && (parseFloat($.browser.version) == 7))
+				{ return true;}
+				return false;
+			},
+			jsLink : function(selector) {
+				$(selector).attr("href","#jsLink");
+				$(selector).click(function(evt) {
+					evt.preventDefault();
+				});
+			},
+			openPopup : function( url, settings ) {
+				$("body").append('<a style="display: none;" id="js-instantlink" href="http://www.express.com/js/'&#32;+&#32;url&#32;+&#32;'"></a>');
+				exp.utils.popupLink("#js-instantlink", settings);
+				$("#js-instantlink").triggerHandler("click");
+				$("#js-instantlink").remove();
+			},
+			popupLink : function(selector, settings) {
+				settings = jQuery.extend({
+	          	width: 500,
+	          	height: 500,
+	          	toolbar: 0,
+			  		menubar: 0,
+			  		location: 0,
+			  		directories: 0,
+			 		status: 0,
+			  		scrollbars: 0,
+			 		resizable: 0,
+			  		name: "Popup_Window"
+	        	}, settings);
+
+        		return $(selector).each(function() {
+        			this.url = jQuery(this).attr("href");
+        			this.features = "toolbar=" + settings.toolbar + ",";
+					this.features += "menubar=" + settings.menubar + ",";
+					this.features += "location=" + settings.location + ",";
+					this.features += "directories=" + settings.directories + ",";
+					this.features += "status=" + settings.status + ",";
+					this.features += "scrollbars=" + settings.scrollbars + ",";
+					this.features += "resizable=" + settings.resizable;
+
+        			$(this).click(function(evt) {
+        				evt.preventDefault();
+        				var newWindow = window.open(this.url, settings.name, 'width=' + settings.width + ',height=' + settings.height + ',"' + this.features + '"');
+						newWindow.focus();
+					});
+        		});
+	      },
+			iframeFix : {
+				add : function(selector) {
+					exp.utils.iframeFix.remove(selector);
+					iframeID = selector.split("#")[1] + "-iframe";
+					iframeHTML = '<div id="' + iframeID + '"><iframe width="100%" height="100%" src="http://www.express.com/css/blank.gif" style="filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);" frameborder="0"></iframe></div>'
+					$("body").append(iframeHTML);
+					$("#" + iframeID).css("position", "absolute");
+					$("#" + iframeID).css("top", $(selector).css("top"));
+					$("#" + iframeID).css("left", $(selector).css("left"));
+					$("#" + iframeID).css("margin-top", $(selector).css("margin-top"));
+					$("#" + iframeID).css("margin-right", $(selector).css("margin-right"));
+					$("#" + iframeID).css("margin-bottom", $(selector).css("margin-bottom"));
+					$("#" + iframeID).css("margin-left", $(selector).css("margin-left"));
+					$("#" + iframeID).css("height", $(selector).height() + "px" );
+					$("#" + iframeID).css("width", $(selector).width() + "px" );
+					$("#" + iframeID).css("z-index", $(selector).css("z-index") - 1);
+				},
+				remove : function(selector) {
+					$(selector + "-iframe").remove();
+				}
+			},
+			getViewportPosition : function() {
+				var scrOfX = 0, scrOfY = 0;
+				if( typeof( window.pageYOffset ) == 'number' ) {
+					//Netscape compliant
+				    scrOfY = window.pageYOffset;
+				    scrOfX = window.pageXOffset;
+				} else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) {
+				    //DOM compliant
+				    scrOfY = document.body.scrollTop;
+				    scrOfX = document.body.scrollLeft;
+				} else if( document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) {
+				    //IE6 standards compliant mode
+				    scrOfY = document.documentElement.scrollTop;
+				    scrOfX = document.documentElement.scrollLeft;
+				}
+				return [ scrOfX, scrOfY ];
+			},
+			getViewportSize : function() {
+				var vpW = 0, vpH = 0;
+				if (typeof window.innerWidth != 'undefined')
+				{
+				    vpW = window.innerWidth,
+				    vpH = window.innerHeight
+				}
+				else if (typeof document.documentElement != 'undefined' && typeof document.documentElement.clientWidth != 'undefined' && document.documentElement.clientWidth != 0)
+				{
+				    vpW = document.documentElement.clientWidth,
+				    vpH = document.documentElement.clientHeight
+				}
+				else
+				{
+				    vpW = document.getElementsByTagName('body')[0].clientWidth,
+				    vpH = document.getElementsByTagName('body')[0].clientHeight
+				}
+				return [  vpW, vpH ];
+			},
+			strTrim : function(s) {
+       			while (s.substring(0,1) == ' ') {
+           			s = s.substring(1, s.length);
+       			}
+       			while (s.substring(s.length-1, s.length) == ' ') {
+           			s = s.substring(0, s.length-1);
+       			}
+       			return s;
+   			}
+		},
+		func : {
+			sizeChartLayerSetup : function(selector, close, locX, locY) {
+				$(selector).css("margin-left", locX+"px").css("top", locY+"px");
+				$(close).unbind("click").click(function() { exp.layer.close(selector); });
+
+				if( exp.utils.isIE6() )
+				{ exp.utils.iframeFix.add(selector); }
+			},
+			sizeChartSetup : function(selector) {
+				var sizeChart = [];
+				$(selector).each(function(i) {
+					sizeChart[sizeChart.length] = $(this).attr("href");
+					$(this).click(function(evt) {
+						evt.preventDefault();
+						var getBodyWidth = function() {
+							var D = document;
+							return Math.max(
+								Math.max(D.body.scrollWidth, D.documentElement.scrollWidth),
+								Math.max(D.body.offsetWidth, D.documentElement.offsetWidth),
+								Math.max(D.body.clientWidth, D.documentElement.clientWidth)
+							);
+						};
+						//body width before the layer is added.
+						var bodyWidth = getBodyWidth();
+						$("#cat-sizechart").remove();
+						var htmlContainer = '<div id="cat-sizechart">' +
+										'<div id="cat-sizechart-top" class="widget-ie6png"><!--  --></div>' +
+										'<div id="cat-sizechart-body" class="widget-ie6png">' +
+										'  <div id="cat-sizechart-content">' +
+										'  <span class="cat-sizechart-but-close"><a href="javascript:void(0)" class="widget-sizechart-but-close">Close</a></span>' +
+										'    <div id="cat-sizechart-loader"><img src="../assets/images/ima/ima-glo-loading.gif" alt="Loading..." /></div>' +
+										'  </div>' +
+										'</div>' +
+										'<div id="cat-sizechart-bottom" class="widget-ie6png"><!--  --></div>' +
+										'</div>';
+
+						$("body").append(htmlContainer);
+
+						//if on Product page set location
+						var locX, locY;
+						if ( $("#cat-prod-flash").size() > 0)
+						{
+							locX = (parseInt($("#cat-sizechart").css("margin-left")) - ($("#glo-container").width() - $("#cat-sizechart").width()) / 2) + 525;
+							locY = 250;
+						}
+						else //if on ensemble page set location
+						{
+							locX = locX = (parseInt($("#cat-sizechart").css("margin-left")) - ($("#glo-container").width() - $("#cat-sizechart").width()) / 2) + 625;
+							locY = evt.pageY + 10;
+						}
+						exp.func.sizeChartLayerSetup("#cat-sizechart",".widget-sizechart-but-close", locX, locY);
+						$.get(sizeChart[i], function(data) {
+							$("#cat-sizechart *").remove();
+							$("#cat-sizechart").html("");
+							$("#cat-sizechart").append(data);
+							exp.func.sizeChartLayerSetup("#cat-sizechart", ".widget-sizechart-but-close", locX, locY);
+						});
+
+						//If the layer widened the page, then push it back into the page.
+						var adjustWidth = getBodyWidth() - bodyWidth;
+						if (adjustWidth  > 0) {
+							$("#cat-sizechart").css("margin-left", "auto").css("left","auto").css("right", "5px");
+						}
+
+					});
+				});
+			},
+			setupRecentlyViewed : function() {
+				var recentlyViewedTimer;
+				$("#glo-recently-viewed-cont #glo-recently-viewed-products-cont").bind("mouseover.recently_viewed",function(evt){
+					if( $(evt.target).is("img") )
+					{
+						if( typeof recentlyViewedTimer != "undefined")
+						{ clearTimeout(recentlyViewedTimer); }
+
+						$("#glo-recently-viewed-cont #glo-recently-viewed-products-cont img").addClass("hover");
+						$(evt.target).removeClass("hover");
+						nameStr = $(evt.target).attr("alt");
+
+						if( nameStr.length > 21 )
+						{
+							nameStr = nameStr.substring(0,21);
+							nameStr += "...";
+						}
+
+						$("#glo-recently-viewed-prod-name").html( nameStr );
+						$("#glo-recently-viewed-prod-name").css("visibility","visible");
+					}
+				});
+				$("#glo-recently-viewed-cont #glo-recently-viewed-products-cont").bind("mouseout.recently_viewed",function(evt){
+					if( $(evt.target).is("img") )
+					{
+						if( typeof recentlyViewedTimer != "undefined")
+						{ clearTimeout(recentlyViewedTimer); }
+
+						recentlyViewedTimer = setTimeout( function() {
+							$("#glo-recently-viewed-cont #glo-recently-viewed-products-cont img").removeClass("hover");
+							$("#glo-recently-viewed-prod-name").css("visibility","hidden");
+						}, 50 );
+					}
+				});
+			},
+			setupGlobalNav : function() {
+				var ucartTimer;
+
+				// Universal Cart Button setup
+				$("#widget-ucart-but").hover(function(ev) {
+					if( !ucartActive ) { ucartTimer = setTimeout(function() { showBasket('show',''); }, 500); }
+				},function(ev) {
+					if( typeof ucartTimer != undefined ) { clearTimeout(ucartTimer); }
+				});
+
+
+				// events for header search box.
+				exp.input.defaultText("#glo-header-search-component-input", "keyword or style #");
+				$("#searchForm").submit(function() {
+					searchVal = $("#glo-header-search-component-input").val();
+					if( (searchVal == "keyword or style #") || (searchVal == "") )
+					{
+						alert("Please enter a search term and try your search again");
+						return false;
+					}
+				});
+
+				// events for body search box.
+				exp.input.defaultText("#glo-body-search-component-input", "keyword or style #");
+				$("input.searchWithinButton").click(function() {
+                    searchWithinVal = $("#glo-body-search-component-input").val();
+					if( (searchWithinVal == "keyword or style #") || (searchWithinVal == "") )
+					{
+						alert("Please enter a search term and try your search again");
+						return false;
+					}
+				});
+
+                // events for no search results box.
+                exp.input.defaultText("#cat-nos-search-text", "keyword or style #");
+                $("#cat-nos-search-text").val("keyword or style #");
+                $(".cat-nos-but").click(function() {
+                    searchVal = $("#cat-nos-search-text").val();
+                    if( (searchVal == "keyword or style #") || (searchVal == "") )
+                    {
+                        alert("Please enter a search term and try your search again");
+                        return false;
+                    }
+                });
+
+				//setup the express radio but
+				$("#glo-header-express-radio img").widgetButton({
+					 off: "/assets/images/tex/tex-header-express-radio.gif",
+			         hover: "/assets/images/tex/tex-header-express-radio-hover.gif"
+			    });
+
+				$(".glo-header-link-span").each(function(i) {
+					if( i == 2 )
+					{
+						if( $("img", this).attr("class") == "widget-sign-out" )
+						{
+							onPath = "/assets/images/tex/tex-header-sign-out-active.gif";
+							offPath = "/assets/images/tex/tex-header-sign-out.gif";
+							hoverPath = "/assets/images/tex/tex-header-sign-out-hover.gif";
+						}
+						else
+						{
+							onPath = "/assets/images/tex/tex-header-sign-in-active.gif";
+							offPath = "/assets/images/tex/tex-header-sign-in.gif";
+							hoverPath = "/assets/images/tex/tex-header-sign-in-hover.gif";
+						}
+					}
+					else if( i == 1 )
+					{
+						onPath = "/assets/images/tex/tex-header-my-account-active.gif";
+						offPath = "/assets/images/tex/tex-header-my-account.gif";
+						hoverPath = "/assets/images/tex/tex-header-my-account-hover.gif";
+					}
+					else if( i == 0 )
+					{
+						onPath = "/assets/images/tex/tex-header-shopping-bag-active.gif";
+						offPath = "/assets/images/tex/tex-header-shopping-bag.gif";
+						hoverPath = "/assets/images/tex/tex-header-shopping-bag-hover.gif";
+					}
+
+					$("img",this).widgetButton({
+						on: onPath,
+						off: offPath,
+			        	hover: hoverPath,
+			        	hasClick: 1,
+			        	activeId: "widget-header-active-link",
+			        	buttonSelector: "#glo-header-link-span img"
+			        });
+				});
+
+				// popup link for shipping info
+				exp.utils.popupLink("#use-ship-info-link .widget-popup-window", {
+					width: 485,
+					height: 605,
+					scrollbars: 0
+				});
+
+				// Express Radio Pop-up
+				exp.utils.popupLink("#glo-header-express-radio .widget-popup-window",{
+					width: 504,
+					height: 219,
+					scrollbars: 0,
+			        location:0,
+			        status:0,
+			        name:"PlayerPopup"
+				});
+
+				// popup link for gift card balance Pop-up
+				exp.utils.popupLink(".giftcard-balance-popup", {
+					width: 700,
+					height: 500,
+					scrollbars: 0
+				});
+			},
+			loadAjaxContent : function(params) {
+				/* Ajax Request for Page Areas */
+				var params = $.extend({
+					ts : (new Date().getTime())
+				}, params);
+
+				$.get( "/includes/dynamic_content.jsp", params, function(data) {
+					/* Update the Header */
+					$("#amt-holder").append(  $(data).filter("#js-headerAjaxContent-amt").html() );
+                    $("#sign-in-holder").append(  $(data).filter("#js-headerAjaxContent-sign-in").html() );
+					exp.func.setupGlobalNav();
+					/* --------------------- */
+
+					/* Update the Recently Viewed */
+          var currentPath = document.location.pathname;
+          var noShowRecentlyViewed = "/womens/index.sec,/mens/index.sec";
+          if(noShowRecentlyViewed.indexOf(currentPath)==-1){
+            $("#glo-body-leftnav").append( $(data).filter("#js-recentlyViewedAjaxContent").html() );
+            exp.func.setupRecentlyViewed();
+          }
+					/* ----------------------- */
+				});
+				/* ----------------------- */
+			}
+		},
+		autorun: {
+		    doPreload : function() {
+		    	$(function() {
+		    		var preloadImages = "";
+					preloadImages = preloadImages + "/assets/images/bac/bac-ucart-top.png,";
+					preloadImages = preloadImages + "/assets/images/bac/bac-ucart-bottom.png,";
+					preloadImages = preloadImages + "/assets/images/bac/bac-ucart-body.png,";
+					preloadImages = preloadImages + "/assets/images/bac/bac-ucart-slider-container.gif,";
+					preloadImages = preloadImages + "/assets/images/ima/ima-glo-loading.gif,";
+					preloadImages = preloadImages + "/assets/images/bac/bac-quickview-top.png,";
+					preloadImages = preloadImages + "/assets/images/bac/bac-quickview-bottom.png,";
+					preloadImages = preloadImages + "/assets/images/bac/bac-quickview-body.png,";
+					preloadImages = preloadImages + "/assets/images/bac/bac-cat-quickview-bullet.gif,";
+					preloadImages = preloadImages + "/assets/images/but/cat/but-cat-quickview.png,";
+					preloadImages = preloadImages + "/assets/images/ima/ima-glo-loading.gif";
+
+					//do the image preloading.
+					exp.image.preload(preloadImages);
+		    	});
+		    }(),
+			setupQuickview : function() {
+				//on ready
+				$(function() {
+					var qTimer;
+					var imgHTML = '<a href="global.jsp.html#"><img id="widget-quickview-but" class="widget-ie6png" src="http://www.express.com/assets/images/but/cat/but-cat-quickview.png" alt="Express View" /></a>';
+					$(".widget-app-quickview").each(function() {
+						$(this).parent().parent().css("position","relative");
+						$(this).mouseover(function() {
+							if( typeof qTimer != undefined )
+							{
+								clearTimeout(qTimer);
+								$("#widget-quickview-but").parent().remove();
+							}
+							$(this).parent().parent().append(imgHTML);
+							$("#widget-quickview-but").css("position","absolute");
+							$("#widget-quickview-but").css("left", "50px");
+							qTop = $(".widget-app-quickview", $("#widget-quickview-but").parent().parent()).height() - $("#widget-quickview-but").height() - 2 - 10;
+							//$("#widget-quickview-but").css("top", qTop+"px");
+							$("#widget-quickview-but").widgetButton({
+								cssButton: 1,
+								cssOff: "glo-but-css-off2",
+								cssHover: "glo-but-css-hover2"
+							});
+							$("#widget-quickview-but").mouseover(function() {
+								if(typeof qTimer != undefined)
+								{ clearTimeout(qTimer); }
+							});
+							$("#widget-quickview-but").parent().click(function(ev) {
+								type = $(this).parent().attr("id").split("-")[0];
+								id = $(this).parent().attr("id").split("-")[1];
+								if( type == "p" )
+								{ params = "productId="+id;}
+								else
+								{ params = "ensembleId="+id; }
+
+								//if on basket page
+								if ( $(".che-bas-also-like-item").size() > 0 )
+								{ params = params + "&onBasketPage=1"; }
+
+								loadQuickView(params, $("body"));
+							});
+
+
+
+							exp.utils.jsLink( $("#widget-quickview-but").parent() );
+						});
+						$(this).mouseout(function() {
+							qTimer = setTimeout(function() { $("#widget-quickview-but").parent().remove(); }, 100);
+						});
+					});
+				})
+			}(),
+			setupSwatchQuickview : function() {
+				$(function() {
+				$(".cat-cat-item").each(function(i) {
+
+					$(".js-swatchLinkQuickview", this).click(function(ev) {
+
+								ev.preventDefault();
+								var swatchName = $(this).attr("alt");
+								type = $('.cat-cat-prod-img-cont').eq(i).attr("id").split("-")[0];
+								id = $('.cat-cat-prod-img-cont').eq(i).attr("id").split("-")[1];
+
+								if( type == "p" )
+								{ params = "productId="+id;}
+								else
+								{ params = "ensembleId="+id; }
+
+                                if(swatchName != "" && swatchName != undefined)
+                                { params = params + "&swatchColorName=" + swatchName; }
+
+                                //if on basket page
+								if ( $(".che-bas-also-like-item").size() > 0 )
+								{ params = params + "&onBasketPage=1"; }
+
+								loadQuickView(params, $("body"));
+
+
+							});
+					});
+                $(".cat-thu-product").each(function(i) {
+
+					$(".js-swatchLinkQuickview", this).click(function(ev) {
+
+								ev.preventDefault();
+								var swatchName = $(this).attr("alt");
+								type = $('.cat-thu-p-cont').eq(i).attr("id").split("-")[0];
+								id = $('.cat-thu-p-cont').eq(i).attr("id").split("-")[1];
+
+								if( type == "p" )
+								{ params = "productId="+id;}
+								else
+								{ params = "ensembleId="+id; }
+
+                                if(swatchName != "" && swatchName != undefined)
+                                { params = params + "&swatchColorName=" + swatchName; }
+
+                                //if on basket page
+								if ( $(".che-bas-also-like-item").size() > 0 )
+								{ params = params + "&onBasketPage=1"; }
+
+								loadQuickView(params, $("body"));
+
+
+							});
+					});
+                 $(".cat-luc-result-item").each(function(i) {
+
+					$(".js-swatchLinkQuickview", this).click(function(ev) {
+
+								ev.preventDefault();
+								var swatchName = $(this).attr("alt");
+								type = $('.cat-luc-item-img').eq(i).attr("id").split("-")[0];
+								id = $('.cat-luc-item-img').eq(i).attr("id").split("-")[1];
+
+								if( type == "p" )
+								{ params = "productId="+id;}
+								else
+								{ params = "ensembleId="+id; }
+
+                                if(swatchName != "" && swatchName != undefined)
+                                { params = params + "&swatchColorName=" + swatchName; }
+
+                                //if on basket page
+								if ( $(".che-bas-also-like-item").size() > 0 )
+								{ params = params + "&onBasketPage=1"; }
+
+								loadQuickView(params, $("body"));
+
+							});
+					});
+                });
+			}(),
+
+			setupEmailFriend : function() {
+				//on ready
+				$(function() {
+					$(".widget-popup-window-ef").click(function() {
+						type = $(this).attr("id").split("-")[0];
+						id = $(this).attr("id").split("-")[1];
+						if( type == "p" )
+						{ params = "productId="+id;}
+						else
+						{ params = "ensembleId="+id; }
+						loadEmailFriend(params, $("body"));
+					});
+				});
+			}(),
+
+			setupQuickview2 : function() {
+				$(function() {
+					//quickview.
+					$(".widget-quickview-but2").each(function() {
+						$(this).parent().click(function() {
+							type = $(this).attr("id").split("-")[0];
+							id = $(this).attr("id").split("-")[1];
+							if( type == "p" )
+							{ params = "productId="+id;}
+							else
+							{ params = "ensembleId="+id; }
+
+							//if on basket page
+							if ( $(".che-bas-also-like-item").size() > 0 )
+							{ params = params + "&onBasketPage=1"; }
+
+							loadQuickView(params, $("body"));
+						});
+						$(this).widgetButton({
+							cssButton: 1,
+							cssOff: "glo-but-css-off2",
+							cssHover: "glo-but-css-hover2"
+						});
+						exp.utils.jsLink( $(this).parent() );
+					});
+				});
+			}()
+		}
+	};
+}(jQuery)
+
+
+// --------------------
+
+/* OCP FRAMEWORK FILES */
+/* +++++++++++++++++++++++++++++++++++++++++++++ */
+
+//---------------------------------------------
+// OCP Framework
+// Corresponding Javascript Object Lib
+//
+// Convention: __[name] == private variable or
+//                         method of class.
+//---------------------------------------------
+
+// Product variant attribute object
+
+function VariantAttribute(attribName, attribValue, /*optional*/ variant)
+{
+   // Store name and value pair
+   this.name = attribName.toUpperCase();
+   this.value = attribValue;
+   this.matched = false;
+
+   // This is the variant that this
+   // attribute belongs to
+   if (arguments.length == 3)
+      this.__variant = variant;
+   else
+      this.__variant = null;
+}
+
+function varattr_getVariant()
+{
+   return this.__variant;
+}
+
+function varattr_equals(attrib)
+{
+   return ((this.name == attrib.name) && (this.value == attrib.value));
+}
+
+VariantAttribute.prototype.getVariant     = varattr_getVariant;
+VariantAttribute.prototype.equals         = varattr_equals;
+
+//----------------------------------------------------------------------------------
+
+// Product variant
+
+function Variant(/*optional*/ prodVarGroup)
+{
+   // This will be the VariantAttribute(s)
+   // for a product
+   this.__attributes = new Array();
+
+   // This is the unique ID for this variant
+   this.__id = null;
+
+   // When editing an item, this will be set to true
+   // if this is the variant that was selected
+   this.__selected = false;
+
+   // The product variant group object
+   // this variant belongs to
+   if (arguments.length == 1)
+      this.__productVariantGroup = prodVarGroup;
+   else
+      this.__productVariantGroup = null;
+}
+
+function variant_setSelected()
+{
+   this.__selected = true;
+}
+
+function variant_isSelected()
+{
+	return this.__selected;
+}
+
+function variant_getAttribute(attrib_1)
+{
+   // If they pass a string, it must be an attribute name
+   // otherwise it's an index.  In the first case, return
+   // the value.  For the second, return the entire attribute.
+   if (typeof attrib_1 == "string")
+   {
+      for (var idx = 0; idx < this.__attributes.length; idx++)
+         if (attrib_1.toUpperCase() == this.__attributes[idx].name)
+            return this.__attributes[idx];
+   }
+   else if ((typeof attrib_1 == "number") &&
+            (attrib_1 >= 0 && attrib_1 < this.__attributes.length))
+      return this.__attributes[attrib_1];
+
+   // If we didn't find an attribute
+   // just return null
+   return null;
+}
+
+function variant_getAllAttributes()
+{
+	return this.__attributes;
+}
+
+function variant_getAttributeValue(attribName)
+{
+   var attrib = this.getAttribute(attribName);
+   if (attrib != null)
+      return attrib.value;
+   else
+      return undefined;
+}
+
+
+function variant_addAttribute(attribName, attribValue)
+{
+   // We only set attributes that don't exist
+   if (this.getAttribute(attribName) == null)
+      this.__attributes[this.__attributes.length] = new VariantAttribute(attribName, attribValue, this);
+   else
+   {
+      // Throw an exception
+      var err = new Error("Attribute " + attribName + " already exists in Variant");
+      throw err;
+   }
+}
+
+function variant_size()
+{
+   return this.__attributes.length;
+}
+
+function variant_setId(varID)
+{
+   this.__id = varID;
+}
+
+function variant_getId()
+{
+   return this.__id;
+}
+
+function variant_equals(variant)
+{
+   function keyMatch(keyArr, key)
+   {
+      for (var z = 0; z < keyArr.length; z++)
+         if (keyArr[z] == key)
+            return true;
+
+      return false;
+   }
+
+   var matchKeys = new Array();
+   var matchSize = this.__attributes.length;
+
+   for (var x = 0; x < this.size(); x++)
+      for (var y = 0; y < variant.size(); y++)
+			if (this.getAttribute(x).equals(variant.getAttribute(y)) && !keyMatch(matchKeys, this.getAttribute(x).name))
+				matchKeys[matchKeys.length] = this.getAttribute(x).name;
+
+	return (matchKeys.length == this.__attributes.length);
+}
+
+function variant_getProductVariantGroup()
+{
+	return this.__productVariantGroup;
+}
+
+Variant.prototype.setSelected             = variant_setSelected;
+Variant.prototype.isSelected              = variant_isSelected;
+Variant.prototype.getAttribute            = variant_getAttribute;
+Variant.prototype.getAllAttributes        = variant_getAllAttributes;
+Variant.prototype.addAttribute            = variant_addAttribute;
+Variant.prototype.getAttributeValue       = variant_getAttributeValue;
+Variant.prototype.setId                   = variant_setId;
+Variant.prototype.getId                   = variant_getId;
+Variant.prototype.size                    = variant_size;
+Variant.prototype.equals                  = variant_equals;
+Variant.prototype.getProductVariantGroup  = variant_getProductVariantGroup;
+
+//----------------------------------------------------------------------------------
+
+// Product variant grouping
+
+function ProductVariantGroup()
+{
+   this.__variants = new Array();
+   this.__formField = null;
+   this.__variantGroup = null;
+}
+
+function pvgroup_setVariantGroup(variantGroupList)
+{
+   this.__variantGroup = variantGroupList.split(",");
+}
+
+function pvgroup_getVariantGroup()
+{
+	return this.__variantGroup;
+}
+
+function pvgroup_setFormField(fieldName)
+{
+	this.__formField = fieldName;
+}
+
+function pvgroup_getFormField()
+{
+	return this.__formField;
+}
+
+function pvgroup_getVariant(arg1)
+{
+   if (typeof arg1 == "number")
+   {
+	   // Find variant by index number
+		if (arg1 >= 0 && arg1 < this.__variants.length)
+			return this.__variants[arg1];
+		else
+			return null;
+	}
+	else if (typeof arg1 == "object")   // We're in control, so we'll assume Array...
+	{
+		// Find variant by attribute combination
+		var vTest = new Variant();
+		for (var x = 0; x < arg1.length; x++)
+			vTest.addAttribute(arg1[x].name, arg1[x].value);
+
+		return this.variantExists(vTest);
+	}
+}
+
+function pvgroup_getAllVariants()
+{
+	return this.__variants;
+}
+
+function pvgroup_variantExists(variant)
+{
+   // See if we already have this variant
+   for (var idx = 0; idx < this.__variants.length; idx++)
+   {
+      var v = this.getVariant(idx);
+      if (v != null)
+			if (v.equals(variant))
+				return v;
+   }
+
+   return null;
+}
+
+function pvgroup_addVariant(variant)
+{
+   // Add the variant as long as it doesn't
+   // already exist for this product
+   if (this.variantExists(variant) == null && variant instanceof Variant)
+   {
+      // Assign the productVariantGroup back to the variant
+      // so the end user can access it.
+      variant.__productVariantGroup = this;
+      // Store the variant
+      this.__variants[this.__variants.length] = variant;
+   }
+   else if (!variant instanceof Variant)
+   {
+      // Throw an exception
+      var err = new Error("Cannot add objects not of type Variant to ProductVariantGroup");
+      throw err;
+   }
+}
+
+function pvgroup_getAttributesWithName(attrName)
+{
+   function isInList(arAttribs, attrValue)
+   {
+      for (var idx = 0; idx < arAttribs.length; idx++)
+         if (arAttribs[idx].value == attrValue)
+            return true;
+
+      return false;
+   }
+
+   var matchingAttributes = new Array();
+
+   for (var idx=0; idx < this.__variants.length; idx++)
+      if (!isInList(matchingAttributes, this.__variants[idx].getAttributeValue(attrName)))
+         matchingAttributes[matchingAttributes.length] = this.__variants[idx].getAttribute(attrName);
+
+   return matchingAttributes;
+}
+
+function pvgroup_getVariantsMatching(attrName, attrValue)
+{
+   var matchingVariants = new Array();
+
+   // Find every variant that contains the
+   // matching attribute name/value pair
+   for (var idx = 0; idx < this.__variants.length; idx++)
+      if (this.__variants[idx].getAttribute(attrName).value != null &&
+          this.__variants[idx].getAttribute(attrName).value == attrValue)
+         matchingVariants[matchingVariants.length] = this.__variants[idx];
+
+   // return the matching variants array
+   return matchingVariants;
+}
+
+function pvgroup_getSelectedVariant()
+{
+   for (var idx = 0; idx < this.__variants.length; idx++)
+      if (this.__variants[idx].isSelected())
+         return this.__variants[idx];
+
+	// Nothing is selected
+   return null;
+}
+
+function pvgroup_size()
+{
+   return this.__variants.length;
+}
+
+ProductVariantGroup.prototype.getFormField = pvgroup_getFormField;
+ProductVariantGroup.prototype.setFormField = pvgroup_setFormField;
+ProductVariantGroup.prototype.getVariant = pvgroup_getVariant;
+ProductVariantGroup.prototype.getAllVariants = pvgroup_getAllVariants;
+ProductVariantGroup.prototype.variantExists = pvgroup_variantExists;
+ProductVariantGroup.prototype.addVariant = pvgroup_addVariant;
+ProductVariantGroup.prototype.getVariantsMatching = pvgroup_getVariantsMatching;
+ProductVariantGroup.prototype.getSelectedVariant = pvgroup_getSelectedVariant;
+ProductVariantGroup.prototype.getAttributesWithName = pvgroup_getAttributesWithName;
+ProductVariantGroup.prototype.getVariantGroup = pvgroup_getVariantGroup;
+ProductVariantGroup.prototype.setVariantGroup = pvgroup_setVariantGroup;
+ProductVariantGroup.prototype.size = pvgroup_size;
+
+//----------------------------------------------------------------------------------
+// HELPER METHODS
+
+// Returns an array of unique VariantAttribute objects from
+// an array of Variant objects
+function getAttributesWithNameFromVariants(varArray, attrName)
+{
+   function isInList(arAttribs, attrValue)
+   {
+      for (var idx = 0; idx < arAttribs.length; idx++)
+         if (arAttribs[idx].value == attrValue)
+            return true;
+
+      return false;
+   }
+
+   var matchingAttributes = new Array();
+
+   for (var idx=0; idx < varArray.length; idx++)
+      if (!isInList(matchingAttributes, varArray[idx].getAttributeValue(attrName)))
+         matchingAttributes[matchingAttributes.length] = varArray[idx].getAttribute(attrName);
+
+   return matchingAttributes;
+}
+
+
+//---------------------------------------------
+// OCP Framework
+//
+// Dropdown maintenance functions for multi-
+// variant display.
+//
+//--------------------------------------------------------------------------
+var __pvdsArray = new Array();
+
+function __getDropdownSupport(listObj)
+{
+	var idx = 0;
+	while (idx < __pvdsArray.length)
+	{
+		if (__pvdsArray[idx].__list == listObj)
+			return __pvdsArray[idx];
+
+		idx++;
+	}
+
+	return null;
+}
+
+//--------------------------------------------------------------------------
+// Creating the support structure for a variant dropdown,
+// specify the name of the dropdown, not the actual object
+function ProductVariantDropdownSupport(listName, productID, complimentaryLists, productVariants, callbackFunc, primary, selectedValue, defaultText, defaultValue)
+{
+	// Private fields
+   this.__attribCallback      = null;
+   this.__arDefOpts           = new Array();
+
+   this.__attributeName       = listName;
+   this.__list                = document.getElementById(listName + productID + "Variants");
+   this.__complimentaryLists  = complimentaryLists;
+   this.__productVariants     = productVariants;
+   this.__selectedValue       = selectedValue;
+
+   this.__defaultText         = (arguments.length > 7 ? defaultText : "Select One");
+   this.__defaultValue        = (arguments.length > 8 ? defaultValue : "");
+
+	// Public fields
+   this.isPrimary             = primary;
+   this.productID             = productID;
+
+
+	// Add this directly to the list
+	this.__list.productVariantDropdownSupport = this;
+
+   // We use this global array because we need to find
+   // the primary list for complimentary/dependent lists
+   __pvdsArray[__pvdsArray.length] = this;
+
+	// Register a formatter callback
+	if (callbackFunc != "")
+		this.setAttributeFormatCallback(callbackFunc);
+
+	// Get the selected value for this dropdown
+	var selVariant = this.__productVariants.getSelectedVariant();
+	if (selVariant != null)
+		this.__selectedValue = selVariant.getAttributeValue(this.__attributeName);
+
+	// Load the data if this is the primary
+	this.loadDropdown();
+
+	// Register the event we want to respond to
+	if (this.__list.attachEvent)
+	{
+		// This is Internet Explorer
+		this.__list.attachEvent("onchange", this.updateLists);
+	}
+	else if (this.__list.addEventListener)
+	{
+	   // This is Mozilla/Firefox
+		this.__list.addEventListener("change", this.updateLists, true);
+	}
+}
+
+// Callback function when dropdowns are loaded
+// The callback function should be in the form:
+//
+//   function cbFuncName(list, attribute, optionObj)
+//
+// When adding attributes to a dropdown, this method
+// will pass to the callback the list object that is being
+// modified, the VariantAttribute object, and the Option
+// object that will be appended to the list
+// The callback should return an Option object that
+// will be added to the dropdown list.
+
+function pvds_setAttributeFormatCallback(cbFuncPointer)
+{
+   if (cbFuncPointer == null)
+      return;
+
+   // Determine that the object pass in is a function
+   if (typeof cbFuncPointer != "function")
+   {
+      // Throw an exception
+      var err = new Error("The attribute format callback must be a function pointer");
+      throw err;
+   }
+
+   // Check it's length (should be 3 parameters)
+   if (cbFuncPointer.length != 3)
+   {
+      // Throw an exception
+      var err = new Error("The attribute format callback must take 3 parameters");
+      throw err;
+   }
+
+   // Function ok, set it
+   this.__attribCallback = cbFuncPointer;
+
+}
+
+//--------------------------------------------------------------------------
+
+// Clear a dropdown's options
+function pvds_clearDropdown()
+{
+   while (this.__list.options.length > 0)
+      this.__list.remove(0);
+}
+
+function pvds_addDefault()
+{
+	var dOpt = document.createElement("option");
+	dOpt.text = this.__defaultText;
+	dOpt.value = this.__defaultValue;
+	try
+	{
+      // IE likes it this way
+      this.__list.add(dOpt);
+   }
+   catch (ex)
+   {
+      // The W3C DOM specifies the second parameter is required
+      this.__list.add(dOpt, null);
+   }
+}
+
+// Returns the primary drop-down for any list provided
+function pvds_getPrimary()
+{
+	if (this.isPrimary)
+		return this;
+	else
+	{
+		for (var x = 0; x < __pvdsArray.length; x++)
+			if ((__pvdsArray[x].productID == this.productID) &&
+				 (__pvdsArray[x].isPrimary))
+				return __pvdsArray[x];
+	}
+
+	return null;
+}
+
+function pvds_getPrimarySelectedValue()
+{
+	var primary = this.getPrimary();
+	return primary.__selectedValue;
+}
+
+// Load all of the unique attributes of a
+// particular name into a dropdown list
+var arrColors = null; //hoang add
+var arrColorsCopy = null; //hoang add
+
+function pvds_loadDropdown()
+{
+	// Clear the dropdown
+   this.clearDropdown();
+
+   // Add the default option
+	this.addDefault();
+
+	// All lists start out as disabled
+	this.__list.disabled = true;
+
+	// Primary lists are never disabled
+	if (this.isPrimary)
+		this.__list.disabled = false;
+
+	// Enable a list that has a value selected
+	if (this.__selectedValue != "")
+		this.__list.disabled = false;
+
+   var primarySelOpt = (this.getPrimarySelectedValue() != "");
+
+	if (!this.isPrimary && primarySelOpt)
+		this.__list.disabled = false;
+
+	// Don't need to load the list if nothing selected and not primary and primary has no selected options
+	if (!this.isPrimary && !primarySelOpt && (this.__selectedValue == ""))
+		return;
+
+   // Get all of the unique values
+	var arAttributeList = null;
+   if (!this.isPrimary && this.getPrimarySelectedValue() != "")
+   {
+      var arMatchingVariants = this.__productVariants.getVariantsMatching(this.getPrimary().__attributeName, this.getPrimarySelectedValue());
+      arAttributeList = getAttributesWithNameFromVariants(arMatchingVariants, this.__attributeName);
+   }
+   else {
+      arAttributeList = this.__productVariants.getAttributesWithName(this.__attributeName); }
+
+	//if( arAttributeList.length > 1 )
+	//{ this.addDefault(); }
+
+	arrColors = new Array();
+	arrColorsCopy = new Array();
+   // Load the array of values
+   for (var idx = 0; idx < arAttributeList.length; idx++)
+   {
+      // Create new element
+      var opt = document.createElement("option");
+      opt.text = arAttributeList[idx].value;
+      opt.value = arAttributeList[idx].value;
+
+		arrColors.push(arAttributeList[idx].value);
+
+		// Give them a chance to modify the option object
+      if (this.__attribCallback != null)
+         opt = this.__attribCallback(this.__list, arAttributeList[idx], opt);
+
+		try
+		{
+			// IE likes it this way
+			this.__list.add(opt);
+		}
+		catch (ex)
+		{
+			// The W3C DOM specifies the second parameter is required (mozilla/firefox)
+			this.__list.add(opt, null);
+		}
+
+		// Is this a selected option?
+		if (this.__selectedValue == opt.value)
+			opt.selected = true;
+   }
+
+	// Set the variant form field to the selected value
+	this.setVariantField();
+}
+
+// Update dropdown lists, relative to a changed element
+// in another list.  ie:
+//    Change size from small to medium and update the
+//    color dropdown to show all of the colors for
+//    that size.
+function pvds_updateLists(evt)
+{
+	arrColors = new Array();
+	arrColorsCopy = new Array();
+
+	if (evt == "")
+	{ alert("Nothing") }
+	else
+	{
+    var dropdown = (evt.target) ? evt.target : evt.srcElement;
+
+	}
+
+    var thisObj = __getDropdownSupport(dropdown);
+
+    var selectedColor = $(".colorInfo span.selectedColor").text();
+
+    var arDependentAttribs = thisObj.__complimentaryLists.split(",");
+
+	// Anything to update??
+	if (!(arDependentAttribs.length == 1 && arDependentAttribs[0] == ""))
+	{
+		// Get the variants which match the selected attribute
+		var sAttribValue = thisObj.__list.options[thisObj.__list.selectedIndex].value;
+		var arMatchingVariants = thisObj.__productVariants.getVariantsMatching(thisObj.__attributeName, sAttribValue);
+
+		for (var lIdx = 0; lIdx < arDependentAttribs.length; lIdx++)
+		{
+			// The name of the list = [name]Variants
+			var listName = arDependentAttribs[lIdx] + thisObj.productID + "Variants";
+
+			// Refresh the proper list(s)
+			var compList = document.getElementById(listName);
+
+
+			// Get the ProductVariantDropdownSupport object
+			var pvdsObj = __getDropdownSupport(compList);
+
+			var sSelection = "";
+
+			// 1) Enable list
+			//    -or-
+			//    If enabled, grab the selected option's name so we
+			//    can retain that selection if possible
+			if (compList.disabled)
+				compList.disabled = false;
+			else
+				sSelection = compList.options[compList.selectedIndex].value;
+
+			// 2) Clear the list
+			pvdsObj.clearDropdown();
+
+			// 3) Add default option
+			//pvdsObj.addDefault();
+
+			// 4) Load the values
+			var arAttribs = getAttributesWithNameFromVariants(arMatchingVariants, arDependentAttribs[lIdx]);
+
+			if( arAttribs.length != 1 )
+			{ pvdsObj.addDefault(); }
+
+			for (var idx = 0; idx < arAttribs.length; idx++)
+			{
+				// Create new element
+				var opt = document.createElement("option");
+				opt.text = arAttribs[idx].value;
+				opt.value = arAttribs[idx].value;
+
+				// Give them a chance to modify the option object
+				if (pvdsObj.__attribCallback != null)
+					opt = pvdsObj.__attribCallback(compList, arAttribs[idx], opt);
+
+				if (sSelection == arAttribs[idx].value)
+					opt.selected = true;
+
+				try
+				{
+					// IE likes it this way
+					compList.add(opt);
+				}
+				catch (ex)
+				{
+					// The W3C DOM specifies the second parameter is required
+					compList.add(opt, null);
+				}
+			}
+
+			// Disable this list if there are no elements in the dropdown
+			if (arAttribs.length == 0)
+				pvdsObj.__list.disabled = true;
+		}
+	}
+
+	// Set the variant form field to the selected value
+	thisObj.setVariantField();
+
+}
+
+function pvds_updateListsNew(dropdown)
+{
+	arrColors = new Array();
+	arrColorsCopy = new Array();
+
+    var thisObj = __getDropdownSupport(dropdown);
+
+    var arDependentAttribs = thisObj.__complimentaryLists.split(",");
+
+	// Anything to update??
+	if (!(arDependentAttribs.length == 1 && arDependentAttribs[0] == ""))
+	{
+		// Get the variants which match the selected attribute
+		var sAttribValue = thisObj.__list.options[thisObj.__list.selectedIndex].value;
+		var arMatchingVariants = thisObj.__productVariants.getVariantsMatching(thisObj.__attributeName, sAttribValue);
+
+		for (var lIdx = 0; lIdx < arDependentAttribs.length; lIdx++)
+		{
+			// The name of the list = [name]Variants
+			var listName = arDependentAttribs[lIdx] + thisObj.productID + "Variants";
+
+			// Refresh the proper list(s)
+			var compList = document.getElementById(listName);
+
+			// Get the ProductVariantDropdownSupport object
+			var pvdsObj = __getDropdownSupport(compList);
+
+			var sSelection = "";
+
+			// 1) Enable list
+			//    -or-
+			//    If enabled, grab the selected option's name so we
+			//    can retain that selection if possible
+			if (compList.disabled)
+				compList.disabled = false;
+			else
+				sSelection = compList.options[compList.selectedIndex].value;
+
+
+			// 2) Clear the list
+			pvdsObj.clearDropdown();
+
+			// 3) Add default option
+			//pvdsObj.addDefault();
+
+			// 4) Load the values
+			var arAttribs = getAttributesWithNameFromVariants(arMatchingVariants, arDependentAttribs[lIdx]);
+
+			if( arAttribs.length != 1 )
+			{ pvdsObj.addDefault(); }
+
+			for (var idx = 0; idx < arAttribs.length; idx++)
+			{
+				// Create new element
+				var opt = document.createElement("option");
+				opt.text = arAttribs[idx].value;
+				opt.value = arAttribs[idx].value;
+
+				// Give them a chance to modify the option object
+				if (pvdsObj.__attribCallback != null)
+					opt = pvdsObj.__attribCallback(compList, arAttribs[idx], opt);
+
+				if (sSelection == arAttribs[idx].value)
+					opt.selected = true;
+
+				try
+				{
+					// IE likes it this way
+					compList.add(opt);
+				}
+				catch (ex)
+				{
+					// The W3C DOM specifies the second parameter is required
+					compList.add(opt, null);
+				}
+			}
+
+			// Disable this list if there are no elements in the dropdown
+			if (arAttribs.length == 0)
+				pvdsObj.__list.disabled = true;
+		}
+	}
+
+	// Set the variant form field to the selected value
+	thisObj.setVariantField();
+
+
+}
+
+// Set the hidden form field that is tied to this variant with
+// the value of the combined variant attributes.
+function pvds_setVariantField()
+{
+   // Find the variant that matches this type
+   var variantArray = this.__productVariants.getVariantGroup();
+   var attribs = new Array();
+   for (var x = 0; x < variantArray.length; x++)
+   {
+	   var pvds = document.getElementById(variantArray[x] + this.productID + "Variants").productVariantDropdownSupport;
+		if (pvds)
+			attribs[attribs.length] = new VariantAttribute(variantArray[x], pvds.getSelectedOption().value);
+   }
+
+   var selVariant = this.__productVariants.getVariant(attribs);
+
+   // Set the form field
+   try
+   {
+      document.getElementById(this.__productVariants.getFormField()).value = selVariant.getId();
+   }
+   catch (ex)
+   {
+		// They've probably selected something invalid...
+		document.getElementById(this.__productVariants.getFormField()).value = "";
+   }
+}
+
+function pvds_getSelectedOption()
+{
+	return this.__list.options[this.__list.selectedIndex];
+}
+
+function pvds_getProductVariants()
+{
+	return this.__productVariants;
+}
+
+ProductVariantDropdownSupport.prototype.setAttributeFormatCallback   = pvds_setAttributeFormatCallback;
+ProductVariantDropdownSupport.prototype.clearDropdown                = pvds_clearDropdown;
+ProductVariantDropdownSupport.prototype.addDefault                   = pvds_addDefault;
+ProductVariantDropdownSupport.prototype.loadDropdown                 = pvds_loadDropdown;
+ProductVariantDropdownSupport.prototype.updateLists                  = pvds_updateLists;
+ProductVariantDropdownSupport.prototype.updateListsNew               = pvds_updateListsNew;
+ProductVariantDropdownSupport.prototype.getSelectedOption            = pvds_getSelectedOption;
+ProductVariantDropdownSupport.prototype.getPrimary                   = pvds_getPrimary;
+ProductVariantDropdownSupport.prototype.getPrimarySelectedValue      = pvds_getPrimarySelectedValue;
+ProductVariantDropdownSupport.prototype.getProductVariants           = pvds_getProductVariants;
+ProductVariantDropdownSupport.prototype.setVariantField              = pvds_setVariantField;
+
+// This is an example of sending product data from the server
+// to the client, then formatting the variants on the client-side
+// based on certain criteria.
+function cbFormatter(list, attribute, opt)
+{
+	// Get the price for this variant.. If this is the primary list, get all related
+	// variants from the group and get their prices as well so we can build a range.
+	var pvds = list.productVariantDropdownSupport;
+
+	// Get all of the product variants for this attribute
+	var variantGroup = attribute.getVariant().getProductVariantGroup();
+	var groupVariants = variantGroup.getAllVariants()
+
+	// Are all of the prices the same within the group?
+	var lowGroupPrice = 999999.00;
+	var highGroupPrice = -1.00;
+
+	for (var idx = 0; idx < groupVariants.length; idx++)
+	{
+      lowGroupPrice = groupVariants[idx].numericPrice < lowGroupPrice ? groupVariants[idx].numericPrice : lowGroupPrice;
+		highGroupPrice = groupVariants[idx].numericPrice > highGroupPrice ? groupVariants[idx].numericPrice : highGroupPrice;
+    }
+
+	// Are all of the prices the same within the variant?
+	var variants = variantGroup.getVariantsMatching(attribute.name, attribute.value);
+	var lowVariantPrice = 999999.00;
+	var highVariantPrice = -1.00;
+
+	var lowVariantDisplay = variants[0].displayPrice;
+	var highVariantDisplay = variants[0].displayPrice;
+    var isPriceRange = variants[0].isPriceRange;
+
+   for (var idx = 0; idx < variants.length; idx++)
+   {
+	  // Display really needs to be done before the re-assignment...
+      lowVariantDisplay = parseFloat(variants[idx].numericPrice) < lowVariantPrice ? variants[idx].displayPrice : lowVariantDisplay;
+      lowVariantPrice = parseFloat(variants[idx].numericPrice) < lowVariantPrice ? parseFloat(variants[idx].numericPrice) : lowVariantPrice;
+      highVariantDisplay = parseFloat(variants[idx].numericPrice) > highVariantPrice ? variants[idx].displayPrice : highVariantDisplay;
+	  highVariantPrice = parseFloat(variants[idx].numericPrice) > highVariantPrice ? parseFloat(variants[idx].numericPrice) : highVariantPrice;
+   }
+
+	if (lowGroupPrice != highGroupPrice)
+	{
+		// Primary list should display a range
+		if (pvds.isPrimary)
+			if (lowVariantPrice != highVariantPrice)
+				opt.text = opt.text + " " + lowVariantDisplay + " - " + highVariantDisplay;
+			else
+				opt.text = opt.text + " " + attribute.getVariant().displayPrice;
+		else  // Secondary lists should show exact price
+			opt.text = opt.text + " " + attribute.getVariant().displayPrice;
+	} else if (isPriceRange == 'true') {
+        // Primary list should display a range
+		if (pvds.isPrimary)
+			if (lowVariantPrice != highVariantPrice)
+				opt.text = opt.text + " " + lowVariantDisplay + " - " + highVariantDisplay;
+			else
+				opt.text = opt.text + " " + attribute.getVariant().displayPrice;
+		else  // Secondary lists should show exact price
+			opt.text = opt.text + " " + attribute.getVariant().displayPrice;
+    }
+
+   return opt;
+}
+
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++ */

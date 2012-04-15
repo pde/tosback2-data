@@ -1,0 +1,350 @@
+<HTML>
+<SCRIPT type="text/javascript">
+//<![CDATA[
+if(!window.__td){window.__MT=100;window.__ti=0;window.__td=[];window.__td.length=window.__MT;window.__noTrace=false;}
+
+
+
+var isIE=(navigator.appVersion.indexOf("MSIE")!=-1)?true:false;
+var isWin=(navigator.appVersion.toLowerCase().indexOf("win")!=-1)?true:false;
+var isOpera=(navigator.userAgent.indexOf("Opera")!=-1)?true:false;
+
+function ControlVersion()
+{if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+var version;
+var axo;
+var e;
+
+
+
+try{
+
+axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash.7");
+version=axo.GetVariable("$version");
+}catch(e){
+}
+
+if(!version)
+{
+try{
+
+axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash.6");
+
+
+
+
+
+
+version="WIN 6,0,21,0";
+
+
+axo.AllowScriptAccess="always";
+
+
+version=axo.GetVariable("$version");
+
+}catch(e){
+}
+}
+
+if(!version)
+{
+try{
+
+axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash.3");
+version=axo.GetVariable("$version");
+}catch(e){
+}
+}
+
+if(!version)
+{
+try{
+
+axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash.3");
+version="WIN 3,0,18,0";
+}catch(e){
+}
+}
+
+if(!version)
+{
+try{
+
+axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash");
+version="WIN 2,0,0,11";
+}catch(e){
+version=-1;
+}
+}
+
+return version;
+}ControlVersion._vpfn='$vpfn_CXpip1svBqaNQHIqRxmEJQ9$0';
+
+
+function GetSwfVer(){if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+
+var flashVer=-1;
+
+if(navigator.plugins!=null&&navigator.plugins.length>0){
+if(navigator.plugins["Shockwave Flash 2.0"]||navigator.plugins["Shockwave Flash"]){
+var swVer2=navigator.plugins["Shockwave Flash 2.0"]?" 2.0":"";
+var flashDescription=navigator.plugins["Shockwave Flash"+swVer2].description;
+var descArray=flashDescription.split(" ");
+var tempArrayMajor=descArray[2].split(".");
+var versionMajor=tempArrayMajor[0];
+var versionMinor=tempArrayMajor[1];
+if(descArray[3]!=""){
+tempArrayMinor=descArray[3].split("r");
+}else{
+tempArrayMinor=descArray[4].split("r");
+}
+var versionRevision=tempArrayMinor[1]>0?tempArrayMinor[1]:0;
+var flashVer=versionMajor+"."+versionMinor+"."+versionRevision;
+}
+}
+
+else if(navigator.userAgent.toLowerCase().indexOf("webtv/2.6")!=-1)flashVer=4;
+
+else if(navigator.userAgent.toLowerCase().indexOf("webtv/2.5")!=-1)flashVer=3;
+
+else if(navigator.userAgent.toLowerCase().indexOf("webtv")!=-1)flashVer=2;
+else if(isIE&&isWin&&!isOpera){
+flashVer=ControlVersion();
+}
+return flashVer;
+}GetSwfVer._vpfn='$vpfn_QXTGgyCalsUYLi3E6xd6Cg82$0';
+
+
+function DetectFlashVer(reqMajorVer,reqMinorVer,reqRevision)
+{if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+versionStr=GetSwfVer();
+if(versionStr==-1){
+return false;
+}else if(versionStr!=0){
+if(isIE&&isWin&&!isOpera){
+
+tempArray=versionStr.split(" ");
+tempString=tempArray[1];
+versionArray=tempString.split(",");
+}else{
+versionArray=versionStr.split(".");
+}
+var versionMajor=versionArray[0];
+var versionMinor=versionArray[1];
+var versionRevision=versionArray[2];
+
+
+if(versionMajor>parseFloat(reqMajorVer)){
+return true;
+}else if(versionMajor==parseFloat(reqMajorVer)){
+if(versionMinor>parseFloat(reqMinorVer))
+return true;
+else if(versionMinor==parseFloat(reqMinorVer)){
+if(versionRevision>=parseFloat(reqRevision))
+return true;
+}
+}
+return false;
+}
+}DetectFlashVer._vpfn='$vpfn_lX0gE85c0go1xjfBzgrylg116$0';
+
+function AC_AddExtension(src,ext)
+{if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+if(src.indexOf('?')!=-1)
+return src.replace(/\?/,ext+'?');
+else
+return src+ext;
+}AC_AddExtension._vpfn='$vpfn_M0hAIz0NgIeKGoJEn8rx3Q149$0';
+
+function AC_Generateobj(objAttrs,params,embedAttrs,hidden,afterload)
+{if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+var str='';
+if(hidden==true){
+str+='<div style="overflow: hidden; width: 1px; height: 1px;">';
+}
+
+if(isIE&&isWin&&!isOpera)
+{
+str+='<object ';
+for(var i in objAttrs)
+str+=i+'="'+objAttrs[i]+'" ';
+str+='>';
+for(var i in params)
+str+='<param name="'+i+'" value="'+params[i]+'" /> ';
+str+='</object>';
+}else{
+str+='<embed ';
+for(var i in embedAttrs)
+str+=i+'="'+embedAttrs[i]+'" ';
+str+='> </embed>';
+}
+
+if(hidden){
+str+='</div>';
+}
+
+if(afterload)
+{
+
+var elem=document.createElement("DIV");
+elem.innerHTML=str;
+var innerElem=elem.firstChild;
+elem.removeChild(innerElem);
+
+
+document.body.appendChild(innerElem);
+}
+else
+{
+document.write(str);
+}
+}AC_Generateobj._vpfn='$vpfn_9TFYUPC1qsGV6ZhkF$KMKQ157$0';
+
+function AC_FL_RunContent(){if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+var ret=AC_GetArgs(0,arguments,".swf","movie","clsid:d27cdb6e-ae6d-11cf-96b8-444553540000","application/x-shockwave-flash");
+AC_Generateobj(ret.objAttrs,ret.params,ret.embedAttrs,false,false);
+}AC_FL_RunContent._vpfn='$vpfn_e5TQbMzIxgYSIUONkO0vbg201$0';
+
+
+function AC_FL_RunContentH(){if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+var ret=AC_GetArgs(0,arguments,".swf","movie","clsid:d27cdb6e-ae6d-11cf-96b8-444553540000","application/x-shockwave-flash");
+AC_Generateobj(ret.objAttrs,ret.params,ret.embedAttrs,true,false);
+}AC_FL_RunContentH._vpfn='$vpfn_yJ8XV4cEOstsXgaYL4RcnA207$0';
+
+function AC_FL_RunContentEx(){if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+var ret=AC_GetArgs(2,arguments,".swf","movie","clsid:d27cdb6e-ae6d-11cf-96b8-444553540000","application/x-shockwave-flash");
+AC_Generateobj(ret.objAttrs,ret.params,ret.embedAttrs,ret.hidden,ret.afterload);
+}AC_FL_RunContentEx._vpfn='$vpfn_e9KZ12lYwFCYAfGlcp_KlA212$0';
+
+function AC_GetArgs(start,args,ext,srcParamName,classid,mimeType){if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+var ret=new Object();
+ret.embedAttrs=new Object();
+ret.params=new Object();
+ret.objAttrs=new Object();
+if(start==2){
+ret.hidden=args[0];
+ret.afterload=args[1];
+}
+for(var i=start;i<args.length;i=i+2){
+var currArg=args[i].toLowerCase();
+
+switch(currArg){
+case"classid":
+break;
+case"pluginspage":
+ret.embedAttrs[args[i]]=args[i+1];
+break;
+case"src":
+case"movie":
+args[i+1]=AC_AddExtension(args[i+1],ext);
+ret.embedAttrs["src"]=args[i+1];
+ret.params[srcParamName]=args[i+1];
+break;
+case"onafterupdate":
+case"onbeforeupdate":
+case"onblur":
+case"oncellchange":
+case"onclick":
+case"ondblClick":
+case"ondrag":
+case"ondragend":
+case"ondragenter":
+case"ondragleave":
+case"ondragover":
+case"ondrop":
+case"onfinish":
+case"onfocus":
+case"onhelp":
+case"onmousedown":
+case"onmouseup":
+case"onmouseover":
+case"onmousemove":
+case"onmouseout":
+case"onkeypress":
+case"onkeydown":
+case"onkeyup":
+case"onload":
+case"onlosecapture":
+case"onpropertychange":
+case"onreadystatechange":
+case"onrowsdelete":
+case"onrowenter":
+case"onrowexit":
+case"onrowsinserted":
+case"onstart":
+case"onscroll":
+case"onbeforeeditfocus":
+case"onactivate":
+case"onbeforedeactivate":
+case"ondeactivate":
+case"type":
+case"codebase":
+ret.objAttrs[args[i]]=args[i+1];
+break;
+case"id":
+case"width":
+case"height":
+case"align":
+case"vspace":
+case"hspace":
+case"class":
+case"title":
+case"accesskey":
+case"name":
+case"tabindex":
+ret.embedAttrs[args[i]]=ret.objAttrs[args[i]]=args[i+1];
+break;
+default:
+ret.embedAttrs[args[i]]=ret.params[args[i]]=args[i+1];
+}
+}
+ret.objAttrs["classid"]=classid;
+if(mimeType)ret.embedAttrs["type"]=mimeType;
+return ret;
+}AC_GetArgs._vpfn='$vpfn_smowYS491jWPG$k3F83Rkw217$0';
+
+
+
+//]]>
+</SCRIPT>
+
+<SCRIPT LANGUAGE="JavaScript">
+var redirected = false;
+function doRedirect(fvis) {
+  if (redirected==false) {
+    redirected = true;
+    if (fvis != null && fvis != 'null' && fvis != '') {
+      window.top.location.replace('http://www.vistaprint.com/vp/changevisitor.aspx?fvis=' + fvis + '&msrdb=0&cv=flash&d=%2fcustomer-care%2fprivacy-and-security.aspx%3fxnav%3dfoot%26GP%3d4%252f15%252f2012%2b11%253a26%253a21%2bAM%26GPS%3d2414928795%26GNF%3d0%26GPLSID%3d');
+    } else {
+      window.top.location.replace('/customer-care/privacy-and-security.aspx?xnav=foot&GP=4%2f15%2f2012+11%3a26%3a21+AM&GPS=2414928795&GNF=0&GPLSID=');
+    }
+  }
+}
+if(this!=top) {{window.top.location.replace(this.location); }} else { setTimeout('doRedirect("")', 2000); }
+var hasRequestedVersion = DetectFlashVer(8, 0, 0);
+if (hasRequestedVersion ) {
+AC_FL_RunContentEx(true, false,
+  "src", "/vp/flash_lso/write_lso?v=24.6",
+  "width", "1",
+  "height", "1",
+  "align", "middle",
+  "id", "write_lso",
+  "quality", "high",
+  "bgcolor", "#AAAAAA",
+  "name", "write_lso",
+  "flashvars",'visitor=614438870617&doRedirect=1&newVisitor=1',
+  "allowScriptAccess","always",
+  "type", "application/x-shockwave-flash",
+  "pluginspage", "http://www.adobe.com/go/getflashplayer"
+  );
+}
+else {
+doRedirect("");
+}
+</SCRIPT>
+<NOSCRIPT><META HTTP-EQUIV="Refresh" CONTENT="0; URL=http://www.vistaprint.com/vp/errjscript.aspx"></NOSCRIPT>
+<BODY>
+<NOSCRIPT><font FACE="Verdana,Arial,Helvetica" COLOR="#FF0000"><b>One moment, the site is loading&#8230;</b><BR><BR>This site requires JavaScript. If you see this message for more than 5 seconds, please check your browser settings and enable JavaScript.</font></NOSCRIPT>
+</BODY>
+</HTML>

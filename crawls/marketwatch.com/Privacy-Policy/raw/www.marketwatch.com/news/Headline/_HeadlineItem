@@ -1,0 +1,53 @@
+if (!window.Spark) window.Spark = {};
+if (!window.Spark.Shared) window.Spark.Shared = {};
+window.Spark.Shared._News_HeadlineItem = {
+Title:"MarketWatch.com",
+DefaultTitleProcessing:true,
+RenderView: function(viewData) {
+var StringWriter = function() {this._parts = [];this.Write = function(arg) {this._parts.push(arg.toString());};this.toString = function() {return this._parts.join('');};};
+var Output = new StringWriter();
+var Content = {};
+function OutputScope(arg) {if (typeof arg == 'string') {if (!Content[arg]) Content[arg] = new StringWriter(); arg = Content[arg];}OutputScope._frame = {_frame:OutputScope.Frame, _output:Output};Output = arg;};
+function DisposeOutputScope() {Output = OutputScope._frame._output;OutputScope._frame = OutputScope._frame._frame;};
+var link = viewData["link"];
+var headline = viewData["headline"];
+var Title = this.Title;
+var DefaultTitleProcessing = this.DefaultTitleProcessing;
+function RenderViewLevel0() {
+if (headline != null && !string.IsNullOrEmpty(headline.HeadlineText)) {
+if (!(headline.Breaking || headline.Correction)) {
+Output.Write("\r\n  <li class=\"fnewsitem\" data-uniqueid=\"");
+Output.Write(headline.UniqueId);
+Output.Write("\"><span class=\"timestamp\">");
+Output.Write(Html.GetShortDateStampMarkupRound(headline.TimestampUtc.Value, headline.EasternTimeOffset.Value));
+Output.Write("</span><p>");
+Output.Write(Html.ModelLink(headline, {LinkTickerAsHeadline:true,link:link }, {target:"_blank" }));
+Output.Write("</p></li>");
+}
+else if (headline.Breaking) {
+Output.Write("\r\n\t<li class=\"breaking fnewsitem\" data-uniqueid=\"");
+Output.Write(headline.UniqueId);
+Output.Write("\"><span class=\"timestamp\">");
+Output.Write(Html.GetShortDateStampMarkupRound(headline.TimestampUtc.Value, headline.EasternTimeOffset.Value));
+Output.Write("</span><p>BREAKING</p><span class=\"timestamp\"></span><p>");
+Output.Write(Html.ModelLink(headline, {LinkTickerAsHeadline:true,link:link }, {target:"_blank" }));
+Output.Write("</p></li>");
+}
+else if (headline.Correction) {
+Output.Write("\r\n\t<li class=\"correction fnewsitem\" data-uniqueid=\"");
+Output.Write(headline.UniqueId);
+Output.Write("\"><span class=\"timestamp\">");
+Output.Write(Html.GetShortDateStampMarkupRound(headline.TimestampUtc.Value, headline.EasternTimeOffset.Value));
+Output.Write("</span><p>CORRECTED</p><span class=\"timestamp\"></span><p>");
+Output.Write(Html.ModelLink(headline, {LinkTickerAsHeadline:true,link:link }, {target:"_blank" }));
+Output.Write("</p></li>");
+}
+}
+Output.Write("\r\n");
+}
+RenderViewLevel0();
+this.Title = Title;
+this.DefaultTitleProcessing = DefaultTitleProcessing;
+return Output.toString();
+} // function RenderView
+} // window.Spark.Shared._News_HeadlineItem

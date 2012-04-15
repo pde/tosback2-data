@@ -1,0 +1,92 @@
+var userLocationCompany;
+var idToReplace;
+
+function parseCookie(cookieToParse)
+{
+	var myCookie = getCookie(cookieToParse);
+	if( myCookie != null) 
+	{
+		var contentArray = myCookie.split("|");
+		var numNodes = contentArray.length;
+		if(numNodes == 6 || numNodes == 7)
+		{
+			$('userLocationState').innerHTML = contentArray[3].substring(6);
+			$('welcomeBlock').innerHTML = 'Welcome back!';
+			$('locChange').innerHTML = 'Change';
+			userLocationCompany = contentArray[2].substring(8);
+		}
+	}
+}
+
+function getCookie(name) 
+{
+	var dc = document.cookie;
+  	var prefix = name + "=";
+ 	var begin = dc.indexOf("; " + prefix);
+  	if (begin == -1) 
+  	{
+    	begin = dc.indexOf(prefix);
+    	if (begin != 0) 
+    	{
+    		return null;
+    	}
+  	} 
+  	else
+  	{
+    	begin += 2;
+    }
+  	var end = document.cookie.indexOf(";", begin);
+  	if (end == -1)
+  	{
+    	end = dc.length;
+    }
+  	return unescape(dc.substring(begin + prefix.length, end));
+}
+
+function runAjax(theID)
+{ 
+	idToReplace = theID;
+	var centerTilePath = 'callouts/en_US/fakeSlots/fake2/';
+	var centerTileFile = null;
+
+	//
+	// If neither "account=login" nor "account=register" parameter/value are present in URL, then
+	// certain links may be changed based on "company" value found in cookie.  Determine if that is the case
+	// here, and identify what file contains the needed content.
+	//
+	if (account != 'login' && account != 'register') {
+		switch (userLocationCompany) {
+		case 'att':
+			centerTileFile='legacy-att.html';
+			break;
+		case 'bellsouth':
+			centerTileFile='legacy-bellsouth.html';
+			break;
+		case 'sbc':
+			centerTileFile='legacy-sbc.html';
+			break;
+		}
+	}
+	
+	
+	//
+	// If contents of center tile needs to be replaced, retrieve via Ajax
+	//
+	if (centerTileFile != null) {
+		var url = centerTilePath + centerTileFile;
+		var myAjax = new Ajax.Request(
+			url,
+			{
+				method: 'GET',
+				onComplete: replaceCenterTile
+			});
+	}
+}
+
+//
+// Ajax callback function that actually replaces contents of the center tile
+//
+function replaceCenterTile(response)
+{
+	$(idToReplace).innerHTML  = response.responseText;
+}

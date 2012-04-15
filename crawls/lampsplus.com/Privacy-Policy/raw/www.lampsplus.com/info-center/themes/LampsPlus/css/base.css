@@ -1,0 +1,720 @@
+
+/* $Layout
+/******************************/
+.layout, .page-editing, .page-tabs { width: 792px; margin: 0 auto; }
+.layout { clear: both; }
+.layout-footer { clear: both; }
+.page-management .layout { clear: none; width: 11% !important; min-width: 0 !important; max-width: 2000px !important; background-color: #e9e9e9; }
+.page-management-header { background-color: #e9e9e9; height: 10px; }
+.page-management { background-color: #e9e9e9; border-width: 0; }
+.page-editing { width: 792px; position: relative; }
+.site-banner .internal-link.edit-page, .site-banner .internal-link.save-page
+{ position: absolute; top: 10px; right: 0; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/customize-button.gif') no-repeat right -20px; height: 14px; padding: 3px 8px 3px 3px; z-index: 3; }
+    .site-banner .internal-link.edit-page span, .site-banner .internal-link.save-page span
+	{ background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/customize-button.gif') no-repeat left top; display: block; position: absolute; left: -18px; top: 0; width: 18px; height: 20px; }
+.page-management .content-fragment-search input { padding-top: 5px; background-image: url('http://www.lampsplus.com/info-center/themes/LampsPlus/images/content-fragment-search.gif'); }
+
+/* $Merge Styles
+/******************************/
+.merge-added { background: SpringGreen; }
+.merge-deleted {text-decoration: line-through; }
+	.merge-added img, .content-fragment.compare .merge-added img { padding: 5px; }
+	.merge-deleted img { background: red; }
+
+/* $Pager
+/******************************/
+.pager { text-align: center; margin-top: 5px; }
+	.pager a { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/pager-item.png') repeat-x left bottom; padding: 2px 6px 3px 6px; margin: 0 1px 0 0; display: inline-table; display: -moz-inline-box; display: inline-block; border: solid 1px #ccc; }
+	.pager .separator { display: none; }
+	.pager a.selected { border-color: #999; }
+	.pager .summary { display: none; }
+
+/* $Tab-Set
+/******************************/
+.page-tabs .page-tabs-top { margin: 0; height: 5px; }
+.page-tabs .r1, .page-tabs .r2, .page-tabs .r3, .page-tabs .r4 { border-left: solid 1px; border-right: solid 1px; height: 1px; overflow: hidden; }
+.page-tabs .r1 { margin: 0 5px; height: 0; border-top: solid 1px; border-left-width: 0; border-right-width: 0; }
+.page-tabs .r2 { margin: 0 3px; border-left-width: 2px; border-right-width: 2px; }
+.page-tabs .r3 { margin: 0 2px; }
+.page-tabs .r4 { margin: 0 1px; height: 2px; }
+.page-tabs .r1, .page-tabs .r2, .page-tabs .r3, .page-tabs .r4 { background-color: #474747; border-color: #ccc; }
+.tab .internal-link.edit-tab, .tab .internal-link.delete-tab { margin-top: 7px; }
+.tab-set{ list-style: none; margin: 0px; padding: 0 2px; overflow: hidden; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/tab-bar.gif') repeat-x; }
+	.tab-set .tab { float: left; margin-right: 2px; padding: 0 0 0 10px; border: none; }
+	.tab-set .tab div{ padding: 0 10px 0 0; overflow: hidden }
+	.tab-set .tab a{ display: block; float: left; cursor: pointer; }
+	.tab-set .tab.selected { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/tab-set.png') no-repeat left -30px }
+	.tab-set .tab.selected div{ background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/tab-set.png') no-repeat right -90px }
+	.tab-set #new-tab { background-position: left -120px }
+	.tab-set #new-tab div { background-position: right -150px }
+.tab-set.with-panes { margin: 0; padding-left: 0; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/modal-tab-set.gif') repeat-x left bottom; }
+	.tab-set.with-panes .tab { float: none; border-right: solid 1px #ccc; border-bottom-width: 0; margin: 2px 0 1px 0; padding: 6px 10px; background: #f3f3f3 url(http://www.lampsplus.com/info-center/themes/LampsPlus/Images/application-tabset.gif) repeat-x scroll left bottom; }
+	.tab-set.with-panes table tr td:last-child .tab { border: none; }
+	.tab-set.with-panes .tab div { background-image: none; padding: 0; }
+	.tab-set.with-panes .tab a {display: block; float: left}
+	.tab-set.with-panes .tab.selected { background: #FFFFFF; margin-bottom: 0; padding-top: 7px; }
+	.tab-set.with-panes .tab.selected div { background-image: none; }
+.tab-pane { background: #fff; border-top-width: 0; padding: 10px; }
+		
+/* $Content Fragments
+/*******************************/
+.content-fragment { margin: 10px 0; }
+.layout-content.header-top-content-left-sidebar-right .layout-region.content .content-fragment { margin-left: 0px; }
+.layout-content.header-top-content-left-sidebar-right .layout-region.right-sidebar .content-fragment { margin-right: 0px; }
+.layout-content.header-top-content-left-split-sidebar-right-top-single-sidebar-right-bottom .layout-region.split-sidebar-right .content-fragment { margin-right: 0px; }
+.layout-content.header-top-content-left-split-sidebar-right-top-single-sidebar-right-bottom .layout-region.right-sidebar .content-fragment { margin-right: 0px; }
+.content-fragment-content { background-color: #fff;  padding: 12px; }
+	.content-fragment.with-header .content-fragment-header { background-color: #fff; padding: 6px 12px; border-left: 1px solid #ccc; border-right: 1px solid #ccc; }
+	.content-fragment.with-header .content-fragment-header div { padding-bottom: 5px; border-bottom: 1px solid #ddf1fa; }
+	.content-fragment.with-header.editable .content-fragment-header { background-image: url('http://www.lampsplus.com/info-center/themes/LampsPlus/images/editable-content-fragment-background.gif'); border-bottom-color: #BFAE9E; }
+	.content-fragment.with-header.no-wrapper .content-fragment-header, .content-fragment.with-header.no-wrapper-with-spacing .content-fragment-header
+	{ background-color: Transparent; border-left-width: 0; border-right-width: 0; padding-left: 0; padding-right: 0; }
+	.content-fragment.with-header .content-fragment-content { padding-top: 1px; }
+	.content-fragment.no-wrapper .content-fragment-content, .content-fragment.no-wrapper-with-spacing .content-fragment-content { padding: 0; }
+
+.layout-content.content-left-sidebar-right .layout-region.right-sidebar .content-fragment,
+.layout-content.sidebar-left-content-right .layout-region.content .content-fragment,
+.layout-content.sidebar-left-content-center-sidebar-right .layout-region.content .content-fragment,
+.layout-content.sidebar-left-content-center-sidebar-right .layout-region.right-sidebar .content-fragment,
+.layout-content.content-left-split-sidebar-right-top-single-sidebar-right-bottom .layout-region.split-sidebar-left .content-fragment,
+.layout-content.content-left-split-sidebar-right-top-single-sidebar-right-bottom .layout-region.split-sidebar-right .content-fragment,
+.layout-content.content-left-split-sidebar-right-top-single-sidebar-right-bottom .layout-region.right-sidebar .content-fragment,
+.layout-content.header-top-content-left-sidebar-right .layout-region.right-sidebar .content-fragment,
+.layout-content.header-top-sidebar-left-content-right .layout-region.content .content-fragment,
+.layout-content.header-top-sidebar-left-content-center-sidebar-right .layout-region.content .content-fragment,
+.layout-content.header-top-sidebar-left-content-center-sidebar-right .layout-region.right-sidebar .content-fragment,
+.layout-content.header-top-content-left-split-sidebar-right-top-single-sidebar-right-bottom .layout-region.split-sidebar-left .content-fragment,
+.layout-content.header-top-content-left-split-sidebar-right-top-single-sidebar-right-bottom .layout-region.split-sidebar-right .content-fragment,
+.layout-content.header-top-content-left-split-sidebar-right-top-single-sidebar-right-bottom .layout-region.right-sidebar .content-fragment
+{ margin-left: 10px; }
+.content-fragment-top, .content-fragment-bottom { height: 5px; }
+	.content-fragment-top .r1, .content-fragment-top .r2, .content-fragment-top .r3, .content-fragment-top .r4, .content-fragment-bottom .r1, .content-fragment-bottom .r2, .content-fragment-bottom .r3, .content-fragment-bottom .r4
+	{ border-left: solid 1px; border-right: solid 1px; height: 1px; overflow: hidden; }
+	.content-fragment-top .r1, .content-fragment-bottom .r4 { margin: 0 5px; height: 0; border-top: solid 1px; border-left-width: 0; border-right-width: 0; }
+	.content-fragment-top .r2, .content-fragment-bottom .r3 { margin: 0 3px; border-left-width: 2px; border-right-width: 2px; }
+	.content-fragment-top .r3, .content-fragment-bottom .r2 { margin: 0 2px; }
+	.content-fragment-top .r4, .content-fragment-bottom .r1 { margin: 0 1px; height: 2px; }
+	.content-fragment-top .r1, .content-fragment-top .r2, .content-fragment-top .r3, .content-fragment-top .r4, .content-fragment-bottom .r1, .content-fragment-bottom .r2, .content-fragment-bottom .r3, .content-fragment-bottom .r4 
+	{ background-color: #fff; border-color: #ccc; }
+	.content-fragment-content { border-left: 1px solid #ccc; border-right: 1px solid #ccc; }
+.content-fragment.side-border-only .content-fragment-top, .content-fragment.side-bottom-border-only .content-fragment-top, .content-fragment.no-wrapper .content-fragment-top, .content-fragment.no-wrapper-with-spacing .content-fragment-top, .content-fragment.top-side-border-only .content-fragment-bottom, .content-fragment.side-border-only .content-fragment-bottom, .content-fragment.no-wrapper .content-fragment-bottom, .content-fragment.no-wrapper-with-spacing .content-fragment-bottom
+{ display: none; }
+.content-fragment.no-wrapper .content-fragment-content, .content-fragment.no-wrapper-with-spacing .content-fragment-content { border-left-width: 0; border-right-width: 0; padding: 0; background-color: Transparent; }
+.content-fragment.no-wrapper { margin: 0; }
+.content-fragment.side-border-only { margin-top: 0; margin-bottom: 0; }
+.content-fragment.top-side-border-only { margin-bottom: 0; }
+.content-fragment.side-bottom-border-only { margin-top: 0; }
+
+/* $Content List
+/******************************/
+.content-list { list-style: none; margin: 0; padding: 0 }
+	.content-list .content-item { margin: 0; padding: 0; border-bottom: dotted 1px #ccc; }
+	
+/* $Navigation List
+/******************************/
+.navigation-list { list-style: none; margin: 0; padding: 0 }
+	.navigation-list .navigation-item { margin: 0; padding: 0; }
+
+/* $Table List
+/******************************/
+.table-list { margin: 1em 0; border-collapse: collapse; }
+	.table-header-column { border-top: dotted 1px #ccc; border-bottom: solid 1px #999; padding: 8px; margin: 0; white-space: nowrap; }
+		.table-header-column.sorting_asc, .table-header-column.sorting_desc, .table-header-column.sorting  { text-align: left; }
+		.table-header-column .internal-link.sort-descending, .table-header-column .internal-link.sort-ascending { background-image: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/descending.gif'); background-repeat: no-repeat; width: 10px; height: 0px; padding: 6px 0 0 0; margin: 0; overflow: hidden; display: inline-table; display: -moz-inline-box; display: inline-block; position: relative; top: -1px; }
+		.table-header-column .internal-link.sort-ascending { background-image: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/ascending.gif'); }
+	.table-column { border-bottom: dotted 1px #ccc; padding: 8px; margin: 0; }
+	.table-item.last .table-column { border-bottom-width: 0; }
+
+/* $Attribute List
+/******************************/
+.attribute-list { list-style-type: none; margin: 0; padding: 0; }
+.attribute-item { margin: 0 3px 0 0; padding: 0; display: inline; }	
+.attribute-name { margin: 0 3px 0 0; }
+
+/* $Hierarchical List
+/******************************/
+.hierarchy-list { list-style-type: none; margin: 1px 0; padding: 0; }
+	.hierarchy-list .hierarchy-list { margin-left: 11px; }
+.hierarchy-item { padding: 0; margin: 0; position: relative; height: 1%; padding: 4px 0 4px 11px; border-bottom: dotted 1px #ccc; }
+	.hierarchy-item img { position: absolute; left: 0; top: 7px; }
+	.hierarchy-item.selected { background-color: #06c; border-bottom-width: 0; }
+		.hierarchy-item.selected img { display: none; }
+	.hierarchy-item.without-children { padding-left: 0; }
+
+/* $List Filters
+/******************************/
+.filter { border-top: solid 1px #ccc; padding: 10px 0 0 0; margin: 1em 0 10px 0; }
+	.filter .separator { margin: 0 3px; }
+
+/* $Forms
+/*******************************/
+fieldset.field-list { border: none; margin: 1em 0; padding: 0; }
+	.field-list-description { white-space: normal; display: inline; }
+	.field-list-description span { float: left; position: relative; }
+	ul.field-list { list-style-type: none; margin: 0; padding: 0; clear: both; }
+.field-item { margin: 0; padding: .5em 0 }
+	.field-item-description { display: block; clear: both; }
+	.field-item-header { display: block; }
+
+/* $Bread Crumbs
+/******************************/
+.content-fragment.group-bread-crumbs .content-fragment-content { padding-bottom: 0px; padding-left: 18px; }
+.content-fragment.group-bread-crumbs .content-fragment-top, .content-fragment.group-bread-crumbs .content-fragment-bottom { display: none; }
+.breadcrumb-list { padding: 0 5px 10px 6px; }
+	.breadcrumb-list .breadcrumb-item { margin: 0 3px; }
+
+/* $Admin Bar
+/******************************/
+.admin-bar { text-align: right; position: relative; height: 25px; padding: 4px; background: #999; }
+	.admin-bar .navigation-list { width: 792px; margin: 0 auto; list-style-type: none; padding-top: 3px; }
+	.admin-bar .navigation-item { display: inline; margin: 0; padding:0; }
+	.admin-bar .navigation-item .internal-link { padding-left: 5px; border-left: 1px solid #666; margin-left: 5px; }
+	.admin-bar .internal-link.save-default-page, .admin-bar .internal-link.edit-page { border-left-width: 0; }
+	.admin-bar fieldset.field-list { width: 792px; position: relative; margin: 0 auto; border: none; margin: 0 auto; padding: 0; }
+		.admin-bar ul.field-list {  list-style-type: none; margin: 0; padding: 0; position: absolute; }
+		.admin-bar .field-item { padding: 0; margin: 0 8px 0 0; display: inline; }
+		.admin-bar .field-item-description { display: none; }
+		.admin-bar .field-item-input select { margin: 0; padding: 0; line-height: 18px; }
+
+/* $Group Banner
+/******************************/
+.content-fragment.group-banner { position: relative; min-height: 125px; padding: 0; background: transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/banner-background.png') no-repeat; }
+	.group-banner .content-fragment-content { background-color: transparent; }
+	.group-banner .group-name { margin: 0; padding: 26px 0 0 18px; }
+	.group-banner .group-description { margin: 0; padding: 0 0 1em 18px; }
+	.group-banner .group-description p { margin: 0px; }
+	.group-banner .group-banner-actions { position: absolute; top: 38px; right: 20px }
+
+/* $User Banner
+/******************************/
+.content-fragment.user-banner { position: relative; min-height: 121px; padding: 0 5px; background-color: #fff; }
+	.user-banner .user-name { margin: 0; padding: 15px 0 0 100px; letter-spacing: -1.25px; }
+	.user-banner .user-status { margin: 0; padding: 0 0 0 100px; width: 465px; overflow: hidden; }
+		.user-banner .user-status-header { width: 465px; height: 12px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/images/core/user-banner-status-message-background.gif') no-repeat left top; overflow: hidden; }
+		.user-banner .user-status-content { width: 447px; padding: 2px 8px; border: solid 1px #ccc; border-top-width: 0; border-bottom-width: 0; }
+		.user-banner .user-status-footer { width: 465px; height: 3px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/images/core/user-banner-status-message-background.gif') no-repeat left bottom; margin-bottom: 12px; overflow: hidden; }
+		.user-banner .status-message { display: block; padding-bottom: 4px; }
+		.user-banner .status-date { display: block; }
+	.user-banner .user-banner-actions { position: absolute; top: 15px; right: 20px; }
+	.user-banner .user-banner-actions .navigation-item { padding: 6px 0; border-bottom: dotted 1px #ccc; text-align: right; margin: 0; white-space: nowrap; } 
+	.user-banner .internal-link.request-friendship span, .user-banner .internal-link.cancel-friend-request span, .user-banner .internal-link.delete-friendship span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/images/core/add-friend.gif') no-repeat left top; display: inline-table; display: -moz-inline-box; display: inline-block; width: 15px; height: 16px; margin: 0 4px -3px 0; }
+	.user-banner .internal-link.favorite-on span, .user-banner .internal-link.favorite-off span, .user-banner .internal-link.processing span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/images/core/follow.gif') no-repeat left top; display: inline-table; display: -moz-inline-box; display: inline-block; width: 15px; height: 16px; margin: 0 4px -3px 0; }
+	.user-banner .internal-link.send-email span, .user-banner .internal-link.start-conversation span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/images/core/send-message.gif') no-repeat left top; display: inline-table; display: -moz-inline-box; display: inline-block; width: 16px; height: 12px; margin-top: -14px; margin-right: 4px; }
+	.user-banner .internal-link.save-user-profile span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/images/save-user-profile.gif') no-repeat left top; display: inline-table; display: -moz-inline-box; display: inline-block; width: 14px; height: 14px; margin: -3px 4px 0 0; }
+	.user-banner .user-avatar { position: absolute; left: 20px; top: 20px; max-width: 70px !important; padding: 2px; border: solid 1px #ccc; }
+		.user-banner .user-avatar img { border-width: 0; max-width: 70px !important; max-height: 70px !important; }
+
+/* $Menu
+/******************************/
+.menu { background: #001a26; padding: 10px; border: solid 1px #004365; }
+	.menu .content-list-name a { text-transform: none }
+	.menu .content-item { padding: 3px 0; border-top: dotted 1px #40535C }
+	
+/* $Tag-Cloud
+/******************************/
+.tag-cloud .tag-list{list-style:none; margin: 0; padding: 0}
+.tag-cloud .tag-list li{display: inline; margin-right: 8px;}
+
+/* $LPTag-Cloud
+/******************************/
+.l-p-tag-cloud .tag-list{list-style:none; margin: 0; padding: 0}
+.l-p-tag-cloud .tag-list li{display: inline; margin-right: 8px;}
+
+.l-p-tag-cloud .tag-list a{ font-weight: normal;}
+.l-p-tag-cloud {font:Arial,Helvetica,sans-serif;}
+  .l-p-tag-cloud li.level-6{font-size: 10px;}
+  .l-p-tag-cloud li.level-5{font-size: 12px;}
+  .l-p-tag-cloud li.level-4{font-size: 14px;}
+  .l-p-tag-cloud li.level-3{font-size: 16px;}
+  .l-p-tag-cloud li.level-2{font-size: 18px;}
+  .l-p-tag-cloud li.level-1{font-size: 22px;}
+  
+/* $Abbreviated-Post
+/******************************/
+.abbreviated-post { position: relative; padding: 10px 0 10px 46px; min-height: 46px; }
+	.abbreviated-post .avatar{ padding: 1px; border: solid 1px #ccc; position: absolute; left: 0; top: 10px; }
+		.abbreviated-post .avatar img { max-width: 32px; max-height: 32px; }
+		.abbreviated-post .avatar.blogapp { height: 32px; width: 32px; background: url(http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Weblogs/icon-blog-32.gif) no-repeat top left; }
+		.abbreviated-post .avatar.forumapp { height: 32px; width: 32px; background: url(http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-forum-32.gif) no-repeat top left; }
+		.abbreviated-post .avatar.fileapp { height: 32px; width: 32px; background: url(http://www.lampsplus.com/info-center/themes/LampsPlus/Images/MediaGalleries/icon-files-32.gif) no-repeat top left; }
+		.abbreviated-post .avatar.wikiapp { height: 32px; width: 32px; background: url(http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Wikis/icon-wiki-32.gif) no-repeat top left; }
+	.abbreviated-post .post-name { margin: 0 0 8px 0; }
+	.abbreviated-post .post-author { display: inline; }
+	.abbreviated-post .post-date { display: inline; }
+		.abbreviated-post .post-date .value { margin-left: 3px; }
+	.abbreviated-post .post-summary { margin: 8px 0; }
+	.abbreviated-post .post-content { margin: 8px 0; }
+	
+/* $Full-Post
+/******************************/
+.full-post { position: relative; }	
+	
+/* $Messages
+/******************************/
+.message { margin: 1em 0; }
+	.message.norecords { padding: 12px; border: solid 1px #300; background-color: #CADBEE; }
+	.message.success { padding: 12px; border: solid 1px #030; background-color: #88dd88;  }
+	.message.error { padding: 12px; border: solid 1px #300; background-color: #d66; }
+	.message.warning { padding: 12px; border: solid 1px #eec600; background-color: #FFFFAA; }
+	.message.disclaimer { padding: 12px; border: solid 1px #eec600; background-color: #FFFFAA; }
+	.message.capture { padding: 12px; border: solid 1px #eec600; background-color: #FFFFAA; }
+	
+/* $Page
+/******************************/
+.page { padding: 20px; }
+.page-name { margin-bottom: 10px; }
+.page-description { margin: 1em 0; }
+.page-content { margin: 1em 0; }
+
+/* $User Defined Markup
+/******************************/
+.user-defined-markup { overflow: hidden; max-width: 100%; position: relative; }
+.user-defined-markup img { overflow: hidden; max-width: 100%; }
+.user-defined-markup .MsoListParagraph { text-indent: .25in !important; margin-top: 0; margin-bottom: 0; }
+.user-defined-markup .MsoNormal { margin: 0 0 .0001pt 0 !important; }
+
+/* Base modal
+/******************************/
+div.modal-close { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-close.gif') no-repeat; margin-top: 2px; }
+.modal { border: 0; margin: 0; background: transparent; }
+.modal-content { margin: 0; padding: 0; padding-right: 6px; border-right: 1px solid #ccc; }
+.modal-content-2 { background-color: #fff; border-left: 1px solid #ccc; padding: 0 6px; }
+.modal-title { margin: 0; padding: 0 0 0 6px; background: transparent url(http://www.lampsplus.com/info-center/themes/LampsPlus/Images/modal-header-left.png) no-repeat 0 0; cursor: move; border: 0; }
+.modal-title-2 { background: transparent url(http://www.lampsplus.com/info-center/themes/LampsPlus/Images/modal-header-right.png) no-repeat top right; padding-right: 6px; cursor: move; }
+.modal-title-3 { border-top: 1px solid #ccc; padding: 7px; background-color: #fff; }
+.modal-title-4 { border-bottom: 1px solid #DDF1FA; overflow: hidden; padding: 6px 0; }
+.modal-footer { margin: 0; padding: 0; background: url(http://www.lampsplus.com/info-center/themes/LampsPlus/Images/modal-footer-left.png) no-repeat; }
+.modal-footer-2 { background: url(http://www.lampsplus.com/info-center/themes/LampsPlus/Images/modal-footer-right.png) no-repeat top right; padding: 0 6px 0 0; }
+.modal-footer-3 { overflow: hidden; padding: 6px 0 0 0; border-bottom: 1px solid #ccc; background-color: #fff; margin-left: 6px; height: 0.99%; }
+.modal-resize { bottom: 10px; right: 6px; }
+
+/* Poll 
+/******************************/
+.CommonPollArea { width: 50%; min-width: 300px; background-color: #f4f4f4; border: solid 1px #999; margin: 0 auto; }
+.CommonPollQuestion { background-color: #ccc; border: solid 0 #999; border-bottom-width: 1px; padding: 4px; margin: 0; }
+.CommonPollContent { padding: 4px; }
+.CommonPollSwitchedContent { width: 80%; margin: 0 auto; }
+ul.CommonPollAnswerList { list-style-type: none; margin: 0;	padding: 0;	}
+ul.CommonPollAnswerList li { padding: 0; margin: 6px 0 0 0; }
+.CommonPollAnswer {	padding: 2px; }
+.CommonPollUserVote { margin: 1em 0; }
+.CommonPollFooter {	padding: 2px; background-color: #ccc; border: solid 0 #999;	border-top-width: 1px; }
+.CommonPollResultGraph { white-space: nowrap; }
+ul.CommonPollFooterList { list-style-type: none; margin: 0;	padding: 0; }
+ul.CommonPollFooterList li { display: inline; margin: 0 6px; padding: 0; }
+
+/* User Settings 
+/******************************/
+.content-fragment.edit-user .tab-set { margin-left: -12px; margin-right: -12px; }
+fieldset.setting-list { border: none; margin: 1em 0; padding: 0; }
+fieldset.setting-list legend { display: block; margin-bottom: 1em; }
+ul.setting-list { list-style-type: none; margin: 0; padding: 0; clear: both; }
+.setting-list-footer { clear: both; }
+.setting-item { margin: 0; padding: .5em 0; clear: both;}
+.setting-item-label { display: block; float: left; width: 16em; text-align: right; vertical-align: top; margin-right: 0.4em; }
+.setting-item-header { }
+.setting-item-description { display: block; }
+.setting-item-input { display: block; float: left; }
+.setting-item.setting-avatar .setting-item-label, .setting-item.setting-shared-feeds .setting-item-label, .setting-item.setting-signature .setting-item-label { text-align: left; margin-top: 1em; }
+.setting-item.setting-avatar .setting-item-input, .setting-item.setting-shared-feeds .setting-item-input, .setting-item.setting-signature .setting-item-input { float: none; clear: both; }
+.setting-item.setting-save .setting-item-label { display: none; }
+
+/* User File Url
+/******************************/
+.user-file-url { background-color: #ccc; margin-bottom: 8px; margin-top: 4px; border: solid 1px #999; }
+.user-file-url input { margin: 2px; }
+.user-file-url-preview { text-align: center; background-color: #fff; border: solid 0px #999; border-bottom-width: 1px; padding: 4px; overflow: hidden; }
+.user-file-url-preview img { max-width: 250px; max-height: 100px; }
+
+/* $Forum Title
+/******************************/
+.content-fragment.forum-title { display: none; }
+
+/* $Forum Banner
+/******************************/
+.content-fragment.forum-banner { margin: 0; }
+
+/* $Browse Forums
+/******************************/
+.content-fragment.browse-forums { margin-bottom: 0px; }
+	.content-fragment.browse-forums .content-fragment-header div { border: none; }
+	
+	.content-fragment.browse-forums .content-fragment-bottom .r1,
+	.content-fragment.browse-forums .content-fragment-bottom .r2,
+	.content-fragment.browse-forums .content-fragment-bottom .r3,
+	.content-fragment.browse-forums .content-fragment-bottom .r4 { background: #fff url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/browse-app-background.gif') repeat-x 0 bottom; }
+
+	.content-fragment.browse-forums.top-side-border-only .content-fragment-footer, 
+	.content-fragment.browse-forums.side-border-only .content-fragment-footer { border-top: 1px solid #ccc; width: 100%; }
+	
+	.content-fragment.browse-forums .table-list-header { border-top: solid 1px #999; }
+	.content-fragment.browse-forums .table-list-header.with-scroll { margin-right: 17px; }
+	.content-fragment.browse-forums .table-list { width: 100%; margin: 0; }
+	.content-fragment.browse-forums .table-list a { font-weight: bold; font-size: 1.2em; }
+	.content-fragment.browse-forums .table-list .description { display: block; color: #666; }
+	.content-fragment.browse-forums .table-header-column .internal-link { margin-left: 6px; }
+		.content-fragment.browse-forums .favorite-off { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-favorite-off.gif') no-repeat center left; padding-left: 20px; cursor: pointer; }
+		.content-fragment.browse-forums .favorite-on { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-favorite-on.gif') no-repeat center left; padding-left: 20px; cursor: pointer; }
+		
+	.content-fragment.browse-forums ul.field-list { list-style: none; margin: 0; padding: 0; overflow: hidden; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/search-field-input.png') no-repeat top left; height: 26px; width: 299px }
+		.content-fragment.browse-forums .field-item { display: block; float: left; margin: 0; padding: 0; } 
+		.content-fragment.browse-forums .field-item-input input { border: none; display: block; padding: 6px 5px 0 5px; margin-left: 10px; width: 250px; height: 18px; background: none; cursor: auto}
+
+/* $Forum Thread List
+/******************************/
+.content-fragment.thread-list { position: relative; overflow: hidden; }
+.content-fragment.thread-list .filter { position: relative; border: 0px; border-bottom: 1px solid #ccc; padding: 0; margin: 0 -12px; background: #fff url(http://www.lampsplus.com/info-center/themes/LampsPlus/images/filter-background.png) repeat-x bottom left; height: 35px; }
+	.content-fragment.thread-list .filter-option { float: left; padding: 15px 12px 5px 12px; height: 20px; }
+	.content-fragment.thread-list .filter-option.selected { background: #fff; height: 20px; }
+	.content-fragment.thread-list .filter .separator { float: left; text-indent: -5555em; background: transparent url(http://www.lampsplus.com/info-center/themes/LampsPlus/images/filter-separator-background.png) no-repeat bottom left; height:35px; width: 1px; margin: 0; padding: 0; }
+
+.content-fragment.thread-list .table-item { border-bottom: 1px dotted #ccc; }
+.content-fragment.thread-list .table-list { position: relative; clear: both; width: 97%; overflow: hidden; table-layout: fixed; }
+	.content-fragment.thread-list .table-column { padding: 8px 0; }
+	.content-fragment.thread-list .table-header { position: relative; margin-right: 12px; border-bottom: 1px solid #999; }
+	.content-fragment.thread-list .table-header .table-header-column { padding: 8px 0px 0px 0px; border-top: 0px; border-bottom: 0px; }
+	.content-fragment.thread-list .table-header-column .internal-link.sort-descending, .content-fragment.thread-list .table-header-column .internal-link.sort-ascending { background-image: none; width: auto; height: auto; padding: 0 18px 0 0; margin: 0; overflow: hidden; line-height: 18px; display: inline-table; display: -moz-inline-box; display: inline-block; position: relative; }
+	.content-fragment.thread-list .table-header-column .internal-link.sort-descending span, .content-fragment.thread-list .table-header-column .internal-link.sort-ascending span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/descending.gif') no-repeat top center; width: 10px; height: 6px; margin: 0; position: absolute; top: 6px; right: 0; padding: 0 3px; }
+	.content-fragment.thread-list .table-header-column .internal-link.sort-ascending span { background-image: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/ascending.gif'); }
+	.content-fragment.thread-list .table-column.post-name { overflow: hidden; word-wrap: break-word; }
+	.content-fragment.thread-list .table-header-column.date-sort { padding-left: 60px; width: 160px; }
+	.content-fragment.thread-list .table-column.post-status { width: 200px; }
+    .content-fragment.thread-list .table-header-column.post-author {width: 50px;}
+	.content-fragment.thread-list .table-header-column.total-replies-sort, .content-fragment.thread-list .table-column.total-replies { text-align: right; width: 80px; }
+	.content-fragment.thread-list .table-column.total-replies .abbreviated-post { padding-right: 18px; padding-left: 0px; }
+
+.content-fragment.thread-list .table-column.post-author .user-name { position: absolute; text-indent: -5555em; }
+.content-fragment.thread-list .table-column.post-name .abbreviated-post { padding-left: 0; }
+
+.content-fragment.thread-list .abbreviated-post { padding: 8px 0; min-height: 0; }
+.content-fragment.thread-list .abbreviated-post.popular { padding-top: 10px; }
+	.content-fragment.thread-list .abbreviated-post .post-thumbnail img { display: none; }
+	.content-fragment.thread-list .abbreviated-post .post-name { margin: 0; }
+	.content-fragment.thread-list .abbreviated-post .post-name.with-summary { padding: 0; }
+	.content-fragment.thread-list .abbreviated-post.popular .post-name { padding: 0 10px 0 0; }
+	.content-fragment.thread-list .abbreviated-post.popular .post-name.with-summary { padding: 0; line-height: 14px; }
+	.content-fragment.thread-list .abbreviated-post .post-author .user-name { position: absolute; text-indent: -5555em; }
+	.content-fragment.thread-list .abbreviated-post .post-summary { margin: 0; }
+		.content-fragment.thread-list .abbreviated-post .post-summary.sticky { text-transform: uppercase; }
+		.content-fragment.thread-list .abbreviated-post .post-summary.announcement { text-transform: uppercase; }
+	.content-fragment.thread-list .abbreviated-post .post-reply-count { font-weight: bold; font-size: 16px; position: relative; }
+	.content-fragment.thread-list .abbreviated-post .avatar { padding: 1px; border: solid 1px #ccc; margin-right: 4px; }
+		.content-fragment.thread-list .abbreviated-post .avatar img { max-width: 32px; max-height: 32px; }
+    .content-fragment.thread-list .abbreviated-post .post-date .value { margin-left: 0; }
+	.content-fragment.thread-list .abbreviated-post.discussion { width: 200px; overflow: hidden; position: relative; padding-left: 20px; }
+		.content-fragment.thread-list .abbreviated-post.discussion .post-thumbnail {  top: 16px; width: 14px; height: 14px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-discussion.gif'); position: absolute; left: 0; }
+		.content-fragment.thread-list .abbreviated-post.discussion .post-attributes { position: absolute; width: 65px; height: 16px; left: 20px; }
+		.content-fragment.thread-list .abbreviated-post.discussion .post-author { padding-left: 65px; white-space: nowrap; display: inline-block; }
+		.content-fragment.thread-list .abbreviated-post.discussion .post-date { display: block; }
+	.content-fragment.thread-list .abbreviated-post.not-answered { width: 200px; overflow: hidden; position: relative; padding-left: 20px; }
+		.content-fragment.thread-list .abbreviated-post.not-answered .post-thumbnail { top: 16px; width: 14px; height: 14px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/question-not-answered.gif'); position: absolute; left: 0; }
+		.content-fragment.thread-list .abbreviated-post.not-answered .post-attributes { position: absolute; width: 65px; height: 16px; left: 20px; }
+		.content-fragment.thread-list .abbreviated-post.not-answered .post-author { padding-left: 65px; white-space: nowrap; display: inline-block;  }
+		.content-fragment.thread-list .abbreviated-post.not-answered .post-date { display: block; }
+	.content-fragment.thread-list .abbreviated-post.verified-answered { width: 200px; overflow: hidden; position: relative; padding-left: 20px; }
+		.content-fragment.thread-list .abbreviated-post.verified-answered .post-thumbnail { top: 16px; width: 14px; height: 14px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/question-verified-answered.gif'); position: absolute; left: 0; }
+		.content-fragment.thread-list .abbreviated-post.verified-answered .post-attributes { position: absolute; width: 65px; height: 16px; left: 20px; }
+		.content-fragment.thread-list .abbreviated-post.verified-answered .post-author { padding-left: 65px; white-space: nowrap; display: inline-block;  }
+		.content-fragment.thread-list .abbreviated-post.verified-answered .post-date { display: block; }
+	.content-fragment.thread-list .abbreviated-post.suggested-answered { width: 200px; overflow: hidden; position: relative; padding-left: 20px; }
+		.content-fragment.thread-list .abbreviated-post.suggested-answered .post-thumbnail { top: 16px; width: 14px; height: 14px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/question-suggested-answered.gif'); position: absolute; left: 0; }
+		.content-fragment.thread-list .abbreviated-post.suggested-answered .post-attributes { color: #666; position: absolute; width: 65px; height: 16px; left: 20px; }
+		.content-fragment.thread-list .abbreviated-post.suggested-answered .post-author { padding-left: 65px; white-space: nowrap; display: inline-block; }
+		.content-fragment.thread-list .abbreviated-post.suggested-answered .post-date { display: block; }
+
+.content-fragment.thread-list .abbreviated-post.popular { padding-left: 0px; min-height: 10px; border-bottom: 1px dotted #ccc; }
+	.content-fragment.thread-list .abbreviated-post.popular .post-author { display: inherit; }
+		.content-fragment.thread-list .abbreviated-post.popular .post-author .user-name { position: relative; text-indent: 0px; }
+
+.content-fragment.thread-list .abbreviated-post.popular { margin-right: 12px; margin-left: 12px; }
+
+/* $Forum Thread
+/******************************/
+.content-fragment.thread .content-fragment-header { position: relative; margin-bottom: 0; padding-top: 9px; border-bottom: 3px solid #B2B1B4; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/application-title-background.gif') repeat-x; }
+.content-fragment.thread .content-fragment-header div { border: none; }
+.content-fragment.thread .content-fragment-header .internal-link.view-application { margin-left: 8px; }
+	.content-fragment.thread .content-fragment-header .internal-link.view-application span { position: absolute; left: 6px; top: 3px; height:26px; width: 6px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-left-arrow.gif') no-repeat center center; padding: 0 4px; }
+.content-fragment.thread .content-fragment-content { background-color: #EAF1F7; }
+.content-fragment.thread .content-list .content-item { border-top: 0px; border-bottom: 0px; margin-bottom: 20px; }
+.content-fragment.thread .content-list-name.all-replies { display: none; }
+.content-fragment.thread .content-list-name.verified-answers { display: none; }
+
+.content-fragment.thread .message.capture strong { display: block; }
+
+.content-fragment.thread .internal-link.favorite-off, .content-fragment.thread .internal-link.favorite-on { display: none; }
+.content-fragment.thread .internal-link.quick-add-post { display: none; }
+.content-fragment.thread .internal-link.capture-post { display: none; }
+.content-fragment.thread .internal-link.start-conversation { display: none; }
+.content-fragment.thread .navigation-item .internal-link.view-user-profile { display: none; }
+.content-fragment.thread .menu-button.favorite { display: none; }
+.content-fragment.thread .internal-link.edit-post { display: none; }
+.content-fragment.thread .internal-link.delete-post { display: none; }
+.content-fragment.thread .post-rating { display: inline; border-right: 1px solid #ccc; }
+.content-fragment.thread .full-post .navigation-list { position: relative; padding-right: 0px; }
+
+.content-fragment.thread .abbreviated-post { margin: 0; padding-left: 0px; padding-top: 20px; }
+	.content-fragment.thread .abbreviated-post .post-name { overflow: hidden; word-wrap: break-word; }
+	.content-fragment.thread .abbreviated-post .post-rating { display: none; }
+	.content-fragment.thread .abbreviated-post .post-attributes { display: none; }
+	.content-fragment.thread .abbreviated-post .post-actions { display: none; }
+	.content-fragment.thread .abbreviated-post .post-status { text-transform: uppercase; }
+		.content-fragment.thread .abbreviated-post .post-status .suggested-answer { padding-left: 18px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/question-suggested-answered.gif') no-repeat; }
+		.content-fragment.thread .abbreviated-post .post-status .verified-answer { padding-left: 18px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/question-verified-answered.gif') no-repeat; }
+		.content-fragment.thread .abbreviated-post .post-status .not-answered { padding-left: 18px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/question-not-answered.gif') no-repeat; }
+		.content-fragment.thread .abbreviated-post .post-status img { display: none; }
+	.content-fragment.thread .content-fragment-content.verified-answer .post-status { text-transform: none; }
+	.content-fragment.thread .content-fragment-content.verified-answer .post-status .verified-answer { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/answered-thread-status.gif') no-repeat; }
+
+.content-fragment.thread .full-post .post-details-container { background: #ECECEC url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/details-container-background.gif') top left repeat-x; width: 100%; border-top: 1px dotted #CCC; padding: 18px 15px 10px 15px; }
+	.content-fragment.thread .full-post .post-rating-cell {  position: relative; vertical-align: middle; }
+	.content-fragment.thread .full-post .report-abuse-cell{ min-width: 12px; vertical-align: middle; }
+	.content-fragment.thread .full-post .edit-post-cell{ min-width: 25px; vertical-align: middle; }
+	.content-fragment.thread .full-post .delete-post-cell{ min-width: 25px; vertical-align: middle; }
+	.content-fragment.thread .full-post .moderate-post-cell { vertical-align: middle; }
+	.content-fragment.thread .full-post .post-actions-cell { width: 100%; position: relative; }
+		.content-fragment.thread .full-post .post-actions-cell .navigation-list { min-height: 25px; }
+		.content-fragment.thread .full-post .post-actions-cell .navigation-list .navigation-item.moderation-menu { display: block; text-align: right; padding-top: 40px; }
+		
+.content-fragment.thread .full-post-footer { height: 1px; background: #EAF1F7 url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/post-dropshadow-bottom.gif') top right repeat-x; padding: 0 0 5px 0; margin-right: -5px; }
+.content-fragment.thread .full-post-container { background: #fff url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/post-dropshadow-right.gif') top right repeat-y; padding-right: 5px; margin-right: -5px; }
+.content-fragment.thread .full-post { display: block; border: 1px solid #CBCACF; border-right: none; position: relative; overflow: hidden; height: 1%; }
+	.content-fragment.thread .full-post .report-abuse { height: 15px;  margin-left: 2px; display: inline; }
+		.content-fragment.thread .full-post .report-abuse .internal-link.report-post { overflow: hidden; width: 10px; height: 0; padding: 10px 0px 0px 0px; display: inline-table; display: -moz-inline-box; display: inline-block; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-report-abuse.gif') top left no-repeat; }
+	.content-fragment.thread .full-post .edit-post { border-left: 1px solid #ccc; height: 15px; margin-left: 7px; display: inline; }
+		.content-fragment.thread .full-post .edit-post .internal-link.edit-post { overflow: hidden; width: 10px; height: 0; padding: 10px 0px 0px 0px; display: inline-table; display: -moz-inline-box; display: inline-block; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-edit.gif') top left no-repeat; border: 0; }
+	.content-fragment.thread .full-post .delete-post { border-left: 1px solid #ccc; height: 15px; margin-left: 7px; display: inline; }
+		.content-fragment.thread .full-post .delete-post .internal-link.delete-post { overflow: hidden; width: 10px; height: 0; padding: 10px 0px 0px 0px; display: inline-table; display: -moz-inline-box; display: inline-block; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-delete.gif') top left no-repeat; border: 0; }
+	.content-fragment.thread .full-post .moderation-menu { border-left: 1px solid #ccc; height: 15px; margin-left: 7px; display: inline; }
+		.content-fragment.thread .full-post .moderation-menu .button { padding-left: 7px; padding-right: 14px; }
+		.content-fragment.thread .full-post .moderation-menu .button.inactive { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/descending.gif') no-repeat center right; }
+		.content-fragment.thread .full-post .moderation-menu .button.active { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/ascending.gif') no-repeat center right; }
+	.content-fragment.thread .full-post .post-tags-container { padding-top: 15px; margin: 0px 15px 15px 15px; border-top: 1px dotted #ccc; }
+		.content-fragment.thread .full-post .post-tags { margin-left: 2px; font-weight: bold; }
+		.content-fragment.thread .full-post .post-tags span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-tags.gif') 4px 2px no-repeat; padding-left: 15px; }
+		.content-fragment.thread .full-post .post-tags a { padding-left: 1px; }
+	.content-fragment.thread .post-starter .full-post { background: #fff url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/post-starter-background.jpg') no-repeat right 40px; }
+	.content-fragment.thread .full-post .post-author { width: 100%; background-color: #DDEFF7; height: 46px; border: none; border-bottom: 1px solid #ccc; overflow: hidden; padding: 0; }
+		.content-fragment.thread .full-post .post-author .avatar { position: absolute; }
+			.content-fragment.thread .full-post .post-author .avatar img { padding: 7px; margin: 0; }
+		.content-fragment.thread .full-post .post-author .user-name-post-date { padding-top: 8px; margin-left: 49px; }
+		.content-fragment.thread .full-post .post-author .user-name-post-date .ip-and-post-status-note { padding-top: 2px; }
+			.content-fragment.thread .full-post .post-author .user-name { display: inline; }
+				.content-fragment.thread .full-post .post-author .user-name a { font-weight: bold; }
+			.content-fragment.thread .full-post .post-author .post-date { display: inline; }
+			.content-fragment.thread .full-post .post-author .user-name-post-date .verified-text { position: absolute;  right: 10px; top: 14px; margin: 0px; font-size: 14px; font-weight: bold; }
+			    .content-fragment.thread .full-post .post-author .user-name-post-date .verified-text span { position: relative; width: 18px; top: 3px; height: 14px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/verified-answer.gif') no-repeat; display: inline-table; display: -moz-inline-box; display: inline-block; }
+			.content-fragment.thread .full-post .post-author .user-name-post-date .suggested-text { position: absolute; right: 10px; top: 14px; margin: 0px; font-size: 14px; font-weight: bold; }
+			    .content-fragment.thread .full-post .post-author .user-name-post-date .suggested-text span { position: relative; width: 18px; top: 3px; height: 14px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/suggested-answer.gif') no-repeat; display: inline-table; display: -moz-inline-box; display: inline-block; }
+		.content-fragment.thread .full-post .post-author .address-container { display: block; }
+		.content-fragment.thread .full-post .post-author .post-status-author { display: inline; }
+		.content-fragment.thread .full-post .post-author .user-name-post-date-extended { padding-top: 8px; margin-left: 49px; }		
+			.content-fragment.thread .full-post .post-author .user-name-post-date .post-host-address {  padding: 0; display: inline; margin-right: 16px; }
+				.content-fragment.thread .full-post .post-author .user-name-post-date .post-host-address span {  background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/images/forums/icon-ipaddress.png') no-repeat ; position: relative; width: 12px; height: 10px; overflow: hidden; display: inline-table; display: -moz-inline-box; display: inline-block; }
+		.content-fragment.thread .full-post .post-author .post-author-details-table { width: 100%; height: 100% }
+		.content-fragment.thread .full-post .post-author .post-author-avatar-cell { width: 46px; }
+			.content-fragment.thread .full-post .post-author .post-author-avatar-cell .avatar { position: relative; }
+		.content-fragment.thread .full-post .post-author .post-author-user-cell { width: 99%; }
+			.content-fragment.thread .full-post .post-author .post-author-user-cell .user-name-post-date { padding-top: 0; margin-left: 0;  }
+	.content-fragment.thread .full-post .post-attributes { display: none; }
+	
+	.content-fragment.thread .full-post .user-signature { padding: 0px 20px 8px 20px; width: auto; position: relative; overflow: hidden; display: block; }
+	.content-fragment.thread .full-post .post-content.user-defined-markup { width: auto; overflow: hidden; position: relative; padding: 20px; }
+		.content-fragment.thread .full-post .post-content.user-defined-markup blockquote { border: 1px dotted #ccc; padding: 5px; }
+	.content-fragment.thread .full-post .post-actions .navigation-item { display: inline; margin: 0; }
+		.content-fragment.thread .full-post .post-actions .navigation-item a { padding-right: 5px; }
+	.content-fragment.thread .full-post .post-actions .navigation-list .navigation-item.search { display: none; }
+	.content-fragment.thread .full-post .post-actions .navigation-item a.view-post.verified-answer { display: none; }
+	.content-fragment.thread .full-post .post-actions .navigation-item a.view-post.answer { display: none; }
+	.content-fragment.thread .full-post .post-actions .navigation-item a.view-post.unverified-answer { display: none; }
+	.content-fragment.thread .full-post .internal-link.subscription-on { display: none; }
+	.content-fragment.thread .full-post .internal-link.subscription-off { display: none; }
+	.content-fragment.thread .full-post .post-actions .navigation-item.post-subscription { display: none; }
+	.content-fragment.thread .full-post .post-actions .navigation-item.post-tracking { display: none; }
+	.content-fragment.thread .full-post .post-actions .navigation-item.user-rank { display: none; }
+	.content-fragment.thread .full-post .menu-button.forum-post-option { display: none; }
+	.content-fragment.thread .full-post .internal-link.follow-post-on { display: none; }
+	.content-fragment.thread .full-post .internal-link.follow-post-off { display: none; }
+	.content-fragment.thread .full-post .internal-link.favorite-off { display: none !important; }
+	.content-fragment.thread .full-post .internal-link.favorite-on { display: none !important; }
+	
+	.content-fragment.thread .full-post .post-attachment-container { position: relative; padding-bottom: 10px; border-bottom: 1px solid #CBCACF; background: #F5F5F4 url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/attachment-background.gif') repeat-x top left; }
+		.content-fragment.thread .full-post	.post-attachment-viewer { margin-left: 10px; margin-top: 15px; display: inline-table; display: -moz-inline-box; display: inline-block; }
+		.content-fragment.thread .full-post .post-attachment { position: relative; padding-bottom: 5px; width: 80%; display: inline-table; display: -moz-inline-box; display: inline-block;  }
+			.content-fragment.thread .full-post .post-attachment .value { vertical-align: middle; float: left; line-height: 21px; }
+			.content-fragment.thread .full-post .post-attachment .internal-link.view-post.media-gallery { margin-left: 10px; padding-left: 18px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-binocular-arrow.gif') no-repeat left center; }
+		.content-fragment.thread .full-post .attachment-separator { display: block; }
+	
+
+.content-fragment.thread .full-post .post-actions .navigation-list .navigation-item a.add-post { padding-left: 15px; padding-right: 22px; }
+.content-fragment.thread .internal-link.add-post { font-size: 10px; color: #fff; float: right; display: block; position: relative; margin-left: 12px; background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/reply-button.gif') no-repeat scroll right -20px; height: 20px; padding: 3px 10px 3px 0px; font-weight: bold; }
+	.content-fragment.thread .internal-link.add-post span { position: absolute; left: -8px; top: 0; background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/reply-button.gif') no-repeat scroll left top; height: 20px; width: 8px; display: block; }
+.content-fragment.thread .internal-link.add-post.selected { background-image: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/reply-button-selected.gif');  }
+	.content-fragment.thread .internal-link.add-post.selected span { background-image: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/reply-button-selected.gif'); }
+.content-fragment.thread .full-post .post-actions .navigation-list .navigation-item a.not-answer{ padding-left: 7px; padding-right: 14px;}
+.content-fragment.thread .internal-link.not-answer { font-size: 10px; color: #fff; float: right; display: block; position: relative; margin-left: 12px; background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/suggest-answer-button.gif') no-repeat scroll right -20px; height: 20px; padding: 3px 13px 3px 3px; font-weight: bold; }
+	.content-fragment.thread .internal-link.not-answer span { position: absolute; left: -8px; top: 0; background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/suggest-answer-button.gif') no-repeat scroll left top; height: 20px; width: 8px; display: block; }
+.content-fragment.thread .full-post .post-actions .navigation-list .navigation-item a.suggest-answer{ padding-left: 9px; padding-right: 16px;}
+.content-fragment.thread .internal-link.suggest-answer.selected { background-image: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/suggest-answer-button-selected.gif');  }
+	.content-fragment.thread .internal-link.suggest-answer.selected span { background-image: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/suggest-answer-button-selected.gif');  }
+.content-fragment.thread .internal-link.suggest-answer { font-size: 10px; color: #fff; float: right; display: block; position: relative; margin-left: 12px; background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/suggest-answer-button.gif') no-repeat scroll right -20px; height: 20px; padding: 3px 10px 3px 0px; font-weight: bold; }
+	.content-fragment.thread .internal-link.suggest-answer span { position: absolute; left: -8px; top: 0; background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/suggest-answer-button.gif') no-repeat scroll left top; height: 20px; width: 8px; display: block; }
+.content-fragment.thread .full-post .post-actions .navigation-list .navigation-item a.verify-answer { padding-left: 7px; padding-right: 14px; }
+.content-fragment.thread .internal-link.verify-answer { float: right; display: block; position: relative; margin-left: 12px; background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/verify-answer-button.gif') no-repeat scroll right -20px; height: 20px; padding: 3px 10px 3px 0px; }
+	.content-fragment.thread .internal-link.verify-answer span { position: absolute; left: -7px; top: 0; background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/verify-answer-button.gif') no-repeat scroll left top; height: 20px; width: 7px; display: block; }
+
+.content-fragment.thread .full-post.verified-answer .post-author { background-color: #DCF4D5; }
+
+.content-fragment.thread .full-post.suggested-answer .post-status-author.suggester { display: none; }
+
+.menu.moderation-content { background-color:#fff; border: solid 1px #999; width: 80px; }
+.menu.moderation-content .menu-item { background-color: #fff; border: solid 1px #fff; cursor: pointer; padding: 3px; margin-right: 5px; }
+.menu.moderation-content .menu-item.hover { background-color: #f4f4f4; border: solid 1px #E1E1E1; cursor: pointer; padding: 3px; margin-right: 5px; }
+
+.content-fragment.thread .post-rating { position: relative; display: inline; width: 80px; border-right: 1px solid #ccc; margin-right: 5px; height: 15px; padding-right: 87px; }
+.content-fragment.thread .post-rating .rating { border-right: none; position: absolute; width: 80px; height: 15px; top: -2px; }
+
+.content-fragment.thread .field-list { margin: 0px; background: #ECECEC; position: relative; width: auto; padding: 0px 15px 10px 15px; overflow: hidden; }
+.content-fragment.thread .field-list textarea { overflow: auto; width: 100%; display: block; margin-bottom: 8px; border: 1px solid #ccc; }
+.content-fragment.thread .field-list .internal-link { display: inline; }
+.content-fragment.thread .full-post .post-actions .navigation-list .navigation-item .field-list a.add-inline-post { padding-right: 8px; }
+.content-fragment.thread .field-list .internal-link.add-inline-post { display: inline; margin-left: 8px; font-size: 11px; color: #fff; position: relative; background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/reply-button.gif') no-repeat scroll right -20px; height: 20px; padding: 3px 10px 3px 0px; }
+	.content-fragment.thread .field-list .internal-link.add-inline-post span { position: absolute; left: -8px; top: 0; background: Transparent url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/reply-button.gif') no-repeat scroll left top; height: 20px; width: 8px; display: block; }
+.content-fragment.thread .field-list .internal-link.cancel-reply { display: inline; position: absolute; right: 15px; bottom: 15px; }
+.content-fragment.thread .field-list .internal-link.add-post { margin-left: 10px; float: none; font-size: inherit; top: auto; right: auto; display: inline; position: relative; background: Transparent; }
+	.content-fragment.thread .field-list .internal-link.add-post span { left: auto; top: auto; position: relative; background: Transparent; display: inline; }
+
+.content-fragment.thread .field-list .internal-link.add-inline-post.processing { overflow: hidden; height: 0; padding: 18px 0px 0px 0px; display: inline-table; display: -moz-inline-box; display: inline-block; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/spinner_ececec.gif') center center no-repeat; }
+.content-fragment.thread .field-list .internal-link.add-inline-post.processing span { background: none; }
+
+.content-fragment.thread .content-fragment-bottom .r1, .content-fragment.thread .content-fragment-bottom .r2, .content-fragment.thread .content-fragment-bottom .r3, .content-fragment.thread .content-fragment-bottom .r4 { background: #EAF1F7; }
+
+/* $Forum Thread Details
+/******************************/
+.content-fragment.thread-details .abbreviated-post { padding: 0; }
+	.content-fragment.thread-details .abbreviated-post .attribute-item { border-bottom: 1px dotted #ccc; display: block; padding: 5px 0px; }
+	.content-fragment.thread-details .abbreviated-post .attribute-item.post-reply-count { padding-left: 20px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-balloon.gif') 0px 4px no-repeat; }
+	.content-fragment.thread-details .abbreviated-post .attribute-item.post-subscriber-count { padding-left: 20px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-inbox.gif') 0px 4px no-repeat; }
+	.content-fragment.thread-details .abbreviated-post .attribute-item.post-days-old { padding-left: 20px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-calendar-month.gif') 0px 4px no-repeat; }
+	.content-fragment.thread-details .abbreviated-post .post-rating { border-bottom: 1px dotted #ccc; position: relative; text-transform: uppercase; padding-bottom: 4px; }
+	.content-fragment.thread-details .abbreviated-post .post-rating .rating { position: absolute; top: -3px; padding-left: 4px; }
+
+/* $Forum Create/Edit Post
+/******************************/
+.content-fragment.create-edit-post .content-fragment-header .internal-link.view-application { margin-left: 8px; }
+	.content-fragment.create-edit-post .content-fragment-header .internal-link.view-application span { position: absolute; left: 6px; top: 3px; height:26px; width: 6px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-left-arrow.gif') no-repeat center center; padding: 0 4px; }
+.content-fragment.create-edit-post .content-fragment-header { position: relative; margin-bottom: 0; padding-top: 9px; border-bottom: 3px solid #B2B1B4; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/application-title-background.gif') repeat-x; }
+.content-fragment.create-edit-post .content-fragment-header div { border: none; }
+.content-fragment.create-edit-post .tab-set.with-panes { background: none;  }
+.content-fragment.create-edit-post .content-fragment-content { padding-top: 10px; background: #fff url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/form-background.gif') repeat-x; }
+.content-fragment.create-edit-post label.field-item-header { display: inline; text-transform: uppercase; margin-bottom: 3px; }
+.content-fragment.create-edit-post .content-fragment-content .field-item .field-item-input { display: block; padding-left: 10px; }
+.content-fragment.create-edit-post .content-fragment-content .field-item.post-type .field-item-input, .content-fragment.create-edit-post .content-fragment-content .field-item.post-tags .field-item-input { display: inline; }
+.content-fragment.create-edit-post .reply-post { width: 890px; overflow: hidden; }
+.content-fragment.create-edit-post .field-item.post-type { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/post-type-background.gif') repeat-x; border: 1px solid #ccc; padding-left: 10px; }
+.content-fragment.create-edit-post .field-item.post-subject .field-item-input { display: block; margin-top: 5px; }
+.content-fragment.create-edit-post .field-item.post-subject .field-item-input input { width: 99%; height: 22px; padding-top: 5px; padding-left: 2px; border: 1px solid #ccc; }
+.content-fragment.create-edit-post .field-item.post-tags .field-item-header { display: block; margin-bottom: 5px; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-tags-large.gif') no-repeat left center; height: 16px; padding-left: 18px; }
+.content-fragment.create-edit-post .field-item.post-tags input { height: 22px; padding-top: 5px; padding-left: 2px; border: 1px solid #ccc; }
+.content-fragment.create-edit-post .field-item.post-icon { display: none; }
+.content-fragment.create-edit-post .message.directions { display: none; }
+
+.content-fragment.create-edit-post .content-item { border-bottom: none; }
+.content-fragment.create-edit-post .full-post { overflow: hidden; margin: 12px; border: 1px solid #ccc; }
+	.content-fragment.create-edit-post .full-post .post-author { width: 100%; background-color: #DDEFF7; height: 46px; border: none; border-bottom: 1px solid #ccc; overflow: hidden; padding: 0; }
+		.content-fragment.create-edit-post .full-post .post-author .avatar { position: absolute; }
+			.content-fragment.create-edit-post .full-post .post-author .avatar img { padding: 7px; margin: 0; }
+		.content-fragment.create-edit-post .full-post .post-author .user-name { position: absolute; left: 50px; top: 15px; }
+	.content-fragment.create-edit-post .full-post .post-content.user-defined-markup { padding: 10px; margin-bottom: 12px; }
+		.content-fragment.create-edit-post .full-post .post-content.user-defined-markup blockquote { border: 1px dotted #ccc; padding: 5px; }
+	.content-fragment.create-edit-post .full-post .user-signature { padding: 0px 10px 10px 10px; display: block; overflow: hidden; position: relative; }
+		
+	.content-fragment.create-edit-post .field-item-input.featured-post-url .user-file-url { margin-left: 30px; }
+	.content-fragment.create-edit-post .full-post .post-date .label { display: none; }
+	.content-fragment.create-edit-post .full-post .post-date .value { display: none; }
+	.content-fragment.create-edit-post .full-post .post-attributes{ display: none; }
+	
+	.content-fragment.create-edit-post .field-item.poll-toggled-option .field-item-input { display: block; }
+	.content-fragment.create-edit-post .field-item-input a.move-up { text-decoration: none; }
+	.content-fragment.create-edit-post .field-item-input .move-up { background-image: none; width: auto; height: auto; padding: 0 16px 0 0; margin: 0; overflow: hidden; display: inline-table; display: -moz-inline-box; display: inline-block; position: relative; }
+		.content-fragment.create-edit-post .field-item-input .move-up span { position: absolute; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/up-arrow.gif') no-repeat center center; width: 18px; height: 18px; }
+	.content-fragment.create-edit-post .field-item-input a.move-down { text-decoration: none; }
+	.content-fragment.create-edit-post .field-item-input .move-down { background-image: none; width: auto; height: auto; padding: 0 16px 0 0; margin: 0; overflow: hidden; display: inline-table; display: -moz-inline-box; display: inline-block; position: relative; }
+		.content-fragment.create-edit-post .field-item-input .move-down span { position: absolute; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/down-arrow.gif') no-repeat center center; width: 18px; height: 18px; }
+	.content-fragment.create-edit-post .field-item-input a.delete-question { text-decoration: none; }
+	.content-fragment.create-edit-post .field-item-input .delete-question { background-image: none; width: auto; height: auto; padding: 0 16px 0 0; margin: 0; overflow: hidden; display: inline-table; display: -moz-inline-box; display: inline-block; position: relative; }
+		.content-fragment.create-edit-post .field-item-input .delete-question span { position: absolute; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-delete.gif') no-repeat center center; width: 18px; height: 18px; }
+	
+/* $Forum Report Abuse
+/******************************/
+.content-fragment.report-abuse .field-item.post-subject .field-item-input input { width: 99%; }
+
+/* $Forum Delete Post
+/******************************/
+.content-fragment.delete-post { padding: 12px; }
+	.content-fragment.delete-post  { }
+	.content-fragment.delete-post .full-post .post-author { position: relative; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/thread-author-background.gif') repeat-x; height: 40px; border-right: 1px solid #ccc; border-left: 1px solid #ccc; overflow: hidden; }
+		.content-fragment.delete-post .full-post .post-author .avatar img { margin: 4px; }
+		.content-fragment.delete-post .full-post .post-author .user-name { position: absolute; left: 45px; top: 13px; }
+	.content-fragment.delete-post .full-post .post-date .label { display: none; }
+	.content-fragment.delete-post .full-post .post-date .value { display: none; }
+	.content-fragment.delete-post .field-list-header { margin: 0; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/thread-post-header-background.gif') repeat-x; height: 15px; }
+	.content-fragment.delete-post .field-item-header { text-transform: uppercase; }
+	.content-fragment.delete-post .field-list-description { padding: 10px; padding-top: 0px; }
+	
+/* $Forum Links
+/******************************/
+.content-fragment.forum-links .navigation-item { border-bottom: 1px dotted #ccc; position: relative; }
+	.content-fragment.forum-links .navigation-item .internal-link { padding-left: 18px; position: relative; }
+	.content-fragment.forum-links .navigation-item .internal-link span { position: absolute; left: 0px; top: 1px; width: 16px; height: 15px; }
+
+	.content-fragment.forum-links .navigation-item .internal-link.mark-all-read span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-mark-read.gif') center center no-repeat; }
+	.content-fragment.forum-links .navigation-item .internal-link.rss span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-rss.gif') center center no-repeat; }
+	.content-fragment.forum-links .navigation-item .internal-link.subscription-on span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-subscribe.gif') center center no-repeat; }
+	.content-fragment.forum-links .navigation-item .internal-link.subscription-off span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-subscribe.gif') center center no-repeat; }
+	.content-fragment.forum-links .navigation-item .internal-link.favorite-on span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-favorite-on.gif') center center no-repeat; }
+	.content-fragment.forum-links .navigation-item .internal-link.favorite-off span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/icon-favorite-off.gif') center center no-repeat; }
+	.content-fragment.forum-links .navigation-item .internal-link.view-moderation span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-moderate.gif') center center no-repeat; }
+	.content-fragment.forum-links .navigation-item .internal-link.add-application span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-add.gif')  center center no-repeat; }
+	.content-fragment.forum-links .navigation-item .internal-link.view-control-panel span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-settings.gif') center center no-repeat; }
+	.content-fragment.forum-links .navigation-item .internal-link.email-post span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/MediaGalleries/icon-share.gif') no-repeat center center; }
+	.content-fragment.forum-links .navigation-item .internal-link.capture-post span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-capture.gif') no-repeat center center; }
+	.content-fragment.forum-links .navigation-item .internal-link.follow-post-on span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-follow-on.gif') no-repeat center center; }
+	.content-fragment.forum-links .navigation-item .internal-link.follow-post-off span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/Forums/icon-follow-off.gif') no-repeat center center; }
+	
+/* $Forum Email Information
+/******************************/
+.content-fragment.email-information .field-list-description { display: none;  }
+.content-fragment.email-information .content-fragment-content { padding: 2px 12px 5px 12px; }
+.content-fragment.email-information .field-list { margin: 0px; }
+.content-fragment.email-information .field-item { padding: 1px 0px; font-size: 12px; }
+	.content-fragment.email-information .field-item .field-item-header { display: inline; }
+	.content-fragment.email-information .field-item.email-address .field-item-header { position: absolute; }
+	.content-fragment.email-information .field-item.email-address .field-item-input { display: inline-table; display: -moz-inline-box; display: inline-block; margin-left: 38px; }
+	
+	/* $Blog Blog Post Comment Form
+/******************************/
+.content-fragment.blog-post-comment-form { padding-left: 10px; position: relative; }
+	.content-fragment.blog-post-comment-form .field-list { width: 100%; position: relative; min-width: 0; }
+	.content-fragment.blog-post-comment-form .field-list-header { display: none; }
+	.content-fragment.blog-post-comment-form .field-list-description { text-transform: uppercase; font-size: 10px; font-weight: bold; color: #666; }
+	.content-fragment.blog-post-comment-form .field-item-header { color: #444; display: inline; }
+	.content-fragment.blog-post-comment-form .field-item { margin: 8px 0; padding: 0; position: relative; }
+	.content-fragment.blog-post-comment-form .field-item input { border: 1px solid #ccc; }
+	.content-fragment.blog-post-comment-form .field-item.post-body { margin-right: 8px; }
+	.content-fragment.blog-post-comment-form .field-item textarea { width: 100%; border: 1px solid #ccc; color:#666; padding: 3px; font-family: Arial, Sans-Serif; font-size: 1em; }
+	.content-fragment.blog-post-comment-form .field-item .field-item-validation { font-weight: bold; padding: 3px; }
+	.content-fragment.blog-post-comment-form .field-item-input { display: block; }
+	.content-fragment.blog-post-comment-form .field-list-footer { display: none; }
+	.content-fragment.blog-post-comment-form .internal-link.add-reply { margin-left: 10px; position: relative; background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/button.gif') no-repeat right -20px; height: 20px; color: #fff; font-size: 10px; padding: 3px 12px 6px 2px; }
+		.content-fragment.blog-post-comment-form .internal-link.add-reply span { background: url('http://www.lampsplus.com/info-center/themes/LampsPlus/Images/button.gif') no-repeat left top; display: block; position: absolute; left: -10px; top: 0; width: 18px; height: 20px; }
+		
+    .content-fragment.blog-post-comment-form .field-item.user-name { display: none; }
+    .content-fragment.blog-post-comment-form .field-item.user-url { display: none; }
+    .content-fragment.blog-post-comment-form .field-item .field-item-validation { display: none; }
+    
+    .content-fragment.blog-post-comment-form .message.success { display: none; }
+		.content-fragment.blog-post-comment-form .message.success .internal-link.close-message { float: right; text-indent: -5555em; background: transparent url(http://www.lampsplus.com/info-center/themes/LampsPlus/images/icon-sprite.gif) no-repeat 0 -1151px; height: 12px; width: 12px; margin: 0; padding: 0; }
+		
+	.content-fragment.blog-post-comment-form .message.warning { position: relative; display: none; }
+		.content-fragment.blog-post-comment-form .message.warning .internal-link.close-message { position: absolute; right: 10px; top: 12px; text-indent: -5555em; background: transparent url(http://www.lampsplus.com/info-center/themes/LampsPlus/images/icon-sprite.gif) no-repeat 0 -1151px; height: 12px; width: 12px; margin: 0; padding: 0; }
+	

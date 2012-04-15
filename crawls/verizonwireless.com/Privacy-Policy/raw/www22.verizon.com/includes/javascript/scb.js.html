@@ -1,0 +1,150 @@
+
+var arrHost=(window.location.hostname).split('.');
+var scbCkDom='.'+arrHost[arrHost.length-2]+'.'+arrHost[arrHost.length-1];
+
+/* headerlogin.js */
+
+/* ***** GLOBALS ***** */
+
+var DIVOff=-250;
+var ZIPOn=3;
+
+var dly=50;
+var out=2;
+
+var hideZIPTimer=0;
+
+/* ***** LOCATION DIV ***** */
+
+function mvDIVzip(o,p){
+	var d=0;
+	if(o!=null){
+		window.mvDIVzipAg=function(){
+			var cp=parseInt(o.style.top);
+			if(p>0){
+				d=Math.floor((p-cp)/2);
+				o.style.top=cp+d+"px";
+				if(d!=0){
+					setTimeout("mvDIVzipAg()",dly);
+				}
+			}else{
+				if(cp>p){
+					if(d==0)d=-1;
+					d=d*out;
+					o.style.top=cp+d+"px";
+					if(d>p&&cp>DIVOff){
+						setTimeout("mvDIVzipAg()",dly);
+					}
+				}
+			}
+		}
+		mvDIVzipAg();
+	}
+}
+function sldLzip(){
+	var obj,args=arguments;
+	if((obj=fObj(args[0]))!=null){
+		mvDIVzip(obj,args[1]);
+	}
+}
+function hideZIP(){
+	dispLayer("ghzipdiv","none");
+}
+function toggleZIP(){
+	var objDIVzip=fObj("ghzip");
+	if(objDIVzip!=null){
+		if(parseInt(objDIVzip.style.top)<ZIPOn-1){
+			ZIPin();
+		}else{
+			ZIPout();
+		}
+	}
+}
+function ZIPin(){
+	window.clearTimeout(hideZIPTimer);
+	dispLayer("ghzipdiv","block");
+	sldLzip("ghzip",ZIPOn);
+}
+function ZIPout(){
+	window.clearTimeout(hideZIPTimer);
+	sldLzip("ghzip",DIVOff);
+	hideZIPTimer=window.setTimeout("hideZIP()",200);
+}
+function restartPage(){
+	window.location.reload(true);
+}
+function validateZIP(frm){
+	if(frm.zipcode.value==""||frm.zipcode.value=="Enter your ZIP code"||(frm.zipcode.value).length<5){
+		alert("Please enter a valid ZIP code.");
+		frm.zipcode.focus();
+		return false;
+	if(frm.loc.value==""){
+	 	frm.loc.value = "GHF"
+	}
+	}else{
+		var headID = document.getElementsByTagName("head")[0];
+		var newScript = document.createElement('script');
+		newScript.type = 'text/javascript';
+		//newScript.src = 'https://www22.verizon.com/includes/getlocation/?zipcode='+frm.zipcode.value;
+		newScript.src = 'https://www22.verizon.com/includes/getlocation/0,,'+frm.zipcode.value+',00.html?loc='+frm.loc.value+'&zipcode='+frm.zipcode.value;
+		headID.appendChild(newScript);
+	}
+	return false;
+}
+function resetLocation(){
+	var expireDate=new Date();
+	expireDate.setTime(expireDate.getTime()-(1000*60*60*24*365));
+	fnSetFullCookie('vzapps','NPA=&NXX=&LAST=&STATE=;',expireDate,'/',scbCkDom);
+	restartPage();
+}
+function checkZIP(p,e){
+	var s=p.value;
+	var ev=e?e:window.event;
+	if(!ev){return false;}
+	var targ=ev.target?ev.target:ev.srcElement;
+	var which=-1;
+	if(ev.which){which=ev.which;}
+	else if(ev.keyCode){which=ev.keyCode;}
+	if(which==8||which==9||which==13||which==35||which==36||which==37||which==39||which==45||which==46){ 
+		return true;
+	}else if((which>47&&which<58)&&s.length<=5){
+		return true;
+	}else{
+		return false;
+	}
+	return false;
+}
+function getLocInfo(){
+	var stCity=null;
+	var stState=null;
+	var stZIP=null;
+	var stACity=null;
+	var stAState=null;
+	var stAZIP=null;
+
+	stCity=fnGetFullCookie("vzapps","CITY");
+	if(stCity==null && stACity!=""){stCity=stACity;}
+	if(stCity!=null){stCity=stCity.replace(/%5f|%5F|\_/gi," ");}
+
+	stState=fnGetFullCookie("vzapps","STATE");
+	if(stState==null && stAState!=""){stState=stAState;}
+	if(stState!=null){stState=stState.replace(/%5f|%5F|\_/gi," ");}
+
+	stZIP=fnGetFullCookie("vzapps","ZIPCODE");
+	if(stZIP==null && stAZIP!=""){stZIP=stAZIP;}
+	if(stZIP!=null){stZIP=stZIP.replace(/%5f|%5F|\_/gi," ");}
+
+	stACity="";stAState="";stAZIP="";
+
+	if(stState!=null&&(stState=="V1"||stState=="V2")){stState="VA";}
+	if(stState!=null&&(stState=="P1"||stState=="P2")){stState="PA";}
+	var gLoc="";if(stCity!=null && stState!=null && stZIP!=null)gLoc += stCity+", "+stState+" "+stZIP;
+	else if(stState!=null){for(var z=0;z<arrStateAbbrev.length;z++){if(stState==arrStateAbbrev[z]){stState=arrStateFullCAPS[z];break;}}gLoc=stState;}
+	if(gLoc!=""){
+		rewriteHTML("loclinklabel","<!--mp_trans-->");
+		rewriteHTML("loclinktext","");
+		rewriteHTML("ghziploc","<!-- mp_trans_disable_start -->"+gLoc+"<!-- mp_trans_disable_end -->");
+		ZIPout();
+		if(document.locationfrm.zipcode){document.locationfrm.zipcode.value="";}
+	}
+}

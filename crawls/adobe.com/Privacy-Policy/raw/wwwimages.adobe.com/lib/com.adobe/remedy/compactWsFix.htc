@@ -1,0 +1,14 @@
+<component lightweight="true">
+	<attach event="oncontentready" handler="compactWsFix" />
+	<script> 
+		function compactWsFix() { /*@cc_on; @if (@_jscript_version <= 5) return; @end; @*/ 
+			var d = element.uniqueID;
+			for(var i=0, n; (n=element.all.tags("A")[i]);i++) {
+				var p = n.parentNode.parentNode;
+				if(p.uniqueID == d) {
+					n.runtimeStyle.whiteSpace = "nowrap";	
+				}
+			}
+		}
+	</script>
+</component>

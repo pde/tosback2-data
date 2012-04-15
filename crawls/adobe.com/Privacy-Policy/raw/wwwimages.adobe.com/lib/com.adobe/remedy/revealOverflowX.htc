@@ -1,0 +1,63 @@
+<component lightweight="true">
+	<attach event="ondocumentready" handler="applyFix" />
+	<script>
+	/*$Revision: #1 $*/
+		function setup(e) {
+			var _element = e,
+			_spacer = (_element.ownerDocument || window.document).createElement("span"),
+			_NO_VALUE = "",
+			_UNIT = "px",
+			_OVERFLOW_POSITION_TYPE = "absolute",
+			_AUTO = "auto",
+			_MENU_DISPLAY_TYPE = "inline-block",
+			_HIDDEN_DISPLAY_TYPE = "none",
+			_originalWidth = _element.offsetWidth;
+			
+			_spacer.style.position = "relative";
+			_spacer.style.display = _HIDDEN_DISPLAY_TYPE;
+			
+			_element.parentNode.insertBefore(_spacer, _element);
+			
+			function _removeFix() {
+				_element.style.width = _NO_VALUE;
+				_element.style.top = _NO_VALUE;
+				_element.style.left = _NO_VALUE;
+				_element.style.position = _NO_VALUE;
+				
+				_spacer.style.display = _HIDDEN_DISPLAY_TYPE;
+				_spacer.style.height = _NO_VALUE;
+				_spacer.style.width = _NO_VALUE;
+			}
+			
+			function _applyFix() {
+				_spacer.style.display = _MENU_DISPLAY_TYPE;
+				_spacer.style.width = _element.currentStyle.width;
+				_spacer.style.height = _element.offsetHeight+_UNIT;
+				
+				_element.style.top = _spacer.offsetTop+_UNIT;
+				_element.style.left = _spacer.offsetLeft+_UNIT;
+				_element.style.position = _OVERFLOW_POSITION_TYPE;
+				_element.style.width = _AUTO;
+			}
+			
+			return {
+				o: function() {										
+					_applyFix();
+					if(_originalWidth > _element.offsetWidth) {
+						_removeFix();
+					}
+				},
+				c: function() {
+					_removeFix();
+				}
+				
+			}
+		}
+		
+		function applyFix() {
+			var f = setup(element);
+			element.attachEvent("onfocusin", f.o );
+			element.attachEvent("onfocusout", f.c );
+		}
+	</script>
+</component>

@@ -1,0 +1,81 @@
+/* BORDERS */
+/**** Custom Borders *****************************************************************/
+
+/* Descriptions/Translations of selectors
+[cb]     = a custom border parent element. A javascript searches for elements of this attribute. Do not use .cb as a class selector. NOTE - This has yet to be implemented.
+.fold    = a bordered box w/ dog-eared corner. This should be a class of the parent of the respective corner (e.g. - .cbt or .cbb).
+.paper   = designates a notebook paper box.
+.cbt     = top
+.cbb     = bottom
+.cbl     = left
+.cbr     = right
+.cbs     = parent element of .cbc that displays a drop shadow either by a border or background property ('s' is for 'shadow')
+.cbc     = element that holds actual content ('c' is for 'content')
+.r[n]    = '[n]' refers to the "corner radius" of a box
+.d[n]    = '[n]' refers to the size of a drop shadow
+.b[n][c] = '[n]' refers to border width and '[c]' refers to border color
+.g[c][c] = '[c]' refers to background color of box itself. second refers to background color of intended underlying element.
+
+/* More Notes
+- Corner radius, drop shadow and color codes should be combined into one class selector b/c all these aspects determine a single background image to be used. (e.g. - .r6_d2_b3WHT_gPYE_WHT denotes a rounded, white-bordered, pale yellow box over a white background. This element has a corner radius of 6px, a border width of 3px and a drop shadow size of 2px. )
+- The underlying element's background color is taken into account b/c of our use of GIFs.
+- These start to break down when they are in a child element of another custom-bordered element. Since our friend IE6 doesn't support child combinators, everything is based on descendant selectors. To thwart this I have made redundant, more specific styles whenever necessary.
+- IMPORTANT - Because of another short-coming of IE6, widths must also (sometimes) be expicitly declared for the top-most element [cb], and would be best if done so without any of the selectors found herein.
+*/
+
+.cbl { margin-right:40%; }
+.cbr { margin-left:40%; }
+
+.cbt .cbl { background-position:0 0; }
+.cbt .cbr { background-position:100% 0; }
+.cbb .cbl { background-position:0 100%; }
+.cbb .cbr { background-position:100% 100%; }
+
+.r2_gLGR .cbl { height:2px; }
+.r2_gLGR .cbr { height:2px; margin-top:-2px; }
+.r2_gLGR .cbc { background:#e9e9e9; }
+.r2_gLGR .cbl,
+.r2_gLGR .cbr { background-image:url("../../marieclaire/assets/images/borders/r2_gLGR.gif"); }
+
+.r2_b1GRA .cbl { height:2px; }
+.r2_b1GRA .cbr { height:2px; margin-top:-2px; }
+.r2_b1GRA .cbc { border-left:#e9e9e9 1px solid;; border-right:#e9e9e9 1px solid; padding:0 2px; }
+.r2_b1GRA .cbl,
+.r2_b1GRA .cbr { background-image:url("../../marieclaire/assets/images/borders/r2_b1GRA_gLGR.gif"); }
+
+.r2_b1GRA_gLGR .cbl { height:2px; }
+.r2_b1GRA_gLGR .cbr { height:2px; margin-top:-2px; }
+.r2_b1GRA_gLGR .cbc { background:#fff; border-left:#e9e9e9 1px solid;; border-right:#e9e9e9 1px solid; padding:0 2px; }
+.r2_b1GRA_gLGR .cbl,
+.r2_b1GRA_gLGR .cbr { background-image:url("../../marieclaire/assets/images/borders/r2_b1GRA_gLGR.gif"); }
+
+.r2_b1GRA_b2WHT_gLGR .cbl { height:4px; }
+.r2_b1GRA_b2WHT_gLGR .cbr { height:4px; margin-top:-4px; }
+.r2_b1GRA_b2WHT_gLGR .cbs { background:#fff; border-left:#e9e9e9 1px solid; border-right:#e9e9e9 1px solid; padding:0 2px; zoom: 1;}
+.r2_b1GRA_b2WHT_gLGR .cbc { background:#fff; }
+.r2_b1GRA_b2WHT_gLGR .cbl,
+.r2_b1GRA_b2WHT_gLGR .cbr { background-image:url("../../marieclaire/assets/images/borders/r2_b1GRA_b2WHT_gLGR.gif"); }
+
+
+/* Provisions for nested custom-bordered elements */
+.r2_b1GRA_gLGR .r2_b1GRA .cbl { height:2px; }
+.r2_b1GRA_gLGR .r2_b1GRA .cbr { height:2px; margin-top:-2px; }
+.r2_b1GRA_gLGR .r2_b1GRA .cbc { border-left:#e9e9e9 1px solid;; border-right:#e9e9e9 1px solid; padding:0 2px; background:#fff; }
+.r2_b1GRA_gLGR .r2_b1GRA .cbl,
+.r2_b1GRA_gLGR .r2_b1GRA .cbr { background-image:url("../../marieclaire/assets/images/borders/r2_b1GRA_gLGR.gif"); }
+
+/* Provisions for IE */
+* html .cbt, * html .cbb, * html .cbl, * html .cbr { font-size:1%; }
+* html .cbt, * html .cbb, * html .cbl, * html .cbr, * html .cbs, * html .cbc,
+*:first-child+html .cbs, *:first-child+html .cbc  { height:1%; }
+* html .d2 .cbb.fold .cbr { background-image:url("../../quickandsimple/images_tmpl/borders/fold.gif"); }
+* html #global_site .cap,
+*:first-child+html #global_site .cap { width:1000px; }
+* html #global_right .right_rail,
+*:first-child+html #global_right .right_rail { width:348px; }
+
+/* Provisions for for Share menu in Viral Toolbar in IE7 */
+*:first-child+html .b7_d2 .cbr { margin-top:-10px }
+*:first-child+html .b7_d2 .cbl { margin-top:-7px; }
+
+/**** /Custom Borders ****************************************************************/

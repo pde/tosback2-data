@@ -1,0 +1,448 @@
+// --------------------------------------------------------------------------
+// Class Variables
+// --------------------------------------------------------------------------
+/**
+ * map: ESRI map object:
+ * http://resources.esri.com/help/9.3/arcgisserver/apis/javascript/arcgis/help/jsapi/map.htm
+ */
+var _map = null;
+
+/**
+ * dataLayer: ArcGISDynamicMapServiceLayer contains the background map and
+ * coverage layer data
+ */
+var _dataLayer = null;
+
+/**
+ * currentMapZone: indicates if the viewing area is the contiguous US, Alaska,
+ * Hawaii, or Puerto Rico
+ */
+var _currentMapZone = ESRIConfig.mapZoneContiguousUSA;
+
+/**
+ * currentDataTypeID: used to store the coverage data type that is currently on
+ * the map.
+ */
+// var _currentDataTypeID = ESRIConfig.defaultDataTypeID;
+var _currentDataTypeID = _selectedDataTypeID;
+
+/**
+ * locationSymbol: Green dot used as a marker on the map.
+ */
+// var _locationSymbol = new esri.symbol.SimpleMarkerSymbol(
+// esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE, 0,
+// new esri.symbol.SimpleLineSymbol(
+// esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color( [ 0,
+// 255, 0 ]), 2), new dojo.Color( [ 0, 255, 0 ]))
+// .setAngle(0).setOffset(0, 0);
+/**
+ * pinSymbol: Push Pin icon used as a marker on the map.
+ */
+var _pinSymbol = new esri.symbol.PictureMarkerSymbol('images/pin_black.gif',
+		16, 30);
+// --------------------------------------------------------------------------
+// END Class Variables
+// --------------------------------------------------------------------------
+
+function initializeMyMap() {
+
+	esriConfig.defaults.map.slider = ESRIConfig.mapSliderStyle;
+
+	esriConfig.defaults.map.sliderLabel = {
+		tick : ESRIConfig.mapSliderLabelTickSize,
+		labels : ESRIConfig.mapSliderLabels,
+		style : ESRIConfig.mapSliderLabelStyle
+	};
+
+	// Initialize the Map
+	// CHANGE 4.H START
+	/**
+	 * In the constructor of the map we need to add the initial extent we
+	 * defined in esriDefaults.js in CHANGE 4.G
+	 * 
+	 * Original: 
+	 * _map = new esri.Map(UIConfig.esriMapID, 
+	 * { 
+	 * slider : true, lods :
+	 * ESRIDefaults.mapLODs 
+	 * });
+	 * 
+	 * New :  
+	 * _map = new esri.Map(UIConfig.esriMapID, 
+	 * {
+	 * slider : true,
+	 * lods : ESRIDefaults.mapLODs,
+	 * extent:ESRIDefaults.initialExtent
+	 * });
+	 */
+
+	
+
+	_map = new esri.Map(UIConfig.esriMapID, {
+		slider : true,
+		lods : ESRIDefaults.mapLODs,
+		extent:ESRIDefaults.initialExtent,
+            logo:false
+	});
+	// CHANGE 4.H END
+	if (_map != null) {
+
+		// CHANGE 4.B START
+
+		/***********************************************************************
+		 * 
+		 * Remove the addition of the base map. The old comment below is no
+		 * longer true. we set the LODs is the esriDefaults.js file
+		 * 
+		 * 
+		 */
+
+		/**
+		 * Add an ArcGISTiledMapServiceLayer to the map. We want the predefined
+		 * map Levels of Detail (LOD).
+		 * http://resources.esri.com/help/9.3/arcgisserver/apis/javascript/arcgis/help/jsapi/lod.htm
+		 * 
+		 * Since our Dynamic service has map background and road data, set the
+		 * layer's visibility to false.
+		 */
+		// var baseLayer = new esri.layers.ArcGISTiledMapServiceLayer(
+		// ESRIConfig.baseMapServiceURL);
+		//		
+		//		
+		// baseLayer.visible = false;
+		// _map.addLayer(baseLayer);
+		// CHANGE 4.B END
+		/**
+		 * Add the dynamic service containing the at&t coverage data and map
+		 * data.
+		 */
+		_dataLayer = new esri.layers.ArcGISDynamicMapServiceLayer(
+				ESRIConfig.dynamicServiceURL);
+		dojo.connect(_dataLayer, "onError", dataLayerOnError);
+
+		if (_dataLayer.loaded) {
+			ESRIConfig.setLayerIndexs(_dataLayer);
+			// CHANGE 4.E START
+			/**
+			 * The call to handleUrlParams is not to be called here
+			 */
+			// handleUrlParams();
+			// CHANGE 4.E END
+		} else {
+			dojo.connect(_dataLayer, "onLoad", dataLayerOnLoad);
+		}
+
+		_map.addLayer(_dataLayer);
+
+		// CHANGE 4.C START
+		/**
+		 * 
+		 * The application was incorrectly listening for the dataLayer onLoad
+		 * event to initialized the application via the handleUrlParams() call.
+		 * 
+		 * The call should only be made after the Map has been loaded not just
+		 * the _dataLayer.
+		 * 
+		 */
+		if (_map.loaded) {
+			handleUrlParams();
+		} else {
+			dojo.connect(_map, "onLoad", mapOnLoad);
+		}
+		// CHANGE 4.C END
+	}
+}
+
+// --------------------------------------------------------------------------
+//
+// Map Viewing Area Management
+//
+// --------------------------------------------------------------------------
+
+/**
+ * centerMap(x,y,scaleLevel, symbolize):
+ * 
+ * centers the map to point x,y where x and y are longitude and latitude values.
+ * If x or y is not given the current map center x or y value will be used.
+ * 
+ * If a valid scaleLevel is given (0-15) the map will zoom to that scale level.
+ * If not scaleLevel is given the default scaleLevel for the current map zone
+ * will be used.
+ * 
+ * The parameter symbolize should be a true or false value. If symbolize is true
+ * a marker will display on the map at x y. If symbolize is false or not given
+ * (null) no marker will be displayed
+ */
+function centerMap(x, y, scaleLevel, symbolize) {
+	if (_map != null) {
+		// No scale level defined use the default
+		if (scaleLevel == null || !validLOD(scaleLevel)) {
+			scaleLevel = ESRIDefaults.mapZoneStartLODs[_currentMapZone];
+		}
+
+		// symbolize is not given or null, set to false.
+		if (symbolize == null) {
+			symbolize = false;
+		}
+		// if x or y is not given use the current map center x or y.
+		if (x == null) {
+			x = _map.extent.getCenter().x;
+		}
+		if (y == null) {
+			y = _map.extent.getCenter().y;
+		}
+
+		// cast x and y to Numbers
+		x = parseFloat(x);
+		y = parseFloat(y);
+
+		// scale level should be a number
+		scaleLevel = parseInt(scaleLevel);
+
+		// create point to center map on.
+		var point = new esri.geometry.Point(x, y, ESRIConfig.spatialRef);
+
+		// add the marker on the map at the location of point
+		if (symbolize) {
+			_map.graphics.clear();
+			_map.graphics.add(new esri.Graphic(point, _pinSymbol));
+		}
+
+		// center on the point and zoom the map to the scaleLevel
+		_map.centerAndZoom(point, scaleLevel);
+	}
+}
+
+/**
+ * panMap(cardinalDirection): pans the map in the directions: N,S,E,W, NW, NE,
+ * SW, SE
+ */
+function panMap(cardinalDirection) {
+	switch (cardinalDirection) {
+	case 'N':
+		_map.panUp();
+		break;
+	case 'NW':
+		_map.panUpperLeft();
+		break;
+	case 'NE':
+		_map.panUpperRight();
+		break;
+	case 'W':
+		_map.panLeft();
+		break;
+	case 'E':
+		_map.panRight();
+		break;
+	case 'SW':
+		_map.panLowerLeft();
+		break;
+	case 'S':
+		_map.panDown();
+		break;
+	case 'SE':
+		_map.panLowerRight();
+		break;
+	default:
+		break;
+
+	}
+}
+
+/**
+ * showMapOnClick(clickEvent): This function is a blend of UI and map
+ * functionality. It takes a clickEvent ideally from a static map image
+ * identifies the latitude and longitude of the point clicked on the image and
+ * zooms the map to that location.
+ * 
+ */
+function showMapOnClick(clickEvent) {
+	// get the event
+	var e = clickEvent ? clickEvent : window.event;
+
+	// get the position of the image
+	var pos = findPos(document.getElementById(UIConfig.mapImageID));
+	// get the x and y of the click over the image.
+	var imageX = e.offsetX ? (e.offsetX) : e.pageX - pos[0];
+	var imageY = e.offsetY ? (e.offsetY) : e.pageY - pos[1];
+
+	// create an ESRI Point where the click occurred
+	var clickPoint = imageCordsToPoint(imageX, imageY);
+	// get the default zoom scale of the map zone
+	var scaleLevel = ESRIDefaults.mapZoneStartLODs[_currentMapZone];
+
+	// Set Map Data View based on click
+	_map.centerAndZoom(clickPoint, scaleLevel);
+}
+
+// --------------------------------------------------------------------------
+//
+// Layer Management
+//
+// --------------------------------------------------------------------------
+
+/**
+ * addVisibleDataLayersByIndexArray(layerIndexes):
+ * 
+ * layerIndexes: array of integers that correspond to layer indexes of the
+ * dataLayer.
+ * 
+ * Function adds the layers in the layerIndexes array to the dataLayer's visible
+ * layers array. Thus making them visible on the map.
+ * 
+ */
+function addVisibleDataLayersByIndexArray(layerIndexes) {
+
+	if (_dataLayer == null) {
+		return;
+	}
+
+	// get current visible layers
+	var visableLayers = new Array();
+	visableLayers = _dataLayer.visibleLayers;
+
+	var insertIndex = visableLayers.length;
+
+	// add the new layerIndexes into the visibleLayers array
+	for ( var i = 0; i < layerIndexes.length; i++) {
+		visableLayers[i + insertIndex] = layerIndexes[i];
+	}
+
+	// make sure the visibleLayers array only contains unique values
+	// and set the new visible layers to those unique values
+	_dataLayer.setVisibleLayers(uniqueArray(visableLayers));
+}
+
+/**
+ * removeVisibleDataLayersByIndexArray(layerIndexes):
+ * 
+ * layerIndexes: array of integers that correspond to layer indexes of the
+ * dataLayer.
+ * 
+ * If the layers in the layerIndexes array are visible this function sets them
+ * to hidden.
+ */
+function removeVisibleDataLayersByLayerIndexes(layerIndexes) {
+
+	if (_dataLayer == null) {
+		return;
+	}
+	var visableLayers = new Array();
+	var visibleIndex = 0;
+
+	// loop over current visible layers.
+	for ( var i = 0; i < _dataLayer.visibleLayers.length; i++) {
+		var addLayer = true;
+		// loop over layerIndexes
+		for ( var j = 0; j < layerIndexes.length; j++) {
+			if (_dataLayer.visibleLayers[i] == layerIndexes[j]) {
+				addLayer = false;
+			}
+		}
+		// Adds layers that are not in the "hide" layerIndexes array.
+		if (addLayer) {
+			visableLayers[visibleIndex] = _dataLayer.visibleLayers[i];
+			visibleIndex++;
+		}
+	}
+
+	// set the visible layers to array that does not contain layerIndexes
+	// values.
+	_dataLayer.setVisibleLayers(uniqueArray(visableLayers));
+}
+
+/**
+ * Sets the dataLayer's visible layers that that defined by the dtaTypeID in the
+ * ESRIConfig.visibleDataLayers array.
+ */
+function setVisibleDataLayersByDataTypeID(dataTypeID) {
+	_currentDataTypeID = dataTypeID;
+	_dataLayer.setVisibleLayers(this
+			.uniqueArray(ESRIConfig.visibleDataLayers[_currentDataTypeID]));
+
+}
+
+function dataLayerOnError(error) {
+	// alert(error);
+}
+
+function dataLayerOnLoad(layer) {
+	ESRIConfig.setLayerIndexs(layer);
+	// CHANGE 4.F START
+	/**
+	 * The call to handleUrlParams is not to be called here
+	 */
+	// handleUrlParams();
+	// CHANGE 4.F END
+}
+// CHANGE 4.D START
+/**
+ * Once the map has been loaded, read the url parameters and start the
+ * application.
+ */
+function mapOnLoad(map) {
+	handleUrlParams();
+}
+// CHANGE 4.D END
+// --------------------------------------------------------------------------
+//
+// Utilities
+//
+// --------------------------------------------------------------------------
+/**
+ * imageCordsToPoint(x,y): returns a ESRI point that matches the x,y of the map
+ * image.
+ */
+function imageCordsToPoint(x, y) {
+	var currentImageLocations = ESRIConfig.imageSizes[_currentDataTypeID];
+	_currentMapZone = ESRIConfig.mapZoneContiguousUSA;
+	// get the map zone that relates to the x,y coordinates.
+	if (y > currentImageLocations[ESRIConfig.imageLocationLower]) {
+		_currentMapZone = ESRIConfig.mapZoneHawaiiUSA;
+		if (x < currentImageLocations[ESRIConfig.imageLocationLeft]) {
+			_currentMapZone = ESRIConfig.mapZoneAlaskaUSA;
+		} else if (x > currentImageLocations[ESRIConfig.imageLocationRight]) {
+			_currentMapZone = ESRIConfig.mapzonePuertoRicoVirginIslands;
+		}
+	}
+
+	var extent = ESRIConfig.mapZoneExtent[_currentMapZone];
+
+	var mapX = extent[ESRIConfig.imageLocationXSlope] * x
+			+ extent[ESRIConfig.imageLocationXIntercept];
+	var mapY = extent[ESRIConfig.imageLocationYSlope] * y
+			+ extent[ESRIConfig.imageLocationYIntercept];
+
+	var point = new esri.geometry.Point(mapX, mapY, ESRIConfig.spatialRef);
+	return point;
+}
+
+/**
+ * returns an array with unique values.
+ */
+function uniqueArray(a) {
+	var r = new Array();
+	o: for ( var i = 0, n = a.length; i < n; i++) {
+		for ( var x = 0, y = r.length; x < y; x++) {
+			if (r[x] == a[i])
+				continue o;
+		}
+		r[r.length] = a[i];
+	}
+	return r;
+}
+
+/**
+ * returns an arry returning the objs left offest and top offset
+ */
+function findPos(obj) {
+	var curleft = curtop = 0;
+	if (obj.offsetParent) {
+		do {
+			curleft += obj.offsetLeft;
+			curtop += obj.offsetTop;
+
+		} while (obj = obj.offsetParent);
+		return [ curleft, curtop ];
+	}
+}

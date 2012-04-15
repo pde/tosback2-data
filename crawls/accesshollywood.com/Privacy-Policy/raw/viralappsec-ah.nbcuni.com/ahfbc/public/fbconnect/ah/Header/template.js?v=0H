@@ -1,0 +1,33 @@
+function getLoginHeaderTemplate() {
+	/* this function will return the template for Login Header section
+	 *
+	 */
+	var output = '';
+	output +=   '<div id="OmigDiv"></div>';
+	output +=	'	<div class="fbc_welcomeContainer">';
+	output +=	'<# if (typeof loggedIn != "undefined" && loggedIn == "Y" && !loggedInContainerSite) { #>';
+	output +=	'		<div class="fbc_bannerWelcomeThumb">';
+	output +=	'  			 <#if (profilePic == "" ||typeof profilePic == undefined || typeof profilePic == "undefined" || profilePic == null ||  profilePic == "null" ) {#>';
+	output +=	'                  <img class="pic fbc_profilePic" src="http://static.ak.fbcdn.net/pics/t_silhouette.gif"></img>';
+	output +=	'             <# } else {#>';
+	output +=	'                  <img class="pic fbc_profilePic" src="<#= profilePic #>"/>';
+	output +=	'             <# } #>';
+	output +=	'                  <img class="fbc_profilePicFlogo" src="<#= imgURL #>icon_f.jpg"></img>';
+	output +=	'  		</div>';
+	output +=	'<# } #>';
+	output +=	'<# if (typeof loggedInUserName != "undefined" && loggedInUserName != null && loggedInUserName != "") { #>';
+	output +=	'  		<div class="fbc_bannerWelcome">';
+	output +=	'  			<span class="fbc_fbNamewelcome">Hello, <#= loggedInUserName #></span>';
+	output +=	'<# 		if (typeof loggedIn != "undefined" && loggedIn == "Y" && !loggedInContainerSite) { #>';
+	output +=	'				&nbsp;|&nbsp;';
+	output +=	'  				<span class="fbc_fbNameLogout" onclick="handleFacebookLogout();return false;">Logout</span>';
+	output +=	'<# 		} #>';
+	output +=	'  		</div>';
+	output +=	'<# } else {  #>';
+	output +=	'	<div id="fbc_loginButton">';
+	output +=	'		<fb:login-button size="medium" background="dark" length="long" onclick="facebook_onlogin_ready();"></fb:login-button>';
+	output +=	'	</div>';
+	output +=	'<# } #>';
+	output +=	'  	</div>';
+	return output;
+}

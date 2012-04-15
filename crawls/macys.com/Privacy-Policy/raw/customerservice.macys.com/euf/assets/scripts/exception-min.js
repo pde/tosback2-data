@@ -1,0 +1,1 @@
+MACYS.namespace("MACYS");MACYS.Exception=function(B,A){this.message=B;this.source=A;this.toString=function(){var C=this.source+" : "+this.message+" (MACYS.Exception)";return C}};

@@ -1,0 +1,850 @@
+/*
+	POLITICO.com Stylesheet
+	Author:			Jared Cunha
+	Contact Email:	jcunha@politico.com
+*/
+
+/*Import Stylesheets*/
+@import url(http://www.politico.com/css/v7/politico/plugin-colorbox.css);
+
+/*=======================================================================================
+	RESET
+=========================================================================================*/
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}:focus{outline:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+
+/*=======================================================================================
+	BEGIN BASE STYLES
+=========================================================================================*/
+html {font-size:1em;-webkit-font-smoothing: antialiased;}
+body {text-align: center; background-color: #e1e5e8; position:relative; color: #171717; font: 62.5% "Helvetica Neue",Helvetica, Arial, sans-serif;}
+
+
+h1 {font-size: 2.29em; /*32px*/}
+h2 {font-size: 1.71em; /*24px*/}
+h3 {font-size: 1.36em; /*21px*/}
+h4 {font-size: 1.42857em; /*20px*/}
+h5 {font-size: 1.33em; /*18px*/}
+h6 {font-size: 1em; /*14px*/}
+
+a:link, a:visited {color: #004276; text-decoration: none; font-weight:bold;}
+a:hover, a:active, a:focus { color:#01365f; text-decoration: underline;}
+
+/*p {line-height: 1.2857em; margin-bottom:1.28em;}*/
+
+textarea, input {font-family: Helvetica, Arial, sans-serif}
+
+hr {color: #e6e6e6; border-top:1px solid #e6e6e6; border-bottom:0; margin: 0 11px 0 15px; border-left:0; border-right:0;}
+hr.thick {border-top:5px solid #e6e6e6;}
+
+button {cursor:pointer; border:0; display:block;}
+
+input[type=hidden] {display:none !important;}
+
+/*=======================================================================================
+	SPRITES
+=========================================================================================*/
+/*Main POLITICO sprite*/
+.close-button, .share-article li a, #comments ul.comment-controls li, .slot-sign-up button, .anon-tips button, .sb-email-newsletter button, .pollitico-poll h4 {background: transparent url(http://images.politico.com/global/v4/sprites/iconsprite.gif) no-repeat;}
+
+.close-button {background-position: 0 -1440px; display:block; cursor:pointer; width:11px; height:11px; text-indent:-9999em; font-size:2px;}
+.close-button:hover {background-position: 0 -1451px;}
+
+/*Sprite for POLITICO, p44, and CLICK*/
+ul.adjust-text-size li, 
+.reporter-alert-signup .email-subscribe-submit input, 
+ul.reporter-alerts-list li span, 
+#listenToStory a, 
+.story-toolbar li.num-comments a, 
+.story-toolbar li.share-email a,
+.story-toolbar li.share-print a,
+ul.social-content a
+{background: transparent url(http://images.politico.com/global/v5/sprites/global-sprite.gif) no-repeat;}
+
+/*New POLITICO Sprite*/
+.captioned-image .hide-caption, .captioned-image .show-caption, .whiteboard-options .toggle-whiteboard, .whiteboard-options .toggle-whiteboard-alt {background: url(http://www.politico.com/design/sprites/p-sprite.png) no-repeat;}
+
+
+
+/*=======================================================================================
+	REUSABLE CLASS NAMES
+=========================================================================================*/
+/*Skip Links*/
+.jump-links {height:0; overflow:hidden;}
+.jump-links a {position:absolute; left: -99999em;}
+.jump-links a:focus {right:0; left:auto; top:0; background:black; color:#999; padding:10px; font-weight:normal; text-decoration:none;}
+
+/*Float clearing-----------------------------------------*/
+.clearfix:before, .clearfix:after {content: "\0020"; display: block; height: 0; overflow: hidden;}
+.clearfix:after {clear: both;}
+.clearfix {zoom: 1;}
+.group {overflow:hidden; height:1%;}
+.clear-above {clear:both; position:relative;}
+
+/*All bylines base style*/
+.byline {font-size: .86em;color: #696969;}
+.byline a {font-weight:normal;}
+
+
+/*hiding content*/
+.hidden {position: absolute;left: -9999em;} /*This method is accessible*/
+.erase {display:none;} /*hide from browsers and screen readers*/
+#content #mainContent .js, #content #secondaryContent .js {display:none;} /*invisible without javascript, class removed by javascript */
+
+.full-width {width:100%;}
+
+.error {border: 1px solid #cf2626; color: #cf2626; font-weight: bold; font-size:13px; background:#fbbfbf; padding: 5px 10px; margin-bottom:10px; -moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px;}
+.btn-reg {display:block; background: #004276 url(http://images.politico.com/global/v5/bg/btn-reg-bg.png) repeat-x left bottom; border:none; font-family:"Hevetica Neue",  Helvetica, Arial, sans-serif; color:#FFFFFF; height: 27px; padding: 0 10px; text-transform: uppercase; text-shadow: -1px -1px 0px rgba(0,0,0,.5); line-height: 27px; cursor:pointer;}
+	.ie6 .btn-reg, .ie7 .btn-reg {padding: 0;}
+.btn-reg:hover {opacity:.9; }
+
+/*breadcrumbs*/
+div.breadcrumbs {font-size: .86em; margin-bottom: 2em;}
+h4.breadcrumbs {display:inline; float:left;font-size: 1em;}
+ul.breadcrumbs {color:#515151;}
+ul.breadcrumbs li {float:left; display:inline; border-right: 1px solid; padding: 0 7px;}
+ul.breadcrumbs li.last {border-right:none;}
+
+/*pagination*/
+.pagination {margin:0 12px 1em 15px; text-align:right;}
+.pagination li {display:inline-block; color:#a3a3a3; font-weight:bold; border:1px solid #e2e2e2;}
+.ie7 .pagination li, .ie6 .pagination li {display:inline; zoom:1; margin-left:5px; vertical-align:top;}
+.ie6 .pagination li {height:1%;}
+.pagination li a {display:block; padding:.15em 6px; background:#fff url(http://www.politico.com/design/bg/pagination-bg.gif) repeat-x left bottom;}
+.pagination li a:hover {color:#fff; background:#004276; text-decoration:none;}
+.pagination li.current {border:1px solid #999; background:transparent none;}
+.pagination li.current a {color:#666 !important; cursor:default; background:transparent none !important;}
+.pagination li.spread {padding:.15em 6px;}
+.pagination li.inactive a {color:#a3a3a3; background:transparent none; cursor:default;}
+
+/*mid-line headings*/
+.mid-line {color:#666666; border-bottom: 1px solid #e2e2e2; line-height:1; margin-top:-.5em; height:1%; margin-bottom:10px}
+.mid-line span {background: #FFFFFF;  padding-right: 10px; position:relative; top:.5em;}
+
+/*video and slideshow overlays*/
+.media-overlay {position:relative; overflow:hidden; display:block;}
+.media-overlay-button {position:absolute; display:block; width:605px; height:605px; left:0; bottom:0; text-indent:-9999em;}
+.media-overlay .video {background:transparent url(http://www.politico.com/design/global/video-overlay.png) no-repeat left bottom;}
+.media-overlay .photo {background:transparent url(http://www.politico.com/design/global/photo-overlay.png) no-repeat left bottom;}
+.media-overlay:hover .media-overlay-button {cursor:pointer;}
+.media-overlay:hover .video {background-image:url(http://www.politico.com/design/global/video-overlay-hover.png);}
+.media-overlay:hover .photo {background-image:url(http://www.politico.com/design/global/photo-overlay-hover.png);}
+.ie6 .media-overlay-button {display:none;}
+
+/*large more button*/
+a.more-stories-full {display:block; text-align:center; background:transparent url(http://images.politico.com/global/v5/2010/button.jpg) no-repeat left top; font-size:1.43em; text-shadow:0 1px 0 rgba(255,255,255,1); padding:10px 20px; margin:1em 12px 0 15px; width:565px;}
+a.more-stories-full:hover {text-decoration:none; background-position: right top}
+
+/*border treatment for images*/
+img.border {border:1px solid #b4b4b4; padding:1px; background-color: #fff;}
+
+/*easy classes for web editors*/
+.left {float:left;display:inline; margin-right:10px; margin-bottom:3px;}
+.right {float:right; display:inline; margin-left:10px; margin-bottom:3px;}
+.center {text-align:center;margin-bottom:1em;}
+.center > * {margin-left:auto; margin-right:auto;}
+dl.captioned img {float:none !important; display:block; margin-bottom:3px;}
+dl.captioned dd {color: #666; font-style:italic; font-size: 12px;}
+
+/*red letter text*/
+.head-descrip {color: #ce181f; font-size: 1.29em; letter-spacing:.1em; font-weight:bold; margin-bottom:2px; text-align:center;}
+
+/*live player*/
+a.live-player {margin:0 12px 10px 15px; background:url(http://images.politico.com/global/v5/misc/live-player-arrow.gif) no-repeat; padding-left:20px; color: #b70000;}
+a.live-player + .head-descrip {margin-top:10px;}
+
+/*button styles*/
+.p-btn, a.p-btn:link, a.p-btn:visited {border:none;border:1px solid #61181a; border-bottom-color:#4f0f11 !important; text-transform:uppercase; font-size:12px; color: #fff; line-height:normal !important; padding:6px 12px; display:inline-block; width:auto; cursor:pointer; font-family:"Hevetica Neue",  Helvetica, Arial, sans-serif; font-weight:bold; text-shadow: 0 -1px 1px rgba(0,0,0,.5); margin:0; 
+	-webkit-border-radius: 3px;
+	     -o-border-radius: 3px;
+	   -moz-border-radius: 3px;
+	        border-radius: 3px; 
+	   -webkit-transition: all 0.2s ease-in-out; 
+	      -moz-transition: all 0.2s ease-in-out;
+	       -ms-transition: all 0.2s ease-in-out;
+			-o-transition: all 0.2s ease-in-out;
+	           transition: all 0.2s ease-in-out;
+	background: #951519 url(http://www.politico.com/design/bg/p-btn-bg.png) repeat-x;
+	background: -moz-linear-gradient(top, #c31c21 0%, #951519 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c31c21), color-stop(100%,#951519)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #c31c21 0%,#951519 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #c31c21 0%,#951519 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, #c31c21 0%,#951519 100%); /* IE10+ */
+	background-color: #951519;
+	background-repeat: repeat-x;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
+	   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
+	        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+	.ie6 .p-btn, .ie7 .p-btn {filter:chroma(color=#000000); }
+	.ie6 button.p-btn, .ie7 button.p-btn {}
+	.ie6 a.p-btn, .ie7 a.p-btn {padding:0 12px; float:left;}
+.p-btn:hover, a.p-btn:hover, .p-btn:focus {color:#fff; text-decoration:none; background-position: 0 -14px;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 5px rgba(187, 0, 0, 0.5);
+	   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 5px rgba(187, 0, 0, 0.5);
+	        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 5px rgba(187, 0, 0, 0.5);
+}
+
+
+/*These are random on probably no longer in use*/
+.article-info div {line-height:1.53}
+.break {display: block;}
+#content .end {margin-bottom:20px;}
+.important, .important a {color: #CE181F;}
+.updated {color: #b70000; font-size: .86em; margin-top:.5em;}
+.pos1 {float:left; margin: 0 15px 1em 0;}
+.pos2 {float:right; margin: 0 0 1em 15px;}
+.separated {border-bottom: 1px solid #e6e6e6;}
+
+
+/*=======================================================================================
+	STRUCTURE
+=========================================================================================*/
+/* Styles here will appear on all pages*/
+#siteWrapper {background: #FFFFFF; border:1px solid #cecece; border-bottom:none; text-align:left; font-size: 1.4em; margin: 0 auto -1em; width: 999px;}
+#content:before, #content:after {content: "\0020"; display: block; height: 0; overflow: hidden;}
+#content:after {clear: both;}
+#content {margin-bottom:-1px; padding:23px 0 2em; position:relative;height:1%}
+
+#mainContentFull {position:relative; background:#fff; padding-bottom:15px; height:1%;}
+#mainContent {float:left; display:inline; position:relative; padding-bottom: 5em;width:632px;}
+
+#secondaryContent {float:right; display:inline; position:relative; padding-bottom: 5em; width: 367px;}
+
+/*Template Variations*/
+.has-section-masthead #content {padding-top:1px;}
+.has-section-masthead #mainContent {margin-top: 15px;}
+.has-section-masthead #secondaryContent {margin-top:-68px;}
+
+/*Section Mastheads*/
+.section-masthead {background: url(http://www.politico.com/design/bg/section-masthead-shadow.png) no-repeat center bottom; border-top:1px solid #cecece;border-bottom:1px solid #cecece; height:77px; overflow:hidden; width: 605px; padding: 11px 379px 0 15px; text-align:center;}
+h1.p-masthead a {height:65px; text-align:center; margin:0 auto; text-indent:-9999em; display:block;}
+h1.masthead-44 a {background: url(http://www.politico.com/design/mastheads/masthead-44.png) no-repeat; width:365px;}
+h1.masthead-photos a {background: url(http://www.politico.com/design/mastheads/masthead-photos.png) no-repeat; width:227px; }
+h1.masthead-headlines a {background: url(http://www.politico.com/design/mastheads/masthead-headlines.png) no-repeat; width:282px; }
+h1.masthead-technology a {background: url(http://www.politico.com/design/mastheads/masthead-technology.png) no-repeat; width:365px; }
+h1.masthead-defense a {background: url(http://www.politico.com/design/mastheads/masthead-defense.png) no-repeat; width:216px; }
+h1.masthead-energy a {background: url(http://www.politico.com/design/mastheads/masthead-energy.png) no-repeat; width:602px; }
+h1.masthead-healthcare a {background: url(http://www.politico.com/design/mastheads/masthead-healthcare.png) no-repeat; width:335px; }
+h1.masthead-money a {background: url(http://www.politico.com/design/mastheads/masthead-money.png) no-repeat; width:318px; }
+h1.masthead-opinion a {background: url(http://www.politico.com/design/mastheads/masthead-opinion.png) no-repeat; width:255px; }
+h1.masthead-congress a {background: url(http://www.politico.com/design/mastheads/masthead-congress.png) no-repeat; width:341px; }
+h1.masthead-2012 a {background: url(http://www.politico.com/design/mastheads/masthead-2012.png) no-repeat; width:317px; }
+h1.masthead-transportation a {background: url(http://www.politico.com/design/mastheads/masthead-transportation.png) no-repeat; width:605px; }
+h1.masthead-wuerker a {background: url(http://www.politico.com/design/mastheads/masthead-wuerker.png) no-repeat; width:269px;}
+h1.masthead-events a {background: url(http://www.politico.com/design/mastheads/masthead-events.png) no-repeat; width:434px;}
+
+h1.masthead-politico-bookshelf {float:left;width:293px}
+h1.masthead-politico-bookshelf a {background: url(http://www.politico.com/design/mastheads/masthead-politico-bookshelf.png) no-repeat; width:293px; margin:0; text-align:left; float:left;}
+
+
+
+/*=======================================================================================
+	HEADER
+=========================================================================================*/
+/*POLITICO Logo*/
+h1.site-logo {float:left; display:inline; margin-top:4px;}
+h1.site-logo a {text-indent:-9999em; background: url(http://www.politico.com/design/logo/politico-logo-main.png) no-repeat; display:block; width:157px; height:32px;}
+
+.primary-masthead:before, .primary-masthead:after {content: "\0020"; display: block; height: 0; overflow: hidden;}
+.primary-masthead:after {clear:both;}
+.primary-masthead {padding:11px 15px; zoom:1;}
+
+/*Utility Links*/
+.utilities:before, .utilities:after {content: "\0020"; display: block; height: 0; overflow: hidden;}
+.utilities:after {clear:both;}
+.utilities {float:right; display:inline; height:38px; width:797px; position:relative; z-index:6000;}
+.utility-links {float:right; margin: 12px 342px 0 0; display:inline; overflow:hidden;}
+.utility-links li {float:left; display:inline; margin-right:5px; border-right:1px solid #a8a8a8; font-size:.86em; padding-right:5px;}
+.utility-links li.last {margin-right:0; padding-right:0; border-right:none;}
+.utility-links li a {font-weight:normal;}
+.utility-links li.p-user a {font-weight:bold;}
+
+/*Search Bar*/
+.site-search {width:auto; background:#f0f0f0; border:1px solid #d9d9d9; position:absolute; right:0; padding:3px;z-index:3000;
+	-webkit-border-radius:3px;
+	   -moz-border-radius:3px;
+	     -o-border-radius:3px;
+	        border-radius:3px;
+}
+
+.site-search label {font-weight:bold; font-size:.86em;}
+.site-search label b {font-weight:normal;}
+.site-search label.infield {margin-left:10px; margin-top:6px; font-weight:normal; font-size:1em;font-family:'Lucida Grande', 'Lucida Sans Unicode', sans-serif; position:absolute;}
+.site-search ul:before, .site-search ul:after {content: "\0020"; display: block; height: 0; overflow: hidden;}
+.site-search ul:after {clear:both;}
+.site-search ul {zoom:1; display:inline; float:left;}
+.site-search li {float:left; display:inline;}
+
+
+li.search-author, li.search-date {display:inline; position:absolute; left:-9999em; opacity:0; position:absolute;  border-right:1px solid #c7c7c7; margin-right:10px; padding-right:10px; line-height:26px;
+	-webkit-transition: opacity 0.5s ease-in-out; 
+	   -moz-transition: opacity 0.5s ease-in-out;
+	    -ms-transition: opacity 0.5s ease-in-out;
+	        transition: opacity 0.5s ease-in-out;
+	-webkit-perspective: 1000;
+	-webkit-backface-visibility: hidden;
+	}
+li.search-author {padding-left:10px;}
+.ie6 .li.search-author, .ie6 li.search-date, .ie7 li.search-author, .ie7 li.search-date {margin-top:4px}
+.ie6 .li.search-author label, .ie6 li.search-date label, .ie7 li.search-author label, .ie7 li.search-date label {position:relative; top:-2px}
+li.search-keyword {float:right; border:none; margin-right:0; padding-right:0; position:relative;}
+.ie6 li.search-keyword, .ie7 li.search-keyword {float:left;}
+
+.site-search input#newkey { border:1px solid #c7c7c7; line-height: 26px; padding:0 5px; margin:0; width:241px; font-size:1.14em; color: #333; height:26px;
+	-webkit-border-radius:3px;
+	   -moz-border-radius:3px;
+	     -o-border-radius:3px;
+	        border-radius:3px;
+	font-family:'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+}
+.ie6 .site-search input#newkey, .ie7 .site-search input#newkey {margin-top:-1px;}
+
+
+/*search button*/
+.site-search input.search-submit {border:1px solid #b3b0b0; text-indent:-99999em; font-size:0; line-height:0; height:28px; width:39px; background: url(http://www.politico.com/design/buttons/search-button.png) no-repeat center center; margin-left:3px; cursor:pointer;
+	-webkit-border-radius:3px;
+	   -moz-border-radius:3px;
+	     -o-border-radius:3px;
+	        border-radius:3px;
+}
+
+/*expand/collapse button*/
+button.search-toggle {border:1px solid #b3b0b0; text-indent:-99999em; font-size:0; line-height:0; height:28px; width:18px; display:inline; float:left; margin-right: 3px;
+	-webkit-border-radius:3px;
+	   -moz-border-radius:3px;
+	     -o-border-radius:3px;
+	        border-radius:3px;
+}
+button.search-expand {background:url(http://www.politico.com/design/buttons/search-expand.png) no-repeat center center;}
+button.search-collapse {background:url(http://www.politico.com/design/buttons/search-collapse.png) no-repeat center center;}
+.site-search button:hover, .site-search button:focus, .site-search input.search-submit:hover, .site-search input.search-submit:focus {border-color: #666}
+
+/*expanded search view*/
+.advanced-search-enabled li.search-author, .advanced-search-enabled li.search-date {position:static; opacity:1; width:auto; height:auto; overflow:visible; position:static;}
+.advanced-search-enabled li.search-keyword {float:left;}
+
+/*Search suggestions*/
+#mainsuggestdiv {position: absolute; left:0; top:26px; z-index:3000;}
+#mainsuggestdiv div {float:none; display:block;}
+#mainsuggestdiv #suggestList {border:1px solid #c7c7c7; border-top-style:dashed; background: #FFFFFF; width: 251px; max-height: 200px; 
+	-webkit-box-shadow: 0 3px 3px rgba(0,0,0,.15);
+	-moz-box-shadow: 0 3px 3px rgba(0,0,0,.15);
+	-o-box-shadow: 0 3px 3px rgba(0,0,0,.15);
+	box-shadow: 0 3px 3px rgba(0,0,0,.15);}
+#mainsuggestdiv #suggestList > div {border-bottom:none !important;}
+#mainsuggestdiv .somekeyword {padding: 3px 10px;}
+#mainsuggestdiv .somekeyword:hover {background: #c7c7c7 !important;}
+
+
+/*=======================================================================================
+	MAIN NAVIGATION
+=========================================================================================*/
+.primary-nav {background: #FFFFFF; font-size: 13px; width:999px; zoom:1; line-height:1; border-bottom:5px solid #aa0101; margin-top:1px}
+.primary-nav:before, .primary-nav:after {content: "\0020"; display: block; height: 0; overflow: hidden;}
+.primary-nav:after {clear:both;}
+.primary-nav li {display:inline; float: left; text-transform: uppercase; text-shadow: 1px 0 2px rgba(0,0,0,.5); text-align:center; position:relative; top:-1px; z-index:1501;}
+.primary-nav li.current {z-index:1500;}
+.primary-nav li a:link, .primary-nav li a:visited {display: block;  color: #FFFFFF; background: #256396 url(http://www.politico.com/design/sprites/main-nav-sprite.png) no-repeat 0 0; line-height:35px;}
+
+
+
+
+
+/*widths*/
+.primary-nav li.nav-2012-live a {width:89px; background-position: -2px 0;}
+.primary-nav li.nav-44 a {width:60px;}
+.primary-nav li.nav-congress a {width:104px;}
+.primary-nav li.nav-blogs a {width:78px;}
+.primary-nav li.nav-arena a {width:75px}
+.primary-nav li.nav-opinion a {width:89px}
+.primary-nav li.nav-policy a {width:80px}
+.primary-nav li.nav-video a {width:73px}
+.primary-nav li.nav-headlines a {width:104px;}
+.primary-nav li.nav-bookshelf a {width:101px;}
+.primary-nav li.nav-politico-pro a:link, .primary-nav li.nav-politico-pro a:visited {width:146px; text-indent:-9999em; background-position:-594px 0; overflow:hidden;}
+
+/*current page*/
+.primary-nav li.current a:link, .primary-nav li.current a:visited {border-bottom: 1px solid #aa0101; background-position:-400px 0; margin-bottom:-1px;}
+
+/*hover actions*/
+.primary-nav li a:hover, .primary-nav li.current a:hover, .primary-nav li.active a:link, .primary-nav li.active a:visited, .primary-nav li a:focus {text-decoration: none; background-position: -198px 0;border-bottom-color:#fff; }
+.primary-nav li.nav-politico-pro a:hover, .primary-nav li.nav-politico-pro a:focus {background-position:-740px 0;}
+
+
+
+/* @main navigation @dropdowns */
+.main-nav-sub {position:absolute; left:-9999em;background:#02335b;cursor:pointer;z-index: 1510; width:250px;border:1px solid #01243f; border-top:none; opacity:0;
+	-webkit-box-shadow: 0 5px 5px rgba(0,0,0,.25);
+	   -moz-box-shadow: 0 5px 5px rgba(0,0,0,.25);
+	     -o-box-shadow: 0 5px 5px rgba(0,0,0,.25);
+	        box-shadow: 0 5px 5px rgba(0,0,0,.25);
+	-webkit-transition: opacity 0.2s ease-in-out; 
+	   -moz-transition: opacity 0.2s ease-in-out;
+	     -o-transition: opacity 0.2s ease-in-out;
+	        transition: opacity 0.2s ease-in-out;
+	-webkit-perspective: 1000;
+	-webkit-backface-visibility: hidden;
+}
+.main-nav-sub li {float:none; display:block;position:static;}
+.primary-nav .main-nav-sub li a:link, .primary-nav .main-nav-sub li a:visited {border:none; background:none; text-align:left;line-height:1; padding:7px 14px; width:auto;}
+.primary-nav .main-nav-sub li a:hover, .primary-nav .main-nav-sub li a:focus {background-color:#01243f; }
+.primary-nav li.active .main-nav-sub, .primary-nav li:hover .main-nav-sub, .main-nav-sub:hover {left:1px; top:34px; overflow:visible;opacity:1;}
+li.nav-policy .main-nav-sub {width:330px;}
+
+
+/*=======================================================================================
+	ANNOUNCEMENT BAR
+=========================================================================================*/
+.announcement {margin-top:-5px}
+.announcement + .announcement {margin-top:0;}
+.announcement img {display:block;}
+.ie8 .announcement img {display:inline-block;}
+
+.p-breaking-news {background:#c90f0f url(http://www.politico.com/design/announcements/breaking-news-bg.png) repeat-x left bottom; font-size: 1.43em;color: #fff; border:1px solid #7c1e1e; border-bottom: 1px solid #6a0000; border-top:1px solid #883333; line-height:1;text-shadow: 0 2px 0 rgba(0,0,0,.5);
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+	   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+	     -o-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+	        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.p-breaking-news a:link, .p-breaking-news a:visited {color: #fff; display:block; width:100%; height:100%; background: url(http://www.politico.com/design/announcements/breaking-news-arrow.png) no-repeat 98% center;text-shadow: 0 2px 3px rgba(0,0,0,.5); 
+	-webkit-transition: all 0.2s ease-in-out; 
+	   -moz-transition: all 0.2s ease-in-out; 
+	     -o-transition: all 0.2s ease-in-out; 
+	    -ms-transition: all 0.2s ease-in-out; 
+	        transition: all 0.2s ease-in-out; 
+}
+.ie6 .p-breaking-news a:link, .ie6 .p-breaking-news a:visited {background:none;}
+.p-breaking-news a:hover {text-decoration:none; background-position: 98.5% center; text-shadow: 0 2px 3px rgba(0,0,0,.9); color: #fff;}
+.ie6 .p-breaking-news a:hover {text-decoration:underline;}
+.p-breaking-news p {padding: 10px; font-weight:bold;}
+.non-urgent {font-size:1.14em;}
+
+.feature-promo-banner {border-top:1px solid #fff; margin-top:-6px; position:relative; z-index:500;}
+.has-section-masthead .feature-promo-banner {margin-bottom:-5px;}
+
+
+/*=======================================================================================
+	SECTION SUBNAV
+=========================================================================================*/
+.p-section-subnav {display:table; width:100%; margin-bottom:15px;}
+.ie6 .p-section-subnav, .ie7 .p-section-subnav {overflow:hidden; height:1%;}
+.p-section-subnav li {display:table-cell; text-align:center; padding-left:4px; padding-right:4px}
+.ie6 .p-section-subnav li, .ie7 .p-section-subnav li {display:inline; float:left; padding:0; margin-right:8px;}
+.p-section-subnav li:first-child {padding-left:0;}
+.p-section-subnav li:last-child {padding-right:0;}
+.p-section-subnav li.current {cursor:default;}
+.p-section-subnav li a:link, .p-section-subnav li a:visited {display:block; color:#fff;text-shadow: 0 -1px 1px rgba(0,0,0,.5); background:#153b63 url(http://www.politico.com/design/bg/p-sectionnav-bg.png) repeat-x; padding: 5px 0; border:1px solid #004276; border-bottom-color: #044072; font-size: 1.14em;
+	-webkit-border-radius:3px; 
+	   -moz-border-radius:3px;
+	     -o-border-radius:3px; 
+	        border-radius:3px; 
+	-webkit-transition: all 0.2s ease-in-out; 
+	   -moz-transition: all 0.2s ease-in-out; 
+	     -o-transition: all 0.2s ease-in-out; 
+	    -ms-transition: all 0.2s ease-in-out; 
+	        transition: all 0.2s ease-in-out;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);
+	   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);
+	        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);}
+.p-section-subnav li a:hover {text-decoration:none; background-position: 0 -10px;}
+.p-section-subnav li.current a:link,.p-section-subnav li.current a:visited {cursor:default; color:#333; border-color:#bebdbd; background: #e6e6e6 url(http://www.politico.com/design/bg/p-sectionnav-bg-active.png) repeat-x 0 0; text-shadow: 0 1px 1px rgba(255,255,255,.5);
+-webkit-transition: anone; 
+	   -moz-transition: none; 
+	     -o-transition: none; 
+	    -ms-transition: none; 
+	        transition: none;
+}
+.ie6 .p-section-subnav li a:link, .ie6 .p-section-subnav li a:visited, .ie7 .p-section-subnav li a:link, .ie7 .p-section-subnav li a:visited {padding-left:20px; padding-right:20px;}
+
+/*=======================================================================================
+	GLOBAL ARTICLE TYPOGRAPHY
+=========================================================================================*/
+.p-content p {line-height:1.5em; margin-bottom:0.9em;}
+.p-content img {max-width: 605px; display:block; margin-bottom: 1em;}
+.p-content img.border {max-width:601px;}
+.p-content > ul {padding:0 0 0 50px;}
+.p-content > ul li {background:url(http://www.politico.com/design/misc/bullet.gif) no-repeat 0 7px; padding-left:10px; line-height:1.5em; margin-bottom:0.9em;}
+.p-content blockquote {background:transparent url(http://www.politico.com/design/misc/blockquote.gif) top left no-repeat; overflow:visible; margin: 0.9em 0; color:#555555; padding:.3em 0 .3em 3.44em;}
+.p-content blockquote ul {padding:0;}
+.p-content object, .p-content .twitter-stream {display:block; margin-bottom:1em;}
+.p-content cite {color:#555555; clear:both; margin:-0.5em 6.1em 1em 0; display:block; font-size:.93em; font-style:normal;}
+
+
+
+
+
+/*=======================================================================================
+	CONTENT AREA
+=========================================================================================*/
+#incStoryTeasebox {margin: 10px 12px 1em 15px; border-top:10px solid #cdcdcd; padding-top:12px;}
+#incStoryTeasebox h3 {font-size: 1.29em; margin-bottom:12px; }
+.teasebox {font-size: .93em;border-bottom: 1px solid #cdcdcd;overflow:hidden; height:1%; margin-bottom:36px}
+.teasebox li {padding:0 0 15px; width:131px; float:left; display:inline;  margin-right: 27px;}
+	.ie6 .teasebox li {margin-right:25px}
+.teasebox li.last {margin-right:0;}
+.teasebox h4 {font-size: 1em;}
+.teasebox img {display:block;width:131px;}
+
+/*Image + Caption */
+.captioned-image {position:relative; height:1%; background-color: #000; margin:0 2px;}
+	.ie6 .captioned-image {left:-2px}
+.captioned-image img {display:block; margin-left:-2px;}
+	.ie6 .captioned-image img {margin-left:0px;}
+.captioned-image .slideshow-controls {position:absolute; left:0; bottom:2px; width:100%;}
+.captioned-image .caption {background: url(http://www.politico.com/design/bg/caption-bg.png);  color: #fff; padding: 11px 0; text-shadow: 0 1px 2px rgba(0,0,0,.85); text-align:left; width:100%; position:relative;}
+	.ie6 .captioned-image .caption {left:2px;background:#000; }
+.captioned-image .caption p {margin-bottom:0; padding: 0 40px 0 9px; font-size:.86em}
+.captioned-image .hide-caption {position:absolute; top:10px; right:10px; display:block; text-indent:-9999em; width:16px; height:16px;}
+.captioned-image .show-caption {position:absolute; right:5px; bottom:7px; color:#fff;display:block; text-indent:-9999em; width:16px; height:16px; background-position: 0 -27px; cursor:pointer;}
+
+.photo-slideshow-nav {font-size:.86em; overflow:hidden;height:1%; margin-bottom:1px;}
+.ie6 .photo-slideshow-nav {margin-left:2px;}
+.photo-slideshow-nav li {display:inline; float:left;margin-left:1px;}
+.photo-slideshow-nav li:last-child {padding-right:0; border-right:none;}
+.photo-slideshow-nav a:link, .photo-slideshow-nav a:visited {background: url(http://www.politico.com/design/bg/caption-bg.png); display:block; color:#999; padding:8px; line-height:1;}
+.ie6 .photo-slideshow-nav a:link, .ie6 .photo-slideshow-nav a:visited {background:#000;}
+.photo-slideshow-nav a:hover {text-decoration:none; color:#fff;}
+.photo-slideshow-nav li.current a:link, .photo-slideshow-nav ul li.current a:visited {cursor:default; color:#fff;}
+.photo-slideshow-nav li.current a:hover {text-decoration:none;}
+
+/*=======================================================================================
+	SPLIT COLUMNS
+=========================================================================================*/
+.split-col {width:605px; margin: 0 12px 1em 15px; overflow:hidden; height:1%;}
+.split-col .col1 {float:left; display:inline; width:289px;}
+.split-col .col2 {float:right; display:inline; width:289px;}
+
+/*=======================================================================================
+	ADVERTISING
+=========================================================================================*/
+.top-leaderboard {text-align:center; padding:8px 0 10px; margin:0 auto; width: 999px; border: 1px solid #cecece; border-bottom:none; background: #efefef;}
+.top-leaderboard * {margin:0 auto !important;}
+
+#bottomLeaderBoard {text-align:center; border-top: 1px dotted #ababab; width: 999px; background: #FFFFFF; margin-top:1em}
+#bottomLeaderBoard div, #bottomLeaderBoard table {margin: 10px auto;}
+
+/*=======================================================================================
+	FOOTER
+=========================================================================================*/
+#footer {background: #296aa1 url(http://www.politico.com/design/bg/footer-bg.png) repeat-x 0 0; color: #FFFFFF; padding: 20px 0 16px; overflow:hidden; height:1%; border-top:5px solid #000}
+#footer img {display:none;}
+#footer a:link, #footer a:visited {color: #FFFFFF;}
+
+#footer .footer-links {float:left; display: inline; margin: 0 10px; position: relative;width: 979px; font-size:.86em}
+.footer-cols ul {margin-bottom: 1em; height: 1%; overflow: hidden; display:block; clear:both; margin-bottom:.25em;}
+.footer-cols ul li {float: left; display: inline; padding-right: 15px;}
+.footer-cols ul li a {font-weight:normal;}
+
+#footer div.leaderboard {text-align:center;margin: 0 0 5px;}
+#footer div.leaderboard div, #footer div.leaderboard table {margin: 0 auto;}
+
+.footer-cols {margin: 0 15px; overflow:hidden; height:1%;}
+.footer-cols .col {float:left; display:inline; margin-right:27px; width:131px;}
+.footer-cols .col h5 {background: transparent url(http://images.politico.com/global/v5/bg/footer-heading-bg-blue.gif) repeat-x left bottom; font-size: 1em; margin-bottom:8px; padding-bottom:5px;}
+.footer-cols .col ul {clear:none; font-size: .93em; list-style-position:outside;}
+.footer-cols .col ul li {float:none; display:block; margin-bottom:5px;}
+.footer-cols .col-news {width: 289px; overflow:hidden; height:1%;}
+.footer-cols .col-news ul {float:left; display: inline; margin-right:27px; width:131px;}
+.footer-cols .col-news ul.last {margin-right:0;}
+.footer-cols .col-wide {margin-right:0; width: 337px; overflow:hidden; height:1%;}
+.footer-cols .col-wide ul {float:left; display: inline; margin-right:27px; width:155px;}
+.footer-cols .col-wide ul.last {margin-right:0;}
+.site-info {border-top: 1px solid #2d6b9a; margin: 1em 15px 0; padding-top:10px; overflow:hidden; height:1%; font-size:.86em;}
+.site-info span {float:left; width:auto;}
+.site-info ul {overflow:hidden; height:1%; float:right; display:inline; width:auto; margin:0; clear:none;}
+.site-info ul li {display:inline; float:left; border-right:1px solid; margin-right:5px; padding-right:5px;}
+.site-info ul li.last {margin-right:0; padding-right:0; border-right:none;}
+.site-info ul li a {display:block; border-bottom: 1px solid transparent; font-weight:normal;}
+.site-info ul li a:hover {text-decoration:none; border-bottom-color:#fff;}
+
+/* end @all Pages=============================*/
+
+
+
+/*Story Slots*/
+.story-slots {font-size:0.86em; padding-top: 2.14em;list-style-position: outside; float:left; display: inline; margin: 0 12px 2em 15px; position: relative; width:289px;}
+.story-slots li {margin-bottom:1.75em;}
+.story-slots h3 {font-size:1.67em;}
+.story-slots h4 {font-size:1.33em;}
+.story-slots img {display:block;}
+.story-slots img.show-image {width:289px;}
+.story-slots .vid-overlay-button {width: 289px; height: 218px;}
+	.ie6 .story-slots .vid-overlay {height:218px;}
+	.ie6 .story-slots .vid-overlay-button {width:500px; height:500px; top:-282px;}
+.story-slots li.vid {background: transparent url(http://images.politico.com/global/v4/icons/video.gif) no-repeat 0 2px;}
+.story-slots li.photo {background: transparent url(http://images.politico.com/global/v4/icons/photo.gif) no-repeat 0 2px;}
+.story-slots p {margin-bottom:0;}
+
+.story-slots ul {position:relative; margin-top:0;}
+.story-slots ul li {padding: 2px 0 2px 20px; background: transparent url(http://images.politico.com/global/v3/icon_bullet.gif) no-repeat 0 3px; margin-bottom:0; margin-left:0; width:auto; height:1%;}
+.story-slots .byline {font-size: 0.92em; margin-bottom:3px;}
+.story-slots .byline a {font-weight:normal;}
+.slot-flag {height:16px; font-weight:bold; color: #b70000;}
+
+/*Stories-only HP layout*/
+.rows {overflow:hidden; height:1%; width: 100%; margin:0; float:none; display:block;}
+.rows li {width:289px; float:left; display:inline; margin: 0 12px 0 15px;}
+.rows li.last {margin-right:0;}
+
+
+/*Story slots with small lead story, also on section fronts*/
+.sm-lead li {margin-bottom:1em;}
+.sm-lead h1 {font-size: 2.17em;}
+.sm-lead .head-only a {background: transparent url(http://www.politico.com/congress/headline_raquo.gif) no-repeat 0 3px; padding-left: 14px;}
+.sm-lead .lead-story img {margin-bottom:5px; display:block; padding:0; margin-top:0;}
+.sm-lead .slideshow img {margin-bottom:0;}
+.sm-lead .slideshow {margin-bottom:5px;}
+.sm-lead .more-section-stories {border-top: 1px dotted #e2e2e2;  padding:5px 0; margin-left:5px; margin-right:5px;}
+#mainContent .more-section-stories a {font-weight:normal;background: transparent url(http://images.politico.com/global/v4/bg/chev-bullet.gif) no-repeat -2px 1px; padding-left:14px;color: #484848;}
+
+.story-slots .multi-part-list li {background:none; padding-left:0;}
+.story-slots .multi-part-list a{color: #484848; background: transparent url(http://images.politico.com/global/v4/bg/chev-bullet.gif) no-repeat -2px 1px; padding-left:14px;}
+.story-slots .multi-part-list h4 {font-size: 1.71em; font-weight:normal; color:#666666; border-bottom: 1px dotted #e6e6e6;}
+
+.split-slot .main, .split-slot .sub {float:left; display:inline; width:131px;}
+.split-slot .main {padding-right: 13px; border-right: 1px dotted #e6e6e6; margin-right:13px;}
+.split-slot h2 {margin-bottom: 5px;}
+.split-slot p, .split-slot h5 {font-size:1em;}
+.split-slot div a {font-weight:normal}
+
+#topStory .split-slot p {font-size: .86em;}
+.thumb img {float:left; margin-right: 10px;}
+
+/*Secondary list of articles*/
+.secondary-items {margin: 0 15px 3em 15px; font-size:.86em;}
+.secondary-items li {float:left; display:inline; width:302px;  margin: 0 30px 5px 0;}
+.secondary-items li.even {margin-right:0;}
+#mainContent .secondary-items li a {color: #484848; background: transparent url(http://images.politico.com/global/v4/bg/chev-bullet.gif) no-repeat -2px 1px; padding-left:14px;}
+
+.other-news .secondary-items {margin: 0;}
+.other-news .secondary-items li {float:none; width:100%; display:block; margin-right:0;}
+
+.other-news {margin: 0 12px 20px 15px;}
+.other-news-box {float:left; display:inline; margin: 0 27px 20px 0; width:289px;}
+.other-news .last {margin-right:0;}
+.other-news h3 {border-bottom:1px dotted #e6e6e6; font-weight:normal; margin-bottom: 5px;}
+.other-news h3 a.section-feed {font-weight:normal; font-size: .75em;}
+
+/*More headings*/
+.head-strong {clear:both; margin: 0 12px 10px 15px; padding: 0 10px; background: #333333 url(http://images.politico.com/global/v4/bg/sectionfront-secondary-head.gif) repeat-x 0 0; color:#FFFFFF; font-weight:normal; text-shadow: 1px 1px 2px #333333; font-size: 1.57em; line-height: 42px;}
+.external-sources {margin: 0 15px 10px 15px; font-size: 1.57em; border-top: 1px dotted #e2e2e2; padding-top:10px;}
+
+
+/*Split Features*/
+.split-features {margin: 0 12px 20px 15px; border-top: 5px solid #CCCCCC; padding-top:20px;}
+.split-features h4 {color: #666666; font-weight:normal; border-bottom: 1px dotted; padding-bottom:3px; margin-bottom: 10px;}
+.split-features .photo-galleries, .split-features .featured-comment {width:289px; display:inline; float:left;}
+.split-features .photo-galleries {margin-right:27px; position:relative;}
+.split-features .photo-galleries {overflow:hidden; height:1%;}
+.split-features .photo-galleries ul li {float:left; display:inline; margin-right:33px;}
+.split-features .photo-galleries ul li.last {margin-right:0;}
+.photo-galleries .boxes-more{top:0; right:0; font-weight:normal;}
+
+.featured-comment blockquote {font-style: italic; font-size: 1.25em;}
+
+/* @Special Pages========================================*/
+h2.special-section {width: 605px; height:64px; text-indent: -9999em; margin: 10px 12px 8px 15px;}
+h2.special-sectionNoImage {width: 605px; height:0px; text-indent: -9999em;}
+
+
+/* @Full width Pages========================================*/
+#fullWidth #content {background-image: none;}
+#fullWidth #content h1 {margin: 0 15px;}
+
+/* @promo pages========================================*/
+.static #mainContent {width: 605px; margin-left:15px; margin-right:12px;}
+.static h1 {margin-bottom:1em;}
+
+
+
+
+/*=======================================================================================
+	JQUERY UI BASICS
+=========================================================================================*/
+.ui-tabs-panel {opacity:1; -webkit-transition: opacity .5s linear; -moz-transition: opacity .5s linear; transition: opacity .5s linear;}
+.ui-tabs-hide {position:absolute; left:-9999em; opacity:0;}
+.ie6 .tab-content, .ie7 .tab-content {height:1%;}
+.ie6 .tab-content li, .ie7 .tab-content li {height:1%; position:relative;}
+
+
+
+/*=======================================================================================
+	STORY TOOLBAR
+=========================================================================================*/
+/*Begin clearfixes for toobar*/
+.story-toolbar:before, 
+.story-toolbar:after,
+.story-toolbar .toolbar-main:before, 
+.story-toolbar .toolbar-main:after, 
+.story-toolbar .toolbar-secondary:before, 
+.story-toolbar .toolbar-secondary:after {content: "\0020"; display: block; height: 0; overflow: hidden;}
+
+.story-toolbar:after,
+.story-toolbar .toolbar-main:after,
+.story-toolbar .toolbar-secondary:after {clear: both;}
+
+.story-toolbar, .story-toolbar .toolbar-main, .story-toolbar .toolbar-secondary {zoom:1; }
+/*End clearfixes for toolbar*/
+
+.story-toolbar { border-top: 1px solid #e2e2e2; width:100%; padding: 8px 0; font-size:.86em;position:relative; z-index:1000;}
+.story-toolbar .toolbar-main {float:left; display:inline;}
+.story-toolbar .toolbar-main li {float:left; display:inline; margin-right:10px; padding: 3px 0;}
+.story-toolbar .toolbar-secondary {float:right; display:inline; }
+.story-toolbar .toolbar-secondary li {float:left; display:inline; margin-left:15px;}
+.story-toolbar li.social-sharing {position:relative; top:-3px}
+.story-toolbar li.num-comments a{ color: #171717;  background-position: 0 -609px; padding-left:20px; }
+.story-toolbar li.share-email a{background-position: 0 -482px; padding-left:20px; }
+.story-toolbar li.share-print a{background-position: 0 -545px; padding-left:22px; }
+
+/*Override FB opacity hover thing*/
+.addthis_button_facebook_like  {opacity:1 !important;}
+
+/*AddThis IE Overrides*/
+.ie6 .story-toolbar li.social-sharing {width:320px;}
+.ie6 a.addthis_button_facebook_like span {width:100px; overflow:hidden;display:block;}
+.ie6 .atclear, .ie7 .atclear {height:0; font-size:0; line-height:0;}
+
+/*Show additional share tools*/
+.story-toolbar .additional-share-tools {float:left; position:relative; }
+.ie6 .story-toolbar .additional-share-tools {display:none;}
+.story-toolbar .additional-share-tools:hover .additional-share-tools-list {left:0;}
+.story-toolbar .additional-share-tools .toggle {position:relative; top:3px; font-weight:bold;  cursor:pointer; padding-bottom:10px;}
+.story-toolbar .additional-share-tools-list {position:absolute; left:-9999em; background: #fff; border:1px solid #cecece; width:230px; padding:10px;top:20px;z-index:1500;
+	-webkit-box-shadow: 0 3px 3px rgba(0,0,0,.50);
+	   -moz-box-shadow: 0 3px 3px rgba(0,0,0,.50);
+	        box-shadow: 0 3px 3px rgba(0,0,0,.50);}
+.story-toolbar .additional-share-tools-list li {float:left;  width:45%; font-size:.86em;}
+.story-toolbar .additional-share-tools-list li.full {clear:both;}
+.story-toolbar .additional-share-tools-list li a:before {content: " ";}
+.story-toolbar .addthis_toolbox.addthis_default_style span {margin-right:3px}
+
+
+/*=======================================================================================
+	SOCIAL MEDIA
+=========================================================================================*/
+ul.social-content {display: inline;  text-align:center; height:1%; overflow:hidden; line-height:24px;}
+ul.social-content li {display:inline; margin-left: 2px} 
+ul.social-content a {text-indent:-99999em; display:inline-block; position:relative; -webkit-transition: all .1s linear;}
+ul.social-content a:hover {top:-2px;}
+ul.social-icons24 li a {width:24px; height:24px;}
+ul.social-icons24 li.fb a {background-position: 0 -735px}
+ul.social-icons24 li.rss a {background-position: 0 -810px}
+ul.social-icons24 li.twitter a {background-position: 0 -885px}
+
+/*=======================================================================================
+	CALENDAR WIDGET
+=========================================================================================*/
+/*Calendar Header*/
+.calendar-header {padding:5px 10px; position:relative;}
+.ie6 .calendar-header {height:1%;}
+
+/*Calendar Navigation*/
+.calendar-nav {position:absolute; overflow:hidden; top:0; left:0;}
+.calendar-nav li {padding:6px 10px;}
+.calendar-nav .previous {float:left;}
+.calendar-nav .next {float:right;}
+.calendar-nav a {display:block; width:17px; height:15px; text-indent:-9999em; background:transparent url(http://www.politico.com/design/widgets/widget-sprite-arrow.gif) no-repeat left top; font-size:1px; line-height:1px;}
+.calendar-nav .previous a {background-position:left top;}
+.calendar-nav .previous a:hover {background-position:left bottom;}
+.calendar-nav .next a {background-position:right top;}
+.calendar-nav .next a:hover {background-position:right bottom;}
+
+/*Month Calendar*/
+.calendar-month {padding:10px;background:#555 url(http://www.politico.com/design/widgets/widget-gray-gradient.jpg) repeat-y left top;}
+.calendar-month .calendar-header {border:1px solid #292929; background:#373737;}
+.calendar-month .calendar-header h5 {font-size:.86em; color:#fff; text-transform:uppercase; text-align:center;}
+
+.calendar-month .calendar-nav {width:313px;}
+
+.calendar-month th, .calendar-month td {text-align:center !important;}
+.calendar-month thead th {width:14.29%; font-size:.64em; font-weight:normal; color:#000; text-transform:uppercase; border:1px solid #ececec; border-bottom:1px solid #dbdbdb; padding:3px 5px; background:#ececec;}
+.calendar-month tbody td {border:1px solid #dbdbdb; font-size:1.14em; font-weight:bold; color:#b7b7b7; background:#f4f4f4;}
+.calendar-month tbody td a, .calendar-month tbody td.no-activity a:hover {display:block; background:#ececec; padding:3px 5px;
+    -webkit-box-shadow: inset 0 1px 0 #fff;
+       -moz-box-shadow: inset 0 1px 0 #fff;
+            box-shadow: inset 0 1px 0 #fff;
+}
+.ie6 .calendar-month tbody td a {height:1%;}
+.calendar-month tbody td a:hover {text-decoration:none; background:#e0e0e0;
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.1);
+       -moz-box-shadow: inset 0 0 3px rgba(0,0,0,.1);
+            box-shadow: inset 0 0 3px rgba(0,0,0,.1);
+}
+.calendar-month tbody td.today a, .calendar-month tbody td.today a:hover {background:#fff;}
+.calendar-month tbody td.no-activity a, .calendar-month tbody td.no-activity a:hover {color:#b7b7b7; cursor:default;}
+.calendar-month tbody td.current a, .calendar-month tbody td.current a:hover {background:#9e0a0f; color:#fff; text-decoration:none; cursor:default;
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.7);
+       -moz-box-shadow: inset 0 0 3px rgba(0,0,0,.7);
+            box-shadow: inset 0 0 3px rgba(0,0,0,.7);
+}
+
+
+
+
+/*=======================================================================================
+	FOLLOW REPORTER
+=========================================================================================*/
+.p-follow-reporter {background:#f6f6f6; border:1px solid #eaeaea; padding:10px; clear:both;}
+.p-follow-reporter h2 {font-size:1.14em; line-height:1.1; margin-bottom:12px}
+.p-follow-reporter li:before, .p-follow-reporter li:after {content: "\0020"; display: block; height: 0; overflow: hidden;}
+.p-follow-reporter li:after {clear: both;}
+.p-follow-reporter li {zoom: 1;}
+.p-follow-reporter li + li {margin-top:5px; padding-top:5px; border-top: 1px dashed #ccc}
+.p-follow-reporter li .item {float:right; position:relative; margin: 3px 0 0 15px;}
+
+/*Name*/
+.p-follow-reporter .vcard {float:left; width:239px;}
+.p-follow-reporter li h3 {font-size:.86em; text-transform: uppercase; color:#b70000; line-height:1.1;}
+.p-follow-reporter li a.email {font-weight:normal; font-size:.86em;}
+
+/*Twitter*/
+.p-follow-reporter li .p-reporter-twitter {width:63px;overflow:hidden;}
+
+/*Google Plus*/
+.p-follow-reporter li .p-reporter-gplus {width:16px; margin-top:5px;}
+
+/*Facebook*/
+.p-follow-reporter li .p-reporter-fb {width:120px;}
+
+/*Email alert*/
+.p-follow-reporter li .p-reporter-alert {z-index:300;}
+.ie6 .p-follow-reporter li .p-reporter-alert {width:90px;}
+.p-follow-reporter li + li .p-reporter-alert {z-index:250}
+.p-follow-reporter li + li + li .p-reporter-alert {z-index:240}
+.p-follow-reporter li + li + li + li .p-reporter-alert {z-index:230}
+.p-reporter-alert .form-container {opacity:0; position:absolute; left:-9999em; background:#e4e4e4 url(http://www.politico.com/design/reporter-alerts/signup-bg.png) repeat-x; border: 1px solid #b9b9b9; width:308px; padding:5px 10px 10px; top:23px; 
+	box-shadow: 0 5px 5px rgba(0,0,0,.25);
+	-webkit-backface-visibility:hidden;
+	-webkit-transition: opacity 0.1s ease-in-out;
+	   -moz-transition: opacity 0.1s ease-in-out;
+	    -ms-transition: opacity 0.1s ease-in-out;
+	        transition: opacity 0.1s ease-in-out;}
+.p-reporter-alert .form-container:before {background: url(http://www.politico.com/design/reporter-alerts/pointer.png) no-repeat; content: "\0020"; display:block; font-size:0; width:14px; height:9px; top:-9px; right:15px; position:absolute;}
+.p-reporter-alert .form-container.enabled {right:0; opacity:1; left:auto;z-index:350;}
+.ie6 .p-reporter-alert .form-container.enabled {position:static;}
+.p-reporter-alert  h4.btn {color: #004276; font-size:.86em; border:1px solid #ccc; display:inline-block; padding:2px 10px; cursor:pointer; background: #dfdfdf url(http://www.politico.com/design/reporter-alerts/email-btn-bg.png) repeat-x; 
+	-webkit-border-radius: 3px;
+	   -moz-border-radius: 3px;
+	     -o-border-radius: 3px;
+	        border-radius: 3px;
+}
+.p-reporter-alert h4.btn:hover {background-position:left -5px; border-color:#999;}
+.p-reporter-alert .form-container h5 {font-size:1.14em; margin-bottom:5px; text-shadow:0 1px 0 rgba(255,255,255,1);}
+.p-reporter-alert .form-container .success {text-shadow:0 1px 0 rgba(255,255,255,1);}
+.p-reporter-alert .form-container .close {text-shadow:0 1px 0 rgba(255,255,255,1); color:#666; position:absolute; right:10px; top:3px; cursor:pointer; padding:5px; font-size:.86em;}
+.p-reporter-alert .form-container .close:hover {text-decoration:underline}
+
+/*The form*/
+.reporter-alert-form {overflow:hidden; height:1%;}
+.reporter-alert-form fieldset, .reporter-alert-form .actions {float:left;}
+.reporter-alert-form fieldset {margin-right:3px;}
+.reporter-alert-form label, .reporter-alert-form .input-email {font-family: 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;color: #666; font-size:1em;}
+.reporter-alert-form label {margin: 7px 0 0 7px;  }
+.reporter-alert-form .input-email {background: white; border: 1px solid #C7C7C7; display: block; padding: 5px 5px 5px; margin: 0; width: 210px; height: 18px;
+	-webkit-border-radius: 4px;
+	   -moz-border-radius: 4px;
+	        border-radius: 4px;
+}
+.ie7 .reporter-alert-form .p-btn, .ie6 .reporter-alert-form .p-btn {width:70px;}
+

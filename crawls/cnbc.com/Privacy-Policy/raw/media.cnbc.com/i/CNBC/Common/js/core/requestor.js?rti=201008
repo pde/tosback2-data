@@ -1,0 +1,226 @@
+/////////////////////////////////////////////////////////////////////////////////////////
+//Base Requestor
+/////////////////////////////////////////////////////////////////////////////////////////
+BaseRequestor= Class.create();
+	BaseRequestor.prototype =  {
+	  initialize: function() {
+	  },	
+		 
+	  execute : function( URL, params, options ) {
+		if(options.onInitializeEvent==true)
+		{	
+			options.controller.onRequestEvent(options.event,
+								 			  BaseRequestor.State.INITIALIZE, 
+								 			  null);					
+		}
+		
+		this.makeRequest( URL, params, options );	
+		
+		  if( options.onTimeoutEvent==true		 &&
+			  options.onTimeoutLength!=undefined &&
+			  options.onTimeoutLength!=0 )
+		 {
+			setTimeout(function (){ 
+						if(options.executing)
+						{
+							options.executing = false;
+							options.controller.onRequestEvent(options.event,
+											  			  	  BaseRequestor.State.TIMEOUT,
+											  			  	  null);
+						}
+					  }, options.onTimeoutLength);
+		 }
+	  },
+	  
+	   /**
+	   * Override Methods Below For Your Requestor Specific Implementation
+	   */
+	   makeRequest: function(URL, params, options){		   
+	   }
+};
+
+BaseRequestor.State = [];
+BaseRequestor.State.INITIALIZE	="INITIALIZE";
+BaseRequestor.State.SUCCESS		="SUCCESS";
+BaseRequestor.State.ERROR		="ERROR";
+BaseRequestor.State.TIMEOUT		="TIMEOUT";
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//Prototype/Ajaxtags Requestor
+//	-- Requires include of prototype_ajax.js
+/////////////////////////////////////////////////////////////////////////////////////////
+AJRequestor= Class.create();
+  AJRequestor.prototype = Object.extend(new BaseRequestor(),  {
+	  initialize: function(asynchronous, evalScripts) {
+		  this.asynchronous = asynchronous || true;
+		  this.evalScripts	= evalScripts || true;
+	  },	
+	  
+	  makeRequest: function(URL, params, options){
+			try
+			{
+				var aj = new Ajax.Request(URL, {  asynchronous: this.asynchronous,
+												  method: options.doPost ? 'post':'get',
+												  evalScripts: this.evalScripts,
+												  parameters: params,
+												  onSuccess: function(request) {
+												 	if(options.executing)
+													{														
+														try
+														{
+															options.executing = false;
+															if(options.onSuccessEvent==true)
+															{
+																options.controller.onRequestEvent(options.event, 
+																								  BaseRequestor.State.SUCCESS, 
+																								  options.controller.parser.load(request));
+															}
+														}
+														catch(e)
+														{ 
+															options.executing = false;											
+															if(options.onErrorEvent==true)
+															{
+																options.controller.onRequestEvent(options.event, 
+																								  BaseRequestor.State.ERROR, 
+																								  e.message);
+															}
+														}
+													}
+												  },
+												  onFailure: function(request) {													  
+													if(options.executing)
+													{
+														options.executing = false;											
+														if(options.onErrorEvent==true)
+														{
+															options.controller.onRequestEvent(options.event, 
+																							  BaseRequestor.State.ERROR, 
+																							  null);
+														}
+													}
+												  }
+												});	
+			}
+			catch(e)
+			{ 
+				if(options.executing)
+				{
+					options.executing = false;											
+					if(options.onErrorEvent==true)
+					{
+						options.controller.onRequestEvent(options.event, 
+														  BaseRequestor.State.ERROR, 
+														  e.message);
+					}
+				}
+			}
+		}						  
+});
+  
+/////////////////////////////////////////////////////////////////////////////////////////
+//Prototype/Ajaxtags Requestor
+//	-- Requires include of prototype_ajax.js
+/////////////////////////////////////////////////////////////////////////////////////////
+FlashProxyRequestor= Class.create();
+  FlashProxyRequestor.prototype = Object.extend(new BaseRequestor(),  {
+	  initialize: function(proxyname,contenttype, pendingtimeout) {
+		  this.proxyname	= proxyname;
+		  this.contenttype	= contenttype || "xml";
+		  this.pendingtimeout = pendingtimeout || 100;
+	  },
+	  
+	   makeRequest: function(URL, params, options){	
+		var obj = this;
+		var random = new Date().getTime();
+	  	var flashProxy = (navigator.appName.indexOf("Microsoft") != -1) ? window[this.proxyname] : document[this.proxyname];
+
+		if((flashProxy!=null) && ((typeof flashProxy) != 'undefined') &&  ((typeof window["flproxy"+random]) == 'undefined') )
+	  	{
+            try
+            {   
+				//Define anonymous to be called on command success...
+				window["flproxy"+random] = function (request)
+										   {	
+										   		if(options.executing)
+												{														
+													try
+													{
+														var requestWrapper = [];
+															if(obj.contenttype=="xml") {
+																requestWrapper.responseXML	= obj.getXML(request);
+															}
+															else {
+																requestWrapper.responseText = request;
+															}
+															
+															options.executing = false;
+															if(options.onSuccessEvent==true)
+															{
+																options.controller.onRequestEvent(options.event, 
+																								  BaseRequestor.State.SUCCESS, 
+																								  options.controller.parser.load(requestWrapper));
+															}
+													}
+													catch(e)
+													{ 
+														options.executing = false;											
+														if(options.onErrorEvent==true)
+														{
+															options.controller.onRequestEvent(options.event, 
+																							  BaseRequestor.State.ERROR, 
+																							  e.message);
+														}
+													}
+												}
+											};
+				
+				if(obj.contenttype=="xml") {
+					flashProxy.callGetData(URL+"?"+params,
+										   'window.flproxy' + random);
+				}
+				else {
+					flashProxy.callGetDataEx(URL+"?"+params,
+									     	'window.flproxy' + random);
+				}
+            }
+            catch(e)
+			{ 
+				if(options.executing)
+				{
+					options.executing = false;											
+					if(options.onErrorEvent==true)
+					{
+						options.controller.onRequestEvent(options.event, 
+														  BaseRequestor.State.ERROR, 
+														  e.message);
+					}
+				}
+			}
+        }
+		else
+		{
+			setTimeout(function (){obj.makeRequest(URL, params, options );}, this.pendingtimeout);
+		}
+	  },
+	  
+	  getXML : function(xmlData){
+			var xmlDoc = null;
+			var browser = navigator.appName;
+			
+			xmlData = xmlData.replace(/&/gi,"&amp;").replace(/'/gi,"&apos;");
+			if(browser.indexOf('Microsoft') != -1)
+			{
+				xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+				xmlDoc.async="false";
+				xmlDoc.loadXML(xmlData);					
+			} 
+			else
+			{
+				var parser = new DOMParser();
+				xmlDoc = parser.parseFromString(xmlData,"text/xml");					
+			}
+			
+			return xmlDoc;
+	}	
+});

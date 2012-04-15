@@ -1,0 +1,85 @@
+<html>
+<head>
+<!--
+Version: 2.0
+Purpose: this page helps to load a sequence of javascript and swf files 
+for use by a parent document.  
+Dependencies: 
+1)  must be loaded from an iframe, with the same originating domain 
+    as the parent document.
+2)  parent document must include the "generic" namespace
+3)  parent document must include the "ad_utils" namespace for 1.0 support
+Todo: Remove 1.0 support after all 1.0 code is properly deprecated
+-->
+</head>
+<body onload="runCallbacks();">
+<script>
+(function(){
+    var generic = parent.generic;
+    var ad_utils = parent.ad_utils;
+    var args = document.location.hash.replace('#', '');
+    var targets = args.split(",");
+    var callbacks = [];
+
+    // When the page is done loading - fire all callbacks
+    this.runCallbacks = function(){
+        for(var i in callbacks){
+            callbacks[i]();
+        }
+    }
+
+    for(var i in targets) {
+        var itemName = targets[i];
+
+        var target = generic.cache.get(itemName) 
+            // for scriptloader 1.0 compatability
+            || parent[itemName]; 
+
+        if(target == undefined) {
+            continue;
+        }
+
+        var onCall = target.onCall 
+            // for scriptloader 1.0 compatability
+            || target.oncall;
+
+        if (typeof(onCall) == "function"){
+            onCall();
+        }
+
+        if (typeof(target.onCallback) == "function"){
+            callbacks.push(target.onCallback);
+        }
+
+        var url = target.url
+            // for scriptloader 1.0 compatability
+            .replace(ad_utils.ord_regex, ad_utils.ord);
+
+        if (typeof(url) == "string"){
+            if (target.type == "js" 
+                // for scriptloader 1.0 compatability
+                || !(target.type)){
+
+                var script = document.createElement("script");  
+                script.type = "text/javascript";  
+                script.src = url;
+                document.getElementsByTagName('head')[0].appendChild(script);          
+            }
+            if (target.type == "swf"){
+                if (parent.flashAdUtils.canPlayFlash(9)){
+                    var flashTags = parent.flashAdUtils.makeFlashAd({
+                        id:itemName,
+                        src:url,
+                        height:target.height || 1,
+                        width:target.width || 1
+                    });
+                    document.write(flashTags);
+                }
+            }
+        }
+    }
+})();
+</script>
+
+</body>
+</html>

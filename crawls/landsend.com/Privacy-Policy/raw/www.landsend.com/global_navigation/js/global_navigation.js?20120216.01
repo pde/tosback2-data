@@ -1,0 +1,1606 @@
+/*********************************************
+******START - 2010 global_navigation.js*******
+*********************************************/
+/******** OBJECT SECTION ********/
+function Menu(element)
+{
+	this.element = element;
+	this.hostPart = "http://" + window.location.host;
+	this.topLevelMenus = null;
+	this.menuData = null;
+	this.heightOffset = 0;
+	this.isCanvas = false;
+	this.init();
+}
+
+Menu.prototype.init = function()
+{
+	if ($(".this-is-canvas").length == 0)
+	{
+		this.menuData = le_menu_json;
+	}
+	else
+	{
+		this.menuData = canvas_menu_json;
+		this.isCanvas = true;
+	}
+	
+	le_menu_json = null;
+	canvas_menu_json = null;
+	
+	this.topLevelMenus = $(this.element).children("ul");
+	this.generateMenus();
+	this.setPage();
+	this.bindEvents();
+}
+
+Menu.prototype.setPage = function()
+{
+	if ($.query && !this.isCanvas)
+	{
+		var categoryNumber = ($.query.get("tab")+"").match(/^\d+$/);
+		$("#nav-menu-" + categoryNumber).addClass("this-page");
+	}
+	if (this.isCanvas)
+	{
+		$("#womens-tab-page").find("#nav-menu-1").addClass("this-page");
+		$("#mens-tab-page").find("#nav-menu-2").addClass("this-page");
+		$("#accessories-tab-page").find("#nav-menu-3").addClass("this-page");
+		//$("#sale-tab-page").find("#sale-tab").addClass("this-page");	
+		$("#the-canvas-story").find("#nav-menu-5").addClass("this-page");
+		$("#as-seen-in").find("nav-menu-6").addClass("this-page");
+	}
+}
+
+Menu.prototype.buildLink = function(myLink)
+{
+	if (myLink.match("http") != null)
+		return myLink;
+	else
+		return this.hostPart + myLink;
+}
+
+Menu.prototype.generateMenus = function()
+{
+	$(this.element).append("<div class=\"top-shadow shadows\"></div><div class=\"bottom-shadow shadows\"></div><div class=\"top-flyout-shadow shadows\"></div><div class=\"bottom-flyout-shadow shadows\"></div>");
+
+	if (this.topLevelMenus.length == 0)
+	{
+		for (var i = 0; i < this.menuData.length; i++)
+		{
+			var htmlString = "<ul class=\"first-level-menu\"><li>";
+			htmlString += "<a href=\"" + this.buildLink(this.menuData[i].url) + "\"><span>" + this.menuData[i].title + "</span></a>";
+			if (this.menuData[i].submenu)
+			{
+				htmlString += this.buildSubMenu(i);
+			}
+			htmlString += "</li></ul>";
+			$(this.element).append(htmlString);
+		}
+	}
+	else
+	{
+		for (var i = 0; i < this.topLevelMenus.length; i++)
+		{
+			var htmlString = "";
+			if (this.menuData[i].submenu)
+			{
+				htmlString += this.buildSubMenu(i);
+			}
+			$(this.topLevelMenus[i]).children("li").append(htmlString);
+			
+			$(this.element).children(".top-shadow").css("top", -10);
+			$(this.element).find(".second-level-menu").css("top", 29);
+			if( this.isCanvas )
+				this.heightOffset = -1;
+			else
+				this.heightOffset = 4;
+		}
+	}
+}
+
+Menu.prototype.buildSubMenu = function(parentIndex)
+{
+	var htmlString = "<ul class=\"second-level-menu\">";
+	for (var i = 0; i < this.menuData[parentIndex].submenu.length; i++)
+	{
+		htmlString += "<li><a href=\"" + this.buildLink(this.menuData[parentIndex].submenu[i].url) + "\">" + this.menuData[parentIndex].submenu[i].title + "</a>";
+		if (this.menuData[parentIndex].submenu[i].submenu)
+		{
+			htmlString += "<ul class=\"third-level-menu\">";
+			for (var j = 0; j < this.menuData[parentIndex].submenu[i].submenu.length; j++)
+			{
+				htmlString += "<li><a href=\"" + this.buildLink(this.menuData[parentIndex].submenu[i].submenu[j].url) + "\">" + this.menuData[parentIndex].submenu[i].submenu[j].title + "</a></li>";
+			}
+			htmlString += "</ul>";
+		}
+		htmlString += "</li>";
+	}
+	htmlString += "</ul>";
+	return htmlString;
+}
+
+Menu.prototype.bindEvents = function()
+{
+	var parentRef = this.element;
+	var functionRef = this;
+
+	$(parentRef).children(".first-level-menu").children("li").unbind();
+	$(parentRef).children(".first-level-menu").children("li").children(".second-level-menu").children("li").unbind();
+
+	$(parentRef).children(".first-level-menu").children("li").hoverIntent(
+		function() {
+			$(this).parent().css("z-index", 100);
+			$(this).children("a").addClass("highlighted");
+			$(parentRef).addClass("opened-menu");
+			$(this).children(".second-level-menu").show();
+			var offsetValue = 0;
+			if (functionRef.isCanvas)
+				offsetValue = 5;
+			$(this).children(".second-level-menu").show();
+			if ( $(this).children(".second-level-menu").length > 0 )
+			{
+				$(parentRef).children(".top-shadow").css("left", $(this).offset().left - $(parentRef).position().left - 15);
+				$(parentRef).children(".top-shadow").show();
+				$(parentRef).children(".bottom-shadow").css("left", $(this).offset().left - $(parentRef).position().left - 15);
+				$(parentRef).children(".bottom-shadow").css("top", $(this).children(".second-level-menu").outerHeight() + 29 - offsetValue);
+				$(parentRef).children(".bottom-shadow").show();
+			}
+		},
+		function() {
+			$(this).parent().css("z-index", 0);
+			$(this).children("a").removeClass("highlighted");
+			$(this).children(".second-level-menu").hide(0,
+				function() {
+					$(parentRef).children(".top-shadow").hide();
+					$(parentRef).children(".bottom-shadow").hide();
+					$(parentRef).removeClass("opened-menu");
+				});
+		}
+	);
+
+	$(parentRef).children(".first-level-menu").children("li").children(".second-level-menu").children("li").hoverIntent(
+		function() {
+			$(this).children(".third-level-menu").show();
+			if ( $(this).children(".third-level-menu").length > 0 )
+			{
+				$(parentRef).children(".top-flyout-shadow").css("left", $(this).children(".third-level-menu").offset().left - $(parentRef).position().left - 27);
+				$(parentRef).children(".top-flyout-shadow").css("top", $(this).children(".third-level-menu").offset().top - 54 - $(parentRef).offset().top + 15);
+				$(parentRef).children(".top-flyout-shadow").show();
+				$(parentRef).children(".bottom-flyout-shadow").css("left", $(this).children(".third-level-menu").offset().left - $(parentRef).position().left - 27);
+				$(parentRef).children(".bottom-flyout-shadow").css("top", $(this).children(".third-level-menu").offset().top + $(this).children(".third-level-menu").height() - 5 - $(parentRef).offset().top + 15);
+				$(parentRef).children(".bottom-flyout-shadow").show();
+			}
+		},
+		function() {
+			$(this).children(".third-level-menu").hide(0,
+				function() {
+					$(parentRef).children(".top-flyout-shadow").hide();
+					$(parentRef).children(".bottom-flyout-shadow").hide();
+				});
+		}
+	);
+}
+
+/******** GLOBAL SECTION ********/
+var menus = new Array();
+
+$(document).ready(function() {
+	$(".navigation-container").each(function() {
+		menus.push(new Menu(this));
+	});
+});(function(){
+
+/******************************/
+/*   START - document.ready   */
+/******************************/
+
+$(document).ready(function(){
+
+	/**************************/
+    /* Search Functions */
+    /**************************/
+    // stores our default search input value
+    var searchInputValue = $('#site-wide-search-input').val();
+    
+    // remove all errors for search
+    function searchErrorRemove(){
+      $('#site-wide-search.error, #site-wide-search-button.error, #site-wide-search-input.error').removeClass('error');
+	  $('#site-wide-search-input').closest('.oo-txt').removeClass('txte');	
+      $('#site-wide-search-error').fadeOut('slow', function(){
+        $('#site-wide-search-error').remove();
+      });
+    }
+    
+    // build the errors for the search form
+    function searchErrorBuild(){
+		$('#site-wide-search-input').closest('.oo-txt').addClass('txte');
+        $('#site-wide-search').append('<div id="site-wide-search-error" class="error"><p class="head"></p><p class="body"><span><img src="/global_navigation/images/notifications/error_inline_icon.gif" />Please enter a keyword or item # in the search box, then click "Search".</span></p><p class="foot"></p></div>');
+        $('#site-wide-search-error').fadeIn('slow');
+        return false;
+    }
+    
+    // remove the error bubble when a user clicks on it
+    $('#site-wide-search-error').live("click",function(){
+      searchErrorRemove();
+    });
+  
+    //On focus sets the input value to nothing
+    $('#site-wide-search-input').focus(function(){
+      $(this).attr({value:''});
+      $(this).css('text-transform','none');
+    });
+    //On Blur check to see if it is a valid input
+    $('#site-wide-search-input').blur(function(){
+      if ($(this).val().length == 0 || $(this).val() == 'enter keyword or item #'){
+        $(this).css('text-transform','uppercase');
+        $(this).val(searchInputValue);
+      } else{
+        searchErrorRemove();
+        return true
+      }
+      return false;
+    });
+
+    //Submit the search value only if it is valid
+    $('#site-wide-search').submit(function(){
+      if ($('#site-wide-search-input').val() == 'Enter keyword or item #' || $('#site-wide-search-input').val().length == 0){
+        searchErrorBuild();
+        //Omniture Search Tags
+        s_omtr = s_gi(s_account);
+        s_omtr.pageName="Null search pop";
+        s_omtr.tl(true,'o','link');
+        return false;
+      } else{
+
+		//window.location = "http://"+window.location.host+"/ix/index.html?store=" + $("#site-wide-search input[name='store']").val()+"&action=newSearch&search="+$("#site-wide-search-input").val();
+		
+        $('#site-wide-search').submit();
+		return true;
+     }
+	});
+
+    
+    /**************************/
+    /* Account Status (Sign In & Sign Out)*/
+    /**************************/
+    if ($.cookie("signedIn") == "1" || $.cookie("cid") != null){
+      $('#account-tool-status, #sign-in').text('Sign Out').attr({href:"http://" + location.host + "/cgi-bin/SignOut.cgi?resetSID=Y"});
+      $('#account-tool-access').text('my account').attr({href:"https://" + location.host + "/cgi-bin/Login.cgi?redirect=/cgi-bin/AccountPortal.cgi&type=GenLogin"});
+    } else {
+      $('#account-tool-status, #sign-in').text('Sign In').attr({href:"https://" + location.host + "/cgi-bin/Login.cgi?redirect=/cgi-bin/AccountPortal.cgi&type=GenLogin"});
+      $('#account-tool-access').text('create account').attr({href:"https://" + location.host + "/cgi-bin/Login.cgi?redirect=/cgi-bin/AccountPortal.cgi&type=GenLogin"});
+      $.cookie("signedIn", null);
+    }
+
+
+
+	/**************************/
+    /* Promotions*/
+    /**************************/
+
+	// Execute all promotions display logic - self-contained except for temporary global a/b test variable
+    
+    /*Initiate the iPad detection for perma-footer*/
+    leutil.ui.browser.isiPad();
+    
+    /*Initiate the promo display and ajax content for promos*/
+    promoDisplay();
+  
+    /* if cookies are enabled display cookies error banner */
+    if($.cookie.test() == false) $("#cookiesErrorBanner").show();
+  
+    /*  Current Year Update  */
+    $('#current-year').text(new Date().getUTCFullYear());
+    
+    /* if there is a tab defined in the current url select the appropriate tab*/
+    var tab = ($.query.get("tab")+"").match(/^\d+$/);
+    if(tab) $(".tab-nav-"+tab).addClass("selected-tab-nav");
+    
+
+  
+    /**************************/
+    /* START Email Address Functions */
+    /**************************/
+    //Stores our default search input value
+    var emailInputValue = $('#site-wide-email-signup-input').val();
+    
+    //On Blur check to see if it is a valid input
+    $('#site-wide-email-signup-input').blur(function(){
+      if ($(this).val().length == 0 || $(this).val() == 'enter email address'){
+        $(this).val(emailInputValue);
+      } else{
+        emailErrorRemove();
+        return true
+      }
+      return false;
+    });
+    
+    // remove all errors for search
+    function emailErrorRemove(){
+      $('#email-signup.error, #site-wide-email-signup.error, #site-wide-email-signup-button.error, #site-wide-email-signup-input.error').removeClass('error');
+	  $('#site-wide-email-signup-input').closest('.oo-txt').removeClass('txte');	
+      $('#site-wide-email-signup-error').fadeOut('slow', function(){
+        $('#site-wide-email-signup-error').remove();
+      });
+    }
+    
+    //build the errors for the search form
+    function emailErrorBuild(){
+        emailErrorRemove();
+        $('#email-signup, #site-wide-email-signup-button').addClass('error');
+		$('#site-wide-email-signup-input').closest('.oo-txt').addClass('txte');	
+        $('#site-wide-email-signup').append('<div id="site-wide-email-signup-error"><p class="head"></p><p class="body"><span><img src="/global_navigation/images/notifications/error_inline_icon.gif" />Please enter a valid email address to receive exclusive Lands\' End offers and news updates.</span></p><p class="foot"></p></div>');
+        $('#site-wide-search-error').fadeIn('slow');
+        return false;
+    }
+    
+    // remove the error bubble when a user clicks on it
+    $('#site-wide-email-signup-error').live("click",function(){
+      emailErrorRemove();
+    });
+  
+    //On focus sets the input value to nothing
+    $('#site-wide-email-signup-input').focus(function(){
+      $(this).attr({value:''});
+    });
+    //Submit the search value only if it is valid
+    $('#site-wide-email-signup').submit(function(){
+      if ($('#site-wide-email-signup-input').val() == 'enter email address' || $('#site-wide-email-signup-input').val().length == 0){
+        emailErrorBuild();
+        return false;
+      }
+      else if ($('#site-wide-email-signup-input').val() != null){
+        validEmailInputValue = $('#site-wide-email-signup-input').val();
+        var emailReg = new RegExp(/^[A-Z1-9][\w.+-]*@[\w.-]+\.[A-Z]{2,6}$/i);
+        if(!emailReg.test(validEmailInputValue)) {
+          emailErrorBuild();
+          return false;
+        }
+        else{
+          return true;
+          $(this).submit();
+        }
+      }
+      
+    });
+    
+    /******************************/
+    /*    START - Partner Links Overlay  */
+    /******************************/  
+    $('.partner-link').live('click', function(){
+      overlayAlert(''+
+          '<p class="nav"><img src="/global_navigation/images/overlay/partner_link.jpg"><br /><a href="'+$(this).attr('href')+'" target="_blank" class="btn-spa">continue</a>'+
+          '<a href="#" class="btn-opa close">stay on landsend.com</a></p>'
+      );
+      return false;
+    });
+  });
+  
+  /******************************/
+  /*    START - PROMO Code  */
+  /******************************/  
+  function promoDisplay(){
+
+    var applyPromoStatus = ($.query.get("applyPromo")+"").match(/^\w+$/);
+    var promoCookie = $.cookie("promoCookieKey");
+ 
+/* start executing our promotions functionality */
+    function execute() {
+      if(applyPromoStatus) {
+        /* just applied a promotion, display promotion applied overlay */
+        if(typeof navTestGroup == "undefined" || navTestGroup == "C" || navTestGroup == "D") {
+				le.uxd.ui.promotion.displayPromotion({location: 'modal'});
+        }
+        if (promoCookie) {
+          s_omtr.pageName="PROMOTIONAL OFFER DROPDOWN";
+          s_omtr.channel="PROMOTIONAL OFFER DROPDOWN";
+          s_omtr.eVar44= promoCookie.split("_")[0] + "-_-VALID";
+          var s_code=s_omtr.t();if(s_code)document.write(s_code);
+        }
+      }
+	  if(promoCookie){
+		var promoBrand = promoCookie.split('_')[2];
+		var isCanvas = /canvas/.test(window.location.host);
+		if ((window.location+"").indexOf("OrderConfirm.cgi") != -1) {
+		  setCookie("promoCookieKey", "" , null);
+		} else if(promoBrand=="0" || (promoBrand=="1" && !isCanvas) || (promoBrand=="2" && isCanvas)){
+			le.uxd.ui.promotion.displayPromotion();
+		}
+	  }
+    }
+    
+    execute();
+    
+  }
+})();/**************************************************
+*code added for peak_sev1_fix
+ **************************************************/
+var buttonDisabler = new function(){
+	var delay = 15; //seconds
+
+	var data = [
+		"#shopping-bag div.productBlockRight a", 
+		"#shopping-bag div.subHeader a",
+		"#shopping-bag-tool",
+		"#account-tool-status",
+		"#account-tool-access",
+		"#track-order-tool",
+		"#shopping-bag div.sb_continueBtn input", 
+		"#ship-to div.continueBtn input",
+		"#bill-to div.btn_bill_to input",
+		"#login div.login_btn input"
+	];
+
+	var buttons = new Array();
+
+	function Button(myElement,myWait){
+		var element = myElement;
+		var timer;
+		var wait = myWait * 1000;
+		var waiting = false;
+	
+		element.bind("click",function(e){
+			if(waiting == true){
+				return false;
+			}
+			else{
+				waiting = true;
+				clearTimeout(timer);
+				timer = setTimeout(enable,wait);
+			}
+		});
+		var enable = function(){
+			waiting = false;
+		}
+	}
+
+	this.init = function(){                   
+		for(var a = 0; a<data.length; a++){
+			var temp = $(data[a]);
+			temp.each(function(){                                                      
+				buttons.push(new Button($(this),delay));
+			});
+		}
+	}
+}
+ 
+$(document).ready(function() {     
+            buttonDisabler.init(); 
+});/**************************************************
+* START overlayAlert function
+* Nifty reusable overlay alert function -
+* Leaving global in case anybody else decides to use it
+ **************************************************/
+function overlayAlert(overlayCopy) {
+  scroll(0,0);
+  //hides the selects boxes due to IE6
+  $('select').hide();
+  $('body').prepend('<div id="overlay"><div id="overlay-filter"></div>'+
+      '<div id="overlay-window"><div id="close-window"></div>'+
+      '<div class="overlay-window-n"></div><div class="overlay-window-ne"></div><div class="overlay-window-e"></div>'+
+      '<div class="overlay-window-se"></div><div class="overlay-window-s"></div><div class="overlay-window-sw"></div>'+
+      '<div class="overlay-window-w"></div><div class="overlay-window-nw"></div>'+
+      '</div></div>'
+  );
+  $('#overlay,#overlay-filter').height($(document).height());
+  $('#overlay-filter').fadeTo('slow', 0.80);
+  $('#overlay-window').fadeIn()
+  .css({'width': '500px', 'margin-left':'-250px'})
+  .append('<div id="overlay-content">'+
+      '<div class="head"></div><div class="body">'+ overlayCopy +'</div>'+
+      '<div class="foot"></div>'
+  );
+  $('.overlay-window-n, .overlay-window-s').width($('#overlay-content').width());
+  $('.overlay-window-w, .overlay-window-e').height($('#overlay-content').height());
+  $('#overlay-content img').load(function() {
+    $('.overlay-window-n, .overlay-window-s').width($('#overlay-content').width());
+    $('.overlay-window-w, .overlay-window-e').height($('#overlay-content').height());
+  });
+  $('#overlay-filter, #cancel, #close-window, .close').live('click', function(){
+    $('select').show();
+    $('#overlay, #overlay-filter, .overlay-window').fadeTo('slow', 0, function() {
+      $('#overlay, #overlay-filter, .overlay-window').remove();
+      $('html, body').removeClass('overlay-hidden');
+    });
+  });
+}var eglvchathandle = null;
+
+function openHelp(egchat_queueId, egchat_templatename) {
+    try {
+        if (eglvchathandle !== null && eglvchathandle.closed === false) {
+            eglvchathandle.focus();
+            return;
+        }
+    } catch (err) {}
+
+    var refererName = document.title;
+    var refererurl = encodeURIComponent(document.location.href);
+    var hashIndex = refererurl.lastIndexOf('#');
+    if (hashIndex != -1) {
+        refererurl = refererurl.substring(0, hashIndex);
+    }
+
+    var w = 520,
+        h = 600;
+    var t = 0,
+        l = 0;
+    if (window.screen) {
+        l = (window.screen.availWidth - w) * 98 / 100;
+    }
+    var eglvcaseid = (/eglvcaseid=[0-9]*/gi).exec(window.location.search);
+    var params = "width=" + w + ",height=" + h + ",left=" + l + ",top=" + t + ",resizable=no,scrollbars=yes,toolbar=no";
+    eglvchathandle = window.open('https://support.landsend.com/system/web/view/live/templates/' + egchat_templatename + '/chat.html?entryPointId=' + egchat_queueId + '&referer=' + refererurl + '&eglvrefname=' + refererName + '&' + eglvcaseid, '', params);
+}/*
+* jQuery Cycle Lite Plugin
+* http://malsup.com/jquery/cycle/lite/
+* Copyright (c) 2008-2011 M. Alsup
+* Version: 1.3 (01-JUN-2011)
+* Dual licensed under the MIT and GPL licenses:
+* http://www.opensource.org/licenses/mit-license.php
+* http://www.gnu.org/licenses/gpl.html
+* Requires: jQuery v1.3.2 or later
+*/
+;(function($) {
+
+var ver = 'Lite-1.3';
+
+$.fn.cycle = function(options) {
+    return this.each(function() {
+        options = options || {};
+        
+        if (this.cycleTimeout) clearTimeout(this.cycleTimeout);
+        this.cycleTimeout = 0;
+        this.cyclePause = 0;
+        
+        var $cont = $(this);
+        var $slides = options.slideExpr ? $(options.slideExpr, this) : $cont.children();
+        var els = $slides.get();
+        if (els.length < 2) {
+            window.console && console.log('terminating; too few slides: ' + els.length);
+            return; // don't bother
+        }
+
+        // support metadata plugin (v1.0 and v2.0)
+        var opts = $.extend({}, $.fn.cycle.defaults, options || {}, $.metadata ? $cont.metadata() : $.meta ? $cont.data() : {});
+var meta = $.isFunction($cont.data) ? $cont.data(opts.metaAttr) : null;
+if (meta)
+opts = $.extend(opts, meta);
+            
+        opts.before = opts.before ? [opts.before] : [];
+        opts.after = opts.after ? [opts.after] : [];
+        opts.after.unshift(function(){ opts.busy=0; });
+            
+        // allow shorthand overrides of width, height and timeout
+        var cls = this.className;
+        opts.width = parseInt((cls.match(/w:(\d+)/)||[])[1]) || opts.width;
+        opts.height = parseInt((cls.match(/h:(\d+)/)||[])[1]) || opts.height;
+        opts.timeout = parseInt((cls.match(/t:(\d+)/)||[])[1]) || opts.timeout;
+
+        if ($cont.css('position') == 'static')
+            $cont.css('position', 'relative');
+        if (opts.width)
+            $cont.width(opts.width);
+        if (opts.height && opts.height != 'auto')
+            $cont.height(opts.height);
+
+        var first = 0;
+        $slides.css({position: 'absolute', top:0, left:0}).each(function(i) {
+            $(this).css('z-index', els.length-i)
+        });
+        
+        $(els[first]).css('opacity',1).show(); // opacity bit needed to handle reinit case
+        if ($.browser.msie) els[first].style.removeAttribute('filter');
+
+        if (opts.fit && opts.width)
+            $slides.width(opts.width);
+        if (opts.fit && opts.height && opts.height != 'auto')
+            $slides.height(opts.height);
+        if (opts.pause)
+            $cont.hover(function(){this.cyclePause=1;}, function(){this.cyclePause=0;});
+
+        var txFn = $.fn.cycle.transitions[opts.fx];
+txFn && txFn($cont, $slides, opts);
+        
+        $slides.each(function() {
+            var $el = $(this);
+            this.cycleH = (opts.fit && opts.height) ? opts.height : $el.height();
+            this.cycleW = (opts.fit && opts.width) ? opts.width : $el.width();
+        });
+
+        if (opts.cssFirst)
+            $($slides[first]).css(opts.cssFirst);
+
+        if (opts.timeout) {
+            // ensure that timeout and speed settings are sane
+            if (opts.speed.constructor == String)
+                opts.speed = {slow: 600, fast: 200}[opts.speed] || 400;
+            if (!opts.sync)
+                opts.speed = opts.speed / 2;
+            while((opts.timeout - opts.speed) < 250)
+                opts.timeout += opts.speed;
+        }
+        opts.speedIn = opts.speed;
+        opts.speedOut = opts.speed;
+
+  opts.slideCount = els.length;
+        opts.currSlide = first;
+        opts.nextSlide = 1;
+
+        // fire artificial events
+        var e0 = $slides[first];
+        if (opts.before.length)
+            opts.before[0].apply(e0, [e0, e0, opts, true]);
+        if (opts.after.length > 1)
+            opts.after[1].apply(e0, [e0, e0, opts, true]);
+        
+        if (opts.click && !opts.next)
+            opts.next = opts.click;
+        if (opts.next)
+            $(opts.next).bind('click', function(){return advance(els,opts,opts.rev?-1:1)});
+        if (opts.prev)
+            $(opts.prev).bind('click', function(){return advance(els,opts,opts.rev?1:-1)});
+
+        if (opts.timeout)
+            this.cycleTimeout = setTimeout(function() {
+                go(els,opts,0,!opts.rev)
+            }, opts.timeout + (opts.delay||0));
+    });
+};
+
+function go(els, opts, manual, fwd) {
+    if (opts.busy) return;
+    var p = els[0].parentNode, curr = els[opts.currSlide], next = els[opts.nextSlide];
+    if (p.cycleTimeout === 0 && !manual)
+        return;
+
+    if (manual || !p.cyclePause) {
+        if (opts.before.length)
+            $.each(opts.before, function(i,o) { o.apply(next, [curr, next, opts, fwd]); });
+        var after = function() {
+            if ($.browser.msie)
+                this.style.removeAttribute('filter');
+            $.each(opts.after, function(i,o) { o.apply(next, [curr, next, opts, fwd]); });
+        };
+
+        if (opts.nextSlide != opts.currSlide) {
+            opts.busy = 1;
+            $.fn.cycle.custom(curr, next, opts, after);
+        }
+        var roll = (opts.nextSlide + 1) == els.length;
+        opts.nextSlide = roll ? 0 : opts.nextSlide+1;
+        opts.currSlide = roll ? els.length-1 : opts.nextSlide-1;
+    }
+    if (opts.timeout)
+        p.cycleTimeout = setTimeout(function() { go(els,opts,0,!opts.rev) }, opts.timeout);
+};
+
+// advance slide forward or back
+function advance(els, opts, val) {
+    var p = els[0].parentNode, timeout = p.cycleTimeout;
+    if (timeout) {
+        clearTimeout(timeout);
+        p.cycleTimeout = 0;
+    }
+    opts.nextSlide = opts.currSlide + val;
+    if (opts.nextSlide < 0) {
+        opts.nextSlide = els.length - 1;
+    }
+    else if (opts.nextSlide >= els.length) {
+        opts.nextSlide = 0;
+    }
+    go(els, opts, 1, val>=0);
+    return false;
+};
+
+$.fn.cycle.custom = function(curr, next, opts, cb) {
+    var $l = $(curr), $n = $(next);
+    $n.css(opts.cssBefore);
+    var fn = function() {$n.animate(opts.animIn, opts.speedIn, opts.easeIn, cb)};
+    $l.animate(opts.animOut, opts.speedOut, opts.easeOut, function() {
+        $l.css(opts.cssAfter);
+        if (!opts.sync) fn();
+    });
+    if (opts.sync) fn();
+};
+
+$.fn.cycle.transitions = {
+    fade: function($cont, $slides, opts) {
+$slides.not(':eq(0)').hide();
+opts.cssBefore = { opacity: 0, display: 'block' };
+opts.cssAfter = { display: 'none' };
+opts.animOut = { opacity: 0 };
+opts.animIn = { opacity: 1 };
+    },
+    fadeout: function($cont, $slides, opts) {
+opts.before.push(function(curr,next,opts,fwd) {
+$(curr).css('zIndex',opts.slideCount + (fwd === true ? 1 : 0));
+$(next).css('zIndex',opts.slideCount + (fwd === true ? 0 : 1));
+});
+$slides.not(':eq(0)').hide();
+opts.cssBefore = { opacity: 1, display: 'block', zIndex: 1 };
+opts.cssAfter = { display: 'none', zIndex: 0 };
+opts.animOut = { opacity: 0 };
+    }
+};
+
+$.fn.cycle.ver = function() { return ver; };
+
+// @see: http://malsup.com/jquery/cycle/lite/
+$.fn.cycle.defaults = {
+animIn: {},
+animOut: {},
+fx: 'fade',
+    after: null,
+    before: null,
+cssBefore: {},
+cssAfter: {},
+    delay: 0,
+    fit: 0,
+    height: 'auto',
+metaAttr: 'cycle',
+    next: null,
+    pause: 0,
+    prev: null,
+    speed: 1000,
+    slideExpr: null,
+    sync: 1,
+    timeout: 4000
+};
+
+})(jQuery);window.le = window.le || {};
+window.le.uxd = le.uxd || {};
+
+le.uxd.namespace = function(nsString){
+	var parts = nsString.split('.'),
+		parent = le,
+		i;
+		
+	if (parts[0] === 'le'){
+		parts = parts.slice(1);
+	}
+	
+	for(i=0;i< parts.length;i++){
+		if (typeof parent[parts[i]] === 'undefined'){
+			parent[parts[i]] = {};
+		}
+		parent = parent[parts[i]];
+	}
+	return parent;
+};le.uxd.namespace('le.uxd.ui.personalization');
+
+le.uxd.ui.personalization.certona = {
+	showHoverRec: function(target, size, opts){
+		le.uxd.ui.hoverCard.open(
+			$(target),
+			{
+				parentClass	:	'certona-recs', // pass style information to the hovercard
+				onFillStart	:	function(content){
+									var $content = $(content);
+									var $img = $content.find('img');
+									var imageOnload = function(){
+										$img.attr('src',this.src);
+									};
+									var image = new Image();									
+									image.onload = image.onerror = null;
+									image.onload = imageOnload;	// must come before image.src
+									image.src = $img.attr('src').replace(/\?.+/g,'?'+$img.attr('data-mouseover-image'));
+									return $content;
+								},
+				width		: 133,
+				height		: 265
+		});
+	}
+};le.uxd.namespace('le.uxd.ui');
+le.uxd.ui.hoverCard = function() {
+	var _baseHtml = '<div class="hc"> \
+						<div class="hct"> \
+							<b class="hcw"></b><b class="hcn"></b><b class="hce"></b> \
+						</div> \
+						<div class="hcm"> \
+							<b class="hcw"></b> \
+							<div class="hcc"></div> \
+							<b class="hce"></b> \
+						</div> \
+						<div class="hcb"> \
+							<b class="hcw"></b><b class="hcs"></b><b class="hce"></b> \
+						</div> \
+					</div>';			
+	var defaults = {
+		onFillStart: null,
+		onFillComplete: null,
+		skin: 'shadow',
+		skinSize: 'medium',
+		paddingSize: 'medium',
+		width: '100%',
+		height: '100%',
+		parentClass: ''
+	};
+	var _getViewportCoords = function(){
+		var st = $(document).scrollTop(),
+			sl = $(document).scrollLeft();
+		return {
+			x1: sl,
+			x2: $(window).width() + sl,
+			y1: st,
+			y2: $(window).height() + st
+		}
+	};
+	var _convert = function($hcSettings) {
+		var offSetSkinSize, offSetPaddingSize, paddingSizeName, skinSize = $hcSettings.skinSize,
+			paddingSize = $hcSettings.paddingSize; // converting skin size
+		if (skinSize == 'small') {
+			offSetSkinSize = 5;
+		}
+		if (skinSize == 'medium') {
+			offSetSkinSize = 10;
+		}
+		if (skinSize == 'large') {
+			offSetSkinSize = 20;
+		} // converting padding name and size
+		if (paddingSize == 'small') {
+			paddingSizeName = 'pas';
+			offSetPaddingSize = 5;
+		}
+
+		if (paddingSize == 'medium') {
+			paddingSizeName = 'pam';
+			offSetPaddingSize = 10;
+		}
+		if (paddingSize == 'large') {
+			paddingSizeName = 'pal';
+			offSetPaddingSize = 20;
+		}
+		return {
+			offSetSize: offSetSkinSize + offSetPaddingSize,
+			paddingSizeName: paddingSizeName
+		};
+	};
+	var _build = function() {
+		return $(_baseHtml);
+	};	
+	var _fill = function(content, $hoverCard, $hcSettings) {
+		var $hcContent = content;
+		if ($(content).length > 0) {
+			var $elm = $(content);
+			$hcContent = $('<div>').append($elm.clone()).html();
+		}
+		if ($hcSettings.onFillStart && typeof $hcSettings.onFillStart == 'function') {
+			$hcContent = $hcSettings.onFillStart($hcContent);
+		}
+		$hoverCard.find('.hcc').html($hcContent).end() 
+			.addClass('hc-' + $hcSettings.skin + '-' + $hcSettings.skinSize + '');
+		if ($hcSettings.onFillComplete && typeof $hcSettings.onFillComplete == 'function') {
+			$hoverCard = $hcSettings.onFillComplete($hoverCard);
+		}
+		return $hoverCard;
+	};
+	var _show = function(content, $hoverCard, $hcSettings) {
+		var $elm = content;
+		var hoverCardOptions = _convert($hcSettings);
+		var $hcPosition = $elm.offset();
+		var $elmWidth = $elm.width();
+		var $elmHeight = $elm.height();
+		var hcPositionOffsetWidth = ($hcSettings.width - $elmWidth) / 2;
+		var hcPositionOffsetHeight = ($hcSettings.height - $elmHeight) / 2;
+		var v = _getViewportCoords();		
+		var oCoords = {};
+
+		oCoords.x1 = $hcPosition.left - (hcPositionOffsetWidth) - hoverCardOptions.offSetSize;
+		oCoords.x2 = oCoords.x1 + $hcSettings.width + (hoverCardOptions.offSetSize * 2);
+		oCoords.y1 = $hcPosition.top - (hcPositionOffsetHeight) - hoverCardOptions.offSetSize;
+		oCoords.y2 = oCoords.y1 + $hcSettings.height + (hoverCardOptions.offSetSize * 2);
+		
+		oCoords.width = function(){
+			return this.x2-this.x1;
+		};
+		oCoords.height = function(){
+			return this.y2 - this.y1;
+		}
+		
+		var nCoords = $.extend(true,{},oCoords);
+		
+		if (oCoords.y1 < v.y1){
+			nCoords.y1 = v.y1;
+			nCoords.y2 = v.y1 + oCoords.height();
+		}
+		
+		if (oCoords.y2 > v.y2){
+			nCoords.y2 = v.y2 - (hoverCardOptions.offSetSize / 2);
+			nCoords.y1 = nCoords.y2 - oCoords.height();
+		}
+		
+		if (oCoords.x1 < v.x1){
+			nCoords.x1 = v.x1;
+			nCoords.x2 = v.x1 + oCoords.width();
+		}
+		
+		if (oCoords.x2 > v.x2){
+			nCoords.x2 = v.x2 - (hoverCardOptions.offSetSize / 2);
+			nCoords.x1 = nCoords.x2 - oCoords.width();
+		}
+
+		$hoverCard
+			.find('.hcc').addClass(hoverCardOptions.paddingSizeName + ' ' + $hcSettings.parentClass)
+			.end()
+			.css({
+			
+				"width": $elmWidth + (hoverCardOptions.offSetSize * 2),
+				"height": $elmHeight + (hoverCardOptions.offSetSize * 2),
+				"left": $hcPosition.left - hoverCardOptions.offSetSize,
+				"top": $hcPosition.top - hoverCardOptions.offSetSize,
+				"display": 'block'
+			});
+		
+		$('body').prepend($hoverCard);
+		
+		$hoverCard.animate({
+			width: nCoords.width(),
+			height: nCoords.height(),
+			left: nCoords.x1,
+			top: nCoords.y1
+		}, 100);
+		
+
+		$hoverCard.mouseleave(function(){	
+			setTimeout( function() {
+				_destroy($hoverCard);
+			}, 1 );
+		});
+			
+
+	};
+	var _destroy = function($hoverCard) {
+		$hoverCard.stop().remove();
+	};
+	var _open = function(content, options) {
+		var $hoverCard = _build();
+		var $hcSettings = $.extend({}, defaults, options);
+		_fill(content, $hoverCard, $hcSettings);
+		_show(content, $hoverCard, $hcSettings);
+		
+		// clean up
+		setTimeout(function(){
+			_destroy($hoverCard);
+		},10000);
+	};
+	return {
+		open: function(content, options) {
+			_open(content, options);
+		},
+		close: function() {
+			_destroy();
+		}
+	};
+}();
+le.uxd.namespace('le.uxd.ui');
+
+le.uxd.ui.promotion = {
+			getOfferDetailsUrl: function(){
+				var promoCookie = $.cookie("promoCookieKey");
+				var promoId = (promoCookie) ? promoCookie.split('_').slice(0,2).join("_") : "";
+				var offerDetailsUrl = (promoCookie) ? "/pp/OfferDetails_"+promoCookie.split("_")[1]+"_"+promoCookie.split("_")[0]+".html" : "";
+				this.offerDetailsUrl = offerDetailsUrl;
+				
+				return this.offerDetailsUrl;
+				
+			},
+			displayPromotion: function(options){
+				var defaults = {
+					showInFooter:true,
+					showInModal:false,
+					location: 'footer'
+				};
+				
+				var displayOptions = $.extend({}, defaults, options);
+
+				var offerDetailsUrl = this.getOfferDetailsUrl();
+				
+				if(offerDetailsUrl){
+					if(displayOptions.location == 'footer'){
+						le.uxd.ui.promotion._showInPermaFooter();
+					}
+					if(displayOptions.location == 'modal'){
+						le.uxd.ui.promotion._showInModal();
+					}
+				}else{
+					le.uxd.ui.promotion.clearPromotion();
+				}
+			},
+			clearPromotion: function(){
+					
+					var $pfPromo = $('#pf-promo');
+					var promoTitle = $('.promo-title', $pfPromo);
+					var promoPanel = $('.promo-panel p', $pfPromo);
+					
+					$pfPromo.find('pf-levee').css('display','none');
+					promoTitle.text('');
+					promoPanel.text('');
+					
+				
+			},
+			_showInPermaFooter: function(){
+
+				var offerDetailsUrl = this.getOfferDetailsUrl();
+
+				var populatePromoInfo = function(ajaxResponse){	
+									
+					var $ajaxResponse = $(ajaxResponse);
+					var ajaxPromoTitle = $ajaxResponse.find('.txtHeader').text();
+					var ajaxPromoDescription = $ajaxResponse.find('#detailCopy table tr td').text();
+					var $pfPromo = $('#pf-promo');
+					var promoTitle = $('.promo-title', $pfPromo);
+					var promoPanel = $('.promo-panel p', $pfPromo);
+					promoTitle.html(ajaxPromoTitle);
+					promoPanel.html(ajaxPromoDescription);
+
+					//we need to get the height of the promo description copy
+					$pfPromo.find('.oo-water').css('display','block').end().css('display','block');
+					
+					
+					if(promoTitle.width() >= 400){
+						promoTitle.append('<span> &#8230; view details<span>');
+					}
+
+					if($pfPromo.find('.oo-water').height()>120){
+						
+						$pfPromo.find('.promo-panel').css({'height':'100px'});
+						
+						$pfPromo.find('a.more').click(function(){
+							$(this).remove();
+							$pfPromo.find('.promo-panel').css('height','100%');
+						});
+						
+					}else{
+						$pfPromo.find('a.more').remove();
+					}
+
+					$pfPromo.find('.pf-levee').leLevee();
+				};
+				
+				$.when(
+					$.get(offerDetailsUrl)
+				).done(
+					populatePromoInfo
+
+				);
+			
+			},
+			_showInModal: function(){
+				var applyPromoStatus = ""+($.query.get("applyPromo")+"").match(/^\w+$/)+"";
+				
+				var offerDetailsUrl = this.getOfferDetailsUrl();
+				
+				var populatePromoInfo = function(ajaxResponse){	
+									
+					var $ajaxResponse = $(ajaxResponse);
+					var ajaxPromoTitle = $ajaxResponse.find('.txtHeader').text();
+					var ajaxPromoDescription = $ajaxResponse.find('#detailCopy table tr td').text();
+						
+						var overLayHtml = null;
+						
+						switch (applyPromoStatus) {
+							case "0":
+							case "7":
+								overLayHtml = '<h1 class="promo-title">'+ajaxPromoTitle+'</h1>'+
+									'<p><a href="javascript:LE_popup(\''+offerDetailsUrl+'\');">details</a></p>'+
+									'<span class="oo-fe oo-btn btnp"><span class="first-child"><a href="#" class="close">Shop</a></span></span>';
+								break;
+							case "emailPromoOff":
+								overLayHtml = '<p><img src="/promo/errors/OL_emailPromoOff.jpg"></p>'+
+									'<span class="oo-fe oo-btn btnp"><span class="first-child"><a href="#" class="close">continue</a></span></span>';
+								break;
+							case "promoOff":
+								overLayHtml = '<p><img src="/promo/errors/OL_promoOff.jpg"></p>'+
+									'<span class="oo-fe oo-btn btnp"><span class="first-child"><a href="#" class="close">continue</a></span></span>';
+								break;
+							case "51":
+								overLayHtml = '<p><img src="/promo/errors/OL_maxUse.jpg"></p>'+
+									'<span class="oo-fe oo-btn btnp"><span class="first-child"><a href="#" class="close">continue</a></span></span>';
+								break;
+							default:
+								overLayHtml = '<p><img src="/promo/errors/OL_default_message.jpg"></p>'+
+									'<span class="oo-fe oo-btn btnp"><span class="first-child"><a href="#" class="close">continue</a></span></span>';
+								break;
+						}
+					
+					overlayAlert(overLayHtml);
+
+				};
+				
+				$.when(
+					$.get(offerDetailsUrl)
+				).done(
+					populatePromoInfo
+				);
+
+			}
+
+
+};(function($){	
+	$.leLevee = function(el, options, parameter){		
+		// To avoid scope issues, use 'base' instead of 'this'
+		// to reference this class from internal events and functions.
+		var base = this;
+		
+		// Access to jQuery and DOM versions of element
+		base.$el = $(el);
+		base.el = el;
+		
+		// Add a reverse reference to the DOM object
+		base.$el.data("le.udx.plugins.Levee", base);
+		
+		base.init = function(){
+			if( typeof( parameter ) === "undefined" || parameter === null ) parameter = "value";
+			
+			base.$el.data('levee_set','true');
+			
+			base.parameter = parameter;
+			
+			base.options = $.extend({},$.leLevee.defaultOptions, options);
+			
+			
+			base.$damControl = base.$el.find('a.oo-dam');		//set the controlling class for the dam
+			base.$floodWater = base.$el.find('.oo-water');		//sets the object for the water
+			base.animate = base.$el.attr('data-animate');
+	
+			base.addEvent();
+		};
+
+		// Sample Function, Uncomment to use
+		// base.functionName = function(paramaters){
+		// 
+		// };
+		
+		base.isVisible = function(){
+		// Put your initialization code here
+			return (base.$floodWater.is(':visible')) ? 1 : 0;
+		};
+		
+		base.addEvent = function(){
+			base.$floodWater.css({'display':'none'});
+
+			base.$damControl.click(function(){
+					base.$el.addClass('oo-'+base.animate);
+					if(!base.isVisible()){
+						base.$floodWater.stop().animate({			//animate the floodwater
+							'height': 'toggle'
+						}, 500);	
+					}
+					else{
+						base.$floodWater.animate({			//animate the floodwater
+							'height': 'toggle'
+						}, 500);
+					}
+			});
+		};
+		
+		// Run initializer
+		base.init();
+	};
+	
+	$.leLevee.defaultOptions = {
+		option: "value"
+	};
+	
+	$.fn.leLevee = function(options, parameter){
+		return this.each(function(){
+			if(!$(this).data('levee_set')){
+				(new $.leLevee(this, options, parameter));
+			}
+		});
+	};
+	
+})(jQuery);/*
+	$('#scroll_A').leElementScroller({
+		'next': '#wmn_next',
+		'prev': '#wmn_prev',
+		'positions': ['0px','-808px','-1076px'],
+		'speed': 400,
+		'curPos': 0,
+		'onShowComplete': function($el,curPos){},
+		'position-0-onShowComplete': function($el,curPos){},
+		'position-1-onShowComplete': function($el,curPos){},
+		'position-2-onShowComplete': function($el,curPos){}
+	});	
+	
+	// to move to a position automatically, after the plugin has been initiated on the element
+	$('#scroll_A').leElementScroller('go',2);
+*/
+(function($){
+    $.leElementScroller = function(el, options, parameter){
+        var base = this;
+        base.$el = $(el);
+        base.el = el;
+		
+		if (base.$el.data("leElementScroller") != undefined){
+			return;
+		}
+		
+        base.$el.data("leElementScroller", base);
+ 
+        base.init = function(){
+            if( typeof( parameter ) === "undefined" || parameter === null ) parameter = "value";
+            base.parameter = parameter;
+            var opts = base.options = $.extend({},$.leElementScroller.defaultOptions, options);
+			base.$next_control = base.$el.find(opts.next);
+			base.$prev_control = base.$el.find(opts.prev);
+			base.$scrollingDiv = base.$el.find('.scroll');
+			base.positions = opts.positions;
+			base.curPos = opts.curPos || 0;
+
+			base.updateControls();
+			base.$next_control.bind('click',{direction:1},base.move);
+			base.$prev_control.bind('click',{direction:-1},base.move);
+			base.move();
+        };        
+        base.move = function(pkg){
+			var dir = (pkg && pkg.data) ? pkg.data.direction : 0;
+			if (dir > 0) base.curPos++;
+			if (dir < 0) base.curPos--;
+			if (typeof pkg == 'number') base.curPos = pkg;
+			
+			base.checkPosition();
+			base.animate()
+			base.updateControls();
+		};
+		base.checkPosition = function(){
+			if  (base.curPos < 0) base.curPos = 0;
+			if (base.curPos > base.positions.length-1) base.curPos = base.positions.length-1;
+		};
+		base.animate = function(){
+		
+			base.$scrollingDiv.stop().animate({
+				left: base.positions[base.curPos]
+			},base.options.speed, function(){
+				
+				if (base.options['onShowComplete'] && typeof base.options['onShowComplete'] == 'function'){
+					base.options['onShowComplete'](base.$el, base.curPos);
+				} 
+				
+				if (base.options['position-'+base.curPos+'-onShowComplete'] && typeof base.options['position-'+base.curPos+'-onShowComplete'] == 'function'){
+					base.options['position-'+base.curPos+'-onShowComplete'](base.$el, base.curPos);
+				} 
+			})
+		};
+		base.updateControls = function(){
+			base.$next_control[(base.curPos == base.positions.length-1) ? 'fadeOut' : 'fadeIn']();
+			base.$prev_control[(base.curPos == 0) ? 'fadeOut' : 'fadeIn']();
+		};
+        base.init();
+    };
+ 
+    $.leElementScroller.defaultOptions = {
+		next_control: null,
+		prev_control: null,
+		curPos: 0,
+		positions: [],
+		speed: 700
+    };
+	
+	$.leElementScroller.methods = {
+		go: function(pos){
+			var data = $(this).data('leElementScroller');
+			data.move(pos);
+		}
+	};
+ 
+    $.fn.leElementScroller = function(options, parameter){
+		var args = arguments;
+        return this.each(function(){
+			// direct method calls
+			if ($.leElementScroller.methods[options]){
+				return $.leElementScroller.methods[options].apply(this, Array.prototype.slice.call( args, 1 ));
+			}
+			
+			// regular initialization
+			if (typeof options == 'object'){
+				(new $.leElementScroller(this,options, parameter));
+			}
+        });
+    };
+ 
+})(jQuery);
+le.uxd.namespace('le.uxd.ui');
+
+le.uxd.ui.tabbedSpreadManager = function(){
+	return{
+		init: function(options){
+			$('.tabbed-spreads').each(function(){
+			
+				new le.uxd.ui.tabbedSpreadConstructor($(this), options);
+			
+			});	
+		}
+	}
+}();
+
+le.uxd.ui.tabbedSpreadConstructor = function($elm, options){
+		var $tabbedContentDom = $elm;
+        var eventToBeBound = options && options.event ? options.event : 'hover';
+        if(options){
+        	$initialSpread = $tabbedContentDom.find('.spreads li.chosen');       
+	        initialSpreadIndex = $initialSpread.index();
+	        initialSpreadIndexAdjusted = initialSpreadIndex+1
+	        
+	        if (options['tab-'+initialSpreadIndexAdjusted+'-onShowComplete'] && typeof options['tab-'+initialSpreadIndexAdjusted+'-onShowComplete'] == 'function'){
+				options['tab-'+initialSpreadIndexAdjusted+'-onShowComplete']($initialSpread);
+			}
+        }
+        
+        
+        $tabbedContentDom.find('.tabs li')[eventToBeBound](function(){
+			var $this = $(this),
+				$tabLi = $this,
+				tabIndex = $tabLi.index();
+				tabIndexAdjusted = tabIndex+1 //simplifying tabs, spread and index match
+				$prevSpread = $tabbedContentDom.find('.spreads li.chosen'),
+				prevSpreadIndexAdjusted = $prevSpread.index()+1,
+				$curSpread = $tabbedContentDom.find('.spreads > li').eq(tabIndex),
+				$arrow = $tabbedContentDom.find('#tab-arrow')
+					
+				
+            if($tabLi.hasClass('chosen') || $curSpread.is(':empty')) {
+				return false;
+			}
+			
+
+			/* animate previous spread */	
+			$prevSpread
+				.stop()
+				.animate({
+					 opacity: 0
+  				}, 250, function(){
+	  				$tabbedContentDom.find('.spreads > li').removeClass('chosen').css({'opacity':0, "z-index":1}); 
+  					if (options && options['tab-'+prevSpreadIndexAdjusted+'-onHideComplete'] && typeof options['tab-'+prevSpreadIndexAdjusted+'-onHideComplete'] == 'function'){
+						options['tab-'+prevSpreadIndexAdjusted+'-onHideComplete']($prevSpread);
+					}
+  				});					
+			
+			/* stop and animate new spread */	
+			$curSpread
+			.stop()
+			.css({'opacity':0})
+				.animate({
+					 opacity: 1
+  				}, 250, function(){
+  					$curSpread.addClass('chosen').css({'opacity':1, "z-index":2}); 
+  															
+					if (options && options['tab-'+tabIndexAdjusted+'-onShowComplete'] && typeof options['tab-'+tabIndexAdjusted+'-onShowComplete'] == 'function'){
+						options['tab-'+tabIndexAdjusted+'-onShowComplete']($curSpread);
+					}
+  				});
+
+  				
+			// reset all tabs items
+			$tabbedContentDom.find('.tabs li').removeClass('chosen');
+			
+			// set active item class
+			$tabLi.addClass('chosen');
+			
+			
+        }, function(){
+            return false;
+        });
+};(function($){	
+	$.leTabbedSpreads = function(el, options, parameter){
+		var base = this;
+		base.$el = $(el);
+		base.el = el;
+		
+		// if the plugin has already been initiated, no need to re-initiate
+		if (base.$el.data("leTabbedSpreads") != undefined){
+			return;
+		}
+		
+		base.$el.data("leTabbedSpreads", base);
+		
+		
+		base.init = function(){
+			if( typeof( parameter ) === "undefined" || parameter === null ) parameter = "value";
+			base.parameter = parameter;
+			var opts = base.options = $.extend({},$.leTabbedSpreads.defaultOptions, options);
+
+			// reduce the name for clarity
+			base.$tabs = base.$el.find('.tabs li');
+			base.$spreads = base.$el.find('.spreads li');
+
+			// we really just care about the index
+			base.curPos = base.$el.find('.tabs li.chosen').index();
+			base.prevPos = -1;
+				
+		
+			// we can use a more generic name, we're just firing an event
+			// the method already runs a check to validate the function so we can just call it directly
+			base.fireOnShowComplete(base.curPos);
+			
+			base.$tabs[base.options.event](function(){
+				// we need a level of indirection here in case we need to swap out the animate method
+				// it will also allow us wrap up everything we need to move the spread
+				base.move($(this));
+			},function(){
+				return;
+			});
+			
+		};
+		
+		base.move = function(arg){
+			var $elm;
+			
+			if (arg && arg.length) {
+				$elm = arg;
+			}
+			
+			// check to see if an integer is passed in, we need to also accept integers
+			if (typeof arg == 'number'){
+				$elm = base.$tabs.eq(arg);
+			}
+		
+			// we can now place our check earlier in the process
+			if($elm.hasClass('chosen') || $elm.hasClass('dead')){
+				return false;
+			}
+			base.setStatus($elm.index());
+			base.animate();
+		};
+		
+		// changing name to more generic
+		base.fireOnShowComplete = function(pos){
+			if (base.options['onShowComplete'] && typeof base.options['onShowComplete'] == 'function'){
+				var onShowComplete  = base.options['onShowComplete'];
+			}
+			
+			if (base.options['tab-'+pos+'-onShowComplete'] && typeof base.options['tab-'+pos+'-onShowComplete'] == 'function'){
+				var onShowComplete  = base.options['tab-'+pos+'-onShowComplete'];
+			}
+			onShowComplete(base.$spreads.eq(pos));						
+		};
+		
+		// changing name to more generic
+		base.fireOnHideComplete = function(pos){
+			// set a variable for readability and performance
+			var onHideComplete = base.options['tab-'+pos+'-onHideComplete'] 
+			if (onHideComplete && typeof onHideComplete == 'function'){
+				// we can do a quick lookup instead of carrying around the property
+				onHideComplete(base.$spreads.eq(pos));
+			}
+		};
+		
+		// set the status here
+		base.setStatus = function(pos){
+			// the previous becomes the current
+			base.prevPos = base.curPos;
+			
+			// the current is passed in
+			base.curPos = pos;
+			
+			// now we can animate without any dependencies
+			base.animate();
+		};
+		
+		// the animate method can just do the animation
+		base.animate = function(){
+			// lets give specific names for clarity
+			base.hidePrevious();
+			base.showCurrent();
+		};
+		
+
+		base.hidePrevious = function(){
+			
+			// we can now do a simple lookup and save setting a property
+			base.$spreads.eq(base.prevPos)
+				.stop()
+				.animate({
+					 opacity: 0
+				}, 250, function(){
+					base.$tabs.removeClass('chosen');
+					base.$spreads.removeClass('chosen').css({'opacity':0, "z-index":1}); 
+					base.fireOnHideComplete(base.prevPos);
+				});
+			
+		};
+
+
+		base.showCurrent = function(){
+
+			// we can now do a simple lookup and save setting a property
+			base.$spreads.eq(base.curPos)
+				.stop()
+				.css({'opacity':0})
+					.animate({
+						 opacity: 1
+					}, 250, function(){
+						base.$tabs.eq(base.curPos).addClass('chosen');
+						base.$spreads.eq(base.curPos).addClass('chosen').css({'opacity':1, "z-index":2}); 
+						base.fireOnShowComplete(base.curPos);
+					});
+
+		};		
+
+
+		// Run initializer
+		base.init();
+	};
+	
+	$.leTabbedSpreads.defaultOptions = {
+		event:	"hover",
+		curPos: 0
+	};
+	
+	$.leTabbedSpreads.methods = {
+		// expose a method that can be called programmatically
+		// $('.tabbed-spreads').leTabbedSpreads('show',2);
+		show: function(pos){
+			var data = $(this).data('leTabbedSpreads');
+			data.move(pos);
+		}
+	};
+	
+	$.fn.leTabbedSpreads = function(options, parameter){
+		var args = arguments;
+        return this.each(function(){
+			// direct method calls from outside the plugin
+			if ($.leTabbedSpreads.methods[options]){
+				return $.leTabbedSpreads.methods[options].apply(this, Array.prototype.slice.call( args, 1 ));
+			}
+			
+			// regular initialization
+			if (typeof options == 'object'){
+				(new $.leTabbedSpreads(this,options, parameter));
+			}
+        });
+	};
+	
+})(jQuery);
+var addPageSizeToURL = function(href) {
+	var lhref = href;
+	var setpagecookievar = $.cookie("setPageSize");
+
+
+	// set the page size on the url
+	if (lhref.indexOf("setPageSize=") == -1 && lhref.indexOf("pageSize=") == -1) {
+		if ($.cookie("kiosk") != null) setpagecookievar  = 12;
+		if (setpagecookievar != undefined && 
+				setpagecookievar != null && setpagecookievar != "" &&
+				setpagecookievar > 0) {
+			lhref = lhref + "&pageSize=" + setpagecookievar;
+		}
+	}
+	else {
+		if (lhref.indexOf("setPageSize=") == -1 && lhref.indexOf("pageSize=") > 0) {
+			if ($.cookie("kiosk") != null) setpagecookievar  = 12;
+			if (setpagecookievar != undefined && 
+					setpagecookievar != null && setpagecookievar != "" &&
+					setpagecookievar > 0) {                                      
+				lhref = lhref.replace(/pageSize=\d+/g,"pageSize=" + setpagecookievar);
+			}
+		}
+	}
+	return lhref;
+}
+var addSortToURL = function(href) {
+	var lhref = href;
+	var setSortCookie = $.cookie("setSort");
+
+	// set the sort on the url
+	if (lhref.indexOf("setSort=") == -1 && lhref.indexOf("sort=") == -1) {
+		if (setSortCookie != undefined && setSortCookie != null && setSortCookie != "") {
+			lhref = lhref + "&sort=" + encodeURIComponent(setSortCookie).replace(/%20/g, '+');
+		}
+	}
+	else {
+		if (lhref.indexOf("setSort=") == -1 && lhref.indexOf("sort=") > 0) {
+			if (setSortCookie != undefined && setSortCookie != null && setSortCookie != "") {                                   
+				lhref = lhref.replace(/sort=[^&]+/g,"sort=" + encodeURIComponent(setSortCookie).replace(/%20/g, '+'));
+			}
+		}
+	}
+	return lhref;
+}
+
+$("a[href*='/ix/']").live("click",function(){
+	this.href = addPageSizeToURL(this.href);
+	this.href = addSortToURL(this.href);
+});
+

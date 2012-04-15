@@ -1,0 +1,1439 @@
+
+var cnbc_mrq_numElements=5;var cnbc_mrq_expiration_hours=24;var cnbc_mrq_baseCookieName='cnbc_most_recent_quotes';var cnbc_mrq_baseDivId='cnbc_most_recent_symbol_';var cnbc_mrq_symbols_getDataQueue;var cnbc_watchlist_baseCookieName='cnbc_watchlist_quotes';var cnbc_watchlist_baseDivId='cnbc_watchlist_symbol_';var cnbc_watchlist_rem_baseDivId="cnbc_watchlist_symbol_remove_";var cnbc_watchlist_detailedquotepage;var cnbc_mrq_detailedquotepage;var cnbc_watchlist_cookie_exp_hours=24;var cnbc_unregistered_max;var cnbc_default_unregistered_max=10;var cnbc_watchlist_alert_flag=true;var cnbc_master_service_realtime_symbols;var cnbc_master_service_notrealtime_symbols;var cnbc_master_service_update_interval;var cnbc_master_service_ar;var cnbc_master_static_rt_script_id='cnbc_master_service_static_rt_script';var cnbc_master_static_nrt_script_id='cnbc_master_service_static_nrt_script';var cnbc_master_rt_toggle=true;var cnbc_bugbar_symbols;var cnbc_bugbar_realtime='0';var cnbc_bugbar_service_ar;var cnbc_bugbar_service_numElements;var cnbc_bugbar_service_update_interval;var cnbc_bugbar_service_url;var cnbc_bugbar_script_id='cnbc_bugbar_service_script';var cnbc_bugbar_service_ar;var cnbc_mrq_update_interval;var cnbc_wsod_applet_symbols;var cnbc_wsod_applet_nonrt_key='nonrealtime';var cnbc_wsod_applet_mrq_key=0;var cnbc_wsod_applet_watchlist_key=1;var cnbc_wsod_poll_batch;var cnbc_wsod_stop_poll_batch;var cnbc_wsod_applet_divid='cnbc_wsod_master_applet';var cnbc_wsod_applet_script_divid='cnbc_wsod_master_applet_sript';var cnbc_wsod_applet_rt_key='realtime';var cnbc_wsod_datapopulation_batch;var cnbc_wsod_applet_server_archive=cnbc_AppsURL+'streamer/inlineStreamer.jar';var cnbc_wsod_applet_changekey='changekey';var cnbc_wsod_applet_poll;var cnbc_switch_cookie='cnbc_on_switch_cookie';var cnbc_wsod_ferc_mrq_ar;var cnbc_mrq_wlmrq_service_url;var cnbc_switch_activated=false;var cnbc_watchlistapp_base_url='';var cnbc_wl_wlmrq_service_url;var cnbc_watchlist_alllists;var cnbc_watchlist_alllist_symbols;var cnbc_watchlist_defaultlist=null;var cnbc_watchlist_currentList;var cnbc_watchlist_app_baseurl="http://watchlist.cnbc.com/";var cnbc_watchlist_realtime='0';var cnbc_mrq_realtime='0';var cnbc_mrq_id;var cnbc_watchlist_id;var cnbc_watchlist_firstLoad=true;var cnbc_chart_timeouts=new Array();var cnbc_chart_scriptblock='cnbc_chart_script';var cnbc_login_cookie='CASTOKEN';var cnbc_login_cookie2='ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE';var cnbc_watchlist_cms_url;var cnbc_watchlist_temp_divs;var cnbc_watchlist_videoshare_url;var cnbc_watchlist_alerts_poll;var cnbc_mrq_prefetch;var cnbc_watchlist_symbollookup;var cnbc_master_service_interval_time="30";var cnbc_wlmrq_service_interval_time='30';var cnbc_wl_alerts_interval_time='30';var cnbc_bugbar_service_interval_time='30';var cnbc_srchbox_target='all';var cnbc_bugbar_initflag=false;var cnbc_flashproxy_init_flag=false;var cnbc_flashproxy_reqqueue=new Array();var cnbc_stream_reqqueue=new Array();var cnbc_stream_Comp_Global=new Array();var cnbc_stream_intervalid=0;var cnbc_stream_reqqueue_update=new Array();var cnbc_stream_reqqueue_length=0;var cnbc_chart_tab_value="";var cnbc_stream_flash_init_chg,cnbc_stream_flash_init_chgpct,cnbc_stream_flash_init_chgarrow,cnbc_stream_flash_init_chgarrowbb,cnbc_stream_flash_init_dynaco,cnbc_stream_flash_init_unch,cnbc_stream_flash_init_vol,cnbc_stream_flash_init_flash=false;var cnbc_most_Recent_Q_Display_Mode_checker="Original";var cnbc_Watchlist_Display_Mode_checker="Original";if(typeof cnbc_newMediaServer_img=="undefined")
+{cnbc_newMediaServer_img="http://media.cnbc.com/i/CNBC/CNBC_Images";}
+var cnbc_image_bugbar_uparrow=cnbc_newMediaServer_img+'/componentbacks/bug_bar_up.gif';var cnbc_image_bugbar_downarrow=cnbc_newMediaServer_img+'/componentbacks/bug_bar_down.gif';var cnbc_image_watchlist_uparrow=cnbc_newMediaServer_img+'/componentbacks/watchlist_up.gif';var cnbc_image_watchlist_downarrow=cnbc_newMediaServer_img+'/componentbacks/watchlist_down.gif';var cnbc_image_uparrow=cnbc_newMediaServer_img+'/componentbacks/bug_bar_up.gif';var cnbc_image_downarrow=cnbc_newMediaServer_img+'/componentbacks/bug_bar_down.gif';var cnbc_class_unchanged='WSODQ_UNCHHIDE';var cnbc_class_changeshow='WSODQ_CHGSHOW';var cnbc_class_greenflash='WSODQ_GREENFLASH';var cnbc_class_redflash='WSODQ_REDFLASH';var cnbc_class_noflash='WSODQ_NOFLASH';var cnbc_bugbar_quoteserverbridge='cnbc_bugbar_quoteserverbridge';var cnbc_quoteserverbridge_initflag=false;var cnbc_quoteserverbridge_init_funct;var oldDomain=document.domain;var cnbc_quoteServer_url;if(typeof cnbc_global_quoteServer!="undefined")
+{if(cnbc_global_quoteServer!='')
+{cnbc_quoteServer_url=cnbc_global_quoteServer;}
+else
+{cnbc_quoteServer_url="http://quote.cnbc.com";}}
+else
+{cnbc_quoteServer_url="http://quote.cnbc.com";}
+var cnbc_quoteServerBridge_url=cnbc_quoteServer_url+'/quote-iframe.html';var cnbc_quoteService_url=cnbc_quoteServer_url+cnbc_QuoteUrlSuffix;var cnbc_fvquoteService_url=cnbc_quoteServer_url+cnbc_QuoteUrlFVSuffix;var isOpera=(navigator.userAgent.indexOf('Opera')!=-1);var isIE=((navigator.appVersion.indexOf("MSIE")!=-1)&&!isOpera);var isWindows=(navigator.platform.indexOf('Win')!=-1);var isMac=(navigator.platform.indexOf('Mac')!=-1||navigator.platform.indexOf('PowerPC')!=-1);if(!isIE){}
+var streamPoolCheckerInterval=120;var streamPoolChecker=-1;var cnbcStreamQSTimeStore="";function cnbc_createCookie(name,value,hours)
+{if(hours)
+{var date=new Date();date.setTime(date.getTime()+(hours*60*60*1000));var expires="; expires="+date.toGMTString();}
+else var expires="";document.cookie=name+"="+value+expires+";domain=cnbc.com;path=/";}
+function cnbc_readCookie(name)
+{var nameEQ=name+"=";var ca=document.cookie.split(';');for(var i=0;i<ca.length;i++)
+{var c=ca[i];while(c.charAt(0)==' ')c=c.substring(1,c.length);if(c.indexOf(nameEQ)==0)return c.substring(nameEQ.length,c.length);}
+var unescaped=unescape(document.cookie);var ca2=unescaped.split(';');for(var i=0;i<ca2.length;i++)
+{var c=ca2[i];while(c.charAt(0)==' ')c=c.substring(1,c.length);if(c.indexOf(nameEQ)==0)return c.substring(nameEQ.length,c.length);}
+return null;}
+function cnbc_eraseCookie(name,path,domain){if(cnbc_readCookie(name))document.cookie=name+"="+
+((path)?";path="+path:"")+
+((domain)?";domain="+domain:"")+";expires=Thu, 01-Jan-1970 00:00:01 GMT";}
+function cnbc_mrq_cookieRead()
+{var raw_cookie=cnbc_readCookie(cnbc_mrq_baseCookieName);var pattern=/\s*[|]+\s*/;var symbols_ws;if(!raw_cookie)return null;if(raw_cookie.indexOf("%2C")!=-1)
+{pattern="%2C";symbols_ws=raw_cookie.split(pattern);}
+else
+{symbols_ws=raw_cookie.split(pattern);}
+var symbols=new Array();var offset=0;for(var i=0;i<symbols_ws.length;i++)
+{if(symbols_ws[i]!='')
+{symbols[offset]=unescape(symbols_ws[i]);offset++;}}
+return symbols;}
+function cnbc_mrq_writeCookie(ar)
+{var raw_string=ar.join("|");cnbc_createCookie(cnbc_mrq_baseCookieName,raw_string,cnbc_mrq_expiration_hours);}
+function cnbc_mrq_saveSymbol(symbol,symbolList,maxElements)
+{}
+function cnbc_mrq_pushSymbol(symbol,last,change,changepct)
+{var symbols=cnbc_mrq_cookieRead();if(!symbols)symbols=new Array();if(cnbc_arrayContains(symbols,symbol))
+{return;}
+if(symbols.length>=cnbc_mrq_numElements)
+{var MaxLength=symbols.length-cnbc_mrq_numElements;for(var i=0;i<MaxLength;i++)
+{symbols.pop();}}
+var new_symbols=new Array();new_symbols.push(symbol);for(var i=0;i<symbols.length;i++)
+{new_symbols.push(symbols[i]);}
+cnbc_mrq_writeCookie(new_symbols);if(document.getElementById('cnbc_mrq_data'))
+{cnbc_mrq_addNewRow(0,symbol,false);cnbc_mrq_populatedata(escape(symbol),last,change,changepct);if(cnbc_mrq_realtime=='1')
+{realtime=true;}
+else
+{realtime=false}
+cnbc_applet_pushSymbol(symbol,realtime,cnbc_wsod_applet_mrq_key);}
+else
+{if(!cnbc_mrq_symbols_getDataQueue)
+{cnbc_mrq_symbols_getDataQueue=new Array();}
+cnbc_mrq_symbols_getDataQueue.push(symbol);}}
+function cnbc_arrayContains(ar,str)
+{if(!ar)return false;var myarray=ar;for(var i=0;i<myarray.length;i++)
+{if(str.toUpperCase()==myarray[i].toUpperCase())return true;}
+return false;}
+function cnbc_mrq_draw(ar,maxElements)
+{var mrq_cell_1;var mrq_cell_1_end;var mrq_cell_2;var mrq_cell_2_end;var mrq_cell_3;var mrq_cell_3_end;var mrq_cell_4;var mrq_cell_4_end;var mrq_cell_5;var mrq_cell_5_end;var symbols=ar.split("|");var new_symbols=new Array();if(symbols==null)
+{cnbc_mrq_show_avaliable_switch(false);cnbc_clearTable('cnbc_mrq_data');if(cnbc_most_Recent_Q_Display_Mode_checker=='Refresh')
+{}
+return;}
+if(symbols!=null)
+{if(symbols.length>=maxElements)
+{var MaxLength=symbols.length-maxElements;for(var i=0;i<MaxLength;i++)
+{symbols.pop();}}}
+cnbc_mrq_writeCookie(symbols);var div_class_begin;var div_class_close;var numElements=symbols.length;var mrqTable=document.getElementById('cnbc_mrq_data');if(!mrqTable)
+{return;}
+if(cnbc_most_Recent_Q_Display_Mode_checker=='Original'|cnbc_most_Recent_Q_Display_Mode_checker==''){document.getElementById('cnbc_mrq_data').border="0px";document.getElementById('cnbc_mrq_data').cellPadding="0px";document.getElementById('cnbc_mrq_data').cellSpacing="0px";}
+var row;var cell;cnbc_clearTable('cnbc_mrq_data');for(var i=0;i<numElements;i++)
+{cnbc_mrq_addNewRow(i,symbols[i],false);}}
+function cnbc_mrq_processGetDataQueue()
+{if(!cnbc_mrq_symbols_getDataQueue)return;while(cnbc_mrq_symbols_getDataQueue.length>0)
+{cnbc_mrq_singleSymbol_update(cnbc_mrq_symbols_getDataQueue.pop());}
+cnbc_mrq_symbols_getDataQueue=null;}
+function cnbc_mrq_addNewRow(pos,symbol,filldata)
+{var mrqTable=document.getElementById('cnbc_mrq_data');var row;var cell;var div_class_begin;var div_class_close;var wsodqmrq_id='WSODQ_'+escape(symbol.toUpperCase())+'_';var mrqBaseId='_'+mrqBaseIdStore;if(cnbc_most_Recent_Q_Display_Mode_checker=='Original'|cnbc_most_Recent_Q_Display_Mode_checker==''){var mrq_cell_1='<div class="mrq_sym_cell" align="left" id="'+wsodqmrq_id+'SYMBOL" ><a style="color: #365582;" onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#365582\'" href="'+cnbc_mrq_detailedquotepage;var mrq_cell_1_end='</a></div>';var mrq_cell_2='<div class="mrq_last_cell" align="left"><span id="'+wsodqmrq_id+'LAST'+mrqBaseId+'">Loading...';var mrq_cell_2_end='</span></div>';var mrq_cell_3='<div class="mrq_img_cell" align="center"><span id="'+wsodqmrq_id+'CHANGEARROW'+mrqBaseId+'">';var mrq_cell_3_end='</span></div>';var mrq_cell_4='<div class="mrq_chg_cell" align="right"><span id="'+wsodqmrq_id+'CHANGE'+mrqBaseId+'">';var mrq_cell_4_end='</span></div>';var mrq_cell_5='<div class="mrq_perchg_cell" align="right"><span id="'+wsodqmrq_id+'CHANGEPCT'+mrqBaseId+'">';var mrq_cell_5_end='</span></div>';var mrqTable=document.getElementById('cnbc_mrq_data');div_class_begin='<div id="'+wsodqmrq_id+'CONTAINER'+mrqBaseId+'" class="cnbc_mrq_div" onmouseover="mrq_mouseOver(this)" onmouseout="mrq_mouseOut(this)">';}
+else if(cnbc_most_Recent_Q_Display_Mode_checker=='Refresh'){var mrq_cell_1='<div class="fL h23 bold_b" align="left" id="'+wsodqmrq_id+'SYMBOL'+mrqBaseId+'" style="width: 25%;"><div class="padL10"><a style="color: #365582; text-decoration: none;" onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#365582\'" href="'+cnbc_mrq_detailedquotepage;var mrq_cell_1_end='</a></div></div>';var mrq_cell_2='<div class="fL h23" style="width: 18%;" align="center"><div class="h23"><div class="fL" style="padding-left: 14px; padding-top: 6px;"><span id="'+wsodqmrq_id+'GUESTALERT'+mrqBaseId+'"></span> </div><div class="fR padR" style="padding-top: 8px;"><a id="'+wsodqmrq_id+'VIDEOALERTLINK'+mrqBaseId+'"><span id="'+wsodqmrq_id+'VIDEOALERT'+mrqBaseId+'"></span>';var mrq_cell_2_end='</a></div></div></div>';var mrq_cell_3='<div class="fL h23" style="width: 26%;" align="right"><div class="h23 padR"><div class="h23 blac"><span id="'+wsodqmrq_id+'LAST'+mrqBaseId+'">Loading...</span>';var mrq_cell_3_end='</div></div></div>';var mrq_cell_4='<div class="fL h23" align="center" style="width: 10%;"><div class="mT5"><span id="'+wsodqmrq_id+'CHANGEARROW'+mrqBaseId+'"></span></div>';var mrq_cell_4_end='</div>';var mrq_cell_5='<div class="fL h23"align="left"><div class="h23 padL10 blac"><div class="h23"><span id="'+wsodqmrq_id+'CHANGEPCT'+mrqBaseId+'"></span>';var mrq_cell_5_end='</div></div></div>';var mrqTable=document.getElementById('cnbc_mrq_data');div_class_begin='<div id="'+wsodqmrq_id+'CONTAINER'+mrqBaseId+'" class="cnbc_wl_mrq_div bluefont cFont cf11 h23 lh21" onmouseover="mrq_mouseOver(this)" onmouseout="mrq_mouseOut(this)" style="line-height: 21px;">';}
+div_class_close='</div>';row=mrqTable.insertRow(pos);cell=row.insertCell(row.cells.length);cell.innerHTML=div_class_begin+mrq_cell_1+escape(symbol)+'\">'+symbol+mrq_cell_1_end+mrq_cell_2+mrq_cell_2_end+mrq_cell_3+mrq_cell_3_end+mrq_cell_4+mrq_cell_4_end+mrq_cell_5+mrq_cell_5_end+div_class_close;if(filldata==true)
+{cnbc_mrq_singleSymbol_update(symbol);}}
+function cnbc_mrq_updateAll()
+{var symbols=cnbc_mrq_cookieRead();if(!symbols)return;cnbc_mrq_singleSymbol_update(symbols.join('|'));}
+function cnbc_mrq_singleSymbol_update(symb)
+{var http_request=false;var url=cnbc_mrq_wlmrq_service_url+'?symbol='+escape(symb)+'&requestMethod=getQuickQuote&realtime='+cnbc_mrq_realtime;if(window.XMLHttpRequest){http_request=new XMLHttpRequest();if(http_request.overrideMimeType){http_request.overrideMimeType('text/html');}}else if(window.ActiveXObject){try{http_request=new ActiveXObject("Msxml2.XMLHTTP");}catch(e){try{http_request=new ActiveXObject("Microsoft.XMLHTTP");}catch(e){}}}
+if(!http_request){return false;}
+http_request.onreadystatechange=function(){cnbc_mrq_processRequest(http_request,symb);};http_request.open('GET',url,true);http_request.send(null);}
+function cnbc_mrq_processRequest(http_request,symb){var data_string;var results;var last;var change;var change_val;var changepct;var changearrow;var symbol;if(http_request.readyState==4){if(http_request.status==200){data_string=new String(cnbc_string_trim(http_request.responseText));results=data_string.split("|");if((results.length<4)||(results[1]=='NA'))
+{cnbc_mrq_invalidate(symb);return;}
+cnbc_mrq_populatedata(escape(results[0]),results[1],results[2],results[3]);}else{cnbc_mrq_invalidate(symb);}}}
+function cnbc_mrq_invalidate(symb)
+{var symbols=cnbc_mrq_cookieRead();var symbols_new=symbols;table=document.getElementById('cnbc_mrq_data');for(var i=0;i<symbols.length;i++)
+{if(symbols[i].toUpperCase()==symb.toUpperCase())
+{symbols_new=cnbc_removesymbol_from_array(symbols_new,symbols[i]);table.deleteRow(i);}}
+cnbc_mrq_writeCookie(symbols_new);}
+function cnbc_round(number,decimals,x)
+{var original=parseFloat(number);var multiplier=Math.pow('10',decimals);var float_result=Math.round(original*multiplier)/multiplier;if(isNaN(float_result))
+{return'';}
+var temp=''+float_result;if(x<1)
+{return temp;}
+var string_result=temp.split('.');if(!string_result[1])
+{string_result[1]='';}
+var extraZeros=x-string_result[1].length;for(var i=0;i<extraZeros;i++)
+{string_result[1]+='0';}
+var final_result=string_result.join('.');return final_result;}
+function mrq_mouseOver(x)
+{try{x.style.backgroundColor='#f7f7f7';x.style.borderTopColor='#dee6e7';}
+catch(e){}}
+function mrq_mouseOut(x)
+{try{x.style.backgroundColor='#ffffff';x.style.borderTopColor='#dee6e7';}
+catch(e){}}
+function cnbc_mrq_init(detailedquotepage,max,service_url,realtime,time)
+{if(max)cnbc_mrq_numElements=max;else if(!cnbc_mrq_numElements)cnbc_mrq_numElements=5;if(service_url)
+{cnbc_mrq_wlmrq_service_url=service_url;}
+if(time)cnbc_wlmrq_service_interval_time=time;cnbc_mrq_detailedquotepage=detailedquotepage;if(realtime!=null)
+{cnbc_mrq_realtime=realtime;}
+else
+{cnbc_mrq_realtime='0';}
+if(cnbc_most_Recent_Q_Display_Mode_checker=='Original'|cnbc_most_Recent_Q_Display_Mode_checker=='')
+{document.write('<div class="mrq_headertop"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/header_titlespad.jpg" border="0px" /></div>');document.write('<div class="mrq_header_drop" algin="center"><div class="fL w100"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/header_drop_transparent.gif" border="0px" /></div><div class=fL">');document.write('<div class="cnbc_mrq_toptitle">Most Recent Quotes</div></div></div>');document.write('<div class="mrq_headerbottom"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/header_titlespad.jpg" border="0px" /></div>');document.write('<div class="mrq_titles_div" style="border:none"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/mrq_titlesbg.jpg" border="0px" /></div>');document.write('<div class="mrq_border">');document.write('<div class="mrq_scroller_style" id="cnbc_mrq_data_holder" style="overflow-x: hidden; overflow-y: hidden; height: 180px; width: 298px; border: 0px;">');document.write('<table class="w100p" border="0" cellpadding="0" cellspacing="0" id="cnbc_mrq_data"></table>');document.write('</div></div>');document.write('<div align="left" id="cnbcCustomWatchlistTEXT" class="cFont cf10 blucomp mrq_border" style="height: 30px; _width:300px;"><div class="padT padB padR padL">Quotes are <img width="20" vspace="0" hspace="0" height="11" border="0" src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/realtime_footer_icon.jpg"/><br/>Source: NASDAQ LS and NYSE RT Stock Prices</div></div>');document.write('<div id="mrq_bottom" class="cnbc_bottom_mrqbg">');document.write('<div class="mrq_bottom_cell" align="center">');document.write('<div align="right"></div>');document.write('</div>');document.write('<div class="mrq_bottom_cell" align="center"></div>');document.write('<div class="mrq_bottom_cell" align="center">');document.write('<div class="wlt_mrq_botlks" align="left"><a onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#004276\'" href="#" onClick="cnbc_mrq_createNewList()">Create new list</a></div>');document.write('</div>');document.write('</div>');}
+else if(cnbc_most_Recent_Q_Display_Mode_checker=='Refresh')
+{document.write('<div class="clr w100p" id="cnbc_mrq_show_avaliable">');document.write('<div class="clr w100p" id="cnbc_mrq_headerWrap">');document.write('<div class="h13 cnbc_bg_cfdde6 w100p">');document.write('<div class="fL h13" style="width: 25%;" align="left"><div class="h13 padL10"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/symbol.gif" border="0"/></div></div>');document.write('<div class="fL h13" style="width: 20%;" align="center"><div class="h13"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/alerts.gif" border="0"/></div></div>');document.write('<div class="fL h13" style="width: 25%;" align="right"><div class="h13 padR"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/last.gif" border="0"/></div></div>');document.write('<div class="fL h13" style="width: 10%;"></div>');document.write('<div class="fL h13" align="left"><div class="h13 padL10"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/change.gif" border="0"/></div></div>');document.write('</div>');document.write('<div class="fL clr lh21 w100p" id="cnbc_mrq_data_holder">');document.write('<table border="0" cellpadding="0" cellspacing="0" id="cnbc_mrq_data" class="lh21 w100p"></table>');document.write('</div>');document.write('<div class="clr padT padB bluefont cFont cf11" style="height: 25px;">');document.write('<div class="h23 padL10 clr" style="line-height: 21px;">');document.write('<div class="fL padR"><img style="margin-top: 7px; _margin-top:4px;" src="http:\/\/media.cnbc.com\/i\/CNBC\/CNBC_Images\/componentbacks\/orange_arrow_link_icon.gif" vspace="4" border="0px" \/></div>');document.write('<div class="fL" align="left"><a style="color: #004276; text-decoration: none;" onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#004276\'" href="#" onClick="cnbc_mrq_createNewList()">Create a watchlist from recent quotes</a></div>');document.write('</div>');document.write('</div>');document.write('</div>');document.write('<div align="left" id="cnbcCustomWatchlistTEXT" class="cFont cf10 blucomp"><div class="padT padB padR padL">Quotes are <img width="20" vspace="0" hspace="0" height="11" border="0" src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/realtime_footer_icon.jpg"/><br/>Source: NASDAQ LS and NYSE RT Stock Prices</div></div>');document.write('</div>');}
+cnbc_mrq_applet_pushAllSymbols();cnbc_applet_registerfunction(cnbc_mrq_applet_update);cnbc_create_wsod_applet(false);cnbc_wsod_registerPollFunction(cnbc_applet_start_poll);cnbc_wsod_registerStopPollFunction(cnbc_applet_stop_poll);}
+function cnbc_mrq_createNewList()
+{var symbols=cnbc_mrq_cookieRead();var escaped_symbols=new Array;var symbols_string="";if(symbols!=null)
+{for(var i=0;i<symbols.length;i++)
+{escaped_symbols.push(escape(symbols[i]));}
+symbols_string=escaped_symbols.join(',');cnbc_mrq_show_avaliable_switch(true);if(cnbc_most_Recent_Q_id_checker!=''){document.getElementById('cnbc_watchlist_header_wrap').style.borderBottom="";}}
+var url=cnbc_watchlistURL+'manage.do?Action=createsettings&symbols=';url+=symbols_string;window.location=url;}
+function cnbc_mrq_applet_update()
+{var applet=document.cnbcApplet;var data_raw_string;var data;if(!cnbc_wsod_applet_symbols)return;var ar=cnbc_wsod_applet_symbols[cnbc_wsod_applet_rt_key][cnbc_wsod_applet_mrq_key];if(!applet||!ar)return;for(var i=0;i<ar.length;i++)
+{applet=document.cnbcApplet;if(applet)
+{data_raw_string=applet.getMarketDataAsString(ar[i]);if(data_raw_string)
+{data=data_raw_string.toString().split(" ");if(data.length>5)
+{if(data[0]!='NaN')
+{cnbc_mrq_populatedata(ar[i],data[0],data[4],data[5]);}}}}}}
+function cnbc_mrq_ferc_store(symbol,data_string)
+{if(!cnbc_wsod_ferc_mrq_ar)
+{cnbc_wsod_ferc_mrq_ar=new Array();}
+cnbc_wsod_ferc_mrq_ar[symbol]=data_string;}
+function cnbc_mrq_ferc_update(symbols)
+{var data;if(!symbols)return;if(!cnbc_wsod_ferc_mrq_ar)return;for(var i=0;i<symbols.length;i++)
+{if(cnbc_wsod_ferc_mrq_ar[symbols[i]])
+{data=cnbc_wsod_ferc_mrq_ar[symbols[i]].split(" ");cnbc_mrq_populatedata(escape(symbols[i]),data[1],data[2],data[3]);}}}
+function cnbc_mrq_populatedata(symbol,last_,change_,changepct_)
+{var symbol;var last;var change;var changepct;var flash;var classname;var class_temp;last=document.getElementById('WSODQMRQ_'+symbol+'_LAST');change=document.getElementById('WSODQMRQ_'+symbol+'_CHANGE');if(cnbc_most_Recent_Q_Display_Mode_checker=='Original'|cnbc_most_Recent_Q_Display_Mode_checker==''){changepct=document.getElementById('WSODQMRQ_'+symbol+'_CHANGEPCT');}
+changearrow=document.getElementById('WSODQMRQ_'+symbol+'_CHANGEARROW');if(!last)return;change_val=change_;last.innerHTML=cnbc_round(last_,'4','2');if(change_val>0)
+{changearrow.innerHTML='<img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/watchlist_up.gif" vspace="13" />'}
+if(change_val<0)
+{changearrow.innerHTML='<img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/watchlist_down.gif" vspace="13" />'}
+if(change_val==0)
+{changearrow.innerHTML='<div style="padding-top: 5px;">---</div>';change.innerHTML='UNCH';if(cnbc_most_Recent_Q_Display_Mode_checker=='Original'|cnbc_most_Recent_Q_Display_Mode_checker==''){changepct.innerHTML='---';}}
+else
+{change.innerHTML=cnbc_round(change_,'4','2');if(cnbc_most_Recent_Q_Display_Mode_checker=='Original'|cnbc_most_Recent_Q_Display_Mode_checker==''){changepct.innerHTML=cnbc_round(changepct_,'2','0');}}}
+function cnbc_flash(element_id,classn)
+{var element=document.getElementById(element_id);if(!element)return;var old_class=element.className;element.className=classn+' '+old_class;setTimeout('document.getElementById("'+element_id+'").className=""',1000);}
+function cnbc_applet_registerfunction(a)
+{if(!cnbc_wsod_datapopulation_batch)
+{cnbc_wsod_datapopulation_batch=new Array();}
+for(var i=0;i<cnbc_wsod_datapopulation_batch.length;i++)
+{if(cnbc_wsod_datapopulation_batch[i]==a)
+{return;}}
+cnbc_wsod_datapopulation_batch.push(a);}
+function cnbc_create_wsod_applet(startApplet)
+{var applet_script=document.getElementById(cnbc_wsod_applet_script_divid);if(!applet_script)
+{document.write('<script id=\"'+cnbc_wsod_applet_script_divid+'\"></script>');}
+if(!cnbc_wsod_applet_symbols)return;if(!startApplet)return;var realtimesymbols=cnbc_applet_getRealtimeSymbolsString(cnbc_wsod_applet_symbols);var delayedsymbols=cnbc_applet_getDelayedSymbolsString(cnbc_wsod_applet_symbols);var realtimeParam='';var delayedParam='';if(realtimesymbols!='')
+{realtimeParam='&realtimesymbols='+realtimesymbols;}
+if(delayedsymbols!='')
+{delayedParam='&delayedsymbols='+delayedsymbols;}
+var url=cnbc_wl_wlmrq_service_url+'?method=getKey'+realtimeParam+delayedParam;applet_script=document.getElementById(cnbc_wsod_applet_script_divid);cnbc_asyncScriptsource_eval(url,true);}
+function cnbc_wsod_registerPollFunction(func)
+{if(!cnbc_wsod_poll_batch)
+{cnbc_wsod_poll_batch=new Array();}
+for(var i=0;i<cnbc_wsod_poll_batch.length;i++)
+{if(cnbc_wsod_poll_batch[i]==func)
+{return;}}
+cnbc_wsod_poll_batch.push(func);return;}
+function cnbc_wsod_registerStopPollFunction(func)
+{if(!cnbc_wsod_stop_poll_batch)
+{cnbc_wsod_stop_poll_batch=new Array();}
+for(var i=0;i<cnbc_wsod_stop_poll_batch.length;i++)
+{if(cnbc_wsod_stop_poll_batch[i]==func)
+{return;}}
+cnbc_wsod_stop_poll_batch.push(func);return;}
+function cnbc_wsod_startPolls()
+{if(!cnbc_wsod_poll_batch)return;cnbc_switch_label(true);for(var i=0;i<cnbc_wsod_poll_batch.length;i++)
+{cnbc_wsod_poll_batch[i]();}}
+function cnbc_wsod_stopPolls()
+{if(!cnbc_wsod_stop_poll_batch)return;for(var i=0;i<cnbc_wsod_stop_poll_batch.length;i++)
+{cnbc_wsod_stop_poll_batch[i]();}
+cnbc_switch_label(false);}
+function cnbc_master_service_stop_poll()
+{if(cnbc_master_service_update_interval)
+{cnbc_master_service_update_interval=clearInterval(cnbc_master_service_update_interval);}}
+function cnbc_applet_stop_poll()
+{if(cnbc_wsod_applet_poll)
+{cnbc_wsod_applet_poll=clearInterval(cnbc_wsod_applet_poll);}}
+function cnbc_watchlist_alerts_stop_poll()
+{if(cnbc_watchlist_alerts_poll)
+{cnbc_watchlist_alerts_poll=clearInterval(cnbc_watchlist_alerts_poll);}}
+function cnbc_master_service_start_poll()
+{if(!cnbc_master_service_update_interval)
+{cnbc_master_service_update_interval=setInterval("cnbc_master_service_call()",cnbc_master_service_interval_time*1000);}
+else
+{cnbc_master_service_update_interval=clearInterval(cnbc_master_service_update_interval)
+cnbc_master_service_update_interval=setInterval("cnbc_master_service_call()",cnbc_master_service_interval_time*1000);}}
+function cnbc_applet_start_poll()
+{if(cnbc_wsod_applet_poll)
+{cnbc_wsod_applet_poll=clearInterval(cnbc_wsod_applet_poll);}
+cnbc_wsod_applet_poll=setInterval("cnbc_applet_update_data()",cnbc_wlmrq_service_interval_time*1000);}
+function cnbc_watchlist_alerts_start_poll()
+{if(!cnbc_watchlist_alerts_poll)
+{cnbc_watchlist_alerts_poll=setInterval("cnbc_watchlist_getAlerts()",cnbc_wl_alerts_interval_time*1000);}
+else
+{cnbc_watchlist_alerts_poll=clearInterval(cnbc_watchlist_alerts_poll);cnbc_watchlist_alerts_poll=setInterval("cnbc_watchlist_getAlerts()",cnbc_wl_alerts_interval_time*1000);}}
+function cnbc_applet_update_data()
+{if(!cnbc_wsod_applet_symbols)return;if(!cnbc_updatesOn())
+{cnbc_wsod_stopPolls();return;}
+if(cnbc_wsod_applet_symbols[cnbc_wsod_applet_changekey]==true)
+{cnbc_create_wsod_applet(true);cnbc_wsod_applet_symbols[cnbc_wsod_applet_changekey]=false;}
+for(var i=0;i<cnbc_wsod_datapopulation_batch.length;i++)
+{cnbc_wsod_datapopulation_batch[i]();}}
+function cnbc_mrq_applet_pushAllSymbols()
+{var symbols=cnbc_mrq_cookieRead();if(!symbols)return;var realtime;if(cnbc_mrq_realtime=='1')
+{realtime=true;}
+else
+{realtime=false}
+for(var i=0;i<symbols.length;i++)
+{cnbc_applet_pushSymbol(symbols[i],realtime,cnbc_wsod_applet_mrq_key);}}
+function cnbc_applet_pushSymbol(symbol,realtime,componentkey)
+{if(!cnbc_wsod_applet_symbols)
+{cnbc_wsod_applet_symbols=new Array();cnbc_wsod_applet_symbols[cnbc_wsod_applet_changekey]=new Boolean(true);}
+if(!cnbc_wsod_applet_symbols[cnbc_wsod_applet_nonrt_key])
+{cnbc_wsod_applet_symbols[cnbc_wsod_applet_nonrt_key]=new Array();}
+if(!cnbc_wsod_applet_symbols[cnbc_wsod_applet_rt_key])
+{cnbc_wsod_applet_symbols[cnbc_wsod_applet_rt_key]=new Array();}
+if(!cnbc_wsod_applet_symbols['nrtcomponents'])cnbc_wsod_applet_symbols['nrtcomponents']=new Array();if(!cnbc_wsod_applet_symbols['rtcomponents'])cnbc_wsod_applet_symbols['rtcomponents']=new Array();if(!symbol)return;if(componentkey==null)return;if(realtime==false)
+{if(!cnbc_wsod_applet_symbols[cnbc_wsod_applet_nonrt_key][componentkey])
+{cnbc_wsod_applet_symbols[cnbc_wsod_applet_nonrt_key][componentkey]=new Array();cnbc_wsod_applet_symbols['nrtcomponents'].push(componentkey);}
+cnbc_wsod_applet_symbols[cnbc_wsod_applet_nonrt_key][componentkey].push(escape(symbol.toUpperCase()));cnbc_wsod_applet_symbols[cnbc_wsod_applet_changekey]=true;}
+else
+{if(!cnbc_wsod_applet_symbols[cnbc_wsod_applet_rt_key][componentkey])
+{cnbc_wsod_applet_symbols[cnbc_wsod_applet_rt_key][componentkey]=new Array();cnbc_wsod_applet_symbols['rtcomponents'].push(componentkey);}
+cnbc_wsod_applet_symbols[cnbc_wsod_applet_rt_key][componentkey].push(escape(symbol.toUpperCase()));cnbc_wsod_applet_symbols[cnbc_wsod_applet_changekey]=true;}}
+function cnbc_applet_getDelayedSymbolsString(ar)
+{var temp=new Array();var nrt='';var t;if(ar[cnbc_wsod_applet_nonrt_key])
+{for(var i=0;i<ar['nrtcomponents'].length;i++)
+{t=ar['nrtcomponents'][i];for(var x=0;x<ar[cnbc_wsod_applet_nonrt_key][t].length;x++)
+{if(!(cnbc_arrayHas(temp,ar[cnbc_wsod_applet_nonrt_key][t][x]))&&(ar[cnbc_wsod_applet_nonrt_key][t][x]!=''))
+{temp.push(ar[cnbc_wsod_applet_nonrt_key][t][x]);}}}
+nrt=temp.join(',');}
+return nrt;}
+function cnbc_applet_getRealtimeSymbolsString(ar)
+{var temp=new Array();var rt='';var t;if(ar[cnbc_wsod_applet_rt_key])
+{for(var i=0;i<ar['rtcomponents'].length;i++)
+{t=ar['rtcomponents'][i];for(var x=0;x<ar[cnbc_wsod_applet_rt_key][t].length;x++)
+{if(!(cnbc_arrayHas(temp,ar[cnbc_wsod_applet_rt_key][t][x]))&&(ar[cnbc_wsod_applet_rt_key][t][x]!=''))
+{temp.push(ar[cnbc_wsod_applet_rt_key][t][x]);}}}
+rt=temp.join(',');}
+return rt;}
+function cnbc_wsod_applet_toHTML(realtimesymbols,delayedsymbols,timestamp,key)
+{var html='<applet code="com/wsod/streamer/inline/Streamer.class" archive="'+cnbc_wsod_applet_server_archive+'" width=0 height=0 name="cnbcApplet" MAYSCRIPT> <PARAM NAME="realtime symbols" VALUE="'+realtimesymbols+'"/> <PARAM NAME="delayed symbols" VALUE="'+delayedsymbols+'"/> <PARAM NAME="symbolset" VALUE="Bridge"/> <PARAM NAME="rollup time" VALUE="1000"/> <PARAM NAME="server" VALUE="'+cnbc_wsod_applet_server+'"/> <PARAM NAME="timestamp" VALUE="'+timestamp+'"/> <PARAM NAME="key" VALUE="'+key+'"/></applet> ';applet=document.getElementById(cnbc_wsod_applet_divid);if(!applet)return;applet.innerHTML='';applet.innerHTML=html;return;}
+function cnbc_getURLParam(strParamName)
+{var strReturn="";var strHref=window.location.href;if(strHref.indexOf("?")>-1)
+{var strQueryString=strHref.substr(strHref.indexOf("?")).toLowerCase();var aQueryString=strQueryString.split("&");for(var iParam=0;iParam<aQueryString.length;iParam++)
+{if(aQueryString[iParam].indexOf(strParamName+"=")>-1)
+{var aParam=aQueryString[iParam].split("=");strReturn=aParam[1];break;}}}
+return strReturn;}
+function cnbc_getURLParamGivenURL(strParamName,url)
+{var strReturn="";var strHref=url;if(strHref.indexOf("?")>-1)
+{var strQueryString=strHref.substr(strHref.indexOf("?")).toLowerCase();var aQueryString=strQueryString.split("&");for(var iParam=0;iParam<aQueryString.length;iParam++)
+{if(aQueryString[iParam].indexOf(strParamName+"=")>-1)
+{var aParam=aQueryString[iParam].split("=");strReturn=aParam[1];break;}}}
+return strReturn;}
+function cnbc_getURLParamGivenURL_sensitive(strParamName,url)
+{var strReturn="";var strHref=url;if(strHref.indexOf("?")>-1)
+{var strQueryString=strHref.substr(strHref.indexOf("?"));var aQueryString=strQueryString.split("&");for(var iParam=0;iParam<aQueryString.length;iParam++)
+{if(aQueryString[iParam].indexOf(strParamName+"=")>-1)
+{var aParam=aQueryString[iParam].split("=");strReturn=aParam[1];break;}}}
+return strReturn;}
+function cnbc_watchlist_isRegistered()
+{return((cnbc_readCookie(cnbc_login_cookie))||cnbc_readCookie(cnbc_login_cookie2));}
+function cnbc_watchlist_writeCookie(ar)
+{var symbols=ar;var raw_string='';for(var i=0;i<symbols.length;i++)
+{raw_string=raw_string+'|'+symbols[i];}
+cnbc_createCookie(cnbc_watchlist_baseCookieName,raw_string,cnbc_watchlist_cookie_exp_hours);}
+function cnbc_remove_from_array(symbols_old,x)
+{if(!symbols_old)return;var symbols_new=new Array();var offset=0;for(var i=0;i<symbols_old.length;i++)
+{if(i!=x)
+{symbols_new[offset]=symbols_old[i];offset++;}}
+return symbols_new;}
+function cnbc_removesymbol_from_array(symbols_old,x)
+{if(!symbols_old)return;var symbols_new=new Array();var offset=0;var found=false;for(var i=0;i<symbols_old.length;i++)
+{if((symbols_old[i].toUpperCase()!=x.toUpperCase())||(found==true))
+{symbols_new[offset]=symbols_old[i];offset++;}
+else
+{found=true;}}
+return symbols_new;}
+function cnbc_watchlist_init(detailedquotepage,service_url,realtime,app_url,cms_url,videoshare_url,symbollookup,time,alerttime)
+{cnbc_watchlist_app_baseurl=cnbc_watchlistURL;cnbc_watchlist_detailedquotepage=detailedquotepage;cnbc_watchlist_cms_url=cms_url;if(service_url)cnbc_wl_wlmrq_service_url=service_url;if(videoshare_url)cnbc_watchlist_videoshare_url=videoshare_url;cnbc_watchlist_symbollookup=symbollookup;if(time)cnbc_wlmrq_service_interval_time=time;if(alerttime)cnbc_wl_alerts_interval_time=alerttime;if(realtime!=null)
+{cnbc_watchlist_realtime=realtime;}
+else
+{cnbc_watchlist_realtime='0';}
+if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker==''){document.write('<div id="cnbc_watchlist_header_contents">');document.write('<div class="wlt_hdtp"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/header_titlespad.jpg" border="0px" /></div>');document.write('<div class="cnbc_wlt_hddrp"><div style="float:left; width: 15px;"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/header_drop_transparent.gif" border="0px" />');document.write('</div><div><select id="cnbc_watchlist_dropdown" onChange="cnbc_watchlist_switchList(this)" style="display:none; float:left;"></select></div></div>');document.write('<div class="wlt_hdbot"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/header_titlespad.jpg" border="0px" /></div>');document.write('<div class="wlt_titlediv" style="border:none"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/watchlist_titlesbg.jpg" border="0px" /></div>');document.write('</div>');document.write('<div class="wlt_brdr">');document.write('<div class="wl_scroller_style fL" id="cnbc_watchlist_data_holder" style="overflow-x: hidden; overflow-y: auto;_overflow-y: 180px; height: 180px; width: 298px; border: none;" >');document.write('<table border="0px" cellspacing="0px" cellpadding="0px" width="300px"><tbody border="0px" width="300px" id="cnbc_watchlist_data"></tbody>');cnbc_watchlist_basepage_draw();document.write('</table></div>');document.write('</div>');document.write('<div align="left" class="cFont cf10 blucomp" id="cnbcCustomWatchlistTEXT"><div class="padT padB padR padL">Quotes are <img width="20" vspace="0" hspace="0" height="11" border="0" src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/realtime_footer_icon.jpg"/><br/>Source: NASDAQ LS and NYSE RT Stock Prices</div></div>');var dashboardlink='<a onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#365582\'" style="text-decoration: none; font-family: Arial; color: #365582; font-weight: bold;" href=\"'+cnbc_watchlist_app_baseurl+'"main.do\"> Dashboard </a>';var createnewlistlink='<a onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#365582\'" style="text-decoration: none; font-family: Arial; color: #365582; font-weight: bold;" href=\"'+cnbc_watchlist_app_baseurl+'"manage.do?action=create\"> Create new list </a>';var editthislistlink='<a onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#365582\'" style="text-decoration: none; font-family: Arial; color: #365582; font-weight: bold;" href="#" onClick="cnbc_watchlist_editThisList();"> Edit this list</a>';var tellmemore_link='<a onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#365582\'"  style="text-decoration: none; font-family: Arial; color: #365582; font-weight: bold;" href=\"'+cnbc_RegisterURL+'registerUser.do?source=watchlist\"> Tell me more </a>';document.write('<div id="watchlist_create_base_bg" class="cnbc_wlt_bkbg fL" style="width: 300px; height: 30px;"></div>');document.write('<div id="watchlist_bottom" class="cnbc_bot_wlt fL">');document.write('<div id="cnbc_watchlist_footer_loggedin" style="display: none;">');document.write('<div class="wlt_bot_cell wlt_mrq_botlks" align="center">');document.write('<div id="watchlist_footer_editlist" align="right">'+editthislistlink+' | </div>');document.write('</div>');document.write('<div class="wlt_bot_cell wlt_mrq_botlks" align="center">'+dashboardlink+'</div>');document.write('<div class="wlt_bot_cell wlt_mrq_botlks" align="center">');document.write('<div align="left">|'+createnewlistlink+'</div>');document.write('</div>');document.write('</div>');document.write('<div id="cnbc_watchlist_footer_loggedout" style="display: none;">');document.write('<div style="width: 300px; height: 25px; _height: 25px;">');document.write('<div class="fL" style="width: 215px; height: 25px; _height: 25px;" align="right"><img style="margin-top:11px; _margin-top:8px;" src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/orange_arrow_link_icon.gif" border="0px" vspace="4"/>&#160;</div>');document.write('<div class="fL" style="height: 25px; _height: 25px; line-height: 23px; font-size:11px;">'+tellmemore_link+'</div>');document.write('</div>');document.write('</div>');document.write('</div>');}
+else if(cnbc_Watchlist_Display_Mode_checker=='Refresh'){var createnewlistlink='<a onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#004276\'" style="text-decoration: none; font-family: Arial; color: #004276; font-weight: bold;" href=\"'+cnbc_watchlistURL+'"manage.do?action=create\"> Create</a>';var editthislistlink='<a onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#004276\'" style="text-decoration: none; font-family: Arial; color: #004276; font-weight: bold;" href="#" onClick="cnbc_watchlist_editThisList();"> Edit</a>';document.write('<div id="cnbc_watchlist_header_wrap" class="w100p">');document.write('<div id="cnbc_watchlist_headerWrap" class="w100p">');document.write('<div class="cFont w100p cf11" id="cnbc_watchlist_header_contents" style="display: none;">');document.write('<div class="h23 bluefont cFont cf11 padT padB lh21">');document.write('<div class="fL h23 padL"><div><select id="cnbc_watchlist_dropdown" class="search_input padL padT2" onChange="cnbc_watchlist_switchList(this)" style="display:none; width: 125px;"></select></div></div>');document.write('<div class="fL h23 padL">');document.write('<div class="fL h23" align="center" style="width: 30px; font-weight: bold;">'+editthislistlink+'</div>');document.write('<div class="fL h23" align="center" style="width: 10px;">|</div>');document.write('<div class="fL h23" align="center" style="width: 30px; font-weight: bold;"><div class="fL padR">'+createnewlistlink+'</div></div>');document.write('</div>');document.write('</div>');document.write('<div class="h13 cnbc_bg_cfdde6 w100p">');document.write('<div class="fL h13" style="width: 25%;" align="left"><div class="h13 padL10"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/symbol.gif" border="0"/></div></div>');document.write('<div class="fL h13" style="width: 20%;" align="center"><div class="h13"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/alerts.gif" border="0"/></div></div>');document.write('<div class="fL h13" style="width: 25%;" align="right"><div class="h13 padR"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/last.gif" border="0"/></div></div>');document.write('<div class="fL h13" style="width: 10%;"></div>');document.write('<div class="fL h13" align="left"><div class="h13 padL10"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/change.gif" border="0"/></div></div>');document.write('</div>');document.write('<div class="lh21 w100p clr" id="cnbc_watchlist_data_holder">');document.write('<table class="w100p cFont lh21" style="border: 0px;" cellpadding="0" cellspacing="0" id="cnbc_watchlist_data"></table>');cnbc_watchlist_basepage_draw();document.write('</div>');document.write('<div style="height: 65px;">');document.write('<div class="padL10 padT10">');document.write('<div style="padding-bottom: 2px;">');document.write('<div class="blac cf10">Add symbols to this watchlist</div>');document.write('</div>');document.write('<div>');document.write('<div class="fL padR"><input type="text" id="cnbc_addtowatchlist" class="search_input padT2 cf11 padL blac" value="Enter Symbol(s)" onfocus="cnbc_clr_addto_wl(this.id)" style="width:122px; height: 21px;"></input></div>');document.write('<div class="fL padR"><div onclick="cnbc_watchlist_add_trigger(\'cnbc_addtowatchlist\')" style="cursor: pointer;"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/add_btn.gif" border="0"/></div></div>');document.write('<div class="fL cf10"><div style="width: 38px; line-height: 11px;"><a href="'+cnbc_watchlist_symbollookup+'" style="cursor: pointer;">Symbol Lookup</a></div></div>');document.write('</div>');document.write('</div>');document.write('</div>');document.write('</div>');document.write('<div id="cnbc_notsignedin_or_reg" class="cFont cf11" style="display: none;">');document.write('<div align="left" class="padT10 padR10 padL10 bluefont cf11">');document.write('<div class="h23 lh21">');document.write('<div class="fL padR">');document.write('<img style="margin-top: 7px; _margin-top:4px;" src="http:\/\/media.cnbc.com\/i\/CNBC\/CNBC_Images\/componentbacks\/orange_arrow_link_icon.gif" vspace="4" border="0px" \/>');document.write('</div>');document.write('<div class="fL">');document.write('<div align="left" class="bluefont"><a href=\"'+cnbc_watchlistURL+'main.do\"><strong>Sign in</strong> to view your watchlists</a></div>');document.write('</div>');document.write('</div>');document.write('<div class="h23 lh21">');document.write('<div class="fL padR">');document.write('<img style="margin-top: 7px; _margin-top:4px;" src="http:\/\/media.cnbc.com\/i\/CNBC\/CNBC_Images\/componentbacks\/orange_arrow_link_icon.gif" vspace="4" border="0px" \/>');document.write('</div>');document.write('<div class="fL">');document.write('<div align="left" class="bluefont"><a href=\"'+cnbc_RegisterURL+'registerUser.do?source=watchlist\"><strong>Register</strong> to create watchlists</a></div>');document.write('</div>');document.write('</div>');document.write('<div class="h23 lh21">');document.write('<div class="fL padR">');document.write('<img style="margin-top: 7px; _margin-top:4px;" src="http:\/\/media.cnbc.com\/i\/CNBC\/CNBC_Images\/componentbacks\/orange_arrow_link_icon.gif" vspace="4" border="0px" \/>');document.write('</div>');document.write('<div class="fL">');document.write('<div align="left" class="bluefont"><a href=\"'+cnbc_LoginURL+'cas/login?login-view=watchlist&partner-code=null\"><strong>Learn more</strong> about watchlists</a></div>');document.write('</div>');document.write('</div>');document.write('</div>');document.write('<div align="left" class="padT10 padL10 padB10">')
+document.write('<div style="padding-bottom: 2px;">');document.write('<div class="bold_b blac cf10">Start creating your watchlist</div>');document.write('</div>');document.write('<div class="padB10 h18">');document.write('<div class="fL">');document.write('<input id="cnbc_creatnew_wl_1" class="search_input padT2 cf11 padL blac" onfocus="cnbc_clr_addto_wl(this.id)" value="Enter Symbol(s)" style="width:122px; height: 21px;"/>');document.write('</div>');document.write('<div class="fL padR"><a onclick="cnbc_watchlist_addSymbolsFromTextArea(\'cnbc_creatnew_wl_1\')" style="cursor: pointer; text-transform:"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/create.gif" border="0"/></a></div>');document.write('<div class="fL cf10"><div style="width: 38px; line-height: 11px;"><a href="'+cnbc_watchlist_symbollookup+'" style="cursor: pointer;">Symbol Lookup</a></div></div>');document.write('</div>');document.write('</div>');document.write('</div>');document.write('<div id="cnbc_signedin_no_wl" class="cFont cf11" style="display: none;">');document.write('<div align="left" class="padT10 padR10 padL10 bluefont cFont cf11" style="font-weight: lighter;">As a registered member you can create watchlist for video and CNBC guest alerts.</div>');document.write('<div align="left" class="padT10 padL10 padB10">');document.write('<div style="padding-bottom: 2px;">');document.write('<div class="bold_b blac cf10">Start creating your watchlist</div>');document.write('</div>');document.write('<div class="padB10 h18">');document.write('<div class="fL padR">');document.write('<input id="cnbc_creatnew_wl_2" class="search_input padT2 cf11 padL blac" onfocus="cnbc_clr_addto_wl(this.id)" value="Enter Symbol(s)" style="width:122px; height: 21px;" />');document.write('</div>');document.write('<div class="fL padR"><a onclick="cnbc_watchlist_addSymbolsFromTextArea(\'cnbc_creatnew_wl_2\')" style="cursor: pointer; text-transform:"><img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/create.gif" border="0"/></a></div>');document.write('<div class="fL cf10"><div style="width: 38px; line-height: 11px;"><a href="'+cnbc_watchlist_symbollookup+'" style="cursor: pointer;">Symbol Lookup</a></div></div>');document.write('</div>');document.write('</div>');document.write('</div>');document.write('</div>');document.write('<div align="left" class="cFont cf10 blucomp" id="cnbcCustomWatchlistTEXT"><div class="padT padB padR padL">Quotes are <img width="20" vspace="0" hspace="0" height="11" border="0" src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/realtime_footer_icon.jpg"/><br/>Source: NASDAQ LS and NYSE RT Stock Prices</div></div>');document.write('</div>');}
+if(!cnbc_watchlist_isRegistered())
+{cnbc_watchlist_showBasePage(true);cnbc_watchlist_showDataTable(false);if(cnbc_Watchlist_Display_Mode_checker=='Refresh'){cnbc_watchlist_signedin_no_wl(false)}}
+cnbc_applet_registerfunction(cnbc_watchlist_applet_update);cnbc_create_wsod_applet(false);cnbc_wsod_registerPollFunction(cnbc_applet_start_poll);cnbc_wsod_registerStopPollFunction(cnbc_applet_stop_poll);cnbc_wsod_registerPollFunction(cnbc_watchlist_alerts_start_poll);cnbc_wsod_registerStopPollFunction(cnbc_watchlist_alerts_stop_poll);}
+function cnbc_clr_addto_wl(x)
+{document.getElementById(x).value='';}
+function cnbc_watchlist_add_trigger(x)
+{var symbol_get;var upper_sym;symbol_get=document.getElementById(x).value;upper_sym=symbol_get.toUpperCase();var symbol_get_array=upper_sym.split(",");if(symbol_get_array.length<2){symbol_get_array=upper_sym.split(" ");}
+for(i=0;i<symbol_get_array.length;i++){cnbc_watchlist_addSymbol(symbol_get_array[i].replace(/^\s+/,''));}}
+function cnbc_watchlist_basepage_draw()
+{if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker==''){var signin_link='<a onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#365582\'" style="text-decoration: none; font-family: Arial; color: #365582; font-weight: bold;" href=\"'+cnbc_watchlist_app_baseurl+'main.do\"> Sign In to view your lists </a>';var tellmemore_link='<a onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#365582\'" style="text-decoration: none; font-family: Arial; color: #365582; font-weight: bold;" href=\"'+cnbc_RegisterURL+'registerUser.do?source=watchlist\"> Tell me more </a>';var createnewlist_link='<a onmouseover="this.style.color=\'#ececec\'" onmouseout="this.style.color=\'#4a4a4a\'" style="text-decoration: none; font-family: Arial; color: #4a4a4a; font-weight: bold;" href=\"#" onClick = \"cnbc_watchlist_createNewList();">Create a New List</a>';document.write('<tbody border="0px" width="300px"><div id="cnbc_watchlist_basepage" style="display: none; width: 300px; float: left;"><div class="w300 cnbc_wlt_bkbg fL">');document.write('<div class="w300" style="height: 30px; _height: 30px; line-height: 28px;">');document.write('<div id = "watchlist_signin_link"><div class="fL" style=" width: 25px; height: 30px; _height: 30px;" align="right">');document.write('<img style="margin-top:11px; _margin-top:8px;" src="http:\/\/media.cnbc.com\/i\/CNBC\/CNBC_Images\/componentbacks\/orange_arrow_link_icon.gif" vspace="4" border="0px" \/>');document.write('</div>');document.write('<div class="fL" style="font-size:11px; color: #365582; font-weight: bold; font-family: Arial;">');document.write('&#160;'+signin_link+"</div>");document.write('</div>');document.write('</div>');document.write('<div style="padding-left: 20px; width:260px; padding-right: 20px;">');document.write('<div class="cnbc_wlt_dot w300" style="width:260px;">');document.write('</div>');document.write('</div>');document.write('<div class="w300 cnbc_wlt_4a4a4a cnbc_wlt_strg" style="height: 30px; _height: 30px; line-height: 28px; font-size:11px; _margin-top:-12px;">');document.write('&#160;&#160;&#160;&#160;&#160;&#160;&#160;'+createnewlist_link);document.write('</div>');document.write('<div class="w300 cnbc_wlt_4a4a4a" style="height: 22px; _height: 22px; line-height: 20px; font-size:11px;">');document.write('&#160;&#160;&#160;&#160;&#160;&#160;&#160;Enter Symbol(s):');document.write('</div>');document.write('<div class="w300" style="height: 59px;">');document.write('<div class="fL" style="width:230px;">');document.write('&#160;&#160;&#160;&#160;&#160;<textarea id="cnbc_watchlist_add_textarea" style="width: 200px; height: 59px; _height: 59px;" name="symbols" rows=3 cols=30><\/textarea>');document.write('</div>');document.write('<div class="fL" style="padding-top: 15px;">');document.write('&#160;<img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/watchlist_addbtn.jpg" onclick="cnbc_watchlist_addSymbolsFromTextArea(\'cnbc_watchlist_add_textarea\');" style="cursor: hand;" />');document.write('</div>');document.write('</div>');document.write('<div class="w300" style="height: 30px;">');document.write('<div class="fL cnbc_wlt_424858" style="width: 210px; height: 20px; _height: 20px; line-height: 18px; font-size: 11px;">');document.write('&#160;&#160;&#160;&#160;&#160;&#160;Separate ticker symbols with commas.');document.write('</div>');document.write('<div class="fL bodytext cnbc_wlt_365582" style="height: 18px; _height: 18px; line-height: 16px; font-size:11px;">');document.write('&#160;&#160;&#160;&#160;&#160;&#160;<a onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#004276\'" style="text-decoration: none; font-family: Arial; color: #004276;" href="'+cnbc_watchlist_symbollookup+'">[Find Symbol]</a>');document.write('</div>');document.write('</div></tbody>');var signin=document.getElementById('watchlist_signin_link');if(!signin)return;if(cnbc_watchlist_isRegistered())
+{signin.style.display="none";}}
+else if(cnbc_Watchlist_Display_Mode_checker=='Refresh'){var signin=document.getElementById('watchlist_signin_link');if(!signin)return;if(cnbc_watchlist_isRegistered())
+{signin.style.display="none";}}}
+function cnbc_watchlist_applet_pushAllSymbols(watchlist)
+{var symbols=cnbc_watchlist_getSymbolNames(watchlist);if(cnbc_wsod_applet_symbols)cnbc_wsod_applet_symbols[cnbc_wsod_applet_nonrt_key][cnbc_wsod_applet_watchlist_key]=new Array();if(cnbc_wsod_applet_symbols)cnbc_wsod_applet_symbols[cnbc_wsod_applet_rt_key][cnbc_wsod_applet_watchlist_key]=new Array();if(!symbols)return;var realtime;if(cnbc_watchlist_realtime=='1')
+{realtime=true;}
+else
+{realtime=false;}
+for(var i=0;i<symbols.length;i++)
+{cnbc_applet_pushSymbol(symbols[i],realtime,cnbc_wsod_applet_watchlist_key);}}
+function cnbc_watchlist_singleSymbol_update(symb)
+{var http_request=false;var url=cnbc_wl_wlmrq_service_url+'?symbol='+escape(symb)+'&requestMethod=getQuickQuote&realtime='+cnbc_watchlist_realtime;if(window.XMLHttpRequest){http_request=new XMLHttpRequest();if(http_request.overrideMimeType){http_request.overrideMimeType('text/html');}}else if(window.ActiveXObject){try{http_request=new ActiveXObject("Msxml2.XMLHTTP");}catch(e){try{http_request=new ActiveXObject("Microsoft.XMLHTTP");}catch(e){}}}
+if(!http_request){return false;}
+http_request.onreadystatechange=function(){cnbc_watchlist_processRequest(http_request);};http_request.open('GET',url,true);http_request.send(null);}
+function cnbc_watchlist_processRequest(http_request){var data_string;var results;var last;var change;var change_val;var changepct;var changearrow;var title=new Array();var symbol;var vid_id_param="videoid";var vid_title_param="videotitle";var vid_id;var vid_title;var guest_name_param="guestname";var guest_show_param="guestshow";var guest_name;var guest_show;if(http_request.readyState==4){if(http_request.status==200){data_string=new String(cnbc_string_trim(http_request.responseText));results=data_string.split("|");if(results.length<4)return;var wl_ar=cnbc_watchlist_getAllDiv();cnbc_watchlist_populatedata(escape(results[0]),results[1],results[2],results[3],wl_ar);if(results.length>4)
+{vid_id=cnbc_getURLParamGivenURL_sensitive(vid_id_param,unescape(results[4]));vid_title=cnbc_getURLParamGivenURL_sensitive(vid_title_param,unescape(results[4]));if((vid_id!='')&&(vid_title!=''))
+{cnbc_watchlist_temp_divs=cnbc_watchlist_getAllDiv();cnbc_watchlist_populateVideoAlerts(results[0],true,vid_id,vid_title);}
+else
+{cnbc_watchlist_populateVideoAlerts(results[0],false,"","");}
+guest_name=cnbc_getURLParamGivenURL_sensitive(guest_name_param,unescape(results[5]));guest_show=cnbc_getURLParamGivenURL_sensitive(guest_show_param,unescape(results[5]));if((guest_name!=''))
+{cnbc_watchlist_temp_divs=cnbc_watchlist_getAllDiv();cnbc_watchlist_populateGuestAlerts(results[0],true,guest_name,guest_show);}
+else
+{cnbc_watchlist_populateGuestAlerts(results[0],false,"","");}}
+else
+{cnbc_watchlist_populateVideoAlerts(results[0],false,"","");}}else{return;}}}
+function cnbc_watchlist_getAllDiv()
+{var wl_ar=new Array();var arraySpans=document.body.getElementsByTagName("DIV");var debugText='';var id;for(var i=0;i<arraySpans.length;i++)
+{if(cnbc_startsWith(arraySpans[i].id,'WSODQWL_')==true)
+{fragName=arraySpans[i].id;id=fragName.substr(fragName.lastIndexOf('_')+1,fragName.length);fragName=fragName.substr(fragName,fragName.lastIndexOf('_'));fragName=fragName.substr(fragName,fragName.lastIndexOf('_'));if(!wl_ar[fragName])
+{debugText+='created '+fragName;wl_ar[fragName]=new Array();}
+if(cnbc_arrayHas(wl_ar[fragName],id)==false)
+{debugText+='pushed '+id;wl_ar[fragName].push(id);}}}
+return wl_ar;}
+function cnbc_watchlist_applet_update()
+{var applet=document.cnbcApplet;var data_raw_string;var data;var ar=cnbc_wsod_applet_symbols[cnbc_wsod_applet_rt_key][cnbc_wsod_applet_watchlist_key];if(!applet||!ar)return;var wl_ar=new Array();wl_ar=cnbc_watchlist_getAllDiv();for(var i=0;i<ar.length;i++)
+{data_raw_string=applet.getMarketDataAsString(ar[i]);if(data_raw_string)
+{data=data_raw_string.toString().split(" ");if(data.length>5)
+{if(data[0]!='NaN')
+{cnbc_watchlist_populatedata(ar[i],data[0],data[4],data[5],wl_ar);}}}}}
+function cnbc_watchlist_populateVideoAlerts(symbol_in,hasvideo,vid_id,title)
+{var ar=cnbc_watchlist_temp_divs;var video;var videolink;var symbol=escape(symbol_in);if(ar['WSODQWL_'+symbol])
+{for(var i=0;i<ar['WSODQWL_'+symbol].length;i++)
+{id=ar['WSODQWL_'+symbol][i];video=document.getElementById('WSODQWL_'+symbol+'_VIDEOALERT_'+id);videolink=document.getElementById('WSODQWL_'+symbol+'_VIDEOALERTLINK_'+id);if(hasvideo==true)
+{video.style.display="block";video.title=title;videolink.href=cnbc_watchlist_videoshare_url+"?video="+vid_id;}
+else
+{video.style.display="none";}}}}
+function cnbc_watchlist_populateGuestAlerts(symbol_in,hasguest,guestname,show)
+{var ar=cnbc_watchlist_temp_divs;var guest;var symbol=escape(symbol_in);if(ar['WSODQWL_'+symbol])
+{for(var i=0;i<ar['WSODQWL_'+symbol].length;i++)
+{id=ar['WSODQWL_'+symbol][i];guest=document.getElementById('WSODQWL_'+symbol+'_GUESTALERT_'+id);if(hasguest==true)
+{guest.style.display="block";guest.title=guestname+" at "+show;}
+else
+{guest.style.display="none";}}}}
+function cnbc_watchlist_populatedata(symbol,last_,change_,changepct_,ar)
+{var symbol;var last;var change;var changepct;var id;if(ar['WSODQWL_'+symbol])
+{for(var i=0;i<ar['WSODQWL_'+symbol].length;i++)
+{id=ar['WSODQWL_'+symbol][i];last=document.getElementById('WSODQWL_'+symbol+'_LAST_'+id);change=document.getElementById('WSODQWL_'+symbol+'_CHANGE_'+id);if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker==''){changepct=document.getElementById('WSODQWL_'+symbol+'_CHANGEPCT_'+id);}
+changearrow=document.getElementById('WSODQWL_'+symbol+'_CHANGEARROW_'+id);if(!last)return;change_val=change_;last.innerHTML=cnbc_round(last_,'4','2');if(change_val>0)
+{changearrow.innerHTML='<img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/watchlist_up.gif" vspace="13" />'}
+if(change_val<0)
+{changearrow.innerHTML='<img src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/watchlist_down.gif" vspace="13" />'}
+if(change_val==0)
+{changearrow.innerHTML='<div style="padding-top: 5px;">---</div>';change.innerHTML='UNCH';if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker==''){changepct.innerHTML='---';}}
+else
+{change.innerHTML=cnbc_round(change_,'4','2');if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker==''){changepct.innerHTML=cnbc_round(changepct_,'2','0');}}}}}
+function cnbc_watchlist_populatedropdown()
+{var dropdown=document.getElementById('cnbc_watchlist_dropdown');var options;var optn;if(!cnbc_watchlist_isRegistered())
+{if(cnbc_Watchlist_Display_Mode_checker=='Refresh'){cnbc_createCookie('cnbc_mywl_dropdown_stat_check','none');}
+dropdown.style.display='none';return;}
+if(!cnbc_watchlist_alllists){return;}
+if(cnbc_Watchlist_Display_Mode_checker=='Refresh'){cnbc_createCookie('cnbc_mywl_dropdown_stat_check','block');}
+dropdown.style.display='inline';options=dropdown.options;if(options.length==0)
+{for(var i=0;i<cnbc_watchlist_alllists.length;i++)
+{optn=document.createElement("OPTION");optn.text=cnbc_watchlist_alllists[i].name;optn.value=cnbc_watchlist_alllists[i].name;options.add(optn);}
+if(cnbc_Watchlist_Display_Mode_checker=='Refresh'){cnbc_watchlist_remember_last_state();}}}
+function cnbc_watchlist_switchList(form)
+{var number=form.selectedIndex;var watchlist=form.options[number].value;cnbc_createCookie('wl_remember_last_state_num',number,'');cnbc_createCookie('wl_remember_last_state',watchlist,'');if(!watchlist)return;cnbc_watchlist_switchWatchlistAndDraw(watchlist);}
+function cnbc_watchlist_remember_last_state()
+{if(!cnbc_watchlist_isRegistered())
+{return;}
+else{var cnbc_readCookie_read_wl_dd_stat_check=cnbc_readCookie('cnbc_mywl_dropdown_stat_check')
+if(cnbc_readCookie_read_wl_dd_stat_check=='none')
+{return;}
+else
+{var cnbc_wl_mylast_setter=document.getElementById('cnbc_watchlist_dropdown');var number_rem=cnbc_wl_mylast_setter.selectedIndex;var watchlist_rem=cnbc_wl_mylast_setter.options[number_rem].value;var cnbc_wl_mylast_chg=cnbc_readCookie('wl_remember_last_state');var cnbc_wl_mylast_state=cnbc_readCookie('wl_remember_last_state_num');if(cnbc_wl_mylast_state==null){return;}
+else{if(watchlist_rem==cnbc_wl_mylast_chg){return;}
+else{cnbc_wl_mylast_setter.options[cnbc_wl_mylast_state].text=watchlist_rem;cnbc_wl_mylast_setter.options[cnbc_wl_mylast_state].value=watchlist_rem;cnbc_wl_mylast_setter.options[number_rem].text=cnbc_wl_mylast_chg;cnbc_wl_mylast_setter.options[number_rem].value=cnbc_wl_mylast_chg;cnbc_watchlist_switchWatchlistAndDraw(cnbc_wl_mylast_chg);}}}}}
+function cnbc_mrq_show_avaliable_switch(show){var mrq_id_reader=cnbc_most_Recent_Q_id_checker;var mrq_show_list=document.getElementById(mrq_id_reader);if(mrq_show_list!=null)
+{if(show==true)
+{mrq_show_list.style.display="block";}
+else
+{mrq_show_list.style.display="none";}}}
+function cnbc_watchlist_showBasePage(show)
+{if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker==''){var basepage=document.getElementById('cnbc_watchlist_basepage');var basepagepad=document.getElementById('watchlist_create_base_bg');var header=document.getElementById('cnbc_watchlist_header_contents');var footer_edit=document.getElementById('watchlist_footer_editlist');if(basepage)
+{if(show==true)
+{basepage.style.display="inline";basepagepad.style.display="inline";header.style.display="none";footer_edit.style.display="none";}
+else
+{basepage.style.display="none";basepagepad.style.display="none";}}}
+else if(cnbc_Watchlist_Display_Mode_checker=='Refresh'){var basepage=document.getElementById('cnbc_notsignedin_or_reg');if(basepage)
+{if(show==true)
+{basepage.style.display="block";}
+else
+{basepage.style.display="none";}}}}
+function cnbc_watchlist_signedin_no_wl(show)
+{var sign_no_wl=document.getElementById('cnbc_signedin_no_wl');if(sign_no_wl)
+{if(show==true)
+{sign_no_wl.style.display="block";}
+else
+{sign_no_wl.style.display="none";}}}
+function cnbc_watchlist_showDataTable(show)
+{if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker==''){var table=document.getElementById('cnbc_watchlist_data');var header=document.getElementById('cnbc_watchlist_header_contents');var footer_edit=document.getElementById('wachlist_footer_editlist');if(table)
+{if(show==true)
+{table.style.display="inline";header.style.display="inline";if(footer_edit)
+{footer_edit.style.display="inline";}}
+else
+{table.style.display="none";header.style.display="none";}}}
+else if(cnbc_Watchlist_Display_Mode_checker=='Refresh'){var wl_body_wrap=document.getElementById('cnbc_watchlist_header_contents');if(wl_body_wrap)
+{if(show==true)
+{wl_body_wrap.style.display="block";}
+else
+{wl_body_wrap.style.display="none";}}}}
+function cnbc_watchlist_showFooter()
+{var loggedin=document.getElementById('cnbc_watchlist_footer_loggedin');var loggedout=document.getElementById('cnbc_watchlist_footer_loggedout');if(!loggedin||!loggedout)
+{return}
+if(cnbc_watchlist_isRegistered())
+{loggedin.style.display="inline"
+loggedout.style.display="none";}
+else
+{loggedin.style.display="none";loggedout.style.display="inline";}}
+function cnbc_watchlist_draw(watchlist)
+{var watchlistTable=document.getElementById('cnbc_watchlist_data');if(!watchlistTable)return;if(cnbc_Watchlist_Display_Mode_checker=='Refresh')
+{}
+else if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker=='')
+{cnbc_watchlist_showFooter();}
+if(!cnbc_watchlist_isRegistered())
+{cnbc_clearTable('cnbc_watchlist_data');cnbc_watchlist_showBasePage(true);cnbc_watchlist_showDataTable(false);if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker=='')
+{}
+else if(cnbc_Watchlist_Display_Mode_checker=='Refresh')
+{cnbc_watchlist_signedin_no_wl(false)}
+return;}
+var symbols=cnbc_watchlist_getSymbolNames(watchlist)
+if(symbols==null)
+{if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker=='')
+{cnbc_clearTable('cnbc_watchlist_data');cnbc_watchlist_showBasePage(true);}
+else if(cnbc_Watchlist_Display_Mode_checker=='Refresh')
+{cnbc_watchlist_showBasePage(false)
+cnbc_clearTable('cnbc_watchlist_data');cnbc_watchlist_signedin_no_wl(true);}
+return;}
+else{if(cnbc_Watchlist_Display_Mode_checker=='Refresh')
+{var blank_wl_checker=document.getElementById('cnbc_watchlist_header_contents').style.display;var blank_no_wl_checker=document.getElementById('cnbc_signedin_no_wl').style.display;if(blank_wl_checker=='none')
+{if(cnbc_watchlist_isRegistered())
+{cnbc_watchlist_showDataTable(true);}}
+if(blank_no_wl_checker=='block')
+{if(cnbc_watchlist_isRegistered())
+{cnbc_watchlist_showDataTable(false)}}}}
+var numElements=symbols.length;if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker=='')
+{watchlistTable.border="0px";watchlistTable.cellPadding="0px";watchlistTable.cellSpacing="0px";}
+var name=Math.round(Math.random()*100);if(watchlist!=null)
+{cnbc_watchlist_currentList=watchlist;}
+else
+{cnbc_watchlist_currentList=cnbc_watchlist_defaultlist;}
+cnbc_clearTable('cnbc_watchlist_data');for(var i=0;i<numElements;i++)
+{cnbc_watchlist_addNewRow(i,symbols[i],false);}
+cnbc_watchlist_initialPopulateAllData(watchlist);cnbc_watchlist_populatedropdown();cnbc_watchlist_getAlerts();cnbc_watchlist_firstLoad=false;}
+function cnbc_watchlist_getAlerts()
+{var escaped_symbols=new Array();if(!cnbc_watchlist_currentList)
+{return;}
+var symbols=cnbc_watchlist_getSymbolNames(cnbc_watchlist_currentList)
+for(var i=0;i<symbols.length;i++)
+{escaped_symbols[i]=escape(symbols[i]);}
+cnbc_watchlist_temp_divs=cnbc_watchlist_getAllDiv();var url=cnbc_wl_wlmrq_service_url+'?symbols='+escaped_symbols.join(',')+'&method=getAlerts&realtime='+cnbc_watchlist_realtime;cnbc_asyncScriptsource_eval(url,true);}
+function cnbc_watchlist_addNewRow(pos,symbol,getdata)
+{var rand=Math.round(Math.random()*10000);var wsodqmrq_id='WSODQWL_'+escape(symbol.toUpperCase())+'_';if(cnbc_Watchlist_Display_Mode_checker=='Refresh')
+{var table_cell_0='<div class="fL h23 bold_b" style="width: 25%;" align="left"><div class="h23 padL10"><div id="'+wsodqmrq_id+'SYMBOL_'+rand+'"><a style="color: #004276; text-decoration: none;" onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#004276\'" href="'+cnbc_watchlist_detailedquotepage;var tabel_cell_0_end='</a></div></div></div>';var table_cell_1='<div class="fL h23" style="width: 20%;" align="center"><div class="h23"><div class="fL" style="padding-left: 14px; padding-top: 6px;"><image id="'+wsodqmrq_id+'GUESTALERT_'+rand+'" src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/person_icon.gif" style="display:none" border="0"></div><div class="fR" style="padding-right: 11px; padding-top: 8px;"><a id="'+wsodqmrq_id+'VIDEOALERTLINK_'+rand+'" ><image id="'+wsodqmrq_id+'VIDEOALERT_'+rand+'" src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/video_icon.gif" style="display:none" border="0"></a></div></div></div>';var table_cell_2='<div class="fL h23" style="width: 25%;" align="right"><div class="h23 padR blac"><div class="h23" id="'+wsodqmrq_id+'LAST_'+rand+'">Loading...</div></div></div>';var table_cell_3='<div class="fL h23" style="width: 10%;" align="center"><div class="h23" id="'+wsodqmrq_id+'CHANGEARROW_'+rand+'" style="margin-top: -7px;"></div></div>';var table_cell_4='<div class="fL h23" align="left"><div class="h23 padL10 blac" id="'+wsodqmrq_id+'CHANGE_'+rand+'"></div></div>';}
+else if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker=='')
+{var span_class_begin='<span class="cnbc_watchlist_row">';var span_class_close='</span>';var table_cell_0='<div class="wl_alert_cell" align="center" ><div class="fL" style="padding-left: 5px; padding-top: 15px;"><image id="'+wsodqmrq_id+'GUESTALERT_'+rand+'" src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/person_icon.gif" style="display:none" border="0"></div><div class="fR" style="padding-right: 5px; padding-top: 15px;"><a id="'+wsodqmrq_id+'VIDEOALERTLINK_'+rand+'" ><image id="'+wsodqmrq_id+'VIDEOALERT_'+rand+'" src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/video_icon.gif" style="display:none" border="0"></a></div>';var tabel_cell_0_end='</div>';var table_cell_1='<div class="wl_sym_cell" align="left" id="'+wsodqmrq_id+'SYMBOL_'+rand+'" ><a style="color: #365582;" onmouseover="this.style.color=\'#Fc7410\'" onmouseout="this.style.color=\'#365582\'" href="'+cnbc_watchlist_detailedquotepage;var table_cell_1_end='</a></div>';var table_cell_2='<div class="wl_last_cell" align="center" id="'+wsodqmrq_id+'LAST_'+rand+'" >Loading...';var table_cell_2_end='</div>';var table_cell_3='<div class="wl_img_cell" align="center" id="'+wsodqmrq_id+'CHANGEARROW_'+rand+'" >';var table_cell_3_end='</div>';var table_cell_4='<div class="wl_chg_cell" align="center" id="'+wsodqmrq_id+'CHANGE_'+rand+'" >';var table_cell_4_end='</div>';var table_cell_5='<div class="wl_perchg_cell" align="left" id="'+wsodqmrq_id+'CHANGEPCT_'+rand+'" >';var table_cell_5_end='</div>';}
+var row;var cell;var watchlistTable=document.getElementById('cnbc_watchlist_data');if(!watchlistTable){return;}
+var numColumns=5;if(cnbc_Watchlist_Display_Mode_checker=='Refresh')
+{div_watchlist_class_begin='<div id="'+wsodqmrq_id+'CONTAINER" class="cnbc_wl_mrq_div bluefont cFont cf11 h23 lh21" onmouseover="mrq_mouseOver(this)" onmouseout="mrq_mouseOut(this)">';}
+else if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker=='')
+{div_watchlist_class_begin='<div id="div_i" id="'+wsodqmrq_id+'CONTAINER" class="cnbc_wlt_div" onmouseover="mrq_mouseOver(this)" onmouseout="mrq_mouseOut(this)">';}
+div_watchlist_class_close='</div>';row=watchlistTable.insertRow(pos);cell=row.insertCell(row.cells.length);if(cnbc_Watchlist_Display_Mode_checker=='Refresh')
+{cell.innerHTML=div_watchlist_class_begin+table_cell_0+escape(symbol.toUpperCase())+'\">'+symbol.toUpperCase()+tabel_cell_0_end+table_cell_1+table_cell_2+table_cell_3+table_cell_4+div_watchlist_class_close;}
+else if(cnbc_Watchlist_Display_Mode_checker=='Original'|cnbc_Watchlist_Display_Mode_checker=='')
+{cell.innerHTML=div_watchlist_class_begin+table_cell_0+tabel_cell_0_end+table_cell_1+escape(symbol)+'\">'+symbol+table_cell_1_end+table_cell_2+table_cell_2_end+table_cell_3+table_cell_3_end+table_cell_4+table_cell_4_end+table_cell_5+table_cell_5_end+div_watchlist_class_close;}
+cnbc_watchlist_showDataTable(true);cnbc_watchlist_showBasePage(false);if(cnbc_Watchlist_Display_Mode_checker=='Refresh')
+{cnbc_watchlist_signedin_no_wl(false);}
+if(getdata==true)
+{cnbc_watchlist_singleSymbol_update(symbol);}}
+function cnbc_watchlist_addSymbol(symbol)
+{if(!cnbc_watchlist_isRegistered())
+{window.location=cnbc_watchlistURL+"main.do";return;}
+if(!cnbc_watchlist_currentList)
+{window.location=cnbc_watchlistURL+"manage.do?Action=addsymbol&symbols="+escape(symbol.toUpperCase());return;}
+cnbc_watchlist_alert_flag=true;cnbc_watchlist_pushSymbol(symbol);cnbc_watchlist_app_pushSymbol(symbol,cnbc_watchlist_getWatchlistId(cnbc_watchlist_currentList));}
+function cnbc_watchlist_getWatchlistId(watchlist)
+{for(var i=0;i<cnbc_watchlist_alllists.length;i++)
+{if(cnbc_watchlist_alllists[i].name.toUpperCase()==watchlist.toUpperCase())
+{return cnbc_watchlist_alllists[i].id;}}}
+function cnbc_watchlist_app_pushSymbol(symbol,watchlist_id)
+{var reqParam="manage.do?Action=addsymbol&symbols="+escape(symbol.toUpperCase())+"&id="+watchlist_id;cnbc_callFlashProxy(cnbc_watchlistURL+reqParam,"",true);}
+function cnbc_watchlist_pushSymbol(symbol)
+{if(!cnbc_watchlist_isRegistered())
+{return;}
+if(cnbc_string_trim(symbol)=='')
+{return;}
+var realtime;if(cnbc_watchlist_realtime=='1')
+{realtime=true;}
+else
+{realtime=false;}
+cnbc_applet_pushSymbol(symbol,realtime,cnbc_wsod_applet_watchlist_key);cnbc_watchlist_addNewRow(0,symbol,true);}
+function cnbc_watchlist_clearcookie()
+{cnbc_eraseCookie(cnbc_watchlist_baseCookieName,"","");cnbc_watchlist_draw(null);}
+function cnbc_mrq_clearcookie()
+{cnbc_eraseCookie(cnbc_mrq_baseCookieName,"","");cnbc_mrq_draw();}
+function cnbc_clearTable(table)
+{var watchlistTable=document.getElementById(table);while(watchlistTable.rows.length>0){watchlistTable.deleteRow(0);}}
+function cnbc_watchlist_createNewList()
+{if(!document.getElementById('cnbc_watchlist_add_textarea'))
+{return;}
+var txt_input=document.getElementById('cnbc_watchlist_add_textarea').value;txt_input=txt_input.toUpperCase();var url=cnbc_watchlistURL+'manage.do?Action=createsettings&symbols=';var symbols=txt_input.split(',');var symbols_string;for(var i=0;i<symbols.length;i++)
+{symbols[i]=(cnbc_string_trim(symbols[i]));}
+symbols_string=symbols.join(',');url+=symbols_string;window.location=url;}
+function cnbc_watchlist_editThisList()
+{if(!cnbc_watchlist_currentList)return;var url=cnbc_watchlistURL+'manage.do?Action=editsettings&id=';url+=cnbc_watchlist_getWatchlistId(cnbc_watchlist_currentList);window.location=url;}
+function cnbc_watchlist_addSymbolsFromTextArea(getid)
+{var txt_input=getid;txt_input=txt_input.toUpperCase();var url=cnbc_watchlistURL+'manage.do?Action=createsettings&symbols=';var symbols=txt_input.split(',');var symbols_string;for(var i=0;i<symbols.length;i++)
+{symbols[i]=(cnbc_string_trim(symbols[i]));}
+symbols_string=symbols.join(',');url+=symbols_string;window.location=url;}
+function cnbc_alphabetical(a,b)
+{var A=a.toLowerCase();var B=b.toLowerCase();if(A<B)return-1;if(A>B)return 1;return 0;}
+function cnbc_numerical(a,b)
+{return(a-b);}
+function cnbc_embedded_WSOD_Symbol_overide()
+{}
+function cnbc_mrq_plug_load(param,validationurl)
+{paramName=param;var symbol=cnbc_getLastSlashValue(paramName);if(!symbol)return;if(symbol!='')
+{symbol=symbol.toUpperCase();symbol=unescape(symbol)
+symbol=cnbc_string_trim(symbol)
+if(symbol!='')
+{cnbc_mrq_validate_andPush(symbol,validationurl);}}}
+function cnbc_getLastSlashValue(paramName)
+{var value;var strHref=window.location.href;if(strHref.indexOf("?")!=-1){value=cnbc_getURLParam(paramName)}
+else{var url=strHref.split("/");if(url.length>0)
+{for(var i=0;i<url.length;i++)
+{if(url[i]=="id")
+{value=url[i+2].toString();break;}}}}
+return value;}
+function cnbc_mrq_validate_andPush(symb,validationurl)
+{var http_request=false;var new_param=symb;if(cnbc_QuoteUrlSuffix.indexOf("ex.htm")!=-1)
+{new_param=cnbc_readCookie("cnbcQuotesSymParamCookie");}
+var url=validationurl+'?symbol='+escape(new_param)+'&requestMethod=getQuickQuote&realtime='+cnbc_mrq_realtime;if(window.XMLHttpRequest){http_request=new XMLHttpRequest();if(http_request.overrideMimeType){http_request.overrideMimeType('text/html');}}else if(window.ActiveXObject){try{http_request=new ActiveXObject("Msxml2.XMLHTTP");}catch(e){try{http_request=new ActiveXObject("Microsoft.XMLHTTP");}catch(e){}}}
+if(!http_request){return false;}
+http_request.onreadystatechange=function(){if(http_request.readyState==4){if(http_request.status==200){var data_string=new String(cnbc_string_trim(http_request.responseText));results=data_string.split("|");if((results.length<4)||(results[1]=='NA'))
+{return;}}
+else
+{return;}}};http_request.open('GET',url,true);http_request.send(null);}
+function cnbc_radiogroup_set_action(form,button)
+{var value;if(button.value.indexOf("|")!=-1)
+{var split=button.value.split("|");cnbc_chart_tab_value=split[1];}
+else{value=button.value}
+form.action=value;}
+function cnbc_quotebox_toggle_action(id_of_selected_span,spanclassRegEx,form,value,data)
+{cnbc_chart_tab_value=data;var arraySpans=document.body.getElementsByTagName("SPAN");var elementObj=document.getElementById(id_of_selected_span);for(var i=0;i<arraySpans.length;i++)
+{if(arraySpans[i].id.match(spanclassRegEx))
+{arraySpans[i].className='cnbc_qbox_opt_unsel';}}
+elementObj.className='cnbc_qbox_opt_sel';document.getElementById(form).action=value;}
+function cnbc_radiogroup_submit_form_with_symbol(form,symbol)
+{var temp=form.action;temp=temp.replace('?q='+escape(symbol),"");temp=temp+'?q='+escape(symbol);form.action=temp;form.submit();}
+function cnbc_radiogroup_submitSlash_form_with_symbol(form,symbol)
+{var temp=form.action;temp=temp.substring(0,(temp.indexOf('/quotes')+7));temp=temp+'/'+escape(symbol)+cnbc_chart_tab_value;form.action=temp;form.submit();}
+function cnbc_watchlist_mrq_master_init(watchlistid,mrqid)
+{var watchlist=document.getElementById(watchlistid);var mrq=document.getElementById(mrqid);cnbc_mrq_id=mrqid;cnbc_watchlist_id=watchlistid;img=new Image();img.src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/watchlist_header_unselectedbg.jpg";img2=new Image();img2.src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/recentquote_header_unselectedbg.jpg";img3=new Image();img3.src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/watchlist_header_selectedbg.jpg";if(cnbc_watchlist_isRegistered())
+{if(cnbc_watchlist_alllists)
+{if(cnbc_watchlist_alllists.length==0)
+{if(!cnbc_readCookie(cnbc_mrq_baseCookieName))
+{watchlist.style.display='block';mrq.style.display='none';cnbc_watchlist_tabselected();}
+else
+{watchlist.style.display='none';mrq.style.display='block';cnbc_mrq_tabselected();}}
+else
+{watchlist.style.display='block';mrq.style.display='none';cnbc_watchlist_tabselected();}}
+else
+{watchlist.style.display='none';mrq.style.display='block';cnbc_mrq_tabselected();}}
+else
+{if(!cnbc_readCookie(cnbc_mrq_baseCookieName))
+{watchlist.style.display='block';mrq.style.display='none';cnbc_watchlist_tabselected();}
+else
+{watchlist.style.display='none';mrq.style.display='block';cnbc_mrq_tabselected();}}}
+function cnbc_watchlist_mrq_master_toggle(onid,offid)
+{var on=document.getElementById(onid);on.style.display="block";var off=document.getElementById(offid);off.style.display="none";}
+function cnbc_get_gmt_time()
+{var curDateTime=new Date();var curHour=curDateTime.getHours();+curDateTime.getTimezoneOffset()/60;if(curHour>24)curHour-=24;if(curHour<0)curHour+=24;var curMin=curDateTime.getMinutes();var curTime=((curHour<10)?"0":"")+curHour+":"
++((curMin<10)?"0":"")+curMin;return curTime;}
+function cnbc_master_service_pushSymbols(symbols,realtime)
+{var ar=symbols.split(',');if(realtime==true)
+{if(!cnbc_master_service_realtime_symbols)
+{cnbc_master_service_realtime_symbols=new Array();}
+for(var i=0;i<ar.length;i++)
+{if(!(cnbc_arrayHas(cnbc_master_service_realtime_symbols,escape(ar[i])))&&(ar[i]!=''))
+{cnbc_master_service_realtime_symbols.push(escape(ar[i]));cnbc_master_service_realtime_symbols.sort(cnbc_alphabetical);}}}
+else
+{if(!cnbc_master_service_notrealtime_symbols)
+{cnbc_master_service_notrealtime_symbols=new Array();}
+for(var i=0;i<ar.length;i++)
+{if(!(cnbc_arrayHas(cnbc_master_service_notrealtime_symbols,escape(ar[i])))&&(ar[i]!=''))
+{cnbc_master_service_notrealtime_symbols.push(escape(ar[i]));cnbc_master_service_notrealtime_symbols.sort(cnbc_alphabetical);}}}}
+function cnbc_master_service_pushSymbol(symbol,realtime)
+{if(realtime==true)
+{if(!cnbc_master_service_realtime_symbols)
+{cnbc_master_service_realtime_symbols=new Array();}
+if(!(cnbc_arrayHas(cnbc_master_service_realtime_symbols,escape(symbol))))
+{cnbc_master_service_realtime_symbols.push(escape(symbol));cnbc_master_service_realtime_symbols.sort(cnbc_alphabetical);}}
+else
+{if(!cnbc_master_service_notrealtime_symbols)
+{cnbc_master_service_notrealtime_symbols=new Array();}
+if(!(cnbc_arrayHas(cnbc_master_service_notrealtime_symbols,escape(symbol))))
+{cnbc_master_service_notrealtime_symbols.push(escape(symbol));cnbc_master_service_notrealtime_symbols.sort(cnbc_alphabetical);}}}
+function cnbc_arrayHas(ar,elem)
+{var retval=false;if(!ar)return retval;for(var i=0;i<ar.length;i++)
+{if(ar[i].toUpperCase()==elem.toUpperCase())return true;}
+return retval;}
+function cnbc_master_service_update(time)
+{if(time)cnbc_master_service_interval_time=time;cnbc_wsod_registerPollFunction(cnbc_master_service_start_poll);cnbc_wsod_registerStopPollFunction(cnbc_master_service_stop_poll);}
+function cnbc_master_service_call()
+{var url;if(!cnbc_master_service_realtime_symbols&&!cnbc_master_service_notrealtime_symbols)return;if(!cnbc_updatesOn())
+{cnbc_wsod_stopPolls();return;}
+if(!cnbc_master_service_ar)
+{cnbc_master_service_evalarray();}
+if((cnbc_master_service_realtime_symbols)&&(cnbc_master_rt_toggle==true))
+{url=cnbc_quoteComponent_generate_req(cnbc_master_service_realtime_symbols,true);cnbc_master_rt_toggle=false;cnbc_callFlashProxy(url,cnbc_master_service_ar[1].join('|'),false);return;}
+else if((!cnbc_master_service_realtime_symbols)&&(cnbc_master_rt_toggle==true))
+{cnbc_master_rt_toggle=false;}
+if((cnbc_master_service_notrealtime_symbols)&&(cnbc_master_rt_toggle==false))
+{url=cnbc_quoteComponent_generate_req(cnbc_master_service_notrealtime_symbols,false);cnbc_master_rt_toggle=true;cnbc_callFlashProxy(url,cnbc_master_service_ar[0].join('|'),false);return;}
+else if((!cnbc_master_service_notrealtime_symbols)&&(cnbc_master_rt_toggle==false))
+{cnbc_master_rt_toggle=true;}}
+function cnbc_quoteComponent_generate_req(ar,realtime)
+{var url;if(cnbc_quoteService_url.indexOf("ex.htm")!=-1)
+{url=cnbc_quoteService_url+'?partnerId='+cnbc_QuoteURLPartnerID+'&authkey='+cnbc_readCookie("cnbcQuotesAuthKeyCookie")+'&symbols='+ar+'&requestMethod=quick&noform=1&client='+client;}
+else
+{url=cnbc_quoteService_url+'?&symbols='+ar.join('|')+'&requestMethod=quick&noform=1&client='+client;}
+if(realtime=='true')
+{url+='&realtime=1';}
+else
+{url+='&realtime=0';}
+return url;}
+function cnbc_quoteComponent_generate_reqs_url(ar,realtime,flag,client,maskParam,methodParam)
+{var url;if(methodParam==null)
+{methodParam="quick";}
+var switchurl;if(flag=="false")
+{switchurl=cnbc_quoteService_url;}
+else
+{switchurl=cnbc_fvquoteService_url;}
+if(switchurl.indexOf("ex.htm")!=-1)
+{url=switchurl+'?partnerId='+cnbc_QuoteURLPartnerID+'&authkey='+cnbc_readCookie("cnbcQuotesAuthKeyCookie")+'&symbols='+ar+'&requestMethod='+methodParam+'&noform=1';}
+else
+{url=switchurl+'?&symbols='+ar+'&requestMethod='+methodParam+'&noform=1';}
+if(realtime=='true')
+{url+='&realtime=1';}
+else
+{url+='&realtime=0';}
+if(client!=null)
+{url+='&client='+client;}
+if(maskParam!=null)
+{url+='&extendedMask='+maskParam;}
+return url;}
+function cnbc_master_service_evalarray()
+{cnbc_master_service_ar=new Array();var arraySpans=document.body.getElementsByTagName("SPAN");var debugText='';var tempid;cnbc_master_service_ar[0]=new Array();cnbc_master_service_ar[1]=new Array();for(var i=0;i<arraySpans.length;i++)
+{if(cnbc_startsWith(arraySpans[i].id,'WSODQ_')==true)
+{tempid=arraySpans[i].id;if(tempid.split('_')[3]=='0')
+{cnbc_master_service_ar[0].push(arraySpans[i].id);}
+else
+{cnbc_master_service_ar[1].push(arraySpans[i].id);}}}}
+function cnbc_startsWith(str,sect)
+{var strvalue=str.toUpperCase();var section=sect.toUpperCase();strvalue=cnbc_string_trim(strvalue);section=cnbc_string_trim(section);strvalue=strvalue.substring(0,section.length);return(strvalue==section);}
+function cnbc_string_trim(str)
+{var new_str=str.replace(/^\s*|\s*$/g,"");return new_str;}
+function cnbc_createQuoteObj(xml)
+{var string=xml;var results
+try{results=eval('('+string+')');}
+catch(e){return;}
+var total_quotes=results.QuickQuoteResult.QuickQuote.length;var intCount=0;if(total_quotes)
+intCount=total_quotes;else
+intCount=1;var quotes=new Array();var intLoop;var jsonObject=results.QuickQuoteResult;var symbol,code,change,change_pct,volume,last,openn,high,low,last_time,exchange,provider,namee,realTime,source,currencycode,timezone;var curmktstatus,ext_volume,ext_last,ext_type,ext_last_time,ext_change_pct,ext_change,ext_exchange,ext_source,ext_timezone;for(intLoop=0;intLoop<intCount;intLoop++)
+{if(intCount>1)
+{symbol=jsonObject.QuickQuote[intLoop].symbol;code=jsonObject.QuickQuote[intLoop].code;change=jsonObject.QuickQuote[intLoop].change;change_pct=jsonObject.QuickQuote[intLoop].change_pct;volume=jsonObject.QuickQuote[intLoop].volume;last=jsonObject.QuickQuote[intLoop].last;openn=jsonObject.QuickQuote[intLoop].open;high=jsonObject.QuickQuote[intLoop].high;low=jsonObject.QuickQuote[intLoop].low;last_time=jsonObject.QuickQuote[intLoop].last_time;exchange=jsonObject.QuickQuote[intLoop].exchange;provider=jsonObject.QuickQuote[intLoop].provider;namee=jsonObject.QuickQuote[intLoop].name;realTime=jsonObject.QuickQuote[intLoop].realTime;source=jsonObject.QuickQuote[intLoop].source;curmktstatus=jsonObject.QuickQuote[intLoop].curmktstatus;currencycode=jsonObject.QuickQuote[intLoop].currencyCode;timezone=jsonObject.QuickQuote[intLoop].timeZone;if(jsonObject.QuickQuote[intLoop].ExtendedMktQuote!=null)
+{ext_volume=jsonObject.QuickQuote[intLoop].ExtendedMktQuote.volume;ext_last=jsonObject.QuickQuote[intLoop].ExtendedMktQuote.last;ext_type=jsonObject.QuickQuote[intLoop].ExtendedMktQuote.type;ext_last_time=jsonObject.QuickQuote[intLoop].ExtendedMktQuote.last_time;ext_change_pct=jsonObject.QuickQuote[intLoop].ExtendedMktQuote.change_pct;ext_change=jsonObject.QuickQuote[intLoop].ExtendedMktQuote.change;ext_exchange=jsonObject.QuickQuote[intLoop].ExtendedMktQuote.exchange;ext_source=jsonObject.QuickQuote[intLoop].ExtendedMktQuote.source;ext_timezone=jsonObject.QuickQuote[intLoop].ExtendedMktQuote.timeZone;}}
+else
+{symbol=jsonObject.QuickQuote.symbol;code=jsonObject.QuickQuote.code;change=jsonObject.QuickQuote.change;change_pct=jsonObject.QuickQuote.change_pct;volume=jsonObject.QuickQuote.volume;last=jsonObject.QuickQuote.last;openn=jsonObject.QuickQuote.open;high=jsonObject.QuickQuote.high;low=jsonObject.QuickQuote.low;last_time=jsonObject.QuickQuote.last_time;exchange=jsonObject.QuickQuote.exchange;provider=jsonObject.QuickQuote.provider;namee=jsonObject.QuickQuote.name;realTime=jsonObject.QuickQuote.realTime;source=jsonObject.QuickQuote.source;curmktstatus=jsonObject.QuickQuote.curmktstatus;currencycode=jsonObject.QuickQuote.currencyCode;timezone=jsonObject.QuickQuote.timeZone;if(jsonObject.QuickQuote.ExtendedMktQuote!=null)
+{ext_volume=jsonObject.QuickQuote.ExtendedMktQuote.volume;ext_last=jsonObject.QuickQuote.ExtendedMktQuote.last;ext_type=jsonObject.QuickQuote.ExtendedMktQuote.type;ext_last_time=jsonObject.QuickQuote.ExtendedMktQuote.last_time;ext_change_pct=jsonObject.QuickQuote.ExtendedMktQuote.change_pct;ext_change=jsonObject.QuickQuote.ExtendedMktQuote.change;ext_exchange=jsonObject.QuickQuote.ExtendedMktQuote.exchange;ext_source=jsonObject.QuickQuote.ExtendedMktQuote.source;ext_timezone=jsonObject.QuickQuote.ExtendedMktQuote.timeZone;}}
+var symbol_=new String(symbol.replace('&amp;','&'));var key=symbol_.toUpperCase();quotes[key]=new Array();quotes[key]['SYMBOL']=new Array(symbol.replace('&amp;','&'));quotes[key]['CODE']=new Array(code);quotes[key]['CHANGE']=new Array(change);quotes[key]['CHANGEPCT']=new Array(change_pct);quotes[key]['VOLUME']=new Array(volume);quotes[key]['LAST']=new Array(last);quotes[key]['OPEN']=new Array(openn);quotes[key]['HIGH']=new Array(high);quotes[key]['LOW']=new Array(low);quotes[key]['LASTTIME']=new Array(last_time);quotes[key]['EXCHANGE']=new Array(exchange);quotes[key]['PROVIDER']=new Array(provider);quotes[key]['NAME']=new Array(namee);quotes[key]['REALTIME']=new Array(realTime);quotes[key]['SOURCE']=new Array(source);quotes[key]['CURMKTSTATUS']=new Array(curmktstatus);quotes[key]['CURRENCYCODE']=new Array(currencycode);quotes[key]['TIMEZONE']=new Array(timezone);quotes[key]['EXTVOLUME']=new Array(ext_volume);quotes[key]['EXTLAST']=new Array(ext_last);quotes[key]['EXTTYPE']=new Array(ext_type);quotes[key]['EXTLASTTIME']=new Array(ext_last_time);quotes[key]['EXTCHANGEPCT']=new Array(ext_change_pct);quotes[key]['EXTCHANGE']=new Array(ext_change);quotes[key]['EXTEXCHANGE']=new Array(ext_exchange);quotes[key]['EXTSOURCE']=new Array(ext_source);quotes[key]['EXTTIMEZONE']=new Array(ext_timezone);}
+return quotes;}
+function cnbc_createFVQuoteObj(xml)
+{var string=xml;var results
+try{results=eval('('+string+')');}
+catch(e){return;}
+var total_quotes=results.FairValueQuoteResult.FairValueQuote.length;var intCount=0;if(total_quotes)
+intCount=total_quotes;else
+intCount=1;var quotes=new Array();var intLoop;var jsonObject=results.FairValueQuoteResult;var symbol,code,change,change_pct,volume,last,openn,high,low,last_time,exchange,provider,namee,realTime,index_close,fv_close,fv_change,fv_spread,source;for(intLoop=0;intLoop<intCount;intLoop++)
+{if(intCount>1)
+{symbol=jsonObject.FairValueQuote[intLoop].symbol;code=jsonObject.FairValueQuote[intLoop].code;change=jsonObject.FairValueQuote[intLoop].change;change_pct=jsonObject.FairValueQuote[intLoop].change_pct;volume=jsonObject.FairValueQuote[intLoop].volume;last=jsonObject.FairValueQuote[intLoop].last;openn=jsonObject.FairValueQuote[intLoop].open;high=jsonObject.FairValueQuote[intLoop].high;low=jsonObject.FairValueQuote[intLoop].low;last_time=jsonObject.FairValueQuote[intLoop].last_time;exchange=jsonObject.FairValueQuote[intLoop].exchange;provider=jsonObject.FairValueQuote[intLoop].provider;namee=jsonObject.FairValueQuote[intLoop].name;index_close=jsonObject.FairValueQuote[intLoop].index_close;fv_close=jsonObject.FairValueQuote[intLoop].fv_close;fv_change=jsonObject.FairValueQuote[intLoop].fv_change;fv_spread=jsonObject.FairValueQuote[intLoop].fv_spread;realTime=jsonObject.FairValueQuote[intLoop].realTime;source=jsonObject.FairValueQuote[intLoop].source;}
+else
+{symbol=jsonObject.FairValueQuote.symbol;code=jsonObject.FairValueQuote.code;change=jsonObject.FairValueQuote.change;change_pct=jsonObject.FairValueQuote.change_pct;volume=jsonObject.FairValueQuote.volume;last=jsonObject.FairValueQuote.last;openn=jsonObject.FairValueQuote.open;high=jsonObject.FairValueQuote.high;low=jsonObject.FairValueQuote.low;last_time=jsonObject.FairValueQuote.last_time;exchange=jsonObject.FairValueQuote.exchange;provider=jsonObject.FairValueQuote.provider;namee=jsonObject.FairValueQuote.name;index_close=jsonObject.FairValueQuote.index_close;fv_close=jsonObject.FairValueQuote.fv_close;fv_change=jsonObject.FairValueQuote.fv_change;fv_spread=jsonObject.FairValueQuote.fv_spread;realTime=jsonObject.FairValueQuote.realTime;source=jsonObject.FairValueQuote.source;}
+var symbol_=new String(symbol.replace('&amp;','&'));var key=symbol_.toUpperCase();quotes[key]=new Array();quotes[key]['SYMBOL']=new Array(symbol.replace('&amp;','&'));quotes[key]['CODE']=new Array(code);quotes[key]['CHANGE']=new Array(change);quotes[key]['CHANGEPCT']=new Array(change_pct);quotes[key]['VOLUME']=new Array(volume);quotes[key]['LAST']=new Array(last);quotes[key]['OPEN']=new Array(openn);quotes[key]['HIGH']=new Array(high);quotes[key]['LOW']=new Array(low);quotes[key]['LASTTIME']=new Array(last_time);quotes[key]['EXCHANGE']=new Array(exchange);quotes[key]['PROVIDER']=new Array(provider);quotes[key]['NAME']=new Array(namee);quotes[key]['INDEX_CLOSE']=new Array(index_close);quotes[key]['FV_CLOSE']=new Array(fv_close);quotes[key]['FV_CHANGE']=new Array(fv_change);quotes[key]['FV_SPREAD']=new Array(fv_spread);quotes[key]['REALTIME']=new Array(realTime);quotes[key]['SOURCE']=new Array(source);}
+return quotes;}
+function cnbc_createQuoteObjExtend(xml)
+{var string=xml;var results
+try
+{results=eval('('+string+')');}
+catch(e)
+{return;}
+var total_quotes=results.ExtendedQuoteResult.ExtendedQuote.length;;var intCount=0;if(total_quotes)
+{intCount=total_quotes;}
+else
+{intCount=1;}
+var quotes=new Array();var intLoop;var jsonObject=results.ExtendedQuoteResult.ExtendedQuote;var symbol,code,change,change_pct,volume,last,openn,high,low,last_time,exchange,provider,namee,realTime,source;var curmktstatus,ext_volume,ext_last,ext_type,ext_last_time,ext_change_pct,ext_change;var video,guest;for(intLoop=0;intLoop<intCount;intLoop++)
+{if(intCount>1)
+{symbol=jsonObject[intLoop].QuickQuote.symbol;code=jsonObject[intLoop].QuickQuote.code;change=jsonObject[intLoop].QuickQuote.change;change_pct=jsonObject[intLoop].QuickQuote.change_pct;volume=jsonObject[intLoop].QuickQuote.volume;last=jsonObject[intLoop].QuickQuote.last;openn=jsonObject[intLoop].QuickQuote.open;high=jsonObject[intLoop].QuickQuote.high;low=jsonObject[intLoop].QuickQuote.low;last_time=jsonObject[intLoop].QuickQuote.last_time;exchange=jsonObject[intLoop].QuickQuote.exchange;provider=jsonObject[intLoop].QuickQuote.provider;namee=jsonObject[intLoop].QuickQuote.name;realTime=jsonObject[intLoop].QuickQuote.realTime;source=jsonObject[intLoop].QuickQuote.source;if(jsonObject[intLoop].VideoAlerts!=null)
+{video=cnbcVideoAlertFormat(jsonObject[intLoop].VideoAlerts);}
+else
+{video="false";}
+if(jsonObject[intLoop].GuestAlerts!=null)
+{guest=cnbcGuestAlertFormat(jsonObject[intLoop].GuestAlerts);}
+else
+{guest="false";}}
+else
+{symbol=jsonObject.QuickQuote.symbol;code=jsonObject.QuickQuote.code;change=jsonObject.QuickQuote.change;change_pct=jsonObject.QuickQuote.change_pct;volume=jsonObject.QuickQuote.volume;last=jsonObject.QuickQuote.last;openn=jsonObject.QuickQuote.open;high=jsonObject.QuickQuote.high;low=jsonObject.QuickQuote.low;last_time=jsonObject.QuickQuote.last_time;exchange=jsonObject.QuickQuote.exchange;provider=jsonObject.QuickQuote.provider;namee=jsonObject.QuickQuote.name;realTime=jsonObject.QuickQuote.realTime;source=jsonObject.QuickQuote.source;curmktstatus=jsonObject.QuickQuote.curmktstatus;if(jsonObject.QuickQuote.ExtendedMktQuote!=null)
+{ext_volume=jsonObject.QuickQuote.ExtendedMktQuote.volume;ext_last=jsonObject.QuickQuote.ExtendedMktQuote.last;ext_type=jsonObject.QuickQuote.ExtendedMktQuote.type;ext_last_time=jsonObject.QuickQuote.ExtendedMktQuote.last_time;ext_change_pct=jsonObject.QuickQuote.ExtendedMktQuote.change_pct;ext_change=jsonObject.QuickQuote.ExtendedMktQuote.change;}
+if(jsonObject.VideoAlerts!=null)
+{video=cnbcVideoAlertFormat(jsonObject.VideoAlerts);}
+else
+{video="false";}
+if(jsonObject.GuestAlerts!=null)
+{guest=cnbcGuestAlertFormat(jsonObject.GuestAlerts);}
+else
+{guest="false";}}
+var symbol_=new String(symbol.replace('&amp;','&'));var key=symbol_.toUpperCase();quotes[key]=new Array();quotes[key]['SYMBOL']=new Array(symbol.replace('&amp;','&'));quotes[key]['CODE']=new Array(code);quotes[key]['CHANGE']=new Array(change);quotes[key]['CHANGEPCT']=new Array(change_pct);quotes[key]['VOLUME']=new Array(volume);quotes[key]['LAST']=new Array(last);quotes[key]['OPEN']=new Array(openn);quotes[key]['HIGH']=new Array(high);quotes[key]['LOW']=new Array(low);quotes[key]['LASTTIME']=new Array(last_time);quotes[key]['EXCHANGE']=new Array(exchange);quotes[key]['PROVIDER']=new Array(provider);quotes[key]['NAME']=new Array(namee);quotes[key]['REALTIME']=new Array(realTime);quotes[key]['SOURCE']=new Array(source);quotes[key]['VIDEOALERT']=new Array(video);quotes[key]['GUESTALERT']=new Array(guest);}
+return quotes;}
+function cnbcVideoAlertFormat(obj)
+{var videoArray=new Array();var video;videoArray.push(obj);for(var i=0;i<videoArray.length;i++)
+{if(i==0)
+{video="true|"+videoArray[i].VideoAlert.link+"|"+videoArray[i].VideoAlert.title;break;}}
+return video;}
+function cnbcGuestAlertFormat(obj)
+{var guestArray=new Array();var guest;guestArray.push(obj);for(var i=0;i<guestArray.length;i++)
+{if(i==0)
+{guest="true|"+cnbc_Capitalize(guestArray[i].GuestAlert.fname+" "+guestArray[i].GuestAlert.lname);break;}}
+return guest;}
+function submitEnterSlash(symbol,event)
+{var temp;temp=symbol.action;var keycode;if(window.event)keycode=window.event.keyCode;if(keycode==13||event.which==13)
+{temp=temp.substring(0,(temp.indexOf('/quotes')+7));temp=temp+'/'+escape(event)+cnbc_chart_tab_value;symbol.action=temp;symbol.submit();}}
+function submitenter(symbol,event)
+{var temp;temp=symbol.action;var keycode;if(window.event)keycode=window.event.keyCode;if(temp.indexOf('?q=')!=-1)temp=temp.substr(0,temp.indexOf('?q='));if(keycode==13)
+{temp=temp+'?q='+escape(event);symbol.action=temp;symbol.submit();}
+else if(event.which==13)
+{temp=temp+'?q='+escape(event);symbol.action=temp;symbol.submit();}}
+function cnbc_watchlist_tabselected()
+{var watchlist_tab=document.getElementById("comp_wl");var mrq_tab=document.getElementById("comp_mrq");cnbc_swapClass(watchlist_tab,'cnbc_tab_sel');cnbc_swapClass(mrq_tab,'cnbc_tab_mrq_unsel');document.getElementById("wl_link").style.color="#393939";document.getElementById("mrq_link").style.color="#FFFFFF";}
+function cnbc_mrq_tabselected()
+{var watchlist_tab=document.getElementById("comp_wl");var mrq_tab=document.getElementById("comp_mrq");cnbc_swapClass(mrq_tab,'cnbc_tab_sel');cnbc_swapClass(watchlist_tab,'cnbc_tabwlt_unsel');document.getElementById("wl_link").style.color="#FFFFFF";document.getElementById("mrq_link").style.color="#393939";}
+function cnbc_swapClass(element,classname)
+{var old=element.className;var temp=old.split(" ");temp.pop();temp.push(classname);element.className=temp.join(" ");}
+function cnbc_watchlist_switchWatchlistAndDraw(watchlist)
+{var req;if(!cnbc_watchlist_isRegistered())
+{return;}
+var username="";if(cnbc_readCookie(cnbc_login_cookie2))
+{var emembercookie=cnbc_readCookie(cnbc_login_cookie2);var temp=remembercookie.split(":");username=escape(temp[0]);}
+else
+{username=escape(cnbc_readCookie(cnbc_login_cookie));}
+if(window.XMLHttpRequest)
+{req=new XMLHttpRequest();try{netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");}catch(e){}}
+else if(window.ActiveXObject)
+{req=new ActiveXObject("Microsoft.XMLHTTP");}
+if(req)
+{req.onreadystatechange=function(){if(req.readyState==4)
+{if(req.status==200)
+{cnbc_watchlist_getSymbolsForWatchlist_processReq(req.responseText,watchlist);}}}
+req.open("GET",cnbc_watchlist_cms_url+"?watchlistid="+cnbc_watchlist_getWatchlistId(watchlist));req.send(null);}}
+function cnbc_watchlist_getSymbolsForWatchlist_processReq(jsonText,watchlist)
+{var result_ar=new Array();if(jsonText=='')return;if(!cnbc_watchlist_alllist_symbols)cnbc_watchlist_alllist_symbols=new Array();var string=jsonText;string=string.replace('cnbc-watchlist-response',"cnbc_watchlist_response");string=string.replace('error-code',"error_code");string=string.replace('error-message',"error_message");var temp_obj;var temp_wl;var results
+try{results=eval('('+string+')');}
+catch(e){return;}
+if(results.cnbc_watchlist_response.error_code)
+{if(results.cnbc_watchlist_response.error_code=='1')
+{return;}}
+cnbc_watchlist_alllist_symbols[results.cnbc_watchlist_response.data.watchlist[0].name]=new Array;var total_symbols=results.cnbc_watchlist_response.data.watchlist[0].symbolList.length;for(var j=0;j<total_symbols;++j)
+{temp_obj=new cnbc_watchlist_symbol(cnbc_string_trim(results.cnbc_watchlist_response.data.watchlist[0].symbolList[j].symbolName.toUpperCase()),results.cnbc_watchlist_response.data.watchlist[0].symbolList[j].last,results.cnbc_watchlist_response.data.watchlist[0].symbolList[j].change,results.cnbc_watchlist_response.data.watchlist[0].symbolList[j].change_pct)
+cnbc_watchlist_alllist_symbols[results.cnbc_watchlist_response.data.watchlist[0].name].push(temp_obj);}
+cnbc_watchlist_draw(watchlist);cnbc_watchlist_applet_pushAllSymbols(watchlist);}
+function cnbc_watchlist_getSymbols_processReq(jsonText,watchlist)
+{var result_ar=new Array();if(jsonText=='')return;cnbc_watchlist_alllist_symbols=new Array();cnbc_watchlist_alllists=new Array();var string=jsonText;string=string.replace('cnbc-watchlist-response',"cnbc_watchlist_response");string=string.replace('error-code',"error_code");string=string.replace('error-message',"error_message");var temp_obj;var temp_wl;var results
+try{results=eval('('+string+')');}
+catch(e){return;}
+if(results.cnbc_watchlist_response.error_code)
+{if(results.cnbc_watchlist_response.error_code=='1')
+{return;}}
+var total_watchlists=results.cnbc_watchlist_response.data.watchlist.length;if(total_watchlists>0)
+{cnbc_watchlist_defaultlist=results.cnbc_watchlist_response.data.watchlist[0].name;}
+for(var i=0;i<total_watchlists;++i)
+{cnbc_watchlist_alllist_symbols[results.cnbc_watchlist_response.data.watchlist[i].name]=new Array;temp_wl=new cnbc_watchlist_list(results.cnbc_watchlist_response.data.watchlist[i].name,results.cnbc_watchlist_response.data.watchlist[i].id);cnbc_watchlist_alllists.push(temp_wl);var total_symbols=results.cnbc_watchlist_response.data.watchlist[i].symbolList.length;for(var j=0;j<total_symbols;++j)
+{temp_obj=new cnbc_watchlist_symbol(cnbc_string_trim(results.cnbc_watchlist_response.data.watchlist[i].symbolList[j].symbolName.toUpperCase()),results.cnbc_watchlist_response.data.watchlist[i].symbolList[j].last,results.cnbc_watchlist_response.data.watchlist[i].symbolList[j].change,results.cnbc_watchlist_response.data.watchlist[i].symbolList[j].change_pct);cnbc_watchlist_alllist_symbols[results.cnbc_watchlist_response.data.watchlist[i].name].push(temp_obj);}}
+cnbc_watchlist_draw(watchlist);cnbc_watchlist_applet_pushAllSymbols(watchlist);}
+function cnbc_watchlist_create_symbolList()
+{if(!cnbc_watchlist_alllist_symbols)cnbc_watchlist_alllist_symbols=new Array();}
+function cnbc_watchlist_getSymbolNames(watchlist_)
+{var watchlist=watchlist_;var symbols=new Array();if(watchlist==null)
+{if(!cnbc_watchlist_defaultlist)
+{return null;}
+watchlist=cnbc_watchlist_defaultlist;}
+if(!cnbc_watchlist_alllist_symbols[watchlist])
+{return null;}
+for(var i=0;i<cnbc_watchlist_alllist_symbols[watchlist].length;i++)
+{symbols.push(cnbc_watchlist_alllist_symbols[watchlist][i].name);}
+return symbols;}
+function cnbc_watchlist_getSymbolsData(watchlist_)
+{var watchlist=watchlist_;var symbols=new Array();if(watchlist==null)
+{if(!cnbc_watchlist_defaultlist)
+{return null;}
+watchlist=cnbc_watchlist_defaultlist;}
+if(!cnbc_watchlist_alllist_symbols[watchlist])
+{return null;}
+for(var i=0;i<cnbc_watchlist_alllist_symbols[watchlist].length;i++)
+{symbols.push(cnbc_watchlist_alllist_symbols[watchlist][i]);}
+return symbols;}
+function cnbc_watchlist_symbol(name,last,change,change_pct)
+{this.name=name;this.last=last;this.change=change;this.change_pct=change_pct;}
+function cnbc_watchlist_list(name,id)
+{this.name=name;this.id=id;}
+function cnbc_watchlist_initialPopulateAllData(watchlist)
+{var symbols=cnbc_watchlist_getSymbolsData(watchlist);var watchlist=document.getElementById(cnbc_watchlist_id)
+var mrq=document.getElementById(cnbc_mrq_id);if((watchlist)&&(mrq)&&(cnbc_watchlist_firstLoad))
+{if(cnbc_watchlist_alllists.length>0)
+{watchlist.style.display='inline';mrq.style.display='none';watchlist.className='tab_sel fL';cnbc_watchlist_tabselected();}}
+if(!symbols)
+{return;}
+var wl_ar=cnbc_watchlist_getAllDiv();for(var i=0;i<symbols.length;i++)
+{cnbc_watchlist_populatedata(escape(symbols[i].name),symbols[i].last,symbols[i].change,symbols[i].change_pct,wl_ar);}}
+function cnbc_HtmlDecode(s)
+{var out="";if(s==null)return;var l=s.length;for(var i=0;i<l;i++)
+{var ch=s.charAt(i);if(ch=='&')
+{var semicolonIndex=s.indexOf(';',i+1);if(semicolonIndex>0)
+{var entity=s.substring(i+1,semicolonIndex);if(entity.length>1&&entity.charAt(0)=='#')
+{if(entity.charAt(1)=='x'||entity.charAt(1)=='X')
+ch=String.fromCharCode(eval('0'+entity.substring(1)));else
+ch=String.fromCharCode(eval(entity.substring(1)));}
+else
+{switch(entity)
+{case'quot':ch=String.fromCharCode(0x0022);break;case'amp':ch=String.fromCharCode(0x0026);break;case'lt':ch=String.fromCharCode(0x003c);break;case'gt':ch=String.fromCharCode(0x003e);break;case'nbsp':ch=String.fromCharCode(0x00a0);break;case'iexcl':ch=String.fromCharCode(0x00a1);break;case'cent':ch=String.fromCharCode(0x00a2);break;case'pound':ch=String.fromCharCode(0x00a3);break;case'curren':ch=String.fromCharCode(0x00a4);break;case'yen':ch=String.fromCharCode(0x00a5);break;case'brvbar':ch=String.fromCharCode(0x00a6);break;case'sect':ch=String.fromCharCode(0x00a7);break;case'uml':ch=String.fromCharCode(0x00a8);break;case'copy':ch=String.fromCharCode(0x00a9);break;case'ordf':ch=String.fromCharCode(0x00aa);break;case'laquo':ch=String.fromCharCode(0x00ab);break;case'not':ch=String.fromCharCode(0x00ac);break;case'shy':ch=String.fromCharCode(0x00ad);break;case'reg':ch=String.fromCharCode(0x00ae);break;case'macr':ch=String.fromCharCode(0x00af);break;case'deg':ch=String.fromCharCode(0x00b0);break;case'plusmn':ch=String.fromCharCode(0x00b1);break;case'sup2':ch=String.fromCharCode(0x00b2);break;case'sup3':ch=String.fromCharCode(0x00b3);break;case'acute':ch=String.fromCharCode(0x00b4);break;case'micro':ch=String.fromCharCode(0x00b5);break;case'para':ch=String.fromCharCode(0x00b6);break;case'middot':ch=String.fromCharCode(0x00b7);break;case'cedil':ch=String.fromCharCode(0x00b8);break;case'sup1':ch=String.fromCharCode(0x00b9);break;case'ordm':ch=String.fromCharCode(0x00ba);break;case'raquo':ch=String.fromCharCode(0x00bb);break;case'frac14':ch=String.fromCharCode(0x00bc);break;case'frac12':ch=String.fromCharCode(0x00bd);break;case'frac34':ch=String.fromCharCode(0x00be);break;case'iquest':ch=String.fromCharCode(0x00bf);break;case'Agrave':ch=String.fromCharCode(0x00c0);break;case'Aacute':ch=String.fromCharCode(0x00c1);break;case'Acirc':ch=String.fromCharCode(0x00c2);break;case'Atilde':ch=String.fromCharCode(0x00c3);break;case'Auml':ch=String.fromCharCode(0x00c4);break;case'Aring':ch=String.fromCharCode(0x00c5);break;case'AElig':ch=String.fromCharCode(0x00c6);break;case'Ccedil':ch=String.fromCharCode(0x00c7);break;case'Egrave':ch=String.fromCharCode(0x00c8);break;case'Eacute':ch=String.fromCharCode(0x00c9);break;case'Ecirc':ch=String.fromCharCode(0x00ca);break;case'Euml':ch=String.fromCharCode(0x00cb);break;case'Igrave':ch=String.fromCharCode(0x00cc);break;case'Iacute':ch=String.fromCharCode(0x00cd);break;case'Icirc':ch=String.fromCharCode(0x00ce);break;case'Iuml':ch=String.fromCharCode(0x00cf);break;case'ETH':ch=String.fromCharCode(0x00d0);break;case'Ntilde':ch=String.fromCharCode(0x00d1);break;case'Ograve':ch=String.fromCharCode(0x00d2);break;case'Oacute':ch=String.fromCharCode(0x00d3);break;case'Ocirc':ch=String.fromCharCode(0x00d4);break;case'Otilde':ch=String.fromCharCode(0x00d5);break;case'Ouml':ch=String.fromCharCode(0x00d6);break;case'times':ch=String.fromCharCode(0x00d7);break;case'Oslash':ch=String.fromCharCode(0x00d8);break;case'Ugrave':ch=String.fromCharCode(0x00d9);break;case'Uacute':ch=String.fromCharCode(0x00da);break;case'Ucirc':ch=String.fromCharCode(0x00db);break;case'Uuml':ch=String.fromCharCode(0x00dc);break;case'Yacute':ch=String.fromCharCode(0x00dd);break;case'THORN':ch=String.fromCharCode(0x00de);break;case'szlig':ch=String.fromCharCode(0x00df);break;case'agrave':ch=String.fromCharCode(0x00e0);break;case'aacute':ch=String.fromCharCode(0x00e1);break;case'acirc':ch=String.fromCharCode(0x00e2);break;case'atilde':ch=String.fromCharCode(0x00e3);break;case'auml':ch=String.fromCharCode(0x00e4);break;case'aring':ch=String.fromCharCode(0x00e5);break;case'aelig':ch=String.fromCharCode(0x00e6);break;case'ccedil':ch=String.fromCharCode(0x00e7);break;case'egrave':ch=String.fromCharCode(0x00e8);break;case'eacute':ch=String.fromCharCode(0x00e9);break;case'ecirc':ch=String.fromCharCode(0x00ea);break;case'euml':ch=String.fromCharCode(0x00eb);break;case'igrave':ch=String.fromCharCode(0x00ec);break;case'iacute':ch=String.fromCharCode(0x00ed);break;case'icirc':ch=String.fromCharCode(0x00ee);break;case'iuml':ch=String.fromCharCode(0x00ef);break;case'eth':ch=String.fromCharCode(0x00f0);break;case'ntilde':ch=String.fromCharCode(0x00f1);break;case'ograve':ch=String.fromCharCode(0x00f2);break;case'oacute':ch=String.fromCharCode(0x00f3);break;case'ocirc':ch=String.fromCharCode(0x00f4);break;case'otilde':ch=String.fromCharCode(0x00f5);break;case'ouml':ch=String.fromCharCode(0x00f6);break;case'divide':ch=String.fromCharCode(0x00f7);break;case'oslash':ch=String.fromCharCode(0x00f8);break;case'ugrave':ch=String.fromCharCode(0x00f9);break;case'uacute':ch=String.fromCharCode(0x00fa);break;case'ucirc':ch=String.fromCharCode(0x00fb);break;case'uuml':ch=String.fromCharCode(0x00fc);break;case'yacute':ch=String.fromCharCode(0x00fd);break;case'thorn':ch=String.fromCharCode(0x00fe);break;case'yuml':ch=String.fromCharCode(0x00ff);break;case'OElig':ch=String.fromCharCode(0x0152);break;case'oelig':ch=String.fromCharCode(0x0153);break;case'Scaron':ch=String.fromCharCode(0x0160);break;case'scaron':ch=String.fromCharCode(0x0161);break;case'Yuml':ch=String.fromCharCode(0x0178);break;case'fnof':ch=String.fromCharCode(0x0192);break;case'circ':ch=String.fromCharCode(0x02c6);break;case'tilde':ch=String.fromCharCode(0x02dc);break;case'Alpha':ch=String.fromCharCode(0x0391);break;case'Beta':ch=String.fromCharCode(0x0392);break;case'Gamma':ch=String.fromCharCode(0x0393);break;case'Delta':ch=String.fromCharCode(0x0394);break;case'Epsilon':ch=String.fromCharCode(0x0395);break;case'Zeta':ch=String.fromCharCode(0x0396);break;case'Eta':ch=String.fromCharCode(0x0397);break;case'Theta':ch=String.fromCharCode(0x0398);break;case'Iota':ch=String.fromCharCode(0x0399);break;case'Kappa':ch=String.fromCharCode(0x039a);break;case'Lambda':ch=String.fromCharCode(0x039b);break;case'Mu':ch=String.fromCharCode(0x039c);break;case'Nu':ch=String.fromCharCode(0x039d);break;case'Xi':ch=String.fromCharCode(0x039e);break;case'Omicron':ch=String.fromCharCode(0x039f);break;case'Pi':ch=String.fromCharCode(0x03a0);break;case'Rho':ch=String.fromCharCode(0x03a1);break;case'Sigma':ch=String.fromCharCode(0x03a3);break;case'Tau':ch=String.fromCharCode(0x03a4);break;case'Upsilon':ch=String.fromCharCode(0x03a5);break;case'Phi':ch=String.fromCharCode(0x03a6);break;case'Chi':ch=String.fromCharCode(0x03a7);break;case'Psi':ch=String.fromCharCode(0x03a8);break;case'Omega':ch=String.fromCharCode(0x03a9);break;case'alpha':ch=String.fromCharCode(0x03b1);break;case'beta':ch=String.fromCharCode(0x03b2);break;case'gamma':ch=String.fromCharCode(0x03b3);break;case'delta':ch=String.fromCharCode(0x03b4);break;case'epsilon':ch=String.fromCharCode(0x03b5);break;case'zeta':ch=String.fromCharCode(0x03b6);break;case'eta':ch=String.fromCharCode(0x03b7);break;case'theta':ch=String.fromCharCode(0x03b8);break;case'iota':ch=String.fromCharCode(0x03b9);break;case'kappa':ch=String.fromCharCode(0x03ba);break;case'lambda':ch=String.fromCharCode(0x03bb);break;case'mu':ch=String.fromCharCode(0x03bc);break;case'nu':ch=String.fromCharCode(0x03bd);break;case'xi':ch=String.fromCharCode(0x03be);break;case'omicron':ch=String.fromCharCode(0x03bf);break;case'pi':ch=String.fromCharCode(0x03c0);break;case'rho':ch=String.fromCharCode(0x03c1);break;case'sigmaf':ch=String.fromCharCode(0x03c2);break;case'sigma':ch=String.fromCharCode(0x03c3);break;case'tau':ch=String.fromCharCode(0x03c4);break;case'upsilon':ch=String.fromCharCode(0x03c5);break;case'phi':ch=String.fromCharCode(0x03c6);break;case'chi':ch=String.fromCharCode(0x03c7);break;case'psi':ch=String.fromCharCode(0x03c8);break;case'omega':ch=String.fromCharCode(0x03c9);break;case'thetasym':ch=String.fromCharCode(0x03d1);break;case'upsih':ch=String.fromCharCode(0x03d2);break;case'piv':ch=String.fromCharCode(0x03d6);break;case'ensp':ch=String.fromCharCode(0x2002);break;case'emsp':ch=String.fromCharCode(0x2003);break;case'thinsp':ch=String.fromCharCode(0x2009);break;case'zwnj':ch=String.fromCharCode(0x200c);break;case'zwj':ch=String.fromCharCode(0x200d);break;case'lrm':ch=String.fromCharCode(0x200e);break;case'rlm':ch=String.fromCharCode(0x200f);break;case'ndash':ch=String.fromCharCode(0x2013);break;case'mdash':ch=String.fromCharCode(0x2014);break;case'lsquo':ch=String.fromCharCode(0x2018);break;case'rsquo':ch=String.fromCharCode(0x2019);break;case'sbquo':ch=String.fromCharCode(0x201a);break;case'ldquo':ch=String.fromCharCode(0x201c);break;case'rdquo':ch=String.fromCharCode(0x201d);break;case'bdquo':ch=String.fromCharCode(0x201e);break;case'dagger':ch=String.fromCharCode(0x2020);break;case'Dagger':ch=String.fromCharCode(0x2021);break;case'bull':ch=String.fromCharCode(0x2022);break;case'hellip':ch=String.fromCharCode(0x2026);break;case'permil':ch=String.fromCharCode(0x2030);break;case'prime':ch=String.fromCharCode(0x2032);break;case'Prime':ch=String.fromCharCode(0x2033);break;case'lsaquo':ch=String.fromCharCode(0x2039);break;case'rsaquo':ch=String.fromCharCode(0x203a);break;case'oline':ch=String.fromCharCode(0x203e);break;case'frasl':ch=String.fromCharCode(0x2044);break;case'euro':ch=String.fromCharCode(0x20ac);break;case'image':ch=String.fromCharCode(0x2111);break;case'weierp':ch=String.fromCharCode(0x2118);break;case'real':ch=String.fromCharCode(0x211c);break;case'trade':ch=String.fromCharCode(0x2122);break;case'alefsym':ch=String.fromCharCode(0x2135);break;case'larr':ch=String.fromCharCode(0x2190);break;case'uarr':ch=String.fromCharCode(0x2191);break;case'rarr':ch=String.fromCharCode(0x2192);break;case'darr':ch=String.fromCharCode(0x2193);break;case'harr':ch=String.fromCharCode(0x2194);break;case'crarr':ch=String.fromCharCode(0x21b5);break;case'lArr':ch=String.fromCharCode(0x21d0);break;case'uArr':ch=String.fromCharCode(0x21d1);break;case'rArr':ch=String.fromCharCode(0x21d2);break;case'dArr':ch=String.fromCharCode(0x21d3);break;case'hArr':ch=String.fromCharCode(0x21d4);break;case'forall':ch=String.fromCharCode(0x2200);break;case'part':ch=String.fromCharCode(0x2202);break;case'exist':ch=String.fromCharCode(0x2203);break;case'empty':ch=String.fromCharCode(0x2205);break;case'nabla':ch=String.fromCharCode(0x2207);break;case'isin':ch=String.fromCharCode(0x2208);break;case'notin':ch=String.fromCharCode(0x2209);break;case'ni':ch=String.fromCharCode(0x220b);break;case'prod':ch=String.fromCharCode(0x220f);break;case'sum':ch=String.fromCharCode(0x2211);break;case'minus':ch=String.fromCharCode(0x2212);break;case'lowast':ch=String.fromCharCode(0x2217);break;case'radic':ch=String.fromCharCode(0x221a);break;case'prop':ch=String.fromCharCode(0x221d);break;case'infin':ch=String.fromCharCode(0x221e);break;case'ang':ch=String.fromCharCode(0x2220);break;case'and':ch=String.fromCharCode(0x2227);break;case'or':ch=String.fromCharCode(0x2228);break;case'cap':ch=String.fromCharCode(0x2229);break;case'cup':ch=String.fromCharCode(0x222a);break;case'int':ch=String.fromCharCode(0x222b);break;case'there4':ch=String.fromCharCode(0x2234);break;case'sim':ch=String.fromCharCode(0x223c);break;case'cong':ch=String.fromCharCode(0x2245);break;case'asymp':ch=String.fromCharCode(0x2248);break;case'ne':ch=String.fromCharCode(0x2260);break;case'equiv':ch=String.fromCharCode(0x2261);break;case'le':ch=String.fromCharCode(0x2264);break;case'ge':ch=String.fromCharCode(0x2265);break;case'sub':ch=String.fromCharCode(0x2282);break;case'sup':ch=String.fromCharCode(0x2283);break;case'nsub':ch=String.fromCharCode(0x2284);break;case'sube':ch=String.fromCharCode(0x2286);break;case'supe':ch=String.fromCharCode(0x2287);break;case'oplus':ch=String.fromCharCode(0x2295);break;case'otimes':ch=String.fromCharCode(0x2297);break;case'perp':ch=String.fromCharCode(0x22a5);break;case'sdot':ch=String.fromCharCode(0x22c5);break;case'lceil':ch=String.fromCharCode(0x2308);break;case'rceil':ch=String.fromCharCode(0x2309);break;case'lfloor':ch=String.fromCharCode(0x230a);break;case'rfloor':ch=String.fromCharCode(0x230b);break;case'lang':ch=String.fromCharCode(0x2329);break;case'rang':ch=String.fromCharCode(0x232a);break;case'loz':ch=String.fromCharCode(0x25ca);break;case'spades':ch=String.fromCharCode(0x2660);break;case'clubs':ch=String.fromCharCode(0x2663);break;case'hearts':ch=String.fromCharCode(0x2665);break;case'diams':ch=String.fromCharCode(0x2666);break;default:ch='';break;}}
+i=semicolonIndex;}}
+out+=ch;}
+return out;}
+function cnbc_chart_streamOn(streamid,staticid,symbol,builderurl,realtime,exp)
+{var timeout;var html;stream=document.getElementById(streamid);staticc=document.getElementById(staticid);var scriptblock=document.getElementById(cnbc_chart_scriptblock);if(!stream||!staticc||!scriptblock)
+{return;}
+var http_request=false;var symbol_decoded=cnbc_HtmlDecode(symbol)
+var url=builderurl+'?symbol='+escape(symbol_decoded)+'&elementid='+escape(streamid)+'&realtime='+realtime;cnbc_asyncScriptsource_eval(url,true);stream.style.display="inline";staticc.style.display="none";timeout=setTimeout("cnbc_chart_streamOff(\'"+streamid+"\',\'"+staticid+"\')",exp*1000*60);cnbc_chart_timeouts[streamid]=timeout;}
+function cnbc_chart_createScriptBlock()
+{if(!document.getElementById(cnbc_chart_scriptblock))
+{document.write('<script id="'+cnbc_chart_scriptblock+'"></script>')}}
+function cnbc_chart_createApplet(id,symbol,key,timestamp,realtime,server)
+{var html;var applet=document.getElementById(id);if(!applet)return;var althtml='<p> you need java runtime </p>';var _app=navigator.appName;if((_app=='Microsoft Internet Explorer'))
+{html='<div style="margin-left:5px;">';html+='<OBJECT Name="CNBC chart" Width="200" Height="175" codebase="http://java.sun.com/update/1.5.0/jinstall-1_5_0-windows-i586.cab#Version=1,5,0" classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" MAYSCRIPT="" >';html+='<PARAM NAME="Archive" VALUE="http://'+server+'/api/tickbytick/cnbc.jar"/> ';html+='<PARAM NAME="Code" VALUE="com.wsod.streamer.cnbc.TickByTickStreamer.class"/> ';html+='<PARAM NAME="user_id" VALUE="cnbctest"/> ';html+='<PARAM NAME="user_password" VALUE="cnbctest8j2"/> ';html+='<PARAM NAME="server" VALUE="'+server+'"/> ';html+='<PARAM NAME="asppath" VALUE="/api/tickbytick/"/> ';html+='<PARAM NAME="type" VALUE="1"/> ';html+='<PARAM NAME="realtime" VALUE="'+realtime+'"/> ';html+='<PARAM NAME="symbol" VALUE="'+symbol+'"/> ';html+='<PARAM NAME="key" VALUE="'+key+'"/> ';html+='<PARAM NAME="timestamp" VALUE="'+timestamp+'"/> ';html+=althtml;html+='</OBJECT>';}
+else if(_app=='Netscape')
+{html='<div style="margin-left:5px;">';html+='<applet Name="CNBC chart" Width="200" Height="175" Codebase="./" Archive="http://'+server+'/api/tickbytick/cnbc.jar" Code="com.wsod.streamer.cnbc.TickByTickStreamer.class" type="application/x-java-applet;version=1.5" classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" MAYSCRIPT="" >';html+='<PARAM NAME="user_id" VALUE="cnbctest"/> ';html+='<PARAM NAME="user_password" VALUE="cnbctest8j2"/> ';html+='<PARAM NAME="server" VALUE="'+server+'"/> ';html+='<PARAM NAME="asppath" VALUE="/api/tickbytick/"/> ';html+='<PARAM NAME="type" VALUE="1"/> ';html+='<PARAM NAME="realtime" VALUE="'+realtime+'"/> ';html+='<PARAM NAME="symbol" VALUE="'+symbol+'"/> ';html+='<PARAM NAME="key" VALUE="'+key+'"/> ';html+='<PARAM NAME="timestamp" VALUE="'+timestamp+'"/> ';html+='</applet>';}
+else
+{html='<div style="margin-left:5px;">';html+='<applet Name="CNBC chart" Width="200" Height="175" Codebase="./" Archive="http://'+server+'/api/tickbytick/cnbc.jar" Code="com.wsod.streamer.cnbc.TickByTickStreamer.class" MAYSCRIPT="" >';html+='<PARAM NAME="user_id" VALUE="cnbctest"/> ';html+='<PARAM NAME="user_password" VALUE="cnbctest8j2"/> ';html+='<PARAM NAME="server" VALUE="'+server+'"/> ';html+='<PARAM NAME="asppath" VALUE="/api/tickbytick/"/> ';html+='<PARAM NAME="type" VALUE="1"/> ';html+='<PARAM NAME="realtime" VALUE="'+realtime+'"/> ';html+='<PARAM NAME="symbol" VALUE="'+symbol+'"/> ';html+='<PARAM NAME="key" VALUE="'+key+'"/> ';html+='<PARAM NAME="timestamp" VALUE="'+timestamp+'"/> ';html+=althtml;html+='</applet>';}
+applet.innerHTML=html;}
+function cnbc_chart_streamOff(streamid,staticid)
+{if(cnbc_chart_timeouts[streamid]!=null)
+{clearInterval(cnbc_chart_timeouts[streamid]);cnbc_chart_timeouts[streamid]=null;}
+stream=document.getElementById(streamid);staticc=document.getElementById(staticid);if(!stream||!staticc)
+{return;}
+staticc.style.display="inline";stream.style.display="none";stream.innerHTML="";}
+function cnbc_JavaEnabled_Handler(divid)
+{var element=document.getElementById(divid);if(!element)return;if(cnbc_JavaEnabled()==true)
+{element.innerHTML="Java Plugin Enabled";}
+else
+{element.innerHTML="Java Plugin Disabled or not installed";}}
+function cnbc_JavaEnabled()
+{if(isWindows)
+{if(!isIE)
+{if(navigator.mimeTypes&&navigator.mimeTypes['application/x-java-applet']&&navigator.mimeTypes["application/x-java-applet"].enabledPlugin)
+{return navigator.javaEnabled();}}
+else
+{try{var objJava=new ActiveXObject('JavaPlugin');if(objJava)
+{return navigator.javaEnabled();delete objJava;}}catch(e){}}}
+if(isMac)
+{return true;}
+return false;}
+function cnbc_asyncScriptsource_eval(url,async)
+{var req;if(window.XMLHttpRequest)
+{req=new XMLHttpRequest();}
+else if(window.ActiveXObject)
+{req=new ActiveXObject("Microsoft.XMLHTTP");}
+if(req)
+{req.onreadystatechange=function(){if(req.readyState==4)
+{if(req.status==200)
+{try{eval(req.responseText);}
+catch(e){return;}}}}
+req.open("GET",url,async);req.send(null);}}
+function checkJavaSupport(){var result={javaEnabled:false,version:''};if(typeof navigator!='undefined'&&typeof navigator.javaEnabled!='undefined')
+result.javaEnabled=navigator.javaEnabled();else
+result.javaEnabled='unknown';if(navigator.javaEnabled()&&typeof java!='undefined')
+result.version=java.lang.System.getProperty("java.version");return result.version;}
+function cnbc_smartTab_init(stockid,fundid,param)
+{if((!param)||(!stockid)||(!fundid))
+{return;}
+var symbol=cnbc_getURLParam(param);symbol=cnbc_string_trim(symbol);var stocktab=document.getElementById(stockid);var fundtab=document.getElementById(fundid);if((!stocktab)||(!fundtab))
+{return;}
+if((symbol.length==5)&&((symbol.charAt(4)=='x')||(symbol.charAt(4)=='X')))
+{fundtab.style.display="inline";stocktab.innerHTML="";}
+else
+{stocktab.style.display="inline";fundtab.innerHTML="";}}
+function cnbc_srchbox_toggle(on,off,off2,action)
+{document.getElementById(on).className="selected";document.getElementById(off).className="cnbc_qbox_opt_unsel";document.getElementById(off2).className="cnbc_qbox_opt_unsel";cnbc_srchbox_target=action;}
+function cnbc_srchbox_submit(form,searchURL,searchParams){var escapeParams=escape(searchParams);form.action=searchURL+"?target="+cnbc_srchbox_target+"&keywords="+escapeParams;form.submit();}
+function cnbc_srchbox_submitenter(field)
+{var keycode;if(window.event)keycode=window.event.keyCode;if(keycode==13)
+{var url="";cnbc_srchbox_submit(field.form,field.value);return false;}
+else
+return true;}
+function Quote(symbol,code,change,change_pct,volumn,last,open,high,low,last_time,exchange,name){this.symbol=symbol;this.code=code;this.change=change;this.change_pct=change_pct;this.volumn=volumn;this.last=last;this.open=open;this.low=low;this.high=high;this.last_time=last_time;this.exchange=exchange;this.name=name;}
+function cnbc_quoteComponent_paintData(xml,propid,init){var results;if(xml.indexOf("FairValueQuoteResult")!=-1)
+{results=cnbc_createFVQuoteObj(xml.replace(/&/gi,'&amp;'));}
+else if(xml.indexOf("ExtendedQuoteResult")!=-1)
+{results=cnbc_createQuoteObjExtend(xml.replace(/&/gi,'&amp;'));}
+else
+{results=cnbc_createQuoteObj(xml.replace(/&/gi,'&amp;'));}
+var ids=propid.split('|');var symbol="";var spanids="";var timeout=75;var idfragments;for(var i=0;i<ids.length;i++)
+{idfragments=ids[i].split('_');var currentSymbol=unescape(idfragments[1]).toUpperCase();if((i+1)==ids.length)
+{spanids+=ids[i]+"|";currentSymbol="";}
+if((symbol!="")&&(currentSymbol!=symbol))
+{if(results[symbol]!=null)
+{var resultsStr=results[symbol]['SYMBOL']+","+results[symbol]['CODE']+","+results[symbol]['CHANGE']+","+results[symbol]['CHANGEPCT']+","+results[symbol]['VOLUME']+","+results[symbol]['LAST']+","+results[symbol]['OPEN']+","+results[symbol]['HIGH']+","+results[symbol]['LOW']+","+results[symbol]['LASTTIME']+","+results[symbol]['EXCHANGE']+","+results[symbol]['PROVIDER']+","+results[symbol]['NAME']+","+results[symbol]['INDEX_CLOSE']+","+results[symbol]['FV_CLOSE']+","+results[symbol]['FV_CHANGE']+","+results[symbol]['FV_SPREAD']+","+results[symbol]['REALTIME']+","+results[symbol]['SOURCE']+","+results[symbol]['CURMKTSTATUS']+","+results[symbol]['EXTVOLUME']+","+results[symbol]['EXTLAST']+","+results[symbol]['EXTTYPE']+","+results[symbol]['EXTLASTTIME']+","+results[symbol]['EXTCHANGEPCT']+","+results[symbol]['EXTCHANGE']+","+results[symbol]['EXTEXCHANGE']+","+results[symbol]['EXTSOURCE']+","+results[symbol]['VIDEOALERT']+","+results[symbol]['GUESTALERT']+","+results[symbol]['CURRENCYCODE']+","+results[symbol]['TIMEZONE']+","+results[symbol]['EXTTIMEZONE'];setTimeout('cnbc_quoteComponent_paintPropertyHandler("'+resultsStr+'","'+spanids+'","'+init+'")',timeout);timeout+=75;}
+spanids=ids[i]+"|";}
+else
+{spanids+=ids[i]+"|";}
+symbol=currentSymbol;}}
+function cnbc_formatVolume(amount)
+{var delimiter=",";var a=amount.split('.',2)
+var d=a[1];var i=parseInt(a[0]);if(isNaN(i)){return'';}
+var minus='';if(i<0){minus='-';}
+i=Math.abs(i);var n=new String(i);var a=[];while(n.length>3)
+{var nn=n.substr(n.length-3);a.unshift(nn);n=n.substr(0,n.length-3);}
+if(n.length>0){a.unshift(n);}
+n=a.join(delimiter);if(d.length<1){amount=n;}
+else{amount=n+'.'+d;}
+amount=minus+amount;return amount;}
+function cnbc_quoteComponent_paintPropertyHandler(resultsStr,spanids,init)
+{var results=new Array();var resultsTemp=resultsStr.split(",");results['SYMBOL']=resultsTemp[0];results['CODE']=resultsTemp[1];results['CHANGE']=resultsTemp[2];results['CHANGEPCT']=resultsTemp[3];results['VOLUME']=resultsTemp[4];results['LAST']=resultsTemp[5];results['OPEN']=resultsTemp[6];results['HIGH']=resultsTemp[7];results['LOW']=resultsTemp[8];results['LASTTIME']=resultsTemp[9];results['EXCHANGE']=resultsTemp[10];results['PROVIDER']=resultsTemp[11];results['NAME']=resultsTemp[12];results['INDEX_CLOSE']=resultsTemp[13];results['FV_CLOSE']=resultsTemp[14];results['FV_CHANGE']=resultsTemp[15];results['FV_SPREAD']=resultsTemp[16];results['REALTIME']=resultsTemp[17];results['SOURCE']=resultsTemp[18];results['CURMKTSTATUS']=resultsTemp[19];results['EXTVOLUME']=resultsTemp[20];results['EXTLAST']=resultsTemp[21];results['EXTTYPE']=resultsTemp[22];results['EXTLASTTIME']=resultsTemp[23];results['EXTCHANGEPCT']=resultsTemp[24];results['EXTCHANGE']=resultsTemp[25];results['EXTEXCHANGE']=resultsTemp[26];results['EXTSOURCE']=resultsTemp[27];results['VIDEOALERT']=resultsTemp[28];results['GUESTALERT']=resultsTemp[29];results['CURRENCYCODE']=resultsTemp[30];results['TIMEZONE']=resultsTemp[31];results['EXTTIMEZONE']=resultsTemp[32];var currentStatus=results['CURMKTSTATUS'];var ids=spanids.split("|")
+for(var i=0;i<ids.length;++i)
+{if((ids[i]!=null)&&(ids[i]!=""))
+{var idfragments=ids[i].split('_');property=idfragments[2];spanid=ids[i];var change=results['CHANGE'];var fv_change=results['FV_CHANGE'];var ext_change=results['EXTCHANGE'];if(results['CODE']=='0')
+{if(property=='LAST')
+{var valueLastOld;var updateLast=results['LAST'];var flashID=spanid.replace('CHANGE','LAST');var flashNode=document.getElementById(flashID);if(flashNode!=null)
+{valueLastOld=parseFloat(flashNode.innerHTML);}
+var valueLastNew=parseFloat(updateLast);}
+if(property=='EXTLAST')
+{var ext_valueLastOld;var ext_updateLast=results['EXTLAST'];var ext_flashID=spanid.replace('EXTCHANGE','EXTLAST');var ext_flashNode=document.getElementById(ext_flashID);if(ext_valueLastOld!=null)
+{ext_valueLastOld=parseFloat(ext_flashNode.innerHTML);}
+var ext_valueLastNew=parseFloat(ext_updateLast);}}
+if(results['CODE']=='0')
+{if(property=='CHANGE')
+{var ChangeP=document.getElementById(spanid);if(ChangeP!=null)
+{if(change==0)
+{if(currentStatus.indexOf("PRE")!=-1)
+{ChangeP.innerHTML='';}
+else
+{ChangeP.innerHTML='UNCH';}}
+else
+{ChangeP.innerHTML=cnbc_round(results['CHANGE'],'4','2');if(cnbc_stream_intervalid)
+{if(change>0)
+{if((valueLastOld=='NaN')|(valueLastOld!=valueLastNew))
+{cnbc_flash(spanid,cnbc_class_greenflash);}}
+else
+{if((valueLastOld=='NaN')|(valueLastOld!=valueLastNew))
+{cnbc_flash(spanid,cnbc_class_redflash);}}}}}}
+else if(property=='CHANGEPCT')
+{var changePct=document.getElementById(spanid);if(changePct!=null)
+{if(change>0)
+{changePct.innerHTML='+'+cnbc_round(results['CHANGEPCT'],'2','0')+'%';if(cnbc_stream_intervalid)
+{if((valueLastOld=='NaN')|(valueLastOld!=valueLastNew))
+{cnbc_flash(spanid,cnbc_class_greenflash);}}}
+else if(change==0)
+{if(currentStatus.indexOf("PRE")!=-1)
+{changePct.innerHTML='---';}
+else
+{changePct.innerHTML=cnbc_round(results['CHANGEPCT'],'2','0');}
+if(cnbc_stream_intervalid)
+{if((valueLastOld=='NaN')|(valueLastOld!=valueLastNew))
+{cnbc_flash(spanid,cnbc_class_greenflash);}}}
+else
+{changePct.innerHTML=cnbc_round(results['CHANGEPCT'],'2','0')+'%';if(cnbc_stream_intervalid)
+{if((valueLastOld=='NaN')|(valueLastOld!=valueLastNew))
+{cnbc_flash(spanid,cnbc_class_redflash);}}}}}
+else if(property=='CHANGEARROW')
+{var changeArrow=document.getElementById(spanid);if(changeArrow!=null)
+{if(change>0)
+{changeArrow.innerHTML='<image src="'+cnbc_image_watchlist_uparrow+'" border="0"/>';}
+else if(change<0)
+{changeArrow.innerHTML='<image src="'+cnbc_image_watchlist_downarrow+'" border="0"/>';}
+else
+{if(currentStatus.indexOf("PRE")!=-1)
+{changeArrow.innerHTML='';}
+else
+{changeArrow.innerHTML='---';}}}}
+else if(property=='CHANGEARROWBB')
+{var changeArrowBB=document.getElementById(spanid);if(changeArrowBB!=null)
+{if(change>0)
+{changeArrowBB.innerHTML='<image src="'+cnbc_image_bugbar_uparrow+'" border="0"/>';}
+else if(change<0)
+{changeArrowBB.innerHTML='<image src="'+cnbc_image_bugbar_downarrow+'" border="0"/>';}
+else
+{changeArrowBB.innerHTML='---';}}}
+else if(property=='DYNACOLOR0')
+{var DynaColoro=document.getElementById(spanid);if(DynaColoro!=null)
+{if(change>0)
+{DynaColoro.className='green_pos_change';}
+else if(change<0)
+{DynaColoro.className='red_neg_change';}
+else
+{DynaColoro.className='';}}}
+else if(property=='DYNACOLOR1')
+{var DynaColorA=document.getElementById(spanid);if(DynaColorA!=null)
+{if(fv_change>0)
+{DynaColorA.className='green_pos_change';}
+else if(fv_change<0)
+{DynaColorA.className='red_neg_change';}
+else
+{DynaColorA.className='';}}}
+else if(property=='UNCHHIDE')
+{var UnChhide=document.getElementById(spanid);if(UnChhide!=null)
+{if(change==0)
+{UnChhide.className=cnbc_class_unchanged;}
+else
+{UnChhide.className=cnbc_class_changeshow;}}}
+else if(property=='VOLUME')
+{var Volume=document.getElementById(spanid);if(Volume!=null)
+{Volume.innerHTML=cnbc_formatVolume(results['VOLUME']+'.');}}
+else if(property=='INDEXCLOSE')
+{var IndexClose=document.getElementById(spanid);if(IndexClose!=null)
+{IndexClose.innerHTML=results['INDEX_CLOSE'];}}
+else if(property=='FVCLOSE')
+{var FvClose=document.getElementById(spanid);if(FvClose!=null)
+{FvClose.innerHTML=results['FV_CLOSE'];}}
+else if(property=='FVLAST')
+{var FvLast=document.getElementById(spanid);if(FvLast!=null)
+{FvLast.innerHTML=results['LAST'];}}
+else if(property=='FVCHANGE')
+{var FvChange=document.getElementById(spanid);if(FvChange!=null)
+{if(fv_change==0)
+{FvChange.innerHTML='UNCH';}
+else
+{FvChange.innerHTML=cnbc_round(results['FV_CHANGE'],'4','2');if(cnbc_stream_intervalid)
+{if(fv_change>0)
+{if((valueLastOld=='NaN')|(valueLastOld!=valueLastNew))
+{cnbc_flash(spanid,cnbc_class_greenflash);}}
+else
+{if((valueLastOld=='NaN')|(valueLastOld!=valueLastNew))
+{cnbc_flash(spanid,cnbc_class_redflash);}}}}}}
+else if(property=='FVSPREAD')
+{var FvSpread=document.getElementById(spanid);if(FvSpread!=null)
+{FvSpread.innerHTML=results['FV_SPREAD'];}}
+else if(property=='FLASH')
+{if(init=='false')
+{if((valueLastOld=='NaN')|(valueLastOld!=valueLastNew))
+{var changeid=spanid.replace('_FLASH_','_CHANGE_');var changepctid=spanid.replace('_FLASH_','_CHANGEPCT_');if(change>0)
+{cnbc_flash(changeid,cnbc_class_greenflash);cnbc_flash(changepctid,cnbc_class_greenflash);}
+else if(change<0)
+{cnbc_flash(changeid,cnbc_class_redflash);cnbc_flash(changepctid,cnbc_class_redflash);}}}}
+else if(property=='EXCHANGE')
+{var extexchange=document.getElementById(spanid);if(extexchange!=null)
+{if(init=='true')
+{if((results["LASTTIME"].indexOf("T")!=-1)&&(results["EXTLASTTIME"].indexOf("T")!=-1))
+{var exchg_gettime=results["LASTTIME"].split("T");var exchg_tempGetTime=exchg_gettime[1];var exchg_getTimeNew=exchg_tempGetTime.split(':');var exchg_getdate=exchg_gettime[0].split("-");var exchg_dateSave=Date.UTC(exchg_getdate[0],exchg_getdate[0],exchg_getdate[1],exchg_getTimeNew[0],exchg_getTimeNew[1],exchg_getTimeNew[2].substr(0,2));var exchg_ext_gettime=results["EXTLASTTIME"].split("T");var exchg_ext_tempGetTime=exchg_ext_gettime[1];var exchg_ext_getTimeNew=exchg_ext_tempGetTime.split(':');var exchg_ext_getdate=exchg_ext_gettime[0].split("-");var exchg_ext_dateSave=Date.UTC(exchg_ext_getdate[0],exchg_ext_getdate[0],exchg_ext_getdate[1],exchg_ext_getTimeNew[0],exchg_ext_getTimeNew[1],exchg_ext_getTimeNew[2].substr(0,2));if(source_ext_dateSave>source_dateSave)
+{extexchange.innerHTML=results['EXTEXCHANGE'];}
+else
+{extexchange.innerHTML=results['EXCHANGE'];}}
+else if(((currentStatus.indexOf("PRE")!=-1)||(currentStatus.indexOf("POST")!=-1))&&(results['EXTLAST']!=''))
+{extexchange.innerHTML=results['EXTEXCHANGE'];}
+else
+{extexchange.innerHTML=results['EXCHANGE'];}}}}
+else if(property=='NAME%15')
+{cnbc_quoteComponent_paintName(results,spanid,15);}
+else if(property=='NAME%13')
+{cnbc_quoteComponent_paintName(results,spanid,13);}
+else if(property=='NAME%19')
+{cnbc_quoteComponent_paintName(results,spanid,19);}
+else if(property=='LINK')
+{}
+else if(property=='SYMBOL')
+{}
+else if(property=='EXTLINK')
+{if(typeof cnbc_headerfooter_basehref!="undefined")
+{if(cnbc_headerfooter_basehref=='')
+{cnbc_headerfooter_basehref="http://www.cnbc.com";}}
+else
+{cnbc_headerfooter_basehref="http://www.cnbc.com";}
+if(typeof cnbc_ext_detailedquote!="undefined")
+{if(cnbc_ext_detailedquote=='')
+{cnbc_ext_detailedquote="'/id/15837290'";}}
+else
+{cnbc_ext_detailedquote="'/id/15837290'";}
+document.getElementById(spanid).href=cnbc_headerfooter_basehref+cnbc_ext_detailedquote+"/"+escape(results["SYMBOL"])}
+else if(property=='DISPLAYPARENT')
+{var node=document.getElementById(spanid);if(node!=null)
+{var providerID=spanid.replace('DISPLAYPARENT','PROVIDER');var providerNode=document.getElementById(providerID);if((providerNode!=null)&&(providerNode.value!=null))
+{var provider=results['PROVIDER'];var cmsproviders=providerNode.value.split(";");for(var j=0;j<cmsproviders.length;++j)
+{if((provider!=null)&&(provider.length>0)&&(provider.indexOf(cmsproviders[j])!=-1))
+{node.parentNode.style.display='block';break;}}}}}
+else if(property=='SOURCE')
+{var node=document.getElementById(spanid);if(node!=null)
+{if((results["LASTTIME"].indexOf("T")!=-1)&&(results["EXTLASTTIME"].indexOf("T")!=-1))
+{var source_gettime=results["LASTTIME"].split("T");var source_tempGetTime=source_gettime[1];var source_getTimeNew=source_tempGetTime.split(':');var source_getdate=source_gettime[0].split("-");var source_dateSave=Date.UTC(source_getdate[0],source_getdate[0],source_getdate[1],source_getTimeNew[0],source_getTimeNew[1],source_getTimeNew[2].substr(0,2));var source_ext_gettime=results["EXTLASTTIME"].split("T");var source_ext_tempGetTime=source_ext_gettime[1];var source_ext_getTimeNew=source_ext_tempGetTime.split(':');var source_ext_getdate=source_ext_gettime[0].split("-");var source_ext_dateSave=Date.UTC(source_ext_getdate[0],source_ext_getdate[0],source_ext_getdate[1],source_ext_getTimeNew[0],source_ext_getTimeNew[1],source_ext_getTimeNew[2].substr(0,2));if(source_ext_dateSave>source_dateSave)
+{node.innerHTML="Source: "+results['EXTSOURCE'];}
+else
+{node.innerHTML="Source: "+results['SOURCE'];}}
+else if(((currentStatus.indexOf("PRE")!=-1)||(currentStatus.indexOf("POST")!=-1))&&(results['EXTLAST']!=''))
+{node.innerHTML="Source: "+results['EXTSOURCE'];}
+else
+{node.innerHTML="Source: "+results['SOURCE'];}}}
+else if(property=='REALTIME')
+{var node=document.getElementById(spanid);if(node!=null)
+{var delayedID=document.getElementById(spanid.replace('REALTIME','DELAYED'));var realtimeSpan=document.getElementById(spanid);if(((currentStatus.indexOf("PRE")!=-1)||(currentStatus.indexOf("POST")!=-1))&&(results['EXTLAST']!=''))
+{if(realtimeSpan.style.display=='block')
+{realtimeSpan.style.display='none';}
+if(delayedID.style.display=='block')
+{delayedID.style.display='none';}
+delayedID=spanid.replace('REALTIME','DELAYEDEXT');realtimeSpan=document.getElementById(spanid.replace('REALTIME','REALTIMEEXT'));}
+var realtimeID=spanid.replace('REALTIME','REALTIMENAME');var delayedIDname=spanid.replace('REALTIME','DELAYEDNAME');var realtimeTXT=spanid.replace('REALTIME','SOURCE');var realtimeB=spanid.replace('REALTIME','REALTIMEB');var delayedIDB=spanid.replace('REALTIME','DELAYEDB');var realtimeTXTSpan=document.getElementById(realtimeTXT);var realtimeIDSpan=document.getElementById(realtimeID);var delayedIDSpan=document.getElementById(delayedID);var delayedIDnameSpan=document.getElementById(delayedIDname);var realtimeSpanB=document.getElementById(realtimeB);var delayedIDSpanB=document.getElementById(delayedIDB);if(results['REALTIME']=='true')
+{if(realtimeSpan!=null)
+realtimeSpan.style.display='block';if(realtimeTXTSpan!=null)
+realtimeTXTSpan.style.display='block';if(realtimeIDSpan!=null)
+realtimeIDSpan.style.display='block';if(realtimeSpanB!=null)
+realtimeSpanB.style.display='block';if(delayedIDSpan!=null)
+delayedIDSpan.style.display='none';if(delayedIDnameSpan!=null)
+delayedIDnameSpan.style.display='none';if(delayedIDSpanB!=null)
+delayedIDSpanB.style.display='none';}
+else if(results['REALTIME']=='false')
+{if(realtimeSpan!=null)
+realtimeSpan.style.display='none';if(realtimeTXTSpan!=null)
+realtimeTXTSpan.style.display='none';if(realtimeIDSpan!=null)
+realtimeIDSpan.style.display='none';if(realtimeSpanB!=null)
+realtimeSpanB.style.display='none';if(delayedIDSpan!=null)
+delayedIDSpan.style.display='block';if(delayedIDnameSpan!=null)
+delayedIDnameSpan.style.display='block';if(delayedIDSpanB!=null)
+delayedIDSpanB.style.display='block';}}}
+else if(property=='LASTTIME')
+{var node=document.getElementById(spanid);if(node!=null)
+{var date=results[property];if(results[property].indexOf("T")!=-1)
+{var gettime=date.split("T");var tempGetTime=gettime[1];var getTimeNew=tempGetTime.split(':');var currHr=getTimeNew[0];var currMin=getTimeNew[1];var currSec=getTimeNew[2].substr(0,2);var ap="";var d=new Date();if(currHr<12)
+{ap="AM";}
+else
+{ap="PM";}
+if(currHr==0)
+{currHr=12;}
+if(currHr>12)
+{currHr=currHr-12;}
+node.innerHTML=currHr+":"+currMin+":"+currSec+" "+ap;}
+else if(results[property].indexOf("-")!=-1)
+{var getdate=date.split("-");node.innerHTML=getdate[1]+"-"+getdate[2]+"-"+getdate[0];}
+else
+{node.innerHTML="4:00:00 PM";}}}
+else if(property=='TIMEZONE')
+{if((results["LASTTIME"].indexOf("T")!=-1)||(results["LASTTIME"].indexOf("-")==-1))
+{var timezoneText=document.getElementById(spanid);if(timezoneText!=null)
+{timezoneText.innerHTML=results['TIMEZONE'];}}}
+else if(property=='CURMKTSTATUS')
+{var currmktstatus=document.getElementById(spanid);if(currmktstatus!=null)
+{if(currentStatus.indexOf("PRE")!=-1)
+{var tempTxt=results['CURMKTSTATUS'].replace('_MKT','-MARKET').toLowerCase();currmktstatus.innerHTML=cnbc_Capitalize(tempTxt);}
+else if(currentStatus.indexOf("POST")!=-1)
+{currmktstatus.innerHTML="After Hours";}}}
+else if(property=='EXTLAST')
+{var currmktstatusdisp=document.getElementById(spanid.replace('EXTLAST','CURMKTSTATUSDISP'));var tradetime=document.getElementById(spanid.replace('EXTLAST','MKTSTATUS'));var tradelast=document.getElementById(spanid.replace('EXTLAST','LASTSTATUS'));var ext_label_change=document.getElementById(spanid.replace('EXTLAST','EXTCHANGELABEL'));var ext_last=document.getElementById(spanid);if(((currentStatus.indexOf("PRE")!=-1)||(currentStatus.indexOf("POST")!=-1))&&(results['EXTLAST']!=''))
+{ext_last.innerHTML=results['EXTLAST'];if(currmktstatusdisp!=null)
+{currmktstatusdisp.removeAttribute('style');}
+if(tradetime!=null)
+{tradetime.innerHTML="Market Close";}
+if(tradelast!=null)
+{tradelast.innerHTML="Close Price";}
+if(ext_label_change!=null)
+{if(currentStatus.indexOf("PRE")!=-1)
+{ext_label_change.innerHTML="Pre-Market Change";}
+if(currentStatus.indexOf("POST")!=-1)
+{ext_label_change.innerHTML="After Hours Change";}}}
+else
+{ext_last.innerHTML='Unavailable';if(currmktstatusdisp!=null)
+{currmktstatusdisp.setAttribute('style','');currmktstatusdisp.style.display='none';}
+if(tradetime!=null)
+{tradetime.innerHTML="Trade Time";}
+if(tradelast!=null)
+{tradelast.innerHTML="Last Trade";}}}
+else if(property=='EXTCHANGE')
+{var ExtChange=document.getElementById(spanid);if(ExtChange!=null)
+{if(ext_change==0)
+{ExtChange.innerHTML='UNCH';}
+else
+{ExtChange.innerHTML=cnbc_round(results['EXTCHANGE'],'4','2');if(cnbc_stream_intervalid)
+{if(ext_change>0)
+{if((ext_valueLastOld=='NaN')|(ext_valueLastOld!=ext_valueLastNew))
+{cnbc_flash(spanid,cnbc_class_greenflash);}}
+else
+{if((ext_valueLastOld=='NaN')|(ext_valueLastOld!=ext_valueLastNew))
+{cnbc_flash(spanid,cnbc_class_redflash);}}}}}}
+else if(property=='EXTCHANGEPCT')
+{var ExtChangePct=document.getElementById(spanid);if(ExtChangePct!=null)
+{if(ext_change>0)
+{ExtChangePct.innerHTML='+'+cnbc_round(results['EXTCHANGEPCT'],'2','0')+'%';if(cnbc_stream_intervalid)
+{if((ext_valueLastOld=='NaN')|(ext_valueLastOld!=ext_valueLastNew))
+{cnbc_flash(spanid,cnbc_class_greenflash);}}}
+else if(ext_change==0)
+{ExtChangePct.innerHTML=cnbc_round(results['EXTCHANGEPCT'],'2','0');if(cnbc_stream_intervalid)
+{if((ext_valueLastOld=='NaN')|(ext_valueLastOld!=ext_valueLastNew))
+{cnbc_flash(spanid,cnbc_class_greenflash);}}}
+else
+{ExtChangePct.innerHTML=cnbc_round(results['EXTCHANGEPCT'],'2','0')+'%';if(cnbc_stream_intervalid)
+{if((ext_valueLastOld=='NaN')|(ext_valueLastOld!=ext_valueLastNew))
+{cnbc_flash(spanid,cnbc_class_redflash);}}}}}
+else if(property=='EXTCHANGEARROW')
+{var ExtChangeArrow=document.getElementById(spanid);if(ExtChangeArrow!=null)
+{if(ext_change>0)
+{ExtChangeArrow.innerHTML='<image src="'+cnbc_image_watchlist_uparrow+'" border="0"/>';}
+else if(ext_change<0)
+{ExtChangeArrow.innerHTML='<image src="'+cnbc_image_watchlist_downarrow+'" border="0"/>';}
+else
+{ExtChangeArrow.innerHTML='---';}}}
+else if(property=='EXTDYNACOLOR0')
+{var ExtChangeColoro=document.getElementById(spanid);if(ExtChangeColoro!=null)
+{if(ext_change>0)
+{ExtChangeColoro.className='green_pos_change';}
+else if(ext_change<0)
+{ExtChangeColoro.className='red_neg_change';}
+else
+{ExtChangeColoro.className='';}}}
+else if(property=='EXTFLASH')
+{if(init=='false')
+{if((ext_valueLastOld=='NaN')|(ext_valueLastOld!=ext_valueLastNew))
+{var ext_changeid=spanid.replace('_EXTFLASH_','_EXTCHANGE_');var ext_changepctid=spanid.replace('_EXTFLASH_','_EXTCHANGEPCT_');if(ext_change>0)
+{cnbc_flash(ext_changeid,cnbc_class_greenflash);cnbc_flash(ext_changepctid,cnbc_class_greenflash);}
+else if(ext_change<0)
+{cnbc_flash(ext_changeid,cnbc_class_redflash);cnbc_flash(ext_changepctid,cnbc_class_redflash);}}}}
+else if(property=='EXTVOLUME')
+{var extVolume=document.getElementById(spanid);if(extVolume!=null)
+{extVolume.innerHTML=cnbc_formatVolume(results['EXTVOLUME']+'.');}}
+else if(property=='EXTLASTTIME')
+{var ext_node=document.getElementById(spanid);if(ext_node!=null)
+{var ext_date=results[property];if(results[property].indexOf("T")!=-1)
+{var ext_gettime=ext_date.split("T");var ext_tempGetTime=ext_gettime[1];var ext_getTimeNew=ext_tempGetTime.split(':');var ext_currHr=ext_getTimeNew[0];var ext_currMin=ext_getTimeNew[1];var ext_currSec=ext_getTimeNew[2].substr(0,2);var ext_ap="";var ext_d=new Date();if(ext_currHr<12)
+{ext_ap="AM";}
+else
+{ext_ap="PM";}
+if(ext_currHr==0)
+{ext_currHr=12;}
+if(ext_currHr>12)
+{ext_currHr=ext_currHr-12;}
+ext_node.innerHTML=ext_currHr+":"+ext_currMin+":"+ext_currSec+" "+ext_ap;}
+else if(results[property].indexOf("-")!=-1)
+{var ext_getdate=ext_date.split("-");ext_node.innerHTML=ext_getdate[1]+"-"+ext_getdate[2]+"-"+ext_getdate[0];}}}
+else if(property=='EXTTIMEZONE')
+{if(results["EXTLASTTIME"].indexOf("T")!=-1)
+{var ext_timezoneText=document.getElementById(spanid);if(ext_timezoneText!=null)
+{ext_timezoneText.innerHTML=results['EXTTIMEZONE'];}}}
+else if(property=='NAME')
+{var NameCheck=document.getElementById(spanid);if(NameCheck!=null)
+{NameCheck.innerHTML=results[property];}}
+else if(property=='VIDEOALERT')
+{var videoAlert=results["VIDEOALERT"].split("|");var video=document.getElementById(spanid);if(video!=null)
+{if(videoAlert[0]!="false")
+{video.innerHTML='<a href="'+videoAlert[1]+'" title="'+videoAlert[2]+'"><image src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/video_icon.gif" border="0"/></a>';}}}
+else if(property=='GUESTALERT')
+{var guest=document.getElementById(spanid);var guestAlert=results["GUESTALERT"].split("|");if(guest!=null)
+{if(guestAlert[0]!="false")
+{guest.innerHTML='<a title="'+guestAlert[1]+'"><image src="http://media.cnbc.com/i/CNBC/CNBC_Images/componentbacks/person_icon.gif" border="0"/></a>';}}}
+else if(property=='CURRENCYCODE')
+{var currencySymbol=document.getElementById(spanid);var escapeCurrency=unescape(results['CURRENCYCODE'].replace(/&amp;/g,'&'));if(currencySymbol!=null)
+{currencySymbol.innerHTML=escapeCurrency;}}
+else
+{if(results[property]!=null)
+{var extraLogic=document.getElementById(spanid);if(extraLogic!=null)
+{extraLogic.innerHTML=results[property];}}}}
+else if(property=='LAST')
+{var LastCheck=document.getElementById(spanid);if(LastCheck!=null)
+{LastCheck.innerHTML='Unavailable';}}}}}
+function cnbc_quoteComponent_paintName(resultset,id,num)
+{document.getElementById(id).innerHTML=cnbc_truncateString(resultset['NAME'],num);document.getElementById(id).title=cnbc_HtmlDecode(new String(resultset['NAME']));}
+function cnbc_truncateString(str,num)
+{var string=new String(str);if(string.length<=num)
+{return string;}
+var newstring=string.substr(0,num)+'...';return newstring;}
+function set_FlashProxyInitFlag()
+{cnbc_flashproxy_init_flag=true;for(var i=0;i<cnbc_flashproxy_reqqueue.length;++i)
+{cnbc_callFlashProxy(cnbc_flashproxy_reqqueue[i]['URL'],cnbc_flashproxy_reqqueue[i]['PROPIDS'],cnbc_flashproxy_reqqueue[i]['INIT']);}
+cnbc_flashproxy_reqqueue=new Array();if((typeof cnbc_flashproxy_data_reqqueue!="undefined")&&(cnbc_flashproxy_data_reqqueue!=null))
+{for(var i=0;i<cnbc_flashproxy_data_reqqueue.length;++i)
+{getData_FlashProxy(cnbc_flashproxy_data_reqqueue[i]['URL'],cnbc_flashproxy_data_reqqueue[i]['CALLBACK']);}
+cnbc_flashproxy_data_reqqueue=new Array();}}
+function flush_ReqStreamQueue()
+{if(cnbc_isIPADUserAgent()){flush_ReqStreamQueueIPAD();}
+else{if(cnbc_stream_reqqueue_length==0){cnbc_switch_off('masterSwitch')}
+else
+{if(cnbc_flashproxy_init_flag)
+{var flashProxy=(navigator.appName.indexOf("Microsoft")!=-1)?window["flashQuoteProxy"]:document["flashQuoteProxy"];if(flashProxy!=null)
+{for(var i in cnbc_stream_reqqueue_update)
+{try
+{cnbc_callFlashProxy(cnbc_stream_Comp_Global[cnbc_stream_reqqueue_update[i]]['URL'],cnbc_stream_Comp_Global[cnbc_stream_reqqueue_update[i]]['PROPIDS'],cnbc_stream_Comp_Global[cnbc_stream_reqqueue_update[i]]['INIT']);}
+catch(e){}}}}}}}
+function cnbc_callFlashProxy(url,propids,init)
+{if(cnbc_isIPADUserAgent()){cnbc_callFlashProxyIPAD(url,propids,init);}
+else
+{if(cnbc_flashproxy_init_flag)
+{var flashProxy=(navigator.appName.indexOf("Microsoft")!=-1)?window["flashQuoteProxy"]:document["flashQuoteProxy"];if(flashProxy!=null)
+{try
+{url+="&output=json";var key=cnbc_stream_reqqueue.length;cnbc_stream_reqqueue[key]=new Array();cnbc_stream_reqqueue[key]['URL']=url;cnbc_stream_reqqueue[key]['PROPIDS']=propids;cnbc_stream_reqqueue[key]['INIT']=init;flashProxy.callGetQuoteData(url,propids,init);}
+catch(e){}}}
+else
+{var key=cnbc_flashproxy_reqqueue.length;cnbc_flashproxy_reqqueue[key]=new Array();cnbc_flashproxy_reqqueue[key]['URL']=url;cnbc_flashproxy_reqqueue[key]['PROPIDS']=propids;cnbc_flashproxy_reqqueue[key]['INIT']=init;}}}
+function cnbc_updateGlobal_stream_pool(url,propids,init,compId,switchvalue,compValue)
+{var cnbc_stream_dynaMCcomId="";cnbc_stream_dynaMCcomId=compId;cnbc_stream_Comp_Global[cnbc_stream_dynaMCcomId]=new Array();cnbc_stream_Comp_Global[cnbc_stream_dynaMCcomId]['URL']=url;cnbc_stream_Comp_Global[cnbc_stream_dynaMCcomId]['PROPIDS']=propids;cnbc_stream_Comp_Global[cnbc_stream_dynaMCcomId]['INIT']=init;cnbc_stream_Comp_Global[cnbc_stream_dynaMCcomId]['componentID']=compId;cnbc_stream_Comp_Global[cnbc_stream_dynaMCcomId]['state']=switchvalue;cnbc_stream_Comp_Global[cnbc_stream_dynaMCcomId]['compSwitch']=compValue;}
+function cnbc_escape(str)
+{var newstr=escape(str);return newstr.replace('/','%2f');}
+function cnbc_quoteComponent_init_getData(symbols,id,prefix,realtime,compId,switchvalue,compValue,client,maskParam,methodParam)
+{var symbollist;var switchurl;var flag="false";var allsymbols=new Array();if(id.indexOf("FV")!=-1){flag="true";}
+if(flag=="false"){switchurl=cnbc_quoteService_url;}
+else{switchurl=cnbc_fvquoteService_url;}
+var componentwrapper=document.getElementById(id);var spanList=componentwrapper.getElementsByTagName('span');var quoteSpans=new Array();if(switchurl.indexOf("ex.htm")==-1){symbollist=symbols.split(',');for(var i=0;i<symbollist.length;i++)
+{allsymbols.push(cnbc_escape(cnbc_string_trim(symbollist[i])));}
+symbols=allsymbols.join("|");}
+for(var i=0;i<spanList.length;i++)
+{if(cnbc_startsWith(spanList[i].id,prefix))
+{quoteSpans.push(spanList[i].id);}
+else if(cnbc_startsWith(spanList[i].id,prefix+'STREAMOFF'))
+{quoteSpans.push(spanList[i].id);}}
+var url=cnbc_quoteComponent_generate_reqs_url(symbols,realtime,flag,client,maskParam,methodParam);cnbc_updateGlobal_stream_pool(url,quoteSpans.join('|'),realtime,compId,switchvalue,compValue);cnbc_callFlashProxy(url,quoteSpans.join('|'),true);}
+function cnbc_switch_on(type){var buttonON=document.getElementById('masterSwitchon');var buttonOFF=document.getElementById('masterSwitchoff');if((buttonON!=null)||(buttonOFF!=null))
+{buttonOFF.style.display='block';buttonON.style.display='none';if(type=='masterSwitch'){cnbc_createCookie("cnbcStreamQuoteMasterToggleRememberSwitch","on","");for(var i in cnbc_stream_Comp_Global){if(cnbc_stream_Comp_Global[i]['state']=="on"){cnbc_stream_reqqueue_update[cnbc_stream_Comp_Global[i]['componentID'].toString()]=cnbc_stream_Comp_Global[i]['componentID'];++cnbc_stream_reqqueue_length;}}}
+if(cnbc_stream_intervalid>0)
+{clearInterval(cnbc_stream_intervalid);cnbc_stream_intervalid=0;}
+streamPoolChecker=setInterval('cnbc_RunQuoteStripCheck("'+streamQSTimeId+'")',streamPoolCheckerInterval*1000);cnbc_stream_intervalid=setInterval("flush_ReqStreamQueue()",cnbc_switch_on_expiration*1000);}}
+function cnbc_switch_off(type)
+{var buttonON=document.getElementById('masterSwitchon');var buttonOFF=document.getElementById('masterSwitchoff');if((buttonON!=null)||(buttonOFF!=null))
+{buttonON.style.display='block';buttonOFF.style.display='none';if(type=='masterSwitch'){cnbc_createCookie("cnbcStreamQuoteMasterToggleRememberSwitch","off","");for(var i in cnbc_stream_Comp_Global){if(cnbc_stream_Comp_Global[i]['state']=="off"){cnbc_stream_reqqueue_update[cnbc_stream_Comp_Global[i]['componentID'].toString()]=cnbc_stream_Comp_Global[i]['componentID'];--cnbc_stream_reqqueue_length;}}
+cnbc_stream_reqqueue_update=new Array();}
+if(cnbc_stream_intervalid<=0)
+{clearInterval(cnbc_stream_intervalid);cnbc_stream_intervalid=0;clearInterval(streamPoolChecker);streamPoolChecker=0;}
+cnbc_stream_reqqueue_length=0;}}
+function switchToggleQuotesVarArray(x,state){cnbc_stream_Comp_Global[x]['state']=state;if(state=='on')
+{document.getElementById('off_'+x).style.display='none';document.getElementById('on_'+x).style.display='block';cnbc_stream_reqqueue_update[x.toString()]=x;++cnbc_stream_reqqueue_length;if(cnbc_stream_intervalid<=0)
+{cnbc_switch_on(x);}}
+else
+{document.getElementById('on_'+x).style.display='none';document.getElementById('off_'+x).style.display='block';delete cnbc_stream_reqqueue_update[x.toString()];--cnbc_stream_reqqueue_length;if(cnbc_stream_reqqueue_length==0){cnbc_switch_off(x)}}}
+function cnbcSwitchOnRemember(x)
+{var buttonCheck=document.getElementById('cnbcMasterSwitchId');if(buttonCheck!=null)
+{buttonCheck.style.display='block';}
+var cookie_MO_recall_init=cnbc_readCookie(x);if(cookie_MO_recall_init!=null)
+{if(cookie_MO_recall_init=='on'){cnbc_switch_on('masterSwitch');}
+else if(cookie_MO_recall_init=='off'){cnbc_switch_off('masterSwitch');}}
+else{return;}}
+function cnbc_updatesOn()
+{return cnbc_readCookie(cnbc_switch_cookie);}
+function cnbc_Capitalize(word)
+{var tmp=word.toLowerCase().split(" ");var tmpArray=new Array();for(var i=0;i<tmp.length;i++)
+{tmpArray.push(tmp[i].replace(tmp[i].charAt(0),tmp[i].charAt(0).toUpperCase()));}
+tmp=tmpArray.join(" ");return tmp;}
+function cnbc_displayQuoteStripData(quotedata,compid,init)
+{var componentwrapper=document.getElementById("WSODQ_COMPONENT_"+compid);var spanList=componentwrapper.getElementsByTagName('span');var propids=new Array();var prefix="WSODQ";for(var i=0;i<spanList.length;i++)
+{if(cnbc_startsWith(spanList[i].id,prefix))
+{propids.push(spanList[i].id);}
+else if(cnbc_startsWith(spanList[i].id,prefix+'STREAMOFF'))
+{propids.push(spanList[i].id);}}
+cnbc_quoteComponent_paintData(quotedata,propids.join('|'),init);cnbc_updateGlobal_stream_pool(quotedata,propids.join('|'),0,compid,"on","true");}
+function cnbc_RunQStripCheck(x)
+{var streamQSid=document.getElementById(x)
+if(streamQSid!=null)
+{var extTime=x.replace("_LASTTIME_","_EXTLASTTIME_");var extTimeId=document.getElementById(extTime);if(extTimeId!=null)
+{streamQSid=extTimeId;}
+if(cnbcStreamQSTimeStore=="")
+{cnbcStreamQSTimeStore=streamQSid.innerHTML;}
+else
+{if(cnbcStreamQSTimeStore!=streamQSid.innerHTML)
+{cnbcStreamQSTimeStore=streamQSid.innerHTML;}
+else
+{cnbc_switch_off("masterSwitch")
+clearInterval(streamQPoolChecker);streamQPoolChecker=-1;}}}}
+function cnbc_checkPageReferrerWA(ref_url,cookie)
+{var cnbc_url="cnbc.com";var pshd_value=cnbc_readPartnerSessionCookie(cookie);if((pshd_value!=null)&&(ref_url!=null)&&(ref_url.length>0))
+{var pshd_fun_value=pshd_value.split('|');var psh_PartnerURL=pshd_fun_value[7];var params_index=ref_url.indexOf("?");if(params_index!=-1)
+{ref_url=ref_url.substring(0,params_index);}
+var ref_index=ref_url.indexOf(psh_PartnerURL);var cnbc_index=ref_url.indexOf(cnbc_url);if((ref_index==-1)&&(cnbc_index==-1))
+{return null;}
+else
+{return pshd_value;}}
+else
+{return pshd_value;}}
+function cnbc_updateQuoteStripData(data)
+{try
+{var divIndex=data.indexOf("<");var html=data.substring(divIndex);var id=data.substring(0,divIndex);var quoteStrip=document.getElementById("quotestrip_"+id);if(quoteStrip!=null)
+{var scriptStart=html.indexOf('<script id="cnbcdisplayquotestrip">');var scriptBody=html.indexOf(">",scriptStart);var scriptEnd=html.indexOf("<",scriptBody);var script=html.substring(scriptBody+1,scriptEnd);eval(script);}}
+catch(e){}}
+function cnbc_callUpdateQuoteStripData(url,callback)
+{if(cnbc_isIPADUserAgent()){cnbc_callUpdateQuoteStripDataIPAD(url,callback);}
+else{try
+{var flashProxy=(navigator.appName.indexOf("Microsoft")!=-1)?window["flashQuoteProxy"]:document["flashQuoteProxy"];if(flashProxy!=null)
+{try
+{var streamingCookie=cnbc_readCookie("cnbcStreamQuoteMasterToggleRememberSwitch");if((streamingCookie==null)||(streamingCookie!="off")){flashProxy.callGetData(url,callback);}}
+catch(e){}}}
+catch(e){}}}
+function updateTitle(dataTitle)
+{try
+{if((dataTitle!=null)&&(dataTitle.length>0))
+{if(parent!=null)
+{parent.document.title=dataTitle;}
+else
+{document.title=dataTitle;}}}
+catch(e){}}
+function getTitle(currentTitle)
+{var inx=-1;var parsedTitle="";try
+{if(currentTitle!=null)
+{var inx=currentTitle.indexOf(":");parsedTitle=(inx!=-1)?(currentTitle.substring(0,inx+1)+" "):parsedTitle;}}
+catch(e){}
+return parsedTitle;}

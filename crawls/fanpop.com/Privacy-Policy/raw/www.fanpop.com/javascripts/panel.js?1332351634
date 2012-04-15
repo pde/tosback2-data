@@ -1,0 +1,476 @@
+var panel_open=false;
+var panel_toggle=true;
+var panel_allow_auto=true;
+var panel_timer;
+
+function check_panel() {
+	visibility_off = false;
+	panel_elem = document.getElementById('fp_p');
+	contents_elem = document.getElementById('fp_contents');
+	if (contents_elem && panel_elem) {
+		height_val = contents_elem.offsetHeight;
+		//alert(height_val);
+		if (height_val == 0) {
+			visibility_off = true;
+		} else if (height_val < 120) {
+			contents_elem.style.height = "120px";
+			panel_elem.style.height = "164px";
+			contents_elem.style.top = "-190px";
+		} else {
+			panel_elem.style.height = height_val+25+"px";
+			contents_elem.style.top = -1*(height_val+25+25)+"px";
+			//alert(contents_elem.offsetHeight);
+			//alert(panel_elem.style.height);
+			//alert(contents_elem.style.top);
+		}
+	}
+	if (panel_elem) {
+		if (visibility_off == false) {
+			panel_elem.style.visibility="visible";
+		} else {
+			panel_elem.style.visibility="hidden";
+		}
+	}
+}
+
+function toggle_panel() {
+	if (panel_toggle == true) {
+		if (panel_open==true) {
+			hide_panel(0);
+		} else {
+			reveal_panel(0);
+		}
+	}
+}
+
+function auto_panel() {
+	if (panel_allow_auto == true) {
+		reveal_panel(0);
+	}
+}
+
+function reveal_panel(starttime) {
+	d = new Date();
+	panel_toggle = false;
+	div_elem = document.getElementById('fp_p')
+	tab_elem = document.getElementById('fp_pt');
+	tab_elem2 = document.getElementById('fp_pt_b');
+	totalheight=div_elem.offsetHeight;
+	totalwidth=div_elem.offsetWidth;
+	currentpos=div_elem.style.left;
+	if (starttime) {
+	} else {
+		starttime = 0;
+	}
+	if (starttime == 0) {
+		starttime = d.getTime();
+		panel_allow_auto = false;
+		clearTimeout(panel_timer);
+	}
+	if (currentpos=="") {
+		// div_elem.style.bottom="-"+totalheight+"px";
+		div_elem.style.left="-"+totalwidth+"px";;
+		panel_timer = setTimeout("reveal_panel("+starttime+")", 25);
+	} else {
+		currenttime = d.getTime();
+		duration=500;
+		horizontal_offset=0;
+		timedelta = currenttime - starttime;
+		if (timedelta <= duration) {
+			left_pos = ((timedelta/duration)*(totalwidth+horizontal_offset))-totalwidth;
+			div_elem.style.left=left_pos+"px";
+			if ((timedelta/duration) > 0.5) {
+				//tab_width = 10;
+				//tab_offset = -10;
+				//tab_elem.style.width=tab_width+"px";
+				//tab_elem2.style.left=tab_offset+"px";
+			}
+			panel_timer = setTimeout("reveal_panel("+starttime+")", 10);
+		} else {
+			left_pos = (totalwidth+horizontal_offset)-totalwidth;
+			div_elem.style.left=left_pos+"px";
+			//tab_width = 10;
+			//tab_offset = -10;
+			//tab_elem.style.width=tab_width+"px";
+			//tab_elem2.style.left=tab_offset+"px";
+			panel_toggle = true;
+			panel_open = true;
+		}
+	}
+}
+
+function hide_panel(starttime) {
+	d = new Date();
+	panel_toggle = false;
+	div_elem = document.getElementById('fp_p');
+	tab_elem = document.getElementById('fp_pt');
+	tab_elem2 = document.getElementById('fp_pt_b');
+	totalheight=div_elem.offsetHeight;
+	totalwidth=div_elem.offsetWidth;
+	currentpos=div_elem.style.left;
+	if (starttime == 0) {
+		starttime = d.getTime();
+		clearTimeout(panel_timer);
+	}
+	if (currentpos=="") {
+		// div_elem.style.bottom="-"+totalheight+"px";
+		div_elem.style.left="-"+totalwidth+"px";;
+		panel_timer = setTimeout("hide_panel("+starttime+")", 25);
+	} else {
+		currenttime = d.getTime();
+		duration=500;
+		horizontal_offset=0;
+		timedelta = currenttime - starttime;
+		if (timedelta <= duration) {
+			left_pos = -1*((timedelta/duration)*(totalwidth+horizontal_offset));
+			div_elem.style.left=left_pos+"px";
+			if ((timedelta/duration) > 0.5) {
+				//tab_width = 20;
+				//tab_offset = 0;
+				//tab_elem.style.width=tab_width+"px";
+				//tab_elem2.style.left=tab_offset+"px";
+			}
+			panel_timer = setTimeout("hide_panel("+starttime+")", 10);
+		} else {
+			left_pos = -1*(totalwidth+horizontal_offset);
+			div_elem.style.left=left_pos+"px";
+			//tab_width = 20;
+			//tab_offset = 0;
+			//tab_elem.style.width=tab_width+"px";
+			//tab_elem2.style.left=tab_offset+"px";
+			panel_toggle = true;
+			panel_open = false;
+		}
+	}
+}
+
+function panel_highlight(id, color) {
+	i = 0;
+	loop = true;
+	if (color) {
+		bgcolor = color;
+	} else {
+		bgcolor = "#d8e0f0";
+	}
+	while (loop)
+	{
+		obj = document.getElementById(id+"_"+i);
+		if (obj) {
+			obj.style.backgroundColor = bgcolor;
+			i = i + 1;
+		} else {
+			loop = false;
+		}
+	}
+}
+
+
+function panel_unhighlight(id, color) {
+	panel_highlight(id, "transparent");
+}
+
+
+function check_fp_panel() {
+	visibility_off = false;
+	panel_elem = document.getElementById('fp_p');
+	contents_elem = document.getElementById('fp_contents');
+	x_elem = document.getElementById('fp_x');
+	if (contents_elem) {
+		height_val = contents_elem.offsetHeight;
+		if (height_val == 0) {
+			visibility_off = true;
+		} else {
+			h = height_val;
+			if (height_val < 140) {
+				h = 140;
+			}
+			if (panel_elem) {
+				panel_elem.style.height = h+25+"px";
+			}
+			if (x_elem) {
+				x_elem.style.top = -1*(height_val+h+(2*(25+3)))+"px";
+			}
+			contents_elem.style.top = -1*(h+(2*(25+3)))+"px";
+		}
+	}
+	if (panel_elem) {
+		if (visibility_off == false) {
+			panel_elem.style.visibility="visible";
+		} else {
+			panel_elem.style.visibility="hidden";
+		}
+	}
+}
+
+function toggle_fp_panel() {
+	if (panel_toggle == true) {
+		if (panel_open==true) {
+			hide_fp_panel(0);
+		} else {
+			reveal_fp_panel(0);
+		}
+	}
+}
+
+function auto_fp_panel() {
+	if (panel_allow_auto == true) {
+		reveal_fp_panel(0);
+	}
+}
+
+function reveal_fp_panel(starttime) {
+	d = new Date();
+	panel_toggle = false;
+	div_elem = document.getElementById('fp_p');
+	tab_elem = document.getElementById('fp_pt');
+	ctab_elem = document.getElementById('fp_pct');
+	totalheight=div_elem.offsetHeight;
+	totalwidth=div_elem.offsetWidth;
+	currentpos=div_elem.style.left;
+	if (starttime) {
+	} else {
+		starttime = 0;
+	}
+	if (starttime == 0) {
+		starttime = d.getTime();
+		panel_allow_auto = false;
+		clearTimeout(panel_timer);
+	}
+	if (currentpos=="") {
+		div_elem.style.left="-"+totalwidth+"px";;
+		panel_timer = setTimeout("reveal_fp_panel("+starttime+")", 10);
+	} else {
+		currenttime = d.getTime();
+		duration=500;
+		horizontal_offset=-1;
+		timedelta = currenttime - starttime;
+		if (timedelta <= duration) {
+			if (div_elem) {
+				left_pos = ((timedelta*100/duration)*(totalwidth+horizontal_offset))/100-totalwidth;
+				div_elem.style.left=left_pos+"px";
+			}
+			if (ctab_elem) {
+				if (timedelta/duration < 0.5) {
+					ctab_height = 0;
+					ctab_bottom = 3;
+				} else {
+					ctab_height = 2*18*(timedelta/duration-1/2);
+					ctab_bottom = 3 + ctab_height;
+				}
+				ctab_elem.style.bottom=ctab_bottom+"px";
+				ctab_elem.style.height=ctab_height+"px";
+			}
+			if (tab_elem) {
+				tab_offset = 30-(30*timedelta/duration);
+				tab_elem.style.width=tab_offset+"px";
+			}
+			panel_timer = setTimeout("reveal_fp_panel("+starttime+")", 10);
+		} else {
+			if (div_elem) {
+				left_pos = (totalwidth+horizontal_offset)-totalwidth;
+				div_elem.style.left=left_pos+"px";
+			}
+			if (ctab_elem) {
+				ctab_elem.style.bottom="21px";
+				ctab_elem.style.height="18px";
+			}
+			if (tab_elem) {
+				tab_width = 30;
+				tab_offset = -30;
+				tab_elem.style.width="0";
+			}
+			panel_toggle = true;
+			panel_open = true;
+		}
+	}
+}
+
+function hide_fp_panel(starttime) {
+	d = new Date();
+	panel_toggle = false;
+	div_elem = document.getElementById('fp_p');
+	tab_elem = document.getElementById('fp_pt');
+	ctab_elem = document.getElementById('fp_pct');
+	totalheight=div_elem.offsetHeight;
+	totalwidth=div_elem.offsetWidth;
+	currentpos=div_elem.style.left;
+	if (starttime == 0) {
+		starttime = d.getTime();
+		clearTimeout(panel_timer);
+	}
+	if (currentpos=="") {
+		div_elem.style.left="-"+totalwidth+"px";;
+		panel_timer = setTimeout("hide_fp_panel("+starttime+")", 25);
+	} else {
+		currenttime = d.getTime();
+		duration=500;
+		horizontal_offset=-1;
+		timedelta = currenttime - starttime;
+		if (timedelta <= duration) {
+			if (div_elem) {
+				left_pos = -1*((timedelta/duration)*(totalwidth+horizontal_offset));
+				div_elem.style.left=left_pos+"px";
+			}
+			if (ctab_elem) {
+				if (timedelta/duration < 0.5) {
+					ctab_offset = 18 - (2*18*timedelta/duration);
+					ctab_bottom = 21 - (2*18*timedelta/duration);
+				} else {
+					ctab_offset = 0;
+					ctab_bottom = 3;
+				}
+				ctab_elem.style.height=ctab_offset+"px";
+				ctab_elem.style.bottom=ctab_bottom+"px";
+			}
+			if (tab_elem) {
+				tab_offset = (30*timedelta/duration);
+				tab_elem.style.width=tab_offset+"px";
+			}
+			panel_timer = setTimeout("hide_fp_panel("+starttime+")", 10);
+		} else {
+			if (div_elem) {
+				left_pos = -1*(totalwidth+horizontal_offset);
+				div_elem.style.left=left_pos+"px";
+			}
+			if (ctab_elem) {
+				ctab_elem.style.height="0";
+				ctab_elem.style.bottom="3px";
+			}
+			if (tab_elem) {
+				tab_elem.style.width="30px";
+			}
+			panel_toggle = true;
+			panel_open = false;
+		}
+	}
+}
+
+function reveal_fp_tab(starttime) {
+	d = new Date();
+	tab_elem = document.getElementById('fp_pt');
+	if (starttime) {
+		if (starttime == -1) {
+			if (tab_elem) {
+				tab_elem.style.width="30px";
+			}
+			return;
+		}
+	} else {
+		starttime = 0;
+	}
+	if (starttime == 0) {
+		starttime = d.getTime();
+	}
+
+	currenttime = d.getTime();
+	duration=500;
+	timedelta = currenttime - starttime;
+	if (timedelta <= duration) {
+		if (tab_elem) {
+			tab_offset = (30*timedelta/duration);
+			tab_elem.style.width=tab_offset+"px";
+		}
+		panel_timer = setTimeout("reveal_fp_tab("+starttime+")", 10);
+	} else {
+		if (tab_elem) {
+			tab_elem.style.width="30px";
+		}
+	}
+}
+
+function p_choice_hl(elem) {
+	if (elem) {
+		elem.style.border="2px solid #00C000";
+		elem.style.backgroundColor="#EEFFEE";
+	}
+}
+function p_choice_xhl(elem) {
+	if (elem) {
+		elem.style.border="2px solid #C0C0C0";
+		elem.style.backgroundColor="transparent";
+	}
+}
+
+var panel_ql_hint_selected = -1; 
+function panel_ql_keymove(event) {
+	if (window.event) {
+		key = window.event.keyCode; //IE
+	} else {
+		key = event.which; // !IE
+	}
+	if (key == 38 || key == 40 || key == 13) {
+		switch (key) {
+			case 13:
+				if (panel_ql_hint_selected >= 0 && panel_ql_hint_selected < 10) {
+					obj = document.getElementById("ql_club_"+panel_ql_hint_selected);
+					if (obj) {
+						obj.onclick();
+					}
+				}
+				break;
+			case 38:
+				if (panel_ql_hint_selected > 0) {
+					highlight_ql_hint(panel_ql_hint_selected - 1);
+				} else {
+					highlight_ql_hint(0);
+				}
+				break;
+			case 40:
+				if (panel_ql_hint_selected < 10) {
+					highlight_ql_hint(panel_ql_hint_selected + 1);
+				} else {
+					highlight_ql_hint(10);
+				}
+				break;
+		}
+	}
+	return (key != 13 && key != 38 && key != 40);
+}
+	
+function unhighlight_all_ql_hints() {
+	panel_ql_hint_selected = -1;
+	for (i=0; i<10; i++) {
+		if (document.getElementById("ql_club_"+i)) {
+			document.getElementById("ql_club_"+i).style.backgroundColor="#FFFFFF";
+		}
+	}
+}
+function highlight_ql_hint(num) {
+	obj = document.getElementById("ql_club_"+num);
+	if (obj) {
+		unhighlight_all_ql_hints();
+		obj.style.backgroundColor="#F0F0FF";
+		panel_ql_hint_selected = num;
+	}
+}
+
+function panel_ql_preview(cat_id, logo, name) {
+	hint_obj = document.getElementById('panel_ql_hints');
+	img_div_obj = document.getElementById('panel_ql_club_image_div');
+	img_obj = document.getElementById('panel_ql_club_image');
+	form_obj = document.getElementById('panel_form_quick_link_cat');
+	submit_obj = document.getElementById('panel_form_quick_link_item_save_button');
+	text_obj = document.getElementById('panel_form_quick_link_text_display');
+	if (hint_obj) {
+		hint_obj.style.display='none';
+	}
+	if (form_obj) {
+		form_obj.value = cat_id;
+	}
+	if (submit_obj) {
+		//submit_obj.value = "Save "+name;
+		submit_obj.disabled="";
+		submit_obj.focus();
+	}
+	if (text_obj) {
+		text_obj.innerHTML=name;
+	}
+	if (img_obj) {
+		img_obj.src=logo;
+		img_obj.title=name;
+		img_obj.alt=name;
+		if (img_div_obj) {
+			img_div_obj.style.display="block";
+		}
+	}
+}

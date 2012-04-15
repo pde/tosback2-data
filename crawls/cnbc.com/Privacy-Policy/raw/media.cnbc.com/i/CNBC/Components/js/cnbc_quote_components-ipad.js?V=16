@@ -1,0 +1,104 @@
+function cnbc_isIPADUserAgent(){
+	//Determine if page is being rendering on the IPad.
+	return ((navigator.userAgent.indexOf("iPad")!=-1) ||
+		    (navigator.userAgent.indexOf("iPod")!=-1) ||
+		    (navigator.userAgent.indexOf("iPhone")!=-1));
+	
+}
+
+function flush_ReqStreamQueueIPAD(){
+  	if(cnbc_stream_reqqueue_length==0){
+		cnbc_switch_off('masterSwitch')
+	}
+	else{
+		//Flush pending REQUEST QUEUE...
+		for (var i  in cnbc_stream_reqqueue_update)
+		{
+			try{      
+				cnbc_callFlashProxyIPAD(cnbc_stream_Comp_Global[cnbc_stream_reqqueue_update[i]]['URL'],
+										cnbc_stream_Comp_Global[cnbc_stream_reqqueue_update[i]]['PROPIDS'],
+										cnbc_stream_Comp_Global[cnbc_stream_reqqueue_update[i]]['INIT'] );
+			}
+			catch(e){}
+		}
+	}
+}
+
+function cnbc_callFlashProxyIPAD(url,propids,init){
+	try
+	{			
+		//Adarsh JSON code
+		url+= "&output=json";
+		url+= "&random=" +  new Date().getTime();
+		
+		var currentDomain = document.domain;
+		if(currentDomain.indexOf("classic.cnbc.com")!=-1){
+			url= url.replace("http://quote.cnbc.com","http://classic.cnbc.com/quotes");
+		}
+		else if(currentDomain.indexOf("data.cnbc.com")!=-1){
+			url= url.replace("http://quote.cnbc.com","http://data.cnbc.com/request");
+		}
+		else{		
+			url= url.replace("http://quote.cnbc.com","http://www.cnbc.com/quotes");
+		}
+
+
+		//Add to STREAMING REQUEST QUEUE...
+		var key = cnbc_stream_reqqueue.length;
+		cnbc_stream_reqqueue[key] = new Array();		
+		cnbc_stream_reqqueue[key]['URL']	= url;
+		cnbc_stream_reqqueue[key]['PROPIDS']= propids;
+		cnbc_stream_reqqueue[key]['INIT']	= init;		        
+		
+		var aj = new Ajax.Request(url, {  asynchronous: true,
+										  method: 'GET',
+										  onSuccess: function(returnData) {			
+											try {
+												var responseText = returnData.responseText;
+												cnbc_quoteComponent_paintData(responseText, propids, init);
+											}
+											catch(e){
+												//alert("An exception occurred in the script. Error name: " + e.name + ". Error message: " + e.message);
+											}
+										  } 
+									    });	
+	}
+	catch(e){}
+}
+
+function cnbc_callUpdateQuoteStripDataIPAD(url, callback){
+	try{     
+		try{  
+			var streamingCookie = cnbc_readCookie("cnbcStreamQuoteMasterToggleRememberSwitch");
+  
+			if((streamingCookie==null) || (streamingCookie!="off"))	{              
+				url += "&random=" +  new Date().getTime();
+				var currentDomain = document.domain;
+				if(currentDomain.indexOf("classic.cnbc.com")!=-1){
+					url= url.replace("http://quote.cnbc.com","http://classic.cnbc.com/quotes");
+				}
+				else if(currentDomain.indexOf("data.cnbc.com")!=-1){
+					url= url.replace("http://quote.cnbc.com","http://data.cnbc.com/request");
+				}
+				else{		
+					url= url.replace("http://quote.cnbc.com","http://www.cnbc.com/quotes");
+				}
+
+				var aj = new Ajax.Request(url, {asynchronous: true,
+										  		method: 'GET',
+										  		onSuccess: function(returnData) {	
+													try {
+														var responseText = returnData.responseText;
+														callback(responseText);
+													}
+													catch(e){
+														//alert("An exception occurred in the script. Error name: " + e.name + ". Error message: " + e.message);
+													}
+										  		} 
+									    	   });	
+			}            
+		}    
+		catch(e){}
+	 }
+	catch(e){}
+}

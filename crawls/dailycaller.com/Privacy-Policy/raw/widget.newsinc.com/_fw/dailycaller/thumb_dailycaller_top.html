@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+    <title>NDN Top Picks Widget</title> 
+    <script type="text/javascript" src="../../../assets.newsinc.com/ndn.2.js"></script> 
+    <script type="text/javascript" src="../../../assets.newsinc.com/swfobject.js"></script> 
+    <script language="javascript" type="text/javascript"> 
+		function init() {
+			if (arguments.callee.done) return;
+				
+				// flag this function so we don't do the same thing twice
+			arguments.callee.done = true;
+				
+				// kill the timer
+			if (_timer) {
+				clearInterval(_timer);
+				_timer = null;
+			}
+			var flashvars = new Object();
+			var wid = GetQueryStringValue('wid');
+			var cid = GetQueryStringValue('CID');
+			var freewheel = GetQueryStringValue('freewheel');
+			var sitesection = GetQueryStringValue('sitesection');
+			
+			if (wid != ""){
+				flashvars.WID = wid;
+			} else {
+				flashvars.WID = "2333";
+			} 
+			
+			if (cid != ""){
+				flashvars.CID =  cid;
+			} else {
+				flashvars.CID = "507";
+			} 
+			
+			flashvars.player = "http://widget.newsinc.com/fullplayerwvars.html";
+			//Use this to Scale...larger the number, larger the thumbnails.
+			flashvars.tscale = "0.92";
+			
+			if (sitesection != ""){
+				flashvars.sitesection = sitesection;
+			} else {
+				sitesection = flashvars.sitesection = "dailycaller_top";
+			}
+			
+			if (freewheel != ""){
+				flashvars.freewheel = freewheel;
+			} else {
+				freewheel = flashvars.freewheel = "90046";
+			}
+			
+			flashvars.tplace = "BOTM";
+			//Font Size
+			flashvars.fsize = "12";
+			flashvars.pages = true;
+			//Font Color
+			flashvars.fcolor = "0x000000";
+			flashvars.guixml = "widget_thumbgui_rt.xml"
+ 			var bgColor = "#FFFFFF";
+
+			var params = new Object();
+			params.allowfullscreen = "true";
+			params.AllowScriptAccess = "always";
+			params.wmode = "transparent";
+			swfobject.embedSWF("http://assets.newsinc.com/flash/ndn_thb_widget01.swf" , "flashcontent", 300, 150, "9.0.115", bgColor, flashvars, params);
+ 
+			//call save page view
+			var furlArr = window.location.href.split('?');
+			SavePageView(flashvars.WID, furlArr[0], null, ((sitesection == '') ? null : sitesection), freewheel);
+		}
+							
+		/* for Mozilla */
+		if (document.addEventListener) {
+			document.addEventListener("DOMContentLoaded", init, false);
+		}
+		
+		/* for Internet Explorer */
+		/*@cc_on @*/
+		/*@if (@_win32)
+			document.write("<script id=__ie_onload defer src=javascript:void(0)><\/script>");
+			var script = document.getElementById("__ie_onload");
+			script.onreadystatechange = function() {
+				if (this.readyState == "complete") {
+					init(); // call the onload handler
+				}
+			};
+		/*@end @*/
+		
+		/* for Safari */
+		if (/WebKit/i.test(navigator.userAgent)) { // sniff
+			var _timer = setInterval(function() {
+				if (/loaded|complete/.test(document.readyState)) {
+					init(); // call the onload handler
+				}
+			}, 10);
+		}
+		
+		/* for other browsers */
+		window.onload = init;
+    </script>    
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><style type="text/css"> 
+<!--
+html, body{ height:100%; }
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-color: #FFF;
+}
+flashcontent{ height: 100%;
+			  width:100%;
+			  	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style> 
+</head> 
+ 
+<body> 
+    <div id="flashcontent" style="font-family: Calibri, Verdana, Geneva, sans-serif;
+
+        font-size: 12px"> 
+        Please wait while loading this widget.<br /> 
+        If no content appears within 15sec, you may need to download or upgrade the free
+        <a href="http://get.adobe.com/flashplayer/" target="_blank">Adobe Flash Player</a>.</div> 
+    <!-- Start Quantcast tag --> 
+    <script type="text/javascript"> 
+        _qoptions = {
+            qacct: "p-573scDfDoUH6o"
+        };
+    </script> 
+ 
+    <script type="text/javascript" src="../../../edge.quantserve.com/quant.js"></script> 
+ 
+    <noscript> 
+        <img src="../../../pixel.quantserve.com/pixel/p-573scDfDoUH6o.gif" style="display: none;"
+
+            border="0" height="1" width="1" alt="Quantcast" /> 
+    </noscript> 
+    <!-- End Quantcast tag --> 
+        <script type="text/javascript">  
+	if (document.getElementById('flashcontent')) {
+		  init();
+	} 
+    </script> 
+</body> 
+</html>

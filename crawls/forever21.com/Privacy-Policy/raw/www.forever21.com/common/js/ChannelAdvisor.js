@@ -1,0 +1,1 @@
+﻿document.write("<img src=https://tracking.searchmarketing.com/welcome.asp?SMCID=32001089&x=" + escape(document.referrer) + " width=1 height=1>");

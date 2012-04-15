@@ -1,0 +1,648 @@
+.left_col {
+  width: 49.9999%;
+  height: 100%;
+  float: left;
+}
+.right_col {
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+/* -- -- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Lucida Grande", "Helvetica", "Arial";
+  overflow: hidden;
+}
+#container {
+  width: 250px;
+  position: absolute;
+}
+#loading {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  background-image: url("http://widgets.itunes.apple.com/images/ajax-loader-small.gif");
+  background-repeat: no-repeat;
+  top: 5px;
+  right: 7px;
+}
+#load_screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url("http://widgets.itunes.apple.com/images/bg_trans.png");
+  z-index: 100;
+}
+img.load_screen_spinner {
+  width: 32px;
+  height: 32px;
+  margin: 60px auto 0 auto;
+  display: block;
+}
+.header {
+  height: 26px;
+}
+.header .right {
+  background-image: url("http://widgets.itunes.apple.com/images/header_app_store.png");
+  background-position: top right;
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+#container.app_store .header .left {
+  background-image: url("http://widgets.itunes.apple.com/images/header_app_store.png");
+  width: 49.9999%;
+  height: 100%;
+  float: left;
+}
+#container.itunes_store .header .left {
+  background-image: url("http://widgets.itunes.apple.com/images/header_itunes_store.png");
+  width: 49.9999%;
+  height: 100%;
+  float: left;
+}
+#container.playlist #playlist_view {
+  display: block;
+}
+#background {
+  position: relative;
+}
+#background .p_background {
+  position: absolute;
+  width: 100%;
+}
+#background .p_background .left {
+  background-image: url("http://widgets.itunes.apple.com/images/background_generic.png");
+  background-position: bottom left;
+  width: 49.9999%;
+  height: 100%;
+  float: left;
+}
+#background .p_background .right {
+  background-image: url("http://widgets.itunes.apple.com/images/background_generic.png");
+  background-position: bottom right;
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+.payload {
+  height: 274px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 26px;
+}
+#app_search {
+  display: none;
+}
+#app_search .magnify {
+  background-image: url("http://widgets.itunes.apple.com/images/magnify_icon.png");
+  width: 12px;
+  height: 12px;
+  position: absolute;
+}
+#app_search .reset {
+  top: 4px;
+  right: 6px;
+  position: absolute;
+  background-image: url("http://widgets.itunes.apple.com/images/reset_icon.png");
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+}
+#app_item {
+  display: none;
+}
+#app_item div.top_payload {
+  padding-top: 18px;
+  padding-left: 16px;
+  margin: 0 auto;
+  position: relative;
+}
+#app_item div.top_payload div.icon {
+  float: left;
+  width: 100px;
+}
+#app_item div.top_payload div.icon img {
+  width: 88px;
+}
+#app_item div.top_payload div.meta {
+  margin-left: 105px;
+  padding-top: 8px;
+  padding-right: 10px;
+}
+#app_item div.top_payload div.meta h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  font-weight: bold;
+  width: 100%;
+  height: 1.2em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: "Helvetica", "Arial";
+}
+#app_item div.top_payload div.meta h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  font-weight: normal;
+  height: 1.2em;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: "Helvetica", "Arial";
+}
+#app_item div.description {
+  margin-top: 10px;
+  padding-left: 16px;
+  overflow: hidden;
+  position: absolute;
+}
+#app_item div.description a.more_link {
+  display: block;
+  float: right;
+  color: #003366;
+  font-size: 11px;
+  text-decoration: none;
+}
+#app_item div.description a.more_link :hover {
+  text-decoration: underline;
+}
+#app_item div.description h1 {
+  margin: 3px 0 8px 0;
+  padding: 0;
+  font-size: 13px;
+  font-weight: bold;
+}
+#app_item div.description p {
+  margin: 0;
+  padding: 0;
+  font-size: 11px;
+  font-weight: normal;
+  color: #666666;
+  word-wrap: break-word;
+}
+#playlist_view {
+  display: none;
+}
+#playlist_view table {
+  border-spacing: 0px 0px;
+}
+#playlist_view table tr {
+  height: 62px;
+}
+#playlist_view table td.meta div.meta {
+  margin-left: 14px;
+  padding: 3px 10px 0px 0;
+}
+#playlist_view table td.meta div.meta:hover h2,
+#playlist_view table table td.meta div.meta:hover h1 {
+  text-decoration: underline;
+}
+#playlist_view table td span.index {
+  text-align: center;
+  margin-left: 7px;
+  background-image: url(http://widgets.itunes.apple.com/images/itunes_play_preview.png);
+  background-repeat: no-repeat;
+  background-position: 3px -1px;
+}
+#playlist_view table td.icon img {
+  width: 53px;
+  height: 53px;
+  display: block;
+  float: left;
+  -webkit-mask-image: url("http://widgets.itunes.apple.com/images/app_store_icon_mask_53.png");
+  -moz-box-shadow: 0px 3px 5px gray;
+  -webkit-box-shadow: 0px 3px 5px gray;
+}
+#playlist_view div.meta {
+  padding: 7px;
+}
+#playlist_view div.meta h1 {
+  width: 100%;
+  height: 1.4em;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#playlist_view div.meta h2 {
+  width: 100%;
+  height: 1.4em;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+  font-weight: normal;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#playlist_view div.meta a {
+  text-decoration: none;
+  color: #151515;
+}
+#playlist_view div.meta a :hover {
+  text-decoration: underline;
+  color: #151515;
+}
+#playlist_view .top_payload {
+  border-bottom: 1px solid #CFCFCF;
+  background-image: url("http://widgets.itunes.apple.com/images/background_itunes_top_payload.png");
+  margin-left: 1px;
+  margin-right: 2px;
+  height: 57px;
+}
+#container.app_store.search #app_search {
+  display: block;
+  width: 100%;
+}
+#container.app_store.item #app_item {
+  display: block;
+}
+#search_box {
+  height: 40px;
+  padding: 10px 10px 0px 10px;
+  position: relative;
+}
+#search_box_bg {
+  height: 37px;
+}
+#search_box_bg .left {
+  background-image: url("http://widgets.itunes.apple.com/images/background_search_box.png");
+  background-position: bottom left;
+  width: 49.9999%;
+  height: 100%;
+  float: left;
+}
+#search_box_bg .right {
+  background-image: url("http://widgets.itunes.apple.com/images/background_search_box.png");
+  background-position: bottom right;
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+#search_box_form {
+  position: absolute;
+  top: 18px;
+  height: 30px;
+}
+#frm_background {
+  height: 100%;
+  margin-left: 10px;
+}
+#frm_background .right {
+  background-image: url("http://widgets.itunes.apple.com/images/background_search_field.png");
+  background-position: bottom right;
+  width: 50%;
+  height: 19px;
+  float: left;
+}
+#frm_background .left {
+  background-image: url("http://widgets.itunes.apple.com/images/background_search_field.png");
+  background-position: top left;
+  width: 49.9999%;
+  height: 19px;
+  float: left;
+}
+#search_form {
+  top: 1px;
+  position: absolute;
+}
+#search_form input {
+  background: none;
+  margin-left: 30px;
+  border: none;
+  height: 18px;
+  font-family: "Lucida Grande", "Helvetica", "Arial";
+  font-size: 10px;
+  display: block;
+  padding-top: 4px;
+}
+#search_form input:focus {
+  outline: none;
+}
+#container.app_store #app_empty_search_results {
+  margin-top: 27px;
+  width: 100%;
+  height: 177px;
+  background-image: url("http://widgets.itunes.apple.com/images/app_search_intro.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+}
+#container.itunes_store #itunes_empty_search_results {
+  width: 100%;
+  height: 177px;
+  margin-top: 10px;
+  background-image: url("http://widgets.itunes.apple.com/images/itunes_search_intro.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+}
+div.filter {
+  height: 16px;
+  width: 100%;
+  text-align: center;
+  color: #999999;
+  font-size: 12px;
+  cursor: pointer;
+}
+div.filter span.highlight {
+  color: #333333;
+}
+div.app_carousel {
+  width: 95%;
+  margin: 0 auto;
+  height: 75px;
+}
+div.overview {
+  top: 0;
+  position: relative;
+  width: 100%;
+}
+#fade_bar {
+  padding-top: 10px;
+  margin-left: 16px;
+  height: 7px;
+  position: absolute;
+  background-image: url("http://widgets.itunes.apple.com/images/background_fade_bar.png");
+  background-repeat: repeat-x;
+  background-position: bottom left;
+}
+div.btn_view_app {
+  z-index: 3;
+  margin: 3px 0 0 0;
+  width: 57px;
+  height: 21px;
+  background-image: url("http://widgets.itunes.apple.com/images/btn_view.png");
+}
+div.btn_itunes_gray {
+  z-index: 3;
+  margin: 3px 0 0 0;
+  width: 50px;
+  height: 13px;
+  background-image: url("http://widgets.itunes.apple.com/images/btn_view_sm.png");
+}
+div.btn_view_itunes {
+  z-index: 3;
+  margin: 3px 0 0 0;
+  width: 57px;
+  height: 21px;
+  background-image: url("http://widgets.itunes.apple.com/images/btn_view.png");
+}
+div.btn_view_app_gray {
+  margin-top: 3px;
+  width: 50px;
+  height: 13px;
+  background-image: url("http://widgets.itunes.apple.com/images/btn_view_sm.png");
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+#btn_back {
+  background-image: url("http://widgets.itunes.apple.com/images/btn_left_arrow.png");
+  background-position: 10px center;
+  background-repeat: no-repeat;
+  height: 18px;
+  padding: 6px 0px 0px 20px;
+  font-size: 11px;
+  line-height: 11px;
+  color: #666666;
+  border-bottom: 1px solid #999999;
+  cursor: pointer;
+}
+#search_results {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid #d2d2d2;
+}
+ul.results_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+}
+ul.results_list li {
+  display: block;
+  padding: 3px 10px 6px 10px;
+  margin: 0;
+  height: 53px;
+}
+ul.results_list li :last-child {
+  height: 25px;
+}
+ul.results_list li img {
+  width: 53px;
+  height: 53px;
+  background: blue;
+  display: block;
+  float: left;
+  -webkit-mask-image: url("http://widgets.itunes.apple.com/images/app_store_icon_mask_53.png");
+}
+ul.results_list li div.meta {
+  margin-left: 63px;
+  padding: 3px 10px 0px 0;
+}
+ul.results_list li div.meta h1 {
+  width: 100%;
+  height: 1.4em;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+ul.results_list li div.meta h2 {
+  width: 100%;
+  height: 1.4em;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+  font-weight: normal;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+ul.results_list li div.meta a {
+  text-decoration: none;
+  color: #151515;
+}
+ul.results_list li div.meta a :hover {
+  text-decoration: underline;
+  color: #151515;
+}
+div.scrollbar {
+  width: 8px;
+  position: absolute;
+  right: 10px;
+  top: 96px;
+}
+div.scrollbar .top {
+  background-image: url("http://widgets.itunes.apple.com/images/background_scrollbar.png");
+  background-position: top center;
+  width: 8px;
+  height: 50%;
+}
+div.scrollbar .bottom {
+  background-image: url("http://widgets.itunes.apple.com/images/background_scrollbar.png");
+  background-position: bottom center;
+  width: 8px;
+  height: 50%;
+}
+div.scrollbar .thumb {
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  height: 1px;
+  width: 8px;
+  cursor: pointer;
+  background-image: url("http://widgets.itunes.apple.com/images/scrollbar_thumb.png");
+  background-position: bottom center;
+}
+div.scrollbar .thumb .thumb_top {
+  width: 8px;
+  height: 50%;
+}
+div.scrollbar .thumb > .bottom {
+  background-image: url("http://widgets.itunes.apple.com/images/scrollbar_thumb.png");
+  background-position: top center;
+  height: 4px;
+  width: 8px;
+  overflow: hidden;
+}
+#scrollbar_playlist_tracks {
+  top: 87px;
+}
+#description_scrollbar {
+  top: 153px;
+}
+#description_scrollbar.back_option {
+  top: 170px;
+}
+#footer {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  height: 24px;
+}
+#footer .right {
+  background-image: url("http://widgets.itunes.apple.com/images/footer.png");
+  background-position: bottom right;
+  width: 50%;
+  height: 24px;
+  float: left;
+}
+#footer .left {
+  background-image: url("http://widgets.itunes.apple.com/images/footer.png");
+  background-position: top left;
+  width: 49.9999%;
+  height: 24px;
+  float: left;
+}
+a.view_more {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  font-color: ;
+  display: block;
+  width: 100%;
+  color: #666666;
+  text-decoration: none;
+}
+a.view_more :hover {
+  text-decoration: underline;
+}
+span.view_more_arrow {
+  display: inline-block;
+  width: 7px;
+  height: 8px;
+  background-image: url("http://widgets.itunes.apple.com/images/btn_right_arrow.png");
+  background-repeat: no-repeat;
+}
+#playlist_payload {
+  display: block;
+  padding: 3px 10px 6px 10px;
+  margin: 0;
+  height: 53px;
+  position: relative;
+}
+#playlist_container {
+  position: absolute;
+  top: 0;
+}
+#playlist_title {
+  font-size: 13px;
+  color: #333333;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
+#playlist_description {
+  font-size: 11px;
+  color: #666666;
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
+}
+#playlist_payload {
+  margin: 0px 1px;
+  height: 170px;
+  position: absolute;
+  overflow: hidden;
+}
+#trackcount {
+  position: absolute;
+  text-align: center;
+  color: #666666;
+  font-size: 11px;
+  width: 100%;
+  margin-top: 4px;
+  left: 0;
+}
+.playlist-table div.list_icon > img {
+  width: 53px;
+  height: 53px;
+  background: blue;
+  display: block;
+  float: left;
+  -webkit-mask-image: url("http://widgets.itunes.apple.com/images/app_store_icon_mask_53.png");
+}
+div.btn_view {
+  z-index: 3;
+  margin: 3px 0 0 0;
+  width: 50px;
+  height: 13px;
+  background-image: url("http://widgets.itunes.apple.com/images/btn_view_sm.png");
+  cursor: pointer;
+}
+.hide {
+  display: none;
+}
+/* Clearfix */
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+.clearfix {
+  display: inline-block;
+}
+html[xmlns] .clearfix {
+  display: block;
+}
+* html .clearfix {
+  height: 1%;
+}

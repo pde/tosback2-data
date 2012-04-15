@@ -1,0 +1,86 @@
+﻿Type.registerNamespace('AjaxControlToolkit');AjaxControlToolkit.TextBoxWatermarkBehavior = function(element) {
+AjaxControlToolkit.TextBoxWatermarkBehavior.initializeBase(this, [element]);this._watermarkText = null;this._watermarkCssClass = null;this._watermarked = null;this._focusHandler = null;this._blurHandler = null;this._keyPressHandler = null;this._propertyChangedHandler = null;this._oldClassName = null;this._clearedForSubmit = null;this._maxLength = null;}
+AjaxControlToolkit.TextBoxWatermarkBehavior.prototype = {
+initialize : function() {
+AjaxControlToolkit.TextBoxWatermarkBehavior.callBaseMethod(this, 'initialize');var e = this.get_element();var hasInitialFocus = false;var clientState = AjaxControlToolkit.TextBoxWatermarkBehavior.callBaseMethod(this, 'get_ClientState');if (clientState != null && clientState != "") {
+hasInitialFocus = (clientState == "Focused");AjaxControlToolkit.TextBoxWatermarkBehavior.callBaseMethod(this, 'set_ClientState', null);}
+this._oldClassName = e.className;this._focusHandler = Function.createDelegate(this, this._onFocus);this._blurHandler = Function.createDelegate(this, this._onBlur);this._keyPressHandler = Function.createDelegate(this, this._onKeyPress);$addHandler(e, 'focus', this._focusHandler);$addHandler(e, 'blur', this._blurHandler);$addHandler(e, 'keypress', this._keyPressHandler);this.registerPropertyChanged();var currentValue = e.value;this._watermarked = (("" == currentValue) || (this._watermarkText == currentValue));if (hasInitialFocus) {
+this._onFocus();} else {
+e.blur();this._onBlur();}
+this._clearedForSubmit = false;this.registerPartialUpdateEvents();},
+dispose : function() {
+var e = this.get_element();if(e.control && this._propertyChangedHandler) {
+e.control.remove_propertyChanged(this._propertyChangedHandler);this._propertyChangedHandler = null;}
+if (this._focusHandler) {
+$removeHandler(e, 'focus', this._focusHandler);this._focusHandler = null;}
+if (this._blurHandler) {
+$removeHandler(e, 'blur', this._blurHandler);this._blurHandler = null;}
+if (this._keyPressHandler) {
+$removeHandler(e, 'keypress', this._keyPressHandler);this._keyPressHandler = null;}
+if(this._watermarked) {
+this.clearText(false);}
+AjaxControlToolkit.TextBoxWatermarkBehavior.callBaseMethod(this, 'dispose');},
+clearText : function(focusing) {
+this.get_element().value = "";if(focusing) {
+this.get_element().setAttribute("autocomplete","off");this.get_element().select();}
+},
+_onFocus : function(evt) {
+var e = this.get_element();if(this._watermarked) {
+this.clearText(evt ? true : false);}
+e.className = this._oldClassName;this._watermarked = false;if (this._maxLength > 0) {
+this.get_element().maxLength = this._maxLength;this._maxLength = null;}
+},
+_onBlur : function() {
+if(("" == this.get_element().value) || this._watermarked) {
+if (this.get_element().maxLength > 0 && this._watermarkText.length > this.get_element().maxLength) {
+this._maxLength = this.get_element().maxLength;this.get_element().maxLength = this._watermarkText.length;}
+this._applyWatermark();}
+},
+_applyWatermark : function() {
+this.get_element().value = this._watermarkText;if(this._watermarkCssClass) {
+this.get_element().className = this._watermarkCssClass;}
+this._watermarked = true;},
+_onKeyPress : function() {
+this._watermarked = false;},
+registerPropertyChanged : function() {
+var e = this.get_element();if(e.control && !this._propertyChangedHandler) {
+this._propertyChangedHandler = Function.createDelegate(this, this._onPropertyChanged);e.control.add_propertyChanged(this._propertyChangedHandler);}
+},
+_onPropertyChanged : function(sender, propertyChangedEventArgs) {
+if("text" == propertyChangedEventArgs.get_propertyName()) {
+this.set_Text(this.get_element().value);}
+},
+_onSubmit : function() {
+if(this._watermarked) {
+this.clearText(false);this._clearedForSubmit = true;}
+},
+_partialUpdateEndRequest : function(sender, endRequestEventArgs) {
+AjaxControlToolkit.TextBoxWatermarkBehavior.callBaseMethod(this, '_partialUpdateEndRequest', [sender, endRequestEventArgs]);if (this.get_element() && this._clearedForSubmit) {
+this.get_element().blur();this._onBlur();this._clearedForSubmit = false;}
+},
+get_WatermarkText : function() {
+return this._watermarkText;},
+set_WatermarkText : function(value) {
+if (this._watermarkText != value) {
+this._watermarkText = value;if (this._watermarked) {
+this._applyWatermark();}
+this.raisePropertyChanged('WatermarkText');}
+},
+get_WatermarkCssClass : function() {
+return this._watermarkCssClass;},
+set_WatermarkCssClass : function(value) {
+if (this._watermarkCssClass != value) {
+this._watermarkCssClass = value;if (this._watermarked) {
+this._applyWatermark();}
+this.raisePropertyChanged('WatermarkCssClass');}
+},
+get_Text : function() {
+return (this._watermarked ? "" : this.get_element().value);},
+set_Text : function(value) {
+if ("" == value) {
+this.get_element().value = "";this.get_element().blur();this._onBlur();} else {
+this._onFocus();this.get_element().value = value;}
+}
+}
+AjaxControlToolkit.TextBoxWatermarkBehavior.registerClass('AjaxControlToolkit.TextBoxWatermarkBehavior', AjaxControlToolkit.BehaviorBase);
+if(typeof(Sys)!=='undefined')Sys.Application.notifyScriptLoaded();

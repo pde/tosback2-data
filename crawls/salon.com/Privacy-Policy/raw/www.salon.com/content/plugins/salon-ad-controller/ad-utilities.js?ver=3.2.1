@@ -1,0 +1,97 @@
+// Salon Ad Utilities
+
+var ad_x10_top, ad_x10_bottom, ad_x10_left;
+// $ noConflict
+jQuery.noConflict();
+
+jQuery(document).ready(function($) {
+	
+	// fixed positioning for x10 only in 3 column layout
+	if ($('.grid_10 #ad_x10').length >= 1) {
+		
+		var $x10 = $('.grid_10 #ad_x10');
+		var thisHeight = $x10.height();
+		var thisWidth = $x10.innerWidth();
+		var position = $x10.offset();
+		var before = $x10.prev();
+		var bottom = $('.cols3').next().offset();
+		
+		try {
+			$(window).bind('scroll resize', function() {
+				if ($(window).scrollTop() > position.top && $(window).scrollTop() < ((bottom.top - thisHeight) - 60)) {
+					$x10.css({
+						"width" : thisWidth + "px",
+						"height" : thisHeight + "px",
+						"position" : "fixed",
+						"left" : (before.offset().left - $(window).scrollLeft()) + "px",
+						"top" : "10px"
+						// "padding" : ".9em .4em"
+					});
+				} else {
+					$x10.css({
+						"position" : before.css("position")
+					});
+				}
+			});
+		} catch (e) {
+			//do nothing
+		}	
+	}
+    auditEmptyAds();
+
+});
+
+function refreshAds() {
+    // Please note that the line below is not how we should refresh ads.  OAS_refresh needs to work properly.
+    // jQuery('iframe').attr('src', function(i,v) { return v; }); // HACK TO REFRESH IFRAMES, must troubleshoot below
+
+    var ad_divs = jQuery('.ad_content_refresh');
+    for (var i = 0; i < ad_divs.length; i++ ) {
+        var ad = ad_divs[i];
+        var ad_label = ad.id.replace( 'ad_', '');
+        var refd = OAS_refresh(ad_label);
+		if ( ad_label == 'x10' ) try {
+			ad_x10_left = jQuery('#ad_x10').offset().left;
+			ad_x10_top = jQuery('#ad_x10').offset().top;
+		} catch (e) {
+			// do nothing
+		}
+	}
+	jQuery('.ad_content_refresh').filter(':has(a > img[src$="salon.com/RealMedia/ads/Creatives/default/empty.gif"])').hide();
+}
+
+function auditEmptyAds () {
+	jQuery('.advert script:only-child').parent().hide();
+	jQuery('.advert').filter(':has(a > img[src$="salon.com/RealMedia/ads/Creatives/default/empty.gif"])').hide();
+}
+
+function adfree () { 
+	return 's_a_n' == getCookie('salon_status_cookie');
+}
+
+// from http://jquery-howto.blogspot.com/2010/09/jquery-cookies-getsetdelete-plugin.html
+function setCookie(name,value,days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+function deleteCookie(name) {
+    setCookie(name,"",-1);
+}
+

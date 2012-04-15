@@ -1,0 +1,1182 @@
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.8.0r4
+*/
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}del,ins{text-decoration:none;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:baseline;}sub{vertical-align:baseline;}legend{color:#000;}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}input,button,textarea,select{*font-size:100%;}
+
+/*
+
+Nicholas Macias
+http://rockinghelvetica.com/
+	
+*/
+
+
+html, body {
+	background: #cfcfcf;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 16px;
+	color: #333;
+	}
+img {
+	display: block;
+	}
+p, h4 {
+	line-height: 24px;
+	}
+em {
+	font-style: italic;
+	}
+a, a:link, a:visited {
+	color: #d3222a;
+	text-decoration: none;
+	}
+a:hover {
+	text-decoration: underline;
+	}
+h1, h2, h3, .chart span, th {
+	text-transform: uppercase;
+	}
+h1 {
+	font-size: 52px;
+	color: white;
+	}
+h1 span {
+	position: relative;
+	z-index: 3; 
+	}
+h2 {
+	font-size: 64px;
+	padding-bottom: 18px;
+	border-bottom: 3px solid #bdbdbd;
+	}
+.aux h2 {
+	font-size: 42px;
+	}	
+h3, h4 {
+	font-weight: bold;
+	}
+h4 {
+	margin: 16px 0;
+	}
+strong {
+	font-weight: bold;
+	}
+.hr {
+	background: transparent url("../images/sprited-v2.png") no-repeat -10px -10px;
+	border: 0;
+	display: block;
+	height: 17px;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	width: 978px;
+	}
+.hr hr {
+	display: none;
+	}
+sup {
+	vertical-align: top;
+	font-size: 80%;
+	line-height: 80%;
+	opacity: 0.5;
+	}
+	
+
+	
+
+	
+	
+/* Structure
+----------------------------------------------- */
+.grid {
+	margin: auto;
+	position: relative;
+	width: 978px;
+	}
+.clear {
+	clear: both;
+	}	
+.branded {
+	background-image: url("../images/ign_entertainment.png") !important;
+	background-repeat: no-repeat !important;
+	background-position: 778px 56px !important;
+	padding-right: 256px !important;
+	}
+.sidebar {
+	line-height: 24px;
+	position: absolute;
+	top: 204px;
+	right: 0;
+	width: 256px;
+	text-align: center;
+	}
+.sidebar img {
+	margin: auto;
+	border-top: 1px solid #cfcfcf;
+	}
+.sidebar h3 {
+	margin: 37px auto;
+	color: #b1b1b1;
+	}
+.facet, .aside {
+	background: white;
+	margin: 16px;
+	text-align: left;
+	padding: 16px;
+	}
+.facet h3, .aside h3 {
+	font-size: 36px;
+	margin: 0 0 16px 0;
+	font-weight: normal;
+	}
+.facet li {
+	padding: 6px 0;
+	border-top: 1px solid #cfcfcf;
+	font-style: italic;
+	}
+.facet li a {
+	font-style: normal;
+	}
+.hot {
+	background: #d3222a;
+	color: #333;
+	}
+p.hot { 
+	color: white;
+	}
+.hot a, .hot h3 {
+	color: white;
+	}
+.subnav {
+	position: relative;
+	text-transform: uppercase;
+	}
+.subnav ul {
+	border-bottom: 1px solid #cfcfcf;
+	margin: 0 0 0 -16px;
+	}
+.subnav li {
+	border-top: 1px solid #cfcfcf;
+	}
+.subnav li a {
+	padding: 8px 16px;
+	display: block;
+	font-weight: 800;
+	font-size: 18px;
+	}
+.subnav li a, .subnav li a:link, .subnav li a:visited {
+	color: #d3222a;
+	}
+.subnav li a:hover {
+	color: #333;
+	text-decoration: none !important;
+	}
+.section {
+	position: relative;
+	background: #e3e3e3;
+	padding: 16px;
+	}
+.inset {
+	background: #cfcfcf;
+	margin: 0 -16px;
+	}
+.chapter {
+	border: 1px solid #cfcfcf;
+	margin-top: 16px;
+	padding: 16px;
+	}
+.chapter p {
+	padding: 16px 0 0 0;
+	}
+.intro {
+	margin-top: 0;
+	background: white;
+	}
+.pullquote {
+	font-weight: 800;
+	text-transform: uppercase;
+	color: #333;
+	font-size: 24px;
+	line-height: 36px;
+	}
+.callout {
+	position: relative;
+	width: 324px;
+	background: #d3222a;
+	float: right;
+	margin-top: 16px;
+	margin-left: 16px;
+	padding: 16px;
+	font-size: 18px;
+	line-height: 24px;
+	color: white;
+	}
+.callout div:first-child {
+	position: absolute;
+	top: -20px;
+	left: 16px;
+	display: block;
+	background: url("../images/sprited-v2.png") no-repeat -10px -48px;
+	width: 41px;
+	height: 20px;
+	}
+.footnote, tfoot td {
+	margin-top: 16px;
+	clear: both;
+	padding: 8px 0;
+	border-top: 3px solid #bdbdbd;
+	font-size: 11px;
+	font-weight: normal;
+	line-height: 14px;
+	}
+.hash {
+	background: #d3222a;
+	padding: 3px 4px;
+	margin: 0;
+	color: white;
+	font-weight: 800;
+	font-size: 10px;
+	text-transform: uppercase;
+	display: inline-block;
+	}
+a.hash, a.hash:hover {
+	color: white;
+	text-decoration: none;
+	}	
+.hash + h2, .hash + ul {
+	padding-top: 16px !important;
+	}
+.split {
+	float: left;
+	width: 446px;
+	}
+.split h2 {
+	font-size: 40px;
+	}
+.third {
+	float: left;
+	width: 259px;
+	margin-right: 16px;
+	background: #efefef;
+	}
+.last {
+	margin-right: 0;
+	width: 260px;
+	}
+.chart {
+	font-size: 13px;
+	font-weight: bold;
+	}
+.chart span {
+	font-size: 24px;
+	font-weight: bold;
+	}
+.chart li {
+	border-bottom: 1px solid rgb(80%, 80%, 80%);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	padding: 8px 0;
+	text-align: left;
+	vertical-align: bottom;
+	}
+dl.chart { 
+	position: relative;
+	}
+.chart dt { 
+	position: relative; 
+	text-align: center; 
+	width: 50px; 
+	height: 30px; 
+	margin-bottom: -30px; 
+	top: 12px; 
+	font-size: 24px; 
+	}
+.chart dd {
+	border-bottom: 1px solid rgb(255, 255, 255); 
+	border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+	width: 350px; 
+	height: 36px; 
+	padding: 12px 8px 8px 72px; 
+	background: none;
+	}
+.chart dd strong {
+	display: block;
+	padding-top: 8px;
+	}
+table.chart {
+	border-width: 0px;
+	border-style: none;
+	width: 100%;
+	background: white;
+	padding: 16px;
+	border-collapse: separate;
+	}
+.chart td, .chart th {
+	border-bottom: 1px solid #ccc;
+	padding: 8px;
+	zoom: 1;
+	}
+.chart thead th {
+	border-width: 3px;
+	border-color: #666;
+	background: url("../images/shading-dark.png");
+	}
+.chart tfoot td {
+	border: 0;
+	padding-bottom: 0;
+	width: auto !important;
+	}
+.tabs {
+	position: relative;
+	margin: 16px 0 0;
+	}
+.tabs h3 {
+	background: url("../images/shading.png");
+	font-size: 12px;
+	height: 1.0em;
+	padding: 1.0em;
+	}
+.tabs div {
+	background: transparent url("../images/rgba25525525512.png");
+	background: rgba(255, 255, 255, 0.12) none;
+	text-align: left;
+	padding: 16px;
+	}
+.tabs .chart dd {
+	width: 318px;
+	}
+.tabNavigation {
+	position: absolute;
+	right: 0.5em;
+	top: 0;
+	font-size: 12px;
+	height: 3.0em;
+	padding-left: 40px;
+	}
+.tabNavigation li {
+	float: left;
+	font-weight: bold;
+	padding: 0.5em 0;
+	}
+.tabNavigation a {
+	color: white;
+	padding: 0.5em;
+	display: block;
+	}
+.tabSelected {
+	background: transparent url("../images/rgba20202004.png");	
+	background: rgba(20, 20, 20, 0.4) none;
+	text-decoration: underline;
+	}
+
+#footer {
+	clear: both;
+	padding: 8px 0;
+	border-top: 3px solid #bdbdbd;
+	font-size: 11px;
+	font-color: #666;
+	margin-top: 16px;
+	}
+#footer ul {
+	padding: 8px;
+	background: #bdbdbd;
+	float: right;
+	}
+#footer li {
+	float: left;
+	font-size: 13px;
+	margin-left: 8px;
+	}
+#footer a {
+	padding-right: 14px;
+	margin-right: 4px;
+	background: url("../images/sprited-v2.png") no-repeat 198px -84px;
+	}
+
+.intro, .tabs, #influencers { overflow: hidden; } 
+
+
+	
+	
+/* Primary Navigation
+----------------------------------------------- */
+#tray {
+	height: 52px;
+	position: relative;
+	}
+#nav {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 100;
+	width: 100%;
+	font-size: 18px;
+	font-weight: bold;
+	text-transform: uppercase;
+	}
+#nav div, .aux #nav {
+	background: transparent url("../images/rgba20202092.png");
+	background: rgba(20, 20, 20, 0.92) none;	
+	padding: 16px 15px 16px 33px;
+	position: relative;
+	text-align: right;
+	width: 930px;
+	margin: auto;
+	}
+.aux #nav {
+	padding-top: 33px;
+	}	
+#nav ul {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	width: 500px;
+	float: left;
+	}
+#nav li, .aux #nav a:first-child {
+	float: left;
+	}
+#nav a {
+	padding-right: 18px;
+	margin-left: 12px;
+	/*background: url("../images/sprited-v2.png") no-repeat -720px -83px;*/
+	}	
+#nav li a {
+	margin-left: 0;
+	background: none;
+	color: #d3222a !important;	
+	}
+.aux #nav a:first-child {
+	margin-left: -22px;
+	padding: 0 0 0 22px;
+	/*background: url("../images/sprited-v2.png") no-repeat -305px -83px;*/
+    background: url("../images/nav-sprites.png") repeat scroll 0 0 transparent;
+	}	
+#nav a:hover {
+	text-decoration: none !important;
+	color: white;	
+	}
+#nav a:hover strong {
+	color: #d3222a;
+	}	
+#nav strong {
+	color: white;
+	}	
+		
+	
+	
+	
+	
+/* Home
+----------------------------------------------- */
+#headline {
+	height: 360px;
+	padding: 20px;
+	position: relative;
+	z-index: 2;
+	}
+.subhead {
+	font-weight: 800;
+	text-transform: uppercase;
+	font-size: 13px;
+	background: url("../images/sprited-v2.png") no-repeat 198px -84px;
+	padding-right: 14px;
+	}
+.subhead:hover {
+	color: white;
+	text-decoration: none;
+	}
+#home {
+	position: relative;
+	background: #e3e3e3;
+	padding: 16px;
+	}
+#home .chapter {
+	border: 1px solid #e3e3e3;
+	margin: 0;
+	padding: 0 388px 16px 16px;
+	}
+#forehead {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 400px;
+	width: 978px;
+	}
+#forehead img {
+	position: absolute;
+	display: none;
+	}
+#forehead img:first-child {
+	display: block;
+	}
+#logo {
+	float: right;
+	}
+#rotation {
+	position: absolute;
+	right: 37px;
+	top: 37px;
+	width: 272px;
+	padding: 8px;
+	background: white;
+	height: 200px;
+	text-align: right;
+	}
+#rotation .subhead:hover {
+	color: #333;
+	}
+#promo {
+	margin-top: 16px;
+	text-align: center;
+	border: 1px solid #efefef;
+	height: 164px;
+	}
+
+
+
+
+
+
+
+
+
+/* Section: Audience
+----------------------------------------------- */
+#audience .intro .footnote {
+	width: 624px;
+	}
+#audience .subnav {
+	margin: -16px -16px 0 -16px;
+	padding: 16px;
+	border-bottom: 1px solid #cfcfcf;
+	height: 7.2em;
+	}
+#audience .intro h2 {
+	border: none;
+	padding: 0;
+	}
+#audience .subnav ul {
+	position: absolute;
+	right: 0;
+	top: -1px;
+	border: 0;
+	padding-bottom: 1px;
+	border-left: 1px solid #cfcfcf;
+	height: 100%;
+	width: 304px;
+	}
+#audience .subnav li {
+	height: 33%;
+	padding: 0;
+	}
+#audience .subnav a {
+	padding: 13px 16px;
+	}
+#audience .intro img {
+	float: right;
+	}
+#profile {
+	background: #2d2b2b url("../images/profile.jpg") no-repeat left bottom;
+	border: 0;
+	margin: 16px -16px -16px -16px;
+	padding: 16px;
+	}
+#profile .footnote {
+	width: 466px;
+	border: none;
+	color: white;
+	}
+#profile .split {
+	padding: 16px;
+	width: 430px;
+	color: white;
+	border: 1px solid #d3222a;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	}
+#influencers {
+	float: right;
+	border-color: #d3222a;
+	background-color: #d3222a;
+	}
+#influencers li {
+	padding: 8px 0;
+	border-top: 1px solid white;
+	}
+#influencers * {
+	zoom: 1 !important;
+	}
+#reach table {
+	margin-top: 24px;
+	}
+#reach .chart td {
+	width: 148px;
+	}
+
+	
+	
+	
+	
+	
+/* Section: Content
+----------------------------------------------- */
+#content .intro {
+	position: relative;
+	padding: 0 0 0 384px;
+	margin-bottom: 16px;
+	}
+#content .subnav {
+	position: absolute;
+	top: 16px;
+	left: 16px;
+	width: 368px;
+	}
+#content .intro h2 {
+	border: 0;
+	padding: 0;
+	letter-spacing: -2px;
+	}
+#content .intro p {
+	border-left: 1px solid #cfcfcf;
+	padding: 0 32px 16px 32px;
+	}
+#content .intro p:first-child {
+	padding-top: 46px;
+	}
+#content .intro p:last-child {
+	padding-bottom: 3.0em;
+	}
+	
+	
+	
+	
+	
+/* Section: Content Properties
+----------------------------------------------- */
+#properties {
+	background: rgb(20, 20, 20);
+	color: #666;
+	margin: 0 auto;
+	padding: 0 0 32px 0;
+	position: relative;
+	width: 902px;
+	}
+#properties h2 {
+	color: white;
+	font-size: 48px;
+	border: 0;
+	margin-left: 16px;
+	margin-bottom: 16px;
+	z-index: 4;	
+	}
+#properties .hash {
+	color: #666;
+	background: #333;
+	margin: 16px;
+	}
+div.peek {
+	background: url("../images/shading.png") !important;
+	}
+.peek a, .peek a:hover {
+	border-color: #666 !important;
+	color: #d3222a !important;
+	z-index: 4;
+	}
+#brands {
+	background: url("../images/sprited-v2.png") -18px -546px no-repeat;
+	}
+#brands ul {
+	width: 902px;
+	height: 100px;
+	text-align: center;
+	border-top: 1px solid #333;
+	}
+#brands #gaming {
+	border: 0;
+	border-bottom: 1px solid black;
+	}
+#brands li {
+	float: left;
+	}
+#brands a {
+	display: block;
+	height: 100px;
+	width: 100px;
+	background: url("../images/sprited-v2.png") 0 -690px no-repeat;
+	}
+#brands a[rel=onesheet-ign] { width: 180px; background-position: -48px -790px; }
+#brands a[rel=onesheet-gamespy] { width: 143px; background-position: -228px -790px; }
+#brands a[rel=onesheet-teamxbox] { width: 156px; background-position: -371px -790px; }
+#brands a[rel=onesheet-fileplanet] { width: 130px; background-position: -533px -790px; }
+#brands a[rel=onesheet-whattheyplay] { width: 110px; background-position: -668px -790px; }
+#brands a[rel=onesheet-battlefieldheroes] { width: 172px; background-position: -778px -790px; }
+#brands a[rel=onesheet-askmen] { 
+	width: 156px; 
+	background-position: -371px -880px;
+	margin: 0 351px;
+	}
+#newmedia {
+	margin: 0 -16px -16px -16px;
+	padding-bottom: 0;
+	border: 0;
+	}
+#newmedia .split {
+	padding: 16px;
+	width: 430px;
+	border: 1px solid rgb(190, 190, 190);
+	min-height: 910px;			
+	}
+#ignvideo {
+	background-color: white;
+	}
+#iphone {
+	margin-left: 16px;
+	}
+
+
+
+
+
+
+/* Section: Property One-sheets
+----------------------------------------------- */
+#onesheets {
+	position: relative;
+	width: 962px;
+	height: 460px;
+	left: -38px;
+	background-color: #d3222a;
+	background-image: url("../images/sprited-v2.png");
+	background-position: -18px -116px;
+	background-repeat: no-repeat;
+	border: 8px solid black;
+	overflow: hidden;
+	}
+.onesheet, #onesheet {
+	position: relative;
+	height: 388px;
+	width: 930px;	
+	overflow: hidden;
+	padding: 16px;
+	background: transparent;
+	}
+.onesheet .screenshot {
+	position: absolute;
+	top: 90px;
+	left: 31px;
+	}	
+#onesheet {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 0;
+	z-index: 66;
+	width: 100%;
+	height: 420px;
+	}
+#properties .controls {
+	position: absolute;
+	top: 420px;
+	width: 930px;
+	background: black;
+	padding: 8px 16px;
+	height: 24px;
+	z-index: 67;
+	text-align: right;
+	}
+#properties .controls .subhead {
+	margin-top: 8px;
+	float: left;
+	}
+#properties .controls a.carousel {
+	background: transparent url("../images/carousel.png") no-repeat -1568px 0;
+	display: inline-block;
+	text-align: right;
+	text-decoration: none;
+	width: 32px;
+	height: 32px;
+	}
+#properties .controls a.carousel div {
+	background: transparent url("../images/carousel.png") no-repeat -1600px 0;
+	width: 32px;
+	height: 32px;		
+	}
+#overview {
+	position: absolute;
+	bottom: 54px;
+	right: 16px;
+	width: 330px;
+	background: white;
+	background: rgba(255, 255, 255, 0.94);
+	padding: 16px 24px 16px 24px;
+	font-size: 12px;
+	font-weight: bold;
+	}
+#overview p {
+	line-height: 18px;
+	}
+#onesheet .tabNavigation a {
+	padding: 6px 8px;
+	}
+#onesheet .tabNavigation {
+	display: block;
+	width: 372px;
+	height: 38px;
+	background: rgb(0, 0, 0);
+	background: rgba(0, 0, 0, 0.5);
+	background-image: url("../images/shading.png");
+	right: 16px;
+	bottom: 16px;
+	top: auto;
+	padding-left: 6px;
+	}
+#onesheet h3 {
+	font-size: 28px;
+	margin: 0 0 8px 0;
+	color: #292929;
+	font-weight: normal;
+	}
+.reachdata, .pvdata {
+	position: absolute;
+	left: 0;
+	top: 0;
+	padding: 16px;
+	}
+.pvdata {
+	left: 251px;
+	}
+.pvdata dt, .reachdata dt, .pvdata dd, .reachdata dd {
+	padding: 0;
+	font-size: 12px;
+	font-weight: bold;
+	color: white;
+	}
+.pvdata dd, .reachdata dd {
+	position: relative;
+	z-index: 72;
+	font-size: 32px;
+	font-weight: normal;
+	height: 48px;
+	}	
+#previous, #next {
+	position: absolute;
+	cursor: pointer;
+	display: block;
+	width: 80px;
+	height: 80px;
+	top: -420px;
+	right: 0;
+	z-index: 67;
+	background: url("../images/sprited-v2.png") no-repeat -918px -30px;
+	}
+#previous {
+	right: 80px;
+	background: url("../images/sprited-v2.png") no-repeat -838px -30px;
+	}
+#onesheets .profile {
+	padding: 16px;
+	margin-top: 90px;
+	margin-left: 24px;
+	height: 600px;
+	width: 594px;
+	color: white;
+	}		
+#onesheets .footnote {
+	border: 0;
+	}
+.onesheet .split {
+	width: 240px;
+	margin: 0 16px 0 0;
+	}
+.onesheet .split ul {
+	width: 100%;
+	}			
+
+
+
+
+/* Section: Showcase
+----------------------------------------------- */
+#showcase h2 {
+	font-size: 55px;
+	}
+#featuredproduct img, #gallery img {
+	border-bottom: 8px solid white;
+	}
+#featuredproduct strong, #gallery strong {
+	display: block;
+	}
+#gallery a div, #featuredproduct div {
+	background: #333;
+	padding: 8px;
+	}
+#gallery {
+	width: 944px;
+	overflow: hidden;
+	margin: 0 -16px;
+	font-size: 13px;
+	}
+#gallery a, #featuredproduct a {
+	display: block;
+	padding: 8px;
+	width: 200px;
+	background: #cfcfcf;
+	overflow: hidden;
+	height: 180px;
+	float: left;
+	margin: 16px 0 0 16px;
+	color: #999;
+	}
+#featuredproduct {
+	float: right;
+	margin-top: 0;
+	margin-right: 16px;
+	width: 448px;
+	}
+#featuredproduct a {
+	width: auto;
+	height: auto;
+	}
+#gallery a:hover, #featuredproduct a:hover {
+	background: url("../images/shading-ani.gif");
+	text-decoration: none;
+	color: white;
+	}
+#contact {
+	background-color: #d3222a;
+	}
+#contact a {
+	color: white;
+	}
+#contact .chapter {
+	margin: 0;
+	padding: 16px 16px 16px 464px;
+	}
+#contact h2 {
+	position: absolute;
+	left: 32px;
+	width: 464px;
+	border: 0;
+	margin-right: 16px;
+	font-size: 54px;
+	color: white;
+	}
+#contact form {
+	border-left: 2px solid white;
+	background: url("../images/shading.png");
+	padding: 8px;
+	}
+#contact form div {
+	background: #d3222a;
+	padding: 16px 8px 16px 16px;
+	margin: 0 0 8px 0;
+	}
+label {
+	background: rgb(246, 90, 73);
+	border: 1px solid #6e3235;
+	color: #333;
+	display: inline-block;
+	float: left;
+	font-style: italic;
+	height: 1.0em;
+	margin: 0 8px 0 0;
+	overflow: hidden;
+	padding: 8px;
+	position: relative;
+	width: 185px;
+	}
+label input, label textarea {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 8px 4px 6px 2px;
+	background: transparent;
+	border: 1px solid rgb(249, 156, 145);
+	font-style: normal;
+	}
+label input {
+	width: 193px;
+	height: 1.0em;
+	}
+label textarea {
+	width: 404px;
+	height: 90px;
+	}
+.message {
+	float: none;
+	clear: both;
+	width: 396px;
+	margin-top: 8px;
+	height: 90px;
+	}
+.submit {
+	text-transform: uppercase;
+	margin: 16px 0 0 0;
+	padding: 8px 16px;
+	background: #d3222a;
+	font-size: 24px;
+	font-weight: bold;
+	color: white;
+	border: 1px solid white;
+	}		
+.submit:hover {
+	background: #333;
+	}
+.opaque {
+	background: white;
+	}
+		#contacts {
+			position: relative;
+			background: white url("../images/shading-d3222a.png");			
+			padding: 16px;
+			margin-top: 16px;
+			height: 294px;
+			}
+		#rolodex {
+			overflow: hidden;
+			}			
+		#rolodex ul {
+			overflow: hidden;
+			}
+		#rolodex li {
+			display: block;
+			padding: 16px 16px 16px 56px;
+			background: white url("../images/sprited-v2.png") no-repeat;
+			background-position: -180px -33px;
+			margin: 0;
+			border-bottom: 1px solid #efefef;
+			cursor: pointer;
+			height: 16px;
+			}
+		#rolodex em {
+			display: block;
+			color: #666;
+			float: right;
+			}
+		#rolodex span {
+			display: none;
+			}
+		#rolodex .hover strong, #rolodex .hover em {
+			color: #d3222a;
+			}
+		#compose {
+			height: 100%;
+			width: 100%;
+			background: #d3222a url("../images/shading.png");
+			}
+		#compose > div {
+			height: 262px;
+			margin: 16px;
+			padding: 16px 202px 16px 16px;			
+			background: #d3222a;
+			}
+		.fouc #rolodex input, .fouc #compose {
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			}
+
+#toolkit li {
+	padding: 8px 0;
+	border-top: 1px solid #cfcfcf;
+	}
+	
+
+	
+	
+/* Section: Profile
+----------------------------------------------- */
+#profile-ign img, #profile-network img, #profile-am img {
+	float: right;
+	top: 0;
+	right: 0;
+	}
+#profile-ign p, #profile-network p, #profile-am p {
+	font-size: 13px;
+	font-weight: bold;
+	background: rgba(213, 29, 41, 1.0);
+	margin-top: 16px;
+	padding: 8px;
+	line-height: 18px;
+	}
+#profile-ign .chart, #profile-network .chart, #profile-am .chart {
+	width: 224px;
+	}
+#reach h3 {
+	background: url("../images/shading-dark.png");
+	}
+#video {
+	margin: 80px auto;
+	width: 640px;
+	}	
+	
+	
+	
+	
+	
+	
+	
+/* Aux Page: Press
+----------------------------------------------- */
+.press .intro {
+	min-height: 1100px;
+	}
+#articles {
+	margin: 16px 0 0 0;
+	padding: 38px;
+	border: 1px solid rgb(232, 232, 232);
+	}
+#articles dt {
+	font-size: 24px;
+	line-height: 32px;
+	}
+#articles dt a {
+	display: block;
+	}
+#articles a span {
+	font-weight: bold;
+	background: transparent url("../images/shading-d3222a.png");
+	color: #333;
+	text-decoration: none !important;
+	}
+#articles a .date {
+	vertical-align: text-top;
+	background: transparent;
+	text-transform: uppercase;
+	font-size: 13px;
+	color: #d3222a;
+	display: inline-block;
+	padding: 0;
+	height: 22px;
+	}
+#articles a:hover span {
+	background: #d3222a;
+	}
+#articles a:hover .date {
+	background: #333;
+	}
+#articles dd {
+	padding: 8px 0 24px 0;
+	border-bottom: 2px solid rgb(227, 227, 227);
+	margin-bottom: 24px;
+	font-size: 13px;
+	}
+#articles dd:first-letter {
+	color: #d3222a;
+	font-size: 16px;
+	}
+.article div {
+	line-height: 24px;
+	}
+.article h2 {
+	font-size: 40px;
+	}
+
+
+
+	
+		
+		

@@ -1,0 +1,13 @@
+function truncateStr(str, strMaxlength, startCharPos, endCharPos) {
+	var updateStr = encodeURIComponent(str);	
+	if(updateStr.length > strMaxlength) {
+		updateStr = updateStr.substr(startCharPos,endCharPos);
+		var lastIndex = updateStr.lastIndexOf('%');
+		if(updateStr.lastIndexOf('%') > -1) {
+			updateStr = updateStr.substr(startCharPos,lastIndex);		
+		}
+	}
+	 return updateStr;					 
+}				
+
+

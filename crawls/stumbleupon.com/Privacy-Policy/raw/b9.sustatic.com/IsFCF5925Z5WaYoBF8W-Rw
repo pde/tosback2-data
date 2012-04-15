@@ -1,0 +1,3426 @@
+(function() {
+    SU.Cookie = function(name, value) {
+        this.name    = name;
+        this.value   = value;
+        this.expires = null;
+        this.path    = '/';
+
+        // Use the TLD by default, this matches the PHP behavior
+        this.domain = document.location.host.replace(/[^\.]*/, '');
+
+        //not implemented
+        this.secure = false;
+    
+        this.setExpirationSeconds = function(seconds) {
+            var date = new Date();
+            date.setTime(date.getTime() + (1000 * seconds));
+            this.expires = date;
+        };
+
+        this.setExpirationHours = function(hours) {
+            this.setExpirationSeconds(hours * 3600);
+        };
+
+        this.setExpirationDays = function(days) {
+            this.setExpirationSeconds(days * 86400);
+        };
+
+        this.setDomain = function(domain) {
+            this.domain = domain;
+        };
+
+        this.save = function() {
+            var curCookie   = this.name + '=' + escape(this.value) +
+                ((this.expires) ? '; expires=' + this.expires.toGMTString() : '') +
+                ((this.path) ? '; path=' + this.path : '') +
+                ((this.domain) ? '; domain=' + this.domain : '') +
+                ((this.secure) ? '; secure' : '');
+            document.cookie = curCookie;
+        }
+
+        this.read = function() {
+            var nameEQ = this.name + "=";
+            var ca     = document.cookie.split(';');
+            for(var i = 0 ; i < ca.length ; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1,c.length);
+                }
+                if (c.indexOf(nameEQ) == 0) {
+                    this.value = unescape(c.substring(nameEQ.length,c.length));
+                }
+            }
+            return this.value;
+        };
+
+        this.setValue = function(value) {
+            this.value = value;
+        };
+
+        this.kill = function() {
+            this.setExpirationSeconds(-86400);
+            this.value = null;
+            this.save();
+        };
+    };
+}).call(this);
+/**
+ * Request keychain. Holds auth for requests to API
+ *   - tokens are for HTTP request security / anti-forgery
+ *   - authString and OAuth are competing solutions to the same issue: user authentication
+ */
+var SU_ClientRequestKeychain = function() {
+    this.tokens = {
+        stumble: '',
+        request: ''
+    }
+
+    this.authString = '';
+    this.OAuth = {};
+}
+
+/**
+ * SU Client API. Makes authenticated requests
+ * stateless, except auth string and device/source ids (for convenience)
+ */
+var SU_Client = function(connectorClass) {
+    //constructor logic here
+    this.keychain = new SU_ClientRequestKeychain();
+    this.connectorClass = connectorClass ? connectorClass : SU_ClientApiConnector;
+    return true;
+}
+SU_Client.prototype = {
+    AUTH_RETRY_WAIT: 15000,
+    version: 1.0,
+    device: '',
+    source: '',
+    clientVersion: '',
+    scriptVersion: '',
+    consumerKey: '',
+    keychain: null,
+    successFilter: null,
+    errorFilter: null,
+
+    /** api calls to server **/
+    rate: function(publicid, rating, callback, noFacebookAutoshare, callbackError) {
+        if (!callback) {
+            callback = function(response) {
+            }
+        }
+        this.makeRequest({action: 'simple-rate', pid: publicid, rating: rating, noFacebookAutoshare: noFacebookAutoshare}, callback, callbackError);
+    },
+
+    subrate: function(publicid, subrating, callback) {
+        if (!callback) {
+            callback = function(response) {
+            }
+        }
+        this.makeRequest({action: 'simple-subrate', pid: publicid, subrating: subrating}, callback);
+    },
+
+    blocksite: function(publicid, blocksite, callback) {
+        if (!callback) {
+            callback = function(response) {
+            }
+        }
+        this.makeRequest({action: 'blocksite', pid: publicid, blocksite: blocksite}, callback);
+    },
+
+    askAutoShareFacebook: function(callback) {
+        if (!callback) return;
+        this.makeRequest({action: 'askAutoShareFacebook'}, callback);
+    },
+
+    autoShareFacebook: function(publicid, url, callback) {
+        if (!callback)  {
+            callback = function(response) {
+            }
+        }
+        this.makeRequest({action: 'autoShareFacebook', pid: publicid, url:url}, callback);
+    },
+
+    saveTimers: function(publicid, timers, callback) {
+        if (!callback) {
+            callback = function(response) {
+            }
+        }
+        this.makeRequest({action: 'timers', pid: publicid, timers: timers}, callback);
+    },
+
+    getStumble: function(mode, callback) {
+        var params = {};
+        for (var i in mode)
+        {
+            if (i == 'extra')
+            {
+                for (var j in mode[i])
+                    params[j] = mode[i][j];
+            }
+            else
+            {
+                params[i] = mode[i];
+            }
+        }
+        params.action = 'stumble';
+
+        return this.makeRequest(params, callback);
+    },
+
+    getStumbles: function(mode, callback) {
+        var params = {};
+        for (var i in mode)
+        {
+            if (i == 'extra')
+            {
+                for (var j in mode[i])
+                    params[j] = mode[i][j];
+            }
+            else
+            {
+                params[i] = mode[i];
+            }
+        }
+        params.action = 'getstumbles';
+
+        return this.makeRequest(params, callback);
+    },
+
+    getShare: function(callback) {
+        var params = {};
+        params.action = 'referral';
+
+        return this.makeRequest(params, callback);
+    },
+
+    getUserData: function(callback) {
+        this.makeRequest({action: "userdata"}, callback);
+    },
+
+    getUrlInfo: function(url, callback) {
+        this.makeRequest({
+            action: 'geturlinfo',
+            url: url
+        }, callback);
+    },
+
+    getUserTopics: function() {
+        this.makeRequest({action: "getTopics"}, callback);
+    },
+
+    checkForShares: function(callback) {
+        this.makeRequest({action: "getFriendShares"}, callback);
+    },
+
+    getRequestToken: function(callback) {
+        this.makeRequest({action: 'getState'}, callback);
+    },
+
+    getState: function(fnSuccess, fnFailure) {
+        this.makeRequest({action: 'getState'}, fnSuccess, fnFailure);
+    },
+
+    getOAuthToken: function(callback) {
+        this.makeRequest({action: 'getOAuthToken'}, callback);
+    },
+
+    getAuthString: function(callback) {
+        this.makeRequest({action: 'getAuth'}, callback);
+    },
+
+    logoutWebsite: function(callback) {
+        this.makeRequest({action: 'logoutWebsite', logout: 1}, callback);
+    },
+
+    trk: function(metric) {
+        this.makeRequest({action:'rec', metric: metric}, function() {});
+    },
+
+    sendShare: function(shareInfo, callback) {
+        this.makeRequest({
+            action:'send',
+            in_reply_to:shareInfo.referralId,
+            msg: shareInfo.text,
+            url: shareInfo.url
+        }, callback);
+    },
+
+    sendEmailShare: function(shareInfo, callback) {
+        throw "Not yet implemented";
+    },
+
+    markShareSeen: function(shareid){
+        this.makeRequest({action:'markShareSeen', shareid: shareid}, function() {});
+    },
+
+    logEvent: function(event, count){
+        this.makeRequest({action: 'logEvent', event: event, count: count}, function() {});
+    },
+
+    /** book-keeping functions **/
+    setDevice: function(device) {
+        this.device = device;
+    },
+
+    setSource: function(source) {
+        this.source = source;
+    },
+
+    setClientVersion: function(version) {
+        this.clientVersion = version;
+    },
+
+    setScriptVersion: function(version) {
+        this.scriptVersion = version;
+    },
+
+    setKeychain: function(keychain) {
+        this.keychain = keychain;
+    },
+
+    setConsumerKey: function (key) {
+        this.consumerKey = key;
+    },
+
+    setParam: function(param, value) {
+        this.params[param] = value;
+    },
+
+    setErrorFilter: function(callback) {
+        this.errorFilter = callback;
+    },
+
+    setSuccessFilter: function(callback) {
+        this.successFilter = callback;
+    },
+
+    setupRequestParams: function() {
+        var params = {
+            src: this.source,
+            device: this.device,
+            v: this.clientVersion,
+            sv: this.scriptVersion,
+            x_su_consumer_key: this.consumerKey
+        };
+
+        return params;
+    },
+
+    setAuth: function(authString) {
+        this.keychain.authString = authString;
+    },
+
+    /** request-related **/
+    makeRequest: function(params, callbackSuccess, callbackError) {
+        var connector = new this.connectorClass();
+        var request   = new SU_ClientRequest();
+        if (params.action && params.action == 'getState') {
+//            request.async = false;
+        }
+        var postActions = { 'logoutWebsite': true,
+                'send': true,
+                'timers': true
+                };
+        if (params.action && (params.action in postActions)) {
+            request.type = 'POST';
+        }
+
+        request.params = this.setupRequestParams();
+        for (var key in params) {
+            request.params[key] = params[key];
+        }
+
+        // Note:  There is a special-case where if a callback isn't supplied, the caller gets a direct
+        //        response of a url to navigate to (yuck! @todo: change this).  So we don't filter these types of
+        //        direct navigation approaches (thus the check on callbackSuccess)
+        var instance = this;
+        var fnSuccess = callbackSuccess;
+        if(fnSuccess && this.successFilter)
+        {
+            fnSuccess = function(response) {
+                if(!instance.successFilter(response, params, callbackSuccess, callbackError) && callbackSuccess)
+                    callbackSuccess(response);
+            }
+        }
+
+        var fnInternalErrorHandler = function(response) {
+            // Our own error handler
+            if (instance.handleErrorResponse(response, params, callbackSuccess, callbackError))
+                return;
+
+            var fnError = callbackError;
+            if (this.errorFilter)
+            {
+                fnError = function(response) {
+                    if(!instance.errorFilter(response, params, callbackSuccess, callbackError) && callbackError)
+                        callbackError(response);
+                }
+            }
+            if (fnError)
+                fnError(response);
+        }
+
+        return connector.getResponse(request, this.keychain, fnSuccess, fnInternalErrorHandler);
+    },
+
+    handleErrorResponse: function(response, params, fnSuccess, fnError) {
+        if(this.inAuthRetry || (response.status != 401) || (params.action == 'getOAuthToken'))
+        {
+            // No retry, just let them handle the error
+            return false;
+        }
+
+        var instance = this;
+        this.inAuthRetry = true;
+        var fnDoneAuthRetry = function(fnCallback) {
+            // Don't hammer us, cool your jets
+            window.setTimeout(function() {
+                instance.inAuthRetry = false;
+            }, instance.AUTH_RETRY_WAIT);
+        }
+        var fnRetrySuccess = function(response2) {
+            fnDoneAuthRetry();
+            if(fnSuccess)
+                fnSuccess(response2);
+        }
+        var fnRetryFailure = function(response2) {
+            fnDoneAuthRetry();
+            if(fnError)
+                fnError(response2);
+        }
+        var fnStateSuccess = function() {
+            // We were able to refresh the state, try the original call again
+            instance.makeRequest(params, fnRetrySuccess, fnRetryFailure);
+        }
+        // If we can't refresh our state then report the _original_ failure
+        var fnStateFailed = function() {
+            fnDoneAuthRetry();
+            if(fnError)
+                fnError(response);
+        }
+        // Kick off the retry by refreshing our state. If state refreshing failed, try getting an oauth token
+        if (params.action == 'getState')
+            this.getOAuthToken(fnStateSuccess, fnStateFailed);
+        else
+            this.getState(fnStateSuccess, fnStateFailed);
+
+        // true == we handled it
+        return true;
+    }
+}
+
+/**
+ * API Connector
+ *   - handles connecting client API and SU server API via ajax requests
+ *   - intended to be highly naive and light
+ *   - intended to be swapped out for REST API connector soon
+ */
+var SU_ClientApiConnector = function() {
+
+    //define endpoints for each action.
+    //RESTful Connector will specify many more and more verbosely
+    this.endpoints = {
+        stumble: "/su/api/nextstumble",
+        referral: "/su/api/nextstumble",
+        logoutWebsite: "/toolbar/loginservices.php",
+        send: "/toolbar/shareservices.php",
+        def: "/su/api/action",
+        getState: "/su/api/getState",
+        getOAuthToken: "/su/api/getOAuthToken"
+    }
+
+    this.getResponse = function(request, keychain, callback, callbackError) {
+
+        if (!keychain) {
+            throw "Must provide credentials for request";
+        }
+
+        var endpoint = this.endpoints.def;
+        if (typeof request.params.action != "undefined")
+        {
+            if (typeof this.endpoints[request.params.action] != "undefined") {
+                endpoint = this.endpoints[request.params.action];
+            }
+        }
+
+        if (keychain.authString) {
+            request.params.auth = keychain.authString;
+        }
+
+        if (keychain.OAuth != undefined && keychain.OAuth != null && keychain.OAuth.key != undefined) {
+            request.params.x_su_access_token_key = keychain.OAuth.key;
+        }
+
+        if (typeof request.params.action != "undefined" && request.params.action == "stumble") {
+            request.params._token = keychain.tokens.stumble;
+        }
+        else {
+            request.params._token = keychain.tokens.request;
+        }
+
+        if (callback)
+        {
+            if  (!callbackError)
+                callbackError = function() {}
+            request.params.output = 'json';
+            $.ajax({
+                url: endpoint,
+                type: request.type,
+                data: request.params,
+                dataType: 'json',
+                async: request.async,
+                success: callback,
+                error: callbackError
+            });
+        }
+        else
+        {
+            var query_string = [];
+            for (var i in request.params)
+            {
+                query_string.push(i + '=' + request.params[i]);
+            }
+            var url = endpoint + '?' + query_string.join("&");
+            return url;
+        }
+    }
+}
+
+/**
+ * REST API Connector
+ *   - will replace deprecated API connector in near future
+ *   - will be slightly less naive than deprecated one, since RESTful (one endpoint per call type)
+ */
+var SU_ClientApiConnector_REST = function() {
+    this.endpoints = {
+        stumble: '',
+        rate: '',
+        getTopics: ''
+    }
+}
+SU_ClientApiConnector_REST.prototype = new SU_ClientApiConnector();
+
+/**
+ * Request convenience class
+ */
+var SU_ClientRequest = function() {
+
+    this.type = "GET";
+    this.params = {};
+    this.async = true;
+
+    this.defaultParams = {
+        src : 'litebar'
+    }
+};
+/**
+ * su_extensionapi_webtb.js
+ *
+ * Implements the suExtensionApi for the webtb
+ */
+(function() {
+    SU.SuExtensionApiWebTb = function() {
+        this.message._listeners = [];
+    };
+
+    SU.SuExtensionApiWebTb.prototype = {
+        // -------------------------------------------------------------------
+        // Extension information
+        // -------------------------------------------------------------------
+        _info: { apiVersion: "1.0",    provider: "webtb", _providerVersion: "1.0" },
+        id: 1,
+
+        getProviderInfo: function(callback) {
+            callback(this._info);
+        },
+
+        isReady: function() { return true; },
+
+        // -------------------------------------------------------------------
+        // Message functionality
+        // -------------------------------------------------------------------
+        message: {
+            addListener: function(fnListener/*function(messageId, data, sender) { }*/) {
+                this.removeListener(fnListener);
+                this._listeners.push(fnListener);
+            },
+
+            removeListener: function(fnListener) {
+                for(var i=0; i<this._listeners.length; i++)
+                {
+                    if(this._listeners[i] === fnListener)
+                    {
+                        this._listeners.splice(i, 1);
+                        return;
+                    }
+                }
+            },
+
+            broadcastMessage: function(messageId, data) {
+                this.postMessage(null, messageId, data);
+            },
+
+            postMessage: function(target, messageId, data) {
+                for(var i=0; i<this._listeners.length; i++)
+                {
+                    this._listeners[i](messageId, data, null);
+                }
+            }
+        },
+
+        // -------------------------------------------------------------------
+        // Overlay functionality
+        // -------------------------------------------------------------------
+        overlay: {
+            opener: null, /* always null for webtoolbar */
+            /*
+            _overlayPrototype: {
+                opener: null,
+
+                close: function() {},
+                getPosition: function(callback) {},
+                setPosition: function(position) {}
+                // position is of the form { left: n, top: n, width: n, height: n }
+            },
+            */
+            create: function(url, options, callback /*function (overlay)*/) {},
+
+            destroy: function(id) {
+                suExtensionApi.message.postMessage(null, 'overlayClose', id);
+            }
+        }
+    };
+
+    SU.addInit("mSuExtensionApiWebTb", function(data) {
+        if (typeof suExtensionApi != "undefined")
+            return;
+        if (typeof top.suExtensionApi != "undefined")
+            suExtensionApi = top.suExtensionApi;
+        else
+            suExtensionApi = top.suExtensionApi = new SU.SuExtensionApiWebTb;
+    });
+}).call(this);
+/*
+ * Litebar client Implementation
+ *   - speaks to Client API
+ *   - implementation class
+ *   - extended by webtoolbar and chrome
+ */
+var SU_ClientLitebar = function() {
+    this.api              = new SU_Client();
+    this.currentStumble   = null;
+    this.currentStaticUrl = null;
+    this.currentUser      = null;
+    this.sidecarData      = null;
+    this.consumerKey      = '';
+
+    this._globals          = null;
+
+    // The SidePanel (/js/sidepanel.js)
+    this.sidepanel  = null;
+    this.errorState = null;
+
+    this.keychain = new SU_ClientRequestKeychain();
+
+    this.credentialsFetchedTime = 0;
+
+    this.data = {};
+
+    this.timers = null;
+
+    this.overlayManager = null;
+
+    this.delayedTooltips = {};
+    this.notificationCloseTimeout = 0;
+
+    this.overlaysPreloaded = false;
+
+    this.mobileBrowser = false;
+
+    this.ready = false;
+
+    this.loginUrl = "https://www.stumbleupon.com/login";
+
+    // TODO: Those messages should be in their own file in the future
+    this.messages = {
+        genericError: "The selected action could not be completed due to a network error. Please try again.",
+        loggedOut: "You have been signed out from StumbleUpon.",
+        notDiscoveredNoThumbUpMore: "Nobody has discovered this page yet, so you cannot use extended options.",
+        notDiscoveredNoThumbDown: "Nobody has discovered this page yet, so it cannot be thumbed down.",
+        notDiscoveredNoUrlInfo: "Nobody has discovered this page yet, so we don't have information for this page.",
+        hideStumbleBadFlashMessage: "For a better experience, we've temporarily hidden the page until you close the menu. <a href='/help/trouble/stumbling' target='_blank'>Learn more</a>.",
+        notLoggedInNoStumble: "You must sign in to stumble. <a href='/login' target='_top'>Click here to sign in</a>."
+    };
+
+    return true;
+};
+
+SU_ClientLitebar.prototype = {
+
+    init: function(globals, stumbleInfo) {
+        if (globals) {
+            this._globals = globals;
+
+            if (globals.user && globals.user.loggedIn)
+                this.setActiveUser(globals.user);
+        }
+
+        // Detect mobile browsers that don't handle iframe correctly
+        var ua = navigator.userAgent;
+        var checker = {
+            iphone: ua.match(/(iPhone|iPod|iPad)/),
+            blackberry: ua.match(/BlackBerry/),
+            android: ua.match(/Android/)
+        };
+        this.mobileBrowser = checker.iphone;
+        if (this.mobileBrowser)
+        {
+            $('#tb-stumble-container').css('position', 'static');
+        }
+
+        // Workaround for safari bug on back button
+        $(window).unload( function() {} );
+
+        // Install the resize window handler
+        this.installResizeHandler();
+
+        this.bindListeners();
+
+        this.clientVersion = globals.clientVersion;
+
+        this.overlayManager = new suOverlayManager(this, this.clientVersion);
+
+        if (stumbleInfo) {
+            this.setActiveStumble(stumbleInfo);
+            this.handleSidecarData(stumbleInfo);
+        }
+
+        // Set up the api
+        this.setupApi();
+        // Finally, update the UI
+        this.updateUI();
+
+        this.initTimers();
+
+        // Check to see if the url is a share
+        this.getShareInfo();
+
+        // IE8- does not have createEvent
+        if (document.createEvent) {
+            var scriptReadyEvent = document.createEvent("Event");
+            scriptReadyEvent.initEvent("suScriptReadyWebToolbar", false, false);
+            window.dispatchEvent(scriptReadyEvent);
+        }
+
+        this.ready = true;
+    },
+
+    isReady: function() {
+        return this.ready;
+    },
+
+    installResizeHandler: function() {
+        var instance = this;
+        $(window).resize(function() {
+            instance.onResize();
+        });
+        this.onResize();
+    },
+
+    initTimers: function() {
+        if (!this.timers) {
+            this.timers = new SU_Timers();
+            this.timers.init();
+            var instance = this;
+
+            if (this.timers.enabled) {
+                // Check if we need to send timers for the saved/previous stumbles
+                var saved_timers = this.timers.getSavedTimers();
+                if (saved_timers) {
+                    // Send locally saved timers to server
+                    if (instance.currentUser && instance.currentUser.uid
+                            && instance.currentUser.loggedIn
+                            && instance.currentUser.uid == saved_timers.uid
+                            && instance.currentUser.uid > 15041000)
+                        instance.api.saveTimers(saved_timers.pid, saved_timers.data);
+                }
+
+                // Add the event handler to save the info when page is unloaded
+                $(window).unload( function() {
+                    instance.timers.addEvent('interrupted');
+                    instance.timers.saveTimersToDOMStorage();
+                });
+            }
+        }
+    },
+
+    onResize: function() {
+        // Resize the possible opened overlays
+        if (this.overlayManager)
+        {
+            var oSpaces = this.overlayManager.onResize();
+            var h = $('#tb-toolbar').height();
+        }
+        else // When chromebar installed
+        {
+            var oSpaces = {top: 0, right: 0, bottom: 0, left: 0};
+            var h = 40; /* v5 chromebar size */
+        }
+
+        // Resize the stumble container if present
+
+        var winH = $(window).height();
+        var disableDiv = $('#tb-stumble-disable');
+        disableDiv.css('height', (winH - h));
+        var container = $('#tb-stumble-container');
+        if (!this.mobileBrowser && container.length > 0)
+        {
+            container.css('height', ($(window).height() - h - oSpaces.top - oSpaces.bottom));
+            container.css('top', oSpaces.top + 'px');
+        }
+    },
+
+    /*
+     * onStumblePageLoading
+     *
+     * Called when we know we have a currentStumble and it is loading.
+    */
+    onStumblePageLoading: function() {
+        if( this.currentStumble && this.currentStumble.guess )
+            this.preloadNextStumble( this.currentStumble.guess );
+    },
+
+    onStumblePageLoaded: function() {
+        if (this.timers) {
+            this.timers.addEvent('pageLoaded');
+        }
+    },
+
+    bindListeners: function() {
+        var instance = this;
+        suExtensionApi.message.addListener(function(messageId, data, sender) {
+            instance.onMessage(messageId, data, sender);
+        });
+
+        var uiEvent;
+        for (var evt in this.userInterfaceEvents) {
+            uiEvent = this.userInterfaceEvents[evt];
+            $(uiEvent.target).bind(uiEvent.action, {instance: this}, uiEvent.handler);
+        }
+    },
+
+    /*
+     * Local user data is per-user data that is stored on the local client and shared
+     * amongst all toolbars.  Data stored as local user data is automatically deleted
+     * when the current user changes.
+     *
+    */
+    getLocalUserData: function() {
+        return this._globals.localUserData;
+    },
+
+    /*
+     * Get information about a url if that information is stored locally.  This is
+     * how we get information about stumbles or recently rated urls.
+     */
+    getLocalUrlInfo: function(url) {
+        var data = this.getLocalUserData();
+        if (!data || !data.urls)
+            return null;
+
+        for (var i=0; i<data.urls.length; i++) {
+            if (data.urls.url == url)
+                return data.urls;
+        }
+        return null;
+    },
+
+    // Use for read-only access to current globals.
+    // Use updateGlobal to update global properties
+    getGlobals: function() {
+        return this._globals;
+    },
+
+    getState: function(fnSuccess, fnFailure) {
+        //  Our api success filter deals with the getState response
+        this.api.getState(fnSuccess, fnFailure);
+    },
+
+    // Updates globals with the values that are passed.
+    // Also purges any per-user data if the user changes.
+    //
+    updateGlobals: function(newValues) {
+        // Start with the current globals
+        var globals = jQuery.extend({}, this._globals);
+        var newUser = false;
+        if (newValues.user) {
+            // They supplied a new user value, check whether it's a change
+            if(!globals.user)
+                newUser = true;
+            else if (newValues.user.userid != globals.user.userid)
+                newUser = true;
+        }
+
+        if(newUser)
+        {
+            globals.token = {};
+            globals.localUserData = {};
+            globals.state = {};
+        }
+
+        // Merge the new values and update
+        globals = jQuery.extend({}, globals, newValues);
+        this.updateAllGlobals(globals, false);
+    },
+
+    updateAllGlobals: function(newGlobals, fromExternal) {
+        this._globals = newGlobals;
+        this.onGlobalsUpdated(fromExternal);
+    },
+
+    // Called whenever global state has been changed.
+    // It will update the UI.  Override to do additional processing, for example
+    // if you need to store the globals and/or notify other endpoints about the change
+    onGlobalsUpdated: function(fromExternal) {
+        // @todo:  This is temporary, we shouldn't be storing the user separately.
+        if(this._globals)
+            this.setActiveUser(this._globals.user);
+        else
+            this.setActiveUser({ loggedIn: false });
+
+        if (this._globals && this._globals.token && this.api) {
+            var keychain            = new SU_ClientRequestKeychain();
+            keychain.tokens.stumble = this._globals.token.stumble;
+            keychain.tokens.request = this._globals.token.ajax;
+            keychain.OAuth          = this._globals.oAuth;
+            this.api.setKeychain(keychain);
+        }
+
+        this.updateUI();
+    },
+
+    onMessage: function(messageId, data, sender) {
+        switch (messageId) {
+            case 'stumbleStarted':
+                this.preupdateUI_Stumble();
+                break;
+            //todo: remove this autoshared message crap in a bit..added in on 02/02
+            case 'autosharepopupoptout':
+                var target = data.targetlink;
+                var token = data.token;
+                Sync(target).update({
+                    _token:token
+                });
+                break;
+            case 'displayNotification':
+                this.displayNotification(data);
+                break;
+            case 'externalModeSelect':
+                this.logEvent('change-mode');
+                this.setStumbleState(data);
+                break;
+            case 'overlayClose':
+                this.overlayManager.closeOverlay(data);
+                break;
+            case 'rate':
+                if (this.currentStumble.publicid == data.pid
+                        && $.inArray(data.rating, [1, 0, -1]) != -1)
+                    this.performRating(data.rating);
+                break;
+            case 'refreshState':
+                var instance = this;
+                this.getRequestToken(function (response) {
+                        // Check if login state changed
+                        if (instance.currentUser.loggedIn != response.user.loggedIn
+                                || (instance.currentUser.loggedIn && instance.currentUser.username != response.user.username)) {
+                            if (!response.user.loggedIn) {
+                                instance.overlayManager.destroyAllOverlays();
+                                instance.displayNotification({
+                                    type: 'error',
+                                    message: instance.messages.loggedOut,
+                                    delay: 8000
+                                });
+                            }
+                            instance.setActiveUser(response.user);
+                        }
+                    });
+                break;
+            case 'resizePanel':
+                this.overlayManager.repositionOverlay(data.id, data.size);
+                break;
+            case 'hideToolbar':
+                var instance = this;
+                if (data && data.hidePermanent)
+                    // Do an ajax hit
+                    $.ajax({
+                        url: '/su/api/hideToolbarPerm',
+                        data: data,
+                        type: 'POST',
+                        complete: function() {instance.hideToolbar();}
+                    });
+                else
+                    this.hideToolbar();
+                break;
+            case 'showMessageOverlay':
+                this.displayMessageOverlay(data);
+                break;
+            case 'showShareMessageReply':
+                // Display the share extended panel
+                url = '/su/overlay/sharemsgreply?sharepid=' + encodeURIComponent(data);
+                this.overlayManager.toggleOverlay('share-panel-reply', {
+                    url: url,
+                    type: 'floating',
+                    size: {width: 508, height: 391},
+                    closeOthers: ['floating', 'notification'],
+                    refresh: true
+                });
+                break;
+            case 'showSharePanel':
+                if (data.pid)
+                    this.showSharePanel(data.pid);
+                else if (data.url)
+                    this.showSharePanel(null, data.url);
+                break;
+            case 'stumbleNow':
+                this.performStumble();
+                this.overlayManager.closeOtherOverlays(null, ['floating']);
+                break;
+            case 'thumbDownMenu_blocksite':
+                this.performBlockSite(data.pid, data.blocksite);
+                this.overlayManager.closeOverlay('thumbdown-menu');
+                break;
+            case 'thumbDownMenu_subrate':
+                this.performSubRating(data.subrating);
+                this.overlayManager.closeOverlay('thumbdown-menu');
+                break;
+            case 'closeOtherOverlays':
+                this.overlayManager.closeOtherOverlays(data.overlayid, data.others);
+                break;
+            case 'updateCurrentUrlInfo':
+                this.getCurrentUrlInfo(null, true);
+                break;
+            case 'updateRating':
+                this.currentStumble.rating = data.rating;
+                this.updateUI();
+                break;
+        }
+    },
+
+    displayMessageOverlay: function(message) {
+        if (message.options.type == 'permanenttooltip')
+            message.options.data = '<a href="#" onclick="javascript:suExtensionApi.message.postMessage(null, \'overlayClose\', \'' + message.id + '\');return false;">×</a>'
+                                   + message.options.data;
+        if (message.anchor)
+            message.options.anchorElement = $('#' + message.anchor);
+        this.overlayManager.openOverlay(message.id, message.options);
+    },
+
+    displayNotification: function(data /*js object: type, message, delay -optional default to 4 seconds*/) {
+        this.overlayManager.openOverlay('notification-bar', {
+            type: 'notification',
+            notificationType: data.type,
+            data: data.message,
+            size: {'max-width': 500},
+            refresh: true
+        });
+        if (this.notificationCloseTimeout)
+            clearTimeout(this.notificationCloseTimeout);
+        var instance = this;
+        this.notificationCloseTimeout = setTimeout(function() {
+                instance.overlayManager.closeOverlay('notification-bar');
+                instance.notificationCloseTimeout = 0;
+            }, data.delay ? data.delay : 4000);
+    },
+
+    setData: function(key, data, callback) {
+        throw "Must implement setData in implementation class";
+    },
+
+    getData: function(key, callback) {
+        throw "Must implement getData in implementation class";
+    },
+
+    setKeychain: function(keychain) {
+        this.keychain = keychain;
+        this.setData('keychain', keychain);
+    },
+
+    handleSidecarData: function(response) {
+        if (!response || typeof response.auxData == "undefined") {
+            return false;
+        }
+
+        this.sidecarData = response.auxData;
+        if (typeof response.auxData.updateClient != "undefined") {
+            this.setData('performClientUpdate', 1);
+        }
+    },
+
+    setAuth: function(authString) {
+        this.keychain.authString = authString;
+    },
+
+    setupApi: function() {
+        // Prime the api with our parameters
+        this.api.setDevice(this.device);
+        this.api.setSource(this.source);
+        this.api.setConsumerKey(this.consumerKey);
+
+        // Build a keychain with the tokens and give it to the api
+        // @todo:  combine the authstring which should also be in the globals
+        // @todo:  Also, this should be done during global update processing
+        var globals = this.getGlobals();
+        if (globals.token) {
+            var keychain = new SU_ClientRequestKeychain();
+            keychain.tokens.stumble = globals.token.stumble;
+            keychain.tokens.request = globals.token.ajax;
+            keychain.OAuth = globals.oAuth;
+            this.api.setKeychain(keychain);
+        }
+
+        if (typeof this.clientVersion != "undefined")
+            this.api.setClientVersion(this.clientVersion);
+        this.api.setScriptVersion(this.scriptVersion);
+
+        var instance = this;
+        this.api.setErrorFilter(function(response, params, fnSuccess, fnError) {
+            return instance.filterApiError(response, params, fnSuccess, fnError);
+        });
+
+        this.api.setSuccessFilter(function(response, params, fnSuccess, fnError) {
+            return instance.filterApiSuccess(response, params, fnSuccess, fnError);
+        });
+    },
+
+    filterApiSuccess: function(response, params, fnSuccess, fnError) {
+        // getState is called implicitly by the API so we handle the response here
+        if(params.action == 'getState')
+        {
+            var newGlobals = {
+                token: response.token,
+                user: response.user,
+                clientVersion: response.clientVersion,
+                shares: response.shares
+            };
+
+            if (!response.user || !response.user.loggedIn)
+                newGlobals.oAuth = null;
+
+            this.updateGlobals(newGlobals);
+
+            // Allow it to continue to be processed
+            return false;
+        }
+
+        if(params.action == 'getOAuthToken')
+        {
+            this.updateGlobals({
+                oAuth: response.token
+            });
+        }
+    },
+
+    filterApiError: function(response, params, fnSuccess, fnError) {
+        // Display an error for any failed API call
+        this.displayNotification({
+            type: 'error',
+            message: this.messages.genericError,
+            delay: 10000
+        });
+        return false;
+    },
+
+    performShareStumble: function(callback) {
+        var instance = this;
+
+        this.setActiveStumble(null);
+        this.setActiveStaticUrl(null);
+        instance.api.getShare(function(response) {
+            instance.setActiveStumble(response);
+            instance.handleSidecarData(response);
+            instance.updateUI();
+            if (callback) {
+                callback(response);
+            }
+        });
+    },
+
+    performStumble: function(callback, nextpid) {
+        if (this.stumblePending) {
+            return false;
+        }
+        this.stumblePending = true;
+
+        var instance = this;
+        this.preupdateUI_Stumble();
+        var newMode = this._globals.state;
+        if (nextpid)
+            newMode.nextpid = nextpid;
+
+        if (suExtensionApi.stumble )
+            suExtensionApi.stumble.stumble();
+        else
+        {
+            this.performStumbleDirect(newMode, function(url) {
+                instance.gotoUrl(url);
+            });
+        }
+    },
+
+    preupdateUI_Stumble: function() {
+        $('#tb-stumble').addClass('tb-active');
+        this.beginStumbleAnimation();
+        this.overlayManager.closeAllOverlays();
+    },
+
+    beginStumbleAnimation: function() {
+        if (this.stumbleAnimationActive)
+            return;
+
+        var instance = this;
+        this.stumbleAnimPos = 0;
+        this.stumbleAnimationActive = true;
+        window.setInterval(function() {
+            var selector = $('#tb-stumble .tb-btn-ico');
+            selector.removeClass("tb-stumble-anim-" + instance.stumbleAnimPos);
+
+            instance.stumbleAnimPos++;
+            if(instance.stumbleAnimPos == 6)
+                instance.stumbleAnimPos = 1;
+
+            selector.addClass("tb-stumble-anim-" + instance.stumbleAnimPos);
+        }, 200);
+    },
+
+    //instead of ajax, a 301-based solution
+    performStumbleDirect: function(extraParams, callback) {
+        var instance = this;
+        this.setActiveStumble(null);
+        this.setActiveStaticUrl(null);
+        var params = instance._globals.state;
+        if (extraParams)
+        {
+            for (var i in extraParams)
+            {
+                params[i] = extraParams[i];
+            }
+        }
+        // Save "stumbleRequest" timestamp for next stumble
+        params['stumbleRequest'] = new Date().getTime();
+        if (instance.timers) {
+            // Save possible timers for this current stumble
+            // they will be sent to the server on the next stumble
+            instance.timers.addEvent('nextStumbleClick');
+            instance.timers.saveTimersToDOMStorage();
+        }
+        var url = instance.api.getStumble(params);
+        callback(url);
+//        return this.api.getStumble(params);
+    },
+
+    performRating: function(rating) {
+        var instance = this;
+        if (instance.currentStumble)
+        {
+            if (typeof instance.currentStumble.rating != "undefined")
+                    instance.currentStumble.previousRating = instance.currentStumble.rating;
+            if (typeof instance.currentStumble.rating != "undefined" && instance.currentStumble.rating == rating) {
+                rating = -1;
+            }
+
+            var callback = function(response) { instance.ratingCallback(response); }
+            var callbackError = function(jqXHR, textStatus, errorThrown) { instance.ratingCallbackError(jqXHR, textStatus, errorThrown); }
+            instance.api.rate(instance.currentStumble.publicid, rating, callback, instance.currentStumble.autosharedToFacebook, callbackError);
+            instance.currentStumble.rating = rating;
+            instance.updateUI();
+        }
+    },
+
+    performSubRating: function(subrating, callback) {
+        var instance = this;
+        if (instance.currentStumble)
+        {
+            if (typeof instance.currentStumble.subrating != "undefined" && instance.currentStumble.subrating == subrating) {
+                subrating = 0;
+            }
+
+            instance.api.subrate(instance.currentStumble.publicid, subrating, callback);
+            instance.currentStumble.subrating = subrating;
+            // When subrating, we also change the rating to "Not Like"
+            if (subrating < 0)
+                instance.currentStumble.rating = 0;
+            else // When un-subrating we remove the "Not Like" rating
+                instance.currentStumble.rating = -1;
+            instance.updateUI();
+        }
+    },
+
+    performBlockSite: function(pid, blocksite/*1 to block 0 to unblock*/, callback) {
+        var instance = this;
+        instance.api.blocksite(instance.currentStumble.publicid, blocksite, callback);
+    },
+
+    getRequestToken: function(callback) {
+        this.setupApi();
+        var instance = this;
+        this.api.getRequestToken(function(response) {
+            if (callback) {
+                callback(response);
+            }
+        });
+    },
+
+    trk: function(metric) {
+        // TODO for v5 metrics
+        //this.api.trk(metric, function() {});
+    },
+
+    showSidePanel: function(stumbler, url, force) {
+        // Must be implemented by derived class
+    },
+
+    hideSidePanel: function(stumbler, url) {
+        // Must be implemented by derived class
+    },
+
+    resetStumbleState: function(callback) {
+        this.updateGlobals({ state: {} });
+    },
+
+    setStumbleState: function(state, callback) {
+        this.updateGlobals({ state: state });
+    },
+
+    getStumbleState: function() {
+        return this._globals.state;
+    },
+
+    getActiveStumble: function() {
+        return this.currentStumble;
+    },
+
+    setActiveStumble: function(stumbleInfo) {
+        var oldInfo = this.currentStumble;
+
+        if (this.timers && this.timers.enabled
+                && stumbleInfo && stumbleInfo.publicid
+                && this.currentUser && this.currentUser.uid && this.currentUser.uid > 0) {
+            this.timers.setPidAndUid(stumbleInfo.publicid, this.currentUser.uid);
+            if (this.timers.hasEvent('stumbleRequest') == false) {
+                // Try to retrieve the "stumbleRequest" from the cookie set by "/toolbar/next_stumble.php"
+                var cookie = new SU.Cookie('savedStumbleRequest', '1');
+                cookie.read();
+                var values = cookie.value ? cookie.value.split('|') : [];
+                if (values != null && values.length == 2 && values[0] == stumbleInfo.publicid)
+                    this.timers.addEvent('stumbleRequest', values[1]);
+            }
+        }
+
+        // Many overlays have per-url state, so destroy most of them
+        this.overlayManager.destroyAllOverlays([ /^interests-menu$/, /^keyword-autocomplete-.*/ ]);
+
+        // Display a possible permanent tooltip
+        var globals = this.getGlobals();
+        if (globals.messageOverlay)
+        {
+            var message = globals.messageOverlay;
+            delete globals.messageOverlay;
+            this.displayMessageOverlay(message);
+        }
+
+        // Preload the interests panel for logged users
+        if (this.currentUser && !this.overlaysPreloaded) {
+            this.toggleInterestsPanel(true);
+            this.overlaysPreloaded = true;
+        }
+
+        this.currentStaticUrl = null;
+        this.currentStumble   = stumbleInfo;
+        if (this.currentStumble && this.currentStumble.sharePid)
+        {
+            // Display the share panel
+            url = '/su/overlay/sharemsg?sharepid=' + encodeURIComponent(this.currentStumble.sharePid);
+            this.overlayManager.toggleOverlay('share-panel', {
+                url: url,
+                type: 'top',
+                size: {height: 40},
+                closeOthers: ['floating', 'notification'],
+                refresh: true
+            });
+        }
+
+        this.updateUI_StumbleMeta();
+
+        // Preload the next stumble if there is one
+        if(stumbleInfo)
+            this.onStumblePageLoading();
+    },
+
+    setActiveStaticUrl: function(staticUrl) {
+        this.currentStumble   = null;
+        this.currentStaticUrl = staticUrl;
+    },
+
+    setActiveUser: function(user) {
+        // @todo:  This is reundant with globals.user, we shouldn't be duplicating this
+        this.currentUser = user;
+    },
+
+    setModeLabel: function(label, callback) {
+        $('#tb-interests a span.tb-btn-text').html(label);
+        this.setData('stumblingModeLabel', label, callback);
+    },
+
+    autoShareToFacebook: function(callback) {
+        var instance = this;
+        if (instance.currentStumble && instance.currentStumble.url && instance.currentStumble.publicid
+            && !instance.currentStumble.autosharedToFacebook) {
+            instance.api.autoShareFacebook(instance.currentStumble.publicid, instance.currentStumble.url);
+            instance.currentStumble.autosharedToFacebook = true;
+        }
+    },
+
+    showMeMore: function(data) {
+        if (data.user_id) {
+            this.setStumbleState({
+                mode: 'instumbler',
+                stumbler: data.user_id
+            });
+        }
+        else if (data.topic_id) {
+            this.setStumbleState({
+                topic: data.topic_id,
+                contextual: data.topic_name
+            });
+        }
+        else if (data.url_domain) {
+            this.setStumbleState({
+                mode: 'stumblethru',
+                partner: data.url_domain,
+                contextual: data.url_domain
+            });
+        }
+    },
+
+    preloadNextStumble: function(guess) {
+        // Client-dependent, chromebar uses prerender, webbar should use something else
+    },
+
+    //descendents must implement updateUI_Error, etc.
+    updateUI: function() {
+
+        if (this.errorState) {
+            //display error shit
+            this.updateUI_Error();
+        }
+
+        // Update global state UI elements
+        this.updateUI_General();
+
+        // Update rating-related UI elements
+        if (this.currentStumble) {
+            this.updateUI_StumbleMeta();
+        }
+
+        //update user-related UI elements. call no matter what, in case logged out
+        this.updateUI_User();
+
+        //todo change these into updateUI_Global() and updateUI_Local()
+        //(one for all tabs/windows, the other for just this one)
+    },
+
+    updateUI_General: function() {
+        // Update the stumble context label
+        var state = this.getStumbleState();
+        var label = "All Interests";
+        if(state.contextual)
+            label = state.contextual;
+        else {
+            if((state.mode == 'instumbler') && state.stumbler)
+                label = state.stumbler + '\'s favorites';
+        }
+        this.setModeLabel(label);
+
+        // Update the number of referrals
+        var numref = 0;
+        if (this.currentStumble && this.currentStumble.numreferrals) {
+            numref = this.currentStumble.numreferrals;
+        }
+        this.updateNumReferrals(numref);
+    },
+
+    updateUI_StumbleMeta: function() {
+        if (this.currentStumble && typeof this.currentStumble.rating != "undefined") {
+            if (this.currentStumble.rating == 1) {
+                $('#tb-toolbar').removeClass('tb-thumbeddown').addClass('tb-thumbedup');
+            }
+            else if (this.currentStumble.rating == 0) {
+                $('#tb-toolbar').removeClass('tb-thumbedup').addClass('tb-thumbeddown');
+            }
+            else {
+                $('#tb-toolbar').removeClass('tb-thumbedup tb-thumbeddown');
+            }
+        }
+        else {
+            $('#tb-toolbar').removeClass('tb-thumbedup tb-thumbeddown');
+        }
+
+        // Update sponsored label
+        if (this.currentStumble && this.currentStumble.sponsored)
+            $('#tb-toolbar').addClass('tb-stumble-sponsored');
+        else
+            $('#tb-toolbar').removeClass('tb-stumble-sponsored');
+
+        // Update user label
+        var userlabeltext = '';
+        var userlabelurl = null;
+        var discoverer = null;
+        var channel = null;
+        var friend = (this.currentStumble && this.currentStumble.friend) ? this.currentStumble.friend : null;
+        if (friend == null)
+        {
+            channel = (this.currentStumble && this.currentStumble.channel) ? this.currentStumble.channel : null;
+            if (channel == null)
+                discoverer = (this.currentStumble && this.currentStumble.discoverer) ? this.currentStumble.discoverer : null;
+        }
+        if (friend || discoverer || channel) {
+            if (friend)
+            {
+                $('#tb-toolbar').removeClass('tb-stumble-discoverer tb-stumble-channels').addClass('tb-stumble-friend');
+                userlabeltext = friend.username;
+                userlabelurl = friend.url;
+            }
+            else if (channel)
+            {
+                $('#tb-toolbar').removeClass('tb-stumble-discoverer tb-stumble-friend').addClass('tb-stumble-channels');
+                userlabeltext = channel.username.substr(1);
+                userlabelurl = channel.url;
+            }
+            else
+            {
+                $('#tb-toolbar').removeClass('tb-stumble-friend tb-stumble-channels').addClass('tb-stumble-discoverer');
+                userlabeltext = discoverer.username;
+                userlabelurl = discoverer.url;
+            }
+        } else {
+            $('#tb-toolbar').removeClass('tb-stumble-discoverer tb-stumble-friend tb-stumble-channels');
+        }
+        $('#tb-userlabel a span.tb-btn-text').text(userlabeltext);
+        $('#tb-userlabel a').attr('href', userlabelurl ? userlabelurl : '#');
+        if (userlabelurl)
+            $('#tb-userlabel a').attr('target', '_blank');
+        else
+            $('#tb-userlabel a').removeAttr('target');
+
+        if (this.currentStumble && this.currentStumble.discoverer_nick) {
+            $('#friends').show();
+            $('#friends a').show();
+            $('#friends a').html('<span></span>' + this.currentStumble.discoverer_nick);
+            $('#friends a').attr('href', '/stumbler/' + this.currentStumble.discoverer_nick + '/');
+            $('#friends a').attr('target', '_blank');
+            if (!this.currentStumble.is_subscription) {
+                $('#friends span').addClass('nonfriend');
+            }
+        }
+
+        if (this.currentStumble && typeof this.currentStumble.numreviews != "undefined") {
+            $('#reviews a').html(this.currentStumble.numreviews);
+        }
+
+        if (this.currentStumble && this.currentStumble.sponsored) {
+            $('#sponsored').show();
+        }
+    },
+
+    updateUI_User: function() {
+        if (this.currentUser && this.currentUser.loggedIn) {
+            $('#tb-toolbar').removeClass('tb-visitor').addClass('tb-user');
+            // Update the number of notifications
+            if (this.currentUser.notifications > 0)
+                $('#tb-toolbar').addClass('tb-has-notifications');
+            else
+                $('#tb-toolbar').removeClass('tb-has-notifications');
+            $('#tb-notification .tb-btn-text').text(this.currentUser.notifications);
+        }
+        else {
+            $('#tb-toolbar').removeClass('tb-user').addClass('tb-visitor');
+        }
+    },
+
+    updateNumReferrals: function(num) {
+        //nada for webtoolbar
+        if (num != 0) {
+            $('#numReferrals a').html('<span></span>'+num);
+            $('#numReferrals').show();
+        }
+        else {
+            $('#numReferrals').hide();
+        }
+    },
+
+    handleErrorState: function(response) {
+        return false;
+    },
+
+    debugText: function(text) {
+       if (typeof console != "undefined") {
+           console.log(text);
+       }
+    },
+
+    logEvent: function(event)
+    {
+        // logEvent is only available in the webtb api for now
+        // TODO: remove this condition when it is also in chromebar
+        if (this.device == 'webtb')
+            this.api.logEvent(event);
+    },
+
+    performUrlLookup: function(callback) {
+        var instance = this;
+        var fnGetUrlInfo = function(url) {
+            instance.api.getUrlInfo(url, function(info) {
+                // The client expects the url itself to include the known property
+                var result = { url: url, known: false };
+                if(info.success && info.urlinfo.known) {
+                    result = info.urlinfo;
+                }
+                callback(result);
+            });
+        };
+        if(suExtensionApi && suExtensionApi.litebar)
+        {
+            suExtensionApi.litebar.getContentLocation(function(url) {
+                fnGetUrlInfo(url);
+            });
+        }
+        else
+        {
+            // @todo:  We should generalize this retrieval of the current content location
+            var url = (this.currentStumble && this.currentStumble.url) ? this.currentStumble.url : window.top.location.href;
+            fnGetUrlInfo(url);
+        }
+	},
+
+    /*
+     * getCurrentUrlInfo
+     *
+     * Gets the stumble info for the current url.  If we don't have data for the current url we'll perform
+     * a url lookup and set that information as the active stumble so we don't have to look it up again.
+     *
+     */
+    getCurrentUrlInfo: function(callback, force) {
+        if (this.currentStumble && !force) {
+            if (callback != null)
+                callback(this.currentStumble);
+            return;
+        }
+
+        // Create a local function that will perform the lookup if the url isn't stored locally
+        var instance = this;
+        var fnDoLookup = function() {
+            instance.performUrlLookup(function(urlinfo) {
+                if(urlinfo && urlinfo.known) {
+                    instance.setActiveStumble(urlinfo);
+                }
+                if (callback != null)
+                    callback(urlinfo);
+            });
+        }
+
+        if (this.getLocalUrlInfo && !force) {
+            this.getLocalUrlInfo(function(urlinfo) {
+                if(urlinfo && urlinfo.known) {
+                    instance.setActiveStumble(urlinfo);
+                    if(callback)
+                        callback(urlinfo);
+                    return;
+                }
+                else
+                    fnDoLookup();
+            });
+        }
+        else
+            fnDoLookup();
+
+    },
+
+    getShareInfo: function() {
+        var instance = this;
+        this.getCurrentUrlInfo(function(urlinfo) {
+            var globals = instance.getGlobals();
+            var value = globals.shares;
+            if (value != null && value != {})
+            {
+                for (shareid in value)
+                {
+                    if (value[shareid] == urlinfo.url)
+                    {
+                        urlinfo.sharePid = shareid;
+                        instance.setActiveStumble(urlinfo);
+                        instance.markShareSeen(shareid);
+                    }
+                }
+            }
+        });
+    },
+
+    markShareSeen: function(shareid)
+    {
+        var globals = this.getGlobals();
+        var value = globals.shares;
+        delete value[shareid];
+        this.updateGlobals({ shares: value });
+        this.api.markShareSeen(shareid);
+    },
+
+    ratingCallback: function(response, extraCallback) {
+        if (response._success)
+        {
+            if (response.new_rating == -1) {
+                if (this.currentUser) {
+                    this.currentUser.favorites--;
+                    this.setData('userInfo', this.currentUser);
+                }
+            }
+            else {
+                //todo: remove this autoshared message crap in a bit..added in on 02/02
+                if (response.rating == 1
+                        && response.toolbarState
+                        && response.toolbarState.globalState
+                        && response.toolbarState.globalState.messageOverlay)
+                    this.displayMessageOverlay(response.toolbarState.globalState.messageOverlay);
+                if (this.currentUser) {
+                    this.currentUser.favorites++;
+                    this.setData('userInfo', this.currentUser);
+                    if (response.noFacebookPublish)
+                        this.currentUser.facebookPublish = false;
+                }
+                else {
+                    this.setData('pendingRating', {
+                        publicid: this.currentStumble.publicid,
+                        rating: 1
+                    });
+                    this.toggleLoginUI();
+                }
+            }
+            this.updateUI_User();
+        }
+        else if (response.redirect_url) {
+            // redirect to the error page
+            this.gotoUrl(response.redirect_url, 'cannotrate');
+        }
+        else {
+            this.ratingCallbackError(null, null, null);
+        }
+
+        if (extraCallback) {
+            extraCallback();
+        }
+    },
+
+    ratingCallbackError: function (jqXHR, textStatus, errorThrown) {
+        if (this.currentStumble)
+        {
+            // Rating not done on the server side
+            // go back to the previous rating
+            if (typeof this.currentStumble.previousRating == 'undefined')
+                delete this.currentStumble.rating;
+            else
+                this.currentStumble.rating = this.currentStumble.previousRating;
+        }
+        this.updateUI_User();
+        this.updateUI_StumbleMeta();
+        this.displayNotification({
+                type: 'error',
+                message: this.messages.genericError
+            });
+    },
+
+    toggleThumbDownMore: function() {
+        var url = '/su/overlay/notlikemore?src='
+            + this.source + '&pid='
+            + encodeURIComponent(this.currentStumble.publicid);
+        if (this.currentStumble.friend)
+            url += '&friendid=' + encodeURIComponent(this.currentStumble.friend.userid);
+        else if (this.currentStumble.discoverer)
+            url += '&discovererid=' + encodeURIComponent(this.currentStumble.discoverer.userid);
+        if (this.currentStumble.sponsored)
+            url += "&sponsored=true";
+        this.overlayManager.toggleOverlay('thumbdown-menu', {
+                url: url,
+                type: 'floating',
+                anchorElement: $('#tb-notlikemore'),
+                size: {width: 220, height: 169},
+                closeOthers: ['floating', 'notification'],
+                refresh: true
+            });
+    },
+
+    toggleShowMeMore: function() {
+        var height = 135;
+        var url = '/su/overlay/showmemore?src='
+            + this.source + '&pid='
+            + encodeURIComponent(this.currentStumble.publicid);
+        if (this.currentStumble.friend)
+            url += '&friendid=' + encodeURIComponent(this.currentStumble.friend.userid);
+        else if (this.currentStumble.discoverer)
+            url += '&discovererid=' + encodeURIComponent(this.currentStumble.discoverer.userid);
+        else
+            height = 101;
+        if (this.currentStumble.sponsored)
+            url += "&sponsored=true";
+        this.overlayManager.toggleOverlay('thumbup-menu', {
+                url: url,
+                type: 'floating',
+                anchorElement: $('#tb-likemore'),
+                size: {width: 250, height: height},
+                closeOthers: ['floating', 'notification']
+            });
+    },
+
+    toggleUrlInfoMenu: function() {
+        var url = '/su/overlay/urlinfo/?pid=' + this.currentStumble.publicid + '&src=' + this.source;
+        this.overlayManager.toggleOverlay('comment-menu', {
+            url: url,
+            type: 'floating',
+            anchorElement: $('#tb-comment'),
+            size: {width: 495, height: 415},
+            closeOthers: ['floating'],
+            refresh: true
+        });
+    },
+
+    showSharePanel: function(pid, urlToShare) {
+        var refresh = (this._previousSharedPid != (pid ? pid :  urlToShare));
+        this._previousSharedPid = (pid ? pid : urlToShare);
+        if (pid)
+            var url = '/su/overlay/share/?pid=' + pid + '&src=' + this.source;
+        else
+            var url = '/su/overlay/share/?url=' + encodeURIComponent(urlToShare) + '&src=' + this.source;
+        this.overlayManager.openOverlay('share-menu', {
+            url: url,
+            type: 'floating',
+            anchorElement: $('#tb-share'),
+            size: {width: 495, height: 412},
+            closeOthers: ['floating', 'notification'],
+            refresh: refresh
+        });
+    },
+
+    toggleInterestsPanel: function(hidden) {
+        var url = '/su/overlay/interests/?src=' + this.source;
+        var options = {
+                url: url,
+                type: 'floating',
+                anchorElement: $('#tb-interests'),
+                size: {width: 330, height: 520},
+                closeOthers: ['floating', 'notification']
+            };
+        if (hidden)
+            this.overlayManager.openOverlay('interests-menu', options, true);
+        else
+            this.overlayManager.toggleOverlay('interests-menu', options);
+    },
+
+    toggleSharePanel: function(pid, urlToShare) {
+        var refresh = (this._previousSharedPid != (pid ? pid :  urlToShare));
+        this._previousSharedPid = (pid ? pid : urlToShare);
+        if (pid)
+            var url = '/su/overlay/share/?pid=' + pid + '&src=' + this.source;
+        else
+            var url = '/su/overlay/share/?url=' + encodeURIComponent(urlToShare) + '&src=' + this.source;
+        this.overlayManager.toggleOverlay('share-menu', {
+            url: url,
+            type: 'floating',
+            anchorElement: $('#tb-share'),
+            size: {width: 495, height: 412},
+            closeOthers: ['floating', 'notification'],
+            refresh: refresh
+        });
+    },
+
+    toggleShareFacebookPanel: function(pid, urlToShare) {
+        var refresh = (this._previousSharedPid != (pid ? pid :  urlToShare));
+        this._previousSharedPid = (pid ? pid : urlToShare);
+        if (pid)
+            var url = '/su/overlay/share/facebook?pid=' + pid + '&src=' + this.source;
+        else
+            var url = '/su/overlay/share/facebook?url=' + encodeURIComponent(urlToShare) + '&src=' + this.source;
+        this.overlayManager.toggleOverlay('share-facebook-menu', {
+            url: url,
+            type: 'floating',
+            anchorElement: $('#tb-share-facebook'),
+            size: {width: 495, height: 238},
+            closeOthers: ['floating', 'notification'],
+            refresh: refresh
+        });
+    },
+
+    showHoverTip: function(node) {
+        // I don't display tooltips if floating overlays are displayed
+        if ($('#tb-toolbar').data('overlayfloating') > 0
+                || $('#tb-toolbar').data('overlaypermanenttooltip') > 0)
+            return;
+
+        var id = node.attr('id');
+        if (this.delayedTooltips[id])
+            return;
+
+        var instance = this;
+        this.delayedTooltips[id] = setTimeout(function() {
+                // I don't display tooltips if floating overlays are displayed
+                if ($('#tb-toolbar').data('overlayfloating') > 0
+                        || $('#tb-toolbar').data('overlaypermanenttooltip') > 0)
+                {
+                    instance.delayedTooltips[id] = 0;
+                    return;
+                }
+
+                instance.overlayManager.openOverlay('tooltip-' + id, {
+                    type: 'tooltip',
+                    data: node.data('tooltip'),
+                    anchorElement: $('#' + id),
+                    closeOthers: ['tooltip', 'permanenttooltip'],
+                    size: {'max-width': 250}
+                });
+            }, 800);
+    },
+
+    hideHoverTip: function(node) {
+        var id = node.attr('id');
+        this.overlayManager.closeOverlay('tooltip-' + id);
+        // Remove possible timer
+        if (this.delayedTooltips[id])
+            clearTimeout(this.delayedTooltips[id]);
+        this.delayedTooltips[id] = 0;
+    },
+
+    // Listener Interface implementation to handle the overlays open/close events
+    onOverlayOpened: function(overlay) {
+        var tb = $('#tb-toolbar');
+        tb.addClass('tb-overlay-' + overlay.id);
+        var count = tb.data('overlay' + overlay.options.type);
+        if (typeof count == 'undefined')
+            count = 0;
+        count++;
+        tb.data('overlay' + overlay.options.type, count);
+        if (count >= 1)
+            tb.addClass('tb-over-' + overlay.options.type);
+
+        // If we open a overlay which is not a tooltip, we should close all the tooltip overlays
+        if ($.inArray(overlay.options.type, ['tooltip', 'permanenttooltip']) == -1)
+            this.overlayManager.closeOtherOverlays(null, ['tooltip', 'permanenttooltip']);
+
+        if (count == 1 && overlay.options.type == "floating" && this.currentStumble && this.currentStumble.has_bad_flash)
+        {
+            this.displayNotification({
+                type: 'info',
+                message: this.messages.hideStumbleBadFlashMessage
+            });
+            $('#tb-stumble-frame').hide();
+            $('#tb-stumble-container-bad-flash').show();
+        }
+
+        if ($.inArray(overlay.options.type, ['top', 'right', 'bottom', 'left']) >= 0)
+            this.onResize();
+    },
+
+    onOverlayClosed: function(overlay) {
+        var tb = $('#tb-toolbar');
+        var count = tb.data('overlay' + overlay.options.type);
+        if (typeof count == 'undefined')
+            count = 1;
+        count--;
+        tb.data('overlay' + overlay.options.type, count);
+        if (count < 1)
+            tb.removeClass('tb-over-' + overlay.options.type);
+
+        $('#tb-toolbar').removeClass('tb-overlay-' + overlay.id);
+
+        if (count < 1 && overlay.options.type == "floating" && this.currentStumble && this.currentStumble.has_bad_flash)
+        {
+            $('#tb-stumble-frame').show();
+            $('#tb-stumble-container-bad-flash').hide();
+        }
+
+        if ($.inArray(overlay.options.type, ['top', 'right', 'bottom', 'left']) >= 0)
+            this.onResize();
+    },
+
+    hideToolbar: function() {
+        if (suExtensionApi && suExtensionApi.toolbar)
+            suExtensionApi.toolbar.closeToolbar();
+        else if (this.currentStumble)
+            this.gotoUrl(this.currentStumble.url, 'closetoolbar');
+        else {
+            // TODO make this go to actual page in chromebar and other clients that can see that
+            this.gotoUrl("/", 'closetoolbar');
+        }
+    },
+
+    toJSONString: function(data)
+    {
+        var json = "{";
+        var j = 0;
+        for (i in data)
+        {
+            if (j > 0) json += ', ';
+            json += "\"" + i + "\":" + "\"" + data[i] + "\"";
+            j++;
+        }
+        json += "}";
+        return json;
+    },
+
+    //events handled by all litebars. assumes DOM structure
+    userInterfaceEvents: {
+        buttonTooltipClick: {
+            target: '.tips',
+            action: 'click.tips',
+            handler: function(event) {
+                event.data.instance.hideHoverTip($(this));
+            }
+        },
+        buttonTooltipOn: {
+            target: '.tips',
+            action: 'mouseenter.tips',
+            handler: function(event) {
+                event.data.instance.showHoverTip($(this));
+            }
+        },
+        buttonTooltipOff: {
+            target: '.tips',
+            action: 'mouseleave.tips',
+            handler: function(event) {
+                event.data.instance.hideHoverTip($(this));
+            }
+        },
+        toolbarClick: {
+            target: '#tb-toolbar',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.overlayManager.closeOtherOverlays(null, ['floating', 'notification']);
+            }
+        },
+        stumble: {
+            target: '#tb-stumble a',
+            action: 'click',
+            handler: function(event) {
+                var instance = event.data.instance;
+                instance.logEvent('click-stumble');
+                if(event.ctrlKey && event.altKey) {
+                    debugger;
+                    return;
+                }
+                instance.overlayManager.destroyOverlaysTypes('floating');
+                if (instance.device == 'chromebar' && !instance._globals.user.loggedIn)
+                    instance.displayNotification({
+                        type: 'info',
+                        message: instance.messages.notLoggedInNoStumble,
+                        delay: 10000 // 10 seconds
+                    });
+                else
+                    event.data.instance.performStumble();
+                return false;
+            }
+        },
+        thumbUp: {
+            target: '#tb-like a',
+            action: 'click',
+            handler: function(event) {
+                var instance = event.data.instance;
+                instance.logEvent('click-thumbup');
+                instance.getCurrentUrlInfo(function(urlinfo) {
+                    if(urlinfo.known)
+                        instance.performRating(1);
+                    else {
+                        // Send to the submit page
+                        instance.gotoUrl('http://www.stumbleupon.com/submit?url='+encodeURIComponent(urlinfo.url), 'submitpage', true);
+                    }
+                });
+                return false;
+            }
+        },
+        showMeMore: {
+            target: '#tb-likemore a',
+            action: 'click',
+            handler: function(event) {
+                var instance = event.data.instance;
+                instance.logEvent('click-thumbupmenu');
+                instance.getCurrentUrlInfo(function(urlinfo) {
+                    if(urlinfo.known)
+                        instance.toggleShowMeMore();
+                    else {
+                        instance.displayNotification({
+                            type: 'info',
+                            message: instance.messages.notDiscoveredNoThumbUpMore
+                        });
+                    }
+                });
+                return false;
+            }
+        },
+        thumbDown: {
+            target: '#tb-notlike a',
+            action: 'click',
+            handler: function(event) {
+                var instance = event.data.instance;
+                instance.logEvent('click-thumbdown');
+                instance.getCurrentUrlInfo(function(urlinfo) {
+                    if(urlinfo.known)
+                        instance.performRating(0);
+                    else {
+                        instance.displayNotification({
+                            type: 'info',
+                            message: instance.messages.notDiscoveredNoThumbDown
+                        });
+                    }
+                });
+                return false;
+            }
+        },
+        thumbDownMoreToggle: {
+            target: '#tb-notlikemore a',
+            action: 'click',
+            handler: function(event) {
+                var instance = event.data.instance;
+                instance.logEvent('click-thumbdownmenu');
+                instance.getCurrentUrlInfo(function(urlinfo) {
+                    if(urlinfo.known)
+                        instance.toggleThumbDownMore();
+                    else {
+                        instance.displayNotification({
+                            type: 'info',
+                            message: instance.messages.notDiscoveredNoThumbDown
+                        });
+                    }
+                });
+                return false;
+            }
+        },
+        shareFacebookMenuToggle: {
+            target: '#tb-share-facebook a',
+            action: 'click',
+            handler: function(event) {
+                var instance = event.data.instance;
+                instance.logEvent('click-facebook');
+                instance.getCurrentUrlInfo(function(urlinfo) {
+                    if(urlinfo.known && urlinfo.publicid)
+                        instance.toggleShareFacebookPanel(urlinfo.publicid);
+                    else
+                        instance.toggleShareFacebookPanel(null, urlinfo.url);
+                });
+                instance.trk('normalShareFacebookClick');
+                return false;
+            }
+        },
+        shareMenuToggle: {
+            target: '#tb-share a',
+            action: 'click',
+            handler: function(event) {
+                var instance = event.data.instance;
+                instance.logEvent('click-share');
+                instance.getCurrentUrlInfo(function(urlinfo) {
+                    if(urlinfo.known && urlinfo.publicid)
+                        instance.toggleSharePanel(urlinfo.publicid);
+                    else
+                        instance.toggleSharePanel(null, urlinfo.url);
+                });
+                instance.trk('normalShareClick');
+                return false;
+            }
+        },
+        interestsMenuToggle: {
+            target: '#tb-interests a',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.logEvent('click-interestsmenu');
+                event.data.instance.toggleInterestsPanel();
+                return false;
+            }
+        },
+        topicDeselection: {
+            target: '#topics.cancel .bgImgRight',
+            action: 'click',
+            handler: function(event) {
+                if ($('#topics').hasClass('cancel')) {
+                    event.data.instance.resetStumblingMode();
+                    // TODO take out reference to chromebar here. quick fix
+                    if (event.data.instance.device == 'chromebar') {
+                        suExtensionApi.message.broadcastMessage('localUpdateStumblingTopic', { id: 0, name: 'All Interests'});
+                    }
+                    if (typeof event.data.instance.hideViewPane != "undefined") {
+                        event.data.instance.hideViewPane(event.data.instance.viewPanes['topics']);
+                    }
+                    event.data.instance.performStumble();
+                }
+                else {
+                    event.data.instance.toggleTopicSelectorUI();
+                }
+                return false;
+            }
+        },
+        showUrlInfo: {
+            target: '#tb-comment a',
+            action: 'click',
+            handler: function(event) {
+                var instance = event.data.instance;
+                instance.logEvent('click-urlinfo');
+                instance.getCurrentUrlInfo(function(urlinfo) {
+                    if(urlinfo.known) {
+                        instance.toggleUrlInfoMenu();
+                    } else {
+                        instance.displayNotification({
+                            type: 'info',
+                            message: instance.messages.notDiscoveredNoUrlInfo
+                        });
+                    }
+                });
+                return false;
+            }
+        },
+
+        /*
+        showUserInfo: {
+            target: '#tb-userlabel a',
+            action: 'click',
+            handler: function(event) {
+                if (!event.data.instance.currentStumble.friend && !event.data.instance.currentStumble.discoverer)
+                    return;
+
+                var instance = event.data.instance;
+
+                var url = '/su/overlay/userinfo/?pid=' + instance.currentStumble.publicid + '&src=' + instance.source;
+                if (instance.currentStumble.friend)
+                    url += '&friendid=' + encodeURIComponent(instance.currentStumble.friend.userid);
+                else
+                    url += '&discovererid=' + encodeURIComponent(instance.currentStumble.discoverer.userid);
+                instance.overlayManager.toggleOverlay('userinfo-menu', {
+                    url: url,
+                    type: 'floating',
+                    anchorElement: $('#tb-userlabel'),
+                    size: {width: 300, height: 110},
+                    closeOthers: ['floating'],
+                    refresh: true
+                });
+                return false;
+            }
+        },
+        */
+
+        notificationMenuToggle: {
+            target: '#tb-notification a',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.logEvent('click-notification');
+                var height = 101;
+                if (event.data.instance.currentUser && event.data.instance.currentUser.notifications)
+                    height = 135 + event.data.instance.currentUser.notifications * 56;
+                if (height > 300)
+                    height = 300;
+                var url = '/su/overlay/notification/?src=' + event.data.instance.source;
+                event.data.instance.overlayManager.toggleOverlay('notification-menu', {
+                    url: url,
+                    type: 'floating',
+                    anchorElement: $('#tb-notification'),
+                    anchorToRight: true,
+                    size: {width: 220, height: height},
+                    closeOthers: ['floating', 'notification'],
+                    refresh: true
+                });
+                return false;
+            }
+        },
+        settingsMenuToggle: {
+            target: '#tb-settings a',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.logEvent('click-settings');
+                var url = '/su/overlay/settings/?src=' + event.data.instance.source;
+                var height = 201;
+                // first case catches when we are not stumbling and second case catches when we are stumbling an SU page
+                if((window.location.href.indexOf(event.data.instance._globals.server_http + '/su/') !== 0)
+                    || (
+                        event.data.instance.currentStumble
+                        && event.data.instance.currentStumble.url
+                        && event.data.instance.currentStumble.url.indexOf(event.data.instance._globals.server_http) === 0
+                       )
+                   ) {
+                        url += "&hideHideLink=1";
+                        height = 167;
+                    }
+                event.data.instance.overlayManager.toggleOverlay('settings-menu', {
+                    url: url,
+                    type: 'floating',
+                    anchorElement: $('#tb-settings'),
+                    anchorToRight: true,
+                    size: {width: 220, height: height},
+                    closeOthers: ['floating', 'notification']
+                });
+                return false;
+            }
+        },
+
+        loginMenuToggle: {
+            target: '#tb-login a',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.logEvent('click-login');
+                try {
+                    window.top.location.href = event.data.instance.loginUrl;
+                } catch (err) {
+                    window.location.href = event.data.instance.loginUrl;
+                }
+
+                /*
+                var url = '/su/overlay/login?src=' + event.data.instance.source;
+                event.data.instance.overlayManager.toggleOverlay('login-menu', {
+                    url: url,
+                    type: 'floating',
+                    anchorElement: $('#tb-login'),
+                    anchorToRight: true,
+                    size: {width: 400, height: 300},
+                    closeOthers: ['floating', 'notification'],
+                    refresh: true
+                });
+                */
+                return false;
+            }
+        },
+
+        learnMoreMenuToggle: {
+            target: '#tb-learnmore a',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.logEvent('click-learnmore');
+                event.data.instance.gotoUrl('http://www.stumbleupon.com/?pre=wtb_learnmore', 'learnmore');
+                return false;
+            }
+        },
+
+        signupMenuToggle: {
+            target: '#tb-signup a',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.logEvent('click-signup');
+                event.data.instance.gotoUrl('https://www.stumbleupon.com/signup?pre=wtb_signup', 'signup');
+                return false;
+            }
+        },
+
+        sponsoredPage: {
+            target: '#sponsored',
+            action: 'click',
+            handler: function(event) {
+        //        event.data.instance.gotoUrl('/sponsored_page/');
+        //        return false;
+            }
+        },
+        favoritesLoggedOut: {
+            target: '#favorites_l',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.gotoUrl('https://www.stumbleupon.com/signup?pre=wtb_savefavs', 'signup');
+                return false;
+            }
+        },
+        favoritesLoggedOutVideo: {
+            target: '#favorites_l_video',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.gotoUrl('https://www.stumbleupon.com/signup?pre=video_wtb_savefavs', 'signup');
+                return false;
+            }
+        },
+        favoritesLoggedIn: {
+            target: '#favorites',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.gotoUrl('/favorites/', 'favorites');
+                return false;
+            }
+        },
+        homeButton: {
+            target: '#goHome',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.logEvent('click-home');
+                event.data.instance.gotoUrl('http://www.stumbleupon.com/', 'home');
+                return false;
+            }
+        },
+        closeButton: {
+            target: '#tb-close a',
+            action: 'click',
+            handler: function(event) {
+                event.data.instance.logEvent('click-close');
+                event.data.instance.hideToolbar();
+                return false;
+            }
+        }
+    }
+}
+
+var SU_Timers = function() {
+    this.pid      = null;
+    this.uid      = null;
+    this.data     = [];
+    this.dataHash = {};
+    this.enabled  = ("localStorage" in window && window['localStorage'] !== null);
+    // Try to save data into localStorage
+    // Because it crashes on private mode (safari at least)
+    try {
+        window.localStorage.setItem('test_localStorage', new Date().getTime());
+    }
+    catch (err) { this.enabled = false; }
+
+    this.hasInterruption = false;
+
+    this.noDuplicates = {
+        stumbleRequest : 1,
+        stumbleResponse: 1,
+        interrupted    : 1 };
+
+    this.interruptedEntries = {
+        'nextStumbleClick'        : 1,
+        'interrupted'          : 1,
+        'interrupted-closetoolbar': 1,
+        'interrupted-home'      : 1,
+        'interrupted-login'      : 1,
+        'interrupted-reviews'      : 1,
+        'interrupted-shares'      : 1,
+        'interrupted-signup'      : 1
+        //'interrupted-stumbler'      : 1,
+        };
+
+        return true;
+}
+
+SU_Timers.prototype = {
+        init: function(urlid) {
+        // Check if we have a global var defined at the beginning of the template
+        // include/smarty/templates/master/master_litebar_su.tpl
+        var v = new Date().getTime();
+        if ("_stumbleResponse" in window && !isNaN(window._stumbleResponse) && window._stumbleResponse > 0)
+            v = window._stumbleResponse;
+                this.addEvent('stumbleResponse', v);
+                this.addEvent('startLoad');
+        },
+
+    reset: function() {
+        if (!this.enabled)
+            return false;
+
+        this.pid      = null;
+        this.data     = [];
+        this.dataHash = {};
+
+        return true;
+    },
+
+    setPidAndUid: function(_pid, _uid) {
+        if (!this.enabled)
+            return;
+
+        this.pid = _pid;
+        this.uid = _uid;
+    },
+
+        addEvent: function(eventName, time) {
+                if (!this.enabled)
+                        return;
+                if (!time)
+                        time = new Date().getTime();
+
+        if (eventName in this.noDuplicates && this.hasEvent(eventName))
+            return;
+
+        if (eventName in this.interruptedEntries)
+        {
+            if (this.hasInterruption) return;
+            this.hasInterruption = true;
+        }
+
+        if (eventName == 'stumbleRequest')
+            // We want this event to be first
+            this.data.unshift( {"event": eventName, "timestamp": time } );
+        else
+                    this.data.push( {"event": eventName, "timestamp": time } );
+                this.dataHash[eventName] = time;
+        },
+
+        hasEvents: function() {
+                return this.data.length > 0;
+        },
+
+        hasEvent: function(eventName) {
+                if (!this.enabled || (typeof this.dataHash[eventName] == 'undefined'))
+                        return false;
+                return true;
+        },
+
+        toJSONString: function() {
+                var json = "[";
+                for (i in this.data)
+                {
+                        if (i > 0) json += ', ';
+
+                        json += "{";
+                        var j = 0;
+                        for (p in this.data[i])
+                        {
+                                if (j++ > 0)
+                                        json += ', ';
+                                json += "\"" + p + "\":" + "\"" + this.data[i][p] + "\"";
+                                j++;
+                        }
+                        json += "}";
+                }
+                json += "]";
+                return json;
+        },
+
+    saveTimersToDOMStorage: function() {
+        if (!this.enabled || !this.pid || !this.uid || this.hasEvents() == 0)
+            return false;
+
+        try {
+            window.localStorage.setItem('saved_data', this.toJSONString());
+            window.localStorage.setItem('saved_pid', this.pid);
+            window.localStorage.setItem('saved_uid', this.uid);
+        } catch (err) {}
+
+        return true;
+    },
+
+    /**
+     * return an object:
+     * { pid: pid, uid: uid, data: data values }
+     **/
+    getSavedTimers: function() {
+        if (!this.enabled)
+            return null;
+
+        var saved_pid = window.localStorage.getItem('saved_pid');
+        var saved_uid = window.localStorage.getItem('saved_uid');
+        var saved_data = window.localStorage.getItem('saved_data');
+        if (!saved_pid || !saved_data)
+            return null;
+
+        window.localStorage.removeItem('saved_pid');
+        window.localStorage.removeItem('saved_uid');
+        window.localStorage.removeItem('saved_data');
+        return { pid: saved_pid, uid: saved_uid, data: saved_data };
+    }
+};
+/**
+ * Webtoolbar Client Implementation
+ *   - inherits from Litebar client impl class
+ *   - parent to chromebar impl class for now, since so much is shared (changing in future)
+ *   - handles UI updating
+ *   - handles storing auth and tokens since that is a client-specific data store detail
+ *      - may later abstract data storage though
+ */
+var SU_ClientWebtoolbar = function() {
+    this.device = 'webtb';//webtoolbar';
+    this.source = 'webtb';
+    this.clientVersion = '';
+    this.scriptVersion = '';
+    this.stumblePending = false;
+    this.favoritesText = ' favorites';
+    this.toolbarHeight = 40; // Need to be removed in future versions !!
+    this.su_ga = new SU_GA();
+    return true;
+}
+SU_ClientWebtoolbar.prototype = new SU_ClientLitebar();
+SU_ClientWebtoolbar.superclass = SU_ClientLitebar.prototype;
+
+//syntactic sugar. apples vs. oranges. I like oranges better
+var SU_ClientWebtoolbar_prototype = {
+
+    init: function(globals, stumbleInfo, nochromebarcheck) {
+        var instance = this;
+
+        // See if we should just load chromebar
+        if (!nochromebarcheck && this.checkTryChromebar(globals, stumbleInfo))
+        {
+            // Install the resize window handler
+            this.installResizeHandler();
+            return;
+        }
+        // Initialize the webbar
+        SU_ClientWebtoolbar.superclass.init.call(this, globals, stumbleInfo);
+
+        // Watch events to get badge/GA data
+        this.su_ga.init(stumbleInfo);
+    },
+
+    updateLitebarMode: function(globals, stumbleInfo) {
+        if (stumbleInfo && stumbleInfo.url
+                && globals && globals.state) {
+            suExtensionApi.message.broadcastMessage('modeSelect', globals.state);
+            if (stumbleInfo.contextual) {
+                suExtensionApi.message.broadcastMessage('setModeLabel', stumbleInfo.contextual);
+            }
+            else {
+                suExtensionApi.message.broadcastMessage('setModeLabel', 'All Interests');
+            }
+        }
+    },
+
+    //chrome and other litebars supercede webbar, so pass off relevant state and exit
+    litebarCommunicationTasks: function(globals, stumbleInfo) {
+        var instance = this;
+        //only work on litebars (not mozbar, etc)
+        if (typeof suExtensionApi.toolbar == "undefined") {
+            return false;
+        }
+
+        this.litebarActivated = true;
+        suExtensionApi.toolbar.openToolbar();
+
+        this.updateLitebarMode(globals, stumbleInfo);
+
+        // If it wasn't ready, then update it when it is ready.
+        suExtensionApi.message.addListener(function(messageID, data) {
+            switch (messageID) {
+                case "litebarReadyForMessages":
+                    instance.updateLitebarMode(globals, stumbleInfo);
+                    break;
+            }
+        });
+
+    },
+
+    hasChromebarExtApi: function() {
+        return (typeof(suExtensionApi) != "undefined") && (suExtensionApi._info) &&
+               (suExtensionApi._info.provider == 'chromebar');
+    },
+
+    waitForChromebarExtApi: function(callback) {
+        var instance = this;
+        if (this.hasChromebarExtApi() && suExtensionApi.isReady())
+            callback();
+        else {
+            if(window.addEventListener) {
+                window.addEventListener('suScriptReadyExtensionApi', function() {
+                    if(instance.hasChromebarExtApi())
+                        callback();
+                }, false);
+            }
+        }
+    },
+
+    checkTryChromebar: function(globals, stumbleInfo) {
+
+        var instance = this;
+        // chrome_cookie is a quick hint that allows us to determine quickly whether
+        // chromebar is installed.
+        var chrome_cookie = new SU.Cookie('chromebar_stumble');
+        chrome_cookie.read();
+
+        if(chrome_cookie.value || this.hasChromebarExtApi())
+        {
+            // It is possible they removed the extension since we set the cookie, so
+            // if it never shows up, then we remove the cookie and re-initialize.
+            window.setTimeout(function() {
+                if(!instance.litebarActivated || !suExtensionApi || !suExtensionApi.isReady() || !suExtensionApi.toolbar)
+                {
+                    var chrome_cookie = new SU.Cookie('chromebar_stumble');
+                    chrome_cookie.kill();
+
+                    // The old chromebar used to create the cookie on www.stumbleupon.com, kill that one too
+                    chrome_cookie = new SU.Cookie('chromebar_stumble');
+                    chrome_cookie.setDomain(document.location.host);
+                    chrome_cookie.kill();
+
+                    // Showing the webtoolbar again
+                    $('#tb-toolbar').show();
+                    $("body").css('padding-top', '40px');
+                    instance.init(globals, stumbleInfo, true);
+                }
+            }, 3000);
+
+            // Hide the webtoolbar
+            $('#tb-toolbar').hide();
+            $("body").css('padding-top', '0px');
+
+            // Wait for the extension API and open the chromebar
+            this.waitForChromebarExtApi(function() {
+                instance.litebarCommunicationTasks(globals, stumbleInfo);
+            });
+
+            // Return true to indicate that we are using chromebar
+            return true;
+        }
+
+        // If the chromebar extension API shows up later, then hide this toolbar and show chromebar
+        this.waitForChromebarExtApi(function() {
+            $('#tb-toolbar').hide();
+            $("body").css('padding-top', '0px');
+            instance.litebarCommunicationTasks(globals, stumbleInfo);
+        });
+
+        return false;
+    },
+
+    // TODO cookie-based impl for data
+    setData: function(key, data, callback) {
+        this.data[key] = data;
+        if (callback) {
+            callback();
+        }
+    },
+
+    getData: function(key, callback) {
+        if (typeof this.data[key] != "undefined") {
+            callback(this.data[key]);
+        }
+        else {
+            throw "Invalid data identifier";
+        }
+    },
+
+    gotoUrl: function(url, timersInterruptInfo) {
+        if (this.timers) {
+            var timer = 'interrupted';
+            if (timersInterruptInfo)
+                timer += '-' + timersInterruptInfo;
+            this.timers.addEvent(timer);
+            this.timers.saveTimersToDOMStorage();
+        }
+
+        if (url[0] == '/' && this._globals && this._globals.server_http)
+            url = this._globals.server_http + url;
+        window.location.href = url;
+    }
+}
+
+//prototype the prototype. do it this way because it's easier on the eyes and supporter brain
+for (var func in SU_ClientWebtoolbar_prototype) {
+    SU_ClientWebtoolbar.prototype[func] = SU_ClientWebtoolbar_prototype[func];
+}
+
+/**
+ * string received from the badge as a postmessage event
+ * represents a json object.
+ * json object format is:
+ * {
+ *         "type"  : "SU_BADGEMESSAGE",
+ *         "params": {
+ *             "name1": "value1",
+ *             "name2": "value2",
+ *            ...
+ *         }
+ * }
+ */
+var SU_GA = function() {
+    this.enabled = ("sessionStorage" in window && window['sessionStorage'] !== null);
+    // Try to save data into localStorage
+    // Because it crashes on private mode (safari at least)
+    this.currentStumble = null;
+    try {
+        window.sessionStorage.setItem('test_sessionStorage', new Date().getTime());
+    }
+    catch (err) { this.enabled = false; }
+
+    var instance = this;
+    if ( window.attachEvent ) {
+        // IE
+        window.attachEvent("onmessage", function(e) { instance.handleBadgeMessage(e); });
+    }
+    if ( document.attachEvent ) {
+        // IE
+        document.attachEvent("onmessage", function(e) { instance.handleBadgeMessage2(e); });
+    }
+    if ( window.addEventListener ) {
+        // FF
+        window.addEventListener("message", function(e) { instance.handleBadgeMessage(e); }, false);
+    }
+
+    return true;
+};
+
+SU_GA.prototype = {
+
+    init: function(currentStumble) {
+        if (!this.enabled)
+            return;
+
+        this.handlePreviousHit();
+        try {
+            window.sessionStorage.removeItem('webtb_ga_exit_time');
+            window.sessionStorage.removeItem('webtb_ga_exit_stumble_url');
+        } catch (err) {}
+
+        this.currentStumble = currentStumble;
+
+        // Add unload hook
+        var instance = this;
+        $(window).unload(function() {
+            instance.onUnload();
+        });
+    },
+
+    handlePreviousHit: function() {
+        if (!this.enabled)
+            return;
+
+        try
+        {
+            var data_str = window.sessionStorage.getItem('webtb_ga');
+            var exit_time = window.sessionStorage.getItem('webtb_ga_exit_time');
+            var exit_time_stumble_url = window.sessionStorage.getItem('webtb_ga_exit_stumble_url');
+            var data = $.parseJSON(data_str);
+            if (typeof(data) != 'object'
+                    || data.type != 'SU_BADGEMESSAGE'
+                    || !data.params)
+                return;
+            if (data.params.url != exit_time_stumble_url)
+                return;
+
+            delete data.params.url;
+
+            var elapsed = (new Date()).getTime() - data.params.utmn;
+            elapsed = Math.round(elapsed / 1000.0);
+
+            data.params['utme'] = "5(Page Exit*Time On Site*First Load)(" + elapsed + ")";
+
+            var url = 'http://www.google-analytics.com/__utm.gif';
+            var request = url + "?";
+            var first = true;
+            for (var param in data.params)
+            {
+                request += (first ? "" : "&") + param + "=" + encodeURIComponent(data.params[param]);
+                first = false;
+            }
+
+            $('<img border="0" width="0" height="0" style="display: none" src="' + request + '"></img>').appendTo('body');
+
+        } catch (err) {}
+    },
+
+    handleBadgeMessage: function(e) {
+        try {
+            this.handleMessage(e.data);
+        } catch (err) {
+        }
+    },
+    handleBadgeMessage2: function(e) {
+        try {
+            this.handleMessage(e.data);
+        } catch (err) {
+        }
+    },
+
+    handleMessage: function(data_str) {
+        if (!this.enabled || !this.currentStumble)
+            return;
+
+        var data = $.parseJSON(data_str);
+        if (typeof(data) == 'object'
+                && data.type == 'SU_BADGEMESSAGE'
+                && data.params)
+        {
+            // Save the data for next hit in the dom storage
+            try
+            {
+                window.sessionStorage.setItem('webtb_ga', data_str);
+            }
+            catch (err) {}
+        }
+    },
+
+    onUnload: function() {
+        if (!this.enabled || !this.currentStumble || !this.currentStumble.url)
+            return;
+        // Save possible ga exit page timing for the next hit
+        try
+        {
+            window.sessionStorage.setItem('webtb_ga_exit_time', (new Date()).getTime() );
+            window.sessionStorage.setItem('webtb_ga_exit_stumble_url', this.currentStumble.url);
+        } catch (err) {}
+    }
+};
+/**
+ * toolbar_init.js
+ *
+ * js for toolbar init
+ *
+ * @author fabrice
+ */
+(function() {
+    /**
+     * @param strClass:
+     *            class name
+     * @param optionals:
+     *            constructor arguments
+     */
+    SU.ReflectUtil = {
+        newInstance : function(strClass) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            var clsClass = eval(strClass);
+            function F() {
+                return clsClass.apply(this, args);
+            }
+            F.prototype = clsClass.prototype;
+            return new F();
+        }
+    };
+
+    SU.addInit("mToolbar", function(data) {
+        SU.WebToolbar = SU.ReflectUtil.newInstance(data.globalState.toolbarClass);
+        SU.WebToolbar.init(data.globalState, data.stumbleInfo);
+    });
+}).call(this);
+/**
+ *
+ * @param listener: object that should implement onOverlayOpened(overlay) and onOverlayClosed(overlay) methods to listen to open/close events
+ * @param suExtensionApi
+ * @returns
+ */
+var suOverlayManager = function(listener, versionString) {
+    this.listener = listener;
+    this.versionString = versionString || '';
+    this.suExtensionApi = suExtensionApi;
+    this._overlays = {};
+    this._overlaysTypes = {
+        floating: {},
+        tooltip: {},
+        permanenttooltip: {},
+        top: {},
+        notification: {}
+    };
+    // @todo:  Two things:  1. Re-define getProviderInfo to be synchronous, the async implementation is not needed
+    //                      2. Implement the webbar specific overlays _inside_ the extension API so this special-case
+    //                         isn't really needed (i.e. create / destroy the div within the api, simplifying the manager).
+    this.useExtensionApi = (suExtensionApi && suExtensionApi.overlay && (suExtensionApi._info.provider == "chromebar"));
+
+    if (!this.useExtensionApi)
+    {
+        this._disabledStumbleDiv = $('#tb-stumble-disable');
+        if (this._disabledStumbleDiv.length == 0)
+        {
+            $body.append('<div id="tb-stumble-disable"></div>');
+            this._disabledStumbleDiv = $('#tb-stumble-disable');
+        }
+        var instance = this;
+        this._disabledStumbleDiv.click(function() {
+            instance.closeOtherOverlays(null, ['floating']);
+            instance._disabledStumbleDiv.hide();
+        });
+    }
+
+    this.spaces = {top: 0, right: 0, bottom: 0, left: 0};
+
+    return true;
+};
+
+suOverlay = function(listener, id, options, versionString) {
+    this.listener = listener;
+    this.id = id;
+    this.visible = false;
+    this.options = options;
+    this.versionString = versionString || '';
+
+    // @todo:  Two things:  1. Re-define getProviderInfo to be synchronous, the async implementation is not needed
+    //                      2. Implement the webbar specific overlays _inside_ the extension API so this special-case
+    //                         isn't really needed (i.e. create / destroy the div within the api, simplifying the manager).
+    this.useExtensionApi = (suExtensionApi && suExtensionApi.overlay && (suExtensionApi._info.provider == "chromebar"));
+    this.options.containerClass = 'tb-overlay tb-overlay-' + this.options.type;
+    if(this.options.type == 'notification')
+        this.options.containerClass += ' tb-overlay-notification-type-' + this.options.notificationType;
+    this.options.containerId = 'tb-overlay-container-' + id;
+
+    if(!this.useExtensionApi)
+    {
+        this.container = $('<div class="' + this.options.containerClass + '" id="' + this.options.containerId + '"></div>');
+        this.container.hide();
+        if (options.size.width)
+            this.container.css('width', options.size.width+'px');
+        else if (options.size['max-width'])
+            this.container.css('max-width', options.size['max-width']+'px');
+        if (options.size.height)
+            this.container.css('height', options.size.height+'px');
+        if (this.options.url)
+            this._createIframe();
+        else if (this.options.data)
+            this.container.html(this.options.data);
+
+        var b = $('body');
+        b.append(this.container);
+        this.autoPosition($(window).width());
+    }
+    else
+    {
+        var options2 = this._getExtApiOptions();
+        if(options2.size && options2.size['max-width']) {
+            // Set an initial position that is wide enough to accomodate
+            // the entire element, it will recompute its size later
+            options2.position = {
+                width: options2.size['max-width'] + 200
+            }
+        }
+        suExtensionApi.overlay.create(id, options2);
+
+        this.autoPosition($(window).width());
+    }
+};
+
+suOverlay.prototype = {
+    _destroyIframe: function() {
+        this.iframe.remove();
+        delete this.iframe;
+    },
+
+    _createIframe: function() {
+        // Note:  Not called when using the extension api
+        if (this.iframe)
+            this._destroyIframe();
+        this.iframe = $('<iframe frameborder="0" class="tb-overlay-iframe" id="tb-overlay-iframe-' + this.id + '"></iframe>');
+        this.iframe.attr('src', this.options.url)
+                   .css({'width'     :'100%',
+                         'height'    :'100%',
+                         'border'    :'none',
+                         'overflow'  :'hidden',
+                         'background':'transparent url(http://b9.sustatic.com/anAVjBrzYFAmwazVAqaA_A) no-repeat center'});
+        this.container.append(this.iframe);
+    },
+
+    _getExtApiOptions: function()
+    {
+        // Convert this overlay's options into extapi-compatible options
+        var options2 = {};
+        for(var key in this.options)
+            options2[key] = this.options[key];
+        if(options2.anchorElement)
+            delete options2.anchorElement;
+        // Don't use display:none because we sometimes do asynchronous position calculations and we need it to have
+        // dimensions for that to work
+        options2.css = this.visible ? { visibility:'visible' } : { visibility:'hidden' };
+        options2.css["box-shadow"] = "2px 6px 6px rgba(0,0,0,0.2), -2px 6px 6px rgba(0,0,0,0.2)";
+        options2.css["background-color"] = "#f1f1ee";
+
+        // Turn relative paths into full paths
+        if (options2.url && options2.url.indexOf("/") == 0)
+            options2.url = document.location.origin + options2.url;
+        // Use the simple page for simple data urls
+        if (options2.data && !options2.url)
+            options2.url = document.location.origin + "/su/overlay/simple?v=" + this.versionString;
+        return options2;
+    },
+
+    show: function() {
+        if (this.visible)
+            return;
+        this.visible = true;
+        if(!this.useExtensionApi)
+            this.container.show();
+        else
+            suExtensionApi.overlay.update(this.id,  this._getExtApiOptions());
+
+        if (this.listener && this.listener.onOverlayOpened)
+            this.listener.onOverlayOpened(this);
+
+    },
+    hide: function() {
+        if (!this.visible)
+            return;
+        this.visible = false;
+        if(!this.useExtensionApi)
+            this.container.hide();
+        else
+            suExtensionApi.overlay.update(this.id,  this._getExtApiOptions());
+
+        if (this.listener && this.listener.onOverlayClosed)
+            this.listener.onOverlayClosed(this);
+    },
+    remove: function() {
+        if (!this.useExtensionApi)
+        {
+            if (this.iframe)
+                this.iframe.remove();
+            this.container.remove();
+        }
+        else
+        {
+            suExtensionApi.overlay.destroy(this.id);
+        }
+    },
+    setPosition: function(top, left, width, height) {
+        if (!this.useExtensionApi)
+        {
+            var css = {};
+            if (typeof width != 'undefined')
+                css.width = width + 'px';
+            else if (this.options.size.width)
+                css.width = this.options.size.width + 'px';
+            if (typeof height != 'undefined')
+                css.height = height + 'px';
+            else if (this.options.size.height)
+                css.height = this.options.size.height + 'px';
+            css.top = top + 'px';
+            css.left = left + 'px';
+            this.container.css(css);
+        }
+        else
+        {
+            var pos = {
+                left: left,
+                top: top,
+                height: this.options.size.height,
+                width: this.options.size.width
+            };
+            if (typeof width != 'undefined')
+                pos.width = width;
+            if (typeof height != 'undefined')
+                pos.height = height;
+
+            if (!this.options)
+                this.options = {};
+            this.options.position = pos;
+            suExtensionApi.overlay.update(this.id,  this._getExtApiOptions());
+        }
+    },
+
+    autoPosition: function(winWidth) {
+        if(this.options.type == 'notification')
+        {
+            if (this.container) {
+                var w = this.container.width();
+            } else {
+                var w = this.options.size.width;
+            }
+            var pos = {
+                top: 0,
+                left: (winWidth - w) / 2
+            }
+        }
+        else if (this.options.anchorToRight)
+        {
+            var pos = this.options.anchorElement.offset();
+            pos.top = this.options.anchorElement.height();
+            pos.left = pos.left + this.options.anchorElement.width() - this.options.size.width;
+            if (pos.left < 0)
+                pos.left = 0;
+        }
+        else if (this.options.anchorElement)
+        {
+            var pos = this.options.anchorElement.offset();
+            if (!this.options.size.width && this.options.size['max-width'])
+            {
+                if(this.container)
+                    this.options.size.width = this.container.width();
+            }
+            if (this.options.size.width)
+            {
+                var right = pos.left + this.options.size.width;
+                if (right > winWidth)
+                {
+                    pos.left = winWidth - this.options.size.width;
+                    if (pos.left < 0)
+                        pos.left = 0;
+                }
+            }
+            if (this.options.anchorElement.is('input'))
+                pos.top = this.options.anchorElement.outerHeight();
+            else
+                pos.top = this.options.anchorElement.height();
+        }
+        else
+        {
+            var tb = $('#tb-toolbar');
+            var tbHeight = tb.height();
+            var winHeight = $(window).height();
+            if (this.useExtensionApi && this.options.type != 'top')
+            {
+                var instance = this;
+                suExtensionApi.litebar.getWindowDimensions(function (response) {
+                    winHeight = response.height;
+                    winWidth  = response.width;
+                    var pos = {
+                            top:  (winHeight - tbHeight - instance.options.size.height) / 2 + tbHeight,
+                            left: (winWidth - instance.options.size.width) / 2
+                    };
+                    instance.setPosition(
+                            pos.top,
+                            pos.left
+                    );
+                });
+                return;
+            }
+            var pos = {
+                    top:  (winHeight - tbHeight - this.options.size.height) / 2 + tbHeight,
+                    left: (winWidth - this.options.size.width) / 2
+                };
+        }
+        this.setPosition(
+                pos.top,
+                pos.left
+            );
+    }
+};
+
+suOverlayManager.prototype = {
+    _updateShowDisabledStumbleDiv: function() {
+        var showDisabledStumbleDiv = false;
+        // Positioning 'floating' overlays
+        for (id in this._overlaysTypes.floating)
+        {
+            overlay = this._overlays[id];
+            if (!overlay.visible)
+                continue;
+            if (overlay.options.viewEnabled !== true)
+                showDisabledStumbleDiv = true;
+        }
+        if (showDisabledStumbleDiv)
+        {
+            if(this.useExtensionApi)
+            {
+                suExtensionApi.message.postMessage({ id: 1 }, "disableStumble");
+            }
+            else
+            {
+                this._disabledStumbleDiv.show();
+            }
+        }
+        else
+        {
+            if(this.useExtensionApi)
+            {
+                suExtensionApi.message.postMessage({ id: 1 }, "enableStumble");
+            }
+            else
+            {
+                this._disabledStumbleDiv.hide();
+            }
+        }
+    },
+
+    _positionOverlays: function() {
+        var overlay;
+        var win = $(window);
+        var winWidth = win.width();
+
+        for (id in this._overlays)
+        {
+            overlay = this._overlays[id];
+            overlay.autoPosition(winWidth);
+        }
+
+        this._updateShowDisabledStumbleDiv();
+
+        // Position top overlays
+        this.spaces.top = 0;
+        var h = $('#tb-toolbar').height();
+        for (id in this._overlaysTypes.top)
+        {
+            overlay = this._overlays[id];
+            if (!overlay.visible)
+                continue;
+            overlay.setPosition(h + this.spaces.top, 0, winWidth, overlay.options.size.height);
+            this.spaces.top +=  overlay.options.size.height;
+        }
+    },
+
+    closeOtherOverlays: function(id, others) {
+        if (!others)
+            return;
+        if (others === true)
+        {
+            for (_id in this._overlays)
+                if (_id != id && this._overlays[_id].visible)
+                    this._overlays[_id].hide();
+        }
+        else
+        {
+            for (type in others)
+            {
+                if (typeof this._overlaysTypes[others[type]] == 'undefined')
+                    continue;
+
+                for (_id in this._overlaysTypes[others[type]])
+                    if (_id != id && this._overlays[_id].visible)
+                        this._overlays[_id].hide();
+            }
+        }
+        this._positionOverlays();
+    },
+
+    onResize: function() {
+        this._positionOverlays();
+        return this.getSpaces();
+    },
+
+    /**
+     * @param id: string: unique identifier og the overlay
+     * @param options: js object:
+     *         - url (required or data provided): url to load in the panel
+     *         - data (required or url provided): data to display in the panel
+     *         - type (required): floating / tooltip / permanenttooltip / top / notification
+     *         - notificationType(only for notification type): error / info
+     *         - anchorElement(floating only. optional): a jquery object to anchor to. For floating if not present, center the overlay in the page
+     *         - anchorToRight (optional): false (default) / true
+     *                 * false: position the left of the popup to the left of the element
+     *                 * true:  potision the right of the popup to the right of the element
+     *         - size (required):
+     *              {
+     *                  width (optional): int
+     *                  height (optional): int
+     *                  max-width (optional): int
+     *              }
+     *         - refresh (optional): false (default) / true (refresh the panel if called again)
+     *         - viewEnabled (optional): false (default) / true: only for 'floating' overlays. if false disable the view (stumble) and add some opacity over it
+     *         - closeOthers (optional):
+     *                 * false (default)
+     *                 * true (hide all other overlays)
+     *                 * array : array of (floating | top | bottom | left | right) of which overlays will be removed
+     *
+     * @param hidden: if true, the overlay will not be displayed and repositioning will not be done
+     *                (the overlay is created but not displayed)
+     */
+    openOverlay: function(id, options, hidden) {
+        // If it exists and they want to refresh it then close it first
+        if (typeof this._overlays[id] != 'undefined' && options.refresh)
+        {
+            this.closeOverlay(id);
+            this.destroyOverlay(id);
+        }
+
+        if (typeof this._overlays[id] == 'undefined')
+        {
+            var overlay = new suOverlay(this.listener, id, options, this.versionString);
+            this._overlays[id] = overlay;
+            this._overlaysTypes[options.type][id] = overlay;
+        }
+        else
+        {
+            var overlay = this._overlays[id];
+            if (overlay.options.type != options.type)
+            {
+                delete this._overlaysTypes[overlay.options.type][id];
+                this._overlaysTypes[options.type][id] = overlay;
+            }
+        }
+
+        if (!hidden)
+        {
+            if (options.closeOthers)
+            {
+                this.closeOtherOverlays(id, options.closeOthers);
+            }
+            overlay.show();
+            this._positionOverlays();
+        }
+
+        return overlay;
+    },
+
+    toggleOverlay: function(id, options) {
+        if (typeof this._overlays[id] == 'undefined')
+        {
+            return this.openOverlay(id, options);
+        }
+        else
+        {
+            var overlay = this._overlays[id];
+            if (overlay.visible)
+            {
+                overlay.hide();
+                if (overlay.options.viewEnabled !== true)
+                    this._positionOverlays();
+                return overlay;
+            }
+            else
+                return this.openOverlay(id, options);
+        }
+    },
+
+    /**
+     * returns true if the overlay was opened, visibled and has been closed
+     * @param id
+     */
+    closeOverlay: function(id) {
+        if (typeof this._overlays[id] == 'undefined')
+            return false;
+
+        var overlay = this._overlays[id];
+        if (!overlay.visible)
+            return false;
+        overlay.hide();
+
+        this._positionOverlays();
+        return true;
+    },
+
+    closeAllOverlays: function() {
+        for (id in this._overlays)
+            this._overlays[id].hide();
+
+        this._positionOverlays();
+    },
+
+    destroyOverlay: function(id) {
+        var overlay = this._overlays[id];
+        if (!overlay)
+            return;
+
+        overlay.hide();
+        overlay.remove();
+        delete this._overlaysTypes[overlay.options.type][overlay.id];
+        delete this._overlays[id];
+        this._positionOverlays();
+    },
+
+    destroyOverlaysTypes: function(type) {
+        for (id in this._overlaysTypes[type])
+        {
+            var overlay = this._overlays[id];
+            overlay.hide();
+            overlay.remove();
+            delete this._overlaysTypes[type][overlay.id];
+            delete this._overlays[id];
+        }
+        this._positionOverlays();
+    },
+
+    /**
+     * @param exceptions: array: regular expressions of overlays that should not be destroyed
+     */
+    destroyAllOverlays: function(exceptions) {
+
+        var fnIsException = function(id) {
+            if (exceptions)
+                for (var i=0; i<exceptions.length; i++)
+                    if (id.match(exceptions[i]))
+                        return true;
+            return false;
+        }
+
+        for (id in this._overlays)
+        {
+            if (fnIsException(id))
+                continue;
+            var overlay = this._overlays[id];
+            overlay.hide();
+            overlay.remove();
+            delete this._overlaysTypes[overlay.options.type][overlay.id];
+            delete this._overlays[id];
+        }
+        this._positionOverlays();
+    },
+
+    getSpaces: function() {
+        return this.spaces;
+    },
+
+    repositionOverlay: function(id, size) {
+        var overlay = this._overlays[id];
+        if (size.width)
+            overlay.options.size.width = size.width;
+        if (size.height)
+            overlay.options.size.height = size.height;
+        if (overlay.visible)
+            overlay.autoPosition($win.width());
+    }
+};

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+	<title>Dick's Sporting Goods</title>
+	<script type="text/javascript" src="siteJs.js"></script>
+	<script type="text/javascript" language="JavaScript">
+	function emailCheck(val)
+	{
+		var regEx = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+		if(val.match(regEx))
+		{
+			return true;
+		}
+		else{
+			return false;
+		}	}
+
+	function valForm(frm)
+	{
+		if(!emailCheck(frm.emailAddress.value) || frm.emailAddress.value != frm.emailAddress2.value)
+		{
+			alert("Please enter a valid email address.");
+			if(!document.layers)
+			{
+				document.getElementById("emailAddress").style.backgroundColor = "f9c755";
+				document.getElementById("emailAddress2").style.backgroundColor = "f9c755";
+			}
+			frm.emailAddress.focus();
+			return false;
+		}
+		return true;
+	}
+	</script>
+</head>
+<style>
+/*body {margin:0;font-family:verdana;font-size:9px;background: url(/images/email_bg.gif) 0px 23px no-repeat;}*/
+/*body{margin:0;font-family:verdana;font-size:9px;background:none;/*background: url(../images/hdr_nav.png) 0px -145px 23px no-repeat;}*/
+body{margin:0;font-family:verdana;font-size:9px;background: url(../images/hdr_nav.png) 0px -122px no-repeat;}
+/* email pop */
+#emailUpdate {width:284px;width:"286px";height:209px;height:"227px";}
+.emailHeadline {height:22px;height:"30px";padding-top:8px;margin:0 7px;font-family:verdana;font-size:9px;letter-spacing:-.5px;letter-spacing:"-1px";color:#464646;}
+.emailHeadline span {font-weight:bold;font-family:verdana;font-size:9px;color:#464646;}
+.emailHeadlineThanks {margin:0 7px;font-family:verdana;font-size:9px;color:#464646;}
+.emailHeadlineThanks span {font-weight:bold;font-family:verdana;font-size:9px;color:#464646;}
+.emailForm {width:251px;width:"269px";height:80px;height:"98px";margin:60px 7px 10px 7px;padding: 9px;background-color:#fff;border:1px solid #D5D5D5;}
+.emailForm span {color:#686868;font-weight:bold;margin-bottom:5px;}
+.emailForm label {color:#A3A3A3;position:relative;top:3px;}
+.emailOrange {float:left;color:#EEA125;font-weight:bold;}
+.emailTextInputs {clear:both;margin-bottom:5px;}
+.emailGender {background-color:#FBFBFB;padding:5px 0;border-top:1px dotted #8C8C8C;border-bottom:1px dotted #8C8C8C;margin-bottom:5px;}
+.emailGender span {color:#686868;font-weight:bold;position:relative;top:-2px;}
+.emailGender label {color:#A3A3A3;position:relative;top:-2px;}
+#emailLine {border-top:1px dotted #8C8C8C;margin-top:7px;margin-top:"24px";margin-bottom:7px;}
+.emailLowerForm {float:left;margin-bottom:2px;margin-bottom:"0":}
+#emailSubmit img {vertical-align:top;float:right;}
+#emailSubmit{padding-right:5px;}
+#email_privacyPolicy{width:107px;height:18px;line-height:18px;float:right;background:url(../images/hdr_nav.png) no-repeat -640px -56px;margin:0px;padding:0px 0px 0px 0px;border: none;margin:0px 10px 0px 0px;cursor:pointer}
+#Submit{float:right;background:url(../images/hdr_nav.png) no-repeat -572px -55px;width:66px;height:23px;border:none;cursor:pointer}
+
+</style>
+<body>
+
+<img src="../images/email_update_hdr.jpg" alt="" width="286" height="23" border="0" usemap="#emailUpdate_header" />
+<div id="emailUpdate">
+		<form name="emailForm" action="http://dsp.imageg.net/emailHandler/index.jsp" method="post" onsubmit="return valForm(this)" style="display:inline;margin:0;">
+			<div class="emailForm">
+				<input type="hidden" name="contest" value="dsp_emailUpdate"> 
+				<input type="hidden" name="targetPage" value="/include/email_thanks.html"> 
+				<input type="hidden" name="datetime" value="">
+				<input type="hidden" name="emailPref" value="Y">
+				<div class="emailOrange">Email Address</div>
+				<div style="float:right;">All fields required</div><br />
+				<div class="emailTextInputs"><input type="text" id="emailAddress" name="emailAddress" class="pagetext" style="width:247px;color:#656565;margin-top:2px;" /></div>
+				<div class="emailOrange">Confirm Email Address</div><br />
+				<div class="emailTextInputs"><input type="text" id="emailAddress2" name="emailAddress2" class="pagetext" style="width:247px;color:#656565;margin-top:2px;" /></div>
+			</div>
+			<div id="emailSubmit">
+               <input id="Submit" type="submit" value="" title="Submit" border="0" />
+				  <a href="javascript:showCustomPopUp('../helpdesk/popup.jsp?display=safety&subdisplay=privacy','safety_privacy','width=500,height=400,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes');">
+                    <span id="email_privacyPolicy"></span>
+                  </a>
+			</div><br clear="all" />
+		</form>
+		<script type="text/javascript">
+		//get date to pass with form
+		var formdate = new Date();
+		document.emailForm.datetime.value = formdate;
+		</script>
+	</div>
+</div>
+
+<map name="emailUpdate_header">
+	<area alt="" coords="265,3,278,17" href="javascript:toggleEmailUpdate();" />
+</map>
+
+<script>
+function toggleEmailUpdate()
+{
+	parent.document.getElementById("hdrEmail").style.visibility="hidden";
+}
+</script>
+
+</body>
+</html> 

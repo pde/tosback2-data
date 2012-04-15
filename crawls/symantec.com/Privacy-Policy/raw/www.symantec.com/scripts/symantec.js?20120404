@@ -1,0 +1,962 @@
+/* ****************************************************************************
+Header
+Date: 					2007.11.29
+Modified:				2009.07.21
+**************************************************************************** */
+function clearInputValue(inputBox)
+{
+	if (inputBox.defaultValue==inputBox.value)
+	{
+		inputBox.value = "";				
+	}
+}
+function writeInputValue(inputBox, inputDefault)
+{
+	if (inputBox.value=="")
+	{
+		inputBox.value = inputDefault;				
+	}
+}
+function searchFormAction(defaultvalue,inputBox)
+{	
+	searchStr=document.getElementsByName(inputBox)[0].value;
+	if((searchStr==defaultvalue) ||(searchStr="")){
+		return false;
+	}
+	return true;
+}
+function toggleGG(){
+	var countryName = document.getElementById("countryName");
+	var worldMap = document.getElementById("worldMap");
+	if (countryName.className == "ctryTxtOff")
+		countryName.className = "ctryTxtOn";	 
+	else
+		countryName.className = "ctryTxtOff";	 
+	if (worldMap.className == "ctryImgOff")
+		worldMap.className = "ctryImgOn";	 
+	else
+		worldMap.className = "ctryImgOff";	 
+}
+function hideCSDropDown(dropDownLink, dropDownLinkClass, dropDownPane, dropDownOverlay){	
+	document.getElementById(dropDownLink).className	= dropDownLinkClass;
+	document.getElementById(dropDownPane).style.visibility = 'hidden';
+	document.getElementById("pipeLeft").style.visibility = 'visible';
+	document.getElementById("pipeRight").style.visibility = 'visible';
+	document.getElementById('localizationPaneShop2').style.visibility = 'hidden';
+	document.getElementById('localizationPaneShop2').style.display= 'none';
+}
+function showCSDropDown(dropDownLink, dropDownLinkClass, dropDownPane, dropDownOverlay, showPipeLeft, showPipeRight){			
+	document.getElementById(dropDownLink).className	= dropDownLinkClass+"ON";
+	document.getElementById(dropDownPane).style.top =  '33px';
+	document.getElementById(dropDownPane).style.visibility = 'visible';
+	
+	document.getElementById('localizationPaneShop2').style.left  = 		
+		document.getElementById("localizationShopLink").offsetWidth
+		-1+"px";
+	document.getElementById('localizationPaneShop2').style.width = 		
+		document.getElementById("localizationPaneShop").offsetWidth
+		- document.getElementById("localizationShopLink").offsetWidth
+		+"px";
+	if (dropDownLink == 'localizationShopLink'){
+		document.getElementById('localizationPaneShop2').style.visibility = 'visible';
+		document.getElementById('localizationPaneShop2').style.display= 'block';
+	}
+	if (showPipeLeft){
+		document.getElementById("pipeLeft").style.visibility = 'visible';
+	}
+	else{
+		document.getElementById("pipeLeft").style.visibility = 'hidden';
+	}
+	if (showPipeRight){
+		document.getElementById("pipeRight").style.visibility = 'visible';
+	}
+	else{
+		document.getElementById("pipeRight").style.visibility = 'hidden';
+	}
+}
+function hideSNDropDown(dropDownLink, dropDownFly, pipeClass){	
+
+	
+	document.getElementById(dropDownLink).className	= pipeClass;
+	if (document.getElementById(dropDownFly)!=null){
+		document.getElementById(dropDownFly).style.visibility = 'hidden';
+	}
+	if (segNavSelected != null && dropDownLink == segNavSelected){
+		document.getElementById(dropDownLink).className	= pipeClass +'  symcSegNavMainTabOn';
+		
+	}
+}	
+function showSNDropDown(dropDownLink, dropDownFly, pipeClass){
+
+
+	document.getElementById(dropDownLink).className	= pipeClass + '  symcSegNavMainTabOver';
+	if (document.getElementById(dropDownFly)!=null){
+		document.getElementById(dropDownFly).style.visibility = 'visible';
+			
+	}
+}
+function dropDownfocus(dropDownLink, dropDownFly,pipeClass){
+	document.getElementById(dropDownLink).className	= pipeClass + '  symcSegNavMainTabOver';
+	showSNDropDown(dropDownLink, dropDownFly,pipeClass);
+	this.onblur = function () { 
+	
+	document.getElementById(dropDownFly).focus(); 
+	
+	}
+	if((menu = document.getElementById(dropDownFly)))
+		if((menu_item = menu.getElementsByTagName('a')))
+			menu_item[menu_item.length-1].onblur= function () 
+		{
+document.getElementById(dropDownLink).className	= pipeClass + '  symcSegNavMainTabOver';
+		hideSNDropDown(dropDownLink, dropDownFly); };
+}
+
+
+
+function highlightNav(currentUrl, navTabs, onClass, type){
+
+
+	if (PageElements['segment'] != 'global'){
+
+		
+		var tabId = "";		
+		var tabIdInner = "";		
+		var navTab = "";		
+	for (i = 0; i < navTabs.length; i++){	
+		if (currentUrl.indexOf(navTabs[i].path) > -1){	
+			tabId = navTabs[i].id;
+			tabIdInner = navTabs[i].idInner;			
+			break;				
+		}
+	}		
+	navTab = document.getElementById(tabId);
+	navTab.className = onClass;	  
+	if (type == "symcGlobalNav"){
+			navTabInner = document.getElementById(tabIdInner);				
+			navTabInner.className = "symcGlobalSegNavOn";	  
+	}	
+	return tabId;
+}		
+}		
+// ------------------------------------------------------------------------------------------------------------------
+//Right Nav, Rounded Corners
+function Rounded(selector,wich,bk,color,opt){
+var i,prefixt,prefixb,cn="r",ecolor="",edges=false,eclass="",b=false,t=false;
+if(color=="transparent"){
+    cn=cn+"x";
+    ecolor=bk;
+    bk="transparent";
+    }
+else if(opt && opt.indexOf("border")>=0){
+    var optar=opt.split(" ");
+    for(i=0;i<optar.length;i++)
+        if(optar[i].indexOf("#")>=0) ecolor=optar[i];
+    if(ecolor=="") ecolor="#666";
+    cn+="e";
+    edges=true;
+    }
+else if(opt && opt.indexOf("smooth")>=0){
+    cn+="a";
+    ecolor=Mix(bk,color);
+    }
+if(opt && opt.indexOf("small")>=0) cn+="s";
+prefixt=cn;
+prefixb=cn;
+if(wich.indexOf("all")>=0){t=true;b=true}
+else if(wich.indexOf("top")>=0) t="true";
+else if(wich.indexOf("tl")>=0){
+    t="true";
+    if(wich.indexOf("tr")<0) prefixt+="l";
+    }
+else if(wich.indexOf("tr")>=0){
+    t="true";
+    prefixt+="r";
+    }
+if(wich.indexOf("bottom")>=0) b=true;
+else if(wich.indexOf("bl")>=0){
+    b="true";
+    if(wich.indexOf("br")<0) prefixb+="l";
+    }
+else if(wich.indexOf("br")>=0){
+    b="true";
+    prefixb+="r";
+    }
+var v=getElementsBySelector(selector);
+var l=v.length;
+for(i=0;i<l;i++){
+    if(edges) AddBorder(v[i],ecolor);
+    if(t) AddTop(v[i],bk,color,ecolor,prefixt);
+    if(b) AddBottom(v[i],bk,color,ecolor,prefixb);
+    }
+}
+function AddBorder(el,bc){
+var i;
+if(!el.passed){
+    if(el.childNodes.length==1 && el.childNodes[0].nodeType==3){
+        var t=el.firstChild.nodeValue;
+        el.removeChild(el.lastChild);
+        var d=CreateEl("span");
+        d.style.display="block";
+        d.appendChild(document.createTextNode(t));
+        el.appendChild(d);
+        }
+    for(i=0;i<el.childNodes.length;i++){
+        if(el.childNodes[i].nodeType==1){
+            el.childNodes[i].style.borderLeft="0px solid "+bc;
+            el.childNodes[i].style.borderRight="1px solid "+bc;
+            }
+        }
+    }
+el.passed=true;
+}
+    
+function AddTop(el,bk,color,bc,cn){
+var i,lim=4,d=CreateEl("b");
+if(cn.indexOf("s")>=0) lim=2;
+if(bc) d.className="artop";
+else d.className="rtop";
+d.style.backgroundColor=bk;
+for(i=1;i<=lim;i++){
+    var x=CreateEl("b");
+    x.className=cn + i;
+    x.style.backgroundColor=color;
+    if(bc) x.style.borderColor=bc;
+    d.appendChild(x);
+    }
+el.style.paddingTop=0;
+el.insertBefore(d,el.firstChild);
+}
+function AddBottom(el,bk,color,bc,cn){
+var i,lim=4,d=CreateEl("b");
+if(cn.indexOf("s")>=0) lim=2;
+if(bc) d.className="artop";
+else d.className="rtop";
+d.style.backgroundColor=bk;
+for(i=lim;i>0;i--){
+    var x=CreateEl("b");
+    x.className=cn + i;
+    x.style.backgroundColor=color;
+    if(bc) x.style.borderColor=bc;
+    d.appendChild(x);
+    }
+el.style.paddingBottom=0;
+el.appendChild(d);
+}
+function CreateEl(x){
+return(document.createElement(x));
+}
+function getElementsBySelector(selector){
+var i,selid="",selclass="",tag=selector,f,s=[],objlist=[];
+if(selector.indexOf(" ")>0){  //descendant selector like "tag#id tag"
+    s=selector.split(" ");
+    var fs=s[0].split("#");
+    if(fs.length==1) return(objlist);
+    f=document.getElementById(fs[1]);
+    if(f) return(f.getElementsByTagName(s[1]));
+    return(objlist);
+    }
+if(selector.indexOf("#")>0){ //id selector like "tag#id"
+    s=selector.split("#");
+    tag=s[0];
+    selid=s[1];
+    }
+if(selid!=""){
+    f=document.getElementById(selid);
+    if(f) objlist.push(f);
+    return(objlist);
+    }
+if(selector.indexOf(".")>0){  //class selector like "tag.class"
+    s=selector.split(".");
+    tag=s[0];
+    selclass=s[1];
+    }
+var v=document.getElementsByTagName(tag);  // tag selector like "tag"
+if(selclass=="")
+    return(v);
+for(i=0;i<v.length;i++){
+    if(v[i].className.indexOf(selclass)>=0){
+        objlist.push(v[i]);
+        }
+    }
+return(objlist);
+}
+function Mix(c1,c2){
+var i,step1,step2,x,y,r=new Array(3);
+if(c1.length==4)step1=1;
+else step1=2;
+if(c2.length==4) step2=1;
+else step2=2;
+for(i=0;i<3;i++){
+    x=parseInt(c1.substr(1+step1*i,step1),16);
+    if(step1==1) x=16*x+x;
+    y=parseInt(c2.substr(1+step2*i,step2),16);
+    if(step2==1) y=16*y+y;
+    r[i]=Math.floor((x*50+y*50)/100);
+    }
+return("#"+r[0].toString(16)+r[1].toString(16)+r[2].toString(16));
+} 
+// ------------------------------------------------------------------------------------------------------------------
+// Product Pages Buy Box
+function go(form) {
+	location = document.form.site.options[document.form.site.selectedIndex].value;                  
+	}
+// ------------------------------------------------------------------------------------------------------------------
+// Popup Window for PartnerNet
+// this is the old script
+function P(url,h,w) {
+	var p = "height=" + h + ",width=" + w + ",scrollbars=yes";
+	window.open(url,"",p);
+	}
+// this is the newer, more expanded script
+function P2(url,h,w,scr) {
+	window.open(url,"", "height=" + h + ",width=" + w + "," + scr);
+	}
+// ------------------------------------------------------------------------------------------------------------------
+// NPC Hover popup
+function getObj(name){
+ if (document.getElementById){
+	   this.obj = document.getElementById(name);
+	   this.style = document.getElementById(name).style;
+ }
+ else if (document.all){
+	   this.obj = document.all[name];
+	   this.style = document.all[name].style;
+ }
+ else if (document.layers) {
+	   if (document.layers[name]){
+	   	this.obj = document.layers[name];
+	   	this.style = document.layers[name];
+	   }
+	   else{
+	    this.obj = document.layers.testP.layers[name];
+	    this.style = document.layers.testP.layers[name];
+	   }
+	}
+}
+function findPosX(obj){
+	var curleft = 0;
+	if (obj.offsetParent){
+		while (obj.offsetParent){
+			curleft += obj.offsetLeft
+			obj = obj.offsetParent;
+		}
+	}
+	else if (obj.x)
+		curleft += obj.x;
+	return curleft;
+}
+function findPosY(obj){
+	var curtop = 0;
+	if (obj.offsetParent){
+		while (obj.offsetParent){
+			curtop += obj.offsetTop
+			obj = obj.offsetParent;
+		}
+	}
+	else if (obj.y)
+		curtop += obj.y;
+	return curtop;
+}
+function show_popup(obj, lyr){
+	var newX = findPosX(obj);
+	var newY = findPosY(obj);
+	var x = new getObj(lyr);
+	x.style.top = newY + 20 + 'px';
+	x.style.left = newX + 'px';
+	document.getElementById(lyr).style.visibility = 'visible';
+	obj.onmouseout = function() {
+		clearTimeout();
+		document.getElementById(lyr).style.visibility = 'hidden';
+	}
+}
+///////////////////////////////////////////////////////////////////////////////
+// NPC_divshow 	- Show a mouse over in the NPC pages
+// Author: 		Kevin De Angelis
+// Date: 		2006.08.31
+// Receive: 	void
+// Return: 		void
+///////////////////////////////////////////////////////////////////////////////
+function NPC_divshow( itemlocation, showdiv, xOffset, yOffset ){
+	var xPosition = findPosX( itemlocation );
+	var yPosition = findPosY( itemlocation );
+	showdiv.style.visibility 	= 'visible';
+	showdiv.style.left 			= xPosition + xOffset;
+	showdiv.style.top 			= yPosition + yOffset;
+}
+///////////////////////////////////////////////////////////////////////////////
+// NPC_divhide 	- Hide a mouse over in the NPC pages
+// Author: 		Kevin De Angelis
+// Date: 		2006.08.31
+// Receive: 	void
+// Return: 		void
+///////////////////////////////////////////////////////////////////////////////
+function NPC_divhide( showdiv ){
+	showdiv.style.visibility = 'hidden';
+}
+function setOpacity(obj, opacity) {
+  opacity = (opacity == 100)?99.999:opacity;  
+  // IE/Win
+  obj.style.filter = "alpha(opacity:"+opacity+")";  
+  // Safari<1.2, Konqueror
+  obj.style.KHTMLOpacity = opacity/100;  
+  // Older Mozilla and Firefox
+  obj.style.MozOpacity = opacity/100;  
+  // Safari 1.2, newer Firefox and Mozilla, CSS3
+  obj.style.opacity = opacity/100;
+}
+// The fadeIn function uses a Timeout to call itself every 100ms with an object Id and an opacity. The opacity is specified as a percentage and increased 10% at a time. The loop stops once the opacity reaches 100%:
+
+function fadeIn(objId,opacity){
+  if (document.getElementById){
+	obj = document.getElementById(objId);
+    if (opacity <= 100){
+      setOpacity(obj, opacity);
+      opacity += 25;
+      window.setTimeout("fadeIn('"+objId+"',"+opacity+")", 100);
+    }
+  }
+}
+///////////////////////////////////////////////////////////////////////////////
+// GetLocation 	- Get the Language/Country from the page
+// Return: 		array ("lg","ct")
+///////////////////////////////////////////////////////////////////////////////
+function GetLocation(  ){
+	var thisPath 		= location.pathname;
+	var thisURLArray	= thisPath.split( "/" );
+	var LangArray		= new Array();
+	if( ( thisURLArray[1].length == 2 ) && ( thisURLArray[2].length == 2 ) ){
+		// 2006.09.18 KJD: Cut out the language path
+		thisPath = location.pathname.substring( 6, location.pathname.length );
+		LangArray['lg'] = thisURLArray[1];
+		LangArray['ct'] = thisURLArray[2];
+	}
+	else{
+		LangArray['lg'] = "en";
+		LangArray['ct'] = "us";
+	}
+	return LangArray;
+}
+////////////////////////////// ITM BELOW ////////////////////////////////
+// get browser version
+// NN4 layers, IE4+ all, IE5+ NN6+ getElementById
+// bCode_itm = 0, no browser support
+// bCode_itm = 1, isIE5 = false, supports all
+// bCode_itm = 2, isIE5 = true, supports getElementById
+// bCode_itm = 2, isNN6 = true, supports getElementById
+// bCode_itm = 3, isNN4 = true, supports layers 
+var bCode_itm = 0;
+var isIE_itm = false;
+var isIE5_itm = false;
+var isNN4 = false;
+var isNN6_itm = false;
+var isOpera_itm	= (navigator.userAgent.toLowerCase().indexOf('opera') != -1);
+var isFirefox_itm	= (navigator.userAgent.toLowerCase().indexOf('firefox') != -1);
+// get browser version function
+function getBrowserVersion_itm()
+{
+	if(document.all){
+		isIE_itm = true; bCode_itm = 1;
+	}	
+	if(document.getElementById){
+		if(isIE_itm){
+			isIE5_itm = true; bCode_itm = 2;
+		}
+		else{
+			isNN6_itm = true; bCode_itm = 2;
+		}
+	}	
+	if(document.layers){
+		isNN4_itm = true; 
+		bCode_itm = 3;
+	}
+}
+// get browser version
+getBrowserVersion_itm();
+// get element function
+function getElement_itm(elementName){
+	if(bCode_itm==1){
+		return document.all[elementName];
+	}
+	else if(bCode_itm==2){
+		return document.getElementById(elementName);
+	}
+	else {
+		return null;
+	}
+}
+// get position of x and y when mouse is clicked
+// Register DOM style events
+if (document.addEventListener)
+	document.addEventListener("mouseover", handleHover_itm, true);
+// Register IE style events
+if (document.attachEvent)
+	document.attachEvent("onmouseover",handleHover_itm);
+var eventX_itm = 0;
+var eventY_itm = 0;
+function handleHover_itm(e){
+	if (!e)
+	var e = window.event;
+	eventX_itm = e.clientX;
+	eventY_itm = e.clientY;
+}
+// set x-coordinate of layer function
+function setX_itm(elementName){
+	 var theElement = getElement_itm(elementName);
+	if(isOpera_itm){
+			theElement.style.pixelLeft = eventX_itm-779;
+	 }
+	 else{
+			theElement.style.left = eventX_itm-779+"px";
+	 }
+}
+// set y-coordinate of layer function
+function setY_itm(elementName){
+	 var theElement = getElement_itm(elementName);
+	 if(isOpera_itm){
+			theElement.style.pixelTop = 20;
+	 }
+	 else{
+			theElement.style.top = 20+"px";
+	 }
+}
+function resetX_itm(elementName){
+	 var theElement = getElement_itm(elementName);	 
+	 if (theElement) {
+	 	setVisibility_itm(theElement, "hidden")	 
+		if(isOpera_itm){
+			theElement.style.pixelLeft = eventX_itm-2000;
+	 	}
+	 	else{
+			theElement.style.left = eventX_itm-2000+"px";
+	 	}
+	}
+}
+// set y-coordinate of layer function
+function resetY_itm(elementName){
+	 var theElement = getElement_itm(elementName);	 
+	 if (theElement) {
+	 	setVisibility_itm(theElement, "hidden")	 
+	 	if(isOpera_itm){
+			theElement.style.pixelTop = 20;
+		 }
+	 	else{
+			theElement.style.top = 20+"px";
+	 	}
+	}
+}
+var newCount_itm = 0;
+var visibilityTimeoutId_itm = null;
+var opacityTimeoutId1_itm = null;
+var opacityTimeoutId2_itm = null;
+var opacityTimeoutId3_itm = null;
+var opacityTimeoutId4_itm = null;
+var opacityTimeoutId5_itm = null;
+var opacityTimeoutId6_itm = null;
+var opacityTimeoutId7_itm = null;
+var opacityTimeoutId8_itm = null;
+var opacityTimeoutId9_itm = null;
+var newOpacityLevel_itm = 0;
+function showSmallITMBackground_Popupbox(id1, src, id2){
+	clearTimeouts_itm();	
+	resetOpacity_itm();
+	var element1= getElement_itm("itm_small_" + id1);
+	var element2= getElement_itm("itm_small_" + id2);
+	if(element1 && element2){
+		element1.style.backgroundImage = src;
+		setX_itm("itm_small_" + id2);
+		setY_itm("itm_small_" + id2);		
+		// alert("x is " + eventX_itm + " y is " + eventY_itm);	
+		setOpacity_itm(element2, 0);		
+		visibilityTimeoutId_itm = setTimeout(function() { setVisibility_itm(element2,"visible");	}, 0);
+		opacityTimeoutId1_itm = setTimeout(function() { setOpacity_itm(element2, .15); }, 200);
+		opacityTimeoutId2_itm = setTimeout(function() { setOpacity_itm(element2, .25); }, 250);
+		opacityTimeoutId3_itm = setTimeout(function() { setOpacity_itm(element2, .35); }, 300);
+		opacityTimeoutId4_itm = setTimeout(function() { setOpacity_itm(element2, .45); }, 350);
+		opacityTimeoutId5_itm = setTimeout(function() { setOpacity_itm(element2, .55); }, 400);
+		opacityTimeoutId6_itm = setTimeout(function() { setOpacity_itm(element2, .65); }, 450);
+		opacityTimeoutId7_itm = setTimeout(function() { setOpacity_itm(element2, .75); }, 500);
+		opacityTimeoutId8_itm = setTimeout(function() { setOpacity_itm(element2, .85); }, 550);
+		opacityTimeoutId9_itm = setTimeout(function() { setOpacity_itm(element2, .99); }, 600);	
+	}
+}
+function setVisibility_itm(element2, visibility) {
+		element2.style.visibility = "visible";	
+}
+function setOpacity_itm(element2, newCount_itm) {
+	newOpacityLevel_itm = newCount_itm;
+	if(document.all){
+		element2.style.filter = "alpha(opacity=" + 100*newCount_itm + ")";			
+	}
+	else if(document.getElementById){
+    	element2.style.opacity = newCount_itm;
+	}
+}
+function resetOpacity_itm(){
+	setOpacity_itm(getElement_itm("itm_small_popupbox1"), .0);
+	setOpacity_itm(getElement_itm("itm_small_popupbox2"), .0);
+	setOpacity_itm(getElement_itm("itm_small_popupbox3"), .0);
+	setOpacity_itm(getElement_itm("itm_small_popupbox4"), .0);	
+}
+function clearTimeouts_itm(){
+	if(visibilityTimeoutId_itm)
+		clearTimeout(visibilityTimeoutId_itm);	
+	if(opacityTimeoutId1_itm)
+		clearTimeout(opacityTimeoutId1_itm);	
+	if(opacityTimeoutId2_itm)	
+		clearTimeout(opacityTimeoutId2_itm);	
+	if(opacityTimeoutId3_itm)	
+		clearTimeout(opacityTimeoutId3_itm);	
+	if(opacityTimeoutId4_itm)	
+		clearTimeout(opacityTimeoutId4_itm);	
+	if(opacityTimeoutId5_itm)	
+		clearTimeout(opacityTimeoutId5_itm);	
+	if(opacityTimeoutId6_itm)	
+		clearTimeout(opacityTimeoutId6_itm);	
+	if(opacityTimeoutId7_itm)	
+		clearTimeout(opacityTimeoutId7_itm);	
+	if(opacityTimeoutId8_itm)	
+		clearTimeout(opacityTimeoutId8_itm);	
+	if(opacityTimeoutId9_itm)	
+		clearTimeout(opacityTimeoutId9_itm);
+}
+function pausecomp_itm(millis){
+date = new Date();
+var curDate = null;
+do { var curDate = new Date(); }
+while(curDate-date < millis);
+} 
+function hideSmallITMBackground_Popupbox(id1, src, id2){
+	clearTimeouts_itm();			
+	var element1= getElement_itm("itm_small_" + id1);
+	var element2= getElement_itm("itm_small_" + id2);	
+	if(element1 && element2){	
+		resetX_itm("itm_small_popupbox1");
+		resetY_itm("itm_small_popupbox1");
+		resetX_itm("itm_small_popupbox2");
+		resetY_itm("itm_small_popupbox2");
+		resetX_itm("itm_small_popupbox3");
+		resetY_itm("itm_small_popupbox3");
+		resetX_itm("itm_small_popupbox4");
+		resetY_itm("itm_small_popupbox4");	
+		element1.style.backgroundImage = src;
+		fadeOutPopupbox_itm(element2);	 
+	}
+}
+function fadeOutPopupbox_itm(element2) {		
+		// reset and hide box code
+		setOpacity_itm(element2, .0);
+		setVisibility_itm(element2,"hidden");	
+}
+///////////////////////////////////////////////////////////////////////////////
+// Leftnav
+// Date: 	 2007-07-21
+///////////////////////////////////////////////////////////////////////////////
+var submenuoffset=0; 
+// pid = main parent's id
+// mid = id for the DIV containing main menu item
+// prefix = prefix for all DIV that contain main menu item
+// posfix = postfix to the mid that gives id of the popup-menu DIV.
+function showchild(pid, mid, prefix, postfix){
+	var cid = mid + postfix;
+	var p = document.getElementById(pid);
+	var arrdiv = document.getElementsByTagName('div');
+	for (i = 0; i < arrdiv.length; i++)	
+	{
+		var d = arrdiv[i];
+		if (d.id.indexOf(prefix) == 0 && d.id != cid && d.id.indexOf(postfix) != -1)
+		{
+			hidemenu(d.id);
+		}
+	}
+	showmenu(cid);
+}
+function leftnav_highlight( thisObj ){
+	thisObj.className = "lftNavFlyMenu lftNavOnHover";
+}
+function leftnav_lowlight( thisObj ){
+	thisObj.className = "lftNavFlyMenu";
+}
+function leftnav_parent_highlight( thisObj ){
+	thisObj.className = "lftNavMainNav lftNavOnHover";
+}
+function leftnav_parent_lowlight( thisObj ){
+	thisObj.className = "lftNavMainNav";
+}
+function hidemenu(mid){
+	var menu = document.getElementById(mid);
+	menu.style.display="none";
+	menu.style.visibility="hidden"; 
+}
+function showmenu(mid) 
+{
+	cancelfade();
+	var menu = document.getElementById(mid);	
+	if (menu == null){
+		return;
+	}	
+	if(document.all){
+		menu.parentNode.style.position="relative"
+		menu.style.position = "absolute"
+		menu.style.top="0px";
+		menu.style.left = menu.parentNode.offsetWidth  - 13 + "px";
+	} else {
+		menu.parentNode.style.position="relative"
+		menu.style.position = "absolute" 
+		menu.style.left = menu.parentNode.offsetWidth + "px";
+		menu.style.top="0px";
+	}
+	setOpacity_leftnav(menu, .99);
+    menu.style.display = "block";
+	menu.style.visibility = "visible";
+}
+function setOpacity_leftnav(menu, newCount_leftnav){
+ 	var newOpacityLevel_leftnav = newCount_leftnav;
+ 	if(document.all){
+ 		menu.style.filter = "alpha(opacity=" + 100*newCount_leftnav + ")";
+ 	}
+	else if(document.getElementById){
+ 		menu.style.opacity = newCount_leftnav;
+ 	}
+}
+function findPos(obj){
+	var curleft = curtop = 0;
+	if (obj.offsetParent){
+		curleft = obj.offsetLeft
+		curtop = obj.offsetTop
+		while (obj = obj.offsetParent){
+			curleft += obj.offsetLeft
+			curtop += obj.offsetTop
+		}
+	}
+	return [curleft,curtop];
+}
+var leftnavOpacityTimeoutId1_leftnav = null;
+var leftnavOpacityTimeoutId2_leftnav = null;
+var leftnavOpacityTimeoutId3_leftnav = null;
+var leftnavOpacityTimeoutId4_leftnav = null;
+var leftnavOpacityTimeoutId5_leftnav = null;
+var leftnavOpacityTimeoutId6_leftnav = null;
+var leftnavOpacityTimeoutId7_leftnav = null;
+var leftnavOpacityTimeoutId8_leftnav = null;
+var leftnavOpacityTimeoutId9_leftnav = null;
+function fademenu(mid){	
+	var menu = document.getElementById(mid);
+	hidemenu(mid);	
+}
+function cancelfade(){
+	if(leftnavOpacityTimeoutId1_leftnav)
+		clearTimeout(leftnavOpacityTimeoutId1_leftnav);	
+	if(leftnavOpacityTimeoutId2_leftnav)
+		clearTimeout(leftnavOpacityTimeoutId2_leftnav);	
+	if(leftnavOpacityTimeoutId3_leftnav)
+		clearTimeout(leftnavOpacityTimeoutId3_leftnav);	
+	if(leftnavOpacityTimeoutId4_leftnav)
+		clearTimeout(leftnavOpacityTimeoutId4_leftnav);	
+	if(leftnavOpacityTimeoutId5_leftnav)
+		clearTimeout(leftnavOpacityTimeoutId5_leftnav);	
+	if(leftnavOpacityTimeoutId6_leftnav)
+		clearTimeout(leftnavOpacityTimeoutId6_leftnav);	
+	if(leftnavOpacityTimeoutId7_leftnav)
+		clearTimeout(leftnavOpacityTimeoutId7_leftnav);	
+	if(leftnavOpacityTimeoutId8_leftnav)
+		clearTimeout(leftnavOpacityTimeoutId8_leftnav);	
+	if(leftnavOpacityTimeoutId9_leftnav)
+		clearTimeout(leftnavOpacityTimeoutId9_leftnav);
+}
+///////////////////////////////////////////////////////////////////////////////
+// Footer
+// Date: 	 2007-07-30
+///////////////////////////////////////////////////////////////////////////////
+function showdiv(thisitem) {
+	var thisitem2= "mainitem"+thisitem;
+	var boxObj = document.getElementById(thisitem2);
+	var boxStyle = boxObj.style;
+	var textitem= "item"+thisitem;
+	var urlObj = document.getElementById(textitem);
+	var bottomitem = "bottomborder" + thisitem;
+	var bottomObj = document.getElementById(bottomitem);	
+	boxObj.parentNode.style.position = "relative";
+	boxStyle.bottom = "1em";	
+	document.getElementById("mr1_" + thisitem).style.marginLeft = (urlObj.offsetWidth) + "px";	
+	urlObj.style.background = "#FFF";
+	urlObj.style.borderLeft="1px solid #DDD"
+	urlObj.style.borderRight="1px solid #DDD";
+	urlObj.style.marginLeft = "0px";
+	urlObj.style.marginRight = "0px";	
+	// Keep this after modifying url obj margins and borders
+	bottomObj.style.width=(urlObj.offsetWidth) + "px";	
+	boxStyle.display = 'block';
+	boxStyle.visibility = 'visible';
+	bottomObj.style.display = 'block';
+	bottomObj.style.visibility = 'visible';
+}	
+function hidediv(thisitem) {
+	var thisitem2= "mainitem"+thisitem;
+	var boxObj = document.getElementById(thisitem2);
+	boxObj.style.visibility = 'hidden';
+	boxObj.style.display = 'none';	
+	var thisitem3= "item"+thisitem;
+	var urlObj = document.getElementById(thisitem3);
+  	urlObj.style.background = 'none';
+	urlObj.style.borderLeft="none"; 
+	urlObj.style.borderRight="none";
+	urlObj.style.marginLeft = "1px";
+	urlObj.style.marginRight = "1px";	
+	var bottomitem = "bottomborder" + thisitem;
+	var bottomObj = document.getElementById(bottomitem);
+	bottomObj.style.display = 'none';
+	bottomObj.style.visibility = 'hidden';
+}
+// 2007.09.07 KJD: Create the form to replace the document.location.href so that we can get the document.referrer
+document.write("<DIV ID='thisLocationFormDiv' STYLE='visibility:hidden;position:absolute'></DIV>");
+/* ****************************************************************************
+URLredirect				Send the user to a different URL
+Date: 					2007.09.07
+Receive: 				string
+Return: 				null
+**************************************************************************** */
+function URLredirect( thisURL ){
+	var thisNav = navigator.userAgent.toLowerCase();
+	if( thisNav.indexOf( "msie" ) > -1 ){
+		var LocationFormString = "<FORM METHOD='POST' NAME='LocationForm' ACTION=\"" + thisURL + "\" STYLE='position:absolute;visibility:hidden;display:inline;'></FORM>";
+
+		document.getElementById( 'thisLocationFormDiv' ).innerHTML = LocationFormString;
+		document.LocationForm.submit();
+	}
+	else{
+		location.href= thisURL;
+	}
+}
+/* ****************************************************************************
+base64			Base64 encode - norton flash
+Date: 			2007.07.21
+Receive: 		string
+Return: 		string
+**************************************************************************** */
+var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+function base64( input ){
+   var output = "";
+   var chr1, chr2, chr3;
+   var enc1, enc2, enc3, enc4;
+   var i = 0;
+   do {
+      chr1 = input.charCodeAt(i++);
+      chr2 = input.charCodeAt(i++);
+      chr3 = input.charCodeAt(i++);
+      enc1 = chr1 >> 2;
+      enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+      enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+      enc4 = chr3 & 63;
+      if (isNaN(chr2)) {
+         enc3 = enc4 = 64;
+      } else if (isNaN(chr3)) {
+         enc4 = 64;
+      }
+      output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2) + 
+         keyStr.charAt(enc3) + keyStr.charAt(enc4);
+   } while (i < input.length);   
+   return output;
+}
+/* ****************************************************************************
+URLParams				Put together the url parameters
+Date: 					2007.08.30
+Receive: 				null
+Return: 				t/f
+**************************************************************************** */
+function FlashDetected(){
+	var flashinstalled = false;	
+	if ((navigator.appName == "Microsoft Internet Explorer" &&
+	    navigator.appVersion.indexOf("Mac") == -1 &&   navigator.appVersion.indexOf("3.1") == -1) ||
+	    (navigator.plugins && navigator.plugins["Shockwave Flash"])
+	                       || navigator.plugins["Shockwave Flash 2.0"])
+	{
+	   flashinstalled = true;
+	}
+	else{
+	    flashinstalled = false;
+	}	
+	return flashinstalled;
+}
+/* ****************************************************************************
+Partners Locator (Business)
+Date: 					2008.04.10
+**************************************************************************** */
+function find_locator_partners(){
+    var loc = this.location.pathname
+    var search = this.location.search
+    loc = loc.replace(/\//g,'|')
+    loc = loc.replace(/\\/g,'|')
+    search = search.replace(/\?/g,'')   
+    search = search.replace(/\&/g,'||')   
+    search = search.replace(/=/g,'|')
+    window.open('http://partnerlocator.symantec.com/public/product_finder;loc='+loc+';search='+search+'/','partner_locator','width=990,height=640,resizable=yes,toolbar=yes,scrollbars=yes,location=yes,status=yes,menubar=yes')
+}
+/* ****************************************************************************
+Services Tab (Norton)
+Date: 					2008.07.16
+**************************************************************************** */
+function showServicePrice(divId, imgSrc){
+	document.getElementById("priceHover"+divId).style.visibility = 'visible';
+	document.getElementById("imageHover"+divId).getElementsByTagName("img")[0].src = imgSrc;
+}
+function hideServicePrice(divId, imgSrc){
+	document.getElementById("priceHover"+divId).style.visibility = 'hidden';
+	document.getElementById("imageHover"+divId).getElementsByTagName("img")[0].src = imgSrc;
+}
+function delayHideServicePrice(divId){
+	setTimeout("hideServicePrice('" + divId + "')",2000);
+}
+function showServiceLearn(id) {
+document.getElementById(id).style.visibility = 'visible';
+}
+function hideServiceLearn(id) {
+  document.getElementById(id).style.visibility = 'hidden';
+}
+/* ****************************************************************************
+Info (i) Box
+Date: 					2008.08.15
+**************************************************************************** */
+function showInfoBox(divId){
+	document.getElementById("infoBox"+divId).style.visibility = 'visible';
+}
+function hideInfoBox(divId){
+	document.getElementById("infoBox"+divId).style.visibility = 'hidden';
+}
+/* ****************************************************************************
+Select Product Fly Out
+Date: 					2008.12.02
+**************************************************************************** */
+function showSrFlyDwn(divId){
+	document.getElementById("srFlyDwnBdy"+divId).style.visibility = 'visible';
+	document.getElementById("srFlyDwnHdr"+divId).className="srFlyDwnWdgtTxt";
+}
+function hideSrFlyDwn(divId){
+	document.getElementById("srFlyDwnBdy"+divId).style.visibility = 'hidden';
+	document.getElementById("srFlyDwnHdr"+divId).className="srFlyDwnWdgtHdr";
+}
+/* ****************************************************************************
+Social Bookmark
+Date: 					2008.12.12
+**************************************************************************** */
+function showSBWdgt(divId){
+	document.getElementById(divId).style.visibility = 'visible';
+}
+function hideSBWdgt(divId){
+	document.getElementById(divId).style.visibility = 'hidden';
+}
+function openSBWdgtLinks(socialUrl){
+	var sbLink = socialUrl.replace("THE_PAGE_URL",window.location.href);			
+	sbLink = sbLink.replace("THE_PAGE_TITLE",document.title);			
+	window.open(encodeURI(sbLink));
+}	
+jQuery(document).ready(function($) {
+ $("ul.footerLinks li.seoTitle").click(function(){
+	 $(this).toggleClass('footerLinksOpen').siblings().removeClass('footerLinksOpen').end().children('ul').toggle().end().siblings().children('ul:visible').toggle();
+	 if ($(this).hasClass("footerLinksOpen")) {
+		 $(this).children("span").text("-").end().siblings().children("span").text("+");
+	 }
+	 else{
+		 $(this).children("span").text("+");
+	 }
+ });
+});

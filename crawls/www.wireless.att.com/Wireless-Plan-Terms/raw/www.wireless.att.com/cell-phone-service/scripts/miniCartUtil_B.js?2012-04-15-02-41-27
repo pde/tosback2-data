@@ -1,0 +1,1031 @@
+
+	function WPI_allservicescancel(){      
+ 		     document.getElementById("sku1040075").checked = false;
+             
+	}
+	function WPI_popularServicesCancel(){      
+ 		     document.getElementById("sku1040075_popular").checked = false;
+             
+	}
+		
+	function WPI_checkboxcancel(){                                 
+             document.getElementById("WPI_check").checked = false;                        
+      }
+      
+	function WPI_radiocancel(){      
+ 		     document.getElementById("WPI_service_check").checked = "false";
+             document.getElementById("WPInone_selected").checked = "true";
+	}
+
+	
+	
+
+function MiniCartLib() {
+	this.elemObj=null;
+	this.mLOSGId = null;
+	this.mLookupFields = null;
+	this.autoHide = true;
+	var bodyId = "bodyText";
+	var mSubsidizedUpgrade = "";
+	
+	this.initialize = function(p1) {
+		var element = getObj(p1);
+		if (element) {
+			this.state = 0;
+			this.elemObj = element;
+			this.bodyId = "miniCartBody";
+			useLoadingMessage("LOADING........");
+			DWREngine.setTextHtmlHandler(sessionTimeoutDisplay);
+			//PopupBox.initialize("miniCartCenter", "miniCart");
+		} 
+	}
+	this.hoverOver = function() {
+		var header = getObj("miniCartHeader");
+		header.className += "miniCartHover";
+	}
+	this.hoverOut = function() {
+		var header = getObj("miniCartHeader");
+		header.className = header.className.replace(/miniCartHover/g,"");
+	}
+	this.blink = function(iteration, state) {
+		if (iteration > 0) {
+			if(state == "hover") {
+				this.hoverOut();
+				window.setTimeout("MiniCart.blink(" + (iteration - 1) + ",'out');",200);
+			} else {
+				this.hoverOver();	
+				window.setTimeout("MiniCart.blink(" + iteration + ",'hover');",200);
+			}
+		}
+	}
+	this.click = function(event) { 
+		if (v_pageLoaded == true) {
+			v_pageLoaded == false;
+			if (this.state == 0) { 	
+				var header = getObj("miniCartHeader");
+					
+				this.swapImage(true);
+				finishMiniCartCenter();
+				this.showCenter("miniCartCenter");
+				stopBubble(event);
+				return false;
+			} else if (this.state == 1) {
+				var header = getObj("miniCartHeader");
+				
+				this.swapImage(false);
+				this.close();
+				stopBubble(event);
+				return false;
+			}
+			v_pageLoaded == true;
+		}
+	}
+	
+	this.chooseAdditionalLines = function(event) {
+			var header = getObj("miniCartHeader");
+				
+			this.swapImage(true);		
+			this.showCenter("miniCartDecision");
+			stopBubble(event);
+			return false;
+	}
+
+	this.showCenter = function(pData) {
+		commonFunc.overLayDiv(true);
+		HideSelectOption(true);
+		try {
+			dcsMultiTrackTop('DCS.dcsuri','/cell-phone-service/miniCart/miniCart.jsp','DCS.dcsref',document.URL,'DCSext.wtEvent','','DCSext.wtEventSuccessFlag','','WT.pn_sku','','DCS.wtUserResp','');
+		} catch (e) { /* do nothing */ }
+		if(this.state == 0)
+			PopupBox.startExpand("miniCartCenter", "miniCart");
+		//this.displayShim(top, left, body.offsetHeight, body.offsetWidth);
+		this.state = 1;
+		
+		startFocus();
+	}
+	this.stopAutoHide = function(event) {
+		this.autoHide = false;
+	}
+	this.close = function(pCancelAnimation) {
+		if(this.autoHide) {
+			if(this.elemObj) {
+				//Hide the current element
+				if(this.state == 1) {
+					PopupBox.startCollapse("miniCartCenter", "miniCart", pCancelAnimation);
+					if(typeof addedDeviceSkuAnchor != 'undefined' && addedDeviceSkuAnchor != '') {
+						//$('viewCartAccessLink').focus();
+					}	
+				}
+				//TLDropDownBox.hideElement("miniCartCenter");
+				//this.hideShim();
+				this.state = 0;
+				//Reload the element with the top left minicart
+				//Reposition the element as it should be.
+				
+				//TLDropDownBox.showElement(this.elemObj);
+											
+			}
+		} else {
+			this.autoHide = true;
+		}
+		HideSelectOption(false);
+		commonFunc.overLayDiv(false);		
+	}
+	this.addAnotherLine = function() {
+		var xmlhttp = getHTTPRequest();
+
+		//MiniCart.hide();
+		xmlhttp.open("GET","/cell-phone-service/miniCart/LOSGDisplay.jsp");
+		xmlhttp.onreadystatechange = function()
+		{
+			if (xmlhttp.readyState == 4) {
+				var element = getObj("miniCart");
+				if (element) element.innerHTML = xmlhttp.responseText;
+				MiniCart.isUpdated = false;
+			}
+		}
+		xmlhttp.send(null);
+	}
+	this.updateTop = function(pUrl) {
+		var xmlhttp = getHTTPRequest();
+
+		//MiniCart.hide();
+		xmlhttp.open("GET",pUrl);
+		xmlhttp.onreadystatechange = function()
+		{
+			if (xmlhttp.readyState == 4) {
+				var element = getObj("miniCart");
+				if (element) element.innerHTML = xmlhttp.responseText;
+				MiniCart.isUpdated = false;
+			}
+		}
+		xmlhttp.send(null);
+	}
+	
+	this.update = function(pData) {
+		var xmlhttp = getHTTPRequest();
+		var pResponse = pData.parseJSON();
+		var pUrl;
+		if(pResponse) {
+			if(pResponse.clearLOSGId) {
+				MiniCart.setLOSGId(null);
+			}
+			pUrl = pResponse.returnUrl;
+		} else {
+			pUrl = pData;
+		}
+		
+		if (pResponse.isRedirect) {
+			//MiniCart.hide();
+			window.location = pUrl;
+		} else {
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+					if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+						document.body.innerHTML = xmlhttp.responseText;
+					} else { 
+						MiniCart.setHtmlValue(xmlhttp.responseText);
+						MiniCart.updateHTML("miniCartCenter");
+						if (xmlhttp.responseText.indexOf("Are you sure you want to remove this from the cart?") != -1){
+							dcsMultiTrackTop('DCS.dcsuri','/cell-phone-service/miniCart/miniCartDecision.jsp','DCS.dcsref','http://' + document.domain + '/cell-phone-service/miniCart/miniCart.jsp');	
+						}
+					}
+					v_pageLoaded=true;
+				}
+			}
+			xmlhttp.send(null);
+		}
+	}
+	this.refresh = function(pUrl) {
+		var xmlhttp = getHTTPRequest();
+		//MiniCart.hide();
+		xmlhttp.open("GET",pUrl);
+		xmlhttp.onreadystatechange = function()
+		{
+			if (xmlhttp.readyState == 4) {
+				MiniCart.setHtmlValue(xmlhttp.responseText);
+				MiniCart.updateHTML("miniCartCenter");
+			}
+		}
+		xmlhttp.send(null);
+	}
+	this.updateHTML = function(elementName) {
+		var element = getObj(elementName);
+		if(element) {
+			element.innerHTML = this.htmlValue;
+			var scripts = element.getElementsByTagName("script");
+			for(var i = 0; i < scripts.length; i++) {
+				eval(scripts[i].innerHTML);
+			}
+			finishMiniCartCenter();
+			PopupBox.updateHtml(element, "miniCart");
+			MiniCart.showCenter(element);
+			MiniCart.isUpdated = true;
+		} else {
+			//If for whatever reason the element could not be found kick off a timer to try and update it later
+			//Should only happen if you click ADD TO CART when the page hasn't fully finished loading
+			window.setTimeout('MiniCart.updateHTML("' + elementName + '")', 200);
+		}
+	}
+	function useLoadingMessage(message) {
+
+	  DWREngine.setPreHook(function() {
+	  	obj = getObj("loadingDiv");		
+
+		//Calculate the position given the above calculation above the center of the screen.
+		var top = (documentHeight() / 2) - (obj.offsetHeight / 2);
+		var left = (documentWidth() / 2) - (obj.offsetWidth / 2);
+	
+		//Calculate if the top would be off the top of the screen then move it down till it is visible
+		top = (top + obj.offsetHeight > documentHeight()) ? top + (top + obj.offsetHeight - documentHeight()) : top;
+		top = (top >= 0) ? top : 0;
+		top += documentScrollY();
+		
+		left = left < 0 ? 0 : left;
+		obj.style.position = "absolute";
+		obj.style.top = top + "px";
+		obj.style.left = left + "px";
+	  	getObj('disabledZone').style.visibility = 'visible';
+	  });
+	
+	  DWREngine.setPostHook(function() {
+	    getObj('disabledZone').style.visibility = 'hidden';
+	  });
+	}
+	
+	this.setHtmlValue = function(pHtml) {
+		this.htmlValue = pHtml;
+	}
+	this.addItemToOrderWithQuantity = function(productId, catalogRefId, quantityFieldName)  {
+	    var quantityField = getObj(quantityFieldName);
+		if (quantityField) {
+			var quantity = quantityField.value;
+			this.addItemToOrder(productId,catalogRefId,quantity);
+		}
+	}
+	this.addRemoveMultipleItemsToOrder = function(prodArray,ciArray,successUrl, optLosgId,isVoicePlus)  {		
+
+		var params = this.processAddArguments(prodArray);
+		if(this.getItems()) {
+			if(this.getItems().length > 0) {
+				for(var i = 0; i < this.getItems().length; i++) {
+					params.push(this.getItems()[i].value);
+				}
+			}
+		}
+		
+		var tmpLosgId = (this.getLOSGId() || optLosgId);
+		DWRRequestManager.removeAndAddItemsToOrder(params,ciArray,tmpLosgId,successUrl,((isVoicePlus)?true:false),MiniCart.update);
+		this.setItems(null);
+	}
+	this.addItemToOrderByLookupField = function() {
+	
+		if(this.mLookupFields) {
+			if(this.mLookupFields.length > 0) {
+				for(var i = 0; i < this.mLookupFields.length; i++) {
+					var fieldArr = getObjArray(this.mLookupFields[i]);
+					for(var j = 0; j < fieldArr.length; j++) {
+						if(fieldArr[j].checked && fieldArr[j].value != "none") {
+							this.addItemByField(null, fieldArr[j].value, 1, fieldArr[j]);
+						}
+					}
+				}
+			}
+		}
+		this.addItemToOrder();
+	}
+	this.addItemToOrderByField = function(fieldName) {
+		var fieldArr = getObjArray(fieldName);
+		for(var j = 0; j < fieldArr.length; j++) {
+			if(fieldArr[j].checked && fieldArr[j].value != "none") {
+				this.addItemByField(null, fieldArr[j].value, 1, fieldArr[j]);
+			}
+		}
+		this.addItemToOrder();
+	}
+		
+	this.displayTermsConditionServices = function(formName,pProdId, pSkuId) {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartTermsConditionPopup.jsp?q_prodId="+pProdId+"&q_skuId="+pSkuId+"&fName="+formName+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+	
+	this.displayTermsConditionMPPServices = function(formName,pProdId, pSkuId, pMPPservice) {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartTermsConditionPopup.jsp?q_prodId="+pProdId+"&q_skuId="+pSkuId+"&fName="+formName+"&q_MPPservice="+pMPPservice+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+	
+	this.displayTermsConditionMPP = function(formName, pMPPservice) {
+		try {
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartTermsConditionPopup.jsp?fName="+formName+"&q_MPPservice="+pMPPservice+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+	
+	this.displayTermsCondition = function(formName) {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartTermsConditionPopup.jsp?fName="+formName+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+	
+	this.displayTermsConditionATTInsurance = function(formName, pSkuId) {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartTermsConditionPopup.jsp?fName="+formName+"&q_ATTmiSkuId="+pSkuId+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+	
+	this.displayTermsConditionSmartPhones = function(formName,pProdId, pSkuId) {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartSmartPhonesPopup.jsp?q_prodId="+pProdId+"&q_skuId="+pSkuId+"&fName="+formName+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+	
+	this.displayEmergingDevicesShipping = function(formName,pProdId, pSkuId, pEmergingDevice, piPad2Shipping) {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartEmergingDevicesShippingPopup.jsp?q_prodId="+pProdId+"&q_skuId="+pSkuId+"&q_emergingDevice="+pEmergingDevice+"&q_iPad2Shipping="+piPad2Shipping+"&fName="+formName+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+	
+	this.displayTabletInformation = function(tabletType, pProdId, pSkuId) {
+		try {
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartTabletsPopup.jsp?q_prodId="+pProdId+"&q_skuId="+pSkuId+"&tabletType="+tabletType+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+					if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+						document.body.innerHTML = xmlhttp.responseText;
+					} else {
+						MiniCart.setHtmlValue(xmlhttp.responseText);
+						MiniCart.updateHTML("miniCartCenter");
+					}
+				}
+				//alert (pUrl);
+			}
+			xmlhttp.send(null);
+		}
+		catch (e) {
+			// do nothing
+		}
+	}
+	
+	this.displayTermsConditionQMD = function(formName,pProdId, pSkuId) {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartQMDPopup.jsp?q_prodId="+pProdId+"&q_skuId="+pSkuId+"&fName="+formName+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+	
+	this.displaySimImeiInformation = function(formName,pProdId, pSkuId) {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartSimImeiPopup.jsp?q_prodId="+pProdId+"&q_skuId="+pSkuId+"&fName="+formName+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+					metaName='DCSext.buyflowtype'; 
+                    fetchMetaContent (metaName);
+                    try {
+                        dcsMultiTrackTop('DCS.dcsuri','/cell-phone-service/miniCart/miniCartSimImeiPopup.jsp','DCS.dcsref',document.URL,'DCSext.wtPN','Wireless SIM Only Find IMEI Pg','DCSext.buyflowtype',metaContent);
+                    } catch (e) {
+                    
+                    }
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+			}
+			xmlhttp.send(null); 
+		}
+		catch (e) {
+			// do nothing
+		}                
+	}
+	
+	this.displayHighlightedSIMFeatureMsg = function(formName,losgId,featureId,featureParentID) {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartSIMHighlightedFeaturePopup.jsp?fName="+formName+"&losgId="+losgId+"&featureComp="+featureId+"&featureCompParent="+featureParentID+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+	
+	this.displayMiniCart = function() {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartCenter.jsp"
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+	this.displayTermsConditionCart = function(formName,losgId,featureId,featureParentID) {
+		try {  
+			
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartTermsConditionPopup.jsp?fName="+formName+"&losgId="+losgId+"&featureComp="+featureId+"&featureCompParent="+featureParentID+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}	
+	
+	this.displayCosmeticBlemishTermsCondition = function(formName,pProdId, pSkuId) {
+		try {      
+			var xmlhttp = getHTTPRequest();
+			var pUrl = "/cell-phone-service/miniCart/miniCartCosmeticBlemishPopup.jsp?q_prodId="+pProdId+"&q_skuId="+pSkuId+"&fName="+formName+"";
+			xmlhttp.open("GET",pUrl);
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4) {
+				if (xmlhttp.responseText.indexOf("expiredSession") != -1) {
+					document.body.innerHTML = xmlhttp.responseText;
+				} else {
+					MiniCart.setHtmlValue(xmlhttp.responseText);
+					MiniCart.updateHTML("miniCartCenter");
+				}
+			}
+			//alert (pUrl);
+		}
+		xmlhttp.send(null); 
+	}
+	catch (e) {
+	// do nothing
+		}                 
+	}
+
+
+	this.addItemToOrder = function()  {
+		 if (v_pageLoaded){
+			v_pageLoaded = false; //prevent double clicking. Set back to true in MiniCart.update function
+			if (arguments.length > 0) {
+				if (arguments[2] >= 1 && arguments[2] < 6) {
+					metaName='DCSext.buyflowtype'; 
+					fetchMetaContent (metaName);
+					var skuAddQty = arguments[1] + "~" + arguments[2];
+					try {
+					dcsMultiTrackTop('DCS.dcsuri','/cell-phone-service/miniCart/miniCart.jsp','DCS.dcsref',document.URL,'DCSext.wtEvent','submitAddCart','DCSext.wtEventSuccessFlag','1','WT.pn_sku',arguments[1],'WT.tx_u',arguments[2], 'DCSext.buyflowtype',metaContent,'DCSext.wtAddSkuQty',skuAddQty);	
+					} catch (e) { /* do nothing */ }				
+				} else {
+					metaName='DCSext.buyflowtype'; 
+					fetchMetaContent (metaName);
+					try {
+					dcsMultiTrackTop('DCS.dcsuri','/cell-phone-service/miniCart/miniCart.jsp','DCS.dcsref',document.URL,'DCSext.wtEvent','submitAddCart','DCSext.wtEventSuccessFlag','1','WT.pn_sku',arguments[1],'DCSext.buyflowtype',metaContent);
+					} catch (e) { /* do nothing */ }	
+				}
+			}
+			var params = this.processAddArguments(arguments);
+			if(this.getItems()) {
+				if(this.getItems().length > 0) {
+					for(var i = 0; i < this.getItems().length; i++) {
+						params.push(this.getItems()[i].value);
+					}
+				}
+			}
+			DWRRequestManager.addItemsToOrder(params, this.getLOSGId(), MiniCart.update);
+			this.setItems(null);
+		}
+	}
+	this.removeItemFromOrder = function(ci)  {
+		metaName='DCSext.buyflowtype'; fetchMetaContent (metaName); 
+		dcsMultiTrackTop('DCS.dcsuri','/cell-phone-service/miniCart/miniCartDecision.jsp','DCS.dcsref','http://' + document.domain + '/cell-phone-service/miniCart/miniCart.jsp','DCSext.wtEvent','submitRemoveCartReq','DCSext.wtEventSuccessFlag','1','WT.pn_sku',ci,'DCSext.buyflowtype',metaContent);						
+		DWRRequestManager.removeItemsFromOrder(ci, MiniCart.update);
+		this.setItems(null);
+	}	
+	this.addConfigurableItemToOrderWithQuantity = function(productId, catalogRefId, quantityFieldName)  {
+		var quantityField = getObj(quantityFieldName);
+		if (quantityField) {
+			var quantity = quantityField.value;
+			this.addConfigurableItemToOrder(productId,catalogRefId, quantity);
+		}
+	}
+	this.addConfigurableItemToOrder = function()  {
+		if (arguments.length > 0) {
+metaName='DCSext.buyflowtype'; 
+fetchMetaContent (metaName);
+
+			dcsMultiTrackTop('DCS.dcsuri','/cell-phone-service/miniCart/miniCart.jsp','DCS.dcsref',document.URL,'DCSext.wtEvent','submitAddCart','DCSext.wtEventSuccessFlag','1','WT.pn_sku',arguments[1],'DCSext.buyflowtype',metaContent);	
+		}
+		var params = this.processAddArguments(arguments);
+		if(this.getItems()) {
+			if(this.getItems().length > 0) {
+				for(var i = 0; i < this.getItems().length; i++) {
+					params.push(this.getItems()[i].value);
+				}
+			}
+		}
+		if(this.mLookupFields) {
+			if(this.mLookupFields.length > 0) {
+				for(var i = 0; i < this.mLookupFields.length; i++) {
+					var fieldArr = getObjArray(this.mLookupFields[i]);
+					for(var j = 0; j < fieldArr.length; j++) {
+						if(fieldArr[j].checked) {
+							var item = { productId:'', catalogRefId:fieldArr[j].value, quantity:1 };
+							params.push(item);
+						}
+					}
+				}
+			}
+		}
+		var subCatalogRefIds = new Array();
+		if(this.getSubCatalogRefIds()) {
+			if(this.getSubCatalogRefIds().length > 0) {
+				for(var i = 0; i < this.getSubCatalogRefIds().length; i++) {
+					subCatalogRefIds.push(this.getSubCatalogRefIds()[i].value);
+				}
+			}
+		}
+		var arrCount = getObjArray("alfCount");
+		var alfCount = new String();
+		if (arrCount) {
+			for(var c = 0; c < arrCount.length; c++) {
+				alfCount = arrCount[c].value;
+			}
+		}		
+		DWRRequestManager.addConfigurableItemsToOrder(params, subCatalogRefIds, this.getLOSGId(), alfCount, MiniCart.update);
+		this.setItems(null);
+	}
+	this.processAddArguments = function(argArray) {
+		if(argArray.length%3 != 0) {
+			return null;
+		}
+		var params = new Array();
+		var productIdValue, catalogRefIdValue, quantityValue = 0;
+		
+		for(var i = 0; i < argArray.length; i+=3) {
+			productIdValue = argArray[i];
+			catalogRefIdValue = argArray[i+1];
+			quantityValue = argArray[i+2];
+			if(isNaN(parseInt(quantityValue))) {
+				//Must be a field name try and retrieve the field value
+				var quantityField = getObj(quantityValue);
+				if(quantityField) {
+					quantityValue = quantityField.value;
+				} else {
+					quantityValue = 0;
+				}
+			}
+			
+			var item = { productId:productIdValue, catalogRefId:catalogRefIdValue, quantity:quantityValue, upgradeType:this.getSubsidizedUpgrade() };
+			params.push(item);
+		}
+		return params;
+	}
+	
+	this.processRedirection= function(url,queryString,defaultValue) {
+		//var fields = getObjArray(fieldName);
+		//alert(fields);
+		//if (fields) {
+		//for(var i = 0; i < fields.length; i++) {
+			//alert(fields[i].checked);
+			//alert(fields[i].value);
+		//}
+			
+		//}
+		
+		var rad_val = defaultValue;
+		
+		for (var i=0; i < document.mLUAdd.selectedResult.length; i++)
+		   {
+		   if (document.mLUAdd.selectedResult[i].checked)
+			  {
+			  var rad_val = document.mLUAdd.selectedResult[i].value;
+			  }
+		   }
+		document.location.href = url + '?LOSGId=' + rad_val + '&' + queryString;
+	}
+	
+	this.processDecision = function(fieldName, returnUrl) {
+		var fields = getObjArray(fieldName);
+		if (fields) {
+			var optionIds = new Array();
+			for(var i = 0; i < fields.length; i++) {
+				if (fields[i].type == "hidden") {
+					optionIds.push(fields[i].value);
+				} else if(fields[i].checked) {
+					optionIds.push(fields[i].value);
+				} else if (fields[i].name == "alfCount") {
+					alfCount = fields[i].value;
+				}
+			}
+			
+			var arrCount = getObjArray("alfCount");
+			var alfCount = new String();
+			if (arrCount) {
+				for(var c = 0; c < arrCount.length; c++) {
+					alfCount = arrCount[c].value;
+				}
+			}
+			
+			if(optionIds.length > 0) {
+				MiniCart.close(true);
+				DWRRequestManager.processDecision(optionIds, alfCount, returnUrl, MiniCart.update);
+			} else {
+				alert("Please select a valid option in order to continue.");
+			}
+		} 
+	}
+	this.cancelAddItemToOrder = function() {
+		MiniCart.close(true);
+		DWRRequestManager.cancelAddItemToOrder(MiniCart.update);
+	}
+	this.cancelAddItemToOrderRedirect = function(newUrl) {
+		MiniCart.close(true);
+		DWRRequestManager.cancelAddItemToOrderRedirect(newUrl, MiniCart.update);
+	}
+	this.addItemByField = function(pProductIdValue, pCatalogRefIdValue, pQuantity, pElement)  {
+		if(pElement.type == "radio") {
+			if(this.getItems()) {
+				for(var i = 0; i < this.getItems().length; i++) {
+					if(this.getItems()[i].key  == pElement.name) {
+						this.getItems().splice(i,1);
+					}
+				}
+			}
+		} else {
+			if(!pElement.checked) {
+				if(this.getItems()) {
+					for(var i = 0; i <this. getItems().length; i++) {
+						if(this.getItems()[i].value.catalogRefId  == pCatalogRefIdValue) {
+							this.getItems().splice(i,1);
+						}
+					}
+				}
+			}
+		}
+		if(pElement.checked) {
+			if(isNaN(parseInt(pQuantity))) {
+				//Must be a field name try and retrieve the field value
+				var quantityField = getObj(pQuantity);
+				if(quantityField) {
+					pQuantity = quantityField.value;
+				} else {
+					pQuantity = 0;
+				}
+			}
+			var item =  { productId:pProductIdValue, catalogRefId:pCatalogRefIdValue, quantity:pQuantity };
+			var itemToken = { key:pElement.name, value:item };
+			
+			this.getItems().push(itemToken);
+		}
+	}
+	/**
+	*	This method will associate a field lookup with the minicart. 
+	*	During an AddToOrder call this array will be used to lookup any values.
+	*
+	*	@param 
+	*/
+	this.addLookupField = function(pFieldName) {
+		if(!this.mLookupFields) {
+			this.mLookupFields = new Array();
+		}
+		this.mLookupFields.push(pFieldName);
+	}
+	this.addConfigurableOption = function(pSubCatalogRefId, pElement) {
+		if(typeof(pElement) != "object") {
+			pElement = getObj(pElement);
+		}
+		if(!pElement) return;
+		
+		if(pElement.type == "radio") {
+			if(this.getSubCatalogRefIds()) {
+				for(var i = 0; i < this.getSubCatalogRefIds().length; i++) {
+					if(this.getSubCatalogRefIds()[i].key  == pElement.name) {
+						this.getSubCatalogRefIds().splice(i,1);
+					}
+				}
+			}
+		} else if(pElement.type == "checkbox") {
+			if(!pElement.checked) {
+				if(this.getSubCatalogRefIds()) {
+					for(var i = 0; i < this.getSubCatalogRefIds().length; i++) {
+						if(this.getSubCatalogRefIds()[i].value  == pSubCatalogRefId) {
+							this.getItems().splice(i,1);
+						}
+					}
+				}
+			}
+		}
+		
+		if(pElement.checked || pElement.type == "hidden") {
+			var itemToken = { key:pElement.name, value:pSubCatalogRefId };
+			this.getSubCatalogRefIds().push(itemToken);
+		}
+	}
+	this.setItems = function(pItems) {
+		this.mItems = pItems;
+	}
+	this.getItems = function() {
+		if(this.mItems) {
+			return this.mItems;
+		} else {
+			this.mItems = new Array();
+			return this.mItems;		
+		}
+	}
+	this.setSubCatalogRefIds = function(pItems) {
+		this.mSubCatalogRefIds = pItems;
+	}
+	this.getSubCatalogRefIds = function() {
+		if(this.mSubCatalogRefIds) {
+			return this.mSubCatalogRefIds;
+		} else {
+			this.mSubCatalogRefIds = new Array();
+			return this.mSubCatalogRefIds;		
+		}
+	}
+	this.setLOSGId = function(pLOSGId) {
+		this.mLOSGId = pLOSGId;
+	}
+	this.getLOSGId = function() {
+		return this.mLOSGId;
+	}
+	
+	this.setSubsidizedUpgrade = function(pSubsidizedUpgrade) {
+		mSubsidizedUpgrade = pSubsidizedUpgrade;
+	}
+	this.getSubsidizedUpgrade = function() {
+		return mSubsidizedUpgrade;
+	}
+	
+	//minicart image swapper
+	var intImage = false;
+	this.swapImage = function (intImage){
+		var image = getObj("IMG1");
+		if(!image) return;
+
+		if (intImage) {
+			getObj("IMG1").src="/cell-phone-service/images/cart/downarrow.gif";
+		} else {
+			getObj("IMG1").src="/cell-phone-service/images/cart/x_button.gif";
+		}
+	}
+	
+	this.displayShim = function(pTop, pLeft, pHeight, pWidth)
+	{
+		var shim = getObj('miniCartShim');
+		
+		shim.style.top = Math.round(pTop) + "px";
+		shim.style.left = Math.round(pLeft) + "px";
+
+		shim.style.width = Math.round(pWidth) + "px";
+		shim.style.height = Math.round(pHeight) + "px";
+		shim.style.display = "block";
+	}
+	this.hideShim = function() {
+		var shim = getObj('miniCartShim');
+		shim.style.top = 0 + "px";
+		shim.style.left = 0 + "px";
+				
+		shim.style.width = parseInt(0) + "px";
+		shim.style.height = parseInt(0) + "px";
+		shim.style.display = "none";
+	}
+}
+function finishMiniCartCenter() { 
+	// miniCartCenter was revamped so the LOSGDroplet loads only when the miniCart is activated instead of when the page loads
+	var xmlhttp = getHTTPRequest();
+	xmlhttp.open("GET","/cell-phone-service/miniCart/miniCartCenterLOSGDroplet.jsp",false);
+	xmlhttp.send(null);
+	var element = getObj("miniCartCenterLOSGDroplet");
+	if (element) element.innerHTML = xmlhttp.responseText;
+}
+function sessionTimeoutDisplay() {
+	obj = getObj("sessionTimeoutBody");		
+
+	//Calculate the position given the above calculation above the center of the screen.
+	var top = (documentHeight() / 2) - (obj.offsetHeight / 2);
+	var left = (documentWidth() / 2) - (obj.offsetWidth / 2);
+
+	//Calculate if the top would be off the top of the screen then move it down till it is visible
+	top = (top + obj.offsetHeight > documentHeight()) ? top + (top + obj.offsetHeight - documentHeight()) : top;
+	top = (top >= 0) ? top : 0;
+	top += documentScrollY();
+	
+	left = left < 0 ? 0 : left;
+	obj.style.position = "absolute";
+	obj.style.top = top + "px";
+	obj.style.left = left + "px";
+	getObj("sessionTimeout").style.visibility = 'visible';
+}
+function sessionTimeoutHide() {
+	MiniCart.refresh("/cell-phone-service/miniCart/miniCartCenter.jsp");
+	getObj("sessionTimeout").style.visibility = 'hidden';		
+}
+/*This is added as part of ticket B2C-92587*/
+function submitCosBlemDevice() {
+	$("cosBlemDeviceSubmit").click();
+}
+function loadingHide() {
+	MiniCart.refresh("/cell-phone-service/miniCart/miniCartCenter.jsp");
+	getObj("disabledZone").style.visibility = 'hidden';		
+}
+var MiniCart = new MiniCartLib();
+//document.attachEvent("onclick",MiniCart.hide());
+
+function fetchMetaContent (metaName) {
+metaCollection = document.getElementsByTagName('meta'); 
+for (i=0;i<metaCollection.length;i++) { 
+nameAttribute = metaCollection[i].name.search(metaName); 
+if (nameAttribute != -1) {
+metaContent = metaCollection[i].content; 
+return metaContent; 
+} 
+}
+}
+

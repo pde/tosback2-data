@@ -1,0 +1,35 @@
+var npex=(function(){var ec=encodeURIComponent;var dc=decodeURIComponent;var pi=parseInt;var c_d="cdn.nprove.com";var c_n="_npt";var doc=document;var now=new Date().getTime();function sd(n){var d='';for(var i=0;i<4;i++)
+d+=ec(n.substr(i,1))+(i<3?'/':'');return d;}
+function ifr(s,n,a,u,qs){var el=doc.createElement("iframe");el.id=a+'-'+n;var d=sd(n);el.temp_src=(s?"https":"http")+"://"+c_d+"/"+ec(a)+"/p/"
++d+'/'+ec(n)+".html?npuid="
++ec(u)+"&rurl="
++ec(doc.referrer)+"&"+fmt(qs)+"&r="+br();el.style.width="0";el.style.height="0";el.style.display="none";el.np_querystring=qs;return el;}
+function br(){return pi(Math.random()*Math.pow(10,15),10);}
+function gc(n){var cv;if(doc.cookie&&doc.cookie!=''){var cs=doc.cookie.split(';');for(var i=cs.length-1;i>=0;i--){var c=(cs[i].replace(/^\s+|\s+$/g,""));if(c.substr(0,n.length+1)==(n+'=')){cv=dc(c.substr(n.length+1));break;}}}
+return cv?prs(cv):new Mm({v:["1"],uid:[pi(now/1000,10)+'-'+br()],vc:["0"]});}
+function sc(n,v,d,s){var expires='; expires='+
+new Date(now+7776000000).toUTCString();doc.cookie=[n,'=',(v?fmt(v):''),(v?expires:-1),'',(d?'; domain='+(d):''),(s?'; secure':'')].join('');}
+function npi(con){inccon(con.s,con.a,con.cid);}
+function inccon(s,a,i){inc((s?"https":"http")+"://"+c_d+"/"
++ec(a)+"/c/"+sd(i)+'/'
++ec(i)+".js?r="
++br());}
+function prs(qs){var vars=qs.split("&");var ps={};for(var i=0;i<vars.length;i++){var p=vars[i].split("=");if(p.length>=1)
+if(ps[p[0]])
+ps[p[0]].push(p.length>=2?p[1]:"");else
+ps[p[0]]=[p.length>=2?p[1]:""];}
+return new Mm(ps);}
+function fmt(mm){var qs=mm.qs;var r="";for(var k in qs)
+for(var v in qs[k]) if(typeof qs[k][v] != "function")
+r+=ec(k)+"="+ec(qs[k][v])+"&";return r.substr(0,r.length-1);}
+function inc(src){doc.write("<scr"+"ipt type='text/javascript' src='"+src+"'></scr"+"ipt>");}
+function npex(f,c){var con=sco();var mm=gc(c_n);mm.i("vc",(mm.i("vc"))+1);var hc=window.location.hostname;var fv=f(mm,con,prs(window.location.href.replace(/.*\?/,'')));var ps=fv[0];sc(c_n,mrg(fv[1],mm),hc.substr(hc.indexOf('.'),hc.length),con.s);var co=doc.createElement('div');co.id="nprove_cc_"+con.qs.s('id');for(var i=0;i<ps.length;i++){if(c[ps[i]][0]==1)
+inccon(con.s,c[ps[i]][1],c[ps[i]][2]);else{var fqs=mrg(prs(c[ps[i]][2]),con.qs);co.appendChild(ifr(con.s,c[ps[i]][1],con.a,mm.i("uid"),fqs));}}
+doc.getElementsByTagName("head")[0].appendChild(co);for(var i=0;i<co.childNodes.length;i++){co.childNodes[i].src=co.childNodes[i].temp_src;}}
+function Mm(qs){this.qs=qs;this.i=function(n,v){return v?qs[n]=[v]:pi(qs[n]);}
+this.s=function(n,v){return v?qs[n]=[v]:qs[n][0];}
+this.sa=function(n,v){return v?qs[n]=v:qs[n];}}
+function mrg(a,b){var mm=new Mm({});for(var k in b.qs)mm.qs[k]=b.qs[k];for(var k in a.qs)mm.qs[k]=a.qs[k];return mm;}
+function sco(){var e=doc.getElementsByTagName("script");for(var i=0;i<e.length;i++){var s=e[i].src;if(s&&s.indexOf(c_d)>0){var qs=prs(s.replace(/.*\?/,'')); if (!(qs.s("id").indexOf('/') < 0 )){ qs = mrg(prs("id=" + qs.s("id").replace(/\/.*\//, '-').replace(".js", '')), qs);} var t=qs.s("id").split('-');return{s:s.substr(0,5)=="https",qs:qs,a:t[0],cid:t[1]};}}}
+try{var con=sco();npi(con);}catch(x){}
+return npex;})();

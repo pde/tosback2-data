@@ -1,0 +1,135 @@
+﻿// ----------------------------------------------
+// File:		BrowserUtils.js
+// Author:		Nathan Derksen
+// Description:	Class to provide access to some basic browser utilities 
+// Example:
+// var width = BrowserUtils.getBrowserWidth();
+// ----------------------------------------------
+
+
+// ----------------------------------------------
+// Function:	BrowserUtils()
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+function BrowserUtils()
+{
+}
+
+// ----------------------------------------------
+// Function:	getBrowserWidth()
+// Author:		Nathan Derksen
+// Description:	Find out how wide the browser window is
+// Inputs:		<None>
+// Returns:		<Number>
+// ----------------------------------------------
+BrowserUtils.getBrowserWidth = function()
+{
+	var width = 0;
+	
+	if (typeof(innerWidth) == "number")
+	{
+		width = window.innerWidth;
+	}
+	else if (document.documentElement && document.documentElement.clientWidth)
+	{
+		width = document.documentElement.clientWidth;
+	}
+	else
+	{
+		width = document.body.clientWidth;
+	}
+	return width;
+};
+
+// ----------------------------------------------
+// Function:	getBrowserHeight()
+// Author:		Nathan Derksen
+// Description:	Find out how tall the browser page is
+// Inputs:		<None>
+// Returns:		<Number>
+// ----------------------------------------------
+BrowserUtils.getBrowserHeight = function()
+{
+	var height = 0;
+	
+	if (typeof(innerHeight) == "number")
+	{
+		height = window.innerHeight;
+	}
+	else if (document.documentElement && document.documentElement.clientHeight)
+	{
+		height = document.documentElement.clientHeight;
+	}
+	else
+	{
+		height = document.body.clientHeight;
+	}
+	return height;
+};
+
+// ----------------------------------------------
+// Function:	addOnLoadHandler()
+// Author:		Nathan Derksen
+// Description:	Add a function to a list of functions to be called when the page completes loading
+// Inputs:		<Function> newHandler - The function to execute on page load
+// Returns:		<Nothing>
+// ----------------------------------------------
+BrowserUtils.addOnLoadHandler = function(newHandler)
+{
+	try
+	{
+		if (window.onload)
+		{
+			if (newHandler)
+			{
+				var oldHandler = window.onload;
+				window.onload = function()
+				{
+					oldHandler();
+					newHandler();
+				};
+			}
+		}
+		else
+		{
+			window.onload = newHandler;
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+BrowserUtils.getPosition = function(elementHandle)
+{
+	var currentLeft = currentTop = 0;
+	if (elementHandle.offsetParent) 
+	{
+		currentLeft = elementHandle.offsetLeft;
+		currentTop = elementHandle.offsetTop;
+		while (elementHandle = elementHandle.offsetParent) 
+		{
+			currentLeft += elementHandle.offsetLeft;
+			currentTop += elementHandle.offsetTop;
+		}
+	}
+	return {left:currentLeft, top:currentTop};
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+BrowserUtils.getIsSecure = function()
+{
+	var pageLocation = window.location.href.toLowerCase();
+	if (pageLocation.indexOf("https://") == 0)
+	{
+		return true;
+	}
+	return false;
+}

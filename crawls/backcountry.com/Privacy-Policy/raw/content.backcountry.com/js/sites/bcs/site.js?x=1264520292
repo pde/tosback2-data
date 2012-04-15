@@ -1,0 +1,85 @@
+// site namespace
+BCNTRY.site = {
+	name: 'Backcountry.com',
+	catalog: 'store',
+	
+	connection: {},
+	event: {},
+	page: {},   // per-page namespaces
+	util: {}
+};
+
+// old stuff
+
+var catalog='store';
+var ajax_load_msg = '<span class="ajax_load">Loading...</span>';
+
+// empty function for ScAbTest() onclick called from left_nav_table near footer
+function ScAbTest() { }
+
+// error checking for newsletter signup in footer and index:right_nav
+function checkEmail(newsletter_form) {
+	if (/^\w+([\.\-]?\w+)*@\w+([\.\-]?\w+)*(\.\w{2,3})+$/.test(newsletter_form.email.value)) {
+		return (true);
+	}
+	alert("Invalid e-mail. Please re-enter.");
+	return (false);
+}
+
+(function() {
+	// This function marries any element with a checkbox so that you can style the element however
+	// you want and have it act like a checkbox. Here's what you need to make it work:
+	//		* A real checkbox element with an id ending in "_chk" (it should be hidden).
+	//		* Another element with an identical id except it should end in "_lbl" instead of "_chk".
+	//		* When the element is "checked" it will be assigned the "selected" class. Style accordingly.
+	//		* This function should be attached to the label element's onclick event.
+	//	Example:
+	//		<span id="a_lbl" onclick="BCNTRY.toggle_check(this)">Stuff</span>
+	//		<input id="a_chk" type="checkbox" style="display:none" />
+	BCNTRY.toggle_check = function(el) {
+		var chk_el = $(el.id.replace(/_lbl$/, "_chk"));
+		if (chk_el.checked) {
+			chk_el.checked = false;
+			yd.removeClass(el, 'selected');
+		}
+		else {
+			chk_el.checked = true;
+			yd.addClass(el, 'selected');
+		}
+		return false;
+	};
+})();
+
+//Price compare template for the current site
+var price_compare_template =
+'<div id="" class="price_comparison"> '
++ '	<h2>Other Places to Get it:</h2> '
++ '	<ul> '
++ '{for p in products}'
++ '		<li> '
++ '			<span class="retailer_name"><a href="${p.url}" target=\'blank\' onClick="BCNTRY.price_compare.price_compare_click(\'${sku}\',\'${p.vendorName}\', this );">${p.vendorName}</a> </span> <span class="price">Priced from <strong>\$${p.price}</strong></span> '
++ '		</li> '
++ '{/for}'
++ '	</ul> '
++ '	<div id="bottom_links"> '
++ '		<span id="whats_this"><a rel="nofollow" href="#" onclick="show_hint(\'price_compare_whats_this\',\'price_compare_whats_link\'); template_links_tl(\'tr_template\', \'header: pricecompare\'); return false;">What\'s this?</a></span> '
++ '		<span id="powered_by"><div>Powered by <a target=\'blank\' rel="nofollow" href="http://www.geardigger.com">Geardigger.com</a></div></span> '
++ '	</div> '
++ '	<div class="clearb" /> '
++ '</div>  '
++ ' <div class="hint" id="price_compare_whats_this" style="display:none">'
++ '            <div class="hint_title" id="price_compare_whats_this_title">'
++ '                <a rel="nofollow" id="price_compare_whats_this_link_close_x" href="#" onclick="hide_hint(\'price_compare_whats_this\'); template_links_tl(\'tr_template\', \'header: pricecompare_close\'); return false;" class="hint_close">close</a>'
++ '                </div><div class="hint_content" id="price_compare_content">'
++ '                <p>As the center of gear knowledge, Backcountry.com wants you to be as informed as possible when buying high-end gear, and we\'ve compiled price listings from some other reputable retailers for you to compare. Although we take steps to confirm this information is accurate and updated, we assume no responsibility for the accuracy of the price and shipping information provided by other vendors.</p>'
++ '                <a id="price_compare_whats_this_link_close" href="#" onclick="hide_hint(\'price_compare_whats_this\'); template_links_tl(\'tr_template\', \'header: pricecompare_x\'); return false;" class="hint_close">close</a>'
++ '            </div>'
++ '</div>';
+
+//Show google ads only if not from an affiliate
+YAHOO.util.Event.onDOMReady(function(){
+    if(!/(PID\=|AVAD\=|JFTID\=)/.test(location.href) && !/(PID|AVAD|JFTID)/.test(document.cookie)){
+        var nodes = YAHOO.util.Dom.getElementsByClassName('google_ads');
+        YAHOO.util.Dom.setStyle(nodes, 'display', 'block');
+    }
+});

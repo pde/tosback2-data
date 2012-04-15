@@ -1,0 +1,890 @@
+/**
+ * @name: 			JaySAPI
+ * @description: 	Centralized JavaScript "Framework"
+ * @author: 		Rahmin Pavlovic, Crain Communications, 2008
+ * @version: 		2008-12-25
+ *
+ */
+
+
+// add trim routines just cause other langs have em--why not us?!
+function ltrim(s) { return s.replace( /^\s*/, "" ); };
+function rtrim(s) { return s.replace( /\s*$/, "" ); };
+function trim(s) { return rtrim(ltrim(s)); };
+
+/**
+ * Custom String extensions
+ *
+ */
+String.prototype.trim = function() {
+	var a=this.replace(/^\s+/,'');
+	return a.replace(/\s+$/,'');
+};
+
+String.prototype.ucfirst = function() {
+	return this.charAt(0).toUpperCase() + this.substring(1,this.length).toLowerCase();
+};
+
+String.prototype.isEmpty = function() {
+	if(this.length === 0 || this.trim().length === 0) {
+		return true;
+	}
+	for(var i=0; i<this.length; i++) {
+		if(this.charAt(i) != ' ') {
+			return false;
+		}
+	}
+	return true;
+};
+
+String.prototype.isNumeric = function() {
+	for (var i=0; i<this.length; i++) {
+		if ("0123456789".indexOf(this.charAt(i)) == -1) {
+			return false;
+		}	
+	}
+	return true;
+};
+
+// @author: Timothy Dalbey
+String.prototype.addCommas = function() {
+	var tmp1 = this.split('.');
+	var tmp2 = tmp1[0];
+	if(tmp1.length > 1){
+		var tmp3 = '.' + tmp1[1];
+	}
+	else{
+		var tmp3 = '';
+	}
+	var regex = /(\d+)(\d{3})/;
+	while (regex.test(tmp2)) {
+		tmp2 = tmp2.replace(regex, '$1' + ',' + '$2');
+	}
+	return tmp2 + tmp3;
+};
+
+// @author: Rahmin Pavlovic
+String.prototype.isEmail = function() {
+	if(this.isEmpty()) { //check if email field is blank
+		return false;
+	}
+	if(this.indexOf('@') == -1 || this.indexOf('.') == -1) { //make sure the field has an '@' and a '.'
+		return false;
+	}
+	if (this.indexOf('@') > this.lastIndexOf('.')) { //then make sure the '@' is before the last occurence of the '.'
+		return false;
+	}
+	if (this.indexOf('@') < 1) { // make sure there's at least one char before the '@' symbol
+		return false;
+	}
+	if ((this.lastIndexOf('.') - this.indexOf('@')) < 3) { // check if there's at least 2 chars between the '@' and the '.'
+		return false;
+	}
+	if ((this.length - this.lastIndexOf('.')) < 3) { // and make sure there are at least 2 chars between the '.' and the end
+		return false;
+	}
+	return true;
+};
+
+// @author: Timothy Dalbey
+String.prototype.isAlphaNumeric = function() {
+	var regex_epr = /[^a-zA-Z0-9]/;
+	if(regex_epr.test(this)){
+		return false;
+	}
+	return true;
+};
+
+String.prototype.autolink = function() {
+	var hlink = /\s(ht|f)tp:\/\/([^ \,\;\:\!\)\(\"\'\<\>\f\n\r\t\v])+/g;
+	return this.replace (
+		hlink, function ($0, $1, $2) {
+			s = $0.substring(1, $0.length);
+
+			// remove trailing dots, if any
+			while (s.length > 0 && s.charAt(s.length-1)=='.') {
+				s = this.substring(0, s.length-1);
+			}
+			// add hlink
+			return " " + s.link(s); 
+		}
+	);
+}
+
+/**
+ * Custom Array extensions
+ *
+ */
+// returns the index of an array element, -1 if element not found
+Array.prototype.indexOf=function(el) {
+	for(var n=0; n<this.length; n++) {
+		if(this[n]==el) {
+			return n;
+		}
+	}
+	return -1;
+};
+
+// search each array element for existence of string (case-sensitive), returns array index or -1
+Array.prototype.search=function(str) {
+	for(var n=0; n<this.length; n++) {
+		if(this[n].indexOf(str) != -1) {
+			return n;
+		}
+	}
+	return -1;
+};
+
+// search each array element for existence of string (case-insensitive), returns array index or -1
+Array.prototype.searchNoCase=function(str) {
+	for(var n=0; n<this.length; n++) {
+		if(this[n].toLowerCase().indexOf(str.toLowerCase()) != -1) {
+			return n;
+		}
+	}
+	return -1;
+};
+
+// see if array contains an item
+Array.prototype.contains = function(el) {
+	return this.indexOf(el) != -1;
+};
+
+// return last item from array
+Array.prototype.last = function() {
+	return this[this.length-1];
+};
+
+// routine to clear an array
+Array.prototype.destroy = function() {
+	this.length=0;
+	return this;
+};
+
+Array.prototype.arrange = function() {
+	minor=[];
+	major=[];
+
+	// split array into two arrays (a 1 char array, and a 2+ char array)
+	for(var i=0; i<this.length; i++) {
+		if(this[i].toString().trim().length==1) {
+			minor[minor.length]=this[i];
+		}
+		else {
+			major[major.length]=this[i];
+		}
+	}
+
+	minor.sort(); // sort 1 char array
+	major.sort(); // sort 2+ char array
+	this.clear(); // clear current array
+
+	// rebuild current array
+	for(var i=0; i<minor.length; i++) { this[this.length] = minor[i]; }
+	for(var i=0; i<major.length; i++) { this[this.length] = major[i]; }
+
+	// cleanup
+	minor.destroy();
+	major.destroy();
+};
+
+/**
+ * Window Routines
+ *
+ * create our own Window object to centralize routines
+ *
+ */
+var Window = {
+	isString:function(obj) {
+		if(obj.constructor.toString().indexOf("String") == -1) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	},
+
+	isArray:function(obj) {
+		if(obj.constructor.toString().indexOf("Array") == -1) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	},
+
+	isObject:function(obj) {
+		if(obj.constructor.toString().indexOf("Object") == -1) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	},
+
+	attachEvent:function(eventName, functionName) {
+		if (typeof window.addEventListener != 'undefined') {
+			window.addEventListener(eventName, functionName, false);
+		}
+		else if (typeof document.addEventListener != 'undefined') {
+			document.addEventListener(eventName, functionName, false);
+		}
+		else if (typeof window.attachEvent != 'undefined') {
+			window.attachEvent('on'+eventName, functionName);	
+		}
+		else {
+			var oldFunctionName = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = functionName;
+			}
+			else {
+				window.onload = function() {
+					oldFunctionName();
+					functionName();
+				};
+			}
+		}
+	},
+
+	onLoadEvent:function(fn) {
+		this.attachEvent('load', fn);
+	},
+
+	getLocation:function(loc) {
+		loc=(!loc) ? window.location : loc;
+		return loc.toString();
+	},
+
+	getPath:function(loc) {
+		loc = this.getLocation(loc);
+		var normal=loc.lastIndexOf("/");
+		var reverse=loc.lastIndexOf("\\");
+		return (reverse > normal) ? loc.substring(0,reverse+1) : loc.substring(0,normal+1);
+	},
+
+	getLocationHash:function(loc) {
+		loc = this.getLocation(loc);
+		loc=(loc.hash) ? loc.hash : loc;
+		return (loc.indexOf('#') != -1) ? loc.substring(loc.indexOf('#')+1, loc.length) : null;
+	},
+
+	getFilename:function(loc) {
+		loc = this.getLocation(loc);
+		return loc.substring(loc.lastIndexOf('/')+1,loc.length);
+	},
+
+	getURLParams:function(loc) {
+		params = {};
+
+		// see if string is being passed;  otherwise, grab location URL
+		get_string = this.getLocation(loc);
+
+		// chop up GET string into name/value pairs
+		get_string = get_string.split('&');
+
+		// loop through all name/value pairs
+		for(var n=0; n<get_string.length; n++) {
+
+			// split name/value pair by '=' sign
+			get_param=get_string[n].split('=');
+
+			// set params
+			params[get_param[0]]=get_param[1];
+		}
+		return params;
+	},
+
+	pop:function(file,w,h) {
+		window.open(file,'','width='+w+',height='+h+',top=0,menubar=no,toolbar=no,scrollbars=yes,resizable=yes,location=yes,status=no');
+		return false;
+	},
+
+	// centralize inner window width/height
+	getInnerWidth:function() {
+		if(window.innerWidth) { return innerWidth; }
+		if(document.body.offsetWidth) { return document.body.offsetWidth; }
+		return null;
+	},
+
+	getInnerHeight:function() {
+		if(window.innerHeight) { return innerHeight; }
+		if(document.body.clientWidth) { return document.body.clientWidth; }
+		if(document.body.offsetHeight) { return document.body.offsetHeight; }
+		return null;
+	},
+
+	// centralize number of pixels scrolled to
+	getScrollX:function() {
+		if(window.pageXOffset) { return pageXOffset; }
+		if(document.body.scrollLeft) { return document.body.scrollLeft; }
+		if(document.documentElement.scrollLeft) { return document.documentElement.scrollLeft; }
+		return null;
+	},
+
+	getScrollY:function() {
+		if(window.pageYOffset) { return pageYOffset; }
+		if(document.body.scrollTop) { return document.body.scrollTop; }
+		if(document.documentElement.scrollTop) { return document.documentElement.scrollTop; }
+		return null;
+	},
+
+	getPageX:function(e) {
+		if(!e) { var e=window.event; }
+		if(e.pageX) { return e.pageX; }
+		if(e.clientX) { return e.clientX + this.getScrollX(); }
+		if(e.offsetLeft) { return e.offsetLeft; }
+		return null;
+	},
+
+	getPageY:function(e) {
+		if(!e) { var e=window.event; }
+		if(e.pageY) { return e.pageY; }
+		if(e.clientY) { return e.clientY + this.getScrollY(); }
+		if(e.offsetTop) { return e.offsetTop; }
+		return null;
+	},
+
+	getPosX:function(obj) {
+		var posX = 0;
+		if(obj.offsetParent) { // loop through parent elements
+			while(obj.offsetParent) {
+				posX+=obj.offsetLeft;
+				if(!obj.offsetParent) {
+					break; // no more parents
+				}
+				obj=obj.offsetParent;
+			}
+		}
+		else if(obj.x) {
+			posX+=obj.x;
+		}
+		return parseInt(posX);
+	},
+
+	getPosY:function(obj) {
+		var posY = 0;
+		if(obj.offsetParent) { // loop through parent elements
+			while(obj.offsetParent) {
+				posY+=obj.offsetTop;
+				if(!obj.offsetParent) {
+					break; // no more parents
+				}
+				obj=obj.offsetParent;
+			}
+		}
+		else if(obj.y) {
+			posX+=obj.y;
+		}
+		return parseInt(posY);
+	},
+
+	getElementByEvent:function(e) {
+		if(!e) { var e=window.event; }
+		if(e.srcElement) { return e.srcElement; }
+		if(e.target) { return e.target; }
+		return null;
+	},
+
+	getKeyCode:function(e) {
+		if(!e) { var e=window.event; }
+		return (e.keyCode)? e.keyCode : e.which;
+	}
+};
+
+/**
+ * Util function
+ *
+ * create our own Utilities object to centralize routines
+ *
+ */
+var Utils = {
+	stringCompare:function(str1, str2) {
+
+		// see if we're comparing strings first
+		if(Window.isString(str1) && Window.isString(str2)) {
+			if(str1.trim().toLowerCase() === str2.trim().toLowerCase()) {
+				return true;
+			}
+		}
+
+		// try comparing anyways
+		else {
+			str1 = str1.toString();
+			str2 = str2.toString();
+			if(str1.trim().toLowerCase() === str2.trim().toLowerCase()) {
+				return true;
+			}
+		}
+		return false;
+	},
+
+	stringCompareNoCase:function(str1, str2) {
+
+		// see if we're comparing strings first
+		if(Window.isString(str1) && Window.isString(str2)) {
+			if(str1.trim() === str2.trim()) {
+				return true;
+			}
+		}
+
+		// try comparing anyways
+		else {
+			str1 = str1.toString();
+			str2 = str2.toString();
+			if(str1.trim() === str2.trim()) {
+				return true;
+			}
+		}
+		return false;
+	}
+};
+
+/**
+ * Form function
+ *
+ * create our own Form object to centralize routines
+ *
+ */
+var Form = {
+	setCursor:function(obj) {
+		if(obj && window.focus) {
+			obj.focus();
+		}
+	},
+
+	selectField:function(obj) {
+		this.setCursor(obj);
+		if(obj && window.select) {
+			obj.select();
+		}
+	},
+
+	setLabel:function(field,value) {
+		if(field.value==value) {
+			field.value='';
+		}
+	},
+
+	checkLabel:function(field,value) {
+		if(field.value.isEmpty()) {
+			field.value=value;
+		}
+	},
+
+	getRadioValue:function(fieldset) {
+		for(var n=0; n<fieldset.length; n++) {
+			if(fieldset[n].checked) {
+				return fieldset[n].value;
+			}
+		}
+		return '';
+	},
+	
+	getRadioIndex:function(fieldset,value) {
+		for(var n=0; n<fieldset.length; n++) {
+			if(fieldset[n].value==value) {
+				return n;
+			}
+		}
+		return -1;
+	},
+
+	getCheckedRadioIndex:function(fieldset) {
+		for(var n=0; n<fieldset.length; n++) {
+			if(fieldset[n].checked) {
+				return n;
+			}
+		}
+		return -1;
+	},
+	
+	isChecked:function(fieldset) {
+		checked=false;
+		for(var n=0; n<fieldset.length; n++) {
+			if(fieldset[n].checked) {
+				checked=true;
+				break;
+			}
+		}
+		return checked;
+	},
+	
+	toggleChecbox:function(box) {
+		box.checked=(box.checked)?false:true;
+	}
+};
+
+/**
+ * DOM Routines
+ *
+ * create our own DOM object to centralize DOM-based routines
+ *
+ */
+var DOM = {
+	getElementById:function(id, tag, parent) {
+		if(document.getElementById(id)) {
+			return document.getElementById(id);
+		}
+		if(document.layers && document.layers[id]) {
+			return document.layers[id];
+		}
+		if(document.all && document.all[id]) {
+			return document.all[id];
+		}
+		if(document[id]) {
+			return document[id];
+		}
+		if(window[id]) {
+			return window[id];
+		}
+		if(this.createElement) {
+			tag=(tag)? tag : 'div';
+			el=this.createElement(tag);
+			el.setAttribute('id', id);
+			parent=(parent)? parent : 'body';
+			this.getElementsByTagName(parent)[0].appendChild(el);
+			return el;
+		}
+		return null;
+	},
+
+	getElementsByTagName:function(tagName, el) {
+		var el=(el)? el : document;
+		if(el.getElementsByTagName) { return el.getElementsByTagName(tagName); }
+		return null;
+	},
+
+	getElementsByClassName:function(className, el) {
+		var el=(el)? el : document;
+		if(el.getElementsByClassName) { return el.getElementsByClassName(className); }
+		return null;
+	},
+
+	createElement:function(el) {
+		if(document.createElement) { return document.createElement(el); }
+		return null;
+	},
+
+	getTagNameFromElement:function(el) {
+		if(el.tagName) { return el.tagName.toLowerCase(); }
+		if(el) { return el.toString().toLowerCase(); }
+		return null;
+	},
+
+	setOpacity:function(id, opacity) {
+    	el=this.getElementById(id);
+		el.style.opacity=(opacity / 100);
+		el.style.MozOpacity=(opacity / 100);
+		el.style.KhtmlOpacity=(opacity / 100);
+		el.style.filter="alpha(opacity=" + opacity + ")";
+	},
+
+	fade:function(id, start, end, time) {
+		var speed=Math.round(time / 100);
+		var timer=0;
+
+		if(start > end) {
+			for(var i=start; i>=end; i--) {
+				setTimeout("DOM.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+			}
+		}
+		else if(start < end) {
+			for(var i=start; i <= end; i++) {
+				setTimeout("DOM.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+			}
+		}
+	},
+
+	getInclude:function(src) {
+		if(document.createElement) {
+			var js=document.createElement('script');
+			js.setAttribute('type', 'text/javascript');
+			js.setAttribute('src', src);
+			document.getElementsByTagName('head')[0].appendChild(js);
+		}
+	},
+
+	getCSS:function(src) {
+		if(document.createElement) {
+			var js=document.createElement('link');
+			js.setAttribute('type', 'text/css');
+			js.setAttribute('rel', 'stylesheet');
+			js.setAttribute('media', 'all');
+			js.setAttribute('src', src);
+			document.getElementsByTagName('head')[0].appendChild(js);
+		}
+	},
+
+	setHTML:function(id, html) {
+		try {
+			this.getElementById(id).innerHTML=html
+		}
+		catch(e) {
+			alert(e.description)
+		}
+	},
+
+	setClass:function(id, className) {
+		this.getElementById(id).className=className;
+	},
+
+	getDisplay:function(id) {
+		return this.getElementById(id).style.display;
+	},
+
+	setDisplay:function(id, display) {
+		this.getElementById(id).style.display=display;
+	},
+
+	toggle:function(id) {alert(this.getDisplay(id));
+		if(this.getDisplay(id).isEmpty() || this.getDisplay(id) == 'show') {
+			this.setDisplay(id, 'none');
+		}
+		else {
+			this.setDisplay(id, 'show');
+		}
+	}
+};
+
+/**
+ * DHTML Routines
+ *
+ * create our own DHTML object to centralize cross-browser DHTML routines
+ *
+ */
+var DHTML={
+	// centralize inner window width/height
+	getInnerWidth:function() {
+		if(window.innerWidth) { return innerWidth; }
+		if(document.body.offsetWidth) { return document.body.offsetWidth; }
+		return null;
+	},
+	getInnerHeight:function() {
+		if(window.innerHeight) { return innerHeight; }
+		if(document.body.clientWidth) { return document.body.clientWidth; }
+		if(document.body.offsetHeight) { return document.body.offsetHeight; }
+		return null;
+	},
+	// centralize number of pixels scrolled to
+	getScrollX:function() {
+		if(window.pageXOffset) { return pageXOffset; }
+		if(document.body.scrollLeft) { return document.body.scrollLeft; }
+		if(document.documentElement.scrollLeft) { return document.documentElement.scrollLeft; }
+		return null;
+	},
+	getScrollY:function() {
+		if(window.pageYOffset) { return pageYOffset; }
+		if(document.body.scrollTop) { return document.body.scrollTop; }
+		if(document.documentElement.scrollTop) { return document.documentElement.scrollTop; }
+		return null;
+	},
+	getPageX:function(e) {
+		if(!e) { var e=window.event; }
+		if(e.pageX) { return e.pageX; }
+		if(e.clientX) { return e.clientX + DHTML.getScrollX(); }
+		if(e.offsetLeft) { return e.offsetLeft; }
+		return null;
+	},
+	getPageY:function(e) {
+		if(!e) { var e=window.event; }
+		if(e.pageY) { return e.pageY; }
+		if(e.clientY) { return e.clientY + DHTML.getScrollY(); }
+		if(e.offsetTop) { return e.offsetTop; }
+		return null;
+	},
+	getPosX:function(obj) {
+		posX=0;
+		if(obj.offsetParent) { // loop through parent elements
+			while(obj.offsetParent) {
+				posX+=obj.offsetLeft;
+				if(!obj.offsetParent) {
+					break; // no more parents
+				}
+				obj=obj.offsetParent;
+			}
+		}
+		else if(obj.x) {
+			posX+=obj.x;
+		}
+		return parseInt(posX);
+	},
+	getPosY:function(obj) {
+		posY=0;
+		if(obj.offsetParent) { // loop through parent elements
+			while(obj.offsetParent) {
+				posY+=obj.offsetTop;
+				if(!obj.offsetParent) {
+					break; // no more parents
+				}
+				obj=obj.offsetParent;
+			}
+		}
+		else if(obj.y) {
+			posX+=obj.y;
+		}
+		return parseInt(posY);
+	},
+	getElementByEvent:function(e) {
+		if(!e) { var e=window.event; }
+		if(e.srcElement) { return e.srcElement; }
+		if(e.target) { return e.target; }
+		return null;
+	},
+	getKeyCode:function(e) {
+		if(!e) { var e=window.event; }
+		return (e.keyCode)? e.keyCode : e.which;
+	}
+};
+
+
+/**
+ * AJAX Routines
+ *
+ * create our own AJAX object to centralize cross-browser AJAX routines
+ *
+ */
+
+var AJAX={};
+
+// return HTTP responses
+AJAX.ReadyState={};
+AJAX.ReadyState['Uninitialized']=0;
+AJAX.ReadyState['Loading']		=1;
+AJAX.ReadyState['Loaded']		=2;
+AJAX.ReadyState['Interactive']	=3;
+AJAX.ReadyState['Complete']		=4;
+
+// initialize cross-browser HTTP request
+AJAX.getHTTPRequest = function() {
+	if(window.XMLHttpRequest) { return new XMLHttpRequest(); }
+	if(window.ActiveXObject) {
+		try { return new ActiveXObject("Msxml2.XMLHTTP"); }
+		catch(e) { return new ActiveXObject("Microsoft.XMLHTTP"); }
+	}
+	return null;
+};
+
+// Constructor to setup HTTP file requests
+AJAX.FileRequest=function(url, onload, onerror, method, params, contentType) {
+	this.url=url;
+	this.params=(params)? params : null;
+	this.method=(method)? method : 'get';
+
+	this.url+=(this.params!=null && this.method.toLowerCase()=='get')?'?'+this.params:'';
+	this.contentType=(contentType)? contentType : "application/x-www-form-urlencoded";
+	this.contentType=(!this.contentType && this.method.toLowerCase()=='post')? "application/x-www-form-urlencoded" : this.contentType;
+
+	this.request=null;
+	this.response=null;
+	this.onload=(onload)? onload : this.OnLoad;
+	this.onerror=(onerror)? onerror : this.OnError;
+	this.sendFileRequest();
+};
+
+// method to generate an HTTP request for selected file
+AJAX.FileRequest.prototype.sendFileRequest = function() {
+	this.request=AJAX.getHTTPRequest();
+	if(this.request) {
+		try {
+			// pass reference of current instance to event handler
+			var ref=this;
+			this.request.onreadystatechange = function() {
+				ref.onReadyState.call(ref);
+				delete ref;
+			}
+
+			// open HTTP connection
+			this.request.open(this.method, this.url, 1);
+
+			// set content-type header
+			if(this.contentType) { this.request.setRequestHeader('content-type', this.contentType); }
+
+			// send request
+			this.request.send(this.params);
+		}
+		catch(err) {
+			//alert('err 1')
+			this.onerror.call(this);
+		}
+	}
+};
+
+AJAX.FileRequest.prototype.onReadyState = function() {
+	if(this.request) {
+		if(this.request.readyState == AJAX.ReadyState['Complete']) {
+			if(this.request.status==200 || this.request.status==0) {
+				this.response=this.request.responseText;
+				this.onload.call(this);
+			}
+			else {
+				//alert('err 2')
+				this.onerror.call(this);
+			}
+		}
+		else {
+			//this.response=AJAX.ReadyState.getKeyProperty(this.request.readyState);
+			//this.onload.call(this);
+		}
+	}
+	else {
+		//alert('err 3')
+		this.onerror.call(this);
+	}
+};
+
+AJAX.FileRequest.prototype.OnError = function() {
+	if(this.request) {
+		alert(
+			"Error fetching data"
+			+ "\n\tReadyState: " + this.request.readyState
+			+ "\n\tStatus: " + this.request.status
+			+ "\n\tHeaders: " + this.request.getAllResponseHeaders()
+		);
+	}
+};
+
+AJAX.FileRequest.prototype.OnLoad = function() {
+	if(this.request) {
+		alert(this.response);
+	}
+};
+
+// parse XML tree
+AJAX.parseXML=function(xml) {
+	var doc=null;
+	if(window.DOMParser) {
+		try { 
+			doc=(new DOMParser()).parseFromString(xml, "text/xml"); 
+		} 
+		catch (e) { doc=null; }
+	}
+	else if (window.ActiveXObject) {
+		try {
+			doc=new ActiveXObject('Microsoft.XMLHTTP');
+			doc.async=false;
+			if(!doc.loadXML(xml)) {
+				//doc=doc.parseError.reason + doc.parseError.srcText;
+				doc=null;
+			}
+		} 
+		catch (e) { doc=null; }
+	}
+	return doc;
+};
+
+/**
+ * JSON Routines
+ *
+ * create our own JSON object to centralize cross-browser routines
+ *
+ */
+var JSON={
+	parse:function(code) {
+		if (/^[\],:{}\s]*$/.test(code.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(:?[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+			return eval('('+code+')');
+		}
+		return null;
+	}
+};

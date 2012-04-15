@@ -1,0 +1,2193 @@
+var fbcClientId = "telemundo";
+var cookiePrefix = "TELEMUNDO_CONNECT_";
+var directUrlId = "-telemundo";
+var maxVote = 40;
+var clientParameters;
+var actionType;
+var captchaText = '';
+var modalOpen = 0;
+var closeModalObj = '';
+var parentCommentId = "";
+var oldParentCommentId = "";
+var refrechCaptchaTImerObj = "";
+var redirectToLogin = "";
+var captchaForPlatformUsers = "N";
+var isAnonUserFieldsEnabled = "N";
+launchTime = new Date();
+launchTime.setMonth("9");
+launchTime.setDate("21");
+launchTime.setFullYear("2009");
+launchTime.setHours("12");
+launchTime.setMinutes("40");
+launchTime.setSeconds("00");
+/*
+ * All setup procedures and inits should go in here
+ */
+
+function telemundoFBC_init() {
+
+	// init our globals
+	// clearly hardcoding this is pretty sad_face. Although this version has the
+	// fbcClientId set
+	// within the script tag in the header, we could just make this dynamic off
+	// of the domain name
+	var fullDomainArray = new Array();
+	fullDomainArray = String(window.location).split("/");
+	fbconnectURL = fullDomainArray[0] + "//" + fullDomainArray[2];
+
+	baseURL = viralappsURL + "public/fbconnect/" + fbcClientId + "/";
+	ajaxURL = baseURL + "index.php";
+	ajaxBusyTag = '<div style="width:300px;height:350px;margin-left:120px;padding-top:60px;"><img src="' + baseURL + 'img/ajax-loader.gif" ></div>';
+
+	// Make sure we're not conflicting anywhere. I've tested and verified that
+	// if there's already
+	// a noConflict() call to an existing jQuery implementation that this jQuery
+	// reference will not
+	// interfere with it. However, it would probably be smarter to just change
+	// this file slightly if
+	// a client is already using jQuery and has setup a noConflict function
+	// jQuery = jQuery.noConflict();
+
+	// Make sure this is the executed before any render calls can be fired to
+	// avoid any race conditions
+	processAuthenticationParams();
+	attachFBCFooter();
+	if (apiKey == null || apiKey == '' || templateIds == '') {
+		getAppParams();
+	}
+
+	FB.ensureInit( function() {
+		if (FB.XFBML.Host) {
+			FB.XFBML.Host.autoParseDomTree = false
+			processAuthenticationParams();
+		}
+	});
+
+}
+
+function setOmiture() {
+}
+
+function setOmnitureForLogin() {
+}
+function telemundoReplyComments(commentId, userName) {
+	/*
+	 * jQuery("#fbc_userComment"+commentId).val("");
+	 * jQuery("#fbc_userComment"+commentId).css({display:"block"});
+	 * $("#fbc_ReplySaveComment"+commentId).css({display:"block"});
+	 */
+	// $("#display_comments").html(commentsData);
+	if(userName.indexOf('anon-') != -1){
+		userName = 'Invitado';
+	}
+	jQuery('#reply_arrow' + oldParentCommentId).attr('src',
+			baseURL + "img/Reply_G.gif");
+	jQuery('#reply_arrow' + commentId).attr('src',
+			baseURL + "img/Reply_todown_G.gif");
+	oldParentCommentId = commentId;
+	if (typeof document.getElementById("dialogReplyFormBackground") != 'undefined'
+			&& document.getElementById("dialogReplyFormBackground") != undefined) {
+		var d = document.getElementById('fbc_comments-form');
+		var olddiv = document.getElementById("dialogReplyFormBackground");
+		d.removeChild(olddiv);
+	}
+	objRecaptchaTxtlabel = jQuery("#replyrecaptchaTxtlabel");
+	objRecaptchaTxtlabel.addClass('captcha_success');
+	objRecaptchaTxtlabel.removeClass('captcha_error');
+	objRecaptchaTxtlabel.html("Enter the words above:");
+	document.forms["fbc_Replycomments-form"].reset();
+	jQuery("#ReplyFormHeader")
+			.html(
+					'<div class="headerReply"><img src="'
+					+ viralappsURL + 'public/fbconnect/telemundo/img/Reply_G.gif" style="margin-right:10px;"></img>Responder a '
+							+ userName
+							+ '</div>');
+	jQuery(jQuery('#replyComments')).appendTo('#CommentsDiv' + commentId);
+	parentCommentId = commentId;
+	if (getLoggedInState() == 'Y') {
+		var jQueryel = jQuery('<div id="dialogReplyFormBackground"></div>')
+				.prependTo(document.getElementById("fbc_comments-form"))
+				.addClass(
+						'ui-widget-overlay_custom_loggedInUser_' + clientParams.showName
+								.replace(".", "")).css( {
+					width :551
+
+				});
+	} else {
+		var jQueryel = jQuery('<div id="dialogReplyFormBackground"></div>')
+				.prependTo(document.getElementById("fbc_comments-form"))
+				.addClass(
+						'ui-widget-overlay_custom_' + clientParams.showName
+								.replace(".", "")).css( {
+					width :551
+
+				});
+		jQuery("#dialogReplyFormBackground").css( {
+			display :"block"
+		});
+		jQuery("#recaptcha_image_reply")
+				.html(jQuery("#recaptcha_image").html());
+	}
+	jQuery("#replyComments").css( {
+		display :"block"
+	});
+
+}
+function closeReplyForm(commentId) {
+	if(confirm("\xbfEst\xe1 seguro que desea cancelar este comentario?")){
+	jQuery("#replyComments").css( {
+		display :"none"
+	});
+	jQuery("#dialogReplyFormBackground").css( {
+		width :"0px"
+	});
+	jQuery("#dialogReplyFormBackground").css( {
+		display :"none"
+	});
+	jQuery('#reply_arrow' + parentCommentId).attr('src',
+			baseURL + "img/Reply_G.gif");
+	//the following two lines are added to fix the weird issue happening in ie7
+	jQuery('img.fbc_commentprofilePicTlogo').css({clear:"none"});
+	jQuery('img.fbc_commentprofilePicTlogo').css({clear:"both"});
+	parentCommentId = "";
+	document.forms["fbc_Replycomments-form"].reset();
+    }
+	
+}
+
+function closeMainCommentForm() {
+if(confirm("\xbfEst\xe1 seguro que desea cancelar este comentario?")){
+   jQuery("#fbc_userComment").val("");
+}
+}
+
+function resetErrorDiv(){
+  resetinlineErrorMsg('fbc_userComment','fbc_loggedUserComment_errormsg','userComment_post_label');
+  resetinlineErrorMsg('fbc_userComment','fbc_userComment_errormsg','userComment_post_label');
+  resetinlineErrorMsg('fbc_ReplyuserComment','fbc_ReplyuserComment_errormsg','ReplyCommentLabel');
+  resetinlineErrorMsg('fbc_ReplypostedBy','fbc_ReplypostedBy_errormsg','fbc_replyPostedby_label');
+  resetinlineErrorMsg('fbc_postedBy','fbc_postedBy_errorMsg','fbc_postedBy_label');
+  resetinlineErrorMsg('fbc_postedUserEmailId','fbc_postedUserEmailId_errormsg2','fbc_topCommentsContainer_emailLabel');
+  resetinlineErrorMsg('fbc_ReplypostedUserEmailId','fbc_ReplypostedUserEmailId_errormsg','fbc_ReplypostedUserEmail_label');
+  resetinlineErrorMsg('recaptcha_response_field','fbc_captcha_errorMsg','recaptchaTxtlabel');
+  resetinlineErrorMsg('recaptcha_response_field_reply','fbc_reply_captcha_errorMsg','replyrecaptchaTxtlabel');
+  resetinlineErrorMsg('fbc_userComment','fbc_loggedUserCommentLimit_errormsg','userComment_post_label');                   
+  resetinlineErrorMsg('fbc_userComment','fbc_userCommentLimit_errormsg','userComment_post_label'); 
+  resetinlineErrorMsg('fbc_userComment','fbc_userCommentLogged_errormsg2','userComment_post_label');
+  resetinlineErrorMsg('fbc_userComment','fbc_userComment_errormsg2','userComment_post_label');
+  resetinlineErrorMsg('fbc_ReplyuserComment','fbc_ReplyuserComment_errormsg2','ReplyCommentLabel');
+}
+
+function closeeditForm(commentId) {
+	jQuery("#editComments").css( {
+		display :"none"
+	});
+	jQuery("#dialogReplyFormBackground").css( {
+		width :"0px"
+	});
+	jQuery("#dialogReplyFormBackground").css( {
+		display :"none"
+	});
+	jQuery('#reply_arrow' + parentCommentId).attr('src',
+			baseURL + "img/Reply_G.gif");
+	parentCommentId = "";
+	document.forms["fbc_editcomments-form"].reset();
+
+}
+
+function refreshCaptcha() {
+	jQuery("#recaptcha_image_reply").html(jQuery("#recaptcha_image").html());
+	clearTimeout(refrechCaptchaTImerObj);
+	// alert(jQuery("#recaptcha_image_reply").html());
+}
+function reloadCaptcha() {
+	jQuery("#recaptcha_response_field").val("");
+	jQuery("#recaptcha_response_field_reply").val("");
+	Recaptcha.reload('t');
+	clearTimeout(refrechCaptchaTImerObj);
+	refrechCaptchaTImerObj = setTimeout("refreshCaptcha()", 700);
+}
+
+function telemundoSaveComments() {
+	var divObj = '';
+	var objCommentText = '';
+	var objPostedBy = '';
+	var objPostedUserEmailID = '';
+	var objCaptchaResponse = '';
+	var objRecaptchaTxtlabel = '';
+    var recaptchaTxtlabelId='';
+    var activity = '';
+	var directURL = '';
+	var loggedInState = getLoggedInState();
+	var fbConnectedState = getFBconnectedState();
+	var captchaChallenge = jQuery("#recaptcha_challenge_field").val();
+	if (platform == "twitter") {
+		shortenUrl();
+	}
+	isAnnonAction = false;
+	if (loggedInState != 'Y') {
+		isAnnonAction = 'Y';
+	}
+	directURL = ajaxURL;
+	directURL = directURL.replace(directUrlId,"");
+	var fullURL = directURL + "?controller=Ajax&callback=?";
+	if (parentCommentId == "") {
+		objCommentText = jQuery("#fbc_userComment");
+		objPostedBy = jQuery("#fbc_postedBy");
+		objPostedUserEmailID = jQuery("#fbc_postedUserEmailId");
+		objCaptchaResponse = jQuery("#recaptcha_response_field");
+		responseId = "recaptcha_response_field";
+		catpchaErrorMsgId = "fbc_captcha_errorMsg";
+		recaptchaTxtlabelId = "recaptchaTxtlabel";
+		objRecaptchaTxtlabel = jQuery("#recaptchaTxtlabel");
+		ObjCaptchaErrorMsg = jQuery("#fbc_captcha_errorMsg");
+		divObj = document.getElementById("fbc_contentContainer");
+		activity = 'commentSave';
+	} else {
+		objCommentText = jQuery("#fbc_ReplyuserComment");
+		objPostedBy = jQuery("#fbc_ReplypostedBy");
+		objPostedUserEmailID = jQuery("#fbc_ReplypostedUserEmailId");
+		objCaptchaResponse = jQuery("#recaptcha_response_field_reply");
+		responseId = "recaptcha_response_field_reply";
+		catpchaErrorMsgId = "fbc_reply_captcha_errorMsg";
+		recaptchaTxtlabelId = "replyrecaptchaTxtlabel";
+		objRecaptchaTxtlabel = jQuery("#replyrecaptchaTxtlabel");
+		ObjCaptchaErrorMsg = jQuery("#fbc_reply_captcha_errorMsg");
+		divObj = document.getElementById("childParentDiv" + parentCommentId);
+		activity = 'commentReply';
+	}
+
+	if(isSplitComment=="Y"){
+        var commentText = splitCommenttext;
+       }else{
+      	 var commentText = objCommentText.val();
+       }
+       var fullCommentText =  objCommentText.val();
+	var postedBy = objPostedBy.val();
+	
+	var postedUserEmailID = objPostedUserEmailID.val();
+	var captchaResponse = objCaptchaResponse.val();
+	var clientParamsArray = new Array("contentTitle", "id", "CommentsPerPage",
+			"showName","sortOldestFirst");
+
+	var queryParams = {
+		"sectionNumber" :1,
+		"requestedController" :"Comment",
+		"requestedMethod" :"savePollComment",
+		"filterByFriends" :'N',
+		"Commenttext" :commentText,
+		"loggedIn" :getLoggedInState(),
+		"parentCommentID" :parentCommentId,
+		"fbc_postedBy" :postedBy,
+		"isAnnonAction" :isAnnonAction,
+		"platform" :platform,
+		"response" :captchaResponse,
+		"challenge" :captchaChallenge,
+		"renderView" :false,
+              "isReplyEnabled": clientParams.comments.isReplyEnabled,
+              "isSplitComment" : isSplitComment,
+              "totalSplits": totalSplits,
+              "currentSplit": currentSplit 
+	};
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams,
+				clientParamsArray);
+	}
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (typeof postedUserEmailID != 'undefined' && postedUserEmailID != ''
+			&& postedUserEmailID != 'undefined') {
+		queryParams.postedUserEmailID = encodeURIComponent(postedUserEmailID)
+				.replace('.', 'dotcom');
+	}
+	var profilePic = user.profilePic;
+	if (typeof profilePic == "undefined" || profilePic == null) {
+	profilePic = readCookie("udata_pic_square");
+	}else{
+  profilePic = user.profilePic;
+  }
+	var profileName = user.loggedInUserName;
+	if (typeof postedBy != "undefined" && postedBy != "" && postedBy != null) {
+		profileName = postedBy;
+	}
+	if (typeof profileName == "undefined") {
+		profileName = 'Invitado';
+	}
+	   
+	if (parentCommentId != "") {
+		jQuery("#fbc_ReplySaveComment" + parentCommentId).css( {
+			display :"none"
+		});
+	}
+	jQuery('#reply_arrow' + parentCommentId).attr('src',
+			baseURL + "img/Reply_G.gif");
+	jQuery("#error_msg").html(
+			"Please Refresh the application to view the Latest Comment");
+	jQuery
+			.ajax( {
+				type :"GET",
+				url :fullURL,
+				data :queryParams,
+				dataType :"jsonp",
+				success : function(data) {
+					               $('#comment_submit_button').attr('disabled', false);  
+                                   splitsCompleted = splitsCompleted+1;   
+
+                                  if(splitsCompleted != totalSplits && isSplitComment=="Y"){
+                                       return false;  
+                                  } 
+                                  commentTextResult = new Array(); 
+                                  totalSplits=0; currentSplit=0;    isSplitComment="N"; splitCommenttext=""; profanityResponseCnt=0; isProfanityWord = "false";splitsCompleted=0;
+
+					if (getLoggedInState() == "N" && captchaEnabled == "Y") {
+						// extra param is passed to avoid default focus by
+						// Recaptcha
+						Recaptcha.reload('t');
+					}
+					switch (data.errorCode) {
+						case 'CV':
+							objCaptchaResponse.val("");
+							objCaptchaResponse.focus();
+							objRecaptchaTxtlabel.removeClass('captcha_success');
+							objRecaptchaTxtlabel.addClass('captcha_error');
+							objRecaptchaTxtlabel.html("Enter both words below:");
+							// ObjCaptchaErrorMsg.css({display:"block"});
+							inlineErrorMsg(responseId, catpchaErrorMsgId, recaptchaTxtlabelId);
+							ObjCaptchaErrorMsg.html(clientParams.messages.captchaError);
+							ObjCaptchaErrorMsg.css( {
+								display :"block"
+							});
+							if (parentCommentId != "") {
+								refrechCaptchaTImerObj = setTimeout("refreshCaptcha()", 700);
+							}
+							break;
+						case 'BI':
+                            $("#dialogComments").dialog("destroy");
+							if (typeof clientParams.messages.bannedIp != "undefined") {
+								jQuery("#dialogComments").html(clientParams.messages.bannedIp);							
+								jQuery("#dialogComments").dialog( {
+									modal :true
+								});
+								document.forms["fbc_comments-form"].reset();
+							}
+							break;
+						case 'BU':
+                                                $("#dialogComments").dialog("destroy");
+							if (typeof clientParams.messages.bannedUser != "undefined") {
+								jQuery("#dialogComments").html(clientParams.messages.bannedUser);							
+								jQuery("#dialogComments").dialog( {
+									modal :true
+								});
+							}
+							break;
+						case 'CE':
+                                                $("#dialogComments").dialog("destroy");
+								jQuery("#dialogComments").html(clientParams.messages.commentError);							
+								jQuery("#dialogComments").dialog( {
+									modal :true
+								});
+						break;
+						default:
+							jQuery("#fbc_contentContainer").css( {
+								display :"block"
+							});
+							jQuery("#fbc_messages_id").css( {
+								display :"none"
+							});
+                                                 if(parseInt(jQuery("#fbc_totalCommentsCount").html())<1 && clientParams.comments.sortOldestFirst=="true"){
+                                                    jQuery("#fbc_messages_id").css( {
+								display :"block"
+							}); 
+                                                 }
+							resetinlineErrorMsg(responseId, catpchaErrorMsgId, recaptchaTxtlabelId);
+							setOmnitureFeature(activity,escape(clientParams.content.contentTitle));
+							jQuery("#replyComments").css( {
+								display :"none"
+							});
+							jQuery("#dialogReplyFormBackground").css( {
+								display :"none"
+							});
+							objCommentText.val("");
+							objPostedBy.val("");
+							objPostedUserEmailID.val("");
+                           if (parentCommentId != ""||clientParams.comments.sortOldestFirst=="false") {
+							 pushCommentContent(divObj, profilePic, profileName, platform,fullCommentText);
+							 jQuery('#saveCommentDivId').css({display:"block"});
+							 setTimeout("closeSaveCommentdialog()",6000);
+							 //alert("Comments are moderated and generally will be posted if they are on-topic and not abusive. For more information, please contact us.");
+                           }else{
+							                     html = ''; 
+                                                 /* html = html+'<img id="saveCloseDivId" onclick="closeSaveCommentdialog()" src="'+viralappsURL+'public/fbconnect/syfy/img/close_dialog.png" />';  
+                                                  jQuery("#saveCommentDivId").html(html); */
+                                                  jQuery('#saveCommentReplyDivId').css({display:"block"});
+                                                  setTimeout("closeSaveCommentReplydialog()",6000);
+												  pushCommentContent(divObj, profilePic, profileName, platform,	fullCommentText);
+												   //alert("Comments are moderated and generally will be posted if they are on-topic and not abusive. For more information, please contact us.");
+                                                 }
+
+
+							 jQuery('#fbc_totalCommentsCount').html(parseInt(jQuery("#fbc_totalCommentsCount").html())+1);
+                                                  jQuery('#'+clientParams.content.id+'_comments_total').html(parseInt(jQuery('#'+clientParams.content.id+'_comments_total').html())+1);
+                             jQuery("#allcommentsCountDiv")
+									.html(parseInt(jQuery("#allcommentsCountDiv").html())+1);
+                              jQuery("#allcommentsDivHeaderCount").html(parseInt(jQuery("#allcommentsDivHeaderCount").html())+1);
+							jQuery("#dialogCustomBackground").css( {
+								width :"0px"
+							});
+							objRecaptchaTxtlabel.addClass('captcha_success');
+							objRecaptchaTxtlabel.removeClass('captcha_error');
+							objRecaptchaTxtlabel.html("Enter the words above:");
+							jQuery("#recaptcha_response_field").val("");
+							jQuery("#recaptcha_response_field_reply").val("");
+							if (platform == "twitter") {
+								if (document.getElementById("tweet").checked == 1 && parentCommentId == "") {
+									postTweet(fullCommentText);
+								}else if (document.getElementById("replytweet").checked == 1 && parentCommentId != "") {
+									postTweet(fullCommentText);
+								}
+							}
+							parentCommentId="";  
+
+							if (getFacebookLogInState() == 'Y' && platform != "snas") {
+								 handleFeeds(clientParams, "comments", fullCommentText);
+							}
+							break;
+					}
+		},
+		error : function(request, textStatus, thrownError) {
+alert("error"+textStatus);
+		}
+			});
+
+}
+
+function pushCommentContent(divObj, profilePic, profileName, platform,commentText) {
+	var newDiv = document.createElement("div");
+	newDiv.className = "fbc_innerThumbContainer";
+	newDiv.innerHTML = '';
+	var appShowName=clientParams.showName.toLowerCase();
+    appShowName = appShowName.replace(".","");   
+	html = '<div class="fbc_nameContainer">';
+	
+	if (typeof profilePic != "undefined" && profilePic != ""
+			&& profilePic != null) {
+		html = html
+				+ ' <div class="fbc_innerThumbLftContainer"><img width="50px" height="50px" src="'
+				+ profilePic + '"/></div>';
+		html = html + '<div class="arrow_placement"><img src="' + viralappsURL
+				+ 'public/fbconnect/telemundo/img/LeftPointArrow.png"></img></div>';
+		if (parentCommentId == "") {
+			html = html + '<div class="fbc_innerThumbRgtContainer">';
+		} else {
+			html = html + '<div class="fbc_innerThumbRgtContainer_child">';
+		}
+       
+ } else {
+		html = html+ ' </div><div class="fbc_innerThumbLftContainer">';
+              if (platform == "facebook" && getLoggedInState() == 'Y') {
+               html = html+ '<img width="50px" height="50px" src="http://static.ak.fbcdn.net/pics/t_silhouette.gif"></img>';  
+			   } else if (platform == "snas") {
+				html = html+ '<img width="50px" height="50px" src="' + viralappsURL+ 'public/fbconnect/telemundo/img/telemundo_Thump.jpg"></img>';     
+			   } else{
+              html = html+ '<img width="50px" height="50px" src="' + viralappsURL+ 'public/fbconnect/telemundo/img/New_Guest_thumb.jpg"></img>';
+			  }
+              html = html+ '</div>';
+		html = html + '<div class="arrow_placement"><img src="' + viralappsURL
+				+ 'public/fbconnect/telemundo/img/LeftPointArrow.png"></img></div>';
+		if (parentCommentId == "") {
+			html = html + '<div class="fbc_innerThumbRgtContainer">';
+		} else {
+			html = html + '<div class="fbc_innerThumbRgtContainer_child">';
+		}
+	}
+  
+	if (typeof profileName != "undefined" && profileName != ""
+			&& profileName != null && profileName != "Invitado") {
+				
+     if (platform == "twitter") {
+			html = html
+					+ '<img  class="fbc_commentprofilePicTlogo" width="16px" height="16px" src="'
+					+ viralappsURL + 'public/fbconnect/telemundo/img/tw_icon.png"></img>';
+		} else if (platform == "facebook" && getLoggedInState() == 'Y') {
+			html = html
+					+ '<img  class="fbc_commentprofilePicTlogo" width="16px" height="16px" src="'
+					+ viralappsURL + 'public/fbconnect/telemundo/img/fb_icon.png"></img>';
+
+		} else if (platform == "snas") {
+				html = html
+					+ '<img  class="fbc_commentprofilePicTlogo" width="16px" height="16px" src="'
+					+ viralappsURL + 'public/fbconnect/telemundo/img/t_icon.png"></img>';
+		}
+	}
+	html = html + '<div><div class="fbc_postedBy">' + profileName + ' <span class="createdBy"> Wrote 1 minute ago</span></div> ';
+	html = html + '<div class="fbc_comment_text" id="">' + commentText
+			+ '</div>';
+	html = html + '</div></div><div class="fbc_clearFloat"></div><div>'
+
+	newDiv.innerHTML = html;
+	divObj.insertBefore(newDiv, divObj.firstChild);
+	telemundorefreshAds();
+	jQuery('img.fbc_commentprofilePicTlogo').css({position:"absolute"});
+}
+
+function openModal(dialogContent, fbConnectedState) {
+	// jQuery("#fbc_errorMsg").css({display:"none"});
+	if (dialogContent.length > 40) {
+		jQuery("#dialogComments").addClass('dialogComments_longDialog');
+		jQuery(".ui-dialog-custom").addClass('ui-dialog-custom_longDialog');
+	} else {
+		jQuery("#dialogComments").addClass('dialogComments_shortDialog');
+		jQuery(".ui-dialog-custom").addClass('ui-dialog-custom');
+	}
+	jQuery("#dialogComments").html(dialogContent);
+	isCommentingAnnon = 'Y';
+	if (fbConnectedState == 'Y') {
+		isCommentingAnnon = 'N';
+	}
+	jQuery("#dialogComments").dialogCustom( {
+		autoOpen :false,
+		beforeClose :closeCallback,
+		modal :true,
+		draggable :false,
+		resizable :false,
+		isCommentingAnnon :isCommentingAnnon
+	});
+	jQuery("#dialogComments").dialogCustom('open');
+	modalOpen = 1;
+	closeModalObj = setTimeout("closeModal()", 6000);
+}
+
+function closeModal() {
+	modalOpen = 0;
+	jQuery("#dialogComments").dialogCustom('close');
+	// jQuery("#dialogComments").dialogCustom('destroy');
+
+	clearTimeout(closeModalObj);
+}
+
+function closeCallback() {
+	modalOpen = 0;
+	jQuery("#dialogComments").dialogCustom('close');
+	// jQuery("#dialogComments").dialogCustom('destroy');
+	clearTimeout(closeModalObj);
+}
+
+function displayComments(data) {
+	// captchaEnabled = "N";
+	// captchaForPlatformUsers = 'N';
+	data.captchaEnabled = captchaEnabled;
+	data.captchaForPlatformUsers = captchaForPlatformUsers;
+	data.profanityMessage = clientParams.messages.profanityMessage;
+	data.profanityMessageForName = clientParams.messages.profanityMessageForName;
+	data.invalidName = clientParams.messages.invalidName;
+	data.nameEntry = clientParams.messages.nameEntry;
+	data.invalidEmail = clientParams.messages.invalidEmail;
+	data.emailEntry = clientParams.messages.emailEntry;
+	data.commentTextLimit = clientParams.messages.commentTextLimit;
+	data.commentTextEntry = clientParams.messages.commentTextEntry;
+	data.captchaEntry = clientParams.messages.captchaEntry;
+	data.invalidCaptcha = clientParams.messages.invalidCaptcha;
+	data.commentTextFlag = clientParams.messages.commentTextFlag;
+	
+	// alert(captchaEnabled);
+	/*
+	 * if(captchaEnabled == 'Y'){ if(data.loggedIn == false ||
+	 * (captchaForPlatformUsers == 'Y' && data.loggedIn == true )){ var fullURL =
+	 * ajaxURL + "?controller=Ajax"; var queryParams = { "requestedController"
+	 * :"Captcha", "requestedMethod" :"renderCapthaText" }; jQuery.ajax( { type
+	 * :"GET", url :fullURL, data : queryParams, dataType :"jsonp", success :
+	 * function(captchaData) { data.captchaText = captchaData.captchaText; if
+	 * (typeof captchaData.captchaText != "undefined" && captchaData.captchaText != "" &&
+	 * captchaData.captchaText != null) { createCookie("c_vt",
+	 * captchaData.captchaSecretText, ""); } data.captchaSecretText =
+	 * captchaData.captchaSecretText; displaySyfyComments(data); }, error :
+	 * function(request, textStatus, thrownError) { } }); }else{
+	 * displaySyfyComments(data); } }else{
+	 */
+	displayTelemundoComments(data);
+	// }
+
+}
+
+function replaceAll(commentText, replace, with_this) {
+	return commentText.replace(new RegExp(replace, 'g'), with_this);
+}
+
+function replaceAll1(commentText, replace, with_this) {
+	return commentText.replace(replace, with_this, "gi");
+}
+
+/*
+ * function handleFeeds(template_id_for_rating,template_data) {
+ * facebook_publish_feed_story(template_id_for_rating,template_data); }
+ */
+function handleFeeds(feed_obj, feed_data, commentText) {
+	if (!userProfileLoaded) {
+		functionToCallbacks.getUserProfile.push("publishFeeds");
+		return '';
+	}
+	var showName = feed_obj.showName;
+	var brandNames = {
+		"telemundo" : "telemundo",
+		"cdn" : "cdn"
+	};
+	var currentPageUrl = feed_obj.feed.comments.contentURL;
+	brandVar = brandNames[showName];
+	/*
+	 * if(showName.indexOf(".com")!=-1){ var brandVar =
+	 * replaceAll(showName,'.com',''); }else if(showName.indexOf(".net")!=-1){
+	 * var brandVar = replaceAll(showName,'.net',''); }else{ //for enhancement }
+	 */
+	var ratingFeedDST = "?dst=" + brandVar
+			+ "|fbconnect|feedstory|rating&__source=" + brandVar
+			+ "|fbconnect|feedstory|rating";
+	var commentFeedDST = "?dst=" + brandVar
+			+ "|fbconnect|feedstory|commenting&__source=" + brandVar
+			+ "|fbconnect|feedstory|commenting";
+	
+	
+	if (currentPageUrl.indexOf("?") != -1)
+	{
+		ratingFeedDST = ratingFeedDST.replace("?","&");
+		commentFeedDST = commentFeedDST.replace("?","&");
+	}
+	var profileName = user.name;
+	var attachment = new Object();
+	switch (feed_data) {
+	case 'comments':
+		captionText = profileName + " commented on "
+				+ unescape(feed_obj.feed.comments.contentType);
+		if (typeof (feed_obj.feed.comments.video) != 'undefined'
+				&& typeof (feed_obj.feed.comments.video.preview_img) != 'undefined') {
+			attachment = {
+				'name' :captionText,
+				'href' :currentPageUrl + commentFeedDST,
+				'media' : [ {
+					'type' :'flash',
+					'imgsrc' :feed_obj.feed.comments.video.preview_img,
+					'swfsrc' :feed_obj.feed.comments.video.video_src
+				} ]
+			};
+		} else if (typeof feed_obj.feed.comments.contentImage != 'undefined'
+				&& feed_obj.feed.comments.contentImage != '') {
+			attachment = {
+				'name' :captionText,
+				'href' :currentPageUrl + commentFeedDST,
+				'media' : [ {
+					'type' :'image',
+					'src' :feed_obj.feed.comments.contentImage,
+					'href' :currentPageUrl + commentFeedDST
+				} ]
+			};
+		} else {
+			attachment = {
+				'name' :captionText,
+				'href' :currentPageUrl + commentFeedDST
+			};
+		}
+		if (typeof showProblemElms == "function") {
+			facebook_stream_publish(commentText, attachment, '', '',
+					'Write your comment', showProblemElms, '', '');
+		} else {
+			facebook_stream_publish(commentText, attachment, '', '',
+					'Write your comment', '', '', '');
+		}
+		break;
+	case 'ratings':
+		captionText = profileName + " rated on "
+				+ unescape(feed_obj.feed.rating.contentType);
+		if (typeof feed_obj.feed.rating.video != 'undefined'
+				&& typeof feed_obj.feed.rating.video.preview_img != 'undefined') {
+			attachment = {
+				'name' :captionText,
+				'href' :feed_obj.feed.rating.contentURL + ratingFeedDST,
+				'media' : [ {
+					'type' :'flash',
+					'imgsrc' :feed_obj.feed.rating.video.preview_img,
+					'swfsrc' :feed_obj.feed.rating.video.video_src
+				} ]
+			};
+		} else if (typeof feed_obj.feed.rating.contentImage != 'undefined'
+				&& feed_obj.feed.rating.contentImage != '') {
+			attachment = {
+				'name' :captionText,
+				'href' :feed_obj.feed.rating.contentURL + ratingFeedDST,
+				'media' : [ {
+					'type' :'image',
+					'src' :feed_obj.feed.rating.contentImage,
+					'href' :feed_obj.feed.rating.contentURL + ratingFeedDST
+				} ]
+			};
+		} else {
+			attachment = {
+				'name' :captionText,
+				'href' :feed_obj.feed.rating.contentURL + ratingFeedDST
+			};
+		}
+		if (typeof showProblemElms == "function") {
+			facebook_stream_publish('', attachment, '', '',
+					'Write your comment', showProblemElms, '', '');
+		} else {
+			facebook_stream_publish('', attachment, '', '',
+					'Write your comment', '', '', '');
+		}
+		break;
+	}
+}
+function publishFeeds() {
+	handleFeeds(clientParams, actionType);
+}
+function telemundoRateContent(contentId, ratingIndex) {
+	clientParameters = clientParams;
+	actionType = 'ratings';
+	var ratingValue = '';
+	if (ratingIndex > 1) {
+		ratingValue = ratingIndex + ' stars';
+	} else {
+		ratingValue = ratingIndex + ' star';
+	}
+	template_data_for_rating = {
+		"ratedContentType" :clientParams.feed.rating.contentType,
+		"pageURL" :clientParams.feed.rating.contentURL,
+		"ratingValue" :ratingValue
+	};
+
+	if (typeof clientParams.feed.rating.include_video != 'undefined'
+			&& clientParams.feed.rating.include_video == 'true') {
+		if (typeof clientParams.feed.rating.video != 'undefined'
+				&& clientParams.feed.rating.video != '') {
+			if (typeof clientParams.feed.rating.video.video_src != 'undefined'
+					&& typeof clientParams.feed.rating.video.video_src != ''
+					&& typeof clientParams.feed.rating.video.preview_img != 'undefined'
+					&& typeof clientParams.feed.rating.video.preview_img != '')
+				template_data_for_rating.video = {
+					"video_src" :clientParams.feed.rating.video.video_src,
+					"preview_img" :clientParams.feed.rating.video.preview_img
+				};
+		}
+	} else if (typeof clientParams.feed.rating.contentImage != 'undefined'
+			&& clientParams.feed.rating.contentImage != '') {
+		template_data_for_rating.images = [ {
+			"src" :clientParams.feed.rating.contentImage,
+			"href" :clientParams.feed.rating.contentURL
+		} ];
+	}
+
+	template_id_for_rating = templateIds['rateContentTemplateId'];
+	var loggedInState = getLoggedInState();
+	var fullURL = ajaxURL + "?controller=Rating&method=saveRating";
+	isAnnonAction = 'N';
+	if (loggedInState != 'Y') {
+		isAnnonAction = 'Y';
+	}
+	var queryParams = {
+		"contentId" :contentId,
+		"contentTitle" :clientParams.content.contentTitle,
+		"id" :clientParams.content.id,
+		"ratingIndex" :ratingIndex,
+		"loggedIn" :getLoggedInState(),
+		"returnCurrentRating" :1,
+		"showName" :clientParams.showName,
+		"isAnnonAction" :isAnnonAction,
+		"platform" :platform
+	};
+	queryParams = jQuery.extend(queryParams, userParams);
+
+	var userid = getLoggedInUserId();
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+			jQuery('#current_average_rating_' + contentId).text(
+					data.currentRating.AVGRATING);
+			if (data.success) {
+				var loggedInState = getLoggedInState();
+				if (getFacebookLogInState() == 'Y') {
+					//handleFeeds(clientParams, "ratings", "");
+				}
+				var ratingCount = ++data.currentRating.COMMENTRATINGCOUNT;
+				jQuery('#ratingCount').html(ratingCount);
+				jQuery('#dialog').css( {
+					padding :"0"
+				});
+				jQuery('#dialog').html(
+						jQuery('#thanksForRating').html()
+								+ jQuery('#shareRating').html());
+			} else {
+				jQuery('#dialog').css( {
+					padding :"7px 0"
+				});
+				jQuery('#dialog').html(jQuery('#ratingFailed').html());
+			}
+			jQuery("#dialog").dialog( {
+				modal :true
+			});
+		},
+		error : function(request, textStatus, thrownError) {
+		}
+	});
+
+}
+
+
+function renderTotalCommentsWithToggle() {
+	var displayOnLoad = 'false';
+	var htmlContent = '';
+	if (typeof clientParams.comments != "undefined"
+			&& typeof clientParams.comments.showOnLoad != "undefined") {
+		displayOnLoad = clientParams.comments.showOnLoad;
+	}
+	if(!isPageLoad){
+          displayOnLoad = 'true';
+       }
+	getBrowserType();
+	switch (displayOnLoad) {
+	case 'true':
+		jQuery('#display_comments').css( {
+			display :"block"
+		});
+		if (browserType == 'mozilla') {
+			if (clientParams.showName.toLowerCase() == 'fidgit.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightfidgit' + browserType + ' fbc_open" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'visionsfortomorrow.net') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightvisions' + browserType + ' fbc_open" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'syfy.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightsyfy' + browserType + ' fbc_open" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'dvice.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightdvice' + browserType + ' fbc_open" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'scifiwire.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightwire' + browserType + ' fbc_open" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'caprican') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightcaprican' + browserType + ' fbc_open" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightsyfy' + browserType + ' fbc_open" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			}
+			}else if (browserType == 'safari' && clientParams.showName.toLowerCase() == 'caprican') {
+       		htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;width:100px;padding-left:24px" class="fbc_arrow_right' + browserType + ' fbc_open" onclick="toggleComments();return false;"><div style="margin-top:-2px">Comments (<span id="fbc_totalCommentsCount"></span>)</div></div>';
+			break;
+		} else {
+			htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_right' + browserType + ' fbc_open" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			break;
+		}
+		break;
+	case 'false':
+		jQuery('#display_comments').css( {
+			display :"none"
+		});
+		if (browserType == 'mozilla') {
+			if (clientParams.showName.toLowerCase() == 'fidgit.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightfidgit' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'visionsfortomorrow.net') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightvisions' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'syfy.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightsyfy' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'dvice.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightdvice' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'scifiwire.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightwire' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'caprican') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightcaprican' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			}
+			}else if (browserType == 'safari' && clientParams.showName.toLowerCase() == 'caprican') {
+       		htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;width:100px;padding-left:24px" class="fbc_arrow_right' + browserType + '" onclick="toggleComments();return false;"><div style="margin-top:-2px">Comments (<span id="fbc_totalCommentsCount"></span>)</div></div>';
+			break;
+		} else {
+			htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_right' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			break;
+		}
+		break;
+	default:
+		jQuery('#display_comments').css( {
+			display :"none"
+		});
+		if (browserType == 'mozilla') {
+			if (clientParams.showName.toLowerCase() == 'fidgit.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightfidgit' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'visionsfortomorrow.net') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightvisions' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'syfy.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightsyfy' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'dvice.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightdvice' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'scifiwire.com') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightwire' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			} else if (clientParams.showName.toLowerCase() == 'caprican') {
+				htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_rightcaprican' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			}
+				}else if (browserType == 'safari' && clientParams.showName.toLowerCase() == 'caprican') {
+       		htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;width:100px;padding-left:24px" class="fbc_arrow_right' + browserType + '" onclick="toggleComments();return false;"><div style="margin-top:-2px">Comments (<span id="fbc_totalCommentsCount"></span>)</div></div>';
+			break;
+		} else {
+			htmlContent += '<div id="fbc_toggleCommentsLink" style="display:none;" class="fbc_arrow_right' + browserType + '" onclick="toggleComments();return false;">Comments (<span id="fbc_totalCommentsCount"></span>)</div>';
+			break;
+		}
+		break;
+	}
+
+	jQuery('#fbc_commentsLink').html(htmlContent);
+
+	if (clientParams.showName.toLowerCase() == 'syfy.com') {
+		if (typeof clientParams.pageName != 'undefined'
+				&& clientParams.pageName == 'default') {
+				jQuery("#fbc_commentsLink").css( {
+					paddingBottom :"10px"
+			});
+			}
+
+		if (browserType == 'msie') {
+			jQuery("#fbc_toggleCommentsLink").removeClass(
+					"fbc_arrow_right" + browserType);
+			if (browserVersion == 'msie6') {
+				jQuery("#fbc_toggleCommentsLink").addClass(
+						"fbc_arrow_rightmsie6syfy");
+			} else {
+				jQuery("#fbc_toggleCommentsLink").addClass(
+						"fbc_arrow_rightmsiesyfy");
+			}
+		}
+	}
+
+	if (clientParams.showName.toLowerCase() == 'visionsfortomorrow.net') {
+		if (browserType == 'msie') {
+			jQuery("#fbc_toggleCommentsLink").removeClass(
+					"fbc_arrow_right" + browserType);
+			if (browserVersion == 'msie6') {
+				jQuery("#fbc_toggleCommentsLink").addClass(
+						"fbc_arrow_rightmsie6visions");
+				jQuery("#fbc_commentsLink").css( {
+					width :"672px"
+				});
+			} else {
+				jQuery("#fbc_toggleCommentsLink").addClass(
+						"fbc_arrow_rightmsievisions");
+			}
+		}
+	}
+	if (clientParams.showName.toLowerCase() == 'dvice.com') {
+		if (browserType == 'msie'
+				&& (jQuery('#display_comments').css('display')) == 'block') {
+			jQuery("#fbc_toggleCommentsLink").removeClass(
+					"fbc_arrow_right" + browserType + " fbc_open");
+			jQuery("#fbc_toggleCommentsLink").addClass(
+					"fbc_arrow_rightmsiedvicefbc_open");
+		} else if (browserType == 'msie'
+				&& (jQuery('#display_comments').css('display')) == 'none') {
+			jQuery("#fbc_toggleCommentsLink").removeClass(
+					"fbc_arrow_right" + browserType);
+			jQuery("#fbc_toggleCommentsLink").addClass(
+					"fbc_arrow_rightmsiedvice");
+		}
+	}
+	if (clientParams.showName.toLowerCase() == 'scifiwire.com') {
+		if (browserType == 'msie'
+				&& (jQuery('#display_comments').css('display')) == 'block') {
+			jQuery("#fbc_toggleCommentsLink").removeClass(
+					"fbc_arrow_right" + browserType + " fbc_open");
+			jQuery("#fbc_toggleCommentsLink").addClass(
+					"fbc_arrow_rightmsiewirefbc_open");
+		} else if (browserType == 'msie'
+				&& (jQuery('#display_comments').css('display')) == 'none') {
+			jQuery("#fbc_toggleCommentsLink").removeClass(
+					"fbc_arrow_right" + browserType);
+			jQuery("#fbc_toggleCommentsLink").addClass(
+					"fbc_arrow_rightmsiewire");
+		}
+	}
+	if (clientParams.showName.toLowerCase() == 'fidgit.com') {
+		if (browserType == 'msie'
+				&& (jQuery('#display_comments').css('display')) == 'block') {
+			jQuery("#fbc_toggleCommentsLink").removeClass(
+					"fbc_arrow_right" + browserType + " fbc_open");
+			jQuery("#fbc_toggleCommentsLink").addClass(
+					"fbc_arrow_rightmsiefidgitfbc_open");
+		} else if (browserType == 'msie'
+				&& (jQuery('#display_comments').css('display')) == 'none') {
+			jQuery("#fbc_toggleCommentsLink").removeClass(
+					"fbc_arrow_right" + browserType);
+			jQuery("#fbc_toggleCommentsLink").addClass(
+					"fbc_arrow_rightmsiefidgit");
+		}
+	}
+	if (clientParams.showName.toLowerCase() == 'caprican') {
+		if (browserType == 'msie'
+				&& (jQuery('#display_comments').css('display')) == 'block') {
+			jQuery("#fbc_toggleCommentsLink").removeClass(
+					"fbc_arrow_right" + browserType + " fbc_open");
+			jQuery("#fbc_toggleCommentsLink").addClass(
+					"fbc_arrow_rightmsiecapricanfbc_open");
+		} else if (browserType == 'msie'
+				&& (jQuery('#display_comments').css('display')) == 'none') {
+			jQuery("#fbc_toggleCommentsLink").removeClass(
+					"fbc_arrow_right" + browserType);
+			jQuery("#fbc_toggleCommentsLink").addClass(
+					"fbc_arrow_rightmsiecaprican");
+		}
+	}
+	if (clientParams.showName.toLowerCase() == 'syfy.com') {
+		if (browserType == 'msie') {
+			jQuery("#fbc_contentContainer").removeClass(
+					"fbc_message_comments_list");
+			jQuery("#fbc_contentContainer").removeClass("fbc_comments");
+			jQuery("#fbc_contentContainer").addClass("syfyCommentsContent");
+			jQuery("#fbc_contentContainer").addClass(
+					"fbc_message_comments_list");
+		}
+	}
+}
+
+// function to stream publish poll results
+function postPoll() {
+	var profileName = user.name;
+	if (profileName == '' || typeof profileName == 'undefined') {
+		profileName = postedBy;
+	}
+	var linkedText = clientParams.feed.poll.linkableText;
+	var attachment = new Object();
+	linkedText = linkedText.replace("[NAME]", profileName).replace("[OPTION]",
+			clientParams.poll.selectedOption.name);
+	attachment = {
+		'name' :linkedText,
+		'href' :clientParams.feed.poll.link,
+		'description' :clientParams.feed.poll.plainText,
+		'media' : [ {
+			'type' :'image',
+			'src' :'http://www.bravotv.com/' + clientParams.poll.selectedOption.image,
+			'href' :'http://www.bravotv.com/'
+		} ]
+	};
+	facebook_stream_publish('', attachment, '', '', 'Write Something', '', '',
+			'');
+}
+
+function displayTelemundoComments(data) {
+	data.isReplyEnabled = clientParams.comments.isReplyEnabled;
+	if (data.totalCommentCount == "") {
+		data.totalCommentCount = 0;
+	}
+	var commentsTemplate = getTelemundoTemplate();
+	var commentsData = jQuery("#display_comments").parseTemplate(
+			commentsTemplate, data);
+	jQuery("#display_comments").html(commentsData);
+	isPageLoad = false;
+if (clientParams.showName.toLowerCase() == 'caprican') {
+jQuery("#fbc_commentsLink").css( {
+					'float': 'none','marginTop' : '0px','padding-top': '0px','marginRight': '0px','marginLeft': '515px'
+				});
+
+}
+if (clientParams.showName.toLowerCase() == 'dvice.com') {
+	if (browserType == 'msie') {
+			jQuery("#fbc_commentsLink").css( {
+						'float': 'right','marginTop' : '5px','padding-top': '5px','marginRight': '70px','text-align': 'right','color':'#42145F'
+				});
+			if (browserVersion == 'msie6') {
+			jQuery("#fbc_commentsLink").css( {
+						'float': 'right','marginTop' : '5px','padding-top': '5px','marginRight': '32px','text-align': 'right','color':'#42145F'
+				});
+			}}else if(browserType == 'safari'){
+			jQuery("#fbc_commentsLink").css( {
+						'float': 'right','marginTop' : '5px','padding-top': '5px','marginRight': '105px','text-align': 'right','color':'#42145F'
+				});
+			}else{
+			jQuery("#fbc_commentsLink").css( {
+						'float': 'right','marginTop' : '5px','padding-top': '5px','marginRight': '90px','text-align': 'right','color':'#42145F'
+				});
+
+	}}
+
+	if (clientParams.showName.toLowerCase() == 'scifiwire.com') {
+	if (browserType == 'msie') {
+			jQuery("#fbc_commentsLink").css( {
+						'float': 'right','marginTop' : '-65px','padding-top': '5px','marginRight': '-30px','text-align': 'right','color':'#42145F'
+				});
+			if (browserVersion == 'msie6') {
+			jQuery("#fbc_commentsLink").css( {
+						'float': 'right','marginTop' : '-65px','padding-top': '5px','marginRight': '-15px','text-align': 'right','color':'#42145F'
+				});
+			}}else if(browserType == 'safari'){
+			jQuery("#fbc_commentsLink").css( {
+						'float': 'right','marginTop' : '-25px','padding-top': '5px','marginRight': '0px','text-align': 'right','color':'#42145F'
+				});
+			}else{
+			jQuery("#fbc_commentsLink").css( {
+						'float': 'right','marginTop' : '-25px','padding-top': '5px','marginRight': '-13px','text-align': 'right','color':'#42145F'
+				});
+
+	}}
+
+setOmnitureFeature('commentLoad',escape(clientParams.content.contentTitle));
+	if (clientParams.showName.toLowerCase() == 'syfy.com') {
+		jQuery("#display_comments").removeClass("fbc_mainContainer");
+		if (typeof data.pageName != 'undefined' && data.pageName == 'default') {
+			if (data.browserVersion == 'msie6') {
+				jQuery("#display_comments").addClass(
+						"fbc_mainContainermsie6syfydefault");
+				jQuery("#fbc_tP_commenting_id").css( {
+					width :"660px"
+				});
+				jQuery("#fbc_comments_header").css( {
+					width :"654px"
+				});
+				jQuery("#fbc_comments-form").css( {
+					width :"675px"
+				});
+				jQuery("#fbc_messages_id").css( {
+					width :"652px"
+				});
+				jQuery("#fbc_pagination_holder_id").css( {
+					width :"674px"
+				});
+				jQuery("#fbc_tP_pagination_id").css( {
+					padding :"0px"
+				});
+			} else {
+				jQuery("#display_comments").addClass(
+						"fbc_mainContainersyfydefault");
+			}
+		} else if (data.browserVersion == 'msie6') {
+			jQuery("#display_comments").addClass("fbc_mainContainermsie6syfy");
+			jQuery("#fbc_comments_header").css( {
+				width :"620px"
+			});
+			jQuery("#fbc_comments-form").css( {
+				width :"641px"
+			});
+			jQuery("#fbc_messages_id").css( {
+				width :"618px"
+			});
+			jQuery("#fbc_pagination_holder_id").css( {
+				width :"640px",
+				margin :"5px 0"
+			});
+			jQuery("#fbc_tP_pagination_id").css( {
+				padding :"0px"
+			});
+		} else {
+			jQuery("#display_comments").addClass("fbc_mainContainersyfy");
+		}
+	}
+	if (clientParams.showName.toLowerCase() == 'visionsfortomorrow.net') {
+		if (data.browserVersion == 'msie6') {
+			jQuery("#display_comments").removeClass("fbc_mainContainer");
+			jQuery("#display_comments")
+					.addClass("fbc_mainContainermsie6vision");
+			jQuery("#fbc_tP_commenting_id").css( {
+				width :"660px"
+			});
+			jQuery("#fbc_comments_header").css( {
+				width :"654px"
+			});
+			jQuery("#fbc_comments-form").css( {
+				width :"675px"
+			});
+			jQuery("#fbc_messages_id").css( {
+				width :"652px"
+			});
+			jQuery("#fbc_pagination_holder_id").css( {
+				width :"674px"
+			});
+			jQuery("#fbc_tP_pagination_id").css( {
+				padding :"0px"
+			});
+		}
+	}
+	if (clientParams.showName.toLowerCase() == 'fidgit.com') {
+		if (data.browserType == 'msie') {
+			jQuery("#fbc_contentContainer").css( {
+				width :"672px"
+			});
+		}
+	}
+	if (clientParams.showName.toLowerCase() == 'syfy.com') {
+		if (browserType == 'msie') {
+			jQuery("#fbc_contentContainer").removeClass(
+					"fbc_message_comments_list");
+			jQuery("#fbc_contentContainer").removeClass("fbc_comments");
+			jQuery("#fbc_contentContainer").addClass("syfyCommentsContent");
+			jQuery("#fbc_contentContainer").addClass(
+					"fbc_message_comments_list");
+			jQuery("#fbc_comments_header").removeClass(
+					"fbc_module_header_internal");
+			jQuery("#fbc_comments_header").removeClass("comments_header");
+			jQuery("#fbc_comments_header").addClass(
+					"fbc_module_header_internal_syfy");
+			jQuery("#fbc_comments_header").addClass("comments_header");
+		}
+	}
+
+	if (data.displayedCommentCount <= 0) {
+		jQuery(".fbc_messages").html("No hay comentarios.");
+		jQuery(".fbc_messages").css( {
+			display :"block"
+		});
+        jQuery(".fbc_messages").css( {
+			color :"#606060"
+		});
+		jQuery("#fbc_contentContainer").css( {
+			display :"none"
+		});
+	}
+
+	if (data.endIndex > 2) {
+		jQuery(".fbc_pagination_holder").css( {
+			display :"block"
+		});
+	}
+	refreshXFBML();
+	
+	//to fix png issue in ie6
+	if (data.browserVersion == 'msie6') {
+		//jQuery("#display_comments").pngFix();
+		//jQuery(jQuery("#fbc_contentContainer")).pngFix();
+		jQuery(jQuery("#fbc_comments-form")).pngFix();
+	}
+}
+
+// Modal functionality customised
+uiDialogCustomClasses = 'ui-dialog-custom ' + 'ui-widget ' + 'ui-widget-content ' + 'ui-corner-all ';
+jQuery
+		.widget(
+				"ui.dialogCustom",
+				{
+
+					_init : function(initDivId) {
+            if(typeof initDivId == 'undefined'){
+              initDivId = flagCommentId;
+              }
+						this.originalTitle = this.element.attr('title');
+						var self = this, options = this.options,
+
+						title = options.title || this.originalTitle || '&nbsp;', titleId = jQuery.ui.dialogCustom
+								.getTitleId(this.element), uiDialog = (this.uiDialog = jQuery('<div/>'))
+								.appendTo(
+										jQuery('#flag_comment_popup' + initDivId))
+								.hide()
+								.addClass(
+										uiDialogCustomClasses
+												+ options.dialogClass)
+								.css( {
+									position :'absolute',
+									overflow :'hidden',
+									zIndex :options.zIndex
+								})
+								// setting tabIndex makes the div focusable
+								// setting outline to 0 prevents a border on
+								// focus in Mozilla
+								.attr('tabIndex', -1)
+								.css('outline', 0)
+								.keydown(
+										function(event) {
+											(options.closeOnEscape
+													&& event.keyCode
+													&& event.keyCode == jQuery.ui.keyCode.ESCAPE && self
+													.close(event));
+										}).attr( {
+									role :'dialog',
+									'aria-labelledby' :titleId
+								}).mousedown( function(event) {
+									self.moveToTop(false, event);
+								}),
+
+						uiDialogContent = this.element.show().removeAttr(
+								'title').addClass(
+								'ui-dialog-content ' + 'ui-widget-content')
+								.appendTo(uiDialog),
+
+						uiDialogTitlebar = (this.uiDialogTitlebar = jQuery('<div id="closeButtonId"></div>'))
+								.addClass(
+										'ui-dialog-titlebar ' + 'ui-widget-header ' + 'ui-corner-all ' + 'ui-helper-clearfix')
+								.prependTo(uiDialog),
+
+						uiDialogTitlebarClose = jQuery('<a href="#"/>')
+								.addClass(
+										'ui-dialog-titlebar-close ' + 'ui-corner-all')
+								.attr('role', 'button')
+								.hover(
+										function() {
+											uiDialogTitlebarClose
+													.addClass('ui-state-hover');
+										},
+										function() {
+											uiDialogTitlebarClose
+													.removeClass('ui-state-hover');
+										})
+								.focus(
+										function() {
+											uiDialogTitlebarClose
+													.addClass('ui-state-focus');
+										})
+								.blur(
+										function() {
+											uiDialogTitlebarClose
+													.removeClass('ui-state-focus');
+										}).mousedown( function(ev) {
+									ev.stopPropagation();
+								}).click( function(event) {
+									self.close(event);
+									return false;
+								}).appendTo(uiDialogTitlebar),
+
+						uiDialogTitlebarCloseText = (this.uiDialogTitlebarCloseText = jQuery('<span/>'))
+								.addClass('ui-icon ' + 'ui-icon-closethick')
+								.text(options.closeText).appendTo(
+										uiDialogTitlebarClose),
+
+						uiDialogTitle = jQuery('<span/>').addClass(
+								'ui-dialog-title').attr('id', titleId).html(
+								title).prependTo(uiDialogTitlebar);
+
+						uiDialogTitlebar.find("*").add(uiDialogTitlebar)
+								.disableSelection();
+
+						(options.draggable && jQuery.fn.draggable && this
+								._makeDraggable());
+						(options.resizable && jQuery.fn.resizable && this
+								._makeResizable());
+
+						this._createButtons(options.buttons);
+						this._isOpen = false;
+
+						(options.bgiframe && jQuery.fn.bgiframe && uiDialog
+								.bgiframe());
+						(options.autoOpen && this.open());
+
+					},
+
+					destroy : function() {
+						(this.overlay && this.overlay.destroy());
+						this.uiDialog.hide();
+						this.element.unbind('.dialog').removeData('dialog')
+								.removeClass(
+										'ui-dialog-content ui-widget-content')
+								.hide().appendTo('body');
+						this.uiDialog.remove();
+
+						(this.originalTitle && this.element.attr('title',
+								this.originalTitle));
+					},
+
+					close : function(event) {
+
+						var self = this;
+
+						if (false === self._trigger('beforeclose', event)) {
+							return;
+						}
+
+						(self.overlay && self.overlay.destroy());
+						self.uiDialog.unbind('keypress.ui-dialog-custom');
+
+						(self.options.hide ? self.uiDialog.hide(
+								self.options.hide, function() {
+									self._trigger('close', event);
+								}) : self.uiDialog.hide()
+								&& self._trigger('close', event));
+
+						jQuery.ui.dialogCustom.overlay.resize();
+
+						self._isOpen = false;
+
+						// adjust the maxZ to allow other modal dialogs to
+						// continue to work (see #4309)
+						if (self.options.modal) {
+							var maxZ = 0;
+							jQuery('.ui-dialog-custom').each(
+									function() {
+										if (this != self.uiDialog[0]) {
+											maxZ = Math.max(maxZ, jQuery(this)
+													.css('z-index'));
+										}
+									});
+							jQuery.ui.dialogCustom.maxZ = maxZ;
+						}
+						this.destroy();
+					},
+
+					isOpen : function() {
+						return this._isOpen;
+					},
+
+					// the force parameter allows us to move modal dialogs to
+					// their correct
+					// position on open
+					moveToTop : function(force, event) {
+
+						if ((this.options.modal && !force)
+								|| (!this.options.stack && !this.options.modal)) {
+							return this._trigger('focus', event);
+						}
+
+						if (this.options.zIndex > jQuery.ui.dialogCustom.maxZ) {
+							jQuery.ui.dialogCustom.maxZ = this.options.zIndex;
+						}
+						(this.overlay && this.overlay.jQueryel
+								.css(
+										'z-index',
+										jQuery.ui.dialogCustom.overlay.maxZ = ++jQuery.ui.dialogCustom.maxZ));
+
+						// Save and then restore scroll since Opera 9.5+ resets
+						// when parent z-Index is changed.
+						// http://ui.jquery.com/bugs/ticket/3193
+						var saveScroll = {
+							scrollTop :this.element.attr('scrollTop'),
+							scrollLeft :this.element.attr('scrollLeft')
+						};
+						this.uiDialog.css('z-index',
+								++jQuery.ui.dialogCustom.maxZ);
+						this.element.attr(saveScroll);
+						this._trigger('focus', event);
+					},
+
+					open : function() {
+						this.destroy();
+						this._init(flagCommentId);
+						if (this._isOpen) {
+							return;
+						}
+
+						var options = this.options, uiDialog = this.uiDialog;
+
+						this.overlay = new jQuery.ui.dialogCustom.overlay(this);
+						(uiDialog.next().length && uiDialog.appendTo('body'));
+						this._size();
+						this._position(options.position);
+						uiDialog.show(options.show);
+						this.moveToTop(true);
+
+						// prevent tabbing out of modal dialogs
+						(options.modal && uiDialog
+								.bind(
+										'keypress.ui-dialog-custom',
+										function(event) {
+											if (event.keyCode != jQuery.ui.keyCode.TAB) {
+												return;
+											}
+
+											var tabbables = jQuery(':tabbable',
+													this), first = tabbables
+													.filter(':first')[0], last = tabbables
+													.filter(':last')[0];
+
+											if (event.target == last
+													&& !event.shiftKey) {
+												setTimeout( function() {
+													first.focus();
+												}, 1);
+											} else if (event.target == first
+													&& event.shiftKey) {
+												setTimeout( function() {
+													last.focus();
+												}, 1);
+											}
+										}));
+
+						// set focus to the first tabbable element in the
+						// content area or the first button
+						// if there are no tabbable elements, set focus on the
+						// dialog itself
+						jQuery( [])
+								.add(
+										uiDialog
+												.find('.ui-dialog-content :tabbable:first'))
+								.add(
+										uiDialog
+												.find('.ui-dialog-buttonpane :tabbable:first'))
+								.add(uiDialog).filter(':first');
+						// .focus();
+
+						this._trigger('open');
+						this._isOpen = true;
+					},
+
+					_createButtons : function(buttons) {
+						var self = this, hasButtons = false, uiDialogButtonPane = jQuery(
+								'<div></div>')
+								.addClass(
+										'ui-dialog-buttonpane ' + 'ui-widget-content ' + 'ui-helper-clearfix');
+
+						// if we already have a button pane, remove it
+						this.uiDialog.find('.ui-dialog-buttonpane').remove();
+
+						(typeof buttons == 'object' && buttons !== null && jQuery
+								.each(buttons, function() {
+									return !(hasButtons = true);
+								}));
+						if (hasButtons) {
+							jQuery
+									.each(
+											buttons,
+											function(name, fn) {
+												jQuery(
+														'<button type="button"></button>')
+														.addClass(
+																'ui-state-default ' + 'ui-corner-all')
+														.text(name)
+														.click(
+																function() {
+																	fn
+																			.apply(
+																					self.element[0],
+																					arguments);
+																})
+														.hover(
+																function() {
+																	jQuery(this)
+																			.addClass(
+																					'ui-state-hover');
+																},
+																function() {
+																	jQuery(this)
+																			.removeClass(
+																					'ui-state-hover');
+																})
+														.focus(
+																function() {
+																	jQuery(this)
+																			.addClass(
+																					'ui-state-focus');
+																})
+														.blur(
+																function() {
+																	jQuery(this)
+																			.removeClass(
+																					'ui-state-focus');
+																})
+														.appendTo(
+																uiDialogButtonPane);
+											});
+							uiDialogButtonPane.appendTo(this.uiDialog);
+						}
+					},
+
+					_makeDraggable : function() {
+						var self = this, options = this.options, heightBeforeDrag;
+
+						this.uiDialog.draggable( {
+							cancel :'.ui-dialog-content',
+							handle :'.ui-dialog-titlebar',
+							containment :'document',
+							start : function() {
+								heightBeforeDrag = options.height;
+								jQuery(this).height(jQuery(this).height())
+										.addClass("ui-dialog-dragging");
+								(options.dragStart && options.dragStart.apply(
+										self.element[0], arguments));
+							},
+							drag : function() {
+								(options.drag && options.drag.apply(
+										self.element[0], arguments));
+							},
+							stop : function() {
+								jQuery(this).removeClass("ui-dialog-dragging")
+										.height(heightBeforeDrag);
+								(options.dragStop && options.dragStop.apply(
+										self.element[0], arguments));
+								jQuery.ui.dialogCustom.overlay.resize();
+							}
+						});
+					},
+
+					_makeResizable : function(handles) {
+						handles = (handles === undefined ? this.options.resizable
+								: handles);
+						var self = this, options = this.options, resizeHandles = typeof handles == 'string' ? handles
+								: 'n,e,s,w,se,sw,ne,nw';
+
+						this.uiDialog
+								.resizable(
+										{
+											cancel :'.ui-dialog-content',
+											alsoResize :this.element,
+											maxWidth :options.maxWidth,
+											maxHeight :options.maxHeight,
+											minWidth :options.minWidth,
+											minHeight :options.minHeight,
+											start : function() {
+												jQuery(this).addClass(
+														"ui-dialog-resizing");
+												(options.resizeStart && options.resizeStart
+														.apply(self.element[0],
+																arguments));
+											},
+											resize : function() {
+												(options.resize && options.resize
+														.apply(self.element[0],
+																arguments));
+											},
+											handles :resizeHandles,
+											stop : function() {
+												jQuery(this).removeClass(
+														"ui-dialog-resizing");
+												options.height = jQuery(this)
+														.height();
+												options.width = jQuery(this)
+														.width();
+												(options.resizeStop && options.resizeStop
+														.apply(self.element[0],
+																arguments));
+												jQuery.ui.dialogCustom.overlay
+														.resize();
+											}
+										}).find('.ui-resizable-se').addClass(
+										'ui-icon ui-icon-grip-diagonal-se');
+					},
+
+					_position : function(pos) {
+						if (this.options.isCommentingAnnon == 'Y') {
+							this.uiDialog.css( {
+								marginTop :"-50px",
+								marginLeft :"218px"
+							});
+						} else {
+							this.uiDialog.css( {
+								marginTop :"-50px",
+								marginLeft :"218px"
+							});
+						}
+						return;
+						var wnd = jQuery(window), doc = jQuery(document), pTop = doc
+								.scrollTop(), pLeft = doc.scrollLeft(), minTop = pTop;
+
+						if (jQuery.inArray(pos, [ 'center', 'top', 'right',
+								'bottom', 'left' ]) >= 0) {
+							pos = [
+									pos == 'right' || pos == 'left' ? pos
+											: 'center',
+									pos == 'top' || pos == 'bottom' ? pos
+											: 'middle' ];
+						}
+						if (pos.constructor != Array) {
+							pos = [ 'center', 'middle' ];
+						}
+						if (pos[0].constructor == Number) {
+							pLeft += pos[0];
+						} else {
+							switch (pos[0]) {
+							case 'left':
+								pLeft += 0;
+								break;
+							case 'right':
+								pLeft += wnd.width()
+										- this.uiDialog.outerWidth();
+								break;
+							default:
+							case 'center':
+								pLeft += (wnd.width() - this.uiDialog
+										.outerWidth()) / 2;
+							}
+						}
+						if (pos[1].constructor == Number) {
+							pTop += pos[1];
+						} else {
+							switch (pos[1]) {
+							case 'top':
+								pTop += 0;
+								break;
+							case 'bottom':
+								pTop += wnd.height()
+										- this.uiDialog.outerHeight();
+								break;
+							default:
+							case 'middle':
+								pTop += (wnd.height() - this.uiDialog
+										.outerHeight()) / 2;
+							}
+						}
+
+						// prevent the dialog from being too high (make sure the
+						// titlebar
+						// is accessible)
+						pTop = Math.max(pTop, minTop);
+						this.uiDialog.css( {
+							top :pTop,
+							left :pLeft
+						});
+					},
+
+					_setData : function(key, value) {
+						(setDataSwitch[key] && this.uiDialog.data(
+								setDataSwitch[key], value));
+						switch (key) {
+						case "buttons":
+							this._createButtons(value);
+							break;
+						case "closeText":
+							this.uiDialogTitlebarCloseText.text(value);
+							break;
+						case "dialogClass":
+							this.uiDialog.removeClass(this.options.dialogClass)
+									.addClass(uiDialogCustomClasses + value);
+							break;
+						case "draggable":
+							(value ? this._makeDraggable() : this.uiDialog
+									.draggable('destroy'));
+							break;
+						case "height":
+							this.uiDialog.height(value);
+							break;
+						case "position":
+							this._position(value);
+							break;
+						case "resizable":
+							var uiDialog = this.uiDialog, isResizable = this.uiDialog
+									.is(':data(resizable)');
+
+							// currently resizable, becoming non-resizable
+							(isResizable && !value && uiDialog
+									.resizable('destroy'));
+
+							// currently resizable, changing handles
+							(isResizable && typeof value == 'string' && uiDialog
+									.resizable('option', 'handles', value));
+
+							// currently non-resizable, becoming resizable
+							(isResizable || this._makeResizable(value));
+							break;
+						case "title":
+							jQuery(".ui-dialog-title", this.uiDialogTitlebar)
+									.html(value || '&nbsp;');
+							break;
+						case "width":
+							this.uiDialog.width(value);
+							break;
+						}
+
+						jQuery.widget.prototype._setData.apply(this, arguments);
+					},
+
+					_size : function() {
+						/*
+						 * If the user has resized the dialog, the
+						 * .ui-dialog-custom and .ui-dialog-content divs will
+						 * both have width and height set, so we need to reset
+						 * them
+						 */
+						var options = this.options;
+
+						// reset content sizing
+					this.element.css( {
+						height :0,
+						minHeight :0,
+						width :'auto'
+					});
+
+					// reset wrapper sizing
+					// determine the height of all the non-content elements
+					var nonContentHeight = this.uiDialog.css( {
+						height :'auto',
+						width :options.width
+					}).height();
+
+					this.element.css( {
+						minHeight :Math.max(options.minHeight
+								- nonContentHeight, 0),
+						height :options.height == 'auto' ? 'auto' : Math.max(
+								options.height - nonContentHeight, 0)
+					});
+				}
+				});
+
+jQuery.extend(jQuery.ui.dialogCustom, {
+	version :"1.7.2",
+	defaults : {
+		autoOpen :true,
+		bgiframe :false,
+		buttons : {},
+		closeOnEscape :true,
+		closeText :'close',
+		dialogClass :'',
+		draggable :true,
+		hide :null,
+		height :'auto',
+		maxHeight :false,
+		maxWidth :false,
+		minHeight :150,
+		minWidth :150,
+		modal :false,
+		position :'center',
+		resizable :true,
+		show :null,
+		stack :true,
+		title :'',
+		width :300,
+		zIndex :1000
+	},
+
+	getter :'isOpen',
+
+	uuid :0,
+	maxZ :0,
+
+	getTitleId : function(jQueryel) {
+		return 'ui-dialog-title-' + (jQueryel.attr('id') || ++this.uuid);
+	},
+
+	overlay : function(dialogCustom) {
+		this.jQueryel = jQuery.ui.dialogCustom.overlay.create(dialogCustom);
+	}
+});
+
+jQuery
+		.extend(
+				jQuery.ui.dialogCustom.overlay,
+				{
+					instances : [],
+					maxZ :0,
+					events :jQuery.map(
+							'focus,mousedown,mouseup,keydown,keypress,click'
+									.split(','), function(event) {
+								return event + '.dialog-overlay';
+							}).join(' '),
+					create : function(dialogCustom) {
+						if (this.instances.length === 0) {
+							// prevent use of anchors and inputs
+							// we use a setTimeout in case the overlay is
+							// created from
+							// an
+							// event that we're going to be cancelling (see
+							// #2804)
+							setTimeout( function() {
+								// handle jQuery(el).dialog().dialog('close')
+								// (see #4065)
+									if (jQuery.ui.dialogCustom.overlay.instances.length) {
+										jQuery(document)
+												.bind(
+														jQuery.ui.dialogCustom.overlay.events,
+														function(event) {
+															var dialogCustomZ = jQuery(
+																	event.target)
+																	.parents(
+																			'.ui-dialog-custom')
+																	.css(
+																			'zIndex') || 0;
+															return (dialogCustomZ > jQuery.ui.dialogCustom.overlay.maxZ);
+														});
+									}
+								}, 1);
+
+							// allow closing by pressing the escape key
+							jQuery(document)
+									.bind(
+											'keydown.dialog-overlay',
+											function(event) {
+												(dialogCustom.options.closeOnEscape
+														&& event.keyCode
+														&& event.keyCode == jQuery.ui.keyCode.ESCAPE && dialogCustom
+														.close(event));
+											});
+
+							// handle window resize
+							jQuery(window).bind('resize.dialog-overlay',
+									jQuery.ui.dialogCustom.overlay.resize);
+						}
+						if (typeof document
+								.getElementById("dialogCustomBackground") != 'undefined'
+								&& document
+										.getElementById("dialogCustomBackground") != undefined) {
+							var d = document
+									.getElementById('fbc_comments-form');
+							var olddiv = document
+									.getElementById("dialogCustomBackground");
+							d.removeChild(olddiv);
+						}
+
+						if (dialogCustom.options.isCommentingAnnon == 'N') {
+							var jQueryel = jQuery(
+									'<div id="dialogCustomBackground"></div>')
+									.prependTo(
+											document
+													.getElementById("fbc_comments-form"))
+									.addClass(
+											'ui-widget-overlay_custom_loggedInUser_' + clientParams.showName
+													.replace(".", "")).css( {
+										width :640,height:160
+
+									});
+						} else {
+							var jQueryel = jQuery(
+									'<div id="dialogCustomBackground"></div>')
+									.prependTo(
+											document
+													.getElementById("fbc_comments-form"))
+									.addClass(
+											'ui-widget-overlay_custom_' + clientParams.showName
+													.replace(".", "")).css( {
+										width :640,height:360
+
+									});
+						}
+
+						(dialogCustom.options.bgiframe && jQuery.fn.bgiframe && jQueryel
+								.bgiframe());
+
+						this.instances.push(jQueryel);
+						return jQueryel;
+					},
+
+					destroy : function(jQueryel) {
+						this.instances.splice(jQuery.inArray(this.instances,
+								jQueryel), 1);
+
+						if (this.instances.length === 0) {
+							jQuery( [ document, window ]).unbind(
+									'.dialog-overlay');
+						}
+
+						jQueryel.remove();
+
+						// adjust the maxZ to allow other modal dialogs to
+						// continue to
+						// work (see #4309)
+						var maxZ = 0;
+						jQuery.each(this.instances, function() {
+							maxZ = Math.max(maxZ, this.css('z-index'));
+						});
+						this.maxZ = maxZ;
+					},
+
+					height : function() {
+						// handle IE 6
+						if (jQuery.browser.msie && jQuery.browser.version < 7) {
+							var scrollHeight = Math.max(
+									document.documentElement.scrollHeight,
+									document.body.scrollHeight);
+							var offsetHeight = Math.max(
+									document.documentElement.offsetHeight,
+									document.body.offsetHeight);
+
+							if (scrollHeight < offsetHeight) {
+								return jQuery(window).height() + 'px';
+							} else {
+								return scrollHeight + 'px';
+							}
+							// handle "good" browsers
+						} else {
+							return jQuery(document).height() + 'px';
+						}
+					},
+
+					width : function() {
+						// handle IE 6
+						if (jQuery.browser.msie && jQuery.browser.version < 7) {
+							var scrollWidth = Math.max(
+									document.documentElement.scrollWidth,
+									document.body.scrollWidth);
+							var offsetWidth = Math.max(
+									document.documentElement.offsetWidth,
+									document.body.offsetWidth);
+
+							if (scrollWidth < offsetWidth) {
+								return jQuery(window).width() + 'px';
+							} else {
+								return scrollWidth + 'px';
+							}
+							// handle "good" browsers
+						} else {
+							return jQuery(document).width() + 'px';
+						}
+					},
+
+					resize : function() {
+						/*
+						 * If the dialog is draggable and the user drags it past
+						 * the right edge of the window, the document becomes
+						 * wider so we need to stretch the overlay. If the user
+						 * then drags the dialog back to the left, the document
+						 * will become narrower, so we need to shrink the
+						 * overlay to the appropriate size. This is handled by
+						 * shrinking the overlay before setting it to the full
+						 * document size.
+						 */
+						var jQueryoverlays = jQuery( []);
+						jQuery.each(jQuery.ui.dialogCustom.overlay.instances,
+								function() {
+									jQueryoverlays = jQueryoverlays.add(this);
+								});
+
+						jQueryoverlays.css( {
+							width :0,
+							height :0
+						}).css( {
+							width :jQuery.ui.dialogCustom.overlay.width(),
+							height :jQuery.ui.dialogCustom.overlay.height()
+						});
+					}
+				});
+
+jQuery.extend(jQuery.ui.dialogCustom.overlay.prototype, {
+	destroy : function() {
+		jQuery.ui.dialogCustom.overlay.destroy(this.jQueryel);
+	}
+});
+
+function closeSaveCommentReplydialog(){
+jQuery('#saveCommentReplyDivId').css({display:"none"});
+
+}
+
+function telemundorefreshAds(){
+	if (typeof DARTad != 'undefined' && typeof DARTad.refreshAds != 'undefined')
+	{
+		DARTad.refreshAds();
+	}
+}
+
+function setOmnitureFeature(event,commentText){
+   var omigImg = '';
+CommentSource = platform ;
+if(CommentSource == "facebook" ){
+if(getFacebookLogInState() == "N"){
+CommentSource = "anon";
+}
+}
+if(event == 'commentLoad'){
+	omigImg ='<img src="http://oimg.nbcuni.com/b/ss/nbcutelemundobu/1/H.20.3/1?&ev=event36&v46='+commentText+'&v47='+commentPageNumber+'&pe=lnk_o&pev2=Comment%20Module%20Loaded&v49='+CommentSource+'" width="1" height="1" border="0" />';
+    }
+if(event == 'commentSave'){
+	omigImg ='<img src="http://oimg.nbcuni.com/b/ss/nbcutelemundobu/1/H.20.3/1?&ev=event36&v46='+commentText+'&v47='+commentPageNumber+'&pe=lnk_o&pev2=Comment%20Made&v49='+CommentSource+'" width="1" height="1" border="0" />';
+    }
+
+if(event == 'commentReply'){
+	omigImg ='<img src="http://oimg.nbcuni.com/b/ss/nbcutelemundobu/1/H.20.3/1?&ev=event37&v46='+commentText+'&v47='+commentPageNumber+'&pe=lnk_o&pev2=Comment%20Reply&v49='+CommentSource+'" width="1" height="1" border="0" />';
+    }
+
+if(event == 'commentFlagged'){
+	omigImg ='<img src="http://oimg.nbcuni.com/b/ss/nbcutelemundobu/1/H.20.3/1?&ev=event38&v46='+commentText+'&v47='+commentPageNumber+'&pe=lnk_o&pev2=Comment%20Flagged&v49='+CommentSource+'" width="1" height="1" border="0" />';
+    }
+	jQuery("#OmigDiv").html(omigImg);
+
+}
+
+function displayCaptcha() {
+	loggedInState = getLoggedInState();
+	fullURL = ajaxURL + "?controller=Ajax";
+	if (captchaEnabled == 'Y') {
+		if (loggedInState != 'Y'
+				|| (captchaForPlatformUsers == 'Y' && loggedInState == 'Y')) {
+			var captchaQueryParams = {
+				"requestedController" :"Captcha",
+				"requestedMethod" :"renderCapthaText"
+			};
+			jQuery
+					.ajax( {
+						type :"GET",
+						url :fullURL,
+						data :captchaQueryParams,
+						dataType :"jsonp",
+						success : function(captchaData) {
+							captchaText = captchaData.captchaText;
+
+							if (typeof captchaData.captchaText != "undefined"
+									&& captchaData.captchaText != ""
+									&& captchaData.captchaText != null) {
+								createCookie("c_vt",
+										captchaData.captchaSecretText, "");
+							}
+							captchaSecretText = captchaData.captchaSecretText;
+							if (typeof captchaText != "undefined"
+									&& captchaText != "" && captchaText != null) {
+								jQuery("#fbc_captchaText")
+										.attr(
+												'src',
+												ajaxURL
+														+ '?controller=Captcha&method=loadImage&captchaText='
+														+ captchaText);
+							}
+						},
+						error : function(request, textStatus, thrownError) {
+						}
+					});
+		}
+	}
+}
+
+function handleSSOLogout() {
+	userParams = new Object();
+	clearAuthenticationCookies();
+	var url = window.location;
+	var domainArray = new Array();
+	var callback = "";
+	fullDomainArray = String(window.location).split("/");
+	for (i = 3; i < fullDomainArray.length; i++) {
+		if (fullDomainArray[i].indexOf('#') != -1) {
+			tempArray = fullDomainArray[i].split('#');
+			fullDomainArray[i] = tempArray[0];
+		}
+		callback += "/" + fullDomainArray[i];
+	}
+	//clearSiteCookies();	
+	clearServerSideCookies(false, false);
+	redirectToLogin = filterURL(window.location.toString());
+	if (typeof sn_logOut == 'function') {
+		sn_logOut();
+	}
+	//window.location.reload();
+}
+
+
+function handleSSOLogoutRedirect() {
+	userParams = new Object();
+	clearAuthenticationCookies();
+	clearServerSideCookies(false, false);
+	createCookie("redirectToLogin", "true", 1);
+	redirectToLogin = filterURL(window.location.toString());
+	if (typeof sn_logOut == 'function') {
+		sn_logOut();
+	}
+	//window.location.reload();
+}
+
+function ssoSignIn() {
+	createCookie("redirectToLogin", "false", 1);
+	var loginURL = '/registro?act=login&redirectUrl=' + window.location.toString();
+	window.location = loginURL;
+}
+
+function filterURL(url) {
+	var location = '';
+	var querystring = '';
+	var tmpArray = url.split("?");
+	location = tmpArray[0];
+	// split up the query string and store in an
+	// associative array
+	var params = '';
+	if (typeof tmpArray[1] != "undefined")
+	{
+		params = tmpArray[1].split("&");
+	}
+	var queryStringList = {};		 
+	for(var i=0;i<params.length;i++)
+	{
+		var tmp = params[i].split("=");
+		queryStringList[tmp[0]] = unescape(tmp[1]);
+	}
+	for(var i in queryStringList) {
+		if (i != 'token' && i != 'statusCode') {
+			if (querystring == '') {
+				querystring += "?";
+			} else {
+				querystring += "&";
+			}
+			querystring += i+"="+queryStringList[i];
+		}
+	}
+	location += querystring;
+	return location;
+}
+
+function teleflagComment(commentId,commentText) {
+  flagCommentId = commentId;
+  isCommentingAnnon = 'Y';
+  if (getLoggedInState() == 'Y') {
+		isCommentingAnnon = 'N';
+  }
+  var dialogContent = '<div><div class="flag_improper">Marcar como inadecuado</div><span class="reason_text">Raz&#243;n</span><br>'
+                      +'<textarea id="report_Comment" style="width:268px;margin-left:0px;" rows=5 cols=25></textarea><span id="report_Comment_id" class="report_Comment_id_errormsg">'+clientParams.messages.commentTextFlag+'</span><div class="fbc_form_multi_buttons"><button class="fbc_cancel_btn" type="button" onclick="cancelFlagForm();"></button><button class="fbc_submitflag_btn" type="button" onclick="closeReportComment('+commentId+',\''+commentText+'\');return false;"></button></div></div>';
+  jQuery("#fbc_messages_id").html(dialogContent);
+  jQuery("#fbc_messages_id").dialogCustom({autoOpen: false, modal: true,draggable: false, resizable: false,	commentId :commentId,isCommentingAnnon :isCommentingAnnon
+});
+  jQuery("#fbc_messages_id").dialogCustom('open');
+}

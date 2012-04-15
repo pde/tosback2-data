@@ -1,0 +1,50 @@
+BN('WL.Config.Text', function(){
+    return {
+        'ShortName': 'BN.com',
+        'LongName': 'Barnes &amp; Noble',
+        'StoreName': 'Barnes &amp; Noble',
+        'ArchiveName': 'Archive',
+        'Device': 'nook',
+        'DeviceLink' :'<a href="http://www.barnesandnoble.com/nook/index.asp">|[{Device}]|</a>',
+        'EReaderSoftwareName':'B&N eReader',
+        'PhoneNum': '1-800-THE-BOOK (1-800-843-2665)',
+        'PrivacyLink': '<a href="http://www.barnesandnoble.com/help/nc_privacy_policy.asp">Privacy Policy</a>',
+        'Copyright': '1997-2009 Barnesandnoble.com llc',
+        'ItemsFrom': 'Items from |[{StoreName}]|',
+        'ShippingOptionsLabel': 'Shipping Options &amp; Gift Preferences',
+        'ArchiveTitle': '|[{ArchiveName}]|',
+        'CancelledSub': 'You have cancelled your subscription. ',
+        'StaticMyUpdates': '',
+        'DigitalManagementTitle': 'Digital Management',
+        'DigitalManagementFirstColHeader': 'Digital Downloads',
+        'eBookStoreFront': 'Go to eBooks Storefront',
+        'eBookStaticAccordion': '<h3>Start reading your eBook</h3><p>Use your |[{Device}]| &amp; start reading.</p>',
+        'SelectDigitalOrderLabel': 'Download Digital Items',
+        'PageHeader': 'My Account',
+        'PageSignInHeader': 'Sign In or Create An Account',
+        'CreateAccountBenefits': '<ul class="personalizeOptions"><li>Create and email your wish lists</li><li>Fill your virtual library</li><li>Share your reviews</li><li>Get updates on local store events</li></ul>',
+        'HowToPurchase': '',
+        'CreateAccountHeader': 'Create a Barnes &amp; Noble.com Account',
+        'CreateAccountInstructions': 'Fill in the fields below to create a Barnes &amp; Noble.com account. You\'ll be able to shop and check out faster on your next visit; check your order status online and receive updates on special offers and events. ',
+        'mainAccountFeatureTxt': '',
+        'BNUserInstructions': '',
+        'DeliveryDetailsLabel': 'Delivery &amp; Gift Details',
+        'OnlinePriceLabel': 'Online Price',
+        'EBookOnlinePriceLabel': 'eBook Price',
+        'BuyNow':{
+        	'OwnerMessage':'<p>Download your |!P{itemType}P!| from your Library any time!<br /><a href="http://|!P{communityDomain}P!|/ebooks/ebookslibrary.html"> > Go To My Library<a/></p>',
+        	'SampleAddedMessage': '<h3>Your Sample has been added to your eBooks Library.</h3>',        	
+        	'SampleAddedDownloadMessage': '<p>Download your |!P{itemType}P!| from your Library any time!<br /><a href="http://|!P{communityDomain}P!|/ebooks/ebookslibrary.html"> > Go To My Library<a/></p>',
+        	'OwnerInstructionSupport':'<ul><li class="top"><p>Use your <a href="http://www.barnesandnoble.com/nook/index.asp">|[{Device}]|</a> or open |[{EReaderSoftwareName}]| on your computer or mobile device & start reading.</p></li>',
+        	'OwnerDeviceHelpTitle':'<li class="info"><p><strong>Need to install our FREE eReader application?</strong></p></li>',        	
+        	'AccordianPlaceHolder': '<div class="supportedDevices">Supported Devices</div>',
+        	'OwnerDeviceInfoEnable': 'true'
+        },
+        'SignIn': {
+            'AccountBenefits': '<h2>Sign up now and enjoy these benefits:</h2><p class="errors" ></p><div id="newCustomersCopy"><ul><li>Create and email your wish lists</li><li>Champion your favorite titles</li><li>Fill your virtual library</li><li>Share your reviews</li><li>Get updates on local store events</li></ul></div>',
+            'LearnAboutBN': '<a href="http://|!P{WebDomain}P!|/my-bn/">Learn more about My B&amp;N</a>',
+            'CreateAccountInstructions': 'If you already have an account, please <a href="#" class="signInLink">sign in</a>.',
+            'LockOutMessage':''
+        }
+    }
+},true);

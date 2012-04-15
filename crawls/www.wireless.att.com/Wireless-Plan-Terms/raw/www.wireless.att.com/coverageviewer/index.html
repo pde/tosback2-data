@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+
+
+
+
+
+
+		 
+		
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>AT&amp;T Coverage Viewer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<meta http-equiv="MSThemeCompatible" content="no" />
+<meta http-equiv="cache-control" content="no-store" />
+<meta name="robots" content="all" />
+<meta name="description" content='Enter your location to see coverage in your area.' />
+<meta name="keywords" content="" />
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/coverage-viewer.css%3Fv=3.css" media="screen, projection" type="text/css" />
+
+<!-- JS -->
+<script type="text/javascript" src="js/mainLayout.js.html"> </script>
+</head>
+
+<body>
+<div id="container" style="margin-left:15px;width:900px">
+	<div id="close-win"><a href="javascript:window.close();" class="close">Close window</a></div>
+	<div id="header">
+		<p class="logo"><img src="images/att-logo.gif" alt="AT&amp;T" /></p>
+	</div>
+	<h1>AT&amp;T Coverage Viewer</h1>
+	<!-- Tabs -->
+	<div class="tab">
+		<ul>
+			<li id="nationalTab" class="current"><a href="javascript:showNational()" tabindex="1">United States</a></li>
+			<li id="internationalTab"><a href="javascript:showInternational('http://att.cellmaps.com/?locale=en_US');" tabindex="2">International</a></li>
+		</ul>
+	</div>
+	<div class="clear"></div>
+	
+	<div class="tab-container" style="background: none repeat scroll 0 0 #FFFFFF; border-bottom: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC; clear: both; margin: 0 0 10px; padding: 10px;">
+		<div id="nationalContainer" style="display:block;">
+			<head>
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="css/tundra.css" />
+<link rel="stylesheet" href="css/coverage-viewer.css%3Fv=3.css" media="screen, projection" type="text/css" />
+
+<!-- Javascript -->
+
+
+
+    <script type="text/javascript" src="../../serverapi.arcgisonline.com/jsapi/arcgis/index.html%3Fv=2.3"></script>
+
+
+
+<script type="text/javascript" src="js/nls/messages_en.js.html"> </script>
+<script type="text/javascript" src="js/nls/messages_es.js.html"> </script>
+<script type="text/javascript" src="js/nls/messages.js.html"> </script>
+<script type="text/javascript" src="js/com/esri/app/esriConfig.js.html"> </script>
+<script type="text/javascript" src="js/com/esri/app/esriDefaults.js.html"> </script>
+<script type="text/javascript" src="js/UI/UIManager.js%3Fv=2.html"> </script>
+<script type="text/javascript" src="js/UI/UIConfig.js.html"> </script>
+<script type="text/javascript" src="js/com/esri/app/MapManager.js.html"> </script>
+<script type="text/javascript" src="js/com/esri/app/GeoCoder.js.html"> </script>
+
+<script type="text/javascript">
+	setLanguage();
+	dojo.addOnLoad(initializeApp);
+	function initializeApp() { initializeMyMap(); initializeUIHandler(); initializeGeoCoder(); }
+
+	// **** **** **** ****
+	// Commented out code can be used to swap language for testing, but should not be present on the site as more information is stored in the colam_ctn cookie.
+	//	function setEnglish(){ document.cookie='colam_ctn=en_US'; } 
+	//	function setSpanish(){ document.cookie='colam_ctn=es_US'; }           
+	// **** **** **** ****
+</script>
+</head>
+
+<div id="address-col">
+	<p>Enter your location to see coverage in your area.</p>
+
+	<!-- Tabs -->
+	<div class="tab">
+		<ul>
+		  <li id="addressTab" class="current"><a href="javascript:showAddress();" tabindex="1">Address</a></li> 
+		  <li id="latLongTab"><a href="javascript:showLatLong();" tabindex="2">Latitude\Longitude</a></li> 
+		</ul> 
+	</div>
+	<div class="address-container">
+		<!-- Hidden address Area --> 
+		<div class="HiddenAddress"> 
+			<div id="PrintAddress"> 
+				<h2>Address</h2> 
+				<textarea id="printAddressText" style="width: 245px"></textarea>
+			</div> 
+			<div id="PrintLatLong" style="display: none"> 
+				<p>Latitude:&nbsp;<input id="printLatitude" type="text" style="width: 225px" /></p> 
+				<p>Longitude:&nbsp;<input id="printLongitude" type="text" style="width: 225px" /></p> 
+			</div> 
+		</div> 
+		<!-- End Hidden Address Area --> 
+		
+		<div id="FormContainer">
+			<!-- Shown Address Area --> 
+			<div class="ShownAddress" id="address"> 
+				<dl id="address-fields"> 
+					<!-- Address --> 
+					<!--Street Address or Intersection --> 
+					<dt>Street Address or Intersection <a href="http://www.wireless.att.com/coverageviewer/popUp_address.jsp" onclick="return showExampleWindow('popUp_address.jsp');" target="_blank"><img src="images/btn_help_small.gif" /></a></dt> 
+					<dd><input id="streetAddress" type="text" tabindex="3" style="width: 225px" onfocus="this.select();" /></dd> 
+					
+					<!-- City --> 
+					<dt>City</dt> 
+					<dd><input id="city" type="text" tabindex="4" /></dd> 
+					<dd> 
+						<!--State/US Territory-->
+						<dl class="state"> 
+							<dt>State/US Territory <a href="http://www.wireless.att.com/coverageviewer/popUp_stateTerritory.jsp" onclick="return showStateWindow('popUp_stateTerritory.jsp');" target="_blank"><img src="images/btn_help_small.gif" /></a></dt>
+							<dd><input id="state" type="text" tabindex="5" /></dd> 
+						</dl> 
+						<!--ZIP Code-->
+						<dl class="zip"> 
+							<dt>ZIP Code</dt> 
+							<dd><input id="zipCode" type="text" tabindex="6" /></dd> 
+						</dl> 
+					</dd> 
+					<div class="clear"></div> 
+				</dl> 
+				<div class="clear"></div>
+				<p class="view-map"><a href="javascript:viewMapAddressClickHandler();"><img src='images/btn-viewMap.gif' alt='View Map' title='View Map' tabindex="7" /></a></p>
+				<!-- Start Error Bad Address -->
+				<div id="error" style="display: none">
+					<h3 id="messageHeading">We Cannot Find Your Address</h3>
+					<p id="messageBody"></p>
+					<div id="multiResultsContainer" style="display: none"></div>
+				</div>
+				<!-- End Error Bad Address -->
+			</div>
+			<!-- Shown Address Area --> 
+			<!-- Shown Lat/Long Area --> 
+			<div class="ShownLatLong" style="display: none" id="latlong"> 
+				<p class="noprint">Enter in Decimal Degree Format<br /> (e.g., Lat. 33.767711 Long. -84.41819)</p> 
+				<dl id="address-fields"> <!--<dt>Latitude</dt>--> 
+					<dt>Latitude</dt> 
+					<dd><input id="latitude" type="text" style="width: 225px" onfocus="this.select();" /></dd> 
+					<!--Longitude--> 
+					<dt>Longitude</dt> 
+					<dd><input id="longitude" type="text" style="width: 225px" onfocus="this.select();" /></dd> 
+				</dl> 
+				<div class="clear"></div>
+				<p class="view-map"><a href="javascript:viewMapLatLongClickHandler();"><img src='images/btn-viewMap.gif' alt='View Map' title='View Map' tabindex="7" /></a></p> 
+				<!-- Start Error Bad Lat/Long --> 
+				<div id="errorLL" style="display: none"> 
+					<h3 id="messageHeadingLL">We Cannot Find Your Address</h3> 
+					<p id="messageBodyLL"></p> 
+				</div> 
+				<!-- End Error Bad Lat/Long --> 
+				<div class="clear"></div> 
+			</div> 
+			<!-- End Shown Lat/Long Area -->
+		</div>
+		<!-- End Form Container -->
+	</div>
+
+	
+
+
+
+<class="note">Coverage last updated on: 03/16/12<br />
+Map depicts an approximation of coverage.<br />
+
+
+	<a href="http://www.wireless.att.com/coverageviewer/popUp_legal.jsp" onclick="return showExampleWindow('popUp_legal.jsp');" class="newWin" target="_blank">Learn More</a>
+	<br /><br /> 
+
+	<dl class="external-links">
+		<dt>The Nation's Fastest Mobile Broadband network is getting faster with 4G LTE</dt>
+		<dd><a href="http://www.att.com/network" target="4g">Learn more</a></dd> 
+	</dl>
+	<br /> 
+
+	<dl class="external-links">
+		<dt>AT&T Wi-Fi Locations</dt>
+		<dd><a href="http://www.att.com/gen/general?pid=13540" target="wifi">Find a Hotspot</a></dd> 
+		<dd><a href="../../www.att.com/gen/general%3Fpid=5949.html" target="wifi">Learn more</a></dd>
+	</dl>
+	<br />
+	
+	<dl class="external-links">
+		<dt>New Customers - Get Started</dt> 
+		<dd><a href="http://www.wireless.att.com/" target="new">Shop for a Cell Phone</a></dd> 
+		<dd><a href="http://www.wireless.att.com/cell-phone-service/cell-phone-plans/" target="new">Shop for Cell Phone Plans</a></dd> 
+		<dd><a href="http://www.wireless.att.com/cell-phone-service/go-phones/" target="new">Shop for Prepaid Cell Phones</a></dd> 
+		<dd><a href="http://www.wireless.att.com/support/" target="new">Wireless Support</a></dd> 
+	</dl>
+</div>
+
+<div id="map-col">
+	<div class="print-map"><a href="javascript:openPrintPage()" class="print-map">Print this page</a></div>
+	<h2>Coverage Type</h2>
+	<ul class="coverage-types">
+		<li><a href="javascript:dataTypeLinkClickHandler(ESRIConfig.voiceDataTypeID);" id="voice" class="currentSelection">Voice</a></li>
+		<li><a href="javascript:dataTypeLinkClickHandler(ESRIConfig.dataDataTypeID);" id="data">Data</a></li>
+		<li><a href="javascript:dataTypeLinkClickHandler(ESRIConfig.goPhoneDataTypeID);" id="gophone">GoPhone</a></li>
+		<li class="last"><a href="javascript:dataTypeLinkClickHandler(ESRIConfig.smartLimitsFamilyMapLooptDataTypeID);" id="smartlimits">Smart Limits & FamilyMap</a></li>
+	</ul>
+	
+	<div id="map-container" class="tundra">
+		<div id="map-controls">
+			<div id="map-box" class="mapBox">
+				<div id="esriMapDiv" class="esriMapDiv"></div>
+				<div id="imageMapDiv" class="imageMapDiv">	
+					<img id="mapImage"src="images/coverage_Voice.gif" onclick="mapImgeClickHandler(event);" />
+				</div>
+			</div>
+			<div id="staticImageSliderDiv" class="staticSlider"> 
+				<div id="staticImageSlider" ></div> 
+			</div>
+
+			<ul id="Directionals">
+				<li id="NW"><a href="javascript:panButtonClickHandler('NW');"><img src="images/arrow_nw.gif" alt='Move Northwest' /></a><span class="accessible">Move Northwest</span></li> 
+				<li id="N"><a href="javascript:panButtonClickHandler('N');"><img src="images/arrow_n.gif" alt='Move North' /></a><span class="accessible">Move North</span></li> 
+				<li id="NE"><a href="javascript:panButtonClickHandler('NE');"><img src="images/arrow_ne.gif" alt='Move Northeast' /></a><span class="accessible">Move Northeast</span></li>
+				<li id="W"><a href="javascript:panButtonClickHandler('W');"><img src="images/arrow_w.gif" alt='Move West' /></a><span class="accessible">Move West</span></li>
+				<li id="E"><a href="javascript:panButtonClickHandler('E');"><img src="images/arrow_e.gif" alt='Move East' /></a><span class="accessible">Move East</span></li>
+				<li id="SW"><a href="javascript:panButtonClickHandler('SW');"><img src="images/arrow_sw.gif" alt='Move Southwest' /></a><span class="accessible">Move Southwest</span></li>
+				<li id="S"><a href="javascript:panButtonClickHandler('S');"><img src="images/arrow_s.gif" alt='Move South' /></a><span class="accessible">Move South</span></li>
+				<li id="SE"><a href="javascript:panButtonClickHandler('SE');"><img src="images/arrow_se.gif" alt='Move Southeast' /></a><span class="accessible">Move Southeast</span></li> 
+			</ul>
+		</div>
+	</div>
+
+	<h2 id="legendTitle">Voice Coverage Legend</h2>
+	<div class="legend">
+		<!-- Dynamic Map Legend Voice-->
+		<div id="dynamicMapLegendvoice" style="display: none;"> 
+			<dl> 
+			  <dt><img src="images/icon_best.gif" alt='Best' /></dt> 
+			  <dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='In general, the areas shown in dark orange should have the strongest signal strength and be sufficient for most in-building coverage. Click the Best link for more information.' class="newWin">Best</a></dd> 
+			  <dt class="img"><img src="images/icon_better.gif" alt='Good' /></dt> 
+			  <dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='The areas shown in the medium orange should be sufficient for on-street or in-the-open coverage, most in-vehicle, some in-building. Click the Good link for more information.' class="newWin">Good</a></dd> 
+			  <dt class="img"><img src="images/icon_good.gif" alt='Moderate' /></dt> 
+			  <dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='The areas shown in the light orange should have sufficient signal strength for on-street or in-the-open coverage. Click the Moderate link for more information.' class="newWin">Moderate</a></dd> 
+			  <dt class="img"><img src="images/icon_handset.gif" alt='Requires 3G Capable Handset' /></dt> 
+			  <dd>Requires 3G Capable Handset</dd> 
+			  <dt class="img"><img src="images/icon_partner.gif" alt='Partner' /></dt> 
+			  <dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='The areas shown in the light orange should have sufficient signal strength for on-street or in-the-open coverage. Click the Moderate link for more information.' class="newWin">Partner</a></dd> 
+			  <dt class="img"><img src="images/icon_none.gif" alt='No Service Available' /></dt> 
+			  <dd>No Service Available</dd> 
+			</dl> 
+			<input id="3gToggle" style="display:none;"/> 
+			<div class="clear"></div>
+		</div>
+		<!-- Static Map Legend Voice -->
+		<div id="staticMapLegendvoice">
+			<dl>
+			  <dt><img alt='AT&amp;T National Voice Coverage' title='AT&amp;T National Voice Coverage' src="images/icon_best.gif" height="15" width="20" /></dt> 
+			  <dd>AT&amp;T National Voice Coverage</dd> 
+			  <dt><img alt='Requires 3G Capable Handset' title='Requires 3G Capable Handset' src="images/icon_3ghandset.gif" height="15" width="20" /></dt> 
+			  <dd>Requires 3G Capable Handset</dd> 
+			  <dt class="img"><img alt='No Service Available' title='No Service Available' src="images/icon_none.gif" height="15" width="20" /></dt> 
+			  <dd>No Service Available</dd> 
+			</dl>
+			<div class="clear"></div>
+		</div>
+
+		<!-- Dynamic Map Legend Data-->
+		<div id="dynamicMapLegenddata" style="display: none;">
+			<dl> 
+			  <dt><img src="images/icon_4g.gif" height="15" width="20" alt="" /></dt> 
+			  <dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" class="newWin" title="When combined with enhanced backhaul, our HSPA+ technology delivers speeds up to 4x faster than AT&amp;T's already fast Mobile Broadband network. Click for more information.">4G</a>, <a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp#dataConnectPass" onclick="return showLegendWindow('popUp_legend.jsp#dataConnectPass');" target="legend" class="newWin">DataConnect Pass</a></dd> 
+			  <dt><img src="images/icon_3g.gif" alt='Best' /></dt> 
+			  <dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" class="newWin" title='Mobile broadband provides accelerated data speeds and simultaneous voice and data capabilities for an amazing wireless voice and data experience. Click for more information.'> Mobile Broadband<img src="images/symbol-including.gif" height="9" width="7" alt="" /></a> , <a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp#dataConnectPass" onclick="return showLegendWindow('popUp_legend.jsp#dataConnectPass');" target="legend" class="newWin">DataConnect Pass</a> </dd> 
+			  <dt><img src="images/icon_dataEDGE.gif" height="15" width="20" alt="" /></dt> 
+			  <dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp#EDGE');" target="_blank" class="newWin" title='High-speed, mobile data and Internet access technology supports a range of advanced data services including video and music clips, full picture &amp; video messaging, high-speed color internet access and email. Click for more information.'>EDGE<img src="images/symbol-including.gif" height="9" width="7" /></a>, <a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp#dataConnectPass" onclick="return showLegendWindow('popUp_legend.jsp#dataConnectPass');" target="legend" class="newWin">DataConnect Pass</a></dd> 
+			  <dt><img src="images/icon_dataEDGEpartner.gif" height="15" width="20" alt="" /></dt> 
+			  <dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" class="newWin" title='Unaffiliated Partner high-speed, mobile data and internet access technology. Click for more information.'>Partner EDGE<img src="images/symbol-excluding.gif" height="9" width="7" alt="" /></a></dd> 
+			  <dt><img src="images/icon_dataGPRSpartner.gif" height="15" width="20" alt="" /></dt> 
+			  <dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" class="newWin" title='Unaffiliated Partner General Packet Radio Service allowing nationwide text, email and basic WAP service.  Click for more information.'>Partner GPRS<img src="images/symbol-excluding.gif" height="9" width="7" alt="" /></a></dd> 
+			  <dt><img src="images/icon-none.gif" height="15" width="20" alt="" /></dt> 
+			  <dd>No Service Available</dd> 
+			</dl> 
+			<div class="clear"></div>
+			<ul class="legal">
+				<li><img src="images/symbol-including.gif" height="9" width="7" />Supports optional features such as AT&amp;T Media, including Cellular Video.</li> 
+				<li><img src="images/symbol-excluding.gif" height="9" width="7" alt="" />Supports optional features AT&amp;T Media, excluding Cellular Video.</li> 
+			</ul>
+		</div>
+			
+		<!-- Static Map Legend Data -->
+		<div id="staticMapLegenddata" style="display: none;"> 
+			<dl class="one"> 
+			  <dt><img alt="National Data Coverage" title="National Data Coverage" src="images/icon_dataEDGE.gif" height="15" width="20" /></dt> 
+			  <dd>National Data Coverage</dd> 
+			  <dt class="img"><img alt='No Service Available' title='No Service Available' src="images/icon_none.gif" height="15" width="20" /></dt> 
+			  <dd>No Service Available</dd> 
+			</dl>
+			<div class="clear"></div>
+		</div>
+
+		<!-- Dynamic Map Legend GoPhone-->
+		<div id="dynamicMapLegendgophone" style="display: none;">
+			<div class="one">
+				<p><input name="dynamicGoPhoneRadio" id="payAsYouGoRadio" type="radio" value="radioButton" onclick="payAsYouGoRadioClickHandler();" checked="checked" />Pay As You Go
+				<br	 />
+				<input name="dynamicGoPhoneRadio" id="pickYourPlanRadio" type="radio" value="radioButton" onclick="pickYourPlanRadioClickHandler();" />Pick Your Plan</p>
+			</div>
+
+			<div id="dynamicLegendGoPhonePYP" style="display:none">
+				<dl class="two">
+					<dt><img src="images/icon-best.gif" height="15" width="20" alt="" /></dt>
+					<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='In general, the areas shown in dark orange should have the strongest signal strength and be sufficient for most in-building coverage. Click the Best link for more information.' class="newWin">Best</a></dd>
+					<dt><img src="images/icon-better.gif" height="15" width="20" alt="" /></dt>
+					<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='The areas shown in the medium orange should be sufficient for on-street or in-the-open coverage, most in-vehicle, some in-building. Click the Good link for more information.' class="newWin">Good</a></dd>
+					<dt><img src="images/icon-good.gif" height="15" width="20" alt="" /></dt>
+					<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='The areas shown in the light orange should have sufficient signal strength for on-street or in-the-open coverage. Click the Moderate link for more information.' class="newWin">Moderate</a></dd>
+					<dt class="img"><img src="images/icon_partner.gif" alt='Partner' /></dt> 
+					<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='The areas shown as a stripped pattern represent the coverage of unaffiliated carriers. Click the link for more information.' class="newWin">Partner</a></dd>
+
+<dt><img alt='3G GoPhone - requires 3G capable handset' title='3G coverage for GoPhone is available in select areas and requires a 3G capable handset to receive service.' src="images/icon_handset.gif" height="15" width="20" /></dt>
+			<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp#goPhone_3G');" target="_blank" title='3G coverage for GoPhone is available in select areas and requires a 3G capable handset to receive service.' class="newWin">3G GoPhone - requires 3G capable handset</a></dd>
+
+					<dt><img src="images/icon-none.gif" height="15" width="20" alt="" /></dt>
+					<dd>No Service Available</dd>
+				</dl>
+			</div>
+
+			<div id="dynamicLegendGoPhonePayGo">
+				<dl class="two">
+					<dt><img src="images/icon-best.gif" height="15" width="20" alt="" /></dt>
+					<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='In general, the areas shown in dark orange should have the strongest signal strength and be sufficient for most in-building coverage. Click the Best link for more information.' class="newWin">Best</a></dd>
+					<dt><img src="images/icon-better.gif" height="15" width="20" alt="" /></dt>
+					<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='The areas shown in the medium orange should be sufficient for on-street or in-the-open coverage, most in-vehicle, some in-building. Click the Good link for more information.' class="newWin">Good</a></dd>
+					<dt><img src="images/icon-good.gif" height="15" width="20" alt="" /></dt>
+					<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='The areas shown in the light orange should have sufficient signal strength for on-street or in-the-open coverage. Click the Moderate link for more information.' class="newWin">Moderate</a></dd>
+					<dt><img src="images/icon_partner.gif" alt='Partner' /></dt> 
+					<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp');" target="_blank" title='The areas shown as a stripped pattern represent the coverage of unaffiliated carriers. Click the link for more information.' class="newWin">Partner</a></dd>
+					<dt><img alt='3G GoPhone - requires 3G capable handset' title='3G coverage for GoPhone is available in select areas and requires a 3G capable handset to receive service.' src="images/icon_handset.gif" height="15" width="20" /></dt>
+					<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp" onclick="return showLegendWindow('popUp_legend.jsp#goPhone_3G');" target="_blank" title='3G coverage for GoPhone is available in select areas and requires a 3G capable handset to receive service.' class="newWin">3G GoPhone - requires 3G capable handset</a></dd>
+					<dt><img src="images/icon-none.gif" height="15" width="20" alt="" /></dt>
+					<dd>No Service Available</dd>
+				</dl>
+			</div>
+
+			<div class="clear"></div>
+		</div>
+
+		<!-- Static Map Legend GoPhone -->
+		<div id="staticMapLegendgophone" style="display: none;">
+			<div class="one">
+				<p><input name="staticGoPhoneRadio" id="payAsYouGoRadioStatic" type="radio" value="radioButton" checked="checked" onclick="payAsYouGoRadioClickHandler();" />Pay As You Go
+				<br />
+				<input name="staticGoPhoneRadio" id="pickYourPlanRadioStatic" type="radio" value="radioButton" onclick="pickYourPlanRadioClickHandler();" />Pick Your Plan
+			</div>
+			<div id="staticLegendGoPhonePYP" style="display: none;">
+				<dl class="two">
+					<dt><img alt='National GoPhone Coverage' title='National GoPhone Coverage' src="images/icon_best.gif" height="15" width="20" /></dt>
+					<dd>National GoPhone Coverage</dd>
+
+<dt class="img"><img alt='3G GoPhone - requires 3G capable handset' title='3G GoPhone - requires 3G capable handset' src="images/icon_3ghandset.gif" height="15" width="20" /></dt>
+			<dd>3G GoPhone - requires 3G capable handset</dd>
+
+					<dt class="img"><img alt='No Service Available' title='No Service Available' src="images/icon_none.gif" height="15" width="20" /></dt>
+					<dd>No Service Available</dd>
+				</dl>
+			</div>
+			<div id="staticLegendGoPhonePayGo" style="display: block;">
+				<dl class="two">
+					<dt><img alt='National GoPhone Coverage' title='National GoPhone Coverage' src="images/icon_best.gif" height="15" width="20" /></dt>
+					<dd>National GoPhone Coverage</dd>
+					<dt class="img"><img alt='3G GoPhone - requires 3G capable handset' title='3G GoPhone - requires 3G capable handset' src="images/icon_3ghandset.gif" height="15" width="20" /></dt>
+					<dd>3G GoPhone - requires 3G capable handset</dd>
+					<dt class="img"><img alt='No Service Available' title='No Service Available' src="images/icon_none.gif" height="15" width="20" /></dt>
+					<dd>No Service Available</dd>
+				</dl>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<!-- Dynamic Map Legend Smart Limits-->
+		<div id="dynamicMapLegendsmartlimits" style="display: none;">
+			<dl>
+				<dt><img src="images/icon-best.gif" height="15" width="20" alt="" /></dt>
+				<dd><a href="index.html#" onclick="return showLegendWindow('popUp_legend.jsp#familymap');" target="_blank" class="newWin" title='The areas shown in dark orange depict where AT&T Smart Limits for Wireless and AT&T FamilyMap will operate. Service is dependent upon features associated with the subscriber account.'>AT&T Smart Limits for Wireless and AT&T FamilyMap</a></dd>
+				<dt><img src="images/icon-partner-edge.gif" height="15" width="20" alt="" /></dt>
+				<dd><a href="index.html#" onclick="return showLegendWindow('popUp_legend.jsp#smartlimits');" target="_blank" class="newWin" title='The areas shown as a stripped pattern represent the coverage of unaffiliated carriers.  Click the link for more information.'> AT&T Smart Limits Partner</a> </dd>
+				<dt><img src="images/icon-none.gif" height="15" width="20" alt="" /></dt>
+				<dd>No Service Available</dd>
+			</dl>
+			<div class="clear"></div>
+			<p>View details about <a href="http://www.att.com/smartlimitsforwireless" class="newWin" target="_blank">Smart Limits</a>, <a href="http://www.att.com/familymap" class="newWin" target="_blank">and FamilyMap</a> </p> 
+		</div>
+
+		<!-- Static Map Legend Smart Limits -->
+		<div id="staticMapLegendsmartlimits" style="display: none;">
+			<dl>
+				<dt><img alt='AT&T Smart Limits for Wireless and AT&T FamilyMap ' title='AT&T Smart Limits for Wireless and AT&T FamilyMap ' src="images/icon_best.gif" height="15" width="20" /></dt> 
+				<dd>AT&T Smart Limits for Wireless and AT&T FamilyMap </dd> 
+				<dt><img alt='AT&T Smart Limits coverage' title='AT&T Smart Limits coverage' src="images/icon_good.gif" height="15" width="20" /></dt> 
+				<dd>AT&T Smart Limits coverage</dd> 
+				<dt class="img"><img alt='No Service Available' title='No Service Available' src="images/icon_none.gif" height="15" width="20" /></dt> <dd>No Service Available</dd> 
+			</dl>
+			<div class="clear">
+		</div>
+
+		<!-- Dynamic Map Legend Mobile TV -->
+		<div id="dynamicMapLegendmobiletv" style="display: none;">
+			<dl>
+				<dt><img src="images/icon-tv.jpg" height="15" width="20" alt="" /></dt>
+				<dd><a href="http://www.wireless.att.com/coverageviewer/popUp_legend.jsp#mobiletv" onclick="return showLegendWindow('popUp_legend.jsp#mobiletv');" target="_blank" class="newWin" title='The pattern areas should have sufficient signal strength for on-street or in-the-open coverage, and represent areas where AT&T Mobile TV operates; feature required on subscriber account; video capable handset required.'>AT&amp;T Mobile TV</a>.</dd> 
+				<dt><img src="images/icon-none.gif" height="15" width="20" alt="" /></dt> 
+				<dd>No Service Available</dd> 
+			</dl> 
+			<div class="clear"></div> 
+			<p>View details about<a href="http://www.wireless.att.com/learn/messaging-internet/mobile-tv/" class="newWin">AT&amp;T Mobile TV</a></p> 
+		</div> 
+	
+		<div id="staticMapLegendmobiletv" style="display: none;"> 
+			<dl class="one"> 
+				<dt><img alt='AT&amp;T Mobile TV' title='AT&amp;T Mobile TV' src="images/icon-tv.jpg" height="15" width="20" /></dt> 
+				<dd>AT&amp;T Mobile TV</dd> 
+				<dt class="img"><img alt='No Service Available' title='No Service Available' src="images/icon_none.gif" height="15" width="20" /></dt> 
+				<dd>No Service Available</dd> 
+			</dl>
+		</div>
+	</div>
+</div>
+	<div class="legalPrintDisplay">
+		<p><strong>Important Information About the Coverage Map</strong></p>
+		<p>Map may include areas served by unaffiliated carriers, and may depict their licensed area rather than an approximation of the coverage there. Actual coverage area may differ substantially from map graphics, and coverage may be affected by such things as terrain, weather, foliage, buildings and other construction, signal strength, customer equipment and other factors. AT&amp;T does not guarantee coverage. Charges will be based on the location of the site receiving and transmitting the call, not the location of the subscriber.</p>
+	</div>
+</div>
+
+		</div>
+		<div class="clear"></div>
+		<div id="internationalContainer" style="display:none;">
+			
+<div id="address-col" style="margin-right:2px">
+
+<p>Enter your international destination to see available coverage. </p>
+	
+	<dl class="external-links">
+		<dd><a href="http://www.wireless.att.com/learn/international/roaming/travel-guide.jsp" class="newWin" target="_blank">Travel Guide</a></dd>  
+</dl>
+	<br /> 
+
+<dl class="external-links">
+		<dd><a href="http://www.wireless.att.com/learn/international/roaming/international-roaming.jsp" class="newWin" target="_blank">Learn More</a></dd>  
+</dl>
+	<br /> 
+
+<dl class="external-links">
+		<dd><a href="http://www.wireless.att.com/learn/international/roaming/affordable-world-packages.jsp" class="newWin" target="_blank">Affordable World Packages</a></dd>  
+</dl>
+	<br /> 
+
+<dl class="external-links">
+		<dd><a href="http://www.wireless.att.com/learn/en_US/pdf/Travel-Tips.pdf?wtSlotClick=1-0064NO-0-1&WT.svl=calltoaction" class="newWin" target="_blank">Travel Tips</a></dd>  
+</dl>
+	<br /> 
+
+	<div class="clear">
+		</div>
+
+	<p>
+
+
+
+<class="note">Coverage last updated on: 11/17/11<br />
+Map depicts an approximation of coverage.<br />
+
+
+	<a href="http://www.wireless.att.com/coverageviewer/popUp_legal_international.jsp" onclick="return showExampleWindow('popUp_legal_international.jsp');" class="newWin" target="_blank">More Details</a>
+	<br /><br /> </p>
+<div class="clear">
+		</div>
+
+<p>For detailed coverage in the United States, select the "United States" tab above or  <a href="javascript:showNational()">here</a>.
+	<br /><br /> </p>
+
+	
+</div>
+<div id="map-col" style="margin:0;width:600px;">
+	
+	<iframe id="AR_iframe" height="820px" width="600px" frameborder="0" ></iframe>
+</div>
+
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+
+
+
+<!-- BEGIN BAYNOTE OBSERVER -->
+<script language="javaScript"
+	src="../global/scripts/baynote-observer.js"
+	type="text/javascript"></script>
+<!-- END BAYNOTE OBSERVER -->
+<script language="javaScript" src="http://www.wireless.att.com/webtrends/scripts/dcs_tag.js" type="text/javascript"></script>
+</body>
+</html>

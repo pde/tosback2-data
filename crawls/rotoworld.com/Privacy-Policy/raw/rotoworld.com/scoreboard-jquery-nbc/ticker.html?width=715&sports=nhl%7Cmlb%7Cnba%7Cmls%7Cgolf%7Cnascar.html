@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	<title>scores</title>
+	
+	<!-- Style includes -->
+	<link rel="stylesheet" href="scripts/shs_masterTicker.css%3Fvs=8172011.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<!--[if IE]>
+    <style type="text/css">
+		@font-face {
+			font-family: HelveticaNeueCustom;
+			src: url('scripts/helveticaneueltstd-bdcn_0-webfont.eot');
+		}
+        </style>
+	<![endif]-->
+
+	
+	<!--scripts -->
+	<script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="../../scores.nbcsports.msnbc.com/ticker/scripts/jquery.client.js"></script>
+	
+	<script type="text/javascript" src="scripts/msnbcTicker.js%3Fvs=03062012"></script>
+	<script type="text/javascript">
+		var shsMSNBCTicker = null;
+		$(document).ready(function() {
+			var findSports = new RegExp('[?&]sports=([^&]*)','i');
+			var showSports = "cfb|mlb|nfl|nhl|golf";
+			if (location.search.search(findSports) >= 0) {
+				var queryArr = location.search.match(findSports);
+				showSports = queryArr[1];
+			}
+			var findWidth = new RegExp('[?&]width=([^&]*)','i');
+			var useWidth = '100%';
+			if (location.search.search(findWidth) >= 0) {
+				var queryArr = location.search.match(findWidth);
+				useWidth = queryArr[1];
+			}
+			
+			shsMSNBCTicker = new SHS.MSNBCTicker({ 
+				width: useWidth,
+				sports: showSports
+				/*
+				width: 777,
+				sports: "mlb|nfl|nba|nhl|cfb|cbk|nascar|golf|cycling",
+				path: "http://scores.nbcsports.msnbc.com/"
+				*/
+			});
+		});
+	</script>
+
+<base target="_top"/>
+</head>
+	<body>
+	
+		<div class="shs_customTicker"></div><!-- shs_customTicker -->
+		<!-- <div id="debug" style="color: #fff"></div> -->
+	</body>
+</html>

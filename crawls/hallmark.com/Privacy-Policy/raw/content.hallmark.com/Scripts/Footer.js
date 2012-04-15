@@ -1,0 +1,5 @@
+﻿
+function AddOnTheFlyPreference(emailAddress){if(isValidEmail(emailAddress)){$.ajax({type:"POST",contentType:"application/x-www-form-urlencoded",url:"/Home/AddOnTheFlyPreference",data:{emailAddress:emailAddress},dataType:"json",success:function(data){if((data.JsonError!=null)&&(data.JsonError!='')){document.getElementById('onTheFlyError').innerHTML=data.JsonError;document.getElementById("success").innerHTML="";}
+else{document.getElementById("success").innerHTML="<b>Congratulations! You have successfully signed up.</b>";document.getElementById('onTheFlyError').innerHTML='';}}});}
+else{document.getElementById('onTheFlyError').innerHTML="<b>Invalid e-mail address</b>";document.getElementById('success').innerHTML="";}}
+function isValidEmail(emailAddress){var regex=/^[a-zA-Z0-9._-]+@([a-zA-Z0-9.-]+\.)+[a-zA-Z0-9.-]{2,4}$/;return regex.test(emailAddress);}

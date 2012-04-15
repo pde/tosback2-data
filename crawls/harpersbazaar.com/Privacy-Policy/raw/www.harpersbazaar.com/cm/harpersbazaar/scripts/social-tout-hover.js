@@ -1,0 +1,20 @@
+$(document).ready(function(){
+	$('#lr_social_tooltip_fb').hover(function(){
+		$(".soc_fb_cont").addClass('soc_facebook_active');
+		$(this).mouseleave(function(){
+			$(".soc_fb_cont").removeClass('soc_facebook_active');
+		});
+	});
+	$('#lr_social_tooltip_tw').hover(function(){
+		$(".soc_tw_cont").addClass('soc_twitter_active');
+		$(this).mouseleave(function(){
+			$(".soc_tw_cont").removeClass('soc_twitter_active');
+		});
+	});
+	$('#lr_social_tooltip_nl').hover(function(){
+		$(".soc_nl_cont").addClass('soc_newsltr_active');
+		$(this).mouseleave(function(){
+			$(".soc_nl_cont").removeClass('soc_newsltr_active');
+		});
+	}); // I am so disappointed that it came to this
+});

@@ -1,0 +1,150 @@
+(function($$, $) {
+  $$.setup_fbconnect_interaction = function() {
+    //if not logged in
+    if (!slideshare_object.user.loggedin) {
+      $('#fb-login-modalbox').live('click', function() {
+        var itemLocation = 'fancybox';
+        $('#j-fb-modalbox-indicator').show();
+        var perms = slideshare_object.fbconnect.basic_perms;
+        if (typeof(thisLink) != "undefined" && is_abbr(thisLink)) {
+          perms = slideshare_object.fbconnect.download_perms;
+        }
+        //Facebook SDK should be ready before this block executes
+        FB.login(function(response) {
+          if (response) {
+            if (response.authResponse) {
+              if (typeof(thisLink) != "undefined" && is_abbr(thisLink)) {
+                $.post('/fbconnect/create_account_or_login?from_page=download',
+                       {access_token : response.authResponse.accessToken,
+                        fb_user_id : response.authResponse.userID},
+                       function(data) {
+                         fbconnect_login_redirect(data, itemLocation);
+                       },
+                       'json');
+              } else {
+                $.post('/fbconnect/create_account_or_login', 
+                       {access_token : response.authResponse.accessToken,
+                        fb_user_id : response.authResponse.userID},
+                       function(data) {
+                         fbconnect_login_redirect(data, itemLocation);
+                       },
+                       'json');
+              }
+            } else {
+              $('#j-fb-modalbox-indicator').hide();
+            }
+          } else {
+            $('#j-fb-modalbox-indicator').hide();
+          }
+        },
+        perms);
+      });
+    }
+
+    function fbconnect_login_redirect(data, itemLocation) {
+      switch (data.status) {
+      case 1:
+        /*A new user has been created*/
+        _gaq.push(['_trackEvent', 'Signup', 'fb_login', 'fb_signup_from_'+itemLocation]);
+        if (typeof(fromSource) != "undefined") {
+          window.location.replace("/fbconnect/landingpage?from=" + fromSource);
+        } else {
+          window.location.replace("/fbconnect/landingpage?from=" + escape(window.location.href));
+        }
+        break;
+      case 2:
+      case 3:
+        /*The user already had a facebook linked account*/
+        /*Handle the logout page*/
+        _gaq.push(['_trackEvent', 'Login', 'fb_login', 'fb_login_from_'+itemLocation]);
+        if (getUrlVars().from_logout !== undefined &&
+            typeof(fromType) == "undefined") { window.location.replace('/newsfeed'); }
+        else {
+          (typeof(fromType) != "undefined" &&
+             (fromType == 'zipcast' || fromType == 'business' ||
+              fromType == 'upload' || fromType == 'download') && fromSource &&
+              fromSource.length > 1) ?
+          window.location.href = unescape(fromSource) : window.location.reload();
+        }
+        break;
+      case 4:
+        /*Failed*/
+        window.location.reload();
+        break;
+      default:
+        window.location.reload();
+      }
+    }
+
+    function fbconnect_login_redirect_link(data) {
+      $('#j-fb-topnav-indicator').hide();
+      $('#j-fb-login-indicator').hide();
+      switch (data.status) {
+      case 1:
+        /* Success */
+        window.location.reload();
+        break;
+      case 3:
+        /*User already exists this facebook login*/
+        $('#page-error').append('We could not connect your SlideShare account ' +
+                                'to Facebook. This Facebook login is already ' +
+                                'being used with another SlideShare account.').show();
+        break;
+      default:
+        $('#page-error').append('There was an error.').show();
+      }
+    }
+    
+    $(document).ready(function() {
+      _gaq.push(['_setAccount', 'UA-2330466-1']);
+      $('#fb-login').click(function(e) {
+        var itemLocation = 'login';
+        e.preventDefault();
+        if (this.href) {
+          fromSource = getUrlVar('from_source', this.href);
+        }
+        $('#j-fb-login-indicator').show();
+        var perms = slideshare_object.fbconnect.basic_perms;
+        if (slideshare_object.user.loggedin) {
+          perms = slideshare_object.fbconnect.download_perms;
+        }
+
+        FB.login(function(response) {
+          if (response) {
+            if (response.authResponse) {
+              if (slideshare_object.user.loggedin) {
+                if (!slideshare_object.user.is_fbuser) {
+                  $.post('/fbconnect/link_facebook_profile', 
+                    {access_token : response.authResponse.accessToken,
+                     fb_user_id : response.authResponse.userID},
+                    function(data) {
+                      fbconnect_login_redirect_link(data);
+                    },
+                    'json');
+                }
+              } else {
+                $.post('/fbconnect/fb_login', 
+                {},
+                function(data) {
+                  $.post('/fbconnect/create_account_or_login', 
+                    {access_token : response.authResponse.accessToken,
+                     fb_user_id : response.authResponse.userID},
+                    function(data) {
+                      fbconnect_login_redirect(data, itemLocation);
+                    },
+                    'json');
+                },
+                'json');
+              }
+            } else {
+              $('#j-fb-login-indicator').hide();
+            }
+          } else {
+            $('#j-fb-login-indicator').hide();
+          }
+        },
+        perms);
+      });
+    });
+  };
+})(slideshare_object, jQuery);

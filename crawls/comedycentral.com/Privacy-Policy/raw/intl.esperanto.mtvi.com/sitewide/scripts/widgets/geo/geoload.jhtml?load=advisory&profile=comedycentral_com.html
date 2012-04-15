@@ -1,0 +1,195 @@
+try {
+if (!mtvni) var mtvni = {};
+if (!mtvni.geo) {
+mtvni.geo = {};
+mtvni.geo.init = {};
+mtvni.geo.info = { profile: {}, imagefolder: "/gsp", verno: "2.5", initLoaded: false }
+try {
+mtvni.geo.info.scriptfolder = document.getElementById("MTVNI-GEO-JS").src.replace(/^(.*)\/geoload.jhtml(.*)/, '$1'); 
+} catch(e) {
+mtvni.geo.info.scriptfolder = "http://intl.esperanto.mtvi.com";
+}
+};
+
+mtvni.geo.info.profile.advisory = "comedycentral_com";
+} catch(e) {
+
+};
+
+ 
+ 
+
+ 
+
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+mtvni.geo.info.code = "US";
+
+ 
+
+ 
+
+ 
+
+
+
+
+
+
+
+// COOKIE MANAGER
+function advisorycookie() {
+this.parsecookies();
+};
+
+advisorycookie.prototype.set = function(name,value,expires,path,domain) {
+document.cookie = name + "=" + value +((path) ? ";path=" + path : "") +((domain) ? ";domain=" + domain : "") + ((expires) ? ";expires="+ expires : "");
+this.parsecookies();
+
+var cookietest = this.get(name);
+if(cookietest == value){
+return true;
+} else {
+return false;
+}
+};
+
+advisorycookie.prototype.get = function(name) {
+return this.cookieArray[name];
+}; 
+
+advisorycookie.prototype.del = function(name, path, domain) {
+if (this.cookieArray[name]) {
+document.cookie = name + "=" +((path) ? ";path=" + path : "") +((domain) ? ";domain=" + domain : "") +";expires=Thu, 01-Jan-1970 00:00:01 GMT";
+}
+};
+
+advisorycookie.prototype.parsecookies = function() {
+this.cookieArray = new Array();
+var cookies = document.cookie;
+
+var namevalues = cookies.split(';');
+for(i=0; i < namevalues.length; i++) {
+// the cookieParams will have multiple = signs
+if(namevalues[i].indexOf('cookieParams')>-1) { 
+var splitAt = namevalues[i].indexOf('=');
+var pairs = new Array();
+pairs[0] = namevalues[i].substring(0,splitAt);
+pairs[1] = namevalues[i].substring(splitAt+1);
+} else {
+var pairs = namevalues[i].split('=');
+};
+
+this.cookieArray[this.trimString(pairs[0])] = pairs[1];
+};
+};
+
+advisorycookie.prototype.getExpDate = function(days, hours, minutes) { // expires format "Thu, 01-Jan-1970 00:00:01 GMT"
+var expDate = new Date();
+if (typeof days == "number" && typeof hours == "number" && typeof hours == "number") {
+expDate.setDate(expDate.getDate() + parseInt(days));
+expDate.setHours(expDate.getHours() + parseInt(hours));
+expDate.setMinutes(expDate.getMinutes() + parseInt(minutes));
+return expDate.toGMTString();
+};
+};
+
+advisorycookie.prototype.trimString = function(str){
+if(typeof str != 'string') return str;
+
+var retString = str;
+// check begining of string for white spaces
+var character = retString.substring(0,1);
+while(character.charCodeAt(0) == 9 || character.charCodeAt(0) == 32 || character.charCodeAt(0) == 10){
+retString = retString.substring(1,retString.length);
+character = retString.substring(0,1);
+};
+
+// check end of string for white spaces
+character = retString.substring(retString.length-1,retString.length);
+while(character.charCodeAt(0) == 9 || character.charCodeAt(0) == 32 || character.charCodeAt(0) == 10){
+retString = retString.substring(0,retString.length-1);
+character = retString.substring(retString.length-1,retString.length);
+};
+
+return retString;
+};	
+mtvni.geo.cookie = new advisorycookie();
+mtvni.geo.init.loadQueue = function() {
+if (mtvni.geo.init.persistent) mtvni.geo.init.persistent();
+if (mtvni.geo.init.advisory) mtvni.geo.init.advisory();
+};	
+
+try {
+// SET ONLOAD INIT OBJECT
+if(window.attachEvent) {
+window.attachEvent('onload', mtvni.geo.init.loadQueue);	
+} else if(document.addEventListener) {
+if (/WebKit/i.test(navigator.userAgent)) {
+// safari
+var projx_safari_timer = setInterval(function() {
+if (/loaded|complete/.test(document.readyState)) {
+clearInterval(projx_safari_timer);
+mtvni.geo.init.loadQueue();
+};
+}, 10);
+} else {
+// not safari
+document.addEventListener('DOMContentLoaded',mtvni.geo.init.loadQueue,null);
+};
+};
+} catch(e) {
+
+}; 
+
+try {
+// LOAD ADVISORY SCRIPT
+if (!mtvni.geo.cookie.get("geoadvisory")) { 
+//"&bustcache="+new Date().getTime()+'
+document.write('<script type="text/javascript" src="http://intl.esperanto.mtvi.com/sitewide/scripts/widgets/geo/json/advisory.jhtml?profile='+mtvni.geo.info.profile.advisory+'&geocode='+mtvni.geo.info.code.toLowerCase()+'&verno='+mtvni.geo.info.verno+'"></script>');
+document.write('<script type="text/javascript" src="http://intl.esperanto.mtvi.com/sitewide/scripts/widgets/geo/js/advisory.js?verno='+mtvni.geo.info.verno+'"></script>'); 
+} else {
+mtvni.geo.info.initLoaded = true;
+};
+} catch(e) {
+
+};
+
+mtvni.geo.init.advisoryLoaded = false;
+mtvni.geo.init.advisory = function() {
+try { 
+if ((advisory) && (mtvni.geo.info.advisoryjson) && (mtvni.geo.init.advisoryLoaded == false)) {
+mtvni.geo.init.advisoryLoaded = true;
+mtvni.geo.advisory = new advisory(); 
+mtvni.geo.advisory.setParams(mtvni.geo.info.advisoryjson);
+mtvni.geo.advisory.setImagesFolder(mtvni.geo.info.imagefolder);
+mtvni.geo.advisory.init();
+window.onresize = mtvni.geo.advisory.reposition; // ON-WINDOW RESIZE 
+window.onscroll = mtvni.geo.advisory.reposition; // ON-WINDOW RESIZE 
+} else {
+if (mtvni.geo.init.advisoryLoaded == false) self.setTimeout('mtvni.geo.init.advisory()', 1000); 
+}
+} catch(e) {
+
+};
+}; 
+

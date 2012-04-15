@@ -1,0 +1,63 @@
+/* jqModal base Styling courtesy of;
+	Brice Burgess <bhb@iceburg.net> */
+
+/* The Window's CSS z-index value is respected (takes priority). If none is supplied,
+	the Window's z-index value will be set to 3000 by default (in jqModal.js). You
+	can change this value by either;
+	  a) supplying one via CSS
+	  b) passing the "zIndex" parameter. E.g.  (window).jqm({zIndex: 500}); */
+	
+.jqmWindow {
+    display: none;
+    
+    position: fixed;
+    top: 17%;
+    left: 50%;
+    
+    margin-left: -300px;
+    width: 600px;
+    
+    background-color: #fff;
+    color: #317fab;
+	font-weight:700;
+    border: 1px solid black;
+    padding: 12px;
+	
+	-moz-border-radius: 15px;
+}
+
+.jqmWindow .buttons{margin-top:20px; width:100%;}
+.jqmWindow label{float:left; width:182px; padding-top:6px;}
+.jqmWindow input.text{width:406px; height:22px; background:transparent url(http://www.grooveshark.com/webincludes/img/gecko/lightbox_input_bg.png) no-repeat; border:0; font-size:100%; padding:8px 0 0 8px;}
+/*.jqmWindow input[type="checkbox"]{width:auto; height:auto;}*/
+.jqmWindow input:focus{background:transparent url(http://www.grooveshark.com/webincludes/img/gecko/lightbox_input_bg.png) no-repeat;}
+
+.jqmOverlay { background-color: #000; }
+
+/* Background iframe styling for IE6. Prevents ActiveX bleed-through (<select> form elements, etc.) */
+* iframe.jqm {position:absolute;top:0;left:0;z-index:-1;
+	width: expression(this.parentNode.offsetWidth+'px');
+	height: expression(this.parentNode.offsetHeight+'px');
+}
+
+/* Fixed posistioning emulation for IE6
+     Star selector used to hide definition from browsers other than IE6
+     For valid CSS, use a conditional include instead */
+* html .jqmWindow {
+     position: absolute;
+     top: expression((document.documentElement.scrollTop || document.body.scrollTop) + Math.round(17 * (document.documentElement.offsetHeight || document.body.clientHeight) / 100) + 'px');
+}
+
+/***********************************************/
+/* Modal Boxes                                 */
+/***********************************************/
+#container .modalbox{width:500px; background:#FFF; border:3px solid #39C;}
+#container .modalconfirm{width:300px; height:200px; background:#FFF; border:3px solid #39C;}
+#container .modalbox h2,#container .modalconfirm h2{color:#39C; border-bottom:1px solid #39C; font-weight:normal; font-size:182%; text-transform:none;}
+#container .modalbox h3,#container .modalconfirm h3{font-weight:normal; color:#39C; border:0; margin:20px 0 10px;}
+#container .modalconfirm .bluebutton{margin:30px 0 0 15px;}
+a.jqmClose{float:right !important; display:inline;}
+a.jqm_edit{float:right; display:block; background:transparent url(http://www.grooveshark.com/webincludes/img/bullet_edit.png) no-repeat; padding-left:20px; height:20px; font-size:85%; text-decoration:none;}
+
+
+.jqmIHateIE {display:block; width:1px; height: 1px; overflow:hidden;}

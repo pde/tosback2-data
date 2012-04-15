@@ -1,0 +1,12 @@
+if(!window.searchBox){window.searchBox=function(id){var div;var form;var input;try{div=document.getElementById(id);form=div.getElementsByTagName('FORM')[0];input=form.getElementsByTagName('INPUT')[0];if(document.compatMode=='BackCompat'&&navigator.appName=='Microsoft Internet Explorer'){var shdw=div.getElementsByTagName('DIV')[1];shdw.style.height='39px';shdw.style.width='174px';}}catch(ex){if(div){div.parentNode.removeChild(div);}
+return;}
+form.onsubmit=function(){var q=input.value.replace(/^\s+|\s+$/g,'');if(!q.length||q=='Search'){div.className='srch error';window.setTimeout(function(){div.className='srch';},2500);return false;}else{if(typeof _hbSet!="undefined"&&typeof _hbSet!==undefined){_hbSet("lid","srch");_hbSet("lpos",div.id);_hbSend();}
+form.submit();}};input.onfocus=function(){input.value='';input.onfocus=function(){input.select();div.className='srch';};};div.getElementsByTagName('A')[0].href="javascript:document.getElementById('"+id+"').getElementsByTagName('FORM')[0].onsubmit(); undefined";div.getElementsByTagName('A')[1].href="javascript:document.getElementById('"+id+"').className = 'srch'; undefined";};}
+function trim(s){var whitespace=" \t\n\r";var i=0;while((i<s.length)&&(whitespace.indexOf(s.charAt(i))!=-1))i++;var j=s.length;while((j>i)&&(whitespace.indexOf(s.charAt(j-1))!=-1))j--;return s.substr(i,j-i);}
+function isEmailValid(emailStr){var emailPat=/^(.+)@(.+)$/;var specialChars="\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";var validChars="\[^\\s"+specialChars+"\]";var quotedUser="(\"[^\"]*\")";var ipDomainPat=/^\[(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\]$/;var atom=validChars+'+';var word="("+atom+"|"+quotedUser+")";var userPat=new RegExp("^"+word+"(\\."+word+")*$");var domainPat=new RegExp("^"+atom+"(\\."+atom+")*$");var matchArray=emailStr.match(emailPat);if(matchArray==null)return false;var user=matchArray[1]
+var domain=matchArray[2]
+if(user.match(userPat)==null)return false;var IPArray=domain.match(ipDomainPat)
+if(IPArray!=null){for(var i=1;i<=4;i++){if(IPArray[i]>255)return false;}
+return true;}
+var domainArray=domain.match(domainPat)
+if(domainArray==null)return false;var atomPat=new RegExp(atom,"g");var domArr=domain.match(atomPat);var len=domArr.length;if(domArr[domArr.length-1].length<2||domArr[domArr.length-1].length>4)return false;if(len<2)return false;return true;}

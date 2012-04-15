@@ -1,0 +1,4 @@
+﻿
+var adSpot={"GetAdHTML":function(div,parentCategoryID,CategoryID,Componentname){var data="ParentCategoryID="+parentCategoryID+"&CategoryID="+CategoryID+"&ComponentName="+Componentname;$.ajax({type:"POST",contentType:"application/x-www-form-urlencoded",url:"/InterWoven/AdSpot",data:data,dataType:"json",error:function(e){return"";},success:function(data){div.html(data);}});}}
+var contentSpot={"AppendAdHTML":function(div,parentCategoryID,CategoryID,Componentname,successCallBack){var data="ParentCategoryID="+parentCategoryID+"&CategoryID="+CategoryID+"&ComponentName="+Componentname;$.ajax({type:"POST",contentType:"application/x-www-form-urlencoded",url:"/InterWoven/AdSpot",data:data,dataType:"json",error:function(e){return"";},success:function(data){div.append(data);if(typeof successCallBack!="undefined"&&null!=successCallBack)
+successCallBack();}});}}

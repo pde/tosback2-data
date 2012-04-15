@@ -1,0 +1,106 @@
+
+
+var url = window.location.toString();
+var loc = url.indexOf("storeId=");
+var storeId = url.substring(loc+8,loc+12);
+if(storeId/storeId != 1){
+	storeId = '8000';
+}
+function addStoreId() {
+	var pageLinks = document.getElementsByTagName('a');
+	for(i=0; i<pageLinks.length; i++){
+		var href = pageLinks[i].href
+		var hasQuery = href.indexOf('?');
+		var hasHash = href.indexOf('#');
+		var toLoc = href.indexOf('storeId=');
+		var isHelp = href.indexOf("/help/membership");
+		if(toLoc == -1 && isHelp > -1){
+			if(loc == -1){
+				storeId = 8000;
+			}
+			if(hasQuery > -1 && hasHash == -1){
+				href = href + '&storeId=' + storeId;
+			}
+			if(hasQuery == -1 && hasHash == -1){
+				href = href + '?storeId=' + storeId;
+			}
+			if(hasQuery > -1 && hasHash > -1){
+				href = href.substring(0, hasHash) + '&storeId=' + storeId + href.substring(hasHash);
+			}
+			if(hasQuery == -1 && hasHash > -1){
+				href = href.substring(0, hasHash) + '?storeId=' + storeId + href.substring(hasHash);
+			}
+			document.getElementsByTagName('a')[i].href = href;
+		}
+	}
+}
+
+var helpAccordion = {
+		init : function() {
+
+			var helpAccordionHeader = $(".msg_head");
+
+			helpAccordion.closeAllSections();
+
+			//-- add event listeners --
+			$("p.msg_head").click( function(event){
+				try{
+					helpAccordion.whenclick($(this));
+				}catch(err){}
+			});
+		},
+
+		whenclick : function(locationHeader) //toggle the section with class msg_body
+		{
+			if (locationHeader.next(".msg_body").is(":visible")) 
+			{
+				helpAccordion.closeSection(locationHeader);
+			}
+			else
+			{
+				helpAccordion.closeAllSections();
+				helpAccordion.openSection(locationHeader);
+			}
+		},
+		openSection : function(currentSection){
+			// for the clicked header switch a down arrow for a right arrow
+			currentSection.find("span.rightArrowSmall").addClass("downArrowSmall").removeClass("rightArrowSmall");
+
+			// for the clicked header switch the closed bottom to open
+			currentSection.addClass("openBottom").removeClass("closeBottom");
+
+			// msg_body always have gradients, just remove it from the open header
+			currentSection.removeClass("gradient");
+
+			// open the message body for the clicked header 
+			currentSection.next(".msg_body").slideToggle(200);
+
+		},
+		closeSection : function(currentSection){
+			// close the message body for the clicked header 
+			currentSection.next(".msg_body").slideToggle(200);
+
+			// change all the bottom open headers to closed
+			currentSection.removeClass("openBottom").addClass("closeBottom");
+
+			//all closed header have to have the gradient
+			currentSection.addClass("gradient");
+
+			// for message header, make and down arrow back to right arrows
+			currentSection.find("span.downArrowSmall").removeClass("downArrowSmall").addClass("rightArrowSmall");
+
+		},
+		closeAllSections : function(){
+			//look for any open message bodies and close them
+			$(".msg_body").hide(); //hide all message bodies
+
+			// change all the bottom open headers to closed
+			$(".msg_head").removeClass("openBottom").addClass("closeBottom");
+
+			//all closed header have to have the gradient
+			$(".msg_head").addClass("gradient");
+
+			// for all message headers, make and down arrow back to right arrows
+			$(".msg_head").find("span.downArrowSmall").removeClass("downArrowSmall").addClass("rightArrowSmall");
+		}
+}

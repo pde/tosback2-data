@@ -1,0 +1,56 @@
+﻿function cnbc_dupPagContent () {
+    
+    var directiveParentNode;
+    var directiveClassId = "t2 aR c666 padT PadB";
+    var dirDivs = document.getElementsByTagName("DIV");
+    
+    var dirBylineClassId = "w100p fL clr padT marB20";
+    
+    if ((location.href.indexOf('/page/1') != -1) || (location.href.indexOf('/page/') == -1)) return;
+
+    for(i=0; i< dirDivs.length; i++) {
+    	
+        if(dirDivs[i].className == dirBylineClassId) {
+		    // Remove Byline
+		    var removeNode = dirDivs[i];
+		    removeNode.parentNode.removeChild(removeNode);
+
+		}
+		    
+	    if(dirDivs[i].className == directiveClassId) {
+		    // clone node
+		    var cloneDiv = dirDivs[i].cloneNode(true);
+		    
+		    var blgdot = document.createElement("DIV");
+		    //blgdot.setAttribute("class","w100p clr cnbc_blgwlt_dot");
+		    blgdot.className = "w100p clr cnbc_blgwlt_dot";
+		    
+		    var cloneDivParent = document.createElement("DIV");
+		    //cloneDivParent.setAttribute("class","dirStyles w100p clr");
+		    cloneDivParent.className = "dirStyles w100p clr";
+		    
+		    cloneDivParent.appendChild(cloneDiv);
+		    cloneDivParent.appendChild(blgdot);
+		    
+		    // get parent node
+		    var parentClassId = "storyBody";
+		    var parentDivs = document.getElementsByTagName("DIV");
+    		
+		    for(j=0; j<parentDivs.length; j++) {
+		        if(parentDivs[j].className == parentClassId) {
+		            parentNode = parentDivs[j];  
+		            break;
+		        }
+		    }
+		    // get first child
+		    var firstChildNode = parentNode.firstChild;
+		    // insert before first child
+            parentNode.insertBefore(cloneDivParent,firstChildNode); 
+      
+		    break;
+	    }
+    }	
+
+}
+
+window.onload = cnbc_dupPagContent;

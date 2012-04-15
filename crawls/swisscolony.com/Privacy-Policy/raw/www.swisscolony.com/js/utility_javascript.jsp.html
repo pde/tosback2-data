@@ -1,0 +1,309 @@
+
+
+
+function replaceImage(imgVarId) {
+	imgVarId = '000470';
+	var imgObj = $(".main-item-image .entity-image img");
+	var currentSrc = imgObj.attr("src");
+	console.log(currentSrc);
+	var pathSuffix = currentSrc.slice(currentSrc.indexOf("?"));
+	console.log(pathSuffix);
+	var pathPrefix = currentSrc.substring(0,currentSrc.lastIndexOf("/"));
+	console.log(pathPrefix);
+	var newSrc = pathPrefix + "/" + imgVarId + pathSuffix;
+	imgObj.attr("src", newSrc);
+}
+
+
+function ship_to_changed_checkout(nickName, productID, orderIndex, itemIndex) {
+   //Ignore if selected value isn't "Other Address"
+   if (nickName == "Another Recipient") {
+      /*
+      ** Launch a new window to accept a new nick name and pass product id, item index  and order index as queryString parameters.
+      */
+      var winWidth = 325;
+      var winHeight = 185;
+      var winLeft = (screen.width-winWidth)/2;
+      var winTop = (screen.height-winHeight)/2;
+      var urlToOpen ="/popup/ship_to_popup.jsp" + "?PRODUCT_ID=" + productID + "&orderIndex=" + orderIndex + "&itemIndex=" + itemIndex;
+      //alert (urlToOpen);
+      newWindow(urlToOpen, winWidth, winHeight, 'resizable,scrollbars', "popup");
+   }
+}
+
+/*
+** This function loads a popup page given a user's email address.
+** The idea is to popup a dialog box that loads a predetermined page from CheetahMail
+** so that the user can select which newsletters they want to receive.
+**
+** emailAddress: the user's email address
+** returns nothing.
+*/
+
+function emailSignUp(emailAddress) {
+   /*
+   ** Launch a new window to accept a new nick name and pass formName and elementName as queryString parameters.
+   */
+   var winWidth = 450;
+   var winHeight = 450;
+   var winLeft = (screen.width - winWidth) / 2;
+   var winTop = (screen.height - winHeight) / 2;
+
+   if (emailAddress !=null) {
+      newWindow(("http://oi.vresp.com/?fid=af9dbf1817&" + "email_address=" + emailAddress ), winWidth, winHeight, 'resizable,scrollbars','VerticalResponse');
+   } else {
+      newWindow(("http://oi.vresp.com?fid=af9dbf1817&"), winWidth, winHeight, 'resizable,scrollbars','VerticalResponse');
+   }
+}
+
+function unsubscribeEmail(emailAddress) {
+   /*
+   ** Launch a new window to accept a new nick name and pass formName and elementName as queryString parameters.
+   */
+   var winWidth = 450;
+   var winHeight = 450;
+   var winLeft = (screen.width - winWidth) / 2;
+   var winTop = (screen.height-winHeight) / 2;
+   var urlToOpen ="/user/unsubscribe_email.jsp" + "?email_address=" + emailAddress;
+   newWindow(urlToOpen, winWidth, winHeight, 'resizable,scrollbars', "popup");
+}
+
+function buildBreadCrumb(pageName, secondaryLinkName, secondaryLinkURL,thirdLinkName, thirdLinkURL ) {
+   //we assume here that there is more than home to show
+   if (document.getElementById("breadCrumbs")) {
+      var breadcrumb = "<a href='http://www.swisscolony.com/home.jsp' class='bcrumb'>Home</a><span class='bcrumbArrow'>&nbsp;&gt;&nbsp;</span>";
+
+      if(secondaryLinkURL != null) {
+         breadcrumb +=	"<a href='http://www.swisscolony.com/js/&quot;&#32;+&#32;secondaryLinkURL&#32;+&#32;&quot;' class='bcrumb'>" + secondaryLinkName + "</a><span class='bcrumbArrow'>&nbsp;&gt;&nbsp;</span>";
+      }
+
+      if(thirdLinkURL != null) {
+         breadcrumb +=	"<a href='http://www.swisscolony.com/js/&quot;&#32;+&#32;thirdLinkURL&#32;+&#32;&quot;' class='bcrumb'>" + thirdLinkName + "</a><span class='bcrumbArrow'>&nbsp;&gt;&nbsp;</span>";
+      }
+
+      breadcrumb += "<span class='bcrumb'>" + pageName + "</span>";
+      document.getElementById("breadCrumbs").innerHTML = breadcrumb;
+   }
+}
+
+/*
+This function opens a new window.
+*/
+
+function openNewWindow(URL, winWidth, winHeight, popUpWin, windowName, leftPos, topPos) {
+   // Default window width and height, if not passed in.
+   var w = 800, h = 600;
+
+   //Check browser is IE.
+   if (document.all) {
+      w = document.body.clientWidth;
+      h = document.body.clientHeight;
+   } else {
+      w = window.innerWidth;
+      h = window.innerHeight;
+   }
+
+   //Check if window width was passed. If so, use that width.
+   var popW;
+
+   if (winWidth != null) {
+      popW = winWidth;
+   } else {
+      popW = (w - 100);
+   }
+
+   //Check if window height was passed. If so, use that height.
+   var popH;
+
+   if (winHeight != null) {
+      popH = winHeight;
+   } else {
+      popH = (h - 100);
+   }
+
+   //Check if window should be opened as popup.
+   var scrollbars = "yes";
+   var noPopUp;
+
+   if (popUpWin != null) {
+      noPopUp = 'yes';
+
+      if (popUpWin.toLowerCase() == 'y' || popUpWin.toLowerCase() == 'yes') {
+         noPopUp = 'no';
+         scrollbars = "auto";
+      }
+   } else {
+      noPopUp = 'yes';
+   }
+
+   /*
+   compare the URL being passed to the Right Now url in the site properties
+   if the URL is a Right Now link, make the window resizeable
+   */
+   var RNurl= 'swisscolony.custhelp.com';
+
+   if (URL.substr(0,4)== 'http') {
+      var urlSplitAr = URL.split("//");
+      var urlSplitAr2 = urlSplitAr[1].split("/");
+
+      if (RNurl == urlSplitAr2[0]) {
+        canResize = 1;
+      } else {
+         canResize = 0;
+      }
+   } else {
+      canResize = 0;
+   }
+
+   // Create the window name, if not passed in.
+   var winName;
+
+   if (windowName != null) {
+      // Use the window name passed in.
+      winName = windowName;
+   } else {
+      //Generate window name with random number (ie 'win274').
+      winName = 'win'+Math.floor(Math.random()*1000);
+   }
+
+   // Set the window positions.
+   if ((leftPos == null) || (leftPos == "undefined")) {
+      leftPos = (w - popW) / 2;
+   }
+   if ((topPos == null) || (topPos == "undefined")) {
+      topPos = (h - popH) / 2;
+   }
+
+   // Open the new window.
+   newWindow = window.open(URL,winName,'width='+popW+',height='+popH+',top='+topPos+',left='+leftPos+',menubar='+noPopUp+',location='+noPopUp+',directories='+noPopUp+',fullscreen=no,resizable='+canResize+',scrollbars=yes,status='+canResize+',toolbar='+noPopUp);
+   return newWindow;
+}
+
+function showTabCom(objComDivId, objComDivArr) {
+   var lastOne = "";
+
+   for (i = 0; i < objComDivArr.length; i++) {
+      if (document.getElementById(objComDivArr[i] + "-id")) {
+         lastOne = "";
+
+         if(i == (objComDivArr.length - 1)) {
+            document.getElementById(objComDivArr[i] + "-id").className = "proddetailTab lastTab";
+            lastOne = objComDivArr[i];
+         } else {
+            document.getElementById(objComDivArr[i] + "-id").className = "proddetailTab";
+         }
+
+         document.getElementById(objComDivArr[i]).style.display = "none";
+      }
+   }
+
+   if(lastOne == objComDivId) {
+      document.getElementById(objComDivId + "-id").className = "proddetailTab pdTabOn lastTab";
+   } else {
+      document.getElementById(objComDivId + "-id").className = "proddetailTab pdTabOn";
+   }
+
+   document.getElementById(objComDivId).style.display = "block";
+}
+
+function showDropDown(objVarLen, objComDivId, objComDivArr) {
+   popPrdVariant('');
+   idx = parseInt(objComDivId, 10);
+
+	for (i = 0; i < objComDivArr.length; i++) {
+		for (j = 0; j < objVarLen; j++) {
+         obj = document.getElementById("PVDD-" + i + j);
+
+         if (obj) {
+            if (i == idx) {
+               obj.style.display = "block";
+            } else {
+               obj.style.display = "none";
+            }
+
+            //alert(obj.id + ": " + obj.className);
+         }
+		}
+	}
+}
+
+function showDropDownInEnsemble(objVarLen, objComDivId, objComDivArr, offset) {
+   intOffset = parseInt(offset, 10);
+   idx = parseInt(objComDivId, 10) + intOffset;
+
+	for (i = intOffset; i < objComDivArr.length + intOffset; i++) {
+		for (j = 0; j < objVarLen; j++) {
+         obj = document.getElementById("PVDD-" + i + j);
+
+			if (obj) {
+            if (i == idx) {
+   				obj.style.display = "block";
+            } else {
+   				obj.style.display = "none";
+            }
+
+            //alert(obj.id + ": " + obj.className);
+			}
+		}
+	}
+}
+
+function loadDropDown(objVarLen, selectedProductId) {
+	if(document.productForm.relatedProductId != null) {
+		for (i = 0; i < document.productForm.relatedProductId.length; i++) {
+			if(selectedProductId >= 0) {
+				document.productForm.relatedProductId[selectedProductId].checked=true;
+			}
+			if(document.productForm.relatedProductId[i]) {
+				if(document.productForm.relatedProductId[i].checked==true) {
+					for (j = 0; j < objVarLen; j++) {
+						document.getElementById("PVDD-" + i + j).style.display = "block";
+					}
+				}
+				if(document.productForm.relatedProductId[i].checked!=true) {
+					for (j = 0; j < objVarLen; j++) {
+						document.getElementById("PVDD-" + i + j).style.display = "none";
+					}
+				}
+			}
+		}
+	}
+	return false;
+}
+
+function goToLastPage() {
+   var histCount = window.history.length;
+
+   if (histCount > 1) {
+      window.history.go(-1);
+   } else {
+      window.location.href= "http://www.swisscolony.com/";
+   }
+}
+
+/*
+ ** This function is called from the footerSignUpForm on it's onClick event.
+ ** The idea is to popup a dialog box that loads a predetermined page from Vertical Response
+ ** so that the user can select which newsletters they want to receive.
+ **
+ ** emailAddress: the user's email address
+ ** returns nothing.
+ */
+
+var defaultEmailValue = "Enter email address";
+function emailSignUpSubmit(my_form_name, isMember) {
+   my_form = document.forms[my_form_name];
+   var emailAddress =  my_form.email_address.value;
+
+   if (isMember == "true") {
+      return emailSignUpSubmit1(my_form_name);
+   } else {
+      if (validateEmail(emailAddress, "emailError")) {
+         window.location.href = 'http://www.swisscolony.com/user/full_subscribe_email.jsp' + "?email_address=" + emailAddress;
+         my_form.email_address.value = defaultEmailValue;
+         document.getElementById("emailError").innerHTML = "";
+      }
+   }
+
+   return false;
+}

@@ -1,0 +1,292 @@
+$(document).ready(function(){
+	$.ad.init();
+	
+	var newsletter = new NewsletterAlerts({
+		elm: $("#newsAlertsEmailSignup"),
+		ajaxUrl: "/about/newsletters/${slids}/${email}",
+		messages: {
+			defaultTxt: "Enter Your Email Address",
+			email:'Invalid email address. Please try again.',
+			checkBox:'Choose at least one news alert.',
+			submitted:'You have already submitted. Please <a href="#" class="email-input-reset">click here</a> to try again.',
+			error:'Request Error. Please <a href="#" class="email-input-reset">click here</a> to try again.',
+			thankyou: 'Thank you. Your subscription has been submitted.'
+		}
+	});
+	
+	// RSS FEEDS
+	(function(){
+		
+		var setHeader = function(title,url) {
+			$("#feed-header-title").html(title);
+			$("#feed-header-url a").html(url).attr("href",url);
+		};
+		
+		var linkItems = $(".feed_url");
+		linkItems.each(function(i){
+			var item = $(this);
+			
+			if (i===0) { // first item will always be the initial feed
+				var url = item.attr("data-url"), path = url.replace(/^http:\/\//i,"").split("/");
+				path = path.slice(1,path.length).join("/");
+				setHeader(item.text(),url);
+				getRSSFeed(path);
+			}
+
+			item.click(function(){
+				var url = item.attr("data-url"), path = url.replace(/^http:\/\//i,"").split("/");
+				path = path.slice(1,path.length).join("/");
+				
+				linkItems.parent().removeClass("active");
+				item.parent().addClass("active");
+				setHeader(item.text(),url);
+				getRSSFeed(path);
+				return false;
+			});
+		});
+
+		$(".refresh-link").click(function(){ getRSSFeed("refresh"); return false; });
+	}());
+	
+	
+});
+
+/*** RSS FEEDS ***/
+function getRSSFeed(path){
+	var url ="/about/rss/feedburner/${path}",
+		preloadUrl = "/about/sites/foxnews.com.about/themes/foxnews_com_privacy/img/ajax-loader.gif",
+		daysArr = ["Sun","Mon","Tues","Weds","Thur","Fri","Sat"],
+		monthArr = ["January","February","March","April","May","June","July","August","September","October","November","December"],
+		contentArea = $("#feed-content"),
+		refreshLink = $(".refresh-link");
+	
+	contentArea.html("");
+	if (!refreshLink.data("origImg")) { refreshLink.data("origImg",refreshLink.find("img:first").attr("src")); }
+	
+	function preloader(show) {
+		var elm = refreshLink.find("img:first");
+		if (show) {
+			var img = new Image();
+			img.onload = function() { elm.attr("src",preloadUrl); };
+			img.src = preloadUrl;
+		} else {
+			elm.attr("src",refreshLink.data("origImg"));
+		}
+	}
+	
+	preloader(true);
+	
+	if (path) {
+		if (path!=="refresh") {
+			url = url.replace("${path}",path);
+			contentArea.data("currentPath",path);
+		} else {
+			var curr = contentArea.data("currentPath"),
+				feedPath = (curr) ? curr : "foxnews/most-popular";
+			url = url.replace("${path}",feedPath);
+		}
+	} else {
+		url = url.replace("${path}","foxnews/most-popular");
+		$("#feed-header-url a").html(url).attr("href",url);
+	}
+	
+	if (typeof RSSAjaxReq!=="undefined") { RSSAjaxReq.abort(); }
+	window.RSSAjaxReq = $.ajax({
+		url: url,
+		dataType:"xml",
+		type: "GET",
+		success: function(data) {
+			var html = [], limit = 10;
+
+			$(data).find("item").each(function(i){
+				if (i>limit-1) { return false; }
+				var item = $(this), dateObj = new Date(item.find("pubDate").text());
+				
+				var dateStr = (function(){
+					var str = monthArr[dateObj.getMonth()] + " " + dateObj.getDate() + ", " + dateObj.getFullYear(),
+						hr = dateObj.getHours(), mins = dateObj.getMinutes(), amPm = (hr >= 12) ? "PM" : "AM";
+					hr = (hr > 12) ? (hr-12) : (hr===0) ? 12 : hr;
+					mins = (mins < 10) ? ("0" + mins) : mins;
+					str += " " + hr + ":" + mins + " " + amPm;
+					return str;
+				}());
+				
+				var cleanDesc = (function(){
+					var desc = item.find("description").text(), tmp = $("<div></div>").html(desc);
+					var str = tmp.text();
+					return str;
+				}());
+				
+				html.push('<li><h2><a href="' + item.find("link").text() + '" target="_blank">'+ item.find("title").text() + '</a></h2>');
+				html.push('<p class="date">' + dateStr + '</p>');
+				html.push('<p>' + cleanDesc + '</p></li>');
+				
+			});
+			contentArea.html(html.join(""));
+			
+			refreshLink.attr("data-url", url);
+			$("#subscribe-link").attr("href", url);
+
+			preloader();
+		},
+		error: function(){
+			contentArea.html('<li><h2>No Recent Stories</h2></li>');
+			preloader();
+		}
+	});
+}
+
+/*** NEWS ALERTS Script ***/
+(function($){
+	
+	window.NewsletterAlerts = function(config) {
+		if (typeof config!=="object") { return false; }
+		this._cfg = {}; // config
+		this.SLID = []; // slid array
+		
+		this.status = new Status(this);
+		this.init(config);
+	};
+
+	NewsletterAlerts.prototype = {
+		init: function(config) {
+			var i; for (i in config) { this._cfg[i] = config[i]; }
+			this.setHolders();
+			this.setListeners();
+		},
+		setHolders: function() {
+			var NA = this, cfg = NA._cfg, elm = cfg.elm;
+
+			this.elmObj = {
+				elm: elm,
+				form: elm.find("form"),
+				options: elm.find("form > fieldset > .option"),
+				status: elm.find("form > fieldset > .status"),
+				input: elm.find("form #newsletter_input")
+			};
+			this.elmObj.inputLine = this.elmObj.input.parent().addClass("input-line");
+		},
+		setListeners: function() {
+			var NA = this, cfg = NA._cfg, elmObj = this.elmObj,
+				input = elmObj.input,
+				options = elmObj.options,
+				form = elmObj.form;
+				
+			// remove those listener crap
+			input.removeAttr("onblur").removeAttr("onfocus");
+			
+			// set onblur/onfocus unobtrusively
+			input.val(cfg.messages.defaultTxt).blur(function(){
+				var elm = $(this), val = elm.val();
+				elm.val((val==="")?cfg.messages.defaultTxt:val);
+			}).focus(function(){
+				var elm = $(this), val = elm.val();
+				elm.val((val===cfg.messages.defaultTxt)?"":val);
+				NA.status.hide();
+			});
+			
+			// set options
+			options.each(function(){
+				var elm = $(this), input = elm.find("> input[type='checkbox']"), label = elm.find("> label"),
+					id = $.trim(elm.find("input[name='slid']").val());
+				
+				if (input.is(":checked")) { input.attr("checked",false); }
+				var set = function() {
+					NA.setSLID((input.is(":checked")) ? "add" : "remove",id);
+					NA.status.hide();
+				};
+				input.click(function(){ set(); });
+				label.click(function(){ input.click(); set(); });
+			});
+
+			form.submit(function(){
+				NA.validate(function(email){ 
+					try { NA.submit(email); } catch(err) { showToConsole("[Newsletter Alert] Error: " + err); }
+				});
+				return false;
+			});
+		},
+		setSLID: function(type,id) {
+			if (!type || !id) { return false; }
+			var NA = this, x, len = NA.SLID.length;
+			
+			switch(type) {
+				case "add": 
+					var found = false;
+					for (x = 0; x < len; x++) {
+						if (NA.SLID[x]===id) { found = true; break; }
+					}
+					if (!found) { NA.SLID.push(id); }
+					break;
+				case "remove":
+					for (x = 0; x < len; x++) {
+						if (NA.SLID[x]===id) { NA.SLID.splice(x,1); break; }
+					}
+					break;
+			}
+		},
+		validate: function(fn) {
+			var NA = this, cfg = NA._cfg, msg = cfg.messages, email = NA.elmObj.input.val();
+			
+			if (!checkEmail(email)) { // validate email
+				NA.status.show(msg.email);
+			} else if (NA.SLID.length===0) { // check for selections
+				NA.status.show(msg.checkBox);
+			} else {
+				fn(email);
+			}
+		},
+		submit: function(email) {
+			var NA = this, url = NA._cfg.ajaxUrl, inputLine = NA.elmObj.inputLine;
+
+			url = url.replace("${slids}",NA.SLID.join(","));
+			url = url.replace("${email}",email);
+			var hideInputLine = function() { setTimeout(function(){ inputLine.slideUp("slow"); },500); };
+			
+			$.ajax({
+				url: url,
+				success: function(data) {
+					// var div = $('<div></div>').html(data);
+					NA.status.show(NA._cfg.messages.thankyou);
+					hideInputLine();
+					NA.elmObj.elm.data("hasSubmitted",true);
+				},
+				error: function(status,response) {
+					NA.status.show(NA._cfg.messages.thankyou);
+					hideInputLine();
+				}
+			});
+		}
+	};
+	
+	var Status = function(root) {
+		this.root = root;
+	};
+	
+	Status.prototype = {
+		show: function(txt) {
+			var root = this.root, elm = root.elmObj.status, input = root.elmObj.input;
+			if (txt) {
+				elm.html(txt).css({ visibility:"visible" });
+				elm.animate({ opacity:1 },200,"swing",function(){ elm.css({ backgroundColor:"#fff" }); });
+				elm.find(".email-input-reset").click(function(){ inputLine.show(); input.val("").focus(); return false; });
+			}
+		},
+		hide: function() {
+			var root = this.root, elm = root.elmObj.status;
+			if (!root.elmObj.elm.data("hasSubmitted")) {
+				elm.animate({ opacity:0 },200,"swing");
+			}
+		}
+	};
+	
+	function checkEmail(email) { // Email check
+		 var pattern = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
+		return (pattern.test(email))?true:false;
+	}
+
+	function showToConsole(str) {
+		if (typeof window.console==='object') { console.log(str); }
+	}
+	
+}(jQuery)); /*** end - NEWS ALERTS Script ***/

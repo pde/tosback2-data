@@ -1,0 +1,42 @@
+<component lightweight="true">
+<attach event="ondocumentready" handler="setHover"/>
+	<script type="text/javascript"> /*	HOVER $Revision: #1 $ */
+		 var n = (typeof element.onmouseenter == 'object') ? "onmouseenter" : "onmouseover"; 
+		 var o = (typeof element.onmouseenter == 'object') ? "onmouseleave" : "onmouseout"; 
+		 function setHover() { 
+		 /*@cc_on; @if (@_jscript_version <= 5) return; @end; @*/ 
+			for(var i = 0, c; (c=this.children[i]); i++) {
+				var t = toggle(c.uniqueID);
+				c.attachEvent(n, t.show);
+				c.attachEvent(o, t.hide);
+			}
+		 } 
+		function toggle(id) {
+			var _element = (element.ownerDocument || element.document).getElementById(id),
+			_cssname="hover",
+			_pattern = new RegExp("(^|\\s)" + _cssname + "(\\s|$)");
+			
+			return {
+				show: function() {
+					var currentStyle = _element.className || "";
+					
+					if(_pattern.test(currentStyle)) { return; }
+					
+					_element.className = currentStyle + ((currentStyle) ? " " : "") + _cssname;
+					
+				},
+				hide: function() {
+					var currentStyle = _element.className;
+					
+					if(!_pattern.test(currentStyle)) { return; }
+					
+					_element.className = currentStyle.replace(_pattern, function(s,$1,$2) {
+						if(!$1) { return ""; }
+						if(!$2) { return ""; }
+						return " ";
+					});
+				}
+			};
+		} 
+	</script>
+</component>

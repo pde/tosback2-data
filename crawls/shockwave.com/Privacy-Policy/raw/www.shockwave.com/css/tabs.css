@@ -1,0 +1,190 @@
+/* Global Tab Settings */
+
+.ui-wrapper { border: 1px solid #50A029; }
+.ui-wrapper input, .ui-wrapper textarea { border: 0; }
+
+
+/* Caution! Ensure accessibility in print and other media types... */
+@media projection, screen { /* Use class for showing/hiding tab content, so that visibility can be better controlled in different media types... */
+    .ui-tabs-hide {
+        display: none;
+    }
+}
+
+/* Hide useless elements in print layouts... */
+@media print {
+    .ui-tabs-nav {
+        display: none;
+    }
+}
+
+/* Skin */
+.ui-tabs-nav {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+}
+.ui-tabs-panel {
+    margin-top: -1px;
+}
+.ui-tabs-nav {
+    list-style: none;
+    font-size: 13px;
+}
+.ui-tabs-nav:after { /* clearing without presentational markup, IE gets extra treatment */
+    display: block;
+    clear: both;
+    content: " ";
+}
+.ui-tabs-nav li {
+	float: left;
+	margin: 0 5px 0 0;
+	font-weight: bold;
+	background: url(../i/common/site/tabsOffBkgSprite.png) repeat-x;
+}
+.ui-tabs-nav a, .ui-tabs-nav a span {
+    float: left; /* fixes dir=ltr problem and other quirks IE */
+    padding: 0 12px;
+}
+.ui-tabs-nav a {
+    padding-left: 0;
+    text-decoration: none;
+    white-space: nowrap; /* @ IE 6 */
+    outline: 0; /* @ Firefox, prevent dotted border after click */
+}
+.ui-tabs-nav a:link, .ui-tabs-nav a:visited {
+    color: #fff;
+}
+.ui-tabs-nav .ui-tabs-selected a {
+    position: relative;
+    z-index: 2;
+    margin-top: 0;
+}
+.ui-tabs-nav li.ui-tabs-selected  {
+    border-bottom: none;
+}
+.ui-tabs-nav a span {
+    padding: 1px 0 3px 12px;
+    height: 25px;
+    background-position: 0 0;
+    line-height: 25px;
+}
+.ui-tabs-nav .ui-tabs-selected a span {
+    height: 26px;
+}
+
+.ui-tabs-nav .ui-tabs-selected a:link, .ui-tabs-nav .ui-tabs-selected a:visited,
+.ui-tabs-nav .ui-tabs-disabled a:link, .ui-tabs-nav .ui-tabs-disabled a:visited { /* @ Opera, use pseudo classes otherwise it confuses cursor... */
+    cursor: text;
+}
+.ui-tabs-nav a:hover, .ui-tabs-nav a:focus, .ui-tabs-nav a:active,
+.ui-tabs-nav .ui-tabs-unselect a:hover, .ui-tabs-nav .ui-tabs-unselect a:focus, .ui-tabs-nav .ui-tabs-unselect a:active { 
+    cursor: pointer;
+}
+
+.ui-tabs-disabled {
+    opacity: .4;
+    filter: alpha(opacity=40);
+}
+.ui-tabs-nav .ui-tabs-disabled a:link, .ui-tabs-nav .ui-tabs-disabled a:visited {
+    color: #000;
+}
+.ui-tabs-panel {
+	padding: 15px 15px 8px 15px;
+	min-height: 1px; /* fixes content shifting on tab hover in IE7 */
+	_zoom: 1; /* fixes content shifting on tab hover in IE6 */
+}
+/*.ui-tabs-loading em {
+    padding: 0 0 0 20px;
+    background: url(loading.gif) no-repeat 0 50%;
+}*/
+
+/* Additional IE specific bug fixes... */
+* html .ui-tabs-nav { /* auto clear @ IE 6 & IE 7 Quirks Mode */
+    display: inline-block;
+}
+*:first-child+html .ui-tabs-nav  { /* auto clear @ IE 7 Standards Mode - do not group selectors, otherwise IE 6 will ignore complete rule (because of the unknown + combinator)... */
+    display: inline-block;
+}
+
+
+
+/* 
+	custom colors and backgrounds, default is gray 
+	make sure these match the pod colors from common.css
+*/
+
+.ui-tabs-nav .ui-tabs-selected a,
+.ui-tabs-nav li.ui-tabs-selected,
+.ui-tabs-nav .ui-tabs-selected a span {
+	background: #f6f6f6;
+	color: #333;
+}
+.ui-tabs-panel {
+    background: #f6f6f6; /* declare background color for container to avoid distorted fonts in IE while fading */
+}
+.ui-tabs-nav li, .ui-tabs-panel {
+    border: 1px solid #efefef;
+}
+.ui-tabs-nav li {
+	background: url(../i/common/site/tabsOffBkgSprite.png) repeat-x;
+	border-bottom: none;
+}
+
+
+.tabsOnline .ui-tabs-nav .ui-tabs-selected a,
+.tabsOnline .ui-tabs-nav li.ui-tabs-selected,
+.tabsOnline .ui-tabs-nav .ui-tabs-selected a span {
+	background: #cde7f6;
+	color: #3479d8;
+}
+.tabsOnline .ui-tabs-panel {
+    background: #cde7f6;
+}
+.tabsOnline .ui-tabs-nav li, .tabsOnline .ui-tabs-panel {
+    border: 1px solid #5794ed;
+}
+.tabsOnline .ui-tabs-nav li {
+	background: url(../i/common/site/tabsOffBkgSprite.png) 0 -40px repeat-x;
+	border-bottom: none;
+}
+
+.tabsMyShockwave .ui-tabs-nav .ui-tabs-selected {
+	color: #436600;
+}
+.tabsMyShockwave .ui-tabs-nav .ui-tabs-selected a,
+.tabsMyShockwave .ui-tabs-nav .ui-tabs-selected span{
+	background-color: #c5e091 !important;
+}
+.tabsMyShockwave .ui-tabs-panel {
+    background: #c5e091;
+}
+.tabsMyShockwave .ui-tabs-nav li, .tabsMyShockwave .ui-tabs-panel {
+    border: 1px solid #7bb40d;
+}
+.tabsMyShockwave .ui-tabs-nav li {
+	background: url(../i/common/site/tabsOffBkgSprite.png) 0 -80px repeat-x;
+	border-bottom: none;
+}
+
+#podMyGames .ui-tabs-selected a,
+#podMyGames .ui-tabs-selected span {
+	background: #fff !important;
+}
+
+#highScoresInvite {
+	display: block;
+	margin: 5px 0 0 0;
+	position: absolute;
+	right: -2px;
+	z-index: 100;
+}
+.tabsMyShockwave .ui-tabs-nav li.ui-tabs-trigger {
+    background: none;
+    border: none;
+}
+.tabsMyShockwave .ui-tabs-nav li.ui-tabs-trigger a.triggerGames {
+    background-color: #FFF !important;
+}
+.tabsMyShockwave .ui-tabs-nav li.ui-tabs-trigger a.triggerGames h2 {
+    #C8581D !important;
+}

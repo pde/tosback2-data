@@ -1,0 +1,402 @@
+var E4x = {
+    showPopupOnClick:  false,
+    
+    showPopupOnLinkClick: function(){
+        //set this to true when explicitly clicking and opening context chooser
+    	E4x.showPopupOnClick = true;
+    	
+    	E4x.initialize($('div.E4x')[0]);
+    },
+    
+	initialize : function() {
+    	E4x.container = $('div.E4x')[0];
+ 
+		var loc = window.location + '';
+        if(loc.indexOf('secure') < 0 )
+        {
+		if (true) {
+			E4x.url = '/WebServices/RenderControls.aspx?control=E4x';
+			E4x.ajaxUpdate();
+		}
+		}
+		else
+		{ 
+		   if (true) {
+			    E4x.url = '/WebServices/RenderControlsSecure.aspx?control=E4x';
+			    E4x.ajaxUpdate();
+		    }
+		}
+ 
+	},
+
+	ajaxUpdate : function() {
+
+        jQuery.ajax({
+            type: 'POST',
+            url: E4x.url,
+            dataType: 'html',
+            async: true,
+            success: function(html) {
+                html = RemoveScriptFromAjaxResponse(CleanAjaxResponse(html));
+
+                $(E4x.container).html(html);
+                E4x.popupDiv();
+            }
+        });
+
+	},
+    popupDiv: function() {
+        var cookies = new CookieManager();
+        var ipCountry = cookies.getValueIgnoreCase('IPCountry');
+        if(E4x.showPopupOnClick ||(typeof(ipCountry)!= 'undefined' && ipCountry != 'US') )
+		{
+            var myAnnouncement = Dialog.Box;
+            myAnnouncement.initialize($('#E4x'));
+            myAnnouncement.show();
+        }
+        else
+        {
+        $('#E4x').hide();
+        }
+    },
+    setFlag: function() {
+        var cookies = new CookieManager();
+        var country = cookies.getValueIgnoreCase('Country')||'US';
+        var img = $('#imgFlag')[0];
+        if(country!= 'US')
+        {         
+        img.src='/Images/e4xFlags/' + country + '.gif';
+        }
+        else
+        {
+        img.src='/Images/Shopping/spacer.gif';
+        }
+    },
+    e4xPopup: function() {
+        var cookies = new CookieManager();
+		var ipCountry = cookies.getValueIgnoreCase('IPCountry');
+		 
+	    var img = $('#imgFlag');
+	    if (img.length > 0) //Remember, jQuery always returns a stack; it is never null
+	    {    
+        E4x.setFlag();
+		$('#imgFlag').click(E4x.showPopupOnLinkClick);
+		}
+	
+        if(typeof(ipCountry) == 'undefined')
+		{
+		 $(document).ready(E4x.initialize);
+		}
+	}
+	
+};
+
+
+// for light box effect
+var Dialog = {};
+Dialog.Box = {
+	initialize: function(id) {
+		Dialog.Box.createOverlay();
+
+		Dialog.Box.dialog_box = $(id)[0];
+		Dialog.Box.dialog_box.show = Dialog.Box.show;
+		Dialog.Box.dialog_box.hide = Dialog.Box.hide;
+
+		Dialog.Box.parent_element = $(Dialog.Box.dialog_box).parent()[0];
+
+		Dialog.Box.dialog_box.style.position = 'absolute';
+
+		Dialog.Box.dialog_box.style.left = '300px';
+		Dialog.Box.dialog_box.style.top = '100px';
+
+		Dialog.Box.dialog_box.style.zIndex = Dialog.Box.overlay.style.zIndex + 1;
+
+	},
+
+	createOverlay: function() {
+		if($('#dialog_overlay').length) {
+			Dialog.Box.overlay = $('#dialog_overlay')[0];
+		} else {
+			Dialog.Box.overlay = document.createElement('div');
+			Dialog.Box.overlay.id = 'dialog_overlay';
+			$(Dialog.Box.overlay).css({
+				'position': 'absolute',
+				'top': '0',
+				'left': '0',
+				'zIndex': '30000',
+				'width': '100%',
+				'backgroundColor': '#000',
+				'display': 'none'
+			});
+			document.body.insertBefore(Dialog.Box.overlay, document.body.childNodes[0]);
+		}
+	},
+
+	moveDialogBox: function(where) {
+		$(Dialog.Box.dialog_box).remove();
+		if(where == 'back')
+		Dialog.Box.dialog_box = Dialog.Box.parent_element.appendChild(Dialog.Box.dialog_box);
+		else
+		Dialog.Box.dialog_box = $(Dialog.Box.overlay).parent()[0].insertBefore(Dialog.Box.dialog_box, Dialog.Box.overlay);
+	},
+
+	show: function() {
+		Dialog.Box.overlay.style.height = $(document).height() +'px';
+		Dialog.Box.moveDialogBox('out');
+		Dialog.Box.selectBoxes('hide');
+		$(Dialog.Box.overlay).animate({opacity: 0.3}, 0.0).show();
+		Dialog.Box.dialog_box.style.display = '';
+	},
+
+	hide: function() {
+		Dialog.Box.selectBoxes('show');
+		$(Dialog.Box.overlay).fadeOut('fast');
+		Dialog.Box.dialog_box.style.display = 'none';
+		Dialog.Box.moveDialogBox('back');
+		$(Dialog.Box.dialog_box.getElementsByTagName('input')).each(
+			function(index, e) {
+				if(e.type!='submit') {
+					e.value='';
+				}
+			}
+		);
+	},
+
+	selectBoxes: function(what) {
+		if(what == 'show') {
+			$('select').show();
+		}
+		else if(what == 'hide') {
+			$('select').hide();
+			$(Dialog.Box.dialog_box.getElementsByTagName('select')).show();
+		}
+	}
+};
+
+
+var E4XClient = {
+
+    displayPrices: function () {
+        var cookieManager = new CookieManager();
+        var userCurrency = cookieManager.getValueIgnoreCase('Currency') || 'USD';
+        var userCountry = cookieManager.getValueIgnoreCase('Country') || 'US';
+        var fxrate = $('.e4xrates').attr(userCurrency);
+        var lcpRate = $('.e4xLcpRates').attr(userCountry);
+
+        if (isNaN(lcpRate))
+            lcpRate = 1;
+
+        $('.e4xprice').each(
+			    function (index, e) {
+			        //all prices shud have this attr set when e4xenabled
+			        if ($(e).attr('e4xprice_usd') == null) {
+			            return;
+			        }
+
+			        var price = parseFloat($(e).attr('e4xprice_usd').replace(/\,/g, ''));
+
+			        if (isNaN(price)) {
+			            //convert prices from certona. certona doesnt set the above attr 
+			            var cprice = parseFloat(e.innerHTML.substring(e.innerHTML.indexOf('$') + 1).replace(/\,/g, ''));
+			            var text = e.innerHTML.substring(0, e.innerHTML.indexOf('$'));
+			            if (!isNaN(cprice) && !isNaN(fxrate) && userCurrency != 'USD') {
+			                e.innerHTML = text + userCurrency + " " + thousandSeparator((cprice * fxrate * lcpRate).toFixed(2));
+			            }
+			        } else {
+			            if (isNaN(fxrate) || userCurrency == 'USD') {
+			                e.innerHTML += "$" + thousandSeparator(price.toFixed(2));
+			            }
+			            else {
+			                e.innerHTML += userCurrency + " " + thousandSeparator((price * fxrate * lcpRate).toFixed(2));
+			            }
+			        }
+			    }
+		    );
+    },
+    displayFreeShipping: function () {
+        var cookieManager = new CookieManager();
+        var userCountry = cookieManager.getValueIgnoreCase('Country') || 'US';
+
+        if (userCountry != 'US') {
+            $('.e4xshipping').each(
+				function (index, e) {
+				    e.innerHTML = $(e).attr('e4xshipping_International');
+				}
+			);
+        }
+        else {
+            $('.e4xshipping').each(
+				function (index, e) {
+				    e.innerHTML = $(e).attr('e4xshipping_Domestic');
+				}
+			);
+        }
+    },
+    fixOnSiteSearch: function () {
+        var cookieManager = new CookieManager();
+        var userCountry = cookieManager.getValueIgnoreCase('Country') || 'US';
+
+        var nInputs = document.getElementsByName('N');
+        if (nInputs && nInputs.length != 0) {
+            var searchNValueInput = nInputs[0];
+            if (searchNValueInput && userCountry != 'US') {
+                if ($('#E4xAllowedDimension').length) {
+                    searchNValueInput.value = $('#E4xAllowedDimension')[0].value || '0';
+                } else {
+                    searchNValueInput.value = '0';
+                }
+            }
+        }
+    },
+
+    hideInfo: function () {
+        var cookieManager = new CookieManager();
+        var userCountry = cookieManager.getValueIgnoreCase('Country') || 'US';
+        if (userCountry != 'US') {
+            //Hide BML Info on Prod Details Page.
+            if ($('div.bmlBoxWrap').length) { $('div.bmlBoxWrap').hide(); }
+            //Hide Lowest Price Guarantee Info.
+            if ($('#lpg').length) { $('#lpg').hide(); }
+            //Hide Ships Same day.
+            if ($('#sameday').length) { $('#sameday').hide(); }
+            //Hide Free Shipping
+            if ($('#freeship').length) { $('#freeship').hide(); }
+        }
+    },
+
+    reloadPage: function (reloadFlag) {
+        //Basically, check if we are on the results page.
+        if ($('#e4xDomesticUrl').length && $('#e4xInternationalUrl').length && $('#e4xInternationalView').length) {
+            var cookieManager = new CookieManager();
+            var userCountry = cookieManager.getValueIgnoreCase('Country') || 'US';
+
+            if (userCountry != 'US' && $('#e4xInternationalView')[0].value == 'False') {
+                window.location = $('#e4xInternationalUrl')[0].value;
+            }
+            else if (userCountry == 'US' && $('#e4xInternationalView')[0].value == 'True') {
+                window.location = $('#e4xDomesticUrl')[0].value;
+            }
+            else if (reloadFlag && reloadFlag == true) {
+                window.location.reload();
+            }
+        }
+        else {
+            window.location.reload();
+        }
+    },
+    setCCCookie: function (ddlCountry, ddlCurrency) {
+        var oCountry = $('#' + ddlCountry)[0];
+        var countryCode = oCountry.options[oCountry.selectedIndex].value;
+
+        var oCurrency = $('#' + ddlCurrency)[0];
+        var currencyCode = oCurrency.options[oCurrency.selectedIndex].value;
+
+        if (countryCode != 0 && currencyCode != 0) {
+            //set country and currency cookies
+            var cookies = new CookieManager();
+            cookies.setCookie('Country', countryCode, 30, siteDomain);
+            cookies.setCookie('Currency', currencyCode, 30, siteDomain);
+
+            //close modal dialog
+            E4XClient.Hide('E4x');
+
+            //refresh underlying page
+            E4XClient.reloadPage(true);
+        }
+        else {
+            if (countryCode == 0 && currencyCode == 0) {
+                $('#ErrorMsgCountry').css('display', '');
+                $('#ErrorMsgCurrency').css('display', '');
+            }
+            else if (countryCode == 0) {
+                $('#ErrorMsgCountry').css('display', '');
+                $('#ErrorMsgCurrency').css('display', 'none');
+            }
+            else if (currencyCode == 0) {
+                $('#ErrorMsgCurrency').css('display', '');
+                $('#ErrorMsgCountry').css('display', 'none');
+            }
+        }
+    },
+    USCustomer: function () {
+        //set country and currency cookies to US
+        var cookies = new CookieManager();
+        cookies.setCookie('Country', 'US', 30, siteDomain);
+        cookies.setCookie('Currency', 'USD', 30, siteDomain);
+
+        //close modal dialog
+        E4XClient.Hide('E4x');
+
+        //refresh underlying page
+        E4XClient.reloadPage(true);
+    },
+    CloseWindow: function () {
+        var cookies = new CookieManager();
+        var userCountry = cookies.getValueIgnoreCase('Country');
+        var userCurrency = cookies.getValueIgnoreCase('Currency');
+
+        //if no cookies present, set them to US - USD
+        if ((typeof (userCurrency) == 'undefined') || (typeof (userCurrency) == 'undefined')) {
+            cookies.setCookie('Country', 'US', 30, siteDomain);
+            cookies.setCookie('Currency', 'USD', 30, siteDomain);
+        }
+        E4XClient.Hide('E4x');
+    },
+
+    Hide: function (domid) {
+        $(domid).hide();
+    },
+
+    selectDefaultCurrency: function (ddlcountry, ddlcurrency) {
+        var oCountry = $('#' + ddlcountry)[0];
+        var oCurrency = $('#' + ddlcurrency)[0];
+
+        var defaultCurrency = $(oCountry.options[oCountry.selectedIndex]).attr('default');
+        for (var i = 0; i < oCurrency.options.length; i++) {
+            if (oCurrency.options[i].value == defaultCurrency)
+                oCurrency.options[i].selected = '1';
+        }
+    },
+    toggleCheckout: function () {
+        var cookieManager = new CookieManager();
+        var userCountry = cookieManager.getValueIgnoreCase('Country') || 'US';
+
+        if (userCountry != 'US') {
+            $('#lnkInternational').css('display', 'none');
+            $('#lnkDomestic').css('display', '');
+        }
+        else {
+            $('#lnkInternational').css('display', '');
+            $('#lnkDomestic').css('display', 'none');
+        }
+
+    }
+}
+
+function thousandSeparator(v, s, d) {
+    if (arguments.length == 2) d = ".";
+    if (arguments.length == 1) { s = ","; d = "."; }
+
+    v = v.toString();
+    // separate the whole number and the fraction if possible
+    var a = v.split(d);
+    var x = a[0]; // decimal
+    var y = a[1]; // fraction
+    var z = "";
+    var l = x.length;
+    while (l > 3) {
+        z = "," + x.substr(l - 3, 3) + z;
+        l -= 3;
+    }
+    z = v.substr(0, l) + z;
+
+    if (a.length > 1)
+        z = z + d + y;
+    return z;
+}
+
+$(document).ready(E4XClient.displayPrices);
+$(document).ready(E4XClient.displayFreeShipping);
+$(document).ready(E4XClient.fixOnSiteSearch);
+$(document).ready(E4XClient.hideInfo);
+

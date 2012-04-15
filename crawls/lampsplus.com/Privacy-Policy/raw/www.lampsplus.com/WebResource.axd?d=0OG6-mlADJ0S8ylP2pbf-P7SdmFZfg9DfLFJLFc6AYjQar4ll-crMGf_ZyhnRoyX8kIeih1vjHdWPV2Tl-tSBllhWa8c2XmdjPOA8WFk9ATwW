@@ -1,0 +1,74 @@
+﻿function deSerialize(text) {
+    var result = { };
+    var pairs = text.split("&");
+    for (var i = 0; i < pairs.length; i++) {
+        var keyValuePair = pairs[i].split("=");
+        result[keyValuePair[0]] = keyValuePair[1];
+    }
+    return result;
+}
+
+$(window).bind("message", function (event) {
+    var e = event.originalEvent;
+    if (e.origin !== "https://secure.lampsplus.com") {
+        log("not authorized domain");
+        return;
+    }
+
+    var data = deSerialize(e.data);
+    if (data.Name && data.Name != "") {
+        $(window).trigger("gsession", [data.Name, data.SessionToken]);
+        var globalSessionCookie = GID.personalizationCookieName + '=' + data.SessionToken + '; path=/; expires=' + new Date(parseInt(data.TokenExpiration)).toGMTString();
+        if (GID.cookieDomain && GID.cookieDomain != '')
+            globalSessionCookie += '; domain=' + GID.cookieDomain;
+        document.cookie = globalSessionCookie;
+        setGlobalSessionCookie(true);
+        log("Global Session Found");
+    }
+    else {
+        log("No Global Session Found");
+        setGlobalSessionCookie(false);
+    }
+});
+
+$(function () {
+    var hasGlobalIdentity = readCookie(GID.globalIdentityFlagCookieName);
+    if (hasGlobalIdentity != null)
+        log("Global identity flag found, value=" + hasGlobalIdentity);
+    log("Request is local=" + GID.isLocal);
+    if (!hasGlobalIdentity && !GID.isLocal) {
+        log("Reading global session...");
+        var src = 'https://secure.lampsplus.com/secure/auth/global/read.aspx';
+        $("body").append("<iframe id='global-auth-frame' style='display:none' src='" + src + "'></iframe>");
+    }
+
+});
+
+function setGlobalSessionCookie(authed) {
+    var value = authed ? '1' : '0';
+    var cookie = GID.globalIdentityFlagCookieName + '=' + value + '; path=/;';
+    var date = new Date();
+    date.setTime(date.getTime() + (60 * 24 * 60 * 60 * 1000));
+    cookie += "; expires=" + date.toGMTString();
+    if (GID.cookieDomain && GID.cookieDomain != '')
+        cookie += '; domain=' + GID.cookieDomain;
+    document.cookie = cookie;
+}
+
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+};
+
+/** Logs a statement to the console at INFO: level */
+function log(text) {
+    if (window.console) {
+        console.log("INFO: " + text);
+    }
+};

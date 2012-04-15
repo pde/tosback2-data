@@ -1,0 +1,220 @@
+function reveal_trophy_message(trophyid, starttime) {
+	d = new Date();
+	totalheight=document.getElementById('trophy_display_'+trophyid).offsetHeight;
+	currentpos=document.getElementById('trophy_display_'+trophyid).style.bottom;
+	if (starttime == 0) {
+		starttime = d.getTime();
+	}
+	if (currentpos=="") {
+		document.getElementById('trophy_display_'+trophyid).style.bottom="-"+totalheight+"px";
+		document.getElementById('trophy_display_'+trophyid).style.right="0px";
+		document.getElementById('trophy_display_'+trophyid).style.position="fixed";
+		document.getElementById('trophy_display_'+trophyid).style.display="block";
+		setTimeout("reveal_trophy_message("+trophyid+","+starttime+")", 25);
+	} else {
+		currenttime = d.getTime();
+		duration=1000;
+		vertical_offset=30;
+		timedelta = currenttime - starttime;
+		bottom_pos = ((timedelta/duration)*(totalheight+vertical_offset))-totalheight;
+		if (timedelta <= duration) {
+			document.getElementById('trophy_display_'+trophyid).style.bottom=bottom_pos+"px";
+			setTimeout("reveal_trophy_message("+trophyid+","+starttime+")", 10);
+		} else {
+			document.getElementById('trophy_display_'+trophyid).style.bottom=vertical_offset+"px";
+		}
+	}
+}
+
+function reveal_trophy_message_div(starttime) {
+	d = new Date();
+	div_elem = document.getElementById('trophy_display_div')
+	totalheight=div_elem.offsetHeight;
+	currentpos=div_elem.style.bottom;
+	if (starttime == 0) {
+		starttime = d.getTime();
+	}
+	if (currentpos=="") {
+		div_elem.style.bottom="-"+totalheight+"px";
+		div_elem.style.right="0px";
+		div_elem.style.position="fixed";
+		div_elem.style.display="block";
+		setTimeout("reveal_trophy_message_div("+starttime+")", 25);
+	} else {
+		currenttime = d.getTime();
+		duration=1000;
+		vertical_offset=30;
+		timedelta = currenttime - starttime;
+		bottom_pos = ((timedelta/duration)*(totalheight+vertical_offset))-totalheight;
+		if (timedelta <= duration) {
+			div_elem.style.bottom=bottom_pos+"px";
+			setTimeout("reveal_trophy_message_div("+starttime+")", 10);
+		} else {
+			div_elem.style.bottom=vertical_offset+"px";
+		}
+	}
+}
+
+function expand_contract_trophy(row,col) {
+	main_obj = document.getElementById("trophy_img_"+row+"_"+col);
+	if (main_obj) {
+		if (main_obj.width > 100) {
+			shrink_trophy(row,col);
+		} else {
+			enlarge_trophy(row,col);
+		}
+	}
+}
+
+var enlarge_trophy_timer;
+var enlarge_trophy_done = true;
+function enlarge_trophy(row,col,starttime) {
+	if (shrink_trophy_done == false) {
+		if (starttime) {
+			enlarge_trophy_timer = setTimeout("enlarge_trophy("+row+","+col+","+starttime+")", 25);
+		} else {
+			enlarge_trophy_timer = setTimeout("enlarge_trophy("+row+","+col+")", 25);
+		}
+		return
+	}
+	enlarge_trophy_done = false;
+	d = new Date();
+	duration = 1000;
+	target_size = 300;
+	main_obj = document.getElementById("trophy_img_"+row+"_"+col);
+	main_div_obj = document.getElementById("trophy_block_"+row+"_"+col);
+	if (!starttime) {
+		starttime = d.getTime();
+		if (main_obj) {
+			if (main_obj.width > 100) {
+				starttime = starttime - duration * (main_obj.width/target_size);
+			}
+		}
+	}
+	current_time = d.getTime();
+	timedelta = current_time - starttime;
+	if (timedelta < duration) {
+		//size = 120+(target_size-120)*(timedelta/duration);
+		size = main_obj.width + (target_size-main_obj.width)*(timedelta/duration);
+	} else {
+		size = target_size;
+	}
+	small_size = 100-(size-100)/4
+	for (i=1; i<=5; i=i+1) {
+		obj = document.getElementById("trophy_img_"+row+"_"+i);
+		div_obj = document.getElementById("trophy_block_"+row+"_"+i);
+		txt_obj = document.getElementById("trophy_text_"+row+"_"+i);
+		if (obj && i!=col) {
+			if (div_obj) {
+				div_obj.style.width=small_size+"px";
+			}
+			if (txt_obj) {
+				color = Math.ceil(2*main_obj.width - 100);
+				if (color > 255) {
+					color = 255;
+				} else if (color < 0) {
+					color = 0;
+				}
+				txt_obj.style.color="rgb("+color+","+color+","+color+")";
+			}
+			obj.width=small_size;
+			obj.height=small_size;
+			obj.style.paddingTop=Math.ceil((size-100)/2+(100-small_size)/2)+"px";
+		}
+	}
+	if (main_obj) {
+		if (main_div_obj) {
+			main_div_obj.style.width=size+"px";
+		}
+		main_obj.width=size;
+		main_obj.height=size;
+		main_obj.src=main_obj.src.replace(/^(.*)_[0-9]{3}_[0-9]{3}(\.[a-z]{3})$/g, "$1_300_300$2");
+		main_obj.style.paddingTop="0px";
+	}
+	if (size != target_size) {
+		if (enlarge_trophy_done == false) {
+			enlarge_trophy_timer = setTimeout("enlarge_trophy("+row+","+col+","+starttime+")", 25);
+		}
+	} else {
+		enlarge_trophy_done = true;
+	}
+}
+
+var shrink_trophy_timer;
+var shrink_trophy_done = true;
+function shrink_trophy(row,col,starttime) {
+	if (!starttime && shrink_trophy_done==false) {
+		return;
+	}
+	shrink_trophy_done = false;
+	if (enlarge_trophy_done == false) {
+		enlarge_trophy_done = true;
+		clearTimeout(enlarge_trophy_timer);
+	}
+	d = new Date();
+	duration = 250;
+	target_size = 100;
+	main_obj = document.getElementById("trophy_img_"+row+"_"+col);
+	main_div_obj = document.getElementById("trophy_block_"+row+"_"+col);
+	if (!starttime) {
+		starttime = d.getTime();
+	}
+	current_time = d.getTime();
+	timedelta = current_time - starttime;
+	if (timedelta < duration) {
+		size = target_size + (main_obj.width-target_size)*((duration-timedelta)/duration);
+	} else {
+		size = target_size;
+	}
+	small_size = 100-(size-100)/4
+	for (i=1; i<=5; i=i+1) {
+		obj = document.getElementById("trophy_img_"+row+"_"+i);
+		div_obj = document.getElementById("trophy_block_"+row+"_"+i);
+		txt_obj = document.getElementById("trophy_text_"+row+"_"+i);
+		if (obj && i!=col) {
+			if (div_obj) {
+				div_obj.style.width=small_size+"px";
+			}
+			if (txt_obj) {
+				color = (main_obj.width-target_size)*2;
+				if (color > 255) {
+					color = 255;
+				} else if (color < 0) {
+					color = 0;
+				}
+				txt_obj.style.color="rgb("+color+","+color+","+color+")";
+				//txt_obj.style.display="block";
+			}
+			obj.width=small_size;
+			obj.height=small_size;
+			obj.style.paddingTop=Math.ceil((size-100)/2+(100-small_size)/2)+"px";
+		}
+	}
+	if (main_obj) {
+		if (main_div_obj) {
+			main_div_obj.style.width=size+"px";
+		}
+		main_obj.width=size;
+		main_obj.height=size;
+		main_obj.style.paddingTop="0px";
+		if (size == target_size) {
+			main_obj.src=main_obj.src.replace(/^(.*)_[0-9]{3}_[0-9]{3}(\.[a-z]{3})$/g, "$1_100_100$2");
+		}
+	}
+	if (size != target_size) {
+		shrink_trophy_timer = setTimeout("shrink_trophy("+row+","+col+","+starttime+")", 25);
+	} else {
+		shrink_trophy_done = true
+	}
+}
+
+var trophy_redirect_var = true;
+function trophy_redirect(location) {
+	if (trophy_redirect_var == true) {
+		window.location=location;
+	}
+	trophy_redirect_var = true;
+}
+function trophy_redirect_disable() {
+	trophy_redirect_var = false;
+}

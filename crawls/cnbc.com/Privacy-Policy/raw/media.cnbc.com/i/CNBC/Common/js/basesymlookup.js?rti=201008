@@ -1,0 +1,1241 @@
+/////////////////////////////////////////////////////////////////////////////////////////
+//Base Symbol Lookup View
+/////////////////////////////////////////////////////////////////////////////////////////
+BaseSymbolLookupView = Class.create();
+	BaseSymbolLookupView.prototype = Object.extend(new BaseView,  {
+	  initialize: function() {
+	  },
+	  
+	  onDataEvent: function(event,data){		  		  
+		  if( ((typeof event)!='undefined') && (event!=null))
+		  {
+			  switch(event.getType())
+			  {
+				case SLEvent.Type.GETMATCHES:			
+					this.onGetMatches(event.getState(),data);
+					break;
+			 }
+		  }		 
+	  },
+	
+	  /**
+	   * Override Abstract Methods Below For Your View Specific Implementation
+	   */
+	  onGetMatches: function(state,data){
+		  //TO-DO: Add the specific view implementation
+	  }
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//Base Symbol Lookup Controller
+/////////////////////////////////////////////////////////////////////////////////////////
+BaseSymbolLookupController= Class.create();
+	BaseSymbolLookupController.prototype =  Object.extend(new BaseController,{
+	  initialize: function(data,requestor,parser) {
+  		this.data		= data;
+		this.requestor	= requestor
+		this.parser		= parser;
+	  },		  
+	  
+	  /**
+	   * Override Abstract Methods Below For Your Controller Specific Implementation
+	   * NOTE:  Must delegate data call via requestor object in the form of:
+	   *		this.execute(URL, params, options )
+	   */
+      getMatches: function(prefix, pagesize, pagenum, pagok, pagurl){		  
+	  		var prefixLwCase = prefix.toLowerCase();
+	  		var pgsz    = pagesize || "10";
+	  		var page    = pagenum  || (this.data.getCurrentPage() + 1);		
+			var pagOn   = pagok    || "0";
+			var params  = "";
+			var URL     = pagurl   || "http://symlookup.cnbc.com/symservice/symlookup.do";
+			
+			
+			if (pagOn == "1") {
+			    params  = "output=json&pgok="+pagOn+"&pgsize="+pgsz+"&pg="+page+"&prefix="+escape(prefixLwCase);
+			} else {
+			    params = "output=json&maxresults="+pgsz+"&prefix="+escape(prefixLwCase);
+			}		
+			
+		
+			this.execute(URL, 
+						 params, 
+						  { event: SLEvent.Type.GETMATCHES,
+						    doPost : true,
+							onSuccessEvent : true,
+							onInitializeEvent: true,
+							onErrorEvent : true,
+							onTimeoutEvent : true,
+							onTimeoutLength : 30000});
+	  } 
+});
+		
+///////////////////////////////////////////////////////////
+// Symbol Lookup Object Model and Parser
+///////////////////////////////////////////////////////////
+SymbolLookupMatch = Class.create();
+	SymbolLookupMatch.prototype = {
+		initialize:function(){
+			this.name 		 = '';
+			this.companyName = '';
+			this.exchange 	 = '';
+			this.country 	 = '';
+		},		
+		getName:function(){
+			return this.name;
+		},		
+		getCompanyName:function(){
+			return this.companyName;
+		},		
+		getExchange:function(){
+			return this.exchange;
+		},
+		getCountry:function(){
+		    return this.country;
+		},		
+		setName:function(name){
+			this.name= name;
+		},
+		setCompanyName:function(name){
+			this.companyName = name;
+		},
+		setExchange:function(exchange){
+			this.exchange = exchange;
+		},
+		setCountry:function(country){
+		    this.country = country;
+		}
+};
+
+SymbolLookupModel = Class.create();
+	SymbolLookupModel.prototype =  Object.extend(new BaseModel,{
+	  initialize: function(views) {
+		this.views		= views || [];
+		this.totalMatchesAvailable 	= 0;
+		this.totalPages				= 0;
+		this.appliedPageSize		= 0;
+		this.currentPage			= 0;
+		this.matches				= []; // Array of type SymbolLookup Match
+	  },
+
+	  	getTotalMatchesAvailable:function() {
+			return this.totalMatchesAvailable;
+		},
+		getTotalPages:function() {
+			return this.totalPages;
+		},
+		getAppliedPageSize:function() {
+			return this.appliedPageSize;
+		},
+		getCurrentPage:function() {
+			return this.currentPage;
+		},
+		getMatches:function(){
+			return this.matches;
+		},
+		setTotalMatchesAvailable:function(totalMatchesAvailable) {
+			this.totalMatchesAvailable = totalMatchesAvailable;
+		},
+		setTotalPages:function(totalPages) {
+			this.totalPages = totalPages;
+		},
+		setAppliedPageSize:function(appliedPageSize) {
+			this.appliedPageSize = appliedPageSize;
+		},
+		setCurrentPage:function(currentPage) {
+			this.currentPage = currentPage;
+		},
+		setMatches:function(matches){
+			this.matches = matches;
+		},
+			 	
+		//Add the specific object update based on submitted data
+		applyData: function(event,data){			
+			    if( ((typeof event)!='undefined') && (event!=null) &&
+				    ((typeof data)!='undefined') && (data!=null) )
+			   {
+				  try
+				  {				  
+				 	  switch(event.getState())
+					  {
+					  case BaseRequestor.State.ERROR:
+					  case BaseRequestor.State.TIMEOUT:
+					  		return data;
+							break;
+					  
+					  default:
+					  	var updateModel = new SymbolLookupModel();
+						updateModel.setTotalMatchesAvailable(data.totalMatchesAvailable);
+						updateModel.setTotalPages(data.totalPages);
+						updateModel.setAppliedPageSize(data.appliedPageSize);
+						updateModel.setCurrentPage(data.currentPage);
+						updateModel.setMatches(data.matches);
+						this.setTotalMatchesAvailable(data.totalMatchesAvailable);
+						this.setTotalPages(data.totalPages);
+						this.setAppliedPageSize(data.appliedPageSize);
+						this.setCurrentPage(data.currentPage);
+						this.setMatches(data.matches);
+						return updateModel;
+						break;
+					  }
+				  }
+				  catch(e)
+				  {
+					  event.setState(BaseRequestor.State.ERROR);
+					  return e.message;
+				  }
+			   }
+			   
+			   return this;
+		}
+});
+
+SymbolLookupParser= Class.create();
+	SymbolLookupParser.prototype =  Object.extend(new BaseModelParser,{
+		initialize: function() {					
+	  	},	
+		load: function(request){
+				if( ((typeof request)!='undefined') && (request!=null) )
+				{
+					/* JSON Version*/
+					var content = request.responseText;
+					
+					var content =  eval('(' +content + ')');
+					
+					if(content.length>=1)
+					{
+						var data = [];										
+						data.totalMatchesAvailable	= content[0].TotalMatchAvailable;
+						data.totalPages				= content[0].TotalPageAvailable;
+						data.appliedPageSize		= content[0].AppliedPageSize;
+						data.currentPage			= content[0].CurrentPage;
+
+						data.matches = [];
+						var totalReturned = content[0].TotalMatchReturned;
+
+						for(var i=1; i<=totalReturned; ++i)
+						{	
+							var match 	= new SymbolLookupMatch();
+							match.name 	= content[i].symbolName;
+							match.companyName	= content[i].companyName;
+							match.exchange		= content[i].exchangeName;
+							match.country   	= content[i].countryCode;
+							data.matches.push(match);
+						}
+					}
+
+					return data;
+				}			
+			
+			return null;
+		}		
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//Generic Event
+/////////////////////////////////////////////////////////////////////////////////////////
+SLEvent = Class.create();
+	SLEvent.prototype = Object.extend( new Event,{
+		initialize: function(type,state) {						
+			this.type	= type;
+			this.state	= state;
+	  	}
+});
+
+SLEvent.Type = [];
+SLEvent.Type.GETMATCHES	="GETMATCHES";
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//Symbol Lookup Settings - used in Dynamic and Static Symbol Lookup Classes
+/////////////////////////////////////////////////////////////////////////////////////////
+SymbolLookupSettings = Class.create();
+SymbolLookupSettings.prototype = {
+    initialize: function(maxresults, pattern, count, pageUrl, footercontent, errorcontent, linkevent, paginateMethod, linkcount, savedprefix) {
+            
+        this.maxresults     = maxresults || 10;
+	    this.pattern        = pattern || ",";
+	    this.count          = count || 10;
+	    this.page_url       = pageUrl;
+	    this.footercontent  = footercontent || "";
+	    this.errorcontent   = errorcontent  || "";
+	    this.linkevent      = linkevent || "";
+	    this.paginateMethod = paginateMethod || "";
+	    this.linkcount      = linkcount || 5;
+	    this.savedprefix     = savedprefix || "";
+	    
+			
+	},
+		
+	getMaxResults:function() {
+	    return this.maxresults;
+	},
+	getPageURL:function() {
+	    return this.page_url;
+	},
+	getPattern:function() {
+	    return this.pattern;
+	},
+	getCount:function() {
+	    return this.count;
+	},
+	getFooterContent:function() {
+	    return this.footercontent;
+	},
+	getErrorContent:function() {
+	    return this.errorcontent;
+	},
+	getPaginationLinksMethod:function() {
+	    return this.paginateMethod;
+	},
+	getLinkCount:function() {
+	    return this.linkcount;
+	},
+	getLinkEvent:function() {
+	    return this.linkevent;
+	},
+	getSavedPrefix:function() {
+	    return this.savedprefix;
+	},
+	setMaxResults:function(results) {
+	    this.maxresults = results;
+	},
+	setPageURL:function(url) {
+	    this.page_url = url;
+	},
+	setPattern:function(pattern) {
+	    this.pattern = pattern;
+	},
+	setCount:function(count) {
+	    this.count = count;
+	},
+	setFooterContent:function(content) {
+	    this.footercontent = content;
+	},
+	setErrorContent:function(content) {
+	    this.errorcontent = content;
+	},
+	setPaginationLinksMethod:function(method) {
+	    this.paginateMethod = method;
+	},
+	setLinkCount:function(count) {
+	    this.linkcount = count;
+	},
+	setLinkEvent:function(event) {
+	    this.linkevent = event;
+	},
+	setSavedPrefix:function(query) {
+	    this.savedprefix = query;
+	}
+
+};
+	
+	
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//Dynamic SymbLookup AutoSuggest Class and methods
+/////////////////////////////////////////////////////////////////////////////////////////
+SymLookupAutoSuggest = Class.create();
+SymLookupAutoSuggest.prototype = {
+	initialize: function(oInput, oContainer,oSettings,oController) {
+	    // vars
+			this.currMatchIndex    = -1;
+			this.flag              = false;				
+			this.prefix            = "";
+			this.containerPrefix   = "";
+			
+			//objects
+			this.input             = oInput;
+			this.container         = oContainer;	
+			this.settings          = oSettings;	
+			this.controller		   = oController;
+					
+			this.input.savedonkeyup     = this.input.onkeyup;
+			this.input.savedonkeydown   = this.input.onkeydown;
+			this.input.savedonpaste     = this.input.onpaste;
+			this.input.savedoninput     = this.input.oninput;
+			this.input.savedonfocus     = this.input.onfocus;
+			this.input.savedonblur      = this.input.onblur; 
+			
+			this.enableAutoSuggest();	
+	},
+	
+	setController:function(controller) {
+		this.controller = controller;
+	},
+	
+	enableAutoSuggest:function () {
+		var thisInput = this;		  
+		
+		this.input.onkeyup = function (evt) {
+		    if((typeof thisInput.input.savedonkeyup) == 'function')
+			{ thisInput.input.savedonkeyup(); }
+			
+			// onkeydown, call handler
+			if (!evt) {
+				evt = window.event;
+			}
+			thisInput.handleKeyUp(evt);
+		};
+				
+		this.input.onkeydown = function (evt) {
+		    if((typeof thisInput.input.savedonkeydown) == 'function')
+			{ thisInput.input.savedonkeydown(); }
+			
+			// onkeydown, call handler
+			if (!evt) {
+				evt = window.event;
+			}
+			thisInput.handleKeyDown(evt);
+		};
+			
+		this.input.onpaste = function (evt) {
+		    if((typeof thisInput.input.savedonpaste) == 'function')
+			{ thisInput.input.savedonpaste(); }
+			
+			// onpaste, treat like onkeyup event
+			if (!evt) {
+				evt = window.event;
+			}
+			thisInput.handleKeyUp(evt);
+		};
+		
+		this.input.oninput = function (evt) {
+		    if((typeof thisInput.input.savedoninput) == 'function')
+			{ thisInput.input.savedoninput(); }
+			
+			// on input, treat like onkeyup event
+			if (!evt) {
+				evt = window.event;
+			}
+			thisInput.handleKeyUp(evt);
+		};
+		
+		this.input.onblur = function () {
+		    if((typeof thisInput.input.savedonblur) == 'function')
+			{thisInput.input.savedonblur(); }
+			
+			// on blur, onblur event
+			var hideMethod = function () {
+			
+	            //hide dropdown menu
+                thisInput.flag = false;
+                thisInput.hideSymSuggest();  
+	        };
+    	    
+	        setTimeout(hideMethod, 150);
+		};
+		
+		this.input.onfocus = function () {
+			if((typeof thisInput.input.savedonfocus) == 'function')
+			{thisInput.input.savedonfocus(); }
+
+			// on focus, do nothing
+			
+		};
+		
+	},
+		
+	disableAutoSuggest:function(){
+    
+		//disable events to the input field
+		this.input.onkeyup   = null;
+		
+		this.input.onkeydown = null;
+		
+		this.input.onpaste   = null;
+		
+		this.input.oninput   = null;
+		
+		this.input.onfocus   = null;
+		
+		this.input.onblur    = null;
+		
+		//hide dropdown menu
+		this.flag = false;
+		this.hideSymSuggest();
+	},
+	
+    disableSymSuggestEvents:function (events) {
+            
+        for(i=0;i<events.length;i++) {    
+            switch(events[i]) 
+            {
+                case "onkeyup": 
+                    this.input.onkeyup   = null;
+                    break;
+                case "onkeydown": 
+                    this.input.onkeydown = null;
+                    break;
+                case  "onpaste": 
+                    this.input.onpaste   = null;
+                    break;	
+                case "oninput": 
+                    this.input.oninput   = null;	
+                    break;
+                case "onblur": 
+                    this.input.onblur    = null;
+                    break;	
+                case "onfocus": 
+                    this.input.onfocus   = null;	
+                    break;	    
+            }
+            
+        }
+    },
+		
+	hideSymSuggest:function () {
+			
+	    if(this.container.style.display != "none")
+	    {
+		    this.currMatchIndex = -1;
+		    this.container.innerHTML  = "";
+		    this.container.style.display ="none";
+	    }
+    },	
+	
+	initShowSymSuggest:function () {
+	    var onloadPrefix = this.settings.getSavedPrefix();
+	    
+	    if(onloadPrefix != "")
+	    {
+	    	if(this.flag == false)
+	        {
+		        this.input.onfocus = null;
+		        this.prefix = onloadPrefix;
+		        this.flag = true;
+        		
+		        /** call controller class and get requested data - getMatches function function(prefix, pagesize, pagenum, pagok, pageurl) **/
+		        this.controller.getMatches(this.prefix, this.settings.getMaxResults(),'','', this.settings.getPageURL());
+        		
+	        } else {
+		        this.hideSymSuggest();
+	        }
+	    }
+	},
+		
+	showSymSuggest:function(){
+	
+	    if(this.flag == false)
+	    {
+	        this.settings.setSavedPrefix(this.input.value); 
+	        this.prefix = this.input.value;
+	        var patt = this.settings.getPattern();
+	        var prefix_split = this.prefix.split(patt);
+	        this.prefix = this.LTrim(prefix_split[prefix_split.length-1]);
+        	
+	        this.currMatchIndex = -1;
+        				
+	        if(this.prefix.length > 0)
+	        {
+		        this.flag = true;
+        		
+		        /** call controller class and get requested data - getMatches function function(prefix, pagesize, pagenum, pagok, pageurl) **/
+		        this.controller.getMatches(this.prefix, this.settings.getMaxResults(),'','', this.settings.getPageURL());
+        		
+	        } else {
+		        this.hideSymSuggest();
+	        }
+	    }
+	},
+	
+	handleKeyUp:function (evt) {
+		 var keycode = evt.keyCode;
+
+		 if (keycode == 8 || keycode == 46) {
+			// update current string variable
+			if(this.input.value == '') {
+				this.containerPrefix = '';
+			} else {
+				var lastIndex = this.input.value.lastIndexOf(",");
+				if(lastIndex != -1) {
+					this.containerPrefix = this.input.value.slice(0, lastIndex).toUpperCase();
+				} else {
+					this.containerPrefix = '';
+				}
+			}
+			// backspace and delete key codes
+			this.showSymSuggest();
+							
+		} else if (keycode < 32 || (keycode >= 33 && keycode <= 46) || (keycode >= 112 && keycode <= 123)) {
+			//ignore
+		} else {
+			// update current string variable
+			if(this.input.value == '') {
+				this.containerPrefix = '';
+			} else {
+				var lastIndex = this.input.value.lastIndexOf(",");
+				if(lastIndex != -1) {
+					this.containerPrefix = this.input.value.slice(0, lastIndex).toUpperCase();
+				} else {
+					this.containerPrefix = '';
+				}
+			}
+			// default behavior
+			this.showSymSuggest();
+		}
+	},
+
+	handleKeyDown:function (evt) {
+		switch(evt.keyCode) {
+			case 38: //up arrow
+				this.prevSymSuggest();
+				break;
+			case 40: //down arrow
+				this.nextSymSuggest();
+				break;
+			case  9: //tab
+			    this.hideSymSuggest();	
+				break;	
+			case 13: //enter
+				this.hideSymSuggest();	
+				break;
+		}
+	},
+	nextSymSuggest:function () {
+
+		var SuggestNode = this.container.getElementsByTagName("li");
+		
+		if (SuggestNode.length > 0 && this.currMatchIndex < SuggestNode.length-1) {
+			var symNode = SuggestNode[++this.currMatchIndex];
+			this.accentSymSuggest(symNode);
+			if(this.containerPrefix == '') {
+				this.input.value = symNode.id + ", ";
+			} else {
+				this.input.value = this.containerPrefix + ", " + symNode.id + ", ";
+			}
+		}
+	},
+
+	prevSymSuggest:function () {
+		
+		var SuggestNode = this.container.getElementsByTagName("li");
+		
+		if (SuggestNode.length-1 > 0 && this.currMatchIndex > 0) {
+			
+			var symNode = SuggestNode[--this.currMatchIndex];
+			this.accentSymSuggest(symNode);
+			if(this.containerPrefix == '') {
+				this.input.value = symNode.id + ", ";
+			} else {
+				this.input.value = this.containerPrefix + ", " + symNode.id + ", ";
+			}
+		}
+	},
+
+	accentSymSuggest:function (SuggestNode) {
+		
+		var contNodes = this.container.getElementsByTagName('li');
+		
+		for (var i=0; i < contNodes.length; i++) {
+			
+			var symNode = contNodes[i];
+			
+			if (symNode == SuggestNode) {
+				symNode.className = "hlight";
+				
+			} else if (symNode.className == "hlight") {
+				symNode.className = "";
+			}
+		}
+	},
+	
+	displayMatches:function (data) {
+		var syms = [];
+		var symsContent="";
+		var results = data.getMatches();
+		var upper, upperPos, sym, symRow, symFtr, symName, compName, ctryCode_exchgName;
+		
+		this.flag = false;
+		
+		var requestedPrefix = this.settings.getSavedPrefix();
+		if(requestedPrefix != this.input.value) { 
+		  
+		    this.showSymSuggest();
+		    
+		} 
+		else if( ((typeof results)!='undefined') && ((typeof results.length)!='undefined') && (results.length > 0) )
+		{
+			if(results.length <= this.settings.getMaxResults())
+			{
+				totalcount = results.length;
+			} else {
+				totalcount = this.settings.getMaxResults();
+			}		 
+			
+			try{
+				for (var i=0; i < totalcount; i++)
+				{
+					
+		            			            
+					sym = results[i].getName();	            
+					symName = results[i].getName();
+					compName = results[i].getCompanyName();
+					ctryCode_exchgName = (results[i].getCountry() != null) ? results[i].getCountry() : results[i].getExchange();
+					ctryCode_exchgName = (ctryCode_exchgName!= "") ? ctryCode_exchgName : "--";
+					
+					var UpperPrefix = this.prefix.toUpperCase();
+					
+					upper    = symName.toUpperCase();
+					upperPos = upper.indexOf(UpperPrefix);
+					 
+					if (upperPos != -1) {
+						symName = symName.slice(0, upperPos) + "<span>" + symName.slice(upperPos, (upperPos + UpperPrefix.length)) + "</span>" + symName.slice(upperPos + UpperPrefix.length);
+					}
+					
+					upper    = compName.toUpperCase();
+					upperPos = upper.indexOf(UpperPrefix);
+					 
+					if (upperPos != -1) {
+						compName = compName.slice(0, upperPos) + "<span>" + compName.slice(upperPos, (upperPos + UpperPrefix.length)) + "</span>" + compName.slice(upperPos + UpperPrefix.length);
+					}	
+					
+					
+					symRow  = "<li id=\""+sym+"\">";
+					symRow += "<div class=\"fL symName\">"+symName+"</div>";
+					symRow += "<div class=\"fL compName\">"+compName+"</div>";
+					symRow += "<div class=\"fL exchgName\">"+ctryCode_exchgName+"</div>";
+					symRow += "</li>";
+		            		            
+					symsContent += symRow; 				
+				}
+				symFtr = this.symbolReplaceText(this.settings.getFooterContent(), this.prefix, "##prefix##");
+				
+				this.container.innerHTML ="<div id=\"dd_body\"><ul>"+symsContent +"</ul>"+symFtr+"</div>";
+				this.container.style.display ="block";
+		        		
+				this.ActivateLinks();
+				
+				requestedPrefix = this.settings.getSavedPrefix();
+		        if(requestedPrefix != this.input.value) { 
+        		  
+		            this.showSymSuggest();
+        		    
+		        }else {
+		            return;
+				}
+			}
+			catch(e)
+			{
+				this.hideSymSuggest();
+				
+				throw e;
+			}
+		} else {
+		    this.hideSymSuggest();
+		}
+	},
+
+	ActivateLinks:function () {
+
+		var thisInput = this;
+		var thisContainer = this.container.childNodes[0];
+				
+		thisContainer.onmousedown = thisContainer.onmouseup = thisContainer.onmouseover = function (evt) {
+						
+			evt = evt || window.event;
+			evt_target = evt.target || evt.srcElement;
+			evt_target_node = null;
+							
+			if (evt.type == "mousedown") {
+				
+				if(evt_target.nodeName == 'LI') {
+					evt_target_node = evt_target;
+					
+				} else if(evt_target.nodeName == 'DIV') {
+					if(evt_target.parentNode.nodeName == 'LI') {
+						evt_target_node = evt_target.parentNode;
+					}
+				} else if(evt_target.nodeName == 'SPAN') {
+					if(evt_target.parentNode.parentNode.nodeName == 'LI') {
+						evt_target_node = evt_target.parentNode.parentNode;
+					}
+				} 
+									
+				if(evt_target_node != null){
+					
+					if(thisInput.containerPrefix.indexOf(',') != -1 || thisInput.containerPrefix !='') {
+						
+						var commas = thisInput.containerPrefix.split(thisInput.settings.getPattern());
+						
+						if(commas.length < thisInput.settings.getCount()) {
+							thisInput.containerPrefix += String(", " + evt_target_node.id);
+						}
+					} else {
+						thisInput.containerPrefix = String(evt_target_node.id);
+					}
+					
+					thisInput.input.value = thisInput.containerPrefix;
+					thisInput.hideSymSuggest();
+					
+					thisInput.ActiveLinkEvent( thisInput.containerPrefix );
+				}
+									
+			} else if (evt.type == "mouseover") {
+			
+				if(evt_target.nodeName == 'LI') {
+					evt_target_node = evt_target;
+					
+				} else if(evt_target.nodeName == 'DIV') {
+					if(evt_target.parentNode.nodeName == 'LI') {
+						evt_target_node = evt_target.parentNode;
+					}				
+				} else if(evt_target.nodeName == 'SPAN') {
+					if(evt_target.parentNode.parentNode.nodeName == 'LI') {
+						evt_target_node = evt_target.parentNode.parentNode;
+					}
+				}
+				
+				if(evt_target_node != null){
+					thisInput.accentSymSuggest(evt_target_node);
+				}
+								
+			} else {
+				
+				thisInput.input.focus();
+			}
+			
+		};
+	},
+	ActiveLinkEvent:function ( value ) {
+        
+        var event = this.symbolReplaceText(this.settings.getLinkEvent(), value, "##param##");
+        eval( event );
+    },
+	// Removes leading whitespaces
+	LTrim:function( value ) 
+	{	
+		var re = /\s*((\S+\s*)*)/;
+		return value.replace(re, "$1");
+		
+	},
+	symbolReplaceText:function (text,symbol,specialChar) {
+	    
+	    var replacedText = text;
+	    replacedText = replacedText.replace(eval("/"+specialChar+"/g"), symbol);
+	    
+	    return replacedText;
+	    
+	}
+	
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//Static SymbLookup AutoSuggest Class and methods
+/////////////////////////////////////////////////////////////////////////////////////////
+StaticSymLookup = Class.create();
+StaticSymLookup.prototype = {
+	initialize: function(oInput, oContainer,oSettings,oController) {
+	
+	    // vars
+			this.currMatchIndex    = -1;
+			this.flag              = false;				
+			this.prefix            = "";
+			this.containerPrefix   = "";
+			this.currentpage       = 1;
+			
+			//objects
+			this.input             = oInput;
+			this.container         = oContainer;	
+			this.settings          = oSettings;	
+			this.controller		   = oController;
+								
+			this.input.savedonkeyup     = this.input.onkeyup;
+			this.input.savedonkeydown   = this.input.onkeydown;
+			this.input.savedonpaste     = this.input.onpaste;
+			this.input.savedoninput     = this.input.oninput;
+			this.input.savedonfocus     = this.input.onfocus; 
+			
+			this.enableAutoSuggest();	
+	},
+	
+	setController : function(controller) {
+		this.controller = controller;
+	},
+
+	enableAutoSuggest:function () {
+		var thisInput = this;
+
+		//attach event to the input field
+		this.input.onkeyup = function (evt) {
+			if (!evt) {
+				evt = window.event;
+			}
+			thisInput.handleKeyUp(evt);
+		};
+		
+		this.input.onfocus = function () {
+			this.value = "";
+			this.onfocus = null;
+			
+		};
+	},
+	
+	initShowSymSuggest:function () {
+	    var onloadPrefix = this.settings.getSavedPrefix();
+	    
+	    if(onloadPrefix != "")
+	    {
+	    	if(this.flag == false)
+	        {
+		        this.input.onfocus = null;
+		        this.prefix = onloadPrefix;
+		        this.flag = true;
+        		
+		        /** call controller class and get requested data - getMatches function function(prefix, pagesize, pagenum, pagok, pageurl) **/
+		        this.controller.getMatches(this.prefix, this.settings.getMaxResults(), this.currentpage, 1, this.settings.getPageURL());
+        		
+	        } else {
+		        this.hideSymSuggest();
+	        }
+	    }
+	},
+		
+	hideSymSuggest:function () {
+			
+	    var content = this.settings.getErrorContent();		
+		this.container.innerHTML = this.symbolReplaceText(this.settings.getErrorContent(), this.prefix, "##prefix##");
+		
+    },	
+		
+	showSymSuggest:function(){
+	    
+	    this.prefix = this.input.value;
+	    var patt = this.settings.getPattern();
+	    var prefix_split = this.prefix.split(patt);
+	    this.prefix = this.LTrim(prefix_split[prefix_split.length-1]);
+    	
+	    this.currMatchIndex = -1;
+    				
+	    if((this.prefix.length > 0) && (this.flag == false))
+	    {
+		    this.flag = true;
+    		
+		    /** call controller class and get requested data - getMatches function function(prefix, pagesize, pagenum, pagok, pageurl) **/
+		    this.controller.getMatches(this.prefix, this.settings.getMaxResults(), this.currentpage, 1, this.settings.getPageURL());
+    		
+	    } else {
+		    this.hideSymSuggest();
+	    }
+	},
+	
+	handleKeyUp:function (evt) {
+		 var keycode = evt.keyCode;
+		 var keytype = evt.type;
+
+		 if (keycode == 13 || keytype == "click") {
+			// submit request and update container	
+			
+			this.showSymSuggest();			
+		}
+	},
+
+	accentSymSuggest:function (SuggestNode) {
+		
+		var contNodes = this.container.getElementsByTagName('li');
+		
+		for (var i=0; i < contNodes.length; i++) {
+			
+			var symNode = contNodes[i];
+			
+			if (symNode == SuggestNode) {
+				symNode.className = "hlight";
+				
+			} else if (symNode.className == "hlight") {
+				symNode.className = "";
+			}
+		}
+	},
+	
+	displayMatches:function (data) {
+		var syms = [];
+		var symsContent="";
+		var results = data.getMatches();
+		
+		this.flag = false;
+		this.currentpage = 1;
+		
+		if( ((typeof results)!='undefined') && ((typeof results.length)!='undefined') && (results.length > 0) )
+		{
+			if(results.length <= this.settings.getMaxResults())
+			{
+				totalcount = results.length;
+			} else {
+				totalcount = this.settings.getMaxResults();
+			}		 
+			
+			try{
+				for (var i=0; i < totalcount; i++)
+				{
+					var upper, upperPos, sym, symRow, symHdr, symFtr, symName, compName, ctryCode, exchgName;
+		            			            
+					sym = results[i].getName();	            
+					symName = results[i].getName();
+					compName = results[i].getCompanyName();
+					ctryCode = (results[i].getCountry() != null) ? results[i].getCountry() : "--";
+					exchgName = (results[i].getExchange() != null) ? results[i].getExchange() : "--";
+					
+					var UpperPrefix = this.prefix.toUpperCase();
+					
+					upper    = symName.toUpperCase();
+					upperPos = upper.indexOf(UpperPrefix);
+					 
+					if (upperPos != -1) {
+						symName = symName.slice(0, upperPos) + "<span>" + symName.slice(upperPos, (upperPos + UpperPrefix.length)) + "</span>" + symName.slice(upperPos + UpperPrefix.length);
+					}
+					
+					upper    = compName.toUpperCase();
+					upperPos = upper.indexOf(UpperPrefix);
+					 
+					if (upperPos != -1) {
+						compName = compName.slice(0, upperPos) + "<span>" + compName.slice(upperPos, (upperPos + UpperPrefix.length)) + "</span>" + compName.slice(upperPos + UpperPrefix.length);
+					}	
+					
+					
+					symRow  = "<li id=\""+sym+"\" style=\"display: list-item;\" class=\"\">";
+					symRow += "<div class=\"fL symName\">"+symName+"</div>";
+					symRow += "<div class=\"fL compName\">"+compName+"</div>";
+					symRow += "<div class=\"fL exchgName\">"+exchgName+"</div>";
+					symRow += "<div class=\"fL ctryCode\">"+ctryCode+"</div>";
+					symRow += "</li>";
+		            
+					symHdr = "<div id=\"dd_header\" class=\"fL\">";
+					symHdr += "<div class=\"fL symName\">Symbol</div>";
+					symHdr += "<div class=\"fL compName\">Name</div>";
+					symHdr += "<div class=\"fL exchgName\">Exchange</div>";
+					symHdr += "<div class=\"fL ctryCode\">Country</div>";
+					symHdr += "</div>";
+		            									
+					symsContent += symRow; 				
+				}
+		        // pagination - totalcount, totalpages, currentpage
+		        symFtr = this.StaticSymLookupPagination(data.getTotalMatchesAvailable(), data.getTotalPages(), data.getCurrentPage());
+				symFtr += this.settings.getFooterContent();
+					
+				this.container.innerHTML  = symHdr+"<div id=\"dd_body\"><ul>"+symsContent +"</ul>"+symFtr+"</div>";
+				this.container.style.display ="block";
+		        		
+				this.ActivateLinks();
+							
+				return;
+			}
+			catch(e)
+			{
+				this.hideSymSuggest();
+				
+				throw e;
+			}
+		} else {
+		    this.hideSymSuggest();
+		}
+	},
+
+	ActivateLinks:function () {
+
+		var thisInput = this;
+		var thisContainer = this.container.childNodes[1].childNodes[0];
+				
+		thisContainer.onmousedown = thisContainer.onmouseup = thisContainer.onmouseover = function (evt) {
+						
+			evt = evt || window.event;
+			evt_target = evt.target || evt.srcElement;
+			evt_target_node = null;
+							
+			if (evt.type == "mousedown") {
+				
+				if(evt_target.nodeName == 'LI') {
+					evt_target_node = evt_target;
+					
+				} else if(evt_target.nodeName == 'DIV') {
+					if(evt_target.parentNode.nodeName == 'LI') {
+						evt_target_node = evt_target.parentNode;
+					}
+				} else if(evt_target.nodeName == 'SPAN') {
+					if(evt_target.parentNode.parentNode.nodeName == 'LI') {
+						evt_target_node = evt_target.parentNode.parentNode;
+					}
+				} 
+									
+				if(evt_target_node != null){
+					
+					thisInput.containerPrefix = String(evt_target_node.id);
+					thisInput.input.value = thisInput.containerPrefix;
+					
+					thisInput.ActiveLinkEvent( thisInput.containerPrefix );
+				    
+						
+				}
+									
+			} else if (evt.type == "mouseover") {
+			
+				if(evt_target.nodeName == 'LI') {
+					evt_target_node = evt_target;
+					
+				} else if(evt_target.nodeName == 'DIV') {
+					if(evt_target.parentNode.nodeName == 'LI') {
+						evt_target_node = evt_target.parentNode;
+					}				
+				} else if(evt_target.nodeName == 'SPAN') {
+					if(evt_target.parentNode.parentNode.nodeName == 'LI') {
+						evt_target_node = evt_target.parentNode.parentNode;
+					}
+				}
+				
+				if(evt_target_node != null){
+					thisInput.accentSymSuggest(evt_target_node);
+				}
+								
+			} else {
+				
+				thisInput.input.focus();
+			}
+			
+		};
+	},
+	
+	StaticSymLookupPagination:function(totalcount, totalpages, currentpage) {
+	    
+	    var content = "";
+	    if(Number(totalpages) > 1) {
+	        content    += "<div id=\"Pagination\"><div id=\"single_brdr\">&#160;</div>";
+	        content    += "<div class=\"PagBox\"><div class=\"row\">";
+	        content    += "<div class=\"cell\" id=\"leftPagCol\">";
+    	    
+	        if(Number(currentpage) > 1) {
+                content += "<a href=\"#\" "+this.symbolReplaceText(this.settings.getPaginationLinksMethod(), "1", "##current##")
+                +">&laquo;&#160;First</a>&#160;|&#160;<a href=\"#\" "+this.symbolReplaceText(this.settings.getPaginationLinksMethod(), Number(currentpage)-1, "##current##")+">&laquo;&#160;Previous</a>";
+            } else {
+                content +="&#160;&#160;";
+            }
+            content    += "</div>";
+            content    += "<div class=\"cell\" id=\"centerPagCol\">";
+            
+            content    += this.getPagLinks(totalcount, totalpages, currentpage, this.settings.getLinkCount());
+            content    += "&#160;of&#160;"+totalpages;
+            
+            content    += "</div>";
+	        content    += "<div class=\"cell\" id=\"rightPagCol\">";
+    	    
+    	    if(Number(currentpage) < Number(totalpages)) {
+	            content += "<a href=\"#\" "+this.symbolReplaceText(this.settings.getPaginationLinksMethod(), Number(currentpage)+1, "##current##")
+	            +">Next&#160;&raquo;</a>&#160;|&#160;<a href=\"#\" "+this.symbolReplaceText(this.settings.getPaginationLinksMethod(), Number(totalpages), "##current##")+">Last&#160;&raquo;</a>";
+    	    } else {
+                content +="&#160;&#160;";
+            }
+	        content    += "</div>";
+	        content    += "</div></div><div id=\"single_brdr\">&#160;</div></div>";
+	    } 
+	    return content;
+	},
+	
+	getPagLinks:function (totalcount, totalpages, currentpage, linkcount) {
+	
+	    //start, end, currentpage, linkcount (5)
+            var start = 1;
+            var end   = linkcount || 5;
+            var links  = "";           
+            for (var i=1; i<= totalcount; i++)
+            {
+                if(Number(currentpage) < linkcount || totalpages <= linkcount) {
+                                                
+                    if(totalpages <= linkcount) {
+                        var newcount = totalpages;
+                    } else {
+                        var newcount = linkcount;
+                    }
+                    // count, page, total, current, url
+                    links = this.createLinkPages(newcount, start, totalpages, currentpage);
+                    break;   
+                }
+                else if((Number(currentpage) > (totalpages - (linkcount - 1))) && (Number(currentpage) <= totalpages)) 
+                {
+                    var newstart = totalpages - (linkcount - 1);
+                    
+                    links = this.createLinkPages (linkcount, newstart, totalpages, currentpage);
+                    break;
+                } 
+                else if(start <= Number(currentpage) <= end) 
+                {
+                    var newstart = Number(currentpage) - 1;
+                    
+                    links = this.createLinkPages (linkcount, newstart, totalpages, currentpage);
+                    break;
+                }
+                else 
+                {
+                    start = Number(start) + Number(linkcount);
+                    end   = Number(end) + Number(linkcount);
+                }
+            }
+            
+            return links;
+	},
+	
+	createLinkPages:function (count, page, total, current)
+    {
+        var Links = "";
+        var separator = "&#160;|&#160;";
+        
+        
+        for (var i=1; i<=count; i++) // 5-1
+        {
+            if(page == current) {
+                if(page == total) {
+                    if(i > 1) { Links += separator; }
+                    Links += "<span>"+ page +"</span>";
+                
+                } else {
+                    if(i > 1) { Links += separator; }
+                    Links += "<span>"+ page +"</span>";
+                    page++;
+                }
+            } else {
+                if(page == total) {
+                    if(i > 1) { Links += separator; }
+                    Links += "<a href=\"#\" "+this.symbolReplaceText(this.settings.getPaginationLinksMethod(), page, "##current##")+">"+ page +"</a>";
+                
+                } else {
+                    if(i > 1) { Links += separator; }
+                    Links += "<a href=\"#\" "+this.symbolReplaceText(this.settings.getPaginationLinksMethod(), page, "##current##")+">"+ page +"</a>";
+                    page++;
+                    
+                }
+            }
+        }
+        
+        return Links;
+        
+    },
+    
+    getLinkPage:function (current) {
+       
+       this.currentpage = current;
+       this.showSymSuggest();
+       
+       return false; 
+    },
+    
+    ActiveLinkEvent:function ( value ) {
+        
+        var event = this.symbolReplaceText(this.settings.getLinkEvent(), value, "##param##");
+        eval( event );
+    },
+ 
+	LTrim:function( value ) 
+	{	
+		var re = /\s*((\S+\s*)*)/;
+		return value.replace(re, "$1");
+		
+	},
+	
+	symbolReplaceText:function (text,symbol,specialChar) {
+	    
+	    var replacedText = text;
+	    replacedText = replacedText.replace(eval("/"+specialChar+"/g"), symbol);
+	    
+	    return replacedText;
+	    
+	}
+	
+}

@@ -1,0 +1,485 @@
+
+if(!window.cbd )
+{
+cbd={};
+}
+cbd.loader={};
+cbd.loader.callbacks=[];
+if(!basePageLoaded)
+{
+cbd.loader.pageReadyConditions=['LOADER', 'PAGE_LOAD'];
+}
+else
+{
+cbd.loader.pageReadyConditions=['LOADER'];
+}
+cbd.loader.loadRunning=false;
+cbd.loader.pageReady=!RIA;
+cbd.loader.pendingCallbacks=[];
+cbd.loader.pendingRequires=[];
+if(!window.loaderWebBase )
+{
+if(window._cbdContentDomain)
+{
+window.loaderWebBase=window._cbdContentDomain;
+}
+else
+{
+window.loaderWebBase='';
+}
+}
+if(!window.loaderWebContextRoot){
+window.loaderWebContextRoot=_cbdWebContextRoot;
+}
+var loader_cbd_path=_cbdGetDebugFlag('loader_cbd_path' );
+if(loader_cbd_path!='enabled'&&loader_cbd_path!='' )
+{
+loaderWebBase=loader_cbd_path;
+}
+if(!window.yuiBase )
+{
+yuiBase=loaderWebBase+loaderWebContextRoot+'/yui/build/';
+}
+var loader_yui_path=_cbdGetDebugFlag('loader_yui_path' );
+if(loader_yui_path!='enabled'&&loader_yui_path!='' )
+{
+yuiBase=loader_yui_path;
+}
+cbd.loader.initModules=function()
+{
+var loader=cbd.loader;
+loader.addModule({
+name:'cbdLayer',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/Layer.js'
+});
+loader.addModule({
+name:'cbdInfoBox',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/InfoBox.js'
+});
+loader.addModule({
+name:'cbdHLayer',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/HLayer.js'
+});
+loader.addModule({
+name:'cbdNavBox',
+type:'js',
+requires:['animation'],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/NavBox.js'
+});
+loader.addModule({
+name:'cbdFlipper',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/Flipper.js'
+});
+loader.addModule({
+name:'cbdToolTip',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/ToolTip.js'
+});
+loader.addModule({
+name:'cbdSliderTab',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/SliderTab.js'
+});
+loader.addModule({
+name:'cbdSelectOneMenu',
+type:'js',
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/SelectOneMenu.js'
+});
+loader.addModule({
+name:'cbdListGrid',
+type:'js',
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/ListGrid.js'
+});
+loader.addModule({
+name:'cbdListGridStyle',
+type:'css',
+fullpath:loaderWebBase+loaderWebContextRoot+'/stylesheet/listGrid.css'
+});
+loader.addModule({
+name:'cbdMenu',
+type:'js',
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/Menu.js'
+});
+loader.addModule({
+name:'cbdHLayerStyle',
+type:'css',
+fullpath:loaderWebBase+loaderWebContextRoot+'/stylesheet/hLayer.css'
+});
+loader.addModule({
+name:'cbdFloatHeads',
+type:'js',
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/floatHeads.js'
+});
+loader.addModule({
+name:'cbdSlider',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/Slider.js'
+});
+loader.addModule({
+name:'cbdCalendar',
+type:'js',
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/Calendar.js'
+});
+loader.addModule({
+name:'cbdSelectListComp',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/SelectListComp.js'
+});
+loader.addModule({
+name:'cbdCalendarStyle',
+type:'css',
+fullpath:loaderWebBase+loaderWebContextRoot+'/stylesheet/calendar.css'
+});
+loader.addModule({
+name:'cbdNGCalendarStyle',
+type:'css',
+fullpath:loaderWebBase+loaderWebContextRoot+'/stylesheet/calendar-ng.css'
+});
+loader.addModule({
+name:'cbdFundBox',
+type:'js',
+requires:['dragdrop'],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/fundBox.js'
+});
+loader.addModule({
+name:'cbdExtLockGrid',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/extjs/examples/ux/LockingGridView.js'
+});
+loader.addModule({
+name:'cbdExtLockGridCSS',
+type:'css',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/extjs/examples/ux/css/LockingGridView.css'
+});
+loader.addModule({
+name:'cbdCharts',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/charting.js'
+});
+loader.addModule({
+name:'cbdChartsRender',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/ChartRenderer.js'
+});
+loader.addModule({
+name:'cbdSimpleCharts',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/simpleCharts.js'
+});
+loader.addModule({
+name:'cbdComplexCharts',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/complexCharts.js'
+});
+loader.addModule({
+name:'cbdPaginator',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/Paginator.js'
+});
+loader.addModule({
+name:'cbdCarousel',
+type:'js',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/carousel.js'
+});
+loader.addModule({
+name:'RIA',
+type:'js',
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/ria.js'
+});
+loader.addModule({
+name:'AJAX',
+type:'js',
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/ajaxFunctions.js'
+});
+loader.addModule({
+name:'RIAStyle',
+type:'css',
+fullpath:loaderWebBase+loaderWebContextRoot+'/stylesheet/RIA.css'
+});
+loader.addModule({
+name:'RIAStyleHostedApp',
+type:'css',
+fullpath:loaderWebBase+loaderWebContextRoot+'/stylesheet/RIA1.css'
+});
+loader.addModule({
+name:'VGIStyleHostedApp',
+type:'css',
+fullpath:loaderWebBase+loaderWebContextRoot+'/stylesheet/VGI1.css'
+});
+loader.addModule({
+name:'VG',
+type:'js',
+requires:['event'],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/vg.js'
+});
+loader.addModule({
+name:'FORMCHECK',
+type:'js',
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/FormCheck.js'
+});
+loader.addModule({
+name:'cbdDebug',
+type:'js',
+requires:['tabview', 'logger', 'autocomplete'],
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/debug.js'
+});
+var loadRollups=_cbdIsEnabled('loader_rollups' );
+cbd.loader.rollupFiles=new Array('cbdLayer', 'cbdInfoBox', 'cbdSelectOneMenu',
+'cbdListGrid', 'cbdFloatHeads', 'cbdSlider', 'cbdCalendar', 'cbdSliderTab', 'cbdSelectListComp', 'cbdFlipper', 'cbdToolTip', 'cbdCharts', 'cbdChartsRender', 'cbdSimpleCharts', 'cbdComplexCharts');
+cbd.loader.rollupFilesHash=[];
+with(cbd.loader)
+{
+for(var i=0;i < rollupFiles.length;i++)
+{
+rollupFilesHash[rollupFiles[i]]=true;
+}
+}
+if(loadRollups )
+{
+loader.addModule({
+name:'cbdAllComp',
+type:'js',
+fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/all.js',
+supersedes:cbd.loader.rollupFiles,
+rollup:1
+});
+}
+}
+cbd.loader.addModule=function(fileInfo)
+{
+if(typeof plsVersionQueryStr=="undefined"||plsVersionQueryStr=="?")
+{
+var currentTime=new Date();
+plsVersionQueryStr='?'+currentTime.getFullYear()+currentTime.getMonth()+currentTime.getDate()+'|'+currentTime.getHours()+currentTime.getMinutes()+currentTime.getSeconds();
+}
+fileInfo.fullpath+=plsVersionQueryStr;
+cbd.loader.yuiloader.addModule(fileInfo);
+}
+cbd.loader.isPageReady=function()
+{
+return cbd.loader.pageReady;
+}
+cbd.loader.checkLoadEvent=function(loadEvent)
+{
+for(var i=0;i < cbd.loader.pageReadyConditions.length;i++)
+{
+if(cbd.loader.pageReadyConditions[i]==loadEvent)
+{
+return false;
+}
+}
+return true;
+}
+cbd.loader.waitForEvent=function(loadEvent)
+{
+cbd.loader.pageReadyConditions.push(loadEvent);
+}
+cbd.loader.notifyReady=function(loadEvent)
+{
+var pageReadyConditions=cbd.loader.pageReadyConditions;
+if(pageReadyConditions.length==0)
+{
+return;
+}
+for(var i=0;i < pageReadyConditions.length;++i)
+{
+if(pageReadyConditions[i]==loadEvent)
+{
+pageReadyConditions.splice(i, 1);
+break;
+}
+}
+if(pageReadyConditions.length==0)
+{
+cbd.loader.pageReady=true;
+cbd.loader.onSucessCallback();
+if(RIA&&!basePageLoaded)
+{
+vg.html._fireCustomEvent(vg.event.PAGE_READY, window);
+}
+}
+}
+cbd.loader.onSuccess=function()
+{
+if(cbd.loader.isPageReady())
+{
+cbd.loader.onSucessCallback();
+}
+else
+{
+cbd.loader.notifyReady("LOADER");
+}
+}
+cbd.loader.onSucessCallback=function()
+{
+setTimeout(cbd.loader.onSuccessFinish, 1 );
+var callbacks=cbd.loader.callbacks;
+while(callbacks.length > 0 )
+{
+var func=callbacks.shift();
+vg.util.execFunc(func);
+}
+}
+cbd.loader.onSuccessFinish=function()
+{
+if(!cbd)
+{
+return;
+}
+if(cbd.loader.callbacks.length > 0 )
+{
+cbd.loader.onSucessCallback();
+}
+else
+{
+cbd.loader.callbacks=[];
+cbd.loader.loadRunning=false;
+if(cbd.loader.pendingCallbacks.length > 0
+||cbd.loader.pendingRequires.length > 0 )
+{
+for(var i=0;i < cbd.loader.pendingRequires.length;i++)
+{
+cbd.loader.require(cbd.loader.pendingRequires[i]);
+}
+cbd.loader.callbacks=cbd.loader.pendingCallbacks;
+cbd.loader.pendingCallbacks=[];
+cbd.loader.pendingRequires=[];
+cbd.loader.load();
+}
+}
+}
+cbd.loader.onFailure=function(e )
+{
+console.error('cbd.loader error:'+e.msg );
+}
+cbd.loader.loadAndExec=function(req, func, now )
+{
+var allLoaded=true;
+if(req instanceof Array )
+{
+for(var i=0;i < req.length;i++)
+{
+if(!cbd.loader.hasLoaded(req[i]))
+{
+allLoaded=false;
+break;
+}
+}
+}
+else if(req!=null )
+{
+allLoaded=cbd.loader.hasLoaded(req );
+}
+if(allLoaded&&now )
+{
+vg.util.execFunc(func);
+}
+else
+{
+if(req )
+{
+cbd.loader.require(req );
+}
+cbd.loader.addCallback(func );
+cbd.loader.load();
+}
+}
+cbd.loader.hasLoaded=function(mod )
+{
+return cbd.loader.yuiloader.loaded[mod]||cbd.loader.yuiloader.inserted[mod];
+}
+cbd.loader.require=function(mod )
+{
+if(!cbd.loader.yuiloader )
+{
+throw new Error("YUI is not installed correctly" );
+}
+if(mod instanceof Array )
+{
+for(var i=0;i < mod.length;i++)
+{
+cbd.loader.require(mod[i]);
+}
+}
+else
+{
+if(!cbd.loader.yuiloader.moduleInfo[mod])
+{
+throw new Error("Unknown module:"+mod );
+}
+if(cbd.loader.hasLoaded('cbdAllComp')&&cbd.loader.rollupFilesHash[mod])
+{
+return;
+}
+if(cbd.loader.loadRunning )
+{
+cbd.loader.pendingRequires.push(mod );
+}
+else
+{
+cbd.loader.yuiloader.require(mod );
+}
+}
+}
+cbd.loader.addCallback=function(f )
+{
+if(cbd.loader.loadRunning )
+{
+cbd.loader.pendingCallbacks.push(f );
+}
+else
+{
+cbd.loader.callbacks.push(f );
+}
+}
+cbd.loader.load=function()
+{
+if(cbd.loader.yuiloader&&!cbd.loader.loadRunning)
+{
+cbd.loader.loadRunning=true;
+var opt={};
+if(!_cbdIsEnabled('loader_min_js' ) )
+{
+opt.filter={searchExp:'-min\.js', replaceStr:'-debug.js'};
+}
+cbd.loader.yuiloader.insert(opt );
+}
+}
+if(_isYUILoaderDefined() )
+{
+cbd.loader.yuiloader=new YAHOO.util.YUILoader(
+{base:yuiBase,
+onSuccess:cbd.loader.onSuccess,
+onFailure:cbd.loader.onFailure
+}
+);
+cbd.loader.initModules();
+cbd.loader.yuiloader.calculate();
+}
+else
+{
+vg.util.throwException('_isYUILoaderDefined()', 'YUI Loader is not found');
+}
+cbd.testNSFunc=function(){
+_debug("log", "Hosting-App cbd object");
+}

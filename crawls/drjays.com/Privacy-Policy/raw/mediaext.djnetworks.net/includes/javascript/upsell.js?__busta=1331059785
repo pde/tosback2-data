@@ -1,0 +1,216 @@
+
+$(function(){
+        dj.upsell.certona_run();
+});
+
+
+dj.upsell = function(selector,opts,ga,callback){
+    opts = opts || {};
+    var mode = (opts.mode ? opts.mode : dj.upsell.mode).toLowerCase();
+    var num  = opts.num || 3; // Number of products to display
+    ga = ga || {}; // Google Analytics mode,action,label,value
+
+    ga.mode = (ga.mode || mode).toLowerCase();
+
+    if (mode == "internal") //Internal gets served on initial page load, default back to dj
+	mode = ga.mode = "dj";
+
+    if (mode == "dj"){
+	dj.ajax({
+		url : '/sitejson',
+		    data: 'class=Shop&cmd=upsells',
+		    ref : { pid : opts.pid, num : num },
+		    error : function(){},
+		    success : function(incoming){
+		    var products = [];
+		    $.each(incoming.upsells,function(i,u){
+			    products.push({
+				    link : u.link,
+					image : u.feature_image.url,
+					name : u.name,
+					brand : u.brand,
+					price : parseFloat(u.price),
+					offprice : u.oprice ? parseFloat(u.oprice) : 0,
+					product_id : u.product_id
+					});
+			});
+			dj.upsell.load_when_ready(selector,dj.upsell.render( products, ga ), callback);
+		}
+		});
+    }
+    else if(mode == "certona"){
+        dj.upsell.certona.stack.push([selector,opts.scheme,num,ga,callback]);
+    }
+    return $(selector);
+};
+
+dj.upsell.load_when_ready = function(selector,html,callback){
+    if ($(selector).length != 0)
+        dj.upsell.show(selector,html,callback);
+    else
+	$(function(){ dj.upsell.show(selector,html,callback) } );
+};
+
+
+dj.upsell.certona = { 'stack' : [] };
+
+dj.upsell.certona_run = function(){
+
+    if (!dj.upsell.certona.stack.length) return;
+
+    var url = "http" + ('https:' == document.location.protocol ? 's' : '') + "://" + (dj.is_dev == 1 ? "qa" : "www") + ".res-x.com/ws/r2/resonance.aspx";
+    var scheme_default;
+    var params = { "appid" : dj.upsell.certona.appid,
+                   "trackingid" : dj.upsell.certona.trackingid,
+                   "sessionid" : dj.upsell.certona.sessionid,
+                   "segment" : dj.upsell.certona.segment,
+                   "catalog" : dj.upsell.certona.catalog,
+                   "url" : dj.upsell.certona.url,
+                   "ref" : dj.upsell.certona.ref
+    };
+
+    if (dj.upsell.event == 'prodview'){
+        scheme_default = 'product_rr';
+        params["event"] = "product";
+        params["context"] = dj.upsell.certona.context;
+        params["itemid"] = dj.upsell.certona.context;
+        params["links"] = "";
+    }
+    else if (dj.upsell.event == 'homepage'){
+        scheme_default = 'home_rr';
+    }
+    else if (dj.upsell.event == 'prodlist'){
+        scheme_default = 'cat_rr';
+        params["links"] = dj.upsell.certona.links.join(";") || "";
+    }
+    else if (dj.upsell.event == 'cart'){
+        scheme_default = 'cart_rr';
+        params["links"] = dj.upsell.certona.links.join(";") || "";
+	//Per Call on 10-12-09
+	params["event"] = "shopping cart";
+	params["itemid"] = params["links"];
+    }
+    else if (dj.upsell.event == 'search'){
+        scheme_default = 'search_rr';
+        params["links"] = dj.upsell.certona.links.join(";") || "";
+    }
+    else if (dj.upsell.event == 'addtocart'){ // Some values not available to templates
+        scheme_default = 'cart_rr';
+        params["event"] = "shopping cart";
+        params["context"] = dj.upsell.certona.context;
+        params["itemid"] = dj.upsell.certona.context;
+    }
+    else if (dj.upsell.event == 'orderconf'){ // Some values not available to templates
+        scheme_default = 'confirm_rr';
+        params["event"] = "purchase confirmation";
+    }
+    else{ // If we don't have a scheme, something is probably wrong, but lets default to category
+        scheme_default = 'cat_rr';
+        params["links"] = dj.upsell.certona.links.join(";") || "";
+    }
+
+    var mapping = {};
+    var nums    = [];
+    var schemes = [];
+
+    $.each(dj.upsell.certona.stack,function(i,walk){
+            var scheme = walk[1] || scheme_default;
+            var num = walk[2];
+            mapping[scheme] = {
+                selector : walk[0],
+                num : num,
+                ga : walk[3],
+		callback : walk[4]
+            };
+	    nums.push(num);
+	    schemes.push(scheme);
+        });
+
+    params["scheme"] = schemes.join(';');
+    params["number"] = nums.join(';');
+    if (dj.upsell.gender)
+      params["gender"] = dj.upsell.gender;
+
+    $.ajax({
+            url : url,
+                data : params,
+                dataType: 'jsonp',
+                jsonp : 'jsonp',
+                success: function(incoming){
+                $.each(incoming.schemes,function(i,s){
+                        var map = mapping[s.scheme];
+                        if (!map) return;
+
+                        var links = [];
+
+                        $.each(s.products,function(j,p){
+                                var price = parseFloat(p.price), original_price = parseFloat(p.original_price);
+                                links.push({
+                                        link : p.url,
+                                            image : p.image,
+                                            name : p.name,
+                                            brand : p.brand,
+                                            price : price ? price : original_price,
+                                            offprice : price ? original_price : 0,
+					    product_id : p.product_id
+                                            });
+                            });
+		    dj.upsell.show( map['selector'], dj.upsell.render( links, map['ga'] ), map['callback'] );
+                    });
+            }
+        });
+};
+
+
+dj.upsell.render = function(upsells,ga){
+    var wrapper = dj.element('div',{'class':'upsells'});
+    $.each(upsells,function(i,u){	
+	    
+	    //UK TAX HACK
+	    if(dj.currency.code == "gbp"){
+		u.offprice += u.offprice * .20;
+		u.price += u.price * .20;
+	    }
+	    
+            var link = u.link, name = u.name, image = u.image, brand = u.brand, offprice = dj.currency_convert(u.offprice), price = dj.currency_convert(u.price), product_id = u.product_id;
+	    image = dj.media(image);
+            var gaevent = ga && ga.mode && ga.action ? 'djgaevent-upsells_~_' +
+                ga.mode.replace(/\s+/g,"_") + "-" + ga.action.replace(/\s+/g,"_") + "-" + ( ga.label ? ga.label : ( brand ? brand + ' ~ ' : '' ) + name.toUpperCase() + ' ~ ' + product_id ).replace("-"," ").replace(/\s+/g,"_")
+                : '';
+            var product = dj.element('div',{'class':'product'});
+            var anchor  = dj.element('a',{'class':'img ' + gaevent,href:link,title:name}).html( dj.element('img',{src:image,title:name}) );
+            var info    = dj.element('a',{'class':'productinfo ' + gaevent,href:link});
+            if (brand)  info.append( dj.element('span',{'class':'brand'}).html( brand ) );
+            info.append( dj.element('span',{'class':'prodname'}).html( name ) );
+            if (u.offprice) info.append( dj.element('span',{'class':'offprice'}).html( offprice ) );
+            info.append( dj.element('span',{'class':'price'}).html( price ) );
+            wrapper.append( product.append( anchor ).append( info ) );
+	    });
+    return wrapper;
+};
+
+dj.upsell.show = function(selector,html,callback){
+    $(selector).html(html);
+    if ($(html).html())
+	$(selector).closest('.upsell_parent_target').addClass('upsell_parent_active');
+    else
+	$(selector).closest('.upsell_parent_target').addClass('upsell_parent_none');
+    // If there is a function to execute on callback, do it
+    if (typeof callback == 'function')
+	callback();
+};
+
+
+/* Hooklogic helper */
+
+dj.upsell.hooklogic = function(selector,opts){
+    $('.product',$(selector)).each(function(i,o){
+	var option = opts[i];
+	var o = $(o);
+	if (option){
+	    if (option.id){
+		o.attr('id',option.id);
+	    }
+	}
+    });
+};

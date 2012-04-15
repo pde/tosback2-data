@@ -1,0 +1,195 @@
+/**
+ * config
+ * 
+ * Configure and bootstrap the application
+ * 
+ * @author Alec Hill
+ */
+(function(){
+	
+	// set application name
+	// - this is the directory and namespace of application specific code 
+	// - directory should live at same level as Ioko directory
+	Ioko.namespace('config').app_name = 'App';
+	
+	// if you dont want bundled module assets (stylesheets and images) to be auto loaded, then set this to false - default is true
+	Ioko.namespace('config').load_module_assets = true;
+	
+	// associate controllers with pages
+	Ioko.namespace('config').controller_associations = {
+		// 'default': 'DefaultConmtroller' will be used for every page, default will not need to be added as a page id for this
+		// specific pages can use specific controllers by association body id with a controller class
+		// 'body_id': 'ControllerClassName'
+		'default': 'DefaultController',
+		'library': 'LibraryController',
+		'contact': 'ContactUsController',
+		'search': 'SearchController',
+		'onDemand': 'OnDemandController',
+		'bookmarks': 'BookmarksController',
+		'placeholder': '// do not delete this placeholder... {controller}'
+	}
+	
+	// add names of any libraries to auto load
+	Ioko.namespace('config').libraries = [
+		'mootools-1.2.4-core',
+		'mootools-1.2.2.1-more',
+		'livevalidation_1.3_standalone',
+		'// do not delete this placeholder... {library}'
+	];
+	
+	// Environment setup...
+	
+	// make sure an environment is set - default to DEVELOPMENT
+	Ioko.namespace('config').environment = Ioko.namespace('config').environment || Ioko.DEVELOPMENT;
+	
+	//logging excludes
+	Ioko.namespace('config').loggingExcludes = ['LoaderAuditor', 'SiteController', 'ControlManager'];
+	
+	// now set up config based upon the environment...
+	switch( Ioko.namespace('config').environment ){
+		case Ioko.PRODUCTION:
+			// allow logging?
+			Ioko.namespace('config').logging = false;
+			// add logging pane for browsers without console?
+			Ioko.namespace('config').logging_pane = false;
+			// set test to false
+			Ioko.namespace('config').test = false;
+			// use minified libs?
+			Ioko.namespace('config').use_minified_libs = true;
+			break;
+		case Ioko.STAGING:
+			// allow logging?
+			Ioko.namespace('config').logging = true;
+			// add logging pane for browsers without console?
+			Ioko.namespace('config').logging_pane = true;
+			// set test to true
+			Ioko.namespace('config').test = false;
+			// use minified libs?
+			Ioko.namespace('config').use_minified_libs = true;
+			break;
+		case Ioko.TEST:
+			// allow logging?
+			Ioko.namespace('config').logging = true;
+			// add logging pane for browsers without console?
+			Ioko.namespace('config').logging_pane = true;
+			// set test to true
+			Ioko.namespace('config').test = true;
+			// use minified libs?
+			Ioko.namespace('config').use_minified_libs = false;
+			break;
+		case Ioko.DEVELOPMENT:
+		default:
+			// allow logging?
+			Ioko.namespace('config').logging = true;
+			// add logging pane for browsers without console?
+			Ioko.namespace('config').logging_pane = true;
+			// set test to false
+			Ioko.namespace('config').test = true;
+			// use minified libs?
+			Ioko.namespace('config').use_minified_libs = false;
+	}
+	
+	// timeout for setting up site - milliseconds
+	Ioko.namespace('config').site_timeout = 10000;
+	
+	// any custom stuff to be done before the app is kickstarted
+    Ioko.namespace('config').beforeKickStart = function(){
+		// do not delete this placeholder... {beforeKickstart}
+    }
+	
+	
+	// DO NOT EDIT BELOW HERE ///////////////////////////////////////////////////////////////////////////////////////
+	
+	// delete placeholders
+	delete Ioko.namespace('config').controller_associations['placeholder'];
+	Ioko.namespace('config').libraries.pop();
+	
+	// make sure that we have the paths, in case we are not usig the dispatcher
+	Ioko.namespace('config').base_js_path = Ioko.namespace('config').base_js_path || Ioko.getBasePath(true);
+	Ioko.namespace('config').base_code_path = Ioko.namespace('config').base_code_path || Ioko.getBasePath();
+	
+	// lets be verbose
+	Ioko.log('Running under ' + Ioko.namespace('config').environment.toLowerCase() + ' environment', 'Config');
+	
+	// bootstrap function for the SiteController to use
+	Ioko.namespace('config').bootStrap = function(){
+		var SC = Ioko.controllers.SiteController, associations = Ioko.namespace('config').controller_associations;
+		for(var id in associations){
+			SC.addPageController(id, associations[id]);
+		}
+	}
+	
+	// everything that needs to be done to kickstart the application...
+	Ioko.namespace('config').kickStart = function(){
+        
+        Ioko.namespace('config').beforeKickStart();
+		
+		// load any libraries before SiteController as their contents are likely to be used inside the loaded modules...
+		var libs = Ioko.namespace('config').libraries;
+		Ioko.namespace('config').libraries_loaded = 0;
+		
+		// if cannot use ajax loading, libraries should be included as script tags in page so empty the libs array
+		if(Ioko.namespace('config')['no_includes_by_ajax']) libs = [];
+		
+		// callback that checks if all the libs have loaded
+		var callback = function(){
+			Ioko.namespace('config').libraries_loaded++;
+			if( Ioko.namespace('config').libraries_loaded == libs.length ){
+				// load SiteController to kickstart the load process of the rest of the application
+				Ioko.loadModule('Ioko.controllers.SiteController');
+			}
+		}
+		
+		// load the libraries synchronously as they are likely to be required
+		for(var i = 0, len = libs.length; i < len; i++){
+			Ioko.loadLibrary( libs[i], callback, true );
+			alert(libs[i]);
+		}
+		
+		if(!libs.length) Ioko.loadModule('Ioko.controllers.SiteController');
+		
+	}
+	
+	// on your marks...
+	Ioko.namespace('config').goForIt = function(){
+		// if logging is on, load the LoaderAuditor - so can track loading -  before kickstarting
+		if(Ioko.namespace('config').logging){
+			Ioko.loadModule('Ioko.utils.LoaderAuditor');
+			Ioko.onModuleLoad('Ioko.utils.LoaderAuditor', Ioko.namespace('config').kickStart);
+		}else{
+			Ioko.namespace('config').kickStart();
+		}
+	}
+	
+	// add the specs runner scripts etc if in test mode - otherwise go!
+	if(Ioko.namespace('config').test){
+		Ioko.onWindowLoad( function(){
+			var base = Ioko.namespace('config').base_js_path;
+			Ioko.loadScript(base + 'resources/jsspec/runner/diff_match_patch',function(){
+				Ioko.loadScript(base + 'resources/jsspec/runner/JSSpec', function(){
+					Ioko.loadScript(base + 'resources/jsspec/runner/JSSpec_extras', Ioko.namespace('config').goForIt );
+				});
+			});
+			Ioko.loadStylesheet(base + 'resources/jsspec/runner/JSSpec_new');
+			
+			//ctrl+alt+t will open the specs container
+			function keydownEv(e) {
+				var e = e || window.event;
+				if(e.ctrlKey && e.altKey && e.keyCode == 84){
+					var specs = document.getElementById('jsspec_container');
+					specs.style.display = (specs.style.display == 'block') ? 'none' : 'block';
+					return false;
+				}
+			}
+			
+			if (document.addEventListener) {
+				document.addEventListener('keydown', keydownEv, false);
+			} else if (document.attachEvent){
+				document.attachEvent('onkeydown', keydownEv);
+			}
+		});
+	}else{
+		Ioko.namespace('config').goForIt();
+	}
+	
+})();

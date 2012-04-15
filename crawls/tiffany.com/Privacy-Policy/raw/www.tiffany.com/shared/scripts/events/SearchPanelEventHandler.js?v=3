@@ -1,0 +1,190 @@
+﻿// -----------------------------------------------------------------
+//   Description:
+//	 Class that handles events on behalf of the search panel
+//   
+//   Usage:
+//   var g_searchPanelEventHandler = new SearchPanelEventHandler();
+//   subscribe(g_searchPanelEventHandler);
+// -----------------------------------------------------------------
+
+function SearchPanelEventHandler()
+{
+}
+
+// -----------------------------------------------------------------
+// -----------------------------------------------------------------
+SearchPanelEventHandler.prototype.onSearchCheckComplete = function(isEmpty, errorMessage, searchParams, redirect, keyword, qs, itemSku, selectedFilters)
+{
+	try
+	{
+		if (redirect != null && typeof (redirect) != "undefined" && redirect != "")
+		{
+			if (redirect.length >= 24 && redirect.substring(0, 24) == 'http://press.tiffany.com')
+			{
+				window.open(redirect, "newwindow");
+			}
+			else
+			{
+				window.location.href = redirect;
+			}
+		}
+		else
+		{
+			var vwLocator = ViewLocator.getInstance();
+			var searchPanel = vwLocator.getView("searchPanel");
+			var searchError = vwLocator.getView("searchError");
+			var query = window.location.search.split("?").join("");
+			var sessionId = "";
+			var sessionIdQSVal = URLFactory.extractQueryStringValue(query, "mysid2");
+
+			if (sessionIdQSVal != "")
+			{
+				sessionId = "&mysid2=" + sessionIdQSVal;
+			}
+
+			if (isEmpty == true)
+			{
+				if (keyword != "" && qs != "")
+				{
+					var newURL = "/Shopping/CategoryBrowse.aspx?search=1&search_params=" + qs + sessionId;
+					//					searchError.innerHTML = didYouMeanLiteral + '<a href="' + newURL + '">' + keyword + '</a>?';
+					searchError.innerHTML = didYouMeanLiteral.split("{0}").join('<a href="' + newURL + '">' + keyword + '</a>');
+					searchError.style.display = "block";
+					searchError.className = "";
+				}
+				else
+				{
+					searchError.innerHTML = errorMessage;
+					searchError.style.display = "block";
+					searchError.className = "errorText";
+				}
+			}
+			else
+			{
+				var newURL = "/Shopping/CategoryBrowse.aspx?search=1&search_params=" + searchParams + sessionId;
+				if (itemSku != "")
+				{
+					searchParams += "-k+" + selectedFilters;
+					newURL = "/Shopping/Item.aspx?search=1&search_params=" + searchParams + "&sku=" + itemSku + sessionId
+				}
+				window.location.href = newURL;
+			}
+		}
+		unblockSearchClose();
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+};
+
+// -----------------------------------------------------------------
+// -----------------------------------------------------------------
+SearchPanelEventHandler.prototype.onSearchCheckInitiated = function()
+{
+	try
+	{
+		var vwLocator = ViewLocator.getInstance();		
+		var searchPanel = vwLocator.getView("searchPanel");
+		var searchError = vwLocator.getView("searchError");
+		
+		searchError.style.display = "none";
+		searchError.innerHTML = "&nbsp;";
+		blockSearchClose();
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+};
+
+// -----------------------------------------------------------------
+// -----------------------------------------------------------------
+SearchPanelEventHandler.prototype.onAdvancedSearchDataLoaded = function(menuData)
+{
+	try
+	{
+		var elements = document.forms[0].elements;
+		hideMenu("searchCategories");
+		hideMenu("searchCollections");
+		hideMenu("searchGemstones");
+		hideMenu("searchMaterials");
+		hideMenu("searchPriceRanges");
+		hideMenu("searchPearlTypes");
+		hideMenu("searchPreciousMetals");
+		hideMenu("searchGender");
+		hideMenu("searchDial");
+		hideMenu("searchMovementType");
+		hideMenu("searchBraceletStrap");
+		hideMenu("searchCollections");
+		
+		for (var i=0; i < menuData.length; i++)
+		{
+			switch(menuData[i].name.toLowerCase())
+			{
+				case "categories":
+					populateMenuItem(elements["searchCategories"], menuData[i]);
+					showMenu("searchCategories");
+					break;
+				case "gemstones":
+					populateMenuItem(elements["searchGemstones"], menuData[i]);
+					showMenu("searchGemstones");
+					break;
+				case "materials":
+				case "case":
+					populateMenuItem(elements["searchMaterials"], menuData[i]);
+					showMenu("searchMaterials");
+					break;
+				case "price ranges":
+					populateMenuItem(elements["searchPriceRanges"], menuData[i]);
+					showMenu("searchPriceRanges");
+					break;
+				case "pearl types":
+					populateMenuItem(elements["searchPearlTypes"], menuData[i]);
+					showMenu("searchPearlTypes");
+					break;
+				case "precious metals":
+					populateMenuItem(elements["searchPreciousMetals"], menuData[i]);
+					showMenu("searchPreciousMetals");
+					break;
+				case "gender":
+					populateMenuItem(elements["searchGender"], menuData[i]);
+					showMenu("searchGender");
+					break;
+				case "dial":
+					populateMenuItem(elements["searchDial"], menuData[i]);
+					showMenu("searchDial");
+					break;
+				case "movement":
+					populateMenuItem(elements["searchMovementType"], menuData[i]);
+					showMenu("searchMovementType");
+					break;
+				case "strap":
+					populateMenuItem(elements["searchBraceletStrap"], menuData[i]);
+					showMenu("searchBraceletStrap");
+					break;
+				case "collections":
+					populateMenuItem(elements["searchCollections"], menuData[i]);
+					showMenu("searchCollections");
+					break;
+			}
+		}
+
+		deferDropDownMenuRender = false;
+
+		updateSelects();
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+};
+
+
+
+
+
+
+
+
+

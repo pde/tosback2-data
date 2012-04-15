@@ -1,0 +1,268 @@
+function popUp(URL) {
+    day = new Date();
+    id = day.getTime();
+    eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=300');");
+}
+
+function changeFilter(filter, showdate, page, sort, display, order) {
+    window.location = "/index.php?filter=" + filter + "&showdate=" + showdate + "&page=" + page + "&sort=" + sort + "&display=" + display + "&order=" + order;
+}
+
+function changeDisplay(display, showdate, page, sort, filter, order) {
+    window.location = "/index.php?display=" + display + "&showdate=" + showdate + "&page=" + page + "&sort=" + sort + "&filter=" + filter + "&order=" + order;
+}
+
+function changeTheme(theme, showdate, mpage) {
+    window.location = "/index.php?showdate=" + showdate + "&mpage=" + mpage + "&theme=" + theme;
+}
+
+function checkAll(theElement) {
+    var theForm = theElement.form, i = 0;
+    for (i = 0; i < theForm.length; i++) {
+        if (theForm[i].type == 'checkbox' && theForm[i].name != 'checkall')
+            theForm[i].checked = theElement.checked;
+    }
+}
+
+function resizeIframe(f, height) {
+    fobj = document.getElementById(f);
+
+    if (fobj != null)
+        fobj.height = parseInt(height) + 10;
+}
+
+function threadLocked() {
+    alert('Sorry, this thread is currently locked. No new replies allowed.');
+}
+
+function voteKarma(memberid, karma) {
+    var divname = 'div.karmember_' + memberid;
+
+    var reason = prompt("To proceed, please specify a reason for your " + (karma > 0 ? "good (+1)" : "bad (-1)") + " karma vote.\n", "");
+
+    if (reason == null || reason == "")
+        return false;
+
+    var orig = $(divname).html();
+
+    $(divname).html('<img src="/ajax/ajax-loader.gif" alt="Loading">');
+
+    $.ajax({
+        type: "POST",
+        url: "/bbs/actions/karma.php",
+        data: { member: memberid , karma: karma, reason: reason },
+        dataType: "json",
+        success: function(d) {
+            if (d.res == false)
+                alert('Sorry, there was a problem recording your karma vote. Please try again later:\n' + d.msg + '\n');
+            else
+                $(divname).hide();
+        },
+        error: function(d, s) {
+            alert('Sorry, there was a problem processing your request. Please try again later!' + s);
+        },
+        complete: function(jqXHR, textStatus) {
+            $(divname).html(orig);
+        }
+    });
+
+    return false;
+}
+
+function confirmExchangePoints(amt, prize) {
+    var reply = confirm("You are about to exchange " + amt + " karma points for the prize '" + prize + "'.\nContinue?");
+    return reply;
+}
+
+function confirmRedeem(prize) {
+    var reply = confirm("If you proceed you will redeem a karma prize" + (prize != null ? " (" + prize + ")" : "") + ".\nContinue?");
+    return reply;
+}
+
+function addQuote(type, id) {
+    var dataString = 'action=add&' + type + '=' + id;
+
+    $.ajax({
+        type: "POST",
+        url: "/bbs/actions/addquote.php",
+        data: dataString,
+        success: function(d) {
+            var linkId = '#add_quote_' + type + '_' + id;
+
+            $(linkId).html('<img src="/i/remquote.png">');
+            $(linkId).attr('href', "javascript:remQuote('" + type + "', '" + id + "');");
+            $(linkId).attr('title', "Remove from List of Posts to Quote");
+        }
+    });
+}
+
+function remQuote(type, id) {
+    var dataString = 'action=del&' + type + '=' + id;
+
+    $.ajax({
+        type: "POST",
+        url: "/bbs/actions/addquote.php",
+        data: dataString,
+        success: function(d) {
+            var linkId = '#add_quote_' + type + '_' + id;
+
+            $(linkId).html('<img src="/i/addquote.png">');
+            $(linkId).attr('href', "javascript:addQuote('" + type + "', '" + id + "');");
+            $(linkId).attr('title', "Add to List of Posts to Quote");
+        }
+    });
+}
+
+function suggestVote(messageid) {
+    $.ajax({
+        type: "POST",
+        url: "/bbs/actions/pinvote.php",
+        data: "message=" + messageid,
+        success: function(d) {
+            if (d == '0')
+                alert('Sorry, there was a problem recording your suggestion. Please try again later!');
+            else
+                $('a#suggest').hide();
+        },
+        error: function(d) {
+            alert('Sorry, there was a problem processing your request. Please try again later!');
+        }
+    });
+}
+
+function scrollToId(id) {
+    $('html,body').animate({ scrollTop: $("#" + id).offset().top }, 400);
+}
+
+function getPostIndex(elem_name) {
+    var j = elem_name.split('_');
+    var post_idx = j[1];
+    return post_idx;
+}
+
+function goToNextPost(post_type, orig_post_id, post_idx, member_id, user_id, dir) {
+    var scroll_to = null;
+
+    if (dir == undefined)
+        dir = 1;
+
+    if (member_id != 0 && member_id != null) {
+        var p = $('tr.post_member_' + member_id).filter(function(idx) {
+            var elem_id = $(this).attr('id');
+            return dir > 0 ? getPostIndex(elem_id) > post_idx : getPostIndex(elem_id) < post_idx;
+        });
+
+        if (p.length > 0) {
+            var post_idx = getPostIndex((dir > 0 ? p.first() : p.last()).attr('id'));
+            scroll_to = (scroll_to == null || (dir > 0 && post_idx < scroll_to) || (dir < 0 && post_idx > scroll_to) ? post_idx : scroll_to);
+        }
+    }
+
+    if (user_id != 0 && user_id != null) {
+        var p = $('tr.post_uid_' + user_id).filter(function(idx) {
+            var elem_id = $(this).attr('id');
+            return dir > 0 ? getPostIndex(elem_id) > post_idx : getPostIndex(elem_id) < post_idx;
+        });
+
+        if (p.length > 0) {
+            var post_idx = getPostIndex((dir > 0 ? p.first() : p.last()).attr('id'));
+            scroll_to = (scroll_to == null || (dir > 0 && post_idx < scroll_to) || (dir < 0 && post_idx > scroll_to) ? post_idx : scroll_to);
+        }
+    }
+
+    if (scroll_to != null) {
+        scrollToId('post_' + scroll_to);
+    }
+    else {
+        var url = lookupNextPreviousPost(post_type, orig_post_id, dir > 0 ? 'next' : 'previous');
+
+        if (url != null)
+            window.location = url;
+    }
+}
+
+function lookupNextPreviousPost(post_type, orig_post_id, type) {
+    var url = null;
+
+    $.ajax({
+        type: "GET",
+        url: "/bbs/actions/lookup_post.php",
+        data: { post_id: orig_post_id, type: type, post_type: post_type },
+        dataType: "json",
+        async: false,
+        success: function(d) {
+            if (d.res == -1) {
+                alert('Sorry, there was a problem processing your request.');
+            }
+            else if (d.res == 1) {
+                url = d.url;
+            }
+            else if (d.res == 2) {
+                alert('No ' + type + ' post by this user in this thread found.');
+            }
+        },
+        error: function(d, s) {
+            alert('Sorry, there was a problem processing your request.');
+        },
+        complete: function(jqXHR, textStatus) {
+        }
+    });
+
+    return url;
+}
+
+function markAllRead() {
+    $.ajax({
+        type: "GET",
+        url: "/ajax/markallread.php",
+        data: { },
+        dataType: "json",
+        async: true,
+        success: function(d) {
+            if (d && d.res == '1') {
+                $('.unr').fadeOut(400);
+            }
+            else {
+                alert('Sorry, there was a problem processing your request.');
+            }
+        },
+        error: function(d, s) {
+            alert('Sorry, there was a problem processing your request.');
+        },
+        complete: function(jqXHR, textStatus) {
+        }
+    });
+
+    return false;
+}
+
+function showHiddenThread(thread_id) {
+    $('#hidden_btn_' + thread_id).hide();
+
+    $('.hidden_r_' + thread_id).fadeOut(500, function() {
+        $('.hidden_' + thread_id).fadeIn(500);
+    });
+    return false;
+}
+
+function showHiddenReply(post_idx) {
+    $('#hidden_' + post_idx).fadeOut(500, function() {
+        $('#post_' + post_idx).fadeIn(500);
+    });
+    return false;
+}
+
+function showHiddenRelated()
+{
+    $('.hidden_related').show();
+    $('#show_hidden_related').hide();
+    return false;
+}
+
+function checkPrescription() {
+    if (window.goggles && window.goggles.active) {
+        window.goggles.stop();
+    }
+}
+
+setInterval("checkPrescription()", 5000);

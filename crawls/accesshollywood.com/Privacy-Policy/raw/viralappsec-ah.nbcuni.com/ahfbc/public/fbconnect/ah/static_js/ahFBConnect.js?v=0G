@@ -1,0 +1,517 @@
+/* Globals */
+var fbcClientId = "ah";
+var cookiePrefix = "AH_FBCONNECT_";
+var maxVote = 40;
+var brandVar = "ah";
+var ratingFeedDST = "?dst="+brandVar+"|fbconnect|feedstory|rating&__source="+brandVar+"|fbconnect|feedstory|rating";
+var commentFeedDST = "?dst="+brandVar+"|fbconnect|feedstory|commenting&__source="+brandVar+"|fbconnect|feedstory|commenting";
+overrideDefaultHeader = 1;
+/*
+ * All setup procedures and inits should go in here
+ */
+
+function ahFBC_init()
+{
+
+	// init our globals
+	// clearly hardcoding this is pretty sad_face. Although this version has the
+	// fbcClientId set
+	// within the script tag in the header, we could just make this dynamic off
+	// of the domain name
+	var fullDomainArray = new Array();
+	fullDomainArray = String(window.location).split("/");
+	fbconnectURL = fullDomainArray[0] + "//" + fullDomainArray[2];
+
+	baseURL = viralappsURL + "public/fbconnect/" + fbcClientId + "/";
+	ajaxURL = baseURL + "index.php";
+	ajaxBusyTag = '<div style="width:300px;height:350px;margin-left:120px;padding-top:60px;"><img src="' + baseURL + 'img/ajax-loader.gif" ></div>';
+
+	// Make sure we're not conflicting anywhere. I've tested and verified that
+	// if there's already
+	// a noConflict() call to an existing jQuery implementation that this $
+	// reference will not
+	// interfere with it. However, it would probably be smarter to just change
+	// this file slightly if
+	// a client is already using jQuery and has setup a noConflict function
+	//$ = jQuery.noConflict();
+
+	// Make sure this is the executed before any render calls can be fired to
+	// avoid any race conditions
+	processAuthenticationParams();
+	attachFBCFooter();
+	if (apiKey == null || apiKey == '' || templateIds == '') {
+		getAppParams();
+	}
+
+	FB.ensureInit( function()
+	{
+		if (FB.XFBML.Host) {
+			FB.XFBML.Host.autoParseDomTree = false
+			processAuthenticationParams();
+		}
+	});
+
+}
+
+
+function setOmiture()
+{
+	var showName='';
+	if(feedType=='poll')
+	{
+		showName = clientParams.showName;
+		if (showName == ''){
+			showName='The Fashion Show';
+		}
+	    omigImgForPoll='<img src="http://oimg.nbcuni.com/b/ss/nbcufacebookglobal,nbcubravotvbu/1/H.2-pdv-2/RAND?pe=lnk_o&pev2=FBConnect&pageName='+escape('Bravo Facebook Connect')+'&v24='+escape('Bravo Facebook Feed Story')+'&v25='+escape(clientParams.contentTitle)+'&v28='+escape('From Poll')+'&v36='+escape(showName)+'&events=event33" width="1" height="1" border="0" />';
+	}
+	else
+	{
+		if(clientParams.disableVoting=="true"){
+			showName='The Real housewives of new york city';
+		}else{
+			showName='The Fashion Show';
+			
+		}
+	omigImgForPoll='<img src="http://oimg.nbcuni.com/b/ss/nbcufacebookglobal,nbcubravotvbu/1/H.2-pdv-2/RAND?pe=lnk_o&pev2=FBConnect&pageName='+escape('Bravo Facebook Connect')+'&v24='+escape('Bravo Facebook Feed Story')+'&v25='+escape(clientParams.contentTitle)+'&v28='+escape('From Comments')+'&v36='+escape(showName)+'&events=event33" width="1" height="1" border="0" />';	
+	}
+    script='document.getElementById("OmigDiv").innerHTML=\''+omigImgForPoll+'\'';	
+    eval(script);  
+}
+
+
+
+
+/*
+ * 
+ * $('#display_comments').html(ajaxBusyTag); var fullURL = ajaxURL +
+ * "?controller=Ajax"; var queryParams = { "sectionNumber" :1,
+ * "requestedController" :"Comment", "requestedMethod"
+ * :"displayCommentsSection", "PageNumber":1, "filterByFriends":'N' }; if
+ * (userParams != null){ queryParams = appendJSObjects(queryParams,userParams); }
+ * if (clientParams != null){ queryParams =
+ * appendJSObjects(queryParams,clientParams ); }
+ * 
+ * $.ajax( { type :"GET", url :fullURL, data :queryParams, dataType :"jsonp",
+ * success : function(data) { $('#display_comments').html(data.html);
+ * refreshXFBML(); }, error : function(request, textStatus, thrownError) { } }); }
+ */
+
+
+
+function setOmnitureForLogin(){
+	
+	showName = clientParams.showName;
+	if (showName == ''){
+		if(clientParams.disableVoting=="true"){
+			showName='The Real housewives of new york city';
+		}else{
+			showName='The Fashion Show';
+		}
+	}
+	omigImgForPoll='<img src="http://oimg.nbcuni.com/b/ss/nbcufacebookglobal,nbcubravotvbu/1/H.2-pdv-2/RAND?pe=lnk_o&pev2=FBConnect&pageName='+escape('Bravo Facebook Connect')+'&v28='+escape('Facebook Connect Login')+'&v36='+escape(showName)+'" width="1" height="1" border="0" />';	
+	script='document.getElementById("OmigDiv").innerHTML=\''+omigImgForPoll+'\'';	
+    eval(script);
+}
+
+function ahSaveComments(uid)
+{
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var commentCategory = jQuery("#commentCategory").val();
+	var commentText = jQuery("#fbc_userComment").val();
+	var oldCommentCount = jQuery("#totalCommentCount").val();
+	var profilePic = user.profilePic;
+	var profileName = user.name;
+	var fbconnectedstate = getFBconnectedState();
+	if (typeof profilePic == 'undefined' || profilePic == '' || profilePic == null || fbconnectedstate == "N") {
+		profilePic = "http://static.ak.fbcdn.net/pics/t_silhouette.gif";
+	}
+	var oldContent = jQuery('#fbc_contentContainer').html();
+	commentText = trim(commentText);
+	commentText = stripHTML(commentText);
+	commentSaved = "true";
+	if (commentText.length <= 0) {
+		alert('Please enter your comments');
+		jQuery("#fbc_userComment").val("");
+		document.getElementById("fbc_userComment").focus();
+		return false;
+	}
+	jQuery("#fbc_userComment").val("");
+	if (oldCommentCount == 0) {
+		jQuery("#noComments").hide();
+	}
+
+	template_data_for_comments =
+	{
+		"commentContentType" :clientParams.feed.comments.contentType,
+		"pageURL" :clientParams.feed.comments.contentURL,
+		"commentText" :commentText
+	};
+	if (typeof clientParams.feed.comments.contentImage != 'undefined' && clientParams.feed.comments.contentImage != '') {
+		template_data_for_comments.images = [{"src":clientParams.feed.comments.contentImage, "href":clientParams.feed.comments.contentURL}];
+	}
+	
+	if (commentCategory != "Y") {
+		var divObj = document.getElementById("fbc_contentContainer");
+		var newDiv = document.createElement("div");
+		newDiv.className = "fbc_innerDetailContainer";
+		var innerHTMLcontent = '';
+		innerHTMLcontent =  '<div class="fbc_innerDetailLftContainer">'
+        					+ '  <img width="40px" height="40px" src="'+ profilePic +'"/>';
+        if (fbconnectedstate == "Y") {					
+			innerHTMLcontent +=	'  <img class="fbc_commentprofilePicFlogo'+ browserType +'" src="'+ baseURL +'img/fLogo.jpg"></img>';
+		}
+		        
+        innerHTMLcontent += '</div>'
+         					+ '<div class="fbc_innerDetailRgtContainer">'          
+        					+ '  <div class="fbc_subLftContainer">'      
+         					+ '    <span class="fbc_subHead">'+ profileName +'</span>'          
+        					+ '  </div>'
+        					+ '  <div class="fbc_subRgtContainer">'           
+         					+ '    <span class="fbc_ddmmyy">Wrote 1 minute ago</span>'          
+       						+ '  </div>'          
+       						+ '  <div class="fbc_clearFloat"></div>'          
+               				+ '  <div class="fbc_subDescription">'+ commentText +'</div>'         
+       						+ '</div>'
+       						+ '<div class="fbc_clearFloat"></div>'         
+       						+ '<div class="fbc_starLineContainer"></div>';  
+       	newDiv.innerHTML = innerHTMLcontent;
+		divObj.insertBefore(newDiv, divObj.firstChild);
+		jQuery("#notes").val("");
+
+		if (clientParams.disableVoting == "true") {
+			postCommentFeedId = templateIds['commentsOnlyYesTemplateId'];
+		} else {
+			postCommentFeedId = templateIds['commentsOnlyNoTemplateId'];
+		}
+        feedType='';
+        refreshXFBML();
+	}
+
+	var queryParams =
+		{
+			"sectionNumber" :1,
+			"requestedController" :"Comment",
+			"requestedMethod" :"savePollComment",
+			"filterByFriends" :'N',
+			"Commenttext" :commentText,
+			"loggedIn" :getLoggedInState(),
+			"oldCommentCount" :oldCommentCount
+		};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+                            if(data.isBadWord=='YES'){
+                           message = 'You have used an inappropriate word in your comment. Please modify your comment and re-try.';
+                           var divObj = document.getElementById("fbc_contentContainer");
+                           divObj.removeChild(divObj.childNodes[0]);  
+                           if(oldCommentCount==0){
+                                jQuery("#noComments").html("No comments posted yet");
+                                jQuery("#noComments").css({display:"block"});
+                                jQuery("#fbc_contentContainer").css({display:"block"});
+                            }
+                              alert(message);
+                           }else{
+                            handleFeeds(clientParams,"comments",commentText); 
+				if (commentCategory == "Y") {
+					jQuery('#comments_container').html(data.html);
+					jQuery("#notes").val("");
+					if (data.commentCount > oldCommentCount) {
+						jQuery("#totalCommentCount").val(data.commentCount);
+						//facebook_publish_feed_story(postCommentFeedId, comment_data,commentText);
+						//refreshXFBML();
+					} else {
+						if (data.errorMsg != '' && data.errorMsg != null) {
+							// alert(data.errorMsg);
+						}
+					}
+					eval(data.script);
+					
+				} else {
+					if (data.commentCount > oldCommentCount) {
+						jQuery("#totalCommentCount").val(data.commentCount);
+					} else {
+						// $('#comments_container').html(oldContent);
+						// if (data.errorMsg != '' && data.errorMsg != null){
+						// alert(data.errorMsg);
+						// }
+					}
+				}
+				//alert(data.script1);
+				
+				if (typeof contentCommentedCallback == "function") {
+					contentCommentedCallback();
+				}	
+				eval(data.script1);
+			}},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+
+}
+
+function ahInviteFriendsPopUp(id)
+{
+
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var queryParams =
+		{
+			"requestedController" :"Invite",
+			"requestedMethod" :"inviteFriend",
+			"selectedFriend" :id,
+			"actionUrl" :escape(document.location)
+		};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams);
+	}
+
+	// FB.XFBML.Host.parseDomTree();
+	jQuery.ajax(
+		{
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data)
+			{
+				document.getElementById("friendRequest").innerHTML = data.html;
+				refreshXFBML();
+				if(clientParams.disableVoting=='false')
+			 	{
+					showName='The Fashion Show';
+				}
+				else
+				{
+					showName='The Real housewives of new york city';
+				}
+			   omigImgForPoll='<img src="http://oimg.nbcuni.com/b/ss/nbcufacebookglobal,nbcubravotvbu/1/H.2-pdv-2/RAND?pe=lnk_o&pev2=FBConnect&pageName='+escape('Bravo Facebook Connect')+'&v24='+escape('Bravo Facebook Invite')+'&v26='+escape(clientParams.contentTitle)+'&v28='+escape('Request')+'&v36='+escape(showName)+'&events=event34" width="1" height="1" border="0" />';
+			   script='document.getElementById("OmigDiv").innerHTML=\''+omigImgForPoll+'\'';	
+			   eval(script); 
+					},
+			error : function(request, textStatus, thrownError)
+			{
+			}
+		});
+}
+
+function ahSavePollResults()
+{
+	if (hasSubmittedVoteResults == true) {
+		return;
+	}
+	
+	hasSubmittedVoteResults = true;
+	var fullURL = ajaxURL + "?controller=Ajax";
+
+	var userid = '';
+	var selectedoptionValue = '';
+	var voteCount = 0;
+	var sessionVoteCount = '';
+	userid = getLoggedInUserId();
+	selectedoptionValue = clientParams.selectedOption;
+	correctOptionValue = clientParams.correctAnswer;
+	voteCount = readCookie('BRAVO_FBCONNECT_' + clientParams['contentTitle']
+			+ '_' + userid);
+	sessionVoteCount = readCookie('BRAVO_FBCONNECT_session_'
+			+ clientParams['contentTitle'] + '_' + userid)
+	if (userid != null) {
+
+		if (userid != '') {
+			var queryParams =
+				{
+					"selectedValue" :selectedoptionValue,
+					"correctValue" :correctOptionValue,
+					"requestedController" :"Poll",
+					"requestedMethod" :"savePollResponse",
+					"showName" :clientParams.showName,
+					"selectedOptionImg" :fbconnectURL + "/"
+							+ clientParams.selectedOptionImage
+
+				};
+			if (userParams != null) {
+				queryParams = appendUserParamObjects(queryParams, userParams);
+			}
+			if (clientParams != null) {
+				queryParams = appendJSObjects(queryParams, clientParams);
+			}
+
+			if (voteCount < 40) {
+				jQuery.ajax(
+					{
+						type :"GET",
+						url :fullURL,
+						data :queryParams,
+						dataType :"jsonp",
+						success : function(data)
+						{
+							// facebook_publish_feed_story(data.templateId,data.templateData,
+						// '');
+						templateDataGlobal = data.templateData;
+						templateIdGlobal = data.templateId;
+						
+						if (voteCount == null) {
+							createCookie('BRAVO_FBCONNECT_' + queryParams['contentTitle']
+									+ '_' + userid, 1, 30);
+						} else {
+							createCookie('BRAVO_FBCONNECT_' + queryParams['contentTitle']
+									+ '_' + userid, parseInt(voteCount) + 1, 30);
+						}
+						if (sessionVoteCount == null || sessionVoteCount == 0) {
+							if (data.templateId != '') {
+								feedType='poll';
+								postVote('');
+								refreshXFBML();
+							}
+							createCookie('BRAVO_FBCONNECT_session_'
+									+ queryParams['contentTitle'] + '_' + userid, 1, 0)
+						} else {
+							createCookie('BRAVO_FBCONNECT_session_'
+									+ queryParams['contentTitle'] + '_' + userid,
+									parseInt(voteCount) + 1, 0);
+						}
+						
+						eval(data.script);
+					},
+					error : function(request, textStatus, thrownError)
+					{
+					}
+					});
+			}
+		}
+	}
+
+}
+
+function showFriendSelected(friendId)
+{
+	document.getElementById(friendId).className = "MMAS_Friend_name_plain_bg_selected";
+
+}
+
+function unselectFriend(friendId)
+{
+
+	for (i = 0; i < invitelist.length; i++) {
+		if (invitelist[i] == friendId) {
+			//alert("911 unselected friend shows up in invite list");
+		}
+	}
+	document.getElementById(friendId).className = "MMAS_Friend_name_plain_bg";
+
+}
+function unselectFriends() {
+	for (i = 0; i < invitelist.length; i++) {
+	  if (document.getElementById(invitelist[i]) != undefined) {
+	    document.getElementById(invitelist[i]).className = "MMAS_Friend_name_plain_bg";
+	  }
+	}
+	invitelist = new Array();
+}
+
+function displayComments(data) {
+	var commentsTemplate = getCommentsTemplate();
+	//commentsTemplate += getLoginTemplate();
+	var commentsData = jQuery("#display_comments").parseTemplate(commentsTemplate,data);
+	jQuery("#display_comments").html(commentsData);
+	refreshXFBML();
+}
+
+/*function handleFeeds(template_id_for_rating,template_data) {
+	if (getLoggedInUserId() != '') {
+		hideProblemElms();
+		ahfacebook_publish_feed_story(template_id_for_rating,template_data);
+	}
+}*/
+function handleFeeds(feed_obj,feed_data,commentText) {
+	if (!userProfileLoaded) {
+		functionToCallbacks.getUserProfile.push("publishFeeds");
+		return '';
+	}
+	if (typeof hideProblemElms == "function") {
+		hideProblemElms();
+	}
+	var profileName = user.name;
+	
+	var attachment = new Object();
+	switch(feed_data){
+	case 'comments':
+		captionText =profileName+" commented on "+feed_obj.feed.comments.contentType;
+		if(typeof (feed_obj.feed.comments.video) != 'undefined' && typeof (feed_obj.feed.comments.video.preview_img) != 'undefined'){
+			attachment = {'name':captionText,'href':feed_obj.feed.comments.contentURL+commentFeedDST,'media': [{'type':'flash','imgsrc':feed_obj.feed.comments.video.preview_img,'swfsrc':feed_obj.feed.comments.video.video_src}]};
+		}else if(typeof feed_obj.feed.comments.contentImage != 'undefined'){ 
+			attachment = {'name':captionText,'href':feed_obj.feed.comments.contentURL+commentFeedDST,'media': [{'type':'image','src':feed_obj.feed.comments.contentImage,'href':feed_obj.feed.comments.contentURL+commentFeedDST}]};
+		}else{
+			attachment = {'name':captionText,'href':feed_obj.feed.comments.contentURL+commentFeedDST};
+		}
+		if (typeof showProblemElms == "function") {
+			facebook_stream_publish(commentText, attachment, '', '', 'Write your comment', showProblemElms, '', '');
+		} else {
+			facebook_stream_publish(commentText, attachment, '', '', 'Write your comment', '', '', '');
+		}
+		break;
+	case 'ratings':
+		captionText =profileName+" rated on "+feed_obj.feed.rating.contentType;
+		if(typeof feed_obj.feed.rating.video != 'undefined' && typeof feed_obj.feed.rating.video.preview_img != 'undefined'){
+			attachment = {'name':captionText,'href':feed_obj.feed.rating.contentURL+ratingFeedDST,'media': [{'type':'flash','imgsrc':feed_obj.feed.rating.video.preview_img,'swfsrc':feed_obj.feed.rating.video.video_src}]};
+		}else if(typeof feed_obj.feed.rating.contentImage != 'undefined'){			
+			attachment = {'name':captionText,'href':feed_obj.feed.rating.contentURL+ratingFeedDST,'media': [{'type':'image','src':feed_obj.feed.rating.contentImage,'href':feed_obj.feed.rating.contentURL+ratingFeedDST}]};
+		}else{
+			attachment = {'name':captionText,'href':feed_obj.feed.rating.contentURL+ratingFeedDST};
+		}
+		if (typeof showProblemElms == "function") {
+			facebook_stream_publish('', attachment, '', '', 'Write your comment', showProblemElms, '', '');
+		} else {
+			facebook_stream_publish('', attachment, '', '', 'Write your comment', '', '', '');
+		}
+		break;
+	}
+}
+
+function publishFeeds() {
+	/*hideProblemElms();
+	ahfacebook_publish_feed_story(template_id_for_rating,template_data_for_rating);*/
+	handleFeeds(clientParams,actionType);
+}
+
+function ahfacebook_publish_feed_story(form_bundle_id, template_data, userMessege)
+{
+	var user_message_prompt = userMessege;
+	var user_message =
+		{
+			value :userMessege
+		};
+	FB.ensureInit( function()
+	{
+		FB.Connect.showFeedDialog(form_bundle_id, template_data, null, null,
+				FB.FeedStorySize.shortStory, FB.RequireConnect.promptConnect, showProblemElms,
+				"What's on your mind?", null);
+		});
+}
+
+function containerLoginPopup() {
+	add_overlay({
+		'method':'fetch_module',
+		'_file':'socialnetworking',
+		'_function':'socialnetwork_controller',
+		'next_func':'socialnetwork_signin_step_1',
+		'container_title':'SIGN IN',
+		'redirect_url':document.location.href
+	}, setTimeout(function () {
+		setup_form();
+	}, "1000"));
+}

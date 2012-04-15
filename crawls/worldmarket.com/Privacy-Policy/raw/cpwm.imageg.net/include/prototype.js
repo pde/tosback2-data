@@ -1,0 +1,1 @@
+/* removing contents for minicart */

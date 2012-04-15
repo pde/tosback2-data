@@ -1,0 +1,155 @@
+/*
+
+file: search.jhtml
+requires: jquery.js, jquery.autocomplete.js, jquery.bgiframe.min.js
+description: This file handles search validation and submission. It will clear
+the search box on focus. The input text field must have the attribute
+name="searchterm" and must be nested in exactly one node before the parent
+node. The button tag must have the attribute class="search-vh1-btn" to search
+vh1 and class="search-web-btn" to search the web.
+
+sample code:
+<div>
+<div><input name="searchterm" value="" /></div>
+<a class="search-vh1-btn"><div>VH1</div></a>
+<a class="search-web-btn"><div>WEB</div></a>
+</div>
+
+*/
+
+//System.out.println("/sitewide/scripts/search.jhtml: OK");
+
+var hoverDebug = new Array();
+function sfHover() {
+//System.out.println('sfHover');
+try
+{
+var nav = document.getElementById("nav");	
+
+if(nav){
+var sfEls = nav.getElementsByTagName("LI");
+
+for (var i=0; i<sfEls.length; i++) {
+sfEls[i].onmouseover=function() {
+//System.out.println('mouseover');
+this.className+=" sfhover";
+}
+sfEls[i].onmouseout=function() {
+//System.out.println('mouseout');
+this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+}
+}
+}
+}
+catch(err){hoverDebug[0] = err;}
+}
+
+if (window.attachEvent){
+sfHover();
+}
+
+jQuery(document).ready(function($) {
+var isSearchInit = new Array();
+var searchterm = '';
+var requiredfields = '';
+var partialfields = '';
+var optionalparams = '';
+var my_hostname = window.location.hostname;
+
+var url = "http://search.mtvnservices.com/typeahead/suggest/?siteName=vh1&format=json";
+if(my_hostname.match(/mtvi.com$/) != null) {
+url = "http://search.mtvnservices-d.mtvi.com/typeahead/suggest/?siteName=vh1&format=json";
+}
+
+if(requiredfields!='') {
+optionalparams += 'requiredfields='+requiredfields+'&';
+}
+if(partialfields!='') {
+optionalparams += 'partialfields='+partialfields+'&';
+}
+if ((my_hostname.indexOf("vh1")!=-1)&&(my_hostname.indexOf("blog")==-1)&&(my_hostname.indexOf("classic")==-1)&&(my_hostname.indexOf("community")==-1)) {
+var isLocalhost="true";
+} else {
+var isLocalhost="false";
+}
+
+$(":input[name=searchterm]").each(function(i){
+// indexed class is used for initilizing each search box
+$(this).addClass("search-box-"+i);
+if(searchterm!=''){
+isSearchInit[i]="true";
+}
+
+// clear current text and initialize this search box
+$(this).bind("focus", function(){
+this.value='';
+isSearchInit[i]="true";
+});
+
+// search vh1
+$(this).parent().parent().find(".search-vh1-btn").click(function() {
+var searchQuery = $(this).parent().find(":input[name=searchterm]").val().toLowerCase().replace(/^\s+|\s+$/g, '');
+searchQuery = encodeURIComponent(searchQuery);
+if ((isSearchInit[i]=="true")&&(searchQuery!='')) { var isSearchReady="true"; } else { var isSearchReady="false"; }
+if((isLocalhost=="true")&&(isSearchReady=="true")){
+window.location="/search/?"+optionalparams+"q="+searchQuery; return false;
+} else if(isSearchReady=="true") {
+window.location="http://www.vh1.com/search/search.jhtml?"+optionalparams+"q="+searchQuery; return false;
+}
+});
+
+// search web
+$(this).parent().parent().find(".search-web-btn").bind("click", function(){
+var searchQuery = $(this).parent().find(":input[name=searchterm]").val().toLowerCase().replace(/^\s+|\s+$/g, '');
+searchQuery = encodeURIComponent(searchQuery);
+if ((isSearchInit[i]=="true")&&(searchQuery!='')) { var isSearchReady="true"; } else { var isSearchReady="false"; }
+if(isSearchReady){
+window.open("http://search.live.com/results.aspx?searchtype=general&mkt=en-US&FORM=VCM010&q="+searchQuery); return false;
+}
+});
+
+// search when return key is pressed
+$(this).keyup(function(e) {
+if(e.keyCode == 13) {
+var searchQuery = $(this).parent().find(":input[name=searchterm]").val().toLowerCase().replace(/^\s+|\s+$/g, '');
+searchQuery = encodeURIComponent(searchQuery);
+if ((isSearchInit[i]=="true")&&(searchQuery!='')) { var isSearchReady="true"; } else { var isSearchReady="false"; }
+if((isSearchReady=="true")&&(isLocalhost=="true")){
+window.location="/search/?"+optionalparams+"q="+searchQuery; return false;
+} else if(isSearchReady=="true") {
+window.location="http://www.vh1.com/search/search.jhtml?"+optionalparams+"q="+searchQuery; return false;
+}
+}
+});
+
+// autocomplete search
+$(this).autocomplete(url, {
+minChars:1,
+width:250,
+dataType:'json',
+scrollHeight:200,
+selectFirst:false,
+matchSubset:false,
+jsonpCallback: 'vh1SearchJSONP',
+formatItem:function(item){ return item; },
+parse:function(data) {
+var parsed = [];
+for (var i = 0; i < data.length; i++) {
+var row = $.trim(data[i]);
+parsed[i] = {data: row,	value: row, result: row};
+}
+return parsed;
+}
+}).result(function(event, data, formatted) {
+//var searchQuery = $(this).parent().find(":input[name=searchterm]").val().toLowerCase().replace(/^\s+|\s+$/g, '');
+var searchQuery = data.toLowerCase().replace(/^\s+|\s+$/g, '');
+if ((isSearchInit[i]=="true")&&(searchQuery!='')) { var isSearchReady="true"; } else { var isSearchReady="false"; }
+if((isSearchReady=="true")&&(isLocalhost=="true")){
+window.location="/search/?"+optionalparams+"q="+searchQuery; return false;
+} else if(isSearchReady=="true") {
+window.location="http://www.vh1.com/search/search.jhtml?"+optionalparams+"q="+searchQuery; return false;
+}
+}); 
+});
+$("#nav_search").css("visibility", "visible");
+});

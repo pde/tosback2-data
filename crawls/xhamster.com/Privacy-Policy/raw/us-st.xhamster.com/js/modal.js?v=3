@@ -1,0 +1,233 @@
+var modal = {'window':false,'mask':false};
+
+modal.size = function () {
+    if (!modal.mask) return false;
+    var maskHeight = $(document).height();
+    var maskWidth = $(window).width();
+    return modal.mask.css({'height':maskHeight,'width':maskWidth});
+}
+
+modal.show = function (el,noClose) {
+    modal.size().show();
+    if (noClose) {
+        $(document).unbind('keydown',modal.key);
+        $('#mask').unbind('click',modal.hide);
+        modal.mask.css({'opacity':0.9});
+    } else {
+        $(document).bind('keydown',modal.key);
+        $('#mask').bind('click',modal.hide);
+        modal.mask.css({'opacity':0.8});
+    }
+
+    //Get the window height and width
+    var winH = $(window).height();
+    var winW = $(window).width();
+          
+    //Set the popup window to center
+    modal.window = $(el);
+    var wTop = winH/2-modal.window.height()/2;
+    var wTop = (window.scrollY) ? window.scrollY : document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+    //wTop = 100;
+    wTop += 50;
+    var wLeft = winW/2-modal.window.width()/2;
+    modal.window.css({'top':wTop, 'left':wLeft}).fadeIn('fast');
+    $('.spot iframe').hide();
+}
+
+modal.key = function (e) {
+    if (e.keyCode == 27) {
+        $('#mask').click();
+    }
+}
+
+modal.hide = function (el) {
+    $(document).unbind('keydown',modal.key);
+    $('#mask').unbind('click',modal.hide);
+    modal.mask.hide();
+    if (modal.window) modal.window.hide();
+    $('.spot iframe').show();
+    modal.window = false;
+}
+
+
+$(document).ready(function() {
+    var mask = $('#mask');
+    if (!mask.size()) {
+      $('body').append("<div id='mask'></div>");
+      mask = $('#mask');
+    }
+    modal.mask = mask;
+    $(window).bind('resize',modal.size);
+});
+
+
+/*------- login form ---------------*/
+var loginTimer = false;
+login = {'opened':false,'ready':false};
+report = {'opened':false,'ready':false};
+disclaimer = {'opened':false,'ready':false};
+xmessage = {'opened':false,'ready':false};
+
+disclaimer.show = function (e) {
+    $('#dsAgree').bind('click',disclaimer.agree)
+    $('#dsCancel').bind('click',disclaimer.cancel)
+    return modal.show('#modalDisclaimer',false);
+}
+
+disclaimer.agree = function (e) {
+    document.cookie = 'disclaimer=OK; path=/';
+    modal.hide('#modalDisclaimer');
+}
+
+disclaimer.cancel = function (e) {
+    document.location.href="http://google.com";
+}
+
+
+login.ajaxDone = function () {
+    $('#modalForm .ajax').hide();
+    $('#modalForm .ajaxInp').removeClass('ajaxInp');
+}
+
+login.error = function(el, mess) {
+    var t = $(el);
+    var err = t.next();
+    var useClass = true;
+    if (err.size() && err[0].nodeName == 'LABEL') {
+        t = err;
+        err = t.next();
+        useClass = false;
+    }
+    if (!err.size() || err.attr('class') !='err') {
+        t.after("<div class='err'></div>");
+        err = t.next();
+    }
+    err.html(mess);
+    if (useClass) {
+        if (mess && mess !='') t.addClass('inpErr');
+        else t.removeClass('inpErr');
+    }
+}
+
+login.showLogin = function (e) {
+    e.preventDefault();
+    $('#loginForm').show();
+    $('#username').focus();
+    $('#signupForm').hide();
+    $('#showLogin').addClass('curr');
+    $('#showSignup').removeClass('curr');
+    if (!login.opened) login.ajax({'open':1},'signupChk');
+}
+
+login.showSignup = function (e) {
+    e.preventDefault();
+    $('#loginForm').hide();
+    $('#signupForm').show();
+    $('#s_username').focus();
+    $('#showLogin').removeClass('curr');
+    $('#showSignup').addClass('curr');
+    if (!login.opened) login.ajax({'open':1},'signupChk');
+}
+
+login.showSignup2 = function (e) {
+    $('#signupForm2').slideDown();
+    login.opened = true;
+    $('#s_country option').each(function(){
+        if ($(this).val()) {
+            var img = "url('http://static.xhamster.com/images/flag/"+$(this).val()+".gif')";
+            $(this).css({'backgroundImage':img})
+        }
+    });
+    $('#s_country').bind('change',login.country);
+    $('#s_country').change();
+}
+
+login.country = function (e) {
+    var t = $(this);
+    $('#signupForm .s_state').hide();
+    if (t.val()=='US') $('#s_usa_state').parent().parent().show();
+    if (t.val()=='CA') $('#s_canada_state').parent().parent().show();
+    var img = "url('http://static.xhamster.com/images/flag/"+$(this).val()+".gif')";
+    $(this).css({'backgroundImage':img})
+}
+
+login.ajax = function (data,act) {
+    data.act=act;
+    data.ajax=1;
+    data.id=1;
+    if (login.ajaxID) login.ajaxID.abort();
+    login.ajaxID = $.ajax({'url':'/photos/ajax.php', 'data':data, 'dataType':'script','complete':login.ajaxDone,'error':login.ajaxDone});
+}
+
+login.show = function (e,title,useHref,signup) {
+    if (typeof(signup)=='undefined') signup = true;
+    var e = $.Event(e);
+    e.preventDefault();
+    title = title || 'This feature is available for registered users only';
+    $('#modalForm .title').text(title);
+    if (useHref) {
+        var href = $(useHref).attr('href');
+        $('#modalForm input[name=href]').val(href);
+    }
+    if (!signup) $('#showLogin').click();
+    else $('#showSignup').click();
+    login.ready = true;
+    return modal.show('#modalForm');
+}
+
+report.show = function (e,title) {
+    if (typeof(signup)=='undefined') signup = true;
+    var e = $.Event(e);
+    e.preventDefault();
+    title = title || 'Please tell us the reason';
+    $('#reportForm .title').text(title);
+    report.ready = true;
+    return modal.show('#reportForm');
+}
+
+xmessage.show = function(e,id) {
+    var e = $.Event(e);
+    e.preventDefault();
+    //title = 'xHamster message';
+    //$(id+' .title').text(title);
+    xmessage.ready = true;
+    return modal.show(id);
+}
+
+$(document).ready(function(e) {
+    $('#loginForm').bind('submit',function(e) {
+        e.preventDefault();
+        var t = $(this);
+        $('.ajax',t).show();
+        login.ajax(t.serializeJSON(),'loginChk');
+    });
+    
+    $('#signupForm').bind('submit',function(e) {
+        e.preventDefault();
+        var t = $(this);
+        $('.ajax',t).show();
+        login.ajax(t.serializeJSON(),'signupChk');
+    });
+    
+    $('#s_username, #s_email').bind('change',function(e) {
+        var t = $(this);
+        t.addClass('ajaxInp');
+        var data = {};
+        data[t.attr('name')] = t.val();
+        login.ajax(data,'signupChk');
+    });
+    
+    $('#showLogin').bind('click',login.showLogin);
+    $('#showSignup').bind('click',login.showSignup);
+});
+
+(function( $ ){
+$.fn.serializeJSON=function(inp) {
+var json = inp || {};
+jQuery.map($(this).serializeArray(), function(n, i){
+json[n['name']] = n['value'];
+});
+return json;
+};
+})( jQuery );
+

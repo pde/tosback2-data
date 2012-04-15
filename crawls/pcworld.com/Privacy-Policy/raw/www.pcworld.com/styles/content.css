@@ -1,0 +1,985 @@
+@charset "UTF-8";
+/*
+h1.title {margin-bottom:15px;padding:5px 10px;font-weight:bold;border:1px solid #ddd;background:url("http://images.macworld.com/images/shared/backgrounds/module-gradient-bg-tile.gif") repeat-x bottom left}
+	*/
+	
+	#reviewFinder {position:relative;color:#000;background:#e4e6e0} 
+	#reviewFinder select {display:block;width:140px;margin:0 0 3px;font-size:10px;padding:2px}			
+	#finderOptions {z-index:999;padding:10px 0 0}
+	#reviewFinder input[type=text] {width:135px;margin-bottom:5px}
+	#reviewFinder .close {float:right;display:inline;padding:0;font-size:11px;border:0;line-height:28px}
+	#reviewFinder a.close:hover {text-decoration:underline}	
+
+	#sidebar #productMenu {padding:10px;border:1px solid #ddd;margin-bottom:20px}
+	#sidebar #topCategories.menu li a {font-size:14px;font-weight:bold}
+	#sidebar .menu li {margin-bottom:5px;font-size:12px;line-height:14px}
+	#sidebar ul.menu {padding-bottom:10px;margin-bottom:15px;border-bottom:solid 1px #ddd}
+	#sidebar #resourceCenter {float:none;margin-right:0;width:auto}
+	#sidebar #resourceCenter h5 {font-size:9px;text-transform:uppercase;color:#999;margin-bottom:5px}
+	#sidebar .subscription{display:none}
+	#joinPCW li {font-size:11px;color:#333}
+	
+	#sidebar #newsletters,#sidebar #joinPCW {line-height:16px;padding:10px 10px 0 10px}
+	#sidebar #joinPCW{padding-bottom:10px}
+	
+	/* newsletters module styles */
+	
+	#newsletters form {clear:both;margin-bottom:8px}
+	#newsletters .modTitle {border-bottom:1px solid #DDE0D9 !important;margin-bottom:8px !important}
+	#newsletterSelect input {float:left}
+	#newsletterSelect li div {padding-left:20px;line-height:16px}
+	#newsletterSelect ul li {margin-bottom: 8px !important}
+	#newsletters ul li {margin-bottom: 5px}
+	#newsletters .submitField .textField {border:1px solid #999;margin-bottom:5px}
+	#newsletterModuleForm img{margin-bottom:5px;display:block}	
+	#newsletters .submitField .textField .field {font-family:arial,verdana,helvetica,sans-serif;font-size:13px}	
+	#newsletters li {font-size:12px}
+	#newsletters p.moreLink {clear:both}
+	
+	
+	#sidebar #newsletters form {clear:both;margin-bottom:10px}
+	#sidebar .newsletterTitle {font-weight:bold;line-height:16px !important}
+	#sidebar #newsletters .modTitle {border-bottom:1px solid #DDE0D9 !important;margin-bottom:8px !important;padding-bottom:7px}
+	#sidebar #newsletterSelect input {float:left}
+	#sidebar #newsletterSelect li div {padding-left:20px;line-height:16px}
+	#sidebar #newsletterSelect ul li {margin-bottom: 8px !important}
+	#sidebar #newsletters ul li {margin-bottom: 5px}
+	#sidebar #newsletters .submitField .textField {width:100px !important;border:1px solid #999;float:none;margin-bottom:5px;float:left;height:22px}
+	#sidebar #newsletters .submitField .textField input {width:96px !important;float:left}	
+	#sidebar #newsletters .submitField .submitBtn, #newsletterModuleForm .submitBtn, #rightColumn #newsletterModuleForm .submitField .submitBtn{border:1px solid #999;border-left:0;float:none !important;-webkit-border-radius:0 3px 3px 0 !important;-khtml-border-radius:0 3px 3px 0 !important;-moz-border-radius:0 3px 3px 0 !important;border-radius:0 3px 3px 0 !important;padding:0 4px 1px 4px !important;height:24px;vertical-align:middle}
+	#sidebar #newsletters li {font-size:12px}
+	#sidebar #newsletters p.moreLink {clear:both}
+	
+	/* newsletters module styles when in right column */
+	#rightColumn #newsletters {margin:0;border:1px solid #CCC}
+	#rightColumn .newsletterTitle {font-weight:bold;line-height:18px}
+	#rightColumn #newsletters img {display:block}
+	#rightColumn #newsletters .submitField {margin-top:7px}
+	#rightColumn #newsletters .submitField .textField {width:200px;border:1px solid #999;float:left;margin-right:8px}
+	#rightColumn #newsletters .submitField .textField input {width:195px}	
+	#rightColumn #newsletters .submitField .submitBtn, #newsletterModuleForm .submitBtn, #rightColumn #newsletterModuleForm .submitField .submitBtn{border:1px solid #999;float:none !important;-webkit-border-radius:3px !important;-khtml-border-radius:3px !important;-moz-border-radius:3px !important;border-radius:3px !important;padding:2px 4px 1px 4px !important}
+	#rightColumn #newsletters .newsletterTitle {font-size:14px !important;margin-bottom:10px !important}
+	#rightColumn #newsletters p {font-size:13px !important;margin:0 !important}
+	#rightColumn #newsletters p a{font-size:12px !important}
+	#rightColumn #newsletters ul {margin-top: 8px}
+	#rightColumn #newsletters ul li {margin: 5px 0}
+	#rightColumn #newsletters .newsletterSuccess {padding:8px 0}
+	
+	#newsletters .frequency {font-size:12px;font-style:italic;color:#999}
+	
+	/* when newsletter module is in tout position */	
+	#rightColumn #touts  #newsletters {background-color:#EEE;border:1px solid #DDD;padding:10px}	
+	
+	#newsletters form {clear:both}
+	#newsletters .submitField .textField {width:194px;border:1px solid #999}
+	#newsletters .submitField .textField input {width:194px !important;background:#FFF}	
+	#newsletters .submitField .submitBtn {border:1px solid #999;border-left:0}
+	#newsletters li {font-size:12px}
+	#newsletters .moreLink {clear:both;font-size:12px}
+	
+	.userDesire {color:#526a2d}	
+		
+	.tools {clear:both !important;margin-bottom:10px !important}
+	.tools li {  list-style-type: none !important;position:relative !important;float:left !important;margin:0 10px 0 0 !important;font-size:11px !important;line-height:20px !important}
+	.tools li a {display:block !important}
+	
+	.tools .tool.facebook iframe {width:90px;height:21px;padding:0;border:none;overflow:hidden}
+	.tools .tool.facebook .connect_widget_summary.connect_widget_text {display:none !important}
+	.tools .tool.twitter {width:90px}
+	.tools .tool.facebook div,
+	.tools .tool.twitter div {display:inline-block}
+	.tools .tool.digg {width:90px}
+	.tools .tool.digg .db-wrapper {display:block;vertical-align:top}
+	.tools .tool.digg .db-count {padding:0 5px 4px 8px !important;line-height:21px !important}
+	.tools .tool.comments {}
+	.tools .tool.recommends {}
+	.tools .tool.email {}
+	.tools .tool.print {}
+	
+	
+/* Sidebar styles */
+
+	#productMenu .linkList {margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #ddd}
+		#topCategories li,
+		#topCategoriesMedia li {margin-bottom:4px}
+		#topCategoriesMedia li {font-size:12px}
+		#topCategories li a {font-weight:bold}
+	
+	
+/* 	Global Article Styles */
+
+	.articleBodyContent ul li {margin:0 0 5px 15px;list-style-type:disc}	
+	
+	#article_default .artCaption {font-weight:normal;font-size:11px;color:#404040;line-height:16px;padding:6px 0;clear:both;float:left}
+	span.artCaption {font-weight:normal;font-size:11px;color:#404040;line-height:16px;padding:6px 0;clear:both;float:left}
+	
+	#article_zoom h2 {margin-bottom:15px;font-size:18px}
+	#article_zoom img {margin-bottom:15px}
+	#article_zoom .artCaption {padding:10px 0;border-top:1px solid #ddd;font-size:14px}
+	
+/* Generic Post Styles */	
+	
+	ul.meta {float:left;margin-bottom:10px}
+		ul.meta.small {font-size:12px}
+		ul.meta li {float:left;display:block;margin-right:10px}
+		ul.meta li img {width:12px;height:12px;margin-right:3px;vertical-align:baseline}
+	
+	.post {clear:both;float:left;width:100%;padding:16px 0;border-top:1px solid #ddd}
+		.post p.category {margin-bottom:0;text-transform:uppercase;font-size:13px}
+		.post p.category a {color:#6e8e3c;font-weight:bold}
+		.post p.category span.byline {font-size:10px;color:#999}
+		.post h3 {padding-top:3px}
+		.post .image.large {width:100%;text-align:center}
+		
+		.post p {font-size:14px;line-height:18px;color:#333}
+		.post p.byline {font-size:12px;color:#666}
+		
+		.post p.meta {color:#526a2d}
+		
+		.post ul.meta li {padding-left:15px;background:url(../../zapp5.staticworld.net/images/shared/icons/bullet-arrow.gif) no-repeat left}
+		.post ul.meta big {line-height:12px}
+		
+		.post .editRating {float:right;font-size:10px;color:#666;width:120px;margin:0 0 20px 20px}
+		.post .editRating .scale {margin-bottom:5px}
+		.post .editRating span {padding:0 0 0 5px}
+
+		.fullReview .image {float:left;padding:20px;border:1px solid #ddd;margin-right:20px}
+		.fullReview .image img {width:170px;height:auto}	
+		
+		
+	#comments form ul,
+		#comments form li,
+		#comments form p,
+		#comments form h3,
+		#comments form h4,
+		#comments form label,
+		#comments form small {margin:0;padding:0} /* Reset #comments form styles */
+
+	#comments {padding:15px 0 0;border:0}
+	
+		#comments h3 strong em {font-weight:bold}
+		#comments .userAction {margin-left:0px}
+		
+		#comments form {background:transparent}
+			#comments .userAction form p {margin-bottom:10px}
+			
+			#comments .gravatar img {width:48px;height:48px;border:1px solid #ddd}
+			#comments form .gravatar {float:left;margin-right:15px}
+			#comments form .gravatar img {border-color:#999}		
+			#comments form.default .btn {float:left}
+			
+			#comments form textarea {margin-bottom:5px}
+			#comments form.default textarea {float:left;width:300px;height:44px;margin-right:15px;padding:2px 5px;font-family:Arial, Helvetica, sans-serif;font-size:20px;color:#ccc;font-style:italic}
+			#comments form.default textarea.expanded {float:left;width:300px;height:100px;margin-right:15px;padding:2px 5px;font-size:13px;color:#000;font-style:normal;font-family:"Courier New", Courier, monospace}
+			#comments form.active textarea.expanded {width:400px;height:100px;padding:2px 5px;font-size:13px;color:#000;font-style:normal;font-family:"Courier New", Courier, monospace}
+		
+		#comments form .socialSignIn {float:right;margin-right:30px;padding:10px;border:1px solid #ffe26b;background:#fff}
+	
+		#commentList {}
+			#commentList li {margin-bottom:15px;padding:0 10px 10px 15px;border-bottom:1px solid #ddd}
+			#commentList .gravatar {float:left;margin-left:0px}
+			#commentList cite {display:block;margin-bottom:5px}
+			#commentList br {display:none}		
+			#commentList p.meta {margin:0 0 10px;font-size:12px;line-height:12px;color:#999;border:0}
+			#commentList p.meta a {color:#999}
+			#commentList li div ul li {border:0;margin-bottom:5px;margin-left:15px;padding:0;list-style-type:disc}
+			#commentList li .quote1 {margin-bottom:10px;padding:15px 15px 10px 20px;font-size:13px;line-height:17px;border-bottom:1px solid #ccc;background:#efefef}		
+			#commentList .reply {text-align:right;font-size:13px;/*text-transform:uppercase*/}
+			#commentList .reply a span {display:none}			
+			/*
+			#commentList .reply a:hover {text-decoration:none}
+			#commentList .reply a:hover span {display:inline}
+			#commentList .reply a,
+			#commentList .reply a span {font-weight:bold}
+			*/	
+			#commentList li .commentAvatar {float:left;margin:3px}
+			#commentList li .commentAvatar img {height:50px;}
+			#commentList li .commentAvatarIcon {float:right;}
+			#commentList li .commentAvatar .commentAvatarIcon img {height:20px; width:20px;}
+			#commentList li.item .recommend {float:left;}
+			#commentList li.item .flag {text-align:right;}
+			
+			#commentList li ul.children {margin-bottom:-20px;padding-top:10px}
+			#commentList li ul.children li {padding-top:10px;border:0;border-top:1px solid #ddd}
+	
+			#comments form.rego_signin {}
+				#comments form.rego_signin h4 {margin-bottom:5px;font-size:18px;font-weight:bold}
+				#comments form.rego_signin h4 small {font-size:14px;color:#666}
+				#comments form.rego_signin p {font-size:14px;line-height:17px}
+				#comments form.rego_signin p small {font-size:11px;line-height:12px}
+				#comments form.rego_signin p.optout {padding-top:10px}
+				
+				#comments form.rego_signin.default p.caption {width:300px;margin:0 0 0 17px;font-size:10px;line-height:12px;color:#666}
+				#comments form.rego_signin.active p.caption {width:300px;font-size:10px;line-height:12px;color:#666}
+				
+				#comments form.rego_signin .formField.error {padding:4px;background:#ffe8e9;border:1px solid #999}
+				#comments form.rego_signin .errorMessage {margin-bottom:10px;padding:10px 10px 0;background:#ffe8e9;border:1px solid #eaa09f}
+				#comments form.rego_signin .errorMessage p {font-size:13px;line-height:16px}
+				
+				#comments form.rego_signin .fieldList {margin-bottom:5px}
+				#comments form.rego_signin .fieldList li {margin-bottom:5px}
+				#comments form.rego_signin .fieldList li label {display:inline-block;width:90px}
+				#comments form.rego_signin input[type='text'],
+				#comments form.rego_signin input[type='password'] {width:200px}	
+				#comments form.rego_signin input.formField {padding:2px}
+				
+				#comments form.rego_signin .fieldList.checkList li {margin:0 0 15px 22px}
+				#comments form.rego_signin .fieldList.checkList input {margin:0 5px 0 -22px}
+				
+			.orDivider {float:right;padding:20px 20px 0 0;font-size:20px;font-weight:bold}
+			#comments.narrow form .orDivider {float: none;padding:9px 0;}
+			#rego_signin_pop {position:absolute;top:200px;left:25%;width:650px}
+				#rego_signin_pop .socialSignIn {float:left;width:200px}
+				#rego_signin_pop .orDivider {float:left}
+				#rego_signin_pop fieldset {display:block;float:left;width:350px;margin-bottom:15px;border:0}
+			
+			#popWrapper {background:transparent;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000,endColorstr=#99000000);zoom: 1}
+			
+			/*IE6*/ html>body #popWrapper {background:rgba(0, 0, 0, 0.8)}
+			/*IE7*/ *:first-child+html #popWrapper {background:transparent;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000,endColorstr=#99000000);zoom: 1}
+
+
+	
+	
+	#latestReviews.module {}
+		#latestReviews.module .storyList .image {border:0} 
+		
+		#latestReviews.module .storyList li.first {padding-left:102px;padding-top:15px}
+		#latestReviews.module .storyList li.first .image {float:left;width:92px;margin-left:-102px}
+		#latestReviews.module .storyList li.first .image img {width:92px;height:auto}
+		#latestReviews.module .storyList li.first a.title {font-size:16px}
+		
+		#latestReviews.module .storyList li {padding-left:60px}
+		#latestReviews.module .storyList li .image {float:left;margin-left:-60px}
+		#latestReviews.module .storyList li .starRating {float:right;margin:0 0 10px 10px}
+		#latestReviews.module .storyList li a {font-size:12px}
+		#latestReviews.module .storyList li a.title {font-size:14px}
+		
+/* Latest App review module */
+		
+		#latestAppReviews {border:1px solid #CCC !important}
+		#latestAppReviews p {margin-bottom:0 !important}
+		#latestAppReviews .moreExtra {color:#444;padding-top:8px;margin-top:0;border-top:1px dotted #CCC}
+		#latestAppReviews .moreExtra a {font-size:12px !important;font-weight:bold}
+		#latestAppReviews h2 {font-size:17px;font-weight:bold;color:#000;margin-bottom:8px;border:none;line-height:20px}
+		#latestAppReviews table {border-collapse:collapse;padding:0;margin:7px 0 0 0;width:100%}
+		#latestAppReviews table td {vertical-align:top;padding-bottom:10px}
+		#latestAppReviews table td.image {padding-right:10px;margin: 0}
+		#latestAppReviews table td.image img {width:45px}
+		#latestAppReviews table td.description a{font-size:13px;font-weight:normal;padding-right:10px}
+		#latestAppReviews .editRating .scale {display:block}
+		#latestAppReviews .editRating .rating {display:block;font-size:11px;color:#888;margin-top:5px}
+		
+/* Content Top Wrapper Styles */
+
+	#topContentWrapper h1.productTitle {clear:both;margin-bottom:10px;font-size:34px;line-height:34px;font-family: Georgia,"Times New Roman",Times,serif}
+	#topContentWrapper h1.productTitle span {font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;vertical-align:baseline}
+	
+
+/* Right Column Modules */
+
+	#shoppingMod .linkList.even {margin-right:0}
+	#shoppingMod .categories .col {margin-bottom:10px !important}
+	#shoppingMod .linkList li {margin-bottom:0;font-size:12px}
+	#shoppingMod .linkList li a.level1 {font-size:14px;font-weight:bold;margin-bottom:3px;display:inline-block}
+	#shoppingMod .storyList li {padding-left:62px !important}
+	#shoppingMod .storyList .image {margin-left:-62px !important}
+	#shoppingMod .moreExtra {color:#444;padding-top:8px;margin-top:8px;border-top:1px dotted #CCC}
+	#shoppingMod .moreExtra a {font-weight:normal}
+	
+	#buyingGuides #primaryCategories.linkList li a {font-weight:bold}
+	
+	#howto .linkList li {position:relative;margin-bottom:12px}
+	#howto .linkList li a {display:block;margin-right:50px !important}
+	#howto .linkList ul.meta {position:absolute;top:0;right:0}	
+	#howto .linkList ul.meta li {float:right;margin:0}
+	#howto .linkList ul.meta li.reccomends {padding-right:18px;line-height:17px;font-size:12px;color:#666;background:url("../../zapp5.staticworld.net/images/common/templates08/thumbsUp.gif") no-repeat right}
+	
+	#news .linkList li {margin-bottom:12px}
+	
+	#topProducts.module .storyList li {padding:10px 0;margin:0}
+
+
+/* Chart Styles */
+
+	#article.chart #leftColumn {}
+	#product.chart #leftColumn {width:845px}
+	#article.chart #mainWell,
+	#product.chart #mainWell  {width:640px}
+	#article.chart #rightColumn {}
+	#product.chart #rightColumn  {width:160px}
+	#article.chart #breadcrumbs,
+	#product.chart #breadcrumbs {padding-bottom:5px;border-bottom:1px solid #e4e4e4}
+
+	#product.chart #topContentWrapper {margin-bottom:20px}
+
+	#article.chart #resultsTable table .textAds {margin-left:120px}
+
+	#article.chart #articleHead h2 {margin-bottom:10px;font-size:16px;color:#333}
+
+	#sidebar #productFilters {}
+		#sidebar #productFilters p {margin-bottom:4px;color:#999;font-size:10px;line-height:12px}
+		#productFilters #selectedFilters li {margin-bottom:3px;padding:5px 8px;border:1px solid #ccc;background:#e4e4e4}
+		#productFilters #selectedFilters li a.clear {display:block;float:right;padding-top:2px}
+		#productFilters li.listSubHead {margin-bottom:10px;padding-top:5px;border-top:1px solid #ddd}
+		#productFilters li.listSubHead a {font-weight:bold;color:#333}
+		#productFilters li.selected {margin-left:-5px;padding:5px 5px 4px;background:#e4e4e4}			
+		#productFilters li.selected a {color:#000}
+		#productFilters .subModTitle {margin-bottom:5px;padding-top:5px;font-weight:bold}
+		#productFilters form {padding-top:5px;border-top:1px solid #ddd}
+		#productFilters .submitField {margin-bottom:10px;height:23px;border:solid #666;border-width:1px 0 1px 1px}
+		#productFilters .submitField .textField {width:103px}
+		#productFilters .submitField .textField input {width:100px}
+
+	.compares {margin-bottom:15px;padding:10px;border:1px solid #ccc;box-shadow: 0px 5px 5px #ddd; -moz-box-shadow: 0px 5px 5px #ddd;background:url("../../images.macworld.com/images/shared/backgrounds/module-gradient-bg-tile.gif") repeat-x bottom left}
+		.compares a.clearLink {display:block;float:right;line-height:18px;font-size:12px;text-decoration:underline}
+		.compares .modTitle {padding:0;border:0}		
+		.compares ul {padding-top:10px}		
+		.compares ul li {float:left;width:101px;min-height:105px;margin:0 10px 0 0;padding:5px;text-align:center;border:1px solid #e4e4e4}
+		.compares li .image {position:relative;margin-bottom:5px;overflow:visible}
+		.compares li .image img {width:60px;height:auto}		
+		.compares li .image img.clear {position:absolute;top:-12px;right:-12px;z-index:1000;width:23px;height:23px}
+		.compares li strong {display:block;font-size:11px;font-weight:normal;line-height:12px}
+		.compares li.optional {color:#999;font-size:12px}		
+		.compares li.optional strong {display:block;padding-top:20px;color:#000;font-size:14px}
+		.compares .compareButton {margin:0;padding:0;text-align:center}
+	
+	#resultsTable {margin-bottom:10px}	
+		#resultsTable h1 {padding-bottom:5px;font-size:20px;color:#333;font-weight:normal}
+		#resultsTable h2 {padding-bottom:5px;font-size:20px;color:#333;font-weight:normal}
+		#resultsTable p.caption {margin-bottom:10px;font-size:16px;color:#575757;font-weight:normal}	
+		
+		#resultsTable .pagination {padding:10px}
+		#resultsTable .pagination.top {border:solid #ddd;border-width:1px 1px 0}
+		#resultsTable .pagination.bottom {border:solid #ddd;border-width:0 1px 1px}
+	
+	#sortResults {height:37px;border:1px solid #ddd;background:url(../../images.macworld.com/images/appstore/sortresults-bg-tile.gif) repeat-x left bottom}
+		#sortResults ul {padding:8px 10px 0}
+		#sortResults li {float:left;margin-right:5px;font-size:10px}
+			#sortResults li a {position:relative;display:inline-block;padding:0 5px;line-height:20px;color:#fff;border:1px solid #575757;background:url(../../zapp5.staticworld.net/images/appguide/button-grey-bg-tile.gif) repeat-x left}
+			#sortResults li a:hover {background:#666}
+			#sortResults li.title {float:left;margin-right:10px;font-size:11px;line-height:22px}
+			#sortResults li a.selected {position:relative;border:1px solid #a20607;background:url("../../zapp5.staticworld.net/images/appguide/button-bg-tile.gif") repeat-x left}
+			#sortResults li a.selected label {position:relative;display:inline-block;height:1%;padding-right:12px;background:url("../../zapp5.staticworld.net/images/appguide/arrows-sort-2.gif") no-repeat}	
+				#sortResults li a.selected.asc label {background-position:top right}
+				#sortResults li a.selected.desc label {background-position:bottom right}
+	
+		/*IE6*/ html>body #sortResults li a {display:block}
+		/*IE6*/ html>body #sortResults li a.selected label {display:block}
+		
+				.click2compare {float:right;padding:0 10px 0 20px;font-size:12px;line-height:37px;background:#d6d5d5 url(../../images.macworld.com/images/appstore/sortresults-arrow.gif) no-repeat left}
+				.click2compare span.btn {line-height:16px !important}	
+				
+	#resultsTable table {margin-top:-1px;background:url(../../images.macworld.com/images/appstore/compare-bg-tile.gif) repeat-y top right}
+		#resultsTable tr.sponsored td {border:solid #ccc;border-width:1px 0;background:url(../../images.macworld.com/images/appstore/slider-gradient-btm-bg-tile.gif) repeat-x bottom left}
+		#resultsTable tr.sponsored td.image {border-left:1px solid #ccc}
+		#resultsTable tr.sponsored td.compare {border-left:1px solid #ddd;border-right:1px solid #ccc;background:none}
+		#resultsTable td {padding:15px 5px;border-bottom:1px solid #e4e4e4 !important}
+		#resultsTable td.image {width:55px;padding-left:10px;border-left:1px solid #fff}
+		#resultsTable td.image img {width:50px;height:50px}
+		#resultsTable td.description {width:165px;padding-right:10px;font-size:11px}
+		#resultsTable td.description h2 {padding:0;font-size:14px;line-height:16px}	
+		#resultsTable td.description h2 a {font-weight:bold}	
+		#resultsTable td.description label {font-size:10px;color:#999}
+		#resultsTable td.description strong {display:block;margin-bottom:3px;font-size:14px;line-height:15px}
+		#resultsTable td.productRating {width:80px;font-size:10px;color:#999}	
+		#resultsTable td.productRating .starRating {margin-bottom:4px}
+		#resultsTable td.price {text-align:right}
+		#resultsTable td.price .priceRange {display:block;margin-bottom:5px;font-size:12px}		
+		#resultsTable td.price a.buyDirect {display:block;padding-top:5px;font-size:12px;font-weight:bold}		
+		#resultsTable td.compare {width:24px;text-align:center;border-left:1px solid #ddd;border-right:1px solid #fff}
+	
+	#product.chart #resultsTable td.description {width:200px}		
+	#product.chart #resultsTable td.price {width:125px}
+	
+	#resultsTable.topXChart table.topXTable { width:655px;background:none;}
+		#resultsTable.topXChart tr{padding-bottom:10px;}
+		#resultsTable.topXChart td {border-bottom:none !important;padding:0;}		
+		#resultsTable.topXChart td.imageAndText {width:auto;padding-bottom:30px;}
+		#resultsTable.topXChart td.imageAndText .chartContent{ margin-left:102px;}
+		#resultsTable.topXChart td.imageAndText .image {margin:0 10px 10px 0;float:left;}
+		#resultsTable.topXChart td.imageAndText .image a {float:left;}
+		#resultsTable.topXChart td.imageAndText .image .rankNumber {float:left;padding:2px 7px;text-align:center;background: url("../../zapp5.staticworld.net/images/shared/buttons/red-bg-tile.gif") 50% 50% repeat-x;font-size:16px;position:absolute;border:1px solid #921517;opacity:.90;}		
+		#resultsTable.topXChart td.imageAndText .image .rankNumber a{color:#fff;text-shadow: 1px 1px 0 #000000;opacity:1;}		
+		#resultsTable.topXChart td.imageAndText .image img{width:92px;height:auto;float:left;}
+		#resultsTable.topXChart td.imageAndText .scale {text-align:left}
+		#resultsTable.topXChart td.imageAndText h2 {margin-bottom:2px;font-size:18px;line-height:20px;padding-bottom:0;}
+		#resultsTable.topXChart td.imageAndText h2 a {font-weight:bold}
+		#resultsTable.topXChart td.imageAndText p {margin-bottom:3px;font-size:14px;line-height:20px;width:420px}
+		#resultsTable.topXChart td.imageAndText .meta {margin-bottom:2px;color:#666;font-size:12px;line-height:20px;}		
+		#resultsTable.topXChart .floatRight{float:right;width:140px;margin-left:10px}
+		#resultsTable.topXChart .price {width:140px;font-size:11px;text-align:left;float:right;line-height:14px;}
+		#resultsTable.topXChart .price .buyDirect {font-size:12px;line-height:20px;font-weight:bold;}
+		#resultsTable.topXChart .price .priceRange {}
+		#resultsTable.topXChart .elevenPix{font-size:11px;line-height:19px;}
+		#resultsTable.topXChart .btn.red, #resultsTable.topXChart .buyDirect{margin-top:5px;}
+		#resultsTable.topXChart td.imageAndText.elevenPix {padding-bottom:15px;}
+		#resultsTable.topXChart #rankedChart table td .textAds {padding:10px 20px 5px !important;border:1px solid #DDDDDD !important;margin:0 0 20px;}
+		#resultsTable.topXChart td.imageAndText .chartLicense {margin-left:2px;color:#666;font-size:12px;line-height:20px;}		
+		
+		
+
+
+	#compareTable {border-collapse:collapse}
+		#compareTable td {width:155px;padding:5px 10px 10px;font-size:12px;border:1px solid #ccc}
+		#compareTable th {padding:10px;font-weight:bold;background:#efefef url("../../images.macworld.com/images/shared/backgrounds/module-gradient-bg-tile.gif") repeat-x top left;border:1px solid #ccc}	
+		#compareTable tr:hover {background-color:#ffffcc}
+		#compareTable tr:hover td.label {background-color:#ffffcc}
+		#compareTable td.label {text-align:left;font-weight:bold;background-color:#efefef}	
+		#compareTable td.labelNoshade {border:0;background-color:#fff}
+		#compareTable td.compareProductImage {background-color:#fff;text-align:center}	
+		#compareTable td .editRating {font-size:10px;color:#999}
+		#compareTable td .editRating .scale {display:block;margin-bottom:4px}
+		#compareTable td .price {display:block;margin-bottom:4px;font-size:14px;font-weight:bold}
+		#compareTable td .image {position:relative;overflow:visible}
+		#compareTable td .image img.clear {position:absolute;top:0;right:0;z-index:1000;width:23px;height:23px}
+		#compareTable th.sectionHead {background:transparent;border:0;padding:10px;text-align:center}
+		#compareTable tr.compareAd:hover {background-color:#fff}
+		#compareTable tr.compareAd td {text-align:center;padding: 10px 10px 20px 10px;border:0px}
+
+/* Video Filter */
+
+	#videoFilter {background:url("../../images.macworld.com/images/shared/backgrounds/module-gradient-bg-tile.gif") repeat-x bottom left}
+		#videoFilter #filterHead {padding:10px 10px 0;overflow:hidden;background:#333}
+		#videoFilter.module .modTitle {float:left;margin:0 20px 0 0;font-size:18px;line-height:18px;color:#fff}
+		#videoFilter.module.tabbed .tabs {float:left;margin-bottom:0}
+		#videoFilter .tabs .tab {margin-right:4px}
+		#videoFilter .tabs .tab a {border-color:#000;border-bottom-color:transparent}
+		   
+		#videoFilter #filterContent {clear:both;padding:10px;border:solid #ccc;border-width:0 1px 1px}
+		#videoFilter .left {float:left;width:172px;clear:left}
+		#videoFilter .right {float:left;width:455px}
+		
+		#videoFilter #relatedVideos .storyList li {float:left;width:30%;margin-right:10px;padding:0;border:0}
+		#videoFilter #relatedVideos .storyList li,
+		#videoFilter #relatedVideos .storyList li a {font-size:11px;line-height:13px}
+		#videoFilter #relatedVideos .storyList li img {border:1px solid #999}
+		#videoFilter #relatedVideos .storyList li.spacer {width:1px;height:1px;margin:0;padding:0}
+		
+		#videoFilter #allCategories li {float:left;width:45%}
+
+		#videoFilter .filterNav {clear:both;margin-bottom:10px}
+		#videoFilter .filterNav a {font-weight:bold}
+		
+		/* For Privacy Policy page */
+		
+		#policyText  {margin-left: 180px}
+		
+		
+		.formCont  {font-size:14px;line-height:20px;color:#030303;width:750px;margin:0 0 20px}
+		.formCont hr {margin:20px 0;color: #CCC;background-color: #CCC;height: 1px;border: none}
+		.formCont h1 { font-size: 25px; font-weight:bold; line-height: normal; margin-bottom:20px}
+		.formCont h2 { font-size: 21px; line-height: normal; margin: 20px 0 10px}
+		.formCont h3 { font-size: 19px; line-height: normal; margin: 20px 0 10px;font-weight:bold}
+		.formCont h4 { font-size: 16px;margin: 20px 0 10px;font-weight:bold}
+		.formCont a {text-decoration:none}
+		.formCont a:hover {text-decoration:underline}
+		.formCont p {margin:0 0 10px}
+		.formCont p.byline a {text-decoration:none}
+		.formCont code {color:#55803B;font:monospace;font-size:11px}
+		.formCont pre {max-width:573px;padding:10px; overflow:auto;border:solid 1px #eee}
+		.formCont tt {color:#921B1E}
+		.formCont ul, ol {margin:20px 0 20px 40px}
+		.formCont ul li {list-style:disc;padding:5px 0}
+		.formCont ol li {list-style:decimal; padding:5px 0}
+		.formCont blockquote {font-style:italic;padding-left:0 0 15px 15px}
+		.formCont strong a {font-weight:bold}
+		.formCont a:hover {background-color:transparent}
+		
+		/*for FAQ */
+		.formCont ul.toc li {padding:0;margin:8px 0}
+		.formCont p.subhead {font-size:16px;font-weight:bold;border-top:1px solid #DDD;padding-top:20px;margin-top:20px}
+		
+
+/* MainWell Styles */
+
+	.searchForm {position:relative;margin-bottom:14px;padding:0 0 10px 182px;border-bottom:1px solid #ddd;background:url("../../images.macworld.com/images/shared/backgrounds/module-gradient-bg-tile.gif") repeat-x bottom left}
+		.searchForm h1 {position:absolute;top:0px;left:10px;font-size:45px}	
+		.searchForm form {margin-bottom:5px}
+		.searchForm input[type=text] {width:400px;padding:2px;font-size:16px}
+		.searchForm .searchSelecter {}
+		.searchForm .searchSelecter li {float:left;margin-right:10px;font-size:14px;line-height:20px}
+		.searchForm .searchSelecter li.title {font-weight:bold}
+		.searchForm .searchSelecter li a.selected {display:inline-block;padding:0 5px;color:#fff;background:#666; -webkit-border-radius: 3px; -khtml-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px}
+
+	#search_results_default .modTitle span.sort {display:inline-block;float:right;font-size:12px;line-height:16px}
+	#search_results_default .modTitle span.sort span.selected {display:inline-block;color:#fff;padding:0 4px;line-height:16px;background:#666}
+	#search_results_default .pagination.bottom {border:0}
+
+	#latestVideo {}
+	#latestVideo.module .storyList .image {float:left;margin:0 10px 10px 0;padding-bottom:25px;background:url(../../zapp5.staticworld.net/images/common/templates08/video-thumb-playbar.gif) no-repeat bottom right}
+	#latestVideo.module .storyList li .image img {width:92px;height:61px}
+		
+	#videoPlayer {width:377px;margin:5px 0 20px}
+	#inlinePlayerContainer1481{height:auto;display:inline-block}
+
+	#productFilters {margin-bottom:20px;padding:10px 10px 0 10px;border:1px solid #ddd;background:url("../../images.macworld.com/images/shared/backgrounds/module-gradient-bg-tile.gif") repeat-x bottom left}
+	#productFilters .modTitle {margin-bottom:5px;font-weight:bold}
+	
+	
+	
+	
+/* 404 Page */
+
+	body#error #miniHeader {width:100%;margin-left:35px}
+	body#error #content {margin:0 10px}
+	body#error#error h2 {margin-bottom:10px}
+	body#error#error p {margin-bottom:10px;font-size:16px}
+	body#error#error ul {margin-bottom:10px}
+	body#error li {margin:0 0 5px 20px;font-size:16px}
+	body#error li input {vertical-align:middle;margin:0 5px 0 0}
+	
+/* d-link RC */
+	.dlinkhomelink { width:500px; height:70px; display:block; float:left; }
+	.dlinkBlog #breadcrumbs{padding-top:10px}
+	
+
+/* Template Logon */
+
+	#template_logon .areaMainRight,  #template_logon {line-height:normal}
+	#template_logon ul#syndication {display:none}
+	#template_logon .areaMainRight {width:100% !important}
+	#template_logon .areaMainRight {width:100% !important}
+	#template_logon .logonContainer {-moz-border-radius: 5px;-webkit-border-radius: 5px;border: 1px solid #CCCCCC}
+	#template_logon .copy {width:220px;float:left;background-color:#FDF4E1;height:300px;-moz-border-radius:5px 0 0 5px;-webkit-border-radius:5px 0 0 5px;border-right:1px solid #ccc;overflow:visible}
+	#template_logon .copy h2 {line-height:26px;padding:13px 25px 0 10px;font-size:20px;text-align:right;border:0px solid #ccc}
+	#template_logon .copy h2 span.arrowhead {
+		display:block;
+		background: url('../../zapp5.staticworld.net/images/arrowhead_whiteleft.png') no-repeat scroll 0 0 transparent;
+		width:16px;height:27px;position:relative;top:-100px;left:195px}
+
+	*:first-child+html #template_logon .copy h2 span.arrowhead {display:block;background: url('../../zapp5.staticworld.net/images/arrowhead_whiteleft.png') no-repeat scroll 0 0 transparent;width:16px;height:27px;position:relative;top:-100px;left:26px}
+	* html #template_logon .copy h2 span.arrowhead {display:block;background: url('../../zapp5.staticworld.net/images/arrowhead_whiteleft.png') no-repeat scroll 0 0 transparent;width:16px;height:27px;position:relative;top:-100px;left:26px}
+	#template_logon .log h3 {font-size:15px;font-weight:bold;padding:0 10px 0px 20px}
+	#template_logon .log p {padding:0 0 10px 20px}
+	#template_logon .log .borderLeft ul.listArrowSetTout {margin:0 0 0 20px}
+	#template_logon .log .borderLeft ul.listArrowSetTout li {padding:0 0 4px 0}
+	#template_logon .log .disclaim {font-size:11px;padding-right:40px;color:#999999;line-height:13px}
+	#template_logon .log {width:713px;float:left}
+	#template_logon .fieldLogin {margin:3px 10px 0 0}
+	#template_logon .section2Col.column2 {width:300px}
+	#template_logon .section2Col .borderLeft {border-left: 1px dotted #ccc;margin:20px 0;height:250px}
+	#template_logon .section2Col .borderLeft h3 {padding-bottom:10px}
+	#template_logon .section2Col .login {margin:20px 0;height:250px}
+	#template_logon .areaMainRight {line-height:normal}
+	#template_logon .btn.blue {margin-top: 13px}
+	#template_logon span.btn {height:auto}
+	#template_logon .linkInline {font-size: 11px}
+	#template_logon .modBase {border:none}
+	#template_logon #socialBarWrapper {display:none}
+
+
+	
+/* //////  SEARCH RESULTS 2011  ////// */
+
+#search2011{font-size:13px}
+
+/* form */
+
+#search2011 .search2011form{border:1px solid #DDD;margin-bottom:15px;padding:15px;background-color:#EEE}
+#search2011 #searchFormForm {margin:0;padding:0}
+#search2011 #searchFormForm #searchQT {float: left;line-height:30px;width:514px;height:30px;font-size:18px;font-weight:normal;font-family: arial,verdana,helvetica,sans-serif;color:#111;padding:0 5px;margin-right:12px;border-bottom:1px solid #BBB;border-right:1px solid #BBB;border-top:1px solid #777;border-left:1px solid #777}
+#search2011 #searchFormForm .btn a {font-size:13px !important;font-weight:bold;text-transform:uppercase;line-height:31px;width:80px;padding:0;margin:0;border:0;text-shadow:0 -1px 0 #00559A;text-align: center }
+
+/* groups */
+
+#search2011 .searchGroup,
+	#browse2011 .searchGroup	{margin-bottom:20px;border:1px solid #DDD;padding:4px 10px 0 10px}
+#search2011 .searchGroup.expand,
+	#browse2011 .searchGroup.expand	 {border:none;padding:0;margin-bottom:0}
+
+#search2011 .searchGroup .searchGroupHeader,
+	#browse2011 .searchGroup .searchGroupHeader	{padding:4px 0 5px 0;margin-bottom:10px;border-bottom:1px solid #CCC;vertical-align:middle}
+#search2011 .searchGroup.expand .searchGroupHeader,
+	#browse2011 .searchGroup.expand .searchGroupHeader{padding-top:9px}
+#search2011 .searchGroup .searchGroupName,
+	#browse2011 .searchGroup .searchGroupName {color:#222;font-size:18px;font-weight:bold}
+#search2011 .searchGroup .maxResults,
+	#browse2011 .searchGroup .maxResults {color:#666;font-size:11px;margin-left:2px;vertical-align:text-top}
+
+#search2011 .searchGroup ul li,
+	#browse2011 .searchGroup ul li {margin-bottom:20px;display:block}
+#search2011 .searchGroup.news ul li,
+	 #browse2011 .searchGroup.news ul li {margin-bottom:12px}
+#search2011 .searchGroup.expand ul li,
+	#browse2011 .searchGroup.expand ul li {margin-bottom:20px}
+#search2011 .searchGroup ul li.secondary,
+	#browse2011 .searchGroup ul li.secondary {margin-bottom:8px}
+
+#search2011 .searchGroup .hed,
+	#browse2011 .searchGroup .hed {font-size:16px;line-height:20px;display:block;font-weight:bold;margin-bottom:2px}
+#search2011 .searchGroup .hed2,
+	#browse2011 .searchGroup .hed2 {font-size:14px;font-weight:bold;line-height:18px;margin-bottom:2px;display:block;word-wrap: break-word}
+#search2011 .searchGroup .hed3,
+	#browse2011 .searchGroup .hed3 {font-size:13px;line-height:17px;font-weight:bold;margin-right:2px}
+#search2011 .searchGroup .hedRating,
+	#browse2011 .searchGroup .hedRating {width:230px; word-wrap: break-word}
+
+#search2011 .searchGroup .dek,
+	#browse2011 .searchGroup .dek {display:block;color:#222;margin-top:3px;line-height:16px;font-size:12px}
+
+#search2011 .searchGroup .more,
+	#browse2011 .searchGroup .more {margin:0 0 12px;padding-top:10px;border-top:1px dotted #CCC}
+#search2011 .searchGroup .more a,
+	#browse2011 .searchGroup .more a {font-style:normal;font-weight:normal;font-size:12px}
+/* when in single cat mode kill more link, already have pagination --> */
+#search2011 .searchGroup.expand .more,
+	#browse2011 .searchGroup.expand .more {display:none}
+
+/* special treatment groups */
+#search2011 .searchGroup.news ul {padding-bottom:5px}
+#search2011 .searchGroup li.videoGroup {margin-left:75px}
+#search2011 .searchGroup.product ul li {margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #DDD}
+#search2011 .searchGroup.product ul li .editRating {margin:4px 0 6px 0}
+#search2011 .searchGroup.apps img, #search2011 .searchGroup.androidapps img {float:left;width:50px;max-height:50px;overflow:hidden;margin:0 12px 0 0}
+
+#search2011 .searchGroup .stats{display:none}
+
+/* search groups when in right column */
+
+#search2011 #rightColumn .searchGroup {padding:10px 10px 0 10px;margin-bottom: 20px;border:1px solid #DDD}
+#search2011 #rightColumn .searchGroup li {display:block;margin-bottom:12px}
+#search2011 #rightColumn .searchGroup .searchGroupHeader {padding-top:0}
+#search2011 #rightColumn .searchGroup .iconImage {float:left;width:50px;max-height:50px;overflow:hidden;margin-right:12px}
+#search2011 #rightColumn .searchGroup .more {margin-bottom:1px !important;padding:10px 0;border-top:1px dotted #CCC}
+#search2011 #rightColumn .searchGroup .editRating {float:right;display:block;margin:0 0 5px 5px}
+#search2011 #rightColumn .searchGroup.download .hed2 {margin-right:6px;display:inline}
+#search2011 #rightColumn .searchGroup.product ul li {border:none;padding:0}
+
+/* image treatment, positioning */
+
+#search2011 .searchGroup .image,
+	#browse2011 .searchGroup .image {float:right;border:1px solid #CCC;margin:0 0 12px 15px;padding:0;max-height:80px;overflow:hidden}
+#search2011 .searchGroup .image a,
+	#browse2011 .searchGroup .image a {padding:0;margin:0;border:0;display:block}
+#search2011 .searchGroup .image img,
+	#browse2011 .searchGroup .image img {width:100px;border:0;margin:0;padding:0}
+/* overrides */
+#search2011 .searchGroup li.videoGroup .image {float:left;margin:0 0 0 -75px;max-height:50px;overflow:hidden}
+#search2011 .searchGroup li.videoGroup .image img {width:60px}
+#search2011 .searchGroup.product.expand .image {float:left;margin:0 18px 0 0;border:none}
+
+
+/* filter menu ///// blues D9E1E8 or ecf0f3 border: b6cbdd  */
+
+#search2011 #filterMenu,
+	 #browse2011 #filterMenu {padding:0 !important}
+#search2011 #filterMenu .searchSelecter, #filterMenu .searchSelecter li,
+	#browse2011 #filterMenu .searchSelecter, #filterMenu .searchSelecter li {margin:0}
+#search2011 #filterMenu .searchSelecter li a,
+	#browse2011 #filterMenu .searchSelecter li a {padding:5px 14px;display:block;font-size:13px;outline:none}
+#search2011 #filterMenu .searchSelecter li a:hover,
+	#browse2011 #filterMenu .searchSelecter li a:hover {background-color:#ecf0f3}
+#search2011 #filterMenu .searchSelecter li.selected a,
+	#browse2011 #filterMenu .searchSelecter li.selected a {background:url(../../zapp5.staticworld.net/graphics/search_filter_arrow.png) 0 8px no-repeat;outline:none;font-weight:bold;color:#000}
+#search2011 #filterMenu .searchSelecter li.selected a:hover,
+	#browse2011 #filterMenu .searchSelecter li.selected a:hover {background-color:#ecf0f3}
+#search2011 #filterMenu .searchSelecter li.first a,
+	#browse2011 #filterMenu .searchSelecter li.first a {padding-top:11px}
+#search2011 #filterMenu .searchSelecter li.last a,
+	#browse2011 #filterMenu .searchSelecter li.last a {padding-bottom:11px}
+#search2011 #filterMenu .searchSelecter li.first a, #filterMenu .searchSelecter li.last a,
+	#browse2011 #filterMenu .searchSelecter li.first a, #filterMenu .searchSelecter li.last a {background-position: 0 12px}
+#search2011 #filterMenu p.title,
+	#browse2011 #filterMenu p.title {color:#111;font-weight:normal;font-size:12px;border-bottom:1px solid #DDD;padding:11px 10px 10px 14px;margin:0}
+
+#browse2011 #filterMenu .searchSelecter li.pad2 {}
+#browse2011 #filterMenu .searchSelecter li.pad3 {padding-left:6px}
+#browse2011 #filterMenu .searchSelecter li.pad4 {padding-left:12px}
+#browse2011 #filterMenu .searchSelecter li.pad5 {padding-left:18px}
+
+/* quick links, more about */
+
+#search2011 #quicklinksMenu {padding:0 !important;border-color:#DDD !important;background-color:#EEE}
+#search2011 #quicklinksMenu p.title {color:#000;font-weight:bold;font-size:13px;border-bottom:1px solid #DDD;padding:10px 10px 10px 14px;margin:0 0 8px 0}
+#search2011 #quicklinksMenu li {margin:9px 10px 9px 14px}
+#search2011 #quicklinksMenu li a{padding:0;margin:0;font-size:13px;font-weight:bold;outline:none}
+
+
+/* sort list */
+
+#search2011 .sort{float:right;font-size:11px;margin-top:5px;display:inline-block}
+#search2011 .sortBy {color:#666;margin-right:3px}
+#search2011 .sort .selected{font-weight:bold;color:#111;background-color:#DFDFDF;padding:3px 7px 2px 7px}
+#search2011 .sort .delimiter {margin:0 6px;color:#999}
+
+
+/* No results */
+
+#search2011 #searchNoResultsMessage {margin-top:6px}
+#search2011 #searchNoResultsMessage h2 {font-weight:normal;line-height:25px}
+#search2011 #searchNoResultsMessage p {margin-top:10px}
+#search2011 #searchNoResultsMessage ol {padding:0;margin:0}
+#search2011 #searchNoResultsMessage li {list-style-type: decimal !important;list-style-position:outside;margin-top:15px;margin-left:20px;font-size:14px}
+#search2011 #searchNoResultsMessage .termHigh {font-weight:bold}
+#search2011 #searchNoResultsMessage .example {font-style:italic;padding-top:5px;display:block}
+
+
+/* meta  */
+
+#search2011 .searchGroup .meta,
+	#browse2011 .searchGroup .meta {font-size:11px;color:#AAA}
+#search2011 .searchGroup .date,
+	#browse2011 .searchGroup .date {color:#888;font-size:11px;white-space:nowrap}
+#search2011 .searchGroup .cat,
+	#browse2011 .searchGroup .cat {color:#6E8E3C;font-size:11px;white-space:nowrap}
+#search2011 .searchGroup .blog,
+	#browse2011 .searchGroup .blog {color:#6E8E3C;font-size:11px;white-space:nowrap}
+#search2011 .searchGroup .price,
+	#browse2011 .searchGroup .price {color:#888;font-size:11px}
+/* when category is above headline --> */ #search2011 .searchGroup.howto .catTop {margin-bottom:2px;display:block}
+
+
+/* overwrite defaults in this context */
+
+#search2011 #reviewFinder,
+	#browse2011 #reviewFinder {background-color:#EEE}
+#search2011 #reviewFinder .modTitle,
+	#browse2011 #reviewFinder .modTitle {font-size:13px !important}
+#search2011 #reviewFinder #finderOptions,
+	#browse2011 #reviewFinder #finderOptions {font-size:12px !important;padding-top:0}
+
+/* shopping is currently live on search results and references structure.css, below are overwrites. once live re-write shopping jsp and make styles self contained within search.css only */
+#search2011 #shopping {border:1px solid #DDD;padding:10px}
+#search2011 #shopping ul {margin-bottom:0 !important}
+#search2011 #shopping .modTitle {font-size:18px;padding:0 0 8px 0;margin-bottom:10px;border-bottom:1px solid #CCC;vertical-align:middle}
+#search2011 #shopping .image {float:none;margin:0 0 10px 0;max-width:50px;border:none}
+#search2011 #shopping .image img {width:50px}
+#search2011 #shopping .title {font-size:13px;font-weight:bold}
+#search2011 #shopping .price {font-size:12px;line-height:20px;font-weight:bold;color:#333}
+#search2011 #shopping .btn {margin:4px 0 0 0}
+#search2011 #shopping label {margin-top:4px}
+#search2011 #shopping .productRating {margin-bottom:4px}
+#search2011 #shopping  a {font-size:12px}
+
+#search2011 .textAds {margin-bottom:20px !important}
+
+/* inline chart tables */
+/* Table Styles copied from MW only max-width is increased */
+
+/* Table Styles */
+.statsTable {width:auto;height:auto;color:#333;margin-bottom:15px;overflow:auto}
+.statsTable strong {color:#FF0000}
+.statsTable p {margin:0 0 6px;padding:0}
+.statsTable.float {float:left;margin-right:15px}
+.statsTable table.stats {width:100%;float:none;width:auto;overflow:hidden;background-color:#FFF;margin:0;font-size:12px;text-align:left;border-bottom:none;border-right:none;border-left:1px solid #ccc}
+.statsTable table.stats tr {position:relative;width:100%}
+.statsTable table.stats th {border:solid #CCC;border-width:0 1px 1px 0;line-height:14px;border-right-color:#ccc;text-align:left;font-weight:bold;vertical-align:bottom}
+.statsTable table.stats th {padding:6px 8px 6px 8px;background:#EEE;border-color:#ccc}
+.statsTable table.stats td {padding:6px 8px 6px 8px !important;border:solid #CCC;border-width:0 1px 1px 0;line-height:14px;border-right-color:#ccc;text-align:left;width:100%}
+
+.statsTable table.stats th.col1 {text-align:left}
+.statsTable table.stats td.col1 {text-align:left}
+.articleText .statsTable h2 {margin:0;padding:6px 10px 6px;border:1px solid;border-top-color:#ccc;border-right-color:#ccc;border-bottom-color:#CCC;border-left-color:#ccc;background:#ddd url(../../images.macworld.com/images/templates/v4/mw-table-header-tile.gif) repeat-x top left;font-weight:bold}
+
+.statsTable .even{background-color:#FFF}
+.statsTable .odd {background-color:#EEE}
+
+.statsTable .caption {margin-top:10px;line-height:11px}
+
+.tableSmall {width:200px}
+.tableMedium {width:400px;clear:both}
+.tableMedium.float {clear:none}
+.tableLarge {clear:both;width:650px}
+.tableLarge table {width:100%}
+.tableLarge table tbody {display:block;width:649px;overflow-x:auto}
+.tableLarge table col {color:#f00}
+.tableLarge table.stats .col1 {width:100%}
+
+
+/* *****  HUB PAGES ***** */
+
+.hubPage {background-color:#FFF}
+
+.hubPage #topContent {width:650px;float:left}
+.hubPage #topContentWrapper h1.productTitle {clear:both;margin-bottom:20px;font-size:30px;font-weight:bold;line-height:34px;font-family: Arial, Georgia,"Times New Roman",Times,serif}
+
+.hubPage #syndication {margin-top:12px}
+
+.hubPage p.subTitle {text-transform:none;font-size:18px !important;font-weight:bold;margin-bottom:6px !important;color:#444 !important}
+
+.hubPage ul.meta li {font-size:12px;color:#888}
+
+/* blog roll styling */
+.hubPage .post  {padding:16px 0 0 0;margin:0 0 16px 0;border-top-color:#CCC;float:none}
+.hubPage .post h3 {padding:5px 0 2px 0}
+.hubPage .post h3 a {font-weight:bold;font-size:20px}
+.hubPage .post h2 {font-size:16px !important;line-height:16px !important;padding:5px 0 !important}
+.hubPage .post .byline {padding-top:4px}
+.hubPage .post p.category a, .hubPage p.category {font-size:12px !important;margin-bottom:4px !important}
+.hubPage .post .articleBodyContent p {line-height:19px !important}
+
+.hubPage .post .image {margin-top:3px !important;border:1px solid #DDD}
+
+.hubPage .post .moreLink {margin:16px 0}
+.hubPage .post .moreLink a {padding:5px 9px;background-color:#e3ebf2;-webkit-border-radius: 5px; -khtml-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;border:1px solid #c6d3de}
+.hubPage .post .moreLink a, .hubPage .post .moreLink a big {font-size:13px}
+
+.hubPage .post .meta {color:#CCC;font-size:13px;margin-bottom:0 !important;padding-top:5px}
+.hubPage .post .green {color:#526A2D;font-size:13px;padding-right:5px}
+.hubPage .post .meta a {font-size:13px;padding-left:5px}
+
+.hubPage .more {padding:10px 0 15px;border-top:1px solid #CCC;margin-bottom:20px}
+.hubPage .more a {font-size:15px;font-weight:bold}
+
+.hubPage .pagination.bottom{padding-top: 18px;font-size:15px !important}
+.hubPage .pagination .pages li {margin-right:6px;-webkit-border-radius: 3px; -khtml-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;color:#666}
+.hubPage .pagination .pages li.current {color:#FFF}
+.hubPage .pagination li.current a:hover {background-color:#777 !important}
+.hubPage .pagination .pages li a{-webkit-border-radius: 3px; -khtml-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px}
+.hubPage .pagination .pages li a:hover {background-color:#ECF0F3}
+
+.hubPage .vidPlay { height:412px; float:left; margin-bottom:20px; }
+.hubPage .module .storyList li a { line-height: 125%; }
+.hubPage .pcwTwitterUpdates { float:left; width:336px; margin-bottom: 10px; }
+.hubPage ul.pcwTwitterList li { float:none; }
+.hubPage ul.pcwTwitterList li img { display:none; }
+.hubPage ul.pcwTwitterList li p { margin-left:0; width:316px; font-size:15px; }
+.hubPage #mainWell { width:auto; }
+.hubPage #mainWell #feature.module {}
+.hubPage #rightColumn .module.storyList .image img { border:none; }
+
+/* repurposed from product index pages - keeping same id name for now */
+.hubPage #editorModule .module {border:none;margin:0!important;padding:0 !important}
+/* hiding title for now */
+.hubPage #editorModule .modTitle {display:none}
+.hubPage #editorModule {border:1px solid #CCC;background-color:#F3F3F4;padding:15px 15px 15px 15px;margin:0 0 25px 0;-moz-box-shadow: 0 1px 4px rgba(0,0,0,0.15);-webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.15);box-shadow: 0 1px 4px rgba(0,0,0,0.15)}
+.hubPage #editorModule ul.storyList{}
+.hubPage #editorModule ul.storyList li {list-style-type: none;float:left;padding:0;margin:0;border:0;line-height:16px;font-size:13px;width:198px;padding-left:102px}
+.hubPage #editorModule ul.storyList li.index1 {margin:0 15px 0 0}
+.hubPage #editorModule ul.storyList li a {font-weight:bold;font-size:15px;line-height:18px;margin:0 0 2px 0}
+.hubPage #editorModule ul.storyList li.first a {font-weight:bold;font-size:20px;line-height:25px;margin-bottom:4px}
+.hubPage #editorModule ul.storyList li.first {font-size:14px;line-height:19px;border-bottom:1px dotted #CCC;padding-bottom:10px;margin-bottom:10px;width:auto;float:none}
+.hubPage #editorModule .module .storyList .image {width:90px;max-width:90px;text-align:center;padding:0;margin-left:-102px}
+.hubPage #editorModule .module .storyList .image a {margin-bottom:0}
+.hubPage #editorModule .module .storyList .image img  {width:auto;max-width:90px;max-height:61px;margin:0}
+.hubPage #editorModule .module .storyList .first .image {margin-right:15px;width:auto;max-width: 230px !important;max-height: 153px !important;text-align:center}
+.hubPage #editorModule .module .storyList .first .image img {max-width: 230px !important;max-height: 153px !important}
+
+.hubPage #hubProgram, .hubPage #hubAuto {border:1px solid #DDD;padding:10px 10px 7px 10px;margin-bottom:20px;background-color:#FFF;-webkit-border-radius: 3px; -khtml-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;}
+.hubPage #hubProgram .linkList li, .hubPage #hubAuto .linkList li  {margin-bottom:5px}
+.hubPage #hubProgram .linkList li a, .hubPage #hubAuto .linkList li a{font-size:13px;line-height:17px;font-weight:bold}
+.hubPage #hubProgram .modTitle, .hubPage #hubAuto .modTitle  {color:#444;border-bottom:1px dotted #CCC !important;font-size:16px !important;margin-bottom: 8px !important}
+
+/* #breadcrumbs {border-bottom: 1px solid #DDD; margin-bottom: 15px; padding-bottom: 5px;} */
+
+/* *****  END HUB PAGES ***** */
+
+/* *****  video module styles ***** */
+.clearfix.vArticle.popUpLoader{margin:7px 0 0;line-height:16px}
+.vArticle.popUpLoader a {font-size:13px;font-weight:bold}
+
+/* Old registration page fixes */
+#usr_frm_reg a:hover {text-decoration:underline}
+#usr_frm_reg .btn a:hover {color:#FFF;text-decoration:none}
+#usr_frm_reg #joinForm h2 {border:none;line-height:19px;font-size:15px;font-style:normal;margin:0;padding:0}
+#usr_frm_reg #joinForm {border:1px solid #CCC;background-color:#FFF;padding:20px;margin:0 0 15px 0;-moz-box-shadow: 0 1px 4px rgba(0,0,0,0.15);-webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.15);box-shadow: 0 1px 4px rgba(0,0,0,0.15)}
+#usr_frm_reg #joinForm h1 {background:none;color:#000;text-align:left;line-height:24px;font-weight:bold}
+#usr_frm_reg .moreInfo {font-size:12px;padding-top:15px;margin-top:15px;border-top:1px #CCC dotted}
+#usr_frm_reg #regCta {margin-top:15px;text-align: center}
+#usr_frm_reg #regCta .alredayMember {margin-left:8px;font-size:13px}
+
+.errorFeedback {color:#f00;margin-top:15px;}
+
+/* *****  Top 100 Feature CSS ***** */
+
+		#feature p.byline {font-size:12px;color:#666;margin: 5px 0 15px;}
+		body #content #content{padding:0;}
+		body#feature #content #content #mainWell {padding:0;width:100%;}
+		#articleHead.top100Header{padding-left:74px;background:url(../../zapp5.staticworld.net/images/shared/icons/Bestof_2011_webVersion_pageLabel.jpg) no-repeat 0 2px}
+
+/* NEW COMMENTS */
+/*
+#commentsNav {padding-bottom:15px;border-bottom:5px solid #CCC}
+#commentsNavViewContainer {}
+#commentsNavTopContainer {font-size:12px;color:#222}
+#commentsNavTopContainer a {margin:0 3px;padding:5px 8px;border:1px solid #B2C6D9;background-color:#ECF0F3;vertical-align:middle;-webkit-border-radius: 5px; -khtml-border-radius: 3px; -moz-border-radius: 5px;border-radius: 5px;outline:none}
+#commentsNavTopContainer a:hover {background-color:#FFF;text-decoration:none;border-color:#7b9fc1;-moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1)}
+#commentsNavTopContainer a.selected {color:#000;font-weight:bold;background-color:#FFF;border-color:#CCC}
+#commentsNavTopContainer a.selected:hover {-moz-box-shadow: none;-webkit-box-shadow: none;box-shadow: none}
+#commentsNavTopContainer .pipeDivider{margin:0;padding:0;color:#FFF}
+
+*/
+
+.modTitle #artCommentCountCommentNav {font-size:18px;color:#222}
+
+#commentsNav {padding:11px 15px 10px 15px;border:1px solid #CCC;border-bottom-width:5px;background:#ECF0F3 /* url(http://zapp5.staticworld.net/images/shared/trans_white_fade.png) repeat-x top left */}
+#commentsNav:hover {}
+#commentsNavViewContainer {}
+#commentsNavTopContainer {float:left;font-size:13px;color:#444;vertical-align:text-top}
+#commentsNavTopContainer a {margin:0;padding:0 9px;border:none;background-color:transparent;vertical-align:text-top;outline:none;text-shadow: 1px 1px rgba(255, 255, 255, 0.8), -1px -1px rgba(13,73,128, 0.1)}
+#commentsNavTopContainer a:hover {background-color:transparent;text-shadow:none}
+#commentsNavTopContainer a.selected {text-shadow:-1px -1px rgba(153,153,153,0.1),1px 1px rgba(255,255,255,0.9);color:#000;font-weight:bold;background-color:transparent;border-color:#CCC}
+#commentsNavTopContainer a.selected:hover {text-decoration:none;-moz-box-shadow: none;-webkit-box-shadow: none;box-shadow: none}
+#commentsNavTopContainer .pipeDivider{margin:0;padding:0;color:#CCC}
+
+#commentsSortLoader {display:none;float:right;color:#555;vertical-align:text-top;width:78px;height:15px;font-size:13px;background:url(../../zapp5.staticworld.net/images/shared/comments/preloader_ani.gif) no-repeat center right;zoom: 1;*display:inline}
+
+#commentContainer {clear:both;display:block}
+
+
+#commentContainer #commentList {}
+#commentContainer #commentList li {padding:15px 0 14px 95px;margin:0;border:none;border-top:1px solid #F5F5F5;border-bottom:1px solid #C9C9C9;font-size:13px}
+
+#commentContainer #commentList li p {line-height:21px !important;font-size:13px;color:#111;margin-bottom: 17px;  word-wrap: break-word}
+
+#commentContainer #commentList li p img {max-width:100%}
+
+#commentContainer #commentList li ul li {line-height:21px !important;font-size:13px;color:#111;margin-bottom: 17px;border:none;padding:0 0 0 6px;margin-left:15px;list-style-type: square}
+#commentContainer #commentList li ol {line-height:21px !important;font-size:13px;color:#111;border:none;padding:0;margin-left:0}
+#commentContainer #commentList li ol li {line-height:21px !important;font-size:13px;color:#111;margin-bottom: 17px;border:none;padding:0;margin-left:0}
+
+#commentContainer #commentList li .quote1 p {font-style:italic}
+#commentContainer #commentList li .quote1 {padding:16px 32px 14px 32px;margin-bottom:16px !important;color:#000; font-size: 13px;line-height: 20px !important;border:none;-webkit-border-radius: 5px; -khtml-border-radius: 5px; -moz-border-radius: 5px;border-radius: 5px;border-bottom:1px solid #CFCFCF;background:#EFEFEF url(../../zapp5.staticworld.net/images/shared/comments/quote_lv1.png) no-repeat 11px 12px}
+#commentContainer #commentList li .quote1 .quote1 {border-top:1px solid #DFDFDF;border-left:1px solid #DFDFDF;border-right:1px solid #DFDFDF;background:#EFEFEF url(../../zapp5.staticworld.net/images/shared/comments/quote_lv2.png) no-repeat 11px 10px;-moz-box-shadow:inset 0 0 2px rgba(0,0,0,0.1); -webkit-box-shadow:inset 0 0 2px rgba(0,0,0,0.1); box-shadow:inset 0 0 2px rgba(0,0,0,0.1)}
+#commentContainer #commentList li .quote1 .quote1 .quote1 {background:#EFEFEF url(../../zapp5.staticworld.net/images/shared/comments/quote_lv3.png) no-repeat 11px 10px}
+#commentContainer #commentList li .quote1 .quote1 .quote1 .quote1 {background:#EFEFEF url(../../zapp5.staticworld.net/images/shared/comments/quote_lv4.png) no-repeat 11px 10px}
+
+
+#commentContainer #commentList li .commentAvatar {float:left;width:80px;max-height:80px;overflow:hidden;position:relative;margin:0 15px 0 -95px;border:1px solid #CCC;line-height:15px}
+#commentContainer #commentList li .commentAvatar img {max-width:80px;height:auto;width:auto}
+#commentContainer #commentList li .commentAvatarIcon {position:absolute;bottom:4px;right:4px;-moz-box-shadow: 0 0 2px 1px rgba(0,0,0,0.2);-webkit-box-shadow: 0 0 2px 1px rgba(0,0,0,0.2);box-shadow: 0 0 2px 1px rgba(0,0,0,0.2)}
+#commentContainer #commentList li .commentAvatarIcon img {float:right}
+#commentContainer #commentList li img.avatarImg {min-width:80px}
+
+
+#commentContainer #commentList li .meta {margin-bottom:12px;font-size:11px;color:#666;clear:none}
+#commentContainer #commentList li .meta a {}
+#commentContainer #commentList li .title {margin:0;padding:0;height:0}
+#commentContainer #commentList li cite {font-size:13px;font-style:normal;color:#777}
+#commentContainer #commentList li cite a {font-weight:bold;font-size:14px;margin-left:2px}
+
+
+#commentContainer #commentList li .userActions {margin-top:12px;line-height:15px;vertical-align:top}
+
+#commentContainer .recommendContainer {float:left}
+
+#commentContainer #commentList li a.recommend {background-image: -moz-linear-gradient(center bottom , #ECF0F3, #ECF0F3 60%, #ECF0F3 96%, #FFF 98%);text-shadow: 1px 1px rgba(255, 255, 255, 0.8), -1px -1px rgba(13,73,128, 0.1);display:inline-block;padding:3px 8px;border:1px solid #B2C6D9;background-color:#ECF0F3;margin:0;font-size:11px;vertical-align:middle;-webkit-border-radius: 5px; -khtml-border-radius: 5px; -moz-border-radius: 5px;border-radius: 5px;outline:none}
+#commentContainer #commentList li a.recommend:hover {background-image:none;text-shadow:none;text-decoration:none;border:1px solid #7b9fc1;background-color:#fff;-moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1)}
+#commentContainer #commentList li a:active {color:#1C609F !important}
+#commentContainer #commentList .recAlready {text-shadow:none;font-weight:normal;color:#222;padding:3px 8px;background-color:#FFF;border:1px solid #C3C3C3;display:inline-block;margin:0;font-size:11px;vertical-align:middle;-webkit-border-radius: 5px; -khtml-border-radius: 5px; -moz-border-radius: 5px;border-radius: 5px}
+
+
+#commentContainer .recommendCountCont {font-size:11px;display:inline-block;margin-left:3px;vertical-align:top;zoom: 1;*display:inline}
+#commentContainer .recommendCount {font-weight:normal;display:inline-block;color:#111;padding:3px 8px;margin:0;border:1px solid #C3C3C3;background-color:#FFF;font-size:11px;vertical-align:middle;-webkit-border-radius: 5px; -khtml-border-radius: 5px; -moz-border-radius: 5px;border-radius: 5px;zoom: 1;*display:inline}
+#commentContainer .recommendPointer {display:inline-block;margin-right:-1px;z-index:2;position:relative;width:5px;height:20px;vertical-align:middle;background: url(../../zapp5.staticworld.net/images/shared/comments/recommend_pointer.png) no-repeat 0 6px;zoom: 1;*display:inline}
+
+
+#commentContainer #commentList li .flag, #commentContainer #commentList li div.reply {display:inline-block;margin:0;font-size:11px;line-height:15px;vertical-align:middle;padding:3px 0;zoom: 1;*display:inline}
+#commentContainer #commentList li .reply {font-size:11px}
+#commentContainer .pipeDivider {margin:0;padding:3px 7px;color:#CCC}
+
+#commentContainer #commentList li .editorLabel {height:9px;margin-left:7px;display:inline-block;padding:2px 4px;background-color:#b31b23;color:#FFF;text-transform:uppercase;font-size:9px;line-height:9px;vertical-align:2px;webkit-border-radius: 3px; -khtml-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;zoom: 1;*display:inline}
+
+
+#commentsNavLoadMore {text-shadow: 1px 1px rgba(255, 255, 255, 0.7), -1px -1px rgba(204,204,204, 0.15);display:block;text-align:center;font-weight:bold;font-size:13px;padding:8px 0;margin:-1px 0 5px 0;border:1px solid #B2C6D9;-webkit-border-bottom-left-radius: 5px; -khtml-border-radius-bottomleft: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px; -khtml-border-radius-bottomright: 5px; -moz-border-radius-bottomright: 5px; border-bottom-right-radius: 5px;outline:none;background:#DEE8F2 url(../../zapp5.staticworld.net/images/shared/trans_white_fade.png) repeat-x top left}
+#commentsNavLoadMore:hover {text-decoration:none;background:none;border:1px solid #7b9fc1;-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.15);-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.15);box-shadow: 0 2px 2px rgba(0,0,0,0.15)}
+#commentsNavLoadMore:active {color:#1C609F !important}
+#commentsNavLoadMoreCont {margin-left:6px;padding:0;width:15px;height:15px;vertical-align:text-top;display:inline-block;zoom: 1;*display:inline}
+#commentsNavLoadMoreClick {display:none;width:15px;height:15px;display:inline-block;background:url(../../zapp5.staticworld.net/images/shared/comments/preloader_ani_blue.gif) no-repeat center center;zoom: 1;*display:inline}
+
+#commentContainer .commentFlagReply {float:right;vertical-align:top;display:inline-block;zoom: 1;*display:inline}
+
+#commentContainer .editorBadged {height:38px;width:161px;color:#FFF;font-size:10px;line-height:10px;text-transform:uppercase;display:inline-block;margin:-8px 0 -20px 8px;padding:15px 0 0 9px;vertical-align:middle;background:url(../../zapp5.staticworld.net/images/shared/comments/ed_rec.png) no-repeat;zoom: 1;*display:inline}
+#commentSpacer {margin-bottom:10px}		
+		

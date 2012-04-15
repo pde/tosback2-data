@@ -1,0 +1,32 @@
+function cnbc_submit_commentsform(thisform, url)
+{
+    // show loader
+    cnbc_showLoader('edit_submit','Submitting Comment', 'submit_btn');
+    
+    //make flashproxy call   
+    cnbc_com_cacheParams = cnbc_com_cacheParams +"&page="+ cnbc_com_futComid;
+    	     
+    url = url+"?view=json&contentType="+thisform.contenttype.value+"&contentID="+thisform.contentid.value+"&commentText="+encodeURIComponent(thisform.content.value)+"&partnerId="+cnbc_com_partnerid+"&authkey="+cnbc_readCookie('cnbcCommentsAuthKeyCookie')+"&cachebuster="+encodeURIComponent(cnbc_com_cacheParams)+"&location="+encodeURIComponent(window.location.href);
+    
+    document.getElementById("edit_but").style.display = "none";
+    
+	getData_FlashProxy(url, "cnbc_SubmitResponseHandler");   
+	// trigger timeout timer
+	setTimeout("cnbc_SubmitTimeoutHandler()",5000);  
+	return false;
+}
+
+function cnbc_SubmitTimeoutHandler(){
+    //hide loader
+    cnbc_hideLoader();
+	
+    var errorcode = 0;
+    if(errorcode == 0){
+	cnbc_toggleCommentsForms();
+	document.getElementById("com_submit_success").style.display = "block";
+    } else {
+	cnbc_ErrorConfirmMessages ('get_error', errorcode);
+    }
+    
+    cnbc_reloadOnSubmit();
+}

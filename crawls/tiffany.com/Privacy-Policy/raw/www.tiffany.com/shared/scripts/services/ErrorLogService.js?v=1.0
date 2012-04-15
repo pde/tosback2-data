@@ -1,0 +1,137 @@
+﻿// ----------------------------------------------
+// File:		ErrorLogService.js
+// Author:		Nathan Derksen
+// Description:	A class that holds the available service methods, along with response handlers.
+// ----------------------------------------------
+
+
+// ----------------------------------------------
+// Function:	ErrorLogService
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<none>
+// Returns:		<nothing>
+// ----------------------------------------------
+function ErrorLogService()
+{
+}
+
+var errorLogService_lastError;
+
+// ----------------------------------------------
+// Function:	ErrorLogService.logError
+// Author:		Nathan Derksen
+// Description:	Sends error details to the server
+// Inputs:		<Object> searchCriteria - An object of properties to search on
+//				<Number> startIndex - The zero-based index of which row to start at in the total results
+//				<Number> maxResults - The maximum number of results to return
+// Returns:		<nothing>
+// ----------------------------------------------
+ErrorLogService.prototype.logError = function(errorData)
+{
+	if (errorLogService_isLoggingEnabled() == true)
+	{
+		try
+		{
+			if (isAjaxEnabled() == true)
+			{
+				errorLogService_lastError = errorData;
+				PageMethods.AddToErrorLog(
+					errorData.errorMessage,
+					errorData.errorDetail,
+					errorData.priority,
+					errorData.errorType,
+					errorData.applicationName,
+					errorData.moduleName,
+					errorData.procName, 
+					this.onResult, this.onError);
+			}
+			else
+			{
+				// Use image shim technique to log error instead
+				errorLogService_logErrorNoAjax(
+					errorData.errorMessage, 
+					errorData.errorDetail, 
+					errorData.priority, 
+					errorData.errorType, 
+					errorData.applicationName, 
+					errorData.moduleName, 
+					errorData.procName);
+			}
+		}
+		catch (err)
+		{
+			errorLogService_logErrorNoAjax(
+				errorData.errorMessage, 
+				errorData.errorDetail, 
+				errorData.priority, 
+				errorData.errorType, 
+				errorData.applicationName, 
+				errorData.moduleName, 
+				errorData.procName);
+		}
+	}
+};
+
+// ----------------------------------------------
+// Function:	ErrorLogService.onResult
+// Author:		Nathan Derksen
+// Description:	Callback from the successful completion of the service call
+// Inputs:		<XMLElement> result - Handle to the results xml object
+// Returns:		<nothing>
+// ----------------------------------------------
+ErrorLogService.prototype.onResult = function(result)
+{
+};
+
+// ----------------------------------------------
+// Function:	ErrorLogService.onError
+// Author:		Nathan Derksen
+// Description:	Callback from the unsuccessful completion of the service call
+// Inputs:		<XMLElement> result - Handle to the results xml object
+// Returns:		<nothing>
+// ----------------------------------------------
+ErrorLogService.prototype.onError = function(result)
+{
+	var err = errorLogService_lastError;
+	errorLogService_logErrorNoAjax(err.errorMessage, 
+		err.errorDetail, 
+		err.priority, 
+		err.errorType, 
+		err.applicationName, 
+		err.moduleName, 
+		err.procName);
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+function errorLogService_logErrorNoAjax(errorMessage, errorDetail, priority, errorType, applicationName, moduleName, procName)
+{
+	errorMessage = "errMsg=" + escape(errorMessage);
+	priority = "&priority=" + escape(priority);
+	errorType = "&errorType=" + escape(errorType);
+	applicationName = "&appName=" + escape(applicationName);
+	moduleName = "&modName=" + escape(moduleName);
+	procName = "&procName=" + escape(procName);
+	errorDetail = "&errDtl=" + escape(errorDetail);
+	
+	var imageShim = document.createElement("img");
+	imageShim.setAttribute("src", "/Common/Errors/AJAXErrorInterface.aspx?" + errorMessage + priority + errorType + applicationName + moduleName + procName + errorDetail);
+	imageShim.style.display = "none";
+	document.body.appendChild(imageShim);
+};
+
+function errorLogService_isLoggingEnabled()
+{
+	if (document.forms[0])
+	{
+		if (document.forms[0].LogClientSideErrors)
+		{
+			if (document.forms[0].LogClientSideErrors.value.toLowerCase() == "true")
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}

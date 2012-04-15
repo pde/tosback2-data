@@ -1,0 +1,317 @@
+document.write('<link rel="stylesheet" href="http://media.adn.com/includes/classified/js/top_jobs.css">');
+
+
+function adn_tj_make_title(tag){
+	if(!tag){tag = 'h5';}
+	var jobs_title=document.createElement(tag);
+	var title_link=document.createElement('a');
+	title_link.setAttribute('href','http://www.adn.com/classified/employment/top_jobs/');
+	
+	var site = window.location.hostname;
+	
+	if (site == "www.adn.com"){
+		title_txt = document.createTextNode('Top Jobs');
+	}else{
+		title_txt = document.createTextNode('Alaska\'s Top Jobs');	
+	
+	}
+	
+	title_link.appendChild(title_txt);
+	title_link.onclick = function(){
+		var rkey = 'TOP_JOBS|' + this.innerHTML;
+		var ref = this.href;
+		//alert(rkey + ' // ' + ref);
+		//return false;
+		record_click(rkey,ref);	
+	}
+	jobs_title.appendChild(title_link);
+	return jobs_title;
+	
+}
+
+function adn_tj_make_morelink(){
+	
+	var more_link = document.createElement('a');
+	more_link.setAttribute('href','http://www.adn.com/classified/employment/top_jobs/');
+	var more_txt = document.createTextNode('all ' + tj_total + ' top jobs');
+	//var more_txt = document.createTextNode('all top jobs');
+	var more_p=document.createElement('p');
+	
+	more_p.className = "more";
+	more_link.appendChild(more_txt);
+	more_link.onclick = function(){
+		var rkey = 'TOP_JOBS|' + this.innerHTML;
+		var ref = this.href;
+		//alert(rkey + ' // ' + ref);
+		//return false;
+		record_click(rkey,ref);		
+	}
+	more_p.appendChild(more_link);
+	return more_p;
+	
+}
+
+function adn_tj_make_jobs(){
+	
+	var jobs_parent=document.createElement('div');
+	jobs_parent.className = 'adn_cb_jobs';
+
+	
+	
+	for(var i=0;i<top_jobs.length;i++){
+		
+		
+		//url:'$link', company:'$company',job:'$job',type:'$type'"
+		
+		var top_job = top_jobs[i];
+		var url = top_job.url;
+		var title = top_job.company;	
+		var company = top_job.job;
+		var type = top_job.type;
+		
+		//remove placeholder . from jobs wiht no type
+		if (type == "."){
+			type = " ";
+		}
+		
+		//alert(i + ' of ' + top_jobs.length);
+		
+		//var tj=top_jobs[i];
+		var container = document.createElement('div');
+		container.className = 'adn_cb_job';
+		var job=document.createElement('p');
+		job.className = "job_title";
+
+		var job_link=document.createElement('a');
+		job_link.setAttribute('href', url);
+		job_link.company = company;
+		job_link.onclick = function(){
+			var rkey = 'TOP_JOBS|' + this.company + '|' + this.innerHTML;
+			var ref = this.href;
+			//alert(rkey + ' // ' + ref);
+			record_click(rkey,ref);	
+			//return false;
+		}
+
+		
+		var job_txt = document.createTextNode(title);
+	
+		var job_type=document.createElement('p');
+		var type_text = document.createTextNode(type);
+		job_type.className = "job_type";
+	
+		var company_name=document.createElement('p');
+		var company_text = document.createTextNode(company);
+		company_name.typeName = "company_type";
+		
+		job_link.appendChild(job_txt);
+		
+		company_name.appendChild(company_text);
+		
+		job_type.appendChild(type_text);
+		
+		job.appendChild(job_link);
+		
+
+		
+		
+		//container.className = "container";
+		
+		container.link = url;
+		container.txt = title;
+		container.company = company;
+		container.appendChild(job_type);
+		container.appendChild(job);
+		container.appendChild(company_name);
+		
+		container.style.cursor = 'pointer';
+		container.onmouseover = function(){
+			this.className = this.className + ' adn_cb_job_highlight';	
+		}
+		
+		container.onmouseout = function(){
+			this.className = this.className.replace(' adn_cb_job_highlight','');
+		}
+		
+		container.onclick = function(){
+			
+			var rkey = 'TOP_JOBS|' + this.company + '|' + this.txt;
+			var ref = this.link;
+			record_click(rkey,ref);	
+			window.location = this.link;
+		}
+		
+		jobs_parent.appendChild(container);
+		
+	}
+	
+	return jobs_parent;
+	
+}
+
+function adn_tj_make_form(){
+	
+	
+	//QUICK LINKS NOT FUNCTIONAL YET..
+	var qlinks = document.createElement('div');
+	qlinks.className = 'adn_cb_qlinks';
+	
+	var keywords = new Array(
+		{n:'Aviation',k:'aviation+flying+flight+aeronautics+pilot'},
+		{n:'Animal Care Services Jobs',k:'kennel techs+groomers+veterinary+vet+animal'},
+		{n:'Automotive Services Jobs',k:'auto+tech+lube+tire+parts+runner+im'},
+		{n:'Beauty / Cosmetology Jobs',k:'beauty cosmetology hairdresser, stylist, esthetician, massage, barber, nail'}
+	);
+	
+	for(var i=0;i<keywords.length;i++){
+		var a = document.createElement('a');
+		a.href ='http://www.careerbuilder.com/jobseeker/jobs/jobresults.aspx?jrdid=&IPATH=JR&sname=&strCrit=QID=A3849789019034;st=a;use=ANY;rawWords='+ keywords[i].k +';CTY=;SID=AK,ALL,ALL;CID=US;ENR=NO;DTP=DR3;YDI=YES;IND=ALL;PDQ=All;JN=JN010;PAYL=0;PAYH=GT120;POY=NO;ETD=ALL;ETD=JTFT;ETD=JTCT;ETD=JTIN;ETD=JTPT;RE=ALL;MGT=DC;SUP=DC;FRE=30;CHL=AL;QS=sid_unknown;SS=NO;TITL=0;VT=detail;RAD=30;JQT=RAD&cibookmark=1&vt=detail&lr=cbmc_adn';
+		a.appendChild(document.createTextNode(keywords[i].n));
+		a.style.display = 'block';
+		qlinks.appendChild(a);
+	}
+	
+	
+	var div = document.createElement('div');
+	var logo = document.createElement('a');
+	var img = document.createElement('img');
+	img.src = 'http://media.adn.com/includes/assets/images/akcblogo.gif';
+	logo.href = 'http://jobs.adn.com/';
+	logo.appendChild(img);
+	
+	logo.onclick = function(){
+		var rkey = 'TOP_JOBS|AlaskaCareeBuilder logo';
+		var ref = this.href;
+		//alert(rkey + ' // ' + ref);
+		//return false;
+		record_click(rkey,ref);		
+	}
+	
+	var inpt = document.createElement('input');
+	var inptwrap = document.createElement('span');
+	/*inptwrap.appendChild(qlinks);
+	
+	inptwrap.onmouseover = function(){
+		qlinks.style.display = 'block';
+	}
+
+	inptwrap.onmouseout = function(){
+		qlinks.style.display = 'none';
+	}*/
+	
+	inpt.type = 'text';
+	inpt.className = 'adn_cb_inpt';
+	inptwrap.appendChild(inpt);
+	
+	var bttn = document.createElement('input');
+	bttn.type = 'submit';
+	bttn.value = 'find';
+	bttn.className = 'adn_cb_button';
+	
+	var hid1 = document.createElement('input');hid1.type ='hidden';hid1.name ='lr';hid1.value ='cbmc_adn';
+	var hid2 = document.createElement('input');hid2.type ='hidden';hid2.name ='siteid';hid2.value ='mc_adn003';
+	var hid3 = document.createElement('input');hid3.type ='hidden';hid3.name ='use';hid3.value ='all';
+	var hid4 = document.createElement('input');hid4.type ='hidden';hid4.name ='mxjobsrchcriteria_state';hid4.value ='AK, US';
+	var hid5 = document.createElement('input');hid5.type ='hidden';hid5.name ='MXJOBSRCHCRITERIA_JobTypes';hid5.value ='All';
+	
+	
+		
+	
+	var frm = document.createElement('form');
+	frm.action = 'http://www.careerbuilder.com/JobSeeker/Jobs/JobResults.aspx';
+	frm.appendChild(inptwrap);
+	frm.appendChild(bttn);frm.appendChild(hid1);frm.appendChild(hid2);frm.appendChild(hid3);frm.appendChild(hid4);frm.appendChild(hid5);
+	
+	frm.onsubmit = function(){
+		var rkey = 'TOP_JOBS|search|' + inpt.value;
+		var ref = this.action;
+		//alert(rkey + ' // ' + ref);
+		//return false;
+		record_click(rkey,ref);		
+	}
+	
+	var links = document.createElement('p');
+	var adplace = document.createElement('a');
+	adplace.style.fontWeight = 'bold';
+	adplace.href = 'http://anchoragedailynews.adperfect.com/';
+	adplace.appendChild(document.createTextNode('Place an ad'));
+	adplace.onclick = function(){
+		var rkey = 'TOP_JOBS|' + this.innerHTML;
+		var ref = this.href;
+		//alert(rkey + ' // ' + ref);
+		//return false;
+		record_click(rkey,ref);		
+	}	
+	
+
+	
+	
+	var adv = document.createElement('a');
+	adv.href = 'http://jobs.adn.com/';
+	adv.appendChild(document.createTextNode('Advanced search'));
+	
+	adv.onclick = function(){
+		var rkey = 'TOP_JOBS|' + this.innerHTML;
+		var ref = this.href;
+		//alert(rkey + ' // ' + ref);
+		//return false;
+		record_click(rkey,ref);		
+	}
+	
+	links.appendChild(adplace);
+	links.appendChild(document.createTextNode(' | '));
+	links.appendChild(adv);
+	
+	div.appendChild(logo);
+	frm.appendChild(links);
+	div.appendChild(frm);
+	
+	
+	return div;
+}
+
+function adn_tj_oas_display(id){
+	if(document.getElementById(id)){
+		var parent=document.getElementById(id);	
+		parent.appendChild(adn_tj_make_title());
+		parent.appendChild(adn_tj_make_jobs());
+		parent.appendChild(adn_tj_make_morelink());
+	}
+}
+
+function adn_tj_index_display(id){
+	if(document.getElementById(id)){
+		var parent=document.getElementById(id);	
+		parent.appendChild(adn_tj_make_jobs());
+	}
+}
+
+function adn_tj_standard_display(id){
+	if(document.getElementById(id)){	
+		var parent=document.getElementById(id);
+		var container = document.createElement('div');
+		container.className = 'jobs_container';
+		container.appendChild(adn_tj_make_title());
+		container.appendChild(adn_tj_make_jobs());
+		container.appendChild(adn_tj_make_morelink());
+		parent.appendChild(container);
+	}
+}
+
+function adn_tj_standard2_display(id){
+	if(document.getElementById(id)){	
+		var parent=document.getElementById(id);
+		var container = document.createElement('div');
+		container.className = 'ad_content';
+		var jobs_title_div = document.createElement('div');
+		jobs_title_div.className = "title_strip";
+		jobs_title_div.appendChild(adn_tj_make_title('h4'));
+		var morelink = adn_tj_make_morelink();
+		morelink.className = '';
+		jobs_title_div.appendChild(morelink);
+		parent.appendChild(jobs_title_div);	
+		container.appendChild(adn_tj_make_form());
+		container.appendChild(adn_tj_make_jobs());
+		parent.appendChild(container);
+	}
+}

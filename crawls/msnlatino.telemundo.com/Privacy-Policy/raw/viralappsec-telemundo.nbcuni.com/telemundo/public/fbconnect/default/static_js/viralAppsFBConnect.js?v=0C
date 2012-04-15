@@ -1,0 +1,1519 @@
+
+/* Globals */
+
+var facebookFeatureLoaderURL = "http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php";
+var apiKey = "";
+var ajaxBusyTag = "";
+var templateIds = new Object();
+var templateDataGlobal = new Object();
+var templateIdGlobal = "";
+var postCommentFeedId = "";
+var test;
+var oldFriendId = '';
+var invitelist = new Array();
+var globalCache = new Object();
+var FriendsVoteajaxCacheTime = 45000;
+var inviteFriendsajaxCacheTime = 45000;
+var FriendsCommentsajaxCacheTime = 45000;
+var fbconnectURL = "";
+var displayedCommentCount = "";
+var loggedInStateChecked = false;
+var serverLoggedInState = "false";
+var hasSubmittedVoteResults = false;
+var feedType = '';
+var commentPageNumber = 1;
+var commentSectionIsFriends = 'N';
+var notDrawingHTML = false;
+var template_data_for_rating = {};
+var template_data_for_comments = {};
+var template_id_for_rating = '';
+var disableRatingHover = 0;
+var browserType = '';
+var browserVersion = '';
+var mozillaVersion = '';
+var facebook_onload_function = 0;
+var mergeToSnasEnabled = 0;
+var g_refreshTimer = "";
+var refreshComments = 1;
+var loggedInContainerSite = 0;
+var allowAnonPosting = 0;
+var overrideDefaultHeader = 0;
+var launchTime = '';
+var user = {};
+var userProfileLoaded = false;
+var functionToCallbacks = {
+	"getUserProfile" : [],
+	"getAppParams" : []
+};
+var enablesnasidentity = 0;
+var batchSequencerSet = 0;
+var userid;
+var captchaEnabled = '';
+var totalCommentCount = 0
+var specialCharReplace = '  ';
+var editedCommentArray = new Object();
+var kickappsParentCommentId = "";
+var commentCallBackFunction = "";
+var isProfanityCheckEnabled = "";
+var reCaptchaResult = "";
+var mediaId = "";
+//var isNameValidation ='';
+/*
+ * All setup procedures and inits should go in here
+ */
+
+function fbc_init() {	
+    attachFBCFooter();
+	jQuery('<div id="fb-root"></div>').insertBefore('#display_comments');
+}
+function relogin(){
+	 //FB.Connect.requireSession(function() {}, true);
+	facebook_onlogin_ready();
+	createCookie("showReloginPopUp", "false", 1);
+}
+function attachFBCFooter() {
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var date = new Date();
+	var queryParams = {
+		"requestedController" :"Home",
+		"requestedMethod" :"getFBCFooter",
+		"loggedIn" :getLoggedInState(),
+		"fbconnectURL" :fbconnectURL,
+		"showName" :clientParams.showName
+	};
+	queryParams = appendJSObjects(queryParams, userParams);
+	jQuery.jsonp( {
+		"url" :fullURL,
+		"cache" :false,
+		"pageCache" :"false",
+		"data" :queryParams,
+		"callback" :"getFBCFooterCallback",
+		"success" : function(data) {
+			jQuery('body', document).append(data.html);	 
+			processAuthenticationParams();	
+			getUserProfile();
+			//we should move this block to viralAppsConnect.js
+		       // The condition is added here since connect_onload_functions is called in facebook_onlogin_ready function
+			if (!facebook_onload_function) {
+				connect_onload_functions();
+			}
+		
+		    if(readCookie("showReloginPopUp") == "true") {
+		       	jQuery(document).ready( function() {
+		         relogin();
+		         });
+		    }
+  		
+		},
+		error : function(request, textStatus, thrownError) {
+		}
+	});
+}
+
+function getProfileDetails(uids, fields) {
+	var uids = new Array();
+	uids[0] = userid;
+	//var attachment = {'media':[{'type':'image','src':'http://viralappsdev2.nbcuni.com/testapps/public/accesshollywood/igoogle/img/ah_icon.png','href':'http://viralappsdev2.nbcuni.com/testapps/public/accesshollywood/igoogle/img/ah_icon.png'}]}; 
+	//facebook_stream_publish('',attachment);
+	var fields = new Array();
+	fields = new Array('first_name', 'last_name ', 'pic_square');
+	if (batchSequencerSet) {
+		return '';
+	}
+	var detailsArray = new Array();
+	var target = new Array();
+	var sql = "SELECT uid, first_name, last_name, pic_square  FROM user WHERE uid ="
+			+ uids[0];
+				var api = FB.Facebook;
+				api
+						.get_sessionState()
+						.waitUntilReady(
+								function() {
+									var sequencer = new FB.BatchSequencer();
+									batchSequencerSet = 1;
+									var pendingUserDetails = api.apiClient
+											.fql_query(sql, sequencer);
+									sequencer
+											.execute( function() {
+												detailsArray = pendingUserDetails.result[0];
+												if (getLoggedInState() == 'Y') {
+													loginState = true;
+												} else {
+													loginState = false;
+												}
+												user = {
+													"externalPlatformId" :detailsArray['uid'],
+													"name" :detailsArray['first_name']
+															+ detailsArray['last_name'],
+													"loggedInUserName" :detailsArray['first_name'],
+													"profilePic" :detailsArray['pic_square'],
+													"loggedIn" :loginState,
+													"imgURL" :baseURL + 'img/'
+												};
+												userProfileLoaded = true;
+												executeCallbackfunctions(functionToCallbacks.getUserProfile);
+											});
+								});
+			
+}
+
+function getInfo(result, exception) {
+	detailsArray = result[0];
+	if (getLoggedInState() == 'Y') {
+		loginState = true;
+	} else {
+		loginState = false;
+	}
+	user = {
+		"externalPlatformId" :detailsArray['uid'],
+		"name" :detailsArray['first_name'] + " " + detailsArray['last_name'],
+		"loggedInUserName" :detailsArray['first_name'],
+		"profilePic" :detailsArray['pic_square'],
+		"loggedIn" :loginState,
+		"imgURL" :baseURL + 'img/'
+	};
+	userProfileLoaded = true;
+	executeCallbackfunctions(functionToCallbacks.getUserProfile);
+}
+
+function facebook_stream_publish(user_message, attachment, action_links,
+		target_id, user_message_prompt, callback, auto_publish, actor_id) {
+	// Handling undefined cases with default values 
+	if (typeof user_message == 'undefined') {
+		user_message = '';
+	}
+
+	if (typeof attachment == 'undefined') {
+		attachment = null;
+	}
+
+	if (typeof action_links == 'undefined') {
+		action_links = null;
+	}
+
+	if (typeof target_id == 'undefined') {
+		target_id = '';
+	}
+
+	if (typeof user_message_prompt == 'undefined') {
+		user_message_prompt = "What do you think?";
+	}
+
+	if (typeof callback == 'undefined') {
+		callback = null;
+	}
+
+	if (typeof auto_publish == 'undefined') {
+		auto_publish = false;
+	}
+
+	if (typeof actor_id == 'undefined') {
+		actor_id = '';
+	}
+
+	
+		/*FB.Facebook.get_sessionState().waitUntilReady(
+				function() {
+					FB.Connect.streamPublish(user_message, attachment,
+							action_links, target_id, user_message_prompt,
+							callback, auto_publish, actor_id);
+				});*/
+
+
+
+if(user_message.length>1250){
+
+user_message =user_message.slice(0 ,1250)+"....";
+}
+FB.ui(
+   {
+     method: 'stream.publish',
+     message: user_message,
+     attachment: attachment
+ });
+
+
+if(clientParams.showName=="Idealab"){
+jQuery("#fb-root").css( {
+					'marginTop' : '-1200px','position': 'absolute','marginLeft': '-258px'
+				});
+$('#fb-root').focus();
+
+}
+
+	
+
+}
+
+function getUserProfile() {
+	var userid = getLoggedInUserId();
+	if (getLoggedInState() == 'N') {
+		userProfileLoaded = true;
+		return '';
+	}
+	var udata_name = readCookie("udata_name");	
+	if (udata_name != null) {
+		//user object is already set
+		var udata_uid = readCookie("udata_uid");
+		var udata_first_name = readCookie("udata_first_name");
+		var udata_pic_square = readCookie("udata_pic_square");
+		var loginState = (getLoggedInState() == "Y") ? true : false;
+		loggedInContainerSite = readCookie("udata_loggedInContainerSite");
+		user = {
+			"externalPlatformId" :udata_uid,
+			"name" :udata_name,
+			"loggedInUserName" :udata_first_name,
+			"profilePic" :udata_pic_square,
+			"loggedIn" :loginState,
+			"imgURL" :baseURL + 'img/',
+			"loggedInContainerSite" :loggedInContainerSite
+		};
+		userProfileLoaded = true;
+		executeCallbackfunctions(functionToCallbacks.getUserProfile);
+		functionToCallbacks.getUserProfile = [];
+		return '';
+	}
+	if (ajaxURL == 'notset') {
+		get_required_url();
+	}
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var date = new Date();
+	var clientParamsArray = new Array("showName");
+	var queryParams = {
+		"requestedController" :"Account",
+		"requestedMethod" :"getUserProfile",
+		"loggedIn" :getLoggedInState(),
+		"showName" :clientParams.showName
+	};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams,
+				clientParamsArray);
+	}
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+			jQuery.extend(user, data);
+                     
+			if (typeof data.loggedInContainerSite != "undefined"
+					&& data.loggedInContainerSite != ""
+					&& data.loggedInContainerSite != null) {
+				loggedInContainerSite = data.loggedInContainerSite;
+				createCookie("udata_loggedInContainerSite",
+						loggedInContainerSite, 1);
+			}
+			if (typeof data.externalPlatformId != "undefined"
+					&& data.externalPlatformId != ""
+					&& data.externalPlatformId != null) {
+				createCookie("udata_uid", data.externalPlatformId, 1);
+                           	createCookie("isLoginInTofacebook","true", 1);
+ 
+			}
+			if (typeof data.name != "undefined" && data.name != ""
+					&& data.name != null) {
+				createCookie("udata_name", data.name, 1);
+			}
+			if (typeof data.loggedInUserName != "undefined"
+					&& data.loggedInUserName != ""
+					&& data.loggedInUserName != null) {
+				createCookie("udata_first_name", data.loggedInUserName, 1);
+			}
+			if (typeof data.profilePic != "undefined" && data.profilePic != ""
+					&& data.profilePic != null) {
+				createCookie("udata_pic_square", data.profilePic, 1);
+			}
+			if (typeof data.sn_nbc_a != "undefined" && data.sn_nbc_a != ""
+					&& data.sn_nbc_a != null) {
+				createCookie("sn_nbc_a", data.sn_nbc_a);
+			}
+			if (typeof data.sn_nbc_b != "undefined" && data.sn_nbc_b != ""
+					&& data.sn_nbc_b != null) {
+				createCookie("sn_nbc_b", data.sn_nbc_b);
+			}
+			userProfileLoaded = true;
+			executeCallbackfunctions(functionToCallbacks.getUserProfile);
+		},
+		error : function(request, textStatus, thrownError) {
+			alert('An error has occured ' + textStatus);
+		}
+	});
+}
+
+/**
+ * Wrapper method around the FBC feed dialog. I'm hardcoding the templateId
+ * here. However, a better way to do this is delegate to our
+ * NotifiationAndFeedController to determine what was the requested event, what
+ * is the correct feed story id (all in config or DB, etc), make the AJAX call
+ * and then call showFeedDialog. Not sure about latency to and from on this call
+ * but it shouldn't be THAT bad.
+ * 
+ */
+function publishFeedStory(template_data) {
+				FB.Connect.showFeedDialog(55003499916, template_data, null,
+						null, null);
+			
+}
+
+/*
+ * Convienence function to refresh the dom whenever a new XFBML tag is placed
+ * onto the page
+ */
+function refreshXFBML() {
+	
+		//if (FB.XFBML.Host.parseDomTree) {
+			setTimeout("FB.XFBML.parse()", 0);
+		//}
+	
+
+}
+
+function refreshXFBMLElement(refreshElement) {
+	
+		var fbElement = FB.XFBML.Element(refreshElement);
+		FB.XFBML.Host.addElement(fbElement);
+	
+}
+
+function onConnected(user_id) {
+		if (loggedInStateChecked) {
+			return;
+		}
+		loggedInStateChecked = true;
+		//FB.XFBML.Host.autoParseDomTree = false;
+		if (serverLoggedInState == 'true') {
+			//facebook_onlogin_ready();
+
+			getUserProfile();
+			//refreshXFBML();
+		} else {
+			facebook_onlogin_ready();
+		}
+	
+}
+
+function onNotConnected() {
+	
+		if (loggedInStateChecked) {
+			return;
+		}
+		loggedInStateChecked = true;
+		FB.XFBML.Host.autoParseDomTree = false;
+		if (serverLoggedInState == 'true') {
+			if (!loggedInContainerSite) {
+				//alert('You were logged out of Facebook.com');
+			clearAuthenticationCookies();
+			processAuthenticationParams();
+			clearServerSideCookies(false, true);
+		}
+	} else {
+		//refreshXFBML();
+	}
+
+}
+
+/*
+ * If the user's logged in status has changed since the last page load, then
+ * refresh the page to pick up the change.
+ * 
+ * This helps enforce the concept of "single sign on", so that if a user is
+ * signed into Facebook when they visit your site, they will be automatically
+ * logged in - without any need to click the login button.
+ * 
+ * @param already_logged_into_facebook reports whether the server thinks the
+ * user is logged in, based on their cookies
+ * 
+ */
+function facebook_onload(already_logged_into_facebook) {
+	serverLoggedInState = already_logged_into_facebook;
+	// user state is either: has a session, or does not.
+	// if the state has changed, detect that and reload.
+}
+
+/*
+ * Our <fb:login-button> specifies this function in its onlogin attribute, which
+ * is triggered after the user authenticates the app in the Connect dialog and
+ * the Facebook session has been set in the cookies.
+ */
+function facebook_onlogin_ready(getFeedState) {
+
+FB.login(function(response) {
+  if (response.authResponse) {
+    if (response.status) {
+loggedInStateChecked = false;
+serverLoggedInState  = "true";
+     processAuthenticationParams();
+     getUserProfile();
+ facebook_onload_function = 0;
+    connect_onload_functions();
+     if(getFeedState == 'Y'){
+	   setTimeout("callbackhandleFeeds()",5000);
+	   //handleFeeds(clientParams, "ratings", "");
+	 }
+    } else {
+      //alert('success1');
+    }
+  } else {
+      //alert('success2');
+  }
+}, {scope:'read_stream,publish_stream,offline_access'});
+}
+
+function fb_onlogin_ready() {
+    processAuthenticationParams();
+    getUserProfile();
+ 	facebook_onload_function = 0;
+    connect_onload_functions();
+}
+
+function callbackhandleFeeds(){
+handleFeeds(clientParams, "ratings", "");
+}
+/*
+ * Prompts the user to grant a permission to the application.
+ */
+function facebook_prompt_permission(permission) {
+	
+		FB.Connect.showPermissionDialog(permission);
+	}
+
+/*
+ * Show the feed form. This would be typically called in response to the onclick
+ * handler of a "Publish" button, or in the onload event after the user submits
+ * a form with info that should be published.
+ * 
+ */
+function facebook_publish_feed_story(form_bundle_id, template_data, userMessege) {
+	var user_message_prompt = userMessege;
+	var user_message = {
+		value :userMessege
+	};
+
+		FB.Connect.showFeedDialog(form_bundle_id, template_data, null, null,
+				FB.FeedStorySize.shortStory, FB.RequireConnect.promptConnect,
+				setOmiture, "What's on your mind?", null);
+
+}
+/*
+ * Show the feed form if user clicks on Post your vote and share with friends
+ */
+function postVote(templateId) {
+	feedType = 'poll';
+	if (clientParams.selectedOption == '') {
+		alert("Please submit your vote first");
+		return false;
+	}
+	facebook_publish_feed_story(templateIdGlobal, templateDataGlobal, '');
+}
+
+/*
+ * If a user is not connected, then the checkbox that says "Publish To Facebook"
+ * is hidden in the "add run" form.
+ * 
+ * This function detects whether the user is logged into facebook but just not
+ * connected, and shows the checkbox if that's true.
+ */
+function facebook_show_feed_checkbox() {
+	
+		FB.Connect.get_status().waitUntilReady( function(status) {
+			if (status != FB.ConnectState.userNotLoggedIn) {
+				// If the user is currently logged into Facebook, but has not
+				// authorized the app, then go ahead and show them the feed
+				// dialog + upsell
+				checkbox = ge('publish_fb_checkbox');
+				if (checkbox) {
+					checkbox.style.visibility = "visible";
+				}
+			}
+		});
+
+}
+
+/**
+ * Requests and renders the HTML & XFBML to display the login area. Assigns the
+ * resulting interface code to our placeholder <div>
+ * 
+ */
+function renderFBCLoginButton() {
+	var fullURL = ajaxURL
+			+ "?controller=Account&method=renderLoginButton&callback=?";
+	var queryParams = {
+		"showName" :clientParams.showName
+	};
+	if (userParams != null) {
+		queryParams = appendJSObjects(queryParams, userParams);
+	}
+	if (getLoggedInState() == 'N') {
+		var loginHTML = '<div id="login_button" style="margin:3px 0 0 330px;">';
+		loginHTML += '<fb:login-button size="medium" background="dark" length="long" onclick="facebook_onlogin_ready();"></fb:login-button>';
+		loginHTML += '</div>';
+		jQuery('#login_button').html(loginHTML);
+		//refreshXFBML();
+	} else {
+		jQuery.ajax( {
+			type :"GET",
+			url :fullURL,
+			data :queryParams,
+			dataType :"jsonp",
+			success : function(data) {
+				jQuery('#login_button').html(data.html);
+				// We've added a new XFBML element, lets make sure its rendered
+			//refreshXFBML();
+		},
+		error : function(request, textStatus, thrownError) {
+		}
+		});
+	}
+}
+
+function renderUserDetails() {
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var queryParams = {
+		"requestedController" :"Home",
+		"requestedMethod" :"renderUserDetails",
+		"showName" :clientParams.showName
+	};
+
+	queryParams = jQuery.extend(queryParams, userParams);
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+			jQuery('#login_button').html(data.html);
+		},
+		error : function(request, textStatus, thrownError) {
+		}
+	});
+}
+
+function renderHeaderSection() {
+	if (apiKey == null || apiKey == '')
+	{
+		functionToCallbacks.getAppParams.push("renderHeaderSection");
+		return '';
+	}
+	//alert(userProfileLoaded);
+	if (!userProfileLoaded) {
+		functionToCallbacks.getUserProfile.push("renderHeaderSection");
+		return '';
+	}
+	processAuthenticationParams();	
+				var fullURL = ajaxURL + "?controller=Ajax";
+				getBrowserType();
+					responseHandler(user, 'LoginHeader');
+				//refreshXFBML();
+
+}
+
+function savePoll(category) {
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var clientParamsArray = new Array("contentTitle", "id", "CommentsPerPage",
+			"showName");
+	var queryParams = {
+		"sectionNumber" :sectionNumber,
+		"requestedController" :"Comment",
+		"requestedMethod" :"getPollComments",
+		"PageNumber" :PageNumber,
+		"FromAjax" :"Y",
+		"loggedIn" :getLoggedInState(),
+		"filterByFriends" :filterByFriends
+	};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams,
+				clientParamsArray);
+	}
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+			jQuery('#commentsSection').html(data.html);
+			//refreshXFBML();
+		},
+		error : function(request, textStatus, thrownError) {
+		}
+	});
+	//refreshXFBML();
+}
+
+/*
+ * 
+ * jQuery('#display_comments').html(ajaxBusyTag); var fullURL = ajaxURL +
+ * "?controller=Ajax"; var queryParams = { "sectionNumber" :1,
+ * "requestedController" :"Comment", "requestedMethod"
+ * :"displayCommentsSection", "PageNumber":1, "filterByFriends":'N' }; if
+ * (userParams != null){ queryParams = appendJSObjects(queryParams,userParams); }
+ * if (clientParams != null){ queryParams =
+ * appendJSObjects(queryParams,clientParams ); }
+ * 
+ * jQuery.ajax( { type :"GET", url :fullURL, data :queryParams, dataType :"jsonp",
+ * success : function(data) { jQuery('#display_comments').html(data.html);
+ * refreshXFBML(); }, error : function(request, textStatus, thrownError) { } }); }
+ */
+
+function renderInviteFriendList(pageNumber) {
+	if (pageNumber == 1) {
+		var cacheValue = getFromCache('InviteFriendsList', 'script');
+		if (cacheValue != '') {
+			jQuery('#rightContentInner').html(cacheValue.value);
+			eval(cacheValue.script);
+			return false;
+		}
+	}
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var clientParamsArray = new Array("contentTitle", "id", "CommentsPerPage",
+			"showName");
+	var queryParams = {
+		"requestedController" :"Friend",
+		"requestedMethod" :"getFriendsList",
+		"FromAjax" :"Y",
+		"PageNumber" :pageNumber
+	};
+
+	if (userParams != null) {
+		queryParams = appendJSObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams,
+				clientParamsArray);
+	}
+
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+			jQuery('#rightContentInner').html(data.html);
+			eval(data.script);
+			if (pageNumber == 1) {
+				saveToCache('InviteFriendsList', data.html,
+						inviteFriendsajaxCacheTime, data.script);
+			}
+			//refreshXFBML();
+		},
+		error : function(request, textStatus, thrownError) {
+		}
+	});
+
+}
+function renderFriendsVotedList(pollId, pollText, PageNumber) {
+
+	if (PageNumber == 1) {
+		var cacheValue = getFromCache('friendsVotes', 'script');
+		if (cacheValue != '') {
+			jQuery('#rightContentInner').html(cacheValue.value);
+			eval(cacheValue.script);
+			return false;
+		}
+	}
+
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var clientParamsArray = new Array("contentTitle", "id", "CommentsPerPage",
+			"showName");
+	var queryParams = {
+		"requestedController" :"Poll",
+		"requestedMethod" :"getFriendsVotes",
+		"pollId" :pollId,
+		"pollText" :pollText,
+		"PageNumber" :PageNumber
+
+	};
+
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams,
+				clientParamsArray);
+	}
+
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+			jQuery('#rightContentInner').html(data.html);
+			eval(data.script);
+			if (PageNumber == 1) {
+				saveToCache('friendsVotes', data.html,
+						FriendsVoteajaxCacheTime, data.script);
+			}
+			//refreshXFBML();
+
+		},
+		error : function(request, textStatus, thrownError) {
+		}
+	});
+
+}
+function getFromCache(key, type) {
+	var valueObject = new Object();
+	valueObject = globalCache[key];
+	if (valueObject != '' && valueObject != null && valueObject != 'undefined') {
+		timenow = new Date().getTime();
+		if (valueObject.expiresAtTime != 0) {
+			if (valueObject.expiresAtTime < timenow) {
+
+				return "";
+			}
+		}
+
+		// return valueObject.value;
+		return valueObject;
+	} else {
+		return "";
+	}
+}
+function saveToCache(key, value, secondsUntilExpires, scriptdata) {
+	var expriesAtTime = 0;
+	if (secondsUntilExpires) {
+		timenow = new Date().getTime();
+		expiresAtTime = timenow + secondsUntilExpires;
+	}
+	var valueObject = {
+		"value" :value,
+		"expiresAtTime" :expiresAtTime,
+		"script" :scriptdata
+	};
+	globalCache[key] = valueObject;
+}
+function listFriendsRun(searchString) {
+	var fullURL = ajaxURL + "?controller=Ajax";
+
+	var queryParams = {
+		"requestedController" :"Friend",
+		"requestedMethod" :"displayFilterResults",
+		"searchstring" :searchString
+	};
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+
+			jQuery('#friendsdiv').html(data.html);
+			//refreshXFBML();
+		},
+		error : function(request, textStatus, thrownError) {
+		}
+	});
+
+}
+
+function listFriends() {
+
+	clearTimeout(window.listFriendsTimer);
+	var searchstring = jQuery("#friendsname").val();
+	window.listFriendsTimer = setTimeout("listFriendsRun('" + searchstring
+			+ "');", 300);
+
+	// new Dialog().showMessage('value',searchstring);
+}
+
+function saveComments(uid) {
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var commentCategory = jQuery("#commentCategory").val();
+	var commentText = jQuery("#fbc_userComment").val();
+	var oldCommentCount = jQuery("#totalCommentCount").val();
+
+	if (oldCommentCount == 0) {
+		//document.getElementById("noComments").style.display = 'none';
+	}
+	var oldContent = jQuery('#fbc_contentContainer').html();
+	commentText = trim(commentText);
+	commentSaved = "true";
+	if (commentText.length <= 0) {
+		alert('Your comment must include text');
+		jQuery("#notes").val("");
+		document.getElementById("notes").focus();
+		return false;
+	}
+
+	var comment_data = {
+		"comment_text" :commentText
+	};
+	if (commentCategory != "Y") {
+		var divObj = document.getElementById("fbc_contentContainer");
+		var newDiv = document.createElement("div");
+		newDiv.className = "fbc_innerDetailContainer";
+		newDiv.innerHTML = '<div class="fbc_innerDetailLftContainer">'
+				+ '  <fb:profile-pic uid="'
+				+ uid
+				+ '" size="square" height="40px" width="40px" linked="false"></fb:profile-pic>'
+				+ '</div>' + '<div class="fbc_innerDetailRgtContainer">'
+				+ '  <div class="fbc_subLftContainer">'
+				+ '    <span class="fbc_subHead"><fb:name useyou="false" uid="'
+				+ uid + '" linked="false"></fb:name></span>' + '  </div>'
+				+ '  <div class="fbc_subRgtContainer">'
+				+ '    <span class="fbc_ddmmyy">wrote 1 minute ago</span>'
+				+ '  </div>' + '  <div class="fbc_clearFloat"></div>'
+				+ '  <div class="fbc_subDescription">' + commentText + '</div>'
+				+ '</div>' + '<div class="fbc_clearFloat"></div>'
+				+ '<div class="fbc_starLineContainer"></div>';
+		divObj.insertBefore(newDiv, divObj.firstChild);
+		jQuery("#notes").val("");
+
+		if (clientParams.disableVoting == "true") {
+			postCommentFeedId = templateIds['commentsOnlyYesTemplateId'];
+		} else {
+			postCommentFeedId = templateIds['commentsOnlyNoTemplateId'];
+		}
+		feedType = '';
+		handleFeeds(postCommentFeedId, comment_data, commentText);
+		//refreshXFBML();
+	}
+	var clientParamsArray = new Array("contentTitle", "id", "CommentsPerPage",
+			"showName");
+	var queryParams = {
+		"sectionNumber" :1,
+		"requestedController" :"Comment",
+		"requestedMethod" :"savePollComment",
+		"filterByFriends" :'N',
+		"Commenttext" :commentText,
+		"loggedIn" :getLoggedInState(),
+		"oldCommentCount" :oldCommentCount
+	};
+
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams,
+				clientParamsArray);
+	}
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+			if (commentCategory == "Y") {
+				jQuery('#comments_container').html(data.html);
+				jQuery("#notes").val("");
+				if (data.commentCount > oldCommentCount) {
+					jQuery("#totalCommentCount").val(data.commentCount);
+					facebook_publish_feed_story(postCommentFeedId,
+							comment_data, commentText);
+					//refreshXFBML();
+				} else {
+					if (data.errorMsg != '' && data.errorMsg != null) {
+						//alert(data.errorMsg);
+					}
+				}
+				eval(data.script);
+
+			} else {
+				if (data.commentCount > oldCommentCount) {
+					jQuery("#totalCommentCount").val(data.commentCount);
+				} else {
+				}
+			}
+			//alert(data.script1);
+			eval(data.script1);
+		},
+		error : function(request, textStatus, thrownError) {
+		}
+	});
+
+}
+
+function inviteFriendsPopUp(id) {
+
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var clientParamsArray = new Array("showName");
+	var queryParams = {
+		"requestedController" :"Invite",
+		"requestedMethod" :"inviteFriend",
+		"selectedFriend" :id,
+		"actionUrl" :escape(document.location)
+	};
+
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams,
+				clientParamsArray);
+	}
+
+	// FB.XFBML.Host.parseDomTree();
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+			document.getElementById("friendRequest").innerHTML = data.html;
+			//refreshXFBML();
+			showName = clientParams.showName;
+			//temporarily commented the 3 lines below
+		//omigImgForPoll='<img src="http://oimg.nbcuni.com/b/ss/nbcufacebookglobal,nbcubravotvbu/1/H.2-pdv-2/RAND?pe=lnk_o&pev2=FBConnect&pageName='+escape('Bravo Facebook Connect')+'&v24='+escape('Bravo Facebook Invite')+'&v26='+escape(clientParams.content.title)+'&v28='+escape('Request')+'&v36='+escape(showName)+'&events=event34" width="1" height="1" border="0" />';
+		//script='document.getElementById("OmigDiv").innerHTML=\''+omigImgForPoll+'\'';	
+		//eval(script); 
+	},
+	error : function(request, textStatus, thrownError) {
+	}
+	});
+}
+
+function inviteFriends() {
+	//alert ('Invite Friends');
+	var invitees;
+
+	for (i = 0; i < invitelist.length; i++) {
+		if (i == 0) {
+			invitees = invitelist[i];
+		} else {
+			invitees += ',' + invitelist[i];
+		}
+	}
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	var clientParamsArray = new Array("showName");
+	var queryParams = {
+		"requestedController" :"Invite",
+		"requestedMethod" :"sendInviteNotification",
+		"invitees" :invitees,
+		"inviteurl" :escape(window.location)
+	};
+
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams,
+				clientParamsArray);
+	}
+
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+			if (invitelist.length == 1) {
+				alert("Your friend has been sent an invitation.");
+			} else {
+				alert("Your friends have been sent an invitation.");
+			}
+
+			unselectFriends();
+			eval(data.script);
+		},
+
+		error : function(request, textStatus, thrownError) {
+			alert('Not invited');
+		}
+	});
+
+}
+
+function handleFacebookLogout(autoRelogin) {
+	userParams = new Object();
+	clearAuthenticationCookies();
+	var url = window.location;
+	var domainArray = new Array();
+	var callback = "";
+	fullDomainArray = String(window.location).split("/");
+	for (i = 3; i < fullDomainArray.length; i++) {
+		if (fullDomainArray[i].indexOf('#') != -1) {
+			tempArray = fullDomainArray[i].split('#');
+			fullDomainArray[i] = tempArray[0];
+		}
+		callback += "/" + fullDomainArray[i];
+	}
+	clearServerSideCookies(false,false);
+       createCookie("isLoginInTofacebook", "false", 1);
+	if(autoRelogin == "Y"){
+	   createCookie("showReloginPopUp", "true", 1);
+	}
+   redirectToLogin = window.location.toString();
+   if (typeof filterURL == "function")
+   {
+		redirectToLogin = filterURL(redirectToLogin);
+   }
+	FB.logout(function(response) {
+         //window.location.reload();
+		if (typeof sn_logOut == 'function') {
+			sn_logOut();
+		} else {
+         	facebook_onload_function = 0;
+         	connect_onload_functions();
+           	if(readCookie("showReloginPopUp") == "true"){
+	       	jQuery(document).ready( function() {
+	              relogin();
+	         });
+	      	}
+      	}
+       });
+}
+
+function savePollResults() {
+	if (hasSubmittedVoteResults == true) {
+		return;
+	}
+
+	hasSubmittedVoteResults = true;
+	var fullURL = ajaxURL + "?controller=Ajax";
+
+	var userid = '';
+	var selectedoptionValue = '';
+	var voteCount = 0;
+	var sessionVoteCount = '';
+	userid = getLoggedInUserId();
+	selectedoptionValue = clientParams.selectedOption;
+	correctOptionValue = clientParams.correctAnswer;
+	voteCount = readCookie(cookiePrefix + clientParams['contentTitle'] + '_'
+			+ userid);
+	sessionVoteCount = readCookie(cookiePrefix + 'session_'
+			+ clientParams['contentTitle'] + '_' + userid)
+	if (userid != null) {
+		if (userid != '') {
+			var clientParamsArray = new Array("contentTitle", "id",
+					"CommentsPerPage", "showName");
+			var queryParams = {
+				"selectedValue" :selectedoptionValue,
+				"correctValue" :correctOptionValue,
+				"requestedController" :"Poll",
+				"requestedMethod" :"savePollResponse",
+				"showName" :clientParams.showName,
+				"loggedIn" :getLoggedInState(),
+				"selectedOptionImg" :fbconnectURL + "/"
+						+ clientParams.selectedOptionImage
+
+			};
+
+			if (userParams != null) {
+				queryParams = appendUserParamObjects(queryParams, userParams);
+			}
+			if (clientParams != null) {
+				queryParams = appendJSObjects(queryParams, clientParams,
+						clientParamsArray);
+			}
+
+			if (voteCount < maxVote) {
+				jQuery.ajax( {
+					type :"GET",
+					url :fullURL,
+					data :queryParams,
+					dataType :"jsonp",
+					success : function(data) {
+						// facebook_publish_feed_story(data.templateId,data.templateData,
+					// '');
+					templateDataGlobal = data.templateData;
+					templateIdGlobal = data.templateId;
+
+					if (voteCount == null) {
+						createCookie(cookiePrefix + queryParams['contentTitle']
+								+ '_' + userid, 1, 30);
+					} else {
+						createCookie(cookiePrefix + queryParams['contentTitle']
+								+ '_' + userid, parseInt(voteCount) + 1, 30);
+					}
+					if (sessionVoteCount == null || sessionVoteCount == 0) {
+						if (data.templateId != '') {
+							feedType = 'poll';
+							postVote('');
+							//refreshXFBML();
+						}
+						createCookie(cookiePrefix + 'session_'
+								+ queryParams['contentTitle'] + '_' + userid,
+								1, 0)
+					} else {
+						createCookie(cookiePrefix + 'session_'
+								+ queryParams['contentTitle'] + '_' + userid,
+								parseInt(voteCount) + 1, 0);
+					}
+
+					eval(data.script);
+				},
+				error : function(request, textStatus, thrownError) {
+				}
+				});
+			}
+		}
+	}
+
+}
+function clearServerSideCookies(refreshPage, refreshComponent) {
+	var fullURL = ajaxURL + "?controller=Ajax";
+	var clientParamsArray = new Array("contentTitle", "id", "CommentsPerPage",
+			"showName");
+	var queryParams = {
+		"requestedController" :"Account",
+		"requestedMethod" :"clearCookies"
+	};
+
+	if (userParams != null) {
+		queryParams = appendUserParamObjects(queryParams, userParams);
+	}
+	if (clientParams != null) {
+		queryParams = appendJSObjects(queryParams, clientParams,
+				clientParamsArray);
+	}
+	clearAuthenticationCookies();
+	jQuery.ajax( {
+		type :"GET",
+		url :fullURL,
+		data :queryParams,
+		dataType :"jsonp",
+		success : function(data) {
+			if (refreshPage) {
+				window.location = document.location.href;
+			}
+
+			if (refreshComponent) {
+				//to trigger the connect_onload_functions
+		facebook_onload_function = 0;
+		connect_onload_functions();
+		//refreshXFBML();
+	}
+
+},
+error : function(request, textStatus, thrownError) {
+}
+	});
+}
+
+function getLoggedInUserId() {
+	var userid = '';
+	for ( var name in userParams) {
+
+		if (name.indexOf('user') != -1 || name.indexOf('udata_uid') != -1) {
+			userid = userParams[name];
+		}
+	}
+
+	return userid;
+}
+
+function getFacebookLogInState() {
+	if (loggedInContainerSite) {
+		return 'Y';
+	}
+
+	for ( var name in userParams) {
+		if (name.indexOf('user') != -1 || name.indexOf('sn_nbc') != -1) {
+			if (userParams[name] != '' && userParams[name] != 'undefined') {
+				return 'Y';
+			}
+		}else if (name.indexOf('signed_request') != -1){
+			return 'Y';
+             }
+
+
+	}
+
+	return 'N';
+}
+
+function getFBconnectedState() {
+	for ( var name in userParams) {
+		if (name.indexOf('user') != -1) {
+			if (userParams[name] != '' && userParams[name] != 'undefined') {
+				return 'Y';
+			}
+		}else if (name.indexOf('signed_request') != -1){
+			return 'Y';
+             }
+	}
+
+	return 'N';
+}
+
+function processAndRenderFacebookData(facebookParams) {
+	var elements = new Object();
+	var i = 0;
+	for ( var name in facebookParams) {
+		switch (name) {
+		case "Pic":
+			elements[i] = new FB.XFBML.ProfilePic(jQuery("#"
+					+ facebookParams[name]));
+			break;
+		case "Name":
+			elements[i] = new FB.XFBML.Name(jQuery("#" + facebookParams[name]));
+			break;
+
+		}
+		i++;
+	}
+	FB.XFBML.Host.addElements(elements);
+}
+
+function addSelectedFriend(friendId) {
+	var showFriendFlag = 'Y'
+	var totalInvitees = invitelist.length;
+	if (totalInvitees > 0) {
+		for (i = 0; i < totalInvitees; i++) {
+			if (invitelist[i] == friendId) {
+				showFriendFlag = 'N'
+				invitelist.splice(i, 1);
+				break;
+			}
+		}
+	}
+	if (showFriendFlag == 'Y') {
+		showFriendSelected(friendId);
+		invitelist[totalInvitees] = friendId;
+	} else {
+		unselectFriend(friendId);
+	}
+}
+
+function notficationConfirm() {
+	if (invitelist.length > 0) {
+		if (invitelist.length == 1) {
+			var answer = confirm("Are you sure you want to invite this friend?");
+		} else {
+			var answer = confirm("Are you sure you want to invite these friends?");
+		}
+
+		if (answer) {
+			inviteFriends();
+		} else {
+			return false;
+		}
+	} else {
+		alert('Please select atleast one friend to invite');
+		return false;
+	}
+}
+
+/*function checkAndReinstantiateJquery(){	
+ if(jQuery == '' || jQuery == 'undefined' || jQuery == null ){		
+ jQuery = jQuery;
+ }
+ }*/
+
+function displayEditTextBox(commentId, userName, contentId) {
+
+	jQuery('#reply_arrow' + oldParentCommentId).attr('src',
+			baseURL + "img/Reply.gif");
+	jQuery('#reply_arrow' + commentId).attr('src',
+			baseURL + "img/Reply_todown.gif");
+	oldParentCommentId = commentId;
+	if (typeof document.getElementById("dialogReplyFormBackground") != 'undefined'
+			&& document.getElementById("dialogReplyFormBackground") != undefined) {
+		var d = document.getElementById('fbc_comments-form');
+		var olddiv = document.getElementById("dialogReplyFormBackground");
+		d.removeChild(olddiv);
+	}
+	objRecaptchaTxtlabel = jQuery("#editrecaptchaTxtlabel");
+	objRecaptchaTxtlabel.addClass('captcha_success');
+	objRecaptchaTxtlabel.removeClass('captcha_error');
+	objRecaptchaTxtlabel.html("Enter the words above:");
+	document.forms["fbc_editcomments-form"].reset();
+	jQuery("#editFormHeader")
+			.html(
+					'<img src="http://mt-video.nbcuni.com/_widgets/fonts/drawFont.php?t=%0A%09%09%09%09%09edit%20Comment%0A%09%09%09%09&f=Syfy-Medium&s=12&c=FFFFFF&case=none&type=png&" alt="edit Comment">');
+	jQuery(jQuery('#editComments')).appendTo('#CommentsDiv' + commentId);
+	parentCommentId = commentId;
+	mediaId = contentId;
+	if (getLoggedInState() == 'Y') {
+		var jQueryel = jQuery('<div id="dialogReplyFormBackground"></div>')
+				.prependTo(document.getElementById("fbc_comments-form"))
+				.addClass(
+						'ui-widget-overlay_custom_loggedInUser_' + clientParams.showName
+								.replace(".", "")).css( {
+					width :693
+
+				});
+	} else {
+		var jQueryel = jQuery('<div id="dialogReplyFormBackground"></div>')
+				.prependTo(document.getElementById("fbc_comments-form"))
+				.addClass(
+						'ui-widget-overlay_custom_' + clientParams.showName
+								.replace(".", "")).css( {
+					width :693
+
+				});
+		jQuery("#dialogCustomBackground").css( {
+			display :"block"
+		});
+		jQuery("#recaptcha_image_reply")
+				.html(jQuery("#recaptcha_image").html());
+	}
+	jQuery("#editComments").css( {
+		display :"block"
+	});
+
+}
+
+function editComment() {
+	var userid = '';
+	var replace = "\\n";
+	var with_this = "<br />";
+
+	userid = getLoggedInUserId();
+	var commentText = jQuery("#fbc_editUserComment").val();
+	commentText = trim(commentText);
+	commentText = replaceAll(commentText, replace, with_this);
+	commentText = replaceAll1(commentText, replace, with_this);
+
+	if (commentText.length <= 0) {
+		alert('Your comment must include text');
+		jQuery("#fbc_editUserComment").val("");
+		document.getElementById("fbc_editUserComment").focus();
+		return false;
+	}
+
+	// No reason to proceed if the user isn't auth'd
+	if (userid != null && userid != '') {
+		var fullURL = ajaxURL + "?controller=Ajax";
+		var clientParamsArray = new Array("contentTitle", "id",
+				"CommentsPerPage", "showName");
+		var queryParams = {
+			"requestedController" :"Comment",
+			"requestedMethod" :"editthisComment",
+			"commentID" :parentCommentId,
+			"commentText" :commentText,
+			"mediaId" :mediaId
+		};
+
+		if (userParams != null) {
+			queryParams = appendUserParamObjects(queryParams, userParams);
+		}
+
+		if (clientParams != null) {
+			queryParams = appendJSObjects(queryParams, clientParams,
+					clientParamsArray);
+		}
+
+		jQuery
+				.ajax( {
+					type :"GET",
+					url :fullURL,
+					data :queryParams,
+					dataType :"jsonp",
+					success : function(data) {
+						if (data.isBadWord == 'YES') {
+							jQuery("#fbc_errorMsg").css( {
+								display :"none"
+							});
+							jQuery("#dialogComments")
+									.html(
+											"Hello - somewhere in your post is a less-than-nice word. Please remove it to have your post go live.");
+							isCommentingAnnon = 'Y';
+							if (fbConnectedState == 'Y') {
+								isCommentingAnnon = 'N';
+							}
+							jQuery("#dialogComments").dialogCustom( {
+								autoOpen :false,
+								beforeClose :closeCallback,
+								modal :true,
+								draggable :false,
+								resizable :false,
+								isCommentingAnnon :isCommentingAnnon
+							});
+							jQuery("#dialogComments").dialogCustom('open');
+
+							modalOpen = 1;
+							closeModalObj = setTimeout("closeModal()", 6000);
+						} else {
+							jQuery("#" + commentId).html(commentText);
+							editedCommentArray[commentId] = commentText;
+							jQuery("#fbc_editComment" + commentId).css( {
+								display :"none"
+							});
+							jQuery('#fbc_editTextBox' + commentId).css( {
+								display :"block"
+							});
+							jQuery("#fbc_errorMsg").css( {
+								display :"none"
+							});
+						}
+
+						if (data.error != '') {
+							//alert(data.error);
+						}
+					},
+
+					error : function(request, textStatus, thrownError) {
+					}
+				});
+	}
+}
+
+function setRating(elm) {
+	if (disableRatingHover) {
+		return false;
+	}
+	thisIndex = jQuery("div.rating ul li a").index(elm);
+	fbc_page['modules']['ratings']['current_item']['rating'] = thisIndex + 1;
+	jQuery("div.rating ul li a").unbind().css( {
+		"cursor" :"default"
+	});
+	disableRatingHover = 1;
+}
+
+function publishFeeds() {
+	facebook_publish_feed_story(template_id_for_rating,
+			template_data_for_rating);
+}
+
+function renderLikeItMainSection() {
+	var data = new Object();
+	data.userId = getLoggedInUserId();
+	data.clientParams = clientParams;
+	data.imgURL = baseURL + 'img/';
+	//var templateContent = getLikeItTemplate();
+	//var likeItData = jQuery('#likeit_area').parseTemplate(templateContent,data);
+	//jQuery('#likeit_area').html(likeItData);
+	renderLikeIt();
+}
+
+function renderLikeIt() {
+	contentType = 'Rating';
+	//var contentId = '15242410';
+	var fullURL = ajaxURL + "?controller=Ajax&callback=?";
+	//var fullURL = ajaxURL + "?contentId="+contentId+"&requestedController=Rating&requestedMethod=getFBCVideoRatingInterface&callback=?";
+	var queryParams = {
+		"contentTitle" :clientParams.content.contentTitle,
+		"requestedController" :"Rating",
+		"loggedIn" :getLoggedInState(),
+		"requestedMethod" :"getFBCVideoRatingInterface",
+		"showName" :clientParams.showName
+	};
+	queryParams = jQuery.extend(queryParams, userParams);
+
+	jQuery.jsonp( {
+		"url" :fullURL,
+		"cache" :false,
+		"pageCache" :"false",
+		"data" :queryParams,
+		"callback" :"getFBCVideoRatingCallback",
+		"success" : function(data) {
+			responseHandler(data, 'LikeIt');
+		},
+		error : function(request, textStatus, thrownError) {
+		}
+	});
+}
+function renderFBLikeIt(){ 
+        var isInIFrame = (window.location != window.parent.location) ? true : false; 
+        if(isInIFrame){ 
+                var fbLikeIt = '<fb:like href="'+window.parent.location+'"  layout="standard" show_faces="true" font="Arial" colorscheme="dark" width="510px" height="67px"></fb:like>';
+
+        }else{ 
+                var fbLikeIt = '<fb:like href="'+window.location+'"  layout="standard" show_faces="true" font="Arial" colorscheme="light" ></fb:like>';
+
+        } 
+        document.getElementById("likeit").innerHTML = fbLikeIt; 
+        FB.XFBML.parse(); 
+} 
+

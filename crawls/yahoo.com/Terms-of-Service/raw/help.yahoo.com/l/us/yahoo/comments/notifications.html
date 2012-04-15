@@ -1,0 +1,512 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Notifications | Commenting on Yahoo! Help</title>
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="../../../../../l.yimg.com/d/lib/common/css/grids_2.1.2.css">
+<link rel="stylesheet" type="text/css" href="../../../../../l.yimg.com/kx/l/utils/y/css/yahoo_browse_2008-min.css"/>
+
+<link rel="stylesheet" type="text/css" href="../../../../../l.yimg.com/a/lib/s5/miniassist_200908201638.css">
+<script type="text/javascript" src="../../../../../yui.yahooapis.com/combo%3F2.7.0%252Fbuild%252Fyahoo-dom-event%252Fyahoo-dom-event.js&amp;2.7.0%252Fbuild%252Fconnection%252Fconnection-min.js&amp;2.7.0%252Fbuild%252Fdatas"></script> 
+<script>
+YAHOO.namespace("yhelp");
+var yhelpCallback = {};
+var yhelpCrumb = "7zJkvn7lGc9";
+var yhelpPostData = "";
+var yhelpRequestUrl = "";
+var yhelpRequest = "";
+var yhelpPropertyDirectory = "us/yahoo/comments/";
+
+var yhelpSetMyhelpStateCallback = {};
+
+function yhelp_set_myhelp_state(part, state, dir, block){
+	yhelpPostData = "crumb=" + encodeURIComponent(yhelpCrumb);
+	yhelpPostData = yhelpPostData + "&state=" + encodeURIComponent(state); 
+	yhelpPostData = yhelpPostData + "&part=" + encodeURIComponent(part); 
+	yhelpPostData = yhelpPostData + "&dir=" + encodeURIComponent(dir); 
+	yhelpPostData = yhelpPostData + "&block=" + encodeURIComponent(block); 
+	yhelpRequestUrl = "/js/setmyhelpstate.html";
+	yhelpRequest = YAHOO.util.Connect.asyncRequest('POST', yhelpRequestUrl, yhelpSetMyhelpStateCallback, yhelpPostData);
+}
+
+/* Functions to support Help blocks */
+
+/* inIdPrefixIdIdxStr is in the form {id prefix}|{id index} */
+function flipHelpBlock(inIdPrefixIdIdxStr) {
+	var argArr = inIdPrefixIdIdxStr.split('|');
+
+	var idPrefix = argArr[0];
+	var idIdx = argArr[1];
+
+	var helpHeaderDiv = document.getElementById(idPrefix+'Header'+idIdx);
+	var helpBlockDiv = document.getElementById(idPrefix+'Block'+idIdx);
+
+	if (helpHeaderDiv.className=='contntblck-collaps') {
+		/* The block is collapsed so expand it */
+		helpHeaderDiv.className='contntblck-expnd';
+		helpBlockDiv.style.display = 'block';
+		yhelp_set_myhelp_state("helpblock", "1", yhelpPropertyDirectory, idPrefix+'Block'+idIdx);
+	} else {
+		/* The block is expanded so collapse it */
+		helpHeaderDiv.className='contntblck-collaps';
+		helpBlockDiv.style.display = 'none';
+		yhelp_set_myhelp_state("helpblock", "0", yhelpPropertyDirectory, idPrefix+'Block'+idIdx);
+	}
+}
+
+</script>
+<style>
+.myhelpcount {font-weight:bold; font-family:arial; font-size:100%; color:#3d68ad;}
+</style>
+<script charset="utf-8" type="text/javascript" src="../../../../../yui.yahooapis.com/2.7.0/build/element/element-min.js"></script>
+<script charset="utf-8" type="text/javascript" src="../../../../../yui.yahooapis.com/2.7.0/build/utilities/utilities.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../../../l.yimg.com/kx/l/utils/y/css/accordionview.css" />
+<link rel="stylesheet" type="text/css" href="../../../../../l.yimg.com/a/lib/ush/ygsh_1.0.4.css" />
+</head>
+<body>
+<div id="doc2">
+  <div id="hd"><script type='text/javascript' src='../../../../../yui.yahooapis.com/3.2.0/build/yui/yui-min.js'></script><link type='text/css' rel='stylesheet' href='../../../../../l.yimg.com/zz/combo%3Fkx%252Fucs%252Fuh%252Fcss%252F271%252Fyunivhead-min.css&amp;kx%252Fucs%252Fuh%252Fcss%252F221%252Flogo-min.css&amp;kx%252Fucs%252Fnotif_v2%252Fcss%252F139%252F.css'/><style></style><div id="yUnivHead" class="yucs-en-us" data-lang="en-us" data-property="help">    <div class="yucs-ipv6 yucs-activate hide"     data-nagtext="Ensure uninterrupted access to the Web. Confirm your {0}IPv6 compliance{1}."     data-naglink="http://help.yahoo.com/l/us/yahoo/ipv6/general/ipv6-13.html"     data-failScenarioFreq="7",    data-passScenarioFreq="10",    data-ylt-ipv6link="/;_ylt=AirU0.loyICRFealok9vuvtNFHxG"    data-ylt-nagbaropen="/;_ylt=ArJcanMRNWP54OXQmlC4jkFNFHxG"    data-ylt-nagbarclose="/;_ylt=Ao8Nx4tOG2scVzCBELuTRABNFHxG"    data-close-txt="Close this window"></div>    <a href="notifications.html#yuhead-search" class="yucs-skipto-search yucs-activate">Skip to search.</a>        <div id="yuhead-hd" class="yuhead-clearfix">        <div id="yuhead-mepanel-cont">            <ul id="yuhead-mepanel" class="yucs-toolbar yucs-activate"  aria-label="User Services"><li class="yuhead-me yuhead-nodivide yuhead-nopad">    <a class="yuhead-signup" href="https://us.lrd.yahoo.com/_ylt=AuNw2mvfoLYebPd49CBN8YZNFHxG/SIG=1583pk4a5/EXP=1335712875/**https%3A//edit.yahoo.com/config/eval_register%3F.src=yhelp%26.intl=us%26.lang=en-US%26.done=http%3A//help.yahoo.com/l/us/yahoo/comments/notifications/" target="_top" rel="nofollow">    <em>New User?</em> Register</a></li><li class="yuhead-me">        <a href="https://us.lrd.yahoo.com/_ylt=ApaYcXOqnqTQCvdZ69TXAgtNFHxG/SIG=151qtdbtp/EXP=1335712875/**https%3A//login.yahoo.com/config/login%3F.src=yhelp%26.intl=us%26.lang=en-US%26.done=http%3A//help.yahoo.com/l/us/yahoo/comments/notifications/"  target="_top" rel="nofollow">    <em>Sign In</em></a></li><li class="yuhead-me"><a href="http://us.lrd.yahoo.com/_ylt=Av3zaGmZI996u_dFU96y3ypNFHxG/SIG=121ks5veq/EXP=1335712875/**http%3A//help.yahoo.com/l/us/yahoo/helpcentral/" rel="nofollow" target="_top">Help</a></li></ul>        </div>        <div id="yuhead-promo"><a style="font-weight:bold;" id="ygmaie8" href="http://us.lrd.yahoo.com/_ylt=AgpWlk9xStG4FjgFfM275FpNFHxG/SIG=11n2vflaj/EXP=1335712875/**http%3A//downloads.yahoo.com/firefox/" target="_top" rel="nofollow">Get the Latest Firefox<abbr title="Firefox 3.6"></abbr></a></div>        <div id="yuhead-com-links-cont">            <ul id="yuhead-com-links" class="yucs-toolbar yucs-activate" aria-label="Yahoo! Services">                <li class="yucs-notifications yucs-notif-activate yuhead-com-link-item">    <a class="ynotif-control yltasis" href="notifications.html#" rel="nofollow" aria-haspopup="true" title="Notifications" role="button"><span class="sp ynotif-ico-bell"></span><span class="ynotif-notif-count-con hide"><span class="ynotif-notif-count"></span></span>&nbsp;</a>    <div class="yucs-notif-panel hide"         data-ylt-bell="/;_ylt=AnflSUf2..WiE3xH.LAXiG9NFHxG"        data-ylt-profile="/;_ylt=ApAFuATuHsN9OcaiY5VBF.9NFHxG"        data-ylt-app="/;_ylt=AkqR3TPGGv9WwkmZqjHVmhVNFHxG"        data-ylt-cta="/;_ylt=ApAzaeumwycCxBzEnyasGpxNFHxG"        data-ylt-pageurl="/;_ylt=AtvlbE98oOhKhywnNjBW_elNFHxG"          data-ylt-signin-cta="/;_ylt=ArdqUOFS3fUGtfEiwJfZoh9NFHxG"        data-guid=""        data-crumb="QwOG5.xfthf"        data-mode="2"        data-pagesize="10"                        data-view-more-txt="View More"        data-notif-user="A Yahoo! user"        data-intl="en-us"        data-yql-env=""        data-settings-tooltip="Settings"        data-app-aria-txt="App Icon"        data-view-all-txt="See All Notifications"        data-view-url="http://pulse.yahoo.com/y/notifications"        data-no-items-txt="There are currently no items."        data-no-notif-txt="You have no notifications."        data-notif-error-txt="Notifications with errors:"        data-get-notif-txt="Receive notifications when you comment or discuss content with friends on Yahoo!"        data-try-notif-txt="Learn more"        data-try-notif-link="http://help.yahoo.com//l/us/yahoo/comments/notifications/pnotification-03.html"        data-ylt-try-notif="/;_ylt=AgXp8cc.KTw3CqptSPG0hgBNFHxG"         data-loading-txt="Loading..."        data-error-unavail-txt="Notifications are temporarily unavailable. Please try again later."        data-middleauth-nonotif-text="You have no new notifications."        data-password-verify-text="Please verify your password to view notifications."        data-authState="signedout"        data-signedout-cta-text="Sign In"        data-popup-login-url="https://login.yahoo.com/config/login_verify2?.pd=c%3DOIVaOGq62e5hAP8Tv..nr5E3&.src=sc"        data-signedout-message="Sign in to view notifications."        data-middleauth-text="You have new notifications.">        <div class="yucs-notif-title-bar yuhead-clearfix">            <span class="yucs-notif-panel-title">Notifications</span>             <a target="_blank" href="http://us.lrd.yahoo.com/_ylt=AqZr0.We9fS5lMyn6_DrN7hNFHxG/SIG=12bljuomj/EXP=1335712875/**http%3A//help.yahoo.com/l/us/yahoo/comments/notifications" class="yucs-notif-tools">Help</a>        </div>        <ul class="yucs-notif-items-panel" role="menu">        </ul>    </div></li>                <li class="yuhead-com-link-item">    <a class="sp yuhead-ico-mail" href="http://us.lrd.yahoo.com/_ylt=AlRhGLGJ1Ce6iwTyCn1mJVtNFHxG/SIG=123u2jopt/EXP=1335712875/**http%3A//mail.yahoo.com/%3F.intl=us%26.lang=en-US" rel="nofollow" target="_top">Mail</a></li><li class="yuhead-com-link-item">    <a href="http://my.yahoo.com/;_ylt=AhjwIUZ5mqEff02sE9ONAX1NFHxG"     rel="nofollow"     target="_top">   My Y!    </a></li><li id="yuhead-com-home"><a class="sp yuhead-ico-home" href="http://us.lrd.yahoo.com/_ylt=AuB8csLElp4i6NmTZNDSb7hNFHxG/SIG=119lh9ege/EXP=1335712875/**http%3A//www.yahoo.com/" rel="nofollow" target="_top">Yahoo!</a></li>            </ul>        </div>    </div>    <div id="yuhead-bd" class="yuhead-clearfix">        <div class="yuhead-logo">   <style>      .yuhead-logo h2{        width:213px;        height:36px;        background-image:url(../../../../../l.yimg.com/a/i/brand/purplelogo/uh/us/20/help/help.png);        _background-image:url(../../../../../l.yimg.com/a/i/brand/purplelogo/uh/us/20/help/help-ffffff.gif);      }      .yuhead-logo a{        width:213px;        height:36px;      }      .yuhead-logo div.yuhead-comarketing {       width:213px;      }         </style>   <h2>      <a href="http://us.lrd.yahoo.com/_ylt=Amy.h.bLsU0DekM2pc8Ut.hNFHxG/SIG=121ks5veq/EXP=1335712875/**http%3A//help.yahoo.com/l/us/yahoo/helpcentral/"       target="_top" tabindex="-1">         Yahoo! Help      </a>   </h2>   <!-- comarketing component --></div>        <div id="yuhead-search">        <div id="yuhead-sform-cont" class="yuhead-s-web yuhead-search-form">        <form role="search" class="yucs-search yucs-activate" target="_top"    action="http://search.yahoo.com/search;_ylt=AiW7sOoBENzlDLbz8pfBKZVNFHxG" method="get"><table role="presentation">   <tbody role="presentation"><tr role="presentation"><td class="yucs-form-input" role="presentation"> <label for="yuhead-sform-searchfield">     <span>Search</span>             </label>                 <input autocomplete="off" type="text" class="sp yuhead-ico-mglass yuhead-search-hint yucs-search-field" name="p"                  data-sh="Search"                  data-satype="rich"                  data-gosurl=""                  id="yuhead-sform-searchfield"                 data-pubid="" /></td><td NOWRAP class="yucs-form-btn" role="presentation"><div class="yucs-btn-wrap">    <button class="yucs-sweb-btn" type="submit">Search Web</button></div>            </td>         </tr>        </tbody></table><input type="hidden" id="fr" name="fr" value="ush-help" /><!-- desktop device --></form>            </div>    </div>    </div>                <!-- s2s -->    <!-- desktop device --></div><script type='text/javascript' charset='utf-8'> YUI().use('node','event','event-mouseenter','substitute','oop','node-focusmanager','node','event','substitute','cookie','node', 'event', 'querystring-stringify', 'node-focusmanager', 'cookie', 'substitute', 'json','node','event','event-custom','event-valuechange','classnamemanager', function(Y) {});</script><script type='text/javascript' src='http://l.yimg.com/zz/combo?kx/ucs/sts/js/290/skip-min.js&kx/ucs/menu_utils/js/164/menu_utils_v2-min.js&kx/ucs/uh/js/267/aria_toolbar-min.js&kx/ucs/username/js/42/user_menu-min.js&kx/ucs/help/js/41/help_menu-min.js&kx/ucs/utility_link/js/20/utility_menu-min.js&kx/ucs/uh/js/262/logo_debug-min.js&kx/ucs/ipv6_test/js/12/seed-min.js&kx/ucs/common/js/131/jsonp-cached-min.js&kx/ucs/notif_v2/js/143/notifications_bootstrap-min.js&kx/ucs/common/js/1/setup-min.js&kx/ucs/search/js/221/search-min.js&kx/ucs/search/js/210/search_text_dir-min.js'></script></div>
+  <div id="bd" class="wrapper">
+				<!-- Begin Top Nav -->
+				<div id="nav" class="nav">
+					<div class="bd">
+					<ul class="firt-of-type">						<li class="tb">
+							<span class="hometb">
+								<a href="http://help.yahoo.com/l/us/yahoo/comments/;_ylt=Au.cXYsyALcsfCnnc.P378ZNFHxG">&nbsp;&nbsp;</a>
+							</span>
+						</li>						<li id="helptopicsnav" class="tb selected">
+							<span class="selecteddown">
+								<a href="notifications.html#">Commenting on Yahoo! Help Topics</a>
+							</span>
+						</li>
+	
+	<script>
+YAHOO.util.Event.onContentReady("nav", function () {
+	var oMenuBar = new YAHOO.widget.MenuBar("nav",{
+		autosubmenudisplay: true,
+		submenualignment: ["tl", "bl"],
+		hidedelay: 750,
+		lazyload: true }
+	);	var aSubmenuData = [
+	{
+		id: "hlpmenu",
+		itemdata:[
+			{ text: "Location Feature",url: "/l/us/yahoo/comments/location/;_ylt=Au5sl5uSZeZaTjfejJH.dFRNFHxG",classname: "mi" },{ text: "Notifications",url: "/l/us/yahoo/comments/notifications/;_ylt=Ah.FgkdMWHOJzhwHGI7qiXZNFHxG",classname: "mi" },{ text: "Posting Comments",url: "/l/us/yahoo/comments/article_comments/;_ylt=AjyRwDPg4NGsmyxu6vxVjjFNFHxG",classname: "mi" },{ text: "Yahoo! Conversations",url: "/l/us/yahoo/comments/conversations/;_ylt=ArjBjeAB.ozRWKu8MksWcwNNFHxG",classname: "mi" },{ text: "Yahoo! Social Bar",url: "/l/us/yahoo/comments/activity/;_ylt=Aslc2x9T7TURhlQK.DwU8AhNFHxG",classname: "mi" },{ text: "Yahoo! Update Email",url: "/l/us/yahoo/comments/digest/;_ylt=Atmyzgt28bZq.IutqNKkrG1NFHxG",classname: "mi" }
+		]
+	}];
+	oMenuBar.subscribe("beforeRender", function(){
+		if(this.getRoot() == this){
+			this.getItem(1).cfg.setProperty("submenu", aSubmenuData[0]);
+		}
+	});
+
+	oMenuBar.subscribe("beforeShow", function(){
+		if(document.getElementById('helptopicsnav').offsetWidth > 150){
+			el = YAHOO.util.Dom.getFirstChild(YAHOO.util.Dom.getFirstChild(document.getElementById('hlpmenu')));
+			el.style.width = document.getElementById('helptopicsnav').offsetWidth + "px"; 
+		}
+	});	oMenuBar.render();
+});
+</script><!-- Go back button suppressed -->
+					</ul>
+					</div><!-- class="bd" -->
+				</div> <!-- id="nav" class="nav" -->
+				<!-- End Top Nav -->				<!-- Begin Search Bar -->
+				
+				<div id="hlpsrch">
+					
+					 
+					<form name="question_form" id="question_form" method="GET" action="http://help.yahoo.com//l/us/yahoo/comments/notifications/vsp.html;_ylt=AtVIsoVrZqJZBcvMWrLzh.pNFHxG">
+						<div role="application">
+							<input type="text" size="50" id="query" name="query" value=""  autocomplete="off" />
+							<input type="submit" id="search" class="srchbtn" name="Ask" value="Search Help"/>
+							<div id="helpsat"></div>
+<script type="text/javascript" src="../../../../../l.yimg.com/a/lib/s5/miniassist_200908201638.js"></script>
+<script type="text/javascript">
+
+(function () {
+var sa = new YAHOO.Search.MiniAssist('query', 'helpsat');
+sa.setConfigValue('spaceid', '2142478948');
+sa.gossip.setConfigValue('pubid', 105);
+})();
+
+</script>
+
+						</div>
+						<input type="hidden" name="lang" value="us"/>
+						<input type="hidden" name="prop" value="comments"/>						<input type="hidden" name="lsp" value="notifications"/>						<input type="hidden" name=".p" value="yahoo"/>
+					</form>
+				
+				</div><!-- helpsrch -->
+				
+				<!-- End Search Bar -->    <!-- Main content area begins -->
+    <div class="yui-t6">
+      <!-- left column begins -->
+      <div id="yui-main">
+        <div class="yui-b">
+<!-- Begin breadcrumb -->
+<div class="hlpbc">
+<a href='http://us.lrd.yahoo.com/_ylt=AvIhYliQSoVba08qokEvN1NNFHxG/SIG=1207m782u/EXP=1335712875/**http%3A//help.yahoo.com/l/us/yahoo/helpcentral'>Yahoo! Help Central</a> &gt; <a href='http://help.yahoo.com/l/us/yahoo/comments/;_ylt=Arsne1cEXhYkhbc89W2InA9NFHxG'>Commenting on Yahoo!</a> &gt; <b>Notifications</b>
+</div> <!-- class="hlpbc" -->
+<!-- End breadcrumb -->
+          <!-- header begins -->
+          <div class="hlphdr brws"><h1>Commenting on Yahoo! Help Topics</h1></div>
+          <!-- header ends -->
+          <!-- maincontent begins -->
+          <div class="maintpcs">
+            <div class="leftnav">
+              <ul>                <li ><a href="http://help.yahoo.com/l/us/yahoo/comments/location/;_ylt=Areg0W18Bouq1D7iD4BnIcxNFHxG">Location Feature</a></li>                <li  class='on' ><a href="http://help.yahoo.com/l/us/yahoo/comments/notifications/;_ylt=AmHNpgwo35MyniP3kAM4J5xNFHxG">Notifications</a></li>                <li ><a href="http://help.yahoo.com/l/us/yahoo/comments/article_comments/;_ylt=ApPTkGr0KBo57TA.nmkqo_JNFHxG">Posting Comments</a></li>                <li ><a href="http://help.yahoo.com/l/us/yahoo/comments/conversations/;_ylt=Aj4gTUKVFjnVxO88LcwDmG1NFHxG">Yahoo! Conversations</a></li>                <li ><a href="http://help.yahoo.com/l/us/yahoo/comments/activity/;_ylt=AmRZpApQY10S4VtKPuaYUgVNFHxG">Yahoo! Social Bar</a></li>                <li ><a href="http://help.yahoo.com/l/us/yahoo/comments/digest/;_ylt=Ako45x_h_IU6051HrszGJK5NFHxG">Yahoo! Update Email</a></li>              </ul>
+            </div>            <div class="brwstpcs">
+              <h2>Notifications</h2>
+              <p></p>
+<span class="offscrntxt"></span><div id="ec" class="ec"><a href="notifications.html#">Expand All</a></div><div id="ce" class="ec" style="display:none;"><a href="notifications.html#">Collapse All</a></div><div id="brwstree" class="brwstree"><div class="brwsctg"><div id='catdiv0'><span id='catspan0' class='ygtvtp'>&nbsp;</span><span class="ygtvitem ygtvlabel"><a href="notifications.html#" class="nl">Notifications</a></span></div>
+<ul id='catul0' style='display:none;'>
+<li class='tree'><a href='http://help.yahoo.com//l/us/yahoo/comments/notifications/pnotification-03.html;_ylt=AvpLDc9.O.xnBz.fxE8xejxNFHxG'>What are notifications?</a></li><li class='tree'><a href='http://help.yahoo.com//l/us/yahoo/comments/notifications/pnotification-04.html;_ylt=AqcA8zxyU9xwrLw2Y1EUctVNFHxG'>Where will I receive notifications?</a></li><li class='tree'><a href='http://help.yahoo.com//l/us/yahoo/comments/notifications/pnotification-01.html;_ylt=AnZscU43944nSeDuNPOTPRZNFHxG'>How do I find or change my primary email address?</a></li><li class='tree'><a href='http://help.yahoo.com//l/us/yahoo/comments/notifications/pnotifications-11.html;_ylt=AiiXypnJQr..FYE4C9kRU01NFHxG'>How do I block notifications from a user?</a></li><li class='tree'><a href='http://help.yahoo.com//l/us/yahoo/comments/notifications/pnotifications-12.html;_ylt=AhjYXv9pDZq08iBh.hYBlONNFHxG'>When will I receive notifications?</a></li></ul>
+</div></div><script type="text/javascript">
+var catArr = [0];
+function closeCat(id) {
+	document.getElementById("catspan" + id).className="ygtvtp";
+	document.getElementById("catul" + id).style.display="none";
+	yhelp_set_myhelp_state("browsetree", "0", 182421, id);
+}
+function openCat(id) {
+	document.getElementById("catspan" + id).className="ygtvtm";
+	document.getElementById("catul" + id).style.display="block";
+	yhelp_set_myhelp_state("browsetree", "1", 182421, id);
+}
+function flipCat(id) {
+	if(document.getElementById("catspan" + id).className == "ygtvtp") {
+		openCat(id);
+	}else{
+		closeCat(id);
+	}
+}
+function expandAllCats() {
+	for (var i = catArr.length-1; i > -1; i--) {
+		openCat(catArr[i]);
+	}
+}
+function colapseAllCats() { 
+	for (var i = catArr.length-1; i > -1; i--) {
+		closeCat(catArr[i]);
+	}
+}
+function clickFlipCat(e) {
+	YAHOO.util.Event.preventDefault(e);
+	var id = this.id.replace("catdiv","");
+	flipCat(id);
+}
+	YAHOO.util.Event.on("ec","click", function(e){expandAllCats(); document.getElementById("ec").style.display="none"; document.getElementById("ce").style.display="block"; YAHOO.util.Event.preventDefault(e);});
+	YAHOO.util.Event.on("ce","click", function(e){colapseAllCats(); document.getElementById("ce").style.display="none"; document.getElementById("ec").style.display="block"; YAHOO.util.Event.preventDefault(e);});expandAllCats(); document.getElementById("ec").style.display="none"; document.getElementById("ce").style.display="block";YAHOO.util.Event.addListener(['catdiv0'],"click", clickFlipCat);</script>
+            </div><!-- class="brwstpcs" -->
+          </div><!-- class="maintpcs" -->
+          <!-- maincontent ends -->
+        </div>
+      </div>
+      <!-- left column ends -->
+      <!-- right column begins -->
+      <div class="yui-b">
+
+	<!-- Begin My Help -->
+	<div id="myhlp" class="myshdw Box floating"> 
+		<span class="x1"><span class="x1a"></span></span>
+<span class="x2"><span class="x2a"></span></span>
+		<div class="myacct signedin floating">
+			<h2>My Help</h2>
+			<span class="forgot"><a href="https://us.lrd.yahoo.com/_ylt=Ak4KX2SAS1XhhCyaFxcplDxNFHxG/SIG=17lb5tt3m/EXP=1335712875/**https%3A//edit.yahoo.com/forgot%3Fnew=1%26.src=help%26partner=%26.intl=us%26pkg=%26stepid=%26.pd=help_ver%26c=%26.ab=%26.last=%26.done=http%253A%252F%252Fhelp.yahoo.com%252Fl%252Fus%252Fyahoo%252Fcomments%252Fnotifications%252F">Forgot your ID or password?</a></span>
+			<h3><a href="https://us.lrd.yahoo.com/_ylt=ArwMLsRXEcD8efYgpIxmSxJNFHxG/SIG=15kabcuoe/EXP=1335712875/**https%3A//login.yahoo.com/config/login%3F.src=help%26.intl=us%26.done=http%253A%252F%252Fhelp.yahoo.com%252Fl%252Fus%252Fyahoo%252Fcomments%252Fnotifications%252F">Sign In</a></h3>
+			<span class="small">Sign in to see your account information saved articles and more.</span> 
+		</div><!-- class="myacct signedin floating" -->
+		<span class="mystored sub floating">
+			<ol>
+				<li>
+					<p class="head" id="click2flip_searches"><span id="flip_searches" class="collaps">Recent Searches&nbsp;(<span id="myhelpcount_searches" class="myhelpcount">0</span>)</span></p>
+					<div id="recent_searches" class="recent"  style="display:none;" >
+						<div id="recent_searches_listing">
+							No recent searches
+						</div>
+						<p id="recent_searches_clear" class="clear"  style='display:none;' ><a id="clear_recent_searches" href="notifications.html#">Clear all</a></p>
+					</div><!-- class="recent" -->
+				</li>				<li>
+					<p class="head" id="click2flip_articles"><span id="flip_articles" class="collaps">Recently Viewed&nbsp;(<span id="myhelpcount_articles" class="myhelpcount">0</span>)</span></p>
+					<div id="recent_articles" class="recent saved"  style="display:none;" >
+						<div id="recent_articles_listing">
+							No Recently Viewed Articles
+						</div>
+						<p id="recent_views_clear" class="clear"  style='display:none;' ><a id="clear_recent_views" href="notifications.html#">Clear all</a></p>
+					</div><!-- class="recent" -->
+				</li>			</ol>
+		</span><!-- class="mystored sub floating" -->
+	</div><!-- id="myhlp" class="myshdw Box floating" -->
+	<!-- End My Help -->
+<script>
+
+	function flip_searches(){
+		var el_flip_searches = document.getElementById('flip_searches');
+		var el_recent_searches = document.getElementById('recent_searches');
+		if(el_flip_searches.className == "expnd"){
+			el_recent_searches.style.display = 'none';
+			el_flip_searches.className = 'collaps';
+			yhelp_set_myhelp_state("search", "0", "", "");
+		}else{
+			el_recent_searches.style.display = 'block';
+			el_flip_searches.className = "expnd";
+			yhelp_set_myhelp_state("search", "1", "", "");
+		}
+	}
+	function flip_articles(){
+		var el_flip_articles = document.getElementById('flip_articles');
+		var el_recent_articles = document.getElementById('recent_articles');
+		if(el_flip_articles.className == "expnd"){
+			el_recent_articles.style.display= 'none';
+			el_flip_articles.className = 'collaps';
+			yhelp_set_myhelp_state("articles", "0", "", "");
+		}else{
+			el_recent_articles.style.display= 'block';
+			el_flip_articles.className = "expnd";
+			yhelp_set_myhelp_state("articles", "1", "", "");
+		}
+	}
+
+	var yhelpClearRecentViewsSuccess = function(o) {
+		document.getElementById('recent_articles_listing').innerHTML = "No Recently Viewed Articles";
+		document.getElementById('myhelpcount_articles').innerHTML = "0";
+		document.getElementById('recent_views_clear').style.display="none";
+		document.getElementById('recent_articles').style.display="none";
+		document.getElementById('flip_articles').className = "collaps";
+	}
+
+	var yhelpClearRecentViewsCallback = { success:yhelpClearRecentViewsSuccess };
+
+	function yhelp_clear_recent_views(){
+		yhelpPostData = "crumb=" + encodeURIComponent(yhelpCrumb);
+		yhelpRequestUrl = "/js/clearrecentviews.html";
+		yhelpRequest = YAHOO.util.Connect.asyncRequest('POST', yhelpRequestUrl, yhelpClearRecentViewsCallback, yhelpPostData);
+	}
+
+	var yhelpClearSaveSuccess = function(o) {
+		document.getElementById('recent_articles_listing').innerHTML = "No saved articles.";
+		document.getElementById('myhelpcount_articles').innerHTML = "0";
+		document.getElementById('recent_articles_clear').style.display="none";
+		document.getElementById('recent_articles').style.display="none";
+		document.getElementById('flip_articles').className = "collaps";
+	}
+
+	var yhelpClearSaveCallback = { success:yhelpClearSaveSuccess };
+
+	function yhelp_clear_saved(){
+		yhelpPostData = "crumb=" + encodeURIComponent(yhelpCrumb);
+		yhelpRequestUrl = "/js/clearsavedarticles.html";
+		yhelpRequest = YAHOO.util.Connect.asyncRequest('POST', yhelpRequestUrl, yhelpClearSaveCallback, yhelpPostData);
+	}
+
+	var yhelpClearSearchesSuccess = function(o) {
+		document.getElementById('recent_searches_listing').innerHTML = "No recent searches";
+		document.getElementById('myhelpcount_searches').innerHTML = "0";
+		document.getElementById('recent_searches_clear').style.display="none";
+		document.getElementById('recent_searches').style.display="none";
+		document.getElementById('flip_searches').className = "collaps";
+	}
+
+	var yhelpClearSearchesCallback = { success:yhelpClearSearchesSuccess };
+
+	function yhelp_clear_searches(){
+		yhelpPostData = "crumb=" + encodeURIComponent(yhelpCrumb);
+		yhelpRequestUrl = "/js/clearrecentsearches.html";
+		yhelpRequest = YAHOO.util.Connect.asyncRequest('POST', yhelpRequestUrl, yhelpClearSearchesCallback, yhelpPostData);
+	}
+
+	YAHOO.util.Event.addListener("click2flip_searches", "click", flip_searches);
+	YAHOO.util.Event.addListener("click2flip_articles", "click", flip_articles);
+	if(document.getElementById('clear_recent_searches'))
+	{
+		YAHOO.util.Event.addListener("clear_recent_searches", "click", yhelp_clear_searches);
+	}
+	if(document.getElementById('clear_recent_articles'))
+	{
+		YAHOO.util.Event.addListener("clear_recent_articles", "click", yhelp_clear_saved);
+	}
+	if(document.getElementById('clear_recent_views'))
+	{
+		YAHOO.util.Event.addListener("clear_recent_views", "click", yhelp_clear_recent_views);
+	}
+</script> 
+<div style="clear:both";></div><div id='articleContentBlocksDiv' class='contntblck rt'>
+<ul id='articleContentBlocks' class='yui-accordionview'>
+</ul>
+</div>
+      </div>
+        <!-- right column ends -->
+      <!-- Main content area ends -->
+    </div>
+  </div>
+</div>
+
+<div id="ft">
+<font size="-2" face="arial"><span class=sbody>Copyright &copy; 2012 Yahoo! All rights reserved. <a href="http://global.ard.yahoo.com/SIG=15nc3ilnd/M=224039.1982531.3586300.9262555/D=site/S=1182536781:FOOT/Y=YAHOO/EXP=1334510475/L=2KggdTIxNi6nlrybvLpztyDPOTguMU.K52v__8ew/B=rpQzA9BDRmY-/J=1334503275734264/K=1BQ3s0hBOmNIKlA7v_G3Ow/A=1123556/R=0/SIG=1163rhhok/*http://privacy.yahoo.com/privacy/us/">Privacy Policy</a> - <a href="http://global.ard.yahoo.com/SIG=15nc3ilnd/M=224039.1982531.3586300.9262555/D=site/S=1182536781:FOOT/Y=YAHOO/EXP=1334510475/L=2KggdTIxNi6nlrybvLpztyDPOTguMU.K52v__8ew/B=rpQzA9BDRmY-/J=1334503275734264/K=1BQ3s0hBOmNIKlA7v_G3Ow/A=1123556/R=1/SIG=11475d5s1/*http://info.yahoo.com/relevantads/">About Our Ads</a> - <a href="http://global.ard.yahoo.com/SIG=15nc3ilnd/M=224039.1982531.3586300.9262555/D=site/S=1182536781:FOOT/Y=YAHOO/EXP=1334510475/L=2KggdTIxNi6nlrybvLpztyDPOTguMU.K52v__8ew/B=rpQzA9BDRmY-/J=1334503275734264/K=1BQ3s0hBOmNIKlA7v_G3Ow/A=1123556/R=2/SIG=1136qnvkg/*http://docs.yahoo.com/info/terms/">Terms of Service</a> - <a href=http://global.ard.yahoo.com/SIG=15nc3ilnd/M=224039.1982531.3586300.9262555/D=site/S=1182536781:FOOT/Y=YAHOO/EXP=1334510475/L=2KggdTIxNi6nlrybvLpztyDPOTguMU.K52v__8ew/B=rpQzA9BDRmY-/J=1334503275734264/K=1BQ3s0hBOmNIKlA7v_G3Ow/A=1123556/R=3/SIG=11lp7krrc/*http://docs.yahoo.com/info/copyright/copyright.html>Copyright/IP Policy</a> </span></font><!-- SpaceID=1182536781 loc=FR05 noad -->
+<!--QYZ ,;;;1182536781;;--></div> 
+	<!-- Yahoo! Web Analytics - All rights reserved -->
+<script type="text/javascript" src="../../../../../d.yimg.com/mi/ywa.js"></script>
+<script type="text/javascript">
+
+function captureAction(actionnumber) {
+var YWATracker = YWA.getTracker("1000379873063");
+	YWATracker.setAction(actionnumber);
+	YWATracker.submit_action();
+}
+
+/*globals YWA*/
+var YWATracker = YWA.getTracker("1000379873063");
+YWATracker.setUrl("http://help.yahoo.com/l/us/yahoo/comments/notifications/");
+
+YWATracker.setDocumentGroup("us/yahoo/comments/");
+
+
+
+YWATracker.setCF(1, "lorax");
+YWATracker.setCF(8, "comments");
+YWATracker.setCF(9, "");
+YWATracker.setCF(10, "Americas"); 
+YWATracker.setCF(11, "us");
+YWATracker.setCF(12, "lorax");
+
+
+YWATracker.submit();
+</script>
+<noscript>
+<div><img src="../../../../../a.analytics.yahoo.com/p.pl%3Fa=1000379873063&amp;js=no" width="1" height="1" alt="" /></div>
+</noscript>
+</body>
+</html>
+<!-- START FEATURE CUE Help/us/en/95/ %space% -->
+<script type="text/javascript">YAHOO.namespace("fcue");var YUIMinBuild=733;if(!YAHOO.env.getVersion("yahoo")||YAHOO.env.getVersion("yahoo").build<YUIMinBuild){YAHOO.lang.merge=function(){var F={},H=arguments;for(var G=0,E=H.length;G<E;G=G+1){YAHOO.lang.augmentObject(F,H[G],true)}return F};YAHOO.lang.later=function(O,L,N,J,R){O=O||0;L=L||{};var K=N,P=J,Q,M;if(YAHOO.lang.isString(N)){K=L[N]}if(!K){throw new TypeError("method undefined")}if(!YAHOO.lang.isArray(P)){P=[J]}Q=function(){K.apply(L,P)};M=(R)?setInterval(Q,O):setTimeout(Q,O);return{interval:R,cancel:function(){if(this.interval){clearInterval(M)}else{clearTimeout(M)}}}}};</script>
+<!--[if IE 6]><script type="text/javascript">YAHOO.fcue.IE6=true;</script><![endif]-->
+<!--[if IE 7]><script type="text/javascript">YAHOO.fcue.IE7=true;</script><![endif]-->
+<script type="text/javascript" src="../../../../../yui.yahooapis.com/2.5.1/build/get/get-min.js" ></script> 
+<script type="text/javascript">
+// ///
+// YAHOO.widget.DateMath 
+// http://developer.yahoo.com/yui/docs/YAHOO.widget.DateMath.html 
+// This is a great utility for doing date math in JavaScript.
+// Reproduced here so we don't have to include the entire humongous YUI Calendar widget, 
+// which is where this comes from
+// we're only using YAHOO.widget.DateMath.add(), YAHOO.widget.DateMath.after() and their supporting functions
+// ///
+YAHOO.fcue.load = function() { 
+	var YUIMinBuild = 733; // 2.5.2
+	var YUICurrentVersion = "2.5.2";
+	var YUIBasePath = "http://yui.yahooapis.com/" + YUICurrentVersion + "/build/";
+	var fcueBasePath = "http://d.yimg.com/fx/fc/cues/Help/us/en/95/";
+	var fcueJSPath = "http://d.yimg.com/fx/fc/cues/Help/us/en/95/fcue.js";
+	var fcueCSSPath = "http://d.yimg.com/fx/fc/cues/Help/us/en/95/fcue.css";
+	var userStateViewMax = 1;
+	YAHOO.fcue.userStateCampaignEndDate = new Date(2012,3,22);
+
+	var successHandler = function() { 
+		var now = new Date();
+		function saveStateAndInitCues(fcueData) { 
+			var moreYUILibs = ['dom','event'];
+			var moreLibURLs = [];
+			for(var i=0;i<moreYUILibs.length;i++) {
+				if(!YAHOO.env.getVersion(YUILibs[i])) {
+					moreLibURLs.push(YUIBasePath + moreYUILibs[i] + "/" + moreYUILibs[i] + "-min.js");
+				}
+			}
+		
+			var getSuccessHandler = function(o) {
+				YAHOO.fcue.preloadFcueImages(0);
+
+				var leaving = true;
+				YAHOO.fcue.checkURL = function (href,fcueData) {
+					leaving = (((href.indexOf("://") > -1) || (href.indexOf("help.") > -1)) && (href.indexOf(window.location.host) == -1));
+					return leaving;
+				}
+	
+				YAHOO.fcue.showCue = function (o) {
+					YAHOO.fcue.preloadFcueImages(1);
+					YAHOO.fcue.setTheCookie(fcueData);
+				}
+
+				YAHOO.fcue.setTheCookie = function (o) {
+					var fcueDataString = YAHOO.lang.JSON.stringify(o); 
+                        		YAHOO.util.Cookie.set('fcue',fcueDataString, {
+                                		expires: new Date(2012,3,22),
+                                		path: "/"
+                        		}); 
+				}
+			
+				var e = document.getElementsByTagName('a');
+				var curURL = window.location.href;
+		                curURL = curURL.replace(/\/\/l/, "/l");
+
+				var prop = curURL.split('/');
+				if( curURL.indexOf('?terms=') != -1 || curURL.indexOf('?query=') != -1  ) {
+					var keywords = curURL.substring(curURL.indexOf('?')+7, curURL.length);
+					keywords = keywords.replace('#','');
+				} else {
+					var keywords = '';
+				}
+				var surveyURL = 'http://surveylink.yahoo.com/wix/p11790600.aspx?parameter1='+prop[6]+'&parameter2='+curURL;
+				if(keywords != '')
+					surveyURL += '&parameter3='+keywords;
+                                for(var i=0;i<e.length;i++) {
+					if (YAHOO.fcue.checkURL(e[i].href)) {
+						YAHOO.util.Event.addListener(e[i], 'click', function(e) {
+							var originalURL = this.href;
+							YAHOO.util.Event.preventDefault(e);
+							YAHOO.fcue.showCue(true);
+							YAHOO.util.Event.addListener("fcuebtn2", 'click', function() {
+								location.href = originalURL;
+							});
+							YAHOO.util.Event.addListener("fcuebtn1", 'click', function() {
+								window.open(surveyURL);
+								location.href = originalURL; 
+							});
+						});
+					}
+				}	
+			};	
+		moreLibURLs.push(fcueJSPath); 
+		YAHOO.util.Get.css(fcueCSSPath);
+		YAHOO.util.Get.script(moreLibURLs, {onSuccess: getSuccessHandler, data: fcueData});
+	}
+
+	var fcueDataString =YAHOO.util.Cookie.get('fcue');
+	if(fcueDataString) {
+		var fcueData = YAHOO.lang.JSON.parse(fcueDataString);
+	} if(!fcueData) { var fcueData = {};
+		fcueData.viewCount = 1;
+		saveStateAndInitCues(fcueData);
+	} else {
+		var view=true;
+		if(fcueData.viewCount==userStateViewMax) {
+			view=false;
+		}
+		if(view) {
+			fcueData.viewCount = 1;
+				saveStateAndInitCues(fcueData);
+			} 
+		}
+	}
+	var YUILibs = ['json','cookie'];
+	var libURLs = [];
+	for(var i=0;i<YUILibs.length;i++) {
+		if(!YAHOO.env.getVersion(YUILibs[i])) {
+			if(YUILibs[i]=="cookie") { 
+				var beta="-beta";
+			} else {
+				var beta="";
+			}
+			libURLs.push(YUIBasePath + YUILibs[i] + "/" + YUILibs[i] + beta + "-min.js"); 
+		}
+	}
+	if(libURLs.length==0) {
+                successHandler();
+        } else {
+                YAHOO.util.Get.script(libURLs, {onSuccess: successHandler});
+        }
+}();
+</script>
+<!-- END FEATURE CUE Help/us/en/95/ %space% -->
+<!-- w4.help.sp2.yahoo.com uncompressed/chunked Sun Apr 15 15:21:15 UTC 2012 -->

@@ -1,0 +1,360 @@
+/*	---------------------------------------------------------------
+		@filename		modal_fluid.css
+		@author			trey.eckels@akqa.com
+		@description	Style definitions for the verticaly fluid modal
+		
+		Contents
+		1. Lightbox Background
+		2. Modal Outlines
+		3. Close Modal Button
+		4. Modal Endcaps and borders
+		5. Common Elements
+		6. IE Common styles
+		7. IE Specific styles
+		
+		
+		Notes:
+		1. Content that displays in modal lives in the .modal-content div.
+		2. There is an IE-6 hacks file, mostly for handling png transparency issues on the cap images
+		
+	--------------------------------------------------------------- */
+	
+/*	
+	=========== 1. Lightbox Background ===========
+*/
+
+#lightbox-background-fluid{
+	position:absolute;
+	z-index:10001;
+	left:0px;
+	background-color:#000000;
+	width:100%;
+	height:100%;
+	display:none;
+	opacity:0;
+}
+
+
+/*	
+	=========== 2. Modal Outlines ===========
+*/
+
+#modal-positioner-fluid{
+	position:absolute;
+	z-index:10002;
+}
+
+#modals-fluid{
+	position:relative;
+	display:none;
+	z-index:10002;
+}
+
+#modals-fluid h2{
+	font-size:1.3em;
+	padding:15px 0 0 5px;
+	font-weight:bold;
+	color:#202020;
+}
+
+/*	
+	=========== 3. Close Modal Button ===========
+*/
+
+#modals-fluid #closeModal{
+	width:34px;
+	height:34px;
+	background-image:url(http://about.usps.com/common/images/global/buttons/btn_popup_close.png);
+	background-position:0 0;
+	background-repeat:no-repeat;
+	position:absolute;
+	right:-10px;
+	top:-10px;
+	cursor:pointer;
+	overflow:hidden;
+	text-indent:-9000px;
+}
+
+#modals-fluid #closeModal.hover{
+	background-position:-35px 0;
+}
+
+#modals-fluid p{
+	margin:0;
+	/*margin-bottom:1px;*/
+	padding:0;
+}
+
+/*	
+	=========== 4. Modal Endcaps and borders ===========
+*/
+
+
+#modals-fluid .modal-tl,
+#modals-fluid .modal-tr,
+#modals-fluid .modal-tm{
+	height:38px;	
+}
+
+#modals-fluid .modal-tl,
+#modals-fluid .modal-tr{
+	width:9px;
+	background-repeat:no-repeat;
+}
+
+#modals-fluid .modal-tl{
+	float:left;	
+	background-image:url(http://about.usps.com/common/images/global/modal/popup_top_l_corner.png);
+}
+
+#modals-fluid .modal-tr{
+	float:right;
+	background-image:url(http://about.usps.com/common/images/global/modal/popup_top_r_corner.png);
+}
+
+#modals-fluid .modal-tm{
+	background-repeat:repeat-x;
+	background-image:url(http://about.usps.com/common/images/global/modal/popup_top_bg_repeat.png);
+	margin:0 9px;
+}
+
+#modals-fluid .modal-middle-left,
+#modals-fluid .modal-middle-right{
+	background-repeat:repeat-y;	
+	height:auto !important;
+}
+
+#modals-fluid .modal-middle-left{
+	
+	background-image:url(http://about.usps.com/common/images/global/modal/popup_l_border.png);	
+	background-position:left;
+}
+
+#modals-fluid .modal-middle-right{
+	background-image:url(http://about.usps.com/common/images/global/modal/popup_r_border.png);	
+	background-position:right;
+}
+
+#modals-fluid .modal-middle{
+	margin-left:9px;
+	margin-right:9px;
+	background-color:#FEFEFE;
+}
+
+#modals-fluid .modal-middle .modal-content{
+	background-color:white;
+	/*padding:15px;*/
+}
+#modals-fluid .modal-middle .modal-content .gut{
+	padding:20px 5px 5px;}
+
+
+
+#modals-fluid #modal-center{
+	
+}
+
+#modals-fluid .modal-bl,
+#modals-fluid .modal-br,
+#modals-fluid .modal-bm{
+	height:12px;
+	
+}
+
+#modals-fluid .modal-bl,
+#modals-fluid .modal-br{
+	width:9px;
+	background-repeat:no-repeat;
+}
+
+#modals-fluid .modal-bl{
+	float:left;	
+	background-image:url(http://about.usps.com/common/images/global/modal/popup_btm_l_corner_fluid.png);
+	clear:both;
+}
+
+#modals-fluid .modal-br{
+	float:right;
+	background-image:url(http://about.usps.com/common/images/global/modal/popup_btm_r_corner_fluid.png);
+}
+
+#modals-fluid .modal-bm{
+	background-image:url(http://about.usps.com/common/images/global/modal/popup_btm_bg_repeat_v2_fluid.png);
+	margin:0 9px;
+	padding:0;
+}
+
+
+/*	
+	=========== 5. Common Elements ===========
+*/
+
+
+#modals-fluid div.input-text-lg{
+	height:27px;
+}
+
+
+/*	
+	=========== 6. IE Common Styles ===========
+*/
+
+
+.dj_ie6 #modals-fluid .modal-bl,
+.dj_ie6 #modals-fluid .modal-bm,
+.dj_ie6 #modals-fluid .modal-br,
+.dj_ie7 #modals-fluid .modal-bl,
+.dj_ie7 #modals-fluid .modal-bm,
+.dj_ie7 #modals-fluid .modal-br{
+	margin-top:-13px;	
+}
+
+
+
+/*	
+	=========== 6. IE Specific Styles ===========
+*/
+
+
+.dj_ie6 #modals-fluid .modal-content-abs{
+	position:absolute;
+	left:5px;
+	top:38px;
+	padding-bottom:10px;
+}
+
+.dj_ie6 #lightbox-background{
+	filter:alpha(opacity=0);
+}
+
+.dj_ie6 #modals-fluid #closeModal{
+	background:none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src='/common/images/global/buttons/btn_popup_close.png',sizingMethod='crop');
+}
+
+.dj_ie6 #modals-fluid #closeModal.hover{
+	background:none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src='/common/images/global/buttons/btn_popup_close-hover.png',sizingMethod='crop');
+}
+
+.dj_ie6 #modals-fluid .modal-tl{
+	background:none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src='/common/images/global/modal/popup_top_l_corner.png',sizingMethod='image');
+	margin-right:-10px;
+}
+
+.dj_ie6 #modals-fluid .modal-tr{
+	background:none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src='/common/images/global/modal/popup_top_r_corner.png',sizingMethod='image');
+	margin-left:-10px;
+}
+
+.dj_ie6 #modals-fluid .modal-tm{
+	background:none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src='/common/images/global/modal/popup_top_bg_repeat.png',sizingMethod='scale');	
+}
+/*
+.dj_ie6 #modals-fluid .modal-middle-left,
+.dj_ie6 #modals-fluid .modal-middle-right,
+.dj_ie6 #modals-fluid .modal-middle{
+	margin-top:-7px;	
+}*/
+
+.dj_ie6 #modals-fluid .modal-middle-left
+{
+	/*background:none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src='/common/images/global/modal/popup_l_border.png',sizingMethod='scale');	*/
+}
+
+.dj_ie6 #modals-fluid .modal-middle-right
+{
+	/*background:none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src='/common/images/global/modal/popup_r_border.png',sizingMethod='scale');*/
+}
+
+.dj_ie6 #modals-fluid .modal-middle-left{
+	background-image:url(http://about.usps.com/common/images/global/modal/popup_l_border_ie6.png);	
+	background-position:left;
+	padding-right:1px;
+}
+
+.dj_ie6 #modals-fluid .modal-middle-right{
+	background-image:url(http://about.usps.com/common/images/global/modal/popup_r_border_ie6.png);	
+	background-position:right;
+}
+
+.dj_ie6 #modals-fluid .modal-bl{
+	background:none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src='/common/images/global/modal/popup_btm_l_corner_fluid.png',sizingMethod='image');
+	margin-right:-10px;
+}
+
+.dj_ie6 #modals-fluid .modal-br{
+	background:none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src='/common/images/global/modal/popup_btm_r_corner_fluid.png',sizingMethod='image');
+	margin-left:-10px;
+}
+
+.dj_ie6 #modals-fluid .modal-bm{
+	background:none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src='/common/images/global/modal/popup_btm_bg_repeat_v2_fluid.png',sizingMethod='scale');
+}
+
+.dj_ie6 #modals-fluid h2{
+	padding-top:10px;
+}
+
+
+.dj_ie6 #modals-fluid,
+.dj_ie6 #modals-fluid .modal-center,
+.dj_ie6 #modals-fluid .modal-tm,
+.dj_ie6 #modals-fluid .modal-tr,
+.dj_ie6 #modals-fluid .modal-tl,
+.dj_ie6 #modals-fluid .modal-bl,
+.dj_ie6 #modals-fluid .modal-br,
+.dj_ie6 #modals-fluid .modal-bm,
+.dj_ie6 #modals-fluid .modal-middle-right,
+.dj_ie6 #modals-fluid .modal-middle-left,
+.dj_ie6 #modals-fluid .modal-middle,
+.dj_ie6 #modals-fluid .modal-content{
+	zoom:1;}
+/*
+.dj_ie6 #modals-fluid .modal-tl{
+	background-image:url(/common/images/global/modal/popup_top_l_corner_ie6.png);
+}
+
+	
+.dj_ie6 #modals-fluid .modal-tr{
+	background-image:url(/common/images/global/modal/popup_top_r_corner_ie6.png);
+}
+
+.dj_ie6 #modals-fluid .modal-tm{
+	background-image:url(/common/images/global/modal/popup_top_bg_repeat_ie6.png);
+}
+
+
+#modals-fluid .modal-middle-left{
+	background-image:url(/common/images/global/modal/popup_l_border_ie6.png);	
+}
+.dj_ie6 #modals-fluid .modal-bl{
+	background-image:url(/common/images/global/modal/popup_btm_l_corner_fluid_ie6.png);}
+
+.dj_ie6 #modals-fluid .modal-br{
+	background-image:url(/common/images/global/modal/popup_btm_r_corner_fluid_ie6.png);}
+
+.dj_ie6 #modals-fluid .modal-bm{
+	background-image:url(/common/images/global/modal/popup_btm_bg_repeat_v2_fluid_ie6.png);}
+
+.dj_ie6 #modals-fluid .modal-tl{
+	background-image:url(/common/images/global/modal/popup_top_l_corner_ie6.png);}
+
+.dj_ie6 #modals-fluid .modal-tr{
+	background-image:url(/common/images/global/modal/popup_top_r_corner_ie6.png);}
+
+.dj_ie6 #modals-fluid .modal-tm{
+	background-image:url(/common/images/global/modal/popup_top_bg_repeat_ie6.png);}
+
+	
+.dj_ie6 #modals-fluid .modal-middle-right{
+	background:url(/common/images/global/modal/popup_r_border.png) repeat-y right top !important;}
+*/

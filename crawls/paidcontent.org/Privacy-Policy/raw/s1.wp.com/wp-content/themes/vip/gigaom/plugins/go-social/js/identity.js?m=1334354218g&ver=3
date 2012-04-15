@@ -1,0 +1,115 @@
+jQuery(function($){$("#react-tabs").tabs();});jQuery(document).ready(function($){var wp_username;var comment_id=document.location.hash;var ua=navigator.userAgent;var checker={iphone:ua.match(/(iPhone|iPod|iPad)/),blackberry:ua.match(/BlackBerry/),android:ua.match(/Android/)};$('.next-comments-link').prepend('Displaying '+$('li.comment').length+' of '+$('#react-wp-count-button').text()+' comments. ');$('#commentform input, #commentform textarea').focus(function(){$(this).removeClass('error');});$('#social-identity-feedback a[title]').tooltip({position:'center left'});$('#shared-auth').tooltip({tip:'#login-tooltip',position:'center right',offset:[-30,0],onBeforeShow:function(){return((goauth_type===null)&&!$('body').hasClass('loggedin'));},onShow:function(){if(checker.iphone)
+{$('#login-tooltip').css('top',findPos(document.getElementById('social-identity-pic')).top-50).css('left',findPos(document.getElementById('social-identity-pic')).left+60);}}});$('#author, #email, #url').example(function(){return $(this).attr('title');},{className:'form-example'});$('#credential-fields').find('label').each(function(){$(this).hide();});$('.comment-subscription-form #subscribe, .comment-subscription-form #subscribe-label').hide();$('#social-identity-remember').click(function(){if($(this).attr('checked')!=='checked'){goauth_delete_cookie('gigaom_identity_service',true);}});if($('body').hasClass('loggedin'))
+{$('.logged-in-wrapper').appendTo('#social-identity-logout');wp_username=$('#logged-in-as a').text();$('#logged-in-as').hide();$('#comment').example('Welcome, '+wp_username+'. Join the conversation.',{className:'form-example'});$('#comment').attr('title','Welcome, '+wp_username+'. Join the conversation.');window.wp_username=wp_username;}
+else
+{$(document).GoIdentity('check_identity','update_url');window.wp_username=null;}
+if(goauth_read_cookie('gigaom_comment',true)!==null)
+{$('#comment').val(goauth_read_cookie('gigaom_comment',true)).removeClass('form-example');}
+window.goauth_type=null;if(window.location.search.indexOf('go_commented')>-1)
+{goauth_delete_cookie('gigaom_comment',false);}
+$('#dialog').overlay({mask:{fixed:true,color:'#DEEBF3',loadSpeed:200,opacity:0.5},closeOnClick:false,onLoad:function(){var popup=null;var preferred_service=null;var remembered_name=null;var remember_me_cookie=null;remember_me_cookie=goauth_read_cookie('gigaom_identity_service');if(remember_me_cookie!==null)
+{remember_me_cookie=remember_me_cookie.split('|');remembered_name=remember_me_cookie[1];preferred_service=remember_me_cookie[0];$('.credentials-social-change-service').click(function(){$('#credential-social').find('.credentials-social-title').first().text('Click to log in with:');$('#credential-social').find('.credential-popup-logins').children().find('a').not('.goauth-'+preferred_service).show();$(this).removeClass('rendered');$('#credential-wp').show();$('#dialog').removeClass('remembered');});if(preferred_service!==''&&$('#social-identity-remember').attr('checked')==='checked')
+{$('#credential-social').find('.credentials-social-title').first().text('Hi, '+remembered_name+'!');$('#credential-social').find('.credential-popup-logins').children().find('a').not('.goauth-'+preferred_service).hide();$('#credential-social').find('.credentials-social-change-service').addClass('rendered');$('#credential-wp').hide();$('#dialog').addClass('remembered');}
+else
+{$('.credentials-social-change-service').trigger('click');}}
+$('#dialog').find('.goauth-wpdotcom').click(function(){goauth_create_cookie('gigaom_comment',$('#comment').val(),60);});$('#dialog').find('.credential-popup-logins li a').not('.goauth-wpdotcom').each(function(){$(this).click(function(){var url=$(this).attr('href');if($(this).hasClass('goauth-facebook'))
+{popup=window.open(url,'','resizable=1,width=880,height=480');}
+else
+{popup=window.open(url,'','resizable=1,width=480,height=480');}
+var timer=setInterval(function(){if(popup!==null){if(popup.closed){window.focus();clearInterval(timer);return $(document).GoIdentity('check_identity','submit_comment',true);}}},1000);return false;});});if(checker.iphone)
+{$('#dialog').css('position','absolute').css('top',window.pageYOffset+200);}},onClose:function()
+{$('#commentform').appendTo('#respond');$('#comment-textarea').show();$('#social-identity-feedback').show();$('#credentials').hide();$('#comment_submit').attr('src',go_social_plugin_path+'/images/submit.png');$('#credentials input').removeClass('error');$('#dialog').find('.credential-popup-logins li a').each(function(){$(this).unbind('click');});}});$('#comment-textarea').after('<input type="hidden" name="goauth" id="goauth" value="1">');$('#credentials').hide();$('#comment_submit').click(function(event){var commentdata=$('#comment').val();if(commentdata===''||commentdata===$('#comment').attr('title'))
+{$('#comment').addClass('error');return event.preventDefault();}
+if(goauth_type!==null||window.wp_username!==null)
+{return true;}
+if($('#dialog').data('overlay').isOpened())
+{return $(document).GoIdentity('validate_fields');}
+else
+{$('#comment_submit').attr('src',go_social_plugin_path+'/images/guest-comment.png');$('#credential-fields').addClass('guest-comment');$('#dialog').data('overlay').load();$('#commentform').appendTo('#credential-wp');$('#comment-textarea').hide();$('#social-identity-feedback').hide();$('#credentials').find('li').css('float','right');$('#comment_submit').css('float','right');$('#credentials').show();}
+event.preventDefault();});});function go_setup_share_tooltip(args,$){var ua=navigator.userAgent;var checker={iphone:ua.match(/(iPhone|iPod|iPad)/),blackberry:ua.match(/BlackBerry/),android:ua.match(/Android/)};var settings={relative:true,tip_arr:null,tipSelector:null,};args=$.extend(settings,args);var post_comment_tip_name='#sharing-tooltip-'+args.tip_arr[2];if(checker.iphone)
+{args.relative=false;}
+$('#post-comment-thanks').find('.comment-sharing-icons').tooltip({tip:post_comment_tip_name,position:'center right',relative:args.relative,delay:1000,offset:[-40,10],events:{tooltip:'mouseenter, mouseleave touchstart'},onBeforeShow:function(){var $tooltip=$(post_comment_tip_name);var post_title=$('.post-content').find('.title').text().replace(/^\s+|\s+$/g,"");if(post_title.length>84)
+{post_title=post_title.substring(0,84)+'...';}
+var twitter_text='Discuss %22'+post_title+'%22 with me on: ';if(typeof FB.ui=='function')
+{$tooltip.find('.fb-sharing-tooltip').click(function(event){if(checker.iphone)
+{document.getElementById('brand').scrollIntoView(false);}
+FB.ui({method:'feed',name:'Discuss "'+$('.post-content').find('.title').text().replace(/^\s+|\s+$/g,"")+'" with me @'+twitter_handle+'.',caption:'by '+$tooltip.prevAll('.comment-meta').find('cite').text(),link:$tooltip.find('.fb-sharing-tooltip a').attr('href'),description:$tooltip.prevAll('.comment-text').find('p').first().text()},function(response){document.getElementById('post-comment-thanks').scrollIntoView(false);return;});event.preventDefault();});}
+if($tooltip.hasClass('rendered'))
+{return;}
+$tooltip.find('.fb-sharing-tooltip').addClass('rendered');$tooltip.find('.twitter-sharing-tooltip').html('<iframe allowtransparency="true" frameborder="0" scrolling="no"'+
+' src="http://platform.twitter.com/widgets/tweet_button.html?via='+twitter_handle+'&url='+$tooltip.find('.twitter-share-needs-parsing').attr('data-url')+
+'&text='+twitter_text+
+'" style="width:130px; height:20px;"></iframe>');$tooltip.find('.twitter-share-needs-parsing').removeClass('twitter-share-needs-parsing').addClass('twitter-share-rendered');$tooltip.find('.linkedin-sharing-tooltip').find('script').attr('type','IN/Share');IN.parse(document.getElementById('linkedin-sharing-tooltip-'+args.tip_arr[2]));gapi.plusone.render('google-sharing-tooltip-'+args.tip_arr[2],{"size":"medium","count":"true","href":$tooltip.find('.google-sharing-tooltip').attr('data-url')});$tooltip.addClass('rendered');},onShow:function(event){if(checker.iphone)
+{var offset=ua.match(/OS\ 5/)?event.pageY:event.clientY;var $tooltip=$(post_comment_tip_name);$tooltip.css('position','absolute !important').css('top',offset-document.getElementById('react-tabs').offsetTop-280);}},onHide:function(event){var $tooltip=$(post_comment_tip_name);$tooltip.find('.fb-sharing-tooltip').unbind('click');}});}
+function go_post_comment_share($)
+{var comment_id=document.location.hash;var ua=navigator.userAgent;var checker={iphone:ua.match(/(iPhone|iPod|iPad)/),blackberry:ua.match(/BlackBerry/),android:ua.match(/Android/)};if(comment_id.match(/^#comment-/)!==null&&document.location.hash.length>0&&document.location.search.match('go_commented=1'))
+{$(comment_id).find('.comment-content').prepend('<div class="post-comment-highlight" id="post-comment-thanks"><div id="post-comment-thanks-text">Thank you for your comment!</div><div id="post-comment-sharing">'+
+'Share with the world, "Discuss this with me on '+twitter_handle+'..."</div><div id="post-comment-sharing-icons"></div></div>');$(comment_id).find('.comment-content').children().addClass('post-comment-highlight');$(comment_id).addClass('post-comment');$(comment_id).find('.comment-sharing').appendTo('#post-comment-sharing-icons');$(comment_id).find('#post-comment-sharing-icons').find('span').text('');go_setup_share_tooltip({tip_arr:$('#post-comment-thanks').find('.comment-sharing-icons').attr('id').split('-')},$);}}
+function go_refresh_comment_stream($)
+{var ua=navigator.userAgent;var checker={iphone:ua.match(/(iPhone|iPod|iPad)/),blackberry:ua.match(/BlackBerry/),android:ua.match(/Android/)};var post_comment='#comment-sharing-'+document.location.hash.split('-')[1];$('.comment-sharing-icons').not(post_comment).each(function(index,el){var id_arr=$(el).attr('id').split('-');var tip_name='#sharing-tooltip-'+id_arr[2];var relativity=true;if(checker.iphone)
+{relativity=false;}
+$(el).tooltip({tip:tip_name,position:'center right',offset:[-40,5],delay:500,relative:relativity,events:{def:'mouseenter, mouseleave',tooltip:'mouseenter, mouseleave touchstart'},onBeforeShow:function(){var $tooltip=$(tip_name);var post_title=$('.post-content').find('.title').text().replace(/^\s+|\s+$/g,"");if(post_title.length>84)
+{post_title=post_title.substring(0,84)+'...';}
+var twitter_text='Interesting comment on %22'+post_title+'%22: ';if(typeof FB.ui=='function')
+{$tooltip.find('.fb-sharing-tooltip').click(function(event){if(checker.iphone)
+{document.getElementById('brand').scrollIntoView(false);}
+FB.ui({method:'feed',name:'Interesting comment on "'+$('.post-content').find('.title').text().replace(/^\s+|\s+$/g,"")+'"',caption:'by '+$tooltip.prevAll('.comment-meta').find('cite').text(),link:$tooltip.find('.fb-sharing-tooltip a').attr('href'),description:$tooltip.prevAll('.comment-text').find('p').first().text()},function(response){document.getElementById(el.id).scrollIntoView(false);return;});event.preventDefault();});}
+if($tooltip.hasClass('rendered'))
+{return;}
+$tooltip.find('.fb-sharing-tooltip').addClass('rendered');$tooltip.find('.twitter-sharing-tooltip').html('<iframe allowtransparency="true" frameborder="0" scrolling="no"'+
+' src="http://platform.twitter.com/widgets/tweet_button.html?via='+twitter_handle+'&url='+$tooltip.find('.twitter-share-needs-parsing').attr('data-url')+
+'&text='+twitter_text+
+'" style="width:130px; height:20px;"></iframe>');$tooltip.find('.twitter-share-needs-parsing').removeClass('twitter-share-needs-parsing').addClass('twitter-share-rendered');$tooltip.find('.linkedin-sharing-tooltip').find('script').attr('type','IN/Share');IN.parse(document.getElementById('linkedin-sharing-tooltip-'+id_arr[2]));gapi.plusone.render('google-sharing-tooltip-'+id_arr[2],{"size":"medium","count":"true","href":$tooltip.find('.google-sharing-tooltip').attr('data-url')});$tooltip.addClass('rendered');},onShow:function(event){if(checker.iphone)
+{var offset=ua.match(/OS\ 5/)?event.pageY:event.clientY;var $tooltip=$(tip_name);$tooltip.css('position','absolute !important').css('top',offset-document.getElementById('react-tabs').offsetTop-280);}},onHide:function(event){var $tooltip=$(tip_name);$tooltip.find('.fb-sharing-tooltip').unbind('click');}});}).click(function(){return false;});}
+function findPos(obj)
+{var curleft=curtop=0;if(obj.offsetParent)
+{do
+{curleft+=obj.offsetLeft;curtop+=obj.offsetTop;}
+while(obj=obj.offsetParent);}
+return{left:curleft,top:curtop};}
+function goauth_get_gravatar(email,size){var MD5=function(s){function L(k,d){return(k<<d)|(k>>>(32-d))}function K(G,k){var I,d,F,H,x;F=(G&2147483648);H=(k&2147483648);I=(G&1073741824);d=(k&1073741824);x=(G&1073741823)+(k&1073741823);if(I&d){return(x^2147483648^F^H)}if(I|d){if(x&1073741824){return(x^3221225472^F^H)}else{return(x^1073741824^F^H)}}else{return(x^F^H)}}function r(d,F,k){return(d&F)|((~d)&k)}function q(d,F,k){return(d&k)|(F&(~k))}function p(d,F,k){return(d^F^k)}function n(d,F,k){return(F^(d|(~k)))}function u(G,F,aa,Z,k,H,I){G=K(G,K(K(r(F,aa,Z),k),I));return K(L(G,H),F)}function f(G,F,aa,Z,k,H,I){G=K(G,K(K(q(F,aa,Z),k),I));return K(L(G,H),F)}function D(G,F,aa,Z,k,H,I){G=K(G,K(K(p(F,aa,Z),k),I));return K(L(G,H),F)}function t(G,F,aa,Z,k,H,I){G=K(G,K(K(n(F,aa,Z),k),I));return K(L(G,H),F)}function e(G){var Z;var F=G.length;var x=F+8;var k=(x-(x%64))/64;var I=(k+1)*16;var aa=Array(I-1);var d=0;var H=0;while(H<F){Z=(H-(H%4))/4;d=(H%4)*8;aa[Z]=(aa[Z]|(G.charCodeAt(H)<<d));H++}Z=(H-(H%4))/4;d=(H%4)*8;aa[Z]=aa[Z]|(128<<d);aa[I-2]=F<<3;aa[I-1]=F>>>29;return aa}function B(x){var k="",F="",G,d;for(d=0;d<=3;d++){G=(x>>>(d*8))&255;F="0"+G.toString(16);k=k+F.substr(F.length-2,2)}return k}function J(k){k=k.replace(/\r\n/g,"\n");var d="";for(var F=0;F<k.length;F++){var x=k.charCodeAt(F);if(x<128){d+=String.fromCharCode(x)}else{if((x>127)&&(x<2048)){d+=String.fromCharCode((x>>6)|192);d+=String.fromCharCode((x&63)|128)}else{d+=String.fromCharCode((x>>12)|224);d+=String.fromCharCode(((x>>6)&63)|128);d+=String.fromCharCode((x&63)|128)}}}return d}var C=Array();var P,h,E,v,g,Y,X,W,V;var S=7,Q=12,N=17,M=22;var A=5,z=9,y=14,w=20;var o=4,m=11,l=16,j=23;var U=6,T=10,R=15,O=21;s=J(s);C=e(s);Y=1732584193;X=4023233417;W=2562383102;V=271733878;for(P=0;P<C.length;P+=16){h=Y;E=X;v=W;g=V;Y=u(Y,X,W,V,C[P+0],S,3614090360);V=u(V,Y,X,W,C[P+1],Q,3905402710);W=u(W,V,Y,X,C[P+2],N,606105819);X=u(X,W,V,Y,C[P+3],M,3250441966);Y=u(Y,X,W,V,C[P+4],S,4118548399);V=u(V,Y,X,W,C[P+5],Q,1200080426);W=u(W,V,Y,X,C[P+6],N,2821735955);X=u(X,W,V,Y,C[P+7],M,4249261313);Y=u(Y,X,W,V,C[P+8],S,1770035416);V=u(V,Y,X,W,C[P+9],Q,2336552879);W=u(W,V,Y,X,C[P+10],N,4294925233);X=u(X,W,V,Y,C[P+11],M,2304563134);Y=u(Y,X,W,V,C[P+12],S,1804603682);V=u(V,Y,X,W,C[P+13],Q,4254626195);W=u(W,V,Y,X,C[P+14],N,2792965006);X=u(X,W,V,Y,C[P+15],M,1236535329);Y=f(Y,X,W,V,C[P+1],A,4129170786);V=f(V,Y,X,W,C[P+6],z,3225465664);W=f(W,V,Y,X,C[P+11],y,643717713);X=f(X,W,V,Y,C[P+0],w,3921069994);Y=f(Y,X,W,V,C[P+5],A,3593408605);V=f(V,Y,X,W,C[P+10],z,38016083);W=f(W,V,Y,X,C[P+15],y,3634488961);X=f(X,W,V,Y,C[P+4],w,3889429448);Y=f(Y,X,W,V,C[P+9],A,568446438);V=f(V,Y,X,W,C[P+14],z,3275163606);W=f(W,V,Y,X,C[P+3],y,4107603335);X=f(X,W,V,Y,C[P+8],w,1163531501);Y=f(Y,X,W,V,C[P+13],A,2850285829);V=f(V,Y,X,W,C[P+2],z,4243563512);W=f(W,V,Y,X,C[P+7],y,1735328473);X=f(X,W,V,Y,C[P+12],w,2368359562);Y=D(Y,X,W,V,C[P+5],o,4294588738);V=D(V,Y,X,W,C[P+8],m,2272392833);W=D(W,V,Y,X,C[P+11],l,1839030562);X=D(X,W,V,Y,C[P+14],j,4259657740);Y=D(Y,X,W,V,C[P+1],o,2763975236);V=D(V,Y,X,W,C[P+4],m,1272893353);W=D(W,V,Y,X,C[P+7],l,4139469664);X=D(X,W,V,Y,C[P+10],j,3200236656);Y=D(Y,X,W,V,C[P+13],o,681279174);V=D(V,Y,X,W,C[P+0],m,3936430074);W=D(W,V,Y,X,C[P+3],l,3572445317);X=D(X,W,V,Y,C[P+6],j,76029189);Y=D(Y,X,W,V,C[P+9],o,3654602809);V=D(V,Y,X,W,C[P+12],m,3873151461);W=D(W,V,Y,X,C[P+15],l,530742520);X=D(X,W,V,Y,C[P+2],j,3299628645);Y=t(Y,X,W,V,C[P+0],U,4096336452);V=t(V,Y,X,W,C[P+7],T,1126891415);W=t(W,V,Y,X,C[P+14],R,2878612391);X=t(X,W,V,Y,C[P+5],O,4237533241);Y=t(Y,X,W,V,C[P+12],U,1700485571);V=t(V,Y,X,W,C[P+3],T,2399980690);W=t(W,V,Y,X,C[P+10],R,4293915773);X=t(X,W,V,Y,C[P+1],O,2240044497);Y=t(Y,X,W,V,C[P+8],U,1873313359);V=t(V,Y,X,W,C[P+15],T,4264355552);W=t(W,V,Y,X,C[P+6],R,2734768916);X=t(X,W,V,Y,C[P+13],O,1309151649);Y=t(Y,X,W,V,C[P+4],U,4149444226);V=t(V,Y,X,W,C[P+11],T,3174756917);W=t(W,V,Y,X,C[P+2],R,718787259);X=t(X,W,V,Y,C[P+9],O,3951481745);Y=K(Y,h);X=K(X,E);W=K(W,v);V=K(V,g)}var i=B(Y)+B(X)+B(W)+B(V);return i.toLowerCase()};var size=size||80;return'http://www.gravatar.com/avatar/'+MD5(email)+'.jpg?s='+size;}
+function goauth_get_current_url(call_back)
+{return document.location.href+call_back;}
+function goauth_get_current_server()
+{return social_identity_server;}
+function goauth_auth_type(user)
+{var auth_type=null;if(user.go_remote_identity.twitter!==undefined)
+{auth_type='twitter';}
+else if(user.go_remote_identity.linkedin!==undefined)
+{auth_type='linkedin';}
+else if(user.go_remote_identity.facebook!==undefined)
+{auth_type='facebook';}
+else if(user.go_remote_identity.gigaom!==undefined)
+{auth_type='gigaom';}
+window.goauth_type=auth_type;window.goauth_user=user;if(jQuery('#comment-textarea').next('#goauth_cookie').length===0)
+jQuery('#comment-textarea').after('<input type="hidden" name="goauth_cookie" id="goauth_cookie" value="'+user.cookie+'">');return auth_type;}
+function goauth_print_logout_button(user)
+{var logout_pop=null;jQuery('#social-identity-logout').html('<a href="javascript: void(0)">Logout</a>');jQuery('#social-identity-logout').click(function(){logout_pop=window.open(user.logout_url+'?redirect_to=/?goauth_action=logout','','resizable=1,width=100,height=100');var timer=setInterval(function(){if(logout_pop!==null){this.parent.focus();if(logout_pop.closed){clearInterval(timer);window.location.reload();}}},1000);});}
+function goauth_create_global_cookie(name,value,seconds){if(seconds){var date=new Date();date.setTime(date.getTime()+(seconds*1000));var expires="; expires="+date.toGMTString();}
+else var expires="";document.cookie=name+"="+value+expires+"; path=/";}
+function goauth_create_cookie(name,value,seconds){if(jQuery('div[id^="post-content-"]').length===0)
+return;var post_arr=jQuery('div[id^="post-content-"]').attr('id').split('-');;name+='_'+post_arr[2];if(seconds){var date=new Date();date.setTime(date.getTime()+(seconds*1000));var expires="; expires="+date.toGMTString();}
+else var expires="";document.cookie=name+"="+value+expires+"; path=/";}
+function goauth_read_cookie(name,unique){if(jQuery('div[id^="post-content-"]').length===0)
+return;if(unique)
+{var post_arr=jQuery('div[id^="post-content-"]').attr('id').split('-');name+='_'+post_arr[2];}
+var nameEQ=name+"=";var ca=document.cookie.split(';');for(var i=0;i<ca.length;i++){var c=ca[i];while(c.charAt(0)==' ')c=c.substring(1,c.length);if(c.indexOf(nameEQ)==0)return c.substring(nameEQ.length,c.length);}
+return null;}
+function goauth_delete_cookie(name,global){if(global)
+{goauth_create_global_cookie(name,"",-1);}
+else
+{var post_arr=jQuery('div[id^="post-content-"]').attr('id').split('-');name+='_'+post_arr[2];goauth_create_cookie(name,"",-1);}}
+(function($){var methods={init:function(user){if(user===null||user===undefined)
+return false;else
+this.GoIdentity('comment_fill',user);},comment_fill:function(user){$('#author').val(user.display_name);$('#url').val(user.user_url);if(goauth_type=='twitter')
+{$('#email').val(user.twitter_id+'@twitter.id');}
+else if(goauth_type=='linkedin')
+{$('#email').val(user.linkedin_id+'@linkedin.id');}
+else
+{$('#email').val(user.user_email);}},update_url:function(user){goauth_print_logout_button(user);goauth_auth_type(user);$('#social-identity-pic img').attr('src',user.picture_url).css({'height':55,'width':55});$('#comment').example('Welcome, '+user.display_name+'. Join the conversation.',{className:'form-example'});$('#comment').attr('title','Welcome, '+user.display_name+'. Join the conversation.');$('#social-identity-chiclet').removeClass('loggedout').addClass(goauth_type);},print_login:function(user){jQuery(document).GoIdentity('comment_fill',user);},submit_comment:function(user){$('#dialog').addClass('ajax-loading').children().hide();$('.ajax-loading').show();$('#dialog').height(220).width(380);$('#commentform').attr('action','http://'+document.location.host+'/wp-comments-post.php');clearInterval(timer);if($('#social-identity-remember').attr('checked'))
+{goauth_create_global_cookie('gigaom_identity_service',goauth_type+'|'+user.display_name,30*24*60*60);}
+$('#commentform').submit();},validate_fields:function(){var author=($('#author').val()!==$('#author').attr('title')&&$('#author').val().length>0);var email=$('#email').val();var email_pattern=/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;var valid_email=email.match(email_pattern)?true:false;if(!author)
+$('#author').addClass('error');if(!valid_email)
+$('#email').addClass('error');return author&&valid_email;},check_identity:function(js_method,force_check){var force=force_check?force_check:null;force=true;if(goauth_read_cookie('pro-is-logged-in')===null&&force===null)
+{jQuery(window).load(function(){jQuery('#comment').example(function(){return $(this).attr('title');},{className:'form-example'});});return jQuery(this);}
+var social_ajax=goauth_get_current_server()+'/wp-admin/admin-ajax.php?action=go_identity&callback=?';return jQuery.ajax({url:social_ajax,cache:true,dataType:'jsonp',error:function(j,t,error){return false;},success:function(u){auth_type=goauth_auth_type(u);$('#commentform').attr('action','http://'+document.location.host+'/wp-comments-post.php');jQuery(document).GoIdentity(js_method,u);}});return jQuery(this);}};$.fn.GoIdentity=function(method){if(methods[method]){return methods[method].apply(this,Array.prototype.slice.call(arguments,1));}else if(typeof method==='object'||!method){return methods.init.apply(this,arguments);}else{$.error('Method '+method+' does not exist on jQuery.GoIdentity');}};})(jQuery);

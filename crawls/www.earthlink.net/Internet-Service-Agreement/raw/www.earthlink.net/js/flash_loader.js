@@ -1,0 +1,3 @@
+function writeFlash(id) { 
+    document.getElementById(id).innerHTML = "<object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0' wmode='transparent' width='104' height='23' id='pq_flash_loader' align='middle'><param name='allowScriptAccess' value='sameDomain' /><param name='movie' value='img/com/squares.swf' /><param name='quality' value='high' /><param name='wmode' value='transparent' /><embed src='img/com/squares.swf' quality='high' bgcolor='#F7F8F9' width='104' height='23' name='pq_flash_loader' align='middle' allowScriptAccess='sameDomain' type='application/x-shockwave-flash' pluginspage='http://www.macromedia.com/go/getflashplayer' /></object>";
+} 

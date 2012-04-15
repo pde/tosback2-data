@@ -1,0 +1,925 @@
+@charset "UTF-8";
+/* ================= BEGIN base.css ==================*/
+/**
+ * "Yet Another Multicolumn Layout" - (X)HTML/CSS Framework
+ * (en) YAML core stylesheet
+*/
+@media all
+{
+ /**
+  * @section browser reset
+  * @see     http://www.yaml.de/en/documentation/css-components/base-stylesheet.html
+  */
+  /* (en) Global reset of paddings and margins for all HTML elements */
+  /* (de) Globales Zur�cksetzen der Innen- und Au�enabst�nde f�r alle HTML-Elemente */
+  * { margin:0; padding: 0; }
+
+  /* (en) Correction: margin/padding reset caused too small select boxes. */
+  option { padding-left: 0.4em; } /* LTR */
+  select { padding: 1px; }
+
+ /**
+  * (en) Global fix of the Italics bugs in IE 5.x and IE 6
+  * @bugfix
+  * @affected   IE 5.x/Win, IE6
+  * @css-for    IE 5.x/Win, IE6
+  * @valid      yes
+  */
+  * html body * { overflow:visible; }
+  * html iframe, * html frame { overflow:auto; }
+  * html frameset { overflow:hidden; }
+
+  /* (en) Forcing vertical scrollbars in Netscape, Firefox and Safari browsers */
+  html { height: 100%; margin-bottom: 1px; }
+  body {
+    /* (en) Fix for rounding errors when scaling font sizes in older versions of Opera browser */
+    font-size: 100.01%;
+
+    /* (en) Standard values for colors and text alignment */
+
+    color: #000;
+    background: #fff;
+    text-align: left; /* LTR */
+  }
+
+  /* (en) Clear borders for <fieldset> and <img> elements */
+  fieldset, img { border: 0 solid; }
+
+  /* (en) new standard values for lists, blockquote and cite */
+  ul, ol, dl { margin: 0 0 1em 1em } /* LTR */
+  li {
+    margin-left: 0.8em; /* LTR */
+    line-height: 1.5em;
+  }
+  dt { font-weight: bold; }
+  dd { margin: 0 0 1em 0.8em; } /* LTR */
+
+  blockquote { margin: 0 0 1em 0.8em; } /* LTR */
+
+  blockquote:before, blockquote:after,
+  q:before, q:after { content: ""; }
+
+ /*------------------------------------------------------------------------------------------------------*/
+
+ /**
+  * @section base layout | Basis Layout
+  * @see     http://www.yaml.de/en/documentation/css-components/base-stylesheet.html
+  *
+  * |-------------------------------|
+  * | #header                       |
+  * |-------------------------------|
+  * | #col1   | #col3     | #col2   |
+  * | 200 px  | flexible  | 200px   |
+  * |-------------------------------|
+  * | #footer                       |
+  * |-------------------------------|
+  */
+
+  #header { position:relative; }
+
+  /* (en) Text Alignment for #topnav content */
+  #topnav { text-align: right; }  /* LTR */
+
+  /* (en) Absolute positioning only within #header */
+  #header #topnav {
+    position:absolute;
+    top: 10px;
+    right: 10px; /* LTR */
+  }
+
+  /* (en) Backup for correct positioning */
+  #header, #nav, #main, #footer { clear:both; }
+
+  /* (en/de) Standard: 200 Pixel */
+  #col1 { float: left; width: 200px }
+  /* (en/de) Standard: 200 Pixel */
+  #col2 { float:right; width: 200px }
+  /* (en) Standard: center column with flexible width */
+  #col3 { width:auto; margin: 0 200px }
+
+  /* (en) Preparation for absolute positioning within content columns */
+  #col1_content, #col2_content, #col3_content { position:relative; }
+  
+  #rsHomepage #col1 { float: left; width: 247px;  margin:0; border:0;}
+  #rsHomepage #col2 { float: left; width: 400px;  margin:0; }
+  #rsHomepage #col3 { width: auto; width:324px; margin: 0 0 0 651px;}
+  #rsHomepage #col1_content { padding: 0 10px 0 20px; }
+  #rsHomepage #col2_content { padding: 0 0px; }
+  #rsHomepage #col3_content { padding: 0 0px 0 0px; /*overflow: hidden;*/}
+
+ /*------------------------------------------------------------------------------------------------------*/
+
+ /**
+  * @section clearing methods
+  * @see     http://yaml.de/en/documentation/basics/general.html
+  */
+
+  /* (en) clearfix method for clearing floats */
+  .clearfix:after {
+    content: ".";
+    display: block;
+    font-size:0;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+
+  /* (en) essential for Safari browser !! */
+  .clearfix { display: block; }
+
+  /* (en) overflow method for clearing floats */
+  .floatbox { overflow:hidden; }
+
+  /* (en) IE-Clearing: Only used in Internet Explorer, switched on in iehacks.css */
+  #ie_clearing { display: none; }
+
+ /*------------------------------------------------------------------------------------------------------*/
+
+ /**
+  * @section subtemplates
+  * @see     http://www.yaml.de/en/documentation/practice/subtemplates.html
+  */
+  .subcolumns { width: 100%; overflow:hidden; }
+
+  /* (en) alternative class for optional support of old Mozilla/Netscape browers */
+  .subcolumns_oldgecko { width: 100%; float:left; }
+
+/* RS ADAPTIONS: C34L, C34R*/
+  .c50l, .c15l, .c25l, .c33l, .c35l, .c38l, .c66l, .c75l, .c85l, .c62l, .c65l {float: left; }
+  .c50r, .c15r, .c25r, .c33r, .c35r, .c38r, .c66r, .c75r, .c85r, .c62r, .c65r {float: right; margin-left: -5px; }
+
+  .c15l, .c15r { width: 15%; }
+  .c25l, .c25r { width: 25%; }
+  .c33l, .c33r { width: 33.333%; }
+  .c35l, .c35r { width: 34.4%; } 
+  .c50l, .c50r { width: 50%; }
+  .c66l, .c66r { width: 66.666%; }
+  .c75l, .c75r { width: 75%; }
+  .c38l, .c38r { width: 38.2%; }
+  .c62l, .c62r { width: 61.8%; }
+  .c65l, .c65r { width: 65.5% }
+  .c85l, .c85r { width: 85% }  
+
+  .subc  { padding: 0 0.5em; }
+  .subcl { padding: 0 1em 0 0; }
+  .subcr { padding: 0 0 0 1em; }
+
+  .equalize, .equalize .subcolumns { overflow:visible; display:table; table-layout:fixed; }
+  .equalize .c50l,.equalize .c25l,.equalize .c33l,.equalize .c38l,.equalize .c66l,
+  .equalize .c75l,.equalize .c62l,.equalize .c50r,.equalize .c25r,.equalize .c33r,
+  .equalize .c38r,.equalize .c66r,.equalize .c75r,.equalize .c62r {
+    display:table-cell; vertical-align:top;
+    float:none; margin:0; overflow:hidden;
+  }
+
+ /*------------------------------------------------------------------------------------------------------*/
+
+ /**
+  * @section hidden elements | Versteckte Elemente
+  * @see     http://www.yaml.de/en/documentation/basics/skip-links.html
+  * (en) skip links and hidden content
+  */
+  /* (en) classes for invisible elements in the base layout */
+  .skip, .hideme, .print, dfn {
+    position: absolute;
+    left: -1000em; /* LTR */
+    top: -1000em;
+  }
+
+  /* (en) make skip links visible when using tab navigation */
+  .skip:focus, .skip:active {
+    position: static;
+    left: 0;
+    top:0;
+  }
+}
+#main { margin:15px 0; height:1%;}
+/* ================= END base.css ==================*/
+/* ================= BEGIN basemod.css ==================*/
+@media screen, projection
+{
+  /* body { background: #4d87c7 url("images/bg_blue.gif") repeat-x top left fixed; } */
+
+  .page_margins { margin: 0 auto; }
+  .page_margins { width: auto;  min-width: 980px; max-width: 980px; background: #fff; }
+  .page { padding: 10px; }
+  .rsFooter { clear:both;height: 1%;}
+  #topnav { color: #aaa; background: transparent; }
+  /* #nav { overflow:hidden; } */
+  div.hlist { /* background-color: #c8ddf3 */ }
+  #rsHomepage #main {    margin: 4px 0 15px; background-image:url(http://assets.rollingstone.com/images/fe/layout/hpBackground.gif);background-repeat:repeat-y; border-left:1px solid #7f8080;border-right:1px solid #7f8080;}
+
+/*   #artistPage #main {margin-top:0px;}  */
+  #teaser { clear:both; padding: 0 20px; margin: 10px 0; }
+  #footer { padding: 10px 20px; color:#666; background: #f9f9f9; border-top: 5px #efefef solid; }
+  /* #nav ul { margin-left: 20px; } */
+  #nav ul { margin:0;}
+  #nav #mainMenu #menuFooter ul {margin-left:5px;}
+  #col1 { float: left; width: 643px; }
+  #artistPage #col1,
+  .mixedColumns #col1
+   {
+  	width: 978px;
+  	background-color:#fff;
+	border-left:1px solid #7f8080;
+	border-right:1px solid #7f8080;
+	margin-bottom:15px;
+  }
+  #col2 { display:none}
+  #rsHomepage #col2 {display:block;}
+  #col3 { width: auto; margin: 0 0 0 648px}
+  #col1_content { padding: 0 10px 0 20px }
+  #artistPage #main #col1_content { padding: 0 0 0 0 }  
+  #actualContent .mixedColumns #col1_content { padding: 0px 0px 0 0px }
+  #actualContent .homepage.mixedColumns #col1_content { padding-top: 14px;}  
+  #col3_content { padding: 0 20px 0 10px }
+  .syncedHeight {overflow:hidden !important;}
+
+}
+/* ================= END basemod.css ==================*/
+/* ================= BEGIN content.css ==================*/
+@media all
+{
+
+
+  textarea, pre, code, kbd, samp, var, tt {
+    font-family: Georgia, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier;
+  }
+
+  /* (en) base layout gets standard font size 12px */
+  body {
+    font-family:  Georgia, Helvetica, sans-serif;
+    font-size: 75.00%;
+    color: #444;
+  }
+
+  /*--- Headings | �berschriften ------------------------------------------------------------------------*/
+
+  h1,h2,h3,h4,h5,h6 {
+    font-family: Georgia, Times, serif;
+    font-weight:normal;
+    color:#222;
+    margin: 0 0 0em 0;
+  }
+
+  h1 { 
+	font-size: 250%; 
+	color:#FFFFFF;
+	font-size:33px;
+	font-weight:bold;
+	}                       /* 30px */
+  h2 { font-size: 200%; }                       /* 24px */
+  h3 { font-size: 150%; }                       /* 18px */
+  h4 { font-size: 100%; }                    /* 16px */
+  h5 { font-size: 100.67%; }                    /* 14px */
+  h6 { font-size: 100.67%; }                    /* 14px */
+
+  /* --- Lists  -------------------------------------------------------------------------------- */
+
+/*   ul, ol, dl { line-height: 1.5em; margin: 0 0 1em 1em; } */
+  ul, ol, dl { line-height: 1.5em; margin: 0; }
+  ul li { list-style-type: disc; }
+  ul ul li { list-style-type: circle; }
+
+  ol li { list-style-type: decimal; }
+  ol ol li { list-style-type: lower-latin; }
+
+  /*
+li { margin-left: 0.8em; line-height: 1.5em; }
+*/
+
+  li { margin:0; line-height: 1.5em; }
+
+  dt { font-weight: bold; }
+  dd { margin: 0 0 1em 0.8em; }
+
+  /* --- general text formatting------------------------------------------ */
+
+  p { line-height: 1.5em; margin: 0 0 1em 0; }
+
+  blockquote, cite,q {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-style:italic;
+  }
+  blockquote { margin: 0 0 1em 1.6em; color: #666; }
+
+  strong,b { font-weight: bold; }
+  em,i { font-style: italic; }
+
+  pre, code, kbd, tt, samp, var { font-size: 100%; }
+  pre, code { color: #800; }
+  pre { line-height: 1.5em; margin: 0 0 1em 0; }
+  kbd, samp, var { color: #666; }
+  var { font-style: italic; }
+
+  acronym, abbr {
+    border-bottom: 1px #aaa dotted;
+    font-variant: small-caps;
+    letter-spacing: .07em;
+    cursor: help;
+  }
+
+  sub, sup { font-size: 91.6667%; }
+
+  hr {
+    color: #fff;
+    background:transparent;
+    margin: 0 0 0.5em 0;
+    padding: 0 0 0.5em 0;
+    border:0;
+    border-bottom: 1px #eee solid;
+  }
+
+  /*--- Links -------------------------------------- */
+
+  a { color: #4D87C7; background:transparent; text-decoration:none; }
+  a:visited  { color: #036; }
+
+  a:focus,
+  a:hover,
+  a:active { color:#182E7A; text-decoration:underline; }
+
+  /* --- images (with optional captions) ----- */
+
+  p.icaption_left { float:left; display:inline; margin: 0 1em 0.15em 0; }
+  p.icaption_right { float:right; display:inline; margin: 0 0 0.15em 1em; }
+
+  p.icaption_left img,
+  p.icaption_right img { padding:0; border: 1px #888 solid; }
+
+  p.icaption_left strong,
+  p.icaption_right strong { display:block; overflow:hidden; margin-top: 2px; padding: 0.3em 0.5em; background: #eee; font-weight: normal; font-size: 91.667%; }
+
+  .highlight { color: #000; }
+  .dimmed { color: #888; }
+
+  .info { background: #f8f8f8; color: #666; padding: 10px; margin-bottom: 0.5em; font-size: 91.7%; }
+
+  .note { background: #efe; color: #040; border: 2px #484 solid; padding: 10px; margin-bottom: 1em; }
+  .important { background: #ffe; color: #440; border: 2px #884 solid; padding: 10px; margin-bottom: 1em; }
+  .warning { background: #fee; color: #400; border: 2px #844 solid; padding: 10px; margin-bottom: 1em; }
+
+  .float_left { float: left; display:inline; margin-right: 1em; margin-bottom: 0.15em; }
+  .float_right { float: right; display:inline; margin-left: 1em; margin-bottom: 0.15em; }
+  .center { display:block; text-align:center; margin: 0.5em auto; }
+
+  table { width: auto; border-collapse:collapse; margin-bottom: 0.5em; }
+  .containerListWrap table {border-collapse:separate; margin-bottom: 0; }
+  table caption { font-variant:small-caps; }
+  table.full { width: 100%; }
+  table.fixed { table-layout:fixed; }
+
+  th,td { padding: 0.5em; }
+  .x-small-editor td,
+  .containerWrap th, .containerWrap td,
+  .containerListWrap th, .containerListWrap td { padding: 0em; }
+  thead th { color: #000; }
+  tbody th { color: #333; }
+  tbody th[scope="row"], tbody th.sub { background: #f0f0f0; }
+
+  tbody th {text-align: left; }
+  tbody td { }
+
+
+}
+/* ================= END content.css ==================*/
+/* ================= BEGIN print.css ==================*/
+@media print
+{
+ /**
+  * @section basic layout preparation
+  * @see     http://www.yaml.de/en/documentation/css-components/layout-for-print-media.html
+  */
+
+  /* (en) change font size unit to [pt] - avoiding problems with [px] unit in Gecko based browsers  */
+  body { font-size: 10pt; }
+  
+  /* (en) Reset Scrollbar-Fix for FF in screenlayout */
+  html { height: auto; margin-bottom: 0; }
+
+  /* (en) Hide unneeded container of the screenlayout in print layout */
+  #topHeadActions, #nav, #headerTout1, #searchContainer, #rsFooter { display: none !important;}
+#main #col1 #col1_content {overflow: visible}
+
+  /* (en) Disable background graphics of links  */
+  body a[href^="http:"],
+  body a[href^="https:"] {
+    padding-left: 0;
+    background-image: none;
+  }
+    
+ /**
+  * (en) overflow:hidden Bug in print layouts
+  * @bugfix
+  * @since     3.0
+  * @affected  FF2.0, FF3.0, IE7
+  * @css-for   all browsers
+  * @valid     yes
+  */
+  .floatbox,
+  .subcolumns,
+  .subcolums_oldgecko { overflow:visible; display: table; }
+  /* (en) Linearising subtemplates */
+  .c25l, .c33l, .c38l, .c50l, .c62l, .c66l, .c75l,
+  .c25r, .c33r, .c38r, .c50r, .c62r, .c66r, .c75r {
+    width: 100%; margin:0; padding: 0; float:none !important; overflow:visible; display:table !important;
+  }
+  .subc, .subcl, .subcr  { margin: 0; padding: 0; }
+
+  /* (en) make .print class visible */
+  .print { position: static; left: 0; }
+
+  /* (en) generic class to hide elements for print */
+  .noprint { display:none !important; }
+
+  /*------------------------------------------------------------------------------------------------------*/
+
+  /* (en) Avoid page breaks right after headings */
+  h1,h2,h3,h4,h5,h6 { page-break-after:avoid; }
+
+  /*------------------------------------------------------------------------------------------------------*/
+
+  /* (en) Preparation for optional column labels */
+
+  #col1_content:before, #col2_content:before, #col3_content:before {
+    content: "";
+    color:#888;
+    background:inherit;
+    display:block;
+    font-weight:bold;
+    font-size:1.5em;
+  }
+  #col1 {
+    width: 55%;
+  }
+  #col1_content {
+    width: 100%;
+  }
+  #col3_content {
+    float:right;
+    width: 30%;
+  }
+
+  /*------------------------------------------------------------------------------------------------------*/
+  /* add your print styles here */
+
+	#col1, #col1_content {float:none; width: 100%; margin: 0; padding: 0; border: 0; }
+	#col2 { display:none; }
+	#col3, #col3_content { width: 100%; margin:0; padding: 0; border:0; }
+	
+	#gwt-jahiatoolbar,
+	#lmp_playlistFlyout,
+	#lalaMediaPlayer,
+	#lalaWidgetPlayerAd,
+	.storyActions,
+	#storyPage #col3 .followUs,
+	#storyPage .c35r,
+	#storyPage #col1 .ad,
+	#storyPage #col1 .prevNext,
+	#storyPage #col1 #mentioned,
+	#storyPage #col1 #related,
+	#storyPage #comments,
+	#storyPage #footer,
+	.rsFooter,
+	#storyPage #col3 .textImageGrid,
+	#storyPage #col3 #featureGallery,
+	.loginContainer, .storySponserBanner, #nav, #topAd, #gwt-jahiatoolbar, #placedSocialShareContainer, .adsByGoogle,
+	#teaser  .c35r { display:none; }
+	#storyPage #main b{display:none;}
+	#storyPage #col1 #storyTextContainer .paginationGroup {display:block!important;}
+	#storyPage #col3 #rightNaveAd1, #storyPage #col3 #rightNaveAd2{
+		display: block;
+		}
+
+	#storyPage #main{ position:relative; top: -100px !important;}
+	#storyPage #col1{ position:absolute; left:0px; width:55%;}
+	#storyPage #col3{ position:absolute; left:55%; width:300px;}
+	#storyPage .c65l .date,
+	#storyPage .c65l .author,
+	#storyPage .c65l h1,
+	#storyPage .c65l h2,
+	#storyPage .imageCredit,
+	#storyPage .imageCaption{ 
+		text-align:left; 
+		margin-left:0px; 
+		padding-left:0px;	
+		}
+		
+	#storyPage .imageCredit{ font-size:11px;}
+	#teaser {background-color:transparent;color:#000000; margin-top:0px; padding: 0px 0 5px 0; clear: both; width: 980px; margin-bottom: 20px;}
+	#teaser .subcolumns {overflow: auto; clear: both;}
+	#teaser .c65l {width: 900px;}
+	#teaser h1, #teaser h2 {width: 900px; display: block; clear: both;}
+	.page_margins {margin-top: 0px;}
+	#rsLogo {left:0;position:relative !important;top:0;}
+	#rsLogo img{width:600px !important; height:126px !important;}
+	#storyPage{margin-top:125px;}
+	#storyPage #storyTextContainer .imageContainer{float: none; display: block; clear: both;}
+	#storyPage #storyTextContainer .author span {clear: both;}
+
+  /*------------------------------------------------------------------------------------------------------*/
+}
+/* ================= END print.css ==================*/
+/* ================= BEGIN forms.css ==================*/
+@media all
+{
+  /**
+   *  YAML Forms - visual styling
+   *
+   *  (en) visual form styling area
+   */
+  form.yform {
+    background: #f4f4f4;
+    border: 1px #ddd solid;
+    margin: 0 0 1em 0;
+    padding: 10px;
+  }
+
+  form.yform fieldset {
+    margin: 0 0 1em 0;
+    padding: 0.5em 1em 0.5em 36px;
+  }
+
+  form.yform legend {
+    font-size: 125%; font-weight: normal; color: #000;
+  }
+
+  form.yform label {
+    color: #666;
+  }
+
+  form.yform .type-text input,
+  form.yform .type-text textarea,
+  form.yform .type-select select {
+    font-family:  Arial, Helvetica, sans-serif; /* proportional fonts for all form elements */
+    border: 1px solid #ddd;
+  }
+
+  /* :hover and :focus status on form fields */
+  form.yform div.type-button input:focus,
+  form.yform div select:focus,
+  form.yform div textarea:focus,
+  form.yform div.type-button input:hover,
+  form.yform div select:hover,
+  form.yform div textarea:hover,
+  form.yform div.type-button input:active,
+  form.yform div select:active,
+  form.yform div textarea:active {
+    border: 1px #a66 solid;
+    background: #fff;
+  }
+
+  /* Styling of buttons */
+  form.yform .type-button input {
+    border-top: 1px #ddd solid;
+    border-left: 1px #ddd solid;
+    border-right: 1px #444 solid;
+    border-bottom: 1px #444 solid;
+    color: #000;
+    padding: .5em 1.2em;
+  }
+  form.yform .type-button input.rsLink {
+	border:1px solid black;
+	padding:2px 12px 3px 5px;
+	color:#fff;
+  }
+ /*------------------------------------------------------------------------------------------------------*
+ /**
+  * Vertical-Forms - technical base (standard)
+  *
+  * |-------------------------------|
+  * | fieldset                      |
+  * |-------------------------------|
+  * |   label                       |
+  * |   input / select / textarea   |
+  * |-------------------------------|
+  * | /fieldset                     |
+  * |-------------------------------|
+  * (en) Styling of forms where both label and input/select/textarea are styled with display: block;
+  * WARNING: This part contains several IE-stability-fixes. Don't edit this part if you are not sure, what you're doing!
+  */
+
+  /* General form styling  */
+  form.yform { overflow: hidden; }
+  form.yform fieldset { overflow: hidden; }
+  form.yform legend { background: transparent; border: 0; }
+  form.yform label { display:block; cursor: pointer; }
+  form.yform .message { display: block; margin-bottom: 0.5em; color: #666; }
+
+  /* Hiding of hidden fields (otherwise ugly spaces in Firefox) */
+  form.yform input[type=hidden] { display: none !important; }
+
+  /* Highlight mandatory fields  */
+  form.yform sup { color: #800; font-weight: bold; }
+
+  /* styling containing DIV elements */
+  form.yform div.type-text,
+  form.yform div.type-select,
+  form.yform div.type-check,
+  form.yform div.type-button {
+    margin: 0.5em 0;
+    position: relative;
+    overflow: hidden;
+    padding-right:2px;
+  }
+
+  /* styling standard form elements with 'almost' equal flexible width */
+  form.yform .type-text input,
+  form.yform .type-text textarea {
+    display: block;
+    position: relative;
+    padding: 0.3em 0.3em;
+    width: 58.5%;
+  }
+
+  form.yform .type-select select {
+    display: block;
+    position: relative;
+    padding: 0.3em 2px 0.3em 1px;
+    width: 60%;
+    cursor: pointer;
+  }
+  form.yform .type-select select optgroup {
+    font-style: normal;
+    font-weight: bold;
+  }
+
+  form.yform .type-check input { cursor: pointer; }
+  form.yform .type-check label { display: inline; }
+
+  /* Styling of buttons | Gestaltung von Buttons */
+  form.yform .type-button input {
+    width: auto;
+    cursor: pointer;
+  }
+
+  /* Styling of error-messages | Fehlermeldungen */
+  form.yform div.error {
+    border: 1px #a00 dashed;
+    background: #faf4f4;
+    padding: 0.5em;
+  }
+
+  form.yform div.error label { color: #000; font-weight:bold; }
+  form.yform div.error .message { color: #800; }
+
+ /*------------------------------------------------------------------------------------------------------*/
+
+ /**
+  * Columnar forms display - technical base (optional)
+  *
+  * |-------------------------------------------|
+  * | fieldset                                  |
+  * |-------------------------------------------|
+  * |                                           |
+  * |   label   |   input / select / textarea   |
+  * |                                           |
+  * |-------------------------------------------|
+  * | /fieldset                                 |
+  * |-------------------------------------------|
+  *
+  * (en) Styling of forms where label floats left of form-elements
+  * (de) Formulargestaltung, bei der die label-Elemente nach links flie�en
+  *
+  * WARNING: This part contains several IE-stability-fixes. Don't edit this part if you are not sure, what you're doing!
+  */
+
+  /* Columnar display | Spalten-Darstellung */
+  .columnar .type-text label,
+  .columnar .type-select label {
+    float: left;
+    width: 30%; /* Can be fixed width too | Kann auch eine fixe Angabe sein */
+  }
+
+  /* Indent Checkbox fields to match label-width | Checkboxen um den gleichen Wert einr�cken, wie die Breite der labels */
+  .columnar div.type-check { padding-left: 30%; }
+  .columnar div.error .message { margin-left: 30%; }
+
+  .columnar div.type-text input,
+  .columnar div.type-text textarea { width: 67.8%; }
+  .columnar div.type-select select { width: 69.4%; }
+  
+  /* width adjustments for IE 5.x & IE6 | Breitenanpassung f�r Internet Explorer 5.x und 6.0 */
+  * html .columnar div.type-text input,
+  * html .columnar div.type-text textarea { width: 67.2%; }
+  * html .columnar div.type-select select { width: 68.8%; }
+  
+ /*------------------------------------------------------------------------------------------------------*/
+
+ /**
+  * Forms Fieldset/Legend-Bug in IE
+  * @see http://www.mattheerema.com/web-design/2006/04/getting-fieldset-backgrounds-and-legends-to-behave-in-ie/
+  *
+  * @workaround
+  * @affected IE 5.x/Win, IE6, IE7
+  * @css-for IE 5.x/Win, IE6, IE7
+  * @valid yes
+  */
+  
+  /* IE5.x & IE6 */
+  * html form.yform legend { position:absolute; top: -.5em; left: .5em; }
+  * html form.yform fieldset { overflow:visible; height: 1%; margin-top:1.5em; padding-top:1.5em; }
+
+  /* IE7 */
+  *+html form.yform legend { position:absolute; top: -.5em; left: .5em; }
+  *+html form.yform fieldset { overflow:visible; height:1%; margin-top:1.5em; padding-top:1.5em; }
+  *+html form.yform.tabularForm .type-check label  { margin-top: 2px; }
+  *+html form.yform.tabularForm div.answerSpaceholder { margin-top: 5px; }
+}
+
+form.yform.tabularForm {
+	background-color:white;
+	border: none;
+	margin: 7px 14px 14px 14px;
+}
+
+form.yform.tabularForm .type-check {
+	margin-bottom: 4px;
+}
+form.yform.tabularForm .type-check input{
+	float:left;
+	margin-right: 4px;
+	margin-top:3px;
+}
+
+form.yform.tabularForm .type-check label {
+	display:block;
+	float:left;
+	width:80%;
+	margin-top:0px;
+}
+
+
+form.yform.tabularForm input{
+	float:left;
+}
+
+/* ================= END forms.css ==================*/
+/* ================= BEGIN THICKBOX.css ==================*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> global settings needed for thickbox <<<-----------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+*{padding: 0; margin: 0;}
+
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> thickbox specific link and font settings <<<------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+#TB_window {
+	/*font: 12px Arial, Helvetica, sans-serif;*/
+	color: #333333;
+	top: 0 !important;
+	margin-top: 0 !important;
+}
+
+#TB_secondLine {
+	font: 10px Arial, Helvetica, sans-serif;
+	color:#666666;
+}
+
+#TB_window a:link {color: red;}
+#TB_window a:visited {color: #666666;}
+#TB_window a:hover {color: red;}
+#TB_window a:active {color: #666666;}
+#TB_window a:focus{color: #666666;}
+
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> thickbox settings <<<-----------------------------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+#TB_overlay {
+	position: fixed;
+	z-index:1000;
+	top: 0px;
+	left: 0px;
+	height:100%;
+	width:100%;
+}
+
+.TB_overlayMacFFBGHack {background: url(http://www.rollingstone.com/css/fe/macFFBgHack.png) repeat;}
+.TB_overlayBG {
+	background-color:#000;
+	filter:alpha(opacity=75);
+	-moz-opacity: 0.75;
+	opacity: 0.75;
+}
+
+* html #TB_overlay { /* ie6 hack */
+     position: absolute;
+     height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
+}
+
+#TB_window {
+	position: fixed;
+	background: #ffffff;
+	z-index: 1002;
+	color:#000000;
+	display:none;
+	text-align:left;
+	top:50%;
+	left:50%;
+}
+
+* html #TB_window { /* ie6 hack */
+position: absolute;
+margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+}
+
+#TB_window img#TB_Image {
+	display:block;
+	margin: 15px 0 0 15px;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #666;
+	border-left: 1px solid #666;
+}
+
+#TB_caption{
+	height:25px;
+	padding:7px 30px 10px 25px;
+	float:left;
+}
+
+#TB_closeWindow{
+	height:25px;
+	padding:11px 25px 10px 0;
+	float:right;
+}
+
+#TB_closeAjaxWindow{
+	padding:7px 10px 5px 0;
+	margin-bottom:1px;
+	text-align:right;
+	float:right;
+}
+
+#TB_ajaxWindowTitle{
+	float:left;
+	padding:7px 0 5px 10px;
+	margin-bottom:1px;
+}
+
+#TB_title{
+	background-color:#e8e8e8;
+	height:27px;
+	display:none;
+	}
+
+#TB_ajaxContent{
+	clear:both;
+	/*padding:2px 15px 15px 15px;
+	overflow:auto;
+	text-align:left;
+	line-height:1.4em;*/
+}
+
+#TB_ajaxContent.TB_modal{
+	padding:0px;
+}
+
+#TB_ajaxContent p{
+	padding:5px 0px 5px 0px;
+}
+
+#TB_load{
+	position: fixed;
+	display:none;
+	height:13px;
+	width:208px;
+	z-index:103;
+	top: 50%;
+	left: 50%;
+	margin: -6px 0 0 -104px; /* -height/2 0 0 -width/2 */
+}
+
+* html #TB_load { /* ie6 hack */
+position: absolute;
+margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+}
+
+#TB_HideSelect{
+	z-index:99;
+	position:fixed;
+	top: 0;
+	left: 0;
+	background-color:#fff;
+	border:none;
+	filter:alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	height:100%;
+	width:100%;
+}
+
+* html #TB_HideSelect { /* ie6 hack */
+     position: absolute;
+     height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
+}
+
+#TB_iframeContent{
+	clear:both;
+	border:none;
+	margin-bottom:-1px;
+	margin-top:1px;
+	_margin-bottom:1px;
+}
+/* ================= END THICKBOX.css ==================*/
+}

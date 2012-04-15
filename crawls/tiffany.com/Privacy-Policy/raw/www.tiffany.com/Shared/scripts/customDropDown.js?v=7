@@ -1,0 +1,557 @@
+//hide html drop downs that are assigned these classes
+document.write('<style>.ddlReset, .ddl, .vddl {display:none}</style>');
+
+deferDropDownMenuRender = false;
+blockDropDownClicks = false;
+
+pMenuVisibility = new Object();
+
+pMenuRemoved = new Object();
+
+function showMenu(menuName)
+{
+	pMenuVisibility[menuName] = true;
+}
+
+function hideMenu(menuName)
+{
+	pMenuVisibility[menuName] = false;
+}
+
+function removeMenu(menuName)
+{
+	hideMenu(menuName);
+	pMenuRemoved[menuName] = true;
+}
+
+function isMenuVisible(menuName)
+{
+	if (pMenuVisibility[menuName] == false)
+	{
+		return false;
+	}
+	else if (pMenuRemoved[menuName] == true)
+	{
+		return false;
+	}
+	return true;
+}
+
+function replaceSelects()
+{
+	if (deferDropDownMenuRender == false)
+	{
+		var selectList = document.getElementsByTagName("select");
+		var isVisible;
+		var labelElement;
+		var menuElement;
+		var selectElement;
+		if (selectList)
+		{
+			for (var i=0; i < selectList.length; i++)
+			{
+				//Only replace HTML selects that have been flagged to be replaced by checking to see if class contains "ddl" 
+				if (selectList[i].className.indexOf("ddl") > -1)
+				{
+					if (selectList[i].options.length > 0)
+					{
+	//					isVisible = !selectList[i].disabled;
+						isVisible = true;
+	//					alert(pMenuVisibility[selectList[i].id]);
+						if (pMenuVisibility[selectList[i].id] == false || pMenuRemoved[selectList[i].id] == true)
+						{
+							isVisible = false;
+						}
+	//					alert("menu: " + selectList[i].id + " visible: " + isVisible);
+	//					Create dhtml select
+						createSelect(selectList[i].id, selectList[i], selectList[i].id, isVisible);
+						//Determine variable size
+						if (selectList[i].className.indexOf("vddl") > -1)
+						{
+							labelElement = document.getElementById('cddDefault' + selectList[i].id);
+							menuElement = document.getElementById('cddUL' + selectList[i].id);
+							selectElement = selectList[i];
+							newWidth = menuElement.offsetWidth;
+							if (labelElement != null && labelElement.offsetWidth > newWidth && selectElement.options[0].value == "#")
+							{
+								// If the menu starts with a non-selectable label, it does not get factored in
+								// with calculating the width of the menu. Make sure that if it's wider than the rest
+								// of the menu, that the menu uses the width of the top label.
+								newWidth = labelElement.offsetWidth;
+							}
+							//IE 7 and Netscape 8 doesn't seem to be able to extract the correct value.
+							if (newWidth == 11) {
+								//Go iterate and test drop down values to find the widest menu.
+								formElementObj = document.getElementById(selectList[i].id);
+									
+								if (formElementObj.options.length > 0)
+								{
+
+									for (var k=0; k<formElementObj.length; k++) {
+										
+										divIE7TextLength = document.createElement("div");
+										document.body.insertBefore(divIE7TextLength, document.body.firstChild);
+										divIE7TextLength.id = "divTextLength";
+										divIE7TextLength.className= "cddDefault";
+										divIE7TextLength.style.visibility="hidden";
+										divIE7TextLength.style.position="absolute";
+										divIE7TextLength.style.left="-9999px";
+										divIE7TextLength.style.whiteSpace="nowrap";
+										divIE7TextLength.innerHTML = '<span id="testIE7Width">'+formElementObj[k].text+'</span>';
+										document.getElementById("testIE7Width").style.whiteSpace="nowrap";
+										if (document.getElementById("testIE7Width").offsetWidth + 10 > newWidth) {newWidth = document.getElementById("testIE7Width").offsetWidth + 10}
+										divIE7TextLength.innerHTML ="";
+										document.body.removeChild(divIE7TextLength);	
+									}
+								}
+							}
+							if (newWidth < 49)  {newWidth=49;}
+							if (newWidth > 129) {
+								newWidth=129; 
+								document.getElementById('cddUL'+selectList[i].id).style.whiteSpace = "";
+							}
+							document.getElementById('cddDefault'+selectList[i].id).style.width = (newWidth + 10) + "px";
+							document.getElementById('cddUL'+selectList[i].id).style.width = (newWidth + 10) + "px";
+						}
+						//Assign mouse event
+						document.getElementById('cdd'+selectList[i].id).onmouseout = closeMenu;
+					}
+				}
+			}
+		}
+	}
+}
+
+function updateSelects()
+{	
+	replaceSelects();
+}
+
+var spanHolderArray = new Array();
+var selectArray = new Array();
+
+function createSelect(hNum, hItem, objID, isVisible)
+{
+	//Create Custom Drop Down Output
+	var cddMenu = cddHTMLOutput2(hNum,objID);
+
+	// create an empty element node
+	// without an ID, any attributes, or any content
+	spanHolderArray[hItem] = document.createElement("span");
+
+	// give it an id attribute called 'newSpan'
+	spanHolderArray[hItem].setAttribute("id", 'span'+hItem);
+	
+	// create some content for the newly created element.
+	var divHolder = document.getElementById("selectHolder" + hNum);
+	if (divHolder == null)
+	{
+		divHolder = document.createElement("div");
+		divHolder.id = "selectHolder" + hNum;
+		
+		// apply that content to the new element
+		spanHolderArray[hItem].appendChild(divHolder);
+		selectArray[hItem] = document.getElementById(objID);
+		var parentDiv = selectArray[hItem].parentNode;
+		
+		// insert the new element into the DOM before the combobox
+		parentDiv.insertBefore(spanHolderArray[hItem], selectArray[hItem]);
+	}
+//alert(divHolder.parentNode.parentNode.outerHTML);
+	if (isVisible == false)
+	{
+		divHolder.parentNode.parentNode.style.display = "none";
+	}
+	else
+	{
+		divHolder.parentNode.parentNode.style.display = "block";
+	}
+	divHolder.innerHTML = cddMenu;
+
+	if (isIPad() == true)
+	{
+		// Click events do not fire when swipe gestures are made, so use 
+		// touch events instead to decide when to close menu.
+		$(document).bind('touchstart', function(e)
+		{
+			var $clicked = $(e.target);
+			if (!($clicked.is('.cdd') || $clicked.parents().is('.cdd')))
+			{
+				//click outside
+				cddClose("cdd" + hNum);
+
+			}
+			// With the touch handling in place, clicking on a top nav menu
+			// selects the master category right away, so block the touch
+			// event from propagating if that's the case.
+			if ($clicked.is('#nav > li > a') == true)
+			{
+				event.preventDefault();
+				return false;
+			}
+		});
+		
+	}
+}
+
+function cddOpen(showLayer) 
+{
+	if (blockDropDownClicks == false)
+	{
+		//get form drop down object to work with
+		formElementObj = document.getElementById(showLayer);
+		//get dhtml drop down id
+		if(document.all){whichElShow = eval('cdd'+showLayer);}
+		else{whichElShow = document.getElementById('cdd'+showLayer);}
+		//Test to see if its the reset version of the drop down by testing the css class name assigned.
+		if(formElementObj.className.indexOf("ddlReset") > -1 && formElementObj.selectedIndex != 0)
+		{
+			//Remove the reset link when you click on menu
+			cddRemoveReset("cddDefault"+showLayer);
+			//Perform reset to first value
+			cddDefaultValID='cddDefaultVal'+showLayer;
+			document.getElementById(cddDefaultValID).innerHTML = formElementObj[0].text;
+			// ND: Forced code to call onchange handler - changing selectedIndex doesn't trigger onchange
+			var oldIndex = formElementObj.selectedIndex;
+			formElementObj.selectedIndex = 0;
+			if (formElementObj.onchange && oldIndex != 0)
+			{
+				formElementObj.onchange();
+			}
+		}
+		else 
+		{
+			//Show dhtml drop down
+			whichElShow.style.left = "auto";
+		}
+	}
+}
+
+function cddClose(cddObjID) 
+{
+	if (document.all)
+	{
+		whichElShow = eval(cddObjID);
+	}
+	else
+	{
+		whichElShow = document.getElementById(cddObjID);
+	}
+	whichElShow.style.left = "-9999px";
+}
+
+function cddUpdateValue(formElementID,newValue,i)
+{
+	cddObjID='cdd'+formElementID;
+	cddDefaultValID='cddDefaultVal'+formElementID;
+	cddLiID='cddLI'+formElementID+i;
+	formElementObj = document.getElementById(formElementID);
+	htmlSelectID='dd1'+formElementID;
+	
+	//Close
+	cddClose(cddObjID);
+	//Apply Reset style if drop down type is ddlReset
+	if(formElementObj.className.indexOf("ddlReset") > -1 && formElementObj.selectedIndex != 0)
+	{
+		cddMakeReset("cddDefault"+formElementID);
+	}
+	else
+	{
+		cddRemoveReset("cddDefault" + formElementID);
+	}
+	
+	//Update hidden form element
+	// ND: Forced code to call onchange handler - changing selectedIndex doesn't trigger onchange
+	var oldIndex = formElementObj.selectedIndex;
+	formElementObj.selectedIndex = i;
+	if (formElementObj.onchange && oldIndex != i)
+	{
+		formElementObj.onchange();
+	}
+}
+
+function changeClass(id, newClass) 
+{
+	identity=document.getElementById(id);
+	identity.className=newClass;
+}
+
+function setWidth(formElementID,selectText,cddDefaultClass, cddWidth) {
+	//This function determines if Ellipses should be used
+	divTextLength = document.createElement("div");
+	document.body.insertBefore(divTextLength, document.body.firstChild);
+	divTextLength.id = "divTextLength";
+	divTextLength.className= "cddReset";
+	divTextLength.style.visibility="hidden";
+	divTextLength.style.position="absolute";
+	divTextLength.style.left="-9999px";
+	divTextLength.style.whiteSpace="nowrap";
+	divTextLength.innerHTML = '<span id="testWidth">'+ selectText+'</span>';
+	document.getElementById("testWidth").style.whiteSpace="nowrap";
+	if (cddDefaultClass == "cddReset") {
+	    if (locale == "zh-CN" || locale == "zh-Hant" || locale == "ko-KR") { ellipseWidth = 160; }
+		else {ellipseWidth = 120;}
+	}
+	else {
+		ellipseWidth = cddWidth-21;
+	}
+	if(document.getElementById("testWidth").offsetWidth > ellipseWidth) {
+	    if (locale == "ja-JP" || locale == "ja-JP-EStr") { selectText = selectText.substring(0, 12) + "..."; }	
+		else {selectText = selectText.substring(0,20) + "...";}
+		
+	}
+	divTextLength.innerHTML ="";
+	document.body.removeChild(divTextLength);
+	return selectText;
+}
+
+function cddHTMLOutput2 (formElementID, formElementObjName)
+{
+	formElementObj = document.getElementById(formElementObjName);
+	var cddWidth = (formElementObj.className.substring(formElementObj.className.indexOf(" "),formElementObj.className.length ));
+	//Globalization options
+	if ((cddWidth.indexOf('159px') > -1) && (locale == "zh-CN" || locale == "zh-Hant" || locale == "ko-KR" || locale == "it-IT" || locale == "es-ES" || locale == "es-MX")) { cddWidth = "179px" }	
+	//Variable width accomodation
+	if (cddWidth.indexOf('px') < 1) {cddULWidth = "white-space:nowrap;";} else {cddULWidth = "width:" + cddWidth;}
+	//If drop down type is ddlReset and if you are not the first value then assign the Reset class which has the Reset wording in the drop down.
+	if (formElementObj.className.indexOf("ddlReset") > -1 && formElementObj.selectedIndex != 0)
+	{
+		cddDefaultClass = "cddReset";
+	}
+	else 
+	{
+		cddDefaultClass = "cddDefault";
+	}
+
+	
+	var dhtmlContents = ""; 
+	if (formElementObj.options.length > 0)
+	{
+		if (formElementObj.selectedIndex < 0)
+		{
+			formElementObj.selectedIndex = 0;
+		}
+		dhtmlContents = '<div id="cddDefault' + formElementID + '" class="' + cddDefaultClass + '" style="width:' + cddWidth + '">'
+			+ '<a href="javascript:cddOpen(\'' + formElementID + '\')" onfocus="this.blur()"><span id="cddDefaultVal' + formElementID + '">'
+			+ setWidth(formElementID, formElementObj[formElementObj.selectedIndex].text, cddDefaultClass, cddWidth) + '</span></a></div>'
+			+ '<div id="cdd' + formElementID + '" class="cdd" style="width:' + cddWidth + ';">';
+		if (isIPad() == true)
+		{
+			if (cddWidth == "vddl")
+			{
+				dhtmlContents += '<div class="close nowidth" onclick="cddClose(\'cdd' + formElementID + '\');"><img src="/shared/images/misc/close_ipad.gif" width="10" height="10" /></div>';
+			}
+			else
+			{
+				dhtmlContents += '<div class="close" onclick="cddClose(\'cdd' + formElementID + '\');"><img src="/shared/images/misc/close_ipad.gif" width="10" height="10" /></div>';
+			}
+		}
+		dhtmlContents += '<ul id="cddUL' + formElementID + '" style="' + cddULWidth + '">';
+	
+		var formDDLStart = 0;
+		for (var i=formDDLStart; i<formElementObj.length; i++) 
+		{
+			if(formElementObj[i].value=="---" || formElementObj[i].text == "---")
+			{
+				dhtmlContents += '<li class="cddEmpty">&nbsp;</li>';
+			}
+			//Don't write in drop down Also Available twice into the drop down
+			else if (formElementObj[i].value=="#") {}
+			else
+			{
+				if (i == 0)
+				{
+					dhtmlContents += '<li class="first" style="width:' + cddWidth + '"><a id="cddLI' + formElementID + i + '" href="javascript:cddUpdateValue(\'' + formElementID + '\', \'' + escape(escape(formElementObj[i].text)) + '\', \'' + i + '\')" onfocus="this.blur()" >' + formElementObj[i].text + '</a></li>';
+				}
+				else
+				{
+					dhtmlContents += '<li style="width:' + cddWidth + '"><a id="cddLI' + formElementID + i + '" href="javascript:cddUpdateValue(\'' + formElementID + '\', \'' + escape(escape(formElementObj[i].text)) + '\', \'' + i + '\')" onfocus="this.blur()" >' + formElementObj[i].text + '</a></li>';
+				}
+			}
+		}
+		dhtmlContents += '<li class="cddLast">&nbsp;</li>'
+					  + '</ul></div>';
+	}
+	return dhtmlContents;
+}
+
+function closeMenu(event) 
+{
+	var current, related;
+
+	if (window.event) 
+	{
+		current = this;
+		related = window.event.toElement;
+	}
+	else 
+	{
+		current = event.currentTarget;
+		related = event.relatedTarget;
+	}
+
+	if (current != related && !contains(current, related))
+	{
+		cddClose(this.id);
+	}
+	//alert(this.id)
+}
+
+function contains(a, b) 
+{
+  // Return true if node a contains node b.
+	if (typeof(b) != "undefined" && b != null)
+	{
+		while (b.parentNode)
+			if ((b = b.parentNode) == a)
+				return true;
+	}
+	return false;
+}
+
+function cddMakeReset(cddDefaultValID) 
+{
+	changeClass(cddDefaultValID, "cddReset");
+}
+
+function cddRemoveReset(cddDefaultValID) 
+{
+	changeClass(cddDefaultValID, "cddDefault");
+}
+
+
+// -----------------------------------------------------------------
+// Function selectMenuItem
+// Author:		Nathan Derksen
+// Description:	Utility function to find and select an entry in a drop-down menu
+// Inputs:		<Select> menuHandle - A handle to the select form field driving the menu
+//				<String> menuValue - The string value to look for (not the label)
+// Returns:		<nothing>
+// -----------------------------------------------------------------
+function selectMenuItem(menuHandle, menuValue)
+{
+	try
+	{
+		if (menuHandle)
+		{
+			for (var i=0; i < menuHandle.options.length; i++)
+			{
+				if (menuHandle.options[i].value == menuValue)
+				{
+					menuHandle.selectedIndex = i;
+					break;
+				}
+			}
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+}
+
+// -----------------------------------------------------------------
+// Function getSelectedMenuItem
+// Author:		Nathan Derksen
+// Description:	Utility function to get the value associated with a menus selectedIndex
+// Inputs:		<Select> menuHandle - A handle to the select form field driving the menu
+// Returns:		<String> - The value for the currently selected menu item
+// -----------------------------------------------------------------
+function getSelectedMenuItem(menuHandle)
+{
+	if (menuHandle)
+	{
+		return menuHandle.options[menuHandle.selectedIndex].value;
+	}
+	return "";
+}
+
+// -----------------------------------------------------------------
+// Function populateMenuItem
+// Author:		Nathan Derksen
+// Description:	Utility function to fill a menu with a list of name/value pairs
+// Inputs:		<Select> menuHandle - A handle to the select form field driving the menu
+//				<Array> menuValues - An array of objects, in the form {label:"", value:""}
+//				<String> selectedValue - The value that should be set as the selected menu item
+// Returns:		<nothing>
+// -----------------------------------------------------------------
+function populateMenuItem(menuHandle, menuValues)
+{
+	try
+	{
+		var i;
+		var tempOption;
+		var selectedItem;
+		var catModel = CategoriesModel.getInstance();
+		var selectedValue = "";
+
+		if (menuHandle)
+		{
+			if (catModel.isMenuRemoved(menuHandle.name) == true)
+			{
+		//		menuHandle.disabled = true;
+			}
+			else
+			{
+				if (menuValues && menuValues.items && menuValues.items.length > 0)
+				{
+					showMenu(menuHandle.name);
+					
+					// Remove old values, preserving the first two which are constant (menu start label and separator)
+					for (i = menuHandle.options.length-1; i >= 2; i--)
+					{
+						if (menuHandle.options.remove)
+						{
+							menuHandle.options.remove(i);
+						}
+						else
+						{
+							menuHandle.options[i] = null;
+						}
+					}
+					
+					// Populate new values
+					for (i = 0; i < menuValues.items.length; i++)
+					{
+						tempOption = new Option(menuValues.items[i].label, menuValues.items[i].value);
+						if (menuHandle.options.add)
+						{
+							// IE
+							menuHandle.options.add(tempOption, i+2);
+						}
+						else
+						{
+							menuHandle.options[i+2] = tempOption;
+						}
+						if (menuValues.items[i].selected == true)
+						{
+							selectedValue = menuValues.items[i].value;
+						}
+					}
+					// Find the menu item corresponding to the selected value
+					for (i = 0;i < menuHandle.options.length; i++)
+					{
+						if (menuHandle.options[i].value == selectedValue)
+						{
+//							menuHandle.options[0].value = selectedValue;
+							menuHandle.selectedIndex = i;
+							break;
+						}
+					}
+				}
+				else
+				{
+					hideMenu(menuHandle.name);
+				}
+			}
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+}
+
+	
+//onload=replaceSelects
+//BrowserUtils.addOnLoadHandler(replaceSelects); // ND: Added to allow multiple onload handlers

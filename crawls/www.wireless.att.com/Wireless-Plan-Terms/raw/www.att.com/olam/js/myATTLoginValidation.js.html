@@ -1,0 +1,737 @@
+var userIDDefaultVal = jQuery('#userIDDefaultVal').val();
+var passwordDefaultVal;
+var tGuardOn;
+
+function displayBubble(){jQuery("#loginBubbleUnit").show();}
+function hideBubble(){jQuery("#loginBubbleUnit").hide();}
+
+
+jQuery(document).ready(function() 
+{
+	tGuardOn = jQuery('#tGuardOn').val();
+	userIDDefaultVal = jQuery('#userIDDefaultVal').val();
+	passwordDefaultVal = jQuery('#passwordDefaultVal').val();
+ 	
+	if(tGuardOn == "false")
+	{ // Tguard is off
+		
+		// setting password as null
+		jQuery("pass").val("");
+		
+		if(jQuery("#loginImageTop").is(":visible"))
+		{
+			jQuery("#loginBubble").addClass("NewLoginPop4_291");
+		}
+		else	
+		{
+			jQuery("#loginBubble").addClass("NewLoginPop4_291");
+		}
+		
+		var flag = 0;
+        var bubbleTop = 0;
+        var preFooterTop = 0;
+        var topDiff = 0;
+        jQuery("#wireless_num").mouseover(function displayBubble(){
+                
+        	bubbleTop = (jQuery("#userNameDiv").offset().top);
+    		preFooterTop = (jQuery("#preFooter").offset().top);
+    		topDiff = bubbleTop - preFooterTop;	
+    			
+    		if (jQuery.browser.msie && jQuery.browser.version < 9) {	
+    			topDiff = topDiff + 3;
+    		}
+    		/********/
+            topDiff=topDiff-67;
+            /********/                                
+
+    		jQuery("#loginBubbleUnit").css("top",topDiff);					 
+    			
+    		jQuery("#wireless_num").focusin(function (){			
+    			bubbleTop = (jQuery("#userNameDiv").offset().top);
+    			preFooterTop = (jQuery("#preFooter").offset().top);
+    			topDiff = bubbleTop - preFooterTop;	
+    				
+    			if (jQuery.browser.msie && jQuery.browser.version < 9) {	
+    				topDiff = topDiff + 3;
+    			}
+    			/********/
+                topDiff=topDiff-67;
+                /********/                                
+
+    			jQuery("#loginBubbleUnit").css("top",topDiff);
+    			jQuery("#loginBubbleUnit").css("display","block");
+    			flag = 1;
+    		});
+    		jQuery("#loginBubbleUnit").css("display","block");
+            /********/
+            if (!jQuery("#loginBubble2").hasClass("notFirst")){
+                        jQuery("#loginBubble2").css("height",parseInt(jQuery("#loginBubble2").css("height")) - 60);
+                        jQuery("#loginBubble2").addClass("notFirst");
+            }
+            /********/
+
+
+        });
+		
+		jQuery("#wireless_num").mouseleave(function displayBubble(){
+			jQuery("#wireless_num").focusout(function (){
+				flag = 2;
+				jQuery("#loginBubbleUnit").css("display","none");
+			});
+			if(flag == 1 && flag == 2){
+				jQuery("#loginBubbleUnit").css("display","none");
+			}
+			if(flag != 1){
+				jQuery("#loginBubbleUnit").css("display","none");
+			}
+		});			
+	}
+	else
+	{ // TGuard is on
+		
+		// setting password as null
+		jQuery("password").val("");
+		
+		var flag = 0;
+        var bubbleTop = 0;
+        var preFooterTop = 0;
+        var topDiff = 0;
+        jQuery("#userID").mouseover(function displayBubble(){
+                
+        	bubbleTop = (jQuery("#userNameDiv").offset().top);
+    		preFooterTop = (jQuery("#preFooter").offset().top);
+    		topDiff = bubbleTop - preFooterTop;	
+    			
+    		if (jQuery.browser.msie && jQuery.browser.version < 9) {	
+    			topDiff = topDiff + 3;
+    		}
+            /********/
+            topDiff=topDiff-67;
+            /********/                                
+
+    		jQuery("#loginBubbleUnit").css("top",topDiff);					 
+    			
+    		jQuery("#userID").focusin(function (){			
+    			bubbleTop = (jQuery("#userNameDiv").offset().top);
+    			preFooterTop = (jQuery("#preFooter").offset().top);
+    			topDiff = bubbleTop - preFooterTop;	
+    				
+    			if (jQuery.browser.msie && jQuery.browser.version < 9) {	
+    				topDiff = topDiff + 3;
+    			}
+                /********/
+                topDiff=topDiff-67;                                                         
+                /********/
+
+    			jQuery("#loginBubbleUnit").css("top",topDiff);
+    			jQuery("#loginBubbleUnit").css("display","block");
+    			flag = 1;
+    		});
+    		jQuery("#loginBubbleUnit").css("display","block");
+            /********/
+            if (!jQuery("#loginBubble2").hasClass("notFirst")){
+                        jQuery("#loginBubble2").css("height",parseInt(jQuery("#loginBubble2").css("height")) - 60);
+                        jQuery("#loginBubble2").addClass("notFirst");
+            }
+            /********/
+
+        });
+		
+		jQuery("#userID").mouseleave(function displayBubble(){
+			jQuery("#userID").focusout(function (){
+				flag = 2;
+				jQuery("#loginBubbleUnit").css("display","none");
+			});
+			if(flag == 1 && flag == 2){
+				jQuery("#loginBubbleUnit").css("display","none");
+			}
+			if(flag != 1){
+				jQuery("#loginBubbleUnit").css("display","none");
+			}
+		});		
+	}
+
+	if(jQuery("#loginImageTop").is(":visible"))
+	{
+		jQuery("#loginBubble").addClass("NewLoginPop4_291");
+	}
+	else	
+	{
+		jQuery("#loginBubble").addClass("NewLoginPop4_291");
+	}
+	
+	browserCompatabilityMsg();
+	populateUserIDFromCookie();
+	// CR 51003 overrides the value if present with the 
+	populateWirelessNumber();
+	populateUserIDPopup();
+	isCookieEnabled();
+});
+
+function browserCompatabilityMsg()
+{
+	if(jQuery("#errorListValue").val() != "true")
+	{
+		if ((BrowserDetect.browser=='Explorer' && BrowserDetect.version < 7) || 
+				(BrowserDetect.browser=='Firefox' && BrowserDetect.version < 4 ) || 
+				(BrowserDetect.browser=='Chrome' && BrowserDetect.version < 1) || 
+				(BrowserDetect.browser=='Safari' && BrowserDetect.version < 1) || 
+				(BrowserDetect.browser=='Opera' && BrowserDetect.version < 7.54) || 
+				(BrowserDetect.browser=='Netscape' && BrowserDetect.version < 7))  
+		{	
+			jQuery("#errorDiv").attr("className" ,"errorMsg box");	
+			jQuery("#errorDiv").html(jQuery("#browserVersionError").val());
+		}
+	}
+}
+
+function populateUserIDPopup()
+{
+	
+	if(jQuery("#passthroughPage")!=null
+			&& jQuery("#passthroughPage").val() == "Y")
+	{
+		hideUserIDPopup();
+		
+		if(jQuery("#isSuperNLogin").val() == "true")
+		{
+			jQuery("#superN").show();
+		}
+		else if(jQuery("#loginType").val() == "WIRELESS")
+		{
+			jQuery("#wirelessUserID").show();
+		}
+		else if(jQuery("#loginType").val() == "TELCO")
+		{
+			jQuery("#telcolUserID").show();
+		}
+		else if(jQuery("#loginType").val() == "SLID")
+		{
+			jQuery("#slidUserID").show();
+		}
+		else if(jQuery("#loginType").val() == "TITAN")
+		{
+			jQuery("#titanPassthru").show();
+		}
+		else if(jQuery("#loginType").val() == "ISP" 
+			     || (jQuery("#loginType").val() == "UVERSE" 
+			    	 	&& jQuery("#iTarget")!=null
+			    	 	&& jQuery("#iTarget").val()!=null
+			    	 	&& jQuery("#iTarget").val()!="")) 
+		{
+			jQuery("#ispUserID").show();
+		}
+		else if(jQuery("#loginType").val() == "UVERSE")
+		{
+			jQuery("#uverseUserID").show();
+		}
+		else
+		{
+			jQuery("#defautlUserID").show();
+		}
+	}
+	else
+	{
+		jQuery("#defautlUserID").show();
+	}
+}
+
+function hideUserIDPopup()
+{
+	jQuery("#defautlUserID").hide();
+	jQuery("#wirelessUserID").hide();
+	jQuery("#telcolUserID").hide();
+	jQuery("#uverseUserID").hide();
+	jQuery("#ispUserID").hide();
+	jQuery("#slidUserID").hide();
+	jQuery("#superN").hide();
+}
+
+function userIDOnFoucs()
+{
+	var userIDValue = null;
+	if(tGuardOn == "false") {
+		userIDValue = jQuery.trim(jQuery("#wireless_num").val());
+	}
+	else{
+		userIDValue = jQuery.trim(jQuery("#userID").val());
+	}
+	if((userIDValue == "") || (userIDValue == userIDDefaultVal))
+	{
+		if(tGuardOn == "false"){
+			jQuery("#wireless_num").val("");
+		}
+		else{
+			jQuery("#userID").val("");
+		}
+	}
+}
+
+function userIDOnBlur()
+{
+	validateUserID();
+	var userIDValue = null;
+	if(tGuardOn == "false") {
+		userIDValue = jQuery.trim(jQuery("#wireless_num").val());
+	}
+	else{
+		userIDValue = jQuery.trim(jQuery("#userID").val());
+	}
+	var isErrorVisible =  jQuery("#userAlertDiv").is(":visible");
+	if(isErrorVisible)
+	{
+		if(userIDValue != null 
+				&& userIDValue != "" 
+					&& (userIDValue.indexOf('@')==-1 || isValidEmail(userIDValue)))
+		{
+			jQuery("#userAlertDiv").hide();
+			jQuery("#userNameDiv").attr("className","w211");
+		}
+	}
+	if(userIDValue == "")
+	{
+		if(tGuardOn == "false") {
+			jQuery("#wireless_num").val(userIDDefaultVal);
+		}
+		else{
+			jQuery("#userID").val(userIDDefaultVal);
+		}
+	}
+}
+
+function validateUserID()
+{
+	var userID = null;
+	if(tGuardOn == "false") {
+		userID = jQuery("#wireless_num").val();
+	}
+	else{
+		userID = jQuery("#userID").val();
+	}
+	
+	if(userID != null && userID != userIDDefaultVal)
+	{
+		userID = userID.split(' ').join('');
+		if(userID.indexOf('@')==-1)
+		{
+			userID = userID.replace(/[^a-zA-Z 0-9 @._ -]+/g,"");
+			var userIDtemp = userID.split('-').join('');
+			//userIDtemp = userIDtemp.split('.').join('');
+			//userIDtemp = userIDtemp.split('_').join('');
+			if(!isNaN(userIDtemp))
+			{
+				userID = userIDtemp;
+			}
+		}
+		if(tGuardOn == "false") {
+			jQuery("#wireless_num").val(userID);
+		}
+		else{
+			jQuery("#userID").val(userID);
+		}
+	}
+}
+
+function showPasswordField()
+{
+	jQuery("#pwdDiv").show();
+	jQuery("#pwdTextDiv").hide();
+	if(tGuardOn == "true")
+	{
+		jQuery("#password").focus()
+	}
+	else
+	{
+		jQuery("#pass").focus();
+	}
+}
+
+function showPasswordTextDiv()
+{
+	var password = "";
+	if (tGuardOn == "true")
+	{
+		password = rtrim(jQuery("#password").val()); //      document.forms['loginActionForm'].elements['pass'].value;
+	}
+	else
+	{
+		password = rtrim(jQuery("#pass").val()); //document.forms['loginActionForm'].elements['password'].value;
+	}
+	var isErrorVisible =  jQuery("#pwdAlertDiv").is(":visible");
+	if(isErrorVisible)
+	{
+		if(password != null && password != "" && password.length>3)
+		{
+			jQuery("#pwdAlertDiv").hide();
+			jQuery("#pwdDiv").attr("className","w211");
+			jQuery("#pwdTextDiv").attr("className","w211");
+		}
+	}
+	if(password == null || password == "")
+	{
+		jQuery("#pwdTextDiv").show();
+		jQuery("#pwdDiv").hide();
+		// Resetting the Password Value
+		if (tGuardOn == "true"){
+			jQuery("#password").attr("value", "");
+		}
+		else{
+			jQuery("#pass").attr("value", "")
+		}
+	}
+	jQuery("#passwordTextField").blur();
+}
+function validateCapsLock(e)
+{
+	var tguard = document.forms['loginActionForm'].elements["tGuardOn"].value;
+	kc = e.keyCode?e.keyCode:e.which;
+	sk = e.shiftKey?e.shiftKey:((kc == 16)?true:false);
+	if(((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk))
+	{
+		jQuery("#capsLockDiv").show();
+	}
+	else
+	{
+		jQuery("#capsLockDiv").hide();
+	}
+}
+
+function clearErrorDivs()
+{
+	// UserID
+	jQuery("#userAlertDiv").hide();
+	jQuery("#userNameDiv").attr("className","w211");
+	// Password
+	jQuery("#pwdAlertDiv").hide();
+	jQuery("#pwdDiv").attr("className","w211");
+	jQuery("#pwdTextDiv").attr("className","w211");
+}
+
+function checkFormValues(formObj)
+{
+	var userID;
+	var password;
+	var returnObj = true;
+	var errorFieldFocus;
+	if (tGuardOn == "false")
+	{
+		userID = jQuery.trim(jQuery("#wireless_num").val()); 
+		password = rtrim(jQuery("#pass").val());
+		jQuery("#pass").val(password);
+	}
+	else
+	{
+		userID = jQuery.trim(jQuery("#userID").val());
+		password = rtrim(jQuery("#password").val());
+		jQuery("#password").val(password);
+	}
+	if (userID == "" || userID == userIDDefaultVal) 
+	{
+		jQuery("#userAlertDiv").show();
+		jQuery("#userIDErrMsg").html(jQuery("#blankUserID").val());
+		jQuery("#userNameDiv").attr("className","w211 error");
+		if(tGuardOn == "false") {
+			jQuery("#wireless_num").focus();
+		}
+		else{
+			jQuery("#userID").focus();
+		}
+		errorFieldFocus = "userID";
+		return false;
+	}
+	else if(userID.indexOf("@")!=-1 && !(isValidEmail(userID)))
+	{
+		jQuery("#userAlertDiv").show();
+		jQuery("#userIDErrMsg").html(jQuery("#invalidEmailID").val());
+		jQuery("#userNameDiv").attr("className","w211 error");
+		if(tGuardOn == "false") {
+			jQuery("#wireless_num").focus();
+		}
+		else{
+			jQuery("#userID").focus();
+		}
+		errorFieldFocus = "userID";
+		return false;
+	}
+	
+	if (password == null || password == "" ) 
+	{
+		jQuery("#pwdAlertDiv").show();
+		jQuery("#passwordErrMsg").html(jQuery("#blankPassword").val());
+		jQuery("#pwdDiv").attr("className","w211 error");
+		jQuery("#pwdTextDiv").attr("className","w211 error");
+		if(errorFieldFocus==null)
+		{
+			showPasswordField();
+			if(tGuardOn == "false") {
+				errorFieldFocus = "pass";
+			}
+			else{
+				errorFieldFocus = "password";
+			}
+			return false;
+		}
+	}
+	else if (password.length < 4) 
+    {
+		jQuery("#pwdAlertDiv").show();
+		jQuery("#passwordErrMsg").html(jQuery("#passwordLessChars").val());
+		jQuery("#pwdDiv").attr("className","w211 error");
+		jQuery("#pwdTextDiv").attr("className","w211 error");
+		if(errorFieldFocus==null)
+		{
+			showPasswordField();
+			if(tGuardOn == "false") {
+				errorFieldFocus = "pass";
+			}
+			else{
+				errorFieldFocus = "password";
+			}
+		}
+		return  false;
+    }
+	return true;
+}
+function setRememberMeVal()
+{
+	var isChecked =  jQuery("#rememberMe").is(":checked");
+	if(isChecked)
+	{
+		 jQuery("#remember_me").val('Y');
+	}
+	else
+	{
+		jQuery("#remember_me").val('N');
+	}
+}
+
+function openPopup()
+{
+	jQuery.colorbox({iframe:true, height:500, width:600, scrolling:false, overlayClose:false, href:'/olam/jsp/login/inProgress.jsp?rootPath='+document.loginActionForm.rootPath.value+''});
+	return false;
+}
+
+function removeSpaces(string) 
+{
+	return string.split(' ').join('');
+}
+
+
+function isValidEmail(emailAddress) 
+{
+	// Since one of the Prod Account has abcded..o@sbcglobal.net
+	//Since one of the Prod Account has abcded--o@sbcglobal.net
+	//  Hence removing the dots and hyphen before validation.
+    if(emailAddress !=null 
+            && emailAddress.indexOf("@")!=-1)
+    {
+        var temp = new Array();
+        temp = emailAddress.split("@");
+        if(temp.length==2)
+        {
+        	
+        	emailAddress = temp [0].split('.').join('');
+        	emailAddress = emailAddress.split('-').join('') + "@" + temp [1];
+        } 
+    }
+	return (/^\w+([\+\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(emailAddress));
+}
+
+/*
+function isValidEmail(emailAddress) 
+{
+	return (/^\w+([\+\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(emailAddress));
+}
+*/
+function getCOLAMCookie(name)
+{
+	var dc = document.cookie;
+	var prefix = name + "=";
+	var begin = dc.indexOf("; " + prefix);
+	if (begin == -1) 
+	{
+		begin = dc.indexOf(prefix);
+		if (begin != 0) return null;
+	}
+	else
+	{
+		begin += 2;
+	}
+	var end = document.cookie.indexOf(";", begin);
+	if (end == -1)
+	{
+		end = dc.length;
+	}
+	return unescape(dc.substring(begin + prefix.length, end));
+}
+
+function getCOLAMCookieArray()
+{
+	  var colamCtnCookie = getCOLAMCookie("colam_ctn");
+	  var cookieArray = new Hash();	  
+	  if (colamCtnCookie!=null) 
+	  {
+		  if (colamCtnCookie.indexOf(";") != -1) 
+		  {
+			  tmpArray = colamCtnCookie.split(";");
+			  for (var i = 0; i < tmpArray.length; i++) 
+			  {
+				  keyValuePair = tmpArray[i].split("=");
+				  cookieArray[keyValuePair[0]] = keyValuePair[1];
+			  }			  
+		  }
+		  else if (colamCtnCookie.indexOf("=") != -1) 
+		  {
+			  keyValuePair = colamCtnCookie.split("=");
+			  cookieArray[keyValuePair[0]] = keyValuePair[1];
+		  }
+	  }	  
+	  return cookieArray; 
+}
+
+function checkRememberMe()
+{
+	var cookieArray = getCOLAMCookieArray();
+	if(cookieArray != null && cookieArray['rme']!=null && cookieArray['rme']=='Y')
+	{
+		jQuery("#rememberMe").attr('checked','checked');
+		jQuery("#uniform-rememberMe span").addClass("checked");
+	}
+	else
+	{
+		jQuery("#rememberMe").removeAttr('checked');
+		jQuery("#uniform-rememberMe span").removeClass("checked");
+	}
+}
+
+function populateUserIDFromCookie()
+{
+	checkRememberMe();
+	var cookieArray = getCOLAMCookieArray();
+	if(cookieArray != null && cookieArray['rme']!=null && cookieArray['rme']=='Y')
+	{
+		if(cookieArray['uid']!=null && cookieArray['uid'] !="")
+		{
+			if(tGuardOn == "false") {
+				jQuery("#wireless_num").val(cookieArray['uid']);
+			}
+			else{
+				jQuery("#userID").val(cookieArray['uid']);
+			}
+		}
+		else
+		{
+			jQuery("#rememberMe").removeAttr('checked');
+		}
+	}
+}
+
+/**
+ * Unescapes the the HTML (&nbsp; will render as &)
+ */
+function unescapeHTML(html) {
+	//create a div element and add the html
+	var htmlNode = document.createElement("DIV");
+	htmlNode.innerHTML = html;
+	//In IE return the innerText
+	if(htmlNode.innerText !== undefined){
+		return htmlNode.innerText; // IE
+	}
+	//In FF return the textContent
+	return htmlNode.textContent; // FF
+}
+
+function trim(stringToTrim) 
+{
+	return stringToTrim.replace(/^\s+|\s+$/g,"");
+}
+function ltrim(stringToTrim) 
+{
+	return stringToTrim.replace(/^\s+/,"");
+}
+function rtrim(stringToTrim) 
+{
+	return stringToTrim.replace(/\s+$/,"");
+}
+
+function isCookieEnabled()
+{
+	if(!navigator.cookieEnabled)
+	{
+		jQuery("#errorCookieDisabled").show();
+	}
+}
+
+function eraseUnwantedCookie()
+{
+	try
+	{
+		var cookieNames = jQuery("#cookiesToBeErased").val();
+		var cookieArray = null;
+		if(cookieNames !=null && jQuery.trim(cookieNames)!="")
+		{
+			cookieArray = cookieNames.split(',');
+			if(cookieArray !=null)
+			{
+				for(i = 0 ; i < cookieArray.length ; i ++)
+				{
+					deleteCookie(cookieArray[i]);
+				}
+			}
+		}
+	}
+	catch(exception)
+	{
+		// Nothing to be done , as it should allow login.
+	}
+}
+
+function deleteCookie(name) 
+{
+	document.cookie = name +'=;expires=Thu, 01-Jan-1970 00:00:01 GMT;path=/;domain=.att.com';
+}
+
+
+/*
+ * Specific to Passthrough Page Pages
+ */
+
+function addToFavorites()
+{
+  if (window.external)
+  {
+       window.external.AddFavorite(urlAddress,pageName)
+  }
+  else
+  {
+       alert("Sorry, your browser does not support this function.");
+  }
+}
+
+function openHelp(url) 
+{
+    window.open(url,"window3","width=618,height=485,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes");
+}
+
+function submitPromotion(promotionId) 
+{
+    document.loginActionForm.target="_self";
+	document.loginActionForm.action='/olam/gotoShop.olamexecute?event=displayPromotion&promotionId='+promotionId+'&<%=OlamMiscConstants.REPORT_ACTION_EVENT%>=<%=ReportingActionEventsConstants.A_SHOP_SHOP_PROMOTION_RETR%>';
+    document.loginActionForm.submit();
+}
+
+function appendSLIDDomainForSuperNLogin()
+{
+	if(jQuery("#isSuperNLogin").val() == "true")
+	{
+		var userID = jQuery("#userID").val();
+		jQuery("#superNUserID").val(userID);
+		if(userID !=null && userID!="")
+		{
+			userID = userID + "@slid.dum";
+			jQuery("#userID").val(userID);
+			jQuery("#tGaurdUserID").hide();
+			jQuery("#superNDiv").show();
+		}
+	}
+}

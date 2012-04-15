@@ -1,0 +1,206 @@
+var canvas_menu_json =
+[
+   {
+      "url":"/canvas/women/index.html?cm_re=Canvas-Women-_-D-1",
+      "categoryId":1,
+      "title":"Women",
+      "submenu":[
+         {
+            "url":"/ix/canvas/Canvas/Women/New-Arrivals/index.html?seq=1~2~3~4&catNumbers=2198~2199~2500&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Women-_-D-1-1",
+            "title":"New Arrivals"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Women/Sweaters/index.html?seq=1~2~3~4&catNumbers=2198~2199~2216&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Women-_-D-1-2",
+            "title":"Sweaters"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Women/Shirts/index.html?seq=1~2~3~4&catNumbers=2198~2199~2215&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Women-_-D-1-3",
+            "title":"Shirts"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Women/Polos-Tees/index.html?seq=1~2~3~4&catNumbers=2198~2199~2214&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Women-_-D-1-4",
+            "title":"Polos & Tees"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Women/Dresses-Skirts/index.html?seq=1~2~3~4&catNumbers=2198~2199~2209&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Women-_-D-1-5",
+            "title":"Dresses + Skirts"
+         },
+		 {
+            "url":"/ix/canvas/Canvas/Women/Bottoms/index.html?seq=1~2~3~4&catNumbers=2198~2199~2202&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Women-_-D-1-6",
+            "title":"Pants & Shorts"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Women/Blazers-Jackets/index.html?seq=1~2~3~4&catNumbers=2198~2199~2217&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Women-_-D-1-7",
+            "title":"Jackets & Blazers"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/index.html?seq=1~2~3~4&catNumbers=2198~2199~2203&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Women-_-D-1-8",
+            "title":"Shoes + Accessories"
+		  },
+          {
+            "url":"/ix/canvas/Canvas/Women/Outerwear/index.html?seq=1~2~3~4&catNumbers=2198~2199~2204&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Women-_-D-1-9",
+            "title":"Outerwear"
+		  },
+          {
+            "url":"/ix/canvas/Canvas/Women/Swim/index.html?seq=1~2~3~4&catNumbers=2198~2199~2210&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Women-_-D-1-10",
+            "title":"Swim"
+		  }
+      ]
+   },
+   {
+      "url":"/canvas/men/index.html?cm_re=Canvas-Men-_-D-2",
+      "title":"Men",
+      "categoryId":2,
+      "submenu":[
+         {
+            "url":"/ix/canvas/Canvas/Men/New-Arrivals/index.html?seq=1~2~3~4&catNumbers=2198~2200~2501&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Men-_-D-2-1",
+            "title":"New Arrivals"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Men/Sweaters/index.html?seq=1~2~3~4&catNumbers=2198~2200~2523&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Men-_-D-2-2",
+            "title":"Sweaters"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Men/Shirts/index.html?seq=1~2~3~4&catNumbers=2198~2200~2238&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Men-_-D-2-3",
+            "title":"Shirts"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Men/Polos-Tees/index.html?seq=1~2~3~4&catNumbers=2198~2200~2237&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Men-_-D-2-4",
+            "title":"Polos & Tees"
+         },
+		 {
+            "url":"/ix/canvas/Canvas/Men/Bottoms/index.html?seq=1~2~3~4&catNumbers=2198~2200~2212&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Men-_-D-2-5",
+            "title":"Pants & Shorts"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Men/Blazers-Jackets/index.html?seq=1~2~3~4&catNumbers=2198~2200~2239&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Men-_-D-2-6",
+            "title":"Jackets & Blazers"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Men/Shoes-Accessories/index.html?seq=1~2~3~4&catNumbers=2198~2200~2206&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Men-_-D-2-7",
+            "title":"Shoes + Accessories"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Men/Outerwear/index.html?seq=1~2~3~4&catNumbers=2198~2200~2205&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Men-_-D-2-8",
+            "title":"Outerwear"
+         }
+      ]
+   },
+   {
+      "url":"/canvas/accessories/index.html?cm_re=Canvas-Accessories-_-D-3",
+      "title":"Accessories",
+      "categoryId":3,
+      "submenu":[
+         {
+            "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/index.html?catNumbers=2198~2199~2203&store=le&tab=17&cm_re=Canvas-Accessories-_-D-3-1",
+            "title":"Women",
+            "submenu":[
+			  {
+                  "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/Shoes/index.html?seq=1~2~3~4~5&catNumbers=2198~2199~2203~2223&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-2",
+                  "title":"Shoes"
+               },
+               {
+                  "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/Bags-Totes/index.html?seq=1~2~3~4~5&catNumbers=2198~2199~2203~2408&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-3",
+                  "title":"Bags & Totes"
+               },
+               {
+                  "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/Scarves/index.html?seq=1~2~3~4~5&catNumbers=2198~2199~2203~2410&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-4",
+                  "title":"Scarves"
+               },
+               {
+                  "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/Belts/index.html?seq=1~2~3~4~5&catNumbers=2198~2199~2203~2411&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-5",
+                  "title":"Belts"
+               },
+               {
+                  "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/Hats/index.html?seq=1~2~3~4~5&catNumbers=2198~2199~2203~2413&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-6",
+                  "title":"Hats"
+               },
+			   {
+                  "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/Socks-Tights/index.html?seq=1~2~3~4~5&catNumbers=2198~2199~2203~2414&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-7",
+                  "title":"Socks & Tights"
+               },
+			   {
+                  "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/Jewelry/index.html?seq=1~2~3~4~5&catNumbers=2198~2199~2203~2412&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-8",
+                  "title":"Jewelry"
+               },
+			   {
+                  "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/Gloves/index.html?seq=1~2~3~4~5&catNumbers=2198~2199~2203~2622&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-9",
+                  "title":"Gloves"
+               },
+			   {
+                  "url":"/ix/canvas/Canvas/Women/Shoes-Accessories/Other/index.html?seq=1~2~3~4~5&catNumbers=2198~2199~2203~2497&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-10",
+                  "title":"Other"
+               }
+            ]
+         },
+         {
+            "url":"/ix/canvas/Canvas/Men/Shoes-Accessories/index.html?catNumbers=2198~2200~2206&store=le&tab=17&cm_re=Canvas-Accessories-_-D-3-11",
+            "title":"Men",
+            "submenu":[
+			  {
+                  "url":"/ix/canvas/Canvas/Men/Shoes-Accessories/Shoes/index.html?seq=1~2~3~4~5&catNumbers=2198~2200~2206~2242&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-12",
+                  "title":"Shoes"
+               },
+			   {
+                  "url":"/ix/canvas/Canvas/Men/Shoes-Accessories/bags/index.html?seq=1~2~3~4~5&catNumbers=2198~2200~2206~3195&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-13",
+                  "title":"Bags"
+               },
+			   {
+                  "url":"/ix/canvas/Canvas/Men/Shoes-Accessories/belts/index.html?seq=1~2~3~4~5&catNumbers=2198~2200~2206~3196&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-14",
+                  "title":"Belts"
+               },
+			   {
+                  "url":"/ix/canvas/Canvas/Men/Shoes-Accessories/ties-pocket-squares/index.html?seq=1~2~3~4~5&catNumbers=2198~2200~2206~3197&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-15",
+                  "title":"Ties & Pocket Squares"
+               },
+			   {
+                  "url":"/ix/canvas/Canvas/Men/Shoes-Accessories/hats/index.html?seq=1~2~3~4~5&catNumbers=2198~2200~2206~3198&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-16",
+                  "title":"Hats & Scarves"
+               },
+			   {
+                  "url":"/ix/canvas/Canvas/Men/Shoes-Accessories/other/index.html?seq=1~2~3~4~5&catNumbers=2198~2200~2206~3200&visible=1~1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Accessories-_-D-3-18",
+                  "title":"Other"
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "url":"/ix/canvas/Canvas/Sale/index.html?seq=1~2~3&catNumbers=2198~2471&visible=1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Sale-_-D-4-1",
+      "title":"Sale",
+      "categoryId":8,
+      "submenu":[
+         {
+            "url":"/ix/canvas/Canvas/Sale/Women/index.html?seq=1~2~3~4&catNumbers=2198~2471~2508&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Sale-_-D-4-2",
+            "title":"Women"
+         },
+         {
+            "url":"/ix/canvas/Canvas/Sale/Men/index.html?seq=1~2~3~4&catNumbers=2198~2471~2509&visible=1~1~1~1&store=le&sort=Recommended&tab=17&cm_re=Canvas-Sale-_-D-4-3",
+            "title":"Men"
+         },
+         {
+            "url":"/otc/index.html?cm_re=Canvas-Sale-_-D-4-4",
+            "title":"Classifieds"
+         }
+      ]
+   },
+   {
+      "url":"/canvas/boathouse/index.html?cm_re=Canvas-boathouse-_-D-5-1",
+      "title":"The Boathouse",
+      "categoryId":4,
+      "submenu":[
+		   {
+              "url":"/canvas/as-seen-in/index.html?cm_re=Canvas-boathouse-_-D-5-3",
+              "title":"AS SEEN IN"
+           },
+		   {
+              "url":"/canvas/film/index.html?cm_re=Canvas-boathouse-_-D-5-4",
+              "title":"FILM"
+           }
+       ]
+   },
+   {
+      "url":"http://www.landsend.com/?cm_re=canv-core",
+      "title":"Shop Lands' End"
+   }
+];

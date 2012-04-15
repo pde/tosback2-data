@@ -1,0 +1,43 @@
+
+jQuery(document).ready( function($) {
+    $('select.selectWire').change( function() {
+        var selected_cat = 'cat-'+$(this).val();
+        $('div.wiresContent').each( function() {
+            if ( selected_cat == this.id ) {
+                $(this).find('img').fadeIn();
+                $(this).removeClass('hidden').addClass('block').show();
+            } else {
+                $(this).find('img').fadeOut();
+                $(this).removeClass('block').addClass('hidden').hide();
+            }
+        });
+        /*
+        var post_id = $(this).attr('id');
+        $.post('/wordpress/wp-admin/admin-ajax.php', {
+            action:"get-new-wires", wires_cat: $(this).val(), post_id: post_id
+        }, function (response) {
+            data = $.parseJSON(response);
+            if ( data.response == '0' ) {
+                alert(data.message);
+            } else if ( data.response == '1' ) {
+                $('div#wires_widget').find('div.widgetContent').html( data.message );
+                refreshAds(); 
+            } else {
+                alert('Something went wrong!');
+            }
+        });
+        */
+    });
+    $('a.muteWire').click( function(e) {
+        e.preventDefault();
+        var post_id = $(this).attr('id').substr(5); // remove 'mute-'
+        var answer = confirm('Are you sure you want to mute this wire?');
+        if ( answer ) {
+            $('input#cover-actions-post_id').val( post_id );
+            $('input#cover-actions-cover_action').val( 'mute_story' );
+            $('form#cover-actions').submit();
+        }
+    });      
+});
+
+

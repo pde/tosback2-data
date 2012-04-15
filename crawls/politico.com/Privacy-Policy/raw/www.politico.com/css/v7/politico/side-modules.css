@@ -1,0 +1,1011 @@
+/*
+    POLITICO.com Widgets Stylesheet
+    Author:         Michael Marcialis
+    Contact Email:  mmarcialis@politico.com
+*/
+
+/*=======================================================================================
+    WIDGET GENERAL FRAMEWORK STYLES
+=========================================================================================*/
+
+.widget {margin:0 15px 15px 15px;}
+.ie6 .widget {height:1%;}
+
+/*CLEAR FIX---------------------------*/
+
+.widget .widget-form .input-action ul:after,
+.widget .widget-form .input-checkbox ul:after,
+.widget .widget-tabs-large .widget-tabs-nav:after {visibility:hidden; display:block; content:""; clear:both; height:0;}
+.ie6 .widget .widget-form .input-action ul,
+.ie6 .widget .widget-form .input-checkbox ul,
+.ie6 .widget .widget-tabs-large .widget-tabs-nav { zoom: 1; } /* IE6 */
+.ie7 .widget .widget-form .input-action ul,
+.ie7 .widget .widget-form .input-checkbox ul,
+.ie7 .widget .widget-tabs-large .widget-tabs-nav { zoom: 1; } /* IE7 */
+
+/*TOOL TIP STYLES---------------------------*/
+
+.widget .tool-tip {position:relative;}
+.widget .tool-tip .tool-tip-message {position:absolute; left:-9999em; bottom:35px; background:#333; width:125px; color:#fff; font-size:.92em; font-weight:bold; border:1px solid #000; padding:7px 10px; opacity:0; text-shadow:1px 1px 0 #000;
+    -webkit-border-radius:3px;
+       -moz-border-radius:3px;
+            border-radius:3px;
+    -webkit-box-shadow:0 0 5px rgba(0,0,0,.2);
+       -moz-box-shadow:0 0 5px rgba(0,0,0,.2);
+            box-shadow:0 0 5px rgba(0,0,0,.2);
+    -webkit-transition:bottom 0.5s ease, opacity 0.5s ease;
+       -moz-transition:bottom 0.5s ease, opacity 0.5s ease;
+            transition:bottom 0.5s ease, opacity 0.5s ease;
+}
+.widget .tool-tip .tool-tip-message:after {content:''; display:block; background:transparent url(http://www.politico.com/design/widgets/widget-tooltip-arrow.png) no-repeat left top; width:20px; height:10px; position:absolute; left:10px; bottom:-10px;}
+.widget .tool-tip:hover {cursor:help;}
+.widget .tool-tip:hover .tool-tip-message {opacity:1; left:-10px; bottom:25px;}
+
+/*=======================================================================================
+    WIDGET HEADER FRAMEWORK STYLES
+=========================================================================================*/
+
+.ie6 .widget .widget-header {height:1%;}
+.widget .widget-header h4 {padding:5px 10px;}
+
+/*INCLUSIVE WIDGETS (DIRECTLY RELATED TO MAIN CONTENT)---------------------------*/
+
+.widget-inclusive .widget-header {border-top:5px solid #575757; border-bottom:1px solid #e5e5e5;}
+.widget-inclusive .widget-header h4 {font-size:1.29em; color:#000;}
+
+/*Share Tools*/
+.widget-inclusive .share-tools {overflow:hidden;}
+.widget-inclusive .share-tools h4 {float:left; width:137px;}
+.widget-inclusive .share-links {float:right; padding:4px 10px; max-width:150px;}
+.widget-inclusive .share-links dt, .widget-inclusive .share-tools dd {float:left;}
+.widget-inclusive .share-links dt {font-size:.93em; font-weight:bold; color:#666; padding-top:2px;}
+.widget-inclusive .share-links dd {margin-left:5px;}
+.ie6 .widget-inclusive .share-links dd {display:inline;}
+.widget-inclusive .share-links dd a {display:block; text-indent:-9999em; width:22px; height:22px; background:transparent url(http://www.politico.com/design/widgets/widget-sprite-share.gif) no-repeat left top;}
+
+.widget-inclusive .share-links dd.twitter a {background-position:0 0;}
+.widget-inclusive .share-links dd.twitter a:hover {background-position:-22px 0;}
+.widget-inclusive .share-links dd.facebook a {background-position:0 -22px;}
+.widget-inclusive .share-links dd.facebook a:hover {background-position:-22px -22px;}
+.widget-inclusive .share-links dd.rss a {background-position:0 -44px;}
+.widget-inclusive .share-links dd.rss a:hover {background-position:-22px -44px;}
+
+/*Emphasized Headers*/
+.widget-inclusive .emphasized {border-top:5px solid #b81419;}
+
+/*EXCLUSIVE & EXTERNAL WIDGETS (NOT DIRECTLY RELATED TO MAIN CONTENT)---------------------------*/
+
+.widget-exclusive .widget-header, .widget-external .widget-header {background:#010101 url(http://www.politico.com/design/widgets/widget-header-default.gif) repeat-x left top;}
+.widget-exclusive .widget-header h4, .widget-external .widget-header h4 {font-size:1em; color:#fff; text-transform:uppercase; text-shadow:0 1px 0 rgba(0,0,0,.4);}
+.widget-exclusive .widget-header h4 b, .widget-external .widget-header h4 b {font-weight:normal; color:#ccc;}
+
+/*External Widgets*/
+.widget-external {border-top:2px solid #c7121a; padding-top:1px;}
+
+.widget-external .widget-header h4 {padding-right:49px;}
+.widget-external .more-info h4 {padding-right:10px;} /*Remove extra padding if more link present*/
+
+.widget-facebook {border-color:#627aad;}
+.widget-facebook .widget-header {background:#355698 url(http://www.politico.com/design/widgets/widget-header-facebook.gif) repeat-x left top;}
+.widget-facebook .widget-header h4 {background:transparent url(http://www.politico.com/design/widgets/widget-logo-facebook.gif) no-repeat 312px 4px;}
+.widget-facebook .widget-header h4 b {color:#fff; text-transform:none;}
+
+.widget-twitter {border-color:#1e5d89;}
+.widget-twitter .widget-header {background:#0079a3 url(http://www.politico.com/design/widgets/widget-header-twitter.gif) repeat-x left top;}
+.widget-twitter .widget-header h4 {background:transparent url(http://www.politico.com/design/widgets/widget-logo-twitter.gif) no-repeat 304px 5px;}
+.widget-twitter .widget-header h4 b {color:#fff; text-transform:none;}
+
+.widget-youtube {border-color:#e31000;}
+.widget-youtube .widget-header {background:#444 url(http://www.politico.com/design/widgets/widget-header-youtube.gif) repeat-x left top;}
+.widget-youtube .widget-header h4 {background:transparent url(http://www.politico.com/design/widgets/widget-logo-youtube.gif) no-repeat 308px 6px;}
+.widget-youtube .widget-header h4 b {color:#fff; text-transform:none;}
+
+.widget-flickr {border-color:#e03a91;}
+.widget-flickr .widget-header {background:#0c439b url(http://www.politico.com/design/widgets/widget-header-flickr.gif) repeat-x left top;}
+.widget-flickr .widget-header h4 {background:transparent url(http://www.politico.com/design/widgets/widget-logo-flickr.gif) no-repeat 306px 9px;}
+.widget-flickr .widget-header h4 b {color:#fff; text-transform:none;}
+
+/*Sign Up Widgets (For Exclusive Widgets Only)*/
+.widget-sign-up .widget-header {background:#04457d url(http://www.politico.com/design/widgets/widget-header-signup.gif) repeat-x left top;}
+.widget-sign-up .widget-header h4 b {color:#abd1f1;}
+
+/*Emphasized Widgets*/
+.widget-exclusive .emphasized {background:#8a0101 url(http://www.politico.com/design/widgets/widget-header-special.gif) repeat-x left top;}
+
+/*More Link Included*/
+.widget-exclusive .more-info, .widget-external .more-info {overflow:hidden;}
+.widget-exclusive .more-info h4, .widget-external .more-info h4 {float:left; width:276px;}
+.widget-exclusive .more-link, .widget-external .more-link {float:right; display:block; text-indent:-9999em; width:30px; border-left:1px solid #0d0d0d; padding-bottom:999px; margin-bottom:-999px; background:transparent url(http://www.politico.com/design/widgets/widget-more-chevron-black.gif) no-repeat center 9px;
+    -webkit-box-shadow:inset 1px 0 0 rgba(255,255,255,.15);
+       -moz-box-shadow:inset 1px 0 0 rgba(255,255,255,.15);
+            box-shadow:inset 1px 0 0 rgba(255,255,255,.15);
+}
+.widget-exclusive .more-link:hover, .widget-external .more-link:hover {background-color:#222;
+    -webkit-box-shadow:none;
+       -moz-box-shadow:none;
+            box-shadow:none;
+}
+
+.widget-sign-up .more-link {border-color:#033159; background-image:url(http://www.politico.com/design/widgets/widget-more-chevron-blue.gif);}
+.widget-sign-up .more-link:hover {background-color:#04457d;}
+
+.widget-exclusive .emphasized .more-link {border-color:#8a0000; background-image:url(http://www.politico.com/design/widgets/widget-more-chevron-red.gif);}
+.widget-exclusive .emphasized .more-link:hover {background-color:#9c0000;}
+
+/*=======================================================================================
+    WIDGET CONTENT FRAMEWORK STYLES
+=========================================================================================*/
+
+.widget .widget-content {background:#fff;}
+.ie6 .widget .widget-content {height:1%;}
+
+.widget .widget-content .timestamp, .widget .widget-content .byline {font-size:.86em; color:#666; margin:0;}
+.widget .widget-content .timestamp a, .widget .widget-content .byline a {font-weight:normal;}
+.widget .widget-content a:hover .tagline {text-decoration:underline;}
+
+.widget .widget-content .even {background-color:#f5f5f5;}
+
+.widget .widget-content .divider-bottom {border-bottom:5px solid #393939;}
+.widget-sign-up .widget-content .divider-bottom {border-bottom:5px solid #0f5e9f;}
+.widget .widget-content .divider-top {border-top:5px solid #393939;}
+.widget-sign-up .widget-content .divider-top {border-top:5px solid #0f5e9f;}
+
+.widget .widget-content table {width:100%;}
+.widget .widget-content th {text-align:left;}
+
+/*META DATA---------------------------*/
+
+.widget .meta-data {border-top:1px solid #e8e8e8; padding:7px 10px;}
+.widget .meta-data:first-child {border:none;}
+.widget .meta-data p {margin:0; font-size:.79em; font-style:italic; color:#666;}
+
+/*CONTACT US---------------------------*/
+
+.widget .contact-us {padding:7px 10px; border-top:1px solid #e8e8e8;}
+.ie6 .widget .contact-us {height:1%;}
+.widget .contact-us:first-child {border-top:none;}
+.widget .contact-us h5 {font-size:.86em; color:#ab051d; text-transform:uppercase; margin-bottom:2px;}
+.widget .contact-us p {font-size:.86em; font-style:italic; color:#666; margin-bottom:10px;}
+.widget .contact-us ul {overflow:hidden; margin-bottom:10px;}
+.widget .contact-us ul:last-child {margin:0;}
+.ie6 .widget .contact-us ul {height:1%;}
+.widget .contact-us ul li {font-size:.93em; margin-bottom:2px;}
+.widget .contact-us ul li h6 {margin-right:5px; font-weight:bold; display:inline;}
+.widget .contact-us ul li a {font-weight:normal;}
+
+/*TOPIC SPOTLIGHT---------------------------*/
+
+.widget .topic-spotlight {padding:10px;}
+.widget .topic-spotlight h5, .widget .topic-spotlight h6 {line-height:1.2em;}
+.widget .topic-spotlight h5 {font-size:.86em; color:#000; text-transform:uppercase;}
+.widget .topic-spotlight h5 a {color:#ab051d;}
+.widget .topic-spotlight h5 a:hover {text-decoration:none; color:#870114;}
+.widget .topic-spotlight h6 {font-size:1em;}
+
+/*TOPIC QUOTES---------------------------*/
+
+.widget .topic-quote {padding:10px;}
+.widget .topic-quote blockquote p {font-size:.93em; color:#666; margin-bottom:7px;}
+.widget .topic-quote cite {display:block; font-size:.86em; color:#666; font-style:italic; line-height:1.2em;}
+.widget .topic-quote cite a {font-style:normal; display:block;}
+
+/*PRODUCT SPOTLIGHT---------------------------*/
+
+.widget .product-spotlight {overflow:hidden;}
+
+.widget .product-intro, .widget .product-review {padding:10px 10px 10px 120px;}
+.ie6 .widget .product-intro, .ie6 .widget .product-review {height:1%;}
+
+.widget .product-intro {position:relative;}
+.widget .product-intro h5 {font-size:1em;}
+.widget .product-intro h5 .tagline {display:block; font-weight:normal;}
+.widget .product-intro .thumbnail {position:absolute; left:10px; top:10px; z-index:100;}
+
+.widget .product-review {background:#f5f5f5; border-top:1px solid #e8e8e8;}
+.widget .product-review h6, .widget .product-review cite, .widget .product-review p {font-size:.86em;}
+.widget .product-review h6 {text-transform:uppercase;}
+.widget .product-review cite, .widget .product-review cite a {display:block;}
+.widget .product-review cite {font-style:italic; color:#666; margin-bottom:7px;}
+.widget .product-review cite a {font-style:normal;}
+.widget .product-review blockquote p {color:#666; margin:0;}
+
+/*IMAGE SPOTLIGHT---------------------------*/
+
+.widget .image-spotlight {padding:10px;}
+.widget .image-spotlight img {display:block; background:#fff; border:1px solid #cecece; padding:1px;}
+.widget .image-spotlight a:hover img {border-color:#aaa;}
+
+/*STORY SPOTLIGHT---------------------------*/
+
+.widget .story-spotlight {padding:10px;}
+.widget .story-intro {overflow:hidden; margin-bottom:7px;}
+.widget .story-intro .thumbnail {width:77px; display:block; background:#fff; border:1px solid #cecece; padding:1px; float:left; margin:0 10px 7px 0;}
+.widget .story-intro a:hover .thumbnail {border-color:#aaa;}
+.widget .story-intro h5 {font-size:1.29em;}
+.widget .story-tease p {color:#000; margin:0;}
+
+/*STORY LISTS---------------------------*/
+
+.ie6 .widget .story-list {height:1%;}
+.widget .story-list li {padding:7px 10px; border-top:1px solid #e8e8e8;}
+.ie6 .widget .story-list li {height:1%;}
+.widget .story-list:first-child li:first-child {border:none;}
+.widget .story-list h5, .widget .story-list h6, .widget .story-list p {line-height:1.2em;}
+.widget .story-list h5 {font-size:.86em; color:#000; text-transform:uppercase;}
+.widget .story-list h5 a {color:#ab051d;}
+.widget .story-list h5 a:hover {text-decoration:none; color:#870114;}
+.widget .story-list h5 b {font-weight:normal; color:#666; text-transform:none;}
+.widget .story-list h6 {font-size:.93em; margin:0;}
+.widget .story-list h6 b {font-weight:normal;}
+.widget .story-list h6 .tagline {display:block; font-weight:normal;}
+.widget .story-list p {font-size:.93em;}
+.widget .story-list p.byline {margin-bottom:3px;}
+.widget .story-list p.byline a {text-transform:uppercase;}
+
+/*Incremented*/
+.widget .incremented li {position:relative;}
+.widget .incremented h6, .widget .incremented p {padding-left:30px;}
+.widget .incremented .increment {position:absolute; left:10px; top:7px; width:20px; font-size:.93em; color:#ab051d;}
+
+/*Incremented With Thumbnail*/
+.ie7 .widget .with-thumbnail, .ie6 .widget .with-thumbnail {overflow:hidden;}
+.widget .with-thumbnail li {overflow:hidden;}
+.ie7 .widget .with-thumbnail li, .ie6 .widget .with-thumbnail li {float:left; clear:both; width:315px;}
+.widget .with-thumbnail .details {float:right; width:240px;}
+.widget .with-thumbnail h6, .widget .with-thumbnail p {padding:0;}
+.widget .with-thumbnail .thumbnail {display:block; float:left; margin-left:20px;}
+.ie6 .widget .with-thumbnail .thumbnail {display:inline;}
+
+/*THUMBNAIL LISTS---------------------------*/
+
+.widget .thumbnail-list {overflow:hidden; padding:10px; border-top:1px solid #e8e8e8;}
+.ie6 .widget .thumbnail-list {height:1%;}
+.widget .thumbnail-list:first-child {border:none;}
+.widget .thumbnail-list dt, .widget .thumbnail-list dd {width:226px; float:right; color:#000;}
+.widget .thumbnail-list dt {font-size:1.14em; font-weight:bold;}
+.widget .thumbnail-list dd.thumbnail {width:81px; float:left;}
+.widget .thumbnail-list dd.thumbnail img {display:block; background:#fff; border:1px solid #cecece; padding:1px;}
+.widget .thumbnail-list dd.thumbnail a:hover img {border-color:#aaa;}
+
+/*TWITTER LISTS---------------------------*/
+
+.widget .twitter-list li {padding:7px 10px; border-top:1px solid #e8e8e8;}
+.widget .twitter-list li:first-child {border:none;}
+.widget .twitter-list blockquote {overflow:hidden; padding-bottom:5px;}
+.widget .twitter-list cite, .widget .twitter-list blockquote p {width:257px; float:right; font-size:.93em; line-height:1.15em;}
+.widget .twitter-list .twitter-photo {width:48px; float:left;}
+.widget .twitter-list .twitter-photo img {display:block;}
+.widget .twitter-list .twitter-user {font-style:normal; font-weight:bold;}
+.widget .twitter-list .twitter-user a:hover {text-decoration:none;}
+.widget .twitter-list .real-name {font-size:.93em; font-weight:normal; color:#666;}
+.widget .twitter-list p {margin:0;}
+.widget .twitter-list blockquote p {color:#000;}
+.widget .twitter-list blockquote p a {font-weight:normal;}
+.widget .twitter-list .timestamp {padding-left:58px; font-size:.79em;}
+
+/*Twitter Plugin Overrides (using #secondaryContent for greater specificity)*/
+#secondaryContent .twtr-hd, #secondaryContent .twtr-ft {display:none;}
+#secondaryContent .twtr-timeline {height:auto !important;}
+#secondaryContent .twtr-bd {padding:0;}
+#secondaryContent .twtr-tweet {border-bottom:1px solid #e2e2e2;}
+#secondaryContent .twtr-tweet:nth-child(odd) {background:#f5f5f5;}
+#secondaryContent .twtr-tweet-wrap {padding:7px 10px;}
+#secondaryContent .twtr-avatar {width:58px; height:58px;}
+#secondaryContent .twtr-avatar img {width:48px; height:48px;}
+#secondaryContent .twtr-tweet-text {margin-left:58px !important;}
+#secondaryContent .twtr-tweet-text a {font-weight:normal;}
+#secondaryContent .twtr-tweet-text .twtr-user {display:block; font-weight:bold;}
+#secondaryContent .twtr-tweet-text p {font:normal 13px/1.15em 'Helvetica Neue', Helvetica, Arial, sans-serif !important;}
+#secondaryContent .twtr-tweet-text em, #secondaryContent .twtr-tweet-text em a {font-size:11px; color:#666 !important;}
+#secondaryContent .twtr-tweet-text .twtr-popular {font-size:11px; color:#fff !important; background:#666 !important; padding:2px 5px 3px 5px;}
+
+/*CATEGORY LISTS---------------------------*/
+
+.widget .category-list {overflow:hidden; padding:7px 0;}
+.ie6 .widget .category-list {height:1%;}
+.widget .category-list ol, .widget .category-list ul {width:153px; float:left; margin-left:10px;}
+.ie6 .widget .category-list ol, .ie6 .widget .category-list ul {display:inline;}
+.widget .category-list li {font-size:.86em; margin-bottom:4px;}
+.ie6 .widget .category-list li {float:left; width:153px; clear:both;}
+.widget .category-list li a {font-weight:normal;}
+.widget .category-list p.show-all {margin-left:10px; font-size:.86em;}
+.widget .category-list p.show-all a:before {content:"[+] ";}
+
+/*REFERENCE LISTS---------------------------*/
+
+.widget .reference-list {padding:7px 10px;}
+.widget .reference-list li {font-size:.86em; margin-bottom:5px;}
+.widget .reference-list li:last-child {margin-bottom:0;}
+
+/*NETWORKING LISTS---------------------------*/
+
+.widget .networking-list {background:#f5f5f5;}
+.widget .networking-list h5 {font-size:.86em; border-bottom:1px solid #e2e2e2; background:#fff; padding:7px 10px; text-transform:uppercase;}
+.widget .networking-list li {border-bottom:1px solid #e9e9e9; border-top:1px solid #fcfcfc; padding:7px 10px;}
+.widget .networking-list li:first-child {border-top:none;}
+.widget .networking-list li:last-child {border-bottom:none;}
+.widget .networking-list iframe {display:block;}
+
+/*STATISTIC LISTS---------------------------*/
+
+.widget .statistic-list {background:#f5f5f5; padding:10px 0; overflow:hidden;}
+.ie6 .widget .statistic-list {height:1%;}
+.widget .statistic-list li {float:left; width:132px; margin:0 1px 0 9px; background:#f8f8f8 url(http://www.politico.com/design/widgets/widget-gray-tile.gif) repeat-x left bottom; color:#666; font-weight:bold; padding:2px 10px 9px 10px; border:1px solid #999;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+    -webkit-box-shadow:0 0 5px rgba(0,0,0,.25);
+    -moz-box-shadow:0 0 5px rgba(0,0,0,.25);
+    box-shadow:0 0 5px rgba(0,0,0,.25);
+}
+.ie6 .widget .statistic-list li {display:inline;}
+.widget .statistic-list a {color:#666; text-decoration:none;}
+.widget .statistic-list a:hover {color:#333; cursor:pointer;}
+.widget .statistic-list span {display:block; line-height:1em;}
+.widget .statistic-list .statistic {font-size:2.57em; float:left; margin-right:7px;}
+.widget .statistic-list .category {font-size:1.07em; margin-top:3px}
+
+/*IMAGE GALLERY LIST (THUMBNAILS MUST BE 51x51)---------------------------*/
+
+.widget .image-gallery-list {overflow:hidden; padding:10px 0; background:#f5f5f5;}
+.ie6 .widget .image-gallery-list {height:1%;}
+.widget .image-gallery-list li {float:left; margin-left:10px;}
+.ie6 .widget .image-gallery-list li {display:inline;}
+.widget .image-gallery-list li img {display:block; background:#fff; padding:1px; border:1px solid #d7d7d7;}
+.widget .image-gallery-list li a:hover img {border-color:#aaa;}
+
+/*Image Gallery Within Slider (Thumbnails Must Be 77x77)*/
+.widget .coda-slider-wrapper .image-gallery-list {padding:20px 26px;}
+
+/*VIDEO LISTS---------------------------*/
+
+.widget .video-list {overflow:hidden; padding:10px 0; border-top:1px solid #e8e8e8;}
+.ie6 .widget .video-list {height:1%;}
+.widget .video-list:first-child {border:none;}
+.widget .video-list li, .widget .video-list-large li {font-size:.86em;}
+.widget .video-list li .timestamp, .widget .video-list-large li .timestamp {font-size:1em;}
+.widget .video-list li {float:left; width:95px; margin:0 6px 0 9px;}
+.ie6 .widget .video-list li {display:inline;}
+.widget .video-list li strong, .widget .video-list-large li strong {color:#bb0000; text-transform:uppercase;}
+.widget .video-list .thumbnail, .widget .video-list-large .thumbnail {display:block; margin-bottom:4px;}
+.widget .video-list img, .widget .video-list-large img {display:block; background:#fff; padding:1px; border:1px solid #cecece;}
+.widget .video-list a:hover, .widget .video-list-large a:hover {text-decoration:none;}
+.widget .video-list a:hover img, .widget .video-list-large a:hover img {border-color:#aaa;}
+
+/*Video Lists Large*/
+.widget .video-list-large {padding:10px; background:#f5f5f5;}
+.ie6 .widget .video-list-large {padding:9px;}
+.widget .video-list-large .video-overlay {position:relative; overflow:hidden;}
+.widget .video-list-large .video-overlay-button {position:absolute; display:block; width:605px; height:605px; left:0; bottom:0; text-indent:-9999em; background:transparent url(http://www.politico.com/design/global/video-overlay.png) no-repeat left bottom; }
+.ie6 .widget .video-list-large .video-overlay-button {display:none;}
+.widget .video-list-large .video-overlay:hover .video-overlay-button {background-image:url(http://www.politico.com/design/global/video-overlay-hover.png); cursor:pointer;}
+
+/*PERSONALITY LISTS---------------------------*/
+
+.widget .personality-list {background:#e8e8e8 url(http://www.politico.com/design/widgets/widget-gray-noise.gif) repeat left top; padding:10px 0 6px 5px; overflow:hidden;}
+.ie6 .widget .personality-list {height:1%;}
+.widget .personality-list li {float:left; margin:0 0 4px 4px;}
+.ie6 .widget .personality-list li {display:inline;}
+.widget .personality-list li img {border:1px solid #cecece; background:#fff; padding:1px; display:block;}
+.widget .personality-list li a:hover img {border-color:#999;}
+
+/*PERSONALITY RELATED---------------------------*/
+
+.widget .personality-related li {padding-bottom:10px;}
+
+.widget .personality-header {display:block; overflow:hidden; background:#e3e3e3 url(http://www.politico.com/design/widgets/widget-gray-header-arrow.gif) no-repeat -65px top; border-top:1px solid #dadada; border-bottom:1px solid #dadada; padding:2px 10px;
+    -webkit-transition:all 0.2s ease-in-out;
+    -moz-transition:all 0.2s ease-in-out;
+    transition:all 0.2s ease-in-out;
+}
+.ie6 .widget .personality-header {height:1%;}
+.widget .personality-header:hover {text-decoration:none; background-position:-62px top; cursor:pointer;}
+.widget .personality-header h5 {float:right; width:215px; padding-right:50px; font-size:1.43em; line-height:.85em; margin-top:10px;}
+.widget .personality-header h5 .title {display:block; font-size:.6em; font-weight:normal; font-style:italic; color:#666;}
+.widget .personality-header img {display:block; float:left; width:38px; border:1px solid #fff;}
+
+.widget .personality-headlines {padding:5px 10px;}
+.widget .personality-headlines li {list-style:disc; margin:0 0 3px 15px; padding:0;}
+.widget .personality-headlines li a {font-weight:normal;}
+.widget .personality-headlines li.current {font-size:.86em; color:#666; list-style:none; margin-left:0;}
+.widget .personality-headlines li.current strong {color:#b70000;}
+.widget .personality-headlines li.current a {color:#666;}
+
+.widget .personality-link {display:block; padding:0 10px; text-align:right;}
+
+/*POLL LISTS---------------------------*/
+
+.widget .poll-list li {padding:7px 10px; border-top:1px solid #e8e8e8;}
+.widget .poll-list:first-child li:first-child {border:none;}
+.widget .poll-list h5 {font-size:.86em; color:#666; text-transform:uppercase; margin-bottom:3px;}
+
+/*POLL TABLES---------------------------*/
+
+.widget .poll-table {width:auto !important;}
+.widget .poll-table caption {caption-side:bottom; text-align:left; font-size:.79em; font-style:italic; color:#666; padding:5px 0;}
+.widget .poll-table tbody th, .widget .poll-table tbody td {padding:2px 0; color:#000;}
+.widget .poll-table tbody th {width:110px; padding-right:10px;}
+.widget .poll-table tbody td {width:195px; text-align:right;}
+.widget .poll-table .graph, .widget .poll-table .index {height:10px; display:inline-block;}
+.widget .poll-table .graph {position:relative; background:transparent url(http://www.politico.com/design/widgets/widget-poll-grid.gif) repeat-x left center; width:140px; vertical-align:baseline; margin-left:5px;}
+.widget .poll-table .index {position:absolute; left:0; top:0; font-size:1px; line-height:1px;}
+
+/*Poll Tables Large*/
+.widget .poll-table-large {position:relative; overflow:hidden; height:1%;}
+.widget .poll-table-large tbody tr {position:relative; display:block; float:left; clear:both; width:335px;}
+.ie7 .widget .poll-table-large tbody tr {height:1em;} /*Seems IE7 requires a defined height when positioning children from the bottom of a table row*/
+.widget .poll-table-large tbody th, .widget .poll-table-large tbody td {padding:7px 10px 30px 10px; border-top:1px solid #e8e8e8; color:#000; font-weight:bold;}
+.ie7 .widget .poll-table-large tbody th, .ie7 .widget .poll-table-large tbody td, .ie6 .widget .poll-table-large tbody th, .ie6 .widget .poll-table-large tbody td {border-top:none;} /*Removing border due to row collapsing*/
+.widget .poll-table-large:first-child tbody tr:first-child th, .widget .poll-table-large:first-child tbody tr:first-child td {border-top:none;}
+.widget .poll-table-large tbody th {width:167px;}
+.widget .poll-table-large tbody td {text-align:right; width:168px;}
+.widget .poll-table-large .remainder th, .widget .poll-table-large .remainder td {color:#666; padding-bottom:7px;}
+
+.widget .poll-table-large .graph, .widget .poll-table-large .index {height:20px; display:block; position:absolute;}
+.widget .poll-table-large .graph {background:transparent url(http://www.politico.com/design/widgets/widget-poll-grid.gif) repeat-x left center; text-align:left; left:10px; bottom:8px; /*top:20px;*/ width:315px;}
+.widget .poll-table-large .index {left:0; top:0;}
+
+/*Poll Bar Colors For All Poll Tables*/
+.widget .poll-table .index, .widget .poll-table-large .index {background:#666 url(http://www.politico.com/design/widgets/widget-poll-highlight.png) repeat-x left center;}
+.widget .poll-table .party-democrat .index, .widget .poll-table-large .party-democrat .index {background-color:#1570ba;}
+.widget .poll-table .party-republican .index, .widget .poll-table-large .party-republican .index {background-color:#b30505;}
+.widget .poll-table .party-independent .index, .widget .poll-table-large .party-independent .index {background-color:#ffb739;}
+.ie6 .widget .poll-table .index, .ie6 .widget .poll-table-large .index {background-image:none;}
+
+/*USER QUESTION---------------------------*/
+
+.widget .user-question {padding:7px 10px; background:#f5f5f5; border-bottom:1px solid #e8e8e8;}
+.widget .user-question h5 {font-size:.93em; font-weight:normal; color:#666;}
+.widget .user-question p {font-weight:bold; color:#000; margin:0;}
+
+/*USER RESULTS TABLES---------------------------*/
+
+/*Due to browser inconsistancies, IE7 and IE6 receive an alternative layout for the table*/
+.widget .user-results-table caption {caption-side:bottom; text-align:right; font-size:.79em; font-style:italic; color:#666; padding:10px;}
+.ie7 .widget .user-results-table caption, .ie6 .widget .user-results-table caption {text-align:left;}
+.widget .user-results-table th, .widget .user-results-table td {display:block; float:left; clear:both;}
+.ie7 .widget .user-results-table th, .ie7 .widget .user-results-table td, .ie6 .widget .user-results-table th, .ie6 .widget .user-results-table td {display:table-cell; float:none; clear:none;}
+.widget .user-results-table th {font-size:.93em; font-weight:normal; color:#000; padding:10px 10px 3px 10px; width:315px;}
+.ie7 .widget .user-results-table th, .ie6 .widget .user-results-table th {width:148px; padding:0 10px 10px 10px;}
+.widget .user-results-table td {color:#000; position:relative; padding:4px 20px; width:295px;}
+.ie7 .widget .user-results-table td, .ie6 .widget .user-results-table td {width:127px; padding:4px 20px 14px 20px;}
+.widget .user-results-table td strong {position:relative; z-index:100;}
+
+.widget .user-results-table .graph, .widget .user-results-table .index {height:24px; display:block; position:absolute;}
+.widget .user-results-table .graph {text-align:left; left:10px; top:0; width:311px; border:1px solid #cecece; padding:1px;}
+.ie7 .widget .user-results-table .graph, .ie6 .widget .user-results-table .graph {width:143px;}
+.widget .user-results-table .index {background:#ffb739 url(http://www.politico.com/design/widgets/widget-poll-highlight.png) repeat-x left center;}
+.ie6 .widget .user-results-table .index {background-image:none;}
+
+/*DATA TABLES---------------------------*/
+
+.widget .data-table tbody th, .widget .data-table tbody td {border-top:1px solid #e8e8e8; padding:5px 10px; line-height:1.2em;}
+.widget .data-table tbody tr:first-child th, .widget .data-table tbody tr:first-child td {border:none;}
+.widget .data-table tbody th {color:#000;}
+.widget .data-table tbody td {color:#666;}
+
+/*CALENDAR DAY TABLES---------------------------*/
+
+.widget .calendar-day .calendar-header {background:#0f5e9f url(http://www.politico.com/design/widgets/widget-interface-bar.gif) repeat-x left bottom;}
+.widget .calendar-day .calendar-header h5 {font-size:1em; color:#fff; text-align:center;}
+
+.widget .calendar-day .calendar-nav {width:335px;}
+
+.widget .calendar-day tbody th, .widget .calendar-day tbody td {padding:7px 10px; border-top:1px solid #e8e8e8; font-size:.93em; color:#000;}
+.widget .calendar-day tbody th {color:#666; width:60px;}
+.widget .calendar-day tbody tr:first-child th, .widget .calendar-day tbody tr:first-child td {border-top:none;}
+.widget .calendar-day tbody td .event-location {font-size:.93em; font-style:italic; color:#666;}
+
+.widget .calendar-day .no-event {font-weight:bold; text-transform:uppercase; color:#999; text-align:center; padding:20px 10px; background:#f5f5f5;}
+
+/*CALENDAR MONTH TABLES (REST MOVED TO BASE.CSS)---------------------------*/
+
+.widget .calendar-month .calendar-nav {width:313px;}
+
+/*WIDGET FORMS---------------------------*/
+
+.widget .widget-form *:invalid {
+    -webkit-box-shadow:none;
+       -moz-box-shadow:none;
+            box-shadow:none;
+}
+
+.widget .widget-form {background:#f5f5f5;}
+.widget .widget-form h5 {font-size:.86em; border-bottom:1px solid #e2e2e2; background:#fff; padding:7px 10px; text-transform:uppercase;}
+.widget .widget-form fieldset {padding:10px;}
+.widget .widget-form li {margin-bottom:10px;}
+.widget .widget-form li:last-child {margin-bottom:0;}
+.widget .widget-form legend, .widget .widget-form label {font-size:.86em; color:#666; display:block;}
+.widget .widget-form legend span {display:block; padding:0 0 7px 0; position:relative; bottom:-10px; width:315px; white-space:normal;}
+.ie8 .widget .widget-form legend span, .ie7 .widget .widget-form legend span, .ie6 .widget .widget-form legend span {bottom:0;}
+.ie7 .widget .widget-form legend span, .ie6 .widget .widget-form legend span {left:-7px;}
+.ie6 .widget .widget-form legend span {width:280px; overflow:hidden;}
+.widget .widget-form label {margin-bottom:7px;}
+.widget .widget-form textarea {border:1px solid #d7d7d7; padding:6px 5px; width:303px; height:4em; font:normal .93em 'Lucida Grande', 'Lucida Sans Unicode', sans-serif; color:#666;}
+.widget .widget-form textarea:focus {color:#000; border-color:#aaa;}
+
+/*widget form following a networking list*/
+.widget .networking-list + .widget-form {border-top:1px solid #e9e9e9;}
+
+/*Combo Text Input & Button Styles*/
+.widget .widget-form .input-combo {border-top:1px solid #fcfcfc;}
+.widget .widget-form .input-combo:first-child {border-top:none;}
+.widget .widget-form .input-combo ul {overflow:hidden; background:#f0f0f0; border:1px solid #d9d9d9; padding:3px 0;
+    -webkit-border-radius:6px;
+       -moz-border-radius:6px;
+            border-radius:6px;
+}
+.ie6 .widget .widget-form .input-combo ul {height:1%;}
+.widget .widget-form .input-combo li {float:left; margin:0 0 0 3px;}
+.ie6 .widget .widget-form .input-combo li {display:inline;}
+.widget .widget-form .input-combo label {position:absolute; left:-9999em;}
+.widget .widget-form .input-combo-entry input, .widget .widget-form .input-combo-entry select {background:#fff; border:1px solid #c7c7c7; display:block; font:normal .93em 'Lucida Grande', 'Lucida Sans Unicode', sans-serif; color:#666; padding:5px; margin:0;
+    -webkit-border-radius:4px;
+       -moz-border-radius:4px;
+            border-radius:4px;
+}
+.widget .widget-form .input-combo-entry select {height:29px;}
+.ie7 .widget .widget-form .input-combo-entry select, .ie6 .widget .widget-form .input-combo-entry select {font-size:1.3em;}
+.widget .widget-form .input-combo-entry input:focus, .widget .widget-form .input-combo-entry select:focus {color:#000; border-color:#aaa;}
+
+.widget .widget-form .input-sign-up .input-combo-entry input {width:211px;}
+.ie7 .widget .widget-form .input-sign-up .input-combo-entry input {width:203px;}
+.widget .widget-form .input-search .input-combo-entry input {width:255px;}
+.widget .widget-form .input-go .input-combo-entry select {width:248px;}
+.ie7 .widget .widget-form .input-go .input-combo-entry select {width:245px;}
+
+.widget .widget-form .input-sign-up .p-btn {padding:inherit 0; width:81px;}
+.widget .widget-form .input-search .p-btn {padding:0 !important; display:block !important;}
+.widget .widget-form .input-search .p-btn em {display:block; text-indent:-9999em; width:37px; height:27px; background:transparent url(http://www.politico.com/design/widgets/widget-button-search.gif) no-repeat center center;}
+.widget .widget-form .input-go .p-btn {padding:inherit 0; width:56px;}
+
+/*Checkbox Styles*/
+.widget .widget-form .input-checkbox {padding:0;}
+.widget .widget-form .input-checkbox ul {border-bottom:1px solid #e9e9e9; border-top:1px solid #fcfcfc; padding:5px 0;}
+.ie6 .widget .widget-form .input-checkbox ul {height:1%;}
+.widget .widget-form .input-checkbox ul:first-child {border-top:none;}
+.widget .widget-form .input-checkbox li {float:left; width:151px; margin:0 0 0 10px;}
+.ie6 .widget .widget-form .input-checkbox li {display:inline;}
+.widget .widget-form .input-checkbox input {float:left;}
+.widget .widget-form .input-checkbox label {font-size:.86em; color:#333; float:right; margin:2px 0 0 0; width:126px;}
+.widget .widget-form .input-checkbox label a {display:block; background:transparent url(http://www.politico.com/design/widgets/widget-more-chevron-gray.gif) no-repeat right 3px; padding-right:15px; color:#333; text-decoration:none;}
+
+/*Radio Button Styles*/
+.widget .widget-form .input-radio li {overflow:hidden;}
+.ie6 .widget .widget-form .input-radio li {height:1%;}
+.widget .widget-form .input-radio input {float:left;}
+.widget .widget-form .input-radio label {display:block; float:right; width:280px; font-size:.93em; color:#000; margin-bottom:0;}
+
+/*User Action Styles*/
+.widget .widget-form .input-action {padding-top:0;}
+.widget .widget-form .input-action li {float:left; margin:0 5px 0 0;}
+
+/*WIDGET TABS---------------------------*/
+
+/*Override Base Styles*/
+.ui-tabs-panel {
+	-webkit-transition:none;
+	   -moz-transition:none;
+	        transition:none;
+}
+
+.widget .widget-tabs, .widget .widget-tabs-large {zoom:1; position:absolute; left:-9999em; height:0;}
+.widget .widget-tabs-revealed, .widget .widget-tabs-large-revealed {position:static; left:auto; height:auto;}
+.widget .widget-tabs-nav a:focus {text-decoration:none;}
+.widget .widget-tabs .ui-tabs-panel, .widget .widget-tabs-large .ui-tabs-panel {display:block; clear:both;}
+.widget .widget-tabs .ui-tabs-hide, .widget .widget-tabs-large .ui-tabs-hide {position:absolute; left:-9999em; top:0;}
+.widget .widget-tabs .ui-tabs-nav li.ui-tabs-selected a, .widget .widget-tabs .ui-tabs-nav li.ui-state-disabled a, .widget .widget-tabs .ui-tabs-nav li.ui-state-processing a, .widget .widget-tabs-large .ui-tabs-nav li.ui-tabs-selected a, .widget .widget-tabs-large .ui-tabs-nav li.ui-state-disabled a, .widget .widget-tabs-large .ui-tabs-nav li.ui-state-processing a {cursor:default;}
+.widget .widget-tabs .ui-tabs-nav li a, .widget .widget-tabs .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a, .widget .widget-tabs-large .ui-tabs-nav li a, .widget .widget-tabs-large .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {cursor:pointer;}
+
+.widget .widget-tabs .widget-tabs-nav {overflow:hidden; background:#0f5e9f url(http://www.politico.com/design/widgets/widget-interface-bar.gif) repeat-x left bottom;}
+.ie6 .widget .widget-tabs .widget-tabs-nav {height:1%;}
+.widget .widget-tabs .widget-tabs-nav li {float:left;}
+.widget .widget-tabs .widget-tabs-nav li a {display:block; font-size:.86em; color:#fff; padding:7px 10px; border-right:1px solid #013663; border-left:1px solid #0d61a7;}
+.widget .widget-tabs .widget-tabs-nav li:first-child a, .widget .widget-tabs .widget-tabs-nav li.first a {border-left:none !important;}
+.widget .widget-tabs .widget-tabs-nav li a:hover {background:#003f72; border-left:1px solid #003f72; text-decoration:none;}
+.widget .widget-tabs .widget-tabs-nav li.ui-tabs-selected a {background:#fff !important; color:#000;}
+
+/*Widget Tabs Large*/
+.widget .widget-tabs-large {position:relative; padding-bottom:70px; border-top:1px solid #e8e8e8;}
+.widget .widget-tabs-large:first-child {border:none;}
+.widget .widget-tabs-large .widget-tabs-nav {position:absolute; left:0; bottom:0; border-top:1px solid #e8e8e8; background:#f5f5f5; width:100%;}
+.widget .widget-tabs-large .widget-tabs-nav li {float:left;}
+.widget .widget-tabs-large .widget-tabs-nav li:hover {background-color:#ededed;}
+.widget .widget-tabs-large .widget-tabs-nav li.ui-tabs-selected {background:#666 url(http://www.politico.com/design/widgets/widget-tabs-large-current.gif) no-repeat center top; position:relative; margin-top:-1px}
+.widget .widget-tabs-large .widget-tabs-nav a {display:block; width:65px; height:57px; padding-top:12px; border-left:1px solid #fff; border-right:1px solid #e8e8e8;}
+.widget .widget-tabs-large .widget-tabs-nav li.first a, .widget .widget-tabs-large .widget-tabs-nav li.last a {width:66px;}
+.widget .widget-tabs-large .widget-tabs-nav li.first a {border-left:none;}
+.widget .widget-tabs-large .widget-tabs-nav li.last a {border-right:none;}
+.widget .widget-tabs-large .widget-tabs-nav li.ui-tabs-selected a {border-color:#3f3f3f; padding-top:13px;}
+.widget .widget-tabs-large .widget-tabs-nav img {display:block; border:1px solid #fff; width:45px; margin:0 auto;
+    box-shadow:0 1px 2px rgba(0,0,0,.32);
+}
+
+/*WIDGET SLIDER---------------------------*/
+.widget .coda-slider-wrapper {clear:both; overflow:auto; position:relative;}
+.ie6 .widget .coda-slider-wrapper {height:1%;}
+.widget .coda-slider {overflow:hidden; position:relative;}
+.widget .coda-slider, .widget .coda-slider .panel {width: 335px; float:left;}
+.widget .coda-slider .panel {display:block;}
+.widget .coda-slider .panel-container {position:relative;}
+
+.widget .coda-nav-left a, .widget .coda-nav-right a {position:absolute; z-index:100; display:block; width:17px; height:15px; text-indent:-9999em; background:transparent url(http://www.politico.com/design/widgets/widget-sprite-arrow.gif) no-repeat left top; top:44%; font-size:1px; line-height:1px;}
+.widget .coda-nav-left a {background-position:left top; left:10px;}
+.widget .coda-nav-left a:hover {background-position:left bottom;}
+.widget .coda-nav-right a {background-position:right top; right:10px;}
+.widget .coda-nav-right a:hover {background-position:right bottom;}
+	
+.widget .coda-slider .loading {padding:10px; text-align:center; font-weight:bold; color:#666;}
+
+/*TABBED WIDGET SLIDER---------------------------*/
+.widget .tabbed-coda-slider-wrapper {clear:both; overflow:hidden; position:relative; width:335px; background:#f5f5f5}
+.ie6 .widget .tabbed-coda-slider-wrapper {height:1%;}
+.widget .promo-carusel-items {display:none;}
+.widget .promo-carusel-items.arrows {display:block;}
+.widget .tabbed-coda-slider {overflow:hidden; position:relative; width:335px}
+.widget .tabbed-coda-slider, .widget .tabbed-coda-slider .panel {width: 335px; float:left;}
+.widget .tabbed-coda-slider .panel {display:block;}
+.widget .tabbed-coda-slider .panel-container {position:relative;width: 335px;}
+
+.tabbed-coda-slider-wrapper .coda-nav {overflow:hidden; height:25px; margin:0 auto; display:block;width: 335px !important; border-top:1px solid #e8e8e8; background: #f5f5f5}
+.tabbed-coda-slider-wrapper .coda-nav ul {clear: both; display: block; margin:6px auto 0; overflow: hidden}
+.tabbed-coda-slider-wrapper .coda-nav li {display:inline;}
+.tabbed-coda-slider-wrapper .coda-nav li a {float:left; display:block; width:10px; height:10px; margin:0 3px; background: #fff; border: 1px solid #9a9a9a; border-radius:10px; font-size:0; line-height:1;}
+.ie7 .tabbed-coda-slider-wrapper .coda-nav li a {margin:0 1px;}
+.tabbed-coda-slider-wrapper .coda-nav li a.current {background: #9a9a9a}
+
+.tabbed-coda-slider-wrapper .coda-nav-left a, .tabbed-coda-slider-wrapper .coda-nav-right a {background: url(http://www.politico.com/design/widgets/carousel/arrows.png) no-repeat; width:13px; height:29px; top:67px; cursor:pointer;}
+.tabbed-coda-slider-wrapper.coda-nav-left a {background-position:left top;}
+.tabbed-coda-slider-wrapper .coda-nav-left a:hover {background-position:left bottom;}
+.tabbed-coda-slider-wrapper .coda-nav-right a {background-position:right top; }
+.tabbed-coda-slider-wrapper .coda-nav-right a:hover {background-position:right bottom;}
+
+/*INCLUSIVE WIDGETS (DIRECTLY RELATED TO MAIN CONTENT)---------------------------*/
+
+.widget-inclusive .widget-content {border-bottom:1px solid #e8e8e8;}
+
+.widget-inclusive .incremented li .increment {font-size:1.5em;}
+
+.widget-inclusive .calendar-month {background:transparent none;}
+
+/*EXCLUSIVE & EXTERNAL WIDGETS (NOT DIRECTLY RELATED TO MAIN CONTENT)---------------------------*/
+
+.widget-exclusive .widget-content, .widget-external .widget-content {border:1px solid #e8e8e8;}
+
+/*=======================================================================================
+    WIDGET FOOTER FRAMEWORK STYLES
+=========================================================================================*/
+
+.widget .widget-footer {overflow:hidden;}
+.ie6 .widget .widget-footer {height:1%;}
+
+.widget .supplementary-tools {padding:7px 10px; float:right;}
+.widget .supplementary-tools li {float:left; font-size:.93em; border-left:1px solid #666; padding-left:7px; margin-left:7px; white-space:nowrap;}
+.widget .supplementary-tools li:first-child, .widget .supplementary-tools li.first {border-left:none; padding-left:none; margin-left:none;}
+.widget .supplementary-tools li a {font-weight:normal;}
+
+/*INCLUSIVE WIDGETS (DIRECTLY RELATED TO MAIN CONTENT)---------------------------*/
+
+.widget-inclusive .widget-footer {border-bottom:1px solid #e8e8e8;}
+
+/*EXCLUSIVE & EXTERNAL WIDGETS (NOT DIRECTLY RELATED TO MAIN CONTENT)---------------------------*/
+
+.widget-exclusive .widget-footer, .widget-external .widget-footer {border:1px solid #e8e8e8; border-top:none;}
+
+/*=======================================================================================
+    WIDGET ADVERTISEMENT FRAMEWORK STYLES
+=========================================================================================*/
+
+.widget-ad {text-align:center;}
+.widget-ad * {margin:0 auto;}
+.widget-ad img {display:block;} 
+.widget-ad:before {content:'Advertisement'; display:block; font-size:11px; color:#959595; margin:-3px auto 3px; text-align:center;}
+
+.has-section-masthead .widget-ad {background:url(http://www.politico.com/design/widgets/ad-bg-shadow.png) no-repeat center 15px;}
+.has-section-masthead .widget + .widget-ad {background:none;}
+.ie6 .has-section-masthead .widget-ad {background:none;}
+
+/*=======================================================================================
+    POPULAR ON POLITICO
+=========================================================================================*/
+
+#widgetPopularStories .widget-content {background:#f5f5f5;}
+#widgetPopularStories .widget-tabs .widget-tabs-nav li.ui-tabs-selected a {background:#f5f5f5 !important;}
+#widgetPopularStories .meta-data {padding:15px 10px; overflow:hidden;}
+.ie7 #widgetPopularStories .meta-data {width:315px;} /*For some reason, this is the only thing that will trigger hasLayout in IE7. Holly Hack not working.*/
+.ie6 #widgetPopularStories .meta-data {height:1%;}
+#widgetPopularStories .meta-data p {text-align:right; float:right; width:175px;}
+#widgetPopularStories .meta-data p.meta-timeframe {text-align:left; float:left; width:130px; font-weight:bold; font-style:normal;}
+#widgetPopularStories .story-list {background:#fff;}
+
+.widget-subtabs {zoom:1; position:relative;}
+.ie6 .widget-subtabs {height:1%;}
+.widget-subtabs .ui-tabs-panel {display:block; clear:both;}
+.widget-subtabs .ui-tabs-hide {position:absolute; left:-9999em;}
+.widget-subtabs .widget-subtabs-nav li.ui-tabs-selected a, .widget-subtabs .widget-subtabs-nav li.ui-state-disabled a, .widget-subtabs .widget-subtabs-nav li.ui-state-processing a {cursor:default;}
+.widget-subtabs .widget-subtabs-nav li a, .widget-subtabs .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {cursor:pointer;}
+
+.widget-subtabs-nav {width:120px; position:absolute; left:10px; top:36px; z-index:0;}
+.widget-subtabs-nav li {width:120px; position:relative; margin-top:-1px; background:#eee; left:-9999em; z-index:999;}
+.widget-subtabs-nav li a {font-size:.79em; font-weight:bold; white-space:nowrap; display:block; padding:0 30px 0 10px; line-height:26px; border:1px solid #cdcdcd; color:#004276 !important;}
+.ie7 .widget-subtabs-nav li a, .ie6 .widget-subtabs-nav li a {height:1%;}
+.widget-subtabs-nav li a:hover, .widget-subtabs-nav li a:active, .widget-subtabs-nav li a:focus {text-decoration:none; top:0;}
+.widget-subtabs-nav li a:hover {background:#ddd;}
+.widget-subtabs-nav-revealed {z-index:997;}
+.widget-subtabs-nav-revealed li {left:0;}
+
+/*Selected & Visible Product*/
+
+.widget-subtabs-nav li.ui-tabs-selected, .widget-subtabs-nav li.ui-tabs-selected a {
+    -webkit-border-radius:3px;
+       -moz-border-radius:3px;
+            border-radius:3px;
+}
+.widget-subtabs-nav li.ui-tabs-selected {display:block; position:absolute; left:0; top:-28px; z-index:998; margin-top:0; background:#f5f5f5;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(236,236,236,1)));
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(236,236,236,1) 100%);
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(236,236,236,1) 100%);
+    background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(236,236,236,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(236,236,236,1) 100%);
+    background: linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(236,236,236,1) 100%);
+    -webkit-box-shadow:0 1px 0 rgba(255,255,255,1);
+       -moz-box-shadow:0 1px 0 rgba(255,255,255,1);
+            box-shadow:0 1px 0 rgba(255,255,255,1);
+}
+.widget-subtabs-nav li.ui-tabs-selected a {color:#666 !important; background:transparent url(http://www.politico.com/design/widgets/widget-subtabs-arrow.gif) no-repeat 100px center !important;}
+.widget-subtabs-nav-revealed li.ui-tabs-selected, .widget-subtabs-nav-revealed li.ui-tabs-selected a {
+    -webkit-border-bottom-right-radius:0;
+     -webkit-border-bottom-left-radius:0;
+        -moz-border-radius-bottomright:0;
+         -moz-border-radius-bottomleft:0;
+            border-bottom-right-radius:0;
+             border-bottom-left-radius:0;
+}
+.widget-subtabs-nav-revealed li.ui-tabs-selected {background:#e5e5e5;}
+
+/*=======================================================================================
+    POLITICO BLOGS
+=========================================================================================*/
+
+#widgetAllBlogs .story-list li {position:relative; padding-right:60px;}
+#widgetAllBlogs .thumbnail {position:absolute; right:10px; top:2px; background:transparent url(http://www.politico.com/design/widgets/widget-sprite-blog.gif) no-repeat right center;}
+#widgetAllBlogs .blog-ben-smith .thumbnail {background-position:center 0;}
+#widgetAllBlogs .blog-burns-haberman .thumbnail {background-position:center -50px;}
+#widgetAllBlogs .blog-david-catanese .thumbnail {background-position:center -100px;}
+#widgetAllBlogs .blog-click .thumbnail {background-position:center -150px;}
+#widgetAllBlogs .blog-on-congress .thumbnail {background-position:center -200px;}
+#widgetAllBlogs .blog-on-media .thumbnail {background-position:center -250px;}
+#widgetAllBlogs .blog-josh-gerstein .thumbnail {background-position:center -300px;}
+#widgetAllBlogs .blog-dylan-byers .thumbnail {background-position:center -350px;}
+
+/*=======================================================================================
+    JOE SCARBOROUGH BLOG (& COLUMN)
+=========================================================================================*/
+
+#widgetScarboroughBlog .story-list li {position:relative; padding-right:60px; border:none;}
+#widgetScarboroughBlog .thumbnail {position:absolute; right:10px; top:2px; background:transparent url(http://www.politico.com/design/widgets/widget-sprite-blog.gif) no-repeat right center;}
+#widgetScarboroughBlog .blog-joe-scarborough .thumbnail {background-position:center -400px;}
+#widgetScarboroughBlog .story-list h6 strong {color:#000; text-transform:uppercase; font-size:.92em;}
+
+/*=======================================================================================
+    POLITICO PRO
+=========================================================================================*/
+
+#widgetPro .widget-header h4 {text-indent:-9999em; background:transparent url(http://www.politico.com/design/widgets/widget-logo-pro.gif) no-repeat 10px 5px;}
+#widgetPro .widget-content a:hover {text-decoration:none; color:#004276;}
+#widgetPro .story-list h6 strong {color:#000; text-transform:uppercase; font-size:.92em;}
+
+/*=======================================================================================
+    POLITICO COLUMN
+=========================================================================================*/
+
+#widgetColumn .story-list li {position:relative; padding-right:60px; overflow:hidden;}
+#widgetColumn .thumbnail {position:absolute; right:10px; top:2px; background:transparent url(http://www.politico.com/design/widgets/widget-sprite-column.gif) no-repeat right center;}
+#widgetColumn .column-roger-simon .thumbnail {background-position:3px center;}
+
+/*=======================================================================================
+    POLLITICO
+=========================================================================================*/
+
+#widgetPollitico .widget-header h4 {text-transform:none;}
+#widgetPollitico .widget-form {background:transparent none;}
+#widgetPollitico .widget-form .input-action {padding-left:45px;}
+#widgetPollitico .widget-footer {background:#f5f5f5;}
+
+/*=======================================================================================
+    EARLY STATE INSIDER
+=========================================================================================*/
+
+/*Accounts for a 1 line state and 2 line headline to avoid jumping in right rail*/
+#widgetEarlyState .widget-tabs-large-revealed {min-height:70px;}
+.ie6 #widgetEarlyState .widget-tabs-large-revealed {height:70px;}
+
+#widgetEarlyState .widget-tabs-nav a {text-indent:-9999em; background:transparent url(http://www.politico.com/design/widgets/widget-early-states.gif) no-repeat center 19px;}
+#widgetEarlyState .widget-tabs-nav .ui-tabs-selected a {text-indent:-9999em; background-image:url(http://www.politico.com/design/widgets/widget-early-states-active.gif);}
+
+#widgetEarlyState #earlyStateNavIA a {background-position:center 20px;}
+#widgetEarlyState #earlyStateNavNH a {background-position:center -86px;}
+#widgetEarlyState #earlyStateNavSC a {background-position:center -182px;}
+#widgetEarlyState #earlyStateNavNV a {background-position:center -286px;}
+#widgetEarlyState #earlyStateNavFL a {background-position:center -383px;}
+
+#widgetEarlyState .topic-spotlight {padding-right:121px;}
+#widgetEarlyState .topic-spotlight h5 em {display:block; position:absolute; width:101px; right:10px; top:12px; color:#666; font-size:.83em; font-weight:normal; font-style:normal; text-transform:capitalize;}
+#widgetEarlyState .topic-spotlight h5 .sponsor {background:transparent url(http://www.politico.com/design/widgets/widget-early-state-sponsors.gif) no-repeat right top; display:block; height:15px; text-indent:-9999em; margin-top:2px;}
+
+#widgetEarlyState #earlyStateIA .sponsor {background-position:0 0;}
+#widgetEarlyState #earlyStateNH .sponsor {background-position:0 -100px;}
+#widgetEarlyState #earlyStateSC .sponsor {background-position:0 -200px;}
+#widgetEarlyState #earlyStateNV .sponsor {background-position:0 -300px;}
+#widgetEarlyState #earlyStateFL .sponsor {background-position:0 -400px;}
+
+/*=======================================================================================
+    ARENA
+=========================================================================================*/
+
+/*Accounts for a 3 line quote, 1 line name, and 2 line title to avoid jumping in right rail*/
+#widgetArena .widget-tabs-large-revealed {min-height:120px;}
+.ie6 #widgetArena .widget-tabs-large-revealed {height:120px;}
+
+/*=======================================================================================
+    ROGER SIMON
+=========================================================================================*/
+
+/*Temporary solution, until decision is made on include bio photos on contact widgets*/
+#widgetRogerSimon .contact-us {overflow:hidden;}
+#widgetRogerSimon .contact-us img {float:left; margin-right:10px;}
+
+/*=======================================================================================
+    CANDIDATE HUB
+=========================================================================================*/
+
+#widgetCandidateHub .widget-content {border-color:#cecece; margin-top:1px;}
+
+/*=======================================================================================
+    BOOK ARENA
+=========================================================================================*/
+
+/*Accounts for a 3 line quote, 1 line name, and 2 line title to avoid jumping in right rail*/
+#widgetBookArena .widget-tabs-large-revealed {min-height:120px;}
+.ie6 #widgetBookArena .widget-tabs-large-revealed {height:120px;}
+
+/*=======================================================================================
+    MOST SEARCHED
+=========================================================================================*/
+
+#widgetMostSearched .incremented li .increment {font-size:.93em;}
+
+
+/*=======================================================================================
+    DELEGATES
+=========================================================================================*/
+/*Overall Delegate Table=====================================*/
+.delegate-table-container {clear:both; position:relative; zoom:1;}
+.total-delegate-chart {zoom:1;}
+.total-delegate-chart thead th {position:relative; z-index:100;background:#fff;padding:10px 0;}
+.total-delegate-chart thead th em {color:#b70000;}
+
+.total-delegate-chart tbody th, .total-delegate-chart tbody td {padding-bottom:10px}
+.total-delegate-chart tbody td {vertical-align:middle;}
+.total-delegate-chart tbody th img {display:block;box-shadow: 0 2px 2px rgba(0,0,0,.09)}
+
+.total-delegate-chart .container {position:relative;}
+.total-delegate-chart .candidate-name {position:absolute; font-weight:bold; left:8px; z-index:50; color:#fff;text-shadow:0px 1px 1px rgba(0,0,0,0.75);}
+.total-delegate-chart .graph {z-index:30; border:1px solid #797979; background: #797979 url(http://www.politico.com/design/2012/delegate-tracker/graph-bg.png) repeat-x; margin-right:8px; overflow:visible; 
+	-webkit-box-shadow: inset 0 0 8px rgba(0,0,0,.38), 0 2px 2px rgba(0,0,0,.09);
+	       -moz-shadow: inset 0 0 8px rgba(0,0,0,.38), 0 2px 2px rgba(0,0,0,.09);
+	        box-shadow: inset 0 0 8px rgba(0,0,0,.38), 0 2px 2px rgba(0,0,0,.09);}
+.total-delegate-chart .index {background: #990000 url(http://www.politico.com/design/2012/delegate-tracker/index-bg.png) repeat-x; top:-1px; left:-1px; padding:0 1px;}
+.total-delegate-chart .num-dels {color:#b70000; font-weight:bold; position:relative;}
+
+/*Overall table marker*/
+.marker {bottom:0; position:absolute; z-index:90; text-align:center; zoom:1;}
+.marker .line {position:absolute; bottom:2px; left:50%; width:1px; background: #f6d434;
+-webkit-box-shadow:1px 0 0 rgba(0,0,0,.15);
+   -moz-box-shadow:1px 0 0 rgba(0,0,0,.15);
+	    box-shadow:1px 0 0 rgba(0,0,0,.15);}
+.marker p {position:absolute; bottom:0; font-size:.86em; background: #eecd30 url(http://www.politico.com/design/2012/delegate-tracker/marker-bg.png) repeat-x; border-radius: 3px; white-space:nowrap; padding:3px 0 4px; line-height:1.1; margin-bottom:2px; width:234px; margin-left: -117px;
+	-webkit-box-shadow:0 1px 2px rgba(0,0,0,.30);
+	   -moz-box-shadow:0 1px 2px rgba(0,0,0,.30);
+	        box-shadow:0 1px 2px rgba(0,0,0,.30);}
+.marker p:before {content:""; font-size:0; line-height:0; color:transparent; display:block; width: 9px; height: 5px; background: url(http://www.politico.com/design/2012/delegate-tracker/marker-arrow.png) no-repeat; position:absolute; top:-4px; left:50%; margin-left: -4.5px}
+
+
+/*RIGHT RAIL WIDGET*/
+.widget .delegate-source {text-align:right; font-size:.86em; color:#666; padding:5px 10px; font-style:italic;}
+.widget .delegate-table-container {padding:0 10px 20px; margin-bottom:5px;height:1%; position:relative; overflow:hidden;}
+.widget .delegate-table-container .note {position:absolute; right:10px; top:10px; font-size:.86em; z-index:300; color:#666; font-style:italic;}
+.widget .total-delegate-chart {vertical-align:top; width:auto;}
+.widget .total-delegate-chart thead th {font-size: .86em}
+.widget .total-delegate-chart tbody th {width:30px; height:30px; border-right-width:1px; }
+.widget .total-delegate-chart tbody th img {width:30px}
+.widget .total-delegate-chart td.sum {width:250px; vertical-align:top;}
+.widget .total-delegate-chart .candidate-name {font-size:.86em; top:8px;}
+.widget .total-delegate-chart .graph {height:28px; width:230px; float:left; }
+.widget .total-delegate-chart .index {height:30px; display:block;position: relative;}
+.widget .total-delegate-chart .num-dels {top:3px; font-size:1em;}
+.widget .marker {left:161px;}
+.widget .marker .line {height:218px;}
+
+
+/*IE Hacks for widget*/
+.ie7 .widget .total-delegate-chart td.sum, .ie6 .widget .total-delegate-chart td.sum {height:30px;}
+.ie6 .widget .total-delegate-chart td.sum .container {zoom:1;}
+.ie7 .widget .total-delegate-chart .graph, .ie6 .widget .total-delegate-chart .graph {width:200px;}
+.ie6 .widget .total-delegate-chart .graph {zoom:1; height:26px;}
+.ie7 .widget .total-delegate-chart .index, .ie6 .widget .total-delegate-chart .index {z-index:45}
+.ie7 .widget .marker, .ie6 .widget .marker {left:149px;}
+.ie7 .widget .marker .line, .ie6 .widget .marker .line {height:231px;}
+
+
+
+/*=======================================================================================
+    REDDIT
+=========================================================================================*/
+.widget-reddit {border-top-color: #ff4500; }
+.widget-reddit .widget-header {background-color:#ff4500; background-image: url(http://www.politico.com/design/widgets/widget-header-reddit.gif);}
+.widget-reddit .widget-header h4 {background: url(http://www.politico.com/design/widgets/widget-logo-reddit.png) no-repeat 306px 5px}
+.widget-reddit .widget-header h4 b {color:#fff;}
+.widget-reddit .reddit-header {padding:7px 10px; background:#EFF7FF; border-bottom:1px solid #e8e8e8}
+.widget-reddit .reddit-header h4 {font-size:.73em; line-height:15px;}
+.widget-reddit .reddit-header h4 img {margin-right:5px; display:none;}
+.widget-reddit .reddit-link {padding: 7px 10px;}
+.widget-reddit .reddit-voting-arrows {float:left;}
+.widget-reddit .reddit-entry {margin-left:25px;}
+.widget-reddit .reddit-entry .reddit-link-title {font-size:.79em;}
+.widget-reddit .reddit-entry small {font-size:.86em; color: #666;}
+.widget-reddit .reddit-entry small a {font-weight:normal;}
+
+
+/*=======================================================================================
+    General Info
+=========================================================================================*/
+#widgetGenInfo .widget-content > p {margin: 5px 10px; font-size:.86em;} /*Potentially make this global*/
+
+
+/*=======================================================================================
+    POLITICO PRESENTS
+=========================================================================================*/
+.widget .panel-link {display:block; width:335px; height:168px;}
+
+
+
+
+/*=======================================================================================
+    ELECTION CENTRAL COUNTDOWN (TEMPORARY: REMOVE AFTER EVENT)
+=========================================================================================*/
+
+#widgetCountdown2012 {overflow:hidden;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+}
+#widgetCountdown2012 a {text-decoration:none; color:#222; cursor:pointer;}
+
+/*COUNTDOWN HEADER---------------------------*/
+
+#widgetCountdown2012 .countdown-header {background:#0c1a23 url(http://www.politico.com/design/widgets/countdown-header.jpg) no-repeat center top; border:1px solid #121e28; padding:5px 25px 0 25px;}
+.ie6 #widgetCountdown2012 .countdown-header {height:1%;}
+#widgetCountdown2012 h4 {width:285px; height:45px; text-indent:-9999em; background:transparent url(http://www.politico.com/design/widgets/countdown-logo.png) no-repeat left top; border-bottom:1px solid #3a4751; border-bottom:1px solid rgba(255,255,255,.15);}
+
+/*Countdown Details*/
+#widgetCountdown2012 .countdown-details {border-top:1px solid #0f1c24; border-top:1px solid rgba(0,0,0,.5); overflow:hidden; padding:13px 0;}
+.ie6 #widgetCountdown2012 .countdown-details {height:1%;}
+#widgetCountdown2012 h5 {width:147px; height:37px; text-indent:-9999em; float:left; background:transparent url(http://www.politico.com/design/widgets/countdown-title.png) no-repeat left top; margin-top:5px;}
+
+/*Countdown Timer*/
+#widgetCountdown2012 .countdown-timer {float:right;}
+#widgetCountdown2012 .countdown-timer li {float:left; font-size:.79em; font-weight:normal; text-align:center; text-transform:uppercase; background:#f6f6f6 url(http://www.politico.com/design/widgets/countdown-tile.gif) repeat-x left center; border:1px solid #333; margin-left:2px; width:35px; line-height:16px; padding:6px 0 2px 0;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+}
+#widgetCountdown2012 .countdown-timer li em {display:block; font-size:2.18em; font-style:normal; font-weight:bold;}
+
+/*COUNTDOWN FOOTER---------------------------*/
+
+#widgetCountdown2012 .countdown-footer {background:#3d3d3d url(http://www.politico.com/design/widgets/countdown-footer.gif) repeat-x left top; border:1px solid #212121; border-top:none; padding:13px 10px;}
+.ie6 #widgetCountdown2012 .countdown-footer {height:1%;}
+#widgetCountdown2012 .countdown-footer p {color:#fff; font-size:.86em; text-align:center; text-shadow:0 -1px 0 rgba(0,0,0,.7);}
+
+

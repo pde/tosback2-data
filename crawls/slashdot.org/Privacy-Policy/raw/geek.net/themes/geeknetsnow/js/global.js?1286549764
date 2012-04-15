@@ -1,0 +1,41 @@
+$.fn.droppy=function(options){options=$.extend({speed:0},options||{});this.each(function(){var root=this,zIndex=1000;function getSubnav(ele){if(ele.nodeName.toLowerCase()=='li'){var subnav=$('> ul',ele);return subnav.length?subnav[0]:null}else{return ele}}function getActuator(ele){if(ele.nodeName.toLowerCase()=='ul'){return $(ele).parents('li')[0]}else{return ele}}function hide(){var subnav=getSubnav(this);if(!subnav)return;$.data(subnav,'cancelHide',false);$(subnav).hide('fast')}function show(){var subnav=getSubnav(this);if(!subnav)return;$.data(subnav,'cancelHide',true);$(subnav).css({zIndex:zIndex++}).slideDown('fast');if(this.nodeName.toLowerCase()=='ul'){var li=getActuator(this);$(li).addClass('hover');$('> a',li).addClass('hover')}}$('ul, li',this).hover(show,hide);$('li',this).hover(function(){$(this).addClass('hover');$('> a',this).addClass('hover')},function(){$(this).removeClass('hover');$('> a',this).removeClass('hover')})})};
+
+jQuery.jQueryRandom = 0;
+jQuery.extend(jQuery.expr[":"],
+{       
+    random: function(a, i, m, r) {
+        if (i == 0) {
+            jQuery.jQueryRandom = Math.floor(Math.random() * r.length);
+        };
+        return i == jQuery.jQueryRandom;
+    }
+});
+
+
+$(document).ready(function(){         
+	$('.nav > li:last a').css('border-right','none');
+        $('.nav ul li:last-child a').addClass('last');
+	$("img").hover(
+ function()
+ {
+  this.src = this.src.replace("-hp1","-hp2");
+ },
+ function()
+ {
+  this.src = this.src.replace("-hp2","-hp1");
+ }
+);
+        $(".rand:random").css('display','inline').css('position','relative');
+        $(".rand1:random").css('display','inline').css('position','relative');
+        $(".rand2:random").css('display','inline').css('position','relative');
+        $(".rand3:random").css('display','inline').css('position','relative');
+        $(".quote:random").css('display','block').css('position','relative');
+
+	$(".lightitup").colorbox();	
+});
+  
+$(function() {
+    $('.nav').droppy();
+});
+
+

@@ -1,0 +1,2064 @@
+body {
+	color: #006699;
+	background-color: #ffffff;
+	font-family: arial,helvetica,sans-serif;
+	font-size: 11px;
+	height:100%;
+}
+a, a:link,  a:visited {
+	color: #2075c2;
+	text-decoration: none;
+}
+a:hover, a:active {
+	color: #2075C2;
+	text-decoration: underline;
+}
+
+area {
+outline:0;	
+}
+
+img {
+	border: 0;
+}
+hr {
+	display: none;
+}
+.hideOnload {
+display:none !important;	
+}
+/* === PL page layout === */
+body #container, body #footer {
+	margin:15px auto;
+}
+
+#PLBody {
+	width:915px;
+	margin:10px auto;
+}
+#PLMainCL {
+	padding:0 141px 0 136px;
+	clear:both;
+}
+#PLOuterCL {
+	padding:16px 160px 0 0px;
+	clear:both;
+}
+* html #PLOuterCL {
+	display:inline-block; /* IE workaround to show Footer full width (impacts Safari so needs to be in IE-specific property) */
+}
+#PLOuterCenterColumnCPos {
+	float:left;
+	width:100%;
+	/* margin-right:-100%; don't do this: this causes the footer to flush vertically against the outer right column */
+}
+
+#PLOuterLeftColumnCPos {
+	float:left;
+	width:0px;
+	margin-left:-0px;
+	display:inline;
+}
+#PLOuterRightColumnCPos {
+	float:right;
+	width:160px;
+	margin-right:-160px;
+	display:inline; /* IE workaround to show column content and prevent doubled margin bug */
+}
+
+#PLMainEqC { /* allows for equal length colored columns; can be left un-styled if columns do not need to be colored */
+	background-color:#fff;
+	float:left;
+	width:100%;
+	border-left:136px solid #fff; /* width of [InnerLeft column] */
+	border-right:141px solid #fff; /* width of [InnerRight column + padding] */
+	margin-left:-136px; /* width of [InnerLeft column] */
+	margin-right:-141px; /* width of [InnerRight column + padding] */
+	min-width: 111px; /*## Needed? If so, then calculate it ##*/
+}
+* html #PLMainEqC {
+	display:inline; /* IE workaround to show left column */
+}
+	
+#PLMainLeftColumnCPos{
+	float:left;
+	width:136px; /* width of [InnerLeft column] */
+	margin-left:-136px; /* width of [InnerLeft column] */
+	display:inline; /* IE workaround to show left column content */
+
+}
+
+#PLMainCenterColumnCPos{
+	float:left;
+	width:100%;
+	margin-right:-100%;
+}
+#PLMainRightColumnFloat {
+	float:right;
+	width:141px; /* width of [InnerRight column] */
+	margin-left:0px; /* gutter */
+	background-color:#fff;
+	display:none;
+	visibility:hidden;
+}
+#PLTopBody {
+	clear:both;
+}
+#PLMainRightColumnCPos {
+	float:right;
+	width:141px; /* width of [InnerRight column] */
+	margin-right:-141px; /* width of [InnerRight column] */
+	display:inline; /* IE workaround to show right column content and prevent doubled margin bug */
+}
+#PLMainRightColumnCSp {
+	padding-right:0px; /* gutter on right in case there's an InnerRight or OuterRight column */
+}
+#PLMainCenterColumnCSp {
+	padding-left:14px; /* gutter on left in case there's an InnerLeft column */
+	padding-right:14px; /* gutter on right in case there's an InnerRight or OuterRight column */
+	min-width:111px;
+}
+#PLBottomBody, #PLFooter {
+	clear:both;
+}
+#PLCenterCL {
+	padding:0 158px 0 173px; /* width of [right body] and [left body] */
+	clear:both;
+}
+* html #PLCenterCL {
+	display:inline-block; /* IE workaround to show bottom body (impacts Safari so needs to be in IE-specific property) */
+}
+
+#PLCenterEqC { /* allows for equal length colored columns; can be left un-styled if columns do not need to be colored */
+	background-color:#fff;
+	float:left;
+	width:100%;
+	border-left:173px solid #fff; /* width of [left body] */
+	border-right:158px solid #fff; /* width of [right body] */
+	margin-left:-173px; /* width of [left body] */
+	margin-right:-158px; /* width of [right body] */
+	min-width: 111px;
+}
+* html #PLCenterEqC {
+	display:inline; /* IE workaround to show left body */
+}
+	
+#PLLeftBodyCPos{
+	float:left;
+	width:173px; /* width of [left body] */
+	margin-left:-173px; /* width of [left body] */
+	display:inline; /* IE workaround to show left body content */
+}
+#PLCenterBodyCPos{
+	float:left;
+	width:100%;
+	margin-right:-100%;
+	min-width:111px;
+}
+#PLCenterBodyCSp {
+	padding-left:0px; /* gutter on left in case there's a left body */
+	padding-right:0px; /* gutter on right in case there's a right body */
+}
+#PLRightBodyCPos {
+	float:right;
+	width:158px; /* width of [right body] */
+	margin-right:-158px; /* width of [right body] */
+	display:inline; /* IE workaround to show right body content and prevent doubled margin bug */
+}
+* html #PLRightBodyCPos {
+}
+
+.PL_pw {
+	overflow-x:hidden;
+}
+/* apply "setFormattingContext" class to any div that contains floating elements that need to be contained within that div */
+.setFormattingContext { /* standard way to set formatting context */
+	overflow-y:auto;
+}
+* html .setFormattingContext { /* for IE to set formatting context */
+	display: inline-block;
+	overflow:visible;
+}
+
+
+/* === legacy page layout === */
+
+#container {
+	width: 950px !important;
+	margin: 0;
+	padding: 0;
+}
+#header, #iheader {
+	width: 950px !important;
+	padding: 0;
+}
+#header, #header h1, #header #userstatustext, 
+#iheader, #iheader h1, #iheader #userstatustext,
+#PLInnerHeader, #PLInnerHeader h1, #PLInnerHeader #userstatustext{
+	font-size: 12px;
+	margin: 0;
+}
+#header div#feature,  #header ul, #hdrcont ul, #header li, #hdrcont li, #header form, #hdrcont form, 
+#iheader div#feature, #iheader ul, #iheader li, #iheader form,
+#PLInnerHeader div#feature, #PLInnerHeader ul, #PLInnerHeader li, #PLInnerHeader form {
+	display: inline;
+	padding:0 2px;
+}
+#header ul, #hdrcont ul, #iheader ul, #PLInnerHeader ul, #leftColumn ul, #outerRightColumn ul {
+	list-style: none;
+}
+
+ul#headerNav {
+	float: right;
+	margin-top: 2em; 
+}
+ul#headerNav li {
+	margin: 0;
+	padding: 2px;
+	font-size: 11px;
+}
+*.headerNavDivider {
+	font-size: 10px;
+}
+/* GHR Change */
+#phoneNumber {
+	display:none;
+}
+
+/* GHR Change */
+#userStatusArea {
+	display: none;
+}
+
+/* == Add FOR GHR == */
+
+#hdrcont  a, #hdrcont  a:link{
+	color: #2075C2;
+	text-decoration: none;
+}
+#hdrcont  a:visited {
+	color: #663399;
+}
+#hdrcont  a:hover {
+	text-decoration: underline;
+}
+#hdrcont  a:active {
+	color: #FF9900;
+	text-decoration: underline;
+}
+
+#hdrcont {
+float:left;
+width:100%;
+color:#444444;
+padding-bottom:5px;
+height:90px;
+}
+
+#shlogo {
+float:left;
+width:150px;
+height:76px;
+padding:0;
+}
+
+#shlogo_uk {
+float:left;
+width:148px;
+height:66px;
+padding:13px 0 0 0;
+}
+
+#ustatrpl {
+display:none;	
+}
+
+#usrmncont {
+float:right;
+width:600px;
+height:23px;
+padding:0;
+margin:0;
+font-size:12px;
+}
+
+#headermenu {
+float:right;
+padding:0;
+margin:0;
+}
+
+#geocont {
+height:17px;
+width:248px !important;
+float:left;
+}
+
+#rd_crnr_ul {
+	font-size:0px;
+	background:url(gray_rd_corners.png) no-repeat 0 0 scroll transparent;
+}
+
+#rd_crnr_ur {
+	font-size:0px;
+	background:url(gray_rd_corners.png) no-repeat -6px 0 scroll transparent;
+}
+
+#rd_crnr_ll {
+	font-size:0px;
+	background:url(gray_rd_corners.png) no-repeat 0 -6px scroll transparent;
+}
+
+#rd_crnr_lr {
+	font-size:0px;
+	background:url(gray_rd_corners.png) no-repeat -6px -6px scroll transparent;
+}
+
+#citycont  a, #citycont a:link{
+color: #006699;
+text-decoration:none !important;
+
+font-weight:normal;
+text-align:left;
+font-size:12px;
+}
+
+#citycont a:hover, #citycont a:active{
+text-decoration:underline !important;
+}
+
+#hdrrt {
+padding:6px 0 0 35px;
+float:left;
+width:750px;
+}
+
+#hdrbt{
+height:55px;
+width:950px;
+clear:both;
+border-top: 1px solid #fff;
+}
+
+#srchcont {
+padding:0px 0 0 77px;
+float:left;
+}
+
+#srchbtncont {
+float:left;
+padding:0px 0 0 9px;
+}
+
+#srchbtn {
+background:url(button_search.png) no-repeat 0 0;
+display:block;
+width:66px;
+height:25px;
+text-align:center;
+border:0 none;
+}
+
+#c_srch{
+padding:3px 0 0 15px;
+color:#2075C2;
+float:left;
+}
+
+#c_srch span{
+padding-right:7px;	
+}
+
+.prtnrlogo {
+float:left;
+width:89px;
+height:31px;
+padding-left:5px;
+}
+
+.pipe {
+color:#cccccc;
+}
+
+#hdr_t{
+height:119px;
+}
+
+.hp_promo{
+width:190px;
+height:293px;
+padding:7px 20px 15px 20px;
+margin-bottom:15px;
+}
+
+.infoMod {
+color:#333333 !important;	
+}
+
+.hp_promo a, .hp_promo a:active, .hp_promo a:hover, .hp_promo a:visited {
+font-weight:bold;
+}
+
+.hp_promo_ln1{
+padding-top:15px;
+padding-bottom:13px;
+font-size:18px;
+color:#ff7300;
+line-height:20px;
+}
+
+.hp_promo_ln2{
+font-size:13px;
+color:#444;	
+padding-bottom:18px;
+line-height:18px;
+}
+
+#fb_activity{
+font-size:18px;
+color:#000;
+margin-bottom:5px;
+margin-top:15px;
+}
+
+.phoenix #GridCenterSp{
+padding-bottom:0 !important;	
+}
+
+#mm > ul{
+width:100%;
+padding-left: 0;
+margin:0;
+background-image:url(mm_bg.gif);
+background-repeat:repeat-x;
+float: left;
+}
+
+#mm  ul  li {
+list-style-type:none;
+display:block !important;
+}
+
+#mm > ul > li > a
+{
+padding: 0 33px 0 25px;
+color: white;
+text-decoration: none;
+font-size:14px;
+font-weight:bold;
+height:25px;
+padding-top:7px;
+display:block;
+}
+
+#mm > ul > li > a:hover
+{
+text-decoration:none;
+
+}
+
+#mm ul div {
+	border: 2px solid #ccc;
+    position:absolute;
+    background-color:#fff;
+	z-index:1000;
+        padding:0px;
+	display:block;
+	clear:both;
+}
+
+#mm ul ul {
+    float:left;
+   padding:15px 20px 25px 25px;
+	margin:0;
+    display:block !important;
+   line-height: 19px;
+}
+
+
+#mm > ul > li {
+    float:left;
+}
+
+#mm ul li a:hover > div {
+    display:block;    
+}
+
+#mm ul li div {
+    display:none;
+z-index:3001;    
+}
+
+#nav_myaccount div {
+    width:151px;    
+}
+
+#nav_upcoming div {
+    width:140px;    
+}
+
+
+#locationtabs ul.ui-tabs-nav li.ui-state-default {
+border-radius:none;
+}
+
+#locationtabs ul.ui-tabs-nav li.ui-state-hover a {
+background:url("../../../resources/mojito/img/pattern/phoenix/tabs_sprite.gif") no-repeat scroll 100% 0 transparent !important;
+}
+
+#locationtabs .tabs a {
+border-left:1px solid #ccc;	
+}
+
+#locationtabs ul.tabs li a{
+padding:10px;
+	}
+	
+.Mywrapper ul{
+padding:0;
+float:left;
+width:120px;
+	}
+	
+.UKwrapper ul{
+padding:0;
+float:left;
+width:140px;
+	}
+	
+.CAwrapper ul{
+padding:0;
+float:left;
+width:140px;
+	}	
+	
+.Mywrapper ul > li, .Ukwrapper ul > li ,  .CAwrapper ul > li {
+  float:left;
+  position:relative;
+  clear:both;  
+}
+
+.Mywrapper ul li a {
+  display:block;
+  width:120px;
+}
+.UKwrapper ul li a {
+  display:block;
+  width:140px;
+}
+.CAwrapper ul li a {
+  display:block;
+  width:140px;
+}
+#locationtabs ul.tabs li.ui-tabs-selected a{
+padding-bottom:11px !important;
+	}
+	
+#locationtabs ul.tabs li {
+margin-right:1px;
+}
+
+#locationtabs ul.tabs, #locationtabs ul.tabs {
+position:static;
+margin-top:0;
+}
+
+#locationtabs table{
+padding:0;
+margin:0;
+}
+
+#findTickets {
+background:none !important;
+margin:0 !important;
+border-style: none !important;
+/* padding: 0 0 8px 10px !important; */
+}
+
+#findTickets #rowDate {
+clear:none !important;
+float:right;
+margin-right:15px;
+width:390px;
+
+}
+
+#findTickets img.ui-datepicker-trigger {
+position:relative !important;
+left:-20px !important;
+*bottom:5px;
+
+}
+#eventfinderBtn {
+*margin: -24px 20px 0 0 !important;
+}
+
+#findTickets #DateStart, #findTickets #DateEnd {
+width:109px !important;
+height:19px !important;
+padding-left: 5px;
+*padding: 2px 0 0 5px;
+}
+#findTickets #rowDate div {
+	
+	padding-top : 5px;
+	padding-left : 6px;
+}
+
+#findTickets button.btn-find {
+margin:0 !important;
+}
+#findTickets #keyword {
+	margin:0 !important;
+	*margin-bottom:3px !important;
+}
+	
+ul.ui-tabs-nav li.ui-state-active {
+
+border-radius:none;
+border-bottom: none;
+}
+.Mywrapper
+{   padding:10px ;
+	height:180px;
+	overflow:auto;
+	border-left: 1px solid #CCCCCC;
+	border-right: 1px solid #CCCCCC;
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+	
+}
+
+#tabBody li{
+list-style-type:none;	
+}
+
+.phoenix #GridTop {
+max-height: 318px;
+}
+
+
+.phx_input {
+	color:#222222;
+	font-family:arial,helvetica,sans-serif;
+	font-size:12px;
+	line-height:15px;
+	border:1px solid #ccc;
+	padding:3px;
+}
+
+.corp {
+float:left;
+height:22px;
+padding-top:9px;
+padding-left:5px;
+}
+
+#ustatreplace {
+display:none;
+}
+
+.block-list {
+	display: block;
+	float:left;
+	margin: 0;
+	padding: 0;
+	color: #069;
+	width:102px;
+	font-size:12px;
+	list-style-type:none;
+	}
+
+#tagline{
+padding:0 0 5px 85px;
+font-weight:bold;
+color:#444;
+}
+
+/* From HP_toptickets_rightnav.css */
+
+.concertstab
+{
+	width:400px;
+}
+.concertstabbot
+{
+	width:400px;
+	text-align:right; 
+	padding-right: 20px;
+	align: right;
+}
+.concerttabeventsdiv
+{
+	margin-bottom:2px;
+	width:100px;
+}
+.concerttabeventstd
+{
+	width:100px;
+}
+.concertstabanchordiv
+{
+	text-align:right; 
+	width:400px;
+}
+
+/* Taken from Email_module_home.css*/
+
+#prefCenterModule
+{background:url(../common/ticket_update_module_136.jpg) no-repeat; width:136px; height:253px; padding:0 0 0 4px; margin:0px; color:#000000;}
+
+#moduleOffNew
+{padding:0; margin:0; background-image:none; font-family: Arial, Helvetica, sans-serif; font-size:12px; color:#000000; top:94px; position:relative;}
+
+#moduleOffNew p
+{margin:0px; padding:6px 0 0 0;}
+
+.pc_addView
+{margin:10px 0 0 0; padding:0px;}
+
+#pc_moduleContainer
+{margin:10px 0 0 0; padding:0px; background-image:none; top:94px; position:relative;}
+
+#prefCenterModuleButton
+{position:relative; }
+
+#prefCenterEmailError
+{top:43px; position:relative; padding:0 0 0 4px; margin:0; color:red; font-size:12px;}
+
+#prefCenterModuleResults
+{background:url(../common/ticket_update_module_thanks_136.jpg) no-repeat; width:124px; height:203px; padding:46px 8px 0 8px; margin:0px; font-size:13px; font-family:Arial, Helvetica, sans-serif; color:#000000; line-height:15px;}
+
+#prefCenterModuleResults .thank_you_msg p
+{padding:6px 0 0 0; margin:0;}
+
+#prefCenterModuleResults a
+{font-size:13px; color:#2075c2;}
+
+.error_img
+{background:url(../common/ticket_update_module_bg_136_error.jpg) no-repeat !important;}
+
+/* BUBBLE */
+
+.pf-obs,
+.ov-bubble .ov-slice,
+.ov-bubble .ov-spike {
+	background-image:url(../../../resources/mojito/img/pattern/phoenix/overlay_bubble_sprite.png);
+	background-repeat:no-repeat;
+}
+.pf-obhs,
+.ov-bubblehelp .ov-slice,
+.ov-bubblehelp .ov-spike {
+	background-image:url(../../../resources/mojito/img/pattern/phoenix/overlay_bubblehelp_sprite.png);
+	background-repeat:no-repeat;
+}
+.pf-os,
+.ov-overlay .ov-slice {
+	background-image:url(../../../resources/mojito/img/pattern/phoenix/overlay_sprite.png);
+	background-repeat:no-repeat;
+}
+
+.ov-wrapper {
+	/*z-index:1;*/
+	margin-left:11px; /* margin-left = leftSliceWidth : width of left corner (1px border width + 10px padding)*/
+}
+.ov-slice-tr {
+	/* top-right vertical slice */
+	background-position:top right;
+	position:relative;
+	padding:10px 16px 0 0; /* only padding-top and padding-right need to be defined; padding-right and padding-bottom are covered by image slicing */
+	                       /* padding right is (1px border width + 10px content padding + 5px shadow) */
+	clear:both;
+	zoom:1;
+	_overflow-y:hidden; /* IE6, needed in combination with _height on .ov-slice-tl */
+}
+
+.ov-slice-tl {
+	/* top-left vertical slice */
+	background-position:top left;
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:11px; /* = leftSliceWidth */
+	margin-left:-11px; /* = - leftSliceWidth */
+	height:100%;
+	_height:590px;  /* max height, IE 6 */
+}
+
+.ov-slice-br,
+.ov-slice-bl {
+	height:16px; /* = bottomSliceHeight : height of bottom slice (1px border width + 10px padding + 5px shadow) */
+	font-size:1px;
+	line-height:3px;
+}
+
+.ov-slice-br {
+	/* bottom-right */
+	background-position:bottom right;
+	position:relative;
+	width:100%;
+}
+.ov-slice-bl {
+	/* bottom-left */
+	background-position:bottom left;
+	position:relative;
+	width:11px; /* = leftSliceWidth */
+	margin-left:-11px; /* = leftSliceWidth */
+}
+.ov-bubble .ov-slice-br,
+.ov-bubblehelp .ov-slice-br{
+	background-position:100% -565px; /* y = maxTopSliceHeight : height of image (581) - bottomSliceHeight */
+}
+.ov-bubble .ov-slice-bl,
+.ov-bubblehelp .ov-slice-bl{
+	background-position:0 -565px; /* y = maxTopSliceHeight */
+}
+
+.ov-spike-tr,
+.ov-spike-tl,
+.ov-spike-br,
+.ov-spike-bl {
+	width:15px;
+	height:15px;
+	position:relative;
+}
+.ov-spike-bl	{
+	background-position:0 100% ;
+	margin:-7px 0 0 0; /* margin-top (-7px) = - shadowOffset(6) - borderOffset(1): offset for border shadow height and border width */
+}
+.ov-spike-br	{
+	background-position:-30px 100%;
+	float:right;
+	margin:-7px 17px 0 0; /* margin-top (-7px) = - shadowOffset - borderOffset */
+	                      /* margin-right (-17px) = - shadowOffset - borderOffset - leftSliceWidth */
+}
+.ov-spike-tl	{
+	background-position:-60px 100% ;
+	margin:0 0 -1px 0;  /* margin-bottom (-1px) = - borderOffset */
+	z-index:10;
+}
+.ov-spike-tr	{
+	background-position:-90px 100% ;
+	float:right;
+	margin:0 17px -1px 0; /* margin-right (-17px) = - shadowOffset - borderOffset - leftSliceWidth */
+	                      /* margin-bottom (-1px) = - borderOffset */
+	z-index:10;
+}
+
+.ov-content h2,
+.ov-content h3{
+	font-size:16px;
+	line-height:20px;
+	font-weight:bold;
+	color:#222;
+	margin:0; /* caution: margins cause cross-browser spacing differences! */
+	margin-top:-2px;
+	padding:0 0 8px;
+}
+.ov-content p,
+.ov-content ul,
+.ov-content ol,
+.ov-content dl,
+.ov-content .ajaxError {
+	margin-top:0;/*top margins cause spacing issues wrt visual specs!*/
+	margin-bottom:0;/*bottom margins cause image gaps!*/
+	padding:0;
+}
+.ov-content p + p {
+	margin-top:10px; /* (expensive rule!) only allow margins in between paragraphs: this might be an unexpected limitation for help content when paragraphs are mixed with divs or uls ! */
+}
+.ov-content .scrollBox {
+	border:1px solid #ccc;
+	padding:10px;
+	max-height:225px;
+	overflow:auto; /* scroll bar is not active in Opera for some reason */
+}
+.ov-content div.errorsMsg{
+	margin-top:0
+}
+.pf-obg,
+.ui-widget-overlay {
+	position: absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background-image:url(../../../resources/mojito/img/pattern/phoenix/bg_opac35.png);
+}
+* html .ui-widget-overlay{
+	filter:alpha(opacity=35);
+}
+.ui-dialog-titlebar{
+	height:1px;
+	font-size:1px;
+	line-height:3px;
+}
+.ui-dialog-title,
+.ov-noCloseControl .ui-dialog-titlebar {
+	display:none;
+}
+.ov-closeControl .ui-dialog-titlebar-close {
+	height:14px;
+	width:14px;
+	padding:1px;
+	position:absolute;
+	right:9px; /* = image border (1) + width of image shadow (5) + desired padding (4) - shadow of icon (1) */
+	top:5px; /* = image border (1) + desired padding (4) */
+	z-index:1;
+}
+.ui-icon-closethick {
+	background-image: url(../../../resources/mojito/img/pattern/phoenix/icon_sprite_14.png);
+	background-repeat:no-repeat;
+	height:16px;
+	width:16px;
+	display:block;
+	overflow:hidden;
+	text-indent:-99999px;
+	background-position: 0 -25px;
+	cursor:pointer;
+}
+
+/* for find button alignment in ghloc module */
+
+.ghloc div.inputClass #searchFormButton 
+{
+margin-left:-15px;
+}
+
+/* Classes inclused for Left Nav and Events Tab Pagination */
+
+.anchornumber
+{font-weight:bold;}
+
+/* Concert Finder */
+
+.ghloc {
+	font:10px Arial;
+	color:#222222;
+	text-align:left;
+	
+}
+.ghloc .dropDown{
+	width:125px;
+	height:20px;
+	background:url(../common/dropdown.gif) no-repeat;
+	padding:3px 0px 0px 3px;
+	border:none;
+}
+.ghloc #concertName {
+	width:127;
+}
+.ghloc .dateClass {
+	width:85px;
+}
+.ghloc div.inputClass {
+	margin-top:15px;
+	_margin-top:12px;
+	width: 122px;
+}
+.ghloc div.inputClass #concertName{
+	width: 122px;
+}
+.ghloc div.venuesDropdown {
+	margin-top:15px;
+	_margin-top:12px;
+	width: 122px;
+}
+.ghloc div.inputClass span{
+	clear:both;
+	display:none;
+	font:12px Arial;
+}
+.ghloc div.inputClass span.to{
+	margin:3px 0px;
+}
+.ghloc form button.find_btn {
+	background:url(../common/find_btn.gif);
+	margin-top:15px;
+	width:52px;
+	height:26px;
+	border:none;
+}
+.ghloc form button.find_btn span {
+	display:none;
+}
+
+/* End Concert Finder */
+
+/*Style definitions for  Concerts Finder*/
+
+#loc_drop_div
+{
+width:196px;
+display: none;
+position:absolute;
+}
+
+a.loc_anc,.maincont a:visited.loc_anc
+{
+color: #000;
+text-decoration:none;
+padding:2px 0px 2px 15px;
+display:block;
+}
+
+#loc_drop_div .maincont a:hover
+{
+color: #000;
+text-decoration:none;
+padding:2px 0px 2px 15px;
+background-color: #ddeeff;
+display:block;
+}
+
+#loc_drop_div .loc_hd
+{
+	color: #000; font-weight: bold; padding-left:5px;
+}
+
+/* #CCCCCC colored round corner box*/
+
+#loc_drop_div .oulay
+{ 
+	border:0px solid #CCCCCC;     	  	 
+	padding:0;	
+	clear:both;	
+	backgound-color: #fff;
+}
+#loc_drop_div .oulay .maincont
+{
+	margin:0 0 0 0;
+	height:150px;
+	overflow-x:hidden;
+	overflow-y:auto;
+	color: #000;
+	font-family: Arial;
+	font-size: 12px;
+	width:194px;
+}
+
+#loc_drop_div .oulay .maincont div
+{
+	width:172px;
+	text-align:left;
+	background-color: #fff;
+}
+#loc_drop_div .oulay .lefttopcnr .righttopcnr, 
+#loc_drop_div .oulay .lefttopcnr .middletop, 
+#loc_drop_div .oulay .leftbtmcnr .rightbtmcnr, 
+#loc_drop_div .oulay .leftbtmcnr .middlebtm 
+{
+display:block; 
+height:8px; 
+position:relative; 
+line-height:0%; 
+font-size:0; 
+margin:0;
+}
+#loc_drop_div .oulay .middletop {top:0px; left:-2px; background:url(../common/gray_rd_corner_LT.gif) no-repeat top left}
+#loc_drop_div .oulay .righttopcnr {top:-1px; right:-1px; background:url(../common/gray_rd_corner_RT.gif) no-repeat top right}
+#loc_drop_div .oulay .rightbtmcnr {_top:8px;right:-1px;top:1px; background:url(../common/gray_rd_corner_RB.gif) no-repeat bottom right}
+#loc_drop_div .oulay .middlebtm {bottom:0px;left:-2px; background:url(../common/gray_rd_corner_LB.gif) no-repeat bottom left}
+
+/* Round corner ends here*/
+
+#locdropdown
+{
+	display:none;
+}
+
+/* new css for table structure */
+
+.topborder
+{
+background-image:url(../common/gray_rd_top_midbdr.gif);
+background-repeat:repeat-x;
+font-size:0px;
+height:6px;
+}
+.btmborder
+{
+background-image:url(../common/gray_rd_btm_midbdr.gif);
+background-repeat:repeat-x;
+font-size:0px;
+height:6px;}
+.midbdr{
+border-left:1px solid #cdcdcd;
+border-right:1px solid #cdcdcd;
+background-color:#FFFFFF;
+padding:0 0 0 0px;}
+
+
+/* ENDS --new css for table structure */
+
+
+/* == End add FOR GHR == */
+
+#header #feature img, #iheader #feature img, #PLInnerHeader #feature img {
+	margin:10px 0px 0px 15px;
+	padding-top: 8px; 
+}
+#header ul, #iheader ul, #PLInnerHeader ul {
+	padding-left: 0;
+}
+
+#header ul a, #iheader ul a, #PLInnerHeader ul a {
+	text-decoration: none;
+}
+
+#tabs {
+	border-left: 1px solid #6699cc;	
+	width:742px;
+	border-bottom: 1px solid #6699cc;	
+	height:30px;
+	overflow-y:hidden;
+}
+
+#tabs ul {
+	padding: 0 24px;
+	margin-left:24px;
+}
+#tabs ul li {
+	padding: 0;
+	margin: 0;
+}
+#tabs ul li img {
+	margin-top: -6px; 
+	margin-bottom: -12px; 
+}
+#tabs li.on {
+}
+
+#searchStr {
+	position:relative;
+	/* == Changed for GHR == */
+	width:380px !important;
+	margin-right:4px !important;
+	left:6px;
+	font-size:14px !important;
+	color:#888 !important;
+}
+
+
+#searchFormButton {
+	position:relative;
+	left:14px;
+}
+#cityArea {
+	position:relative;
+	float:right;
+	width:195px;
+	text-align:center;
+	margin-top:4px;
+}
+#cityArea.citySelected {
+	position:relative;
+	top:-7px;
+	font-size:12px;
+	font-weight:bold;
+}
+#cityArea.citySelected a, #cityArea.citySelected a:link, #cityArea.citySelected a:visited, #cityArea.citySelected .changeCity {
+	font-size:10px;
+	font-weight:normal;
+}
+#searchArea {
+	position:relative;
+	float:left;
+}
+
+/* New Footer Styles */
+
+#footer {
+	font-size:11px;
+	color:#444444;
+	clear:both;
+}
+
+#footer ul.newfooter {
+	margin:0px;
+	padding-left:12px;
+}
+#footer p {
+	padding:0 12px 12px 12px;
+	margin:0;
+	width:640px;
+}
+#container #footer{ width:950px !important;}
+#footer a {
+	color:#2075c2;
+	text-decoration:none;
+}
+.newfooter li {
+	display: inline;
+	padding: .5em 1em;
+}
+.newfooter .secondnav {
+	width:640px;
+	float:left;
+}
+#footer .newfooter li {
+	display: inline;
+	padding: 0em .9em 0em .9em;
+	border-right: 1px solid #444444;
+}
+#footer .newfooter li a {
+	color:#2075c2;
+}
+}
+#footer ul li a:visited {
+	font-weight:bold;
+}
+#footer .newfooter li.last {
+	border:0px;
+}
+#footer .newfooter li.first {
+	padding-left:0px;
+}
+.firstnav {
+	padding:40px 0 14px 0;
+	margin:0;
+}
+.secondnav li {
+	font-weight:bold;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+#footer_img {
+	background-image:url(../sh/footer_hands.gif);
+	height:71px;
+	width:100%;
+	margin:0;
+	padding:0;
+}
+#footer_main_cont {
+	background-image:url(../sh/footer_grad.gif);
+	background-repeat:repeat-x;
+	height:208px;
+	width:100%;
+	margin-left:0;
+	padding:0 0 40px 0;
+}
+
+/* Promo Styles */
+.rr_promo {
+width:136px;
+margin-top:20px;
+}
+
+.rr_promo2 {
+width:158px;
+margin-top:20px;
+}
+
+.rr_promo_int {
+float:right;
+padding:0 7px 0px 0;
+font-size:12px;
+font-weight:bold;
+}
+
+#hshw_promo {
+background-image:url(../promo/marketplace_136.jpg);
+margin-top:16px;
+height:165px;
+}
+
+ #shfc_promo2 {
+height:165px;
+background-image:url(../common/sh_for_concerts_158.jpg);
+}
+
+#ed_promo2 {
+height:111px;
+background-image:url(../common/e_delivery_158.jpg);
+}
+
+#shfc_promo2 span, #ed_promo2 span {
+	display:none;
+}
+
+
+#hshw_promo .rr_promo_int {
+padding-top:142px;
+}
+
+#fp_promo {
+height:111px;
+background-image:url(../promo/fan_protect_136.jpg);
+}
+
+#fp_promo .rr_promo_int, #fs_promo .rr_promo_int {
+padding-top:88px;
+}
+
+#fs_promo {
+height:111px;
+background-image:url(../promo/fan_stories_136.jpg);
+}
+
+#gc_promo {
+height:57px;
+background-image:url(../promo/gift_cert_136.jpg);
+}
+
+.rr_promo_int_small {
+padding:40px 7px 0px 6px;
+font-size:11px;
+font-weight:bold;
+}
+
+#sa_promo {
+height:57px;
+background-image:url(../promo/spotlight_artist_136.jpg);
+}
+
+#hshw_promo2 {
+background-image:url(../promo/marketplace_158.jpg);
+margin-top:16px;
+height:165px;
+}
+
+#hshw_promo2 .rr_promo_int, #hshw_promo .rr_promo_int {
+padding-top:142px;
+}
+
+#fp_promo2 {
+height:111px;
+background-image:url(../promo/fan_protect_158.jpg);
+}
+
+#fp_promo2 .rr_promo_int, #fs_promo2 .rr_promo_int {
+padding-top:88px;
+}
+
+#fs_promo2 {
+height:111px;
+background-image:url(../promo/fan_stories_158.jpg);
+}
+
+#gc_promo2 {
+height:57px;
+background-image:url(../promo/gift_cert_158.jpg);
+}
+
+.rr_promo_int_small2 {
+padding:40px 7px 0px 12px;
+font-size:11px;
+font-weight:bold;
+}
+
+#tabs a {
+	text-decoration:underline;
+}
+#leftColumn {
+	clear:left;
+	position:relative; 
+	margin: 0px; 
+	top: -1px; 
+	left:0px;
+	float: left;
+	width: 122px;
+	padding: 6px;
+	border-left: 1px solid #6699cc;	
+	border-right: 1px solid #6699cc;
+	border-bottom: 1px solid #6699cc;
+	background-color: #f2f5f7; 
+	overflow-x:hidden;
+}
+
+#leftColumn ul {
+	padding:4px 4px 17px 4px;
+	margin:0px;
+}
+#leftColumn li {
+	margin-bottom:4px;
+}
+
+#leftColumn li a {
+	text-decoration:none;
+	font-weight:normal;
+	font-size:11px;	
+}
+#leftColumn li.heading  {
+	font-size:12px;
+	font-weight:bold;
+	margin-bottom:4px; 
+	margin-top:0px;
+}
+#leftColumn .heading a {
+	font-weight:bold;
+	font-size:12px;
+}
+#outerRightColumn {
+	margin-left:-1px;
+	margin-top: -70px;
+	float: right;
+	width: 158px;
+	border: 1px solid #6699cc;
+	background-color: #f2f5f7;
+	padding-bottom:6px;
+	overflow-x:hidden;
+}
+
+#innerRightColumn {
+	padding: 0;
+	float: right;
+	width: 139px;
+	margin: 0px;
+	border: 1px solid #6699cc;	
+	border-top: 0px;
+	background-color: #f2f5f7;
+	overflow-x:hidden;
+}
+#leftColumn p, #outerRightColumn p { 
+	margin: 0px 0px 10px 0px; 
+}
+#content {
+	margin-left: 136px;
+	margin-right: 300px;
+	padding: 0px 14px;
+}
+.topBody {
+	width:447px;
+	margin-bottom:15px;
+	margin-top:16px;
+}
+.topBody h2 {
+	margin: 5px 0 0 0; 
+	padding: 0;
+}
+.topBody * a, .topBody * a:link,  .topBody * a:visited {text-decoration: underline;}
+#topContent H3 {background-color: transparent;}
+#globalPromo_2 {
+	width:447px;
+	margin-top:5px;
+	overflow:hidden;
+}
+ul#breadcrumb {
+	padding: 0;
+	margin: 0;
+	margin-top:15px;
+}
+ul#breadcrumb li {
+	display: inline;
+	padding: 0;
+	padding-left: .3em;
+}
+#content h1, #content h2, #content h3, #content h4,
+#PLMainCL h1, #PLMainCL h2, #PLMainCL h3, #PLMainCL h4 { 
+	margin: 0px; 
+	margin-top: 4px;
+	padding: 0px;
+}
+#content h1, #content h2,
+#PLMainCL h1, #PLMainCL h2 {
+	font-size: 1.2em;
+}
+#content h3, #PLMainCL h3 {
+	color: #ffffff;
+	background-color: #265686;
+	font-size: 1.2em;
+	padding-left: .5em;
+}
+#content h4, #PLMainCL h4 {
+	font-size: 1.1em;
+}
+#bottomBody {
+	margin-top:20px;
+	float:left;
+	width:100%;
+}
+#bottomBody p {
+	margin: 0; 
+	padding: 0px 0px 5px 0px;
+}
+
+#content .bottomBodyInner, #PLMainCL .bottomBodyInner {
+	border: 1px solid #6699cc;
+	padding: 0.5em;
+	margin-bottom: 1em;
+	position:relative;	
+}
+#content .reversed, #PLMainCL .reversed {
+	background-color: #265686;
+	color: #ffffff;
+}
+#content h4, #PLMainCL h4 {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+#topLink {
+	width: 6em;
+	float: right;
+	padding-top: .5em;
+}
+#topLink a, #topLink  a:visited {
+	color: #ffffff;
+}
+
+#freeTicketUpdates {
+	margin-top: 7em;
+	background-color: #ffffff;
+}
+#freeTicketUpdates p {
+	padding: .2em .5em;
+}
+#freeTicketUpdates li {
+	list-style-image: url(	../common/ep-arrow.gif);
+	margin-left: -15px;
+}
+#leftBody {
+	width: 158px;
+	margin:0px;
+	padding:0px;
+	margin-right:15px;
+	float:left;
+	overflow-x:hidden;
+}
+#leftBody li {
+	margin-bottom: 5px;
+}
+#rightBody {
+	float:right;
+	width: 274px;	
+	overflow-x:hidden;
+	overflow:hidden;
+	margin:0px;
+	padding:0px;
+}
+
+#rightContent {
+	width: 158px;
+	float: right;
+	overflow-x:hidden;
+}
+#leftBody ul, #rightBody ul {
+	list-style-type: none;
+	padding: 0;
+	line-height:12px;
+	margin: 0;
+}
+#rightBody li {
+	margin-left: 10px;
+	margin-bottom: 2px;
+}
+#rightBody li.heading, #leftBody li.heading {
+	font-weight:bold;
+	font-size:12px;
+	margin-top: 1.2em;
+	margin-bottom:.2em;
+}
+#rightBody h4 {
+	background-color: #ff9900;
+	padding:4px 0px 0px 10px;
+	margin-top:0px;
+	height:18px;
+	overflow:hidden;
+	margin-bottom:15px;
+}
+#bordersports {
+	position: relative;
+	clear:none;
+	border-top: 1px solid #ffffff;
+	width: 89px;
+	font-size: 1px;
+	padding: 0;
+	margin:0;
+	top: -1px;
+	left:48px;
+	display:none;
+}
+#borderconcerts {
+	position: relative;
+	clear:none;
+	border-top: 1px solid #ffffff;
+	width: 89px;
+	font-size: 1px;
+	padding: 0;
+	margin:0;
+	top: -1px;
+	left:141px;
+	display:none;
+}
+#bordertheater {
+	position: relative;
+	clear:none;
+	border-top: 1px solid #ffffff;
+	width: 89px;
+	font-size: 1px;
+	padding: 0;
+	margin:0;
+	top: -1px;
+	left:234px;
+	display:none;
+}
+#borderexclusives {
+	position: relative;
+	clear:none;
+	border-top: 1px solid #ffffff;
+	width: 89px;
+	font-size: 1px;
+	padding: 0;
+	margin:0;
+	top: -1px;
+	left:327px;
+	display:none;
+}
+
+.ginput {font-size:11px; font-weight: normal; background-color:#ffffff ! important;}
+.tt, .ticketsTable {
+	width:586px;
+	border-style:none;
+	border-collapse:collapse;
+	table-layout:fixed;
+}
+#ttb, #ticketsTableBody {
+	width:586px;
+}
+.tt *, .ticketsTable * {
+	size:11px;
+}
+.tt td, .ticketsTable td {
+	padding:4px;
+}
+.ttnrl a, .ticketsTableNavRowLinks a {
+	text-decoration:underline;
+}
+.ttnrl, .ticketsTableNavRowLinks {
+	display:inline;
+	float:left;
+}
+.ttnrh, .ticketsTableNavRowHelp {
+	display:inline;
+	float:right;
+	text-align:right;
+}
+.ttnrh a, .ticketsTableNavRowHelp a {
+	font-weight: bold;
+	text-decoration: underline;
+}
+.tthr, .ticketsTableHeaderRow {
+	height:22px;
+	overflow:hidden;
+}
+.tthr td, .ticketsTableHeaderRow td {
+	background-color: #FF9900;
+	font-weight: bold;
+	height:22px;
+	overflow:hidden;
+}
+.tthr td a, .ticketsTableHeaderRow td a {
+	text-decoration: underline;
+	color:#265686;
+}
+.tthr td a:hover, .tthr td a:active, .tthr td a:visited, 
+.ticketsTableHeaderRow td a:hover, .ticketsTableHeaderRow td a:active, .ticketsTableHeaderRow td a:visited {
+	text-decoration: underline;
+	color:#265686;
+}
+
+.date {
+	padding-left:10px;
+	width: 76px;
+}
+.venue {
+	width: 136px;
+}
+.price {
+	padding-left:10px;
+	width: 76px;
+}
+.finalCol {
+	width:80px;
+}
+#ttb td, .ticketsTableRow td {
+	border-width:0px 0px 1px 0px;
+	border-style:dashed;
+	border-color:#6699cc;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#ttb td.ttcc, .ticketsTableRow td.contrast {
+	background-color: #f2f5f7
+}
+#ttb td.nowrap, .ticketsTableRow td.nowrap {
+	white-space: nowrap;
+}
+#ttb td.ttfc, .ticketsTableRow td.finalCell {
+	background-color: #f2f5f7;
+	font-size: 14px;
+	font-weight: bold;
+	color:#cacaca;
+	white-space: nowrap;
+	text-align:center;
+}
+#ttb td.ttfc a, .ticketsTableRow td.finalCell a {
+	color:#265686;
+	text-decoration: underline;
+}
+
+#bottomBody .footcontentheader {
+	background-color:#265686;
+	color:#ffffff;
+	padding-left:5px; padding-right:5px;
+	height:25px;
+	overflow:hidden;
+}
+#bottomBody .fchright {
+	position:relative;
+	background-color:#265686;
+	color:#ffffff;
+	float:right;
+	margin-top:-30px;
+}
+#bottomBody .fchright a {
+	color:#ffffff;
+	background-color:#265686;
+	text-decoration:underline;
+}
+#bottomBody h3 {
+	position:relative;
+	left:-8px;
+	background-color:#ffffff;
+	color:#265686;
+}
+.padA {
+	padding: 5px;
+}
+.padB {
+	padding: 8px;
+}
+.warning {
+	color: #d32d2a;
+	font-size:12px;
+	font-weight:bold;
+}
+.confirmList li {
+	list-style: square;
+}
+#globalPromo_1 {
+	width:136px!important;
+	height:23px;
+	float:left;
+	overflow:visible!important;
+	position:relative;
+	top:-8px; left:-12px;
+	padding:0px;
+	margin:0px;
+}
+#reSizeDiv {
+	display:none;
+}
+.fakelink {
+	text-decoration:underline;
+	cursor:pointer;
+}
+#working {
+	display:none;
+}
+
+
+/* === overrides for legacy css to enable PL layout === */
+#PLBody #outerRightColumn {
+	margin: -1px 0 0;
+}
+#PLBody .topBody {
+	/* float:left; */ /* don't do this: prevents lower content from showing in IE */
+	overflow:auto; /* to set formatting context */
+}
+/* === to enable center content to be on top of any overflowing side column content: === */
+#PLMainCenterColumnCSp {
+	position:relative;
+	z-index:20;
+	background-color:#fff;
+}
+/* except... it's causing the topbody and bottomBody to become invisible in IE */
+* html #PLMainCenterColumnCSp {
+	z-index:auto;
+	background-color:transparent;
+}
+/* === specifically for media=print, but good for browser too if it doesn't have negative side-effects === */
+#PLBody #outerRightColumn, #PLBody #leftColumn, #PLBody #rightBody {
+	overflow:visible; /* to prevent print artifacts in FF */
+}
+/* well, except for IE it's causing columns to be pushed out too wide */
+* html #PLBody #outerRightColumn, * html #PLBody #leftColumn, * html #PLBody #rightBody {
+	overflow:hidden;
+}
+/* === misc fixes for issues with current layout === */
+#PLBody .topBody {
+	width:100%;
+}
+#PLBody #bottomBody h3 {
+	position:static;
+	padding-left:0px;
+}
+#PLBody #leftBody {
+	float:none;
+	width:auto;
+}
+
+/* === define min-widths === */
+.browseCategory #PLOuterCenterColumnCPos {
+	min-width:755px; /* nominal page width (excluding OuterRight column) */
+}
+.browseCategory #PLMainCenterColumnCPos {
+	min-width:478px;
+}
+/* === set fixed widths for IE print (to workaround lack of support for min-width) === */
+* html .browseCategory #PLOuterCenterColumnCPos {
+	margin-right:-755px; /* nominal page width (excluding OuterRight column) */
+	width:755px; /* nominal page width (excluding OuterRight column) */
+	display:inline;
+}
+* html .browseCategory #PLMainCenterColumnCPos {
+	margin-right:-478px; /* nominal page width - width InnerLeft column - width InnerRight column */
+	width:478px;
+	display:inline;
+}
+/* == Browse Redesign == */
+.top-module{
+	margin:0;
+	padding:0;
+	width:710px;
+}
+.top-cont-txt{
+    color: #FFFFFF;
+    font: bold 20px arial;
+    margin: 14px 0 0;
+    position: absolute;
+   /* width: 710px;*/
+}
+.top-txt-bg {
+    background-color: #FFFF00;
+    height: 45px;
+    margin: 13px 0 0;
+    opacity: 0.5;
+    position: absolute;
+    width: 710px;
+}
+.top-bg-img
+{
+	width:710px;
+	height:125px;
+	margin-top:10px;
+}
+.top-desc-txt{
+	float:right;
+	padding-right:15px;
+}
+.bg-shadow{
+	filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    -khtml-opacity: 0.5;
+	opacity: 0.5;
+	height: 45px;
+	background-color: #000000;
+	z-index: 0;
+}
+#browsePageWrapper{
+	overflow: hidden;
+}
+
+#bottomContentTitle-module h3 {
+    color: #444444;
+}
+
+/* ---------------------- FOOTER STYLES: START -------------------------*/
+ #footer
+{
+    background-color: #EFEFEF;
+    height: 220px;
+}
+#footer div#footerTopContent
+{
+    padding: 20px 40px;
+    height: 90px;
+}
+#footer div.footer-main-top-list
+{
+    float: left;
+    height: 90px;
+}
+#footer .footerdivider
+{
+float:left;
+height:100%;
+width:1px;
+}
+#footer .footerdivider .ftdv_top, .mmDivider_top
+{
+width:1px;
+height:50%;
+background-image: -moz-linear-gradient(bottom, rgb(175,175,175) 5%, rgb(237,237,237) 95% );
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgb(175,175,175)), color-stop(0.95, rgb(237,237,237)));
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#afafaf');
+}
+#footer .footerdivider .ftdv_bottom, .mmDivider_bot
+{
+width:1px;
+height:50%;
+background-image: -moz-linear-gradient(top, rgb(175,175,175) 5%, rgb(237,237,237) 95% );
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, rgb(175,175,175)), color-stop(0.95, rgb(237,237,237)));
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#afafaf', endColorstr='#ededed');
+}
+#footer div.footer-main-top-list-first
+{
+    padding-right:36px;
+}
+#footer div.footer-main-top-list-second
+{
+    padding-left: 36px;
+	padding-right: 36px;
+}
+#footer div.footer-main-top-list-third
+{
+    padding-left: 36px;
+	padding-right: 36px;
+}
+#footer div.footer-main-top-list-fourth
+{
+    padding-left: 36px;
+	padding-right: 36px;
+}
+#footer div.footer-main-top-list-last
+{
+    float: left;
+	height:90px;
+    padding-left: 32px;
+	width:110px;
+}
+#footer ul.footer-main-ul
+{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+#footer .footer-main-top-list li.footer-main-ul-heading
+{
+    font: arial 11px #000;
+}
+.footer-main-li-us
+{
+    background-image: url("../common/footer_flags.jpg");
+    background-position: 0 0;
+    float: left;
+    height: 18px;
+    width: 25px;
+}
+.footer-main-li-uk
+{
+    background-image: url("../common/footer_flags.jpg");
+    background-position: 0px -20px;
+    float: left;
+    height: 18px;
+    width: 25px;
+}
+.footer-main-li-mobile
+{
+    background-image: url("../common/footer_flags.jpg");
+    background-position: 0px 20px;
+    float: left;
+    height: 18px;
+    width: 25px;
+}
+.footer-main-li-sites
+{
+    padding-bottom: 5px;
+}
+#footer div#footerBottomContent
+{
+    height: 100px;
+    padding: 10px 0 0 0;
+    margin: 0 40px 0 40px;
+    width: 91%;
+    border-top: 1px solid #ccc;
+}
+#footer div.footer-main-bottom-social
+{
+    width: 25%;
+    float: left;
+    text-align: top;
+}
+#footer div.footer-main-bottom-copyright
+{
+    width: 70%;
+    float: right;
+    font-size: 11px;
+    font-family: Arial;
+    color: #444;
+}
+#footer div.social_interaction
+ {
+    background-color: #ccc;
+	padding:5px 0 5px 20px;
+	margin:10px 0 0 0;
+	width:100%;
+}
+/* ---------------------- FOOTER STYLES: END -------------------------*/
+/* ---------- Sign Up Alert - Start ----------------*/
+#signUpModule .alertHeader {
+    color: #222222;
+    font-family: arial;
+    font-size: 16px;
+}
+#signUpModule h2 {
+    margin: -2px 0 0;
+    padding: 0 0 8px;
+}
+#signUpModule  .alertBody {
+    color: #222222;
+    font-family: arial;
+    font-size: 12px;
+    padding-top: 4px;
+}
+#signUpModule .botTxt {
+    color: #666666;
+    font-size: 11px;
+}
+#signUpModule #signUpModule .btn-gotomyaact, #signUpModule .linkButton {
+    margin-bottom: 0;
+}
+#signUpModule  #signUpAlert {
+    padding-bottom: 6px;
+}
+#signUpModule .buttonBar
+{
+    margin-top: 10px;
+}
+#signUpModule button.btn-gotomyaact
+{
+    background: url("../common/btn_goto_my_account.png") no-repeat scroll left 0 transparent;
+    border: 0 none;
+    height: 28px;   
+    width: 146px;
+}
+.phoenix #signUpAlert button {
+    float: left;
+}
+
+/* ---------- Sign Up Alert - End ----------------*/
+
+/* -------------Favorites module------------------*
+#findEvents ul.tablistings {padding:0 !important; }
+/* -------------Favorites module------------------*/
+#advOverlay {
+margin-top:-5px;
+margin-bottom:-2px;
+margin-right:-10px;
+}
+.highlight {
+background-image: url("mm_bg_on.gif");
+background-repeat: repeat;
+border-left:1px solid #8eb7dc;
+border-right:1px solid #8eb7dc;
+margin:0 -1px;
+
+}
+.infoicon {
+    background: url("../../../resources/mojito/img/pattern/phoenix/icon_sprite_14.png") repeat scroll -49px 0 transparent;
+    display: inline-block;
+    height: 14px;
+    margin-right: 6px;
+    width: 15px;
+}

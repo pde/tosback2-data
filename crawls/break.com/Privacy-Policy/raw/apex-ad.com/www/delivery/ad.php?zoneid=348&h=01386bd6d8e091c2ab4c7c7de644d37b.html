@@ -1,0 +1,93 @@
+
+if (window.master_ad_count == undefined)
+{
+    window.master_ad_count = 0;
+}
+
+var invocationUrl = 'http://apex-ad.com/www/delivery/ajs.php?zoneid=348&amp;h=01386bd6d8e091c2ab4c7c7de644d37b&amp;key=value&amp;cb=27233079&amp;=348%26h';
+var zoneDefinition = 1;
+
+if (!document.MAX_used) document.MAX_used = ',';
+if (document.MAX_used != ',') invocationUrl += '&amp;exclude=' + document.MAX_used;
+if (document.referrer) invocationUrl += '&amp;referer=' + document.referrer;
+if (document.context) invocationUrl += '&amp;context=' + escape(document.context);
+if (window.advviewed) invocationUrl += '&amp;advviewed=' + window.advviewed;
+if (window.advexcluded) invocationUrl += '&amp;advexcluded=' + window.advexcluded;
+if (document.mmm_fo) invocationUrl += '&amp;mmm_fo=1';
+
+if (document.charset)
+{
+        '&amp;charset=' + document.charset;
+}
+else if (document.characterSet)
+{
+        invocationUrl += '&amp;charset=' + document.characterSet;
+}
+
+    if (zoneDefinition == 3)
+    {
+        var companionAd = 0;
+
+        if ((window.master_ad_array != undefined) && (window.master_zone_id == undefined))
+        {
+    
+        for(var key in master_ad_array)
+        {
+            companionAd = master_ad_array[key].companionId;
+            window.master_zone_id = master_ad_array[key].zoneid;
+            delete master_ad_array[key];
+            break;
+        }
+
+        if(companionAd != 0)
+        {
+            invocationUrl += '&amp;bannerid=' + companionAd;
+        }
+        else
+        {
+            window.available_companion_div_id = 0;
+        }
+    }
+}
+
+if (typeof setInlineCompanion == 'undefined' || typeof setInlineCompanion != 'function')
+{
+    function setInlineCompanion(companionCode)
+    {
+        var adElement = document.getElementById('apexAdCompanion');
+
+        if (companionCode.match(/afr.php/))
+        {
+            adElement.innerHTML = '<iframe src="http://apex-ad.com/www/delivery/'&#32;+&#32;companionCode&#32;+&#32;'" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0" allowtransparency="true" width="300" height="250"></iframe>';
+        }
+        else if (companionCode.match(/^http:\/\//))
+        {
+            adElement.innerHTML = '<img src="http://apex-ad.com/www/delivery/'&#32;+&#32;companionCode&#32;+&#32;'"/>';
+        }
+        else
+        {
+            adElement.innerHTML = companionCode;
+        }
+    }
+}
+
+if (zoneDefinition == 3)
+{
+    document.write('<div id="apexAdCompanion">');
+}
+
+if ((zoneDefinition != 3) || (companionAd != 0) || (window.master_ad_count == 0))
+{
+    document.write('<script type="text/javascript" src="http://apex-ad.com/www/delivery/'&#32;+&#32;invocationUrl&#32;+&#32;'"></scr'+'ipt>');
+
+    if (zoneDefinition == 2)
+    {
+        window.master_ad_count++;
+    }
+}
+
+if (zoneDefinition == 3)
+{
+    document.write('</div>');
+}
+

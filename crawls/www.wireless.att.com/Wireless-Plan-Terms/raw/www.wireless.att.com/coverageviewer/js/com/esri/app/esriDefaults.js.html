@@ -1,0 +1,283 @@
+function ESRIDefaults(){	
+}
+
+//--------------------------------------------------------------------------
+//
+//Map
+//
+//--------------------------------------------------------------------------
+
+//CHANGE 4.G START 
+/** 
+* 
+* This defines the Initial Extent to the entire world 
+* This will force the static images to display initially 
+* 
+* Originally the initial extent of the basemap did this 
+* since we removed the basemap layer we need to manually 
+* define and set the initial extent.  
+*/ 
+ESRIDefaults.initialExtent = new esri.geometry.Extent({ 
+	xmin : -180, 
+	ymin : -90, 
+	xmax : 180, 
+	ymax : 90, 
+	spatialReference : { wkid : 4326 } 
+}); 
+//CHANGE 4.G END
+
+//Data Type LOD Settings
+ESRIDefaults.mapZoneMinLODs = new Array();
+ESRIDefaults.mapZoneMinLODs[ESRIConfig.mapZoneContiguousUSA] = 1;
+ESRIDefaults.mapZoneMinLODs[ESRIConfig.mapZoneAlaskaUSA] = 2;
+ESRIDefaults.mapZoneMinLODs[ESRIConfig.mapZoneHawaiiUSA] = 3;
+ESRIDefaults.mapZoneMinLODs[ESRIConfig.mapzonePuertoRicoVirginIslands] = 3;
+
+ESRIDefaults.mapZoneStartLODs = new Array();
+ESRIDefaults.mapZoneStartLODs[ESRIConfig.mapZoneContiguousUSA] = 3;
+ESRIDefaults.mapZoneStartLODs[ESRIConfig.mapZoneAlaskaUSA] = 3;
+ESRIDefaults.mapZoneStartLODs[ESRIConfig.mapZoneHawaiiUSA] = 4;
+ESRIDefaults.mapZoneStartLODs[ESRIConfig.mapzonePuertoRicoVirginIslands] = 4;
+
+ESRIDefaults.staticPanXYLODs = new Array();
+ESRIDefaults.staticPanXYLODs[ESRIConfig.PanN] = [-98.77730390624998, 40.8232875, 1];
+ESRIDefaults.staticPanXYLODs[ESRIConfig.PanS] = [ -98.95308515624998, 34.583053125, 1];
+ESRIDefaults.staticPanXYLODs[ESRIConfig.PanE] = [-81.59468671874998, 35.8574671875, 1];
+ESRIDefaults.staticPanXYLODs[ESRIConfig.PanW] = [-116.26753828124998, 40.29594375, 1];
+ESRIDefaults.staticPanXYLODs[ESRIConfig.PanNE] = [-78.56246015624998, 38.801803125, 1];
+ESRIDefaults.staticPanXYLODs[ESRIConfig.PanNW] = [-117.54195234374998, 43.46000625, 1];
+ESRIDefaults.staticPanXYLODs[ESRIConfig.PanSE] = [-86.73628828124998, 33.3965296875, 1];
+ESRIDefaults.staticPanXYLODs[ESRIConfig.PanSW] = [-113.58687421874998, 37.395553125, 1];
+			
+
+
+ESRIDefaults.mapLODs = 
+		[
+//			{"level" : Original 0, "resolution" : 0.3515625, "scale" : 147748799.285417},
+			{"level" : 0, "resolution" : 0.17578125, "scale" : 73874399.6427087},
+			{"level" : 1, "resolution" : 0.087890625, "scale" : 36937199.8213544},
+			{"level" : 2, "resolution" : 0.0439453125, "scale" : 18468599.9106772},
+			{"level" : 3, "resolution" : 0.02197265625, "scale" : 9234299.95533859},
+			{"level" : 4, "resolution" : 0.010986328125, "scale" : 4617149.97766929},
+//			{"level" : Original 6, "resolution" : 0.0054931640625, "scale" : 2308574.98883465},
+			{"level" : 5, "resolution" : 0.00274658203125, "scale" : 1154287.49441732},
+			{"level" : 6, "resolution" : 0.001373291015625, "scale" : 577143.747208662},
+			{"level" : 7, "resolution" : 0.0006866455078125, "scale" : 288571.873604331},
+			{"level" : 8, "resolution" : 0.00034332275390625, "scale" : 144285.936802165},
+			{"level" : 9, "resolution" : 0.000171661376953125, "scale" : 72142.9684010827},
+			{"level" : 10, "resolution" : 0.0000858306884765629, "scale" : 36071.4842005414},
+//			{"level" : Original 13, "resolution" : 0.0000429153442382814, "scale" : 18035.7421002707},
+			{"level" : 11, "resolution" : 0.0000214576721191407, "scale" : 9017.87105013534},
+			{"level" : 12, "resolution" : 0.0000107288360595703, "scale" : 4508.93552506767}
+		];
+
+
+/*
+//Original
+ESRIDefaults.mapLODs = 
+		[
+			{"level" : 0, "resolution" : 0.3515625, "scale" : 147748799.285417},
+			{"level" : 1, "resolution" : 0.17578125, "scale" : 73874399.6427087},
+			{"level" : 2, "resolution" : 0.087890625, "scale" : 36937199.8213544},
+			{"level" : 3, "resolution" : 0.0439453125, "scale" : 18468599.9106772},
+			{"level" : 4, "resolution" : 0.02197265625, "scale" : 9234299.95533859},
+			{"level" : 5, "resolution" : 0.010986328125, "scale" : 4617149.97766929},
+			{"level" : 6, "resolution" : 0.0054931640625, "scale" : 2308574.98883465},
+			{"level" : 7, "resolution" : 0.00274658203125, "scale" : 1154287.49441732},
+			{"level" : 8, "resolution" : 0.001373291015625, "scale" : 577143.747208662},
+			{"level" : 9, "resolution" : 0.0006866455078125, "scale" : 288571.873604331},
+			{"level" : 10, "resolution" : 0.00034332275390625, "scale" : 144285.936802165},
+			{"level" : 11, "resolution" : 0.000171661376953125, "scale" : 72142.9684010827},
+			{"level" : 12, "resolution" : 0.0000858306884765629, "scale" : 36071.4842005414},
+			{"level" : 13, "resolution" : 0.0000429153442382814, "scale" : 18035.7421002707},
+			{"level" : 14, "resolution" : 0.0000214576721191407, "scale" : 9017.87105013534},
+			{"level" : 15, "resolution" : 0.0000107288360595703, "scale" : 4508.93552506767}
+		];
+
+*/
+ESRIDefaults.mapLODMaxIndex = ESRIDefaults.mapLODs.length - 1;
+
+
+
+
+// --------------------------------------------------------------------------
+//
+// Geo Coder
+//
+// --------------------------------------------------------------------------
+
+//The maximum number of candidates printed to the screen
+ESRIDefaults.numberCandidatesReturned = 5;
+
+
+// The zoom LOD scales to use for each return type
+ESRIDefaults.searchTypeLODs = new Array();
+ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeAddress]=10;
+ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeZip]=9;
+ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeCityState]=10;
+ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState]=3;
+
+ESRIDefaults.searchTypeLODs[ESRIConfig.searchLatLong]=10;
+
+//http://www.maxmind.com/app/state_latlon
+
+ESRIDefaults.stateLatLongLODs = new Array();
+ESRIDefaults.stateLatLongLODs['AK'] = "61.3850,-152.2683," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['ALASKA'] = "61.3850,-152.2683," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['AL'] = "32.7990,-86.8073," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['ALABAMA'] = "32.7990,-86.8073," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['AR'] = "34.9513,-92.3809," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['ARKANSAS'] = "34.9513,-92.3809," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['AZ'] = "33.7712,-111.3877," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['ARIZONA'] = "33.7712,-111.3877," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+
+ESRIDefaults.stateLatLongLODs['CA'] = "36.1700,-119.7462," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['CALIFORNIA'] = "36.1700,-119.7462," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['CO'] = "39.0646,-105.3272," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['COLORADO'] = "39.0646,-105.3272," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['CT'] = "41.5834,-72.7622," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['CONNECTICUT'] = "41.5834,-72.7622," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['DC'] = "38.8964,-77.0262," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['DISTRICT OF COLUMBIA'] = "38.8964,-77.0262," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['DE'] = "39.3498,-75.5148," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['Delaware'] = "39.3498,-75.5148," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['FL'] = "27.8333,-81.7170," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['FLORIDA'] = "27.8333,-81.7170," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['GA'] = "32.9866,-83.6487," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['GEORGIA'] = "32.9866,-83.6487," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['HI'] = "21.1098,-157.5311," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['HAWAII'] = "21.1098,-157.5311," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['IA'] = "42.0046,-93.2140," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['IOWA'] = "42.0046,-93.2140," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['ID'] = "44.2394,-114.5103," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['IDAHO'] = "44.2394,-114.5103," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['IL'] = "40.3363,-89.0022," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['ILLINOIS'] = "40.3363,-89.0022," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['IN'] = "39.8647,-86.2604," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['INDIANA'] = "39.8647,-86.2604," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['KS'] = "38.5111,-96.8005," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['KANSAS'] = "38.5111,-96.8005," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['KY'] = "37.6690,-84.6514," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['KENTUCKY'] = "37.6690,-84.6514," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['LA'] = "31.1801,-91.8749," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['LOUISIANA'] = "31.1801,-91.8749," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['MA'] = "42.2373,-71.5314," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['MASSACHUSETTS'] = "42.2373,-71.5314," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['MD'] = "39.0724,-76.7902," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['MARYLAND'] = "39.0724,-76.7902," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['ME'] = "44.6074,-69.3977," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['MAINE'] = "44.6074,-69.3977," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['MI'] = "43.3504,-84.5603," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['MICHIGAN'] = "43.3504,-84.5603," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['MN'] = "45.7326,-93.9196," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['MINNESOTA'] = "45.7326,-93.9196," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['MO'] = "38.4623,-92.3020," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['MISSOURI'] = "38.4623,-92.3020," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['MS'] = "32.7673,-89.6812," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['MISSISSIPPI'] = "32.7673,-89.6812," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['MT'] = "46.9048,-110.3261," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['MONTANA'] = "46.9048,-110.3261," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['NC'] = "35.6411,-79.8431," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['NORTH CAROLINA'] = "35.6411,-79.8431," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['ND'] = "47.5362,-99.7930," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['NORTH DAKOTA'] = "47.5362,-99.7930," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['NE'] = "41.1289,-98.2883," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['NEBRASKA'] = "41.1289,-98.2883," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['NH'] = "43.4108,-71.5653," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['NEW HAMPSHIRE'] = "43.4108,-71.5653," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['NJ'] = "40.3140,-74.5089," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['NEW JERSEY'] = "40.3140,-74.5089," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['NM'] = "34.8375,-106.2371," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['NEW MEXICO'] = "34.8375,-106.2371," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['NV'] = "38.4199,-117.1219," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['NEVADA'] = "38.4199,-117.1219," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['NY'] = "42.1497,-74.9384," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['NEW YORK'] = "42.1497,-74.9384," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['OH'] = "40.3736,-82.7755," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['OHIO'] = "40.3736,-82.7755," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['OK'] = "35.5376,-96.9247," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['OKLAHOMA'] = "35.5376,-96.9247," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['OR'] = "44.5672,-122.1269," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['OREGON'] = "44.5672,-122.1269," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['PA'] = "40.5773,-77.2640," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['PENNSYLVANIA'] = "40.5773,-77.2640," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['PR'] = "18.2766,-66.3350," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['PUERTO RICO'] = "18.2766,-66.3350," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['RI'] = "41.6772,-71.5101," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['RHODE ISLAND'] = "41.6772,-71.5101," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['SC'] = "33.8191,-80.9066," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['SOUTH CAROLINA'] = "33.8191,-80.9066," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['SD'] = "44.2853,-99.4632," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['SOUTH DAKOTA'] = "44.2853,-99.4632," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['TN'] = "35.7449,-86.7489," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['TENNESSEE'] = "35.7449,-86.7489," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['TX'] = "31.1060,-97.6475," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['TEXAS'] = "31.1060,-97.6475," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['UT'] = "40.1135,-111.8535," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['UTAH'] = "40.1135,-111.8535," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['VA'] = "37.7680,-78.2057," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['VIRGINA'] = "37.7680,-78.2057," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['VI'] = "18.0001,-64.8199," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['VIRGIN ISLANDS'] = "18.0001,-64.8199," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['VT'] = "44.0407,-72.7093," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['VERMONT'] = "44.0407,-72.7093," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['WA'] = "47.3917,-121.5708," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['WASHINGTON'] = "47.3917,-121.5708," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['WI'] = "44.2563,-89.6385," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['WISCONSIN'] = "44.2563,-89.6385," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['WV'] = "38.4680,-80.9696," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['WEST VIRGINIA'] = "38.4680,-80.9696," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+
+ESRIDefaults.stateLatLongLODs['WY'] = "42.7475,-107.2085," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];
+ESRIDefaults.stateLatLongLODs['WYOMING'] = "42.7475,-107.2085," + ESRIDefaults.searchTypeLODs[ESRIConfig.searchTypeState];

@@ -1,0 +1,414 @@
+//Gallery_Block JS
+function showPlayBtn(e){
+	$(this).children('.play-btn-overlay').stop('true','true').fadeIn('fast');
+	$(this).children('a.pl-add').show();
+}
+function hidePlayBtn(e){
+	$(this).children('.play-btn-overlay').stop('true','true').fadeOut('fast');
+	$(this).children('a.pl-add').hide();
+}
+$('.thumb-container').live("mouseenter", showPlayBtn);
+$('.thumb-container').live("mouseleave", hidePlayBtn);
+
+function subscribeClick(){
+	$(this).removeClass("subscribe").addClass("unsubscribe");
+}
+function unsubscribeClick(){
+	$(this).removeClass("unsubscribe").addClass("subscribe");
+}
+$("#subBtn.subscribe").live("click", subscribeClick);
+$("#subBtn.unsubscribe").live("click", unsubscribeClick);
+
+function addToPlaylist(itemId){
+	var plmsg = $("#pl-msg", "#pl-container");
+	var plthumbcont = $("#pl-thumb-container", "#pl-container");
+	$.post('/request/playlist',{'f':'add', 'id':itemId}, 
+		function(response) {
+			if (response == "0") {
+				plmsg.html("Oops! This video is already in your playlist.");
+				plmsg.fadeIn("fast");
+				setTimeout( function() {
+					plmsg.fadeOut("fast");
+				}, 1500 );
+			}else {
+				if (plthumbcont.length){	
+					plmsg.html("Video added to your playlist.");
+					plmsg.fadeIn("fast");
+					setTimeout( function() {
+						plmsg.fadeOut("fast");
+					}, 1500 );
+					plcnt++;
+					var a = plthumbcont.width();
+					b = 242,
+					c = a + 242,
+					d = $("#pl-count").html(),
+					e = parseFloat(d)+1,
+					f = 22*2+2,
+					g = windowSize(),
+					h = e*b
+					i = g-h-f,
+					plthumbcont.append(response);
+					plthumbcont.width(c);
+					if (c > g){
+						plthumbcont.animate({left: i}, "fast", function(){
+						rdy = true;
+						thumbContainer.attr("data-scroll-offset", i);
+					});
+					}
+					$("#pl-count").html(e);
+				}else{
+					window.location.href = '/playlist';
+				}
+			}
+		});
+}
+function closeUpload() {
+	$(".upload-container").hide();
+}	
+function clearPendingVideos(url)
+{
+	$.post(url,{},function(response){});
+}
+var currentImages = 1;
+var imagesCount = 4;
+var imagesWidth = 74*imagesCount;
+var numberOfImages = 4
+function nextClick() {
+	if(currentImages==numberOfImages) currentImages=0;
+	$('div.next-arrow a').unbind('click');
+	$('ul.carrousel li:lt('+imagesCount+')').clone().insertAfter($('ul.carrousel li:last'));
+	$('ul.carrousel')
+		.animate({left:-imagesWidth*2},500, function(){
+			$('ul.carrousel li:lt('+imagesCount+')').remove();
+			$('ul.carrousel').css('left',-imagesWidth+'px');
+			currentImages++;
+			$('div.next-arrow a').click(nextClick);
+		});
+		return false;
+}
+function prevClick(){
+	$('div.prev-arrow a').unbind('click');
+	$('ul.carrousel li:gt('+(numberOfImages-imagesCount-1)+')').clone().insertBefore($('ul.carrousel li:first'));
+	$('ul.carrousel')
+		.css('left',-imagesWidth*2+'px')
+		.animate({left:-imagesWidth}, 500, function(){
+			$('ul.carrousel li:gt('+(numberOfImages-1)+')').remove();
+			currentImages--;
+			if(currentImages==0) currentImages=numberOfImages;
+			$('div.prev-arrow a').click(prevClick);
+		});
+	return false;
+}
+function changePic(urlPic, pictureUrl){
+	$("div.big-pic-container > a > img").attr("src", urlPic);
+	$("div.big-pic-container > a").attr("href", pictureUrl);
+}
+function bookmarksite(title, url){
+	if (window.sidebar) // firefox
+		window.sidebar.addPanel(title, url, "");
+	else if(window.opera && window.print){ // opera
+		var elem = document.createElement('a');
+		elem.setAttribute('href',url);
+		elem.setAttribute('title',title);
+		elem.setAttribute('rel','sidebar');
+		elem.click();
+	}
+	else if(document.all)// ie
+		window.external.AddFavorite(url, title);
+}
+function valueWidth(){
+    var thumbpercent = $("div#thumbs_percent");
+    var greenbar = $("div.green-bar");
+    var bar = $("div.bar");
+	if(greenbar.width() <= (bar.width() / 2)){
+		thumbpercent.width(bar.width() - greenbar.width());
+	}else{
+		thumbpercent.width(greenbar.width());
+	}
+	$(".value").show();
+	
+}
+function closeLogin(e) {
+    var forgotpw = $("div#forgotpassword-confirmed-div");
+	showHide('div.login-box-wrapper');
+	$("div#login-form-div").removeClass("display-none");
+	forgotpw.addClass("display-none");
+	forgotpw.next().removeClass("display-none");
+}
+function submitLogin(e){
+	var loginer = $("#login_error");
+	loginer.text("Please wait...");
+	$.post("/user/login", {username: $("input#loginUsername").val(), password: $("input#loginPassword").val()},
+	function(response){
+		if(response == 1){
+			var redirect = $("#loginRedirect").val();
+			if(redirect != null && redirect != ""){
+				document.location = redirect;
+			}
+			else{
+				document.location.reload();
+			}
+		}else{
+			if(response == '00'){
+				loginer.addClass("red");
+				loginer.text("Account Not Verified");
+			}
+			else{
+				loginer.addClass("red");
+				loginer.text("Invalid Username Or Password");
+			}
+			$("div.alert-msg-box").removeClass("display-none");
+			return false;
+		}
+	});
+	return false;
+}
+function submitForgot(e){
+	var loginer = $("#login_error");
+	loginer.text("Please wait...");
+	$.post("/user/forgot", {username: $("input#loginUsername").val(), email: $("input.email-forgot-form").val()},
+	function(response){
+		if(response == 1){
+			loginer.addClass("red");
+			loginer.text("An Email has been sent with instructions");
+		}else if(response == 0){
+			loginer.addClass("red");
+			loginer.text("An unkown error has occured");
+		}else {
+			loginer.addClass("red");
+			loginer.text(response);
+		}
+	});
+	return false;
+}
+function openTopLogin() {
+	openLogin();
+	window.scrollTo(0,0);
+}
+function openLogin(){
+	var loginbtn = $('.login-btn'),
+	loginbox = $("#login-box"),
+	imgoverlay = $("#image-overlay");
+	loginbtn.addClass('active');
+	if (!loginbox.length ) {
+		openLoginBox();				
+	}
+	loginbox.show();
+	imgoverlay.css('filter', 'alpha(opacity=40)').fadeIn('fast');
+	loginbtn.css({"z-index" : 11});
+	imgoverlay.click(function(){
+		$("#login-box").hide();
+		loginbtn.css({"z-index" : 0});
+		loginbtn.removeClass('active');
+		imgoverlay.fadeOut('fast');
+	})	
+}
+function gotoForgotPassword(){
+	$("div.forgot-password").hide();
+	$(".login-box-title").html("Forgot Your Password?");
+	$(".password-box").hide();
+	$(".email-box").show();
+	$(".login-form-btn").hide();
+	$(".login-now").show();
+	$(".password-form-btn").show();
+}
+function gotoPleaseLogin(){
+	$(".login-now").hide();
+	$(".login-box-title").html("Login:");
+	$(".password-box").show();
+	$(".email-box").hide();
+	$(".login-form-btn").show();
+	$(".password-form-btn").hide();
+	$("div.forgot-password").show();	
+}
+function submitSignup(){
+	$("#signUpForm").submit()	
+}
+function resetSignupForm(){
+	$(':input','#signUpForm')
+	.not(':button, :submit, :reset, :hidden')
+	.val('')
+	.removeAttr('checked')
+	.removeAttr('selected');	
+}
+function showPassword(){
+	$('.password-box').hide();
+	$('.email-box').show();
+	$('#password-form-link').hide();
+	$('#login-form-link').show();
+	$('.login-form-btn').hide();
+	$('.password-form-btn').show();
+}
+function showLogin(){
+	$('.email-box').hide();
+	$('.password-box').show();
+	$('#login-form-link').hide();
+	$('#password-form-link').show();
+	$('.password-form-btn').hide();
+	$('.login-form-btn').show();
+}
+function saveProfile() {
+	$('#profile_edit').submit();
+}
+function deleteProfileShow(){
+	$('div.confirm-box-wrapper').show();
+}
+$(document).ready(function(){
+	
+	$('#nav li').mouseenter(function(){
+	   var rightHeight = $("#videos-menu > #dropdown").height();
+	   if ($(this).is('#videos-menu')){
+			 $("#videos-menu > #dropdown > .video-right").height(rightHeight)
+	   }
+	   $(this).children('a.menu-btn').addClass("hover");
+	   $(this).children("div#dropdown").show();
+	   var menuImg = $("img", this);
+	   menuImg.each(function(){
+		   var headerImageSrc = $(this).attr("data-src");
+		   $(this).attr("src", headerImageSrc);
+	   });
+	   if($('.login-btn').hasClass('active')){
+	   		 $('#login-box').hide();
+			 $('.login-btn').removeClass('active');   
+	   }
+	   										   
+	});
+	$('#nav li').mouseleave(function(){
+	   $(this).children('a.menu-btn').removeClass("hover");
+	   $(this).children("div#dropdown").hide();
+	});
+	
+	//SORTING BARS
+	
+	if($('#video-sort-list-when').find('a').hasClass('active')) {
+	    var whentext = $('#video-sort-list-when').find('a.active').html();
+	    $('#active-sort-when').html(whentext);
+	}
+	if($('#video-sort-list-by').find('a').hasClass('active')) {
+	    var whentext = $('#video-sort-list-by').find('a.active').html();
+	    $('#active-sort-by').html(whentext);
+	}
+	if($('#video-sort-list-medium').find('a').hasClass('active')) {
+	    var whentext = $('#video-sort-list-medium').find('a.active').html();
+	    $('#active-sort-medium').html(whentext);
+	}
+	$('.video-sort-menu-container-when, .video-sort-menu-container-by, .video-sort-menu-container-medium').mouseenter(function(){
+		$(this).children('.down-arrow').addClass('hover')
+	 });
+
+	$('.video-sort-menu-container-when').click(function(){
+		 $('#video-sort-list-when').slideDown('fast');
+	});
+	$('.video-sort-menu-container-when').mouseleave(function(){
+		 $(this).children('.down-arrow').removeClass('hover')
+		 $('#video-sort-list-when').slideUp('fast');
+	});
+	$('.video-sort-menu-container-by').click(function(){
+		 $('#video-sort-list-by').slideDown('fast');
+	});
+	$('.video-sort-menu-container-by').mouseleave(function(){
+		 $(this).children('.down-arrow').removeClass('hover')
+		 $('#video-sort-list-by').slideUp('fast');
+	});
+    $('.video-sort-menu-container-medium').click(function(){
+		 $('#video-sort-list-medium').slideDown('fast');
+	});
+	$('.video-sort-menu-container-medium').mouseleave(function(){
+		 $(this).children('.down-arrow').removeClass('hover')
+		 $('#video-sort-list-medium').slideUp('fast');
+	});
+});
+function searchForm(){
+	if($("input.search-input").val() == ""){
+		$("input.search-input").focus();
+	}else{
+		document.search_form.submit()
+	}
+}
+function showHide(elementHideShow){
+	$(elementHideShow).toggleClass("display-block");
+}
+
+function getThumbs(type, html_id, item_id){
+	var id = typeof(item_id) != 'undefined' ? item_id : '';
+	
+	if($("#"+html_id).html() == ""){
+		$.post(
+			'/request/thumbs',
+			{'type':type, 'id':id},
+			function(response) {
+				$("#"+html_id).html(response);
+			}
+		);
+	}
+	return false;
+}
+
+function getChannelBlock(type, filter, user_id){
+	$.post(
+		'/request/channelItems',
+		{'type':type+'_'+filter, 'uid':user_id},
+		function(response) {
+			$("#channel_video").html(response);
+		});
+	return false;
+}
+function openLoginBox(){
+	$.post(
+		'/request/loginbox',
+		function(response) {
+			$("#login").append(response);
+		}
+	);
+	return false;
+}
+function guestComment() {
+		var postBtn = $("#commentDiv-postButton a");
+		postBtn.removeClass("gig-comments-button-disabled gig-comments-button-post-disabled gig-comments-commentBox-button-post-disabled");
+		var guestClick = $("#commentDiv-guestDropdown").attr("onClick");
+		if($.browser.msie && parseInt($.browser.version, 10) == 7) {
+			$("#commentDiv-postButton a").click(guestClick);
+		}else{
+			$("#commentDiv-postButton a").attr("onClick", guestClick);
+		}
+};
+
+//Window Lazy Loading Thumbs
+window.VB = {};
+VB.img = {
+    imgLL: {
+        showThumbs: function () {
+            var a = $(window);
+            $("img[data-thumb]").each(function (c, d) {
+                var e = $(d),
+                    f = e.offset().top,
+                    g = f + e.height(),
+                    h = a.scrollTop() + 200,
+                    i = h + a.height();
+                if (f >= h && f <= i || g >= h && g <= i) {
+                    e.css("opacity", 0).attr("src", e.attr("data-thumb")).fadeTo(100, 1).removeAttr("data-thumb")
+                }
+            })
+        },
+        timeout: undefined
+    }
+};
+$(function (a) {
+    if (a("img[data-thumb]").length > 0) {
+        var b = VB.img.imgLL;
+        b.showThumbs();
+        a(window).bind("scroll resize", function () {
+            clearTimeout(b.timeout);
+            b.timeout = setTimeout(b.showThumbs, 50)
+        })
+    }
+})
+function saveSocialComment(comment, username, thumb){
+	$("#comment_content").html(comment);
+	$("#comment_username").val(username);
+	$("#comment_thumb").val(thumb);
+	addComment(true);
+}
+function popUp(URL, width, height) {
+	window.open(URL,'window', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width='+width+',height='+height);
+}

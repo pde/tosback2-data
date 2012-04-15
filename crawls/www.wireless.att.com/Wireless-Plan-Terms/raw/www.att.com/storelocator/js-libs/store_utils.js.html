@@ -1,0 +1,53 @@
+function unescapeHTML(html) {
+	var htmlNode = document.createElement("DIV");
+	htmlNode.innerHTML = html;
+	if(htmlNode.innerText)
+		return htmlNode.innerText; // IE
+	return htmlNode.textContent; // FF
+} 
+
+function checkEnter(e) {
+    var characterCode;
+    if (e && e.which) {
+        e = e
+        characterCode = e.which
+    }
+    else {
+        e = event
+        characterCode = e.keyCode
+    }
+    return (characterCode == 13);
+}
+
+function filterNumbersOnly(eventObj) {
+  var e = (window.event) ? window.event : eventObj;
+  var key = (window.event) ? e.keyCode : e.which;
+
+  // the following key enhancers are available: ctrlKey, altKey, shiftKey, metaKey
+  //enable copy/paste
+
+  if ( (key==67 && e.ctrlKey) || (key==86 && e.ctrlKey) ) return true;
+
+  var keyCodeExceptions = new Array(8, 46, 16, 9, 17, 20, 19, 13, 35, 36, 37, 39);
+
+ //enable basic keyboard operations
+  for ( var i=0; i<keyCodeExceptions.length; i++ )
+	if ( keyCodeExceptions[i] == key ) return true;
+
+  //the number filter, accepts only digits 0..9 (includes keypad), no shifted special chars
+  var result = ( key != null && !e.shiftKey && (key > 47 && key < 58) || (key > 95 && key < 106) );
+  //note: window.event.cancelBubble is done by returning true or false in IE (implicit)
+
+  if ( !result ) stopBubble(e);
+  return result;
+}
+
+function stopBubble(event) {
+    event.cancelBubble=true;
+    event.cancel = true;
+    event.returnValue=false;
+    if ( !window.event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+}

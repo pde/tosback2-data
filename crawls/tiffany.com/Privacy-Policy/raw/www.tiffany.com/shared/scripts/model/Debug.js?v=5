@@ -1,0 +1,210 @@
+﻿/* TODO: Add ability to ping server with error information. Should not use Ajax service, should call 
+	something like an image, and append the info to be logged to the query string at the end of the URL.
+*/
+
+function Debug()
+{
+}
+
+Debug.error = function(err)
+{
+	var pageURL = window.location.href;
+	
+	var filterError = Debug.filterError(pageURL, err.message, err.fileName, err.lineNumber);
+	if (filterError == false)
+	{
+		if (document.forms[0])
+		{
+			if (document.forms[0].showJSErrors)
+			{
+				if (document.forms[0].showJSErrors.value.toLowerCase() == "true")
+				{
+					// Only show JS errors if the <add key="showJSErrors" value="true" /> value is set in the web.config file.
+					alert("Intercepted error\nname: " + err.name +
+							"\nmessage: " + err.message +
+							"\nfile: " + err.fileName +
+							"\nline: " + err.lineNumber + 
+							"\n\nNote that this a message from the debugging framework. These debug messages will be disabled in production and will instead be silently logged to the server.");
+				}
+			}
+		}
+
+		// Don't try to log the error to the server unless the JS code to do it will actually run
+		if (typeof(ErrorVO) != "undefined" && typeof(ServiceLocator) != "undefined" && typeof(ErrorLogService) != "undefined")
+		{
+			// If the error log service hasn't started up, then force it
+			if (ServiceLocator.getInstance().getService("errorLogService") == null)
+			{
+				ServiceLocator.getInstance().registerService("errorLogService", new ErrorLogService());
+			}
+			
+			var errDetails = new ErrorVO();
+			errDetails.errorMessage = err.name;
+			errDetails.errorDetail = "\nreferrer URL: " + pageURL + "\nfileName: " + err.fileName + "\nlineNumber: " + err.lineNumber + "\ndetail:\n" + err.message;
+			if (ServiceLocator.getInstance().getService("errorLogService"))
+			{
+				ServiceLocator.getInstance().getService("errorLogService").logError(errDetails);
+			}
+		}
+	}
+};
+
+Debug.windowTrace = function(message)
+{
+	if (document.getElementById("debug") == null)
+	{
+		var debugDiv = document.createElement("div");
+		debugDiv.setAttribute("id", "debug");
+		document.body.appendChild(debugDiv);
+	}
+	document.getElementById("debug").innerHTML += message + "<br \>";
+}
+
+Debug.getCurrentTime = function()
+{
+	var tempDate = new Date();
+	return tempDate.getTime();
+}
+
+Debug.filterError = function(pageURL, message, URL, line)
+{
+	try
+	{
+		var lowerPageURL = pageURL.toLowerCase();
+		var lowerMessage = message.toLowerCase();
+		var lowerURL = "";
+		if (typeof (URL) != "undefined" && URL != null)
+		{
+			lowerURL = URL.toLowerCase();
+		}
+
+		// Ignore errors coming from Flash Player external interface bug
+		if (lowerMessage.indexOf("mainflash") >= 0)
+		{
+			return true;
+		}
+
+		if (lowerMessage.indexOf("syntax error") >= 0 && line == 1 && lowerPageURL.indexOf("/item.aspx"))
+		{
+			return true;
+		}
+
+		if (lowerMessage.indexOf("sendclick is not a function") >= 0)
+		{
+			return true;
+		}
+
+		if (lowerMessage.indexOf("error loading script") >= 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
+	catch(err)
+	{
+		return false;
+	}
+}
+
+window.onerror = function(message, URL, line)
+{
+	var pageURL = window.location.href;
+	
+	var filterError = Debug.filterError(pageURL, message, URL, line);
+	if (filterError == true)
+	{
+		return true;
+	}
+		
+	if (document.forms[0])
+	{
+		if (document.forms[0].showJSErrors)
+		{
+			if (document.forms[0].showJSErrors.value.toLowerCase() == "true")
+			{
+				// Only show JS errors if the <add key="showJSErrors" value="true" /> value is set in the web.config file.
+				alert("Intercepted error\nsource URL: " + pageURL +
+					"\nmessage: " + message + 
+					"\nfile: " + URL + 
+					"\nline: " + line +
+					"\n\nNote that this a message from the debugging framework. These debug messages will be disabled in production and will instead be silently logged to the server.");
+			}
+		}
+	}
+
+	// Don't try to log the error to the server unless the JS code to do it will actually run
+	if (typeof(ErrorVO) != "undefined" && typeof(ServiceLocator) != "undefined" && typeof(ErrorLogService) != "undefined")
+	{
+		// If the error log service hasn't started up, then force it
+		if (ServiceLocator.getInstance().getService("errorLogService") == null)
+		{
+			ServiceLocator.getInstance().registerService("errorLogService", new ErrorLogService());
+		}
+		
+		var errDetails = new ErrorVO();
+		errDetails.errorMessage = "Intercepted error: " + message;
+		errDetails.errorDetail = "\nreferrer URL: " + pageURL + "\nfileName: " + URL + "\nlineNumber: " + line + "\ndetail:\n" + message;
+		if (ServiceLocator.getInstance().getService("errorLogService"))
+		{
+			ServiceLocator.getInstance().getService("errorLogService").logError(errDetails);
+		}
+	}
+
+	return true;
+};
+
+// ----------------------------------------------
+// Description:	Value Object - stores model information about an event
+// This class was previously a separate file, but is moving here to reduce
+// http requests. Conditional is to make sure pages that still include
+// ErrorVO.js still work.
+// ----------------------------------------------
+if (typeof (ErrorVO) == "undefined")
+{
+	function ErrorVO(errorMessage, errorDetail, priority, errorType, applicationName, moduleName, procName)
+	{
+		this.errorMessage = "-";
+		this.errorDetail = "-";
+		this.priority = "1";
+		this.errorType = "25";
+		this.applicationName = "-";
+		this.moduleName = "-";
+		this.procName = "-";
+
+		if (errorMessage)
+		{
+			this.errorMessage = errorMessage;
+		}
+
+		if (errorDetail)
+		{
+			this.errorDetail = errorDetail;
+		}
+
+		if (priority)
+		{
+			this.priority = priority;
+		}
+
+		if (errorType)
+		{
+			this.errorType = errorType;
+		}
+
+		if (applicationName)
+		{
+			this.applicationName = applicationName;
+		}
+
+		if (moduleName)
+		{
+			this.moduleName = moduleName;
+		}
+
+		if (procName)
+		{
+			this.procName = procName;
+		}
+	}
+}

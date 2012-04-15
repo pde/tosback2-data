@@ -1,0 +1,40 @@
+/////////////////////////////////////////////////////////////////////////////////////////
+//CNBC Watchlist View
+//	-- Requires include of basesymlookup.js
+/////////////////////////////////////////////////////////////////////////////////////////
+CNBCSymbolLookupView = Class.create();
+	CNBCSymbolLookupView.prototype =  Object.extend(new BaseSymbolLookupView,  {
+	  initialize: function(suggester,controls) {
+	    
+	    this.suggester	= suggester;
+	    this.uicontrols = controls;
+	    
+	  },	  	 
+	  onGetMatches: function(state,data){
+		switch(state)
+		  {
+			case BaseRequestor.State.INITIALIZE:	
+				// show loader
+				if(document.getElementById(this.uicontrols.menu) != null && ((typeof this.uicontrols.showLoader)!='undefined')) {
+				    this.uicontrols.showLoader(this.uicontrols.menu,this.uicontrols.menutext, '');
+                }
+				break;
+				
+			case BaseRequestor.State.SUCCESS:       
+                this.suggester.displayMatches(data);
+				break;
+				
+			case BaseRequestor.State.ERROR:
+				//alert("CNBC-OnGetMatches: " + state + "-" + data);
+				this.suggester.flag = false;
+				this.suggester.hideSymSuggest();               
+				break;
+
+			case BaseRequestor.State.TIMEOUT:
+				//alert("CNBC-OnGetMatches " + state + "-" + data);
+				this.suggester.flag = false;
+				this.suggester.hideSymSuggest();
+				break;
+		 }
+	  }
+});

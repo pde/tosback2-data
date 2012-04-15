@@ -1,0 +1,535 @@
+
+ 
+
+
+
+/* Persistant Cart (universal cart) Javascript */
+/* --------------------------------------------- */
+
+// Commands
+// persistantCartCommands[0] = "showProduct" action
+// persistantCartCommands[1] = "addProduct" action
+// persistantCartCommands[2] = "addEnsemble" action
+// persistantCartCommands[3] = "remove" action
+// persistantCartCommands[4] = "addProductWishlist" action
+// persistantCartCommands[5] = "addAllProductsWishlist" action
+
+var persistantCartCommands = new Array(4);
+persistantCartCommands[0] = '/checkoutajax/universal_cart.jsp';
+persistantCartCommands[1] = '/checkout/add_item_pc.cmd';
+persistantCartCommands[2] = '/checkout/add_items_pc.cmd';
+persistantCartCommands[3] = '/checkout/delete_item_in_cart.cmd';
+persistantCartCommands[4] = '/user/add_wishlist_item_to_basket_pc.cmd';
+persistantCartCommands[5] = '/user/add_all_wishlist_items_to_basket_pc.cmd';
+
+var ucartActive = 0;
+var requestURL = "";
+var persistantCartContainerId = "#widget-ucart";
+var persistantCartCloseButClass = ".widget-ucart-close-but";
+var hideTimeOuts= new Array();
+var ucartTimer;
+
+var ucartLoadingHTML = 	'<div id="widget-ucart">' +
+				 		'  <div id="glo-ucart-top" class="widget-ie6png"><!--  --></div>' +
+				  		'  <div id="glo-ucart-body" class="widget-ie6png">' +
+				  		'    <div id="glo-ucart-content">'+
+				  		'	   <div class="widget-ima-loader"><img src="../assets/cms/global/site_assets/ima-glo-loading.gif" alt="Loading..." /></div>' +
+				  		'    </div>' +
+				  		'  </div>' +
+				  		'  <div id="glo-ucart-bottom" class="widget-ie6png"><!--  --></div>' +
+  				  		'</div>';
+
+/* Function(s) to Show the Basket Layer */
+function showBasket(action,params) {
+	if(typeof ucartTimer != "undefined")
+  	{ clearTimeout(ucartTimer); }
+
+	ucartActive = 1;
+	showloading();
+	
+	if( exp.utils.isIE6() )
+	{ exp.utils.iframeFix.add(persistantCartContainerId); }
+	
+	if( (action == "show") || (action == "showFromQuickview") )
+	{ requestURL = persistantCartCommands[0]; }
+	else if(action == "addProduct")
+	{ requestURL = persistantCartCommands[1];}
+	else if(action == "addEnsemble")
+	{ requestURL = persistantCartCommands[2];}
+	else if(action == "remove")
+	{ requestURL = persistantCartCommands[3];}
+   //we don't want to set the mini cart close timer redirect in universal_cart.jsp if main.jsp calls add to shopping basket
+	else if ((action == "addProductWishlist") || (action == "addProductWishlistFromFilmStrip"))
+	{ requestURL = persistantCartCommands[4];}
+	else if(action == "addAllProductsWishlist")
+	{ requestURL = persistantCartCommands[5];}
+
+	else
+	{ alert("missing action"); }
+	
+	requestURL = requestURL;
+	params = "ts=" + timestamp() + "&action=" + action + "&" + params;
+	
+	$.ajax({
+		type: "POST",
+		url: requestURL,
+		data: params,
+		dataType: "html",
+      	timeout: 15000,
+		success: function(data) {
+			hideloading();
+			$(persistantCartContainerId).append(data);
+			$(persistantCartContainerId).slideDown();
+			
+			if( exp.utils.isIE6() )
+			{ exp.utils.iframeFix.add(persistantCartContainerId); }
+			if( exp.utils.isIE7() )
+			{ $("#glo-ucart-content").css("left","10px"); }
+
+			return true;
+		},
+		error: function() {
+			hideBasket();
+			return false; 
+		}
+	});
+};
+  				  
+function showloading() {
+	$(persistantCartContainerId).remove();
+	
+	//load, position, show new cart
+	$("body").append(ucartLoadingHTML);
+	positionPersistantCart();
+	$(persistantCartContainerId).slideDown();
+	if( exp.utils.isIE7() )
+	{ $("#glo-ucart-content").css("left","10px"); }
+};
+
+function hideloading() {
+	$(persistantCartContainerId + " *").remove();
+	$(persistantCartContainerId).html("");
+};
+
+function addToCart(){
+	params =  "productName=" + $("input[name=productName]").val() +
+			  "&productId=" + $("input[name=productId]").val() +
+   	 		  "&quantity=" + $("input[name=quantity]").val() +
+   	 		  "&productVariantId=" + $("input[name=productVariantId]").val();
+
+	if($("input[name=subCategoryId]").val()) {
+      params += "&subCategoryId=" + $("input[name=subCategoryId]").val();
+    }else {
+      params += "&subCategoryId= ";
+    }
+
+	if($("input[name=categoryId]").val()) {
+      params += "&categoryId=" + $("input[name=categoryId]").val();
+    }else {
+      params += "&categoryId= ";
+    }
+
+	if($("input[name=parentCategoryId]").val()) {
+      params += "&parentCategoryId=" + $("input[name=parentCategoryId]").val();
+    }else {
+      params += "&parentCategoryId= ";
+    }
+
+	if($("input[name=firstName]").val()) {
+      params += "&firstName=" + $("input[name=firstName]").val();
+    }else {
+      params += "&firstName= ";
+    }
+
+    if($("input[name=lastName]").val()) {
+      params += "&lastName=" + $("input[name=lastName]").val();
+    }else {
+      params += "&lastName= ";
+    }
+
+    if($("input[name=email]").val()) {
+      params += "&email=" + $("input[name=email]").val();
+    }else {
+      params += "&email= ";
+    }
+
+    if($("input[name=confirmeMail]").val()) {
+      params += "&confirmeMail=" + $("input[name=confirmeMail]").val();
+    }else {
+      params += "&confirmeMail= ";
+    }
+
+    if($("textarea[name=personalMessage]").val()) {
+      params += "&personalMessage=" + $("textarea[name=personalMessage]").val();
+    }else {
+      params += "&personalMessage= ";
+    }
+
+  	//see if this is an update.
+  	if( $("input[name=itemGUID]").size() > 0 )
+  	{ params = params + "&itemGUID=" + $("input[name=itemGUID]").val() + "&isUpdate=1"; }
+
+  if($("input[name=omnitureRecipe]").val()) {
+      params += "&omnitureRecipe=" + $("input[name=omnitureRecipe]").val();
+    }else {
+      params += "&omnitureRecipe= ";
+    }
+  	showBasket('addProduct',params);
+};
+
+function wishListAddToCart(params) {
+	showBasket('addProductWishlist',params);
+};
+
+function wishListFilmStripAddToCart(params) {
+   showBasket('addProductWishlistFromFilmStrip',params);
+};
+
+function wishListAddAllToCart(params) {
+	showBasket('addAllProductsWishlist',params);
+};
+
+function addEnsembleToCart(type) {
+	params =  "productName=" + $("input[name=productName]").val() +
+			  "&ensembleId=" + $("input[name=ensembleId]").val() +
+			  "&categoryId=" + $("input[name=categoryId]").val() +
+   	 		  "&parentCategoryId=" + $("input[name=parentCategoryId]").val();
+	
+	// iterate through products for productIds
+	/*
+	$(".the-product-ids").each(function() {
+		params = params + "&" + $(this).attr("name") + "=" + $(this).val();
+	});
+	*/
+	
+	// iterate through products in the ensemble for variant id
+	$(".the-variant-ids").each(function() {
+		params = params + "&" + $(this).attr("name") + "=" + $(this).val();
+	});
+	
+	// iterate through products for qty
+	$(".the-variant-qtys").each(function() {
+		if( type == 'all' )
+		{
+		  $(this).val("1");
+		  params = params + "&" + $(this).attr("name") + "=1";
+		}
+		else
+		{ params = params + "&" + $(this).attr("name") + "=" + $(this).val(); }
+	});
+	
+	params = params + "&productCount=" + $(".the-variant-ids").length;
+    if($("input[name=omnitureRecipe]").val()) {
+      params += "&omnitureRecipe=" + $("input[name=omnitureRecipe]").val();
+    }else {
+      params += "&omnitureRecipe= ";
+    }
+	showBasket('addEnsemble',params);
+};
+
+function updateHeader(amt) {
+	if(amt == 1)
+	{ $("#widget-ucart-item-count").text("("+amt+")"); }
+	else
+	{ $("#widget-ucart-item-count").text("("+amt+")"); }
+};
+
+function errorAppend(area,msg) {
+	$(area).html(msg.replace(/&amp;/g, "&").replace(/&lt;/g,
+        "<").replace(/&gt;/g, ">").replace(/&#39;/g, "'"));
+	$(area).show();
+};
+
+function resetErrorFields() {
+	$(".glo-tex-error").hide();
+	$(".glo-tex-error").html("");
+};
+
+function messageAppend(area,msg) {
+	$(area).html(msg);
+	$(area).show();
+};
+
+function resetMessageFields() {
+	$(".glo-tex-info").hide();
+};
+
+function timestamp() { return new Date().getTime(); }
+
+//Edit this function if need to do something special on basket close.
+function hideBasket() {
+	if(typeof ucartTimer != "undefined")
+  	{ clearTimeout(ucartTimer); }
+
+	ucartActive = 0;
+	$(persistantCartContainerId).slideUp();
+	$(persistantCartContainerId).slideUp();
+	
+	if( exp.utils.isIE6() )
+	{ exp.utils.iframeFix.remove(persistantCartContainerId); }
+	
+	//if not on basket page reset the header link
+	if ( $(".che-bas-header-left").size() == 0 )
+	{
+		shoppingBagBut = $("#widget-header-active-link").eq(0);
+		$(shoppingBagBut).attr("id","")
+		$(shoppingBagBut).mouseout();
+		$(shoppingBagBut).parent().parent().removeClass("glo-header-link-span-active");
+	}
+};
+
+//edit this function to update the setup
+function setupPersistantCartButtons() {
+	// draw focus near this
+	window.location = "#";
+	
+	$(persistantCartCloseButClass).unbind("click").click(function() { 
+		hideBasket(); 
+	});
+	$("#widget-ucart-but-checkout").widgetButton({ cssButton: 1, cssOn: "glo-but-css-on2", cssHover: "glo-but-css-hover2", cssOff: "glo-but-css-off2" });
+	$(persistantCartCloseButClass).attr("href","javascript:void(0)");
+	
+	/* setup the timer */
+	ucartTimer = setTimeout(function() { hideBasket(); }, 4000);
+  	$("#widget-ucart").unbind("mousemove").mousemove(function() {
+  		if(typeof ucartTimer != "undefined")
+  	  	{ clearTimeout(ucartTimer); }
+  	});
+  	$("#widget-ucart").hover(
+  		function() {},
+  		function() {
+  			if(typeof ucartTimer != "undefined")
+  			{ ucartTimer = setTimeout(function() { hideBasket(); }, 100); }
+  		}
+  	);
+  	
+  	var setupInterval = setInterval(function() {
+  		var neededH = $("#glo-ucart-slider-content").height();
+  		var actualH = $("#glo-ucart-slider-viewport").height();
+  		if( neededH == actualH )
+  		{ clearInterval(setupInterval); }
+  		else
+  		{ $("#glo-ucart-slider-viewport").height( neededH + 15 ); } 
+  	}, 250);
+};
+
+//edit this function to position cart.
+function positionPersistantCart() {
+	//turn on my account link, if not already on
+	if(!($("#widget-ucart-but #widget-header-active-link").size() > 0))
+	{ 
+		$("#widget-ucart-but").parent().addClass("glo-header-link-span-active");
+		$("#widget-ucart-but img").attr("id", "widget-header-active-link").attr("src","/assets/images/tex/tex-header-shopping-bag-active.gif"); 
+	}
+	
+	// position the layer.
+	if( resizingWidthWindow )
+	{ newLeft = $("#glo-body-container").width() + 55 - $(persistantCartContainerId).width() - 60; }
+	else
+	{ newLeft = ($("body").width() / 2) + ( $("#glo-body-container").width() / 2) - $(persistantCartContainerId).width() + 8; }
+	
+	$(persistantCartContainerId).css("left", newLeft+"px");
+};
+/* ---------------------------------------- */
+
+
+/* QuickView Javascript */
+/* ---------------------------------------- */
+
+//quickViewcommands[0] = "show" action
+//quickViewcommands[1] = "add product" action
+var quickViewCommands = new Array(2);
+quickViewCommands[0] = '/catalog/quickview.jsp';
+quickViewCommands[1] = '/catalog/qv_add_item_pc.cmd';
+
+var quickViewContainerId = "#widget-quickview";
+var quickViewCloseButtonsClass = ".widget-quickview-but-close";
+var quickViewCloseButtonsAdd = ".widget-quickview-but-add";
+
+var quickviewContainerHTML = '<div id="widget-quickview"></div>';
+var quickviewLoadingHTML = 	'  <div id="cat-quickview-top" class="widget-ie6png"><!--  --></div>' +
+				  			'  <div id="cat-quickview-body" class="widget-ie6png">' +
+				  			'	 <div id="cat-quickview-content">'+
+				  			'	   <span class="cat-quickview-but-close"><a href="javascript:closeQuickView()" class="widget-quickview-but-close">Close</a></span>' +
+				  			'	   <div class="widget-ima-loader"><img src="../assets/images/ima/ima-glo-loading.gif" alt="Loading..." /></div>' +
+				  			'    </div>' +
+				  			'  </div>' +
+				  			'  <div id="cat-quickview-bottom" class="widget-ie6png"><!--  --></div>';
+  				  			
+
+/* Function(s) for QuickView */
+function loadQuickView(params,selector) {
+	closeQuickView();
+	addQuickView(selector);
+	ajaxQuickView(quickViewCommands[0],params);
+	
+	// if this is an edit, want to have this appear above the cart.
+	if( params.indexOf("itemGUID") != -1 ) 
+	{ $(quickViewContainerId).css("z-index", "20"); }
+};
+
+function addQuickView(selector) {
+	$(selector).append(quickviewContainerHTML);
+	$(quickViewContainerId).append(quickviewLoadingHTML);
+	adjustQuickviewLocation();
+	$(quickViewContainerId).show();
+
+};
+
+function closeQuickView() {
+	$(quickViewContainerId).remove();
+	
+	if( exp.utils.isIE6() )
+	{ exp.utils.iframeFix.remove(quickViewContainerId); }
+};
+	      
+function ajaxQuickView(page,params) {
+	params = "rId=" + new Date().getTime() + "&" + params;
+	$.ajax({
+   		type: "POST",
+   		url: page,
+   		data: params,
+   		dataType: "html",
+   		success: function(msg) { 
+   			$(quickViewContainerId +" *").remove();
+   			$(quickViewContainerId).html("");
+   			$(quickViewContainerId).append(msg);
+   		}
+   	});
+};
+
+function addProductFromQuickView(params) {
+	params = params + "&productName=" + $(quickViewContainerId + " input[name=productName]").val()  + "&productVariantId=" + $(quickViewContainerId + " input[name=productVariantId2]").val() + "&quantity=" +$(quickViewContainerId + " input[name=quantity]").val();
+	
+	if( $(quickViewContainerId + " input[name=itemGUID]").size() > 0 )
+  	{ params = params + "&itemGUID=" + $(quickViewContainerId + " input[name=itemGUID]").val(); }
+	if( $(quickViewContainerId + " input[name=onBasketPage]").size() > 0 )
+  	{ params = params + "&onBasketPage=" + $(quickViewContainerId + " input[name=onBasketPage]").val(); }
+	
+	$(quickViewContainerId + " select").each(function() {
+		params = params + "&" + $(this).attr("name") + "=" + $(this).val(); 
+	});
+
+   if($("input[name=omnitureRecipe]").val()) {
+      params += "&omnitureRecipe=" + $("input[name=omnitureRecipe]").val();
+    }else {
+      params += "&omnitureRecipe= ";
+    }
+	$("#quickview-flash-ima").remove(); // remove the flash movie on quickview
+	$(quickViewContainerId + " *").remove();
+	$(quickViewContainerId).append(quickviewLoadingHTML);
+	ajaxQuickView(quickViewCommands[1],params);
+};
+
+var qvInterval;
+function setupQuickViewButtons() {
+	$(quickViewCloseButtonsClass).unbind("click").click(function() { closeQuickView(); });
+	$(quickViewCloseButtonsAdd).unbind("click").click(function() {
+		params = "productId=" + $(this).attr("id").split("-")[1]; 
+		addProductFromQuickView(params);
+	});
+	$(quickViewCloseButtonsClass).add( $(quickViewCloseButtonsAdd) ).attr("href","javascript:void(0)");
+	
+	qvInterval = setInterval( "adjustQuickviewLocation();" , 100);
+	setTimeout(function() { clearInterval(qvInterval); }, 1000);
+	adjustQuickviewLocation();
+};
+
+// Edit this per site to adjust location
+function adjustQuickviewLocation() {
+	var bWindowOffsets = exp.utils.getViewportPosition();
+	var bWindowViewport = exp.utils.getViewportSize();
+	var qvTop = ((bWindowViewport[1] / 2) - ($(quickViewContainerId).height() / 2)) + bWindowOffsets[1];
+	qvTop = (qvTop < 0) ? 100 : qvTop;
+	$(quickViewContainerId).css("top",qvTop+"px");
+	
+	if( exp.utils.isIE6() )
+	{ exp.utils.iframeFix.add(quickViewContainerId); }
+};
+/* ---------------------- */
+
+/* EmailFriend Javascript */
+/* ---------------------------------------- */
+
+//emailFriendCommands[0] = "show" action
+var emailFriendCommands = new Array(1);
+emailFriendCommands[0] = '/catalog/email_a_friend_layer.jsp';
+
+
+var emailFriendContainerId = "#email-friend";
+var emailFriendCloseButtonsClass = ".email-friend-but-close";
+var emailFriendCloseButtonsAdd = ".widget-email-friend-but-add";
+
+var emailFriendContainerHTML = '<div id="email-friend"></div>';
+var emailFriendLoadingHTML = 	'  <div id="email-friend-top" class="widget-ie6png"><!--  --></div>' +
+				  			'  <div id="email-friend-body" class="widget-ie6png">' +
+				  			'	 <div id="email-friend-content">'+
+				  			'	   <span class="email-friend-but-close"><a href="javascript:closeEmailFriend()" class="widget-email-friend-but-close">Close</a></span>' +
+				  			'	   <div class="widget-ima-loader"><img src="../assets/images/ima/ima-glo-loading.gif" alt="Loading..." /></div>' +
+				  			'    </div>' +
+				  			'  </div>' +
+				  			'  <div id="email-friend-bottom" class="widget-ie6png"><!--  --></div>';
+
+
+/* Function(s) for EmailFriend */
+function loadEmailFriend(params, selector) {
+	closeEmailFriend();
+	addEmailFriend(selector);
+	ajaxEmailFriend(emailFriendCommands[0],params);
+};
+
+function addEmailFriend(selector) {
+	$(selector).append(emailFriendContainerHTML);
+	$(emailFriendContainerId).append(emailFriendLoadingHTML);
+	adjustEmailFriendLocation();
+	$(emailFriendContainerId).fadeIn();
+
+	if( exp.utils.isIE6() ){
+		$("select").each(function(i){
+			if($(this).attr("id").indexOf("Variants") != -1){
+				$(this).css('visibility', 'hidden');
+			}
+		});
+	}
+};
+
+function closeEmailFriend() {
+	if( exp.utils.isIE6() ){
+		$("select").each(function(i){
+			if($(this).attr("id").indexOf("Variants") != -1){
+				$(this).css('visibility', 'visible');
+			}
+		});
+	}
+
+	$(emailFriendContainerId).fadeOut();
+
+	if( exp.utils.isIE6() ){ 
+		exp.utils.iframeFix.remove(emailFriendContainerId);	    
+	}		
+};
+
+function ajaxEmailFriend(page,params) {
+	params = "rId=" + new Date().getTime() + "&" + params;
+	$.ajax({
+   		type: "POST",
+   		url: page,
+   		data: params,
+   		dataType: "html",
+   		success: function(msg) {
+   			$(emailFriendContainerId +" *").remove();
+   			$(emailFriendContainerId).html("");
+   			$(emailFriendContainerId).append(msg);
+   		}
+   	});
+};
+
+// Edit this per site to adjust location
+function adjustEmailFriendLocation() {
+	$(emailFriendContainerId).css("top", "250px");
+
+	if( exp.utils.isIE6() )
+	{ exp.utils.iframeFix.add(emailFriendContainerId); }
+};
+/* ---------------------- */
+

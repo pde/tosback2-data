@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<script type="text/javascript">
+<!--
+var page_name = "";
+var protocol = window.location.protocol;
+
+// Get query string following the question mark
+var qs = location.href.substring(location.href.indexOf("?")+1);
+
+// Split parameters into an array of name=value pairs, assuming pairs are separated by ampersands
+var params = qs.split("&");
+
+// looking for page_name parameter value
+for (i=0;i<params.length;i++){
+  pos = params[i].indexOf("=");
+  if (pos == -1){ continue }
+  if( params[i].substring(0,pos) == "page_name" ) {
+    page_name = (params[i].substring(pos+1)).toLowerCase();
+    break;
+  }
+}
+
+if ( page_name == "pacsun_retargeting"){
+var mt_tags_all = new Array;
+
+// MOJO assigned Site Tracking Tags Array - all tags will be served, regardless of lastvendor cookie or vendor override
+if( page_name == "pacsun_retargeting" ) {
+ mt_tags_all[0] = "<img src=\"" + protocol + "//secure.fastclick.net/w/tre?ad_id=26654;evt=19419;cat1=25234;cat2=25235\" width=\"1\" height=\"1\" border=\"0\">";
+mt_tags_all.push("<img src=\"" + protocol + "//altfarm.mediaplex.com/ad/bk/20340-146478-3840-0?Retargeting=<retargeting/>&mpuid=<mpuid/>\" border=0 height=1 width=1>");
+}
+
+
+
+// Combine all tracking tags into one string
+var mt_tags_str = mt_tags_all.join("\n");
+
+// Replace all parameter macros in the tracking tags string
+for (i=0;i<params.length;i++){
+  pos = params[i].indexOf("=");
+  if (pos == -1){
+    continue;
+  }
+  var name = params[i].substring(0,pos);
+  var value = params[i].substring(pos+1);
+  
+  // Create a regular expression to match all instances of the paramater macro and replace with values from the query string
+  var regex_str = "<" + name + "\\/>";
+  myregexp = new RegExp(regex_str, "gi");
+  
+  mt_tags_str = mt_tags_str.replace(myregexp, value);
+}
+
+
+}
+if ( page_name == "pacsun_order"){
+var client_id = 20340;
+var mt_tags_all = new Array;
+var mt_tags_str = "";
+
+// MOJO assigned Site Tracking Tags - one vendor tag will be served, based on lastvendor cookie or vendor override
+  var mt_tags = new Array;
+if( page_name == "pacsun_order" ) {
+mt_tags["s17922"] = "<img src=\"" + protocol + "//secure.fastclick.net/w/roitrack.cgi?aid=13078\" width=1 height=1 border=0>";
+mt_tags["MPLX"] = "<img src=\"" + protocol + "//altfarm.mediaplex.com/ad/bk/20340-146478-3840-0?Order=<order/>&Order_Value=<order_value/>&mpuid=<mpuid/>\" border=0 height=1 width=1>";
+}
+
+
+
+
+
+// Check to see if there is a vendor override and build a string of tracking tags
+if (qs.search(/(!?)mpvo=(\d+)/)!=-1){
+  var ven_o = "s" + RegExp.$2;
+
+  // If a tracking tag exists for the override vendor add to the tracking tags string  
+  if(mt_tags[ven_o]){  
+    mt_tags_str = mt_tags_str + "\n" +  mt_tags[ven_o];
+  }
+  
+  // If a MOJO tracking tag exists and it wasn't blocked by the override parameter add to tags string
+  if (RegExp.$1 != "!" && mt_tags["MPLX"]){ 
+  	mt_tags_str = mt_tags_str + "\n" + mt_tags["MPLX"];
+  }
+  
+  // Remove the override paramater from the parameters array
+  params.pop(); 
+}
+
+// If no vendor override, get vendor ID from lastvendor cookie and build a string of tracking tags
+else{
+
+  var mojo_cookie = "";
+  var mojo_cookie_name = new Array( "mojo2", "mojo3" );
+  var c_temp, v_pos;
+  for( var i=0; i < mojo_cookie_name.length; i++ ) {
+    var c_temp = document.cookie;
+    v_pos = c_temp.indexOf( mojo_cookie_name[i] );
+    if( v_pos >= 0 ) {
+      c_temp = c_temp.substring( v_pos + 6);
+      v_pos = c_temp.indexOf( ";" );
+      if( v_pos >= 0 ) c_temp = c_temp.substring( 0, v_pos );
+      mojo_cookie += "/" + c_temp;
+    }
+  }  
+  var ven;
+  var myregexp = new RegExp( "/" + client_id + ":(\\d+)");
+  mojo_cookie.search(myregexp);
+  ven = "s" + RegExp.$1;
+
+  // If a tracking tag exists for the vendor add to the tracking tags string
+  if(mt_tags[ven]){
+    mt_tags_str += "\n" + mt_tags[ven];
+  }  
+  
+  // If a MOJO tracking tag exists add to tags string
+  if(mt_tags["MPLX"]){ 
+    mt_tags_str += "\n" + mt_tags["MPLX"];
+  }
+}
+
+// Combine all tracking tags from second array into one string
+if (mt_tags_all.length > 0){
+  mt_tags_str += "\n" + mt_tags_all.join("\n");
+}
+
+// Replace all parameter macros in the tracking tags string
+for (i=0;i<params.length;i++){
+  var pos = params[i].indexOf("=");
+  if (pos == -1){
+    continue;
+  }
+  var name = params[i].substring(0,pos);
+  var value = params[i].substring(pos+1);
+  
+  // Create a regular expression to match all instances of the paramater macro
+  // and replace with value from the query string
+  var regex_str = "<" + name + "\\/>";
+  myregexp = new RegExp(regex_str, "gi");
+  
+  mt_tags_str = mt_tags_str.replace(myregexp, value);
+}
+
+
+
+}
+
+if( mt_tags_str ) {
+// Clean up any macros that may not have been replaced
+mt_tags_str = mt_tags_str.replace(/<[^<>&?=+*#@!%^~;\s'"]+\/>/gi, "");
+
+// Write out all tracking tags
+document.write(mt_tags_str);
+}
+//-->
+</script>
+<title></title>
+</head>
+<body><p></p></body>
+</html>
+  

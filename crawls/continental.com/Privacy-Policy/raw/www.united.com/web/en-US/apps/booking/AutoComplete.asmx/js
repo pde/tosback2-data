@@ -1,0 +1,43 @@
+var AutoComplete=function() {
+AutoComplete.initializeBase(this);
+this._timeout = 0;
+this._userContext = null;
+this._succeeded = null;
+this._failed = null;
+}
+AutoComplete.prototype={
+_get_path:function() {
+ var p = this.get_path();
+ if (p) return p;
+ else return AutoComplete._staticInstance.get_path();},
+GetFlightAirportNamesInterline:function(prefixText,count,contextKey,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetFlightAirportNamesInterline',false,{prefixText:prefixText,count:count,contextKey:contextKey},succeededCallback,failedCallback,userContext); },
+GetFlightAirportNamesInterlineRevenue:function(prefixText,count,contextKey,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetFlightAirportNamesInterlineRevenue',false,{prefixText:prefixText,count:count,contextKey:contextKey},succeededCallback,failedCallback,userContext); },
+GetFlightAirportNamesInterlineReward:function(prefixText,count,contextKey,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetFlightAirportNamesInterlineReward',false,{prefixText:prefixText,count:count,contextKey:contextKey},succeededCallback,failedCallback,userContext); },
+GetFlightAirportNamesNoInterline:function(prefixText,count,contextKey,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetFlightAirportNamesNoInterline',false,{prefixText:prefixText,count:count,contextKey:contextKey},succeededCallback,failedCallback,userContext); },
+GetNonFlightAirportNames:function(prefixText,count,contextKey,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetNonFlightAirportNames',false,{prefixText:prefixText,count:count,contextKey:contextKey},succeededCallback,failedCallback,userContext); },
+GetHotelCities:function(prefixText,count,contextKey,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetHotelCities',false,{prefixText:prefixText,count:count,contextKey:contextKey},succeededCallback,failedCallback,userContext); }}
+AutoComplete.registerClass('AutoComplete',Sys.Net.WebServiceProxy);
+AutoComplete._staticInstance = new AutoComplete();
+AutoComplete.set_path = function(value) { AutoComplete._staticInstance.set_path(value); }
+AutoComplete.get_path = function() { return AutoComplete._staticInstance.get_path(); }
+AutoComplete.set_timeout = function(value) { AutoComplete._staticInstance.set_timeout(value); }
+AutoComplete.get_timeout = function() { return AutoComplete._staticInstance.get_timeout(); }
+AutoComplete.set_defaultUserContext = function(value) { AutoComplete._staticInstance.set_defaultUserContext(value); }
+AutoComplete.get_defaultUserContext = function() { return AutoComplete._staticInstance.get_defaultUserContext(); }
+AutoComplete.set_defaultSucceededCallback = function(value) { AutoComplete._staticInstance.set_defaultSucceededCallback(value); }
+AutoComplete.get_defaultSucceededCallback = function() { return AutoComplete._staticInstance.get_defaultSucceededCallback(); }
+AutoComplete.set_defaultFailedCallback = function(value) { AutoComplete._staticInstance.set_defaultFailedCallback(value); }
+AutoComplete.get_defaultFailedCallback = function() { return AutoComplete._staticInstance.get_defaultFailedCallback(); }
+AutoComplete.set_path("/web/en-US/apps/booking/AutoComplete.asmx");
+AutoComplete.GetFlightAirportNamesInterline= function(prefixText,count,contextKey,onSuccess,onFailed,userContext) {AutoComplete._staticInstance.GetFlightAirportNamesInterline(prefixText,count,contextKey,onSuccess,onFailed,userContext); }
+AutoComplete.GetFlightAirportNamesInterlineRevenue= function(prefixText,count,contextKey,onSuccess,onFailed,userContext) {AutoComplete._staticInstance.GetFlightAirportNamesInterlineRevenue(prefixText,count,contextKey,onSuccess,onFailed,userContext); }
+AutoComplete.GetFlightAirportNamesInterlineReward= function(prefixText,count,contextKey,onSuccess,onFailed,userContext) {AutoComplete._staticInstance.GetFlightAirportNamesInterlineReward(prefixText,count,contextKey,onSuccess,onFailed,userContext); }
+AutoComplete.GetFlightAirportNamesNoInterline= function(prefixText,count,contextKey,onSuccess,onFailed,userContext) {AutoComplete._staticInstance.GetFlightAirportNamesNoInterline(prefixText,count,contextKey,onSuccess,onFailed,userContext); }
+AutoComplete.GetNonFlightAirportNames= function(prefixText,count,contextKey,onSuccess,onFailed,userContext) {AutoComplete._staticInstance.GetNonFlightAirportNames(prefixText,count,contextKey,onSuccess,onFailed,userContext); }
+AutoComplete.GetHotelCities= function(prefixText,count,contextKey,onSuccess,onFailed,userContext) {AutoComplete._staticInstance.GetHotelCities(prefixText,count,contextKey,onSuccess,onFailed,userContext); }

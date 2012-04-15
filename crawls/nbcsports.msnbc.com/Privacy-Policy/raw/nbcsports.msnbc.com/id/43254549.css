@@ -1,0 +1,3652 @@
+/* --- reset --- */
+h1, h2, h3, h4, h5, h6 {
+ margin: 0;
+ font-size: 100%;
+ font-weight: normal;
+}
+img {
+ border: 0;
+}
+form {
+ margin: 0;
+}
+p {
+ margin: 0 0 1.4em 0;
+}
+
+/* --- global --- */
+html {
+ overflow-x: hidden;
+}
+html, body {
+ background: #000 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg.jpg%3Fv=18') repeat-y center top;
+}
+body {
+ margin: 0;
+ font: normal 12px Arial,Helvetica,sans-serif;
+}
+body, a {
+ color: #000;
+}
+a {
+ text-decoration: none;
+}
+a:hover {
+ text-decoration: underline;
+}
+#nbc-header, #nbc-content, #nbc-footer {
+ margin-left: auto;
+ margin-right: auto;
+}
+div.omniture, div.dpn {
+ display: none;
+}
+#nbc-content .noborder, #nbc-content .noborder div, #nbc-content .noborder .img div, #nbc-content .cbx .cbx-content td img.noborder {
+ border: 0 none !important;
+}
+#nbc-content .presented-by .text, #nbc-content .presentedby .text {
+ text-align: right;
+}
+
+/* -------------- */
+/* --- HEADER --- */
+/* -------------- */
+#nbc-header {
+ background: #000 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-top.jpg%3Fv=18') no-repeat center top;
+ width: 970px;
+ /*padding: 0 15px 10px;*/
+ padding: 0 15px; /* scoreboard */
+ color: #999;
+}
+#nbc-header a {
+ color: #fff;
+}
+#nbc-header a.nbcsports-logo {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') no-repeat left top;
+ display: block;
+ width: 128px; /* was 143 before header scoreboard change */
+ height: 107px; /* was 121 before header scoreboard change */
+ position: absolute;
+ z-index: 1020; /* bring over 10 of dropdown */
+ margin-left: -9px; /* was -8 before header scoreboard change */
+ /*margin-top: 1px;*/ /* was 1 before header scoreboard change */
+ text-indent: -1000px;
+ overflow: hidden;
+}
+#nbc-header a.green {
+ background-position: left -300px;
+}
+/* --- powered by --- */
+#nbc-header div.msnbc {
+ overflow: hidden;
+ font-size: 11px;
+ margin-bottom: 5px;
+ padding-top: 16px; /* 26 before header scoreboard change */
+ text-align: right;
+}
+#nbc-header div.msnbc div {
+ display: inline; /* instead of inline-block for IE */
+ line-height: 16px;
+}
+#nbc-header div.msnbc div.powered-by {
+ padding-right: 12px;
+ border-right: 1px solid #777;
+}
+#nbc-header div.msnbc div.powered-by .logo {
+ margin-left: 2px;
+ display: inline-block;
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') left -950px no-repeat;
+ width: 92px;
+ height: 11px;
+ text-align: left;
+ text-indent: -1000px;
+ overflow: hidden;
+ vertical-align: text-top;
+}
+#nbc-header div.msnbc div.news {
+ padding-left: 10px;
+}
+#nbc-header div.msnbc div.news span.headline {
+ font-size: 12px;
+ color: #fff;
+ padding-left: 5px;
+}
+#nbc-header div.msnbc div.news span.headline h6 {
+ display: inline;
+}
+#nbc-header div.msnbc div.news span.headline h6 span {
+ display: none;
+}
+
+/* --- both main and subnav --- */
+#nav, #nbc-header div.nav div.sub ul.left, #nav li h2 a, #nav li h2 a:hover {
+ background-image: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-header.png%3Fv=18');
+ background-repeat: no-repeat;
+ /*zoom: 1;*/ /* hasLayout - breaks IE6 */
+ /*height: 1%;*/ /* hasLayout - breaks IE6 */
+ min-width: 0; /* hasLayout - IE7 only */
+}
+#nbc-header div.nav div ul, #nav ul { /* dropdown content */
+ margin: 0; /* remove space above and below nav ul's */
+ /*padding: 0;*/ /* removed to allow dropdown content to have padding */
+ /*zoom: 1;*/ /* hasLayout - not needed */
+}
+#nbc-header div.nav ul li {
+ float: left;
+ list-style-type: none;
+}
+#nbc-header div.nav ul li a {
+ /*display: block;*/ /* allow piped stories */
+}
+#nbc-header div.nav ul li h2 a {
+ display: block;
+}
+
+/* --- main --- */
+/*#nav, #nav * {
+ margin:   0;
+ padding:  0;
+ list-style:  none;
+}*/
+#nav {
+ margin: 0 0 4px 0; /* was 5 before header scoreboard change */
+ z-index: 1010; /* for Flash (ad) */
+ position: relative; /* moved here from #nav li to bring menu to left */
+ height: 32px; /* needed due to removal of float from #nbc-header div.nav div ul? */
+ background-position: left top;
+ background-color: #ffbf11;
+ line-height: 1.4;
+ padding-left: 137px;
+}
+#nav.cufon {
+ padding-left: 135px;
+}
+#nav ul {
+ position: absolute;
+ top: -999em;
+ padding: 20px 0 12px 120px;
+ width: 850px; /* 980-120 */
+ height: 368px; /* 400-20-12 */
+ overflow: hidden;
+ left: -10000px; /* added to remove horizontal scrollbar with large width */ /* removed - not needed anymore after bring dropdown to left */
+ /*background-color: #444;*/
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-dropdown.png%3Fv=18') center top repeat-x;
+}
+* #nav ul li {
+ width:   100%;
+}
+#nav li:hover {
+ visibility: inherit; /* fixes IE7 'sticky bug' */
+}
+#nav li {
+}
+#nav a {
+ /*position: relative;*/ /* causes disappearing on rollover in IE7 */
+}
+#nav li:hover ul, #nav li.sfHover ul {
+ left: 0;
+ top: 32px; /* CHANGE: match top ul list item height (full bar height 32px) */
+ z-index: 99; /* bring over subsequent li's */
+}
+#nav li:hover li ul, #nav li.sfHover li ul {
+ top: -999em;
+}
+#nav li li:hover ul, #nav li li.sfHover ul {
+ left: 900px; /* CHANGE: match ul width */
+ top: 0;
+}
+#nav li li:hover li ul, #nav li li.sfHover li ul {
+ top: -999em;
+}
+#nav li li li:hover ul, #nav li li li.sfHover ul {
+ left: 900px; /* CHANGE: match ul width */
+ top: 0;
+}
+* html #nav { /* IE6 */
+ display: inline-block; /* hasLayout */
+}
+
+/* --- main top level links --- */
+#nav li h2 a {
+ font-size: 14px; /* before cufon */
+ font-weight: bold; /* before cufon */
+ text-transform: uppercase;
+ line-height: 32px; /* 32px = full height, 18px = partial */
+ color: #000;
+ background-position: left -143px;
+ white-space: nowrap;
+}
+#nav li.first h2 a {
+ background-position: right -143px; /* empty space */
+}
+#nav li h2 a:hover {
+ color: #fff;
+ text-decoration: none;
+ background-position: left -100px;
+ position: relative;
+ margin-right: -1px;
+ padding-right: 1px;
+}
+/*
+#nav li h2 a.entering:hover {
+ color: #000;
+ background-position: left -143px;
+}
+#nav li h2 a.leaving {
+ color: #fff !important;
+ background-position: left -100px !important;
+}
+*/
+#nav li h2 a span { /* needed to remove cufon canvas flicker on hover */
+ padding: 0 13px;
+ display: block;
+}
+#nav li h2 a span.cufon {
+ padding: 0 15px;
+}
+#nav li h2 a:hover span {
+ background-image: none;
+}
+#nav li ul #cell1 a { /* Left-side links have inconsistent formatting */
+ font-size: 12px;
+ font-weight: bold;
+}
+
+/* --- subnav --- */
+#nbc-header div.nav div.sub, #nbc-header div.nav div.sub a {
+ line-height: 10px; /* was 14 before header scoreboard change */
+}
+#nbc-header div.nav div.sub {
+ overflow: hidden;
+}
+#nbc-header div.nav div.sub ul.left {
+ background-position: left -50px;
+ background-color: #393939;
+ padding-left: 142px; /* 150 - space between items */
+}
+#nbc-header div.nav div.sub ul, #nbc-header div.nav div.sub div {
+ float: left;
+}
+#nbc-header div.nav div.sub ul {
+ padding: 6px 0;
+}
+#nbc-header div.nav div.sub ul li a {
+ padding: 0 8px; /* space between items */
+}
+#nbc-header div.nav div.sub ul.middle {
+ background-color: #d7d7d7;
+}
+#nbc-header div.nav div.sub ul.middle, #nbc-header div.nav div.sub ul.middle a {
+ color: #000;
+}
+#nbc-header div.nav div.sub ul.left {
+ padding-right: 10px;
+}
+#nbc-header div.nav div.sub ul.left li {
+ border-left: 1px solid #fff;
+ border-right: 1px solid #000;
+}
+#nbc-header div.nav div.sub ul.left li.first { border-left: 0; }
+#nbc-header div.nav div.sub ul.left li.last { border-right: 0; }
+#nbc-header div.nav div.sub form.search {
+ margin-left: 3px;
+}
+#nbc-header div.nav div.sub form.search fieldset {
+ background-color: #fff;
+ border: 1px solid #aaa;
+ padding: 0;
+}
+#nbc-header div.nav div.sub form.search input {
+ height: 13px; /* was 20 before header scoreboard change */
+ border: 0 none;
+ display: block;
+ float: left;
+ line-height: 13px;
+ padding: 4px 0 3px 2px;
+ width: 125px;
+}
+#nbc-header div.nav div.sub form.search input.bing {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') left -1250px no-repeat;
+ cursor: pointer;
+ width: 18px;
+ height: 18px;
+ margin: 1px;
+}
+#nbc-header div.nav div.sub a.rw-logo {
+ border-right: 1px solid black;
+ display: block;
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') 8px -1000px no-repeat;
+ width: 83px;
+ text-indent: -1000px;
+ overflow: hidden;
+}
+
+/* --- ads --- */
+.ad object, .ad embed, .ad img, .ad iframe {
+ display: block;
+}
+.leaderboard object, .leaderboard embed, .leaderboard img, .leaderboard iframe, .leaderboard table, .leaderboard div {
+ margin-left: auto !important;
+ margin-right: auto !important;
+}
+.leaderboard object, .leaderboard embed, .leaderboard img, .leaderboard iframe, .leaderboard table, .leaderboard span {
+ z-index: 1 !important;
+}
+#nbc-header div.expandable { /* tweaks for expandable ads */
+ z-index: 1 !important;
+ position: relative;
+}
+#nbc-header .leaderboard {
+ background: #000 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-ad.png%3Fv=18') center top no-repeat;
+ margin: 4px -15px;
+}
+#nbc-content div.pulse {
+ margin-bottom: 20px;
+}
+#nbc-content div.pulse div {
+ height: auto !important;
+}
+#nbc-content div.pulse #p360-format-header {
+ overflow: auto;
+ padding-bottom: 1px;
+}
+#nbc-content .body div.pulse {
+ float: right;
+}
+
+/* --- dropdown --- */
+#nav li ul .grid {
+ overflow: hidden; /* override "auto" for PIE OTL */
+}
+#nav li ul .grid .label {
+ display: none; /* hide dropdown grid labels */
+}
+#nav li ul .grid .content {
+ padding-top: 8px;
+ padding-bottom: 10000px; /* PIE One True Layout */
+ margin-bottom: -10000px;
+}
+#nav li ul .grid #cell1 {
+ text-transform: uppercase;
+ font-size: 11px;
+ line-height: 22px;
+ border-right: 1px solid #111;
+}
+#nav li ul .grid #cell1 div {
+ position: relative; /* TODO: more elegant */
+ top: -4px;
+}
+#nav li ul .grid #cell1 a:hover {
+ text-decoration: none;
+ color: #aaa;
+}
+#nav li ul .grid #cell2 {
+ border-left: 1px solid #555;
+ padding-left: 25px;
+ /*padding-right: 20px;
+ width: 315px;*/
+ width: 335px;
+}
+#nav li ul .grid #cell2 .story {
+ padding: 6px 0; /* hits both .story .text div h6 and .story h6 */
+ /*overflow: auto;*/ /* not needed, causes scrollbars on prod */
+}
+#nav li ul .grid #cell2 div.story h5 {
+ text-transform: uppercase;
+ font-weight: bold;
+ overflow: hidden;
+}
+#nav li ul .grid #cell2 div.story h6 {
+ font-weight: bold;
+ overflow: hidden;
+}
+#nav li ul .grid #cell2 div.story p.abstr { /* collapse random SN Story extra markup + blank abstract */
+ margin: 0;
+}
+#nav li ul div.img-left {
+ margin-bottom: 10px;
+ padding-top: 0 !important; /* override 6px #nav li ul .grid #cell2 .story */
+}
+#nav li ul .grid #cell3 div.ad iframe { /* ad */
+ width: 300px;
+ height: 250px;
+ border: none;
+ background: transparent;
+ /*filter: chroma(color=#FFFFFF);*/
+ overflow: hidden;
+}
+
+/* --- SF/story subnav --- */
+#nbc-header .subnav {
+ overflow: hidden;
+ line-height: 26px;
+ /*margin-top: 9px;*/ /* before header scoreboard change */
+ margin-bottom: 4px; /* after header scoreboard change */
+ background-color: #393939;
+}
+#nbc-header .subnav h1, #nbc-header .subnav div {
+ float: left;
+}
+#nbc-header .subnav h1 {
+ text-align: right;
+ background: #ffbf11 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-header.png%3Fv=18') right -200px no-repeat;
+ min-width: 135px;
+ font-weight: bold;
+ text-transform: uppercase;
+ /*color: #393939;*/
+ color: #222;
+ font-size: 14px;
+}
+* html #nbc-header .subnav h1 { /* IE6 */
+ width: 135px; /* min-width */
+}
+#nbc-header .subnav h1 a {
+ display: block;
+ color: #222;
+ padding: 0 18px 0 10px;
+}
+#nbc-header .subnav h1 a:hover {
+ text-decoration: none;
+}
+#nbc-header .suvnav h1 .cufon {
+ position: relative;
+ top: 1px;
+}
+#nbc-header .subnav div {
+ background-color: #393939;
+ padding-right: 10000px;
+ margin-right: -10000px;
+ text-indent: 4px;
+ text-shadow: -1px -1px #222222;
+}
+#nbc-header .subnav div a {
+ font-weight: bold;
+ color: #ccc;
+ margin: 0 5px;
+}
+#nbc-header .subnav div a:hover {
+ color: #fff;
+}
+
+/* --- scoreboard --- */
+#nbc-header .scoreboard {
+ margin-left: -15px;
+ margin-right: -14px;
+ height: 35px;
+}
+#nbc-header .scoreboard object {
+ display: block;
+ position: relative; /* needed? */
+ float: left;
+}
+#nbc-header .scoreboard .promo {
+ float: right;
+ width: 223px;
+ margin-top: -3px;
+ margin-bottom: 0px;
+}
+#nbc-header .scoreboard .promo img {
+ display: block;
+ border: 0 none !important; /* override inline 1px black solid */
+}
+
+/* --- marquee --- */
+#nbc-header #marquee div {
+ margin-left: -15px;
+ margin-right: -15px;
+ margin-top: 4px;
+ padding: 5px 0;
+ color: #000;
+ text-align: center;
+ font-size: 19px;
+ background: #FFBF11;
+}
+#nbc-header #marquee div a {
+ color: #000;
+}
+#nbc-header #marquee .continuing {
+ background: #d84800;
+ color: #fff;
+}
+#nbc-header #marquee .breaking,
+#nbc-header #marquee .breakingupdated {
+ background: #900;
+ color: #fff;
+}
+#nbc-header #marquee .continuing a,
+#nbc-header #marquee .breaking a,
+#nbc-header #marquee .breakingupdated a {
+ color: #fff;
+}
+
+/*
+#marquee .breaking {background: #c33 url("http://msnbcmedia1.msn.com/i/msnbc/Components/CSS/http://nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg_marquee_breaking.gif") repeat-y center !important; border-top: 1px solid #e64d4d;}
+#marquee .developing {background: #06C url("http://msnbcmedia2.msn.com/i/msnbc/Components/CSS/http://nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg_marquee_developing.gif") repeat-y center !important; border-top: 1px solid #0099e6;}
+#marquee .breakingupdated {background: #E08721 url("http://msnbcmedia3.msn.com/i/msnbc/Components/CSS/http://nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg_marquee_breakingupdated.gif") repeat-y center !important; border-top: 1px solid #f3ce59;}
+#marquee .comingup {background: #54a43e url("http://msnbcmedia4.msn.com/i/msnbc/Components/CSS/http://nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg_marquee_comingup.gif") repeat-y center !important; border-top: 1px solid #9bf084;}
+#marquee .continuing {background: #582c3d url("http://msnbcmedia.msn.com/i/msnbc/Components/CSS/http://nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg_marquee_continuing.gif") repeat-y center !important; border-top: 1px solid #89435d;}
+#marquee .ticker {background: #582c3d url("http://msnbcmedia1.msn.com/i/msnbc/Components/CSS/http://nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg_marquee_continuing.gif") repeat-y center !important; border-top: 1px solid #89435d; height: 47px;}
+#marquee .ticker h1 {font-family: Arial, sans-serif; font-weight: bold; font-size: 2em; color: #FFF; margin-top: 4px;}
+#marquee .ticker h1 a, #marquee .ticker h1 a:visited {text-transform: none; font-weight: normal; text-decoration: none; color: #FFF; border-bottom: 1px dotted #FFF;}
+#marquee .ticker h1 a:hover {text-decoration: none; border-bottom: 1px solid #FFF;}
+#marquee h1{text-align: center !important; font-family: Arial, sans-serif !important; font-weight: bold; font-size: 2em !important; color: #FFF; padding-left: 0 !important;}
+#marquee h1 a, #marquee h1 a:visited {text-transform: none; font-weight: normal; text-decoration: none; color: #FFF; border-bottom: 1px dotted #FFF;}
+#marquee h1 a:hover{border-bottom: 1px solid #FFF; text-decoration: none;}
+*/
+
+/* video + slideshow icons */
+#nbc-content .icoVid, .icoSli {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') no-repeat left top;
+ /*margin-right: 5px;*/
+ padding-left: 14px;
+}
+#nbc-content .icoVid {
+ background-position: left -1199px;
+}
+#nbc-content .tsm-area .x4 .story .icoVid, #nbc-content .boxes .icoVid,  #nbc-content .box .icoVid {
+ background-position: -25px -1199px;
+}
+#nbc-content .icoSli {
+ background-position: left -1224px;
+}
+#nbc-content .tsm-area .x4 .story .icoSli, #nbc-content .boxes .icoSli,  #nbc-content .box .icoSli {
+ background-position: -25px -1224px;
+}
+
+#nbc-content .icoNew, #nbc-content .icoUpd {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') no-repeat left top;
+ /*margin-right: 3px;*/
+}
+#nbc-content .icoNew {
+ background-position: -50px -1199px;
+ padding-left: 23px;
+}
+#nbc-content .icoUpd {
+ background-position: -50px -1224px;
+ padding-left: 40px;
+}
+#nbc-content .icoVid:hover, #nbc-content .icoSli:hover, #nbc-content .icoNew:hover, #nbc-content .icoUpd:hover {
+ text-decoration: none;
+}
+
+/* --- END HEADER --- */
+
+/* --------------- */
+/* --- CONTENT --- */
+/* --------------- */
+#nbc-content {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-header.png%3Fv=18') no-repeat center -500px;
+ width: 940px;
+ padding: 10px 30px 10px;
+ /*overflow: auto;*/
+ overflow: hidden; /* IE6 */
+}
+#nbc-content .tsm-area .ad {
+ position: absolute;
+}
+#nbc-content div.below-tsm .content-right .ad {
+ padding-bottom: 20px;
+}
+#nbc-content div.below-tsm {
+ overflow: hidden;
+}
+#nbc-content div.content-left {
+ float: left;
+ width: 640px;
+ margin-top: 20px;
+ margin-right: -20px;
+}
+#nbc-content div.content-right {
+ float: left;
+ width: 300px;
+ margin-left: 20px;
+ margin-top: 20px;
+}
+
+/* ------------------ */
+/* --- CMS STYLES --- */
+/* ------------------ */
+/* --- grids ---
+between cols = 20px
+1 col (of 6) = 150px
+2 cols = 300px
+etc.
+*/
+.grid {
+ overflow: hidden;
+}
+.grid .content {
+ float: left;
+}
+.grid .w1 {
+ width: 150px;
+}
+.grid .w2 {
+ width: 300px;
+ margin-right: 20px;
+}
+.grid .sR {
+ margin-right: 0 !important;
+}
+.grid .w3 {
+ width: 450px;
+}
+.grid .w4 {
+ width: 620px;
+ margin-right: 20px;
+}
+.grid .w5 {
+ width: 770px;
+ margin-right: 20px;
+}
+.grid .w6 {
+ width: 940px;
+}
+.grid .nowrap {
+ display: table;
+}
+.grid .nowrap .text {
+ display: table-cell; /* or inline-block */
+ vertical-align: middle;
+}
+
+/* --- images --- */
+.img {
+ margin-bottom: 4px;
+}
+.story .text {
+ overflow: hidden; /* nowrap */
+}
+.img div {
+ border: 1px solid #cfcfcf;
+}
+.img div img {
+ margin: 3px;
+ display: block; /* remove space below image */
+ /*border: 1px solid #ccc !important;*/ /* override #000 inline */
+ /*padding: 3px;*/
+}
+.img div a {
+ display: block;
+}
+.box .img div, .boxes .img div, .tsm-area .img div {
+ border: none;
+}
+.box .img div img, .boxes .img div img, .tsm-area .img img {
+ margin: 0;
+}
+
+/* --- images - cms --- */
+.img-left,
+.img-right {
+ overflow: hidden;
+}
+.img-left .img {
+ float: left;
+ margin-right: 10px;
+}
+.img-thumb-m h6 {
+ font-size: 11px;
+}
+.img-right .img {
+ float: right;
+ margin-left: 10px;
+}
+/* --- nav specific images --- */
+#nav ul .img-left .img {
+ margin-right: 10px;
+}
+#nav ul .img-left .img div {
+ border: 1px solid #4b4b4b; /* override #cfcfcf */
+}
+#nav ul .story .img cite {
+ color: #666;
+}
+
+/* --- cite --- */
+cite, #nbc-content .credit {
+ font-size: 9px;
+ text-align: right;
+ display: block;
+ color: #999;
+ line-height: 11px;
+ margin-top: 2px;
+ /*margin-bottom: -4px;*/
+}
+cite .byline {
+ display: none;
+}
+#nbc-content .cbx .credit {
+ display: none;
+}
+#nav li ul cite {
+ margin-top: 2px;
+ color: #fff;
+}
+.boxes cite, .box cite, .tsm-area .x4 .img cite {
+ color: #888;
+}
+.grid .img-thumb-s .img cite, .grid .img-small .img cite {
+ display: none;
+}
+
+/* --- graphic header -- */
+.graphic-header img {
+ margin: 5px auto 10px;
+ margin-top: 5px;
+ display: block;
+}
+
+/* --- tsm specific --- */
+.tsm-area h1, .tsm-area h1 a,
+.tsm-area h2, .tsm-area h2 a,
+.tsm-area h3, .tsm-area h3 a,
+.tbx-stack h2 {
+ color: #333;
+}
+.tsm-area h1, .tsm-area h2, .tsm-area h3, .tbx-stack h2 {
+ background: #ddd url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left top repeat-x;
+ padding: 4px 10px;
+ border-bottom: 1px solid #888;
+ font-weight: bold;
+ margin-bottom: 4px;
+}
+.tsm-area h1 a, .tsm-area h2 a, .tsm-area h3 a {
+ display: block;
+}
+.tsm-area h1 a:hover, .tsm-area h2 a:hover, .tsm-area h3 a:hover {
+ text-decoration: none;
+ color: #000;
+}
+.tsm-area .w4, .tsm-area .w5 {
+ clear: left;
+}
+.tsm-area .w4 img, .tsm-area .w5 img {
+ border: 1px solid #999;
+ margin: 0;
+}
+.tsm-area .w4 cite .byline, .tsm-area .w5 cite .byline {
+ display: inline;
+}
+.tsm-area .w4 .layoutFX-1col-thumb-m img, .tsm-area .w5 .layoutFX-1col-thumb-m img {
+ border: none;
+}
+.tsm-area .w4 .layoutFX-1col-thumb-m cite .byline, .tsm-area .w5 .layoutFX-1col-thumb-m cite .byline {
+ display: none;
+}
+
+/* Super Bowl TSM */
+.tsm-area .x5 .img-left .text { /* right-most 1-col of 5-1 grid */
+ overflow: visible; /* override hidden to let text wrap */
+}
+.tsm-area .x5 .tbx-stack h2 {
+ display: none;
+}
+.tsm-area .x5 .tbx-stack h2:not(:empty) {
+ display: block;
+}
+
+/* --- headline stack --- */
+.tbx-stack {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') left top no-repeat;
+ margin-bottom: 5px;
+ overflow: auto; /* needed for IE space between headlines and ad */
+}
+.tbx-stack .box-hdr ul {
+ display: none; /* hide ul.ctrl1 and ul.tabs */
+}
+.tbx-stack h2 {
+ font-size: 14px;
+ line-height: 20px;
+ text-transform: uppercase;
+ border-bottom: 1px solid #999;
+ margin-bottom: 0;
+}
+.tbx-stack h6 {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bullet.jpg%3Fv=18') left 9px no-repeat;
+ padding: 5px 0 5px 10px;
+ line-height: 12px;
+}
+#nbc-content .grid a, #nbc-content .body a {
+ font-weight: bold;
+}
+#nbc-content .tbx-stack .story a {
+ font-weight: normal;
+}
+.tbx-stack .tbx-body {
+ padding: 5px 0 5px 5px;
+}
+.tbx-stack .grid .content {
+ width: auto;
+}
+.tbx-stack .grid .content .label {
+ display: none;
+}
+.tbx-stack .grid .content .story p.abstr {
+ display: none;
+}
+
+/* --- labels --- */
+.label {
+ text-transform: uppercase;
+ display: block;
+ line-height: 25px;
+ padding-top: 1px;
+ font-weight: bold;
+ margin: 0 10px;
+}
+.label a {
+ display: block; /* catch whole header */
+}
+.label a:hover {
+ text-decoration: none;
+}
+.tsm-area .x4 .label {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') right top no-repeat;
+ margin: 0;
+ padding: 0 4px;
+ text-indent: 4px;
+ margin-bottom: -5px; /* if there is a label, bring up the content below it */
+ padding-bottom: 5px; /* push down the content to compensate for bringing up its bg, effectively moving up just the backgruond */
+ position: relative; /* layer the label on top of the content */
+}
+.tsm-area .x4 .label a {
+ margin-bottom: -2px; /* if the label is not blank, bring up the content 2px closer to it */
+}
+.tsm-area .x4 .label a {
+ border-bottom: 1px solid #c9c9c9;
+}
+.lbl-custom {
+ line-height: 26px; /* pft - 1 more than normal for .boxes .lbl-custom */
+}
+.sport-slices .sport-slice .label.lbl-custom {
+ line-height: 25px;
+}
+.lbl-custom {
+ text-transform: none;
+ background: #900 !important;
+ color: #fff;
+ height: 24px;
+ border-top: 1px solid #5f0000;
+ border-right: 1px solid #5f0000;
+ margin: 0 0 7px 0 !important; /* override .label default, !important for .boxes .label */
+ text-indent: 0 !important; /* for .boxes .label */
+ border-bottom: none !important; /* for .boxes .label */
+}
+.tsm-area .x4 .lbl-custom, .tsm-area .x4 .lbl-custom-2col {
+ /*position: relative;*/  /* to overcome position absolute collapse - unneeded after same attr added to .tsm-area .x4 .label */
+ height: 21px;
+ margin-bottom: 0 !important;
+ padding: 0; /* override .tsm-area .x4 .label padding 0 4px 5px */
+}
+.lbl-custom a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 5px -150px no-repeat; /* pft logo */
+ text-indent: 45px;
+ height: 27px; /* icon height */
+ margin-top: -1px;
+ color: #fff;
+ border-bottom: none !important;
+}
+.tsm-area .x4 .lbl-custom a {
+ position: absolute; /* bleed below label */
+ width: 100%; /* catch whole header with position absolute */
+ margin-top: -2px;
+}
+.tsm-area .lbl-custom-2col {
+ height: 22px;
+ text-transform: uppercase;
+ background: #000 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sponsors/us-bank-story-header.jpg') left top no-repeat !important;
+ cursor: pointer; /* for JS */
+ color: #fff;
+ text-indent: 10px !important;
+ margin: 0 0 7px 0 !important; /* override .label default, !important for .boxes .label */
+ border-bottom: none !important; /* for .boxes .label */
+ line-height: 22px;
+ padding-right: 20px;
+}
+.tsm-area .lbl-custom-2col a {
+ color: #fff;
+ border-bottom: none !important;
+}
+.breaking {
+ line-height: 22px;
+ background: #900 !important;
+ color: #fff;
+ border-top: 1px solid #5f0000;
+ border-right: 1px solid #5f0000;
+ text-indent: 0 !important; /* for .boxes .label */
+ border-bottom: none !important; /* for .boxes .label */
+ margin: -2px 0 0;
+ padding: 1px 10px;
+}
+.breaking a {
+ color: #fff;
+ border-bottom: none !important;
+ text-indent: 4px;
+}
+.lbl-custom:hover, .breaking:hover {
+ background-color: #a00 !important;
+ border-right: 1px solid #700;
+ border-top: 1px solid #700;
+}
+.lbl-custom a:hover {
+ text-decoration: none;
+}
+.lbl-hrdbl {
+ text-align: right;
+ padding-left: 0px !important; /* override .box .sR label 20px */
+}
+
+/* --- boxes --- */
+.tsm-area .x4 .story { /* was .tsm-area .content .box */
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') right top no-repeat;
+ padding: 5px 4px 5px 7px;
+ margin-bottom: 5px;
+}
+.tsm-area .x4 .story .img {
+ margin-top: 3px;
+}
+.tsm-area .x4 .presented-by {
+ font: 9px Verdana, Arial, Helvetica;
+ color: #666;
+ padding-top: 9px; /* 5 default + 4 */
+ text-align: center;
+}
+.tsm-area .x4 .presented-by img {
+ display: inline-block;
+ vertical-align: middle;
+ margin-top: -4px;
+ margin-left: 4px;
+ border: 0 none !important;
+}
+.tsm-area .x4 .tbx .story { /* reverse for headline stack */
+ background: none;
+ padding: 0;
+ margin: 0;
+}
+.tsm-area .x4 .tbx .content {
+ width: auto;  /* override 300px */
+}
+.tsm-area .x4 .tbx .content .label { /* remove bg on grid inside tbx */
+ display: none;
+}
+.tsm-area .x4 .story p.abstr, .boxes p.abstr, .blog-slice p.abstr, .rw-box p.abstr { /* just do all p.abstr? */
+ margin-bottom: 0;
+}
+.tsm-area .grid, .boxes {
+ overflow: hidden; /* override "auto" for PIE OTL */
+}
+.boxes .content {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') right top no-repeat;
+ padding-bottom: 10000px; /* PIE One True Layout */
+ margin-bottom: -10000px;
+ /*min-height: 160px;*/
+}
+* html .boxes .content { /* IE6 */
+ /*height: 160px;*/
+}
+.boxes .content .label {
+ border-bottom: 1px solid #fff;
+}
+.boxes .content .label a {
+ border-bottom: 1px solid #ccc;
+}
+/*.boxes .sR {
+ background: none !important;
+ margin-right: 0 !important;
+ margin-left: 10px !important;
+ width: 300px !important;
+ position: relative !important;
+}*/
+.boxes .story {
+ margin: 7px 10px 5px;
+}
+.boxes .w4 .layoutFX-1col-thumb-m {
+ margin-right: 18px;
+}
+.boxes .w2 .layoutFX-1col-thumb-m {
+ margin-right: 13px;
+}
+/* --- single box --- */
+.box {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') right top no-repeat;
+ padding: 0 10px 10px;
+ margin-bottom: 20px;
+ margin-right: 20px; /* was 0 before Sponsor slice changes */
+}
+.box .label {
+ margin: 0; /* override .label 0 10px */
+ /*border-bottom: 1px solid #ccc;*/
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left bottom repeat-x;
+ min-height: 26px; /* for blank labels */
+}
+.box .w1 {
+ width: 153px; /* was 158px before Sponsor slice changes */
+}
+.tsm-grid .box .sR {
+ width: 127px; /* override .grid .w1 150, .box .w1 158 default */
+}
+.box .w1 .label, .box .w1 .story {
+ padding-right: 31px; /* 158 cell - 127 image */
+}
+.box .w2 {
+ margin-right: 0;
+}
+.box .sR .label, .box .sR .story {
+ padding-right: 0; /* reverse for last cell */
+ padding-left: 20px;
+}
+.box .story {
+ /*border-top: 1px solid #fff;*/
+ padding-top: 8px;
+}
+.box .img-right, .box .img-bot {
+ border: 0 none;
+ padding: 0;
+}
+.box .img-bot p {
+ margin-bottom: 0;
+}
+.content-left .box {
+ margin-right: 20px;
+}
+.box .content .layoutFX-1col-thumb-m {
+ margin-right: 23px;
+ padding-left: 0px !important; /* override .box .sR label 20px */
+}
+.tsm-area .box {
+ float: left;
+}
+
+/* --- game reports box --- */
+.game-reports .cbx-data {
+ width: auto !important; /* override 300px inline */
+}
+.game-reports .cbx-data table.cbx-content {
+ width: 100%; /* override 300px inline */
+ border-top: 1px solid #fff;
+ padding: 0 10px 3px;
+}
+.game-reports.cfb-game-reports .cbx-data table.cbx-content {
+ padding: 0 0 3px;
+}
+.game-reports .content {
+ float: none;
+ width: auto;
+}
+.game-reports .textSmallBlackBold {
+ line-height: 12px; /* negate effect of br */
+ margin-bottom: 3px;
+}
+.game-reports .textHang {
+ line-height: 18px;
+ font-size: 11px;
+}
+.game-reports.cfb-game-reports .textHang {
+ line-height: normal;
+}
+.game-reports .textHang b {
+ font-size: 12px;
+}
+.game-reports .bulletRedSmall {
+ color: #a00;
+ margin-right: 2px;
+}
+#nbc-content .game-reports .textHang a {
+ font-weight: normal;
+}
+.game-reports .story {
+ border-top: 1px solid #fff;
+ border-bottom: 1px solid #ccc;
+ padding: 2px 0 3px;
+ font-size: 11px;
+}
+
+/* --- tsm area tweaks --- */
+.tsm-area .grid { /* verizon ad issues */
+ clear: both;
+ /*position: relative;*/
+ zoom: 1; /* reinforce IE7 hasLayout */
+}
+.tsm-area .boxes .w2 {
+ width: 305px;
+ margin-right: 10px;
+}
+.tsm-area .boxes .w2 .story {
+ margin: 5px 4px 10px 7px;
+}
+.tsm-area .boxes .w2 .label {
+ padding-top: 0; /* override 1px; */
+ margin: 0 4px;
+ text-indent: 4px;
+}
+.tsm-area .boxes .w2 .content {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') right top no-repeat;
+}
+
+/* --- stories --- */
+div.story h1, div.story h2, div.story h3, div.story h4, div.story h5, div.story h6 {
+ font-weight: bold;
+}
+div.story h4 {
+ font-size: 17px;
+}
+div.story h5 {
+ font-size: 15px;
+ margin-bottom: 4px;
+ line-height: 19px;
+}
+div.story h6 {
+ font-size: 12px;
+}
+.tbx .pft, .tbx .pft a, .sport-slice .pft, .sport-slice .pft a {
+ color: #900;
+}
+
+/* --- headline sizes --- */
+.grid .textFX-center h1, .grid .textFX-center h2, .grid .textFX-center h3, .grid .textFX-center h4,
+.grid .textFX-center h5, .grid .textFX-center h6, .grid .textfx-center h1, .grid .textfx-center h2,
+.grid .textfx-center h3, .grid .textfx-center h4, .grid .textfx-center h5, .grid .textfx-center h6 {
+ text-align: center;
+}
+/*.grid .story h2 {
+ font-size: 30px;
+ line-height: 30px;
+}*/
+.grid .story h1 { font-size: 34px; text-transform: uppercase; }
+.grid .story h2 { font-size: 28px; text-transform: uppercase; }
+.grid .story h3 { font-size: 25px; text-transform: uppercase; }
+.grid .story h4 { font-size: 21px; }
+.grid .story h5 { font-size: 17px; }
+.grid .nocaps h3, .grid .nocaps h4, .grid .nocaps h5 { text-transform: none; }
+/*.grid .story h6 { font-weight: bold; }*/
+
+/*.grid .textFX-up1 h6, .grid .textfx-up1 h6 { font-size: 13px; }
+.grid .textFX-up2 h6, .grid .textfx-up1 h6 { font-size: 14px; }
+.grid .textFX-up1 h5, .grid .textfx-up1 h5 { font-size: 18px; }
+.grid .textFX-up2 h5, .grid .textfx-up2 h5 { font-size: 20px; }
+.grid .textFX-up1 h4, .grid .textfx-up1 h4 { font-size: 22px; }
+.grid .textFX-up2 h4, .grid .textfx-up2 h4 { font-size: 24px; }*/
+.grid .textFX-up1 h3, .grid .textfx-up1 h3 { font-size: 26px; }
+.grid .textFX-up2 h3, .grid .textfx-up2 h3 { font-size: 27px; }
+.grid .textFX-up1 h2, .grid .textfx-up1 h2 { font-size: 30px; }
+.grid .textFX-up2 h2, .grid .textfx-up2 h2 { font-size: 33px; }
+.grid .textFX-up3 h2, .grid .textfx-up3 h2 { font-size: 35px; }
+.grid .textFX-up1 h1, .grid .textfx-up1 h1 { font-size: 36px; }
+.grid .textFX-up2 h1, .grid .textfx-up2 h1 { font-size: 40px; }
+.grid .textFX-up3 h1, .grid .textfx-up3 h1 { font-size: 48px; }
+.grid .textFX-up4 h1, .grid .textfx-up4 h1 { font-size: 68px; }
+.grid .textFX-up5 h1, .grid .textfx-up5 h1 { font-size: 80px; }
+
+/*.grid .textFX-up1 h6 {font-size: 80%;}
+.grid .textFX-up2 h6 {font-size: 90%;}
+.grid .textFX-up1 h5 {font-size: 110%;}
+.grid .textFX-up2 h5 {font-size: 120%;}
+.grid .textFX-up1 h4 {font-size: 135%;}
+.grid .textFX-up2 h4 {font-size: 145%;}
+.grid .textFX-up1 h3 {font-size: 160%;}
+.grid .textFX-up2 h3 {font-size: 165%;}
+.grid .textFX-up1 h2 {font-size: 185%;}
+.grid .textFX-up2 h2 {font-size: 220%;}
+.grid .textFX-up1 h1 {font-size: 225%;}
+.grid .textFX-up2 h1 {font-size: 250%;}
+.grid .textFX-up3 h1 {font-size: 300%;}
+.grid .textFX-up4 h1 {font-size:425%;}
+.grid .textFX-up5 h1 {font-size:500%;}
+.grid h1 { text-transform: uppercase; }*/
+
+/* --- blog slice header --- */
+.blog-slice {
+ margin-bottom: 20px;
+ margin-right: 20px;
+ clear: both;
+}
+.blog-slice .header {
+ overflow: hidden;
+ background: #ddd url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left top repeat-x;
+ border-bottom: 1px solid #7f7f7f;
+ height: 21px;
+}
+.blog-slice .header h3 {
+ float: left;
+ width: 166px;
+ height: 22px;
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') left -400px no-repeat; /* dark gray default */
+ line-height: 22px;
+ width: 166px; /* match */
+ color: #fff;
+ font-weight: bold;
+ text-indent: 8px;
+}
+.blog-slice .header h3 p { /* ignore extra wb markup */
+ display: inline;
+ margin: 0;
+}
+.blog-slice .header h3 a {
+ width: 166px; /* match */
+ line-height: 25px;
+ margin-top: -2px;
+ position: absolute;
+ margin-left: -8px;
+ color: #fff;
+}
+.blog-slice .header h3 a:hover {
+ text-decoration: none;
+}
+.blog-slice .header .buttons {
+ float: right;
+ margin-top: 2px;
+ margin-bottom: 1px;
+}
+.blog-slice .header .buttons a.icon {
+ float: left;
+ background-image: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24');
+ width: 20px;
+ height: 18px;
+ padding-left: 2px;
+ display: inline; /* IE6 */
+ overflow: hidden;
+ text-indent: -1000px;
+}
+.blog-slice .header .buttons a.twitter {
+ background-position: left top;
+}
+.blog-slice .header .buttons a.twitter:hover {
+ background-position: left -25px;
+}
+.blog-slice .header .buttons a.facebook {
+ background-position: left -50px;
+}
+.blog-slice .header .buttons a.facebook:hover {
+ background-position: left -75px;
+}
+.blog-slice .header .buttons a.rss {
+ background-position: left -100px;
+ border-right: 1px solid #a6a6a6;
+ padding-right: 5px;
+}
+.blog-slice .header .buttons a.rss:hover {
+ background-position: left -125px;
+}
+.blog-slice .more {
+ line-height: 18px;
+ display: block;
+ float: left;
+ padding-left: 18px;
+ border-left: 1px solid #f7f7f7;
+ font-weight: bold;
+ color: #3b3b3b;
+ font-size: 11px;
+ padding-right: 10px;
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') 4px -145px no-repeat;
+}
+.blog-slice .label {
+ display: none;
+}
+
+/* --- specific blog slice headers --- */
+.pft-slice .header h3 {
+ position: absolute;
+ background-position: left -200px;
+}
+.pft-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 4px -149px no-repeat;
+ height: 28px;
+ text-indent: 44px;
+}
+.cft-slice .header h3 {
+ position: absolute;
+ background-position: left -500px;
+}
+.cft-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 4px -449px no-repeat;
+ height: 28px;
+ text-indent: 44px;
+}
+.hbt-slice .header h3 {
+ position: absolute;
+ background-position: left -250px;
+}
+.hbt-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 3px -200px no-repeat;
+ text-indent: 44px;
+}
+.pbt-slice .header h3 {
+ position: absolute;
+ background-position: left -300px;
+}
+.pbt-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 3px -250px no-repeat;
+ text-indent: 44px;
+}
+.pgt-slice .header h3 {
+ position: absolute;
+ background-position: left -550px;
+}
+.pgt-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 3px -500px no-repeat;
+ height: 28px;
+ text-indent: 44px;
+}
+.gtc-slice .header h3 {
+ position: absolute;
+ background-position: left -550px;
+}
+.gtc-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 3px -851px no-repeat;
+ text-indent: 44px;
+}
+.otb-slice .header h3 {
+ position: absolute;
+ background-position: left -450px;
+}
+.otb-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 0px -548px no-repeat;
+ text-indent: 44px;
+}
+.pht-slice .header h3 {
+ position: absolute;
+ background-position: left -600px;
+}
+.pht-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 3px -599px no-repeat;
+ text-indent: 44px;
+}
+.bta-slice .header h3 {
+ position: absolute;
+ background-position: left -350px;
+}
+.bta-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 0px -650px no-repeat;
+ text-indent: 44px;
+}
+.fromthedock-slice .header h3 {
+ position: absolute;
+ background-position: left -1450px;
+}
+.fromthedock-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 0px -699px no-repeat;
+ text-indent: 44px;
+}
+.fromthelodge-slice .header h3 {
+ position: absolute;
+ background-position: left -1500px;
+}
+.fromthelodge-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 0px -749px no-repeat;
+ text-indent: 44px;
+}
+.pst-slice .header h3 {
+ position: absolute;
+ background-position: left -1600px;
+}
+.pst-slice .header h3 a {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-24bit.png%3Fv=26') 4px -900px no-repeat;
+ text-indent: 44px;
+}
+
+/* --- blog slice grid --- */
+.blog-slice .grid {
+ margin-top: 6px;
+ overflow: hidden; /* scrollbars reported */
+}
+.blog-slice .grid .sL {
+ width: 280px;
+ margin-right: 10px;
+}
+.blog-slice .grid .textHang div {
+ /*padding-bottom: 0 !important;*/ /* overrides inline 3px */
+}
+.blog-slice .grid .textMed {
+ font-size: 11px;
+ /* cut off at one line: */
+ /*display: block;
+ line-height: 18px;
+ height: 18px;
+ overflow: hidden;*/
+}
+.blog-slice .grid .textMed .time {
+ padding-left: 8px;
+ font-size: 9px;
+ color: #a12a2a;
+ word-spacing: -0.1em;
+ /*display: inline-block;*/ /* cut off at one line */
+ white-space: nowrap;
+}
+.blog-slice .grid .story p.abstr {
+ margin-bottom: 6px;
+}
+
+/* --- mini slices --- */
+.mini-slice {
+ width: 300px;
+ float: left;
+ clear: none;
+}
+.last-slice {
+ margin-right: 0;
+}
+.mini-slice .cbx, .mini-slice .cbx table {
+ width: auto !important; /* override 320px inline */
+}
+.mini-slice .more {
+ border-left: none;
+}
+.mini-slice .grid .textMed {
+ /* remove 1 line cutoff: */
+ line-height: 14px;
+ height: auto;
+ margin-bottom: 4px;
+}
+.mini-slice .grid .textMed .time {
+ display: none;
+}
+.mini-slice h6 { /* only MultiPartnerHeadlines uses H6 */
+ font-size: 11px;
+ line-height: 14px;
+ margin-bottom: 4px;
+}
+
+/* --- left slice clear --- */
+.left-slice {
+ clear: left;
+}
+
+/* --- rotoworld box --- */
+#nbc-content .rw-box {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') right top no-repeat;
+ padding: 10px;
+ margin-bottom: 20px;
+}
+#nbc-content .rw-box .big-logo {
+ display: block;
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') left -700px no-repeat;
+ width: 176px;
+ height: 36px;
+ margin: 0 auto;
+ text-indent: -1000px;
+ overflow: hidden;
+ margin-top: -3px;
+}
+#nbc-content .rw-box .cbx {
+ margin-bottom: 0; /* override #nbc-content .cbx 20px */
+}
+#nbc-content .rw-box .cbx table, .box .cbx table {
+ /*width: auto;*/ /* override 300px inline */
+ width: 100%;
+}
+#nbc-content .rw-box .cbx .cbx-header {
+ width: 100%; /* IE7/8 */
+ display: block;
+ background: #5c5c5c url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left -200px repeat-x;
+ color: #fff;
+ padding: 5px 10px;
+ font-size: 14px;
+ font-weight: bold;
+ text-transform: uppercase;
+ margin-bottom: 5px;
+ border-bottom: 1px solid #fff;
+ border-right: 1px solid #fff;
+}
+#nbc-content .rw-box .grid .content {
+ width: 130px;
+}
+
+/* Wide formatted RW box */
+#nbc-content .rw-box.rw-wide .grid .content {
+ width: auto;
+}
+#nbc-content .rw-box.rw-wide .grid a {
+ font-weight: normal;
+ line-height: 20px;
+}
+
+/* --- rw top 10 player searches --- */
+#nbc-content .rw-box .top10 .content {
+ width: 140px;
+}
+#nbc-content .rw-box .top10 .content ol {
+ margin: 1em 0 0;
+ padding: 0 0 10px;
+}
+#nbc-content .rw-box .top10 .content ol li {
+ margin-bottom: 5px;
+ margin-left: 27px;
+}
+#nbc-content .rw-box .top10 .content ol li .searches {
+ font-size: 11px;
+}
+#nbc-content .rw-box .search {
+ border-top: 1px solid #ccc;
+}
+#nbc-content .rw-box .search { /* Removed ", .rw-box .more" */
+ margin-bottom: 10px;
+}
+#nbc-content .rw-box .search form input.text {
+ width: 235px;
+ height: 17px;
+ padding: 2px;
+ border: 1px solid #9f9f9f;
+ -moz-border-radius: 2px;
+ border-radius: 2px;
+}
+#nbc-content .rw-box .search form input.error {
+ border-color: #c00;
+}
+#nbc-content .rw-box .search form input.submit {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') left -1100px no-repeat;
+ width: 34px;
+ height: 23px;
+ border: 0;
+ cursor: pointer;
+ line-height: 0;
+ text-indent: -1000px;
+ vertical-align: top;
+}
+#nbc-content .rw-box .search div {
+ border-top: 1px solid #fff;
+ color: #666;
+ font-size: 10px;
+ font-weight: bold;
+ text-shadow: 1px 1px #eee;
+ margin-bottom: 2px;
+ padding-top: 7px;
+}
+
+/* --- rw features --- */
+#nbc-content .rw-box .features {
+ /*padding-bottom: 7px;*/
+ /*border-bottom: 1px solid #c2c2c2;*/
+ overflow: hidden; /* override "auto" for PIE OTL */
+}
+#nbc-content .rw-box .features .content {
+ padding-bottom: 10000px; /* PIE One True Layout */
+ margin-bottom: -10000px;
+}
+#nbc-content .rw-box .features .content p {
+ margin-bottom: 0;
+}
+#nbc-content .rw-box .features .sL {
+ width: 127px;
+ padding-right: 7px;
+ border-right: 1px solid #f4f4f4;
+}
+#nbc-content .rw-box .features .sR {
+ padding-left: 7px;
+ border-left: 1px solid #c2c2c2;
+}
+#nbc-content .rw-box .features img {
+ width: 100%;
+}
+#nbc-content .rw-box .features .sR .story {
+ border-top: 1px solid #f4f4f4;
+ border-bottom: 1px solid #c2c2c2;
+ padding-top: 5px;
+ padding-bottom: 5px;
+}
+#nbc-content .rw-box .features .sR .first {
+ border-top: 0;
+ padding-top: 0;
+}
+#nbc-content .rw-box .features .sR .last {
+ border-bottom: 0;
+ padding-bottom: 0;
+}
+#nbc-content .rw-box .more {
+ margin-top: 7px;
+ border-top: 1px solid #c2c2c2;
+}
+#nbc-content .rw-box .more .links {
+ text-align: center;
+ border-top: 1px solid #f4f4f4;
+ padding-top: 5px;
+ font-size: 11px;
+ color: #666;
+ text-shadow: 1px 1px #fff;
+}
+#nbc-content .rw-box .more .links a {
+ font-weight: bold;
+ color: #666;
+ white-space: nowrap;
+}
+#nbc-content .rw-box a.rw-logo {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') left -1050px no-repeat;
+ width: 83px;
+ height: 12px;
+ display: inline-block;
+ vertical-align: bottom;
+ text-indent: -1000px;
+ overflow: hidden;
+}
+
+/* --- events in rw box --- */
+#nbc-content .rw-box img.header {
+ display: block;
+ margin: 0 auto 7px;
+}
+
+/* --- photos + videos --- */
+.grid .layoutFX-1col-thumb-m, .grid .layoutFX-1col, .grid .layoutFX-1col-grid-2x2, .grid .layoutFX-1col-nbcsports-grid-2x2 {
+ float: left;
+ width: 127px;
+}
+#nbc-content .boxes {
+ margin-bottom: 20px;
+}
+
+/* --- sport slices --- */
+.sport-slices {
+ overflow: hidden; /* changed to correct for IE7 */
+ margin-right: -20px;
+}
+.sport-slices .sport-slice {
+ float: left;
+ margin-right: 20px;
+ margin-bottom: 20px;
+ overflow: hidden; /* override "auto" */
+ display: inline;
+}
+.sport-slices .sport-slice .label {
+ background: #ddd url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left top repeat-x;
+ padding: 4px 10px;
+ margin: 0 0 4px;
+ display: block;
+ font-size: 14px;
+ line-height: 20px;
+ /*min-height: 20px;*/ /* for blank labels */
+ text-transform: uppercase;
+ border-bottom: 1px solid #999;
+}
+.sport-slices .sport-slice .story .img, .sport-slices .sport-slice .story .text p.abstr {
+ margin-bottom: 10px;
+}
+.sport-slices .sport-slice .story .img cite {
+ margin-bottom: 0; /* override -4px to get true .img margin-bottom 10px; */
+}
+.sport-slices .sport-slice ul {
+ margin: 0;
+ padding: 0;
+}
+.sport-slices h6 {
+ margin-bottom: .6em;
+}
+
+/* --- sponsored sport slice --- */
+/*.sport-slices .sponsored .content {
+ margin-right: 0;
+}
+.sport-slices .sponsored .w2 {
+ width: 320px;
+}
+.sport-slices .sponsored .sR {
+ margin-right: 20px;
+ width: 300px;
+}
+.sport-slices .sponsored .label, .sport-slices .sponsored .story {
+ padding-right: 20px;
+}*/
+/* --- sponsor sport slice --- */
+.sport-slices .sponsor {
+ margin-left: -20px;
+}
+.sport-slices .sponsor .w2 {
+ width: 320px;
+}
+.sport-slices .sponsor .story {
+ padding-left: 20px;
+}
+.sport-slices .sponsor .label {
+ padding: 0 0 0 20px; /* override .label 0 10px; */
+}
+.sport-slices .sponsor .label a {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-header.png%3Fv=18') right -250px;
+ height: 23px;
+ margin-top: 3px;
+ margin-bottom: 2px; /* 27px total */
+ display: inline-block;
+ padding-right: 25px;
+ padding-left: 10px;
+ text-transform: none;
+ font-size: 12px;
+ text-shadow: 1px 1px #f5cf67;
+ min-width: 113px;
+}
+
+/* --- shop slice --- */
+.layoutFX-1col-thumb-s {
+ float: left;
+ margin-right: 10px;
+ display: inline;
+}
+.sport-slices .shop-slice .story .img div {
+ border: 0 none;
+}
+.sport-slices .shop-slice .story .img div img {
+ margin: 0;
+}
+
+/* --- ticketcity ads --- */
+#TC-Ad .textHang {
+ margin-left: 0; /* was 9px */
+}
+#TC-Ad {
+ margin-bottom: 20px;
+ width:300px;
+ margin-top: -20px;
+ display: none;
+}
+#TC-Ad img {
+ display: block;
+}
+#TC-Ad #TC-Banner {
+ margin:0px;
+ height:25px;
+}
+#TC-Ad #TC-Banner p {
+ font-family:sans-serif;
+ font-size:13px;
+ text-align:center;
+ line-height: 13px;
+ color:#FFFFFF;
+ margin: 0px;
+}
+#TC-Ad #TC-Body {
+ margin:0px;
+ background-color:#FFFFFF;
+ padding: 15px;
+ background-image:url('../../msnbcmedia.msn.com/i/NBCSports/SiteFrame/images/sponsors/ticketcity/TC-Box-Logo.png');
+ background-position: 95% 15%;
+ background-repeat: no-repeat;
+ border-left: solid #00549F 2px;
+ border-right: solid #00549F 2px;
+}
+#TC-Ad #TC-Body  div {
+ padding-bottom: 0 !important; /* was 20px */
+}
+#TC-Ad #TC-Body span {
+ font-family: arial, sans-serif;
+ font-weight: bold;
+ font-size:11px;
+ line-height: 12px;
+ color:#000000;
+ margin:0px 5px 7px 0px;
+ display: block;
+}
+#TC-Ad #TC-Body a {
+ text-decoration:none;
+ color: #007dc9;
+}
+#TC-Ad form {
+ margin:0px;
+ padding:0px;
+}
+#TC-Ad .TCinput {
+ font-family:sans-serif;
+ font-size:16px;
+ color:#000000;
+ border: solid #aaaaaa 2px;
+  margin:0px;
+ padding:0px;
+}
+#TC-Ad .TCbutton {
+ background-image:url('../../msnbcmedia.msn.com/i/NBCSports/SiteFrame/images/sponsors/ticketcity/TC-Box-Button.png');
+ background-repeat:no-repeat;
+ background-position: top;
+ height: 23px;
+ width: 59px;
+ border:0px;
+  margin:0px;
+ padding:0px;
+}
+#TC-Ad #TC-Logo {
+ margin:0px;
+ width:300px;
+}
+
+/* --- section shops --- */
+#Table_01 img {
+ display: block;
+}
+
+/* --- story pages --- */
+/* headline */
+#nbc-content .headline {
+ overflow: hidden; /* wrap floats */
+ padding-top: 5px;
+ padding-bottom: 10px;
+}
+#nbc-content .headline .v-center1 {
+ padding-left: 10px;
+ padding-right: 20px;
+ width: 463px;
+ height: 250px;
+ float: left;
+ display: table;
+ * position: relative;
+ overflow: hidden;
+}
+#nbc-content .headline .v-center2 {
+ * position: absolute;
+ * top: 50%;
+ display: table-cell;
+ vertical-align: middle;
+}
+#nbc-content .headline .v-center3 {
+ * position: relative;
+ * top: -50%;
+}
+#nbc-content .headline h1 {
+ font-size: 35px;
+ text-transform: uppercase;
+ font-weight: bold;
+ color: #333;
+ letter-spacing: -0.01em;
+}
+#nbc-content .headline h2 {
+ font-size: 15px;
+ line-height: 22px;
+ margin-top: 6px;
+}
+#nbc-content .headline div.v-center3 table {
+ /*display: none;*/ /* this gets moved to .photo */
+}
+#nbc-content .headline .feature, #nbc-content .headline .ad {
+ padding-top: 20px;
+}
+#nbc-content .headline .feature {
+ width: 127px;
+ float: left;
+ /*margin-right: 20px;
+ display: inline;*/
+}
+#nbc-content .headline .feature .content {
+ width: auto;
+}
+#nbc-content .headline .feature .cbx .cbx-header {
+ /*display: none;
+ border: 1px solid red;*/
+}
+#nbc-content .headline .feature .cbx .cbx-content div a img {
+ /*margin-bottom: 3px;*/
+}
+#nbc-content .headline .feature .cbx .cbx-content .textHang .textMed { /* headline */
+ /*margin-top: 2px;*/
+}
+#nbc-content .headline .feature .story {
+ margin-bottom: 10px;
+}
+#nbc-content .headline .feature .credit {
+ display: none;
+}
+#nbc-content .headline .feature .img div {
+ border: none; /* override #cfcfcf */
+}
+#nbc-content .headline .feature .img div img {
+ margin: 0; /* override 3px */
+}
+#nbc-content .headline .feature .caption {
+ display: none;
+}
+#nbc-content .headline .feature .cbx, #nbc-content .headline .feature table {
+ width: 100% !important; /* override 152 inline */
+}
+#nbc-content .headline .ad {
+ float: right;
+ width: 300px;
+ /*text-align: center;
+ color: #666;
+ font-size: 11px;*/
+}
+
+/* body photo */
+#nbc-content .photo-320w {
+ width: 322px;
+}
+#nbc-content .photo-grid-5x2 {
+ width: 402px;
+}
+#nbc-content .photo cite {
+ margin-bottom: 7px;
+}
+#nbc-content .photo-320w cite .byline, #nbc-content .photo-grid-5x2 cite .byline {
+ display: inline; /* override none */
+}
+#nbc-content .photo cite .byline {
+ display: inline;
+}
+#nbc-content .photo .caption {
+ font-size: 11px;
+ line-height: 16px;
+}
+#viewRelatedPhotosLink {
+ display: none;
+}
+#nbc-content .photo img {
+ display: block;
+ border: 1px solid #ccc !important; /* override #000 inline */
+ padding: 3px;
+}
+#nbc-content .photo #linkRelatedPhotos img {
+ display: none; /* legacy icon */
+}
+#nbc-content .photo .cbx-header, #nbc-content .photo .cbx-content {
+ /*display: none;*/ /* H2 tease */
+}
+
+/* body */
+#nbc-content .body {
+ font-size: 15px;
+ line-height: 27px;
+ padding-right: 130px;
+ padding-left: 65px;
+ margin-bottom: 20px;
+}
+#nbc-content .body p.textBodyBlack {
+ margin: 1.4em 0;
+}
+#nbc-content .body div.textBodyBlack { /* copyright */
+ line-height: normal;
+ color: #666;
+ font-size: 11px;
+}
+#nbc-content .body tr td.textMed { /* actual tables */
+ background-color: #f0f0f0;
+ padding: 5px;
+}
+#nbc-content .body tr.even td.textMed { /* alternating rows */
+ background-color: #fff;
+}
+
+/* body - byline */
+#nbc-content .body div.byline {
+ line-height: normal;
+ font-size: 11px;
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') right top no-repeat;
+ padding: 15px;
+ overflow: auto; /* prevent overlapping with image */
+ position: relative;
+ display: inline-block;
+ min-width: 390px;
+ /*margin-bottom: 15px;*/ /* removed due to p.textBodyBlack top-margin 1.4em */
+}
+#nbc-content .body div.byline .textStoryTag { /* opinion, ask the expert, etc. */
+ color: #c00;
+ float: left;
+ font-size: 12px;
+ letter-spacing: 0.2em;
+ padding-bottom: 0 !important;
+}
+
+#nbc-content .body div.byline .textMedBlackBold { /* author byline */
+ font-size: 14px;
+ text-transform: uppercase;
+ font-weight: bold;
+}
+#nbc-content .body div.byline .textBodyBlack { /* editor's note */
+ padding-top: 13px !important; /* override 20px inline */
+}
+#nbc-content .body div.byline .textBodyBlack p {
+ margin-bottom: 0;
+ font-size: 13px;
+}
+#nbc-content .body div.byline .textMedBlack { /* job title */
+ font-size: bold;
+}
+#nbc-content .body div.byline .textTimestamp { /* updated */
+ color: #666;
+ position: absolute;
+ right: 0;
+ bottom: 0;
+}
+
+/* body - ads */
+#nbc-content .body #AdShowcase_F1 {
+ overflow: auto;
+ line-height: normal;
+ font-size: 11px;
+ color: #666;
+ text-align: center;
+ margin-bottom: 15px;
+}
+#nbc-content .body #AdShowcase_F1 a {
+ color: #666;
+}
+#nbc-content .body #AdShowcase_F1 a:first-child {
+ font-style: italic;
+}
+#nbc-content .body hr {
+ border: 0;
+ height: 1px;
+ color: #ccc;
+ background-color: #ccc;
+}
+
+/* ads from pulse js */
+#nbc-content .body #AdShowcase_F1 .ads {
+ margin-top: 6px;
+}
+#nbc-content .body #AdShowcase_F1 .ads .ad {
+ /* margin-left: 80px; */
+ margin-left: 5px;
+ float: left;
+}
+#nbc-content .body #AdShowcase_F1 .ads hr {
+ clear: both;
+}
+#nbc-content .body #AdShowcase_F1 .ads iframe.pulse {
+ width: 300px;
+ height: 250px;
+ margin-left: 5px;
+ overflow: hidden;
+}
+/* body - teases */
+#nbc-content .body table {
+ margin: 5px 20px;
+}
+#nbc-content.nbc-int .body table {
+ margin-left: 0;
+ margin-right: 0;
+}
+#nbc-content .body table.left {
+ margin-left: 0;
+}
+#nbc-content .body table.right {
+ margin-right: 0;
+}
+#nbc-content .body table.none {
+ margin-left: 0;
+ margin-right: 0;
+ margin-top: 20px;
+}
+#nbc-content .body table table {
+ margin: 0 !important;
+}
+#nbc-content .body img {
+ width: auto; /* IE */
+}
+#nbc-content .body /*table*/ .grid, #nbc-content .body /*table*/ .cbx {
+ line-height: normal;
+ font-size: 12px;
+ margin-bottom: 15px;
+}
+#nbc-content .cbx {
+ margin-bottom: 20px;
+}
+#nbc-content .body .cbx {
+ margin: 0;
+}
+#nbc-content /*.body table*/ .cbx .cbx-content td img {
+ border: none !important; /* override td:first-child #000 inline */
+ background: #fff;
+ display: block;
+}
+#nbc-content /*.body table*/ .cbx .cbx-content td img {
+ border: 1px solid #ccc !important; /* override td:first-child #000 inline */
+ padding: 1px;
+ /*width: 127px;
+ -ms-interpolation-mode: bicubic;*/
+}
+#nbc-content .feature .cbx-content img {
+ width: 127px;
+ -ms-interpolation-mode: bicubic;
+ border: none !important;
+ padding: 0 !important;
+}
+#nbc-content .body /*table*/ .cbx .cbx-content td img {
+ margin-right: 5px;
+ margin-bottom: 5px;
+}
+#nbc-content .body table .grid .label,
+#nbc-content /*.body table*/ .cbx .cbx-header,
+#nbc-content .feature .cbx-header,
+#nbc-content .embss .embheader {
+ background: #ddd url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left top repeat-x;
+ padding: 4px 10px;
+ margin: 0 0 4px !important;
+ display: block;
+ font-size: 14px;
+ line-height: 20px;
+ text-transform: uppercase;
+ border-bottom: 1px solid #999;
+ font-weight: bold;
+}
+/*#nbc-content .body table .grid .label, */#nbc-content /*.body table*/ .cbx .cbx-header img, #nbc-content .feature .cbx-header img  {
+ display: none; /* old inline video and slideshow icons */
+}
+#nbc-content /*.body table .cbx*/ .cbx-content td div {
+ background: none !important; /* override td:first-child inline style */
+}
+#nbc-content /*.body table .cbx*/ .cbx-content .scalAd {
+ background: #fff;
+ text-align: center;
+ /*padding: 4px 0;
+ background: #ddd url('http://nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png?v=18') left top repeat-x !important;*/
+ margin-top: 4px;
+ display: none;
+}
+#nbc-content /*.body table*/ .cbx .cbx-content .scalAd input,
+#nbc-content .feature .cbx-content .scalAd input {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') left -1150px no-repeat;
+ width: 71px;
+ height: 23px;
+ border: 0;
+ cursor: pointer;
+ line-height: 0;
+ text-indent: -1000px;
+ vertical-align: top;
+}
+#nbc-content .body table h6 {
+ margin-top: 10px;
+}
+#nbc-content .body /*table*/ .cbx .cbx-content .textHang { /* headline */
+ /*margin-left: 10px;*/
+}
+#nbc-content /*.body table .cbx*/ .cbx-content .textHang .textMedBlackBold { /* headline */
+ font-size: 15px;
+ font-weight: bold;
+}
+#nbc-content /*.body table .cbx*/ .cbx-content .textHang .textMed { /* caption */
+ display: block;
+ margin-top: 2px;
+}
+#nbc-content /*.body table .cbx*/ .cbx-content .textHang .textMed a { /* article links */
+ /*font-weight: bold;*/
+}
+
+/* story - big red links */
+#nbc-content .box_brl {
+ background: #f3f3f3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') left -4px no-repeat;
+ border: 1px solid #e8e8e8;
+ border-radius: 4px;
+ clear: both;
+ font-size: 14px;
+ padding: 5px;
+ width: 608px !important;
+}
+#nbc-content .box_brl .boxH_brl {
+ background: none;
+ border: none;
+ border-bottom: 1px solid #ccc;
+ padding: 0;
+ margin: 0 0 4px;
+ color: #ab8c39;
+ display: block;
+ line-height: 20px;
+ text-transform: uppercase;
+ font-weight: bold;
+}
+#nbc-content .box_brl .boxB_brl {
+ line-height: 20px;
+ padding-left: 0.2em;
+}
+#nbc-content p.empty {
+ display: none;
+}
+
+/* more on nbcsports.com brl */
+#nbc-content #more-on-brl .box_brl {
+ background: none;
+ border: none;
+ padding: 0;
+ width: 100% !important;
+}
+
+/* story - legacy elements */
+#nbc-content .body .p7 { /* continued */
+ padding-top: 5px;
+ line-height: normal;
+ font-size: 14px;
+ color: #999;
+}
+#nbc-content .body .p7 .pS { /* page #'s */
+ font-size: 16px;
+ word-spacing: 4px;
+}
+#nbc-content .body .p7 .pS a {
+}
+#nbc-content .body #stryTools,
+#nbc-content .body .cbx-next,
+#nbc-content .body .p2,
+#nbc-content .body .eshopStory,
+#nbc-content .body table .box_brl,
+#nbc-content .body p.textBodyBlack span#byLine {
+ display: none;
+}
+
+/* interactives */
+div.nbc-int {
+ /*position: relative;*/ /* prevent IE ad col bump */
+ overflow: hidden;
+}
+div.nbc-int div.headline { /* ad */
+ float: right;
+ /*position: absolute;*/ /* prevent IE ad col bump */
+ /*right: 0;*/ /* prevent IE ad col bump */
+ /*margin-right: 30px;*/ /* prevent IE ad col bump */
+ width: 300px; /* IE */
+ padding-top: 0 !important;
+ text-align: right;
+}
+div.nbc-int .headline .v-center1, div.nbc-int .headline .feature {
+ display: none !important;
+}
+div.nbc-int .headline .ad .cbx {
+ text-align: left;
+ margin-top: 20px;
+}
+div.nbc-int .headline .ad .cbx-content img {
+ margin-right: 5px;
+}
+div.nbc-int .body {
+ /* padding-right: 65px !important; /* match padding-left */
+ /* width: 500px !important; */
+
+}
+div.nbc-int .body .int-body #AdShowcase_F1 {
+ clear: both;
+}
+div.nbc-int .body table.none {
+ display: none;
+}
+div.nbc-int div.headline .ad, #nbc-content .interactive {
+ padding-top: 10px !important;
+}
+
+/* interactives - like nfl draft busts */
+#nbc-content .interactive {
+ width: 640px;
+ overflow: hidden;
+}
+#nbc-content .interactive .app {
+ max-width: 630px; /* "max" for BCS/SB */
+}
+#nbc-content .interactive .navCell a, #nbc-content .poptext_ a {
+ font-weight: bold;
+}
+/*#nbc-content .interactive .cbx {
+ margin-top: 20px;
+}*/
+#nbc-content .interactive .empty {
+ width: 0;
+ display: none;
+}
+#nbc-content .interactive .bulletRedSmall {
+ display: none;
+}
+#nbc-content .interactive .credit {
+ margin-bottom: 0;
+ text-align: left;
+}
+#nbc-content .interactive td.hed {
+ background: #ddd url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left top repeat-x;
+ padding: 4px 0;
+ margin: 0 0 4px;
+ display: block;
+ font-size: 14px;
+ font-weight: bold;
+ line-height: 20px;
+ text-transform: uppercase;
+ border-bottom: 1px solid #999;
+}
+
+/* interactives - like trash talk */
+#nbc-content .interactive .xpress-int, #nbc-content .interactive .xpress-int .poptext_ table {
+ font-size: 100% !important; /* IE8 */
+ font-family: Arial, Helvetica, sans-serif !important; /* IE8 */
+}
+#nbc-content .interactive .xpress-int iframe {
+ display: none;
+}
+#nbc-content .interactive .poptext_ {
+ text-align: left; /* IE */
+ margin-top: 8px;
+}
+#nbc-content .interactive .xpress-int li {
+ margin-left: 1.4em;
+}
+#nbc-content .interactive .xpress-int font.bullet {
+ display: none;
+}
+#nbc-content .interactive .xpress-int font.headline {
+ font-size: 17px;
+ font-weight: bold;
+}
+#nbc-content .interactive .xpress-int table.image {
+ margin: 3px 10px;
+}
+#nbc-content .interactive .xpress-int td {
+ overflow: hidden;
+}
+#nbc-content .interactive .xpress-int td.img {
+ border: 1px solid #cfcfcf;
+}
+#nbc-content .interactive .xpress-int td.img img {
+ margin: 3px;
+ display: block;
+}
+#nbc-content .interactive .xpress-int td div {
+ height: auto !important; /* override 400px inline */
+}
+#nbc-content .interactive .xpress-int .subhed {
+ display: block;
+ padding: .5em 0;
+ width: 146px;
+ text-align: center;
+ font-weight: bold;
+ border-top: 1px solid #ccc;
+ border-bottom: 1px solid #ccc;
+ color: #c00;
+ font-size: 100% !important; /* override 65% inline */
+}
+#nbc-content .interactive .xpress-int .navCell {
+ width: 100%;
+ line-height: 1.4em !important; /* override 140% inline */
+}
+#nbc-content .interactive .xpress-int .navCell td {
+ background: #ddd url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left top repeat-x;
+ padding: 4px 8px;
+ border-left: 1px solid #eee;
+}
+#nbc-content .interactive .xpress-int .navCell td:hover {
+ cursor: pointer;
+ background-position: left -10px;
+}
+#nbc-content .interactive a:hover {
+ text-decoration: none;
+}
+#nbc-content .interactive .poptext_ a {
+ text-decoration: underline;
+}
+#nbc-content .interactive .xpress-int .poptext_ table, #nbc-content .interactive .xpress-int .poptext_ table td {
+ border: 0 none;
+}
+#nbc-content .interactive .xpress-int .poptext_ table td {
+ padding: 5px 6px;
+}
+#nbc-content .interactive .deck_ table {
+ width: auto;
+}
+#nbc-content .interactive .deck_ table img {
+ -ms-interpolation-mode: bicubic;
+}
+
+/* tables */
+/* lots commented out for TV Listings 4/20 RB */
+div.nbc-table {
+ overflow: hidden;
+}
+div.nbc-table .body {
+ float: left;
+ padding-top: 10px;
+ /*padding-right: 0 !important;*/
+}
+div.nbc-table .body table.none {
+ margin-top: 0 !important; /* override #nbc-content .body table.none 20px */
+}
+/*div.nbc-table div.headline {
+ float: right;
+ width: 300px;
+ padding-top: 0 !important;
+ text-align: right;
+}
+div.nbc-table .headline .v-center1, div.nbc-table .headline .feature {
+ display: none !important;
+}
+div.nbc-table .headline .ad .h2art {
+ margin-top: 20px;
+}
+div.nbc-table .headline .ad .cbx-content img {
+ margin-right: 5px;
+}*/
+div.nbc-table p.textBodyBlack {
+ margin: 0 !important;
+}
+div.nbc-table table {
+ width: auto;
+}
+
+/* hide interactives while loading */
+#nbc-content div.photo div table {
+ display: table;
+}
+
+/* social */
+#nbc-content .social {
+ overflow: hidden;
+ line-height: normal;
+}
+#nbc-content .social .button {
+ display: block;
+ float: left;
+}
+#nbc-content .social .twitter {
+ margin-right: 10px;
+}
+#nbc-content div.body .social {
+ margin-bottom: 30px;
+ margin-top: -5px;
+}
+#nbc-content div.headline .social {
+ margin-top: 10px;
+}
+
+/* story - more news */
+#nbc-content .more-news {
+ padding-top: 1.4em;
+ margin-bottom: 10px;
+ clear: both;
+}
+#nbc-content .more-news .label {
+ font-size: 14px;
+ margin: 0 0 5px; /* override 0 10px */
+ height: 25px; /* for blank labels */
+}
+#nbc-content .more-news #cell1 .img div img, #nbc-content .more-news #cell2 .img div img {
+ margin: 0; /* override 3px */
+}
+#nbc-content .more-news #cell2 .img div {
+ border: none; /* override #cfcfcf */
+}
+#nbc-content .more-news #cell2 .story {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') right top no-repeat;
+ padding: 5px 4px 5px 7px;
+ margin-bottom: 5px;
+}
+#nbc-content .more-news #cell2 .story .img {
+ margin-top: 3px;
+}
+/* overrides for headlines in #cell2 */
+#nbc-content .more-news #cell2 .tbx-stack .story {
+ background: none;
+ padding: 0;
+ margin-bottom: 0;
+}
+
+/* --- legacy teases --- */
+#nbc-content .legacy {
+ display: none;
+}
+
+/* --- scoreboard central --- */
+#nbc-content .sb-central .story {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') right top no-repeat;
+ padding: 5px 4px 5px 7px;
+ margin-bottom: 5px;
+}
+#nbc-content .sb-central .story a {
+ display: block;
+}
+#nbc-content .sb-central .w1 {
+ width: 160px;
+ margin-left: 22px;
+}
+#nbc-content .sb-central .sL .story {
+ background: none;
+ padding: 0;
+ margin: 0;
+}
+
+/* --- slideshows --- */
+
+
+/* --- END CMS STYLES --- */
+
+/* -------------------- */
+/* --- CDATA STYLES --- */
+/* -------------------- */
+/* --- team pages box --- */
+.sport-slice .conference {
+ float: left;
+ width: 280px;
+ padding: 3px 10px 5px;
+ background: #f0f0f0 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') left top no-repeat;
+}
+.sport-slice .afc {
+ margin-right: 20px;
+}
+.sport-slice .conference .division {
+ overflow: hidden; /* wrap floats + prevent link scrollbars */
+ border-bottom: 1px solid #c9c9c9;
+ border-top: 1px solid #fff;
+ padding-bottom: 4px;
+}
+.sport-slice .conference .first {
+ border-top: none;
+}
+.sport-slice .conference .last {
+ border-bottom: none;
+}
+.sport-slice .conference .division h6 {
+ font-weight: bold;
+ color: #999;
+ margin: 2px 0 2px;
+}
+.sport-slice .conference .first h6 {
+ margin-top: 1px;
+}
+.sport-slice .conference .division a {
+ float: left;
+ background-image: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-teams-nfl.png%3Fv=18');
+ background-repeat: no-repeat;
+ font-size: 10px;
+ line-height: 20px;
+ text-indent: 27px;
+ width: 140px;
+ margin-bottom: 1px;
+ word-spacing: -0.1em;
+}
+/* afc */
+.division .BUF { background-position: left 3px; }
+.division .MIA { background-position: left -25px; }
+.division .NE { background-position: left -47px; }
+.division .NYJ { background-position: left -71px; }
+.division .DEN { background-position: left -97px; }
+.division .KC { background-position: left -123px; }
+.division .OAK { background-position: left -150px; }
+.division .SD { background-position: left -173px; }
+.division .BAL { background-position: left -196px; }
+.division .CIN { background-position: left -225px; }
+.division .CLE { background-position: 2px -247px; }
+.division .PIT { background-position: 2px -273px; }
+.division .HOU { background-position: left -300px; }
+.division .IND { background-position: left -323px; }
+.division .JAC { background-position: 1px -347px; }
+.division .TEN { background-position: 1px -374px; }
+/* nfc */
+.division .DAL { background-position: 1px -399px; }
+.division .NYG { background-position: left -421px; }
+.division .PHI { background-position: left -447px; }
+.division .WAS { background-position: left -475px; }
+.division .ARI { background-position: left -500px; }
+.division .SF { background-position: 1px -521px; }
+.division .SEA { background-position: left -545px; }
+.division .STL { background-position: left -573px; }
+.division .CHI { background-position: left -597px; }
+.division .DET { background-position: left -625px; }
+.division .GB { background-position: 1px -647px; }
+.division .MIN { background-position: left -675px; }
+.division .ATL { background-position: 1px -700px; }
+.division .CAR { background-position: 2px -721px; }
+.division .NO { background-position: left -749px; }
+.division .TB { background-position: left -774px; }
+
+/* --- END CDATA STYLES --- */
+
+/* --- cufon position fixes --- */
+/*.textfx-up2 h2 .cufon {
+ position: relative;
+ top: 2px;
+}*/
+.grid .lbl-custom .cufon {
+ position: relative;
+ top: -1px;
+}
+.tsm-area .x4 .label .cufon {
+ position: relative;
+ top: 1px;
+}
+.tsm-area .x4 .lbl-custom .cufon {
+ position: relative;
+ top: -1px;
+}
+
+/* temp fix for new image sizes */
+.grid .w4 .story .img div a img { /* nbcsports-grid-8x2 */
+ /*width: 618px;*/
+}
+.boxes .w4 .story .img div a img { /* undo for boxes */
+ /*width: auto;*/
+}
+.grid .img-small .img div a img { /* nbcsports-grid-2x2 */
+ /*width: 127px;*/
+}
+.boxes .img-small .img div a img { /* undo for boxes */
+ /*width: auto;*/
+}
+.grid .img-small .img div a {
+ /*height: 72px;
+ overflow: hidden;
+ display: block;*/
+}
+.grid .img-thumb-m .img div a img, /* should be using nbcsports-grid-2x2 */
+.grid .w2 .img-left .img div a img {
+ /*width: 127px;*/
+}
+.grid .img-thumb-m .img div a,
+.grid .w2 .img-left .img div a {
+ /*height: 72px;
+ overflow: hidden;
+ display: block;*/
+}
+
+/* --- UGC photo uploader --- */
+#ugc {
+ overflow: hidden;
+ width: 800px;
+}
+
+#ugc .header {
+ font-size: 15px;
+ font-weight: bold;
+}
+
+#ugc .pt, #ugc .ar {
+ font-size: 15px;
+}
+
+#ugc .ugc-upload .pt, #ugc .ugc-information .pt {
+ font-weight: bold;
+}
+
+#ugc .pb {
+ font-size: 12px;
+ xcolor: red;
+}
+
+#ugc b {
+ font-weight: bold;
+}
+
+#ugc .ugc-upload {
+ border-right: 1px solid #999;
+ margin-right: 20px;
+ padding-right: 10px;
+}
+
+#ugc textarea {
+ width: 360px;
+ height: 8em;
+}
+
+#ugc .ugc-upload,
+#ugc .ugc-information {
+ float: left;
+ margin-bottom: 10px;
+ width: 380px;
+}
+
+#ugc input[type=text] {
+ width: 200px;
+}
+
+#ugc .terms {
+ border-top: 1px solid #999;
+ clear: both;
+ color: #555;
+ line-height: 17px;
+}
+
+/* -------------- */
+/* --- FOOTER --- */
+/* -------------- */
+#nbc-footer {
+ width: 946px;
+ margin-top: 10px;
+ background: #272727 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left -400px repeat-x;
+ color: #b3b3b3;
+ padding: 17px;
+ padding-bottom: 25px;
+}
+#nbc-footer a {
+ color: #b3b3b3;
+}
+#nbc-footer a:hover {
+ color: #fff;
+ text-decoration: none;
+}
+#nbc-footer .grid {
+ overflow: hidden;
+}
+#nbc-footer .grid .label, #nbc-footer .grid .label a {
+ color: #585858;
+}
+#nbc-footer .grid .label {
+ font-size: 14px;
+ padding-bottom: 5px;
+ margin: 0; /* override .label 0 10px */
+}
+#nbc-footer .grid .sR .label {
+ padding-bottom: 7px;
+}
+#nbc-footer .grid .content {
+ padding-bottom: 10000px; /* PIE One True Layout */
+ margin-bottom: -10000px;
+ font-size: 11px;
+}
+#nbc-footer .grid .w1 .story a {
+ font-weight: normal;
+ display: block;
+ line-height: 20px;
+}
+#nbc-footer .grid .sR .story {
+ margin-bottom: 10px;
+}
+#nbc-footer .grid .sR .story h6 {
+ text-transform: uppercase;
+ font-size: 14px;
+ line-height: 16px;
+ margin-bottom: 2px;
+}
+#nbc-footer #cell1 {
+ width: 260px;
+}
+#nbc-footer #cell2 {
+ border-left: 1px solid #595959;
+ width: 210px;
+}
+#nbc-footer #cell2 .label, #nbc-footer #cell2 .story {
+ border-left: 1px solid #1b1b1b;
+ padding-left: 50px;
+}
+#nbc-footer #cell3 {
+ border-right: 1px solid #595959;
+}
+#nbc-footer #cell4 {
+ border-left: 1px solid #1b1b1b;
+}
+#nbc-footer #cell4 {
+ padding-left: 20px;
+ width: 280px;
+}
+#nbc-footer .nbcsports-logo {
+ display: block;
+ text-indent: -1000px;
+ width: 128px;
+ height: 110px;
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites.png%3Fv=24') left -800px no-repeat;
+ margin: 58px auto 25px;
+}
+#nbc-footer .copyright, #nbc-footer .copyright a {
+ color: #666;
+}
+#nbc-footer .copyright {
+ text-align: center;
+ line-height: 17px;
+}
+#nbc-footer .copyright a {
+ margin: 0 5px;
+}
+#nbc-footer .copyright a:hover {
+ color: #999;
+}
+/* --- END FOOTER --- */
+
+/* ------------ */
+/* --- IMAX --- */
+/* ------------ */
+#nbc-content.imax {
+ background: #fff url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') repeat-x center -1150px;
+ width: 1000px;
+ padding: 10px 0;
+}
+#nbc-content.imax .feature {
+ background-color: #fff;
+}
+#nbc-content.imax .below-feature {
+ margin: 20px auto;
+ overflow: auto;
+}
+#nbc-content.imax .below-feature .headlines, #nbc-content.imax .below-feature .tease, #nbc-content.imax .below-feature .ad {
+ float: left;
+ margin-left: 25px;
+ margin-top: 14px;
+}
+#nbc-content.imax .below-feature .headlines {
+ width: 300px;
+ height: 250px;
+}
+#nbc-content.imax .below-feature .ad {
+ font-size: 10px;
+ line-height: 14px;
+ margin-top: 0;
+ color: #666;
+ text-align: center;
+ /*border-top: 1px solid #cfcfcf;*/
+}
+#nbc-footer.imax {
+ width: 1000px;
+ margin-top: 0;
+ padding: 17px 0 25px;
+}
+#nbc-content .NBCSportLogo { /* legacy */
+ display: none;
+}
+
+/* New Story Change CSS hacks */
+
+#nbc-content .body {
+ float: left;
+ line-height: 22px !important;
+ margin: 0 !important;
+ overflow: hidden !important;
+ padding: 0 0 5px 0 !important;
+ width: 620px;
+}
+
+#nbc-content .body p {
+ margin: 14px 0 !important;
+}
+
+#nbc-content .body div.byline {
+ background: none !important;
+ border-bottom: 1px solid #eee;
+ margin-top: 16px;
+ padding: 0;
+ width: 620px !important;
+}
+
+#nbc-content .body div.byline .textMedBlackBold {
+ clear: left;
+ font-size: 12px;
+}
+
+#nbc-content .body div.byline .textMedBlack {
+ clear: left;
+ float: left;
+}
+
+/* TODO: Remove ad in workbench */
+#nbc-content .body #AdShowcase_F1 {
+ /* display: none; */
+ clear: both;
+}
+
+/* TODO: See if this is an issue for fronts */
+.content-right {
+ overflow: hidden;
+}
+
+/* Headline fixes */
+#nbc-content .body .headline .v-center1 {
+ font-size: 12px !important;
+ height: auto !important;
+ line-height: normal !important;
+ padding: 20px 0 0 !important;
+ width: 620px !important;
+}
+
+#nbc-content .body .headline .v-center2 {
+ position: relative;
+}
+
+/* Inline color box fixes */
+#nbc-content .body .cbx {
+ width: 300px;
+ overflow: hidden;
+}
+
+#nbc-content .body .cbx .cbx-header {
+ width: 300px;
+ margin-bottom: 0 !important;
+}
+
+#nbc-content .body .cbx .cbx-content {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') left top no-repeat !important;
+ padding: 5px;
+}
+
+#nbc-content .body .cbx .cbx-content td {
+ padding: 5px;
+}
+
+#nbc-content .body .cbx .cbx-content img {
+ max-width: 276px;
+}
+
+/* Inline grid fixes */
+#nbc-content .body .grid {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') left top no-repeat !important;
+ padding-bottom: 5px;
+}
+
+#nbc-content .body .grid .label {
+ width: 300px !important;
+}
+
+#nbc-content .body .grid .story {
+ padding: 0px 5px;
+}
+
+#nbc-content .body .grid img {
+ max-width: 282px;
+}
+
+#nbc-content .leaderboard.ad {
+ clear: both;
+ padding-top: 20px;
+}
+
+/* Sidebar color box fixes */
+#nbc-content .content-right .cbx {
+ overflow: hidden;
+}
+
+#nbc-content .content-right .cbx table {
+ background: #e3e3e3 url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18') left top no-repeat !important;
+ padding: 5px;
+}
+
+#nbc-content .content-right .cbx table td {
+ padding: 5px;
+}
+
+#nbc-content .content-right .cbx table.cbx-header {
+ background: #ddd url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left top repeat-x !important;
+ padding: 0 10px !important;
+ margin-bottom: 0 !important;
+}
+
+#nbc-content .content-right .cbx table.cbx-header td {
+ padding: 4px 0 !important;
+}
+
+#nbc-content .content-right .cbx {
+ margin: 0 !important;
+}
+
+#nbc-content .content-right .h2art {
+ padding-bottom: 20px;
+ display: none;
+}
+
+#nbc-content .content-right .h2art:empty {
+ display: none;
+}
+
+#nbc-content .content-right .ad {
+ height: 250px;
+ margin-bottom: 20px;
+ width: 300px;
+}
+
+#nbc-content .body div.social {
+ margin-bottom: 10px !important;
+}
+
+#nbc-content .body .headline {
+ padding-bottom: 0 !important;
+}
+
+/* Trash Talk styling */
+#nbc-content .appspt_trash_talk {
+ width: 620px !important;
+}
+
+#nbc-content .appspt_trash_talk #prnt_spt_trash_talk .credit {
+ color: #999;
+ float: left;
+ font-size: 12px;
+ margin-top: 20px;
+}
+
+#nbc-content .appspt_trash_talk a {
+ color: black;
+ font-weight: bold;
+}
+
+#nbc-content .appspt_trash_talk .navCellspt_trash_talk {
+ border: none;
+ padding: 0;
+}
+
+#nbc-content .appspt_trash_talk .navCellspt_trash_talk td {
+ background: #ddd url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left top repeat-x;
+ border: none;
+ border-left: 1px solid #eee;
+ height: 45px;
+ padding: 4px;
+}
+
+#nbc-content .appspt_trash_talk .navCellspt_trash_talk td:hover {
+ cursor: pointer;
+ background-position: left -10px;
+}
+
+#nbc-content .appspt_trash_talk .navlinkspt_trash_talk {
+ color: black !important;
+ font-family: Arial, Helvetica, sans-serif;
+ font-size: 12px;
+}
+
+#nbc-content .appspt_trash_talk .navlinkspt_trash_talk:hover {
+ text-decoration: none;
+}
+
+#nbc-content .appspt_trash_talk .deckspt_trash_talk {
+ padding: 0 !important;
+}
+
+#nbc-content .appspt_trash_talk .deckspt_trash_talk td {
+ width: 620px !important;
+}
+
+#nbc-content .appspt_trash_talk .deckspt_trash_talk img {
+ border: none !important;
+ margin: 0 -10px;
+ padding: 0 !important;
+ width: 640px;
+}
+
+#nbc-content .appspt_trash_talk .boxB_spt_trash_talk {
+ border: none !important;
+}
+
+#nbc-content .appspt_trash_talk .boxB_spt_trash_talk,
+#nbc-content .appspt_trash_talk .boxB_spt_trash_talk tr,
+#nbc-content .appspt_trash_talk .boxB_spt_trash_talk table {
+ font-family: Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-weight: normal;
+ text-align: left !important;
+ width: 620px;
+}
+
+#nbc-content .appspt_trash_talk font.headlinespt_trash_talk {
+ font-size: 17px;
+ font-weight: bold;
+ color: black;
+ text-align: left !important;
+}
+
+#nbc-content .appspt_trash_talk .boxB_spt_trash_talk tr tr,
+#nbc-content .appspt_trash_talk .boxB_spt_trash_talk table table {
+ width: auto !important;
+}
+
+#nbc-content .appspt_trash_talk .boxB_spt_trash_talk .navCellspt_trash_talk,
+#nbc-content .appspt_trash_talk .boxB_spt_trash_talk .navCellspt_trash_talk tr {
+ width: auto !important;
+}
+
+#nbc-content .appspt_trash_talk .boxB_spt_trash_talk .navCellspt_trash_talk td:first-child {
+ display: none;
+}
+
+#nbc-content #poptext_spt_trash_talk {
+ margin: 10px -10px -10px;
+}
+
+#nbc-content #poptext_spt_trash_talk table {
+ padding: 0;
+}
+
+#nbc-content #poptext_spt_trash_talk img {
+ padding: 0 !important;
+ border: none !important;
+}
+
+#nbc-content .more-news .grid {
+ background: none !important;
+}
+
+#nbc-content .more-news #cell2,
+#nbc-content .more-news #cell3 {
+ margin-right: 0;
+}
+
+#nbc-content .more-news #cell3 {
+ display: none;
+}
+
+#nbc-content .content-right .more-news-cell3 {
+ margin-bottom: 20px;
+}
+
+#prnt_spt_trash_talk .bulletRedSmall {
+ display: none;
+}
+
+#nbc-content div.byline a img {
+ max-height: 40px;
+}
+
+/* ------------------------- */
+/* EMBEDDED SLIDESHOWS START */
+/* ------------------------- */
+/* .grid = for TSM and section slice grids (not tested) */
+/* .body table = for in-story slideshows (replaced .body table) */
+/* #contentsRight = for section front C columns (not tested) */
+/* .photo = for story main art (HLarge) */
+/* .richMedia = for story rich media section (very large) */
+/* ------------------------- */
+.grid .w2 .embss .slide,
+.grid .w3 .embss .slide,
+.body table .embss .slide,
+#contentsRight .embss .slide,
+.photo .embss .slide,
+.richMedia .embss .slide {
+ /* border: 1px solid #aaa; */
+ /* background: #fff url(http://msnbcmedia.msn.com/i/NBCSports/Dev-Test/RichardGong/loading.gif) no-repeat scroll 50% 50%; */
+ /* (overwritten by black bg) */
+ position: relative; /* Richard */
+ overflow: hidden; /* Richard */
+}
+.grid .w2 .embss .slide .image,
+.grid .w3 .embss .slide .image,
+.body table .embss .slide .image,
+#contentsRight .embss .slide .image,
+.photo .embss .slide .image,
+.richMedia .embss .slide .image {
+/*
+ background: #000;
+ border: 1px solid #fff;
+ border-bottom: 0; *//* this part of the border is added later at a.link */
+ overflow: hidden;
+ text-align: center;
+}
+.grid .w2 .embss .slide a.link,
+.grid .w3 .embss .slide a.link,
+.body table .embss .slide a.link,
+#contentsRight .embss .slide a.link,
+.photo .embss .slide a.link,
+.richMedia .embss .slide a.link {
+ /* border-bottom: 1px solid #fff; Remove this? */
+}
+#nbc-content .embss .slide .image img {
+ text-align: left;
+ margin: 0 auto;
+}
+#nbc-content .embss.letterboxed .slide .image img {
+ border: 1px solid #aaa;
+ padding: 1px;
+}
+.grid .w2 .embss .ad,
+.grid .w3 .embss .ad,
+.body table .embss .ad,
+#contentsRight .embss .ad,
+.photo .embss .ad,
+.richMedia .embss .ad {
+ text-align: center;
+ background: #fff !important;
+ border: 1px solid #fff;
+ overflow: hidden; /* Richard */
+ position: absolute; /* Richard */
+ top: 0; /* Richard */
+}
+.grid .w2 .embss .slide a.link,
+.grid .w3 .embss .slide a.link,
+.body table .embss .slide a.link,
+#contentsRight .embss .slide a.link,
+.photo .embss .slide a.link,
+.richMedia .embss .slide a.link {
+ position: relative;
+ display: block;
+ font-weight: normal;
+ cursor: pointer;
+ overflow: hidden;
+}
+.embss .slide a.link:hover {
+ text-decoration: none !important;
+}
+/* --- Caption --- */
+.grid .w2 .embss .slide .sscaption,
+.grid .w3 .embss .slide .sscaption,
+.body table .embss .slide .sscaption,
+#contentsRight .embss .slide .sscaption,
+.photo .embss .slide .sscaption,
+.richMedia .embss .slide .sscaption {
+ position: absolute;
+ bottom: 0;
+ width: 100%;
+ border-top: 1px solid #fff;
+ background: #fff;
+}
+.Win-IE .grid .w2 .embss .slide .sscaption,
+.Win-IE .grid .w3 .embss .slide .sscaption,
+.Win-IE .body table .embss .slide .sscaption,
+.Win-IE #contentsRight .embss .slide .sscaption,
+.Win-IE .photo .embss .slide .sscaption,
+.Win-IE .richMedia .embss .slide .sscaption {
+ margin-bottom: -1px; /* fixes weird IE bug from a.link's border-bottom */
+}
+.grid .w2 .embss .slide .sscaption .cont,
+.grid .w3 .embss .slide .sscaption .cont,
+.body table .embss .slide .sscaption .cont,
+#contentsRight .embss .slide .sscaption .cont,
+.photo .embss .slide .sscaption .cont,
+.richMedia .embss .slide .sscaption .cont {
+ border-top: 1px solid #aaa;
+ padding-top: 5px;
+}
+.grid .w2 .embss .slide .sscaption .cont cite,
+.grid .w3 .embss .slide .sscaption .cont cite,
+.body table .embss .slide .sscaption .cont cite,
+#contentsRight .embss .slide .sscaption .cont cite,
+.photo .embss .slide .sscaption .cont cite,
+.richMedia .embss .slide .sscaption .cont cite {
+ margin: -3px 5px 0;
+ display: block;
+}
+.grid .w2 .embss .slide .sscaption .cont .text,
+.grid .w3 .embss .slide .sscaption .cont .text,
+.body table .embss .slide .sscaption .cont .text,
+#contentsRight .embss .slide .sscaption .cont .text,
+.photo .embss .slide .sscaption .cont .text,
+.richMedia .embss .slide .sscaption .cont .text {
+ font-size: 11px; /* TODO: Changed for check others 70%; */
+ color: #444;
+ margin: 1px 5px 5px;
+ height: 2.5em; /* force 2 line caption so buttons don't shift */
+}
+.grid .w3 .embss .slide .sscaption .cont .text {
+ height: 1.25em; /* force 1 line caption for 3-col grids */
+}
+.body table cite,
+#contentsRight cite,
+.photo cite,
+.richMedia cite {
+ font-size: 55%;
+ color: #aaa;
+ text-align: right;
+}
+
+.embss cite .byline {
+ display: block;
+ font-size: 9px;
+}
+/* --- Prev and next --- */
+.embss .ssnav {
+ text-align: center;
+ margin: 5px 0;
+ position: relative; /* Rod 1-14-09 */
+}
+.embss .ssnav .cont {
+ color: #444;
+ overflow: hidden;
+ width: 110px;
+ text-align: left;
+ margin: 0 auto;
+}
+.embss .ssnav .cont .prev {
+ float: left;
+ display: block;
+ width: 23px;
+ height: 16px;
+ margin-top: 5px;
+ background: url(../../msnbcmedia.msn.com/i/NBCSports/Redesign/SiteFrame/img/sprites-embss.png%3Fv=1) no-repeat 0px -2px;
+ text-indent: -1000em;
+}
+.embss .ssnav .cont .prev:hover {
+ background: url(../../msnbcmedia.msn.com/i/NBCSports/Redesign/SiteFrame/img/sprites-embss.png%3Fv=1) no-repeat 0px -19px;
+}
+.embss .ssnav .cont .next {
+ float: right;
+ display: block !important;
+ width: 23px;
+ height: 16px;
+ margin-top: 5px;
+ background: url(../../msnbcmedia.msn.com/i/NBCSports/Redesign/SiteFrame/img/sprites-embss.png%3Fv=1) no-repeat -23px -2px;
+ text-indent: -1000em;
+}
+.embss .ssnav .cont .next:hover {
+ background: url(../../msnbcmedia.msn.com/i/NBCSports/Redesign/SiteFrame/img/sprites-embss.png%3Fv=1) no-repeat -23px -19px;
+}
+/* --- Disabled back button for first slide --- */
+.embss .ssnav .cont .prev.disabled {
+ background: url(../../msnbcmedia.msn.com/i/NBCSports/Redesign/SiteFrame/img/sprites-embss.png%3Fv=1) no-repeat 0px -38px;
+}
+.embss .ssnav .cont .of {
+ width: 54px;
+ margin-left: 28px;
+ text-align: center;
+ font-size: 13px; /* TODO: Changed for check others 80%; */
+ font-weight: bold;
+ line-height: 180%;
+}
+.embss .ssnav .cont .of a {
+ display: block;
+}
+.Win-IE .grid .w2 .embss .slide,
+.Win-IE .grid .w2 .embss .slide .link,
+.Win-IE .grid .w2 .embss .slide .link .image,
+.Win-IE .grid .w3 .embss .slide,
+.Win-IE .grid .w3 .embss .slide .link,
+.Win-IE .grid .w3 .embss .slide .link .image,
+.Win-IE .body table .embss .slide,
+.Win-IE .body table .embss .slide .link,
+.Win-IE .body table .embss .slide .link .image,
+.Win-IE #contentsRight .embss .slide,
+.Win-IE #contentsRight .embss .slide .link,
+.Win-IE #contentsRight .embss .slide .link .image,
+.Win-IE .photo .embss .slide,
+.Win-IE .photo .embss .slide .link,
+.Win-IE .photo .embss .slide .link .image,
+.Win-IE .richMedia .embss .slide,
+.Win-IE .richMedia .embss .slide .link,
+.Win-IE .richMedia .embss .slide .link .image {
+ width: 100%; /* IE expanding box bug workaround - needed to crop img tag */
+}
+/* --- Slideshow size --- */
+/* Grids, story and SF C-columns */
+.grid .w2 .embss .slide a.link,
+.grid .w3 .embss .slide a.link,
+.body table .embss .slide a.link,
+#contentsRight .embss .slide a.link {
+ height: 251px; /* comes out to 250px */
+}
+.Win-IE .grid .w2 .embss .slide a.link,
+.Win-IE .grid .w3 .embss .slide a.link,
+.Win-IE .body table .embss .slide a.link,
+.Win-IE #contentsRight .embss .slide a.link {
+ height: 252px; /* comes out to 250px - IE */
+}
+.grid .w2 .embss .slide .link .image,
+.grid .w3 .embss .slide .link .image,
+.body table .embss .slide .link .image,
+#contentsRight .embss .slide .link .image {
+ height: 250px;
+}
+.Win-IE .grid .w2 .embss .slide .link .image,
+.Win-IE .grid .w3 .embss .slide .link .image,
+.Win-IE .body table .embss .slide .link .image,
+.Win-IE #contentsRight .embss .slide .link .image {
+ height: 251px; /* IE border-bottom bug workaround */
+}
+/* Grids only */
+.grid .w2 .embss,
+.grid .w3 .embss {
+ width: 304px;
+ margin: 10px 0 0 10px;
+}
+/* Story and SF C-columns only */
+.body table .embss,
+#contentsRight .embss {
+ width: 300px;
+}
+/* Story main art only */
+.photo .embss .slide a.link {
+ height: 409px; /* 276px; */
+}
+.Win-IE .photo .embss .slide a.link {
+ height: 410px;
+}
+.photo .embss .slide .link .image {
+ height: 408px;
+}
+.Win-IE .photo .embss .slide .link .image {
+ height: 409px; /* IE border-bottom bug workaround */
+}
+.photo .embss {
+ width: 620px; /* 418px; */
+
+}
+/* Story rich media area only */
+.richMedia .embss {
+ padding: 0 65px;
+}
+.richMedia .embss .slide a.link {
+ height: 535px;
+}
+.Win-IE .richMedia .embss .slide a.link {
+ height: 536px;
+}
+.richMedia .embss .slide .link .image {
+ height: 534px;
+}
+.Win-IE .richMedia .embss .slide .link .image {
+ height: 535px; /* IE border-bottom bug workaround */
+}
+.richMedia .embss {
+ width: 810px;
+}
+.richMedia .embss .embheader {
+ display: none !important;
+}
+/* For 3-column grid cell only */
+.grid .w3 .embss .slide a.link {
+ height: 259px;
+}
+.Win-IE .grid .w3 .embss .slide a.link {
+ height: 260px;
+}
+.grid .w3 .embss .slide .link .image {
+ height: 258px;
+}
+.Win-IE .grid .w3 .embss .slide .link .image {
+ height: 259px; /* IE border-bottom bug workaround */
+}
+.grid .w3 .embss {
+ width: 474px;
+}
+/* --- Fullscreen icon --- */
+.embss .fullscreen {
+ position: absolute;
+ right: 0;
+ top: 4px;
+}
+.embss .fullscreen a {
+ display: block; /* border-bottom disappears without this */
+ font-size: 11px; /* TODO: Changed for check others 70%; */
+ text-decoration: none;
+ font-weight: bold;
+}
+.embss .fullscreen a:hover {
+ text-decoration: underline;
+}
+/* --- Letterboxed --- */
+.embss.letterboxed .slide a.link {
+ height: auto !important;
+}
+.embss.letterboxed .slide .sscaption {
+ position: static !important;
+}
+/* ----------------------- */
+/* EMBEDDED SLIDESHOWS END */
+/* ----------------------- */
+
+/* RSN grid styling */
+#nbc-content .rsn-slice #cell1 em {
+ font-size: 15px;
+ font-weight: bold;
+ text-transform: uppercase;
+}
+
+#nbc-content .rsn-slice #cell1 div.cbx {
+ margin-bottom: 0;
+ font-size: 12px;
+ text-transform: none;
+}
+
+#nbc-content .rsn-slice #cell1 em,
+#nbc-content .rsn-slice #cell1 div.story {
+ padding: 0 10px;
+ width: 280px;
+ margin-bottom: 0.8em;
+ font-style: normal;
+}
+
+#nbc-content .rsn-slice #cell1 em a:hover {
+ color: #333;
+}
+
+#nbc-content .rsn-slice #cell1 em *,
+#nbc-content .rsn-slice #cell1 em div.story {
+ padding: 0;
+ margin: 0;
+ display: inline;
+}
+
+#nbc-content .rsn-slice #cell1 div.story.img-left {
+ padding: 0 5px;
+ width: 290px;
+ margin-bottom: 0.8em;
+}
+
+#nbc-content .rsn-slice #cell1 .cbx {
+ padding: 0 10px;
+ width: 280px;
+}
+
+#nbc-content .rsn-slice #cell1 .cbx a,
+#nbc-content .rsn-slice #cell1 div.story a {
+ font-weight: normal !important;
+}
+
+#nbc-content .rsn-slice #cell1 .cbx .textMed,
+#nbc-content .rsn-slice #cell1 div.story h6 {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bullet.jpg%3Fv=18') left 5px no-repeat;
+ padding-left: 10px;
+}
+
+#nbc-content .rsn-slice #cell1 div.story.img-left a {
+ font-weight: bold !important;
+ padding-left: 0;
+ background: none;
+}
+
+#nbc-content .rsn-slice #cell1 .cbx table {
+ width: 280px;
+}
+
+#nbc-content .rsn-slice {
+ background: url(../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-box.png%3Fv=18);
+ margin-bottom: 10px;
+}
+
+#nbc-content .rsn-slice .label {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Feeds/LocalFeeds/header-csn.png') top left no-repeat;
+ padding: 0;
+ margin: 0 0 5px;
+ height: 32px;
+ text-indent: -10000px;
+}
+
+#nbc-content .rsn-slice.csn-chicago .label {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Feeds/LocalFeeds/header-csn-chicago.png') top left no-repeat;
+}
+
+#nbc-content .rsn-slice.csn-bayarea .label {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Feeds/LocalFeeds/header-csn-bayarea.png') top left no-repeat;
+}
+
+#nbc-content .rsn-slice.csn-philadelphia .label {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Feeds/LocalFeeds/header-csn-philadelphia.png') top left no-repeat;
+}
+
+#nbc-content .rsn-slice.csn-washington .label {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Feeds/LocalFeeds/header-csn-washington.png') top left no-repeat;
+}
+
+#nbc-content .rsn-slice.csn-newengland .label {
+ background: url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Feeds/LocalFeeds/header-csn-newengland.png') top left no-repeat;
+}
+
+#grid_38995526 div.story:empty, .rsn-slice div.story:empty {
+ display: none;
+}
+
+#nbc-header {
+ margin-bottom: 8px;
+ position: relative;
+}
+#nbc-header .header-bridge {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-header.png%3Fv=18') no-repeat center -500px;
+ height: 8px;
+ width: 1000px; 
+ position: absolute; 
+ left: 0px;
+}
+#nbc-content {
+ background: transparent url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/bg-center.png') repeat-y center top;
+ padding: 2px 30px 20px;
+}
+#nbc-footer {
+ margin-top: 0;
+}
+
+.tv-listings-header {
+ background: #3e3e3e url('../../nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/sprites-repeat-x.png%3Fv=18') left -400px repeat-x; 
+ width: 745px; 
+ height: 24px;
+ line-height: 24px;
+ padding: 4px 10px 7px;
+ color: white;
+ text-transform: uppercase;
+ font-weight: bold;
+ border-bottom: 1px solid #ddd;
+ font-size: 22px;
+}
+
+.tv-listings-header img {
+ vertical-align: middle;
+}
+
+.four-gridlet-header {
+ font-weight: bold;
+ text-transform: uppercase;
+ padding: 2px 0;
+}
+
+.sidebar-image {
+ margin-bottom: 20px;
+}
+
+#nbc-footer div.tsm.grid #cell4 div.cbx {
+ display: none;
+}
+
+#nbc-footer div.tsm.grid #cell4 div.cbx table {
+ border-collapse: collapse;
+ margin-bottom: 4px;
+}
+
+#nbc-footer div.tsm.grid #cell4 div.cbx tr {
+ background-color: transparent !important;
+}
+
+#nbc-footer div.tsm.grid #cell4 div.cbx td {
+ border: 1px solid #555;
+}
+
+#nbc-footer div.tsm.grid #cell4 div.cbx table.boxF_3053751 td {
+ border: none;
+}
+
+#nbc-footer div.tsm.grid #cell4 .label a.tv-listings-footer-link {
+ color: #999;
+ float: right;
+ font-size: 11px;
+ line-height: normal;
+ text-align: right;
+ text-transform: none;
+}
+
+#nbc-footer div.tsm.grid #cell4 .label a.tv-listings-footer-link:link {
+ color: #999;
+}
+
+#nbc-footer div.tsm.grid #cell4 .label a.tv-listings-footer-link:hover {
+ color: #ddd;
+}
+
+.ticketsnow-widget {
+ width: 300px;
+ background: #303161 url('../../msnbcmedia.msn.com/i/NBCSports/SiteFrame/images/sponsors/ticketsnow/ticketsnow-background.gif') left top no-repeat;
+ padding: 50px 10px 10px;
+}
+
+.ticketsnow-widget .ticketsnow-links {
+ background: url('../../msnbcmedia.msn.com/i/NBCSports/SiteFrame/images/sponsors/ticketsnow/ticketsnow-logo-light.png') right bottom no-repeat;
+ overflow: auto;
+ padding-bottom: 40px;
+ width: 280px;
+}
+
+.ticketsnow-widget .ticketsnow-links a {
+ background: url('../../msnbcmedia.msn.com/i/NBCSports/SiteFrame/images/sponsors/ticketsnow/ticketsnow-buy.gif') left top no-repeat;
+ color: white;
+ display: inline-block;
+ float: left;
+ font-family: Arial, Helvetica, sans-serif;
+ font-size: 13px;
+ font-weight: bold;
+ line-height: 15px;
+ margin: 3px 0;
+ padding-left: 50px;
+ min-width: 90px;
+}
+
+.ticketsnow-widget .ticketsnow-links a:link,
+.ticketsnow-widget .ticketsnow-links a:hover {
+ color: white;
+}

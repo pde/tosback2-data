@@ -1,0 +1,80 @@
+var actionType ='ratings';
+function getStarRatingTemplate() {
+	/* this function will return the template for star rating
+	 *
+	 */
+	var output = '';
+	output += '	<div class="fbc_mainContainerBG">';
+		/* Header Contanier */
+	/*output += '		<div class="fbc_headerContainer">';
+	output += '			<span class="fbc_txtheadertBold"> 716: MR. Monk Fights City Hall</span><br />';
+	output += '		</div>';*/
+		/* Header Contanier Ends */
+		/* Header content */
+	/*output += '		<div class="fbc_headercontent">';
+	output += '			<span class="fbc_txtcontent">';
+	output += '				When the parking garage where Monk\'s wife was killed is set for demolition, Monk intervenes -- but soon finds himself investigating the disappearance of a city official key to preserving the site.';
+	output += '			</span><br/><br/>';
+	output += '		</div>';*/
+		/* Header content Ends */
+		/* inner content */
+	output += '		<div class="fbc_innercontent">';
+	output += getStarRatingSection();
+	output += '		<# if (!loggedInContainerSite) { #>';
+	output += '			<div class="fbc_innercontentRight" id="thanksForRating">';
+	output += '				<span class="fbc_txtinnertextBold">Thanks for rating!!!</span><br />';
+	output += '				<# if (userId != "") { #>';
+	output += '					<span onclick="handleFeeds(clientParams,actionType)" class="fbc_txtinnertextfoneLinked"> Share Rating with Facebook Friends </span>';
+	output += '				<# } else { #>'; 
+	output += '					<span onclick="FB.Connect.requireSession();facebook_onlogin_ready();handleFeeds(clientParams,actionType);" class="fbc_txtinnertextfoneLinked"> Share Rating with Facebook Friends </span>';
+	output += '				<# } #>'; 
+	output += '			</div>'; 
+	output += '		<# } else { #>';
+	output += '			<div class="fbc_innercontentRightNoLogin" id="thanksForRating">';
+	output += '				<span class="fbc_txtinnertextBold">Thanks for rating!!!</span><br />';
+	output += '			</div>';
+	output += '		<# } #>';
+	output += '			<div id="ratingFailed">';
+	output += '				<span class="fbc_txtinnertextBold">You have already rated this content</span><br />';
+	output += '			</div>'; 
+	output += '		</div>';
+		/* inner content ends */
+	output += '		<# if (!loggedInContainerSite) { #>';
+	output += '		<div class="fbc_innercontentFlash" id="shareRating">';
+	output += '			<# if (userId == "") { #><span class="fbc_txtinnertextBold"><fb:login-button size="small" background="dark" length="short" onclick="facebook_onlogin_ready();handleFeeds(clientParams,actionType);"></fb:login-button></span><# } else { #><span onclick="handleFeeds(clientParams,actionType)" class="fbc_txtinnertextBoldLinked"><img src="<#= imgURL #>MW051_F.jpg"></img></span><# } #>';
+	output += '		</div>';  
+	output += '		<# } #>';	
+	output += '		<div class="fbc_clearFloat"></div>';
+	/*output += '		<div class="fbc_innerGrab">';
+	output += '			<img src="<#= imgURL #>/MW051_GrabIt.gif" />';    
+	output += '		</div>';*/
+	output += '	</div>';
+	return output;
+}
+
+function getStarRatingSection(){
+	var output = '';
+	output += '			<div class="rating fbc_innercontentLeft"><ul class="fbc_listStyle">';
+	output += '				<# for (var i = 1; i <= 5; i++) { ';
+	output += '					if (i <= ratingInfo.AVGRATING) { #>';
+	output += '						<li class="default"><a href="#" onclick="rateContent(\'<#= contentId #>\', <#= i #>); setRating(this); return false;" onmouseover="changeRating(this)" onmouseout="resetRating()"> <span>RATING</span> </a></li>';
+	output += '					<# } else { #>';
+	output += '						<li class=""><a href="#" onclick="rateContent(\'<#= contentId #>\', <#= i #>); setRating(this); return false;" onmouseover="changeRating(this)" onmouseout="resetRating()"> <span>RATING</span> </a></li>';
+	output += '				<# }} #>';
+	output += '			</ul>';
+	output += '				<span id="ratingCount"><#= ratingInfo.COMMENTRATINGCOUNT #></span> ratings';
+	output += '			</div>';
+	output += '			<script>';
+	output += '			function setRatingValue() {';
+	output += '				fbc_page = {};';
+	output += '				fbc_page[\'modules\'] = {};';
+	output += '				fbc_page[\'modules\'][\'ratings\'] = {};';
+	output += '				fbc_page[\'modules\'][\'ratings\'][\'current_item\'] = {};';
+	output += '				fbc_page[\'modules\'][\'ratings\'][\'current_item\'][\'rating\'] = <#= ratingInfo.AVGRATING #>;';
+	output += '				fbc_page[\'modules\'][\'ratings\'][\'current_item\'][\'id\'] = <#= contentId #>;';
+	output += '				fbc_page[\'modules\'][\'ratings\'][\'current_item\'][\'type\'] = \'<#= contentType #>\';';
+	output += '			}';
+	output += '			setRatingValue();';	
+	output += '			</script>';
+	return output;
+}

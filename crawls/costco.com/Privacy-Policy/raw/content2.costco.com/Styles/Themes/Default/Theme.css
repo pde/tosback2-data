@@ -1,0 +1,239 @@
+/*
+======================================================= 
+[DOCUMENT DETAILS]
+    - Document:     Costco Base Theme
+    - Version:      1.0.0
+
+[COMMON COLORS]
+    - Costco Blue:      #1a5aae
+    - Costco Red:       #e2373f
+    - InputBox Text:    #444
+    - Dark Grey:        #555
+    - Light Grey:       #636363
+
+[TABLE OF CONTENTS]
+    1.0 =IMPORTS
+    2.0 =ALL MEDIA   
+    3.0 =SCREEN MEDIA
+        3.1     =STRUCTURE
+        3.2     =HEADER
+        3.3     =FOOTER
+        3.4     =CATEGORYMENU
+        3.5     =FORMS
+        3.6     =LINKS
+        3.7     =FEATURES
+        3.8     =SITECORE
+        3.9     =MODAL
+    4.0 =PRINT MEDIA
+        4.1     =STRUCTURE
+        4.2     =HEADER
+        4.3     =FOOTER
+        4.4     =FEATURES
+        4.5     =MODAL 
+=======================================================
+=======================================================
+*/
+
+/* > [1.0] =IMPORTS
+     [load order is important]
+======================================================= */
+@import url("../../Baseline.css");
+@import url("../../Content.css");
+
+/* > [2.0] =ALL MEDIA 
+======================================================= */
+@media all 
+{
+}
+/* > [3.0] =SCREEN MEDIA 
+======================================================= */
+@media screen {
+    /* > [3.1] =STRUCTURE 
+            ----------------------------------------------- */
+           BODY {background-image:url(Images/Background_BorderShadow.jpg); background-repeat:repeat-y; background-color:#efefef; background-position: center top;}
+           #sitewrap {margin:0 auto;padding:0;width:770px;clear:both;}
+                #footerwrap,#headerwrap {margin:0 auto;width:100%;}
+                #contentwrap {margin:4px auto;width:100%;text-align:left;}
+
+    /* > [3.2] =HEADER
+            ----------------------------------------------- */
+	    #headerwrap a img {display:inline;}
+            #headerwrap .logo {float:left;border:0;margin-top:1px;}
+            #headerwrap #links {float:left;width:630px;height:auto;}
+                #headerwrap #servicelinks{float:right;margin-bottom:15px;display:inline;line-height:1em;margin-top:1px;}
+                #headerwrap #contentarealinks{clear:both;}
+            #headerwrap #categorymenu {clear:both;text-align:left;}
+                #categorymenu #menucell {}
+            #headerwrap #searchbar {background-image: url(Images/BlueGradient.gif);background-repeat:repeat-x;height:40px;width:769px;border:solid 1px #bbb;border-top:none;overflow:hidden;}
+                #searchbar .login {float:left;}
+                #searchbar .searchform {float:left;padding-top:10px;padding-left:1px;line-height:19px;width:338px;}
+                #searchbar .adspot {float:right;width:368px;height:41px;overflow:hidden;}
+                    #searchbar .adspot UL {list-style-type:none;margin:0;padding:0;margin-left:-332px;width:700px;}
+                    #searchbar .adspot UL LI {float:right;display:inline;vertical-align:top;padding:0;margin:0;}
+            #headerwrap .hellomessage {float:right;}
+                .hellomessage .helloname {font-weight:bold;}
+                
+    /* > [3.3] =FOOTER
+            ----------------------------------------------- */
+             #footerwrap .footerlinks {width:100%;font-weight:bold;font-size:11px;background-color:#eee;border:#aaa 1px solid;color:#000;font-family:arial;text-align:center;clear:both;margin-bottom:10px;}
+                .footerlinks UL {list-style-type:none;margin:.3em 0;}
+                    .footerlinks UL LI {margin-left:0;padding:0 10px 0 12px;list-style:none;display:inline;background-image:url(Images/FooterLinksDivider.gif);background-repeat:no-repeat;background-position:center left;}
+                    .footerlinks UL LI.firstchild {border-left:none;background:none;}
+                        .footerlinks UL LI A {font-weight:bold;text-decoration:none;color:#000;text-transform:uppercase;}
+                            .footerlinks UL LI A:Hover {text-decoration:underline;}
+            #footerwrap .copyright {width:100%;margin-top:.3em;font-size:10px;font-family:arial;text-align:center;clear:both;}
+            #footerwrap .compliancelinks {width:100%;font-size:10px;font-family:arial;text-align:center;clear:both;}
+                .compliancelinks UL {list-style-type:none;margin:0;}
+                    .compliancelinks UL LI {list-style:none;display:inline;padding:2px;}
+                        .compliancelinks UL LI A {color:#336699;text-transform:capitalize;}
+
+    /* > [3.4] =CATEGORYMENU
+            ----------------------------------------------- */
+            #MenuCell {width:769px;font-size:11px;font-family:arial;}
+                #MenuCell * A:link {color:#000;}
+                #MenuCell * A:visited {color:#000;}
+                #MenuCell * A:Hover {color: #1a5aae;}
+                #MenuCell * A:active {color: #1a5aae;}
+                #MenuCell .TopNavRow1 {width:100%;border:solid 1px #bbb;margin:0 auto;}
+                    #MenuCell .TopNavRow1 UL {z-index:99;}
+                        #MenuCell .TopNavRow1 UL LI {border-right:solid 1px #dfdfdf;padding-left:1px;padding-right:2px;}
+                        #MenuCell .TopNavRow1 UL UL {z-index:99;}
+                #MenuCell .TopNavRow2 {width:100%;border-left:solid 1px #bbb;border-right:solid 1px #bbb;border-bottom:solid 1px #bbb;margin: 0 auto;}	
+                    #MenuCell .TopNavRow2 UL {z-index:1;}
+                        #MenuCell .TopNavRow2 UL LI {border-right:solid 1px #dfdfdf;}
+                        #MenuCell .TopNavRow2 UL UL {z-index:1;}
+                #MenuCell .TopNavRow1, #MenuCell .TopNavRow2 {}                
+                    #MenuCell .TopNavRow1 UL, #MenuCell .TopNavRow2 UL, #MenuCell .TopNavRow1 UL UL, #MenuCell .TopNavRow2 UL UL {list-style:none;line-height:1;background:#efefef;font-weight:bold;padding:0;margin:0;height:20px;}
+                    #MenuCell .TopNavRow1 UL LI, #MenuCell .TopNavRow2 UL LI {float:left;min-height:14px;padding-top:5px;padding-bottom:1px;}
+                        #MenuCell .TopNavRow1 UL LI LI, #MenuCell .TopNavRow2 UL LI LI {position:relative;width:15.9em;background:#efefef;border-bottom:solid 1px #bbb;border-right:none;padding:0px;}
+                        #MenuCell .TopNavRow1 UL LI UL, #MenuCell .TopNavRow2 UL LI UL {position:absolute;left:-999em;width:15.9em;height:auto;font-weight:normal;border:solid 1px #000;margin:5px 0px 0px 0px;}                   
+                        #MenuCell .TopNavRow1 > UL LI.over > A, #MenuCell .TopNavRow2 > UL LI.over > a {color: #1a5aae;} /* KYBD styles */
+                        #MenuCell .TopNavRow1 > UL LI:Hover UL UL, #MenuCell .TopNavRow2 > UL LI:Hover UL UL,
+                        #MenuCell .TopNavRow1 > UL LI:Hover UL UL UL, #MenuCell .TopNavRow2 > UL LI:Hover UL UL UL,
+                        #MenuCell .TopNavRow1 .navfxenabled LI:Hover UL, #MenuCell .TopNavRow2 .navfxenabled LI:Hover UL,
+                        #MenuCell .TopNavRow1 .navfxenabled LI:Hover UL UL, #MenuCell .TopNavRow2 .navfxenabled LI:Hover UL UL,
+                        #MenuCell .TopNavRow1 .navfxenabled LI:Hover UL UL UL, #MenuCell .TopNavRow2 .navfxenabled LI:Hover UL UL UL,
+                        #MenuCell .TopNavRow1 .navfxenabled LI.over UL UL, #MenuCell .TopNavRow2 .navfxenabled LI.over UL UL,
+                        #MenuCell .TopNavRow1 .navfxenabled LI.over UL UL UL, #MenuCell .TopNavRow2 .navfxenabled LI.over UL UL UL
+                        {left:-999em;}
+                        #MenuCell .TopNavRow1 > UL LI:Hover UL, #MenuCell .TopNavRow2 > UL LI:Hover UL,
+                        #MenuCell .TopNavRow1 .navfxenabled LI.over UL, #MenuCell .TopNavRow2 .navfxenabled LI.over UL
+                        {left:auto;}
+                        #MenuCell .TopNavRow1 > UL LI LI:Hover UL, #MenuCell .TopNavRow2 > UL LI LI:Hover UL,
+                        #MenuCell .TopNavRow1 > UL LI LI LI:Hover UL, #MenuCell .TopNavRow2 > UL LI LI LI:Hover UL,
+                        #MenuCell .TopNavRow1 .navfxenabled LI LI.over UL, #MenuCell .TopNavRow2 .navfxenabled LI LI.over UL,
+                        #MenuCell .TopNavRow1 .navfxenabled LI LI LI.over UL, #MenuCell .TopNavRow2 .navfxenabled LI LI LI.over UL
+                        {left:-2px;}
+                        #MenuCell .TopNavRow1 LI LI.over UL.leftover, #MenuCell .TopNavRow2 LI LI.over UL.leftover, 
+                        #MenuCell .TopNavRow1 .navfxenabled LI LI LI.over UL.leftover, #MenuCell .TopNavRow2 .navfxenabled LI LI LI.over UL.leftover, 
+                        #MenuCell .TopNavRow1 .navfxenabled LI LI LI LI.over UL.leftover, #MenuCell .TopNavRow2 .navfxenabled LI LI LI LI.over UL.leftover
+                        {left:-28.44em;}
+                        #MenuCell .TopNavRow1 UL LI A, #MenuCell .TopNavRow2 UL LI A,
+                        #MenuCell .TopNavRow1 UL LI UL LI A, #MenuCell .TopNavRow2 UL LI UL LI a
+                        {display:block;text-decoration:none;padding:0;}
+                            #MenuCell .TopNavRow1 UL LI UL UL, #MenuCell .TopNavRow2 UL LI UL UL {margin:-1.75em 0 0 14em;}
+                                #MenuCell .TopNavRow1 > UL LI UL LI, #MenuCell .TopNavRow2 > UL LI UL LI {padding:0px;}
+                                    #MenuCell .TopNavRow1 UL LI UL LI A, #MenuCell .TopNavRow2 UL LI UL LI a {padding:5px;}
+                                        #MenuCell .TopNavRow1 UL LI UL LI.over A, #MenuCell .TopNavRow2 UL LI UL LI.over A,
+                                        #MenuCell .TopNavRow1 UL LI UL LI A:Hover, #MenuCell .TopNavRow2 UL LI UL LI A:Hover {color:#1a5aae;background-color:#fff;}
+                    
+    /* > [3.5] =FORMS 
+            ----------------------------------------------- */
+            .searchform LABEL {float:left;font-weight:bold;font-size:12px;padding:0 1px;}
+            .searchform .textinput {float:left;color:#444;line-height:15px;margin:0 3px 0 2px;}
+                .searchform .textinput INPUT {width:114px;height:14px;}
+            .searchform .listinput {float:left;}
+                .searchform .listinput SELECT {width:124px;margin:0 2px 0 3px;}
+            .searchform .button {float:left;padding:1px 0 0 0 ;vertical-align:middle;}
+
+    /* > [3.6] =LINKS
+            ----------------------------------------------- */
+            #servicelinks UL {list-style-type:none;font-size:7pt;text-align:right;margin:0;}
+                #servicelinks UL LI {padding:0;float:left;}
+                    #servicelinks UL LI A {height:1.5em;padding-right:0.8em;text-transform:uppercase;text-decoration:none;color:#636363;}
+                        #servicelinks UL LI A:Hover {text-decoration:underline;}
+                #servicelinks UL LI.cartcounter {}
+                    #servicelinks UL LI.cartcounter A {text-transform:uppercase;text-decoration:none;color:#e2373f;padding-right:0;}
+                        #servicelinks UL LI.cartcounter A:Hover {text-decoration:underline;}
+                        #servicelinks UL LI.cartcounter A IMG {vertical-align:middle;padding:0;margin-top:-1px;}
+            
+             #contentarealinks .linkitemwrap {float:right;text-align:center;height:auto;}
+                #contentarealinks .linkitemwrap .linkitem {background-image: url("Images/ContentArealinkDivider.gif");background-repeat:no-repeat;background-position:2px 0;padding-left:5px;}
+                #contentarealinks .linkitemwrap .linkitem DIV,
+                #contentarealinks .linkitemwrap .firstchild DIV {padding-top:1px;line-height:9px;min-height:9px;width:auto;text-align:center;overflow:hidden;}
+                    #contentarealinks .linkitemwrap * DIV IMG.indicator {}
+                    #contentarealinks .linkitemwrap * A {overflow:hidden;line-height:11px;}
+                    
+            .featurewrap a:link {color: #069;border-bottom-width: 1px;border-bottom-style: dotted;border-bottom-color: #999;text-decoration: none;}
+            .featurewrap a:active {color: #069;border-bottom-width: 1px;border-bottom-style: dotted;border-bottom-color: #999;text-decoration: none;}
+            .featurewrap a:visited {color: #036;border-bottom-width: 1px;border-bottom-style: dotted;border-bottom-color: #999;text-decoration: none;}
+            .featurewrap a:hover {color: #014a88;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #369;text-decoration: none;}
+    
+    /* > [3.7] =FEATURES
+            ----------------------------------------------- */
+            .featurewrap {width:762px;overflow:hidden;margin:16px 0px 21px 0px;padding-left:8px}
+            .featurewrap td {vertical-align: top;} 
+                .featurewrap .featurec1r1 {width:100%;}
+                .featurewrap .featurec2r1 {width:100%;}
+                    .featurec2r1 .c1 {float:left;padding-left:2px;padding-right:10px;}
+                    .featurec2r1 .c2 {float:left;width:600px;overflow:hidden;padding-right:10px;}
+
+            .featurelinks_v {width:100%;}
+                .featurelinks_v H2 {color:#5277b1;font-size:1em;font-weight:bold;margin-bottom:2px;}
+                .featurelinks_v UL {list-style-type:none;margin:0;font-size:.9em;}
+                    .featurelinks_v UL LI {width:140px;padding:0 0 1.5em 0;margin:0 !important;}
+                        .featurelinks_v UL LI .descriptor {display:block;color:#555}
+                        .featurelinks_v UL LI A {color:#555;font-weight:bold;}
+
+    /* > [3.8] =SITECORE
+            ----------------------------------------------- */
+            .scWebEditRibbon {width:100%;}
+            
+      /* > [3.9] =MODAL
+            ----------------------------------------------- */
+            #LeavingCostcoDialog {height:400px;}
+            .divhide {display:none;}
+            .dialogcontent {font-size:0.8em;background-color:#fff;padding:20px;}
+		        .dialogheader {border-bottom:2px solid #336699;margin-bottom:5px;}
+		            .dialogheader H1 {font-size:1.6em;margin:0;color:#000;margin-bottom:5px;text-align:center;}
+		        .dialogbody {font-size:1.2em;text-align:left;}
+		            .dialogcontent p {margin:5px 0;}
+		        .dialogbodycenter {font-size:1.2em;text-align:center;}
+		        .dialoginterstatial {margin-top:15px;text-align:center;}
+}
+/* > [4.0] =PRINT MEDIA 
+======================================================= */
+@media print 
+{
+    /* > [4.1] =STRUCTURE 
+            ----------------------------------------------- */
+            body{background:#fff;font-size:9pt;}
+                #sitewrap{width:100%;}
+           
+    /* > [4.2] =HEADER
+            ----------------------------------------------- */
+            #headerwrap{}
+                #headerwrap .logo {float:left;border:0;clear:both;}
+                #headerwrap #links {display:none;}
+                #headerwrap #categorymenu {display:none;}
+                #headerwrap #searchbar {display:none;}
+
+    /* > [4.3] =FOOTER
+            ----------------------------------------------- */
+            #footerwrap{}
+                #footerwrap .footerlinks {display:none;}
+                #footerwrap .copyright {width:100%;text-align:center;clear:both;}            
+                #footerwrap .compliancelinks {display:none;}
+                   
+    /* > [4.4] =FEATURES
+            ----------------------------------------------- */
+            .featurewrap{clear:both;}
+                .featurelinks_v {display:none;}
+     
+      /* >[4.5] =MODAL
+            ----------------------------------------------- */
+      .divhide {display:none;}
+      .dialogContent {display:none;}
+					    
+            
+}

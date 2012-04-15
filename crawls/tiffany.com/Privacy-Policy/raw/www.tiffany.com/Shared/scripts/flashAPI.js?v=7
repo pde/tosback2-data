@@ -1,0 +1,375 @@
+// ----------------------------------------------
+// File:		flashAPI.js
+// Author:		Nathan Derksen
+// Description:	Wrapper class for Flash detect kit. Requires the adobe AC_OETags.js file to be in place as well.
+// Example:
+// var itemFlash = new FlashAPI("itemImage");
+// itemFlash.setAttribute("src", "/Shared/flash/itemZoom.swf");
+// itemFlash.setAttribute("width", "475");
+// itemFlash.setAttribute("height", "440");
+// itemFlash.setAttribute("bgcolor", itemZoomProperties.backgroundColor);
+// itemFlash.setAttribute("flashVars", imageZoomData);
+// itemFlash.setAttribute("name", "itemZoom");
+// itemFlash.setAlternateHTML(alternateHTML);
+// itemFlash.setFlashVersion(8, 0, 0);
+// itemFlash.generateFlash();
+// ----------------------------------------------
+
+var FlashAPI_skipFlashFocus = false;
+
+// ----------------------------------------------
+// Function:	FlashAPI()
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<String> id: The ID for the tag to hold the Flash content
+// Returns:		<Nothing>
+// ----------------------------------------------
+function FlashAPI(handle)
+{
+	this.pHandle = handle;
+	
+	this.pAttributes = new Object();
+	this.pAttributes["width"] = 100;
+	this.pAttributes["height"] = 100;
+	this.pAttributes["wmode"] = "opaque";
+	this.pAttributes["quality"] = "high";
+	this.pAttributes["scale"] = "noscale";
+	this.pAttributes["salign"] = "tl";
+	this.pAttributes["bgcolor"] = "#FFFFFF";
+	this.pAttributes["quality"] = "high";
+	this.pAttributes["play"] = "true";
+	this.pAttributes["loop"] = "false";
+	this.pAttributes["allowScriptAccess"] = "sameDomain";
+
+	this.pAlternateHTML = "";
+	this.pAlternateImage = "";
+	this.pRedirectURL = "";
+	this.pAlternateMobile = "";
+		
+	this.pVersionMajor = 9;
+	this.pVersionMinor = 0;
+	this.pVersionRevision = 0;
+
+	// Fix for IE title issue - trap focus event which triggers title replacement
+	this.setAttribute("onfocus", "pageTitle_verify();");
+	this.setAttribute("menu", "false");
+}
+
+// ----------------------------------------------
+// Function:	setAttribute()
+// Author:		Nathan Derksen
+// Description:	Sets the various attributes to be used within the <object> and <embed> tags. 
+//				Certain attributes will automatically be put within certain tags (such as width 
+//				and height in the <object> and <embed> tags and flashvars in the <param> and <embed> tags.
+// Inputs:		<String> attName: The attribute name to set
+//				<String> attValue: Value to give the specified attribute
+// Returns:		<Nothing>
+// ----------------------------------------------
+FlashAPI.prototype.setAttribute = function(attName, attValue)
+{
+	if (attName)
+	{
+		this.pAttributes[attName] = attValue;
+	}
+};
+
+// ----------------------------------------------
+// Function:	setAlternateHTML()
+// Author:		Nathan Derksen
+// Description:	Specify the HTML to show in the event that the user does not have a recent enough version of Flash.
+//				This HTML will be applied when the generateFlash method is called.
+// Inputs:		<String> alternateHTML: The HTML to place inside the element specified in the constructor
+// Returns:		<Nothing>
+// ----------------------------------------------
+FlashAPI.prototype.setAlternateHTML = function(alternateHTML)
+{
+	if (alternateHTML)
+	{
+		this.pAlternateHTML = alternateHTML;
+	}
+};
+
+// ----------------------------------------------
+// Function:	setAlternateImage()
+// Author:		Nathan Derksen
+// Description:	Specify an image to show in the event that the user does not have a recent enough version of Flash.
+//				This image will be applied when the generateFlash method is called. Note that this method overrides 
+//				the effect of setAlternateHTML().
+// Inputs:		<String> src: The source of the image to place inside the element specified in the constructor. 
+//				The dimensions used are taken from the width and height attributes assigned to the Flash component 
+//				through setAttribute().
+// Returns:		<Nothing>
+// ----------------------------------------------
+FlashAPI.prototype.setAlternateImage = function(src)
+{
+	if (src)
+	{
+		this.pAlternateImage = src;
+	}
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+FlashAPI.prototype.setAlternateMobile = function(src)
+{
+	if (src)
+	{
+		this.pAlternateMobile = src;
+	}
+};
+
+// ----------------------------------------------
+// Function:	setAlternateRedirect()
+// Author:		Nathan Derksen
+// Description:	Specify a url to navigate to in the event that the proper version of the Flash plugin is not installed.
+// Inputs:		<String> url: The location to navigate to.
+// Returns:		<Nothing>
+// ----------------------------------------------
+FlashAPI.prototype.setAlternateRedirect = function(url)
+{
+	if (url)
+	{
+		this.pRedirectURL = url;
+	}
+};
+
+
+// ----------------------------------------------
+// Function:	setFlashVersion()
+// Author:		Nathan Derksen
+// Description:	Specify the version of the Flash player to set as minimum. Anything below this value will trigger
+//				the alternate display when the generateFlash() method is called.
+// Inputs:		<Number> major: The major version (eg 9)
+//				<Number> minor: The minor version (almost always zero)
+//				<Number> revision: The revision (generally zero, but may be higher. Set to zero if unsure)
+// Returns:		<Nothing>
+// ----------------------------------------------
+FlashAPI.prototype.setFlashVersion = function(major, minor, revision)
+{
+	if (major)
+	{
+		this.pVersionMajor = major;
+	}
+	if (minor)
+	{
+		this.pVersionMinor = minor;
+	}
+	if (revision)
+	{
+		this.pVersionRevision = revision;
+	}
+};
+
+// ----------------------------------------------
+// Function:	generateFlash()
+// Author:		Nathan Derksen
+// Description:	Trigger the rendering of the Flash component. Nothing is displayed until this method is called.
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+FlashAPI.prototype.generateFlash = function(inline)
+{
+	var isInline = false;
+	if (inline == true)
+	{
+		isInline = true;
+	}
+	var validate = false;
+
+	if (this.pHandle)
+	{
+		validate = true;
+	}
+	else if (isInline == true)
+	{
+		validate = true;
+	}
+
+	if (validate == true)
+	{
+		var hasReqVers = DetectFlashVer(this.pVersionMajor, this.pVersionMinor, this.pVersionRevision);
+
+		var attributeList = new Array();
+		for (var attribute in this.pAttributes)
+		{
+			attributeList.push(attribute);
+			attributeList.push(this.pAttributes[attribute]);
+		}
+
+		if (hasReqVers == true)
+		{
+			if (this.pAlternateMobile != "" && isMobile() == true)
+			{
+				if (isInline == true)
+				{
+					document.write(this.pAlternateMobile);
+				}
+				else
+				{
+					this.pHandle.innerHTML = this.pAlternateMobile;
+				}
+			}
+			else
+			{
+				var args = AC_GetArgs(attributeList, "", "movie", "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000", "application/x-shockwave-flash");
+				var html = "";
+				html += '<object ';
+				for (var attr in args.objAttrs)
+				{
+					html += attr + '="' + args.objAttrs[attr] + '" ';
+				}
+				html += '>';
+				for (var attr in args.params)
+				{
+					html += '<param name="' + attr + '" value="' + args.params[attr] + '" />';
+				}
+				html += '<embed ';
+				for (var attr in args.embedAttrs)
+				{
+					html += attr + '="' + args.embedAttrs[attr] + '" ';
+				}
+				html += '></embed></object>';
+				if (isInline == true)
+				{
+					document.write(html);
+				}
+				else
+				{
+					this.pHandle.innerHTML = html;
+				}
+				this.triggerBlur();
+			}
+		}
+		else
+		{
+			if (this.pAlternateMobile != "" && isMobile() == true)
+			{
+				if (isInline == true)
+				{
+					document.write(this.pAlternateMobile);
+				}
+				else
+				{
+					this.pHandle.innerHTML = this.pAlternateMobile;
+				}
+			}
+			else if (this.pRedirectURL != "")
+			{
+				window.location.href = this.pRedirectURL;
+			}
+			else if (this.pAlternateImage != "")
+			{
+				if (isInline == true)
+				{
+					document.write('<img src="' + this.pAlternateImage + '" width="' + this.pAttributes["width"] + '" height="' + this.pAttributes["height"] + '" />');
+				}
+				else
+				{
+					this.pHandle.innerHTML = '<img src="' + this.pAlternateImage + '" width="' + this.pAttributes["width"] + '" height="' + this.pAttributes["height"] + '" />';
+				}
+			}
+			else
+			{
+				if (isInline == true)
+				{
+					document.write(this.pAlternateHTML);
+				}
+				else
+				{
+					this.pHandle.innerHTML = this.pAlternateHTML;
+				}
+			}
+		}
+	}
+};
+
+// ----------------------------------------------
+// Function:	triggerBlur()
+// Author:		Nathan Derksen
+// Description:	Manually remove the focus from the Flash module
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+FlashAPI.prototype.triggerBlur = function()
+{
+	var elements = [];
+	
+	if (parent == window)
+	{
+		// not in an iframe		
+		if (document.getElementById("divLogo") != null)
+		{
+			elements = document.getElementById("divLogo").getElementsByTagName("a");
+		}
+		else
+		{
+			elements = document.getElementsByTagName("a");
+		}
+	}
+	else
+	{
+		// in an iframe, get around the fact that the first bunch of links are not visible and can't be detected as such
+		if (document.getElementById("divPageContent") != null)
+		{
+			elements = document.getElementById("divPageContent").getElementsByTagName("a");
+		}
+	}
+
+    try {
+        // 3219: Fails in IE if <a> tag is hidden, so catch the error so that rest of code isn't aborted
+        if (elements.length > 0) {
+            if (FlashAPI_skipFlashFocus == false) {
+                elements[0].focus();
+                elements[0].blur();
+            }
+        }
+    }
+    catch (err) {
+    }
+
+    if (typeof (pageTitle_verify) != "undefined")
+	{
+		pageTitle_verify();
+	}
+}
+
+// ----------------------------------------------
+// Function:	isFlashAvailable()
+// Author:		Nathan Derksen
+// Description:	A static helper method that allows for a Flash player version test without actually needing to create 
+//				a new instance of FlashAPI.
+// Inputs:		<Number> major: The major version (eg 9)
+//				<Number> minor: The minor version (almost always zero)
+//				<Number> revision: The revision (generally zero, but may be higher. Set to zero if unsure)
+// Returns:		<Boolean>: True if the installed player is greater than or equal to the passed in parameters, false otherwise.
+// ----------------------------------------------
+FlashAPI.isFlashAvailable = function(major, minor, revision)
+{
+	return DetectFlashVer(major, minor, revision);
+};
+
+FlashAPI.getHandle = function(movieName)
+{
+	var isIE = navigator.appName.indexOf("Microsoft") != -1;
+	var windowRef = window[movieName];
+	var documentRef = document[movieName];
+	
+	if (isIE)
+	{
+		if (windowRef) {
+			return windowRef;
+		} else {
+			return document.getElementById(movieName);
+		}
+	}
+	else
+	{
+		if (documentRef && documentRef.length > 0)
+		{
+			// Some flash embed implementations use "name" for both object and embed tags. We want the embed one.
+			return documentRef[documentRef.length-1];
+		}
+	}
+	return null;
+};
+

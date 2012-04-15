@@ -1,0 +1,1422 @@
+
+
+/*------------------------------------------------------------------------------
+
+BusinessWeek
+Global Screen Styles
+Copyright (c) Bloomberg L.P.
+
+------------------------------------------------------------------------------*/
+
+/*@import url("jquery-ui.css"); */ /*i47:ttm*/
+@import url("http://res.businessweek.com/css/screen/jquery-ui.css"); /*i47:ttm*/
+
+/*====================================================================
+CSS Hacks/tricks
+====================================================================*/
+
+.clearfix:after { content: " "; display: block; height: 0; clear: both; visibility: hidden; line-height: 0px; font-size: 0; }
+.clearfix {display: inline-block;}
+html[xmlns] .clearfix {display: block;}
+* html .clearfix {height: 1%;}
+.clear { clear: both; visibility: hidden; overflow: hidden; margin: 0; padding: 0; height: 0; line-height: 0;}
+
+/*====================================================================
+Globals
+====================================================================*/
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-size: 10px; /* sets 1em to 10px */
+	font-family: Helvetica, Arial, sans-serif;
+	color: #333;
+	/*background: white url(http://images.businessweek.com/gen/backgrounds/body-20100414.gif) repeat-x; *//*i56:rl*/
+	/*padding: 37px 0 7px 0; */
+	padding: 0px 0 7px 0;
+}
+
+a img {
+	border: none;
+}
+
+a:link, a:visited {
+	color: #064599;
+	text-decoration: none;
+}
+a:hover, a:active {
+	color: #064599;
+	text-decoration: underline;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+hr.clearFloat {
+	clear: both;
+	display: block;
+	visibility: hidden;
+	margin: 0;
+}
+
+.clearFloat {
+	clear: both;
+	line-height: 0;
+	height: 0;
+}
+
+/*clearfix:after moved up to top*/ /*PA*/
+
+.module {
+	clear: both;
+	position: relative;
+}
+
+.module .cornerBug {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+
+#wrapper {
+	width: 980px;	
+	margin: 0 auto;
+}
+
+#prestitial {
+	display: none; /* suppress whitespace when prestitial ad is not served */
+}
+
+#header {
+	position: relative;
+}
+
+#footer {
+	clear: both;
+	margin-top: 10px;
+	padding-top: 11px;
+	border-color: #bfbfbf;
+	border-width: 1px 0 0 0;
+	border-style: solid;
+}
+
+#footer p {
+	font-size: 1.2em;
+	margin-bottom: .7em;
+}
+
+#footer .copyright {
+	font-size: 1.1em;
+	margin-bottom: 1em;
+}
+
+.modalDialogWrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;	
+	/*
+	opacity: .5;
+	filter: alpha(opacity = 50);
+	background-color: black;
+	*/
+}
+
+/*- Main BW Logo -------------------------------------------------------------*/
+
+#header .logo img {
+	display: block;
+}
+
+#subscribe {
+	color: #E63F96;
+	font-size: 14px;
+	font-weight: bold;
+	letter-spacing: 0.2px;
+	position: absolute; /* IE6 */
+	margin-top: 9px;
+}
+
+#header-nav-area #subscribe a {
+	color: #E63F96;
+}
+
+/*- Main Navigation ----------------------------------------------------------*/
+
+#navigation {
+	position: relative;
+	width: 100%; /* force hasLayout in IE */
+	height: 60px;
+	margin: 0 0 8px 0;
+	/* margin: 3px 0 8px 0; */
+	border-color: #bfbfbf;
+	border-width: 1px 0 1px 0;
+	border-style: solid;
+}
+
+#navigation li {
+	float: left;
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+#navTopNews a, 
+#navInvesting a,
+#navCompanies a, 
+#navTechnology a,
+#navInnovation a,
+#navManaging a,
+#navSmallBiz a,
+#navBSchools a,
+#navAsia a, 
+#navEurope a, 
+#navLifestyle a,
+#navMagazine a {
+	display: block;
+	height: 100%;
+	text-indent: -5000px;
+}
+
+#navTopNews, 
+#navInvesting,
+#navCompanies,
+#navTechnology,
+#navInnovation,
+#navManaging,
+#navSmallBiz,
+#navBSchools,
+#navAsia, 
+#navEurope, 
+#navLifestyle,
+#navMagazine {
+	height: 30px; /* always make sure these stretches to touch second tier */
+	background: url(http://images.businessweek.com/gen/nav/global_nav_20071220.gif) no-repeat;
+}
+
+/* tier 1 defaults */
+#navTopNews {width: 49px; background-position: 0 1px;}
+#navInvesting {width: 77px;	background-position: -100px 1px;}
+#navCompanies {width: 82px;	background-position: -200px 1px;}
+#navTechnology {width: 92px; background-position: -300px 1px;}
+#navInnovation {width: 86px; background-position: -500px 1px;}
+#navManaging {width: 79px; background-position: -1100px 1px;}
+#navSmallBiz {width: 76px; background-position: -600px 1px;}
+#navBSchools {width: 81px; background-position: -700px 1px;}
+#navAsia {width: 44px; background-position: -800px 1px;}
+#navEurope {width: 62px; background-position: -900px 1px;}
+#navLifestyle {width: 75px; background-position: -1200px 1px;}
+#navMagazine {width: 77px; background-position: -1000px 1px;}
+
+/* tier 1 highlighting (disable hover states) */
+.topNews #navTopNews, .topNews #navTopNews:hover, .topNews #navTopNews.hover {background-position: 0 -26px;}
+.investing #navInvesting, .investing #navInvesting:hover, .investing #navInvesting.hover {background-position: -100px -26px;}
+.companies #navCompanies, .companies #navCompanies:hover, .companies #navCompanies.hover {background-position: -200px -26px;}
+.technology #navTechnology, .technology #navTechnology:hover, .technology #navTechnology.hover {background-position: -300px -26px;}
+.innovation #navInnovation, .innovation #navInnovation:hover, .innovation #navInnovation.hover {background-position: -500px -26px;}
+.managing #navManaging, .managing #navManaging:hover, .managing #navManaging.hover {background-position: -1100px -26px;}
+.smallBiz #navSmallBiz, .smallBiz #navSmallBiz:hover, .smallBiz #navSmallBiz.hover {background-position: -600px -26px;}
+.bSchools #navBSchools, .bSchools #navBSchools:hover, .bSchools #navBSchools.hover {background-position: -700px -26px;}
+.asia #navAsia, .asia #navAsia:hover, .asia #navAsia.hover {background-position: -800px -26px;}
+.europe #navEurope, .europe #navEurope:hover, .europe #navEurope.hover {background-position: -900px -26px;}
+.lifestyle #navLifestyle, .lifestyle #navLifestyle:hover, .lifestyle #navLifestyle.hover {background-position: -1200px -26px;}
+.magazine #navMagazine, .magazine #navMagazine:hover, .magazine #navMagazine.hover {background-position: -1000px -26px;}
+
+/* hover states */
+#navTopNews:hover, #navTopNews.hover {background-position: 0 -53px;} 
+#navInvesting:hover, #navInvesting.hover {background-position: -100px -53px;}
+#navCompanies:hover, #navCompanies.hover {background-position: -200px -53px;}
+#navTechnology:hover, #navTechnology.hover {background-position: -300px -53px;}
+#navInnovation:hover, #navInnovation.hover {background-position: -500px -53px;}
+#navManaging:hover, #navManaging.hover {background-position: -1100px -53px;}
+#navSmallBiz:hover, #navSmallBiz.hover {background-position: -600px -53px;}
+#navBSchools:hover, #navBSchools.hover {background-position: -700px -53px;}
+#navAsia:hover, #navAsia.hover {background-position: -800px -53px;}
+#navEurope:hover, #navEurope.hover {background-position: -900px -53px;}
+#navLifestyle:hover, #navLifestyle.hover {background-position: -1200px -53px;}
+#navMagazine:hover, #navMagazine.hover {background-position: -1000px -53px;}
+
+/* turn off subesection by default */
+#navigation li ul {
+	display: none;
+	position: absolute;
+	top: 30px;
+	left: 0;
+	background-color: white;
+	width: 980px; /* percent doesn't work with IE here, use px instead */
+	border-color: #bfbfbf;
+	border-width: 1px 0 0 0;
+	border-style: solid;
+}
+
+/* for all links in the list */
+#navigation li ul li a {
+	display: block;
+	height: auto; /* override height from tier 1 anchors */
+	line-height: 26px;
+	padding: 2px 12px 0 5px;
+	font-size: 11px;
+	text-indent: 0; /* override text-indent from tier 1 anchors */
+	color: #666;
+}
+
+.topNews #navTopNews ul,
+.investing #navInvesting ul,
+.companies #navCompanies ul, 
+.technology #navTechnology ul,
+.innovation #navInnovation ul,
+.managing #navManaging ul,
+.smallBiz #navSmallBiz ul,
+.bSchools #navBSchools ul,
+.asia #navAsia ul,
+.europe #navEurope ul,
+.lifestyle #navLifestyle ul,
+.magazine #navMagazine ul {
+	display: block;
+}
+
+/* subsection rollovers */
+#navigation li:hover ul, #navigation li.hover ul {
+	display: block;
+	z-index: 1000;
+}
+
+/* tier 2 highlighting */
+.topNewsHome #tnHome a,
+.topNewsSpecialReports #tnSpecialReports a,
+.topNewsVideos #tnVideos a,
+.topNewsNewsletters #tnNewsletters a, 
+.topNewsBlogs #tnBlogs a,
+.topNewsDebateRoom #tnDebateRoom a,
+.topNewsFeaturedReaders #tnFeaturedReaders a,
+.topNewsExecutiveSummary #tnExecutiveSummary a,
+.topNewsColumnists #tnColumnists a, 
+.topNewsElection #tnElection a,
+.topNewsPoliticsBlog #tnPoliticsBlog a,
+.topNewsGreenBusiness #tnGreenBusiness a,
+.topNewsWhatsYourStory #tnWhatsYourStory a,
+.investingHome #inHome a,
+.investingMarkets #inMarkets a,
+.investingStocks #inStocks a,
+.investingFunds #inFunds a,
+.investingSectors #inSectors a,
+.investingBonds #inBonds a,
+.investingEurope #inEurope a,
+.investingPhilanthropy #inPhilanthropy a,
+.investingNewsletters #inNewsletters a,
+.investingRealEstate #inRealEstate a,
+.investingRetirement #inRetirement a,
+.investingLearningCenter #inLearningCenter a,
+.investingEconBlog #inEconBlog,
+.investingGreenBizBlog #inGreenBizBlog a,
+.investingBlog #inBlog a,
+.investingColumnists #inColumnists a,
+.companiesHome #coHome a,
+.companiesSectors #coSectors a,
+.companiesIndustryNews #coIndustryNews a,
+.companiesLearningCenter #coLearningCenter a,
+.companiesPeople #coPeople a,
+.companiesWindowsApp #coWindowsApp a,
+.techHome #tcHome a,
+.techBeat #tcBeat a,
+.techCeoGuide #tcCeoGuide a,
+.techComputers #tcComputers a,
+.techElectronics #tcElectronics a,
+.techEntertainment #tcEntertainment a,
+.techInternet #tcInternet a,
+.techReviews #tcReviews a,
+.techSoftware #tcSoftware a,
+.techInvesting #tcInvesting a,
+.techMaven #tcTechMaven a,
+.techTelecom #tcTelecom a,
+.techColumnists #tcColumnists a,
+.innovationHome #idHome a,
+.innovationArchitecture #idArch a,
+.innovationAutos #idAuto a,
+.innovationBrandEquity #idBrandEquity a,
+.innovationGameRoom #idGameRoom a,
+.innovationBrandBlog #idBrandBlog a,
+.innovationDesignBlog #idDesignBlog a,
+.innovationGamesBlog #idGamesBlog a,
+.innovationMediaBlog #idMediaBlog a,
+.innovationJDPower #idJDPower a,
+.innovationNextBlog #idNextBlog a,
+.innovationSlideShows #idSlideShows a,
+.innovationColumnists #idColumnists a,
+.managingHome #mnHome a,
+.managingCareer #mnCareer a,
+.managingTeam #mnTeam a,
+.managingCompany #mnCompany a,
+.managingBoard #mnBoard a,
+.managingCaseStudies #mnCaseStudies a,
+.managingColumnists #mnColumnists a,
+.managingClassroom #mnClassroom a,
+.managingBooks #mnBooks a,
+.managingIQBlog #mnIQBlog a,
+.managingWorkingParents #mnWorkingParents a,
+.managingCaseStudies #mnCaseStudies a,
+.managingColumnists #mnColumnists a,
+.smallBizHome #sbHome a,
+.smallBizBlog #sbBlog a,
+.smallBizGettingStarted #sbGettingStarted a,
+.smallBizMarketing #sbMarketing a,
+.smallBizLeadership #sbLeadership a,
+.smallBizCommunications #sbCommunications a,
+.smallBizSmartCenters #sbSmartCenters a,
+.smallBizSuccessStories #sbSuccessStories a,
+.smallBizTech #sbTech a,
+.smallBizMagazine #sbMag a,
+.smallBizColumnists #sbColumnists a,
+.smallBizFinancing #sbFinancing a,
+.bSchoolsHome #bsHome a,
+.bSchoolsUndergrad #bsUndergrad a,
+.bSchoolsMBAInsider #bsMBAInsider a,
+.bSchoolsMBABlogs #bsMBABlogs a,
+.bSchoolsCalendar #bsCalendar a,
+.bSchoolsForums #bsForums a,
+.bSchoolsRankings #bsRankings a,
+.bSchoolsAdmissionsQA #bsAdmissionsQA a,
+.bSchoolsJournals #bsJournals a,
+.bSchoolsVideos #bsVideos a,
+.bSchoolsColumnists #bsColumnists a,
+.bSchoolsAdmissionsBlog #bsAdmissionsBlog a,
+.asiaHome #asHome a,
+.asiaChina #asChina a,
+.asiaIndia #asIndia a,
+.asiaEconomics #asEcon a,
+.asiaInnovation #asInnovation a,
+.asiaInvesting #asInvesting a,
+.asiaEyeOnAsia #asEyeOnAsia a,
+.europeHome #euHome a,
+.europeAutos #euAutos a,
+.europeCompanies #euCompanies a,
+.europeEconomics #euEcon a,
+.europeEnergy #euEnergy a,
+.europeInnovation #euInnovation a,
+.europeInvesting #euInvesting a,
+.europeInsight #euInsight a,
+.europeColumnists #euColumnists a,
+.lifestyleHome #lsHome a,
+.lifestyleRealEstate #lsRealEstate a,
+.lifestyleAutos #lsAutos a,
+.lifestyleTravel #lsTravel a,
+.lifestyleHealth #lsHealth a,
+.lifestyleLivingWell #lsLivingWell a,
+.lifestyleAutoBeat #lsAutoBeat a,
+.lifestyleBizOfLuxury #lsBizOfLuxury a,
+.lifestyleHotProperty #lsHotProperty a,
+.lifestyleTravelersCheck #lsTravelersCheck a,
+.lifestyleColumnists #lsColumnists a,
+.magazineCurrent #mzCurrent a,
+.magazinePastIssues #mzPastIssues a,
+.magazineCoverPodcasts #mzCoverPodcasts a,
+.magazineFigures #mzFigures a,
+.magazineIN #mzIN a,
+.magazineSmallBiz #mzSmallBiz
+.magazineBWTV #mzBWTV a,
+.magazineSubscribe #mzSubscribe a,
+.magazineFAQ #mzFAQ a,
+.magazineColumnists #mzColumnists a {
+	cursor: default;
+	color: #ed1c24;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+/*- Search -------------------------------------------------------------------*/
+
+#header #searchForm {
+	border: solid 0 transparent; /* removes fieldset borders in Opera 7 */ 
+	position: absolute;
+	top: 11px;
+	left: 287px;
+}
+
+#header #searchTerm {
+	width: 180px;
+	height: 16px;
+	border: 1px solid #a8a8a8;
+	margin-right: 2px;
+	padding-left: 2px;
+	color: #999;
+	vertical-align: bottom;
+	/* font-size: 1.2em; */
+}
+
+#header #searchTerm.active {
+	color: #333;
+}
+
+#header #searchForm img {
+	vertical-align: bottom;
+	width: 53px;
+	height: 19px;
+}
+
+/*- Advanced Search ----------------------------------------------------------*/
+
+#advancedSearchWrapper {
+	position: absolute;
+	top: 29px;
+	width: 1px;
+	z-index: 11000;
+}
+
+#advancedSearch {
+	display: none;
+	width: 421px; 
+	background-color: #f2f2f2;
+	border-width: 0 2px 2px 2px;
+	border-color: #999;
+	border-style: solid;
+	position: absolute;
+	top: 0;
+	left: 555px;
+}
+
+#advancedSearch.on {
+	display: block;
+}
+
+#advancedSearch fieldset {
+	border: solid 0 transparent; /* removes fieldset borders in Opera 7 */
+	margin: 0 12px;
+}
+
+#advancedSearch .mainSearch {
+	border-width: 0 0 1px 0;
+	border-color: #999;
+	border-style: solid;
+}
+
+#advancedSearch .mainSearch input {
+	display: block;
+	width: 290px;
+	height: 23px;
+	line-height: 23px;
+	color: #666;
+	border: 1px solid #999;
+	margin: 20px auto;
+	padding-left: 4px;
+}
+
+#advancedSearch .searchOptions {
+	padding: 20px 0 0 0;
+	margin-bottom: 18px;
+	border-width: 0 0 2px 0;
+	border-color: #999;
+	border-style: solid;
+}
+
+#advancedSearch .searchOptions label {
+	display: block;
+	float: left;
+	clear: left;
+	width: 88px;
+	text-align: right;
+	text-transform: uppercase;
+	font-weight: bold; 
+	font-size: 12px;
+	line-height: 23px;
+	color: #333;
+	padding-right: 10px;
+}
+
+#advancedSearch .searchOptions input, #advancedSearch .searchOptions select {
+	height: 23px;
+	line-height: 23px;
+	color: #666;
+	border: 1px solid #999;
+	padding-left: 4px;
+	margin-bottom: 20px;
+}
+
+#advancedSearch .searchOptions input {
+	width: 244px;
+}
+
+#advancedSearch .searchOptions select {
+	width: 250px;
+}
+
+#advancedSearch .customDateOptions {
+	display: none;
+}
+
+#advancedSearch .customDateOptions.on {
+	display: block;
+}
+
+#advancedSearch .customDateOptions {
+	padding-left: 86px;
+}
+
+#advancedSearch .customDateOptions input {
+	width: 75px;
+}
+
+#advancedSearch .customDateOptions .ui-datepicker-trigger {
+	position: absolute;
+	margin: 3px 0 0 3px;
+}
+
+#advancedSearch #advancedSearch-toDate {
+	margin-left: 50px;
+}
+
+#advancedSearch .submission {
+	padding-right: 5px;
+	font-size: 14px;
+	text-transform: lowercase;
+}
+
+#advancedSearch .submission a {
+	color: #666;
+}
+
+#advancedSearch .submit, #advancedSearch .cancel {
+	display: block;
+	float: right;
+	height: 19px;
+	line-height: 19px;
+}
+
+#advancedSearch .submit {
+	width: 51px;
+	background: url(http://images.businessweek.com/icons/search_51x19.gif) no-repeat 0 0;
+	margin-left: 20px;
+}
+
+#advancedSearch .submit a {
+	display: block;
+	height: 100%;
+	text-indent: -5000px;
+	cursor: pointer;
+}
+
+#advancedSearch .cancel {
+	margin-bottom: 18px;
+}
+
+/*- Register, Sign In --------------------------------------------------------*/
+
+#header .welcomePrompt {
+	position: absolute;
+	top: 23px;
+	left: 275px;
+	padding-left: 1px;
+	font-size: 1.1em;
+}
+
+.welcomePrompt .signInOut {
+	border-color: #d9d9d9;
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	padding-left: 5px;
+	margin-left: 2px;
+}
+
+/*- SWF Data Gateway ---------------------------------------------------------*/
+
+#gatewaySWFWrapper {
+	position: absolute;
+	top: -10px;
+	left: -10px;
+	width: 1px;
+	height: 1px;
+}
+
+/*- Magazine Box -------------------------------------------------------------*/
+
+#header #magazineBox {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 198px;
+	height: 52px;
+	border: 1px solid #d9d9d9;
+	background: #fafafa url(http://images.businessweek.com/mz/covers/current_subscribe_box.jpg) no-repeat 105% 20%;
+	overflow: hidden;
+}
+
+#header #magazineBox h3 {
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 12px;
+	margin: 5px 0 0 8px;
+	padding: 0 0 2px 0;
+	border-color: #e5e5e5;
+	border-width: 0 0 1px 0;
+	border-style: solid;
+	width: 90px;
+}
+
+#header #magazineBox h4 {
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 11px;
+	margin: 4px 0 0 8px;
+}
+
+#header #magazineBox h5 {
+	/*
+	font-size: 11px;
+	line-height: 11px;
+	margin: 1px 0 0 8px;
+	*/
+	
+	font-size: 10px;
+	line-height: 11px;
+	margin: 1px 0 0 8px;
+	text-transform: uppercase;
+}
+
+#header #magazineBox h4 a, #header #magazineBox h5 a {
+	color: #ef181e;
+}
+
+div#headerContainer { /*i56:rl, adding CIC style override here so we don't have to have CIC update some common.css on their end */
+	background-color: #fff;
+	margin-top: 2px;
+	padding-top: 0;
+}
+
+div.newTopAdContainer { /*i56:rl, adding CIC style override here so we don't have to have CIC update some common.css on their end */
+	background-color: #f7f7f7;
+	margin-bottom: 11px;
+}
+
+/*- CapIQ Partner Box --------------------------------------------------------*/
+
+#header #capiqPartnership {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 190px;
+	height: 60px;
+	background: url(http://images.businessweek.com/gen/logos/capital_iq_190x60.gif) no-repeat 0 0;
+	overflow: hidden;
+}
+
+#header #capiqPartnership p a {
+	display: block;
+	height: 160px;
+	text-indent: -5000px;
+}
+
+/*- Edit Notes ---------------------------------------------------------------*/
+
+#header #editNote {
+	position: absolute;
+	top: 0;
+	left: 655px;
+	width: 112px;
+	height: 54px;
+	background: url(http://images.businessweek.com/icons/promo_bugs/unstructured_finance.jpg) no-repeat 0 0;
+	overflow: hidden;
+}
+
+#header #editNote a {
+	display: block;
+	height: 60px;
+	text-indent: -5000px;
+}
+
+/*====================================================================
+BW2 Umbrella
+====================================================================*/
+#bw2-umbrella {
+	background-color: #000;
+	border-bottom: 1px solid #666; 
+	top: 0;
+	position: absolute;
+	width: 980px;
+}
+
+#umbrella-inner {
+	width: 980px;
+	margin: 0 auto;
+	height: 36px;
+	overflow: hidden;
+	/*position: relative;*/
+}
+
+/*- Umbrella Tabs --------------------------------------------------*/
+#umbrella-tabs {
+	width: 380px;
+	height: 26px;
+	position: absolute;
+	top: 5px;
+}
+
+#umbrella-tabs li {
+	border-bottom: 0;
+	display: block;
+	float: left;
+	overflow: hidden;
+	height: 100%;
+}
+
+#umbrella-tabs li.first {
+	margin-left: 0px;
+}
+
+#umbrella-bloomberg { width: 111px; border-right: 1px solid #666666 !important; }
+#umbrella-bw { width: 176px; display: none !important; }
+#umbrella-bx { width: 135px; }
+
+#umbrella-tabs a {
+	display: block;
+	overflow: hidden;
+	padding-top: 26px;
+	height: 0;
+	outline: transparent none 0;
+	background: transparent url(http://images.businessweek.com/gen/nav/umbrella_nav_sprite-20100414.gif) no-repeat;
+}
+
+/*- Umbrella Tabs - Default State -*/
+#umbrella-bloomberg a { background-position: -3px 5px; }
+#umbrella-bw a { background-color: #000; background-position: 0px -18px; }
+#umbrella-bx a { background-color: #000; background-position: 5px -41px; }
+
+
+/*- Umbrella Search --------------------------------------------------*/
+#umbrella-search {
+	float: right;
+	padding-top: 5px;
+	width: 450px; 
+}
+
+#umbrella-search fieldset {
+	border: 0 none;
+}
+
+#umbrellaForm input {
+	width: 196px;
+	height: 18px;
+	border: 1px solid #C0C0C0;
+	color: #7e7e7e;
+	font-size: 13px;
+	line-height: 18px;
+	padding: 1px 0px 0px 8px;
+}
+
+#umbrella-submit img {
+	float: right;
+	margin-top: 3px;
+	margin-left: 12px;
+}
+
+#umbrella-toggle img {
+	float: right;
+	margin-left: 1px;
+	margin-top: 3px;
+}
+
+#umbrella-textField-wrapper {
+	background-color: #E5E5E5;
+	border: 2px solid #E5E5E5;
+	float: right;
+}
+
+/*====================================================================
+BW2 Header
+====================================================================*/
+
+#bw2-header {
+	position: relative;
+	color: #CCCCCC;
+	font-family: Helvetica, Arial;
+	font-size: 10px;
+	margin: 0 auto;
+	padding: 11px 0px 34px;
+	margin-bottom: 14px; 
+	width: 980px;
+	z-index: 10800;	
+}
+
+#bw2-header a {
+	color: #ccc;
+}
+
+#logo-bw {}
+
+#logo-bw img {
+	vertical-align: top;
+}
+
+#header-info {
+	float: right;
+	width: 300px;
+}
+
+#header-info li {
+	display: inline;
+	font-size: 11px;
+}
+
+#today-date {
+	/*float: left;*/
+	display: none;
+}
+
+#header-info .account {
+	font-weight: bold;
+	float: right;
+	color: #999;
+}
+
+#header-info .account a {
+	color: #999;
+}
+
+#header-info .subscribe-link {
+	float: right;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+
+/*====================================================================
+BW2 Header Navigation
+====================================================================*/
+
+#header-nav-area {
+	clear: left;
+	margin-top: 9px;
+	position: relative;
+	border-top: 1px solid #ddd;
+}
+
+#header-nav {
+	position: absolute;
+	right: 0;
+	top: 4px;
+}
+
+#header-nav li.nav-flyout-link {
+	float: left;
+}
+#header-nav li.first {
+	margin-left: 0;
+}
+#header-nav li.nav-flyout-link .flyout-header {
+	padding: 20px 10px 2px;
+	border: 1px solid #eee;
+	border-right-color: #fff;
+	border-left-width: 6px;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	margin-top: 1px;
+	display: block;
+	position: relative;
+	text-decoration: none;
+	color: #fff;
+	height: 0;
+	overflow: hidden;
+	background: transparent url(http://assets.businessweek.com/images/backgrounds/top-nav-bg.png) no-repeat 0 0; /*i56:rl */
+}
+#header-nav li.nav-flyout-link .flyout-header span {
+	cursor: hand;
+	cursor: pointer;
+	color: #fff;
+	visibility: hidden;
+	font-size: 0;
+}
+
+/* normal state */
+#header-nav #header-nav-homepage .flyout-header {width: 45px; background-position: 5px 0px; border-left-color: #5f6062;}
+#header-nav #header-nav-finance .flyout-header {width: 65px; background-position: -60px 0px; border-left-color: #0068ac;}
+#header-nav #header-nav-technology .flyout-header {width: 90px; background-position: -144px 0px; border-left-color: #7da6be;}
+#header-nav #header-nav-innovation .flyout-header {width: 85px; background-position: -262px 0px; border-left-color: #67af3d;}
+#header-nav #header-nav-management .flyout-header {width: 95px; background-position: -370px 0px; border-left-color: #ffd300;}
+#header-nav #header-nav-small-business .flyout-header {width: 110px; background-position: -494px 0px; border-left-color: #f8941d;}
+#header-nav #header-nav-global .flyout-header {width: 45px; background-position: -644px 0px; border-left-color: #99295e;}
+
+/* hover state */
+#header-nav li.flyout-hover .flyout-header {
+	background-color: #f7f7f7;
+	border-top-width: 1px;
+	margin-top: 0;
+	z-index: 900;
+}
+
+#header-nav #header-nav-homepage.flyout-hover .flyout-header {border-color: #5f6062;}
+#header-nav #header-nav-finance.flyout-hover .flyout-header {border-color: #0068ac;}
+#header-nav #header-nav-technology.flyout-hover .flyout-header {border-color: #7da6be;}
+#header-nav #header-nav-innovation.flyout-hover .flyout-header {border-color: #67af3d;} 
+#header-nav #header-nav-management.flyout-hover .flyout-header {border-color: #ffd300;} 
+#header-nav #header-nav-small-business.flyout-hover .flyout-header {border-color: #f8941d;}
+#header-nav #header-nav-global.flyout-hover .flyout-header {border-color: #99295e;}
+
+/* active/current page state */
+body.homepage #header-nav-homepage .flyout-header, 
+body.archive #header-nav-homepage .flyout-header,
+body.finance #header-nav-finance .flyout-header,
+body.technology #header-nav-technology .flyout-header,
+body.innovation #header-nav-innovation .flyout-header,
+body.management #header-nav-management .flyout-header,body.business-schools #header-nav-management .flyout-header,
+body.small-business #header-nav-small-business .flyout-header,
+body.global #header-nav-global .flyout-header,body.asia #header-nav-global .flyout-header,body.europe #header-nav-global .flyout-header {
+	background-color: #f7f7f7;
+}
+
+#header-nav li.flyout-hover .flyout {
+	display: block;
+}
+
+#header-nav .flyout { 
+	display: none; 
+	position: absolute;
+	left: 0;
+	top: 22px;
+	width: 300px;
+	border: 1px solid #eee;
+	border-left-width: 6px;
+	background-color: #f7f7f7;
+	z-index: 800;
+	padding: 10px 8px 5px;
+	-moz-box-shadow: -2px 3px 10px rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow: -2px 3px 10px rgba(0, 0, 0, 0.15);
+	box-shadow: -2px 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+#header-nav #header-nav-homepage.flyout-hover .flyout {border-color: #5f6062;}
+#header-nav #header-nav-finance.flyout-hover .flyout {border-color: #0068ac;}
+#header-nav #header-nav-technology.flyout-hover .flyout {border-color: #7da6be;}
+#header-nav #header-nav-innovation.flyout-hover .flyout {border-color: #67af3d;} 
+#header-nav #header-nav-management.flyout-hover .flyout {border-color: #ffd300;} 
+#header-nav #header-nav-small-business.flyout-hover .flyout {border-color: #f8941d;}
+#header-nav #header-nav-global.flyout-hover .flyout {border-color: #99295e;}
+
+#header-nav .flyout ul {
+	float: left;
+	margin-left: 10px;
+} 
+#header-nav .flyout ul.even  {
+	margin-left: 0;
+	float: left;
+	border-right: 1px solid #ccc;
+	padding-right: 8px;
+} 
+#header-nav .flyout-right {
+	right: 0;
+	left: auto;
+}
+#header-nav .flyout li  { 
+	width: 140px;
+	padding: 3px 0;
+}
+#header-nav .flyout li a { 
+	color: #14427e;
+	font-size: 12px;
+}
+#header-nav .flyout li a.channel-home {
+	font-weight: bold;	
+}
+
+#header-nav .flyout #bschool-link {
+	background: transparent url(http://images.businessweek.com/icons/bschool.png) no-repeat scroll 0 0;
+	padding: 3px 0 2px 20px;
+	position: relative;
+	left: -3px;
+} 
+
+/* flyout ads */
+#header-nav .flyout .ad {
+	border: 0px none;
+	text-align: right;
+	padding: 5px 0px 0px;
+	margin: 0px;
+	float: right;
+	font-size: 0px;
+	line-height: 0px;
+	width: 300px;
+	overflow: hidden;
+	background-color: inherit;
+}
+
+#header-nav .flyout .ad img {
+	vertical-align: bottom;
+}
+/*- Ads -----------------------------------------------------*/
+
+#wrapper .ad, #top-section .ad {
+	background-color: #f7f7f7;
+	border-top: 3px solid #fff;
+	padding: 3px 0px;
+	text-align: center;
+}
+
+#TopRightAd .ad {
+	position: absolute;
+	right: 0;
+	text-align: right;
+	top: 5px;
+	padding: 0;
+	border: 0;
+	background-color: white;
+}
+
+#CircFooterAd {
+   text-align: center;
+   margin-bottom: 15px;
+   background-color: #fff;
+}
+
+#columnLayout .ad {
+	/*border-color: #ededed;
+	border-width: 1px 0 1px 0;
+	border-style: solid;*/
+	padding: 8px 0 6px 0;
+	margin-bottom: 15px;
+	text-align: center;
+	background-color: white;
+}
+
+/* override extra ad wrapper */
+#columnLayout .ad .ad {
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
+#ad-top-wrapper { /*i47:ttm*/
+	height: 90px;
+	text-align: center;
+	padding: 3px 0;
+	/* i56, fix ad overlay */
+	position: relative;
+	z-index: 900;
+}
+
+.noAd * {
+	display: none;
+}
+
+#column2 .adPair .ad {
+	width: 150px;
+	float: left;
+}
+
+.textAd ul, .textAd p {
+	font-size: 1.2em;
+	line-height: 1.3em;
+	margin: .8em 0;
+}
+
+.textAd ul a, .textAd p a {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+/*====================================================================
+Footer 
+====================================================================*/
+
+#bw2-footer {
+	position: absolute;
+	left: 0px;
+	width: 100%;
+	margin-top: 10px;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+/*====================================================================
+Leg
+====================================================================*/
+
+#wrapper-super-footer { /*i47:ttm*/
+	background-color: #3a3a3a;
+}
+
+#leg {
+	height: 260px;
+	padding: 15px 0px;
+	font-size: 10px;
+	margin: 0 auto;
+	width: 980px;
+}
+
+#leg div { /*i47:ttm*/
+	float: left;
+}
+
+#leg #leg-sr {
+	height: 245px;
+	margin: 0px 25px 16px 0px;
+	padding-left: 28px;
+	padding-top: 15px;
+	width: 172px;	
+	background-color: #454545;	
+}
+
+#leg #leg-sr li {
+	float: none;
+}
+
+#leg .leg-list li {
+	float: none;
+
+}
+
+#leg h3 {
+	color: #fff;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 1.1em;
+}
+
+#leg .no-header {
+	visibility: hidden !important;
+}
+
+.leg-list h3 {
+	margin-bottom: 6px;
+}
+
+#leg a.more, #leg a:visited.more, #leg a:active.more {
+	color: #ccc;
+	font-size: 1.1em;
+	font-weight: bold;
+	display: block;
+	margin-top: 8px;
+}
+
+div .leg-list {
+	width: 138px;
+	height: 95%;
+	margin-right: 10px;
+	margin-top: 15px;
+	border-right: solid 1px #454545;
+}
+
+#leg ul {
+	font-weight: bold;
+	margin-right: 8px;
+}
+
+#leg-sr h3, 
+#leg-current-mag h3 {
+	margin-bottom: 12px;
+}
+
+#leg-current-mag h3 a {
+	color:#FFFFFF;
+	margin-bottom:12px;
+}
+
+#leg-sr h4 {
+	color: #fff;
+	font-weight: bold;
+	margin-bottom: 6px;
+	font-size: 1.1em;
+}
+#leg-current-mag h4 {
+
+}
+#leg-current-mag h4 a, #leg-current-mag h4 a:active, #leg-current-mag h4 a:visited{
+	color: #fff;
+	display: inline-block;
+	font-weight: bold;
+  margin-bottom: 6px;
+	font-size: 11px;
+	/*margin-bottom: 6px;*/ /*PBA*/
+}
+
+#leg-sr img {
+	margin-bottom: 10px;
+	width: 125px;
+	height: 100px;
+	display: block;
+}
+
+#leg #leg-sr ul {
+	margin: 0px;
+}
+
+.leg-list ul{
+	
+}
+
+.leg-list ul.double-list{
+	margin-bottom: 6px;	
+}
+
+#leg ul span {
+	display: block;
+	margin-bottom: 5px;
+	text-transform: uppercase;
+	font-size: 11px;	
+}
+
+#leg .no-heading span {
+	display: none;	
+}
+
+#leg li {
+	list-style-type: none;
+	list-style-position: none;
+	list-style-image: none; 
+	padding-bottom: 6px; 
+	background: url(http://images.businessweek.com/gen/footer/bullet.gif) no-repeat 0 3px;
+	padding-left: 8px;
+}
+
+#leg li a {
+	font-size: 1.1em;
+	font-weight: bold;
+	line-height: 10px;	
+}
+
+.leg-list li a,
+.leg-list li a:active,
+.leg-list li a:hover,
+.leg-list li a:visited {
+	color: #ccc;	
+}
+
+#leg-sr li a,
+#leg-sr a,
+#leg-sr a:active,
+#leg-sr a:visited {
+	color: #fff;
+}
+
+#leg-current-mag {
+	margin-top: 15px;
+}
+
+#leg-current-mag img.cover {
+	width: 120px;
+	height: 160px;
+	display: block;
+	margin-bottom: 10px;
+}
+
+#leg-current-mag img.subscribe {
+	width: 106px;
+	height: 18px;
+}
+
+#leg .linked-header,
+#leg .linkedheader {
+	color:#FFFFFF;
+}
+
+/*====================================================================
+BW2 Footer
+====================================================================*/
+
+#wrapper-bw2-footer {
+	font-size: 10px;
+	background-color: #000;
+}
+
+#footer-inner {
+	padding: 25px 0px;
+	width: 980px;
+	margin: 0 auto;
+}
+
+#footer-inner p {
+	color: #999;
+	font-size: 1.1em;
+	margin-left: 226px;
+}
+
+#footer-inner p.company-links {
+	padding-top: 4px;
+}
+
+#footer-inner p a {
+	border-right: 1px solid #333333;
+	color: #fff;
+	margin-right: 2px;
+	padding-right: 4px;
+}
+
+#footer-inner p a.first {
+	margin-left: 0px;
+}
+#footer-inner p a.last {
+	border: 0px;
+}
+#footer-inner p.copyright {
+	padding-top: 4px;
+	text-transform: uppercase;
+}
+
+#logo-bb {
+	float: left;
+	margin-left: 9px;
+}
+
+
+#subscribe-now{color:#fff;text-transform:uppercase;background:#ed2027;-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;padding:1px 5px;text-decoration:none;}
+
+
+#logo-bb{float:left;margin-left:9px;margin-right:38px;margin-bottom:4px;}
+a#logo_bb{float:left;width:179px;height:39px;text-indent:-9999em;text-align:left;overflow:hidden;margin:0 30px 0 8px;background:url("http://www.businessweek.com/css/images/bbw_sprite.png") repeat scroll 0 -64px transparent;}
+
+
+/* new design css*/
+.module {
+	clear: none;
+}
+#wrapper {
+	font-size: 10px;
+}
+body {
+	background: white;
+}
+#footer .clear {
+	overflow: visible;
+	visibility: visible;
+}
+#footer .copyright {
+	margin-bottom: 30px;
+	margin-top: 10px;
+	font-size: 10px;
+	height: 32px;
+	line-height: 12px;
+}
+.companies #newFooterContainer {
+	background-color: #FFFFFF;
+	width: 980px;
+	margin-left: 70px;
+}
+body {
+	background: none;
+	font-size: 10px;
+}
+#mainContainer #footerContainer #footer ul li {
+	clear: both;
+}
+#footerContainer .bloomberg_logo {
+	width: 175px;
+}
+/* for partner pages*/
+#headerContainer #gatewaySWFWrapper {
+	position: none;
+}
+.companies #headerContainer {
+	margin-top: 0px;
+}
+#wrapper .ad, #top-section .ad, .newTopAdContainer #ad-top-wrapper {
+	position: relative;
+	z-index: 0;
+}
+#simplyhired_job_widget #container {
+	margin: 0px;
+	width: auto;
+}
+
+

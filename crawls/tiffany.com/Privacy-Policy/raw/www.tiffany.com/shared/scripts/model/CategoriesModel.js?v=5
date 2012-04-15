@@ -1,0 +1,253 @@
+﻿// ----------------------------------------------
+// File:		CategoriesModel.js
+// Author:		Nathan Derksen
+// Description:	Singleton class used to keep track of category menu data and state.
+//				Defines getters and setters used to track and modify state data.
+// Example:
+// CategoriesModel.getInstance().getMenu("materials");
+// ----------------------------------------------
+
+
+// ----------------------------------------------
+// Function:	CategoriesModel
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<none>
+// Returns:		<nothing>
+// ----------------------------------------------
+function CategoriesModel()
+{
+	this.pInstance = null;
+	this.categoryMenus = new Object();
+	this.removedMenus = new Object();
+
+	this.filterArray = [];
+	this.pCachedFilters = [];
+	this.filteredProductArray = [];
+	this.appliedFilterIdArray = [];
+}
+
+// ----------------------------------------------
+// Function:	getInstance()
+// Author:		Nathan Derksen
+// Description:	Singleton access method
+// Inputs:		<none>
+// Returns:		<CategoriesModel> Handle to a single CategoriesModel instance
+// ----------------------------------------------
+CategoriesModel.getInstance = function()
+{
+	if (!this.pInstance)
+	{
+		this.pInstance = new CategoriesModel();
+	}
+	return this.pInstance;
+};
+
+// ----------------------------------------------
+// Function:	addMenus()
+// Author:		Nathan Derksen
+// Description:	Add an array of menu arrays to the model
+// Inputs:		<Array> menusArray - An array of CategoryMenuVO objects
+// Returns:		<Nothing>
+// ----------------------------------------------
+CategoriesModel.prototype.addMenus = function(menusArray)
+{
+	if (menusArray)
+	{
+		this.reset();
+		for (var i=0; i < menusArray.length; i++)
+		{
+			this.addMenu(menusArray[i]);
+		}
+		generateEvent("onReloadCategoryMenus", this.categoryMenus);
+	}
+};
+
+// ----------------------------------------------
+// Function:	addMenu()
+// Author:		Nathan Derksen
+// Description:	Add a menu array to the model
+// Inputs:		<CategoryMenuVO> menuObject - An object representing a category menu
+// Returns:		<Nothing>
+// ----------------------------------------------
+CategoriesModel.prototype.addMenu = function(menuObject)
+{
+	if (menuObject)
+	{
+		this.categoryMenus[menuObject.name] = menuObject;
+	}
+};
+
+// ----------------------------------------------
+// Function:	getMenu()
+// Author:		Nathan Derksen
+// Description:	Get a CategoryMenuVO for a particular menu name
+// Inputs:		<String> menuName - The name of the menu to retrieve
+// Returns:		<CategoryMenuVO>
+// ----------------------------------------------
+CategoriesModel.prototype.getMenu = function(menuName)
+{
+	if (menuName)
+	{
+		if (this.categoryMenus[menuName])
+		{
+			return this.categoryMenus[menuName];
+		}
+	}
+	return null;
+};
+
+// ----------------------------------------------
+// Function:	getRelatedMenuName()
+// Author:		Nathan Derksen
+// Description:	Based on the selected item in one menu, find if there is a related sub menu that needs to be populated
+// Inputs:		<String> menuName - The name of the menu being checked
+//				<String> selectedItem - The name of the item selected in the chosen menu
+// Returns:		<String> - The name of the menu list that should be used to populate a sub-menu
+// ----------------------------------------------
+CategoriesModel.prototype.getRelatedMenuName = function(menuName, selectedItem)
+{
+	if (menuName)
+	{
+		if (selectedItem != "" && selectedItem != null)
+		{
+			var menu = this.getMenu(menuName);
+			if (menu)
+			{
+				for (var i = 0; i < menu.items.length; i++)
+				{
+					if (menu.items[i].value == selectedItem)
+					{
+						if (menu.items[i].sub)
+						{
+							return menu.items[i].sub;
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+	return "";
+};
+
+// ----------------------------------------------
+// Function:	reset()
+// Author:		Nathan Derksen
+// Description:	Clear out category menu data
+// Inputs:		<None>
+// Returns:		<Nothing>
+// ----------------------------------------------
+CategoriesModel.prototype.reset = function()
+{
+	this.categoryMenus = new Object();
+};
+
+// ----------------------------------------------
+// Function:	removeMenu()
+// Author:		Nathan Derksen
+// Description:	Indicate that a particular menu should be removed from the screen (as opposed to removing the menu data)
+// Inputs:		<String> menuName - The name of the menu to remove from the list
+// Returns:		<Nothing>
+// ----------------------------------------------
+CategoriesModel.prototype.removeMenu = function(menuName)
+{
+	if (menuName)
+	{
+		this.removedMenus[menuName] = true;
+	}
+};
+
+// ----------------------------------------------
+// Function:	isMenuRemoved()
+// Author:		Nathan Derksen
+// Description:	Check whether a particular menu should be removed from the screen
+// Inputs:		<String> menuName - The name of the menu to check as to whether it should be removed from being shown on screen
+// Returns:		<Boolean>
+// ----------------------------------------------
+CategoriesModel.prototype.isMenuRemoved = function(menuName)
+{
+	if (this.removedMenus[menuName] == true)
+	{
+		return true;
+	}
+	return false;
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+CategoriesModel.prototype.addFilters = function(filterIdArray)
+{
+	var filterIdString = "," + this.appliedFilterIdArray.join(",") + ",";
+	var n = filterIdArray.length;
+
+	for (var i = 0; i < n; i++)
+	{
+		if (filterIdString.indexOf("," + filterIdArray[i] + ",") == -1)
+		{
+			this.appliedFilterIdArray.push(filterIdArray[i]);
+			filterIdString = "," + this.appliedFilterIdArray.join(",") + ",";
+		}
+	}
+	this.updateFilteredList();
+	generateEvent("onFiltersChanged", this.appliedFilterIdArray);
+}
+
+// ----------------------------------------------
+// ----------------------------------------------
+CategoriesModel.prototype.removeFilters = function(filterIdArray)
+{
+	var n = filterIdArray.length;
+	var i, j;
+	var filterToRemove;
+
+	for (i = 0; i < n; i++)
+	{
+		filterToRemove = filterIdArray[i];
+
+		for (j = 0; j < this.appliedFilterIdArray.length; j++)
+		{
+			if (this.appliedFilterIdArray[j] == filterToRemove)
+			{
+				this.appliedFilterIdArray.splice(j, 1);
+				break;
+			}
+		}
+	}
+	this.updateFilteredList();
+	generateEvent("onFiltersChanged", this.appliedFilterIdArray);
+}
+
+// ----------------------------------------------
+// ----------------------------------------------
+CategoriesModel.prototype.removeAllFilters = function()
+{
+	this.filteredProductArray = this.productArray;
+	this.appliedFilterIdArray = [];
+	this.updateFilteredList();
+	generateEvent("onFiltersChanged", this.appliedFilterIdArray);
+}
+
+// ----------------------------------------------
+// ----------------------------------------------
+CategoriesModel.prototype.updateFilteredList = function()
+{
+/*	var n = this.productArray.length;
+	this.filteredProductArray = [];
+
+	for (var i = 0; i < n; i++)
+	{
+		if (this.isProductIncluded(this.appliedFilterIdArray, this.productArray[i]) == true)
+		{
+			this.filteredProductArray.push(this.productArray[i]);
+		}
+	}*/
+}
+
+// ----------------------------------------------
+// ----------------------------------------------
+CategoriesModel.prototype.getFilter = function(filterId)
+{
+	return this.pCachedFilters[filterId];
+}
+

@@ -1,0 +1,44 @@
+dj.ticker = function(selector,links,opts){
+    opts = opts || {};
+    var delay = opts.delay || 4500;
+    var speed = opts.speed || 800;
+    var length = links.length;
+    var current = 0;
+    var interval;
+
+    if (!length) return;
+
+    var showNext = function(){
+        var title = links[current].title, link = links[current].link;
+        $(selector).fadeOut(speed,function(){
+                $(this).html( dj.element('a',{href:link,target:'_blank'}).html(title) ).fadeIn();
+            });
+        current < length - 1 ? current++ : current = 0;
+    };
+
+    var pause = function(){
+	interval = clearInterval(interval) || 0;
+    };
+
+    var play = function(){
+	if (!interval)
+	    interval = setInterval( showNext, delay );
+    };
+
+    showNext();
+
+    $(selector).hover( pause , play ).mouseleave();
+};
+
+dj.live_ticker = function(campaign_extra){
+    $('#top_nav_live').css("width","430px");
+    $('#top_nav_live table').show();
+    dj.getRSS("http://live.drjays.com/?feed=rss",function(incoming){
+	    var links = [];
+	    for (var i = 0; i < incoming.entries.length && i < 10; i++){
+		var tracking = "?utm_source=drjays&utm_medium=banner&utm_content=ticker&utm_campaign=drjays%2Btopnav"+campaign_extra;
+		links.push({title:incoming.entries[i].title,link:incoming.entries[i].link+tracking});
+	    }
+	    dj.ticker("#top_nav_ticker",links);
+	});
+};

@@ -1,0 +1,722 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/">
+        <head>
+        <title>  Answerbag</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <meta name="keywords" content="" />
+        <meta name="Pragma" content="no-cache" />
+        <meta name="Cache-control" content="no-cache" />
+                <meta name="ROBOTS"  content="ALL" />
+                <!-- Site verifications -->
+        <meta name="verify-v1" content="o5MrTEBDPIDFFlDy2CM8m2VUul0r+Di53s21FLC55J4=" />
+        <meta name="verify-v1" content="KqIz5OcQ5htnYJG3P0FX6oCOmAKBIn5dylpIWhuqYyk=" />
+        <meta name="google-site-verification" content="A1TSJcuAgl-ES3wjaje0XtM5cwKRyMJPWSCnDu9X_lU" />
+        <META name="y_key" content="c933d6a8ffb84762">
+        <meta name="msvalidate.01" content="5F1B06EBE88583F1C05B9114514366ED" />
+        
+	<meta property="fb:app_id" content="129507778518" />
+        <meta property="fb:page_id" content="189242547342" /> 
+        
+<meta property='og:type' content='article' />
+<meta property='og:title' content='' />
+<meta property='og:url' content='http://www.answerbag.com/privacy' />
+<meta property='og:image' content='http://i.abimg.net/ui/images/icons/icon_set2b_q.png' />
+<meta property='og:description' content='' />
+<meta property='fb:admins' content='100000495146580,100000337386305,100000227392052' />
+<meta property='og:site_name' content='Answerbag' />
+
+
+                    <meta name="contentid" scheme="DMINSTR2" content="0" />
+<meta name="category" scheme="DMINSTR2" content="" />
+<meta name="subcategory" scheme="DMINSTR2" content="" />
+<meta name="subsubcategory" scheme="DMINSTR2" content="" />
+<meta name="studioid" scheme="DMINSTR2" content="" />
+<meta name="siteid" scheme="DMINSTR2" content="ANSCUS" />
+<meta name="wa_lr" scheme="DMINSTR2" content="en-US" />
+<meta name="pagetype" scheme="DMINSTR2" content="default" />
+<meta name="subpagetype" scheme="DMINSTR2" content="" />
+<meta name="wa_user1" scheme="DMINSTR2" content="" />
+<meta name="wa_user2" scheme="DMINSTR2" content="" />
+<meta name="wa_user3" scheme="DMINSTR2" content="" />
+<meta name="wa_user4" scheme="DMINSTR2" content="" />
+<meta name='wa_un' scheme='DMINSTR2' content='' />
+<meta name='wa_isreg' scheme='DMINSTR2' content='0' />
+<meta name='wa_lgdin' scheme='DMINSTR2' content='0' />
+<meta name='wa_clvl' scheme='DMINSTR2' content='' />
+<meta name='wa_lgsrc' scheme='DMINSTR2' content='' />
+
+        			 
+
+             
+		        <link href="../../i.abimg.net/css%3Fk=1334485618a.css" type="text/css" rel="stylesheet" />
+		        
+                    <link href="../../i.abimg.net/ui/stylesheets/pages/footer-pages.css%3Fj=1334485618a.css" type="text/css" rel="stylesheet" />
+                
+                
+		<!-- IE Specific Stylesheets : start -->
+		<!--[if IE 9]>
+			<link rel="stylesheet" href="http://i.abimg.net/ui/stylesheets/ie9.css?j=1334485618a" type="text/css" media="screen" />
+		<![endif]-->
+		<!--[if IE 8]>
+			<link rel="stylesheet" href="http://i.abimg.net/ui/stylesheets/ie8.css?j=1334485618a" type="text/css" media="screen" />
+		<![endif]-->
+		<!--[if lte IE 7]>
+			<link rel="stylesheet" href="http://i.abimg.net/ui/stylesheets/ie7.css?j=1334485618a" type="text/css" media="screen" />
+		<![endif]-->
+		<!--[if lte IE 6]>
+			<link rel="stylesheet" href="http://i.abimg.net/ui/stylesheets/ie6.css?j=1334485618a" type="text/css" media="screen" />
+		<![endif]-->
+		<!-- IE Specific Stylesheets : end -->
+        
+				<script src="../../ui.abimg.net/js/min/prototaculous.min.js%3Fk=1334485618a" type="text/javascript"></script>
+				<script src="../../ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script src="../../ui.abimg.net/ui/scripts/jquery.tools.min.js" type="text/javascript"></script>
+		<script src="../../ui.abimg.net/ui/scripts/template.js" type="text/javascript"></script>
+
+        
+		<script src="../../cdn.optimizely.com/js/1617017.js"></script>
+				<script src="../../ui.abimg.net/js/min/answerbag.min.js%3Fk=1334485618a" type="text/javascript"></script>
+		
+		
+		<script type="text/javascript">
+		
+			jQuery.noConflict()(function($) {
+				// can run document.ready jquery here using $
+				//$('.bg').css('height','26px');
+				$('.fbWrapper').css('display','none');
+				$('.fbWrapper').delay(1500).fadeIn('slow');
+				// bind to login dialog to login link
+				$('.login-dialog').click(function() {
+					AB.dialog('login');
+				});
+
+				$('.logout-now').click(function() {
+					$.getJSON('/ajax/logout', null, function(json) {
+						if (json) {
+							AB.dialog('logout');
+						} else {
+							AB.dialog('error?error='+escape('logout failed'));
+						}
+					});
+				});
+
+				window.fb_login_now = function(show_confirmation) {
+					FB.login(function(response) {
+						if (response.authResponse) {
+                            $.ajax({
+                                url: '/ajax/facebook_auth',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: { perms: 'email' },
+                                success: function(json) {
+                                    if (typeof json == 'string') { // error string
+                                        AB.dialog('error?error='+escape(json));
+                                        return;
+                                    }
+
+                                    AB.user_id = json.user_id;
+
+                                    if (json.new_account) {
+                                        AB.dialog('login/registered/facebook');
+                                    } else if (show_confirmation) {
+                                        AB.dialog('login/logged-in');
+                                    } else {
+                                        AB.onLogin();
+                                    }
+                                }
+                            });
+						} else if(show_confirmation) {
+							AB.dialog('login?error='+escape('You must authorize Answerbag to login with Facebook.'));
+						}
+					}, { scope:'email' });
+					return false;
+				};
+
+				$('.fb-login-now').click( function() { window.fb_login_now(false); });
+			
+			
+				
+				
+
+			});
+			AB.user_id = null;
+		</script>
+        
+        
+         <!-- Begin comScore Tag -->
+        <script type="text/javascript">
+            document.write(unescape("%3Cscript src='" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js' %3E%3C/script%3E"));
+        </script>
+        
+        <script type="text/javascript">
+          COMSCORE.beacon({
+            c1:2,
+            c2:6036385,
+            c3:"",
+            c4:"",
+            c5:"",
+            c6:"",
+            c15:""
+          });
+        </script>
+        <noscript>
+          <img src="../../b.scorecardresearch.com/b%3Fc1=2&amp;c2=6036385&amp;c3=&amp;c4=&amp;c5=&amp;c6=&amp;c15=&amp;cv=1.3&amp;cj=1.html" style="display:none" width="0" height="0" alt="" />
+        </noscript>
+        <!-- End comScore Tag --> 
+        
+        <!-- OPTIMOST PAGE CODE V2.7 - Copyright 2002-2009 Interwoven, Inc. -->
+        <script language="javascript" type="text/javascript"><!--
+        var optimost={A:{},C:{},D:document,L:document.location,M:[],Q:{},T:new Date(),U:'',V:'2.7',Enabled:true,ST:"script",SA:
+        {"type":"text/javascript"},I:function(){var s=this.L.search;var c=this.D.cookie;if(s.length>3){for(var a=s.substring(1)
+        .split("&"),i=0,l=a.length;i<l;i++){var p=a[i].indexOf("=");if(p>0)this.Q[a[i].substring(0,p)]=unescape(a[i].substring(
+        p+1));}}if(c.length>3){for(var a=c.split(";"),i=0,b=a.length;i<b;i++){var v=a[i].split("=");while(v[0].substring(0,
+        1)==" ")v[0]=v[0].substring(1,v[0].length);if(v.length==2)this.C[v[0]]=unescape(v[1]);}}},B:function(){var n;this.A={
+        };var _o=this;this.A.D_ts=Math.round(_o.T.getTime()/1000);this.A.D_tzo=_o.T.getTimezoneOffset();this.A.D_loc=_o.L.protocol+
+        "//"+_o.L.hostname+_o.L.pathname;this.A.D_ckl=_o.D.cookie.length;this.A.D_ref=_o.D.referrer;if(typeof optrial=="object")
+        for(n in optrial)this.A[n]=optrial[n];for(n in this.Q)this.A[n]=this.Q[n];for(n in this.C)if(n.substring(0,2)=="op")this.A[n]=
+        this.C[n];},S:function(){var q='';for(var n in this.A)if(this.A[n]!=null && this.A[n]!="")q+=(q.length>0?"&":(this.U.indexOf(
+        "?")>0?"&":"?"))+n+"="+escape(this.A[n]);return this.U+q;},SC:function(n,v,e,d){var de=new Date();de.setTime(
+        de.getTime()+e * 1000);this.D.cookie=n+"="+escape(v)+((e==null)?"":("; expires="+de.toGMTString()))+"; path=/"+((d==
+        null)?"":(";domain="+d));},SLD:function(){var sld=this.D.domain;var dp=sld.split(".");var l=dp.length;if(l<2)sld=null;
+        else if(!isNaN(dp[l-1])&&!isNaN(dp[l-2]))sld=null;else sld="."+dp[l-2]+"."+dp[l-1];return sld;},R:function(r,c,d,
+        e){if(this.Enabled){var b=true;if(r<1000){b=(Math.floor(Math.random()*1000)<r);if(c!=null){if(this.C[c]!=null)b=(this.C[c]!=
+        "mvt-no");else this.SC(c,b?"mvt-yes":"mvt-no",e,d);}}if(b){var t='<'+this.ST+' src="'+this.S()+'"';for(n in this.SA)
+        t+=(" "+n+'="'+this.SA[n]+'"');t+='><\/'+this.ST+'>';this.D.write(t);}}},addModule:function(s,f){this.M[s]=f;
+        },displayModule:function(s){if(typeof this.M[s]=="function")this.M[s]();},hasModules:function(){return count(this.M)>0;
+        }};optimost.I();
+        //--></script>
+        <!-- END OPTIMOST PAGE CODE -->
+              
+        <!-- OPTIMOST EXPERIMENT SELECTOR CODE -->
+        <script type="text/javascript">
+        var opProto = (("https:" == document.location.protocol) ? "https://by.essl." : "http://es.");
+        var opLiveURL = opProto + 'optimost.com/es/335/c/91/u/live.js';
+        var opQaURL = opProto + 'optimost.com/es/335/c/91/u/staging.js';
+        var opContentURL = opLiveURL;
+        var opThisURL = document.location.toString();
+        opThisURL = opThisURL.split('?')[0];
+        if (opThisURL) {
+        	if (typeof(optimost)=='object') {
+        		if (optimost.Q['opsel'] && optimost.Q['opsel']=='opsel') opContentURL = opQaURL;
+        	}
+        }
+        document.write('<' + 'script type="text/javascript" src="' + opContentURL + '"></' + 'script>\n');
+        </script>	
+        <!-- END OPTIMOST EXPERIMENT SELECTOR CODE -->
+        
+        
+        <link rel="icon" href="../favicon.ico" type="image/vnd.microsoft.icon" />
+        <link rel="SHORTCUT ICON" href="../favicon.ico" />
+                                
+        		<!-- Demdex Tag Insertion Manager -->
+		<script type="text/javascript">
+		var dexBaseURL=(("https:"==document.location.protocol) ? 
+		 "https://a248.e.akamai.net/demdex.download.akamai.com/dm/28/" : 
+		 "http://cdn.demdex.net/dm/28/");
+		document.write(unescape("%3Cscript src='"+ dexBaseURL + 
+		 "demdex.js' type='text/javascript' %3E%3C/script%3E"));
+		</script>
+		<!-- End Demdex Tag Insertion Manager -->
+		
+
+		<script>
+jQuery(document).ready(function() {
+//jQuery('body').append('<div id="fb-root"></div>');
+//			jQuery.getScript(document.location.protocol + '//connect.facebook.net/en_US/all.js');
+
+			window.fbAsyncInit = function() {
+				(function($) {
+					// code using $ for jquery
+					AB.XD = $.extend(true, { }, FB.XD);
+
+					FB.XD.recv = function(data) {
+						if (data.match(/type=dismissEdgeCommentDialog/)) {
+							var cb = data.match(/cb=([0-9a-f]+)/i);
+							cb = cb[1];
+							var href = $('iframe[src*='+cb+']').parent().parent().attr('href');
+							// [AL] Disabling Universal Like since conflicts with regular likes
+							// window.universal_like(href);
+						}
+						AB.XD.recv(data);
+					}
+				})(jQuery);
+
+				FB.init({
+					appId  : 129507778518,
+					status : true, // check login status
+					cookie : true, // enable cookies to allow the server to access the session
+					xfbml  : true,  // parse XFBML,
+					channelUrl : (window.location.protocol + '//' + window.location.host + '/fb/xd.html')
+				});
+								FB.Event.subscribe('edge.create', function (href, widget) {
+					new Ajax.Request('/ajax/ajax_request?type=fblike&url=' + href);
+				});
+								// trigger our own like when a facebook like is activated
+				/* [AL] Disabling Universal Like since conflicts with regular likes
+				(function($) {
+					// code using $ for jquery
+
+					window.universal_like = function(href, widget) {
+						//console.log(href);
+						var matches = href.match(/(a|q)_view\/([0-9]+)$/i);
+						if (matches.length != 3) return false;
+						var content_type = matches[1] == 'a' ? 'ans' : 'question';
+						var content_id = matches[2];
+						var mkey = $('#liked_by_whom_'+content_id+'_'+content_type).attr('mkey');
+						$.noConflict(); // no more jquery in this scope
+						// [Optimost] disabled below code to prevent button conflicts!
+						//like(content_id, content_type, mkey);
+					}
+
+					FB.Event.subscribe('edge.create', window.universal_like);
+				})(jQuery);
+				*/
+			};
+
+			(function() {
+				var e = document.createElement('script');
+				e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+				e.async = true;
+				document.getElementById('fb-root').appendChild(e);
+			}());
+
+
+
+		});
+
+		</script>
+    </head>
+
+    <body id="Template2a">
+    <div id="fb-root"></div>
+
+
+    
+
+
+
+        <!-- Header : start -->
+
+        <div class="Header">
+            <div class="Frame FLC">
+            	<div class="fl">
+					<a data-lk="/" class="logo"><img src="../../ui.abimg.net/ui/images/logos/answerbag_logo_2.jpg" width="285" height="60" alt="Answers. Every Question Deserves a Great Answer" /></a>
+				</div>
+                <div class="fr">
+                <div class="topbar"><span>
+                <ul class="Login">
+                    
+
+							<li class="login"><a class="IconFacebook1 fb-login-now" title="login to Answerbag with your Facebook account"></a>
+									<script type="text/javascript">
+			var html_compressed = '<a class=\"login-dialog\">Login / Register</a>';
+			document.write(html_compressed);
+		</script></li>
+                                    </ul>
+                 </span>
+                </div><br /><!--This is for IE7-->
+                <div class="askpoll">
+					<a data-lk="/ask/" class="">
+                    <dl>
+                        <dd><span class="btn_ask"><span>Ask a Question</span></span></dd>
+                        <dd><span class="btn_or">or</span></dd>
+                        <dd><span class="btn_poll"><span>Create a Poll</span></span></dd>
+                    </dl>
+					</a>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- Header : end -->
+
+        <!-- Navigation : start -->
+        <div class="Navigation" id="navigation" style="height:44px;">
+                        <div class="Frame FLC">
+            	<form class="SearchAnswers" action="http://www.answerbag.com/search/" method="get">
+                    <input type="text" class="textInput" id="globalSearch"  value="" name="q" />
+                    <input type="submit" class="submitButton Heading6a" value="" name="" />
+                </form>
+                
+                <div class="navContainer">
+                    <ul class="Nav1">
+                        <li id="home_tab" ><a href="http://www.answerbag.com/">Home</a></li>
+                        <li id="categories_tab" ><a href="http://www.answerbag.com/categories/" onclick="toggle_categories(); return false;">Categories</a></li>
+                       	<li id="questions_tab" ><a href="http://www.answerbag.com/questions/">Questions</a></li>
+                        <li id="forums_tab" ><a data-lk="/forums/" class="">Forums</a></li>
+															<li id="blog_tab" class="hoverIndicator"><a data-lk="/blog/" class="">Blog</a><div class="blogIndicator"><div class="content"><dl><dt>NEW!</dt><dd></dd></dl></div><div class="bottom"></div></div></li>
+							                    </ul></div>
+                    <div class="navContainer">
+                        <div class="CategoryNav FLC" id="category_dropdown" style="background-color:white; z-index:100000; height: 180px; padding: 0 20px 0 20px; display:none;">
+                            <ul class="categories FLC" style="padding: 20px 0 0 5px;">
+ 																	<li><a data-lk="/category/arts_28" class="">Arts</a></li>
+									<li><a data-lk="/category/autos-motorcycles_2" class="">Autos &amp; Motorcycles</a></li>
+									<li><a data-lk="/category/business_29" class="">Business</a></li>
+									<li><a data-lk="/category/computers_20" class="">Computers</a></li>
+									<li><a data-lk="/category/diet-and-fitness_22" class="">Diet &amp Fitness</a></li>
+									<li><a data-lk="/category/education_106" class="">Education</a></li>
+									<li><a data-lk="/category/electronics_30" class="">Electronics</a></li>
+									<li><a data-lk="/category/entertainment_31" class="">Entertainment</a></li>
+									<li><a data-lk="/category/environmentalism_10163" class="">Environmentalism</a></li>
+									<li><a data-lk="/category/fashion-and-beauty_25" class="">Fashion &amp Beauty</a></li>
+									<li><a data-lk="/category/finance_33" class="">Finance</a></li>
+									<li><a data-lk="/category/food-dining_184" class="">Food &amp; Dining</a></li>
+									<li><a data-lk="/category/games_21" class="">Games</a></li>
+									<li><a data-lk="/category/health-fitness_36" class="">Health</a></li>
+									<li><a data-lk="/category/hobbies_26" class="">Hobbies</a></li>
+									<li><a data-lk="/category/home-garden_37" class="">Home &amp; Garden</a></li>
+									<li><a data-lk="/category/kids_38" class="">Kids</a></li>
+									<li><a data-lk="/category/legal_191" class="">Legal</a></li>
+									<li><a data-lk="/category/life-society_32" class="">Life &amp; Society</a></li>
+									<li><a data-lk="/category/pets_97" class="">Pets &amp; Pet Care</a></li>
+									<li><a data-lk="/category/real-estate_7" class="">Real Estate</a></li>
+									<li><a data-lk="/category/sports-recreation_39" class="">Recreation &amp; Sports</a></li>
+									<li><a data-lk="/category/relationship-advice_24" class="">Relationship Advice</a></li>
+									<li><a data-lk="/category/religion_114" class="">Religion</a></li>
+									<li><a data-lk="/category/science_40" class="">Science</a></li>
+									<li><a data-lk="/category/social-sciences_23" class="">Social Sciences</a></li>
+									<li><a data-lk="/category/transportation_506" class="">Transportation</a></li>
+									<li><a data-lk="/category/travel-places_41" class="">Travel &amp; Places</a></li>
+									<li><a data-lk="/category/answerbag_207" class="">Answerbag</a></li>
+									<li><a data-lk="/category/outside-the-bag_3602" class="">Outside the Bag</a></li>
+								                            </ul>
+                            <a onclick="toggle_categories(); return false;" class="close"><img src="../../i.abimg.net/ui/images/buttons/blue_close.png" width="15" height="15" alt="Close the Category Navigation Menu" /></a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Navigation : end -->
+
+		<!-- Container for Profile Modal -->
+		<div class="ProfileModal">
+			<a class="close"><img src="../../i.abimg.net/ui/images/buttons/popup_close_button.png"></a>
+			<div class="header"></div>
+			<div class="content">
+				<img class="loading" src="../images/bar.gif" />
+			</div>
+			<div class="footer"></div>
+		</div>
+		<!-- Container for Profile Modal : end -->
+
+
+
+            <script type="text/javascript">
+                selected = '';
+                tabs = new Array('home', 'topics', 'questions', 'polls', 'debates', 'forum', 'blog');
+				// below are unused   
+                var cat_dropdown = '';
+                var navigation = '';
+            </script>
+
+
+
+<div class="Content" id="Legal">
+    <div class="Frame">
+
+        <ol class="Breadcrumbs">
+            <li><a href="http://www.answerbag.com/">Home</a> /</li>
+            <li>Privacy Policy</li>
+        </ol>
+      
+        <div class="SectionTitle">      
+        <h1 class="Heading1a header">Privacy Policy.</h1> <span class="Note">Keeping your information top secret.</span>
+        </div>
+
+
+        <p class="Title6d">Effective Date August 3, 2010</p>
+
+        <p>This Privacy and Information Security Policy ("this Policy") discusses the personally identifying information ("PII") that we collect about you when you use our website <a href="http://www.answerbag.com/">www.answerbag.com</a> (the "Site") and the other services we provide on or through the Site (together with the Site, the "Service").</p>
+        
+        
+        
+        <p>Who We Are. We are Demand Media, Inc. ("Answerbag "Answerbag.com," "Site," "Service," "we," "us," or "our"). Answerbag.com is a popular place to share knowledge on various topics and enjoy sharing in the Answerbag community. In conducting our business, as further described below, we collect information about the individuals who use the Service. In conducting our business, as further described below, we collect information, including PII, about the individuals who use the Service.</p>
+        
+        <p><strong>This Policy and the Terms of Use</strong>. This Policy is part of and incorporated into the Answerbag.com <a href="http://www.answerbag.com/terms">Terms of Use</a> (collectively, the "Terms").</p>
+        
+        <p>BY PROVIDING PII OR OTHER INFORMATION TO US OR BY USING OUR SERVICE, YOU AGREE TO THIS POLICY AND THE PRACTICES DESCRIBED IN THE POLICY.</p>
+        
+        <ol>
+            <li>
+                <h2 class="Title5d">INFORMATION YOU GIVE US.</h2>
+                <ol>
+                    <li><strong>The Types of Information Answerbag Collects</strong>. We collect any information you enter on the Service or give us in any other way (such as through an email, survey, or letter). The information that we collect varies depending upon how you use our Service. Our account registration process requires that you provide us with your user name, birthday and email address, and that you create and provide us with a password. We may also request other information, such as but not limited to, your actual first and last name, gender, and zip code.</li>
+
+                    <li><strong>Information in Public Areas of the Site</strong>. Please keep in mind that whenever you voluntarily provide information in public areas of the Service, such as the user profile pages or forums, that information can be viewed and possibly used by others. We therefore advise visitors not to disclose contact information, including phone number, email address, street address or instant messenger address (within these public areas) that they do not wish to share. We are not responsible for PII you choose to submit in these public areas. Also, we may highlight content you post to the public areas of the Service such as reviews or comments, such as by featuring your content on the Site's home page.</li>
+
+                    <li><strong>Facebook</strong>. As an optional service, we offer users the ability to integrate their Facebook accounts with Answerbag. See Section V below for more information on the types of information we collect from the use of this service.</li>
+
+                 </ol>
+            </li>
+            <li>
+                <h2 class="Title5d">AUTOMATIC INFORMATION COLLECTION.</h2>
+                <ol>
+                    <li>
+                        <p><strong>Cookies</strong>. Like many websites, we use "cookies." Cookies are alphanumeric identifiers that we transfer to your computer's hard drive through your Web browser to enable our systems to recognize your browser. We use persistent, identifying cookies to remember your information and to link your activities to you. While you can take steps to warn off, block or disable cookies, if you do, the Service may not function and appear as we have designed it. Nonetheless, if you want to take these steps, you can do so by following the instructions associated with your browser. Our cookies do not collect PII that you provide to us during the registration process, but they do collect other information such as the following:</p>
+                        <ol>
+                            <li>the domain name and host from which you access the Internet and the Internet address of the site from which you direct-linked to ours;</li>
+                            <li>the date and time you access the Site and pages you visit;</li>
+                            <li>your computer's IP address and information about its operating system, platform and the Web browser type and version you use;</li>
+                            <li>demographic and other non-personally identifiable profile information about you; and</li>
+                            <li>information to combat fraud or misuse.</li>
+                        </ol>
+                    </li>
+                    <li><strong>Pixel Tags</strong>. In our email to you, we use "pixel tags" to determine if your email software or service can display html-formatted email (this helps us optimize the size of our email messages and conserve bandwith).</li>
+                
+                    <li>
+                        <p><strong>Collection of Information by Third Parties</strong>. Some of the advertisers and other businesses that advertise or place other content our Site use cookies on our Site and may place a cookie on your computer. The content posted by these businesses will be identified as coming from a third party. In addition, we use third party advertising companies to serve ads. These companies (1) use information obtained from your visits to this Site and other sites to serve ads to you and (2) place unique third party cookies on your browser. Also, we use web beacons provided by third party advertising companies to help optimize our advertising. Web beacons enable us to recognize your browser when a cookie has been placed on your computer. Some but not all third party advertising companies provide a mechanism to opt-out of their technology. For more information and an identification of advertisers that provide an opt-out mechanism, please click the following: <a href="http://www.networkadvertising.org/managing/opt_out.asp">http://www.networkadvertising.org/managing/opt_out.asp</a>.</p>
+                        <p>The information collected by third party cookies is subject to the privacy policy of the third party, not Answerbag's privacy policy.</p>
+                    </li>
+                    
+                    <li><strong>Promotions, Sweepstakes, and Contests</strong>. From time to time, we may host a promotion, sweepstake, or contest on the Service. You May be asked to provide personal information or permit the transfer to a third party of your personal information in connection with such promotion, sweepstake or contest. It will be disclosed at the point of collection or transfer who is collection or transferring the information and whose privacy statement applies, and it will be your choice whether or not you wish to permit such transfer to our collection of personal information by a third party.</li>
+                </ol>
+            </li>
+
+            <li>
+                <h2 class="Title5d">ANSWERBAG'S USE AND RETENTION OF YOUR INFORMATION.</h2>
+                <ol>
+                    <li><strong>Use of PII</strong>. We use your PII for purposes such as responding to your requests; monitoring and providing the Service; maintaining your Answerbag account; providing you with advertising and non-advertising content that we believe would be of interest to you; enforcing our rights and the rights of third parties, and investigating and ensuring compliance with the <a href="http://www.answerbag.com/terms">Terms</a>. We also may use your PII to contact you regarding your account, such as to inform you that you have received an email from another Answerbag member, or to forward user comments to you about the content that you have posted. We may also email Answerbag newsletters, and similar communications about the Service.</li>
+                        
+                    <li><strong>Use of Other Information</strong>. We use non-PII about our users for purposes such as measuring the number of visitors to sections of our Site, making the Service more useful to visitors and delivering targeted advertising and non-advertising content. We use IP addresses to analyze trends, administer the Site, track a user's movement, and gather broad demographic information for aggregate, non-personally identifiable use.</li>
+                        
+                    <li><strong>Retention of Information</strong>. We retain information for as long as required, allowed or we believe it useful, but do not undertake retention obligations. We may dispose of information in our discretion without notice, subject to applicable law that specifically requires the handling or retention of information. You must keep your own, separate back-up records.</li>
+                </ol>
+            </li>
+
+            <li>
+                <h2 class="Title5d">ANSWERBAG'S SHARING OF INFORMATION.</h2>
+                <p>Answerbag shares information with third parties, but only as described in this Section 4.</p>
+                <ol>
+                    <li><strong>Advertisers and Others</strong>. We share non-personally identifiable information with advertisers, service providers, and other persons with whom we conduct business. Conversely, these advertisers, service providers, and other persons may share with us non-PII about you that they have independently developed or acquired.</li>
+            
+                    <li><strong>Service Third Parties</strong>. We contract with affiliated and non-affiliated third parties to provide services to us or to you on our behalf. Examples include providing marketing assistance, providing customer services, sending Answerbag email to you, removing repetitive information from customer lists, and analyzing data. These third parties have access to personal information needed to perform their functions.</li>
+                    
+                    <li><strong>Business Transfer</strong>. As we develop our business, we might sell or buy businesses or their assets, or engage in acquisitions, merger, restructurings, changes or control, or similar transactions. In such transactions, customer information generally is one of the transferred business assets, and your PII is subject to such a transfer. Also, in the unlikely event of a bankruptcy, customer information may be transferred to a bankruptcy trustee or debtor in possession and then to a subsequent purchaser.</li>
+                    
+                    <li><strong>Affiliates</strong>. We may share PII, non-PII and other information with our corporate affiliates. Some of our most significant affiliates are identified on the website of our parent company, <a href="http://www.demandmedia.com/">Demand Media, Inc.</a> Corporate affiliates are those entities that we control, are controlled by us, or are under common control with us and any joint venture in which any of the controlled entities may participate from time to time. Any use of your information by our corporate affiliates is subject to this Policy or another policy no less protective of your privacy. Likewise, we may obtain information about you from our corporate affiliates or from your visits to other web sites that we or our corporate affiliates control. We may share information about you with our corporate affiliates and our corporate affiliates may share information with us using cookie or any other available technology.</li>
+                    
+                    <li>
+                        <p><strong>Compliance and Safety</strong>. We may release user information when we believe release is appropriate to:</p>
+                        <ol>
+                            <li>comply with applicable law, and to respond to legal process, including subpoenas, search warrants and court orders, and to respond to or otherwise address written complaints of copyright infringement;</li>
+                            <li>make disclosures under programs intended to prevent potential crimes or investigate persons;</li>
+                            <li>enforce or apply agreements, including the Terms; or</li>
+                            <li>protect the rights, property, or safety of Answerbag, our users, or others, including exchanging information with other companies for fraud protection and credit risk reduction.</li>
+                        </ol>
+                    </li>
+                </ol>
+            </li>
+
+            <li>
+                <h2 class="Title5d">FACEBOOK.</h2>
+                <p>This section is only applicable to users who choose to integrate their Facebook accounts with Answerbag.</p>
+                <ol>
+                    <li><strong>The Types of Information We Collect</strong>. We use Facebook's OpenGraph API, so that you can use your existing Facebook.com account to access the features of the Site. You must explicitly authorize Facebook to share your information with us when you first login to the Site with your Facebook credentials.<br/><br/>
+You should review your privacy settings on your Facebook account because those settings determine what PII is made available to us when you access the Site. While the Facebook OpenGraph API allows us to access and store a host of information about you, we only access and store PII which we feel is useful to enhance your experience of the Site. When you first create an account with us through the Facebook OpenGraph API, we access and store your name, public "About Me" information, your email address, your Facebook user id number, and your Facebook URL. We also pull your friends list (their first and last names and Facebook user id numbers), but only keep a record of your connection to them if your friends have also created accounts with the Site. We do NOT store any data about any of your Facebook friends if they don't already have their own Site accounts. Each time you login to the Site we check your friends list from Facebook to see if any of your friends have signed up for the Site since you last visited so they can appear as part of your Answerbag network of friends.<br/><br/>
+Facebook also gives us access to your (and your friends') main profile photos, if those photos are public. We do not store those photos ourselves; rather, we serve them directly from Facebook's servers.<br/><br/>
+We may store your birthdate if you make it public on your Facebook profile.<br/><br/>
+We collect any information you enter on the Site or give us in any other way (such as through an email, survey, or letter). The information that we collect varies depending upon how you use our Site.</li>
+            
+                    <li><strong>Terminating your Account</strong>. You may discontinue this service at any time by removing your Answerbag account under the "Applications and Websites" section of your Facebook Privacy Settings. This will remove all references to you and your data from display on Facebook, but will not affect your Facebook.com account.</li>
+                    
+                </ol>
+            </li>
+
+            <li>
+                <h2 class="Title5d">INFORMATION SECURITY</h2>
+                <ol>
+                    <li><strong>Your Obligations</strong>. You must protect against unauthorized access to your password and to your computer. Please sign off when finished using a shared computer. Your emails to us are not necessarily secure against interception so do not include sensitive information in them - we generally will not ask for passwords in an email and you should assume that if you get such a request, it might be fraudulent. YOU MUST DO WHAT YOU REASONABLY CAN TO ENSURE THE SECURITY OF YOUR PERSONAL INFORMATION.</li>
+                    
+                    <li><strong>Our Security Measures</strong>. We have physical, electronic, and managerial procedures to help safeguard, prevent unauthorized access, maintain data security, and correctly use your information. HOWEVER, WE DO NOT GUARANTEE SECURITY. Neither people nor security systems are foolproof, including encryption systems. In addition, people can commit intentional crimes, make mistakes or fail to follow policies. If applicable law imposes any non-disclaimable duty (if any), you agree that intentional misconduct will be the standards used to measure our compliance with that duty.</li>
+                </ol>
+            </li>
+
+            <li>
+                <h2 class="Title5d">LINKS.</h2>
+                <p>The Service contains links to other sites. We are not responsible for the privacy practices of such other sites. We encourage you to be aware when you leave our Site and to read the privacy statements of every web site that collects your personally identifiable information. This Policy applies only to information collected by the Service.</p>
+            </li>
+
+            <li>
+                <h2 class="Title5d">CHOICE.</h2>
+                <p>We reserve the right to send you customary business communications such as acceptance/rejection notices regarding content submissions, general system and administrative messages, address confirmations, and transactional information about your account, and we may not offer you the opportunity to opt-out of receiving such communications. However, we provide you with the opportunity to elect not to receive other types of communications, such as friend requests or the Answerbag of the day emails. If you want to stop receiving these communications, you may opt by going to the Profile tab on the Site and editing your email preferences.</p>
+            </li>
+            
+            <li>
+                <h2 class="Title5d">ACCESS AND RECORD KEEPING.</h2>
+                <p>Information relating to our programs is not necessarily maintained in a retrievable form. However, you may make changes, corrections or updates to some PII provided through the Service which we use for communications with you, by going to the " Profile" tab on the Site. We may keep a record of all information that is changed. We may determine what may be changed. For example, if we are required to keep track of certain kinds of transactions, you may be prevented from changing relevant information.</p>
+            </li>
+
+            <li>
+                <h2 class="Title5d">CONDITIONS OF USE, NOTICES, AND REVISIONS.</h2>
+                <ol>
+                    <li><strong>Privacy Concerns</strong>. Your use of the Service and any dispute over privacy is subject to the <a href="http://www.answerbag.com/terms">Terms</a>. If you have any concern about privacy at Answerbag, please send us a thorough description to admin@answerbag.com, and we will try to resolve it. If you think we are in default of the Terms, you may contact us at Our Legal Notices Address in Section 10 below.</li>
+                    
+                    <li><strong>Notice Required by Law</strong>. In those jurisdictions that permit email notice, if we are required to disclose or provide notice of invasion of certain security systems, we will do so by email to the most current email address provided by you to us. It is critical that you keep your email contact information correct and updated with Answerbag at all times.</li>
+                    
+                    <li><strong>Identity Theft</strong>. If you believe that you are a victim of identity theft entitled by law to request information from us, write us at our Legal Notice address (see the next section of this Policy) and we will let you know what additional information you must provide to us. After we have received that information, we will supply without charge the information legally required to be disclosed that we then have, subject to applicable law and reserving all of our rights and defenses.></li>
+                </ol>
+            </li>
+            <li>
+                <h2 class="Title5d">CONTACT INFORMATION AND INFORMATION ABOUT ENFORCEMENT OF OUR POLICY.</h2>
+                <p>For customer service matters (including questions relating to this Policy), you may email us at <a href="mailto:admin@answerbag.com">admin@answerbag.com</a>. To send us a legal notice, mail it by certified mail (return receipt requested) to: Legal Department, 5808 Lake Washington Blvd., Suite 300, Kirkland, WA 98033. When we need to contact you, including when we give a legal notice, we may do so to an email address that we have on file for you or we may post notice on the Site. You must keep your email address information accurate. If we make a material change to this Policy, we will notify you by posting notice to the Site for at least 30 days and sending you an email to the email address that we have on record for you.</p>
+            </li>
+        </ol>
+
+        <h5>Answerbag is a registered trademark of Demand Media, Inc. in the United States and other countries.</h5>
+        
+        <h6 class="Note">Copyright &copy; 2010. Demand Media, Inc.</h6>
+
+    </div>
+</div>
+
+         <!-- Footer : start -->
+         
+        <div class="Footer">
+            <div class="Frame">
+            
+                <ul class="FLC">
+                    <li class="about">
+                        <dl>
+                            <dt class="Heading2a SectionTitle">About Us</dt>
+                            <dd><a href="http://www.answerbag.com/about-us/">About Answerbag</a></dd>
+                            <dd><a href="http://www.answerbag.com/sitemap/">Sitemap</a></dd>
+                            <dd><a href="http://www.answerbag.com/sitemap/professionally-researched">Professionally Researched Questions</a></dd>
+                                                        							<dd>&nbsp;</dd>
+                        </dl>
+						<dl>
+							<dt class="Heading2a SectionTitle">Legal</dt>
+								<dd><a href="index.html">Privacy Policy</a></dd>
+								<dd><a href="http://www.answerbag.com/terms/">Terms of Use</a></dd>
+								<dd><a href="http://www.answerbag.com/disclaimer/">Disclaimer</a></dd>
+								<dd><a id="_bapw-link" style="color:#142631 !important;cursor:pointer !important;font:9pt Trebuchet MS !important;text-decoration:none !important"><img id="_bapw-icon" style="display:inline !important;vertical-align:middle !important"/> <span style="vertical-align:middle !important">Ad Choices</span></a><script>(function(){var e=document,b,a=(e.location.protocol=="https:"?"https":"http"),c=(a=="https"?"https://info.evidon.com/c/betrad/pub/":"http://cdn.betrad.com/pub/");e.getElementById("_bapw-icon").src=c+"icon1.png";e.getElementById("_bapw-link").onclick=function(){var f=this;function d(i,l){var j=e.getElementsByTagName("head")[0]||e.documentElement,h=false,g=e.createElement("script");function k(){g.onload=g.onreadystatechange=null;j.removeChild(g);l()}g.src=i;g.onreadystatechange=function(){if(!h&&(this.readyState=="loaded"||this.readyState=="complete")){h=true;k()}};g.onload=k;j.insertBefore(g,j.firstChild)}this.onclick="return false";d(a+"://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js",function(){d(c+"pub1.js",function(){BAPW.i(f,{pid:46,ocid:374},false)})});return false};b=new Image();b.src=a+"://l.betrad.com/pub/p.gif?pid=46&ocid=374&ii=1&r="+Math.random()}());</script></dd>
+								<dd>&nbsp;</dd>
+						</dl>
+                    </li>
+                    <li class="fanPage">
+                        <dl>
+							<dt class="Heading2a SectionTitle">Follow Us on Facebook</dt>
+							<dd>
+								<a href="http://www.facebook.com/AskAnswerbag" target="_blank"><img src="../../i.abimg.net/ui/images/logos/ab_bag.png" alt="Answerbag.com on Facebook" width="49" height="51" class="logo" />
+								<h6>
+									<strong class="Title5b">Answerbag.com</strong>
+									<img src="../../i.abimg.net/images/Facebook_LikeButton.png" alt="Become a Fan of Answerbag.com on Facebook" width="54" height="30" style="vertical-align:middle;"  /></a>
+									<p>Your favorite Q&amp;A site is on Facebook! Become a fan to connect with the ever-growing community of Answerbaggers, share your thoughts and find out what Answerbag's up to next!</p>
+								</h6>
+							</dd>
+							
+                                                    </dl>
+                    </li>
+                    <li class="latestTweets">
+                        <dl>
+                            <dt class="Heading2a SectionTitle">Latest Tweet</dt>
+                            <dd class="tweet">What kind of criminal do you most want behind bars? <a href="uhttp://bit.ly/HEltGX" rel="nofollow" >uhttp://bit.ly/HEltGX</a></dd>
+                            <dd>
+                                <div class="TwitterFollowUsV2">
+                                    <p class="Title5a"><a href="http://twitter.com/AnswerBag">Follow Answerbag on Twitter!</a></p>
+                                </div>
+
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            
+            </div>
+        </div>
+        <!-- Footer : end -->
+        
+        <!-- SubFooter : start -->
+        <div class="SubFooter">
+            <div class="Frame">
+                <div class="copyright Note FLC">
+                    <p>		<script type="text/javascript">
+			var html_compressed = '<span>Copyright &copy; 2003-2012</span>';
+			document.write(html_compressed);
+		</script> Answerbag</p>
+                    <ul>
+                        <li><a href="http://www.answerbag.com/category/adult_569/">AB4Adults</a></li>
+                        <li><a href="http://www.answerbag.co.uk/">Answerbag UK</a></li>
+                    </ul>
+                    <a href="http://www.demandmedia.com/"><img class="brick" src="../../i.abimg.net/ui/images/logos/DM_eHow_Partner.png" alt="a Demand Media company" width="241" height="33" /></a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SubFooter : end --> 
+
+    
+                        
+            	
+            
+    
+
+    <script type="text/javascript">request_google_ads();</script>
+
+    <!-- OPTIMOST GLOBAL MODULE AND COUNTER CODE -->
+    <script type="text/javascript">
+		jQuery.noConflict()(function ($){
+			$('a').each( function(i){
+				if ($(this).attr('data-lk')) {
+					$(this).noFollow();
+				}
+			});
+		});
+	</script>
+    <script type="text/javascript">
+    if (opContentUrls.length>0 && opModulesArray.length>0) {
+    	for(var i=0;i<opModulesArray.length;i++){
+    		optimost.displayModule(opModulesArray[i]);
+    	}
+    }
+    if(typeof opRunCounters=='function'){
+    	opRunCounters();
+    }
+    </script>
+    <!-- END OPTIMOST GLOBAL MODULE AND COUNTER CODE -->
+
+    <script src="../../www.google-analytics.com/urchin.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    	
+    	_uacct = "UA-709906-10";
+    	__utmSetVar('Registered');
+    	_udn="none";
+    	_ulink=1;
+    	urchinTracker();
+    </script>
+        
+    <noscript><img src="../../vs.dmtracker.com/images/zig.gif%3FLog=1" /></noscript>
+    <script src="../../vs.dmtracker.com/tags/vs.js" type="text/javascript"></script>
+    
+    
+    <script type="text/javascript">
+	_JT.SM_Click = function(a) {
+		var tempRQ2 = _JT.rq2;
+		_JT.DM_Click(a);
+		_JT.rq2 = 'http://www.answerbag.com/ajax/zig/zig.gif?';	
+		_JT.DM_Click(a);
+		_JT.rq2 = tempRQ2;
+	}
+     </script>
+    
+     
+  
+    <!-- START REVENUE SCIENCE PIXELLING CODE -->
+    <script type="text/javascript" src="../../js.revsci.net/gateway/gw.js%3Fcsid=F08747"></script>
+    <script type="text/javascript">
+    DM_tag();
+    </script>
+    <!-- END REVENUE SCIENCE PIXELLING CODE -->
+     
+     
+	
+
+    <script type="text/javascript">tyntVariables = { "ap":"Read more: " };</script>
+    <script type="text/javascript" src="../../tcr.tynt.com/javascripts/Tracer.js%3Fuser=a2UaPsAgSr35ldadbi-bpO&amp;st=1"></script>
+
+	
+	
+	
+    <!-- This resolves a Facebook bug with IE8: 'FB.HiddenContainer.get()' is null or not an object -->
+    <div id="FB_HiddenIFrameContainer" style="display:none; position:absolute; left:-100px; top:-100px; width:0px; height: 0px;"></div>   
+    <div id="FB_HiddenContainer" style="display:none; position:absolute; left:-100px; top:-100px; width:0px; height: 0px;"></div> 
+    </body>
+</html>

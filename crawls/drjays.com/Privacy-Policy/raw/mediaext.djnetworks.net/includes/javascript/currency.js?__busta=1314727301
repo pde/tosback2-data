@@ -1,0 +1,163 @@
+dj.currency = {};
+
+dj.currency_selector = function (selector) {
+
+	dj.dropdown( $(selector), {
+
+			select_cb:	function (o) {
+
+				$('span',o).attr('class').match(/currency_(\S+)/);
+				var curr_code = RegExp.$1;
+
+				// Google Analytics for a/b/c menu test //
+				var _gaq = _gaq || window['_gaq'] || [];
+				_gaq.push(['_trackEvent', 'currency', currency_menu_type, curr_code]);
+				//////////////////////////////////////////
+
+				// If this page was created by a form submit, resubmit it with currency
+				var target = $('form.currency_selector_target:first');
+
+				if (target.length){
+				    return target.append( dj.element('input',{'name':'currency'}).val(curr_code).css('display','none') ).submit();
+				}
+
+				var qstring = window.location.search;
+				if (qstring) {
+
+					var new_url = qstring.replace(/&?currency=[^&]+/,'');
+					var currency_string = 'currency=' + curr_code;
+
+					if (new_url.length > 1) { // empty = '?'
+						new_url = new_url + '&' + currency_string;
+					} else {
+						new_url = new_url + currency_string;
+					}
+
+					_gaq.push(function () { window.location.search = new_url; });
+
+				} else {
+
+					_gaq.push(function () { window.location.search = 'currency=' + curr_code; });
+
+				}
+
+			},
+
+			current_cb:	function (o,curr,initial) {
+
+				// complain to Zach if you don't like the below code
+				curr
+					.contents()
+					.filter( function () { return this.nodeType != 1 } )
+					.replaceWith('<b>Change Currency</b>');
+			}
+
+		});
+
+	$(selector).css('visibility','visible');
+
+};
+
+
+// Replication of http://cpansearch.perl.org/src/TNGUYEN/Locale-Currency-Format-1.28/Format.pm
+
+dj.currency_convert = function(amt){
+    
+    // Default to USD if all three required values aren't set
+    if (!dj.currency.code || !dj.currency.rate || !dj.currency.format){
+	dj.currency.format = ["US Dollar",2,",",".","","\\x{0024}","&#x0024;","$",1];
+	dj.currency.rate   = 1;
+	dj.currency.code   = "USD";
+    }
+
+    var format_negative = function(number,format){
+	format = format || '-x';
+	number = number.replace(/^-/,'');
+	format = format.replace(/x/,number);
+	return format;
+    }
+
+    var round = function(number,precision){
+	var sign = number ? number > 0 ? 1 : -1 : 0;
+	var multiplier = Math.pow(10,precision);
+	var result = Math.abs(number);
+	result = Math.floor(result * multiplier + .5000001) / multiplier;
+	if (sign < 0) result = -result;
+	return result;
+    }
+
+    // Because IE can't just do this in a regex
+    var str_split = function(str, chunk_size){
+	var a_chunks = [], index = str.length % chunk_size;
+	if(index)
+	    a_chunks.push(str.slice(0,index));
+	while (index < str.length){
+	    a_chunks.push(str.slice(index, index+chunk_size));
+	    index += chunk_size;
+	}
+	return a_chunks;
+    }
+
+    var format_number = function(number,precision,trailing_zeroes,ksep,dsep){
+
+	// Handle negative numbers
+	var sign = number ? number > 0 ? 1 : -1 : 0;
+	if (sign < 0) number = Math.abs(number);
+	number = round(number,precision); // round off $number
+
+	// Split integer and decimal parts of the number and add commas
+	var integer = Math.floor(number);
+	var decimal;
+        if ( (integer+'').length < (number+'').length )	decimal = (number+'').substr((integer+'').length+1);
+	decimal = decimal || '';
+
+	// Add trailing 0's if $trailing_zeroes is set.
+        if (trailing_zeroes && precision > (decimal+'').length){
+	    for (var i = 0, limit = precision - (decimal+'').length; i < limit; i++){
+		decimal += '0';
+	    }
+	}
+
+	// Add leading 0's so length($integer) is divisible by 3
+      	if ( (integer+'').length % 3 != 0){
+	    var zeros = '';
+	    for (var i = 0, limit = 3 - (integer+'').length; i < limit; i++){
+		zeros += '0';
+	    }
+	    integer = zeros + integer;
+	}
+
+	var split_it = str_split(integer+'',3);
+	var split_clean = [];
+	for (var i in split_it){ 
+	    if (split_it[i].length)
+		split_clean.push(split_it[i]);
+	}
+	integer = split_clean.join(ksep);
+
+	// Strip off leading zeroes and/or comma
+	integer = integer.replace(/^0+/,'');
+	if (integer == '') integer = '0';
+
+	// Combine integer and decimal parts and return the result.
+	var result = ( decimal.length ? [integer,decimal].join(dsep) : integer );
+
+	return (sign < 0) ? format_negative(result) : result;
+    }
+
+    amt = format_number(dj.currency.rate ? parseFloat(amt) * dj.currency.rate : parseFloat(amt),
+			parseInt(dj.currency.format[1]) || 0,
+			2,
+			dj.currency.format[2],
+			dj.currency.format[3]
+			);
+
+    return ( dj.currency.format[6] ?
+	     ( dj.currency.format[8] ?
+	       [ dj.currency.format[6], amt ] :
+	       [ amt, dj.currency.format[6] ]
+	     ).join(dj.currency.format[4]) :
+	     [ amt, dj.currency.code.toUpperCase() ].join(' ')
+	     );
+};
+

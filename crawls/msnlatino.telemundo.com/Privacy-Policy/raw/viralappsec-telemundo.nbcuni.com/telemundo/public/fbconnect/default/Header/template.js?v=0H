@@ -1,0 +1,72 @@
+function getLoginHeaderTemplate() {
+	/* this function will return the template for Login Header section
+	 *
+	 */
+	var output = '';
+	if (overrideDefaultHeader) {
+		//customised for AH
+		output +=   '<div id="OmigDiv"></div>';
+		output +=	'	<div class="fbc_welcomeContainer">';
+		output +=	'<# if (loggedIn == true) { #>';
+		output +=	'		<div class="fbc_bannerWelcomeThumb">';
+		output +=	'  			 <# if (typeof profilePic != "undefined" && profilePic != "" && profilePic != null) { #>';
+		output +=	'                  <img class="pic fbc_profilePic" src="<#= profilePic #>"></img>';
+		output +=	'             <# } else { #>';
+		output +=	'                  <img class="pic fbc_profilePic" src="http://static.ak.fbcdn.net/pics/t_silhouette.gif"/>';
+		output +=	'             <# } #>';
+		output +=	'                  <img class="fbc_profilePicFlogo" src="<#= imgURL #>icon_f.jpg"></img>';
+		output +=	'  		</div>';
+		output +=	'  		<div class="fbc_bannerWelcome">';
+		output +=	'  			<span class="fbc_fbNamewelcome">Hello, <#= loggedInUserName #></span>';
+		output +=	'			&nbsp;|&nbsp;';
+		output +=	'  			<span class="fbc_fbNameLogout" onclick="handleFacebookLogout();return false;">Logout</span>';
+		output +=	'  		</div>';
+		output +=	'<# } else { #>';
+		output +=	'	<div id="fbc_loginButton">';
+		output +=	'		<fb:login-button size="medium" background="dark" length="long" onclick="facebook_onlogin_ready();"></fb:login-button>';
+		output +=	'	</div>';
+		output +=	'<# } #>';
+		output +=	'  	</div>';	
+	} else {
+		output +=   '<div id="OmigDiv"></div>';
+		output +=	'	<div class="fbc_welcomeContainer">';
+		output +=	'<# if (loggedIn == true) { #>';
+		output +=	'		<div class="fbc_bannerWelcomeThumb">';
+		output +=	'  			 <# if (typeof loggedInUser_pic != "undefined" && loggedInUser_pic != "" && loggedInUser_pic != null) { #>';
+		output +=	'                  <img class="pic fbc_loggedInUser_pic" width="50" height="50" src="<#= loggedInUser_pic #>"></img>';
+		output +=	'             <# } else { #>';
+		output +=	'                  <img class="pic fbc_profilePic" src="http://static.ak.fbcdn.net/pics/t_silhouette.gif"/>';
+		output +=	'             <# } #>';
+		output += '	<# if (connectedPlatform == "twitter") { #>';
+    	output += ' 	<img  class="fbc_headerSectionprofilePicTlogo<#= browserType #>" width="14px" height="14px" src="<#= baseURL #>img/twitter16.png"></img>';
+	    output += ' <# } else if (connectedPlatform  == "facebook") { #>';
+      	output += ' 	<img  class="fbc_headerSectionprofilePicTlogo<#= browserType #>" width="14px" height="14px" src="<#= baseURL #>img/fLogo.jpg"></img>';
+    	output += ' <# } #>';
+		output +=	'  		</div>';
+		output +=	'  		<div class="fbc_bannerWelcome">';
+		output +=	'  			<span class="fbc_fbNamewelcome">Hello, <#= loggedInUserName #>';
+		output +=	'  			</span>';
+		output +=	'  			<br/>';
+		output += '		<div class="logout_headersection"><# if (fbconnected != "N") { #>';
+    	output += ' 		<a href="#" onclick="handleFacebookLogout();return false;" class="user_logout">Logout</a>';
+      	output += ' 	<# } else if (connectedPlatform == "twitter") { #>';
+	    output += ' 		<a href="#" onclick="handleTwitterLogout();return false;" class="user_logout">Logout</a>';
+     	output += '		<# } #>';
+		 	output +=	'  		</div>';
+		output +=	'<# } else { #>';
+		output +=	'	<div id="fbc_loginButton">';
+		output +=	'<# if ( showName != "covertaffairs" && showName != "fairlylegal"){ #>';
+		output +=	'<img style="float:left;" src="<#= imgURL #>Connect_with_facebook.png" onclick="facebook_onlogin_ready();" id="facebookLoginButtton"/><br/>';
+		output +=	'             <# } else { #>';
+		output +=	'<img style="float:left;" src="http://static.ak.fbcdn.net/rsrc.php/zBIU2/hash/85b5jlja.gif" onclick="facebook_onlogin_ready();" id="facebookLoginButtton"/><br/>';
+	  output +=	'             <# } #>';
+    output +=	'<# if ( showName != "covertaffairs" && showName != "fairlylegal"){ #>';
+    output +=	'<img style="float: left;margin-top:10px;padding-left:0px;" class="twitter_clickable" src="<#= imgURL #>twitter_login_button.gif" onclick="twiterconnect_init();"></img>';
+		output +=	'             <# } #>';
+              output +=	'	</div>';
+		output +=	'<# } #>';
+		output +=	'  	</div>';
+	}
+	return output;
+}
+

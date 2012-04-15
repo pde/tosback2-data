@@ -1,0 +1,956 @@
+<!-- DW6 -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>GlobalResearch.ca - Centre for Research on Globalization</title>
+<link rel="stylesheet" href="3col_leftNav.css" type="text/css">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+
+var currentMapImage='site_images/worldmapbanner.jpg';
+var testvar='154';
+var domainroot="globalresearch.ca";
+var NewsLetterWasClicked = 0;
+
+
+function preloadImages()
+{
+	var imageList = new Array();
+	imageList[0] = 'site_images/worldmapbannerSAMERICA.jpg';
+	imageList[1] = 'site_images/worldmapbannerUSA.jpg';
+	imageList[2] = 'site_images/worldmapbannerCAN.jpg';
+	imageList[3] = 'site_images/worldmapbannerAFRICA.jpg';
+	imageList[4] = 'site_images/worldmapbannerEURO.jpg';
+	imageList[5] = 'site_images/worldmapbannerASIA.jpg';
+	imageList[6] = 'site_images/worldmapbannerOCEA.jpg';
+	imageList[7] = 'site_images/worldmapbannerRUS.jpg';
+	imageList[8] = 'site_images/worldmapbannerMIDEAST.jpg';
+	imageList[9] = 'site_images/topbanner.jpg';
+	imageList[10] = 'site_images/blank1x1.gif';
+	imageList[11] = 'site_images/topbanner_top_right_bg.jpg';
+	imageList[12] = 'site_images/topmenuBGleft.jpg';
+	imageList[13] = 'site_images/topmenuBGcrg.jpg';
+	imageList[14] = 'site_images/aboutButton.gif';
+	imageList[15] = 'site_images/contactButton.gif';
+	imageList[16] = 'site_images/membershipButton.gif';
+	imageList[17] = 'site_images/OnlineStoreButton.gif';
+	imageList[18] = 'site_images/aboutButtonDown.gif';
+	imageList[19] = 'site_images/contactButtonDown.gif';
+	imageList[20] = 'site_images/membershipButtonDown.gif';
+	imageList[21] = 'site_images/OnlineStoreButtonDown.gif';
+	imageList[22] = 'site_images/topmenuBGright.jpg';
+	imageList[23] = 'site_images/sidemenuBG.jpg';
+	imageList[24] = 'site_images/blank1x17.gif';
+	imageList[25] = 'site_images/sidemenufooter.jpg';
+	imageList[26] = 'site_images/sidemenubottompart2.jpg';
+	imageList[27] = 'site_images/topheader1c.jpg';
+	imageList[28] = 'site_images/topheaderBG.jpg';
+	imageList[29] = 'site_images/blank150x1.gif';
+
+	var images = new Array();
+	var length = imageList.length;
+	
+	for(var i = 0; i < length; i++)
+	{
+		images[i] = new Image();
+		images[i].src = imageList[i];
+	}
+
+	return true;
+}
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+
+function sendarticle(id, title)
+{
+	var myAction = "mailto:?subject=Article from Global Research&body=" + title + ". %0A%0ARead the article at%0A%0A";
+	
+	myAction += escape(window.location.href);
+	
+	document.getElementById(id).href = myAction;
+}
+
+function printarticle(articleId)
+{
+	var mywin;
+	var myString = "PrintArticle.php?articleId=" + articleId;
+	
+	mywin = window.open(myString,'','toolbar=yes,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500');
+	
+}
+							
+function GetCurrentMapImage()
+{
+	return currentMapImage;
+}
+
+function SetCurrentMapImage(imagePath)
+{
+	currentMapImage = imagePath;
+}
+
+function SetButtonImage(id, imageSource)
+{
+	document.images[id].src=imageSource;
+}
+
+function CheckNewsLetterBox()
+{
+	if(!NewsLetterWasClicked)
+	{
+		NewsLetterWasClicked = 1;
+		document.getElementById("NewsLetterSubscribe").value = "";
+	}
+}
+
+function SubmitNewsLetter()
+{
+	var emailField = document.getElementById("NewsLetterSubscribe").value;
+	
+	window.location = 'index.php?context=section&sectionName=newsletter&emailAddr=' + emailField;
+}
+
+function CheckForValidEmail()
+{
+	var idx = 0;
+	var lastIdx = 0;
+	var strl = 0;
+	var emailField = document.NewsletterSectionForm.emailField.value;
+	
+	if(emailField == "") 
+	{
+		alert('Email field is empty. Please enter your email address.');
+		return false;
+	}
+	
+	strl = emailField.length;
+	
+	idx = emailField.indexOf(' ');
+	if(idx != -1)
+	{
+		alert('Invalid email address. Please verify your email address.');
+		return false;
+	}
+	
+	idx = emailField.indexOf('@');
+	if(idx == -1 || idx == 0)
+	{
+		alert('Invalid email address. Please verify your email address.');
+		return false;
+	}
+	
+	if(emailField.charAt(0) == '.' || emailField.charAt(strl-1) == '.' || emailField.charAt(idx-1) == '.' || emailField.charAt(idx+1) == '.')
+	{
+		alert('Invalid email address. Please verify your email address.');
+		return false;
+	}
+	
+	lastIdx = emailField.lastIndexOf('.');
+	if(idx > lastIdx || lastIdx == -1)
+	{
+		alert('Invalid email address. Please verify your email address.');
+		return false;
+	}
+	
+	if(lastIdx < strl - 5)
+	{
+		alert('Invalid email address. Please verify your email address.');
+		return false;
+	}
+	
+	return true;
+}
+
+function xSearch()
+{
+	var myval = document.getElementById("SearchBox").value;
+	
+	
+	//window.location = 'http://www.google.com/search?domains='+domainroot+'&q='+myval+'&sa=Google+Search&sitesearch=globalresearch.ca/index.php';
+	//window.location = 'http://www.google.com/search?domains='+domainroot+'&q='+myval+'&sa=Google+Search&sitesearch=globalresearch.ca';
+	window.location = 'http://www.globalresearch.ca/index.php?context=advSearch&keywordsField='+myval;
+	return true;
+}
+
+function Search2()
+{
+	var myval = document.getElementById("SearchBox2").value;
+	
+	if(myval == "")
+	{
+		myval = "globalresearch";
+	}
+	
+	//window.location = 'http://www.google.com/search?domains='+domainroot+'&q='+myval+'&sa=Google+Search&sitesearch=globalresearch.ca/index.php';
+	window.location = 'http://www.google.com/search?domains='+domainroot+'&q='+myval+'&sa=Google+Search&sitesearch=globalresearch.ca';
+}
+
+//MM_reloadPage(true);
+//preloadImages();
+
+//-->
+</script>
+
+<!-- GOOGLE ANALYTICS -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9062277-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<!-- GOOGLE ANALYTICS -->
+</head>
+
+<body>
+<map name="bannermap">
+	<area shape="rect" coords="705,1,785,16" href="http://www.mondialisation.ca" alt="Mondialisation.ca">
+	<area shape="rect" coords="729,29,784,36" href="http://www.globalresearch.ca/index.php?context=otherLang&langId=3" alt="Spanish articles">
+	<area shape="rect" coords="706,45,785,55" href="http://www.globalresearch.ca/index.php?context=otherLang&langId=4" alt="Portuguese articles">
+	<area shape="rect" coords="740,61,781,72" href="http://www.globalresearch.ca/index.php?context=otherLang&langId=6" alt="German articles">
+	<area shape="rect" coords="656,61,706,78" href="http://www.globalresearch.ca/index.php?context=otherLang&langId=5" alt="Arabic articles">
+    <area shape="rect" coords="665,43,706,56" href="http://www.globalresearch.ca/index.php?context=otherLang&langId=8" alt="Serbian articles">
+    <area shape="rect" coords="667,27,709,39" href="http://www.globalresearch.ca/index.php?context=otherLang&langId=7" alt="Italian articles">
+</map>
+
+<map name="worldmap">
+  <area shape="rect" coords="35,44,60,78" href="http://globalresearch.ca/index.php?context=region&amp;regionId=3" alt="Latin America" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerSAMERICA.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+  <area shape="rect" coords="20,32,43,39" href="http://globalresearch.ca/index.php?context=region&amp;regionId=1" alt="USA" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerUSA.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+  <area shape="rect" coords="19,18,51,31" href="http://globalresearch.ca/index.php?context=region&amp;regionId=2" alt="Canada" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerCAN.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+  <area shape="rect" coords="67,37,86,52" href="http://globalresearch.ca/index.php?context=region&amp;regionId=5" alt="Africa" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerAFRICA.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+  <area shape="rect" coords="68,24,83,37" href="http://globalresearch.ca/index.php?context=region&amp;regionId=4" alt="Europe" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerEURO.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+  <area shape="rect" coords="102,30,141,45" href="http://globalresearch.ca/index.php?context=region&amp;regionId=9" alt="Asia" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerASIA.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+  <area shape="rect" coords="113,45,144,58" href="http://globalresearch.ca/index.php?context=region&amp;regionId=8" alt="Oceania" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerOCEA.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+  <area shape="rect" coords="125,56,141,70" href="http://globalresearch.ca/index.php?context=region&amp;regionId=8" alt="Oceania" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerOCEA.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+  <area shape="rect" coords="79,52,100,68" href="http://globalresearch.ca/index.php?context=region&amp;regionId=5" alt="Africa" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerAFRICA.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+  <area shape="rect" coords="84,21,150,31" href="http://globalresearch.ca/index.php?context=region&amp;regionId=6" alt="Russia" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerRUS.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+  <area shape="rect" coords="86,30,102,48" href="http://globalresearch.ca/index.php?context=region&amp;regionId=7" alt="Middle East" onMouseOver="SetButtonImage('worlMapImage', 'site_images/worldmapbannerMIDEAST.jpg');" onMouseOut="SetButtonImage('worlMapImage', GetCurrentMapImage());">
+</map>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><!-- Top table -->
+	<tr>
+	<td>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	 <tr>
+	  <td width="787" height="81" align="left" bgcolor="#37487E"><img src="site_images/topbanner.jpg" alt="" name="TopBanner" usemap="#bannermap" border="0" width="787" height="81" hspace="0" vspace="0" align="left"></td>
+	  <td align="left" bgcolor="#37487E" background="site_images/topbanner_top_right_bg.jpg"><img width="1" height="1" src="site_images/blank1x1.gif" align="left"></td>
+	 </tr>
+	</table>
+	</td>
+	</tr>
+	<tr>
+	 <td align="left">
+	
+	<table bgcolor="#476098" border="0" cellpadding="0" cellspacing="0"> 
+	 <tr>
+	  <td width="4" height="33" align="left"><img src="site_images/topmenuBGleft.jpg" hspace="0" vspace="0" align="left" width="4" height="33"></td>
+	  <td width="347" height="33" align="left"><a href="http://globalresearch.ca/index.php"><img src="site_images/topmenuBGcrg.jpg" width="347" height="33" hspace="0" vspace="0" align="left" border="0"></a></td>
+	  <td width="55" height="33"><a href="http://globalresearch.ca/index.php?context=section&amp;sectionName=about"><img border="0" name="aboutButtonImage" src="site_images/aboutButton.gif" onMouseOut="SetButtonImage('aboutButtonImage', 'site_images/aboutButton.gif');" onMouseOver="SetButtonImage('aboutButtonImage', 'site_images/aboutButtonDown.gif');" align="left" width="55" height="33" hspace="0" vspace="0"></a></td>
+	  <td width="61" height="33" align="left"><a href="http://globalresearch.ca/index.php?context=section&amp;sectionName=contact"><img border="0" name="contactButtonImage" src="site_images/contactButton.gif" onMouseOut="SetButtonImage('contactButtonImage', 'site_images/contactButton.gif');" onMouseOver="SetButtonImage('contactButtonImage', 'site_images/contactButtonDown.gif');" align="left" width="61" height="33" hspace="0" vspace="0"></a></td>	  
+	  
+
+<!--<a href="index.php?context=section&sectionName=membership">-->
+<td width="87" height="33"><a href="http://store.globalresearch.ca/member/"><img border="0" name="enewsletterButtonImage" src="site_images/membershipButton.gif" onMouseOut="SetButtonImage('enewsletterButtonImage', 'site_images/membershipButton.gif');" onMouseOver="SetButtonImage('enewsletterButtonImage', 'site_images/membershipButtonDown.gif');" align="left" width="87" height="33" hspace="0" vspace="0"></a></td>
+
+<!-- <td width="87" height="33"><a href="index.php?context=section&sectionName=store"><img border="0" name="storeButtonImage" src="site_images/OnlineStoreButton.gif" onMouseOut="SetButtonImage('storeButtonImage', 'site_images/OnlineStoreButton.gif');" onMouseOver="SetButtonImage('storeButtonImage', 'site_images/OnlineStoreButtonDown.gif');" align="left" width="87" height="33" hspace="0" vspace="0"></a></td>-->
+
+<!-- new store button -->
+<td width="87" height="33"><a href="http://store.globalresearch.ca"><img border="0" name="storeButtonImage" src="site_images/OnlineStoreButton.gif" onMouseOut="SetButtonImage('storeButtonImage', 'site_images/OnlineStoreButton.gif');" onMouseOver="SetButtonImage('storeButtonImage', 'site_images/OnlineStoreButtonDown.gif');" align="left" width="87" height="33" hspace="0" vspace="0"></a>
+
+	  <!-- <td width="56" height="33"><a href="index.php?context=section&sectionName=donate">-->
+	  <!--<a href="https://store.globalresearch.ca/donate/">-->
+<td width="56" height="33"><a href="http://store.globalresearch.ca/donate/"><img border="0" name="donateButtonImage" src="site_images/donateButton.gif" onMouseOut="SetButtonImage('donateButtonImage', 'site_images/donateButton.gif');" onMouseOver="SetButtonImage('donateButtonImage', 'site_images/donateButtonDown.gif');" align="left" width="56" height="33" hspace="0" vspace="0"></a></td>	  
+	  <td width="100%" height="33" background="site_images/topmenuBGright.jpg" align="left"><img width="1" height="1" src="site_images/blank1x1.gif" align="right"></td>
+	 </tr>
+	</table>
+	
+	 </td>
+	</tr>
+
+	<tr>
+	<td>
+<!-- Main page content table -->
+<table id="mainTable" width="100%" border="0" cellspacing="2" cellpadding="0">
+  <tr>
+    <td valign="top" width="166" bgcolor="#f1f1f1">
+		<!-- Side Menu Table -->
+		<table id="sideMenuTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+<td width="165" height="88" bgcolor="#37467F"><img name="worlMapImage" src="site_images/worldmapbanner.jpg" width="165" height="88" hspace="0" vspace="0" border="0" usemap="#worldmap"></td>
+		
+		  </tr>
+		  <tr>
+			<td><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+		  </tr>
+		  <tr>
+		    <td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;">
+		  		<a href="http://globalresearch.ca/index.php?context=home">Home Page</a></div>
+			</td>
+		  </tr>
+		   <tr>
+		    <td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;">
+		  		<a href="http://globalresearch.ca/index.php?context=latestNews">Latest News/Top Stories</a></div>
+			</td>
+		  </tr>
+		   <tr>
+		    <td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;">
+		  		<a href="http://globalresearch.ca/index.php?context=mostPopular">Most Popular Stories</a></div>
+			</td>
+		  </tr>
+			
+		  <tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=region&amp;regionId=1">
+USA</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=region&amp;regionId=2">
+Canada</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=region&amp;regionId=3">
+Latin America & Caribbean</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=region&amp;regionId=4">
+Europe</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=region&amp;regionId=5">
+sub-Saharan Africa</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=region&amp;regionId=6">
+Russia and FSU</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=region&amp;regionId=7">
+Middle East</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=region&amp;regionId=8">
+Oceania</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=region&amp;regionId=9">
+Asia</a></div></td></tr>
+		  
+		  <tr>
+			<td><img src="site_images/sidemenufooter.jpg" width="165" height="22" hspace="0" vspace="0"></td>
+		  </tr>
+		   <tr>
+			<td><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+		  </tr>
+		  
+		  <tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=1">
+US NATO  War Agenda</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=2">
+Global Economic Crisis</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=3">
+Crimes against Humanity</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=4">
+Environment</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=6">
+Oil and Energy</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=36">
+Poverty & Social Inequality</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=5">
+Militarization and WMD</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=18">
+9/11 & 'War on Terrorism'</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=7">
+Police State</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=28">
+Law and Justice</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=24">
+Biotechnology and GMO</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=32">
+Women's Rights</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=20">
+Media Disinformation</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=27">
+Politics and Religion</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=26">
+United Nations</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=19">
+Science and Medicine</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=38">
+Culture, Society & History</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=33">
+Intelligence</a></div></td></tr>
+<tr><td valign="middle" align="left" height="17" bgcolor="#37467F" background="site_images/sidemenuBG.jpg"><img width="1" height="17" src="site_images/blank1x17.gif" align="left" hspace="0" vspace="0"><div class="menuText" align="right" style="position:static; width:154px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=theme&amp;themeId=40">
+I-BOOKS SERIES</a></div></td></tr>
+		  <tr>
+			<td bgcolor="#9A9A9A" class="searchLink"><br>&nbsp;<input id="SearchBox" name="SearchBox" type="text" size="20" maxlength="50"><br>&nbsp;<input id="SearchButton" name="SearchButton" onClick="xSearch();" type="button" value="Search"></td>
+		  </tr>
+		  <tr>
+		  	<td bgcolor="#9A9A9A" valign="middle">
+			 <table>
+			  <tr><td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksBold" align="left" style="position:static; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=viewArchivesMenu&amp;sectionType=home">Archives</a></span></td></tr>
+			  <tr><td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksBold" align="left" style="position:static; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=countryList">Countries</a></span></td></tr>
+			  <tr><td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksBold" align="left" style="position:static; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=authorList">Author Index</a></span></td></tr>
+			 </table>
+			</td>
+		  </tr>
+		  <tr>
+			<td valign="middle" bgcolor="#9A9A9A" class="searchLink"><table><tr><td nowrap class="searchLink"><a href="http://globalresearch.ca/rss.php"><img src="site_images/rss.gif" alt="RSS Feed" align="absbottom" width="28" height="14" border="0"></a> | </td><td class="searchLink"><a href="http://globalresearch.ca/index.php?context=section&amp;sectionName=rssinfo">Global Research RSS Feed</a></td></tr></table></td>
+		  </tr>
+		  <tr>
+			<td><img src="site_images/sidemenubottompart2.jpg" width="165" height="79" hspace="0" vspace="0"></td>
+		  </tr>
+<tr>
+<td width="166"><DIV align=justify>
+<TABLE id=leftSideTable cellSpacing=0 cellPadding=0 width="100%" border=0>
+<TBODY>
+<TR>
+<TD align=middle><SPAN class=titleLinks><FONT face=Verdana size=1><A href="http://www.globalresearch.ca/index.php?context=va&amp;aid=20729" target=_new><B><BR></A><A href="https://store.globalresearch.ca/donate/"><IMG style="WIDTH: 93px; HEIGHT: 96px" height=94 src="../www.globalresearch.ca/articlePictures/donationbutton3.jpg" width=88></A><A href="http://www.globalresearch.ca/index.php?context=va&amp;aid=20729" target=_new><BR><BR>Frequent Contributors</B></A></FONT><FONT face=Arial color=maroon><FONT size=2> 
+<HR>
+</FONT><A href="http://tv.globalresearch.ca/" target=_new><FONT face=Verdana color=forestgreen size=2><B>GlobalResearchTV</B></FONT></A><BR><FONT size=2><FONT face=Verdana><B><IMG style="WIDTH: 122px; HEIGHT: 36px" height=84 src="../www.globalresearch.ca/articlePictures/GRTVLOG.png" width=149 border=0></B><FONT color=#000000>&nbsp; 
+<HR>
+<SPAN class=titleLinks><FONT color=maroon size=1><A href="http://www.globalresearch.ca/index.php?context=va&amp;aid=17320" target=_new><B>Submission Guidelines</B></A></FONT></SPAN>&nbsp;<BR>
+<HR>
+<STRONG>NEW RELEASE IN PAPERBACK<BR></STRONG><A href="https://store.globalresearch.ca/store/towards-a-world-war-iii-scenario-the-dangers-of-nuclear-war/" target=_new><STRONG><FONT face=Arial>Towards a <BR>World War III Scenario</FONT></STRONG></A><BR><SPAN class=titleLinks><FONT face=Verdana color=#000000><IMG style="WIDTH: 97px; HEIGHT: 148px" height=289 hspace=0 src="../www.globalresearch.ca/articlePictures/borderedcover.jpg" width=219 align=middle border=0></FONT></SPAN><BR><FONT size=1><B>by Michel Chossudovsky<BR><BR></B></FONT>
+<HR>
+</FONT></FONT></FONT></FONT></SPAN>
+<DIV class=menuLinks style="Z-INDEX: 1; WIDTH: 134px; POSITION: static; HEIGHT: 41px; TEXT-ALIGN: center"><A href="http://www.globalresearch.ca/globaloutlook/truth911.html" target=_blank><B><FONT face=Arial>America's "War on Terrorism"</FONT></B></A></DIV></TD></TR>
+<TR>
+<TD>
+<CENTER><A href="http://www.globalresearch.ca/globaloutlook/truth911.html" target=_blank><FONT face=Arial><B><IMG style="WIDTH: 93px; HEIGHT: 134px" height=123 src="../www.globalresearch.ca/site_images/truth911small.jpg" width=89 align=middle border=0></B></FONT></A></CENTER></TD></TR>
+<TR>
+<TD vAlign=top align=middle>
+<DIV class=articleText style="POSITION: static; TEXT-ALIGN: center"><FONT face=Verdana size=1><B>by Michel Chossudovsky<BR></B></FONT><A href="http://www.globalresearch.ca/globaloutlook/truth911.html" target=_new><FONT face=Arial color=blue size=1><B>also available in pdf format</B></FONT></A><B><FONT size=2><FONT face=Arial><FONT color=blue> </FONT><BR></FONT></FONT>
+<HR>
+</B></DIV><A href="http://globalresearch.ca/books/SoD.html" target=_new><FONT color=blue><B><FONT size=2>Seeds of <BR>Destruction</FONT></B></FONT><FONT size=2> </FONT></A><BR><IMG style="WIDTH: 98px; HEIGHT: 141px" height=148 src="../www.globalresearch.ca/articlePictures/SeedsD.jpg" width=98 border=0><BR><B><FONT face=Arial><FONT size=2><FONT size=1>by F.William Engdahl</FONT> 
+<HR>
+</FONT></FONT></B></TD></TR>
+<TR>
+<TD align=middle><A href="http://globalresearch.ca/globaloutlook/GofP.html" target=_new><B><FONT face=Arial color=blue size=2>The Globalization <BR>of Poverty</FONT></B></A></TD></TR>
+<TR>
+<TD>
+<CENTER><A href="http://globalresearch.ca/globaloutlook/GofP.html" target=_blank><FONT face=Arial><IMG style="WIDTH: 93px; HEIGHT: 146px" height=127 src="../www.globalresearch.ca/site_images/globalpov.gif" width=97 align=middle border=0></FONT></A></CENTER></TD></TR>
+<TR>
+<TD vAlign=top align=middle>
+<DIV class=articleText style="POSITION: static; TEXT-ALIGN: center"><FONT face=Arial><FONT size=2><B><FONT face=Verdana><FONT size=1>by Michel Chossudovsky</FONT><BR></FONT></B></FONT><A href="http://globalresearch.ca/globaloutlook/GofP.html" target=_new><B><FONT size=1>also&nbsp;available in pdf format</FONT></B></A> 
+<HR>
+</FONT></DIV><A href="http://globalresearch.ca/index.php?context=va&amp;aid=21118" target=_new><FONT face=Verdana size=2><B>Superpower DVD </B></FONT></A><BR><FONT face=Verdana size=2>award winning documentary<BR></FONT><IMG style="WIDTH: 87px; HEIGHT: 133px" height=214 src="../www.globalresearch.ca/coverStoryPictures2/21118.jpg" width=140 border=0><A href="http://s108.photobucket.com/albums/n31/emmabelle011/?action=view&amp;current=frontwhole.jpg" target=_blank><B><FONT face=Arial></FONT></B></A></TD></TR>
+<TR>
+<TD align=middle>
+<DIV class=articleText style="POSITION: static; TEXT-ALIGN: center">
+<DIV class=articleText style="POSITION: static; TEXT-ALIGN: center"><B><FONT face=Arial size=2></FONT></B>&nbsp; 
+<HR>
+</DIV></DIV></TD></TR>
+<TR>
+<TD>
+<CENTER><A href="http://en.m4.cn/" target=_blank rel=nofollow><IMG style="WIDTH: 127px; HEIGHT: 57px" height=33 alt=4thmedia src="../img.m4.cn/templates/default/css/imgs/m4en.gif" width=274></A>&nbsp;&nbsp;&nbsp;</CENTER></TD></TR>
+<TR>
+<TD vAlign=top align=middle>
+<HR>
+<IMG style="WIDTH: 99px; HEIGHT: 136px" height=184 src="coverStoryPictures2/24722.jpg" width=154 border=0><BR><FONT size=1><B><A href="http://www.globalresearch.ca/index.php?context=va&amp;aid=24722" target=_new>PROJECT CENSORED <BR>TRUTH IN MEDIA</A></B></FONT></TD></TR></TBODY></TABLE></DIV></td>
+</tr>	
+		  
+		 
+		<tr>
+		 <td align="center"><br><br>
+			
+			<!-- GOOGLE ADS HERE-->
+			 
+			<br><br>
+		 </td>
+		</tr>
+		  
+		  
+		  
+		</table>
+   </td>
+   
+   <!-- Middle and Right part-->
+    <td width="100%" valign="top">
+		<!-- Top part-->
+		<table id="topHeaderTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+		   <td width="100%" colspan="1">
+		    <table id="toptopHeaderTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+			 <tr>
+		      <td width="26" height="22" bgcolor="#C4CFE1"><img src="site_images/topheader1c.jpg" width="26" height="22" hspace="0" vspace="0" align="left"></td>
+	<td valign="top" bgcolor="#C4CFE1" background="site_images/topheaderBG.jpg" width="100%"><table id="marqueeTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+<td nowrap valign="top" width="130"><span class="dateFont" align="left" style="position:static; padding: 1px 0px 0px 0px; width:130px; height:16px; z-index:1;">April 15, 2012 &nbsp;&nbsp;</span></td>
+<td width="400" align="left"><marquee width="390" class="dateFont" behavior="slide" scrollamount="4"><a href="http://globalresearch.ca/index.php?context=va&aid=29234">SYRIA: NATO'S NEXT HUMANITARIAN WAR?</a></marquee>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</table>
+</td>
+		  
+			  <td width="48" height="22" bgcolor="#C4CFE1"><img src="site_images/topheader1a.jpg" width="48" height="22" hspace="0" vspace="0" align="right"></td>
+			 </tr>
+			</table>
+		   </td>
+		  </tr>
+		  <tr>
+		  	<td width="100%" colspan="1"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+		  </tr>
+		 
+		  <tr>
+			<td colspan="1"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+		  </tr>
+		  <tr>
+			<td colspan="1"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+		  </tr>
+		  <tr>
+		  	<td width="100%" colspan="1">
+				<table id="topContentTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+					<td valign="top">
+<table id="privacyTable" width="100%" border="0" cellspacing="0" cellpadding="4">
+  <tr>
+<td align="left" valign="top">   <div class="bigSectionTitle">Privacy policy</div></td>
+  </tr>
+  <tr>
+<td align="left" valign="top">   <div class="bigArticleText"><br><br>When you sign up for our E-Newsletter, only your e-mail address is 
+required.  To become a Global Research Member, your email and name are 
+required.
+Global Research will never disclose your name or email address to third 
+parties.
+</div></td>
+  </tr>
+</table>
+</td>
+			 	
+<!-- ///////////////////////////////////////////////////////////////   -->						
+						<!-- Advertizing side-->
+						<td width="180" valign="top">
+						
+						  <table id="rightSideTable" width="100%" border="0" cellspacing="0" cellpadding="1">
+						   <tr>
+						    <td align="left">
+							 <!-- <table background="site_images/boxheader3BGa.jpg" id="messagesTable" width="100%" border="0" cellspacing="0" cellpadding="0"> -->
+							  <table bgcolor="#E7EAEF" id="messagesTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+								<!-- <tr>
+									<td width="20"><img src="site_images/boxheader3a.jpg"></td>
+									<td width="143" background="site_images/boxheader3BG.jpg"><img src="site_images/blank1x1.gif"></td>
+									<td width="17"><img src="site_images/boxheader3.jpg"></td>
+								</tr> -->
+								<tr>
+									<td bgcolor="#B4BFD3" height="3" width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td bgcolor="#B4BFD3" height="3" width="143"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td bgcolor="#B4BFD3" height="3" width="17"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								
+								<tr><td align="left" width="180" colspan="3"><table bgcolor="#E7EAEF" id="topInmessagesTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr><td align="left" width="8"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"></td>
+<td><table bgcolor="#E7EAEF" id="InmessagesTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr><td class="articleText">
+<FONT face=Verdana><FONT size=2><SPAN class=menuLinks style="Z-INDEX: 1; WIDTH: 160px; POSITION: static; HEIGHT: 16px" align="left"><BR><A href="http://globalresearch.ca/index.php?context=section&amp;sectionName=newsletter&amp;emailAddr="><STRONG>Subscribe to our Newsletter</STRONG></A></SPAN><BR><!-- <INPUT onclick=CheckNewsLetterBox(); maxLength=40 size=16 value="enter your email" name=NewsLetterSubscribe> <INPUT onclick=SubmitNewsLetter(); type=button value=Go name=NewsLetterButton>&nbsp;&nbsp;<BR>-->
+<HR>
+<A href="http://store.globalresearch.ca/donate/" target=_new>Donate to Global Research</A> 
+<HR>
+<A href="http://tv.globalresearch.ca/" target=_new><B><FONT color=forestgreen>GlobalResearchTV</FONT></B></A><BR><B><IMG style="WIDTH: 122px; HEIGHT: 36px" height=84 src="../www.globalresearch.ca/articlePictures/GRTVLOG.png" width=149 border=0></B>&nbsp; 
+<LI class=visit-youtube><A href="http://www.youtube.com/globalresearchtv" target=_blank><FONT face=Arial size=1><STRONG>Visit&nbsp;GRTV Youtube channel</STRONG></FONT></A><FONT face=Arial size=1><STRONG> </STRONG></FONT></LI>
+<LI class=visit-vimeo><A href="http://vimeo.com/globalresearch" target=_blank><FONT face=Arial size=1><STRONG>Visit GRTV&nbsp;Vimeo channel</STRONG></FONT></A><STRONG><FONT size=1> <BR></FONT></STRONG><FONT face=Arial><STRONG><FONT size=1>
+<HR>
+<IMG style="WIDTH: 27px; HEIGHT: 19px" height=19 src="../www.globalresearch.ca/articlePictures/facebook2.jpg" width=27 border=0></FONT><FONT face=Verdana size=1>Join Global Research<BR>on </FONT><A href="http://www.facebook.com/home.php#!/pages/Centre-for-Research-on-Globalization-Global-Research/200870816591393" target=_new><FONT face=Verdana size=1>Facebook</FONT></A><B><FONT face=Verdana size=1>!&nbsp;<BR></FONT><IFRAME style="BORDER-RIGHT: medium none; BORDER-TOP: medium none; OVERFLOW: hidden; BORDER-LEFT: medium none; WIDTH: 88px; BORDER-BOTTOM: medium none; HEIGHT: 20px" src="../www.facebook.com/plugins/like.php%3Fhref=http%253A%252F%252Fwww.facebook.com%252Fhome.php%2523%2521%252Fpages%252FCentre-for-Research-on-Globalization-Global-Research%252F2.html" frameBorder=0 scrolling=no allowTransparency></IFRAME><BR></B></STRONG></FONT><FONT size=1>Follow us on </FONT><A href="http://www.twitter.com/GRTVnews" target=_blank><FONT face=Arial size=1><STRONG>Twitter</STRONG></FONT></A><FONT face=Arial size=1><STRONG> </STRONG></FONT><!-- <ul>
+                <li><a href="http://www.facebook.com/home.php?#/group.php?gid=44209863651&ref=ts" target="_blank"><img src="/sites/default/themes/grtv/images/icons/related-links-facebook.png" alt="FB" /></a></li>
+                <li><a href="http://www.twitter.com/" target="_blank"><img src="/sites/default/themes/grtv/images/icons/related-links-uTwitter.png" alt="TW" /></a></li>
+                <li><a href="/node"><img src="/sites/default/themes/grtv/images/icons/related-links-rss.png" alt="RSS" title="RSS" width="17" height="17" /></a></li>
+              </ul>
+							--></LI><FONT size=1><STRONG>
+<HR>
+Partner Websites<BR></STRONG></FONT><A href="http://corbettreport.com/" target=_new><FONT size=1><STRONG>Corbett Report</STRONG></FONT></A><BR><A href="http://rickrozoff.wordpress.com/" target=_new><STRONG><FONT size=1>Stop NATO</FONT></STRONG></A><BR><A href="http://www.strategic-culture.org/" target=_new><STRONG><FONT size=1>Strategic Culture Foundation</FONT></STRONG></A><BR><A href="http://projectcensored.org/" target=_new><STRONG><FONT size=1>Project Censored</FONT></STRONG></A><BR><A href="http://washingtonsblog.com/" target=_new><FONT size=1><STRONG>Washington's Blog</STRONG></FONT></A><FONT face=Arial><FONT face=Verdana size=1><STRONG> 
+<HR>
+TV Radio Interviews, contact:<BR></STRONG></FONT><A href="mailto:media@globalresearch.ca"><FONT face=Verdana size=1><STRONG>media@globalresearch.ca</STRONG></FONT></A><STRONG><FONT face=Verdana size=1> <BR></FONT>
+<HR>
+</STRONG><FONT face=Verdana><STRONG>NEW RELEASE: NOW IN PAPERBACK<BR></STRONG></FONT><A href="https://store.globalresearch.ca/store/towards-a-world-war-iii-scenario-the-dangers-of-nuclear-war/" target=_new>Towards a World War III Scenario</A><BR><SPAN class=titleLinks><FONT color=#000000><FONT face=Verdana><STRONG><IMG style="WIDTH: 112px; HEIGHT: 166px" height=289 hspace=0 src="../www.globalresearch.ca/articlePictures/borderedcover.jpg" width=219 align=middle border=0></STRONG></FONT></FONT></SPAN><BR><STRONG><FONT size=1><FONT face=Verdana>by Michel Chossudovsky<BR></FONT></FONT>
+<HR>
+</STRONG><A href="http://globalresearch.ca/index.php?context=va&amp;aid=18851" target=_new><STRONG>The Global <BR>Economic Crisis</STRONG></A></FONT><BR><A href="http://globalresearch.ca/index.php?context=va&amp;aid=18851"></A><STRONG><IMG style="WIDTH: 108px; HEIGHT: 153px" height=147 src="../www.globalresearch.ca/articlePictures/globaleconomiccrisiscover.gif" width=115 border=0><BR></STRONG><FONT size=1><FONT face=Arial>Michel Chossudovsky <BR>Andrew G. Marshall (editors)</FONT><BR></FONT><B>
+<HR>
+</B></FONT></FONT><SPAN class=titleLinks><SPAN class=titleLinks><SPAN class=titleLinks><B>
+<TABLE id=ViewArticleTable cellSpacing=0 cellPadding=4 width="100%" border=0>
+<TBODY>
+<TR>
+<TD vAlign=top align=left>
+<DIV class=articleTitle><FONT face=Verdana size=2></FONT></DIV>
+<DIV class=articleTitle><FONT face=Verdana size=2></FONT><FONT size=1><B>
+<TABLE id=news0 cellSpacing=0 cellPadding=2 width="100%" border=0>
+<TBODY>
+<TR>
+<TD width=1><A href="http://www.globalresearch.ca/index.php?context=va&amp;aid=12651"><FONT face=Verdana><IMG height=50 src="../www.globalresearch.ca/coverStoryPictures/12651.jpg" width=50 align=left border=0></FONT></A></TD>
+<TD vAlign=top><SPAN class=titleLinks><A href="http://www.globalresearch.ca/index.php?context=va&amp;aid=12651"><FONT face=Verdana size=1><B>ARTWORKS FOR&nbsp;PEACE</B></FONT></A><BR><B><FONT face=Verdana size=1>Original etchings<BR></FONT></B></SPAN></TD></TR></TBODY></TABLE></B></FONT></DIV>
+<HR>
+</TD></TR>
+<TR>
+<TD align=left width=1><FONT size=2></FONT>
+<TABLE id=leftSideTable cellSpacing=0 cellPadding=0 width="100%" border=0>
+<TBODY>
+<TR>
+<TD align=middle><B><FONT color=blue><A href="http://globalresearch.ca/globaloutlook/GofP.html" target=_new><FONT face=Arial size=2>The Globalization of Poverty</FONT></A><A href="http://globalresearch.ca/globaloutlook/GofP.html" target=_new></FONT></B></A></TD></TR>
+<TR>
+<TD>
+<CENTER><A href="http://globalresearch.ca/globaloutlook/GofP.html" target=_blank><FONT face=Arial size=2><IMG style="WIDTH: 107px; HEIGHT: 159px" height=127 src="../www.globalresearch.ca/site_images/globalpov.gif" width=97 align=middle border=0></FONT></A></CENTER></TD></TR>
+<TR>
+<TD vAlign=top align=middle>
+<DIV class=articleText style="POSITION: static; TEXT-ALIGN: center"><B><FONT face=Verdana size=2><FONT size=1>by Michel <BR>Chossudovsky</FONT><BR></FONT></B><A href="http://globalresearch.ca/globaloutlook/GofP.html" target=_new><B><FONT face=Verdana size=1>now available in pdf format</FONT></B></A></DIV></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></B></SPAN></SPAN><FONT size=1>
+<HR>
+</FONT><A href="http://www.globalresearch.ca/index.php?context=section&amp;sectionName=newsletter&amp;emailAddr="><FONT face=Verdana size=1><B>SUBSCRIBE&nbsp;TO OUR NEWSLETTER</B></FONT></A> 
+<HR>
+<A href="http://globalresearch.ca/books/SoD.html" target=_new><B><FONT face=Arial size=2>Seeds of Destruction</FONT></B></A><B><FONT face=Arial size=2> </FONT></B>
+<P></P>
+<P></P>
+<P></P>
+<P></P>
+<P align=left><IMG style="WIDTH: 109px; HEIGHT: 154px" height=146 src="../www.globalresearch.ca/articlePictures/SeedsD.jpg" width=97 border=0><BR><FONT face=Arial size=2><FONT size=1><B>by F.William Engdahl<BR></B></FONT></FONT></SPAN></P>
+<HR>
+<A href="http://globalresearch.ca/index.php?context=va&amp;aid=22294" target=_new><FONT size=2>Erratum: Article removed</FONT></A> 
+	</td></tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+								
+								<tr>
+									<td width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td><img width="1" height="6" src="site_images/blank1x6.gif"></td>
+									<td width="17"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<tr>
+									<td width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td><img width="1" height="6" src="site_images/blank1x6.gif"></td>
+									<td width="17"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<tr>
+									<td bgcolor="#566994" height="6" width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td height="6" bgcolor="#566994"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td height="6" width="17" bgcolor="#566994"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<!-- <tr>
+									<td width="20" bgcolor="#D1D8E8" background="site_images/boxfooter2a.jpg"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td background="site_images/boxfooter2a.jpg"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td width="17" background="site_images/boxfooter2a.jpg"><img src="site_images/boxfooter2b.jpg"></td>
+								</tr> -->
+							</table>
+							</td>
+							</tr>
+							
+						   <tr>
+						    <td align="left">
+							<table bgcolor="#E7EAEF" id="newHiLightsTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+								<!-- <tr>
+									<td width="20"><img src="site_images/boxheader3a.jpg"></td>
+									<td background="site_images/boxheader3BG.jpg" width="143" class="sectionTitleCentered">News Highlights</td>
+									<td width="17"><img src="site_images/boxheader3.jpg"></td>
+								</tr> -->
+								<tr>
+									<td bgcolor="#E7EAEF" width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td bgcolor="#E7EAEF" width="143" class="sectionTitleCentered">News Highlights</td>
+									<td bgcolor="#E7EAEF" width="17"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<tr>
+									<td width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td width="143" class="sectionTitleCentered"></td>
+									<td width="17"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<tr>
+									<td width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td class="sectionTitleCentered"><img src="site_images/blank1x1.gif"></td>
+									<td width="17"><img width="1" height="4" src="site_images/blank1x4.gif"></td>
+								</tr><tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=56">OCCUPY WALL STREET</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=47">CRIMINALIZE WAR</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=49">THE BP  OIL SLICK</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=53">ARAB PROTEST MOVEMENT</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=54">NATO'S WAR ON LIBYA</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=55">SYRIA: NATO'S NEXT WAR?</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=1">IRAQ REPORT</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=18">IRAN: THE NEXT WAR?</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=20">HAITI</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=42">PAKISTAN</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=6">PALESTINE</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=19">THE BALKANS</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=22">NORTH KOREA</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=40">AFGHANISTAN</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=34">Nuclear War</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=41">Depleted Uranium</a></span></td>
+</tr>
+<tr><td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:165px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=newsHighlights&amp;newsId=24">Climate Change</a></span></td>
+</tr>
+								<tr>
+									<td width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td class="sectionTitleCentered"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td width="17"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<tr>
+									<td width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td><img width="1" height="6" src="site_images/blank1x6.gif"></td>
+									<td width="17"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<tr>
+									<td bgcolor="#566994" height="6" width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td height="6" bgcolor="#566994"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td height="6" width="17" bgcolor="#566994"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<!-- <tr>
+									<td width="20" background="site_images/boxfooter2a.jpg"><img src="site_images/blank1x1.gif"></td>
+									<td background="site_images/boxfooter2a.jpg"><img src="site_images/blank1x1.gif"></td>
+									<td width="17" background="site_images/boxfooter2a.jpg"><img src="site_images/boxfooter2b.jpg"></td>
+								</tr> -->
+							</table>
+							
+						  </td></tr>
+						  
+						  <tr><td>
+							<table bgcolor="#E7EAEF" id="audioVideoTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+								<!-- <tr>
+									<td width="20"><img src="site_images/boxheader3a.jpg"></td>
+									<td background="site_images/boxheader3BG.jpg" width="143" class="sectionTitleCentered"><a href="index.php?context=audioVideo">Audio Video Library</a></td>
+									<td width="17"><img src="site_images/boxheader3.jpg"></td>
+								</tr> -->
+								<tr>
+									<td bgcolor="#E7EAEF" width="20"><img src="site_images/blank1x1.gif"></td>
+									<td bgcolor="#E7EAEF" width="143" align="middle" class="menuLinksBold"><a href="http://globalresearch.ca/index.php?context=audioVideo">Audio Video Library</a></td>
+									<td bgcolor="#E7EAEF" width="17"><img src="site_images/blank1x1.gif"></td>
+								</tr>
+								<tr>
+									<td colspan="3"><img width="1" height="4" src="site_images/blank1x4.gif"></td>
+								</tr>
+								
+								<!-- <tr>
+									<td colspan="3"><img src="site_images/blank4x1.gif"><img src="site_images/blank4x1.gif"><span class="menuLinks" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="index.php?context=audioVideo">Audio-Video Library</a></span></td>
+								</tr> --><tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=25128">Global Research TV (GRTV): See the World Through an Independent Lens</a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=18592">AUDIO: The Myth of a Free Press </a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=16075">VIDEO: Contaminated H1N1 Vaccines?</a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=15920">VIDEO: The Nature and Significance of NATO-US-Israeli War Crimes </a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=15001">VIDEO: The Federal Reserve is paying banks NOT to make loans to struggling Americans!</a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=13278">VIDEO: Taxpayers, Where Is Your Money Going?</a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=12838">VIDEO: US-NATO War Crimes: "Humanitarian Intervention" Challenged</a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=10780">VIDEO: SHADOWPLAY: 9/11 PUPPETMASTERS.  </a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=7623">VIDEO: Rare Footage - Flight 93 crashes in Pennsylvania - September 11 2001</a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=5932">VIDEO: Canada and the Afghan War </a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=2843">VIDEO: The Dangers of a Nuclear War</a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=2116">VIDEO: 100,000 Iraqi Kids Killed</a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=1382">VIDEO: British Mercenary Company Kills Iraqi Civilians</a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=533">VIDEO: World Tribunal on Iraq</a></span></td>
+</tr>
+<tr>
+ <td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksArrow" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=va&amp;aid=511">US Apache Helicopter massacring Iraqis</a></span></td>
+</tr>
+								
+								<tr>
+									<td><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td><img width="1" height="6" src="site_images/blank1x6.gif"></td>
+									<td><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<tr>
+									<td bgcolor="#D1D8E8" height="6" width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td height="6" bgcolor="#D1D8E8"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td height="6" width="17" bgcolor="#D1D8E8"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<!-- <tr>
+									<td background="site_images/boxfooter2a.jpg"><img src="site_images/blank1x1.gif"></td>
+									<td background="site_images/boxfooter2a.jpg"><img src="site_images/blank1x1.gif"></td>
+									<td background="site_images/boxfooter2a.jpg"><img src="site_images/boxfooter2b.jpg"></td>
+								</tr> -->
+							</table>
+						  </td></tr>
+						  
+						  <tr><td>
+							<table id="otherLinksTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+							  <!-- <tr>
+								<td background="site_images/boxheaderBG.jpg" align="left"><img src="site_images/topheader2a.jpg"></td>
+							  </tr> -->
+							  <tr>
+								<td bgcolor="#263A6D" width="127" height="12" align="left"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+							  </tr>
+							</table>
+						  </td></tr>
+						
+						  <tr><td> 
+							   	<table bgcolor="#E7EAEF" id="xtable" width="100%" border="0" cellspacing="0" cellpadding="0">
+								
+								<tr>
+									<td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinks" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=section&amp;sectionName=newsletter&amp;emailAddr=">Subscribe to newsletter</a></span>
+									 <img src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><input onClick="CheckNewsLetterBox();" name="NewsLetterSubscribe" type="text" size="16" maxlength="40" value="enter your email"><input OnClick="SubmitNewsLetter();" name="NewsLetterButton" type="button" value="Go">
+									 </td>									
+								</tr>
+								<tr>
+									<td colspan="3"><img width="1" height="4" src="site_images/blank1x4.gif"></td>
+								</tr>
+																<tr>
+									
+									<td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksBold" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=viewArchivesMenu&amp;sectionType=home">Archives</a></span></td>
+									
+								</tr>
+								<tr>
+									
+									<td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksBold" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=authorList">Author Index</a></span></td>
+									
+								</tr>
+								<tr>
+									
+									<td colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksBold" align="left" style="position:static; width:160px; height:16px; z-index:1;"><!--<a href="index.php?context=section&sectionName=donate">--><a href="https://store.globalresearch.ca/donate/">Donate</a></span></td>
+									
+								</tr>
+								<!-- <tr>
+									
+									<td colspan="3"><img src="site_images/blank4x1.gif"><img src="site_images/blank4x1.gif"><span class="menuLinksBold" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca.myforums.net/index.php" target="_blank">Forums</a></span></td>
+									
+								</tr> -->
+								<tr>
+									
+									<td width="180" colspan="3"><img width="4" height="1" src="site_images/blank4x1.gif"><img width="4" height="1" src="site_images/blank4x1.gif"><span class="menuLinksBold" align="left" style="position:static; width:160px; height:16px; z-index:1;"><a href="http://globalresearch.ca/index.php?context=section&amp;sectionName=links">Links</a></span></td>
+									
+								</tr>
+								<tr>
+									
+									<td colspan="3"><img width="1" height="6" src="site_images/blank1x6.gif"></td>
+									
+								</tr>
+								<tr>
+									<td bgcolor="#566994" height="6" width="20"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td height="6" bgcolor="#566994"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+									<td align="right" height="6" width="17" bgcolor="#566994"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+								</tr>
+								<!-- <tr>
+									<td background="site_images/boxfooter2a.jpg"></td>
+									<td background="site_images/boxfooter2a.jpg"></td>
+									<td align="right" background="site_images/boxfooter2a.jpg"><img src="site_images/boxfooter2b.jpg"></td>
+								</tr> -->
+								
+							</table>
+						  </td></tr>
+						  <tr><td>
+<table bgcolor="#E7EAEF" id="addsTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td colspan="3" background="site_images/white1x2.gif">
+<img width="1" height="1" src="site_images/blank1x1.gif" align="left">
+</td>
+</tr>
+<tr>
+<td colspan="3">
+<img width="1" height="6" src="site_images/blank1x6.gif" align="left">
+</td>
+</tr>
+<tr>
+<td><img width="1" height="1" src="site_images/blank1x1.gif" align="left"></td>
+<td valign="middle">
+<A href="http://www.globalresearch.ca/index.php?context=countryList" target=_new><FONT face=Arial color=navy size=2><B>Country Index</B></FONT></A> 
+<HR>
+<FONT face=Arial><FONT size=1><FONT size=2></FONT><B>Alternative media:&nbsp;</B></FONT></FONT><A href="http://www.globalresearch.ca/index.php?context=section&amp;sectionName=links" target=_new><B><FONT face=Arial color=navy size=1>extensive links</FONT></B></A><FONT color=darkblue><FONT face=Arial size=1><B> 
+<HR>
+</B></FONT><B><A href="http://www.globalresearch.ca/index.php?context=listByAuthor&amp;authorFirst=Michel&amp;authorName=Chossudovsky" target=_new><B><FONT face=Arial color=navy size=1>Michel Chossudovsky Archive</FONT></B></A><A href="http://www.globalresearch.ca/index.php?context=section&amp;sectionName=store" target=_new><B><FONT color=navy><BR></FONT></B></A><FONT face=Arial size=1>
+<HR>
+</FONT><A href="http://uruknet.info/" target=_new><B><FONT face=Arial color=navy size=1>uruknet.info: news&nbsp;from occupied Iraq</FONT></B></A><A href="http://www.globalresearch.ca/index.php?context=section&amp;sectionName=store" target=_new><FONT face=Arial color=navy size=1> 
+<HR>
+Global Research Books and Videos</FONT></B></A></FONT><FONT face=Arial size=1><B> 
+<HR>
+</B></FONT><A href="http://globalresearch.ca/articles/GLOBALOUTLOOK504A.html" target=_new><FONT color=navy><FONT face=Arial><FONT size=1><B>Obituary:</B> </FONT></FONT></FONT></A><A href="http://www.globalresearch.ca/index.php?context=viewArticle&amp;code=20060212&amp;articleId=1955" target=_new><FONT face=Arial color=navy size=1>Evgeny Chossudovsky:&nbsp;Writer with a distinguished&nbsp;UN career</FONT></A><FONT face=Arial><FONT size=1> 
+<HR>
+</FONT><A href="http://web.archive.org/web/20010915225829/http://globalresearch.ca/" target=_new><FONT color=navy size=1>Global Research Website on the 12 Sept 2001</FONT></A><A href="http://globalresearch.ca/articles/GLOBALOUTLOOK504A.html" target=_new><FONT color=navy size=1> 
+<HR>
+</FONT></FONT></A><FONT face=Arial><FONT size=1><B>Support our activities<FONT color=navy>: </FONT></B></FONT></FONT><A href="http://www.globalresearch.ca/index.php?context=section&amp;sectionName=donate" target=_new><B><FONT face=Arial><FONT size=1><FONT color=navy>Donate to Global Research</FONT></FONT></FONT></B></A>
+</td>
+<td><img width="1" height="1" src="site_images/blank1x1.gif" align="left"></td>
+</tr>
+<tr>
+<td colspan="3">
+<img width="1" height="6" src="site_images/blank1x6.gif" align="left">
+</td>
+</tr>
+<tr>
+<td bgcolor="#566994" height="6" width="4"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+<td height="6" bgcolor="#566994"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+<td align="right" height="6" width="17" bgcolor="#566994"><img width="1" height="1" src="site_images/blank1x1.gif"></td>
+</tr>
+</table>
+</td></tr>
+</table>
+</td>
+	
+				<!---END OF ADVERTIZING SIDE-->
+				 				
+				</tr>
+				</table>
+				
+				</td>
+		  		</tr>
+			
+				<tr><td>
+				<table id="footerTable" width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr><td><hr></td></tr>
+					<tr> 
+					 <td align=center><div class="articleFooterText"><a href="index.php%3Fcontext=privacy.html">Privacy Policy</a></div></td>
+				    	</tr>
+					<tr>
+					 <td align=center><div class="articleFooterText"><b>Copyright &copy; 2005-2011 <b>GlobalResearch.ca</b></div></td>
+				    	</tr> 	
+				</table>
+				<table id="footerTable" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+					
+					<tr><td><hr></td></tr>
+					
+					<!--- begin google-adsense -->
+					<tr align="center"><td>
+					<script type="text/javascript"><!--
+					google_ad_client = "ca-pub-1591488516340780";
+					/* 728x90, Homepage, 1/16/11 */
+					google_ad_slot = "4498356836";
+					google_ad_width = 728;
+					google_ad_height = 90;
+					//-->
+					</script>
+					
+					<script type="text/javascript" src="../pagead2.googlesyndication.com/pagead/show_ads.js"> </script>
+					</td></tr>
+					<!--- end google-adsense -->
+				</table>	
+						
+			</td>
+		  </tr>
+		</table>
+	 </td>
+	</tr>
+	
+</table><!-- Main page content table END -->
+</td>
+</tr>
+</table><!-- Top table -->
+
+</body>
+</html>

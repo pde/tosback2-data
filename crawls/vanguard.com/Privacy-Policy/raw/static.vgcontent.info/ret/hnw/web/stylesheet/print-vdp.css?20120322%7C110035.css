@@ -1,0 +1,176 @@
+/*
+================================================================================================
+DIS css file for print media (VDP templates)
+FileName:		print-vdp.css
+Version:		2011.05.09 (14.300.0+)
+Last Change:   	NBR529581 - Added styles for printing layer title and horizontal dotted lines
+================================================================================================
+*/
+
+/* --------------------------------- */
+/* Template Driven Print Styles      */
+/* --------------------------------- */
+body { background-color: #FFFFFF; } /* NextGen pages won't print the grey background */
+#gh #util { display: none }
+#gh #subutil { display: none }
+#gh #nav { display: none }
+#gh #subnav { display: none }
+#gh #utilBar { display: none }
+#gh #subUtilSearch { display: none }
+#gh #subUtilLinks { display: none }
+#gh #firstNav { display: none !important }
+#gh #secondNav { display: none !important }
+#gh #subUtilSection { background-image:none; border-bottom:3px solid #9E1B34; }
+#gh #subUtilContent { height: 60px; width: 100%}
+#colL { width: 0; }
+#colM { width: 100%; }
+#colR { width: 0; }
+#colRcontent { display: none; }
+#colLcontent { display: none; }
+#main, #colM , #colL, #colR { padding: 0px; } /* Eliminate padding so that more prints */
+.template12Grid #main { padding: 0px; }
+
+#cbdModalDiv { display: none !important; }
+.vg-comboBox-hiddenrow { display:none !important; }
+#main.printLayer { display: none; }
+#layer.printLayer { display: none; }
+#printLayerDiv { display:block; }
+.template12Grid #printLayerDiv { width:1002px; }
+#printLayerDiv .roundBoxScrollDiv, #printLayerDiv .scrollRegion { overflow:visible; }
+.border { width: 97%; margin-right: 0px; }
+.floatColWrapper{ overflow:visible; }
+
+/* Improves printing in FF and Safari */
+.cbdDiv { display: inherit; }
+
+/* --------------------------------- */
+/* Print-All Styles (Optional)       */
+/* --------------------------------- */
+/* Force expanded printing of Div's regardless of state */
+div.printAll, .printAll div { overflow: visible; }
+
+/* Force expanded printing of Navboxes, regardless of state */ 
+.printAll .vg-NavboxClosed .vg-NavboxContent { display: block; }
+.printAll .vg-NavboxContent { left: 0px !important; top: 0px !important;  } /* override animation style */
+
+/* Force expanded printing of Accordions, regardless of state */
+.printAll .vg-AccItemDeselected .vg-AccItemContent { display: block; }
+.printAll .vg-AccItem { height: auto !important; }
+
+/* Force expanded printing of all tabs */
+.printAll .vtabs .tabBoxItemContainer div { display: block !important; }
+
+/* DEF420919 - Fixes printing issue when opacity is set on a deck card in IE */
+.vg-deckCard { filter: none !important; }
+.vg-NavboxContent { position: relative !important; }
+
+/* DEF497595 - Fixes printing the nav box in the side tab of funds and ETFs long list*/ 
+.sideTabTD .vg-Navbox div { filter:none; }
+
+/* Unselect tabs during printing */	
+.printAll .vtabs.opt1 .tabbox li { background-image: url(../images/tab_grey_border_r_curve.gif) !important; background-repeat: no-repeat !important; background-position: right top !important; background-color: #FFF !important; border-bottom: solid 1px #FFF !important; margin-right:2px !important; }
+.printAll .vtabs.opt1 .tabbox li a { background-image:  url(../images/tab_grey_border_l_curve.gif) !important; background-repeat: no-repeat; background-position: left top !important; color: #036 !important; border-bottom: solid 1px #D2E2EC !important; padding-bottom: 4px !important; font-weight:normal !important; }
+.printAll .vtabs.opt2 .tabbox li { background-color: #D2E2EC !important; background-image:  url(../images/tab_grey_border_r_curve.gif) !important; background-repeat: no-repeat !important;background-position: right top !important; border-bottom: solid 1px #FFF !important; margin-right:2px; }
+.printAll .vtabs.opt2 .tabbox li a { background-image:  url(../images/tab_grey_border_l_curve.gif) !important; background-repeat: no-repeat !important; background-position: left top !important; color: #036 !important; font-weight:normal !important;}
+
+/*DEF478161*/
+.vtabs .tab-opt1 .tabbox ul li, .vtabs .tab-opt1 .int-tabbox ul li, .vtabs .tab-opt1 .tabbox a, .vtabs .tab-opt1 .int-tabbox a,
+.vtabs .tab-opt2 .tabbox ul li, .vtabs .tab-opt2 .int-tabbox ul li, .vtabs .tab-opt2 .tabbox a, .vtabs .tab-opt2 .int-tabbox a  { _background-image:none !important;}
+
+/*DEF514041*/
+.vtabs .nav-Sq1 .tabbox ul li a, .vtabs .nav-Sq2 .tabbox ul li a { color: black !important; background-color: white !important; }
+
+/*DEF514032*/
+.roDeck-opt3 .roDeckTable td .roController div { position: static !important; }
+
+/*DEF505356*/
+.gridTable dl.arrow { _margin-top: 0; }
+
+/* --------------------------------- */
+/* Component Print Styles (Always)   */
+/* --------------------------------- */
+.actButtons { display: none; }
+.panel .overlay, .panelBody { padding:0px; margin:0px }  /* Minimize panel pad to improve printing - VFP */
+.vtabs .roundBoxScrollDiv.layer { overflow:visible !important; height:100% !important }  /* Force expanded printing of vtabs */
+.vtabs.opt2 .tabbox li.current a {color:#036 !important;}
+.FOCTitle h3 { font-size: 66% !important } /* DEF411407 */
+.vg-SelOneMenuHiddenRow { _display:none }  /* DEF436826 - SelectOneMenu printing IE only */
+.vfpPlan .disabled { _float: left } 		/* DEF436826 - VFP printing issue - IE only hack */
+.embedpdf { display: none }                 /* Embedded PDF */
+.printpdfmsg { display: inline }            /* Embedded PDF Print Message */
+
+/* --------------------------------- */
+/* Print-Friendly Styles (Optional)  */
+/* --------------------------------- */
+.printNoTabs .vtabs div.tabbox, .printNoTabs .vtabs div.subhead  { display: none; }
+.vtabs .subhead ul li.spacer { _margin-left: -7px; _margin-right: -6px } /* Narrow IE printing of subtabs */
+.printNoTabs div.tabbox { display: none; }
+.printNoSideTabs .sideTabTD { display: none; }
+.printNoSideTabs .sideTabBody { padding-left: 5px; _zoom: 90%} /* Zoom is IE only */
+.printNoSideTabs .rdglow1topMid, 
+.printNoSideTabs .rdglow1botMid,
+.printNoSideTabs .rdglow1botRgt,
+.printNoSideTabs .rdglow1topRgt,
+.printNoSideTabs .rdglow1topLft,
+.printNoSideTabs .rdglow1ctrLft,
+.printNoSideTabs .rdglow1ctrMid,
+.printNoSideTabs .rdglow1ctrRgt,
+.printNoSideTabs .rdglow1botLft { background-image: none !important; }
+
+/* --------------------------------- */
+/* Other Generic Styles              */
+/* --------------------------------- */
+.printSmall { font-size: 8pt; }
+.pageBreak { page-break-before: always; }
+
+/* zoom styles */
+.printZoom95 { zoom: 95% }
+.printZoom90 { zoom: 90% }
+.printZoom85 { zoom: 85% }
+.printZoom80 { zoom: 80% }
+.printZoom75 { zoom: 75% }
+.printZoom70 { zoom: 70% }
+.printZoom65 { zoom: 65% }
+.printZoom60 { zoom: 60% }
+.printZoom55 { zoom: 55% }
+.printZoom50 { zoom: 50% }
+
+/* --------------------------------- */
+/* Print-None Styles                 */
+/* --------------------------------- */
+/* Put around anything to suppress print - keep near bottom to take precedence */
+.noPrint { display: none !important; }
+.printNone { display: none !important; }
+.printHide { visibility:hidden }
+
+
+/*****  NextGen print styles  *****/
+/* since IE6 does not have "shrink to fit", reduce IE6 #main so that it fits on one portrait width page*/
+.template12Grid #main { _zoom:60%; }
+html>body .IE6Ignore, .template12Grid #main { _zoom:100% }
+
+.noRnavPrint { background:none; }
+.noRnavPrint .rnavRegion { display:none; }
+.noRnavPrint .grid-9wide { width:963px } /* make the content of the 9wide be the same width as a 12wide */
+
+.printAll .vtabs .tab-opt1 .tabbox ul li { border:2px solid #FFF; }
+.printAll .vtabs .tab-opt1 .tabbox ul li a,
+.printAll .vtabs .tab-opt1 .tabbox ul li.current a { background-color: #CCC }
+
+#NON_BB_GLOBAL_INFO_BOX, #ldr_NON_BB_GLOBAL_INFO_BOX { display:none }
+
+/* layer printing styles */
+#printLayerDiv { margin-top: 8px; }
+#printLayerDiv .pageTools { display:none }
+.layerTitle { margin-bottom: 18px; }
+.ltitle-table .ltitle-right { display:none }
+
+/* super footer printing styles */
+.template12Grid div.sFooter { margin-top: 14px; }
+
+/* global footer printing styles */
+.template12Grid div.gblFoot { background-color: #FFF; padding: 18px 0px 0px 0px; }
+.gblFoot td, .gblFoot a, .gblFoot a:link, .gblFoot a:visited, .gblFoot a:active, .gblFoot td a.dateTextLink, .gblFoot td a.dateTextLink:hover  { color: #333; }
+
+/* dotted horizontal rule printing styles */
+div.horizDotted { background: none; border-bottom: 1px solid #ccc; }

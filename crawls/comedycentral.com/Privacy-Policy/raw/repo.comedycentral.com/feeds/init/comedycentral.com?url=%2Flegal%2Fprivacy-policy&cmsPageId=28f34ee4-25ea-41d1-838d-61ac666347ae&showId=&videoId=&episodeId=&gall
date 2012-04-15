@@ -1,0 +1,61 @@
+/* Reporting and Ad Call Setup */
+
+/* comedycentral.com */
+
+
+//Omniture Setup
+mtvn.btg.config.ReportSettings.Omniture.dynamicAccountSelection = "true";
+mtvn.btg.config.ReportSettings.Omniture.dynamicAccountList = "viacomedycentralrldev=comedycentral-d,comedycentral-q,mtv-d,cclocal";
+mtvn.btg.config.ReportSettings.Omniture.linkInternalFilters = "javascript:,comedycentral,mtvi.com,cclocal";
+mtvn.btg.config.ReportSettings.Omniture.videoViewEventDisable = true;
+mtvn.btg.config.ReportSettings.Omniture.enableVisitorNamespace = true;
+mtvn.btg.config.ReportSettings.Omniture.defaultHier = "hier1"; 
+
+
+
+//Ads Setup
+mtvn.btg.config.AdSettings.DoubleClick.dartSite="comedycentral.mtvi";
+mtvn.btg.config.AdSettings.DoubleClick.autoDcopt=true;
+
+mtvn.btg.config.AdSettings.DoubleClick.positionThreshold = "3";
+mtvn.btg.config.AdSettings.DoubleClick.sections = "/legal/privacy-policy";
+mtvn.btg.config.AdSettings.DoubleClick.keyValues = "!category=comedycentral;!category=legal;";
+mtvn.btg.config.AdSettings.DoubleClick.contentType = "adj";
+
+//DART Served Page Ads Setup
+mtvn.btg.config.AdSettings.reloadableAds=false;
+mtvn.btg.config.AdSettings.reloadInterval=240000;
+
+
+
+//FreeWheel Served Page Ads Setup
+mtvn.btg.config.AdSettings.FreeWheel = { enabled:false, type:"MRM" }; 
+
+
+//Init btg controller
+mtvn.btg.Controller.init();
+
+
+//Send Reporting call
+mtvn.btg.Controller.sendPageCall( {  pageName:"legal/privacy-policy",channel:"cc|legal",prop21:"ALLTRAFFIC:ComedyCentral",prop35:"legal/privacy-policy",prop8:"no-show",hier1:"legal/privacy-policy",eVar9:"legal/privacy-policy",eVar10:"ALLTRAFFIC:ComedyCentral",eVar6:"no-show"  } );
+
+
+//Vars used for ad calls, reporting and, site section Id
+var siteSectionId = "";
+var pageName = 'legal/privacy-policy';
+var exclusionString = '!category=comedycentral;!category=legal;';
+var allKeyString = '!category=comedycentral;!category=legal;mtfIFPath=/asm/doubleclick/;';
+var repCallObject = { pageName:"legal/privacy-policy",channel:"cc|legal",prop21:"ALLTRAFFIC:ComedyCentral",prop35:"legal/privacy-policy",prop8:"no-show",hier1:"legal/privacy-policy",eVar9:"legal/privacy-policy",eVar10:"ALLTRAFFIC:ComedyCentral",eVar6:"no-show" };
+
+
+if (typeof repCallObject.events == 'undefined' || repCallObject.events == '') {
+	repCallObject.events = 'event16';
+} 
+
+var sectionString = "/legal/privacy-policy";
+var useSurveyString = true;
+var adCall6x6 = false;
+var onAdNumber = 1;
+
+
+

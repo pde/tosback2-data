@@ -1,0 +1,28 @@
+jQuery(document).ready(function($) {
+	RPXNOW.init({
+		appId: wpJanrainEngageShare.appId,
+		xdReceiver: wpJanrainEngageShare.xdReceiver
+	});
+});
+
+function socialShare(userContent,callback) {
+	RPXNOW.loadAndRun(['Social'], function() {
+		var activity = new RPXNOW.Social.Activity(
+				wpJanrainEngageShare.share_display,
+				wpJanrainEngageShare.action,
+				wpJanrainEngageShare.permalink
+			),
+			description = jQuery('<div/>').html(wpJanrainEngageShare.description).text();
+
+		activity.setDescription(description);
+		activity.setUserGeneratedContent(userContent);
+
+		if (wpJanrainEngageShare.thumbnail != '' && wpJanrainEngageShare.thumbnail != null ) {
+			var shareImage = new RPXNOW.Social.ImageMediaCollection();
+			shareImage.addImage(wpJanrainEngageShare.thumbnail,wpJanrainEngageShare.permalink);
+			activity.setMediaItem(shareImage);
+		}
+
+		RPXNOW.Social.publishActivity(activity, {finishCallback: callback});
+	});
+}

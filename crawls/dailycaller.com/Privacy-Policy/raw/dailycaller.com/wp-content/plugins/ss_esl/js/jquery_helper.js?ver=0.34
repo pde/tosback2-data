@@ -1,0 +1,128 @@
+function showPopupSubscribe(timeout) {
+	$('#sssubscribe-wrapper').delay(timeout).queue(function() {
+		$(this).show();
+	});
+}
+
+$(document).ready(function () {
+	$('input#ss_esl_email').blur(function() {
+		if($(this).val() == '') {
+			$(this).val($(this).attr('title'));
+		}
+	}).focus(function() {
+		if($(this).val() == $(this).attr('title')) {
+			$(this).val('');
+		}
+	});
+	
+});
+
+function ss_esl_hidePopupSubscribe(cookie_exp_ms) {
+	$('#sssubscribe-wrapper').hide();
+	ss_esl_setCookie('ss_esl_nothanks', true, cookie_exp_ms,'/');
+}
+
+function ss_esl_emailAjax(cookie_exp_ms){
+	var ajaxRequest;  // The variable that makes Ajax possible!
+
+	try{
+		// Opera 8.0+, Firefox, Safari
+		ajaxRequest = new XMLHttpRequest();
+	} catch (e){
+		// Internet Explorer Browsers
+		try{
+			ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+			try{
+				ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e){
+				// Something went wrong
+				alert("Your browser is not compatible with AJAX.");
+				return false;
+			}
+		}
+	}
+	
+	var prevSubmitHTML = document.getElementById('ss_esl_EmailSubmitButton').innerHTML;
+	document.getElementById('ss_esl_EmailSubmitButton').innerHTML = '<img src="'+ssSubscribePluginURL+'images/ajax-loader.gif">';
+
+	// Create a function that will receive data sent from the server
+	ajaxRequest.onreadystatechange = function(){
+		if(ajaxRequest.readyState == 4){
+			document.getElementById('ss_esl_widgetEmailResults').innerHTML = ajaxRequest.responseText;
+
+			document.getElementById('ss_esl_EmailSubmitButton').innerHTML = prevSubmitHTML;
+			
+			var successText = 'You have successfully signed up for our daily emails.';
+			if(ajaxRequest.responseText == successText) {
+				ss_esl_setCookie('ss_esl_successfull_signup', true, cookie_exp_ms,'/');
+				subscribe_box = document.getElementById('sssubscribe-wrapper');
+				subscribe_box.parentNode.removeChild(subscribe_box);
+				alert('You have successfully signed up for our daily emails!');
+			} else {
+				document.getElementById('ss_esl_widgetEmailResults').innerHTML = ajaxRequest.responseText + ' Please retry!';
+			}
+
+		}
+	};
+	
+	var EmailValidator = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	var email = document.getElementById('ss_esl_email');
+	if(email.value=='' || email.value == email.title || !EmailValidator.test(email.value)) {
+		alert("Invalid Email Address. Please input an email address");
+		document.getElementById('ss_esl_EmailSubmitButton').innerHTML = prevSubmitHTML;			
+		return false;
+	}
+	else {
+
+		var TheDCLinks = document.getElementById('ss_esl_TheDCLinks').checked;
+		var CampusCaller = document.getElementById('ss_esl_CampusCaller').checked;
+		var GinnisList = document.getElementById('ss_esl_GinnisList').checked;
+		var TheDCMorning = document.getElementById('ss_esl_TheDCMorning').checked;			
+
+		var queryString = "?email=" + encodeURIComponent(email.value);
+
+		if(TheDCLinks==true){	queryString = queryString + "&TheDCLinks=" + TheDCLinks;	}
+		if(CampusCaller==true){	queryString = queryString + "&CampusCaller=" + CampusCaller;	}
+		if(GinnisList==true){	queryString = queryString + "&GinnisList=" + GinnisList;	}
+		if(TheDCMorning==true){	queryString = queryString + "&TheDCMorning=" + TheDCMorning;	}
+
+			ajaxRequest.open("GET", ss_esl_subscribe_ajax_action + queryString, true);
+			ajaxRequest.send(null); 
+		
+	}
+}
+
+
+
+function ss_esl_setCookie(name,value,ms,path) {
+	if (ms) {
+		var date = new Date();
+		date.setTime(date.getTime()+ms);
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path="+path;
+}
+
+function ss_esl_readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+function ss_esl_getHost(url)
+{
+    var a = document.createElement('a');
+    a.href = url.toLowerCase();
+    result = a.hostname;
+    if (result.indexOf('www.')==0){
+    	result = result.substring(4);
+    }
+    return result;
+}

@@ -1,0 +1,66 @@
+function wtbpop(url){window.open(url,'popup','screenX=0,screenY=0,resizable=yes,scrollbars=yes, height=300, width=400');}
+function disclaimer(){wtbpop('/static/wtb_disclaimer.html');}
+function ppp(){wtbpop('/static/wtb_featured_store.html');}
+function trusted(){wtbpop('/static/wtb_trusted_store.html');}
+function smart(){wtbpop('/static/wtb_smart_buy.html');}
+function popsl(url,w,h,x,y){window.open(url,'popup','screenX='+x+',screenY='+y+',top='+y+',left='+x+',resizable=yes,scrollbars=yes,height='+h+',width='+w)}
+linkName2Index=new Object();
+function getLinkNamed(name){
+var d=document;
+if(linkName2Index[name]>=0){return d.links[linkName2Index[name]];}
+for(i=d.links.length-1;i>=0;i--){
+if(typeof d.links[i].name!="undefined"){if(d.links[i].name==name){linkName2Index[d.links[i].name]=i;return d.links[i];}}
+}return null;
+}
+
+function cpl(from,to,ct) {
+   var flnk=getLinkNamed(from);
+   var tlnk=getLinkNamed(to);
+   if(flnk!=null&&tlnk!=null){
+      var ltxt=tlnk.innerHTML;
+      ctidx=flnk.href.lastIndexOf('&CT=');
+      if(ctidx!=-1){tlnk.href=flnk.href.replace(/&CT=./g,"&CT="+ct);}
+      else{tlnk.href=flnk.href;}
+      tlnk.innerHTML=ltxt;tlnk.target=flnk.target;tlnk.className="";tlnk.onclick=flnk.onclick;
+    }
+}
+var MerchWinName = null;
+var popWin;
+function cb(anch, url) {
+  if(anch && anch.target) merchWinName = anch.target;
+  if (window.showModelessDialog) setTimeout("showRebate('"+url+"','popup')",50);
+  else showRebate(url, 'popup');
+}
+function showRebate(url, wName){
+ var wSpecs = 'width=290,height=535,screenX=100,screenY=270,top=270,left=100,scrollbars=yes,toolbar=no,menu=no';
+ if (window.showModelessDialog) {
+  window.showModelessDialog("javascript:function noerror(){return true;} window.onerror = noerror; function doit(){window.open('','"+wName+"', '"+wSpecs+"', true);self.close();} doit();","","dialogTop=12355; dialogLeft=12355; dialogHeight:0px; dialogWidth:0px; status:no; help:no");
+  popWin = null;
+ } else {
+  popWin = window.open(url, wName, wSpecs);
+ }
+ setTimeout("focusInOrder('"+url+"','"+wName+"','"+wSpecs+"')",1000);
+}
+                                                                           
+function focusInOrder(url, wname, wspecs){
+ var mWin = null;
+ if (document.hasFocus) {
+  if (document.hasFocus() == true) {
+   if (merchWinName && merchWinName != "_blank") mWin = window.open("", merchWinName, "");
+  }
+ } else {
+    if(merchWinName && merchWinName != "_blank") mWin = window.open("", merchWinName, "");
+ }
+ if (mWin) mWin.focus();
+ if (!popWin) popWin = window.open(url, wname, wspecs);
+ if (popWin) popWin.focus();
+}
+
+function reload(){window.location.reload()}
+
+function isMaxLength(obj){
+   var mlength=obj.getAttribute? parseInt(obj.getAttribute("maxlength")) : ""
+   if (obj.getAttribute && obj.value.length>mlength)
+      obj.value=obj.value.substring(0,mlength)
+}
+

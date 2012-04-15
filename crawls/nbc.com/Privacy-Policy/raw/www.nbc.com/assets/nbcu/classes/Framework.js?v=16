@@ -1,0 +1,1028 @@
+// BEGIN INHERITANCE FRAMEWORK
+Function.prototype.method=function(name,func)
+{this.prototype[name]=func;return this;};Function.method("inherits",function(parent)
+{var d={},p=(this.prototype=new parent());this.method("uber",function uber(name)
+{if(!(name in d))
+{d[name]=0;}
+var f,r,t=d[name],v=parent.prototype;if(t)
+{while(t)
+{v=v.constructor.prototype;t-=1;}
+f=v[name];}
+else
+{f=p[name];if(f==this[name])
+{f=v[name];}}
+d[name]+=1;r=f.apply(this,Array.prototype.slice.apply(arguments,[1]));d[name]-=1;return r;});return this;});Function.method("swiss",function(parent)
+{for(var i=1;i<arguments.length;i+=1)
+{var name=arguments[i];this.prototype[name]=parent.prototype[name];}
+return this;});function Namespace(names)
+{var win=window;var name=names.split(".");var count=name.length;for(var i=0;i<count;i++)
+{if(typeof(win[name[i]])=="undefined")
+{win[name[i]]=new Object();}
+win=win[name[i]];}}
+// END INHERITANCE FRAMEWORK
+
+// BEGIN NBCU
+Nbcu = function()
+{	
+	var _params = new Object();
+	this.isStopped = false;
+
+	// Work around for this not being available to private methods
+	var THIS = this;
+
+	// Define parameters for the framework
+	this.addParam = function(key, value)
+	{
+		this.setParam(key, value);
+	}
+
+	// Define parameters for the framework
+	this.setParam = function(key, value)
+	{
+		_params[key] = value;
+	}
+	
+	// Retrieve a parameter
+	this.getParam = function(key)
+	{
+		return _params[key];
+	}
+	
+	// Clear all the parameters because they persist between instances of the same class
+	this.resetParams = function()
+	{
+		_params = new Array();
+	}
+}
+
+// Wrap logging
+Nbcu.method("log", function(message)
+{	
+	if (nbcu.config.getParam("nbcuEnvironment") == "dev" && window.console && console.log) {
+		console.log(message);
+	}
+});
+
+// Send an alert to the developer if a necessary parameter is missing from the page
+Nbcu.method("requireParam", function(param)
+{	
+	if (!this.getParam(param))
+	{
+		alert("Integration Error: nbcu...addParam(\"" + param + "\", \"DEVELOPER DEFINED VALUE\"); is missing on page.");
+		return false;
+	}
+});
+
+nbcu = new Nbcu();
+// END NBCU
+
+// BEGIN NBCU.CONFIG
+Namespace("Nbcu.Config");
+Nbcu.Config = function(){ this.constructor(); }
+Nbcu.Config.inherits(Nbcu);
+
+Namespace("nbcu.config");
+nbcu.config = new Nbcu.Config();
+// END NBCU.CONFIG
+
+// BEGIN NBCU.UTIL
+Namespace("Nbcu.Util.Common");
+Nbcu.Util.Common = function()
+{
+	this.loadedClasses = "";	
+}
+
+Nbcu.Util.Common.method("query", function(param)
+{
+	a = window.location.search.substring(1);
+	b = a.split("&");
+	count= b.length;
+	
+	for (i=0; i < count; i++)
+	{
+		c = b[i].split("=");
+		if (c[0] == param)
+		{
+			return c[1];
+		}
+	}
+	
+	return "";
+});
+
+Nbcu.Util.Common.method("decodeHtml", function(theString)
+{
+	var str = new String(theString);
+	str = str.replace(/&amp;/g, '&');
+	str = str.replace(/&lt;/g, '<');
+	str = str.replace(/&gt;/g, '>');
+	str = str.replace(/&quot;/g, '"');
+	str = str.replace(/<br \/>/g, "\r\n");
+	str = str.replace(/<br \/>/g, "\n");
+	str = str.replace(/<br \/>/g, "\r");
+	
+	return str;
+});
+
+Nbcu.Util.Common.method("encodeHtml", function(theString)
+{
+	var str = new String(theString);
+	str = str.replace(/&/g, '&amp;');
+	str = str.replace(/</g, '&lt;');
+	str = str.replace(/>/g, '&gt;');
+	str = str.replace(/"/g, '&quot;');
+	str = str.replace(/\r\n/g, '<br />');
+	str = str.replace(/\n/g, '<br />');
+	str = str.replace(/\r/g, '<br />');
+	
+	return str;
+});
+
+Nbcu.Util.Common.method("stripHtml", function(theString)
+{
+	return theString.replace(/(<([^>]+)>)/ig,""); 
+});
+
+Nbcu.Util.Common.method("trim", function(theString)
+{
+	return theString.replace(/^\s+|\s+$/g, '');
+});
+
+Nbcu.Util.Common.method("getDevice", function()
+{
+	var cookieName = "ak-mobile-agent";
+	var device = jqN.cookie(cookieName);
+	if (!device) {
+		var uagent = navigator.userAgent.toLowerCase();
+		if (uagent.search("iphone") > -1) {
+			device = "iphone";
+		} else if (uagent.search("ipad") > -1) {
+			device = "ipad";
+		} else if (uagent.search("ipod") > -1) {
+			device = "ipod";
+		} else if (uagent.search("android") > -1) {
+			device = "android";
+		} else if (uagent.search("webos") > -1) {
+			device = "webos";
+		} else if (uagent.search("palm") > -1) {
+			device = "palm";
+		} else if (uagent.search("googletv") > -1) {
+			device = "googletv";
+		} else {
+			device = "web";
+		}
+		if (device != "web") {
+			jqN.cookie(cookieName, device, { path: '/' });
+		}
+	} 
+	return device;
+});
+
+Nbcu.Util.Common.method("getUrl", function(allowHash)
+{
+	var url = "http://" + location.hostname + location.pathname + location.search.substring(0, 1);
+	var a = window.location.search.substring(1);
+	var b = a.split("&");
+	var count = b.length;
+	var params = "";
+	
+	for (i=0; i < count; i++)
+	{
+		c = b[i].split("=");
+		
+		if (c[0].indexOf("__") != 0 && c[0] != "")
+		{
+			if (params)
+			{
+				params += "&"
+			}
+
+			params += c[0] + "=" + c[1];
+		}
+	}
+
+	url += params;
+	
+	if (!allowHash)
+	{
+		url += location.hash;
+	}
+	
+	return this.trim(url);
+});
+
+Nbcu.Util.Common.method("loadClass", function(className)
+{
+	if (this.loadedClasses.indexOf(className + "|") < 0)
+	{
+		if (className.substring(0, 14) != "Nbcu.Template.")
+		{
+			jsFile = className.replace(/\./g, "/").substring(5) + ".js";
+			this.loadJs(nbcu.config.getParam("frameworkUrl") + '/classes/' + jsFile + '?v=2');
+		}
+		else
+		{
+			jsFile = className.replace(/\./g, "/").substring(14) + ".js";
+			this.loadJs(nbcu.config.getParam("frameworkUrl") + '/templates/' + jsFile + '');
+		}
+		
+		this.loadedClasses += className + "|";
+
+		return true;
+	}
+	
+	return false;
+});
+
+// add option to avoid cache busting in getScript
+Nbcu.Util.Common.method('getScript', function(url, callback, cache){
+    cache = cache ? false : true;
+    jqN.ajax({
+        type: "GET",
+        url: url,
+        success: callback,
+        dataType: "script",
+        cache: cache
+    });
+});
+
+Nbcu.Util.Common.method("loadJs", function(jsUrl)
+{
+	jqN.ajax(
+	{
+		type: "GET",
+		url: jsUrl,
+		dataType: "text",
+		async: false,
+		success: function(data)
+		{
+			try {
+				eval(data);
+			} catch(err) {
+			}
+		}
+	});
+});
+
+Nbcu.Util.Common.method("loadCss", function(cssUrl, mediaTarget)
+{
+	var headID = document.getElementsByTagName("head")[0];         
+	var cssNode = document.createElement("link");
+
+	media = mediaTarget || "all";
+	
+	cssNode.type = "text/css";
+	cssNode.rel = "stylesheet";
+	cssNode.href = cssUrl;
+	cssNode.media = media;
+	headID.appendChild(cssNode);
+});
+
+Nbcu.Util.Common.method("toggleFlash", function(s)
+{
+	jqN(document).ready(function()
+	{	
+		var f_Objects = document.getElementsByTagName("object");
+		for (i = 0; i < f_Objects.length; i++) {f_Objects[i].style.visibility = s;}
+		var f_Embeds = document.getElementsByTagName("embed");
+		for (i = 0; i < f_Embeds.length; i++) {f_Embeds[i].style.visibility = s;}
+	});
+});
+
+// Convert from xmlObject to xmlText
+Nbcu.Util.Common.method("convertData", function(data, currentDataFormat, newDataFormat)
+{
+	switch(currentDataFormat)
+	{
+		case "xmlObject":
+			switch(newDataFormat)
+			{
+				case "xmlText":
+					return getXmlNodeSerialisation(data);
+					break;    
+				default:
+					return data;
+					break;    
+			}
+			break;
+	}	
+
+	function getXmlNodeSerialisation(xmlNode)
+	{
+		var text = false;
+		try {
+			// Gecko-based browsers, Safari, Opera.
+			var serializer = new XMLSerializer();
+			text = serializer.serializeToString(xmlNode);
+		}
+		catch (e) {
+			try {
+				// Internet Explorer.
+				text = xmlNode.xml;
+			}
+			catch (e) {}
+		}
+		return text;
+	}
+});
+
+Namespace("nbcu.util.common");
+nbcu.util.common = new Nbcu.Util.Common();
+// END NBCU.UTIL
+
+// BEING NBCU.SN.SESSION
+Namespace("Nbcu.Sn.Session");
+
+Nbcu.Sn.Session = function()
+{
+	this.constructor(); 
+	 
+	var _accountInfo;
+	
+	// Work around for this not being available to private methods
+	var THIS = this;
+	
+	// Get the user's username from the clear text cookie.
+	// Value should only be used for UI purposes since it has not been
+	// authenticated by the server. Use Session class on server for security.
+	this.getUsername = function()
+	{
+		return _getSnClearCookie(6);
+	}
+
+	// Deprecated
+	this.getUserName = function()
+	{
+		return this.getUsername();
+	}
+	
+	// Get the user's uuid from the clear text cookie.
+	// Value should only be used for UI purposes since it has not been
+	// authenticated by the server. Use Session class on server for security.	
+	this.getUuid = function()
+	{
+		return _getSnClearCookie(1);
+	}
+	
+	// Return the value of the specified field from the user's account.
+	// Field names match the element names from getPersonProfile..
+	// except for homePhone and cellPhone
+	this.getAccountInfo = function(field)
+	{
+		_loadAccountInfo();
+		
+		if (value = _accountInfo[field])
+		{
+			return value;
+		}
+		else
+		{
+			return "";
+		}
+	}
+	
+	// Get the current user's UID from the external platform he's logged in from
+	this.getExternalPlatformUserId = function ()
+	{
+		return _getExternalPlatformCookie(1);
+	}
+	
+	// Assuming that future external platform integrations will be able
+	// to use the same cookie/session structure.
+	this.getExternalPlatform = function ()
+	{
+		return _getExternalPlatformCookie(0);
+	}
+	
+	this.logoutExternalPlatform = function ()
+	{
+		_deleteExternalPlatformCookie();
+	}
+	
+	// Get the entire array holding account info.
+	// Useful if you need to loop through the array or dynamically
+	// retrieve info from it.
+	this.getAccountArray = function()
+	{
+		_loadAccountInfo();
+		
+		return _accountInfo;
+	}
+	
+	this.isModerator = function()
+	{
+		return _getSnClearCookie(12);
+	}
+	
+	// isManualMode, dataFormat and submitButton are optional
+	this.login = function(email, password, isRemember, isManualMode, dataFormat, submitButton)
+	{ 
+		var valError = "";
+		var oldSubmitBtnValue;
+		
+		if (submitButton)
+		{
+			oldSubmitBtnValue = submitButton.value;
+			submitButton.disabled = true;
+			submitButton.value = "<span>Logging in..</span>";
+		}
+		
+		//this.requireParam('redirectUrl');
+		
+		if ((email.search(/(.+)@(.+)\.(.+)/)))
+		{
+			valError += "A valid email address is required.\n";
+		}
+		
+		if (password.length < 6 || password.length > 32) 
+		{
+			valError += "Password must be between 6 and 32 characters in length.\n";
+		}	
+		
+		// Make sure isRemember is a 1 or 0 instead of true or false
+		isRemember = Number(isRemember);
+		
+		if (valError)
+		{
+			if(!isManualMode)
+			{
+				alert(valError);
+			}
+			else
+			{
+				if(dataFormat && dataFormat == 'json')
+				{
+					json = '{';
+					json += '"status": "0",';
+					json += '"msg": "' + valError + '"';
+					json += '}';
+					
+					return json;
+				}
+				else
+				{
+					return valError;
+				}
+			}
+		}
+		else
+		{	
+			loginResult = _ssoLogin(email, password, isRemember);
+	
+			if (!isManualMode)
+			{
+				if (loginResult["status"] == 1)
+				{
+					if (this.getParam("redirectUrl"))
+					{
+						window.open(this.getParam("redirectUrl"));
+					}
+					
+					xdSync("initServerLogin");
+					addHiddenFrame(loginResult["openIdRedirectUri"]);
+
+					return true;
+				}
+				else if (loginResult["status"] == 2)
+				{
+					window.open(loginResult["redirectUrl"], "login");
+				}
+				else
+				{
+					alert(loginResult["msg"]);
+				}
+			}
+			else
+			{
+				if (dataFormat && dataFormat == 'json')
+				{
+					json = '{';
+					json += '"status": "' + loginResult["status"] + '",';
+					if (typeof(loginResult["userName"]) != "undefined")
+					{
+						json += '"userName": "' + loginResult["userName"] + '",';
+					}
+					if (typeof(loginResult["uuid"]) != "undefined")
+					{
+						json += '"uuid": "' + loginResult["uuid"] + '",';
+					}
+					if (typeof(loginResult["redirectUrl"]) != "undefined")
+					{
+						json += '"redirectUrl": "' + loginResult["redirectUrl"] + '",';
+					}
+					json += '"msg":"' + loginResult["msg"] + '"';
+					json += '}';
+				
+					return json;
+				}
+				else
+				{
+					return loginResult;
+				}
+			}
+		}
+		
+		if (submitButton)
+		{
+			submitButton.disabled = false;
+			submitButton.value = oldSubmitBtnValue;
+		}
+	
+		return false;
+	}
+
+	function _ssoLogin(email, password, isRemember)
+	{
+		result = new Array();
+		
+		params = new Object();
+		params.email = email;
+		params.password = password;
+		params.remember = isRemember;
+
+		api = new Nbcu.Api();
+		var data = api.call("login", params, "sn", "account", "DIRECT", "POST");
+		
+		result["status"] = jqN(data).find("login>status").text();
+		result["msg"] = jqN(data).find("login>msg").text();
+		result["userName"] = jqN(data).find("login>userName").text();
+		result["uuid"] = jqN(data).find("login>uuid").text();
+		result["openIdRedirectUri"] = jqN(data).find("login>openIdRedirectUri").text();
+		
+		if (result["status"] == 2)
+		{
+			result["redirectUrl"]== jqN(data).find("login>redirectUrl").text();
+		}
+	
+		return result;
+	}
+
+	// Do the ajax call for account info and convert the info into a
+	// flat array. The ajax call only happens once no matter how many
+	// times this method is called unless isForceRefresh is true.
+	function _loadAccountInfo(isForceRefresh)
+	{
+		if ((!_accountInfo || isForceRefresh) && THIS.isLoggedIn)
+		{
+			result = new Array();
+
+			data = nbcu.api.call("getAccountInfo", null, "sn", "account", "DIRECT", "GET");
+			marker = jqN(data).find("getAccountInfo>accountInfo>*");
+			
+			marker.each(function()
+			{
+				// Create the flat array with the element name as the key
+				// and the element value as the value
+				result[this.nodeName] = jqN(this).text();	
+			});	
+
+			// Assign the result to the private accountInfo variable for use
+			// throughout the class
+			_accountInfo = result;
+		}
+	}
+	
+	// Parse the sn_nbc_b cookie and return the portion needed
+	function _getSnClearCookie(index)
+	{
+		var data = "";
+		var env = nbcu.config.getParam("nbcuEnvironment");
+		
+		if (env == "production")
+		{
+			cookieName = "sn_nbc_b";
+		}
+		else
+		{
+			cookieName = env + "_sn_nbc_b";	
+		}
+		
+		if (cookie = jqN.cookie(cookieName))
+		{
+			parts = cookie.split("|");
+			data = nbcu.util.common.encodeHtml(parts[index]);
+		}
+		
+		return data;
+	}
+	
+	// Parse external platform cookie 'external_platform' and return portion needed
+	function _getExternalPlatformCookie(index)
+	{
+		var data = "";
+		var env = nbcu.config.getParam("nbcuEnvironment");
+		
+		if (env == "production")
+		{
+			cookieName = "external_platform";
+		}
+		else
+		{
+			cookieName = env + "_external_platform";	
+		}
+		
+		if (cookie = jqN.cookie(cookieName))
+		{
+			parts = cookie.split("|");
+			data = nbcu.util.common.encodeHtml(parts[index]);
+		}
+		
+		return data;
+		
+	}
+	
+	function  _deleteExternalPlatformCookie() 
+	{
+		var env = nbcu.config.getParam("nbcuEnvironment");
+
+		var date = new Date();
+		date.setTime(date.getTime() + -1 * 24 * 60 * 60 * 1000);
+
+		if (env == "production")
+		{
+			cookieName = "external_platform";
+			domain = document.domain.replace("www", "");
+			// Deleting these cookies forcifully since Facebook Connected users are special at the moment to avoid
+			// them logging in on other x.nbc.com sites
+			jqN.cookie('sn_nbc_a', null, { path: '/' });
+			jqN.cookie('sn_nbc_b', null, { path: '/' });
+			jqN.cookie('sn_nbc_c', null, { path: '/' });
+			jqN.cookie('snas', null, { path: '/' });
+			jqN.cookie('external_platform', null, { path: '/' });
+			jqN.cookie('external_platform_user_info', null, { path: '/' });
+			jqN.cookie('external_platform', null, { path: '/', domain: domain });
+			jqN.cookie('external_platform_user_info', null, { path: '/', domain: domain });
+		}
+		else if (env == "stage")
+		{
+			cookieName = env + "_external_platform";
+			domain = document.domain;
+			// Deleting these cookies forcifully since Facebook Connected users are special at the moment to avoid
+			// them logging in on other x.nbc.com sites
+			jqN.cookie('stage_sn_nbc_a', null, { path: '/' });
+			jqN.cookie('stage_sn_nbc_b', null, { path: '/' });
+			jqN.cookie('stage_sn_nbc_c', null, { path: '/' });
+			jqN.cookie('snas', null, { path: '/' });
+			jqN.cookie('stage_external_platform', null, { path: '/' });
+			jqN.cookie('stage_external_platform_user_info', null, { path: '/' });
+			
+			jqN.cookie('stage_sn_nbc_a', null, { path: '/', domain: '.' + domain });
+			jqN.cookie('stage_sn_nbc_b', null, { path: '/', domain: '.' + domain });
+			jqN.cookie('stage_sn_nbc_c', null, { path: '/', domain: '.' + domain });
+			jqN.cookie('snas', null, { path: '/', domain: '.' + domain });
+			jqN.cookie('stage_external_platform', null, { path: '/', domain: '.' + domain });
+			jqN.cookie('stage_external_platform_user_info', null, { path: '/', domain: '.' + domain });
+		}
+		else
+		{
+			cookieName = env + "_external_platform";
+			domain = ".qa.nbc.com";
+		}
+
+		document.cookie = cookieName + '=;path=/;domain=' + domain + ';expires=' + date.toGMTString();
+	}
+	
+}
+ 
+Nbcu.Sn.Session.inherits(Nbcu);
+
+Nbcu.Sn.Session.method('getExternalPlatform', function()
+{
+	return this.getExternalPlatform();
+});
+
+Nbcu.Sn.Session.method('getExternalPlatformUserId', function()
+{
+	return this.getExternalPlatformUserId();
+});
+
+Nbcu.Sn.Session.method('logoutExternalPlatform', function()
+{
+	return this.logoutExternalPlatform();
+});
+
+
+// Check if the is logged in and redirect to a specified page if not
+Nbcu.Sn.Session.method('requireAuthentication', function(url)
+{
+	if (!this.isLoggedIn())
+	{
+		window.location = url;
+		this.isStopped = true;
+	}
+});
+
+// Check if the user is logged in
+Nbcu.Sn.Session.method('isLoggedIn', function()
+{
+	if (this.getUserName())
+	{
+		return true;
+	} else if (this.getExternalPlatformUserId()) {
+		return true;
+	}
+	
+	return false;
+});
+
+// Check if the user is logged in to a specific external platform
+Nbcu.Sn.Session.method('isLoggedInToExternalPlatform', function(externalPlatform)
+{
+	if (this.getExternalPlatform() == externalPlatform)
+	{
+		if (this.getExternalPlatformUserId()) 
+		{
+			return true;
+		}
+	}
+	
+	return false;
+});
+
+Namespace("nbcu.sn.session");
+nbcu.sn.session = new Nbcu.Sn.Session();
+// END NBCU.SN.SESSION
+
+// BEGIN NBCU.SERVICE
+Namespace("Nbcu.Api");
+
+Nbcu.Api = function()
+{	
+	this.call = function(method, params, application, service, connection, type, callback, dataFormat, isCached)
+	{
+		var data;
+
+		if (!params)
+		{
+			params = Array();
+		}
+		
+		if (typeof(isCached) == "undefined")
+		{
+			isCached = true;
+		}
+
+		if (nbcu.sn.session.isLoggedIn())
+		{
+			isCached = false;
+		}
+		
+		if (application == "sn")
+		{
+			if (service == "snas")
+			{
+				if (connection == "DIRECT" && document.domain == "www.nbc.com") 
+				{
+					endpoint = "/" + service + "/api/" + method;
+				}
+				else
+				{
+					endpoint = nbcu.config.getParam("frameworkApiUrl") + "/" + application + "/snas/?method=" + method;
+				}
+			}
+			else
+			{
+				if (("leaderboard, challenges, challenge, product").indexOf(service) >= 0 /*&& nbcu.config.getParam("nbcuEnvironment") != "dev"*/)
+				{
+					isCached = true;
+					apiUrl = nbcu.config.getParam("frameworkApiUrl").replace("/app/", "/assets/");
+				}
+				else
+				{
+					apiUrl = nbcu.config.getParam("frameworkApiUrl");	
+				}
+				
+				endpoint = apiUrl + "/" + application + "/" + service + "/?method=" + method;		
+			}
+			
+			if (typeof(params.siteName) == "undefined")
+			{
+				params.siteName = nbcu.config.getParam("snasSiteName");
+			}
+			
+			if (typeof(params.siteDomainName) == "undefined")
+			{
+				params.siteDomainName = nbcu.config.getParam("snasSiteDomainName");
+			}
+
+			try
+			{
+				if (typeof(params.siteId) == "undefined" || params.siteId == "")
+				{
+					params.siteId = showId;
+				}
+			}
+			catch (e)
+			{
+				params.siteId = "";
+			}
+		}
+		else
+		{
+			applicationString = (application) ? "/" + application : "";
+			endpoint = nbcu.config.getParam("frameworkApiUrl") + "/" + service + applicationString + "/?method=" + method;			
+		}
+
+		
+		// If a callback function name was passed in as a parameter,
+		// run the ajax with async true and callback the function on success
+
+		if (typeof(callback) == "undefined" || callback == null)
+		{
+			jqN.ajax(
+			{
+				type: type,
+				async: false,		
+				url: endpoint,
+				data: params,
+				dataType: "xml",
+				cache: isCached,
+				timeout: 20000,
+				success: function(xml)
+				{
+					data = xml;
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown)
+				{
+					data = null;
+				}
+			});		
+		}
+		else
+		{
+			jqN.ajax(
+			{
+				type: type,
+				async: true,		
+				url: endpoint,
+				data: params,
+				dataType: "xml",
+				cache: isCached,
+				timeout: 20000,
+				success: function(data)
+				{
+					if (typeof(callback) == "string")
+					{
+						eval(callback.replace(/%data%/g, "data"));
+					}
+					else
+					{
+						callback(data);
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown)
+				{
+					if (typeof(callback) == "string")
+					{
+						eval(callback.replace(/%data%/g, "null"));
+					}
+					else
+					{
+						callback(null);
+					}
+				}
+			});		
+		}
+	
+		if (typeof(data) == "undefined")
+		{
+			return null;
+		}
+		else
+		{
+			return nbcu.util.common.convertData(data, "xmlObject", dataFormat);
+		}
+	}	
+}
+
+Namespace("nbcu.api");
+nbcu.api = new Nbcu.Api();
+// END NBCU.SERVICE
+
+// BEGIN NBCU.SN.FLAG
+Namespace("Nbcu.Sn.Flagging");
+Nbcu.Sn.Flagging = function(){}
+Nbcu.Sn.Flagging.inherits(Nbcu);
+
+Nbcu.Sn.Flagging.method('flagContent', function(callback, contentID)
+{
+	params = new Object();
+	params.contentID = contentID || "";
+	return nbcu.api.call("flagContent", params, "sn", "flagging", "DIRECT", "GET", callback);
+});
+
+Nbcu.Sn.Flagging.method('defaultAlert', function()
+{
+	alert("Thank you.  This item has been flagged.");
+});
+
+Namespace("nbcu.sn.flagging");
+nbcu.sn.flagging = new Nbcu.Sn.Flagging();
+// END NBCU.SN.FLAG
+
+// BEGIN NBCU.UTIL.FRAME
+Namespace("Nbcu.Util.Frame");
+Nbcu.Util.Frame = function(){}
+Nbcu.Util.Frame.inherits(Nbcu);
+
+Nbcu.Util.Frame.method('load', function(frameUri, width, height, params)
+{	
+	if(params == undefined){
+		isDimmed = false;
+	} else {
+		isDimmed = params.isDimmed;
+	}
+	this.modal(frameUri, width, height, isDimmed);
+	return false;
+});
+
+Nbcu.Util.Frame.method('modal', function(frameUri, width, height, isDimmed)
+{	
+	
+		//nbcu.util.common.toggleFlash("hidden");
+		
+		if (!jqN("#modal-container").length)
+		{
+			jqN("body").append('<span id="modal-container"></span>');
+		}
+		
+		jqN("#modal-container").html('<div class="jqmWindow" style="display:none" id="modalDialog">' + 
+			'<iframe frameborder="0" id="jqmContent" src="">' +
+			'</iframe>' +
+			'</div>');
+	
+		var dialog = jqN('#modalDialog')
+			.jqm({ 
+				onShow: function(h) {
+					var $modal = jqN(h.w);                
+					var $modalContent = jqN("iframe", $modal); 
+					$modalContent.html('').attr('src', 'about:blank'); 
+					$modalContent.html('').attr('src', frameUri); 
+					$modalContent.html('').attr('width', width); 
+					$modalContent.html('').attr('height', height); 
+					if (height > 0) $modal.height(height);    
+					if (width > 0) $modal.width(width);                
+					h.w.fadeIn("fast");          
+				},
+				modal: true
+			 }).css('z-index', '1000001').jqmShow(); 
+		if(!isDimmed) {
+			jqN(".jqmOverlay").remove();	
+		}
+
+	return false;
+});
+
+Nbcu.Util.Frame.method('close', function()
+{	
+	jqN(document).ready(function()
+	{	
+		self.parent.nbcu.util.common.toggleFlash("visible");
+		self.parent.jqN('#modalDialog').jqmHide();
+	});
+	
+	return false;
+});
+
+Nbcu.Util.Frame.method('sendEvent', function(eventName, params)
+{	
+	try	{
+		params.frameUri = location.href;
+		self.parent.frameEvent(eventName, params);
+	}
+	catch(err){
+		var error = err;
+	}
+});
+
+Namespace("nbcu.util.frame");
+nbcu.util.frame = new Nbcu.Util.Frame();
+// END NBCU.UTIL.FRAME
+
+// BEGIN NBCU.UTIL.AMF
+Namespace("Nbcu.Util.Amf");
+Nbcu.Util.Amf = function(){}
+Nbcu.Util.Amf.inherits(Nbcu);
+
+Nbcu.Util.Amf.method("getGateway", function()
+{
+	siteId = (typeof(showId) == "undefined") ? "" : showId;
+	return "/app/api/amf/gateway.php?siteId=" + siteId;
+});
+
+Nbcu.Util.Amf.method("getToken", function(instanceId)
+{
+	var THIS = this;
+	jqN.cookie("amf_" + instanceId, window.location);
+	jqN.ajax({
+		async: false,
+		dataType: "xml",
+		success: function(data) {THIS.setParam("token", jqN(data).find('response').text());},
+		url: "/app/api/amf/token.php?method=generateToken&instanceId=" + instanceId
+	});
+	return THIS.getParam("token");
+});
+
+Namespace("nbcu.util.amf");
+nbcu.util.amf = new Nbcu.Util.Amf();
+// END  NBCU.UTIL.AMF

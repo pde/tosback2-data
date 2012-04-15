@@ -1,0 +1,3373 @@
+/* General Structure
+----------------------------------------------- */
+
+body {
+	margin: 0; padding: 0;
+	/* TODO: Set line-height as a multiplier with no unit to make it scale according to font size. Needs site-wide testing. */
+	font: 11px/15px Arial, sans-serif;
+	/* commented out 8/3/2011 by madanik to accomodate the Daily Rewards slide down effect uncomment when campaign is over
+	background: #e6eef9 url(/i/common/bodyBkg/SIS.jpg) no-repeat scroll center 18px;*/
+	background: #e6eef9 url(../i/common/bodyBkg/sw_background.jpg) no-repeat scroll center 18px;
+	text-align: left;
+	color: #666;
+	}
+
+/*
+	various sign-in states
+
+> these two are equal
+	NotSignedIn
+	SignedInStandard
+
+> this = Unlimited
+	SignedInPremium
+
+> these two are equal
+	SignedInClub
+	SignedInFreeClub
+*/
+body.SignedInStandard,
+body.NotSignedIn {
+	/* commented out 8/3/2011 by madanik to accomodate the Daily Rewards slide down effect uncomment when campaign is over
+	background-image: url(/i/common/bodyBkg/NSI_SIS_bg.jpg);*/
+	background: #e6eef9 url("../i/common/bodyBkg/sw_background.jpg") no-repeat scroll center 18px;
+}
+body.standardNoHeader {
+	background: #e6eef9 url(../i/common/bodyBkg/SIS.jpg) no-repeat scroll center 0;
+}
+body.SignedInClub,
+body.SignedInFreeClub {
+	background-color: #3478cd;
+	background-image: url(../i/common/bodyBkg/csw_background.jpg);
+}
+body.SignedInPremium {
+	background-color: #15355c;
+	background-image: url(../i/common/bodyBkg/swu_background.jpg);
+}
+
+/* club game upsell landing pages */
+body.nsiClubGame {
+	background-color: #3478cd;
+	background-image: url(../i/common/bodyBkg/NSI_clubGame.jpg);
+	background-position: center 0;
+}
+/* for Unlimited and Club landing pages  */
+body.nsiUnlimited,
+body.nsiClub {
+	background-position: center 0;
+}
+body#gamePlayBlankWithPreplay {
+	background-position: 0 0 !important;
+	background-image: url(../i/common/bodyBkg/SIS_daughterWindow.jpg);
+}
+/* for pages with a referring block in the header to other sites in our network */
+body.referringSite {
+	background-position: center 66px !important;
+}
+#agSiteRefer {
+	background: url(../../www.addictinggames.com/images/background-gradient.png) repeat-x;
+	display: none;
+}
+#backToAgLogo.clearLink{
+	padding-top: 40px;
+	width: 225px;
+	background-image: url(../../www.addictinggames.com/images/logoTabsSprite.png);
+	margin: 5px 15px;
+}
+/* New Mamabar */
+div.brand-mamabar {
+	position: relative;
+	height: 18px;
+	_height: 16px;
+	border-bottom: 2px solid #f1f1f1;
+	background-color: #fff;
+	text-align: center;
+	z-index: 10000;
+}
+div.brand-mamabar-wrapper {
+	position: relative;
+	width: 984px;
+	height: 18px;
+	margin: 0 auto;
+	text-align: left;
+}
+img.brand-mamabar-logo { float: right; }
+ul.brand-mamabar-list {
+	float: left;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+ul.brand-mamabar-list li {
+	float: left;
+	display: inline;
+	margin-right: 15px;
+	font: bold 11px Arial, sans;
+}
+ul.brand-mamabar-list a {
+	display: block;
+	line-height: 18px;
+	color: #9a9a9a;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+ul.brand-mamabar-list a:hover { text-decoration: underline; }
+ul.brand-mamabar-list a.brand-mamabar-active {
+	color: #ff9540;
+	cursor: default;
+}
+ul.brand-mamabar-list a.brand-mamabar-active:hover { text-decoration: none; }
+li.brand-mamabar-more-link {
+	position: relative;
+	cursor: pointer;
+	margin-left: -5px;
+}
+li.brand-mamabar-more-link * { cursor: pointer; }
+a.brand-mamabar-more-a {
+	padding-left: 5px;
+	display: block;
+	height: 16px;
+	_width: 1px;
+}
+li.brand-mamabar-more-link-hover a.brand-mamabar-more-a {
+	background: transparent url(../i/common/mamabar/mb_tab_left.gif) no-repeat top left;
+	text-decoration: none !important;
+	color: #fff;
+}
+a.brand-mamabar-more-a span {
+	display: block;
+	background: transparent url(../i/common/mamabar/mb_tab_right.gif) no-repeat top right;
+	padding-right: 20px;
+	height: 16px;
+}
+li.brand-mamabar-more-link-hover a.brand-mamabar-more-a span { background-position: 100% -29px; }
+li.brand-mamabar-more-link div.brand-mamabar-more-wrapper ul {
+	padding: 7px 0 10px 10px;
+	background: transparent url(../i/common/mamabar/mb_topbar.gif) no-repeat top left;
+}
+li.brand-mamabar-more-link div.brand-mamabar-more-wrapper {
+	clear: both;
+	display: none;
+	position: absolute;
+	width: 138px;
+	left: -83px;
+	background: transparent url(../i/common/mamabar/mb_bottombar.png) no-repeat bottom left;
+	_background-image: url(../i/common/mamabar/mb_bottombar_ie.gif);
+	_margin-top: -2px;
+}
+li.brand-mamabar-more-link-hover div.brand-mamabar-more-wrapper { display: block; }
+li.brand-mamabar-more-link div.brand-mamabar-more-wrapper li {
+	float: none;
+	display: block;
+}
+
+div.brand-mamabar .brand-mamabar-host-link {
+	color: #003D7B;
+	line-height:18px;
+}
+
+ul.brand-mamabar-more-list a {
+	_display:inline;
+}
+
+
+/* gutter links for reskins */
+.gutLinks {
+	position: absolute;
+	top: 18px;
+	left: 0;
+	display: block;
+	padding-top: 800px;
+}
+
+#gutLinkRit {
+	right: 0;
+	left: auto;
+}
+/* positioning for selectable reskins */
+#reskinContent #reskinSponsorLink {
+	float: left;
+}
+#reskinContent ul {
+	height: 151px;
+	padding-top: 15px;
+	float: right;
+	display: inline;
+	margin-right: 25px;
+}
+#reskinContent ul li {
+	float: left;
+}
+#reskinContent ul li a {
+	float: left;
+	width: 120px;
+	padding-top: 135px;
+}
+	/* for selectable skins */
+	.reskinContent-4 #reskinSponsorLink,
+	.reskinContent-3 #reskinSponsorLink,
+	.reskinContent-2 #reskinSponsorLink {
+		width: 420px;
+		padding-top: 166px;
+	}
+	.reskinContent-3 #reskinSponsorLink {
+		width: 570px;
+	}
+	.reskinContent-2 #reskinSponsorLink {
+		width: 650px;
+	}
+	.reskinContent-4 #selectableSkinLink-0,
+	.reskinContent-3 #selectableSkinLink-0,
+	.reskinContent-2 #selectableSkinLink-0 {
+		background-position: 0 0;
+	}
+	.reskinContent-4 #selectableSkinLink-1,
+	.reskinContent-3 #selectableSkinLink-1,
+	.reskinContent-2 #selectableSkinLink-1 {
+		background-position: -120px 0;
+	}
+	.reskinContent-4 #selectableSkinLink-2,
+	.reskinContent-3 #selectableSkinLink-2 {
+		background-position: -240px 0;
+	}
+	.reskinContent-4 #selectableSkinLink-3 {
+		background-position: -360px 0;
+	}
+	.reskinContent-4 #selectableSkinLink-0:hover,
+	.reskinContent-3 #selectableSkinLink-0:hover,
+	.reskinContent-2 #selectableSkinLink-0:hover,
+	.reskinContent-4 #selectableSkinLink-0.selected,
+	.reskinContent-3 #selectableSkinLink-0.selected,
+	.reskinContent-2 #selectableSkinLink-0.selected {
+		background-position: 0 -135px;
+	}
+	.reskinContent-4 #selectableSkinLink-1:hover,
+	.reskinContent-3 #selectableSkinLink-1:hover,
+	.reskinContent-2 #selectableSkinLink-1:hover,
+	.reskinContent-4 #selectableSkinLink-1.selected,
+	.reskinContent-3 #selectableSkinLink-1.selected,
+	.reskinContent-2 #selectableSkinLink-1.selected {
+		background-position: -120px -135px;
+	}
+	.reskinContent-4 #selectableSkinLink-2:hover,
+	.reskinContent-3 #selectableSkinLink-2:hover,
+	.reskinContent-4 #selectableSkinLink-2.selected,
+	.reskinContent-3 #selectableSkinLink-2.selected {
+		background-position: -240px -135px;
+	}
+	.reskinContent-4 #selectableSkinLink-3:hover,
+	.reskinContent-4 #selectableSkinLink-3.selected {
+		background-position: -360px -135px;
+	}
+
+.fixedPrice,
+#podUpsellMembersOnly b
+{ color: red}
+
+
+#wrapper {
+	padding-top: 30px;
+	margin: 0 auto;
+	width: 998px;
+}
+.SignedInStandard li#logo,
+.NotSignedIn li#logo {
+	background: url(../i/common/logos/sw_logo_extrude.png) no-repeat 10px 5px;
+}
+.SignedInPremium li#logo {
+	background: url(../i/common/logos/swu_logo_tail.png) no-repeat 10px 5px;
+	margin: -22px 0px 0px -88px;
+}
+.SignedInClub li#logo {
+	background: url(../i/common/logos/csw_logo.png) no-repeat 10px 5px;
+}
+.col {
+	float: left;
+	margin: 0 18px 0 0;
+	position: relative;
+	min-height: 1px;
+	z-index: 6;
+}
+
+.colLast {
+	margin-right: 0;
+}
+
+.col1 { width: 65px; }
+.col2 { width: 148px; }
+.col3 { width: 231px; }
+.col4 { width: 314px; }
+.col5 { width: 397px; }
+.col6 { width: 480px; }
+.col7 { width: 563px; }
+.col8 { width: 646px; }
+.col9 { width: 729px; }
+.col10 { width: 812px; }
+.col11 { width: 895px; }
+.col12 { width: 978px; margin-right: 0 }
+
+/* arrows
+----------------------------------------------- */
+
+
+	.arrowLft, .arrowRit, .arrowRitSm, .arrowDownLft, .arrowDownRit, .arrowUpLft, .arrowUpRit, .arrowLeftSmlAg {
+		background: url(../i/common/site/arrows.png) no-repeat  !important;
+	}
+
+	.arrowLft {
+		background-position: 0 0 !important;
+		padding: 2px 0 2px 11px !important;
+	}
+	.arrowRit {
+		background-position: right -40px  !important;
+		padding: 2px 11px 2px 0 !important;
+	}
+	.arrowRitSm {
+		background-position: right -555px  !important;
+		padding: 2px 11px 2px 0 !important;
+	}
+	.arrowLeftSmlAg {
+		background-position: -6px -596px !important;
+		padding: 2px 0 1px 10px !important;
+	}
+	.arrowDownSmlRit {
+		background: url(../i/common/site/arrowsSml.png) no-repeat !important;
+	}
+	.arrowDownSmlRit {
+			background-position: right -36px !important;
+			padding: 0 10px 0 0 !important;
+	}
+
+	.podPurple .arrowLft, .podPurple .arrowRit { color: #681646; }
+	.podPurple .arrowLft { background-position: 0 -80px; }
+	.podPurple .arrowRit { background-position: right -120px !important; }
+
+	.podDownload .arrowLft, .podDownload .arrowRit { color: #CE5119;	}
+	.podDownload .arrowLft { background-position: 0 -160px; }
+	.podDownload .arrowRit { background-position: right -200px !important; }
+
+	.podMyShockwave .arrowLft, .podMyShockwave .arrowRit, .tabsMyShockwave .arrowRit { color: #426700;	}
+	.podMyShockwave .arrowLft { background-position: 0 -240px; }
+	.podMyShockwave .arrowRit { background-position: right -280px !important; }
+
+	.arrowDownLft, .arrowUpLft {
+		background-position: 0 -398px !important;
+		padding: 0 0 0 20px !important;
+	}
+	.arrowUpLft {
+		background-position: 0 -438px !important;
+	}
+	.arrowDownRit, .arrowUpRit {
+		background-position: right -398px !important;
+		padding: 0 20px 0 0 !important;
+	}
+	.arrowUpRit {
+		background-position: right -438px !important;
+	}
+
+	/* no workie with IE6, sue me */
+	.arrowLft.disabled, .carousel .carousel-nav-left a.disabled{ background-position: left -320px !important; }
+	.arrowRit.disabled, .carousel .carousel-nav-right a.disabled { background-position: right -360px !important; }
+
+	.arrowLftLrg, .arrowRitLrg {
+		background: url(../i/common/site/arrowsLrg.png) no-repeat  !important;
+	}
+	.arrowLftLrg {
+		background-position: 0 7px !important;
+		padding: 10px 0 10px 22px !important;
+	}
+	.arrowRitLrg {
+		background-position: right -33px  !important;
+		padding: 10px 22px 10px 0 !important;
+	}
+	/* no workie with IE6, sue me */
+	.arrowLftLrg.disabled, #podGameTrophies .carousel .carousel-nav-left a.disabled{ background-position: left -73px !important; }
+	.arrowRitLrg.disabled, #podGameTrophies .carousel .carousel-nav-right a.disabled { background-position: right -113px !important; }
+/* header
+----------------------------------------------- */
+#mainNav #logo {
+	width: 193px;
+	position: absolute;
+	top: -28px;
+	z-index: 1;
+}
+#mainNav .swuLogo {
+	width: 253px !important;
+	height: 253px;
+}
+#mainNav .clubLogo {
+	width: 175px !important;
+	height: 67px;
+}
+	#logo a {
+		display: block;
+		padding-top: 68px;
+	}
+
+	#headerNoNav {
+		height: 45px
+	}
+	.nsiClubGame #headerNoNav {
+		height: 82px
+	}
+
+
+
+
+/* main and sub navigation
+----------------------------------------------- */
+
+#mainNav {
+	position: relative;
+	height: 40px;
+	}
+
+#mainNav li {
+	display: block;
+	position: absolute;
+	top: 0;
+	z-index: 2;
+	}
+
+#mainNav #tab-1 a,
+#mainNav #tab-2 a,
+#mainNav #tab-3 a {
+	display: block;
+	background: url(../i/common/nav/mainNavTabs.png);
+	padding-top: 40px;
+	overflow: hidden;
+	height: 0;
+	z-index: 5;
+}
+	#mainNav #tab-1 {
+		left: 195px;
+		}
+	#mainNav #tab-1 a {
+		width:149px;
+		}
+	#online #mainNav #tab-1 {
+		top: 1px;
+	}
+	#online #mainNav #tab-1 a {
+		background-position: 0 -40px;
+	}
+
+	#mainNav #tab-2 {
+		left: 346px;
+		}
+	#mainNav #tab-2 a {
+		width:183px;
+		background-position: -149px 0;
+		}
+	#download  #mainNav #tab-2 {
+		top: 1px;
+	}
+	#download  #mainNav #tab-2 a {
+		background-position: -149px -40px;
+	}
+
+	#mainNav #tab-3 {
+		left: 531px;
+		}
+	#mainNav #tab-3 a {
+		width:160px;
+		background-position: -332px 0;
+	}
+	#myShockwave #mainNav #tab-3  {
+		top: 1px;
+	}
+	#myShockwave #mainNav #tab-3 a {
+		background-position: -332px -40px;
+	}
+
+
+
+	#mainNav li#myTools a {
+		padding: 0;
+		display: inline;
+		font-weight: normal;
+	}
+
+	#mainNav #myTools {
+		padding: 12px 0 0 8px;
+		left: 691px;
+		width: 299px;
+		top: -12px;
+		background: url(../i/common/userBar/nsiBkg.png) no-repeat scroll right 0;
+		height: 40px;
+		margin-bottom: 0;
+		position: absolute;
+		z-index: 3 !important;
+	}
+
+		.SignedInPremium #mainNav #myTools,
+		.SignedInClub #mainNav #myTools,
+		.SignedInFreeClub #mainNav #myTools,
+		.SignedInStandard #mainNav #myTools {
+			background-position: right -63px;
+			top: 0;
+			height: 29px;
+            z-index: 3 !important;
+	}
+
+
+	/* pre login state */
+
+
+		#myTools .userMessage {
+			position: absolute;
+			top: 2px;
+			left: 9px;
+			z-index: 5;
+			font-weight: bold;
+		}
+		#myTools .userMessage a {
+			font-weight: bold !important;
+		}
+
+		form a.btnMyShockwavePlain.disabled {
+			background: #ccc !important;
+			border: 1px solid #999 !important;
+			color: #fff !important;
+		}
+
+			.rememberMeWrap label {
+				background: url(../i/common/userBar/checkBox.png) 0 -7px no-repeat;
+				padding: 0 0 0 17px !important;
+				line-height: 14px;
+				width: 106px;
+				display: inline;
+				float: none;
+				width: auto;
+				cursor:pointer;
+			}
+			.rememberMeWrap label.active {
+					background-position: 0 -27px;
+				}
+			.rememberMeWrap input {
+				position: absolute;
+				top: auto;
+				left: -9999px;
+			}
+
+		/* post login state */
+		#myTools img {
+			border: 1px solid #fff;
+			position: absolute;
+			top: 9px; left: 3px;
+		}
+		#myTools .username,
+		#myTools #logout {
+			position: absolute;
+			top: 6px; left: 41px;
+		}
+		#myTools #logout {
+			right: 4px; left: auto;
+			font-weight: bold !important;
+		}
+		#mainNav li#myTools .username a {
+			font-weight: bold !important;
+			display: block;
+			float: left;
+			overflow: hidden;
+			padding-left: 5px;
+			width: 145px;
+		}
+
+		#myTools ul.clearfix {
+			position: absolute;
+			top: 23px; left: 40px;
+			width: 267px;
+		}
+		#myTools ul li {
+			padding: 1px 7px 0 7px;
+			position: static;
+			float: left;
+			height: 16px;
+			position: relative;
+
+		}
+		#myTools ul li#tokenCount {
+			text-align: right;
+			background: url(../i/common/site/icons16x16.png) 4px -480px no-repeat;
+			border-left: none;
+		}
+			#myTools ul li#tokenCount a {
+				display: block;
+				text-align: right;
+				color: #666;
+			padding-left: 18px;
+
+			}
+			#myTools ul li#tokenCount span {
+				display: inline !important;
+			}
+		#myTools ul li#headerCashBalance {
+			color: #666;
+			margin-left: 10px;
+		}
+		#myTools ul li#headerCashBalance a {
+			color: #666;
+			padding-left: 13px
+		}
+		#myTools ul li#headerCashBalance span {
+			display: inline !important;
+		}
+		#myTools ul li#friendCount {
+			width: 83px;
+			text-align: right;
+			background: url(../i/common/site/icons16x16.png) 4px -520px no-repeat;
+			cursor: pointer;
+		}
+		#myTools ul li#faveGames {
+			padding-left: 26px;
+			background: url(../i/common/site/icons16x16.png) 4px -400px no-repeat;
+			cursor: pointer;
+			float: right;
+		}
+
+#subNav #cart {
+	position: absolute;
+	top: 5px;
+	left: 894px;
+	width: 104px;
+	font-size: 10px;
+	line-height: 13px;
+}
+	#subNav #cart a {
+		color: #fff;
+		font-weight: normal;
+		padding-top: 3px;
+		display: block;
+	}
+	#subNav a#cartIcon {
+		position: absolute;
+		top: 5px;
+		right: 3px;
+		background: url(../i/common/site/icons16x16.png) 0 -1440px no-repeat;
+		display: block;
+		height: 10px;
+		width: 16px;
+		padding-top: 11px;
+		height: 15px;
+		text-align: center;
+	}
+
+
+
+
+f
+#subNav, #subNav ul li, #subNav ul li a:hover, #subNav, #subNav ul li.active a, 	#subNav ul li div.newGenre:hover {
+	background: url(../i/common/nav/subNavBkg.png);
+}
+
+#subNav {
+	border: 1px solid #fff;
+	position: relative;
+	height: 34px;
+	background-repeat: repeat-x;
+	border-bottom: none;
+	position: relative;
+	z-index: 1;
+}
+	.hideSubNav #subNav ul {
+		visibility: hidden !important;
+	}
+
+	#subNav ul li a {
+		display: block;
+		padding: 11px 10px 8px 10px;
+		font-size: 12px;
+	}
+	#subNav ul li a:hover {
+		text-decoration: none;
+	}
+	#subNav ul li.newGenre a {
+		padding-left: 20px;
+	}
+	#subNav ul li.newGenre img {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
+	#subNav ul li {
+		float: left;
+		height: 34px;
+		padding-right: 1px;
+		background-repeat: no-repeat;
+		position: relative;
+		}
+
+	#online #subNav 						{ background-position: 0 0 }
+	#online #subNav ul li a					{ color: #003D7B; }
+	#online #subNav ul li a:hover,
+	#online #subNav ul li.active a			{ background-position: left -34px; }
+	#online #subNav ul li 					{ background-position: right -68px; }
+
+	#download #subNav 						{ background-position: 0 -102px }
+	#download #subNav ul li a,
+	#download #subNavMore ul li a 			{ color: #a73512; }
+	#download #subNav ul li a:hover,
+	#download #subNav ul li.active a		{ background-position: left -136px; }
+	#download #subNav ul li 				{ background-position: right -170px; }
+
+	#myShockwave #subNav 					{ background-position: 0 -204px }
+	#myShockwave #subNav ul li a			{ color: #3d5714; }
+	#myShockwave #subNav ul li a:hover,
+	#myShockwave #subNav ul li.active a		{ background-position: left -238px; }
+	#myShockwave #subNav ul li 				{ background-position: right -272px; }
+
+
+
+	.dropmenu div {
+		display: none;
+		background: url(../i/common/nav/dropMenuBkg.png) bottom left no-repeat !important;
+		_background: url(../i/common/nav/dropMenuBkgIE6.png) bottom left no-repeat !important;
+		position: absolute;
+		top: 34px;
+		left: -4px;
+		_left: -5px;
+		padding: 6px 0;
+		border: none;
+		width: 400px
+	}
+
+		#myTools .dropmenu div {
+			top: 17px;
+			left: -302px;
+		}
+		#myTools .dropmenu div h5 {
+			padding: 0; margin: 0;
+			color: #666;
+		}
+		#myTools div ul li {
+			border: none;
+		}
+		#myTools div ul.block1,
+		#myTools div ul.block2 {
+			width: 173px;
+			float: left;
+			padding: 0 10px 0 15px;
+			border-right: 2px dotted #ccc;
+		}
+		#myTools div ul.block2  {
+			float: right;
+			padding: 0 15px 0 0;
+			width: 173px;
+			border: none;
+		}
+		#myTools div ul li {
+			position: relative;
+			display: block;
+			float: none;
+			height: auto;
+			width: auto;
+			margin: 0;
+			border: none;
+			padding: 3px 0;
+			background: none;
+		}
+
+		#myTools div ul li a {
+			display: inline;
+			padding: 0;
+			font-size: 11px;
+			font-weight: normal;
+			background: none;
+		}
+		#myTools div ul li a:hover {
+			display: inline;
+			padding: 0;
+			background: none;
+			text-decoration: underline;
+		}
+
+	#myTools #sisUpsell {
+		position: absolute;
+		top: -16px;
+		left: 0;
+		padding: 2px;
+		width: 301px;
+		color: #fff;
+		background:url(../i/common/userBar/nsiBkg.png) no-repeat scroll right -112px;
+		text-align: center;
+
+	}
+	#myTools #sisUpsell a {
+		font-weight: normal;
+		color: #fff;
+	}
+
+
+	#moreDropDown span {
+		font-size: 15px;
+	}
+	#moreDropDown .arrowDownRit {
+		background-position: right -395px !important;
+	}
+	#moreDropDown .arrowUpRit {
+		background-position: right -435px !important;
+	}
+	#download #moreDropDown .arrowDownRit {
+		background-position: right -477px !important;
+	}
+	#download #moreDropDown .arrowUpRit {
+		background-position: right -518px !important;
+	}
+	#subNavMore {
+		background: url(../i/common/nav/subNavBkg.png) 0 -306px repeat-x;
+		padding: 6px 0;
+		border-bottom: 1px solid #9ac8ec;
+        position: relative;
+        z-index: 1;
+	}
+		#download #subNavMore {
+			background-position: 0 -339px;
+			border-bottom: 1px solid #f8b974;
+		}
+	#subNavMore ul {
+		width: 100%;
+		text-align: right;
+	}
+	#subNavMore li {
+		display: inline;
+		padding: 0 10px 0 11px;
+		border-left: 1px solid #9bc9e7;
+	}
+	#subNavMore li:first-child {
+		border-left: none;
+		position: relative;
+		z-index: 7;
+	}
+		#download #subNavMore li {
+			border-color: #f8b974;
+		}
+
+	#globalSearch {
+		position: absolute;
+		top: 4px;
+		right: 10px;
+		width: 209px;
+	}
+
+	.cartEnabled #globalSearch { right: 30px; }
+
+	#globalSearch input {
+		position: absolute;
+		top: 0; left: 0;
+		height: 17px;
+		padding: 3px;
+		outline: none;
+		border: 1px solid #ccc;
+		font-size: 12px;
+		font-family: Arial, sans-serif;
+		color: #999;
+		width: 142px
+	}
+	#globalSearch #searchSite,
+	#globalSearch #searchWeb {
+		position: absolute;
+		top: 0; left: 150px;
+		background: url(../i/buttons/searchBtns.png);
+		padding-top: 25px;
+		width: 31px;
+	}
+	#globalSearch #searchWeb {
+		position: absolute;
+		top: 0; left: 181px;
+		background-position: 32px 0;
+		width: 32px;
+	}
+
+
+/* body content & general rules
+----------------------------------------------- */
+
+#mainContent {
+	padding-top: 18px;
+	padding: 20px 10px 0 10px;
+	background: #fff;
+	min-height: 400px;
+	position: relative;
+	z-index: 2;
+}
+    .dfContainer {
+        border: 1px solid #969696;
+        border-radius: 5px;
+        padding: 15px 5px 0px 5px;
+        width: 100%;
+        margin: 0px 0px 20px 0px;
+    }
+    .dfTreatment {
+        position: relative;
+        z-index: 4;
+    }
+
+	#altNav {
+		border-bottom: 1px solid #8fb3ec;
+		/* height: 268px; */
+	}
+		#download #altNav {
+			border-color: #dd6611;
+		}
+
+	#altNav li {
+		display: block;
+		position: relative;
+		border: 1px solid #8fb3ec;
+		border-bottom: none;
+	}
+		#download #altNav li {
+			border-color: #dd6611;
+		}
+	#altNav li a {
+		padding-top: 44px;
+		background-repeat: no-repeat;
+	}
+		#altNav li.altNavDouble a {
+			padding-top: 87px;
+		}
+
+	#online #altNav li a {
+		background-position: 0 -44px;
+	}
+		#online #altNav li.altNavDouble a {
+			background-position: 0 -88px;
+		}
+	#download #altNav li a {
+		background-position: 0 0;
+	}
+		#download #altNav li.altNavDouble a {
+			background-position: 0 0;
+		}
+	#altNav li a:hover {
+		background-position: 0 -88px !important;
+	}
+		#altNav li.altNavDouble a:hover {
+			background-position: 0 -176px !important;
+		}
+
+.sponsoredLinks {
+	background: #fff;
+	padding: 10px 10px 0 10px;
+}
+	.sponsoredLinks h5 {
+		margin: 0 0 7px 0;
+		padding-bottom: 7px;
+		border-bottom: 1px solid #ccc;
+		color: #999;
+	}
+	.sponsoredLinks table td {
+		width: 23%;
+		padding-right: 2%;
+	}
+	.sponsoredLinks table td a {
+		font-weight: normal;
+		color: #3177cc;
+	}
+	.sponsoredLinks table td .description,
+	.sponsoredLinks table td .linkGray {
+		color: #999;
+	}
+
+#footerTop {
+	background: url(../i/common/site/footerBkg.png) no-repeat;
+	height: 30px;
+}
+
+#footer {
+	padding: 0 45px 45px 45px;
+	background: #eee;
+	border: 1px solid #d6d4d7;
+	border-top: none;
+	position: relative;
+	font-size: 11px;
+	}
+	ul.footerLinks li {
+		float: left;
+	}
+    ul.footerLinks li.sw_mod_links {
+        margin-right: 70px;
+    }
+    ul.footerLinks li.sw_gamesformom {
+        margin: 0px 0px 0px 1px;
+    }
+	#footer h2,
+	#footer .moreCoolGames {
+		padding-top: 35px;
+		margin-bottom: 25px;
+		letter-spacing: normal;
+		color: #666 !important;
+		font: normal bold 16px/18px Arial !important;
+	}
+	.extLinksHeader {
+		font-size: 11px;
+		font-weight: bold !important;
+	}
+	ul.extLinks li {
+		float: none;
+		width: 125px;
+	}
+	.extLinks a {
+		color: #666;
+		font-weight: normal;
+	}
+	ul.listNav  {
+		border-top: 1px solid #ccc;
+	}
+	ul.listNav li {
+		border-bottom: 1px solid #ccc;
+		_zoom: 1;
+	}
+	ul.listNav li a,
+	#footer .colLast ul li {
+		display: block;
+		padding-top: 4px;
+		line-height: 15px;
+		height: 19px;
+	}
+	.legal a {
+		color: #460;
+	}
+
+	.colLast ul li a {
+		/*font-weight: normal;*/
+		display: inline;
+	}
+	.clear {
+		clear: both;
+	}
+	ul.corpLinks li {
+		float: left;
+		font-size: 11px;
+		margin: 20px 20px 0 0;
+	}
+	a.corpLinks:link { text-decoration: underline;}
+	a.corpLinks:visited { color: #003D7B; text-decoration: underline;}
+	a.corpLinks:hover { text-decoration: none;}
+	a.corpLinks:active { color: #003D7B;}
+
+/*speficic changes for btnOnlinePlain in coppLinks   */
+	.aboutUs {
+		border-top: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
+		height: 67px;
+		margin-top: 20px;
+	}
+	.aboutUs a.corpLinks {
+		display: block;
+		height: 20px;
+		padding: 6px 0;
+	}
+	ul.aboutUs li a.btnOnlinePlain {
+	 	border: 1px solid #3060BE;
+		display: block;
+		height: 20px;
+		/*overflow: hidden;*/
+		padding: 5px 9px 0 !important ;
+		text-decoration: none;
+		font-size: 11px ;
+	}
+	.aboutUs li {
+		font-size: 12px !important;
+	}
+	.footer .footerLinks {
+		overflow: hidden;
+	}
+	.aboutUs .exposeComments {
+	 	float: right;
+		margin-top: 24px;
+		margin-right: 0px;
+	}
+	.aboutUs .btnOnlinePlain:hover {
+		text-decoration: underline;
+	}
+.shareIconsFooter a  {
+	padding-top: 20px;
+	width: 20px;
+	background-image: url(../i/common/site/shareIconsFooter.png);
+	background-repeat: no-repeat;
+	float: left;
+	margin-left: 10px;
+}
+	.shareBlogFooter { background-position: 0 0 }
+	.shareFacebookFooter { background-position: 0 -21px }
+	.shareTwitterFooter { background-position: 0 -42px }
+	.shareStumbleFooter { background-position: 0 -63px }
+	.shareFlickrFooter { background-position: 0 -84px }
+
+#footerLogo {
+	padding-top: 36px;
+	background: url(../i/common/site/nickFamilyLogo.png) no-repeat bottom right;
+}
+
+
+ul.games4,
+ul.games3 {
+	padding-left: 6px;
+}
+ul.games1 {
+	margin-top: -15px;
+}
+.podNoPad ul.games4,
+.podNoPad ul.games3,
+.podNoPad ul.games2,
+.podNoPad ul.games1 {
+	padding-left: 20px;
+}
+ul.games4 li,
+ul.games3 li,
+ul.games2 li,
+ul.games1 li  {
+	float: left;
+	display: block;
+	_display: inline;
+	padding: 0 11px 18px;
+	position: relative;
+	width: 129px;
+}
+ul.games1 li {
+	width: 614px;
+	padding: 18px 0;
+	border-bottom: 1px solid;
+}
+#online ul.games1 li {
+	border-bottom-color: #afd2f4;
+}
+#download ul.games1 li {
+	border-bottom-color: #f0ba80;
+}
+ul.games1 li .content {
+	width: 325px;
+	padding-left: 15px;
+}
+ul.games2 li .content {
+	width: 125px;
+	padding-left: 15px;
+}
+ul.games1 li .content .title,
+ul.games2 li .content .title {
+	font-size: 14px;
+	display: block;
+	padding-bottom: 8px;
+}
+#download ul.games1 li .content .title,
+#download ul.games2 li .content .title {
+	color: #C8581D;
+}
+ul.games2 li {
+	width: 270px;
+	padding: 11px;
+}
+ul.games3 li {
+	width: 180px;
+}
+ul.games4 li.doubleWide {
+	width: 282px;
+}
+ul.games4 li.doubleWide img {
+	margin-bottom: 0;
+}
+ul.swSalesPod {
+    padding-bottom: 15px !important;
+}
+ul.swSalesPod li {
+    padding: 0 11px !important;
+    height: 276px !important;
+}
+ul.games4Boxed {
+	background: #feeed5;
+	border: 1px solid #ee9559;
+	padding: 17px 0 0 5px !important;
+	margin: 0 14px 25px;
+}
+ul.game4Boxed {
+	background: #FFF;
+	border: 1px solid #DEDEDE;
+	padding: 17px 0 0 5px !important;
+	margin: 0 14px 19px;
+}
+
+ul.games4 .games4TwoColUpsell {
+	position: relative;
+	}
+	ul.games4 .games4TwoColUpsell .upsellContainer {
+		position: absolute; top: 0; left: 11px;
+		width: 274px;
+	}
+.gameRank {
+	position: absolute;
+	top: 0;
+	left: -8px;
+	height: 16px;
+	width: 16px;
+	background: url(../i/common/site/gameRank.png) no-repeat;
+}
+.gameRank2 { background-position: 0 -20px; }
+.gameRank3 { background-position: 0 -40px; }
+.gameRank4 { background-position: 0 -60px; }
+.gameRank5 { background-position: 0 -80px; }
+.gameRank6 { background-position: 0 -100px; }
+.gameRank7 { background-position: 0 -120px; }
+.gameRank8 { background-position: 0 -140px; }
+.gameRank9 { background-position: 0 -160px; }
+.gameRank10 { background-position: 0 -180px; }
+.gameRank11 { background-position: 0 -200px; }
+.gameRank12 { background-position: 0 -220px; }
+
+.emptyMessage {
+	font-weight: bold;
+	text-align: center;
+	padding: 15px 0 10px;
+}
+.podInnerBox .emptyMessage {
+	padding: 5px 0 7px;
+}
+.salePrice {
+	color:red;
+	font-weight: bold;
+}
+.download { color: #de6713; }
+.myShockwave { color: #446600 !important; }
+.online { color: #3476ca; }
+
+/* logos
+----------------------------------------------- */
+.clubExclusiveLogo {
+	background: url(../i/common/logos/clubExclusive.png) no-repeat;
+	padding: 10px 0 10px 102px;
+}
+.unlimitedLogo {
+	background: url(../i/common/logos/logoSW-SIP.png) no-repeat;
+	width: 290px;
+	height: 110px;
+}
+.unlimitedLogoSm {
+	background: url(../i/common/logos/logoSW-SIP-small_28.png) no-repeat;
+	padding: 10px 0 10px 102px;
+}
+/* inbody ad
+----------------------------------------------- */
+.bannerWrapper {
+	width: 100%;
+    background: #FFF;
+    padding-top: 10px;
+}
+.banner, 
+.banner  > * {
+    text-align: center;
+    margin: 0px auto !important;
+}
+.transparentAd {
+    background: none !important;
+}
+.dynamicSkin {
+    padding-bottom: 20px !important;
+}
+#inBodyAd {
+	width: 100%;
+	background: #FFF;
+    padding-top: 10px;
+}
+.adWrap {
+	text-align: center;
+    margin: 0px auto;
+}
+#inBodyAd td {
+	border-top: 10px solid #fff;
+	border-collapse: separate;
+}
+#inBodyAd td.adWrap {
+	width: 970px;
+	text-align: center; /* for Safari */
+	background: #FFF;
+}
+#inBodyAd td.adSide {
+	background: #fff;
+	width: 14px;
+}
+/* picon sizes
+----------------------------------------------- */
+.picon_small {
+	width: 92px;
+	height: 70px;
+}
+.picon_jigsaw {
+	background-position: -17px -13px;
+}
+.picon_regular {
+	width: 122px;
+	height: 92px;
+}
+.picon_large {
+	width: 122px;
+	height: 182px;
+}
+.picon_XL {
+	width: 272px;
+	height: 182px;
+}
+/* 16x16 icons
+----------------------------------------------- */
+.icon16Rit, .icon16Lft {
+	background-image: url(../i/common/site/icons16x16.png);
+	background-repeat: no-repeat;
+	line-height: 17px;
+}
+.icon16Rit {
+	padding: 1px 20px 2px 0;
+}
+.icon16Lft {
+	padding: 2px 0 2px 20px;
+}
+.icon16Play { background-position: 0 0 }
+.icon16Download { background-position: 0 -40px ; color: #ce5119; }
+.icon16Question { background-position: 0 -80px }
+.icon16Buy { background-position: 0 -120px }
+.icon16Info { background-position: 0 -160px }
+.icon16Plus { background-position: 0 -200px }
+.icon16Minus { background-position: 0 -240px }
+.icon16Rit.icon16Close { background-position: right -280px }
+.icon16Close { background-position: 0 -280px }
+.icon16Help { background-position: 0 -320px }
+.icon16UserOnline { background-position: 0 -360px }
+.icon16Favorite { background-position: 0 -400px }
+.icon16FavoriteAdded { background-position: 0 -440px }
+.icon16Tokens { background-position: 0 -480px }
+.icon16Tokens.icon16Rit { background-position: right -480px }
+.icon16Friends { background-position: 0 -520px }
+.icon16Warning { background-position: 0 -560px }
+.icon16Pages { background-position: 0 -600px }
+.icon16Screenshots { background-position: 0 -640px }
+.icon16PlayVideo { background-position: 0 -680px }
+.icon16Cash { background-position: 0 -720px }
+.icon16Ticket { background-position: 0 -760px }
+.icon16AddFriend { background-position: 0 -800px }
+.icon16Trophy { background-position: 0 -840px }
+.icon16Trophy.icon16Rit { background-position: right -840px }
+.icon16ShareGame { background-position: 0 -880px }
+.icon16GameInstruct { background-position: 0 -920px }
+.icon16Email { background-position: 0 -960px }
+.icon16Email.icon16Rit { background-position: right -960px }
+.icon16Globe { background-position: 0 -1000px }
+.icon16Embed { background-position: 0 -1040px }
+.icon16OnlyOnShockwave { background-position: 0 -1080px }
+.icon16GameFace { background-position: 0 -1120px }
+.icon16Edit { background-position: 0 -1160px }
+.icon16HighScores { background-position: 0 -1200px }
+.icon16PlayClub { background-position: 0 -1240px }
+.icon16TokenX2 { background-position: 0 -1280px }
+.icon16TokenX3 { background-position: 0 -1320px }
+.icon16TokenX4 { background-position: 0 -1360px }
+.icon16TokenX5 { background-position: 0 -1400px }
+.icon16Cart { background-position: 0 -1440px }
+.icon16Silence { background-position: 0 -1480px }
+.icon16Rit.icon16Silence { background-position: right -1480px }
+.icon16Challenge { background-position: 0 -1520px }
+.icon16Marketing { background-position: 0 -1560px }
+.icon16PhotoSubmitted { background-position: 0 -1600px }
+.icon16SWCash { background-position: 0 -1640px }
+.icon16FacebookLike { background-position: 0 -1680px; }
+.icon16Rit.icon16SWCash { background-position: right -1640px}
+.clubGame .icon16Play { background-position: 0 -1240px; color: #77a922 }
+
+#footer .icon16Lft,
+#footer .icon16Rit {
+	background-image: url(../i/common/site/icons16x16Footer.png);
+}
+.icon16EmailUpdates {
+	background-position: 0 4px;
+	padding: 7px 0 2px 20px;
+}
+.icon16RSS { background-position: 0 -36px }
+.icon16AG { background-position: 0 -76px }
+.icon16Parents { background-position: 0 -116px }
+.icon16Nick { background-position: 0 -156px }
+.icon16NickJr { background-position: 0 -196px }
+.icon16NickAcade { background-position: 0 -236px }
+.icon16Neopets { background-position: 0 -276px }
+.icon16TheN { background-position: 0 -316px }
+.icon16AdChoices { background-position: right -355px }}
+
+.iconSubmitPhoto {
+	padding: 4px 0 4px 28px;
+	background: url(../i/common/site/iconSubmitPhoto.png) 0 1px no-repeat;
+	position: relative;
+	display: block;
+	top: -4px
+}
+.shareIcons a  {
+	padding-top: 16px;
+	width: 16px;
+	background-image: url(../i/common/site/shareIcons.png);
+	background-repeat: no-repeat;
+	float: left;
+	margin-right: 10px;
+	margin-top: 1px !important;
+}
+.shareDelicious { background-position: 0 0 }
+.shareDigg { background-position: 0 -16px }
+.shareFacebook { background-position: 0 -32px }
+.shareGoogle { background-position: 0 -48px }
+.shareMySpace { background-position: 0 -64px }
+.shareReddit { background-position: 0 -80px }
+.shareStumble { background-position: 0 -96px }
+.shareTechnorati { background-position: 0 -112px }
+.shareTwitter { background-position: 0 -128px }
+.shareIcons .sharePlusOne {
+	background: none;
+	padding-top: 0;
+	width: 26px;
+}
+
+/* buttons
+----------------------------------------------- */
+
+a.btnOnlinePlain, a.btnMyShockwavePlain, a.btnDisabledPlain, a.btnRedPlain, a.btnPurplePlain, a.btnOrangePlain {
+	background: url(../i/common/site/tabsOffBkgSprite.png) !important;
+	padding: 3px 8px 5px 8px !important;
+	color: #fff !important;
+	font-weight: bold;
+	border: 1px solid #666;
+	zoom: 1;
+	vertical-align: middle;
+}
+
+	a.btnOnlinePlain {
+		background-position: 0 -40px !important;
+		border: 1px solid #5794ed;
+	}
+	a.btnMyShockwavePlain {
+		background-position: 0 -80px !important;
+		border: 1px solid #77a922;
+	}
+	a.btnPurplePlain {
+		background-position: 0 -240px !important;
+		border: 1px solid #aa4378;
+	}
+	a.btnRedPlain {
+		background-position: 0 -216px !important;
+		border: 1px solid #aa0000;
+	}
+	a.btnOrangePlain {
+		background-position: 0 -120px !important;
+		border: 1px solid #dd6710;
+	}
+	a.btnDisabledPlain, a.btnOnlinePlain.disabled {
+		background-position: 0 -160px !important;
+		border: 1px solid #999;
+		color: #999 !important;
+	}
+
+a.btnOnlineFull, a.btnDownloadFull, a.btnMyShockwaveFull, a.btnBuyFull, a.btnOnTheGoFull {
+	background: url(../i/buttons/btnOnlineFull.png) no-repeat center left;
+	color: #fff;
+	font-weight: bold;
+	border: 1px solid #3060be;
+	line-height: 22px;
+}
+
+a.btnDownloadFull {
+	background: url(../i/buttons/btnDownloadFull.png) no-repeat center left;
+	border: 1px solid #ce5119;
+}
+a.btnDownloadUpsell {
+    background: url('../i/buttons/swu_button_blue.png');
+    background-repeat: no-repeat;
+    border: 1px solid #3060BE;
+}
+a.btnPad {
+    padding: 5px 10px 5px 20px !important;
+    color: #FFF !important;
+}
+.dLoadFull {
+    background: url(../i/buttons/btnDownloadFull.png) no-repeat center left !important;
+    border: 1px solid #CE5119 !important;
+}
+.dLoadBuy {
+    background: url(../i/buttons/btnBuyFull.png) no-repeat center left !important;
+    border: 1px solid #79A91F !important;
+}
+.dLoadUpsell {
+    background: url('../i/buttons/swu_button_blue.png') no-repeat center left !important;
+    border: 1px solid #3060BE;
+}
+a.btnOnTheGoFull {
+	background: url(../i/buttons/btnDownloadFull.png) no-repeat center left;
+	border: 1px solid #ce5119;
+}
+a.btnMyShockwaveFull {
+	background: url(../i/buttons/btnMyShockwaveFull.png) no-repeat center left;
+	border: 1px solid #76aa21;
+}
+a.btnBuyFull, a.btnOnTheGoFull {
+	background: url(../i/buttons/btnBuyFull.png) no-repeat center left;
+	border: 1px solid #79a91f;
+}
+a.btnOnTheGoFull {
+	background: url(../i/buttons/btnOnTheGoFull.png) no-repeat center left;
+	border: 1px solid #79a91f;
+}
+	a.btnBig {
+		font-size: 11px;
+		padding: 5px 10px 6px 22px;
+	}
+	a.btnSmall {
+		font-size: 10px;
+		padding: 2px 10px 3px 22px;
+	}
+
+
+a.btnSmall:hover, a.btnBig:hover, a.btnOnlinePlain:hover, a.btnMyShockwavePlain:hover, a.btnPurplePlain:hover, a.btnBuyFull:hover {
+	color: #fff;
+}
+
+a.bcOverlayBtn {
+	margin-left: 10px !important; 
+	background: url(../i/buttons/bcfs_button.png);
+	background-repeat: no-repeat;
+	border: 1px solid #ec008c;
+}
+.btnWrap {
+	padding: 10px 0 10px;
+}
+
+
+/* Large Buttons */
+
+.btnLrgWrap {
+	padding: 30px 0 12px;
+}
+a.btnLrg {
+	font-size: 18px;
+	color: #fff;
+	background: url(../i/common/site/tabsOffBkgSprite.png);
+	padding: 6px 17px;
+	letter-spacing: 1px;
+}
+	a.btnLrg:hover {
+		text-decoration: none;
+		color: #fff !important;
+	}
+	a.btnLrgGreen {
+		background-position: 0 -80px;
+		border: 1px solid #77a922;
+	}
+	a.btnLrgBlue {
+		background-position: 0 -40px;
+		border: 1px solid #3479d8;
+	}
+	a.btnLrgOnline {
+		background-position: 0 -40px;
+		border: 1px solid #3478cd;
+	}
+	a.btnLrgRed {
+		background-position: 0 -205px;
+		border: 1px solid red;
+	}
+a.btnLrg.disabled {
+	background: #ccc;
+	color: #fff !important;
+	border-color: #999 !important;
+}
+
+.btnSpecialOffer {
+	margin-left: 5px;
+	position: relative;
+	top: 2px
+}
+.btnSpecialOffer img {
+	display: inline;
+	margin-bottom: -8px !important;
+}
+
+
+/* THESE ARE GOING OUT, REPLACED BY STYLES ABOVE---------------------------- */
+
+
+a.btnDownloadIcon, a.btnBuyIcon, a.btnMyShockwaveIcon {
+	background: url(../i/buttons/btnDownloadIcon.png) no-repeat;
+	padding: 2px 0 3px 20px;
+	line-height: 20px;
+	color: #ce5119;
+}
+a.btnBuyIcon {
+	background: url(../i/buttons/btnBuyIcon.png) no-repeat;
+	color: #669d20;
+}
+a.btnMyShockwaveIcon {
+	background: url(../i/buttons/btnMyShockwaveIcon.png) no-repeat;
+	color: #426700;
+}
+	a.btnDownloadIcon:hover { color: #ce5119; }
+	a.btnBuyIcon:hover { color: #669d20; }
+
+
+
+.btnDownload {
+	background: url(http://www.shockwave.com/i/buttons/btnDownload.png) no-repeat;
+	padding: 2px 6px 3px 20px;
+	font-weight: bold;
+	color: #dd6710;
+}
+.btnExpand, .btnCollapse {
+	background: url(../i/buttons/btnExpandCollapse.png) no-repeat;
+	padding: 0 6px 3px 17px;
+}
+.btnCollapse {
+	background-position: 0 -38px;
+}
+
+/* END OF DEAD STYLES ---------------------------- */
+
+
+/* Token Stacks
+----------------------------------------------- */
+
+.tokenStackSml {
+	height: 159px; width: 220px;
+	background-repeat: no-repeat;
+}
+.tokenStackSml-1 { background-image: url(../i/apps/tokenImages/tokendisplay_small_1.png) }
+.tokenStackSml-2 { background-image: url(../i/apps/tokenImages/tokendisplay_small_2.png) }
+.tokenStackSml-3 { background-image: url(../i/apps/tokenImages/tokendisplay_small_3.png) }
+.tokenStackSml-4 { background-image: url(../i/apps/tokenImages/tokendisplay_small_4.png) }
+.tokenStackSml-5 { background-image: url(../i/apps/tokenImages/tokendisplay_small_5.png) }
+.tokenStackSml-6 { background-image: url(../i/apps/tokenImages/tokendisplay_small_6.png) }
+.tokenStackSml-7 { background-image: url(../i/apps/tokenImages/tokendisplay_small_7.png) }
+.tokenStackSml-8 { background-image: url(../i/apps/tokenImages/tokendisplay_small_8.png) }
+.tokenStackSml-9 { background-image: url(../i/apps/tokenImages/tokendisplay_small_9.png) }
+.tokenStackSml-10 { background-image: url(../i/apps/tokenImages/tokendisplay_small_10.png) }
+.tokenStackSml-11 { background-image: url(../i/apps/tokenImages/tokendisplay_small_11.png) }
+.tokenStackSml-12 { background-image: url(../i/apps/tokenImages/tokendisplay_small_12.png) }
+.tokenStackSml-13 { background-image: url(../i/apps/tokenImages/tokendisplay_small_13.png) }
+.tokenStackSml-14 { background-image: url(../i/apps/tokenImages/tokendisplay_small_14.png) }
+.tokenStackSml-15 { background-image: url(../i/apps/tokenImages/tokendisplay_small_15.png) }
+.tokenStackSml-16 { background-image: url(../i/apps/tokenImages/tokendisplay_small_16.png) }
+
+.tokenStackLrg {
+	height: 203px; width: 279px;
+	background-repeat: no-repeat;
+}
+.tokenStackLrg-1 { background-image: url(../i/apps/tokenImages/tokendisplay_large_1.png) }
+.tokenStackLrg-2 { background-image: url(../i/apps/tokenImages/tokendisplay_large_2.png) }
+.tokenStackLrg-3 { background-image: url(../i/apps/tokenImages/tokendisplay_large_3.png) }
+.tokenStackLrg-4 { background-image: url(../i/apps/tokenImages/tokendisplay_large_4.png) }
+.tokenStackLrg-5 { background-image: url(../i/apps/tokenImages/tokendisplay_large_5.png) }
+.tokenStackLrg-6 { background-image: url(../i/apps/tokenImages/tokendisplay_large_6.png) }
+.tokenStackLrg-7 { background-image: url(../i/apps/tokenImages/tokendisplay_large_7.png) }
+.tokenStackLrg-8 { background-image: url(../i/apps/tokenImages/tokendisplay_large_8.png) }
+.tokenStackLrg-9 { background-image: url(../i/apps/tokenImages/tokendisplay_large_9.png) }
+.tokenStackLrg-10 { background-image: url(../i/apps/tokenImages/tokendisplay_large_10.png) }
+.tokenStackLrg-11 { background-image: url(../i/apps/tokenImages/tokendisplay_large_11.png) }
+.tokenStackLrg-12 { background-image: url(../i/apps/tokenImages/tokendisplay_large_12.png) }
+.tokenStackLrg-13 { background-image: url(../i/apps/tokenImages/tokendisplay_large_13.png) }
+.tokenStackLrg-14 { background-image: url(../i/apps/tokenImages/tokendisplay_large_14.png) }
+.tokenStackLrg-15 { background-image: url(../i/apps/tokenImages/tokendisplay_large_15.png) }
+.tokenStackLrg-16 { background-image: url(../i/apps/tokenImages/tokendisplay_large_16.png) }
+
+
+
+
+
+
+/* General Carousel Rules
+----------------------------------------------- */
+
+.carousel {
+	overflow: hidden;
+}
+.carouselFade .carousel-element .carousel-element-name {
+	display: none;
+}
+.carousel-element a.fullSize {
+	display: block;
+}
+	.carouselFade .carousel-container,
+	.carouselSwitch .carousel-container{
+		position: relative;
+	}
+	.carouselFade .carousel-element,
+	.carouselSwitch .carousel-element {
+		position: absolute;
+		top:0; left: 0;
+		width: 100%;
+		display: block;
+	}
+	.carouselSlide .carousel-element,
+	.carouselLoop .carousel-element,
+	.carouselNoSlide .carousel-element {
+		float: left;
+		display: block;
+		_display: inline;
+	}
+	.carouselNoSlide .carousel-container {
+		border-bottom: none !important;
+	}
+.carousel-nav {
+	position: relative;
+	height: 25px;
+	margin: 8px 0 0 0;
+}
+	.carousel-nav a {
+		color: #003D7B !important;
+		font-weight: normal;
+	}
+	.carousel-nav a:hover {
+		text-decoration: none;
+	}
+
+.carousel-nav-left {
+	position: absolute;
+	top: 0;
+	left: 10px;
+}
+	.carousel-nav-left a {
+		background-position: 0 0 !important;
+	}
+.carousel-nav-right {
+	position: absolute;
+	top: 0;
+	right: 10px;
+}
+	.carousel .carousel-nav-right a {
+		background-position: right -40px !important;
+	}
+
+.carousel-progress {
+	position: absolute;
+	left: 50%;
+	float: left;
+	text-align: left;
+}
+.carousel-progress ul {
+	position: relative;
+	left: -50%;
+	_left: -55%;
+}
+.carousel-progress li {
+	float: left;
+	position: relative;
+}
+.carousel-progress li a {
+	float: left;
+	background: url(../i/common/site/carouselProgress.png) -20px 0  no-repeat;
+	width: 14px;
+	padding-top: 14px;
+	margin: 0 3px;
+	_margin: 0 0 0 3px;
+	_display: inline;
+}
+	.carousel-progress li a.active {
+		background-position: 0 0;
+		cursor: default;
+	}
+/* HoverBox
+----------------------------------------------- */
+
+.hoverBoxContent {
+	display: none;
+	height: 0; /* helps js set correct height once in hoverBox */
+}
+
+#hoverBox .hoverBoxIgnore {
+	display: none;
+}
+
+#hoverBox {
+	position: absolute;
+	padding: 0;
+	display: none;
+	z-index: 100;
+}
+#hoverBox table {
+	width: 100%;
+}
+#hoverBox .shmm {
+	padding: 10px 10px 3px 10px;
+}
+#hoverBox #shadowBox .shmm li {
+	padding: 0;
+	margin: 0;
+	float: none;
+	width: 100%;
+}
+
+/* hoverBox arrows */
+
+#hoverBox #hoverBoxArrow {
+	position: absolute;
+	height: 33px;
+	width: 39px;
+	overflow: hidden;
+	background-image: url(../i/common/hoverBox/hoverBoxArrows.png);
+	_background-image: url(../i/common/hoverBox/hoverBoxArrowsIE6.png);
+	background-repeat: no-repeat;
+}
+#hoverBox .arrowTopLft {
+	top: -23px;
+	left: 81px;
+	background-position: -157px 0;
+}
+#hoverBox .arrowTopRit {
+	top: -23px;
+	right: 89px;
+	background-position: 0 0;
+}
+#hoverBox .arrowBotLft {
+	bottom: -23px;
+	left: 83px;
+	background-position: 0 -33px;
+}
+#hoverBox .arrowBotRit {
+	bottom: -23px;
+	right: 88px;
+	background-position: -160px -33px;
+}
+
+
+	/* default styles for when the hoverBox shows */
+
+	#hoverBox .shmm .hoverBoxContent {
+		display: block;
+		height: auto;
+	}
+	#hoverBox .shmm img {
+		margin-bottom: 7px;
+	}
+	#hoverBox .shmm .clubBox {
+		background: #FEEED5;
+        border: 1px solid #C8581D;
+        color: #000;
+        padding: 7px 7px 0 7px;
+		margin-bottom: 10px;
+	}
+	#hoverBox .shmm h4 {
+		color: #124499;
+	}
+
+	/* --- specific hoverBox styles --- */
+		/* regular/large picons */
+		#hoverBox.piconLrgLft .shmm {
+			padding-bottom: 10px;
+		}
+		#hoverBox.piconLrgLft .shmm img {
+			float: left;
+			margin-bottom: 0;
+		}
+		#hoverBox.piconLrgLft .shmm .hoverBoxContent {
+			padding: 0 0 0 10px;
+			float: left;
+			width: 138px;
+		}
+
+		/* jigsaws */
+		#hoverBox.jigsaws h5 { color: #456500; }
+		#hoverBox.jigsaws h5 span { color: #666; }
+
+		/* avatars */
+		#hoverBox.avatar .shmm img {
+			float: left;
+		}
+		#hoverBox.avatar .shmm .hoverBoxContent {
+			padding: 0 0 0 10px;
+			float: left;
+			width: 150px;
+		}
+
+/* New Feature Tip box
+----------------------------------------------- */
+.tipBox {
+	position: absolute;
+	/*display: none;*/
+	z-index: 100;
+	border: 3px #2775d1 solid;
+	border-radius: 10px;
+	background: white;
+}
+.tipBox .tipContent {
+	background: url(../i/common/tipBox/tipBoxIdeaBulb.png) left center no-repeat;
+	min-height: 36px;
+	padding: 5px 5px 0 30px;
+	margin: 5px;
+}
+	/* arrows */
+.tipBox .hoverBoxArrow {
+	position: absolute;
+	height: 13px;
+	overflow: hidden;
+	background-image: url(../i/common/tipBox/tipBoxArrows.png);
+	background-repeat: no-repeat;
+}
+.tipBox .closeTipBox {
+	cursor: pointer;
+	text-align: right;
+	display: block;
+	position: relative;
+	bottom: 0px;
+}
+.tipBox .arrowRitTop {
+	left: -9px;
+	top: 20px;
+	width: 10px;
+	background-position: 0 50%;
+}
+/**** Modify these if you need the arrow in a different place
+.tipBox .arrowTopLft {
+	top: -23px;
+	left: 81px;
+	background-position: -157px 0;
+}
+.tipBox .arrowTopRit {
+	top: -23px;
+	right: 89px;
+	background-position: 0 0;
+}
+.tipBox .arrowBotLft {
+	bottom: -13px;
+	left: 73px;
+	background-position: 0 -80px;
+}
+.tipBox .arrowBotRit {
+	bottom: -13px;
+	right: 88px;
+	background-position: -160px -33px;
+}
+*/
+/* Messenger
+----------------------------------------------- */
+
+#messenger {
+	border: 1px solid #eeaa01;
+	margin-bottom: 15px;
+	padding: 20px 100px;
+	background: #ffffdd;
+	position: relative;
+	font-weight: bold;
+}
+	#messenger p {
+		text-align: center;
+	}
+	#messenger .btnClose {
+		position: absolute;
+		top: 4px; right: 5px;
+		_top: 6px; _right: 17px;
+		background: url(http://www.shockwave.com/i/temp/smallIcon.png) top right no-repeat;
+		font-size: 9px;
+		padding: 2px 20px 5px 0;
+		line-height: 10px;
+		font-weight: normal;
+	}
+
+
+/* Link Colors and Headers
+----------------------------------------------- */
+
+a {
+	text-decoration: none;
+	outline: none;
+	color: #003d7b;
+	font-weight: bold;
+}
+a:hover {
+	text-decoration: underline;
+}
+a.plain {
+	color: #666;
+}
+
+a.disabled {
+	cursor: default;
+	color: #999 !important;
+	border: 0;
+}
+a.disabled:hover {
+	text-decoration: none;
+}
+a.selected {
+	color: #000;
+	cursor: text;
+	border: 0;
+	text-decoration: none;
+}
+a.selected:hover{
+	text-decoration: none;
+}
+a.local {
+	font-weight: normal;
+}
+
+p {
+	margin-bottom: 7px;
+}
+
+h1 {
+	font: bold 24px Arial;
+	padding: 0;
+	letter-spacing: -1px;
+	color: #446600;
+	margin: 0 0 4px 0;
+	position: relative;
+}
+
+	h1.pageTitle {
+		margin-bottom: 20px;
+		color: #666;
+	}
+	h1.genreTitle {
+		letter-spacing: 0;
+		/*margin-bottom: 25px;*/
+		/*border-bottom: 1px solid #9accef;*/
+		font-variant: small-caps;
+		color: #333;
+	}
+    h1.gamesAtShockwave {
+        margin: -5px 0px 15px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 1px solid #9ACCEF;
+    }
+    h1.downloadGamesAtShockwave {
+        font-variant: normal;
+        font: bold 24px "arial black", sans-serif;
+        color: #C8581D !important;
+        letter-spacing: -1px;
+        line-height: 1em;
+        text-transform: none;
+        margin: 0px 0px 15px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #C8581D;
+    }
+
+h2 { /* reserved for pod headers, see pods.css */ }
+
+	h2.sub {
+		font-variant: normal;
+		font-weight: bold;
+		margin-bottom: 15px;
+		color: #333;
+	}
+
+h3 {
+	font-size: 11px;
+}
+
+h4 {
+	font-size: 16px;
+	margin-bottom: 10px;
+	line-height: 18px;
+}
+
+h5 {
+	font-size: 14px;
+	margin: 3px 0 7px 0;
+}
+
+.green { color: green; }
+.red { color: red; }
+
+
+ul.list {
+	padding-left: 20px;
+	list-style: disc;
+	margin-bottom: 7px;
+}
+ol.list {
+	padding-left: 20px;
+	list-style: decimal;
+	margin-bottom: 7px;
+}
+
+
+/* Pagination
+----------------------------- */
+
+.pag {
+	padding: 6px 0;
+	background: #fff;
+}
+.pag span {
+	padding-left: 7px;
+}
+.pag .pagLftNav,
+.pag .pagRitNav {
+	float: left;
+	width: 12%;
+}
+.pag .pagRitNav{
+	float: right;
+	text-align: right;
+	padding: 0;
+}
+.pag .pagRitNav a{
+	margin-right: 7px;
+}
+.pag .pagRitNav a,
+.pag .pagLftNav a {
+	color: #003D7B;
+}
+	.pag .pagRitNav a.arrowRit {
+		background-position: right -40px !important;
+	}
+	.pag .pagRitNav a.arrowRit.disabled {
+		background-position: right -360px !important;
+	}
+
+.pag .pagNums{
+	text-align: center;
+}
+.pag .pagNums span {
+	padding: 0 3px;
+}
+.pag .pagNums span a {
+	background: #fff;
+	padding: 1px 4px;
+	color: #045CB6 !important;
+	border: 1px solid #ccc;
+}
+.pag .pagNums span a.disabled {
+	background: #666;
+	color: #fff !important;
+}
+.pag .pagNums span a.showAll {
+	background: none;
+	color: #045CB6 !important;
+	padding: 0;
+	border: none;
+}
+
+.pagBot {
+	border-top: 1px solid #ccc;
+	margin-top: 5px;
+}
+.pagTop {
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 15px;
+}
+
+
+
+/* Provides full screen dimmer
+---------------------------------*/
+
+#dimmer {
+	position: fixed;
+	top: 0; left: 0;
+	background: url(../i/common/shadowBox/dimmerBkg.png); /* bkg img fixes issue with Firefox transparency */
+	width: 100%; height: 100%;
+	z-index:9999998;
+}
+
+#dimmerMessage {
+	position: fixed;
+	top: 50%; left: 50%;
+	width: 400px; /* default width */
+	z-index: 9999999;
+	font-size: 11px;
+	color: #333;
+}
+.dimmerMessage { display: none }
+
+	#dimmerMessage .shadowBox { width: 100%;}
+	#dimmerMessage .swBtnSml, #dimmerMessage .swBtnMed { margin-bottom: 0}
+
+
+#dimmerMessage .dimmerBtnClose {
+	padding-top: 26px;
+	width: 25px;
+	background: url(../i/common/shadowBox/dimmerCloseBtn.png) no-repeat;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+
+/* built using table because children of a png24 background parent doesn't fade properly, background is white */
+
+.shadowBox .shtl, .shadowBox .shtm, .shadowBox .shtr, .shadowBox .shbl, .shadowBox .shbm, .shadowBox .shbr { height: 10px; font-size: 1px; }
+
+.shadowBox .shtl { background: url(../i/common/shadowBox/shtl.png) no-repeat; width: 10px; }
+.shadowBox .shtm { background: url(../i/common/shadowBox/shtm.png) repeat-x; }
+.shadowBox .shtr { background: url(../i/common/shadowBox/shtr.png) no-repeat; width: 10px}
+
+.shadowBox .shbl { background: url(../i/common/shadowBox/shbl.png) no-repeat; width: 10px}
+.shadowBox .shbm { background: url(../i/common/shadowBox/shbm.png) repeat-x; }
+.shadowBox .shbr { background: url(../i/common/shadowBox/shbr.png) no-repeat; width: 10px}
+
+.shadowBox .shmm { padding: 13px 18px; background: #fff }
+.shadowBox .shml, .shadowBox .ml { background: url(../i/common/shadowBox/shml.png) repeat-y; width: 10px;}
+.shadowBox .shmr { background: url(../i/common/shadowBox/shmr.png) repeat-y; }
+
+.shadowBoxEvenPadding .shmm { padding: 13px; }
+
+/* Game Pre-Play and Play
+----------------------------------------------*/
+
+#gameCanvasWrap {
+	background: #f0f0f0 url(../i/common/gameOverlay/gameCanvasOverlayBkg.jpg) center center no-repeat;
+}
+
+#gameCanvasWrap #ad1 { height: 0 }
+
+#gameCanvasWrap #preplayDiv {
+	margin: 0 auto;
+	width: 640px;
+}
+	.col10 #gameCanvasWrap #preplayDiv {
+		padding: 60px 0;
+	}
+
+/* this is the game itself */
+#gameCanvas {
+	position: relative;
+	text-align: center;
+}
+#gameCanvas iframe {
+	margin: 0 auto;
+	border: none;
+}
+
+#gameCanvas object,
+#gameCanvas applet {
+	margin: 0 auto;
+	display: block;
+}
+
+/* Firefox error messages */
+#gameCanvas comment {
+	position: absolute;
+	top: 200px;
+	left: 50%;
+	margin-left: -150px;
+}
+	.col10 #gameCanvas comment {
+		top: 263px;
+	}
+
+
+/* Free Club Game Message */
+
+#gameCanvasWrap .freeClubDialog {
+	height: 600px
+}
+#gameCanvasWrap .freeClubDialog .shadowBox {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -150px;
+	margin-left: -306px;
+}
+#gameCanvasWrap .freeClubDialog .shadowBox .content{
+	width: 552px;
+	padding-top: 30px;
+	position: relative;
+}
+#gameCanvasWrap .freeClubDialog .shadowBox .content .icon16Close{
+	position: absolute;
+	top: -5px;
+	right: -5px;
+}
+#gameCanvasWrap .freeClubDialog .logoClubShockwave {
+	background: url(../i/common/logos/logoSW-Club-tiny.png) no-repeat;
+	height: 51px;
+	width: 140px;
+	position: absolute;
+	top: -27px;
+	left: -34px;
+}
+#gameCanvasWrap .freeClubDialog .shadowBox .content p{
+	font-size: 15px;
+	line-height: 18px;
+	padding-bottom: 7px
+}
+#gameCanvasWrap .freeClubDialog .shadowBox .content .fltL {
+	background: url(../i/pods/freeGameOverlay/freeGameSignIn.png) no-repeat;
+	width: 212px;
+	height: 30px;
+	padding: 70px 0 0 15px;
+}
+
+
+
+
+/* Game Achievement Overlay
+----------------------------------------------*/
+
+#gameOverlay{
+	z-index:60;
+	position: absolute;
+	left: -9999px; /* prevents flicker that would otherwised be caused by display:none */
+	font-size: 11px;
+}
+#gameOverlay .shmm {
+	padding:0;
+	background: #ccdd99;
+	zoom: 1;
+}
+#gameOverlay .shmm #overlayTop {
+	background: url(../i/common/gameOverlay/overlayTop.png) repeat-x;
+	height: 50px;
+	position: relative;
+}
+#gameOverlay .shmm #overlayTop .swLogoSmall {
+	position: absolute;
+	top: 5px; left: 15px;
+	background: url(../i/common/site/swLogoSmall.png) repeat-x;
+	width: 69px;
+	height: 26px;
+}
+#gameOverlay .shmm #overlayBot{
+	background: #fff url(../i/common/gameOverlay/overlayBot.png) repeat-x;
+	padding: 25px 15px 8px;
+	zoom: 1;
+}
+#gameOverlay .shmm .content {
+	padding: 0 15px;
+	position: relative;
+	zoom: 1;
+}
+#gameOverlay .shmm .iconHelp {
+	background: url(../i/temp/iconHelp.png) 0 0 no-repeat;
+	position: absolute;
+	top: 10px; right: 40px;
+	width: 15px;
+	padding-top: 15px;
+}
+#gameOverlay .shmm .iconClose {
+	background: url(../i/temp/iconClose.png) no-repeat;
+	position: absolute;
+	top: 10px; right: 6px;
+	padding: 17px 0 0 0;
+	width: 17px;
+}
+#gameOverlay .shmm .content .section {
+	border-color: #4c6d09;
+}
+#gameOverlay .shmm .awardContainer {
+	position: absolute;
+	bottom: -96px;
+	right: 8px;
+	width: 230px;
+	height: 311px;
+}
+	#gameOverlay .shmm .trophyMulti .awardContainer {
+		bottom: -136px;
+	}
+#gameOverlay .tokenContainer {
+	position: absolute;
+	right: 0;
+	top: -12px;
+}
+
+#gameOverlay .shmm .content h4,
+#gameOverlay .shmm .content .bigBoldFont,
+#gameOverlay .shmm .content b {
+	color: #446605;
+}
+#gameOverlay .shmm .content p {
+	margin-bottom: 4px;
+}
+#gameOverlay .shmm .content p.section {
+	margin-bottom: 7px;
+}
+
+#gameOverlay.overlaySmlNoBkg #overlayTop,
+#gameOverlay.overlaySmlNoBkg #overlayBot {
+	background: none;
+}
+	#gameOverlay.overlaySmlNoBkg .shmm,
+	#gameOverlay.overlaySml .shmm {
+		width: 400px;
+	}
+	#gameOverlay.overlaySmlNoBkg .shmm {
+		background: #fff;
+	}
+#gameOverlay.overlayLrg .shmm {
+	width: 575px;
+}
+
+#gameOverlay #signInBox {
+	margin: 45px 0 5px;
+	border: 1px solid #4c6d09;
+	background: #ccdd99;
+	position: relative;
+	height: 98px;
+}
+#gameOverlay #signInBox .fltL,
+#gameOverlay #signInBox .fltR {
+	padding: 10px;
+	width: 226px;
+}
+#gameOverlay #signInBox .text {
+	width: 100px;
+}
+#gameOverlay #signInBox form li {
+	padding-bottom: 9px;
+}
+#gameOverlay #signInBox .last {
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+#gameOverlay #signInBox .last a {
+	line-height: 12px;
+}
+#gameOverlay #signInBox .leftHalf,
+#gameOverlay #signInBox .rightHalf {
+	min-height: 1px;
+}
+
+#gameOverlay #signInBox .rightHalf p {
+	margin-top: 3px;
+}
+
+/* Facebook Game Overlay sign in */
+#gameOverlay .shmm #overlayBotFb {
+	background: #fff url(../i/common/gameOverlay/overlayBot.png) repeat-x;
+	padding: 1px 15px 8px;
+	zoom: 1;
+}
+
+#gameOverlay #signInBoxFb {
+	margin: 70px 0 5px;
+	padding: 10px 0 0 10px;
+	border: 1px solid #4c6d09;
+	background: #ccdd99;
+	position: relative;
+	height: 88px;
+	zoom: 1;
+}
+#gameOverlay #signInBoxFb ul {
+	width: 330px;
+	border-right: 2px dotted #4e6c08;
+	margin-right: 25px;
+}
+#gameOverlay #signInBoxFb li {
+	margin-right: 5px;
+	float: left;
+	clear: none;
+	padding-bottom: 0;
+}
+#gameOverlay #signInBoxFb .text {
+	width: 110px;
+}
+/* Overlay overrides and rules for
+   Overlay with recommendations
+------------------------------------ */
+#gameOverlay #overlayRec {
+	background: #fff url(../i/common/gameOverlay/overlayBot.png) repeat-x;
+	padding: 20px 0 8px 15px;
+	width: 555px;
+	zoom: 1;
+}
+#gameOverlay .nsiOverlayRec #signInBoxFb {
+	margin-top: 0;
+	height: auto;
+	border: 0;
+	border-bottom: 2px dotted #77A922;
+	padding: 0;
+}
+#gameOverlay .nsiOverlayRec #signInBoxFb ul {
+	border: 0;
+	margin: 0;
+}
+#gameOverlay .nsiOverlayRec .tokenContainer {
+	top: -50px;
+}
+#gameOverlay .nsiOverlayRec #signInBoxFb ul{
+	width: 375px;
+	border-right: 0;
+	margin-right: 0;
+}
+.nsiOverlayRec input.text {
+	width: 125px;
+	padding: 4px 8px 6px !important;
+	font-size: 14px;
+	border: 1px solid #77A922;
+	
+}
+.nsiOverlayRec a.btnMyShockwavePlain {
+	font-size: 14px;
+	padding: 4px 8px 6px !important;
+}
+#overlayRecHeader {
+	float: left;
+	font-size: 15px;
+	font-weight: bold;
+	color: #77A922;
+	text-align: right;
+	padding: 25px 5px 15px 0;
+	line-height: 1.3em;
+}
+#overlayRecList {
+	float: left;
+}
+#overlayRecList li {
+	float: left;
+	margin-left: 20px;
+	width: 92px;
+}
+
+.badgeYourBestScore {
+	background: url(../i/common/gameOverlay/badgeYourBestScore.png) no-repeat right 0;
+	padding: 7px 45px 25px 0;
+}
+/* Ratings Stars
+--------------------------- */
+
+.ratingStars, .ratingStarsUserRated {
+	background: url(../i/common/site/ratingStars.png) repeat-x 0 -30px;
+	width: 84px;
+	margin: 2px 0 7px;
+}
+.ratingStars div {
+	background: url(../i/common/site/ratingStars.png) repeat-x;
+	height: 15px;
+	padding: 0 !important;
+}
+	.ratingStarsUserRated div {
+		background: url(../i/common/site/ratingStars.png) repeat-x 0 -15px;
+	}
+
+.raterFloat .ratingStars {
+	float: left;
+}
+.raterFloat b {
+	padding-top: 3px;
+}
+
+
+/* User Ratings Stars
+--------------------------- */
+
+.userStarRater, .ratingWrap, .ratingConfirm {
+	position: relative;
+	padding: 0;
+	width: 155px;
+	_width: 160px;
+}
+ul.starActive {
+	background: url(../i/common/site/ratingStars.png) 0 -30px repeat-x;
+	width: 84px;
+	height: 15px;
+	position: relative;
+}
+ul.starActive li {
+	clear: none !important;
+	padding: 0 !important;
+	border: none !important;
+	float: none !important;
+	height: 15px !important;
+	position:absolute !important;
+	top: 0; left: 0;
+}
+ul.starActive li a {
+	position: absolute;
+	left: 0; top: 0;
+	display: block;
+	height: 15px;
+	outline: none;
+	width: 100%;
+}
+ul.starActive li a:hover, ul.starActive li a.active  { background: url(../i/common/site/ratingStars.png) 0 -15px repeat-x; }
+
+ul.starActive.selected li a:hover { cursor: default; }
+
+.ratingStars-5 { width: 100%; z-index: 6  }
+.ratingStars-4 { width: 80%; z-index: 7 }
+.ratingStars-3 { width: 60%; z-index: 8  }
+.ratingStars-2 { width: 40%; z-index: 9 }
+.ratingStars-1 { width: 20%; z-index: 10 }
+
+.starRatingText {
+	font-weight: bold;
+	position: absolute;
+	top: 0; left: 90px;
+	white-space: nowrap;
+	color: #000;
+}
+
+
+/* Bubble Review
+_______________________________*/
+
+.reviewBubble {
+	padding-bottom: 10px;
+}
+
+.reviewBubble .bubbleTopLft,
+.reviewBubble .bubbleTopRit,
+.reviewBubble .bubbleBotLft,
+.reviewBubble .bubbleBotRit {
+	background: url(../i/common/site/reviewBubble.png) no-repeat;
+	height: 10px;
+	width: 50%;
+	float: left;
+	font-size: 0;
+}
+.reviewBubble .bubbleTopRit {
+	background-position: right top;
+	float: right;
+}
+.reviewBubble .bubbleBotLft {
+	background-position: left bottom;
+	height: 32px;
+	float: left;
+}
+.reviewBubble .bubbleBotRit {
+	height: 32px;
+	background-position: right bottom;
+	float: right;
+}
+.reviewBubble .bubbleContent {
+	border-left: 1px solid #cfcfcf;
+	border-right: 1px solid #cfcfcf;
+	padding: 0 10px;
+	position: relative;
+	background: #fff;
+	zoom: 1;
+}
+.reviewBubble .bubbleContent .clearfix {
+	padding: 0 0 5px 0;
+}
+
+	.reviewBubble p {
+		margin: 0;
+	}
+	.reviewBubble h5 {
+		margin-top: 0;
+	}
+	.reviewBubble .ratingStars {
+		position: absolute;
+		top: -2px; right: 10px;
+	}
+	.reviewBubble .info {
+		width: 61%;
+	}
+	.col4 .reviewBubble .ratingStars {
+		position: static;
+	}
+	.reviewBubble img {
+		float: left;
+	}
+	.reviewBubble .reviewUser {
+		padding: 0 0 3px 15px;
+	}
+
+
+/*for standalone pages without pod borders*/
+.plainPage {
+	margin: 40px 0;
+}
+
+
+.subSection {
+	margin-bottom: 15px;
+}
+.subSection h1 {
+	font-size: 30px;
+	color: #333;
+	margin-bottom: 20px !important;
+}
+.subSection h2 {
+	font-variant: normal;
+	color: #333;
+	margin-bottom: 20px !important;
+}
+.subSection h3 {
+	font-size: 18px;
+	margin-top: 30px;
+	margin-bottom: 20px;
+	color: #666;
+}
+.subSection h4 {
+	margin-top: 20px;
+}
+.subSection h5 {
+	padding-top: 10px;
+	border-top: 1px solid #ccc;
+	margin-top: 20px;
+	line-height: 18px;
+}
+.subSection h6 {
+	font-size: 14px;
+}
+
+.subSection .indent,
+.subSection .indentDouble{
+	padding-left: 20px;
+}
+.subSection .indentDouble {
+	padding-left: 40px;
+}
+.subSection .underline {
+	padding-left: 40px;
+}
+
+.subSection ul {
+	padding-left: 20px;
+	list-style: disc;
+	margin-bottom: 7px;
+}
+.subSection ol {
+	padding-left: 23px;
+	list-style: decimal;
+	margin-bottom: 7px;
+}
+.subSection form ul {
+	padding: 0;
+}
+
+.subSection .answers {
+	margin-top: 20px;
+}
+	.subSection .answers h3 {
+		background: #eee;
+		padding: 10px;
+		margin-top: 30px;
+	}
+.subSection .section {
+	margin-top: 20px;
+	border: none;
+	padding: 0;
+}
+.subSection .entry {
+	border-top: 1px solid #ccc;
+	margin-top: 20px;
+}
+.subSection .btt {
+	margin-bottom: 20px;
+}
+.subSection .headline {
+	margin-bottom: 24px;
+	margin-top: -25px;
+	_margin-top: 0;
+}
+
+.listNav .active a {
+	color: #333;
+	background: url(../i/common/site/arrowsSml.png) no-repeat 0 9px !important;
+	padding-left: 7px;
+}
+
+.agreement {
+	border:1px solid #ccc;
+	height:100px;
+	overflow:auto;
+	padding:10px;
+}
+
+/* Static, modal login and register overlays */
+#modalLogin {
+	font-size: 12px;
+	color: #7BB40D;
+}
+#modalLogin input.text {
+	display: block;
+	font-size: 17px;
+	margin-bottom: 5px;
+	border: 1px solid #7BB40D;
+}
+#modalLogin ul {
+	display: inline;
+}
+#modalLogin li {
+	display:inline;
+	float:left;
+	clear:none;
+	margin-right: 10px;
+}
+#modalLogin .btn {
+	font-size: 17px;
+	margin-top: 1.4em;
+	line-height: 28px;
+}
+#modalLogin .btn a {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	height: 28px;
+	display: inline-block;
+}
+#modalRegister .btnFacebookBig {
+	font-size: 13px;
+}
+#modalLogin .desc {
+	font-size: 17px;
+	/*line-height: 25px;*/
+	color: #7BB40D;
+	font-weight: normal;
+}
+#modalLogin .podTitle,
+#modalRegister .podTitle,
+.fbLogin .podTitle {
+	font-variant: normal;
+	font-weight: bold;
+	font-family: Arial;
+	font-size: 22px;
+	line-height: 23px;
+	color: #656565;
+	margin-bottom: 5px;
+}
+#modalLogin .registerContainer {
+	color: #656565;
+	font-size: 17px;
+	text-align: center;
+}
+#modalLogin .registerContainer a {
+	margin-left: 17px;
+}
+#modalLogin .error,
+#modalRegister .error {
+	font-size: 12px !important;
+}
+#modalRegister {
+	line-height: 1.5;
+	font-size: 13px;
+	color: #656565;
+}
+#modalRegister .leftSide {
+	float: left;
+	width: 475px;
+	margin-right: 10px;
+	padding-bottom: 10px;
+}
+.fbLogin .fltL,
+#modalRegister .leftSide{
+	padding-right: 50px;
+	background: transparent url(../i/common/site/vertDividerOr.png) no-repeat scroll center right;
+}
+#modalRegister form li {
+	padding-bottom: 10px;
+}
+#modalRegister label.desc {
+	float:left;
+	width: 120px;
+	font-size: 17px;
+	margin-right: 15px;
+}
+#modalRegister .noDesc {
+	margin-left: 135px;
+}
+#modalRegister .error {
+	margin-left: 135px;
+}
+#modalRegister .globalError .error {
+	margin-left: 0;
+}
+#modalRegister li div {
+	width: 310px;
+	float: left;
+}
+#modalRegister label.desc {
+	color: #656565;
+	font-weight: normal;
+}
+#modalRegister .btn,
+#modalRegister input {
+	font-size: 17px;
+}
+#modalRegister label.choice,
+#modalRegister select {
+	font-size: 13px;
+}
+#modalRegister input.text {
+	border: 1px solid #c1c1c1;
+	width: 300px;
+}
+#modalRegister #country {
+	width: 300px;
+	padding: 3px;
+}
+#modalRegister #month,
+#modalRegister #day,
+#modalRegister #year {
+	width: 95px;
+}
+.modalFacebook {
+	font-size: 13px;
+	color: #3B5997;
+}
+.modalFacebook h3 {
+	font-size: 17px;
+}
+/* Facebook Connect
+------------------------ */
+
+/* NSI Header */
+#myTools .fbLoginForm .userMessage {
+	font-weight: normal;
+	top: 1px;
+}
+.fbLoginForm #loginOptions{
+	background: transparent url(../i/common/userBar/avatarSmlEmpty_32.png) no-repeat scroll 0 6px;
+	height: 32px;
+	padding-top: 15px;
+	padding-left: 40px;
+}
+#mainNav #myTools .fbLoginForm #loginOptions a{
+	font-weight: bold;
+}
+#mainNav #myTools .fbLoginForm a.headerLoginSW{
+	/*
+	background: transparent url(/i/common/site/arrows.png) no-repeat scroll right -42px;
+	margin-right: 10px;
+	*/
+	padding-right: 10px;
+}
+#mainNav #myTools .fbLoginForm a.headerLoginFacebook,
+.textLoginFacebook
+{
+	background: transparent url(../i/common/userBar/facebook_icon_14.png) no-repeat scroll 10px 50%;
+	padding-left: 28px;
+}
+.textLoginFacebook {
+	background-position: 5px 0;
+	padding-left: 24px;
+}
+.facebookBlock {
+	text-indent: 20px;
+	background: transparent url(../i/common/userBar/facebook_icon_14.png) no-repeat scroll top left;
+}
+
+#myTools .errorOn .fbLoginForm .userMessage {
+	top: -13px;
+}
+#myTools .fbLoginForm #loginInputs {
+	padding-top: 0;
+	position: static;
+}
+
+/* Facebook connected user */
+#mainNav #myTools .username a.facebookUser
+{
+	padding-left: 18px;
+	margin-left: 5px;
+	background: transparent url(../i/common/userBar/facebook_icon_14.png) no-repeat scroll center left;
+}
+#friendsData .podPad .avatar6Up li a {
+	display: block;
+}
+#friendsData .podPad .avatar6Up li .nameIndented {
+	margin-left: 18px;
+}
+.facebookTextLink div
+{
+	width: 18px;
+	float: left;
+	background: transparent url(../i/common/userBar/facebook_icon_14.png) no-repeat scroll center left;
+}
+
+/* Create/Link Account */
+.fbLogin h3 {
+	font-size: 18px;
+}
+.fbLogin .dottedL {
+	padding-left: 20px;
+	border-left: 2px dotted #ccc;
+}
+.fbLogin form li.fiftyL {
+	clear: none;
+}
+.fbLogin p {
+	line-height: 1.5em;
+	margin-bottom: 1em
+}
+
+#facebookRegistrationForm label.choice {
+	margin: 0;
+}
+#facebookRegistrationForm .choice input.checkbox {
+	display: inline;
+	margin: 0 5px 0 0;
+}
+
+.ui-autocomplete {
+	width: 201px;
+	padding: 5px;
+	font-size: 13px;
+	position: absolute;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-top: none;
+	box-shadow: 4px 6px 6px #a9a9a9;
+	-webkit-box-shadow: 4px 6px 6px #a9a9a9;
+	-moz-box-shadow: 4px 6px 6px #a9a9a9;
+}
+
+.ui-autocomplete a {
+	display: block;
+	padding: 5px;
+	font-weight: normal;
+}
+.ui-autocomplete b {
+	font-weight: bold;
+}
+.ui-autocomplete a.ui-state-hover {
+	background-color: #eee;
+	text-decoration: none;
+}
+#breadCrumbs {
+	font-weight: bold;
+	padding-bottom: 5px;
+	text-transform:capitalize;
+	margin-bottom: 10px;
+}
+#online #breadCrumbs,
+#download #breadCrumbs {
+	border-bottom:1px solid #9ACCEF;
+	margin-bottom: 20px;
+}
+#download #breadCrumbs {
+    border-bottom: 1px solid #C8581D;
+}
+#online #gameHeader #breadCrumbs {
+	border-bottom:none;
+	margin-bottom: 5px;
+}
+body.family-kids #breadCrumbs {
+	margin-top: -5px;
+	padding-bottom: 0px;
+}
+#burgerKingPuzzles {
+	background: url(../sponsorsStatic/burgerKingPuzzles/burgerking_logo.png) no-repeat;
+	width: 120px;
+	padding-top: 60px;
+	display: block;
+	float: right;
+}
+#followButtons pt10{
+	zoom: 1;
+}
+.sw_support a {
+    font: normal 10px arial, helvetica, times new roman;
+    vertical-align: middle;
+    text-decoration: none;
+    margin-left: 10px;
+}
+.sw_support a:hover {
+    text-decoration: underline;
+}
+
+.subSection h2.sw_contactTitle {
+    margin-top: -46px;
+    zoom: 1;
+}
+.sw_drSignup, .sw_drHed, .sw_drSIShed {
+	text-decoration: none;
+	color: #003D7B;
+	font-weight : bold;
+	margin-left: 150px;
+}
+.sw_drSignupSIS {
+	margin-left: 100px;
+}
+.sw_drSignupSISentered {
+	margin-left: 150px;
+}
+.sw_drHed {
+	margin-left: -47px;
+	*margin-left: -42px;
+	font-size: 12px;
+}
+.sw_drSIShed {
+	margin: 0px 10px;
+	color: #666;
+}
+.sw_drSIShed SPAN {
+	 color: #003D7B;
+	margin: 0px !important;
+}
+.sw_drPrizes {
+	display: none;
+	width: 1000px;
+	margin: 0px auto;
+	padding: 10px 0px 20px;
+	text-align: center;
+	height: 294px;
+	background: url(../i/common/dailyrewards/gradient.jpg) repeat-x; 
+}
+.sw_drPrizes DIV {
+	margin: 0px auto 10px;
+	text-align: center;
+	color: #003D7B;
+	font: bold 16px arial, helvetica, times new roman;
+}
+.sw_drPrizes img {
+	margin: 0px auto;
+}
+.sw_drTheReward {
+	margin-left: -3px !important;
+	*+margin-left: 0px !important;
+	*+float: left;
+}
+.sw_drSignupContainer {
+	width: 986px;
+	margin: 0px auto;
+	text-align: center;
+	padding: 2px 7px 15px 7px;
+	border: none;
+	border-bottom: 1px solid #7AB50B;
+	height: 20px;
+	background: url(../i/common/dailyrewards/gradient_sml.jpg) repeat-x;
+	display: none;
+	zoom: 1;	
+}
+.sw_drSignupContainer ul, .sw_drPrizes ul {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+	zoom: 1;
+}
+.sw_drPrizes ul {
+	margin-left: 42px;
+}
+.sw_drSignupContainer ul li, .sw_drPrizes ul li {
+	display: inline-block;
+	zoom: 1;
+	*+display: inline;
+	vertical-align: middle;
+}
+.sw_drSignupContainer ul li.sw_drPassword {
+	margin-left: -15px;
+}
+.sw_drSignupContainer ul li input {
+	width: 104px;
+	height: 12px;
+	border: 1px solid #7AB50B;
+	margin-top: 2px;
+}
+.sw_drSignupContainer ul li span {
+	margin: 3px 4px 0px 20px;
+	font-weight: 600;
+}
+.sw_drCollapse,
+.sw_drExpand {
+	/*float: right;*/
+	margin: 0px 10px 0px 2px;
+	*+margin: 3px 6px 0px 5px;
+	display: none;
+}
+.sw_drExpand {
+	display: block;
+}
+.sw_drExpand:hover,
+.sw_drCollapse:hover {
+	cursor: pointer;
+}
+.sw_drFBLike {
+	margin: 10px 0px 10px 520px !important;
+}
+.sw_drMembership {
+	margin: -10px 0px 0px 10px;
+	*+margin: 3px 0px 0px 10px;
+	width: 120px;
+	height: 22px;
+	*+height: 35px;
+}
+.sw_drMembership img {
+	margin: -28px 0px 0px 270px;
+	margin-left: 280px \0/IE9;
+	*+margin-left: 290px;
+	display: none;
+}
+.sw_drpassLink {
+	margin-top: -2px;
+}
+.sw_drClose {
+	float: right;
+	margin-top: -28px;
+}
+.sw_drClose img {
+	display: none;
+	margin-top: 35px;
+	*+margin-top: 0px;
+}
+.sw_drFBlogin {
+	width: 152px;
+	height: 22px;
+	margin-left: 15px;
+}
+/* download bar ad styles */
+#gamebarButtonAd {
+	background: url(../i/downloadGameBar/gamebarBottomBg.png) repeat-x 0 109px transparent;
+	position: fixed;
+	bottom: -200px;
+	width: 100%;
+	left: 0;
+	text-align: center;
+	z-index: 1000;
+}
+#gamebarLeftAd {
+	position: fixed;
+	bottom: 50px;
+	left: -44px;
+	z-index: 1000;
+	width: 1124px;
+	overflow: hidden;
+	display: none;
+}
+#gamebarLeftAd.collapsed {
+	left: 0;
+	width: 44px;
+}
+#gamebarButtonAd {
+	display: none;
+}
+#gamebarButtonAd img {
+	display: none;
+}
+/*share pod styles */
+.titleWithSharePod {
+	display: block;
+	float: left;
+	width: auto;
+}
+#sharePod {
+	margin: 2px 20px;
+}
+#sharePod div {
+	float: left;
+}
+.podDownload h1 {
+	color: #C8581D;
+}
+.pageSponsorLogo {
+	float: left;
+	left: 315px;
+	position: absolute;
+	top: -13px;
+}
+#homepageCheck {
+    margin-bottom: 20px;
+}
+.gameRecspadding {
+    padding-top: 4px;
+}
+.upsellPadding {
+    padding-bottom: 12px;
+    clear: both;
+}
+
+/* World Wide Day of Play styles */
+.wwwdop {
+	width: 100%;
+	position: absolute;
+	z-index: 10001;
+	top: 0;
+	left: 0;
+	background: #000;
+}
+.wwwdop_imgContainer {
+	position: relative;
+	margin: 13% auto;
+	z-index: 10002;
+}
+.wwwdop_img {
+	margin: 0px auto;
+	text-align: center;
+	position: relative;
+	top: -20px;
+	z-index: 10003;
+}
+.wwwdop_linkDiv {
+	width: 210px;
+	height: 25px;
+	margin : -105px 215px 0px 0px;
+	position: relative;
+	z-index: 10004;
+	float: right;
+}
+
+.wwwdop_closeDiv {
+	width: 80px;
+	height: 25px;
+	margin-right: 25px;
+	position: relative;
+	z-index: 10004;
+	float: right;
+	top /*\**/: 25px\9;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+	.wwwdop_img {
+		top: -45px;
+	}
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+	.wwwdop_closeDiv {
+		top: 0px;
+	}
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+	.wwwdop_linkDiv {
+		margin-top: -130px;
+	}
+}
+*+html .wwwdop_img {
+	top: -45px;
+}
+*+html .wwwdop_linkDiv {
+	margin-top: -130px;
+}
+*+html .wwwdop_closeDiv {
+	top: 0px;
+}
+/* h2 css position newestGames */
+#podNewestGames .h2, .footer .h2 {
+	height: 30px;
+	display: block;
+}
+.footer .h2 {
+	margin-bottom: 25px;
+	padding-top: 35px;
+}
+/* class added for technical support link on all online games pages */
+.gameTechnical {
+    margin: 0px 0px 10px 0px;
+}
+/* nick jr holiday footer fix */
+.nickjrFooter {
+    padding-top: 35px;
+}
+/* new nick.com footer adjustments */
+.policyFrame {
+    display: block;
+    width: 700px;
+    height: 3500px;
+    *height: 3605px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+    .policyFrame {
+        height: 3405px;
+    }
+}
+@media \0screen {
+  .policyFrame {height: 3505px;}
+}
+.nickFrame img,
+.nickFrame h2 {
+    margin-left: 10px; !important;
+}
+.nickFrame {
+    width: 700px;
+}
+.nickFrame p {
+    font: 11px verdana, arial, helvetica, sans-serif;
+    padding: 0px 10px;
+}
+.nickFrame p.privacyUpdate {
+    color: #565555;
+    font-style: italic;
+    font-weight: bold;
+}
+.contactFormSuccess {
+    background : none !important;
+    border : none !important;
+    color : #666 !important;
+    font : normal 12px arial, helvetica, times new roman !important;
+    text-decoration : none !important;
+}
+.locality {margin-left: 20px !important;}
+
+/* swu button/banner upsell ab test */
+.swuButton,
+.swuBanner {display: none;}

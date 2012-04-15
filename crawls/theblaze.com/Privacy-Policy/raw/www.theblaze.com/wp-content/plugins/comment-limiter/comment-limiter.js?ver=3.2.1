@@ -1,0 +1,12 @@
+jQuery(document).ready(function($) {
+	$('#comment').keyup(function(event) {
+		var value = $(this).val(),
+			remaining = comment_limiter.comment_max_length - value.length;
+
+		if ( remaining < 0 ) {
+			$(this).val( value.substring(0,comment_limiter.comment_max_length) );
+			remaining = 0;
+		}
+		$('#char_count').text( remaining );
+	});
+});

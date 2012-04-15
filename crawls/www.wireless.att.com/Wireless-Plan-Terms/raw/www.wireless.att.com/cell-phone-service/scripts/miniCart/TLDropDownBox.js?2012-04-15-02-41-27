@@ -1,0 +1,302 @@
+//**************************************************
+// TLDropDownBoxLib.js
+// Author: Tong Lim 
+// Version: 1.3
+// Date: 8/4/2006
+// Update: 8/31/2006
+// Example:
+//     init: TLDropDownBox.initialize('bodyText')
+//           TLDropDownBox.initialize('bodyText',0,'fast',1)
+//           TLDropDownBox.startSlide('bodyText')
+//***************************************************
+
+
+function TLDropDownBoxLib() {
+
+    var v_imgSwap=0;
+    elementObjects = new Array(); // array of all html element object
+
+	function menuStruct (p1) {
+        this.box_height;
+        this.menuState;
+        this.elementObj;
+        this.htmlValue;
+        this.increment;
+        this.inc_num = 10;
+        this.clearIntervalValue;
+        this.opacityValue = 0;
+        this.speed = 100;
+		this.showOpacity = 0;
+		this.temp;
+    }
+
+    // param: p1 = id name of the div
+    // param: p2 = menu state, 0 = fold, 1=down
+	// param: speed = fast or normal
+    // param: showOpacity = 1 for show, 0 no show
+    this.initialize = function(p1, p2, speed, showOpacity) {
+        var elemObj = this.getElementObj(p1);
+        var v_menuStruct = new menuStruct();
+        v_menuStruct.elementObj = elemObj;
+        v_menuStruct.box_height = elemObj.offsetHeight;
+        v_menuStruct.htmlValue = elemObj.innerHTML;
+		v_menuStruct.menuState = 0;
+        if (showOpacity != null)
+			v_menuStruct.showOpacity = showOpacity;
+		if (speed == 'fast')
+			v_menuStruct.speed = 0;        
+        if (p2 == 0) {
+            this.hideElement(elemObj);
+            elemObj.innerHTML = "";
+            elemObj.style.height = "0px";
+            v_menuStruct.menuState = 1;
+        }
+        elementObjects[elemObj.id] = v_menuStruct;
+    }
+    
+    // p1 = name of the div
+    this.updateHtml = function(p1) {
+        var elemObj = getObj(p1);
+        if(elemObj) {
+	        var v_menuStruct = elementObjects[elemObj.id];
+			v_menuStruct.htmlValue = elemObj.innerHTML;
+			v_menuStruct.box_height = elemObj.offsetHeight;
+			v_menuStruct.elementObj = elemObj;
+		} else {
+			setTimeout("TLDropDownBox.updateHtml(" + p1 + ")", 100);
+		}
+    }
+
+    // p1 = name of the div
+    this.getHtml = function(p1) {
+        var elemObj = this.getElementObj(p1);
+        var v_menuStruct = elementObjects[elemObj.id];
+		return v_menuStruct.htmlValue;
+
+    }
+
+	// p1 = name of the div
+	// delay = delay speed in seconds
+	this.startDownUp = function(p1, delay) {
+		var v_delay = 3000;
+		if (delay != null) {
+			v_delay * 1000;	
+		}		
+		this.startSlide(p1);
+		setTimeout("TLDropDownBox.startSlide(" + p1 + ")", v_delay); 
+		
+	}
+	
+	// p1 = name of the div id
+	// state = the current menu state
+    this.startSlide = function(p1, state) {
+        var elemObj = this.getElementObj(p1);
+        var v_menuStruct = elementObjects[elemObj.id];
+        var v_idStr =  v_menuStruct.elementObj.id;
+
+		if(v_menuStruct.box_height > v_menuStruct.inc_num)
+	        v_menuStruct.increment = parseInt(v_menuStruct.box_height / v_menuStruct.inc_num);
+	    else 
+	    	v_menuStruct.increment = v_menuStruct.box_height;
+		
+		if(state) {
+			v_menuStruct.menuState = state;
+		}
+		
+        if (v_menuStruct.menuState == 0) {
+            v_menuStruct.temp = v_menuStruct.box_height;
+            v_menuStruct.opacityValue = v_menuStruct.inc_num;
+            if (v_menuStruct.speed == 0)
+				slideUp2(v_menuStruct.elementObj);
+			else
+				v_menuStruct.clearIntervalValue = setInterval('TLDropDownBox.slideUp("' + v_idStr + '")', v_menuStruct.speed);
+            
+        }
+        else {
+            v_menuStruct.temp = 0;
+            this.showElement(elemObj);
+            v_menuStruct.opacityValue = 1;
+            if (v_menuStruct.speed == 0)
+				slideDown2(v_menuStruct.elementObj);
+			else
+				v_menuStruct.clearIntervalValue = setInterval('TLDropDownBox.slideDown("' + v_idStr + '")', v_menuStruct.speed);
+            
+        }
+    }
+
+    // p1 = id of the div
+    function slideDown2 (obj) {
+        var v_menuStruct = elementObjects[obj.id];
+        var v_height = 0;
+
+        while (v_height < v_menuStruct.box_height) {
+    		if (v_menuStruct.showOpacity == 1) {
+                setOpacity(v_menuStruct.elementObj, v_menuStruct.opacityValue);
+    			v_menuStruct.opacityValue += 1;
+    		}
+    		v_menuStruct.elementObj.style.height = v_height + "px";
+    		v_height = v_height + v_menuStruct.increment;
+        }
+        v_menuStruct.elementObj.innerHTML = v_menuStruct.htmlValue;
+        v_menuStruct.menuState = 0;
+        v_menuStruct.elementObj.style.height = v_menuStruct.box_height + "px";
+    }
+
+    // p1 = id of the div
+    this.slideDown = function(p1) {
+        var elemObj = this.getElementObj(p1);
+        var v_menuStruct = elementObjects[elemObj.id];
+
+        v_menuStruct.temp = v_menuStruct.temp + v_menuStruct.increment;
+
+		if (v_menuStruct.showOpacity == 1) {
+			// opacity of text area
+            setOpacity(v_menuStruct.elementObj, v_menuStruct.opacityValue);
+			v_menuStruct.opacityValue += 1;
+		}
+
+        // stop the timer
+        if (v_menuStruct.temp >= v_menuStruct.box_height) {
+			clearInterval(v_menuStruct.clearIntervalValue);
+            v_menuStruct.menuState = 0;
+			v_menuStruct.temp = v_menuStruct.box_height;
+			v_menuStruct.elementObj.innerHTML = v_menuStruct.htmlValue;
+		}
+        v_menuStruct.elementObj.style.height = v_menuStruct.temp + "px";
+    }
+
+
+    // p1 = id of the div
+    function slideUp2 (obj) {
+        var v_menuStruct = elementObjects[obj.id];
+        var v_height = v_menuStruct.box_height;
+        v_menuStruct.elementObj.innerHTML = "";
+        
+        while (v_height > 0) {
+    		if (v_menuStruct.showOpacity == 1) {
+                setOpacity(v_menuStruct.elementObj, v_menuStruct.opacityValue);
+    			v_menuStruct.opacityValue -= 1;
+    		}
+    		v_menuStruct.elementObj.style.height = v_height + "px";
+    		v_height = v_height - v_menuStruct.increment;
+        }
+
+        TLDropDownBox.hideElement(v_menuStruct.elementObj);
+        v_menuStruct.menuState = 1;
+        v_menuStruct.elementObj.style.height = "0px";
+    }
+
+    // p1 = id of the div
+    this.slideUp = function (p1) {
+        var elemObj = this.getElementObj(p1);
+        var v_menuStruct = elementObjects[elemObj.id];
+
+		if (v_menuStruct.box_height  == v_menuStruct.temp)
+			elemObj.innerHTML = "";
+        v_menuStruct.temp = v_menuStruct.temp - v_menuStruct.increment;
+
+		if (v_menuStruct.showOpacity == 1) {
+			// for opacity
+			setOpacity(v_menuStruct.elementObj, v_menuStruct.opacityValue);
+			v_menuStruct.opacityValue -= 1;
+		}
+
+		// stop the timer
+        if (v_menuStruct.temp <= 0) {
+            this.hideElement(elemObj);
+			clearInterval(v_menuStruct.clearIntervalValue);
+            v_menuStruct.menuState = 1;
+            v_menuStruct.temp = 0;
+		}
+        v_menuStruct.elementObj.style.height = v_menuStruct.temp + "px";
+    }
+
+
+    // param: obj = element object
+    // param: opacityValue = opacity value
+    function setOpacity (obj, opacityValue) {
+		if (obj.style.filter != undefined)
+			obj.style.filter = 'alpha(opacity=' + opacityValue * 10 + ')';
+		if (obj.style.opacity != undefined)
+			obj.style.opacity = opacityValue / 10;
+    }
+    
+
+    //--------------------------------------------
+	// Desc: swap image
+	// param: p1 = object
+	// param: p2 = image one
+	// param: p3 = image two
+	// return: nothing
+	this.imgSwap = function (p1, p2, p3) {
+		if (v_imgSwap == p3 || v_imgSwap == 0) {
+			p1.src = p2;
+			v_imgSwap = p2;
+			return 1;
+		} else {
+			p1.src = p3;
+			v_imgSwap = p3;
+			return 2;
+		}	
+	}
+
+
+	//--------------------------------------------
+	// Desc: Function to get an obj of element. pass in an id and it return the obj
+	// param: id = string of id
+	// return: an object
+	this.getElementObj = function(param) {
+		if (typeof param == 'object') {
+            return param;
+        }
+        else {
+            if (document.getElementById) { // W3C - Explorer 5+ and Netscape 6+
+                return  document.getElementById(param);
+    		}
+    		else if (document.all) { // Explorer 4
+                return document.all[param];
+    		}
+            else if (document.layers) {  // NS4
+                return document.layers[param];
+    		}
+        }
+	}
+
+
+	//------------------------------------------
+	// Desc: Function to hide an element. Pass in an id or object and it will hide the element.
+	// param: id = id string or an object
+	// return: nothing
+	this.hideElement = function (p1) {
+		var obj = this.getElementObj(p1);
+		if (obj != undefined) {
+			if (document.layers){ // Netscape 4
+				obj.visibility = "hide";
+			}
+			else { // W3C - Explorer 5+ and Netscape 6+
+				obj.style.visibility = "hidden";
+			}
+		}
+	}
+
+
+	//--------------------------------------
+	// Desc: Function to show an element. Pass in an id or object and it will show the element.
+	// param: id = id string or an object
+	// return: nothing
+	this.showElement = function (p1) {
+		var obj = this.getElementObj(p1);
+		if (obj != undefined) {
+			if(document.layers) { // Netscape 4
+				obj.visibility = "show";
+			}
+			else { // W3C - Explorer 5+ and Netscape 6+
+				obj.style.visibility = "visible";
+			}
+		}
+	}
+
+} // end of TLDropDownBoxLib()
+
+var TLDropDownBox = new TLDropDownBoxLib();
+

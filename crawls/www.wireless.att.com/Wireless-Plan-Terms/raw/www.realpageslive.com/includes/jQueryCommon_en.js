@@ -1,0 +1,1 @@
+$(document).ready(function(){$("#LangEN").removeClass("language").addClass("languageSelected");$("#LangEN").removeAttr("href");$("#LangSP").removeClass("languageSelected").addClass("language");});

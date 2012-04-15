@@ -1,0 +1,411 @@
+/** 
+ * version 2.0 JTG 2011-08-10 
+ * includes: homepage support and animations
+ * requires full version of jquery.cycle.js rather than lite version
+ **/
+(function($){
+
+	var methods = {
+			
+		init : function(options) {
+
+			return this.each(function() {
+
+				var $obj = $(this), data = $obj.data('slideshow'), slideSpecs, isScrollHorz = false, $slides, $ribbonAd, slidesLoad, $layoutWrap, $meta, $btns, $thumbs, $ribbonAdBtn, $img1;
+				$obj.addClass('slidepromote');
+
+				//slides_specs default options (binding nodes to context object increase efficiency by not having to re-query dom)
+				slideSpecs = {
+					transition : 'fade', //fade, scrollUp, shuffle..
+					delay : 5000, //miliseconds: '0' means no rotation 
+					transitionSpeed : 1000, 
+					action : 'click',
+					layout : false, 
+					metaNode : false ,
+					isHome : false
+				};
+				
+				if ( options ) {  
+					$.extend( slideSpecs, options ); //polymorphic merge
+					if(slideSpecs.layout == 'scrollHorz') {
+						isScrollHorz = true; 
+						slideSpecs.transition = slideSpecs.layout; 
+					}
+				} 
+				
+				//needs to exist outside of slidesLoad because used in ajax call below
+				$slides = $(document.createElement('a')).attr({'className':'slides'});
+				$layoutWrap = $(document.createElement('div')).attr('className','promoteInner'); 
+				$obj.html($layoutWrap);
+
+				//meta
+				$meta = $(document.createElement('div')).attr('className','meta');
+				$layoutWrap.append($(document.createElement('div')).html($meta));
+
+				//load slides to dom immediately
+				$layoutWrap.append($slides);
+				
+				if(slideSpecs.layout){
+					if(isScrollHorz) {
+						slideSpecs.action = "mouseenter"; 
+						$layoutWrap.addClass('promoteLayout').addClass('thumbsRight');
+					}
+					$layoutWrap.addClass('promoteLayout').addClass(slideSpecs.layout);
+				}
+				
+				//pager thumbs
+				$btns = $(document.createElement('div')).attr('className','btns');
+				$thumbs = $(document.createElement('div')).attr('className','thumbs'); 
+				$thumbs.append($btns);
+				$thumbs.prepend($(document.createElement('span')).attr('className','mask'));
+				$layoutWrap.append($thumbs);
+				
+				//ribbon ad
+				if(slideSpecs.isHome) {
+					$ribbonAd = $(document.createElement('div')).addClass('ribbonAd'); 
+					var $showAd, $close, rbnSpeed = 400; 
+					$layoutWrap.addClass('promoteLayout').addClass('hasRibbonAd');
+					
+					$showAd = $(document.createElement('a')).addClass('show').text('Show Ad');
+					$close = $(document.createElement('a')).addClass('close');
+					
+					$ribbonAdBtn = $(document.createElement('span')).attr('className','ribbonAdBtn noRibbonAd'); 
+					$ribbonAdBtn.append($showAd);
+					$ribbonAdBtn.append($close);
+					$ribbonAdBtn.append($ribbonAd);
+					$thumbs.prepend($ribbonAdBtn);
+					
+					$showAd.click(function(){
+						$slides.cycle('pause');
+						$ribbonAd.animate({"top":"0"}, {duration:rbnSpeed , easing:"easeOutQuad", complete:function(){ $close.fadeIn(); }});
+					});
+					
+					$close.click(function(){
+						$(this).fadeOut();
+						$ribbonAd.animate({"top":"-250px"}, {duration:rbnSpeed , easing:"easeOutQuad", complete:function(){ $slides.cycle('resume'); }});
+					});
+				}
+
+				slideSpecs.slidesObj = $slides; 
+				
+				//pull initial load specs from first image
+				$obj.data('slideshow', slideSpecs );
+				
+				//occurs after $.ajax load
+				slidesLoad = function(){
+					
+					if(!slideSpecs.metaNode) {
+						slideSpecs.titleNode = $(document.createElement('div')).attr('className','title');
+						slideSpecs.descNode = $(document.createElement('div')).attr('className','description');
+						slideSpecs.moreNode = $(document.createElement('a')).attr('className','more').html("More &raquo;");
+						 
+						$meta.html($(document.createElement('span')).attr('className','mask'));
+						$meta.append(slideSpecs.titleNode);
+						$meta.append(slideSpecs.descNode);
+						$meta.append(slideSpecs.moreNode);
+						$meta.append($(document.createElement('div')).attr('className','clear'));
+					}
+					
+					//cycle vars
+					var thmClass, $image, $title, title, $marker, $anchor, $thumb ;
+					var cycleParams = {
+						fx:slideSpecs.transition
+						, timeout: slideSpecs.delay 
+						, speed: slideSpecs.transitionSpeed
+						, pagerEvent: (slideSpecs.action == "mouseover")? "mouseenter" : slideSpecs.action
+						, allowPagerClickBubble: false
+						, pauseOnPagerHover : true
+						, pager:$btns
+					};
+				
+					//thumbs/pager builder
+					cycleParams.pagerAnchorBuilder = function(i, slide){
+						thmClass = "thumb ";
+						thmClass += ($(slide).attr('className'))? $(slide).attr('className')+'-thm' : 'thm-'+i; 
+						
+						title = ($(slide).attr('short') != undefined)? $(slide).attr('short'): $(slide).attr('title');
+						
+						$image = $(document.createElement('img')).attr("src", $(slide).attr('rel'));
+						$title = $(document.createElement('span')).attr("className", "title").html( title );
+						$marker = $(document.createElement('span')).attr("className", "activeMarker");
+						$anchor = $(document.createElement('a')).attr('className',$(slide).attr("className")).html($image).append($title).append($marker); 
+						$thumb = $(document.createElement('div')).attr('className',thmClass).html($anchor);
+						
+						if(cycleParams.pagerEvent == "mouseenter") {
+							$thumb.click(function(){ window.open($(slide).attr("url"), (!$(slide).attr('target'))? '_top' : $(slide).attr('target')); }); 
+						}
+						return $thumb; 
+					};
+					
+					//homepage actions
+					if(isScrollHorz) {
+						var thumbSpeed = cycleParams.speed - 150;
+						cycleParams.easing = 'easeOutQuart';
+						cycleParams.before = function(cur,next){
+							$btns.find('.thm-' + $(cur).index() + ' .activeMarker').animate({"right": "-210px"}, {duration: thumbSpeed , easing:cycleParams.easing } );
+							$btns.find('.thm-' + $(next).index() + ' .activeMarker').animate({"right": "0"}, {duration: thumbSpeed , easing:cycleParams.easing } );
+							$obj.slideshow('loadMeta', $(next), slideSpecs.metaNode); 
+						};
+						
+					} else {
+						cycleParams.before = function(cur,next){
+							$obj.slideshow('loadMeta', $(next)); 
+						};
+					}
+						
+					$slides.cycle(cycleParams);
+				};
+
+				var swfEmbed = function(swfPath){
+					var swfId = swfPath.match(/ribbons\/.*\.swf/g).toString().replace(/ribbons\/|\.swf/g,'');
+					
+					return '<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0"' +
+                                        'WIDTH="970" HEIGHT="250" id="'+swfId+'" ALIGN="">' +
+                                        '<PARAM NAME=movie VALUE="'+swfPath+'">' +
+					'<PARAM NAME=quality VALUE=high>' +
+					'<PARAM NAME=bgcolor VALUE="transparent">' +
+                                        '<PARAM NAME=wmode VALUE="transparent">' + 
+					'<PARAM NAME=menu VALUE="false">' + 
+					'<PARAM NAME=loop VALUE="true">' +
+                                        '<EMBED '+ 
+						'src="'+swfPath+'"'+
+                                                'quality=high ' + 
+						'bgcolor="transparent" wmode="transparent" menu="false" loop="true" '+
+						'WIDTH="970" HEIGHT="250" NAME="'+swfId+'" ALIGN=""'+
+                                                'TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer">' + 
+					'</EMBED>'+
+                                        '</OBJECT>'
+				};
+				
+				//$slides.load(slideSpecs.slides, slidesLoad);	
+				var fileType = (slideSpecs.slides).match(/html$|json$/).toString();
+				$.ajax({
+					url: slideSpecs.slides
+					, dataType: fileType
+					, beforeSend: function(xhr){
+						if(fileType=='json') xhr.setRequestHeader("X-Framework-JSON-Request", "PLAINJSON");
+					}
+					//, contentType : (fileType=='json')? 'application/json':'application/x-www-form-urlencoded'
+					, success: function(response){
+						switch(fileType) {
+							case "html": $slides.html( response );  break;
+							case "json": 
+
+								for(var i in response){
+									
+									if(slideSpecs.isHome && i == 4) {
+										
+										if(response[i] != null) {
+											var device = nbcu.util.common.getDevice();	
+											var subs = response[i].subpromotes, ribbonLinks = [], closeDelay = 7000; 
+											var swfPath = subs[0].link + subs[1].link, isSwf = swfPath.search(/\.swf/g) > 0;
+											
+											if(isSwf && device.search(/ipad|iphone/)==-1){
+												closeDelay = 15000; 
+												$showAd.click(function(){
+                                                							$slides.cycle('pause');
+													$ribbonAd.empty().append($('<div/>').html(swfEmbed(swfPath)));
+                                               								$ribbonAd.css({"top":"0"});
+													$close.delay(4000).fadeIn();
+                                        							});
+											}else {
+												$ribbonAd.css({
+													"background-image":"url("+response[i].image.replace("410x250", "970x250")+")"
+												});
+
+												if(typeof response[i].link != "undefined" && response[i].link != "") {
+													$ribbonAd.append($(document.createElement('a')).attr("href",response[i].link));
+												}else {
+													for(var a in subs){
+														//enforce succession of title first - break loop if either items doesn't exist in order
+														if(typeof subs[a].title != "undefined" && subs[a].title !=""){
+														ribbonLinks.push(subs[a].title);
+														}
+														else break; 
+														if(typeof subs[a].link != "undefined" && subs[a].link !=""){
+															ribbonLinks.push(subs[a].link);
+														}
+														else break; 
+													}
+													for(var b in ribbonLinks){
+														$ribbonAd.append($(document.createElement('a')).attr("href",ribbonLinks[b]).css("width",Math.floor(970/ribbonLinks.length)));
+													}
+												}
+											}
+
+											$showAd.text(response[i].blurb);
+										
+											$ribbonAdBtn.removeClass("noRibbonAd");
+											
+											$showAd.click();
+
+											//close after so many seconds
+											setTimeout(function(){ $close.click(); },closeDelay);
+										}
+										
+									} else {
+
+										var imgAts, imgMeta, tune_in, isHorz, isVert, hasLogo = false, $img = $(document.createElement('img'));
+										//match current structure of  xhtml in includes/slides.shtml
+										imgAts = {
+											 src:response[i].image
+											 ,rel:response[i].thumb
+											,title:response[i].title
+											,short:response[i].title
+											,alt:response[i].blurb
+											,target:''//response[i].link_window
+											,url:response[i].link
+										};
+										
+										//additional data
+										isHorz = typeof response[i].horizontal_image_url != 'undefined';
+										isVert = typeof response[i].vertical_image_url != 'undefined';
+										
+										if(isHorz) {
+											hasLogo = response[i].horizontal_image_url;//.replace(/img\/.*xS\/scet/g, "img/320x37xS/scet");
+										} else if (isVert){
+											hasLogo = response[i].vertical_image_url;//.replace(/img\/.*xS\/scet/g, "img/100x130xS/scet");
+										}
+										
+										tune_in = response[i].tune_in.toString().split("|");
+										imgMeta = {
+											tunein: tune_in.join("<br/>"), 
+											logo: hasLogo, 
+											stacked: isHorz, 
+											promotes: response[i].subpromotes, 
+											siteLink: response[i].site_url, 
+											likeboxOptions : {
+												siteId:response[i].site_id
+												,facebookId:response[i].facebook_id
+												,twtrName:response[i].twitter_username
+											}
+										};
+										
+										$img.attr(imgAts).data('imgMeta', imgMeta);
+										$slides.append($img);
+									}
+								
+									/*1x1 tracking	
+									if(response[i] != null && response[i]['1x1_text'] != ''){
+										$img1x1 = $(document.createElement('img')).attr({"src":response[i]['1x1_text'], 'className':'tracker1x1 trackItem'+i});
+										$layoutWrap.append($img1x1);
+									}*/
+								}
+								
+							break;
+						}
+
+						$img1 = $slides.find("img:first-child");
+						$slides.height($img1.height());
+						$slides.width($img1.width());
+						$obj.slideshow('loadMeta', $img1, slideSpecs.metaNode); 
+					}
+					, complete: slidesLoad
+				});
+			});
+		}
+	
+		,loadMeta: function($img, externalNode){
+			return this.each(function() {
+				var $obj = $(this), slideSpecs = $obj.data('slideshow');
+				var link = { href: $img.attr('url'),  target : (!$img.attr('target'))? '_top' : $img.attr('target') };
+				$(slideSpecs.slidesObj).attr(link);
+				
+				if(!externalNode) {
+					$(slideSpecs.descNode).html($img.attr('alt').replace(/\|/g,"<br/>"));
+					$(slideSpecs.titleNode).text($img.attr('title'));
+					$(slideSpecs.moreNode).attr(link);
+				} else {
+					var imgMeta = $img.data("imgMeta");
+					if(imgMeta.stacked){
+						$(externalNode).find(".spotlight").addClass("stacked");
+					}else {
+						$(externalNode).find(".spotlight").removeClass("stacked");
+					}
+					
+					var indexRef = $img.index(), imgCss = 'img'+indexRef, $logo = $(externalNode).find(".logo"), sizes=[];
+					
+					$logo.find('.logoItem').hide();
+					if($logo.find('.'+imgCss).length == 0 && imgMeta.logo) {
+						$logoImg = $(document.createElement('img')).attr("src", imgMeta.logo);
+						$logoHold = $(document.createElement('span')).attr('className','logoItem '+imgCss);
+						$logo.append($logoHold);
+						$logoHold.html($logoImg).show().pngFix();
+						
+						var size = imgMeta.logo.match(/img\/.*xS\/scet/g);
+						size = size.toString().replace(/img\/|xS\/scet/g,"");
+						size = size.split('x');
+						var elSize = {'height':size[1]+'px','width':size[0]+'px' };
+						if(!$logo.parent().is(".stacked")){
+							var margin = Math.floor(($logo.height() - size[1])/2);
+							elSize['margin-top'] = margin+"px";
+						}
+						$logoHold.find('img, span').css(elSize);
+						
+					} else {
+						$logo.find('.'+imgCss).show();
+					}
+					$logo.attr({"href":imgMeta.siteLink});
+					
+					$(externalNode).find(".tune-in").html(imgMeta.tunein+'');
+					$(externalNode).find(".description span").html($img.attr("alt")+'');
+					$(externalNode).find(".visit").attr({"href":imgMeta.siteLink}).show();
+					
+					var LBcss = 'LB'+indexRef, $LBHold = $(externalNode).find(".likebox-holder");
+					$LBHold.find('.likebox').hide();
+					if($LBHold.find('.'+LBcss).length == 0) {
+						$LBHold.append($(document.createElement('div')).addClass(LBcss).likebox(imgMeta.likeboxOptions).show());
+					} else {
+						$LBHold.find('.'+LBcss).show();
+					}
+					
+					var promotesCss = 'promotes'+indexRef, $promoteBox = $(externalNode).find('.slide-promotes');
+					
+					$promoteBox.find('.layer').hide();
+					if($promoteBox.find('.'+promotesCss).length == 0) {
+						
+						var $promotes = $(document.createElement('div')).attr('className','layer '+promotesCss);
+						for(var j in imgMeta.promotes) {
+							var promote = imgMeta.promotes[j]; 
+							var $promote = $(document.createElement('a')).attr({
+								"className":"promote promote"+(Number(j)+1), 
+								href:promote.link
+								,target:''
+							}); 
+							var $thumb = $(document.createElement('img')).attr("src", promote.thumb);
+							var $thumbTitle = $(document.createElement('span')).html(promote.title);
+							
+							$promote.html($thumb); 
+							$promote.append($thumbTitle); 
+							$promotes.append($promote).show();
+							
+							/*1x1 tracking
+							if(promote['1x1_text'] != ""){
+								var trackCSS = promotesCss+j+"_1x1";
+								var $promote1x1 = $(document.createElement('img')).attr({"src":promote['1x1_text'], 'display':'none', 'className':'tracker1x1 '+trackCSS});
+								$promoteBox.append($promote1x1);
+							}*/
+						}
+						$promoteBox.append($promotes);
+					} else {
+						$promoteBox.find('.'+promotesCss).show();
+					}
+					if($promoteBox.css('display') == 'none') $promoteBox.show();
+					
+				}
+			});
+		}
+	};
+
+	//namespace builder
+	$.fn.slideshow = function(method) {
+		if (methods[method]) {
+			return methods[method].apply(this, Array.prototype.slice.call( arguments, 1));
+		} else if (typeof method === 'object' || !method) {
+			return methods.init.apply(this, arguments);
+		} else {
+			$.error('Method ' + method + ' does not exist on jQuery.slideshow');
+		}
+	};
+	
+})(jQuery);

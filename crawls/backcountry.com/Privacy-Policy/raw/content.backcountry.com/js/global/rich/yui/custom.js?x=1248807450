@@ -1,0 +1,243 @@
+// shortcuts for Yahoo! UI Library (should be loaded before this file)
+var y = YAHOO.util;
+var ya = y.Anim;
+var yc = y.Connect;
+var yd = y.Dom;
+var ye = y.Event;
+
+/* Dirty hack because safari can't do a request within a 
+	request using asyncRequest */
+try {
+	y.Connect.delayedAsyncRequest = function(method, url, todo, args) {
+		setTimeout(function() {
+			yc.asyncRequest(method, url, todo, args);
+		},1);
+	};
+}
+catch(e) { }
+
+// ajax defaults
+var ajax_timeout = 30000;    // in ms, so 30 seconds
+var ajax_error = function(res, msg, caller_name) {
+	var err_str;
+	
+	if ((msg === null) || (msg === '')) {
+		msg = 'Sorry! Looks like our system choked. Please give it another shot. If you get hosed twice, contact customer service for assistance.';
+	}
+	if ((caller_name !== null) && (caller_name !== '')) {
+		err_str = caller_name + ' : ' + res.status + ' : ' + res.statusText;
+	}
+	else {
+		err_str = res.status + ' : ' + res.statusText;
+	}
+	alert(msg + '\n\n (' + err_str + ')');
+
+	// Attempt to send information about the error
+	try {
+		// Gather info for submit
+		var result_arguments = '';
+		if (res.argument) {
+			result_arguments = res.argument.join("\n");
+		}
+		var args = {
+			session_id:       _readCookie("MV_SESSION_ID") || '',
+			document_url:     document.URL || '',
+			window_location:  window.location || '',
+			stack:            BCNTRY.util.debug.stackTrace() || '',
+			err_str:          err_str || '',
+			r_argument:       result_arguments,
+			r_status:         res.status || '',
+			r_responseheader: res.getAllResponseHeaders || ''
+		};
+
+		// Convert object to url query param
+		var params = [];
+		for (var i in args) {
+			params.push(i+'='+escape(args[i]));
+		}
+		var params_string = params.join("&");
+
+		var error_url = "/docs/ajax_error.html?"+params_string;
+
+		// We don't need a response back or anything, so just go directly to the url
+		var image = new Image();
+		image.src = error_url;
+	}
+	catch(e) { }
+};
+
+// mimic prototype.js $() function
+var $ = function(el_id) { return yd.get(el_id); };
+
+// mimic prototype.js $F() function
+var $F = function(form, name) { return eval('document.' + form + '.' + name + '.value'); };
+
+// version of $F that can submit multiple selects, returned as pipe delimited
+var $M = function(form, name) {
+	var selected_fields = '';
+	var e = eval('document.' + form + '.' + name);
+	for (var i = 0; i < e.options.length; i++) {
+		if (e.options[i].selected) {
+			if (selected_fields !== '') {
+				selected_fields += '|';
+			}
+			selected_fields += e.options[i].value;
+		}
+	}
+	return selected_fields;
+};
+
+// version of $F that can submit array elements, returned as pipe delimited
+var $Q = function(form, name) {
+	var selected_fields = '';
+	var e = eval('document.' + form + '.' + name);
+	if (e[0]) {
+		for (var i = 0; i < e.length; i++) {
+			if (selected_fields !== '') {
+				selected_fields += '|';
+			}
+			selected_fields += e[i].value;
+		}
+	}
+	else {
+		selected_fields = e.value;
+	}
+	return selected_fields;
+};
+
+// clear an input field
+var FieldClear = function(form, name) { eval('document.' + form + '.' + name + '.value = "";'); };
+
+var fade_duration = 0.3;
+var fade_method = '';
+
+var fade = function(el_id, opac, on_complete, on_start, display_none)  {
+    var oAnim = new y.Anim(el_id, { opacity: opac }, fade_duration, fade_method);
+    if(on_complete) {
+	    oAnim.onComplete.subscribe(on_complete);
+    }
+    if(display_none) {
+	oAnim.onComplete.subscribe(function() {
+		yd.setStyle(el_id, 'display', 'none');
+	});
+    }
+    if(on_start) {
+	    oAnim.onStart.subscribe(on_start);
+    }
+    oAnim.animate();
+};
+
+// fade opacity from invisible to fully visible
+var fade_in = function(el_id, on_complete, on_start) {
+    fade(el_id, { from: 0, to: 1 }, on_complete, on_start);
+};
+
+// fade opacity from fully visible to invisible
+var fade_out = function(el_id, on_complete, on_start, display_none) {
+    fade(el_id, { from: 1, to: 0 }, on_complete, on_start, display_none);
+};
+
+// simple fade in or out toggle
+var fade_in_out_toggle = function(el_id, on_complete_in, on_complete_out) {
+	if(yd.getStyle(el_id, 'display') == 'none') { fade_in(el_id, on_complete_in); }
+	else { fade_out(el_id, on_complete_out); }
+};
+
+// fade in, but turns css display (hiding) on first
+var fade_on = function(el_id, on_complete, on_start) {
+	yd.setStyle(el_id, 'opacity', 0);
+	yd.setStyle(el_id, 'display', '');
+	fade_in(el_id, on_complete, on_start);
+};
+
+// fade out, turning off css display when complete
+var fade_off = function(el_id, on_complete, on_start) {
+	fade_out(el_id, on_complete, on_start, 1);
+};
+
+// simple fade on or off toggle
+var fade_on_off_toggle = function(el_id, on_complete_on, on_complete_off) {
+	if(yd.getStyle(el_id, 'display') == 'none') { fade_on(el_id, on_complete_on); }
+	else { fade_off(el_id, on_complete_off); }
+};
+
+// ajax call, pass url, form cgi var args, oncomplete function ref, method (post or get, optional)
+var ajax = function(url, args, todo, method, fail, time) {
+	var mthd = method || 'POST';
+	if (!fail) {
+		fail = function (res) {
+			ajax_error(res);
+		};
+	}
+	if (!time)
+		time = ajax_timeout;
+	var cb = { success: todo, failure: fail, timeout: time };
+	var cObj = yc.asyncRequest(mthd, url, cb, args);
+};
+
+
+if (typeof(BCNTRY) == 'undefined') BCNTRY = {};
+if (typeof(BCNTRY.widget) == 'undefined') BCNTRY.widget = {};
+
+// Backcountry rich text editor
+(function() {
+	yd.addClass(document.body, "yui-skin-sam");
+	if (YAHOO.widget.SimpleEditor) {
+		BCNTRY.widget.SimpleEditor = function(el, attr) {
+			attr.markup = attr.markup || 'xhtml'; // Attribute processed in superclass
+
+			// Add a few invalid elements
+			var invalidHTML = "font del".split(" ");
+			for (i in invalidHTML) {
+				this.invalidHTML[i] = true
+			}
+
+			BCNTRY.widget.SimpleEditor.superclass.constructor.call(this, el, attr);
+		};
+
+		YAHOO.extend(BCNTRY.widget.SimpleEditor, YAHOO.widget.SimpleEditor, {
+			STR_BEFORE_EDITOR: '',
+
+			_defaultToolbar: {
+					buttons: [ 
+							{ group: 'textstyle', label: 'Text Style',
+								buttons: [ 
+									{ type: 'push', label: 'Italic', value: 'italic' },
+									{ type: 'push', label: 'Bold', value: 'bold' } 
+								] 
+							} ,
+							{ type: 'separator' },
+							{ group: 'indentlist', label: 'Lists',
+								buttons: [ 
+									{ type: 'push', label: 'Create an Unordered List', value: 'insertunorderedlist' }
+								]
+							}
+						] 
+			},
+
+			initAttributes: function(attr) {
+				BCNTRY.widget.SimpleEditor.superclass.initAttributes.call(this, attr);
+
+				this.setAttributeConfig('titlebarText', {
+					value: attr.titlebarText || 'Editor',
+					method: function(titlebarText) {
+						if (! this.toolbar) {
+							this.toolbar = this._defaultToolbar;
+						}
+						this.toolbar.titlebar = titlebarText;
+					}
+				});
+			},
+
+			// Fix to make the output conform to our standards of xhtml (<br /> rather than <br/>)
+			post_filter_linebreaks: function(html, markup) {
+				if (markup == 'xhtml') {
+					html = html.replace(/<YUI_BR>/g, '<br />');
+				} else {
+					html = html.replace(/<YUI_BR>/g, '<br>');
+				}
+				return html;
+			}
+		});
+	}
+}());

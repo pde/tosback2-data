@@ -1,0 +1,2 @@
+function submitForm() { var keyQ = "q=" + document.forms['subForm'].q.value; document.forms['subForm'].action = "/search.html/find/?" + keyQ ;document.forms['subForm'].action.submit(); }
+function enterKey(event) { 	if (event && event.keyCode == 13) { submitForm(); 	} else { return true; }}

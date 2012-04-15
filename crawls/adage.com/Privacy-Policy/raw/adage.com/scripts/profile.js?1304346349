@@ -1,0 +1,261 @@
+var ProfileRef;
+var Profile = {
+	last_field : null,
+	default_error_message : 'This field is required',
+	loader : 'Checking...',
+
+	required_fields : {
+		'aaoc_code'				: 'Access code must be entered',
+		'email'					: 'Registration will be confirmed via email',
+		'username'				: 'Use 4 to 32 characters',
+		'password1'				: 'Use 6 to 32 characters',
+		'password2'				: '',
+		'firstName'				: '', //'Please provide your full name',
+		'lastName'				: '', //'Please provide your full name',
+		'jobTitleOther'			: '', //'Please provide your job title',
+		'company'				: '', //'Please provide the name of your company',
+		'businessType'			: '', //'Please specify what type of business this is',
+		'jobTitle'				: '', //'Please select the option that best describes your job title',
+		'address1'				: '',
+		'city'					: '',
+		'state'					: 'U.S. and Canada only',
+		'country'				: '',
+		'zip'					: ''
+	},
+
+	debug : function(msg) {
+		DOM.setHTML('debugger', msg);
+	},
+
+	loading : function(field) {
+		this.resetNote(field);
+		DOM.getElementById('note_' + field).innerHTML = this.loader;
+		//DOM.setHTML('note_' + field, this.loader);
+	},
+
+	resetNote : function(f) {
+		$('#note_' + f).removeClass('note error');
+		$('#note_' + f).removeClass('note success');
+		$('#note_' + f).addClass('note standard');
+	},
+
+	resetMessaging : function() {
+		for(field in this.required_fields) {
+			DOM.setClass('id_' + field, 'normal');
+			DOM.setClass('note_' + field, 'note standard');
+
+			if(this.required_fields[field].isEmpty()) {
+				//DOM.setHTML('note_' + field, this.default_error_message);
+				DOM.getElementById('note_' + field).innerHTML = this.default_error_message;
+			}
+			else {
+				//DOM.setHTML('note_' + field, this.required_fields[field]);
+				DOM.getElementById('note_' + field).innerHTML = this.required_fields[field];
+			}
+		}
+	},
+
+	message : function(field, msg, type) {
+		if(type == 'error') {
+			$('#note_' + field).removeClass('note standard');
+			$('#id_' + field).removeClass('normal');
+			$('#id_' + field).addClass('field_error');
+		}
+		else {
+			$('#note_' + field).removeClass('note error');
+			$('#id_' + field).removeClass('field_error');
+			$('#id_' + field).addClass('normal');
+		}
+		$('#note_' + field).addClass('note ' + type);
+
+		if(Utils.stringCompare(DOM.getElementById('note_' + field).innerHTML, msg) === false) {
+			$('#note_' + field).hide();
+			$('#note_' + field).html(msg);
+			$('#note_' + field).show();
+		}
+		this.last_field = field;
+	},
+
+	throwError : function(field, msg) {
+		this.message(field, msg, 'error');
+	},
+
+	success : function(field, msg) {
+		this.message(field, msg, 'success');
+	},
+
+	checkEmail : function(address) {
+		if(address.isEmpty()) {
+			return;
+		}
+
+		if(!address.isEmail()) {
+			this.throwError('email', this.required_fields['email']);
+		}
+		else if(Utils.stringCompare(DOM.getElementById('default_email').value, address) === false) {
+			this.loading('email');
+			ProfileRef = this;
+			//alert('/ajax/check_email_address.php?email=' +escape(address) );
+			new AJAX.FileRequest(
+				'/ajax/check_email_address.php',
+				function() {
+					if(this.request && this.response) {
+						result = JSON.parse(this.response);
+						if(result) {
+							if(result.standard) {
+								ProfileRef.message('email', ProfileRef.required_fields['email'], 'standard');
+							}
+							else{
+								if(!result.success) {
+									ProfileRef.throwError('email', result.message);
+								}else{
+									ProfileRef.success('email', result.message);
+								}								
+							}
+						}
+						else{
+							ProfileRef.message('email', ProfileRef.required_fields['email'], 'standard');
+						}
+					}
+				},
+				null,
+				'post',
+				'email='+escape(address)
+			);
+			delete ProfileRef;
+		}
+	},
+ 
+	checkUsername : function(username) {
+		username = username.trim();
+
+		if(username.isEmpty()) {
+			return;
+		}
+
+		if(username.length < 4) {
+			this.throwError('username', this.required_fields['username']);
+		}
+		else if(Utils.stringCompare(DOM.getElementById('default_username').value, username) === false) {
+			this.loading('username');
+			ProfileRef = this;
+			new AJAX.FileRequest(
+				'/ajax/check_username.php',
+				function() {
+					if(this.request && this.response) {
+						result = JSON.parse(this.response);
+						if(result) {
+							if(result.standard) {
+								ProfileRef.message('username', ProfileRef.required_fields['username'], 'standard');
+							}
+							else {
+								if(!result.success) {
+									ProfileRef.throwError('username', result.message);
+								}
+								else {
+									ProfileRef.success('username', result.message);
+								}								
+							}
+						}
+						else {
+							ProfileRef.message('username', ProfileRef.required_fields['username'], 'standard');
+						}
+					}
+				},
+				null,
+				'post',
+				'username=' + escape(username)
+			);
+			delete ProfileRef;
+		}
+	},
+
+	checkPassword : function(password) {
+		password = password.trim();
+
+		if(password.isEmpty()) {
+			return;
+		}
+
+		if(password.length < 6) {
+			this.throwError('password', this.required_fields['password']);
+		}
+		else {
+			this.message('password', '', 'standard');
+		}
+	},
+
+	checkPasswordConfirmation : function(pass1, pass2) {
+		if(pass1.isEmpty() || pass2.isEmpty()) {
+			return;
+		}
+
+		if(Utils.stringCompare(pass1, pass2) === false) {
+			this.throwError('password2', 'Does not match your password');
+		}
+		else {
+			this.message('password2', '', 'standard');
+		}
+	},
+
+	process : function(form) {
+		this.resetMessaging();
+		for(field in this.required_fields) {
+			if(field == 'aaoc_code'){
+				if (aaoc == 1 && aaocp != 1) {
+					if(form[field].value.isEmpty()) {
+						if(this.required_fields[field].isEmpty()) {
+							this.throwError(field, this.default_error_message);
+						}else {
+							this.throwError(field, this.required_fields[field]);
+						}
+						Form.selectField(form[field]);
+						return false;
+					}
+				}
+			} else if(field != 'state'){
+				if(form[field].value.isEmpty()) {
+					if(this.required_fields[field].isEmpty()) {
+						this.throwError(field, this.default_error_message);
+					}else {
+						this.throwError(field, this.required_fields[field]);
+					}
+					Form.selectField(form[field]);
+					return false;
+				}
+			}else if(field == 'state'){
+				if((form['country'].value == 'USA' || form['country'].value == 'CAN') && form['state'].value.isEmpty()){
+
+					if(this.required_fields[field].isEmpty()) {
+						this.throwError(field, this.default_error_message);
+					}else {
+						this.throwError(field, this.required_fields[field]);
+					}
+					Form.selectField(form[field]);
+					return false;
+					
+				}
+			}
+		}
+		form['submit_btn'].disabled = true;
+		return true;
+	},
+
+	prep_auth : function() {
+		var f = document.registration;
+		var from = ['', 'firstName', '', 'lastName', 'email', 'company', 'address1', 'address2', 'city', 'state', 'country', 'zip', 'phone', ''];
+		var to = ['title', 'first_name', 'init', 'last_name', 'email', 'company', 'address', 'apt', 'city', 'state', 'country', 'zip', 'phone', 'fax'];
+		for(var i=0; i<to.length; i++) {
+
+			if(from[i] != '') {
+				if(document.getElementById('id_x_' + to[i])) {
+					document.getElementById('id_x_' + to[i]).value = (f[from[i]] && f[from[i]].value != -1) ? f[from[i]].value : '';
+				}
+				if(document.getElementById('id_x_ship_to_' + to[i])) {
+					document.getElementById('id_x_ship_to_' + to[i]).value = (f[from[i]] && f[from[i]].value != -1) ? f[from[i]].value : '';
+				}
+			}
+		}
+		return true;
+	}
+};

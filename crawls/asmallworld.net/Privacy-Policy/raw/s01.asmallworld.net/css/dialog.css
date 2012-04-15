@@ -1,0 +1,244 @@
+/* dialog css styles */
+
+
+/* Default styling used when javascript does not transform dialog into rounded border style. */
+.dialog-cbb
+{
+  margin:1em 0;
+  padding:0 10px;
+  border:1px solid #666;
+  background: #fff;
+}
+
+.dialog-cbb h1
+{
+  margin:0 -10px;
+  padding:0.3em 10px;
+  background:#efece6;
+  font:bold 1.2em/1 Arial, Helvetica, sans-serif;
+}
+
+/* After dialog has been transformed into new layout with rounded borders */
+.dialog-cb{ margin:0.5em 0; }
+
+
+/* Top corners and border */
+
+.dialog-bt
+{
+  height:20px;
+  margin:0 0 0 18px;
+  background:url(../images/dialog/dialog_box.png) no-repeat 100% 0;
+  _background-image:url(../images/dialog/box.gif);
+}
+#v4-overlay .dialog-bt  {
+	height: 57px;
+  margin: 0 0 0 44px;
+  background:url(../images/facelift/dialog/dialog_box.png) no-repeat 100% 0;
+  _background-image:url(../images/facelift/dialog/box.gif);
+}
+
+
+.dialog-bt div
+{
+  position:relative;
+  left:-18px;
+  width:18px;
+  height:20px;
+  background:url(../images/dialog/dialog_box.png) no-repeat 0 0;
+  _background-image:url(../images/dialog/box.gif);
+  font-size:0;
+  line-height:0;
+}
+#v4-overlay .dialog-bt div {
+  left:-44px;
+  width:44px;
+  height:57px;
+  background:url(../images/facelift/dialog/dialog_box.png) no-repeat 0 0;
+  _background-image:url(../images/facelift/dialog/box.gif);
+}
+
+/* Bottom corners and border */
+
+.dialog-bb
+{
+  height:20px;
+  margin:0 0 0 12px;
+  background:url(../images/dialog/dialog_box.png) no-repeat 100% 100%;
+  _background-image:url(../images/dialog/box.gif);
+}
+#v4-overlay .dialog-bb {
+  height:50px;
+  margin:0 0 0 50px;
+  background:url(../images/facelift/dialog/dialog_box.png) no-repeat 100% 100%;
+  _background-image:url(../images/facelift/dialog/box.gif);
+}
+
+.dialog-bb div
+{
+  position:relative;
+  left:-12px;
+  width:12px;
+  height:20px;
+  background:url(../images/dialog/dialog_box.png) no-repeat 0 100%;
+  _background-image:url(../images/dialog/box.gif);
+  font-size:0;
+  line-height:0;
+}
+#v4-overlay .dialog-bb div {
+  left:-50px;
+  width:50px;
+  height:50px;
+  background:url(../images/facelift/dialog/dialog_box.png) no-repeat 0 100%;
+  _background-image:url(../images/facelift/dialog/box.gif);
+}
+
+/* Left border */
+.dialog-i1
+{
+  padding:0 0 0 14px;
+  background:url(../images/dialog/dialog_borders_left.png) repeat-y 0 0;
+  _background-image:url(../images/dialog/dialog_borders_left.gif);
+}
+#v4-overlay .dialog-i1 {
+  padding:0 0 0 24px;
+  background:url(../images/facelift/dialog/dialog_borders_left.png) repeat-y 0 0;
+  _background-image:none;	
+}
+
+/* Right border */
+.dialog-i2
+{
+  padding:0 17px 0 0;
+  *padding-right:15px;
+  background:url(../images/dialog/dialog_borders_right.png) repeat-y 100% 0;
+  _background-image:url(../images/dialog/dialog_borders_right.gif);
+}
+#v4-overlay .dialog-i2 {
+  padding:0 30px 0 0;
+  *padding-right:30px;
+  background:url(../images/facelift/dialog/dialog_borders_right.png) repeat-y 100% 0;
+  _background-image:none;
+}
+
+/* Wrapper for the content. Use it to set the background colour and insert some padding between the borders and the content. */
+
+.dialog-i3
+{
+  display:block;
+  margin:0;
+  padding: 0 5px 10px 5px;
+  background:#fff;
+}
+
+#v4-overlay .dialog-i3 {
+	padding: 25px 30px 11px 30px;
+	background: #f9f9f9;
+}
+
+/* Make the content wrapper auto clearing so it will contain floats (see http://positioniseverything.net/easyclearing.html). */
+
+.dialog-i3:after
+{
+  content:".";
+  display:block;
+  height:0;
+  clear:both;
+  visibility:hidden;
+}
+
+.dialog-i3 { display:inline-block; }
+
+.dialog-i3 { display:block; }
+
+
+
+
+/* new styles, get rid of the above as soon as you are able */
+
+
+
+/* Styles the dialog box */
+.dialog {
+	position:relative;
+	padding:10px;
+	margin:0 0.2em 0.6em;
+	border:1px solid #ccc;
+	color:#333;
+	background:#fff;
+	/* css3 - ignored in IE < 9 */
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	border-radius:5px;
+}
+
+/* arrow-back: styles the arrow border (it's actually a larger, darker triangle in the background) */
+/* arrow-fore: styles the arrow fill (it's actually a smaller, lighter triangle in the foreground) */
+.dialog .arrow-back, .dialog .arrow-fore{
+	content:"";
+	position:absolute;
+	border-style:solid;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+.dialog .arrow-back {
+	bottom:-7px; /* value = - border-top-width - border-bottom-width */
+  border-width:7px 7px 0;
+  border-color:#ccc transparent;
+}
+/* IE7 hack */
+*:first-child+html .dialog .arrow-back{
+  bottom: -21px; /* value = - border-top-width - border-bottom-width */
+}
+
+.dialog .arrow-fore {
+	bottom:-5px; /* value = - border-top-width - border-bottom-width */
+	border-width:5px 5px 0;
+	border-color:#fff transparent;
+}
+/* IE7 hack */
+*:first-child+html .dialog .arrow-fore{
+  bottom: -19px; /* value = - border-top-width - border-bottom-width */
+}
+
+
+/* If the dialog box pops up under the anchor rather than over it, these styles will override */
+.dialog.displayUnder {
+  margin-top: 0.6em;
+}
+
+.dialog.displayUnder .arrow-back{
+  bottom: auto;
+	top: -7px; /* value = - border-top-width - border-bottom-width */
+  border-width: 0 7px 7px;
+}
+/* IE7 hack */
+*:first-child+html .dialog.displayUnder .arrow-back{
+  bottom: auto;
+  top: -21px; /* value = - border-top-width - border-bottom-width */
+  border-width: 0 7px 7px;
+}
+
+.dialog.displayUnder .arrow-fore {
+  bottom: auto;
+	top:-5px; /* value = - border-top-width - border-bottom-width */
+	border-width: 0 5px 5px;
+}
+/* IE7 hack */
+*:first-child+html .dialog.displayUnder .arrow-fore{
+  bottom: auto;
+  top: -19px; /* value = - border-top-width - border-bottom-width */
+	border-width: 0 5px 5px;
+}
+
+
+/* Styles the drop shadow in all browsers other then IE < 9 */
+.shadow {
+	-moz-box-shadow: 1px 1px 2px #999;
+	-webkit-box-shadow: 1px 1px 3px #999;
+	box-shadow: 1px 1px 3px #999;
+  /* will be ignored in IE because the drop shadow is interfering with the bubble */
+}
+

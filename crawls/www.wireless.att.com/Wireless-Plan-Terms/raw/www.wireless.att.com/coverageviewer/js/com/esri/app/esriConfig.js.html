@@ -1,0 +1,558 @@
+function ESRIConfig() {
+}
+// --------------------------------------------------------------------------
+//
+// Token and Map Service URLs
+//
+// --------------------------------------------------------------------------
+
+
+
+var usingHTTPS = true;
+var protocol = "https://";
+if (window.location.href.indexOf("https") == -1) {
+	usingHTTPS = false;
+	protocol = "http://";
+}
+
+// ESRIConfig.dynamicServiceURLRoot = protocol + "attstage.esri.com/ArcGIS/rest/services/Final/CoverageMap_v2/MapServer";
+ESRIConfig.dynamicServiceURLRoot = protocol + "attcv-agsms.esri.com/ArcGIS/rest/services/CoverageMap/MapServer";
+
+ESRIConfig.agolGeocoderTimeOutMS = 6000;
+// ESRIConfig.agolGeocoderTimeOutMS = 300;
+var geocodingAppID = "e534b829-86f4-44fe-80b1-74f333056892";
+ESRIConfig.locatorURL = protocol + "tasks.arcgisonline.com/ArcGIS/rest/services/Locators/TA_Address_NA/GeocodeServer/findAddressCandidates";
+ESRIConfig.locatorURL += "?appid="+geocodingAppID;
+
+ESRIConfig.agolPremiumToken_ATT = "TtaDvxKR4D5HaPaVmFoygJdpLYQQs2L0CDTIcOzt6T8m9Ump4_huXRs6Ziq8N6Xt"
+// ESRIConfig.agolPremiumToken_NCS = "TtaDvxKR4D5HaPaVmFoygJMcvC_j5WuToZPctAztc00j8677MYwLaVuKAFmvrlas"
+
+ESRIConfig.agolPremiumToken = ESRIConfig.agolPremiumToken_ATT;
+// ESRIConfig.agolPremiumToken = ESRIConfig.agolPremiumToken_NCS;
+ESRIConfig.premiumLocatorURL = protocol + "premiumtasks.arcgisonline.com/server/rest/services/Locators/TA_Address_NA/GeocodeServer/findAddressCandidates";
+ESRIConfig.premiumLocatorURL += "?appid="+geocodingAppID +"&token="+ESRIConfig.agolPremiumToken;
+
+
+// ESRIConfig.token_NCS = "jMhBTJcbrkWSQHpjCPcPGi34qz6z7gKhj7PsLreKf0OJTvmU9-VMKgUxb1xzz0m5";
+ESRIConfig.token_ATT = "x7agrDtIATmja3qH-S9oZ7QfnT1j0mSRSi8RjNOQxeKekoGEQBA5hUuXofEsyiuv";
+
+// ESRIConfig.token = ESRIConfig.token_NCS;
+ESRIConfig.token = ESRIConfig.token_ATT;
+
+// --------------------------------------------------------------------------
+//
+// Geo Coder
+//
+// --------------------------------------------------------------------------
+
+// DO NOT EDIT theses values match those of the ArcGIS Online GeoCoder.
+// The possible types of search
+ESRIConfig.searchTypeAddress = "US_Streets";
+ESRIConfig.searchTypeCityState = "US_CityState";
+ESRIConfig.searchTypeZip = "US_Zipcode";
+ESRIConfig.searchTypeState = "US_State";
+ESRIConfig.searchLatLong = "latLong";
+// --------------------------------------------------------------------------
+//
+// Map
+//
+// --------------------------------------------------------------------------
+
+ESRIConfig.initialX = -96.449190909;
+ESRIConfig.initialY = 37.3486163640001;
+
+// Spatial Reference WGS 1984 (From AGO)
+ESRIConfig.spatialRef = new esri.SpatialReference({
+	wkid : 4326
+});
+
+// Map Layers
+
+// Data Types --> Must be lower case values
+ESRIConfig.voiceDataTypeID = new String("voice").toLowerCase();
+ESRIConfig.dataDataTypeID = new String("data").toLowerCase();
+ESRIConfig.goPhoneDataTypeID = new String("gophone").toLowerCase();
+ESRIConfig.goPhonePYPDataTypeID = new String("pyp").toLowerCase();
+ESRIConfig.goPhonePAYGDataTypeID = new String("payg").toLowerCase();
+ESRIConfig.smartLimitsFamilyMapLooptDataTypeID = new String("smartlimits")
+		.toLowerCase();
+ESRIConfig.mobileTVDataTypeID = new String("mobiletv").toLowerCase();
+ESRIConfig.G3DataDataTypeID = new String("3GData").toLowerCase();
+// for edo
+ESRIConfig.attDataTypeID = new String("att").toLowerCase();
+ESRIConfig.att3GDataTypeID = new String("att3g").toLowerCase();
+ESRIConfig.usPremiumDataTypeID = new String("uspremium").toLowerCase();
+ESRIConfig.usPremium3GDataTypeID = new String("uspremium3g").toLowerCase();
+ESRIConfig.ccUsPremiumDataTypeID = new String("ccuspremium").toLowerCase();
+ESRIConfig.ccUsPremium3GDataTypeID = new String("ccuspremium3g").toLowerCase();
+
+//Start Phase III changes
+ESRIConfig.usvalDataTypeID = new String("usval").toLowerCase();
+ESRIConfig.usval3GDataTypeID = new String("usval3g").toLowerCase();
+//End Phase III changes
+
+ESRIConfig.defaultDataTypeID = ESRIConfig.voiceDataTypeID;
+
+// --------------------------------------------------------------------------
+//
+// LAYER INDEXING
+//
+// --------------------------------------------------------------------------
+
+/**
+ * visibleDataLayers: contains arrays of numbers indexed by the different
+ * dataTypeIDs. Each array is contains layer indexes of
+ * theESRIConfig.dynamicServiceURL. The indexes correspond to the layers which
+ * are to be set to visible.
+ * 
+ */
+ESRIConfig.visibleDataLayers = new Array();
+ESRIConfig.visibleDataLayers[ESRIConfig.voiceDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.dataDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.goPhoneDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.goPhonePYPDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.goPhonePAYGDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.smartLimitsFamilyMapLooptDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.G3DataDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.mobileTVDataTypeID];
+
+ESRIConfig.visibleDataLayers[ESRIConfig.attDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.att3GDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.usPremiumDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.usPremium3GDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.ccUsPremiumDataTypeID];
+ESRIConfig.visibleDataLayers[ESRIConfig.ccUsPremium3GDataTypeID];
+
+ESRIConfig.dynamicServiceURL = ESRIConfig.dynamicServiceURLRoot + "?token="
+		+ ESRIConfig.token;
+ESRIConfig.zipLayer;
+ESRIConfig.stateLayer;
+ESRIConfig.cityLayer;
+
+ESRIConfig.setLayerIndexs = function(layer) {
+	var referenceLayerName = "CV Reference";
+	var referenceLayerIndex = null;
+
+	var baseLayerName = "CV Base";
+	var baseLayerIndex = null;
+
+	var g3CoverageLayerName = "3G";
+	var g3CoverageLayerIndex = null;
+
+	var g4CoverageLayerName = "4G";
+	var g4CoverageLayerIndex = null;
+	
+	var voiceCoverageLayerName = "Voice";
+	var voiceCoverageLayerIndex = null;
+
+	var dataCoverageLayerName = "Data";
+	var dataCoverageLayerIndex = null;
+
+	var goPhonePAYGCoverageLayerName = "GoPhone PAYG";
+	var goPhonePAYGCoverageLayerIndex = null;
+
+	var goPhonePYPCoverageLayerName = "GoPhone PYP";
+	var goPhonePYPCoverageLayerIndex = null;
+
+	var smartCoverageLayerName = "Smart";
+	var smartCoverageLayerIndex = null;
+
+	var mobileTVCoverageLayerName = "MobileTV";
+	var mobileTVCoverageLayerIndex = null;
+
+	var zipQueryLayerName = "zipCenters";
+	var zipQueryLayerIndex = null;
+
+	var stateQueryLayerName = "stateCapitals";
+	var stateQueryLayerIndex = null;
+
+	var citiesQueryLayerName = "cities";
+	var citiesQueryLayerIndex = null;
+
+	var usPremiumLayerName = "US_Premium";
+	var usPremiumLayerIndex = null;
+
+	var ccUsPremiumLayerName = "CC_US_Premium";
+	var ccUsPremiumLayerIndex = null;
+
+	var GSMXLayerName = "GSMX";
+	var GSMXLayerIndex = null;
+
+	//Start Phase III changes
+	var USValueLayerName = "ROAM_Value";
+	var USValueLayerIndex = null;
+	//End Phase III changes
+
+	if (layer) {
+		var layerInfos = layer.layerInfos;
+		for ( var i = 0; i < layerInfos.length; i++) {
+			var info = layerInfos[i];
+			switch (info.name) {
+			case referenceLayerName:
+				referenceLayerIndex = info.id;
+				break;
+
+			case baseLayerName:
+				baseLayerIndex = info.id;
+				break;
+
+			case g3CoverageLayerName:
+				if (g3CoverageLayerIndex == null) {
+					g3CoverageLayerIndex = info.id;
+				}
+				break;
+
+			case g4CoverageLayerName:
+				g4CoverageLayerIndex = info.id;
+			break;
+			
+			case voiceCoverageLayerName:
+				voiceCoverageLayerIndex = info.id;
+				break;
+
+			case dataCoverageLayerName:
+				dataCoverageLayerIndex = info.id;
+				break;
+
+			case goPhonePAYGCoverageLayerName:
+				goPhonePAYGCoverageLayerIndex = info.id;
+				break;
+
+			case goPhonePYPCoverageLayerName:
+				goPhonePYPCoverageLayerIndex = info.id;
+				break;
+
+			case smartCoverageLayerName:
+				smartCoverageLayerIndex = info.id;
+				break;
+
+			case mobileTVCoverageLayerName:
+				mobileTVCoverageLayerIndex = info.id;
+				break;
+
+			case zipQueryLayerName:
+				zipQueryLayerIndex = info.id;
+				break;
+
+			case stateQueryLayerName:
+				stateQueryLayerIndex = info.id;
+				break;
+
+			case citiesQueryLayerName:
+				citiesQueryLayerIndex = info.id;
+				break;
+
+			case usPremiumLayerName:
+				usPremiumLayerIndex = info.id;
+				break;
+
+			case ccUsPremiumLayerName:
+				ccUsPremiumLayerIndex = info.id;
+				break;
+
+			case GSMXLayerName:
+				GSMXLayerIndex = info.id;
+				break;
+				
+			//Start Phase III changes
+			case USValueLayerName:
+				USValueLayerIndex = info.id;
+				break;
+			//End Phase III changes
+				
+			}
+		}
+
+		
+		ESRIConfig.visibleDataLayers[ESRIConfig.voiceDataTypeID] = new Array(
+				referenceLayerIndex.toString(), voiceCoverageLayerIndex
+						.toString(), baseLayerIndex.toString());
+		
+		if(g4CoverageLayerIndex != null){
+			ESRIConfig.visibleDataLayers[ESRIConfig.dataDataTypeID] = new Array(
+					referenceLayerIndex.toString(), g4CoverageLayerIndex.toString(),
+					dataCoverageLayerIndex.toString(), baseLayerIndex.toString());
+		}else{
+			ESRIConfig.visibleDataLayers[ESRIConfig.dataDataTypeID] = new Array(
+					referenceLayerIndex.toString(),
+					dataCoverageLayerIndex.toString(), baseLayerIndex.toString());
+		}
+		ESRIConfig.visibleDataLayers[ESRIConfig.goPhoneDataTypeID] = new Array(
+				referenceLayerIndex.toString(), goPhonePYPCoverageLayerIndex
+						.toString(), baseLayerIndex.toString()); // Not Used
+		ESRIConfig.visibleDataLayers[ESRIConfig.goPhonePYPDataTypeID] = new Array(
+				referenceLayerIndex.toString(), goPhonePYPCoverageLayerIndex
+						.toString(), baseLayerIndex.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.goPhonePAYGDataTypeID] = new Array(
+				referenceLayerIndex.toString(), goPhonePAYGCoverageLayerIndex
+						.toString(), baseLayerIndex.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.smartLimitsFamilyMapLooptDataTypeID] = new Array(
+				referenceLayerIndex.toString(), smartCoverageLayerIndex
+						.toString(), baseLayerIndex.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.G3DataDataTypeID] = new Array(
+				g3CoverageLayerIndex.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.mobileTVDataTypeID] = new Array(
+				referenceLayerIndex.toString(), mobileTVCoverageLayerIndex
+						.toString(), baseLayerIndex.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.attDataTypeID] = new Array(
+				referenceLayerIndex.toString(), GSMXLayerIndex.toString(),
+				baseLayerIndex.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.att3GDataTypeID] = new Array(
+				referenceLayerIndex.toString(),
+				g3CoverageLayerIndex.toString(), GSMXLayerIndex.toString(),
+				baseLayerIndex.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.usPremiumDataTypeID] = new Array(
+				referenceLayerIndex.toString(), usPremiumLayerIndex.toString(),
+				GSMXLayerIndex.toString(), baseLayerIndex.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.usPremium3GDataTypeID] = new Array(
+				referenceLayerIndex.toString(), usPremiumLayerIndex.toString(),
+				g3CoverageLayerIndex.toString(), GSMXLayerIndex.toString(),
+				baseLayerIndex.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.ccUsPremiumDataTypeID] = new Array(
+				referenceLayerIndex.toString(), ccUsPremiumLayerIndex
+						.toString(), GSMXLayerIndex.toString(), baseLayerIndex
+						.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.ccUsPremium3GDataTypeID] = new Array(
+				referenceLayerIndex.toString(), ccUsPremiumLayerIndex
+						.toString(), g3CoverageLayerIndex.toString(),
+				GSMXLayerIndex.toString(), baseLayerIndex.toString());
+
+		//Start Phase III changes
+		ESRIConfig.visibleDataLayers[ESRIConfig.usvalDataTypeID] = new Array(
+				referenceLayerIndex.toString(), GSMXLayerIndex.toString(),
+				USValueLayerIndex.toString(), baseLayerIndex.toString());
+		ESRIConfig.visibleDataLayers[ESRIConfig.usval3GDataTypeID] = new Array(
+				referenceLayerIndex.toString(), GSMXLayerIndex.toString(),
+				g3CoverageLayerIndex.toString(), USValueLayerIndex.toString(),
+				baseLayerIndex.toString());
+		//End Phase III changes
+
+		ESRIConfig.zipLayer = ESRIConfig.dynamicServiceURLRoot + "/"
+				+ zipQueryLayerIndex + "?token=" + ESRIConfig.token;
+		ESRIConfig.stateLayer = ESRIConfig.dynamicServiceURLRoot + "/"
+				+ stateQueryLayerIndex + "?token=" + ESRIConfig.token;
+		ESRIConfig.cityLayer = ESRIConfig.dynamicServiceURLRoot + "/"
+				+ citiesQueryLayerIndex + "?token=" + ESRIConfig.token;
+	}
+};
+
+// Map Zone Settings
+ESRIConfig.mapZoneContiguousUSA = "CONTIGUOUS_USA";
+ESRIConfig.mapZoneAlaskaUSA = "ALASKA_USA";
+ESRIConfig.mapZoneHawaiiUSA = "HAWAII_USA";
+ESRIConfig.mapzonePuertoRicoVirginIslands = "PUERTO_RICO_VIRGIN_ISLANDS";
+
+// Data Type Overview Map Image Location Types
+ESRIConfig.imageLocationMaxX = "maxX";
+ESRIConfig.imageLocationMaxY = "maxY";
+ESRIConfig.imageLocationLower = "lower";
+ESRIConfig.imageLocationLeft = "left";
+ESRIConfig.imageLocationRight = "right";
+
+// Data Type Overview Map Image Locations
+ESRIConfig.voiceDataTypeImageSizes = new Array();
+ESRIConfig.voiceDataTypeImageSizes[ESRIConfig.imageLocationLower] = 310;
+ESRIConfig.voiceDataTypeImageSizes[ESRIConfig.imageLocationLeft] = 180;
+ESRIConfig.voiceDataTypeImageSizes[ESRIConfig.imageLocationRight] = 358;
+
+// Overview Map IMage Locations
+ESRIConfig.imageSizes = new Array();
+ESRIConfig.imageSizes[ESRIConfig.voiceDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.dataDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.goPhoneDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.goPhonePYPDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.goPhonePAYGDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.smartLimitsFamilyMapLooptDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.mobileTVDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.attDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.att3GDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.usPremiumDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.usPremium3GDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.ccUsPremiumDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.ccUsPremium3GDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+//Start Phase III changes
+ESRIConfig.imageSizes[ESRIConfig.usvalDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+ESRIConfig.imageSizes[ESRIConfig.usval3GDataTypeID] = ESRIConfig.voiceDataTypeImageSizes;
+//End Phase III changes
+
+// Static Map Image Source
+ESRIConfig.mapImageSources = new Array();
+ESRIConfig.mapImageSources[ESRIConfig.voiceDataTypeID] = "images/coverage_Voice.gif";
+ESRIConfig.mapImageSources[ESRIConfig.dataDataTypeID] = "images/coverage_Data.gif";
+ESRIConfig.mapImageSources[ESRIConfig.goPhoneDataTypeID] = "images/coverage_PickYourPlan.gif";
+ESRIConfig.mapImageSources[ESRIConfig.goPhonePYPDataTypeID] = "images/coverage_PickYourPlan.gif";
+ESRIConfig.mapImageSources[ESRIConfig.goPhonePAYGDataTypeID] = "images/coverage_PayAsYouGo.gif";
+ESRIConfig.mapImageSources[ESRIConfig.smartLimitsFamilyMapLooptDataTypeID] = "images/coverage_SmartLimits.gif";
+ESRIConfig.mapImageSources[ESRIConfig.mobileTVDataTypeID] = "images/coverage_MobileTV.gif";
+ESRIConfig.mapImageSources[ESRIConfig.attDataTypeID] = "images/ATT_Domestic_RoamZone_OnNetwork.gif";
+ESRIConfig.mapImageSources[ESRIConfig.att3GDataTypeID] = "images/ATT_Domestic_RoamZone_OnNetwork.gif";
+ESRIConfig.mapImageSources[ESRIConfig.usPremiumDataTypeID] = "images/ATT_Domestic_RoamZone_Premium.gif";
+ESRIConfig.mapImageSources[ESRIConfig.usPremium3GDataTypeID] = "images/ATT_Domestic_RoamZone_Premium.gif";
+ESRIConfig.mapImageSources[ESRIConfig.ccUsPremiumDataTypeID] = "images/ATT_Domestic_RoamZone_Jasper.gif";
+ESRIConfig.mapImageSources[ESRIConfig.ccUsPremium3GDataTypeID] = "images/ATT_Domestic_RoamZone_Jasper.gif";
+//Start Phase III changes
+ESRIConfig.mapImageSources[ESRIConfig.usvalDataTypeID] = "images/ATT_Domestic_RoamZone_USVal.gif";
+ESRIConfig.mapImageSources[ESRIConfig.usval3GDataTypeID] = "images/ATT_Domestic_RoamZone_USVal.gif";
+//End Phase III changes
+
+ESRIConfig.imageLocationYSlope = "ySlope";
+ESRIConfig.imageLocationXSlope = "xSlope";
+ESRIConfig.imageLocationYIntercept = "yIntercept";
+ESRIConfig.imageLocationXIntercept = "xIntercept";
+
+ESRIConfig.mapZoneExtent = new Array();
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneContiguousUSA] = new Array();
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneContiguousUSA][ESRIConfig.imageLocationYSlope] = -0.0991;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneContiguousUSA][ESRIConfig.imageLocationYIntercept] = 53.297;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneContiguousUSA][ESRIConfig.imageLocationXSlope] = 0.1159;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneContiguousUSA][ESRIConfig.imageLocationXIntercept] = -128.61;
+
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneAlaskaUSA] = new Array();
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneAlaskaUSA][ESRIConfig.imageLocationYSlope] = -0.2125;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneAlaskaUSA][ESRIConfig.imageLocationYIntercept] = 140.08;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneAlaskaUSA][ESRIConfig.imageLocationXSlope] = 0.3454;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneAlaskaUSA][ESRIConfig.imageLocationXIntercept] = -188.95;
+
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneHawaiiUSA] = new Array();
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneHawaiiUSA][ESRIConfig.imageLocationYSlope] = -0.0492;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneHawaiiUSA][ESRIConfig.imageLocationYIntercept] = 38.683;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneHawaiiUSA][ESRIConfig.imageLocationXSlope] = 0.0538;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapZoneHawaiiUSA][ESRIConfig.imageLocationXIntercept] = -171.9;
+
+ESRIConfig.mapZoneExtent[ESRIConfig.mapzonePuertoRicoVirginIslands] = new Array();
+ESRIConfig.mapZoneExtent[ESRIConfig.mapzonePuertoRicoVirginIslands][ESRIConfig.imageLocationYSlope] = -0.0278;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapzonePuertoRicoVirginIslands][ESRIConfig.imageLocationYIntercept] = 28.654;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapzonePuertoRicoVirginIslands][ESRIConfig.imageLocationXSlope] = 0.0305;
+ESRIConfig.mapZoneExtent[ESRIConfig.mapzonePuertoRicoVirginIslands][ESRIConfig.imageLocationXIntercept] = -79.968;
+
+ESRIConfig.PanN = 'N';
+ESRIConfig.PanS = 'S';
+ESRIConfig.PanE = 'E';
+ESRIConfig.PanW = 'W';
+ESRIConfig.PanNE = 'NE';
+ESRIConfig.PanNW = 'NW';
+ESRIConfig.PanSE = 'SE';
+ESRIConfig.PanSW = 'SW';
+
+function getInternetExplorerVersion() {
+	// Returns the version of Internet Explorer or a -1
+	// (indicating the use of another browser).
+	var version = -1; // Return value assumes failure.
+	if (navigator.appName == 'Microsoft Internet Explorer') {
+		var ua = navigator.userAgent;
+		var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+		if (re.exec(ua) != null) {
+			version = parseFloat(RegExp.$1);
+		}
+	}
+	return version;
+}
+
+var ieZoomSliderHeight = '150px';
+var ffZoomSliderHeight = '200px';
+
+ESRIConfig.zoomSliderHeight = ffZoomSliderHeight;
+
+var ieStreetTop = '-28px';
+//var ieStreetTop = '-101px';
+var ffStreetTop = '-35px';
+
+var streetTop = ffStreetTop;
+
+var ieNationTop = '33px';
+// var ieNationTop = '107px';
+var ffNationTop = '25px';
+
+var NationTop = ffNationTop;
+
+if (getInternetExplorerVersion() != -1) {
+	ESRIConfig.zoomSliderHeight = ieZoomSliderHeight;
+	streetTop = ieStreetTop;
+	NationTop = ieNationTop;
+}
+
+ESRIConfig.mapSliderStyle = {
+	left : '10px',
+	top : '25px',
+	height : ESRIConfig.zoomSliderHeight,
+	width : null
+};
+
+ESRIConfig.mapSliderLabelTickSize = 0;
+
+ESRIConfig.mapSliderLabelStyle = "font-family:Verdana; font-size:10pt; color:#000000;";
+
+ESRIConfig.mapSliderLabels = [
+		"<img src='http://www.wireless.att.com/coverageviewer/js/com/esri/app/images/Nation_Img.gif' onclick='centerMap(null, null, 0, false);' style='position:absolute; top: "
+				+ NationTop
+				+ "; left: -20px; z-index:1; cursor: pointer;' ></img>"
+				+ "<a href='javascript:centerMap(null, null, 0,false)' title='3000 miles' class='zoomA' style='z-index:1' >-</a>",
+		"<a href='javascript:centerMap(null, null, 1,false)' title='2500 miles' class='zoomA' >-</a>",
+		"<a href='javascript:centerMap(null, null, 2,false)' title='1300 miles' class='zoomA' >-</a>",
+		"<a href='javascript:centerMap(null, null, 3,false)' title='700 miles' class='zoomA' >-</a>",
+		"<a href='javascript:centerMap(null, null, 4,false)' title='350 miles' class='zoomA' >-</a>",
+		"<a href='javascript:centerMap(null, null, 5,false)' title='120 miles' class='zoomA' >-</a>",
+		"<a href='javascript:centerMap(null, null, 6,false)' title='60 miles' class='zoomA' >-</a>",
+		"<a href='javascript:centerMap(null, null, 7,false)' title='40 miles' class='zoomA' >-</a>",
+		"<a href='javascript:centerMap(null, null, 8,false)' title='20 miles' class='zoomA' >-</a>",
+		"<a href='javascript:centerMap(null, null, 9,false)' title='10 miles' class='zoomA' >-</a>",
+		"<a href='javascript:centerMap(null, null, 10,false)' title='2.5 miles' class='zoomA' >-</a>",
+		"<a href='javascript:centerMap(null, null, 11,false)' title='.66 miles (~3500 feet)' class='zoomA'>-</a>",
+		"<a href='javascript:centerMap(null, null, 12,false)' title='.33 miles (~1700 feet)' class='zoomA'>-</a>"
+				+ "<img src='http://www.wireless.att.com/coverageviewer/js/com/esri/app/images/Street_Img.gif' onclick='centerMap(null, null, ESRIDefaults.mapLODMaxIndex, false);' style='position:absolute; top:"
+				+ streetTop + "; left: -20px; cursor: pointer;'></img>" ];
+
+ESRIConfig.states = new Array();
+ESRIConfig.states['ALASKA'] = 'AK';
+ESRIConfig.states['ALABAMA'] = 'AL';
+ESRIConfig.states['ARKANSAS'] = 'AR';
+ESRIConfig.states['ARIZONA'] = 'AZ';
+ESRIConfig.states['CALIFORNIA'] = 'CA';
+ESRIConfig.states['COLORADO'] = 'CO';
+ESRIConfig.states['CONNECTICUT'] = 'CT';
+ESRIConfig.states['DISTRICT OF COLUMBIA'] = 'DC';
+ESRIConfig.states['Delaware'] = 'DE';
+ESRIConfig.states['FLORIDA'] = 'FL';
+ESRIConfig.states['GEORGIA'] = 'GA';
+ESRIConfig.states['HAWAII'] = 'HI';
+ESRIConfig.states['IOWA'] = 'IA';
+ESRIConfig.states['IDAHO'] = 'ID';
+ESRIConfig.states['ILLINOIS'] = 'IL';
+ESRIConfig.states['INDIANA'] = 'IN';
+ESRIConfig.states['KANSAS'] = 'KS';
+ESRIConfig.states['KENTUCKY'] = 'KY';
+ESRIConfig.states['LOUISIANA'] = 'LA';
+ESRIConfig.states['MASSACHUSETTS'] = 'MA';
+ESRIConfig.states['MARYLAND'] = 'MD';
+ESRIConfig.states['MAINE'] = 'ME';
+ESRIConfig.states['MICHIGAN'] = 'MI';
+ESRIConfig.states['MINNESOTA'] = 'MN';
+ESRIConfig.states['MISSOURI'] = 'MO';
+ESRIConfig.states['MISSISSIPPI'] = 'MS';
+ESRIConfig.states['MONTANA'] = 'MS';
+ESRIConfig.states['NORTH CAROLINA'] = 'NC';
+ESRIConfig.states['NORTH DAKOTA'] = 'ND';
+ESRIConfig.states['NEBRASKA'] = 'NE';
+ESRIConfig.states['NEW HAMPSHIRE'] = 'NH';
+ESRIConfig.states['NEW JERSEY'] = 'NJ';
+ESRIConfig.states['NEW MEXICO'] = 'NM';
+ESRIConfig.states['NEVADA'] = 'NV';
+ESRIConfig.states['NEW YORK'] = 'NY';
+ESRIConfig.states['OHIO'] = 'OH';
+ESRIConfig.states['OKLAHOMA'] = 'OK';
+ESRIConfig.states['OREGON'] = 'OR';
+ESRIConfig.states['PENNSYLVANIA'] = 'PA';
+ESRIConfig.states['PUERTO RICO'] = 'PR';
+ESRIConfig.states['RHODE ISLAND'] = 'RI';
+ESRIConfig.states['SOUTH CAROLINA'] = 'SC';
+ESRIConfig.states['SOUTH DAKOTA'] = 'SD';
+ESRIConfig.states['TENNESSEE'] = 'TN';
+ESRIConfig.states['TEXAS'] = 'TX';
+ESRIConfig.states['UTAH'] = 'UT';
+ESRIConfig.states['VIRGINA'] = 'VA';
+ESRIConfig.states['VIRGIN ISLANDS'] = 'VI';
+ESRIConfig.states['VERMONT'] = 'VT';
+ESRIConfig.states['WASHINGTON'] = 'WA';
+ESRIConfig.states['WISCONSIN'] = 'WI';
+ESRIConfig.states['WEST VIRGINIA'] = 'WV';
+ESRIConfig.states['WYOMING'] = 'WY';
