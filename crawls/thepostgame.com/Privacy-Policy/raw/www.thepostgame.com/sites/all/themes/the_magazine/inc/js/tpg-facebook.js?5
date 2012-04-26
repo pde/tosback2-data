@@ -1,0 +1,251 @@
+Drupal.TheMagazine.Facebook = {};
+
+var facebookSocialCookie = "tpg-facebook-social";
+var connected = false;
+
+Drupal.TheMagazine.Facebook.postRead = function(article_url) {
+    var apiurl = '/me/news.reads?article=' + article_url;
+
+    console.log('about to postRead, connected = ' + connected);
+    if (connected && Drupal.TheMagazine.Facebook.isFacebookSocialCookieOn()) {
+       console.log("Posting to fb: " + article_url);
+        FB.api(apiurl, 'post',
+            function(response) {
+                if (!response || response.error) {
+                    if (response.error) {
+                        console.log(response.error);
+                    }
+                    else {
+                        console.log('Error occured');
+                    }
+                } else {
+                    console.log('Post was successful! Action ID: ' + response.id);
+                }
+            });
+    }
+};
+
+Drupal.TheMagazine.Facebook.printReadData = function(data) {
+    var resultString = "";
+
+    $.each(data, function(i, item) {
+
+        resultString += '<li><a href="' + item.data.article.url + '">' + item.data.article.title + '</a> ' + " - " + jQuery.timeago(item.start_time) + '<a href="#" class="btn-close" onclick="Drupal.TheMagazine.Facebook.deleteRead(\'' + item.id + '\');return false;">remove</a></li>';
+    });
+
+    if (resultString == "") {
+        resultString = '<li><span>No current activity.</span></li>';
+    }
+    $('#fb-my-activity').html(resultString);
+};
+
+Drupal.TheMagazine.Facebook.listReads = function() {
+    var apiurl = '/me/news.reads?limit=10';
+
+    $('#fb-my-activity').html("<li><div class='fb-loading'></div></li>");
+    FB.api(apiurl, 'get',
+        function(response) {
+            if (!response || response.error) {
+                if (response.error) {
+                    console.log(response.error);
+                }
+                else {
+                    console.log('Error occured');
+                }
+            } else {
+                // here, we have response.data.  We need to loop over
+                // each of the json elements in the data array.
+                Drupal.TheMagazine.Facebook.printReadData(response.data);
+            }
+        });
+}
+
+Drupal.TheMagazine.Facebook.deleteRead = function(postId) {
+    $('#fb-my-activity').html("<li><div class='fb-loading'></div></li>");
+    FB.api(postId, 'delete', function(response) {
+        if (!response || response.error) {
+            console.log('Error occured');
+        }
+        else {
+            console.log('Post was deleted');
+            Drupal.TheMagazine.Facebook.listReads();
+        }
+    });
+};
+
+Drupal.TheMagazine.Facebook.doFacebookLogin = function() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+            console.log('Welcome!  Fetching your information.... ');
+            reloadPage();
+            //alert('got response');
+//            FB.api('/me', function(response) {
+//                console.log('Good to see you, ' + response.name + '.');
+            //alert(response.name);
+//            FB.logout(function(response) {
+//              console.log('Logged out.');
+//            });
+//            });
+        } else {
+            console.log('User cancelled login or did not fully authorize.');
+            //alert('not authorized')
+        }
+    }, {scope: 'publish_actions'});
+//      });
+};
+
+Drupal.TheMagazine.Facebook.doLogout = function() {
+    FB.logout(function(response) {
+        // user is now logged out
+        reloadPage();
+    });
+}
+
+Drupal.TheMagazine.Facebook.setActivityCallbackForContent = function(url) {
+    $(document).ready(function() {
+        window.setTimeout('Drupal.TheMagazine.Facebook.postRead("' + url + '");', 10000);
+    });
+};
+
+Drupal.TheMagazine.Facebook.checkFacepileIframe = function() {
+   console.log('iframe height: ' + $("#fb-social-callout-facepile iframe").height());
+   if ($("#fb-social-callout-facepile iframe").height() > 0)
+   {
+      console.log('iframe height gt 0, showing facepile');
+      // Show by removing class that hides the facepile thought bubble
+      $('#fb-social-callout-facepile').removeClass("fb-social-callout-facepile-hidden");
+   }
+   else
+   {
+      console.log('iframe height lt 0, do not show facepile');
+      $('#fb-social-callout-facepile').hide();
+   }
+};
+
+Drupal.TheMagazine.Facebook.processFacebookUserStatus = function(status) {
+   console.log('connected: ' + connected);
+    if (status === 'connected') {
+       connected = true;
+        // the user is logged in and connected to your
+        // app, and response.authResponse supplies
+        // the user's ID, a valid access token, a signed
+        // request, and the time the access token
+        // and signed request each expire
+        FB.api('/me', function(response) {
+            console.log('Good to see you, ' + response.first_name + '.');
+            $('#fb-first-name').text('Hi, ' + response.first_name);
+        });
+
+        FB.api('/me/picture', function(response) {
+            console.log('Got a picture, ' + response + '.');
+            $("#fb-picture").attr("src", response);
+
+        });
+
+        // Now, get the user's picture.
+        Drupal.TheMagazine.Facebook.showUserInfoSocialIndicator();
+        $('#fb-user-info').show();
+        $('#fb-activity-div').show();
+        $('#fb-article-facepile').show();
+    } else if (status === 'not_authorized') {
+        // the user is logged in to Facebook,
+        //but not connected to the app
+        $('#fb-article-facepile').show();
+        $('#fb-social-callout-div').show();
+
+        window.setTimeout('Drupal.TheMagazine.Facebook.checkFacepileIframe();', 5000);
+       // Here, the user is logged into facebook, but they haven't connected yet.  We can show the
+       // facepile only if they have friends on the site.
+//       var apiurl = '/fql?q=SELECT uid FROM user WHERE has_added_app%3d1 and uid IN (SELECT uid2 FROM friend WHERE uid1%3dme())';
+//
+//       console.log('about to call query');
+//
+//       FB.api(apiurl,'get', function(response) {
+//           if (response.error)
+//           {
+//               console.log(response.error);
+//           }
+//           else
+//           {
+//               console.log('got data, size: ' + response.data.length);
+//               if (response.data.length == 0)
+//               {
+//                  $('#fb-social-callout-facepile').show();
+//               }
+//               $.each(response.data, function(i, item){
+//                   console.log('uid: ' + item.uid);
+//               });
+//           }
+//       });
+
+    } else {
+        // User not logged into facebook
+        $('#fb-social-callout-div').show();
+    }
+   console.log('connected: ' + connected);
+
+};
+
+Drupal.TheMagazine.Facebook.setFacebookSocialCookieOn = function() {
+    $.cookie(facebookSocialCookie, "on", {path: '/', expires: 3650});
+};
+Drupal.TheMagazine.Facebook.setFacebookSocialCookieOff = function() {
+    $.cookie(facebookSocialCookie, "off", {path: '/', expires: 3650});
+};
+Drupal.TheMagazine.Facebook.isFacebookSocialCookieOn = function() {
+    var facebookSocialCookieValue = $.cookie(facebookSocialCookie);
+
+    // If cookie doesn't exist, create it, set it to on and return true
+    if (facebookSocialCookieValue == null) {
+        Drupal.TheMagazine.Facebook.setFacebookSocialCookieOn();
+        return true;
+    }
+
+    if (facebookSocialCookieValue && facebookSocialCookieValue == "on") {
+        return true;
+    }
+    else {
+        return false;
+    }
+
+    return true;
+};
+
+Drupal.TheMagazine.Facebook.showUserInfoSocialIndicatorOn = function() {
+    $('#fb-social-on').show();
+    $('#fb-social-off').hide();
+};
+
+Drupal.TheMagazine.Facebook.showUserInfoSocialIndicatorOff = function() {
+    $('#fb-social-off').show();
+    $('#fb-social-on').hide();
+};
+
+Drupal.TheMagazine.Facebook.showUserInfoSocialIndicator = function() {
+    if (Drupal.TheMagazine.Facebook.isFacebookSocialCookieOn()) {
+        Drupal.TheMagazine.Facebook.showUserInfoSocialIndicatorOn();
+    }
+    else {
+        Drupal.TheMagazine.Facebook.showUserInfoSocialIndicatorOff();
+    }
+};
+
+Drupal.TheMagazine.Facebook.toggleUserInfoSocialIndicator = function() {
+    if (Drupal.TheMagazine.Facebook.isFacebookSocialCookieOn()) {
+        Drupal.TheMagazine.Facebook.showUserInfoSocialIndicatorOff();
+    }
+    else {
+        Drupal.TheMagazine.Facebook.showUserInfoSocialIndicatorOn();
+    }
+};
+
+Drupal.TheMagazine.Facebook.toggleFacebookSocialCookie = function() {
+    if (Drupal.TheMagazine.Facebook.isFacebookSocialCookieOn()) {
+        Drupal.TheMagazine.Facebook.setFacebookSocialCookieOff();
+    }
+    else {
+        Drupal.TheMagazine.Facebook.setFacebookSocialCookieOn();
+    }
+
+    Drupal.TheMagazine.Facebook.showUserInfoSocialIndicator();
+};

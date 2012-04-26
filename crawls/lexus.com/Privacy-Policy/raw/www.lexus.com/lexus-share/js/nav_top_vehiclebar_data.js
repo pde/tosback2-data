@@ -211,7 +211,7 @@
 	 
     
     newNavLexusLU.categoryModelRX= 'RX';
-    newNavLexusLU.categoryModelPriceRX= 'Starting at $39,075';
+    newNavLexusLU.categoryModelPriceRX= 'Starting at $39,310';
     newNavLexusLU.categoryModelEndPriceRX= '';
     newNavLexusLU.categoryModelCodeRX= '9499';
     
@@ -278,7 +278,7 @@
 	 
     
     newNavLexusH.categoryModelRXh= 'RXh';
-    newNavLexusH.categoryModelPriceRXh= 'Starting at $45,235';
+    newNavLexusH.categoryModelPriceRXh= 'Starting at $45,910';
     newNavLexusH.categoryModelEndPriceRXh= '';
     newNavLexusH.categoryModelCodeRXh= '9444';
     

@@ -7,6 +7,7 @@
 dojo.addOnLoad(function () {
   popup.loadPopups([
     { id: '20HOL',               title: 'Terms &amp; Conditions'                                         },
+    { id: '20off50auto',         title: 'Terms &amp; Conditions', name: 'twentyofffiftyauto'             },
     { id: 'AAA',                 title: 'Terms &amp; Conditions'                                         },
     { id: 'AMEX',                title: 'AMEX Subscriptions Info'                                        },
     { id: 'AMEXFSD',             title: 'FREE Standard Delivery on your entire product purchase'         },

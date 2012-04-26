@@ -72,7 +72,7 @@ End Function
     <script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
     <script src="../../ak.buy.com/buy_assets/scripts/math.uuid.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" src="../../ak.buy.com/buy_assets/scripts/global-v1.js%3F011212"></script>
+    <script type="text/javascript" src="../../ak.buy.com/buy_assets/scripts/global-v1.js%3F105"></script>
    <script language="javascript" src="../../ak.buy.com/buy_assets/scripts/headerscript_v1.js%3F102810a" type="text/javascript"></script>
      
     
@@ -107,8 +107,8 @@ if ((GetCookie("Household") != "") && (GetCookie("Household") != "null")) {
 		
 		<meta name="description" content="Find, shop for and buy Privacy Policy at buy.com" />
 	
-	<meta name="time" content="4/15/2012 8:29:19 AM" />
-	<meta name="web" content="77" />
+	<meta name="time" content="4/26/2012 2:09:50 PM" />
+	<meta name="web" content="141" />
 	<meta name="client" content="" />
 	<meta name="cache" content="208.48.17.173" />
 
@@ -195,7 +195,7 @@ document.domain = "buy.com";
 <link type="text/css" rel="Stylesheet" href="../../ak.buy.com/buy_assets/styles/global-v2.css" />
 
 
-    <link media="all" rel="stylesheet" type="text/css" href="../../ak.buy.com/buy_assets/styles/bdc_all_noreset.css%3Fv30.css" />
+    <link media="all" rel="stylesheet" type="text/css" href="../../ak.buy.com/buy_assets/styles/bdc_all_noreset.css%3Fv113.css" />
 
 <link rel="stylesheet" href="../../ak.buy.com/buy_assets/styles/buystyle.css%3F102008.css" type="text/css" />
 
@@ -210,53 +210,94 @@ document.domain = "buy.com";
 
 
 <div id="header">
-    <div class="header-left">
-        <a href="http://www.buy.com" onclick="s.tl(true,'o','header_logo');"><img src="../../ak.buy.com/buy_assets/v9/header/logo4.gif" border="0" alt="Buy.com" /></a>
-    </div>
-    <div class="header-right">
-        <!--from header-content-->
-        <div class="user-holder">
-	        <!--user-menu-->
-	        <div class="user-menu">
-		        <div class="user-menu-holder1">
-                    <ul class="top-menu">
-	                    <li id="headerSignIn" class="header-sign-in">&nbsp;</li>
-                        <li id="headerSuperPoint" class="header-points">&nbsp;</li>
-                        <li class="header-phone">1-800-800-0800</li>
-                        <li class="li-drop">
-                            <a href="javascript:void(0);" class="account-drop-link">My Account</a>
-                            <div id="headerAccountDropDown" class="header-account1">
-                                <div class="account-link" onclick="s.tl(this,'o','header_ddAccount_MyAccount'); window.location='https://ssl.buy.com/AC/MyAccount.aspx';">My Account</div>
-                                <div class="account-link" onclick="s.tl(this,'o','header_ddAccount_TrackOrder'); window.location='https://ssl.buy.com/AC/Account/OrderHistory.aspx';">Track Your Order</div>
-	                            <div class="account-link" onclick="s.tl(this,'o','header_ddAccount_PointsBalance'); window.location='https://ssl.buy.com/AC/Account/SuperPoints.aspx';">Super Point Balance</div>
-                                <div class="account-link" onclick="s.tl(this,'o','header_ddAccount_WishList'); window.location='https://ssl.buy.com/AC/Wishlist.aspx';">Wish List</div>
-                                <div id="headerAccountLogIO" class="account-link drop-link-bottom"></div>
-                            </div>
-                        </li>
-	                    <li class="li-drop">
-	                        <a href="javascript:void(0);" class="help-drop-link">Help</a>
-	                        <div id="headerHelpDropDown" class="header-help1">
-                                <div class="help-link" onclick="s.tl(this,'o','header_ddhelp_Help'); window.location='http://www.buy.com/help/welcome-to-help/67211.html';">Help Center</div>
-                                <div class="help-link drop-link-bottom" onclick="s.tl(this,'o','header_ddhelp_CS'); window.location='https://ssl.buy.com/ac/contact/contactlogin.aspx';">Customer Service</div>
-	                        </div>
-	                    </li>
-                    </ul>
-                    <span class="follow">&nbsp;</span>
-			        <a href="http://www.facebook.com/buy.com" onclick="s.tl(this,'o','header_facebook_follow');" class="facebook">facebook</a>
-                    <a href="http://twitter.com/Buycom" onclick="s.tl(this,'o','header_twitter_follow');" class="twitter">twitter</a>
-		        </div>
-	        </div>
-        </div>
+    <div class="header-background">
+        <div class="header-left2">
+            <!--<a href="http://www.buy.com" onclick="s.tl(true,'o','header_logo');"><img src="http://ak.buy.com/buy_assets/v9/header/logo4.gif" border="0" alt="Buy.com" /></a>-->
+            <script type="text/javascript" language="javascript">
+                try
+                {
+                    var logosrc = "http://ak.buy.com/buy_assets/v9/header/";
+                    var logoomniture = "";
+                    var randCookie = 0;
+                    var om_ABtest = "buylogoA";
 
-        <div class="buy-header-box">
-	        <div class="nav-holder">
-                <div class="background-container">
-                    
+                    if (GetCookie('altlogo') != 'null')
+                    {
+                        randCookie = GetCookie('altlogo');
+                        parseInt(randCookie);
+                    }
+                    else
+                    {
+                        var d = new Date();
+                        d.setMonth(d.getMonth() + 1);
+                        randCookie = Math.ceil(Math.random() * 100)
+                        document.cookie = "altlogo=" + randCookie + "; expires=" + d.toGMTString() + "; domain=buy.com; path=/";
+                    }
+
+                    if (randCookie > 50)
+                    {
+                        logosrc += "logo4.gif";
+                        logoomniture = "header_logo";
+                    }
+                    else
+                    {
+                        logosrc += "logo6.gif";
+                        logoomniture = "header_logo_new";
+                        om_ABtest = "buylogoB";
+                    }
+
+                    document.write("<a href="http://www.buy.com/corp/\&quot;http://www.buy.com\&quot;" onclick=\"s.tl(true,'o','" + logoomniture + "');\"><img src="http://www.buy.com/corp/\&quot;&quot;" + logosrc + "\" border=\"0\" alt=\"Buy.com\" /></a>");
+                }
+                catch (e)
+                {
+                    document.write("<a href="http://www.buy.com/corp/\&quot;http://www.buy.com\&quot;" onclick=\"s.tl(true,'o','header_logo');\"><img src="http://www.buy.com/corp/\&quot;http://ak.buy.com/buy_assets/v9/header/logo4.gif\&quot;" border=\"0\" alt=\"Buy.com\" /></a>");
+                }
+            </script>
+        </div>
+        <div class="header-right2">
+            <!--from header-content-->
+            <div class="user-holder">
+	            <!--user-menu-->
+	            <div class="user-menu">
+		            <div class="user-menu-holder1">
+                        <ul class="top-menu">
+                            <li id="headerSuperPoint" class="header-points">&nbsp;</li>
+                            <li class="header-phone">1-800-800-0800</li>
+	                        <li id="headerSignIn" class="header-sign-in">&nbsp;</li>
+                            <li class="li-drop">
+                                <a href="javascript:void(0);" class="account-drop-link">My Account</a>
+                                <div id="headerAccountDropDown" class="header-account1">
+                                    <div class="account-link" onclick="s.tl(this,'o','header_ddAccount_MyAccount'); window.location='https://ssl.buy.com/AC/MyAccount.aspx';">My Account</div>
+                                    <div class="account-link" onclick="s.tl(this,'o','header_ddAccount_TrackOrder'); window.location='https://ssl.buy.com/AC/Account/OrderHistory.aspx';">Track Your Order</div>
+	                                <div class="account-link" onclick="s.tl(this,'o','header_ddAccount_PointsBalance'); window.location='https://ssl.buy.com/AC/Account/SuperPoints.aspx';">Super Point Balance</div>
+                                    <div class="account-link" onclick="s.tl(this,'o','header_ddAccount_WishList'); window.location='https://ssl.buy.com/AC/Wishlist.aspx';">Wish List</div>
+                                    <div id="headerAccountLogIO" class="account-link drop-link-bottom"></div>
+                                </div>
+                            </li>
+	                        <li class="li-drop">
+	                            <a href="javascript:void(0);" class="help-drop-link">Help</a>
+	                            <div id="headerHelpDropDown" class="header-help1">
+                                    <div class="help-link" onclick="s.tl(this,'o','header_ddhelp_Help'); window.location='http://www.buy.com/help/welcome-to-help/67211.html';">Help Center</div>
+                                    <div class="help-link drop-link-bottom" onclick="s.tl(this,'o','header_ddhelp_CS'); window.location='https://ssl.buy.com/ac/contact/contactlogin.aspx';">Customer Service</div>
+	                            </div>
+	                        </li>
+                        </ul>
+                        <span class="follow">&nbsp;</span>
+			            <a href="http://www.facebook.com/buy.com" onclick="s.tl(this,'o','header_facebook_follow');" class="facebook">facebook</a>
+                        <a href="http://twitter.com/Buycom" onclick="s.tl(this,'o','header_twitter_follow');" class="twitter">twitter</a>
+		            </div>
+	            </div>
+            </div>
+
+            <div class="buy-header-box2">
+	            <div class="nav-holder">
+                    <div class="background-container2">
+                        
 
 <form name="searchbox" action="http://www.buy.com/retail/GlobalSearchAction.asp" target="_top" class="search-form">
     <fieldset>
 	    <div class="search-text">
-            <div class="placeHolderContainer"><label id="placeHolder" class="placeHolder" for="qu">Search by Keyword or Item#</label><input type="text" name="qu" class="autocomplete-field search" value="" /></div>
+            <div class="placeHolderContainer"><label id="placeHolder" class="placeHolder" for="qu">Type to Search for Products</label><input type="text" name="qu" class="autocomplete-field search" value="" /></div>
 		    <div class="hint">
 			    <div class="c">
 				    <strong class="title">Suggested Searches</strong>
@@ -309,7 +350,7 @@ document.domain = "buy.com";
 </select>
     </div>
     <div class="search-but">
-        <input type="image" src="../../ak.buy.com/buy_assets/v9/header/new/search.png" />
+        <input type="image" src="../../ak.buy.com/buy_assets/v9/header/new/search2.png" />
     </div>
     <input type="hidden" name="suggest" class="suggest" value="" />
     <input type="hidden" name="display" value="" />
@@ -374,40 +415,23 @@ document.domain = "buy.com";
     })
 </script>    
 	
-			        <div class="cart-container" style="width: 0px;">
-			            <div id="mycart-holder" class="cart-background" onclick="loadCartItems(); s.tl(true,'o','header_cart_view');">
-                            <div id="cart-item-count" class="item-count"></div>
+			            <div class="cart-container2" style="width: 0px;">
+			                <div id="mycart-holder" class="cart-background" onclick="loadCartItems(); s.tl(true,'o','header_cart_view');">
+                                <div id="cart-item-count" class="item-count"></div>
+		                    </div>
+                            <div class="cart-items-container"><div id="divCartItemsContainer" class="cart-items-border-container"><div class="close" style="right: 10px; top: 10px; cursor: pointer;" onclick="$('#divCartItemsContainer').slideUp();">X</div><div class="cart-items-border-top"></div><div class="cart-items-border-middle" id="cartItems"></div><div class="cart-items-border-bottom"></div></div></div>
 		                </div>
-                        <div class="cart-items-container"><div id="divCartItemsContainer" class="cart-items-border-container"><div class="close" style="right: 10px; top: 10px; cursor: pointer;" onclick="$('#divCartItemsContainer').slideUp();">X</div><div class="cart-items-border-top"></div><div class="cart-items-border-middle" id="cartItems"></div><div class="cart-items-border-bottom"></div></div></div>
-		            </div>
-                </div>
-                <div id="headerDropDown" class="header-menu-container"></div>
-	        </div>
-        </div>
-    </div>
-    <div class="ads-slider-container">
-    <div class="buy-slider-container">
-        <a id="linkPrev" href="privacy_policy_complete.asp.html#" onclick="s.tl(true,'o','headerslider_previous');" class="prev"></a>
+                    </div>
+                    <div class="ads-slider-container2">
+    <div class="buy-slider-container2">
         <div class="buy-slider">
 	        <ul></ul>
         </div>
-        <a id="linkNext" href="privacy_policy_complete.asp.html#" onclick="s.tl(true,'o','headerslider_next');" class="next"></a>
-    </div>
-    <div class="header-sign-up">
-        <div class="close" onclick="closeHeaderSignUp();">X</div>
-        <div class="title">Sign Up For Our Best Deals Alert!</div>
-        <form name="miniform" action="http://prefctr.na.epidm.net/BuyCom/BC_miniform.asp" method="post" onsubmit="return checkfields();" class="sign-form">
-            <fieldset>
-                <label>Enter your email address:</label>
-                <span class="text"><input name="EmailAddr" type="text" /></span>
-                <input type="submit" class="btn" value="Submit!" name="Submit" />
-            </fieldset>
-        </form>
     </div>
 </div>
 
-<script type="text/javascript" src="../../ak.buy.com/buy_assets/scripts/BuySlider.min.js%3Fv3"></script>
-<script type="text/javascript" src="../../ak.buy.com/buy_assets/scripts/bdc_header_slider_links.js%3Fv1"></script>
+<script type="text/javascript" src="../../ak.buy.com/buy_assets/scripts/BuySlider.min.js%3Fv100"></script>
+<script type="text/javascript" src="../../ak.buy.com/buy_assets/scripts/bdc_header_slider_small_links.js%3Fv1"></script>
 <script type="text/javascript">
     $(document).ready(function ()
     {
@@ -424,29 +448,61 @@ document.domain = "buy.com";
 				else
 					list += '<li><div class="size"><a href="http://www.buy.com/corp/'&#32;+&#32;header_slider_items[i].href&#32;+&#32;'" onclick="s.tl(this,\'o\',\'' + header_slider_items[i].onclick + '\');"' + (header_slider_items[i].linkTarget ? header_slider_items[i].linkTarget : '') + '><img src="http://www.buy.com/corp/'&#32;+&#32;header_slider_items[i].src&#32;+&#32;'" border="0">' + (header_slider_items[i].extraContent ? header_slider_items[i].extraContent : '') + '</a></div></li>';
 			}
-			$("#header .ads-slider-container .buy-slider ul").append(list);
+			$("#header .ads-slider-container2 .buy-slider ul").append(list);
 
 			//create slider
-			var $slider = $("#header .ads-slider-container .buy-slider").BuySlider({
-				prev: ".buy-slider-container a.prev",
-				next: ".buy-slider-container a.next",
-				pauseIn: ".buy-slider-container",
+			var $slider = $("#header .ads-slider-container2 .buy-slider").BuySlider({
+				prev: ".buy-slider-container2 a.prev",
+				next: ".buy-slider-container2 a.next",
+				pauseIn: ".buy-slider-container2",
 				auto: 10000,
 				speed: 1000,
-				numberSlidesVisible: 4,
+				numberSlidesVisible: 1,
 				loop: true
 			});
 		}
 	});
 </script>
-    <div id="signUpOverlay" class="header-sign-up-overlay" style="display:none;"></div>
+	            </div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div id="divMenuContainer" class="header-menu-container2"></div>
+        <div id="signUpOverlay" class="header-sign-up-overlay" style="display:none;"></div>
+        <div class="header-sign-up">
+            <div class="close" onclick="closeHeaderSignUp();">X</div>
+            <div class="title">Sign Up For Our Best Deals Alert!</div>
+            <form name="miniform" action="http://prefctr.na.epidm.net/BuyCom/BC_miniform.asp" method="post" onsubmit="return checkfields2();" class="sign-form">
+                <fieldset>
+                    <label>Enter your email address:</label>
+                    <span class="text"><input name="EmailAddr" type="text" /></span>
+                    <input type="submit" class="btn" value="Submit!" name="Submit" />
+                </fieldset>
+            </form>
+        </div>
+    </div>
 </div>
 
 <div class="header-ad-frame"><iframe id="HeaderAd" src="../ads_iframe.asp%3Foassite=buy.com%252FHelp%252FGuarantees%252FPrivacyPolicy&amp;pagepos=&amp;pos=x70.html" width="0" height="0" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" allowTransparency="true" style="background:transparent"></iframe></div>
 
 <script type="text/javascript">
-    function loadCartItems() {
-        if ($("#divCartItemsContainer:visible").length == 0) {
+    $(document).ready(function()
+    {
+        $('#divMenuContainer').load('http://www.buy.com/links/bdc_header_links2.html?v=1', function(data)
+        {
+            $('#main-nav').mainNav({
+                //custom parameters
+                showDelay: 200,
+                hideDelay: 200,
+                fadeSpeed: 200
+            });
+        });
+    });
+
+    function loadCartItems()
+    {
+        if ($("#divCartItemsContainer:visible").length == 0)
+        {
             var guid = "?banana=" + guidGenerator();
             $.get("http://www.buy.com/ct/cart/cart.aspx" + guid, function(data) { $("#cartItems").html(data); $("#divCartItemsContainer").slideDown(); });
         }
@@ -466,7 +522,7 @@ document.domain = "buy.com";
                 else if (name == "account")
                     selector = "#headerAccountDropDown";
                 else if (name == "signup")
-                    selector = "#header .header-sign-up";
+                    selector = ".header-sign-up";
                 var targ;
                 if (e.target) targ = e.target;
                 else if (e.srcElement) targ = e.srcElement;
@@ -479,7 +535,7 @@ document.domain = "buy.com";
                         $('#headerAccountDropDown').hide();
                     else if (name == "signup")
                     {
-                        $("#header .header-sign-up").hide();
+                        $(".header-sign-up").hide();
                         $('#signUpOverlay').hide();
                     }
                     $("body").unbind("click");
@@ -493,69 +549,80 @@ document.domain = "buy.com";
         if ($("#signUpOverlay").filter(":visible").length == 0)
         {
             $("#signUpOverlay").show();
-            $("#header .header-sign-up").fadeIn();
+            $(".header-sign-up").fadeIn();
             var temp = window.setTimeout(function() { addHeaderPopupFocusCheck("signup"); }, 100);
         }
     }
 
     function closeHeaderSignUp()
     {
-        $("#header .header-sign-up").hide();
+        $(".header-sign-up").hide();
         $("#signUpOverlay").hide();
         $("body").unbind("click");
     }
 
-    function guidGenerator() {
-        var S4 = function() {
+    function guidGenerator()
+    {
+        var S4 = function()
+        {
             return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
         };
         return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
     }
 
-    $(function() {
+    $(function()
+    {
         var HeaderCartInfo, HeaderCartData;
         HeaderCartInfo = GetCookie('headerTotal');
         HeaderCartData = HeaderCartInfo.split("|");
 
         if (mac && navigator.userAgent.indexOf("MSIE") > -1) { }
-        else {
-            if (HeaderCartInfo != "null" && HeaderCartData[1] != 0) {
+        else
+        {
+            if (HeaderCartInfo != "null" && HeaderCartData[1] != 0)
+            {
                 if ($('#viewCartItems').length != 0)
                     $('#viewCartItems').show();
                 $('#cart-item-count').html(HeaderCartData[1]);
                 $("#mycart-holder").removeClass("cart-background-empty").addClass("cart-background");
             }
-            else {
+            else
+            {
                 $('#cart-item-count').html(0);
                 $("#mycart-holder").removeClass("cart-background").addClass("cart-background-empty");
             }
         }
 
         var buyCSRand = rand2(100);
-        if (buyCSRand > 70)
+        if (buyCSRand > 50)
+        {
             $("#header .header-phone").html("1-800-746-7688");
+            $(".footer-cs-phone-container .footer-cs-phone").html("1-800-746-7688");
+        }
 
-        $.get('http://www.buy.com/links/bdc_header_links.html?v=5', function(data) {
-            $('#headerDropDown').html(data);
-        });
-
-        if (GetCookie('GuestBasketSession') != 'null') {
+        if (GetCookie('GuestBasketSession') != 'null')
+        {
             $('#headerSignIn').html("<span class=\"name\"><b>Hello, <A href="http://www.buy.com/corp/\&quot;https://ssl.buy.com/AC/loginAccount.aspx?ReturnUrl=myaccount.aspx\&quot;" onclick=\"s.tl(this,'o','header_SignIn');\" target=\"_top\">Guest!</a></b></span>");
-            $("#headerAccountLogIO").html("Sign In").click(function() {
+            $("#headerAccountLogIO").html("Sign In").click(function()
+            {
                 s.tl(this, 'o', 'header_ddAccount_SignIn');
                 window.location = 'https://ssl.buy.com/AC/loginAccount.aspx?ReturnUrl=myaccount.aspx';
             });
         }
-        else if (GetCookie('buyname') != 'null') {
+        else if (GetCookie('buyname') != 'null')
+        {
             $('#headerSignIn').html("<span class=\"name\"><b>Hello, <A href="http://www.buy.com/corp/\&quot;https://ssl.buy.com/AC/MyAccount.aspx\&quot;" onclick=\"s.tl(this,'o','header_SignIn');\" target=\"_top\">" + formatCustomerName(GetCookie("buyname"), 9) + "!</a></b>&nbsp;<a href="http://www.buy.com/corp/\&quot;javascript:deleteBasketCookie(-1);\&quot;" style=\"text-decoration:underline;\" target=\"_top\">(Not " + formatCustomerName(GetCookie("buyname"), 9) + "?)</a></span>");
-            $("#headerAccountLogIO").html("Sign Out").click(function() {
+            $("#headerAccountLogIO").html("Sign Out").click(function()
+            {
                 s.tl(this, 'o', 'header_ddAccount_SignIn');
                 deleteBasketCookie(-1);
             });
         }
-        else {
+        else
+        {
             $('#headerSignIn').html("<span class=\"name\"><b>Hello, <A href="http://www.buy.com/corp/\&quot;https://ssl.buy.com/AC/loginAccount.aspx?ReturnUrl=myaccount.aspx\&quot;" onclick=\"s.tl(this,'o','header_SignIn');\" target=\"_top\">Sign In!</a></b></span>");
-            $("#headerAccountLogIO").html("Sign In").click(function() {
+            $("#headerAccountLogIO").html("Sign In").click(function()
+            {
                 s.tl(this, 'o', 'header_ddAccount_SignIn');
                 window.location = 'https://ssl.buy.com/AC/loginAccount.aspx?ReturnUrl=myaccount.aspx';
             });
@@ -564,17 +631,21 @@ document.domain = "buy.com";
         var superptsCookie = GetCookie('buyrs');
         var superptsShopper = GetCookie('BuyShopperID');
         var superptsVal = "0";
-        if (GetCookie('buyname') != 'null') {
-            if (superptsCookie != "null") {
+        if (GetCookie('buyname') != 'null')
+        {
+            if (superptsCookie != "null")
+            {
                 superptsVal = superptsCookie;
                 if (superptsVal != "0")
                     $('#headerSuperPoint').html("<div class=\"superpts-holder\"><span class=\"superpts\"><a href="http://www.buy.com/corp/\&quot;https://ssl.buy.com/AC/Account/SuperPoints.aspx\&quot;" onclick=\"s.tl(this,'o','header_Points_ViewPoints');\" class=\"alert\">You Have <b>" + superptsVal + "</b> Super Points!</a></span></div>");
                 else
                     $('#headerSuperPoint').html("<div class=\"superpts-holder\"><span class=\"superpts\"><a href="http://www.buy.com/corp/\&quot;http://www.buy.com/ct/Rakutensuperpoint/default.aspx\&quot;" onclick=\"s.tl(this,'o','header_Points_GetPoints');\" class=\"alert\">Get Super Points</a></span></div>");
             }
-            else {
+            else
+            {
                 $.getJSON("https://ssl.buy.com/AC/rsservice.asmx/GetPoints?id=" + superptsShopper + "&callback=?",
-                function(data) {
+                function(data)
+                {
                     superptsVal = data.Available;
 
                     var superptsDate = new Date();
@@ -587,25 +658,29 @@ document.domain = "buy.com";
                         $('#headerSuperPoint').html("<div class=\"superpts-holder\"><span class=\"superpts\"><a href="http://www.buy.com/corp/\&quot;http://www.buy.com/ct/Rakutensuperpoint/default.aspx\&quot;" onclick=\"s.tl(this,'o','header_Points_GetPoints');\" class=\"alert\">Get Super Points</a></span></div>");
                 });
             }
-        } else {
+        } else
+        {
             $('#headerSuperPoint').html("<div class=\"superpts-holder\"><span class=\"superpts\"><a href="http://www.buy.com/corp/\&quot;http://www.buy.com/ct/Rakutensuperpoint/default.aspx\&quot;" onclick=\"s.tl(this,'o','header_Points_GetPoints');\" class=\"alert\">Get Super Points</a></span></div>");
         }
     });
 
-     /****************************************************************************************************************
-     JS FUNCTION OVERRIDES
-     ****************************************************************************************************************/
+    /****************************************************************************************************************
+    JS FUNCTION OVERRIDES
+    ****************************************************************************************************************/
 
-     function initDrop() {
-         /* override the function that changes the height for the nav category menus */
-     }
+    function initDrop()
+    {
+        /* override the function that changes the height for the nav category menus */
+    }
 
-     function prAnimateCart(count) {
-         if (count > 0) {
-             $('#cart-item-count').html(count);
-             $("#mycart-holder").removeClass("cart-background-empty").addClass("cart-background");
-         }
-     }
+    function prAnimateCart(count)
+    {
+        if (count > 0)
+        {
+            $('#cart-item-count').html(count);
+            $("#mycart-holder").removeClass("cart-background-empty").addClass("cart-background");
+        }
+    }
 </script>
 
 <div class="mainContainer" style="width: 1000px; margin-left:auto; margin-right:auto;">
@@ -671,7 +746,7 @@ document.domain = "buy.com";
 			}
 			
 		    //alert(BUY.ShippingPrice.enabled);
-			document.write("<img src=\"http://traffic.buyservices.com/traffic.asmx/InsertEvent4?EventType=CL&EID=10000&ShopperId=" + sid + "&IP=77&referrer=" + pid + "&Url=%2Fcorp%2Fprivacy%5Fpolicy%5Fcomplete%2Easp%3F%26partitionID%3D%26category%3D" + shippingTestQSParam + gsaParam + "\" width=\"1\" height=\"1\" border=\"0\">");
+			document.write("<img src=\"http://traffic.buyservices.com/traffic.asmx/InsertEvent4?EventType=CL&EID=10000&ShopperId=" + sid + "&IP=141&referrer=" + pid + "&Url=%2Fcorp%2Fprivacy%5Fpolicy%5Fcomplete%2Easp%3F%26partitionID%3D%26category%3D" + shippingTestQSParam + gsaParam + "\" width=\"1\" height=\"1\" border=\"0\">");
 			
 			function GetRefererWebAddress()
 			{
@@ -1050,45 +1125,56 @@ m_atc8 = m_atc8.replace(/qu=/,"");
 
 
             
-            <div style="background:#f5f9ff url(../../ak.buy.com/buy_assets/v9/header/bg-info.gif) no-repeat 50% 0; padding:35px 0 0"></div>
-
             <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
                 <tr>
                     <td align="middle"><div style="margin-top:15px;">
-                        <table width="520" cellpadding="0" cellspacing="0" border="0" align="center">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" style="background-color: #ffffff; padding-top: 15px;">
                             <tr>
-                                <td align="center" valign="middle"><div style="padding-bottom : 20px;"><a rel="nofollow" href= "http://www.la.bbb.org/Business-Report/Buycom-Inc-13065212" class="smBlkText" target="_new"><img src="../../ak.buy.com/buy_assets/corp/bbb.gif" height="73" width="197" border="0" alt="BBB" /></a></div></td>
-                                <td align="center" valign="middle">
-                                    <div style="padding-bottom : 20px;">
-                                        <a rel="nofollow" class="br-button">
-                                            <img src="../../medals.bizrate.com/medals/dynamic/18893_medal.gif" width="125" height="73" border="0" usemap="#18893_medal" alt="See Buy.com Reviews at Bizrate.com"/>
-                                            <map name="18893_medal">
-                                                <area shape="poly" coords="1,0,1,72,67,72,67,49,124,49,124,0" href="http://www.bizrate.com/ratings_guide/merchant_detail__mid--18893.html?rf=sur" title="See Buy.com Reviews at Bizrate.com" target="_blank"/>
-                                                <area shape="rect" coords="68,50,124,72" href="http://www.bizrate.com/?rf=sur" title="Bizrate" target="_blank"/>
-                                            </map>
-                                        </a>
+                                <td style="font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
+                                    <div class="footerCorporateLinks">
+                                        Copyright 1997-2012 Buy.com Inc., All rights reserved.
+                                        <br />
+                                        <a rel="nofollow" href="privacy_policy_complete.asp.html">Buy.com Privacy Policy</a> <a rel="nofollow" href="http://www.buy.com/corp/legal.asp">Terms of Use</a>
+                                    </div>
+                                    <div class="footer-cs-phone-container">
+                                        Call Us Free: <span class="footer-cs-phone">1-800-800-0800</span>
+                                    </div>
+                                    <div class="footer-social-icon">
+                                        <a rel="nofollow" href="http://twitter.com/Buycom" target="_blank"><img src="../../ak.buy.com/buy_assets/v10/footer/icn_twitter.png" alt="Twitter" title="Twitter" /></a>
+                                    </div>
+                                    <div class="footer-social-icon">
+                                        <a rel="nofollow" href="http://www.facebook.com/buycom" target="_blank"><img src="../../ak.buy.com/buy_assets/v10/footer/icn_facebook.png" alt="Facebook" title="Facebook" /></a>
+                                    </div>
+                                    <div class="footer-social-icon">
+                                        <a rel="nofollow" href="http://www.linkedin.com/company/buy.com" target="_blank"><img src="../../ak.buy.com/buy_assets/v10/footer/icn_linkedin.png" alt="LinkedIn" title="LinkedIn" /></a>
+                                    </div>
+                                    <div class="footer-social-icon">
+                                        <a rel="nofollow" href="https://ssl.buy.com/ac/contact/contactlogin.aspx" target="_blank"><img src="../../ak.buy.com/buy_assets/v10/footer/icn_email.png" alt="Email" title="Email" /></a>
+                                    </div>
+                                    <div style="float: right;">
+			                            <ul class="footerlist partner-list2" id="footerAwards" style="padding: 0;">
+                                            <li><a rel="nofollow" href="http://www.la.bbb.org/Business-Report/Buycom-Inc-13065212"><img width="93" height="38" src="../../ak.buy.com/buy_assets/v10/footer/icn_bbb.png" alt="BBB" /></a></li>
+                                            <li>
+                                                <a rel="nofollow" class="br-button">
+                                                    <img src="../../medals.bizrate.com/medals/dynamic/small/18893_medal.gif" width="112" height="37" border="0" usemap="#18893_medal" alt="See Buy.com Reviews at Bizrate.com"/>
+                                                    <map name="18893_medal">
+                                                        <area shape="poly" coords="1,0,1,36,61,36,61,20,111,20,111,0" href="http://www.bizrate.com/ratings_guide/merchant_detail__mid--18893.html?rf=sur" title="See Buy.com Reviews at Bizrate.com" target="_blank"/>
+                                                        <area shape="rect" coords="62,21,111,36" href="http://www.bizrate.com/?rf=sur" title="Bizrate" target="_blank"/>
+                                                    </map>
+                                                </a>
+                                            </li>
+                                            <li><a rel="nofollow" href="http://www.internetretailer.com/2011/12/01/internet-retailer-unveils-its-annual-list-hot-100-e-retailers"><img width="40" height="38" src="../../ak.buy.com/buy_assets/v10/footer/icn_ir100.png" alt="Internet Retailer Top 100" /></a></li>
+                                            <li><img width="37" height="38" src="../../ak.buy.com/buy_assets/v10/footer/icn_twice100.png" alt="TWICE Top 100 Consumer Electronics Retailer" /></li>
+                                        </ul>
                                     </div>
                                 </td>
-                                <td align="center" valign="bottom"><div style="padding-bottom : 20px;"><a rel="nofollow" href="http://www.internetretailer.com/2011/12/01/internet-retailer-unveils-its-annual-list-hot-100-e-retailers" class="smBlkText" target="_new"><img src="../../ak.buy.com/buy_assets/corp/logo_hot100.png" border="0" alt="Internet Retailer Top 100" /></a></div></td>
-                                <td align="center" valign="bottom"><div style="padding-bottom : 20px;"><img src="../../ak.buy.com/buy_assets/corp/2011TWICEtop100.gif" border="0" alt="TWICE Top 100 Consumer Electronics Retailer" /></div></td>
-                                <td align="center" valign="bottom"><div id="gts_container" style="padding-bottom : 20px;"></div></td>
                             </tr>
                         </table>
                     </div></td>
                 </tr>
             </table>
+            <script type="text/javascript">                var bizrate = { small: "true" };</script>
             <script src="../../medals.bizrate.com/medals/js/18893_medal.js.html" type="text/javascript"></script>
-            
-
-
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
-                <tr>
-	                <td align="center" valign="bottom"><div style="margin-top:10px;">
-		            <span style="font:11px/13px Tahoma, Arial, Helvetica, sans-serif; color:#6c6c6c; text-decoration:none;">Copyright 1997-2012 Buy.com Inc., All rights reserved.</span>&nbsp;&nbsp;&nbsp;<a rel="nofollow" href= "privacy_policy_complete.asp.html" target="_top"><span style="font:11px/13px Tahoma, Arial, Helvetica, sans-serif; color:#6c6c6c; text-decoration:underline;">Buy.com Privacy Policy</span></a>&nbsp;&nbsp;&nbsp;<a rel="nofollow" href="http://www.buy.com/corp/legal.asp" target="_top"><span style="font:11px/13px Tahoma, Arial, Helvetica, sans-serif; color:#6c6c6c; text-decoration:underline;">Terms of Use</span></a></div>
-		            <br clear="left"><img src="../../ak.buy.com/buy_assets/v6/img/clear.gif" height="5" width="8" border="0" /><br/>
-		            </td>		
-	            </tr>
-            </table>
 
             
 
@@ -1306,6 +1392,7 @@ if (location.href.indexOf("qxt") != -1 ) {
      s.prop28 = 'STBarUsed';
  }
 
+ s.prop33 = 'corporate - help - guarantees - privacy policy - privacy_policy_complete'
 
 if ('' == 'prodView' || '' == 'scOpen,scAdd' || '' == 'scAdd' || '' == 'scView' || '' == 'scCheckout' || '' == 'purchase')
 {
@@ -1445,6 +1532,11 @@ if (omLocId != "") {
     s.eVar18 = omLocId;
 }
 
+if (typeof om_ABtest === "undefined") {
+} else {
+    s.eVar28 = om_ABtest;
+}
+
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code=s.t();if(s_code)document.write(s_code)//--></script>
 <script language="JavaScript" type="text/javascript"><!--
@@ -1492,7 +1584,8 @@ height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
     _oiqq.push(['oiq_addPageLifecycle', 'Intender']);
     _oiqq.push(['oiq_doTag']);
 
-    (function() {
+    (function()
+    {
         var oiq = document.createElement('script'); oiq.type = 'text/javascript'; oiq.async = true;
         oiq.src = document.location.protocol + '//px.owneriq.net/stas/s/buycom.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(oiq, s);
@@ -1501,8 +1594,6 @@ height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
 
 </body>
 </html>
-
-
 
 </body>
 </html>

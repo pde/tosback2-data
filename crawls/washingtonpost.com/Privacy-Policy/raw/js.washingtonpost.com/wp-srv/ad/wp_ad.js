@@ -400,6 +400,16 @@ if(location.search.match('test_ft_nav_tile')){
   }
 }
 
+//19320-ST
+wpniAds.templates.initRule('kohls88x31');
+wpniAds.templates.rules.kohls88x31 = {
+  what : ['nav_tile'],
+  where : ['lifestyle','entertainment','local'],
+  when : ['201204160000/201205312359'],
+  hardcodes : "<div style=\"margin-top:3px;margin-right:1px;\"><noscript><a href=\"http://servedby.flashtalking.com/click/3/20603;289051;0;209;0/?url=1652133\" target=\"_blank\"><img border=\"0\" src=\"http://servedby.flashtalking.com/imp/3/20603;289051;205;gif;WashingtonPostUS;88x29SiteWindow/?\"></a></noscript><script language=\"Javascript1.1\" type=\"text/javascript\">var ftClick = \"\";var ftX = \"\";var ftY = \"\";var ftZ = \"\";var ftContent = \"\";var ftCustom = \"\";var ft88x29_OOBclickTrack = \"\";var ftRandom = Math.random()*1000000;var ftBuildTag1 = \"<scr\";var ftBuildTag2 = \"</\";var ftTag = ftBuildTag1 + 'ipt language=\"javascript1.1\" type=\"text/javascript\" ';ftTag += 'src=\"http://servedby.flashtalking.com/imp/3/20603;289051;201;js;WashingtonPostUS;88x29SiteWindow/?click='+ftClick+'&ftx='+ftX+'&fty='+ftY+'&ftadz='+ftZ+'&ftscw='+ftContent+'&ft_custom='+ftCustom+'&cachebuster='+ftRandom+'\" id=\"ftscript_88x29\" name=\"ftscript_88x29\"';ftTag += '\">' + ftBuildTag2 + 'script>';document.write(ftTag);</script></div>"
+}
+
+
 //18123 NN - JH
 /*
 wpniAds.templates.initRule('tda_business_nn');
@@ -463,8 +473,8 @@ function initAdType(what)
   break
 
   case 'tiffany_tile':
-   thisAdType.size = "200x60,200x80,234x60,290x60,300x45";
-   thisAdType.code = "ad=tiff;"
+   thisAdType.size = "184x90,200x60";
+   thisAdType.code = ""
   break
 
   case 'flex_ss_bb_hp':
@@ -675,7 +685,7 @@ function posMaker(adType,posOverride,delivery)
             returnValue = adType+"_"+this.usedSpots[adType];
         }
     }
-    var posArray = { 'leaderboard':1,'leaderboard_2':2,'skyscraper':3,'flex_ss_bb_hp':6,'flex_bb_hp':6, 'flex_bb_tp':6,'featurebar':7,'tiffany_tile':14,'336_35':19,'bigbox':20,'pushdown':43,'extra_bb':44,'deal':45};
+    var posArray = { 'leaderboard':1,'leaderboard_2':2,'skyscraper':3,'flex_ss_bb_hp':6,'flex_bb_hp':6, 'flex_bb_tp':6,'featurebar':7,/*'tiffany_tile':14,*/'336_35':19,'bigbox':20,'pushdown':43,'extra_bb':44,'deal':45};
 
     if ( typeof posArray[returnValue] != 'undefined' && (typeof commercialNode!='undefined' && commercialNode=='metro') )
     {

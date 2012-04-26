@@ -355,24 +355,25 @@ table.dijitComboButton {
 .dijitItemChooser .caption  { color: #758b0f; font-weight: bold; text-align: left; }
 .dijitItemChooser .heading  { cursor: default; }
 .dijitItemChooser .caption  { margin: 10px 0 0 10px; }
-.dijitItemChooser .openList { margin: 10px 0 0 0; border: none; font-size: 11px; text-align: left; overflow: auto; }
+.dijitItemChooser .openList { margin: 10px 0 0 0; border: none; font-size: 11px; text-align: left;}
 
 
 .dijitItemChooser .optionPreview { float: left; width: 205px; height: 260px; border-right: #758b0f 1px solid; border-top : #758b0f 1px solid; border-bottom : #758b0f 1px solid; text-align: center; overflow: hidden; }
 .dijitItemChooser .previewText   { margin: 15px 0; }
 
 
-.dijitItemChooser .optionList                      { float: left; width: 300px; height: 260px; border-right : #758b0f 1px solid; border-top : #758b0f 1px solid; border-bottom : #758b0f 1px solid; }
+.dijitItemChooser .options.scroll                  { position: relative; float: left; width: 290px; height: 260px; overflow-y: auto; overflow-x: hidden; border-right : #758b0f 1px solid; border-top : #758b0f 1px solid; border-bottom : #758b0f 1px solid;}
 .dijitItemChooser .optionList .monthSelectionLabel { display: inline; padding-right: 5px; color: #000; font-weight: normal; }
-.dijitItemChooser .optionList .openList            { width: 300px; }
+.dijitItemChooser .optionList .openList            {  }
 .dijitItemChooser .dijitMenuItem                   { white-space : normal; padding: 2px 0 2px 10px; }
 .dijitItemChooser .dijitMenuItem .selectionList    { cursor: default; }
 .dijitItemChooser .dijitMenuItemSelected           { color: #000; background: #dee4c7; }
 
 
-.dijitItemChooser .selectionList            { float: right; width: 383px; height: 260px; border-bottom : #758b0f 1px solid; border-top : #758b0f 1px solid; }
+.dijitItemChooser .selectionList            { float: right; width: 383px; border-bottom : #758b0f 1px solid; border-top : #758b0f 1px solid; overflow: hidden; height: 260px;}
 .dijitItemChooser .selectionList .caption p { margin: 10px 0 0 0; }
-.dijitItemChooser .selectionList .openList  { position: relative; margin: 0 0 0 10px; width: 370px; height: 200px; }
+.dijitItemChooser .selectionList .openList  { margin: 0 0 0 10px; width: 370px; overflow: hidden;}
+.dijitItemChooser .selectionList .scroll    { position: relative; float: right; width: 383px; overflow-y: auto; overflow-x: hidden; height: 210px;}
 .dijitItemChooser .selectionList .option    { padding: 5px 0; width: 350px; border-bottom: 1px dotted #000; text-align: left; }
 
 #addonItemChooser .selectionLabelCounter { display: none; }
@@ -1069,10 +1070,12 @@ span.sprite-verisign-normal            { display: inline-block; }
 
 .dijitDialogTitleBar                       { position: relative; margin: 0 0 10px 0; padding: 5px; text-align: left; border-bottom: 1px solid #000; }
 .dijitDialogTitleBar .dijitDialogTitle     { float: left; color: #758b0f; font-size: 18px; font-weight: bold; }
-.dijitDialogTitleBar .dijitDialogCloseIcon { float: right; margin: 3px 3px 0 0; width: 9px; height: 9px; font-size: 0; cursor: pointer; }
+.dijitDialogTitleBar .dijitDialogCloseIcon { float: right; margin: 3px 3px 0 0; width: 13px; height: 13px; font-size: 0; cursor: pointer; }
 
-      .dijitDialogTitleBar .closeText { display: block; font-size: 0; background-image: url(http://www.harryanddavid.com/content/common/images/sprites/global.png); background-position: -119px -111px; width: 9px; height: 9px; } /* sprite: close-medium */
-.ie_6 .dijitDialogTitleBar .closeText { background-image: url(http://www.harryanddavid.com/content/common/images/sprites/global.gif); } /* sprite: close-medium */
+.dijitDialogTitleBar .closeText       { display: block; font-size: 0;
+                                        background-image: url("http://www.harryanddavid.com/content/common/images/sprites/global.png");
+                                        background-position: -119px -111px; width:  9px; height:  9px; } /* sprite */
+.ipad .dijitDialogTitleBar .closeText { background-position: -102px -109px; width: 13px; height: 13px; } /* sprite */
 
 
 /* Dijit Stuff */
@@ -1118,7 +1121,8 @@ span.sprite-verisign-normal            { display: inline-block; }
 #selectAddOns.dijitDialog,
 #selectCyoItems.dijitDialog        { width: 925px; }
 
-#deliveryPopup .dijitDialogPaneContent { height: 500px !important; overflow: auto; }
+/* position relative is needed so iscroll will show up in correct location - please leave. */
+#deliveryPopup .dijitDialogPaneContent .scroll { height: 500px !important; overflow: auto; position: relative;}
 
 #dialog-festive-wine-covers          { width: 550px; }
 #dialog-festive-wine-covers .group   { float: left; width: 144px; }
@@ -1733,16 +1737,17 @@ a:hover { text-decoration: none; cursor: pointer;  }
 
 /* Panels */
 
-.panel            { background-color: #fff; border: 1px solid #808080; }
-.panel .colored   { color: #80923f; }
-.panel .close     { float: right; margin-top: 2px; }
-.panel .close a   { display: inline-block; margin: 0; width: 9px; height: 9px; 
-                    background-image: url("http://www.harryanddavid.com/content/common/images/sprites/global.png");
-                    background-position: -156px -111px;
-                    font-size: 0; overflow: hidden; }
-.panel .content   { position: relative; padding: 10px; overflow: hidden; }
-.panel .titlebar  { padding: 5px; background-color: #88a548; }
-.panel .titleText { float: left; color: #fff; font-weight: bold;}
+.panel                { background-color: #fff; border: 1px solid #808080; }
+.panel .colored       { color: #80923f; }
+.panel .close         { float: right; }
+.panel .close a       { display: inline-block; margin: 0;
+                        background-position: -156px -111px; width:  9px; height:  9px;
+                        background-image: url("http://www.harryanddavid.com/content/common/images/sprites/global.png");
+                        font-size: 0; overflow: hidden; }
+.ipad .panel .close a { background-position: -139px -109px; width: 13px; height: 13px; }
+.panel .content       { position: relative; padding: 10px; overflow: hidden; }
+.panel .titlebar      { padding: 5px; background-color: #88a548; }
+.panel .titleText     { float: left; color: #fff; font-weight: bold;}
 
 #emailDropDown  { position: absolute; top: 0; right: 0; width: 270px; text-align: left;  z-index:1000; }
 #signInDropDown { position: absolute; top: 0; right: 0; width: 270px; text-align: right; z-index:1000; }
@@ -1893,7 +1898,8 @@ a:hover { text-decoration: none; cursor: pointer;  }
 #minicart .buttons                     { text-align: right; padding-top:10px;}
 #minicart .btn-label                   { display: inline-block; width: 150px; text-align: center; }
 #minicart .product-unavail-error       { color: #CC2036;}
-#minicart .spacer                      { height: 5px;}
+#minicart .spacer                      { width: 5px; height: 5px;}
+.ipad #minicart .spacer                { width: 20px; height: 20px;}
 
 .minicart_underlay                     { opacity: 0.0; }
 
@@ -2056,12 +2062,6 @@ ie_7 #footer .partners .social div                 { display: inline; }
 /* Giftlist Mode */
 
 #footer .giftlist { margin-top: 20px; font-weight: bold; text-align: center; }
-
-
-/* Internet Explorer 6 */
-
-.ie_6 #footer .banner .sprite-icon-phone-left,
-.ie_6 #footer .banner .sprite-icon-phone-right { background-image: url("http://www.harryanddavid.com/content/common/images/sprites/global-F4F2EC.gif"); }
 
 
 /*********************************************************************************************************************/

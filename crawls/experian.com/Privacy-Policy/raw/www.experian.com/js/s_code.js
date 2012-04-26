@@ -173,7 +173,18 @@ function s_doPlugins(s) {
 	}
 
 	if(document.URL.substr(0,4) == 'http') { if(document.URL.substr(0,5) == 'https') { s.prop25 = 'https' } else { s.prop25 = 'http' } } else { s.prop25 = 'Other' }
-	
+
+	if(s.channel) {
+		switch(s.channel.toLowerCase()) {
+			case 'consumer': s.eVar46 = '+1'; break;
+			case 'enterprise': s.eVar46 = '-1'; break;
+			case 'small business': s.eVar46 = '-1'; break;
+			case 'ecd': if(s.events.match(/purchase/i)) { s.eVar46 = '+5' } else { s.eVar46 = '+2' }; break;
+			case 'ecaps': s.eVar46 = '+2'; break;
+		}
+	}
+	if(s.events.match(/event11/i)) { s.eVar46 = '+1' }
+
 }
 s.doPlugins=s_doPlugins
 

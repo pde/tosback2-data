@@ -1,4 +1,4 @@
-//tealium universal tag - utag.loader ut4.0.201204092057, Copyright 2012 Tealium.com Inc. All Rights Reserved. 
+//tealium universal tag - utag.loader ut4.0.201204261619, Copyright 2012 Tealium.com Inc. All Rights Reserved. 
 var utag_condload=false;
 try{
 utag_ntptQueue = [];
@@ -432,16 +432,16 @@ if (typeof utag == "undefined" && !utag_condload) {
   };
   utag.o['foxsports.main']=utag;
   utag.cfg = {
-    v: "ut4.0.201204092057",
+    v: "ut4.0.201204261619",
     session_timeout: 1800000,
     readywait: 0,
     noload: 0,
     forcetimeout: 3000,
     domain: utag.loader.lh(),
     path: "//tealium.hs.llnwd.net/o43/utag/foxsports/main/prod/",
-    utid: "foxsports/main/201204092057"
-  };utag.cond={4:0,3:0,2:0};
-utag.pre=function(){utag.data=(typeof utag_data!='undefined')?utag_data:{};try{utag.loader.RD(utag.data);try{utag.cond[4]|=(utag.data['dom.domain'].indexOf('/fse')<0)}catch(e){};try{utag.cond[3]|=(utag.data['dom.domain'].indexOf('/fse')<0)}catch(e){};try{utag.cond[2]|=(utag.data['dom.domain'].indexOf('/fse')<0)}catch(e){};}catch(e){}};
+    utid: "foxsports/main/201204261619"
+  };try{var _gaq=_gaq || [];var pageTracker=pageTracker || {_trackEvent:function(c,d,e,f,g){g={ga_eventCat:c,ga_eventAction:d,ga_eventLabel:e,ga_eventValue:f};utag.link(g);},_trackPageview:function(c){_gaq.push(['_trackPageview',c?c:null]);}}}catch(e){};utag.cond={4:0,3:0,2:0,5:0};
+utag.pre=function(){utag.data=(typeof utag_data!='undefined')?utag_data:{};try{utag.loader.RD(utag.data);try{utag.cond[4]|=(utag.data['dom.url'].indexOf('/fse')<0)}catch(e){};try{utag.cond[3]|=(utag.data['dom.url'].indexOf('/fse')<0)}catch(e){};try{utag.cond[2]|=(utag.data['dom.url'].indexOf('/fse')<0)}catch(e){};try{utag.cond[5]|=(utag.data['dom.url'].indexOf('/fse')>-1)}catch(e){};}catch(e){}};
 utag.loader.GET=function(){utag.cl={'_all_':1};utag.pre();
   utag.handler.extend=[function(a,b,c,d,e,f,g){d=b['dom.domain'];if(typeof d=='undefined')return;c=[{'qa.foxsports.com':'qa'},{'msn.foxsports.com':'prod'}];var m=false;for(e=0;e<c.length;e++){for(f in c[e]){if(d.indexOf(f)>-1){b['environment']=c[e][f];m=true};};if(m)break};if(!m)b['environment']='dev';},
 function(a,b){
@@ -463,7 +463,7 @@ b['temp_guid'] = guid("");
 
 },
 function(a,b){if(typeof b['cp.utag_main_vi']=='undefined'){utag.loader.SC('utag_main',{'vi':b['temp_guid']});b['cp.utag_main_vi']=b['temp_guid'];}}];
-  utag.loader.cfg={"5":{load:2,send:0,wait:0},"2":{load:1,send:1,wait:1},"3":{load:1,send:1,wait:1},"4":{load:utag.cond[4],send:1,wait:1},"6":{load:utag.cond[3],send:1,wait:1},"7":{load:utag.cond[2],send:1,wait:1},"8":{load:1,send:1,wait:1}};
+  utag.loader.cfg={"5":{load:2,send:0,wait:0},"1":{load:2,send:1,wait:0},"2":{load:1,send:1,wait:1},"3":{load:1,send:1,wait:1},"4":{load:utag.cond[4],send:1,wait:1},"6":{load:utag.cond[3],send:1,wait:1},"7":{load:utag.cond[2],send:1,wait:1},"8":{load:1,send:1,wait:1},"9":{load:utag.cond[5],send:1,wait:1}};
 }
 
   if(typeof utag_cfg_ovrd!='undefined'){for(var i in utag.loader.GV(utag_cfg_ovrd))utag.cfg[i]=utag_cfg_ovrd[i];};

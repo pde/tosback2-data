@@ -1,3 +1,4 @@
+
 // JavaScript Document
 
 
@@ -47,7 +48,7 @@ state = getState();
 function renderTopNav(){
 	document.write('	<ul id="top-nav">');
 	document.write(' <li><a href="http://espanol.att.com/help/contact_us.html?id=' + state + '" title="Cont&aacute;ctanos">Cont&aacute;ctanos</a></li>');
-	document.write(' <li><a href="http://att.com/gen/landing-pages?pid=3308" title="AT&amp;T en ingl&eacute;s">AT&T en inglés</a></li>');
+	document.write(' <li><a href="http://att.com/gen/landing-pages?pid=3308" title="AT&amp;T en ingl&eacute;s">AT&amp;T en inglés</a></li>');
     document.write(' <li><a href="http://world.att.com" class="nb" title="">Otros Idiomas</a></li>');
 	document.write(' <div class="clear"></div>');
 	document.write(' </ul>');
@@ -62,7 +63,7 @@ function renderSearchNav() {
 	document.write('<li id="searchLink">');
 	document.write('<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp">');
 	document.write('<fieldset>');
-	document.write('<legend>Search AT&T</legend>');
+	document.write('<legend>Search AT&amp;T</legend>');
 	document.write('<label for="search">Search</label>');
 	document.write ("<input type=\"text\" value=\"Buscar\" name=\"q\" id=\"search\" title=\"Enter search keywords\" />");
 	document.write('<label for="searchSubmit">Go</label>');
@@ -151,16 +152,16 @@ function renderGlobalNav() {
 	document.write('<div class="tertiary-menu" id="tmenu-internet">');
 	document.write('<ul>');
 	document.write('<li><a href="/residential_customers/att_internet/high_speed_internet.html?id=' + state + '" title="DSL con servicio telef&oacute;nico fijo">DSL con servicio telef&oacute;nico fijo</a></li>');
-	document.write('<li><a href="/residential_customers/att_internet/wifi.html?id=' + state + '" title="Wi-Fi de AT&amp;T">Wi-Fi de AT&T</a></li>');
+	document.write('<li><a href="/residential_customers/att_internet/wifi.html?id=' + state + '" title="Wi-Fi de AT&amp;T">Wi-Fi de AT&amp;T</a></li>');
 	document.write('<li><a href="/residential_customers/att_internet/dsl_direct.html?id=' + state + '" title="DSL sin servicio telef&oacute;nico">DSL sin servicio telef&oacute;nico</a></li>'); 
-	document.write('<li><a href="/residential_customers/att_uverse/uverse_internet/index.html?id=' + state + '" title="Internet de Alta Velocidad de AT&amp;T U-verse">Internet de Alta Velocidad de AT&T U-verse</a></li>'); 
+	document.write('<li><a href="/residential_customers/att_uverse/uverse_internet/index.html?id=' + state + '" title="Internet de Alta Velocidad de AT&amp;T U-verse">Internet de Alta Velocidad de AT&amp;T U-verse</a></li>'); 
 	document.write('</ul>');
 	document.write('</div>');
 	
 	document.write('<div class="tertiary-menu" id="tmenu-advancedtv">');
 	document.write('<ul>');
-	document.write('<li><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '" title="AT&amp;T U-verse TV">AT&T U-verse TV</a></li>');
-	document.write('<li><a href="/residential_customers/att_advanced_tv/directv.html?id=' + state + '" title="AT&amp;T|DIRECTV">AT&T | DIRECTV</a></li>');
+	document.write('<li><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '" title="AT&amp;T U-verse TV">AT&amp;T U-verse TV</a></li>');
+	document.write('<li><a href="/residential_customers/att_advanced_tv/directv.html?id=' + state + '" title="AT&amp;T|DIRECTV">AT&amp;T | DIRECTV</a></li>');
 	document.write('</ul>');
 	document.write('</div>');
 	
@@ -173,16 +174,16 @@ function renderGlobalNav() {
 	
 	document.write('<div class="tertiary-menu" id="tmenu-uverse">');
 	document.write('<ul>'); 
-	document.write('<li><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '" title="AT&amp;T U-verse TV">AT&T U-verse TV</a></li>');
+	document.write('<li><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '" title="AT&amp;T U-verse TV">AT&amp;T U-verse TV</a></li>');
 	document.write('<li class="short"><a href="/residential_customers/att_uverse/uverse_offers/total_home_dvr.html?id=' + state + '" title="U-verse Total Home  DVR">U-verse Total Home  DVR</a></li>');
 	document.write('<li><a href="/residential_customers/att_uverse/uverse_help/index.html?id=' + state + '" title="Servicio de tel&eacute;fono digital de AT&amp;T U-verse">Ayuda técnica  y soluci&oacute;n de problemas</a></li>'); 
-	document.write('<li><a href="/residential_customers/att_uverse/uverse_internet/index.html?id=' + state + '" title="Internet de alta velocidad de AT&amp;T U-verse">Internet de alta velocidad de AT&T U-verse</a></li>');
+	document.write('<li><a href="/residential_customers/att_uverse/uverse_internet/index.html?id=' + state + '" title="Internet de alta velocidad de AT&amp;T U-verse">Internet de alta velocidad de AT&amp;T U-verse</a></li>');
 	document.write('<li class="short"><a href="/residential_customers/att_uverse/uverse_offers/index.html?id=' + state + '" title="Compara nuestras ofertas">Compara nuestras ofertas</a></li>');   
 	document.write('<li><a href="https://www.att.com/olam/dashboardAction.olamexecute" title="Mi Cuenta (en ingl&eacute;s)" target="_blank">Mi Cuenta (en inglés)</a></li>');
-	document.write('<li><a href="/residential_customers/att_uverse/uverse_voice/index.html?id=' + state + '" title="Servicio de tel&eacute;fono digital de AT&amp;T U-verse">Servicio de teléfono digital de AT&T U-verse</a></li>'); 
-	document.write('<li class="short"><a href="/residential_customers/att_uverse/uverse_services/index.html?id=' + state + '" title="Servicios &uacute;nicos de AT&amp;T U-verse">Servicios únicos de AT&T U-verse</a></li>');   
+	document.write('<li><a href="/residential_customers/att_uverse/uverse_voice/index.html?id=' + state + '" title="Servicio de tel&eacute;fono digital de AT&amp;T U-verse">Servicio de teléfono digital de AT&amp;T U-verse</a></li>'); 
+	document.write('<li class="short"><a href="/residential_customers/att_uverse/uverse_services/index.html?id=' + state + '" title="Servicios &uacute;nicos de AT&amp;T U-verse">Servicios únicos de AT&amp;T U-verse</a></li>');   
 	document.write('<li><a href="http://www.att.com/u-verse/availability/index.jsp?source=IC00ya000000001U" target="_blank" title="Disponibilidad en mi &aacute;rea">Disponibilidad en mi &aacute;rea</a></li>');   
-	document.write('<li><a href="/residential_customers/att_uverse/uverse_wireless/index.html?id=' + state + '" title="Receptor inal&aacute;mbrico de TV de AT&T U-verse<sup>&reg;</sup>">Receptor inal&aacute;mbrico de TV de AT&T U-verse </a></li>');
+	document.write('<li><a href="/residential_customers/att_uverse/uverse_wireless/index.html?id=' + state + '" title="Receptor inal&aacute;mbrico de TV de AT&amp;T U-verse<sup>&reg;</sup>">Receptor inal&aacute;mbrico de TV de AT&amp;T U-verse </a></li>');
 	document.write('</ul>');
 	document.write('</div>');
 	
@@ -200,7 +201,7 @@ function renderGlobalNav() {
 	document.write('<li><a href="/smartlimits/index.html" target="_blank" title="Controles parentales">Controles parentales</a></li>');
 	document.write('<li><a ');
 	if(directory == 'att_move' || directory == 'home_technology') { document.write('  class="current" ');}
-	document.write(' href="/help/att_move/index.html?id=' + state + '" title="AT&amp;T Facilita Toda Tu Mudanza">AT&T Facilita Toda Tu Mudanza</a></li>'); 
+	document.write(' href="/help/att_move/index.html?id=' + state + '" title="AT&amp;T Facilita Toda Tu Mudanza">AT&amp;T Facilita Toda Tu Mudanza</a></li>'); 
 	document.write('<li><a ');
 	if(directory == 'conectada') { document.write('  class="current" ');}
 	if(state == 'nostate') {document.write(' href="/help/conectada/index.html" title="La Casa Conectada">La Casa Conectada</a></li>');}
@@ -425,7 +426,7 @@ document.write('                <li><a ');
 												document.write(' title="Opciones de facturaci&oacute;n y pago">Opciones de facturaci&oacute;n y pago</a></li>');
 document.write('                <li><a ');
 		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'move_att\')"') } else {document.write(' href="/help/att_move/index.html?id=' + state  + '" ');}
-												document.write(' title="AT&amp;T facilita toda tu mudanza">AT&T facilita toda tu mudanza</a></li>');
+												document.write(' title="AT&amp;T facilita toda tu mudanza">AT&amp;T facilita toda tu mudanza</a></li>');
 document.write('                <li><a href="http://elportal.att.net/" title="Mi Portal &ndash; entretenimiento y m&aacute;s">Mi Portal – entretenimiento y m&aacute;s</a></li>');
 document.write('                <li><a ');
 		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'legal_home\')"') } else {document.write(' href="/legal_terms/index.html?id=' + state  + '" ');}
@@ -471,14 +472,14 @@ document.write('                </ul>');
 document.write('                </div>');
                 
 document.write('        		<div id="quick-links-box-04" class="quick-links-box">');
-document.write('                <h6>AT&T U-verse...</h6>');
+document.write('                <h6>AT&amp;T U-verse...</h6>');
 document.write('                <ul>');
 document.write('                <li><a ');
 		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'uverse_tv\')"') } else {document.write(' href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '" ');}
 												document.write(' title="U200 Latino">U200 Latino</a></li>');
 document.write('                <li><a ');
 		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'uverse_tv\')"') } else {document.write(' href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '" ');}
-												document.write(' title="Canales en espa&ntilde;ol">Canales en español</a></li>');
+												document.write(' title="Canales en espa&ntilde;ol">Canales en espa&ntilde;ol</a></li>');
 document.write('                <li><a ');
 		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'uverse_services\')"') } else {document.write(' href="/residential_customers/att_uverse/uverse_services/index.html?id=' + state + '" ');}
 												document.write(' title="Servicios &uacute;nicos">Servicios únicos</a></li>');
@@ -489,14 +490,14 @@ document.write('                </ul>');
 document.write('                </div>');
                 
 document.write('        		<div id="quick-links-box-05" class="quick-links-box last">');
-document.write('                <h6>Televisi&oacute;n digital de AT&T...</h6>');
+document.write('                <h6>Televisi&oacute;n digital de AT&amp;T...</h6>');
 document.write('                <ul>');
 document.write('                <li><a ');
 		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'directv\')"') } else {document.write(' href="/residential_customers/att_advanced_tv/directv.html?id=' + state + '" ');}
-												document.write(' title="AT&amp;T | DIRECTV">AT&T | DIRECTV</a></li>');
+												document.write(' title="AT&amp;T | DIRECTV">AT&amp;T | DIRECTV</a></li>');
 document.write('                <li><a ');
 		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'uverse_home\')"') } else {document.write(' href="/residential_customers/att_uverse/index.html?id=' + state + '" ');}
-												document.write(' title="U-verse">AT&T U-verse</a></li>');
+												document.write(' title="U-verse">AT&amp;T U-verse</a></li>');
 document.write('                </ul>');
 document.write('                </div>');
                 
@@ -537,8 +538,14 @@ document.write('<div class="section nbb">');
 document.write('<h6>Titulares</h6>');  
 
 document.write('<div class="rc-release-box">');
+document.write('<p>11 de abril de 2012<br />');
+document.write('<a href="/newsroom/news_releases/el_poder_del_cliente_04_11_12.html?id=' + state + '" title="El Poder del Cliente al Frente de la Nueva Campa&ntilde;a Publicitaria de AT&amp;T, Que Incluye Avisos a Nivel Nacional en las Principales Cadenas en Espa&ntilde;ol">El Poder del Cliente al Frente de la Nueva Campa&ntilde;a Publicitaria de AT&amp;T, Que Incluye Avisos a Nivel Nacional en las Principales Cadenas en Espa&ntilde;ol</a></p>');
+document.write('</div>');
+ 
+
+document.write('<div class="rc-release-box">');
 document.write('<p>5 de abril de 2012<br />');
-document.write('<a href="/newsroom/news_releases/nuestra_belleza_latina_4-05-12.html?id=' + state + '" title="AT&T Ofrece a los Fanáticos la Oportunidad de Ganar $10,000 y Ver en Su Equipo Móvil Compatible Toda la Acción del Detrás de Escena de Nuestra Belleza Latina">AT&T Ofrece a los Fanáticos la Oportunidad de Ganar $10,000 y Ver en Su Equipo Móvil Compatible Toda la Acción del Detrás de Escena de "Nuestra Belleza Latina"</a></p>');
+document.write('<a href="/newsroom/news_releases/nuestra_belleza_latina_4-05-12.html?id=' + state + '" title="AT&amp;T Ofrece a los Fanáticos la Oportunidad de Ganar $10,000 y Ver en Su Equipo Móvil Compatible Toda la Acción del Detrás de Escena de Nuestra Belleza Latina">AT&amp;T Ofrece a los Fanáticos la Oportunidad de Ganar $10,000 y Ver en Su Equipo Móvil Compatible Toda la Acción del Detrás de Escena de "Nuestra Belleza Latina"</a></p>');
 document.write('</div>');
  
 
@@ -563,12 +570,6 @@ document.write('<a href="/newsroom/news_releases/black_friday_11-17-11.html?id='
 document.write('</div>');
 
 document.write('<div class="rc-release-box">');
-document.write('<p>16 del noviembre del 2011<br />');
-document.write('<a href="/newsroom/news_releases/puerto_rico_LTE_11-1611.html?id=' + state + '" title="Disponible 4G LTE de AT&amp;T en San Juan, Puerto Rico el 20 de Noviembre">Disponible 4G LTE de AT&amp;T en San Juan, Puerto Rico el 20 de Noviembre</a></p>');
-document.write('</div>');
- 
-
-document.write('<div class="rc-release-box">');
 document.write('<p class="arrow"> <a href="/newsroom/news_archive.html?id=' + state + '" title="Ver archivos">Ver archivos</a></p>');
 document.write('</div>');
 
@@ -585,7 +586,7 @@ function shareThis() {
 
 function renderAyudaRightCol() { 
 						document.write('<div id="premios-box" class="section">'); 
-						document.write('<p><a href="https://referral.wireless.att.com/postpaid/es/home/landing.do " title="Recomienda a tus familiares y amigos">Recomienda a tus<br />familiares y amigos y<br />gana hasta $599<br /> al año.</a></p>');
+						document.write('<p><a href="https://referral.wireless.att.com/postpaid/es/home/landing.do " title="Recomienda a tus familiares y amigos">Recomienda a tus<br />familiares y amigos y<br />gana hasta $599<br /> al a&ntilde;o.</a></p>');
 						document.write('</div>');
 		 
 
@@ -595,8 +596,8 @@ function renderAyudaRightCol() {
 						document.write('<p><a href="/help/faqs/billing.html?id=' + state + '" title="Informaci&oacute;n sobre opciones de facturaci&oacute;n y pago">Informaci&oacute;n sobre opciones de facturaci&oacute;n y pago</a>.</p>');
  						document.write('<h6>Nuevo Servicio Telef&oacute;nico</h6>');
 						document.write('<p><a href="https://www.att.com/Common/espanol/order_form.html?id=' + state + '&prod=new_phone_service" title="&iquest;Cliente nuevo? Suscr&iacute;bete aqu&iacute;.">¿Cliente nuevo? Suscríbete aquí</a>.</p>');
- 						document.write('<h6>AT&T facilita toda tu mudanza</h6>');
-						document.write('<p><a href="/help/att_move/index.html?id=' + state + '" title="&iquest;Te est&aacute;s mudando? Con AT&amp;T facilita toda tu mudanza, encontrar&aacute;s todo lo necesario para mudarte a tu nueva casa.">¿Te est&aacute;s mudando? Con AT&T Facilita Toda Tu Mudanza, encontrar&aacute;s todo lo necesario para mudarte a tu nueva casa.</a>.</p>');
+ 						document.write('<h6>AT&amp;T facilita toda tu mudanza</h6>');
+						document.write('<p><a href="/help/att_move/index.html?id=' + state + '" title="&iquest;Te est&aacute;s mudando? Con AT&amp;T facilita toda tu mudanza, encontrar&aacute;s todo lo necesario para mudarte a tu nueva casa.">¿Te est&aacute;s mudando? Con AT&amp;T Facilita Toda Tu Mudanza, encontrar&aacute;s todo lo necesario para mudarte a tu nueva casa.</a>.</p>');
  						document.write('<h6>La Casa Conectada</h6>');
 						document.write('<p><a href="/help/conectada/index.html?id=' + state + '" title="Columna con informaci&oacute;n relevante a tus necesidades, consejos y preguntas m&aacute;s comunes.">Columna con informaci&oacute;n relevante a tus necesidades, consejos y preguntas m&aacute;s comunes</a>.</p>');
 						document.write('</div>');
@@ -637,7 +638,7 @@ function renderFooter() {
 	document.write('<div id="inner-footer">');
 	document.write('<ul id="footerNav">');
 	document.write('    	<li><a href="/index.html?id=' + state + '" title="Portada">Portada</a></li>');
-	document.write('    	<li><a href="/about_att/index.html?id=' + state + '" title="Acerca de AT&amp;T">Acerca de AT&T </a></li>');
+	document.write('    	<li><a href="/about_att/index.html?id=' + state + '" title="Acerca de AT&amp;T">Acerca de AT&amp;T </a></li>');
 	document.write('    	<li><a href="http://www.att.com/gen/careers?pid=1" title="Empleos">Empleos</a></li>');
 	document.write('    	<li><a href="http://www.wireless.att.com/find-a-store/" title="Buscar tienda">Buscar tienda</a></li>');
 	document.write('    	<li><a href="/help/contact_us.html?id=' + state + '" title="Cont&aacute;ctanos">Cont&aacute;ctanos</a></li>');
@@ -646,7 +647,7 @@ function renderFooter() {
 	document.write('    	<li><a href="/residential_customers/att_internet/index.html?id=' + state + '" class="nb" title="Broadband Management">Broadband Management</a></li>');
 	document.write('    </ul>');
 	document.write('    <div class="clear"></div>');
-	document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">&copy; 2003-2012 AT&T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
+	document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">&copy; 2003-2012 AT&amp;T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
 	document.write('</div>');
 	
 	document.write('<div id="pop"> </div>');
@@ -658,7 +659,7 @@ function renderFooterOrderForm() {
 	document.write('<div id="inner-footer">');
 	document.write('<ul id="footerNav">');
 	document.write('    	<li><a href="http://espanol.att.com/index.html?id=' + state + '" title="Portada">Portada</a></li>');
-	document.write('    	<li><a href="http://espanol.att.com/about_att/index.html?id=' + state + '" title="Acerca de AT&amp;T">Acerca de AT&T </a></li>');
+	document.write('    	<li><a href="http://espanol.att.com/about_att/index.html?id=' + state + '" title="Acerca de AT&amp;T">Acerca de AT&amp;T </a></li>');
 	document.write('    	<li><a href="http://www.att.com/gen/careers?pid=1" title="Empleos">Empleos</a></li>');
 	document.write('    	<li><a href="http://www.wireless.att.com/find-a-store/" title="Buscar Tienda">Buscar Tienda</a></li>');
 	document.write('    	<li><a href="http://espanol.att.com/help/contact_us.html?id=' + state + '" title="Cont&aacute;ctanos">Cont&aacute;ctanos</a></li>');
@@ -667,7 +668,7 @@ function renderFooterOrderForm() {
 	document.write('    	<li><a href="/residential_customers/att_internet/index.html?id=' + state + '" class="nb" title="Broadband Management">Broadband Management</a></li>');
 	document.write('    </ul>');
 	document.write('    <div class="clear"></div>');
-	document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">© 2003-2012 AT&T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
+	document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">© 2003-2012 AT&amp;T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
 	document.write('</div>');
 	
 	document.write('<div id="pop"> </div>');
@@ -677,13 +678,13 @@ function renderFooterOrderForm() {
 
 function renderUverseProductMenu() {
 	document.write('<div class="section">');
-	document.write('<h6>Servicios AT&T U-verse<sup>&reg;</sup></h6>');
+	document.write('<h6>Servicios AT&amp;T U-verse<sup>&reg;</sup></h6>');
 	document.write('<ul id="uverse-products-menu">');
-	document.write('<li id="bundles"><a href="/residential_customers/att_uverse/uverse_offers/index.html?id=' + state + '" title="Paquetes AT&amp;T U-verse&reg; Choice">Paquetes AT&T U-verse<sup>&reg;</sup> Choice</a></li>');
-	document.write('<li id="tv"><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '" title="AT&amp;T U-verse&reg; TV">AT&T U-verse<sup>&reg;</sup>  TV</a></li>');
-	document.write('<li id="internet"><a href="/residential_customers/att_uverse/uverse_internet/index.html?id=' + state + '" title="Servicio de Internet de Alta Velocidad AT&amp;T U-verse<sup>&reg;</sup>">Servicio de Internet de Alta Velocidad AT&T U-verse<sup>&reg;</sup></a></li>');
+	document.write('<li id="bundles"><a href="/residential_customers/att_uverse/uverse_offers/index.html?id=' + state + '" title="Paquetes AT&amp;T U-verse&reg; Choice">Paquetes AT&amp;T U-verse<sup>&reg;</sup> Choice</a></li>');
+	document.write('<li id="tv"><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '" title="AT&amp;T U-verse&reg; TV">AT&amp;T U-verse<sup>&reg;</sup>  TV</a></li>');
+	document.write('<li id="internet"><a href="/residential_customers/att_uverse/uverse_internet/index.html?id=' + state + '" title="Servicio de Internet de Alta Velocidad AT&amp;T U-verse<sup>&reg;</sup>">Servicio de Internet de Alta Velocidad AT&amp;T U-verse<sup>&reg;</sup></a></li>');
 	document.write('<li id="dvr"><a href="/residential_customers/att_uverse/uverse_offers/total_home_dvr.html?id=' + state + '" title="Total Home DVR">Total Home DVR</a></li>');
-	document.write('<li id="phone"><a href="/residential_customers/att_uverse/uverse_voice/index.html?id=' + state + '" title="Servicio Tel&eacute;fono Digital AT&amp;T U-verse<sup>&reg;</sup>">Servicio Teléfono Digital AT&T U-verse<sup>&reg;</sup></a></li>');
+	document.write('<li id="phone"><a href="/residential_customers/att_uverse/uverse_voice/index.html?id=' + state + '" title="Servicio Tel&eacute;fono Digital AT&amp;T U-verse<sup>&reg;</sup>">Servicio Teléfono Digital AT&amp;T U-verse<sup>&reg;</sup></a></li>');
 	document.write('<li id="wireless"><a href="/residential_customers/att_uverse/uverse_wireless/index.html?id=' + state + '" title="Receptor inal&aacute;mbrico de TV de AT&amp;T U-verse<sup>&reg;</sup>">Receptor inal&aacute;mbrico de TV de AT&amp;T U-verse<sup>&reg;</sup></a></li>');
 	document.write('</ul>');
 	document.write('</div>');
@@ -703,12 +704,12 @@ function renderUverseProductMenu() {
 
 function renderLandingPageBottom() {
 	document.write('<div id="all-products-box" class="content-box-half"> ');
-	document.write('<h6>¿Tienes una pregunta con respecto a los productos y servicios de AT&T?</h6>');
+	document.write('<h6>¿Tienes una pregunta con respecto a los productos y servicios de AT&amp;T?</h6>');
 	document.write('<p><a href="/help/index.html?id=' + state + '" title="M&aacute;s informaci&oacute;n">M&aacute;s informaci&oacute;n >></a></p>');
 	document.write('</div>');
                 
 	document.write('<div id="move-att-box" class="content-box-half last"> ');
-	document.write('<h6><em>¿Te est&aacute;s mudando?</em> AT&T facilita toda tu mudanza</h6>');
+	document.write('<h6><em>¿Te est&aacute;s mudando?</em> AT&amp;T facilita toda tu mudanza</h6>');
 	document.write('<p><a href="/help/att_move/index.html?id=' + state + '" title="M&aacute;s informaci&oacute;n">M&aacute;s informaci&oacute;n >></a></p>');
 	document.write('</div>');
 }
@@ -752,4 +753,5 @@ document.write("    ga.src = ('https:' == document.location.protocol ? 'https://
 document.write("    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);"); 
 document.write("  })();");  
 document.write("</script>"); 
+ 
 }

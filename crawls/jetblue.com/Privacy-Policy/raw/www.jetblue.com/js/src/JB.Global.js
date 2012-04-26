@@ -132,7 +132,9 @@ JB.Ready = function () {
     JB.Fn.getAllPageDimensions(); // Set Page Dimensions in Session
     JB.StartNavigation("#jb-primary-links"); // Start Navigation Event Handlers
 
-    if (JB.Session.isBrowser.isIE) jQuery("input[placeholder]").onFocusClear();
+    try {
+        if (JB.Session.isBrowser.isIE) jQuery("input[placeholder]").onFocusClear();
+    } catch (err) {}
 
     // Jump Link
     if (!!jQuery("a.scrollingjumplink").length) {

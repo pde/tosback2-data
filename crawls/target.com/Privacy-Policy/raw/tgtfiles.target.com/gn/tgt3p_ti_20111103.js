@@ -179,7 +179,7 @@ catch(e) {
 }
 
 TGT3P.nav = {}; //initialize package
-
+isredCard = (window.location.protocol=="https:")?true:false;
 /**
  * navigationLoader is responsible for consuming all of the JSONP APIs that
  * provide data for the header, including categories, global promise,
@@ -208,7 +208,7 @@ TGT3P.nav.navigationLoader = (function ($) {
      * @param Object json - category data from API
      * @return void
      **/
-    var seeMore = $("#MainMenu>li:last").html();
+    //var seeMore = $("#MainMenu>li:last").html();
     function loadCategoryNav(json) {
         var categories = json.nav_categories;
         var metadata = null;
@@ -319,11 +319,12 @@ TGT3P.nav.navigationLoader = (function ($) {
 			
 		}
 		
-		
+		/*
         if($("#MainMenu>li:last .extended ul").find("li").length==0) {
         	$("#MainMenu>li:last").remove();
         	$("#MainMenu").append('<li class="more rightmenu" linktype="rightmenu">'+seeMore+'</li>');
         }
+		*/
         $("."+column.className).find("a").each(function(){
 			if($(this).attr("href").indexOf("http")<0) {
 				$(this).attr("href", TGT3P.config.URLs.base+$(this).attr("href").replace("#?lnk=null|null",""))
@@ -495,10 +496,10 @@ TGT3P.nav.navigationLoader = (function ($) {
 		var calculatePos = function(elem, pos) {		
 			var leftPos,TotWi,EleWi,rightPos;
 			if(elem) {
-				/*
-				leftPos = Math.round(elem.position().left)-140; 
-				elem.find(".column-4,.column-3").css('left',-leftPos);				
-				*/
+				if(isredCard){
+					leftPos = Math.round(elem.position().left)-140; 
+					elem.find(".column-4,.column-3").css('left',-leftPos);				
+				}
 				leftPos	= Math.round(elem.position().left); 
 				TotWi	= $("#Core").width();
 		    	EleWi	= elem.width();
@@ -522,7 +523,7 @@ TGT3P.nav.navigationLoader = (function ($) {
 			// Target.controller.header.state(this);
 			$(this).parent().find("li").each(function(){$(this).attr("class",$(this).attr("linktype"))})
 			$("#MainMenu li .hover").hide();
-			/*
+			if(isredCard){
 				if($(this).hasClass("leftmenu")) {
 					$(this).addClass("listHoverMenu");
 					calculatePos($self, 'left');
@@ -530,7 +531,7 @@ TGT3P.nav.navigationLoader = (function ($) {
 					$(this).addClass("listRightHoverMenu");	
 					calculatePos($self, 'right');	
 				}
-				*/
+			}
 				$(this).addClass("showMenu");
 				$(this).find(".hover").show();
 			
@@ -623,6 +624,8 @@ TGT3P.nav.navigationLoader = (function ($) {
 		$("body").undelegate(".grdaLink", "click");
     }
 
+
+
     /**
      * Creates utility nav HTML
      * @param Object data - global promise data from Category API
@@ -634,6 +637,8 @@ TGT3P.nav.navigationLoader = (function ($) {
         var listItem = null;
         var navItem = null;
         $('.shop-menu-item').remove();
+		targetReg = '<div class="section"><span>Target Wedding registry</span><p class="messageReg">Home of happily ever after</p><p>			<a href="http://www.target.com/WedRegistryPortalView" title="find">find</a> | <a title="create" href="http://www.target.com/RegistryListMenuCmd?registryType=WD&amp;catalogId=10051&amp;linkAction=create" class="grdaLink" grda="http://www.target.com/RegistryListMenuCmd?registryType=WD&amp;catalogId=10051&amp;linkAction=create">create</a> | <a title="manage" href="http://www.target.com/RegistryListMenuCmd?registryType=WD&amp;catalogId=10051&amp;linkAction=manage" class="grdaLink" grda="http://www.target.com/RegistryListMenuCmd?registryType=WD&amp;catalogId=10051&amp;linkAction=manage">manage</a></p></div><div><span>Target Baby registry</span><p class="messageReg">Your one stop cutest-of-all shop</p><p><a href="http://www.target.com/BabyRegistryPortalView" title="find">find</a> | <a title="create" href="http://www.target.com/RegistryListMenuCmd?registryType=BB&amp;catalogId=10051&amp;linkAction=create" class="grdaLink" grda="http://www.target.com/RegistryListMenuCmd?registryType=BB&amp;catalogId=10051&amp;linkAction=create">create</a> | <a title="manage" href="http://www.target.com/RegistryListMenuCmd?registryType=BB&amp;catalogId=10051&amp;linkAction=manage" class="grdaLink" grda="http://www.target.com/RegistryListMenuCmd?registryType=BB&amp;catalogId=10051&amp;linkAction=manage">manage</a></p></div><div class="recentlyViewed"><input type="hidden" value="http://www.target.com/RegistryGiftGiverCmd?" name="newListGGVURL" /><span>recently viewed registries</span></div>';
+		targetList= '<div class="j-list-usertype j-guest hidden"><span>Target Lists makes it easy!</span><p class="makeItEasy">to share, to organize, to shop!<a href="https://www-secure.target.com/EverestLoginView?catalogId=10051&amp;registryView=TargetListPortalView">sign in</a>	or <a href="https://www-secure.target.com/GuestRegistration?catalogId=10051">create an account</a> to get started.</p><p><a href="http://www.target.com/TargetListPortalView" class="createListLink">						create a list</a></p></div><div class="j-list-usertype j-registered hidden"><ul class="yourList"><li class="seeallList"><a href="http://www.target.com/TargetListPortalView"class="seeAllLists">							see all your lists</a></li><li class="createNewList"><a href="" grda="http://www.target.com/TargetListCreateView?action=CreateTargetList&operation=openModal&overlayId=CreateTargetList" class="grdaLink newList" title="create a new list.">create a new list</a></li></ul></div><input type="hidden" value="http://www.target.com/TargetListGiftGiverCmd?registryType=OT" name="newListGGVURL" /><ul class="recentlyViewedLists"><p class="findList"><span>recently viewed lists</span></p></ul><p class="findList"><a href="http://www.target.com/TargetListPortalView" title="find">find a list</a></p>';
         for (var i = 0; i < data.length; i++)
         {
             navItem = data[i];
@@ -644,11 +649,11 @@ TGT3P.nav.navigationLoader = (function ($) {
                 link = $('<a href="'+navItem.location+'" class="grdaLink grdaHover" grdalink="'+navItem.svc+'" grda="'+navItem.location+'" title="'+navItem.text+'">'+navItem.text+'</a>');
                 $(listItem).append(link);
                 if(navItem.location.search(/TargetList/) > -1) {
-                    $(listItem).append('<div class="hover" id="guest"></div>'); //do this for lists
+                    $(listItem).append('<div class="hover" id="guest">'+targetList+'</div>'); //do this for lists
                 }
                 else
                 {
-                    $(listItem).append('<div class="hover"></div>'); //do this for registries
+                    $(listItem).append('<div class="hover">'+targetReg+'</div>'); //do this for registries
                 }				
             }
             else
@@ -662,7 +667,7 @@ TGT3P.nav.navigationLoader = (function ($) {
             $(listItem).insertBefore(miniCart);
         }
         // bind for global hover menu
-		/**
+		 /*
         utilityList.delegate(".grdaHover", "mouseenter", function (e) {
             var self = this,
                 type = "",    
@@ -682,7 +687,7 @@ TGT3P.nav.navigationLoader = (function ($) {
                 Target.controller.header._removeCookie();
             });
         });
-		*/
+		 */
         return utilityList;
     }
 

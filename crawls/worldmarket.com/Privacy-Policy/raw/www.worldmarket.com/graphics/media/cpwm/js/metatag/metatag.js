@@ -21,6 +21,7 @@ for (var i=0; i<cpwm_gwo.experiments.length; i++) {
 	if (location.pathname.indexOf(cpwm_gwo.experiments[i].url)==0 && cpwm_gwo.experiments[i].expid) {
 		//////    ONE experiment per page!!
 		var _gaq = _gaq || [];
+/*
 		if (location.search.indexOf('camp=')>-1) {
 			_gaq.push(['gwo._setCampMediumKey', 'camp']);
 		} else if (location.search.indexOf('cid=')>-1) {
@@ -28,7 +29,7 @@ for (var i=0; i<cpwm_gwo.experiments.length; i++) {
 		} else if (location.search.indexOf('slcid=')>-1) {
 			_gaq.push(['gwo._setCampMediumKey', 'slcid']);
 		}
-
+*/
 		_gaq.push(['gwo._setAccount', cpwm_gwo.experiments[i].acct]);
 		_gaq.push(['gwo._setDomainName', cpwm_gwo.experiments[i].dmn]); 
 		_gaq.push(['gwo._trackPageview', '/'+cpwm_gwo.experiments[i].expid+'/test']);

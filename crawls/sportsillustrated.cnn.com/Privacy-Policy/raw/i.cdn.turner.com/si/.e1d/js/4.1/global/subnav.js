@@ -367,7 +367,7 @@ siNav.load({
 		{ "u": "http://www.golf.com/equipment",			"l":"Equipment",
 			"s": [
 				{ "u":"http://www.golf.com/equipment/see-try-buy?eref=sinav",			"l":"See-Try-Buy" },
-				{ "u":"http://www.golf.com/equipment/club-test-2011?eref=sinav",			"l":"ClubTest" },
+				{ "u":"http://www.golf.com/clubtest?eref=sinav",			"l":"Club Test" },
 				{ "u":"http://shop.golf.com?eref=sinav",			"l":"Shop.GOLF.com" },
 				{ "u":"#",			"l":"&#160;" }
 			]
@@ -375,7 +375,7 @@ siNav.load({
 		{ "u": "http://www.golf.com/courses_travel?eref=sinav",			"l":"Courses &amp; Travel",
 			"s": [
 				{ "u":"http://www.golf.com/courses-and-travel/general-top-courses?eref=sinav",			"l":"Course Rankings" },
-				{ "u":"http://www.pga.com/golf-courses?eref=sinav",			"l":"Golf Course Finder" },
+				{ "u":"http://www.golf.com/courses?eref=sinav",			"l":"Golf Course Finder" },
 				{ "u":"http://www.golf.com/courses-and-travel/trip-guides?eref=sinav",			"l":"Trip Guides" },
 				{ "u":"#",			"l":"&#160;" }
 			]
@@ -521,6 +521,6 @@ siNav.load({
 		{ "u": "/behindthemic/?eref=sinav",			"l":"Behind The Mic" },
 		{ "u": "/specials/just-askin/?eref=sinav",			"l":"Just Askin'" },
 		{ "u": "/video/inside_report/?eref=sinav",			"l":"Inside Report" },
-		{ "u": "/2012_swimsuit/video/?eref=sinav",			"l":"Swimsuit" }
+		{ "u": "/2012_swimsuit/video/kate-upton-profile.html?eref=sinav",			"l":"Swimsuit" }
 	]
 });

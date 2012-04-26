@@ -3,22 +3,14 @@
 $(document).ready(function(){
 	var $flyoutTrigger = $("#flyout-trigger");
 	var $flyout = $("#product-flyout");
-	var animationFlag = false;
-	$flyoutTrigger.hover(
-		function() {
-			animationFlag = true;
-			$flyout.slideToggle('fast', function() {
-				animationFlag = false;
-			});
-		},
-		function() {
-			if (animationFlag === false) {
-				$flyout.slideToggle('fast');
-			}
-			else return;
-		}
-	)
+	//var animationFlag = false;
+	$flyoutTrigger.live('mouseenter',function() {
+			$flyout.slideDown('fast');
+		}).live('mouseleave',function(){
+			$flyout.slideUp('fast');
+		});
 });
+
 
 //mcgowan - clears/restores default textbox values
 function clearDefaultText(elTextBox, defaultValue) {

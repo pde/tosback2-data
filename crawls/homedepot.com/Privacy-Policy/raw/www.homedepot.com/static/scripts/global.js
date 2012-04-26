@@ -66,7 +66,6 @@ overlayConfigs.quickview = $.extend(true, {}, overlayConfigs.modal, {
 overlayConfigs.gallery = $.extend(true, {}, overlayConfigs.modal, {
 	'width':898,
 	'height':601,
-
 	'type':'iframe'
 });
 
@@ -76,6 +75,10 @@ overlayConfigs.content = $.extend(true, {}, overlayConfigs.modal, {
 	'width' : 766,
 	"onComplete": function(currentArray, currentIndex, currentOpts) {
 		//alert('Complete!');
+
+		//To prevent the weirdness, show the preloader and hide the fancybox wrap until loaded. qc-14889
+		$.fancybox.showActivity();
+		$('#fancybox-wrap').css({'visibility':'hidden'});
 
 		setTimeout(function(){
 			var $fbContent = $('#fancybox-content');
@@ -90,7 +93,15 @@ overlayConfigs.content = $.extend(true, {}, overlayConfigs.modal, {
 			$dctm_content_overlay.parent().css({'height':'auto'});
 			$('#fancybox-content').css({'height':'auto'})
 			if(jQuery.fancybox) jQuery.fancybox.resize();
-		}, 1000)
+
+			//Hide the preloader and finally show the fancybox wrap. qc-14889
+			$.fancybox.hideActivity();
+			$('#fancybox-wrap').css({'visibility':'visible'});
+			
+		}, 1500);
+
+		
+		
 	}
 });
 
@@ -275,6 +286,7 @@ function attachOverlays(context) {
 
 		switch (theRel) {
 			case 'bopis':
+				bopisHrefReplace(); //defect #15052
 				useConfig = overlayConfigs.bopis;
 				break;
 			case 'quickview':
@@ -306,6 +318,15 @@ function attachOverlays(context) {
 
 	});
 }
+
+//A peformance hack for defect #15052 that takes the data-bopis attribute on the BOPIS button and makes 
+//an href value so that bopis modal won't degrade if clicked prior to doc ready.
+function bopisHrefReplace(){
+	var hrefValue = $("a.bopis_button").attr("data-bopis");
+	$("a.bopis_button").attr('href', hrefValue);
+}
+
+
 
 function attachQuickViewButtons() {
 	$(".dynamic.product").hover(function(){

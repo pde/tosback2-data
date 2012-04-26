@@ -2184,7 +2184,7 @@ function runMiniAdBanner()
 var opaWidth = $j("#ad-728x90").outerWidth();
 var getData = 
 
-{"module":{"items":{"item":{"images":{"img":{"width":"239","height":"90","src":"http://www.mtv.com/shared/promoimages/bands/a/alabama_shakes/push/hp/mini/alt//239x90.jpg"}},"title":"Alabama Shakes","link":{"args":"http://buzzworthy.mtv.com/category/push/"}}},"name":"minipromos"}}
+{"module":{"items":{"item":{"images":{"img":{"width":"239","height":"90","src":"http://www.mtv.com/shared/promoimages/bands/e/electric_guest/push/hp/mini//239x90.jpg"}},"title":"Electric Guest","link":{"args":"http://buzzworthy.mtv.com/category/push/"}}},"name":"minipromos"}}
 ;
 if(getData.module!=undefined && getData.module.items!=null){
 var total = getData.module.items.item.length;
@@ -2276,10 +2276,13 @@ this.init_coda_link_tracking=function()
 $j('#navlist a').click(function(){
 // report click to CODA
 // http://confluence.mtvi.com/display/BUSTECH/CODA+Link+Events
+
+if (!com_mtvi_mtv2flag){ 
 mtvn.btg.Controller.sendLinkEvent({
 linkName : 'GLOBAL_NAV - ' + $j(this).text(),
 linkType : 'o'
 });
+}
 // continue event
 return true;
 });

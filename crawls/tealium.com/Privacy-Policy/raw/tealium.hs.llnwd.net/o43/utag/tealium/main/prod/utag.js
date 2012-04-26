@@ -1,4 +1,4 @@
-//tealium universal tag - utag.loader ut4.0.201204141606, Copyright 2012 Tealium.com Inc. All Rights Reserved.
+//tealium universal tag - utag.loader ut4.0.201204252017, Copyright 2012 Tealium.com Inc. All Rights Reserved.
 var utag_condload=false;
 try{utag_trackingOptOut=function(){document.cookie='utag_optout=1;path=/;domain='+utag.cfg.domain+';expires=expires=Thu, 31 Dec 2099 00:00:00 GMT;'};utag_trackingOptIn=function(){document.cookie='utag_optout=0;path=/;domain='+utag.cfg.domain+';expires=expires=Thu, 31 Dec 2099 00:00:00 GMT;'};if(document.cookie.indexOf('utag_optout=1')>-1){if(typeof utag_cfg_ovrd=='undefined')utag_cfg_ovrd={};utag_cfg_ovrd['noload']=1}}catch(e){};
 if (typeof utag == "undefined" && !utag_condload) {
@@ -409,7 +409,7 @@ if (typeof utag == "undefined" && !utag_condload) {
     }
   };
   utag.cfg = {
-    v: "ut4.0.201204141606",
+    v: "ut4.0.201204252017",
     session_timeout: 180000,
     readywait: 0,
     noload: 0,
@@ -426,7 +426,7 @@ function(a,b){utag.loader.SC('utag_main',{'session_referrer':b['session_referrer
 function(a,b){
 resx.host="qa.res-x.com";
 }];
-  utag.loader.cfg={"1":{load:1,send:1,wait:1},"2":{load:1,send:1,wait:1},"3":{load:utag.cond[2],send:1,wait:1},"4":{load:1,send:1,wait:1},"25":{load:1,send:1,wait:1},"13":{load:1,send:1,wait:1},"14":{load:utag.cond[6],send:1,wait:1},"15":{load:utag.cond[9],send:1,wait:1},"16":{load:utag.cond[8],send:1,wait:1},"17":{load:utag.cond[7],send:1,wait:1},"18":{load:utag.cond[10],send:1,wait:1},"24":{load:utag.cond[15],send:1,wait:1}};
+  utag.loader.cfg={"1":{load:1,send:1,wait:1},"2":{load:1,send:1,wait:1},"3":{load:utag.cond[2],send:1,wait:1},"4":{load:1,send:1,wait:1},"13":{load:1,send:1,wait:1},"14":{load:utag.cond[6],send:1,wait:1},"15":{load:utag.cond[9],send:1,wait:1},"16":{load:utag.cond[8],send:1,wait:1},"17":{load:utag.cond[7],send:1,wait:1},"18":{load:utag.cond[10],send:1,wait:1},"24":{load:utag.cond[15],send:1,wait:1}};
 }
 
   if(typeof utag_cfg_ovrd!='undefined'){for(var i in utag.loader.GV(utag_cfg_ovrd))utag.cfg[i]=utag_cfg_ovrd[i];};

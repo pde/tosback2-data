@@ -3991,6 +3991,11 @@ $(function() {
 
 function autoLinkTrackEvent(promoName, destinationUrl){
 	var destinationUrl = (typeof destinationUrl != 'undefined') ? destinationUrl : 'no_destination_url';
+	
+	if (destinationUrl.substr(0,1) == '/') {
+		destinationUrl = window.location.protocol + "//" + window.location.host + destinationUrl;
+	}
+	
 	if (typeof(mtvn) != 'undefined') {
 			mtvn.btg.Controller.sendLinkEvent({
 			linkName:promoName + '|' + pageName,
@@ -4083,8 +4088,14 @@ $(function() {
 		autoLinkTrackEvent('searchbox', destinationUrl);
 	});
 	
+	// Carousel
+	$('ul#carousel li.active a').live('click', function() {
+		var destinationUrl = $(this).attr('href');
+		autoLinkTrackEvent('hpcarousel', destinationUrl);
+	});
+	
 	// All other auto link tracking
-	skipTheseClasses = /(noAutoLinkTracking|ad_|visible_header|video_player_module)/; // div classes to skip autolink tracking
+	skipTheseClasses = /(noAutoLinkTracking|ad_|visible_header|video_player_module|hpcarousel)/; // div classes to skip autolink tracking
 	skipTheseAClasses = /\s*mute\s*/i; //a tag Classes to skip
 	
 	moduleRemove = /\s*module\s+/i; //To remove module from potential class names
@@ -4340,53 +4351,69 @@ $(function () {
 	function init()
 	{
 		$carousel = $('#carousel');
-		$player_ready = false;
-		$video_player = $Crabapple.playerA.player.video_player_box;
+		//$player_ready = false;
+		
+		if ($('#video_player_box').length) {
+			$video_player = $Crabapple.playerA.player.video_player_box;
+			$player_ready = true;
+		} else {
+			$player_ready = false;
+		}						
+		
+		$(window).focus(function(){
+			$('#carousel li:last').addClass('active');
+		});
+		
 		//autoplay detect
 		if (!$('#adExpand').length)
 		{		
 			autoplay($carousel);
 			$autoplay_time = $carousel.attr('data-autoplay');
 		}
-		hidePlayer();
-		//player ready detect and hide when ready				
-		$video_player.events.onMetadata = function(){
-			$player_ready = true;			
-			
-				if($.cookie('playerSound') != 'true')
-				{			
-					$('#carouser_wrapper a.mute').removeClass('on');
-					$video_player.mute();
-					$.cookie('playerSound','false');
-				}
-				else
-				{
-					$('#carouser_wrapper a.mute').addClass('on');
-					$video_player.unmute();
-					$.cookie('playerSound','true');			
-				}
-			
-			
-			$video_player.events.onMetadata = function(){};
-		}	
 		
-		$video_player.events.onPlaylistComplete	= function(){
-			hidePlayer();
-			goNext();
-			//continue autoplay after video stop
-			if ($autoplay_time)
-			{
-				$carousel.attr('data-autoplay', $autoplay_time);
-				autoplay($carousel);
-			}
-		}		
+		if ($player_ready = true)
+		{
+			$video_player = $Crabapple.playerA.player.video_player_box;
 				
-		$carousel.find('li a').click(function(){				
+			//player ready detect and hide when ready				
+			$video_player.events.onMetadata = function(){
+				$player_ready = true;			
+				hidePlayer();
+					if($.cookie('playerSound') != 'true')
+					{			
+						$('#carouser_wrapper a.mute').removeClass('on');
+						$video_player.mute();
+						$.cookie('playerSound','false');
+					}
+					else
+					{
+						$('#carouser_wrapper a.mute').addClass('on');
+						$video_player.unmute();
+						$.cookie('playerSound','true');			
+					}
+				
+				
+				$video_player.events.onMetadata = function(){};
+			}	
+			
+			$video_player.events.onPlaylistComplete	= function(){
+				hidePlayer();
+				goNext();
+				//continue autoplay after video stop
+				if ($autoplay_time)
+				{
+					$carousel.attr('data-autoplay', $autoplay_time);
+					autoplay($carousel);
+				}
+			}		
+		}
+				
+		$carousel.find('li a').click(function(){
 			$active = $(this).parent();	
 			//make video player clickable
 			$('.link_overlay_disabled').attr('href',$(this).attr('href'));			
 			$carousel.attr('data-autoplay',0);
-	
+
 			if ($(this).parent().hasClass('active'))
 			{
 				return;
@@ -4394,7 +4421,7 @@ $(function () {
 			else
 			{
 				hidePlayer();
-				animate($active);
+				animate($active);			
 				return false;
 			}
 					
@@ -4441,28 +4468,32 @@ $(function () {
 	{
 		$active.animate({
 			width: 480
-		}, 150, function(){move($active)}).addClass('active');							
-		$('#carousel li:last').addClass('active');		
+		}, 150, function(){move($active)}).addClass('active');								
 	}
 	
 	function move($active)
-	{		
-		hidePlayer();
+	{	
+		hidePlayer();		
 		$active.nextAll().css('width','34').prependTo('#carousel').removeClass('active');
 		
 		$active_link = $active.find('a').attr('href');
 		$('.link_overlay_disabled').attr('href',$active_link);		
 		
-		if ($active.attr('data-mgid'))
+	    $active_id =$active.attr('data-mgid');	
+		
+		if ($active_id)
 		{
+			$video_player.playURI($active_id);
 			showPlayer();
-			$video_player.playURI($active.attr('data-mgid'));
-			$video_player.play();			
+			//$video_player.play();			
+			//console.log($video_player.state);
 			$carousel.attr('data-autoplay', '0');		
 		}
 		else{
-			$video_player.pause();
-			hidePlayer();
+			if ($player_ready) {
+				$video_player.pause();
+				hidePlayer();
+			}
 		}	
 	}
 	
@@ -4473,7 +4504,9 @@ $(function () {
 	
 	function hidePlayer()
 	{
-		$('#carouser_wrapper').css('opacity','0.01');
+		if ($player_ready) {
+			$('#carouser_wrapper').css('opacity','0.01');
+		}
 	}
 	
 	function showPlayer()
@@ -4982,197 +5015,3 @@ $(function () {
 	}
 });
 /* http://btg.mtvnservices.com/mtvn/jquery-flux4/0.11/flux4.js */
-;(function($, w) {
-	
-	var configured, conf, stub, loading, extant = {}, _guid = 0; waiting = $();
-	var version = "0.1";
-
-	var createConf = function() {
-
-		if (w.MTVN && w.MTVN.conf && w.MTVN.conf.flux4) {
-			$.extend(conf, w.MTVN.conf.flux4);
-			configured = true;
-		}
-		
-	}
-	
-	var loadScript = function(url, callback) {
-	 
-		 var script = document.createElement("script"),
-			  body = document.body;
-		 script.type = "text/javascript";
-	 
-		 if ( script.readyState ) {     //IE <= 8
-			  script.onreadystatechange = function() {
-				   if ( script.readyState == "loaded" || script.readyState == "complete" ) {
-						script.onreadystatechange = null;
-						
-						w.setTimeout(function() {
-							callback();
-						}, 100);						
-				   }
-			  };
-		 }
-		 else {     //Others
-			  script.onload = function() {
-				   callback();
-			  };
-		 }
-	 
-		 body.insertBefore(script, body.firstChild);
-		 script.src = url;
-	 
-	}
-	
-	var loadCore = function() {
-		var core =  (MTVN.conf.flux4.staging) ? 
-					"http://widgets4.flux-staging.com/Core?includeJquery=false":
-					"http://widgets4.flux.com/Core?includeJquery=false";
-					
-		loading = true;
-		
-
-
-		// flux needs an id on a script tag to figure out the UCID, so we add an empty one to the document
-		stub = document.createElement("script");
-		stub.setAttribute('id', conf.ucid);
-		stub.setAttribute('widgets4Debug', "true");
-		document.body.appendChild(stub)
-
-		loadScript(core, function () {
-				loading = false;
-				if (w.Flux4) {
-					waiting.trigger("Flux4.coreLoad", [true]);
-				} else {
-					waiting.trigger("Flux4.coreLoad", [false]);
-				}
-			});
-
-
-	}
-
-	var loadElement = function(element) {
-
-		var el = $(element);
-		
-		if (!el.data("_guid")) {
-			el.data("_guid", _guid++)
-		}
-		
-		var wGuid = el.data("_guid");
-		var wName = el.data("widget")
-		var wContentUri = el.data("contenturi");
-		
-		if (conf.widgets[wName]) {
-
-			var opts = $.extend({"container": element}, conf.widgets[wName].opts)
-
-			if (wContentUri) {
-				opts.contentUri = wContentUri;
-				opts.contentId = wContentUri;
-			}
-			
-			if (extant[wGuid] != wName + "|" + wContentUri) {
-				extant[wGuid] = wName + "|" + wContentUri;
-				
-				el.empty();
-				
-				w.Flux4.createWidget(conf.widgets[wName]["name"], opts, function(widget) {
-
-					if  (conf.widgets[wName]["onLoad"]) {
-							conf.widgets[wName]["onLoad"](widget);				
-					}
-					el.trigger("Flux4.widget.load", [widget, true, conf.widgets[wName]["name"], opts]);
-
-				});
-			} else {		
-				el.trigger("Flux4.widget.load", [undefined, false, conf.widgets[wName]["name"], opts]);
-			}
-		} 
-	}
-
-	
-	var init = function() {
-	
-		configured = false;
-		loading = false;
-		extant = {};
-		waiting = $();
-		
-		conf = {}		
-
-		if (stub) {
-			stub.parentNode.removeChild(stub);
-			stub = undefined;
-		}
-	}
-
-	init();
-
-	$.fn.flux4 = function(cmd) {
-		var filtered;	
-
-		if (cmd == "init") {
-		
-			init();
-			return this;
-		
-		} else if (cmd == "debug") {
-		
-			return {
-				configured: configured,
-				extant: extant,
-				waiting: waiting
-			}
-			
-		} else {
-	
-			if (configured !== true) {
-				createConf();
-			}
-		
-			if (!conf.ucid) {
-				return this
-			}
-			
-			
-			filtered = this.filter(function() {
-				if (conf.widgets[$(this).data("widget")]) {
-					return true;
-				} else {
-					return false;
-				}
-			});
-			
-			waiting = waiting.add(filtered);
-
-			if (filtered.length) {
-			
-				if (!window.Flux4) {
-					
-					if (!loading) {
-						loadCore(filtered);
-					}
-
-					filtered.bind("Flux4.coreLoad", function(){
-
-						loadElement(this);
-					});
-	
-				} else {
-	
-					filtered.each(function() {
-						loadElement(this);
-					});
-	
-				}
-			} 
-		}
-		
-		return filtered;
-	
-	};
-
-	
-})(jQuery, window);
-

@@ -546,38 +546,6 @@ function TrackCheckoutClick(p_szCName, p_szAccount, p_szSite, p_szProducts) {
 	s.tl(l_oClickObject, 'o', 'Checkout Button');
 }
 
-// AR 65275 - Addition of below 2 new methods to replace the mail with the checkbox.
-// This function used to track the Berman Accept button click when Checkbox is checked
-function BermanOffer_Accepted_Checked(p_szCName, p_szAccount) {
-	var s_account = p_szAccount;
-	var l_oClickObject = document.getElementById(p_szCName);
-	s.linkTrackVars = 'events';
-	s.linkTrackEvents = 'event14';
-	s.events = 'event14';
-	s.tl(l_oClickObject, 'o', 'Berman Yes');
-}
-
-// This function used to track the Berman Accept button click when Checkbox is not checked.
-function BermanOffer_Accepted_Unchecked(p_szCName, p_szAccount) {
-	var s_account = p_szAccount;
-	var l_oClickObject = document.getElementById(p_szCName);
-	s.linkTrackVars = 'events';
-	s.linkTrackEvents = 'event15';
-	s.events = 'event15';
-	s.tl(l_oClickObject, 'o', 'Berman Yes');
-}
-
-//The following function has been written for WA
-// This function used to track the Berman Reject button click
-function BermanOffer_Rejected(p_szCName, p_szAccount) {
-	var s_account = p_szAccount;
-	var l_oClickObject = document.getElementById(p_szCName);
-	s.linkTrackVars = 'events';
-	s.linkTrackEvents = 'event16';
-	s.events = 'event16';
-	s.tl(l_oClickObject, 'o', 'Berman No');
-}
-
 // This fuction used to track the checkout button click
 function TrackGoogleCheckoutClick(p_szCName, p_szAccount, p_szProducts) {
 	var s = s_gi(p_szAccount);
@@ -1000,10 +968,7 @@ function showOverlay(obj, id, flag, positionNearBy) {
 		        else
 		            y = triggerY + 20;
 
-		        //ele.style.left = x + "px";
-		        //ele.style.top = y + "px";
-		        
-		        //HIPAA Authorization bug fix for Medco
+		      
 		        ele.style.left = triggerX - 200 + "px";
 		        if (triggerX - 200 < 0) {
 		            ele.style.left = Math.abs(triggerX - 200) + "px"; 

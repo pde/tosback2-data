@@ -592,6 +592,7 @@ if($("body.alternate").length){h=$("div#alternatesiteSearchContainer > form")
 $("div#ac_results").bgiframe();
 d(l)
 }},search:function(l){c=k.val();
+c=$("<div/>").text(c).html();
 $.ajax({url:l.url,dataType:"jsonp",data:{q:'topic:"'+c+'"',rows:10,indent:"on",sort:"topic_count desc"},success:function(m){UPX_autoComplete.displayResults($.map(m.response.docs,function(o,n){return o.topic
 }))
 }})

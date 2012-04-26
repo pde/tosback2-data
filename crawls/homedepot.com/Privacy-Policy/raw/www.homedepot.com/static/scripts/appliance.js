@@ -442,7 +442,7 @@ function displayCheckAvailabilityForm()
 		text +='					<div style="float: left; display: inline; margin-left: 20px; width: 69px; margin-top: 1px;"><img style="cursor: pointer;cursor: hand;" src="/static/images/btn_check_green.gif" width="69" height="20" name="Check" alt="Check" onclick="doubleCheckAvailability(document.OrderItemAddForm);"/></div>';
 		text +='					<div class="clr"><!--  --></div>';
 		text +='				</div>';
-		text +='				<div class="pip-appliance-area-msg" style="float:left;">Enter Delivery Zip Code to learn about Options for this item. </div>';
+		text +='				<div class="pip-appliance-area-msg" style="float:left;">Enter Delivery Zip Code to learn about Options for this item. </div>'; //defect #16229: added float left for temp fix
 	}
 	if(isMajorAppliance){
 		document.getElementById('tab-parts_services').innerHTML = text; 

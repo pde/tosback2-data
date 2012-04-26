@@ -289,19 +289,6 @@ function OnSubmitForm()
    var ip = d.getElementById('IPTYPE').value;
    var cobrand = d.getElementById('searchcobrand').value;
    var srchType = d.getElementById('searchType').value;
-   var searchcobrand1 = d.getElementById('url_SearchCobrand').value;
-   var URL1 = location.href;
-   var ind = URL1.search(searchcobrand1);
-	//alert(searchcobrand1);
-   if(ind != -1)
-   {
-		document.getElementById('fs').action = cobrand;
-   }
-   if(srchType == "yp" && ip.search(':') != -1)
-   {
-		document.getElementById('fs').action = cobrand;
-		//alert("cobrand should change");
-   }
    var urlChannel = d.getElementById('url_Channel').value;
     
     if(srchExp(urlChannel) && (srchType == 'web' || srchType == 'img' || srchType == 'vid'))
@@ -313,7 +300,7 @@ function OnSubmitForm()
         
         if(srchType == "web" ) 
         {   
-            d.getElementById('returl').value="http://search.yahoo.com/search?p="+srchString+"&ei=UTF-8&fr=att_web&type=websearch&.partner=sbc";
+            d.getElementById('returl').value="http://us.yhs4.search.yahoo.com/yhs/search?hspart=att&hsimp=yhs-att_001&p="+srchString;
             d.getElementById('name').value="attcategories.yahoo.search.web";
         }
         else if ( srchType == "img")

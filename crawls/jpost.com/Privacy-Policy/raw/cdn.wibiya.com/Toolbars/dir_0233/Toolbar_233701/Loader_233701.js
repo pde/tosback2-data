@@ -377,7 +377,7 @@ Wibiya.framework.events.libraryReady(Wibiya.framework.utils.flashFixInit);
 
     // Set the mobile version url, set to empty when there is no mobile site
     Wibiya.options.mobileUrl = '';
-    Wibiya.options.mobileUrlFormat = "{0}?url={1}&cms={2}&timestamp=1334060720";
+    Wibiya.options.mobileUrlFormat = "{0}?url={1}&cms={2}&timestamp=1334666754";
 
     // Determine the run mode (debug, hide, etc.)
     Wibiya.options.runMode = 'standard';
@@ -393,7 +393,7 @@ Wibiya.framework.events.libraryReady(Wibiya.framework.utils.flashFixInit);
     Wibiya.data = {
         userId:50421,
         containers:{
-            toolbar:'http://cdn.wibiya.com/Toolbars/dir_0233/Toolbar_233701/toolbar_233701_4f8426b08d97e.js',
+            toolbar:'http://cdn.wibiya.com/Toolbars/dir_0233/Toolbar_233701/toolbar_233701_4f8d660299451.js',
             iphone:'',
             box:''
         },

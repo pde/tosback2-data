@@ -61,3 +61,10 @@ $.setNestedUrl(Ca);$.setKitOptions(Da);$.addFontFamily(new N("ff-din-web-pro-1,f
 $.addBrowser(V.getBrowserById("ff35-osx"));$.addBrowser(V.getBrowserById("ff36plus-linux-osx-win2003-win7plus-winvista-winxp"));$.addBrowser(V.getBrowserById("ie6to8-win2003-win7plus-winvista-winxp"));$.addBrowser(V.getBrowserById("ie9plus-win7plus-winvista"));$.addBrowser(V.getBrowserById("opera-linux-win2003-win7plus-winvista-winxp"));$.addBrowser(V.getBrowserById("opera-osx"));$.addBrowser(V.getBrowserById("safari-android-win2003-win7plus-winvista-winxp"));$.addBrowser(V.getBrowserById("safari-osx"));
 $.setFontFilterSet(W);if(Z&&Z.ba.__webfonttypekitmodule__){Z.I($);Z.load()}else window.Typekit.addKit($);
 })(this,document);
+window.TypekitConfig={"p":"//p.typekit.net/p.gif?s=1&k=emb1foc&ht=tk&h={host}&f=4980&a=224441&_={_}"}
+/*{"created":"2012-04-23T23:01:21Z","k":"0.13.0","mac":"1:8597355b60ad6a0f7041c3c3d384785612be3a1657efd28093a38dd31e3b2dd6"}*/
+;(function(window,document,undefined){
+function e(a,b){this.a=a;this.d=b}e.prototype=function(a,b){this.a=a;this.d=b}.prototype;function g(a,b){if(a.b){var c=b.a.location.hostname,d=window.__adobewebfontsappname__;d=d?d.toString().substr(0,20):"";var f=(+new Date).toString();h(a,i(a.b,b.a.location.protocol=="https:",{host:c,app:d,_:f}))}}function h(a,b){var c=new Image(1,1);c.src=b;c.onload=function(){c.onload=null}}
+function i(a,b,c){b=b?"https:":"http:";var d=c||{};a=a.c.replace(/\{([^}]*)\}/g,function(f,k){return encodeURIComponent(d[k])||""});return b+a}window.Typekit||(window.Typekit={});var j=window.TypekitConfig,l=new e(document),m=new function(a,b){this.e=a;this.b=b}(null,new function(a){this.c=a}(j.p)),n=window.Typekit.load;
+window.Typekit.load=function(){n&&n.apply(window.Typekit,arguments);var a=document.getElementsByTagName("link");a.length>0&&a[a.length-1].getAttribute("href").indexOf("use.typekit")>=0&&g(m,l)};
+})(this,document);

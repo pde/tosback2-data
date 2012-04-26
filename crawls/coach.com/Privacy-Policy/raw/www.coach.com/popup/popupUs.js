@@ -37,15 +37,101 @@ function closeMe()
            	$('#divCon').html('');
 		   	$('#divCon').remove();
 		}
+		
+		
+//Apply to Jobs
+function popApplyJobs(){
+$('#DivContainer').prepend('<div id="applyJobsDiv" style="visibility:visible; width:800px; top: 60px; *top:-80px; height:715px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeApplyJobs()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:800px; height:715px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="applyJobsFrame" id="applyJobsFrame" src="https://www.Coach.apply2jobs.com/index.cfm" scrolling="auto" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'applyJobsDiv';
+	divwidth = 800;
+	divheight = 715;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "Apply to Jobs popup";
+	s.eVar16 = "Apply to Jobs popup";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closeApplyJobs() {
+	$('#applyJobsFrame').remove();
+	$('#applyJobsDiv').remove();
+	window.onresize = null; 
+
+}	
+		
+//Coach Foundation
+function popFoundation(){
+$('#DivContainer').prepend('<div id="foundationDiv" style="visibility:visible; width:784px; top: 60px; *top:-80px; height:678px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeFoundation()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:784px; height:678px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="foundationFrame" id="foundationFrame" src="/us/foundation/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'foundationDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "Coach Foundation popup";
+	s.eVar16 = "Coach Foundation popup";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closeFoundation() {
+	$('#foundationFrame').remove();
+	$('#foundationDiv').remove();
+	window.onresize = null; 
+
+}	
+		
+//Men's Washed Canvas Beach Tote
+function popWashedCanvas(){
+$('#DivContainer').prepend('<div id="washedDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWashed()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="washedFrame" id="washedFrame" src="/us/201205/washed/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'washedDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "Washed Canvas popup";
+	s.eVar16 = "Washed Canvas popup";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closeWashed() {
+	$('#washedFrame').remove();
+	$('#washedDiv').remove();
+	window.onresize = null; 
+
+}	
+
 
 //JAMES NARES
 function popNares(){
-$('#DivContainer').prepend('<div id="naresDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeNares()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="naresFrame" id="naresFrame" src="/us/201204/nares/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+$('#DivContainer').prepend('<div id="naresDiv" style="visibility:visible; width:842px; top: 60px; *top:-80px; height:557px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeNares()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:842px; height:557px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="naresFrame" id="naresFrame" src="/us/201205/nares/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
 	  
 	 // REPOSITION DIV
 	divname = 'naresDiv';
-	divwidth = 850;
-	divheight = 550;
+	divwidth = 842;
+	divheight = 557;
 	window.onresize =  divPos;
 	divPos();	
  
@@ -309,11 +395,21 @@ function goLink(linkwwcm){
 
 		case 'mono': //monogramm men shop
 		window.location = "/online/handbags/-mens_monogramming-10551-10051-5000000000000286302-en?t1Id=82&t2Id=5000000000000286302&tier=2&LOC=WWCM";
+		break;
 		
 		case 'stripes': //stripes shop
-		//window.location = "LOC=WWCM";
 		window.location = "/online/handbags/-newatcoach_earnyourstripes-10551-10051-5000000000000295301-en?t1Id=5000000000000000001&t2Id=5000000000000295301&tier=2&LOC=WWCM";
+		break;
+		
+		case 'baseball': //men's baseball shop
+		window.location="/online/handbags/-men_heritage-10551-10051-5000000000000298301-en?t1Id=82&t2Id=5000000000000298301&tier=2&LOC=WWCM";
+		break;
+		
+		case 'nares': //james nares shop
+		window.location="/online/handbags/-men_jamesnares-10551-10051-5000000000000298302-en?t1Id=82&t2Id=5000000000000298302&tier=2&LOC=WWCM";
+		break;
 		}
+		
 }
 
 
@@ -1248,7 +1344,7 @@ window.onresize = null;
 function popBaby() {
 	$('#DivContainer').html('');
 
-	$('#DivContainer').prepend('<div id="babybagsDiv" style="width:850px; height:550px; background:none; position:fixed; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; border:1px solid #000; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeBabybags()" style="position: absolute; right: 0px;_left:680px;" id="closing"><img border="0" style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left: 0px; margin-top: 0px; _hasLayout:true;" src="/us/babybags/slider.html" name="babybagsFrame" id="babybagsFrame" frameborder="0px" scrolling="no"></iframe></div>');	
+	$('#DivContainer').prepend('<div id="babybagsDiv" style="width:850px; height:550px; background:#fff; position:fixed; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; border:1px solid #000; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeBabybags()" style="position: absolute; right: 0px;_left:680px;" id="closing"><img border="0" style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left: 0px; margin-top: 0px; _hasLayout:true;" src="/us/babybags/slider.html" name="babybagsFrame" id="babybagsFrame" frameborder="0px" scrolling="no"></iframe></div>');	
 	
 	// REPOSITION DIV
 	divname = 'babybagsDiv';
@@ -1620,58 +1716,66 @@ function divPos(){
 }
 
 //Popup Hash
-/*
 //load the page
 window.onload = function () { 
 
-	//if hash or converted hash tag exists
-	if((window.location.hash) || (window.location.href.search('%23')!=-1)) {
-		if($.browser.msie && parseInt($.browser.version,10)!="6") { //no IE6
+	  //if hash or converted hash tag exists
+	  if((window.location.hash) || (window.location.href.search('%23')!=-1)) {
+		if(!($.browser.msie)) { //no IE
 			console.log("Hash tag is found.");
 		}
-		//get full url
-		var url = window.location.href;
+				//get full url
+				var url = window.location.href;
 
-		
-		if(window.location.hash){
-						split = '#';
-		}else{
-						split = '%23';
-		}
-		//grab the hash part
-		url = url.split(split);
-		var popdiv = url[1]          
-		
-		//fire the function, else log the error
-		var popdiv = popdiv.toLowerCase();
-		switch(popdiv){
-			case "spotted":
-							popSpot();
-							break;
-			case "leather":
-							popLeather();
-							break;
-			case "crosby":
-							popCrosby();
-							break;
-			case "shoes_video":
-							popVideo('shoes')
-							break;
-			case "heritage":
-							popHeritage();
-							break;
-			case "stripes":
-							popupStripes();
-							break;
-			default:											
-				if($.browser.msie && parseInt($.browser.version,10)!="6") { //no IE6
-					console.log("Hash tag has no popup function.");
+				
+				if(window.location.hash){
+								split = '#';
+				}else{
+								split = '%23';
 				}
-		}              
-	}else{
-		if($.browser.msie && parseInt($.browser.version,10)!="6") { //no IE6
-			console.log("No hash tag found in the URL.");
-		}
-	}
+				//grab the hash part
+				url = url.split(split);
+				var popdiv = url[1];          
+				
+				//fire the function, else log the error
+				var popdiv = popdiv.toLowerCase();
+				switch(popdiv){
+					case "spotted":
+						popSpot();
+						break;
+					case "leather":
+						popLeather();
+						break;
+					case "crosby":
+						popCrosby();
+						break;
+					case "shoes_video":
+						popVideo('shoes')
+						break;
+					case "heritage":
+						popHeritage();
+						break;
+					case "stripes":
+						popupStripes();
+						break;
+					case "baby":
+						popBaby();
+						break;
+					case "nares":
+						popNares();
+						break;
+					case "washed":
+						popWashedCanvas();
+						break;
+					default:
+						if(!($.browser.msie)) { //no IE
+							console.log("Hash tag has no popup function.");
+						}
+				}              
+	  }else{
+			  //no hash tag
+			if(!($.browser.msie)) { //no IE
+				console.log("No hash tag found in the URL.");
+			}
+	  }
 }
-*/

@@ -1,4 +1,4 @@
-// 50recode v1.13.7, 12/04/2012
+// 50recode v1.14.3, 20/04/2012
 // Look up the URL of the calling page. If it is in the LUT give it the uNav. If not Default to legacy (LOP) nav
 
 INTELNAV = window.INTELNAV || {};
@@ -211,8 +211,10 @@ INTELNAV.UrlLookUpTable = {
 // Paths to the entrypoint JavaScript to start the loading of the respective header
 INTELNAV.headerPaths = {
 	recode40 : {
-				filePath: "/sites/sitewide/hat/50recode/js/assetLoader.js",
-				testDomain: "http://proto-cps.cps.intel.com"
+				devfilePath: "/sites/sitewide/hat/50recode/js/assetLoader.js",
+				devDomain: "http://proto-cps.cps.intel.com",
+				prodfilePath: "/sites/sitewide/hat/50recode/js/assetLoader.js",
+				prodDomain: "http://www.intel.com"
 	},
 	recode50 : {
 				devPathHttp: "http://pfcqcontent.cps.intel.com:4503/etc/designs/intel/us/en/js/recode50.dev.js",
@@ -224,7 +226,9 @@ INTELNAV.headerPaths = {
 				prodPathHttp: "http://www.intel.com/etc/designs/intel/us/en/js/recode50.js",
 				prodPathHttps: "https://www-ssl.intel.com/etc/designs/intel/us/en/js/recode50.js",
 				GAtest1PathHttp: "http://www.intel.com/etc/designs/intel/us/en/js/recode50.www.js",
-				GAtest1PathHttps: "https://www-ssl.intel.com/etc/designs/intel/us/en/js/recode50.www.js"
+				GAtest1PathHttps: "https://www-ssl.intel.com/etc/designs/intel/us/en/js/recode50.www.js",				
+				GAtest2PathHttp: "http://gwo-dev.intel.com/jgarber/CQ/recode50.js",
+				GAtest2PathHttps: "https://gwo-dev.intel.com/jgarber/CQ/recode50.js"
 	}
 };
 
@@ -309,10 +313,17 @@ _gaq.push(['GAtracker._setCustomVar', 1, 'HeaderVersion', 'INT.50recode', 3]);
 		switch (getParameterByName("forcetest"))
 		{
 		case "legacy":
-			domain = INTELNAV.headerPaths.recode40.testDomain;
+			domain = INTELNAV.headerPaths.recode40.devDomain;
 			INTELNAV.renderSettings.assetPathRoot = domain;
-			assetPath = domain + INTELNAV.headerPaths.recode40.filePath;
+			assetPath = domain + INTELNAV.headerPaths.recode40.devfilePath;
 			setGACustVars('LegacyDev');
+			break;
+			
+		case "legacyprod":
+			domain = INTELNAV.headerPaths.recode40.prodDomain;
+			INTELNAV.renderSettings.assetPathRoot = domain;
+			assetPath = domain + INTELNAV.headerPaths.recode40.prodfilePath;
+			setGACustVars('LegacyProd');
 			break;
 
 		case "unavdev":
@@ -402,6 +413,13 @@ _gaq.push(['GAtracker._setCustomVar', 1, 'HeaderVersion', 'INT.50recode', 3]);
 			tmpPathHttps = INTELNAV.headerPaths.recode50.GAtest1PathHttps;
 			//setGACustVars('GATest1');
 			assetPath = ((secure) ? tmpPathHttps : tmpPathHttp);
+			break;		
+			
+		case "gatest2":
+			tmpPathHttp = INTELNAV.headerPaths.recode50.GAtest2PathHttp;
+			tmpPathHttps = INTELNAV.headerPaths.recode50.GAtest2PathHttps;
+			//setGACustVars('GATest1');
+			assetPath = ((secure) ? tmpPathHttps : tmpPathHttp);
 			break;
 
 		default:
@@ -418,7 +436,7 @@ _gaq.push(['GAtracker._setCustomVar', 1, 'HeaderVersion', 'INT.50recode', 3]);
 				((secure) ? setGACustVars('uNavProd(HTTPs)') : setGACustVars('uNavProd'));
 			} 
 			else {
-				assetPath = domain + INTELNAV.headerPaths.recode40.filePath;
+				assetPath = domain + INTELNAV.headerPaths.recode40.prodfilePath;
 				setGACustVars('LegacyProd');
 			}
 			break;

@@ -269,7 +269,7 @@ dartAds.prototype.startRefreshTimer = function(id, seconds, action) {
 		this.stopRefreshTimer(timerId);
 	}
 	// create the timer
-	seconds = 90; // override all incoming request to be 60 seconds
+	seconds = 60; // override all incoming request to be 60 seconds
 	action = null; // override all action
 
 	var defaultInterval = seconds || 60; // every 60 seconds by default

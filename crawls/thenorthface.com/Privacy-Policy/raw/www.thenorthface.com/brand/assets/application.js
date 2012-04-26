@@ -3401,6 +3401,12 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
         });
       } else {
         that.gallery.animate({height: that.galleryHeight}, 1000, function() {
+          contentBox = $(this).closest('.content-box');
+          oldPosition = contentBox.css('position');
+
+          contentBox.css({ position: 'relative' })
+                    .css({ position: oldPosition });
+
           $(that.element).parent().fadeIn('fast', function() {
             that.unloadVideo();
             if (TNF.ipad) {

@@ -1,0 +1,35 @@
+//Liest clientseitig Werte aus und ergänzt damit die Url des Nedstat-Pixels
+function readDataFromClient(pixelId, pixelUrl) {
+	var nedstatPixel = document.getElementById(pixelId);
+    pixelUrl = pixelUrl.replace("&c_id_0=unknown", hashUrl(pixelId));
+	pixelUrl = pixelUrl.replace("&wa_t=&", clientTime());
+	pixelUrl = pixelUrl.replace(/&/g,"&amp;");
+    nedstatPixel.src = pixelUrl;
+}
+
+//Liest den Hash-Parameter aus und splittet ihn in einzelne Werte auf
+//(z.B. #.1258-bluestripe-product1-undef -> c_id_1=1258, c_id_2=bluestripe, c_id_3=product1, c_id_4=undef)
+var hashUrl = function splitHashUrlAndReadClientTime(pixelId) {
+	var hash = window.location.hash;
+	var hashUrl = "";
+	var hashIdentifier = "#.";
+	if (hash.indexOf(hashIdentifier) > -1) {
+		var hashArray = {};
+		hash = hash.replace(hashIdentifier, "");
+		hashArray = hash.split("-");
+		for (var i = 0; i < 4; i++) {
+			hashUrl += "&c_id_" + (i + 1).toString() + "=" + (hashArray[i] ? hashArray[i] : "undef");
+		}
+	}
+	return hashUrl;
+};
+
+//Liest clientseitig die Systemzeit aus
+var clientTime = function getClientTime() {
+	var d = new Date();
+	var month = d.getMonth() + 1;
+	if(month < 10) {
+		month = "0" + month;
+	}
+	return "&wa_t=" + d.getFullYear() + month + d.getDate() + d.getHours() + d.getMinutes() + "&";
+}

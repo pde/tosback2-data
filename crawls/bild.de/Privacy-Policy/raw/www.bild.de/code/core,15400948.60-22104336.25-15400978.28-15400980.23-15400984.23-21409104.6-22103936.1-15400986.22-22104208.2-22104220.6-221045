@@ -24,7 +24,7 @@ lang = {
              }
              return false;
          },
-         'cssFile' : '/code/xoz-bild,23582754.2.bild.css',
+         'cssFile' : '/code/xoz-bild,23582754.3.bild.css',
          'swfFile' : '/media/video-player-2012-23583578/Flash/1.bild.swf' 
         
        };
@@ -2489,7 +2489,7 @@ de.bild.social = (function($){
         }
     };
 }(jQuery));
-/*de.bild.community:22104118.18*/
+/*de.bild.community:22104118.19*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -3223,6 +3223,12 @@ de.bild.community = (function($) {
         setFormFieldState($textArea, true);
        }
       }
+     }
+     else{
+      //TODO please remove the following lines...BUG (500)
+      var $fieldset = $elem.find('fieldset');
+      $fieldset.hide();
+      $elem.html("<p class='success'>Vielen Dank für Ihren Kommentar!</p>");
      }
     };
    }
@@ -4682,7 +4688,7 @@ de.bild.accordeon = (function($){
     };
 })(jQuery);
  
-/*de.bild.fotoGallery:22758756.25*/
+/*de.bild.fotoGallery:22758756.26*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -4932,6 +4938,7 @@ de.bild.fotoGallery = (function($){
                 this.$imgElTitle = this.$gallery.find('div.imgElTitle').first();
                 if (this.$imgElTitle.length) {
                     var _this = this;
+                    this.$imgElTitle.find('a.enlarge').css('visibility','visible');
                     this.$imgElTitle.click(function(){
                         
                         var $this = $(this),
@@ -7688,7 +7695,7 @@ google.load('ads.search', '2');
         }
     }
 })(jQuery);
-/*jquery.adloader:22506006.7*/
+/*jquery.adloader:22506006.16*/
 
 /**
  * User: l.bilharz@global-communication.de
@@ -7705,6 +7712,18 @@ google.load('ads.search', '2');
         FLAG_ALL = 15;
     //on document ready: take given array of iframeData and bind handlers
     $(function() {
+        if($.browser.msie && parseInt($.browser.version) < 9) { 
+            var tif = $("#adSlot_skyscraper2");
+            tif.attr("allowtransparency", "true");
+            var d = tif.contents().get(0);
+            if(d){
+            d.open();
+            d.write('<html><body style="background:transparent;"></body></html>');
+            d.close();
+            tif.css("visibility", "visible");
+            console.log('sd'); 
+            }
+        }
         if (!window.de || !window.de.bild) return;
         var data = window.de.bild.iframeData;
         if (!$.isArray(data)) return;
@@ -7713,10 +7732,10 @@ google.load('ads.search', '2');
                 $$ = $("#" + o.id + " iframe");
             if ($$.inSight() == FLAG_ALL) {
                 // element is already in viewport: load script
-                loadJavaScript.call($$.get(0), o.url);
+                loadJavaScript.call($$.get(0), o.url, o.arParams);
             } else {
                 // bind handler triggered when element enters viewport
-                $$.bind(INSIGHT_CHECK_EVENT, {url: o.url}, handleInSight);
+                $$.bind(INSIGHT_CHECK_EVENT, {url: o.url, arParams: o.arParams}, handleInSight);
             }
         }
     });
@@ -7724,9 +7743,9 @@ google.load('ads.search', '2');
      * @extends inSightHandler
      * load javascript in iframe first time that at least one pixel enters browser viewport.
      */
-    function handleInSight(e, visible) { 
+    function handleInSight(e, visible) {
         if (visible == FLAG_ALL) {
-            loadJavaScript.call(this, e.data.url);
+            loadJavaScript.call(this, e.data.url, e.data.arParams);
             $(this).unbind(INSIGHT_CHECK_EVENT, handleInSight);
         }
         return false;
@@ -7736,15 +7755,54 @@ google.load('ads.search', '2');
      * @this {Element} iframe
      * @param url
      */
-    function loadJavaScript(url) {
+    function loadJavaScript(url, arParams) {
         // add a random number to the ad request url
-        url = urlAppend(url, Math.round(Math.random() * new Date().getTime()));
+        //url = urlAppend(url, Math.round(Math.random() * new Date().getTime()));
+       
+        // iframe mit load belegen
+        var iframe = $(this);
+        iframe.load(function() {
+            check();
+        });
+       
+        function check() {
+            if(iframe.data("isLoaded") != "true") {
+                if(!checkNOAD()) {
+                    //iframe sichtbar machen
+                    if(iframe.attr("id") == "adSlot_skyscraper2") {
+                        iframe.css("visibility", "visible");
+                    }
+                    iframe.unbind("load");
+                    iframe.data("isLoaded", "true")
+                }
+                else if(arParams != undefined) {
+                    de.bild.AdReplace.apply("", arParams);
+                    iframe.unbind("load");
+                    iframe.data("isLoaded", "true")
+                }
+            }
+        }
+       
+        function checkNOAD() {
+            if(iframe[0].contentWindow["sas_noad"] == true) {
+                return true;
+            }
+            else {
+                return false
+            }
+        }
+       
         // find iframe document
-        var doc = $(this).contents().get(0);
+        var doc = iframe.contents().get(0);
         doc.open();
-        doc.write('<html><body><scr' + 'ipt type="text/javascr' + 'ipt" sr' + 'c="' + url + '"></scr' + 'ipt></body></html>');
-        if (!(jQuery.browser.msie || jQuery.browser.opera)) {
+        doc.write('<html><body style="background:transparent; margin:0;"><scr' + 'ipt type="text/javascr' + 'ipt" sr' + 'c="' + url + '"></scr' + 'ipt></body></html>');
+        if (!($.browser.msie || $.browser.opera)) {
             doc.close();
+        }
+        else {
+            setTimeout(function() {
+                doc.close();
+            }, 10000);
         }
     }
     /**
@@ -8057,7 +8115,7 @@ de.bild.mobile = (function($){
 
 
 })(jQuery);
-/*de.bild.article:23582842.2*/
+/*de.bild.article:23582842.5*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -8084,6 +8142,7 @@ de.bild.article = (function($){
         this.$zoomLink = this.$zoomer.find('div.imgElTitle > a');
         // setup
         if (this.$zoomLink.length) {
+            this.$zoomLink.css('visibility','visible');
             this.largeImgSrc = this.$zoomLink.attr('href');
             // get content
             var $content = this.$zoomer.find('.entry-content').length ? this.$zoomer.find('.entry-content') : this.$zoomerParent.find('.entry-content'),

@@ -467,7 +467,7 @@ var NICK_LOG_WARNING=2;
 var NICK_LOG_DEBUG=4;
 var NICK_LOG_INFO=8;
 var NICK_LOG_FATAL=22;
-var NickLog=function(){var f=KIDS&&(KIDS.IS_DEBUG||KIDS.utils.getParameter("_log")=="on");
+var NickLog=function(){var f=typeof KIDS==="undefined"||(KIDS.IS_DEBUG||KIDS.utils.getParameter("_log")=="on");
 var d=f&&typeof window.console.log!="undefined";
 var a=f&&!!window.console.firebug;
 var b=f&&console.log.apply==="function";
@@ -1165,7 +1165,11 @@ g++
 $(document).ready(function(){setHeaderStatus();
 $(document).bind("authStatus loggedIn loggedOut",function(){setHeaderStatus()
 });
+$("a[class*='nick-momma']").each(function(){if(!$(this).hasClass("bumper")){$(this).click(function(a){KIDS.reporting.omnifunctions.reportNavBar($(this).attr("class"))
+})
+}});
 $("a.bumper, #nick-arcade-bumper a").each(function(){$(this).click(function(a){a.preventDefault();
+KIDS.reporting.omnifunctions.reportNavBar($(this).attr("class"));
 NICK.utils.openBumper("paysite",$(this).attr("href"));
 return false
 })

@@ -1,0 +1,574 @@
+var dbArray = new Array();
+var dbreport;
+var recordcount;
+var coloumcount;
+
+var imgurl = 'http://static.xhamster.com/images';
+var baseurl = '/';
+
+var dbLloaded=true;
+var valueFade=1;
+
+var blink=0;
+
+var icaptcha=null;
+var menuAjax = false;
+var menuTimer = false;
+
+$(document).ready(function() {
+    $('#menuSub a').hover(menuTopPreLoad,menuTopHide);
+    if (getCookie('UID')) {
+        update_msgs_num(true);
+        //pm_blink();
+    }
+});
+
+function menuTopPreLoad(e) {
+    var t = $(this);
+    if (!t.attr('ajax')) return;
+
+    if (menuTimer) clearTimeout(menuTimer);
+    menuTimer = setTimeout("menuTopLoad('"+t.attr('id')+"')",100);
+}
+
+function menuTopLoad(id) {
+    var t = $("#"+id);
+    var ajax = t.attr('ajax');
+    var sub = t.children('.sub');
+    if (sub.size()) {
+        sub.show();
+        return;
+    }
+    t.append("<div class='sub'><div class='load'>loading</div></div>")
+    menuAjax = $.ajax({'url':ajax,'dataType':'script','data':{'id':id},'cache':false});
+}
+
+function menuTopHide(e) {
+    if (menuTimer) clearTimeout(menuTimer);
+    $(this).children('.sub').hide();
+}
+
+function channelHoverIn(e) {
+    $('img',this).show();
+}
+
+function channelHoverOut(e) {
+    $('img',this).hide();
+}
+
+function getRateIdx(event,plus) {
+    if (typeof plus=="undefined") plus=70;
+    var x = event.pageX;
+    var left_x = $("div#rating_bar").position().left+plus;
+    //alert(left_x+70);
+    var right_x = left_x+110;
+    var left = (right_x-x)*(-1);
+    var index = Math.ceil(left/22);
+    return index;
+}
+
+/*function pm_blink()
+{
+    if (blink==0) {
+        $("#messages_link").css('color','#EFEFEF');
+        $("#invites_link").css('color','#EFEFEF');
+        blink=1;
+    } else {
+        $("#messages_link").css('color','#666666');
+        $("#invites_link").css('color','#666666');
+        blink=0;
+    }
+    setTimeout("pm_blink()", 800); 
+} */
+
+function update_msgs_num() {
+    try {
+        var interval = 1000*60;
+        $("#messages_num").load(baseurl+'ajax/get_pm_messages_num.php?rand='+get_rand(), {}, function() { 
+            setTimeout("update_msgs_num()", interval); 
+        });
+    } catch (error) {
+    }
+}
+
+function comments_toggle_link_click() {
+    $("#s1").slideToggle("slow");
+}
+
+function load_comments_page(ID, page, com_num, cat) {
+    $("#ajax_loader").show();  
+    if (cat!='mixed') {
+        window.location.replace("#comments_title");
+        $("#pageslist_for_comments").load('/ajax/comments_pager.php?ID='+ID+'&'+'page='+page+'&cat='+cat+'&com_num='+com_num);
+    }
+    $("#comments_block").load('/ajax/comments.php?ID='+ID+'&'+'page='+page+'&cat='+cat, {}, load_comments_complete);
+}
+
+function load_comments_complete() 
+{ 
+    $("#ajax_loader").hide();
+    $("#txtComments").val(''); 
+    owner_salt();
+}
+
+function confirmDelete2(comid, page, cat, parent_id, from_mixed_id) {
+    var com_num=$("#element_com_num").text();
+    if (from_mixed_id === undefined) from_mixed_id=0;
+    if ( cat === undefined ) {
+        cat=$('#element_cat').text();
+    }
+    if (parent_id === undefined) {
+        id = $("#element_id").text();
+    } else {
+        id = parent_id;
+    }
+    if (confirm('Are you sure?') ) {
+        $("#ajax_loader").show();  
+        $.ajax({url:'/ajax/comment_delete.php?&id='+id+'&comid='+comid+"&cat="+cat+"&mixed="+from_mixed_id, 
+            success: function (data, textStatus) {
+                if (from_mixed_id) cat='mixed';
+                //alert(isFromMixed);
+                load_comments_page(id, page, com_num, cat);
+                if (com_num) {
+                    $("#comments_toggle_link").text("Comments("+(parseInt(com_num)-1)+")");
+                    $("#element_com_num").text(parseInt(com_num)-1);
+                }
+            }
+        });
+    }
+}
+
+function owner_salt() {
+    if (getCookie('UID') && getCookie('UID')==$("div#element_owner").text()) {
+        $("span.rm_comment_ref").show();
+    }
+}
+
+function send_comment(uid, parent_id, type)
+{
+    var comment_value = $("#txtComments").val();
+    var nick_value = $("#nickComments").val();
+    var pages_num = $("#element_pages_num").text();
+    var str_id = $("#element_str_id").text();
+    if(jQuery.trim(comment_value).length<2 || jQuery.trim(nick_value).length<1){
+        alert('Please, no bullshit.');
+    } else {
+        $("#send_comment_button").attr('disabled', true);
+        $.ajax({cache:false,
+            type:'POST',
+            url:'/ajax/add_comment.php',
+            data: {
+                type:type, 
+                id:parent_id, 
+                anonymous_nick:nick_value, 
+                u:js_u_salt($("#element_u").text()), 
+                body:comment_value,
+                recaptcha_challenge_field: $("#recaptcha_challenge_field").val(),
+                recaptcha_response_field: $("#recaptcha_response_field").val()
+            },
+            success: function (data, textStatus) {
+                $("#send_comment_button").attr('disabled', false);
+                $("#divComResult1").hide();
+                $("#divComResult2").hide();
+                $("#divComResult3").hide();
+                $("#divComResult_captcha").hide();
+                if (data=='0') $("#divComResult2").show();
+                else if (data=='2') $("#divComResult3").show();
+                else if (data=='recaptcha') $("#divComResult_captcha").show();
+                else if (data=='1') { 
+                    //$("#divComments").hide(); 
+                    $("#divComResult1").show();
+                    var ID=parent_id;
+                    var cat=type;
+                    var com_num=$("#element_com_num").text();                    
+                    $("#comments_block").load('/ajax/comments.php?ID='+ID+'&'+'page=1&cat='+cat, {}, load_comments_complete);
+                    $("#pageslist_for_comments").load('/ajax/comments_pager.php?ID='+ID+'&'+'page=1&cat='+cat+'&com_num='+com_num);
+                    $("#comments_toggle_link").text("Comments("+(parseInt(com_num)+1)+")");
+                    $("#element_com_num").text(parseInt(com_num)+1);
+                    window.location.replace("#comments_block");
+                }
+            }
+        });
+    }    
+}
+
+function js_u_salt(u)
+{
+    return u*getCookie('UID');
+}
+
+function fxShowAccInfo(a,b){
+    showMe(a);
+    hideMe(b);
+}
+
+function getCookie(name) {
+    var cookie = " " + document.cookie;
+    var search = " " + name + "=";
+    var setStr = null;
+    var offset = 0;
+    var end = 0;
+    if (cookie.length > 0) {
+        offset = cookie.indexOf(search);
+        if (offset != -1) {
+            offset += search.length;
+            end = cookie.indexOf(";", offset)
+            if (end == -1) {
+                end = cookie.length;
+            }
+            setStr = unescape(cookie.substring(offset, end));
+        }
+    }
+    return(setStr);
+}
+
+function setCookie(name, value, time) {
+    var expires = new Date();
+    expires.setTime( expires.getTime() + time );
+    document.cookie = name + '=' + value + '; expires=' + expires.toGMTString() + '; path=/';
+}
+
+function confirmDelete(aURL) {
+    if(confirm('Are you sure?')) {
+          window.location = aURL;
+    window.event.returnValue=false;
+    }
+  }
+  
+function bookmarksite(title,url){
+    if (window.sidebar) // firefox
+        window.sidebar.addPanel(title, url, "");
+    else if(window.opera && window.print){ // opera
+        var elem = document.createElement('a');
+        elem.setAttribute('href',url);
+        elem.setAttribute('title',title);
+        elem.setAttribute('rel','sidebar');
+        elem.click();
+    } 
+    else if(document.all)// ie
+        window.external.AddFavorite(url, title);
+    else
+        alert('Press < Ctrl > + D to bookmark in Chrome');
+}
+
+function hideMe(myId){
+    document.getElementById(myId).style.display="none";
+}
+
+function showMe(myId){
+    document.getElementById(myId).style.display="block";    
+}
+
+function openPm(username, width, height, isvideo)
+{
+    if (typeof(isvideo)=='undefined') isvideo=false;
+    if (!width) width = 800;
+    if (!height) height = 600;
+    if (isvideo) var url = baseurl+"user/"+username+"/messages-video-1";
+    else var url = baseurl+"user/"+username+"/messages-1";
+    var w = window.open(url, "talking_win_"+username,"width="+width+"px,height="+height+"px,resizable=0,toolbar=0,location=0,status=0,menubar=0,directories=0,scrollbars=yes");
+    w.focus();
+}
+
+function inviteFriend(uid)
+{
+    if (icaptcha==null && typeof(Recaptcha)!=='undefined' && $("invite_friend_captcha").length) { 
+        $("#invite_friend_captcha").css('display', 'block');
+        return;
+    }
+    var el = "#invite_friend";
+    $(el).attr("disabled", true);
+    $.ajax({cache: false, url:'/ajax/invite_friend.php?uid='+uid, 
+        success: inviteFriendComplete
+    });
+}
+
+function inviteFriendComplete(data, textStatus)
+{
+    if (data=='2') {
+        $("#friend_field").css('height', '30px');
+        $("#invite_field").html('<font color="Green">Hey, that\'s your friend already!<font>');
+    } else if (data=='1') {
+        $("#friend_field").css('height', '30px');
+        $("#invite_field").html('<font color="Red">This user is already invited or invite you</font>');
+    } else if (data=='0') {
+        //$("#friend_field").css('height', '30px');
+        $("#invite_field").html('<font color="Green">Your invite has been sent</font>');
+        //$("#subscribe_field").show();
+    } else if (data=='3') {
+        $("#invite_field").html(please_login_str()).css('font-size', '0.9em').css('padding-top', '4px');
+    } else if (data=='4') {
+        $("#invite_field").html('<font color="Red">You have reached friends limit</font>');
+    } else if (data=='5') {
+        $("#invite_field").html('<font color="Red">This user can\'t accept invites anymore</font>');
+    } else if (data=='recaptcha') {
+        $("#invite_field").html('<font color="Red">Recaptcha is wrong</font>');
+    }
+}
+
+function controlInvite(uid, response)
+{
+    $("input.user_ctrl_btn").attr("disabled", true);
+    $.ajax({cache: false, url:'/ajax/invites_control.php?response='+response+'&uid='+uid, 
+        success: function (data, textStatus) {
+            if (response=='accept') {
+                $("#control_field_"+uid).html('<font color="Green">Accepted<font>');
+            } else if (response=='decline') {
+                $("#control_field_"+uid).html('<font color="Red">Declined</font>');
+            }
+            $("input.user_ctrl_btn").attr("disabled", false);
+        }
+    });
+}
+
+function get_rand() {
+    do {
+        var new_value = Math.floor(Math.random()*100000);
+    } while (new_value==get_rand.old_value);
+    get_rand.old_value = new_value;
+    return new_value;
+}
+
+function abuseUser(username, rewrite_id) {
+    $.ajax({cache:false, url:'/ajax/abuse_user.php?username='+username, 
+                success: function (data, textStatus) {
+                   rewrite_id = typeof(rewrite_id) != 'undefined' ? rewrite_id : "abuse_user_field";
+                   $("#"+rewrite_id).html('<font color="Green">Thanks for report</font>');
+                }
+    });
+}
+
+function blockUser(uid, button, block_user_field) {
+    
+    if (getCookie('UID')) {
+        if (confirm('Are you sure block this user?') ) {
+            $(button).attr("disabled", true);
+            $.ajax({cache:false, url:'/ajax/block_user.php?&uid='+uid, 
+                success: function (data, textStatus) {
+                    if (data=='0') {
+                        $("#"+block_user_field).html('<font color="Red">This user is already blocked</font>');
+                    } else if (data=='1') {
+                        $("#"+block_user_field).html('<font color="Green">Succesfully blocked</font>');
+                    } else if (data=='2') {
+                        $("#"+block_user_field).html(please_login_str()).css('font-size', '0.9em');
+                    }
+                }
+            });
+        }
+    } else {
+        $("#"+block_user_field).html(please_login_str()).css('font-size', '0.9em');
+    }
+}
+
+function unblockUser(uid, button, block_user_field) {
+    
+    $(button).attr("disabled", true);
+    $.ajax({cache:false, url:'/ajax/unblock_user.php?&uid='+uid, 
+        success: function (data, textStatus) {
+            if (data=='1') {
+                $("#"+block_user_field).html('<font color="Green">Succesfully unblocked</font>');
+            }
+        }
+    });
+}
+
+function saveFavorite(type, id)
+{
+    if (type=='video') {
+        $("#divSaveFaforite").hide();
+        $.ajax({url:'/ajax/add_favorite.php?&vid='+id, cache:false,
+                success: function (data, textStatus) {
+                    if (data=='1') $("#divSaveResult1").show();
+                    else if (data=='0') $("#divSaveResult2").show();
+                    else $("#divSaveResult3").show();
+                }
+        });
+    } else if (type=='game') {
+        $("#divSaveFaforite").hide();
+        $.ajax({url:'/ajax/add_favorite.php?&gid='+id, cache:false,
+                success: function (data, textStatus) {
+                    if (data=='1') $("#divSaveResult1").show();
+                    else $("#divSaveResult2").show();
+                }
+        });
+    } else if (type=='post') {
+        $("#divSaveFaforite").hide();
+        $.ajax({url:'/ajax/add_favorite.php?&wid='+id, cache:false,
+                success: function (data, textStatus) {
+                    if (data=='1') $("#divSaveResult1").show();
+                    else $("#divSaveResult2").show();
+                }
+        });
+    } else if (type=='photo') {
+        $("#divSaveFaforite").hide();
+        $.ajax({url:'/ajax/add_favorite.php?&pid='+id, cache:false,
+                success: function (data, textStatus) {
+                    if (data=='1') $("#divSaveResult1").show();
+                    else $("#divSaveResult2").show();
+                }
+        });
+    }
+}
+
+function vote2(type, rating, id)
+{
+    if (type=='movie') {
+        $("#voteProcess").hide();
+        $.ajax({url:'/ajax/vote.php?vid='+id+'&rate='+rating, 
+                success: function (data, textStatus) {
+                    $("#rate_tip").html('<span style="color:Green">Thanks for rating!</span>'); 
+                }
+        });
+    } else if (type=='game') {
+         $("#voteProcess").hide(); 
+         $.ajax({url:'/ajax/vote.php?gid='+id+'&rate='+rating, 
+                success: function (data, textStatus) {
+                    $("#voteProcessthank").show();
+                }
+        });
+    } else if (type=='post') {
+         $("#voteProcess").hide(); 
+         $.ajax({url:'/ajax/vote.php?sid='+id+'&rate='+rating, 
+                success: function (data, textStatus) {
+                    $("#voteProcessthank").show();
+                }
+        });
+    }
+}
+
+function please_login_str()
+{
+    var next = "/user/"+$("#element_str_id").text();
+    return 'Please, <a href="/login.php?next='+next+'" onclick="login.show(event,false,false,false)">login</a> or <a href="/signup.php?next='+next+'" onclick="login.show(event,false,false,true)">register</a>';
+}
+
+function tabBoxEvent(e) {
+  e.preventDefault();
+  var t = $(this);
+  var boxMain = t.parents('.tabAll');
+  var header = $('.tabField',boxMain);
+  var content = $('.tabBox',boxMain);
+  var index = $('div',header).removeClass('sel').index(t.parent().addClass('sel'));
+  content.children().hide().eq(index).show();
+}
+
+function adClick(target,clickRef){
+    var bkRef=target.href;
+    target.href=clickRef;
+    setTimeout(function(){target.href=bkRef},500)
+}; 
+
+function adGo(clickRef){
+    window.open(clickRef,'_blank');
+    e.preventDefault();
+}; 
+
+
+function userAddToFavourites(username){
+    if (getCookie('UID')) {
+        $.ajax({url:'/ajax/add_favorite_user.php?user='+username, 
+                    success: function (data, textStatus) {
+                        $("#user_favor_field").hide();
+                        if (data=='1') $("#user_favor_success").show();
+                        else if (data=='0') $("#user_favor_fail").show();
+                    }
+            });
+    } else {
+        login.show();
+    }
+}
+
+function openWindow(url, name, width, height) {
+    window.open(url, name,"width="+width+"px,height="+height+"px,resizable=0,toolbar=0,location=0,status=0,menubar=0,directories=0,scrollbars=yes").focus();
+    return false;
+}
+
+function userInfoOnHover(jqueryObj) {
+    jqueryObj.hoverIntent({
+        timeout: 200,
+        sensitivity: 3,
+        interval: 200,
+        over: function(e) {
+            $("#user_info .info").hide();
+            $("#user_info .loader").show();
+            $("#user_info").css({'top':e.pageY+15, 'left':e.pageX-15-100, 'display':'block'});
+            var uname = $(this).html();
+            if (getCookie('USERNAME')==uname) $("#user_info .btns").hide();
+            else $("#user_info .btns").show();
+             $.ajax({url:'/ajax/user_info.php', 
+                    type: 'POST',
+                    data: {uname:uname},
+                    success: function (data, textStatus) {
+                        data=jQuery.parseJSON(data);
+                        $("#user_info .loader").hide();
+                        $("#user_info .info").show();
+                        $("#user_info").attr('user_id', data.id);
+                        $("#user_info .uname").html(uname);
+                        $("#user_info .uname").removeClass('female trans model gold');
+                        if ($("#model_id").html()==data.id) $("#user_info .uname").addClass('model');
+                        else if (data.isGold) $("#user_info .uname").addClass('gold');
+                        else if (jQuery.inArray(data.gender, ['Woman','Lesbian Woman','Lesbian Couple'])>-1) $("#user_info .uname").addClass('female');
+                        else if (jQuery.inArray(data.gender, ['Transsexual','Transsexual Couple'])>-1) $("#user_info .uname").addClass('trans');
+                        $("#user_info .upic").html(data.photo);
+                        if (data.relation) {
+                            $("#user_info .relation").parent().show();
+                            $("#user_info .relation").html(data.relation);
+                            $("#user_info .seeking").parent().hide();
+                        } else {
+                            $("#user_info .relation").parent().hide();
+                            if (data.seeking) {
+                                $("#user_info .seeking").parent().show();
+                                $("#user_info .seeking").html(data.seeking);
+                            } else {
+                                $("#user_info .seeking").parent().hide();
+                            }
+                        }                                             
+                        if (data.gender) {
+                            $("#user_info .sex").parent().show();
+                            $("#user_info .sex").html(data.gender);
+                        } else {
+                            $("#user_info .sex").parent().hide();
+                        }
+                        if (data.age) {
+                            $("#user_info .age").parent().show();
+                            $("#user_info .age").html(data.age);
+                        } else {
+                            $("#user_info .age").parent().hide();
+                        }
+                        if (data.country) {
+                            $("#user_info .country").html(data.country);
+                            $("#user_info .country").parent().show();
+                        } else {
+                            $("#user_info .country").parent().hide();
+                        }
+                        if (data.city) {
+                            $("#user_info .city").html(data.city);
+                            $("#user_info .city").parent().show();
+                        } else {
+                            $("#user_info .city").parent().hide();
+                        }
+                    }
+            });
+        },
+        out: function(e){
+            //if ( (e.pageX>=$("#user_info").position().left && e.pageX<=$("#user_info").position().left+150) && (e.pageY>=$("#user_info").position().top && e.pageY<=$("#user_info").position().top+150) ) {
+            //} else {
+            if (!userInfoHovered) {
+                $("#user_info").hide();
+            }
+            //}
+        }
+    });
+    $("#user_info").hoverIntent({
+        timeout: 200,
+        sensitivity: 8,
+        interval: 1,
+        over: function(e) {
+            userInfoHovered = true;
+        },
+        out: function(e){
+            userInfoHovered = false;
+            $("#user_info").hide();
+        }
+    });
+}

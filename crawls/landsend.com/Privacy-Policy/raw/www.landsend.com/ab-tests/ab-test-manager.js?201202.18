@@ -1,0 +1,38 @@
+le.uxd.namespace('le.uxd.ui.abtest');
+le.uxd.ui.abtest.manager = function(){
+	
+	var getGroup = function(id, alloc) {
+		for(var i=0,base=0; i< alloc.length; i++) {
+			base +=alloc[i];
+			if (id < base) break;
+		}
+		return String.fromCharCode(65+i);
+	};
+	
+	return {
+
+		execute: function (testName, opts) {
+			try {
+				var forcedGroup = $.query ? $.query.get(testName) : '';
+				if (getCookie("kiosk") != "") forcedGroup = opts.kioskGroup;
+				if (forcedGroup.match(/^[A-Z]$/) != null) {
+					setCookie(testName,forcedGroup,opts.duration);
+				}
+				
+				var group = getCookie(testName);
+				if((group == null || group.match(/^[A-Z]$/) == null)){
+					group = getGroup(new Date().getMilliseconds()%100, opts.allocation);
+					setCookie(testName,group,opts.duration);
+				}
+				s_omtr[opts.eVar]=s_omtr.getValOnce(opts.eVarFormat(testName, group), testName+'-setOnce', 0);
+				
+				opts.command(group);
+			}catch(e){
+				if (opts.error && typeof opts.error == 'function') {
+					opts.error();
+				}
+			}  
+			return group;
+		}
+	}
+}();

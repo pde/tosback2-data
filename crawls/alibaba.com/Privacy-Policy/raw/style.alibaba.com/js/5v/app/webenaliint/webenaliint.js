@@ -16,10 +16,8 @@
  * .startATM()           : 启动ATM客户端
  */
 
-AE.define('app.ATMAPI', function (exports) {
-	var instance = null;
-
-	function ATMAPI() {
+;(function () {
+	function ctor() {
 		var _self = this,
 			cfg = config = {
 				// 用于Firefox插件升级,如此处设置的更新版本是1.0.0.2
@@ -107,13 +105,13 @@ AE.define('app.ATMAPI', function (exports) {
 										_self.atmClientFlag = 2;
 									}
 								} catch (e) {}
+								}
 							}
-						}
 					} else if ( isChrome() ){
 						// 目前插件没有办法判断chrome下客户端是否安装，统一返回3，通常意义下是表示客户端已经安装，这样可能会导致点击无反应，详情请咨询罗晓霞。
 						_self.atmClientFlag = 3;
+						}
 					}
-				}
 				arguments.callee.counter = 1;
 			},
 			buildQuery = function (query) {
@@ -281,14 +279,7 @@ AE.define('app.ATMAPI', function (exports) {
 		};
 	}
 
-	exports.getInstance = function () {
-		if (!instance) {
-			instance = new ATMAPI();
-		}
-		return instance;
-	};
-}).use(function (ATMAPI) {
-	ATMAPI = window.ATMAPI = ATMAPI.getInstance();
+	window.ATMAPI = new ctor();
 
 	/*
 	 * 以下代码为兼容现有网站应用, 不建议在新程序中使用。
@@ -321,4 +312,4 @@ AE.define('app.ATMAPI', function (exports) {
 		var _match = navigator.userAgent.match(/Firefox\/(\d*)\..*/i);
 		return _match && parseFloat(_match[1]) >= 1.5;
 	};
-});
+}());

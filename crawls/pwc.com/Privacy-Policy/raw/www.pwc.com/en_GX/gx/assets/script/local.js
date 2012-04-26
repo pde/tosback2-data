@@ -2,7 +2,7 @@
 
 /* Live search */
 	
-	var livesearchon = "true"; //Enable or disable live search. "true" for on. blank or any other value for off.
+	var livesearchon = ""; //Enable or disable live search. "true" for on. blank or any other value for off.
 	var minchars = 2; //Min number of characters input before suggestions are triggered
 	
 	// Change to location of custom live search xml file

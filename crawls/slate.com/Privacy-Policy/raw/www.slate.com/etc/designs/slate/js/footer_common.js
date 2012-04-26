@@ -22,3 +22,17 @@ var BF_NO_QS = true;
 
 // twitter loader
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+
+// Visual Revenue Script
+var _vrq = _vrq || [];
+_vrq.push(['id', 119]);
+_vrq.push(['track', function(){}]);
+(function(d, a) {
+	var s = d.createElement(a),
+	x = d.getElementsByTagName(a)[0];
+	s.async = true;
+	s.src = 'http://a.visualrevenue.com/vrs.js';
+	x.parentNode.insertBefore(s, x);
+})(document, 'script');
+
+

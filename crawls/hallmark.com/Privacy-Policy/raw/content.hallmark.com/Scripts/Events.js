@@ -1,5 +1,5 @@
 ﻿
-var validationResultsData='';var loadMsg='';function InitLoadEvents(){$('.'+$("#Type").val()).addClass('selected');if($("#FilterValue").val()!=''){$("#"+$("#FilterBy").val()+" > option").each(function(){if(this.value==$("#FilterValue").val())
+var validationResultsData='';var loadMsg='';var loggedinUserFN='';var loggedinUserLN='';function InitLoadEvents(){$('.'+$("#Type").val()).addClass('selected');if($("#FilterValue").val()!=''){$("#"+$("#FilterBy").val()+" > option").each(function(){if(this.value==$("#FilterValue").val())
 $("#Filter").html(this.text);});}
 else
 $("#Filter").html('All');if($('#LoadEventsAdSpot1').size()>0&&$('#LoadEventsAdSpot1').html()=="")
@@ -27,7 +27,7 @@ var secondaryHonoreeName=$('#JQEvent_'+tabNumber+'SecHonName').val()
 var recWidgDisplayName='';if(secondaryHonoreeName!='')
 recWidgDisplayName=primaryHonoreeName.split(' ')[0]+" & "+secondaryHonoreeName.split(' ')[0];else
 recWidgDisplayName=primaryHonoreeName.split(' ')[0];return recWidgDisplayName;}
-function GetProductRecommendations(source,categoryID,objID,eventDescription,recipientRelation,senderRelation,sortOrder,isCarousel,gender,lifeStage,navigationURL,componentName,idlist,idmode,isCardshower,recWidgetHonoreeDisplayName){if("H"==categoryID||(("C"==categoryID||"F"==source)&&($("#Type").size()>0&&$("#Type").val().toLowerCase()=="list")))
+function GetProductRecommendations(source,categoryID,objID,eventDescription,recipientRelation,senderRelation,sortOrder,isCarousel,gender,lifeStage,navigationURL,componentName,idlist,idmode,isCardshower,recWidgetHonoreeDisplayName,eventCategory){if("H"==categoryID||(("C"==categoryID||"F"==source)&&($("#Type").size()>0&&$("#Type").val().toLowerCase()=="list")))
 return;if(typeof($("#"+objID).attr("hdrDiv"))!='undefined'&&$("#"+$("#"+objID).attr("hdrDiv")).html().length>0){$("#"+$("#"+objID).attr("hdrDiv")).find('.xsmallCalTile').next().html("We recommend...");if(recWidgetHonoreeDisplayName!=''&&recWidgetHonoreeDisplayName!=undefined){$("#"+$("#"+objID).attr("hdrDiv")).find('.xsmallCalTile').next().html(recWidgetHonoreeDisplayName+" might like...");}}
 var link="See more";if(idmode=="in"){link=null!=idlist&&idlist!=""?idlist.split(',').length>5?"See more":"":"";}
 var headerTxt=$("#"+objID).attr("hdrDiv")?$("#"+$("#"+objID).attr("hdrDiv")).html():(recWidgetHonoreeDisplayName!=''&&recWidgetHonoreeDisplayName!=undefined)?recWidgetHonoreeDisplayName+" might like...":"Recommendations for "+eventDescription;if($("#"+objID).html()==""){$("#"+objID).addClass('loading');if("C"==categoryID&&componentName!=''&&(isCardshower!='True'&&isCardshower!=true)){if(componentName=="staticOtherRecommendations")
@@ -35,7 +35,7 @@ $("#"+objID).html(headerTxt)
 contentSpot.AppendAdHTML($("#"+objID),'ProductRecommendations','PRODUCTRECOMMENDATIONS',componentName,RecommendationsCallback);}
 else{var productLine="";if(isCardshower=='True'||isCardshower==true){productLine="PODCARD";}
 else{productLine=($("#IsSubscribedUser").val().toLowerCase()=="true")?"FINISHEDGOODS,PODCARD,ECARD":"FINISHEDGOODS,PODCARD,FREEECARD";}
-var parameters="eventDescription="+encodeURIComponent(eventDescription)+"&recipientRelation="+encodeURIComponent(recipientRelation)+"&senderRelation="+encodeURIComponent(senderRelation)+"&gender="+encodeURIComponent(gender)+"&productLine="+productLine+"&age="+lifeStage+"&idlist="+idlist+"&idmode="+idmode;if(isCardshower=='True'||isCardshower==true)
+var parameters="eventDescription="+encodeURIComponent(eventDescription)+"&recipientRelation="+encodeURIComponent(recipientRelation)+"&senderRelation="+encodeURIComponent(senderRelation)+"&gender="+encodeURIComponent(gender)+"&productLine="+productLine+"&age="+lifeStage+"&idlist="+idlist+"&idmode="+idmode+"&eventCategory="+eventCategory;if(isCardshower=='True'||isCardshower==true)
 parameters=parameters+"&productType=Greeting Card,Photo Card";$("#"+objID).hmkRecommendations({ajaxUrl:"/Recommendations/RecommendedProducts",params:parameters,alignment:"H",productSortOrder:sortOrder,isCarousel:isCarousel,headerText:headerTxt,headerLink:navigationURL,headerLinkText:link,successCallback:RecommendationsCallback,ajaxDataType:"json"});}}}
 function RecommendationsCallback(){$('.JQRecommendations').removeClass('loading');$(this).children(":first").show("slow");$('#Recommendations1').find('p').find('a').find('strong').each(function(index){if($(this).html()==""){$(this).parent().remove();}});}
 function DisplayAddEventOverlay(){$("#ShowAddEvent").overlay({api:true,speed:200,expose:{maskId:'overlyMask',loadSpeed:800,opacity:0.9},onBeforeLoad:function(){var wrap=this.getContent().find("div.wrap");if(wrap.is(":empty")){wrap.load(this.getTrigger().attr("href"));}},onClose:function(){$("#ShowAddEvent.wrap").empty();},closeOnClick:false}).load();$(".close").click(function(){document.getElementById("AddEvent").style.display="none";$("#ShowAddEvent").overlay().close();});}
@@ -46,13 +46,15 @@ $('.addEventBtn').text($('.addEventBtn').attr("btnText"));});InitTypeAhead();Dis
 function DisableInviteForPastEvent(){var eventStartDate=$('#CSOcalendar').datepicker('getDate');var tempDate=new Date();var today=new Date(tempDate.getFullYear(),tempDate.getMonth(),tempDate.getDate());if(eventStartDate<today){$('#MoreDetails').attr("disabled","true");$('#AnnualEvent').attr("checked","true");}
 else
 $('#MoreDetails').removeAttr("disabled");}
-function InitEditEvent(){InitEditEventHeaders();$("#addEventLink").hide();LoadEditEvent($("#RequestType").val().toLowerCase());InitializeDoubleClickHandler();}
+function InitEditEvent(){InitEditEventHeaders();$("#addEventLink").hide();var newRequestType=$("#RequestType").val().toLowerCase();if((loggedinUserFN==''||loggedinUserFN==null)&&newRequestType=='i'){newRequestType='d';}
+LoadEditEvent(newRequestType);InitializeDoubleClickHandler();}
 function InitEditEventHeaders(){$('.editHdr').removeClass('selected');$('.editFtr').hide();$('.'+$("#RequestType").val()).addClass('selected');$("#FT_"+$("#RequestType").val()).show();}
 function InitTimeDropdowns(){document.getElementById('EndTime').onchange=function(e){if($('#StartTime').val()==""&&$('#EndTime').val()!="")
 $('#StartTime').val("00:00");ValidateEventDetailsChange();}
 document.getElementById('StartTime').onchange=function(e){if($('#EndTime').val()==""&&$('#StartTime').val()!="")
 $('#EndTime').val("23:45");ValidateEventDetailsChange();}}
-function DisplayUpdateConfirmationOverlay(requestType){var currentFormID=$('#EditEvent').find('form').attr('id');if(currentFormID=="frmInviteGuests"&&$('#IsGuestsModified').val().toLowerCase()=='true'){$("#TempRequestType").val(requestType);$('#inviteGuestUpdateOverlay').trigger('click');}
+function DisplayUpdateConfirmationOverlay(requestType){if(($('#LoggedInUser\\.FirstName').val()==''&&$('#LoggedInUser\\.FirstName').css('visibility')=="visible")||($('#LoggedInUser\\.LastName').val()==''&&$('#LoggedInUser\\.LastName').css('visibility')=="visible")){$('#LoggedInUser\\.FirstName').blur();$('#LoggedInUser\\.LastName').blur();return;}
+var currentFormID=$('#EditEvent').find('form').attr('id');if(currentFormID=="frmInviteGuests"&&$('#IsGuestsModified').val().toLowerCase()=='true'){$("#TempRequestType").val(requestType);$('#inviteGuestUpdateOverlay').trigger('click');}
 else{if($('#'+currentFormID).hmkFormChecker('didFormChange')){$("#TempRequestType").val(requestType);$("#UpdateEventConfirmation").overlay({api:true,speed:200,expose:{maskId:'overlyMask',loadSpeed:800,opacity:0.9},onBeforeLoad:function(){var wrap=this.getContent().find("div.wrap");if(wrap.is(":empty")){wrap.load(this.getTrigger().attr("href"));}},onClose:function(){$("#UpdateEventConfirmation.wrap").empty();},closeOnClick:false}).load();$(".close").click(function(){$("#UpdateEventConfirmation").overlay().close();});InitEnableEnterKey();}
 else
 LoadEditEvent(requestType.toLowerCase());}}
@@ -164,7 +166,9 @@ function handleAddEventOptions(jsonResponse){if(null!=jsonResponse.ValidationErr
 else{PopulateOmnitureForAddEvent();document.location.href=document.URL;window.location.reload(true);}}
 function AddGuestsAndDetails(){clearAllErrorMessages();var eventPE=$("#frmAddEvent").serialize();eventPE+="&OccasionTimeSpan="+occTimeSpan+"&OccassionHonoreeType="+occHonoreeGender;hallmarkBehaviors.hmkDisableButton($('#btAddMore'));$.post('/Events/AddEvent',eventPE,handleAddGuestsAndDetails,"json");}
 function handleAddGuestsAndDetails(jsonResponse){if(null!=jsonResponse.ValidationErrors&&jsonResponse.ValidationErrors.length>0){displayErrorMessagesOnReLoad(jsonResponse.ValidationErrors,'AddEvents');hallmarkBehaviors.hmkEnableButton($('#btAddMore'));}
-else{PopulateOmnitureForAddEvent();document.location.href="/Events/EditEvent/"+jsonResponse.ID+"/I";}}
+else{PopulateOmnitureForAddEvent();if(jsonResponse.LoggedInUser.FirstName==null||jsonResponse.LoggedInUser.FirstName==""||jsonResponse.LoggedInUser.LastName==null||jsonResponse.LoggedInUser.LastName=="")
+document.location.href="/Events/EditEvent/"+jsonResponse.ID+"/D";else
+document.location.href="/Events/EditEvent/"+jsonResponse.ID+"/I";}}
 function SaveEventTypePreferences(formID,callBack){if(formID=="frmEventTypePreferences")
 UpdateEventTypePreferences(callBack);else if(formID=="frmReminderPreferences")
 UpdateReminderPreferences(callBack);else if(formID="frmHolidayPreferences")

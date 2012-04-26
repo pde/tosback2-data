@@ -89,3 +89,8 @@ if(urlValueSplit[4] == 'USCTabPromo'){
 if(urlValueSplit[4] == 'starca'){
     setTimeout(function(){window.location = 'http://pages.samsung.com/starus/ca/'}, 1);
 }
+
+//Android FAQ
+if(urlValueSplit[4] == 'ICSUpdate'){
+	setTimeout(function(){window.location = 'http://www.samsung.com/us/support/SupportOwnersFAQPopup.do?faq_id=FAQ00046726&fm_seq=49755'}, 1);
+}

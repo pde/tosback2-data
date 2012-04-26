@@ -107,7 +107,11 @@
 
 
 
+
 <script src="../../../../../images.sfbc.com/content/branding/common/js/hp_jquery.cookie.js"></script>
+
+
+<script>$("#bnrDiv").css("display","block");</script>
 
 
 
@@ -170,10 +174,17 @@ if (omnChan != "PDP") {
 }
 if (omnChan != "PDP" && omnCat == "") {
 	s.pageName=omnChan.toLowerCase();
-	if(omnChan == "HOMEPAGE"){
-	s.prop1="home";
-	}else{
-	s.prop1="feature page";}
+}
+if (omnChan == "CONTRIBUTOR PAGE") {
+	s.prop1="contributor page";
+	s.prop4 =omnChan.toLowerCase();
+	s.prop5 =omnChan.toLowerCase();
+}
+if (omnChan == "HOMEPAGE" || omnChan == "HOME") {
+	
+	s.prop1="homepage";
+	s.prop4 = "homepage";
+	s.prop5 = "homepage";
 }
 
 s.server=window.location.host.toLowerCase();
@@ -202,12 +213,13 @@ s.events="";
 
 
 	s.prop4="PrivacyPolicy".toLowerCase();
-	//alert(omnChan);
-	if(omnChan=="homepage"){
-	s.prop1="homepage";
-	}else{
-	s.prop1 = "category";}
+	s.prop1 = "channel level page";
+	s.prop4 =omnChan.toLowerCase();
 	s.prop5 =omnChan.toLowerCase();
+
+
+
+
 
 
 
@@ -243,7 +255,7 @@ s.events="";
 
 s.channel="NEW MEMBER|PrivacyPolicy".toUpperCase();
 
-s.eVar29="618105062";s.prop29=s.eVar29;
+s.eVar29="626074982";s.prop29=s.eVar29;
 
 
 
@@ -322,14 +334,14 @@ function eraseCookie(name) {
 }
 
 function starNowTracking(pProductId,ClubCode){
-	if(ClubCode == 'ZOO'){
+	
 	var s=s_gi(s_account);
 	s.linkTrackVars='events,products';
 	s.linkTrackEvents='event13';
 	s.events='event13';
 	s.products=";"+pProductId;
 	s.tl(this,'o','Start Now');
-	}
+	
 }
 
 
@@ -356,10 +368,6 @@ function likeToEnrollTracking(){
 		s.tl(this,'o','Like to Enroll');
 		
 }
-
-
-
-
 
 
 
@@ -631,7 +639,7 @@ if ( $.browser.msie && (( parseInt($.browser.version, 10) )<= 6)) {
 
 
 	<div id="analytics">
-	
+	?
 
 
 
@@ -695,8 +703,6 @@ if ( $.browser.msie && (( parseInt($.browser.version, 10) )<= 6)) {
 
 
 
-
-
 <script type="text/javascript">
 try{ 
   var pageTracker = _gat._getTracker(_directbrandsGaId);
@@ -711,8 +717,13 @@ try{
 	
 
 		
-		
+
+
 	
+
+
+
+
 	</div>
 </div>		
 </body>

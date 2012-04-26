@@ -433,6 +433,20 @@ made when instructed to do so by your account manager.*/
 s.visitorNamespace="bruceclay"
 s.dc="112"
 
+//implement 1st party cookies
+if (clubCode == 'bec'){
+  s.trackingServer="metrics.blackexpressions.com"
+  s.trackingServerSecure="smetrics.blackexpressions.com"
+}
+if (clubCode == 'myg'){
+  s.trackingServer="metrics.mysteryguild.com"
+  s.trackingServerSecure="smetrics.mysteryguild.com"
+}
+if (clubCode == 'dbc'){
+  s.trackingServer="metrics.doubledaybookclub.com"
+  s.trackingServerSecure="smetrics.doubledaybookclub.com"
+}
+
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code='',s_objectID;function s_gi(un,pg,ss){var c="s.version='H.24.2';s.an=s_an;s.logDebug=function(m){var s=this,tcf=new Function('var e;try{console.log(\"'+s.rep(s.rep(m,\"\\n\",\"\\\\n\"),\""
 +"\\\"\",\"\\\\\\\"\")+'\");}catch(e){}');tcf()};s.cls=function(x,c){var i,y='';if(!c)c=this.an;for(i=0;i<x.length;i++){n=x.substring(i,i+1);if(c.indexOf(n)>=0)y+=n}return y};s.fl=function(x,l){retur"

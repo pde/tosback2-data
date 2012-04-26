@@ -63,10 +63,10 @@ s.prop16=s.TimeParting('w','-8'); // Set Weekend / Weekday
 
 
 /* Rolling Visit Number */
-s.eVar44=s.prop44=s.rollingVisitNum('rvd',1);
-s.eVar45=s.prop45=s.rollingVisitNum('rvw',7);
-s.eVar46=s.prop46=s.rollingVisitNum('rvm',30);
-s.eVar43=s.prop43=s.rollingVisitNum('rvq',90);
+s.eVar44=s.prop44=s.rollingVisitNum('rvd',0);
+s.eVar45=s.prop45=s.rollingVisitNum('rvw',0);
+s.eVar46=s.prop46=s.rollingVisitNum('rvm',0);
+s.eVar43=s.prop43=s.rollingVisitNum('rvq',0);
 
 /* visitor uid */
 s.prop24="D=s_vi";

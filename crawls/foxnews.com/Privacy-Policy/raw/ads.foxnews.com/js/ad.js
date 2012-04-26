@@ -693,7 +693,7 @@
 						google_ad_height: '250', // height of iframe 
 						google_ad_format: '300x250_pas_abgc', // html template to fill iframe
 						google_ad_type: 'text', // ad type
-						google_alternate_ad_url : location.href, 
+						google_alternate_ad_url : '', 
 						google_alternate_color : '00FFFF', 
 						google_color_bg : 'FFFFFF', // the ads' background color 
 						google_color_border : 'CCCCCC', //ad border
@@ -841,6 +841,11 @@
 					omtr.prop12 = $("meta[property='og\:title']").attr("content");
 				}
 
+				if(d.raw.genre == "interactiveContent"){
+					omtr.prop13 = "interactive";
+				}				
+				
+				
 				if (typeof $.ad._meta.language != "undefined") {
 					var lang = $.ad._meta.language;
 					omtr.prop19 = lang;
@@ -868,6 +873,11 @@
 					if(colVal){
 						omtr.prop53 = omtr.eVar53 = colVal;
 					}else{	omtr.prop53 = omtr.eVar53 = classVal;}
+				}			
+
+				if(d.mDate){ 
+					omtr.prop54 = omtr.eVar54 = d.mDate; 
+					window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event42";window.omtr.events="event42";
 				}				
 				
 				omtr.hier1 = clean(0,6,',');
@@ -1695,7 +1705,8 @@
 				
 				var classification = ($('meta[name=classification]').attr("content")) || false;
 				var classificationISA = ($('meta[name=classification-isa]').attr("content")) || false;
-				$.ad._meta = {channel: channel, ptype: ptype, ctype: ctype, pageid: pageid, categories: categories, raw: t,canonical:canonical,classification:classification,classificationISA:classificationISA,language:language};
+				var mDate = ($("meta[name='dc.date']").attr("content")) || false;				
+				$.ad._meta = {channel: channel, ptype: ptype, ctype: ctype, pageid: pageid, categories: categories, raw: t,canonical:canonical,classification:classification,classificationISA:classificationISA,language:language, mDate:mDate};
 				//alert("channel: "+channel+", ptype: "+ptype+", ctype: "+ctype+", pageid: "+pageid);
 			}
 			return $.ad._meta;

@@ -1,0 +1,135 @@
+SoundManagerHandler = function(player) {
+
+    this.soundId = 'jam';
+    this.currentSound = null;
+    this.player = player;
+
+    this.prepare = function(jam, autoPlay, onLoad, errorCallback, secondTry) {
+
+        var self = this;
+
+        var endPoint = secondTry ? 'tempfile2' : 'tempfile';
+
+        if(this.player.isOnMetaPage())
+            endPoint += "?isDraft=true";
+
+        $.ajax(
+            {url: "/" + jam.person + "/" + endPoint,
+             type: "POST",
+             async: false,
+             dataType: "JSON",
+             success: function(data) {
+                 var audioUrl = data.tempfile;
+
+                 // canPlayURL is stupid and only checks filename. doesn't work with SC
+                 if(self.currentSound)
+                     self.currentSound.destruct();
+                 self.currentSound = window.soundManager.createSound({
+                     id: self.soundId,
+                     url: audioUrl,
+                     autoLoad: true,
+                     onload: function(success) {
+                         if(success) {
+
+                             // callback
+                             onLoad();
+
+                             self.player.updateDuration(this.duration);
+
+                             if(autoPlay) {
+                                 // dirty, but seems to work.
+                                 // for some reason android phones fire onload when
+                                 // createSound() is called, not when the sound is actually loaded.
+                                 // also, play() only works if the sound is loaded.
+                                 if(self.isAndroid()) {
+                                     self.player.play();
+                                 }
+                             }
+                             else {
+                                 // minging ugly
+                                 self.player.state = new Player.PausedState(self.player);
+                             }
+                         }
+                         else {
+                             $.post('/error/jsdebug', {data: {errorInPlayingJamFirstTry: jam.id, person: jam.person}});
+                             if(secondTry) {
+                                 $.post('/error/jsdebug', {data: {errorInPlayingJamSecondTry: jam.id, person: jam.person}});
+                                 self.player.stop();
+                                 if(errorCallback)
+                                     errorCallback();
+                             }
+                             else
+                                 self.prepare(jam, autoPlay, onLoad, errorCallback, true);
+                         }
+                     }
+                 });
+
+                 // see comment above about android
+                 if(autoPlay && !self.isAndroid()) {
+                     self.player.play();
+                 }
+                 else if(!autoPlay) {
+                     // really i'd just like to self.player.load(), but
+                     // iphones don't like that. this works though.
+                     self.currentSound.play();
+                     window.soundManager.pause(self.soundId);
+                 }
+             },
+             error: function(data, textStatus, errorThrown) {
+                 $.post('/error/jsdebug', {data: {errorInPlayingJam: data, textStatus: textStatus, errorThrown: errorThrown}});
+                 if(errorCallback)
+                     errorCallback();
+             }
+            }
+        );
+
+    };
+
+    this.pause = function() {
+        window.soundManager.pause(this.soundId);
+    };
+
+    this.resume = function() {
+        window.soundManager.resume(this.soundId);
+    };
+
+    this.stop = function() {
+        //console.log(this.currentSound);
+        if(this.currentSound) {
+            window.soundManager.stopAll();
+            this.currentSound.destruct();
+            this.currentSound = null;
+        }
+    };
+
+    this.play = function(onPlaybackStarted, onFinish) {
+        this.currentSound.play({
+            onplay: function() {
+                onPlaybackStarted();
+            },
+            onfinish: function() {
+                onFinish();
+            }
+        });
+    };
+
+    this.isAndroid = function() {
+        return navigator.userAgent.toLowerCase().indexOf("android") > -1;
+    };
+
+    // called on newPage on feed
+    this.show = function() {
+        null;
+    };
+    this.hide = function() {
+        null;
+    };
+    this.getName = function() {
+        return 'soundmanager';
+    };
+    this.getElapsedTime = function() {
+        //console.log("elapsed time", window.soundManager.sounds.jam.position / 1000);
+        return ( window.soundManager.sounds.jam.position / 1000 );
+    };
+
+};

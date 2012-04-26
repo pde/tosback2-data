@@ -1,0 +1,878 @@
+/* 
+    Stylesheets for ASW SDK
+*/
+ * superfish.css  ALWAYS KEEP AT THE TOP OF THIS FILE!
+ *****************************************************************************/
+
+/*** ESSENTIAL STYLES ***/
+.sf-menu, .sf-menu * {
+  margin:     0;
+  padding:    0;
+  list-style:   none;
+}
+.sf-menu {
+  line-height:  1.0;
+}
+.sf-menu ul {
+  position:   absolute;
+  top:      -999em;
+  width:      10em; /* left offset of submenus need to match (see below) */
+}
+.sf-menu ul li {
+  width:      100%;
+}
+.sf-menu li:hover {
+  visibility:   inherit; /* fixes IE7 'sticky bug' */
+}
+.sf-menu li {
+  float:      left;
+  position:   relative;
+}
+.sf-menu a {
+  display:    block;
+  position:   relative;
+}
+.sf-menu li:hover ul,
+.sf-menu li.sfHover ul {
+  left:     0;
+  top:      2.5em; /* match top ul list item height */
+  z-index:   997;   /* 509 */
+}
+ul.sf-menu li:hover li ul,
+ul.sf-menu li.sfHover li ul {
+  top:      -999em;
+}
+ul.sf-menu li li:hover ul,
+ul.sf-menu li li.sfHover ul {
+  left:     10em; /* match ul width */
+  top:      0;
+}
+ul.sf-menu li li:hover li ul,
+ul.sf-menu li li.sfHover li ul {
+  top:      -999em;
+}
+ul.sf-menu li li li:hover ul,
+ul.sf-menu li li li.sfHover ul {
+  left:     10em; /* match ul width */
+  top:      0;
+}
+
+/*** DEMO SKIN ***/
+.sf-menu {
+  float:      left;
+  margin-bottom:  1em;
+}
+.sf-menu a {
+  border-left:  1px solid #fff;
+  border-top:   1px solid #CFDEFF;
+  padding:    .75em 1em;
+  text-decoration:none;
+}
+.sf-menu a, .sf-menu a:visited  { /* visited pseudo selector so IE6 applies text colour*/
+  color:      #13a;
+}
+.sf-menu li {
+  background:   #BDD2FF;
+}
+.sf-menu li li {
+  background:   #AABDE6;
+}
+.sf-menu li li li {
+  background:   #9AAEDB;
+}
+.sf-menu li:hover, .sf-menu li.sfHover,
+.sf-menu a:focus, .sf-menu a:hover, .sf-menu a:active {
+  background:   #CFDEFF;
+  outline:    0;
+}
+
+/*** arrows **/
+.sf-menu a.sf-with-ul {
+  padding-right:  2.25em;
+  min-width:    1px; /* trigger IE7 hasLayout so spans position accurately */
+}
+.sf-sub-indicator {
+  position:   absolute;
+  display:    block;
+  right:      .75em;
+  top:      1.05em; /* IE6 only */
+  width:      10px;
+  height:     10px;
+  text-indent:  -999em;
+  overflow:   hidden;
+  /* background:   url('images/arrows-ffffff.png') no-repeat 2px -100px; */ /* 8-bit indexed alpha png. IE6 gets solid image only */
+}
+a > .sf-sub-indicator {  /* give all except IE6 the correct values */
+  top:      .8em;
+  background-position: 2px -100px; /* use translucent arrow for modern browsers*/
+}
+
+/* apply hovers to modern browsers */
+a:focus > .sf-sub-indicator,
+a:hover > .sf-sub-indicator,
+a:active > .sf-sub-indicator,
+li:hover > a > .sf-sub-indicator,
+li.sfHover > a > .sf-sub-indicator {
+  background-position: -8px -100px; /* arrow hovers for modern browsers*/
+}
+
+/* ASW CUSTOMIZATION */
+/* IE doesn't understand > (child) selectors, so work around */
+a .sf-sub-indicator {
+  * background-position: 2px -100px;
+}
+
+a:focus .sf-sub-indicator,
+a:hover .sf-sub-indicator,
+a:active .sf-sub-indicator {
+  * background-position: -8px -100px; /* arrow hovers for modern browsers*/
+}
+/* ASW CUSTOMIZATION */
+
+/* point right for anchors in subs */
+.sf-menu ul .sf-sub-indicator { background-position:  -8px 0; }
+.sf-menu ul a > .sf-sub-indicator { background-position:  0 0; }
+
+/* ASW CUSTOMIZATION */
+/* IE doesn't understand > (child) selectors, so work around */
+.sf-menu ul a .sf-sub-indicator { * background-position:  0 0; }
+/* ASW CUSTOMIZATION */
+
+/* apply hovers to modern browsers */
+.sf-menu ul a:focus > .sf-sub-indicator,
+.sf-menu ul a:hover > .sf-sub-indicator,
+.sf-menu ul a:active > .sf-sub-indicator {
+  background-position: -10px 0; /* arrow hovers for modern browsers*/
+}
+/* ASW CUSTOMIZATION */
+/* These selectors are too greedy and the ones above won't work in IE
+.sf-menu ul li:hover > a > .sf-sub-indicator,
+.sf-menu ul li.sfHover > a > .sf-sub-indicator
+*/
+.sf-menu ul a:focus .sf-sub-indicator,
+.sf-menu ul a:hover .sf-sub-indicator,
+.sf-menu ul a:active .sf-sub-indicator {
+  * background-position: -10px 0; /* arrow hovers for modern browsers*/
+}
+/* ASW CUSTOMIZATION */
+
+
+/*** shadows for all but IE6 ***/
+.sf-shadow ul {
+ /**  background: url('images/shadow.png') no-repeat bottom right;  **/
+  padding: 0;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+ /** -moz-border-radius-bottomleft: 17px;
+  -moz-border-radius-topright: 17px;
+  -webkit-border-top-right-radius: 17px;
+  -webkit-border-bottom-left-radius: 17px;
+**/
+}
+.sf-shadow ul.sf-shadow-off {
+  background: transparent;
+}
+
+.sf-shadow ul ul {border-top: 1px solid #ccc;}
+
+body.profile ul#gh-primary-nav li#nav-profile a .sf-sub-indicator,
+body.network ul#gh-primary-nav li#nav-network a .sf-sub-indicator,
+body.messages ul#gh-primary-nav li#nav-messages a .sf-sub-indicator,
+body.members ul#gh-primary-nav li#nav-members a .sf-sub-indicator,
+body.forums ul#gh-primary-nav li#nav-forums a .sf-sub-indicator,
+body.events ul#gh-primary-nav li#nav-events a .sf-sub-indicator,
+body.marketplace ul#gh-primary-nav li#nav-marketplace a .sf-sub-indicator,
+body.travel ul#gh-primary-nav li#nav-travel a .sf-sub-indicator,
+body.magazine ul#gh-primary-nav li#nav-magazine a .sf-sub-indicator {
+  background-position: -8px -100px; /* use translucent arrow for modern browsers*/
+}
+/* Overriding Superfish */
+
+.sf-sub-indicator {
+  background-image: url("../../css/facelift/images/gh-primary-nav-arrows.gif");
+  top: 3px; /* IE6 only */
+}
+
+a > .sf-sub-indicator {  /* give all except IE6 the correct values */
+  top: 7px;
+  right: 12px;
+}
+
+.sf-menu li:hover ul, .sf-menu li.sfHover ul {
+  top: 30px; /* needs to match height of gh-primary-nav */
+}
+
+.sf-menu li:hover {
+  z-index: 999999; /* This is the important style directive, without it IE7 chokes */
+}
+
+.sf-menu li, .sf-menu a {
+  z-index: 510; /* 999999 */
+}
+
+/* nuSDK */
+#outer-wrp, #asw-header, #gh-primary-nav-search, #gh-primary-nav-search-inner, #outside-footer {width: 100%;}
+ul#gh-primary-nav li.first-child a.link-primary, ul#gh-primary-nav li:first-child a.link-primary {
+  border-left: 1px solid #555;
+}
+#outside-footer {min-height:393px;}
+/* center */
+div#content-wrp {
+  clear: both;
+  float: left;
+  width: 950px;
+  /* margin-bottom: 70px; */
+}
+div#content-wrp #content {
+  clear: both;
+  color: #333;
+  float: left;
+  width: 100%;
+  margin: 0;
+  padding-top: 10px;
+  vertical-align: top;
+  background-color: #fff;
+}
+div.fix-width, div#gh-header, div.content-area, #asw-login.login-error, #login-magazine-teaser, .logged-out #outer-wrp, .about-us #content-wrp {width: 950px; margin:0px auto; float: none; }
+#asw-subnav, #gh-subnav, div#content-wrp, div#asw-footer, div#asw-footer-inner {width:100%; float: none;}
+div#content-wrp {float: left;}
+.about-us #content-wrp {float: none;}   /* override */
+/* top right menu */
+ul#gh-primary-nav-links {float: right;}
+
+ /* items bg reset */
+ ul#gh-primary-nav li, ul#gh-primary-nav li a, ul#gh-primary-nav li a:link, ul#gh-primary-nav li a:visited, ul#gh-primary-nav-links a, ul#gh-primary-nav-links a:link, ul#gh-primary-nav-links a:visited {background: transparent;}
+ ul#gh-primary-nav li.active, ul#gh-primary-nav li a:hover, ul#gh-primary-nav-links a, ul#gh-primary-nav-links a.active, ul#gh-primary-nav-links a:hover {background: url("../../images/bg_menu.png") #000 repeat-x 0px -30px;}
+ #asw-footer-inner {background: url("../../images/dotted.gif") repeat-x scroll 0 25px #F3F3F3;}
+ /* cleanups */
+ div#asw-footer-inner {border-bottom: 1px solid #CCCCCC;padding-left: 0px;}
+ #footerlinks {border-top: none; margin:0px auto;}
+ #footerlinks ul {margin-left: 0px;}
+
+ 
+/* general styling */
+#asw-header, #asw-subnav, #asw-footer {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    color: #333333;
+    line-height: 18px;
+    text-align: left;
+    vertical-align: baseline;
+    margin: 0px; padding: 0px; border: none;
+    position: relative;
+    z-index: 500;
+}
+#asw-footer{
+  z-index: auto;
+}
+#asw-header a, #asw-subnav a, #asw-footer a{
+    text-decoration: none;
+    font-weight: normal;
+}
+#asw-header a img {
+    border: none;
+    vertical-align: middle;
+}
+#asw-header ul, #asw-header ol, #asw-header li, #asw-subnav ul, #asw-subnav ol, #asw-subnav li, #asw-footer ul,#asw-footer ol,#asw-footer li {
+   /* margin: 0px; */
+   padding: 0px;
+   list-style: none outside none;
+}
+#gh-header {padding: 0px;}
+#gh-header a {
+    color: #666666;
+    font-size: 11px;
+}
+#gh-logo {
+    border: none;
+    float: left;
+    margin: 28px 0;
+    padding: 0;
+}
+
+*html img#gh-logo {visibility: hidden;}
+
+#gh-secondary-nav {
+    color: #666666;
+    float: left;
+    line-height: 12px;
+    margin: 15px 0 0 15px;
+}
+#gh-secondary-nav li {
+    border-right: 1px solid #CCCCCC;
+    float: left;
+    margin: 0 9px 0 0;
+    padding: 0 9px 0 0;
+}
+#gh-header a {
+    color: #666666;
+    font-size: 11px;
+}
+#gh-info-nav {
+    float: right;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 12px;
+    margin: 38px 0 0;
+    padding: 0 15px 0 0;
+}
+ul#gh-info-nav li {
+  padding: 0 6px 0 0;
+  margin: 0 5px 0 0;
+  float: left;
+  border-right: 1px solid #ccc;
+}
+
+ul#gh-info-nav li.last-child {
+  border-right: none;
+  padding-right: 0;
+  margin-right: 0;
+}
+
+/** SECONDARY NAV **/
+
+#gh-secondary-nav {
+	color: #666;
+	float: left;
+	line-height: 12px;
+	margin: 38px 0 0 15px;
+}
+
+#gh-secondary-nav-inbox {margin: 0 0 0; float: left;}
+
+#gh-secondary-nav-inbox ul {
+	background: #fff;
+	margin: 0;
+	width: 100%;
+}
+
+#gh-secondary-nav-inbox ul li {
+ 	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	float: left;
+	width: 100%;
+	padding: 12px 0;
+	margin-left: -1px;
+	margin-right: 0;
+}
+
+#gh-secondary-nav-inbox ul li.tab-compose {
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 10px;
+	padding-top: 1px;
+}
+
+#gh-secondary-nav li {
+	border-right: 1px solid #ccc;
+	float: left;
+	margin: 0 9px 0 0;
+	padding: 0 9px 0 0;
+}
+
+#gh-secondary-nav a:hover, #gh-info-nav a:hover {text-decoration: underline !important;}
+
+#gh-secondary-nav li.last-child {
+	border-right: 0;
+	margin-right: 1px;
+
+}
+
+#gh-secondary-nav-inbox a.link-primary {
+	background: url(../../images/gh_nav_mailbox.gif) 2px 1px no-repeat;
+	border-left: 1px solid #fff;
+	border-right: 1px solid #fff;
+	display: block;
+	padding: 0 45px 0 25px;
+}
+
+#gh-secondary-nav-inbox li.item-primary {
+	position: relative;
+	border-left: 1px solid #fff;
+	border-right: 1px solid #fff;
+ 	border-top: 1px solid #fff;
+	margin-top: -4px;
+	padding-top: 3px;
+}
+
+#gh-secondary-nav #gh-secondary-nav-inbox li.active {
+ 	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+ 	border-top: 1px solid #ccc;
+}
+
+#gh-secondary-nav-inbox ul a {
+	color: #369;
+	font-weight: bold;
+	margin: 0 0 0 5px;
+}
+
+*html #gh-secondary-nav-inbox ul {
+	left: -1px !important;
+	border-left: 1px solid #ccc !important;
+	border-right: 1px solid #ccc !important;
+}
+
+*html #gh-secondary-nav li.item-primary {padding-right: 0 !important;}
+
+*html #gh-secondary-nav-inbox ul li {
+	margin-left: 0px !important;
+	border: 0 !important;
+}
+#gh-secondary-nav-inbox li ul{
+	position: absolute;
+	visibility: hidden;
+}
+
+#gh-secondary-nav-inbox li ul {
+	z-index: 950;
+}		
+
+/** PRIMARY SEARCH **/
+
+#gh-primary-search {
+	float: right;
+	margin: 5px 5px 0 0;
+	width: 187px;
+}
+
+#gh-primary-search input {
+	background:transparent url(../../images/search_bg.png) no-repeat scroll left top;
+	border:0 none;
+	float:left;
+	font-size: 11px;
+	height:19px;
+	padding:0px 0 0 5px;
+	width:156px;
+}
+
+#gh-primary-search button {
+	background:transparent url(../../images/search_btn.png) no-repeat scroll left top;
+	border:0 none;
+	float: left;
+	height:19px;
+	margin:0;
+	padding:0;
+	text-indent:-9999px;
+	width:26px;
+}
+/** PRIMARY NAVIGATION & PRIMARY SEARCH **/
+
+#gh-primary-nav-search, #gh-primary-nav-search-inner {float: left;}
+
+#gh-primary-nav-search {
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	margin: 0;
+	padding: 2px 0;
+}
+
+body.login #gh-primary-nav-search {border-bottom: 0;}
+
+#gh-primary-nav-search-inner {
+	background: url("../../images/bg_menu.png") #000 repeat-x 0px 0px;
+}
+
+/* 1 */
+ul#gh-primary-nav, ul#gh-primary-nav-links {
+  font-size: 11px;
+  margin: 0 ;
+  list-style: none;
+  float: left;
+  height: 30px;
+
+}
+
+/* 2 */
+ul#gh-primary-nav ul {
+    font-weight: bold;
+    -moz-box-shadow: 1px 3px 3px #999;
+    -webkit-box-shadow: 1px 3px 3px #999;
+  /* width: 17em; */
+}
+
+
+/* 1 */
+ul#gh-primary-nav li, ul#gh-primary-nav-links li {
+  padding: 0;
+  margin: 0;
+  float: left;
+  display: block;
+  background: none; /* override */
+}
+/* 1 */
+
+ul#gh-primary-nav li#nav-home a {
+	padding-left: 17px;
+	padding-right: 17px;
+}
+
+ul#gh-primary-nav li a,  ul#gh-primary-nav-links li a {
+  padding: 10px 25px 9px 15px;
+  display: block;
+  border: none; /* override */
+  border-right: 1px solid #555;
+  height: 11px;
+  line-height: 10px;
+  white-space: nowrap;
+}
+
+ul#gh-primary-nav li a.link-primary {
+	float: left;
+}
+
+ul#gh-primary-nav li.first-child a {
+  background-image: url("../../css/facelift/images/gh-primary-nav-background.gif");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+ul#gh-primary-nav.msg-empty li#nav-home a {width: 30px;}
+/* 2 */
+ul#gh-primary-nav li li a, ul#gh-primary-nav li li.last-child a,
+ul#gh-primary-nav-links li li a, ul#gh-primary-nav-links li li.last-child a {
+  border: none; /* override */
+  border-top: 1px solid #ededed;
+  line-height: inherit;
+}
+
+*html ul#gh-primary-nav li li a, *html ul#gh-primary-nav li li.last-child a,
+*html ul#gh-primary-nav-links li li a, *html ul#gh-primary-nav-links li li.last-child a {
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+
+*html ul#gh-primary-nav li li.last-child a,
+*html ul#gh-primary-nav-links li li.last-child a {border-bottom: 1px solid #ccc;}
+
+/* 3 */
+ul#gh-primary-nav li li li a, ul#gh-primary-nav-links li li li a {
+  border: none; /* override */
+  border-bottom: 1px solid #ededed;
+  border-left: none;
+  border-right: 1px solid #ccc;
+}
+
+/* 1 */
+ul#gh-primary-nav li a:link, ul#gh-primary-nav li a:visited,
+ul#gh-primary-nav-links li a:link, ul#gh-primary-nav-links li a:visited {
+  color: #ccc;
+  /* background-color: #111; */
+  font-weight: normal;
+  text-decoration: none;
+}
+
+/* 2 */
+ul#gh-primary-nav li li a:link, ul#gh-primary-nav li li a:visited,
+ul#gh-primary-nav-links li li a:link, ul#gh-primary-nav-links li li a:visited {
+  color: #666;
+  background-color: #f8f8f8;
+  font-weight: bold;
+  text-decoration: none;
+  background-image: none;
+}
+
+/* 3 */
+ul#gh-primary-nav li li li a:link, ul#gh-primary-nav li li li a:visited,
+ul#gh-primary-nav-links li li li a:link, ul#gh-primary-nav-links li li li a:visited {
+	border-right: 0;
+  color: #666;
+  background-color: #f8f8f8;
+  text-decoration: none;
+}
+/* 3 */
+ul#gh-primary-nav li li li a:focus, ul#gh-primary-nav li li li a:hover, ul#gh-primary-nav li li li a:active {
+  color: #fff;
+  background-color: #369;
+  text-decoration: none;
+}
+
+/* current */
+body.profile ul#gh-primary-nav li#nav-profile a.link-primary:link, body.profile ul#gh-primary-nav li#nav-profile a.link-primary:visited,
+body.network ul#gh-primary-nav li#nav-network a.link-primary:link, body.network ul#gh-primary-nav li#nav-network a.link-primary:visited,
+body.messages ul#gh-primary-nav li#nav-messages a.link-primary:link, body.messages ul#gh-primary-nav li#nav-messages a.link-primary:visited,
+body.members ul#gh-primary-nav li#nav-members a.link-primary:link, body.members ul#gh-primary-nav li#nav-members a.link-primary:visited,
+body.forums ul#gh-primary-nav li#nav-forums a.link-primary:link, body.forums ul#gh-primary-nav li#nav-forums a.link-primary:visited,
+body.events ul#gh-primary-nav li#nav-events a.link-primary:link, body.events ul#gh-primary-nav li#nav-events a.link-primary:visited,
+body.marketplace ul#gh-primary-nav li#nav-marketplace a.link-primary:link, body.marketplace ul#gh-primary-nav li#nav-marketplace a.link-primary:visited,
+body.travel ul#gh-primary-nav li#nav-travel a.link-primary:link, body.travel ul#gh-primary-nav li#nav-travel a.link-primary:visited,
+body.magazine ul#gh-primary-nav li#nav-magazine a.link-primary:link, body.magazine ul#gh-primary-nav li#nav-magazine a.link-primary:visited
+{background: url("../../images/bg_menu.png") transparent repeat-x 0px -30px;}
+
+
+body.profile ul#gh-primary-nav li#nav-profile a:link, body.profile ul#gh-primary-nav li#nav-profile a:visited,
+body.network ul#gh-primary-nav li#nav-network a:link, body.network ul#gh-primary-nav li#nav-network a:visited,
+body.messages ul#gh-primary-nav li#nav-messages a:link, body.messages ul#gh-primary-nav li#nav-messages a:visited,
+body.members ul#gh-primary-nav li#nav-members a:link, body.members ul#gh-primary-nav li#nav-members a:visited,
+body.forums ul#gh-primary-nav li#nav-forums a:link, body.forums ul#gh-primary-nav li#nav-forums a:visited,
+body.events ul#gh-primary-nav li#nav-events a:link, body.events ul#gh-primary-nav li#nav-events a:visited,
+body.marketplace ul#gh-primary-nav li#nav-marketplace a:link, body.marketplace ul#gh-primary-nav li#nav-marketplace a:visited,
+body.travel ul#gh-primary-nav li#nav-travel a:link, body.travel ul#gh-primary-nav li#nav-travel a:visited,
+body.magazine ul#gh-primary-nav li#nav-magazine a:link, body.magazine ul#gh-primary-nav li#nav-magazine a:visited
+{
+  color: #fff;
+  background-color: #369;
+  text-decoration: none;
+}
+
+body.profile ul#gh-primary-nav li#nav-profile a .sf-sub-indicator,
+body.network ul#gh-primary-nav li#nav-network a .sf-sub-indicator,
+body.messages ul#gh-primary-nav li#nav-messages a .sf-sub-indicator,
+body.members ul#gh-primary-nav li#nav-members a .sf-sub-indicator,
+body.forums ul#gh-primary-nav li#nav-forums a .sf-sub-indicator,
+body.events ul#gh-primary-nav li#nav-events a .sf-sub-indicator,
+body.marketplace ul#gh-primary-nav li#nav-marketplace a .sf-sub-indicator,
+body.travel ul#gh-primary-nav li#nav-travel a .sf-sub-indicator,
+body.magazine ul#gh-primary-nav li#nav-magazine a .sf-sub-indicator {
+  background-position: -8px -100px; /* use translucent arrow for modern browsers*/
+}
+
+body.profile ul#gh-primary-nav li#nav-profile li a:link, body.profile ul#gh-primary-nav li#nav-profile li a:visited,
+body.network ul#gh-primary-nav li#nav-network li a:link, body.network ul#gh-primary-nav li#nav-network li a:visited,
+body.messages ul#gh-primary-nav li#nav-messages li a:link, body.messages ul#gh-primary-nav li#nav-messages li a:visited,
+body.members ul#gh-primary-nav li#nav-members li a:link, body.members ul#gh-primary-nav li#nav-members li a:visited,
+body.forums ul#gh-primary-nav li#nav-forums li a:link, body.forums ul#gh-primary-nav li#nav-forums li a:visited,
+body.events ul#gh-primary-nav li#nav-events li a:link, body.events ul#gh-primary-nav li#nav-events li a:visited,
+body.marketplace ul#gh-primary-nav li#nav-marketplace li a:link, body.marketplace ul#gh-primary-nav li#nav-marketplace li a:visited,
+body.travel ul#gh-primary-nav li#nav-travel li a:link, body.travel ul#gh-primary-nav li#nav-travel li a:visited,
+body.magazine ul#gh-primary-nav li#nav-magazine li a:link, body.magazine ul#gh-primary-nav li#nav-magazine li a:visited
+{
+  color: #666;
+  background-color: #f8f8f8;
+  text-decoration: none;
+}
+/* 1 */
+ul#gh-primary-nav li a:focus, ul#gh-primary-nav li a:hover, ul#gh-primary-nav li a:active {
+  color: #fff;
+  background-color: #369;
+  text-decoration: none;
+}
+
+/* 2 */
+ul#gh-primary-nav li li a:focus, ul#gh-primary-nav li li a:hover, ul#gh-primary-nav li li a:active,
+body.profile ul#gh-primary-nav li#nav-profile li a:focus, body.profile ul#gh-primary-nav li#nav-profile li a:hover, body.profile ul#gh-primary-nav li#nav-profile li a:active,
+body.network ul#gh-primary-nav li#nav-network li a:focus, body.network ul#gh-primary-nav li#nav-network li a:hover, body.network ul#gh-primary-nav li#nav-network li a:active,
+body.messages ul#gh-primary-nav li#nav-messages li a:focus, body.messages ul#gh-primary-nav li#nav-messages li a:hover, body.messages ul#gh-primary-nav li#nav-messages li a:active,
+body.members ul#gh-primary-nav li#nav-members li a:focus, body.members ul#gh-primary-nav li#nav-members li a:hover, body.members ul#gh-primary-nav li#nav-members li a:active,
+body.forums ul#gh-primary-nav li#nav-forums li a:focus, body.forums ul#gh-primary-nav li#nav-forums li a:hover, body.forums ul#gh-primary-nav li#nav-forums li a:active,
+body.events ul#gh-primary-nav li#nav-events li a:focus, body.events ul#gh-primary-nav li#nav-events li a:hover, body.events ul#gh-primary-nav li#nav-events li a:active,
+body.marketplace ul#gh-primary-nav li#nav-marketplace li a:focus, body.marketplace ul#gh-primary-nav li#nav-marketplace li a:hover, body.marketplace ul#gh-primary-nav li#nav-marketplace li a:active,
+body.travel ul#gh-primary-nav li#nav-travel li a:focus, body.travel ul#gh-primary-nav li#nav-travel li a:hover, body.travel ul#gh-primary-nav li#nav-travel li a:active,
+body.magazine ul#gh-primary-nav li#nav-magazine li a:focus, body.magazine ul#gh-primary-nav li#nav-magazine li a:hover, body.magazine ul#gh-primary-nav li#nav-magazine li a:active
+{
+  color: #fff;
+  background-color: #369;
+  text-decoration: none;
+}
+
+/* subnav */
+#asw-subnav {
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    z-index:499;
+}
+.asw-subnav, #gh-subnav {float: left; border-bottom: 1px solid #ccc;}
+.asw-subnav ul.nav {
+  height: 50px;
+  font-size: 16px;
+  position: relative;
+  margin:0px;
+}
+#asw-subnav ul.nav li.right-aligned {
+  display: block;
+  text-align: right;
+  float: right;
+}
+
+#asw-subnav .my_reservations {
+    display: block;
+    text-align: right;
+    position: absolute;
+    right:0px;
+}
+#asw-subnav ul.nav li {
+    padding: 0px 15px;
+}
+#asw-subnav ul.nav li.first {
+  padding-left: 0;
+}
+
+#asw-subnav ul.nav li.last {
+  background: none;  border: none;
+  padding-right: 0px;
+}
+#asw-subnav ul.nav li {
+  float: left;
+  line-height: 20px;
+  margin: 15px 0;
+  padding: 0 15px;
+  border-right: 1px solid #ccc;
+}
+
+
+.asw-subnav ul.nav a {
+  color:#777; font-weight: normal;
+}
+
+.asw-subnav ul.nav a:hover, .asw-subnav ul.nav .current a {
+  color: #336699; /* #3B99DC */
+  font-weight: normal;
+  text-decoration: none;
+}
+/* footer */
+body#asw-footer-wrpr {font-size:75%;color:#222;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;line-height: 1.5;margin:0px; padding:0px;}
+#asw-footer {
+    clear: both;
+    padding-top: 70px;
+}
+#asw-footer-inner {
+	background: #f3f3f3 url(../../images/dotted.gif) 0 25px repeat-x;
+	border-top: 1px solid #ccc;
+	padding: 35px 0 20px 10px;
+}
+
+#asw-footer, #asw-footer a {
+	font-size: 11px;
+	font-weight: normal;
+}
+
+#asw-footer a {color: #666;}
+#asw-footer a:hover {color: #369;}
+
+#asw-footer ul {
+	float: left;
+	list-style-type: none;
+ 	padding: 4px 0 12px;
+}
+
+#asw-footer ul li {list-style: none;}
+
+#asw-footer-inner ul {
+	margin: 0 10px 0 0;
+	width: 150px;
+}
+
+#asw-footer-inner ul.first-child,
+#asw-footer-inner ul.last-child {
+	width: 140px;
+}
+
+#asw-footer-inner ul.last-child {margin: 0;}
+
+#asw-copyright {
+  float: right;
+  text-align: right;
+  font-size: 10px;
+  margin-top: 8px;
+  padding-right: 5px;
+  color: #666;
+}
+
+#footerlinks {
+  /* border-top: 1px solid #ccc;margin: 0; */
+  height: 50px;
+  padding: 8px 0 0 5px;
+}
+
+
+#footerlinks li {display: inline;}
+
+#asw-footer #footerlinks a  {
+  text-transform: uppercase;
+  margin-right: 20px;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+#asw-footer #footerlinks a.mobile {color: #369;}
+#asw-footer #footerlinks a.mobile:hover {color: #000;}
+
+#asw-footer #footerlinks a:hover {color: #666;}
+
+/* login page */
+.login #outer-wrp {
+    margin: 0 auto;
+    text-align: left;
+    width: 950px;
+}
+.login #asw-header {
+    border-bottom: 1px solid #CCCCCC;
+    float: left;
+    padding: 17px 0;
+}
+.login #asw-header ul {
+    float: right;
+    padding: 10px 0 0;
+}
+.login #asw-header ul li {
+    border-left: 1px solid #CCCCCC;
+    float: left;
+    line-height: 2.2em;
+    margin: 0 0 0 20px;
+    padding: 0 0 0 20px;
+    text-transform: uppercase;
+}
+.login #asw-header ul li.first {
+    border-left: 0 none;
+}
+/* signup&public */
+.public #gh-header{
+    border-bottom: 1px solid #CCCCCC;
+    padding: 17px 0px;
+    
+}
+.public #gh-header a#logo{
+    float: none;
+}
+.public #gh-header ul.nav{
+    float: right;
+    padding: 10px 0 0;
+}
+.public #gh-header ul.nav li{
+    line-height: 2.2em;
+    margin: 0 0 0 20px;
+    padding: 0 0 0 20px;
+    text-transform: uppercase;
+}
+.public #gh-header ul.nav li a{
+    color: #555555;
+    font-size: 13px;
+    font-weight: bold;
+}
+.public #content-wrp {
+    padding-top: 20px;
+}
+.public #asw-subnav{
+    border: none; display: none;
+}
+.public #gh-header ul.nav a:hover {
+    color: #3B99DC; text-decoration: none;
+}
+.logged-out #asw-footer #footerlinks {
+    border-top: 1px solid #CCCCCC;
+    height: 50px;
+    padding: 8px 0 0 5px;
+}
+.public #asw-subnav {display: none;}
+#asw-footer #footerlinks a:hover{
+    text-decoration: underline;
+    color: #666;
+}
+/* Clearfix: http://www.webtoolkit.info/css-clearfix.html*/
+#asw-header .clearfix:after, #content-wrp .clearfix:after, #asw-footer .clearfix:after{
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+#asw-header .clearfix, #content-wrp .clearfix, #asw-footer .clearfix {
+    display: inline-block;
+}
+html[xmlns] #asw-header .clearfix, html[xmlns] #content-wrp .clearfix, html[xmlns] #asw-footer .clearfix{
+    display: block;
+}
+* html #asw-header .clearfix, * html #content-wrp .clearfix, * html #asw-footer .clearfix {
+    height: 1%;
+}

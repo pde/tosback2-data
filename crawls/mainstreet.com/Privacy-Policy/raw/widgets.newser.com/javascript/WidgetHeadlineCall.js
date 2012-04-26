@@ -51,6 +51,11 @@ else if (widgetType == 'grid') {
     var width = (numGridCols * (squareWidth + storySquarePadding + (storySquareBorder * 2))) + storySquarePadding;
     var height = (numGridRows * (squareHeight + storySquarePadding + (storySquareBorder * 2))) + storySquarePadding;
 }
+else if (widgetType == 'thumbnail') {
+    if (typeof width == 'undefined' || !width) width = 300;
+    if (typeof height == 'undefined' || !height) height = 250;
+}
+
 if (widgetType == 'square' || widgetType == 'headline') {
     var hostName = 'widgets.newser.com';
     var tempString = window.location.toString();
@@ -63,12 +68,12 @@ if (widgetType == 'square' || widgetType == 'headline') {
     }
     document.write('<iframe src="http://' + hostName + '/widgets/widgetheadline.aspx?partnerid=' + partnerId + '&sectionid=' + sectionId + '&popular=' + popular + '&newwindow=' + newwindow + '&autoplay=' + autoPlay + '&widgetColor=' + widgetColor + '&widgetbgcolor=' + widgetBGColor + 'widgetheadercolor=' + widgetHeaderColor + '&widgetheaderbgcolor=' + widgetHeaderBGColor + '&font=' + font + '&headerFont=' + headerFont + '&headerText=' + headerText + '&numheadlines=' + numHeadlines + '&slideshowdelay=' + slideShowDelay + '&searchbox=' + searchbox + '&widgettype=' + widgetType + '&widgetlinkcolor=' + linkColor + '&widgethighlightcolor=' + selectedColor + '&widgethighlightbgcolor=' + selectedBGColor + '&reload=' + reload + '&utm_source=' + utm_source + '&utm_medium=' + utm_medium + '&utm_campaign=' + utm_campaign + '" ' + 'width="' + width + '" scrolling="no" height="' + height + '" marginwidth="0" marginheight="0" frameborder="0" style="border:1px solid #eee;"></iframe>');
 }
-else if (widgetType == 'carousel' || widgetType == 'grid') {
+else if (widgetType == 'carousel' || widgetType == 'grid' || widgetType == 'thumbnail') {
     var hostName = 'www.newser.com';
     var tempString = window.location.toString();
     if (tempString.indexOf("www.newser.com") < 0 && tempString.indexOf('newser.com') >= 0) {
         hostName = tempString.substring(7);
         hostName = hostName.substring(0, hostName.indexOf('/'));
     }
-    document.write('<iframe src="http://' + hostName + '/widgetsite/' + widgetType + '.aspx?sectionid=' + sectionId + '&channelid=' + channelId + '&taggroupid=' + tagGroupId + '&popular=' + popular + '&newwindow=' + newwindow + '&label=' + label + '&squarewidth=' + squareWidth + '&numheadlines=' + numHeadlines + '&utm_source=' + utm_source + '&utm_medium=' + utm_medium + '&utm_campaign=' + utm_campaign + '&showlinks=' + showLinks + '" ' + 'width="' + width + '" scrolling="no" height="' + height + '" marginwidth="0" marginheight="0" frameborder="0" style="border:1px solid #eee;"></iframe>');
+    document.write('<iframe src="http://' + hostName + '/widgetsite/' + widgetType + '.aspx?sectionid=' + sectionId + '&channelid=' + channelId + '&taggroupid=' + tagGroupId + '&popular=' + popular + '&newwindow=' + newwindow + '&label=' + label + '&squarewidth=' + squareWidth + '&numheadlines=' + numHeadlines + '&utm_source=' + utm_source + '&utm_medium=' + utm_medium + '&utm_campaign=' + utm_campaign + '&showlinks=' + showLinks + '&font=' + font + '&linkcolor=' + linkColor + '" ' + 'width="' + width + '" scrolling="no" height="' + height + '" marginwidth="0" marginheight="0" frameborder="0"></iframe>');
 }

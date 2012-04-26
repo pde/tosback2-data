@@ -1,0 +1,2269 @@
+/* TODO
+window.location.unbang.prototype = function
+*/
+var unbang = function(bang){
+    var unbanged = bang.replace(/\/\#\./g, "");
+    return unbanged;
+};
+
+if(window.location.hash){
+    newURL = unbang(window.location.href);
+
+    window.location.href = newURL;
+}
+
+
+$(function(){
+
+
+    var $content = $("#content"),
+    scrollOptions = {
+        duration: 400,
+        easing:'linear'
+    },
+    $body = $(document.body),
+    scrollOveride,
+    searchVal,searching;
+
+    // TODO - make this generic for all disconnecitons, pass through message
+
+    var confirmFacebookDisconnect = function(){
+
+        if(confirm('Are you sure you want to disconnect your Facebook account?\n\nThis will also remove all of your pages.')){
+            return true;
+        } else return false;
+    };
+
+
+    /*
+        Re-call facebook if we can't find it
+                                            */
+
+    function fbEnsureInit(callback) {
+        if(!window.FB_API_READY) {
+            setTimeout(function() {fbEnsureInit(callback);}, 100);
+        } else {
+            if(callback) {
+                callback();
+            }
+        }
+    }
+
+
+    /*
+        Profile Height resizing function
+        * Called on contentReady custom event
+                                                */
+
+    function sortHeights(reset){
+
+        var jD = $("#jamDescriptionHolder"),
+            eC = $(".editContainer"),
+            eh = eC.height(),
+            ch = jD.height(),
+            cmh = $(".backing .mask").height(),
+            totalSpace = 500;
+
+        if(typeof(reset) !== "undefined" && reset){
+            $(".mask").css({"height":cmh+"px"},function(){
+                cmh = $(".mask").height();
+            });
+            return;
+        }
+    
+        var $profileTop  = $("#profile-top"),
+            $description = $profileTop.find("#jamDescriptionHolder"),
+            $back = $(".backing"),
+            $mask = $(".mask"),
+            dh = $description.height(),
+            mh = $mask.height();
+
+            //log(dh,ch,mh);
+            if(dh > (mh-25) && ch != cmh){
+                //log("CHANGE: description is bigger",dh, $(".mask").height());
+                eC.css({"height":totalSpace - (dh)});
+                $mask.css({"height":(dh+25)},function(){
+                    cmh = $(".mask").height();
+                });
+            }
+            else if (dh < ($mask.height()-25) && ch != cmh && (dh > 265)) {
+                //log("CHANGE: mask is bigger",dh, $(".mask").height());
+                $mask.css({"height":dh+25});
+                cmh = $(".mask").height();
+                eC.css({"height":totalSpace - (dh)});
+            }
+        
+    }
+
+    /*
+        Dismisser Ajax call - can set and remove elements, or just log dismiss in DB
+                                                                                        */
+
+    function callDismisser($elem,type,fadeOut){
+        $.ajax({
+            url : 'ajax/dismisser',
+            type : "POST",
+            dataType : "JSON",
+            data : { type : type },
+            success : function(d){
+                if(d.success){
+                    if(fadeOut){
+                        $elem.fadeOut();
+                    }
+                } else return;
+            },
+            error : function(a,b,c){
+                log(a,b,c);
+                return;
+            }
+        });
+    }
+
+    /*
+        User Search Functions
+                                */
+
+    function getRowHTML(user,method){
+        //log("found user",user);
+        var type = (user.active) ? "Current" : "Last",
+            jamSpan = (user.jam) ? type + " jam: " + user.jam.artist : "No jam yet...";
+
+            if(method === "artist"){
+                type = (user.searchJam) ? "Previous" : "Current";
+                if(!user.searchJam && !user.active){
+                    type = "Last";
+                }
+                span = (user.searchJam) ? ' jams include ' +user.searchJam.artist : ' jam by ' + user.jam.artist;
+                jamSpan = '<span class="highlight">'+type+span+'</span>';
+            }
+
+            str = '<li>' +
+            '<a href="'+user.url+'">' +
+                '<img width="30" height="30" src="'+user.avatar+'" alt="'+user.username+'">' +
+                '<div class="wrapper left">' +
+                    '<h3 class="gold">'+user.username+'</h3><span class="fullname">'+user.fullname+'</span>' +
+                    '<p class="userMusic smaller topless left">'+jamSpan+'</p>' +
+                '</div>' +
+            '</a>' +
+        '</li>';
+
+        return str;
+
+    }
+
+    var noResultsBlock = function(msg){
+        return '<li class="no-results clearfix left"><p class="smaller">We couldn&rsquo;t find anything for &ldquo;'+$.trim(msg)+'&rdquo;</p></li>';
+    };
+
+    function checkUserResults(value,$userSearchResults,method){
+        //log(value,searchVal,searching);
+        if (value == searchVal || value.length < 2 || searching) return false;
+        
+        $.ajax({
+            url : "/search/user?q=" + encodeURIComponent($.trim(value)) + "&method="+method,
+            dataType : "JSON",
+            beforeSend : function(){
+                // Set searching to true so we don't allow multiple searches
+                searching = true;
+                $userSearchResults.html('<li class="loader clearfix left"></li>');
+            },
+            success :  function(data){
+                //log(data);
+                if(!data.error){
+                    updateUserResults(data,$userSearchResults,false);
+                } else updateUserResults("",$userSearchResults,noResultsBlock(value));
+            },
+            error : function(a,b,c){
+                log(a,b,c);
+            },
+            complete : function(){
+                //Set search term to current search, let search know we're ready again
+                searchVal = value;
+                searching = false;
+            }
+        });
+
+
+        return false;
+    }
+
+    function updateUserResults(results,$userSearchResults,noresults){
+        
+
+        var htmlChunk = "";
+
+        if(noresults)
+        {
+            htmlChunk = noresults;
+        }
+        else if(results.users)
+        {
+
+            for(var i=0; results.users.length > i; i++){
+                htmlChunk += getRowHTML(results.users[i],results.method);
+            }
+
+        }
+
+        $userSearchResults.html(htmlChunk,function(){
+            $userSearchResults.first("li a").addClass("active");
+        }).ajaxify();
+    }
+
+    /* I'm not proud of this, to say the least */
+
+    var $jamEditLink = $("#jamEditLink"),
+        editUrl;
+
+    var toggleEdit = function (toggle) {
+        var $jamTitle = $("#jamTitle"),
+            $jamArtist = $("#jamArtist"),
+            $userDescription = $(".userDescription p");
+        if(toggle){
+            $jamEditLink.hide().parent().prev().hide();
+            $(".jamDescription h1, .userDescription p").attr('contentEditable',true);
+            $(".jamDescription br").remove();
+            $jamArtist.find(".by").remove();
+            $(".jamDescription").append(
+            '<div id="jamProfileEdit" class="five columns offset-by-one flush">' +
+                '<ul class="rightLinks">' +
+                    '<li><a href="/jam/cancel" id="cancel" class="button">Cancel</a></li>' +
+                    '<li><a class="button yellow" id="saveDescription">Save</a></li>' +
+                '</ul>' +
+            '</div>');
+
+        //Copied from upload js, needs copy pasta pass
+        $('[contenteditable]').each(function(){
+            var $this = $(this);
+            $this.data('original', $this.html());
+            
+        }).live("keydown", function(e){
+            var limit = (140 - (window.location.href.length)),
+                $this = $(this);
+        
+            //user presses escape
+            if(e.which === 27){
+                $this.html($this.data("original")).blur();
+            }
+
+
+            //if user presses enter
+
+            if(e.which === 13){
+                $this.data('edited', $this.html());
+                $this.blur();
+            }
+            //or has typed too much prev def baby...
+            if(e.which != 8 && $this.text().length >= limit){
+                e.preventDefault();
+            }
+        }).live('blur', function() {
+            var $this = $(this);
+            //return;
+            if($this.html() === ""){
+                $this.html($this.data('original'));
+            }
+            
+            $this.data('edited', $this.html());
+
+            return $this;
+        }).live('paste',function(e){
+            console.log('pasted');
+            var $this = $(this);
+            //txt = e.originalEvent.clipboardData.getData('text/plain');
+            //if(!txt){
+                //$this.html($this.text());
+            //} else{
+
+            if(Modernizr.firefox) // Terrible temporary fix for moz contenteditable issues
+                return false;
+
+
+                return setTimeout(function(){ $this.html($this.text()); }, 100); // Wait and pray if we don't have the clipboard data accessible to us
+            //}
+            
+        });
+
+        } else {
+
+            $jamEditLink.show().parent().prev().show();
+            sortHeights(true);
+            $("#jamProfileEdit").remove();
+            $(".jamDescription h1, .userDescription p").attr('contentEditable',null);
+            $("<br />").insertAfter("#jamTitle");
+            if(!$jamArtist.find("span").length){
+                $jamArtist.prepend('<span class="by">by</span>');
+            }
+        }
+
+        $("#cancel").click(function(e){
+            e.preventDefault();
+            $('[contenteditable]').each(function(){
+                var $this = $(this);
+                $this.html($this.data('original'));
+                //log($this.data("original"));
+            });
+            toggleEdit(false);
+            return;
+        });
+
+        $("#saveDescription").click(function(){
+            $.ajax({
+                url : editUrl,
+                type : "post",
+                dataType : "json",
+                data : {
+                    "caption" : $.trim($userDescription.text().toString()),
+                    "title": $.trim($jamTitle.text().toString()),
+                    "artist": $.trim($jamArtist.text().toString())
+                },
+                success : function(data){
+                    //log(data);
+                    if(data.success){
+                        $(".jamDescription");
+                        $("#jamProfileEdit").html("<h1 class='topless right'>"+data.message+"</h1>").fadeOut("slow");
+                    } else {
+                        alert("Something went wrong: " + data.message + " Please try again later.");
+                    }
+                    setTimeout(function(){ toggleEdit(false); },1000);
+                },
+                error : function (a,b,c) {
+                    $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                    log(a,b,c);
+                    alert("something went wrong, please try again");
+                }
+            });
+        });
+        
+        return sortHeights();
+    };
+
+    $jamEditLink.live("click",function(e){
+        e.preventDefault();
+        editUrl = $(this).attr("href"); //set editurl on click
+        if($("#jamProfileEdit").length) return false;
+        toggleEdit(true);
+        return false;
+    });
+
+    /*
+        Header dropdown
+                        */
+    var actif = $("#account"),
+        ddBox = $(".dropdownBox");
+
+    actif.bind("click",function(e){
+        var $this = $(this);
+        e.preventDefault();
+        $this.toggleClass("active");
+        ddBox.toggle();
+    });
+
+    //hat-tip to old Janko. http://www.jankoatwarpspeed.com/post/2009/07/28/reinventing-drop-down-with-css-jquery.aspx
+    $(document).bind('click', function(e) {
+        var $clicked = $(e.target);
+        if (! $clicked.parents().hasClass("dropdown")){
+            ddBox.hide();
+            actif.removeClass("active");
+        }
+    });
+
+
+    /** COMMENTS **/
+
+    var $comment_form = $("#comment-form"),
+        $comment_error = $("#comment-error"),
+        $comment_stream = $("#stream"),
+        $last_comment_id = $("#last_comment_id");
+
+
+    /*
+        In Page Actions
+                            */
+    function in_page_action(action,actionString){
+
+        var currentUrl = History.getState().url,
+            type = (typeof(action) === "undefined") ? "scroll" : action,
+            target = (currentUrl.indexOf(actionString) !== -1) ? currentUrl.split(actionString).pop() : false,
+            $elem;
+        
+        if (target && target.indexOf('&') !== -1) // ignore additional params
+            target = target.substr(0, target.indexOf('&'));
+        
+        if(action === "scroll")
+        {
+
+            //log("got scroll",target);
+            //actionString will e.g. be ?=comment
+            //log(currentUrl,"cur url",target,"target");
+
+            if(target){
+                $elem = $("[name='"+target+"']");
+                //log($elem,"elem");
+                scrollOveride = true;
+                if (target == "text" && $elem.length) $elem.focus(); // comment box
+                return ($elem.length) ? $elem.ScrollTo() : false;
+            }
+        } else {
+            //We're in tab land
+            $elem = $("ul.tabs li a[href*="+target+"]");
+            //log("We're in tab land",$elem,"elem");
+            $elem.click();
+        }
+
+    }
+
+    //HTML and DOM push for successfully posted comments
+    function addComment (comment,selector) {
+
+        var comment_already_in = selector.find(".comment#"+comment.id);
+        
+        //log(comment,selector);
+
+        //log(comment_already_in);
+        
+        if(comment_already_in.length){
+            //log("found in the comments");
+
+            return;
+        }
+        
+        /** TODO make this less mega-compile-a-string-y **/
+        var bgCol = '#'+Math.floor(Math.random()*16777215).toString(16),
+            fadeCss = {'-webkit-transition':'background-color 0.5s linear', 'background-color':'white'},
+            commentHTML = '<section class="comment six columns flush clearfix pulse" id="'+comment.id+'" name="'+comment.id+'">';
+            commentHTML += '    <div class="avatarWrapper relative">';
+            commentHTML += '        <a href="'+comment.userUrl+'">';
+            commentHTML += '            <img src="' + asset(comment.avatar) + '">';
+            commentHTML += '            <div class="avatarMask"></div>';
+            commentHTML += '        </a>';
+            commentHTML += '    </div>';
+            commentHTML += '    <div class="commentWrap">';
+            commentHTML += '        <span class="timestamp uppercase letter-spaced greyed FuturaBT-Book smaller">'+comment.timeAgo+'</span>';
+            commentHTML += '        <h3><a href="'+comment.userUrl+'">'+comment.username+'</a></h3>';
+            commentHTML += '            <p>'+comment.text+'</p>';
+            commentHTML += '    </div>';
+            //commentHTML += '  <section class="commentMeta">Comment by: '+comment.username+', posted '+comment.timeAgo+' ago</section>';
+            commentHTML += '    <ul class="commentActions">';
+
+                if(comment.canDelete) commentHTML += '<li><a class="delete-comment" href="'+comment.pageUrl+'/comment?action=delete&amp;comment='+comment.id+'" id="del_'+comment.id+'">Delete</a></li>';
+                if(!comment.isViewer) commentHTML += '<li><a class="reply-comment" href="'+comment.username+'" id="reply_'+comment.id+'">Reply</a></li>';
+            
+            commentHTML += '    </ul>';
+            
+            commentHTML += '</section>';
+        
+        $last_comment_id.val(comment.id); //update last_comment_id
+        selector.append(commentHTML);
+        var $nid = $("#"+comment.id);
+            $nid.addClass("pulse").not(".delete-comment,.reply-comment").ajaxify();
+        //$nid.css({'background-color':bgCol});
+        //setTimeout(function(){ $nid.css(fadeCss); },1000);
+        //setTimeout(function(){ $nid.css({"background":"white"}).addClass("pulse"); },1000);
+        
+    }
+
+
+    //Quick polling operation for new comments...
+    function poll_for_comments(url){
+        
+        if(!$comment_stream.length) return; // don't keep bloody polling if there's no comment stream, innit
+
+        var original_time = 5e3,
+            response = false,
+            profile = document.location.href.split("/").slice(-2).pop(); // WHATEVER.
+
+            //log("Profile we're looking at...",profile,document.location.href.indexOf(profile));
+        
+        function ajax_poll(){
+            
+            var lcID = $last_comment_id.val();
+
+            if(document.location.href.indexOf(profile) == -1) return; // don't keep polling if we're not on that profile page
+
+
+            $.ajax({
+                url : url,
+                type : "POST",
+                dataType : "JSON",
+                data : {"last_comment_id":lcID,"action":"poll"},
+                success : function (data) {
+                    //log("polled comments, got ", data);
+                    
+                    //if the response is the same as before, double the polling interval
+                    //log(response,data.comments)
+                    if (response.length == data.comments.length){
+                        //log("the same");
+                         checkTime = (checkTime *2);
+                    } else {
+                        //otherwise we're polling for the first time or resetting it
+                        checkTime = original_time;
+                    }
+
+                    response = data.comments;
+                    
+                    if(data.success){
+                        var comD = data.comments;
+                        for(var i=0; i<comD.length; i++){
+                            addComment(comD[i],$comment_stream);
+                        }
+                    } else {
+                        $comment_error.text(data.message);
+                    }
+                    //log(checkTime);
+                    if($comment_stream.length){
+                        setTimeout(function() { ajax_poll(); }, checkTime); // 10 seconds before polling again
+                    }
+                },
+                error : function (a,b,c){
+                    $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                    log("errors: ",a,b,c);
+                }
+            });
+        }
+        ajax_poll();
+    }
+
+
+/** END COMMENTS **/
+
+    var toggleCallout = function(id){
+        log(id),$(id);
+        $(id).fadeToggle("fast");
+    };
+
+    /**
+        Stuff that needs re-initialising when the content is reloaded
+                                                                        **/
+
+    $content.bind("contentReady",function(){
+
+        $content.ajaxify(); //Ajaxify our internal links
+
+        // z-index fix for msie
+        //$(".header").fixZIndex({msieOnly:true});
+        
+    /*
+        Google Analytics pageview tracking, cos the page has changed
+    */
+        if ( typeof window._gaq !== 'undefined') {
+            var relativeUrl = window.relative || false;
+            var manualPageViewUrl = $("#pageViewUrl").data('value');
+            if (manualPageViewUrl) { /* manual override case */
+                window._gaq.push(['_trackPageview', manualPageViewUrl]);
+            }
+            else if (relativeUrl){ /* ajax loaded page */
+                window._gaq.push(['_trackPageview', +relativeUrl]);
+            }
+            else { /* traditional page load */
+                window._gaq.push(['_trackPageview']);
+            }
+        }
+
+    /*
+        Re-establish selectors
+    */
+        var $paginateLink = $(".paginate"),
+            $comment_form = $("#comment-form"),
+            $comment_stream = $("#stream"),
+            tabs = $("ul.tabs"),
+            tabLinks = tabs.find("li a"),
+            $ddBox = $(".dropdownBox"),
+            $loader = $("#loading"),
+            $header = $("header"),
+            $itemPlayButton = $('.itemPlayButton'),
+            $jamHolder = $("#jamHolder"),
+            $editLink = $("#backgroundEditLink"),
+            $editBgData = $("#editBgData"),
+            $saveAppSettings = $("#saveAppSettings"),
+            $appsForm = $("#appsForm"),
+            $comment_delete = $(".delete-comment"),
+            $comment_reply = $(".reply-comment"),
+            $comment_box = $("#comment_box"),
+            $load_suggestions = $("#loadedSuggestions"),
+            $playAllJams = $("#playAllJams"),
+            $attached_content = $(".attachedContent"),
+            $newsLike = $(".newsActions a.like"),
+            $sharePanelCaller = $("#sharePanelCaller"),
+            $customizeTweet = $("#customizeTweet"),
+            $customizeTwitter = $("#customizeTwitter"),
+            $expandSymbol = $("#expandSymbol"),
+            $twitterShare = $("#twitterShare"),
+            $ilikenotes = $("#ilikenotes"),
+            $mynewjam = $("#mynewjam"),
+            $tweet1 = $("#tweet1"),
+            $tweet2 = $("#tweet2"),
+            $tweet3 = $("#tweet3"),
+            $tweet4 = $("#tweet4"),
+            $profileCounter = $(".profile-counter"),
+
+            $fbBoxyCall = $("#fbPagesBoxyCall"),
+            $pageDisconnecter = $(".disconnect-page"),
+            $connectionsList = $(".page-connections"),
+            $loadingSpan = $("#waiting");
+            $confirmDisconnect = $(".confirmDisconnect");
+
+        var $cols = $(".layer-left, .layer-right");
+        
+
+        /*
+            Settings with page connections etc, still in work
+                                                                */
+
+        /* TODO: Have one function that deals with connecting and disconnecting */
+
+    var disconnectPage = function(page_id,$context){
+        $.ajax({
+            url : "/settings/fbDisconnectPage",
+            data : {id:page_id},
+            type : "POST",
+            dataType : "JSON",
+            context : $context,
+            success : function(){
+                log($(this));
+                $(this).parent().fadeOut(300,function(){
+                    $(this).remove();
+                });
+            },
+            error : function(){
+                log(arguments);
+            }
+
+        });
+
+    };
+
+    var showPagesSelector = function(pages){
+        log(pages);
+        $fbBoxyCall.data("boxy").show();
+            var $fbPageChoices = $("#fb-page-choice"),
+            $fbPageConfirm = $("#pagesConfirm"),
+            html;
+
+        for(var i=0;pages.length>i;i++){
+            
+            log(pages[i]);
+            html +='<option value="'+pages[i].id+'">'+pages[i].name+'</option>\n';
+        }
+        log(html);
+        $fbPageChoices.html(html);
+
+        $fbPageConfirm.unbind().on("click",function(){
+            var page_id = $fbPageChoices.find(":selected").val(),
+            page_name = $fbPageChoices.find(":selected").text();
+
+
+            return connectFacebookPage(page_id,page_name);
+        });
+    };
+
+    var connectFacebookPage = function(id,name){
+        var $connectionLoader = $("#connectLoader");
+
+        $.ajax({
+            type: 'post',
+            url: '/settings/fbConnectPage',
+            dataType: 'json',
+            data: {'id': id, 'name': name},
+            beforeSend : function(){
+                $("#pagesBox").find(".sign-content fieldset").hide();
+                $connectionLoader.show();
+            },
+            success: function(data) {
+                log(data);
+                if(data && typeof(data.html !=="undefined")){
+                    var htmlSnip = data.html;
+                    $fbBoxyCall.data("boxy").hide();
+                    $connectionsList.append(htmlSnip);
+                }
+
+            },
+            error: function() {
+                log(arguments);
+            },
+            complete : function(){
+                $connectionLoader.hide();
+                $("#pagesBox").find(".sign-content fieldset").fadeIn();
+            }
+        });
+    };
+
+    $confirmDisconnect.on("click",function(e){
+        e.preventDefault();
+        return confirmFacebookDisconnect();
+    });
+
+    $pageDisconnecter.die().live("click",function(e){
+        e.preventDefault();
+        var page_id = this.id.split("_").pop();
+        if(confirm("Are you sure you want to remove this page?"))
+            return disconnectPage(page_id,$(this));
+    });
+
+
+    $fbBoxyCall.boxy({
+        hideFade : 100,
+        hideShrink : false,
+        closeText : "",
+        draggable : true, // doesn't seem to be working?
+        unloadOnHide : true,
+        modal : true,
+        show: false,
+        cssClass: "white",
+        title:"Add A Facebook Page",
+        afterShow : function(){
+            // This is the point at which our functions take over from templating stuff...
+            $("body").addClass("unselectable");
+        },
+        afterHide : function(){
+            $("body").removeClass("unselectable");
+        }
+    }).on("click",function(){
+        var $this = $(this);
+        
+        if($this.hasClass("disabled"))
+            return false;
+        
+        $this.addClass("disabled");
+
+        fbLogin(fbDefaultScope + ",manage_pages",
+            function(data){
+                $.ajax({
+                    url         : "/settings/fbPagesList",
+                    dataType    : "JSON",
+                    beforeSend  : function(){
+                        $loadingSpan.fadeIn();
+                    },
+                    success     : function(data){
+                        log(data);
+                        if(typeof(data.error) !=="undefined"){
+                            log(data.error);
+                            return false;
+                        } else if(typeof(data.accounts) !=="undefined"){
+                            if(data.accounts.length > 0){
+                                return showPagesSelector(data.accounts);
+                            } else {
+                                alert("Hmm, it looks like you don't have any accounts to post to.\nAre you sure you gave This Is My Jam permission to post to your pages?\nPlease try again.");
+                            }
+                        }
+                    },
+                    error       : function(A,B,C){
+                        log(A,B,C);
+                    },
+                    complete : function(){
+                        $loadingSpan.fadeOut();
+                        $this.removeClass("disabled");
+                    }
+                });
+            }
+        );
+
+    });
+
+
+
+
+
+        /*
+        if($cols.length){
+            $windowHeight = $(window).height();
+            $cols.css({"min-height":$windowHeight+"px"});
+        }
+        */
+     /*
+            User Search
+                        */
+
+/*
+        var searchControls = function(e,$list){
+            var keyCode = e.keyCode || e.which,
+            action = {left: 37, up: 38, right: 39, down: 40, enter : 13, escape : 27 },
+            active = $list.index("active");
+
+            log(keyCode,active);
+            return;
+
+            switch (keyCode) {
+                
+                case action.left :
+                    break;
+                case action.up :
+                      //..
+                    break;
+                case action.right :
+                      //..
+                    break;
+                case action.down :
+                      //..
+                    break;
+                case action.enter :
+                    //..
+                    break;
+                case action.escape :
+                    //..
+                    break;
+            }
+        
+        };
+*/
+    /*
+        Edit link hover fix
+                            */
+
+        $jamHolder.hover(function(){
+            if($editLink.hasClass("editLink")){
+                $editLink.css({"visibility":"hidden"});
+            }
+        },function(){
+            if($editLink.hasClass("editLink") && window.player.length && !window.player.isPlaying()){
+                $editLink.css({"visibility":"visible"});
+            }
+        });
+
+        /*
+            Sign up welcome screen guff
+                                        */
+        var $welcomeForm = $("#welcomeForm");
+        if($welcomeForm.length){
+           
+            var $uName = $('input#username');
+            
+            $.get("/welcome/grabAvatar");
+            $uName.focus();
+
+        }
+
+        /*
+            Profile-counter clicks gon toggle callouts
+                                                        */
+        $profileCounter.on("mouseenter",function(e){
+            e.preventDefault();
+            var $this = $(this),
+                calloutId = $this.data("callout");
+
+            $("body").unbind().not(".callout").bind("click",function(){
+                if($(calloutId).is(":visible")){
+                    return toggleCallout(calloutId);
+                }
+            });
+
+            //$this.toggleClass("active");
+            if(!$(calloutId).is(":visible")){
+
+                return toggleCallout(calloutId);
+            }
+        });
+
+        //TODO - change this into a plugin
+        var $userSearchForm = $("#userSearchForm");
+
+        if($userSearchForm.length){
+
+            var $userSearchSubmit = $("#userSearchSubmit"),
+                $userSearchInput = $("#userSearchInput"),
+                $userSearchResults = $("#userSearchResults"),
+                $icon = $(".search-icon"),
+                $toggler = $("#searchMethodToggle");
+
+            $toggler.find("li a").on("click",function(e){
+                e.preventDefault();
+
+                var $this = $(this),
+                    method = $this.data("method"),
+                    placheholderText = (method === "artist") ? "e.g. Duran Duran"
+                        : "Username or full name";
+                    //log("click",$this,method);
+
+                $toggler.find("li a").removeClass("active");
+                $this.addClass("active");
+                $userSearchForm.attr("data-method",method);
+                $userSearchInput.val("").attr("placeholder",placheholderText);
+
+
+
+
+            });
+            
+            //Reset on contentReady
+            searchVal = null;
+            searching = false;
+
+                $userSearchInput.on("focus",function(){
+                    if(!searching){
+                        //$userSearchForm.delay(1000).submit();
+                        $("body").not(".search-icon,#userSearchResults,#userSearchInput,#userSearchResults li a").click(function(e){
+                            //e.preventDefault();
+                            if(e.metaKey) return; // allow control clicks to happen
+                            //log(e);
+                            //return;
+                            $userSearchResults.html("");
+                            //$userSearchInput.val("");
+                            searchVal = null;
+                            searching = false;
+                        });
+                    }
+                }).on("keydown",function(e){
+            
+                    //searchControls(e,$userSearchResults);
+
+                    //user presses escape
+                    if(e.which === 27){
+                        $userSearchInput.val("");
+                        $userSearchResults.html("");
+                        searchVal = null;
+                        searching = false;
+                    }
+                });
+
+                $userSearchSubmit.on("click",function(){
+                    if(!searching){
+                        $userSearchForm.delay(1000).submit();
+                    }
+                });
+
+                $userSearchForm.on("submit", function(e){
+                    //log("submitted");
+                    e.preventDefault();
+                    
+                    var value = $userSearchInput.val();
+                        
+                    if(value === ""){
+                        $userSearchResults.html("");
+                        return;
+                    }
+                    //log(value,$userSearchResults);
+                    checkUserResults(value,$userSearchResults,$userSearchForm.attr("data-method"));
+                    
+                    if(window._gaq !==undefined){
+                        window._gaq.push(['_trackEvent',"Actions","User search by " + $userSearchForm.attr("data-method") ]);
+                    }
+
+                    return false;
+                });
+
+        }
+
+    /******/
+
+            // Dismissing
+
+            $dismissableBlock = $(".dismissable");
+
+            if($dismissableBlock.length){
+
+            
+            // Init Twit
+                var $tBlock = $("#twitterFollowPanel"),
+                    $fBlock = $("#facebookLikePanel");
+
+                if($tBlock.length){
+    
+                    window.twttr.ready(function (twttr) {
+
+                        //alert("ready twwttt");
+                        if(window.twttr.events.length){
+                            log("events",window.twttr.events);
+                            window.twttr.events.unbind();
+                        }
+                        window.twttr.events.bind('follow', function(event) {
+                            //var followed_user_id = event.data.user_id,
+                            //followed_screen_name = event.data.screen_name;
+                            
+                            //Google Analytics event
+                            if(window._gaq !==undefined){
+                                window._gaq.push(['_trackEvent',"Actions","Followed on Twitter (side panel)"]);
+                            }
+
+                            // Now do some kind of ajax call to dismisser.
+                            callDismisser($tBlock,"twitter",false);
+                        });
+
+                    });
+                }
+                
+                if($fBlock.length){
+                    fbEnsureInit(function(){
+                        window.FB.Event.subscribe('edge.create',
+                            function(response) {
+                                //Google Analytics event
+                                if(window._gaq !==undefined){
+                                    window._gaq.push(['_trackEvent',"Actions","Liked on facebook (side panel)"]);
+                                }
+                                callDismisser($fBlock,"facebook",false);
+                            }
+                        );
+
+                    });
+
+                }
+
+                $dismissableBlock.find(".close").on("click",function(e){
+                    e.preventDefault();
+                    var $this = $(this),
+                        type = this.id.split("_")[0];
+                        log(type);
+        
+                    if(window._gaq !==undefined){
+                        window._gaq.push(['_trackEvent',"Actions","Dismissed " + type + " panel"]);
+                    }
+
+                    // Call ajax dismisser
+                    callDismisser($this.parent(),type,true);
+                    
+                    return false;
+                });
+            }
+
+
+
+
+            //SHARING
+
+            if($sharePanelCaller.length){
+                var $sharePanel = $(".sharePanel"),
+                    sharePanelUrl = $sharePanelCaller.attr("href");
+
+                //TODO change to href generated by php
+                $sharePanel.load(sharePanelUrl,function(){
+
+                    // Init Twit
+                    js=document.createElement("script");
+                    js.id="twitter-wjs";
+                    js.src="//platform.twitter.com/widgets.js";
+                    $content.remove("#twitter-wjs").prepend(js);
+
+                    window.twttr = window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f); } });
+                   
+                    var $shareLink = $(".shareLink"),
+                        $shareUrl = $(".share-url"),
+                        $close = $sharePanel.find(".close"),
+                        $poster = $(".fb-post a");
+
+                    $poster.on("click",function(e){
+                        e.preventDefault();
+                        var $this = $(this),
+                            url = this.href,
+                            permalink = $this.data("permalink"),
+                            caption = $this.data("caption"),
+                            $status = $(".fb-posting-status");
+
+                        if($this.hasClass("disabled") || $this.hasClass("posted"))
+                            return false;
+
+                        $.ajax({
+                            url : url,
+                            dataType : "JSON",
+                            type : "POST",
+                            beforeSend : function(){
+                                $poster.addClass("disabled");
+                                $status.fadeIn();
+                            },
+                            data : {
+                                "permalink" : permalink,
+                                "caption" : caption
+                            },
+                            success : function(data){
+                                //log(data);
+                                $this.addClass("posted").text("Posted to Facebook");
+                            },
+                            error : function(a,b,c){
+                                log(a,b,c);
+                                alert("Sorry there was an error with posting your Jam. Please try again.");
+                            },
+                            complete : function(){
+                                $status.hide();
+                            }
+
+                        });
+
+
+                        //Google Analytics event
+                        if(window._gaq !==undefined){
+                            window._gaq.push(['_trackEvent',"Actions","Shared to Facebook Timeline"]);
+                        }
+
+
+                        return false;
+                    });
+
+                        $shareUrl.on("click",function(){
+                            $(this).select();
+
+                            //Google Analytics event
+                            if(window._gaq !==undefined){
+                                window._gaq.push(['_trackEvent',"Actions","Share Url Clicked"]);
+                            }
+                        });
+                        $shareLink.on("click",function(e){
+                            e.preventDefault();
+                            $(this).toggleClass("active");
+                            $sharePanel.fadeToggle("fast");
+                            $shareUrl.focus().select();
+
+
+                            //Google Analytics event
+                            if(window._gaq !==undefined){
+                                window._gaq.push(['_trackEvent',"Actions","Share Button Clicked"]);
+                            }
+
+
+                            return false;
+                        });
+                        $close.on("click",function(e){
+                            e.preventDefault();
+                            $sharePanel.fadeToggle("fast");
+                            $shareLink.removeClass("active");
+                        });
+
+                });
+        }
+
+        // BOXY
+
+            // Modal boxes
+            var $popLink = $(".sign-up, .sign-in");
+
+            //Set initial data for sign in boxes
+                // TODO: make less awful
+
+
+            if($popLink.length){
+                
+                var popType = false,
+                //$signInBox = $('#sign-in-box'),
+                //$signUpBox = $('#sign-up-box'),
+                $uData = null,
+                $iData = null;
+
+                //setBoxes();
+                createPoppers($popLink);
+
+            }
+
+
+            if($newsLike.length){
+                //log("GOT SOME NEWS LIKES ", $newsLike);
+                $newsLike.on("click",function(e){
+                    log("gertting clikkrd");
+                    e.preventDefault();
+
+                    var $this = $(this),
+                        action = ($this.hasClass("active")) ? "unlove" : "love",
+                        person = $this.data("profileperson"),
+                        num_id = $this.attr("id").split("_").pop();
+
+                    
+                    if($this.hasClass("disabled"))
+                        return false;
+
+
+                    //log($this,person,"got person?");
+                    
+                    $.ajax({
+                        url : "/" + person + "/" + action,
+                        type : "POST",
+                        dataType : "JSON",
+                        beforeSend : function(){
+                            $this.addClass("disabled");
+                        },
+                        success : function(d){
+                            log(d);
+                            if(d.success){
+                                $this.toggleClass("active");
+                
+                                if(action === "unlove"){
+                                    $this.text("Like");
+                                    $this.attr("title", "Like this jam");
+                                } else {
+                                    $this.text("Liked");
+                                    $this.attr("title", "Unlike this jam?");
+                                }
+                                //Update count
+                                var $likeList = $this.parentsUntil(".newsActions").find(".lovers");
+                                    $likeList.html(d.loveCount + '<span class="likeList"></span>');
+                                    $likeList.attr("title",d.loversList);
+                                    $likeList.attr("original-title",d.loversList);
+                                $("#flap_"+num_id).toggle();
+                                var activate = (action === "love");
+                                window.player.updateLoveButton(person,activate);
+
+                            }
+                        },
+                        error : function(a,b,c){
+                            $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                            log(a,b,c);
+                        }, complete : function (){
+                            $this.removeClass("disabled");
+                            if(window._gaq !==undefined){
+                                window._gaq.push(['_trackEvent',"Actions",action]);
+                            }
+                        }
+                    });
+
+                    return false;
+                });
+            }
+
+            if($attached_content.length){
+                $attached_content.on("click",function(){
+                    var $this = $(this);
+                    $this.find(".username").click();
+                });
+            }
+    
+            if($saveAppSettings.length){
+                $appsForm.on("change",function(){
+                    $saveAppSettings.removeClass("disabled");
+                });
+
+            }
+            
+            // twitter settings
+            if ($customizeTweet.length) {
+            
+                $customizeTweet.click(function(){
+                    if ($(this).hasClass('disabled'))
+                        return false;
+                    if ($customizeTwitter.is(":visible"))
+                        $expandSymbol.html('▶');
+                    else
+                        $expandSymbol.html('▼');
+                    $customizeTwitter.slideToggle('fast');
+                });
+            
+                $twitterShare.change(function(){
+                    if ($(this).is(":checked"))
+                        $customizeTweet.removeClass('disabled');
+                    else {
+                        $customizeTweet.addClass('disabled');
+                        $customizeTwitter.slideUp('fast');
+                        $expandSymbol.html('▶');
+                    }
+                });
+            
+                // todo: make these element or something, ugh
+                $ilikenotes.change(function(){
+                    $(".tweets").hide();
+                    if ($(this).is(":checked")) {
+                        if ($mynewjam.is(":checked"))
+                            $tweet1.show();
+                        else
+                            $tweet2.show();  
+                    }
+                    else {
+                        if ($mynewjam.is(":checked"))
+                            $tweet3.show();
+                        else
+                            $tweet4.show();
+                    }
+                });
+                $(".twitterType").change(function(){
+                    $(".tweets").hide();
+                    if ($ilikenotes.is(":checked")) {
+                        if ($mynewjam.is(":checked"))
+                            $tweet1.show();
+                        else
+                            $tweet2.show();  
+                    }
+                    else {
+                        if ($mynewjam.is(":checked"))
+                            $tweet3.show();
+                        else
+                            $tweet4.show();
+                    }
+                });
+            }
+
+        /*
+            Play all Jams on feed
+                                    */
+        
+        if($playAllJams.length){
+            $playAllJams.on("click",function(e){
+                e.preventDefault();
+                
+                var $this = $(this),
+                    $first = $("#newsFeed .jamVatar:not(.disabled,.preparing)").first().find(".itemPlayButton");
+
+                if($this.hasClass("disabled")) return;
+                
+                $first.click();
+
+                var t = function(){
+                    setTimeout(function(){
+                        if($first.hasClass("playing")){
+                            $first.ScrollTo();
+                            clearTimeout(t);
+                        } else t();
+                    },300);
+                };
+
+                t();
+
+                if(window._gaq !==undefined){
+                    window._gaq.push(['_trackEvent',"Actions","HomePlayAll"]);
+                 }
+            });
+        }
+
+        if($editBgData.length){
+
+            control = new Control();
+            control.backgroundImage = $editBgData.attr("data-bgImage");
+            control.backgroundRepeat = $editBgData.attr("data-bgRepeat");
+            control.backgroundPosition = $editBgData.attr("data-bgPosition");
+            control.backgroundColour = $editBgData.attr("data-bgColour");
+
+            if(location.href.match(/editBackground=1/)) {
+                window.setTimeout(function() {
+                    $("#backgroundEditLink").click();
+                }, 800);
+            }
+        }
+        else {
+            if(window.control)
+                control.destroy();
+        }
+
+        $itemPlayButton.each( function(){
+            var $this = $(this),
+            id = $this.attr("id");
+            $playParent = $this.parent();
+            $playParent.not(".disabled,.preparing").hover(function(){
+                $(this).find('.playButton, #'+id).hover();
+            });
+
+            $playParent.not(".disabled,.preparing").click(function(e){
+                e.preventDefault();
+                $(this).find('#'+id).click();
+            });
+        });
+
+        $("#ytContainer").die(); // unbind
+
+        $("#ytContainer").live("mouseenter",function(){
+            jam = window.player.getCurrentJam();
+            $jamButton = $("#itemPlayButton"+jam.id);
+                        
+            $jamButton.addClass("hover");
+        }).live("mouseleave",function(){
+            $jamButton.removeClass("hover");
+        }).live("click",function (e) {
+            e.preventDefault();
+            $("#playPause").click();
+        });
+
+
+         
+        // Fade out the loader then remove it
+        $header.removeClass("loadingState");
+        $loader.fadeOut(300,function(){
+            $loader.remove();
+            if($("#loader").length){
+                $("#loader").remove();
+            }
+        });
+
+        // Hide dropdown box if it's showing
+        if($ddBox.is(":visible")){
+            actif.toggleClass("active");
+            $ddBox.toggle();
+        }
+
+            
+        if(tabLinks.length){
+            //log("thinks we have tabs");
+            $("#errorMessage").not(".show").hide();
+            $("#successMessage").not(".show").hide();
+
+            tabs.each(function(i) {
+
+                //Get all tabs
+                var tab = $(this).find('li a');
+                //log(tab);
+                tab.live("click",function(e) {
+                    e.preventDefault();
+
+                    // applies to settings page
+                    $("#errorMessage").not(".show").hide();
+                    $("#successMessage").not(".show").hide();
+                    
+
+                    var $this = $(this),
+                    url = $this.attr("href"),
+                    contentSelector = "#" + url.split("?t=").pop(); // create a selector
+                    
+                    //History.replaceState({state:3}, "State 3", "?state=3"); // logs {state:3}, "State 3", "?state=3"
+
+                    //log(contentSelector,'contentSelector');
+                    //log($this);
+                                
+                    //Make Tab Active
+                    tab.removeClass('active');
+                    $this.addClass('active');
+                    
+                    $(contentSelector).show().addClass('active').siblings().hide().removeClass('active');
+                    /*
+                        Marking this as TODO becuase there's a bit too much going on with History at the moment
+                        if(History.enabled) History.pushState({"type":"tab"},null,url); //update the location
+                    */
+
+                    return false;
+
+                });
+            });
+            in_page_action("tabs","?t=");
+        }
+
+        if($paginateLink.length){
+            checkPos(paginateSelector);
+        }
+
+        if($comment_form.length){
+            $comment_form.ajaxForm({
+            dataType: 'JSON',
+                success: function(data) {
+                    //log(data,data.length);
+                    if(data.success){
+                        var tA = $comment_form.find(".countable");
+                            comD = data.comments;
+                        tA.val("");
+                        for(var i=0; i<comD.length; i++){
+                            addComment(comD[i],$comment_stream);
+                        }
+                        /* Notify Google Analytics of a comment */
+                        if(window._gaq !==undefined){
+                            window._gaq.push(['_trackEvent',"Actions","Comment"]);
+                        }
+                    } else {
+                        $comment_error.text(data.message);
+                    }
+                }
+            });
+        }
+
+        /* No flash messages gon' noflash */
+        if (!window.hasFlash() && !Modernizr.audio && !Modernizr.video) {
+            /* flash isn't installed, show any relevant disclaimers */
+            $(".noflashmsg").show();
+            $(".itemPlayButton.youtube").addClass("disabled").removeClass("loading");
+        }
+        else if(!window.hasFlash() && !window.isIOS()) {
+            $(".noflashmaybemsg").show();
+        }
+
+        /*
+            Pollers Gon Poll
+                                */
+        if( $comment_stream.length && !$comment_stream.hasClass("closed") ){
+            var urlToPoll = $("#comment-form").attr("action");
+            in_page_action("scroll","?comment="); //get ? from history and scrollto if necessary.
+            poll_for_comments(urlToPoll);
+        }
+
+        /*
+            Comments again
+                            */
+
+        $comment_reply.live("click", function(e){
+    
+            e.preventDefault();
+            
+            var $this = $(this),
+                usrStr = "@" + $this.attr("href"),
+                val = $comment_box.val();
+            
+            $comment_box.focus().val(usrStr + " " + val);
+
+            return false;
+        });
+
+        // Temporary fix to bubbling
+            // TODO - get to the bottom of multiple attachments
+        $comment_delete.die("click");
+
+        $comment_delete.live("click", function(e){
+            e.preventDefault();
+            var $this = $(this),
+                href = $this.attr("href"), // K...
+                split = href.split("?"), //Eh?
+                url = split[0], //wah?
+                postData = split[1]; //Ah!
+                id = this.id.split("del_").pop(); //Gah
+            
+            if(confirm("Are you sure you want to delete this comment?"))
+            {
+                $.ajax({
+                    url: url,
+                    type : 'post',
+                    dataType: 'json',
+                    data: postData,
+                    context : $("#"+id),
+                    success: function(data) {
+                        if(data.success){
+                            $(this).fadeOut(300,function(){
+                                $(this).remove();
+                            });
+                        } else {
+                          $comment_error.text(data.message);
+                        }
+                    }
+                });
+
+                return false;
+            
+            } else return false;
+        });
+
+
+
+        /*
+            Scrollers Gon Scroll
+                                    */
+
+        if ( $body.ScrollTo||false ) {
+
+
+            if(!scrollOveride){
+
+                $body.ScrollTo(scrollOptions);
+                $("#loading").remove();
+            } else {
+                scrollOveride = false; //reset
+            }
+        } /* http://balupton.com/projects/jquery-scrollto */
+
+        /*
+            iPhone hack replacer thing bootstrap 
+            taken from jamvatar preview page
+                                                */
+        var $previewPlayer = $("#iphonePreviewPlayer"),
+            $holder = $("#jamHolder");
+    
+        if( $previewPlayer.length ){
+            $previewPlayer.attr("width", $holder.width());
+            $previewPlayer.attr("height", $holder.height());
+        }
+
+
+        /*
+            Resizers Gon Resize
+                                */
+
+        var jD = $("#jamDescriptionHolder"),
+            ch = jD.height(),
+            cmh = $(".backing .mask").height();
+                        
+        if(typeof(jD) !=="undefined" && jD.length)
+        {
+            
+            //log(ch,(cmh-25));
+            if(ch > (cmh-25)){
+                setTimeout(function(){sortHeights();},300);
+            }
+        }
+
+        $(window).resize(function() {
+            //log("window size",$(window).width());
+            if($(window).width() > 768){
+                setTimeout(function(){sortHeights();},300);
+            }
+        });
+
+        /*
+            Tooltips Gon Tip
+                                */
+
+        var $tipper = $tipper || $(".tipsy");
+        if($tipper.length){
+            $('div.tipsy').remove(); // Strip out previous instances of the tipsy div
+            if($tipper.is(".larger, .html, .manual")){
+                $tipper.tipsy({
+                    html: ($tipper.hasClass("html")) ? true : false,
+                    trigger:($tipper.hasClass("html")) ? "manual" : "hover",
+                    tipSize:($tipper.hasClass("larger")) ? "larger" : ""
+
+                }).on("mouseover click",function(){
+                    var $this = $(this);
+
+                    $("body").not(".tipsy, .tipsy-inner").on("click",function(){
+                        $this.tipsy("hide");
+                    }); //hide tipsy on click anywhere else
+                    
+                    $(".tipsy").each(function(){
+                        $(this).tipsy("hide"); // Hide all other tipsys, IMPROVE THIS
+                    });
+
+                    $this.tipsy("show");
+                });
+            } else {
+                $tipper.tipsy();
+            }
+        }
+
+        //TODO remove this and fix the CSS instead ffs
+        var $loggedOutLike = $(".button.like.loggedout")
+        if( $loggedOutLike.length ){
+            $loggedOutLike.tipsy();
+        }
+
+
+
+        /*
+            Stripes Gon Stripe
+                                */
+        var $loggedoutStripe = $loggedoutStripe || $("#data-loggedoutprofile");
+        if ($loggedoutStripe.length) {
+            $("#stripeUsername").html($loggedoutStripe.attr('data-username'));
+            // check if a dismissal cookie has been set, don't show if it has been dismissed
+            if ($(".dismiss-stripe").length) {
+                var cookiename = $(".dismiss-stripe").attr('id');
+                if (!$.cookie(cookiename))
+                    $("#messageStripe").show();
+            }
+            else {
+                $("#messageStripe").show();
+            }
+        }
+        else {
+            $("#messageStripe").hide();
+        }
+                                
+        /*
+            Poppers gon pop
+                            */
+        var $popper = $(".popper");
+        if($popper.length){
+            selector = $popper.attr("href");
+            log("selector stuff",selector,$(selector).html());
+            $popper.bootstrapPopover({
+                //popover_html : $(selector).html()
+                //autoshow : $popper.attr("data-autoshow"),
+                //autodismiss : $popper.attr("data-autodismiss")
+            });
+            $popper.on("click",function (e) {
+                e.preventDefault();
+            });
+        }
+
+        /*
+          Headers (don't show on home, show everywhere else)
+          */
+        if($("#bigHomeLogo").length)
+            $("header").addClass("loggedOutHome");
+        else
+            $("header").removeClass("loggedOutHome");
+            
+            
+        /* Dismissers gon dismiss */
+        if($(".dismiss-stripe").length) {
+            $(".dismiss-stripe").click(function(){
+                var cookiename = $(this).attr('id');
+                $.cookie(cookiename, "dismissed", { expires: 365, path: '/' });
+                $("#messageStripe").slideToggle('fast');
+            });
+        }
+
+
+      /*
+        Forms
+        */
+
+      var $profileForm = $("#profileForm");
+      if($profileForm.length) {
+          $profileForm.ajaxForm({
+              success: function(message) {
+
+                  // if there is a response, there was an error.
+                  if(message) {
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#errorMessage").text(message);
+                      $("#errorMessage").fadeIn();
+                  }
+                  else {
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#successMessage").text('Thanks! Your profile settings have been saved.').fadeIn();
+                      $("input[type=file]").val('');
+
+                      // update avatar all over the place, force cache refresh
+                      // by adding arbitrary number to the end of the url
+                      var username = $("#settingsMain").attr("data-username");
+                      var hash = '&' + Math.floor(Math.random() * 100000);
+                      $("#profileForm .avatar img")
+                          .attr("src", "/" + username + "/avatar?size=normal" + hash);
+                      $("nav img.avatar")
+                          .attr("src", "/" + username + "/avatar?size=header" + hash);
+                  }
+              },
+              error: function(data) {
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#errorMessage").text("Oh dear, something's gone wrong. Please try again!");
+                      $("#errorMessage").fadeIn();
+              }, complete : function(){
+                    setTabsToHideMessages();
+              }
+          });
+      }
+      var $notificationsForm = $("#notificationsForm");
+      if($notificationsForm.length) {
+          $notificationsForm.ajaxForm({
+              success: function(data) {
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#successMessage").text('Thanks! Your notification settings have been saved.').fadeIn();
+              },
+              error: function(data) {
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#errorMessage").text("Oh dear, something's gone wrong. Please try again!");
+                      $("#errorMessage").fadeIn();
+              }, complete : function(){
+                    setTabsToHideMessages();
+              }
+          });
+      }
+      var $passwordForm = $("#passwordForm");
+      if($passwordForm.length) {
+          $passwordForm.ajaxForm({
+
+              success: function(data) {
+
+                  $("#errorMessage").hide(); // if not already hidden
+                  $("#successMessage").hide(); // if not already hidden
+
+                  if(data == "") {
+                      $("#successMessage").text('Thanks! Your password has been changed.').fadeIn();
+                  }
+                  else {
+                      $("#errorMessage").text(data).fadeIn();
+                  }
+              },
+              error: function(data) {
+
+                  log(data);
+                  
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#errorMessage").text("Oh dear, something's gone wrong. Please try again!");
+                      $("#errorMessage").fadeIn();
+              }, complete : function(){
+                    setTabsToHideMessages();
+              }
+          });
+      }
+      var $appsForm = $("#appsForm");
+        if($appsForm.length) {
+            $appsForm.ajaxForm({
+                success: function(data) {
+                        $("#errorMessage").hide(); // if not already hidden
+                        $("#successMessage").hide(); // if not already hidden
+                        $("#successMessage").text('Thanks! Your app settings have been saved.').fadeIn();
+                        $saveAppSettings.addClass("disabled");
+                },
+                error: function(data) {
+                        $("#errorMessage").hide(); // if not already hidden
+                        $("#successMessage").hide(); // if not already hidden
+                        $("#errorMessage").text("Oh dear, something's gone wrong. Please try again!");
+                        $("#errorMessage").fadeIn();
+                }, complete : function(){
+                      setTabsToHideMessages();
+                }
+            });
+        }
+
+    function setTabsToHideMessages(){
+        $("#errorMessage").removeClass("show");
+        $("#successMessage").removeClass("show");
+    }
+
+
+      /*
+
+
+        Welcome forms gon' welcome
+      */
+    /*
+      var $usernameInput = $("#welcomeForm #username");
+      if ($usernameInput.length) {
+          $usernameInput.keyup(function() {
+              $("#profileUrl span").html('thisismyjam.com/'+encodeURIComponent($usernameInput.val()));
+          });
+      }
+    */
+      /*
+
+        Headers gon' head
+
+        // RC removing this because I don't understand it OKAY?
+
+      */
+
+      /*
+      var $jellyRoll = $("#jellyroll"); // header is hidden when this element is present
+      if($jellyRoll.length) {
+          $("header").addClass("loggedOutHome");
+          $("#content").addClass("loggedOutContent");
+      }
+      else {
+          $("header").removeClass("loggedOutHome");
+          $("#content").removeClass("loggedOutContent");
+      }
+      
+      var $betaToggle = $("#betaToggle");
+      if ($betaToggle.length) {
+          $betaToggle.unbind("click");
+          $betaToggle.click(function() {
+                $("#makeYourChoice").fadeToggle('fast');
+                $("#betaSignup").slideToggle('fast');
+            });
+      }
+      
+      var $messageToggle = $("#messageToggle");
+      if($messageToggle.length) {
+          $messageToggle.unbind("click");
+          $messageToggle.click(function() {
+            $("#messageinput").slideToggle('fast');
+        });
+      }
+      */
+
+      // delete confirm checkbox
+          var $confirmBox = $("#confirmDelete");
+      if($confirmBox.length) {
+          $submitButton = $("#submitDelete");
+                $confirmBox.click(function(){
+                      if($confirmBox.prop("checked")){
+                            $submitButton.attr("disabled",false).removeClass('disabled');
+                      } else {
+                            $submitButton.attr("disabled",true).addClass('disabled');
+                      }
+          });
+      }
+
+        if(window.somethingIsPlayingAndItShouldStopOnNewPage) {
+            window.soundManager.stopAll();
+            window.somethingIsPlayingAndItShouldStopOnNewPage = false;
+        }
+
+      // hide player from meta / search youtube
+      if(window.videoIsVisible) {
+          window.videoIsVisible = false;
+          window.ytPlayer.stop();
+      }
+
+      window.ytPlayer.untrack();
+
+      // make all continuous play buttons on the page work after refresh
+      if(window.player) {
+          window.player.newPage();
+          window.player && window.player.toggleTitle && window.player.toggleTitle();
+      }
+
+      // kill soundmanager from search page
+      if(window.searchPageSoundManagerPlaying)
+          soundManager.stopAll();
+
+
+        // show suggestions on home page, but not when logged out
+        if(window.location.pathname === '/' && $("#meAvatar").length) {
+        
+            $.ajax({
+                url : '/home/suggestions',
+                context : $load_suggestions,
+                success : function(data){
+                    $(this).html(data);
+                    $(this).ajaxify();
+                },
+                error : function(a,b,c){
+                    log(a,b,c);
+                }
+            });
+        }
+    });
+
+/** ADDING IN OUR SELECTORS HERE **/
+
+    var $fLink = $('.follow:not(.following)'),
+        $ufLink = $('.following'),
+        $like = $('.like a, a.like'),
+        paginateSelector = ".paginate",
+        $paginateLink = $(".paginate"),
+        $pagination  = $(".pagination");
+
+    /*
+        Follow & Unfollow
+        //TODO make unified controller for these with proper states, not dom representations.
+                        */
+
+    function follow(type,user,link)
+    {
+        $.ajax({
+            url : "/"+user+"/"+type,
+            type : "POST",
+            dataType : "JSON",
+            success : function(d){
+                //log(d);
+                if(d.success){
+                    if(type === "follow"){
+                        $(link).removeClass().addClass("follow button following tipsy").find("span").text("following").tipsy();
+                    } else {
+                        $(link).removeClass().addClass("follow button tipsy").find("span").text("follow").tipsy();
+                    }
+                    var oldTitle = $(link).attr("original-title");
+                    $(link).attr("original-title", $(link).attr("data-alt-title"));
+                    $(link).attr("data-alt-title", oldTitle);
+                    if(window._gaq !==undefined){
+                        window._gaq.push(['_trackEvent',"Actions",type]);
+                    }
+                }
+            },
+            error : function(a,b,c){
+                //log(a,b,c);
+                $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+            }
+        });
+    }
+
+    $fLink.live("click",function(e){
+
+        if($(this).hasClass("disabled"))
+            return false;
+
+        //TODO disable on click until data returned
+        // TODO increment user's follower count on page, add avatar if appropriate
+        e.preventDefault();
+        var t = 'follow',
+            u = $(this).attr('id').split('||').pop();
+        follow(t,u,this);
+    });
+    //$(selector).mouseenter(handlerIn).mouseleave(handlerOut);
+    $ufLink.live("mouseenter",function(){
+        log("hovering");
+        var $sp = $(this).children("span");
+        $sp.html("Unfollow");
+        return false;
+    }).live("mouseleave",function(){
+        //console.log("hovering out");
+        log("hovering out");
+        $(this).find("span").html("Following");
+    });
+
+    $ufLink.live("click",function(e){
+        //TODO disable on click until data returned
+        //TODO decrement user's follower count on page, remove avatar if appropriate
+        e.preventDefault();
+        var t = 'unfollow',
+            u = $(this).attr('id').split('||').pop();
+        follow(t,u,this);
+    });
+
+
+    window.updateLikeList = function(profilePerson, html, count) {
+        var $likeButton = $('.like a, a.like');
+        if($likeButton.length) {
+            var currentProfilePerson = $likeButton.attr('id').split('||').pop();
+
+            //If we're on a profile page
+            if(profilePerson == currentProfilePerson) {
+                var $likesCounter = $("#likesCounter"),
+                    $likesCallout = $("#loversCallout"),
+                    $likeHolder = $likesCallout.find("#likeHolder"),
+                    cntr = (count > 1) ? "Likes" : "Like";
+
+                // Add the number and 'like/likes' to the counter
+                $likesCounter.find(".number").html(count);
+                $likesCounter.find("span").last().html(cntr);
+
+
+                $likeHolder.fadeOut(30,function(){
+                    $likeHolder.html(html).ajaxify(); // Add in the list of likers
+                    if(!$likesCounter.is(":visible")){
+                        $likesCounter.fadeIn();
+                    }
+                    // if the callout is hidden and count > 0, fade it in
+                    if(!$likesCallout.is(":visible") && count > 0){
+                        $likesCallout.fadeIn();
+                    }
+                    if(count === 0){
+                        $likesCounter.fadeOut();
+                        $likesCallout.fadeOut();
+                    }
+                }).fadeIn();
+
+            }
+        }
+    };
+
+   
+
+
+    var updateLikes = function(profilePerson) {
+        var $likeButton = $('.like a, a.like');
+        
+            if($likeButton && $likeButton.hasClass("disabled") || $likeButton.hasClass("loggedout"))
+                return false;
+            
+            var act = ($likeButton.parent().hasClass('active') ||
+                   $likeButton.hasClass('active')) ? "unlove" : "love";
+            
+            $.ajax({
+                  url : "/" + profilePerson + "/" + act,
+                  type : "POST",
+                  dataType : "JSON",
+                  success : function(d){
+                        log(d);
+                        if(d.success){
+                            $('.like a, a.like').toggleClass("active");
+                            out = d.html;
+                            count = d.loveCount;
+
+                            window.updateLikeList(profilePerson, out,count);
+                            if(window.player){
+                                window.player.updateLoveButton(profilePerson, act == 'love');
+                            }
+                        }
+                  },
+                  error : function(a,b,c){
+                        $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                        log(a,b,c);
+                  }, complete : function (){
+                        $likeButton.removeClass("disabled");
+                        if(window._gaq !==undefined){
+                            window._gaq.push(['_trackEvent',"Actions",act]);
+                        }
+                  }
+            });
+    };
+
+
+    /*
+        Like & unlike
+        * todo: disabled states
+                        */
+
+    $like.live("click",function (e){
+    
+        e.preventDefault();
+          
+        var profilePerson = $(this).attr('id').split('||').pop();
+        updateLikes(profilePerson);
+      
+        return false;
+    });
+
+    /*
+        Paginators gon paginate
+                                */
+    $paginateLink.live("click",function(e){
+        e.preventDefault();
+        paginate(this);
+
+        return false;
+    });
+
+    function checkPos(selector){
+
+        var $element = $(selector); // re-set each time
+
+        //log("beginning to check",$element);
+        
+        if(!$element.length){
+            return; // If we can't find the element then let's just fallback to the click method
+        }
+
+        var elementPosition = $element.position(),
+            top = elementPosition.top;
+            pos = (top - $(window).scrollTop());
+            //log(pos,"relative position");
+        
+        if(top === 0){
+            return; //We've removed the link because there's no more paginating tuh be dun
+
+        }
+        
+        if(pos < 900 && pos > 0)
+            return paginate($element);
+        
+        return setTimeout(function(){checkPos(selector);},600);
+    }
+
+    var paginate = function (element) {
+        var $this = $(element),
+            url = $this.attr("href"),
+            page = url.substr(url.indexOf("page"),url.length),
+            num = parseFloat(page.substr((page.indexOf("=")+1),page.length))||1;
+
+            //log(num);
+
+        $this.addClass("loading").attr("disabled",true);
+
+        $.ajax({
+            url : url,
+            dataType : "json",
+            success : function(data){
+                //log("feed data",data);
+                addPageContent(data,element);
+            },
+            error : function(a,b,c){
+                $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                log("error",a,b,c);
+            }
+        });
+
+        var addPageContent = function (pageData,element) {
+            var $pagination = $(element).parent();
+                $paginateLink = $('.paginate'); // re-select the paginate link
+            scrollOveride = true;
+            if(pageData){
+                var feed = pageData.renderedFeed;
+                $(feed).insertBefore($pagination);
+                if(pageData.hasMore){
+
+                    var lastID = $(".newsItem:last").attr("id");
+
+                    //log(pageData,pageData.hasMore);
+                    $paginateLink.attr({"href":"home/feed?lastID=" + lastID});
+                    reenableLink($paginateLink,"loading"); // remove class loading and reenable link
+                } else {
+                    $pagination.remove();
+                }
+            } else {
+                $pagination.remove();
+            }
+            //fire contentReady so we re-tip tooltip elems etc
+            $content.trigger("contentReady");
+        },
+        reenableLink = function ($link,extra){
+            $link.removeClass("disabled").attr("disabled",false);
+            if(typeof(extra) !="undefined"){
+                $link.removeClass(extra);
+            }
+        };
+
+
+    };
+
+
+    /*
+        Countables
+                    */
+    
+    var cntr = $(".countable");
+        cntr.focus(function(){
+            
+            //log($(this).next("span.counter").length);
+            if($(this).next("span.counter").length){
+                return false;
+            } else{
+                $(this).countable();
+            }
+
+        }).blur(function(){
+            //this is a hack, should really extend countable to have a destroy method
+                //e.g. $(this).countable({destroy:true});
+
+            var $this = $(this),
+                cnt = $this.next("span");
+            
+            if(!cnt.hasClass("maxed")){
+                $(this).next("span").fadeOut(300,function(){
+                    $(this).remove();
+                });
+            }
+        });
+
+    $content.trigger("contentReady");
+    
+});
+
+
+window.hasFlash = function() {
+    //return false;
+    return(swfobject.hasFlashPlayerVersion('9'));
+};
+
+Modernizr.addTest('ipad', function () {
+  return !!navigator.userAgent.match(/iPad/i);
+});
+
+Modernizr.addTest('iphone', function () {
+  return !!navigator.userAgent.match(/iPhone/i);
+});
+
+Modernizr.addTest('ipod', function () {
+  return !!navigator.userAgent.match(/iPod/i);
+});
+
+Modernizr.addTest('appleios', function () {
+    return (Modernizr.ipad || Modernizr.ipod || Modernizr.iphone);
+});
+
+Modernizr.addTest('firefox', function () {
+  return !!navigator.userAgent.match(/Firefox/i);
+});
+
+
+window.isIOS = function (){
+    //return true;
+    return Modernizr.appleios;
+};
+
+$(document).ajaxComplete(function(){
+    try{FB.XFBML.parse();}catch(ex){}
+    try{window.twttr.widgets.load();}catch(ex){}
+});
+
+
+function fbLogin(scope, callback) {
+    // if we've been disconnected, try logging in again
+    //FB.getLoginStatus(function(response) {
+    //log(response);
+    //if(!response.authResponse) {
+    FB.login(function(response) {
+        if (!response.authResponse) {
+            $.post('/error/jsdebug', {data: {fbNotLoggedIn: JSON.stringify(response)}});
+        }
+
+        if(callback)
+            callback(response);
+        
+    }, {scope: scope});
+    //}
+    //});
+}
+
+
+/**
+ * Returns the pathname, as it would be without hashbang.
+ */
+locationPathname = function(href) {
+    if(typeof href == 'undefined')
+        href = location.href;
+    if(href.indexOf("#.") != -1) {
+        return href
+            .replace(/^http:\/\/.+\.com/, '')
+            .replace(/\/?#\./, '')
+            .split(/[\?#]/)[0];
+    }
+    else
+        return location.pathname;
+}
+
+// reload without breaking playback (if html5 history exists)
+locationReload = function() {
+    if(History.replaceState)
+        History.replaceState(null, Array(Math.floor(Math.random() * 100)).join(' '), '/settings');
+    else
+        location.reload();
+}
+
+function basename(path) {
+    return path.replace(/\\/g, '/').replace( /.*\//, '');
+}
+     
+function dirname(path) {
+    return path.replace(/\\/g, '/').replace(/\/[^\/]*$/, '');
+}

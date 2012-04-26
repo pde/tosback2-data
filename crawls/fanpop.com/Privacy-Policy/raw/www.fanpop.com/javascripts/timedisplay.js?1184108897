@@ -1,0 +1,94 @@
+function timefromnow(time)
+{
+	currTime = new Date();
+	sampleTime = new Date();
+	sampleTime.setTime(time*1000);
+	delta = Math.round((currTime-sampleTime)/1000);
+	timestring = timedelta(delta)
+	if (timestring == '0&nbsp;minutes')
+	{
+		timestring = '1&nbsp;minute';
+	}
+	return timestring + '&nbsp;ago';
+}
+
+function timedelta(delta)
+{
+	min = 60;
+	hour = 60*min;
+	day = 24*hour;
+	week = 7*day;
+	month = 30*day;
+	year = 365*day;
+	
+	x = 0;
+	
+	if (delta > year)
+	{
+		x = Math.floor(delta / year);
+		if (x==1)
+		{
+			s = '';
+		} else {
+			s = 's';
+		}
+		return x + '&nbsp;year' + s;
+	}
+	if (delta > month)
+	{
+		x = Math.floor(delta / month)
+		if (x==1)
+		{
+			s = '';
+		} else {
+			s = 's';
+		}
+		return x + '&nbsp;month' + s
+	}
+	if (delta > day)
+	{
+		x = Math.floor(delta / day)
+		if (x==1)
+		{
+			s = '';
+		} else {
+			s = 's';
+		}
+		return x + '&nbsp;day' + s
+	}
+	if (delta > hour)
+	{
+		x = Math.floor(delta / hour)
+		if (x==1)
+		{
+			s = '';
+		} else {
+			s = 's';
+		}
+		return x + '&nbsp;hour' + s
+	}
+	if (delta > 5*min)
+	{
+		x = Math.floor(delta / (5*min))*5
+		if (x==1)
+		{
+			s = '';
+		} else {
+			s = 's';
+		}
+		return x + '&nbsp;minutes'
+	}
+	if (delta > min)
+	{
+		x = Math.floor(delta / min)
+		if (x==1)
+		{
+			s = '';
+		} else {
+			s = 's';
+		}
+		return x + '&nbsp;minute' + s
+	}
+	return '0&nbsp;minutes'
+}
+

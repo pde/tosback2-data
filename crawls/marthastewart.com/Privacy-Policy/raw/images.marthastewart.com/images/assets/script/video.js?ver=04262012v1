@@ -1,0 +1,288 @@
+
+/*Video Player Interfacing*/
+
+
+/**
+ * jQuery.ScrollTo - Easy element scrolling using jQuery.
+ * Copyright (c) 2007-2008 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
+ * Dual licensed under MIT and GPL.
+ * Date: 9/11/2008
+ * @author Ariel Flesler
+ * @version 1.4
+ *
+ * http://flesler.blogspot.com/2007/10/jqueryscrollto.html
+ */
+;(function(h){var m=h.scrollTo=function(b,c,g){h(window).scrollTo(b,c,g)};m.defaults={axis:'y',duration:1};m.window=function(b){return h(window).scrollable()};h.fn.scrollable=function(){return this.map(function(){var b=this.parentWindow||this.defaultView,c=this.nodeName=='#document'?b.frameElement||b:this,g=c.contentDocument||(c.contentWindow||c).document,i=c.setInterval;return c.nodeName=='IFRAME'||i&&h.browser.safari?g.body:i?g.documentElement:this})};h.fn.scrollTo=function(r,j,a){if(typeof j=='object'){a=j;j=0}if(typeof a=='function')a={onAfter:a};a=h.extend({},m.defaults,a);j=j||a.speed||a.duration;a.queue=a.queue&&a.axis.length>1;if(a.queue)j/=2;a.offset=n(a.offset);a.over=n(a.over);return this.scrollable().each(function(){var k=this,o=h(k),d=r,l,e={},p=o.is('html,body');switch(typeof d){case'number':case'string':if(/^([+-]=)?\d+(px)?$/.test(d)){d=n(d);break}d=h(d,this);case'object':if(d.is||d.style)l=(d=h(d)).offset()}h.each(a.axis.split(''),function(b,c){var g=c=='x'?'Left':'Top',i=g.toLowerCase(),f='scroll'+g,s=k[f],t=c=='x'?'Width':'Height',v=t.toLowerCase();if(l){e[f]=l[i]+(p?0:s-o.offset()[i]);if(a.margin){e[f]-=parseInt(d.css('margin'+g))||0;e[f]-=parseInt(d.css('border'+g+'Width'))||0}e[f]+=a.offset[i]||0;if(a.over[i])e[f]+=d[v]()*a.over[i]}else e[f]=d[i];if(/^\d+$/.test(e[f]))e[f]=e[f]<=0?0:Math.min(e[f],u(t));if(!b&&a.queue){if(s!=e[f])q(a.onAfterFirst);delete e[f]}});q(a.onAfter);function q(b){o.animate(e,j,a.easing,b&&function(){b.call(this,r,a)})};function u(b){var c='scroll'+b,g=k.ownerDocument;return p?Math.max(g.documentElement[c],g.body[c]):k[c]}}).end()};function n(b){return typeof b=='object'?b:{top:b,left:b}}})(jQuery);
+/*End Plugin*/
+
+
+function load_video_stuff() {
+ 	if ($j('.now_playing') && typeof(omniVideoPlayer) != 'undefined') { //if we are on a vid page
+
+
+ 		$j('#tab1 .content_list li a').hover(function () {
+				$j(this).append($j("<span class='hoverimg'></span>"));
+			},
+	  		function () {
+				$j(this).find("span:last").remove();
+	  		}
+		);
+		$j('#tab2 .content_list li a').hover(function () {
+			$j(this).append($j("<span class='hoverimg'></span>"));
+		},
+		function () {
+			$j(this).find("span:last").remove();
+		});
+
+		$j('.now_playing li a').click(function() { //attach event listener
+			newid=$j(this).siblings('span[rel]').attr('rel');
+ 			omniVideoPlayer.trigger('loadVideo', newid); //api call
+ 			return false; //prevent click
+ 		});
+
+		$j('.now_playing li.active').each(function() {
+ 			//$j('.now_playing li.active').children('a').eq(2).hide();
+			$j(this).children('a:eq(2)').addClass('title');
+ 			$j(this).append('<a class="nowp">Now Playing</a>');
+ 		});
+
+ 	}
+ 	else {
+ 	
+ 	}
+
+	if ($j('#featuredVideoForm .tabs').length > 0) {
+			$j($j('.tabs li a').eq(0)).click(function() {
+ 			$j($j('.tabs li').eq(0)).addClass('active');
+ 			$j($j('.tabs li').eq(1)).removeClass('active');
+ 			$j('#tab2').show();
+ 			$j('#tab1').hide();
+ 			return false;
+ 		});
+ 		$j($j('.tabs li a').eq(1)).click(function() {
+ 			$j($j('.tabs li').eq(1)).addClass('active');
+ 			$j($j('.tabs li').eq(0)).removeClass('active');
+ 			$j('#tab1').show();
+ 			$j('#tab2').hide();
+ 			return false;
+ 		});
+ 	}
+ 	else {
+ 	}
+
+ 	omniVideoPlayer.registerListener(omniVideoPlayer.VIDEO_CHANGE, MSLOonVideoChange);
+	omniVideoPlayer.registerListener(omniVideoPlayer.COMPANION_AD, MSLOonCompanionAdvert);
+	omniVideoPlayer.registerListener(omniVideoPlayer.VIDEO_COMPLETE, MSLO.onVideoComplete);
+	omniVideoPlayer.registerListener(omniVideoPlayer.VIDEO_START, MSLO.onVideoStart);
+ };
+
+
+$j(document).ready(function() {
+	var pagereferrer =  document.referrer;
+	if (pagereferrer.indexOf('/article/') != -1 && (pagereferrer.indexOf('marthastewart.com') != -1 || pagereferrer.indexOf('wholeliving.com') != -1) && typeof(omniVideoPlayer) != 'undefined') {
+		$j('#videoDesc').parent().append('<div><a href="'+document.referrer+'">Return to Article</a></div>');
+	}
+
+	if (document.getElementById("tv_show_nav")) {
+		$j(".videowithcontrols").eq(0).prepend('<h2 class="mod_hed">Best TV Moments <!--<div id="pause_btn"><a href="#" class="pause">PAUSE <span class="icon">||</span></a><a href="#" class="resume">RESUME</a></div>--></h2>');
+		// $j("#pause_btn .pause").click(function() {
+		// 	omniVideoPlayer.trigger('pausePlayback');
+		// 	$j(this).hide();
+		// 	$j("#pause_btn .resume").show();
+		// 	return false;
+		// });
+		// $j("#pause_btn .resume").click(function() {
+		// 	omniVideoPlayer.trigger('resumePlayback');
+		// 	$j(this).hide();
+		// 	$j("#pause_btn .pause").show();
+		// 	return false;
+		// });
+	}
+	if (document.getElementById("workshop-christmas")) {
+		$j(".videowithcontrols").eq(0).prepend('<h2 class="mod_hed">See &amp; Celebrate Christmas</h2>');
+	}
+	if (document.getElementById("Corporate")) {
+		$j(".videowithcontrols").eq(0).prepend('<h2 class="mod_hed">Video</h2>');
+	}
+	if (document.getElementById("tv")) {
+		$j("#ms-global-col3 .videowithcontrols").eq(0).prepend('<h2 class="mod_hed">Video</h2>');
+	}
+
+    if ((typeof Effect!=='undefined') || (typeof Effect2!=='undefined')) {
+        // wide player
+        MSLO.widePlayer=$j('#ms-singlecol-single-day-player');
+        if (MSLO.widePlayer[0].length!=0) {
+            MSLO.widePlayer.each(function(){
+                if ($j(this).find('.listitems').length != 0) {
+                    $j(this).find('.listitems').css({'display':'none'});
+                    MSLO.widePlayer.addClass('no_list');
+                    MSLO.widePlayerMin=true;
+                    $j('#ms-global-col2').toggle().toggle();
+                    $j('#ms-global-col3').css({'margin-top': '-' + ($j('#ms-singlecol-single-day-player').height()+ 5) + 'px'});
+                }
+            });
+        }
+    }
+    
+});
+
+
+function MSLOonVideoChange(){
+	var currentPlaying = omniVideoPlayer.getCurrentPlaying();
+	$j('#videoTitle').html(currentPlaying.title);
+	$j('#videoDesc').html(currentPlaying.description);
+    
+    $j('#ms-singlecol-single-day-player').each(function(){
+        $j(this).find('#videoDesc').css({display:'block'});
+        if ($j(this).find('.listitems').length != 0) {
+            $j('#ms-global-col2').toggle().toggle();
+            $j('#ms-global-col3').css({'margin-top': '-' + ($j('#ms-singlecol-single-day-player').height() + 5) + 'px'});
+        }
+    });
+    
+	$j('.now_playing li span[rel]').each(function() {
+		myattrid = $j(this).attr('rel');
+		checkagainst = omniVideoPlayer.getCurrentPlaying().id
+		if (myattrid == checkagainst) {
+			MSLOvideo_change_highlight(this);
+			$j(this).siblings('span').andSelf().hide();
+		}
+	});
+
+}
+
+
+function MSLOonCompanionAdvert(evt){
+	var content = unescape( evt.data );
+		var iframeHTML = document.getElementById('companionAdIframe');
+			iframeHTML.contentWindow.document.open();
+			iframeHTML.contentWindow.document.write(content);
+			iframeHTML.contentWindow.document.close();
+};
+
+
+MSLO.onVideoComplete = function () {
+    // play once
+    if (!!document.getElementsByTagName('body')[0].className.match(/MSLO-ARTICLE|MSLO-RECIPE/)) {
+        MSLO.playOnce=true;
+    } else if ( (!!document.getElementsByTagName('body')[0].className.match(/MSLO-SHOW/)) && (MSLO.widePlayerMin===true) ) {
+        MSLO.playOnce=true;
+    }
+};
+
+MSLO.onVideoStart = function () {
+    if ( (typeof MSLO.playOnce !== 'undefined') && (MSLO.playOnce===true) ) {
+        omniVideoPlayer.trigger('pausePlayback');
+        MSLO.playOnce=false;
+    }
+};
+
+
+function MSLOvideo_change_highlight(changeto) {
+    $j('.now_playing li').each(function(i) {
+        var thisObj=$j(this);
+        if (thisObj.hasClass('active')) {
+            thisObj.find('span').show();
+            thisObj.find('a').not('.playicon').show();
+            thisObj.find('.nowp').remove();
+            thisObj.removeClass('active');
+        }
+    });
+	$j(changeto).parent().addClass('active');
+
+	//$j(changeto).parent().children('a').eq(2).hide();
+	$j(changeto).parent().children('a').eq(2).addClass('title');
+	$j(changeto).parent().append('<a class="nowp">Now Playing</a>');
+	$j('.now_playing ul').scrollTo( $j('.now_playing li.active')	);
+};
+
+function showVideoCategory(extraParams) {
+	document.getElementById('playlist_id').value=extraParams;
+	document.getElementById('pgnum').value=1;
+	submitVideoAjaxForm('fetchVideoPlaylist', 'featuredVideoForm', 'tab2')
+}
+
+function showVideoPage(channelURL, page) {
+	document.getElementById('pgnum').value= page;
+	submitVideoAjaxForm('fetchVideoPlaylist', 'featuredVideoForm', 'tab2');
+}
+
+
+
+function submitVideoAjaxForm(action, formName, divName)
+{
+	var ajax_url = '/portalext/ajax/akamai-cache';
+	var formHash = formToQueryString(formName);
+	var queryString= formHash ;
+
+	new Ajax.Request(ajax_url, {
+
+  		method: 'post',
+
+  		parameters: queryString,
+
+ 		onComplete: function(transport){
+
+			if(divName!='') {
+					if (action == 'fetchVideoPlaylist')
+					{
+						var abc = transport.responseText;
+						$j('#'+divName).html(abc);
+//						$(divName).update(transport.responseText);
+						$j('#tab2 .content_list li a').hover(function () {
+							$j(this).append($j("<span class='hoverimg'></span>"));
+						},
+						function () {
+							$j(this).find("span:last").remove();
+						});
+					}
+				} else collect.close();
+
+			}
+
+
+ 		,
+
+		onException: function(req,exception) {
+		},
+
+  		onFailure: function(transport){
+  		}
+
+  		});
+
+}
+
+function formToQueryString(formName)
+{
+	var inputs = $(formName).getElements();
+
+	var queryStr = '';
+
+	for(i=0;i<inputs.length;i++)
+	{
+
+		try
+		{
+			var name = inputs[i].name;
+			var value = inputs[i];
+			var type = inputs[i].type;
+			var valText = value.value;
+			if(type!='checkbox' || (type=='checkbox' && inputs[i].checked==true))
+			{
+				queryStr += name+'='+valText+'&';
+			}
+
+
+		}
+		catch(error)
+		{
+			//alert(error);
+		}
+
+	}
+
+
+	return queryStr;
+
+}

@@ -585,7 +585,8 @@ function reloadComments(){
 		document.body.appendChild(jskitscript);
 	});
 }
-﻿// Cross-browser methods for DOM functions
+
+// Cross-browser methods for DOM functions
 var SlateDom = {};
 // ELEMENT FUNCTIONS
 SlateDom.getTarget = function(evt)//event

@@ -100,3 +100,110 @@ function viatorPasSelectMonthDays(targetPrefix, mmyyyy, selected)
 
     viatorPasFillOutMonthDays(targetPrefix, mmyyyy, selected);
 }
+
+
+//set cruise line ships
+function viatorFindCruiseSelectCruiseLine(widgetID, cruiseLineSelect)
+{
+    var serverHost = $("#viatorWidgetDiv_"+widgetID+"_serverHost").html();
+    var ajaxUrl = serverHost + "/AJAXgetFindCruiseLists.jspa?whatList=lineShips&varId="+$(cruiseLineSelect).val()+"&callback=?";
+    $.ajax(
+        {
+            url: ajaxUrl,
+            type: "POST",
+            dataType: 'jsonp',
+            data: "{}",
+            crossDomain: true,
+            jsonp: "jsonpcallbackships",
+            success: function(data) 
+            {
+                //alert(data[0].content);
+            }
+        }
+    );
+    //return false;
+}
+
+function jsonpcallbackships(data)
+{
+    var ships = data.ships;
+    $("#cruiseShip").empty();
+    $("#shipItin").empty();
+    if($(ships).size()>0)
+    {
+        $(ships).each(function()
+        {
+            var value = $(this).attr("value");
+            var label = $(this).attr("label");
+            $("#cruiseShip").append("<option value='"+value+"'>"+label+"</option>");
+        });
+        
+        $("#shipItin").append("<option value='PLS_SEL'>Select an itinerary</option>");
+    }
+    else
+    {
+        $("#cruiseShip").append("<option value='PLS_SEL'>Select a ship</option>");
+    }
+}
+
+function viatorFindCruiseSelectCruiseShip(widgetID, shipSelect)
+{
+    var serverHost = $("#viatorWidgetDiv_"+widgetID+"_serverHost").html();
+    var ajaxUrl = serverHost + "/AJAXgetFindCruiseLists.jspa?whatList=shipItins&varId="+$(shipSelect).val()+"&callback=?";
+    $.ajax(
+        {
+            url: ajaxUrl,
+            type: "POST",
+            dataType: 'jsonp',
+            data: "{}",
+            crossDomain: true,
+            jsonp: "jsonpcallbackitins",
+            success: function(data) 
+            {
+                //alert(data[0].content);
+            }
+        }
+    );
+    //return false;
+}
+
+function jsonpcallbackitins(data)
+{
+    var itins = data.itins;
+    $("#shipItin").empty();
+    if($(itins).size()>0)
+    {
+        $(itins).each(function()
+        {
+            var value = $(this).attr("value");
+            var label = $(this).attr("label");
+            var itinDate = $(this).attr("date");
+
+            if (itinDate == null) {
+                itinDate = 'PLS_SEL';
+                $("#shipItin").append("<option value='PLS_SEL'>Select an itinerary</option>");
+            }
+            else
+            {
+                $("#shipItin").append("<option value='"+value+"'>"+itinDate+" - "+label+"</option>");
+            }
+        });
+    }
+    else
+    {
+        $("#shipItin").append("<option value='PLS_SEL'>Select an itinerary</option>");
+    }
+}
+
+function viatorFindCruiseSelectShipItin(widgetID, itinSelect)
+{
+    $("#frmCruiseLineName").attr("value", $("#cruiseLine option:selected").text());
+    $("#frmCruiseShipName").attr("value", $("#cruiseShip option:selected").text());
+
+    var selectedItem = $(itinSelect).val().split('|~|');
+    $("#frmItineraryID").attr("value", selectedItem[0]);
+    $("#frmSailDate").attr("value", selectedItem[1]);
+    $("#frmItineraryName").attr("value", selectedItem[2]);
+}
+
+//set cruise line ship itins

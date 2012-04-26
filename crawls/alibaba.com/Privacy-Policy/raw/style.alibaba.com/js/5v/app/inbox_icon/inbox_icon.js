@@ -1,11 +1,6 @@
 // #import app/webenaliint/webenaliint.js
 
-AE.define('app.InboxIcon', function (exports) {
-	var YL = YAHOO.lang,
-		YUD = YAHOO.util.Dom,
-		YUE = YAHOO.util.Event,
-		get = YUD.get;
-
+;(function () {
 	function InboxIcon() {
 		var _self = this;
 		var oConfig = {
@@ -335,14 +330,5 @@ AE.define('app.InboxIcon', function (exports) {
 		};
 	}
 
-	exports.create = function (config, mConfig) {
-		var instance = new InboxIcon();
-		instance.init(config, mConfig);
-		return instance;
-	};
-
-	exports.ctor = InboxIcon;
-
-}).use(function (InboxIcon) {
-	AE.namespace('run').inboxIcon = InboxIcon.ctor;
-});
+	AE.namespace('run').inboxIcon = InboxIcon;
+}());

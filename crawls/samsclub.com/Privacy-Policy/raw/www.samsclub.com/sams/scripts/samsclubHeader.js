@@ -1326,7 +1326,7 @@ var $=jQuery.noConflict();
 		});
                 var preSearchCategoryId=$("#preSearchCategoryId").val();
                 if(preSearchCategoryId!=undefined && preSearchCategoryId!=''){
-                    $('#searchSelect option:selected').removeAttr("selected");
+                    /* $('#searchSelect option:selected').removeAttr("selected"); */
                     $('#searchSelect').val(preSearchCategoryId);
                 }
 		selectedO=$('#searchSelect').children('option:selected');

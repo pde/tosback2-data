@@ -29,6 +29,8 @@ function s_doPlugins(s) {
             s.eVar8=s.getQueryParam('psrc');
             if (!s.eVar15)
                         s.eVar15=s.getQueryParam('esrc');
+            if (!s.eVar35)
+                        s.eVar35=s.getQueryParam('socsrc');
 }
 s.doPlugins=s_doPlugins
 

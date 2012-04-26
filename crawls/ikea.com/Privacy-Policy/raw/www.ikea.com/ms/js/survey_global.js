@@ -138,58 +138,57 @@ if (active && surveyAcceptsCookies() && surveyNewSession() && !surveyExceptionUr
     // Stop survey with incidence = -1 
     var Sites = [
 
-"www.ikea.com/au/en", "aue", "en", "D", -1, "TS", "ms", "en_AU", "au", "en",
-"www.ikea.com/aa/en", "auw", "en", "D", -1, "TS", "ms", "en_AA", "aa", "en",
-"www.ikea.com/at/de", "at", "de-at,sl,it", "D", -1, "TS", "ms", "de_AT", "at", "de",
-"www.ikea.com/be/nl", "be", "nl-be,fr", "D", -1, "TS", "ms", "nl_BE", "be", "nl",
-"www.ikea.com/be/fr", "be", "fr,nl-be", "D", -1, "TS", "ms", "fr_BE", "be", "fr",
-"www.ikea.com/ca/en", "ca", "en,fr-ca", "D", -1, "TS", "ms", "en_CA", "ca", "en",
-"www.ikea.com/ca/fr", "ca", "fr-ca,en", "D", -1, "TS", "ms", "fr_CA", "ca", "fr",
-"www.ikea.com/cn/en", "cn", "zh-cn,en", "D", -1, "TS", "ms", "en_CN", "cn", "en",
-"www.ikea.com/cn/zh", "cn", "zh-cn,en", "D", -1, "TS", "ms", "zh_CN", "cn", "zh",
-"www.ikea.com.cy", "cy", "el,en", "D", -1, "-", " ", "-", " ", " ",
-"www.ikea.com/cz/cs", "cz", "cs,en", "D", -1, "TS", "ms", "cs_CZ", "cz", "cs",
-"www.ikea.com/dk/da", "dk", "da,en", "D", -1, "TS", "ms", "da_DK", "dk", "da",
-"www.ikea.com.do", "do", "es", "D", -1, "-", " ", "-", " ", " ",
-"www.ikea.com/fi/fi", "fi", "fi,se", "D", -1, "TS", "ms", "fi_FI", "fi", "fi",
-"www.ikea.com/fr/fr", "fr", "fr", "D", -1, "TS", "ms", "fr_FR", "fr", "fr",
-"www.ikea.com/de/de", "de", "de,tr,ru", "D", -1, "TS", "ms", "de_DE", "de", "de",
-"www.ikea.gr", "gr", "el", "D", -1, "-", " ", "-", " ", " ",
-"www.ikea.com/hk/zh", "hk", "zh-hk,en", "D",-1, "TS", "ms", "zh_HK", "hk", "zh",
-"www.ikea.com/hk/en", "hk", "en,zh-hk", "D", -1, "TS", "ms", "en_HK", "hk", "en",
-"www.ikea.com/hu/hu", "hu", "hu,en", "D", -1, "TS", "ms", "hu_HU", "hu", "hu",
-"www.ikea.is", "is", "is,en", "D", -1, "-", " ", "-", " ", " ",
-"www.ikea.com/ie/en", "ie", "en", "D", -1, "TS", "ms", "en_IE", "ie", "en",
-"www.ikea.co.il", "il", "he,en,ar", "D", -1, "-", " ", "-", " ", " ",
-"www.ikea.com/it/it", "it", "it,en,sl", "D", -1, "TS", "ms", "it_IT", "it", "it",
-"www.ikea.com/jp/en", "jp", "en,ja", "D", -1, "TS", "ms", "en_JP", "jp", "en",
-"www.ikea.com/jp/ja", "jp", "ja,en", "D", -1, "TS", "ms", "ja_JP", "jp", "ja",
-"www.ikea.com.kw", "kw", "ar,en", "D", -1, "-", " ", "-", " ", " ",
-"www.ikea.com/my/en", "my", "en,my", "D",-1, "TS", "ms", "en_MY", "my", "en",
-"www.ikea.com/my/ms", "my", "my,en", "D", -1, "TS", "ms", "ms_MY", "my", "ms",
-"www.ikea.com/nl/nl", "nl", "nl,de", "D", -1, "TS", "ms", "nl_NL", "nl", "nl",
-"www.ikea.com/no/no", "no", "no", "D",-1, "TS", "ms", "no_NO", "no", "no",
-"www.ikea.com/pl/pl", "pl", "pl", "D", -1, "TS", "ms", "pl_PL", "pl", "pl",
-"www.ikea.com/pt/pt", "pt", "pt", "D", -1, "TS", "ms", "pt_PT", "pt", "pt",
-"www.ikea.com/ro/ro", "ro", "ro", "D", -1, "TS", "ms", "ro_RO", "ro", "ro",
-"www.ikea.com/ru/ru", "ru", "ru", "D", -1, "TS", "ms", "ru_RU", "ru", "ru",
-"www.ikea.com.sa", "sa", "ar,en", "D", -1, "-", " ", "-", " ", " ",
-"www.ikea.com.sa/index.php?lang=en", "sa", "en,ar", "D", -1, "-", " ", "-", " ", " ",
-"www.ikea.com/sg/en", "sg", "en,zh-cn,my", "D", -1, "TS", "ms", "en_SG", "sg", "en",
-"www.ikea.com/sk/sk", "sk", "sk,en", "D", -1, "TS", "ms", "sk_SK", "sk", "sk",
-"www.ikea.com/es/es", "es", "es,en", "D", -1, "TS", "ms", "es_ES", "es", "es",
-"islas.ikea.es/IKEA-islas.php", "esi", "es", "D", -1, "-", " ", "-", " ", " ",
-"www.ikea.com/se/sv", "se", "se,fi,en", "D", -1, "TS", "ms", "sv_SE", "se", "sv",
-"www.ikea.com/ch/de", "ch", "de,fr,it", "D", -1, "TS", "ms", "de_CH", "ch", "de",
-"www.ikea.com/ch/fr", "ch", "fr,de,it", "D", -1, "TS", "ms", "fr_CH", "ch", "fr",
-"www.ikea.com/ch/it", "ch", "it,fr,de", "D", -1, "TS", "ms", "it_CH", "ch", "it",
-"www.ikea.com/tw/zh", "tw", "zh-tw,en", "D", -1, "TS", "ms", "zh_TW", "tw", "zh",
-"www.ikea.com.tr", "tr", "tr", "D", -1, "-", " ", "-", " ", " ",
-"www.ikea.com/ae/en", "ae", "en,ar", "D", -1, "TS", "ms", "en_AE", "ae", "en",
-"www.ikea.com/gb/en", "uk", "en", "D", -1, "TS", "ms", "en_GB", "gb", "en",
-"www.ikea.com/us/en", "us", "en,es-us", "D", -1, "TS", "ms", "en_US", "us", "en",
-"www.ikea.com/th/en", "th", "en,th", "D", -1, "TS", "ms", "en_TH", "th", "en",
-"www.ikea.com/th/th", "th", "th,en", "D", -1, "TS", "ms", "th_TH", "th", "th",
+"www.ikea.com/au/en", "aue", "en", "D", 20, "TS", "ms", "en_AU", "au", "en",
+"www.ikea.com/aa/en", "auw", "en", "D", 25, "TS", "ms", "en_AA", "aa", "en",
+"www.ikea.com/at/de", "at", "de-at,sl,it", "D", 60, "TS", "ms", "de_AT", "at", "de",
+"www.ikea.com/be/nl", "be", "nl-be,fr", "D", 30, "TS", "ms", "nl_BE", "be", "nl",
+"www.ikea.com/be/fr", "be", "fr,nl-be", "D", 30, "TS", "ms", "fr_BE", "be", "fr",
+"www.ikea.com/ca/en", "ca", "en,fr-ca", "D", 40, "TS", "ms", "en_CA", "ca", "en",
+"www.ikea.com/ca/fr", "ca", "fr-ca,en", "D", 40, "TS", "ms", "fr_CA", "ca", "fr",
+"www.ikea.com/cn/en", "cn", "zh-cn,en", "D", 70, "TS", "ms", "en_CN", "cn", "en",
+"www.ikea.com/cn/zh", "cn", "zh-cn,en", "D", 70, "TS", "ms", "zh_CN", "cn", "zh",
+"www.ikea.com.cy", "cy", "el,en", "D", 100, "-", " ", "-", " ", " ",
+"www.ikea.com/cz/cs", "cz", "cs,en", "D", 15, "TS", "ms", "cs_CZ", "cz", "cs",
+"www.ikea.com/dk/da", "dk", "da,en", "D", 25, "TS", "ms", "da_DK", "dk", "da",
+"www.ikea.com.do", "do", "es", "D", 100, "-", " ", "-", " ", " ",
+"www.ikea.com/fi/fi", "fi", "fi,se", "D", 20, "TS", "ms", "fi_FI", "fi", "fi",
+"www.ikea.com/fr/fr", "fr", "fr", "D", 60, "TS", "ms", "fr_FR", "fr", "fr",
+"www.ikea.com/de/de", "de", "de,tr,ru", "D", 50, "TS", "ms", "de_DE", "de", "de",
+"www.ikea.gr", "gr", "el", "D", 100, "-", " ", "-", " ", " ",
+"www.ikea.com/hk/zh", "hk", "zh-hk,en", "D", 100, "TS", "ms", "zh_HK", "hk", "zh",
+"www.ikea.com/hk/en", "hk", "en,zh-hk", "D", 100, "TS", "ms", "en_HK", "hk", "en",
+"www.ikea.com/hu/hu", "hu", "hu,en", "D", 5, "TS", "ms", "hu_HU", "hu", "hu",
+"www.ikea.is", "is", "is,en", "D", 40, "-", " ", "-", " ", " ",
+"www.ikea.com/ie/en", "ie", "en", "D", 20, "TS", "ms", "en_IE", "ie", "en",
+"www.ikea.co.il", "il", "he,en,ar", "D", 40, "-", " ", "-", " ", " ",
+"www.ikea.com/it/it", "it", "it,en,sl", "D", 20, "TS", "ms", "it_IT", "it", "it",
+"www.ikea.com/jp/en", "jp", "en,ja", "D", 10, "TS", "ms", "en_JP", "jp", "en",
+"www.ikea.com/jp/ja", "jp", "ja,en", "D", 10, "TS", "ms", "ja_JP", "jp", "ja",
+"www.ikea.com.kw", "kw", "ar,en", "D", 100, "-", " ", "-", " ", " ",
+"www.ikea.com/my/en", "my", "my,en", "D", 50, "TS", "ms", "en_MY", "my", "en",
+"www.ikea.com/nl/nl", "nl", "nl,de", "D", 20, "TS", "ms", "nl_NL", "nl", "nl",
+"www.ikea.com/no/no", "no", "no", "D", 30, "TS", "ms", "no_NO", "no", "no",
+"www.ikea.com/pl/pl", "pl", "pl", "D", 10, "TS", "ms", "pl_PL", "pl", "pl",
+"www.ikea.com/pt/pt", "pt", "pt", "D", 10, "TS", "ms", "pt_PT", "pt", "pt",
+"www.ikea.com/ro/ro", "ro", "ro", "D", 10, "TS", "ms", "ro_RO", "ro", "ro",
+"www.ikea.com/ru/ru", "ru", "ru", "D", 30, "TS", "ms", "ru_RU", "ru", "ru",
+"www.ikea.com.sa", "sa", "ar,en", "D", 100, "-", " ", "-", " ", " ",
+"www.ikea.com.sa/index.php?lang=en", "sa", "en,ar", "D", 100, "-", " ", "-", " ", " ",
+"www.ikea.com/sg/en", "sg", "en,zh-cn,my", "D", 100, "TS", "ms", "en_SG", "sg", "en",
+"www.ikea.com/sk/sk", "sk", "sk,en", "D", 10, "TS", "ms", "sk_SK", "sk", "sk",
+"www.ikea.com/es/es", "es", "es,en", "D", 20, "TS", "ms", "es_ES", "es", "es",
+"islas.ikea.es/IKEA-islas.php", "esi", "es", "D", 100, "-", " ", "-", " ", " ",
+"www.ikea.com/se/sv", "se", "se,fi,en", "D", 30, "TS", "ms", "sv_SE", "se", "sv",
+"www.ikea.com/ch/de", "ch", "de,fr,it", "D", 50, "TS", "ms", "de_CH", "ch", "de",
+"www.ikea.com/ch/fr", "ch", "fr,de,it", "D", 50, "TS", "ms", "fr_CH", "ch", "fr",
+"www.ikea.com/ch/it", "ch", "it,fr,de", "D", 50, "TS", "ms", "it_CH", "ch", "it",
+"www.ikea.com/tw/zh", "tw", "zh-tw,en", "D", 40, "TS", "ms", "zh_TW", "tw", "zh",
+"www.ikea.com.tr", "tr", "tr", "D", 75, "-", " ", "-", " ", " ",
+"www.ikea.com/ae/en", "ae", "en,ar", "D", 100, "TS", "ms", "en_AE", "ae", "en",
+"www.ikea.com/gb/en", "uk", "en", "D", 70, "TS", "ms", "en_GB", "gb", "en",
+"www.ikea.com/us/en", "us", "en,es-us", "D", 60, "TS", "ms", "en_US", "us", "en",
+"www.ikea.com/th/en", "th", "en", "D", -1, "TS", "ms", "en_TH", "th", "en",
+"www.ikea.com/th/th", "th", "en", "D", -1, "TS", "ms", "th_TH", "th", "th",
 "www.ikea.com/se/en", "se", "se,fi,en", "D", -1, "TS", "ms", "en_SE", "se", "en"
 
 ];
@@ -431,9 +430,9 @@ if (active && surveyAcceptsCookies() && surveyNewSession() && !surveyExceptionUr
         inviteNo["sk"] = "Nie, &#271;akujem ";        
 
         inviteLine1["my"] = "Bantulah kami untuk menjadi lebih baik!";
-        inviteLine2["my"] = "Adakan anda ingin turut serta kaji selidik ringkas kami?";        
-        inviteLine3["my"] = "Kalau anda bersetuju untuk turut serta, kaji selidik ini akan bermula apabila anda selesai membeli-belah ke IKEA.com hari ini";
-        inviteYes["my"] = "Turut serta";
+        inviteLine2["my"] = "Mahukah anda sertai kaji selidik ringkas kami?";        
+        inviteLine3["my"] = "Kalau anda bersetuju untuk ikut serta, kaji selidik ini akan bermula apabila anda selesai kunjungan anda ke IKEA.com hari ini";
+        inviteYes["my"] = "Ikut serta";
         inviteNo["my"] = "Tidak, terima kasih";
 
         inviteLine1["nl-be"] = "Help ons te verbeteren!";
@@ -453,12 +452,6 @@ if (active && surveyAcceptsCookies() && surveyNewSession() && !surveyExceptionUr
         inviteLine3["ro"] = "&#238;ntr-o noua fereasta, la &#238;ncheierea vizitei dumneavoastra de astazi de pe IKEA.ro";
         inviteYes["ro"] = "Vreau sa particip";
         inviteNo["ro"] = "Nu, multumesc";
-		
-		inviteLine1["th"] = "\u0e0a\u0e48\u0e27\u0e22\u0e40\u0e23\u0e32\u0e1b\u0e23\u0e31\u0e1a\u0e1b\u0e23\u0e38\u0e07!";
-		inviteLine2["th"] = "\u0e2d\u0e22\u0e32\u0e01\u0e23\u0e48\u0e27\u0e21\u0e17\u0e33\u0e41\u0e1a\u0e1a\u0e2a\u0e33\u0e23\u0e27\u0e08\u0e2a\u0e31\u0e49\u0e19\u0e46 \u0e02\u0e2d\u0e07\u0e40\u0e23\u0e32\u0e21\u0e31\u0e49\u0e22?";
-		inviteLine3["th"] = "\u0e16\u0e49\u0e32\u0e15\u0e01\u0e25\u0e07\u0e40\u0e02\u0e49\u0e32\u0e23\u0e48\u0e27\u0e21\u0e17\u0e33\u0e08\u0e30\u0e40\u0e23\u0e34\u0e48\u0e21\u0e41\u0e1a\u0e1a\u0e2a\u0e33\u0e23\u0e27\u0e08\u0e40\u0e21\u0e37\u0e48\u0e2d\u0e04\u0e38\u0e13\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e2a\u0e34\u0e49\u0e19\u0e01\u0e32\u0e23\u0e40\u0e02\u0e49\u0e32\u0e0a\u0e21 IKEA.com \u0e27\u0e31\u0e19\u0e19\u0e35\u0e49";
-		inviteYes["th"] = "\u0e40\u0e02\u0e49\u0e32\u0e23\u0e48\u0e27\u0e21";
-		inviteNo["th"] = "\u0e44\u0e21\u0e48\u0e25\u0e48\u0e30 \u0e02\u0e2d\u0e1a\u0e43\u0e08";
         
         if (inviteIncidence > -1) {
             INCIDENCE = inviteIncidence;
@@ -760,8 +753,7 @@ function friendlyLanguageName(languageCode) {
             return "Rom&#226;n&#259;";
         case "sk":
             return "Slovensk&#253;";
-        case "th":
-            return "\u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22";    
+            
 
 
 

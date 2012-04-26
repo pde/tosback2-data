@@ -172,7 +172,7 @@
     sw.adSettings.DoubleClickAutoDcopt=true;
 </script>
 
-
+        
 
 
 		
@@ -317,7 +317,22 @@
 		
 
 		
-
+        <!--[if lte IE 8]>
+        <style type="text/css">
+            #wrapper {width: 1000px;}
+            #mainContent { border: 1px solid #CCC; border-top: none; border-bottom: none; }
+            .bannerWrapper { width: 998px; border: 1px solid #CCC; border-top: none; border-bottom: none; }
+            #mainNav .swTicker ul li.tickerNSI DIV.tickerData { margin-top: -15px; }
+        </style>
+        <![endif]-->
+        <!--[if IE 7]>
+        <style type="text/css">
+            .wrapperie7 { width: 1000px; margin-top: -115px !important; }
+            #mainNav .swTicker ul li.tickerNSI DIV.tickerData { margin-top: 0px !important; }
+            .swNavigator { margin-top: -45px !important; }
+            .swNavigator7 { margin-top: -10px !important; }
+        </style>
+        <![endif]-->
 	
 	
 
@@ -503,8 +518,14 @@
 </div>
 
 
-		<div id="wrapper">
-			
+        
+        
+        
+        
+
+
+
+
 
 
 
@@ -517,59 +538,63 @@
 }
 </style>
 <![endif]-->
-
-<!-- jira #SW-2902: BEGIN Hi-Media Media Settings - v1.0 -->
-<script type="text/javascript">
-    var adlSite='autres-sites-mtv.com';
-    var adlZone='ros';
-    var adlKv='';
-    var adlHasDcopt = false;
-    var adlPro=window.location.protocal=='https:'?'https:':'http:';
-    document.write('<'+'sc'+'ript type="text/javascript" src="'+adlPro+'//js.himediads.com/js?lang=fr&s='+adlSite+'&z='+adlZone+'&d='+Math.floor(Math.random()*10000000000)+'"><\/'+'sc'+'ript>');
-</script>
-<!-- END Hi-Media Media Settings - v1.0 -->
-
-
 <script type="text/javascript">
     $(document).ready(function(){
-        var newReleases = /new-releases.jsp/.test(self.location.href);
-        var newSales = /sales.jsp/.test(self.location.href);
+        var windowsOS = navigator.appVersion.indexOf("Win")!=-1;
+        var mozBrowser = $.browser.mozilla;
+        $('.gameTime').hover(function(){
+          $('li.moreGames').show();
+           $(this).css({ 'cursor' : 'pointer' });
+        }, function(){
+           $('li.moreGames').hide();
+           $(this).css({ 'cursor' : 'default' });
+        });
+        if(windowsOS){
+            $('#mainNav .swTicker ul.tickerList li.gameTime ul li.moreGames').addClass('moreGamesWinOS');
+            if($.browser.msie && $.browser.version == 7){
+                $('.swNavigator').addClass('');
+            }
+        }
 
-        if (newReleases) {
-            $('#subNav ul li#new_genre').addClass('active');
-        } else if (newSales) {
-           $('#subNav ul li#99sale').addClass('active');
+        
+        var dataTicker = ["1", "2" , "3"];
+        var myData = Math.floor(Math.random()*dataTicker.length);
+        if(myData == 0){
+            $('.data1').fadeIn(500);
+            $('.data2, .data3').hide();
+        } else if(myData == 1) {
+            $('.data2').fadeIn(500);
+            $('.data1, .data3').hide();
         } else {
-        //    do nothing
+            $('.data3').fadeIn(500);
+            $('.data1, .data2').hide();
         }
     });
 </script>
-
-		
-		<ul id="mainNav">
-			<li id="logo" class=""><a href="http://www.shockwave.com/home.jsp" class="clearLink">Shockwave</a></li>
-			<li id="tab-1"><a title="Online Games" href="http://www.shockwave.com/home.jsp">online games</a></li>
-			<li id="tab-2"><a title="Download Games" href="http://www.shockwave.com/download.jsp">download games</a></li>
-			<li id="tab-3"><a title="Free Online Gaming Community" href="http://www.shockwave.com/myShockwave.jsp">my shockwave</a></li>
-			<li id="myTools">
+<div class="headContainer ">
+    <div id="logo">
+        <a href="http://www.shockwave.com/home.jsp">
+            
+                
+                <img src="../i/common/logos/sw_logo_extrude.png" alt="" />
+            
+        </a>
+    </div>
+    <div id="myTools" class="">
 				
 
 					
 					
 
 						<form class="loginForm clearfix" id="headerLoginForm" name="headerLoginForm" method="post" action="privacyPolicy.jsp.html#">
+                            <div id="loginOptions">
+                                <a href="privacyPolicy.jsp.html#" class="headerLoginSW staticSignInLink">Sign In</a>
+                                <span id="facebookHeaderLogin" style="display:none;"> <span class="divider">|</span>
+                                    <a href="privacyPolicy.jsp.html#" onclick="facebookConnectLink('fbc_btn_userbar_signin'); return false;" class="headerLoginFacebook">Sign In with Facebook</a>
+                                </span>
+                            </div>
 							<div class="fbLoginForm">
-								<div class="userMessage">
-									Not a member? <a href="privacyPolicy.jsp.html#" class="staticRegisterLink">It's FREE to join!</a>
-								</div>
-
-								<div id="loginOptions">
-									<a href="privacyPolicy.jsp.html#" class="headerLoginSW staticSignInLink">Sign In</a>
-									<span id="facebookHeaderLogin" style="display:none;">
-										or
-										<a href="privacyPolicy.jsp.html#" onclick="facebookConnectLink('fbc_btn_userbar_signin'); return false;" class="headerLoginFacebook">Sign In with Facebook</a>
-									</span>
-								</div>
+								<div class="userMessage"><a href="privacyPolicy.jsp.html#" class="staticRegisterLink">Not a member? It's FREE to join!</a></div>
 							</div>
 						</form>
 
@@ -578,9 +603,29 @@
 					
 					
 				
-			</li>
-		</ul>
-
+			</div>
+        <div class="swNavigator">
+            
+            <ul id="mainNav">
+                <li id="tab-1"><a title="Online Games" href="http://www.shockwave.com/home.jsp" >online games</a></li>
+                <li id="tab-2"><a title="Download Games" href="http://www.shockwave.com/download.jsp">download games</a></li>
+                <li id="tab-3"><a title="Free Online Gaming Community" href="http://www.shockwave.com/myShockwave.jsp">my shockwave</a></li>
+                
+                    
+                    <li class="swTicker swTickerNSI">
+                        <ul class="tickerList">
+                            <li class="tickerNSI">
+                                <div class="tickerData data1">952,990 Game Plays</div>
+                                <div class="tickerData data2">53,732 Downloads Today</div>
+                                <div class="tickerData data3">70,064,928 Total Downloads</div>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    
+                
+            </ul>
+        </div>
 		
 		
 		<div id="subNav" >
@@ -824,11 +869,16 @@
 				
 			</ul>
 		</div>
-		
-		
-		
-		
-			                                                            <div class="bannerWrapper">        <div class="banner">           <script type="text/javascript" >
+</div>
+
+        <div id="wrapper">
+            
+            
+
+
+
+
+                                                                <div class="bannerWrapper">        <div class="banner">           <script type="text/javascript" >
 btg.Controller.placeAd(
 {
 size:'728x90',
@@ -840,17 +890,17 @@ loadOrder:1
 } );
 </script>
         </div>    </div>
-		
-
-        
-        
 
 
-		
-		
-			<div id="mainContent" class="clearfix">
 
-				
+
+
+
+
+
+            <div id="mainContent" class="clearfix">
+
+                
 				
 				
 

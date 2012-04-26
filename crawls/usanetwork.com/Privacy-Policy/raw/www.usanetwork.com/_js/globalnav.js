@@ -412,10 +412,10 @@ var usa_globalMenu = {
 					"items" : [
 						/* Featured Slot */
 						{
-							"title" : "Psych",
-							"url" : usa_baseUrlDomain + "/series/psych/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_2.png",
-							"tuneIn" : "WEDNESDAYS 10/9C"
+							"title" : "Common Law",
+							"url" : usa_baseUrlDomain + "/series/commonlaw/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_commonlaw.png",
+							"tuneIn" : "FRIDAY MAY 11 10/9C"
 						},
 						/* Featured Slot */
 						{
@@ -664,29 +664,30 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [
 						{
-							"title" : "OCEAN'S THIRTEEN",
-							"subtitle" : "SATURDAY APRIL 14",
-							"url" : usa_baseUrlDomain + "/movies/oceansthirteen/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_oceansthirteen.png"
+							"title" : "THE GAME PLAN",
+							"subtitle" : "SATURDAY APRIL 28 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/thegameplan/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_thegameplan.png"
 						},
 						{
-							"title" : "RAIDERS OF THE LOST ARK",
-							"subtitle" : "SUN APRIL 15 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/indianajones/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_indianaLostArk.png"
+							"title" : "INSIDE MAN",
+							"subtitle" : "SATURDAY APRIL 28 1/12C",
+							"url" : usa_baseUrlDomain + "/movies/insideman",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_insideman.png"
+						},
+						{
+							"title" : "GOOD LUCK CHUCK",
+							"subtitle" : "SUNDAY APRIL 29 1:30/12:30C",
+							"url" : usa_baseUrlDomain + "/movies/goodluckchuck",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_goodluckchuck.png"
 						},
 						{
 							"title" : "FAST & FURIOUS",
-							"subtitle" : "SUNDAY APRIL 15 4/3C",
-							"url" : usa_baseUrlDomain + "/movies/fastandfurious/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_fastfurious.png"
-						},
-						{
-							"title" : "HE'S JUST NOT THAT INTO YOU",
-							"subtitle" : "SUN APRIL 22 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_hejustnotthat.png"
+							"subtitle" : "MONDAY APRIL 30 11:05/10:05C",
+							"url" : usa_baseUrlDomain + "/movies/fastandfurious",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_fastandfurious.png"
 						}
+						
 					]
 				}
 			],

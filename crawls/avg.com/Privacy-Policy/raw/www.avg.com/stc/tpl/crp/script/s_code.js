@@ -153,10 +153,10 @@ if(!s.prop18){
   s.prop18=s.getQueryParam('intcmp')
 }
 if(!s.eVar16){
-	s.eVar16=s.getQueryParam('mtv')
+	s.eVar16=s.getQueryParam('mtv,mvt')
 }
 if(!s.prop19){
-  s.prop19=s.getQueryParam('mtv')
+  s.prop19=s.getQueryParam('mtv,mvt')
 }
 if(!s.eVar26){
   s.eVar26=s.getQueryParam('re')
@@ -835,8 +835,8 @@ function dwn_trial_pct(obj, server, docid)
 var s=s_gi('avgcorporatepublicww'); 
 s.linkTrackVars='prop9,eVar9,events'; 
 s.linkTrackEvents='event9,event12,event73,event95'; 
-s.eVar9='down_trial_pct_avg_'+server+'_'+docid;  
-s.prop9='down_trial_pct_avg_'+server+'_'+docid;  
+s.eVar9='down_trial_pct_'+server+'_'+docid;  
+s.prop9='down_trial_pct_'+server+'_'+docid;  
 s.events='event9,event12,event73,event95'; 
 s.tl(this,'o','download_trial');
 }
@@ -846,8 +846,8 @@ function dwn_trial_av(obj, server, docid)
 var s=s_gi('avgcorporatepublicww'); 
 s.linkTrackVars='prop9,eVar9,events'; 
 s.linkTrackEvents='event9,event10,event12,event93'; 
-s.eVar9='down_trial_av_avg_'+server+'_'+docid;  
-s.prop9='down_trial_av_avg_'+server+'_'+docid;  
+s.eVar9='down_trial_av_'+server+'_'+docid;  
+s.prop9='down_trial_av_'+server+'_'+docid;  
 s.events='event9,event10,event12,event93'; 
 s.tl(this,'o','download_trial');
 }
@@ -857,8 +857,8 @@ function dwn_free_av(obj, server, docid)
 var s=s_gi('avgcorporatepublicww'); 
 s.linkTrackVars='prop9,eVar9,events'; 
 s.linkTrackEvents='event9,event10,event13,event99'; 
-s.eVar9='down_free_av_avg_'+server+'_'+docid;  
-s.prop9='down_free_av_avg_'+server+'_'+docid; 
+s.eVar9='down_free_av_'+server+'_'+docid;  
+s.prop9='down_free_av_'+server+'_'+docid; 
 s.events='event9,event10,event13,event99'; 
 s.tl(this,'o','download_free');
 }
@@ -868,8 +868,8 @@ function dwn_free_lsnr(obj, server, docid)
 var s=s_gi('avgcorporatepublicww'); 
 s.linkTrackVars='prop9,eVar9,events'; 
 s.linkTrackEvents='event9,event14'; 
-s.eVar9='down_free_ls_avg_'+server+'_'+docid;   
-s.prop9='down_free_ls_avg_'+server+'_'+docid;   
+s.eVar9='down_free_ls_'+server+'_'+docid;   
+s.prop9='down_free_ls_'+server+'_'+docid;   
 s.events='event9,event14'; 
 s.tl(this,'o','download_linkscanner');
 }
@@ -879,8 +879,8 @@ function dwn_ra(obj, server, docid)
 var s=s_gi('avgcorporatepublicww'); 
 s.linkTrackVars='prop9,eVar9,events'; 
 s.linkTrackEvents='event9,event74'; 
-s.eVar9='down_free_ra_avg_'+server+'_'+docid;  
-s.prop9='down_free_ra_avg_'+server+'_'+docid;  
+s.eVar9='down_free_ra_'+server+'_'+docid;  
+s.prop9='down_free_ra_'+server+'_'+docid;  
 s.events='event9,event74'; 
 s.tl(this,'o','download_ra');
 }

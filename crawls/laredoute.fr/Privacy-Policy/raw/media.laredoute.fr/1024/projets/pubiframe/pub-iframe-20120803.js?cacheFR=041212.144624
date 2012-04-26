@@ -1,0 +1,145 @@
+// JavaScript Document
+$j(document).ready(function () {
+	if(document.location.href != 'http://www.laredoute.fr/')
+	{
+	var pubiframeB_url = document.location.href.split(":");
+	var pubiframeB_url_http = pubiframeB_url[0];
+	if (pubiframeB_url_http == 'https'){ OAS_url ='//oasn-en1.247realmedia.com';}else{OAS_url ='//mfr.247realmedia.com';}
+	
+	var pubiframe_shp_url = document.location.href.split("categoryid=");
+	var pubiframe_shp_url_id = parseInt(pubiframe_shp_url[1]);
+
+
+	if(isNaN(pubiframe_shp_url_id) == false) {
+		if(typeof(window['OAS_sitepage']) == 'undefined' ){
+			var pubiframe_shp = { 'marques':'8352243','femme':'22890157','enfant':'22890572','homme':'22890626','grandes-tailles':'41515070','lingerie':'22890374','chaussures-accessoires':'30298933','linge-maison':'22890817','meubles':'22890847','literie':'44311162','electromenager':'22891059','jardin':'120002451','high-tech':'22891092','les-aubaines':'23107224','specialogues':'61264194','specialogues':'22807038','specialogues':'68976754','specialogues':'16270749' }
+			var OAS_sitepage_com1;
+			var OAS_sitepage_com2;
+			$j.each(pubiframe_shp, function(key, value) { 
+				if(pubiframe_shp_url_id == value){
+					OAS_sitepage_com1 = 'www.laredoute.com/'+key+'/home';
+				}
+				else if(OAS_sitepage_com1 == undefined) 
+				{					
+					var pubiframe_liste_class = 'achat-'+value;
+					if($j('div#headerZone').hasClass(pubiframe_liste_class)){
+						OAS_sitepage_com1 = 'www.laredoute.com/'+key+'/rg';
+					}
+					else
+					{
+						OAS_sitepage_com2 = 'www.laredoute.com/op-transversale';
+					}					
+				}
+			});
+			if(OAS_sitepage_com1 != undefined){
+				var OAS_sitepage_com = OAS_sitepage_com1;
+				var OAS_sitepage = OAS_sitepage_com1;
+			}else{
+				var OAS_sitepage_com = OAS_sitepage_com2;
+				var OAS_sitepage = OAS_sitepage_com2;
+			}
+		}
+		else{
+			OAS_sitepage_com = window['OAS_sitepage'];
+			OAS_sitepage = window['OAS_sitepage'];
+			var OAS_test = '6';
+		}
+	}
+	$j('#Rdte_NewFooter2009_D').append('<div class="'+pubiframe_shp_url_id+'-'+OAS_sitepage_com+'-'+OAS_sitepage+'-'+OAS_test+'"></div>');
+	
+	
+	
+	OAS_rns = String(Math.random()).substr(2,10);
+	
+
+	var pubiframeB_iframe_url = OAS_url+'/2/'+OAS_sitepage+'/1'+OAS_rns+'@Top';
+	var pubiframeS_iframe_url = OAS_url+'/2/'+OAS_sitepage+'/1'+OAS_rns+'@Right';
+	
+	var pubiframeB_page_url = document.location.href.split("categoryid=");
+	var pubiframeB_page_id = parseInt(pubiframeB_page_url[1]);
+
+	var pubiframePB_page_url = document.location.href.split("productid=");
+	var pubiframePB_page_id = parseInt(pubiframePB_page_url[1]);
+
+	if(isNaN(pubiframePB_page_id) == true) {
+	
+		if(isNaN(pubiframeB_page_id) == false) {
+			var pubiframeB_iframe = document.createElement('iframe');
+			pubiframeB_iframe.setAttribute('src',pubiframeB_iframe_url);
+			pubiframeB_iframe.setAttribute('width','728');
+			pubiframeB_iframe.setAttribute('height','90');
+			pubiframeB_iframe.setAttribute('hspace','0');
+			pubiframeB_iframe.setAttribute('vspace','0');
+			pubiframeB_iframe.setAttribute('border','no');
+			pubiframeB_iframe.setAttribute('frameBorder','0');
+			pubiframeB_iframe.setAttribute('marginHeight','0');
+			pubiframeB_iframe.setAttribute('marginWidth','0');
+			pubiframeB_iframe.setAttribute('scrolling','no');
+			$j('#pubiframe_iframe_banner').append(pubiframeB_iframe);
+		}
+	
+		if ( $j(window).width() >= 1259 ) { // 1280 - 20px pour scrollbar 
+		
+			if(isNaN(pubiframeB_page_id) == false) {
+			
+		
+				$j('#pubiframe_sky').css({ position: 'absolute', top: 0, left: $j('form:eq(0)').offset().left + $j('form:eq(0)').width() + 5, height: 'auto', width: '133px' }); 
+				$j('#pubiframe_iframe_sky').css({ position: 'relative', top: $j('div[id^=espaceClient]', $j('#headerZone')).offset().top, width: '120px', height: '600px' }).append('<img src="//media.laredoute.fr/1024/projets/one-pix.gif" alt="" height="1" width="120" />');         
+				$j(document).ready(function(){ $j('#pubiframe_iframe_sky').css({ top: $j('div[id^=espaceClient]', $j('#headerZone')).offset().top }); }); 
+				$j(window).resize(function(){ $j('#pubiframe_sky').css({ left: $j('form:eq(0)').offset().left + $j('form:eq(0)').width() + 5 }); }); 
+			
+				var pubiframeS_iframe = document.createElement('iframe');
+				pubiframeS_iframe.setAttribute('src',pubiframeS_iframe_url);
+				pubiframeS_iframe.setAttribute('width','120');
+				pubiframeS_iframe.setAttribute('height','600');
+				pubiframeS_iframe.setAttribute('hspace','0');
+				pubiframeS_iframe.setAttribute('vspace','0');
+				pubiframeS_iframe.setAttribute('border','no');
+				pubiframeS_iframe.setAttribute('frameBorder','0');
+				pubiframeS_iframe.setAttribute('marginHeight','0');
+				pubiframeS_iframe.setAttribute('marginWidth','0');
+				pubiframeS_iframe.setAttribute('scrolling','no');
+				$j('#pubiframe_iframe_sky').append(pubiframeS_iframe);
+			}
+		}	
+	}
+	
+	var pubiframeCO1_iframe_url = OAS_url+'/2/www.laredoute.com/confirmation-commande/1'+OAS_rns+'@Top';
+	var pubiframeCO2_iframe_url = OAS_url+'/2/www.laredoute.com/confirmation-commande/1'+OAS_rns+'@Top1';
+	
+	var pubiframeCO_page_url = document.location.href.split("/Commander/");
+	var pubiframeCO_page_id = pubiframeCO_page_url[1];
+
+
+	if(pubiframeCO_page_id == "Summary.aspx") {
+		
+		
+		var pubiframeCO1_iframe = document.createElement('iframe');
+		pubiframeCO1_iframe.setAttribute('src',pubiframeCO1_iframe_url);
+		pubiframeCO1_iframe.setAttribute('width','728');
+		pubiframeCO1_iframe.setAttribute('height','90');
+		pubiframeCO1_iframe.setAttribute('hspace','0');
+		pubiframeCO1_iframe.setAttribute('vspace','0');
+		pubiframeCO1_iframe.setAttribute('border','no');
+		pubiframeCO1_iframe.setAttribute('frameBorder','0');
+		pubiframeCO1_iframe.setAttribute('marginHeight','0');
+		pubiframeCO1_iframe.setAttribute('marginWidth','0');
+		pubiframeCO1_iframe.setAttribute('scrolling','no');
+		$j('#pubiframe_iframe_banner1').append(pubiframeCO1_iframe);
+		
+		var pubiframeCO2_iframe = document.createElement('iframe');
+		pubiframeCO2_iframe.setAttribute('src',pubiframeCO2_iframe_url);
+		pubiframeCO2_iframe.setAttribute('width','728');
+		pubiframeCO2_iframe.setAttribute('height','90');
+		pubiframeCO2_iframe.setAttribute('hspace','0');
+		pubiframeCO2_iframe.setAttribute('vspace','0');
+		pubiframeCO2_iframe.setAttribute('border','no');
+		pubiframeCO2_iframe.setAttribute('frameBorder','0');
+		pubiframeCO2_iframe.setAttribute('marginHeight','0');
+		pubiframeCO2_iframe.setAttribute('marginWidth','0');
+		pubiframeCO2_iframe.setAttribute('scrolling','no');
+		$j('#pubiframe_iframe_banner2').append(pubiframeCO2_iframe);
+		
+	}
+	}
+});

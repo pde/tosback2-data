@@ -1,0 +1,203 @@
+
+/*cookie logic for iPad interstitial promo*/
+if(navigator.userAgent.indexOf('iPad') != -1 ){
+    if( Cookie.getCookie("mob_promo")){
+    var vidCook= Cookie.getCookie("mob_promo");
+    tokens = vidCook.split("-");
+    var pgv = tokens[1];
+    var cookDays='';    
+		if(pgv < 3){
+			if(Cookie.getCookie("mob_sess")==null){
+				pgv = ++tokens[1];
+				var date = new Date();
+				date.setTime(date.getTime() + (30 * 60 * 1000));
+				var domain= ".reference.com"
+				if (window.location.host.indexOf('thesaurus')!=-1){
+					domain=".thesaurus.com";
+				}
+				Cookie.setCookie("mob_sess", 1, date, "/", domain);
+			}
+			cookieData = tokens[0] + "-"+pgv;
+			if(tokens[0]=='1'){cookDays=1;}
+			var exp = new Date();
+			exp.setFullYear(exp.getFullYear()+cookDays);
+			exp.setMonth(exp.getMonth());
+			exp.setDate(exp.getDate()+30);
+			exp.setHours(0);
+			exp.setMinutes(0);
+			<!--expiry date session-->
+			var domain= ".reference.com"
+			if (window.location.host.indexOf('thesaurus')!=-1){
+				domain=".thesaurus.com";
+			}
+			Cookie.setCookie("mob_promo", cookieData, exp, "/", domain);
+		}
+	}
+}
+/* gutter placement*/ 
+ (function ($) {
+     $.fn.gutter = function (options) {
+         var opt = options;
+         if (opt.adtype == "marketing") {
+             try {
+                 $j(document).ready(function () {
+                     var gutter;
+                     var gutterimg;
+                     var dicbgImg;
+                     var car;
+                     var now = new Date();
+                     var time = (typeof ((opt.rightGutterImageA || opt.leftGutterImageA)) == 'undefined') ? 3 : now.getHours();
+                     var track;
+                     var gutterposition;
+                     var gutterclicked = 'false';
+                     var backgroundimage = (typeof(opt.backgroundImage)!= 'undefined') ?'url(' + opt.backgroundImage + ') repeat-x fixed center top transparent' : '';
+
+                     /* we have a logic of  showing each hour a image that is rotating the assets */
+                     track = {
+                         0: {
+                             gutterleftlink: opt.linkidleftA,
+                             gutterrightlink: opt.linkidrightA
+                         },
+                         1: {
+                             gutterleftlink: opt.linkidleft,
+                             gutterrightlink: opt.linkidright
+                         }
+
+                     }
+
+                     /* based on the time assign the imgaes to gutters*/
+                     if (time % 2 == 0) {
+                         rightgutterimg = opt.rightGutterImageA;
+                         leftGutterimg = opt.leftGutterImageA;
+                     } else if (time % 2 == 1) {
+                         rightgutterimg = opt.rightGutterImage;
+                         leftGutterimg = opt.leftGutterImage;
+                     }
+
+                     /*DYNAMICALLY INSERTING THE GUTTERS*/
+
+                     if (!(typeof ((rightgutterimg || leftGutterimg)) == 'undefined')) {
+
+                         if (a10.flash.isEnabled() && (rightgutterimg.indexOf('swf') != -1 && leftGutterimg.indexOf('swf') != -1)) {
+                             $j('#promo_serpTo').append('<div id="overlayRightA"   style="background-image: none; display: block; position: fixed; height: 413px; width: 125px; top: 115px; float: right; right: 322px;" ><object onmousedown="gutterClick();" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="125" height="413" id="rightimg" align="middle"><param name="wmode" value="transparent" /><param name="movie" value="' + rightgutterimg + '" /><param name="quality" value="high" /><param name="scale" value="showall" /><param name="menu" value="true" /><param name="salign" value="" /><param name="allowScriptAccess" value="sameDomain" /><!--[if !IE]>--><object type="application/x-shockwave-flash" data="' + rightgutterimg + '" width="125" height="413"><param name="movie" value="' + rightgutterimg + '" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" /><param name="play" value="true" /><param name="loop" value="true" /><param name="wmode" value="transparent" /><param name="scale" value="showall" /><param name="menu" value="true" /><param name="devicefont" value="false" /><param name="salign" value="" /><param name="allowScriptAccess" value="sameDomain" /><!--<![endif]--></object><!--<![endif]--></object></div>');
+                             $j('#promo_serpTo').append('<div id="overlayleftA"   style="background-image: none; display: block; position: fixed; height: 413px; top: 115px; cursor: pointer; float: left; width: 125px; left: 295px;" ><object onmousedown="gutterClick();" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="125" height="413" id="leftimg" align="middle"><param name="wmode" value="transparent" /><param name="movie" value="' + leftGutterimg + '" /><param name="quality" value="high" /><param name="scale" value="showall" /><param name="menu" value="true" /><param name="salign" value="" /><param name="allowScriptAccess" value="sameDomain" /><!--[if !IE]>--><object type="application/x-shockwave-flash" data="' + leftGutterimg + '" width="125" height="413"><param name="movie" value="' + leftGutterimg + '" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" /><param name="play" value="true" /><param name="loop" value="true" /><param name="wmode" value="transparent" /><param name="scale" value="showall" /><param name="menu" value="true" /><param name="devicefont" value="false" /><param name="salign" value="" /><param name="allowScriptAccess" value="sameDomain" /><!--<![endif]--></object><!--<![endif]--></object></div>');
+                         } else {
+                             $j('#promo_serpTo').append('<div id="overlayRightA"  style="background-image: none; display: block; position: fixed; height: 420px; width: 145px; top: 129px; float: right; right: 321px;" ><img id="rightimg" alt="" style="cursor:pointer;" src="' + rightgutterimg + '"/></div>');
+                             $j('#promo_serpTo').append('<div id="overlayleftA"   style="background-image: none; display: block; position: fixed; height: 420px; top: 128px; cursor: pointer; float: left; width: 145px; left: 321px;" ><img id="leftimg" alt="" style="cursor:pointer;" src="' + leftGutterimg + '" /></div>');
+                         }
+
+                         /*REAARNGING THE GUTTERS INPLACE WITH THE PAGE */
+                         var id = "contouter";
+                         var contouter = document.getElementById(id);
+                         var adjLeft = contouter.offsetLeft - 141 + "px";
+                         var adjRight = contouter.offsetLeft - 141 + "px";
+                         var view = $j(window);
+                         $j("#overlayleftA").css("left", adjLeft);
+                         $j("#overlayRightA").css("right", adjRight);
+
+                         //scrolling resize
+                         view.bind("scroll resize", function () {
+                             var contouter = document.getElementById(id);
+                             var adjLeft = contouter.offsetLeft - 141 + "px";
+                             var adjRight = contouter.offsetLeft - 141 + "px";
+                             $j("#overlayleftA").css("left", adjLeft);
+                             $j("#overlayRightA").css("right", adjRight);
+                         });
+
+                     }
+                     //css fixes
+                     if(backgroundimage !=''){
+                     $j('.dic_serpto ,.the_serpto ,.trans_serpto ,.enc_serpto').css("background", backgroundimage);
+					 $j('#body').css("background-repeat", "no-repeat");
+					 }
+                     $j('html').css("background-color", "#f5f5f5");                    
+                     $j('#tpnv').css("right", "185px");
+                     $j('.fC').css("background-color", "white");
+                     $j('#cntntxt').css("position", "relative");
+                     
+
+                     /*get the position of the click ,so we can calculate the page as left and right i.e divide the page into two and assign as right and left clicks*/
+
+                     $j('body ,#overlayRightA,#overlayleftA').click(function (e) {
+                         var bodWidth = document.body.clientWidth / 2;
+                         if (e.pageX < bodWidth) {
+                             gutterposition = "gutterleftlink";
+                         } else {
+                             gutterposition = "gutterrightlink";
+                         }
+                     });
+
+                     /*CLICK HANDLER function based on time and position of click and event*/
+
+                     gutterClick = function (e) {
+                         if (gutterclicked == 'true' || !(e.target.nodeName == "BODY" || (e.target.nodeName == "IMG" && (e.target.id == 'rightimg' || e.target.id == 'leftimg')))) {
+                             return;
+                         }
+                         //gutterclicked = 'true';
+                         var gtpos = gutterposition;
+                         var linkid = "";
+                         var link = opt.url;
+                         var pageTracker = _gat._getTrackerByName();
+                         var mispellpgName = '';
+                         if ($j('.Spellhdr').length !== 0) {
+                             mispellpgName = '-spell';
+                         }
+                         if (typeof pageTracker != 'undefined') {
+                             link = pageTracker._getLinkerUrl(opt.url);
+                         }
+
+                         if (window.location.host.indexOf('dictionary') != -1) {
+                             var linkid = track[time % 2][gtpos];
+                             location.href = "http://app.reference.com/click/" + linkid + "?clksite=dict&clkpage=dic" + mispellpgName + "&clkld=0&clken=grail&clkblk=grail&clktemp=grail&clkmod=grail&mp_source=" + linkid + "&clkdest=" + enc(link);
+                         } else if (window.location.host.indexOf('thesaurus') != -1) {
+
+                             var linkid = track[time % 2][gtpos];
+                             location.href = "http://app.thesaurus.com/click/" + linkid + "?clksite=dict&clkpage=the" + mispellpgName + "&clkld=0&clken=grail&clkblk=grail&clktemp=grail&clkmod=grail&mp_source=" + linkid + "&clkdest=" + enc(link);
+                         } else if (window.location.host.indexOf('translate') != -1) {
+                             var linkid = track[time % 2][gtpos];
+                             location.href = "http://app.reference.com/click/" + linkid + "?clksite=dict&clkpage=translate_serp&clkld=0&clken=grail&clkblk=grail&clktemp=grail&clkmod=grail&mp_source=" + linkid + "&clkdest=" + enc(link);
+                         } else {
+                             var linkid = track[time % 2][gtpos];
+                             location.href = "http://app.reference.com/click/" + linkid + "?clksite=ref&clkpage=enc" + mispellpgName + "&clkld=0&clken=grail&clkblk=grail&clktemp=grail&clkmod=grail&mp_source=" + linkid + "&clkdest=" + enc(link);
+                         }
+                         return false;
+                     };
+
+                     /* css fix for the body and condition to avoid the css applying for rest of the content in the page*/
+
+                     $j('div.ra1-pw-addMorePopup').live('mouseenter', function () {
+                         $j('#promo_serpTo').css('cursor', 'default');
+
+                     });
+                     $j('div.ui-dialog').live('mouseenter', function () {
+                         $j('#promo_serpTo').css('cursor', 'default');
+
+                     });
+                     $j("#wrp,#contouter,#fotr,#cwrp,#flyout,#sftr").mouseenter(function () {
+                         $j('#promo_serpTo').css('cursor', 'default');
+                         $j('#sftr').css('cursor', 'default');
+                     }).mouseleave(function (event) {
+                         $j('#promo_serpTo').css('cursor', 'pointer');
+                     });
+
+                     $j('#promo_serpTo').css('cursor', 'pointer');
+                     $j("#promo_serpTo").bind('click', gutterClick);
+
+                 });
+             } catch (e) { 
+			 // do Nothing 
+             }
+         }
+
+     };
+ })(jQuery);
+
+ /*
+  example tempalte call with a json object
+  gutterTemplate({adtype:'marketing',url:'http://dynamo.dictionary.com/writing-dynamo/',linkidleft:'xjiiju',linkidright:'w39c97',linkidleftA:'xjiiju',linkidrightA:'tjl43x',rightGutterImage:'http://sp.dictionary.com/sh/i/dict/adshop/writingdynamo/right_enter your text.gif',leftGutterImage:'http://sp.dictionary.com/sh/i/dict/adshop/writingdynamo/left_writing.gif',rightGutterImageA:'http://sp.dictionary.com/sh/i/dict/adshop/writingdynamo/right_instant.gif',leftGutterImageA:'http://sp.dictionary.com/sh/i/dict/adshop/writingdynamo/left_writing.gif',backgroundImage:'http://sp.dictionary.com/sh/i/dict/adshop/writingdynamo/writing_bg.jpg'})
+ */
+ function gutterTemplate(options) {
+     jQuery().gutter(options);
+ }
+
+ /* gutter placement*/
