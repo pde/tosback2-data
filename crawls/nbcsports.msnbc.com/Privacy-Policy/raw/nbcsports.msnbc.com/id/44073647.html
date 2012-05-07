@@ -1,3 +1,4 @@
+var eventTrackerParams;
 if (typeof $ != 'undefined') { $(function() {
 
  // Begin new story additions
@@ -658,7 +659,36 @@ var pd_me,defer_pd_om=false,cssList=new Array(),curDoc,PSTaxonomy,s_account,s_pr
 function pd_top(dt,dv,id,h,d,s,ss,sss,pn,pc,t,b,l,af,ep,sn,ps,pw,nd,tvc,adp,snm,olt,sc,ssss,sssss){if(pd_me==null)pd_me=new Object;pd_me.dt=dt;pd_me.dv=pd_str(dv);pd_me.id=curDoc=pd_str(id);pd_me.h=pd_str(h);pd_me.d=pd_str(d);pd_me.s=pd_str(s);pd_me.ss=pd_str(ss);pd_me.sss=pd_str(sss);if(ssss!=null)pd_me.ssss=pd_str(ssss);else pd_me.ssss='';if(sssss!=null)pd_me.sssss=pd_str(sssss);else pd_me.sssss='';if(snm!=null)pd_me.site=snm;else pd_me.site='';pd_me.pn=pd_str(pn);pd_me.pc=pd_str(pc);pd_me.t=pd_str(t);pd_me.b=pd_str(b);pd_me.l=pd_str(l);pd_me.af=pd_str(af);pd_me.ep=pd_str(ep);pd_me.sn=pd_str(sn);pd_me.ps=PSTaxonomy=pd_str(ps);pd_me.pw=pd_str(pw);pd_me.nd=pd_str(nd);pd_me.tvc=tvc;pd_me.olt=(olt=='true');pd_me.sc=pd_str(sc);if(null!=adp){pd_me.adp=adp;pd_me.adp.dap=
 function(adpS){var adpO=adp[adpS];if(adpO&&adpO.AdGroup&&(typeof(dap)=="function")){dap("&amp;PG="+adpO.AdGroup+"&amp;AP="+adpO.AdSizeCode,adpO.Width,adpO.Height);return true;}return false;};}var p1r=readCookie('P1');var p2r=readCookie('P2');pd_me.p1=(p1r+'|||||||||||').split('|');pd_me.zip=((p2r.length>8)&&(p2r.substring(0,4)=='pi6='))?p2r.substring(4,9):'';pd_me.nw=location.href.indexOf('/site/newsweek')>0;pd_me.su=(pd_me.nw)?'/site/newsweek':'';pd_me.isF=(pd_me.dt=='Front');pd_me.isS=((dt=='Story')||(dt=='ToolsHandbuilt'));pd_me.isRp=false;if(dv=='html40'){pop_tabBoxes=new Array();pd_me.onlNext=window.onload;window.onload=pd_onl;}if(pd_me.isS)add_history(pd_me.id,pd_me.sn);s_account='';if(location.href.indexOf('from=rss')>-1)SetCookie("FROMRSS","true");var ref=document.referrer;if(ref.indexOf('msn.com')>-1){if(ref.indexOf('msnbc')<0){SetCookie("FROMMSN","true","session");}}if(pd_me.olt){if(document.addEventListener)document.addEventListener('click',linkTrackHandler,false);else if(document.attachEvent)document.attachEvent('onclick',linkTrackHandler);}if(snm=="MSNBC"||(snm=="Today"&&s=="Related Photos"))BrowserDetect.init();pd_me.nsa=readCookie('STID');pd_me.nsl=(pd_me.nsa==''?'N':'Y');}
 function pd_rp(rsId,rsH,rsS,rsSs,rpId,phn,phc,layo){pd_me.rsId=rsId;pd_me.rsH=rsH;pd_me.rsS=rsS;pd_me.rsSs=rsSs;pd_me.rpId=rpId;pd_me.phn=phn;pd_me.phc=phc;pd_me.s="Related Photos";pd_me.l=(layo=='Photo-L')?layo:'Photo-R';pd_me.dt=(layo=='Photo-L')?layo:'Photo-R';pd_me.pw=phn+"|"+phc;pd_me.isRp=true;}
-function pd_om(a,s){s_account=a;if(typeof(s_msn)=="undefined"||s_msn==null){defer_pd_om=true;return;}s_msn.pageName='';s_msn.campaign='';s_msn.zip=pd_me.zip;s_msn.prop3=pd_nou(pd_me.b);s_msn.prop4=pd_nou(pd_me.s);s_prop4_orig=pd_nou(pd_me.s);s_msn.prop5=pd_nou(pd_me.ss);s_prop5_orig=pd_nou(pd_me.ss);s_msn.prop6=pd_nou(pd_me.sss);s_prop6_orig=pd_nou(pd_me.sss);s_msn.prop7=pd_me.l;if(s_account=="CNBCOmnitureAccount"){s_msn.prop8="cnbc";s_msn.prop9="cnbc.com";s_msn.prop10=pd_nou((pd_me.dt=='Cagle')?pd_me.dt:pd_me.s);s_msn.channel="free:CNBC.com";}else{s_msn.prop8=(pd_me.p1[0]!='')?'Y':'N';s_msn.prop9=pd_me.zip;s_msn.channel=pd_nou((pd_me.dt=='Cagle')?pd_me.dt:pd_me.s);}s_msn.prop11=pd_me.p1[6];s_msn.prop12=pd_me.p1[2];s_msn.prop13=pd_me.p1[5];s_msn.prop14="";s_msn.prop15=pd_me.id;s_msn.prop16=pd_me.dt;s_prop16_orig=pd_me.dt;s_msn.prop19=pd_me.af;s_msn.prop26=pd_me.sc;var tOREF=readCookie("OREF");document.cookie="OREF="+tOREF+";path=/;expires="+new Date(1900,1,1).toGMTString();s_msn.prop27=readCookie('lt');s_msn.prop28=pd_bet(location.href,'dst=','&','true');s_msn.prop31=pd_bet(location.href,'ocid=','&','true');s_msn.prop35=pd_me.pw;if(pd_me.site=="MSNBC"){s_msn.prop25=s_msn.getNewRepeat();}if(pd_me.site=="NBCSPORTS"){s_msn.prop13=readCookie('STID');s_msn.prop8=(s_msn.prop13!='')?'Y':'N';if(pd_me.sponsor){s_msn.prop33=pd_me.sponsor;}}var date=new Date();date.setTime(date.getTime()-120000);SetCookie('lt','',date.toGMTString());var nm=readCookie("NM");if(nm.length==0){s_msn.prop39=pd_me.nd=='1'?"ON":"OFF";}else{switch(nm){case'1':s_msn.prop39='ON';break;case'0':s_msn.prop39='OFF';break;case'1|0':s_msn.prop39='ON|OFF';break;case'0|1':s_msn.prop39='OFF|ON';break;default:break;}}var msnRefer=readCookie("FROMMSN");if(msnRefer=="true"){s_msn.eVar39="msn referrer";}var st='';var ref=location.href;if(ref.indexOf('11881780')>0){if(ref.indexOf('&st=1')>0){st='msnbc.com|';}else if(ref.indexOf('&st=2')>0){st='Web|';}else{st='External msnbc.com|';}if(ref.indexOf('/id/11881780')>0){st+='Editor|'+pd_bet(ref,'q=','&');}else if(ref.indexOf('&sm=user')>0){st+='User|'+pd_bet(ref,'&q=','&');}else{st+='External User|'+pd_bet(ref,'&q=','&');}if(st!=''){s_msn.prop17=pd_nou(st);}}var pt=pd_me.dt;if(pd_me.isRp)pt=(pd_me.l=='Photo-L')?pd_me.l:'Photo-R';switch(pt){case'Error':s_msn.pageType="errorPage";break;case'Photo-R':case'Photo-L':s_msn.pageName=pt+'|'+pd_nou(pd_me.rsS.substring(0,10))+(pd_me.site=="NBCSPORTS"?'|'+pd_nou(pd_me.rsSs.substring(0,10)):'')+(pd_me.rsS=="TODAY"&&pd_me.rsSs!=''&&pd_me.rsSs.toUpperCase()!="TODAY"?'|'+pd_nou(pd_me.rsSs.substring(0,10)):'')+'|'+pd_me.rsId+'|'+pd_nou(pd_me.rsH.substring(0,50));s_msn.prop16=pt;s_msn.prop35=pd_me.phn+'|'+pd_me.phc;break;case'Recipe':s_msn.pageName=pd_nou(pd_me.s.substring(0,10))+(pd_me.site=="NBCSPORTS"?'|'+pd_nou(pd_me.ss.substring(0,10)):'')+(pd_me.s=="TODAY"&&pd_me.ss!=''&&pd_me.ss.toUpperCase()!="TODAY"?'|'+pd_nou(pd_me.ss.substring(0,10)):'')+'|'+pd_me.id+'|'+'Recipe '+pd_nou(pd_me.h.substring(0,50));;break;case'Slideshow':if(parseInt(pd_me.pn)>0)s_msn.prop35='p'+pd_me.pn;else{var beginSlide=parseInt(GetUrlParameter('beginSlide'));if(isNaN(beginSlide)||beginSlide<=0)beginSlide=1;s_msn.prop35='#'+((pd_bet(location.href,'#','','true').length>0)?pd_une(pd_bet(location.href,'#','','true')):('slide='+beginSlide));}s_msn.pageName=setPageName();break;case'Fun':s_msn.channel='Fun';var sPage='';var FunP=new RegExp("sFile=(\\D*)(\\d*)");var nset={"ftr":"Trivia","fcx":"Crossword","uj":"Jigsaw","sudoc":"Sudoku","co":"Checkout","nt":"Nile Tiles","ps":"Poker Solitaire"};var result=FunP.exec(location.href);if(result!=null){s_msn.prop15=result[1]+result[2];if(nset[result[1]]!=null){s_msn.prop5=nset[result[1]];sPage=((s_msn.prop5!='Crossword')?(s_msn.prop5):'DailyCrossword');}else{s_msn.prop5='Comics';sPage='Entertainment '+s_msn.prop15;}}else{s_msn.prop15='';sPage='Comics,Sudoku,Puzzle front';}s_msn.prop35=s_msn.prop15+'|'+sPage;s_msn.pageName=pd_me.dt+'|'+s_msn.prop4+'|'+s_msn.prop5;break;case'SportsTools':s_msn.channel='SportsTools';s_msn.prop4='Sports';s_msn.prop5='Scores/Sched';var url=location.href;var SptRet=/([^/]*)\.(?:asp\?|html|asp)(?:frames=\w*)?/i.exec(url);if(SptRet!=null){var sport=/[&|?]sport=(\w*)/i.exec(url);var cat=/&cat=(\w*)/i.exec(url);var team=/&team=(\w*)/i.exec(url);var player=/&player=(\w*)/i.exec(url);var rank=/&rank=(\w*)/i.exec(url);var format=/&format=(\w*)/i.exec(url);s_msn.prop35=SptRet[1]+'|'+((sport==null)?'':sport[1])+'|'+((cat==null)?'':cat[1])+'|'+((team==null)?'':team[1])+'|'+((player==null)?'':player[1])+'|'+((rank==null)?'':rank[1])+((format==null)?'':format[1]);}s_msn.pageName=pd_me.dt+'|'+s_msn.prop4+'|'+s_msn.prop5;break;default:var pn='';if(parseInt(pd_me.pn)>0)pn='p'+pd_me.pn;else if(pd_me.dt=='Cagle')pn=pd_me.pn;s_msn.pageName=setPageName();s_msn.prop35=pn;break;}s_msn.pageName=s_msn.pageName.toLowerCase();var reg=/\|((.*_____.*)|(_+))\|/;if(reg.test(s_msn.pageName))s_msn.pageName=pt+"|Other";if(pd_me.site!="CNBC"){s_msn.pageName=formatPageName(s_msn.pageName);s_msn.eVar1=s_msn.pageName;s_msn.eVar2=s_msn.prop4;s_msn.eVar10=s_msn.prop5;s_msn.eVar8=s_msn.prop6;}}
+function pd_om(a,s){s_account=a;if(typeof(s_msn)=="undefined"||s_msn==null){defer_pd_om=true;return;}s_msn.pageName='';s_msn.campaign='';s_msn.zip=pd_me.zip;s_msn.prop3=pd_nou(pd_me.b);s_msn.prop4=pd_nou(pd_me.s);s_prop4_orig=pd_nou(pd_me.s);s_msn.prop5=pd_nou(pd_me.ss);s_prop5_orig=pd_nou(pd_me.ss);s_msn.prop6=pd_nou(pd_me.sss);s_prop6_orig=pd_nou(pd_me.sss);s_msn.prop7=pd_me.l;if(s_account=="CNBCOmnitureAccount"){s_msn.prop8="cnbc";s_msn.prop9="cnbc.com";s_msn.prop10=pd_nou((pd_me.dt=='Cagle')?pd_me.dt:pd_me.s);s_msn.channel="free:CNBC.com";}else{s_msn.prop8=(pd_me.p1[0]!='')?'Y':'N';s_msn.prop9=pd_me.zip;s_msn.channel=pd_nou((pd_me.dt=='Cagle')?pd_me.dt:pd_me.s);}s_msn.prop11=pd_me.p1[6];s_msn.prop12=pd_me.p1[2];s_msn.prop13=pd_me.p1[5];s_msn.prop14="";s_msn.prop15=pd_me.id;s_msn.prop16=pd_me.dt;s_prop16_orig=pd_me.dt;s_msn.prop19=pd_me.af;s_msn.prop26=pd_me.sc;var tOREF=readCookie("OREF");document.cookie="OREF="+tOREF+";path=/;expires="+new Date(1900,1,1).toGMTString();s_msn.prop27=readCookie('lt');s_msn.prop28=pd_bet(location.href,'dst=','&','true');s_msn.prop31=pd_bet(location.href,'ocid=','&','true');s_msn.prop35=pd_me.pw;if(pd_me.site=="MSNBC"){s_msn.prop25=s_msn.getNewRepeat();}if(pd_me.site=="NBCSPORTS"){s_msn.prop13=readCookie('STID');s_msn.prop8=(s_msn.prop13!='')?'Y':'N';if(pd_me.sponsor){s_msn.prop33=pd_me.sponsor;}}var date=new Date();date.setTime(date.getTime()-120000);SetCookie('lt','',date.toGMTString());var nm=readCookie("NM");if(nm.length==0){s_msn.prop39=pd_me.nd=='1'?"ON":"OFF";}else{switch(nm){case'1':s_msn.prop39='ON';break;case'0':s_msn.prop39='OFF';break;case'1|0':s_msn.prop39='ON|OFF';break;case'0|1':s_msn.prop39='OFF|ON';break;default:break;}}var msnRefer=readCookie("FROMMSN");if(msnRefer=="true"){s_msn.eVar39="msn referrer";}var st='';var ref=location.href;if(ref.indexOf('11881780')>0){if(ref.indexOf('&st=1')>0){st='msnbc.com|';}else if(ref.indexOf('&st=2')>0){st='Web|';}else{st='External msnbc.com|';}if(ref.indexOf('/id/11881780')>0){st+='Editor|'+pd_bet(ref,'q=','&');}else if(ref.indexOf('&sm=user')>0){st+='User|'+pd_bet(ref,'&q=','&');}else{st+='External User|'+pd_bet(ref,'&q=','&');}if(st!=''){s_msn.prop17=pd_nou(st);}}var pt=pd_me.dt;if(pd_me.isRp)pt=(pd_me.l=='Photo-L')?pd_me.l:'Photo-R';switch(pt){case'Error':s_msn.pageType="errorPage";break;case'Photo-R':case'Photo-L':s_msn.pageName=pt+'|'+pd_nou(pd_me.rsS.substring(0,10))+(pd_me.site=="NBCSPORTS"?'|'+pd_nou(pd_me.rsSs.substring(0,10)):'')+(pd_me.rsS=="TODAY"&&pd_me.rsSs!=''&&pd_me.rsSs.toUpperCase()!="TODAY"?'|'+pd_nou(pd_me.rsSs.substring(0,10)):'')+'|'+pd_me.rsId+'|'+pd_nou(pd_me.rsH.substring(0,50));s_msn.prop16=pt;s_msn.prop35=pd_me.phn+'|'+pd_me.phc;break;case'Recipe':s_msn.pageName=pd_nou(pd_me.s.substring(0,10))+(pd_me.site=="NBCSPORTS"?'|'+pd_nou(pd_me.ss.substring(0,10)):'')+(pd_me.s=="TODAY"&&pd_me.ss!=''&&pd_me.ss.toUpperCase()!="TODAY"?'|'+pd_nou(pd_me.ss.substring(0,10)):'')+'|'+pd_me.id+'|'+'Recipe '+pd_nou(pd_me.h.substring(0,50));;break;case'Slideshow':if(parseInt(pd_me.pn)>0)s_msn.prop35='p'+pd_me.pn;else{var beginSlide=parseInt(GetUrlParameter('beginSlide'));if(isNaN(beginSlide)||beginSlide<=0)beginSlide=1;s_msn.prop35='#'+((pd_bet(location.href,'#','','true').length>0)?pd_une(pd_bet(location.href,'#','','true')):('slide='+beginSlide));}s_msn.pageName=setPageName();break;case'Fun':s_msn.channel='Fun';var sPage='';var FunP=new RegExp("sFile=(\\D*)(\\d*)");var nset={"ftr":"Trivia","fcx":"Crossword","uj":"Jigsaw","sudoc":"Sudoku","co":"Checkout","nt":"Nile Tiles","ps":"Poker Solitaire"};var result=FunP.exec(location.href);if(result!=null){s_msn.prop15=result[1]+result[2];if(nset[result[1]]!=null){s_msn.prop5=nset[result[1]];sPage=((s_msn.prop5!='Crossword')?(s_msn.prop5):'DailyCrossword');}else{s_msn.prop5='Comics';sPage='Entertainment '+s_msn.prop15;}}else{s_msn.prop15='';sPage='Comics,Sudoku,Puzzle front';}s_msn.prop35=s_msn.prop15+'|'+sPage;s_msn.pageName=pd_me.dt+'|'+s_msn.prop4+'|'+s_msn.prop5;break;case'SportsTools':s_msn.channel='SportsTools';s_msn.prop4='Sports';s_msn.prop5='Scores/Sched';var url=location.href;var SptRet=/([^/]*)\.(?:asp\?|html|asp)(?:frames=\w*)?/i.exec(url);if(SptRet!=null){var sport=/[&|?]sport=(\w*)/i.exec(url);var cat=/&cat=(\w*)/i.exec(url);var team=/&team=(\w*)/i.exec(url);var player=/&player=(\w*)/i.exec(url);var rank=/&rank=(\w*)/i.exec(url);var format=/&format=(\w*)/i.exec(url);s_msn.prop35=SptRet[1]+'|'+((sport==null)?'':sport[1])+'|'+((cat==null)?'':cat[1])+'|'+((team==null)?'':team[1])+'|'+((player==null)?'':player[1])+'|'+((rank==null)?'':rank[1])+((format==null)?'':format[1]);}s_msn.pageName=pd_me.dt+'|'+s_msn.prop4+'|'+s_msn.prop5;break;default:var pn='';if(parseInt(pd_me.pn)>0)pn='p'+pd_me.pn;else if(pd_me.dt=='Cagle')pn=pd_me.pn;s_msn.pageName=setPageName();s_msn.prop35=pn;break;}s_msn.pageName=s_msn.pageName.toLowerCase();var reg=/\|((.*_____.*)|(_+))\|/;if(reg.test(s_msn.pageName))s_msn.pageName=pt+"|Other";if(pd_me.site!="CNBC"){s_msn.pageName=formatPageName(s_msn.pageName);s_msn.eVar1=s_msn.pageName;s_msn.eVar2=s_msn.prop4;s_msn.eVar10=s_msn.prop5;s_msn.eVar8=s_msn.prop6;}
+if(pd_me.site.toLowerCase() == "nbcsports") {
+    if(s_om && s_om!=null) {
+        eventTrackerParams = {
+            siteName: pd_me.site.toLowerCase(),
+            headline: pd_nou(pd_me.h),
+            section: pd_nou(pd_me.s),
+            subSection: pd_nou(pd_me.ss),
+            subSubSection: pd_nou(pd_me.sss),
+            byline: pd_nou(pd_me.b),
+            source: pd_me.sc,
+            typeName: pd_me.dt,
+            zipCode: pd_me.zip,
+            sitePageId: pd_me.id,
+            eventType: "pageload",
+            eventName: "load",
+            featureName: "nbcsportspage",
+            searchTerm: pd_nou(st),
+            deviceType: pd_me.dv,
+            elem: "document"
+        };
+        if(pd_me.l && pd_me.l == "search") {
+            eventTrackerParams.typeName = "search";
+        }
+        if(pd_me.dt && pd_me.dt.toLowerCase() == "slideshow") {
+            eventTrackerParams.featureName = "nbcsports_slideshow";
+        }
+     }
+ }
+}
 function formatPageName(pageName){var reg=/\s/ig;var reg1=/[^\w|]/ig;var reg2=/_+/ig;pageName=pageName.replace(reg,"_").replace(reg1,"");return pageName.replace(reg2,"_");}
 function setPageName(){var pageName=((pd_me.dt=='ToolsHandbuilt')?'HandTool':pd_me.dt)+'|'+pd_nou(pd_me.s.substring(0,10))+(pd_me.site=="NBCSPORTS"?'|'+pd_nou(pd_me.ss.substring(0,10)):'')+(pd_me.s=="TODAY"&&pd_me.ss!=''&&pd_me.ss.toUpperCase()!="TODAY"?'|'+pd_nou(pd_me.ss.substring(0,10)):'')+'|'+pd_me.id+((pd_me.id=='8903108')?('|'+pd_une(pd_bet(location.href,'qt=','&','true')).replace(/\|/g,' ')):'')+'|'+pd_nou(pd_me.h.substring(0,50));return pageName;}
 function pd_onl(){if(pd_me.isS)moveByline();pop_ShowTabs();boxMove("bba","bb1","bb2");boxMove("bbb","bb3","bb4");if(nm_nIE)nm_done();if(pd_me.onlNext!=null)pd_me.onlNext();HideAdFramesAndChangeTitles();renderTimestampIcon();}
@@ -1887,48 +1917,48 @@ function checkRSNGrid(id, dma)
   602 : 'chicago', // Chicago
   602 : 'chicago', // Chicago
   610 : 'chicago', // Rockford
-  682 : 'chicago', // Davenport â€“ R. Island â€“ Moline
-  675 : 'chicago', // Peoria â€“ Bloomington
-  648 : 'chicago', // Champaign & Sprngfld â€“ Decatur
+  682 : 'chicago', // Davenport – R. Island – Moline
+  675 : 'chicago', // Peoria – Bloomington
+  648 : 'chicago', // Champaign & Sprngfld – Decatur
   527 : 'chicago', // Indianapolis
-  588 : 'chicago', // South Bend â€“ Elkhart
+  588 : 'chicago', // South Bend – Elkhart
   669 : 'chicago', // Madison
   617 : 'chicago', // Milwaukee
-  679 : 'chicago', // Des Moines â€“ Ames
+  679 : 'chicago', // Des Moines – Ames
   637 : 'chicago', // Cedar Rapids
 
   // Bay Area DMAs
-  807 : 'bayarea', // San Francisco â€“ Oak â€“ San Jose
+  807 : 'bayarea', // San Francisco – Oak – San Jose
   801 : 'bayarea', // Eugene
   802 : 'bayarea', // Eureka
-  866 : 'bayarea', // Fresno â€“ Visalia
-  813 : 'bayarea', // Medford â€“ Klamath Falls 
+  866 : 'bayarea', // Fresno – Visalia
+  813 : 'bayarea', // Medford – Klamath Falls 
 
   // Philadelphia DMAs
   504 : 'philadelphia', // Philadelphia
-  566 : 'philadelphia', // Harrisburg â€“ Lncstr â€“ Leb â€“ York
+  566 : 'philadelphia', // Harrisburg – Lncstr – Leb – York
   698 : 'philadelphia', // Montgomery (Selma)
-  574 : 'philadelphia', // Johnstown â€“ Altoona â€“ St Colge
+  574 : 'philadelphia', // Johnstown – Altoona – St Colge
   576 : 'philadelphia', // Salisbury
-  577 : 'philadelphia', // Wilkes Barre â€“ Scranton â€“ Hztn
+  577 : 'philadelphia', // Wilkes Barre – Scranton – Hztn
 
   // Washington D.C. DMAs
   511 : 'washington', // Washington, DC (Hagrstwn)
   512 : 'washington', // Baltimore
   584 : 'washington', // Charlottesville
-  556 : 'washington', // Richmond â€“ Petersburg
-  544 : 'washington', // Norfolk â€“ Portsmth â€“ Newpt Nws
-  573 : 'washington', // Roanoke â€“ Lynchburg
-  518 : 'washington', // Greensboro â€“ H. Point â€“ W. Salem
-  559 : 'washington', // Bluefield â€“ Beckley â€“ Oak Hill
+  556 : 'washington', // Richmond – Petersburg
+  544 : 'washington', // Norfolk – Portsmth – Newpt Nws
+  573 : 'washington', // Roanoke – Lynchburg
+  518 : 'washington', // Greensboro – H. Point – W. Salem
+  559 : 'washington', // Bluefield – Beckley – Oak Hill
 
   // New England DMAs
   506 : 'newengland', // Boston (Manchester)
   533 : 'newengland', // Hartford & New Haven
-  521 : 'newengland', // Providence â€“ New Bedford
-  532 : 'newengland', // Albany â€“ Schenectady â€“ Troy
-  523 : 'newengland', // Burlington â€“ Plattsburgh
-  500 : 'newengland', // Portland â€“ Auburn
+  521 : 'newengland', // Providence – New Bedford
+  532 : 'newengland', // Albany – Schenectady – Troy
+  523 : 'newengland', // Burlington – Plattsburgh
+  500 : 'newengland', // Portland – Auburn
   537 : 'newengland', // Bangor
   552 : 'newengland' // Presque Isle
  }

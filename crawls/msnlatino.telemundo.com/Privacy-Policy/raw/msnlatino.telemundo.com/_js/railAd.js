@@ -22,7 +22,7 @@ if( ( typeof(railAdBgColor)!='undefined') && ( railAdBgColor ) )
 if( ( typeof(railAdBgRepeat)!='undefined' ) && ( railAdBgRepeat ) )
 {
 	// site specific custom background repeat code.
-	jQuery('body').css({'background-repeat':railAdBgRepeat});
+	jQuery('body').css({'background-repeat':railAdBgRepeat, 'background-position': '50% 0'});
 //	console.log(railAdBgRepeat);
 }
 

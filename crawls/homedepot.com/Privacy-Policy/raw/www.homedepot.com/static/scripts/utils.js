@@ -1789,31 +1789,44 @@
 				  Check if the user selected any category.
 				*/ 	 
 				 var category_name = $("#HeaderArea").val();
+				 var selectedCategory = category_name;
+				 if(selectedCategory.indexOf("&")>=0)
+				 {
+					 selectedCategory = selectedCategory.replace(/ /g,'');
+					 var newCategoryname = selectedCategory.split("&");
+					 selectedCategory = newCategoryname[0]+'+'+encodeURIComponent("&")+'+'+newCategoryname[1];
+				 }
+				 else
+				 {
+					 selectedCategory = selectedCategory.replace(/ /g,'+');
+				 }
 				 if(category_name!="SEARCH ALL"){	
 				    var selectedVal = $("#encodedNVal").val(); 
 					var category_value = "5yc1vZ"+selectedVal;	
-					var omnivalue = encodeURIComponent(encodeURIComponent(category_name)); //Double encoding							
+					var omnivalue = encodeURIComponent(encodeURIComponent(encodeURIComponent(category_name))); //Triple encoding							
 					if(category_name.indexOf("&")>=0){ 
 					  category_name = category_name.replace(/ /g,'');
-					  category_name = category_name.replace(/&/g,'-');						  
+					  category_name = category_name.replace(/&/g,'-');
 					}else{
 					  category_name = category_name.replace(/ /g,'-');
 					}	
-					$("#omni").val(omnivalue);//Setting Omni Value for capturing omnievents
- 					var encodedKeyWord = encodeURIComponent(encodeURIComponent(searchTerm.value));//Double Encoding if contains & symbol
+					var encodedKeyWord = encodeURIComponent(encodeURIComponent(searchTerm.value));//Double Encoding if contains & symbol
 			        var host_name = searchUrl.substring(0,searchUrl.indexOf("/webapp"));
-			        var formActionURL = host_name +"/"+category_name+"/h_d1/N-"+category_value+"/Ntt-"+encodedKeyWord+"/searchNav-true/h_d2/Navigation";
+			        var urlParams = 'keyword='+ encodeURIComponent(searchTerm.value)+'&Ns=None&Ntpr=1&Ntpc=1&selectedCatgry='+selectedCategory+'&omni='+omnivalue
+			        				+'&langId=-1&storeId=10051&catalogId=10053';
+			        var formActionURL = host_name +"/"+category_name+"/h_d1/N-"+category_value+"/Ntt-"+encodedKeyWord+"/searchNav-true/h_d2/Navigation?"+urlParams;
 				}else{
-				     var formActionURL = searchUrl;
-				  	 $("#omni").remove();
+					var urlParams = 'keyword='+ encodeURIComponent(searchTerm.value)+'&Ns=None&Ntpr=1&Ntpc=1&selectedCatgry='+ selectedCategory;
+				    var formActionURL = searchUrl+urlParams;
 				}
-				$('#searchBoxForm').attr("action",formActionURL);
-				return true;
+				document.location= formActionURL;
+				 return true;
 			}else{
 				searchTerm.value = "Enter Keyword or SKU";
 				return false;
 			}
 	}
+
 function makeHeader(HeaderTitle,EncodedValue,index) {
 		document.getElementById('HeaderArea').value = HeaderTitle;
 		document.getElementById('encodedNVal').value = EncodedValue;
@@ -2558,4 +2571,15 @@ function disableEnterKey(e)
 /* Dynamically includes a file to the page.  Moved from businessjs.json */
 function includeJS(file){
 	document.write('<scr'+'ipt src='+'"'+file+'" type="text/javascript"'+'></sc'+'ript>'+"\n");
+}
+
+
+/* 14651 */
+/* When calling displayMessageDiv(divId) from the QuickViewOverlay, we must first close the fancybox and run all the code on the parent. */
+function closeOverlayDisplayMessageDiv(divId) {
+	if ($.fancybox) {
+		$.fancybox.close();
+	}
+	$(window).scrollTop(0);
+	displayMessageDiv(divId);
 }

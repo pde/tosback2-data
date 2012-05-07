@@ -6,7 +6,7 @@ $(document).ready(function(){
 	$('meta[name=viewport]').removeAttr('http-equiv');
 
 	// Set all hidden HTML popups
-	$('#header').html('<div id="masthead"><a href="http://att.my.yahoo.com" target="_top" id="attLogoHead" title="att.net Home">AT&amp;T</a><div id="signIn"><ul><li><a href="http://att.my.yahoo.com" target="_top">att.net</a></li><li class="last"><a href="http://www.att.com/esupport/main.jsp?App_ID=PBY" target="_top">AT&amp;T Support</a></li></ul></div></div>');
+	$('#header').html('<div id="masthead"><a href="http://www.att.net" target="_top" id="attLogoHead" title="att.net Home">AT&amp;T</a><div id="signIn"><ul><li><a href="http://www.att.net" target="_top">att.net</a></li><li class="last"><a href="http://www.att.com/esupport/main.jsp?App_ID=PBY" target="_top">AT&amp;T Support</a></li></ul></div></div>');
 
 	//$('#footerFrame').remove();
 	//$('#pageWrap').after('<div id="footer" />');

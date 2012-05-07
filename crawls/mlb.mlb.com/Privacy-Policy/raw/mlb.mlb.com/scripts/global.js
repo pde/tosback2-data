@@ -107,7 +107,8 @@ function openTIXXWindow(url, loc, tracking, use_defaults) {
 	 * if prepending globals, we do it here
 	 */
 	if(use_defaults) {
-		var prepender = omPageName.replace(/(:\s|[:\s\-'])/g, function($0) {
+    var pageName = (omPageName.split(": ").length < 3) ? omPageName.replace(/(: .+)$/, "$1$1") : omPageName;
+		var prepender = pageName.replace(/(:\s|[:\s\-'])/g, function($0) {
 		  var out;
 		  switch($0) {
 		    case ":": out="}"; break;
@@ -548,8 +549,8 @@ getTeamDomain = function(clubcode) {
 if (window.jQuery) {
 $(function() {
  var container = $("#metaWrap"),
-     isIframedSecured = (bam.url.Location(self.location).isSecure() && top !== self) ? true : false;
- 
+     //isIframedSecured = (bam.url.Location(self.location).isSecure() && top !== self) ? true : false;
+ 	isIframedSecured = (bam.url.Location(window.location).isSecure() && top !== self) ? true : false;
  
  if (isIframedSecured) {
    if ($("form input[name='uri']").val() === '/account/login_register.jsp' || $("form input[name='uri']").val() === '/account/forgot_password.jsp') {

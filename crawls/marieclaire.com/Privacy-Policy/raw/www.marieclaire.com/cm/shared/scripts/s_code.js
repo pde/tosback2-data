@@ -1,14 +1,12 @@
-function createCookie(name, value, days){if (days){var date = new Date();date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));var expires = "; expires=" + date.toGMTString();}else var expires = "";document.cookie = name + "=" + value + expires + "; path=/";}
+function createCookie(d,c,a){if("undefined"!==typeof c){"number"==typeof a&&(a={expires:0});a=a||{};null===c&&(c="",a.expires=-1);var b="";if(a.expires&&("number"===typeof a.expires||a.expires.toUTCString))"number"===typeof a.expires?(b=new Date,b.setTime(b.getTime()+864E5*a.expires)):b=a.expires,b="; expires="+b.toUTCString();var e=a.path?"; path="+a.path:"",f=a.domain?"; domain="+a.domain:"",a=a.secure?"; secure":"";document.cookie=[d,"=",encodeURIComponent(c),b,e,f,a].join("")}};
 function readCookie(name) {var nameEQ = name + "=";var ca = document.cookie.split(';');for(var i=0;i < ca.length;i++) {var c = ca[i];while (c.charAt(0)==' ') c = c.substring(1,c.length);if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);}return null;}
-function eraseCookie(name) {createCookie(name,"",-1);}
+function eraseCookie(name,options){ createCookie(name,null,options)}
+
 
 /* SiteCatalyst code version: H.24.3. Last Update 3/26/12 */
 /* s_account set on page */
 var s=s_gi(s_account)
 
-/* HDM Mobile referrer detection */
-var srftst=function(){var e=function(f,d,a){if("undefined"!==typeof d){a=a||{};null===d&&(d="",a.expires=-1);var b="";if(a.expires&&("number"===typeof a.expires||a.expires.toUTCString))"number"===typeof a.expires?(b=new Date,b.setTime(b.getTime()+864E5*a.expires)):b=a.expires,b="; expires="+b.toUTCString();var c=a.path?"; path="+a.path:"",e=a.domain?"; domain="+a.domain:"",a=a.secure?"; secure":"";document.cookie=[f,"=",encodeURIComponent(d),b,c,e,a].join("")}},c=function(c){var c=c+"=",d=document.cookie.split(";"),
-a;for(a=0;a<d.length;a++){for(var b=d[a];" "===b.charAt(0);)b=b.substring(1,b.length);if(0===b.indexOf(c))return b.substring(c.length,b.length)}return null}("mobile_redir_referrer");if(null==c)return!1;if(""!=c){console.log("referrer",c);console.dir(c);var g=document.getElementById("hdmglobalscript").src.split("#")[1];e("mobile_redir_referrer",null,{expires:-1,path:"/",domain:g});return unescape(c)}return!1}();srftst&&(s.referrer=srftst);
 
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
@@ -119,6 +117,44 @@ s.tl(this,'o',eventid);
 /* Plugin Config */
 s.usePlugins=true
 function s_doPlugins(s) {
+
+
+
+
+	/* HDM Mobile referrer detection */
+	function srftst(){
+		var mobredir = readCookie("mobile_redir_referrer");
+		if (mobredir !== null){
+			function getParameterByName(name){
+				name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+				var regexS = "[\\?&]" + name + "=([^&#]*)";
+				var regex = new RegExp(regexS);
+				var results = regex.exec(document.location.search);
+				if(results == null)
+					return "";
+				else
+					return decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
+			if (document.getElementById("mobdskdtct")){
+				var domain = document.getElementById("mobdskdtct").getAttribute("domain")
+				eraseCookie("mobile_redir_referrer", {
+					expires: -1,
+					path: "/",
+					domain: domain
+				});
+				return unescape(mobredir);
+			} else {
+				return document.referrer+"#mobdskdtctnotfound";
+			}
+		} else {
+			return document.referrer;
+		}
+		
+	}
+	if (location.href != s.referrer){
+		s.referrer = srftst();
+	}
+	
 
 /* TNT */
 s.tnt=s.trackTNT();

@@ -132,6 +132,7 @@ Configuration.prototype.initialize = function(){
 						ct = "Host/nominees/winners";
 				else if(KIDS.get("uri").indexOf("/specials/valentines")>-1)ct = "Extras";
 				else if(KIDS.get("urlAlias").indexOf("ninja-turtles")>-1)ct = "About-info";
+				else if(KIDS.get("uri").indexOf("/games/worlds/")>-1)ct = "Game";
 				else ct = "Hub page";
 			}
 			else if(KIDS.get("urlAlias")== "celebrity")ct = "Hub page";
@@ -165,6 +166,16 @@ Configuration.prototype.initialize = function(){
 			
 			this.setting.eVar16 = this.setting.pageName;
 			this.setting.eVar13 = KIDS.reporting.qs.navid;
+			this.setting.prop2 = KIDS.reporting.qs.navid;
+			
+			if(this.setting.prop2.length>0){
+				if(this.setting.events.length>0)this.setting.events += ",";
+				this.setting.events += "event13";
+			}
+			if(this.setting.prop4.length>0){
+				if(this.setting.events.length>0)this.setting.events += ",";
+				this.setting.events += "event14";
+			}
 		}
 		
 		if(location.pathname.indexOf("/club")!=-1){
@@ -194,10 +205,8 @@ KIDS.reporting.init = function(){
 			KIDS.reporting.config.setting.prop8=status;
 		});			
 	}
-	if(KIDS.get("isDetailPage")=="true"){
-		if(KIDS.get("type")=="video"||KIDS.get("type")=="game"){
-			KIDS.reporting.abTest = {"abtestId":"CSAbTestID","abtestGroups":[{name:"Group ChoiceStream",weight:99},{name:"Control Group",weight:1}],"currentGroup":""};
-		}
+	if(typeof NICK.choicestream!="undefined"){
+		KIDS.reporting.abTest = {"abtestId":"CSAbTestID","abtestGroups":[{name:"Group ChoiceStream",weight:99},{name:"Control Group",weight:1}],"currentGroup":""};
 	}
 	mtvn.btg.config.ReportSettings.Omniture.percentPageViewedVarMap = {
 		previousPage: "prop54",

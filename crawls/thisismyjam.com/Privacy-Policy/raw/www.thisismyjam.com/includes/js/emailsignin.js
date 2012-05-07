@@ -1,8 +1,10 @@
 function setBoxes(replace){
 
     if(typeof(replace) !="undefined"){
-        $('#sign-in-box').html($iData);
-        $('#sign-up-box').html($uData);
+        if(typeof $iData != 'undefined' && typeof $uData != 'undefined') {
+            $('#sign-in-box').html($iData);
+            $('#sign-up-box').html($uData);
+        }
     } else {
         $uData = $('#sign-up-box').html();
         $iData = $('#sign-in-box').html();

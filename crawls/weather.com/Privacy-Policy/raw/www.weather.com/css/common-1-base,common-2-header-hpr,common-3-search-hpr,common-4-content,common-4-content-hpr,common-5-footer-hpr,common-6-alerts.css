@@ -19,6 +19,7 @@
 
 #wx-comment-label{margin: 10px 0;font-size: 12px;font-weight: bold;}
 .twc-hide{display:none !important}
+.wx-hide{display:none !important}
 .twc-show{display:block !important}
 .twc-placeholder{display:block}
 .yui-hidden{left:-999999px;overflow:hidden;position:absolute}
@@ -222,6 +223,23 @@ body, body.has-js,body.no-js{background:url(../../s.imwx.com/v.20111012.090959/i
 #wx-header-title{left:0px;margin:0;position:absolute;top:15px;width:84px;height:84px;overflow:hidden}
 #wx-header-title a{background:transparent url(../../s.imwx.com/v.20111012.090711/img/layout/TWC_logo_84x84.gif) left top no-repeat;display:block;height:84px;overflow:hidden;width:84px;padding-left:98px}
 
+/* ==== CUSTOM TWC LOGO ============================== */   
+#wx-twc-logo-container { width: 84px; height: 84px; margin:0px;position: absolute;top:15px;left:0;} 
+#wx-twc-logo {margin:0px;padding:0px;position:absolute;width:84px;height:84px;outline:0;overflow:hidden;cursor:pointer; left: 0;}
+#wx-twc-logo-img {border:0px;width:84px;height:84px;display:block;}
+#wx-personal-logo {padding:0px;margin:0px;border:none;width:84px;height:84px;background-color:#fff;text-decoration:none;cursor:pointer;display:none;text-align:left;}
+#wx-personal-logo-text {display:none;padding:0px;color:#039;font-weight:bold;width:74px;max-height:74px;position:absolute;text-wrap:normal;text-overflow:ellipsis;overflow:hidden;margin:0px;left:8px;bottom:10px;font-size:16px;line-height:18px;}
+#wx-edit-logo-button {	display:none;width:18px;height:17px;text-align:center;text-decoration:none;overflow:hidden;position:absolute;bottom:-6px;right:-6px;z-index:5;background: rgb(0, 51, 152); background: rgba(0, 51, 152, 0.8);}
+#wx-edit-logo-button .wx-logo-pencil{display:block;background:transparent url(../../s.imwx.com/v.20120503.124117/img/common/icons/wx-icons.png) -13px -735px no-repeat;width:18px;height:17px}
+
+#wx-personal-logo.wx-custom {background-color:#039;}
+#wx-personal-logo.wx-custom #wx-personal-logo-text {color:#fff;left:6px;bottom:13px;font-size:13px;line-height:14px;}  
+#wx-personal-logo.wx-custom #wx-personal-logo-text span {display:block;font-size:18px;padding-top:2px;}  
+
+#wx-edit-logo-button.wx-custom { background-color: #fff; background-color: rgba(255,255,255,0.8); }  
+#wx-edit-logo-button.wx-custom .wx-logo-pencil  { background: url(../../s.imwx.com/v.20120421.092023/img/common/icons/wx-triggered-day_a.png) no-repeat -5px -572px; }
+                                                                           
+
 #wx-saved-locations {position:absolute;top:15px;left:94px;z-index:1001;}
 #wx-saved-locations ul {padding:0px; margin:0px; float:left;}
 #wx-saved-locations ul li{display:block;float:left;height:90px;list-style-type:none;margin:0;padding:0;position:relative;width:94px;background:none;}
@@ -236,11 +254,27 @@ body, body.has-js,body.no-js{background:url(../../s.imwx.com/v.20111012.090959/i
 #wx-saved-locations ul li .twc-weather-location-temperature {text-shadow:1px 1px 2px rgba(0, 0, 0, .2); font-size:20px; position:absolute; top:48px; left:40px; width:42px; text-align:center;}
 #wx-saved-locations ul li .twc-weather-location-temperature sup {vertical-align:top; font-size:10px; text-transform:uppercase;}
 #wx-saved-locations ul.twc-weather-locations li a.twc-location-button{font-weight:bold;display:block;width:18px;height:17px;line-height:16px;text-align:center;text-decoration:none;color:#547dbb;overflow:hidden;position:absolute;bottom:0px;right:6px;z-index:3;background: rgb(255, 255, 255); background: rgba(255, 255, 255, 0.6); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#a4bedf, endColorstr=#a4bedf); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#a4bedf, endColorstr=#a4bedf)";}
-#wx-saved-locations .wx-saved-location-bkgnd{padding:0px; width:84px; height:84px; z-index:-1; position:absolute;left:0px;top:0px; background: rgb(120, 162, 212); background: rgba(255, 255, 255, 0.15); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#78a2d4, endColorstr=#78a2d4); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#78a2d4, endColorstr=#78a2d4)"; box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -moz-box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -webkit-box-shadow:1px 1px 2px rgba(0, 0, 0, .2); filter:progid:DXImageTransform.Microsoft.Shadow(Direction=135, Strength=2, Color='#5383b4'); -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#5383b4')"}
+#wx-saved-locations .wx-saved-location-bkgnd{padding:0px; width:84px; height:84px; z-index:-1; position:absolute;left:0px;top:0px; 
+background: rgb(255, 255, 255);  
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=15)"; /* ie8 supports both; this variant doesn't work if meta tag below used */
+ filter:alpha(opacity=15); /* for internet explorer <= 7, and 8 when <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> */
+ -moz-opacity:0.15; /* for older gecko browsers */
+ -khtml-opacity: 0.15; /* for older webkit browsers */
+ opacity: 0.15; /* CSS3 standard */ box-shadow:1px 1px 2px rgba(0, 0, 0, 1); -moz-box-shadow:1px 1px 2px rgba(0, 0, 0, 1); -webkit-box-shadow:1px 1px 2px rgba(0, 0, 0, 1);}
 #wx-saved-locations ul.twc-weather-locations li .wx-alert-badge {background:#A60000; color:#FFFFFF; font-size:10px; font-weight:bold; height:13px; line-height:12px; padding:0 4px; position:absolute; right:6px; text-align:center; top:-6px; width:auto; z-index:4; box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -moz-box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -webkit-box-shadow:1px 1px 2px rgba(0, 0, 0, .2); filter:progid:DXImageTransform.Microsoft.Shadow(Direction=135, Strength=2, Color='#5383b4'); -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#5383b4')"}  
 #wx-saved-locations ul.twc-weather-locations li a span.wx-pencil{display:block;background:transparent url(../../s.imwx.com/v.20111031.084616/img/layout/sprite_home_37x137.png) 0px -80px no-repeat;width:18px;height:17px}
 
-.twc-weather-actions { float:left; margin:47px 0px 0px; width:37px; height:37px; background: rgb(120, 162, 212); background: rgba(255, 255, 255, 0.15); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#78a2d4, endColorstr=#78a2d4); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#78a2d4, endColorstr=#78a2d4)"; box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -moz-box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -webkit-box-shadow:1px 1px 2px rgba(0, 0, 0, .2); filter:progid:DXImageTransform.Microsoft.Shadow(Direction=135, Strength=2, Color='#5383b4'); -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#5383b4')"}
+.twc-weather-actions { float:left; margin:47px 0px 0px; width:37px; height:37px; position:relative;}
+.twc-weather-actions .twc-weather-actions-bg {
+position:absolute;left:0;top:0;z-index:-1;width:37px;height:37px;
+background: rgb(255, 255, 255);  
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=15)"; /* ie8 supports both; this variant doesn't work if meta tag below used */
+ filter:alpha(opacity=15); /* for internet explorer <= 7, and 8 when <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> */
+ -moz-opacity:0.15; /* for older gecko browsers */
+ -khtml-opacity: 0.15; /* for older webkit browsers */
+ opacity: 0.15; /* CSS3 standard */ 
+ box-shadow:1px 1px 2px rgba(0, 0, 0, 1); -moz-box-shadow:1px 1px 2px rgba(0, 0, 0, 1); -webkit-box-shadow:1px 1px 2px rgba(0, 0, 0, 1);
+}
 .twc-weather-actions .twc-weather-add-location {width:37px; height:37px; display:block; background:transparent url(../../s.imwx.com/v.20111012.090932/img/layout/sprite_home_37x119.png) 0px -40px no-repeat; text-indent:-2000px;cursor:pointer}
 .twc-weather-actions .twc-weather-add-location a {width:37px; height:37px; display:block;}
 .twc-weather-actions .twc-weather-other-location {width:37px; height:37px; display:block; background:transparent url(../../s.imwx.com/v.20111012.090932/img/layout/sprite_home_37x119.png) 0px 0px no-repeat; text-indent:-2000px;cursor:pointer}
@@ -284,14 +318,37 @@ body, body.has-js,body.no-js{background:url(../../s.imwx.com/v.20111012.090959/i
 #wx-header-tools #wx-header-tools-languages ul li span{color:#72a8ec;display:block}
 #wx-header-tools #wx-header-tools-languages ul li span:hover{color:#fff}
 #wx-header-tools #wx-header-tools-languages .twc-drop-down {-moz-border-radius:0px; -webkit-border-radius:0px; border-radius:0px; line-height:19px; border:0px none !important; margin-right:0px;}
-#wx-header-tools #wx-header-tools-languages.twc-active  .twc-drop-down{background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.2); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#0a3a66, endColorstr=#0a3a66); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#0a3a66, endColorstr=#0a3a66)";}
+#wx-header-tools #wx-header-tools-languages.twc-active .twc-header-tools-bg {
+width:150px;
+height:19px;
+position:absolute;
+background: rgb(0, 0, 0);  
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)"; /* ie8 supports both; this variant doesn't work if meta tag below used */
+ filter:alpha(opacity=20); /* for internet explorer <= 7, and 8 when <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> */
+ -moz-opacity:0.20; /* for older gecko browsers */
+ -khtml-opacity: 0.20; /* for older webkit browsers */
+ opacity: 0.20; /* CSS3 standard */
+}
 
 #wx-header-tools #wx-header-tools-languages .twc-drop-down strong {height: 19px; line-height:19px;}
 
 #wx-header-tools #wx-header-tools-site-search .twc-drop-down,
 #wx-header-tools #wx-header-tools-languages .twc-drop-down{border: 1px solid #1647CA}
 
-#wx-header-tools #wx-header-tools-languages .twc-drop-down, #wx-header-tools #wx-header-tools-sign-in {background: rgb(255, 255, 255); background: rgba(255, 255, 255, 0.2); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#416a98, endColorstr=#416a98); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#416a98, endColorstr=#416a98)"; box-shadow:1px 1px 2px #0f4478; -moz-box-shadow:1px 1px 2px #0f4478; -webkit-box-shadow:1px 1px 2px #0f4478;}
+#wx-header-tools #wx-header-tools-languages .twc-header-tools-bg {width:150px;}
+#wx-header-tools #wx-header-tools-sign-in .twc-header-tools-sign-in-bg {width:100%;}
+#wx-header-tools #wx-header-tools-languages .twc-header-tools-bg, #wx-header-tools #wx-header-tools-sign-in .twc-header-tools-sign-in-bg {
+height:19px;
+position:absolute;left:0px;top:0;
+z-index:-1;
+background: rgb(255, 255, 255);  
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)"; /* ie8 supports both; this variant doesn't work if meta tag below used */
+ filter:alpha(opacity=20); /* for internet explorer <= 7, and 8 when <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> */
+ -moz-opacity:0.20; /* for older gecko browsers */
+ -khtml-opacity: 0.20; /* for older webkit browsers */
+ opacity: 0.20; /* CSS3 standard */
+}
+#wx-header-tools #wx-header-tools-languages .twc-drop-down, #wx-header-tools #wx-header-tools-sign-in {background:none;-ms-filter:none;filter:none;box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -moz-box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -webkit-box-shadow:1px 1px 2px rgba(0, 0, 0, .2);}
 #wx-header-tools #wx-header-tools-sign-in{padding:0 6px;text-align:center;}
 #wx-header-tools #wx-header-tools-sign-in ul.twc-tier-2{background-position:-568px 0;height:243px;margin:0 0 0 -5px;padding-top:37px !important;*padding-top:44px !important;top:-6px;width:199px;text-align:left;font-family:arial,helvetica,clean,sans-serif;line-height:1.231;}
 #wx-header-tools #wx-header-tools-sign-in form{margin-left:15px;display:block;}
@@ -306,14 +363,29 @@ body, body.has-js,body.no-js{background:url(../../s.imwx.com/v.20111012.090959/i
 
 #wx-temperature-toggle{background:none;display:block;height:19px;overflow:hidden;padding-top:0px !important;}
 #wx-temperature-fahrenheight, #wx-temperature-celcius {float:left;}
-#wx-temperature-fahrenheight button,#wx-temperature-celcius button{font-size:11px;height:19px;width:20px;text-decoration:none;color: #fff; text-align:center; -moz-box-shadow:1px 1px 2px #0f4478; -webkit-box-shadow:1px 1px 2px #0f4478; box-shadow:1px 1px 2px #0f4478;padding: 5px 6px;font-weight: bold;}
+#wx-temperature-fahrenheight button,#wx-temperature-celcius button{font-size:11px;height:19px;width:20px;text-decoration:none;color: #fff; text-align:center; box-shadow:1px 1px 2px rgba(0, 0, 0, .2);-moz-box-shadow:1px 1px 2px rgba(0, 0, 0, .2);-webkit-box-shadow:1px 1px 2px rgba(0, 0, 0, .2);padding:0px;font-weight:bold;}
 .has-IE #wx-temperature-fahrenheight button, .has-IE #wx-temperature-celcius button {line-height:13px}
 
 #wx-temperature-fahrenheight button{margin-right:1px;}
 #wx-temperature-celcius button {margin-right:3px;}
 #wx-temperature-fahrenheight button:hover, #wx-temperature-celcius button:hover{text-decoration:underline;}
-#wx-temperature-fahrenheight.yui-radio-button-checked button, #wx-temperature-celcius.yui-radio-button-checked button{cursor:default; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.2); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#2a5889, endColorstr=#2a5889); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#2a5889, endColorstr=#2a5889)";}
-#wx-temperature-fahrenheight.yui-radio-button-checked button:hover, #wx-temperature-celcius.yui-radio-button-checked button:hover {text-decoration:none;}
+#wx-temperature-fahrenheight.yui-radio-button .twc-temperature-fahrenheight-bg, #wx-temperature-celcius.yui-radio-button .twc-temperature-fahrenheight-bg{cursor:default;z-index:-1;position:absolute;width:20px;height:19px;
+background: rgb(255, 255, 255);  
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)"; /* ie8 supports both; this variant doesn't work if meta tag below used */
+ filter:alpha(opacity=20); /* for internet explorer <= 7, and 8 when <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> */
+ -moz-opacity:0.20; /* for older gecko browsers */
+ -khtml-opacity: 0.20; /* for older webkit browsers */
+ opacity: 0.20; /* CSS3 standard */
+}
+#wx-temperature-fahrenheight.yui-radio-button-checked .twc-temperature-fahrenheight-bg, #wx-temperature-celcius.yui-radio-button-checked .twc-temperature-fahrenheight-bg{cursor:default;z-index:-1;position:absolute;width:20px;height:19px;
+background: rgb(0, 0, 0);  
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)"; /* ie8 supports both; this variant doesn't work if meta tag below used */
+ filter:alpha(opacity=20); /* for internet explorer <= 7, and 8 when <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> */
+ -moz-opacity:0.20; /* for older gecko browsers */
+ -khtml-opacity: 0.20; /* for older webkit browsers */
+ opacity: 0.20; /* CSS3 standard */
+}
+#wx-temperature-fahrenheight.yui-radio-button-checked .twc-temperature-fahrenheight-bg:hover, #wx-temperature-celcius.yui-radio-button-checked .twc-temperature-fahrenheight-bg:hover {text-decoration:none;}
 
 .wx-arrow-down {background:url(../../s.imwx.com/v.20111012.090932/img/layout/sprite_home_37x119.png) no-repeat -6px -106px; width:10px; height:6px;}
 
@@ -429,7 +501,7 @@ body, body.has-js,body.no-js{background:url(../../s.imwx.com/v.20111012.090959/i
 .has-IE7 #wx-header-tools .wx-arrow-down,
 *:first-child+html #wx-header-tools .wx-arrow-down{margin-top:-15px}
 .has-IE #pg_maincontainer #wx-temperature-toggle button{line-height:15px;}
-#wx-temperature-fahrenheight button,#wx-temperature-celcius button{height:19px;width:20px;text-decoration:none;color: #fff; box-shadow:1px 1px 2px #0f4478; -moz-box-shadow:1px 1px 2px #0f4478; -webkit-box-shadow:1px 1px 2px #0f4478; padding: 0px 0px; font-weight: bold; background: rgb(255, 255, 255); background: rgba(255, 255, 255, 0.2); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#416a98, endColorstr=#416a98); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#416a98, endColorstr=#416a98)";}
+#wx-temperature-fahrenheight button,#wx-temperature-celcius button{}
 
 .has-IE7 .twc-tier-2, *:first-child+html .twc-tier-2 {position:relative}
 .has-IE7 #body-bg, *:first-child+html #body-bg{position:absolute;top:0px;left:0px}
@@ -519,7 +591,7 @@ filter:progid:DXImageTransform.Microsoft.Shadow(Direction=135, Strength=2, Color
 #wx-other-locations-container ul li .twc-other-locations-sponsor-tag {width:52px;height:5px;background-image:url(../../s.imwx.com/img/layout/label_sponsored_52x5.png);bottom:2px;right:2px;position:absolute;}
 
 #wx-other-locations-container ul li.wx-addlocs-ad {background-color:#FFFFFF}
-#wx-other-locations-container ul li.wx-addlocs-ad a{display:block;margin-left:auto;margin-right:auto;width:233px;margin-top:5px}
+#wx-other-locations-container ul li.wx-addlocs-ad a{display:block;margin-left:auto;margin-right:auto;width:233px;margin-top:5px;background:none;}
 
 /*	 BReaking Now Block	*/
 #wx-breaking-now {width:100%; height:51px; background:#a60401;}
@@ -661,6 +733,30 @@ input::-webkit-input-placeholder{color:#999 !important; font-style:italic !impor
 .wx-jumpto-location-outer-wrapper{ position:relative;} 
 #twc-jumpto-location-form-id.twc-weather-search-form{position:static}
 #jumpto-trupoint-results-container{left:35px;*margin-left:0}
+
+/* ==== RECENT SEARCH HEADER STYLES ============================== */   
+.twc-recent-search-results h3 {background: none repeat scroll 0 0 #EFEFEF;color: #8B8B8B;font-size: 12px;height: 20px;line-height: 19px;margin: 0;padding: 0 0 0 10px;}
+.twc-recent-search-results{position:absolute;left:0px;top:40px;width:235px;overflow:hidden;z-index:100;text-align:left !important;}
+.twc-recent-search-results ul {
+background: rgb(255, 255, 255);  
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=95)"; /* ie8 supports both; this variant doesn't work if meta tag below used */
+ filter:alpha(opacity=95); /* for internet explorer <= 7, and 8 when <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> */
+ -moz-opacity:0.95; /* for older gecko browsers */
+ -khtml-opacity: 0.95; /* for older webkit browsers */
+ opacity: 0.95; /* CSS3 standard */
+}
+/* Text-align left Added for legacy pages */
+.twc-recent-search-results ul{margin:0;padding:0;width:100%;background:#fff;}
+.twc-recent-search-results ul li{color:#225bd0;font-size:inherit;border-bottom:0px none;display:block;line-height:25px;list-style-type:none;padding:0 10px 0 10px !important;margin:0;cursor:pointer;white-space:nowrap;list-style:none;zoom:1}
+.twc-recent-search-results ul li.twc-alt-row {background:#efefef;}
+.twc-recent-search-results ul li:nth-child(2n+2) {background:#efefef;}
+.twc-recent-search-results ul li:hover,
+.twc-recent-search-results ul li:focus {background:#cee9f3 !important;color:#225bd0;text-decoration:underline;outline:none;}
+
+.twc-recent-search-results ul li:last-child,.twc-recent-search-results ul li.twc-last{border-bottom:none !important}
+.twc-recent-search-results ul li.twc-alt-row:hover {background:#cee9f3 !important;color:#225bd0;text-decoration:underline;}
+.twc-recent-search-results ul li:nth-child(2n+2):hover {background:#cee9f3 !important;color:#225bd0;text-decoration:underline;}
+
 
  
 .wx-jumpto-location-outer-wrapper { position: relative; }
@@ -1004,6 +1100,23 @@ ul.wx-manage-locations-draglist li {margin:0px; padding:0px; list-style-type:non
 
 #wx-content{padding-top:42px !important}
 
+/* Code for Personalization TWC Logo  */
+#wx-manage-loc-edit-name-cntr {margin-bottom:30px;position:relative;width:660px;height:160px; box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -moz-box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -webkit-box-shadow:1px 1px 2px rgba(0, 0, 0, .2); }
+#wx-manage-loc-edit-name-cntr .wx-edit-name-bg {position:absolute;left:0;top:0;width:660px;height:160px;z-index:-1;background: rgb(38, 138, 236); background: rgba(38, 138, 236, 0.20); filter:alpha(opacity=20); -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";}
+#wx-manage-loc-edit-name-cntr .wx-new-strip {position:absolute;left:-10px;top:15px;width:52px;height:22px;font-size:14px;font-weight:bold;line-height:22px;text-transform:uppercase;color:#0775dd;text-align:center;background:#fff;box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -moz-box-shadow:1px 1px 2px rgba(0, 0, 0, .2); -webkit-box-shadow:1px 1px 2px rgba(0, 0, 0, .2);}
+#wx-manage-loc-edit-name-cntr .wx-edit-name-content-left {float:left;margin:15px 0 0 53px;}
+#wx-manage-loc-edit-name-cntr .wx-edit-name-content-left h2 {color:#01254a;font-size:22px;line-height:22px;font-weight:bold;margin:0 0 5px;}
+#wx-manage-loc-edit-name-cntr .wx-edit-name-content-left p {color:#3f5a79;line-height:16px;margin:0;}
+#wx-manage-loc-edit-name-cntr .wx-edit-name-srch-cntr {position:absolute;left:0px;top:90px;}
+#wx-manage-loc-edit-name-cntr .wx-edit-name-srch-cntr .wx-location-delete-btn  {width:31px;height:33px;margin:4px 0 7px 11px;background-image:url(../../s.imwx.com/v.20120323.155701/img/layout/sprite_addEdit_662x53.png);background-position:-160px -20px;position:absolute;}
+#wx-manage-loc-edit-name-cntr .wx-edit-name-srch-cntr .wx-location-delete-btn:hover  {background-image:url(../../s.imwx.com/v.20120323.155701/img/layout/sprite_addEdit_662x53.png);background-position:-200px -20px;}
+#wx-manage-loc-edit-name-cntr .wx-edit-name-srch-cntr input.wx-location-name-fld {background-color:#FFFFFF;border:0 none;display:inline;font-size:13px;margin:2px 0 0px 53px;padding:10px 0 10px 8px;position:absolute;width:258px;}
+#wx-manage-loc-edit-name-cntr .wx-edit-name-srch-cntr input.wx-location-name-fld.twc-empty-input{color:#999999;font-style:italic;}
+#wx-manage-loc-edit-name-cntr .wx-edit-name-srch-cntr input.wx-edit-submit-btn {position:absolute;left:329px;width:94px;color:#fff;font-size:18px;font-weight:bold;text-align:center; background-color:#0775de;border:0px;cursor:pointer;padding:8px 0px 8px 0px;}
+#wx-manage-loc-edit-name-cntr .wx-edit-name-content-right {float:right;width:184px;height:116px;margin:25px 15px 0 0;background:url(../../s.imwx.com/v.20120421.155819/img/common/cut_name_example.png) no-repeat;}
+
+.has-IE7 div#wx-content-2 > #wx-manage-loc-edit-name-cntr {position:static;}
+
 /* Code for Manage your locations  */
 #wx-manage-locations-header {width:661px;padding:0px;margin:0 0 35px 0;}
 #wx-manage-locations-header dt {font-weight:bold;font-size:28px;color:#01254a;padding:0px;margin:0px 0px 7px;position:relative;}
@@ -1205,17 +1318,25 @@ input.twc-search-web-button:hover{background:-webkit-gradient(linear,left top,le
 #wx-footer-links dd{margin:0 0 5px;font-size:12px;color:#365e79; line-height:15px;}
 #wx-footer-links dd a {color:#365e79;}
 #wx-footer-links dd.twc-last{background-image:none;padding-left:3px}
-#wx-footer-links ul.twc-social-list{position:absolute;right:10px;top:17px;width:191px;margin:0px;padding:0px;z-index: 6;}
-#wx-footer-links ul.twc-social-list li {list-style-type:none;float:left;width:191px;height:31px;line-height:30px;margin: 0 0 16px;font-size:14px;}
+#wx-footer-links ul.twc-social-list{position:absolute;right:10px;top:17px;width:240px;margin:0px;padding:0px;z-index: 6;}
+#wx-footer-links ul.twc-social-list li {list-style-type:none;float:left;width:240px;height:31px;line-height:30px;margin: 0 0 16px;font-size:14px;}
 #wx-footer-links ul.twc-social-list li a {display:block;}
 #wx-footer-links ul.twc-social-list li a:hover{text-decoration:underline;}
 #wx-footer-links ul.twc-social-list li span {display:block; width:55px; height:31px; text-indent:-20000px; margin-right:6px; float:left; background-image:url(../../s.imwx.com/v.20120104.100205/img/layout/sprite_foot.png); background-repeat:no-repeat; overflow:hidden;}
+
 .twc-logo-fb {background-position:0px -40px;}
 .twc-logo-twitter {background-position:-60px -40px;}
 .twc-logo-youtube {background-position:-120px -40px;}
 .twc-logo-weather-mobile {background-position:-180px -40px;}
 .twc-logo-weather-desktop {background-position:-240px -40px;}
-.twc-logo-googleplus {background-position:-300px -40px;}
+.twc-logo-googleplus {background-position:-300px -40px;} 
+
+#wx-footer .wx-facebook span { background-position: 0 -40px; }
+#wx-footer .wx-twitter span { background-position: -60px -40px; } 
+#wx-footer .wx-googleplus span { background-position: -300px -40px; }
+#wx-footer .wx-youtube span { background-position: -120px -40px; }
+#wx-footer .wx-mobile span { background-position: -180px -40px; }
+#wx-footer .wx-desktop span { background-position: -240px -40px; }
 
 #wx-footer-legal {position:relative;height:50px;color:#fff;z-index:4;}
 #wx-footer-legal a{color:#fff}
@@ -1374,6 +1495,10 @@ td, ol, ul, li {font-family:Arial,Verdana,Helvetica,SansSerif !important;}
 .twc-unavailable-msg{background:url(../../s.imwx.com/v.20100914.170125/img/common/icon-error-red.png) no-repeat scroll 0 0 transparent;padding-left:27px}
 
 #wx-delete-location .hd h3{visibility:hidden}
+
+.twc-panels {width: 100% !important; z-index: 99999 !important; position:absolute !important}
+#wx-delete-location_c, #wx-delete-location {position:absolute !important}
+
 
 #wx-tru-point-search .hd{height:25px;padding:37px 37px 0;text-align:left}
 #wx-tru-point-search .bd{padding:12px 37px 0;text-align:left}

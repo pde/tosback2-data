@@ -4,6 +4,8 @@ Start Date : 15-02-11
 Author: Anoop Gupta
 Updated by: Vaibhav Gupta, Anand Athavale
 Revision Date: Nov-08-2011 - moved to main.css
+			   Jan-27-2012 - Support track 2 Ref 375 - M.Mashkevich
+			   Mar-02-2012 - Support track 2 Ref 392 - V. D'Aquila (resource carousel styles)
  ==================================================*/	
 
 #sdbr .b1323, .sdbr .b1323 {
@@ -162,12 +164,21 @@ Utility Carousel (Resource Center 3-Column)
 /*==================================================*/
 
 body .rc .p01 {
-	width:195px;
+	width:225px;
+	min-height:190px;
+	height:auto;
+	height:100%;
+	padding:0; 
+}
+
+body .rc .p01 a {
+	display: block;
 	padding:15px;
 	min-height:160px;
 	height:auto;
 	height:100%
 }
+
 body .content .rc.c03 {
 	float:left;
 	padding:0;
@@ -178,6 +189,7 @@ body .content .rc img {
 	height:auto;
 	border:none;
 	margin:0 6px 0 0;
+	float: left;
 }
 /*==================================================
 Brand Carousel 
@@ -324,8 +336,8 @@ border:1px solid #45b0e6!important;
 Resource Center Carousel Hover
 ==================================================*/
 
-body .carousel.rc .p01:hover,
-body .feature.rc .p01:hover  {
+body .carousel.rc .p01 a:hover,
+body .feature.rc .p01 a:hover  {
 	background:#E5F6FE;
 	border-left:1px solid #45b0e6;
 	border-right:1px solid #45b0e6;
@@ -333,6 +345,7 @@ body .feature.rc .p01:hover  {
 	padding-left:14px;
 	padding-right:14px;
 }
+
 body .carousel.rc .p01:hover h3, body .feature.rc .p01:hover h3,
 body .carousel.rc .p01:hover h4, body .feature.rc .p01:hover h4,
 body .carousel.rc .p01:hover a,  body .feature.rc .p01:hover a,
@@ -1783,14 +1796,28 @@ Quickview styles
 	width: 415px;
 	min-height: 280px;
 }
-.quickview .w015, .quickview .c015 {
-	width: 175px;
+.quickview .c015 {
+	width: 205px;
+}
+.quickview .w015 {
+	padding:0 5px;
+	width: 195px;
 }
 .quickview .p08 .w015 .w01 {
 	width: 169px;
 }
-.quickview .w016, .quickview .c016, .quickview .p08 ul.delinfo {
-	width: 225px;
+.quickview .c016 {
+	width: 200px;
+	float: right;
+	margin-right:0;
+}
+.quickview .w016 {
+	padding:0 5px;
+	width:190px;
+}
+.quickview .p08 ul.delinfo {
+	float:none;
+	width:190px;
 }
 .quickview #skuSelectControl {
 	margin-right:3px;
@@ -1839,10 +1866,10 @@ Quickview styles
 	min-height: 16px;
 	height: auto !important;/* This 'important' is written to override the classes written in main.css*/
 	height: 16px;
-	width: 203px;
+	width: 170px;
 }
 .quickview .p08 .mathstory{
-	width: 166px;
+	width: 195px;
 }
 .quickview .p08 .mathstory h3{
 	width: 166px;
@@ -1851,10 +1878,29 @@ Quickview styles
 	margin-right: 10px;
 }
 .quickview .p08 .pricenew.mathtable{
-	width: 166px;
+	width: 195px;
 }
-.quickview .p08 .pricenew.mathtable tr.price td, .quickview .p08 .pricenew.mathtable tr.price th, .quickview .p08 .pricenew.mathtable tr.price td b, .quickview .p08 .pricenew.mathtable tr.price th b, .quickview .p08 .pricenew.mathtable tr.total td, .quickview .p08 .pricenew.mathtable tr.total th, .quickview .p08 .pricenew.mathtable tr.total td b, .quickview .p08 .pricenew.mathtable tr.total th b{
-    font-size: 10px;
+.quickview .price, .quickview .pr0m0 {
+white-space: nowrap;
+}
+.quickview .total {
+line-height: 1.25;
+}
+.quickview .p08 .pricenew.mathtable tr.price td, 
+.quickview .p08 .pricenew.mathtable tr.price td b, 
+.quickview .p08 .pricenew.mathtable tr.total td, 
+.quickview .p08 .pricenew.mathtable tr.total td b {
+    font-size: 14px;
+}
+.quickview .p08 .pricenew.mathtable tr.price th, 
+.quickview .p08 .pricenew.mathtable tr.price th b, 
+.quickview .p08 .pricenew.mathtable tr.total th, 
+.quickview .p08 .pricenew.mathtable tr.total th b {
+    font-size: 12px;
+    padding-top:2px;
+}
+.quickview .p08 .pricenew.mathtable tr th{
+	padding-right:0;
 }
 .quickview .c02.printsku{
 	margin: 0px;
@@ -1913,7 +1959,11 @@ body#sku .quickview .d115,
 {
 	width:160px;
 	float:right;
-	margin-right:2px;
+	margin-right:0;
+	padding-right:0;
+}
+.quickview a.addtofavs {
+	padding-right:0;
 }
 .quickview a.d01
 {

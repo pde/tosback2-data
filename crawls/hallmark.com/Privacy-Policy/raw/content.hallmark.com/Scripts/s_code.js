@@ -1,46 +1,10 @@
-/* 
- * SiteCatalyst H Code Tracking
- * 
- * Additional features added by Evolytics.  Change log:
- * 
- * Date     By              Description
- * -------- --------------- --------------------------------------------------------------------------
- * 20100127 Evolytics       H code initial version
- */
-
-/*
- * Specify the Report Suite ID(s) to track.  If the host is a test server,
- * send Omniture data to the development report suite; otherwise, send to the
- * Production report suite...
- */
-var s_account="";
-
-if (window.location.host.indexOf('tarsin.com') >= 0 ||
-    window.location.host.indexOf('test1') >= 0    ||
-    window.location.host.indexOf('test2') >= 0 ||
-    window.location.host.indexOf('test3') >= 0 ||
-    window.location.host.indexOf('test4') >= 0 ||
-    window.location.host.indexOf('localhost') >= 0 ||
-    window.location.host.indexOf('stage') >= 0 ||
-    window.location.host.indexOf('contentstage') >= 0 ||
-    window.location.host.indexOf('mockstage') >= 0 ||
-    window.location.host.indexOf('prod') >= 0 ||
-    window.location.host.indexOf('perftest') >= 0 ||
-    window.location.host.indexOf('prodfix') >= 0 ||
-    window.location.host.indexOf('textbands') >= 0 ||
-    window.location.host == '')
-    { s_account = "staginghallmarkibmcom"; }
+﻿
+var s_account="";if(window.location.host.indexOf('tarsin.com')>=0||window.location.host.indexOf('test1')>=0||window.location.host.indexOf('test2')>=0||window.location.host.indexOf('test3')>=0||window.location.host.indexOf('test4')>=0||window.location.host.indexOf('localhost')>=0||window.location.host.indexOf('stage')>=0||window.location.host.indexOf('contentstage')>=0||window.location.host.indexOf('mockstage')>=0||window.location.host.indexOf('prod')>=0||window.location.host.indexOf('perftest')>=0||window.location.host.indexOf('prodfix')>=0||window.location.host.indexOf('textbands')>=0||window.location.host=='')
+{s_account="staginghallmarkibmcom";}
 else
-	{ s_account = "hallmarkibmcom"; }
-
+{s_account="hallmarkibmcom";}
 var s=s_gi(s_account)
-
-/************************** CONFIG SECTION **************************/
-/* You may add or alter any code config here. */
-/* Conversion Config */
-//s.charSet="ISO-8859-1"
 s.currencyCode="USD"
-/* Link Tracking Config */
 s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
@@ -49,364 +13,112 @@ s.linkInternalFilters="javascript:,hallmark.com,mappoint,hallmark.custhelp.com,h
 s.linkLeaveQueryString=false
 s.linkTrackVars="None"
 s.linkTrackEvents="None"
-
-/* Plugin Config */
 s.usePlugins=true
-
-function evalOmniture() {
-    var a = s.t()
-}
-
-function s_doPlugins(s) {
-
-    /*
-     * To avoid javascript errors, make sure the following variables are defined...
-     */
-
-    if (typeof s.pageName == "undefined")
-        s.pageName = "";  
-    if (typeof s.prop1 == "undefined")
-        s.prop1 = "";
-    if (typeof s.prop3 == "undefined")
-        s.prop3 = "";
-
-
-    /*
-    * For Level 1 Pagename for Interwoven content...  Logic gets the first whole
-    * word that follows "online" in the pagename...
-    */
-    sText = ">online>";
-    sTextLength = sText.length;
-    if (s.pageName == "") {        
-        s.pageName = document.location.pathname;
-        s.pageName = s.pageName.replace(/\//g, ">");
-    }
-    if (s.pageName.indexOf(sText) >= 0) {
-        sPath = s.pageName;
-        sIndex_start = sPath.indexOf(sText) + sTextLength;
-        sIndex_end = sPath.indexOf(">", sIndex_start);
-        if (sIndex_end > 0)
-        { s.prop1 = sPath.substring(sIndex_start, sIndex_end); }
-        else
-        { s.prop1 = sPath.substring(sIndex_start); }
-        s.pageName = sPath.substring(sIndex_start, s.pageName.length - 1);
-        s.prop2 = s.prop1 + ">Level2";
-        s.prop3 = s.pageName;
-        s.prop30 = s.pageName;
-        s.prop32 = s.pageName;
-    } 
-
-    /*
-     * Level 1 Pagename for Shop Online Top Page...
-     */
-    if (s.prop1) {
-        if (s.prop1.indexOf("Shop Online Top Page") >= 0 ||
-            s.prop1.indexOf("ShopOnline") >= 0  ) {
-            s.prop1 = "Shop Online";
-        }
-    }
-
-    /*
-     * Set hierarchy = s.prop3
-     */
-    s.hier1 = s.prop3;
-
-    /* 
-     * Set channel = hostname + s.prop1...
-     */ 
-    if (location.hostname == "")
-        { temp = "local"; }
-    else
-        { temp = location.hostname; }
-    s.channel = temp + " - " + s.prop1;
-
-    /*
-     * Hallmark RED tracking...
-     */
-    if (s.pageName.indexOf("HallmarkRED") >= 0) {
-      s.prop2 = "HallmarkRED";
-      s.events = "event23";
-    }
-    if (s.pageName.indexOf("HallmarkRED_SPLASH_TY") >= 0) {
-      s.events = "event23,event24";
-    }
-    if (s.pageName.indexOf("HallmarkRED RED_VIDEO") >= 0) {
-      s.events = "event23,event26";
-    }
-
-    /*
-     * Throw the page name (or URL if no page name) into eVar32...Original
-     * Entry Page
-     */
-    if (typeof s.eVar32 == "undefined" || s.eVar32 == "") {
-        if (s.pageName == "")
-        { s.eVar32 = window.location; }
-        else
-        { s.eVar32 = s.pageName; };
-    }
-        
-    /*
-     * Throw today's date into s.prop28...helpful when doing segmentation
-     * in Discover...
-     */
-    var d = new Date();
-    s.prop28 = d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate();
-
-    /*
-     * Set the Store Locator event if viewing the results map page...
-     */
-    if (window.location.pathname.indexOf('PrxResults') >= 0)
-        { s.events=s.events?s.events+',event21':'event21'; };
-
-    /*
-     * Add a generic Page View event...
-     */
-        if (typeof s.events == "undefined" || s.events == "") {
-            s.events = 'event33';
-        }
-        if (s.events.indexOf("event33") < 0) {
-            s.events = s.events ? s.events + ',event33' : 'event33';
-        }
-        
-	/*
-	 * Populate various variables from URL parameters...
-	 */
-    if (!s.campaign)
-        { s.campaign=s.getQueryParam('siteID');
-          s.campaign = s.getValOnce(s.campaign,'v0');
-        }
-    if (!s.campaign)
-        { s.campaign=s.getQueryParam('mailID');
-          s.campaign = s.getValOnce(s.campaign,'v0');
-        }
-    if (!s.campaign)
-        { s.campaign=s.getQueryParam('mc');
-          s.campaign = s.getValOnce(s.campaign,'v0');
-        }
-    if (!s.prop21)
-        s.prop21=s.getQueryParam('lid');
-    if (!s.eVar15)
-        s.eVar15=s.getQueryParam('icamp');
-    if (!s.eVar16)
-        s.eVar16=s.getQueryParam('dircat'); 
-    if (!s.prop11)
-        s.prop11=s.eVar2=s.getQueryParam('isearch');
-    if (!s.prop11)
-        { s.eVar2=s.getQueryParam('rSearchTerm'); 
-          s.eVar2 = s.getValOnce(s.eVar2,'v2');
-          s.prop11=s.eVar2;
-        }
-    if (!s.eVar2)
-        s.eVar2=s.getQueryParam('isearch'); 
-    if (!s.eVar8)
-        s.eVar8=s.getQueryParam('ecid');
-    if (!s.eVar23)
-        s.eVar23=s.getQueryParam('eng');
-    if (!s.eVar24)
-        s.eVar24=s.getQueryParam('kw');
-
-    /*
-     * If Store Locator Results page, get ZIP and Program (FC)...
-     */
-    if (window.location.pathname.indexOf('PrxResults') >= 0)
-            { if (!s.prop33)
-                 s.prop33=s.getQueryParam('ZIP');
-              if (!s.prop34)
-                 s.prop34=s.getQueryParam('FC');
-            };
-
-    /*
-     * Cross Visit Participation:  stack first 8 chars of campaign tracking code
-     */
-    if (!s.campaign)
-        { var s_cvp_val = "" }
-    else
-        { var s_cvp_val = s.campaign.substring(0,9);
-          s.eVar31 = s.crossVisitParticipation(s_cvp_val,'v31','7','10',' > ','purchase');
-        }	
-
-    /*
-     * Get Time Parting...
-     */
-    var d = new Date();
-    s.eVar25=s.getTimeParting('h','-6',d.getFullYear());  //set half-hour of day
-    s.eVar26=s.getTimeParting('d','-6',d.getFullYear());  //set day of week
-    
-    /*
-     * Get previous page name...
-     */
-    prevPage = s.getPreviousValue(s.pageName,'s_ppv','');
-    if (prevPage=="") prevPage="unknown";
-      
-    /*
-     * If Link ID exists, if page not identified on link, concatenate Previous
-     * Page to Link ID.  The page is not identified if there are no ">>"
-     * characters beyond the 8th position of the string.  Finally, copy s.prop21
-     * to s.eVar42.
-     */
-    if (s.prop21)
-        { if (s.prop21.indexOf(">>",7) == -1)
-            { s.prop21 = s.prop21 + ">>" + prevPage; }
-          s.eVar42 = s.prop21;
-        }
-
-    /*
-     * When internal search term exists, set event57 (Internal Searches) and value
-     * evar43 with the combination of the Internal Search Page (previous page)
-     * and Search Term (evar2)...
-     */
-    if (s.prop11) {
-        s.events = s.events?s.events+',event57':'event57';
-        s.eVar43 = prevPage + ">>" + s.eVar2;
-    }
-		
-}
+function evalOmniture(){var a=s.t()}
+function s_doPlugins(s){if(typeof s.pageName=="undefined")
+s.pageName="";if(typeof s.prop1=="undefined")
+s.prop1="";if(typeof s.prop3=="undefined")
+s.prop3="";sText=">online>";sTextLength=sText.length;if(s.pageName==""){s.pageName=document.location.pathname;s.pageName=s.pageName.replace(/\//g,">");}
+if(s.pageName.indexOf(sText)>=0){sPath=s.pageName;sIndex_start=sPath.indexOf(sText)+sTextLength;sIndex_end=sPath.indexOf(">",sIndex_start);if(sIndex_end>0)
+{s.prop1=sPath.substring(sIndex_start,sIndex_end);}
+else
+{s.prop1=sPath.substring(sIndex_start);}
+s.pageName=sPath.substring(sIndex_start,s.pageName.length-1);s.prop2=s.prop1+">Level2";s.prop3=s.pageName;s.prop30=s.pageName;s.prop32=s.pageName;}
+if(s.prop1){if(s.prop1.indexOf("Shop Online Top Page")>=0||s.prop1.indexOf("ShopOnline")>=0){s.prop1="Shop Online";}}
+s.hier1=s.prop3;if(location.hostname=="")
+{temp="local";}
+else
+{temp=location.hostname;}
+s.channel=temp+" - "+s.prop1;if(s.pageName.indexOf("HallmarkRED")>=0){s.prop2="HallmarkRED";s.events="event23";}
+if(s.pageName.indexOf("HallmarkRED_SPLASH_TY")>=0){s.events="event23,event24";}
+if(s.pageName.indexOf("HallmarkRED RED_VIDEO")>=0){s.events="event23,event26";}
+if(typeof s.eVar32=="undefined"||s.eVar32==""){if(s.pageName=="")
+{s.eVar32=window.location;}
+else
+{s.eVar32=s.pageName;};}
+var d=new Date();s.prop28=d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate();if(window.location.pathname.indexOf('PrxResults')>=0)
+{s.events=s.events?s.events+',event21':'event21';};if(typeof s.events=="undefined"||s.events==""){s.events='event33';}
+if(s.events.indexOf("event33")<0){s.events=s.events?s.events+',event33':'event33';}
+if(!s.campaign)
+{s.campaign=s.getQueryParam('siteID');s.campaign=s.getValOnce(s.campaign,'v0');}
+if(!s.campaign)
+{s.campaign=s.getQueryParam('mailID');s.campaign=s.getValOnce(s.campaign,'v0');}
+if(!s.campaign)
+{s.campaign=s.getQueryParam('mc');s.campaign=s.getValOnce(s.campaign,'v0');}
+if(!s.prop21)
+s.prop21=s.getQueryParam('lid');if(!s.eVar15)
+s.eVar15=s.getQueryParam('icamp');if(!s.eVar16)
+s.eVar16=s.getQueryParam('dircat');if(!s.prop11)
+s.prop11=s.eVar2=s.getQueryParam('isearch');if(!s.prop11)
+{s.eVar2=s.getQueryParam('rSearchTerm');s.eVar2=s.getValOnce(s.eVar2,'v2');s.prop11=s.eVar2;}
+if(!s.eVar2)
+s.eVar2=s.getQueryParam('isearch');if(!s.eVar8)
+s.eVar8=s.getQueryParam('ecid');if(!s.eVar23)
+s.eVar23=s.getQueryParam('eng');if(!s.eVar24)
+s.eVar24=s.getQueryParam('kw');if(window.location.pathname.indexOf('PrxResults')>=0)
+{if(!s.prop33)
+s.prop33=s.getQueryParam('ZIP');if(!s.prop34)
+s.prop34=s.getQueryParam('FC');};if(!s.campaign)
+{var s_cvp_val=""}
+else
+{var s_cvp_val=s.campaign.substring(0,9);s.eVar31=s.crossVisitParticipation(s_cvp_val,'v31','7','10',' > ','purchase');}
+var d=new Date();s.eVar25=s.getTimeParting('h','-6',d.getFullYear());s.eVar26=s.getTimeParting('d','-6',d.getFullYear());prevPage=s.getPreviousValue(s.pageName,'s_ppv','');if(prevPage=="")prevPage="unknown";if(s.prop21)
+{if(s.prop21.indexOf(">>",7)==-1)
+{s.prop21=s.prop21+">>"+prevPage;}
+s.eVar42=s.prop21;}
+if(s.prop11){s.events=s.events?s.events+',event57':'event57';s.eVar43=prevPage+">>"+s.eVar2;}}
 s.doPlugins=s_doPlugins
-
-// Link tracking function for Omniture...
-function waLinkClick(pageArea, linkName) {                    
-    s=s_gi(s_account);
-    s.prop21 = s.eVar42 = pageArea + ">>" + linkName + ">>" + s.pageName;
-    s.linkTrackVars = "prop21,eVar42";
-    linkName = s.prop21;
-    s.tl(this,'o',linkName);
-}
-
-// Quick Finder tracking function for Omniture...
-function waQuickFinderClick(product, occasion, recipient) {
-    s = s_gi(s_account);
-    s.prop35 = s.eVar45 = product + ">" + occasion + ">" + recipient;
-    s.linkTrackVars = "prop35,eVar45";
-    linkName = s.prop35;
-    s.tl(this, 'o', linkName);
-}
-
-// Tracking Flash related functions for omniture...
-function sendAnalytics(flashParams) {
-    if (flashParams.pageName != null || flashParams.pageName != "") {
-        s.pageName = flashParams.pageName;
-    }
-    if (flashParams.prop1 != null || flashParams.prop1 != "") {
-        s.prop1 = flashParams.prop1;
-    }
-    if (flashParams.prop2 != null || flashParams.prop2 != "") {
-        s.prop2 = flashParams.prop2;
-    }
-    if (flashParams.prop3 != null && flashParams.prop3 != "") {
-        s.prop3 = s.heir1 = s.eVar32 = flashParams.prop3;
-    }
-    if (flashParams.prop30 != null || flashParams.prop30 != "") {
-        s.prop30 = flashParams.prop30;
-    }
-    if (flashParams.prop32 != null || flashParams.prop32 != "") {
-        s.prop32 = flashParams.prop32;
-    }
-    if (flashParams.eVar37 != null || flashParams.eVar37 != "") {
-        s.eVar37 = flashParams.eVar37;
-    }
-    if (flashParams.prop20 != null || flashParams.prop20 != "") {
-        s.prop20 = flashParams.prop20;
-    }
-    if (flashParams.eVar3 != null || flashParams.eVar3 != "") {
-        s.eVar3 = flashParams.eVar3;
-    }
-    if (flashParams.eVar38 != null || flashParams.eVar38 != "") {
-        s.eVar38 = flashParams.eVar38;
-    }
-    if (flashParams.prop14 != null || flashParams.prop14 != "") {
-        s.prop14 = flashParams.prop14;
-    }
-    if (flashParams.evar40 != null || flashParams.evar40 != "") {
-        s.evar40 = flashParams.evar40;
-    }
-    if (flashParams.events != null || flashParams.events != "") {
-        s.events = flashParams.events;
-    }
-
-    evalOmniture();
-}
-
-/************************** PLUGINS SECTION *************************/
-/* You may insert any plugins you wish to use here.                 */
-/*
- * Plugin: getQueryParam 2.1 - return query string parameter(s)
- */
+function waLinkClick(pageArea,linkName){s=s_gi(s_account);s.prop21=s.eVar42=pageArea+">>"+linkName+">>"+s.pageName;s.linkTrackVars="prop21,eVar42";linkName=s.prop21;s.tl(this,'o',linkName);}
+function waQuickFinderClick(product,occasion,recipient){s=s_gi(s_account);s.prop35=s.eVar45=product+">"+occasion+">"+recipient;s.linkTrackVars="prop35,eVar45";linkName=s.prop35;s.tl(this,'o',linkName);}
+function sendAnalytics(flashParams){if(flashParams.pageName!=null||flashParams.pageName!=""){s.pageName=flashParams.pageName;}
+if(flashParams.prop1!=null||flashParams.prop1!=""){s.prop1=flashParams.prop1;}
+if(flashParams.prop2!=null||flashParams.prop2!=""){s.prop2=flashParams.prop2;}
+if(flashParams.prop3!=null&&flashParams.prop3!=""){s.prop3=s.heir1=s.eVar32=flashParams.prop3;}
+if(flashParams.prop30!=null||flashParams.prop30!=""){s.prop30=flashParams.prop30;}
+if(flashParams.prop32!=null||flashParams.prop32!=""){s.prop32=flashParams.prop32;}
+if(flashParams.eVar37!=null||flashParams.eVar37!=""){s.eVar37=flashParams.eVar37;}
+if(flashParams.prop20!=null||flashParams.prop20!=""){s.prop20=flashParams.prop20;}
+if(flashParams.eVar3!=null||flashParams.eVar3!=""){s.eVar3=flashParams.eVar3;}
+if(flashParams.eVar38!=null||flashParams.eVar38!=""){s.eVar38=flashParams.eVar38;}
+if(flashParams.prop14!=null||flashParams.prop14!=""){s.prop14=flashParams.prop14;}
+if(flashParams.evar40!=null||flashParams.evar40!=""){s.evar40=flashParams.evar40;}
+if(flashParams.events!=null||flashParams.events!=""){s.events=flashParams.events;}
+evalOmniture();}
 s.getQueryParam=new Function("p","d","u",""
 +"var s=this,v='',i,t;d=d?d:'';u=u?u:(s.pageURL?s.pageURL:s.wd.locati"
 +"on);if(u=='f')u=s.gtfs().location;while(p){i=p.indexOf(',');i=i<0?p"
 +".length:i;t=s.p_gpv(p.substring(0,i),u+'');if(t)v+=v?d+t:t;p=p.subs"
-+"tring(i==p.length?i:i+1)}return v");
-s.p_gpv=new Function("k","u",""
++"tring(i==p.length?i:i+1)}return v");s.p_gpv=new Function("k","u",""
 +"var s=this,v='',i=u.indexOf('?'),q;if(k&&i>-1){q=u.substring(i+1);v"
-+"=s.pt(q,'&','p_gvf',k)}return v");
-s.p_gvf=new Function("t","k",""
++"=s.pt(q,'&','p_gvf',k)}return v");s.p_gvf=new Function("t","k",""
 +"if(t){var s=this,i=t.indexOf('='),p=i<0?t:t.substring(0,i),v=i<0?'T"
 +"rue':t.substring(i+1);if(p.toLowerCase()==k.toLowerCase())return s."
-+"epa(v)}return ''");
-
-/*
- * Plugin: getPreviousValue_v1.0 - return previous value of designated
- *   variable (requires split utility)
- */
-s.getPreviousValue=new Function("v","c","el",""
++"epa(v)}return ''");s.getPreviousValue=new Function("v","c","el",""
 +"var s=this,t=new Date,i,j,r='';t.setTime(t.getTime()+1800000);if(el"
 +"){if(s.events){i=s.split(el,',');j=s.split(s.events,',');for(x in i"
 +"){for(y in j){if(i[x]==j[y]){if(s.c_r(c)) r=s.c_r(c);v?s.c_w(c,v,t)"
 +":s.c_w(c,'no value',t);return r}}}}}else{if(s.c_r(c)) r=s.c_r(c);v?"
-+"s.c_w(c,v,t):s.c_w(c,'no value',t);return r}");
-
-/*
- * Plugin: getValOnce 0.2 - get a value once per session or number of days
- */
-s.getValOnce=new Function("v","c","e",""
++"s.c_w(c,v,t):s.c_w(c,'no value',t);return r}");s.getValOnce=new Function("v","c","e",""
 +"var s=this,k=s.c_r(c),a=new Date;e=e?e:0;if(v){a.setTime(a.getTime("
-+")+e*86400000);s.c_w(c,v,e?a:0);}return v==k?'':v");
-
-/*
- * Utility Function: split v1.5 - split a string (JS 1.0 compatible)
- */
-s.split=new Function("l","d",""
++")+e*86400000);s.c_w(c,v,e?a:0);}return v==k?'':v");s.split=new Function("l","d",""
 +"var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
-+"++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
-
-/*
- * s.join: 1.0 - s.join(v,p)
- *
- *  v - Array (may also be array of array)
- *  p - formatting parameters (front, back, delim, wrap)
- *
- */
-
-s.join = new Function("v","p",""
++"++]=l.substring(0,i);l=l.substring(i+d.length);}return a");s.join=new Function("v","p",""
 +"var s = this;var f,b,d,w;if(p){f=p.front?p.front:'';b=p.back?p.back"
 +":'';d=p.delim?p.delim:'';w=p.wrap?p.wrap:'';}var str='';for(var x=0"
 +";x<v.length;x++){if(typeof(v[x])=='object' )str+=s.join( v[x],p);el"
-+"se str+=w+v[x]+w;if(x<v.length-1)str+=d;}return f+str+b;");
-
-/*                                                                                        
- * Plugin: s.crossVisitParticipation : 1.2 - stacks values from 
- * specified variable in cookie and returns value                                                   
- */     
-                                                                                                        
-s.crossVisitParticipation = new Function("v","cn","ex","ct","dl","ev",""                          
-+"var s=this;var ay=s.split(ev,',');for(var u=0;u<ay.length;u++){if(s"                     
-+".events&&s.events.indexOf(ay[u])!=-1){s.c_w(cn,'');return '';}}if(!"                     
-+"v||v=='')return '';var arry=new Array();var a=new Array();var c=s.c"                     
-+"_r(cn);var g=0;var h=new Array();if(c&&c!='') arry=eval(c);var e=ne"                     
-+"w Date();e.setFullYear(e.getFullYear()+5);if(arry.length>0&&arry[ar"                     
-+"ry.length-1][0]==v)arry[arry.length-1]=[v, new Date().getTime()];el"                     
-+"se arry[arry.length]=[v, new Date().getTime()];var data=s.join(arry"                     
-+",{delim:',',front:'[',back:']',wrap:'\\''});var start=arry.length-c"                     
-+"t < 0?0:arry.length-ct;s.c_w(cn,data,e);for(var x=start;x<arry.leng"                     
-+"th;x++){var diff=Math.round(new Date()-new Date(parseInt(arry[x][1]"                     
-+")))/86400000;if(diff<ex){h[g]=arry[x][0];a[g++]=arry[x];}}var r=s.j"                     
-+"oin(h,{delim:dl});return r;");
-
-/*
- * Plugin: getTimeParting 1.3 - Set timeparting values based on time zone
- */
-
-s.getTimeParting=new Function("t","z","y",""
++"se str+=w+v[x]+w;if(x<v.length-1)str+=d;}return f+str+b;");s.crossVisitParticipation=new Function("v","cn","ex","ct","dl","ev",""
++"var s=this;var ay=s.split(ev,',');for(var u=0;u<ay.length;u++){if(s"
++".events&&s.events.indexOf(ay[u])!=-1){s.c_w(cn,'');return '';}}if(!"
++"v||v=='')return '';var arry=new Array();var a=new Array();var c=s.c"
++"_r(cn);var g=0;var h=new Array();if(c&&c!='') arry=eval(c);var e=ne"
++"w Date();e.setFullYear(e.getFullYear()+5);if(arry.length>0&&arry[ar"
++"ry.length-1][0]==v)arry[arry.length-1]=[v, new Date().getTime()];el"
++"se arry[arry.length]=[v, new Date().getTime()];var data=s.join(arry"
++",{delim:',',front:'[',back:']',wrap:'\\''});var start=arry.length-c"
++"t < 0?0:arry.length-ct;s.c_w(cn,data,e);for(var x=start;x<arry.leng"
++"th;x++){var diff=Math.round(new Date()-new Date(parseInt(arry[x][1]"
++")))/86400000;if(diff<ex){h[g]=arry[x][0];a[g++]=arry[x];}}var r=s.j"
++"oin(h,{delim:dl});return r;");s.getTimeParting=new Function("t","z","y",""
 +"dc=new Date('1/1/2000');f=15;ne=8;if(dc.getDay()!=6||"
 +"dc.getMonth()!=0){return'Data Not Available'}else{;z=parseInt(z);"
 +"if(y=='2009'){f=8;ne=1};gmar=new Date('3/1/'+y);dsts=f-gmar.getDay("
@@ -422,18 +134,9 @@ s.getTimeParting=new Function("t","z","y",""
 +"ish=12};if(thisd==6||thisd==0){dt='Weekend'};var timestring=thish+'"
 +":'+mint+ap;var daystring=dow;var endstring=dt;if(t=='h'){return tim"
 +"estring}if(t=='d'){return daystring};if(t=='w'){return en"
-+"dstring}}};"
-);
-
-s.loadModule("Survey")
-var s_sv_dynamic_root = "survey.112.2o7.net/survey/dynamic"
-var s_sv_gather_root = "survey.112.2o7.net/survey/gather"
-
-/* SiteCatalyst code version: H.23.3.
-Copyright 1996-2010 Adobe, Inc. All Rights Reserved
-More info available at http://www.omniture.com */
-/****************************** MODULES *****************************/
-/* Module: Survey */
++"dstring}}};");s.loadModule("Survey")
+var s_sv_dynamic_root="survey.112.2o7.net/survey/dynamic"
+var s_sv_gather_root="survey.112.2o7.net/survey/gather"
 s.m_Survey_c="var m=s.m_i(\"Survey\");m.launch=function(i,e,c,o,f){this._boot();var m=this,g=window.s_sv_globals||{},l,j;if(g.unloaded||m._blocked())return 0;i=i&&i.constructor&&i.constructor==Array?"
 +"i:[i];l=g.manualTriggers;for(j=0;j<i.length;++j)l[l.length]={l:m._suites,i:i[j],e:e||0,c:c||0,o:o||0,f:f||0};m._execute();return 1;};m.version = 10001;m._t=function(){this._boot();var m=this,s=m.s,"
 +"g=window.s_sv_globals||{},l,impr,i,k,impr={};if(m._blocked())return;for(i=0;i<s.va_t.length;i++){k=s.va_t[i];if(s[k]) impr[k]=s[k];}impr[\"l\"]=m._suites;impr[\"n\"]=impr[\"pageName\"]||\"\";impr["
@@ -450,11 +153,7 @@ s.m_Survey_c="var m=s.m_i(\"Survey\");m.launch=function(i,e,c,o,f){this._boot();
 +"on(){var m=this,g=s_sv_globals,q=g.suites,r,i,n=\"s_sv_sid\",b=m.s.c_r(n);if(!b){b=parseInt((new Date()).getTime()*Math.random());m.s.c_w(n,b);}for(i in q){r=q[i];if(!r.requested){r.requested=1;m._"
 +"script(r.url+\"/list.js?\"+b);}}};m._loaded=function(r,b,d,i,l){var m=this,g=s_sv_globals,n=g.incomingLists;--g.pending;if(!g.commonRevision){g.bulkRevision=b;g.commonRevision=r;g.commonUrl=g.url+"
 +"\"/common/\"+b;}else if(g.commonRevision!=r)return;if(!l.length)return;n[n.length]={r:i,l:l};if(g.execute)g.execute();else if(!g.triggerRequested){g.triggerRequested=1;m._script(g.commonUrl+\"/trig"
-+"ger.js\");}};m._script=function(u){var d=document,e=d.createElement(\"script\");e.type=\"text/javascript\";e.src=u;d.getElementsByTagName(\"head\")[0].appendChild(e);};if(m.onLoad)m.onLoad(s,m)";
-s.m_i("Survey");
-
-/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
-var s_code='',s_objectID;function s_gi(un,pg,ss){var c="s.version='H.23.3';s.an=s_an;s.logDebug=function(m){var s=this,tcf=new Function('var e;try{console.log(\"'+s.rep(s.rep(m,\"\\n\",\"\\\\n\"),\""
++"ger.js\");}};m._script=function(u){var d=document,e=d.createElement(\"script\");e.type=\"text/javascript\";e.src=u;d.getElementsByTagName(\"head\")[0].appendChild(e);};if(m.onLoad)m.onLoad(s,m)";s.m_i("Survey");var s_code='',s_objectID;function s_gi(un,pg,ss){var c="s.version='H.23.3';s.an=s_an;s.logDebug=function(m){var s=this,tcf=new Function('var e;try{console.log(\"'+s.rep(s.rep(m,\"\\n\",\"\\\\n\"),\""
 +"\\\"\",\"\\\\\\\"\")+'\");}catch(e){}');tcf()};s.cls=function(x,c){var i,y='';if(!c)c=this.an;for(i=0;i<x.length;i++){n=x.substring(i,i+1);if(c.indexOf(n)>=0)y+=n}return y};s.fl=function(x,l){retur"
 +"n x?(''+x).substring(0,l):x};s.co=function(o){if(!o)return o;var n=new Object,x;for(x in o)if(x.indexOf('select')<0&&x.indexOf('filter')<0)n[x]=o[x];return n};s.num=function(x){x=''+x;for(var p=0;p"
 +"<x.length;p++)if(('0123456789').indexOf(x.substring(p,p+1))<0)return 0;return 1};s.rep=s_rep;s.sp=s_sp;s.jn=s_jn;s.ape=function(x){var s=this,h='0123456789ABCDEF',i,c=s.charSet,n,l,e,y='';c=c?c.toU"
@@ -581,20 +280,10 @@ var s_code='',s_objectID;function s_gi(un,pg,ss){var c="s.version='H.23.3';s.an=
 +"ecure,trackingServerBase,fpCookieDomainPeriods,disableBufferedRequests,mobile,visitorSampling,visitorSamplingGroup,dynamicAccountSelection,dynamicAccountList,dynamicAccountMatch,trackDownloadLinks,"
 +"trackExternalLinks,trackInlineStats,linkLeaveQueryString,linkDownloadFileTypes,linkExternalFilters,linkInternalFilters,linkTrackVars,linkTrackEvents,linkNames,lnk,eo,lightTrackVars,_1_referrer,un';"
 +"s.va_g=s.sp(s.vl_g,',');s.pg=pg;s.gl(s.vl_g);s.contextData=new Object;s.retrieveLightData=new Object;if(!ss)s.wds();if(pg){s.wd.s_co=function(o){s_gi(\"_\",1,1).co(o)};s.wd.s_gs=function(un){s_gi(u"
-+"n,1,1).t()};s.wd.s_dc=function(un){s_gi(un,1).t()}}",
-w=window,l=w.s_c_il,n=navigator,u=n.userAgent,v=n.appVersion,e=v.indexOf('MSIE '),m=u.indexOf('Netscape6/'),a,i,x,s;if(un){un=un.toLowerCase();if(l)for(i=0;i<l.length;i++){s=l[i];x=s._c;if((!x||x=='s_c'||x=='s_l')&&(s.oun==un||(s.fs&&s.sa&&s.fs(s.oun,un)))){if(s.sa)s.sa(un);if(x=='s_c')return s}else s=0}}w.s_an='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-w.s_sp=new Function("x","d","var a=new Array,i=0,j;if(x){if(x.split)a=x.split(d);else if(!d)for(i=0;i<x.length;i++)a[a.length]=x.substring(i,i+1);else while(i>=0){j=x.indexOf(d,i);a[a.length]=x.subst"
-+"ring(i,j<0?x.length:j);i=j;if(i>=0)i+=d.length}}return a");
-w.s_jn=new Function("a","d","var x='',i,j=a.length;if(a&&j>0){x=a[0];if(j>1){if(a.join)x=a.join(d);else for(i=1;i<j;i++)x+=d+a[i]}}return x");
-w.s_rep=new Function("x","o","n","return s_jn(s_sp(x,o),n)");
-w.s_d=new Function("x","var t='`^@$#',l=s_an,l2=new Object,x2,d,b=0,k,i=x.lastIndexOf('~~'),j,v,w;if(i>0){d=x.substring(0,i);x=x.substring(i+2);l=s_sp(l,'');for(i=0;i<62;i++)l2[l[i]]=i;t=s_sp(t,'');d"
++"n,1,1).t()};s.wd.s_dc=function(un){s_gi(un,1).t()}}",w=window,l=w.s_c_il,n=navigator,u=n.userAgent,v=n.appVersion,e=v.indexOf('MSIE '),m=u.indexOf('Netscape6/'),a,i,x,s;if(un){un=un.toLowerCase();if(l)for(i=0;i<l.length;i++){s=l[i];x=s._c;if((!x||x=='s_c'||x=='s_l')&&(s.oun==un||(s.fs&&s.sa&&s.fs(s.oun,un)))){if(s.sa)s.sa(un);if(x=='s_c')return s}else s=0}}w.s_an='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';w.s_sp=new Function("x","d","var a=new Array,i=0,j;if(x){if(x.split)a=x.split(d);else if(!d)for(i=0;i<x.length;i++)a[a.length]=x.substring(i,i+1);else while(i>=0){j=x.indexOf(d,i);a[a.length]=x.subst"
++"ring(i,j<0?x.length:j);i=j;if(i>=0)i+=d.length}}return a");w.s_jn=new Function("a","d","var x='',i,j=a.length;if(a&&j>0){x=a[0];if(j>1){if(a.join)x=a.join(d);else for(i=1;i<j;i++)x+=d+a[i]}}return x");w.s_rep=new Function("x","o","n","return s_jn(s_sp(x,o),n)");w.s_d=new Function("x","var t='`^@$#',l=s_an,l2=new Object,x2,d,b=0,k,i=x.lastIndexOf('~~'),j,v,w;if(i>0){d=x.substring(0,i);x=x.substring(i+2);l=s_sp(l,'');for(i=0;i<62;i++)l2[l[i]]=i;t=s_sp(t,'');d"
 +"=s_sp(d,'~');i=0;while(i<5){v=0;if(x.indexOf(t[i])>=0) {x2=s_sp(x,t[i]);for(j=1;j<x2.length;j++){k=x2[j].substring(0,1);w=t[i]+k;if(k!=' '){v=1;w=d[b+l2[k]]}x2[j]=w+x2[j].substring(1)}}if(v)x=s_jn("
-+"x2,'');else{w=t[i]+' ';if(x.indexOf(w)>=0)x=s_rep(x,w,t[i]);i++;b+=62}}}return x");
-w.s_fe=new Function("c","return s_rep(s_rep(s_rep(c,'\\\\','\\\\\\\\'),'\"','\\\\\"'),\"\\n\",\"\\\\n\")");
-w.s_fa=new Function("f","var s=f.indexOf('(')+1,e=f.indexOf(')'),a='',c;while(s>=0&&s<e){c=f.substring(s,s+1);if(c==',')a+='\",\"';else if((\"\\n\\r\\t \").indexOf(c)<0)a+=c;s++}return a?'\"'+a+'\"':"
-+"a");
-w.s_ft=new Function("c","c+='';var s,e,o,a,d,q,f,h,x;s=c.indexOf('=function(');while(s>=0){s++;d=1;q='';x=0;f=c.substring(s);a=s_fa(f);e=o=c.indexOf('{',s);e++;while(d>0){h=c.substring(e,e+1);if(q){i"
++"x2,'');else{w=t[i]+' ';if(x.indexOf(w)>=0)x=s_rep(x,w,t[i]);i++;b+=62}}}return x");w.s_fe=new Function("c","return s_rep(s_rep(s_rep(c,'\\\\','\\\\\\\\'),'\"','\\\\\"'),\"\\n\",\"\\\\n\")");w.s_fa=new Function("f","var s=f.indexOf('(')+1,e=f.indexOf(')'),a='',c;while(s>=0&&s<e){c=f.substring(s,s+1);if(c==',')a+='\",\"';else if((\"\\n\\r\\t \").indexOf(c)<0)a+=c;s++}return a?'\"'+a+'\"':"
++"a");w.s_ft=new Function("c","c+='';var s,e,o,a,d,q,f,h,x;s=c.indexOf('=function(');while(s>=0){s++;d=1;q='';x=0;f=c.substring(s);a=s_fa(f);e=o=c.indexOf('{',s);e++;while(d>0){h=c.substring(e,e+1);if(q){i"
 +"f(h==q&&!x)q='';if(h=='\\\\')x=x?0:1;else x=0}else{if(h=='\"'||h==\"'\")q=h;if(h=='{')d++;if(h=='}')d--}if(d>0)e++}c=c.substring(0,s)+'new Function('+(a?a+',':'')+'\"'+s_fe(c.substring(o+1,e))+'\")"
-+"'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
-c=s_d(c);if(e>0){a=parseInt(i=v.substring(e+5));if(a>3)a=parseFloat(i)}else if(m>0)a=parseFloat(u.substring(m+10));else a=parseFloat(v);if(a<5||v.indexOf('Opera')>=0||u.indexOf('Opera')>=0)c=s_ft(c);if(!s){s=new Object;if(!w.s_c_in){w.s_c_il=new Array;w.s_c_in=0}s._il=w.s_c_il;s._in=w.s_c_in;s._il[s._in]=s;w.s_c_in++;}s._c='s_c';(new Function("s","un","pg","ss",c))(s,un,pg,ss);return s}
-
++"'+c.substring(e+1);s=c.indexOf('=function(')}return c;");c=s_d(c);if(e>0){a=parseInt(i=v.substring(e+5));if(a>3)a=parseFloat(i)}else if(m>0)a=parseFloat(u.substring(m+10));else a=parseFloat(v);if(a<5||v.indexOf('Opera')>=0||u.indexOf('Opera')>=0)c=s_ft(c);if(!s){s=new Object;if(!w.s_c_in){w.s_c_il=new Array;w.s_c_in=0}s._il=w.s_c_il;s._in=w.s_c_in;s._il[s._in]=s;w.s_c_in++;}s._c='s_c';(new Function("s","un","pg","ss",c))(s,un,pg,ss);return s}

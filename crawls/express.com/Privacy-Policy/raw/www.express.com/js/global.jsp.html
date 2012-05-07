@@ -823,6 +823,7 @@ var exp = window.exp = function($) {
 					//quickview.
 					$(".widget-quickview-but2").each(function() {
 						$(this).parent().click(function() {
+						  
 							type = $(this).attr("id").split("-")[0];
 							id = $(this).attr("id").split("-")[1];
 							if( type == "p" )
@@ -833,8 +834,14 @@ var exp = window.exp = function($) {
 							//if on basket page
 							if ( $(".che-bas-also-like-item").size() > 0 )
 							{ params = params + "&onBasketPage=1"; }
-
+							
 							loadQuickView(params, $("body"));
+							 var s=s_gi(s_account);
+							  
+							 s.linkTrackVars='eVar3';
+							 s.linkTrackEvents='';
+							 s.eVar3="cross-sell";							
+							 s.tl(this,'o','Cross Sell Click');
 						});
 						$(this).widgetButton({
 							cssButton: 1,

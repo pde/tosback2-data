@@ -357,7 +357,7 @@ _b.AutoSuggest.prototype.setSuggestions = function (req, input)
 		
 		for (var i=0;i<jsondata.results.length;i++)
 		{
-			this.aSug.push(  { 'id':jsondata.results[i].id, 'value':jsondata.results[i].value, 'info':jsondata.results[i].info, 'keyword':jsondata.results[i].keyword, 'link':jsondata.results[i].link }  );
+			this.aSug.push(  { 'id':jsondata.results[i].id, 'value':jsondata.results[i].value, 'info':jsondata.results[i].info, 'keyword':jsondata.results[i].keyword  }  );
 		}
 	}
 	else
@@ -441,7 +441,6 @@ _b.AutoSuggest.prototype.createList = function(arr)
 	// loop throught arr of suggestions
 	// creating an LI element for each suggestion
 	//
-
 	for (var i=0;i<arr.length;i++)
 	{
 		// format output with the input enclosed in a EM element
@@ -450,7 +449,6 @@ _b.AutoSuggest.prototype.createList = function(arr)
 		
 		// Trim display
 		var val = arr[i].value;
-		var link = arr[i].link;
 		var original_val = arr[i].value;
 		var dimID = arr[i].id;
 		var isKeyword = arr[i].keyword == "YES";
@@ -472,7 +470,12 @@ _b.AutoSuggest.prototype.createList = function(arr)
 		}
 		
 		// Fixed to link the suggestion to advanced search page
-		var a 			= _b.DOM.cE("a", { href:link });
+		//var a 			= _b.DOM.cE("a", { href:"#" });
+		var a 			= _b.DOM.cE("a", { href:advancedSearchPageURL + dimID + "&Nrt=" + original_val});
+		if (isKeyword)
+			var a                   = _b.DOM.cE("a", { href:advancedSearchPageURL + 0 + "&keyword=" + original_val});
+
+		
 		
 		var tl 		= _b.DOM.cE("span", {className:"tl"}, " ");
 		var tr 		= _b.DOM.cE("span", {className:"tr"}, " ");
@@ -638,14 +641,12 @@ _b.AutoSuggest.prototype.setHighlightedValue = function ()
 		var val = this.sInp = this.fld.value = this.aSug[ this.iHigh-1 ].value;
 		var dimID = this.aSug[ this.iHigh-1 ].id;
 
-		var link = this.aSug[ this.iHigh-1 ].link;
-
 		var isKeyword = this.aSug[ this.iHigh-1 ].keyword == "YES";
 
 		if (isKeyword)
 			document.location.href = advancedSearchPageURL + 0 + "&keyword=" + val
 		else
-			document.location.href = link;
+			document.location.href = advancedSearchPageURL + dimID + "&Nrt=" + val
 		
 		// move cursor to end of input (safari)
 		//

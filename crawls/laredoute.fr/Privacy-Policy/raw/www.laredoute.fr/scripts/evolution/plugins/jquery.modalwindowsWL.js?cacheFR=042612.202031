@@ -1,0 +1,7 @@
+﻿
+(function($){$.init=function(contentDivID,closeMeClass){this.contentDivID="#"+contentDivID;this.closeClass="."+closeMeClass;$(window).resize(function(){$.resizeOpaqueWindow();});}
+$.resizeOpaqueWindow=function(){overlayWidth=$(window).width();overlayHeight=$(document).height();$("#overlay").css({top:0,left:0,background:"white",width:overlayWidth,height:overlayHeight,position:"absolute",display:"block"});}
+$.makeWindow=function(){var modalContent=$(this.contentDivID).html();$('body').append('<div id="modalWindow">'+modalContent+'</div>');MW_WIDTH=261;MW_HEIGHT=141;$("#modalWindow").css({marginLeft:'-'+parseInt((MW_WIDTH/2),10)+'px',width:MW_WIDTH+'px'});if(!(jQuery.browser.msie&&jQuery.browser.version<7)){$("#modalWindow").css({marginTop:'-'+parseInt((MW_HEIGHT/2),10)+'px'});};}
+$.createOverlay=function(){$("body").append('<div id="overlay"></div>');$("#overlay").css("zIndex",500);$("#overlay").css('opacity',0);overlayWidth=$(window).width();overlayHeight=$(document).height();$("#overlay").css({top:0,left:0,background:"white",width:overlayWidth,height:overlayHeight,position:"absolute",display:"block"});}
+$.displayModalWindow=function(){$("#overlay").fadeTo("normal",0.6);$("#overlay").bgiframe();$("#modalWindow").fadeIn("normal");}
+$.closeModalWindow=function(){$("#modalWindow").fadeOut("normal",function(){$("#overlay").fadeTo("normal",0);$("#overlay").remove();$("#modalWindow").remove();});}})(jQuery)

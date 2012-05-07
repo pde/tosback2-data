@@ -8,12 +8,12 @@ function createCookie(name,value,days) {
 	if (days) {
     var date;
     if (typeof days == "object") {
-      date = days
+      date = days;
     } else {
-      var date = new Date();
+       date = new Date();
 		  date.setTime(date.getTime()+days*86400000); // Convert to milleseconds
     }
-		var expires = "; expires="+date.toGMTString();
+		expires = "; expires="+date.toGMTString();
 	}
 	document.cookie = name+"="+value+expires+"; path=/; domain=.comcast.net";
 }
@@ -24,7 +24,9 @@ function readCookie(name) {
   	var re = /\s*(.*)/;
 	for(var i=0, l=ca.length; i<l; i++) {
 		var c = ca[i].match(re)[1];
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		if (c.indexOf(nameEQ) === 0) {
+			return c.substring(nameEQ.length, c.length);
+		}
 	}
 	return null;
 }
@@ -40,7 +42,7 @@ function encodeCookie(data) {
 			.replace(/;/g, '%3B')
 			.replace(/=/g, '%3D')
 			.replace(/&/g, '%26');
-	}
+	};
 
 	var results = [];
 	for (var i in data) {
@@ -53,9 +55,11 @@ function encodeCookie(data) {
 function decodeCookie(data) {
 	var _unescape = function(value) {
 		return unescape(value);
-	}
+	};
 
-	if (!data) return {};
+	if (!data) {
+		return {};
+	}
 
 	var results = {}, pairs = data.split('&');
 	for (var i=0, l=pairs.length; i<l; i++) {
@@ -80,38 +84,26 @@ var BrowserDetect = {
 			var dataProp = data[i].prop;
 			this.versionSearchString = data[i].versionSearch || data[i].identity;
 			if (dataString) {
-				if (dataString.indexOf(data[i].subString) != -1)
+				if (dataString.indexOf(data[i].subString) != -1) {
 					return data[i].identity;
-			}
-			else if (dataProp)
+				}
+			} else if (dataProp) {
 				return data[i].identity;
+			}
 		}
 	},
 	searchVersion: function (dataString) {
 		var index = dataString.indexOf(this.versionSearchString);
-		if (index == -1) return;
+		if (index == -1) {
+			return;
+		}
 		return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
 	},
 	dataBrowser: [
-        {	// google instant preview
+		{ // ad crawler
 			string: navigator.userAgent,
-			subString: "Google Web Preview",
-			identity: "Googlebots"
-		},
-		{	// gooblebot
-			string: navigator.userAgent,
-			subString: "Googlebot",
-			identity: "Googlebots"
-		},
-		{	// google Mediapartners
-			string: navigator.userAgent,
-			subString: "Mediapartners-Google",
-			identity: "Googlebots"
-		},
-		{	// google AdsBot
-			string: navigator.userAgent,
-			subString: "AdsBot-Google",
-			identity: "Googlebots"
+			subString: "visualrevenue",
+			identity: "VisualRevenue"
 		},
 		{   string: navigator.userAgent,
             subString: "Chrome",
@@ -189,6 +181,16 @@ var BrowserDetect = {
 			subString: "Mozilla",
 			identity: "Netscape",
 			versionSearch: "Mozilla"
+		},
+		{	// google bots/preview
+			string: navigator.userAgent,
+			subString: "Google",
+			identity: "Googlebots"
+		},
+		{	// google bots/preview
+			string: navigator.userAgent,
+			subString: "google",
+			identity: "Googlebots"
 		}
 	],
 	dataOS : [
@@ -247,6 +249,9 @@ function upgradeRedirect() {
         redirecting = false;
     }
 	if (BrowserDetect.browser == "Googlebots") {
+		redirecting = false;	
+	}
+	if (BrowserDetect.browser == "VisualRevenue") {
 		redirecting = false;	
 	}
 	

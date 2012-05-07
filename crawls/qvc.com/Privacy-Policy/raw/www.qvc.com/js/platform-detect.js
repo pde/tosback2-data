@@ -122,6 +122,16 @@ var platform = {
 	dataDevice : [
 		{
 			string: navigator.userAgent,
+			subString: "Silk",
+			identity: "Silk"
+		},
+		{
+			string: navigator.userAgent,
+			subString: "Kindle",
+			identity: "Kindle"
+		},
+		{
+			string: navigator.userAgent,
 			subString: "iPod",
 			identity: "iPod"
 		},

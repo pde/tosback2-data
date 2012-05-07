@@ -142,6 +142,9 @@ ESRIConfig.setLayerIndexs = function(layer) {
 	var g4CoverageLayerName = "4G";
 	var g4CoverageLayerIndex = null;
 	
+	var g4lteCoverageLayerName = "4G_LTE";
+	var g4lteoverageLayerIndex = null;
+	
 	var voiceCoverageLayerName = "Voice";
 	var voiceCoverageLayerIndex = null;
 
@@ -205,6 +208,10 @@ ESRIConfig.setLayerIndexs = function(layer) {
 			case g4CoverageLayerName:
 				g4CoverageLayerIndex = info.id;
 			break;
+
+			case g4lteCoverageLayerName:
+				g4lteoverageLayerIndex = info.id;
+				break;
 			
 			case voiceCoverageLayerName:
 				voiceCoverageLayerIndex = info.id;
@@ -268,7 +275,13 @@ ESRIConfig.setLayerIndexs = function(layer) {
 				referenceLayerIndex.toString(), voiceCoverageLayerIndex
 						.toString(), baseLayerIndex.toString());
 		
-		if(g4CoverageLayerIndex != null){
+		if(g4CoverageLayerIndex != null && g4lteoverageLayerIndex != null){
+			ESRIConfig.visibleDataLayers[ESRIConfig.dataDataTypeID] = new Array(
+					referenceLayerIndex.toString(),
+					g4lteoverageLayerIndex.toString(), g4CoverageLayerIndex.toString(),
+					dataCoverageLayerIndex.toString(), baseLayerIndex.toString());
+		}
+		else if(g4CoverageLayerIndex != null){
 			ESRIConfig.visibleDataLayers[ESRIConfig.dataDataTypeID] = new Array(
 					referenceLayerIndex.toString(), g4CoverageLayerIndex.toString(),
 					dataCoverageLayerIndex.toString(), baseLayerIndex.toString());

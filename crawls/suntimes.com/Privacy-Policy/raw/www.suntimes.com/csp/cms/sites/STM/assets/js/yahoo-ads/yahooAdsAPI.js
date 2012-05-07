@@ -33,7 +33,7 @@ slotPosition["Frame1"] = ["720x300"];
 slotPosition["Frame2"] =["800x600"];
 slotPosition["OneByOne"] =["1x1"];
 slotPosition["PromoRight"] =["300x100"];
-slotPosition["PromoBottom"] =["336x280"];
+slotPosition["PromoBottom"] =["300x250"];
 slotPosition["IWantItCube"] =["180x150"];
 slotPosition["NavAd"] =["160x30"];
 

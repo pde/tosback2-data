@@ -2,15 +2,13 @@
 
 $(document).ready(function(){
 	
-	//fade light images
-	$('.activeTab, .inactiveTab').mouseenter(function() {
-		//alert('active tab')
-		$(this).fadeTo(150, .75);
-	})
+	//fade accordion buttons
 	
-	$('.activeTab, .inactiveTab').mouseleave(function() {
-		$(this).fadeTo(150, 1);
-	})
+	$('.activeTab, .inactiveTab').hover(function() {
+			$(this).stop(true, true).fadeTo(250, .80);
+			}, function() {
+			  $(this).stop(true, true).fadeTo(250, 1);
+			});
 		
 	$('div#items').click(function() {
 		

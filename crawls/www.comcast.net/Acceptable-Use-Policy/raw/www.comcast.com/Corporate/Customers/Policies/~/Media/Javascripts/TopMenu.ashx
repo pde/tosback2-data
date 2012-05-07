@@ -105,6 +105,7 @@ function startListMenu() {
         }
 		HideSignOutLinks();
     }
+
     function navigationHoverMenu() {
         var menu = document.getElementById("topMenu");
 
@@ -128,10 +129,11 @@ function startListMenu() {
                 if (document.styleSheets[n].href != null) {
                     menuCss = document.styleSheets[n].href.match(/(comcast_)(\w+)(\.css$)/);
                     if (menuCss) {
-                        selectedMenu = menuCss[2].toLowerCase();
+                        selectedMenu = menuCss[2].toLowerCase();  
+			var mediaUrl = getMediaUrl(selectedMenu.toLowerCase());
                         var menuName = node.className.toLowerCase();
                         if (menuName.indexOf(selectedMenu) > -1) {
-                            node.getElementsByTagName("img")[0].src = ('~/media/ImageLibrary/TopMenu/' + selectedMenu + '_Hover.ashx');
+                            node.getElementsByTagName("img")[0].src = mediaUrl;
                             break;
                         }   // end if (menuName)			            
                     }    // end if (menuCss)
@@ -140,4 +142,28 @@ function startListMenu() {
             }   // end for( n )	
 
         }
-    } 
+    }
+
+	function getMediaUrl(selectedMenu) {
+        var menuMediaUrl;
+        switch (selectedMenu) {
+            case "explore":
+                menuMediaUrl = mediaurllist[0];
+                break;
+            case "shop":
+                menuMediaUrl = mediaurllist[1];
+                break;
+            case "programming":
+                menuMediaUrl = mediaurllist[2];
+                break;
+            case "customers":
+                menuMediaUrl = mediaurllist[3];
+                break;
+            case "About":
+                menuMediaUrl = mediaurllist[4];
+                break;
+            default:
+                menuMediaUrl = "";
+        }
+        return menuMediaUrl;
+    }

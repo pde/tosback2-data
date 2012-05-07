@@ -1,3 +1,13 @@
+/* hack to fix homepage CMS 
+document.observe('dom:loaded', function(e) {
+	$("slide3").update('<a href="http://www.worldmarket.com/category/index.jsp?categoryId=12991345&ab=home:wk15:a:3:img:1:teamtime"><img src="http://www.worldmarket.com/cms_widgets/77/13/771326_assets/a3_2.jpg"></a>');
+
+	$("global_marketing_spot").update('<div style="width:906px; margin:10px auto 0px auto; background:#dd4777; height:36px"> <a href="http://www.worldmarket.com/family/index.jsp?categoryId=11668227&amp;ab=gps:wk15:left:outdoorsale"> <img src="/cms_widgets/77/13/771327_assets/gps-1_2.gif" width="383" height="21" alt="" style="margin:8px 14px 0px 20px; float:left" border="0"/></a> <a href="http://www.worldmarket.com/category/index.jsp?categoryId=12850561&amp;ab=gps:wk15:right:mothersday"> <img src="/cms_widgets/77/13/771327_assets/gps-2_2.gif" width="450" height="22" alt="" style="margin:8px 20px 0px 0px; float:right" border="0"/></a></div>');
+
+
+});
+*/
+
 //// Go through experiments and for the first URL match
 //// fire the control tag
 

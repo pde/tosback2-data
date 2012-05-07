@@ -74,11 +74,14 @@ function s_doPlugins(s) {
 		if(!s.campaign)
 		{
 			s.campaign=s.getQueryParam('partnerId');
+			s.eVar33 = s.campaign;
 			s.campaign=s.getValOnce(s.campaign,'s_campaign',0);
 		}
 		else 
 		{
+			s.eVar33 = s.campaign;
 			s.campaign=s.getValOnce(s.campaign,'s_campaign',0);
+			
 		}
 		if(s.campaign)
 		{

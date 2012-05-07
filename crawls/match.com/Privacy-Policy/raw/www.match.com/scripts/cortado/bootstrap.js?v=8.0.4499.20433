@@ -1,0 +1,405 @@
+﻿//jQuery plugins
+(function ($) {
+	if (!$.isArray) {
+		$.isArray = Array.isArray || function (obj) {
+			return Object.prototype.toString.call(obj) == '[object Array]';
+		};
+	}
+	$.url = function () { function l(a) { for (var b = "", c = 0, f = 0, d = 0; c < a.length; ) { f = a.charCodeAt(c); if (f < 128) { b += String.fromCharCode(f); c++ } else if (f > 191 && f < 224) { d = a.charCodeAt(c + 1); b += String.fromCharCode((f & 31) << 6 | d & 63); c += 2 } else { d = a.charCodeAt(c + 1); c3 = a.charCodeAt(c + 2); b += String.fromCharCode((f & 15) << 12 | (d & 63) << 6 | c3 & 63); c += 3 } } return b } function m(a, b) { var c = {}, f = { "true": true, "false": false, "null": null }; $.each(a.replace(/\+/g, " ").split("&"), function (d, j) { var e = j.split("="); d = k(e[0]); j = c; var i = 0, g = d.split("]["), h = g.length - 1; if (/\[/.test(g[0]) && /\]$/.test(g[h])) { g[h] = g[h].replace(/\]$/, ""); g = g.shift().split("[").concat(g); h = g.length - 1 } else h = 0; if (e.length === 2) { e = k(e[1]); if (b) e = e && !isNaN(e) ? +e : e === "undefined" ? undefined : f[e] !== undefined ? f[e] : e; if (h) for (; i <= h; i++) { d = g[i] === "" ? j.length : g[i]; j = j[d] = i < h ? j[d] || (g[i + 1] && isNaN(g[i + 1]) ? {} : []) : e } else if ($.isArray(c[d])) c[d].push(e); else c[d] = c[d] !== undefined ? [c[d], e] : e } else if (d) c[d] = b ? undefined : "" }); return c } function n(a) { a = a || window.location; var b = ["source", "protocol", "authority", "userInfo", "user", "password", "host", "port", "relative", "path", "directory", "file", "query", "anchor"]; a = /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*):?([^:@]*))?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/.exec(a); for (var c = {}, f = b.length; f--; ) c[b[f]] = a[f] || ""; if (c.query) c.params = m(c.query, true); return c } function o(a) { if (a.source) return encodeURI(a.source); var b = []; if (a.protocol) if (a.protocol == "file") b.push("file:///"); else a.protocol == "mailto" ? b.push("mailto:") : b.push(a.protocol + "://"); if (a.authority) b.push(a.authority); else { if (a.userInfo) b.push(a.userInfo + "@"); else if (a.user) { b.push(a.user); a.password && b.push(":" + a.password); b.push("@") } if (a.host) { b.push(a.host); a.port && b.push(":" + a.port) } } if (a.path) b.push(a.path); else { a.directory && b.push(a.directory); a.file && b.push(a.file) } if (a.query) b.push("?" + a.query); else a.params && b.push("?" + $.param(a.params)); a.anchor && b.push("#" + a.anchor); return b.join("") } function p(a) { return encodeURIComponent(a) } function k(a) { a = a || window.location.toString(); return l(unescape(a.replace(/\+/g, " "))) } return { encode: p, decode: k, parse: n, build: o} } ();
+
+	$.fn.msg = function (cmd) {
+		try {
+			if (cmd) {
+			    var msgArgs = Array.prototype.slice.call(arguments).slice(1);
+
+			    this.each(function () {
+					var elem = this;
+					var all = Cortado.Behaviors.allFrom(elem);
+					for (behavior in all) {
+						all[behavior].getInstance(function (instance) {
+						    if (cmd in instance && $.isFunction(instance[cmd])) {
+								instance[cmd].apply(elem, msgArgs);
+							}
+						});
+					}
+				});
+			}
+		} catch (e) { Cortado.Helpers.log(e); }
+		return this;
+	};
+
+	$.fn.broadcast = function (cmd) {
+		var origArgs = Array.prototype.slice.call(arguments);
+		this.each(function () {
+			$('*[data-behavior]', this).andSelf().each(function () {
+				$.fn.msg.apply($(this), origArgs);
+			});
+		});
+		return this;
+	};
+
+	$.initBehaviorsFor = function (elem) {
+		Cortado.Behaviors.parse(elem);
+	};
+
+	$.ns = $.namespace = function (namespace) {
+		var parts = namespace.split('.');
+
+		var current = window;
+
+		for (var i = 0; i < parts.length; i++) {
+			if (!current[parts[i]])
+				current[parts[i]] = {};
+
+			current = current[parts[i]];
+		}
+
+		return current;
+	};
+
+    $.ns('Cortado');
+
+	Cortado.Uri = function (uriString) {
+		var _parsed = $.url.parse(uriString);
+
+		return {
+			pieces: function () {
+				return _parsed;
+			},
+			params: function (key, val) {
+				if (!_parsed.params)
+					_parsed.params = {};
+
+				if (arguments.length == 0)
+					return _parsed.params;
+
+				if (arguments.length > 1) {
+					//set flow
+					_parsed.params[key] = val;
+				}
+				else {
+					//get flow
+					return _parsed.params[key];
+				}
+			},
+
+			toString: function () {
+				//wipe source
+				_parsed.source = null;
+				return $.url.build(_parsed);
+			}
+		};
+	};
+
+	Cortado.ScriptUri = function (uriString) {
+		var _baseUri = new Cortado.Uri(uriString);
+
+		return {
+			seedValue: function () {
+				return _baseUri.params('v');
+			}
+		};
+	};
+
+	Cortado.Behaviors = function () {
+		var self = {
+			parse: function (elem) {
+				var typeDef = $(elem).attr('data-behavior');
+
+				if (typeDef) {
+					var types = typeDef.split(' ');
+
+					for (var i = 0; i < types.length; i++) {
+						var type = types[i];
+						var wrapper = new Cortado.Behaviors.BehaviorWrapper(type, elem);
+
+						if (!elem.behaviors)
+							elem.behaviors = [];
+
+						elem.behaviors[type] = wrapper;
+
+						if ($(elem).attr('data-init') == 'true')
+							wrapper.touch();
+					}
+				}
+			},
+
+			wireupEvents: function () {
+				if (!window.opera && !/webkit/i.test(navigator.userAgent) && !/Firefox/i.test(navigator.userAgent)) return;
+
+				document.addEventListener("DOMContentLoaded", function (event) {
+					$('.extend').each(function () {
+						Cortado.Behaviors.parse(this);
+					});
+				}, true);
+				document.addEventListener("DOMNodeInserted", function (event) {
+					$('.extend', event.target).andSelf().each(function () {
+						Cortado.Behaviors.parse(this);
+					});
+				}, true);
+			},
+
+			allFrom: function (elem) {
+				self.ensure(elem);
+
+				if (!elem.behaviors)
+					return [];
+
+				return elem.behaviors;
+			},
+
+			ensure: function (elem) {
+				if (!elem.behaviors && $(elem).attr('data-behavior')) {
+					self.parse(elem);
+				}
+			}
+		};
+
+		return self;
+	} ();
+
+	Cortado.Behaviors.BehaviorWrapper = function (typeName, container) {
+		var _typeName = typeName;
+		var _container = container;
+		var _instance = null;
+		var _awake = false;
+
+		var wakeUp = function (onInstantiate) {
+			Cortado.Bootloader.requireByType(_typeName, function () {
+				_instance = eval('new ' + _typeName + '()');
+
+				if ('wakeFrom' in _instance && $.isFunction(_instance['wakeFrom'])) {
+					_instance.wakeFrom(_container);
+				}
+				_awake = true;
+				if ($.isFunction(onInstantiate)) onInstantiate(_instance);
+			});
+		};
+
+		return {
+			getInstance: function (onInstantiate) {
+				if (!_awake) {
+					wakeUp(onInstantiate);
+				}
+				else {
+					onInstantiate(_instance);
+				}
+			},
+
+			touch: function () {
+				if (!_awake) {
+					wakeUp();
+				}
+			}
+		};
+	};
+
+	Cortado.Behaviors.wireupEvents();
+
+
+	Cortado.Bootloader = function () {
+		var _loadListeners = [];
+		var _allowCache = true;
+
+		var determineSeedValue = function () {
+			if (!_allowCache)
+				return (new Date()).getTime().toString();
+
+			var seedValue = null;
+			$('script').each(function () {
+				if ($(this).attr('src') && $(this).attr('src').toLowerCase().indexOf('/cortado/bootstrap.js') >= 0) {
+					var scriptUri = new Cortado.ScriptUri($(this).attr('src'));
+					seedValue = scriptUri.seedValue();
+				}
+			});
+
+			return seedValue;
+		};
+
+		var maskSrc = function (src) {
+			return (src.indexOf('~') == 0) ? src.substring(1) : src;
+		};
+		var maskSrcForFetch = function (src) {
+			var uri = new Cortado.Uri(src);
+			uri.params('v', determineSeedValue());
+
+			return uri.toString();
+		};
+
+		var referenced = function (src) {
+			var masked = maskSrc(src).toLowerCase();
+			var found = false;
+
+			$('script').each(function () {
+				if ($(this).attr('src') && $(this).attr('src').toLowerCase().indexOf(masked) >= 0) {
+					found = true;
+				}
+			});
+
+			return found;
+		};
+
+		var addListenerFor = function (path, onLoaded) {
+			if (_loadListeners[path] == null)
+				_loadListeners[path] = [];
+
+			_loadListeners[path][_loadListeners[path].length] = onLoaded;
+		};
+
+		var fireAllListenersFor = function (path) {
+			for (var i = 0; i < _loadListeners[path].length; i++) {
+				if ($.isFunction(_loadListeners[path][i])) _loadListeners[path][i]();
+			}
+		};
+
+		var getTypeByString = function (typeString) {
+			var parts = typeString.split('.');
+
+			var current = window;
+
+			for (var i = 0; i < parts.length; i++) {
+				if (!current[parts[i]])
+					return null;
+
+				current = current[parts[i]];
+			}
+
+			return current;
+		};
+
+		var self = {
+			requireByType: function (typeName, onLoaded) {
+				if (getTypeByString(typeName) != null) {
+					onLoaded();
+				}
+				else {
+					var requirePath = '/scripts/' + typeName.replace('.', '/') + '.js';
+					self.require(requirePath, onLoaded);
+				}
+			},
+			require: function (src, onLoaded) {
+				if ($.isFunction(onLoaded))
+					addListenerFor(src, onLoaded);
+
+				if (referenced(src)) {
+					return;
+				}
+
+				var script = document.createElement('script');
+				script.src = maskSrcForFetch(src);
+				script.async = true;
+				script.type = 'text/javascript';
+				var head = document.getElementsByTagName('head')[0];
+				if (!head) {
+					head = document.body.parentNode.appendChild(document.createElement('head'));
+				}
+
+				if (script.readyState) { // Ensure IE9 only fires once
+					script.onreadystatechange = function () {
+						if (script.readyState == 'complete' || script.readyState == 'loaded') { // Fire for all versions of IE
+							fireAllListenersFor(src);
+						}
+					}
+				} else {
+					script.onload = function () {
+						fireAllListenersFor(src);
+					}
+				}
+
+				head.appendChild(script);
+			},
+			caching: function (allowCache) {
+				_allowCache = allowCache;
+			}
+		};
+
+		return self;
+	} ();
+
+	Cortado.Helpers = function () {
+		return {
+			safeInvoke: function (method, data) {
+				if ($.isFunction(method))
+					method();
+			},
+			log: function (msg) {
+				try {
+					if (!$.browser.msie) {
+						if (typeof window.console != undefined) {
+							console.log(msg);
+						}
+					}
+				} catch (ex) { };
+			}
+		};
+    } ();
+
+    Cortado.Flash = function () {
+        getVersion = function () {
+            var version = { major: 0, minor: 0, release: 0 };
+            if (typeof navigator.plugins != "undefined" && typeof navigator.plugins["Shockwave Flash"] == "object") {
+                d = navigator.plugins["Shockwave Flash"].description;
+                if (d && !(typeof navigator.mimeTypes != "undefined" && navigator.mimeTypes["application/x-shockwave-flash"] && !navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin)) { // navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin indicates whether plug-ins are enabled or disabled in Safari 3+
+                    d = d.replace(/^.*\s+(\S+\s+\S+$)/, "$1");
+                    version.major = parseInt(d.replace(/^(.*)\..*$/, "$1"), 10);
+                    version.minor = parseInt(d.replace(/^.*\.(.*)\s.*$/, "$1"), 10);
+                    version.release = /[a-zA-Z]/.test(d) ? parseInt(d.replace(/^.*[a-zA-Z]+(.*)$/, "$1"), 10) : 0;
+                }
+            }
+            else if (typeof window.ActiveXObject != "undefined") {
+                try {
+                    var a = new ActiveXObject("ShockwaveFlash.ShockwaveFlash");
+                    if (a) { // a will return null when ActiveX is disabled
+                        d = a.GetVariable("$version");
+                        if (d) {
+                            d = d.split(" ")[1].split(",");
+                            version.major = parseInt(d[0], 10);
+                            version.minor = parseInt(d[1], 10);
+                            version.release = parseInt(d[2], 10);
+                        }
+                    }
+                }
+                catch (e) { }
+            }
+            return version;
+        }
+        return {
+            getVersion: function () {
+                return getVersion();
+            },
+            hasVersion: function (required) {
+                var pv = getVersion(), r = required.split(".");
+                r[0] = parseInt(r[0], 10);
+                r[1] = parseInt(r[1], 10) || 0; // supports short notation, e.g. "9" instead of "9.0.0"
+                r[2] = parseInt(r[2], 10) || 0;
+                return (pv.major > r[0] || (pv.major == r[0] && pv.minor > r[1]) || (pv.major == r[0] && pv.minor == r[1] && pv.release >= r[2])) ? true : false;
+            }
+        }
+    } ();
+
+	Cortado.ChunkLoader = function () {
+		return {
+			load: function (data) {
+				$.ajax({
+					type: 'GET',
+					url: data.url,
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader('X-Cortado-ChunkLoad', 'true');
+					},
+					success: function (response, status, xhr) {
+					    data.success(response, status, xhr);
+					},
+					error: function (xmlhttp, status, exception) {
+						if (xmlhttp.status == 401) {
+							//for now, login will redirect
+							window.location.href = '/login/login.aspx';
+						}
+						else {
+							data.error();
+						}
+					}
+				});
+			}
+		}
+	} ();
+})(jQuery);

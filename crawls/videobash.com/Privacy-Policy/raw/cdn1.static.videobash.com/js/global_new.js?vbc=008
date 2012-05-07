@@ -1,14 +1,16 @@
 //Gallery_Block JS
-function showPlayBtn(e){
-	$(this).children('.play-btn-overlay').stop('true','true').fadeIn('fast');
-	$(this).children('a.pl-add').show();
+if(!(navigator.userAgent.match(/iPad/i))) {
+	function showPlayBtn(e){
+		$(this).children('.play-btn-overlay').stop('true','true').fadeIn('fast');
+		$(this).children('a.pl-add').show();
+	}
+	function hidePlayBtn(e){
+		$(this).children('.play-btn-overlay').stop('true','true').fadeOut('fast');
+		$(this).children('a.pl-add').hide();
+	}
+	$('.thumb-container').live("mouseenter", showPlayBtn);
+	$('.thumb-container').live("mouseleave", hidePlayBtn);
 }
-function hidePlayBtn(e){
-	$(this).children('.play-btn-overlay').stop('true','true').fadeOut('fast');
-	$(this).children('a.pl-add').hide();
-}
-$('.thumb-container').live("mouseenter", showPlayBtn);
-$('.thumb-container').live("mouseleave", hidePlayBtn);
 
 function subscribeClick(){
 	$(this).removeClass("subscribe").addClass("unsubscribe");
@@ -203,6 +205,27 @@ function openLogin(){
 		imgoverlay.fadeOut('fast');
 	})	
 }
+var eo = null;
+function openEmail(url){
+	if (eo == "1"){
+		$("#email").remove();
+		eo = 0;
+	}else{
+		$('div.email-wrapper').prepend('<div id="email"></div>');        
+		eo = 1;
+		$.post(
+			'/request/emailbox', {'url': url},
+			function(response) {
+				$("#email").append(response);
+			}
+		);
+		return false;
+	}
+}
+function closeEmail(){
+	$("#email").remove();
+	eo = 0;
+}
 function gotoForgotPassword(){
 	$("div.forgot-password").hide();
 	$(".login-box-title").html("Forgot Your Password?");
@@ -253,33 +276,29 @@ function saveProfile() {
 function deleteProfileShow(){
 	$('div.confirm-box-wrapper').show();
 }
+function showMenu(e){
+  var rightHeight = $("#videos-menu > #dropdown").height();
+   if ($(e).is('#videos-menu')){
+		 $("#videos-menu > #dropdown > .video-right").height(rightHeight)
+   }
+   $(e).children('a.menu-btn').addClass("hover");
+   $(e).children("div#dropdown").show();
+   var menuImg = $("img", e);
+   menuImg.each(function(){
+	   var headerImageSrc = $(this).attr("data-src");
+	   $(this).attr("src", headerImageSrc);
+   });
+   if($('.login-btn').hasClass('active')){
+	   	 $('#login-box').hide();
+		 $('.login-btn').removeClass('active');   
+   }
+}
+function hideMenu(e){
+   $(e).children('a.menu-btn').removeClass("hover");
+   $(e).children("div#dropdown").hide();
+}
 $(document).ready(function(){
-	
-	$('#nav li').mouseenter(function(){
-	   var rightHeight = $("#videos-menu > #dropdown").height();
-	   if ($(this).is('#videos-menu')){
-			 $("#videos-menu > #dropdown > .video-right").height(rightHeight)
-	   }
-	   $(this).children('a.menu-btn').addClass("hover");
-	   $(this).children("div#dropdown").show();
-	   var menuImg = $("img", this);
-	   menuImg.each(function(){
-		   var headerImageSrc = $(this).attr("data-src");
-		   $(this).attr("src", headerImageSrc);
-	   });
-	   if($('.login-btn').hasClass('active')){
-	   		 $('#login-box').hide();
-			 $('.login-btn').removeClass('active');   
-	   }
-	   										   
-	});
-	$('#nav li').mouseleave(function(){
-	   $(this).children('a.menu-btn').removeClass("hover");
-	   $(this).children("div#dropdown").hide();
-	});
-	
-	//SORTING BARS
-	
+	//SORTING BARS	
 	if($('#video-sort-list-when').find('a').hasClass('active')) {
 	    var whentext = $('#video-sort-list-when').find('a.active').html();
 	    $('#active-sort-when').html(whentext);
@@ -374,6 +393,7 @@ function guestComment() {
 };
 
 //Window Lazy Loading Thumbs
+/*
 window.VB = {};
 VB.img = {
     imgLL: {
@@ -403,6 +423,7 @@ $(function (a) {
         })
     }
 })
+*/
 function saveSocialComment(comment, username, thumb){
 	$("#comment_content").html(comment);
 	$("#comment_username").val(username);
@@ -411,4 +432,17 @@ function saveSocialComment(comment, username, thumb){
 }
 function popUp(URL, width, height) {
 	window.open(URL,'window', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width='+width+',height='+height);
+	return false;
+}
+//TakeOver Checking Function
+function checkTakeOver(id, object){
+	if($("#"+id).find(object).size() > 0){
+		alert (id);
+	}
+}
+function checkAd(id, expected, takeover){
+	if($(id).find(expected).length > 0){
+		$.post(
+			'/inc_imp', {'takeover': takeover})
+	}
 }

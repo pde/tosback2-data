@@ -63,10 +63,17 @@ function s_doPlugins(s) {
 			    s.campaign=s.campaign+' '+s.getQueryParam('kw_refer');
 		    }
 			if(s.getQueryParam('siteID') && s.campaign.indexOf("AFF001") > -1 ){
-				var mySiteIdFlag = "";
-				mySiteIdFlag = s.getQueryParam('siteID');
-//				mySiteIdFlag = mySiteIdFlag.substring(0,11);
-			    s.campaign=s.campaign+' '+mySiteIdFlag;
+				// grab siteID parameter from URL
+				var mySiteIdFlag = s.getQueryParam('siteID');
+				// split dash-delimited data
+				var data = mySiteIdFlag.match(/^([^\-]+)-(.+)$/i);
+				// if any, register data values.
+				if (data) {
+					// append data before the dash to campaign field
+				    s.campaign = s.campaign + ' ' + data[1];
+				    // pass remaining data to new variables
+				    s.eVar47 = s.prop47 = data[2];
+				}
 		    }
 		    s.eVar12=s.campaign;
 	        s.eVar27=s.campaign;

@@ -146,6 +146,7 @@ MTVN.conf.flux4["widgets"] = {
 			showPager: true,
 			paginationType: 'pages',
 			topOrder: true,
+			showPostToFacebook: false,
 			commentMessage: 'Join the conversation ...'
 		},
 		"onLoad": function(widget) {

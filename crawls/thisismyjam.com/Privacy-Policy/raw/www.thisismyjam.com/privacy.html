@@ -18,32 +18,31 @@ Privacy | This Is My Jam        </title>
         <link rel="apple-touch-icon" sizes="114x114" href="http://www.thisismyjam.com/includes/image/apple-touch-icon@2x.png" />
         <meta name="viewport" content="width=device-width,initial-scale=1">
         
-        <link rel="stylesheet" href="includes/css/skeleton.css%3F1.618.css" type="text/css" media="all">
-        <link rel="stylesheet" href="includes/css/main.css%3F1.618.css" type="text/css" media="all">
+        <link rel="stylesheet" href="includes/css/skeleton.css%3F1.633.css" type="text/css" media="all">
+        <link rel="stylesheet" href="includes/css/buttons.css%3F1.633.css" type="text/css" media="all">
+        <link rel="stylesheet" href="includes/css/main.css%3F1.633.css" type="text/css" media="all">
         <link rel="stylesheet" href="includes/css/boxy.css" type="text/css" media="screen">
 
         
-                
-        <script src="includes/js/lib/custom.modernizr.js"></script> 
-        <script type="text/javascript" src="includes/js/lib/jquery-1.7.min.js"></script> 
+        
+                <script type="text/javascript" src="includes/js/lib/custom.modernizr.2.5.3.js"></script>  
+
     	<!-- special IE-only canvas fix -->
 		<!--[if IE]><script type="text/javascript" src="/includes/js/lib/excanvas.js"></script><![endif]-->
         
             </head>
     <body>
     
-         
-     <div id="messageStripe" style="display:none;"><div class="container">
+    
+    <div id="messageStripe" style="display:none;"><div class="container">
+    
         <p>
           Share your favorite song. Play all your friends’ songs in one click. It’s that simple. Slow music = good music! 
             &nbsp;<a href="privacy.html#sign-up-box" title="Sign Up" id="stripeSignup" class="button yellow sign-up">Yes yes, Sign Me Up</a> 
-
         </p>
-        
+    
 
-        </div></div>
- 
-
+    </div></div>
     
 
 <header > 
@@ -185,6 +184,12 @@ Privacy | This Is My Jam        </title>
     
     </footer>
 
+
+
+    
+    <script src="../ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="includes/js/lib/jquery-1.7.2.min.js"><\/script>')</script>
+
    
    
       <div id="sign-in-box" style="display:none">
@@ -264,22 +269,22 @@ Privacy | This Is My Jam        </title>
     <script src="includes/js/emailsignin.js"></script>
     <script src="includes/js/plugins/jquery.cookie.js"></script>
 
-    <script src="includes/js/lib/soundmanager/soundmanager2.js%3F1.608"></script>
-    <script src="includes/js/plugins/jquery.tipsy.js%3F1.608"></script>
-    <script src="includes/js/plugins/jquery.playable.js%3F1.608"></script>
-    <script src="includes/js/plugins/jquery.form.js%3F1.608"></script>
-    <script src="includes/js/lib/jquery.history.js%3F1.608"></script>
-    <script src="includes/js/plugins.js%3F1.608"></script>
-    <script src="includes/js/general.js%3F1.608"></script>
-    <script src="includes/js/history_handler.js%3F1.608"></script>
-    <script src="includes/js/player.js%3F1.608"></script>
-    <script src="includes/js/youtubeplayer.js%3F1.608"></script>
-    <script src="includes/js/youtubehandler.js%3F1.608"></script>
-    <script src="includes/js/iphoneyoutubehandler.js%3F1.608"></script>
-    <script src="includes/js/soundmanagerhandler.js%3F1.608"></script>
+    <script src="includes/js/lib/soundmanager/soundmanager2.js%3F1.635"></script>
+    <script src="includes/js/plugins/jquery.tipsy.js%3F1.635"></script>
+    <script src="includes/js/plugins/jquery.playable.js%3F1.635"></script>
+    <script src="includes/js/plugins/jquery.form.js%3F1.635"></script>
+    <script src="includes/js/lib/jquery.history.js%3F1.635"></script>
+    <script src="includes/js/plugins.js%3F1.635"></script>
+    <script src="includes/js/general.js%3F1.635"></script>
+    <script src="includes/js/history_handler.js%3F1.635"></script>
+    <script src="includes/js/player.js%3F1.635"></script>
+    <script src="includes/js/youtubeplayer.js%3F1.635"></script>
+    <script src="includes/js/youtubehandler.js%3F1.635"></script>
+    <script src="includes/js/iphoneyoutubehandler.js%3F1.635"></script>
+    <script src="includes/js/soundmanagerhandler.js%3F1.635"></script>
     <script src="includes/js/lib/swfobject.js"></script>
 
-    <script src="includes/js/plugins/jquery.boxy.js%3F1.608"></script>
+    <script src="includes/js/plugins/jquery.boxy.js%3F1.635"></script>
                                   
 
   
@@ -297,6 +302,9 @@ Privacy | This Is My Jam        </title>
             if (window.location.hash == '#_=_')window.location.hash = '';
 
             window.fbAsyncInit = function() {
+
+                logger.add('fbAsyncInit: before FB init');
+
                 FB.init({
                     appId      : "210605368997076",
                     channelURL : 'www.thisismyjam.com/channel.php', // Channel File
@@ -308,8 +316,10 @@ Privacy | This Is My Jam        </title>
 
                 window.FB_API_READY = true; //init flag
 
-                                  
+                logger.add('fbAsyncInit: window.FB_API_READY');
             };
+
+              logger.add('Before self-evaluating FB function');
 
               // Load the SDK Asynchronously
               (function(d){
@@ -317,6 +327,8 @@ Privacy | This Is My Jam        </title>
                   js = d.createElement('script'); js.id = id; js.async = true;
                   js.src = "//connect.facebook.net/en_US/all.js";
                   d.getElementsByTagName('head')[0].appendChild(js);
+
+                  logger.add('FB facebook-jssdk appended');
 
               }(document));
 
@@ -329,6 +341,12 @@ Privacy | This Is My Jam        </title>
                     js.src="//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
                     return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f); } });
                 }(document, "script", "twitter-wjs"));
+
+fbDefaultScope = 'user_about_me,user_likes,email,publish_stream,offline_access';
+
+function userIsConnectedToFacebook() {
+    return !!'';
+}
 
         </script>
 
@@ -426,6 +444,74 @@ function bg(path) {
 
     return path;
 }
+
+
+// THIS NEEDS TO BE IN THE FOOTER, AS IT DEPENDS ON PHP, AND IT SHOULD
+// ALWAYS, ALWAYS WORK
+
+/**
+  * Custom error logging. Sends error to server.
+ */
+window.onerror = function(error, url, line)
+{
+    // only send to server 1% of the time.
+    if(Math.random() * 100 > 100)
+        return;
+
+    // using old fashioned xhr just in case there are
+    // errors within jquery
+
+    // no way i could remember how to do this. took if from
+    // http://www.jibbering.com/2002/4/httprequest.html
+
+    var xmlhttp=false;
+    /*@cc_on @*/
+    /*@if (@_jscript_version >= 5)
+    // JScript gives us Conditional compilation, we can cope with old IE versions.
+    // and security blocked creation of the objects.
+    try {
+    xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (e) {
+    try {
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } catch (E) {
+    xmlhttp = false;
+    }
+    }
+    @end @*/
+    if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
+          try {
+                xmlhttp = new XMLHttpRequest();
+          } catch (e) {
+                xmlhttp=false;
+          }
+    }
+    if (!xmlhttp && window.createRequest) {
+          try {
+                xmlhttp = window.createRequest();
+          } catch (err) {
+                xmlhttp=false;
+          }
+    }
+
+    if(xmlhttp) {
+        var params =
+            "error=" + error + "&" +
+            "url=" + url + "&" +
+            "line=" + line;
+
+        xmlhttp.open("POST", 'http://' + window.location.host +
+                     '/error/js');
+        xmlhttp.setRequestHeader("Content-type",
+                              "application/x-www-form-urlencoded");
+        xmlhttp.setRequestHeader("Content-length", params.length);
+        xmlhttp.setRequestHeader("Connection", "close");
+
+        xmlhttp.send(params);
+    }
+};
+
+
       
 </script>
 

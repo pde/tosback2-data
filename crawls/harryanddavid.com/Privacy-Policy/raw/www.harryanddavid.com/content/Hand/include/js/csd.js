@@ -7,6 +7,7 @@
 dojo.addOnLoad(function () {
   popup.loadPopups([
     { id: '20HOL',               title: 'Terms &amp; Conditions'                                         },
+    { id: '20off50auto',         title: 'Terms &amp; Conditions', name: 'twentyofffiftyauto'             },
     { id: 'AAA',                 title: 'Terms &amp; Conditions'                                         },
     { id: 'AMEX',                title: 'AMEX Subscriptions Info'                                        },
     { id: 'AMEXFSD',             title: 'FREE Standard Delivery on your entire product purchase'         },
@@ -95,6 +96,7 @@ dojo.addOnLoad(function () {
     { id: 'CHEERS'    , type: 'coupon' },
     { id: 'CLOVER'    , type: 'coupon' },
     { id: 'CMAD25'    , type: 'coupon' },
+    { id: 'DADSDAY'   , type: 'coupon' },
     { id: 'DASHER'    , type: 'coupon' },
     { id: 'DEAL'      , type: 'coupon' },
     { id: 'DISCOUNT20', type: 'coupon' },

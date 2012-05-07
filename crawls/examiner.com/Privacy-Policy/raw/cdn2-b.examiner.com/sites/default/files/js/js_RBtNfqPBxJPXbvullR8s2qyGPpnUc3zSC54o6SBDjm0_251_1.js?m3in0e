@@ -1,0 +1,10 @@
+/*! sites/all/modules/custom/ex_carousel/ex_carousel.js */
+(function($,Drupal){Drupal.behaviors.exCarousel={attach:function(context,settings){var hop=Object.prototype.hasOwnProperty,property,callback=/Callback$/,eventCallback=/^on/,eventHandlers={},carousels=settings.ex_carousel&&settings.ex_carousel.carousels;function prepareCarousel(options){return function(){var carousel=$(this),callbackFunction,callbackParents,property,option,i,l,wrapper,scrollable,navigator;for(property in options){option=options[property];if(hop.call(options,property)&&typeof option==='string'&&callback.test(property)){callbackFunction=window;callbackParents=option.split('.');for(i=0,l=callbackParents.length;i<l;i+=1){callbackFunction=callbackFunction&&callbackFunction[callbackParents[i]];}
+options[property]=callbackFunction;if(eventCallback.test(property)){eventHandlers[property.replace(callback,'')]=callbackFunction;}}}
+wrapper=carousel.wrap('<div class="carousel-clip"></div>').parent();wrapper.parent().append('<span class="carousel-prev"/>').append('<span class="carousel-next"/>');scrollable=wrapper.scrollable({items:carousel,speed:options.speed||400,size:options.visible||1,next:'.carousel-next',prev:'.carousel-prev',circular:!!options.wrap,clickable:options.clickable}).data('scrollable');if(options.auto){wrapper.autoscroll({interval:options.auto*1000,steps:options.scroll||1,autoplay:true,autopause:true});}
+if(options.wrap){wrapper.circular();}
+if(options.navigation){navigator=$('<ul class="carousel-controls">').appendTo(wrapper);wrapper.navigator({navi:'.carousel-controls',naviItem:'li class="carousel-control"'});navigator.children().text('\u25cf');}
+if(options.swipe){wrapper.wipescroll({speed:(options.speed||400)*1.5});}
+for(property in eventHandlers){option=eventHandlers[property];if(option&&hop.call(eventHandlers,property)){scrollable[property]=option;}}
+if(options.initCallback){options.initCallback.call(scrollable,scrollable);}};}
+if(carousels){settings=settings||Drupal.settings;for(property in carousels){if(hop.call(carousels,property)){$('.'+property,context).once('ex-carousel',prepareCarousel(carousels[property]));}}}}};}(jQuery,Drupal));;

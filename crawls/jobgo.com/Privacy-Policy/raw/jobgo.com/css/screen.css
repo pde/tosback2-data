@@ -30,8 +30,16 @@ a:hover {text-decoration:underline; cursor:pointer;}
     color:black;
 }
 
+.for-print-only {
+    display:none;
+}
+
 label {
     color:black;
+}
+
+.header .label {
+    color: white;
 }
 
 .errorMessage, .warningMessage, .noticeMessage, .searchMessage{
@@ -183,6 +191,7 @@ a.iworkhere span {background: transparent url('../images/icoIWorkHere.png') no-r
 a.remove span {background: transparent url('../images/icoRemove.png') no-repeat 0 5px;padding-left:17px}
 a.new span {background: transparent url('../images/icoAddNew.png') no-repeat 0 5px;}
 a.ShareMenuItem span{background: transparent url('../images/icoShare.png') no-repeat 0 5px}
+a.invite span {background: transparent url('../images/icoContact.png') no-repeat 0 5px}
 
 
 a.candidate-status span {
@@ -316,7 +325,10 @@ div.message {margin:0 auto;width:580px;padding:0px 40px 40px;background:#fff url
 /* bof form */
 input, select, textarea {width:263px;padding-left:0;padding-right:0; } /* width fix */
 textarea {font: normal 13px "Trebuchet MS", Sans-serif;}
+
 input.date {width:120px}
+input.time, select.time {width:80px}
+
 .form-btn-hldr {text-align:center}
 .form-btn-wrap {padding-bottom: 20px;display:inline-block;}
 .mandatory-hint{color: #333333;margin-top: -5px;margin-bottom: 20px;}
@@ -342,7 +354,7 @@ input.date {width:120px}
 .send {padding:30px 10px; padding-top: 10px;}
 .send input, .send textarea {width:100%}
 .send .field-row {padding:0 60px 5px;clear:both;}
-.radio, .checkbox {width:15px}
+.radio, .checkbox, input[type="checkbox"], input[type="radio"] {width:15px;}
 
 .job_routing_type {
 	width: 12px;
@@ -471,7 +483,7 @@ a.prev,
     display: block;
 }
 .list-widget a.nofollow span { color:#000 }
-.list-widget li {border-top:1px solid #ccc;padding:5px 7px 5px 10px;display:block;height:40px;overflow:hidden;}
+.list-widget li {border-top:1px solid #ccc;padding:5px 7px 5px 10px;display:block;min-height:40px;overflow:hidden;}
 .list-widget li:first-child {border-top:none;}
 /* eof */
 
@@ -723,7 +735,7 @@ a.reset:hover {text-decoration:underline}
 /* eof */
 
 /* bof buttons */
-a.lnk-btn {
+.lnk-btn {
     background: transparent url('../images/application/bgLnkBtn.png') no-repeat scroll top right;
     color: #fff;
     display: block;
@@ -735,9 +747,10 @@ a.lnk-btn {
     text-decoration: none;
     min-width:50px;
     text-align:center;
+    cursor:pointer;
 }
-a.lnk-btn span {background: transparent url('../images/application/bgLnkBtnSpan.png') no-repeat;display: block;line-height:10px;padding:2px 0 4px 9px;}
-a.lnk-btn-grey {
+.lnk-btn span {background: transparent url('../images/application/bgLnkBtnSpan.png') no-repeat;display: block;line-height:10px;padding:2px 0 4px 9px;}
+.lnk-btn-grey {
     background: transparent url('../images/application/bgLnkGreyBtn.png') no-repeat scroll top right;
     color: #000;
     display: block;
@@ -750,8 +763,8 @@ a.lnk-btn-grey {
     min-width:50px;
     text-align:center;
 }
-a.lnk-btn-grey span {background: transparent url('../images/application/bgLnkGreyBtnSpan.png') no-repeat;display: block;line-height:10px;padding:2px 0 4px 9px;}
-a.lnk-pgn-grey {
+.lnk-btn-grey span {background: transparent url('../images/application/bgLnkGreyBtnSpan.png') no-repeat;display: block;line-height:10px;padding:2px 0 4px 9px;}
+.lnk-pgn-grey {
     background: transparent url('../images/application/bgPgnGreyBtn.png') no-repeat scroll top right;
     color: #0088cc;
     display: block;
@@ -945,7 +958,7 @@ table.pager td.hellip{text-align:center;color:#0088cc;}
 .toolbar span {font-size:1em;font-weight:700;margin-right:5px}
 .toolbar td {vertical-align:middle;}
 
-td a.msg, td a.save, td a.subscr, td a.findPeople, td a.print, td a.createNew, td a.new, td a.invite {color:#000;white-space:nowrap;padding-left:20px;margin:0 5px;display:block;height:14px;}
+td a.msg, td a.save, td a.subscr, td a.findPeople, td a.print, td a.calendar, td a.createNew, td a.new, td a.invite {color:#000;white-space:nowrap;padding-left:20px;margin:0 5px;display:block;height:14px;}
 td a.findPeople{padding-left:25px;}
 td a.msg {background: url(../images/icoMsg.png) no-repeat left center}
 td a.save {background: url(../images/icoSave.png) no-repeat left center}
@@ -956,6 +969,7 @@ td a.findPeople {background: url(../images/icoFindPeople.png) no-repeat left cen
 td a.remove {background: url(../images/icoRemove.png) no-repeat left center}
 td a.new {background: url(../images/icoAddNew-transparent.gif) no-repeat left center}
 td a.invite {background: transparent url('../images/icoContact.png') no-repeat left center}
+td a.calendar {background: transparent url('../images/icoCalendar.png') no-repeat left center}
 
 ul.tlbr-btn li {float:left;margin-left:5px;position:relative}
 
@@ -3771,6 +3785,134 @@ button {
 .MailPdf .all-wrapper {
     margin-left:auto !important;
     margin-right:auto !important;
+}
+
+table.happening-event-types .field-caption,
+table.happening-event-audiences .field-caption{
+    width:100%;
+    text-align:left;
+}
+
+table.section-content .field-caption-APPEND {
+    text-align:left;
+}
+
+table.happening-event-types .field-content,
+table.happening-event-audiences .field-content {
+    padding-right:0 !important;
+}
+
+.person-invite {
+    padding:10px;
+    font-size:12px !important;
+}
+
+.person-invite .tagsinput {
+    margin-bottom: 10px;
+    width: 95% !important;
+}
+
+.person-invite div.tagsinput input {
+    margin-bottom: 0;
+    width: 100px;
+}
+
+.person-invite div.tagsinput span.tag {
+    margin-bottom: 2px;
+    font-size: 10px;
+}
+
+.HappeningWidget .talentor-dialog-content{
+    min-height: 100px;
+    padding-top:30px;
+    padding-bottom:30px;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+.HappeningWidget .field-row{
+    margin-top:5px;
+}
+
+.HappeningWidget .field-caption,
+.HappeningWidget .field-content  {
+    float:left;
+}
+
+.HappeningWidget .field-caption{
+    text-align:right;
+    width:30%;
+}
+
+
+.HappeningWidget .field-caption label,
+.HappeningWidget .field-caption .label{
+    padding-right: 5px;
+}
+
+.HappeningWidget .field-content {
+    text-align:left;
+    width:70%;
+}
+
+.Model_Happening_Widget_Join .field-caption-APPEND {
+    float:right;
+}
+
+.Model_Happening_Widget_Join #REPRESENTING_A_COMPANY-row {
+    padding-left:30%;
+    width:100%;
+}
+
+.Model_Happening_Widget_Join #REPRESENTED_COMPANY_ID-row {
+    display:none;
+}
+
+.search-bar .label,
+.field-caption .label {
+    color:black !important;
+}
+
+.search-bar label {
+    color: white !important;
+}
+
+
+
+#happening-meeting-search-participant {
+    width:190px;
+}
+#Happening_Meeting_Search .search-bar label {
+    position: absolute;
+    right: 195px;
+    top: -5px;
+}
+
+.btnRemove {
+    margin-top: 8px;
+    display: block;
+    width: 11px;
+    height: 11px;
+    background: url('../images/skills/close.gif') no-repeat bottom;
+    float: right;
+    cursor: pointer;
+}
+
+.btnRemove:hover{
+    background: url('../images/skills/close-hover.gif') no-repeat bottom;
+}
+
+.meeting-row:hover {
+    background-color: #f0f0f0;
+}
+
+.search-results .message-type-24 .item-msg {
+    left: 95px;
+    width: 210px;
+}
+
+.search-results .message-type-24 .item-person-image {
+    left: 315px;
 }
 
 

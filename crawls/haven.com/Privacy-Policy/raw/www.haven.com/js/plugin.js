@@ -264,7 +264,7 @@ var showStatus=this._get("showStatus");var html='<div class="ui-datepicker-heade
 var monthNames=this._get("monthNames");if(secondary||!this._get("changeMonth")){html+=monthNames[drawMonth]+"&#xa0;";
 }else{var inMinYear=(minDate&&minDate.getFullYear()==drawYear);var inMaxYear=(maxDate&&maxDate.getFullYear()==drawYear);
 html+='<select class="ui-datepicker-new-month" onchange="jQuery.datepicker._selectMonthYear('+this._id+", this, 'M');\" onclick=\"jQuery.datepicker._clickMonthYear("+this._id+');"'+(showStatus?this._addStatus(this._get("monthStatus")||"&#xa0;"):"")+">";
-for(var month=0;month<12;month++){if((!inMinYear||month>=minDate.getMonth())&&(!inMaxYear||month<=maxDate.getMonth())&&(month>=2)&&(month<=11)){html+='<option value="'+month+'"'+(month==drawMonth?' selected="selected"':"")+">"+monthNames[month]+"</option>";
+for(var month=0;month<12;month++){/*20120430-SS:EDIT allow november*/if((!inMinYear||month>=minDate.getMonth())&&(!inMaxYear||month<=maxDate.getMonth())&&(month>=2)&&(month<11)){html+='<option value="'+month+'"'+(month==drawMonth?' selected="selected"':"")+">"+monthNames[month]+"</option>";
 }}html+="</select>";}if(secondary||!this._get("changeYear")){html+=drawYear;}else{var years=this._get("yearRange").split(":");
 var year=0;var endYear=0;if(years.length!=2){year=drawYear-10;endYear=drawYear+10;
 }else{if(years[0].charAt(0)=="+"||years[0].charAt(0)=="-"){year=endYear=new Date().getFullYear();
@@ -274,8 +274,8 @@ endYear=(maxDate?Math.min(endYear,maxDate.getFullYear()):endYear);html+='<select
 for(;year<=endYear;year++){html+='<option value="'+year+'"'+(year==drawYear?' selected="selected"':"")+">"+year+"</option>";
 }html+="</select>";}html+="</div>";return html;},_addStatus:function(text){return" onmouseover=\"jQuery('#ui-datepicker-status-"+this._id+"').html('"+text+"');\" onmouseout=\"jQuery('#ui-datepicker-status-"+this._id+"').html('&#xa0;');\"";
 },_adjustDate:function(offset,period){var year=this._drawYear+(period=="Y"?offset:0);
-var month=this._drawMonth+(period=="M"?offset:0);if(month>=10){month=2;year=year+1;
-}if(month<=1){month=11;year=year-1;}var day=Math.min(this._selectedDay,this._getDaysInMonth(year,month))+(period=="D"?offset:0);
+var month=this._drawMonth+(period=="M"?offset:0);/*20120430-SS:EDIT allow november*/if(month>10){month=2;year=year+1;
+}if(month<=1){month=10;year=year-1;}var day=Math.min(this._selectedDay,this._getDaysInMonth(year,month))+(period=="D"?offset:0);
 var date=new Date(year,month,day);var minDate=this._getMinMaxDate("min",true);var maxDate=this._getMinMaxDate("max");
 date=(minDate&&date<minDate?minDate:date);date=(maxDate&&date>maxDate?maxDate:date);
 this._selectedDay=date.getDate();this._drawMonth=this._selectedMonth=date.getMonth();

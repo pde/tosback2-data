@@ -808,7 +808,8 @@ $(function() {
 				$(".feedTools").animate({width:"0px",height:"0px"}, {duration:800,complete:function(){$(".feedTools").remove()}});
 			});
 
-			return false;
+			//return false; //<- prevents click thorugh on the link. Must be there for a reason
+			return true;
 		});
 	};
 

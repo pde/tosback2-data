@@ -1,0 +1,230 @@
+YoutubeHandler = function(player) {
+
+    this.player = player;
+    this.aspectRatio = null;
+
+    this.isJamvatar = true;
+
+    this.prepare = function(jam, autoPlay, onLoad, errorCallback) {
+        var self = this;
+
+        if(autoPlay && player.isOnCurrentlyPlayingPersonsPage()){
+            $(".ytMask").hide();
+            this.animateOpen();
+        }
+
+
+        if(!window.ytPlayer.isReady) {
+            this.player.state = new Player.DisabledState(this.player);
+            return;
+        }
+
+        window.ytPlayer.load(jam.youtubeId);
+/*
+        window.ytPlayer.onReady(function(){
+            console.log("GOT MYSELF TOGETHER");
+        });
+*/
+        onLoad();
+
+        window.ytPlayer.onError = function(code) {
+            if(self.player.isOnCurrentlyPlayingPersonsPage())
+                self.animateClose(true);
+            errorCallback();
+        };
+
+        if(autoPlay) {
+            // hack, create actual updateCssClasses() in state and just call
+            // this.player.state.updateCssClasses(), or even
+            // this.player.updateCssClasses()
+            this.player.play();
+        }
+        else {
+            this.player.state = new Player.LoadedState(this.player);
+        }
+    };
+
+    this.getHeight = function() {
+        return $("#artPlayer").height();
+    };
+
+    this.getWidthForHeight = function(height, aspectRatio) {
+        if(aspectRatio == "4:3") {
+            return Math.round(height * (4/3));
+        }
+        else {
+            return Math.round(height * (16/9));
+        }
+    };
+
+    this.animateOpen = function() {
+        var height = this.getHeight();
+        var width = this.getWidthForHeight(height, this.aspectRatio);
+        var $editlink = $(".editLink");
+        
+        if($editlink.length){
+            $editlink.css({"visibility":"hidden"});
+        }
+        
+        this.oldBackground = $("#artPlayer").css("background");
+        this.animateSize(width + "px", height + "px");
+        this.isJamvatar = false;
+    };
+
+    this.noAnimateOpen = function() {
+        var height = this.getHeight();
+        var width = this.getWidthForHeight(height, this.aspectRatio);
+
+        var $editlink = $(".editLink");
+        if($editlink.length)
+            $editlink.css({"visibility":"hidden"});
+
+        $("#jamHolder, #artPlayer, #jamBackgroundYoutube").
+            css({"width": width + "px", "height": height + "px"});
+
+        this.oldBackground = $("#artPlayer").css("background");
+        this.isJamvatar = false;
+    };
+
+    this.animateClose = function(force) {
+        var self = this;
+        var $editlink = $(".editLink");
+        
+        if($editlink.length)
+            $editlink.css({"visibility":"visible"});
+        this.animateSize(this.getHeight(), this.getHeight(), function() {
+            $("#jamBackgroundYoutube img").show();
+            $("#artPlayer").css("background", self.oldBackground);
+        }, force);
+
+        this.isJamvatar = true;
+    };
+
+    this.animateSize = function(width, height, finishedExtras /* dirt */, force) {
+        if(force || !this.isAnimating) {
+            this.isAnimating = true;
+            var self = this;
+            $("#jamBackgroundYoutube img").hide();
+            $("#artPlayer").css("background", "none");
+            var $playButton = this.player.getCurrentPlayButton();
+            $playButton.css("visibility", "hidden"); // .hide() seems to break show on hover
+            $("#jamHolder, #artPlayer, #jamBackgroundYoutube").animate({"width":width,"height":height},function(){
+                $playButton.css("visibility", "visible");
+                self.isAnimating = false;
+                self.animationFinished();
+                self.animationFinished = function() { }
+                if(finishedExtras)
+                    finishedExtras();
+            });
+        }
+    };
+
+    this.pause = function() {
+        window.ytPlayer.pause();
+    };
+
+    this.showJamvatar = function() {
+        this.hide();
+        var self = this;
+        this.animateClose();
+    };
+
+    this.resume = function() {
+        if(!this.player.isOnHomePage() && this.isJamvatar) {
+            $("#jamBackgroundYoutube img").hide();
+            $(".ytMask").hide();
+            this.animationFinished = function(){
+                window.ytPlayer.play();
+            };
+            this.animateOpen();
+        }
+        else
+            window.ytPlayer.play();
+    };
+
+    this.show = function() {
+        var $element = this.player.getCurrentFeedJamContainer$();
+
+        if($element) {
+            window.ytPlayer.track($element, this.player.isOnCurrentlyPlayingPersonsPage());
+        }
+
+        if(!this.player.isOnCurrentlyPlayingPersonsPage())
+            $(".ytMask").show();
+        else
+            $(".ytMask").hide();
+    };
+
+    this.hide = function() {
+        window.ytPlayer.hide();
+    };
+
+    // show full-size youtube video
+    this.navigateToProfilePage = function() {
+        this.noAnimateOpen();
+    };
+
+    this.stop = function() {
+        // not ready.
+        if(!window.ytPlayer.isReady)
+            return;
+
+        window.ytPlayer.stop();
+
+        ///*
+        if(this.player.isOnCurrentlyPlayingPersonsPage() &&
+           this.player.state.name != 'disabled') {
+            this.animateClose();
+        }
+        //*/
+    };
+
+    this.animationFinished = function(){
+        // noop to be overridden
+    };
+
+    this.play = function(onPlaybackStarted, onFinish) {
+        var self = this;
+        
+        window.ytPlayer.onPlaying = function() {
+            if(self.isAnimating){
+                window.ytPlayer.pause();
+                self.animationFinished = function(){
+                    self.show();
+                    window.ytPlayer.play();
+                };
+            }
+            else {
+                self.show();
+            }
+
+            onPlaybackStarted();
+            self.player.updateDuration(window.ytPlayer.getDuration());
+        };
+
+        // check for pause on the actual player (in the ios case)
+        window.ytPlayer.onPaused = function() {
+            if(self.player.state.name == 'playing')
+                self.player.pause();
+        };
+
+        window.ytPlayer.onFinish = function() {
+            if(self.player.isOnCurrentlyPlayingPersonsPage())
+                self.animateClose();
+            onFinish();
+        };
+        
+        window.ytPlayer.play();
+    };
+
+    this.updateMask = function(mask) {
+        window.ytPlayer.setMask(mask);
+    };
+
+    this.getName = function() {
+        return 'youtube';
+    };
+    this.getElapsedTime = function() {
+        return ( Math.floor(window.ytPlayer.getCurrentTime()) );
+    };
+};

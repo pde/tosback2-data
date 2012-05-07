@@ -310,7 +310,7 @@ else {
    };
 
    // Interaction Tracking for MIA pilot test -- 2012-01-31 JG
-   if (mistats.bizunit && mistats.bizunit.match(/MIA|ELN|KEN|IDA|CDT|BRA|LED|MAC/) && mistats.InteractionTracker)
+   if (mistats.bizunit && mistats.bizunit.match(/MIA|ELN|KEN|IDA|CDT|BRA|LED|MAC|RHH/) && mistats.InteractionTracker)
       mistats.interactionTracker = new mistats.InteractionTracker();
 
    // Post Load Omniture Tracking
@@ -407,6 +407,43 @@ else {
       s.prop48 = s.prop48.join('|');
    }
 
+   if (location.href.match(/mcclatchydc\.com\/2011\/11\/13\/130169\/occupy-wall-street-is-many-things|bradenton\.com\/2011\/11\/10\/3641446\/4-burglary-suspects-arrested-in\.html/i)
+    && s.prop49.match(/no referrer|external opener/)
+    && document.hasFocus
+    && !document.hasFocus())
+   {
+      mistats.deferredTracking = function ()
+      {
+         if (mistats.deferredTracker)
+            clearTimeout(mistats.deferredTracker);
+
+         if (window.removeEventListener)
+            window.removeEventListener('focus', mistats.deferredTracking, false);
+         else if (window.detachEvent)
+            window.detachEvent('onfocus', mistats.deferredTracking)
+         else
+            window.onfocus = null;
+
+         if (mistats.deferredTagSent)
+            return;
+
+         mistats.deferredTagSent = true;
+         s.prop11 = 'onfocus';
+         s.t();
+      };
+
+      mitagsent = true;
+      
+      if (window.addEventListener)
+         window.addEventListener('focus', mistats.deferredTracking, false);
+      else if (window.attachEvent)
+         window.attachEvent('onfocus', mistats.deferredTracking)
+      else
+         window.onfocus = mistats.deferredTracking;
+
+      mistats.deferredTracker = setTimeout(mistats.deferredTracking, 25000);
+   }
+
    if (location.hostname.match(/mcclatchydc\.com|bradenton\.com|newsobserver\.com/i) && s.prop3.match(/\**Story/))
    {
       s.prop11 = 'hasFocus: ';
@@ -428,6 +465,7 @@ else {
 		var mitagsent = true;
 	}
 
+/*
    // Temporary "survey" for No Referrer traffic
    if (location.href.match(/mcclatchydc\.com\/2011\/11\/13\/130169\/occupy-wall-street-is-many-things/i)
     && s.prop49.match(/no referrer|external opener/)
@@ -438,7 +476,7 @@ else {
       (new scriptLoader()).injectStyle('http://media.mcclatchydc.com/mistats/referrer_survey.css');
       (new scriptLoader()).injectScript('http://media.mcclatchydc.com/mistats/referrer_survey.js');
    }
-
+*/
 	// Call quantserve .js file - Added 7/22/2008 - JJ Ticket # 727-5945439
 	var _qoptions = { qacct:"p-50B2Fi6bBqYto", labels: mistats.bizunit };
 	document.write("\n<" + "script type='text/javascript' src='http://edge.quantserve.com/quant.js'>" + "</" + "script>");

@@ -1,0 +1,793 @@
+
+        if (!Array.prototype.indexOf) { /* patch IE */
+            Array.prototype.indexOf = function(obj, start) {
+                 for (var i = (start || 0), j = this.length; i < j; i++) {
+                     if (this[i] === obj) { return i; }
+                 }
+                 return -1;
+            }
+        }
+
+        function record(event, values, collect, opt, componentPath) {
+            var options = {};
+            options.event = event;
+            options.values = values;
+            options.collect = collect;
+            options.options= opt;
+            options.componentPath = componentPath;
+            // could use this hack to force old record() calls: options.componentPath = componentPath || CQ_Analytics.Sitecatalyst.frameworkComponents[0];
+
+            //add old record callbacks to after callbacks
+            var f = function (callback) {
+                return function(options) {
+                    callback.call(this, options.event, options.values);
+                    return false;
+                };
+            };
+
+            for (var i = record.callbacks.length - 1; i >= 0; i--) {
+                CQ_Analytics.registerAfterCallback(f(record.callbacks[i]), 150 - i);
+                record.callbacks.pop();
+            }
+
+            return CQ_Analytics.record(options);
+        }
+
+        record.callbacks = [];
+
+        CQ_Analytics.registerAfterCallback(function(options) {
+            if( $CQ.inArray( options.componentPath, CQ_Analytics.Sitecatalyst.frameworkComponents) < 0 )
+                return false;    // component not in framework, skip SC callback
+            CQ_Analytics.Sitecatalyst.saveEvars();
+            CQ_Analytics.Sitecatalyst.updateEvars();
+            CQ_Analytics.Sitecatalyst.updateLinkTrackVars();
+            return false;
+        }, 10);
+
+        CQ_Analytics.registerAfterCallback(function(options) {
+            if( $CQ.inArray( options.componentPath, CQ_Analytics.Sitecatalyst.frameworkComponents) < 0 )
+                return false;    // component not in framework, skip SC callback
+            s = s_gi("reidev");
+            if (s.linkTrackVars == "None") {
+                s.linkTrackVars = "events";
+            } else {
+                s.linkTrackVars = s.linkTrackVars + ",events";
+            }
+            CQ_Analytics.Sitecatalyst.trackLink(options);
+            return false;
+        }, 100);
+
+
+        CQ_Analytics.registerAfterCallback(function(options) {
+            if( $CQ.inArray( options.componentPath, CQ_Analytics.Sitecatalyst.frameworkComponents) < 0 )
+                return false;    // component not in framework, skip SC callback
+            CQ_Analytics.Sitecatalyst.restoreEvars();
+            return false;
+        }, 200);
+
+        CQ_Analytics.adhocLinkTracking = "false";
+
+        CQ_Analytics.Sitecatalyst = {
+
+            events: [],
+            
+            trackVars: [],
+
+            settings: [],
+
+            stores: CQ_Analytics.StoreRegistry.getStores(),
+
+            getServiceUrl: function() {
+                return "https://sitecatalyst.omniture.com/sc15/reports/index.html?a=Report.Standard&switch_accnt={REPORTSUITE}&r=Report.PageSummary&ssSession={SESSION}&jpj={JPJ}&rp=newpage|{PAGEID};page_type|;";
+            },
+
+            openServiceUrl: function() {
+                var self = this;
+                if (this.getServiceUrl() != "null") {
+                    var contentUrl = CQ.WCM.getContentUrl();
+                    contentUrl = contentUrl.replace(/http:\/\/.*?\//, "/");
+                    /*strip scheme*/
+                    contentUrl = contentUrl.replace(/(.*?)\?.*/, "$1");
+                    /*strip query*/
+                    var url = CQ.HTTP.externalize('/libs/cq/analytics/deeplink.json?cfgPath=/etc/cloudservices/sitecatalyst/reidefault/reidefaul')
+                    url += "&path=" + CQ.HTTP.externalize(contentUrl);
+                    CQ.HTTP.get(url, function(options, success, response) {
+                        if (success) {
+                            var data = CQ.HTTP.eval(response);
+                            if (data) {
+                                var serviceUrl = self.getServiceUrl();
+                                serviceUrl = serviceUrl.replace(/\{SESSION\}/gi, (data.ssSession ? data.ssSession : ""));
+                                serviceUrl = serviceUrl.replace(/\{JPJ\}/gi, (data.jpj ? data.jpj : ""));
+                                serviceUrl = serviceUrl.replace(/\{PAGEID\}/gi, (data.pageid ? data.pageid : ""));
+                                serviceUrl = serviceUrl.replace(/\{REPORTSUITE\}/gi, "reidev");
+                                CQ.shared.Util.open(serviceUrl);
+                            }
+                        }
+                    });
+                }
+            },
+
+            hasEvent: function(event) {
+                var store = CQ_Analytics.StoreRegistry.getStore("eventdata");
+                var a = store.getProperty("events").split("\u2026");
+                var i = a.length;
+                while (i--) {
+                    if (a[i] === event) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+
+            setEvar: function(evar, value) {
+                if (evar.match(/^eventdata\.events\./)) {
+                    if (this.hasEvent(evar.replace(/.+\./, ""))) {
+                        this.events.push(value);
+                        this.updateLinkTrackEvents();
+                    }
+                } else if (value != '') {
+                    var tmp = value.split(".");
+                    var storename = tmp[0];
+                    var key = tmp[1];
+                    //var store = CQ_Analytics.StoreRegistry.getStore(storename);
+                    //s[evar] = store.getProperty(key);
+
+                    // set up direct references to datastores for use in expressions
+                    for (var store in this.stores)
+                        try {
+                            eval("var " + store + "=this.stores[store].data");
+                        } catch(e) {
+                        }
+                    // evaluate expression using direct references to stores
+                    try {
+                        s[evar] = eval(value);
+                    } catch(e) {
+                        console.log("Could not set " + evar + ": " + e);
+                    }
+
+                    if (storename == "eventdata" && this.trackVars.indexOf(evar) < 0) {
+                        this.trackVars.push(evar);
+                    }
+                }
+            },
+
+            updateLinkTrackEvents: function() {
+                s.events = this.events.join(",");
+                s.linkTrackEvents = s.events;
+            },
+
+            updateLinkTrackVars: function() {
+                s.linkTrackVars = this.trackVars.join(",");
+            },
+
+            eraseTrackVars: function(saved) {
+                for (var i = 0; i < this.trackVars.length; i++) {
+                    var evar = this.trackVars[i];
+                    if (evar !== 'events') {
+                        if (saved)
+                            saved[evar] = s[evar];
+                        delete s[evar];
+                    }
+                }
+                this.trackVars = [];
+            },
+
+            saveEvars: function() {
+                var saved = {
+                    events: this.events,
+                    trackVars: this.trackVars,
+                    linkTrackVars: s.linkTrackVars,
+                    linkTrackEvents: s.linkTrackEvents
+                };
+                //clear events cache
+                this.events = [];
+                this.eraseTrackVars(saved);
+                this.settings.push(saved);
+            },
+
+            restoreEvars: function() {
+                var former = this.settings.pop();
+                this.events = former.events;
+                delete former.events;
+                this.trackVars = former.trackVars;
+                delete former.trackVars;
+                this.updateLinkTrackEvents();
+                this.eraseTrackVars();
+                for (var prop in former) {
+                    s[prop] = former[prop];
+                }
+            },
+
+            stopTrackingTemporarily: function() {
+                // Disable tracking temporarily, so automatic link tracking is bypassed
+                var old_s = {
+                    trackDownloadLinks: s.trackDownloadLinks,
+                    trackExternalLinks: s.trackExternalLinks
+                };
+                s.trackDownloadLinks = false;
+                s.trackExternalLinks = false;
+                (function() {
+                    for (var prop in old_s) {
+                        s[prop] = old_s[prop];
+                    }
+                }).defer(200);
+            },
+
+            trackLink: function(options) {
+                var obj = options.options.obj || "", linkType;
+                var defaultLinkType = options.options.defaultLinkType || "o";
+                if (typeof obj.href !== 'undefined')
+                    linkType = s.lt(obj.href);
+                linkType = linkType || defaultLinkType;
+                var s_code = s.tl(obj, linkType, "");
+                if (s_code) document.write(s_code);
+                this.stopTrackingTemporarily();
+            },
+
+
+            customTrack: function(obj) {
+                var events = obj.getAttribute('adhocevents') || "";
+                var evars = obj.getAttribute('adhocevars') || "";
+                if (events || evars) {
+                    // set up direct references to datastores for use in expressions
+                    for (var store in this.stores)
+                        try {
+                            eval("var " + store + "=this.stores[store].data");
+                        } catch(e) {
+                        }
+                    // evaluate evars using direct references to stores
+                    try {
+                        eval("evars = {" + evars + "}");
+                    } catch(e) {
+                    }
+                    CQ_Analytics.Sitecatalyst.saveEvars();
+                    try {
+                        var linkTrackVars = [];
+                        if (events.length > 0) {
+                            s.linkTrackEvents = s.events = events;
+                            linkTrackVars.push('events');
+                        }
+                        for (var key in evars) {
+                            linkTrackVars.push(key);
+                            var value = "'" + escape(evars[key]) + "'";
+                            this.setEvar(key, value);
+                        }
+                        if (linkTrackVars.length > 0)
+                            s.linkTrackVars = linkTrackVars.join(',');
+                        this.trackLink({options: { obj: obj }});
+                    } finally {
+                        CQ_Analytics.Sitecatalyst.restoreEvars();
+                    }
+                }
+            },
+
+            collect: function() {
+                var elements = document.getElementsByTagName("*");
+                var evnts = {};
+                var alldata = {};
+                var store = CQ_Analytics.StoreRegistry.getStore("eventdata");
+                for (var i = 0; i < elements.length; i++) {
+                    if (elements[i].getAttribute("record")) {
+                        var trackres = eval("record(" + elements[i].getAttribute("record") + ",true)");
+                        var event = trackres[0];
+                        evnts[event] = event;
+                        var data = trackres[1];
+                        for (var j in data) {
+                            store.setProperty(j, data[j]);
+                        }
+                    }
+                }
+                var myevents = [];
+                for (i in evnts) {
+                    myevents.push(i);
+                }
+                store.setProperty("events", myevents.join("\u2026"));
+            }
+
+        };
+
+        var s_account = "reidev"
+        var s = s_gi(s_account)
+/************************** CONFIG SECTION **************************/
+        s.fpCookieDomainPeriods = "2"
+        
+                s.dynamicAccountSelection=true
+                s.currencyCode='USD'
+                s.trackInlineStats=true
+                s.eVar37='D=g'
+                s.prop16='D=g'
+                s.charSet='ISO-8859-1'
+                s.linkTrackVars='None'
+                s.linkTrackEvents='None'
+                s.linkDownloadFileTypes='exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx'
+                s.trackDownloadLinks=true
+                s.linkLeaveQueryString=false
+                s.linkExternalFilters=''
+                s.trackExternalLinks=true
+                s.dynamicAccountList='reidev=psqa.rei.com;reiprod=www.rei.com,findout.rei.com;reiqa2=qa.rei.com,qa01.rei.com,origin-qa.rei.com,qstage.rei.com,qfindout.rei.com;reitest=test.rei.com'
+                s.linkInternalFilters='javascript:,rei.com'
+
+    /* WARNING: Changing any of the below variables will cause drastic
+     changes to how your visitor data is collected.  Changes should only be
+     made when instructed to do so by your account manager.*/
+        s.visitorNamespace = "recreationalequipmen"
+        s.trackingServer = "omni.rei.com"
+        s.trackingServerSecure = "somni.rei.com"
+        CQ_Analytics.adhocLinkTracking = ""
+        
+        
+        
+        //overriden from /libs/cq/analytics/components/sitecatalyst - this is where we REI specific code.
+//add you custom settings and code into this file, also here you can use and customize SiteCatalyst plug-ins
+
+s.sa(s_account);
+
+s.usePlugins=true;
+s.doPlugins = function(s) {
+
+/* SearchCenter (manageQueryParam) */
+if(s.getQueryParam('s_kwcid')){
+s.pageURL=s.manageQueryParam('s_kwcid',1,1);
+}
+
+//Used to generate the unique Session ID via VISTA rule
+s.prop31=s.getVisitNum(1825);
+
+/* SearchCenter (clickPast) */
+s.tempSCCT = s.getQueryParam('s_kwcid');
+s.tempSCCT = s.getValOnce(s.tempSCCT,'s_tempSCCT',0);
+s.clickPast(s.tempSCCT,'event14','event15');
+
+/*Campaign variable setting*/
+if(s.getQueryParam('cm_mmc')){
+s.campaign = s.eVar6 = s.eVar7 = s.eVar31 = s.eVar33 = s.getValOnce(s.getQueryParam('cm_mmc'),"s_campaign",0);
+}
+/*Default the pageName to the url via the getPageName() plugin*/
+if(!s.pageName)
+s.pageName=s.getPageName();
+
+s.eVar13=s.getNewRepeat();
+
+/* TimeParting Variables */
+var theDate=new Date()
+var currentYear=(theDate.getFullYear())
+varHour=s.getTimeParting('h','-8', currentYear); // Set hour
+varDay=s.getTimeParting('d','-5', currentYear); // Set day
+s.prop17 = varDay + "|" + varHour;
+
+// moved this call to the bottom
+// doPlugins() is being called twice (once inside s.t once explicitly)
+// this function can only be called once because it overwrites a global variable first-time through
+// running it twice overwrites the TNT variable that gets set the first time through with a blank
+// TNT
+// s.tnt=s.trackTNT();
+
+//this code is for url scrubbing of illegal characters.  Added by LV on 9/1/10
+var refURL = document.referrer;
+refURL = refURL.replace(/%0A/gi,"");
+refURL = refURL.replace(/%0D/gi,"");
+s.referrer = refURL;
+
+/*social Authors*/
+/** ONLINE-8055 add socialPlatforms and socialAuthors*/
+s.socialPlatforms('eVar63');
+
+/* moved here from analytics.js */
+/* these values need to be called before s.t */
+//Template Type First & Last Touch
+s.eVar21 = s.eVar22 = s.prop6;
+//console.log("plugins pulling CQ_Analytics: " + CQ_Analytics.PageDataMgr.data['scTemplateType']);
+//console.log("plugins pulling s.prop6: " + s.prop6);
+//console.log("plugins setting s.eVar21: " + s.eVar21);
+s.eVar23="+1";
+
+}
+
+/*
+* some plugins can only be run once and before s.t call
+* doPlugins() is called twice (in s.t and explicitly)
+*/
+s.singleRunPlugins = function(s) {
+
+// SiteCatalyst for Test&Target, from documentation- The mboxLoadSCPLugin(s), has
+// to be after the reference to the mbox.js and before the s.t(); call.
+if(typeof window.mboxLoadSCPlugin == "function" && ($(".mboxDefault").length > 0 || $(".mbox").length > 0)){
+try{
+mboxLoadSCPlugin(s);
+}catch(e){}
+}
+
+//Test&Target to SiteCatalyst integration
+//this function can only be called once because it overwrites a global variable first-time through
+//running it twice overwrites the TNT variable that gets set the first time through with a blank
+//TNT
+s.tnt=s.trackTNT();
+
+}
+
+/************************** PLUGINS SECTION *************************/
+/* You may insert any plugins you wish to use here. */
+
+/*
+* TNT Integration Pluginv1.0
+* v -Name of the javascriptvariable that is used. Defaults to s_tnt(optional)
+* p -Name of the urlparameter. Defaults to s_tnt(optional)
+* b -Blank Global variable after pluginruns. Defaults to true (Optional)
+*
+* This plugin may only be called once. first call blanks out a global variable that will
+* overwrite the s.tnt variable the second time it is called
+*
+*/
+s.trackTNT= function(v, p, b)
+{
+vars=this, n="s_tnt", p=(p)?p:n, v=(v)?v:n, r="",pm=false, b=(b)?b:true;
+if(s.getQueryParam)
+pm = s.getQueryParam(p); //grab the parameter
+if(pm)
+r += (pm + ","); // append the parameter
+if(s.wd[v] != undefined)
+r += s.wd[v]; // get the global variable
+if(b)
+s.wd[v] = ""; // Blank out the global variable for ajaxrequests
+return r;
+}
+
+/********************************************************************
+*
+* s.integrateSearch (Mercado) (should be in Plug-ins section)
+*
+*******************************************************************/
+/*
+* Plugin: s.integrateSearch : 5.1 - pulls in the Mercado variables into OMTR variables
+*/
+
+/* integrateSearch Example: -- REQUIRES s.vpr, s.escape, Mercado adapter 5.1
+*
+* List of Parameters:
+* p - list of mappings where each mapping is comma seperated and the Mercado variable and OMTR variable are colon sperated
+*
+*/
+
+s.integrateSearch=new Function("p",""
++"if(typeof(mercado_query_stats)!='undefined'){var po=new mercado_que"
++"ry_stats();var s=this,vs='',i,j,d,pv,vs;while(p){i=p.indexOf(',');i"
++"=i<0?p.length:i;d=p.substring(0,i);if(d){j=p.indexOf(':');if(j>0){p"
++"v=d.substring(0,j);d=d.substring(j==d.length?j:j+1);while(d){j=d.in"
++"dexOf('|');j=j<0?d.length:j;vs=d.substring(0,j);s.vpr(vs,('object'="
++"=typeof(po[pv]))?'':po[pv]);d=d.substring(j==d.length?j:j+1);}}}p=p"
++".substring(i==p.length?i:i+1);}}");
+
+/*
+* s.vpr: 1.0 - s.vpr(vs,v)
+*
+*  vs - OMTR Variable
+*  v - Value
+*
+*/
+
+s.vpr=new Function("vs","v",""
++"if(typeof(v)!='undefined'){var s=this;eval('s.'+vs+'=\"'+s.escape(v"
++")+'\"')}");
+
+/**
+* s.escape: 1.0 - s.escape(v)
+*/
+s.escape=new Function("v",""
++"v=v?v:0;if(!v)return'';var n='',i=0,c='';for(i;i<v.length;i++){c=v."
++"charAt(i);if(c=='\\\\'){n+='\\\\\\\\';}else if(c=='\"'){n+='\\\\\"'"
++";}else{n+=c;}}return n;");
+
+/********************************************************************
+*
+* Supporting functions that may be shared between plug-ins
+*
+*******************************************************************/
+
+/*
+* Utility Function: vpr - set the variable vs with value v
+*/
+s.vpr=new Function("vs","v",
+"if(typeof(v)!='undefined'){var s=this; eval('s.'+vs+'=\"'+v+'\"')}");
+
+/*
+* Utility Function: split v1.5 - split a string (JS 1.0 compatible)
+*/
+s.split=new Function("l","d",""
++"var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
++"++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
+
+/*
+* Plugin Utility: Replace v1.0
+*/
+s.repl=new Function("x","o","n",""
++"var i=x.indexOf(o),l=n.length;while(x&&i>=0){x=x.substring(0,i)+n+x."
++"substring(i+o.length);i=x.indexOf(o,i+l)}return x");
+
+/* End supporting functions */
+
+/*
+* Plugin: clickPast - version 1.0
+*/
+s.clickPast=new Function("scp","ct_ev","cp_ev","cpc",""
++"var s=this,scp,ct_ev,cp_ev,cpc,ev,tct;if(s.p_fo(ct_ev)==1){if(!cpc)"
++"{cpc='s_cpc';}ev=s.events?s.events+',':'';if(scp){s.events=ev+ct_ev"
++";s.c_w(cpc,1,0);}else{if(s.c_r(cpc)>=1){s.events=ev+cp_ev;s.c_w(cpc"
++",0,0);}}}");
+
+/*********************************************************************
+* Function p_fo(x,y): Ensures the plugin code is fired only on the
+*      first call of do_plugins
+*
+*
+* Returns:
+*     - 1 if first instance on firing
+*     - 0 if not first instance on firing
+*********************************************************************/
+s.p_fo=new Function("n",""
++"var s=this;if(!s.__fo){s.__fo=new Object;}if(!s.__fo[n]){s.__fo[n]="
++"new Object;return 1;}else {return 0;}");
+
+
+/*
+*	Plug-in: manageQueryParam v1.2 - Manages query string parameters
+*	by either encoding, swapping, or both encoding and swapping a value.
+*/
+
+s.manageQueryParam=new Function("p","w","e","u",""
++"var s=this,x,y,i,qs,qp,qv,f,b;u=u?u:(s.pageURL?s.pageURL:''+s.wd.lo"
++"cation);u=u=='f'?''+s.gtfs().location:u+'';x=u.indexOf('?');qs=x>-1"
++"?u.substring(x,u.length):'';u=x>-1?u.substring(0,x):u;x=qs.indexOf("
++"'?'+p+'=');if(x>-1){y=qs.indexOf('&');f='';if(y>-1){qp=qs.substring"
++"(x+1,y);b=qs.substring(y+1,qs.length);}else{qp=qs.substring(1,qs.le"
++"ngth);b='';}}else{x=qs.indexOf('&'+p+'=');if(x>-1){f=qs.substring(1"
++",x);b=qs.substring(x+1,qs.length);y=b.indexOf('&');if(y>-1){qp=b.su"
++"bstring(0,y);b=b.substring(y,b.length);}else{qp=b;b='';}}}if(e&&qp)"
++"{y=qp.indexOf('=');qv=y>-1?qp.substring(y+1,qp.length):'';var eui=0"
++";while(qv.indexOf('%25')>-1){qv=unescape(qv);eui++;if(eui==10)break"
++";}qv=s.rep(qv,'+',' ');qv=escape(qv);qv=s.rep(qv,'%25','%');qv=s.re"
++"p(qv,'%7C','|');qv=s.rep(qv,'%7c','|');qp=qp.substring(0,y+1)+qv;}i"
++"f(w&&qp){if(f)qs='?'+qp+'&'+f+b;else if(b)qs='?'+qp+'&'+b;else qs='"
++"?'+qp}else if(f)qs='?'+f+'&'+qp+b;else if(b)qs='?'+qp+'&'+b;else if"
++"(qp)qs='?'+qp;return u+qs;");
+
+
+
+/*Media Module configuration*/
+s.loadModule("Media")
+s.Media.autoTrack=true
+s.Media.trackVars="None"
+s.Media.trackEvents="None"
+
+/*
+* Plugin: getPageName v2.1 - parse URL and return
+*/
+s.getPageName=new Function("u",""
++"var s=this,v=u?u:''+s.wd.location,x=v.indexOf(':'),y=v.indexOf('/',"
++"x+4),z=v.indexOf('?'),c=s.ConcatDelim,e=s.ExcludeDelim,g=s."
++"queryVarsList,d=s.siteID,n=d?d:'',q=z<0?'':v.substring(z+1),p=v.sub"
++"string(y+1,q?z:v.length);z=p.indexOf('#');p=z<0?p:s.fl(p,z);x=e?p.i"
++"ndexOf(e):-1;p=x<0?p:s.fl(p,x);p+=!p||p.charAt(p.length-1)=='/'?s.d"
++"efaultPage:'';y=c?c:'/';while(p){x=p.indexOf('/');x=x<0?p.length:x;"
++"z=s.fl(p,x);if(!s.pt(s.ExcludeList,',','p_c',z))n+=n?y+z:z;p=p."
++"substring(x+1)}y=c?c:'?';while(g){x=g.indexOf(',');x=x<0?g.length:x"
++";z=s.fl(g,x);z=s.pt(q,'&','p_c',z);if(z){n+=n?y+z:z;y=c?c:'&'}g=g.s"
++"ubstring(x+1)}return n");
+
+
+/*
+* Plugin: getQueryParam 2.1 - return query string parameter(s)
+
+s.getQueryParam=new Function("p","d","u",""
++"var s=this,v='',i,t;d=d?d:'';u=u?u:(s.pageURL?s.pageURL:s.wd.locati"
++"on);if(u=='f')u=s.gtfs().location;while(p){i=p.indexOf(',');i=i<0?p"
++".length:i;t=s.p_gpv(p.substring(0,i),u+'');if(t)v+=v?d+t:t;p=p.subs"
++"tring(i==p.length?i:i+1)}return v");
+s.p_gpv=new Function("k","u",""
++"var s=this,v='',i=u.indexOf('?'),q;if(k&&i>-1){q=u.substring(i+1);v"
++"=s.pt(q,'&','p_gvf',k)}return v");
+s.p_gvf=new Function("t","k",""
++"if(t){var s=this,i=t.indexOf('='),p=i<0?t:t.substring(0,i),v=i<0?'T"
++"rue':t.substring(i+1);if(p.toLowerCase()==k.toLowerCase())return s."
++"epa(v)}return ''");
+*/
+
+/*
+* Plugin: getQueryParam 2.4
+*/
+s.getQueryParam=new Function("p","d","u","h",""
++"var s=this,v='',i,j,t;d=d?d:'';u=u?u:(s.pageURL?s.pageURL:s.wd.loca"
++"tion);if(u=='f')u=s.gtfs().location;while(p){i=p.indexOf(',');i=i<0"
++"?p.length:i;t=s.p_gpv(p.substring(0,i),u+'',h);if(t){t=t.indexOf('#"
++"')>-1?t.substring(0,t.indexOf('#')):t;}if(t)v+=v?d+t:t;p=p.substrin"
++"g(i==p.length?i:i+1)}return v");
+s.p_gpv=new Function("k","u","h",""
++"var s=this,v='',q;j=h==1?'#':'?';i=u.indexOf(j);if(k&&i>-1){q=u.sub"
++"string(i+1);v=s.pt(q,'&','p_gvf',k)}return v");
+s.p_gvf=new Function("t","k",""
++"if(t){var s=this,i=t.indexOf('='),p=i<0?t:t.substring(0,i),v=i<0?'T"
++"rue':t.substring(i+1);if(p.toLowerCase()==k.toLowerCase())return s."
++"epa(v)}return''");
+
+
+
+/*
+* Plugin: getValOnce 0.2 - get a value once per session or number of days
+*/
+s.getValOnce=new Function("v","c","e",""
++"var s=this,k=s.c_r(c),a=new Date;e=e?e:0;if(v){a.setTime(a.getTime("
++")+e*86400000);s.c_w(c,v,e?a:0);}return v==k?'':v");
+
+/*
+* Plugin: getAndPersistValue 0.3 - get a value on every page
+*/
+s.getAndPersistValue=new Function("v","c","e",""
++"var s=this,a=new Date;e=e?e:0;a.setTime(a.getTime()+e*86400000);if("
++"v)s.c_w(c,v,e?a:0);return s.c_r(c);");
+
+/*
+* Plugin: getNewRepeat 1.1 - Return whether user is new or repeat
+*/
+s.getNewRepeat=new Function("d",""
++"var s=this,e=new Date(),cval,sval,ct=e.getTime();e.setTime(ct+d*24*"
++"60*60*1000);cval=s.c_r('s_nr');if(cval.length==0){s.c_w('s_nr',ct+'"
++"-New',e);return 'New';}sval=cval.split('-');if(ct-sval[0]<30*60*100"
++"0&&sval[1]=='New'){s.c_w('s_nr',ct+'-New',e);return 'New';}else {s."
++"c_w('s_nr',ct+'-Repeat',e);return 'Repeat';}");
+
+
+
+
+/*
+* Plugin: getVisitNum - version 3.0
+*/
+s.getVisitNum=new Function("tp","c","c2",""
++"var s=this,e=new Date,cval,cvisit,ct=e.getTime(),d;if(!tp){tp='m';}"
++"if(tp=='m'||tp=='w'||tp=='d'){eo=s.endof(tp),y=eo.getTime();e.setTi"
++"me(y);}else {d=tp*86400000;e.setTime(ct+d);}if(!c){c='s_vnum';}if(!"
++"c2){c2='s_invisit';}cval=s.c_r(c);if(cval){var i=cval.indexOf('&vn="
++"'),str=cval.substring(i+4,cval.length),k;}cvisit=s.c_r(c2);if(cvisi"
++"t){if(str){e.setTime(ct+1800000);s.c_w(c2,'true',e);return str;}els"
++"e {return 'unknown visit number';}}else {if(str){str++;k=cval.substri"
++"ng(0,i);e.setTime(k);s.c_w(c,k+'&vn='+str,e);e.setTime(ct+1800000);"
++"s.c_w(c2,'true',e);return str;}else {s.c_w(c,e.getTime()+'&vn=1',e)"
++";e.setTime(ct+1800000);s.c_w(c2,'true',e);return 1;}}");
+s.dimo=new Function("m","y",""
++"var d=new Date(y,m+1,0);return d.getDate();");
+s.endof=new Function("x",""
++"var t=new Date;t.setHours(0);t.setMinutes(0);t.setSeconds(0);if(x=="
++"'m'){d=s.dimo(t.getMonth(),t.getFullYear())-t.getDate()+1;}else if("
++"x=='w'){d=7-t.getDay();}else {d=1;}t.setDate(t.getDate()+d);return "
++"t;");
+
+/*
+* Plugin: getTimeParting 1.4 - Set timeparting values based on time zone (15 min increments)
+*/
+s.getTimeParting=new Function("t","z","y",""
++"dc=new Date('1/1/2000');var f=15;var ne=8;if(dc.getDay()!=6||"
++"dc.getMonth()!=0){return'Data Not Available'}else{;z=parseInt(z);"
++"if(y=='2009'){f=8;ne=1};gmar=new Date('3/1/'+y);dsts=f-gmar.getDay("
++");gnov=new Date('11/1/'+y);dste=ne-gnov.getDay();spr=new Date('3/'"
++"+dsts+'/'+y);fl=new Date('11/'+dste+'/'+y);cd=new Date();"
++"if(cd>spr&&cd<fl){z=z+1}else{z=z};utc=cd.getTime()+(cd.getTimezoneO"
++"ffset()*60000);tz=new Date(utc + (3600000*z));thisy=tz.getFullYear("
++");var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Fr"
++"iday','Saturday'];if(thisy!=y){return'Data Not Available'}else{;thi"
++"sh=tz.getHours();thismin=tz.getMinutes();thisd=tz.getDay();var dow="
++"days[thisd];var ap='AM';var dt='Weekday';var mint='00';if(thismin>1"
++"5&&thismin<30){mint='15'}if(thismin>30&&thismin<45){mint='30'}if(th"
++"ismin>45&&thismin<60){mint='45'}"
++"if(thish>=12){ap='PM';thish=thish-12};if (thish==0){th"
++"ish=12};if(thisd==6||thisd==0){dt='Weekend'};var timestring=thish+'"
++":'+mint+ap;var daystring=dow;var endstring=dt;if(t=='h'){return tim"
++"estring}if(t=='d'){return daystring};if(t=='w'){return en"
++"dstring}}};"
+);
+
+/* Plugin: Days since last Visit 1.1.H - capture time from last visit
+*/
+
+s.getDaysSinceLastVisit=new Function("c",""
++"var s=this,e=new Date(),es=new Date(),cval,cval_s,cval_ss,ct=e.getT"
++"ime(),day=24*60*60*1000,f1,f2,f3,f4,f5;e.setTime(ct+3*365*day);es.s"
++"etTime(ct+30*60*1000);f0='Cookies Not Supported';f1='First Visit';f"
++"2='More than 30 days';f3='More than 7 days';f4='Less than 7 days';f"
++"5='Less than 1 day';cval=s.c_r(c);if(cval.length==0){s.c_w(c,ct,e);"
++"s.c_w(c+'_s',f1,es);}else{var d=ct-cval;if(d>30*60*1000){if(d>30*da"
++"y){s.c_w(c,ct,e);s.c_w(c+'_s',f2,es);}else if(d<30*day+1 && d>7*day"
++"){s.c_w(c,ct,e);s.c_w(c+'_s',f3,es);}else if(d<7*day+1 && d>day){s."
++"c_w(c,ct,e);s.c_w(c+'_s',f4,es);}else if(d<day+1){s.c_w(c,ct,e);s.c"
++"_w(c+'_s',f5,es);}}else{s.c_w(c,ct,e);cval_ss=s.c_r(c+'_s');s.c_w(c"
++"+'_s',cval_ss,es);}}cval_s=s.c_r(c+'_s');if(cval_s.length==0) retur"
++"n f0;else if(cval_s!=f1&&cval_s!=f2&&cval_s!=f3&&cval_s!=f4&&cval_s"
++"!=f5) return '';else return cval_s;"
+);
+
+/*
+* Plugin: socialPlatforms v1.0
+*/
+s.socialPlatforms=new Function("a",""
++"var s=this,g,K,D,E,F;g=s.referrer?s.referrer:document.referrer;g=g."
++"toLowerCase();K=s.split(s.socPlatList,'|');for(i=0;i<K.length;i++){"
++"D=s.split(K[i],'>');if(g.indexOf(D[0])!=-1){if(a){s[a]=D[1];}}}");
+s.socPlatList="facebook.com>Facebook|twitter.com>Twitter|t.co/>Twitter|youtube.com>Youtube|clipmarks.com>Clipmarks|dailymotion.com>Dailymotion|delicious.com>Delicious|digg.com>Digg|diigo.com>Diigo|flickr.com>Flickr|flixster.com>Flixster|fotolog.com>Fotolog|friendfeed.com>FriendFeed|google.com/buzz>Google Buzz|buzz.googleapis.com>Google Buzz|plus.google.com>Google+|hulu.com>Hulu|identi.ca>identi.ca|ilike.com>iLike|intensedebate.com>IntenseDebate|myspace.com>MySpace|newsgator.com>Newsgator|photobucket.com>Photobucket|plurk.com>Plurk|slideshare.net>SlideShare|smugmug.com>SmugMug|stumbleupon.com>StumbleUpon|tumblr.com>Tumblr|vimeo.com>Vimeo|wordpress.com>WordPress|xanga.com>Xanga";
+
+/*
+* socialAuthors v1.0
+*/
+s.socialAuthors=new Function("",""
++"var s=this,g,tco;g=s.referrer?s.referrer:document.referrer;g=g.toLo"
++"werCase();if(g.indexOf('t.co/')!=-1){s.tco=escape(s.split(g,'/')[3]"
++");s.Integrate.add('SocialAuthor');s.Integrate.SocialAuthor.tEvar='e"
++"Var64';s.Integrate.SocialAuthor.get('http://search.twitter.com/sear"
++"ch.json?var=[VAR]&callback=s.twitterSearch&q=http%3A%2F%2Ft.co%2F'+"
++"s.tco);s.Integrate.SocialAuthor.delay();s.Integrate.SocialAuthor.se"
++"tVars=function(s,p){s[p.tEvar]=s.user;}}");
+
+s.twitterSearch=new Function("obj",""
++"var s=this,txt,txtRT,txtEnd,txtAuthor;txt=obj.results[0].text;txtRT"
++"=txt.indexOf('RT @');if(txtRT!=-1){txtEnd=txt.indexOf(' ',txtRT+4);"
++"txtAuthor=txt.substring(txtRT+4,txtEnd);s.user=txtAuthor.replace(':"
++"','');}else{s.user=obj.results[0].from_user;}s.Integrate.SocialAuth"
++"or.ready();");
+
+
+s.maxDelay='1000';	//max time to wait for 3rd party api response in milliseconds
+s.loadModule("Integrate")
+s.Integrate.onLoad=function(s,m){
+s.socialAuthors();
+//add other integration module dependent functions here
+};
+
+/****************************** MODULES *****************************/
+/* Module: Media */
+s.m_Media_c="='s_media_'+m._in+'_~=new Function(~m.ae(mn,l,\"'+p+'\",~;`H~o.'+f~o.Get~=function(~){var m=this~}^9 p');p=tcf(o)~setTimeout(~x,x!=2?p:-1,o)}~=parseInt(~m.s.d.getElementsByTagName~ersion"
++"Info~'`z_c_il['+m._in+'],~'o','var e,p=~QuickTime~if(~}catch(e){p=~s.wd.addEventListener~m.s.rep(~=new Object~layState~||^D~m.s.wd[f1]~Media~.name~Player '+~s.wd.attachEvent~'a','b',c~;o[f1]~tm.get"
++"Time()/1~m.s.isie~.current~,tm=new Date,~p<p2||p-p2>5)~m.e(n,1,o^F~m.close~i.lx~=v+',n,~){this.e(n,~MovieName()~);o[f~i.lo~m.ol~o.controls~load',m.as~==3)~script';x.~,t;try{t=~Version()~else~o.id~)"
++"{mn=~1;o[f7]=~Position~);m.~(x==~)};m.~&&m.l~l[n])~var m=s~!p){tcf~xc=m.s.~Title()~();~7+'~)}};m.a~\"'+v+';~3,p,o);~5000~return~i.lt~';c2='~Change~n==~',f~);i.~==1)~{p='~4+'=n;~()/t;p~.'+n)}~~`z.m_"
++"i('`P'`uopen`6n,l,p,b`7,i`L`Ya='',x;l`Bl)`3!l)l=1`3n&&p){`H!m.l)m.l`L;n=`Km.s.rep(`Kn,\"\\n\",''),\"\\r\",''),'--**--','')`3m.`y`b(n)`3b&&b.id)a=b.id;for (x in m.l)`Hm.l[x]`x[x].a==a)`b(m.l[x].n^Fn"
++"=n;i.l=l;i.p=p;i.a=a;i.t=0;i.s`B`V000);`c=0;^A=0;`h=0;i.e='';m.l[n]=i}};`b`6n`e0,-1`wplay`6n,o`7,i;i=`am`1`Ei`3m.l){i=m.l[\"'+`Ki.n,'\"','\\\\\"')+'\"]`3i){`H`c^Gm.e(i.n,3,-1^Fmt=`9i.m,^8)}}'^Fm(`w"
++"stop`6n,o`e2,o`we`6n,x,o`7,i=n`x&&m.l[n]?m.l[n]:0`Yts`B`V000),d='--**--'`3i){if `v3||(x!=`c&&(x!=2||`c^G)) {`Hx){`Ho<0&&^A>0){o=(ts-^A)+`h;o=o<i.l?o:i.l-1}o`Bo)`3`v2||x`l&&`h<o)i.t+=o-`h`3x!=3){i.e"
++"+=`v1?'S':'E')+o;`c=x;}`p `H`c!=1)`alt=ts;`h=o;m.s.pe='media';m.s.pev3=i.n+d+i.l+d+i.p+d+i.t+d+i.s+d+i.e+`v3?'E'+o:''`us.t(0,'`P^K`p{m.e(n,2,-1`ul[n]=0;m.s.fbr('`P^K}}^9 i};m.ae`6n,l,p,x,o,b){`Hn&&"
++"p`7`3!m.l||!m.`ym.open(n,l,p,b`ue(n,x,o^5`6o,t`7,i=`q?`q:o`Q,n=o`Q,p=0,v,c,c1,c2,^1h,x,e,f1,f2`0oc^E3`0t^E4`0s^E5`0l^E6`0m^E7`0c',tcf,w`3!i){`H!m.c)m.c=0;i`0'+m.c;m.c++}`H!`q)`q=i`3!o`Q)o`Q=n=i`3!`"
++"i)`i`L`3`i[i])^9;`i[i]=o`3!xc)^1b;tcf`1`F0;try{`Ho.v`D&&o`X`P&&`j)p=1`I0`8`3^0`1`F0`n`5`G`o`3t)p=2`I0`8`3^0`1`F0`n`5V`D()`3t)p=3`I0`8}}v=\"`z_c_il[\"+m._in+\"],o=`i['\"+i+\"']\"`3p^G^HWindows `P `R"
++"o.v`D;c1`dp,l,x=-1,cm,c,mn`3o){cm=o`X`P;c=`j`3cm&&c`rcm`Q?cm`Q:c.URL;l=cm.duration;p=c`X`t;n=o.p`M`3n){`H^D8)x=0`3n`lx=1`3^D1`N2`N4`N5`N6)x=2;}^B`Hx>=0)`2`A}';c=c1+c2`3`W&&xc){x=m.s.d.createElement"
++"('script');x.language='j`mtype='text/java`mhtmlFor=i;x.event='P`M^C(NewState)';x.defer=true;x.text=c;xc.appendChild(x`g6]`1c1+'`Hn`l{x=3;'+c2+'}`9`46+',^8)'`g6]()}}`Hp==2)^H`G `R(`5Is`GRegistered()"
++"?'Pro ':'')+`5`G`o;f1=f2;c`dx,t,l,p,p2,mn`3o`r`5`f?`5`f:`5URL^3n=`5Rate^3t=`5TimeScale^3l=`5Duration^J=`5Time^J2=`45+'`3n!=`44+'||`Z{x=2`3n!=0)x=1;`p `Hp>=l)x=0`3`Z`22,p2,o);`2`A`Hn>0&&`4^4>=10){`2"
++"^7`4^4=0}`4^4++;`4^I`45+'=p;`9^6`42+'(0,0)\",500)}'`U`1`T`g4]=-`s0`U(0,0)}`Hp`l^HReal`R`5V`D^3f1=n+'_OnP`M^C';c1`dx=-1,l,p,mn`3o`r`5^2?`5^2:`5Source^3n=`5P`M^3l=`5Length()/1000;p=`5`t()/1000`3n!=`4"
++"4+'){`Hn`lx=1`3^D0`N2`N4`N5)x=2`3^D0&&(p>=l||p==0))x=0`3x>=0)`2`A`H^D3&&(`4^4>=10||!`43+')){`2^7`4^4=0}`4^4++;`4^I^B`H`42+')`42+'(o,n)}'`3`O)o[f2]=`O;`O`1`T1+c2)`U`1`T1+'`9^6`41+'(0,0)\",`43+'?500:"
++"^8);'+c2`g4]=-1`3`W)o[f3]=`s0`U(0,0^5s`1'e',`El,n`3m.autoTrack&&`C){l=`C(`W?\"OBJECT\":\"EMBED\")`3l)for(n=0;n<l.length;n++)m.a(`y;}')`3`S)`S('on`k);`p `H`J)`J('`k,false)";
+s.m_i("Media");
+
+
+/* Module: Integrate */
+s.m_Integrate_c="var m=s.m_i('Integrate');m.add=function(n,o){var m=this,p;if(!o)o='s_Integrate_'+n;if(!s.wd[o])s.wd[o]=new Object;m[n]=new Object;p=m[n];p._n=n;p._m=m;p._c=0;p._d=0;p.disable=0;p.get"
++"=m.get;p.delay=m.delay;p.ready=m.ready;p.beacon=m.beacon;p.script=m.script;m.l[m.l.length]=n};m._g=function(t){var m=this,s=m.s,i,p,f=(t?'use':'set')+'Vars',tcf;for(i=0;i<m.l.length;i++){p=m[m.l[i]"
++"];if(p&&!p.disable&&p[f]){if(s.apv>=5&&(!s.isopera||s.apv>=7)){tcf=new Function('s','p','f','var e;try{p[f](s,p)}catch(e){}');tcf(s,p,f)}else p[f](s,p)}}};m._t=function(){this._g(1)};m._fu=function"
++"(p,u){var m=this,s=m.s,x,v,tm=new Date;if(u.toLowerCase().substring(0,4) != 'http')u='http://'+u;if(s.ssl)u=s.rep(u,'http:','https:');p.RAND=Math&&Math.random?Math.floor(Math.random()*1000000000000"
++"0):tm.getTime();p.RAND+=Math.floor(tm.getTime()/10800000)%10;for(x in p)if(x&&x.substring(0,1)!='_'&&(!Object||!Object.prototype||!Object.prototype[x])){v=''+p[x];if(v==p[x]||parseFloat(v)==p[x])u="
++"s.rep(u,'['+x+']',s.rep(escape(v),'+','%2B'))}return u};m.get=function(u,v){var p=this,m=p._m;if(!p.disable){if(!v)v='s_'+m._in+'_Integrate_'+p._n+'_get_'+p._c;p._c++;p.VAR=v;p._d++;m.s.loadModule("
++"'Integrate:'+v,m._fu(p,u),0,1,p._n)}};m.delay=function(){var p=this;if(p._d<=0)p._d=1};m.ready=function(){var p=this,m=p._m;p._d=0;if(!p.disable)m.s.dlt()};m._d=function(){var m=this,i,p;for(i=0;i<"
++"m.l.length;i++){p=m[m.l[i]];if(p&&!p.disable&&p._d>0)return 1}return 0};m._x=function(d,n){var p=this[n],x;if(!p.disable){for(x in d)if(x&&(!Object||!Object.prototype||!Object.prototype[x]))p[x]=d["
++"x];p._d--}};m.beacon=function(u){var p=this,m=p._m,s=m.s,imn='s_i_'+m._in+'_Integrate_'+p._n+'_'+p._c,im;if(!p.disable&&s.d.images&&s.apv>=3&&(!s.isopera||s.apv>=7)&&(s.ns6<0||s.apv>=6.1)){p._c++;i"
++"m=s.wd[imn]=new Image;im.src=m._fu(p,u)}};m.script=function(u){var p=this,m=p._m;if(!p.disable)m.s.loadModule(0,m._fu(p,u),0,1)};m.l=new Array;if(m.onLoad)m.onLoad(s,m)";
+s.m_i("Integrate");
+
+/*
+* Plugins MUST be initialized for omniture to work as expected
+* this is a key detail of analytics working as expected
+* */
+s.doPlugins(s);
+
+/*
+* these plugins are not called from s.t like the doPlugins()
+* generally these are only run once and must be run before s.t call
+*/
+s.singleRunPlugins(s);
+        
+
+        
+        
+
+
+
+ 

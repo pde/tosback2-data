@@ -601,8 +601,12 @@ if ( $hostname === "sports.sportsillustrated.cnn.com" && $isStatsHosted ) {
 		cnn_metadata.section = [ 'nfl', 'draft' ];
 		cnn_metadata.template_type = ( ( $pathname ).match( /^\/football\/nfl\/draft/ ) ) ? 'section front': 'other:draft';
 		cnn_metadata.content_type = 'none';
-	}
-	else if ( ( $pathname ).match( /^\/football\/nfl\/players\// ) ) {
+		
+		
+		if ( ($pathname).match(/popup/) ){
+								cnn_metadata.section = [ 'nfl', 'draft tracker' ];
+  }
+	} else if ( ( $pathname ).match( /^\/football\/nfl\/players\// ) ) {
 		cnn_metadata.section = [ 'nfl', 'players' ];
 		cnn_metadata.template_type = 'other:players';
 		cnn_metadata.content_type = 'none';

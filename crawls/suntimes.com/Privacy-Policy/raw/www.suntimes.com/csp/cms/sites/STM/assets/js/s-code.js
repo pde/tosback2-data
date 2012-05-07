@@ -190,6 +190,12 @@ if (document.URL.match(/rogerebert\./i)) {
 } else if (document.URL.match(/specialsections\./i)) {
 	s_account='digchspecialsections';
 	linkInternalFilters="javascript:,specialsections.suntimes.com";
+} else if (document.URL.match(/\/community\//i)) {
+	s_account='digchtncnetwork';	communityName='suntimes.com';
+	linkInternalFilters="javascript:,www.suntimes.com";
+} else if (document.URL.match(/\/travel\//i)) {
+	s_account='digchtncnetwork';	communityName='suntimes.com';
+	linkInternalFilters="javascript:,www.suntimes.com";
 }
 
 s_account= s_account + ",digchstglobal";

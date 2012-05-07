@@ -1,0 +1,396 @@
+/**
+ * @author Sandeep Rudrawar  
+ *Dt 4/10/2009
+ * Copyright 2009 IBM Corp
+ *
+ */
+ /*  Begin Helper Functions */
+ //pageview connector 
+ /* Start Comstants */
+ var CATEGORY_ITEM_PAGE_ACTIVITIES = 'Item Page Activities';
+ var ITEM_EMAIL_ACTIVITIES = 'Item Email Activities'; 
+ var ITEM_EMAIL_ACTIVITIES ='Item Email Activities';
+ var BROWSE_RELATED = 'Browse Related';
+ var USER_ACTIVITIES = 'User Activities';
+ var ADVANCED_SEARCH = 'Advanced Search';
+ var DEVICE_INFO = 'Device Info';
+
+ // Start Custom Variable related constants
+
+ // Slot of the variables
+ 
+ var STORE_LOCATION_SEARCH_SLOT = 2;
+ var SAVE_ITEM_SLOT = 3;
+ var EMAIL_SIGNUP_SLOT = 8;
+ // Name of the variables
+ var EMAIL_SIGNUP_NAME = 'Email_Signup';
+ var SAVE_ITEM_NAME = 'Save_Item';
+ var STORE_LOCATION_SEARCH_NAME = 'Store_Search';
+ // End Name Section
+
+ // Scope of the variables
+ var VISITOR_LEVEL_SCOPE = 1;
+ var VISIT_LEVEL_SCOPE = 2;
+ var PAGE_LEVEL_SCOPE = 3;
+ // End Scope Section
+
+ // End Custom Variable Constants
+
+ /* End Constants */
+ function SetCustomVariable(custVarSlot, custVarName, custVarValue, custVarScope,requiresPageView) {
+
+     //slots 1,2,3,4,5 total. Only 5 slots are available in total. Do not send any other value, it will be ignored. 
+    //scope 1=>visitor level, 2=>Session Lvele 3=>Page Level. Do not send anything else apart from 1,2,3.
+     custVarValue = TrimString(custVarValue);
+     if (!IsNullOrEmpty(custVarValue)) 
+     {
+         custVarValue = ReplaceSpacesWithUnderScore(custVarValue);
+         pageTracker._setCustomVar(
+      custVarSlot,                   // This custom var is set to this slot
+      custVarName,           // Name of custom variable.
+      custVarValue,      // Sets the value of "Section" to "Life & Style" for this particular aricle
+      custVarScope                    // Sets the scope to page-level as default from GAHelper class.
+                             );
+
+         if (requiresPageView == true) 
+         {
+             TrackPageView();
+         }
+     } 
+
+ }
+ 
+ function GetVirtualPageViewPath(level0,level1,level2,level3)
+ {	var slash = '/';
+	var retVal;
+	if(IsDefined(level0) && IsDefined(level1) && IsDefined(level2) && IsDefined(level3))
+	{
+		retVal= slash + level0 + slash + level1 + slash +level2 + slash +level3;
+	}
+	else if (IsDefined(level0) && IsDefined(level1) && IsDefined(level2))
+	{
+		retVal= slash + level0 + slash + level1 + slash +level2 ;
+	}
+	else if(IsDefined(level0) && IsDefined(level1) )
+	{
+		retVal= slash + level0 + slash + level1;
+	}
+	else if(IsDefined(level0) )
+	{
+		retVal= slash + level0;
+	}
+	// All virtual pageviews should go under /Virtual Folder/ in GA reports.
+	retVal = slash + 'Virtual' +retVal ; 
+	return retVal;
+	
+ }
+function IsDefined( variable)
+{
+
+    if (typeof(variable) != 'undefined' && variable != null && variable != 'undefined') { return true; }
+	else{return false;}
+	
+
+}
+function IsNullOrEmpty(variable)
+{
+	if(variable ==null || variable =='undefined' || variable =='')
+	{ return true;}
+	else {return false;}
+}
+ /*  End Helper Functions */
+function TrackEvent(category, action, label,value)
+{			
+	TrackEventAction(category,action,label,value);			
+}
+function TrackEventAction(category, action, label,value)
+{
+		
+	if(IsDefined(pageTracker ))
+	{		
+		if( IsNullOrEmpty( value)== true)
+		{			
+			pageTracker._trackEvent(category , action, label);
+		}
+		else
+		{
+			pageTracker._trackEvent(category , action, label,value);
+		}
+	}
+}
+function TrackPageView(drillDownPath)
+{
+	if(IsDefined(pageTracker) == true )
+	{	
+		if(IsNullOrEmpty(drillDownPath) == false)
+		{			
+			pageTracker._trackPageview(drillDownPath);
+		}
+		else{pageTracker._trackPageview();}
+	}	
+	
+}
+function SetVar(varName)
+{
+	if( IsDefined(pageTracker ) && IsDefined(varName)  )
+	{		
+		pageTracker._setVar(varName);
+	}
+}
+function GATrackBannerActivity(linkname)
+{
+    /* following variables are declared on MasterCategoryPage only*/
+    if (typeof (BANNER_LABEL) == 'undefined') return;
+	if(IsDefined (USER_ACTIVITIES)==true && IsDefined(BANNER_LABEL)==true )
+	{	
+		TrackEvent(USER_ACTIVITIES, linkname , BANNER_LABEL);
+	}
+}
+function GATrackFileDownLoad(downloadName) 
+{
+	if(IsNullOrEmpty(downloadName)==false  )
+	{
+		var drilldownPath = GetVirtualPageViewPath('Downloads',downloadName);
+		TrackPageView(drilldownPath);
+	}
+}
+function GATrackExitLink(exitLinkName) {
+    if (IsNullOrEmpty(exitLinkName) == false) {
+        var drilldownPath = GetVirtualPageViewPath('Exit Links', exitLinkName);
+        TrackPageView(drilldownPath);
+    }
+
+}
+// Change the name as GATrackActivity(linkname)
+function GATrackItemActivity(linkname) 
+{
+	if(IsDefined(linkname) == false)
+	{
+		return ;
+	}
+	
+	if(linkname == "View Holiday Banner Detail")
+	{
+		GATrackBannerActivity(linkname);
+		return ;
+    }
+
+
+    if (typeof (CATEGORY_ITEM_PAGE_ACTIVITIES) != 'undefined' && typeof (LABEL_PRODUCT_TITLE) != 'undefined') {
+        if (IsDefined(CATEGORY_ITEM_PAGE_ACTIVITIES) && IsDefined(LABEL_PRODUCT_TITLE) && !IsNullOrEmpty(linkname)) {
+            TrackEvent(CATEGORY_ITEM_PAGE_ACTIVITIES, linkname, LABEL_PRODUCT_TITLE);
+        }
+    }
+}
+function GATrackItemEmailActivity(activityName)
+{
+	
+	if( IsDefined(CATEGORY_ITEM_PAGE_ACTIVITIES) && IsDefined(ITEM_EMAIL_ACTIVITIES) && !IsNullOrEmpty(activityName)  )
+	{	
+		TrackEvent(CATEGORY_ITEM_PAGE_ACTIVITIES, ITEM_EMAIL_ACTIVITIES ,activityName );
+	}
+}
+function TrackEngagementBrowseWithRefinements()
+{	
+	TrackPageView(ENGAGEMENT_BROWSE_REFINEMENT);
+	
+}
+// Shpng Bag Tracking
+function GATrackActionAddToShoppingBag(sourceOfAdd )
+{	
+var cookieCnt = parseInt(readCookie("shoppingbagcnt"));
+var drillDownLevel1 ;
+var drillDownLevel0 = 'Shopping Bag';
+var drillDownPath ;
+
+		if (!isNaN(cookieCnt) && cookieCnt > 0)
+		{	// nothing to do 
+		}
+		else 
+		{
+			drillDownLevel1 = 'sc Open';
+			TrackEvent (drillDownLevel0, drillDownLevel1, sourceOfAdd); 
+					
+		}
+		drillDownLevel1 = 'sc Add';
+		//drillDownPath =  GetVirtualPageViewPath(drillDownLevel0,drillDownLevel1,sourceOfAdd);
+		//TrackPageView (drillDownPath);		
+		TrackEvent(drillDownLevel0,drillDownLevel1,sourceOfAdd);
+}
+//saved items 
+function GATrackActionAddToSavedItems (sourceOfAdd)
+{
+	var drillDownLevel1 = 'Add' ;
+	var drillDownLevel0 = 'Saved Items';
+	var drillDownLevel2 = sourceOfAdd;
+	//var drillDownPath = GetVirtualPageViewPath(drillDownLevel0,drillDownLevel1,drillDownLevel2);
+	TrackEvent(drillDownLevel0,drillDownLevel1,drillDownLevel2);
+	//TrackPageView(drillDownPath);
+	
+}
+function GATrackActionEngagementAdd()
+{
+	var drillDownLevel0 = 'Saved Items';
+	var drillDownLevel1 = 'Engagement add' ;
+	var drillDownLevel2 = 'Engagement Item Page';
+	//var drillDownPath = GetVirtualPageViewPath(drillDownLevel0, drillDownLevel1 ,drillDownLevel2);
+	TrackEvent(drillDownLevel0, drillDownLevel1 ,drillDownLevel2);
+	//TrackPageView(drillDownPath);		
+	
+}
+function GATrackAction(argPageTitleSource , argAction,skuValue)
+{
+	if(! IsNullOrEmpty(argAction ))
+	{
+	    if (argAction == 'Add to SavedItems') 
+	    {
+	        if (! IsNullOrEmpty(skuValue))	
+		        SetCustomVariableForSaveItem(skuValue); 
+			GATrackActionAddToSavedItems (argPageTitleSource);
+		}
+		else if ( argAction == 'Add to ShoppingBag')
+		{
+			GATrackActionAddToShoppingBag(argPageTitleSource); 
+		}
+		else 
+		{
+			if(IsDefined(USER_ACTIVITIES)==true && IsDefined(argPageTitleSource)==true && IsDefined(argAction))
+			{
+				TrackEvent(USER_ACTIVITIES,argPageTitleSource,argAction);
+			}
+		}
+	}
+}
+function GATrackCategoryBrowseEvent(viewAllAction)
+{
+
+	if( IsDefined(USER_ACTIVITIES) == true && IsDefined(BROWSE_RELATED) == true  && IsDefined(viewAllAction))
+	{
+		TrackEvent(USER_ACTIVITIES,BROWSE_RELATED,viewAllAction);
+	}
+
+}
+function GATrackSearchTerm(searchTerm)
+{
+// Here /Search should be preceded otherwise it will flood in  Content Drilldown reports. 
+  var newURL ;// = location.pathname;
+  if(IsDefined(searchTerm) == true )
+  {
+	//newURL = '/Virtual/Search' +newURL +'?searchTerm='+searchTerm;
+	newURL = '/Shopping/CategoryBrowse.aspx?searchTerm=' + searchTerm;	
+	TrackPageView(newURL);
+  }
+}
+
+function GATrackAdvancedSearchTerm(searchTerm, searchCriteriaForTracking) {
+
+    if (IsDefined(searchTerm) == true && IsDefined(searchCriteriaForTracking) == true) {
+
+        TrackEvent(USER_ACTIVITIES, ADVANCED_SEARCH, searchCriteriaForTracking.concat("searchTerm: ").concat(searchTerm));
+    }
+
+}
+// Track to click event on Search icon in Mobile site.
+function GATrackMobileSearchClick(category,action,labelName) {
+    if (IsDefined(category) == true && IsDefined(action) == true && IsDefined(labelName) == true) {
+        TrackEvent(category, action, labelName, ''); 
+    } 
+}
+
+function AddTransaction(OrderID,Affiliation,Total,Tax,Shipping ,City ,State,Country)
+{	
+	if(IsDefined(OrderID) && IsDefined(Affiliation)&& IsDefined(Total)&& IsDefined(Tax)&& 
+		IsDefined(Shipping)&& IsDefined(City)&& IsDefined(State) && IsDefined(Country))
+	{
+	
+		pageTracker._addTrans(OrderID,Affiliation,Total,Tax,Shipping ,City ,State,Country);
+	}
+	else if( IsDefined(OrderID) && IsDefined(Affiliation)&& IsDefined(Total) )
+	{
+		pageTracker._addTrans(OrderID , Affiliation , Total);
+	}
+}
+function AddItem(OrderID, SKU ,ProductName , Category, UnitPrice, Quantity)
+{
+	if( IsDefined(OrderID) && IsDefined(SKU) && IsDefined(ProductName) 	   &&
+		IsDefined(Category) && IsDefined(UnitPrice) &&  IsDefined(Quantity)	)
+	{
+	
+		pageTracker._addItem(OrderID ,SKU ,ProductName, Category , UnitPrice , Quantity);
+	}
+}
+function TrackTransaction()
+{
+
+	if(IsDefined(pageTracker))
+	{			
+		pageTracker._trackTrans();
+	}
+}
+
+function GATrackModuleEvent(moduleName, flashTitle)
+{
+	
+	if(IsNullOrEmpty(flashTitle)==true)
+	{
+		flashTitle = moduleName;
+	}
+	
+	if((IsNullOrEmpty(flashTitle)== false))
+	{	var modulePathName ='Modules';
+     	var drilldownPath=	GetVirtualPageViewPath(modulePathName,flashTitle );			
+		TrackPageView(drilldownPath);
+	}
+}
+
+//New method for Carosel swipe and nav link clicks
+function GATrackCaroselEvent(eventName) {
+    if ( ! IsNullOrEmpty(eventName)) {
+        TrackEvent(USER_ACTIVITIES, BROWSE_RELATED, eventName);
+    }
+}
+
+// Function to track device info properties
+function GATrackDeviceInfo(category, data) 
+{
+    if (IsDefined(category) == true && IsDefined(data) == true) {
+
+        TrackEvent(DEVICE_INFO, category, data);
+    }
+}
+
+/* Functions related to Custom Variable */
+
+// Function to set custom variable for Save Item.
+function SetCustomVariableForSaveItem(skuValue) 
+{
+    SetCustomVariable(SAVE_ITEM_SLOT, SAVE_ITEM_NAME, skuValue, VISITOR_LEVEL_SCOPE,false);  
+}
+
+// Function to set custom variable for Store Location.
+function SetCustomVariableForStoreLocation(searchTerm) 
+{
+    SetCustomVariable(STORE_LOCATION_SEARCH_SLOT, STORE_LOCATION_SEARCH_NAME, searchTerm, VISITOR_LEVEL_SCOPE, true);
+}
+
+function ReplaceSpacesWithUnderScore(custVarValue) 
+{
+    custVarValue = custVarValue.replace(" ", "_");
+    return custVarValue;
+}
+
+function TrimString(contentToTrim) 
+{
+	 var finalContent = contentToTrim.match(/^\s*(\S+(\s+\S+)*)\s*$/);
+	 return (finalContent == null) ? "" : finalContent[1];
+}
+
+// Commented due to issue of custom variables of the slots after 5  
+// Function to set custom variable for Email Signup.
+//function SetCustomVariableForEmailSignup() 
+//{
+//   SetCustomVariable(EMAIL_SIGNUP_SLOT, EMAIL_SIGNUP_NAME, GA_SUBMIT_DATE, VISITOR_LEVEL_SCOPE, false);
+//}
+//--------------------------------------------------------------------------
+
+/* End Functions related to Custom Variable */

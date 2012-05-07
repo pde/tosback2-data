@@ -424,16 +424,18 @@
 				var root = this;
 				$('.ad.qu').each(function(){
 					var id=$(this).attr("id"); 
-					if(!$.ad.goog.adsense.isAdsense()){				
-						var sz = $.ad.qu.getSize(data, id);
-						var ifr = $.ad.util.iframe.create(sz.width, sz.height, id);
-						$(this).append(ifr);
-						var doc;
-						doc = $.ad.util.iframe.doc(ifr);
-						doc.open();
-						doc.write($.ad.qu.tag(data, $(this).attr("id")));
-						$.ad.util.iframe.closeDoc(doc, 0); 
-					}	
+					
+					if($.ad.goog.adsense.isAdsense() && (id === "qu_story_4" || id === "qu_channel_7")){return;}					
+					
+					var sz = $.ad.qu.getSize(data, id);
+					var ifr = $.ad.util.iframe.create(sz.width, sz.height, id);
+					$(this).append(ifr);
+					var doc;
+					doc = $.ad.util.iframe.doc(ifr);
+					doc.open();
+					doc.write($.ad.qu.tag(data, $(this).attr("id")));
+					$.ad.util.iframe.closeDoc(doc, 0); 
+						
 				});
 			}
 	    },
@@ -657,7 +659,7 @@
 					if (flag) {
 						
 						flag = false; // reset, check to see if adsense is available for these channels
-						var adsenseTargets = ["fnc/health","fnc/sports","fnc/entertainment","fnc/scitech","fnc/travel","fnc/leisure","fnc/opinion","fnc/politics","fnc/us","fnc/weather","fnc/world"], meta = $.ad.meta();
+						var adsenseTargets = ["fnc/health","fnc/sports","fnc/entertainment","fnc/scitech","fnc/travel","fnc/leisure","fnc/auto","fnc/opinion","fnc/politics","fnc/us","fnc/weather","fnc/world"], meta = $.ad.meta();
 						for(i = 0; i < adsenseTargets.length; i++){
 							if(meta.channel.indexOf(adsenseTargets[i]) > -1){
 								flag = true; break;
@@ -693,7 +695,7 @@
 						google_ad_height: '250', // height of iframe 
 						google_ad_format: '300x250_pas_abgc', // html template to fill iframe
 						google_ad_type: 'text', // ad type
-						google_alternate_ad_url : location.href, 
+						google_alternate_ad_url : '', 
 						google_alternate_color : '00FFFF', 
 						google_color_bg : 'FFFFFF', // the ads' background color 
 						google_color_border : 'CCCCCC', //ad border
@@ -776,9 +778,24 @@
 				        d.raw["subsection"+(x+1)] = sub[x];
 				    }
 				}
-				
+
+				if(d.channel.indexOf("fnc/leisure/auto") > -1){
+					d.channel = d.channel.replace("leisure/","")
+					
+					if(d.raw.subsection2.length > 0){
+						d.raw.section = d.raw.subsection1;
+						d.raw.subsection1 = d.raw.subsection2;
+						d.raw.subsection2 = "";
+					}else if(d.raw.subsection1.length > 0){
+						d.raw.section = d.raw.subsection1;
+						d.raw.subsection1 = "";
+						d.raw.subsection2 = "";						
+					}
+				}				
+
 				var omtr = window.omtr;
 				var hier = [d.raw.channel, d.raw.section, d.raw.subsection1, d.raw.subsection2, d.raw.subsection3, d.raw.subsection4];
+								
 				
 				var channel = clean(0,6,':') || 'undefined';
 				
@@ -841,6 +858,11 @@
 					omtr.prop12 = $("meta[property='og\:title']").attr("content");
 				}
 
+				if(d.raw.genre == "interactiveContent"){
+					omtr.prop13 = "interactive";
+				}				
+				
+				
 				if (typeof $.ad._meta.language != "undefined") {
 					var lang = $.ad._meta.language;
 					omtr.prop19 = lang;
@@ -861,13 +883,21 @@
 					omtr.prop49 = d.raw.title;
 					omtr.eVar50 = $.ad.util.param(window.location.href, 'slide');
 				}
-				
+						
+
 				if(typeof $.ad._meta["classification"] != "undefined"){
 					var classVal = $.ad._meta["classification"];
 					var colVal = $.ad._meta["column"];
 					if(colVal){
 						omtr.prop53 = omtr.eVar53 = colVal;
-					}else{	omtr.prop53 = omtr.eVar53 = classVal;}
+					}else{
+						omtr.prop53 = omtr.eVar53 = classVal;
+					}
+				}				
+				
+				if(d.mDate){ 
+					omtr.prop54 = omtr.eVar54 = d.mDate; 
+					window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event42";window.omtr.events="event42";
 				}				
 				
 				omtr.hier1 = clean(0,6,',');
@@ -1199,6 +1229,22 @@
 				},
 				friendlyComm: { // IAB
 					getData: function(id) {
+
+						var rightRails =  ["300x250","300x100"];
+						var ret = false;	
+						for (x = 0; x < rightRails.length; x++) {
+							if (id.indexOf(rightRails[x]) > -1) { ret = true; break }
+						}
+
+						if($.loadAttempt && ret){
+												
+							$.loadAttempt(10,500,function(){ 
+								return ($("#"+id).children(":first").is("div")) ? true : false;
+							},function(){
+							    $('#' + id).next('span,p').css('display','block');	
+							});	
+						}
+					
 						var data = ($.ad.dc._pageAdsObj[id]) ? $.ad.dc._pageAdsObj[id] : false;
 						return data;
 					},
@@ -1630,6 +1676,11 @@
 			}
 		},
 		callback: function(data) {
+			
+			if(data.dc.site.indexOf("leisure")){
+				data.dc.site = data.dc.site.replace("leisure/","")
+			}       
+						
 			$.ad.invoke([$.ad.dc.init, $.ad.qu.init, $.ad.hbx.init], data);
 			$.ad._data = data;
 		},
@@ -1692,10 +1743,11 @@
 				t.creator = byCleaner(t.creator);					
 
 				var language = ($('meta[name=language]').attr("content")) || false;	
-				
+				var column = ($('meta[name=column]').attr("content")) || false;				
 				var classification = ($('meta[name=classification]').attr("content")) || false;
 				var classificationISA = ($('meta[name=classification-isa]').attr("content")) || false;
-				$.ad._meta = {channel: channel, ptype: ptype, ctype: ctype, pageid: pageid, categories: categories, raw: t,canonical:canonical,classification:classification,classificationISA:classificationISA,language:language};
+				var mDate = ($("meta[name='dc.date']").attr("content")) || false;				
+				$.ad._meta = {channel: channel, ptype: ptype, ctype: ctype, pageid: pageid, categories: categories, raw: t,canonical:canonical,classification:classification,classificationISA:classificationISA,column:column,language:language, mDate:mDate};
 				//alert("channel: "+channel+", ptype: "+ptype+", ctype: "+ctype+", pageid: "+pageid);
 			}
 			return $.ad._meta;

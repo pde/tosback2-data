@@ -3276,6 +3276,7 @@ if(a.length>0){if(this.setting.events.length>0){this.setting.events+=",";
 }this.setting.prop42=this.setting.campaign;
 this.setting.eVar16=this.setting.pageName;
 this.setting.eVar13=KIDS.reporting.qs.navid;
+mtvn.btg.config.ReportSettings.Omniture.percentPageViewedVarMap={previousPage:"prop54",percentage:"prop55"};
 }};
 KIDS.reporting.init=function(){KIDS.reporting.qs=mtvn.btg.util.String.queryStringToObject(location.href);
 KIDS.reporting.config=new Configuration();

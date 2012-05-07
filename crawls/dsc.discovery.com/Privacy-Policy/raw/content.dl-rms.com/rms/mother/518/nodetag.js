@@ -1,10 +1,10 @@
 (function(){
-var pfs={ "http://www.discovery.com/radio/podcasts.html":{"nid":30672,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+var pfs={ "http://tlc.discovery.com/guides/family/family.html":{"nid":17428,"tr":1},
+"http://www.discovery.com/radio/podcasts.html":{"nid":30672,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://school.discoveryeducation.com/":{"nid":18607,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
 "http://curiosity.discovery.com/":{"nid":30670,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
-"http://science.discovery.com/":{"nid":3486,"tr":1},
-"http://animal.discovery.com/":{"nid":3483,"tr":1},
+"http://health.discovery.com/":{"nid":3484,"tr":1},
 "http://news.discovery.com/":{"nid":30669,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
-"http://news.discovery.com/":{"nid":7401,"tr":1},
 "http://dhd.discovery.com/":{"nid":30671,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
 "http://dsc.discovery.com/":{"nid":30668,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
 "http://dsc.discovery.com/":{"nid":3481,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
@@ -14,12 +14,6 @@ function z(n){
 var s,u;
 
 if (Math.random()>=n['tr']) {
-	return;
-}
-
-var ar_nodes = ":30672:30670:30671:";
-if (ar_nodes.indexOf(":"+n['nid']+":") >= 0) {	// adradar only
-	(new Image).src="//amch.questionmarket.com/adscgen/adrad.php?survey_num=0&aicode=0&site="+n['nid'];
 	return;
 }
 

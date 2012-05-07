@@ -25,7 +25,9 @@ var hsocial_tool = {
 			fblikeTop : {dom: null, traced : false},
 			fblikeBot : {dom: null, traced : false},
 			twitterTop : {dom: null, traced : false},
-			twitterBot : {dom: null, traced : false}
+			twitterBot : {dom: null, traced : false},
+			pinTop : {dom: null, traced : false},
+			pinBot : {dom: null, traced : false}
 		},
 		start : function(){//iframe script inspired from http://infinity-infinity.com/wp-content/uploads/2010/09/IframeOnClick.js
 			if (document.activeElement){
@@ -47,35 +49,40 @@ var hsocial_tool = {
 			console.dir(dom);
 //			return false;
 			switch (dom){
-				case this.iframes.fblikeTop:
+				case this.iframes.fblikeTop:						
 					eventTracking("event81");
 					break;
-				case this.iframes.fblikeBot:
-					eventTracking("event82");
+				case this.iframes.fblikeBot:				
+					eventTracking("event81");
 					break;
-				case this.iframes.twitterTop:
+				case this.iframes.twitterTop:				
 					eventTracking("event85");
 					break;
-				case this.iframes.twitterBot:
-					eventTracking("event86");
+				case this.iframes.twitterBot:				
+					eventTracking("event85");
 					break;
+				case this.iframes.pinTop:
+					eventTracking("event26");
+					break;
+				case this.iframes.pinBot:
+					eventTracking("event26");
+					break;					
 			}
 		},
 		init : function(){
-			this.iframes.fblikeTop.dom= $("[hvtnode='fblikebutton']")[0];
-			this.iframes.twitterTop.dom = $("[hvtNode='twlikebutton']")[0]; // this is a button..
-			this.iframes.fblikeBot.dom = $("[hvtnode='fblikebutton']")[1];
-			this.iframes.twitterBot.dom = $("[hvtNode='twlikebutton']")[1]; // this is a button..
-			// ok, so the first thing done here, is that we need to find all the dom with hTracking.. and only find the ones we are interested in..
-//			$("[hTrack='fblikeTop']").click(function(){eventTracking("event81");alert(81)})
-//			$("[hTrack='twitterTop']").click(function(){eventTracking("event85");alert(85)})
+			this.iframes.fblikeTop.dom= $("[hvtnode='fblikebutton'] iframe")[0];
+			this.iframes.twitterTop.dom = $("[hvtNode='twlikebutton']")[0]; 
+			this.iframes.fblikeBot.dom = $("[hvtnode='fblikebutton'] iframe")[1];
+			this.iframes.twitterBot.dom = $("[hvtNode='twlikebutton']")[1]; 
+			this.iframes.pinTop.dom = $("[hvtnode='pinbutton'] iframe")[0];
+			this.iframes.pinBot.dom = $("[hvtNode='pinbutton'] iframe")[1]; 
 			$("[hTrack='emailTop']").click(function(){eventTracking("event87");hsocial_tool.tracking.emailTop();});
 			$("[hTrack='printTop']").click(function(){eventTracking("event83");});
-//			$("[hTrack='fblikeBot']").click(function(){eventTracking("event82");alert(82)})
-//			$("[hTrack='twitterBot']").click(function(){eventTracking("event86");alert(86)})
-			$("[hTrack='emailBot']").click(function(){eventTracking("event89");hsocial_tool.tracking.emailBot();});
-			$("[hTrack='printBot']").click(function(){eventTracking("event84");});
+			$("[hTrack='emailBot']").click(function(){eventTracking("event87");hsocial_tool.tracking.emailBot();});
+			$("[hTrack='printBot']").click(function(){eventTracking("event83");});
 			$("#btnShareSend").click(function(){hsocial_tool.tracking.sendEmail();});
+			$("[hsocial='pinterest_modal'] a").click(function(){eventTracking("event73");});
+			$(".xs_soc_fbshare").click(function(){eventTracking("event99");});			
 			setInterval(function(){hsocial_tool.tracking.start();},250);
 		},
 		emailPositionLastPressed : null,
@@ -91,7 +98,7 @@ var hsocial_tool = {
 			if(this.emailPositionLastPressed === "top"){
 				eventTracking("event88");
 			} else if(this.emailPositionLastPressed === "bot"){
-				eventTracking("event90");
+				eventTracking("event88");
 			} else {
 				$h.console.error("[hsocial_tool.tracking.sendmeail] email Position event call undetermined");
 			}
@@ -102,7 +109,7 @@ var hsocial_tool = {
 		//console.log("in! "+jqo.attr("id")+" : "+jqo.attr("hsocial")+" [lastspot:"+hsocial_tool.lastspot+"]");
 		clearTimeout(hsocial_tool.timer);
 		if (jqo.attr("hsocial") === "modal"){
-			$h.console.log("hsocial attr found");
+			//$h.console.log("hsocial attr found");
 			// we don't want the modal window to move
 		} else if (hsocial_tool.lastspot === jqo.attr("hsocial")){
 			hsocial_tool.pointer.modal.show();
@@ -112,24 +119,47 @@ var hsocial_tool = {
 				// activate facebook popup
 				hsocial_tool.pointer.facebook_modal.show();
 				hsocial_tool.pointer.twitter_modal.hide();
+				hsocial_tool.pointer.pinterest_modal.hide();
+				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.hide();	
 			} else if (jqo.attr("hsocial") === "twitter"){
 				// activate twitter popup
 				hsocial_tool.pointer.facebook_modal.hide();
 				hsocial_tool.pointer.twitter_modal.show();
+				hsocial_tool.pointer.pinterest_modal.hide();
+				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.hide();	
+			} else if (jqo.attr('hsocial') == 'pinterest'){
+				hsocial_tool.pointer.facebook_modal.hide();
+				hsocial_tool.pointer.twitter_modal.hide();
+				hsocial_tool.pointer.pinterest_modal.show();
+				hsocial_tool.pointer.googlep_modal.hide();
+				hsocial_tool.pointer.newsltr_modal.hide();
+			} else if (jqo.attr('hsocial') == 'googlep'){
+				hsocial_tool.pointer.facebook_modal.hide();
+				hsocial_tool.pointer.twitter_modal.hide();
+				hsocial_tool.pointer.pinterest_modal.hide();
+				hsocial_tool.pointer.googlep_modal.show();
+				hsocial_tool.pointer.newsltr_modal.hide();			
+				
 			} else {// all else, just use email
 				// activate email popup
 				hsocial_tool.pointer.facebook_modal.hide();
 				hsocial_tool.pointer.twitter_modal.hide();
+				hsocial_tool.pointer.pinterest_modal.hide();
+				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.show();	
 			}
 			hsocial_tool.pointer.facebook_modal.find("."+jqo.attr("tooltipShow")).show();
 			hsocial_tool.pointer.twitter_modal.find("."+jqo.attr("tooltipShow")).show();
+			hsocial_tool.pointer.pinterest_modal.find("."+jqo.attr("tooltipShow")).show();
+			hsocial_tool.pointer.googlep_modal.find("."+jqo.attr("tooltipShow")).show();
 			hsocial_tool.pointer.newsltr_modal.find("."+jqo.attr("tooltipShow")).show();
 	
 			hsocial_tool.pointer.facebook_modal.find("."+jqo.attr("tooltipHide")).hide();
 			hsocial_tool.pointer.twitter_modal.find("."+jqo.attr("tooltipHide")).hide();
+			hsocial_tool.pointer.pinterest_modal.find("."+jqo.attr("tooltipHide")).hide();
+			hsocial_tool.pointer.googlep_modal.find("."+jqo.attr("tooltipHide")).hide();
 			hsocial_tool.pointer.newsltr_modal.find("."+jqo.attr("tooltipHide")).hide();
 			
 			hsocial_tool.pointer.modal.addClass(jqo.attr("tooltipAddClass"));
@@ -150,18 +180,20 @@ var hsocial_tool = {
 	},
 	lastspot : null,
 	pointer : {
-		facebook : null,
-		twitter : null,
-		newsletter : null,
-		modal : null,
-		facebook_modal : null,
-		twitter_modal : null,
-		newsltr_modal : null
+		facebook: null,
+		twitter: null,
+		pinterest: null,
+		googlep: null,
+		newsletter: null,
+		modal: null,
+		facebook_modal: null,
+		twitter_modal: null,
+		pinterest_modal: null,
+		googlep_modal: null,
+		newsltr_modal: null
 	},
-	popup_show : function(){
-	},
-	popup_hide : function(){
-	},
+	popup_show : function(){},
+	popup_hide : function(){},
 	queue_hide : function(){
 		// this throws down a timeout event for 1.5 seconds to queue the hide
 		hsocial_tool.timer = setTimeout(function(){$("#rr_social_tooltip").hide();hsocial_tool.lastspot = null;},150);
@@ -171,25 +203,6 @@ var hsocial_tool = {
 			hsocial_tool.pointer.modal.css({ "opacity": opa });
 		},
 		timeoutArray : [],
-/*		fadeOut : function(){
-			var start = 1;
-			var end = 0;
-			var numframes = 20;
-			var deltax = start-end;
-			var framerate = 20;
-			var incrementdifferences = [];
-			for (var i=0; i <= numframes; i++) { // build out the list of opacity values to add
-				incrementdifferences.push(Math.sin(i*Math.PI/2/numframes));
-			}
-			incrementdifferences = incrementdifferences.reverse();
-			for (i=0; i <= numframes; i++) {
-				var getnum = incrementdifferences.pop();
-				hsocial_tool.animate.timeoutArray.push(window.setTimeout("hsocial_tool.animate.setOpacity("+getnum+")",framerate*i));
-				if (i == 0){
-				}
-			}
-			
-		},*/
 		fadeIn : function(){
 			while (hsocial_tool.animate.timeoutArray.length > 0){
 				clearTimeout(hsocial_tool.animate.timeoutArray.pop());
@@ -215,12 +228,9 @@ var hsocial_tool = {
 				}
 			}
 		}
-
-		
 	},
 	timer : 0
 };
-
 
 var vtemail = {
 	focus : function(isin){
@@ -236,11 +246,7 @@ var vtemail = {
 			}
 		}
 	},
-	validateForm : function(formobj){
-		//	$(document.forms["rrsocialNewsltr"]).children("input[name='EMAIL'],input[name='email']")[0].value
-		//	alert($(form).children("input[name='EMAIL'],input[name='email']")[0].value);
-		return true;
-	},
+	validateForm : function(formobj){ return true },
 	oldcolor : "",
 	origEmailValue : ""
 }
@@ -249,23 +255,24 @@ var vtemail = {
 $(document).ready(function(){
 	$("body").append($("[hsocial='modal']"));
 	//$("#rr_soc_fb_cont,#rr_soc_tw_cont,#rr_soc_em_cont,#rr_social_tooltip").hover(function(){hoverin($(this));},function(){hoverout($(this));});
-	$("[hsocial='facebook'],[hsocial='twitter'],[hsocial='newsltr'],[hsocial='modal']").hover(function(){hsocial_tool.hoverin($(this));},function(){hsocial_tool.hoverout($(this));});
+	$("[hsocial='facebook'],[hsocial='twitter'],[hsocial='newsltr'],[hsocial='modal'],[hsocial=pinterest],[hsocial=googlep]").hover(function(){hsocial_tool.hoverin($(this));},function(){hsocial_tool.hoverout($(this));});
 	// setting up pointers so we don't have to make new references every time
 	hsocial_tool.pointer.facebook = $("[hsocial='facebook']");
 	hsocial_tool.pointer.twitter = $("[hsocial='twitter']");
-	hsocial_tool.pointer.newsletter = $("[hsocial='newsletter']");
+	hsocial_tool.pointer.newsletter = $("[hsocial='newsltr']");
+	hsocial_tool.pointer.pinterest = $('[hsocial=pinterest]');
+	hsocial_tool.pointer.googlep = $('[hsocial=googlep]');
 	hsocial_tool.pointer.modal = $("[hsocial='modal']");
-
 	hsocial_tool.pointer.facebook_modal = $("[hsocial='facebook_modal']");
 	hsocial_tool.pointer.twitter_modal = $("[hsocial='twitter_modal']");
+	hsocial_tool.pointer.pinterest_modal = $('[hsocial=pinterest_modal]');
+	hsocial_tool.pointer.googlep_modal = $('[hsocial=googlep_modal]');
 	hsocial_tool.pointer.newsltr_modal = $("[hsocial='newsltr_modal']");
 	vtemail.origEmailValue = $("#vt_nl_emailfield").attr("value");
-	
 	$("#vt_nl_emailfield").mouseenter(function(){hsocial_tool.hoverin($("#rr_soc_em_cont, #lr_soc_em_cont"));}); // hack for chrome hover issue
 	
 	hsocial_tool.tracking.init();
 	hsocial_tool.twitter.getNumber();
-	
 	
 	$('.tooltip_body a.tw_f').live("click", function(){
 		if (typeof eventTracking !== 'undefined'){
@@ -275,7 +282,6 @@ $(document).ready(function(){
 	$("#vt_nl_emailfield").parent("form").attr('onsubmit','');
 	$("#vt_nl_emailfield").parent("form").unbind('submit');
 	$("#vt_nl_emailfield").parent("form").bind('submit', submitEmailForm);
-	
 });
 
 function submitEmailForm(evt) {

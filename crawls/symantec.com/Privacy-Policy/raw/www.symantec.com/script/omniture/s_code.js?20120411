@@ -26,6 +26,8 @@ Changes 2012-3-1: prop59/evar59 page name without lg/ct
 Changes 2012-4-10: Removing Norton,verisign domains from internalfilters. Needed for reporting.
 					Connect Community Stacking prop61
 					Connect Utility Stacking prop62
+
+Changes 2012-4-24: Connect Utility Stacking prop62 - remove connect_utility: to reduce image size
 */
 
 var s_account=metaData['repsuite']
@@ -112,6 +114,7 @@ function s_doPlugins(s) {
 
 	// MATT 201203 Pagname without lg/ct. If lg/ct is present in page name then capture page name through 100 characters
 	// Dynamic Variables will capture evar59 if prop59 is populated
+	s.pageName=((s.pageName == "none") || (s.pageName == "") || (s.pageName == undefined)) ? "None" : s.pageName;
 	if(s.pageName.substr(2,1) == "/") s.prop59 = s.pageName.substr(7,100);
 	
 	// KK 20111101 for support
@@ -223,8 +226,12 @@ function s_doPlugins(s) {
 	//Connect Community Stacking - 04-2012
 	if(s.prop49 != "n/a") s.prop61=s.crossVisitParticipation(s.prop49,'s_prop61','1','20',',','purchase',0);
 	
-	//Connect Utility Stacking - 04-2012
-	s.prop62=s.crossVisitParticipation(s.prop18,'s_prop62','1','20',',','purchase',0);
+	//Connect Utility Stacking does not capture prefix - 04-2012
+	s.prop18=((s.prop18 == "none") || (s.prop18 == "") || (s.prop18 == undefined)) ? "" : s.prop18;
+	if(s.prop18.substr(0,17) == "connect_utility: ")
+	s.prop62=s.crossVisitParticipation(s.prop18.substr(17,100),'s_prop62','1','20',',','purchase',0);
+
+	
 	
 	// Internal Parameter Stacking
 	s.eVar4=s.crossVisitParticipation(s.eVar21,'s_eVar4','90', '10',',','purchase',0);

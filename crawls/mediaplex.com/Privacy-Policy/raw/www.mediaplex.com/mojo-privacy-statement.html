@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
@@ -453,6 +452,7 @@ var _gaq = _gaq || [];_gaq.push(["_setAccount", "UA-491978-1"]);_gaq.push(["_tra
 jQuery.extend(Drupal.settings, { "CToolsAJAX": { "scripts": { "/misc/jquery.js?e": true, "/misc/drupal.js?e": true, "/modules/google_analytics/googleanalytics.js?e": true, "/modules/jquerymenu/jquerymenu_no_animation.js?e": true, "/modules/views_slideshow/js/jquery.cycle.all.min.js?e": true, "/modules/views_slideshow/contrib/views_slideshow_singleframe/views_slideshow.js?e": true }, "css": { "/modules/aggregator/aggregator.css?e": true, "/modules/book/book.css?e": true, "/modules/cck/theme/content-module.css?e": true, "/modules/ckeditor/ckeditor.css?e": true, "/modules/ctools/css/ctools.css?e": true, "/modules/date/date.css?e": true, "/modules/date/date_popup/themes/datepicker.css?e": true, "/modules/date/date_popup/themes/timeentry.css?e": true, "/modules/filefield/filefield.css?e": true, "/modules/jquerymenu/jquerymenu.css?e": true, "/modules/node/node.css?e": true, "/modules/system/defaults.css?e": true, "/modules/system/system.css?e": true, "/modules/system/system-menus.css?e": true, "/modules/user/user.css?e": true, "/modules/views_slideshow/contrib/views_slideshow_singleframe/views_slideshow.css?e": true, "/modules/calendar/calendar.css?e": true, "/misc/farbtastic/farbtastic.css?e": true, "/modules/cck/modules/fieldgroup/fieldgroup.css?e": true, "/modules/views/css/views.css?e": true, "/sites/all/themes/mplxhome/mplxhome.css?e": true } } });
 //--><!]]>
 </script>
+  
 <script language="javascript" type="text/javascript">
 <!--
   var page_url = escape(document.URL);
@@ -462,14 +462,32 @@ jQuery.extend(Drupal.settings, { "CToolsAJAX": { "scripts": { "/misc/jquery.js?e
   var mpts = mpt.getTimezoneOffset() + mpt.getTime();
 
   if (window.location.protocol == "https:"){
-    document.write("<iframe src=\"https:\/\/secure.img-cdn.mediaplex.com\/0\/5712\/universal.html?page_name=content&mpt=" + mpts + "&url=" + page_url + "&ref=" + ref_url + "\" HEIGHT=1 WIDTH=1 FRAMEBORDER=0><\/iframe>");
+    document.write("<iframe src="http://www.mediaplex.com/\&quot;https:\/\/secure.img-cdn.mediaplex.com\/0\/5712\/universal.html?page_name=content&amp;mpt=&quot;" + mpts + "&url=" + page_url + "&ref=" + ref_url + "\" HEIGHT=1 WIDTH=1 FRAMEBORDER=0><\/iframe>");
   } else {
-    document.write("<iframe src=\"http:\/\/img-cdn.mediaplex.com\/0\/5712\/universal.html?page_name=content&mpt=" + mpts + "&url=" + page_url + "&ref=" + ref_url + "\" HEIGHT=1 WIDTH=1 FRAMEBORDER=0><\/iframe>");
+    document.write("<iframe src="http://www.mediaplex.com/\&quot;http:\/\/img-cdn.mediaplex.com\/0\/5712\/universal.html?page_name=content&amp;mpt=&quot;" + mpts + "&url=" + page_url + "&ref=" + ref_url + "\" HEIGHT=1 WIDTH=1 FRAMEBORDER=0><\/iframe>");
   }
-// -->  
+
+(function() {
+  var didInit = false;
+  function initMunchkin() {
+    if(didInit === false) {
+      didInit = true;
+      Munchkin.init('459-ODV-784');
+    }
+  }
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = document.location.protocol + '//munchkin.marketo.net/munchkin.js';
+  s.onreadystatechange = function() {
+    if (this.readyState == 'complete' || this.readyState == 'loaded') {
+      initMunchkin();
+    }
+  };
+  s.onload = initMunchkin;
+  document.getElementsByTagName('head')[0].appendChild(s);
+})();
 </script>
-<script src="../munchkin.marketo.net/munchkin.js"
-type="text/javascript"></script> <script>mktoMunchkin("027-AKZ-021");</script>
 
 
 </body>

@@ -1,12 +1,11 @@
 $(document).ready(function(){
-	$.ad.init();
 	
 	var newsletter = new NewsletterAlerts({
-		elm: $("#newsAlertsEmailSignup"),
+		elm: $("#newsletter_form"),
 		ajaxUrl: "/about/newsletters/${slids}/${email}",
 		messages: {
-			defaultTxt: "Enter Your Email Address",
-			email:'Invalid email address. Please try again.',
+			defaultTxt: "Enter Email Address",
+			email:'Invalid email. Please try again.',
 			checkBox:'Choose at least one news alert.',
 			submitted:'You have already submitted. Please <a href="#" class="email-input-reset">click here</a> to try again.',
 			error:'Request Error. Please <a href="#" class="email-input-reset">click here</a> to try again.',
@@ -143,7 +142,6 @@ function getRSSFeed(path){
 		if (typeof config!=="object") { return false; }
 		this._cfg = {}; // config
 		this.SLID = []; // slid array
-		
 		this.status = new Status(this);
 		this.init(config);
 	};
@@ -157,19 +155,24 @@ function getRSSFeed(path){
 		setHolders: function() {
 			var NA = this, cfg = NA._cfg, elm = cfg.elm;
 
+			elm.find('fieldset').append('<span class="status"></span>');
+
 			this.elmObj = {
 				elm: elm,
-				form: elm.find("form"),
-				options: elm.find("form > fieldset > .option"),
-				status: elm.find("form > fieldset > .status"),
-				input: elm.find("form #newsletter_input")
+				form: elm,
+				status: elm.find("fieldset > .status"),
+				input: elm.find("#newsletter_input"),
+				slid: elm.find('#newsletter_slid').val()
 			};
+
+			this.SLID.push(this.elmObj.slid);
+
+
 			this.elmObj.inputLine = this.elmObj.input.parent().addClass("input-line");
 		},
 		setListeners: function() {
 			var NA = this, cfg = NA._cfg, elmObj = this.elmObj,
 				input = elmObj.input,
-				options = elmObj.options,
 				form = elmObj.form;
 				
 			// remove those listener crap
@@ -184,20 +187,6 @@ function getRSSFeed(path){
 				elm.val((val===cfg.messages.defaultTxt)?"":val);
 				NA.status.hide();
 			});
-			
-			// set options
-			options.each(function(){
-				var elm = $(this), input = elm.find("> input[type='checkbox']"), label = elm.find("> label"),
-					id = $.trim(elm.find("input[name='slid']").val());
-				
-				if (input.is(":checked")) { input.attr("checked",false); }
-				var set = function() {
-					NA.setSLID((input.is(":checked")) ? "add" : "remove",id);
-					NA.status.hide();
-				};
-				input.click(function(){ set(); });
-				label.click(function(){ input.click(); set(); });
-			});
 
 			form.submit(function(){
 				NA.validate(function(email){ 
@@ -206,28 +195,9 @@ function getRSSFeed(path){
 				return false;
 			});
 		},
-		setSLID: function(type,id) {
-			if (!type || !id) { return false; }
-			var NA = this, x, len = NA.SLID.length;
-			
-			switch(type) {
-				case "add": 
-					var found = false;
-					for (x = 0; x < len; x++) {
-						if (NA.SLID[x]===id) { found = true; break; }
-					}
-					if (!found) { NA.SLID.push(id); }
-					break;
-				case "remove":
-					for (x = 0; x < len; x++) {
-						if (NA.SLID[x]===id) { NA.SLID.splice(x,1); break; }
-					}
-					break;
-			}
-		},
 		validate: function(fn) {
 			var NA = this, cfg = NA._cfg, msg = cfg.messages, email = NA.elmObj.input.val();
-			
+				
 			if (!checkEmail(email)) { // validate email
 				NA.status.show(msg.email);
 			} else if (NA.SLID.length===0) { // check for selections
@@ -241,18 +211,23 @@ function getRSSFeed(path){
 
 			url = url.replace("${slids}",NA.SLID.join(","));
 			url = url.replace("${email}",email);
-			var hideInputLine = function() { setTimeout(function(){ inputLine.slideUp("slow"); },500); };
+			var hideInputLine = function() { setTimeout(function(){ 
+				inputLine.slideUp(function() {
+					inputLine.html('<strong>Thank you. Your subscription has been submitted.</strong>');
+					inputLine.slideDown();
+				}); 
+			},500); };
 			
 			$.ajax({
 				url: url,
 				success: function(data) {
 					// var div = $('<div></div>').html(data);
-					NA.status.show(NA._cfg.messages.thankyou);
+					//NA.status.show(NA._cfg.messages.thankyou);
 					hideInputLine();
 					NA.elmObj.elm.data("hasSubmitted",true);
 				},
 				error: function(status,response) {
-					NA.status.show(NA._cfg.messages.thankyou);
+					//NA.status.show(NA._cfg.messages.thankyou);
 					hideInputLine();
 				}
 			});
@@ -290,3 +265,5 @@ function getRSSFeed(path){
 	}
 	
 }(jQuery)); /*** end - NEWS ALERTS Script ***/
+
+

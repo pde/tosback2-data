@@ -237,7 +237,7 @@ dwr.engine.setVerb = function(verb) { dwr.engine.setHttpMethod(verb); };
 //==============================================================================
 
 /** The original page id sent from the server */
-dwr.engine._origScriptSessionId = "A4A1EF2351064BE2EEABD3EE0DA14C10";
+dwr.engine._origScriptSessionId = "3333249D2E0ED85609B5086EB1E40AF8";
 
 /** The session cookie name */
 dwr.engine._sessionCookieName = "JSESSIONID"; // JSESSIONID

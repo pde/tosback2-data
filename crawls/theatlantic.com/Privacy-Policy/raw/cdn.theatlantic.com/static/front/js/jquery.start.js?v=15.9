@@ -1,0 +1,888 @@
+$(document).ready(function() {
+
+	//	 main menu
+	
+	(function() {
+		
+		var timer;
+
+		var clearTimer = function(src) {
+			if (!src) {src = '';}
+			if (timer) {
+				clearTimeout(timer);
+				timer = null;
+			}
+		};
+
+		var setTimerFadein = function(currentNavExpanded) {
+			// If the nav is already visible, don't fade it in.
+			if ($(currentNavExpanded).filter(':visible').length) {
+				return;
+			}
+			timer = setTimeout(function(){
+				$(currentNavExpanded).fadeIn(100);
+				$(currentNavExpanded).find('.ad img').each(function(){
+					if ($(this).height() > 35) {
+						$(this).parents('.sponsor').addClass('bigNavLogo');
+					//} else if ($(this).height() == 1 && $(this).width() == 1) {
+					//	$(this).addClass('trackingPixel');
+					}
+				});
+				var links = $(currentNavExpanded).find('.links');
+				if (links.length == 1) {
+					var linksHeight = links.height();
+					if ((linksHeight - 6) > 65) {
+						$(currentNavExpanded).css('height', links.height() + 'px');
+					}
+				}
+			}, 150 );
+		};
+
+		var setTimerFadeout = function(currentNavExpanded) {
+			timer = setTimeout(function(){
+				$(currentNavExpanded).fadeOut(250);
+			}, 300 );
+		};
+
+		var onNavMouseover = function(menuElement) {
+			clearTimer('onNavMouseover');
+
+			$(this).find('a').removeAttr('title');
+			var id = $(this).attr('id');
+			var navExpandedId = id + 'Expanded';
+			var currentNavExpanded = $('#' + navExpandedId);
+			if (!currentNavExpanded.length) {
+				return;
+			}
+
+			Atlantic.Ad.activateIframeAd( currentNavExpanded.find('iframe') );
+
+			$('#menuNavExpanded .navExpanded').not(currentNavExpanded).hide();
+
+			setTimerFadein(currentNavExpanded);
+
+			currentNavExpanded.show();
+			currentNavExpanded.hover(function() {
+				clearTimer('navExpandedHover');
+			}, function() {
+				setTimerFadeout(currentNavExpanded);
+			})
+		};
+		var onNavMouseout = function() {
+			clearTimer('onNavMouseout');
+
+			var id = $(this).attr('id');
+			var navExpandedId = id + 'Expanded';
+			var currentNavExpanded = $('#' + navExpandedId);
+			if (!currentNavExpanded.length) {
+				return;
+			}
+
+			setTimerFadeout(currentNavExpanded);
+		};
+
+		$('#menu li').hover(onNavMouseover, onNavMouseout);
+		
+	})();
+
+	adFunctions();
+	setTimeout('adFunctions()', 250);
+	setTimeout('adFunctions()', 1000);
+	setTimeout('adFunctions()', 3000);
+	
+	// search
+	$("#search #query").val("SEARCH OUR SITE").focus(function(){
+        if ($(this).val() == "SEARCH OUR SITE") {
+            $(this).val("");
+        }
+    }).blur(function(){
+        if ($(this).val() == "") {
+            $(this).val("SEARCH OUR SITE");
+        }
+    });
+
+	// popular tabs switch 
+	$('a.tab').click(function() {
+		$('#searched').toggle();
+		$('#emailed').toggle();
+		return false;
+	});
+  
+	//add long bio toggle for blog pages
+	$("#profile .toggleBio").click(function(){
+ 		toggleBio();
+	});
+	if (window.location.hash == '#bio') toggleBio();
+	function toggleBio(){
+		$(".extendedBio").slideToggle('fast');
+	}
+	
+	function removeFormLabel(inputBox){
+		if ($(inputBox).val().toLowerCase() == $(inputBox).attr('longdesc').toLowerCase()){
+			$(inputBox).val('');
+			$(inputBox).removeClass('label');
+		}
+	}
+	function addFormLabel(inputBox){
+		if ($(inputBox).val().toLowerCase() == ''){
+			$(inputBox).val($(inputBox).attr('longdesc'));
+			$(inputBox).addClass('label');
+		}
+	}
+	
+	//toggle field labels on circ form if it exists
+	$("form.labeled input:text").focus(function(){
+		removeFormLabel(this);
+	});
+	
+	//Set all unfilled fields to blank before submitting
+	$(".labeled").submit(function(event){
+		$(this).find("input:text").each(function(){
+			removeFormLabel(this);
+		});
+	});
+
+	$("form.labeled input:text").blur(function(){
+		addFormLabel(this);
+	});
+	$("form.labeled input:text").each(function(){
+		addFormLabel(this);
+	});
+
+	var selectDate = function() {
+		var text = $("#calendar").DatePickerGetDate('formatted');
+		var myText = new String(text);
+		var range = myText.split(',');
+
+		if (range[0] != range[1]) {
+			window.location = baseLocation + 'date-filter/?startDate=' + range[0] + '&endDate=' + range[1];
+			
+			$('#byDateDropdown .expandingTitle').html('Loading...');
+		}
+	}
+	if ($("#calendar").length > 0){
+		$("#calendar").DatePicker({
+			flat: true,
+			date: ['YYYY-MM-DD','YYYY-MM-DD'],
+			calendars: 1,
+			mode: 'range',
+			starts: 7,
+			onChange: selectDate
+		});
+	}
+	// Expanding Menus
+	$(".expandingMenu .expandingArrow").click(function() {
+	
+		var shouldOpen = true;
+		if ( $(this).hasClass('open') == true ) {
+			shouldOpen = false;
+		}
+
+		$(".expandingMenu .expandingContent").slideUp(80);
+		$(".expandingMenu .expandingArrow").removeClass('open');
+
+		if ( shouldOpen == true ) {
+			$(this).parent().find('.expandingContent').slideDown(80);
+			$(this).addClass('open');
+		}
+
+		return false;
+	});
+
+	$(".expandingMenu .expandingContent a").click(function() {
+		$(this).parent().parent().parent().find('.expandingTitle').html('Loading...');
+	});
+
+	$("html").click(function(){
+		$(".expandingMenu .expandingContent").slideUp(80);
+		$(".expandingMenu .expandingArrow").removeClass('open');
+	});
+
+
+	// open print links in a new window
+	$(".print").click(function(){
+		window.open($(".print").attr("href"),'','width=800,height=480,scrollbars,resizable,location=no,menubar=no,toolbar=no');
+		return false;
+	});
+	
+	//decode email obfuscation
+	if ($(".authorEmail").length){
+		$(".authorEmail").each(function(){
+			$(this).attr('href',$(this).attr('href').replace(' at ','@'));
+		});
+	}
+	
+	//############################
+	//Carousel functions
+	
+	
+	window.totalFeatures = $(".topStoryPlayer").length;
+	window.currentFeature = 0;
+	window.totalLoops = 1;
+	window.completedLoops = 0;
+	window.currentFrame = 0;
+	window.playing = true;
+	var carouselTimeout = undefined;
+	
+	//carousel function to show the ith feature
+	function feature(i){
+		window.currentFrame = i+1;
+		var animateFade = true;
+		if (totalFeatures == 4 && (currentFrame == 4 || currentFrame == 1)) {
+			animateFade = false;
+			
+			// If we are on the 4th (advertisement) slot
+			if (currentFrame != 1) {
+				Atlantic.Ad.activateIframeAd('#topStoryPlayer4 .adCarousel');
+			}
+		}
+
+		//hide all of the features except for this one
+		if (animateFade) {
+			$(".topStoryPlayer").fadeOut("slow");
+		} else {
+			$(".topStoryPlayer").hide();
+		}
+
+		//unfocus the selected controller 
+		$(".control .number").removeClass("selected");
+		
+		$(".control").eq(i+1).find('span').addClass("selected");
+
+		if (animateFade) {
+			$("#topStoryPlayer" + (i+1)).fadeIn("slow");
+		} else {
+			$("#topStoryPlayer" + (i+1)).show();
+		}
+	}
+	
+	function pauseCarousel(){
+		if (carouselTimeout) {
+			clearTimeout(carouselTimeout);
+			carouselTimeout = undefined;
+		}
+		window.playing = false;
+		$(".control .play").removeClass("playing");
+		$(".control .play").addClass("paused");
+	}
+	
+	$(".control .play").click(function(){
+		if (playing){
+			pauseCarousel();
+		}else {
+			window.playing= true;
+		$(".control .play").removeClass("paused");
+		$(".control .play").addClass("playing");
+			rotateCarousel();
+		}
+		return false;
+	});
+	
+	
+	$(".control .number").click(function(){
+		feature(parseInt($(this).text()) - 1);
+		pauseCarousel();
+		return false;
+	});
+	
+	//Carousel play functionality set to run with timeout
+	function rotateCarousel(){ 
+	
+		//check to make sure its set to play and that it hasnt gone around too many times
+		if (playing){
+			//if its gone around too many times
+			window.currentFeature++;
+			feature( window.currentFeature % window.totalFeatures);
+			if (carouselTimeout) {
+				window.clearTimeout(carouselTimeout);
+				carouselTimeout = undefined;
+			}
+			carouselTimeout = window.setTimeout(rotateCarousel,6000);
+			if  (((window.currentFeature + 1)/window.totalFeatures) > window.totalLoops){
+				pauseCarousel();
+				window.currentFrame = 0;
+				window.totalLoops++;
+			}
+		}
+	}
+
+	window.carouselTimeout = window.setTimeout(rotateCarousel,6000);
+	
+	
+	/**** functions to toggle through Our Latest Post **/
+	if ($("#ourLatestPost").length > 0){
+		window.latestOffset = 0;
+		latestPostWidth = 335;
+		
+		//Preload the loading gif to avoid loading delay on click
+		var loadingImage = new Image();
+		loadingImage.src = 'http://cdn.theatlantic.com/static/front/images/loadingSmall.gif';
+	
+		//Add function to toggle through Our Latest Post entries
+		$("#ourLatestPost .nextEntryLink").live("click", function(){
+	
+			window.latestOffset++;
+			
+			$(".promoColumn #olpEntry" + window.latestOffset + "  .nextEntryLink").addClass('olpLoading');
+			
+			var url = "/widget/recent/" + $("#olpEntry" + window.latestOffset + " .justInUnixDate").html() + "/" + window.latestOffset;
+			
+			$.getJSON(url,{} ,function(data){
+				
+				$("#ourLatestPost #olpScroll").append(Utf8.decode(data.output));
+				$("#ourLatestPost #olpScroll").animate({
+					marginLeft: '-=' + latestPostWidth + 'px'
+				}, 800);
+				$(".promoColumn #olpEntry" + window.latestOffset + " .nextEntryLink").removeClass("olpLoading");
+			});
+			
+			if (window.latestOffset == 1){
+				$("#olp1 .previousEntryLink").fadeIn();
+			}
+			setLatestPostTimer();
+			return false;
+		});
+		
+		$("#ourLatestPost .previousEntryLink").live("click", function(){
+			if (window.latestOffset >= 1){
+				window.latestOffset--;
+				$("#ourLatestPost #olpScroll").animate({
+					marginLeft: '+=' + latestPostWidth + 'px'
+				}, 800);
+			}
+			setLatestPostTimer();
+			return false;
+		});
+		
+		$("#olpEntry1 .previousEntryLink").unbind("click");
+		
+	
+		//Function to update ourlatest post with newest content after a certain amount of time
+		function setLatestPostTimer(){
+			window.clearTimeout(window.latestPostRefresh);
+			window.latestPostRefresh = setTimeout(function() {
+				
+				var url = "/widget/recent/";
+				
+				$.getJSON(url,{} ,function(data){
+					if ($(data.output).find(".justInUnixDate").html() > $("#olpEntry1 .justInUnixDate").html()){
+						
+						window.latestOffset = 0;
+						$("#ourLatestPost #olpScroll").animate(
+							{
+							marginLeft:'0px'
+							}, 1000 , function(){
+								$("#ourLatestPost #olpScroll").html(data.output);
+							});
+						
+						
+					}
+					setLatestPostTimer();
+				});
+			
+			}, 300000);
+		}
+		if ($("#ourLatestPost").length){
+			setLatestPostTimer();
+		}
+	}
+	
+	
+	/******* DISQUS COMMENT COUNT ***********/
+	$("a[href$='#disqus_thread']").each(function(i, element) {
+		var disqusIdentifier = $(element).attr('disqus');
+		if ((typeof(disqusIdentifier) != "undefined") && (disqusIdentifier.substring(0,7) != 'infocus')){
+		    
+			$.getJSON('http://disqus.com/api/v1/get_num_posts/?thread_identifier=' + disqusIdentifier + '&forum_url=theatlantic&callback=?',
+				function comments(data) {
+					
+					var numPosts = data.num_posts;
+					if (numPosts != 0) {
+						$(element).text(numPosts);
+						$(element).show();
+					} else {
+						$(element).remove();
+					}
+				}
+			);
+		}
+	});
+
+	//omnitureClickTracking();
+	
+
+
+
+
+	//a minor css change for infocus, will remove after next pseudo launch
+	$("#inFocusPage .articleContent").first().css("min-height","260px");
+
+	// Wrap chinese characters in <span class="chinese"></span>. see site.js
+	var start = (new Date()).getTime();
+	if (window.ChineseWrap) {
+		var wrap = function(i, el) {
+			el.innerHTML = ChineseWrap.wrapTags(el.innerHTML);
+		};
+		$('.articleContent').each(wrap);
+		$('h1.headline').each(wrap);
+		$('.hasChinese.postContent').each(wrap);
+		$('.hasChinese h3.headline').each(wrap);
+	}
+	
+	var end = (new Date()).getTime();
+	if (window.loadTimes && window.loadTimes.js) {
+		loadTimes.js.chinese_wrap = (end - start)/1000;
+	}
+	
+	
+	
+	
+});
+ 
+function cm8_collapse(){
+	$(".adPush").animate({height:'66px'},500);
+}
+function cm8_click(){
+	location.href = $("#FLASH_AD param[name='href']").val();
+}
+function cm8_expand(){
+	$(".adPush").animate({height:'418px'},500);
+}
+
+
+function FLASH_AD_DoFSCommand(command,args) { 
+	if (command == "cm8_click") { 	
+		cm8_click();
+	}else if (command == "cm8_collapse") { 	
+		cm8_collapse();
+	}else if (command == "cm8_expand") { 	
+		cm8_expand();
+	}
+}
+
+
+
+$(".relatedContentVideo .relatedArrowRight").click(function(){
+	if ($("#relatedSlideshow").position().left > -(143 * ($("#relatedSlideshow li").length - 4))){
+	
+		$("#relatedSlideshow").animate({
+			left:"-=143"
+		}, {
+			duration:1000,
+			queue: false
+		});
+	}	
+	return false;
+});
+$(".relatedContentVideo .relatedArrowLeft").click(function(){
+	if ($("#relatedSlideshow").position().left < 0){
+		$("#relatedSlideshow").animate({
+				left:"+=143"
+		}, {
+			duration:1000,
+			queue: false
+		});
+	}
+	return false;
+});
+
+
+// function omnitureClickTracking() {
+// 	// Omniture Group Links
+// 	$("#specialReportPromo a").click(function(){
+// 		var name = $(this).find('img').attr('alt');
+// 		s.tl(this,"o","Special: " + name);
+// 	});
+// 	$("#menu a").click(function(){
+// 		s.tl(this,"o","Nav: main");
+// 	});
+// 	$("#menu .navExpanded a").click(function(){
+// 		s.tl(this,"o","Nav: drop down");
+// 	});
+// 	$("#adHeaderCirc a").click(function(){
+// 		s.tl(this, "o", "Ad: Mini Circ Unit");
+// 	});
+// 	$(".adTopleader a").click(function(){
+// 		s.tl(this, "o", "Ad: Wide Circ Unit");
+// 	});
+// 	$("#menu .navExpanded .sponsor a").click(function(){
+// 		var adChannel = $(this).parent().parent().parent().find('.navLink').text();
+// 		s.tl(this, "o", "Ad: navLogo " + adChannel);
+// 	});	
+// 	$("#ourLatestPost a").click(function(){
+// 		s.tl(this,"o","Module: Just in");
+// 	});
+// 	$("#newsstands a").click(function(){
+// 		s.tl(this,"o","Module: On newstands now");
+// 	});
+// 	$("#circForm button").click(function(){
+// 		s.tl(this,"o","Module: Circ Form");
+// 	});
+// 	$("#otherWorksOfGenius a").click(function(){
+// 		s.tl(this,"o","Module: Other works of genius");
+// 	});
+// 	$("#choiceWords a").click(function(){
+// 		s.tl(this,"o","Module: Choice words");
+// 	});
+// 	$("#newsletters button").click(function(){
+// 		s.tl(this,"o","Module: News letters");
+// 	});
+// 	$("#breakingOpinions a").click(function(){
+// 		s.tl(this,"o","Module: breaking opinions");
+// 	});
+// 	$("#voicesRiver a").click(function(){
+// 		s.tl(this,"o","Module: homepage voices");
+// 	});
+// 	$("#voicesMenu a").click(function(){
+// 		s.tl(this,"o","Module: channel all voices");
+// 	});
+// 	$("#channelVoice a").click(function(){
+// 		s.tl(this,"o","Module: channel voice");
+// 	});
+// 	$("#video a").click(function(){
+// 		s.tl(this,"o","Module: video");
+// 	});
+// 	$("#wire a").click(function(){
+// 		s.tl(this,"o","Module: wire");
+// 	});
+// 	$("#dontMiss a").click(function(){
+// 		s.tl(this,"o","Section: Dont Miss");
+// 	});
+// 	$("#carousel a").click(function(){
+// 		s.tl(this,"o","Section: Carousel");
+// 	});
+// 	$("#channelTopStories a").click(function(){
+// 		s.tl(this,"o","Section: Channel Top Stories");
+// 	});
+// 	$("#recentStories a").click(function(){
+// 		s.tl(this,"o","Section: Recent stories");
+// 	});
+// 	$("#olderStories a").click(function(){
+// 		s.tl(this,"o","Section: Less recent stories");
+// 	});
+// 	$("#filterArchive a").click(function(){
+// 		s.tl(this,"o","Filter: Pop-up Menus");
+// 	});
+// 	$("#subchannelFilter a").click(function(){
+// 		s.tl(this,"o","Filter: culture");
+// 	});
+// 	$("#storiesFromMagazine a").click(function(){
+// 		s.tl(this,"o","Module: From Magazine");
+// 	});
+// 	$("#editorsPicks a").click(function(){
+// 		s.tl(this,"o","Module: Editors Picks");
+// 	});
+// 	$("#backIssues a").click(function(){
+// 		s.tl(this,"o","Module: Magazine back issues");
+// 	});
+// 	$("#premiumArchive button").click(function(){
+// 		s.tl(this,"o","Module: Premium archive");
+// 	});
+// 	$("#foodAnchorPosts a").click(function(){
+// 		s.tl(this,"o","Module: Corbys latest");
+// 	});
+// 	$("#recipeLibrary a").click(function(){
+// 		s.tl(this,"o","Module: Recipe Library");
+// 	});
+// 	$("#followIcons a").click(function(){
+// 		s.tl(this,"e","Follow: top right links");
+// 	});
+// 	$("#footer a").click(function(){
+// 		s.tl(this,"o","Footer: links");
+// 	});
+// 	$(".relatedContent a").click(function(){
+// 		s.tl(this,"o","Related Links");
+// 	});
+// }
+
+function adFunctions() {
+
+	//	Hide tracking pixels
+	$(".ad").each(function(i, ad){
+		var isInterstitial = $(ad).hasClass('adInterstitial');
+		$(ad).find("img").each(function(j, img){
+			if( $(img).attr("src") && $(img).attr("src").search("grey.gif") != -1 ) {
+				if (isInterstitial) {
+					$(img).hide();
+				} else {
+					if ($(ad).hasClass("adBottomboxleft")){
+						$(ad).parent().hide();
+					}
+					$(ad).height(0);
+					// set so we can check whether an ad failed elsewhere
+					$(ad).addClass("adNotLoaded");
+				}
+			}
+			// else if( 
+			// 	($(img).width() == 1 && $(img).height() == 1) || 
+			// 	($(img).attr('width') == 0 && $(img).attr('width') == 0)
+			// ) {
+			// 	$(img).addClass('trackingPixel');
+			// }
+		});
+	});
+
+	//add spacing to right column ads if they don't fill the full width
+	$(".promoColumn .ad, #btf .adBottomboxleft").each(function(){
+
+		maxAdWidth = Math.max(
+			$(this).find(">img").width(),
+			$(this).find(">embed").width(),
+			$(this).find(">div").width(),
+			$(this).find(">a").width(),
+			$(this).find(">object").width(),
+			$(this).find(">table").width(),
+			$(this).find(">span").width(),
+			$(this).find(">iframe").width(),
+			$(this).find(">center").width()
+		);
+			
+		if($(this).hasClass("adBottomboxleft")){
+			if(maxAdWidth >600){
+				$("#moreAt").hide();
+				$(this).css("border", 'none');
+			}else if(maxAdWidth <330){
+				$(this).css("padding","15px");
+				$(this).css("border", "1px solid eaeaeb");
+			}
+		}else if (maxAdWidth < 334){
+			$(this).css("padding-bottom","15px");
+			$(this).css("padding-top","15px");			
+		}else {
+			$(this).css("padding-bottom","0");
+			$(this).css("padding-top","0");
+			$(this).css("width","336px");
+			$(this).css("border", "none");
+		}
+	});
+}
+
+if (typeof window.Atlantic != 'object') {
+	window.Atlantic = {};
+}
+
+(function() {
+	
+	Atlantic.getMaxAdChildSize = function(adElement, sizeIndex) {
+		if (!sizeIndex) {
+			sizeIndex = {};
+		}
+		var dimensions = {
+			width: 0,
+			height: 0
+		};
+
+		var adChildElements = ['img', 'embed', 'div', 'a', 'object', 'table', 'iframe'];
+		
+		var childWidths = [];
+		var childHeights = [];
+		for (var i = 0; i < adChildElements.length; i++) {
+			var elName = adChildElements[i];
+			var children = $(adElement).find(elName);
+			for (var j = 0; j < children.length; j++) {
+				var child = children[j];
+				var width = $(child).width();
+				var height = $(child).height();
+				// Exact match to one of our sizes, no need to go through the rest
+				if (sizeIndex[width + 'x' + height] == 1) {
+					return {width: width, height: height};
+				}
+				childWidths.push(width);
+				childHeights.push(height);
+			}
+		}
+		if (childWidths.length && childHeights.length) {
+			dimensions.width = Math.max.apply(Math, childWidths);
+			dimensions.height = Math.max.apply(Math, childHeights);
+		}
+		
+		return dimensions;
+	};
+	
+	Atlantic.parseDartScriptSz = function(scriptElement) {
+		var scriptSrc = scriptElement.attr('src');
+		if (!scriptSrc) {return [];}
+		var sizesStart = scriptSrc.indexOf('sz=');
+		if (sizesStart == -1) {
+			return [];
+		}
+		var semiColonPos = scriptSrc.slice(sizesStart).indexOf(';');
+		var sizesEnd = (semiColonPos == -1) ? scriptSrc.length : sizesStart + semiColonPos;
+		var sizesStr = scriptSrc.slice(sizesStart + 3, sizesEnd);
+		return sizesStr.split(/,/);
+	};
+	
+	var applyCallback = function(callback, status, width, height) {
+		if (typeof callback == 'string') {
+			// If the string passed is of the form 'Object.SubObject.function',
+			// loop through to get the function object
+			var functionParts = callback.split(/\./);
+			var i = 0;
+			var functionPart = functionParts[i];
+			var obj = window[functionPart];
+			while (typeof obj == 'object' && i < (functionParts.length - 1)) {
+				i++;
+				functionPart = functionParts[i];
+				obj = obj[functionPart];
+			}
+			callback = obj;
+		} 
+		if (typeof callback == 'function') {
+			callback.apply(null, [status, width, height]);
+		}
+	};
+	
+	/**
+	 * Accepts an ad pos and a callback. Once completed calls the callback with
+	 * three parameters:
+	 *
+	 *   status - String; either 'success' or 'failure' - depends on whether
+	 *            the ad unit was found on the page
+	 *   width  - Number; undefined if status is 'failure', otherwise width
+	 *            of ad found
+	 *   height - Number; Like width, only vertical
+	 *
+	 * @String adPos
+	 * @String|Function callback
+	 */
+	Atlantic.getAdSize = function(adPos, callback, tries) {
+		if (!tries) {
+			tries = 0;
+		}
+		
+		// Prepends 'ad' and uppercases first letter of adPos
+		var id = 'ad' + adPos.charAt(0).toUpperCase() + adPos.slice(1);
+		
+		if (!$('.' + id).length) {
+			applyCallback(callback, 'failure', undefined, undefined);
+			return;
+		}
+		
+		var el = $('.' + id);
+		if (el.html().search("grey.gif") > -1) {
+			applyCallback(callback, 'failure', undefined, undefined);
+			return;
+		}
+		
+		var sizes = Atlantic.parseDartScriptSz($('#' + id + 'Script'));
+		
+		// For fast lookup
+		var sizeIndex = {};
+		$.each(sizes, function(i, size) {
+			sizeIndex[size] = 1;
+		});
+		
+		var dimensions = Atlantic.getMaxAdChildSize(el);
+		
+		var status;
+		var width = dimensions.width;
+		var height = dimensions.height;
+		
+		// Exact match
+		if (sizeIndex[ width + 'x' + height ] == 1 ) {
+			status = 'success';
+		// 0x0, so anything goes
+		} else if (sizeIndex['0x0'] == 1 && width > 1 && height > 1) {
+			status = 'success';
+		// If not dart sz, must be a hard-coded ad so use the width and height we've got
+		} else if (!sizes.length && width > 1 && height > 1) {
+			status = 'success';
+		// tried 10 times, ad is greater than 0
+		} else if (tries > 10 && width > 0 && height > 0) {
+			status = 'success';
+		// tried 10 times, width and/or height = 0
+		} else if (tries > 10) {
+			status = 'failure';
+		// haven't finished trying, let's go at it again
+		} else {
+			setTimeout(function() {
+				Atlantic.getAdSize(adPos, callback, tries+1);
+			}, 1000);
+			return;
+		}
+		
+		if (status == 'failure') {
+			width = undefined;
+			height = undefined;
+		}
+		
+		applyCallback(callback, status, width, height);
+	};
+	
+	function resizeOutbrain(width, tries) {
+		if (!tries) {
+			tries = 0;
+		}
+		if (!$('.outbrain_column').length && tries < 10) {
+			setTimeout(function() {
+				resizeOutbrain(width, tries+1);
+			});
+		} else {
+			$('.outbrain_column').css('width', width + 'px');
+		}
+	}
+	
+	// Resize outbrain widget based on the size of the bottomboxright
+	// ad unit
+	Atlantic.getAdSize('bottomboxleft', function(status, w, h) {
+		if (status == 'failure') {
+			resizeOutbrain(615);
+		} else {
+			$('#outbrainWrapper .adBottomboxleft').css('width', w + 'px');
+			$('#outbrainWrapper .adBottomboxleft').css('height', h + 'px');
+			if (w < 600) {
+				resizeOutbrain(590 - w);
+				$('#outbrainWrapper .adBottomboxleft').css('margin-left', '23px');
+			} else if (w >= 600) {
+				$('#outbrainWrapper').hide();
+				$('#outbrainAdWrapper').css("border-top", "1px solid #eaebeb");
+				$('#outbrainAdWrapper').css("padding-top", "15px");
+			}
+		}
+	});
+	
+})();
+
+
+
+/**
+*
+*  UTF-8 data encode / decode
+*  http://www.webtoolkit.info/
+*
+**/
+ 
+var Utf8 = {
+ 
+	// public method for url decoding
+	decode : function (utftext) {
+		var string = "";
+		var i = 0;
+		var c = c1 = c2 = 0;
+ 
+		while ( i < utftext.length ) {
+ 
+			c = utftext.charCodeAt(i);
+ 
+			if (c < 128) {
+				string += String.fromCharCode(c);
+				i++;
+			}
+			else if((c > 191) && (c < 224)) {
+				c2 = utftext.charCodeAt(i+1);
+				string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+				i += 2;
+			}
+			else {
+				c2 = utftext.charCodeAt(i+1);
+				c3 = utftext.charCodeAt(i+2);
+				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+				i += 3;
+			}
+ 
+		}
+ 
+		return string;
+	}
+ 
+}

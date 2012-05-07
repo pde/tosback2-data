@@ -698,16 +698,22 @@ lpAddExtendedVar();
 
 
 </div>
-<!-- Sun Apr 15 09:15:36 2012
- (1334506536) //-->
+<!-- Mon May 07 05:14:35 2012
+ (1336392875) //-->
 <script type="text/javascript" src="../javascript/jquery.rickymenu.js"></script>
-<script>
+<script type="text/javascript">
+$(document).ready(function(){
 $(".rMenu").each(function() {
 var opts = {};
 if ($(this).hasClass("rRightMenu")) opts.align = "right";
 if ($(this).hasClass("rMenu")) opts.align = "right";
 if ($(this).hasClass("rHoverMenu")) opts.open = "hover";
 $(this).rickyMenu(opts)
+});
+// need this since css isn't getting loaded.
+if($.browser.msie){
+$(".rMenuOpener").css('zoom', 1);
+}
 });
 </script>
 </BODY>

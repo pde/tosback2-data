@@ -1114,64 +1114,6 @@ function hideArrowsV() {
 	}
 }
 
-function launchAvailabilityOptions(id) {
-	try {
-		// set object references
-		var wrapperObj = $("options_availability_wrapper" + id);
-		var availObj = $("options_availability" + id);
-		// get the user's screen dimensions and calculate center point
-		var screenWidth = getBrowserWidth();
-		var screenHeight = getBrowserHeight();
-		// scrolling offset
-		var scrollY = getOffsetY();
-		// set wrapper height
-		if( window.innerHeight && window.scrollMaxY ) // Firefox
-		{
-			pageWidth = window.innerWidth + window.scrollMaxX;
-			pageHeight = window.innerHeight + window.scrollMaxY;
-		}
-		else if( document.body.scrollHeight > document.body.offsetHeight ) // all but Explorer Mac
-		{
-			pageWidth = document.body.scrollWidth;
-			pageHeight = document.body.scrollHeight;
-		}
-		else // works in Explorer 6 Strict, Mozilla (not FF) and Safari
-		{
-			pageWidth = document.body.offsetWidth + document.body.offsetLeft;
-			pageHeight = document.body.offsetHeight + document.body.offsetTop;
-		}
-		if (availObj && wrapperObj) {
-			// snapshot dimensions
-			var availObjWidth = parseInt(availObj.style.width);
-			var availObjHeight = parseInt(availObj.style.height);
-			// set snapshot coordinates
-			var x = Math.floor(screenWidth/2) - Math.floor(availObjWidth/2) + "px";
-			var y = Math.floor(screenHeight/2) - Math.floor(availObjHeight/2) + scrollY + "px";
-			// make visible
-			availObj.style.top = y;
-			availObj.style.left = x;
-			// set wrapper height
-			wrapperObj.style.height = pageHeight + "px";
-			// display wrapper and availability options
-			wrapperObj.style.display = "block";
-			availObj.style.display = "block";
-		}
-	} catch (ex) {
-		// debug
-		alert("launchAvailabilityOptions(): " + ex);
-	}
-}
-
-function closeAvailabilityOptions(id) {
-	// set object references
-	var wrapperObj = $("options_availability_wrapper" + id);
-	var availObj = $("options_availability" + id);
-	if (availObj && wrapperObj) {
-		wrapperObj.style.display = "none";
-		availObj.style.display = "none";	
-	}
-}
-
 // fade product detail messages
 var detailsFaderDelay = null;
 var detailsFader = null;

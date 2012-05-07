@@ -1032,7 +1032,7 @@ function AdInstance()
 		var targetDivId = 'wpni_adi_' + thisPos.slug;
 		slugDisplay(thisPos.slug);
 		var dcAdDelivery = "del=" + adDelivery(delivery) + ";";
-		var dcMediaServer = (adDelivery(delivery)=="iframe")?'adi':'adj';
+		var dcMediaServer = (adDelivery(delivery)=="iframe")?'adi':( delivery=='pfadx' ? 'pfadx' : 'adj');
 	
 		
 		
@@ -1099,7 +1099,7 @@ function AdInstance()
 			}
 			//var adAddress = "http://ad.doubleclick.net/" + dcMediaServer + "/" + siteZoneDir(currentLoc) + this.code + this.testAction(this.testFlagArray) + wpFlex(this.size) + dcAdDelivery + kvAjax(dcAdDelivery) + tile(this.tile,varDcCount,what,AJAXflag) + interstitial(this.interstitial,varDcCount) + this.dcCode + thisPos + onTheFly +  ordMaker(AJAXflag) +  "?"
 			
-			var adAddress = "http://ad.doubleclick.net/" + dcMediaServer + "/" + siteZoneDir(currentLoc) + wpFlex(this.size) + 'pos=' + thisPos.keyvalue + ';' + poe() + this.code + this.testAction(this.testFlagArray) + dcAdDelivery + kvAjax(delivery) + innovations_kv() + interstitial(this.interstitial,varDcCount) + new_interstitial(varDcCount) + /*wpAd.govmilCheck() + */this.dcCode + socialMediaSite() + wpAd.fromEmail() + ajaxOrdMaker(delivery) + onTheFly + revsci() + user_id_kv() + tile(this.tile,varDcCount,thisPos,delivery )+ ordMaker(delivery) +  "?";
+			var adAddress = "http://ad.doubleclick.net/" + dcMediaServer + "/" + siteZoneDir(currentLoc) + wpFlex(this.size) + 'pos=' + thisPos.keyvalue + ';' + poe() + this.code + this.testAction(this.testFlagArray) + dcAdDelivery + kvAjax(delivery) + innovations_kv() + interstitial(this.interstitial,varDcCount) + new_interstitial(varDcCount) + /*wpAd.govmilCheck() + */this.dcCode + socialMediaSite() + wpAd.fromEmail() + ajaxOrdMaker(delivery) + onTheFly + revsci() + user_id_kv() + (delivery === 'pfadx' ? 'dcmt=text/html;' : '') + tile(this.tile,varDcCount,thisPos,delivery )+ ordMaker(delivery) +  "?";
 
 		}
 			

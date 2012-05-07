@@ -49,6 +49,40 @@ function ProductPageStats(Category, ProductNumber) {
     });
 }
 
+// Handle ajax download and exit links problems
+try {
+    if (window.addEventListener) {
+        window.addEventListener('click', function (e) {
+            handleClickEvent(e);
+        }, false);
+    } else {
+        document.attachEvent('onclick', function (e) {
+            handleClickEvent(e);
+        });
+    }
+}
+catch (ex) {
+    // Ignore possible errors when adding the ajax download link tracking
+}
+
+function handleClickEvent(e) {
+    var targ;
+	try {
+		if (!e) var e = window.event;
+		if (e.target) targ = e.target;
+		else if (e.srcElement) targ = e.srcElement;
+		if (targ.nodeType == 3) // defeat Safari bug
+			targ = targ.parentNode;
+
+		if (targ != undefined && targ.onclick == undefined) {
+			s.lc.apply(targ);
+		}
+	}
+	catch(ex) {
+		// fail silent when dom-link parsing fails
+	}
+}
+
 /* Plugin Config */
 s.usePlugins=true
 function s_doPlugins(s) {
@@ -61,14 +95,14 @@ function s_doPlugins(s) {
 	/*External Campaigns*/
 	if(!s.campaign){
 		s.campaign=s.getQueryParam('CMP,KAC,HQS',':')
-		s.campaign=s.getValOnce(s.campaign,'s_campaign',0)
 	}
+	s.campaign=s.getValOnce(s.campaign,'s_campaign',0)
    	   	
 	/*Internal Campaigns*/
 	if(!s.eVar2){
-		s.eVar2=s.getQueryParam('icmp')
-   		s.eVar2=s.getValOnce(s.eVar2,'s_eVar2',0)
+		s.eVar2=s.getQueryParam('icmp')   		
    	}
+   	s.eVar2=s.getValOnce(s.eVar2,'s_eVar2',0)
    	
    	/*Copy props to eVars*/
 	 if(s.prop3){ 

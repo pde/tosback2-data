@@ -1,0 +1,86 @@
+﻿var openProductFlyoutName = '';
+var productFlyoutShim = null;
+var ff=false;
+if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
+    ff = true; 
+}
+function OpenProductArticleFlyout(flyoutDiv, articleId, anchorElementID) {
+
+    if (openProductFlyoutName == '') {
+
+        var flyout = $(flyoutDiv);
+        flyout.style.display = 'none';
+        openProductFlyoutName = flyoutDiv;
+        if (isIE6) {
+            if (productFlyoutShim == null) {
+                productFlyoutShim = new Element('iframe', { 'frameborder': '0', 'scrolling': 'no' });
+                $(productFlyoutShim).setStyle({ 'position': 'absolute',
+                    'zIndex': 5
+                });
+                flyout.parentNode.parentNode.appendChild(productFlyoutShim);
+            }
+        }
+
+        var realFlyout = $('BodyWrapper').select('div#realFlyout')[0];
+        if (realFlyout == null) {
+            realFlyout = new Element('div');
+            realFlyout.id = "realFlyout";
+            $(realFlyout).setStyle({ 'position': 'absolute',
+                'backgroundColor': 'white',
+                'border': 'solid 1px black',
+                'zIndex': 10
+            });
+            $('BodyWrapper').appendChild(realFlyout);
+        }
+        if (flyout) {
+
+            var url = '/cnt/article/flyout.aspx?flyid=' + flyoutDiv + '&aid=' + articleId;
+
+            new Ajax.Updater(realFlyout, url, { method: 'get', onComplete: function() {
+                // Position the flyout based relative to the anchorElement
+                var anchorElement = $(anchorElementID);
+                if (anchorElement) {
+                    if (ff)
+                        Position.clone(anchorElement, realFlyout, { setWidth: false, setHeight: false, offsetLeft: -400, offsetTop: 100 });
+                    else
+                        Position.clone(anchorElement, realFlyout, { setWidth: false, setHeight: false, offsetLeft: -400, offsetTop: 30 });
+                    realFlyout.style.display = 'block';
+                    if (isIE6) {
+                        Position.clone(realFlyout, productFlyoutShim);
+                        toggleProductFlyoutShim();
+                    }
+                }
+            } 
+            });
+        }
+    }
+}
+function CloseProductFlyout(flyoutDiv) {
+
+    var flyout = $(flyoutDiv);
+    if (flyout) {
+        flyout.setStyle({ 'display': 'none' });
+    }
+
+    flyout = $('BodyWrapper').select('div#realFlyout')[0];
+    if (flyout) {
+
+        openProductFlyoutName = '';
+        if (isIE6)
+            toggleProductFlyoutShim();
+
+        flyout.style.display = 'none';
+    }
+}
+
+function toggleProductFlyoutShim() {
+
+    if (productFlyoutShim) {
+        if (openProductFlyoutName != '') {
+            productFlyoutShim.style.display = "block";
+        }
+        else {
+            productFlyoutShim.style.display = "none";
+        }
+    }
+}

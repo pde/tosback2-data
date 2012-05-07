@@ -1,24 +1,31 @@
 //simple hide and show flyout function
+if ($().jquery == '1.3.2'){
+		
+			$(document).ready(function(){
+	// Add listener for hover. 
+		$("#flyout-trigger").hover(function() {
+			// Show panel but only if it's not already animated
+			$(this).find("#product-flyout").filter(':not(:animated)').slideDown('fast');
+		}, 
+		function() {
+		// Hide panel.
+			$(this).find("#product-flyout").slideUp('fast'); 
+		});
+	});
 
-$(document).ready(function(){
-	var $flyoutTrigger = $("#flyout-trigger");
-	var $flyout = $("#product-flyout");
-	var animationFlag = false;
-	$flyoutTrigger.hover(
-		function() {
-			animationFlag = true;
-			$flyout.slideToggle('fast', function() {
-				animationFlag = false;
+	}else{
+	
+	$(document).ready(function(){
+		var $flyoutTrigger = $("#flyout-trigger");
+		var $flyout = $("#product-flyout");
+		//var animationFlag = false;
+		$flyoutTrigger.live('mouseenter',function() {
+				$flyout.slideDown('fast');
+			}).live('mouseleave',function(){
+				$flyout.slideUp('fast');
 			});
-		},
-		function() {
-			if (animationFlag === false) {
-				$flyout.slideToggle('fast');
-			}
-			else return;
-		}
-	)
-});
+	});
+}
 
 //mcgowan - clears/restores default textbox values
 function clearDefaultText(elTextBox, defaultValue) {

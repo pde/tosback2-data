@@ -13,6 +13,7 @@
 		},
 		func : {
 			openMegaMenu : function(i) {
+
 				/* Close any open menus */
 				site.func.closeMegaMenu();
 				

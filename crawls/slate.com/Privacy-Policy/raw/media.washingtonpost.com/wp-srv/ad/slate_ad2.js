@@ -11,7 +11,7 @@ if (typeof wp_quantcast !== 'undefined') {
 }
 
 wpniAds.templates.initRule('defaultTemplate');
-wpniAds.templates.rules.defaultTemplate.what = new Array('!tiffanytile','!120x60','!88x31','!120x90','!customcover','!leaderboard_2','!336x60','!336x90','!336x90_most','!120x30','!mostread','!pushdown','!rightflex_2','!featurebar','!sponsor','!comment','!tooltile','!rightflex_3','!bigbox_2','!twitter','!flip','!bigad', '!hive_textlinks','!167x115','!agoogleaday');
+wpniAds.templates.rules.defaultTemplate.what = new Array('!tiffanytile','!120x60','!88x31','!120x90','!customcover','!leaderboard_2','!336x60','!336x90','!336x90_most','!120x30','!mostread','!pushdown','!rightflex_2','!featurebar','!sponsor','!comment','!tooltile','!rightflex_3','!bigbox_2','!twitter','!flip','!bigad', '!hive_textlinks','!167x115','!agoogleaday','!meebo');
 
 wpniAds.templates.initRule('bmDev');
 wpniAds.templates.rules.bmDev.what = new Array('120x90');
@@ -107,6 +107,14 @@ if(urlCheck('test_ads=agoogleaday')){
   }
 }
 
+//19383-CD
+wpniAds.templates.initRule('meebo');
+wpniAds.templates.rules.meebo = {
+  what:['meebo'],
+  where:[''],
+  when:['']
+}
+
 //18288
 //18551
 /*
@@ -133,6 +141,15 @@ wpniAds.templates.rules.slate_hp_leaderboard_bb = {
   where:['homepage'],
   when:['201202220000/201202222359', '201203140000/201203142359', '201204100000/201204102359']
 };
+
+//19487-AL
+wpniAds.templates.initRule('hiscox');
+wpniAds.templates.rules.hiscox = {
+  what:['sponsor', 'featurebar', 'featurebar_2'],
+  where:['business/tenrules'],
+  when:['201205010000/201205312359']
+};
+
 
 
 //18479 -SP-252212434
@@ -370,6 +387,11 @@ function initAdType(what)
   case 'agoogleaday':
     thisAdType.size = '1x1';
     thisAdType.tile = 'ad=agoogleaday;';
+  break
+
+  case 'meebo':
+    thisAdType.size = '55x21';
+    thisAdType.tile = 'ad=meebo;';
   break
 
   case 'video':

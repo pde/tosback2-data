@@ -7,7 +7,7 @@
     LINK_FLOW_ENDPOINT = "/pubajax/wf/flow/social.facebook.link",
     OAUTH_LOGIN_ENDPOINT = "/pubajax/wf/flow/social.facebook.oauthLogin",
     
-    permissions = "email,publish_stream,publish_actions,offline_access,user_about_me, user_birthday, user_education_history, user_location, user_hometown, user_interests, user_relationships, user_work_history",
+    permissions = "email,publish_stream,publish_actions,user_about_me, user_birthday, user_education_history, user_location, user_hometown, user_interests, user_relationships, user_work_history",
        
      
     // events

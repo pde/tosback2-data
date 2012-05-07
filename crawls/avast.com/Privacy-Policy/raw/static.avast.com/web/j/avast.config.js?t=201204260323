@@ -1,0 +1,40 @@
+avast.navContent = "";
+$(document).ready(function(){
+	var tooltip = avast.tooltip;
+	var tabs = avast.tabs;
+	var languageSelector = avast.languageSelector;
+	var navigation = avast.navigation;
+	var gaTracking = avast.gaTracking;
+	var avastCounter = avast.counter;
+	
+	if(!avast.disableTooltip) tooltip.init();
+	if(!avast.disableTabs) tabs.init("#tabs");
+	if(!avast.disableLanguageSelector) languageSelector.init();
+	if(!avast.disableNavigation) navigation.init({navContent:avast.navContent});
+	if(!avast.disableGaTracking) gaTracking.init();
+	if(!avast.disableCounter) avastCounter.init();
+
+	/*
+	 * Bind sharebox events
+	 */
+	$('#btnShareboxFooter').bind('mouseover click', function(){
+		if( $('#blockShareboxFooter').length > 0 ){
+			avast.sharebox.add( 
+				$(this),
+				'#blockShareboxFooter',
+				{
+					title : $('body').find('h1').text(),
+					ref : document.location.href,
+					msg : $('body').find('h2').text(),
+					effect : 'fade',
+					xPos : 'left',
+					yPos : 'top',
+					yFix : 10,
+					xFix : 0
+				}
+			);
+			return false;
+		}
+	});
+
+});

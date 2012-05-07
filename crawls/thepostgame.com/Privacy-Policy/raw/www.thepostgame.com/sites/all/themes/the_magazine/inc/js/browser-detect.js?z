@@ -1,0 +1,42 @@
+function isBrowser(browser)
+{
+   var u = navigator.userAgent.toLowerCase();
+   if(u.indexOf(browser) !=-1)
+      return true;
+   else
+      return false;
+}
+function initBrowserDetect()
+{
+	var _html = document.getElementsByTagName("html")[0];
+	
+	if(isBrowser("win")) addClass("win");
+	else if(isBrowser("mac")) addClass("mac");
+	else if(isBrowser("linux") || isBrowser("x11")) addClass("linux");
+	
+	if(isBrowser("msie 9.0")) addClass("msie9");
+	else if(isBrowser("msie 8.0")) addClass("msie8");
+   else if(isBrowser("msie 7.0")) addClass("msie7");
+   else if(isBrowser("msie 6.0")) addClass("msie6");
+	else if(isBrowser("firefox/2")) addClass("ff2");
+	else if(isBrowser("firefox/3")) addClass("ff3");
+	else if(isBrowser("firefox/4")) addClass("ff4");
+	else if(isBrowser("firefox/5")) addClass("ff5");
+	else if(isBrowser("opera/9")) addClass("opera");
+	else if(isBrowser("safari") && isBrowser("version/3")) {addClass("safari3");addClass("safari");}
+	else if(isBrowser("safari") && isBrowser("version/4")) {addClass("safari4");addClass("safari");}
+	else if(isBrowser("safari") && isBrowser("version/5")) {addClass("safari5");addClass("safari");}
+	else if(isBrowser("chrome")) addClass("chrome");
+	else if(isBrowser("safari")) {addClass("safari2");addClass("safari");}
+    else if(isBrowser("blackberry")) addClass("blackberry");
+	else if(isBrowser("unknown")) addClass("unknown");
+		
+	function addClass(_class)
+	{
+		_html.className += (" " + _class);
+	}
+}
+if (window.addEventListener)
+	window.addEventListener("load", initBrowserDetect, false);
+else if (window.attachEvent)
+	window.attachEvent("onload", initBrowserDetect);

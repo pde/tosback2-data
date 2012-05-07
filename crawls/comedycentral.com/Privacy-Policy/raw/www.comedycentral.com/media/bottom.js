@@ -2155,6 +2155,19 @@ function log() {
 	}
 
 	/**
+	 * Get comments on all GT comunity content
+	 * 
+	**/
+	$Crabapple.FluxWidget.requestCommentsRiver = function (maxResults, func) {
+		if(maxResults == null && isNaN(maxResults = parseInt(maxResults))){	maxResults="2";	}
+		$.ajax({
+			url: 'http://activity.flux.com/api/ActivityService/FindActivities?communityId=' + config.getFluxCommunityId() + '&contentId=&dashboardShowAllCommunities=false&dashboardShowCommunityFeed=false&dashboardShowOnlyFollowFeed=false&activityType=&activityFeedFilter=Comments&maxResults='+maxResults+'&cultureLcid=0&nextPageToken=&sortByTopCounter=false&untilPageToken=&includeChildren=false&includeTweets=true&includeGuestActivities=false&includeRating=true&showParentAddedChild=false&contentAliases=&popularActivitiesCount=0&popularActivitiesType=CommentContent',
+			dataType: 'jsonp',
+			success: func
+		});
+	}
+
+	/**
 	 * Get following statistics of an content
 	 **/
 	$Crabapple.FluxWidget.requestFollowingStats = function(mgid, func){
@@ -3991,6 +4004,11 @@ $(function() {
 
 function autoLinkTrackEvent(promoName, destinationUrl){
 	var destinationUrl = (typeof destinationUrl != 'undefined') ? destinationUrl : 'no_destination_url';
+	
+	if (destinationUrl.substr(0,1) == '/') {
+		destinationUrl = window.location.protocol + "//" + window.location.host + destinationUrl;
+	}
+	
 	if (typeof(mtvn) != 'undefined') {
 			mtvn.btg.Controller.sendLinkEvent({
 			linkName:promoName + '|' + pageName,
@@ -4083,8 +4101,14 @@ $(function() {
 		autoLinkTrackEvent('searchbox', destinationUrl);
 	});
 	
+	// Carousel
+	$('ul#carousel li.active a').live('click', function() {
+		var destinationUrl = $(this).attr('href');
+		autoLinkTrackEvent('hpcarousel', destinationUrl);
+	});
+	
 	// All other auto link tracking
-	skipTheseClasses = /(noAutoLinkTracking|ad_|visible_header|video_player_module)/; // div classes to skip autolink tracking
+	skipTheseClasses = /(noAutoLinkTracking|ad_|visible_header|video_player_module|hpcarousel)/; // div classes to skip autolink tracking
 	skipTheseAClasses = /\s*mute\s*/i; //a tag Classes to skip
 	
 	moduleRemove = /\s*module\s+/i; //To remove module from potential class names
@@ -4340,53 +4364,69 @@ $(function () {
 	function init()
 	{
 		$carousel = $('#carousel');
-		$player_ready = false;
-		$video_player = $Crabapple.playerA.player.video_player_box;
+		//$player_ready = false;
+		
+		if ($('#video_player_box').length) {
+			$video_player = $Crabapple.playerA.player.video_player_box;
+			$player_ready = true;
+		} else {
+			$player_ready = false;
+		}						
+		
+		$(window).focus(function(){
+			$('#carousel li:last').addClass('active');
+		});
+		
 		//autoplay detect
 		if (!$('#adExpand').length)
 		{		
 			autoplay($carousel);
 			$autoplay_time = $carousel.attr('data-autoplay');
 		}
-		hidePlayer();
-		//player ready detect and hide when ready				
-		$video_player.events.onMetadata = function(){
-			$player_ready = true;			
-			
-				if($.cookie('playerSound') != 'true')
-				{			
-					$('#carouser_wrapper a.mute').removeClass('on');
-					$video_player.mute();
-					$.cookie('playerSound','false');
-				}
-				else
-				{
-					$('#carouser_wrapper a.mute').addClass('on');
-					$video_player.unmute();
-					$.cookie('playerSound','true');			
-				}
-			
-			
-			$video_player.events.onMetadata = function(){};
-		}	
 		
-		$video_player.events.onPlaylistComplete	= function(){
-			hidePlayer();
-			goNext();
-			//continue autoplay after video stop
-			if ($autoplay_time)
-			{
-				$carousel.attr('data-autoplay', $autoplay_time);
-				autoplay($carousel);
-			}
-		}		
+		if ($player_ready = true)
+		{
+			$video_player = $Crabapple.playerA.player.video_player_box;
 				
-		$carousel.find('li a').click(function(){				
+			//player ready detect and hide when ready				
+			$video_player.events.onMetadata = function(){
+				$player_ready = true;			
+				hidePlayer();
+					if($.cookie('playerSound') != 'true')
+					{			
+						$('#carouser_wrapper a.mute').removeClass('on');
+						$video_player.mute();
+						$.cookie('playerSound','false');
+					}
+					else
+					{
+						$('#carouser_wrapper a.mute').addClass('on');
+						$video_player.unmute();
+						$.cookie('playerSound','true');			
+					}
+				
+				
+				$video_player.events.onMetadata = function(){};
+			}	
+			
+			$video_player.events.onPlaylistComplete	= function(){
+				hidePlayer();
+				goNext();
+				//continue autoplay after video stop
+				if ($autoplay_time)
+				{
+					$carousel.attr('data-autoplay', $autoplay_time);
+					autoplay($carousel);
+				}
+			}		
+		}
+				
+		$carousel.find('li a').click(function(){
 			$active = $(this).parent();	
 			//make video player clickable
 			$('.link_overlay_disabled').attr('href',$(this).attr('href'));			
 			$carousel.attr('data-autoplay',0);
-	
+
 			if ($(this).parent().hasClass('active'))
 			{
 				return;
@@ -4394,7 +4434,7 @@ $(function () {
 			else
 			{
 				hidePlayer();
-				animate($active);
+				animate($active);			
 				return false;
 			}
 					
@@ -4441,28 +4481,32 @@ $(function () {
 	{
 		$active.animate({
 			width: 480
-		}, 150, function(){move($active)}).addClass('active');							
-		$('#carousel li:last').addClass('active');		
+		}, 150, function(){move($active)}).addClass('active');								
 	}
 	
 	function move($active)
-	{		
-		hidePlayer();
+	{	
+		hidePlayer();		
 		$active.nextAll().css('width','34').prependTo('#carousel').removeClass('active');
 		
 		$active_link = $active.find('a').attr('href');
 		$('.link_overlay_disabled').attr('href',$active_link);		
 		
-		if ($active.attr('data-mgid'))
+	    $active_id =$active.attr('data-mgid');	
+		
+		if ($active_id)
 		{
+			$video_player.playURI($active_id);
 			showPlayer();
-			$video_player.playURI($active.attr('data-mgid'));
-			$video_player.play();			
+			//$video_player.play();			
+			//console.log($video_player.state);
 			$carousel.attr('data-autoplay', '0');		
 		}
 		else{
-			$video_player.pause();
-			hidePlayer();
+			if ($player_ready) {
+				$video_player.pause();
+				hidePlayer();
+			}
 		}	
 	}
 	
@@ -4473,7 +4517,9 @@ $(function () {
 	
 	function hidePlayer()
 	{
-		$('#carouser_wrapper').css('opacity','0.01');
+		if ($player_ready) {
+			$('#carouser_wrapper').css('opacity','0.01');
+		}
 	}
 	
 	function showPlayer()

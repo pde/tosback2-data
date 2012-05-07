@@ -34,13 +34,15 @@ if(!s.campaign)
 	s.campaign=s.getValOnce(s.campaign,'s_campaign',0)
 
 /* Internal Campaign Tracking */
-if(!s.eVar25)
+if(s.getQueryParam('intcmp') != ""){
+   if(!s.eVar25 || s.eVar25 == undefined || s.eVar25 == "")
+   {
+         s.eVar25=s.getQueryParam('intcmp');
+         s.eVar25=s.getValOnce(s.eVar25,'s_ev25');
+         s.events=s.apl(s.events,"event7",",",2); 
+   }
+}
 
-	s.eVar25=s.getQueryParam('intcmp');
-	s.eVar25=s.getValOnce(s.eVar25,'s_ev25'); 
-	s.events=s.apl(s.events,"event7",",",2); 
-
-	
 /* Site Search */
 /* if(!s.prop34)
 	s.prop34=s.getQueryParam('q') */

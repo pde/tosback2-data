@@ -1,0 +1,321 @@
+(function($){
+  window.ga_track = function (tag, type, optional_label, optional_value){
+    window._gaq = _gaq || [];
+    _gaq.push(["_trackEvent", tag, type, optional_label, optional_value]);
+  };
+  getUrlVars = function(url){
+    url = url ? url : window.location.href;
+    var vars = [], hash;
+    var hashes = url.slice(url.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++) {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  };
+  getUrlVar = function(name,url){
+    return this.getUrlVars(url)[name];
+  };
+
+  isInternalRedirect = function(url) {
+    url = decodeURIComponent(url);
+    var dummy_anchor = document.createElement('a');
+    dummy_anchor.href = url;
+    var is_valid_protocol = /http(s)?:$/.test(dummy_anchor.protocol);
+    var is_valid_hostname = (new RegExp('^' + location.hostname + '$')).test(dummy_anchor.hostname);
+    return (is_valid_protocol && is_valid_hostname);
+  };
+
+  is_abbr = function (e){
+    return ((getUrlVar('download_id', e) && getUrlVar('download_id', e).length > 0) ||
+            getUrlVar('abbr', e) == 'true' || getUrlVar('from',e) == 'download');
+  };
+  var atStep = 1;
+  slideshare_object.setup_signup_modal_box = function(){
+    $('a[href*="/login"], a[href*="/signup"]').filter(':not(.void_fancybox)').fancybox({
+      'frameWidth'          : 650,
+      'frameHeight'         : 250,
+      'hideOnContentClick'  : false,
+      'enableEscapeButton'  : true,
+      'centerOnScroll'      : false,
+      'fromType'            : null,
+      'fromSource'          : null,
+      'thisLink'            : null,
+      'callbackOnStart'     : function (e){
+        thisLink = e.href;
+        atStep = 1;
+        if( is_abbr(thisLink) ) {
+          window.ga_track( "Signup", "thickbox_loading", "download" );
+        } else {
+          window.ga_track( "Signup", "thickbox_loading" );
+        }
+        return true;
+      },
+      'callbackOnShow'      : function (e){
+        $('#fancy_outer').animate({
+          top: $(document).scrollTop() + 40});
+        if( is_abbr(thisLink) ) {
+          window.ga_track( "Signup", "thickbox_loaded", "download" );
+        } else {
+          window.ga_track( "Signup", "thickbox_loaded" );
+        }
+
+        modalMessages = {
+          '_start'    : "Login or Signup to ",
+          'download'  : "download this file.",
+          'addcontact': "follow this user.",
+          'favorite'  : "favorite this document.",
+          'comments'  : "post a comment.",
+          'AddToCommunity': "add this document to a group/event.",
+          'follow'    : "follow this user.",
+          'business'  : "try LeadShare.",
+          'upload'    : "start uploading",
+          'contest'   : "vote",
+          'rsvp'      : "join this meeting",
+          '_end'      : ""
+        };
+      
+        if ( !e || !e.href || e.href.length < 1) {
+          $('#modal_message').hide();
+        } else {
+          fromType   = getUrlVar('from', e.href);
+          fromSource = getUrlVar('from_source', e.href);
+          if( !fromType || fromType.length < 1 || !modalMessages[fromType] || modalMessages[fromType].length < 1 ){
+            $('#j-signup-notice').hide();
+          } else {
+            $('#j-signup-notice').html(modalMessages._start+modalMessages[fromType]+modalMessages._end);
+          }
+        }
+        return true;
+      },
+      'callbackOnClose'     : function (e){
+        if( is_abbr(thisLink) ) {
+          window.ga_track( "Signup", "thickbox_closed", "download" );
+        } else {
+          window.ga_track( "Signup", "thickbox_closed" );
+        }
+      
+        return true;
+      },
+      'easingIn'            : 'linear',
+      'easingOut'           : 'linear',
+      'easingChange'        : 'linear',
+      'dontSetNavigation'   : true,
+      'dontShowFancyTitle'  : true
+    });
+  };
+  var extensions = {
+                      modalWin: function (message){
+                        var element = this.parent().find('.modal-action-message').html(message);
+                        element.removeClass('modal-action-fail').addClass('modal-action-success').show();
+                        if(message.length < 1) {
+                          element.removeClass('modal-action-success');
+                        }
+                        this.removeClass('error');
+                        return this;
+                      },
+                      modalFail: function(message){
+                        var container = this.parent().find('.modal-action-message').html(message);
+                        container.removeClass('modal-action-success').addClass('modal-action-fail').show();
+                        this.addClass('error');
+                        return this;
+                      }
+                    };
+  try{
+    slideshare_object.extend($.fn, extensions, function(){
+      log("$.fn extended");
+    });
+  }catch(e){
+    $.fn.extend(extensions);
+  }
+  
+  window.modal_login = {};
+  modal_login.cache_validations = {
+    username  : false,
+    password  : false,
+    email     :false,
+    section_one : false
+  };
+  window.check_username = function(element){
+    var value = element.value;
+    modal_login.cache_validations.username = false;
+    element = $(element);
+    if (value.length < 3 || value.length > 25) {
+      element.modalFail('min 3, max 25 characters');
+      return false;
+    }else if(!value.match(/^([\w])+([\w\-])*([\w])+$/)){
+      element.modalFail('only letters, numbers, underscores and hyphens are allowed');
+      return false;
+    }else{
+      $.get('/account/username_check',{login:value},function(data){
+        if (data.match(/111\+\=/)) {
+          element.modalWin('username available');
+          modal_login.cache_validations.username = true;
+          return true;
+        }else{
+          element.modalFail(data);
+          return false;
+        }
+      });
+    }
+    return true;
+  };
+  window.check_email = function(element){
+    var value = element.value;
+    modal_login.cache_validations.email = false;
+    element = $(element);
+    if (!value.match(/^([^@\s]+)@((?:[\-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/) || value.length > 50) {
+      element.modalFail('email is invalid');
+      return false;
+    }else{
+      $.get('/account/email_check',{email:value},function(data){
+        if (data.match(/111\+\=/)) {
+          modal_login.cache_validations.email = true;
+          element.modalWin('email is valid');
+          return true;
+        }else{
+          element.modalFail('email is already taken!');
+          return false;
+        }
+      });
+    }
+    return true;
+  };
+  window.check_password = function(element){
+    element = $(element);
+    modal_login.cache_validations.password = false;
+    if (element.val().length < 5 || element.val().length > 40) {
+      element.modalFail('min 5, max 40 characters');
+      return false;
+    }else{
+      element.modalWin('password is valid');
+      modal_login.cache_validations.password = true;
+      return true;
+    }
+  };
+  window.modal_signup_submit = function(form){
+    form = $(form);
+    var form_1 = $('#signup_form_1');
+    var element = null;
+    if (form_1.is(':visible')) {
+      modal_login.cache_validations.section_one =
+              modal_login.cache_validations.username &&
+              modal_login.cache_validations.password &&
+              modal_login.cache_validations.email;
+      if (modal_login.cache_validations.section_one) {
+        form_1.find('.submitFormButton .loading').show();
+        $.post(form.attr('action'),form.serialize(),
+         function(data){
+            if (data.success) {
+              window.ga_track( "Signup", "thickbox_signup_success" );
+              element = form_1.find('.submitFormButton .modal-action-message').html("Signup is successful!");
+              element.removeClass('modal-action-fail hide').addClass('modal-action-success');
+            
+              if ( fromType !== 'business' || !fromSource || fromSource.length < 1 || !isInternalRedirect(fromSource) ) {
+                window.location.reload();
+              } else {
+                window.location.href = decodeURIComponent(fromSource);
+              }
+            } else {
+              window.ga_track( "Signup", "thickbox_signup_failed", data.message );
+              form_1.find('.submitFormButton img').hide();
+              element = form_1.find('.submitFormButton .modal-action-message').html(data.message);
+              element.removeClass('modal-action-success').addClass('modal-action-fail');
+            }
+        }, 'json');
+      } else {
+        window.ga_track( "Signup", "thickbox_signup_failed" );
+        var msg = "mandatory fields are empty or invalid";
+        element = form_1.find('.submitFormButton .modal-action-message').html(msg);
+        element.removeClass('modal-action-success hide').addClass('modal-action-fail');
+      }
+    }
+    return false;
+  };
+  window.modal_login_submit = function(form){
+    form = $(form);
+    var username = $('#login_username').val(), password = $('#login_password').val(),
+    remember = ($('#remember').is(':checked') ? '1' : '');
+    if (username.length < 1 || password.length < 1 || username == "Username") {
+      form.find('.modal-action-message')
+          .html("Mandatory field(s) are empty or invalid!")
+          .removeClass('modal-action-success hide')
+          .addClass('modal-action-fail');
+      return false;
+    }
+    form.find('.submitContainer .loading').show();
+    $.post('/login',{ 'user_login' : username, 'user_password' : password, 'remember' : remember },
+     function(data){
+        if (data.success) {
+          if( is_abbr(thisLink) ) {
+            _gaq.push(['_trackEvent', 'Login', 'ss_login', 'ss_login_from_fancybox(download)']);
+          } else {
+              _gaq.push(['_trackEvent', 'Login', 'ss_login', 'ss_login_from_fancybox']);
+          }
+          var escapeUrl = jQuery.inArray(fromType, ["business", "upload", "download"]);
+          if(fromType == 'unsubscribe') {
+            $.post('/comment/unsubscribe' , {'id' : slideshare_object.slideshow.id}, 
+            function(response_data) {
+              $('#fancy_close').click();
+              $('.comments-unsubscribe').hide();
+              $('.comments-subscribe').show().highlightOut();
+              $('.comments-subscribe input')[0].checked = false;   
+              window.location.href= window.location.origin + window.location.pathname;
+            });
+          } else if(escapeUrl && fromSource && fromSource.length > 1 && isInternalRedirect(fromSource)) {
+            window.location.href = decodeURIComponent(fromSource);
+          } else {
+            window.location.reload() ;
+          }
+          form.find('.modal-action-message')
+              .html("Logged in successfully!")
+              .removeClass('modal-action-fail hide')
+              .addClass('modal-action-success');
+        }else{
+          if( is_abbr(thisLink) ) {
+            window.ga_track("Signup", "thickbox_login_failed", "download");
+          } else {
+            window.ga_track("Signup", "thickbox_login_failed");
+          }
+          form.find('.submitContainer .loading').hide();
+          form.find('.modal-action-message')
+              .html(data.message)
+              .removeClass('modal-action-success hide')
+              .addClass('modal-action-fail');
+        }
+    },'json');
+    return false;
+  };
+  window.modal_window_js_loaded = true;
+  if ( !$().toggleText ) {
+    $.fn.extend({toggleText: function(){
+      this.each(function(i, j) {
+        j = $(j);
+        j.data('text_to_toggle', j.val());
+        j.focus(function() {
+          var e = $(this);
+          if (e.val() == e.data('text_to_toggle')) {
+            e.val("");
+          }
+        }).blur(function() {
+          var e = $(this);
+          if (e.val().length < 1) {
+            e.val(e.data('text_to_toggle'));
+          }
+        });
+      });
+    }});
+  }
+  $('#signup_username').live('change',function() {
+    if( is_abbr(thisLink) ) {
+      window.ga_track("Signup", "thickbox_formstart", "download");
+    } else {
+      window.ga_track("Signup", "thickbox_formstart");
+    }
+  });
+  $(document).ready(function(){
+    _gaq.push(['_setAccount', 'UA-2330466-1']);
+    slideshare_object.setup_signup_modal_box();
+  });
+})(jQuery);

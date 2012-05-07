@@ -1,1 +1,904 @@
-eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('7 3b=1N.3a(1N.39()*64);7 S="63-5Z-10-11-21-55";7 3A=H||0;9(!3A){7 H=\'\'}H=H+"";9(2q.2Z=="4A"){b.2I(\'<1D 1u="3k/3r" T="19://6o.6n.1Y/3t/6a.3t"></1D><1D 1v="68" 1u="3k/3r">1h 6c(8,"6f");</1D>\')}v 2A(37){7 3g="aàâä6eç6déèêë6Cîï6Bôö6Gùû5B- ";7 3D="60  ";7 3e="";14(7 i=0;i<37.R;i++){7 2N=37.4f(i,1);3e+=(3g.k(2N)!=-1)?3D.4f(3g.k(2N),1):2N}1w 3e}v 3Z(){7 1A=b.65("*");14(27 5Y 1A){7 2U=1A[27].1v;7 5S=1A[27].5T;7 3n;7 2V;3n=2U||0;9(3n&&(2U!="")){9(2U.k("5U")>=0){2V=1A[27].2b;9(2V.k("5V.5W")>=0){1A[27].2b="";5P}}}}}7 2h=["5Q.3p.1Y"];7 5R=1;7 4c=1N.3a(1N.39()*1);7 t=2h[4c];7 2k=0;7 3i=0;7 2Q=0;9(b.w("I")){3i=1}7 2C=\'4m\';7 17=\'4m\';7 1l=\'1g\';7 1k=2C;7 2C=2C+\'3W\';7 17=17+\'3W\';b.2I(\'<1E V="W:1s;" T="19://\'+t+\'/1c/62/61.5O" 1v="I" 23="0" 1Z="0">\');v 1T(36,2X,2u){7 h=-1;9(2u){h=(36+\'\').5N(2u).3K(2X);9(h!==-1){h+=2u}}c{h=(36+\'\').3K(2X)}1w h>=0?h:E}7 2M=0;7 1t;7 2w=2q.2Z.5C();7 y,J,1X,5D,3s;9(D(\'5A\')){J="5z";y="3B"}c 9(D(\'3P\'))J="3P";c 9(D(\'3O\'))J="3O";c 9(D(\'5w\'))J="5x";c 9(D(\'5y\'))J="5E";c 9(D(\'5F\'))J="5L";c 9(D(\'5M\'))J="5K";c 9(D(\'5J\'))J="5G";c 9(D(\'5H\'))J="5I 66";c 9(!D(\'67\')){J="6w 6x";1X=2w.3Q(8)}c J="3C";9(!1X)1X=2w.3Q(33+3s.R);7 6y=6v(2q.6u);9(!y){9(D(\'6r\'))y="3B";c 9(D(\'6s\'))y="5v";c 9(D(\'6t\'))y="6z";c 9(D(\'6A\'))y="K";c y="3C"}7 1n=2q.2Z;9(1n.k("K 1R 6.1")>0){y="K 6H"}9(1n.k("K 1R 6.0")>0){y="K 6F"}9(1n.k("K 1R 5.2")>0){y="K 3N 6E"}9(1n.k("K 1R 5.1")>0){y="K 3N"}9(1n.k("K 1R 5.0")>0){y="K 32"}9(1n.k("6D 9x 4.90")>0){y="K 6q"}9(1n.k("6p")>0){y="K 95/98"}v D(3u){33=2w.k(3u)+1;3s=3u;1w 33}7 n="";2f{n=l.2o.2o.b.34.2Y}2g(1B){2f{7 n=l.2o.b.34.2Y}2g(1B){2M=1;9(1T(1B.25,\'<\',0)){n=1B.25.1K(1T(1B.25,\'<\',0)+1,1T(1B.25,\'>\',0))}c{n=l.b.34.2Y}}}9((6b!=l)&&(b.2v!="")){2f{n=l.2o.b.2v;S=S+" 69 "+n;2k=1}2g(3v){n=b.2v;S=S+3v.25+" 6g "+n;2k=1}}c{S+=" 6h"+" "+b.2v}7 1U=0;9(1T(n,\'6m.1Y\',0)){1U=1}9(2M==0){7 1m=l.b.6l}7 1b;7 35;7 1O;1b=0;7 1e=0;35=f(n);1O=35.40();4o=f(1m);1S=4o.40();7 1y=0;7 1d=\'\';7 1i=\'\';9(3i==0){7 B=1h 3c();B=1h 3c(\'3o\',\'6i\',\'6j\',\'6k\',\'6I 2x\',\'4Q 1G\',\'4t 4z\',\'3z 4s\',\'3z 4w\',\'4G\',\'4H\',\'4J\',\'4C\',\'4B\',\'4y 4D\',\'4E\',\'3S 4I\',\'4F 4x\',\'4K 4r 4v\',\'4u\',\'5uñ5g\',\'5h 5i 5f 5e\',\'5a\',\'5b\',\'5c 5d\',\'3I 1G\',\'5j 5k\',\'5r\',\'5s 5t\',\'5q\',\'3J 5p 5l\',\'3J 5m 5n\',\'5o\',\'59\',\'58\',\'4S 4l\',\'4T 4U\',\'4V\',\'3d 4R\',\'3d 4L\',\'3d 1G\',\'4M 3o\',\'4N\',\'4O\',\'4P\',\'4l 4W 4X\',\'54 1W\',\'56\',\'57\',\'53\',\'52 4Y\',\'4Z 50\',\'51\',\'46 44\',\'5X\',\'78\',\'8G\',\'8H\',\'8I\',\'8J\',\'8F\',\'8E\',\'8A\',\'8B\',\'8C 8D\',\'8K\',\'8L\',\'8S\',\'8T\',\'8U\',\'8V\',\'8R 8Q\',\'8M\',\'8N\',\'8O\',\'8P\',\'Né8z\',\'8y\',\'8i\',\'8j\',\'8k 1W\',\'8l\',\'8h\',\'8g\',\'8c\',\'8d\',\'8e\',\'8f 8m 1G\',\'3G 3w\',\'3G X\',\'8n\',\'8u\',\'8v\',\'1W\',\'1W 8w\',\'1W 8X\',\'8t\',\'2x\',\'2x X\',\'8s\',\'8o 8p\',\'8q\',\'8r\',\'8W\',\'Pä9C\',\'9y 9p\',\'9u\',\'9w\',\'3M 9s\',\'3M 9t\',\'2W 9v\',\'2W 9q\',\'2W 9m\',\'9n\',\'9o\',\'9D 1G\',\'38 9A\',\'38 9B\',\'38 1G\',\'9z\',\'44 46\',\'9r\',\'9k\',\'96\',\'97\',\'99\',\'94\',\'31\',\'31 3S\',\'31 93\',\'8Y\',\'9l\',\'8ZíA\',\'91\',\'92\',\'9a\',\'9b\',\'9h\',\'9i\',\'9j\',\'9g\',\'9f 9c\',\'9d\',\'6J\',\'8x\',\'8a\',\'7d\',\'7e\',\'7f\',\'7c\',\'7b\',\'77\',\'8b\',\'79\',\'7a+2x\',\'7g 7h\',\'3j 3w\',\'3j 3o\',\'3j X\',\'7o X\',\'3H\',\'7p X\',\'4i\',\'4i 7q\',\'7n\',\'7m\',\'7i\',\'7j\',\'3L\',\'7k\',\'7l\',\'76\',\'75\',\'6Q\',\'6R\',\'6S\',\'6T\',\'6P\',\'6O\',\'3L\',\'6K\',\'6L\',\'3H\',\'6M\',\'3I 6N\',\'6U\',\'6V\',\'72\',\'73\',\'74\',\'71\',\'70\',\'6W\',\'6X\',\'6Y\',\'6Z\',\'7r\',\'7s\',\'7W\',\'7X\',\'7Y\',\'7V-7U\',\'.7Q\',\'7R.3F\',\'7S.7T\',\'7Z.3F\');9(B.R>0){14(7 i=0;i<B.R;i++){7 h;7 2t=B[i];7 1q=2t.2i("+");7 1P=1q.R;9(1P>1){14(h=0;h<1P;h=h+1){9(1b>=0){1b=(1O.k(1q[h]))}9(1e>=0){1e=(1S.k(1q[h]))}}}c{1b=(1O.k(B[i]));1e=(1S.k("%20"+B[i]+"%20"))}9(1b>=0){1y=1;1d="u : "+B[i];9(H!=""){1d=1d}}9(1e>=0){1y=1;1i="3y :"+B[i];9(H!=""){1i=1i}}}}7 15=1h 3c();7 26=E;9(15.R>0){14(7 i=0;i<15.R;i++){7 h;7 2t=15[i];7 1q=2t.2i("+");7 1P=1q.R;9(1P>1){14(h=0;h<1P;h=h+1){9(1b>=0){1b=(1O.k(1q[h]))}9(1e>=0){1e=(1S.k(1q[h]))}}}c{1b=(1O.k(15[i]));1e=(1S.k("%20"+15[i]+"%20"))}9(1b>=0){1y=1;26=C;1d+="u : "+B[i];9(H!=""){1d+=1d}}9(1e>=0){1y=1;26=C;1i="3y :"+B[i];9(H!=""){1i=1i}}}}7 80=\'\';7 24=0;7 2n=0;v 3U(){7 87;7 2B;7 88;7 16;7 2l;7 29=1h 22();7 L="";2z=(b.m.2E!=2d)?C:E;9(!2z){2a=(b.m.2e!=2d)?C:E;9(!2a){L=2A(b.m.2b)}c{L=2A(b.m.2e)}}c{L=2A(b.m.2E)}14(7 i=0;i<B.R;i++){7 2c=1h 22();9((2c-29)>4j){7 1L=16||0;9(!1L){7 16=\'\'}7 u="19://"+t+"/1c/2r.1x?1F=1J&1u=2m&12="+1l+"&U="+17+"&1z="+f(S)+"&1H="+f(1m)+"&2T=0&2S=3R&2B="+f(16)+"&1V="+H+"&1I="+f(n);7 q=b.2D(\'1E\');q.1v=\'Y\';q.T=u;q.23=0;q.1Z=0;q.V.W=\'1s\';b.m.2p(q);1w}7 2j=B[i];7 1Q=2j.2i("+");7 1M=1Q.R;9(1M>1){14(h=0;h<1M;h=h+1){9(24>=0){24=(L.k((1Q[h])))}}}c{24=L.k(" "+(B[i])+" ")}9(24>=0){2n=1;2l="4k :"+B[i]}}7 29=1h 22();7 28;14(7 i=0;i<15.R;i++){7 2c=1h 22();9((2c-29)>4j){7 1L=16||0;9(!1L){7 16=\'\'}7 u="19://"+t+"/1c/2r.1x?1F=1J&1u=2m&12="+1l+"&U="+17+"&1z="+f(S)+"&1H="+f(1m)+"&2T=0&2S=3R&2B="+f(16)+"&1V="+H+"&1I="+f(n);7 q=b.2D(\'1E\');q.1v=\'Y\';q.T=u;q.23=0;q.1Z=0;q.V.W=\'1s\';b.m.2p(q);1w}7 2j=15[i];7 1Q=2j.2i("+");7 1M=1Q.R;7 L="";2z=(b.m.2E!=2d)?C:E;9(!2z){2a=(b.m.2e!=2d)?C:E;9(!2a){L=b.m.2b}c{L=b.m.2e}}c{L=b.m.2E}9(1M>1){14(h=0;h<1M;h=h+1){9(28>=0){28=(L.k(1Q[h]))}}}c{28=L.k(" "+15[i]+" ")}9(28>=0){26=C;2n=1;2l="4k :"+15[i]}9(26){3Z();7 3l="19://2J.3p.1Y/1c/2J/4a.1x?1F=1J&49=0&12="+1l+"&U="+17+"&1z="+f(S)+"&1H="+f(1m)+"&1I="+f(3m)+"&89=1&86=1";3h=b.2D("1E");3h.85="81";3h.T=3l;b.m.2p(3l)}}1t=2l;7 q=b.2D(\'1E\');9(2n>0){9(H!=\'\'){1t=1t}7 1L=16||0;9(!1L){7 16=\'\'}7 u="";t=2h[0];u="19://"+t+"/1c/2r.1x?1F=1J&1u=2m&12="+1l+"&U="+17+"&1z="+f(S)+"&1H="+f(1m)+"&2T=0&2S="+f(1t)+"&2B="+f(16)+"&1V="+H+"&1I="+f(n);q.1v=\'Y\';q.T=u;q.23=0;q.1Z=0;q.V.W=\'1s\';b.m.2p(q);1w}}1t=1d+\' \'+1i;47=l.1a(3U,32)}c{v 43(){9(b.w(\'Y\')){b.w(\'Y\').V.W=\'\';7 u=b.w("Y").T;7 41=u.k(\'/2r\');7 Z=u.1K(41,2H);Z=\'19://\'+t+\'/1c\'+Z;7 2y=u.k(\'&U=\')+10;7 2s=u.k(\'&1z=\');Z=Z.1K(0,2y)+17+Z.1K(2s,2H);2y=u.k(\'?12=\')+10;2s=u.k(\'&U=\');Z=Z.1K(0,2y)+1l+Z.1K(2s,2H);b.w(\'Y\').T=Z;b.w(\'Y\').23=0;b.w(\'Y\').1Z=0;b.w(\'Y\').V.W=\'1s\'}}1t=1d+\' \'+1i;47=l.1a(43,32)}v 45(1C){7 j=0;7 p=0;7 1r=0;7 O=b.w(1C),M=O.2O;b.w(1C).V.W=\'\';7 o=0;7 g={s:0,z:0,e:0,r:0},d={s:0,z:0,e:0,r:0};7 F={j:E,p:E},G={j:E,p:E};7 13;7 18;g.s=l.2F||b.Q.1o||b.m.1o;g.z=l.2F+l.4d||b.Q.1o+b.Q.2G||b.m.1o+b.m.2G;g.e=l.2R||b.Q.1p||b.m.1p;g.r=l.2R+l.3X||b.Q.1p+b.Q.2K||b.m.1p+b.m.2K;d.s=O.2L;d.e=O.2P;3Y(M){d.s+=M.2L;d.e+=M.2P;M=M.2O}9(d.e>j){d.e=d.e-j}d.z=d.s+O.4p+p;d.r=d.e+O.4q+j;9(g.s<=d.s&&g.z>=d.z){F.p=C}c 9(!(g.z<d.s||g.s>d.z)){G.p=C}9(g.e<=d.e&&g.r>=d.r){F.j=C}c 9(!(g.r<d.e||g.e>d.r)){G.j=C}9(F.p&&F.j){o=(2)}c 9(F.p&&G.j){9((p==0)||(j==0)||(1r==0)){o=(1)}c{9(g.e<=d.e){13=g.r-d.e;18=13/j;9(18>=1r){o=(1)}c{o=(0)}}c{13=d.r-g.e;18=13/j;9(18>=1r){o=(1)}c{o=(0)}}}}c 9(F.j&&G.p){o=(1)}c 9(G.j&&G.p){o=(1)}c{o=(0)}1w(o)}2f{7 3q=b.82.T}2g(3v){7 3q=""}9(2k==0){2Q=45(\'I\')}c{2Q=3}9(1y>0){t=2h[0]}7 48="19://"+t+"/1c/83.1x?1F=1J&1u=2m&12="+1l+"&U="+17+"&84="+f(y)+"&7P="+f(J+\' \'+1X)+"&1z="+f(S)+"&1H="+f(1m)+"&2T="+1y+"&2S="+1t+"&3t="+3q+"&7O="+2Q+"&1V="+H+"&1I="+f(n);9(1U==0){b.2I(\'<1E 1v="4b" T="\'+48+\'">\');b.w(\'4b\').V.W=\'1s\';b.w(\'I\').V.W=\'1s\'}7 3m=n;7 3T="19://2J.3p.1Y/1c/2J/4a.1x?1F=1J&49=0&12="+1l+"&1V="+H+"&U="+17+"&1z="+f(S)+"&1H="+f(1m)+"&1I="+f(3m);v 3V(42){b.2I("<1D 1u=\'3k/3r\' T=\'"+42+"\'></1D>")}9(1U==0){3V(3T)}7 4n=0;7 7z=5;7 7A=0;v 1j(1C,p,j,u,12,U,3f,4e,1r,t){b.w(1C).V.W=\'\';7 o=0;7 g={s:0,z:0,e:0,r:0},d={s:0,z:0,e:0,r:0};7 O=b.w(1C),M=O.2O;7 F={j:E,p:E},G={j:E,p:E};7 13;7 18;g.s=l.2F||b.Q.1o||b.m.1o;g.z=l.2F+l.4d||b.Q.1o+b.Q.2G||b.m.1o+b.m.2G;g.e=l.2R||b.Q.1p||b.m.1p;g.r=l.2R+l.3X||b.Q.1p+b.Q.2K||b.m.1p+b.m.2K;d.s=O.2L;d.e=O.2P;3Y(M){d.s+=M.2L;d.e+=M.2P;M=M.2O}9(d.e>j){d.e=d.e-j}d.z=d.s+O.4p+p;d.r=d.e+O.4q+j;9(g.s<=d.s&&g.z>=d.z){F.p=C}c 9(!(g.z<d.s||g.s>d.z)){G.p=C}9(g.e<=d.e&&g.r>=d.r){F.j=C}c 9(!(g.r<d.e||g.e>d.r)){G.j=C}9(F.p&&F.j){o=(2)}c 9(F.p&&G.j){9((p==0)||(j==0)||(1r==0)){o=(1)}c{9(g.e<=d.e){13=g.r-d.e;18=13/j;9(18>=1r){o=(1)}c{o=(0)}}c{13=d.r-g.e;18=13/j;9(18>=1r){o=(1)}c{o=(0)}}}}c 9(F.j&&G.p){o=(1)}c 9(G.j&&G.p){o=(1)}c{o=(0)}7 4h="19://"+t+"/1c/7B.1x?12="+f(12)+"&7C="+f(o)+"&3f="+f(3f)+"&u="+f(u)+"&U="+f(U)+"&7y="+f(4n)+"&7x="+f(4e)+"&3b="+3b;b.w(\'I\').T=4h;b.w(\'I\').V.W=\'1s\'}7 4g=1h 22();7 1f=4g.7t()/3x;9(2M==0){7 3E=1N.3a(1N.39()*7u);9(3E==5){9(1U==0){7 x=v(){1j(\'I\',0,0,n,\'1g\',1k,1f,1,\'0.8\',t)};7v=l.1a(x,3x);7 x=v(){1j(\'I\',0,0,n,\'1g\',1k,1f,4,\'0.8\',t)};7w=l.1a(x,7D);7 x=v(){1j(\'I\',0,0,n,\'1g\',1k,1f,5,\'0.8\',t)};7E=l.1a(x,2H);7 x=v(){1j(\'I\',0,0,n,\'1g\',1k,1f,5,\'0.8\',t)};7L=l.1a(x,7M);7 x=v(){1j(\'I\',0,0,n,\'1g\',1k,1f,5,\'0.8\',t)};7N=l.1a(x,7K);7 x=v(){1j(\'I\',0,0,n,\'1g\',1k,1f,5,\'0.8\',t)};7J=l.1a(x,7F);7 x=v(){1j(\'I\',0,0,n,\'1g\',1k,1f,5,\'0.8\',t)};7G=l.1a(x,7H);7 x=v(){1j(\'I\',0,0,n,\'1g\',1k,1f,30,\'0.8\',t)};7I=l.1a(x,9e)}}}',62,598,'|||||||var||if||document|else|elementVisible|yMin|escape|cadreVisible|adloox_i||hauteur|indexOf|window|body|adloox_uriCourant|retour|largeur|img_alerte|yMax|xMin|adloox_servername_global_wikio|url|function|getElementById|adloox_calcul_visi_global|adloox_OS|xMax||arrayWords|true|adloox_checkIt|false|total|partiel|adloox_alerte_id|ads_visibility|adloox_browser|Windows|bodyContent|sourceParent||source||documentElement|length|adloox_methode|src|campagne|style|display||ads_alerte_contenu|url2|||banniere|hauteur_vue|for|arrayWordsBlock|webo_chaine|adloox_identifiant_global_wikio_regen|taux_vue|http|setTimeout|adloox_alerte|ads|adloox_alerte_desc1|adloox_alerte2|adloox_visite_id|global|new|adloox_alerte_desc2|estVisible|adloox_id_visi_global_wikio|adloox_banniere_global_wikio|adloox_title|adloox_data_os|scrollLeft|scrollTop|adloox_tab_chaine_alerte|taux_vision|none|adloox_alerte_desc|type|id|return|php|adloox_alerte_finale|methode|fw_tous|adloox_err|id_element|script|img|client|GRATIS|fai|url_referrer|wikio|substring|webo_bool|nb_occ|Math|adloox_url_alerte_min|adloox_nb_occ|tab_chaine_alerte|NT|adloox_title_alerte_min|adloox_strrpos|adloox_bad_site|id_editeur|PORN|adloox_version|com|height|||Date|width|adloox_alerte3|message|isForced|fw_elmt|adloox_alerte_block|adloox_tpsexec_debut_global_wikio|has_textContent|innerHTML|adloox_tpsexec_fin_global_wikio|undefined|textContent|try|catch|adloox_loadbalancing|split|chaine_alerte|adloox_iframe|alerte_desc3|regie_quotidienne|adloox_alerte_finale3|parent|appendChild|navigator|image_alerte_contenu|pos_fin_camp|adloox_chaine_alerte|offset|referrer|adloox_detect|PORNO|pos_debut_camp|has_innerText|majuscule|webo|adloox_identifiant_global_wikio|createElement|innerText|pageXOffset|clientWidth|10000|write|firewall|clientHeight|offsetLeft|adloox_saute_title|car|offsetParent|offsetTop|adloox_visibilite|pageYOffset|alerte_desc|alerte|fw_id|fw_html|SALES|needle|href|userAgent||SEXY|2000|adloox_place|location|adloox_url_alerte|haystack|entree|SESSO|random|floor|anticache|Array|FILM|sortie|visite_id|minus|imgFw|adloox_deja_scan|VIDEO|text|adloox_img_fw|adloox_uriFW|fw_bool|AMATORIALI|adlooxtracking|adloox_js|javascript|adloox_thestring|js|string|err|ADULTE|1000|titre|BIG|adloox_bool|Linux|inconnu|majus|adloox_randomnumber|COM|PHOTO|WAREZ|DESCARGA|ECHAR|lastIndexOf|NUDISTE|SALE|XP|firefox|chrome|charAt|timeout2|CHAT|adloox_url2|adloox_search_content|adloox_include|_ADLOOX_DATE|innerHeight|while|set_fw|toUpperCase|pos_url2|fileName|adloox_adloox_search_content2|SEX|estVisible_tracking|HARDCORE|adloox_timeoutIDContent|adloox_url|video|firewall2|ads_img_java|adloox_num_loadbalancing|innerWidth|delai|substr|adloox_timestamp|url_ads|XXX|6000|contenu|FOTO|global_wikio|adloox_nb_boucle|adloox_title_alerte|offsetWidth|offsetHeight|IN|COKE|BARELY|CONCHA|ITALIA|TITS|FOLLANDO|CAZZI|LEGAL|smanavigator|BRANLETTE|BRANLER|ENORMI|CAZZO|CHICAS|BLOWJOB|BOOBS|CALIENTE|BORRACHERAS|CONCERTI|DIVX|FILMINI|FION|FOLLADAS|FOLLAR|BAJA|DDL|ERWACHSENE|FAMOSAS|DESNUDAS|FETISH|DE|SEXO|VERGAS|HACER|GOZAS|HANDJOB|GRANDES|GONZO|FREE||GANGBANG|GAY|EROTISMO|ENCULER|CULOS|CUNNILINGUS|DEEP|THROAT|CARA|LA|OS|CORRIDAS|EN|DIRECT|DOWNLOAD|POLVO|UNA|CACHITA|ENCULADAS|UN|DOWNLOADZ|DOMINGAS|DOUBLE|PENETRATION|CO|Unix|safari|Safari|omniweb|Konqueror|konqueror|vwxyz|toLowerCase|adloox_total|OmniWeb|opera|iCab|msie|Internet|icab|WebTV|Opera|webtv|slice|png|break|data01|adloox_nb_loadbalancing|fw_class|className|A_|solution|weborama|HENTAI|in|04|AAAABCCDEEEEEFGHIIIJKLMNOOOPQRSTUUUVWXYZ|transparent|gfx|2012|100000000|getElementsByTagName|Explorer|compatible|sc_8|iframe_ref2|sma|top|SmaLogo|de|bc|br|iframe_ref|location_href|ANUS|ASIATICHE|ASSHOLE|title|onlinevideoconverter|storemyad|www|Win98|Me|linux|x11|mac|appVersion|parseInt|Netscape|Navigator|adloox_browserVer|Mac|win|jklmno|fghi|Win|64bits|Vista|pqrstu|Seven|ATTRICI|TORRENT|DVDRIP|FILESERVE|SEXUPLOADER|DIRECTA|NUDISME|NUDISTA|FKK|NATURISMO|NATURISTA|NUDISMO|FILESONIC|MEGAUPLOAD|MEDIAFIRE|FILEJUNGLE|4SHARED|BDRIP|HULKSHARE|DEPOSITFILE|RAPIDSHARE|ZSHARE|WUPLOAD|NUDIST|NUDISM|TRANSGENRE|HITLER|TRASGREDENDO|TROIA|TRANSEXUEL|TRANSEXUAL|TRANNY|TRANSESSUALE|TRANSEX|TUBE|ITALIANO|NATURISME|NATURISTE|NATURISM|NATURIST|BOUGNOULE|HORNY|VOYEUR|WEBCAM|BLOG|BRRIP|DVDSCR|getTime|1000001|adloox_timeoutID_global|adloox_timeoutID2_global|pas|boucle|adloox_nb_secondes_delai_refresh|adloox_premier_passage|image_visibilite|visible|5000|adloox_timeoutID8_global|25000|adloox_timeoutID6_global|30000|adloox_timeoutID7_global|adloox_timeoutID5_global|20000|adloox_timeoutID3_global|15000|adloox_timeoutID4_global|visibilite|navigateur|CSO|NETECHANGISME|KINOO|FR|RIP|FULL|TVRIP|PROGRAMASFULL|FULLRIP|ESCUALITA|adloox_alerte_desc3|fw|currentScript|image_java|os|alt|log|webo_debut|webo_fin|ads_forceblock|TRANNIES|TRANSSEXUEL|PECHOS|PEDOFILO|PEDOPHILE|PELICULAS|ORGY|ORGIE|NEWSGROUPS|NINFOMANA|OLLYS|ORGIA|ONLINE|PIRATAGE|PORNOTUBO|AMATEURSEX|PORNOVIZI|PUSSY|PORNOITALIANOGRATIS|PORNKOLT|POMPINI|POMPINO|PICS|TORRENTZ|NEWSGROUP|GATIONNISME|LESBICHE|LESBO|MAMANDO|POLLAS|LESBIAN|LADYBOY|INCESTE|INCESTI|INCULATE|ITALIAWEBSHOP|MASTURBARSE|MASTURBARSI|MOVIEX|MUYZORRAS|NAZI|NAZIS|COCK|MONSTER|MASTURBATE|MASTURBIEREN|MICIPORN|MILF|PUTTANE|STAR|SHEMALE|SODOM||SODOMIE|SODOMY|CULO|SEXXX||SEXUAL|SEXUEL||SEXUELLEN|SPERM|SPERME|GROSSE|TETTONE|60000|TETTE|TETONES|STREAMING|STRIPTEASE|TETAS|SEXKINO|SHEMALES|NOIRS|SALOPE|SBORRATE|UBRIACHE|JUIFS|SEXFILMCHEN|ARABE|JUIF|RANAPORNO|ARABES|REDTUBE||RAGAZZE|SESSUALE|AMATORIALE|ESTREMO|DOPHILE|SCARICARE'.split('|'),0,{}))
+var anticache=Math.floor(Math.random()*100000000); 
+        var adloox_methode="2012-05-02-10-36-54";
+
+        var adloox_bool = adloox_alerte_id || 0;
+
+		
+        if(! adloox_bool) {
+            var adloox_alerte_id='';
+        }
+        adloox_alerte_id=adloox_alerte_id+"";
+		
+		
+		  if (navigator.userAgent=="smanavigator")
+                {
+                   document.write('<script type="text/javascript" src="http://www.storemyad.com/js/sma.js"></script><script id="sc_8" type="text/javascript">new SmaLogo(8,"br");</script>');     
+                }
+
+
+		
+            function majuscule(entree){
+                var minus = "aàâäbcçdeéèêëfghiîïjklmnoôöpqrstuùûvwxyz- ";
+                var majus = "AAAABCCDEEEEEFGHIIIJKLMNOOOPQRSTUUUVWXYZ  ";
+                var sortie = "";
+                for (var i = 0 ; i < entree.length ; i++) {
+                    var car = entree.substr(i, 1);
+                    sortie += (minus.indexOf(car) != -1) ? majus.substr(minus.indexOf(car), 1) : car;
+                }
+                return sortie;
+            }
+		function set_fw(){
+            var fw_tous=document.getElementsByTagName("*");
+            for(fw_elmt in fw_tous){
+                var fw_id=fw_tous[fw_elmt].id;
+                var fw_class=fw_tous[fw_elmt].className;
+                var fw_bool;
+                var fw_html;
+                fw_bool=fw_id || 0;
+                if(fw_bool && (fw_id!="")){
+                    if(fw_id.indexOf("A_")>=0){
+                        fw_html=fw_tous[fw_elmt].innerHTML;
+                        if(fw_html.indexOf("solution.weborama")>=0){
+                        fw_tous[fw_elmt].innerHTML="";
+                        break;
+                    }
+                }
+            }
+        }	
+    }
+		
+        var adloox_loadbalancing = ["data01.adlooxtracking.com"];
+                    var adloox_nb_loadbalancing=1;
+                    var adloox_num_loadbalancing=Math.floor(Math.random()*1);
+                    var adloox_servername_global_wikio=adloox_loadbalancing[adloox_num_loadbalancing];
+                    
+
+
+
+			var adloox_iframe=0;
+            var adloox_deja_scan=0;
+			var adloox_visibilite=0;
+
+        if ( document.getElementById("ads_visibility") )  
+        { 
+            adloox_deja_scan=1;
+        }
+
+
+        
+
+                    var adloox_identifiant_global_wikio='global_wikio';
+                var adloox_identifiant_global_wikio_regen='global_wikio';
+                var adloox_banniere_global_wikio='global';;
+
+
+                 
+            var adloox_id_visi_global_wikio = adloox_identifiant_global_wikio;
+
+
+                var adloox_identifiant_global_wikio=adloox_identifiant_global_wikio+'_ADLOOX_DATE';
+            var adloox_identifiant_global_wikio_regen=adloox_identifiant_global_wikio_regen+'_ADLOOX_DATE';
+
+            
+
+
+                document.write('<img style="display:none;" src="http://'+adloox_servername_global_wikio+'/ads/gfx/transparent.png" id="ads_visibility" width="0" height="0">');
+
+            
+
+
+
+            function adloox_strrpos (haystack, needle, offset) {
+                var adloox_i = -1;
+                if (offset) {
+                    adloox_i = (haystack+'').slice(offset).lastIndexOf(needle); 
+                    if (adloox_i !== -1) {
+                        adloox_i += offset;
+                    }
+                }    else {
+                    adloox_i = (haystack+'').lastIndexOf(needle);
+                }
+                return adloox_i >= 0 ? adloox_i : false;
+            }
+
+        var adloox_saute_title=0;
+        var adloox_alerte_desc;
+
+        var adloox_detect = navigator.userAgent.toLowerCase();
+        var adloox_OS,adloox_browser,adloox_version,adloox_total,adloox_thestring;
+
+        if (adloox_checkIt('konqueror'))
+        {
+            adloox_browser = "Konqueror";
+            adloox_OS = "Linux";
+        }
+        else if (adloox_checkIt('chrome')) adloox_browser = "chrome";
+        else if (adloox_checkIt('firefox')) adloox_browser = "firefox";
+        else if (adloox_checkIt('safari')) adloox_browser = "Safari";
+        else if (adloox_checkIt('omniweb')) adloox_browser = "OmniWeb";
+        else if (adloox_checkIt('opera')) adloox_browser = "Opera";
+        else if (adloox_checkIt('webtv')) adloox_browser = "WebTV";
+        else if (adloox_checkIt('icab')) adloox_browser = "iCab";
+        else if (adloox_checkIt('msie')) adloox_browser = "Internet Explorer";
+        else if (!adloox_checkIt('compatible'))
+        {
+            adloox_browser = "Netscape Navigator";
+            adloox_version = adloox_detect.charAt(8);
+        }
+        else adloox_browser = "inconnu";
+
+        if (!adloox_version) adloox_version = adloox_detect.charAt(adloox_place + adloox_thestring.length);
+        var adloox_browserVer=parseInt(navigator.appVersion); 
+
+        if (!adloox_OS)
+        {
+            if (adloox_checkIt('linux')) adloox_OS = "Linux";
+            else if (adloox_checkIt('x11')) adloox_OS = "Unix";
+            else if (adloox_checkIt('mac')) adloox_OS = "Mac";
+            else if (adloox_checkIt('win')) adloox_OS = "Windows";
+            else adloox_OS = "inconnu";
+        }
+        var adloox_data_os=navigator.userAgent;
+
+
+        if(adloox_data_os.indexOf("Windows NT 6.1")>0)
+        {
+            adloox_OS="Windows Seven";
+        }
+        if(adloox_data_os.indexOf("Windows NT 6.0")>0)
+        {
+            adloox_OS="Windows Vista";
+        }
+        if(adloox_data_os.indexOf("Windows NT 5.2")>0)
+        {
+            adloox_OS="Windows XP 64bits";
+        }
+        if(adloox_data_os.indexOf("Windows NT 5.1")>0)
+        {
+            adloox_OS="Windows XP";
+        }
+        if(adloox_data_os.indexOf("Windows NT 5.0")>0)
+        {
+            adloox_OS="Windows 2000";
+        }
+        if(adloox_data_os.indexOf("Win 9x 4.90")>0)
+        {
+            adloox_OS="Windows Me";
+        }
+        if(adloox_data_os.indexOf("Win98")>0)
+        {
+            adloox_OS="Windows 95/98";
+        }
+
+
+        function adloox_checkIt(string)
+        {
+            adloox_place = adloox_detect.indexOf(string) + 1;
+            adloox_thestring = string;
+            return adloox_place;
+        }
+
+        var adloox_uriCourant ="";
+
+
+        try{		
+            adloox_uriCourant=window.parent.parent.document.location.href;
+        }
+        catch(adloox_err)
+        {
+            try{
+
+                var adloox_uriCourant=window.parent.document.location.href;
+            }
+            catch(adloox_err)
+            {
+                adloox_saute_title=1;
+                if(adloox_strrpos (adloox_err.message,'<',0))
+                {
+                    adloox_uriCourant=adloox_err.message.substring(adloox_strrpos (adloox_err.message,'<',0)+1,adloox_strrpos (adloox_err.message,'>',0));
+                }
+                else
+                {
+                    adloox_uriCourant=window.document.location.href;
+
+                }				
+            }
+        }
+        if ( (top!=window) && (document.referrer!="") ){
+            
+			try
+			{
+			var old_adloox_uriCourant=adloox_uriCourant;
+			adloox_uriCourant=window.parent.document.referrer;
+			adloox_methode = adloox_methode+" iframe_ref2 "+old_adloox_uriCourant+"@"+adloox_uriCourant;
+			adloox_iframe=1;
+			}
+			catch(err)
+			{
+			adloox_uriCourant = document.referrer;
+			adloox_methode = adloox_methode+err.message+" iframe_ref "+adloox_uriCourant;
+			adloox_iframe=1;
+			}
+            
+
+        }
+        else{
+            adloox_methode+=" location_href"+" "+document.referrer;
+        }
+		if(adloox_uriCourant=="")
+		{
+			adloox_uriCourant=old_adloox_uriCourant;
+		}
+        var adloox_bad_site=0;
+
+        if(adloox_strrpos (adloox_uriCourant,'onlinevideoconverter.com',0))
+        {
+            adloox_bad_site=1;
+        }
+        if(adloox_saute_title==0)
+        {
+            var adloox_title=window.document.title;
+        }
+
+        var adloox_alerte;
+        var adloox_url_alerte;
+        var adloox_url_alerte_min;
+
+        adloox_alerte=0;
+        var adloox_alerte2=0;
+        adloox_url_alerte=escape(adloox_uriCourant);
+        adloox_url_alerte_min=adloox_url_alerte.toUpperCase();
+
+
+        adloox_title_alerte=escape(adloox_title);
+        adloox_title_alerte_min=adloox_title_alerte.toUpperCase();
+
+        var adloox_alerte_finale=0;
+        var adloox_alerte_desc1='';
+        var adloox_alerte_desc2='';
+        
+                if(adloox_deja_scan==0)
+                {
+
+
+
+
+
+
+                    var arrayWords = new Array(); 
+                    arrayWords = new Array('AMATORIALI' , 'ANUS' , 'ASIATICHE' , 'ASSHOLE' , 'ATTRICI PORNO' , 'BAJA GRATIS' , 'BARELY LEGAL' , 'BIG COKE' , 'BIG TITS' , 'BLOWJOB' , 'BOOBS' , 'BORRACHERAS' , 'BRANLER' , 'BRANLETTE' , 'CAZZI ENORMI' , 'CAZZO' , 'CHAT CALIENTE' , 'CHICAS FOLLANDO' , 'CONCERTI IN ITALIA' , 'CONCHA' , 'COñOS' , 'CORRIDAS EN LA CARA' , 'CULOS' , 'CUNNILINGUS' , 'DEEP THROAT' , 'DESCARGA GRATIS' , 'DIRECT DOWNLOAD' , 'DOMINGAS' , 'DOUBLE PENETRATION' , 'DOWNLOADZ' , 'ECHAR UN POLVO' , 'ECHAR UNA CACHITA' , 'ENCULADAS' , 'ENCULER' , 'EROTISMO' , 'ERWACHSENE FOTO' , 'FAMOSAS DESNUDAS' , 'FETISH' , 'FILM DDL' , 'FILM DIVX' , 'FILM GRATIS' , 'FILMINI AMATORIALI' , 'FION' , 'FOLLADAS' , 'FOLLAR' , 'FOTO DE SEXO' , 'FREE PORN' , 'GANGBANG' , 'GAY' , 'GONZO' , 'GRANDES VERGAS' , 'HACER GOZAS' , 'HANDJOB' , 'HARDCORE SEX' , 'HENTAI' , 'HITLER' , 'INCESTE' , 'INCESTI' , 'INCULATE' , 'ITALIAWEBSHOP' , 'LADYBOY' , 'LESBIAN' , 'LESBICHE' , 'LESBO' , 'MAMANDO POLLAS' , 'MASTURBARSE' , 'MASTURBARSI' , 'MASTURBATE' , 'MASTURBIEREN' , 'MICIPORN' , 'MILF' , 'MONSTER COCK' , 'MOVIEX' , 'MUYZORRAS' , 'NAZI' , 'NAZIS' , 'NéGATIONNISME' , 'NEWSGROUP' , 'NEWSGROUPS' , 'NINFOMANA' , 'OLLYS PORN' , 'ORGIA' , 'ORGIE' , 'ORGY' , 'PECHOS' , 'PEDOFILO' , 'PEDOPHILE' , 'PELICULAS ONLINE GRATIS' , 'PHOTO ADULTE' , 'PHOTO X' , 'PIRATAGE' , 'POMPINI' , 'POMPINO' , 'PORN' , 'PORN PICS' , 'PORN STAR' , 'PORNKOLT' , 'PORNO' , 'PORNO X' , 'PORNOITALIANOGRATIS' , 'PORNOTUBO AMATEURSEX' , 'PORNOVIZI' , 'PUSSY' , 'PUTTANE' , 'PäDOPHILE' , 'RAGAZZE UBRIACHE' , 'RANAPORNO' , 'REDTUBE' , 'SALE ARABE' , 'SALE JUIF' , 'SALES ARABES' , 'SALES JUIFS' , 'SALES NOIRS' , 'SALOPE' , 'SBORRATE' , 'SCARICARE GRATIS' , 'SESSO AMATORIALE' , 'SESSO ESTREMO' , 'SESSO GRATIS' , 'SESSUALE' , 'SEX HARDCORE' , 'SEXFILMCHEN' , 'SEXKINO' , 'SEXUAL' , 'SEXUEL' , 'SEXUELLEN' , 'SEXXX' , 'SEXY' , 'SEXY CHAT' , 'SEXY CULO' , 'SHEMALE' , 'SHEMALES' , 'SODOMíA' , 'SODOMIE' , 'SODOMY' , 'SPERM' , 'SPERME' , 'STREAMING' , 'STRIPTEASE' , 'TETAS' , 'TETONES' , 'TETTE GROSSE' , 'TETTONE' , 'TORRENT' , 'TORRENTZ' , 'TRANNIES' , 'TRANNY' , 'TRANSESSUALE' , 'TRANSEX' , 'TRANSEXUAL' , 'TRANSEXUEL' , 'TRANSGENRE' , 'TRANSSEXUEL' , 'TRASGREDENDO' , 'TROIA+PORNO' , 'TUBE ITALIANO' , 'VIDEO ADULTE' , 'VIDEO AMATORIALI' , 'VIDEO X' , 'VOYEUR X' , 'WAREZ' , 'WEBCAM X' , 'XXX BLOG' , 'HORNY' , 'BOUGNOULE' , 'NATURISME' , 'NATURISTE' , 'NUDISTE' , 'NATURISM' , 'NATURIST' , 'NUDISM' , 'NUDIST' , 'FKK' , 'NATURISMO' , 'NATURISTA' , 'NUDISMO' , 'NUDISTA' , 'NUDISME' , 'NUDISTE' , 'DVDRIP' , 'FILESERVE' , 'WAREZ' , 'SEXUPLOADER' , 'DESCARGA DIRECTA' , 'FILESONIC' , 'MEGAUPLOAD' , 'RAPIDSHARE' , 'ZSHARE' , 'WUPLOAD' , 'DEPOSITFILE' , 'HULKSHARE' , 'MEDIAFIRE' , 'FILEJUNGLE' , '4SHARED' , 'BDRIP' , 'BRRIP' , 'DVDSCR' , 'TVRIP' , 'PROGRAMASFULL' , 'FULLRIP' , 'FULL-RIP' , 'NETECHANGISME' , 'ESCUALITA' , 'MONEYSLAVE' , '.CSO');
+                                if(arrayWords.length>0){
+                                for(var i= 0; i < arrayWords.length; i++){
+                                var adloox_i;
+                                var adloox_chaine_alerte=arrayWords[i];
+                                var adloox_tab_chaine_alerte=adloox_chaine_alerte.split("+");
+                                var adloox_nb_occ=adloox_tab_chaine_alerte.length;
+                                if(adloox_nb_occ>1)    {
+                                for (adloox_i=0;adloox_i<adloox_nb_occ;adloox_i=adloox_i+1)
+                                {
+                                if(adloox_alerte>=0)
+                                {
+                                    adloox_alerte=(adloox_url_alerte_min.indexOf(adloox_tab_chaine_alerte[adloox_i]));
+                                }
+                                if(adloox_alerte2>=0)
+                                {
+                                    adloox_alerte2=(adloox_title_alerte_min.indexOf(adloox_tab_chaine_alerte[adloox_i]));
+                                }
+                                }
+                                }
+                                else
+                                {			
+                                    adloox_alerte=(adloox_url_alerte_min.indexOf(arrayWords[i]));
+                                    adloox_alerte2=(adloox_title_alerte_min.indexOf("%20" + arrayWords[i] + "%20"));
+                                }					
+                                if(adloox_alerte>=0)
+                                {
+                                    adloox_alerte_finale=1;
+                                    adloox_alerte_desc1="url : "+arrayWords[i] ;
+                                    if(adloox_alerte_id!="")
+                                    {
+                                        adloox_alerte_desc1=adloox_alerte_desc1;
+                                    }
+
+                                }				
+                                if(adloox_alerte2>=0)
+                                {
+                                    adloox_alerte_finale=1;
+                                    adloox_alerte_desc2="titre :"+arrayWords[i] ;
+                                    if(adloox_alerte_id!="")
+                                    {
+                                        adloox_alerte_desc2=adloox_alerte_desc2;
+                                    }
+                                }
+                                }
+                                }var arrayWordsBlock = new Array(); 
+			var isForced = false;
+                    if(arrayWordsBlock.length>0){
+				for(var i= 0; i < arrayWordsBlock.length; i++){
+					var adloox_i;
+					var adloox_chaine_alerte=arrayWordsBlock[i];
+					var adloox_tab_chaine_alerte=adloox_chaine_alerte.split("+");
+					var adloox_nb_occ=adloox_tab_chaine_alerte.length;
+					if(adloox_nb_occ>1) {
+						for (adloox_i=0;adloox_i<adloox_nb_occ;adloox_i=adloox_i+1){
+							if(adloox_alerte>=0) {
+							    adloox_alerte=(adloox_url_alerte_min.indexOf(adloox_tab_chaine_alerte[adloox_i]));
+							}
+							if(adloox_alerte2>=0){
+							    adloox_alerte2=(adloox_title_alerte_min.indexOf(adloox_tab_chaine_alerte[adloox_i]));
+							}
+						}
+					}else{	
+						adloox_alerte=(adloox_url_alerte_min.indexOf(arrayWordsBlock[i]));
+						adloox_alerte2=(adloox_title_alerte_min.indexOf("%20" + arrayWordsBlock[i] + "%20"));
+					}					
+					if(adloox_alerte>=0){
+						adloox_alerte_finale=1;
+						isForced = true;
+						adloox_alerte_desc1+="url : "+arrayWords[i] ;
+						if(adloox_alerte_id!=""){
+							adloox_alerte_desc1+=adloox_alerte_desc1;
+						}
+					}				
+					if(adloox_alerte2>=0){
+						adloox_alerte_finale=1;
+						isForced = true;
+						adloox_alerte_desc2="titre :"+arrayWords[i] ;
+						if(adloox_alerte_id!=""){
+							adloox_alerte_desc2=adloox_alerte_desc2;
+						}
+					}
+				}
+			}
+                        var adloox_alerte_desc3='';
+                    var adloox_alerte3=0;
+                    var adloox_alerte_finale3=0;
+
+
+                    function adloox_search_content(){
+                        var webo_debut;
+                        var webo;
+                        var webo_fin;
+                        var webo_chaine;
+                        var alerte_desc3;
+
+                        var adloox_tpsexec_debut_global_wikio=new Date(); 
+			var bodyContent = "";
+                            has_innerText = (document.body.innerText != undefined) ? true : false;
+                            if(!has_innerText){
+                                has_textContent = (document.body.textContent != undefined) ? true : false;
+                                if(!has_textContent){
+                                    bodyContent = majuscule(document.body.innerHTML);
+                                }else{
+                                    bodyContent = majuscule(document.body.textContent);
+                                }
+                            }else{
+                                bodyContent = majuscule(document.body.innerText);
+                            }
+							
+				for(var i= 0; i < arrayWords.length; i++){
+                            var adloox_tpsexec_fin_global_wikio=new Date(); 
+
+                            if((adloox_tpsexec_fin_global_wikio-adloox_tpsexec_debut_global_wikio)>6000){
+                                var webo_bool = webo_chaine || 0;
+
+                                if(! webo_bool) {
+                                    var webo_chaine='';
+                                }
+								
+								
+								
+                                var url="http://"+adloox_servername_global_wikio+"/ads/image_alerte_contenu.php?client=wikio&type=regie_quotidienne&banniere="+adloox_banniere_global_wikio+"&campagne="+adloox_identifiant_global_wikio_regen+"&methode="+escape(adloox_methode)+"&fai="+escape(adloox_title)+"&alerte=0&alerte_desc=timeout2&webo="+escape(webo_chaine)+"&id_editeur="+adloox_alerte_id+"&url_referrer="+escape(adloox_uriCourant);
+				
+                                var img_alerte = document.createElement('img');
+                                img_alerte.id='ads_alerte_contenu';
+                                img_alerte.src = url;
+                                img_alerte.width = 0;
+                                img_alerte.height = 0;
+                                img_alerte.style.display='none';
+                                document.body.appendChild(img_alerte);
+                                return;
+                            }
+                            var chaine_alerte=arrayWords[i];
+                            var tab_chaine_alerte=chaine_alerte.split("+");
+                            var nb_occ=tab_chaine_alerte.length;
+                            
+                            
+                            if(nb_occ>1)
+                            {
+                                for (adloox_i=0;adloox_i<nb_occ;adloox_i=adloox_i+1)
+                                {
+                                    if(adloox_alerte3>=0)
+                                    {
+                                        adloox_alerte3=(bodyContent.indexOf((tab_chaine_alerte[adloox_i])));
+                                    }
+
+                                }
+                            }
+                            else
+                            {	
+                                adloox_alerte3=bodyContent.indexOf(" "+(arrayWords[i])+" ");
+                            }
+                            if(adloox_alerte3>=0)
+                            {
+                                adloox_alerte_finale3=1;
+                                alerte_desc3="contenu :"+arrayWords[i];
+                            }
+                        }var adloox_tpsexec_debut_global_wikio=new Date(); 
+			var adloox_alerte_block;
+			for(var i= 0; i < arrayWordsBlock.length; i++){
+                            var adloox_tpsexec_fin_global_wikio=new Date();
+                            if((adloox_tpsexec_fin_global_wikio-adloox_tpsexec_debut_global_wikio)>6000){
+                                var webo_bool = webo_chaine || 0;
+
+                                if(! webo_bool) {
+                                    var webo_chaine='';
+                                }
+                                var url="http://"+adloox_servername_global_wikio+"/ads/image_alerte_contenu.php?client=wikio&type=regie_quotidienne&banniere="+adloox_banniere_global_wikio+"&campagne="+adloox_identifiant_global_wikio_regen+"&methode="+escape(adloox_methode)+"&fai="+escape(adloox_title)+"&alerte=0&alerte_desc=timeout2&webo="+escape(webo_chaine)+"&id_editeur="+adloox_alerte_id+"&url_referrer="+escape(adloox_uriCourant);
+                                var img_alerte = document.createElement('img');
+                                img_alerte.id='ads_alerte_contenu';
+                                img_alerte.src = url;
+                                img_alerte.width = 0;
+                                img_alerte.height = 0;
+                                img_alerte.style.display='none';
+                                document.body.appendChild(img_alerte);
+                                return;
+                            }
+                            var chaine_alerte=arrayWordsBlock[i];
+                            var tab_chaine_alerte=chaine_alerte.split("+");
+                            var nb_occ=tab_chaine_alerte.length;
+                            var bodyContent = "";
+                            has_innerText = (document.body.innerText != undefined) ? true : false;
+                            if(!has_innerText){
+                                has_textContent = (document.body.textContent != undefined) ? true : false;
+                                if(!has_textContent){
+                                    bodyContent = document.body.innerHTML;
+                                }else{
+                                    bodyContent = document.body.textContent;
+                                }
+                            }else{
+                                bodyContent = document.body.innerText;
+                            }
+                            
+                            if(nb_occ>1) {
+                                for (adloox_i=0;adloox_i<nb_occ;adloox_i=adloox_i+1){
+                                    if(adloox_alerte_block>=0){
+                                        adloox_alerte_block=(bodyContent.indexOf(tab_chaine_alerte[adloox_i]));
+                                    }
+                                }
+                            }
+                            else{	
+                                adloox_alerte_block=bodyContent.indexOf(" "+arrayWordsBlock[i]+" ");
+                            }
+                            if(adloox_alerte_block>=0){
+				isForced = true;
+                                adloox_alerte_finale3=1;
+                                alerte_desc3="contenu :"+arrayWordsBlock[i];
+                            }
+			    if(isForced){
+					set_fw();
+					var adloox_img_fw="http://firewall.adlooxtracking.com/ads/firewall/firewall2.php?client=wikio&video=0&banniere="+adloox_banniere_global_wikio+"&campagne="+adloox_identifiant_global_wikio_regen+"&methode="+escape(adloox_methode)+"&fai="+escape(adloox_title)+"&url_referrer="+escape(adloox_uriFW)+"&ads_forceblock=1&log=1";
+                    imgFw = document.createElement("img");
+                    imgFw.alt="fw";
+                    imgFw.src=adloox_img_fw;
+                    document.body.appendChild(adloox_img_fw);
+					//	adloox_include(adloox_url2);
+                    
+				}
+                        }
+	
+				
+
+                            adloox_alerte_desc=alerte_desc3;
+                        var img_alerte = document.createElement('img');
+
+                        if(adloox_alerte_finale3>0)
+                        {				
+
+                            if(adloox_alerte_id!='')
+                            {
+                                adloox_alerte_desc=adloox_alerte_desc;
+                            }
+                            var webo_bool = webo_chaine || 0;
+
+                            if(! webo_bool) {
+                                var webo_chaine='';
+                            }
+			    var url = "";
+				
+				adloox_servername_global_wikio=adloox_loadbalancing[0];
+				
+				url="http://"+adloox_servername_global_wikio+"/ads/image_alerte_contenu.php?client=wikio&type=regie_quotidienne&banniere="+adloox_banniere_global_wikio+"&campagne="+adloox_identifiant_global_wikio_regen+"&methode="+escape(adloox_methode)+"&fai="+escape(adloox_title)+"&alerte=0&alerte_desc="+escape(adloox_alerte_desc)+"&webo="+escape(webo_chaine)+"&id_editeur="+adloox_alerte_id+"&url_referrer="+escape(adloox_uriCourant);
+                            img_alerte.id='ads_alerte_contenu';
+                            img_alerte.src = url;
+                            img_alerte.width = 0;
+                            img_alerte.height = 0;
+                            img_alerte.style.display='none';
+                            document.body.appendChild(img_alerte);
+			    return;
+
+
+                        }
+
+
+                    }
+                    adloox_alerte_desc=adloox_alerte_desc1+' '+adloox_alerte_desc2;
+                    adloox_timeoutIDContent = window.setTimeout(adloox_search_content,2000);
+                }
+                else
+                {
+                    function adloox_adloox_search_content2()
+                    {
+                        if(document.getElementById('ads_alerte_contenu'))
+                        {
+
+                            document.getElementById('ads_alerte_contenu').style.display='';
+                            var url=document.getElementById("ads_alerte_contenu").src;
+                            var pos_url2=url.indexOf('/image_alerte_contenu');
+                            var url2=url.substring(pos_url2,10000);
+                            url2='http://'+adloox_servername_global_wikio+'/ads'+url2;
+                            var pos_debut_camp=url.indexOf('&campagne=')+10;
+                            var pos_fin_camp=url.indexOf('&methode=');
+                            url2=url2.substring(0,pos_debut_camp)+adloox_identifiant_global_wikio_regen+url2.substring(pos_fin_camp,10000);
+                            pos_debut_camp=url.indexOf('?banniere=')+10;
+                            pos_fin_camp=url.indexOf('&campagne=');
+                            url2=url2.substring(0,pos_debut_camp)+adloox_banniere_global_wikio+url2.substring(pos_fin_camp,10000);
+                            document.getElementById('ads_alerte_contenu').src =url2;
+                            document.getElementById('ads_alerte_contenu').width = 0;
+                            document.getElementById('ads_alerte_contenu').height = 0;
+                            document.getElementById('ads_alerte_contenu').style.display='none';
+
+                        }
+
+                    }
+                    adloox_alerte_desc=adloox_alerte_desc1+' '+adloox_alerte_desc2;
+                    adloox_timeoutIDContent = window.setTimeout(adloox_adloox_search_content2,2000);
+                }
+
+
+
+
+
+
+
+
+            
+			
+				function estVisible_tracking(id_element){
+				var hauteur=0;
+				var largeur=0;
+				var taux_vision=0;
+				
+							var source = document.getElementById(id_element), sourceParent = source.offsetParent;
+						document.getElementById(id_element).style.display='';
+			
+				var retour=0;
+                var cadreVisible = {xMin: 0, xMax: 0, yMin: 0, yMax: 0}, elementVisible = {xMin: 0, xMax: 0, yMin: 0, yMax: 0};
+                
+                var total = {hauteur: false, largeur: false}, partiel = {hauteur: false, largeur: false};
+                var hauteur_vue;
+                var taux_vue;
+
+
+                cadreVisible.xMin = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
+                cadreVisible.xMax = window.pageXOffset + window.innerWidth || document.documentElement.scrollLeft + document.documentElement.clientWidth || document.body.scrollLeft + document.body.clientWidth;
+                cadreVisible.yMin = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                cadreVisible.yMax = window.pageYOffset + window.innerHeight || document.documentElement.scrollTop + document.documentElement.clientHeight || document.body.scrollTop + document.body.clientHeight;
+                elementVisible.xMin = source.offsetLeft;
+                elementVisible.yMin = source.offsetTop;
+                while(sourceParent) {
+                    elementVisible.xMin += sourceParent.offsetLeft;
+                    elementVisible.yMin += sourceParent.offsetTop;
+                    sourceParent = sourceParent.offsetParent;
+                }
+                if(elementVisible.yMin>hauteur)
+                {
+                    elementVisible.yMin=elementVisible.yMin-hauteur;
+                }
+
+                elementVisible.xMax = elementVisible.xMin + source.offsetWidth+largeur;
+                elementVisible.yMax = elementVisible.yMin + source.offsetHeight+hauteur;
+
+     
+
+
+                if(cadreVisible.xMin <= elementVisible.xMin && cadreVisible.xMax >= elementVisible.xMax){
+                    total.largeur = true;
+                }
+                else if(!(cadreVisible.xMax < elementVisible.xMin|| cadreVisible.xMin > elementVisible.xMax)){
+                    partiel.largeur = true;
+                }
+                if(cadreVisible.yMin <= elementVisible.yMin && cadreVisible.yMax >= elementVisible.yMax){
+                    total.hauteur = true;
+                }
+                else if(!(cadreVisible.yMax < elementVisible.yMin || cadreVisible.yMin > elementVisible.yMax)){
+                    partiel.hauteur = true;
+                }
+                if(total.largeur && total.hauteur){
+                    //return(id_element + ' est entiÃ¨rement visible dans la page !');
+                    retour=(2);
+                }
+                else if(total.largeur && partiel.hauteur){
+                    //return(id_element + ' est entiÃ¨rement visible en largeur mais tronquÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â© en hauteur');
+                    if((largeur==0)||(hauteur==0)||(taux_vision==0)) //calcul taux de vision
+                    {
+                        retour=(1);
+                    }
+                    else
+                    {
+                        if(cadreVisible.yMin<=elementVisible.yMin) // crÃ©a sous le debut du cadre
+                        {
+                            hauteur_vue=cadreVisible.yMax-elementVisible.yMin;
+                            taux_vue=hauteur_vue/hauteur;
+                            if(taux_vue>=taux_vision)
+                            {
+                                retour=(1);
+                            }
+                            else
+                            {
+                                retour=(0);
+                            }
+
+                        }
+                        else // crÃ©a au dessus du dÃ©but du cadre
+                        {
+                            hauteur_vue=elementVisible.yMax-cadreVisible.yMin;
+                            taux_vue=hauteur_vue/hauteur;
+                            if(taux_vue>=taux_vision)
+                            {
+                                retour=(1);
+                            }
+                            else
+                            {
+                                retour=(0);
+                            }
+                        }
+
+                    }
+                }
+                else if(total.hauteur && partiel.largeur){
+                    //return(id_element + ' est entiÃ¨rement visible en hauteur mais tronquÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â© en largeur');
+                    retour=(1);
+                }
+                else if(partiel.hauteur && partiel.largeur){
+                    //return(id_element + ' est tronquÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â© en hauteur et en largeur');
+                    retour=(1);
+                }
+                else{
+
+                    retour=(0);
+                }
+
+
+				return(retour);
+
+
+
+            }
+
+                try
+                {
+                    var adloox_js=document.currentScript.src;
+
+                }
+            catch(err)
+            {
+                var adloox_js="";
+            }
+			
+			if(adloox_iframe==0)
+			{
+			adloox_visibilite=estVisible_tracking('ads_visibility');
+			}
+			else
+			{
+			adloox_visibilite=3;
+			}
+			
+			if(adloox_alerte_finale>0)
+			{
+				adloox_servername_global_wikio=adloox_loadbalancing[0];
+			}
+            var adloox_url="http://"+adloox_servername_global_wikio+"/ads/image_java.php?client=wikio&type=regie_quotidienne&banniere="+adloox_banniere_global_wikio+"&campagne="+adloox_identifiant_global_wikio_regen+"&os="+escape(adloox_OS)+"&navigateur="+escape(adloox_browser+' '+adloox_version)+"&methode="+escape(adloox_methode)+"&fai="+escape(adloox_title)+"&alerte="+adloox_alerte_finale+"&alerte_desc="+adloox_alerte_desc+"&js="+adloox_js+"&visibilite="+adloox_visibilite+"&id_editeur="+adloox_alerte_id+"&url_referrer="+escape(adloox_uriCourant);
+            
+                    if(adloox_bad_site==0)
+                    {	
+                        document.write('<img id="ads_img_java" src="'+adloox_url+'">');
+                        document.getElementById('ads_img_java').style.display='none';
+                        document.getElementById('ads_visibility').style.display='none';
+                    }
+                
+                var adloox_uriFW=adloox_uriCourant;
+
+		var adloox_url2="http://firewall.adlooxtracking.com/ads/firewall/firewall2.php?client=wikio&video=0&banniere="+adloox_banniere_global_wikio+"&id_editeur="+adloox_alerte_id+"&campagne="+adloox_identifiant_global_wikio_regen+"&methode="+escape(adloox_methode)+"&fai="+escape(adloox_title)+"&url_referrer="+escape(adloox_uriFW);
+		
+
+            function adloox_include(fileName){
+                
+                        document.write("<script type='text/javascript' src='"+fileName+"'></script>" );
+                    
+            }
+            if(adloox_bad_site==0)
+            {
+                adloox_include(adloox_url2);
+            }
+            
+
+
+                var adloox_nb_boucle=0;
+            var adloox_nb_secondes_delai_refresh=5;
+            var adloox_premier_passage=0;	
+
+
+			function estVisible(id_element,largeur,hauteur,url,banniere,campagne,visite_id,delai,taux_vision,adloox_servername_global_wikio){
+
+                document.getElementById(id_element).style.display='';
+                var retour=0;
+                var cadreVisible = {xMin: 0, xMax: 0, yMin: 0, yMax: 0}, elementVisible = {xMin: 0, xMax: 0, yMin: 0, yMax: 0};
+                var source = document.getElementById(id_element), sourceParent = source.offsetParent;
+                var total = {hauteur: false, largeur: false}, partiel = {hauteur: false, largeur: false};
+                var hauteur_vue;
+                var taux_vue;
+
+
+                cadreVisible.xMin = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
+                cadreVisible.xMax = window.pageXOffset + window.innerWidth || document.documentElement.scrollLeft + document.documentElement.clientWidth || document.body.scrollLeft + document.body.clientWidth;
+                cadreVisible.yMin = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                cadreVisible.yMax = window.pageYOffset + window.innerHeight || document.documentElement.scrollTop + document.documentElement.clientHeight || document.body.scrollTop + document.body.clientHeight;
+                elementVisible.xMin = source.offsetLeft;
+                elementVisible.yMin = source.offsetTop;
+                while(sourceParent) {
+                    elementVisible.xMin += sourceParent.offsetLeft;
+                    elementVisible.yMin += sourceParent.offsetTop;
+                    sourceParent = sourceParent.offsetParent;
+                }
+                if(elementVisible.yMin>hauteur)
+                {
+                    elementVisible.yMin=elementVisible.yMin-hauteur;
+                }
+
+                elementVisible.xMax = elementVisible.xMin + source.offsetWidth+largeur;
+                elementVisible.yMax = elementVisible.yMin + source.offsetHeight+hauteur;
+
+
+
+                if(cadreVisible.xMin <= elementVisible.xMin && cadreVisible.xMax >= elementVisible.xMax){
+                    total.largeur = true;
+                }
+                else if(!(cadreVisible.xMax < elementVisible.xMin|| cadreVisible.xMin > elementVisible.xMax)){
+                    partiel.largeur = true;
+                }
+                if(cadreVisible.yMin <= elementVisible.yMin && cadreVisible.yMax >= elementVisible.yMax){
+                    total.hauteur = true;
+                }
+                else if(!(cadreVisible.yMax < elementVisible.yMin || cadreVisible.yMin > elementVisible.yMax)){
+                    partiel.hauteur = true;
+                }
+                if(total.largeur && total.hauteur){
+                    //return(id_element + ' est entiÃ¨rement visible dans la page !');
+                    retour=(2);
+                }
+                else if(total.largeur && partiel.hauteur){
+                    //return(id_element + ' est entiÃ¨rement visible en largeur mais tronquÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â© en hauteur');
+                    if((largeur==0)||(hauteur==0)||(taux_vision==0)) //calcul taux de vision
+                    {
+                        retour=(1);
+                    }
+                    else
+                    {
+                        if(cadreVisible.yMin<=elementVisible.yMin) // crÃ©a sous le debut du cadre
+                        {
+                            hauteur_vue=cadreVisible.yMax-elementVisible.yMin;
+                            taux_vue=hauteur_vue/hauteur;
+                            if(taux_vue>=taux_vision)
+                            {
+                                retour=(1);
+                            }
+                            else
+                            {
+                                retour=(0);
+                            }
+
+                        }
+                        else // crÃ©a au dessus du dÃ©but du cadre
+                        {
+                            hauteur_vue=elementVisible.yMax-cadreVisible.yMin;
+                            taux_vue=hauteur_vue/hauteur;
+                            if(taux_vue>=taux_vision)
+                            {
+                                retour=(1);
+                            }
+                            else
+                            {
+                                retour=(0);
+                            }
+                        }
+
+                    }
+                }
+                else if(total.hauteur && partiel.largeur){
+                    //return(id_element + ' est entiÃ¨rement visible en hauteur mais tronquÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â© en largeur');
+                    retour=(1);
+                }
+                else if(partiel.hauteur && partiel.largeur){
+                    //return(id_element + ' est tronquÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â© en hauteur et en largeur');
+                    retour=(1);
+                }
+                else{
+
+                    retour=(0);
+                }
+
+
+
+
+                //alert(old_value+' '+retour);
+
+
+
+
+
+                var url_ads="http://"+adloox_servername_global_wikio+"/ads/image_visibilite.php?banniere="+escape(banniere)+"&visible="+escape(retour)+"&visite_id="+escape(visite_id)+"&url="+escape(url)+"&campagne="+escape(campagne)+"&boucle="+escape(adloox_nb_boucle)+"&pas="+escape(delai)+"&anticache="+anticache;
+                document.getElementById('ads_visibility').src = url_ads;
+                document.getElementById('ads_visibility').style.display='none';
+
+
+
+            }
+
+
+            
+
+
+
+            var adloox_timestamp=new Date();
+            var adloox_visite_id=adloox_timestamp.getTime()/1000;
+
+            if(adloox_saute_title==0)
+            {
+
+                
+                        var adloox_randomnumber=Math.floor(Math.random()*1000001);
+                    if(adloox_randomnumber==5)
+                    {
+                        
+
+                        if(adloox_bad_site==0)
+                        {
+
+
+                            var adloox_calcul_visi_global = function() { estVisible('ads_visibility',0,0,adloox_uriCourant,'global',adloox_id_visi_global_wikio,adloox_visite_id,1,'0.8',adloox_servername_global_wikio); };
+                            adloox_timeoutID_global = window.setTimeout(adloox_calcul_visi_global,1000);
+
+
+                            var adloox_calcul_visi_global = function() { estVisible('ads_visibility',0,0,adloox_uriCourant,'global',adloox_id_visi_global_wikio,adloox_visite_id,4,'0.8',adloox_servername_global_wikio); };
+                            adloox_timeoutID2_global = window.setTimeout(adloox_calcul_visi_global,5000);
+
+                            var adloox_calcul_visi_global = function() { estVisible('ads_visibility',0,0,adloox_uriCourant,'global',adloox_id_visi_global_wikio,adloox_visite_id,5,'0.8',adloox_servername_global_wikio); };
+                            adloox_timeoutID8_global = window.setTimeout(adloox_calcul_visi_global,10000);
+
+                            var adloox_calcul_visi_global = function() { estVisible('ads_visibility',0,0,adloox_uriCourant,'global',adloox_id_visi_global_wikio,adloox_visite_id,5,'0.8',adloox_servername_global_wikio); };
+                            adloox_timeoutID3_global = window.setTimeout(adloox_calcul_visi_global,15000);
+
+                            var adloox_calcul_visi_global = function() { estVisible('ads_visibility',0,0,adloox_uriCourant,'global',adloox_id_visi_global_wikio,adloox_visite_id,5,'0.8',adloox_servername_global_wikio); };
+                            adloox_timeoutID4_global = window.setTimeout(adloox_calcul_visi_global,20000);
+
+                            var adloox_calcul_visi_global = function() { estVisible('ads_visibility',0,0,adloox_uriCourant,'global',adloox_id_visi_global_wikio,adloox_visite_id,5,'0.8',adloox_servername_global_wikio); };
+                            adloox_timeoutID5_global= window.setTimeout(adloox_calcul_visi_global,25000);
+
+                            var adloox_calcul_visi_global = function() { estVisible('ads_visibility',0,0,adloox_uriCourant,'global',adloox_id_visi_global_wikio,adloox_visite_id,5,'0.8',adloox_servername_global_wikio); };
+                            adloox_timeoutID6_global = window.setTimeout(adloox_calcul_visi_global,30000);
+
+                            var adloox_calcul_visi_global = function() { estVisible('ads_visibility',0,0,adloox_uriCourant,'global',adloox_id_visi_global_wikio,adloox_visite_id,30,'0.8',adloox_servername_global_wikio); };
+                            adloox_timeoutID7_global = window.setTimeout(adloox_calcul_visi_global,60000);
+
+                        }
+
+
+                }
+
+
+
+                
+                }
+                

@@ -81,14 +81,14 @@ FilterService.stopService = function(callback) {
 FilterService.isRunning = function(callback) {
   dwr.engine._execute(FilterService._path, 'FilterService', 'isRunning', callback);
 }
-FilterService.logDebug = function(p0, callback) {
-  dwr.engine._execute(FilterService._path, 'FilterService', 'logDebug', p0, callback);
+FilterService.logTrace = function(p0, callback) {
+  dwr.engine._execute(FilterService._path, 'FilterService', 'logTrace', p0, callback);
 }
-FilterService.logDebug = function(p0, callback) {
-  dwr.engine._execute(FilterService._path, 'FilterService', 'logDebug', p0, callback);
+FilterService.logTrace = function(p0, p1, callback) {
+  dwr.engine._execute(FilterService._path, 'FilterService', 'logTrace', p0, p1, callback);
 }
-FilterService.logDebug = function(p0, p1, callback) {
-  dwr.engine._execute(FilterService._path, 'FilterService', 'logDebug', p0, p1, callback);
+FilterService.logTrace = function(p0, callback) {
+  dwr.engine._execute(FilterService._path, 'FilterService', 'logTrace', p0, callback);
 }
 FilterService.logError = function(p0, p1, callback) {
   dwr.engine._execute(FilterService._path, 'FilterService', 'logError', p0, p1, callback);
@@ -102,26 +102,26 @@ FilterService.logError = function(p0, callback) {
 FilterService.getRoot = function(callback) {
   dwr.engine._execute(FilterService._path, 'FilterService', 'getRoot', callback);
 }
+FilterService.logDebug = function(p0, p1, callback) {
+  dwr.engine._execute(FilterService._path, 'FilterService', 'logDebug', p0, p1, callback);
+}
+FilterService.logDebug = function(p0, callback) {
+  dwr.engine._execute(FilterService._path, 'FilterService', 'logDebug', p0, callback);
+}
+FilterService.logDebug = function(p0, callback) {
+  dwr.engine._execute(FilterService._path, 'FilterService', 'logDebug', p0, callback);
+}
 FilterService.getServiceInfo = function(callback) {
   dwr.engine._execute(FilterService._path, 'FilterService', 'getServiceInfo', callback);
 }
+FilterService.logInfo = function(p0, callback) {
+  dwr.engine._execute(FilterService._path, 'FilterService', 'logInfo', p0, callback);
+}
+FilterService.logInfo = function(p0, callback) {
+  dwr.engine._execute(FilterService._path, 'FilterService', 'logInfo', p0, callback);
+}
 FilterService.logInfo = function(p0, p1, callback) {
   dwr.engine._execute(FilterService._path, 'FilterService', 'logInfo', p0, p1, callback);
-}
-FilterService.logInfo = function(p0, callback) {
-  dwr.engine._execute(FilterService._path, 'FilterService', 'logInfo', p0, callback);
-}
-FilterService.logInfo = function(p0, callback) {
-  dwr.engine._execute(FilterService._path, 'FilterService', 'logInfo', p0, callback);
-}
-FilterService.logTrace = function(p0, callback) {
-  dwr.engine._execute(FilterService._path, 'FilterService', 'logTrace', p0, callback);
-}
-FilterService.logTrace = function(p0, callback) {
-  dwr.engine._execute(FilterService._path, 'FilterService', 'logTrace', p0, callback);
-}
-FilterService.logTrace = function(p0, p1, callback) {
-  dwr.engine._execute(FilterService._path, 'FilterService', 'logTrace', p0, p1, callback);
 }
 FilterService.logWarning = function(p0, p1, callback) {
   dwr.engine._execute(FilterService._path, 'FilterService', 'logWarning', p0, p1, callback);

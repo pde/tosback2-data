@@ -31,6 +31,9 @@
  *       lookup, we return the default value on failure.
  *   sayt_description_config: similar to sayt_title.
  *   sayt_price_config: similar to sayt_title.
+ *   sayt_include_attributes: Array of extra attributes that should be included.
+ *       Up to three extra attributes can be included this way (any more will be
+ *       ignored).
  *
  * The returned SAYT object contains the following public method to be passed to
  * the google.search.CustomSearchControl.attachAutoCompletion method:
@@ -86,6 +89,7 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
   var titleConfig = undefined;
   var descriptionConfig = undefined;
   var priceConfig = undefined;
+  var extraAttributes = [];
 
   /**
    * Request thumbnail images inline in a larger JSON response so
@@ -340,9 +344,9 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
     } else if (currency == 'EUR') {
       return '\u20ac' + priceValue.toFixed(2);
     } else if (currency == 'GBP') {
-      return '£' + priceValue.toFixed(2);
+      return '\u00A3' + priceValue.toFixed(2);
     } else if (currency == 'JPY') {
-      return '¥' + priceValue.toFixed(0);
+      return '\u00A5' + priceValue.toFixed(0);
     } else if (currency == 'USD') {
       return '$' + priceValue.toFixed(2);
     } else {
@@ -405,19 +409,26 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
   priceConfig = saytParams['sayt_price_config'];
   descriptionConfig = saytParams['sayt_description_config'];
 
-  // Default value to ask for no attributes from Shopping API.  It does not
-  // hurt to ask for non existing attributes.  Attribute filter cannot be empty.
-  var tmp = ['want_nothing(text)'];
+  var includedAttributes = [];
   if (titleConfig) {
-    tmp.push(titleConfig);
+    includedAttributes.push(titleConfig);
   }
   if (priceConfig) {
-    tmp.push(priceConfig);
+    includedAttributes.push(priceConfig);
   }
   if (descriptionConfig) {
-    tmp.push(descriptionConfig);
+    includedAttributes.push(descriptionConfig);
   }
-  var attributeFilter = tmp.join(',');
+
+  var saytIncludeAttributes = saytParams['sayt_include_attributes'] || [];
+  for (var i = 0; i < saytIncludeAttributes.length && i < 3; ++i) {
+    includedAttributes.push(saytIncludeAttributes[i]);
+  }
+
+  // Default value to ask for no attributes from Shopping API.  It does not
+  // hurt to ask for non existing attributes.  Attribute filter cannot be empty.
+  var attributeFilter = includedAttributes.length > 0 ?
+      includedAttributes.join(',') : 'want_nothing(text)';
 
   // If we are asked to use data URIs for thumbnails, check the browser
   // version to make sure it supports this.

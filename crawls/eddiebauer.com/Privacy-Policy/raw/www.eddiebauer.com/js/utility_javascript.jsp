@@ -1166,7 +1166,7 @@ function takeAction(actionType, soaCookieString){
 		if(soaCookieString.indexOf('cartempty=false') == -1) {
 			if(soaCookieString.indexOf('firstorderofsession=true') > -1){
 				soaCookieString = replaceSEOString(soaCookieString, 'oessoanow', 'oessoacart=' );
-				soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '04/15/2012 07:30:03 EST');
+				soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '05/07/2012 05:10:06 EST');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmmmcnow', 'cmmmccart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmvennow', 'cmvencart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmcatnow', 'cmcatcart=');
@@ -1175,7 +1175,7 @@ function takeAction(actionType, soaCookieString){
 				soaCookieString = changeSEOString(soaCookieString, 'cartempty', 'false');
 			}else {
 				soaCookieString = replaceSEOString(soaCookieString, 'oessoacartbak', 'oessoacart=');
-			   soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '04/15/2012 07:30:03 EST');
+			   soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '05/07/2012 05:10:06 EST');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmmmccartbak', 'cmmmccart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmvencartbak', 'cmvencart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmcatcartbak', 'cmcatcart=');
@@ -1413,6 +1413,47 @@ function buildDOMInputFieldWithDLStructure(tabindex, name, labelText, type,maxLe
 	var div = createDOM('div', {'class':'errorHide','id':'err_'+name});
 	dl.appendChild(div);
 	return dl;
+}
+
+function stringToParams (url, justParams) {
+       var b = {};
+       var params = null ;
+       
+       if (justParams) {
+       	params = url ;
+       } else {
+       	if (url.indexOf ('?') != -1) {
+       		params = url.split ('?')[1] ;
+       	}
+       }
+       if (params) {
+       	var a = params.split('&') ;
+        for (var i = 0; i < a.length; ++i) {
+            var p=a[i].split('=');
+            if (p.length != 2) continue;
+            var val = decodeURIComponent(p[1].replace(/\+/g, " "));
+            if (val) {
+            	b[p[0]] = val ;			            	
+            }
+        }
+       }
+       return b;
+}
+
+function paramsToString (prefixUrl, params) {
+	var paramString = "" ;
+	var first = true ;
+	for (p in params) {
+		var val = params[p] ;
+		if (val) {
+			paramString = paramString + (first ? "" : "&") + p + "=" + encodeURIComponent(val) ;
+			first = false ;
+		}
+	}
+	if (prefixUrl) {
+		paramString = prefixUrl + (paramString ? ("?"+paramString) : "") ;
+	}
+	return paramString;
 }
 
 

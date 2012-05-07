@@ -1,0 +1,50 @@
+if(typeof truste=="undefined"||!truste||typeof truste.ca2=="undefined"||!truste.ca2){if(typeof truste==undefined||!truste){var truste={}
+}if(typeof truste.ca==undefined||!truste.ca){truste.ca={};truste.ts=new Date()}truste.ca2={};truste.ts=new Date();
+truste.ca2.contMap={};truste.ca2.intMap={};truste.ca2.intervalStack=[];truste.ca2.bindMap={};truste.ca2.bindingInitMap={};
+truste.ca2.cidToInt={};truste.ca2.target={};truste.ca2.jsMap={};truste.ca2.adTypeMap={};truste.ca2.osMap={};
+truste.ca2.customDecodeURL=function(a){var c=/\"\\/g;var b=decodeURI(a);b=b.replace(c,"").replace(/&/g,"").toLowerCase();
+return b};truste.ca2.adtype=[truste.ca2.customDecodeURL("F&W%22%5C.A%22%5C&DS%22%5CA%22%5C&F&E%22%5CP&R%22%5CO%22%5CT&%22%5CEC%22%5C&T&E%22%5CD.C%22%5C&O&M"),truste.ca2.customDecodeURL("D&O%22%5C&&U%22%5CB%22%5CL&E%22%5C&C&%22%5C&L%22%5CI&C&K&.N%22%5CE&T%22%5C"),truste.ca2.customDecodeURL("A%22%5CD&S%22%5C.B&R&%22%5CA&N%22%5CD&.N%22%5C&E&T")];
+truste.ca2.mapDFA={adtype:[truste.ca2.customDecodeURL("S%22%5C0.&2%22%5CM&D&%22%5CN.&N%22%5CE%22%5C&T"),truste.ca2.customDecodeURL("%22%5CS1.&2&%22%5CM&%22%5CD&N.%22%5C&N&%22%5CE&T&")],domain:truste.ca2.customDecodeURL("A%22%5CD%22%5CV&E%22%5CR&T%22%5CI&S%22%5CE&R%22%5CS.&D%22%5CO&U%22%5CB&L%22%5CC&L%22%5CI%22%5CC&K.%22%5CN&E%22%5CT")};
+truste.ca2.addEvent=function(d,c,b,a){if(d.addEventListener){d.addEventListener(c,b,false);return true
+}else{if(d.attachEvent){return d.attachEvent("on"+c,b)}else{if(a){b();return true}else{return false}}}};
+truste.ca2.addBinding=function(b){var a=truste.ca2.copyBinding(b);truste.ca2.bindMap[a.baseName]=a;return a
+}}truste.ca2.isTypeMatch=function(a,d){if(typeof a==undefined||!a){return null}for(var c=0;c<truste.ca2.adtype.length;
+c++){var b=truste.ca2.adtype[c];if(a.indexOf(b)>-1){return b}}if(d.docRef.location.href.indexOf(truste.ca2.mapDFA.domain)!=-1){for(var c=0;
+c<truste.ca2.mapDFA.adtype.length;c++){var b=truste.ca2.mapDFA.adtype[c];if(a.indexOf(b)>-1){return b
+}}}return null};truste.ca2.uuid=function(){return"te-"+(((1+Math.random())*65536)|0).toString(16).substring(1)
+};truste.ca2.copyBinding=function(d){var b={};for(var a in d){b[a]=d[a]}var c=truste.ca2.uuid();b.baseName=c;
+b.iconSpanId=c+"-icon";b.intDivName=c+"-itl";b.anchName=c+"-anch";b.target="over";return b};truste.ca2.initialize=function(b){var a=truste.ca2.addBinding(b);
+truste.ca2.bindingInitMap[a.baseName]=0;truste.ca2.addCurrJs(a);truste.ca2.initBinding(a)};var te_clr1_6eefc53b_484b_425d_98c2_07838a271187_ib='  <div id="te-clr1-6eefc53b-484b-425d-98c2-07838a271187-itl" style="position: absolute; margin: 0 auto; width:240px; height:220px; border: 1px solid #ccc; display:block; background:#FFF; overflow:hidden; padding:0; font-size:12px; font-family: arial,helvetica,clean,sans-serif; text-align:left; z-index:1001;">\n    <div class="closeTag" style="float:right; padding:5px"><a style="cursor:pointer; color:#456d88; text-decoration:none; " alt="close" onclick="javascript:self.close()"/>[close]</a></div> \n    <div class="mainRolloverSection" style="padding:5px 15px"> \n      <a href="http://www.comcast.com/Corporate/Learn/overview.html" target="_blank"><img src="http://choices.truste.com/get?name=comcast.gif" alt="ad choices" class="advertiserLogo"/></a> \n      <br /> \n      <p style="padding:0 0 5px;><b><a style="color:#456d88; text-decoration:none;" href="http://www.comcast.com/Corporate/Learn/overview.html" target="_blank">Comcast</a> cares about your privacy.</b> \n            <a style="color:#456d88; text-decoration:none;" href="{PartnerLink}" target="_blank">Comcast01</a> delivered this personalized ad based on your interests. \n             This is a placeholder for custom text.\n      </p> \n      <div style="padding-bottom:5px; ">\n        <a style="color:#456d88; text-decoration:none;" href="https://preferences-mgr.truste.com/?type=comcast&affiliateId=108&pid=comcast01&aid=comcast01&cid=6481142_220519_79528793_48021050&w=120&h=240" target="_blank"><b>Set Your Ad Preferences</b></a><br /> \n        <a style="color:#456d88; text-decoration:none;" href="http://www.comcast.com/corporate/legal/privacyStatement.html" target="_blank"><b>Comcast Privacy Policy</b></a><br /> \n      </div> \n    </div> \n    <div style="padding:5px 15px; height:100%; background:#efefef"> \n      <h2 style="font-weight:bold;font-size:12px;">AdChoices by <a style="color:#456d88; text-decoration:none;" href="http://www.truste.com" target="_blank"><img style="vertical-align:middle; border:none; width:70px;" src="http://privacy-policy.truste.com/ads/logo/TRUSTe_logo.png" /></a></h2>\n    </div> \n  </div> \n\n';
+var te_clr1_6eefc53b_484b_425d_98c2_07838a271187_bi={baseName:"te-clr1-6eefc53b-484b-425d-98c2-07838a271187",anchName:"te-clr1-6eefc53b-484b-425d-98c2-07838a271187-anch",width:120,height:240,ox:0,oy:0,plc:"tl",iplc:"rel",intDivName:"te-clr1-6eefc53b-484b-425d-98c2-07838a271187-itl",iconSpanId:"te-clr1-6eefc53b-484b-425d-98c2-07838a271187-icon",backgroundColor:"white",opacity:0.8,filterOpacity:80,containerId:(""+Math.random()).replace(".",""),noticeBaseUrl:"http://choices2.truste.com/camsg?",irBaseUrl:"http://choices2.truste.com/cair?",interstitial:te_clr1_6eefc53b_484b_425d_98c2_07838a271187_ib,interstitialWidth:240,interstitialHeight:220,popTab:false,showLink:"javascript:truste.ca.showpop(te_clr1_6eefc53b_484b_425d_98c2_07838a271187_bi)",hideLink:"javascript:self.close()",icon:"http://choices.truste.com/assets/forward_i.png",icon_cam:"http://choices.truste.com/assets/admarker.png",icon_cam_daa:"http://choices.truste.com/assets/ad_choices_i.png",icon_cam_mo:"http://choices.truste.com/assets/ad_choices_en.png",iconText:"&nbsp;AdChoices",aid:"comcast01",pid:"comcast01",zindex:"100002",cam:"3",cid:"6481142_220519_79528793_48021050",optoutLink:"https://preferences-mgr.truste.com/?type=comcast&affiliateId=108&pid=comcast01&aid=comcast01&cid=6481142_220519_79528793_48021050&w=120&h=240",target:"pop",docRef:document};
+truste.ca2.addEvent(window,"load",function(){setTimeout(function(){truste.ca2.initialize(te_clr1_6eefc53b_484b_425d_98c2_07838a271187_bi);
+truste.ca2.initializeIcon()},750)});truste.ca2.getParamByName=function(b,a){b=b.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]");
+var d=new RegExp("[\\?&]"+b+"=([^&#]*)");var c=d.exec(a);if(c==null){return""}else{return decodeURIComponent(c[1].replace(/\+/g," "))
+}};truste.ca2.addCurrJs=function(f){var a=document.getElementsByTagName("script");for(var c=0;c<a.length;
+c++){var h=a[c];var b=h.src;if(b&&(b.substring(b.length-2)!="ex"&&b.indexOf(f.pid)>-1&&b.indexOf(f.aid)>-1&&b.indexOf("st_0")>-1)){if(b.indexOf("atlasId")>-1){var g=truste.ca2.getParamByName("atlasId",b);
+if(g){f.atlasId=g}}var d=null;for(var j in truste.ca2.jsMap){var e=truste.ca2.jsMap[j];if(e===h){d=e;
+break}}if(!d){h.src=h.src+"ex";truste.ca2.jsMap[f.baseName]=h;break}}}};truste.ca2.getSz=function(a){var b="sz=";
+var e=new RegExp(b+"[0-9]+x[0-9]+","g");var c=e.exec(a);if(c&&c.length>0){var d=c[0];if(d.length>b.length){return d.substring(b.length,d.length)
+}}return null};truste.ca2.getInterstitial=function(d){var a=d.width+"x"+d.height;var b=document.createElement("script");
+b.type="text/javascript";var c="aid="+d.aid+"&pid="+d.pid+"&cid="+d.cid+"&js=st_1&sz="+a+"&c="+d.containerId;
+b.src="http://choices.truste.com/ca?"+c;document.body.appendChild(b)};truste.ca2.getObjectParamValue=function(e,d){if(typeof e=="undefined"||e.nodeName.toLowerCase()!=="object"){return null
+}var f=e.getElementsByTagName("param");if(f){for(var c=0;c<f.length;c++){var a=f[c];var b=a.getAttribute("name");
+if(b&&b===d){return a.getAttribute("value")}}}return null};truste.ca2.initAtlas=function(e,f){var d=false;
+var a=e.previousSibling;do{if(a&&a.nodeType===1){if(a.nodeName.toLowerCase()==="object"){var c=truste.ca2.getObjectParamValue(a,"movie");
+if(c){if(c.indexOf(f.atlasId)>-1){f.width=a.getAttribute("width");f.height=a.getAttribute("height");d=true
+}}}else{if(typeof a.src!="undefined"&&(a.offsetWidth>10&&a.offsetHeight>10)){var b=a.src;if(b.indexOf(f.atlasId)>-1){f.width=a.offsetWidth;
+f.height=a.offsetHeight;d=true}}}if(d){truste.ca2.getInterstitial(f);break}}}while(a=a.previousSibling)
+};truste.ca2.initDoubleclick=function(f,g){var d=false;var e=f.previousSibling;do{if(e&&e.nodeType===1){if(e.nodeName.toLowerCase()==="script"){var h=e.src;
+if(h&&truste.ca2.isTypeMatch(h,g)){var a=truste.ca2.getSz(h);if(a&&a!==""){var c=a.split("x");if(c.length==2){g.width=c[0];
+g.height=c[1];truste.ca2.getInterstitial(g);d=true;break}}}}else{if(e.nodeName.toLowerCase()==="object"){g.width=e.width;
+g.height=e.height;truste.ca2.getInterstitial(g);d=true;break}}}}while(e=e.previousSibling);if(!d){var b=window.location.href;
+if(truste.ca2.isTypeMatch(b,g)){var a=truste.ca2.getSz(b);if(a&&a!==""){var c=a.split("x");if(c.length==2){g.width=c[0];
+g.height=c[1]}}truste.ca2.getInterstitial(g)}}};truste.ca2.initBinding=function(b){var a=truste.ca2.jsMap[b.baseName];
+if(a){if(typeof b.atlasId!="undefined"){truste.ca2.initAtlas(a,b)}else{truste.ca2.initDoubleclick(a,b)
+}}};truste.ca2.initializeIcon=function(){for(var d in truste.ca2.bindingInitMap){var f=truste.ca2.bindingInitMap[d];
+if(f==0){var a=truste.ca2.bindMap[d];var g="http://choices.truste.com/get?name=";var h=a.plc.toLowerCase();
+if(a.cam==3){a.icon_cam_daa=g+"admarker-icon-"+h+".png";a.icon_cam_mo=g+"admarker-full-"+h+".png"}else{if(a.cam==4){a.icon_cam_daa=g+"admarker-icon-"+h+"-gray.png";
+a.icon_cam_mo=g+"admarker-full-"+h+"-gray.png"}}var c=document.createElement("script");var e="aid=comcast01&pid=comcast01&c=_LBcLB_&cid=6481142_220519_79528793_48021050&js=st_2";
+c.src="http://choices.truste.com/ca?"+e;document.body.appendChild(c);truste.ca2.bindingInitMap[d]=f+1
+}}};var readyState=document.readyState;if((readyState)&&(readyState=="complete"||readyState=="interactive")){setTimeout("truste.ca2.initialize(te_clr1_6eefc53b_484b_425d_98c2_07838a271187_bi)",700);
+setTimeout("truste.ca2.initializeIcon",750)}setTimeout(function(){if(document.readyState=="loading"){truste.ca2.initialize(te_clr1_6eefc53b_484b_425d_98c2_07838a271187_bi);
+truste.ca2.initializeIcon()}},750);

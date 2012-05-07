@@ -1,3 +1,6 @@
+var shUserAgent = navigator.userAgent;
+var smUserAgent;
+if (shUserAgent.match('KTXN') == 'KTXN' || shUserAgent.match('AlertSite') == 'AlertSite'){smUserAgent = 'true'} else { smUserAgent = 'false'};
 	var dmn = intlDomain.substr(1);
 	//var dmnchk = intlDomain.substr(10);
 	//var dmnchk1 = "US";
@@ -533,6 +536,11 @@ function getGenreFeed(){
 							{
 						 $('#sports').css( "width","116px");
 							}
+							if(dmnchk=="US"){
+							 $("#sports").append('<ul style="height: 117px;padding:15px 0 0 !important;"><li style="padding:0px !important" class="mmDivider_top"></li><li style="padding:0px !important" class="mmDivider_bot"></li></ul>');					
+						$("#sports").append('<ul id= "cond'+cno3+'" ><li style="color:#444444;"><b>Event Packages</b></li><li><a href="/indianapolis-500-tickets/">Indy 500</a></li><li><a href="/us-open-golf-tickets/">U.S. Open Golf</a></li><li><a href="/us-open-tennis-tickets/">U.S. Open Tennis</a></li><li><a href="/ryder-cup-tickets/">Ryder Cup</a></li><li><a href="/bcs-national-championship-game-tickets/">BCS Championship</a></li><li><a href="/super-bowl-tickets/">Super Bowl</a></li>');
+						$('#cond'+cno3).append('</ul>');
+							}
 							}
 						else {
 							
@@ -559,6 +567,12 @@ function getGenreFeed(){
 						    }
 						});
 						 $('#cont'+cno3).append('</ul>');
+						 if(dmnchk=="US"){
+						 cno3++;
+						  $("#sports").append('<ul style="height: 117px;padding:15px 0 0 !important;"><li style="padding:0px !important" class="mmDivider_top"></li><li style="padding:0px !important" class="mmDivider_bot"></li></ul>');					
+						$("#sports").append('<ul id= "cond'+cno3+'" ><li style="color:#444444;"><b>Event Packages</b></li><li><a href="/indianapolis-500-tickets/">Indy 500</a></li><li><a href="/us-open-golf-tickets/">U.S. Open Golf</a></li><li><a href="/us-open-tennis-tickets/">U.S. Open Tennis</a></li><li><a href="/ryder-cup-tickets/">Ryder Cup</a></li><li><a href="/bcs-national-championship-game-tickets/">BCS Championship</a></li><li><a href="/super-bowl-tickets/">Super Bowl</a></li>');
+						$('#cond'+cno3).append('</ul>');
+						}
 					}
 						
 //						if(document.getElementById("cont1")){

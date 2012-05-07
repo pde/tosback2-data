@@ -172,7 +172,7 @@
     sw.adSettings.DoubleClickAutoDcopt=true;
 </script>
 
-
+        
 
 
 		
@@ -317,7 +317,27 @@
 		
 
 		
-
+        <!-- if[IE 9]>
+        <style type="text/css">
+            #mainNav .swTicker ul li.tickerNSI DIV.tickerData { margin-top: 0px; }
+        </style>
+        <![endif]-->
+        <!--[if lte IE 8]>
+        <style type="text/css">
+            #wrapper {width: 1000px;}
+            #mainContent { border: 1px solid #CCC; border-top: none; border-bottom: none; }
+            .bannerWrapper { width: 998px; border: 1px solid #CCC; border-top: none; border-bottom: none; }
+            #mainNav .swTicker ul li.tickerNSI DIV.tickerData { margin-top: -15px; }
+        </style>
+        <![endif]-->
+        <!--[if IE 7]>
+        <style type="text/css">
+            .wrapperie7 { width: 1000px; margin-top: -115px !important; }
+            #mainNav .swTicker ul li.tickerNSI DIV.tickerData { margin-top: 0px !important; }
+            .swNavigator { margin-top: -45px !important; }
+            .swNavigator7 { margin-top: -10px !important; }
+        </style>
+        <![endif]-->
 	
 	
 
@@ -369,7 +389,6 @@
 
 		sw_gameRecs();
 		btg.Controller.sendPageCall( pageOmniVars );
-
         // ab test
         $(document).ready(function(){
             var swuTest = swuUpsell.getGroup() == 'swuBanner';
@@ -380,8 +399,20 @@
             }
         });
 	</script>
+        
+        
+        
+            <script type="text/javascript" >
+btg.Controller.placeAd(
+{
+size:'6x6',
+contentType:'adj',
+position:'atf'
+} );
+</script>
 
 		
+        
 <div class="brand-mamabar exposeComments" id="mamabar">
 <!--
   <div class="brand-mamabar-wrapper">
@@ -418,10 +449,8 @@
 
 		
 		
-
-		
-
-		
+        
+        
 <style type="text/css">
 
     /*FF UPGRADE CSS*/
@@ -502,9 +531,14 @@
     </div>
 </div>
 
+        
+        
+        
+        
 
-		<div id="wrapper">
-			
+
+
+
 
 
 
@@ -517,318 +551,338 @@
 }
 </style>
 <![endif]-->
-
-<!-- jira #SW-2902: BEGIN Hi-Media Media Settings - v1.0 -->
-<script type="text/javascript">
-    var adlSite='autres-sites-mtv.com';
-    var adlZone='ros';
-    var adlKv='';
-    var adlHasDcopt = false;
-    var adlPro=window.location.protocal=='https:'?'https:':'http:';
-    document.write('<'+'sc'+'ript type="text/javascript" src="'+adlPro+'//js.himediads.com/js?lang=fr&s='+adlSite+'&z='+adlZone+'&d='+Math.floor(Math.random()*10000000000)+'"><\/'+'sc'+'ript>');
-</script>
-<!-- END Hi-Media Media Settings - v1.0 -->
-
-
 <script type="text/javascript">
     $(document).ready(function(){
-        var newReleases = /new-releases.jsp/.test(self.location.href);
-        var newSales = /sales.jsp/.test(self.location.href);
+        var windowsOS = navigator.appVersion.indexOf("Win")!=-1;
+        var mozBrowser = $.browser.mozilla;
+        $('.gameTime').hover(function(){
+          $('li.moreGames').show();
+           $(this).css({ 'cursor' : 'pointer' });
+        }, function(){
+           $('li.moreGames').hide();
+           $(this).css({ 'cursor' : 'default' });
+        });
+        if(windowsOS){
+            $('#mainNav .swTicker ul.tickerList li.gameTime ul li.moreGames').addClass('moreGamesWinOS');
+        }
 
-        if (newReleases) {
-            $('#subNav ul li#new_genre').addClass('active');
-        } else if (newSales) {
-           $('#subNav ul li#99sale').addClass('active');
+        
+        var dataTicker = ["1", "2" , "3"];
+        var myData = Math.floor(Math.random()*dataTicker.length);
+        if(myData == 0){
+            $('.data1').fadeIn(500);
+            $('.data2, .data3').hide();
+        } else if(myData == 1) {
+            $('.data2').fadeIn(500);
+            $('.data1, .data3').hide();
         } else {
-        //    do nothing
+            $('.data3').fadeIn(500);
+            $('.data1, .data2').hide();
         }
     });
 </script>
+<div class="headContainer ">
+    <div id="logo">
+        <a href="http://www.shockwave.com/home.jsp">
+            
+                
+                <img src="../i/common/logos/sw_logo_extrude.png" alt="" />
+            
+        </a>
+    </div>
+    <div id="myTools" class="">
+        
+            
+            
 
-		
-		<ul id="mainNav">
-			<li id="logo" class=""><a href="http://www.shockwave.com/home.jsp" class="clearLink">Shockwave</a></li>
-			<li id="tab-1"><a title="Online Games" href="http://www.shockwave.com/home.jsp">online games</a></li>
-			<li id="tab-2"><a title="Download Games" href="http://www.shockwave.com/download.jsp">download games</a></li>
-			<li id="tab-3"><a title="Free Online Gaming Community" href="http://www.shockwave.com/myShockwave.jsp">my shockwave</a></li>
-			<li id="myTools">
-				
+                <form class="loginForm clearfix" id="headerLoginForm" name="headerLoginForm" method="post" action="privacyPolicy.jsp.html#">
+                    <div id="loginOptions">
+                        <a href="privacyPolicy.jsp.html#" class="headerLoginSW staticSignInLink">Sign In</a>
+                        <span id="facebookHeaderLogin" style="display:none;"> <span class="divider">|</span>
+                            <a href="privacyPolicy.jsp.html#" onclick="facebookConnectLink('fbc_btn_userbar_signin'); return false;" class="headerLoginFacebook">Sign In with Facebook</a>
+                        </span>
+                    </div>
+                    <div class="fbLoginForm">
+                        <div class="userMessage"><a href="privacyPolicy.jsp.html#" class="staticRegisterLink">Not a member? It's FREE to join!</a></div>
+                    </div>
+                </form>
 
-					
-					
+            
+            
+            
+        
+    </div>
+    <div class="swNavigator">
+        
+        <ul id="mainNav">
+            <li id="tab-1"><a title="Online Games" href="http://www.shockwave.com/home.jsp" >online games</a></li>
+            <li id="tab-2"><a title="Download Games" href="http://www.shockwave.com/download.jsp">download games</a></li>
+            <li id="tab-3"><a title="Free Online Gaming Community" href="http://www.shockwave.com/myShockwave.jsp">my shockwave</a></li>
+            
+                
+                <li class="swTicker swTickerNSI">
+                    <ul class="tickerList">
+                        <li class="tickerNSI">
+                            <div class="tickerData data1">974,573 Game Plays</div>
+                            <div class="tickerData data2">55,458 Downloads Today</div>
+                            <div class="tickerData data3">70,180,467 Total Downloads</div>
+                        </li>
+                    </ul>
+                </li>
+                
+                
+            
+        </ul>
+    </div>
+    
+    
+    <div id="subNav" >
+        
+            
+            
 
-						<form class="loginForm clearfix" id="headerLoginForm" name="headerLoginForm" method="post" action="privacyPolicy.jsp.html#">
-							<div class="fbLoginForm">
-								<div class="userMessage">
-									Not a member? <a href="privacyPolicy.jsp.html#" class="staticRegisterLink">It's FREE to join!</a>
-								</div>
+                <ul class="clearfix">
+                    
+                    <li id="subtab-1" ><a title="All Free Online Games" href="http://www.shockwave.com/online/all-games.jsp">All Games</a></li>
+                    
+                        
+                            
+                            
+                        
+                        
+                        <li id="daily" class="">
 
-								<div id="loginOptions">
-									<a href="privacyPolicy.jsp.html#" class="headerLoginSW staticSignInLink">Sign In</a>
-									<span id="facebookHeaderLogin" style="display:none;">
-										or
-										<a href="privacyPolicy.jsp.html#" onclick="facebookConnectLink('fbc_btn_userbar_signin'); return false;" class="headerLoginFacebook">Sign In with Facebook</a>
-									</span>
-								</div>
-							</div>
-						</form>
+                            
+                            
+                                
+                            
+                            <a title="Daily Games" href="http://www.shockwave.com/online/daily-games.jsp">
+                            
+                            Daily Games</a>
+                        </li>
+                    
+                        
+                            
+                            
+                        
+                        
+                        <li id="jigsaw" class="">
 
-					
+                            
+                            
+                            <a title="Jigsaws Puzzle Games" href="http://www.shockwave.com/online/jigsaw-games.jsp">
+                            
+                            Jigsaws</a>
+                        </li>
+                    
+                        
+                            
+                            
+                        
+                        
+                            
+                        
+                        <li id="99sale" class=" newGenre">
 
-					
-					
-				
-			</li>
-		</ul>
+                            
+                            
+                                
+                            
+                            <a title="" href="http://ad.doubleclick.net/clk;249862721;31471583;m?http://www.shockwave.com/download/special/sales.jsp">
+                            
+                                <img src="../i/common/nav/newNavSash.png" alt class=" "/>
+                            
+                            Sale</a>
+                        </li>
+                    
+                        
+                            
+                            
+                        
+                        
+                        <li id="puzzle" class="">
 
-		
-		
-		<div id="subNav" >
-			
+                            
+                            
+                            <a title="Online Puzzle Games" href="http://www.shockwave.com/online/puzzle-games.jsp">
+                            
+                            Puzzle</a>
+                        </li>
+                    
+                        
+                            
+                            
+                        
+                        
+                        <li id="word" class="">
 
-				
-				
+                            
+                            
+                            <a title="Online Word Games" href="http://www.shockwave.com/online/word-games.jsp">
+                            
+                            Word</a>
+                        </li>
+                    
+                        
+                            
+                            
+                        
+                        
+                        <li id="hidden-object" class="">
 
-					<ul class="clearfix">
-						
-						<li id="subtab-1" ><a title="All Free Online Games" href="http://www.shockwave.com/online/all-games.jsp">All Games</a></li>
-						
-							
-								
-								
-							
-							
-							<li id="daily" class="">
+                            
+                            
+                            <a title="Online Hidden Object Games" href="http://www.shockwave.com/online/hidden-object-games.jsp">
+                            
+                            Hidden Object</a>
+                        </li>
+                    
+                        
+                            
+                            
+                        
+                        
+                        <li id="strategy" class="">
 
-								
-								
-									
-								
-								<a title="Daily Games" href="http://www.shockwave.com/online/daily-games.jsp">
-								
-								Daily Games</a>
-							</li>
-						
-							
-								
-								
-							
-							
-							<li id="jigsaw" class="">
+                            
+                            
+                            <a title="Online Strategy Games" href="http://www.shockwave.com/online/strategy-games.jsp">
+                            
+                            Strategy</a>
+                        </li>
+                    
+                        
+                            
+                            
+                        
+                        
+                        <li id="racing" class="">
 
-								
-								
-								<a title="Jigsaws Puzzle Games" href="http://www.shockwave.com/online/jigsaw-games.jsp">
-								
-								Jigsaws</a>
-							</li>
-						
-							
-								
-								
-							
-							
-								
-							
-							<li id="99sale" class=" newGenre">
+                            
+                            
+                            <a title="Online Racing Games" href="http://www.shockwave.com/online/racing-games.jsp">
+                            
+                            Racing</a>
+                        </li>
+                    
+                    <li id="moreDropDown"><a href="privacyPolicy.jsp.html#"><span class="arrowDownRit">More</span></a>
+                </ul >
+            
+            
+            
+            
+            
+        
 
-								
-								
-									
-								
-								<a title="" href="http://ad.doubleclick.net/clk;249862721;31471583;m?http://www.shockwave.com/download/special/sales.jsp">
-								
-									<img src="../i/common/nav/newNavSash.png" alt class=" "/>
-								
-								Sale</a>
-							</li>
-						
-							
-								
-								
-							
-							
-							<li id="puzzle" class="">
-
-								
-								
-								<a title="Online Puzzle Games" href="http://www.shockwave.com/online/puzzle-games.jsp">
-								
-								Puzzle</a>
-							</li>
-						
-							
-								
-								
-							
-							
-							<li id="word" class="">
-
-								
-								
-								<a title="Online Word Games" href="http://www.shockwave.com/online/word-games.jsp">
-								
-								Word</a>
-							</li>
-						
-							
-								
-								
-							
-							
-							<li id="hidden-object" class="">
-
-								
-								
-								<a title="Online Hidden Object Games" href="http://www.shockwave.com/online/hidden-object-games.jsp">
-								
-								Hidden Object</a>
-							</li>
-						
-							
-								
-								
-							
-							
-							<li id="strategy" class="">
-
-								
-								
-								<a title="Online Strategy Games" href="http://www.shockwave.com/online/strategy-games.jsp">
-								
-								Strategy</a>
-							</li>
-						
-							
-								
-								
-							
-							
-							<li id="racing" class="">
-
-								
-								
-								<a title="Online Racing Games" href="http://www.shockwave.com/online/racing-games.jsp">
-								
-								Racing</a>
-							</li>
-						
-						<li id="moreDropDown"><a href="privacyPolicy.jsp.html#"><span class="arrowDownRit">More</span></a>
-					</ul >
-				
-
-				
-				
-
-				
-				
-			
-
-			
-			
-			
-			<script type="text/javascript">
-				clearSearchField = function ( el ) {
-					if ( el.value == "Search..." ) {
-						el.value = "";
-						el.style.color = "#333";
-					}
-				}
-			</script>
-			<form id="globalSearch" name="globalSearch" method="get" action="privacyPolicy.jsp.html#" onsubmit="return false;">
-				<input id="globalSearchInput" type="text" onfocus="clearSearchField(this);" value="Search..." name="q" />
-				<a href="privacyPolicy.jsp.html#" id="searchSite" onclick="return false;" class="clearLink">search site</a>
-				<a href="privacyPolicy.jsp.html#" id="searchWeb" onclick="return false;" class="clearLink">search web</a>
-			</form>
+        
+        
+        
+        <script type="text/javascript">
+            clearSearchField = function ( el ) {
+                if ( el.value == "Search..." ) {
+                    el.value = "";
+                    el.style.color = "#333";
+                }
+            }
+        </script>
+        <form id="globalSearch" name="globalSearch" method="get" action="privacyPolicy.jsp.html#" onsubmit="return false;">
+            <input id="globalSearchInput" type="text" onfocus="clearSearchField(this);" value="Search..." name="q" />
+            <a href="privacyPolicy.jsp.html#" id="searchSite" onclick="return false;" class="clearLink">search site</a>
+            <a href="privacyPolicy.jsp.html#" id="searchWeb" onclick="return false;" class="clearLink">search web</a>
+        </form>
 
 
-			
-			
+        
+        
 
-		</div>
+    </div>
+   
+    <div id="subNavMore" style="display:none;">
+        <ul>
+            
+                
+                    
+                    
+                    <li id="time-management">
+                        <a title="Time Management Games" href="http://www.shockwave.com/online/time-management-games.jsp">Time Management</a>
+                    </li>
+                
+                    
+                    
+                    <li id="card-board">
+                        <a title="Card Games & Board Games" href="http://www.shockwave.com/online/card-board-games.jsp">Card & Board</a>
+                    </li>
+                
+                    
+                    
+                    <li id="matching">
+                        <a title="Matching Games" href="http://www.shockwave.com/online/matching-games.jsp">Matching</a>
+                    </li>
+                
+                    
+                    
+                    <li id="adventure">
+                        <a title="Adventure Games" href="http://www.shockwave.com/online/adventure-games.jsp">Adventure</a>
+                    </li>
+                
+                    
+                    
+                    <li id="action">
+                        <a title="Action Games" href="http://www.shockwave.com/online/action-games.jsp">Action</a>
+                    </li>
+                
+                    
+                    
+                    <li id="shooters">
+                        <a title="Shooting Games" href="http://www.shockwave.com/online/shooters-games.jsp">Shooters</a>
+                    </li>
+                
+                    
+                    
+                    <li id="car-racing">
+                        <a title="Car Racing Games" href="http://www.shockwave.com/online/car-racing-games.jsp">Car Racing</a>
+                    </li>
+                
+                    
+                    
+                    <li id="sports">
+                        <a title="Sports Games" href="http://www.shockwave.com/online/sports-games.jsp">Sports</a>
+                    </li>
+                
+                    
+                    
+                    <li id="family-kids">
+                        <a title="Family & Kids Games" href="http://www.shockwave.com/online/family-kids-games.jsp">Family & Kids</a>
+                    </li>
+                
+                    
+                    
+                    <li id="music-photos">
+                        <a title="Music & Photos" href="http://www.shockwave.com/online/music-photos-games.jsp">Music & Photos</a>
+                    </li>
+                
+                    
+                    
+                        
+                    
+                    <li id="dressup">
+                        <a title="Dress Up" href="http://www.shockwave.com/games/dress-up-games.jsp">Dress Up</a>
+                    </li>
+                
+            
+            
+        </ul>
+    </div>
+</div>
 
-	   
-		<div id="subNavMore" style="display:none;">
-			<ul>
-				
-					
-						
-						
-						<li id="time-management">
-							<a title="Time Management Games" href="http://www.shockwave.com/online/time-management-games.jsp">Time Management</a>
-						</li>
-					
-						
-						
-						<li id="card-board">
-							<a title="Card Games & Board Games" href="http://www.shockwave.com/online/card-board-games.jsp">Card & Board</a>
-						</li>
-					
-						
-						
-						<li id="matching">
-							<a title="Matching Games" href="http://www.shockwave.com/online/matching-games.jsp">Matching</a>
-						</li>
-					
-						
-						
-						<li id="adventure">
-							<a title="Adventure Games" href="http://www.shockwave.com/online/adventure-games.jsp">Adventure</a>
-						</li>
-					
-						
-						
-						<li id="action">
-							<a title="Action Games" href="http://www.shockwave.com/online/action-games.jsp">Action</a>
-						</li>
-					
-						
-						
-						<li id="shooters">
-							<a title="Shooting Games" href="http://www.shockwave.com/online/shooters-games.jsp">Shooters</a>
-						</li>
-					
-						
-						
-						<li id="car-racing">
-							<a title="Car Racing Games" href="http://www.shockwave.com/online/car-racing-games.jsp">Car Racing</a>
-						</li>
-					
-						
-						
-						<li id="sports">
-							<a title="Sports Games" href="http://www.shockwave.com/online/sports-games.jsp">Sports</a>
-						</li>
-					
-						
-						
-						<li id="family-kids">
-							<a title="Family & Kids Games" href="http://www.shockwave.com/online/family-kids-games.jsp">Family & Kids</a>
-						</li>
-					
-						
-						
-						<li id="music-photos">
-							<a title="Music & Photos" href="http://www.shockwave.com/online/music-photos-games.jsp">Music & Photos</a>
-						</li>
-					
-						
-						
-							
-						
-						<li id="dressup">
-							<a title="Dress Up" href="http://www.shockwave.com/games/dress-up-games.jsp">Dress Up</a>
-						</li>
-					
-				
-				
-			</ul>
-		</div>
-		
-		
-		
-		
-			                                                            <div class="bannerWrapper">        <div class="banner">           <script type="text/javascript" >
+        <div id="wrapper">
+            
+            
+
+
+
+
+                                                                <div class="bannerWrapper">        <div class="banner">           <script type="text/javascript" >
 btg.Controller.placeAd(
 {
 size:'728x90',
@@ -840,17 +894,17 @@ loadOrder:1
 } );
 </script>
         </div>    </div>
-		
-
-        
-        
 
 
-		
-		
-			<div id="mainContent" class="clearfix">
 
-				
+
+
+
+
+
+            <div id="mainContent" class="clearfix">
+
+                
 				
 				
 

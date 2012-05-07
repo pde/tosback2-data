@@ -1550,24 +1550,66 @@ a.shoppingListLink{
  * HTML ad styles
  * - END - 
  **/
-/** Link to mobile web - Start*/
-#mobileWebLinkContainer {
-    background: url("../img/mobile_web/background-1px.png") repeat-x;
-    text-align: center;
-    margin-top: -7px;
-    padding-top: 9px;
-    padding-bottom: 10px;
-}
-#mobileWebLinkContainer a#mobileWebLink {
-    color: #FFF;
-    font-family: verdana;    
-    font-weight: bold;
-    font-size: 12px;
-}
-/** Link to mobile web - End */
 
+ /********************  Redirect mobile version start here **********************/
+.redirectToMobContainer {	
+	border-bottom :3px solid #cccccc; 		
+}
+.redirectToMobContainer a{   
+   background-color: #ffffff;
+   font-family:verdana;
+   font-size:50px;
+   color:#3399fd;
+   display:block;
+   padding:17px 20px 18px 20px;
+   text-decoration:none;
+}
+.redirectToMobContainer a:hover{
+   text-decoration: underline;      
+}
+/********************  Redirect mobile version end here **********************/
 
-/*
+/********************  Error page starts here **********************/
+#errorPage{
+	margin-top:24px;
+	margin-bottom:150px;
+	min-width: 900px;
+}
+#errorPage .clearAll{
+	clear:both;
+}
+#errorPage .errorTxtContainer{
+	float:left;
+	width:500px;
+}
+#errorPage .errorTxtContainer .errorHead{
+	font-weight:bold;
+	margin-bottom:13px;
+	font-size:14px;
+	color: #000000;
+}
+#errorPage .errorTxtContainer .errorMsg{
+	font-size:14px;
+	margin-bottom:14px;
+	color: #000000;
+}
+#errorPage .errorTxtContainer p{
+    font-size:11px;
+    margin:0px;
+    margin-bottom:14px;
+    font-family: Verdana;
+    color: #000000;
+}
+#errorPage .errorTxtContainer a{
+	display:block;
+	font-size:11px;
+	margin-top:5px;
+}
+#errorPage .errorImgContainer{
+	float:right;
+	margin-right:40px;
+}
+/********************  Error page ends here **********************//*
 jake
 2009-01
 framework 10
@@ -3183,24 +3225,31 @@ framework 11
 .rightContent .prodRecsContainer .prodRecContainer .prodFamily {
 	color:#FF6600;
 	display:block;
-	margin-bottom:-0.104em;
     font-size:1.15em;
 	line-height:1.182em;
+	margin-top:5px;
+	margin-bottom: -0.104em;
 }
-	
+.rightContent .productsContainer .productContainer .regularPriceHead {
+    font-size: 11px;
+	color: #000000;
+}
+.rightContent .productsContainer .productContainer .zoom{
+	display:none;
+}
 .rightContent .productsContainer .productContainer .prodPriceFamily,
 .rightContent .prodRecsContainer .prodRecContainer .prodPriceFamily {
-		display:block;
-		color:#000;
-		margin-bottom:0.273em;
-        font-size:1.15em;
-		line-height:1.182em;
-	}
+    display:block;
+    color:#000;
+    margin-bottom:0.273em;
+    font-size:16px;
+	line-height:1.182em;
+	font-weight:bold;
+}
 
 .rightContent .productsContainer .productContainer .moreOptions,
 .rightContent .prodRecsContainer .prodRecContainer .moreOptions{
 	display:block;
-	color:#999;
     font-size:1.15em;
 	margin:0.26em 0;
 	margin-bottom:.75em;
@@ -4190,6 +4239,7 @@ framework 11
 	background-color:#FF0000;
 	margin:0 0 0.52em 0.52em;
 	position:relative;
+	z-index:2;
 }
 
 .rightContent .productsContainer .productContainer .productBtiBack {
@@ -4685,7 +4735,10 @@ div#prfinfo .btns {
 #slideshowCloseBtn:hover {
     background-position:-32px 0px;
 }
-
+#slideshowContainer .newImgLarge {
+    position: relative;
+    z-index: 99999;
+}
 #slideshowContainer .prodInfo{
     position:absolute;
     top:30px;
@@ -4724,9 +4777,28 @@ div#prfinfo .btns {
     line-height:1.08em;
 }
 
+#slideshowContainer .prodPriceMain .unitVal{
+    font-size: 16px
+}
+
+#slideshowContainer .familyContainer {
+	margin:1px 0px 1px 0px;
+}
+
 #slideshowContainer .prodFamily {
     display:block;
     color:#FF6600;
+	font-size:14px !important;
+}
+
+#slideshowContainer .prodPriceFamily {
+	font-size: 28px !important;
+	font-weight: bold;	
+}
+
+#slideshowContainer .regularPriceHead {
+	font-size: 14px;
+	margin: 10px 0px 3px 0px;
 }
 
 #slideshowContainer .dimensions {
@@ -4741,7 +4813,6 @@ div#prfinfo .btns {
 
 #slideshowContainer .moreOptions{
     display:block;
-    color:#999;
     font-size:1.15em;
     margin:0.26em 0;
     text-decoration:none;
@@ -5738,6 +5809,27 @@ padding:.729em 0 0 0.834em
     padding:0.73em 0.31em 0.63em 0.31em;
 }
 
+/* Home page shopping list banner */
+
+#learnMyShoppingList{
+  font-size:1.15em;
+}
+
+#learnMyShoppingListDivider{
+  margin-bottom:0.21em;
+}
+
+#learnMyShoppingList .gotoStoreImg{
+ margin:0 0.82em 0 1em;
+}
+
+#learnMyShoppingList .gotoStoreText{
+ margin-top:0.73em
+}
+
+
+/* Home page shopping list banner */
+
 .replaceFlashLeftArrow {
     background-image: url("../img/html_ad/html_ad_navigation_arrows.png");
     background-repeat: no-repeat;
@@ -5932,7 +6024,7 @@ CSS for product comparison
 }
 
 .productContainer .popupListener{
- width:13.25em;
+ width:12.25em;
 }
 
 #compare .rightContent .productsContainer .productContainer .cartContainer .linkContainer {
@@ -6826,13 +6918,12 @@ td.relatedarrowcell{ padding-top: 4px; }
     left:1.36em;
 }
 #popupContent .productContainer .moreOptions{
-    color:#999999;
     display:block;
     font-size:1.15em;
     margin:0.26em 0 0.75em;
 }
-#popupContent .productContainer .moreOptions a:hover {
-    text-decoration:none;
+#popupContent .productContainer .moreOptions:hover {
+    text-decoration:underline;
 }
 
 #popupContent .productContainerCategory  .listLink {
@@ -6874,13 +6965,20 @@ td.relatedarrowcell{ padding-top: 4px; }
     margin-bottom:-0.104em;
     font-size:1.15em;
     line-height:1.182em;
-}        
+	margin-top:5px;
+	margin-bottom: -0.02em;
+}   
 #popupContent .productContainerCategory  .prodPriceFamily {
     display:block;
     color:#000;
     margin-bottom:0.273em;
-    font-size:1.15em;
+    font-size:16px;
     line-height:1.182em;
+	font-weight:bold;
+}
+#popupContent .productContainerCategory  .regularPriceHead {
+    font-size: 11px;
+	color: #000000;
 }
 #popupContent .productContainerCategory .productBtiBackComp {
     background-color:#FF0000;
@@ -6921,32 +7019,43 @@ td.relatedarrowcell{ padding-top: 4px; }
     top:9.1em;
     z-index:10;
 }
-#prodInfoPopup .productContainer .nlpImage {
-    left:1.36em;
-    position:absolute;
-    top:9.45em;
-    z-index:10;
-}
-#categoryPage .productContainer .nlpImage {
+#miniPip .productContainer .nlpImage {
     left:1.66em;
     position:absolute;
     top:9.5em;
     z-index:10;
 }
-#prodInfoPopup .productContainer .newImgSmall {
+.productContainerPip .newImgSmall {
     position:absolute;
-    top:12.7em !important;
+    top:11.85em !important;
     z-index:10;
 }
-#categoryPage .productContainer .newImgSmall {
+#miniPip .productContainer .newImgSmall {
     position:absolute;
-    top:12.4em;
+    top:12.4em !important;
     z-index:10;
 }
+#miniPip .productContainerPip .newImgSmall {
+    position:absolute;
+    top:12.3em !important;
+    z-index:10;
+}
+#miniPip .productContainerPip .nlpImage {
+    left:1.3em;
+    position:absolute;
+    z-index:10;
+}
+#miniPip .productMoreoption .prodName {
+	margin-top:-0.13em;
+}
+
 .productContainer .popupImg {
     width:110px;
     height:110px;
     margin-bottom:10px;
+}
+.productContainerPip .popupImg {
+    margin-bottom:4px;
 }
 .productContainer .prodName {
     color:#000000;
@@ -6978,8 +7087,18 @@ td.relatedarrowcell{ padding-top: 4px; }
 .productContainer a:hover, .productContainer a:hover .troDate {
     text-decoration:none;
 }
-.productContainer .txtPriceFamily{
+.productContainerPip .txtPriceFamily{
     color:#000;
+	margin-top:5px;
+}
+.productContainerPip .prodPriceFamily{
+	font-size:16px !important;
+	font-weight:bold ;
+	margin-bottom: 4px;
+}
+.productContainerPip .regularPriceHeader{
+	font-size:11px;
+	color: #000;
 }
 .productContainer .prodNlpTroPrice {
     color:#CC0000;
@@ -7003,7 +7122,6 @@ td.relatedarrowcell{ padding-top: 4px; }
     line-height:1.2em;
 }
 .productContainer a.moreOptions {
-    color:#999999;
     display:block;
     font-size:1.15em;
     margin:0.26em 0 0.75em;
@@ -7023,18 +7141,21 @@ td.relatedarrowcell{ padding-top: 4px; }
     text-decoration:underline;
 }
 .productContainer  .perProduct{
-    font-size:11px;
     margin-left:-7px;
+	font-size:11px;
 }
 .parentContainer .prevPrice {
     margin-left:6px;
 }
-#categoryPage .buttonsContainer {
+#miniPip .buttonsContainer {
     width:98%;
 }
-#categoryPage .productBtiBack {
+#miniPip .productBtiBack {
     margin-top:-2px;
     width: 105px;
+}
+#miniPip .compare {
+	display:block !important;
 }
 /********************************************************
 ******************** irwShare.css ***********************
@@ -7122,7 +7243,13 @@ td.relatedarrowcell{ padding-top: 4px; }
     width:140px;
     background:url(../img/sharePluginArrow.png) no-repeat top left;
 }
-
+#pluginPopup .topArrow{
+    position:absolute;
+    top:-12px;
+    left:58px;
+    width:140px;
+    background:url(../img/sharePluginArrowUp.png) no-repeat top left;
+}
 /*email popup */
 #parentEmailContainer{
     display:none;
@@ -7352,7 +7479,7 @@ body#emailSharePageConfirm {
     width: 100%;
 }
 .shareMPAContainer #likeButton {
-    width: auto;
+    width: 85px;
 }
 .shareDiv{
     float:left !important;
@@ -7368,9 +7495,13 @@ body#emailSharePageConfirm {
 #shareButtonWrapper{
 	margin-right:20px;
 }
+.additionalMargin {
+	margin: 7px 0 7px 0;
+}
 /********************************************************
 ******************** irwShare.css ***********************
-********************************************************/@media screen and (-webkit-min-device-pixel-ratio:0) {
+********************************************************/
+@media screen and (-webkit-min-device-pixel-ratio:0) {
     div.buttonContainer a input { 
         height:22px; 
         margin:0; 
@@ -8545,6 +8676,9 @@ body#emailSharePageConfirm {
 }
 .rightInfoDiv .prodPriceFamily {
     padding-right:0.3126em;
+	margin-top:-4px;
+	font-weight:bold;
+	margin-bottom:18px;
 }
 .rightInfoDiv .prodPriceFamily span {
     font-size:1.15em;
@@ -8580,6 +8714,10 @@ body#emailSharePageConfirm {
     padding:0 0 0.3em 0;
     font-weight:normal;
 }
+.rightInfoDiv .regularPriceHead {
+	font-size: 14px;
+	color: #000000;
+}
 .rightInfoDiv .ikeaPrice {
     font-size:11px !important; 
     color:#000;
@@ -8601,12 +8739,18 @@ body#emailSharePageConfirm {
 .rightInfoDiv #famsection{
     color: #000; 
     font-size:11px;
-    padding-bottom:0.4em;
+	margin-top: 23px;
     clear:both !important;
+	margin-bottom: -3px;
 }
 .rightInfoDiv #famsection .ikeaFamilyCaps{
-    font-size:11px !important;
+    font-size:14px !important;
     color:#f60 !important;
+}
+.rightInfoDiv #famsection .ikeaFamilyPrice {
+	font-size: 42px;
+	font-style: bold;
+	color: #000000;
 }
 .rightInfoDiv #prfCharge{
     color:#000;
@@ -8645,41 +8789,86 @@ body#emailSharePageConfirm {
     width:100% !important;
 }
 
-/******************* ProductInfo PIP and Local Price *********************/
-div.buttonContainer a .buttonLeft_Secure{
-    display:inline;
-    padding:4px 3px 5px 0px;
-    background-repeat:no-repeat;
-    text-decoration:none;
+/******************* ProductInfo PIP and Local Price *********************//******************* More Option Start *********************/
+.moreOption {
+	margin-left:45px;
+	position: absolute;
+	top: 11.4em;
+	width:auto;
+	z-index:1;
 }
-div.buttonContainer a .buttonRight_Secure {
-    display:inline;
-    padding:4px 3px 5px 3px;
-    background-repeat:no-repeat;
-    text-decoration:none;
-} 
-div.buttonContainer a .buttonLeft_Secure{
-    background-position:0 0;
+.moreOption .prev{
+	margin-right:7px;
+	position:relative;
 }
-div.buttonContainer a .buttonRight_Secure {
-    background-position:-88px;
+.moreOption .next{
+	margin-left:10px;
+	position:relative;
 }
-div.buttonContainer a.blueButton .buttonLeft_Secure {
-    background-position:0 -132px;
+.moreOption .prev a {
+    background:url('../img/more_options/inactive_left.png') no-repeat;
+    width:24px;
+    height:24px;
+    position:absolute;
+    right:0;
+    z-index:10;	
 }
-div.buttonContainer a.blueButton .buttonRight_Secure {
-    background-position:0 -220px;
+.moreOption .next a {
+	background:url('../img/more_options/inactive_right.png') no-repeat;    
+    width:24px;
+    height:24px;
+    position:absolute;
+    left:0;
+    z-index:10;
 }
-div.buttonContainer a.blueButton_Secure .buttonLeft_Secure {
-    background-position:0 -132px;
+#popupContent .moreOption {
+	top: 11.7em;
+	z-index:999;
 }
-div.buttonContainer a.blueButton_Secure .buttonRight_Secure {
-    background-position:0 -220px;
+#popupContent .moreOption .prev a {
+    background:url('../img/more_options/hover_left.png') no-repeat;
 }
-div.buttonContainer a.blueButton_Secure .buttonLeft {
-    background-position:0 -132px;
+#popupContent .moreOption .next a {
+	background:url('../img/more_options/hover_right.png') no-repeat;    
 }
-div.buttonContainer a.blueButton_Secure .buttonRight {
-    background-position:0 -220px;
-} 
+#popupContent .moreOption .prev a:hover{
+    background:url('../img/more_options/mouseover_left.png') no-repeat;
+}
+#popupContent .moreOption .next a:hover{
+	background:url('../img/more_options/mouseover_right.png') no-repeat;    
+}
+.productContainerCategory  .moreOption {
+	top:10.5em;
+}
+.moreOption .prevDisabled{
+	margin-right:7px;
+	position:relative;
+}
+.moreOption .nextDisabled{
+	margin-left:10px;
+	position:relative;
+}
+.moreOption .prevDisabled a {
+    background:url('../img/more_options/inactive_left.png') no-repeat;
+    width:24px;
+    height:24px;
+    position:absolute;
+    right:0;
+    z-index:10;	
+}
+.moreOption .nextDisabled a {
+	background:url('../img/more_options/inactive_right.png') no-repeat;    
+    width:24px;
+    height:24px;
+    position:absolute;
+    left:0;
+    z-index:10;
+}
+#popupContent .moreOption .prevDisabled a {
+    background:url('../img/more_options/inactive_left.png') no-repeat;
+}
+#popupContent .moreOption .nextDisabled a {
+	background:url('../img/more_options/inactive_right.png') no-repeat;       
+}
+/******************* More Option End *********************/ 
 

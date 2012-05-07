@@ -1,0 +1,1606 @@
+var pending_action = '';
+var pending_action_form = '';
+var pending_div_name = '';
+var pending_error_div_name = '';
+var rate_response_text = '';
+var note_is_new = '';
+var save_note = '';
+var save_tags = '';
+var original_tag_count = 0;
+var community_user_id = '';
+var default_note = "Leave yourself a reminder, a tweak, an idea, or anything else related to this item.";
+var default_tags = "Separate each tag with a comma. If this is a brownie recipe, you might type: chocolate, dessert, Sue's party";
+
+var homepage_membermodule_template = new Template('<!--<div id="logged_in_user_img"><a href="#{profileUrl}"><img src="#{thumbnail}" id="thumbnailimg" alt="#{firstname}"  width="27" height="27" /></a></div>-->	<div id="logged_in_links"> <p class="welcome">Welcome, <a href="#{profileUrl}">#{displayName}</a></p> <p><a href="#{toolsUrl}">Tools</a> | <a href="#{collectionUrl}">Collections</a> | <a href="#{logoutUrl}">Sign Out</a></p>	</div> ');
+var homepage_membermodule_weddings_template = new Template('<!--<div id="logged_in_user_img"><a href="#{profileUrl}"><img src="#{thumbnail}" id="thumbnailimg" alt="#{firstname}"  width="27" height="27" /></a></div>-->	<div id="logged_in_links"> <p class="welcome">Welcome, <a href="#{profileUrl}">#{displayName}</a></p> <p><a href="#{toolsUrl}">Tools</a> | <a href="#{collectionUrl}">Collections</a> | <a href="#{logoutUrl}">Sign Out</a></p>	</div> ');
+var ribbon_membermodule_template = new Template('<span id="greeting">Hello, <a href="#{profileUrl}">#{displayName}</a></span> | <a href="/users/collections/#{displayName}">My Collections</a>|<a href="/account-dashboard">My Account</a>|<a href="#{logoutUrl}">Sign out</a>');
+var ribbon_membermodule_legacy_template = new Template('<span class="welcome">Welcome,</span> <a href="#{profileUrl}">#{displayName}</a> <a href="#{profileUrl}"><span class="ie_valign"></span><img id="thumbnailimg" src="#{thumbnail}" alt="" width="27" height="27" /><span class="ie_valign"></span></a> <a href="#{collectionUrl}">My Collections</a> | <a href="/account-dashboard">My Account</a> | <a href="#{logoutUrl}">Sign Out</a>');
+var ribbon_empty_template = new Template('<span><a onclick="modalBox(\'signinextended\', popup_login_url)">Sign In</a> | <a href="/portal/site/mslo/template.REGISTER/">Register Now</a></span>')
+var saved_msg_template = new Template('This was collected on #{savedDate}. <a href="#{collectionLink}">View Collections</a>');
+var hdr_saved_in_template = new Template('Saved in <a href="#{collectionLink}">My Collections</a>');
+var wedding_msg_template = new Template('<h3>#{wedFName}&#39;s Wedding</h3><p>#{wedDate}</p>');
+var wedding_msg_template = new Template('<h3>#{wedFName}&#39;s Wedding</h3><p>#{wedDate}</p>');
+var wedding_counter = new Template('<span class="count">#{wedDate}</span>DAYS');
+var wedding_msg = new Template('#{wedFName}\'s Wedding: <br>#{cfweddate}');
+var congratulation_message = new Template('Congratulations, #{wedFName}!')
+var login_status_module_template = new Template('<div class="community-module-signed-in" id="community-module-signed-in"><div class="community-module-signed-in-top"></div><h3>Hello, <a href="#{profileUrl}">#{displayName}</a>!</h3><a href="#{profileUrl}"><img alt="#{displayName}" src="#{thumbnail}" width="65"/></a><ul><li><a href="/portal/site/#{siteName}/template.MY_ACCOUNT?newsletterId=0">Sign up for free newsletters</a></li><li><a href="/account-dashboard">Update your account info</a></li></ul><div class="community-module-signed-in-bottom"></div></div>');
+
+function weddingDate(p_date)
+ {
+ var weddingDate;
+ 
+ weddingDate=new Date(p_date);
+ 
+ var today=new Date()
+ 
+ if (today.getMonth()==11 && today.getDate()>25)
+ 	weddingDate.setFullYear(weddingDate.getFullYear()+1)
+ 
+ var one_day=1000*60*60*24
+ 
+ 
+ var daysLeft = Math.ceil((weddingDate.getTime()-today.getTime())/(one_day));
+ 
+ if(daysLeft < 0)
+ 	daysLeft="0";
+ 
+ return daysLeft;
+}
+
+
+function processNoteAndTag() {
+	if (! $('engagement_content') ) {
+		if(!checkMaxLength.isMaxLengthOk('noteandtag'))
+			return false;
+	}
+	
+	note_is_new = '';
+	save_note = '';
+	save_tags = '';
+	
+	if(document.noteandtag.note.value.strip() == document.noteandtag.original_note.value.strip() && document.noteandtag.tags.value.strip() == document.noteandtag.original_tags.value.strip())
+
+		return false;
+
+	// tags
+	if(document.noteandtag.tags.value.strip() != document.noteandtag.original_tags.value.strip()) {
+		save_tags = 'true';
+	} 
+	if (document.noteandtag.original_tags.value.strip() != default_tags) {
+ 		original_tag_count = document.noteandtag.original_tags.value.strip().split(',').length;
+	}
+
+	// notes
+	if (document.noteandtag.original_note.value.strip() == default_note) {
+		note_is_new = 'true';
+	} 
+	if (document.noteandtag.note.value.strip() != document.noteandtag.original_note.value.strip()) {
+		save_note = 'true';
+	} 
+
+	processAction('noteandtag','noteandtag','noteandtag_message','noteandtag_message')
+
+}
+
+
+
+function processAction(action, formName, divName, errorDivName)
+
+{
+	if(action.indexOf('contest')<0) {
+		if (! $('engagement_content') ) {
+			if(!checkMaxLength.isMaxLengthOk(formName))
+				return false;
+		}
+	}
+	
+	if(login_status=='false')
+
+	{
+		pending_action = action;
+		pending_action_form = formName;
+		pending_div_name = divName;
+		pending_error_div_name = errorDivName;
+
+		modalBox('signinextended', popup_login_url);
+
+		//display login popup
+
+	}
+
+	else if(action.indexOf('contest')<0)
+	{
+		submitAjaxForm(action, formName, divName, errorDivName);
+		trackAction(action);
+
+	}
+	else
+	{
+		trackAction(action);
+	//	var contest_id = action.substring(action.indexOf('_')+1);
+	//	window.location.href='/portalext/contest/photo?contestId='+contest_id;
+	}
+
+
+}
+
+/*
+ * This function is used to distinguish genuine comment submits from page refreshes.
+ * Both submit the form but this one sets a flag first that's checked
+ * before the comment is saved in MSOCommunityAjaxDispatcher
+ */
+
+function processCommentSubmitAction(action, formName, divName, errorDivName) {
+	
+	$("submitToken").value='y'; // to distinguish this genuine comment submit from a page refresh
+	processAction(action, formName, divName, errorDivName);
+	
+}
+
+
+
+
+
+
+function paintLoggedIn()
+{
+	if (typeof(ww_domain) == 'undefined') {
+		ww_domain = "";
+	}	
+	if (typeof(weddate) == 'undefined') {
+		weddate = "";
+	}
+	var login_data = {siteName: site_name, firstName: firstname, displayName: displayname, thumbnail: thumbnailurl, profileUrl: cf_url + '/users/' + displayname, collectionUrl: cf_url + '/users/collections/' + displayname, toolsUrl: ww_domain + '/wedding/UserHome', logoutUrl: site_logout_url, activityUrl: cf_url + '/users/ratings/' + displayname, wedFName: firstname, wedDate: weddate};
+
+	if (typeof(email) == 'undefined') {
+		email = "";
+	}
+		
+    if( email !=null && email !=''){     	
+         	
+         	if($('_loaded2') && $('_loaded2').innerHTML !=null && $('_loaded2').innerHTML !='')
+         	{ matchNewsletter();}       
+    }
+	
+    if (site_name != 'mslo') {
+    	if(omniturePageName=='Homepage' && $('logged_in') ) {
+    		var lHtml = homepage_membermodule_template.evaluate(login_data);
+		
+    		if (typeof(site_name) != 'undefined' &&  site_name == 'ww' && (weddate == "")){
+    			displayname = displayname.truncate(19); /* not sure if this will update correctly */
+    			var login_data_home_ww = {firstName: firstname, displayName: displayname, thumbnail: thumbnailurl, profileUrl: cf_url + '/users/' + displayname, collectionUrl: cf_url + '/users/collections/' + displayname, toolsUrl: ww_domain + '/wedding/UserHome', logoutUrl: site_logout_url, activityUrl: cf_url + '/users/ratings/' + displayname, wedFName: firstname, wedDate: weddate};
+    			lHtml = homepage_membermodule_weddings_template.evaluate(login_data_home_ww);
+    		}	
+    		$('logged_in').update(lHtml);
+    		$('login_options').hide();
+    		$('logged_in').show();
+
+    	} else {
+    		var lHtml = ribbon_membermodule_legacy_template.evaluate(login_data);
+    		$('global_user_login_inner').update(lHtml);
+    	}
+	} else {
+    	var lHtml = ribbon_membermodule_template.evaluate(login_data);
+		$('masthead_hp_links').update(lHtml);
+		
+		if( $('community-module-signed-in')) {
+			lHtml = login_status_module_template.evaluate(login_data);
+			$('community-module-not-signed-in').hide();
+			$('community-module-signed-in').replace(lHtml);
+		}
+	}
+		
+/*	} */
+
+	if ( $('ww_welcome') && ! (weddate == "") )  {
+		// this is a weddings page and user has a wedding date; update custom msg in ribbon with wedding info
+		var wHtml = wedding_msg_template.evaluate(login_data);
+		$('ww_welcome').update(wHtml);
+
+	}
+
+	if( $('msw_planning_tools'))
+	{
+		if( weddate !="")
+		{
+			var weddate_left = weddingDate(weddate);
+			var login_dat = {wedFName:firstname, wedDate:weddate_left,cfweddate:weddate}
+			var counterHTML = wedding_counter.evaluate(login_dat);
+			var weddingMSGHTML = wedding_msg.evaluate(login_dat);
+			var congratsMSGHTML = congratulation_message.evaluate(login_dat);
+
+
+			if(weddate_left =="0")
+			{
+				$('congratulation_message').update(congratsMSGHTML);
+				$('tools_complete').show();
+				$('tools_logged_in').hide();
+				$('tools_logged_out').hide();
+			}
+			else
+			{
+				$('remaining').update(counterHTML);
+				$('loggedin_message').update(weddingMSGHTML);
+				$('tools_logged_in').show();
+				$('tools_logged_out').hide();
+				$('tools_complete').hide();
+			}
+
+		}
+		else
+		{
+				$('tools_logged_out').show();
+				$('tools_logged_in').hide();
+				$('tools_complete').hide();
+		}
+	}
+	
+	checkPhotoOwner();	
+	
+	if ( $('display_photo_detail')) {
+		$('comment_container').show();
+	} else {
+		startfb_timer();
+	}
+}
+
+
+function updateDashboardLinks() {
+
+	// set non-existent screen name if displayname is not set (i.e. not logged-in)
+	// cf links will then redirect to the login page
+	var scrn_name = (displayname == "" ? "xnsyfhdncjfhdyushdfnvjhdusfh" : displayname);
+	
+	if (omniturePageName=='Registration Confirmation Main' || omniturePageName=='Account Dashboard') {
+		if ($('dashboard_profile_link') != null) {
+			var html = $('dashboard_profile_link').innerHTML;
+			temp = html.split('profileLink'); // profileLink is a placeholder for the actual link url
+			//$('dashboard_profile_link').innerHTML = temp[0] + cf_url + '/users/' + scrn_name + temp[1];
+			$('dashboard_profile_link').innerHTML = temp[0];
+		}
+	}	
+	if (omniturePageName=='Account Dashboard') {
+		if ($('dashboard_wallpaper_link') != null) {
+			html = $('dashboard_wallpaper_link').innerHTML;
+			temp = html.split('wallpaperLink'); // wallpaperLink is a placeholder for the actual link url
+			//$('dashboard_wallpaper_link').innerHTML = temp[0] + cf_url + '/portal/site/' + site_name + '/template.MY_ACCOUNT' + temp[1];
+			$('dashboard_wallpaper_link').innerHTML = temp[0];
+		}
+	}
+	
+}
+Event.observe(window,'load', updateDashboardLinks);
+
+
+
+
+function postLoginAction()
+{
+
+	paintLoggedIn();
+
+	if(pending_action.indexOf('contest')>-1)
+	{
+		trackAction(pending_action);
+	}
+	else if (pending_action != 'rate' && pending_action != 'recommend') {
+		if ( $('collect-article') || ( $('engagement_content')) ) {
+			if(navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Apple') > 0)
+				setTimeout('checkSaved()',600);
+			else
+				checkSaved();
+		}
+	}
+	else if (pending_action != 'recommend') {
+		processAction(pending_action, pending_action_form, pending_div_name, pending_error_div_name);
+	} else {
+		oneClickRecommend();
+	}
+
+	trackAction('login');
+
+	// remove glitter painting upload filter
+	if ($('signIn_filter') != null) {
+		signInFilter();
+	}
+}
+
+
+
+
+
+function paintError(div,error)
+
+{
+
+	var display = error.substring(6);
+
+	$(div).update(display);
+
+}
+
+
+function formToQueryString(formName)
+{
+
+	var queryStr = '';
+
+	if (! $(formName))
+		return queryStr;
+		
+	var inputs = $(formName).getElements();
+
+	for(i=0;i<inputs.length;i++)
+	{
+
+		try
+		{
+			var name = inputs[i].name;
+			var value = inputs[i];
+			var type = inputs[i].type;
+			var valText = value.value;
+			if(type!='checkbox' || (type=='checkbox' && inputs[i].checked==true))
+			{
+				queryStr += name+'='+valText+'&';
+			}
+
+
+		}
+		catch(error)
+		{
+			//alert(error);
+		}
+
+	}
+
+
+	return queryStr;
+
+}
+
+
+
+function submitAjaxForm(action, formName, divName, errorDivName) {
+	
+	var ajax_url = '/portalext/ajax/community';
+	
+	if (action == 'newsletterhub') {
+		ajax_url = '/portalext/ajax/community-nl';
+	}
+	
+	var formHash = formToQueryString(formName);
+	if (typeof(origin) == 'undefined') {
+		origin = '';
+	}
+	
+	var userHash = $H({userId: userid, communityUserId: community_user_id, screenName: displayname, contentId: contentId, contentType: contentType, origin: origin, title: title, shortTitle: shortTitle, url: itemUrl, thumbnail: thumbnail, shortDescription: shortDescription, isNoteNew: note_is_new, saveNote: save_note, originalTagCount: original_tag_count, saveTags: save_tags});
+	var queryString= formHash + userHash.toQueryString() ;
+
+	new Ajax.Request(ajax_url, {
+  		method: 'post',
+  		parameters: queryString,
+
+ 		onComplete: function(transport){
+			if (pending_action == 'rate') {
+				checkSaved();
+				rate_response_text = transport.responseText;
+
+				// collect.toggle('btn_collect_collect','collect-rate');
+				if (! $('engagement_content') ) {
+					collect.close();
+				} else { // rating is handled through oneClickRecommend for Article2
+					// look in the transport.responseText for the rating count
+				}
+
+			} else {
+				if(divName!='') {
+
+					if (action == 'comments') 
+					{
+					
+						var hasad = 'false';
+						if($('comments-adcontainer'))
+						{
+							var comments_ad = $('comments-adcontainer').innerHTML;
+							hasad = 'true';
+						}
+
+						
+						if (! $('engagement_content')) {
+							$(divName).update(transport.responseText);							
+						} else {
+							$(divName).replace(transport.responseText);
+						}
+
+						if($('comments-adcontainer') && hasad=='true')
+						{
+							var a_index = comments_ad.indexOf('<a');
+							var no_script_index = comments_ad.indexOf('<noscript>');
+							comments_ad = comments_ad.substring(a_index,no_script_index);
+							$('comments-adcontainer').innerHTML = comments_ad;
+						}
+
+						if (! $('engagement_content') ) {
+							comments.init();
+							checkMaxLength.init();
+						} else {
+							// set comment count in engagement toolbar
+							engagement_toolbar.update_comment_count( $('comment-count').innerHTML );
+							engagement_toolbar.setup_onclicks();
+							// enable selective comment delete
+							enableCommentDelete();
+
+						}
+
+					}
+					else if(action == 'photoComments'){
+						setupSessionToken(transport.responseText);
+						ugcInsertComments(transport.responseText, divName);
+						$('comment').value = '';
+						$('add-comment-hdr').style.display = 'none';
+						$('toggle-comment-hdr').className = '';
+					}
+					else if(action == 'fetchUserTags')
+					{   //show the return sting with all user tags in the div						
+						$(divName).update(transport.responseText);		
+					}
+					else 
+					{ 
+						if (action=='noteandtag') 
+						{
+							if (save_note == 'true') {
+								document.noteandtag.original_note.value = document.noteandtag.note.value;
+							} else if (save_tags = 'true') {
+								document.noteandtag.original_tags.value = document.noteandtag.tags.value;
+							}
+						}
+						
+						 if (! $('engagement_content') ) {
+						 	collect.close();
+						 } else {
+						 	engagement_toolbar.close_all_drawers();
+						 	
+						 }
+					}
+
+				}
+
+			}
+
+ 		},
+
+		onException: function(req,exception) {
+			//alert("Sorry, your request could not be performed. \n\n" + exception.message);
+			//return true;
+		},
+
+  		onFailure: function(transport){
+  			//alert('failure');
+  			//alert(transport.responseText);
+  		}
+
+  		});
+
+}
+
+// this is used for /users page only
+function submitAjaxFormForUser(action, formName, divName, errorDivName) {
+	
+	var ajax_url = '/portalext/ajax/community';		
+	var formHash = formToQueryString(formName);
+	var userHash = $H({action:action});
+	var queryString= formHash + userHash.toQueryString() ;
+
+	new Ajax.Request(ajax_url, {
+  		method: 'post',
+  		parameters: queryString,
+
+ 		onComplete: function(transport)
+ 		{
+		 if(action == 'fetchUserTags')
+			{   //show the return sting with all user tags in the div						
+						$(divName).update(transport.responseText);		
+			}
+		},
+
+		onException: function(req,exception) 
+		{
+			//alert("Sorry, your request could not be performed. \n\n" + exception.message);
+			//return true;
+		},
+
+  		onFailure: function(transport)
+  		{
+  			//alert('failure');
+  			//alert(transport.responseText);
+  		}
+
+  		});
+
+}
+
+
+
+
+function setupSessionToken(commentsJSONtxt)
+{
+	commentsarray = eval('('+commentsJSONtxt+')');
+	document.commentsform.submited_session_token.value = commentsarray[0]['currentToken'];
+}
+
+
+function submitPhotoReport(mediaId, reason)
+
+{
+	var url = '/portalext/ajax/community';
+	var userHash = $H({action: 'reportPhoto', mediaId: contentId, screenName: displayname, reason: reason });
+	var queryString = userHash.toQueryString();
+	new Ajax.Request(url, {
+
+  		method: 'post',
+
+  		parameters: queryString
+
+  		});
+
+}
+
+
+
+function submitReport(commentId, reason)
+
+{
+	var url = '/portalext/ajax/community';
+	var userHash = $H({action: 'report', userId: userid, commentId: commentId, reason: reason });
+	var queryString = userHash.toQueryString();
+	new Ajax.Request(url, {
+
+  		method: 'post',
+
+  		parameters: queryString
+
+  		});
+
+}
+
+
+function deleteCmnt(commentId) {
+	
+	var url = '/portalext/ajax/community';
+	var userHash = $H({action: 'deleteComment', userId: userid, screenName: displayname, communityUserId: community_user_id, commentId: commentId, contentId: contentId});
+	var queryString = userHash.toQueryString();
+
+	new Ajax.Request(url, {
+
+  		method: 'post',
+
+  		parameters: queryString,
+
+ 		onComplete: function(transport){
+
+			submitAjaxForm('comments','commentsform','comments','');
+
+		},
+
+		onException: function(req,exception) {
+			//alert("Sorry, your request could not be performed. \n\n" + exception.message);
+			//return true;
+		},
+
+  		onFailure: function(transport){
+  			//alert('failure');
+  			//alert(transport.responseText);
+  		}
+
+  		});
+	
+}
+
+
+
+
+function save() {
+
+	if ($$('.howto').length > 0) {
+		title = $$('#article_title')[0].innerHTML;
+	}
+	
+	if(login_status=='false') {
+		pending_action = 'save'
+		modalBox('signinextended', popup_login_url);
+		return;
+	}
+
+	if ( !($('article_ratings_saved') && !$('article_ratings_saved').empty()))
+		trackAction('save');
+
+	// tagnote will NOT have a class on it if item is saved
+  	if ($('engagement_content') ) {
+		if ($j('#tagnote').className!="") { 
+			trackAction('save');
+		}
+	}
+
+	if ( $('article_ratings_saved') && !$('article_ratings_saved').empty()) { //fix
+		if($$('body.package #package_slideshow.menus').length > 0) {
+		
+		}
+		else {
+		// already saved
+		  collect.toggle('btn_collect_collect','collect-labelnote'); // open or close note & tag
+		  window.setTimeout( 'trackAction(\'noteandtagtab\')',500);
+		}
+
+	} else {
+
+		var ajax_url = '/portalext/ajax/community';
+		var userHash = $H({action: 'save', contentId: contentId, userId: userid, communityUserId: community_user_id, screenName: displayname, contentType: contentType, title: title, shortTitle: shortTitle, url: itemUrl, thumbnail: thumbnail, shortDescription: shortDescription, peId: savedCheckPE });
+		var queryString = userHash.toQueryString();
+
+	  	if ($('engagement_content')) {
+	  		engagement_toolbar.savetag.add_saving_highlight();
+	  	}
+		
+		new Ajax.Request(ajax_url, {
+
+  			method: 'post',
+
+  			parameters: queryString,
+
+			onComplete: function(transport) {
+
+			  	if (! $('engagement_content') ) {
+					updateSavedStatus(transport,'false'); // extract saved date and show saved msg
+				  	if($$('body.package #package_slideshow.menus').length == 0) {
+					  	collect.toggle('btn_collect_collect','collect-labelnote'); // slider stuff & color changes
+					 }
+				} else {
+					engagement_toolbar.savetag.set_saved();
+					engagement_toolbar.currentaction='#save';
+					engagement_toolbar.open_drawer( $j('#engagement_save') );
+				}
+
+	  		}});
+	}
+
+}
+
+
+
+function ratePhoto(value) {
+
+	if(login_status=='false') {
+		pending_action = 'ratephoto'
+		modalBox('signinextended', popup_login_url);
+		return;
+	}
+	
+    var getStars = $("rating_container");
+    if($(getStars)){
+        $(getStars).style.display = "none";
+    	$("rating_saving").style.display = "block";
+	}
+
+	var ajax_url = '/portalext/ajax/community';
+	var userHash = $H({action: 'ratephoto', contentId: contentId, communityUserId: community_user_id, screenName: displayname, contentType: contentType, ratevalue: value});
+	var queryString = userHash.toQueryString();
+	new Ajax.Request(ajax_url, {
+
+		method: 'post',
+		parameters: queryString,
+		onComplete: function(transport) {
+
+			respTxt = transport.responseText;
+			if (respTxt.indexOf('success') > -1) {
+				freezePhotoRatings(value);
+			} 
+			$("rating_saving").style.display = "none";
+			$("rating_container").style.display = "block";
+
+		},
+
+		onException: function(req,exception) {
+			return false;
+		},
+
+  		onFailure: function(transport){
+			return false;
+  		}
+
+
+
+
+  	});
+
+}
+
+
+
+function oneClickRecommend() {
+
+	if(login_status=='false') {
+		pending_action = 'recommend'
+		modalBox('signinextended', popup_login_url);
+		return;
+	}
+
+	engagement_toolbar.recommend.switch_text();
+
+	// engagement-recommend will NOT have a class on it if item is saved
+  	if ($('engagement_content') ) {
+		if ($j('#engagement-recommend a').className!="") {
+			trackAction('oneClickRecommend');
+		}
+	}
+	
+	var ajax_url = '/portalext/ajax/community';
+	var userHash = $H({action: 'rate', contentId: contentId, userId: userid, communityUserId: community_user_id, screenName: displayname, contentType: contentType, title: title, shortTitle: shortTitle, url: itemUrl, thumbnail: thumbnail, shortDescription: shortDescription, peId: savedCheckPE, article2_rating01: '1' });
+	var queryString = userHash.toQueryString();
+	new Ajax.Request(ajax_url, {
+
+		method: 'post',
+		parameters: queryString,
+		onComplete: function(transport) {
+
+			checkSaved(); // to re-populate engagement toolbar
+			engagement_toolbar.recommend.fade_close();
+
+			return recommendedCount; 
+  		},
+
+		onException: function(req,exception) {
+			return false;
+		},
+
+  		onFailure: function(transport){
+			return false;
+  		}
+
+
+
+
+  	});
+
+}
+
+
+
+function updateSavedStatus(transport, repaint) {
+
+	var respText = transport.responseText;
+	var searchtxt = 'item-saved-on:';
+	indx = respText.indexOf(searchtxt);
+	var stopIndx = respText.indexOf('<', indx);
+	savedDateText = respText.substring(Number(indx) + Number(searchtxt.length), Number(stopIndx));
+	var ciIndex = respText.indexOf('item-updated');
+
+	if (ciIndex > 0) {
+
+		if(repaint=='true') {
+			if (! $('engagement_content') ) {
+				var links_ad = $('collect-links-ad').innerHTML;
+				if (typeof($('option_print')) != 'undefined') {
+					var print_link = $('option_print').innerHTML;
+				}
+				var email_link = $('option_email').innerHTML;
+
+				$('collect-article').replace(transport.responseText);
+
+				if (typeof($('option_print')) != 'undefined') {
+					$('option_print').innerHTML = print_link;
+				}
+				
+				$('option_email').innerHTML = email_link;
+
+				var a_index = links_ad.indexOf('<a');
+				a_index = (a_index == -1) ? (links_ad.indexOf('<A')) : (a_index);
+
+				var no_script_index = links_ad.indexOf('<noscript>');
+				no_script_index = (no_script_index == -1) ? (links_ad.indexOf('<NOSCRIPT>')) : (no_script_index);
+
+				links_ad = links_ad.substring(a_index,no_script_index);
+
+				$('collect-links-ad').innerHTML = links_ad;
+				
+			} else {	
+				// new engagement toolbar
+				var print_link = $('engagement-print').innerHTML;
+				var email_link = $('engagement-email').innerHTML;
+				// save recently refreshed comment count
+				
+				$('engagement_content').replace(transport.responseText);
+
+				$('engagement-print').innerHTML = print_link;
+				$('engagement-email').innerHTML = email_link;
+
+				// don't know about saved status yet; update that later
+				engagement_toolbar.update_state(false, $('is-recommended').innerHTML, $('recommended-count').innerHTML);
+				engagement_toolbar.update_comment_count( $('comment-count').innerHTML);
+				engagement_toolbar.setup_onclicks();
+
+			}
+		}
+
+		if (savedDateText.length > 0) 		{
+			var savedinData = {collectionLink: cf_url + '/users/collections/' + displayname};
+			var savedin_html = hdr_saved_in_template.evaluate(savedinData);
+
+			if( $('article_ratings_saved')) {
+
+				if ( $('article_ratings_saved').innerHTML.indexOf('Saved in') == -1 ) {
+					$('article_ratings_saved').update(" | " + savedin_html);
+				}
+
+			} else if (! $('engagement_content')) {
+				if (typeof($('article_title')) != 'undefined') {
+				new Insertion.After($('article_title'), '<div id="article_ratings"><p><span id="article_ratings_saved">' + savedin_html + '</span></p></div>');
+				}
+			}
+
+			if ( $('engagement_content') ) {
+				engagement_toolbar.savetag.set_saved();
+			} else {
+				if ($$('body.package #package_slideshow.menus').length > 0) {
+				
+				}
+				else {
+					$('btn_collect_collect').update('label & note');
+				}
+			}
+		}
+
+	} else {
+		// this is a photo page
+		if (respText.indexOf("userPhotoRating:") > -1) {
+			freezePhotoRatings(respText.substring(respText.indexOf(":") + 1));
+			if (pending_action == 'ratephoto') {
+				pending_action = ''; // user has already rated, cancel his rate request
+			}	
+		}
+	}
+
+	if (! $('engagement_content')) {
+		collect.init();
+	}
+
+}
+
+
+
+function freezePhotoRatings(value) {
+
+	if ("12345".indexOf(value) > -1 && value != '') {
+		var getStars = $("rating_container");
+	    var applyToLis = getStars.getElementsByTagName("li");
+		for(i=0; i<applyToLis.length; i++) {
+	    	applyToLis[i].style.display = "none";
+	    }
+	    getStars.className = ("rated-at-" + value);
+	}
+}
+
+
+function checkSaved() {
+
+	var ajax_url = '/portalext/ajax/community';
+	var paramHash = $H({action: 'checksaved', userId: userid, communityUserId: community_user_id, screenName: displayname, contentId: contentId, contentType: contentType, peId: savedCheckPE, origin: origin });
+	var queryString = paramHash.toQueryString();
+
+	new Ajax.Request(ajax_url, {
+
+  		method: 'post',
+  		parameters: queryString,
+ 		onComplete: function(transport){
+
+		  updateSavedStatus(transport,'true');
+		  
+		  if(pending_action!='' && pending_action != 'save' && pending_action != 'rate') {
+			processAction(pending_action, pending_action_form, pending_div_name, pending_error_div_name);
+
+		  } else if (pending_action=='save') {
+			if ( !($('article_ratings_saved') && !$('article_ratings_saved').empty()))
+					save();
+			pending_action = '';
+ 		  } else if (pending_action == 'rate') {
+			pending_action = '';
+		  } 
+		},
+
+  		onFailure: function(req,response){
+  		//	alert('failure');
+  		//	alert(response.responseText);
+  		},
+	onException: function(req,exception) {
+		//	alert("Exception in checkSave() for query: " +queryString + " :" + exception.message );
+		//	return true;
+		}
+  		});
+
+}
+
+
+
+function getCookieData() {
+
+
+	var ajax_url = '/portalext/cookiedecrypt';
+
+	new Ajax.Request(ajax_url, {
+  		method: 'post',
+ 		onComplete: function(transport){
+
+ 			var respText = transport.responseText;
+ 			if(respText.indexOf("|")>-1)
+ 			{
+
+	 			var pairs = respText.split("|");
+
+				for(i = 0; i < pairs.length; i++){
+
+					var pair = pairs[i];
+					var name = pair.substring(0,pair.indexOf("="));
+					var value = pair.substring(pair.indexOf("=")+1);
+
+					if(name=='displayname')
+						displayname = value;
+					else if(name=='thumbnailurl')
+						thumbnailurl = value;
+					else if(name=='firstname')
+						firstname = value;
+					else if(name=='userid')
+						userid = value;
+					else if(name=='lastname')
+						lastname = value;
+					else if(name=='weddate')
+						weddate = value;
+					else if(name=='groups')
+						groups = value;
+					else if(name=='email')
+						email= value;	
+					else if(name=='community_user_id')
+						community_user_id=value;
+					else if(name=='avatar')
+						avatar= value;	
+					else if(name=='wallpaper')
+						wallpaper=value;
+				}
+
+				login_status='true';
+				setOmnitureVar();
+				paintLoggedIn();
+				
+				return true;
+			}
+
+
+
+ 		}});
+
+ }
+
+
+function checkPhotoOwner() {
+	
+	if ($('display_photo_detail')) {
+		if (displayname != '' && displayname == owner) {
+			
+			// fetch current meta-data
+			var ajax_url = '/portalext/ajax/community';
+			var paramHash = $H({action: 'photometa', mediaId: contentId});
+			var queryString = paramHash.toQueryString();
+
+			new Ajax.Request(ajax_url, {
+
+		  		method: 'post',
+		  		parameters: queryString,
+		 		onComplete: function(transport){
+
+					var meta = transport.responseText; 
+				
+					if (meta) {
+						meta = eval('('+meta+')');
+						$j('.form_row input, .form_row select, .form_row textarea').each(function() {
+							var theKey = $j(this).attr("id");
+							var theVal = meta[theKey];
+							$j(this).val(theVal);
+							});
+					}
+					
+					$j('#display_photo_info_off').hide();
+					$j('#display_photo_info').show();
+					$j('#detail_hdr').hide();
+					$j('#detail_hdr_off').show();
+					checkPhotoMetadataUpdate();
+						
+				},
+
+		  		onFailure: function(req,response){
+		  		//	alert('failure');
+		  		//	alert(response.responseText);
+		  		},
+		  		onException: function(req,exception) {
+				//	alert("Exception in checkSave() for query: " +queryString + " :" + exception.message );
+				//	return true;
+				}
+		  	});
+			
+			
+		}
+	}
+		
+}
+
+
+
+function checkPages(){
+	if(omniturePageName=='Homepage' || omniturePageName=='recipefinder' || omniturePageName=='mostpopular' || omniturePageName=='Most Popular Results' ) {
+
+		paintLoggedIn();
+
+	}
+
+	//processAction
+
+	// make sure we're on a landing page before calling checkSaved
+
+	if ( $('collect-article') ) {
+
+		setTimeout('checkSaved()',350);
+
+		// make sure the landing page supports comments before fetching them
+		if ( $('commentform') ) {
+			submitAjaxForm('comments','commentsform','conversation-container','');
+		}
+	}
+
+	// check if on a page with the new engagement toolbar
+	if ( $('engagement_content') ) {
+
+		setTimeout('checkSaved()', 350);
+
+		if ( $('commentsform') ) {
+			submitAjaxForm('comments','commentsform','comments','');
+
+		}
+	}
+	
+	// check if we're on a photo detail page 
+	if ( $('display_photo_detail')) {
+		savedCheckPE = '';
+		origin = '';
+		setTimeout('checkSaved()', 350);
+		//checkPhotoMetadataUpdate();
+		
+		
+		processAction('photoComments','commentsform','comments_placeholder','');
+	}
+
+}
+function checkPhotoMetadataUpdate(){	
+	if( window.location.href.indexOf('up=mt') > 0){
+		document.getElementById('validate_ok').innerHTML = 'Congratulations your photo has been successfully updated.';
+		$j('#message-congrats').show();	
+	}else if(window.location.href.indexOf('up=1') >0){
+		$j('#message-tellmore').show();
+	}
+}
+
+function enableCommentDelete() {
+	if (displayname != "") {
+		$j(".report").filter("."+displayname).hide();
+		$j(".delete").filter("."+displayname).show();
+	}
+}
+
+
+//jliu==>>> added on 07/09/2008 for newsletter sign up project
+
+/*
+function readNewsletterhubCookie(){
+
+   var name='msonewsletterhub';
+   var ca = document.cookie.split(';');
+   var nameEQ = name + "=";
+   var c='';
+      
+   for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+				
+		while(c.charAt(0)==' ')
+		c = c.substring(1,c.length);
+		
+		if(c.indexOf(nameEQ) == -1)continue;
+		
+		c=c.substring(nameEQ.length, c.length);
+		
+		if(c.indexOf('newsletterhub_validpwd=false') > -1){
+		   	 newsletterhub_validpwd='N';	   	 
+		   	 		   
+	         $("_loaded2").innerHTML='stop';
+	  	  	 $("_loaded2").style.display='none';    		 
+     	     
+     	     document.newsletter_form.password.value='';     	      
+		  	   	    
+		 }
+		 if(c.indexOf('newsletterhub_validpwd=true') > -1)
+		  { 
+		     newsletterhub_validpwd='Y';     
+		    
+		  }
+		 
+	}
+	
+		
+	
+	if(newsletterhub_validpwd==null || newsletterhub_validpwd=='')
+	newsletterhub_validpwd='N';
+	
+	
+	
+	return newsletterhub_validpwd;
+	   
+ }
+ 
+ **/
+
+
+function closeMsg(){ 
+  quicknews.closeflag = 'true';
+  quicknews.hideall();
+  $('errorcontainer').innerHTML = '';
+  $('newsletterhub_loaded').value='NO';  
+  
+  $("_source2").innerHTML='email';
+  $("_source2").style.display = 'none';
+  $("_loaded2").innerHTML='begin';
+  $("_loaded2").style.display = 'none';
+    
+  //alert(" closeMsg: before call matchNewsletter");
+ 	  	matchNewsletter();
+ 
+  
+}
+
+/**
+function requestPWD(){
+  var pwdurl='/portal/site/mslo/template.FORGOT_PASSWORD';
+  var caller=document.newsletter_form.caller.value;
+  var callerpage=document.newsletter_form.callerpage.value;
+    
+  pwdurl +='/?caller='+caller+'&callerpage='+callerpage;
+  
+  
+  window.location.href =pwdurl;
+}
+**/
+
+
+function signRegister(){
+
+$("username").value=$("emailaddrloggedout").value;	
+
+var register_link='/portal/site/mslo/template.REGISTER/';
+if (site_name == "bs")
+	register_link='/portal/site/bs/template.REGISTER/';
+
+if (site_name == "ww")
+	register_link='/portal/site/ww/template.REGISTER/';
+var register_url = register_link;
+
+	var formName="newsletter_form"; 	 
+    var inputs = $(formName).getElements();	
+    var queryStr='';
+    var register_query=''; 
+    var register_email_name='confirmEmail';  
+	var newsletterId='';		
+
+       
+	for(i=0;i<inputs.length;i++)
+	{
+		try
+		{
+			var name = inputs[i].name;
+			var value = inputs[i].value;			
+			var type = inputs[i].type;
+			if(value ==null) value='';
+		 	   
+		    if(type !='checkbox' && (name=='source' || name=='caller' || name=='callerpage' || name=='logon'))
+			{
+			    if(name=='logon')	//'emailaddrloggedin or emailaddrloggedout' is the name of email input box				
+				{						     
+			     if(doEmailFormatCheck(value))		     		          		
+			     	queryStr +=register_email_name +'='+value+'&';			          		   
+			 	}else{    	
+					queryStr += name+'='+value+'&';
+				}
+			}
+			
+			if(type=='checkbox' && inputs[i].checked==true)
+			{   
+			  
+			        if(register_query==null || register_query==''){
+			            register_query ='newsletterId='+value;
+			        }else{register_query += '|'+value;}	
+			   		
+			}			 
+			
+						
+			          					          		      				
+			
+		}catch(error)
+		{
+			//alert(":::err :"+error);
+		}
+		
+		
+    }
+      
+		
+		 register_url +='?rsc=nloi&'+queryStr+register_query;		 
+		 window.location.href =register_url;
+   
+}
+
+function doEmailFormatCheck(p_email)
+{ 
+  if (p_email=='')
+  { 
+       return false;  
+  }
+  else if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(p_email)== false)
+  { 
+       return false;  
+  }
+  else
+  {
+      return true;
+  }
+} 
+
+function matchNewsletter()  
+{
+          
+    var newsletterhub_loaded = $('newsletterhub_loaded').value;     
+    if(newsletterhub_loaded=='undefine' || newsletterhub_loaded==null)
+    { newsletterhub_loaded =''; }  
+   
+    var v_email='';
+	 
+	 var callerpage=$('callerpage').value;
+	 if(callerpage==null || callerpage=='')
+	 callerpage=$('subchannel').value;
+	 
+	 if(callerpage==null)callerpage='';
+	 	 
+	 var caller=window.location.href;
+   	 var urlflag = 'false';
+   	 
+   	 if(caller.indexOf("?") !=-1 && urlflag == 'false')
+   	   caller=caller.substring(0,window.location.href.indexOf("?")); 
+   	    	    	  	 
+     if(caller.indexOf("/portal/site/mslo/menuitem.") !=-1 ){
+   	        caller=caller.substring(0,caller.indexOf("/portal/site/mslo/menuitem.")+1);   	        
+   	        caller=caller+callerpage;
+   	        urlflag = 'true';
+   	        //window.location.href=caller; 
+   	  	        
+   	      
+   	 }
+   	  
+   	 if(caller.indexOf("?") !=-1 && urlflag == 'false'){
+   	   caller=caller.substring(0,window.location.href.indexOf("?"));  
+   	  }
+   	  	 
+   	
+   	 $('caller').value=caller;   
+		 
+	 var _div_loaded='<div id="_loaded" style="display: none;">stop</div>';	 
+	           
+     v_email=email;
+     if(v_email==null) v_email='';     
+     $('username').value=v_email;	 
+	 
+	var ajax_url = '/portalext/ajax/community-nl';	
+	var formName="newsletter_form";
+	var inputs = $(formName).getElements();
+    var query=''; 
+		 
+	 for(i=0;i<inputs.length;i++)
+	 {
+	 		try
+	 		{
+	 			var name = inputs[i].name;
+	 			var value = inputs[i].value;
+	 			 			
+	 			if(value ==null) value='';	 		 
+	 		    
+	 			query += name+'='+value+'&';	 				
+	 		    	 			
+	 		}catch(error){					
+				//alert(":::err :"+error);
+			}
+	  }
+    
+      
+	new Ajax.Request(ajax_url, {
+
+  		method: 'post',
+
+  		parameters: query,
+
+ 		onComplete: function(transport){ 
+ 			    		    
+ 		    var txt = transport.responseText;		    
+ 		    //alert(":::_response_txt : "+txt); 
+ 		     quicknews.loginflag = login_status;
+ 		     
+ 		     
+ 		     if(quicknews.loginflag == 'undefined' || quicknews.loginflag == null) quicknews.loginflag='false';
+ 		     
+ 		     if(txt != null){		         
+     	         
+     	         $('newsletterhub_loaded').value='YES'; 		     
+ 		         $("_loaded2").innerHTML='stop';
+     	 		 $("_loaded2").style.display='none';  
+ 		     }
+ 		     
+ 		     if(txt.indexOf(_div_loaded)>-1){
+ 		         $('server_loaded').value='NO';  
+ 		         quicknews.loadflag = 'false';
+ 		         
+     	         $("errorcontainer").innerHTML='';
+     	         $("errorcontainer").style.display='none';
+     	         //quicknews.hideall();     	           	         
+     	         //quicknews.changestate('thanksfinal','');
+     	         quicknews.switch_tab('1');
+     	          	         
+     	         if(quicknews.closeflag == 'true'){     	             
+     	           // $('newsquicktab1').hide();     
+     	           // $('newsquicktab2').show();    	            
+     	         	quicknews.switch_tab('2');	         
+     	       	         	  	         	  
+     	         }
+     	         
+				 			
+ 		     }
+ 		     
+ 		     if(txt.indexOf(_div_loaded)==-1){ 
+			  quicknews.loadflag = 'true';
+			  quicknews.finalcloseflag = 'false';	
+			  $('server_loaded').value='YES';		  
+			  $("checkbox_container").innerHTML=txt; 
+ 		    
+ 		         //$("newsquicktab2").hide(); 
+     	         //$("newsquicktab1").show();
+     	             	         
+     	         quicknews.switch_tab('1');    
+     	         
+ 		    }
+ 		    
+ 		     if(login_status=='false'){      	            
+				 quicknews.init('out', ''); 
+			 }else{quicknews.init('in', v_email);}	 	
+     	 	 		    
+		},
+
+		onException: function(req,exception) {
+			//alert("Sorry, your request could not be performed. \n\n" + exception.message);
+			//return true;
+
+		},
+
+  		onFailure: function(transport){
+  			//alert('failure');
+  			//alert(transport.responseText);
+
+  		}
+
+
+       });
+       
+       
+       return;
+
+}
+
+//begin newsletterhub
+newsletterhub = {
+newsletterhub_validpwd: '',
+newsletterhub_email: '',
+newsletterhub_cookie:'N',
+newsletterhub_final: 'false',
+newsletterhub_emailAddress:'',
+
+subscribNewsletters: function(){
+	
+	newsletterhub.newsletterhub_email = ''; 
+	newsletterhub.newsletterhub_emailAddress='';  
+    var newsletterhub_loaded = $("newsletterhub_loaded").value;        
+    var src=$("_source2").innerHTML;
+    if(src == 'undefine' || src == null)src = '';
+    
+    var loaded=$("_loaded2").innerHTML;   
+    
+	   
+   var n_email =$("username").getValue();    
+   if(n_email == null) n_email=''; 
+   
+   
+    if(src !=''){
+          if(src=='email' && login_status=='false')	//'logon1' is the name of email input box				
+		  {				     		
+			     n_email=$("emailaddrloggedout").value; 
+			     if(n_email == null) n_email='';
+			     
+			     if(doEmailFormatCheck(n_email)){			        		     	    	
+			        fValidateEmail(n_email);			        
+			     }else{ 
+			       newsletterhub.newsletterhub_email = 'false';
+			       quicknews.check_is_user(n_email);
+			     }
+		   } 
+		      	
+                              	   	     	
+     	if(src=='email' ){ 	    
+			    newsletterhub.setStatus();    
+     	    
+     	}	
+     	  
+     		          	     	   	
+     	if(src=='password'){  
+     	  quicknews.closeflag='false'; 
+     	  $('newsletterhub_modflag').value='newsletterhub';   	  	
+     	  document.newsletter_form.submit();
+     	}  	     
+     	 	 	      
+     	
+    }
+
+},
+
+setStatus: function(){    
+			
+    if(newsletterhub.newsletterhub_email == 'false'){ 
+     	        $("username").value='';	
+     	        $("_source2").innerHTML='email';
+	  	  	    $("_source2").style.display='none';   	   
+     	    	
+	}
+	
+    if(newsletterhub.newsletterhub_email == 'true'){      	       	                 	          
+     	          $("_source2").innerHTML='password';
+	  	  	  	  $("_source2").style.display='none';
+	  	  	    	  	  	    
+     }
+}
+
+};
+
+//end newsletterhub
+
+			
+function checkLoaded(){	
+
+  	     var _loaded='';	     
+	     var _source='';
+	     	     
+	     if($("_loaded2")){
+	     	 _loaded=$("_loaded2").innerHTML; 
+	     	 _source=$("_source2").innerHTML;
+	     }
+	     
+		if(_loaded==null){_loaded=''; _source='';}			
+		
+		if(_loaded =='begin' &&  _source=='email'){			    
+			matchNewsletter();
+		}
+		
+			
+	
+}//end checkLoaded()
+//jliu ==>>> end for newsletter sign up project 
+
+
+// for email backend validation
+
+function fValidateEmail(f_email)
+{  
+   	if(f_email !=''){
+   	  newsletterhub.newsletterhub_emailAddress=f_email;
+	  RegistrationValidationService.checkEmail(f_email, handleEmailValidate); 
+	}   
+	
+}
+
+function handleEmailValidate(exists) { 
+     
+     if(exists =='true')newsletterhub.newsletterhub_email = 'true';
+	 else newsletterhub.newsletterhub_email = 'false'; 
+	 							     	
+	 quicknews.check_is_user(newsletterhub.newsletterhub_emailAddress);   
+}
+
+
+
+if(login_status=='true') {
+	checkPages();
+} else {
+	if (document.cookie.indexOf('msocommunity=') > -1) {
+		try
+		{
+			getCookieData();		
+			checkPages();
+		}
+		catch (error)
+		{
+			//window.location.reload();
+		}
+	}
+	else
+	{
+		if ( $('commentsform') ) {
+			submitAjaxForm('comments','commentsform','comments','');
+		}
+		if( $('tools_logged_out'))
+		{
+			$('tools_logged_out').show();
+			$('tools_logged_in').hide();
+			$('tools_complete').hide();
+		}
+		
+		if ( $('display_photo_detail')) {
+		
+			$('comment_container').hide();
+		
+		}
+	}
+	
+	
+}
+
+//jliu==>>>added 
+Event.observe(window, 'load', function(){
+	if(login_status=='false')
+	{ checkLoaded();}
+});
+
+
+/*
+Event.observe(window, 'load', function(){
+	omnitureVarforMod.setOmnitureVarforMod(); 
+	setTimeout('omnitureVarforMod.setOmnitureVarforMod()',300); 
+});
+*/
+    
+   
+//jliu==>>> ended logics for newsletter sign up project 
+
+function toggleJoinGroupButton() {
+	if( $('join_group')) {
+		if (typeof(groups) != 'undefined') {
+			if ( groups.indexOf($('subscribe_form').group.value) > -1) {
+				toggle_join_button();
+			}
+		}
+	}
+}
+	
+function setOmnitureVar(){
+	s.prop27 = s.eVar27 = "logged in";
+	s.prop28 = "li:"+ s.pageName;
+	s.prop49 = s.eVar49 = displayname;
+	s.eVar28 = "registered";
+}
+
+if(typeof submitOmnitureFromSP == 'function'){ 
+	if (omniture_submitted_flag == false) {
+		setTimeout('submitOmnitureFromSP()',300);
+	}
+}
+
+//Event.observe(window,'load', toggleJoinGroupButton);   
+
+
+
+ 
+

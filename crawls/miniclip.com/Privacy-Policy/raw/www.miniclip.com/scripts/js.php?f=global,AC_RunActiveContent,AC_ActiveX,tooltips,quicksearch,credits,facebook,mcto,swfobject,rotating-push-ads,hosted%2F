@@ -661,10 +661,22 @@ _gaq.push(['b._trackEvent',category,action,opt_label,opt_value]);
 }
 }
 
-function statTrackerDelay(redirect,path){
+function statTrackerDelay(redirect,path,target){
 if (typeof(_gaq) != 'undefined'){
+
+// track the page view in GA
 _gaq.push(['b._trackPageview',path]);
+
+// get optional target param if set
+if (typeof target == "undefined"){
+// if none is set open link in current window with delay for GA
 setTimeout('document.location = "' + redirect + '"',500);
+}else if (target == '_blank'){
+// do not redirect,the link as allready opened in a new window
+}else{
+// another target i.e. frame,self has been supplied,stil use GA
+setTimeout('document.location = "' + redirect + '"',500);
+}
 }
 }
 
@@ -1965,7 +1977,7 @@ if (_webserver == 'devcms' || _webserver == 'cmsftl'){
 enabled = true;
 }
 }
-enabled = true;
+enabled = false;
 if (enabled){
 
 jQuery.ajax({
@@ -2123,6 +2135,16 @@ gamebar.Refresh();
 }
 
 jQuery(document).ready(function(){
+
+    // if smartphone icons are been tracked for AB testing
+    if (typeof(smartphone_icon_tracking) !== "undefined" && smartphone_icon_tracking.length > 0)
+   {
+        // read them
+        for (var i = 0;i < smartphone_icon_tracking.length;i++){
+            // push icons views/impressions to GA
+            statTracker(smartphone_icon_tracking[i]);
+       }
+   }
 
 function copyButton(buttonId){
 jQuery('#'+buttonId).html('Copied').css({

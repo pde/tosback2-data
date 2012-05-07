@@ -7,7 +7,7 @@
  * implied, including fitness for a particular purpose. In no event shall
  * the author be liable for any damages arising in any way out of the use
  * of this software, even if advised of the possibility of such damage.
- * $Id: community-flag.js 38007 2012-04-05 07:29:56Z jskit $
+ * $Id: community-flag.js 38006 2012-04-05 07:26:19Z snaky $
  */
 
 (function($) {

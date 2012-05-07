@@ -219,6 +219,7 @@ $(document).ready(function(){
 		findSize();
 		$("#layer1").css("height",height+"px");
 	}
+	$("html").attr("lang","en");
 });
 
 
@@ -766,7 +767,7 @@ function setTableHeaderArrow(sortColumn , id)
 }
 function newPopup(url) {
 	popupWindow = window.open(
-		url,'popUpWindow','height=500,width=800,left=10,top=10,resizable=no,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+		url,'popUpWindow','height=700,width=800,left=10,top=10,resizable=no,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
 }
 
 function showBTN(id,currentPayment)
@@ -904,9 +905,12 @@ function menuBarLinkTracking(linkName,seqNumber)
 	var page=jQuery.trim(DCSext.wtPN).replace(/ /g,"_");
 	linkName = linkName.replace(/ /g,"_");
 	seqNumber = seqNumber + 1 ;
-	dcsMultiTrack('DCSext.wtLinkName',linkName,
-			'DCSext.wtLinkLoc',page+'_'+'Main_Navigation_Bar'+'_'+seqNumber,
-			'DCSext.wtNoHit','1','DCSext.wtPN',DCSext.wtPN);	
+	if(typeof dcsMultiTrack == 'function')
+	{
+		dcsMultiTrack('DCSext.wtLinkName',linkName,
+				'DCSext.wtLinkLoc',page+'_'+'Main_Navigation_Bar'+'_'+seqNumber,
+				'DCSext.wtNoHit','1','DCSext.wtPN',DCSext.wtPN);	
+	}	
 }
 
 function checkEvent(event,value)
@@ -926,10 +930,24 @@ function linkTracking(linkName,loc,seqNumber)
 	var page=jQuery.trim(DCSext.wtPN).replace(/ /g,"_");
 	var linkName = linkName.replace(/ /g,"_");
 	var loc = loc.replace(/ /g,"_");
-	dcsMultiTrack('DCSext.wtLinkName',linkName,
+	if(typeof dcsMultiTrack == 'function')
+	{
+		dcsMultiTrack('DCSext.wtLinkName',linkName,
 			'DCSext.wtLinkLoc',page+'_'+loc+'_'+seqNumber,
-			'DCSext.wtNoHit','1','DCSext.wtPN',DCSext.wtPN);	
+			'DCSext.wtNoHit','1','DCSext.wtPN',DCSext.wtPN);
+	}
 	
+}
+
+function subcategoryTabLinkTracking(linkName)
+{
+	if(typeof dcsMultiTrack == 'function')
+	{	
+		dcsMultiTrack('DCSext.wtPN','CTech Product Details',
+				'DCSext.wtEvent',linkName,
+				'DCSext.wtSuccessFlag','1',
+				'DCSext.wtStatusMsg', '');
+	}
 }
 
 function reportEvent(event,flag,statusCode,errorMessage,userResp)
@@ -1002,4 +1020,14 @@ function disableAddToCartBtn(btn,dummyBtn)
 	$("."+btn).hide();
 	$("."+dummyBtn).show();
 	$("."+dummyBtn).attr("disabled","true");
+}
+
+function createScriptElementForAtlas(url)
+{
+	var head= document.getElementsByTagName('head')[0];
+	var script= document.createElement('script');
+	script.type= 'text/javascript';
+	script.language='javascript';
+	script.src= url;
+	head.appendChild(script);
 }

@@ -36,7 +36,7 @@ function chatActive(dateStamp) {
 	var propertyValues = new Object;
 	propertyValues = ( {
 	
-	timeStamp: 1334476801616,
+	timeStamp: 1336377602984,
 	
 	cartOverLayFlag: 'ON',
 	addToCartErrorMessage:'We are unable to process your request at this time.Please close this window and try again.',
@@ -105,22 +105,21 @@ function chatActive(dateStamp) {
 		checkoutExclusionPages: 'yourorder,shippinginfo,paymentinfo,revieworder,orderconf,orderconfprnt,kioskexpresscheckout,kioskrevieworder,checkoutenteraddress,checkoutreviewandpay',
 		
 		
-	isChatOpen: chatActive('Apr 15, 2012 12:16:27'),
+	isChatOpen: chatActive('May 07, 2012 08:22:40'),
 		masterChatSwitch: 'ON',
 		showChatOnSku: 'ON',
 		showChatOnHome: 'ON',
-		
-		
-	cmSwitch: 'OFF',	
 
 		
 	analyticsSwitch: 'ON',
 
 		
 	searchAutocomplete: 'ON',
+	
+		
+	inkTonerAutocomplete: 'ON',
 
 		
-	flyoutCmsp: 'merchandising-_-Flyout {0}-_-{1}',
 	flyoutAnalytics: 'Flyout:{0}:{1}',	
 
 		

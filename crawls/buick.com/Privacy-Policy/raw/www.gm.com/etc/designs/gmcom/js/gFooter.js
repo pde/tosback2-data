@@ -62,7 +62,6 @@ if($('body').hasClass('ver4') && target==true){
 		$('#vignette').css('display','none');
 		$('iframe').css('display','block');
 	}
-		
 })()
 });
 

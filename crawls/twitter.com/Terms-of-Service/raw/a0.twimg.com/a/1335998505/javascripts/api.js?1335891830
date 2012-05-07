@@ -1,0 +1,230 @@
+twttr.augmentString('twttr.api', {
+  defaultAjaxOptions: {
+    type: "POST",
+    dataType: "json",
+    url: "#",
+    data: {
+      authenticity_token: "",
+      twttr: true
+    },
+    success: function() {},
+    error: function() {},
+    beforeSend: function() {}
+  },
+  tweet: function(userId, tweet, options) {
+    twttr.User.findById(userId, this, function(user) {
+      var callback = options.success;
+      var data = {status: tweet};
+      var success = function(resp) {
+        user.update("latest_status", resp.text);
+        callback(resp);
+      };
+      var url = '/status/update';
+
+      this._sendRequest(twttr.merge(options, {url: url, success: success, data: data}, true));
+    });
+  },
+  autocomplete: function(userId, screen_name, options) {
+    twttr.User.findById(userId, this, function(user) {
+      var data = {user_id: userId, sn: screen_name};
+      var url = '/users/autocomplete';
+
+      this._sendRequest(twttr.merge(options, {url: url, data: data}, true));
+    });
+  },
+  follow: function(userId, options) {
+    twttr.User.findById(userId, this, function(user) {
+      var callback = options.success;
+      var success = function(resp) {
+        user.updateAll({
+          do_not_follow: false,
+          do_you_follow: true,
+          sees_retweets: true
+        });
+        callback(resp);
+      };
+      var url = '/friendships/create/'+userId;
+
+      this._sendRequest(twttr.merge(options, {url: url, success: success}, true));
+    });
+  },
+  unfollow: function(userId, options) {
+    twttr.User.findById(userId, this, function(user) {
+      var callback = options.success;
+      var success = function(resp) {
+        user.updateAll({
+          do_not_follow: true,
+          do_you_follow: false,
+          gets_device_updates: false,
+          sees_replies: false,
+          sees_retweets: false
+        });
+        callback(resp);
+      };
+      var url = '/friendships/destroy/'+userId;
+      this._sendRequest(twttr.merge(options, {url: url, success: success}, true));
+    });
+  },
+  block: function(userId, options) {
+    twttr.User.findById(userId, this, function(user) {
+      var callback = options.success;
+      var success = function(resp) {
+        user.updateAll({
+          is_not_blocking: false,
+          is_blocking: true,
+          do_not_follow: true,
+          do_you_follow: false,
+          does_follow_you: false,
+          gets_device_updates: false,
+          sees_replies: false,
+          sees_retweets: false
+        });
+        callback(resp);
+      };
+      var url = '/blocks/create/'+userId;
+      this._sendRequest(twttr.merge(options, {url: url, success: success}, true));
+    });
+  },
+  unblock: function(userId, options) {
+    twttr.User.findById(userId, this, function(user) {
+      var callback = options.success;
+      var success = function(resp) {
+        user.updateAll({
+          is_not_blocking: true,
+          is_blocking: false,
+          do_not_follow: true,
+          do_you_follow: false,
+          does_follow_you: false,
+          gets_device_updates: false,
+          sees_replies: false,
+          sees_retweets: false
+        });
+        callback(resp);
+      };
+      var url = '/blocks/destroy/'+userId;
+      this._sendRequest(twttr.merge(options, {url: url, success: success}, true));
+    });
+  },
+  reportForSpam: function(userId, options) {
+    twttr.User.findById(userId, this, function(user) {
+      var callback = options.success;
+      var success = function(resp) {
+        user.updateAll({
+          is_not_blocking: false,
+          is_blocking: true,
+          do_not_follow: true,
+          do_you_follow: false,
+          does_follow_you: false,
+          gets_device_updates: false,
+          sees_replies: false,
+          sees_retweets: false
+        });
+        callback(resp);
+      };
+      var url = '/user_spam_reports/'+userId;
+      this._sendRequest(twttr.merge(options, {url: url, success: success}, true));
+    });
+  },
+  reportSpam: function(userId, options) {
+    this.reportSpam.apply(arguments);
+  },
+  setDeviceAlerts: function(userId, value, options) {
+    var data = {
+      user_ids: userId,
+      value: value
+    };
+    var success = function(resp) {
+      twttr.User.findById(userId, function(user) {
+        user.update("gets_device_updates", value == "on");
+      });
+    };
+
+    this._sendRequest(twttr.merge(options, {url: '/friendships/set_sms', data: data, success: success}, true));
+  },
+  setRetweetVisibility: function(userId, value, options) {
+    var data = {
+      user_ids: userId,
+      value: value
+    };
+    var success = function(resp) {
+      twttr.User.findById(userId, function(user) {
+        user.update("sees_retweets", value == "on");
+      });
+    };
+
+    this._sendRequest(twttr.merge(options, {url: '/friendships/set_shares', data: data, success: success}, true));
+  },
+  setMentions: function(userId, value, options) {
+    var data = {
+      user_ids: userId,
+      value: value
+    };
+    var success = function(resp) {
+      twttr.User.findById(userId, function(user) {
+        user.update("sees_replies", value == "on");
+      });
+    };
+
+    this._sendRequest(twttr.merge(options, {url: '/friendships/set_replies', data: data, success: success}, true));
+  },
+  reverseGeocode: function(options) {
+    // Args:
+    //   options should contain keys lat, long, and accuracy.
+    // Calls options.success with an array of place objects on success.
+    var reverseGeocodeOptions = {
+      type: 'GET',
+      url: '/1/geo/reverse_geocode.json'
+    };
+    this._sendRequest(twttr.merge(options, reverseGeocodeOptions, true));
+  },
+  search: function(options) {
+    // Args:
+    //   options should contain either lat, long, and accuracy, -OR- ip.
+    // Calls options.success with an array of place objects on success.
+    var searchOptions = {
+      type: 'GET',
+      url: '/1/geo/search.json'
+    };
+    this._sendRequest(twttr.merge(options, searchOptions, true));
+  },
+  createPlace: function(options) {
+    // Args:
+    //   options should contain lat, long, name, contained_within, and token.  street_address is optional.
+    // Calls options.success with a place object on success.
+    var createPlaceOptions = {
+      type: 'POST',
+      url: '/1/geo/place.json'
+    };
+    this._sendRequest(twttr.merge(options, createPlaceOptions, true));
+  },
+  similarPlaces: function(options) {
+    // Args:
+    //   options should contain lat, long, name, contained_within.  street_address is optional.
+    // Calls options.success with a result structure with a token and an array of places on success.
+    var similarPlacesOptions = {
+      type: 'GET',
+      url: '/1/geo/similar_places.json'
+    };
+    this._sendRequest(twttr.merge(options, similarPlacesOptions, true));
+  },
+  getPlaceDetails: function(options) {
+    // Calls options.success with the results of the place details API call for the place options.place_id.
+    var placeDetailsOptions = {
+      type: 'GET',
+      url: '/1/geo/id/' + options.place_id + '.json'
+    };
+    this._sendRequest(twttr.merge(options, placeDetailsOptions, true));
+  },
+  _sendRequest: function(options) {
+    var authTokenData = {};
+
+    if (twttr.form_authenticity_token) {
+      authTokenData.authenticity_token = twttr.form_authenticity_token;
+    }
+
+    var ajaxOptions = twttr.merge({}, twttr.api.defaultAjaxOptions, {
+      data: authTokenData
+    }, options, true);
+    $.ajax(ajaxOptions);
+  }
+});

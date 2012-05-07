@@ -48,35 +48,36 @@ function sldLzip(){
 	}
 }
 function hideZIP(){
-	dispLayer("ghzipdiv","none");
+	dispLayer('ghzipdiv','none');
+	dispLayer('scbsmbzipdiv','none');
 }
-function toggleZIP(){
-	var objDIVzip=fObj("ghzip");
+function toggleZIP(divname){
+	var objDIVzip=fObj(divname);
 	if(objDIVzip!=null){
 		if(parseInt(objDIVzip.style.top)<ZIPOn-1){
-			ZIPin();
+			ZIPin(divname);
 		}else{
-			ZIPout();
+			ZIPout(divname);
 		}
 	}
 }
-function ZIPin(){
+function ZIPin(divname){
 	window.clearTimeout(hideZIPTimer);
-	dispLayer("ghzipdiv","block");
-	sldLzip("ghzip",ZIPOn);
+	dispLayer(divname+'div',"block");
+	sldLzip(divname,ZIPOn);
 }
-function ZIPout(){
+function ZIPout(divname){
 	window.clearTimeout(hideZIPTimer);
-	sldLzip("ghzip",DIVOff);
+	sldLzip(divname,DIVOff);
 	hideZIPTimer=window.setTimeout("hideZIP()",200);
 }
 function restartPage(){
 	window.location.reload(true);
 }
-function validateZIP(frm){
-	if(frm.zipcode.value==""||frm.zipcode.value=="Enter your ZIP code"||(frm.zipcode.value).length<5){
+function validateZIP(frm,frmzip){
+	if(frmzip.value==""||frmzip.value=="Enter your ZIP code"||(frmzip.value).length<5){
 		alert("Please enter a valid ZIP code.");
-		frm.zipcode.focus();
+		frmzip.focus();
 		return false;
 	if(frm.loc.value==""){
 	 	frm.loc.value = "GHF"
@@ -85,8 +86,8 @@ function validateZIP(frm){
 		var headID = document.getElementsByTagName("head")[0];
 		var newScript = document.createElement('script');
 		newScript.type = 'text/javascript';
-		//newScript.src = 'https://www22.verizon.com/includes/getlocation/?zipcode='+frm.zipcode.value;
-		newScript.src = 'https://www22.verizon.com/includes/getlocation/0,,'+frm.zipcode.value+',00.html?loc='+frm.loc.value+'&zipcode='+frm.zipcode.value;
+		//newScript.src = 'https://www22.verizon.com/includes/getlocation/?zipcode='+frmzip.value;
+		newScript.src = 'https://www22.verizon.com/includes/getlocation/0,,'+frmzip.value+',00.html?loc='+frm.loc.value+'&zipcode='+frmzip.value;
 		headID.appendChild(newScript);
 	}
 	return false;
@@ -144,7 +145,7 @@ function getLocInfo(){
 		rewriteHTML("loclinklabel","<!--mp_trans-->");
 		rewriteHTML("loclinktext","");
 		rewriteHTML("ghziploc","<!-- mp_trans_disable_start -->"+gLoc+"<!-- mp_trans_disable_end -->");
-		ZIPout();
-		if(document.locationfrm.zipcode){document.locationfrm.zipcode.value="";}
+		ZIPout('ghzip');
+		//if(document.locationfrm.zipcode){document.locationfrm.zipcode.value="";}
 	}
 }

@@ -22,6 +22,7 @@ function neverShowMsg(){
 OOo.createCookie('oo_inv_reprompt',1,157784630);
 }
 function cmOpinionClick(tag){
+	if(typeof(CM_PageID) == "undefined") CM_PageID = "Unknown";
 	cmCreateManualLinkClickTag('http://invite.qvc.com?cm_sp=OPINIONLAB-_-SURVEY-_-'+tag, null, CM_PageID);
 }
 function cmOpinionEvent(action){
