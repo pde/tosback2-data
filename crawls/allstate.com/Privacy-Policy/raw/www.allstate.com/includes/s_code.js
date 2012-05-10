@@ -1,4 +1,4 @@
-/* SiteCatalyst code version: H.21. (1/11/12)
+/* SiteCatalyst code version: H.21. (3/02/12)
 Copyright 1996-2011 Adobe, Inc. All Rights Reserved 
 More info available at http://www.omniture.com */
 /************************ ADDITIONAL FEATURES ************************
@@ -15,7 +15,7 @@ s.trackDownloadLinks = true
 s.trackExternalLinks = true
 s.trackInlineStats = true
 s.linkDownloadFileTypes = "exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx"
-s.linkInternalFilters = "javascript:,allstate.com,myallstatefinancial.com,northlightspecialty.com,allstateagencies.com"
+s.linkInternalFilters = "javascript:,allstate.com,myallstatefinancial.com,northlightspecialty.com,allstateagencies.com,goodhands360review.com,allstatedance.com,allstatecfb.com,allstatenewsroom.com,allstateinvestors.com,allstategoodhandsnews.com,allstateonline.com,allstatemotorclub.com,allstateinvestments.com,allstatemall.com,localhost"
 s.linkLeaveQueryString = false
 s.linkTrackVars = "prop12,prop13,prop14,prop15";
 s.linkTrackEvents = "None"

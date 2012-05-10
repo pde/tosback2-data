@@ -1,0 +1,175 @@
+
+
+$(function(){
+
+    FB.init({
+        appId:'148902401805766', cookie:true,
+        status:true, xfbml:true, oauth:true
+     });
+
+    FB.UIServer.setActiveNode = function(a,b){FB.UIServer._active[a.id]=b;}    // IE hack to correct FB bug
+
+   /* FB.Event.subscribe('auth.login', function(response) {
+        var s = s_gi('gc-giftscom');
+        s.linkTrackVars = 'None';
+        s.linkTrackEvents = 'event14';
+        s.events = 'event14';
+        s.tl(this,'o','event14');
+      });
+   */
+
+    function handleData(response) {
+        handleUser(response);
+        handleBirthdays(response);
+    }
+
+
+
+    function handleUser(response) {
+
+        if (response.authResponse) {
+
+            $.ajax({
+                  url: "http://www.gifts.com/facebook/user.json",
+                  data: ({
+                      accessToken: response.authResponse.accessToken,
+                      uid: response.authResponse.userID
+                  }),
+                  cache: false,
+                  success: function (results) {
+
+                        $('#fb-login-root').empty();
+                        if (results.responseCode == 200) {
+
+                        // Build a row of data for the logged in user
+                        var $tbl = $('<table border="0" cellpadding="0" cellspacing="0" id="fbLoginHdr">');
+
+                          $tbl.append(
+                            $('<tr>')
+                                     .append(
+                                             // Display the friend image
+                                             $('<td>').append('<img src="'+results.user.squarePictureUrl+'" width="30" height="30"/>'),
+
+                                             // Display the friend's name and birthday as well as a link to an SRP
+                                             $('<td class="fbUser">')
+                                                     .append('<b>Hi, '+results.user.firstName+'</b>&nbsp;&nbsp;<a href="javascript:void(0);" style="color:#666" onclick="FB.logout(function(){window.location.reload()}); return false;">Logout</a><br/><a href="javascript:void(0);" class="bdays" onclick="showFriends();">See Friends\' Birthdays<span class="arrow">&nbsp;</span></a>')
+
+                                            )
+                            )
+
+                            $tbl.appendTo('#fb-login-root');
+
+                      } else {
+                          $('#fb-login-root').append('<span class="error">'+results.responseDetail+'</span>');
+                      }
+
+                   }
+
+            });
+
+
+        } else {
+            var button = document.getElementById('fb-auth_hdr');
+            //button.innerHTML = 'Login';
+            button.onclick = function() {
+                FB.login(handleData, {scope:'user_birthday,user_interests,email,offline_access,friends_birthday,friends_interests,friends_likes'}, linkCodeFBConnect(this,'FB Connect: Header'));
+            }
+
+        }
+
+
+    }
+
+
+
+    function handleBirthdays(response) {
+
+        if (response.authResponse) {
+
+            $.ajax({
+              url: "http://www.gifts.com/facebook/birthdays.json",
+              data: ({
+                  accessToken: response.authResponse.accessToken,
+                  uid: response.authResponse.userID,
+                  num: 10
+              }),
+              cache: false,
+              success: handleBirthdayResponse
+            });
+
+
+        }
+        else {
+            if($('#fb-auth').length){
+                var button = document.getElementById('fb-auth');
+                button.innerHTML = 'Login';
+                button.onclick = function() {
+                    FB.login(handleData, {scope:'user_birthday,user_interests,email,offline_access,friends_birthday,friends_interests,friends_likes'}, linkCodeFBConnect(this,'FB Connect: HP'));
+                }
+            }
+
+        }
+
+
+    }
+
+
+
+    function handleBirthdayResponse(results) {
+
+        //$('#fbUserFriends').empty();
+
+        if (results.responseCode == 200) {
+
+            // Build a row of data for each product
+
+            var $tbl = $('<table border="0" cellpadding="0" cellspacing="0" class="fbList">');
+
+            $.each(results.friends, function(i,friend) {
+
+                $tbl.append(
+                    $('<tr>')
+                            .append(
+                                    // Display the friend image
+                                    $('<td width="50">')
+                                            .append('<img src="'+friend.squarePictureUrl+'"/>'),
+
+                                    // Display the friend's name and birthday as well as a link to an SRP
+                                    $('<td style="padding-left:10px;">')
+                                            .append(friend.name+' ('+friend.birthdayShort+')')
+                                             .append(
+                                                    $('<div class="fbFriend">')
+                                                            .append(
+                                                                    $('<a/>').attr("href",friend.searchUrl).attr('target','_blank')
+                                                                        .append("Find birthday gifts &#187;")
+
+                                                                    )
+                                                    )
+
+                                    )
+                    )
+            });
+
+
+            $tbl.appendTo('#fbUserFriends');
+
+            $('.fbList tr:not(:last)').after('<tr><td colspan="2"><div class="divider"></div></td></tr>');
+            $('.fbList .fbFriend a').click(function(){
+                linkCodeFinder(this,'FB Connect: HP: Birthday Links');
+            })
+
+            $tbl.clone().appendTo('#hpLeftNav');
+            $('.fbTxt').hide();
+            $('#hpLeftNav').wrap('<div id="fbFriends"></div>').before('<div class="fbTitle"><span></span>Birthdays</div>');
+
+
+        } else {
+            $('#fbUserFriends').append('<span class="error">'+results.responseDetail+'</span>');
+        }
+
+  	 }
+
+
+    FB.getLoginStatus(handleData);
+
+})

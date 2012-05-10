@@ -1,0 +1,66 @@
+// JavaScript Document
+if($j.browser.msie)
+{
+	userAgent = $j.browser.version;
+	userAgent = userAgent.substring(0,userAgent.indexOf('.'));
+	version = userAgent;
+}
+if($j.browser.msie && version=="6") 
+{
+	function ecrireCookie(nom, valeur, expires)
+	{
+	  var argv=ecrireCookie.arguments;
+	  var argc=ecrireCookie.arguments.length;
+	  
+
+	  var path=(argc > 3) ? argv[3] : null;
+	  var domain=(argc > 4) ? argv[4] : null;
+	  var secure=(argc > 5) ? argv[5] : false;
+	  document.cookie=nom+"="+escape(valeur)+
+	  ((expires==null) ? "" : ("; expires="+expires.toGMTString()))+
+	  ((path==null) ? "" : ("; path="+path))+
+	  ((domain==null) ? "" : ("; domain="+domain))+
+	  ((secure==true) ? "; secure" : "");
+	}
+	
+	function getCookieVal(offset){
+	  var endstr=document.cookie.indexOf (";", offset);
+	  if (endstr==-1) endstr=document.cookie.length;
+	  return unescape(document.cookie.substring(offset, endstr)); 
+	}
+	
+	function lireCookie(nom)
+	{
+	  var arg=nom+"=";
+	  var alen=arg.length;
+	  var clen=document.cookie.length;
+	  var i=0;
+	  while (i<clen) 
+	  {
+		var j=i+alen;
+		if (document.cookie.substring(i, j)==arg) return getCookieVal(j);
+		i=document.cookie.indexOf(" ",i)+1;
+		if (i==0) break;
+	  }
+	  return null; 
+	}
+		
+	// Insertion du cookie questionnaire puis affichage du calque
+	function affiche_layer_TEST() 
+	{
+		var date = new Date();
+	  date.setTime(date.getTime()+(2*60*60*1000));
+	  ecrireCookie("testNav", 1, date);
+	  ouvrirLayerNavigateur();
+	}
+	
+	// traitement et vérification du cookie
+	function open_layer_IE() {
+	  
+	  	if (lireCookie("testNav")!=null) return; // Si le calque s'est déjà ouvert on ne fait rien
+		affiche_layer_TEST();
+	}
+	$j(document).ready(function() {
+		open_layer_IE();
+    });
+}

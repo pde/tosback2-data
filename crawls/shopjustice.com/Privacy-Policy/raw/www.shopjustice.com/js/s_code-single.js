@@ -262,21 +262,33 @@ s.getTimeParting=new Function("t","z",""
 +"if(t=='d'){return dow};if(t=='w'){return dt}}};");
 
 /*
- * crossVisitParticipation- MUST INCLUDE S.JOIN & S.SPLIT
- */
-s.crossVisitParticipation = new Function("v","cn","ex","ct","dl","ev",""
-+"var s=this;var ay=s.split(ev,',');for(var u=0;u<ay.length;u++){if(s"
-+".events&&s.events.indexOf(ay[u])!=-1){s.c_w(cn,'');return '';}}if(!"
-+"v||v=='')return '';var arry=new Array();var a=new Array();var c=s.c"
-+"_r(cn);var g=0;var h=new Array();if(c&&c!='') arry=eval(c);var e=ne"
-+"w Date();e.setFullYear(e.getFullYear()+5);if(arry.length>0&&arry[ar"
-+"ry.length-1][0]==v)arry[arry.length-1]=[v, new Date().getTime()];el"
-+"se arry[arry.length]=[v, new Date().getTime()];var data=s.join(arry"
-+",{delim:',',front:'[',back:']',wrap:'\\''});var start=arry.length-c"
-+"t < 0?0:arry.length-ct;s.c_w(cn,data,e);for(var x=start;x<arry.leng"
-+"th;x++){var diff=Math.round(new Date()-new Date(parseInt(arry[x][1]"
-+")))/86400000;if(diff<ex){h[g]=arry[x][0];a[g++]=arry[x];}}var r=s.j"
-+"oin(h,{delim:dl});return r;");
+* crossVisitParticipation 1.7- MUST INCLUDE S.JOIN AND S.SPLIT
+*/
+s.crossVisitParticipation = new Function("v", "cn", "ex", "ct", "dl", "ev", "dv", ""
++ "var s=this,ce;if(typeof(dv)==='undefined')dv=0;if(s.events&&ev){var"
++ " ay=s.split(ev,',');var ea=s.split(s.events,',');for(var u=0;u<ay.l"
++ "ength;u++){for(var x=0;x<ea.length;x++){if(ay[u]==ea[x]){ce=1;}}}}i"
++ "f(!v||v==''){if(ce){s.c_w(cn,'');return'';}else return'';}v=escape("
++ "v);var arry=new Array(),a=new Array(),c=s.c_r(cn),g=0,h=new Array()"
++ ";if(c&&c!=''){arry=s.split(c,'],[');for(q=0;q<arry.length;q++){z=ar"
++ "ry[q];z=s.repl(z,'[','');z=s.repl(z,']','');z=s.repl(z,\"'\",'');arry"
++ "[q]=s.split(z,',')}}var e=new Date();e.setFullYear(e.getFullYear()+"
++ "5);if(dv==0&&arry.length>0&&arry[arry.length-1][0]==v)arry[arry.len"
++ "gth-1]=[v,new Date().getTime()];else arry[arry.length]=[v,new Date("
++ ").getTime()];var start=arry.length-ct<0?0:arry.length-ct;var td=new"
++ " Date();for(var x2=start;x2<arry.length;x2++){var diff=Math.round((td."
++ "getTime()-arry[x2][1])/86400000);if(diff<ex){h[g]=unescape(arry[x2][0"
++ "]);a[g]=[arry[x2][0],arry[x2][1]];g++;}}var data=s.join(a,{delim:',',"
++ "front:'[',back:']',wrap:\"'\"});s.c_w(cn,data,e);var r=s.join(h,{deli"
++ "m:dl});if(ce)s.c_w(cn,'');return r;");
+
+/*
+ * Plugin Utility: Replace v1.0
+*/
+s.repl=new Function("x","o","n",""
++"var i=x.indexOf(o),l=n.length;while(x&&i>=0){x=x.substring(0,i)+n+x."
++"substring(i+o.length);i=x.indexOf(o,i+l)}return x");
+
 
 /*
  * s.join: 1.0 - s.join(v,p)

@@ -501,3 +501,8 @@ function toggleDisplay(id) {
  	obj.style.display="none";
  else obj.style.display="block";
 }
+
+
+function clearFormField(id) {
+	document.getElementById(id).value = "";
+}

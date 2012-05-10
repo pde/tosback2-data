@@ -3030,7 +3030,7 @@ if(com.mtvi.util.isDefined(b.setting.name)){btg.config.Omniture.account=b.settin
 }btg.Controller.init();
 if(typeof KIDS.reporting.abTest!="undefined"){var c=new btg.ABTest(KIDS.reporting.abTest.abtestId,KIDS.reporting.abTest.abtestGroups);
 KIDS.reporting.abTest.currentGroup=c.getGroup();
-KIDS.utils.doLog("abTest.getGroup():"+KIDS.reporting.abTest.currentGroups);
+KIDS.utils.doLog("abTest.getGroup():"+KIDS.reporting.abTest.currentGroup);
 if(KIDS.reporting.abTest.currentGroup.indexOf("Control")>-1){b.setting.prop32="NickRec Impression"
 }else{b.setting.prop32="CS Impression"
 }}btg.Controller.sendPageCall(b.setting);
@@ -3283,6 +3283,10 @@ a.setHier2("LoginComplete");
 a.setEvents("event4");
 KIDS.reporting.omnifunctions.sendReportingCall(a)
 }catch(b){}};
+KIDS.reporting.omnifunctions.sendUsernameTaken=function(){try{var a="Registration: Username Taken Error";
+mtvn.btg.Controller.sendLinkEvent({linkName:a,linkType:"o",prop29:"Registration: Username Taken Error"})
+}catch(b){KIDS.utils.doLog(b.toString())
+}};
 KIDS.reporting.omnifunctions.sendLogin=function(b){try{if(b=="Popup"){var a=new Configuration();
 a.init();
 a.setName(KIDS.reporting.config.getName());
@@ -3322,6 +3326,25 @@ a.setProp("17","Registration-Signup");
 a.setEVar("17","Registration-Signup");
 KIDS.reporting.omnifunctions.sendReportingCall(a)
 }catch(c){KIDS.utils.doLog(c.toString())
+}};
+KIDS.reporting.omnifunctions.sendForgotPassword=function(){try{var a=new Configuration();
+a.init();
+a.setName(KIDS.reporting.config.getName());
+a.setDynamicAccountSelection(true);
+a.setDynamicAccountList(KIDS.reporting.config.getDynamicAccountList());
+a.setLinkInternalFilters(KIDS.reporting.config.getLinkInternalFilters());
+a.setTrackExternalLinks(true);
+a.setTrackDownloadLinks(true);
+a.setTrackInlineStats(true);
+a.setPageName(KIDS.reporting.domain+"/Login - Forgot Password");
+a.setHier2(a.getPageName());
+a.setChannel("Login");
+a.setProp("1",KIDS.reporting.site);
+a.setEVar("1",KIDS.reporting.site);
+a.setProp("17","Login");
+a.setEVar("17","Login");
+KIDS.reporting.omnifunctions.sendReportingCall(a)
+}catch(b){KIDS.utils.doLog(b.toString())
 }};
 KIDS.reporting.omnifunctions.gameBuilderCreated=function(c){try{var a=new Configuration();
 a.init();
@@ -3515,6 +3538,12 @@ KIDS.reporting.omnifunctions.sendReportingCall(a)
 KIDS.reporting.omnifunctions.kca2012Unlockable=function(a){try{btg.Controller.sendLinkEvent({linkName:"KCADigitalGift"+a,linkType:"o"});
 $(document).trigger("KCADigitalGift")
 }catch(b){}};
+KIDS.reporting.omnifunctions.reportNavBar=function(d){try{var b=d.split(" ");
+for(var a=0;
+a<b.length;
+a++){if(b[a].indexOf("nick-momma")>-1){btg.Controller.sendLinkEvent({linkName:b[a],linkType:"o"})
+}}}catch(c){KIDS.utils.doLog('KIDS.reporting.omnifunctions.reportNavBar("'+d+'"):'+c.toString())
+}};
 KIDS.reporting.omnifunctions.KCA2012OrangeCarpetOn=function(){try{var a=new Configuration();
 a.init();
 a.setChannel("Homepage");
@@ -3608,10 +3637,10 @@ mtvn.btg.Controller.sendLinkEvent({linkName:c,linkType:"o",prop27:c})
 }catch(b){KIDS.utils.doLog(b.toString())
 }};
 KIDS.reporting.omnifunctions.sendShareClick=function(){try{var a="Share Button Click: "+KIDS.reporting.config.getPageName();
-mtvn.btg.Controller.sendLinkEvent({linkName:a,linkType:"o",events:30})
+mtvn.btg.Controller.sendLinkEvent({linkName:a,linkType:"o",events:"event30"})
 }catch(b){KIDS.utils.doLog(b.toString())
 }};
-KIDS.reporting.omnifunctions.sendSTFEmailSent=function(){try{mtvn.btg.Controller.sendLinkEvent({linkName:"Send to Friend Email Sent",linkType:"o",events:31})
+KIDS.reporting.omnifunctions.sendSTFEmailSent=function(){try{mtvn.btg.Controller.sendLinkEvent({linkName:"Send to Friend Email Sent",linkType:"o",events:"event31"})
 }catch(a){KIDS.utils.doLog(a.toString())
 }};
 _nrtrackingcode=KIDS.reporting.omnifunctions.nrtrackingcode;

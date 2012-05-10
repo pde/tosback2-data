@@ -81,6 +81,15 @@ $.Autocompleter = function(input, options) {
 	
 	var blockSubmit;
 	
+	//variables to maintain data from ajax product call for recently purchased items/weekly deals
+	var productData;
+	
+	//should products be shown in autocomplete results
+	var showProductsInResults = true;
+	if (options.url.indexOf("model") != -1 || options.url.indexOf("cartridge") != -1) {
+		showProductsInResults = false;
+	}
+	
 	// prevent form submit in opera when selecting with return key
 	$.browser.opera && $(input.form).bind("submit.autocomplete", function() {
 		if (blockSubmit) {
@@ -210,6 +219,19 @@ $.Autocompleter = function(input, options) {
 		var selected = select.selected();
 		if( !selected )
 			return false;
+		
+		// if the item selected is a product link, redirect the page
+		try {
+			var selectedContent = $(selected.value);
+			if (selectedContent.hasClass("prodlink")) {
+				// set window.location.origin for IE
+				if (!window.location.origin) window.location.origin = window.location.protocol + "//" + window.location.host;
+				var newLocation = window.location.origin + selectedContent.attr("href");
+				window.location = newLocation;
+				return true;
+			}
+		} catch (e) {}
+
 		
 		var v = selected.result;
 		previousValue = v;
@@ -348,40 +370,55 @@ $.Autocompleter = function(input, options) {
 		}
 	};
 	
-	function requestProducts(tempData, term, extraParams, success) {
-		
-		data = tempData;
-		
-		var parsed = options.parse && options.parse(data) || parse(data);
-		
-		cache.add(term, parsed);
-		success(term, parsed);
-		//mohan: commenting out to avoid the AJAX to autocompletedata.jsp
-		/*** $.ajax({
-			// try to leverage ajaxQueue plugin to abort previous requests
-			mode: "abort",
-			// limit abortion to this input
-			port: "autocomplete" + input.name,
-			dataType: options.dataType,
-			url: "/office/supplies/StaplesUSB2CPAS/cat/autocompletedata.jsp",
-			//url:"/sbd/js/prodresults.txt",
-			data: $.extend({
-				q: lastWord(term),
-				limit: options.max
-			}, extraParams),
-			success: function(data) {
-				data = tempData + data;
-			
-				var parsed = options.parse && options.parse(data) || parse(data);
-				
-				cache.add(term, parsed);
-				success(term, parsed);
-			},
-			error: function(xhr, ajaxOptions, thrownError){
-				//alert("error: " + thrownError);
-				//alert(xhr.status);
+	function requestProducts(success, failure) {
+		// return false if no products are to be shown
+		if (showProductsInResults) {
+			// if productdata has already been populated return it
+			if (typeof productData != 'undefined') {
+				return productData;
+			} else {
+				// only execute if not done before and products are to be shown
+				if (typeof productsAjaxRequest == 'undefined') {
+
+					var extraParams = {
+						timestamp: +new Date()
+					};
+
+					$.each(options.extraParams, function(key, param) {
+						extraParams[key] = typeof param == "function" ? param() : param;
+					});
+
+					productsAjaxRequest = $.ajax({
+						// try to leverage ajaxQueue plugin to abort previous requests
+						mode: "abort",
+						// limit abortion to this input
+						port: "autocomplete" + input.name,
+						dataType: options.dataType,
+						url: "/office/supplies/StaplesUSB2CPAS/cat/autocompletedata.jsp",
+						//url:"/sbd/js/prodresults.txt",
+						data: $.extend({
+							limit: options.max
+						}, extraParams),
+						success: function(data) {
+							//save product data so JSP isnt called again
+							productData = options.parse && options.parse(data) || parse(data);
+
+							//call request to load latest term with product results
+							request(lastWord($input.val()).toLowerCase(), success, failure)
+
+						},
+						error: function(xhr, ajaxOptions, thrownError) {
+							//alert("error: " + thrownError);
+							//alert(xhr.status);
+						}
+					});
+				}
+				return false; 
 			}
-		});***/
+
+		} else {
+			return false;
+		}
 	}
 	
 	function request(term, success, failure) {
@@ -390,8 +427,13 @@ $.Autocompleter = function(input, options) {
 			term = term.toLowerCase();
 		
 		var data = cache.load(term);
+
 		if (data && data.length) {
-			
+			// get products and concat to data array
+			var products = requestProducts(success, failure);
+			if (products) {
+				data = data.concat(products);
+			}	
 			success(term, data);
 		// if an AJAX url has been supplied, try loading the data now
 		} else if( (typeof options.url == "string") && (options.url.length > 0) ){
@@ -411,23 +453,34 @@ $.Autocompleter = function(input, options) {
 				dataType: options.dataType,
 				
 				url: options.url,
+				//url:"/sbd/autocomplete/test.txt",
 				complete: function(jqXHR, textStatus) {
 					if(jqXHR.status == 404) { //executed if the autocomplete can't find the right text file
-						//console.log(jqXHR);
-						tempData ='';
-						requestProducts(tempData, term, extraParams, success);
+						// try to get products to match some results if possible
+						var products = requestProducts(success, failure);
+						if (!products) {
+							products = '';
+						}
+						success(term, products);
 					}
 				},
-				//url:"/sbd/js/textresults.txt",
 				data: $.extend({
 					q: lastWord(term),
 					limit: options.max
 				}, extraParams),
 				success: function(data) {
-				
-					//tempData="BIC from existing autocomplete call";
-					var tempData = data;
-					requestProducts(tempData, term, extraParams, success);		
+					// add data to cache
+					data = options.parse && options.parse(data) || parse(data);
+					cache.add(term, data)
+
+					// get products if available
+					var products = requestProducts(success, failure);
+
+					if (products) {
+						data = data.concat(products);
+					}	
+
+					success(term, data);
 				}
 			});
 		} else {
@@ -597,7 +650,7 @@ $.Autocompleter.Cache = function(options) {
 						var c = data[k];
 						$.each(c, function(i, x) {
 							// if we've got a match, add it to the array
-							if (matchSubset(x.value.replace(/<[^>]+>/ig,''), q)) {
+							if (matchSubset(x.value.replace(/<[^>]+>/ig,'').replace(/&.+;/ig,''), q)) {
 								csub.push(x);
 							}
 						});
@@ -615,7 +668,7 @@ $.Autocompleter.Cache = function(options) {
 					if (c) {
 						var csub = [];
 						$.each(c, function(i, x) {
-							if (matchSubset(x.value.replace(/<[^>]+>/ig,''), q)) {
+							if (matchSubset(x.value.replace(/<[^>]+>/ig,'').replace(/&.+;/ig,''), q)) {
 								csub[csub.length] = x;
 							}
 						});
@@ -743,7 +796,9 @@ $.Autocompleter.Select = function (options, input, select, config) {
 		var prodLinkCounter = 0; // counter used to limit number of productLinks returned
 		var keywordMatchCounter = 0;
 		
-
+		// set to true if previous purchase product showing in results
+		// used to not show weekly deals when prev purchase match
+		var prevPurchaseLinkMatch = false; 
 		
 		for (var i=0; i < data.length; i++) {
 			if(prodLinkCounter >= options.prodLinkMax) {
@@ -763,11 +818,19 @@ $.Autocompleter.Select = function (options, input, select, config) {
 			    
 			var isProdLink = formatted.indexOf('prodlink') == -1 ? false : true;
 			
-			// if we have 0 keyword matches and this is a product link we can assume there are no keyword matches
-			if(!keywordMatchCounter && isProdLink) {
-				if(addKeywordHeader) {
-					$('<li class="ac_header"></li>').html('<h4>Please select Search or hit enter when ready</h4>').appendTo(list)[0];
-					addKeywordHeader = false;
+			if (isProdLink) {
+				// if page is secure (https) and url is not already https change image url to be secure
+				// added because cached autocompleteweeklydeals.jsp always returns nonsecure
+				if (isSecure && formatted.indexOf('https') == -1) {
+					var replaceURL;
+					// create regex for replace using nonsecure url
+					var regExNonSecure = new RegExp(propertyValues.s7nonsecure, "ig");
+					if (isKiosk) {
+						replaceURL = propertyValues.s7kiosksecure;
+					} else {
+						replaceURL = propertyValues.s7secure;
+					}
+					formatted = formatted.replace(regExNonSecure, replaceURL);
 				}
 			}
 			
@@ -775,10 +838,17 @@ $.Autocompleter.Select = function (options, input, select, config) {
 			if(cleanText.toLowerCase().indexOf(term) >= 0) {
 				
 				//chooses the second header based on the links returned
-				if(formatted.indexOf('dealslink') > -1) {
-					var headerText = '<h4>Weekly Deals</h4>';
-				} else if(formatted.indexOf('purchlink') > -1) {
-					var headerText = '<h4>Previously Purchased Items</h4>';
+				if (!prevPurchaseLinkMatch) {
+					if(formatted.indexOf('dealslink') > -1) {
+						var headerText = '<h4>Weekly Deals</h4>';
+					} else if(formatted.indexOf('purchlink') > -1) {
+						var headerText = '<h4>Previously Purchased Items</h4>';
+						prevPurchaseLinkMatch = true;
+					}
+				}
+				// if previous purchase link has already been matched skip to next item so weekly deals is not shown together 
+				else if (formatted.indexOf('dealslink') > -1) {
+					continue;
 				}
 				
 				//if this is not a product link it is a key word 
@@ -803,7 +873,11 @@ $.Autocompleter.Select = function (options, input, select, config) {
 					var li = $("<li/>").html(options.highlight(formatted.replace(/>[^<].*</ig,'>'+cleanText+'<'), term) ).addClass(i%2 == 0 ? "ac_even "+suggestedLinkClass : "ac_odd "+suggestedLinkClass).appendTo(list)[0];
 					$.data(li, "ac_data", data[i]);
 				}	
-			}	
+			}
+			// if this is the last data point to check and no matches have been found yet 
+			else if (i == (data.length -1) && !keywordMatchCounter && !prodLinkCounter) {
+				$('<li class="ac_header"></li>').html('<h4>Please select Search or hit enter when ready</h4>').appendTo(list)[0];
+			}
 		}
 		
 		listItems = list.find("li");

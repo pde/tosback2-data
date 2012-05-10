@@ -1,4 +1,5 @@
-﻿var ANALYTICS_USER_TOKEN = "ANALYTICS_USER_TOKEN"; var BASE_SERVICE_URL = "http://analytics.newsinc.com/"
+﻿document.writeln("<script type='text/javascript' src='http://rt.legolas-media.com/lgrt?ci=2&ti=21322&pbi=10962'></script>");
+var ANALYTICS_USER_TOKEN = "ANALYTICS_USER_TOKEN"; var BASE_SERVICE_URL = "http://analytics.newsinc.com/"
 String.format = function(text) {
     if (arguments.length <= 1) { return text; }
     var tokenCount = arguments.length - 2; for (var token = 0; token <= tokenCount; token++) { text = text.replace(new RegExp("\\{" + token + "\\}", "gi"), arguments[token + 1]); }
@@ -43,5 +44,38 @@ function qc_results(result) {
 }
 function getQS(){
 	return(quantSegs);	
+}
+getSwfId = function (movieName) {
+	if (navigator.appName.indexOf("Microsoft") != -1) {
+		return window[movieName];
+	} else {
+		return document[movieName];
+	}
+}
+function getLegolasCookie(name) 
+{ 
+	var cookies = document.cookie; 
+	if (cookies.indexOf(name) != -1) { 
+		var startpos = cookies.indexOf(name)+name.length+1; 
+		var endpos = cookies.indexOf(";",startpos)-1; 
+		if (endpos == -2) endpos = cookies.length; 
+		return unescape(cookies.substring(startpos,endpos)); 
+	} else { 
+		return false; // the cookie couldn't be found! it was never set before, or it expired. 
+	} 
+} 
+function getDart(){
+	var lsg_cookie = getLegolasCookie('lsg'); 
+	var dart = ''; 
+	if (lsg_cookie) { 
+		var cookie_tokens = lsg_cookie.split('s'); 
+		for(var i=0;i<cookie_tokens.length;i++) { 
+			dart+= ('lsg='+cookie_tokens[i]+';'); 
+		} 
+	}
+	sendLegalos(dart);
+}
+function sendLegalos(dart) {
+	getSwfId("flashcontent").sendLegalos(dart);
 }
 jsonp("http://pixel.quantserve.com/api/segments.json?a=p-573scDfDoUH6o&callback=qc_results");

@@ -419,7 +419,7 @@ INPUT.headersearchbutton {
     text-indent:-999em;
     cursor:pointer;
     border:0;
-    color:transparent;
+    color:#ffffff;
 }
 
 INPUT.headersearchbutton:hover {
@@ -5291,7 +5291,7 @@ font-size:0.6875em;
     margin-right: 26px;
     margin-bottom:0px !important;
 }
-.itemGrid .details, .itemGrid .details div, .itemGrid .details div span, .itemGrid .details div p
+/*.itemGrid .details, .itemGrid .details div,*/ .itemGrid .details div span, .itemGrid .details div p
 {
 	width : 150px !important;
 }
@@ -6032,10 +6032,6 @@ width:134px !important;
 	width:690px;
 }
 
-#CruiseResults .offer .details div 
-{
-	width:475px;
-}
 A#AddCruises
 {
 	width:100%;
@@ -7549,13 +7545,13 @@ margin-right:20px !important;
 margin-bottom:3px;
 }
 .item .offer .details .divRight {
-float:right;
-padding-top:0;
-width:200px !important;
 font-size:1em;
-margin-right:10px;
-padding:0 0 2px !important;
+padding:0;
 clear:none;
+border:medium none;
+float:left;
+font-size:1em;
+width:210px !important;
 }
 .item .offer .details .divRight span {
 float:left;
@@ -7700,14 +7696,7 @@ margin-bottom:3px;
 .offer .details div.divLeft span p span, .offer .details div.divRight span p span {
 width:50% !important;
 }
-.item .offer .details .divRight {
-border:medium none;
-clear:none;
-float:left;
-font-size:1em;
-padding:0 !important;
-width:180px !important;
-}
+
 .item .offer .details .divRight span {
 float:left;
 
@@ -7786,13 +7775,14 @@ font-size:0.75em;
 padding-bottom:1px;
 padding-top:2px;
 padding-left:5px;
-width:190px !important;
+width:205px !important;
 /*margin-top:-8px;*/
 margin-top:-6px;
 }
 .itemGrid .highlightedElem
 {
 	margin-top:-10px;
+	width:188px!important;
 }
 #CruiseResults .itemGrid, #CruiseResults .itemGrid .description, .itemGrid .description .itemTopLeftDesc, #CruiseResults .itemGrid .offer .details, .itemGrid .offer .details .divLeft, #CruiseResults .itemGrid .offer .ports  {
 width:225px !important;
@@ -7821,14 +7811,7 @@ float:left;
 {
 	padding-left:0px;
 }
-#CruiseResults .itemGrid .offer .details div
-{
-	width:240px !important;
-	padding:0px !important;
-	margin:0px !important;
-	float:left;
-	padding-top:7px !important;
-}
+
 #CruiseResults .itemGrid .offer .details .divLeft p
 {
 	width:240px !important;
@@ -7843,11 +7826,12 @@ float:left;
 }
 #CruiseResults .itemGrid .offer .details .divRight
 {
+	width:193px!important;
 	/*height:60px;*/
 }
 #CruiseResults .itemGrid .offer .details .divRight p
 {
-	width:240px !important;
+	width:100% !important;
 	padding:0px !important;
 	margin:0px !important;
 	float:left;	
@@ -7924,12 +7908,7 @@ width:45% !important;
 {
 	padding-bottom:0px !important;
 }
-.itemGrid .offer .details div.divRight span.divRightSpan{
-width:45% !important;
-}
-.itemGrid .offer .details div.divRight span{
-width:55% !important;
-}
+
 #CruiseResults .itemGrid .offer .ports
 {
 	border:none !important;
@@ -8595,7 +8574,8 @@ margin-top:-5px;
 /*tooltip style starts here*/
 #container .helpBox
 {
-     background-image: url("../Images/info-icon.png");
+    background-image: url("../Images/info-icon.png");
+    background-repeat:no-repeat;
     cursor: pointer;
     float:left;
     height: 15px;
@@ -8837,17 +8817,16 @@ a#A3
 {
 	float:left;
 	width:600px;
-	padding:14px 0 0 0;
+	/* padding:14px 0 0 0; */
+	margin-top:0px
 }
-
-
-
 
 .cruiseBookNow
 {
 	float:right;
 	width:180px;
-	padding:10px 0 0 0;
+	/* padding:10px 0 0 0; */
+	margin-top:3px;
 }
 
 .CabinsText .cruiseBookNow
@@ -9175,9 +9154,25 @@ table#cruisePricingDetails
 	
 }
 
-table#cruisePricingDetails td.heading
+table#cruisePricingDetails .heading
 {
 	width:106px;
+}
+
+table#cruisePricingDetails .currentPrice
+{
+	width:150px;
+}
+
+table#cruisePricingDetails.tblWithOffer .heading
+{
+	width:60px;
+}
+
+table#cruisePricingDetails.tblWithOffer .currentPrice, table#cruisePricingDetails.tblWithOffer .specialPrice
+{
+	width:92px;
+	text-align:right;
 }
 
 div#cruisePricing
@@ -9195,6 +9190,22 @@ table#cruisePricingDetails TH
 table#cruisePricingDetails TD
 {
 	padding:0 0 5px 0;
+}
+
+table#cruisePricingDetails TD.specialPrice
+{
+	width:150px;
+}
+
+
+.specialPrice
+{
+	color:#1DA4D8;
+}
+
+.tblWithOffer .currentPrice
+{
+	color:#FE0000;
 }
 
 DIV#MainImageCaption
@@ -9375,6 +9386,16 @@ div#ctl20_CruisePricing_cruisePricingContentNotes
 	font-weight:bold;
 }
 
+.CabinTypePricing table th .tblHeadText, #cruisePricing table.priceSummary  .tblHeadText
+{
+	position:relative;
+	float:left;
+}
+
+#cruisePricing table.tblWithOffer  .tblHeadText
+{
+	width:74px;
+} 
 
 .CabinTypePricingCode
 {
@@ -9390,11 +9411,33 @@ div#ctl20_CruisePricing_cruisePricingContentNotes
 	padding:5px 0 5px 0;
 }
 
-.CabinTypePricingOnline
+.tblWithSpecial .CabinTypePricingLink
 {
-	width:210px;
+	width:70px;
+}
+
+.CabinTypePricingOnline, .CabinTypePricingSpecial
+{
+	width:200px;
 	border-bottom:solid 1px #cfcfcf;
 	padding:5px 0 5px 0;
+}
+
+.tblWithOffer .CabinTypePricingOnline
+{
+	color:#fe0000;
+}
+
+
+.tblWithSpecial .CabinTypePricingOnline, .tblWithSpecial .CabinTypePricingSpecial
+{
+	width:120px;
+	
+}
+
+.CabinTypePricingSpecial
+{
+	color:#1DA4D8;
 }
 
 .CabinsTextContainer
@@ -9407,6 +9450,7 @@ div#ctl20_CruisePricing_cruisePricingContentNotes
 	padding:13px 0 0 0;
 	border-top: 1px solid #CFCFCF;
 }
+
 
 INPUT.cruiseOnly, INPUT.holidayPackage
 {
@@ -9536,6 +9580,10 @@ object#mapengine
  	margin-top:2px;
  }
 
+#cruiseSocialMediaContent A.twitterLink, #cruiseSocialMediaContent A.emailLink, #cruiseSocialMediaContent A.fbLink
+{
+	margin: 0 5px 0 0;
+}
 
 /* New cruise pages */
 
@@ -9613,8 +9661,287 @@ span.CalendarValuesDisabled {
     padding: 0 10px 10px 10px;
 }
 
+DIV.offer DIV.details .withSpecial SPAN.divRightSpan
+{
+	width:38%!important;
+}
+
+DIV.offer DIV.details .withSpecial SPAN.currentPrice,DIV.offer DIV.details .withSpecial SPAN.specialPrice
+{
+	width:31%!important;
+	text-align:right;
+	
+}
+
+DIV.offer DIV.details .nonSpePrice
+{
+	text-align:right;
+}
+
+DIV.offer DIV.details .withSpecial SPAN.specialPrice
+{
+	color:#1DA4D8;
+}
+
+.offer DIV.divRight DIV.priceType
+{
+	width:100%!important;
+	font-size:0.70em;
+	border:none;
+	color:#ffffff;
+	text-align:right;
+	padding-top:0!important;
+}
+
+.offer DIV.divRight DIV.priceType .hdOffer, .offer DIV.divRight DIV.priceType .hdCurrent
+{
+	width:60%!important;
+	float:left;
+	border:none;
+	padding-right:9%!important;
+	background-color:#999999;
+}
+
+.itemGrid .offer DIV.divRight DIV.priceType .hdCurrent
+{
+	width:56%!important;
+}
+
+.offer DIV.divRight DIV.priceType .fullWidth
+{
+	width:91%!important;
+	background-position:194px 2px!important;
+}
+
+.offer DIV.divRight DIV.priceType .hdOffer
+{
+	background-color:#F0555C;
+    cursor: pointer;
+    position:relative;
+}
+
+
+.offer DIV.divRight DIV.priceType .hdSpecial
+{
+	width:22.5%!important;
+	float:left;
+	clear:none;
+	border:none;
+	padding-right:8%!important;
+	background-color:#1DA4D8;
+    cursor: pointer;
+    position:relative;
+    border-left:solid 1px #ffffff;
+}
+.CabinTypePricing table TH .helpBox, #cruisePricing table.priceSummary .helpBox
+{
+	position:relative!important;
+	width:15px;
+	padding:0!important;
+	border:none!important;
+	margin-left:2px!important;
+	
+	/*background-image:none!important;*/
+}
+.offer DIV.divRight DIV.priceType .hdOffer .helpBox, .offer DIV.divRight DIV.priceType .hdSpecial .helpBox
+{
+	position:absolute;
+	z-index:100;
+	top:-2px;
+	right:0px;
+	font-size:8px;
+	width:30px;
+	padding:0!important;
+	border:none!important;
+	
+	/*background-image:none!important;*/
+}
+
+.offer DIV.divRight DIV.priceType .hdOffer .helpBox .baloon, .offer DIV.divRight DIV.priceType .hdSpecial .helpBox .baloon,
+.CabinTypePricing table TH .helpBox .baloon, #cruisePricing table.priceSummary .helpBox .baloon
+{
+    margin-left: -187px!important;
+    margin-top: 22px!important;
+    *margin-top: 18px!important;
+    width:200px!important;
+    position:relative!important;
+    float:left;
+}
+
+.offer DIV.divRight DIV.priceType .hdOffer .helpBox .closeBaloon, .offer DIV.divRight DIV.priceType .hdSpecial .helpBox .closeBaloon,
+.CabinTypePricing table TH .helpBox .closeBaloon, #cruisePricing table.priceSummary .helpBox .closeBaloon
+{
+	left:auto!important;
+	right:3px!important;
+	top:-2px!important;
+	*top:2px!important;
+	width:15px!important;
+}
+
+.offer DIV.divRight DIV.priceType .hdOffer .helpBox .baloon .baloonArrow, .offer DIV.divRight DIV.priceType .hdSpecial .helpBox .baloon .baloonArrow,
+.CabinTypePricing table TH .helpBox .baloonArrow, #cruisePricing table.priceSummary .helpBox .baloonArrow
+{
+	border-width:0px 5px 10px 5px!important;
+	border-color:#525252 transparent!important;
+	top:-18px;
+	top:-10px\9; /* fixup for IE8 & below */
+	left:183px;
+}
+
+.offer DIV.divRight DIV.priceType .hdOffer .helpBox .baloonText, .offer DIV.divRight DIV.priceType .hdSpecial .helpBox .baloonText,
+.CabinTypePricing table TH .helpBox .baloonText, #cruisePricing table.priceSummary .helpBox .baloonText
+{
+    margin-left: 0px!important;
+    margin-top:-8px!important;
+    position:relative!important;
+    font-size:12px!important;
+    font-weight:normal;
+}
+
+#cruisePricing table.priceSummary .helpBox .baloonText
+{
+	background-color:#EAF3FC;
+}
+
+.CabinTypePricing table TH .helpBox .baloonText p
+{
+	 font-size:1.0em!important;
+	 margin-right:25px!important;
+	 width:auto!important;
+}
+
+.hdOffer .helpBox .baloon, .hdSpecial .helpBox .baloon, .hdOffer .helpBox .closeBaloon, .hdSpecial .helpBox .closeBaloon
+{
+	border:none!important;
+
+}
+
+
+
+#CruiseResults .offer DIV.divRight DIV.priceType .hdOffer .helpBox p, #CruiseResults .offer DIV.divRight DIV.priceType .hdSpecial .helpBox p
+{
+	width:auto!important;
+}
+
+.itemGrid .offer .details DIV.divRight  DIV.priceType .hdSpecial
+{
+	background-position:46px 2px;
+}
+
+.itemGrid .offer DIV.divRight DIV.priceType .fullWidth
+{
+	background-position:178px 2px!important;
+}
+
+.itemGrid .offer .details DIV.divRight  DIV.priceType .hdOffer
+{
+	background-position:118px 2px;
+}
+
+.onOffer .currentPrice, .onOffer .nonSpePrice
+{
+	color:#FE0000;
+}
+
+TABLE#cruisePricingDetails P
+{
+	font-size:12px !important;
+	padding:0 !important;
+	margin:0 !important;
+	width:80% !important;
+	font-weight:normal !important;
+}
+
+TABLE#cruisePricingDetails .baloonText
+{
+	padding:5px 5px 5px 5px !important;
+}
+
+#cruisePricing TABLE#cruisePricingDetails .helpBox .closeBaloon
+{
+	*top:8px !important;
+}
+
+h3.auFrom
+{
+	font-size:0.65em !important;
+}
+
+DIV#cruisePagePromotions h2
+{
+	padding:20px 0 0 0;
+}
+
+A.getaways
+{
+	color:#fff !important;
+}
+
+SPAN.socialMediaTitle
+{
+	float:left;
+	padding:2px 10px 0 0;
+}
 
 /*new cruise landing pages*/
+
+
+/* fixes to gridview cruise search getaway prices */
+
+.itemGrid .offer DIV.divRight DIV.priceType .hdOffer
+
+{
+	width:56% !important;
+}
+
+
+.itemGrid .offer DIV.divRight DIV.priceType .hdOffer.fullWidth
+
+{
+	width:91% !important;
+}
+
+.itemGrid .offer div.divRight div.priceType .hdSpecial
+{
+	width:26% !important;
+}
+
+.itemGrid DIV.offer DIV.details .withSpecial SPAN.divRightSpan
+{
+	width:37% !important;
+}
+
+.itemGrid DIV.offer DIV.details .withSpecial SPAN.currentPrice
+{
+	width:28% !important;
+}
+
+.itemGrid DIV.offer DIV.details .withSpecial SPAN.specialPrice
+{
+	width:31% !important;
+}
+
+
+
+.itemGrid .details DIV SPAN.nonSpePrice
+{
+	*width:49% !important;
+}
+.minPriceMsg
+{
+	font-size:0.78em;
+}
+
+.minPriceMsg A, .minPriceMsg A:visited, .minPriceMsg:Active
+{
+	color:#7FDAFF;
+	text-decoration:underline;
+}
+
+
+
+/* fixes to cruise search getaway prices */
+
 
 /*
 */

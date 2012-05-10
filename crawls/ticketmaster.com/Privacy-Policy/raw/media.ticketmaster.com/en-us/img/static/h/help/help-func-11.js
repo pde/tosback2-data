@@ -220,5 +220,6 @@ function helpInit() {
 	}
 }
 
-
-window.onload = helpInit;
+if( $("help_frame") != undefined ) {
+ window.onload = helpInit;
+}

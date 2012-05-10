@@ -1,14 +1,715 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml">
+<html lang="en" >
 	<head>
 		<title>Customer Service - Sheplers</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=9" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link href="../css/sheplers.jsp.css" rel="stylesheet" type="text/css"/><link href="../css/cms.jsp.css" rel="stylesheet" type="text/css"/><script src="../js/ocpsdk/base.js" type="text/javascript"></script><script src="../js/ocpsdk/jquery/jquery.js" type="text/javascript"></script><script src="../js/ocpsdk/jquery/ext/jquery.widget.jsp" type="text/javascript"></script><script src="../js/site_lib.js" type="text/javascript"></script><script src="../js/s_code.js" type="text/javascript"></script><script type="text/javascript" src="../js/ocpsdk/aggregator/script_source.jsp%3Fgkey=sG_-8254472877256690893&amp;hash=940378254919379943"></script>
+		<link href="../css/sheplers.jsp.css" rel="stylesheet" type="text/css"/><link href="../css/cms.jsp.css" rel="stylesheet" type="text/css"/><!--[if IE 7]>
+		<link href="/css/ie7.css" rel="stylesheet" type="text/css"/><![endif]-->
 
+		<script src="../js/ocpsdk/base.js" type="text/javascript"></script><script src="../js/ocpsdk/jquery/jquery.js" type="text/javascript"></script><script src="../js/ocpsdk/jquery/ext/jquery.widget.jsp" type="text/javascript"></script><script src="../js/site_lib.js" type="text/javascript"></script><script src="../js/s_code.js" type="text/javascript"></script>
 <script type='text/javascript'>
 
+	function sort(theObj) {
+		
+		var sortUrl = window.location.search;
+		sortUrl = removeParamValue(sortUrl,"sortByColumnName");
+		
+		if($.browser.queryParams["currentIndex"] != null) {
+			sortUrl = removeParamValue(sortUrl,"currentIndex");
+			sortUrl += "&currentIndex=0";	
+		}
+		sortUrl += "&sortByColumnName=" + theObj.options[theObj.selectedIndex].value;
+		if(sortUrl.indexOf("?") == -1)
+			sortUrl = "?" + sortUrl;
+		window.location.search = sortUrl;				
+	}
+
+	function removeParamValue(url, param) {
+		var params = url.split('&');
+		var newUrl = '';
+		for(var i=0;i<params.length;i++)
+			if(params[i].indexOf(param) == -1 && params[i] != '') {
+				if(params[i].indexOf('?') >=0)
+					newUrl += params[i];
+				else
+					newUrl += '&' + params[i];
+			}
+		return newUrl;
+	}
+
+	
+
+if (typeof PagingWidget == "undefined") {
+
+	/**
+	 * @class Renders paging controls allowing direct access to any page within a result set as well as
+	 *        'next' and 'previous' controls.  The pages will all be listed in sequence preceeded and followed
+	 * 		by 'next' and 'previous' links.  The links can be overridden as text or images using Motifs styles for
+	 *       the 'next' and 'previous' css classes and the resource attributes 'paging.previous' and 'paging.next'
+	 * @author Michael Maley(mmaley@fry.com)
+	 */
+	var PagingWidget = BaseWidget.extend({
+
+		create: function(selector, settings) {
+			var jQ = this.base(selector, settings);
+			if (jQ.widgetState().enabled != undefined && !jQ.widgetState().enabled) {
+				this.hide(selector);
+			};
+			if (jQ.widgetState().triggerPageChanged) {
+				this.calculateValues(jQ, 0, settings.totalItems);
+				this.assignEvents(selector);
+			}
+			return jQ;
+		},
+
+	/**
+	 * Hides the Paging controls (using jQuery's 'hide' method)
+	 *
+	 * @param selector {String} A jQuery selector for the widget root
+	 */
+		hide: function(selector) {
+			$(selector).hide();
+		},
+
+	/**
+	 * Shows the Paging controls (using jQuery's 'show' method)
+	 *
+	 * @param selector {String} A jQuery selector for the widget root
+	 */
+		show: function(selector) {
+			$(selector).show();
+		},
+
+	/**
+	 * Returns the class name of the widget
+	 * @type String
+	 */
+		getWidgetClassName: function() {
+			return "PagingWidget";
+		},
+
+	/**
+	 * Sets the 'current-page' css class on the page number provided and recalculates the 'next' and 'previous'
+	 * links.
+	 * @param selector {String} A jQuery selector for the widget root
+	 * @param event {Event} The event object
+	 * @param pageNumber {Integer} The page number you want to set as the current page
+	 */
+		setPage: function(selector, event, pageNumber) {
+			updatePagingLinks(selector, pageNumber, $(selector).widgetState("totalPages"));
+		},
+
+
+	/**
+	 * Sets the number of elements to include per page in the paging control.
+	 *
+	 * @param selector {String} A jQuery selector for the widget root
+	 * @param event {Event} The event object
+	 * @param pageSize {Number} The number of items per page for this paging control.
+	 */
+		setPageSize: function(selector, event, pageSize) {
+			$(selector).widgetState("pageSize", pageSize);
+		},
+
+	/**
+	 * Specify the index of the an item in the collection to use to determine the current-page.  Recalculates
+	 * the entire paging control to activate the page that contains the specified index.
+	 *
+	 * @param selector {String} A jQuery selector for the widget root
+	 * @param event {Event} The event object
+	 * @param index {Number} The index of the item to use to determine the page to mark as the 'current-page'
+	 * @param pageSize {Number} The number of items to render per page
+	 * @param totalItems {Number} The total number of items being paged over
+	 */
+		setIndex: function(selector, event, index, pageSize, totalItems) {
+			var s = $(selector).widgetState();
+			if (pageSize) s.pageSize = pageSize;
+			if (totalItems) s.totalItems = totalItems;
+			if (!s.defaultTotalItems) s.defaultTotalItems = totalItems;
+			this.calculateValues(selector, index, s.totalItems);
+			this.updatePageNumbers(selector);
+			this.assignEvents(selector);
+			this.selectPage(selector, s.currentPage);
+		},
+
+	/**
+	 * Internal helper method to assign click events when the controls is rendered/re-rendered.  Only necessary
+	 * when the next and previous controls have been re-added to the DOM after a change in the total number of
+	 * items/pages in the paged set.
+	 *
+	 * @param selector {String} A jQuery selector for the widget root
+	 * @private
+	 */
+	 
+		assignEvents: function(selector) {
+			var jQ = $(selector);
+			var self = this;
+			var s = jQ.widgetState();
+
+		
+			$(".previous", jQ).click(function(event) {
+				self.onPageChanged(selector, s.previousIndex);
+			});
+
+		
+			jQ.find(".page-number").click(function(event) {
+				$(".current-page", jQ).removeClass("current-page");
+				$(this).addClass("current-page");
+				var pIdx = parseInt($(this).text()) - 1;
+				var startIndex = pIdx * s.pageSize;
+				self.onPageChanged(selector, startIndex);
+			});
+
+		
+			$(".next", jQ).click(function(event) {
+				self.onPageChanged(selector, s.nextIndex);
+			});
+
+			$(".viewall", jQ).click(function(event) {
+				s.pageSize = s.totalItems;
+				s.totalPages = 1;
+				s.currentPage = 1;
+				s.mode = "all";
+				self.updatePageNumbers(selector);
+				self.onPageChanged(selector, 0);
+				self.assignEvents(selector);
+				$(this).css("display", "none");
+				$(".viewbypage", jQ).css("display", "block");
+				EventTracker.track("AllItems");
+			});
+
+			$(".viewbypage", jQ).click(function(event) {
+				s.pageSize = s.defaultPageSize;
+				s.mode = "page";
+				self.calculateValues(selector, 0, s.totalItems);
+				self.updatePageNumbers(selector);
+				self.onPageChanged(selector, 0);
+				self.assignEvents(selector);
+				$(this).css("display", "none");
+				$(".viewall", jQ).css("display", "block");
+				EventTracker.track("ByPage");
+			});
+		},
+
+
+	/**
+	 * Recalculates the number of pages, the current page, the next and previous indexes, and then updates the
+	 * html
+	 *
+	 */
+		onPageChanged: function(selector, pageStartIndex) {
+			var jQ = $(selector);
+			var s = jQ.widgetState();
+			var self = this;
+			/**/
+			s.nextIndex = Number(pageStartIndex) + s.pageSize;
+			s.previousIndex = Number(pageStartIndex) - s.pageSize;
+			s.currentIndex = Number(pageStartIndex);
+			var currentPage = Math.floor((pageStartIndex + s.pageSize) / s.pageSize);
+			self.calculateValues(selector, s.currentIndex, s.totalItems);
+			self.selectPage(selector, currentPage);
+
+			EventTracker.track("ToPage", "Page: " + currentPage);
+
+			/**/
+			if (s.triggerPageChanged) {
+				if (!s.restoringState) {
+					PersistentStorage.savePersistent({"browse": {"currentindex": s.currentIndex, "totalitems": s.totalItems, "pagesize" : s.pageSize, "mode" : s.mode}});
+				} else {
+					s.restoringState = false;
+				}
+				jQ.widgetTrigger("pagechanged", [pageStartIndex, s.pageSize, s.totalItems]);
+			}
+		},
+
+
+	/**
+	 *	Function to redraw the paging numbers and labels when the list of entities has changed and
+	 *	thrown the 'entities loaded' event.  Should always load from the start of the list (index 0)
+	 */
+
+		drawPagingWidget: function(selector, event, totalCount, activeCount) {
+			var jQ = $(selector);
+			var self = this;
+			var s = jQ.widgetState();
+			/**/
+			this.show(selector);
+			if (totalCount != s.totalItems) {
+				s.currentIndex = 0;
+				if (!s.defaultTotalItems) s.defaultTotalItems = totalCount;
+				s.totalItems = totalCount;
+				self.calculateValues(selector, s.currentIndex, totalCount);
+				self.updatePageNumbers(selector);
+				self.selectPage(jQ, s.currentPage);
+				self.assignEvents(jQ);
+			}
+		},
+
+	/**
+	 * Calculate the following values for the paging widget based on the widget's page size:
+	 * Total Number of Pages, Current Page, Next and Previous indexes
+	 *
+	 * @param selector {String} A jQuery selector for the widget root
+	 * @param currentIndex {Integer} The current index into the paged set
+	 * @param totalCount {Integer} The total number of items included in the paged set
+	 */
+		calculateValues: function(selector, currentIndex, totalCount) {
+			var s = $(selector).widgetState();
+			s.totalItems = totalCount;
+			s.totalPages = Math.floor((totalCount + s.pageSize - 1) / s.pageSize);
+			s.currentIndex = currentIndex;
+			s.currentPage = Math.floor((currentIndex + s.pageSize) / s.pageSize);
+			if (currentIndex > s.pageSize) {
+				s.previousIndex = Number(currentIndex) - s.pageSize;
+			}
+			if (currentIndex < (totalCount - s.pageSize)) {
+				s.nextIndex = currentIndex + s.pageSize;
+			}
+		},
+
+
+	/**
+	 * Updates the HTML styles to show/hide next and previous links as appropriate and
+	 * applies the 'current-page' style to the specified current page.
+	 *
+	 * @param selector {String} A jQuery selector for the widget root
+	 *@param currentPage {Integer} The page number to select/highlight
+	 *@param totalPages {Integer} The total number of pages
+	 *
+	 */
+
+		selectPage: function(selector, currentPage) {
+			var jQ = $(selector);
+			var s = jQ.widgetState();
+			if (currentPage > s.totalPages) {
+				currentPage = s.totalPages;
+			}
+			if (currentPage == s.totalPages) {
+				jQ.find(".next").css("display", "none");
+			} else {
+				jQ.find(".next").css("display", "block");
+			}
+
+			jQ.find(".current-page").removeClass("current-page");
+			$(jQ.find(".page-number").get(currentPage - 1)).addClass("current-page");
+			if (currentPage <= 1) {
+				jQ.find(".previous").css("display", "none");
+			} else {
+				jQ.find(".previous").css("display", "block");
+			}
+
+         var endIndex = s.currentIndex + s.pageSize > s.totalItems ? s.totalItems : s.currentIndex + s.pageSize;
+			if (s.currentIndex + 1 == endIndex) {
+				jQ.find(".viewall .xofy").html((s.currentIndex + 1) + ' of ' + s.totalItems);
+			} else {
+				jQ.find(".viewall .xofy").html((s.currentIndex + 1) + ' - ' + (endIndex) + ' of ' + s.totalItems);
+			}
+		},
+
+	/**
+	 * Updates the html/div representation of the pages that are available for the settings defined for
+	 * this widget.  This includes the next and previous labels and links.  Any logic for number ranges
+	 * and/or collapsing should occur here.
+	 * @param selector {String} A jQuery selector for the widget root
+	 * @private
+	 */
+		updatePageNumbers: function(selector) {
+			var jQ = $(selector);
+			var self = this;
+			var s = jQ.widgetState();
+
+         var pgs = jQ.html("");
+			if (s.viewModeBeforePages) {
+				this.generateViewModeDiv(selector);
+			}
+			
+			pgs.append('<div class="page-numbers"></div>').children(".page-numbers");
+			pgs.append('<div class="previous"><span class="text">' + s.paging_previous + '</span></div>');
+			if (s.totalPages > 1 || s.showSinglePage) {
+				for (i = 1; i <= s.totalPages; i++) {
+					var startIndex = (i - 1) * s.pageSize;
+					if (i == s.currentPage) {
+						pgs.append('<div class="page-number current-page">' + i + '</div>');
+					} else {
+						pgs.append('<div class="page-number">' + i + '</div>');
+					}
+				}
+			}
+			pgs.append('<div class="next"><span class="text">' + s.paging_next + '</span></div>');
+			if (s.currentPage <= 1) {
+				jQ.find(".previous").css("display", "none");
+			}
+			if (s.currentPage >= s.totalPages) {
+				jQ.find(".next").css("display", "none");
+			}
+
+			if (!s.viewModeBeforePages) {
+				this.generateViewModeDiv(selector);
+			}
+		},
+
+		generateViewModeDiv: function(selector) {
+			var jQ = $(selector);
+			var s = jQ.widgetState();
+			
+			var vm = jQ.append('<div class="viewmode"></div>').children(".viewmode");
+			var endIndex = s.currentIndex + s.pageSize > s.totalItems ? s.totalItems : s.currentIndex + s.pageSize;
+			var xofy = null;
+			if (s.currentIndex + 1 == endIndex) {
+				xofy = s.showXofYLabel ? '<span class="xofy">' + (s.currentIndex + 1) + ' of ' + s.totalItems + '</span>' : '';
+			}else {
+				xofy = s.showXofYLabel ? '<span class="xofy">' + (s.currentIndex + 1) + ' - ' + endIndex  + ' of ' + s.totalItems + '</span>' : '';
+			}
+			if (s.totalPages > 1) {
+				vm.append('<div class="viewall">' + xofy + '<span class="text">' + s.paging_view_all + '</span></div>');
+			} else {
+				vm.append('<div class="viewall" style="display:none">' + xofy + '<span class="text">' + s.paging_view_all + '</span></div>');
+			}
+			$(".itemcount", vm).html(s.totalItems);
+			if (s.totalItems == s.pageSize) {
+				vm.append('<div class="viewbypage"><span class="text">' + s.paging_view_by_page + '</span></div>');
+			} else {
+				vm.append('<div class="viewbypage" style="display:none"><span class="text">' + s.paging_view_by_page + '</span></div>');
+			}
+		},
+
+
+
+	/**
+	 * Restores the display and state of the widget based on the state object provided.
+	 *
+	 * @param state {Object} A widget state object containing the 'paging' with the required information to restore the PagingWidget
+	 * @param selector {String}  A jQuery selector for the widget root
+	 */
+		restoreState: function(state, selector) {
+			var browse = state["browse"];
+			var jQ = $(selector);
+			var s = jQ.widgetState();
+			if (s.triggerPageChanged) {
+				if (browse && browse.currentindex) {
+					if (browse.currentindex != s.currentIndex) {
+						s.restoringState = true;
+						s.totalItems = browse.totalitems;
+						s.pageSize = browse.pagesize;
+						s.mode = browse.mode;
+						s.currentIndex = browse.currentindex;
+						s.currentPage = Math.floor((s.currentIndex + s.pageSize) / s.pageSize);
+						this.calculateValues(selector, s.currentIndex, s.totalItems);
+						this.updatePageNumbers(selector);
+						this.selectPage(jQ, s.currentPage);
+						this.assignEvents(selector);
+					}
+				} else {
+				
+					s.restoringState = true;
+					s.totalItems = s.defaultTotalItems;
+					s.pageSize = s.defaultPageSize;
+					s.currentPage = 1;
+					s.mode = "page";
+					this.calculateValues(selector, 0, s.totalItems);
+					this.updatePageNumbers(selector);
+					this.selectPage(jQ, s.currentPage);
+					this.assignEvents(selector);
+					$(".viewall", jQ).css("display", "block");
+					$(".viewbypage", jQ).css("display", "none");
+
+				}
+			}
+		}
+
+	});
+}
+;
+                                                
+	if (typeof CollapsingPagingWidget == "undefined") {
+	/**
+	 * @class An extension of the PagingWidget control that renders a listing of pages within a collapsing structure
+	          that allows the paging control to consume a fixed amount of space.  The page listing consists of 5
+	          sections, 3 are clickable, and 2 are ellipsiss representing a collapsed range of numbers.  In general,
+	          the paging control renders the following areas:
+
+                A            B                C
+                     D                   E
+					1 2 3 ... 7 8 9 10 11 12 13 ... 18 19 20
+
+				 where the sections marked A and C are the beginning and end of the paging list.  B represents the 'active'
+				 portion of the user's paging activity, with the middle number (10 in the above example) being the currently
+				 selected page.  D and E represent the page numbers that have been collapsed to save screen space.
+				 Each ellipsis represents at least one page.  The B section of the paging control 'slides' to the left and
+				 right as the user clicks Next and Previous or clicks on a page number.  'Next' would show the next page
+				 in sequence (in this example, 14) and consume '7' from the center list of pages.  'Previous' would
+				 show the next lowest page number below the current active set (in this example, 6) and consume the
+				 number 13 in the ellipsis.
+
+				 As users initialize the paging control or navigate towards the beginning or end of the page list, the
+				 ellipsiss are removed since the active and anchor sections overlap.  The two boundry examples for this
+				 example would be:
+
+				 1 2 3 4 5 6 7 ... 18 19 20
+				 1 2 3 ... 14 15 16 17 18 19 20
+
+				 The number page pages shows (in the above example, 7 pages) is dictated by the size of the 'active buffer',
+				 which is provided to the widget as activeBuffer.  The active page will be surrounded by +/- activeBuffer
+				 pages.  In the above example, the active buffer is 3 which causes at least 7 (3 + active page + 3) pages
+				 to always be shown.  The number of pages shown in the anchors on the left and right side of the
+				 paging list are dicted by the value specified in the inactiveBuffer parameter of the widget.  This is the
+				 number of pages that will always be shown on the left and right sides of the control.
+
+				 When the active portion of the paging list is 'next to' an anchor, you can get a long display of numbers.
+				 This is the 'worst case scenario' for the size of the paging control.  In this example, when the user
+				 selects page 7 or page 15, 10 page numbers 10 will be shown in sequence:
+
+				   A         B         E     C
+				 1 2 3 4 5 6 7 8 9 10 ... 18 19 20
+				   A    D           B            C
+				 1 2 3 ... 12 13 14 15 16 17 18 19 20
+
+				 This behavior leads the largest size possible that the paging control can consume.  This size can be
+				 determined by the following equation:
+
+				 inactiveBuffer + 2 x activeBuffer + 1 active page + 1 ellipsis + inactiveBuffer = total active pages shown
+
+				 So, in the above example, we'd have
+
+				 3 + 2 x 3 + 1 + 1 + 3 = 14
+
+				  
+
+
+	 Renders paging controls allowing direct access to any page within a result set as well as
+	 *        'next' and 'previous' controls.  The pages will all be listed in sequence preceeded and followed
+	 * 		by 'next' and 'previous' links.  The links can be overridden as text or images using Motifs styles for
+	 *       the 'next' and 'previous' css classes and the resource attributes 'paging.previous' and 'paging.next'
+	 * @author Michael Maley(mmaley@fry.com)
+	 * @author $Author: sfarrugia $
+	 * @version $Revision: 1.9 $
+	 */
+		var CollapsingPagingWidget = PagingWidget.extend({
+
+			create: function(selector, settings) {
+				var jQ = this.base(selector, settings);
+				var s = jQ.widgetState();
+				if (jQ.widgetState().triggerPageChanged) {
+					this.calculateValues(jQ, settings.currentIndex, settings.totalItems);
+					this.updatePageNumbers(selector);
+					this.assignEvents(jQ);
+				}
+				return jQ;
+			},
+		
+			
+
+			getWidgetClassName: function() {
+				return "CollapsingPagingWidget";
+			},
+
+		/**
+		 * Updates the html/div representation of the pages that are available for the settings defined for
+		 * this widget.  This includes the next and previous labels and links.  Any logic for number ranges
+		 * and/or collapsing should occur here.
+		 * @param selector {String} A jQuery selector for the widget root
+		 * @private
+		 */
+			updatePageNumbers: function(selector) {
+				var jQ = $(selector);
+				var self = this;
+				var s = jQ.widgetState();
+
+				var inactiveBuffer = s.inactiveBuffer;
+				var activeBuffer = s.activeBuffer;
+				var minPages = (2 * activeBuffer) + 1 + (2 * inactiveBuffer);
+
+				if (s.totalPages <= minPages) {
+					// Use default paging behavior
+					this.base(selector);
+
+
+				} else {
+					var startEllipsis = false;
+					var endEllipsis = false;
+					if ((s.currentPage + activeBuffer) < (s.totalPages - (inactiveBuffer))) {
+						endEllipsis = true;
+					}
+					if ((s.currentPage - (activeBuffer + 1)) > inactiveBuffer) {
+						startEllipsis = true;
+					}
+					jQ.html("");
+					if (s.viewModeBeforePages) {
+						this.generateViewModeDiv(selector);
+					}
+
+					var pgs = jQ.append('<div class="page-numbers">').children(".page-numbers");
+					if (s.currentPage > 1) {
+						pgs.append('<div class="previous"><span class="text">' + s.paging_previous + '</span></div>');
+					}
+					
+
+					for (var i = 1; i <= s.totalPages; i++) {
+						
+						if ((i <= inactiveBuffer) || (i > inactiveBuffer && (s.currentPage <= inactiveBuffer+1) && (i <= (activeBuffer * 2 + 1)))) {
+							self.printPage(pgs, i);
+						
+						} else if ((i > (s.totalPages - inactiveBuffer)) || (i <= (s.totalPages - inactiveBuffer) && (s.currentPage >= s.totalPages - inactiveBuffer) && (i > (s.totalPages - (activeBuffer * 2 + 1))))) {
+						   self.printPage(pgs, i);
+						
+						} else if (i > inactiveBuffer && i < (s.currentPage - activeBuffer)) {
+							if (startEllipsis) {
+								
+								pgs.append('<div class="page-number ellipsis start">&hellip;</div>');
+								startEllipsis = false;
+							}
+
+						
+						} else if (i >= (s.currentPage - activeBuffer) && i <= (s.currentPage + activeBuffer)) {
+                  	self.printPage(pgs, i);
+						
+						} else if (i > (s.currentPage + activeBuffer) && (i <= (s.totalPages - inactiveBuffer))) {
+							if (endEllipsis) {
+								// print ellipsis
+								pgs.append('<div class="page-number ellipsis end">&hellip;</div>');
+								endEllipsis = false;
+							}
+						} else {
+							// console.error("Failed to match " + i );
+						}
+					}
+				if (s.currentPage < s.totalPages) {
+					pgs.append('<div class="next"><span class="text">' + s.paging_next + '</span></div>');
+				}
+
+				if (!s.viewModeBeforePages) {
+					this.generateViewModeDiv(selector);
+				}
+
+
+			}
+
+		},
+
+		onPageChanged: function(selector, pageStartIndex) {
+			var jQ = $(selector);
+			var s = jQ.widgetState();
+			/**/
+			s.nextIndex = pageStartIndex + s.pageSize;
+			s.previousIndex = pageStartIndex - s.pageSize;
+			s.currentIndex = pageStartIndex;
+			var currentPage = Math.floor((pageStartIndex + s.pageSize) / s.pageSize);
+			s.currentPage = currentPage;
+			this.calculateValues(selector, s.currentIndex, s.totalItems);
+			this.updatePageNumbers(selector);
+			// this.selectPage(selector, currentPage);
+			this.assignEvents($(selector));
+			EventTracker.track("ToPage", "Page: " + currentPage);
+
+			/**/
+			if (!s.restoringState) {
+				PersistentStorage.savePersistent({"browse": {"currentindex": s.currentIndex, "totalitems": s.totalItems, "pagesize" : s.pageSize, "mode" : s.mode}});
+			} else {
+				s.restoringState = false;
+			}
+			jQ.widgetTrigger("pagechanged", [pageStartIndex, s.pageSize, s.totalItems]);
+		},
+
+
+		printPage: function(jQ, p) {
+			if (p == jQ.widgetState().currentPage) {
+				jQ.append('<div class="page-number current-page">' + p + '</div>');
+			} else {
+				jQ.append('<div class="page-number">' + p + '</div>');
+			}
+		}
+	});
+}
+;
+	function sort(theObj) {
+		
+		var sortUrl = window.location.search;
+		sortUrl = removeParamValue(sortUrl,"sortByColumnName");
+		
+		if($.browser.queryParams["currentIndex"] != null) {
+			sortUrl = removeParamValue(sortUrl,"currentIndex");
+			sortUrl += "&currentIndex=0";	
+		}
+		sortUrl += "&sortByColumnName=" + theObj.options[theObj.selectedIndex].value;
+		if(sortUrl.indexOf("?") == -1)
+			sortUrl = "?" + sortUrl;
+		window.location.search = sortUrl;				
+	}
+
+	function removeParamValue(url, param) {
+		var params = url.split('&');
+		var newUrl = '';
+		for(var i=0;i<params.length;i++)
+			if(params[i].indexOf(param) == -1 && params[i] != '') {
+				if(params[i].indexOf('?') >=0)
+					newUrl += params[i];
+				else
+					newUrl += '&' + params[i];
+			}
+		return newUrl;
+	}
+
+	
+	function sort(theObj) {
+		
+		var sortUrl = window.location.search;
+		sortUrl = removeParamValue(sortUrl,"sortByColumnName");
+		
+		if($.browser.queryParams["currentIndex"] != null) {
+			sortUrl = removeParamValue(sortUrl,"currentIndex");
+			sortUrl += "&currentIndex=0";	
+		}
+		sortUrl += "&sortByColumnName=" + theObj.options[theObj.selectedIndex].value;
+		if(sortUrl.indexOf("?") == -1)
+			sortUrl = "?" + sortUrl;
+		window.location.search = sortUrl;				
+	}
+
+	function removeParamValue(url, param) {
+		var params = url.split('&');
+		var newUrl = '';
+		for(var i=0;i<params.length;i++)
+			if(params[i].indexOf(param) == -1 && params[i] != '') {
+				if(params[i].indexOf('?') >=0)
+					newUrl += params[i];
+				else
+					newUrl += '&' + params[i];
+			}
+		return newUrl;
+	}
+
+	
+	function sort(theObj) {
+		
+		var sortUrl = window.location.search;
+		sortUrl = removeParamValue(sortUrl,"sortByColumnName");
+		
+		if($.browser.queryParams["currentIndex"] != null) {
+			sortUrl = removeParamValue(sortUrl,"currentIndex");
+			sortUrl += "&currentIndex=0";	
+		}
+		sortUrl += "&sortByColumnName=" + theObj.options[theObj.selectedIndex].value;
+		if(sortUrl.indexOf("?") == -1)
+			sortUrl = "?" + sortUrl;
+		window.location.search = sortUrl;				
+	}
+
+	function removeParamValue(url, param) {
+		var params = url.split('&');
+		var newUrl = '';
+		for(var i=0;i<params.length;i++)
+			if(params[i].indexOf(param) == -1 && params[i] != '') {
+				if(params[i].indexOf('?') >=0)
+					newUrl += params[i];
+				else
+					newUrl += '&' + params[i];
+			}
+		return newUrl;
+	}
+
+	
 	function sort(theObj) {
 		
 		var sortUrl = window.location.search;
@@ -126,10 +827,7 @@
 
 	
 </script>
-<!--[if IE 7]>
-		<link href="/css/ie7.css" rel="stylesheet" type="text/css"/><![endif]-->
-
-		<meta name="keywords" content="Privacy and Security, Sheplers, Cowboy Boots, October 13"/>
+<meta name="keywords" content="Privacy and Security, Sheplers, Cowboy Boots, October 13"/>
 		<meta name="description" content='Privacy and Security'/>
 			<!-- Begin Monetate tag v6. Place at start of document head. DO NOT ALTER. -->
 		<script type="text/javascript">
@@ -144,22 +842,12 @@
 		</script>
 		<!-- End Monetate tag. -->
 
+
+
 	</head>
 	<body id='' class="custserv">
 
-		<div id="fb-root"></div>
-<script>
-      window.fbAsyncInit = function() {
-        FB.init({appId: '271695069558924', status: true, cookie: true,
-                 xfbml: true});
-      };
-      (function() {
-        var e = document.createElement('script'); e.async = true;
-        e.src = document.location.protocol +
-          '//connect.facebook.net/en_US/all.js';
-        document.getElementById('fb-root').appendChild(e);
-      }());
-</script><div id="pageWrap">
+		<div id="pageWrap">
 			<div id="siteHeaderWrap">
 	<div id="siteHeader">
 		<div class="logoWrap" role="banner">
@@ -226,6 +914,7 @@
 										<li><h3><a href="http://www.sheplers.com/Mens/Mens-Socks/pc/1/24.cat">Men's Socks</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Mens/Mens-Wallets-Accessories/pc/1/25.cat">Men's Wallets & Accessories</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Mens/Mens-On-Sale/pc/1/26.cat">Men's On Sale</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Mens/New-Arrivals/pc/1/1112.cat">New Arrivals</a></h3></li>
 										</ul>
 									<div class="navColumns"></div>
 								</div>
@@ -244,6 +933,7 @@
 										<li><h3><a href="http://www.sheplers.com/Womens/Womens-Handbags-Accessories/pc/2/123.cat">Women's Handbags & Accessories</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Womens/Womens-Jewelry-Fragrance/pc/2/131.cat">Women's Jewelry & Fragrance</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Womens/Womens-On-Sale/pc/2/198.cat">Women's On Sale</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Womens/New-Arrivals/pc/2/1105.cat">New Arrivals</a></h3></li>
 										</ul>
 									<div class="navColumns"></div>
 								</div>
@@ -319,60 +1009,61 @@
 					<li id='navCat447'>
 							<a class="root" href="http://www.sheplers.com/Brands/447.sec">Brands</a><div class="subNav">
 									<ul class="subNavFeed">
-										<li><h3><a href="http://www.sheplers.com/Brands/Gibson-Trading-Co/pc/447/576.cat">Gibson Trading Co</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Levis-Jeans/pc/447/203.cat">Levi's Jeans</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Wrangler-Jeans/pc/447/210.cat">Wrangler Jeans</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Justin-Boots/pc/447/232.cat">Justin Boots</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Ariat-Boots/pc/447/240.cat">Ariat Boots</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Stetson/pc/447/250.cat">Stetson</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Tony-Lama-Boots/pc/447/263.cat">Tony Lama Boots</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Lucchese-Boots/pc/447/305.cat">Lucchese Boots</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Old-Gringo-Boots/pc/447/295.cat">Old Gringo Boots</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Ultimate-Riding-Jeans/pc/447/289.cat">Ultimate Riding Jeans</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Aura-Jeans/pc/447/277.cat">Aura Jeans</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Carhartt-Jeans/pc/447/391.cat">Carhartt Jeans</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Chippewa/pc/447/321.cat">Chippewa</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Cinch/pc/447/292.cat">Cinch</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Corral/pc/447/274.cat">Corral</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Cowboys-of-Faith/pc/447/440.cat">Cowboys of Faith</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Cowgirl-Tuff/pc/447/376.cat">Cowgirl Tuff</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Cripple-Creek/pc/447/412.cat">Cripple Creek</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Cruel-Girl/pc/447/351.cat">Cruel Girl</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Dan-Post/pc/447/344.cat">Dan Post</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Dickies/pc/447/338.cat">Dickies</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Dingo/pc/447/313.cat">Dingo</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Double-H/pc/447/311.cat">Double H</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Durango/pc/447/326.cat">Durango</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Ely-Cattleman/pc/447/407.cat">Ely Cattleman</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Georgia/pc/447/434.cat">Georgia</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Harley-Davidson/pc/447/323.cat">Harley Davidson</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Interstate-Motorcycle/pc/447/404.cat">Interstate Motorcycle</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/John-Deere/pc/447/436.cat">John Deere</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Key/pc/447/356.cat">Key</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Kobler/pc/447/416.cat">Kobler</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Laredo/pc/447/308.cat">Laredo</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Larry-Mahan/pc/447/431.cat">Larry Mahan</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Lawman/pc/447/379.cat">Lawman</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Lee-Jeans/pc/447/399.cat">Lee Jeans</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Milwaukee-Motorcycle/pc/447/401.cat">Milwaukee Motorcycle</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Miss-Me/pc/447/269.cat">Miss Me</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Montana-Silversmith/pc/447/421.cat">Montana Silversmith</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Nocona/pc/447/298.cat">Nocona</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Old-West/pc/447/316.cat">Old West</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Outback-Trading-Co/pc/447/409.cat">Outback Trading Co</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Panhandle-Slim/pc/447/347.cat">Panhandle Slim</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Petrol/pc/447/361.cat">Petrol</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Resistol/pc/447/418.cat">Resistol</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Rock-Roll-Cowgirl/pc/447/368.cat">Rock & Roll Cowgirl</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Rockies/pc/447/372.cat">Rockies</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Rocky/pc/447/438.cat">Rocky</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Roper/pc/447/329.cat">Roper</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Round-House/pc/447/381.cat">Round House</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Scala-Hats/pc/447/427.cat">Scala Hats</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Schaefer-Outfitters/pc/447/383.cat">Schaefer Outfitters</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/gibson-trading-co.html">Gibson Trading Co</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/levis-jeans.html">Levi's Jeans</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/wrangler-jeans.html">Wrangler Jeans</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/justin-boots.html">Justin Boots</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/ariat-boots.html">Ariat Boots</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/stetson-hats-boots.html">Stetson</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/tony-lama.html">Tony Lama Boots</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/lucchese-boots.html">Lucchese Boots</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/old-gringo.html">Old Gringo Boots</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/ultimate-riding-jeans.html">Ultimate Riding Jeans</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/aura-jeans.html">Aura Jeans</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Brands/Boulet-Boots/pc/447/1099.cat">Boulet Boots</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/carhartt-workwear.html">Carhartt Jeans</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/chippewa-boots.html">Chippewa</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/cinch-jeans.html">Cinch</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/corral-boots.html">Corral</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/cowboys-of-faith.html">Cowboys of Faith</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/cowgirl-tuff.html">Cowgirl Tuff</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/cripple-creek.html">Cripple Creek</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/cruel-girl-jeans.html">Cruel Girl</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/dan-post.html">Dan Post</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/dickies-jeans.html">Dickies</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/dingo-boots.html">Dingo</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/double-h-boots.html">Double H</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/durango-boots.html">Durango</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/ely-cattleman.html">Ely Cattleman</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/georgia-work-boots.html">Georgia</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/harley-davidson-boots.html">Harley Davidson</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/interstate-motorcycle-apparel.html">Interstate Motorcycle</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/john-deere-boots.html">John Deere</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/key-work-wear.html">Key</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/kobler-leather.html">Kobler</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/laredo-boots.html">Laredo</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/larry-mahan-hats.html">Larry Mahan</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/lawman-jeans.html">Lawman</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/lee-jeans.html">Lee Jeans</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/milwaukee-apparel.html">Milwaukee Motorcycle</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/miss-me-jeans.html">Miss Me</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/montana-silversmiths.html">Montana Silversmith</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/nocona-boots.html">Nocona</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/oldwest-boots.html">Old West</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/outback-trading.html">Outback Trading Co</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/panhandle-slim.html">Panhandle Slim</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/petrol-jeans.html">Petrol</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/resistol-hats.html">Resistol</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/rock-roll-jeans.html">Rock & Roll Cowgirl</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/rockies-jeans.html">Rockies</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/rocky-work-boots.html">Rocky</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/roper-boots.html">Roper</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/round-house-jeans.html">Round House</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/scala-hats.html">Scala Hats</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/schaefer-outfitter.html">Schaefer Outfitters</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Brands/Scully/pc/447/386.cat">Scully</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Silver/pc/447/366.cat">Silver</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Brands/Timberland/pc/447/353.cat">Timberland</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/silver-jeans.html">Silver</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/timberland-boots.html">Timberland</a></h3></li>
 										</ul>
 									<div class="navColumns"></div>
 								</div>
@@ -387,7 +1078,22 @@
 		</div>
 	<div id="headerSubContent">
 		<div id="cmsCrossChannelEvents">
-			<a href="http://www.sheplers.com/custserv/custserv.jsp?pageName=FreeShipping" title="Free Domestic Ground Shipping"><img src="../assets/images/sections/header/header_freeshipping.png" alt="Free Domestic Ground Shipping Over $125" border="0"></a></div>
+			<style type="text/css">
+  
+  	.chase_header { background: url('../assets/images/sections/header/chase_outlaw_chat_5.jpg') 0 0 no-repeat; width:960px; height:48px; position:relative;} 
+    .chase_header ul {float:left; list-style:none; position:absolute; top:0px; left:0px;}
+    .chase_header ul li {float:left;}
+	.chase_header ul li img {border:none;}
+  </style>
+
+
+<div class="chase_header">
+
+	<ul>
+    	<li><a href="http://www.sheplers.com/custserv/custserv.jsp?pageName=FreeShipping" title="Free Shipping On All Orders Over $125"><img src="../assets/images/spacer.gif" width="620" height="48" alt="Free Shipping On All Orders Over $125"></a></li>
+    	<li><a href="http://www.facebook.com/events/355224181202421/" title="Chat Live With PBR Rider Chase Outlaw"><img src="../assets/images/spacer.gif" width="340" height="48" alt="Chat Live With PBR Rider Chase Outlaw"></a></li>
+	</ul>
+</div></div>
 		<div id="cmsGlobalPromotion">
 			<!---WORLD'S LARGEST Western Wear Warehouse---></div>
 	</div>
@@ -753,10 +1459,12 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 	} catch(err) { }
 	</script>
 </div>
-		<!-- Logic for ClickTracks, should be added after all the HTML elements have been loaded -->
-      <script language="javascript" type="text/javascript">
-				document.write('<script language="javascript" src="http://www.sheplers.com/custserv/'						&#32;&#32;+&#32;document.location.protocol						&#32;&#32;+&#32;'//'						&#32;&#32;+&#32;'jdc.sheplers.com'						&#32;&#32;+&#32;'/cgi-bin/ctasp-server.cgi'						&#32;&#32;+&#32;'?i=qwyXbGrAm5yd8XkZ'						&#32;&#32;+&#32;'&amp;fp=1'						&#32;&#32;+&#32;'&amp;c='&#32;+&#32;escape(document.cookie)						&#32;&#32;+&#32;'"></'
-						  + 'script>');
-			</script>
-		</body>
+		<!-- Begin ClickTracks -->
+      <!-- End ClickTracks -->
+      <!-- Begin SurveyMonkey -->
+      <!-- End SurveyMonkey -->
+      <!-- Begin UserVoice -->
+      <!-- End UserVoice -->
+
+	</body>
 </html>

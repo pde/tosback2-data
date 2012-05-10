@@ -52,7 +52,38 @@ for (i=0;i<params.length;i++){
   mt_tags_str = mt_tags_str.replace(myregexp, value);
 }
 
-
+// Custom superpixel request
+var upd_code = "";
+var superPxQueryVars = ["spg","spsg","spn","spv"];
+var superPxQueryString = "";
+function getQueryVariable(variable) {
+	var query = window.location.search.substring(1);
+	var vars = query.split('&');
+	for (var i = 0; i < vars.length; i++) {
+		var pair = vars[i].split('=');
+		if (pair[0] == variable) {
+			return unescape(pair[1]);
+		}
+	}
+	return false;
+}
+for (var i = 0; i < superPxQueryVars.length; i++) {
+	var superPxTmp = getQueryVariable(superPxQueryVars[i]);
+	if (superPxTmp) {
+		superPxQueryString += "&" +  superPxQueryVars[i] + "=" + superPxTmp;
+	} 	
+}
+if (superPxQueryString != "") {
+    upd_code = "<scr" + "ipt type=\"text/javascript\">";
+    upd_code += "\r\n" + "document.write(\"<img src='//sp.fastclick.net/ad/tr/20340-146478-3840-0?spb=132" + superPxQueryString + "&mpt=<mpuid/>' width='1' height='1'>\")";
+    upd_code += "\r\n" +  "</scr" + "ipt>";
+}
+try {
+ if (mt_tags_str) mt_tags_str += upd_code;
+} catch (error) {
+  //window.console.log(error)	
+}
+// End custom superpixel request
 }
 if ( page_name == "pacsun_order"){
 var client_id = 20340;
@@ -66,7 +97,11 @@ mt_tags["s17922"] = "<img src=\"" + protocol + "//secure.fastclick.net/w/roitrac
 mt_tags["MPLX"] = "<img src=\"" + protocol + "//altfarm.mediaplex.com/ad/bk/20340-146478-3840-0?Order=<order/>&Order_Value=<order_value/>&mpuid=<mpuid/>\" border=0 height=1 width=1>";
 }
 
+// MOJO assigned Site Tracking Tags Array - all tags will be served, regardless of lastvendor cookie or vendor override
+  var mt_tags_all = new Array;
+  if( page_name == "pacsun_order" ) {mt_tags_all[0] = "<img src=\"" + protocol + "//secure.fastclick.net/w/tre?ad_id=26654;evt=19839;cat1=25974;cat2=25975\" width=\"1\" height=\"1\" border=\"0\">";
 
+        }
 
 
 
@@ -142,7 +177,38 @@ for (i=0;i<params.length;i++){
   mt_tags_str = mt_tags_str.replace(myregexp, value);
 }
 
-
+// Custom superpixel request
+var upd_code = "";
+var superPxQueryVars = ["spg","spsg","spn","spv"];
+var superPxQueryString = "";
+function getQueryVariable(variable) {
+	var query = window.location.search.substring(1);
+	var vars = query.split('&');
+	for (var i = 0; i < vars.length; i++) {
+		var pair = vars[i].split('=');
+		if (pair[0] == variable) {
+			return unescape(pair[1]);
+		}
+	}
+	return false;
+}
+for (var i = 0; i < superPxQueryVars.length; i++) {
+	var superPxTmp = getQueryVariable(superPxQueryVars[i]);
+	if (superPxTmp) {
+		superPxQueryString += "&" +  superPxQueryVars[i] + "=" + superPxTmp;
+	} 	
+}
+if (superPxQueryString != "") {
+    upd_code = "<scr" + "ipt type=\"text/javascript\">";
+    upd_code += "\r\n" + "document.write(\"<img src='//sp.fastclick.net/ad/tr/20340-146478-3840-0?spb=132" + superPxQueryString + "&mpt=<mpuid/>' width='1' height='1'>\")";
+    upd_code += "\r\n" +  "</scr" + "ipt>";
+}
+try {
+ if (mt_tags_str) mt_tags_str += upd_code;
+} catch (error) {
+  //window.console.log(error)	
+}
+// End custom superpixel request
 
 }
 

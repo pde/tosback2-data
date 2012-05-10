@@ -8,10 +8,19 @@ finalUrl="/"+finalUrl;
 //alert(finalUrl);
 var UrltoSplit =finalUrl.split('?');
 var UrltoSplit2 = UrltoSplit[0].split('/');
-var fiilename = UrltoSplit2[UrltoSplit2.length - 1];
-
-//alert("filename: "+fiilename);
-//alert("urlPage: "+urlPage);
+var chckHashfiilename = UrltoSplit2[UrltoSplit2.length - 1];
+var fiilename = chckHashfiilename;
+var splitHashval = null;
+if(chckHashfiilename.indexOf("#") != -1)
+{
+    splitHashval = chckHashfiilename.split('#'); 
+    fiilename  =  splitHashval[0]
+}
+//if(fiilename.indexOf("?") !=-1)
+//{
+//    fiilename = fiilename.substring(0,fiilename.indexOf("?"));
+//}
+//alert(fiilename);
 var locale = UrltoSplit2[1];
 var firstLevel = UrltoSplit2[1];
 var secondLevel = UrltoSplit2[2];
@@ -559,6 +568,14 @@ if(partner!=undefined && partner!='')
 //}
 
 var CampaignID = getParam('cid');
+    if(pageName != undefined)
+    {
+        if(pageName.indexOf("#") != -1)
+        {
+            var HashpageName = pageName.split('#'); 
+            pageName  =  HashpageName[0]
+        }
+    }
 s.pageName = pageName.toLowerCase();
 
 s.channel = prop1.toLowerCase();
@@ -625,6 +642,14 @@ s.events = "event1"; // custom page views
             s.eVar6 = market;
         }
         var CampaignID = getParam('cid');
+           if(pageName != undefined)
+            {
+                if(pageName.indexOf("#") != -1)
+                {
+                    var HashpageName1 = pageName.split('#'); 
+                    pageName  =  HashpageName1[0]
+                }
+            }
         s.pageName = pageName;
 
         s.channel = prop1.toLowerCase();

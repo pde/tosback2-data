@@ -1,0 +1,442 @@
+/* modal box scripts */
+
+
+var siteName = "";
+
+if (typeof(site_name) == 'undefined') {
+	siteName = "mslo";
+}else{
+	siteName = site_name;
+}
+
+
+function getPageScroll() {
+
+
+
+	if (self.pageYOffset) // all except Explorer
+
+	{
+
+		xScroll = self.pageXOffset;
+
+		yScroll = self.pageYOffset;
+
+	}
+
+	else if (document.documentElement && document.documentElement.scrollTop)
+
+		// Explorer 6 Strict
+
+	{
+
+		xScroll = document.documentElement.scrollLeft;
+
+		yScroll = document.documentElement.scrollTop;
+
+	}
+
+	else if (document.body) // all other Explorers
+
+	{
+
+		xScroll = document.body.scrollLeft;
+
+		yScroll = document.body.scrollTop;
+
+	}
+
+
+
+}
+
+
+
+
+
+
+
+//global browser width & height
+
+var x,y;
+
+
+
+function globalOverlay() {
+
+
+
+	//check to see if overlay already exists
+
+	if($('modal_win_overlay')) { Element.show('modal_win_overlay')
+
+		} else {
+
+		//get browser width & height and cover with transparent layer
+
+
+
+				var test1 = document.body.scrollHeight;
+
+				var test2 = document.body.offsetHeight;
+
+				if (test1 > test2) // all but Explorer Mac
+
+				{
+
+					x = document.body.scrollWidth;
+
+					y = document.body.scrollHeight;
+
+				}
+
+				else // Explorer Mac;
+
+				     //would also work in Explorer 6 Strict, Mozilla and Safari
+
+				{
+
+					x = document.body.offsetWidth;
+
+					y = document.body.offsetHeight;
+
+				}
+
+				y = (y+13)+'px';
+
+	   new Insertion.Bottom(document.body, '<div id="modal_win_overlay"></div>');
+
+	   $('modal_win_overlay').style.height=y;
+
+		}
+
+}
+
+
+
+
+
+function isCookiesEnabled() {
+
+
+
+         var tmpcookie = new Date();
+
+         chkcookie = (tmpcookie.getTime() + '');
+
+         document.cookie = "chkcookie=" + chkcookie + "; path=/";
+
+         if (document.cookie.indexOf(chkcookie,0) < 0)
+
+         {
+
+		return false;
+
+         } else {
+
+		return true;
+
+	 }
+
+
+
+}
+
+
+
+function modalBox(box, url) {
+
+
+
+	//run overlay function
+
+	globalOverlay();
+
+
+
+	getPageScroll();
+
+
+
+	//remove existing modal code if it exists already
+
+	if($('modal_win')) { document.body.removeChild($('modal_win')); }
+
+
+
+
+
+	//now insert correct modal window
+
+
+
+	if(box == "signin") {
+
+	  new Insertion.After('modal_win_overlay', modalSignin);
+
+	}
+
+
+
+	if(box == "signinextended") {
+
+
+
+	  if (! isCookiesEnabled()) {
+
+	          modalBox('cookies');
+
+	  } else {
+
+		  template = new Template(modalSigninExtended);
+
+		  url_data = {popup_url: url};
+
+		  new Insertion.After('modal_win_overlay', template.evaluate(url_data));
+
+	  }
+
+	}
+
+
+
+	if(box == "cookies") {
+
+	  new Insertion.After('modal_win_overlay', modalCookies);
+
+	}
+
+
+
+	if(box == "report") {
+	  new Insertion.After('modal_win_overlay', modalReport);
+
+	}
+
+	if(box == "deleteComment") {
+	  new Insertion.After('modal_win_overlay', modalDeleteComment);
+	}
+
+
+	if(box == "deleteCollection") {
+
+	  new Insertion.After('modal_win_overlay', modalDeleteCollection);
+
+	}
+
+	if(box == "legacy") {
+	  new Insertion.After('modal_win_overlay', modalAtgLegacy);
+	}
+	
+	if(box == "edfModal")
+	{
+		template = new Template(edfWhatsThis);
+
+		new Insertion.After('modal_win_overlay', template.evaluate());
+	}
+	
+	if(box == "edfFrame")
+	{
+		var show = '';
+		if(contentId =="")
+		{
+			show = {framesrc: '<iframe src="/static_html/ziplist-error.html" width="515" height="280" class="modal_iframe" id="modal_edf_whats_this" border=0 frameborder=no></iframe>' }
+			template = new Template(edfError);
+			new Insertion.After('modal_win_overlay', template.evaluate(show));
+		}
+		else
+		{
+			show = {framesrc: '<iframe frameborder="0" id="zl_iframe" marginwidth="15px" marginheight="8px" scrolling="no" style="width: 600px; height: 300px;"></iframe>' }
+			template = new Template(edfZipList);
+			new Insertion.After('modal_win_overlay', template.evaluate(show));
+		}
+		if(contentId !="")
+		{
+		submitToZipList();
+		}
+	}
+	
+	if (box.indexOf("#") == 0) {
+		var theDiv = document.getElementById(box.substring(1)).innerHTML;
+		var modalContents = '<div id="modal_win" class="generic_modal"><div id="modal_win_outer"><div id="modal_win_inner">';
+		modalContents += '<div>';
+		modalContents += theDiv;
+		modalContents += '</div>';
+		modalContents += '</div></div></div>';
+		new Insertion.After('modal_win_overlay', modalContents);
+	}
+
+
+	//center modal window (toggle visibility it while it centers)
+
+	$('modal_win').style.visibility='hidden';
+
+	modalWidth = $('modal_win').offsetWidth/2;
+
+	screenCenter = (x/2-modalWidth)+'px';
+
+	$('modal_win').style.left = screenCenter;
+
+	$('modal_win').style.top = (yScroll + 150) + 'px';
+
+	$('modal_win').style.visibility='visible';
+  
+  try {$('modal_win').getElementsBySelector('form')[0].focusFirstElement();} catch(e) {}
+}
+
+
+
+function closeModal(box) {
+
+	Element.hide('modal_win_overlay');
+
+	Element.hide('modal_win');
+
+}
+
+
+
+
+
+/*modal box signin */
+
+modalSignin = '<div id="modal_win" class="modal_win_274"><div id="modal_win_outer"><div id="modal_win_inner">';
+modalSignin += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p>';
+modalSignin += '<iframe src="registration11_modal_signin_iframe.html" class="modal_iframe" id="modal_sign_in_iframe" border=0 frameborder=no></iframe>';
+modalSignin += '</div></div></div>';
+
+//modalSigninExtended = '<div id="modal_win" class="modal_win_490"><div id="modal_win_outer"><div id="modal_win_inner">';
+//modalSigninExtended += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p>';
+//modalSigninExtended += '<iframe src="dev-registration-signinextended-iframe.html" class="modal_iframe" id="modal_signin_extended_iframe" border=0 frameborder=no></iframe>';
+//modalSigninExtended += '<iframe src=#{popup_url} class="modal_iframe" id="modal_signin_extended_iframe" border=0 frameborder=no></iframe>';
+//modalSigninExtended += '</div></div></div>';
+
+
+
+
+/*modal box signin extended */
+modalSigninExtended = '<div id="modal_win" class="modal_win_490"><div id="modal_win_outer"><div id="modal_win_inner">';
+modalSigninExtended += '<div><iframe height="1" style="position: absolute; left: -2000px" src="" name="signin_iframe" id="signin_iframe" border=0 frameborder=no></iframe></div>';
+modalSigninExtended += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p>';
+//modalSigninExtended += '<body style="background-color:#FFFFFF">';
+//modalSigninExtended += '<div id="ms-popup-wrap">';
+modalSigninExtended += '<div id="popup_login">';
+modalSigninExtended += '<form action="/portal/site/'+siteName+'/template.LOGIN/action.process/" method="post" name="login_form" id="login_form" style="display: inline; margin: 0px"  target="signin_iframe">';
+modalSigninExtended += '<input type="hidden" name="submittype" value="login" />';
+modalSigninExtended += '<input type = "hidden" name = "pu" value = "y"/>';
+modalSigninExtended += '<input type="hidden" name="futurevisits" value="TRUE" />';
+modalSigninExtended += '<input type = "hidden" name = "vgnextoid" value = "68635d0a58300110VgnVCM1000003d370a0aRCRD"/>';
+modalSigninExtended += '<div id="modal_sign_in_extended">';
+modalSigninExtended += '<p id="signin_error" name="signin_error" class="reg_error"></p>';
+modalSigninExtended += '<div id="sign_in">';
+modalSigninExtended += '<h2>Sign In</h2>';
+modalSigninExtended += '<input type="hidden" name="ltype" value="pu"/>';
+modalSigninExtended += '<p><label>Email Address:</label><br />';
+modalSigninExtended += '<input type="text" class="text_input" name="logon" id="username" /></p>';
+modalSigninExtended += '<p><label>Password:</label><br />';
+modalSigninExtended += '<input type="password" class="text_input" name="password" id="password"/><br /><a href="/portal/site/'+siteName+'/template.FORGOT_PASSWORD/">Forgot Password?</a></p>';
+modalSigninExtended += '<p><input type="image" src="/images/assets/module/registration/reg_submit.gif" alt="submit" /></p>';
+modalSigninExtended += '</div>';
+modalSigninExtended += '<div id="sign_up">';
+modalSigninExtended += '<p>Not signed up yet?<br />Become a &ldquo;Contributor&rdquo; and a member of our community. Then you\'ll be able to collect and organize your favorite articles and recipes, plus share your ideas and passion with others.</p>';
+modalSigninExtended += '<p><a href="/portal/site/'+siteName+'/template.REGISTER/">Sign up now!</a> It\'s quick and easy.</p>';
+modalSigninExtended += '<input type="hidden" name="realm" value="realm1">';
+modalSigninExtended += '</div>';
+modalSigninExtended += '</div>';
+modalSigninExtended += '</form>';
+//modalSigninExtended += '</div>';
+//modalSigninExtended += '</div>';
+//modalSigninExtended += '<iframe src="dev-registration-signinextended-iframe.html" class="modal_iframe" id="modal_signin_extended_iframe" border=0 frameborder=no></iframe>';
+modalSigninExtended += '</div></div></div>';
+
+
+
+
+/*cookies */
+modalCookies = '<div id="modal_win" class="modal_win_490"><div id="modal_win_outer"><div id="modal_win_inner">';
+modalCookies += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p>';
+modalCookies += '<div id="modal_cookies"><p>In order to register and sign in, cookies must be enabled on your web browser. For instructions on enabling cookies, click on one of these web browsers that we support:</p>';
+modalCookies += '<ul><li><a href="http://support.microsoft.com/kb/196955" target="_blank">Internet Explorer</a></li>';
+modalCookies += '<li><a href="http://mozilla.gunnars.net/firefox_help_firefox_cookie_tutorial.html#Firefox_Cookie_Options" target="_blank">Firefox</a></li>';
+modalCookies += '<li><a href="http://docs.info.apple.com/article.html?path=Safari/2.0/en/ibr30.html" target="_blank">Safari</a></li>';
+modalCookies += '</ul></div>';
+modalCookies += '</div></div></div>';
+
+/*report post */
+modalReport = '<div id="modal_win" class="modal_win_490"><div id="modal_win_outer"><div id="modal_win_inner">';
+modalReport += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p>';
+modalReport += '<div id="report_post">';
+modalReport += '<h2>Report</h2>';
+modalReport += '<p><strong>You can anonymously report this comment as inappropriate and we will review it to determine if it should be removed from the site.</strong></p>';
+modalReport += '<form name="report">';
+modalReport += '<input type="hidden" name="action" value="report"/>';
+modalReport += '<input type="hidden" name="commentId"/>';
+modalReport += '<textarea onfocus="this.value=\'\'" rows="3" name="reason" id="reason">To make this process fair and smooth, please tell us why you think the comment is inappropriate</textarea>';
+modalReport += '<p id="report_post_submit">';
+modalReport += '<img src="/images/assets/module/registration/reg_cancel.gif" alt="cancel" onclick="parent.closeModal()" /> &nbsp;';
+modalReport += '<img src="/images/assets/module/registration/reg_submit.gif" alt="submit" onclick="submitReport(report_comment_id, document.report.reason.value); parent.closeModal()" />';
+modalReport += '</p>';
+modalReport += '</form>';
+modalReport += '</div>';
+modalReport += '</div></div></div>';
+
+/*report post */
+modalDeleteComment = '<div id="modal_win" class="modal_win_490"><div id="modal_win_outer"><div id="modal_win_inner">';
+modalDeleteComment += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p>';
+modalDeleteComment += '<div id="report_post">';
+modalDeleteComment += '<h2>Delete Comment</h2>';
+modalDeleteComment += '<p><strong>Delete this comment?</strong></p>';
+modalDeleteComment += '<form name="deleteComment">';
+modalDeleteComment += '<input type="hidden" name="action" value="deleteComment"/>';
+modalDeleteComment += '<input type="hidden" name="commentId"/>';
+modalDeleteComment += '<p id="delete_post_submit">';
+modalDeleteComment += '<img src="/images/assets/module/registration/reg_cancel.gif" alt="cancel" onclick="parent.closeModal()" /> &nbsp;';
+modalDeleteComment += '<img src="/images/assets/module/registration/reg_submit.gif" alt="submit" onclick="deleteCmnt(delete_comment_id); parent.closeModal()" />';
+modalDeleteComment += '</p>';
+modalDeleteComment += '</form>';
+modalDeleteComment += '</div>';
+modalDeleteComment += '</div></div></div>';
+
+
+/* delete collection item */
+modalDeleteCollection = '<div id="modal_win" class="modal_win_490"><div id="modal_win_outer"><div id="modal_win_inner">';
+modalDeleteCollection += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p>';
+modalDeleteCollection += '<div id="delete_collection_item"><p>Are you sure you want to delete this item from your Collections?</p>';
+modalDeleteCollection += '<p id="delete_collection_item_submit">';
+modalDeleteCollection += '<input type="image" src="/images/assets/module/registration/reg_yes.gif" alt="yes" onclick="document.report.commentId=report_comment_id" />&nbsp;';
+modalDeleteCollection += '<input type="image" src="/images/assets/module/registration/reg_no.gif" alt="no" onclick="parent.closeModal()"  />';
+modalDeleteCollection += '</p>';
+modalDeleteCollection += '</div>';
+modalDeleteCollection += '</div></div></div>';
+
+
+
+
+var edfWhatsThis = '<div id="modal_win" class="edf_modal about-zl"><div id="modal_win_outer"><div id="modal_win_inner">';
+edfWhatsThis += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p><div id="zl_div">';
+edfWhatsThis +='<iframe src="/static_html/about-zl.html" width="515" height="280" class="modal_iframe" id="modal_edf_whats_this" border=0 frameborder=no></iframe>';
+edfWhatsThis +='</div></div></div></div>';
+
+var edfError = '<div id="modal_win" class="edf_modal about-zl"><div id="modal_win_outer"><div id="modal_win_inner">';
+edfError += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p><div id="zl_div">';
+edfError +='#{framesrc}';
+edfError +='</div></div></div></div>';
+
+var edfZipList =  '<div id="modal_win" class="edf_modal"><div id="modal_win_outer"><div id="modal_win_inner">';
+edfZipList += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p>';
+edfZipList += '<div id="zl_div" style="display: none;">#{framesrc}</div></div></div></div>';
+
+
+/* atg legacy */
+modalAtgLegacy = '<div id="modal_win" class="modal_win_490"><div id="modal_win_outer"><div id="modal_win_inner">';
+modalAtgLegacy += '<p id="close_modal_win" onClick="closeModal()">CLOSE</p>';
+modalAtgLegacy += '<div id="atg_legacy_users">';
+modalAtgLegacy += '<h2>Sign Up</h2>';
+modalAtgLegacy += '<p>Welcome to the new Marthastewart.com. We\'ve just expanded our community, adding exciting enhancements and tools that we know you will enjoy. To start using these new features, please create an account and profile on our new site.</p>';
+modalAtgLegacy += '<p>Creating an account allows you to:</p>';
+modalAtgLegacy += '<ul><li><span>Receive email newsletters with seasonal tips and inspirations</span></li><li><span>Collect and share recipes &amp; articles</span></li><li><span>Tell us what you think</span></li><li><span>Discover fresh ideas</span></li><li><span>Share interests, successes &amp; questions with interesting people</span></li></ul>';
+modalAtgLegacy += '<p>*Important note: You will need to create a new account to continue receiving email newsletters, share ideas on our message boards, and participate in our new community.</p>';
+modalAtgLegacy += '<p>If you have already registered on our new site, please <a onClick="closeModal(); modalBox(\'signinextended\', popup_login_url)\")>click here</a> to sign in.</p>';
+modalAtgLegacy += '<a href="/portal/site/'+siteName+'/template.REGISTER/"><img src="/images/assets/module/registration/reg_signup.gif" alt="sign up" /></a>';
+modalAtgLegacy += '</div>';
+modalAtgLegacy += '</div></div></div>';

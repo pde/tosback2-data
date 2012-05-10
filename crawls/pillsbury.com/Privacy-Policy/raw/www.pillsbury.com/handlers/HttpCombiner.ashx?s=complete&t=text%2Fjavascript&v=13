@@ -162,7 +162,6 @@ function TrackSpotlightVideoPlay() {
 
 function FireHomepageWebTrends() {
     var vid_name = jQuery('.hdnVideoTitle').val();
-    dcsMultiTrack('DCS.dcsuri', '/homepage/heroesclicked', 'DCS.dcsqry', 'shcturi=/Homepage_heros/VideoPlay/' + vid_name, 'WT.ti', 'Content Clicked from Homepage Hero Slideshow');
     ntptEventTag('ev=Slideshow_video_bt&videoname=' + vid_name);
 }
 if (!this.JSON) {
@@ -355,10 +354,13 @@ function bitlyAPI(longUrl, callback) {
         var reddit = { cssClass: 'RedditSmall', text: "Reddit", func: 'openReddit' };
         var timer;
 
+      
+
         function addShareLink(container, linkObj) {
             var share = new shareMethods(options.title, options.url, options.shareType);
             var anchor = $('<a>' + linkObj.text + '</a>').addClass(linkObj.cssClass).click(eval('share.' + linkObj.func)).attr('href', '#');
             container.append($('<li>').append(anchor));
+           
         }
 
         function getContainer() {
@@ -421,19 +423,34 @@ function bitlyAPI(longUrl, callback) {
 })(jQuery);
 
 function shareMethods(titleParam, urlParam,shareContent) {
-  
+
     var url = urlParam ? urlParam : getUrl();
-    var title = titleParam;
+
+    // var title = titleParam ? titleParam : jQuery('meta[name=title]').attr("content");
+    //Fix the Registration Mark
+    var metaTitleName = jQuery('meta[name=title]').attr("content");
+
+    var title;
+    if (typeof myRecipeTitle != 'undefined') {
+        title = myRecipeTitle;
+    }
+
+    //if (!title) title=  escape(titleParam ? titleParam : metaTitleName.replace("®", "&#174"));
+
     var relativePath = "";
     var recipeId =""
+        
+
+    if (!title) title = document.title;
+
     if (urlParam == null || urlParam == undefined || urlParam == "") {
 
         relativePath = location.pathname;
-        var pathArray = relativePath.split('/');       
+        var pathArray = relativePath.split('/');
         recipeId = pathArray[3];
         if (!title) title = pathArray[2];
     }
-    else {       
+    else {
         var pathArray = urlParam.split('/');
         var newPathname = "";
         for (i = 3; i < pathArray.length; i++) {
@@ -462,7 +479,6 @@ function shareMethods(titleParam, urlParam,shareContent) {
 
             ntptEventTag('ev=ContentShare_Reddit_bt');
         }
-        dcsMultiTrack('DCS.dcsuri', '/PageShare', 'DCS.dcsqry', "cturi=" + relativePath, 'WT.ti', 'Page Share');
         window.open("http://reddit.com/submit?title=" + title + "&url=" + url);
         return false;
     }
@@ -477,7 +493,6 @@ function shareMethods(titleParam, urlParam,shareContent) {
                
                 ntptEventTag('ev=ContentShare_Facebook_bt');
             }
-            dcsMultiTrack('DCS.dcsuri', '/PageShare', 'DCS.dcsqry', "cturi=" + relativePath, 'WT.ti', 'Page Share');
             window.open("http://www.facebook.com/share.php?u=" + url);
             return false;
         }
@@ -490,7 +505,6 @@ function shareMethods(titleParam, urlParam,shareContent) {
 
                 ntptEventTag('ev=ContentShare_StumbleUpon_bt');
             }
-            dcsMultiTrack('DCS.dcsuri', '/PageShare', 'DCS.dcsqry', "cturi=" + relativePath, 'WT.ti', 'Page Share');
             window.open("http://www.stumbleupon.com/submit?url=" + url + "&title=" + title);
             return false;
         }
@@ -503,7 +517,6 @@ function shareMethods(titleParam, urlParam,shareContent) {
 
                 ntptEventTag('ev=ContentShare_Digg_bt');
             }
-            dcsMultiTrack('DCS.dcsuri', '/PageShare', 'DCS.dcsqry', "cturi=" + relativePath, 'WT.ti', 'Page Share');
             window.open("http://digg.com/submit?phase=2&title=" + title + "&url=" + url);
             return false;
         }
@@ -516,7 +529,6 @@ function shareMethods(titleParam, urlParam,shareContent) {
 
                 ntptEventTag('ev=ContentShare_Delicious_bt');
             }
-            dcsMultiTrack('DCS.dcsuri', '/PageShare', 'DCS.dcsqry', "cturi=" + relativePath, 'WT.ti', 'Page Share');
             window.open("http://del.icio.us/post?url=" + url + "&title=" + title);
             return false;
         }
@@ -529,7 +541,7 @@ function shareMethods(titleParam, urlParam,shareContent) {
 
                 ntptEventTag('ev=ContentShare_twitter_bt');
             }
-            dcsMultiTrack('DCS.dcsuri', '/PageShare', 'DCS.dcsqry', "cturi=" + relativePath, 'WT.ti', 'Page Share');
+ 
             //var isSafari = (document.childNodes) && (!document.all) && (!navigator.taintEnabled) && (!navigator.accentColorName);
             //if (isSafari) {
             //window.open("http://twitter.com/home?status=" + url + ' ' + title);
@@ -910,17 +922,10 @@ jQuery(document).ready(function () {
     TrimModules();
     SetupHintText();
     SetTopNavBG();
-   // WireBadgeSmallPopups();
-   // WireBadgeMediumPopups();
-   // SetHoverContent();
 
 });
 
-function sizeIFrame() {
-//    var resizeiFrameContainer = jQuery('iframe');
-//    var innerDoc = (resizeiFrameContainer.get(0).contentDocument) ? resizeiFrameContainer.get(0).contentDocument : resizeiFrameContainer.get(0).contentWindow.document;
-//    resizeiFrameContainer.height(innerDoc.body.scrollHeight + 35);
-}
+ 
 
 jQuery(document).ready(function () {
     jQuery(".hero_badge li").hover(
@@ -1172,7 +1177,7 @@ var videoReadyTimeout;
 var videoSwapped = false;
 
 function InitHero(selector, context, startingSlideNumber) {
-    //WireBadgePopups();
+ 
     var initial = true;
     jQuery(selector).cycle({
         timeout: 6000,            //Time between slides
@@ -1222,8 +1227,6 @@ function InitHero(selector, context, startingSlideNumber) {
             }
             initial = false;
 
-            //var index = opts.currSlide;
-            //jQuery('#hero_pager .pager_item').eq(index).addClass('pager_selected');
         },
         prevNextClick: function (isNext, idx, slide) {
             pauseHero(selector);
@@ -1519,7 +1522,6 @@ function ShareSite(sUrl, site) {
         fireSpotlight('share_pills', 'share01');
     }
 
-    dcsMultiTrack('DCS.dcsuri', '/recipes/share/' + site.toLowerCase(), 'WT.ti', 'Share Content with ' + site);
     window.open(sUrl, 'winShare', 'scrollbars=1,toolbar=0,width=800,height=600');
     return;
 }
@@ -2213,7 +2215,8 @@ function GetCountDownClock(liftoffTime) {
         '<div class="minutes">{m10}{m1}</div>' +
         '<div class="seconds">{s10}{s1}</div>'
     });
-}jQuery(document).ready(function() {
+}
+jQuery(document).ready(function() {
     //    jQuery("#benefitSlider").click(function() {
     //        jQuery(".memberBenefits").slideToggle("400");
     //    });
@@ -2251,37 +2254,31 @@ function WebTrendRegistrationFlow(flowId, regPageCount, isBackFlow) {
 
     if (flowId == "2") {
             if (isBackFlow == "False" && regPageCount=="1") {
-            dcsMultiTrack('WT.si_n', 'PBCouponReg', 'WT.si_x', '1');
             document.cookie = "regStep=1;path=/;";
         }
 
         else if (ReadCookie("regStep") == "1" && regPageCount == "2") {
-            dcsMultiTrack('WT.si_n', 'PBCouponReg', 'WT.si_x', '2');
             document.cookie = "regStep=2;path=/;";
 
         }
         else if (ReadCookie("regStep") == "2" && regPageCount == "3") {
-            dcsMultiTrack('WT.si_n', 'PBCouponReg', 'WT.si_x', '3');
             document.cookie = "regStep=3;path=/;";
         }
         else if (ReadCookie("regStep") == "3" && regPageCount == "4") {
-            dcsMultiTrack('WT.si_n', 'PBCouponReg', 'WT.si_x', '4');
             document.cookie = "regStep=4;path=/;";
         }
         else if (ReadCookie("regStep") == "4" && regPageCount == "5") {
-            dcsMultiTrack('WT.si_n', 'PBCouponReg', 'WT.si_x', '5');
             document.cookie = "regStep=5;path=/;";           
            
         }
         else if (ReadCookie("regStep") == "6" && regPageCount == "6") {
-            dcsMultiTrack('WT.si_n', 'PBCouponReg', 'WT.si_x', '6');
             document.cookie = "regStep=0; expires=0;  path=/;";          
           
 
         }
     }
-
 }
+//eof
 
 
 
@@ -2343,7 +2340,7 @@ function ApplyRecipeSummaryBinding(data, recipeAnchor) {
         recipeSummaryData.RecipePage(data.RecipePage);
         recipeSummaryData.HasErrors(false);
 
-     
+
         jQuery("#recipeSummaryDiv").find(".viewRecipeLink").attr("href", data.RecipePage + "?overLay=Recipe");
         jQuery("#recipeSummaryDiv").find(".addToRecipeBoxLink").attr("href", data.RecipeBoxPage + "&overLay=RecipeBox"); //WTReq :12 this query string will be read in recipebox page
         jQuery("#recipeSummaryDiv").find(".jq_printLink").attr("href", data.PrintPage+ "&overLay=Print");
@@ -2458,18 +2455,16 @@ function ShareClick(url, title, option, event) {
     var objShare = new shareMethods(title, url, "share_recipe");
     if (option == 1) {
 
-        dcsMultiTrack('DCS.dcsuri', '/sharethis/facebook/', 'DCS.dcsqry', 'recipeid=' + recipeSummaryData.RecipeId(), 'WT.ti', 'Share This- Facebook');
-        dcsMultiTrack('DCS.dcsuri', '/recipeoverlay/facebook', 'WT.ti', 'Recipe Overlay – Facebook');
-        ntptEventTag('ev=Recipeoverlay_FacebookShare_bt&RecipeID=' + recipeSummaryData.RecipeId() + '&RecipeTitle=' + encodeURIComponent(recipeSummaryData.Title()) + '');
+       
+ntptEventTag('ev=Recipeoverlay_FacebookShare_bt&RecipeID=' + recipeSummaryData.RecipeId() + '&RecipeTitle=' + encodeURIComponent(recipeSummaryData.Title()) + '');
 
         objShare.openFacebook();
 
     }
 
     else if (option == 2) {
-        dcsMultiTrack('DCS.dcsuri', '/sharethis/twitter/', 'DCS.dcsqry', 'recipeid=' +recipeSummaryData.RecipeId(), 'WT.ti', 'Share This - Twitter');
-        dcsMultiTrack('DCS.dcsuri', '/recipeoverlay/twitter', 'WT.ti', 'Recipe Overlay – Twitter');
-        ntptEventTag('ev=Recipeoverlay_twitter_bt&RecipeID=' + recipeSummaryData.RecipeId() + '&RecipeTitle=' + encodeURIComponent(recipeSummaryData.Title()) + '');
+        
+ntptEventTag('ev=Recipeoverlay_twitter_bt&RecipeID=' + recipeSummaryData.RecipeId() + '&RecipeTitle=' + encodeURIComponent(recipeSummaryData.Title()) + '');
         objShare.openTwitter();
     }
     event.preventDefault();
@@ -2609,7 +2604,6 @@ function GetToolBarGroceryListsData(currentLink) {
 
 function AjaxLogOut() {
 
-    dcsMultiTrack('DCS.dcsuri', '/membertoolbar/logout', 'WT.ti', 'MemberToolBar – Log Out', 'WT.si_n', '', 'WT.si_x', '');
     ntptEventTag('ev=membertoolbar_logout_bt');
     var logoutStatus = jQuery.parseJSON(jQuery.ajax({ url: "/Services/Profile/LogOffHandler.ashx",
         async: false,
@@ -2766,17 +2760,14 @@ function WebTrendsCall(itemClicked) {
     switch(itemClicked)
     {
         case 'rbox':
-            dcsMultiTrack('DCS.dcsuri', '/membertoolbar/recipebox', 'WT.ti', 'MemberToolBar – Recipe Box');
             ntptEventTag('ev=membertoolbar_recipebox_bt');
             break;
 
         case 'recent':
-            dcsMultiTrack('DCS.dcsuri', '/membertoolbar/recentlyviewedrecipes', 'WT.ti', 'MemberToolBar – Recently Viewed Recipes');
             ntptEventTag('ev=membertoolbar_recentlyviewedrecipes_bt');
             break;
 
         case 'glist':
-            dcsMultiTrack('DCS.dcsuri', '/membertoolbar/grocerylist', 'WT.ti', 'MemberToolBar – Grocery List');
             ntptEventTag('ev=membertoolbar_grocerylist_bt');
             break;
          default:
@@ -2786,15 +2777,15 @@ function WebTrendsCall(itemClicked) {
     return false;
 
 }
-function CheckToolbarLists() {  
+function CheckToolbarLists() {
     if (jQuery('.roll_list').length == 3) {
         jQuery('.roll_list').each(function () {
-            var list_count = jQuery('li', jQuery(this)).length;           
+            var list_count = jQuery('li', jQuery(this)).length;
             if (list_count > 3) {
-                jQuery('li.empty', jQuery(this)).hide();                
+                jQuery('li.empty', jQuery(this)).hide();
             }
             else {
-                jQuery('li.see_all', jQuery(this)).hide();               
+                jQuery('li.see_all', jQuery(this)).hide();
             }
         });
     }
@@ -2805,11 +2796,11 @@ function CheckToolbarLists() {
 }
 
 
-function CheckToolbarLists(ulElement) {   
+function CheckToolbarLists(ulElement) {
     var obj = jQuery("#" + ulElement);
-    var list_count = jQuery('li', obj).length;   
+    var list_count = jQuery('li', obj).length;
     if (list_count > 3) {
-        jQuery('li.empty', obj).hide();       
+        jQuery('li.empty', obj).hide();
     }
     else {
         jQuery('li.see_all', obj).hide();
@@ -2832,8 +2823,8 @@ function ToolbarErrorHandler(xhr, status, error, name, currentLink) {
      catch (err) 
         {           
             
-         }
-     
+}
+
 }
 
 
@@ -3393,37 +3384,36 @@ function HideRegCallOut() {
         }, objOptions);
 
 
-        setTimeout(function () {
-            $('#PBFacebookFeeds').removeClass("loading");
-            $('#PBTwitterFeeds').removeClass("loading");
+        //  setTimeout(function () {
+        //   $('#PBFacebookFeeds').removeClass("loading");
+        //   $('#PBTwitterFeeds').removeClass("loading");
 
-            //Facebook feeds
-            $('#PBFacebookFeeds').fbWall({ id: GLBVAR.USERNAME,
-                accessToken: 'XXXXXXXXXXXXXXXXXXXXXXXX',
-                showGuestEntries: false,
-                showComments: false,
-                max: GLBVAR.MAXPOSTS,
-                timeConversion: 24
-            });
+        //            //Facebook feeds
+        //            $('#PBFacebookFeeds').fbWall({ id: GLBVAR.USERNAME,
+        //                accessToken: 'XXXXXXXXXXXXXXXXXXXXXXXX',
+        //                showGuestEntries: false,
+        //                showComments: false,
+        //                max: GLBVAR.MAXPOSTS,
+        //                timeConversion: 24
+        //            });
 
-            //Twitter feeds
-            $("#PBTwitterFeeds").tweet({
-                username: GLBVAR.USERNAME,
-                count: GLBVAR.MAXPOSTS,
-                join_text: "auto",
-                avatar_size: 32,
-                auto_join_text_default: "we said,",
-                auto_join_text_ed: "we",
-                auto_join_text_ing: "we were",
-                auto_join_text_reply: "we replied to",
-                auto_join_text_url: "we were checking out",
-                loading_text: " "
-            });
-        }, displayLoading());
+        //Twitter feeds
+        //            $("#PBTwitterFeeds").tweet({
+        //                username: GLBVAR.USERNAME,
+        //                count: GLBVAR.MAXPOSTS,
+        //                join_text: "auto",
+        //                avatar_size: 32,
+        //                auto_join_text_default: "we said,",
+        //                auto_join_text_ed: "we",
+        //                auto_join_text_ing: "we were",
+        //                auto_join_text_reply: "we replied to",
+        //                auto_join_text_url: "we were checking out",
+        //                loading_text: " "
+        //            });
+        //}, displayLoading());
 
         $('#lnkPBCommunityFeeds').click(function () {
-            dcsMultiTrack('DCS.dcsuri', '/socialnetworkfeeds/PB.com', 'WT.ti', 'PB.com Social Network Feeds');
-            ntptEventTag('ev=Socialnetworkfeeds_PB_bt');
+
             $("#PBCommunityFeeds").css("display", "block");
             $("#PBFacebookFeeds").css("display", "none");
             $("#PBTwitterFeeds").css("display", "none");
@@ -3431,11 +3421,17 @@ function HideRegCallOut() {
             $('#lnkPBCommunityFeeds').addClass("activeText");
             $('#lnkPBFacebookFeeds').removeClass("activeText");
             $('#lnkPBTwitterFeeds').removeClass("activeText");
+
+            if (!nonUserClick) {
+                ntptEventTag('ev=Socialnetworkfeeds_PB_bt');
+            }
+            else { nonUserClick = false; }
+
         });
 
         $('#lnkPBFacebookFeeds').click(function () {
-            dcsMultiTrack('DCS.dcsuri', '/socialnetworkfeeds/facebook', 'WT.ti', 'Facebook Social Network Feeds');
             ntptEventTag('ev=Socialnetworkfeeds_facebook_bt');
+
             $("#PBCommunityFeeds").css("display", "none");
             $("#PBFacebookFeeds").css("display", "block");
             $("#PBTwitterFeeds").css("display", "none");
@@ -3443,10 +3439,26 @@ function HideRegCallOut() {
             $('#lnkPBCommunityFeeds').removeClass("activeText");
             $('#lnkPBFacebookFeeds').addClass("activeText");
             $('#lnkPBTwitterFeeds').removeClass("activeText");
+
+            var fbLength = $('#PBFacebookFeeds').html();
+            if (fbLength.length == 0) {
+                $('#PBFacebookFeeds').addClass("loading");
+
+                setTimeout(function () {
+                    //Facebook feeds
+                    $('#PBFacebookFeeds').fbWall({ id: GLBVAR.USERNAME,
+                        accessToken: 'XXXXXXXXXXXXXXXXXXXXXXXX',
+                        showGuestEntries: false,
+                        showComments: false,
+                        max: GLBVAR.MAXPOSTS,
+                        timeConversion: 24
+                    });
+                }, displayLoading());
+            }
+            $('#PBFacebookFeeds').removeClass("loading");
         });
 
         $('#lnkPBTwitterFeeds').click(function () {
-            dcsMultiTrack('DCS.dcsuri', '/socialnetworkfeeds/twitter', 'WT.ti', 'Twitter Social Network Feeds');
             ntptEventTag('ev=Socialnetworkfeeds_twitter_bt');
             $("#PBCommunityFeeds").css("display", "none");
             $("#PBFacebookFeeds").css("display", "none");
@@ -3455,16 +3467,40 @@ function HideRegCallOut() {
             $('#lnkPBCommunityFeeds').removeClass("activeText");
             $('#lnkPBFacebookFeeds').removeClass("activeText");
             $('#lnkPBTwitterFeeds').addClass("activeText");
+
+            var twLength = $('#PBTwitterFeeds').html();
+            if (twLength.length == 0) {
+                $('#PBTwitterFeeds').addClass("loading")
+
+                setTimeout(function () {
+                    //Twitter feeds
+                    $("#PBTwitterFeeds").tweet({
+                        username: GLBVAR.USERNAME,
+                        count: GLBVAR.MAXPOSTS,
+                        join_text: "auto",
+                        avatar_size: 32,
+                        auto_join_text_default: "we said,",
+                        auto_join_text_ed: "we",
+                        auto_join_text_ing: "we were",
+                        auto_join_text_reply: "we replied to",
+                        auto_join_text_url: "we were checking out",
+                        loading_text: " "
+                    });
+                }, displayLoading());
+            }
+            $('#PBTwitterFeeds').removeClass("loading");
         });
 
-        $("#PBCommunityFeeds").css("display", "block");
-        $("#PBFacebookFeeds").css("display", "none");
-        $("#PBTwitterFeeds").css("display", "none");
+        //        $("#PBCommunityFeeds").css("display", "block");
+        //        $("#PBFacebookFeeds").css("display", "none");
+        //        $("#PBTwitterFeeds").css("display", "none");
     };
 
+
+
     function displayLoading() {
-        $('#PBFacebookFeeds').addClass("loading");
-        $('#PBTwitterFeeds').addClass("loading");
+        //  $('#PBFacebookFeeds').addClass("loading");
+        // $('#PBTwitterFeeds').addClass("loading");
         return 1000;
     }
 
@@ -3479,5 +3515,6 @@ function HideRegCallOut() {
 
 //End of File
 //**--**
+
 
 

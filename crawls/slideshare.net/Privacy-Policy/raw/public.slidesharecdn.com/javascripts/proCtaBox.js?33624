@@ -1,0 +1,162 @@
+(function($){
+    private_upload_ab = function(){
+      // Javascript code to run our A/B test. Remove following code block to stop the experiment
+    };
+
+    init_capture_leads_cta = function(){
+      if($(".j-captureLeadsCTA").length > 0){
+        $(".j-captureLeadsCTA").click( function(e) {
+            e.preventDefault();
+            if (typeof mpq !="undefined"){
+              mpq.track('Viewed Capture Leads thickbox', {'Coming from': this.id });
+            }
+            return false;
+        }).fancybox({
+          'frameWidth'          : 575,
+          'frameHeight'         : 180,
+          'hideOnContentClick'  : false,
+          'enableEscapeButton'  : true,
+          'centerOnScroll'      : true,
+          'overlayOpacity'      : 0.85,
+          'overlayColor'        : "#000",
+          'dontShowFancyTitle'  : true
+        });
+      }
+    };
+
+  $(document).ready(function(){
+    // $("a[href='#cta_fancybox']") // this doesnot work in IE6-7
+    // $("a[href='#cta_remove_ad_fancy']"). // this does not work in IE6-7
+    if($(".j-cta_remove_ad_fancy").length > 0){
+      $(".j-cta_remove_ad_fancy").fancybox({
+        'frameWidth'          : 575,
+        'frameHeight'         : 215,
+        'hideOnContentClick'  : false,
+        'enableEscapeButton'  : true,
+        'centerOnScroll'      : true,
+        'overlayOpacity'      : 0.85,
+        'overlayColor'        : "#000"
+      }).click( function(e) {
+          e.preventDefault();
+          $('.j-userDropDown').hide();
+          $('.j-userName').removeClass('userNameSelected');
+          $('.j-know-more').attr('href', '/business/premium/plans?cmp_src=' + this.id);
+          if (typeof mpq !="undefined"){
+            mpq.track('Viewed Remove Ads thickbox', {'Coming from': this.id });
+          }
+          return false;
+      });
+    }
+    if($(".j-cta_conf_line_fancy").length > 0){
+      $(".j-cta_conf_line_fancy").fancybox({
+        'frameWidth'          : 575,
+        'frameHeight'         : 215,
+        'hideOnContentClick'  : false,
+        'enableEscapeButton'  : true,
+        'centerOnScroll'      : true,
+        'overlayOpacity'      : 0.85,
+        'overlayColor'        : "#000"
+      }).click( function(e) {
+          e.preventDefault();
+          $('.j-userDropDown').hide();
+          $('.j-userName').removeClass('userNameSelected');
+          $('.j-know-more').attr('href', '/business/premium/plans?cmp_src=' + this.id);
+          if (typeof mpq !="undefined"){
+            mpq.track('Viewed ZipCast Conf Line thickbox', {'Coming from': this.id });
+          }
+          return false;
+      });
+    }
+    if($(".j-cta_privateupload").length > 0){
+      $(".j-cta_privateupload").click( function(e) {
+        e.preventDefault();
+        private_upload_ab();
+        $('.j-know-more').attr('href', '/business/premium/plans?cmp_src=' + this.id);
+        if (typeof mpq !="undefined"){
+          mpq.track('Viewed Private Uploads thickbox', {'Coming from': this.id });
+        }
+        return false;
+      }).fancybox({
+        'frameWidth'          : 540,
+        'frameHeight'         : 215,
+        'hideOnContentClick'  : false,
+        'enableEscapeButton'  : true,
+        'centerOnScroll'      : true,
+        'overlayOpacity'      : 0.85,
+        'overlayColor'        : "#000"
+      });
+    }
+    if($(".j-cta_meeting_privacy").length > 0){
+      $(".j-cta_meeting_privacy").fancybox({
+        'frameWidth'          : 540,
+        'frameHeight'         : 205,
+        'hideOnContentClick'  : false,
+        'enableEscapeButton'  : true,
+        'centerOnScroll'      : true,
+        'overlayOpacity'      : 0.85,
+        'overlayColor'        : "#000"
+      }).click( function(e) {
+          e.preventDefault();
+          $('.j-know-more').attr('href', '/business/premium/plans?cmp_src=' + this.id);
+          if (typeof mpq !="undefined"){
+            mpq.track('Viewed Private Meetings thickbox', {'Coming from': this.id });
+          }
+          return false;
+      });
+    }
+
+    if($(".j-styleProfile").length > 0 && $('a[href="#cta_styleprofile"]').length > 0){
+      $('.j-styleProfile').click(function() {
+        $('.StyleOverlay').toggle();
+        $('#cta_styleprofile').toggle();
+        $(".j-plan-ex").fancybox({
+          'frameWidth'          : 600,
+          'frameHeight'         : 420,
+          'dontShowFancyTitle'  : true,
+          'centerOnScroll'      : false,
+          'hideOnContentClick'  : false
+        });
+        if (typeof mpq !="undefined"){
+          mpq.track('Viewed Style/Customize Profile thickbox', {'Coming from': this.id });
+        }
+        return false;
+      });
+
+      $('.fancy_close').click(function() {
+         $('#cta_styleprofile').toggle();
+         $('.StyleOverlay').toggle();
+      });
+    }
+
+    if($(".j-removeRelatedCTA").length > 0){
+      //Tracking using GA as KM is unavailable on slideview page
+      // Breaking defered JS load. to be fixed. 
+      //$('.j-removeRelatedCTA').evt_track('slideview', 'removeRelatedCTA');
+      $(".j-removeRelatedCTA").click( function(e) {
+          e.preventDefault();
+          if (typeof mpq !="undefined"){
+            mpq.track('Viewed Remove Related thickbox', {'Coming from': this.id });
+          }
+          if(this.id != "j-removeRelatedCTA-right") {
+            $('#cta_removerelated img').attr("src", "/images/visual-removeRelated-alt.png");  
+          }
+          return false;
+      }).fancybox({
+        'frameWidth'          : 575,
+        'frameHeight'         : 205,
+        'hideOnContentClick'  : false,
+        'enableEscapeButton'  : true,
+        'centerOnScroll'      : true,
+        'overlayOpacity'      : 0.85,
+        'overlayColor'        : "#000",
+        'dontShowFancyTitle'  : true
+      });
+    }
+
+    $(".upgradeNow").click(function(){
+        $(".h-upgradeForm").submit();
+    });
+
+  });
+
+})(jQuery);

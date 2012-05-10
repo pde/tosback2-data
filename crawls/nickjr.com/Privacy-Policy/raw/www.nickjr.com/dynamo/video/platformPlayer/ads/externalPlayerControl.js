@@ -1,5 +1,6 @@
 //These settings can be changed to determine if a player gets muted when it loads up.
 //true means the player gets muted, false it has the audio enabled.
+
 //nickjr players
 var nickjrHomepageMuted= false;
 var nickjrRightRailMuted= false;

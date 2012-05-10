@@ -31,27 +31,7 @@ function productJSfuncInit() {
 	aatTF=false;
 }
 function setContinueBrowsingURL(){
-	document.getElementById("contbrowsing").style.display="block";				
-	document.getElementById("contbrowsingURL").href="";
-var queryString="";
-	if (document.cookie.length>0)
-  {
-  c_start=document.cookie.indexOf("searchcriteria=");
-  if (c_start!=-1)
-    { 
-    c_start=c_start + "searchcriteria".length+1 ;
-    c_end=document.cookie.indexOf(";",c_start);
-    if (c_end==-1) c_end=document.cookie.length
-     var queryString = unescape(document.cookie.substring(c_start,c_end));
-
-
-
-
-    } 
-  }
-
-
-	document.getElementById("contbrowsingURL").href=collectionInfoJSON.continueBrowsingURL+queryString;
+	document.getElementById("contbrowsingURL").href="javascript: void(0);";
 }
 
 // Variable that will be set to false to disable multiple form submissions

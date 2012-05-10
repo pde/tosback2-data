@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US"  xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head profile="http://gmpg.org/xfn/11">
 
@@ -42,9 +42,9 @@ function eraseCookie(name) {
 
 <title>Privacy Policy | The Daily Caller</title>
 
-<link rel="stylesheet" href="../../../cdn2.dailycaller.com/wp-content/themes/default/style1.19.css%3Fv=1.19.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../../cdn2.dailycaller.com/wp-content/themes/default/style1.22.1.css%3Fv=1.22.1.css" type="text/css" media="screen" />
 <!--[if lt IE 8]>
-<link rel="stylesheet" href="http://cdn2.dailycaller.com/wp-content/themes/default/style-ie7.css?v=1.19" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://cdn2.dailycaller.com/wp-content/themes/default/style-ie7.css?v=1.22.1" type="text/css" media="screen" />
 <![endif]-->
 
 <link rel="alternate" type="application/rss+xml" title="The Daily Caller" href="http://feeds.dailycaller.com/dailycaller" />
@@ -80,6 +80,7 @@ function eraseCookie(name) {
 <script type='text/javascript' src='../../../cdn2.dailycaller.com/wp-content/themes/default/js/fancybox/jquery.fancybox-1.3.4.pack.js%3Fver=1.3.4'></script>
 <script type='text/javascript' src='../../../cdn2.dailycaller.com/wp-content/themes/default/js/bxslider/jquery.bxSlider.min.js%3Fver=3.0'></script>
 <script type='text/javascript' src='../../../apis.google.com/js/plusone.js%3Fver=1.0'></script>
+<script type='text/javascript' src='../../wp-content/themes/default/js/facebook/dc-facebook.script.min.js%3Fver=3.2.1'></script>
 <script type='text/javascript' src='../../../ox-d.dailycaller.com/w/1.0/jstag%3Fver=0.1'></script>
 <script type='text/javascript' src='../../wp-content/plugins/ss_esl/js/jquery_helper.js%3Fver=0.34'></script>
 <style type="text/css">img.nothumb{border:0;margin:0 0 0 2px !important;}</style>
@@ -93,7 +94,7 @@ function eraseCookie(name) {
 <meta name="generator" content="WordPress 3.2.1" />
 <link rel='shortlink' href='http://dailycaller.com/?p=5485' />
 
-<!-- All in One SEO Pack 1.6.13.3 by Michael Torbert of Semper Fi Web Design[969,1016] -->
+<!-- All in One SEO Pack 1.6.13.3 by Michael Torbert of Semper Fi Web Design[1015,1062] -->
 <meta name="description" content="THE DAILY CALLER PRIVACY POLICY The Daily Caller (THE DC or we) is the owner and operator of DailyCaller.com {the Website), a comprehensive news website" />
 <link rel="canonical" href="index.html" />
 <!-- /all in one seo pack -->
@@ -285,12 +286,43 @@ function emailAjaxSubscriptionSubmitFunction(isWidget){
 </head>
 
 <body>
-	<div id="fb-root"></div>
-	<script src="../../../connect.facebook.net/en_US/all.js"></script>
-	<script>
-	FB.init({ appId:'143489452702', channelUrl: 'http://dailycaller.com/channel.html', cookie:true, status:true, xfbml:true });
-	</script>
-	
+<div id="fb-root"></div>
+
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId:'143489452702', // App ID
+            channelUrl:'http://dailycaller.com/channel.html', // Channel File
+            status:true, // check login status
+            cookie:true, // enable cookies to allow the server to access the session
+            xfbml:true  // parse XFBML
+        });
+
+        // force load
+        var intv = setInterval(function () {
+            if (window.DcFacebookSocialExp && document.getElementById('sidebar')) {
+                clearInterval(intv);
+                intv = null;
+            }
+
+            $(window).trigger('facebook.onload');
+        }, 100);
+    };
+
+    // Load the SDK Asynchronously
+    (function (d) {
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement('script');
+        js.id = id;
+        js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document));
+</script>
+    
   <!--[if lt IE 7]>
   <div style='border: 1px solid #F7941D; background: #FEEFDA; text-align: center; clear: both; height: 75px; position: relative;'>
     <div style='position: absolute; right: 3px; top: 3px; font-family: courier new; font-weight: bold;'><a href='#' onclick='javascript:this.parentNode.parentNode.style.display="none"; return false;'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-cornerx.jpg' style='border: none;' alt='Close this notice'/></a></div>
@@ -451,7 +483,7 @@ function emailAjaxSubscriptionSubmitFunction(isWidget){
 								
 						
 							<div class="date">
-				April 15, 2012			</div>
+				May 10, 2012			</div>
 			</div>
 			
 			<div class="break"></div>
@@ -555,6 +587,60 @@ register on DailyCaller.com;</li>
 				</div>
 
 	<div id="sidebar">
+		<!--  module  -->
+<div class="dc-module dc-fb-connect" style="display:none;">
+    <h3 class="dc-se-hdg"><span class="bkg"></span><span class="corner">&#xA0;</span></h3>
+
+    <div class="clear"></div>
+    <div class="photo avatar left"></div>
+
+    <ul class="inline hide dc-fb-se-profile-toolbar">
+        <li class="dropdown">
+            <a id="dc_fb_se_app_state" class="dc_fb_se_app_state">Social: <span class="action-app-state-label">Active</span></a>
+            
+            <div id="overlay_dc_fb_se_app_state" class="se-overlay se-options" style="width:86px;left:8px;">
+            	<div class="arrow">&#xA0;</div>
+				<ul class="app-state-options">
+                    <li>
+                        <a class="action-app-state" data-active="true" href="index.html#">Active</a>
+                    </li>
+                    <li>
+                        <a class="action-app-state" data-active="false" href="index.html#">Inactive</a>
+                    </li>
+                </ul>
+            </div>            
+        </li>
+        <li class="dropdown">
+            <a id="dc_fb_se_my_activity" class="dc-fb-se-activity">Your Activity</a>
+        </li>
+        <li class="dropdown">
+            <a id="dc_fb_se_options" class="dc_fb_se_options">Options</a>
+
+            <div id="overlay_dc_fb_se_options" class="se-overlay se-options">
+                <div class="arrow">&#xA0;</div>
+                <h3 class="dc-se-hdg"><span class="bkg">Options</span><span class="corner">&#xA0;</span></h3>
+                <ul>
+                    <li><a class="action-learn-more" href="http://dailycaller.com/social-experience-learn-more/"><span class="icon learn-more">&#xA0;</span>Learn More</a>
+                    </li>
+                    <li><a class="action-invite-friends" href="index.html#"><span class="icon invite">&#xA0;</span>Invite
+                        Friends</a></li>
+                    <li><a class="action-logout" href="index.html#"><span class="icon logout-facebook">&#xA0;</span>Log Out of
+                        Facebook</a></li>
+                    <li><a class="action-remove-app" href="index.html#"><span class="icon remove-app">&#xA0;</span>Remove The
+                        DC Social Experience</a></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <div class="clear">&#xA0;</div>
+</div>
+
+<script type="text/javascript">
+    $(window).bind('facebook.onload', function () {
+        
+        window.DcFacebookSocialExp = new DcFacebookSocialExp({appId : '143489452702', ns : 'dcsocialreader', disableSocialExp : '30', allowedUserLevel : 'all'});
+    });
+</script>
 
 		<div class="ad"><!-- OPENX_LOC[_default:Right1] --><script type="text/javascript">OX.requestAd({"auid":"92721"});</script></div>
 
@@ -598,110 +684,101 @@ register on DailyCaller.com;</li>
 		<h2>Most Popular</h2>
 			
 			<div id="widget-popular">
+				<div class="buttons">
+										<div class="button-most-popular button hilite"><a href="index.html#">Popular</a></div>
+					<div class="button-most-emailed button"><a href="index.html#">Emailed</a></div>
+					<div class="break"></div>
+				</div>				
+				
+								
 				
 				<div id="widget-most-popular" class="popular-box">
-					<div class="widget-most-viewed-buttons">
-						<div class="widget-most-viewed-button-left widget-most-viewed-button-hilite">Most Popular</div>
-						<div class="widget-most-viewed-button-right"><a href="Javascript:doToggle('widget-most-popular', 'none');doToggle('widget-most-emailed', '');">Most Emailed</a></div>
-						<div class="break"></div>
-					</div>
-					
 																<div class="category-headline">
 													<div class="pic">
-		<a href="http://dailycaller.com/2012/04/13/the-greatest-obituary-of-all-time/"><img src="../../../cdn2.dailycaller.com/2012/04/0-e1334348158669-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
+		<a href="http://dailycaller.com/2012/05/10/americans-with-disabilities-act-covers-bashful-bladder-syndrome-could-cost-employers-billions/"><img src="../../../cdn2.dailycaller.com/2012/05/74957790-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
-													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/13/the-greatest-obituary-of-all-time/">
-												'He enjoyed booze, guns, cars and younger women until the day he died'</a></div>
+													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/05/10/americans-with-disabilities-act-covers-bashful-bladder-syndrome-could-cost-employers-billions/">
+												Timid Tinklers</a></div>
 												<div class="break"></div>
 											</div>
 																						<div class="category-headline">
 													<div class="pic">
-		<a href="http://dailycaller.com/2012/04/15/reporters-notebook-flathead-we-hardly-knew-ye/"><img src="../../../cdn2.dailycaller.com/2012/04/blanchard-pickup-e1334467701315-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
+		<a href="http://dailycaller.com/2012/05/09/obama-threatens-to-veto-doj-budget-because-it-blocks-fast-and-furious-gun-control-law/"><img src="../../../cdn2.dailycaller.com/2011/07/cf5929adb5b24e3ba8e256267e66c430-150x150.jpg" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
-													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/15/reporters-notebook-flathead-we-hardly-knew-ye/">
-												Reporter's notebook: Flathead, we hardly knew ye</a></div>
-												<div class="break"></div>
-											</div>
-																						<div class="category-headline">
-														<div class="pic" id="pic-1">
-			<a href="http://dailycaller.com/2012/04/15/misconduct-alleged-against-secret-service-agents-2/" title="Privacy Policy" alt="Privacy Policy">						
-						<img src="../../../cdn2.dailycaller.com/2012/04/2450a9f1c70f437cae86521e7b1e15c7-150x150.jpg" border="0" alt="" width="50" />
-						
-			</a>					</div>
-														<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/15/misconduct-alleged-against-secret-service-agents-2/">
-												SECRET SERVICING</a></div>
+													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/05/09/obama-threatens-to-veto-doj-budget-because-it-blocks-fast-and-furious-gun-control-law/">
+												Obama threatens to veto DOJ budget because it blocks Fast and Furious gun control law</a></div>
 												<div class="break"></div>
 											</div>
 																						<div class="category-headline">
 													<div class="pic">
-		<a href="http://dailycaller.com/2012/04/15/snl-bids-farewell-to-gop-presidential-contenders-with-green-day-parody/"><img src="../../../cdn2.dailycaller.com/2012/04/SNL415-e1334492116802-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
+		<a href="http://dailycaller.com/2012/05/09/limbaugh-rush-babes-for-america-facebook-page-surpasses-now-in-24-hours/"><img src="../../../cdn2.dailycaller.com/2012/05/Rush-Babies-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
-													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/15/snl-bids-farewell-to-gop-presidential-contenders-with-green-day-parody/">
-												SNL bids farewell to GOP presidential contenders with Green Day parody</a></div>
+													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/05/09/limbaugh-rush-babes-for-america-facebook-page-surpasses-now-in-24-hours/">
+												Limbaugh 'Rush Babes for America' Facebook page surpasses NOW in 24 hours</a></div>
 												<div class="break"></div>
 											</div>
 																						<div class="category-headline">
 													<div class="pic">
-		<a href="http://dailycaller.com/2012/04/13/orrin-hatch-doggone-offended-by-radical-libertarians-trying-to-take-away-his-senate-seat/"><img src="../../../cdn2.dailycaller.com/2012/04/50808caa915d471dbe7837831a5447ba-e1334329477786-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
+		<a href="http://dailycaller.com/2012/05/09/doj-defends-staffer-who-called-mississipians-disgusting-and-shameful/"><img src="../../../cdn2.dailycaller.com/2012/04/55fa31e087594e6e966070132715ba63-150x150.jpg" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
-													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/13/orrin-hatch-doggone-offended-by-radical-libertarians-trying-to-take-away-his-senate-seat/">
-												Orrin Hatch 'doggone offended' by 'radical libertarians' trying to take away his Senate seat</a></div>
+													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/05/09/doj-defends-staffer-who-called-mississipians-disgusting-and-shameful/">
+												DOJ defends staffer who called Mississipians 'disgusting and shameful'</a></div>
 												<div class="break"></div>
 											</div>
 																						<div class="category-headline">
-														<div class="pic" id="pic-1">
-			<a href="http://dailycaller.com/2012/04/14/with-new-heart-cheney-speaks-over-an-hour-in-wyo/" title="Privacy Policy" alt="Privacy Policy">						
-						<img src="../../../cdn2.dailycaller.com/2012/04/7cb0c2eaf0cf43f298ce871dd43564af-150x150.jpg" border="0" alt="" width="50" />
-						
-			</a>					</div>
-														<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/14/with-new-heart-cheney-speaks-over-an-hour-in-wyo/">
-												Recovering from heart transplant, Cheney calls Obama 'unmitigated disaster to the country'</a></div>
+																								<div class="blue"><a href="http://dailycaller.com/2012/05/09/barack-obama-a-profile-in-cowardice/">
+												Barack Obama: a profile in cowardice </a></div>
 												<div class="break"></div>
 											</div>
 																						<div class="category-headline">
 													<div class="pic">
-		<a href="http://dailycaller.com/2012/04/13/nc-dem-official-sexually-harrassed-staffer-party-fears-credibility-doomed/"><img src="../../../cdn2.dailycaller.com/2012/04/NC-Dem-Party-HQ-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
+		<a href="http://dailycaller.com/2012/05/09/obama-holder-silent-as-brian-terry-memorial-act-unanimously-passes-house-senate/"><img src="../../../cdn2.dailycaller.com/2011/11/Screen-shot-2011-11-09-at-5.49.00-PM1-e1320979446871-180x160.png" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
-													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/13/nc-dem-official-sexually-harrassed-staffer-party-fears-credibility-doomed/">
-												Staffer claims sexual harassment by NC Dem official</a></div>
+													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/05/09/obama-holder-silent-as-brian-terry-memorial-act-unanimously-passes-house-senate/">
+												Obama, Holder silent as Brian Terry memorial act unanimously passes Congress</a></div>
 												<div class="break"></div>
 											</div>
 																						<div class="category-headline">
 													<div class="pic">
-		<a href="http://dailycaller.com/2012/04/13/tea-party-leader-warns-romney-dont-expect-us-to-campaign-for-you/"><img src="../../../cdn2.dailycaller.com/2012/04/142183790-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
+		<a href="http://dailycaller.com/2012/05/09/thedc-interview-marked-for-death-dutch-parliamentarian-geert-wilders-video/"><img src="../../../cdn2.dailycaller.com/2012/05/143327719-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
-													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/13/tea-party-leader-warns-romney-dont-expect-us-to-campaign-for-you/">
-												Tea party leader warns Romney: Don't expect us to campaign for you</a></div>
+													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/05/09/thedc-interview-marked-for-death-dutch-parliamentarian-geert-wilders-video/">
+												TheDC Interview: 'Marked for Death' Dutch parliamentarian Geert Wilders</a></div>
+												<div class="break"></div>
+											</div>
+																						<div class="category-headline">
+																								<div class="blue"><a href="http://dailycaller.com/2012/05/09/barry-goldwater-vindicated/">
+												Barry Goldwater vindicated</a></div>
 												<div class="break"></div>
 											</div>
 																						<div class="category-headline">
 													<div class="pic">
-		<a href="http://dailycaller.com/2012/04/13/media-law-professor-hannity-could-be-required-to-testify-in-zimmerman-case-despite-florida-shield-law/"><img src="../../../cdn2.dailycaller.com/2012/04/AP-e1334418708883-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
+		<a href="http://dailycaller.com/2012/05/09/george-w-bush-requests-the-most-taxpayer-dollars-of-ex-presidents/"><img src="../../../cdn2.dailycaller.com/2012/04/9e65b6cec5b540d392fef35e169aad86-150x150.jpg" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
-													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/13/media-law-professor-hannity-could-be-required-to-testify-in-zimmerman-case-despite-florida-shield-law/">
-												Hannity To The Stand?</a></div>
+													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/05/09/george-w-bush-requests-the-most-taxpayer-dollars-of-ex-presidents/">
+												George W. Bush requests the most taxpayer dollars of ex-presidents</a></div>
 												<div class="break"></div>
 											</div>
 																						<div class="category-headline">
-														<div class="pic" id="pic-1">
-			<a href="http://dailycaller.com/2012/04/13/has-hilary-rosen-asked-hillary-clinton-for-her-cookie-recipe-yet/" title="Privacy Policy" alt="Privacy Policy">						
-						<img src="../../../cdn2.dailycaller.com/2012/04/axelrod_and_rosen-180x160.jpg" border="0" alt="" width="50" />
-						
-			</a>					</div>
-														<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/13/has-hilary-rosen-asked-hillary-clinton-for-her-cookie-recipe-yet/">
-												Has Hilary Rosen asked Hillary Clinton for her cookie recipe yet?</a></div>
+													<div class="pic">
+		<a href="http://dailycaller.com/2012/05/08/dinosaur-farts-could-have-warmed-the-earth-150-million-years-ago/"><img src="../../../cdn2.dailycaller.com/2012/05/b657abdfddd7467ba1f3f3b7766458e4-150x150.jpg" alt="" width="50" /></a>		<div class="break"></div>
+	</div>
+													<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/05/08/dinosaur-farts-could-have-warmed-the-earth-150-million-years-ago/">
+												Dinosaur farts could have warmed the earth 150 million years ago</a></div>
 												<div class="break"></div>
 											</div>
 															</div>
 				
 				<div id="widget-most-emailed" class="popular-box" style="display:none;">
-					<div class="widget-most-viewed-buttons">
-						<div class="widget-most-viewed-button-left"><a href="Javascript:doToggle('widget-most-popular', '');doToggle('widget-most-emailed', 'none');">Most Popular</a></div>
-						<div class="widget-most-viewed-button-right widget-most-viewed-button-hilite">Most Emailed</div>
-						<div class="break"></div>
-					</div>
-					
 												<div class="category-headline">
+									<div class="pic">
+		<a href="http://dailycaller.com/2012/04/25/rural-kids-parents-angry-about-labor-dept-rule-banning-farm-chores/"><img src="../../../cdn2.dailycaller.com/2012/04/119896379-e1335316187178-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
+	</div>
+									<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/25/rural-kids-parents-angry-about-labor-dept-rule-banning-farm-chores/">
+								Rural kids, parents angry about Labor Dept. rule banning chores on the farm</a></div>
+								<div class="break"></div>
+							</div>
+														<div class="category-headline">
 									<div class="pic">
 		<a href="http://dailycaller.com/2011/10/11/michelle-obamas-warning-to-gun-owners/"><img src="../../../cdn2.dailycaller.com/2011/09/8c2089c395f64df1abddd8da757fe1e4-150x150.jpg" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
@@ -751,14 +828,6 @@ register on DailyCaller.com;</li>
 							</div>
 														<div class="category-headline">
 									<div class="pic">
-		<a href="http://dailycaller.com/2012/01/06/labor-unions-primary-recipients-of-obamacare-waivers/"><img src="../../../cdn2.dailycaller.com/2011/09/692d886ba8034394a586fb9fb553ddfa-e1315146348822-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
-	</div>
-									<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/01/06/labor-unions-primary-recipients-of-obamacare-waivers/">
-								Labor unions primary recipients of Obamacare waivers</a></div>
-								<div class="break"></div>
-							</div>
-														<div class="category-headline">
-									<div class="pic">
 		<a href="http://dailycaller.com/2011/10/14/114-year-old-electric-car-gets-same-40-miles-to-the-charge-as-chevy-volt/"><img src="../../../cdn2.dailycaller.com/2011/10/photo-with-top-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
 									<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2011/10/14/114-year-old-electric-car-gets-same-40-miles-to-the-charge-as-chevy-volt/">
@@ -767,28 +836,39 @@ register on DailyCaller.com;</li>
 							</div>
 														<div class="category-headline">
 									<div class="pic">
-		<a href="http://dailycaller.com/2012/03/22/va-middle-schoolers-assigned-to-do-oppo-research-on-gop-candidates/"><img src="../../../cdn2.dailycaller.com/2012/03/Middle-School-e1332445743372-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
+		<a href="http://dailycaller.com/2012/01/06/labor-unions-primary-recipients-of-obamacare-waivers/"><img src="../../../cdn2.dailycaller.com/2011/09/692d886ba8034394a586fb9fb553ddfa-e1315146348822-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
-									<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/03/22/va-middle-schoolers-assigned-to-do-oppo-research-on-gop-candidates/">
-								Va. middle school class conducts research for Obama campaign</a></div>
+									<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/01/06/labor-unions-primary-recipients-of-obamacare-waivers/">
+								Labor unions primary recipients of Obamacare waivers</a></div>
 								<div class="break"></div>
 							</div>
 														<div class="category-headline">
 									<div class="pic">
-		<a href="http://dailycaller.com/2012/02/12/inside-media-matters-sources-memos-reveal-erratic-behavior-close-coordination-with-white-house-and-news-organizations/"><img src="../../../cdn2.dailycaller.com/2012/02/David-Brock-MMFA-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
+		<a href="http://dailycaller.com/2012/04/24/snl-alum-on-obama-what-a-fking-asshole-audio/"><img src="../../../cdn2.dailycaller.com/2012/04/jon-lovitz-e1335275475420-180x160.jpg" alt="" width="50" /></a>		<div class="break"></div>
 	</div>
-									<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/02/12/inside-media-matters-sources-memos-reveal-erratic-behavior-close-coordination-with-white-house-and-news-organizations/">
-								Inside Media Matters</a></div>
+									<div class="blue" style="margin-left: 65px;"><a href="http://dailycaller.com/2012/04/24/snl-alum-on-obama-what-a-fking-asshole-audio/">
+								SNL alum on Obama: 'What a f**king asshole' [AUDIO]</a></div>
 								<div class="break"></div>
 							</div>
 												</div>
-					
+					<script type="text/javascript">
+						var buttons = $('#widget-popular').find('.button');
+						$(buttons).each(function(idx){
+							var cBoxes = $('#widget-popular').find('.popular-box');
+							$('a', this).bind('click', function(evt){
+								evt.preventDefault();
+								$(cBoxes).hide();
+								$(buttons).removeClass('hilite');
+								$(this).parent().addClass('hilite');
+								$(cBoxes[idx]).show();
+							});
+						});
+					</script>
 				</div>
 				
 			</div>
 					
-			<div class="ad"><!-- OPENX_LOC[_default:Right3] --><script type="text/javascript">OX.requestAd({"auid":"92731"});</script></div>
-	</div>
+			<div class="ad"><!-- OPENX_LOC[_default:Right3] --><script type="text/javascript">OX.requestAd({"auid":"92731"});</script></div>	</div>
 	
 	  	
   	<div style="padding: 0 0 10px 0;margin:0;text-align:center; clear:both; ">
@@ -839,7 +919,7 @@ register on DailyCaller.com;</li>
 		
 		Copyright &copy; 2009 The Daily Caller. <br />
 
-		<small>1.19</small>
+		<small>1.22.1</small>
 		
 	</div>
 

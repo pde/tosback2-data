@@ -18,6 +18,76 @@ var _g = {
 var infOn = false;
 var youthOn = false;
 var tweenOn = false;
+var xmljson, promosjson, numPromos = 0, switchTimer, activeSlide, nextSlide, paused=false, numBrands = 0, brandTimer, hiddenBrands = new Array();
+function randomXToY(minVal,maxVal,floatVal)
+{
+  var randVal = minVal+(Math.random()*(maxVal-minVal));
+  return typeof floatVal=='undefined'?Math.round(randVal):randVal.toFixed(floatVal);
+}
+function clearPlayer(){
+	clearTimeout(switchTimer);
+	paused = true;
+	activeSlide = $('ul#flip-nav li').index($('ul#flip-nav li.active'));
+	nextSlide = ( activeSlide == numPromos -1 ) ? 0 : activeSlide + 1;
+}
+function setFlipper(){
+    numPromos = $("div#flip-hero a.lnk-flip").length;
+    $('div#flip-hero a.lnk-flip').each(function()
+    {
+        var $link = $(this);
+        var newZ = 10 * (numPromos - $('div#flip-hero a.lnk-flip').index($link));
+        $(this).css('z-index', newZ)
+    });
+    $('div#flip-hero a.lnk-flip:first').fadeIn().addClass('active');
+}
+function swapBrand(){
+    var random = Math.floor( Math.random()*10 );
+    var newGuy = hiddenBrands[0];
+    var oldGuy = $('div#dvBrandCrave a.lnk-brand:eq(' + random + ')');
+    var clone = $('div#dvBrandCrave a.lnk-brand:eq(' + random + ')').clone();
+    var fadeSpeed = randomXToY(600,900);
+    var swapTime = randomXToY(2500,3500);
+    //console.log('swap', ' new: ' + newGuy.attr('href'), ' old: ' + newGuy.attr('href'));
+    hiddenBrands.shift();
+    hiddenBrands.push(clone);
+    oldGuy.after(newGuy);
+    newGuy.hide().css({
+        'left': oldGuy.css('left'),
+        'z-index': 99
+    });
+    oldGuy.fadeOut(fadeSpeed).delay(fadeSpeed).remove();
+    newGuy.fadeIn(fadeSpeed).css('z-index',100);
+    brandTimer = setTimeout(swapBrand, swapTime);
+    var random = null;
+    var newGuy = null;
+    var oldGuy = null;
+    var clone = null;
+    var fadeSpeed = null;
+    var swapTime = null;
+}
+function setBrands(){
+    $('div#dvBrandCrave a.lnk-brand').each(function(){
+        var left = 0;
+        left = 73 * numBrands;
+        $(this).css('left',left+'px');
+        if (numBrands > 9) { 
+            hiddenBrands.push($(this));
+        }
+        numBrands++;
+    });
+	brandTimer = setTimeout(swapBrand, 3000);
+}
+function changeSlide(gotoslide){
+	$('div#flip-hero a.lnk-flip').removeClass('active').fadeOut();
+	$('div#flip-hero a.lnk-flip:eq(' + gotoslide + ')').addClass('active').fadeIn();
+	$('ul#flip-nav li').removeClass('active').css('width','');
+	$('ul#flip-nav li:eq(' + gotoslide + ')').animate({width:'49px'}, 200).addClass('active');
+	activeSlide = gotoslide;
+	nextSlide = ( activeSlide == numPromos - 1 ) ? 0 : activeSlide + 1;
+	if ( !paused ){
+		switchTimer = setTimeout( function(){ changeSlide(nextSlide) }, 4000 )
+	}
+}
 
 function moveDropCart() {
     var adj = 925;
@@ -93,7 +163,30 @@ $(function() {
     if ( $("a#nav_link_tween img").attr('src') == '/images/_headerfooter/kz_tween_active.gif' ){
         tweenOn = true;
     }
-
+    
+    $('a.lnk-flip').hide();
+	switchTimer = setTimeout( function(){ changeSlide(1) }, 4000 );
+	setFlipper();
+	setBrands();
+	$('a#flip-play-pause').live('click', function(e){
+		activeSlide = $('ul#flip-nav li').index($('ul#flip-nav li.active'));
+		var $link = $(this);
+		if ( $link.hasClass('flip-btn-pause') ){
+			clearPlayer();
+		}else{
+			paused = false;
+			changeSlide(nextSlide);
+		}
+		$link.toggleClass('flip-btn-pause');
+	});
+	$('ul#flip-nav a.nav-num').live('click', function(e){
+		clearPlayer();
+		$('a#flip-play-pause').removeClass('flip-btn-pause');
+		var $theLi = $(this).parent('li');
+		var idx = $('ul#flip-nav li').index($theLi);
+		changeSlide(idx);
+	});
+    
 });
 
 

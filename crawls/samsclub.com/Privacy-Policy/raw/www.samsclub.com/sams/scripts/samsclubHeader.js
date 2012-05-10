@@ -1326,8 +1326,15 @@ var $=jQuery.noConflict();
 		});
                 var preSearchCategoryId=$("#preSearchCategoryId").val();
                 if(preSearchCategoryId!=undefined && preSearchCategoryId!=''){
-                    $('#searchSelect option:selected').removeAttr("selected");
-                    $('#searchSelect').val(preSearchCategoryId);
+                    var isExistCategory=false;
+                    $('#searchSelect option').each(function(){
+                        if($(this).val()==preSearchCategoryId){
+                            isExistCategory=true;
+                        }
+                    });
+                    if(isExistCategory){
+                        $('#searchSelect').val(preSearchCategoryId);
+                    }
                 }
 		selectedO=$('#searchSelect').children('option:selected');
 		selected=selectedO.index('#searchSelect option');

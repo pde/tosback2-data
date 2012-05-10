@@ -1,4 +1,4 @@
-/* Timestamp: Wed Apr 11 13:21:57 PDT 2012*/
+/* Timestamp: Tue May 08 13:24:55 PDT 2012*/
 if (window["v3Lander"]==null){
 v3Lander={
 	v3Frame:false,
@@ -406,6 +406,12 @@ v3Lander={
 	},
 	
 	testReady:function(){
+		var alreadyReady=false;
+		try {alreadyReady=(!!$&&!!$.isReady&&$.isReady==true);}catch(e){}
+		if (alreadyReady) {
+			setTimeout("v3Lander.onDomReady()", 1);
+			return;
+		}
 		if (typeof document.readyState == "undefined") {
 			if (document.addEventListener){
 				document.addEventListener("load",function(){setTimeout("v3Lander.onDomReady();", 0);}, false);
@@ -670,4 +676,4 @@ v3Lander={
 		v3Lander.main();
 	}
 }
-/* Timestamp: Wed Apr 11 13:21:57 PDT 2012*/
+/* Timestamp: Tue May 08 13:24:55 PDT 2012*/

@@ -3,11 +3,11 @@
 <!-- Methode uuid: "307eb884-73bb-11de-87ca-c3dabad9a33c" -->
 <head>
 <title>Privacy Policy - NYPOST.com</title>
-<meta name="eomportal-instanceid" content="10"/>
-<meta name="eomportal-id" content="58736"/>
+<meta name="eomportal-instanceid" content="12"/>
+<meta name="eomportal-id" content="21938"/>
 <meta name="eomportal-loid" content="4.0.54651653"/>
 <meta name="eomportal-uuid" content="307eb884-73bb-11de-87ca-c3dabad9a33c"/>
-<meta name="eomportal-lastUpdate" content="Sun Apr 15 11:31:46 EDT 2012"/>
+<meta name="eomportal-lastUpdate" content="Thu May 10 07:59:49 EDT 2012"/>
 <meta name="description" content="   Effective as of November 11, 2011  "/>
 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 <meta name="copyright" content="Copyright 2012 NYP Holdings. All rights reserved."/>
@@ -109,29 +109,36 @@
 
 <div id="hat_wrap">
 <script type="text/javascript">
-  /* iPad Redirect */
-  
-  var regex = new RegExp("Mozilla/5.0(.*)AppleWebKit/(.*) \\(KHTML, like Gecko\\) .*?");
-  var matches = regex.exec(navigator.userAgent); 
-  if (matches && matches[1].indexOf("(iPad") == 1) {
-		var isExpired = getCookie("ipadInterstitial");
-		var today = new Date();
-		var deltaPeriod = (1 * 24 * 60 * 60 * 1000);
-		today.setTime( today.getTime() );
-		if(isExpired != "" && isExpired < today.getTime()) {
-			setCookie("ipadInterstitial", today.getTime() + deltaPeriod, deltaPeriod);
-			window.location="/ipadredirect";
-		} else if(isExpired == "") {
-			setCookie("ipadInterstitial", today.getTime() + deltaPeriod, deltaPeriod);
-			window.location="/ipadredirect";
-		}
-  } 
+	$(document).ready(function(){
+	
+	if( navigator.userAgent.match(/iPad/i) === null ) return false;
+	
+	var ipadCookieKey = 'i_welc_cookie';
+	var ipadCookieVal = getCookie(ipadCookieKey);
+
+	var i_c_val = false; //set to false
+	if((ipadCookieVal.length == 0 )){
+		setCookie(ipadCookieKey, true, 86400);
+		i_c_val = true;
+	}
+	if( i_c_val != true ) return false;
+	
+	$('body').append('<div id="ipad-welcome"><div id="ipad-welcome-inner"><a id="ipad-welcome-forward" href="http://bit.ly/k1OLwB"></a><span id="ipad-welcome-close"></span><span id="ipad-welcome-click"></span></div></div>');
+	setTimeout(function(){
+		$('#ipad-welcome-close, #ipad-welcome-click').click(function(){
+			$('#ipad-welcome').fadeOut();
+			setTimeout(function(){
+				$('#ipad-welcome').remove();
+			}, 300);
+		});
+	}, 0);
+});
 </script>
 <div id="hat"> 	
 		<!-- <div><a href="http://weather.nypost.com" class="sm" id="weather"><img src="http://10.238.88.31:31147/rw/SysConfig/WebPortal/nypost/images/nyp_logo_230x32.gif" width="80" height="50" alt="weather icon"/></a></div>-->
 		<a id="weather" class="sm" href="http://weather.nypost.com">
-			<img alt="weather icon" src="../../rw/SysConfig/WebPortal/nypost/blocks/weather/images/weather_clear_day_sm.png" />
-			<span class="conditions">68 &deg; </span>
+			<img alt="weather icon" src="../../rw/SysConfig/WebPortal/nypost/blocks/weather/images/weather_cloudy_day_sm.png" />
+			<span class="conditions">55 &deg; </span>
 		</a>
 	<ul id="hat_link_list" class="link_list">
 			<li id="hat_link_list_1" class="first"><a href="http://www.nypost.com/todays_paper">Today's Paper</a></li>

@@ -412,10 +412,10 @@ var usa_globalMenu = {
 					"items" : [
 						/* Featured Slot */
 						{
-							"title" : "Psych",
-							"url" : usa_baseUrlDomain + "/series/psych/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_2.png",
-							"tuneIn" : "WEDNESDAYS 10/9C"
+							"title" : "Common Law",
+							"url" : usa_baseUrlDomain + "/series/commonlaw/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_commonlaw.png",
+							"tuneIn" : "FRIDAY MAY 11 10/9C"
 						},
 						/* Featured Slot */
 						{
@@ -426,10 +426,10 @@ var usa_globalMenu = {
 						},
 						/* Featured Slot */
 						{
-							"title" : "In Plain Sight",
-							"url" : usa_baseUrlDomain + "/series/inplainsight/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_4.png",
-							"tuneIn" : "FRIDAYS 10/9C"
+							"title" : "Necessary Roughness",
+							"url" : usa_baseUrlDomain + "/series/necessaryroughness/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_nr.png",
+							"tuneIn" : "WEDNESDAY JUNE 6 10/9C"
 						},
 						/* Featured Slot  - LAST */
 						{
@@ -664,29 +664,30 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [
 						{
-							"title" : "OCEAN'S THIRTEEN",
-							"subtitle" : "SATURDAY APRIL 14",
-							"url" : usa_baseUrlDomain + "/movies/oceansthirteen/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_oceansthirteen.png"
+							"title" : "KNOCKED UP",
+							"subtitle" : "SATURDAY 3:30/2:30C",
+							"url" : usa_baseUrlDomain + "/movies/knockedup",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_knockedup.png"
 						},
 						{
-							"title" : "RAIDERS OF THE LOST ARK",
-							"subtitle" : "SUN APRIL 15 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/indianajones/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_indianaLostArk.png"
+							"title" : "IT'S COMPLICATED",
+							"subtitle" : "SATURDAY 8:30/7:30C",
+							"url" : usa_baseUrlDomain + "/movies/itscomplicated",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_itscomplicated.png"
 						},
 						{
-							"title" : "FAST & FURIOUS",
-							"subtitle" : "SUNDAY APRIL 15 4/3C",
-							"url" : usa_baseUrlDomain + "/movies/fastandfurious/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_fastfurious.png"
+							"title" : "THE BREAK-UP",
+							"subtitle" : "SUNDAY 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/thebreakup",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_thebreakup.png"
 						},
 						{
-							"title" : "HE'S JUST NOT THAT INTO YOU",
-							"subtitle" : "SUN APRIL 22 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_hejustnotthat.png"
+							"title" : "LAND OF THE LOST",
+							"subtitle" : "SATURDAY MAY 26 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/landofthelost",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_landofthelost.png"
 						}
+						
 					]
 				}
 			],

@@ -14,6 +14,22 @@ $(document).bind("kca_categories_loaded", function() {
 	KIDS.reporting.kcaVoteInit();
 	KIDS.reporting.omnifunctions.sendReportingCall();
 });
+/*
+KIDS.ads.refresh.adRendered = function(adId){
+	try{
+		if(KIDS.get("videoType")=="fullEpisodeItem"){			
+			var adDivId = $("#fwph_"+adId.substring(2)).parent().attr("id");			
+			if(adDivId.indexOf("728x90")<0){
+				$("#"+adDivId).removeClass("hiddenSlug");
+			}else{
+				$("#"+adDivId).siblings(".hiddenSlug").attr("class","slug");
+			}
+		}
+	}catch(e){KIDS.utils.doLog("KIDS.ads.refresh.adRendered failed:"+e);}
+}
+//btg.Events.adLoaded.subscribe(KIDS.ads.refresh.adRendered);//this is function hooked into Freewheel competitive separation ad refresh so the slugs can be hidden before ads are rendered
+btg.Events.adLoaded.subscribe(KIDS.ads.refresh.adRendered);
+*/
 
 KIDS.ads.refresh.KCAOrangeCarpetOn = function(){
 	try{
@@ -111,23 +127,6 @@ KIDS.ads.refresh.placeKCAAds = function(){
 			KIDS.ads.refresh.placeAd(adHolders[i].id,true);
 	}catch(e){KIDS.utils.doLog(e);}
 }
-KIDS.ads.refresh.adRendered = function(adId){
-/*  commented out due to coda 3
-	try{
-		if(KIDS.get("videoType")=="fullEpisodeItem"){			
-			var adDivId = $("#fwph_"+adId.substring(2)).parent().attr("id");
-			if(adDivId.indexOf("728x90")<0){
-				$("#"+adDivId).removeClass("hiddenSlug");
-			}else{
-				$("#"+adDivId).siblings(".hiddenSlug").attr("class","slug");
-			}
-		}
-	}catch(e){KIDS.utils.doLog("KIDS.ads.refresh.adRendered failed:"+e);}
-*/
-}
-//commented out due to coda 3
-//mtvn.btg.util.Events["adLoaded"].subscribe(KIDS.ads.refresh.adRendered);//this is function hooked into Freewheel competitive separation ad refresh so the slugs can be hidden before ads are rendered
-
 KIDS.ads.refresh.placeAd = function(adDivId,kcaVoteMode, sponsorOveride){
 	try{	
 		if(KIDS.get("adfree")!="true" || sponsorOveride == "true"){

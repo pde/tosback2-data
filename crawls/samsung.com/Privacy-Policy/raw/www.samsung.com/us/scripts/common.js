@@ -1770,6 +1770,13 @@ $(document).ready(function(){
 			$('.nav-shop').hide();
 	}	
 	
+	//hide shop buttons for nx cameras -apr'12
+	if(urlValueSplit[6].match('EV-NX20ZZBSBUS') || urlValueSplit[6].match('EV-NX210ZBSBUS') || urlValueSplit[6].match('EV-NX1000BABUS') || urlValueSplit[6].match('EV-NX1000BFWUS')){
+		$('.flagship-cta').hide();
+		$('.nav-shop').hide();
+	}
+
+	
 });
 
 $(document).ready(function(){

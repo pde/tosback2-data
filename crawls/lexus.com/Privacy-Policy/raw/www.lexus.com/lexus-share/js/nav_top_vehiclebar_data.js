@@ -211,7 +211,7 @@
 	 
     
     newNavLexusLU.categoryModelRX= 'RX';
-    newNavLexusLU.categoryModelPriceRX= 'Starting at $39,075';
+    newNavLexusLU.categoryModelPriceRX= 'Starting at $39,310';
     newNavLexusLU.categoryModelEndPriceRX= '';
     newNavLexusLU.categoryModelCodeRX= '9499';
     
@@ -278,7 +278,7 @@
 	 
     
     newNavLexusH.categoryModelRXh= 'RXh';
-    newNavLexusH.categoryModelPriceRXh= 'Starting at $45,235';
+    newNavLexusH.categoryModelPriceRXh= 'Starting at $45,910';
     newNavLexusH.categoryModelEndPriceRXh= '';
     newNavLexusH.categoryModelCodeRXh= '9444';
     
@@ -291,7 +291,7 @@
                       
                 newNavLexusH.RXhFeature3='0-60 mph in 7.4 or 7.8 sec <span class="span_disclaim" name="PREMIUMFUEL">[<a href="#RXh_Disclaimer_1" class="link_disclaim">1</a>]</span><span class="span_disclaim" name="PERFFIGS">[<a href="#RXh_Disclaimer_2" class="link_disclaim">2</a>]</span>';
                       
-                newNavLexusH.RXhFeature4='FWD or Part-Time AWD';
+                newNavLexusH.RXhFeature4='FWD';
                       
                 newNavLexusH.RXhFeature5='32/28 City/Hwy MPG';
         

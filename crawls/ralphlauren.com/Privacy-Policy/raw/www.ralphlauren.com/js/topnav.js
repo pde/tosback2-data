@@ -147,11 +147,9 @@ jQuery(document).ready(function() {
 					case 'flynavId-1795710':
 						jQuery('#d3-1795710').css('background-image','url(/images/3d-men-golf_920x245.jpg)').show();
 					break;
-				/*	-- Removed Tennis	
 					case 'flynavId-2365312':
 						jQuery('#d3-2365312').css('background-image','url(/images/3d-men-tennis_920x245.jpg)').show();
 					break;
-				*/			
 				//Women categories
 					case 'flynavId-1760782_allBrands':
 						jQuery('#d3-1760782_allBrands').css('background-image','url(/images/3d-women-shopall_920x245.jpg)').show();
@@ -187,11 +185,9 @@ jQuery(document).ready(function() {
 					case 'flynavId-1766618':
 						jQuery('#d3-1766618').css('background-image','url(/images/3d-women-golf_920x245.jpg)').show();
 					break;
-				/*	-- Removed Tennis	
 					case 'flynavId-2365313':
 						jQuery('#d3-2365313').css('background-image','url(/images/3d-women-tennis_920x245.jpg)').show();
 					break;
-				*/
 				//World of Ralph Lauren categories
 				/* --Removed World of Ralph Lauren
 					case 'flynavId-11739990':

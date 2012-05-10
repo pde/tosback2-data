@@ -5,13 +5,18 @@ $(document).ready(function(){
 	$(".fullwidth").css('left', '-1px').hide();
 	
 	var menuOn = false; 
-		
-		$('li.menuItem').hover(function() {
+			
+		$('li.menuItem a.open').hover(function() {
 				menuOn = true;
+				$(this).removeClass('open').addClass('close');
 				runMenuTest();
 			}, function() {
-				menuOn = false;
-				runMenuTest();
+				$('li.menuItem').mouseleave( function() {
+					menuOn = false;
+					$('li.menuItem a.close').removeClass('close').addClass('open');
+					runMenuTest();
+				})
+				
 			});
 		
 		function runMenuTest() {
@@ -19,13 +24,51 @@ $(document).ready(function(){
 			if(menuOn == true){
 				//alert('open menu')
 				$('.dropcontent').stop(true, true).fadeTo(250, 1);
+				//$('a.open').removeClass('open').addClass('close');
 			}
 			
 			if(menuOn == false){
 				$('.dropcontent').stop(true, true).fadeTo(10, 0);
+				//$('a.close').removeClass('close').addClass('open');
 			}
 		
 		}
+		
+			$('li.menuItem a.open').click( function() {
+				var selected = $(this)
+								
+				if(menuOn == true){
+					menuOn = false;
+					if( $(selected).hasClass('open') ){
+						$(selected).removeClass('open').addClass('close');
+					}
+					
+					else if( $(selected).hasClass('close') ){
+						$(selected).removeClass('close').addClass('open');
+					}
+					
+					//alert('you clicked on the menu item.')
+					runMenuTest();
+					$('#menu li .dropcontent').hide();
+				}
+				
+				else if(menuOn == false){
+					menuOn = true;
+					
+					if( $(selected).hasClass('open') ){
+						$(selected).removeClass('open').addClass('close');
+					}
+					
+					else if( $(selected).hasClass('close') ){
+						$(selected).removeClass('close').addClass('open');
+					}
+					
+					//alert('you clicked on the menu item.')
+					runMenuTest();
+					$('#menu li .dropcontent').show();
+				}
+				
+			})
 		
 		function opacityElements() { // Chaging opacity of the social icons on mouse hover and mouse out
 			buttonMode = false;

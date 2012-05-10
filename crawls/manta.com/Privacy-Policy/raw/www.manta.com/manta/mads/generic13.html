@@ -1,0 +1,225 @@
+<html>
+<head></head>
+<body style="background-color: transparent;">
+<div id="admeld"></div>
+<script>
+window.mantaAdIframe = true;
+window.explicitSize = false;
+
+var $ = window.parent.$, jQuery = window.parent.jQuery;
+
+(function() {
+function getDocHeight(doc) {
+//      nicer, but doesn't work:
+//	return $(doc.body).innerHeight();
+	return Math.max(doc.body.offsetHeight, doc.body.scrollHeight);
+}
+function getDocWidth(doc) {
+    return doc.body.scrollWidth;
+}
+function setResizer(iframeId, divId) {
+	var adIframe = window.parent.document.getElementById(iframeId);
+	var adDiv = window.parent.document.getElementById(divId);
+	var contentDoc = adIframe.contentDocument || adIframe.contentWindow.document;
+	var emitlocker = function() {
+		var done = {};
+		return function(pos) {
+			if (window.parent['jQuery'] && (!done[pos])) {
+				var $ = window.parent['jQuery'];
+				$(window.parent.document.body).trigger('ad-loaded-' + pos);
+			}
+			done[pos] = true;
+		};
+	}();
+	//adIframe.height = 1;
+	if (contentDoc) {
+		if ((getDocWidth(contentDoc) == '300') && (iframeId === 'ad_iframe_1')) {
+			/* debugger; */
+		}
+		var pos = window.parent.manta.advertisingInfo[window.name].position;
+		var resizer = function() {
+			if (explicitSize) {
+				adIframe.height = explicitSize.height;
+				adIframe.width = explicitSize.width;
+			}
+			else {
+				adIframe.height = getDocHeight(contentDoc);
+				adIframe.width = getDocWidth(contentDoc);
+			}
+
+			var foo = "" + window.parent.location;
+			if (/hide_rect=1/.test(foo)) {
+				if (pos === 'rectangle') {
+					adIframe.height = "0";
+					adIframe.width = "0";
+				}
+			}
+			if (/hide_rect=0/.test(foo)) {
+				if (pos === 'rectangle') {
+					adIframe.height = "250";
+					adIframe.width = "300";
+				}
+			}
+			if ((adIframe.width > 1) && (adIframe.height > 1)) {
+				//console.log("setting size for "+pos+" to: "+adIframe.width+"x"+adIframe.height);
+				adDiv.style.left = "";
+				adDiv.style.top = "";
+				adDiv.style.position = "relative";
+				adDiv.style.zIndex = 1;
+				adDiv.style.width = ""; //adIframe.width+"px"; don't set width... set it to auto
+				adDiv.style.height = adIframe.height+"px";
+
+				window.parent.manta.advertisingInfo.sizes[iframeId] = {
+					width: adIframe.width,
+					height: adIframe.height
+				};
+				emitlocker(pos);
+			}
+/*
+			if (window.parent.location.href.match(/testwidead/)) {
+				window.parent.manta.advertisingInfo.sizes[iframeId] = {
+					width: 200,
+					height: 200
+				};
+			}
+*/
+		};
+
+		var interval = setInterval(resizer, 500);
+
+		var adTimeout= function() {
+			clearInterval(interval);
+			//console.log('adTimeout code running for position: '+pos);
+			if(adIframe.width <= 1) {
+				//console.log('timeout or pixel served for position: '+pos);
+				adDiv.innerHTML= "";
+				adDiv.style.left="-12000px";
+				adDiv.style.top="-12000px";
+				adDiv.style.position="absolute";
+			}
+		};
+
+		setTimeout(adTimeout, 3100); // let it run for some time
+	}
+}
+
+var advertisingInfo = window.parent.manta.advertisingInfo;
+var onload_actions = function() {
+	var iframeId = advertisingInfo[window.name]["iframe_id"];
+	var divId = advertisingInfo[window.name]["div_id"];
+	advertisingInfo['sizes'][iframeId] = { width: 0, height: 0 };
+	setResizer(iframeId, divId);
+};
+
+var admeld_call = function(size, container) {
+	var pageurl = window.parent.location + "";
+	var url = "http://tag.admeld.com/ad/json?publisher_id=874&site_id=manta&placement=ros&size=" + size + "&url=" + encodeURIComponent(pageurl) + "&callback=admeld_callback&container=" + container;
+	var script = document.createElement('script');
+	script.setAttribute('src', url);
+	window.document.getElementsByTagName('head')[0].appendChild(script);
+		//admeld_callback();
+	window.onload = function() {
+		//document.write('hi there!');
+	};
+};
+
+var admeld_callback = function(json) {
+
+	var zone_id = advertisingInfo[window.name]["zone"];
+	var dfpUrl = advertisingInfo[window.name]["uri"] + zone_id + ";" + advertisingInfo[window.name]["param_string"];
+
+	if (json.ad) {
+		var parts = /"http:\/\/.*\/(.*)\/(.*)\?.*url=([^&]*).*"/.exec(json.ad.creative);
+		var admeldUserId = parts[1];
+		var admeldRequestId = parts[2];
+		var admeldURL = parts[3];
+
+		var admeldBid = json.ad.bid + "";
+		admeldBid = admeldBid.replace(/\./, '');
+		dfpUrl = dfpUrl + ';admbid=' + admeldBid + ';admelduserid=' + admeldUserId + ';admeldrequestid=' + admeldRequestId + ';admeldurl=' + admeldURL;
+	}
+
+	advertisingInfo["ord"] = advertisingInfo["ord"] || Math.floor(Math.random()*1E16);
+	var ord = advertisingInfo["ord"];
+
+ 	dfpUrl = dfpUrl + ";ord=" + ord + "?";
+
+	/*
+	var script = document.createElement('script');
+	script.setAttribute('src', dfpUrl);
+	window.document.getElementsByTagName('head')[0].appendChild(script);
+	*/
+	jQuery('body').append(jQuery('<scr' + 'ipt src="' + dfpUrl + '"></scr' + 'ipt>'));
+
+	onload_actions();
+};
+window.admeld_callback = admeld_callback;
+
+if (window.name && advertisingInfo) {
+	if(!advertisingInfo['sizes']) {
+		advertisingInfo['sizes'] = {};
+	}
+
+	var ad_tag = advertisingInfo[window.name]["ad_tag"];
+	if (advertisingInfo[window.name]["admeld"]) {
+		var script = document.createElement('script');
+		script.setAttribute('src', 'http://m5.manta-r1.com/aggregator/1/js-min/manta::js::jquery::jquery-1.4.2.min.js');
+		window.document.getElementsByTagName('head')[0].appendChild(script);
+		window.onload = function() {
+			document.write = function(s) {
+				try {
+					jQuery('body').append(jQuery(s));
+				}
+				catch (err) {
+					//ack
+					//console.debug('error');
+				}
+			};
+			admeld_call('300x250', 'admeld');
+		};
+	}
+	else {
+		window.onload = onload_actions;
+		document.write(ad_tag);
+	}
+
+}
+})();
+</script>
+
+<script>
+
+</script>
+<!-- Google Analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+	var zone='unknown';
+	var position= 'unknown';
+	var account;
+	var property;
+	if (window.name && window.parent.manta.advertisingInfo[window.name]) {
+		position= window.parent.manta.advertisingInfo[window.name].position;
+	}
+	if (window.name && window.parent.manta.advertisingInfo[window.name]) {
+		zone= window.parent.manta.advertisingInfo[window.name].zone;
+	}
+
+	if(window.parent.manta.ga.account && window.parent.manta.ga.property) {
+		var pageTracker = _gat._getTracker("UA-"+window.parent.manta.ga.account+"-"+window.parent.manta.ga.property);
+
+		var cust_vars= window.parent.manta.ga.custom_vars;
+		for(var i=0; i<cust_vars; i++) {
+			var cust_var= cust_vars[i];
+			pageTracker._setCustomVar(cust_var.index, cust_var.name, cust_var.value, cust_var.scope_level);
+		}
+
+		pageTracker._trackPageview('/virtual/ad/' + position + window.parent.manta.ga.uri);
+	}
+} catch(err) {}
+</script>
+</body>
+</html>

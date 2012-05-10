@@ -1,0 +1,342 @@
+//**************************************************
+// PopupBoxLib.js
+// Author: Louis Baliotis 
+// Version: 1.0
+// Date: 11/21/2006
+// Example:
+//     init: PopupBox.initialize('bodyText')
+//           PopupBox.initialize('bodyText',0,'fast',1)
+//           PopupBox.startSlide('bodyText')
+//***************************************************
+
+
+function PopupBoxLib() {
+
+    var v_imgSwap=0;
+    popupObjects = new Array(); // array of all html element object
+
+	function MenuStruct (p1) {
+        this.box_height;
+        this.menuState;
+        this.elementObj;
+        this.htmlValue;
+        this.increment;
+        this.inc_num = 10;
+        this.clearIntervalValue;
+        this.opacityValue = 0;
+        this.speed = 1;
+		this.showOpacity = 0;
+		this.temp;
+		this.x0;
+		this.y0;
+		this.xN;
+		this.yN;
+		
+		this.h0;
+		this.w0;
+		this.hN = 0;
+		this.wN = 0;
+    }
+    
+    MenuStruct.prototype.position = function(el)	{ 
+		var parent = el;
+		var p = Array();
+		p.w = parent.offsetWidth;
+		p.h = parent.offsetHeight;
+		p.x = parent.offsetLeft;
+		p.y = parent.offsetTop;
+		while (parent.offsetParent)	{
+			parent = parent.offsetParent;
+			p.x += parent.offsetLeft;
+			p.y += parent.offsetTop;
+		}
+		return p;
+	}
+
+    // param: p1 = id name of the div
+    // param: p2 = menu state, 0 = fold, 1=down
+	// param: speed = fast or normal
+    // param: showOpacity = 1 for show, 0 no show
+    this.initialize = function(pElement, pOriginElement) {
+        var elemObj = getObj(pElement);
+		var originObj = getObj(pOriginElement);
+		
+        var popupBox = new MenuStruct();
+
+	    popupBox.elementObj = elemObj;
+	    popupBox.originObj = originObj;
+	    popupBox.htmlValue = elemObj.innerHTML;
+
+        elemObj.innerHTML = "";
+		popupBox.menuState = 0;
+        popupObjects[elemObj.id] = popupBox;
+        return popupBox;
+    }
+    
+    // p1 = name of the div
+    this.updateHtml = function(p1, p2) { 	 	
+        var elemObj = getObj(p1);
+        if(elemObj) {
+	        var popupBox = popupObjects[elemObj.id];
+	        if(popupBox == null) {
+        		popupBox = this.initialize(p1, p2);
+        	} else {
+				popupBox.htmlValue = elemObj.innerHTML;
+				popupBox.elementObj = elemObj;
+			}
+		} else {
+			alert("couldn't update");
+			setTimeout("PopupBox.updateHtml(" + p1 + ", " + p2 + ")", 100);
+		}
+    }
+
+	this.calculateOrigin = function(pPopupBox) {
+
+		//if the page is in the first fold then use the origin obj
+		if (documentScrollY() < 300) {
+	       	pPopupBox.y0 = pPopupBox.position(pPopupBox.originObj).y;
+       	} else {
+	       	pPopupBox.y0 = documentScrollY() - 200;
+       	}
+       	
+   		pPopupBox.x0 = pPopupBox.position(pPopupBox.originObj).x + pPopupBox.originObj.offsetWidth;
+       	pPopupBox.w0 = 0;
+       	pPopupBox.h0 = 0;
+	}
+	this.calculatePosition = function(pPopupBox) {
+		var position = new Object();
+		var element = pPopupBox.elementObj;
+		
+		element.innerHTML = pPopupBox.htmlValue;
+		
+		//Calculate the position given the above calculation above the center of the screen.
+		pPopupBox.yN = (documentHeight() / 2) - (element.offsetHeight / 2);
+		pPopupBox.xN = (documentWidth() / 2) - (element.offsetWidth / 2);
+	
+		//Calculate if the top would be off the top of the screen then move it down till it is visible
+		var bottom = pPopupBox.yN + element.offsetHeight;
+		pPopupBox.yN = (bottom > documentHeight()) ? position.y + (bottom - documentHeight()) : pPopupBox.yN;
+		pPopupBox.yN = (pPopupBox.yN >= 0) ? pPopupBox.yN : 0;
+		pPopupBox.yN += documentScrollY();
+		
+		pPopupBox.xN = pPopupBox.xN < 0 ? 0 : pPopupBox.xN
+		
+		pPopupBox.wN = element.offsetWidth;
+		pPopupBox.hN = element.offsetHeight;
+		
+		element.innerHTML = "";
+	}
+	this.calculateSlope = function(pPopupBox) {
+		
+		//Calculate dX, dY, dW, dH
+       	pPopupBox.dX = (pPopupBox.xN - pPopupBox.x0) / pPopupBox.inc_num;
+       	pPopupBox.dY = (pPopupBox.yN - pPopupBox.y0) / pPopupBox.inc_num;
+       	pPopupBox.dW = (pPopupBox.wN - pPopupBox.w0) / pPopupBox.inc_num;
+       	pPopupBox.dH = (pPopupBox.hN - pPopupBox.h0) / pPopupBox.inc_num;
+	}
+    this.calculateYIntersect = function(pPopupBox) {
+      	pPopupBox.bY = pPopupBox.y0 - (pPopupBox.dY / pPopupBox.dX) * pPopupBox.x0;
+       	pPopupBox.bH = pPopupBox.h0 - (pPopupBox.dH / pPopupBox.dW) * pPopupBox.w0;
+    }
+    this.startExpand = function(p1, p2, pCancelAnimate) {
+
+		var elemObj = getObj(p1);
+        var originObj = getObj(p2)
+        var popupBox = popupObjects[elemObj.id];
+        if(popupBox == null) {
+        	popupBox = this.initialize(elemObj, originObj);
+        }
+        
+        var v_idStr =  popupBox.elementObj.id;
+		
+		this.calculateOrigin(popupBox);
+		this.calculatePosition(popupBox);
+       	this.calculateSlope(popupBox);
+       	this.calculateYIntersect(popupBox);
+		
+		popupBox.increment = popupBox.inc_num;
+		popupBox.hCurrent = popupBox.h0;
+		popupBox.wCurrent = popupBox.w0;
+		popupBox.xCurrent = popupBox.x0;
+		popupBox.yCurrent = popupBox.y0;
+		
+		popupBox.opacityValue = popupBox.inc_num;
+		//setOpacity(popupBox.elementObj, 5);
+		if(pCancelAnimate) {
+			this.showElement(popupBox.elementObj);
+		} else {
+			//setOpacity(popupBox.elementObj, 5);
+			popupBox.clearIntervalValue = setInterval('PopupBox.expand("' + v_idStr + '")', popupBox.speed);
+		}
+    }
+
+    // p1 = id of the div
+    this.expand = function (p1) {
+        var elemObj = getObj(p1);
+        var popupBox = popupObjects[elemObj.id];
+
+		if (popupBox.increment == popupBox.inc_num) {
+			elemObj.innerHTML = "";
+			elemObj.style.width = popupBox.w0  + "px";
+			elemObj.style.height = popupBox.h0 + "px";
+			elemObj.className += " collapse";
+			this.showElement(elemObj);
+		} else if (popupBox.increment == 0) {
+            elemObj.style.height = "auto";
+            elemObj.style.width = "auto";
+            elemObj.style.top = popupBox.yN + "px";
+            elemObj.style.left = popupBox.xN + "px";
+            elemObj.className = elemObj.className.replace(/collapse/g,'');
+            //setOpacity(popupBox.elementObj, 1);
+            elemObj.innerHTML = popupBox.htmlValue;
+			clearInterval(popupBox.clearIntervalValue);
+
+            popupBox.menuState = 0;
+            popupBox.temp = 0;
+            return;
+		} else {
+			popupBox.xCurrent = popupBox.xCurrent + popupBox.dX;
+			popupBox.yCurrent = (popupBox.dY / popupBox.dX) * popupBox.xCurrent + popupBox.bY;
+			
+			popupBox.wCurrent = popupBox.wCurrent + popupBox.dW;
+			popupBox.hCurrent = (popupBox.dH / popupBox.dW) * popupBox.wCurrent + popupBox.bH;
+			//popupBox.hCurrent = popupBox.hCurrent + popupBox.dH;
+			
+			if (popupBox.showOpacity == 1) {
+				// for opacity
+				setOpacity(popupBox.elementObj, popupBox.opacityValue);
+				popupBox.opacityValue -= 1;
+			}
+
+			popupBox.elementObj.style.top = Math.round(popupBox.yCurrent) + "px";
+	        popupBox.elementObj.style.left = Math.round(popupBox.xCurrent) + "px";
+	        
+	        popupBox.elementObj.style.height = Math.round(popupBox.hCurrent) + "px";
+	        popupBox.elementObj.style.width = Math.round(popupBox.wCurrent) + "px";
+		}
+	    popupBox.increment--;
+        
+    }
+    
+    // p1 = name of the div id
+	// state = the current menu state
+	/**
+	* The Function will move linearly using the following mathemat
+	* Y = (dY/dX)X + B
+	* B = y0 - (dY/dX) * x0
+	* dX = (xN - x0) / S
+	* dY = (yN - y0) / S
+	* S = the number of steps to iterate over.
+	**/
+    this.startCollapse = function(p1, p2, pCancelAnimate) {
+        var elemObj = getObj(p1);
+        var originObj = getObj(p2)
+        var popupBox = popupObjects[elemObj.id];
+        if(popupBox == null) {
+        	popupBox = this.initialize(elemObj, originObj);
+        }
+        
+        var v_idStr =  popupBox.elementObj.id;
+		this.calculateOrigin(popupBox);
+		this.calculatePosition(popupBox);
+       	this.calculateSlope(popupBox);
+       	this.calculateYIntersect(popupBox);
+       	
+       	popupBox.increment = popupBox.inc_num;
+       	
+		popupBox.hCurrent = popupBox.hN;
+		popupBox.wCurrent = popupBox.wN;
+		popupBox.xCurrent = popupBox.xN;
+		popupBox.yCurrent = popupBox.yN;
+		
+		popupBox.opacityValue = popupBox.inc_num;
+		if(pCancelAnimate) {
+			this.hideElement(popupBox.elementObj);
+		} else {
+			//setOpacity(popupBox.elementObj, 5);
+			popupBox.clearIntervalValue = setInterval('PopupBox.collapse("' + v_idStr + '")', popupBox.speed);
+		}
+    }
+    
+    // p1 = id of the div
+    this.collapse = function (p1) {
+        var elemObj = getObj(p1);
+        var popupBox = popupObjects[elemObj.id];
+
+		if (popupBox.increment == popupBox.inc_num) {
+			elemObj.innerHTML = "";
+			elemObj.style.width = popupBox.wN  + "px";
+			elemObj.className += " collapse";
+		}
+		popupBox.xCurrent = popupBox.xCurrent - popupBox.dX;
+		popupBox.yCurrent = (popupBox.dY / popupBox.dX) * popupBox.xCurrent + popupBox.bY;
+		
+		popupBox.wCurrent = popupBox.wCurrent - popupBox.dW;
+		//v_menuStruct.hCurrent = v_menuStruct.hCurrent + v_menuStruct.dH;
+		popupBox.hCurrent = (popupBox.dH / popupBox.dW) * popupBox.wCurrent + popupBox.bH;
+
+		//v_menuStruct.hCurrent = v_menuStruct.hCurrent - v_menuStruct.dH;
+		//v_menuStruct.hCurrent = v_menuStruct.hCurrent - v_menuStruct.dH;
+		// stop the timer (when the element is of 0 size)
+        if (popupBox.increment == 0) {
+            this.hideElement(elemObj);
+            elemObj.innerHTML = popupBox.htmlValue;
+            elemObj.style.height = "auto";
+            elemObj.style.width = "auto";
+            elemObj.style.top = "0px";
+            elemObj.style.left = "0px";
+            elemObj.className = elemObj.className.replace(/collapse/g,'');
+            //setOpacity(elemObj, 1);
+			clearInterval(popupBox.clearIntervalValue);
+            popupBox.menuState = 1;
+            popupBox.temp = 0;
+            return;
+		}
+		
+		popupBox.elementObj.style.top = Math.round(popupBox.yCurrent) + "px";
+        popupBox.elementObj.style.left = Math.round(popupBox.xCurrent) + "px";
+        
+        popupBox.elementObj.style.height = Math.round(popupBox.hCurrent) + "px";
+        popupBox.elementObj.style.width = Math.round(popupBox.wCurrent) + "px";
+        popupBox.increment--;
+    }
+
+
+    // param: obj = element object
+    // param: opacityValue = opacity value
+    function setOpacity(obj, opacityValue) {
+		if (obj.style.filter != undefined)
+			obj.style.filter = 'alpha(opacity=' + opacityValue * 10 + ')';
+		if (obj.style.opacity != undefined)
+			obj.style.opacity = opacityValue / 10;
+    }
+
+
+	//------------------------------------------
+	// Desc: Function to hide an element. Pass in an id or object and it will hide the element.
+	// param: id = id string or an object
+	// return: nothing
+	this.hideElement = function (p1) {
+		var obj = getObj(p1);
+		if (obj != undefined) {
+			obj.style.visibility = "hidden";
+			//obj.style.display = "none";
+		}
+	}
+
+
+	//--------------------------------------
+	// Desc: Function to show an element. Pass in an id or object and it will show the element.
+	// param: id = id string or an object
+	// return: nothing
+	this.showElement = function (p1) {
+		var obj = getObj(p1);
+		if (obj != undefined) {
+			obj.style.visibility = "visible";
+			//obj.style.display = "block";
+		}
+	}
+} // end of PopupBoxLib()
+
+var PopupBox = new PopupBoxLib();
+

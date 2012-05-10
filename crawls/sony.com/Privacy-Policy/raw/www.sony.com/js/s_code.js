@@ -247,7 +247,8 @@ s.visitorNamespace="sonycorporate"
 s.trackingServer="metrics.sony.com"
 s.dc="112"
 s.vmk="49C3B811"
-s.trackingServerSecure="sony.com.112.2o7.net"
+s.trackingServerSecure="smetrics.sony.com"
+//s.trackingServerSecure="sony.com.112.2o7.net"
 
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code='',s_objectID;function s_gi(un,pg,ss){var c="=fun^N(~){`Is=`r~#J ~.substring(~.indexOf(~;@j~`Y@j~=new Fun^N(~.toLowerCase()~};s.~=new Object~.length~s_c_il['+s^U+']~`bMigrationServer~.toUp"

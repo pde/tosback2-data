@@ -1,0 +1,7 @@
+jQuery(document).ready(function(){var pagers=jQuery('.go-post-pager');jQuery.each(pagers,function(i,e){var currentPage=parseInt(jQuery('.current-page',e).text());var maxPage=parseInt(jQuery('.max-page',e).text());if(3>maxPage){return;}
+var baseUrl=jQuery('.first-page',e).attr('href');jQuery('.current-page',e).replaceWith(function(){var field=jQuery('<select></select>');for(i=1;i<=maxPage;i++){var option=jQuery('<option>'+i+'</option>');if(i==currentPage){option.attr('selected','selected');}
+option.appendTo(field);}
+field.change(function(e){var targetPage=jQuery(e.target).val();if(targetPage==currentPage){return;}
+var url=window.location.href;if(1!=currentPage){url=url.replace(/\/\d+\/?$/,'/');}
+if(1!=targetPage){url+=targetPage+'/';}
+window.location.assign(url);});return field;});});});

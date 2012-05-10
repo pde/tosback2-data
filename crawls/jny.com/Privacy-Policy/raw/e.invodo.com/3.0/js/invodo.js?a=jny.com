@@ -10,7 +10,8 @@ i<INVODO_NS.allScriptsLength;
 i++){INVODO_NS.tempString=INVODO_NS.allScriptsSoFar[i].src;
 if(INVODO_NS.tempString.indexOf(INVODO_NS.thisSrcStringPattern)>-1){INVODO_NS.thisScriptSrc=INVODO_NS.tempString;
 break
-}}}}catch(e){}(function(w){if(!w.console){w.console={}
+}}}}catch(e){}(function(w){if(w.Invodo){return
+}if(!w.console){w.console={}
 }var f=["asserts","count","dir","dirxml","error","group","groupEnd","info","log","profile","profileEnd","time","timeEnd","trace","warn","markTimeline"];
 while(f.length>0){var u=f.shift();
 if(typeof w.console[u]==="undefined"){w.console[u]=function(){}
@@ -21,7 +22,7 @@ if(bh.src){bf.push(bh.src)
 }}}catch(bi){}return bf
 })(),am=w.document,aa=w.navigator,ax=Object.prototype.toString,x,ad=w.Invodo||null,V,aU,aF="unknown",y="",U={},ay={},aR={},N={},ba={},aZ={},aX,Y=function(){Y=aL();
 return Y.apply(this,arguments)
-},j=w.jQuery,T=j&&j.fn&&j.fn.jquery,z=/(\d+)?(?:[.](\d+))?(?:[.](\d+))?(?:[.](\d+))?.*/,at=T&&aY(j.fn.jquery,[1,3,2]),ak,E=new Date().getTime(),aQ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".split(""),a,v="invodoLogCookie",a8=7,aD=5,a9=10,aA,J,H=h(),a3,q=[],Z=0,P,aq=2000,B=new Date().getTime(),a4=false,ag={podStart:[],podComplete:[],videoStart:[],videoPause:[],videoComplete:[]},A=[],Q=[],d=[],aj=[],ar=[],aM={},bd="invodoVisitor",ac=60,al=30*24*60*60*1000,k=/http.*\/p\/(\w{8}).*/,n=/^\w+:\/\//,bc=/(?:^|&)([^&=]*)=?([^&]*)/g,an="/3.0",bb="12.4.1.4",af=false,ao=w.location.protocol==="https:"?"https:":"http:",s=ao+"//e.invodo.com",W=ao+"//log.invodo.com",X="rtmp://aoaef.invodo.com/",a0=ao+"//e.invodo.com/media/",aK="http://aoael.invodo.com/media/",aw="/s",aC="",D="/log",S="",C={jQuery:m(ao+"//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js","js",function(){V.$jq=ab.$jq=j=w.jQuery.noConflict(true)
+},j=w.jQuery,T=j&&j.fn&&j.fn.jquery,z=/(\d+)?(?:[.](\d+))?(?:[.](\d+))?(?:[.](\d+))?.*/,at=T&&aY(j.fn.jquery,[1,3,2]),ak,E=new Date().getTime(),aQ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".split(""),a,v="invodoLogCookie",a8=7,aD=5,a9=10,aA,J,H=h(),a3,q=[],Z=0,P,aq=2000,B=new Date().getTime(),a4=false,ag={podStart:[],podComplete:[],videoStart:[],videoPause:[],videoComplete:[]},A=[],Q=[],d=[],aj=[],ar=[],aM={},bd="invodoVisitor",ac=60,al=30*24*60*60*1000,k=/http.*\/p\/(\w{8}).*/,n=/^\w+:\/\//,bc=/(?:^|&)([^&=]*)=?([^&]*)/g,an="/3.0",bb="12.4.2a.2",af=false,ao=w.location.protocol==="https:"?"https:":"http:",s=ao+"//e.invodo.com",W=ao+"//log.invodo.com",X="rtmp://aoaef.invodo.com/",a0=ao+"//e.invodo.com/media/",aK="http://aoael.invodo.com/media/",aw="/s",aC="",D="/log",S="",C={jQuery:m(ao+"//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js","js",function(){V.$jq=ab.$jq=j=w.jQuery.noConflict(true)
 },false),iFixPng:m(O("ext/jquery.ifixpng"),"js",function(){j.ifixpng(b("/i/x.gif",S))
 },false),onePixelGif:m(b("/i/x.gif",S),"image",false,false),cta:m(O("cta.invodo"),"js",function(){var be=w.Invodo.__CTA;
 be.__tunnel(function(bf){ab.CTA=aE=bf;

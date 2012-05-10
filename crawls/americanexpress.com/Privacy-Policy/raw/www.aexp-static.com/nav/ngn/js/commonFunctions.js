@@ -31,9 +31,9 @@ NAV.configuration = {
   iNavNGNOverrideLogin: false,
   iNavNGNOverrideLogout: false,
   iNavUserLoggedIn: false,
-  excludeOmniture: false,
   omnitureFile: 'omniture/s_code.js?basis=inav_domestic',
-  omnitureCall: function() { s.t(); }
+  omnitureCall: function() { s.t(); },
+  iNavActiveSAN: 0
 };
 
 /*********************************
@@ -231,6 +231,7 @@ NAV.SiteAreaWatcher = {
     
      var iNavCurURL = location.href;
      if (iNavCurURL.toString().match(/myca/i)) { iNavNGI.iNavHilightSA(iNavCurURL); }
+     else if(((window.iNavActiveSAN) && (window.iNavActiveSAN != 'undefined')) || (NAV.configuration.iNavActiveSAN != 0)) { iNavNGI.iNavHilightSAOt(); }
   },
   iFrameLayerGenerate:function(){
     if ($iN.browser.msie && parseInt($iN.browser.version) == 6) { 
@@ -373,6 +374,7 @@ var iNavNGI = function(){
   if(typeof(iNavConfig) != 'undefined') { var iNavPredSearch = iNavConfig[1][1]; }
     return{
       iNCurEnv:false,
+      iNavDTDLngth: 0,
       iNavExtJSUrls:['','https://dstatic.dev.ipc.us.aexp.com/api/axpi/','https://qwww.aexp-static.com/api/axpi/','https://www.aexp-static.com/api/axpi/'],
       iNavITMUrls:['','https://dstatic.dev.ipc.us.aexp.com/api/axpi/ensighten/','https://qwww.aexp-static.com/api/axpi/ensighten/','//nexus.ensighten.com/'],
       iNavContentUrls:['','https://dstatic.dev.ipc.us.aexp.com/nav/ngn','https://qwww.aexp-static.com/nav/ngn','https://www.aexp-static.com/nav/ngn'],
@@ -411,7 +413,14 @@ var iNavNGI = function(){
         var iNavReg = /\s+([\w]+)\s+([\d\.]+)\s*([^\/]+)/gi;
         var iNavRes = false;
         var iNavDocTypeTag = new Array();
-        if(typeof document.namespaces != "undefined") { iNavRes = document.all[0].nodeType==8 ? iNavReg.test(document.all[0].nodeValue) : false; if(iNavRes) iNavDocTypeTag = (document.all[0].nodeValue).split(' '); }
+        if(typeof document.namespaces != "undefined") { 
+          if(document.all[0].nodeType==8) { 
+                  iNavRes = iNavReg.test(document.all[0].nodeValue); 
+                  iNavNGI.iNavDTDLngth = document.all[0].nodeValue.split(' ').length;
+                }
+          else { iNavRes = false; }
+          if(iNavRes) iNavDocTypeTag = (document.all[0].nodeValue).split(' '); 
+        }
         else { iNavRes = document.doctype != null ? iNavReg.test(document.doctype.publicId) : false; }
         if(iNavRes){
           iNavRes = new Object();
@@ -428,7 +437,10 @@ var iNavNGI = function(){
            $iN("#iNavNGI_Header").addClass("iNavTrans"); $iN("#iNavNGI_FooterMain").addClass("iNavTrans");       
         }
         if( $iN.browser.msie && ((parseInt($iN.browser.version) == 7) || (parseInt($iN.browser.version) == 8)) ) {
-          if(((iNavDTDInfo != null) && (iNavDTDInfo.iNavDocTypeURL.indexOf('.dtd') < 0)) || (iNavDTDInfo == null)){
+          if((iNavNGI.iNavDTDLngth == 2) && ($iN("html").attr('xmlns'))) { 
+             //it's HTML 5, do not do anything 
+          }
+          else if(((iNavDTDInfo != null) && (iNavDTDInfo.iNavDocTypeURL.indexOf('.dtd') < 0)) || (iNavDTDInfo == null)){
             $iN("#iNavNGI_Header").addClass("iNavNoValidDTD"); $iN("#iNavNGI_FooterMain").addClass("iNavNoValidDTD");
           }
         }
@@ -665,36 +677,22 @@ var iNavNGI = function(){
         }
       },
       
+      iNavHilightSAOt: function(){
+        var iNavSAList = []; var iNavHLSATabTmp = (window.iNavActiveSAN) ? iNavActiveSAN : NAV.configuration.iNavActiveSAN;
+        iNavHLSATabTmp--;
+        var iNavSAAncr = $iN("#iNavSANavLvl3 > li > a");
+        $iN(iNavSAAncr).each(function(){ if($iN(this).css('display') == 'block'){ iNavSAList.push($iN(this)); } });
+        if(iNavHLSATabTmp > -1 && iNavHLSATabTmp < iNavSAList.length) {
+            $iN(iNavSAList[iNavHLSATabTmp]).parent().addClass('iNavSecondaryActive');
+        }
+      },
+      
       iNavLoadTrackingJS: function() {
-        
-        if(iNavNGI.iNCurEnv < 3) {
-          if((typeof(excludeOmniture) == 'undefined') || (!excludeOmniture)) { 
-            iNavNGI.iNavBuildJS('omniture/s_code_default.js', null, 'iNavScripts', 'iNavOmnDef', 'iNExt');
-          }
-          
-          iNavNGI.iNavBuildJS('amex/Bootstrap.js?ens_mk=us', null, 'iNavScripts', 'iNavITM', 'iNExt');  
+        if((typeof(excludeOmniture) == 'undefined') || (!excludeOmniture)) { initOmnDefault(); }
 
-          NAV.Watcher.removePrimaryLinks();
-        }
-        else {
-          /* Need to remove for the ensighten phase 2 */
-          
-          iNavNGI.iNavBuildJS('amex/Bootstrap.js?ens_mk=us', null, 'iNavScripts', 'iNavITM', 'iNExt');
-          
-          if((typeof(excludeOmniture) == 'undefined') || (!excludeOmniture)) { 
-            iNavNGI.iNavBuildJS(NAV.configuration.omnitureFile, iNavNGI.iNavInitOmn, 'iNavScripts', 'iNavOMN', 'iNExt'); 
-          }
-          else if(NAV.configuration.omnitureFile.indexOf('s_code.js') < 0) { 
-            iNavNGI.iNavBuildJS(NAV.configuration.omnitureFile, iNavNGI.iNavInitOmn, 'iNavScripts', 'iNavOMN', 'iNExt'); 
-          }
-          else { NAV.Watcher.removePrimaryLinks(); }
+        iNavNGI.iNavBuildJS('amex/Bootstrap.js?ens_mk=us', null, 'iNavScripts', 'iNavITM', 'iNExt');  
 
-          var iNavScr = location.search.substring();
-          if( ((iNavScr != "") && (iNavScr.search(/PSKU=/i) != -1) && (iNavScr.search(/PID=/i) != -1)) || ((iNavScr != "") && (typeof(ngamuIn) != 'undefined')) || (typeof(ngamuIn) != 'undefined') ) {
-            iNavNGI.iNavBuildJS('ngamu/ngamu.js', iNavNGI.iNavInitAMU, 'iNavScripts', 'iNavNGAMU', 'iNExt');
-          }
-        }
-        
+        NAV.Watcher.removePrimaryLinks();    
       },
       iNavInitOmn: function(){ try { s_code = NAV.configuration.omnitureCall(); } catch(e) {}; },
       iNavInitAMU: function(){ amu_BeginTracking(); },
@@ -767,12 +765,13 @@ var iNavNGI = function(){
         return iNavCurDomain; 
       },
       iNavChkValidUser: function() {
-        var curUser = iNavNGI.iNavReadCookie('blueboxvalues');
-        if(curUser != null) { return true; } else { return false; }
+        var iNBlue = iNavNGI.iNavReadCookie('blueboxvalues')
+        var iNSM = iNavNGI.iNavReadCookie('SMSESSION');
+        if((iNBlue != null && iNBlue != '') || (iNSM != null && iNSM != 'LOGGEDOFF')) { return true; } else { return false; }
       },
       iNavChkValidGUID: function() {
         var curPubCookie = iNavNGI.iNavReadCookie('blueboxpublic');
-        if(curPubCookie != null) { return true; } else { return false; }
+        if(curPubCookie != null && curPubCookie != '') { return true; } else { return false; }
       },
       iNavChkAAM: function() {
         // this method has been added to avoid issues with AAM flow seeing all hyperlinks - to be removed later
@@ -787,5 +786,41 @@ var iNavNGI = function(){
 }();
 
 iNavNGI.iNavInit();
+
+/* Default JS functions from s_code */
+function initOmnDefault(){
+  omn_rmaction = function(a,c,t,d){},
+  omn_rmvar = function(a1, a2){},
+  omn_bpoclick = function(a1){},
+  omn_bpoimpression = function(a1){},
+  ctn_rmaction = function(a,c){},
+  ctn_rmvar = function(v,u){},
+  omn_mer_rmaction = function(a,c){},
+  omn_mer_rmleadstart = function(lt){},
+  omn_mer_rmshare = function(a,b){},
+  omn_mer_rmvidstart = function(vid,play){},
+  omn_mer_rmvidcomplete = function(vid,play){},
+  omn_mer_trackdownload = function(d){},
+  omn_mer_rmvar = function(v,u){},
+  omn_mer_tracklogin = function(){},
+  omn_relatedprodclick = function(a1){},
+  searchWidgetAction = function(a1,a2){},
+  searchWidgetError = function(a1,err){},
+  searchWidgetFAQAction = function(a1,fid,a3){},
+  searchWidgetHyperlinkClick = function(a1,h){},
+  searchWidgetSearch = function(a,s,n){},
+  omn_rmdiscuss = function(d,c,a,c){},
+  omn_rmfollowcomplete = function(ft){},
+  omn_rmfollowstart = function(ft){},
+  omn_rmlogin = function(lt){},
+  omn_rmprofile = function(pi){},
+  omn_rmregcomplete = function(rc){},
+  omn_rmregstart = function(rs){},
+  omn_rmaddpaybill = function(pr,c,pb,pd,pbr,pbb,pbs,a,ct){},
+  omn_rmaddsscard = function(p,c,e,ct,a,ac){},
+  omn_rmeStatement = function(rma, d, c, i){},
+  t = function(){},
+  tl = function(){}
+}
 
 //]]>

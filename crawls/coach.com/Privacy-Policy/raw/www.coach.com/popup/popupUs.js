@@ -1,5 +1,5 @@
 // setup container for new divs
-$('#wrapper').prepend('<div id="DivContainer" style="position: relative; width:0px; top:0px; left:0px; z-index: 10000;"></div>');
+$('#wrapper').prepend('<div id="DivContainer" style="position: relative; width:0px; top:0px; left:0px; z-index: 100000;"></div>');
 
 //MEN TOP NAV SET BORDER	
 /*$(document).ready(function() {
@@ -37,15 +37,155 @@ function closeMe()
            	$('#divCon').html('');
 		   	$('#divCon').remove();
 		}
+//Coach and The Glow div
+function popGlow(){
+$('#DivContainer').prepend('<div id="glowDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeGlow()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="glowFrame" id="glowFrame" src="/us/201205/glow/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'glowDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "glow";
+	s.eVar16 = "glow";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closeGlow() {
+	$('#glowFrame').remove();
+	$('#glowDiv').remove();
+	window.onresize = null; 
+
+}	
+		
+//Mom's Gift Guide div
+function popMothersDay(){
+$('#DivContainer').prepend('<div id="mothersDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeMothersDay()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="mothersFrame" id="mothersFrame" src="/us/201205/mothersday/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'mothersDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "Mothersday";
+	s.eVar16 = "Mothersday";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closeMothersDay() {
+	$('#mothersFrame').remove();
+	$('#mothersDiv').remove();
+	window.onresize = null; 
+
+}
+		
+//Apply to Jobs
+function popApplyJobs(){
+$('#DivContainer').prepend('<div id="applyJobsDiv" style="visibility:visible; width:800px; top: 60px; *top:-80px; height:715px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeApplyJobs()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="background: #fff; width:800px; height:715px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="applyJobsFrame" id="applyJobsFrame" src="https://www.Coach.apply2jobs.com/index.cfm" scrolling="auto" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'applyJobsDiv';
+	divwidth = 800;
+	divheight = 715;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "Apply to Jobs popup";
+	s.eVar16 = "Apply to Jobs popup";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closeApplyJobs() {
+	$('#applyJobsFrame').remove();
+	$('#applyJobsDiv').remove();
+	window.onresize = null; 
+
+}	
+		
+//Coach Foundation
+function popFoundation(){
+$('#DivContainer').prepend('<div id="foundationDiv" style="visibility:visible; width:784px; top: 60px; *top:-80px; height:678px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeFoundation()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:784px; height:678px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="foundationFrame" id="foundationFrame" src="/us/foundation/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'foundationDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "Coach Foundation popup";
+	s.eVar16 = "Coach Foundation popup";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closeFoundation() {
+	$('#foundationFrame').remove();
+	$('#foundationDiv').remove();
+	window.onresize = null; 
+
+}	
+		
+//Men's Washed Canvas Beach Tote
+function popWashedCanvas(){
+$('#DivContainer').prepend('<div id="washedDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000; background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWashed()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="washedFrame" id="washedFrame" src="/us/201205/washed/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'washedDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "Washed Canvas popup";
+	s.eVar16 = "Washed Canvas popup";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closeWashed() {
+	$('#washedFrame').remove();
+	$('#washedDiv').remove();
+	window.onresize = null; 
+
+}	
+
 
 //JAMES NARES
 function popNares(){
-$('#DivContainer').prepend('<div id="naresDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeNares()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="naresFrame" id="naresFrame" src="/us/201204/nares/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+$('#DivContainer').prepend('<div id="naresDiv" style="visibility:visible; width:842px; top: 60px; *top:-80px; height:557px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeNares()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:842px; height:557px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="naresFrame" id="naresFrame" src="/us/201205/nares/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
 	  
 	 // REPOSITION DIV
 	divname = 'naresDiv';
-	divwidth = 850;
-	divheight = 550;
+	divwidth = 842;
+	divheight = 557;
 	window.onresize =  divPos;
 	divPos();	
  
@@ -152,7 +292,7 @@ function closeMono() {
 //Hugo
 function popHugo(){
 	window.location="/online/handbags/-hugo_guinness_collection-10551-10051-5000000000000283804-en?t1Id=82&t2Id=5000000000000283804&tier=2&LOC=WWCM";
-/*$('#DivContainer').prepend('<div id="hugoDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:10; border:none;"><a href="javascript:closeHugo()" style="position: absolute; right: -3px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true; border:2px solid #000000;"" name="hugoFrame" id="hugoFrame" src="/us/201202/hugo/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+/*$('#DivContainer').prepend('<div id="hugoDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:10; border:none;"><a href="javascript:closeHugo()" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true; border:2px solid #000000;"" name="hugoFrame" id="hugoFrame" src="/us/201202/hugo/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
 	  
 	 // REPOSITION DIV
 	divname = 'hugoDiv';
@@ -186,7 +326,7 @@ function popTony(){
 
 //VDAY QUIZ
 function popVday(){
-$('#DivContainer').prepend('<div id="vdayDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:1; border:none;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeVday()" style="position: absolute; right: -3px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true; border:2px solid #000000;"" name="vdayFrame" id="vdayFrame" src="/us/201202/quiz/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+$('#DivContainer').prepend('<div id="vdayDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:1; border:none;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeVday()" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true; border:2px solid #000000;"" name="vdayFrame" id="vdayFrame" src="/us/201202/quiz/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
 	  
 	 // REPOSITION DIV
 	divname = 'vdayDiv';
@@ -309,17 +449,31 @@ function goLink(linkwwcm){
 
 		case 'mono': //monogramm men shop
 		window.location = "/online/handbags/-mens_monogramming-10551-10051-5000000000000286302-en?t1Id=82&t2Id=5000000000000286302&tier=2&LOC=WWCM";
+		break;
 		
 		case 'stripes': //stripes shop
-		//window.location = "LOC=WWCM";
 		window.location = "/online/handbags/-newatcoach_earnyourstripes-10551-10051-5000000000000295301-en?t1Id=5000000000000000001&t2Id=5000000000000295301&tier=2&LOC=WWCM";
+		break;
+		
+		case 'baseball': //men's baseball shop
+		window.location="/online/handbags/-men_heritage-10551-10051-5000000000000298301-en?t1Id=82&t2Id=5000000000000298301&tier=2&LOC=WWCM";
+		break;
+		
+		case 'nares': //james nares shop
+		window.location="/online/handbags/-men_jamesnares-10551-10051-5000000000000298302-en?t1Id=82&t2Id=5000000000000298302&tier=2&LOC=WWCM";
+		break;
+		
+		case 'momFB': //facebook you, your mom and coach
+		window.open('https://www.facebook.com/Coach/app_356975334348552','_blank');
+		break;
 		}
+		
 }
 
 
 //HANGTAG 
 function popupTag(){//gallery //intro
-	$('#DivContainer').prepend('<div id="tagDiv" style="visibility:visible; top: 60px; *top:-80px; width:741px; height:497px; background-color:#000000; position:fixed; _position: absolute; z-index:1; border:none;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeTag()" style="position: absolute; right: -3px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:740px; height:480px; margin-left:0px; margin-top:17px; z-index:80000; _hasLayout:true; border:2px solid #000000;"" name="tagFrame" id="tagFrame" src="http://70th.coach.com/hangtag/us/app.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	$('#DivContainer').prepend('<div id="tagDiv" style="visibility:visible; top: 60px; *top:-80px; width:741px; height:497px; background-color:#000000; position:fixed; _position: absolute; z-index:1; border:none;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeTag()" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:740px; height:480px; margin-left:0px; margin-top:17px; z-index:80000; _hasLayout:true; border:2px solid #000000;"" name="tagFrame" id="tagFrame" src="http://70th.coach.com/hangtag/us/app.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
 	  
 	 // REPOSITION DIV
 	divname = 'tagDiv';
@@ -414,7 +568,7 @@ function popContent(content){
 	//var content;
 		
 	$('#DivContainer').html('');
-	$('#DivContainer').prepend('<div id="contentDiv" style="width:850px; height:550px; background:none; position:absolute; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:90000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeContent()" style="position: absolute; right: -3px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
+	$('#DivContainer').prepend('<div id="contentDiv" style="width:850px; height:550px; background:none; position:absolute; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:90000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeContent()" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
 	
 switch(content){ 
 	case 'wardrobe':
@@ -459,7 +613,7 @@ function popLegacy(content){
 	//var content;
 		
 	$('#DivContainer').html('');
-	$('#DivContainer').prepend('<div id="legacyDiv" style="width:850px; height:550px; background:none; position:absolute; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeLegacy()" style="position: absolute; right: -3px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
+	$('#DivContainer').prepend('<div id="legacyDiv" style="width:850px; height:550px; background:none; position:absolute; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeLegacy()" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
 	
 switch(content){ 
 	case 'd':
@@ -515,7 +669,7 @@ function closeLegacy() {
 function popVideo(content){
 	//var content;
 	$('#DivContainer').html('');
-	$('#DivContainer').prepend('<div id="videoDiv" style="width:700px; height:394px; background:none; position:fixed; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="#" onclick="javascript:closeVideo(); return false;" style="position: absolute; right: -2px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
+	$('#DivContainer').prepend('<div id="videoDiv" style="width:700px; height:394px; background:none; position:fixed; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="#" onclick="javascript:closeVideo(); return false;" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
 	
 
 	
@@ -1248,7 +1402,7 @@ window.onresize = null;
 function popBaby() {
 	$('#DivContainer').html('');
 
-	$('#DivContainer').prepend('<div id="babybagsDiv" style="width:850px; height:550px; background:none; position:fixed; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; border:1px solid #000; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeBabybags()" style="position: absolute; right: 0px;_left:680px;" id="closing"><img border="0" style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left: 0px; margin-top: 0px; _hasLayout:true;" src="/us/babybags/slider.html" name="babybagsFrame" id="babybagsFrame" frameborder="0px" scrolling="no"></iframe></div>');	
+	$('#DivContainer').prepend('<div id="babybagsDiv" style="width:850px; height:550px; background:#fff; position:fixed; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; border:1px solid #000; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeBabybags()" style="position: absolute; right: 0px;_left:680px;" id="closing"><img border="0" style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left: 0px; margin-top: 0px; _hasLayout:true;" src="/us/babybags/slider.html" name="babybagsFrame" id="babybagsFrame" frameborder="0px" scrolling="no"></iframe></div>');	
 	
 	// REPOSITION DIV
 	divname = 'babybagsDiv';
@@ -1314,7 +1468,7 @@ window.onresize = null;
   //MEN HERITAGE VIDEO
 function popHeritage(popheri) {
 
-	$('#DivContainer').prepend('<div id="heritageDiv" style="visibility:visible; width:702px; top: 60px; *top:-80px; height:396px; background:none; position:fixed; _position: absolute; z-index:999990;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeHeritage()" style="position: absolute; right: -3px;_left:688px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
+	$('#DivContainer').prepend('<div id="heritageDiv" style="visibility:visible; width:702px; top: 60px; *top:-80px; height:396px; background:none; position:fixed; _position: absolute; z-index:999990;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeHeritage()" style="position: absolute; right: -1px;_left:688px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
 	
 	  // REPOSITION DIV
 	  divname = 'heritageDiv';
@@ -1469,7 +1623,7 @@ function closeMenLeather() {
 function popLeather(hb) {
 	document.getElementById('branding_wrapper').style.zIndex='-5000';
 	
-	$('#DivContainer').prepend('<div id="DivLeather" style="width: 850px; *width:847px;height:550px; top: 60px; *top: 80px;position:fixed;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;background-color: #FFFFFF;"><a href="javascript:closeLeather()" title="" target="" id="closeLink" style="position: absolute; background-color: #000000; height: 25px;*height: 29px; top: 1px; right: 4px;*right: 4px; width: 25px;_left:817px;_z-index:10000005"><img border="0" id="closing" src="/wcsstore/Coach_US/images/btn_detail_close.gif" style="padding-left:5px; padding-top:4px;*padding-top:6px;"/></a><iframe style="width: 850px;*width:847px; height: 550px; *margin-top: 0px; z-index: 8000; _hasLayout:true;border: none;" src="/leather-us/index.html" name="leatherFrame" id="leatherFrame" scrolling="no" frameborder="0"></iframe></div> ');
+	$('#DivContainer').prepend('<div id="DivLeather" style="width: 850px; *width:847px;height:550px; top: 60px; *top: 80px;position:fixed;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;background-color: #FFFFFF;"><a href="javascript:closeLeather()" title="" target="" id="closeLink" style="position: absolute; background-color: #000000; height: 25px;*height: 29px; top: 1px; right: 3px;*right: 3px; width: 25px;_left:817px;_z-index:10000005"><img border="0" id="closing" src="/wcsstore/Coach_US/images/btn_detail_close.gif" style="padding-left:5px; padding-top:4px;*padding-top:6px;"/></a><iframe style="width: 850px;*width:847px; height: 550px; *margin-top: 0px; z-index: 8000; _hasLayout:true;border: none;" src="/leather-us/index.html" name="leatherFrame" id="leatherFrame" scrolling="no" frameborder="0"></iframe></div> ');
 	
 	s.pageName = "Learn About This Leather Popup";
 	s.eVar16 = "learn about this leather popup";
@@ -1620,58 +1774,75 @@ function divPos(){
 }
 
 //Popup Hash
-/*
 //load the page
 window.onload = function () { 
 
-	//if hash or converted hash tag exists
-	if((window.location.hash) || (window.location.href.search('%23')!=-1)) {
-		if($.browser.msie && parseInt($.browser.version,10)!="6") { //no IE6
+	  //if hash or converted hash tag exists
+	  if((window.location.hash) || (window.location.href.search('%23')!=-1)) {
+		if(!($.browser.msie)) { //no IE
 			console.log("Hash tag is found.");
 		}
-		//get full url
-		var url = window.location.href;
+				//get full url
+				var url = window.location.href;
 
-		
-		if(window.location.hash){
-						split = '#';
-		}else{
-						split = '%23';
-		}
-		//grab the hash part
-		url = url.split(split);
-		var popdiv = url[1]          
-		
-		//fire the function, else log the error
-		var popdiv = popdiv.toLowerCase();
-		switch(popdiv){
-			case "spotted":
-							popSpot();
-							break;
-			case "leather":
-							popLeather();
-							break;
-			case "crosby":
-							popCrosby();
-							break;
-			case "shoes_video":
-							popVideo('shoes')
-							break;
-			case "heritage":
-							popHeritage();
-							break;
-			case "stripes":
-							popupStripes();
-							break;
-			default:											
-				if($.browser.msie && parseInt($.browser.version,10)!="6") { //no IE6
-					console.log("Hash tag has no popup function.");
+				
+				if(window.location.hash){
+								split = '#';
+				}else{
+								split = '%23';
 				}
-		}              
-	}else{
-		if($.browser.msie && parseInt($.browser.version,10)!="6") { //no IE6
-			console.log("No hash tag found in the URL.");
-		}
-	}
+				//grab the hash part
+				url = url.split(split);
+				var popdiv = url[1];          
+				
+				//fire the function, else log the error
+				var popdiv = popdiv.toLowerCase();
+				switch(popdiv){
+					case "jw_care":
+						popJw('care');
+						break;
+					case "spotted":
+						popSpot();
+						break;
+					case "leather":
+						popLeather();
+						break;
+					case "crosby":
+						popCrosby();
+						break;
+					case "shoes_video":
+						popVideo('shoes')
+						break;
+					case "heritage":
+						popHeritage();
+						break;
+					case "stripes":
+						popupStripes();
+						break;
+					case "baby":
+						popBaby();
+						break;
+					case "nares":
+						popNares();
+						break;
+					case "washed":
+						popWashedCanvas();
+						break;
+					case "mothersday":
+						popMothersDay();
+						break;
+					case "glow":
+						popGlow();
+						break;
+					default:
+						if(!($.browser.msie)) { //no IE
+							console.log("Hash tag has no popup function.");
+						}
+				}              
+	  }else{
+			  //no hash tag
+			if(!($.browser.msie)) { //no IE
+				console.log("No hash tag found in the URL.");
+			}
+	  }
 }
-*/

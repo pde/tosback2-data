@@ -8,15 +8,15 @@ if (f && f['q']) {
 var q = f['q'];
 var n = navigator;
 var l = location;
-var su = function (n, v, l) {
-if (!encodeURIComponent || !decodeURI) {
+var su = function (n, t, v, l) {
+if (!encodeURIComponent || !decodeURIComponent) {
 return;
 }
 var u = document.createElement('input');
 var regexp = new RegExp('(?:[?&]' + n + '=)([^&#]*)');
-var existing = regexp.exec(v);
+var existing = regexp.exec(t);
 if (existing) {
-v = decodeURI(existing[1]);
+v = decodeURIComponent(existing[1]);
 }
 var delimIndex = v.indexOf('://');
 if (delimIndex >= 0) {
@@ -47,8 +47,9 @@ for (var i = 0; i < s.length; i++) {
     }
     if (append) {
       
-      su('siteurl', document.location.toString(), 250);
-      su('ref', document.referrer, 750);
+      var loc = document.location.toString(); var ref = document.referrer;
+      su('siteurl', loc, loc, 250);
+      su('ref', loc, ref, 750);
     }
 
     

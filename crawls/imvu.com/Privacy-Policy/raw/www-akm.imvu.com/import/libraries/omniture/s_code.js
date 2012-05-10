@@ -29,7 +29,7 @@ s.dstStart="03/14/2010";
 s.dstEnd="11/07/2010";
 
 
-/* Plugin Config */
+/* Plugin Config  */
 s.usePlugins=true
 
 function s_doPlugins(s) {
@@ -140,7 +140,7 @@ function s_doPlugins(s) {
 	}
 
     // Set the visitorID to a dynamic variable so we can capture it on the landing page
-    s.prop15 = s.eVar15 = "D=s_vi";
+    s.visitorID = s.prop15 = s.eVar15 = "D=s_vi";
 
     // Copy Customer ID into an eVar
     if(s.prop16) {

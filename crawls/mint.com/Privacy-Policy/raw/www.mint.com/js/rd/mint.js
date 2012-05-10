@@ -646,37 +646,33 @@ $(document).ready(function(){
       };
   } 
   
-	// start slide show stuff
-	// start slide show stuff
+  // start slide show stuff
+  $("#previous").hide();
  
   var currentPosition = 0;
-  var slideWidth = 835;
+  var slideWidth = 960;
   var slides = $(".slide");
   var numberOfSlides = slides.length;
   var slideShowWidth = slideWidth * numberOfSlides;
   
   //caching often used DOM elements
   var slideInner = $('#slideInner');
-  var caret = $('span.caret');
+  var caret = $('.caret');
   var previous = $('#previous');
   var next = $('#next');
 
   // set width of #slideinner to the width of all the slides
   $("#slideInner").css('width', slideShowWidth);
 
-  // hide left arrow when page loads
-  $('#previous, #next').hide();
-
   // autoplay commented out for the time being
   t = setInterval(autoPlay, 5000);
 
-
   // slideshow animations. Left or Right arrow click
   $(caret).click(function() {
+  	clearInterval(t);
     currentPosition = ($(this).attr('id')=='next') ? currentPosition+1 : currentPosition-1; 
     manageControls(currentPosition);
     moveSlide(currentPosition);
-    updateNavIcon(currentPosition);
     return false;
   });
 
@@ -694,7 +690,7 @@ $(document).ready(function(){
   });
 
   function manageControls(position) {
-    if (position === 0) { 
+    if (position === 0) {  //hide previous slide arrow if on first slide
      $(previous).hide();
     } 
     else {
@@ -702,7 +698,7 @@ $(document).ready(function(){
     }
 
     // hide right arrow
-    if(position === numberOfSlides-1) { 
+    if(position === numberOfSlides-1) { //hide next slide arrow if on last slide 
       $(next).hide();  
     }
     else {
@@ -720,11 +716,13 @@ $(document).ready(function(){
   } // end navigationIndicator
   
   function autoPlay() {
+  	$("#previous").show();
     if (currentPosition === 2) {
       currentPosition = 0;
       moveSlide(currentPosition);
       updateNavIcon(currentPosition);
-    } else {
+    } 
+    else {
       currentPosition += 1;
       moveSlide(currentPosition);
       updateNavIcon(currentPosition);
@@ -736,31 +734,6 @@ $(document).ready(function(){
       'left' : slideWidth * (-position)
     });
   }
-
-
-  // home page partner swithcing
-  if(typeof waPartnerTest!= 'undefined'){
-  	  // add variable for test switching
-	  if (waPartnerTest === 'default') {
-	    $('#main').addClass('default');
-	  } 
-	  else if (waPartnerTest === 'recipe-b') {
-	    $('#main').addClass('recipe-b');
-	  } 
-	  else if (waPartnerTest === 'recipe-c') {
-	    $('#main').addClass('recipe-c');
-	  }	  
-	  else if (waPartnerTest === 'recipe-d') {
-	    $('#main').addClass('recipe-d');
-	  }	  
-	  else if (waPartnerTest === 'recipe-e') {
-	  	$('#main').addClass('recipe-e');
-	  }
-	  else if (waPartnerTest === 'recipe-f') {
-	  	$('#main').addClass('recipe-f');
-	  }
-	  
-  } 
 
 }) // end doc.ready
 

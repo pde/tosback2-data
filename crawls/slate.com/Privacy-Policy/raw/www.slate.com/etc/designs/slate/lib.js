@@ -693,7 +693,7 @@ $(document).ready(function() {
 	setBounds();
 
 	// Define initial range of vertical scroll bounds
-	var shareBoxTopInit = $('#share-box-flank').css('top');
+	var shareBoxTopInit = shareBox.css('top');
 	var topBound = shareBoxPos.top;
 	var bottomBound = shareEdgePos.top - shareEdgeElem.height();
 	
@@ -712,16 +712,16 @@ $(document).ready(function() {
 	
 	function setBounds() {
 		frame = wrapper.offset();
-		shareBoxPos = $('#share-box-flank').offset();
+		shareBoxPos = shareBox.offset();
 		// Adjust these selectors to anchor the scroll limit
 		shareEdgeElem = $('#bottom-bound-div')
-		shareEdgePos = $('#bottom-bound-div').offset();
+		shareEdgePos = shareEdgeElem.offset();
 		leftBound = frame.left - shareBox.width();
 	}
 
 	function follow() {
 		// If side toolbar will fit on screen, render it
-		if ($(window).width() >= (wrapper.width() + shareBox.width())) {
+		if ($(window).width() >= (wrapper.width() + (2 * shareBox.width()))) {
 			// Display floating toolox + hide inline version
 			if (floating !== true) {
 				SG_Async.loadSocial.call(shareBox.get(0));

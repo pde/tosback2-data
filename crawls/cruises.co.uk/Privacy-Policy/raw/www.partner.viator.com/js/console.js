@@ -661,6 +661,15 @@ function checkDoubleClick(alertMsg) {
 }
 /****** End of doubleClick.js ******/
 
+
+function submitThisForm(theButton, formName)
+{
+    $(theButton).attr("disabled","true"); 
+    $("form[name='"+formName+"']").submit();
+    return false;
+}
+
+
 /****** Start shopCart.js ******/
 function getPageURL() {
         var pageURL = document.location.href;
@@ -1603,4 +1612,107 @@ function remainingCharsUpdate(field, maxChars, fieldToUpdate)
         $(field).val($(field).val().substring(0,maxChars));
     }
     //alert(remChars);
+}
+
+/**
+ * Open / Close the specified tooltips
+ */
+function closeAllTooltips(prefixIds)
+{
+    $(prefixIds).each(function()
+    {
+        $(this).hide()
+    });
+}
+
+
+function showTooltips(object, id, prefixIds, position)
+{
+    showTooltips(object, id, prefixIds, position, null, null);
+}
+
+var isMouseOver = false;
+
+function showTooltips(object, id, prefixIds, position, offsetLeft, offsetTop)
+{
+    closeAllTooltips(prefixIds);
+
+    var msgBox = $("#"+id);
+
+    var myOffsetLeft = offsetLeft, myOffsetTop = offsetTop;
+    var objPosition = $(object).position();
+    if (position == 'Top') {
+        if (offsetLeft == null) {myOffsetLeft = ($(msgBox).width()/2);}
+        if (offsetTop == null) {myOffsetTop = $(object).height() + 2;}
+        $(msgBox).css({
+            position: "absolute",
+            left: objPosition.left - myOffsetLeft,
+            top: objPosition.top + myOffsetTop
+        });
+    } else if (position == 'Left') {
+        if (offsetLeft == null) {myOffsetLeft = $(object).width() + 1;}
+        if (offsetTop == null) {myOffsetTop = ($(object).height()/2);}
+        $(msgBox).css({
+            position: "absolute",
+            left: objPosition.left + myOffsetLeft,
+            top: objPosition.top - myOffsetTop
+        });
+    } else if (position == 'Right') {
+        if (offsetLeft == null) {myOffsetLeft = $(msgBox).width() + 2;}
+        if (offsetTop == null) {myOffsetTop = ($(object).height()/2);}
+        $(msgBox).css({
+            position: "absolute",
+            left: objPosition.left - myOffsetLeft,
+            top: objPosition.top - myOffsetTop
+        });
+    } else if (position == 'Bottom') {
+        if (offsetLeft == null) {myOffsetLeft = ($(msgBox).width()/2);}
+        if (offsetTop == null) {myOffsetTop = $(msgBox).height() - 2;}
+        if (id.indexOf('tourOptionTooltips') >= 0)
+        {
+            myOffsetTop = myOffsetTop + 10;
+        }
+        $(msgBox).css({
+            position: "absolute",
+            left: objPosition.left - myOffsetLeft,
+            top: objPosition.top - myOffsetTop
+        });
+    }
+    $(msgBox).show();
+    return $(msgBox);
+}
+
+function closeTooltips(id)
+{
+    $("#"+id).hide();
+}
+
+function showTooltipsViaMouseOver(object, id, prefixIds, position, offsetLeft, offsetTop , relayTime)
+{
+    closeAllTooltips(prefixIds);
+
+    $('#'+id).css('z-Index', 99999999);
+    var mgBox = showTooltips(object, id, prefixIds, position, offsetLeft, offsetTop);
+    if(relayTime != null && relayTime > 0){
+        mgBox.mouseover(function(){
+            isMouseOver = true;
+        }).mouseout(function() {
+            isMouseOver = false;
+            closeTooltipsViaMouseOver(id , relayTime);
+        });
+    }
+
+}
+
+function closeTooltipsViaMouseOver(id , relayTime)
+{
+    var tip = $("#"+id);
+    if(tip.css('display') !='none' && relayTime!=null && relayTime > 0){
+        setTimeout(function(){
+            if(tip.css('display') !='none' && !isMouseOver){
+                closeTooltips(id);
+                isMouseOver = false;
+            }
+        }, relayTime);
+    }
 }

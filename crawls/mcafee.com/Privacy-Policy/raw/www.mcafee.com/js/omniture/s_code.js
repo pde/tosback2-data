@@ -112,6 +112,9 @@ function s_doPlugins(s) {
 //	if(s.prop2) {s.eVar23="D=c2";};
 	if(s.purchaseID) {s.eVar17=s.purchaseID;};
 	if(s.pageName) {s.eVar1=s.pageName;};
+
+	if(s.eVar62) {s.prop26="D=v62";};
+
 	
 	/*partner path */
 	if(s.prop8)
@@ -125,7 +128,32 @@ function s_doPlugins(s) {
 	
 	/* trackTNT 1.0 */
 	s.tnt = s.trackTNT();
-		
+	/* Site Search */
+
+	if(s.eVar61){
+
+		s.eVar61=s.eVar61.toLowerCase();
+
+		s.prop24=s.eVar61;
+
+		var t_search=s.getValOnce(s.eVar61,'ev61',0);
+
+		if(t_search){
+
+			s.events=s.apl(s.events,"event32",",",2);
+
+		}
+
+	}
+
+
+
+	//Search Orgination Page
+
+	s.prop25=s.getPreviousValue(s.pageName,'gpv_p25','event32');
+
+
+	
 }
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/
@@ -243,6 +271,29 @@ s.trackTNT =new Function("v","p","b",""
 +"var s=this,n='s_tnt',p=p?p:n,v=v?v:n,r='',pm=false,b=b?b:true;if(s."
 +"getQueryParam){pm=s.getQueryParam(p);}if(pm){r+=(pm+',');}if(s.wd[v"
 +"]!=undefined){r+=s.wd[v];}if(b){s.wd[v]='';}return r;");
+
+/*
+
+ * Plugin: getPreviousValue v1.0 - return previous value of designated
+
+ *   variable (requires split utility)
+
+ */
+
+s.getPreviousValue=new Function("v","c","el",""
+
++"var s=this,t=new Date,i,j,r='';t.setTime(t.getTime()+1800000);if(el"
+
++"){if(s.events){i=s.split(el,',');j=s.split(s.events,',');for(x in i"
+
++"){for(y in j){if(i[x]==j[y]){if(s.c_r(c)) r=s.c_r(c);v?s.c_w(c,v,t)"
+
++":s.c_w(c,'no value',t);return r}}}}}else{if(s.c_r(c)) r=s.c_r(c);v?"
+
++"s.c_w(c,v,t):s.c_w(c,'no value',t);return r}");
+
+
+
 
 
 /* Configure Modules and Plugins */

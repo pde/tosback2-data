@@ -3307,7 +3307,7 @@ p.box-cta a:hover {
 }
 
 
-		#main {
+#main {
 	clear: both;
 	position: relative;
 	margin: 10px 10px 25px;
@@ -3898,16 +3898,24 @@ i.by cite {
 
 .bg-mag-sub .p-most .add-to-saved {
 	display: inline;
-	margin-left: 1em;
+	margin-left: 0em;
 	position: relative;
 	top: -0.5em;
-	visibility: hidden;
-	padding: .7em 1.3em;
+	visibility: visible;
+	padding: .8em 0;
+}
+.bg-mag-sub .p-most .hover .add-to-saved {
+	visibility: visible;
+	opacity: .95;
 }
 
+.ie .bg-mag-sub .saveable.hover .add-to-saved {
+	display: inline;
+}
 
-.bg-mag-sub .p-most :hover>.add-to-saved {
-	visibility: visible;
+.ie7 .bg-mag-sub .add-to-saved {
+	padding: 0;
+	zoom: 1;
 }
 .mag-spread i.by {
 	white-space: normal;
@@ -4259,14 +4267,26 @@ i.by cite {
 	display: block;
 	margin-bottom: 2em;
 	float:none;
+	/* intrinsic ratio try */
+/*	position: relative;
+	padding-bottom: 57%; */ /* ~16:9 */
+	
 }
 
 .videoplayer object,
 .videoplayer video {
 	clear: both;
+	/* intrinsic ratio try */
+/*	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0; */
 }
 .ie7 .videoplayer object {
-  	width: 100%;
+	width: 100%;
+  	height: auto;
+  	zoom: 1;
 }
 .section-video .inside .feat-thumb {
 	text-align: left;
@@ -6603,7 +6623,9 @@ h2.ico-pic,
 }
 .email-on .email-form {
 	left: 0;
+	z-index:51;
 }
+.email-on .ico-email{ z-index:52; }
 
 .share-on ul {
 	left: auto;
@@ -6890,6 +6912,12 @@ a.article-bar span{
 }
 .article-body .instructions li p {
 	font-weight: normal;
+}
+/* Article Body Float Fixes for IE7 */
+.ie7 .article-body > p {
+	display:inline;
+	zoom:1;
+	margin-bottom:1.125em;
 }
 .notfound-suggestions li {
 	list-style-type: square;
@@ -8358,6 +8386,22 @@ th.table-label {
 /* Specific rail tease styles*/
 .rail-tease .opinion .op-hed-cat {
 	color: #666;
+}
+
+.opinion .story { margin-bottom: 1em; }
+
+.opinion .story:nth-child(2) {
+	clear:both;
+}
+
+/* Recipe Tables */
+table.recipe{
+    display:inline; /* To keep tables inline with ads */
+    width:auto;
+}
+table.recipe td.left{
+    width:20%; /* To maintain space between the table cells */
+    padding-right:15px;
 }
 
 @media screen and (max-width: 500px), print {
@@ -10647,7 +10691,6 @@ tbody .pol2012-state { font-weight: normal }
 .special-container {
 	padding-bottom: 1em;
 }
-
 
 /* global footer - navigation and copyright */
 .bg-footer {

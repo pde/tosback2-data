@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "ADBP-20120126-175A|CORE-1152",
+	version: "cnn.196.2115.20120321",
 	release: "0",
 	dictionary: {
 		init: {
@@ -72,10 +72,10 @@ var _jsmd_default={
 		"business.cnn.page.visit_number.$30Day": "raw:gADBPVisitorSegments|30day,28", 					//prop8,eVar8
 		"business.cnn.page.lateral_navigation": "gCNNgetLatNav|", 										//prop9,eVar9
 		"business.cnn.page.days_since_publish": "gCNNDaysSinceLastPublish|a",              				//prop10,eVar10
-		"business.cnn.page.branding_content_partner": _w.cnnOmniPartner||"",  							//prop11,eVar11
+		"business.cnn.page.branding_content_partner": "gCNNgetBrandingPartner|",  						//prop11,eVar11
 		"business.cnn.page.affiliate_partner": "gQuery|pc", 											//prop12,eVar12
 		"business.cnn.page.partner_referrer": "gQuery|eref", 											//prop13,eVar13
-		"business.cnn.page.branding_ad": _w.cnnOmniBranding||"", 										//prop14,eVar14
+		"business.cnn.page.branding_ad": "gCNNgetBrandingAd|", 											//prop14,eVar14
 		"business.cnn.page.exit_traffic_partner": "gQuery|cid", //	gQuery|pks							//prop15,eVar15
 		"business.cnn.page.publish_date": "gJObj|cnn_metadata,business.cnn.page.publish_date", 			//prop16,eVar16
 		"business.cnn.page.ireport.member": "gIreportgetMember|", 										//prop17,eVar17
@@ -84,7 +84,8 @@ var _jsmd_default={
 		"business.cnn.page.flashversion": "gCNNFlashVersion|", 											//prop20,eVar20
 		"business.cnn.video.sequence": "+1",															//eVar21
 		"business.cnn.page.video_embed_count": "gJObj|cnn_metadata,business.cnn.page.video_embed_count", //eVar22
-		"business.cnn.page.photo.slide": "gCNNgetPhotoImage|" 			// prop25, evar25
+		"business.cnn.page.photo.slide": "gCNNgetPhotoImage|", 											// prop25, evar25
+		"business.cnn.page.socialType": "" 																//prop69, eVar69
 
 			,
 			/* Pre-Metadata Collection Routines */
@@ -194,8 +195,6 @@ var _jsmd_default={
 			        this.push("page.events","content.quiz");
 			        break;
 			      case "gallery":
-			        this.set("page.content_type","other:gallery");
-			        this.push("page.events","content.gallery");
 			        break;
 			      case "chart":
 			        this.push("page.events","content.chart");
@@ -319,7 +318,7 @@ var _jsmd_default={
 			              {
 			                setting = sites.ireportdev[0];
 			              }
-			              else if (hostName.indexOf("jcmsdev8.cnn.com")!=-1 || hostName.indexOf("jcmsref.cnn.com")!=-1 || hostName.indexOf("cnnpreview.cnn.com")!=-1 || hostName.indexOf("ref.cnn.com")!=-1 || hostName.indexOf("preview.cnn.com")!=-1)
+			              else if (hostName.indexOf("jcmsdev8.cnn.com")!=-1 || hostName.indexOf("jcmsref.cnn.com")!=-1 || hostName.indexOf("cnnpreview.cnn.com")!=-1 || hostName.indexOf("ref.cnn.com")!=-1 || hostName.indexOf("preview.cnn.com")!=-1 || hostName.indexOf("dev.cnn.com")!=-1 )
 			              {
 			                      var port = window.location.port;
 			                      if (port.indexOf("94")!=-1|| hostName.indexOf("edition")!=-1||hostName.indexOf("cnnespanol")!=-1)
@@ -389,6 +388,7 @@ var _jsmd_default={
 						"business.cnn.page.flashversion":				["prop20","eVar20"],
 					    "business.cnn.page.video_embed_count": 			["eVar22"],
 					    "business.cnn.page.photo.slide": 				["prop25","eVar25"],
+						"business.cnn.page.socialType": 				["prop69","eVar69"],
 						"m:page.type":									["pageType"]
 					},
 					eventmap: {
@@ -409,7 +409,8 @@ var _jsmd_default={
 						"ireport.form.success":	["event20"],
 						"content.partner":		["event21"],
 						"content.ad":			["event24"],
-						"content.featured":		["event31"]
+						"content.featured":		["event31"],
+						"social.interaction":	["event76"]
 					},
 					premap: function() { },
 					postmap: function() {
@@ -443,8 +444,8 @@ var _jsmd_default={
 		              +"o),n=s.oid(o),x=o.s_oidt;if(s.eo&&o==s.eo){while(o&&!n&&y!='BODY'){"
 		              +"o=o.parentElement?o.parentElement:o.parentNode;if(!o)return '';y=s."
 		              +"ot(o);n=s.oid(o);x=o.s_oidt}}return o.href?o.href:'';");
-					
-						/*
+
+		              /*
 						* TNT Integration Plugin v1.0
 						* v - Name of the javascript variable that is used. Defaults to s_tnt
 						(optional)
@@ -463,7 +464,7 @@ var _jsmd_default={
 						if(b)
 						s.wd[v] = ""; // Blank out the global variable for ajax requests
 						return r;}
-						
+
 						/* Plugin: getQueryParam 2.3
 						 */
 						s.getQueryParam=new Function("p","d","u",""
@@ -479,7 +480,8 @@ var _jsmd_default={
 						+"if(t){var s=this,i=t.indexOf('='),p=i<0?t:t.substring(0,i),v=i<0?'T"
 						+"rue':t.substring(i+1);if(p.toLowerCase()==k.toLowerCase())return s."
 						+"epa(v)}return ''");
-						
+
+
 						var hostN = window.location.hostname;
 		              s.doPlugins=function() {
 							var url1=s.linkHandler('/time/','e');//e
@@ -534,7 +536,7 @@ var _jsmd_default={
 							var url48=s.linkHandler('www.oprah.com/','e');//na
 							var url49=s.linkHandler('www2.oprah.com/','e');//na
 							var url50=s.linkHandler('static.oprah.com/','e');//na
-							
+
 							s.tnt=s.trackTNT();
 		                }
 					}
@@ -762,6 +764,7 @@ var _jsmd_default={
 						"business.cnn.video.video_collection":			["prop60","eVar60"],
 						"business.cnn.video.video_interaction":			["prop66","eVar66"],
 						"business.cnn.video.ad_duration":				["prop68","eVar68"],
+						"business.cnn.video.start_type":				["prop70","eVar70"],
 						"business.cnn.video.sequence":					["eVar21"],
 					    "business.cnn.page.video_embed_count": 			["eVar22"],
 			            "m:page.name":						["pageName","eVar26"],
@@ -1133,12 +1136,13 @@ var _jsmd_default={
 					} catch(e) {}
 					version = new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version').replace(/\D+/g, ',').match(/^,?(.+),?$/)[1];
 				} catch(e) {	//other browsers
-					try {
-						if(navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin) {
-							version = (navigator.plugins["Shockwave Flash 2.0"] || navigator.plugins["Shockwave Flash"]).description.replace(/\D+/g, ",").match(/^,?(.+),?$/)[1];
-						}
-					} catch(e) {}
+				try {
+					if(navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin) {
+						version = (navigator.plugins["Shockwave Flash 2.0"] || navigator.plugins["Shockwave Flash"]).description.replace(/\D+/g, ",").match(/^,?(.+),?$/)[1];
+					}
+				} catch(e) {}
 				}
+				return version.split(",").shift();
 			},
 			gCNNgetAuthor:function(){
 		        var cnnOmniauthor=(cnn_metadata.business.cnn.page.author?cnn_metadata.business.cnn.page.author:"");
@@ -1227,6 +1231,14 @@ var _jsmd_default={
 			     return m[i].content;
 			   }
 			  }
+			},
+			gCNNgetBrandingPartner:function(){
+				var contentPartner=(cnn_metadata.business.cnn.page.branding_partner?cnn_metadata.business.cnn.page.branding_partner:_w.cnnOmniPartner||"");
+				return contentPartner;
+			},
+			gCNNgetBrandingAd:function(){
+				var contentAd=(cnn_metadata.business.cnn.page.branding_ad?cnn_metadata.business.cnn.page.branding_ad:_w.cnnOmniBranding||"");
+				return contentAd;
 			}
 
 
@@ -1751,7 +1763,7 @@ var _jsmd_default={
 			var rval=(objectRef!=null&&attribute!=null&&attribute.indexOf(".")==-1&&attribute.indexOf("[")==-1?objectRef[attribute]:objectRef);
 			if(rval===objectRef) {
 				var attribs=attribute.split("."),len=attribs.length,reArray=/([^\[]+)\[(\d+)\]/,t,t2,rval=objectRef;
-				for(i=0;i<len;i++) {
+				for(var i=0;i<len;i++) {
 					t=attribs[i];
 					if((t2=reArray.exec(t))!=null) {
 						rval=rval[t2[1]][parseInt(t2[2])];
@@ -1920,8 +1932,7 @@ var _jsmd_default={
 			            +"o),n=s.oid(o),x=o.s_oidt;if(s.eo&&o==s.eo){while(o&&!n&&y!='BODY'){"
 			            +"o=o.parentElement?o.parentElement:o.parentNode;if(!o)return '';y=s."
 			            +"ot(o);n=s.oid(o);x=o.s_oidt}}return o.href?o.href:'';");
-						
-						/*
+			            /*
 						* TNT Integration Plugin v1.0
 						* v - Name of the javascript variable that is used. Defaults to s_tnt
 						(optional)
@@ -2230,6 +2241,7 @@ var _jsmd_default={
 					this.set("page.events", null);
 					this.push("page.events", "content.interactive");
 					this.push("page.events", "content.gallery");
+			        this.set("page.content_type", "other:gallery");
 				}
 				if(data.img){
 			        this.set("business.cnn.page.photo.slide", data.img);
@@ -2359,6 +2371,7 @@ var _jsmd_default={
 
 				if(player) {this.set("business.cnn.video.video_player",player);}
 				else {this.set("business.cnn.video.video_player","vod player");}
+				this.set("business.cnn.video.start_type","vod");
 				this.set("business.cnn.video.video_section",v.sectionName);
 				this.set("business.cnn.video.video_length",v.trt);
 				var d = v.dateCreated.text;
@@ -2371,23 +2384,14 @@ var _jsmd_default={
 				this.set("action","link");
 				this.set("link",{name: "video-start: "+ v.headline, type: "o"});
 				if(v.metas.branding && v.metas.branding != ""){
-			        var x=0;
-			        for (x in jsmdbc)
-			        {
-			            if(jsmdbc[x][0] == v.metas.branding)
-			            {
-			              this.push("page.events","video.partner_start");
-			              this.set("business.cnn.page.branding_content_partner",v.metas.branding);
-			              break;
-			            }
-			            else
-			            {
-			              this.push("page.events","video.ad_start");
-			              this.set("business.cnn.page.branding_ad",v.metas.branding);
-			              break;
-			            }
-			        }
+					this.push("page.events","video.partner_start");
+		            this.set("business.cnn.page.branding_content_partner",v.metas.branding);
 				}
+				else if(v.subcategory && v.subcategory != "")
+	            {
+					this.push("page.events","video.ad_start");
+		            this.set("business.cnn.page.branding_ad",v.subcategory);
+		        }
 				else
 				{
 					this.push("page.events","video.start");
@@ -2418,6 +2422,7 @@ var _jsmd_default={
 
 				if(player) {this.set("business.cnn.video.video_player",player);}
 				else {this.set("business.cnn.video.video_player","vod player");}
+				this.set("business.cnn.video.start_type","vod");
 				this.set("business.cnn.video.video_section",v.sectionName);
 				this.set("business.cnn.video.video_length",v.trt);
 				var d = v.dateCreated.text;
@@ -2430,23 +2435,14 @@ var _jsmd_default={
 				this.set("action","link");
 				this.set("link",{name: "video-autostart: "+ v.headline, type: "o"});
 				if(v.metas.branding && v.metas.branding != ""){
-			        var x=0;
-			        for (x in jsmdbc)
-			        {
-			            if(jsmdbc[x][0] == v.metas.branding)
-			            {
-			              this.push("page.events","video.partner_autostart");
-			              this.set("business.cnn.page.branding_content_partner",jsmdbc[x][1]);
-			              break;
-			            }
-			            else
-			            {
-			              this.push("page.events","video.ad_autostart");
-			              this.set("business.cnn.page.branding_ad",jsmdbc[x][1]);
-			              break;
-			            }
-			        }
+					this.push("page.events","video.partner_autostart");
+		            this.set("business.cnn.page.branding_content_partner",v.metas.branding);
 				}
+				else if(v.subcategory && v.subcategory != "")
+	            {
+					this.push("page.events","video.ad_autostart");
+		            this.set("business.cnn.page.branding_ad",v.subcategory);
+		        }
 				else
 				{
 					this.push("page.events","video.autostart");
@@ -2504,21 +2500,12 @@ var _jsmd_default={
 				var days = _jsmd.plugin.gCNNDaysSinceLastPublish(d);
 				this.set("business.cnn.page.days_since_publish",days+"");
 				if(v.metas.branding && v.metas.branding != ""){
-			        var x=0;
-			        for (x in jsmdbc)
-			        {
-			            if(jsmdbc[x][0] == v.metas.branding)
-			            {
-			              this.set("business.cnn.page.branding_content_partner",jsmdbc[x][1]);
-			              break;
-			            }
-			            else
-			            {
-			              this.set("business.cnn.page.branding_ad",jsmdbc[x][1]);
-			              break;
-			            }
-			        }
+		            this.set("business.cnn.page.branding_content_partner",v.metas.branding);
 				}
+				else if(v.subcategory && v.subcategory != "")
+	            {
+		            this.set("business.cnn.page.branding_ad",v.subcategory);
+		        }
 				this.set("video.duration_watched",timeSpent+"");
 				this.set("action","link");
 				this.set("link",{name: "video-complete: "+ v.headline, type: "o"});
@@ -2562,22 +2549,14 @@ var _jsmd_default={
 	          this.set("business.cnn.page.publish_date",d);
 	          var days = _jsmd.plugin.gCNNDaysSinceLastPublish(d);
 	          this.set("business.cnn.page.days_since_publish",days+"");
-	          if(v.metas.branding && v.metas.branding != ""){
-	                var x=0;
-	                for (x in jsmdbc)
-	                {
-	                    if(jsmdbc[x][0] == v.metas.branding)
-	                    {
-	                      this.set("business.cnn.page.branding_content_partner",jsmdbc[x][1]);
-	                      break;
-	                    }
-	                    else
-	                    {
-	                      this.set("business.cnn.page.branding_ad",jsmdbc[x][1]);
-	                      break;
-	                    }
-	                }
-	          }
+
+				if(v.metas.branding && v.metas.branding != ""){
+		            this.set("business.cnn.page.branding_content_partner",v.metas.branding);
+				}
+				else if(v.subcategory && v.subcategory != "")
+	            {
+		            this.set("business.cnn.page.branding_ad",v.subcategory);
+		        }
 	          this.set("video.duration_watched",timeSpent+"");
 	          this.set("action","link");
 	          this.set("link",{name: "video-midpoint: "+ v.headline, type: "o"});
@@ -2620,22 +2599,14 @@ var _jsmd_default={
 	          this.set("business.cnn.page.publish_date",d);
 	          var days = _jsmd.plugin.gCNNDaysSinceLastPublish(d);
 	          this.set("business.cnn.page.days_since_publish",days+"");
-	          if(v.metas.branding && v.metas.branding != ""){
-	                var x=0;
-	                for (x in jsmdbc)
-	                {
-	                    if(jsmdbc[x][0] == v.metas.branding)
-	                    {
-	                      this.set("business.cnn.page.branding_content_partner",jsmdbc[x][1]);
-	                      break;
-	                    }
-	                    else
-	                    {
-	                      this.set("business.cnn.page.branding_ad",jsmdbc[x][1]);
-	                      break;
-	                    }
-	                }
-	          }
+
+				if(v.metas.branding && v.metas.branding != ""){
+		            this.set("business.cnn.page.branding_content_partner",v.metas.branding);
+				}
+				else if(v.subcategory && v.subcategory != "")
+	            {
+		            this.set("business.cnn.page.branding_ad",v.subcategory);
+		        }
 	          this.set("video.duration_watched",timeSpent+"");
 	          this.set("action","link");
 	          this.set("link",{name: "video-ten: "+ v.headline, type: "o"});
@@ -2678,22 +2649,14 @@ var _jsmd_default={
 	          this.set("business.cnn.page.publish_date",d);
 	          var days = _jsmd.plugin.gCNNDaysSinceLastPublish(d);
 	          this.set("business.cnn.page.days_since_publish",days+"");
-	          if(v.metas.branding && v.metas.branding != ""){
-	                var x=0;
-	                for (x in jsmdbc)
-	                {
-	                    if(jsmdbc[x][0] == v.metas.branding)
-	                    {
-	                      this.set("business.cnn.page.branding_content_partner",jsmdbc[x][1]);
-	                      break;
-	                    }
-	                    else
-	                    {
-	                      this.set("business.cnn.page.branding_ad",jsmdbc[x][1]);
-	                      break;
-	                    }
-	                }
-	          }
+
+				if(v.metas.branding && v.metas.branding != ""){
+		            this.set("business.cnn.page.branding_content_partner",v.metas.branding);
+				}
+				else if(v.subcategory && v.subcategory != "")
+	            {
+		            this.set("business.cnn.page.branding_ad",v.subcategory);
+		        }
 	          this.set("video.duration_watched",timeSpent+"");
 	          this.set("action","link");
 	          this.set("link",{name: "video-twentyfive: "+ v.headline, type: "o"});
@@ -2735,22 +2698,14 @@ var _jsmd_default={
 	          this.set("business.cnn.page.publish_date",d);
 	          var days = _jsmd.plugin.gCNNDaysSinceLastPublish(d);
 	          this.set("business.cnn.page.days_since_publish",days+"");
-	          if(v.metas.branding && v.metas.branding != ""){
-	                var x=0;
-	                for (x in jsmdbc)
-	                {
-	                    if(jsmdbc[x][0] == v.metas.branding)
-	                    {
-	                      this.set("business.cnn.page.branding_content_partner",jsmdbc[x][1]);
-	                      break;
-	                    }
-	                    else
-	                    {
-	                      this.set("business.cnn.page.branding_ad",jsmdbc[x][1]);
-	                      break;
-	                    }
-	                }
-	          }
+
+				if(v.metas.branding && v.metas.branding != ""){
+		            this.set("business.cnn.page.branding_content_partner",v.metas.branding);
+				}
+				else if(v.subcategory && v.subcategory != "")
+	            {
+		            this.set("business.cnn.page.branding_ad",v.subcategory);
+		        }
 	          this.set("video.duration_watched",timeSpent+"");
 	          this.set("action","link");
 	          this.set("link",{name: "video-seventyfive: "+ v.headline, type: "o"});
@@ -2771,13 +2726,14 @@ var _jsmd_default={
 				this.set("video.title","live: " + v.headline);
 				this.set("business.cnn.page.section[1]","live video " + v.id );
 				this.set("business.cnn.video.video_player","live player");
+				this.set("business.cnn.video.start_type","live");
 				this.set("page.content_type","adbp:video start");
 				this.set("action","link");
 				this.set("link",{name: "video-live: "+ v.headline, type: "o"});
 				this.push("page.events","video.live");
 				this.send();
 				sendComscoreVideoMetrixBeacon(v.id,1); // Content-related comscore call
-				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id);
+				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id,"live");
 			},
 			"video-progress": function(data, map) {
 				var v=data.video||{};
@@ -2885,6 +2841,15 @@ var _jsmd_default={
 				this.push("page.events","video.interaction");
 				this.set("action","link");
 				this.set("link",{name: "video-interaction: "+ data, type: "o"});
+				this.send();
+			},
+			"social-click": function(data,map) {
+				var clickInfo = data.item||{};
+				this.set("action","link");
+				this.set("link",{name: "social-click: " + clickInfo, type: "o"});
+				this.set("business.cnn.page.socialType",clickInfo);
+				this.set("page.events", null);
+				this.push("page.events","social.interaction");
 				this.send();
 			}
 		}
@@ -3155,7 +3120,7 @@ var _jsmd = function() {
 			},
 			destroy: function(vendorObject) {
 				var unsetList=vendorObject._jsmd.unset_list;
-				for(i=unsetList.length-1;i>=0;i--) { vendorObject[unsetList[i]]="";} // Necessary to remove all previously defined values at the end of the call
+				for(var i=unsetList.length-1;i>=0;i--) { vendorObject[unsetList[i]]="";} // Necessary to remove all previously defined values at the end of the call
 				vendorObject.events="";
 				vendorObject.products="";
 			},
@@ -3163,7 +3128,7 @@ var _jsmd = function() {
 				if(!value||!key) return;
 				var e=(obj.events&&obj.events.length>0?obj.events.split(","):[]),etest=e.join(","); // Use a null event list if not already defined
 				var k=(typeof(key)=="object"?key:[key]);
-				for(i=k.length-1;i>=0;i--) {
+				for(var i=k.length-1;i>=0;i--) {
 					if(etest.indexOf(k[i])==-1) {e.push(k[i]); etest+=","+k[i];
 						var v1=parseFloat(value);
 						if(v1!=null&&typeof(v1)=="number"&&v1>0) {
@@ -3300,8 +3265,9 @@ var _jsmd = function() {
 			this.config.vendor.action=[];
 			for(v1 in m) {
 				v2=m[v1];
-				if(v2.vendors&&typeof(v2.vendors.forEach)=="function") {
-					v2.vendors.forEach(inDoVendorInitialize);
+				var va = (v2.vendors)?new arrayExtender(v2.vendors):null;
+				if(va&&typeof(va.forEach)=="function") {
+					va.forEach(inDoVendorInitialize);
 				}
 			}
 			m.dirty=0;
@@ -3403,7 +3369,7 @@ var _jsmd = function() {
 					set(sete,inLookupEventValue);								// Iterate thorugh each variable definition and set it using the vendor-specific logic
 				};
 				function inLookupEventValue(v) {
-					var e=me.mdata.page.events,getChk=me.get(v),rval=null;
+					var e=new arrayExtender(me.mdata.page.events),getChk=me.get(v),rval=null;
 					if((e!=null&&e.contains(v))) {rval=v;}
 					if(getChk!=null) {rval=getChk;}
 					return rval;												 // Return the actual event value if it's defined.
@@ -3442,9 +3408,11 @@ var _jsmd = function() {
 		if(n.indexOf("raw:")==0) {n=n.substr(4); israw=true;}
 		me.config.map.dirty=1;
 		function inDefaultTransforms(v) {
-			var plug=me.plugin,defF=plug.tF,rval=v;
-			if(typeof(defF)=="object"){rval=defF.dosequential(plug,rval);}
-			if(typeof(defF)=="function"){rval=defF.call(plug,rval);}
+			var plug=me.plugin,defF=new arrayExtender(plug.tF),rval=v;
+			try{
+				if(typeof(defF)=="object"){rval=defF.dosequential(plug,rval);}
+				if(typeof(defF)=="function"){rval=defF.call(plug,rval);}
+			}catch(e){}
 			return rval;
 		}
 		function inTranslatePluginValues(v) {
@@ -3497,15 +3465,83 @@ var _jsmd = function() {
 
 
 	/* Modify Array objects to allow for iterative execution of values */
-	Array.prototype.dosequential=function(o,val) {
+	arrayExtender.prototype = new Array();
+
+	function arrayExtender(a){
+		try{
+			this.push.apply(this, a);
+			return this;
+		}catch(e){
+			var err = e;
+			return a;
+		}
+	}
+
+	arrayExtender.prototype.forEach = (function(){
+		var forEachFunction = function(f,tObj){
+			var l=this.length,i;
+			if((navigator.appVersion.indexOf("MSIE 7.")!=-1)){
+				if(l == 0){
+					try{
+						l = 0;
+						for(var p in this){
+							var pName = p+"";
+							if(!isNaN(parseInt(pName))){
+								l+=1;
+							}
+						}
+					}catch(e){}
+				}
+			}
+			if(typeof f=="function"){
+				for(i=0;i<l;i++){
+					if(i in this){
+						f.call(tObj,this[i],i,this);
+					}
+				}
+			}
+		};
+
+	 	if((navigator.appVersion.indexOf("MSIE 7.")==-1)){
+	 		return Array.prototype.forEach||forEachFunction;
+		}else { return forEachFunction; }
+	 })();
+
+	arrayExtender.prototype.contains = Array.prototype.contains||function(obj){
+		var i=this.length;
+		if((navigator.appVersion.indexOf("MSIE 7.")!=-1)){
+			if(i == 0 || !i){
+				try{
+					i = 0;
+					for(var p in this){
+						var pName = p+"";
+						i+=1;
+					}
+				}catch(e){}
+			}
+		}
+		while(i--){
+			if(this[i]===obj){return true;}
+		}
+		return false;
+	};
+
+	arrayExtender.prototype.dosequential=function(o,val) {
 		var rval=val,l=this.length;
+		if((navigator.appVersion.indexOf("MSIE 7.")!=-1)){
+			if(l == 0 || !l){
+				try{
+					l = 0;
+					for(var p in this){
+						var pName = p+"";
+						l+=1;
+					}
+				}catch(e){}
+			}
+		}
 		for (i=0;i<l;i++) {if(typeof(this[i])=="function"){rval=this[i].call(o,rval);}}
 		return rval;
 	};
-	Array.prototype.forEach=Array.prototype.forEach||function(f,tObj){
-		var l=this.length,i;if(typeof f=="function"){for(i=0;i<l;i++){if(i in this){f.call(tObj,this[i],i,this);}}};
-	};
-	Array.prototype.contains=Array.prototype.contains||function(obj){ var i=this.length; while(i--){if(this[i]===obj){return true;} } return false;};
 
 	/**
 	 *@function .jsmdBind
@@ -3552,26 +3588,14 @@ var _jsmd = function() {
 		prvLastObject=new CAnalyticsObject(io,mo,vo);
 		return prvLastObject;
 	}
+
 	/**
 		@namespace Provides JavaScript object serialization support if not already defined.
 	*/
-	_w.JSON=_w.JSON||{
-		/**
-			@memberOf window.JSON
-			@function
-			Returns a string that is the serialized version of the JavaScript object passed as a parameter
-			@param {Object} a reference to the object that will be serialized.
-			@returns {String} A JSON compliant string representing the original object parameter.  Note that function type children within the object will not be serialized.
-		*/
-	stringify:function(a){var c=typeof a;if(c!="object"||a===null){if(c=="string")a='"'+a+'"';return String(a);}else{var d,b,f=[],e=a&&a.constructor==Array;for(d in a){b=a[d];c=typeof b;if(c=="string")b='"'+b+'"';else if(c=="object"&&b!==null)b=JSON.stringify(b);f.push((e?"":'"'+d+'":')+String(b));}return(e?"[":"{")+String(f)+(e?"]":"}");}},
-		/**
-			@memberOf window.JSON
-			@function
-			Creates a JavaScript object from a JSON string definition.
-			@param {String} a A JSON-compliant string representing a valid JavaScript object.
-			@returns {Object} A valid JavaScript object created from the JSON string passed in as a parameter.  Note that functions may be serialized using this method.
-		*/
-	parse:function(a){var p=null; if(a==="")a='""';try {eval("p="+a+";");} catch(err){};return p;}};
+	_w.JSON=window.JSON||null;
+	if(!_w.JSON){_w.JSON={}}
+	(function(){"use strict";function f(n){return n<10?'0'+n:n}if(typeof Date.prototype.toJSON!=='function'){Date.prototype.toJSON=function(key){return isFinite(this.valueOf())?this.getUTCFullYear()+'-'+f(this.getUTCMonth()+1)+'-'+f(this.getUTCDate())+'T'+f(this.getUTCHours())+':'+f(this.getUTCMinutes())+':'+f(this.getUTCSeconds())+'Z':null};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(key){return this.valueOf()}}var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapable=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={'\b':'\\b','\t':'\\t','\n':'\\n','\f':'\\f','\r':'\\r','"':'\\"','\\':'\\\\'},rep;function quote(string){escapable.lastIndex=0;return escapable.test(string)?'"'+string.replace(escapable,function(a){var c=meta[a];return typeof c==='string'?c:'\\u'+('0000'+a.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+string+'"'}function str(key,holder){var i,k,v,length,mind=gap,partial,value=holder[key];if(value&&typeof value==='object'&&typeof value.toJSON==='function'){value=value.toJSON(key)}if(typeof rep==='function'){value=rep.call(holder,key,value)}switch(typeof value){case'string':return quote(value);case'number':return isFinite(value)?String(value):'null';case'boolean':case'null':return String(value);case'object':if(!value){return'null'}gap+=indent;partial=[];if(Object.prototype.toString.apply(value)==='[object Array]'){length=value.length;for(i=0;i<length;i+=1){partial[i]=str(i,value)||'null'}v=partial.length===0?'[]':gap?'[\n'+gap+partial.join(',\n'+gap)+'\n'+mind+']':'['+partial.join(',')+']';gap=mind;return v}if(rep&&typeof rep==='object'){length=rep.length;for(i=0;i<length;i+=1){if(typeof rep[i]==='string'){k=rep[i];v=str(k,value);if(v){partial.push(quote(k)+(gap?': ':':')+v)}}}}else{for(k in value){if(Object.prototype.hasOwnProperty.call(value,k)){v=str(k,value);if(v){partial.push(quote(k)+(gap?': ':':')+v)}}}}v=partial.length===0?'{}':gap?'{\n'+gap+partial.join(',\n'+gap)+'\n'+mind+'}':'{'+partial.join(',')+'}';gap=mind;return v}}if(typeof JSON.stringify!=='function'){JSON.stringify=function(value,replacer,space){var i;gap='';indent='';if(typeof space==='number'){for(i=0;i<space;i+=1){indent+=' '}}else if(typeof space==='string'){indent=space}rep=replacer;if(replacer&&typeof replacer!=='function'&&(typeof replacer!=='object'||typeof replacer.length!=='number')){throw new Error('JSON.stringify')}return str('',{'':value})}}if(typeof JSON.parse!=='function'){JSON.parse=function(text,reviver){var j;function walk(holder,key){var k,v,value=holder[key];if(value&&typeof value==='object'){for(k in value){if(Object.prototype.hasOwnProperty.call(value,k)){v=walk(value,k);if(v!==undefined){value[k]=v}else{delete value[k]}}}}return reviver.call(holder,key,value)}text=String(text);cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return'\\u'+('0000'+a.charCodeAt(0).toString(16)).slice(-4)})}if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,'@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,']').replace(/(?:^|:|,)(?:\s*\[)+/g,''))){j=eval('('+text+')');return typeof reviver==='function'?walk({'':j},''):j}throw new SyntaxError('JSON.parse')}}}());
+
 	function doImageBeaconGeneral(url,parameters) {
 		for(p in parameters) {
 			url = url.split("${"+p+"}").join(escape(parameters[p]));
@@ -3655,35 +3679,7 @@ function trackMetrics(action,data,mapObj,loaderFunction) {
 /* declare global variable to track video time spent */
 if (!video_start_time) var video_start_time = 0;
 if (!video_pause) var video_pause = [0,0];	//["flag","play time"]
-/* Branded Content Object */
 
-var jsmdbc = {
-  bc1:["Piers Morgan","Piers Morgan"],
-  bc2:["In The Arena","In The Arena"],
-  bc3:["Anderson Cooper 360","Anderson Cooper 360"],
-  bc4:["Fareed Zakaria","Global Public Square"],
-  bc5:["American Morning","American Morning"],
-  bc6:["The Situation Room","The Situation Room"],
-  bc7:["John King USA","John King USA"],
-  bc8:["State of the Union","State of the Union"],
-  bc9:["CNN Newsroom","CNN Newsroom"],
-  bc10:["Jack Cafferty: Commentaries","Cafferty File"],
-  bc11:["Larry King Live","Larry King Live"],
-  bc12:["Joy Behar","Joy Behar"],
-  bc13:["Nancy Grace","Nancy Grace"],
-  bc14:["Dr. Drew","Dr. Drew"],
-  bc15:["Morning Express","Morning Express"],
-  bc16:["Prime News","Prime New"],
-  bc17:["Showbiz Tonight","Showbiz Tonight"],
-  bc18:["Clark Howard","Clark Howard"],
-  bc19:["CNN Student News","CNN Student News"],
-  bc20:["CNN Heroes","CNN Heroes"],
-  bc21:["In America: BIA","Black In America"],
-  bc22:["Latino in America","Latino in America"],
-  bc23:["In America","In America"],
-  bc24:["Issues with Jane Valez","Issues with Jane Valez"],
-  bc25:["Salute to Troops","Salute to Troops"]
-}
 
 /* Initialization flag */
 var jsmdIsInit=true;
@@ -3792,6 +3788,7 @@ function sendComscoreVideoMetrixBeacon(videoId,contentFlag,c4overrride) {
 function sendNielsenVideoCensusBeacon(config,state,videoId,duration) {
 	var url="http://secure-${sfcode}.imrworldwide.com/cgi-bin/m?ci=${clientid}&c6=${prod},${vcid}&cc=1&tl=${state}-${videoId}&rnd=${random}",
 		nVC=(!config?null:config["video-census"]);
+	if(duration == "live"){url="http://secure-${sfcode}.imrworldwide.com/cgi-bin/m?ci=${clientid}&c6=${prod},${vcid}&cc=1&tl=${state}-${videoId}&rnd=${random}&cg=live"}
 	if(!nVC) {return;}
 	switch(state) {
 		case "start":
@@ -3862,7 +3859,7 @@ function getSiteSpecificSettings(type, section){
 	    {
 	      setting = sites.ireportdev[type];
 	    }
-        else if (hostName.indexOf("jcmsdev8.cnn.com")!=-1 || hostName.indexOf("jcmsref.cnn.com")!=-1 || hostName.indexOf("cnnpreview.cnn.com")!=-1 || hostName.indexOf("ref.cnn.com")!=-1 || hostName.indexOf("preview.cnn.com")!=-1)
+	    else if (hostName.indexOf("jcmsdev8.cnn.com")!=-1 || hostName.indexOf("jcmsref.cnn.com")!=-1 || hostName.indexOf("cnnpreview.cnn.com")!=-1 || hostName.indexOf("ref.cnn.com")!=-1 || hostName.indexOf("preview.cnn.com")!=-1 || hostName.indexOf("dev.cnn.com")!=-1 )
         {
                 var port = window.location.port;
                 if (port.indexOf("94")!=-1|| hostName.indexOf("edition")!=-1||hostName.indexOf("cnnespanol")!=-1)
@@ -4326,7 +4323,6 @@ w.s_ft=new Function("c","c+='';var s,e,o,a,d,q,f,h,x;s=c.indexOf('=function(');w
 +"'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
 c=s_d(c);if(e>0){a=parseInt(i=v.substring(e+5));if(a>3)a=parseFloat(i)}else if(m>0)a=parseFloat(u.substring(m+10));else a=parseFloat(v);if(a<5||v.indexOf('Opera')>=0||u.indexOf('Opera')>=0)c=s_ft(c);if(!s){s=new Object;if(!w.s_c_in){w.s_c_il=new Array;w.s_c_in=0}s._il=w.s_c_il;s._in=w.s_c_in;s._il[s._in]=s;w.s_c_in++;}s._c='s_c';(new Function("s","un","pg","ss",c))(s,un,pg,ss);return s}
 function s_giqf(){var w=window,q=w.s_giq,i,t,s;if(q)for(i=0;i<q.length;i++){t=q[i];s=s_gi(t.oun);s.sa(t.un);s.setTagContainer(t.tagContainerName)}w.s_giq=0}s_giqf()
-
 function trackNielsenVideoCensusBeacon(config,state,videoId,videoTitle,duration) {
 	var url="http://secure-${sfcode}.imrworldwide.com/cgi-bin/m?ci=${clientid}&c6=${prod},${vcid}&cc=1&tl=${state}-${videoId}&rnd=${random}&cg=${videoTitle}",
 		nVC=(!config?null:config["video-census"]);

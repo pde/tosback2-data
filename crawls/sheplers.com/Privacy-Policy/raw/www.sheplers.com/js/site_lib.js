@@ -849,7 +849,15 @@ function refinementChangeMulti(refineVal) {
 
 function singleValueRefinement(refinementValueId) {
 	//var refineUrl = removeAllParamValue(window.location.search, "refinementValueIds") + getRefineUrl();
-    var refineUrl = window.location.search;
+   var refineUrl = window.location.search;
+
+	if (refineUrl.contains("currentIndex")) {
+		refineUrl = removeParamValue(refineUrl, "currentIndex");
+	}
+	if (refineUrl.contains("pageSize")) {
+		refineUrl = removeParamValue(refineUrl, "pageSize");
+	}
+
 	if (refineUrl.indexOf("?") == -1) {
 		refineUrl = "?" + refineUrl;
 	}

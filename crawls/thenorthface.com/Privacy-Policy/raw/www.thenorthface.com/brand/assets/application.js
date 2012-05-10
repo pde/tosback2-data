@@ -2465,6 +2465,19 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
   };
 
 }(jQuery));
+(function() {
+  var Utils;
+  Utils = (function() {
+    function Utils() {}
+    Utils.parseDate = function(date) {
+      var date_string;
+      date_string = date.replace(/-/g, '/');
+      return new Date(date_string);
+    };
+    return Utils;
+  })();
+  $.TNF.BRAND.Utils = Utils;
+}).call(this);
 (function($) {
 
   var VideoInterface = Class.create({
@@ -3401,6 +3414,12 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
         });
       } else {
         that.gallery.animate({height: that.galleryHeight}, 1000, function() {
+          contentBox = $(this).closest('.content-box');
+          oldPosition = contentBox.css('position');
+
+          contentBox.css({ position: 'relative' })
+                    .css({ position: oldPosition });
+
           $(that.element).parent().fadeIn('fast', function() {
             that.unloadVideo();
             if (TNF.ipad) {
@@ -5167,34 +5186,34 @@ $.fn.tnfBrandItemBuilder = function () {
     Locale.prototype.locales = [
       {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T20:09:27Z",
+        "created_at": "2011-08-18T13:09:27-07:00",
         "id": 2,
         "lang_identifier": "-12",
         "language": "en",
         "name": "en-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-21T20:24:13Z"
+        "updated_at": "2011-09-21T13:24:13-07:00"
       }, {
         "catalog_identifier": "10201",
-        "created_at": "2011-03-04T21:31:30Z",
+        "created_at": "2011-03-04T13:31:30-08:00",
         "id": 1,
         "lang_identifier": "-1",
         "language": "en",
         "name": "en-US",
         "region": "US",
         "store_identifier": "207",
-        "updated_at": "2011-08-19T18:12:06Z"
+        "updated_at": "2011-08-19T11:12:06-07:00"
       }, {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T20:09:27Z",
+        "created_at": "2011-08-18T13:09:27-07:00",
         "id": 3,
         "lang_identifier": "-13",
         "language": "fr",
         "name": "fr-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-23T22:11:13Z"
+        "updated_at": "2011-09-23T15:11:13-07:00"
       }
     ];
     Locale.prototype.current = function() {
@@ -5614,7 +5633,9 @@ $.fn.tnfBrandItemBuilder = function () {
       oneDay = 1000 * 60 * 60 * 24;
       dayDelta = Math.ceil((this.raceDate() - this.today()) / oneDay);
       this.countdownElement.text(dayDelta);
-      if (dayDelta === 1) {
+      if (dayDelta < 1) {
+        return this.element.hide();
+      } else if (dayDelta === 1) {
         return this.dayElement.text('day');
       }
     };
@@ -5646,6 +5667,92 @@ $.fn.tnfBrandItemBuilder = function () {
   })();
   $.TNF.BRAND.Rating = Rating;
 }).call(this);
+(function() {
+  var RaceEventShuffler;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  RaceEventShuffler = (function() {
+    function RaceEventShuffler(element) {
+      this.oldEventBouncer = __bind(this.oldEventBouncer, this);      this.element = element;
+      this.old_race_events = [];
+      this.bounceOldEvents();
+      this.appendOldEvents();
+    }
+    RaceEventShuffler.prototype.bounceOldEvents = function() {
+      return this.raceEvents().each(this.oldEventBouncer);
+    };
+    RaceEventShuffler.prototype.oldEventBouncer = function(i, race_event) {
+      var dayDelta, end_date, oneDay;
+      end_date = $.TNF.BRAND.Utils.parseDate($(race_event).attr('data-end-date'));
+      oneDay = 1000 * 60 * 60 * 24;
+      dayDelta = Math.ceil((this.today() - end_date) / oneDay);
+      if (dayDelta > 14) {
+        this.old_race_events.push(race_event);
+        return $(race_event).remove();
+      }
+    };
+    RaceEventShuffler.prototype.appendOldEvents = function() {
+      this.raceEvents().removeClass('gutter-03');
+      this.lastRaceEvent().after(this.old_race_events);
+      return this.lastRaceEvent().addClass('gutter-03');
+    };
+    RaceEventShuffler.prototype.lastRaceEvent = function() {
+      return this.raceEvents().last();
+    };
+    RaceEventShuffler.prototype.raceEvents = function() {
+      return this.race_events = this.element.find('.race-event');
+    };
+    RaceEventShuffler.prototype.today = function() {
+      return new Date();
+    };
+    return RaceEventShuffler;
+  })();
+  $.TNF.BRAND.RaceEventShuffler = RaceEventShuffler;
+}).call(this);
+(function() {
+  var RegistrationButtonMonitor;
+  RegistrationButtonMonitor = (function() {
+    var ECS_RESULTS_URL;
+    ECS_RESULTS_URL = 'http://www.sportstats.ca/searchResults.xhtml?eventname=Endurance+Challenge';
+    function RegistrationButtonMonitor(element) {
+      this.element = element;
+      this.end_date = this.element.parent().attr('data-end-date');
+      this.deadline = this.element.parent().attr('data-deadline');
+      this.processButton();
+    }
+    RegistrationButtonMonitor.prototype.processButton = function() {
+      if (this.end_date != null) {
+        this.parseDates();
+        if (this.today() > this.deadline && this.today() < this.end_date) {
+          return this.disallowRegistration();
+        } else if (this.today() > this.end_date) {
+          return this.replaceWithResultButton();
+        }
+      } else {
+        return this.convertToResultButton();
+      }
+    };
+    RegistrationButtonMonitor.prototype.parseDates = function() {
+      this.end_date = $.TNF.BRAND.Utils.parseDate(this.end_date);
+      return this.deadline = $.TNF.BRAND.Utils.parseDate(this.deadline);
+    };
+    RegistrationButtonMonitor.prototype.disallowRegistration = function() {
+      this.element.parent().find('.elite').remove();
+      return this.element.replaceWith('<span class="closed">Registration Closed</span>');
+    };
+    RegistrationButtonMonitor.prototype.replaceWithResultButton = function() {
+      this.element.parent().find('.elite').remove();
+      return this.element.replaceWith('<a href="' + ECS_RESULTS_URL + '">Results</a>');
+    };
+    RegistrationButtonMonitor.prototype.convertToResultButton = function() {
+      return this.element.attr('href', ECS_RESULTS_URL);
+    };
+    RegistrationButtonMonitor.prototype.today = function() {
+      return new Date();
+    };
+    return RegistrationButtonMonitor;
+  })();
+  $.TNF.BRAND.RegistrationButtonMonitor = RegistrationButtonMonitor;
+}).call(this);
 (function($) {
   $(function() {
     $.interface.initialize();
@@ -5669,9 +5776,14 @@ $.fn.tnfBrandItemBuilder = function () {
       if ($(".tweet-container").length) { new $.TNF.BRAND.TwitterSnippet() }
       if ($("#race_event").length) { new $.TNF.BRAND.RaceNav() }
       new $.TNF.BRAND.RaceCountdown($('.race-start'))
+      new $.TNF.BRAND.RaceEventShuffler($('#race-event-table'))
 
       $('#rating-wrapper .rating').each(function() {
         new $.TNF.BRAND.Rating($(this));
+      });
+
+      $('.ecs-reg-btn').each(function() {
+        new $.TNF.BRAND.RegistrationButtonMonitor($(this));
       });
 
       if (top.Midas) {

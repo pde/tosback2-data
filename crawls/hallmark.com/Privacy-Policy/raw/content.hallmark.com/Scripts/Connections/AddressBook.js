@@ -23,12 +23,20 @@ var SaveContactOptions={type:"POST",contentType:"application/x-www-form-urlencod
 $("#GroupMembership").find("input:checkbox").each(function(){if($(this).attr('checked')){selectedGroupIDs+=','+$(this).val();}});for(var i=0;i<contactJson.Groups.length;i++){deselectedGroupIDs+=','+contactJson.Groups[i].GroupID;}
 $("#"+formId).find("#SelectedGroupIDs").val(selectedGroupIDs);$("#"+formId).find("#DeSelectedGroupIDs").val(deselectedGroupIDs);clearAllErrorMessages();$('#'+formId).ajaxSubmit(SaveContactOptions);return false;}
 function SaveContactSuccessCallBack(data){if(null!=data.validationErrors&&data.validationErrors.length>0){displayErrorMessagesOnReLoad(data.validationErrors,errorPage)
-hallmarkBehaviors.hmkEnableButton('.JQDisableAction');scrollToElement("msgDiv\\.AddContacts");}
+hallmarkBehaviors.hmkEnableButton('.JQDisableAction');scrollToElement("msgDiv\\.AddContacts");s.prop14=data.validationErrors[0].Message;evalOmniture();s.prop14='';}
 else{if($("#AddressBookType").val().toUpperCase()==addressBookTypes[0].toUpperCase()){if(IsSavedFromPopUp=="true")
 window.location.reload();else
 window.location.href="/ConnectionsAddressBook/GetFlatContactDetails/"+data.RelatedPersonID+"/0/0";}
-else{document.getElementById("AddEditContact").style.display="none";$("#ShowAddEditContact").find('.close').trigger('click');errorPage='SelectRecipients';AddSelectedContact(data);if(data.FirstName.substr(0,1).toUpperCase()==$("#AlphabetsDropDownHeader").val()||$("#AlphabetsDropDownHeader").val()=="All"||typeof $('#AlphabetsDropDownHeader').val()=='undefined'){PostIndividualsForm(document.getElementById("Contacts.CurrentPageNumber").value);}
-if($("#SelectRecipientsView").val()=='Groups'){PostGroupsForm(document.getElementById("Contacts.CurrentPageNumber").value)}}}}
+else{document.getElementById("AddEditContact").style.display="none";$("#ShowAddEditContact").find('.close').trigger('click');errorPage='SelectRecipients';var listItemDivID='#abselected-'+data.RelatedPersonID;if(!$(listItemDivID).hasClass('contactSelected')){AddSelectedContact(data);}
+else{var divID;selectRecipientsString='';if($('#AddressBookType').val()=='SAB'){divID='ccselected-Contacts-'+data.RelatedPersonID;}
+else if($('#AddressBookType').val()=='POD'){divID='ccselected-Contacts-'+data.AddressID;}
+else if($('#AddressBookType').val()=='MAB'){divID='ccselected-Contacts-'+data.EmailID;}
+if(null!=$("#SelectedRecipientsList #"+divID)){$("#SelectedRecipientsList #"+divID).remove();AddContact(data);if($('#SelectedRecipientsList').children('.cccselected').length<show_per_page){targetDiv.append(selectRecipientsString);$("#SelectedRecipientsList").find('.cccselected').removeClass('hidden');if($('#AddressBookType').val()=='POD'){$("#SelectedRecipientsList").find('.JQAddressDetails').removeClass('hidden');}
+else if($('#AddressBookType').val()=='MAB'){$("#SelectedRecipientsList").find('.JQEmailDetails').removeClass('hidden');}}
+UpdateSelectedRecipientPageDetailsOnAddition();hallmarkBehaviors.hmkTooltip();}}
+if(data.FirstName.substr(0,1).toUpperCase()==$("#AlphabetsDropDownHeader").val()||$("#AlphabetsDropDownHeader").val()=="All"||typeof $('#AlphabetsDropDownHeader').val()=='undefined'){PostIndividualsForm(document.getElementById("Contacts.CurrentPageNumber").value);}
+if($("#SelectRecipientsView").val()=='Groups'){PostGroupsForm(document.getElementById("Contacts.CurrentPageNumber").value)}}}
+hallmarkBehaviors.hmkEnableButton('.JQDisableAction');}
 function GetFlatContactDetails(relatedPeronID){$("#frmEditContact").attr("action","/ConnectionsAddressBook/GetFlatContactDetails/"+relatedPeronID+"/0/0");$("#frmEditContact").attr("method","GET");$("#frmEditContact").submit();}
 function DisplayDeleteContactOverlay(){if(document.getElementById("SelectedContactID").value==""){msgDiv=$(getJQSelectorForID('msgDiv.'+errorPage));addErrorToCommonErrorDiv(msgDiv,'CommonError.DisplayDelete',errorMessage);}
 else{clearAllErrorMessages();$("#DeleteContact").overlay({api:true,speed:200,expose:{maskId:'overlyMask',loadSpeed:800,opacity:0.9},onBeforeLoad:function(){var wrap=this.getContent().find("div.wrap");if(wrap.is(":empty")){wrap.load(this.getTrigger().attr("href"));}},onClose:function(){$("#DeleteContact.wrap").empty();},closeOnClick:false}).load();$(".close").click(function(){$("#DeleteContact").overlay().close();});PostOmnitureData('My Accounts - Address Book- Delete Contact');}}

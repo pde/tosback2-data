@@ -349,14 +349,6 @@ wpniAds.templates.rules.sponsorCondo = {
   when : ['201202150000/201205312359']
 }
 
-//18815-JH
-wpniAds.templates.initRule('homepage336x60');
-wpniAds.templates.rules.homepage336x60 = {
-  what : ['336x60$'],
-  where : ['washingtonpost.com'],
-  when : ['201203140000/201204152359']
-}
-
 //18875-CD
 wpniAds.templates.initRule('re300x100');
 wpniAds.templates.rules.re300x100 = {
@@ -398,6 +390,39 @@ if(location.search.match('test_ft_nav_tile')){
     when : [''],
     hardcodes : "<noscript><a href=\"http://servedby.flashtalking.com/click/3/20603;289051;0;209;0/?url=1652133\" target=\"_blank\"><img border=\"0\" src=\"http://servedby.flashtalking.com/imp/3/20603;289051;205;gif;WashingtonPostUS;88x29SiteWindow/?\"></a></noscript><script language=\"Javascript1.1\" type=\"text/javascript\">var ftClick = \"\";var ftX = \"\";var ftY = \"\";var ftZ = \"\";var ftContent = \"\";var ftCustom = \"\";var ft88x29_OOBclickTrack = \"\";var ftRandom = Math.random()*1000000;var ftBuildTag1 = \"<scr\";var ftBuildTag2 = \"</\";var ftTag = ftBuildTag1 + 'ipt language=\"javascript1.1\" type=\"text/javascript\" ';ftTag += 'src=\"http://servedby.flashtalking.com/imp/3/20603;289051;201;js;WashingtonPostUS;88x29SiteWindow/?click='+ftClick+'&ftx='+ftX+'&fty='+ftY+'&ftadz='+ftZ+'&ftscw='+ftContent+'&ft_custom='+ftCustom+'&cachebuster='+ftRandom+'\" id=\"ftscript_88x29\" name=\"ftscript_88x29\"';ftTag += '\">' + ftBuildTag2 + 'script>';document.write(ftTag);</script>"
   }
+}
+
+//19320-ST
+wpniAds.templates.initRule('kohls88x31');
+wpniAds.templates.rules.kohls88x31 = {
+  what : ['nav_tile'],
+  where : ['lifestyle','entertainment','local'],
+  when : ['201204160000/201205312359'],
+  hardcodes : "<div style=\"margin-top:3px;margin-right:1px;\"><noscript><a href=\"http://servedby.flashtalking.com/click/3/20603;289051;0;209;0/?url=1652133\" target=\"_blank\"><img border=\"0\" src=\"http://servedby.flashtalking.com/imp/3/20603;289051;205;gif;WashingtonPostUS;88x29SiteWindow/?\"></a></noscript><script language=\"Javascript1.1\" type=\"text/javascript\">var ftClick = \"\";var ftX = \"\";var ftY = \"\";var ftZ = \"\";var ftContent = \"\";var ftCustom = \"\";var ft88x29_OOBclickTrack = \"\";var ftRandom = Math.random()*1000000;var ftBuildTag1 = \"<scr\";var ftBuildTag2 = \"</\";var ftTag = ftBuildTag1 + 'ipt language=\"javascript1.1\" type=\"text/javascript\" ';ftTag += 'src=\"http://servedby.flashtalking.com/imp/3/20603;289051;201;js;WashingtonPostUS;88x29SiteWindow/?click='+ftClick+'&ftx='+ftX+'&fty='+ftY+'&ftadz='+ftZ+'&ftscw='+ftContent+'&ft_custom='+ftCustom+'&cachebuster='+ftRandom+'\" id=\"ftscript_88x29\" name=\"ftscript_88x29\"';ftTag += '\">' + ftBuildTag2 + 'script>';document.write(ftTag);</script></div>"
+}
+
+//18123-CR
+wpniAds.templates.initRule('TDA_nn');
+wpniAds.templates.rules.TDA_nn = {
+  what : ['nn'],
+  where : ['business'],
+  when : ['201205070000/201205132359']
+}
+
+//18123-CR
+wpniAds.templates.initRule('TDA_336x30');
+wpniAds.templates.rules.TDA_336x30 = {
+  what : ['336x30$'],
+  where : ['business/front'],
+  when : ['201205070000/201205132359']
+}
+
+//19533-FN
+wpniAds.templates.initRule('arena_stage_336x60');
+wpniAds.templates.rules.arena_stage_336x60 = {
+  what : ['336x60$'],
+  where : ['entertainment'],
+  when : ['201205070000/201207152359']
 }
 
 //18123 NN - JH
@@ -463,8 +488,8 @@ function initAdType(what)
   break
 
   case 'tiffany_tile':
-   thisAdType.size = "200x60,200x80,234x60,290x60,300x45";
-   thisAdType.code = "ad=tiff;"
+   thisAdType.size = "184x90,200x60";
+   thisAdType.code = ""
   break
 
   case 'flex_ss_bb_hp':
@@ -640,7 +665,7 @@ function initAdType(what)
     thisAdType.size = '300x100';
     thisAdType.tile = '';
   break
-  
+
   case '600x130':
     thisAdType.size = '600x130';
     thisAdType.tile = '';
@@ -675,7 +700,7 @@ function posMaker(adType,posOverride,delivery)
             returnValue = adType+"_"+this.usedSpots[adType];
         }
     }
-    var posArray = { 'leaderboard':1,'leaderboard_2':2,'skyscraper':3,'flex_ss_bb_hp':6,'flex_bb_hp':6, 'flex_bb_tp':6,'featurebar':7,'tiffany_tile':14,'336_35':19,'bigbox':20,'pushdown':43,'extra_bb':44,'deal':45};
+    var posArray = { 'leaderboard':1,'leaderboard_2':2,'skyscraper':3,'flex_ss_bb_hp':6,'flex_bb_hp':6, 'flex_bb_tp':6,'featurebar':7,/*'tiffany_tile':14,*/'336_35':19,'bigbox':20,'pushdown':43,'extra_bb':44,'deal':45};
 
     if ( typeof posArray[returnValue] != 'undefined' && (typeof commercialNode!='undefined' && commercialNode=='metro') )
     {
@@ -868,11 +893,10 @@ wpniAds.kv = {
         exec : function(){
             var obj = {
               '!c' : {
-                natural_disaster : ['attack', 'disaster', 'fire', 'explosion', 'oil', 'coal', 'death', 'dead', 'quake', 'earthquake', 'tsunami', 'tornado', 'hurricane', 'flood','bed bug','infestation'],
-                human_disaster : ['spanair', 'sex abuse','aground', 'rescue', 'attack', 'disaster', 'explosion', 'war', 'hostage', 'terror', 'terrorist', 'bomb', 'blast', 'mining', 'miner', 'violence', 'riot', 'plane crash', '9/11', 'sept. 11', 'september 11','car crash'],
-                business_disaster : ['attack', 'disaster', 'exxon', 'goldman', 'mortgage', 'Insurance', 'health', 'bank', 'wall street', 'protest'],
-                goldman : ['aig','fraud','foreclosure','litton','mortgage','sec','investigation','inquiry','bonus','travel','goldman','sachs'],
-                inappropriate : ['gambling','alcohol','pornography']
+                natural_disaster : ['shell', 'exxon', 'citgo', 'bp', 'attack', 'disaster', 'fire', 'explosion', 'oil', 'coal', 'death', 'dead', 'quake', 'earthquake', 'tsunami', 'tornado', 'hurricane', 'flood','bed bug','infestation'],
+                human_disaster : ['spanair', 'aground', 'rescue', 'attack', 'disaster', 'explosion', 'war', 'hostage', 'terror', 'terrorist', 'bomb', 'blast', 'mining', 'miner', 'violence', 'riot', 'plane crash', '9/11', 'sept. 11', 'september 11','car crash'],
+                financial_crisis : ['goldman', 'aig', 'foreclosure', 'enron', 'sec', 'attack', 'disaster', 'mortgage', 'Insurance', 'health', 'bank', 'wall street', 'protest'],
+                inappropriate : ['gambling','sex abuse','alcohol','pornography']
               },
               kw : {
                 energy : ['energy'],
@@ -1048,7 +1072,7 @@ function hackBin(_arg,currentLoc,what,delivery,onTheFly)
                     explb_ie7positionFix();
                 })
             }
-            
+
             //18907
             if(currentLoc === 'realestate' && typeof commercialPageType !== 'undefined' && commercialPageType === 'front'){
               hackReturnValue+='/front';

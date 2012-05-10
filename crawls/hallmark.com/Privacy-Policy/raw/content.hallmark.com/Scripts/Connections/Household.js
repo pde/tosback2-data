@@ -13,16 +13,17 @@ function UpdateHouseHold(){if($("#AddressBookType").val().toUpperCase()==address
 else{SaveHouseHold();}}
 var SaveHouseholdOptions={type:"POST",contentType:"application/x-www-form-urlencoded",url:"/ConnectionsHousehold/SaveHousehold",dataType:"json",success:SaveHouseHoldSuccessCallBack,error:''};function SaveHouseHold(){clearAllErrorMessages();$('#frmHouseholdEdit').ajaxSubmit(SaveHouseholdOptions);return false;}
 function SaveHouseHoldSuccessCallBack(data){if(null!=data.validationErrors&&data.validationErrors.length>0){displayErrorMessagesOnReLoad(data.validationErrors,errorPage)
-hallmarkBehaviors.hmkEnableButton('.JQDisableAction');scrollToElement("msgDiv\\.EditHouseholds");}
+hallmarkBehaviors.hmkEnableButton('.JQDisableAction');scrollToElement("msgDiv\\.EditHouseholds");s.prop14=data.validationErrors[0].Message;evalOmniture();s.prop14='';}
 else{$("#ShowEditHousehold").attr('style','display:none');$("#ShowEditHousehold").find('.close').trigger('click');errorPage='SelectRecipients';AddSelectedHousehold(data);PostHouseholdForm($('#Households\\.CurrentPageNumber').val());NavigateHouseholds();}}
 var AddHouseHoldOptions={type:"POST",contentType:"application/x-www-form-urlencoded",url:"/ConnectionsHousehold/AddHouseHold",dataType:"json",success:AddHouseHoldSuccessCallBack,error:''};function AddHouseHold(){clearAllErrorMessages();if($('div .secondLevel .selected').attr('id')=='AtAGlanceTab'){$('#SelectionCriteria').val('NAME');}
 if($("#AddressBookType").val().toUpperCase()!=addressBookTypes[0].toUpperCase()){$('#frmAddEditHousehold').find('#ValidationType').val($('#SelectionCriteria').val().toUpperCase());}
 $('#frmAddEditHousehold').ajaxSubmit(AddHouseHoldOptions);return false;}
 function AddHouseHoldSuccessCallBack(data){if(null!=data.validationErrors&&data.validationErrors.length>0){displayErrorMessagesOnReLoad(data.validationErrors,errorPage)
-hallmarkBehaviors.hmkEnableButton('.JQDisableAction');scrollToElement("msgDiv\\.AddHouseholds");}
+scrollToElement("msgDiv\\.AddHouseholds");s.prop14=data.validationErrors[0].Message;evalOmniture();s.prop14='';}
 else{if($("#AddressBookType").val().toUpperCase()=="POD"){$("#ShowAddEditContact").find('.close').trigger('click');errorPage='SelectRecipients';AddSelectedHousehold(data);PostHouseholdForm($('#Households\\.CurrentPageNumber').val());}
 else if($('div.secondLevel').find('.secHead_Households').hasClass('selected')){window.location.reload();}
-else{$('#ShowAddEditContact').find('div.close').trigger('click');}}}
+else{$('#ShowAddEditContact').find('div.close').trigger('click');}}
+hallmarkBehaviors.hmkEnableButton('.JQDisableAction');}
 function DisplayHousehold(){document.forms["frmGetContacts"].action="/ConnectionsHousehold/GetHouseholds";document.forms["frmGetContacts"].method="GET";document.forms["frmGetContacts"].submit();}
 function EditHousehold(householdID){var params="HouseholdID="+householdID+"&AddressBookType="+$('#AddressBookType').val()+"&HouseholdSelectionCriteria="+$('#SelectionCriteria').val();window.location.href="/ConnectionsHousehold/LoadEditHousehold/"+householdID+"/"+$('#AddressBookType').val()+"/"+$('#SelectionCriteria').val();}
 function CancelUpdateHousehold(){if($("#AddressBookType").val().toUpperCase()==addressBookTypes[0].toUpperCase()){window.location.href="/ConnectionsHousehold/LoadHouseholdDetails?HouseholdID="+$('#HouseholdID').val();}

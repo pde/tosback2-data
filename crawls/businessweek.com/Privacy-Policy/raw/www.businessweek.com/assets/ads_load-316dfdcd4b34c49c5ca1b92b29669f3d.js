@@ -1,0 +1,2 @@
+/* Begin ads_load.js */
+(function(){typeof AD_SITE=="undefined"&&$("#promo").ready(function(){var a=$(this).find("iframe.ad_frame:first"),b={tile:$(a).attr("data-tile"),size:$(a).attr("data-size"),tz:$(a).attr("data-tz"),pt:$(a).attr("data-pt")},c="http://www.businessweek.com/dynamic_frames/iframe_accessible.html?"+$.param(b);$(this).find("iframe.ad_frame:first").attr("src",c),$(".house_ad").show().css("visibility","visible")})})();

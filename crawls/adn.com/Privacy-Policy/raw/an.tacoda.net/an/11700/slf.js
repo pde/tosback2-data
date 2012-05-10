@@ -1,5 +1,5 @@
-// 2012/01/18 11:07:02
-var ANV='6.3.1';
+// 2012/05/03 16:11:23
+var ANV='6.4.0';
 var ANAXCD=24;
 var ANDCC='zzz';
 var ANDPEFA;
@@ -31,7 +31,7 @@ var ANDNX=new Array();
 var ANID='TID';
 var ANCC=0;
 var ANDPU='http://tacoda.at.atwola.com/rtx/r.js?';
-var ANRDF=0;
+var ANRDF=1;
 var ANSCC="unescape(isSocialNetworkShared()+safeVar('mistats.taxonomy')+document.location.href+tacLogRef5()).toLowerCase()";
 var ANTPUD;
 var ANVDT=0;
@@ -64,6 +64,14 @@ var ANBKF=1;
 var ANBKURL='http://tags.bluekai.com/site/4470?id=UTID';
 var ANBKFRAME='1';
 var ANBKFRURL='http://an.tacoda.net/an/bkids.html';
+var ANACF=1;
+var ANACURL='http://d.p-td.com/r/dt/id/L21rdC80L21waWQvMzMxNTMzNg/mpuid/UTID';
+var ANACFRAME='1';
+var ANACFRURL='http://an.tacoda.net/an/acids.html';
+var ANBTF=1;
+var ANBTURL='http://s.thebrighttag.com/cs?tp=ao&aolid=UTID';
+var ANBTFRAME='1';
+var ANBTFRURL='http://an.tacoda.net/an/btids.html';
 var ANBYODE='bk';
 var ANBYODS='bk,^100[0-9]{3}$';
 var ANBYODO='bk';
@@ -458,6 +466,30 @@ if(0==ANBKFRAME){
 document.write('<IMG'+' SRC="'+ANBKURL+'" STYLE="display: none" height="1" width="1" border="0">');
 }
 }
+function ANAC()
+{
+ANACURL=ANACURL.replace('UTID',ANTID);
+if(1==ANACFRAME){
+var encodedUrl=encodeURIComponent(ANACURL);
+ANACFRURL+='?url='+encodedUrl;
+document.write('<IFRAME'+' SRC="'+ANACFRURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+if(0==ANACFRAME){
+document.write('<IMG'+' SRC="'+ANACURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+}
+function ANBT()
+{
+ANBTURL=ANBTURL.replace('UTID',ANTID);
+if(1==ANBTFRAME){
+var encodedUrl=encodeURIComponent(ANBTURL);
+ANBTFRURL+='?url='+encodedUrl;
+document.write('<IFRAME'+' SRC="'+ANBTFRURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+if(0==ANBTFRAME){
+document.write('<IMG'+' SRC="'+ANBTURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+}
 function Tacoda_AMS_DDC_addPair(k,v){
 ANCV(k,v);
 }
@@ -722,6 +754,14 @@ ANU+="&amp;df="+escape(ANDEMOF);
 if(ANBKF==1)
 {
 ANU+="&amp;bf="+escape(ANBKF);
+}
+if(ANACF==1)
+{
+ANU+="&amp;acf="+escape(ANACF);
+}
+if(ANBTF==1)
+{
+ANU+="&amp;btf="+escape(ANBTF);
 }
 document.write('<SCR'+'IPT SRC="'+ANDPU+'cmd='+ccc+'&amp;si='+ANSID+ANU+'&amp;v='+ANV+'&amp;cb='+Math.floor(Math.random()*100000)+'" LANGUAGE="JavaScript"></SCR'+'IPT>');
 }

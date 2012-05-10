@@ -591,6 +591,10 @@ $.fn.codaSlider = function(settings) {
 				// Slide:
 				$('.panel-container', slider).animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
 				setTimeout(autoSlide,settings.autoSlideInterval);
+				
+				$(window).focus(function(){
+					$('.panel-container', slider).stop();
+				});
 			};
 		};
 		

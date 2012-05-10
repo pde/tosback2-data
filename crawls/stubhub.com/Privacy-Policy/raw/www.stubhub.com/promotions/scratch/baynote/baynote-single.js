@@ -1,4 +1,6 @@
-﻿var BaynoteJSVersion="Revision: 3.22 ";var BaynoteIgnored=false;var BN_READY_SIGNAL="ReadySignal";var Strategy={"ScriptDOMInject":2,"OnLoadInject":3};if(typeof(baynote_globals)=="undefined")var baynote_globals=new Object();baynote_globals.CommonResourceURL="/baynote/tags3/common";baynote_globals.CommonResourceID="Common";baynote_globals.PolicyResourceID="Policy";baynote_globals.CustomerStatus="/baynote/customerstatus2";baynote_globals.CommonScriptId="commonScriptId";if(typeof(baynote_inject_strategy)!="undefined"){baynote_globals.DefaultInjectStrategy=baynote_inject_strategy;}else{baynote_globals.DefaultInjectStrategy=Strategy.ScriptDOMInject;}
+// single-pre $Revision: 1.9 $
+
+var BaynoteJSVersion="Revision: 3.22 ";var BaynoteIgnored=false;var BN_READY_SIGNAL="ReadySignal";var Strategy={"ScriptDOMInject":2,"OnLoadInject":3};if(typeof(baynote_globals)=="undefined")var baynote_globals=new Object();baynote_globals.CommonResourceURL="/baynote/tags3/common";baynote_globals.CommonResourceID="Common";baynote_globals.PolicyResourceID="Policy";baynote_globals.CustomerStatus="/baynote/customerstatus2";baynote_globals.CommonScriptId="commonScriptId";if(typeof(baynote_inject_strategy)!="undefined"){baynote_globals.DefaultInjectStrategy=baynote_inject_strategy;}else{baynote_globals.DefaultInjectStrategy=Strategy.ScriptDOMInject;}
 if(typeof(baynote_server_timeout)!="undefined"){baynote_globals.ServerTimeout=baynote_server_timeout;}else{baynote_globals.ServerTimeout=undefined;}
 if(typeof(baynote_use_window_name)!="undefined"){baynote_globals.UseWindowName=baynote_use_window_name;}else{baynote_globals.UseWindowName=false;}
 baynote_globals.waitForReady=false;baynote_globals.checkStatus=false;baynote_globals.keepTrail=false;baynote_globals.trailLength=5;bnIsOpera=(navigator.userAgent.indexOf("Opera")>=0);bnIsSafari=(navigator.userAgent.indexOf("AppleWebKit")>=0);bnIsKonqueror=(navigator.userAgent.indexOf("Konqueror")>=0);bnIsKHTML=(bnIsSafari||bnIsKonqueror||navigator.userAgent.indexOf("KHTML")>=0);bnIsIE=(navigator.userAgent.indexOf("compatible")>=0&&navigator.userAgent.indexOf("MSIE")>=0&&!bnIsOpera);bnIsMozilla=(navigator.userAgent.indexOf("Gecko")>=0&&!bnIsKHTML);function BNLog(){this.timeBase=new Date().getTime();this.lines=new Array();this.lastLine="";this.repCount=0;}
@@ -41,6 +43,7 @@ bnCommon.waitAndExecuteAll(handlerparams);};BaynoteAPI.call=function(handlerName
 bnCommon.finishCall(handlerName,method,methodArgs,scopeObj);};BaynoteAPI.isBaynoteIgnored=function(){return BaynoteIgnored;};BaynoteAPI.getCookieDomain=function(){var cDomain="";var bn_locHref=window.location.href;var i=bn_locHref.indexOf('//');var s1=bn_locHref.substring(i+2);var j=s1.indexOf('/');if(j<0)
 var s2=s1;else
 var s2=s1.substring(0,j);var k=s2.indexOf('.');var s3=s2.substring(k+1);s3;return cDomain=s3;}
+baynote_globals.cookieDomain=BaynoteAPI.getCookieDomain();
 
  
 
@@ -391,6 +394,9 @@ BNAjaxHandler.prototype.getRTObject=function(reqId){return this.myRegistry[reqId
 var bnAjaxHandler=new BNAjaxHandler();bnTagManager.registerTagHandler(bnAjaxHandler.myType,bnAjaxHandler);
 	
 
+// Baynote custom-script $Revision: 1.9 $
+
+
 // div id for total search injection
 bn_searchwrapper_id = 'searchPageWrapper';
 
@@ -399,6 +405,18 @@ bncs_constants = {
 		// facet filters to be added to our search call. will be assembled into url param form at call time
 		customFacetFilters: {}
 };
+
+/**
+ * detect if we have a dangling UNDEFINED bn_u assigned to www.stubhub.com, and erase it
+ */
+function bn_fixBnU() {
+	var wwwBnU = document.cookie.match(/(?:; )?bn_u=UNASSIGNED;?/g);
+	var correctBnU = document.cookie.match(/(?:; )?bn_u=([0-9]*);?/g);
+	if ( wwwBnU && correctBnU ) {
+		// delete the www.stubhub.com cookie
+		document.cookie = 'bn_u=;expires=Mon, 1 Jan 1990 00:00:00;Path=/';
+	}
+}
 
 /**
  * get js search params from the bnExtraSearchParams variable if it exists
@@ -625,7 +643,7 @@ function bn_setUrl(tag) {
 function myPreHandler(tag) { 
 
 	if (typeof tag != 'undefined' &&  tag.type != 'undefined' && tag.type==bnConstants.OBSERVER_TAG)   {	
-		
+		bn_fixBnU();
 		bn_setUrl(tag);
 		bn_setABTest();
 		
@@ -714,8 +732,9 @@ function bn_decodeQuery(query) {
 baynote_globals.onBeforeTagShow.push(myPreHandler);
 baynote_globals.onTagShow.push(myPostHandler); 
 bnResourceManager.registerResource(baynote_globals.ScriptResourceId); 
+// single-post $Revision: 1.9 $
 
-baynote_globals.cookieDomain=BaynoteAPI.getCookieDomain();var preLoadObj={};var bn_locHref=window.location.href;if(bn_locHref.indexOf("https://")==0){preLoadObj.server="https://stubhub-www.baynote.net";}else{preLoadObj.server="http://stubhub-www.baynote.net";}
+var preLoadObj={};var bn_locHref=window.location.href;if(bn_locHref.indexOf("https://")==0){preLoadObj.server="https://stubhub-www.baynote.net";}else{preLoadObj.server="http://stubhub-www.baynote.net";}
 preLoadObj.customerId="stubhub";preLoadObj.code="www";preLoadObj.policyFormat='POLICY_JSONP';BaynoteAPI.init(preLoadObj);if(typeof(baynoteObserver)=="undefined"||typeof(baynoteObserver)!="boolean"||baynoteObserver){BaynoteAPI.execute("observer");}
 if(typeof(baynoteGuide)=="undefined"||typeof(baynoteGuide)!="boolean"||baynoteGuide){BaynoteAPI.execute("recommendation");}
 if(typeof(baynoteDisableAjax)!="undefined"&&typeof(baynoteDisableAjax)=="boolean"&&!baynoteDisableAjax){BaynoteAPI.execute("ajax");}

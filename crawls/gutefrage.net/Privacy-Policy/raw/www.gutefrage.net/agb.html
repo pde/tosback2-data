@@ -8,26 +8,24 @@
 <meta name="keywords" content="" />
 <meta name="language" content="de" />
 <meta name="viewport" content="width=device-width" />
-<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="apple-touch-icon" href="http://www.gutefrage.net/favicon.png" />
 <link rel="apple-touch-icon-precomposed" href="http://www.gutefrage.net/favicon.png" />
 
 
-<link rel="stylesheet" type="text/css" href="../images.gutefrage.net/css/generated/1334241219/default.basic-min.css" media="screen, print" />
-<link rel="stylesheet" type="text/css" href="../images.gutefrage.net/css/generated/1334241219/static.basic-min.css" media="screen, print" />
+<link rel="stylesheet" type="text/css" href="../images.gutefrage.net/css/generated/1336467087/default.basic-min.css" media="screen, print" />
+<link rel="stylesheet" type="text/css" href="../images.gutefrage.net/css/generated/1336467087/static.basic-min.css" media="screen, print" />
 
 <title>AGB gutefrage.net</title>
 
-<script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script type="text/javascript" src="js/generated/1334241219/preload.default-min.js"></script>
+<script type="text/javascript" src="js/generated/1336467087/preload.default-min.js"></script>
 
 <!--[if lt IE 9]>
-  <script type="text/javascript" src="/js/generated/1334241219/ie-lte9-fixes.default-min.js"></script><![endif]-->
+  <script type="text/javascript" src="/js/generated/1336467087/ie-lte9-fixes.default-min.js"></script><![endif]-->
 
 <!--[if lte IE 7]>
-  <link rel="stylesheet" type="text/css" href="http://images.gutefrage.net/css/ie-fixes.css?1334241219" />
+  <link rel="stylesheet" type="text/css" href="http://images.gutefrage.net/css/ie-fixes.css?1336467087" />
 <![endif]-->
 
 <script>
@@ -35,18 +33,18 @@
 (function() {
   var assets = {
     desktop: {
-      scripts: [{"media":"-gf-desktop","src":"\/js\/generated\/1334241219\/plugins.enhanced-min.js"}, 
-      {"media":"-gf-desktop","src":"\/js\/generated\/1334241219\/default.enhanced-min.js"}, 
-      {"media":"-gf-desktop","src":"\/js\/generated\/1334241219\/static.enhanced-min.js"}], 
-      stylesheets: [{"media":"-gf-desktop","href":"http://fonts.googleapis.com/css?family=Droid+Serif:bold"}, {"media":"-gf-desktop","href":"http:\/\/images.gutefrage.net\/css\/generated\/1334241219\/default.enhanced-min.css"}, 
-      {"media":"-gf-desktop","href":"http:\/\/images.gutefrage.net\/css\/generated\/1334241219\/static.enhanced-min.css"}, {"media": "print", href: "\/css\/ext\/gutefrage\/print.css"}]
+      scripts: [{"media":"-gf-desktop","src":"\/js\/generated\/1336467087\/plugins.enhanced-min.js"}, 
+      {"media":"-gf-desktop","src":"\/js\/generated\/1336467087\/default.enhanced-min.js"}, 
+      {"media":"-gf-desktop","src":"\/js\/generated\/1336467087\/static.enhanced-min.js"}], 
+      stylesheets: [{"media":"-gf-desktop","href":"http://fonts.googleapis.com/css?family=Droid+Serif:bold"}, {"media":"-gf-desktop","href":"http:\/\/images.gutefrage.net\/css\/generated\/1336467087\/default.enhanced-min.css"}, 
+      {"media":"-gf-desktop","href":"http:\/\/images.gutefrage.net\/css\/generated\/1336467087\/static.enhanced-min.css"}, {"media": "print", href: "\/css\/ext\/gutefrage\/print.css"}]
     }, 
     mobile: {
-      scripts: [{"media":"-gf-mobile","src":"\/js\/generated\/1334241219\/plugins.mobile-min.js"}, 
-      {"media":"-gf-mobile","src":"\/js\/generated\/1334241219\/default.mobile-min.js"}, 
-      {"media":"-gf-mobile","src":"\/js\/generated\/1334241219\/static.mobile-min.js"}], 
-      stylesheets:  [{"media":"-gf-mobile","href":"http:\/\/images.gutefrage.net\/css\/generated\/1334241219\/default.mobile-min.css"}, 
-      {"media":"-gf-mobile","href":"http:\/\/images.gutefrage.net\/css\/generated\/1334241219\/static.mobile-min.css"}]
+      scripts: [{"media":"-gf-mobile","src":"\/js\/generated\/1336467087\/plugins.mobile-min.js"}, 
+      {"media":"-gf-mobile","src":"\/js\/generated\/1336467087\/default.mobile-min.js"}, 
+      {"media":"-gf-mobile","src":"\/js\/generated\/1336467087\/static.mobile-min.js"}], 
+      stylesheets:  [{"media":"-gf-mobile","href":"http:\/\/images.gutefrage.net\/css\/generated\/1336467087\/default.mobile-min.css"}, 
+      {"media":"-gf-mobile","href":"http:\/\/images.gutefrage.net\/css\/generated\/1336467087\/static.mobile-min.css"}]
     }
   }; 
 
@@ -66,14 +64,28 @@
   })();
 </script>
 
+<script>
+  (function() {
+    if(gf.assets.isMobileDevice() === true && gf.ext.gutefrage.mobileSwitch.isEnhanceDesktopVersionForced() === false){
+      document.write('<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">');
+    }
+  })();
+</script>
+
 <!-- Google Analytics -->
 
 
 <script>
   var _gaq = _gaq || [];
+  
   _gaq.push(['_setAccount', 'UA-965201-1']);
   
   _gaq.push(['internal._setAccount', 'UA-965201-27']);
+  
+  //Set new Google Analytics account if VWO is active
+  if(gf.util.misc.vwo.isActive()) {
+    _gaq.push(['vwo._setAccount', 'UA-965201-29']);
+  }
 
    
   _gaq.push(['_setCustomVar', 2, "gf version", gf.ext.gutefrage.settings.version]);
@@ -94,10 +106,16 @@
     this._trackEvent = function(first, second, third) {
       _gaq.push(['_trackEvent', first, second, third]);
       _gaq.push(['internal._trackEvent', first, second, third]);
+      if(gf.util.misc.vwo.isActive()) {
+        _gaq.push(['vwo._trackEvent', first, second, third]);
+      }
     }
     this._trackPageview = function() {
       _gaq.push(['_trackPageview']);
       _gaq.push(['internal._trackPageview']);
+      if(gf.util.misc.vwo.isActive()) {
+        _gaq.push(['vwo._trackPageview']);
+      }
     }
   }
   var pageTracker = new PageTrackerProxy();
@@ -174,7 +192,25 @@ document.write("<img src=\""+IVW+"?r="+escape(document.referrer)+"&d="+(Math.ran
 <img src="../gutefrag.ivwbox.de/cgi-bin/ivw/CP/Unternehmenskommunikation%3BUnternehmenskommunikation" width="1" height="1" alt="ivw" />
 </noscript>
 <!-- /SZM -->
+ 
 
+<script type="text/javascript">
+<!--
+  if(gf.assets.isMobileDevice() === true) {
+    var springq = springq || [];
+    springq.push({ 
+      "s":"m-gutefrage",
+      "cp":"Unternehmenskommunikation",
+      "url": document.location.href
+    });
+
+    var tagJs = document.createElement('script'),
+    s = document.getElementsByTagName('script')[0];
+    tagJs.src = ('/js/misc/spring.min.js');
+    s.parentNode.insertBefore(tagJs, s);
+  }
+//-->
+</script>
 
 <script type="text/javascript">
 <!--
@@ -377,14 +413,14 @@ var szmvars="gutefrag//CP//Unternehmenskommunikation";
        >
     Auszeichnung  </a>
     <ul class="subNav">
-    <li data-url="/auszeichnung/das-beliebteste-smartphone">
+    <li data-url="/auszeichnung/die-beliebtesten-chips">
+    Chips  </li>
+  <li data-url="/auszeichnung/das-beliebteste-smartphone">
     Smartphone  </li>
   <li data-url="/auszeichnung/der-beliebteste-schokoriegel">
     Schokoriegel  </li>
   <li data-url="/auszeichnung/die-beliebtesten-reiseanbieter">
     Reiseanbieter  </li>
-  <li data-url="/auszeichnung/das-beste-duschgel">
-    Duschgel  </li>
   </ul>
   </li>
 </ul>        </nav>
@@ -682,34 +718,34 @@ var szmvars="gutefrag//CP//Unternehmenskommunikation";
 
 <ol data-role="listview" id="top10List" class="tagList clearfix">
           <li class="row-1">
-      <a href="http://www.gutefrage.net/tag/dringend/1" title="Dringend" rel="tag">Dringend</a>
+      <a href="http://www.gutefrage.net/tag/informationstechnik/1" title="Informationstechnik" rel="tag">Informationstec...</a>
     </li>
           <li class="row-1">
-      <a href="http://www.gutefrage.net/tag/titanic/1" title="Titanic" rel="tag">Titanic</a>
+      <a href="http://www.gutefrage.net/tag/muttertag/1" title="Muttertag" rel="tag">Muttertag</a>
     </li>
           <li class="row-1">
-      <a href="http://www.gutefrage.net/tag/bundesliga/1" title="Bundesliga" rel="tag">Bundesliga</a>
+      <a href="http://www.gutefrage.net/tag/galaxy/1" title="galaxy" rel="tag">galaxy</a>
     </li>
           <li class="row-1">
-      <a href="http://www.gutefrage.net/tag/movie/1" title="Movie" rel="tag">Movie</a>
+      <a href="http://www.gutefrage.net/tag/food/1" title="Food" rel="tag">Food</a>
     </li>
           <li class="row-1">
-      <a href="http://www.gutefrage.net/tag/ostern/1" title="Ostern" rel="tag">Ostern</a>
+      <a href="http://www.gutefrage.net/tag/unterricht/1" title="Unterricht" rel="tag">Unterricht</a>
     </li>
           <li class="row-2 reset">
-      <a href="http://www.gutefrage.net/tag/fotografieren/1" title="fotografieren" rel="tag">fotografieren</a>
+      <a href="http://www.gutefrage.net/tag/malen/1" title="malen" rel="tag">malen</a>
     </li>
           <li class="row-2">
-      <a href="http://www.gutefrage.net/tag/nvidia/1" title="Nvidia" rel="tag">Nvidia</a>
+      <a href="http://www.gutefrage.net/tag/english/1" title="english" rel="tag">english</a>
     </li>
           <li class="row-2">
-      <a href="http://www.gutefrage.net/tag/bayern/1" title="Bayern," rel="tag">Bayern,</a>
+      <a href="http://www.gutefrage.net/tag/speicher/1" title="Speicher" rel="tag">Speicher</a>
     </li>
           <li class="row-2">
-      <a href="http://www.gutefrage.net/tag/mainboard/1" title="Mainboard" rel="tag">Mainboard</a>
+      <a href="http://www.gutefrage.net/tag/telefonieren/1" title="telefonieren" rel="tag">telefonieren</a>
     </li>
           <li class="row-2">
-      <a href="http://www.gutefrage.net/tag/internetseiten/1" title="Internetseiten" rel="tag">Internetseiten</a>
+      <a href="http://www.gutefrage.net/tag/universitaet/1" title="Universität" rel="tag">Universität</a>
     </li>
   </ol>
 
@@ -728,403 +764,403 @@ var szmvars="gutefrag//CP//Unternehmenskommunikation";
   </thead>
   <tbody>
         <tr class="page-0">
-      <td data-value="278664" data-bar="49.6%">
+      <td data-value="286640" data-bar="49.6%">
         <a class="tag" href="http://www.gutefrage.net/tag/apple/1" rel="tag" title="Apple">Apple</a>
       </td>
       <td>
-                  <span class="tagCount">278664</span>
+                  <span class="tagCount">286640</span>
               </td>
     </tr>
         <tr class="page-0">
-      <td data-value="208581" data-bar="47.2%">
+      <td data-value="215121" data-bar="47.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/arbeit/1" rel="tag" title="Arbeit">Arbeit</a>
       </td>
       <td>
-                  <span class="tagCount">208581</span>
+                  <span class="tagCount">215121</span>
               </td>
     </tr>
         <tr class="page-0">
-      <td data-value="261713" data-bar="49%">
+      <td data-value="268881" data-bar="49%">
         <a class="tag" href="http://www.gutefrage.net/tag/auto/1" rel="tag" title="Auto">Auto</a>
       </td>
       <td>
-                  <span class="tagCount">261713</span>
+                  <span class="tagCount">268881</span>
               </td>
     </tr>
         <tr class="page-0">
-      <td data-value="195777" data-bar="46.6%">
+      <td data-value="204234" data-bar="46.6%">
         <a class="tag" href="http://www.gutefrage.net/tag/beauty/1" rel="tag" title="Beauty">Beauty</a>
       </td>
       <td>
-                  <span class="tagCount">195777</span>
+                  <span class="tagCount">204234</span>
               </td>
     </tr>
         <tr class="page-0">
-      <td data-value="234043" data-bar="47.8%">
+      <td data-value="244627" data-bar="47.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/beruf/1" rel="tag" title="Beruf">Beruf</a>
       </td>
       <td>
-                  <span class="tagCount">234043</span>
+                  <span class="tagCount">244627</span>
               </td>
     </tr>
         <tr class="page-0">
-      <td data-value="203440" data-bar="47.2%">
+      <td data-value="211273" data-bar="47.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/beziehung/1" rel="tag" title="Beziehung">Beziehung</a>
       </td>
       <td>
-                  <span class="tagCount">203440</span>
+                  <span class="tagCount">211273</span>
               </td>
     </tr>
         <tr class="page-0">
-      <td data-value="1692355" data-bar="100%">
+      <td data-value="1748068" data-bar="100%">
         <a class="tag" href="http://www.gutefrage.net/tag/computer/1" rel="tag" title="Computer">Computer</a>
       </td>
       <td>
-                  <span class="tagCount">1692355</span>
+                  <span class="tagCount">1748068</span>
               </td>
     </tr>
         <tr class="page-0">
-      <td data-value="218055" data-bar="47.2%">
+      <td data-value="226087" data-bar="47.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/computerspiele/1" rel="tag" title="Computerspiele">Computerspiele</a>
       </td>
       <td>
-                  <span class="tagCount">218055</span>
+                  <span class="tagCount">226087</span>
               </td>
     </tr>
         <tr class="page-0">
-      <td data-value="203783" data-bar="47.2%">
+      <td data-value="212277" data-bar="47.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/deutsch/1" rel="tag" title="deutsch">deutsch</a>
       </td>
       <td>
-                  <span class="tagCount">203783</span>
+                  <span class="tagCount">212277</span>
               </td>
     </tr>
         <tr class="page-0">
-      <td data-value="143606" data-bar="44.8%">
+      <td data-value="149765" data-bar="44.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/englisch/1" rel="tag" title="Englisch">Englisch</a>
       </td>
       <td>
-                  <span class="tagCount">143606</span>
+                  <span class="tagCount">149765</span>
               </td>
     </tr>
         <tr class="page-1">
-      <td data-value="169683" data-bar="46%">
+      <td data-value="174257" data-bar="45.4%">
         <a class="tag" href="http://www.gutefrage.net/tag/ernaehrung/1" rel="tag" title="Ernährung">Ernährung</a>
       </td>
       <td>
-                  <span class="tagCount">169683</span>
+                  <span class="tagCount">174257</span>
               </td>
     </tr>
         <tr class="page-1">
-      <td data-value="221147" data-bar="47.8%">
+      <td data-value="227235" data-bar="47.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/essen/1" rel="tag" title="essen">essen</a>
       </td>
       <td>
-                  <span class="tagCount">221147</span>
+                  <span class="tagCount">227235</span>
               </td>
     </tr>
         <tr class="page-1">
-      <td data-value="174107" data-bar="46%">
+      <td data-value="183402" data-bar="46%">
         <a class="tag" href="http://www.gutefrage.net/tag/facebook/1" rel="tag" title="Facebook">Facebook</a>
       </td>
       <td>
-                  <span class="tagCount">174107</span>
+                  <span class="tagCount">183402</span>
               </td>
     </tr>
         <tr class="page-1">
-      <td data-value="204857" data-bar="47.2%">
+      <td data-value="210110" data-bar="47.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/fernsehen/1" rel="tag" title="Fernsehen">Fernsehen</a>
       </td>
       <td>
-                  <span class="tagCount">204857</span>
+                  <span class="tagCount">210110</span>
               </td>
     </tr>
         <tr class="page-1">
-      <td data-value="269489" data-bar="49%">
+      <td data-value="279053" data-bar="49%">
         <a class="tag" href="http://www.gutefrage.net/tag/film/1" rel="tag" title="Film">Film</a>
       </td>
       <td>
-                  <span class="tagCount">269489</span>
+                  <span class="tagCount">279053</span>
               </td>
     </tr>
         <tr class="page-1">
-      <td data-value="202969" data-bar="46.6%">
+      <td data-value="207644" data-bar="46.6%">
         <a class="tag" href="http://www.gutefrage.net/tag/finanzen/1" rel="tag" title="Finanzen">Finanzen</a>
       </td>
       <td>
-                  <span class="tagCount">202969</span>
+                  <span class="tagCount">207644</span>
               </td>
     </tr>
         <tr class="page-1">
-      <td data-value="698887" data-bar="64.6%">
+      <td data-value="741978" data-bar="65.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/freizeit/1" rel="tag" title="Freizeit">Freizeit</a>
       </td>
       <td>
-                  <span class="tagCount">698887</span>
+                  <span class="tagCount">741978</span>
               </td>
     </tr>
         <tr class="page-1">
-      <td data-value="395255" data-bar="53.8%">
+      <td data-value="410256" data-bar="53.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/games/1" rel="tag" title="Games">Games</a>
       </td>
       <td>
-                  <span class="tagCount">395255</span>
+                  <span class="tagCount">410256</span>
               </td>
     </tr>
         <tr class="page-1">
-      <td data-value="314797" data-bar="50.8%">
+      <td data-value="324051" data-bar="50.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/geld/1" rel="tag" title="Geld">Geld</a>
       </td>
       <td>
-                  <span class="tagCount">314797</span>
+                  <span class="tagCount">324051</span>
               </td>
     </tr>
         <tr class="page-1">
-      <td data-value="615986" data-bar="61.6%">
+      <td data-value="632400" data-bar="61.6%">
         <a class="tag" href="http://www.gutefrage.net/tag/gesundheit/1" rel="tag" title="Gesundheit">Gesundheit</a>
       </td>
       <td>
-                  <span class="tagCount">615986</span>
+                  <span class="tagCount">632400</span>
               </td>
     </tr>
         <tr class="page-2">
-      <td data-value="200136" data-bar="46.6%">
+      <td data-value="208811" data-bar="46.6%">
         <a class="tag" href="http://www.gutefrage.net/tag/haare/1" rel="tag" title="Haare">Haare</a>
       </td>
       <td>
-                  <span class="tagCount">200136</span>
+                  <span class="tagCount">208811</span>
               </td>
     </tr>
         <tr class="page-2">
-      <td data-value="523286" data-bar="58%">
+      <td data-value="544667" data-bar="58.6%">
         <a class="tag" href="http://www.gutefrage.net/tag/handy/1" rel="tag" title="Handy">Handy</a>
       </td>
       <td>
-                  <span class="tagCount">523286</span>
+                  <span class="tagCount">544667</span>
               </td>
     </tr>
         <tr class="page-2">
-      <td data-value="500406" data-bar="57.4%">
+      <td data-value="520555" data-bar="57.4%">
         <a class="tag" href="http://www.gutefrage.net/tag/hilfe/1" rel="tag" title="Hilfe">Hilfe</a>
       </td>
       <td>
-                  <span class="tagCount">500406</span>
+                  <span class="tagCount">520555</span>
               </td>
     </tr>
         <tr class="page-2">
-      <td data-value="1055983" data-bar="77.2%">
+      <td data-value="1083018" data-bar="76.6%">
         <a class="tag" href="http://www.gutefrage.net/tag/internet/1" rel="tag" title="Internet">Internet</a>
       </td>
       <td>
-                  <span class="tagCount">1055983</span>
+                  <span class="tagCount">1083018</span>
               </td>
     </tr>
         <tr class="page-2">
-      <td data-value="212668" data-bar="47.2%">
+      <td data-value="220512" data-bar="47.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/iphone/1" rel="tag" title="iPhone">iPhone</a>
       </td>
       <td>
-                  <span class="tagCount">212668</span>
+                  <span class="tagCount">220512</span>
               </td>
     </tr>
         <tr class="page-2">
-      <td data-value="145909" data-bar="44.8%">
+      <td data-value="148884" data-bar="44.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/ipod-touch/1" rel="tag" title="iPod Touch">iPod Touch</a>
       </td>
       <td>
-                  <span class="tagCount">145909</span>
+                  <span class="tagCount">148884</span>
               </td>
     </tr>
         <tr class="page-2">
-      <td data-value="176366" data-bar="46%">
+      <td data-value="179842" data-bar="46%">
         <a class="tag" href="http://www.gutefrage.net/tag/kinder/1" rel="tag" title="Kinder">Kinder</a>
       </td>
       <td>
-                  <span class="tagCount">176366</span>
+                  <span class="tagCount">179842</span>
               </td>
     </tr>
         <tr class="page-2">
-      <td data-value="149048" data-bar="44.8%">
+      <td data-value="156310" data-bar="44.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/koerper/1" rel="tag" title="Körper">Körper</a>
       </td>
       <td>
-                  <span class="tagCount">149048</span>
+                  <span class="tagCount">156310</span>
               </td>
     </tr>
         <tr class="page-2">
-      <td data-value="224044" data-bar="47.8%">
+      <td data-value="231876" data-bar="47.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/laptop/1" rel="tag" title="Laptop">Laptop</a>
       </td>
       <td>
-                  <span class="tagCount">224044</span>
+                  <span class="tagCount">231876</span>
               </td>
     </tr>
         <tr class="page-2">
-      <td data-value="437917" data-bar="55%">
+      <td data-value="454618" data-bar="55.6%">
         <a class="tag" href="http://www.gutefrage.net/tag/liebe/1" rel="tag" title="Liebe">Liebe</a>
       </td>
       <td>
-                  <span class="tagCount">437917</span>
+                  <span class="tagCount">454618</span>
               </td>
     </tr>
         <tr class="page-3">
-      <td data-value="146605" data-bar="44.8%">
+      <td data-value="152519" data-bar="44.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/lied/1" rel="tag" title="Lied">Lied</a>
       </td>
       <td>
-                  <span class="tagCount">146605</span>
+                  <span class="tagCount">152519</span>
               </td>
     </tr>
         <tr class="page-3">
-      <td data-value="176808" data-bar="46%">
+      <td data-value="185680" data-bar="46%">
         <a class="tag" href="http://www.gutefrage.net/tag/maedchen/1" rel="tag" title="Mädchen">Mädchen</a>
       </td>
       <td>
-                  <span class="tagCount">176808</span>
+                  <span class="tagCount">185680</span>
               </td>
     </tr>
         <tr class="page-3">
-      <td data-value="212967" data-bar="47.2%">
+      <td data-value="218076" data-bar="47.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/medizin/1" rel="tag" title="Medizin">Medizin</a>
       </td>
       <td>
-                  <span class="tagCount">212967</span>
+                  <span class="tagCount">218076</span>
               </td>
     </tr>
         <tr class="page-3">
-      <td data-value="168112" data-bar="45.4%">
+      <td data-value="178713" data-bar="46%">
         <a class="tag" href="http://www.gutefrage.net/tag/minecraft/1" rel="tag" title="Minecraft">Minecraft</a>
       </td>
       <td>
-                  <span class="tagCount">168112</span>
+                  <span class="tagCount">178713</span>
               </td>
     </tr>
         <tr class="page-3">
-      <td data-value="806743" data-bar="68.2%">
+      <td data-value="831096" data-bar="68.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/musik/1" rel="tag" title="Musik">Musik</a>
       </td>
       <td>
-                  <span class="tagCount">806743</span>
+                  <span class="tagCount">831096</span>
               </td>
     </tr>
         <tr class="page-3">
-      <td data-value="904942" data-bar="71.8%">
+      <td data-value="937327" data-bar="71.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/pc/1" rel="tag" title="PC">PC</a>
       </td>
       <td>
-                  <span class="tagCount">904942</span>
+                  <span class="tagCount">937327</span>
               </td>
     </tr>
         <tr class="page-3">
-      <td data-value="166918" data-bar="45.4%">
+      <td data-value="173406" data-bar="45.4%">
         <a class="tag" href="http://www.gutefrage.net/tag/pc-spiele/1" rel="tag" title="PC-Spiele">PC-Spiele</a>
       </td>
       <td>
-                  <span class="tagCount">166918</span>
+                  <span class="tagCount">173406</span>
               </td>
     </tr>
         <tr class="page-3">
-      <td data-value="176111" data-bar="46%">
+      <td data-value="183679" data-bar="46%">
         <a class="tag" href="http://www.gutefrage.net/tag/problem/1" rel="tag" title="Problem">Problem</a>
       </td>
       <td>
-                  <span class="tagCount">176111</span>
+                  <span class="tagCount">183679</span>
               </td>
     </tr>
         <tr class="page-3">
-      <td data-value="173712" data-bar="46%">
+      <td data-value="180405" data-bar="46%">
         <a class="tag" href="http://www.gutefrage.net/tag/ps3/1" rel="tag" title="PS3">PS3</a>
       </td>
       <td>
-                  <span class="tagCount">173712</span>
+                  <span class="tagCount">180405</span>
               </td>
     </tr>
         <tr class="page-3">
-      <td data-value="316358" data-bar="50.8%">
+      <td data-value="323886" data-bar="50.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/recht/1" rel="tag" title="Recht">Recht</a>
       </td>
       <td>
-                  <span class="tagCount">316358</span>
+                  <span class="tagCount">323886</span>
               </td>
     </tr>
         <tr class="page-4">
-      <td data-value="685950" data-bar="64%">
+      <td data-value="717400" data-bar="64.6%">
         <a class="tag" href="http://www.gutefrage.net/tag/schule/1" rel="tag" title="Schule">Schule</a>
       </td>
       <td>
-                  <span class="tagCount">685950</span>
+                  <span class="tagCount">717400</span>
               </td>
     </tr>
         <tr class="page-4">
-      <td data-value="207009" data-bar="47.2%">
+      <td data-value="213265" data-bar="47.2%">
         <a class="tag" href="http://www.gutefrage.net/tag/software/1" rel="tag" title="Software">Software</a>
       </td>
       <td>
-                  <span class="tagCount">207009</span>
+                  <span class="tagCount">213265</span>
               </td>
     </tr>
         <tr class="page-4">
-      <td data-value="439243" data-bar="55%">
+      <td data-value="452472" data-bar="55%">
         <a class="tag" href="http://www.gutefrage.net/tag/spiele/1" rel="tag" title="Spiele">Spiele</a>
       </td>
       <td>
-                  <span class="tagCount">439243</span>
+                  <span class="tagCount">452472</span>
               </td>
     </tr>
         <tr class="page-4">
-      <td data-value="330908" data-bar="51.4%">
+      <td data-value="344066" data-bar="51.4%">
         <a class="tag" href="http://www.gutefrage.net/tag/sport/1" rel="tag" title="Sport">Sport</a>
       </td>
       <td>
-                  <span class="tagCount">330908</span>
+                  <span class="tagCount">344066</span>
               </td>
     </tr>
         <tr class="page-4">
-      <td data-value="420166" data-bar="54.4%">
+      <td data-value="432898" data-bar="54.4%">
         <a class="tag" href="http://www.gutefrage.net/tag/technik/1" rel="tag" title="Technik">Technik</a>
       </td>
       <td>
-                  <span class="tagCount">420166</span>
+                  <span class="tagCount">432898</span>
               </td>
     </tr>
         <tr class="page-4">
-      <td data-value="199433" data-bar="46.6%">
+      <td data-value="204856" data-bar="46.6%">
         <a class="tag" href="http://www.gutefrage.net/tag/tiere/1" rel="tag" title="Tiere">Tiere</a>
       </td>
       <td>
-                  <span class="tagCount">199433</span>
+                  <span class="tagCount">204856</span>
               </td>
     </tr>
         <tr class="page-4">
-      <td data-value="172500" data-bar="46%">
+      <td data-value="177589" data-bar="46%">
         <a class="tag" href="http://www.gutefrage.net/tag/tv/1" rel="tag" title="TV">TV</a>
       </td>
       <td>
-                  <span class="tagCount">172500</span>
+                  <span class="tagCount">177589</span>
               </td>
     </tr>
         <tr class="page-4">
-      <td data-value="166138" data-bar="45.4%">
+      <td data-value="172284" data-bar="45.4%">
         <a class="tag" href="http://www.gutefrage.net/tag/video/1" rel="tag" title="Video">Video</a>
       </td>
       <td>
-                  <span class="tagCount">166138</span>
+                  <span class="tagCount">172284</span>
               </td>
     </tr>
         <tr class="page-4">
-      <td data-value="172169" data-bar="46%">
+      <td data-value="178096" data-bar="46%">
         <a class="tag" href="http://www.gutefrage.net/tag/windows/1" rel="tag" title="Windows">Windows</a>
       </td>
       <td>
-                  <span class="tagCount">172169</span>
+                  <span class="tagCount">178096</span>
               </td>
     </tr>
         <tr class="page-4">
-      <td data-value="226533" data-bar="47.8%">
+      <td data-value="235388" data-bar="47.8%">
         <a class="tag" href="http://www.gutefrage.net/tag/youtube/1" rel="tag" title="Youtube">Youtube</a>
       </td>
       <td>
-                  <span class="tagCount">226533</span>
+                  <span class="tagCount">235388</span>
               </td>
     </tr>
       </tbody>
@@ -1156,45 +1192,45 @@ var szmvars="gutefrag//CP//Unternehmenskommunikation";
       <div class="content">
        <ol id="userListTopUserSidebar" data-offset="1">
                    <li>
-            <img class="imgAvatar" alt="streetworker56" data-avatar="/uploads/user/6d491270fc5451800c5efd0b2380983b/0cc55eec08d14f7395c31eff647c0f0c.png" height="50" width="50" src="../images.gutefrage.net/images/user/avatar.gif%3F1334241219" />            <dl class="user">
+            <img class="imgAvatar" alt="Ivan25W" data-avatar="/uploads/user/135432eb3dc1e5387306f0a8fa3d6f2c/bfb44354c2f026bd1e6cd94298daf130.png" height="50" width="50" src="../images.gutefrage.net/images/user/avatar.gif%3F1336467087" />            <dl class="user">
               <dt class="nickname">
-                <span class="user" data-nickname="streetworker56">
-                  <a href="http://www.gutefrage.net/nutzer/streetworker56" rel="nofollow">
-                    streetworker56                  </a>
+                <span class="user" data-nickname="Ivan25W">
+                  <a href="http://www.gutefrage.net/nutzer/Ivan25W" rel="nofollow">
+                    Ivan25W                  </a>
                 </span>
               </dt>
               <dt class="label">Punkte:</dt>
-              <dd>3094</dd>
+              <dd>1023</dd>
                             <dt class="label">Level:</dt>
-              <dd><span class="userIcon userIcon-gold" title="Gold-Fragant">streetworker56</span></dd>
+              <dd><span class="userIcon userIcon-gold" title="Gold-Fragant">Ivan25W</span></dd>
                           </dl>
           </li>
                     <li>
-            <img class="imgAvatar" alt="MrSavagee" data-avatar="/uploads/user/b26616053b16d80e72d9732e027e283d/7d14a37220f9b5400a40c7afb92173bf.png" height="50" width="50" src="../images.gutefrage.net/images/user/avatar.gif%3F1334241219" />            <dl class="user">
+            <img class="imgAvatar" alt="Rekordmeister" height="50" width="50" src="../images.gutefrage.net/images/user/avatar.gif%3F1336467087" />            <dl class="user">
               <dt class="nickname">
-                <span class="user" data-nickname="MrSavagee">
-                  <a href="http://www.gutefrage.net/nutzer/MrSavagee" rel="nofollow">
-                    MrSavagee                  </a>
+                <span class="user" data-nickname="Rekordmeister">
+                  <a href="http://www.gutefrage.net/nutzer/Rekordmeister" rel="nofollow">
+                    Rekordmeister                  </a>
                 </span>
               </dt>
               <dt class="label">Punkte:</dt>
-              <dd>2056</dd>
+              <dd>987</dd>
                             <dt class="label">Level:</dt>
-              <dd><span class="userIcon userIcon-platinum" title="Platin-Fragant">MrSavagee</span></dd>
+              <dd><span class="userIcon userIcon-bronze" title="Bronze-Fragant">Rekordmeister</span></dd>
                           </dl>
           </li>
                     <li>
-            <img class="imgAvatar" alt="CaptainCaneman" data-avatar="/uploads/user/4109e68987a31bacf3565f2cee372d5c/096f5e0a2218ffeccadff2b113df9a7e.png" height="50" width="50" src="../images.gutefrage.net/images/user/avatar.gif%3F1334241219" />            <dl class="user">
+            <img class="imgAvatar" alt="mops09" data-avatar="/uploads/user/fe3a712e25640c9e40c4bc62a1f17a76/8384b4a70b150f5a5dc42e46468131f3.png" height="50" width="50" src="../images.gutefrage.net/images/user/avatar.gif%3F1336467087" />            <dl class="user">
               <dt class="nickname">
-                <span class="user" data-nickname="CaptainCaneman">
-                  <a href="http://www.gutefrage.net/nutzer/CaptainCaneman" rel="nofollow">
-                    CaptainCaneman                  </a>
+                <span class="user" data-nickname="mops09">
+                  <a href="http://www.gutefrage.net/nutzer/mops09" rel="nofollow">
+                    mops09                  </a>
                 </span>
               </dt>
               <dt class="label">Punkte:</dt>
-              <dd>1908</dd>
+              <dd>821</dd>
                             <dt class="label">Level:</dt>
-              <dd><span class="userIcon userIcon-gold" title="Gold-Fragant">CaptainCaneman</span></dd>
+              <dd><span class="userIcon userIcon-diamond" title="Diamant-Fragant">mops09</span></dd>
                           </dl>
           </li>
                   </ol>
@@ -1208,26 +1244,26 @@ var szmvars="gutefrag//CP//Unternehmenskommunikation";
       <div id="topQuestions" class="block block-default">
   <div class="header">
     <span>Gute Fragen von heute</span>
-    <em class="info">Aktuell 6.809.467 gute Fragen</em>
+    <em class="info">Aktuell 7.016.992 gute Fragen</em>
   </div>
   <div class="content">
     <ul>
-              <li data-type="question" data-id="7850551" data-stripped-title="man-nimmt-sich-etwas-vor-macht-es-aber-nicht-wer-kennt-das">
+              <li data-type="question" data-id="8101304" data-stripped-title="wenn-eltern-aelter-werden---wie-geht-man-mit-ihnen-um">
           <div class="question">
-            <div class="diggedIt">74</div>
-            <span class="link">Man nimmt sich etwas vor, macht es aber nicht. Wer kennt das?</span>
+            <div class="diggedIt">15</div>
+            <span class="link">wenn Eltern aelter werden - wie geht man mit ihnen um?</span>
           </div>
         </li>
-              <li data-type="question" data-id="7849919" data-stripped-title="darf-man-eigentlich-nach-telefonaten-fremder-leute-in-der-u-bahn-fragen-stellen">
+              <li data-type="question" data-id="8101192" data-stripped-title="gibt-es-bewiesene-verschwoerungen--keine-theorien-sondern-belege">
           <div class="question">
-            <div class="diggedIt">25</div>
-            <span class="link">Darf man eigentlich nach Telefonaten fremder Leute in der U-Bahn Fragen stellen</span>
+            <div class="diggedIt">14</div>
+            <span class="link">Gibt es bewiesene Verschwörungen?  Keine Theorien, sondern Belege?</span>
           </div>
         </li>
-              <li data-type="question" data-id="7860770" data-stripped-title="wieso-ist-man-von-seiner-eigenen-stimme-im-kopf-nie-genervt">
+              <li data-type="question" data-id="8104266" data-stripped-title="haarige-tennisbaelle-o">
           <div class="question">
-            <div class="diggedIt">18</div>
-            <span class="link">Wieso ist man von seiner eigenen Stimme im Kopf nie genervt?</span>
+            <div class="diggedIt">11</div>
+            <span class="link">Haarige Tennisbälle o:</span>
           </div>
         </li>
           </ul>
@@ -1247,13 +1283,13 @@ var szmvars="gutefrag//CP//Unternehmenskommunikation";
 <div>
   <ul id="topVideos-videoList0" class="videoList videoListBlock0 clearfix">
         <li>
-      <a class="detailLink" href="http://www.gutefrage.net/video/hausmittel-gegen-herpes"
-         title="Hausmittel gegen Herpes">Hausmittel gegen Herpes        <img class="imgVideo" src="../videos.gutefrage.net/39866bd62d64a34a38d8aa1c0991e69a_3.jpg" width="135" height="101" alt="Hausmittel gegen Herpes" />
+      <a class="detailLink" href="http://www.gutefrage.net/video/knuspermuesli-selber-machen"
+         title="Knuspermüsli selber machen">Knuspermüsli selber machen        <img class="imgVideo" src="../videos.gutefrage.net/8378e120865c0acba1da18061dc055fc_3.jpg" width="135" height="101" alt="Knuspermüsli selber machen" />
       </a>
     </li>
        <li>
-      <a class="detailLink" href="http://www.gutefrage.net/video/yoga-fuer-die-schultern---uebungen-fuer-die-schultergelenke"
-         title="Yoga für die Schultern - Übungen für die Schultergelenke">Yoga für die Schultern - Übungen für die Schultergelenke        <img class="imgVideo" src="../videos.gutefrage.net/40f8e010d659dab6348273cdf64e6b8a_3.jpg" width="135" height="101" alt="Yoga für die Schultern - Übungen für die Schultergelenke" />
+      <a class="detailLink" href="http://www.gutefrage.net/video/0180er-nummern-umgehen"
+         title="0180er Nummern umgehen">0180er Nummern umgehen        <img class="imgVideo" src="../videos.gutefrage.net/ad4239270657ad4f9017c763140c3170_3.jpg" width="135" height="101" alt="0180er Nummern umgehen" />
       </a>
     </li>
      </ul>
@@ -1261,13 +1297,13 @@ var szmvars="gutefrag//CP//Unternehmenskommunikation";
 <div>
   <ul id="topVideos-videoList1" class="videoList videoListBlock1 clearfix">
         <li>
-      <a class="detailLink" href="http://www.gutefrage.net/video/lampe-richtig-anschliessen-welche-kabel-gehoeren-zusammen"
-         title="Lampe richtig anschließen: Welche Kabel gehören zusammen?">Lampe richtig anschließen: Welche Kabel gehören zusammen?        <img class="imgVideo" src="../videos.gutefrage.net/be1c814e1c9486196a5558ed70bfbeca_3.jpg" width="135" height="101" alt="Lampe richtig anschließen: Welche Kabel gehören zusammen?" />
+      <a class="detailLink" href="http://www.gutefrage.net/video/professionell-servieren-drei-teller-auf-einmal-tragen"
+         title="Professionell servieren: Drei Teller auf einmal tragen">Professionell servieren: Drei Teller auf einmal tragen        <img class="imgVideo" src="../videos.gutefrage.net/e0c79f974540481ddb2788dbfed1d915_3.jpg" width="135" height="101" alt="Professionell servieren: Drei Teller auf einmal tragen" />
       </a>
     </li>
        <li>
-      <a class="detailLink" href="http://www.gutefrage.net/video/backrezept-der-beste-schokokuchen"
-         title="Backrezept: Der beste Schokokuchen">Backrezept: Der beste Schokokuchen        <img class="imgVideo" src="../videos.gutefrage.net/d401c00b5855cf7cf5d1ed6c166bdc40_3.jpg" width="135" height="101" alt="Backrezept: Der beste Schokokuchen" />
+      <a class="detailLink" href="http://www.gutefrage.net/video/muender-aller-art-zeichnen"
+         title="Münder, aller Art zeichnen">Münder, aller Art zeichnen        <img class="imgVideo" src="../videos.gutefrage.net/03c1dc2e34a1d09cdcd955edc824b5fc_3.jpg" width="135" height="101" alt="Münder, aller Art zeichnen" />
       </a>
     </li>
      </ul>
@@ -1275,27 +1311,22 @@ var szmvars="gutefrag//CP//Unternehmenskommunikation";
 
   </div>
 </div>
-      <div class="block">
-    <a href="http://www.gutefrage.net/ratgeberheld">
-      <img src="media/landingpage/bilder/ratgeberheld-promobox.jpg" />    </a>
-  </div>
-
-    
+        
 <div id="statisticsBlock" class="block block-special">
   <div class="header">
     gutefrage.net in Zahlen  </div>
   <div class="content">
     <dl class="clearfix">
       <dt>Anzahl der Mitglieder</dt>
-      <dd>1.389.323</dd>
+      <dd>1.427.401</dd>
       <dt>Anzahl der Fragen</dt>
-      <dd>6.804.013</dd>
+      <dd>7.015.837</dd>
       <dt>Anzahl der Antworten</dt>
-      <dd>30.723.355</dd>
+      <dd>31.520.551</dd>
       <dt>Anzahl der Tipps</dt>
-      <dd>64.955</dd>
+      <dd>66.126</dd>
       <dt>Anzahl der Videos</dt>
-      <dd>3.791</dd>
+      <dd>3.922</dd>
     </dl>
   </div>
 </div>            </div>
@@ -1334,13 +1365,13 @@ var szmvars="gutefrag//CP//Unternehmenskommunikation";
       <script type="text/javascript">
 <!--
 gf.init = function() {
-  gf.ext.gutefrage.settings.timestamp = '1334241219';
+  gf.ext.gutefrage.settings.timestamp = '1336467087';
   gf.ext.gutefrage.settings.login.url = '/login';
   gf.ext.gutefrage.settings.askQuestion.url = '/frage_hinzufuegen';
   gf.ext.gutefrage.settings.askHint.url = '/tipp_hinzufuegen';
   gf.ext.gutefrage.settings.language = 'de-sie';
   gf.ext.gutefrage.settings.token.csrfFieldName = '_csrf_token';
-  gf.ext.gutefrage.settings.token.csrfToken = '49353ca2a89f9e45f35a6f805da677ff';
+  gf.ext.gutefrage.settings.token.csrfToken = '827049478104f59b0a4e2070cfe00e15';
   gf.ext.gutefrage.settings.interest.url = '/daumen-hoch/json';
   gf.ext.gutefrage.settings.autosuggestTags.popular.url = '/js/gf/ext/gutefrage/popularTags.js';
   gf.ext.gutefrage.settings.autosuggestTags.marketing.url = '/js/gf/ext/gutefrage/marketingChannels.js'; 
@@ -1446,6 +1477,9 @@ id: '#top10List'
   <script>
     try {
             _gaq.push(['internal._trackPageview']);
+      if(gf.util.misc.vwo.isActive()) {
+        _gaq.push(['vwo._trackPageview']);
+      }
     } catch(errorObj){}
   </script>
   </body>

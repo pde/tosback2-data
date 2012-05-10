@@ -5,13 +5,8 @@
  * @module AE.widget.overShow
  */
 
-AE.define('app.OverShow', function (exports) {
-	var YL = YAHOO.lang,
-		YUD = YAHOO.util.Dom,
-		YUE = YAHOO.util.Event,
-		get = YUD.get;
-		
-	/** 
+;(function () {
+	/**
 		 AE Widget Module - overShow <br />
 		 适用场景：需要遮挡表单元素，内容区块有关闭按钮，需要显示前后自定义事件<br />
 		 <a href="http://style.aliui.com/js/5v/app/over_show/demo/demo.html" target="_blank">点击查看demo</a><br />
@@ -23,76 +18,76 @@ AE.define('app.OverShow', function (exports) {
 	 */
 	function OverShow() {
 		var _self = this;
-		
+
 		var defConfig = {
-			/** 
+			/**
 				激活目标元素
 				@property config.targetId {String/Dom}
 				@dafault "clickShowTargetId"
 			*/
 		  targetId: "overShowTargetId",
-			/** 
+			/**
 				可选触发元素 targetEl比targetId优先级更高
 				@property config.targetEl {String/Dom}
 				@dafault null
 			*/
 		  targetEl: null,
-			/** 
+			/**
 				相对于该元素定位
 				@property config.positionId {String/Dom}
 				@dafault false
 			*/
 		  positionId: false,
-			/** 
+			/**
 				激活显示内容元素
 				@property config.contentId {String/Dom}
 				@dafault "overShowContentId"
 			*/
 		  contentId: "overShowContentId",
-			/** 
+			/**
 				显示延迟时间
 				@property config.showDelayTime {int}
 				@dafault 200
 			*/
 		  showDelayTime: 200,
-			/** 
+			/**
 				隐藏延迟时间
 				@property config.showDelayTime {int}
 				@dafault 200
 			*/
 		  hiddenDelayTime: 200,
-			/** 
+			/**
 				相对坐标
 				@property config.excursion {array}
 				@dafault [0, 0]
 			*/
 		  excursion: [0, 0],
-			/** 
+			/**
 				是否需要遮罩
 				@property config.needMask {Boolean}
 				@default false
 			*/
 		  needMask: false,
-			/** 
+			/**
 				需要相对config.excursion定位
 				@property config.needXY {Boolean}
 				@default true
 			*/
 		  needXY: true,
-			/** 
+			/**
 				关闭按钮的className 必须置于content元素内
 				@property config.closeBtnClass {String}
 				@default "close-button"
 			*/
 		  closeBtnClass: "close-button",
-			/** 
+			/**
 				遮罩样式名称(遮挡 IE6 表单控件) <br />
 				.maskIframe{position:absolute;z-index:1;width:1px;height:1px;top:0px;left:0px;border:0px;background:#fff;filter:alpha(opacity=0);-moz-opacity:0;opacity:0;}
 				@property config.maskIframeClassName {String}
 				@default "maskIframe"
 			*/
 			maskIframeClassName : "maskIframe",
-			/** 
+			/**
 				遮罩IFRAME路径(为了解决IE HTTPS下IFRAME报错)
 				@property config.iframeMaskSrc {String}
 				@default globalImgServer + "/js/blank.html"
@@ -112,27 +107,27 @@ AE.define('app.OverShow', function (exports) {
 		_self.setFree = function () {
 			holded = false;
 		};
-		/** 
+		/**
 		 * 立即显示后自定义事件
 		 * @event afterShow
 		 * @param dTarget {string/dom} 返回目标元素
 		 * @public
 		*/
 		_self.afterShow = new YAHOO.util.CustomEvent("afterShow", _self);
-		/** 
+		/**
 		 * 延迟显示后自定义事件
 		 * @event afterShowDelay
 		 * @param dTarget {string/dom} 返回目标元素
 		 * @public
 		*/
 		_self.afterShowDelay = new YAHOO.util.CustomEvent("afterShowDelay", _self);
-		/** 
+		/**
 		 * 立即隐藏后自定义事件
 		 * @event afterHidden
 		 * @public
 		*/
 		_self.afterHidden = new YAHOO.util.CustomEvent("afterHidden", _self);
-		/** 
+		/**
 		 * 延迟隐藏后自定义事件
 		 * @event afterHiddenDelay
 		 * @public
@@ -184,7 +179,7 @@ AE.define('app.OverShow', function (exports) {
 				iframeMask.frameBorder = 0;
 				dContent.parentNode.appendChild(iframeMask);
 			}
-			var closeBtns = YUD.getElementsByClassName(config.closeBtnClass, "*", dContent);
+			var closeBtns = config.closeBtnClass && YUD.getElementsByClassName(config.closeBtnClass, "*", dContent);
 			if (closeBtns) {
 				YUE.on(closeBtns, "click", function () {
 					canClose = true;
@@ -300,7 +295,7 @@ AE.define('app.OverShow', function (exports) {
 				iframeMask.style.display = "none";
 			}
 		};
-		
+
 		/**
 			获取内容dom
 			@method getContent
@@ -359,14 +354,5 @@ AE.define('app.OverShow', function (exports) {
 			};
 	}
 
-	exports.create = function (config) {
-		var instance = new OverShow();
-		instance.init(config);
-		return instance;
-	};
-
-	exports.ctor = OverShow;
-
-}).use(function (OverShow) {
-	AE.namespace('widget').overShow = OverShow.ctor;
-});
+	AE.namespace('widget').overShow = OverShow;
+}());

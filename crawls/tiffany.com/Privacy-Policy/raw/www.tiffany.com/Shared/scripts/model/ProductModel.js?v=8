@@ -1,0 +1,741 @@
+﻿// ----------------------------------------------
+// File:		ProductModel.js
+// Author:		Nathan Derksen
+// Description:	Singleton class used to keep track of application data and state.
+//				Defines getters and setters used to track and modify state data.
+// Example:
+// ModelLocator.getInstance().getProduct("1235345");
+// ----------------------------------------------
+
+
+// ----------------------------------------------
+// Function:	ProductModel
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<none>
+// Returns:		<nothing>
+// ----------------------------------------------
+function ProductModel()
+{
+	this.pInstance = null;
+	
+	this.pCachedProducts = new Array();
+	
+	this.pProductGrids = new Array();
+	this.pCurrentProductGrid = "";
+	this.pBrowseState = URLFactory.convertHashToState(window.location.hash);
+	this.pLastHash = "";
+	this.pSku = "";
+
+	this.animatePageChanges = false;
+}
+
+// ----------------------------------------------
+// Function:	ProductModel.getInstance()
+// Author:		Nathan Derksen
+// Description:	Singleton access method
+// Inputs:		<none>
+// Returns:		<ProductModel> Handle to a single ProductModel instance
+// ----------------------------------------------
+ProductModel.getInstance = function()
+{
+	if (!this.pInstance)
+	{
+		this.pInstance = new ProductModel();
+	}
+	return this.pInstance;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.getProduct()
+// Author:		Nathan Derksen
+// Description:	Access product data for a given product id, based on what is cached locally.
+// Inputs:		<String> productId: String ID for the product to retrieve.
+// Returns:		<Object> Object representation of product properties, or null if 
+//					the ID does not exist.
+// ----------------------------------------------
+ProductModel.prototype.getProduct = function(productId)
+{
+	if (this.pCachedProducts[productId])
+	{
+		return this.pCachedProducts[productId];
+	}
+	return null;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.getProducts()
+// Author:		Nathan Derksen
+// Description:	Access list of all previously loaded products
+// Inputs:		<none>
+// Returns:		<Array> List of all previously loaded products.
+//					Each array element is a string ID
+// ----------------------------------------------
+ProductModel.prototype.getProducts = function()
+{
+	var productArray = new Array();
+	for (var item in this.pCachedProducts)
+	{
+		productArray.push(item);
+	}
+	return productArray;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.getProducts()
+// Author:		Nathan Derksen
+// Description:	Access list of all previously loaded products
+// Inputs:		<none>
+// Returns:		<Array> List of all previously loaded products.
+//					Each array element is an object holding properties for one product
+// ----------------------------------------------
+ProductModel.prototype.getProductsComplete = function()
+{
+	var productArray = new Array();
+	for (var item in this.pCachedProducts)
+	{
+		productArray.push(this.pCachedProducts[item]);
+	}
+	return productArray;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.setProduct()
+// Author:		Nathan Derksen
+// Description:	Set properties for a single product.
+// Inputs:		<Object> productDetails: An object holding the properties for the product,
+//					including id, name, description, and price.
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.setProduct = function(productDetails)
+{
+	if (productDetails)
+	{
+		if (productDetails.id)
+		{
+			this.pCachedProducts[productDetails.id] = productDetails;
+		}
+	}
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.setProducts()
+// Author:		Nathan Derksen
+// Description:	Add a list of products to the list of cached product data.
+// Inputs:		<Array> productArray: An array of objects holding the properties for the product,
+//					including id, name, description, and price.
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.setProducts = function(productArray)
+{
+	if (productArray)
+	{
+		var numProducts = productArray.length;
+		
+		for (var i = 0; i < numProducts; i++)
+		{
+			if (productArray[i].id)
+			{
+				this.pCachedProducts[productArray[i].id] = productArray[i];
+			}
+		}
+	}
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+ProductModel.prototype.removeAllProducts = function()
+{
+	this.pCachedProducts = [];
+}
+
+// ----------------------------------------------
+// Function:	ProductModel.addProductGrid()
+// Author:		Nathan Derksen
+// Description:	Add a product grid data set to the list. Multiple product listings can be handled at once,
+//				such as a view all listing or a paged view listing
+// Inputs:		<ProductGridVO> productGrid: An instance of a product grid value object
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.addProductGrid = function(productGrid)
+{
+	if (productGrid)
+	{
+		if (productGrid.gridName)
+		{
+			this.pProductGrids[productGrid.gridName] = productGrid;
+			if (this.pCurrentProductGrid == "")
+			{
+				this.pCurrentProductGrid = productGrid.gridName;
+			}
+		}
+	}
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.getProductGrid()
+// Author:		Nathan Derksen
+// Description:	Retrieve a handle to the currently active product grid value object
+// Inputs:		<String> gridName: The name of the grid value object to retrieve
+// Returns:		<ProductGridVO> A handle to the named product grid value object
+// ----------------------------------------------
+ProductModel.prototype.getProductGrid = function(gridName)
+{
+	if (gridName)
+	{
+		if (this.pProductGrids[gridName])
+		{
+			return this.pProductGrids[gridName];
+		}
+	}
+	return null;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.setCurrentProductGridName()
+// Author:		Nathan Derksen
+// Description:	Set which is the currently active product grid
+// Inputs:		<String> gridName: The name of the grid value object to set as the active value object
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.setCurrentProductGridName = function(gridName)
+{
+	if (gridName)
+	{
+		var oldGridName = this.pCurrentProductGrid;
+		this.pCurrentProductGrid = gridName;
+		var gridProperties = this.getProductGrid(gridName);
+		if (oldGridName != gridName)
+		{
+			generateEvent("onGridSwitched", gridName, gridProperties);
+			
+			var service = ServiceLocator.getInstance().getService("getDataService");
+			if (service != null) {
+				service.getData(URLFactory.convertStateToHash(this.getStateSnapshot()));
+			}
+		}
+	}
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.getCurrentProductGridName()
+// Author:		Nathan Derksen
+// Description:	Get the name of the currently active product grid
+// Inputs:		<None>
+// Returns:		<String> The name of the currently active product grid
+// ----------------------------------------------
+ProductModel.prototype.getCurrentProductGridName = function()
+{
+	return this.pCurrentProductGrid;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.getCurrentProductGrid()
+// Author:		Nathan Derksen
+// Description:	Get the currently active product grid
+// Inputs:		<None>
+// Returns:		<ProductGridVO> The currently active product grid value object
+// ----------------------------------------------
+ProductModel.prototype.getCurrentProductGrid = function()
+{
+	if (this.pCurrentProductGrid)
+	{
+		return this.getProductGrid(this.pCurrentProductGrid);
+	}
+	return null;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.setPageNum()
+// Author:		Nathan Derksen
+// Description:	Set which page of products is currently being displayed in the currently active grid
+// Inputs:		<Number> pageNum: The zero based index of which page should be displayed
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.setPageNum = function(newPageNum)
+{
+	var prodGrid = this.getCurrentProductGrid();
+	var currentPageNum;
+	var pageNum = 0;
+
+	if (newPageNum)
+	{
+		pageNum = newPageNum;
+	}
+	if (prodGrid)
+	{
+		if (pageNum < 0)
+		{
+			pageNum = 0;
+		}
+		else if (pageNum >= prodGrid.numPages && prodGrid.numPages > 0)
+		{
+			pageNum = prodGrid.numPages - 1;
+		}
+
+		currentPageNum = prodGrid.currentPage;
+		if (currentPageNum != pageNum)
+		{
+			prodGrid.currentPage = pageNum;
+			generateEvent("onPageChanged", pageNum, prodGrid);
+
+			var service = ServiceLocator.getInstance().getService("getDataService");
+			if (service != null)
+			{
+				// When animating a page transition, the load process makes the animatin jerky, 
+				// so delay loading for a short while.
+				if (this.animatePageChanges == true)
+				{
+					setTimeout(function(hashData)
+					{
+						service.getData(hashData);
+					}, 750, URLFactory.convertStateToHash(this.getStateSnapshot()));
+
+				}
+				else
+				{
+					service.getData(URLFactory.convertStateToHash(this.getStateSnapshot()));
+				}
+			}
+		}
+	}
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.setPageNum()
+// Author:		Nathan Derksen
+// Description:	Set which page of products is currently being displayed in the currently active grid
+// Inputs:		<Number> pageNum: The zero based index of which page should be displayed
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.initPageNum = function(newPageNum)
+{
+	var prodGrid = this.getCurrentProductGrid();
+	var currentPageNum;
+	var pageNum = 0;
+
+	if (newPageNum)
+	{
+		pageNum = newPageNum;
+	}
+
+	if (prodGrid)
+	{
+		if (pageNum < 0)
+		{
+			pageNum = 0;
+		}
+		else if (pageNum >= prodGrid.numPages && prodGrid.numPages > 0)
+		{
+			pageNum = prodGrid.numPages - 1;
+		}
+		
+		currentPageNum = prodGrid.currentPage;
+		if (currentPageNum != pageNum)
+		{
+			prodGrid.currentPage = pageNum;
+			generateEvent("onPageChanged", pageNum, prodGrid);
+		}
+	}
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+ProductModel.prototype.pageSetForward = function()
+{
+	var prodGrid = this.getCurrentProductGrid();
+	var currentPageNum = 0;	
+	var newPage = 0;
+	
+	if (prodGrid)
+	{
+		currentPageNum = prodGrid.currentPage;
+		newPage = Math.floor(currentPageNum/5) * 5 + 5;
+		if (newPage >= prodGrid.numPages)
+		{
+			newPage = prodGrid.numPages - 1;
+		}
+		
+		if (currentPageNum != newPage)
+		{
+			prodGrid.currentPage = newPage;
+			generateEvent("onPageChanged", newPage, prodGrid);
+			
+			var service = ServiceLocator.getInstance().getService("getDataService");
+			service.getData(URLFactory.convertStateToHash(this.getStateSnapshot()));
+		}
+	}
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+ProductModel.prototype.pageSetBackward = function()
+{
+	var prodGrid = this.getCurrentProductGrid();
+	var currentPageNum = 0;	
+	var newPage = 0;
+	
+	if (prodGrid)
+	{
+		currentPageNum = prodGrid.currentPage;
+		newPage = Math.floor(currentPageNum/5) * 5 - 1;
+		if (newPage < 0)
+		{
+			newPage = 0;
+		}
+		
+		if (currentPageNum != newPage)
+		{
+			prodGrid.currentPage = newPage;
+			generateEvent("onPageChanged", newPage, prodGrid);
+			
+			var service = ServiceLocator.getInstance().getService("getDataService");
+			service.getData(URLFactory.convertStateToHash(this.getStateSnapshot()));
+		}
+	}
+};
+
+
+// ----------------------------------------------
+// Function:	ProductModel.getPageNum()
+// Author:		Nathan Derksen
+// Description:	Get which page of products is currently being displayed in the currently active grid
+// Inputs:		<None>
+// Returns:		<Number> The zero based index of which page should be displayed
+// ----------------------------------------------
+ProductModel.prototype.getPageNum = function()
+{
+	var prodGrid = this.getCurrentProductGrid();
+	
+	if (prodGrid)
+	{
+		return prodGrid.currentPage;
+	}
+	return -1;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.setNumProducts()
+// Author:		Nathan Derksen
+// Description:	Set the total number of products, extending beyond just the currently displayed page.
+// Inputs:		<Number> numProducts: The number of products in the complete search result
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.setNumProducts = function(numProducts)
+{
+	if (typeof (numProducts) != "undefined" && numProducts != null)
+	{
+		var prodGrid = this.getCurrentProductGrid();
+		var numProductsOld;
+		
+		if (prodGrid)
+		{
+			numProductsOld = prodGrid.numResults;
+			prodGrid.numResults = numProducts;
+			
+			if (prodGrid.pageSize > 0)
+			{
+				prodGrid.numPages = Math.ceil(numProducts/prodGrid.pageSize);
+			}
+			else
+			{
+				prodGrid.numPages = 1;
+			}
+			
+			if (numProductsOld != numProducts)
+			{
+				generateEvent("onNumResultsChanged", numProducts, prodGrid);
+			}
+		}
+	}
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.getStateSnapshot()
+// Author:		Nathan Derksen
+// Description:	Get a list of important properties
+// Inputs:		<None>
+// Returns:		<Object> An anonymous object containing the property state
+// ----------------------------------------------
+ProductModel.prototype.getStateSnapshot = function()
+{
+	var prodGrid = this.getCurrentProductGrid();
+	var browseState = this.pBrowseState;
+	
+	var currentPageNum = 0;
+	var currentPageSize = 6;
+	
+	if (prodGrid)
+	{
+		currentPageNum = prodGrid.currentPage;
+		currentPageSize = prodGrid.pageSize;
+	}
+
+	var stateObject = new StateSnapshotVO();
+	stateObject.currentProductGrid = this.pCurrentProductGrid;
+	stateObject.currentPage = currentPageNum;
+	stateObject.category = browseState.category;
+	stateObject.refinement = browseState.refinement;
+	stateObject.sortCriteria = browseState.sortCriteria;
+	stateObject.pageSize = currentPageSize;
+	stateObject.searchTerms = browseState.searchTerms;
+	stateObject.relatedItemSku = browseState.relatedItemSku;
+	stateObject.onlyItems = browseState.onlyItems;
+	stateObject.isNormalized = browseState.isNormalized;
+	stateObject.popup = browseState.popup;
+	stateObject.flash = browseState.flash;
+	
+	return stateObject;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.setStateSnapshot()
+// Author:		Nathan Derksen
+// Description:	Set a list of important properties
+// Inputs:		<None>
+// Returns:		<Object> An anonymous object containing the property state
+// ----------------------------------------------
+ProductModel.prototype.setStateSnapshot = function(modelState)
+{
+	var viewAllGridData = this.getProductGrid("viewAll");
+
+	if (modelState)
+	{
+		if (modelState.currentProductGrid != null)
+		{
+			if (modelState.currentProductGrid == "viewAll" && viewAllGridData && viewAllGridData.numResults > VIEW_ALL_THRESHOLD)
+			{
+				this.pCurrentProductGrid = "viewPaged";
+			}
+			else if (modelState.currentProductGrid == "")
+			{
+				this.pCurrentProductGrid = "viewPaged";
+			}
+			else
+			{
+				this.pCurrentProductGrid = modelState.currentProductGrid;
+			}
+		}
+
+		if (isNaN(modelState.currentPage) == false && modelState.currentPage >= 0)
+		{
+			this.initPageNum(modelState.currentPage);
+		}
+
+		if (modelState.category != null)
+		{
+			this.pBrowseState.category = modelState.category;
+		}
+		
+		if (modelState.refinement != null)
+		{
+			this.pBrowseState.refinement = modelState.refinement;
+		}
+		
+		if (modelState.sortCriteria != null)
+		{
+			this.pBrowseState.sortCriteria = Number(modelState.sortCriteria);
+		}
+
+		if (modelState.pageSize != null)
+		{
+			this.pBrowseState.pageSize = modelState.pageSize;
+		}
+
+		if (modelState.searchTerms != null)
+		{
+			this.pBrowseState.searchTerms = modelState.searchTerms;
+		}
+
+		if (modelState.relatedItemSku != null)
+		{
+			this.pBrowseState.relatedItemSku = modelState.relatedItemSku;
+		}
+
+		if (modelState.onlyItems != null)
+		{
+			this.pBrowseState.onlyItems = modelState.onlyItems;
+		}
+
+		if (modelState.isNormalized != null)
+		{
+			this.pBrowseState.isNormalized = modelState.isNormalized;
+		}
+
+		if (modelState.popup != null)
+		{
+			if (this.pBrowseState.popup != modelState.popup)
+			{
+				this.pBrowseState.popup = modelState.popup;
+				if (modelState.popup != "")
+				{
+					var splitPopupState = modelState.popup.split("+");
+					if (splitPopupState.length == 1)
+					{
+						openMarketingPopUpFollowup(splitPopupState[0])
+					}
+					else if (splitPopupState.length >= 2)
+					{
+						for (var i=1; i < splitPopupState.length; i++)
+						{
+							splitPopupState[i] = URLFactory.hashUnescape(splitPopupState[i]);
+						}
+						openMarketingPopUpFollowup(splitPopupState[0], splitPopupState);
+					}
+				}
+				else
+				{
+					closePopUpFollowup();
+				}
+			}
+		}
+		else
+		{
+			closePopUpFollowup();
+		}
+		
+		if (modelState.flash != null && typeof(FlashCommBridge) != "undefined")
+		{
+		    FlashCommBridge.getInstance().send("setFromHistory", modelState.flash);
+		}
+
+		generateEvent("onSetStateSnapshot", this.pBrowseState, modelState);
+
+		var service = ServiceLocator.getInstance().getService("getDataService");
+		if (service != null)
+		{
+			service.getData(URLFactory.convertStateToHash(this.getStateSnapshot()));
+		}
+	}
+};
+
+
+// ----------------------------------------------
+// Function:	ProductModel.setBrowseStates()
+// Author:		Nathan Derksen
+// Description:	Set a group of values for a corresponding group of search/browse criteria
+// Inputs:		<Object> An object containing the pairs of browse/search name/value pairs
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.setBrowseStates = function(criteriaList)
+{
+	var oldCategoryMenu = this.pBrowseState["category"];
+	var oldDAndCMenu = this.pBrowseState["designerCollection"];
+	
+	for (criteria in criteriaList)
+	{
+		this.pBrowseState[criteria] = criteriaList[criteria];
+	}
+	
+//	if (criteriaList["category"] != oldCategoryMenu)
+//	{
+//		this.pBrowseState["categorySub"] = "all";
+//	}
+
+//	if (criteriaList["designerCollection"] != oldDAndCMenu)
+//	{
+//		this.pBrowseState["designerCollectionSub"] = "all";
+//	}
+	
+	generateEvent("onBrowseStatesChanged", this.pBrowseState);
+
+	var prodGrid = this.getCurrentProductGrid();
+	if (prodGrid != null)
+	{
+		prodGrid.currentPage = 0;
+		generateEvent("onPageChanged", 0, prodGrid);
+	}
+
+	var service = ServiceLocator.getInstance().getService("getDataService");
+	if (service != null)
+	{
+		service.getData(URLFactory.convertStateToHash(this.getStateSnapshot()));
+	}
+};
+
+// ----------------------------------------------
+// ----------------------------------------------
+ProductModel.prototype.setBrowseStatesNoSideEffects = function(criteriaList)
+{
+	for (criteria in criteriaList)
+	{
+		this.pBrowseState[criteria] = criteriaList[criteria];
+	}
+};
+
+
+// ----------------------------------------------
+// Function:	ProductModel.initBrowseStates()
+// Author:		Nathan Derksen
+// Description:	Set a group of values for a corresponding group of search/browse criteria. Don't broadcast the event
+// Inputs:		<Object> An object containing the pairs of browse/search name/value pairs
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.initBrowseStates = function(criteriaList)
+{
+	if (criteriaList)
+	{
+		for (var criteria in criteriaList)
+		{
+			this.pBrowseState[criteria] = criteriaList[criteria];
+		}
+	}
+};
+
+
+// ----------------------------------------------
+// Function:	ProductModel.getBrowseStates()
+// Author:		Nathan Derksen
+// Description:	Get a list of search/browse criteria
+// Inputs:		<None> 
+// Returns:		<Object> An object containing the pairs of browse/search name/value pairs
+// ----------------------------------------------
+ProductModel.prototype.getBrowseStates = function()
+{
+	return this.pBrowseState;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.getSKU()
+// Author:		Nathan Derksen
+// Description:	Get the current product SKU
+// Inputs:		<None> 
+// Returns:		<String> Current product sku
+// ----------------------------------------------
+ProductModel.prototype.getSKU = function()
+{
+	return this.pSKU;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.getSKU()
+// Author:		Nathan Derksen
+// Description:	Set the current product SKU
+// Inputs:		<String> Current product SKU 
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.setSKU = function(sku)
+{
+	this.pSKU = sku;
+};
+
+// ----------------------------------------------
+// Function:	ProductModel.appendProducts()
+// Author:		Nathan Derksen
+// Description:	Trigger a service call to get additional products and append them
+//				to the list of already loaded products.
+// Inputs:		<Number> pageNum - Page num of products to load, zero based
+//				<Number> pageSize - The number of products in each page
+// Returns:		<Nothing>
+// ----------------------------------------------
+ProductModel.prototype.appendProducts = function(pageNum, pageSize)
+{
+	var service = ServiceLocator.getInstance().getService("getDataService");
+	var snapshot = this.getStateSnapshot();
+	snapshot.currentPage = pageNum;
+	snapshot.pageSize = pageSize;
+	if (service != null)
+	{
+		service.getData(URLFactory.convertStateToHash(snapshot), true);
+	}
+};

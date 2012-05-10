@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,3,15,16,17,3,0);
+var tvgServerTimeUTC = new Date(2012,4,10,12,11,21,0);
 
-var dServerET = new Date(2012,3,15,12,17,3,0);
+var dServerET = new Date(2012,4,10,8,11,21,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,3,15);
-dSrvrTime.setUTCHours(16,17,3,0);
+dSrvrTime.setUTCFullYear(2012,4,10);
+dSrvrTime.setUTCHours(12,11,21,0);
 
-var dLocalTime = new Date(2012,3,15,12,17,3,0);
-var dGridStart = new Date(2012,3,15,12,0,0,0);
+var dLocalTime = new Date(2012,4,10,8,11,21,0);
+var dGridStart = new Date(2012,4,10,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 7bed0076184a162747d321bbfa5039e908c78838 1334506623';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= eaf7bf7e51ec48bcd6324c5b7a84bf57a5d1932b 1336651881';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,19 +50,19 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 4/15/2012 4:00:00 PM GMT */
+/* TVGSVC02 5/10/2012 12:00:00 PM GMT */
 
 /* Listings: In-Grid and Close-Up Ads */
 var GridAds = true;
-var MaxGridAds = 8;
+var MaxGridAds = 3;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/WP_Top_rev.jpg";
-var magicBotImage = "/listings/images/topchan/WP_Bottom_TON.jpg";
+var magicTopImage = "/listings/images/topchan/WP_Top_new.jpg";
+var magicBotImage = "/listings/images/topchan/WP_Bottom_SUN.jpg";
 var magicLogo = "/listings/images/topchan/WP_Middle.jpg";
-var magicLink = "http://www.facebook.com/TVGuideNetwork#!/TVGuideNetwork/app_323499311036558";
+var magicLink = "http://www.facebook.com/TVGuideNetwork#!/TVGuideNetwork/app_153855648022942";
 var magicBkgnd = "#FFFFFF";
 var magicTextClr = "#FFFFFF";
 var magicLeftOffset = 640;
@@ -76,19 +76,19 @@ var magicChannelLocation = "top";
 
 /* New! Franchise Channel Check-Ins */
 var franchiseCheckin = new Object();
-franchiseCheckin.Enabled = true;
-franchiseCheckin.ObjectID = 332453;
-franchiseCheckin.ProgramID = 19945139;
-franchiseCheckin.CategoryID = 9;
+franchiseCheckin.Enabled = false;
+franchiseCheckin.ObjectID = 0;
+franchiseCheckin.ProgramID = 0;
+franchiseCheckin.CategoryID = 0;
 franchiseCheckin.SeriesID = 0;
 franchiseCheckin.SportsNonEvent = false;
-franchiseCheckin.ProgramTitle = "25 Most Memorable Infomercials Ever";
+franchiseCheckin.ProgramTitle = "";
 franchiseCheckin.EpisodeTitle = "";
-franchiseCheckin.ObjectUrl = "http://www.tvguide.com/tvshows/25-most-memorable-infomercials-ever/332453";
-franchiseCheckin.CallLetters = "TVGN";
-franchiseCheckin.StartTime = "201111130900";
-franchiseCheckin.BadgeUrl = "http://static.tvguide.com/MediaBin/Galleries/Shows/Numbers/25_Most_Memorable_Infomercials_Ever/25-most-memorable-infomercials-ever_badge.gif";
-franchiseCheckin.LeftOffset = 520;
+franchiseCheckin.ObjectUrl = "";
+franchiseCheckin.CallLetters = "";
+franchiseCheckin.StartTime = "198001011200";
+franchiseCheckin.BadgeUrl = "";
+franchiseCheckin.LeftOffset = 0;
 
 var locationQueryString = location.search.substring(1, location.search.length);
 var locationRef = locationQueryString.substring(14, locationQueryString.length);
@@ -101,8 +101,8 @@ var slot_banner_top = 0;
 var slot_box_300x250 = 0;
 var bEnableWallpaperAds_HP = true;
 var bEnableRichmediaAds_HP = true;
-var slot_banner_top_HP = 1;
-var slot_box_300x250_HP = 0;
+var slot_banner_top_HP = 0;
+var slot_box_300x250_HP = 1;
 var bEnableWallpaperAds_LST = true;
 var bEnableRichmediaAds_LST = true;
 var slot_banner_top_LST = 0;

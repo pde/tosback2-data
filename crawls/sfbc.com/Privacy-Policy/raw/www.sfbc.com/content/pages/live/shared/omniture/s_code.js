@@ -112,33 +112,93 @@ function s_doPlugins(s) {
       s.events = e.substring(0, e.length - 1);
   }
 
-  if ((s.events.indexOf('event18') > -1) && (!s.products)) {
-      s.products = ';';
-  }
   /* Internal Search End */
   
-  /* Automate Finding Method eVar if not set*/
-  if (s.eVar27 && !s.eVar37) s.eVar37 = 'external campaign';
-  if (s.eVar28 && !s.eVar37) s.eVar37 = 'internal search';
-  if (s.eVar30 && !s.eVar37) s.eVar37 = 'internal campaign';
-  if (s.eVar4 && !s.eVar37) s.eVar37 = 'browse';
-  if (s.eVar5 && !s.eVar37) s.eVar37 = 'browse';
-  /*var csp=s.products;
-  var str=/evarN/gi;
-  if(csp.match(str)){
-  s.eVarX="cross sell"
-  }*/
-  /*Other External Sites*/
-  if (document.referrer && !s.eVar37) {
-    var filters = s.split(s.linkInternalFilters, ',');
-    var internalFlag = false;
-    var docRef = s.split(document.referrer, '/');
-    docRef = docRef[2];
-    for (var f in filters) {
-        if (docRef.indexOf(filters[f]) > -1) internalFlag = true;
-    }
-    if (!internalFlag) s.eVar37 = "external non-campaign";
-  }
+  	/* Automate Finding Method eVar */
+	var internalFlag = false;
+	if(document.referrer)
+	{
+		var filters = s.split(s.linkInternalFilters,',');
+		var docRef = s.split(document.referrer,'/');
+		docRef = docRef[2];
+		for(var f in filters)
+		{
+			if(docRef.indexOf(filters[f])>-1)
+				internalFlag = true;
+		}
+	}	
+	if(s.eVar27) //if there is an external campaign
+	{	
+		s.eVar37='external campaign referral'; //product finding method
+		s.eVar28='non-search'; //internal search keyword
+		s.eVar30='non-internal campaign'; //internal tracking code
+		s.eVar4='non-browse'; //merch cat level 1
+		s.eVar5='D=v4'; //merch cat level 2
+	}
+	else if(document.referrer&&!internalFlag) //if there is a referrer, but it's not internal
+	{	
+		s.eVar37='external natural referral';
+		s.eVar28='non-search';
+		s.eVar30='non-internal campaign';
+		s.eVar4='non-browse';
+		s.eVar5='D=v4';
+	}	
+	else if(s.eVar28&&s.eVar28!='non-search') //if there is an internal search term, and it's not 'non-search'
+	{
+		s.eVar37='internal keyword search';
+		s.eVar30='non-internal campaign';
+		s.eVar4='non-browse';
+		s.eVar5='D=v4';
+	}
+	else if(s.eVar30&&s.eVar30!='non-internal campaign') //if there is an internal campaign, and it's not 'non-internal campaign'
+	{
+		s.eVar37='internal campaign';
+		s.eVar28='non-search';
+		s.eVar4='non-browse';
+		s.eVar5='D=v4';
+	}	
+	else if(s.eVar4&&s.eVar4!='non-browse') //if there is a browse category, and it's not 'non-browse'
+	{
+		s.eVar37='browse';
+		s.eVar28='non-search';
+		s.eVar30='non-internal campaign';
+		if(!s.eVar5)
+			s.eVar5=s.eVar4
+	}
+	else if(s.events&&s.events.indexOf('purchase')>-1) //if events is presents, and the purchase events is included
+	{	
+		s.eVar37='unknown at time of purchase';
+		s.eVar28=s.eVar30=s.eVar4=s.eVar5='D=v37';
+	}
+	else if(s.eVar37)
+	{
+		s.eVar28='non-search';
+		s.eVar30='non-internal campaign';
+		s.eVar4='non-browse';
+		s.eVar5='D=v4';
+	}
+	/* create productmerch product for merchandising eVar binding */
+	if(s.eVar37&&(!s.products||(s.products&&s.products.indexOf(';productmerch')>-1)||s.newProduct=='true')&&(s.p_fo('onemerch')==1||(s.linkType!=''&&s.linkTrackVars.indexOf('eVar37')>-1)))
+	{
+		if(!s.c_r('productnum'))
+			s.productNum=1;
+		else
+			s.productNum=parseInt(s.c_r('productnum'))+1;
+		s.products=';productmerch' + s.productNum;
+		var e=new Date();
+		e.setTime(e.getTime()+(30*86400000));
+		s.c_w('productnum',s.productNum,e);
+		s.linkTrackVars=s.apl(s.linkTrackVars,'events,products',',',2);
+		s.linkTrackEvents=s.apl(s.linkTrackEvents,'event46',',',2);
+		s.events=s.apl(s.events,'event46',',',2);
+	}
+	if(s.eVar37&&s.events.indexOf('prodView')>-1)
+	{
+		s.events=s.apl(s.events,'event46',',',2);
+	}
+	if(s.c_r('productnum')&&s.events.indexOf('purchase')>-1)
+		s.c_w('productnum','0',0);
+
   /* End Automated Finding Methods */
   
   /* Copy Member ID to prop16 */
@@ -404,6 +464,27 @@ s.crossVisitParticipation=new Function("v","cn","ex","ct","dl","ev","dv",""
 +"front:'[',back:']',wrap:\"'\"});s.c_w(cn,data,e);var r=s.join(h,{deli"
 +"m:dl});if(ce)s.c_w(cn,'');return r;");
 
+/*********************************************************************
+* Function p_fo(x,y): Ensures the plugin code is fired only on the 
+*      first call of do_plugins
+*
+*
+* Returns:
+*     - 1 if first instance on firing
+*     - 0 if not first instance on firing
+*********************************************************************/
+s.p_fo=new Function("n",""
++"var s=this;if(!s.__fo){s.__fo=new Object;}if(!s.__fo[n]){s.__fo[n]="
++"new Object;return 1;}else {return 0;}");
+
+/*
+* Plugin Utility: apl v1.1
+*/
+s.apl = new Function("l", "v", "d", "u", ""
++ "var s=this,m=0;if(!l)l='';if(u){var i,n,a=s.split(l,d);for(i=0;i<a."
++ "length;i++){n=a[i];m=m||(u==1?(n==v):(n.toLowerCase()==v.toLowerCas"
++ "e()));}}if(!m)l=l?l+d+v:v;return l");
+
 /************************ Test&Target Plugin Start *************************/
 /*
 * TNT Integration Plugin v1.0
@@ -432,6 +513,22 @@ changes to how your visitor data is collected.  Changes should only be
 made when instructed to do so by your account manager.*/
 s.visitorNamespace="bruceclay"
 s.dc="112"
+
+//RDC for non 1st party cookies clubs
+s.trackingServer="bruceclay.d1.sc.omtrdc.net"
+//implement 1st party cookies
+if (clubCode == 'bec'){
+  s.trackingServer="metrics.blackexpressions.com"
+  s.trackingServerSecure="smetrics.blackexpressions.com"
+}
+if (clubCode == 'myg'){
+  s.trackingServer="metrics.mysteryguild.com"
+  s.trackingServerSecure="smetrics.mysteryguild.com"
+}
+if (clubCode == 'dbc'){
+  s.trackingServer="metrics.doubledaybookclub.com"
+  s.trackingServerSecure="smetrics.doubledaybookclub.com"
+}
 
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code='',s_objectID;function s_gi(un,pg,ss){var c="s.version='H.24.2';s.an=s_an;s.logDebug=function(m){var s=this,tcf=new Function('var e;try{console.log(\"'+s.rep(s.rep(m,\"\\n\",\"\\\\n\"),\""

@@ -17,6 +17,7 @@ function InitGroupsSection(){$('#individualContactForm').css('display','none');$
 function InitAddPopup(){if($('div.secondLevel').find('.selected').hasClass('secHead_Households')||$("#SelectRecipientsView").val()=="Households"||selectedTabName=="HouseholdTab"){InitHouseholdSection();}
 else if($('div.secondLevel').find('.selected').hasClass('secHead_Individuals')||$('div.secondLevel').find('.selected').hasClass('secHead_AtAGlance')||$("#SelectRecipientsView").val()=="Contacts"||$("#SelectRecipientsView").val()=="Groups"||selectedTabName=="IndividualTab"){InitIndividualsSection();}
 else if($('div.secondLevel').find('.selected').hasClass('secHead_Groups')){InitGroupsSection();}
+else{InitIndividualsSection();}
 hallmarkBehaviors.hmkCustomFormFields();hmkZipFieldBehavior();hallmarkBehaviors.hmkTooltip();extendedBehaviors.hmkFormFocus();extendedBehaviors.hmkEnterKeyFormSubmit();extendedBehaviors.PhoneTabOut();if($('#SelectionCriteria').val().toUpperCase()=='NAA'){$(".AddressSpan").show();$(".JQAddressRequired").addClass('JQRequiredField');}
 else if($('#SelectionCriteria').val().toUpperCase()=='NAE'){$(".EmailSpan").show();$(".JQEmailRequired").addClass('JQRequiredField');}
 else if($('#SelectionCriteria').val().toUpperCase()=='NOE'){$(".GenderSpan").show();$(".RelationSpan").show();}

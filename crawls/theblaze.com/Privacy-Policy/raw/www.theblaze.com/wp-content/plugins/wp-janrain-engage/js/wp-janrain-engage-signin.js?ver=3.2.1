@@ -1,0 +1,56 @@
+jQuery(document).ready(function($) {
+	RPXNOW.overlay = true;
+	RPXNOW.language_preference = 'en';
+	RPXNOW.flags = 'show_provider_list';
+
+	$('ul.provider-icons li.connected a').click(function(e) {
+		var s = $(this),
+			p = s.parent('li')
+				.css({
+					backgroundColor: '#ffa0a0',
+					borderColor: '#f04040'
+				}),
+			h = s.attr('href');
+
+		$.post(wpJanrainEngageSignin.ajaxUrl, {
+			action: 'social_remove',
+			user_id: h.match(/user_id=([^&]+)/).slice(-1).toString(),
+			identifier: h.match(/identifier=([^&]+)/).slice(-1).toString(),
+			_nonce: h.match(/_nonce=([^&]+)/).slice(-1).toString(),
+			redirect_to: h.match(/redirect_to=([^&]+)/).slice(-1).toString()
+		}, function(data) {
+			var res = wpAjax.parseAjaxResponse(data, 'ajax-response');
+			if ( res && !res.errors ) {
+				$.each(res.responses, function() {
+					if ( 'social_remove' == this.what ) {
+						if ( !this.errors ) {
+							s.attr({
+									href: this.supplemental.href,
+									title: this.supplemental.title
+								})
+								.addClass('rpxnow')
+								.unbind(e);
+							p.removeClass('connected')
+								.animate({
+									backgroundColor: '#eee',
+									borderTopColor: '#ccc',
+									borderRightColor: '#ccc',
+									borderBottomColor: '#ccc',
+									borderLeftColor: '#ccc'
+								}, 2000);
+						}
+					}
+				});
+			} else {
+				p.animate({
+					backgroundColor: '#ffffe0',
+					borderTopColor: '#e6db55',
+					borderRightColor: '#e6db55',
+					borderBottomColor: '#e6db55',
+					borderLeftColor: '#e6db55'
+				}, 2000);
+			}
+		});
+		e.preventDefault();
+	});
+});

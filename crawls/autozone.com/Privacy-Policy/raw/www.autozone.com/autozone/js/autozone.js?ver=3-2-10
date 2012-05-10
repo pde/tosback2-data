@@ -1,0 +1,524 @@
+/**
+* autozone.js - These are javascript objects built for autozone.com
+ *
+ * @author Resource Interactive <www.resource.com>
+ */
+
+function initHtmlClasses() {
+	// Add browser string class to body
+	var browserString = '';
+	jQuery.each(jQuery.browser, function(i, val) {
+		if(i === 'version'){
+			val = parseInt(val);
+			browserString += val;
+		} else {
+			browserString += i;
+		}
+	});
+	jQuery("html").addClass(browserString);
+	if(jQuery.browser.msie && jQuery.browser.version.substr(0,1)<9){
+		jQuery("html").addClass('msie-lt9');
+	}
+}
+initHtmlClasses();
+
+	// Function to load files on demand
+function loadJS(files){
+	// split file names
+	var myFiles = files.split('|');
+	var successFlag = false;
+	// load files
+	jQuery(myFiles).each(function(){
+		jQuery.cachedScript('/autozone'+this).done(function(script, textStatus) {
+			successFlag = true;
+		});
+	});
+	return successFlag;
+}
+
+	// Logging function
+	jQuery.log = function( text ){
+		if( (window['console'] !== undefined) ){
+			console.log( text );
+		}
+	}
+
+	// function to determine if a string is numeric
+	function isNumber(n) {
+		return !isNaN(parseFloat(n)) && isFinite(n);
+	}
+
+	//This function prevent the default behavior of an event
+	function preventDefaultBehavior(e) {
+		// IE does not support the 'preventDefault' method
+		if (e.preventDefault) {
+			e.preventDefault();
+		}
+		else {
+			e.returnValue = false;
+		}
+	}
+
+
+	// Navigation function (MooTools)
+	function addHovers(){
+		$$('.hover').each(function(el, i){
+			var thisSrc =  el.getAttribute('src').split(';')[0];
+			el.hoverinfo = {
+				'off':		thisSrc,
+				'over':		thisSrc.replace(/\.([a-zA-Z]+)$/, '-over.$1'),
+				'selected':	thisSrc.replace(/\.([a-zA-Z]+)$/, '-active.$1')
+			};
+			el.addEvents({
+				'mouseover': function() {
+					this.setAttribute('src', this.hoverinfo.over);
+				},
+				'mouseout': function() {
+					this.setAttribute('src', this.hoverinfo.off);
+				}
+				});
+			jQuery.log(el.hoverinfo.selected);
+		});
+	}
+
+	function showClose(){
+		jQuery('.MultiBoxClose').addClass('showClose');
+	}
+
+	function hideClose(){
+		jQuery('.MultiBoxClose').removeClass('showClose');
+	}
+
+	function initCartSaveNow () {
+		// handle cart deal save now link
+		var modalHeight = 0,
+		viewportHeight = jQuery(window).height();
+		jQuery('#site-shopping-cart a.save-now').click(function(event) {
+			event.preventDefault();
+			var goHere = jQuery(this).attr('href') + ' .dealDescription',
+				goHereUrl = jQuery(this).attr('href'),
+				saveNowLink = '',
+				saveNowDisabled = '',
+				parentTd = '',
+				container = jQuery('<div style="display:hidden" class="modalContainer"></div>'),
+				t = jQuery(this);
+			jQuery.log('goHere URL: '+goHere);
+			saveNowLink = t.clone(true);
+			parentTd = t.closest('td');
+			t.replaceWith("<div class='saveNowDisabled'>Loading <img src='/autozone/images/common/ajax-loader-sm.gif' /></div>");
+			saveNowDisabled = parentTd.find('.saveNowDisabled');
+			container.load(goHere, function(){
+				if(jQuery.trim(jQuery(this).html()) === ''){
+					jQuery(this).html('<p>This deal is not currently available. Please try again later, or try <a href="/autozone/deals?footer=true&showDeal=true">another deal</a></p>');
+				}
+				container.dialog({
+					modal:true,
+					width: 550,
+					title: 'Deals &amp; Savings',
+					open: function(){
+						jQuery(this).find('.dealDescription p:first').not('.alertMessages').append('... <br /><a href="'+goHereUrl+'" class="actionButton orange" title="We will walk you through the steps">Get This Deal</a>');
+						modalHeight = jQuery(this).height();
+						if (modalHeight > viewportHeight){
+							jQuery(this).dialog( "option", "height", .9 * viewportHeight);
+							jQuery(this).dialog( "option", "position", 'center' );
+						}
+						searchAnotherStoreInit();
+						mbYMMEInit();
+						saveNowDisabled.replaceWith(saveNowLink);
+					},
+					close: function() {
+						jQuery(this).dialog('destroy');
+					}
+				});
+			});
+		});
+	}
+	function searchAnotherStoreInit () {
+		jQuery('a.searchAnotherStore').click(function (e) {
+			e.preventDefault();
+			if (jQuery(this).hasClass("short")) {
+				var container = jQuery("<div class='rounded'><iframe frameborder='0' width='824' height='328'></iframe></div>");
+			}
+			else {
+				var container = jQuery("<div class='rounded'><iframe frameborder='0' width='824' height='428'></iframe></div>");
+			}
+			container.find('iframe').attr('src', jQuery(this).attr('href'));
+			container.find('iframe').attr('scrolling', 'no');
+			jQuery.log(container);
+			container.dialog({
+				autoOpen: true,
+				title: 'Search Another Store',
+				width: '852',
+				modal: true,
+				dialogClass: 'azLarge',
+				open: function () {
+					var t = jQuery(this);
+					t.find('iframe').load(function(){
+
+						jQuery(this).contents().find('.cancel-button a').click(function(e){
+							jQuery.log(jQuery(this).html());
+							e.preventDefault();
+							t.dialog('close');
+						});
+					});
+				},
+				close: function () {
+					jQuery(this).dialog('destroy');
+				}
+			});
+		});
+	}
+
+	function makeCartSummaryClickable () {
+		if (jQuery('#shopping-cart h3 a').length > 0) {
+			jQuery('#shopping-cart').click(function(e) {
+				e.preventDefault();
+				window.location = jQuery('#shopping-cart h3 a').attr('href');
+			});
+			jQuery('#shopping-cart').hover(
+				function() {
+					jQuery(this).css('cursor','pointer');
+				},
+				function() {
+					jQuery(this).css('cursor','auto');
+				}
+			);
+		}
+	}
+	/* Run this on window.load */
+	jQuery(window).load(function(){
+		jQuery('html').addClass('load');
+		if(jQuery('body#home').length > 0){ /* If on the home page */
+			loadJS('/js/home.js?ver=' + azVersion);
+		} else {
+			if(jQuery('.videoLibrary').length !== 0 || jQuery('.video').length !== 0) {
+				loadJS('/js/invodo.js?ver=' + azVersion);
+			}
+		}
+		if(jQuery('#c2cOffer').length !== 0) {
+			// Handle chat image display
+			var chatOfferSrc = jQuery('#c2cOffer img:first').attr('src'),
+				chatImg = jQuery("<img id='testChatImg'>");
+			chatImg.hide();
+			chatImg.bind('load', function () {
+				jQuery(this).show();
+				jQuery.log(this.width);
+				if(this.width > 50) {
+					/* Chat offer shown */
+					js_track.s_chatShown();
+					jQuery('#c2cOffer').fadeIn();
+					jQuery('#c2cOffer').removeClass('notLoaded');
+				}
+				jQuery('#testChatImg').remove();
+			});
+			jQuery('body').append(chatImg);
+			chatImg.attr('src',chatOfferSrc);
+			jQuery('#c2cOffer').click(function () {
+				/* Chat offer clicked */
+				js_track.s_chatClicked();
+			});
+		}
+	});
+
+	/* Global variables */
+	var storeType;
+
+	/* Run this on document.ready */
+	jQuery(document).ready(function(){
+		// set variables used in .ready block
+		var azSRDiv = jQuery('.sr_productDetailDiv'),
+			azSRDivHeight = '',
+			checkSRDivTimer = '',
+			productBox= {}, /* Handle Product Links */
+			showChatTimer,
+			checkChatNum = 0;
+
+		if(jQuery('#topcontrols .list').length > 0){
+			storeType = "list";
+		} else {
+			storeType = "bopus";
+		}
+
+
+		// call script to create navigation hover states
+		addHovers();
+
+		jQuery('html').addClass('ready');
+
+		loadJS('/js/ymme.js?ver=' + azVersion + '|/js/forms.js?ver=' + azVersion);
+		if (!jQuery('html').hasClass('msie6')) {
+			loadJS('/js/nav.js?ver=' + azVersion);
+		}
+
+		if ( jQuery('.add-to-cart').length > 0 && jQuery('#productCompare').length === 0) { /* Check for add to cart button. If present, include application.js */
+			loadJS('/js/application.js?ver=' + azVersion);
+		}
+		if(jQuery('.jspop-checkout').length > 0){ /* Check for the jspop class name and include the file if needed */
+			loadJS('/js/jspop.js?ver=' + azVersion);
+		}
+		if (jQuery('.mb-personlization-options').length > 0) {
+			loadJS('/js/personalization.js?ver=' + azVersion);
+		}
+		var topNavLoginForm = '';
+		// Show/Hide dropDowns in header
+		jQuery('a.showDropDown').click(function(e){
+			e.preventDefault();
+			var dropDown = jQuery(this).parents('div:first').find('.dropDown'),
+				dropDowns = jQuery('.dropDown'),
+				visibleDropDowns;
+			visibleDropDowns = dropDowns.filter(':visible');
+			visibleDropDowns.slideUp(300);
+			if (dropDown.is(':hidden')) {
+				dropDown.slideDown(300, function() {
+					if (jQuery('#login_username').length > 0) {
+						if (topNavLoginForm.initialized === undefined || topNavLoginForm.initialized === false) {
+							topNavLoginForm = new validate(jQuery('#login_username').parents('form:first'));
+							topNavLoginForm.init();
+						}
+						jQuery('#login_username', dropDown).focus();
+					}
+				});
+			}
+			if (jQuery('.dropDown .body ul').height() > 199) {
+				jQuery('.dropDown .body ul').css("height","200px");
+			}
+		});
+
+		jQuery('.dropDown').bind('click', function(e) {
+			// don't hide .dropDown if you click inside it.
+			e.stopPropagation();
+		});
+
+		jQuery('body').bind('click', function(e){
+			// on click, look for visible dropdowns and hide them.
+			jQuery.log(e.target);
+			if (!jQuery(e.target).hasClass('showDropDown')) {
+				jQuery('.dropDown').each(function () {
+					if (jQuery(this).is(":visible")) {
+						jQuery(this).hide();
+					}
+				});
+			}
+		});
+
+		jQuery('.dropDown .close').click(function(e){
+			e.preventDefault();
+			var dropDown = jQuery(this).closest('.dropDown');
+			dropDown.slideUp(300);
+		});
+
+		makeCartSummaryClickable();
+
+		/* Handle myZone shopping link */
+		jQuery(document).on('click', 'a.btn-back', function(e) { /* If a link with btn-back class exists reload previous page */
+			e.preventDefault();
+			window.location = document.referrer;
+		});
+		jQuery(document).on('click', '.cont_shop a', function(e) { /* If user came from parts or accessories page send them back else go to link location */
+			if ((/\/parts\//.test(document.referrer)) || (/\/accessories\//.test(document.referrer))) {
+				window.location = document.referrer;
+				return false;
+			}
+		});
+
+		/* Add Placeholder text to search form input and remove on focus */
+		var searchForm = jQuery('#searchformlet');
+		var searchFormInput = jQuery('#searchformlet #q');
+		var searchText = "Find parts and accessories for your vehicle";
+
+		searchFormInput.attr("value", searchText);
+
+		searchFormInput.focus(function() {
+			if(jQuery(this).attr("value") === searchText) jQuery(this).attr("value", "");
+		});
+
+		searchFormInput.blur(function() {
+			if(jQuery(this).attr("value") === "") jQuery(this).attr("value", searchText);
+		});
+
+		/* Disable search form unless something is typed into the search input enable the go button and allow the form submission */
+		var searchSubmit = false;
+		function enableSearch(){ searchForm.find('input:image').attr({
+			"title":"Please enter a search term",
+			"alt":"Please enter a search term"
+			});
+			searchFormInput.css({"color":"#A2A2A2", "font-family":"arial", "font-style":"italic"});
+		}
+		enableSearch();
+
+		searchForm.keyup(function() {
+			if (jQuery.trim(searchFormInput.val()).length > 0){
+				searchForm.find('input:image').attr({
+					"title":"Go",
+					"alt":"Go"
+					});
+				searchFormInput.css({"color":"#000", "font-family":"arial", "font-style":"normal"});
+				searchSubmit = true;
+			} else {
+				enableSearch();
+				searchSubmit = false;
+			}
+		});
+
+		searchForm.submit(function(e){
+			e.preventDefault();
+			if (searchSubmit){
+				this.submit();
+			}
+		});
+
+		/* Add Placeholder text to Email Opt-In form in Footer input and remove on focus */
+		var optInForm = jQuery('#optIn');
+		var optInFormInput = jQuery('#optIn #optInEmail');
+		var optInText = "Enter your email address.";
+
+		optInFormInput.attr("value", optInText).css('color','#999');
+
+		optInFormInput.focus(function() {
+			if(jQuery(this).attr("value") === optInText) jQuery(this).attr("value", "").css('color','#000');
+		});
+
+		optInFormInput.blur(function() {
+			if(jQuery(this).attr("value") === "") jQuery(this).attr("value", optInText);
+		});
+
+		jQuery('#leftsidebar a').click(function(e){
+			/* Track Omniture Event */
+			js_track.s_leftNav(e);
+		});
+		jQuery('#rightcontent .sidebar a').click(function(e){
+			/* Track Omniture Event */
+			js_track.s_rightNav(e);
+		});
+
+		if (jQuery("#site-shopping-cart").length === 0) {
+			myContainer = jQuery('<div style="display:hidden" class="modalContainer"><iframe /></div>');
+			jQuery('.mbProduct').click( function (e) {
+				e.preventDefault();
+				myContainer.find('iframe').attr('src', jQuery(this).attr('href') + '&isOverlay=true').attr('width', '494').attr('scrolling', 'auto').attr('height','100%').attr('frameBorder', '0');
+				myContainer.dialog({
+					modal:true,
+					width: 550,
+					maxHeight: 650,
+					height: 550,
+					title: 'Quick View',
+					close: function () {
+						jQuery(this).dialog('destroy');
+					}
+				});
+			});
+		}
+
+		var externalLinkNotice = jQuery('.externalLinkNotice'),
+			container = jQuery('<div style="display:hidden" class="modalContainer"></div>');
+
+		function showExternalNotice (e) {
+			container.load('/autozone/mscAjaxLoaders/externalLinkNotice.jsp');
+			//container.html('<p>You are leaving AutoZone.com and going to a third party website that is not controlled by or related to AutoZone.com. Please note that third party websites may have different privacy and security practices than AutoZone.com. We are not responsible for the products, services, and content on third party websites.</p>');
+			container.dialog({
+				autoOpen: true,
+				resizable: false,
+				title: 'Third Party Website',
+				width: '400px',
+				modal: true,
+				buttons: {
+					"OK": function() { window.location = jQuery(e.target).attr('href'); }
+				},
+				open: function() {
+					jQuery('.ui-dialog-buttonpane').find('button').addClass('actionButton orange');
+				},
+				close: function (){
+					container.dialog('destroy');
+				}
+			});
+		}
+		if (externalLinkNotice.length > 0) {
+			externalLinkNotice.click(function(e){
+				e.preventDefault();
+				showExternalNotice(e);
+			});
+		}
+
+		var modalHeight = 0,
+			viewportHeight = jQuery(window).height();
+
+		// handle shelf deal save now link
+		jQuery('a.save-now:not(#site-shopping-cart a.save-now)').click(function(event) {
+			event.preventDefault();
+			var goHere = jQuery(this).attr('href') + ' .insidecontainer .content ul',
+			saveNowLink = '',
+			saveNowDisabled = '',
+			parentTd = '',
+			t = jQuery(this);
+			jQuery.log('goHere URL: '+goHere);
+			saveNowLink = t.clone(true);
+			parentDiv = t.closest('div');
+			t.replaceWith("<div class='saveNowDisabled'>Loading <img src='/autozone/images/common/ajax-loader-sm.gif' /></div>");
+			saveNowDisabled = parentDiv.find('.saveNowDisabled');
+			container.load(goHere, function(){
+				if(jQuery.trim(jQuery(this).html()) === ''){
+					jQuery(this).html('<p>This deal is not currently available. Please try again later, or try <a href="/deals?footer=true&showDeal=true">another deal</a></p>');
+				}
+				container.dialog({
+					modal:true,
+					width: 550,
+					title: 'Deals &amp; Savings',
+					open: function() {
+						modalHeight = jQuery(this).height();
+						if (modalHeight > viewportHeight){
+							jQuery(this).dialog( "option", "height", .9 * viewportHeight);
+							jQuery(this).dialog( "option", "position", 'center' );
+						}
+						searchAnotherStoreInit();
+						saveNowDisabled.replaceWith(saveNowLink);
+					},
+					close: function(){
+						jQuery(this).dialog('destroy');
+					}
+				});
+			});
+		});
+
+		// handle store locator links in ui-dialog
+		searchAnotherStoreInit();
+	});
+
+
+	// extend jQuery to handle IE font rendering better on fade in/out
+	jQuery.fn.fadeTo = function(speed,to,callback) {
+		return this.animate({opacity: to}, speed, function() {
+			if (to === 1 && jQuery.browser.msie) {
+			this.style.removeAttribute('filter');
+			}
+			if (jQuery.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+	jQuery.fn.fadeIn = function(speed, callback) {
+		return this.animate({opacity: 'show'}, speed, function() {
+			if (jQuery.browser.msie) {
+				this.style.removeAttribute('filter');
+			}
+			if (jQuery.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+
+	jQuery.fn.fadeOut = function(speed, callback) {
+		return this.animate({opacity: 'hide'}, speed, function() {
+			if (jQuery.browser.msie) {
+				this.style.removeAttribute('filter');
+			}
+			if (jQuery.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+
+	jQuery.fn.hasScrollBar = function() {
+		if (this.length > 0) {
+			return this.get(0).scrollHeight > this.height();
+		}
+	}

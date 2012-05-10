@@ -103,12 +103,11 @@ tvListings.prototype.display_data = function(data){
 		var show_name;
 		var image=DEFAULT_SHOW_ICON;
 		if(curr["url"]!==undefined){
-			show_name='<a href="'+curr['url']+'">'+curr['title']+'</a></dt>'
-			image=this.parse_url_to_show_icon(curr['url']);
-			
+			show_name='<a href="'+curr['url']+'">'+curr['title'].replace("Paid Programming","")+'</a></dt>'
+			image=this.parse_url_to_show_icon(curr['url']);						
 		}
 		else{
-			show_name=curr['title'];
+			show_name=curr['title'].replace("Paid Programming","");			
 		}
 		var selected='';
 		

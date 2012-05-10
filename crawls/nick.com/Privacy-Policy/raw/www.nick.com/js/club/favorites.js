@@ -36,7 +36,7 @@ NICK.club.favorites.addFavorite = function(itemId, attribute) {
 
 NICK.club.favorites.onRemovedClicked = function(cmsid,attribute, element){
 	NICK.club.favorites.removeFavorite(cmsid,attribute);
-	$(element).parent("li").remove();
+	$(element).parent("li").trigger('deleted').remove();
 }
 
 NICK.club.favorites.removeFavorite = function(itemId, attribute) {
@@ -105,6 +105,8 @@ NICK.club.favorites.saveMergedFavorites = function(itemId, response, profileAttr
 	if ( !response )
 		return;
 
+	//Clean out favs for blank spaces and -1
+	
 	// Collect current favorites as array
 	var currentFavorites = this.getFavoritesArray( response.attributeValue );
 
@@ -129,6 +131,10 @@ NICK.club.favorites.saveMergedFavorites = function(itemId, response, profileAttr
 				case "fav_shows":
 					section = "shows";
 					msg = "You are now a fan of this show! Your profile will show an exclusive badge and you'll get even more fan exclusives in the future!";
+					break;
+				case "fav_stars":
+					section = "star";
+					msg = "You are now a fan of this star! Whenever there's news, you'll be the first to find out on your profile!";
 					break;
 				default:
 					section = "main";
@@ -170,7 +176,17 @@ NICK.club.favorites.resetFavoriteButtonText = function (){
 NICK.club.favorites.getFavoritesArray = function( strFavoriteList ) {
 	if ( !!!strFavoriteList || typeof strFavoriteList != "string" )
 		return [];
-	return strFavoriteList.split(",");
+	//split and remove any spaces or -1
+	
+	var favList = strFavoriteList.split(",");
+	try{
+	for (var i=favList.length-1; i>=0; i--) {
+	    if (favList[i] == "" || favList[i] == "-1" ) {
+	    	favList.splice(i, 1);
+	    }
+	}}catch(err){NICK.utils.doLog('Error cleaning fav array');}
+	
+	return favList;
 }
 
 NICK.club.favorites.hasFavorite = function(itemId, favorites) {
@@ -227,7 +243,7 @@ NICK.club.favorites.setAttribute = function(attribute, attributeValue, callback,
 NICK.club.favorites.saveOverlay = function( message, section ) {
 	NICK.overlay.customHTML( 'Save Favorite',
 			'<p style="padding-bottom: 10px;">' + message + '</p>' +
-			'<a href="javascript:NICK.overlay.close()" style="float: left; display: inline; margin-right: 5px;" class="icon icon-close">Close</a><a href="javascript:NICK.club.global.gotoProfile(\'' + section + '\')" style="float: left;" class="icon icon-gotoprofile">Go to Profile</a>',
+			'<a href="javascript:NICK.overlay.close()" style="float: left; display: inline; margin-right: 5px;" class="icon icon-close">Close</a><a href="javascript:NICK.club.global.gotoProfile()" style="float: left;" class="icon icon-gotoprofile">Go to Profile</a>',
 			400 );
 }
 
@@ -252,3 +268,6 @@ NICK.club.favorites.removeFavoriteDialog = function( cmsid, attribute, element )
 		NICK.club.favorites.onRemovedClicked(cmsid, attribute, element);
 	}, null);
 }
+
+
+

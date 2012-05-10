@@ -397,7 +397,6 @@ Event.observe(window, "load", function() {
 });
 Event.observe(document, "unload", Event.unloadCache);
 
-
 //background video adjustment
 function adjustBg() {
 	// check if objects exist otherwise create them and append them to the body tag
@@ -706,7 +705,7 @@ function mobileTermsTip(e) {
 function addPageElementTags() {
 	if (location.href.indexOf("productdetail.jsp") > 0) {
 		// pass an array of ids to function to add cm pageElementTags
-		$w("addToWishlist sendToFriend checkAvailabilityLink sizeChartLink videoTabLink detailsTabLink reviewsTabLink askAndAnswerTabLink socialTabLink").each(function(x) {
+		$w("addToWishlist sendToFriend sizeChartLink videoTabLink detailsTabLink reviewsTabLink askAndAnswerTabLink socialTabLink").each(function(x) {
 			if ($(x)) {
 				Event.observe(x, 'mouseup', function(e) {
 					cmCreatePageElementTag(x,"Product Detail");
@@ -1357,3 +1356,11 @@ function captureGoogleClickId() {
 		clearCookie("googleClickId");
 	}
 }
+
+/* turn on coremetrics clicks for pinterest */
+(function($) {
+	
+	$(document).ready(function() {
+		$("#pinterestWrapper").attr("onclick","return(cmCreatePageElementTag('PINTEREST','PRODUCT DETAIL'));");
+	});
+})(jQuery);

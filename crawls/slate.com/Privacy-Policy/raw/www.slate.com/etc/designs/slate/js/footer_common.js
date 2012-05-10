@@ -22,3 +22,31 @@ var BF_NO_QS = true;
 
 // twitter loader
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+
+// Visual Revenue Script
+var _vrq = _vrq || [];
+_vrq.push(['id', 119]);
+_vrq.push(['track', function(){}]);
+(function(d, a) {
+	var s = d.createElement(a),
+	x = d.getElementsByTagName(a)[0];
+	s.async = true;
+	s.src = 'http://a.visualrevenue.com/vrs.js';
+	x.parentNode.insertBefore(s, x);
+})(document, 'script');
+
+$(document).ready(function() {
+	//Script for external links
+	$("a[href^='http']:not([href*='slate.com'])").each(function(){
+		//instead of "slate.com" we may use location.hostname
+		var noNewTab = (this.getAttribute('class') != undefined) &&
+		(this.getAttribute('class').indexOf('sl-img-no-new-tab') > -1);
+		if((this.href.indexOf('doubleclick.net') == -1) &&	!noNewTab) {
+			//console.log("href----" + this.getAttribute('href'));
+			$this = $(this);
+			if(!$this.has('target') || $this.attr('target') === undefined) {
+				$this.attr('target', '_blank');
+			}
+		}
+	});
+});

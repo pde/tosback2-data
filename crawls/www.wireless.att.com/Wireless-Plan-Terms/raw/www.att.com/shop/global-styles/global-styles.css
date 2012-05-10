@@ -1906,3 +1906,34 @@ li.usmSubDottedSep{background: url(http://www.att.com/images/global/usm/usm-sub-
 	
 }
 /*********************************************************/
+
+/***************************** B2C-112181 - Web Accessibility css starts here ***********************************/
+
+/* Apply the following class to an element you want to be hidden from view and also not read by a screen reader. */
+/* Hidden from sighted users as well as not read by screen reader users. */
+.hidden-silent { 
+    display:none;
+}
+
+/* Apply the following class to an element you want to be hidden from view but still read by a screen reader. */
+/* Hidden from sighted users, read by screen reader users. Special content for benefit of screen reader users alone. */
+.hidden-spoken {
+    position: absolute !important;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+    padding:0 !important;
+    border:0 !important;
+    height: 1px !important; 
+    width: 1px !important; 
+    overflow: hidden;
+}
+
+/* Apply the following class to an element you want to stay visible (so a background will show, for instance) but you want to make its text invisible. The text will be read by a screen reader. If the element only contains text (no background or other styles), this style serves the same purpose as .hidden-spoken can be used interchangably. */
+/* Element viewed by sighted users, text hidden from sighted users, text read by screen reader users. */
+.hidden-text-spoken { 
+    text-indent:-999em; /* does the actual hiding by pushing content off left side of page */
+    overflow:hidden; /* keeps focus outline from extending off left side of page, clips it to visible area of element */
+    display:inline-block; /* text-indent only works on display block or inline-block elements. If inline-block won't work in your particular situation, either change to block or nest another element to hold the hidden text and apply this class to the nested element instead of the parent. */
+}
+
+/***************************** B2C-112181 - Web Accessibility css ends here ***********************************/

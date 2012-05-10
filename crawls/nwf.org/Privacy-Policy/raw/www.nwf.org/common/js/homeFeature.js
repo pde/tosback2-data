@@ -3,7 +3,7 @@
         //Config variables
         var autoSlide = true;
         var mouseDisable = true;
-        var autoSlideDelay = 8000;
+        var autoSlideDelay = 5000;
         //setup variables
         var position = 0;
         var lastPosition = 0;
