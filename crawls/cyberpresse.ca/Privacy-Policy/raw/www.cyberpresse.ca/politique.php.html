@@ -10,57 +10,107 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Cache" content="no store" />
 <meta name="verify-v1" content="xehmvg8QtpAZLH2hipmw6o0J7SCD+4Z+S6+jk/Y9QuE=" />
-<link rel="stylesheet" type="text/css" href="ui/css/general.css%3Fv=20120413100511.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="../static.lpcdn.ca/lpweb/css/styles.css%3Fv=20120413163215.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="ui/css/slideshow.css%3Fv=20120410155418.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="ui/css/print.css" media="print" />
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-<script type="text/javascript" src="ui/js/general.js%3Fv=20120413100531"></script>
-<script type="text/javascript" src="ui/js/prototype.js"></script>
-<script type="text/javascript" src="ui/js/rico.js"></script>
-<script type="text/javascript" src="ui/js/jquery.js"></script>
-<script type="text/javascript" src="ui/js/jScrollPane.js"></script>
-<script type="text/javascript" src="ui/js/jquery.mousewheel.min.js"></script>
-<script type="text/javascript" src="ui/js/loopedslider.js"></script>
-<script type="text/javascript" src="ui/js/functions.js%3Fv=20120316114825"></script>
-<script type="text/javascript" src="ui/js/general-jquery.js%3Fv=20120328161135"></script>
-<script type="text/javascript" src="ui/js/jquery.tools.min.js%3Fv=20120326141001"></script>
+<link rel="stylesheet" type="text/css" href="../www.lapresse.ca/ui/css/general.css%3Fv=20120501161655.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="../static.lpcdn.ca/lpweb/css/styles.css%3Fv=20120511095002.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="../www.lapresse.ca/ui/css/slideshow.css%3Fv=20120412151504.css" media="screen" />
+
+
+<link rel="stylesheet" type="text/css" href="../www.lapresse.ca/ui/css/print.css" media="print" />
+<link rel="shortcut icon" href="../www.lapresse.ca/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="../www.lapresse.ca/ui/js/general.js%3Fv=20120426074627"></script>
+<script type="text/javascript" src="../www.lapresse.ca/ui/js/prototype.js"></script>
+<script type="text/javascript" src="../www.lapresse.ca/ui/js/rico.js"></script>
+<script type="text/javascript" src="../www.lapresse.ca/ui/js/jquery.js"></script>
+<script type="text/javascript" src="../www.lapresse.ca/ui/js/jScrollPane.js"></script>
+<script type="text/javascript" src="../www.lapresse.ca/ui/js/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="../www.lapresse.ca/ui/js/loopedslider.js"></script>
+<script type="text/javascript" src="../www.lapresse.ca/ui/js/functions.js%3Fv=20120405112641"></script>
+<script type="text/javascript" src="../www.lapresse.ca/ui/js/general-jquery.js%3Fv=20120405112642"></script>
+<script type="text/javascript" src="../www.lapresse.ca/ui/js/jquery.tools.min.js%3Fv=20120405112646"></script>
+<script type="text/javascript" src="../static.lpcdn.ca/lpweb/script/mapresse.js"></script>
+
 </head> 
 <body>
 
  
 
 
-<div id="header">      
-    		<div id="pubs">
+<div id="header"> 
+	<script>
+$j(document).ready(function() {
+	 $j("#concours").slideToggle("slow");
+});
+</script>
+<script type="text/javascript" src="../media.ofsys.com/T/OFSYS/H/567595/4r6N4S/jquery.cookie.js"></script>
+<script type="text/javascript">
+$j("#header").addClass('concours');
+
+// Mettre ce script � l'endroit o� faire afficher la banni�re
+var cookieEnabled = (navigator.cookieEnabled)? true : false;
+//if not IE4+ nor NS6+
+if (typeof navigator.cookieEnabled=="undefined" && !cookieEnabled){ 
+	document.cookie = "testcookie";
+	cookieEnabled = (document.cookie.indexOf("testcookie")!=-1)? true : false;
+}
+if (cookieEnabled){
+	// set cookie $j.cookie('the_cookie', 'the_value222', { expires: new Date(2013,0,1), path: '/', domain: 'cyberpresse.ca', secure: false });
+	// Read cookie $j.cookie('the_cookie');
+	// Delete cookie $j.cookie('the_cookie', null);
+	var nbShowContest = 1;
+	var outputBanner = "";
+	var domain = "cyberpresse.ca";
+	var path = "/";
+	var RandomNumber;
+	RandomNumber = Math.floor((Math.random()*500)+1); // Pour 1 chance sur 1000
+	if(RandomNumber == 433){ // Num�ro arbitraire, affiche la banni�re, peut-�tre � changer pour les tests, exemple : != 433
+		if(parseInt($j.cookie('nbShowContest')) < 3 || $j.cookie('nbShowContest') == null){ // Max affichage 3 fois � l'aide d'un biscuit
+			if($j.cookie('nbShowContest') == null)
+				nbShowContest = 1;
+			else
+				nbShowContest = parseInt($j.cookie('nbShowContest')) + 1;
+				$j.cookie('nbShowContest', nbShowContest, { expires: new Date(2013,0,1), path: path, domain: domain, secure: false });
+			
+			outputBanner = outputBanner + "<div id=\"concours\" style=\"display:none;\"><div class=\"ctnConcours\">";
+			outputBanner = outputBanner + "<a href=\"http://adserver.adtechus.com/?adlink|3.0|5214|1046057|1|16|AdId=2701287;BnId=1;link=http://nosconcours.cyberpresse.ca/T/OFC4/CP/786/4AAHebkg/OF/Inscription.ofsys\" title=\"�tes-vous techno ? 25 nouveaux iPad � gagner\" target=\"_blank\">�tes-vous techno ? 25 nouveaux iPad � gagner</a>";
+			outputBanner = outputBanner + "</div></div>";
+			document.write(outputBanner);
+		}
+	}
+}
+else{
+	// Autre chose si le navigateur ne support pas les biscuits.	
+}
+</script>   
+    			<div id="pubs">
        	<div class="ctnPubs">
 		<!-- 728x90_1 -->
 <script type="text/javascript">
 $j("body").attr('id', 'bgPubs');
 </script>
 <div class="pubA">
-<script language="javascript">var curDateTime = new Date(); var offset = -(curDateTime.getTimezoneOffset());if (offset > 0){ offset = '+' + offset; }if (window.adgroupid == undefined) { window.adgroupid = Math.round(Math.random() * 1000);}document.write('<scr'+'ipt lang'+'uage="javascript1.1" src="http://adserver.adtechus.com/addyn/3.0/5214.1/907542/0/-1/ADTECH;alias=cyberpresse_other_728x90_1;key=Comparaison;kvorganizations=1;kvpersons=1;kvgeolocations=1;kvpub=;size=728x90;loc=100;target=_blank;grp='+window.adgroupid+';misc='+new Date().getTime()+';aduho='+offset+';rdclick="><\/script>');</script><noscript><a href="http://adserver.adtechus.com/adlink/3.0/5214.1/907542/0/-1/ADTECH;alias=cyberpresse_other_728x90_1;key=Comparaison;size=728x90;loc=100;rdclick=" target="_blank"><img src="../adserver.adtechus.com/adserv/3.0/5214.1/907542/0/-1/ADTECH%3Bloc=100%3Balias=cyberpresse_other_728x90_1%3Bkey=Comparaison%3Bsize=728x90" border="0" width="728" height="90"></a></noscript></div><script type="text/javascript">
+<script language="javascript">var curDateTime = new Date(); var offset = -(curDateTime.getTimezoneOffset());if (offset > 0){ offset = '+' + offset; }if (window.adgroupid == undefined) { window.adgroupid = Math.round(Math.random() * 1000);}document.write('<scr'+'ipt lang'+'uage="javascript1.1" src="http://adserver.adtechus.com/addyn/3.0/5214.1/2359761/0/-1/ADTECH;alias=lapresse_other_728x90_1;key=Comparaison;kvorganizations=1;kvpersons=1;kvgeolocations=1;kvpub=;size=728x90;loc=100;target=_blank;grp='+window.adgroupid+';misc='+new Date().getTime()+';aduho='+offset+';rdclick="><\/script>');</script><noscript><a href="http://adserver.adtechus.com/adlink/3.0/5214.1/2359761/0/-1/ADTECH;alias=lapresse_other_728x90_1;key=Comparaison;size=728x90;loc=100;rdclick=" target="_blank"><img src="../adserver.adtechus.com/adserv/3.0/5214.1/2359761/0/-1/ADTECH%3Bloc=100%3Balias=lapresse_other_728x90_1%3Bkey=Comparaison%3Bsize=728x90" border="0" width="728" height="90"></a></noscript></div><!-- 238x90_1 -->
+<script type="text/javascript">
 $j("body").attr('id', 'bgPubs');
 </script>
 <div class="pubB">
-	<script language="javascript">var curDateTime = new Date(); var offset = -(curDateTime.getTimezoneOffset());if (offset > 0){ offset = '+' + offset; }if (window.adgroupid == undefined) { window.adgroupid = Math.round(Math.random() * 1000);}document.write('<scr'+'ipt lang'+'uage="javascript1.1" src="http://adserver.adtechus.com/addyn/3.0/5214.1/907659/0/-1/ADTECH;alias=cyberpresse_other_140x90_1;key=Comparaison;kvorganizations=1;kvpersons=1;kvgeolocations=1;kvpub=;size=140x90;loc=100;target=_blank;grp='+window.adgroupid+';misc='+new Date().getTime()+';aduho='+offset+';rdclick="><\/script>');</script><noscript><a href="http://adserver.adtechus.com/adlink/3.0/5214.1/907659/0/-1/ADTECH;alias=cyberpresse_other_140x90_1;key=Comparaison;size=140x90;loc=100;rdclick=" target="_blank"><img src="../adserver.adtechus.com/adserv/3.0/5214.1/907659/0/-1/ADTECH%3Bloc=100%3Balias=cyberpresse_other_140x90_1%3Bkey=Comparaison%3Bsize=140x90" border="0" width="140" height="90"></a></noscript></div>       </div>
+<script language="javascript">var curDateTime = new Date(); var offset = -(curDateTime.getTimezoneOffset());if (offset > 0){ offset = '+' + offset; }if (window.adgroupid == undefined) { window.adgroupid = Math.round(Math.random() * 1000);}document.write('<scr'+'ipt lang'+'uage="javascript1.1" src="http://adserver.adtechus.com/addyn/3.0/5214.1/2359709/0/-1/ADTECH;alias=lapresse_other_238x90_1;key=Comparaison;kvorganizations=1;kvpersons=1;kvgeolocations=1;kvpub=;size=238x90;loc=100;target=_blank;grp='+window.adgroupid+';misc='+new Date().getTime()+';aduho='+offset+';rdclick="><\/script>');</script><noscript><a href="http://adserver.adtechus.com/adlink/3.0/5214.1/2359709/0/-1/ADTECH;alias=lapresse_other_238x90_1;key=Comparaison;size=238x90;loc=100;rdclick=" target="_blank"><img src="../adserver.adtechus.com/adserv/3.0/5214.1/2359709/0/-1/ADTECH%3Bloc=100%3Balias=lapresse_other_238x90_1%3Bkey=Comparaison%3Bsize=238x90" border="0" width="238" height="90"></a></noscript></div>       </div>
 	   </div>
 		    <div id="entete">
     	<div class="ctnEntete">
     		
             <div class="boxLogo">
-            	<h1><a href="http://www.cyberpresse.ca/" title="La Presse.ca">La Presse.ca</a></h1>
+            	<h1><a href="http://www.lapresse.ca/" title="La Presse.ca">La Presse.ca</a></h1>
             </div>
             <div class="boxChannels">
                 <div class="boxVisa">
-                    <p>
-            <a href="http://www.cyberpresse.ca/membre/login.php" title="Se connecter"><strong>Se connecter</strong></a><br />
-        <a href="http://courriel.cyberpresse.ca/membre/profileNoLog.php?mode=register&amp;nextUrl=http://www.cyberpresse.ca/politique.php" title="S'inscrire gratuitement">S'inscrire gratuitement</a>
-    </p>                </div>       
-            	<ul>
-                	<li class="videos"><a href="http://www.cyberpresse.ca/videos/" title="Vidéos">Vidéos</a></li>
-                    <li class="photos"><a href="http://www.cyberpresse.ca/photos/" title="Photos">Photos</a></li>
-                    <li class="debats"><a href="http://www.cyberpresse.ca/debats/" title="Débats">Débats</a></li>
+<p>
+    <a id="visa2Link3" href="http://usager.lapresse.ca/Login?nextUrl=http%3A%2F%2Fwww.lapresse.ca%2Fpolitique.php" title="Se connecter"><strong>Se connecter</strong></a><br />
+    <a id="visa2Link4" href="http://usager.lapresse.ca/Signup?nextUrl=http%3A%2F%2Fwww.lapresse.ca%2Fpolitique.php" title="S'inscrire gratuitement">S'inscrire gratuitement</a>
+</p>
+</div>            	<ul>
+                	<li class="videos"><a href="http://www.lapresse.ca/videos/" title="Vidéos">Vidéos</a></li>
+                    <li class="photos"><a href="http://www.lapresse.ca/photos/" title="Photos">Photos</a></li>
+                    <li class="debats"><a href="http://www.lapresse.ca/debats/" title="Débats">Débats</a></li>
                 </ul>
                 <div class="nouveau">
                 	<p>Nouveau</p>
@@ -70,10 +120,10 @@ $j("body").attr('id', 'bgPubs');
             <div class="boxRecherche">
             	<ul class="mediasSociaux">
                 	<li>Suivez-nous</li>
-                    <li class="facebook"><a href="http://www.cyberpresse.ca/facebook/" title="Facebook" target="_blank">Facebook</a></li>
+                    <li class="facebook"><a href="http://www.lapresse.ca/facebook/" title="Facebook" target="_blank">Facebook</a></li>
                     <li class="twitter"><a href="http://twitter.com/lp_lapresse/" title="Twitter" target="_blank">Twitter</a></li>
-                    <li class="mobile"><a href="http://www.cyberpresse.ca/mobile/" title="Mobiles">Mobiles</a></li>
-                    <li class="rss"><a href="http://www.cyberpresse.ca/rss.php" title="RSS">RSS</a></li>
+                    <li class="mobile"><a href="http://www.lapresse.ca/mobile/" title="Mobiles">Mobiles</a></li>
+                    <li class="rss"><a href="http://www.lapresse.ca/rss.php" title="RSS">RSS</a></li>
                 </ul>
                 <div class="formRecherche">
                 	<script type="text/javascript">
@@ -103,19 +153,19 @@ function clickrecall(thisfield, defaulttext) {
     	<div class="ctnNavigation">
         	<div class="menu">
                                     <ul>
-                                    <li class="accueil"><a href="http://www.cyberpresse.ca/" title="Accueil">&nbsp;</a></li>
-                    <li class="actualites"><a href="http://www.cyberpresse.ca/actualites/" title="Actualités">Actualités</a></li>
-                    <li class="international"><a href="http://www.cyberpresse.ca/international/" title="International">International</a></li>
-                    <li class="affaires"><a href="http://lapresseaffaires.cyberpresse.ca/" title="Affaires">Affaires</a></li>
-                    <li class="sports"><a href="http://www.cyberpresse.ca/sports/" title="Sports">Sports</a></li>
-                    <li class="auto"><a href="http://auto.cyberpresse.ca/" title="Auto">Auto</a></li>
-                    <li class="arts"><a href="http://www.cyberpresse.ca/arts/" title="Arts">Arts</a></li>
-                    <li class="cinema"><a href="http://moncinema.cyberpresse.ca/" title="Cinéma">Cinéma</a></li>
-                    <li class="vivre"><a href="http://www.cyberpresse.ca/vivre/" title="Vivre">Vivre</a></li>
-                    <li class="voyage"><a href="http://www.cyberpresse.ca/voyage/" title="Voyage">Voyage</a></li>
-                    <li class="vins"><a href="http://www.cyberpresse.ca/vins/" title="Vins">Vins</a></li>
-                    <li class="maison"><a href="http://montoit.cyberpresse.ca/" title="Maison">Maison</a></li>
-                    <li class="techno"><a href="http://technaute.cyberpresse.ca/" title="Techno">Techno</a></li>
+                                    <li class="accueil"><a href="http://www.lapresse.ca/" title="Accueil">&nbsp;</a></li>
+                    <li class="actualites"><a href="http://www.lapresse.ca/actualites/" title="Actualités">Actualités</a></li>
+                    <li class="international"><a href="http://www.lapresse.ca/international/" title="International">International</a></li>
+                    <li class="affaires"><a href="http://affaires.lapresse.ca/" title="Affaires">Affaires</a></li>
+                    <li class="sports"><a href="http://www.lapresse.ca/sports/" title="Sports">Sports</a></li>
+                    <li class="auto"><a href="http://auto.lapresse.ca/" title="Auto">Auto</a></li>
+                    <li class="arts"><a href="http://www.lapresse.ca/arts/" title="Arts">Arts</a></li>
+                    <li class="cinema"><a href="http://cinema.lapresse.ca/" title="Cinéma">Cinéma</a></li>
+                    <li class="vivre"><a href="http://www.lapresse.ca/vivre/" title="Vivre">Vivre</a></li>
+                    <li class="voyage"><a href="http://www.lapresse.ca/voyage/" title="Voyage">Voyage</a></li>
+                    <li class="vins"><a href="http://www.lapresse.ca/vins/" title="Vins">Vins</a></li>
+                    <li class="maison"><a href="http://maison.lapresse.ca/" title="Maison">Maison</a></li>
+                    <li class="techno"><a href="http://techno.lapresse.ca/" title="Techno">Techno</a></li>
                 </ul>
             </div>  
         </div>
@@ -145,7 +195,7 @@ function clickrecall(thisfield, defaulttext) {
 	<div class="filariane">
 		
 <ul class="linear fil-ariane">
- <li><a title="Accueil" alt="Accueil" href="http://www.cyberpresse.ca/">Accueil</a>&nbsp;&gt;&nbsp;</li>
+ <li><a title="Accueil" alt="Accueil" href="http://www.lapresse.ca/">Accueil</a>&nbsp;&gt;&nbsp;</li>
   <li>Politique de confidentialit&eacute;</li>
 </ul>
 
@@ -209,7 +259,7 @@ function clickrecall(thisfield, defaulttext) {
 <p>Tous les employ&eacute;s de lapresse.ca sont responsables de la politique et des pratiques de lapresse.ca en mati&egrave;re de gestion des renseignements personnels. Il est toutefois important pour lapresse.ca que vous puissiez identifier facilement des personnes ressources avec lesquelles communiquer &agrave; ce propos, au besoin. Voil&agrave; pourquoi certains employ&eacute;s se verront, de temps &agrave; autre, attribuer une responsabilit&eacute; particuli&egrave;re &agrave; cet &eacute;gard. En envoyant vos commentaires aux coordonn&eacute;es ci-dessous, nous nous assurerons de les faire parvenir &agrave; la personne d&eacute;sign&eacute;e.</p>
 
 
-<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='images/fleche-haut.gif' border='0'></a></div>
+<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='../www.lapresse.ca/images/fleche-haut.gif' border='0'></a></div>
 <a name="2"></a>
 <h3>2. Recevoir et traiter toute plainte relative &agrave; la mise en &oelig;uvre de la pr&eacute;sente politique et des pratiques qui en d&eacute;coulent</h3>
 
@@ -232,7 +282,7 @@ T&eacute;l&eacute;phone : 1 866 806-1804<br />
 T&eacute;l&eacute;copieur : 514 285-7123<br />
 </p>
 
-<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='images/fleche-haut.gif' border='0'></a></div>
+<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='../www.lapresse.ca/images/fleche-haut.gif' border='0'></a></div>
 <a name="3"></a>
 <h3>3.  D&eacute;terminer pourquoi des renseignements personnels sont recueillis</h3>
 
@@ -244,7 +294,7 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
 
 <p>Les renseignements personnels recueillis ne sont utilis&eacute;s qu'aux fins ainsi d&eacute;termin&eacute;es sauf exceptions d&eacute;coulant de la loi ou avec votre consentement au nouvel usage.</p>
 
-<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='images/fleche-haut.gif' border='0'></a></div>
+<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='../www.lapresse.ca/images/fleche-haut.gif' border='0'></a></div>
 <a name="4"></a>
 <h3>4. Obtenir le consentement</h3>
 
@@ -252,14 +302,14 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
 <p>lapresse.ca obtient votre consentement &agrave; la cueillette, &agrave; l'usage et &agrave; la communication de tout renseignement personnel le concernant sauf exceptions d&eacute;coulant de la loi.</p>
 
 
-<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='images/fleche-haut.gif' border='0'></a></div>
+<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='../www.lapresse.ca/images/fleche-haut.gif' border='0'></a></div>
 <a name="5"></a>
 <h3>5. Limiter la cueillette de renseignements personnels</h3> 
 
 
 <p>lapresse.ca ne recueille que les renseignements personnels n&eacute;cessaires suivant les circonstances. lapresse.ca indique, le cas &eacute;ch&eacute;ant, le caract&egrave;re obligatoire ou facultatif d'une demande de renseignements personnels et les cons&eacute;quences d&eacute;coulant de votre choix de ne pas communiquer l'un ou l'autre de ces renseignements.</p>
 
-<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='images/fleche-haut.gif' border='0'></a></div>
+<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='../www.lapresse.ca/images/fleche-haut.gif' border='0'></a></div>
 <a name="6"></a>
 
 <h3>6. Limiter les usages et les communications de renseignements personnels</h3> 
@@ -267,7 +317,7 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
 
 <p>lapresse.ca n'utilise et ne communique les renseignements personnels que pour les fins pour lesquelles ils ont &eacute;t&eacute; recueillis ou qu'avec votre consentement ou dans les cas autoris&eacute;s par la loi.</p>
 
-<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='images/fleche-haut.gif' border='0'></a></div>
+<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='../www.lapresse.ca/images/fleche-haut.gif' border='0'></a></div>
 <a name="7"></a>
 <h3>7. Promouvoir l'exactitude des renseignements personnels au moment de leur utilisation ou de leur communication</h3> 
 
@@ -275,14 +325,14 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
 <p>lapresse.ca prend des mesures raisonnables pour s'assurer que les renseignements personnels sont &agrave; jour et exacts au moment de les utiliser ou de les communiquer. Vous &ecirc;tes invit&eacute; &agrave; y contribuer en communiquant promptement &agrave; lapresse.ca tout changement &agrave; apporter &agrave; votre profil ou en signalant sans d&eacute;lai toute erreur qui se serait produite. Vous pouvez ce faire en acc&eacute;dant &agrave; votre profil sur le site Web de lapresse.ca ou en communiquant avec lapresse.ca par <a href="mailto:commentaires@cyberpresse.ca">courriel</a>, par courrier r&eacute;gulier adress&eacute; &agrave; lapresse.ca, Service &agrave; la client&egrave;le, 7 rue St-Jacques, Montr&eacute;al, Canada H2Y 1K9 ou par t&eacute;l&eacute;phone au 1 866 806-1804.</p>
 
 
-<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='images/fleche-haut.gif' border='0'></a></div>
+<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='../www.lapresse.ca/images/fleche-haut.gif' border='0'></a></div>
 <a name="8"></a>
 <h3>8. Prot&eacute;ger les renseignements personnels</h3>
 
 
 <p>lapresse.ca prot&egrave;ge, par les mesures de s&eacute;curit&eacute; appropri&eacute;es selon les circonstances, les renseignements personnels qui lui sont confi&eacute;s.</p>
 
-<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='images/fleche-haut.gif' border='0'></a></div>
+<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='../www.lapresse.ca/images/fleche-haut.gif' border='0'></a></div>
 
 <a name="9"></a>
 <h3>9. Rendre facilement accessible l'information relative aux pratiques en place et qui touchent aux renseignements personnels</h3>
@@ -291,7 +341,7 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
 <p>lapresse.ca rend accessible sa politique de protection de la vie priv&eacute;e relative &agrave; la cueillette, &agrave; l'usage et &agrave; la communication de renseignements personnels. Vous pouvez la consulter sur le site Web de lapresse.ca ou en obtenir une copie en communiquant avec lapresse.ca par <a href="mailto:commentaires@cyberpresse.ca">courriel</a>, par courrier r&eacute;gulier adress&eacute; &agrave; lapresse.ca, Service &agrave; la client&egrave;le, 7 rue St-Jacques, Montr&eacute;al, Canada H2Y 1K9 ou par t&eacute;l&eacute;phone au 1 866 806-1804.</p>
 
 
-<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='images/fleche-haut.gif' border='0'></a></div>
+<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='../www.lapresse.ca/images/fleche-haut.gif' border='0'></a></div>
 <a name="10"></a>
 <h3>10. Donner acc&egrave;s aux renseignements personnels qui vous concernent et en permettre la rectification</h3>
 
@@ -299,7 +349,7 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
 <p>lapresse.ca vous permet, sous r&eacute;serve des conditions et des exceptions pr&eacute;vues &agrave; la loi, d'avoir acc&egrave;s aux renseignements personnels qui vous concernent et que lapresse.ca d&eacute;tient &agrave; votre sujet. lapresse.ca vous informera, sur demande, de l'existence de renseignements personnels qui vous concernent, de l'usage qui en est fait et du fait qu'ils ont &eacute;t&eacute; communiqu&eacute;s &agrave; des tiers, et vous permettra de les consulter. Il vous sera aussi possible de contester l'exactitude et l'int&eacute;gralit&eacute; des renseignements et d'y faire apporter les corrections appropri&eacute;es.</p>
 
 
-<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='images/fleche-haut.gif' border='0'></a></div>
+<div align="right" style="padding:10px 0px 10px 0px;"><a href="politique.php.html#menu"><img src='../www.lapresse.ca/images/fleche-haut.gif' border='0'></a></div>
 <h3>B.	INSTANCES DE CUEILLETTE DE RENSEIGNEMENTS PERSONNELS</h3>
  
 
@@ -372,10 +422,10 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
 				<!-- recherche bo15 -->	<!-- 300x250_1 -->
 <div class="pub">
 	<p class="txt-pub">publicit&eacute;</p>
-<script language="javascript">var curDateTime = new Date(); var offset = -(curDateTime.getTimezoneOffset());if (offset > 0){ offset = '+' + offset; }if (window.adgroupid == undefined) { window.adgroupid = Math.round(Math.random() * 1000);}document.write('<scr'+'ipt lang'+'uage="javascript1.1" src="http://adserver.adtechus.com/addyn/3.0/5214.1/907523/0/-1/ADTECH;alias=cyberpresse_other_300x250_1;key=Comparaison;kvorganizations=1;kvpersons=1;kvgeolocations=1;kvpub=;size=300x250;loc=100;target=_blank;grp='+window.adgroupid+';misc='+new Date().getTime()+';aduho='+offset+';rdclick="><\/script>');</script><noscript><a href="http://adserver.adtechus.com/adlink/3.0/5214.1/907523/0/-1/ADTECH;alias=cyberpresse_other_300x250_1;key=Comparaison;size=300x250;loc=100;rdclick=" target="_blank"><img src="../adserver.adtechus.com/adserv/3.0/5214.1/907523/0/-1/ADTECH%3Bloc=100%3Balias=cyberpresse_other_300x250_1%3Bkey=Comparaison%3Bsize=300x250" border="0" width="300" height="250"></a></noscript></div>	<div id="boxContribuez300">
-    <h4><a href="http://www.cyberpresse.ca/contact/reseau/contact.php?form_name=soumettre_nouvelle" title="CONTRIBUEZ">CONTRIBUEZ</a> <span> > </span></h4>
+<script language="javascript">var curDateTime = new Date(); var offset = -(curDateTime.getTimezoneOffset());if (offset > 0){ offset = '+' + offset; }if (window.adgroupid == undefined) { window.adgroupid = Math.round(Math.random() * 1000);}document.write('<scr'+'ipt lang'+'uage="javascript1.1" src="http://adserver.adtechus.com/addyn/3.0/5214.1/2359779/0/-1/ADTECH;alias=lapresse_other_300x250_1;key=Comparaison;kvorganizations=1;kvpersons=1;kvgeolocations=1;kvpub=;size=300x250;loc=100;target=_blank;grp='+window.adgroupid+';misc='+new Date().getTime()+';aduho='+offset+';rdclick="><\/script>');</script><noscript><a href="http://adserver.adtechus.com/adlink/3.0/5214.1/2359779/0/-1/ADTECH;alias=lapresse_other_300x250_1;key=Comparaison;size=300x250;loc=100;rdclick=" target="_blank"><img src="../adserver.adtechus.com/adserv/3.0/5214.1/2359779/0/-1/ADTECH%3Bloc=100%3Balias=lapresse_other_300x250_1%3Bkey=Comparaison%3Bsize=300x250" border="0" width="300" height="250"></a></noscript></div>	<div id="boxContribuez300">
+    <h4><a href="http://www.lapresse.ca/contact/reseau/contact.php?form_name=soumettre_nouvelle" title="CONTRIBUEZ">CONTRIBUEZ</a> <span> > </span></h4>
     <p>Vous avez assisté à un évènement d'intérêt public ?</p>
-    <p><a href="http://www.cyberpresse.ca/contact/reseau/contact.php?form_name=soumettre_nouvelle" title="Envoyez-nous vos textes, photos ou vidéos">Envoyez-nous vos textes, photos ou vidéos</a></p>
+    <p><a href="http://www.lapresse.ca/contact/reseau/contact.php?form_name=soumettre_nouvelle" title="Envoyez-nous vos textes, photos ou vidéos">Envoyez-nous vos textes, photos ou vidéos</a></p>
 </div>
 			</div> <!-- END .rail-right -->
 		</div> <!-- END .block-page -->
@@ -392,7 +442,7 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
         <div class="ctnLiensTop">
             <div class="liensTop">
                 <ul>
-                	<li class="contact"><a href="http://www.cyberpresse.ca/contact/" title="Nous joindre">Nous joindre</a></li>
+                	<li class="contact"><a href="http://www.lapresse.ca/contact/" title="Nous joindre">Nous joindre</a></li>
                     <li class="lapresse"><a href="http://carrieres.lapresse.ca" title="LA PRESSE - Carrières chez nous" target="_blank">LA PRESSE - Carrières chez nous</a></li>
                     <li class="linkedin"><a href="http://www.linkedin.com/groups/Presse-Carri%C3%A8res-chez-nous-3972143?trk=myg_ugrp_ovr" title="LinkedIn" target="_blank">&nbsp;</a></li>
                 </ul>            	                               
@@ -410,55 +460,55 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
                             <li>Rester connecté</li>
                             <li>
                                 <ul class="connecte">
-                                    <li class="facebook"><a href="http://www.cyberpresse.ca/facebook/" title="Facebook" target="_blank">Facebook</a></li>
+                                    <li class="facebook"><a href="http://www.lapresse.ca/facebook/" title="Facebook" target="_blank">Facebook</a></li>
                                     <li class="twitter"><a href="http://twitter.com/lp_lapresse/" title="Twitter" target="_blank">Twitter</a></li>
                                     <!--li class="google"><a href="#" title="Google+">Google+</a></li-->
-                                    <li class="rss"><a href="http://www.cyberpresse.ca/rss.php" title="RSS">RSS</a></li>
+                                    <li class="rss"><a href="http://www.lapresse.ca/rss.php" title="RSS">RSS</a></li>
                                 </ul>
                             </li>
-                            <li><a href="http://www.cyberpresse.ca/alertes/" title="Alertes">Alertes</a></li>
-                            <li><a href="http://courriel.cyberpresse.ca/membre/login.php?nextUrl=http://www.cyberpresse.ca/&amp;action=newsletter" title="Infolettre">Infolettre</a></li>
-                            <li><a href="http://www.cyberpresse.ca/cpenaccueil.php" title="Lapresse.ca en page d'accueil">Lapresse.ca en page d'accueil</a></li>
+                            <li><a href="http://www.lapresse.ca/alertes/" title="Alertes">Alertes</a></li>
+                            <li><a href="http://courriel.lapresse.ca/Login?nextUrl=http://www.lapresse.ca/&amp;action=newsletter" title="Infolettre">Infolettre</a></li>
+                            <li><a href="http://www.lapresse.ca/cpenaccueil.php" title="Lapresse.ca en page d'accueil">Lapresse.ca en page d'accueil</a></li>
                         </ul>
                         <ul>
                             <li class="titre">Régions</li>
-                            <li>Montréal: <a href="http://www.cyberpresse.ca/actualites/regional/montreal/" title="La Presse">La Presse</a></li>
-                            <li>Québec: <a href="http://www.cyberpresse.ca/le-soleil/" title="Le Soleil">Le Soleil</a></li>
-                            <li>Trois-Rivières: <a href="http://www.cyberpresse.ca/le-nouvelliste/" title="Le Nouvelliste">Le Nouvelliste</a></li>
-                            <li>Gatineau / Ottawa: <a href="http://www.cyberpresse.ca/le-droit/" title="Le Droit">Le Droit</a></li>
-                            <li>Sherbrooke: <a href="http://www.cyberpresse.ca/la-tribune/" title="La Tribune">La Tribune</a></li>
-                            <li>Saguenay / Lac-St-Jean: <a href="http://www.cyberpresse.ca/le-quotidien/" title="Le Quotidien">Le Quotidien</a></li>                            
-                            <li>Granby: <a href="http://www.cyberpresse.ca/la-voix-de-lest/" title="La Voix de l'Est">La Voix de l'Est</a></li>
+                            <li>Montréal: <a href="http://www.lapresse.ca/actualites/regional/montreal/" title="La Presse">La Presse</a></li>
+                            <li>Québec: <a href="http://www.lapresse.ca/le-soleil/" title="Le Soleil">Le Soleil</a></li>
+                            <li>Trois-Rivières: <a href="http://www.lapresse.ca/le-nouvelliste/" title="Le Nouvelliste">Le Nouvelliste</a></li>
+                            <li>Gatineau / Ottawa: <a href="http://www.lapresse.ca/le-droit/" title="Le Droit">Le Droit</a></li>
+                            <li>Sherbrooke: <a href="http://www.lapresse.ca/la-tribune/" title="La Tribune">La Tribune</a></li>
+                            <li>Saguenay / Lac-St-Jean: <a href="http://www.lapresse.ca/le-quotidien/" title="Le Quotidien">Le Quotidien</a></li>                            
+                            <li>Granby: <a href="http://www.lapresse.ca/la-voix-de-lest/" title="La Voix de l'Est">La Voix de l'Est</a></li>
                         </ul>
                         <ul>
                             <li class="titre">Archives</li>
-                            <li><a href="http://www.cyberpresse.ca/archives/" title="Recherche">Recherche</a></li>
-                            <li><a href="http://www.cyberpresse.ca/archives_payantes/" title="Archives payantes">Archives payantes</a></li>
+                            <li><a href="http://www.lapresse.ca/archives/" title="Recherche">Recherche</a></li>
+                            <li><a href="http://www.lapresse.ca/archives_payantes/" title="Archives payantes">Archives payantes</a></li>
                             <li><a href="http://cyberpresse-ecoles.cedrom-sni.com/" title="La Presse écoles">La Presse-écoles</a></li>
                         </ul>
                     </div>
                     <div class="col">
                         <ul>
                             <li class="titre">Détente</li>
-                            <li><a href="http://www.cyberpresse.ca/photos/caricatures/" title="Caricatures">Caricatures</a></li>
+                            <li><a href="http://www.lapresse.ca/photos/caricatures/" title="Caricatures">Caricatures</a></li>
                             <li><a href="http://cassetete.cyberpresse.ca/" title="Casse-tête">Casse-tête</a></li>
-                            <li><a href="http://concours.cyberpresse.ca/" title="Concours">Concours</a></li>
-                            <li><a href="http://www.cyberpresse.ca/detente/horoscope.php" title="Horoscope">Horoscope</a></li>
-                            <li><a href="http://www.cyberpresse.ca/detente/mots_croises.php" title="Mots croisés">Mots croisés</a></li>
-                            <li><a href="http://quiz.cyberpresse.ca/" title="Quiz">Quiz</a></li>
-                            <li><a href="http://www.cyberpresse.ca/detente/sudoku.php" title="Sudoku">Sudoku</a></li>
+                            <li><a href="http://www.lapresse.ca/nosconcours/" title="Concours">Concours</a></li>
+                            <li><a href="http://www.lapresse.ca/detente/horoscope.php" title="Horoscope">Horoscope</a></li>
+                            <li><a href="http://www.lapresse.ca/detente/mots_croises.php" title="Mots croisés">Mots croisés</a></li>
+                            <li><a href="http://quiz.lapresse.ca/" title="Quiz">Quiz</a></li>
+                            <li><a href="http://www.lapresse.ca/detente/sudoku.php" title="Sudoku">Sudoku</a></li>
                         </ul>
                         <ul>
                             <li class="titre">Services</li>
-                            <li><a href="http://www.cyberpresse.ca/agenda/" title="Agenda culturel">Agenda culturel</a></li>
-                            <li><a href="http://www.cyberpresse.ca/arts/guide-tele/" title="Guide télé">Guide télé</a></li>
-                            <li><a href="http://moncinema.cyberpresse.ca/horaire/" title="Horaire cinéma">Horaire cinéma</a></li>
+                            <li><a href="http://www.lapresse.ca/agenda/" title="Agenda culturel">Agenda culturel</a></li>
+                            <li><a href="http://www.lapresse.ca/arts/guide-tele/" title="Guide télé">Guide télé</a></li>
+                            <li><a href="http://cinema.lapresse.ca/horaire/" title="Horaire cinéma">Horaire cinéma</a></li>
                             <li class="spacer">&nbsp;</li>
-                            <li><a href="http://www.cyberpresse.ca/meteo/ville/montreal_caqc0363.php" title="Météo">Météo</a></li>
-                            <li><a href="http://lapresseaffaires.cyberpresse.ca/bourse/" title="Bourse">Bourse</a></li>
-                            <li><a href="http://www.cyberpresse.ca/sports/" title="Résultats sportifs">Résultats sportifs</a></li>
+                            <li><a href="http://www.lapresse.ca/meteo/ville/montreal_caqc0363.php" title="Météo">Météo</a></li>
+                            <li><a href="http://affaires.lapresse.ca/bourse/" title="Bourse">Bourse</a></li>
+                            <li><a href="http://www.lapresse.ca/sports/" title="Résultats sportifs">Résultats sportifs</a></li>
                             <li class="spacer">&nbsp;</li>
-                            <li><a href="http://necrologie.cyberpresse.ca" title="Nécrologie">Nécrologie</a></li>
+                            <li><a href="http://necrologie.lapresse.ca" title="Nécrologie">Nécrologie</a></li>
                             <li class="spacer">&nbsp;</li>
                             <li><a href="http://duproprio.com/" title="Maisons à vendre" target="_blank">Maisons à vendre</a></li>
                             <li><a href="http://neuves.duproprio.com/" title="Maisons neuves" target="_blank" class="neuves">Maisons neuves</a></li>
@@ -469,46 +519,46 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
                     <h3>Mobile</h3>
                     <ul>
                         <li class="titre">Applications</li>
-                        <li><a href="http://www.cyberpresse.ca/mobile/" title="La Presse Mobile">La Presse Mobile</a></li>
+                        <li><a href="http://www.lapresse.ca/mobile/" title="La Presse Mobile">La Presse Mobile</a></li>
                         <li>Sur iPhone, iPad et Android</li>
-                        <li><a href="http://www.cyberpresse.ca/mobile/" title="LP Hockey">La Presse Hockey</a></li>
+                        <li><a href="http://www.lapresse.ca/mobile/" title="LP Hockey">La Presse Hockey</a></li>
                         <li>Sur iPhone et Android</li>
-                        <li><a href="http://www.cyberpresse.ca/mobile/" title="LP Mots croisés">La Presse Mots croisés</a></li>
+                        <li><a href="http://www.lapresse.ca/mobile/" title="LP Mots croisés">La Presse Mots croisés</a></li>
                         <li>Sur iPhone</li>
                     </ul>
                     <div class="pubApp">
                         <img src="../static.lpcdn.ca/lpweb/img/img_appMobiles.png" alt="Applications mobiles" title="Applications mobiles" />
-                        <p><a href="http://www.cyberpresse.ca/mobile/" title="Voir toutes nos applications mobiles">Voir toutes nos applications mobiles »</a></p>
+                        <p><a href="http://www.lapresse.ca/mobile/" title="Voir toutes nos applications mobiles">Voir toutes nos applications mobiles »</a></p>
                     </div>
                     <!--ul>
                         <li class="titre">Services mobiles</li>
-                        <li><a href="http://www.cyberpresse.ca/recevoir-vos-nouvelles/" title="Accédez aux nouvelles sur un appareil WAP">Accédez aux nouvelles sur<br />un appareil WAP</a></li>
+                        <li><a href="http://www.lapresse.ca/recevoir-vos-nouvelles/" title="Accédez aux nouvelles sur un appareil WAP">Accédez aux nouvelles sur<br />un appareil WAP</a></li>
                     </ul-->
                 </div>
                 <div class="liens journaux">
                     <h3>Journaux</h3>
                     <ul>
                         <li class="titre">Abonnements papier</li>
-                        <li>Montréal: <a href="http://www.cyberpresse.ca/abonnement/lapresse/" title="La Presse">La Presse</a></li>
-                        <li>Québec: <a href="http://www.cyberpresse.ca/abonnement/lesoleil/" title="Le Soleil">Le Soleil</a></li>
-                        <li>Trois-Rivières: <a href="http://www.cyberpresse.ca/abonnement/lenouvelliste/" title="Le Nouvelliste">Le Nouvelliste</a></li>
-                        <li>Gatineau / Ottawa: <a href="http://www.cyberpresse.ca/abonnement/ledroit/" title="Le Droit">Le Droit</a></li>
-                        <li>Sherbrooke: <a href="http://www.cyberpresse.ca/abonnement/latribune/" title="La Tribune">La Tribune</a></li>
-                        <li>Saguenay / Lac-St-Jean: <a href="http://www.cyberpresse.ca/abonnement/lequotidien/" title="Le Quotidien">Le Quotidien</a></li>                        
-                        <li>Granby: <a href="http://www.cyberpresse.ca/abonnement/lavoixdelest/" title="La Voix de l'Est">La Voix de l'Est</a></li>
+                        <li>Montréal: <a href="http://www.lapresse.ca/abonnement/lapresse/" title="La Presse">La Presse</a></li>
+                        <li>Québec: <a href="http://www.lapresse.ca/abonnement/lesoleil/" title="Le Soleil">Le Soleil</a></li>
+                        <li>Trois-Rivières: <a href="http://www.lapresse.ca/abonnement/lenouvelliste/" title="Le Nouvelliste">Le Nouvelliste</a></li>
+                        <li>Gatineau / Ottawa: <a href="http://www.lapresse.ca/abonnement/ledroit/" title="Le Droit">Le Droit</a></li>
+                        <li>Sherbrooke: <a href="http://www.lapresse.ca/abonnement/latribune/" title="La Tribune">La Tribune</a></li>
+                        <li>Saguenay / Lac-St-Jean: <a href="http://www.lapresse.ca/abonnement/lequotidien/" title="Le Quotidien">Le Quotidien</a></li>                        
+                        <li>Granby: <a href="http://www.lapresse.ca/abonnement/lavoixdelest/" title="La Voix de l'Est">La Voix de l'Est</a></li>
                     </ul>
                     <ul>
                         <li><a href="http://kiosque.cyberpresse.ca/" title="Cahiers spéciaux">Cahiers spéciaux</a></li>
                         <li class="spacer">&nbsp;</li>
-                        <li><a href="http://privileges.cyberpresse.ca/" title="Club Privilèges">Club Privilèges</a></li>
+                        <li><a href="http://privileges.lapresse.ca/" title="Club Privilèges">Club Privilèges</a></li>
                         <li class="spacer">&nbsp;</li>
                         <li><a href="http://librairie.cyberpresse.ca/" title="Éditions La Presse">Éditions La Presse</a></li>
                         <li class="spacer">&nbsp;</li>
-                        <li><a href="http://annonces.cyberpresse.ca/" title="Petites annonces">Petites annonces</a></li>
+                        <li><a href="http://annonces.lapresse.ca/" title="Petites annonces">Petites annonces</a></li>
                     </ul>
                     <ul class="electroniques">
                         <li class="titre">Abonnements électroniques</li>
-                        <li><a href="http://www.cyberpresse.ca/abonnement/e_electronique/" title="Versions électroniques">Versions électroniques</a></li>
+                        <li><a href="http://www.lapresse.ca/abonnement/e_electronique/" title="Versions électroniques">Versions électroniques</a></li>
                     </ul>
                 </div>
             </div>
@@ -532,19 +582,19 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
         <div class="ctnNavigation">
             <div class="menu">
                                     <ul>
-                                    <li class="accueil"><a href="http://www.cyberpresse.ca/" title="Accueil">&nbsp;</a></li>
-                    <li class="actualites"><a href="http://www.cyberpresse.ca/actualites/" title="Actualités">Actualités</a></li>
-                    <li class="international"><a href="http://www.cyberpresse.ca/international/" title="International">International</a></li>
-                    <li class="affaires"><a href="http://lapresseaffaires.cyberpresse.ca/" title="Affaires">Affaires</a></li>
-                    <li class="sports"><a href="http://www.cyberpresse.ca/sports/" title="Sports">Sports</a></li>
-                    <li class="auto"><a href="http://auto.cyberpresse.ca/" title="Auto">Auto</a></li>
-                    <li class="arts"><a href="http://www.cyberpresse.ca/arts/" title="Arts">Arts</a></li>
-                    <li class="cinema"><a href="http://moncinema.cyberpresse.ca/" title="Cinéma">Cinéma</a></li>
-                    <li class="vivre"><a href="http://www.cyberpresse.ca/vivre/" title="Vivre">Vivre</a></li>
-                    <li class="voyage"><a href="http://www.cyberpresse.ca/voyage/" title="Voyage">Voyage</a></li>
-                    <li class="vins"><a href="http://www.cyberpresse.ca/vins/" title="Vins">Vins</a></li>
-                    <li class="maison"><a href="http://montoit.cyberpresse.ca/" title="Maison">Maison</a></li>
-                    <li class="techno"><a href="http://technaute.cyberpresse.ca/" title="Techno">Techno</a></li>
+                                    <li class="accueil"><a href="http://www.lapresse.ca/" title="Accueil">&nbsp;</a></li>
+                    <li class="actualites"><a href="http://www.lapresse.ca/actualites/" title="Actualités">Actualités</a></li>
+                    <li class="international"><a href="http://www.lapresse.ca/international/" title="International">International</a></li>
+                    <li class="affaires"><a href="http://affaires.lapresse.ca/" title="Affaires">Affaires</a></li>
+                    <li class="sports"><a href="http://www.lapresse.ca/sports/" title="Sports">Sports</a></li>
+                    <li class="auto"><a href="http://auto.lapresse.ca/" title="Auto">Auto</a></li>
+                    <li class="arts"><a href="http://www.lapresse.ca/arts/" title="Arts">Arts</a></li>
+                    <li class="cinema"><a href="http://cinema.lapresse.ca/" title="Cinéma">Cinéma</a></li>
+                    <li class="vivre"><a href="http://www.lapresse.ca/vivre/" title="Vivre">Vivre</a></li>
+                    <li class="voyage"><a href="http://www.lapresse.ca/voyage/" title="Voyage">Voyage</a></li>
+                    <li class="vins"><a href="http://www.lapresse.ca/vins/" title="Vins">Vins</a></li>
+                    <li class="maison"><a href="http://maison.lapresse.ca/" title="Maison">Maison</a></li>
+                    <li class="techno"><a href="http://techno.lapresse.ca/" title="Techno">Techno</a></li>
                 </ul>
             </div>
         </div>
@@ -554,11 +604,11 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
         <div class="ctnBoxCopyright">
             <div class="boxCopyright">
                 <ul>
-                    <li><a href="http://www.cyberpresse.ca/plandusite.php" title="Plan du site">Plan du site</a></li>
-                    <li><a href="http://www.cyberpresse.ca/membre/login.php" title="Modifier votre profil">Modifier votre profil</a></li>
-                    <li><a href="http://www.cyberpresse.ca/faq.php" title="Foire aux questions">Foire aux questions</a></li>
-                    <li><a href="http://www.cyberpresse.ca/contact/" title="Nous joindre">Nous joindre</a></li>
-                    <li><a href="http://www.cyberpresse.ca/conditions.php" title="Conditions d'utilisation">Conditions d'utilisation</a></li>
+                    <li><a href="http://www.lapresse.ca/plandusite.php" title="Plan du site">Plan du site</a></li>
+                    <li><a href="http://usager.lapresse.ca/Profile" title="Modifier votre profil">Modifier votre profil</a></li>
+                    <li><a href="http://www.lapresse.ca/faq.php" title="Foire aux questions">Foire aux questions</a></li>
+                    <li><a href="http://www.lapresse.ca/contact/" title="Nous joindre">Nous joindre</a></li>
+                    <li><a href="http://www.lapresse.ca/conditions.php" title="Conditions d'utilisation">Conditions d'utilisation</a></li>
                     <li><a href="politique.php.html" title="Politique de confidentialité">Politique de confidentialité</a></li>
                     <li class="last"><a href="http://publicite.gesca.ca/" title="Annoncez dans nos médias">Annoncez dans nos médias</a></li>
                 </ul> 
@@ -571,9 +621,33 @@ T&eacute;l&eacute;copieur : 514 285-7123<br />
 <div class="clearer">&nbsp;</div> 
 <!-- END #footer -->   
 
-<img src="politique.php.html" id="img1" height="1" width="1" alt="" />
+ <!--[if lt IE 7]>  
+    <style>
+        .ie6WarningCtn{border: 1px solid #F7941D; background: #FEEFDA; text-align: center; height: 85px; position: absolute; top:40%;  font-size:12px; font-family:Arial, Helvetica, sans-serif; padding-top:5px;}
+        .browserIcon{width: 75px; float: left;}
+        .warningMessage{width: 300px; float: left;}
+        .warningMessage p{margin: 4px 0; padding:2px 0;color:#000000 !important;font-weight: bold;}
+        .closeWarning{position: absolute; right: 3px; top: 3px; font-family: courier new; font-weight: bold;}
+        .centerDiv{width: 800px; margin: 0 auto; text-align: left; padding: 0; overflow: hidden; color: black;}
+    </style>
+  <div class="ie6WarningCtn">
+    <div  class="closeWarning"><a href='#' onclick='javascript:this.parentNode.parentNode.style.display="none"; return false;'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-cornerx.jpg' style='border: none;' alt='fermer cet avis'/></a></div>
+    <div class="centerDiv">
+      <div class="browserIcon"><img src='http://www.ie6nomore.com/files/theme/ie6nomore-warning.jpg' alt='Avis'/></div>
+      <div class="warningMessage">
+        <p >Vous utilisez un navigateur dépassé qui n'est plus supporté.</p>
+        <p>Pour une meilleure expérience web, prenez le temps de mettre votre navigateur à jour.</p>
+      </div>
+      <div class="browserIcon"><a href='http://fr.www.mozilla.com/fr/' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-firefox.jpg' style='border: none;' alt='Téléchargez Firefox'/></a></div>
+      <div class="browserIcon"><a href='http://www.microsoft.com/downloads/details.aspx?FamilyID=341c2ad5-8c3d-4347-8c03-08cdecd8852b&DisplayLang=fr' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-ie8.jpg' style='border: none;' alt="Téléchargez la dernière version d'Internet Explorer"/></a></div>
+      <div class="browserIcon"><a href='http://www.apple.com/fr/safari/download/' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-safari.jpg' style='border: none;' alt='Téléchargez Safari'/></a></div>
+      <div class="browserIcon"><a href='http://www.google.com/chrome?hl=fr' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-chrome.jpg' style='border: none;' alt='Get Google Chrome'/></a></div>
+    </div>
+  </div>
+<![endif]-->
+ 
 <script type="text/javascript">
-document.getElementById("img1").src="http://beacon.scorecardresearch.com/scripts/beacon.dll?C1=2&amp;C2=3005690&amp;C3=3005690&amp;C4=cyberpresse.ca&amp;C5=Cyberpresse&amp;C6=&amp;C7=" + escape(window.location.href) + "&amp;C8=" + escape(document.title) + "&amp;C9=" + escape(document.referrer) + "&amp;rn=" + Math.floor(Math.random()*99999999);
+document.write("<img id='img1' height='1' width='1'>");document.getElementById("img1").src="http://beacon.scorecardresearch.com/scripts/beacon.dll?C1=2&C2=3005690&C3=3005690&C4=lapresse.ca&C5=Lapresse&C6=&C7=" + escape(window.location.href) + "&C8=" + escape(document.title) + "&C9=" + escape(document.referrer) + "&rn=" + Math.floor(Math.random()*99999999);
 </script>  
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -582,12 +656,12 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 <script type="text/javascript">
 <!--
     var firstAccount = _gat._getTracker("UA-2513326-39"); 
-    firstAccount._setDomainName("cyberpresse.ca");  
+    firstAccount._setDomainName("lapresse.ca");  
     firstAccount._initData(); 
     firstAccount._trackPageview(); 
 
     var secondAccount = _gat._getTracker("UA-2513326-1"); 
-    secondAccount._setDomainName("www.cyberpresse.ca");  
+    secondAccount._setDomainName("www.lapresse.ca");  
     secondAccount._initData();     
     secondAccount._trackPageview();
 //--> 

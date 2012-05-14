@@ -181,14 +181,6 @@ function s_doPlugins(s) {
 	if(s.getQueryParam('sid')) {
 		s.eVar13=temp+" : "+s.getQueryParam('sid'); 
 	}
-	/* Collect and stack the experience site ID */
-	if(!s.eVar28)
-		s.eVar28=s.getQueryParam('eid');
-	
-	if(s.eVar28 && !s.eVar18)
-		s.eVar18="Experience Site";
-	
-	s.eVar33=s.crossVisitParticipation(s.eVar28,'v33_cvp','60','5','>','purchase');
 	
 	/* Test & Target to SiteCatalyst integration */
 		s.tnt = s.trackTNT();

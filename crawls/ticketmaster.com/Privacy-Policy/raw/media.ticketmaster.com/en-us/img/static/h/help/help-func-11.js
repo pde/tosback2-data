@@ -203,22 +203,3 @@ function liveChatWindow(url) {
 } 
 
 
-function helpInit() {
-  var s = getQry("faq");
-	var ans_id = getQry("ans_id");
-  var iframe_src = "";
-  if(s == 1){
-    $("help_frame").src = "https://ticketmasterus.custhelp.com/app/answers/detail/a_id/1480/";
-    $("help_frame").height = "1300";
-  }
-  else {
-    $("help_frame").src = "https://ticketmasterus.custhelp.com/app/answers/list";  
-  }
-	
-	if(ans_id != ""){
-		$("help_frame").src = "https://ticketmasterus.custhelp.com/app/answers/detail/a_id/"+ ans_id +"/";
-	}
-}
-
-
-window.onload = helpInit;

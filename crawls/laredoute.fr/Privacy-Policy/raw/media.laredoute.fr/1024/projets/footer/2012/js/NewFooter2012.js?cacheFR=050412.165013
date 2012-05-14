@@ -1,0 +1,286 @@
+// JavaScript Document
+//JULIEN BABIN -- 20091019 (BG FOOTER)
+
+var var_newsbtn; var var_newserror;
+var current_email;
+
+function TestNewsletterSend(var_newsbtn){
+	var valeur = "";
+	var var_newserror_msg = "";
+	
+	if (var_newsbtn=="#NewsletterEncEmailBtn"){
+		var valeur = $j("#NewsletterEncEmail").val();
+		var_newserror = "NewsletterEncError";
+		
+		var rdte_newsletter_email = valeur;
+		var rdte_newsletter_frame = "rdte_newsletter_frame";
+		var rdte_newsletter_url = "http://webforms.redcats.com/webApp/rdtAbonnement?email=" +rdte_newsletter_email +"&urlAbonnement="+ window.location.href;
+	
+	}
+	
+	if (var_newsbtn=="#NewsletterAnimCoEmailBtn"){
+		var valeur = $j("#NewsletterAnimCoEmail").val();
+		var_newserror = "NewsletterAnimCoError";
+		
+		var rdte_newsletter_email = valeur;
+		var rdte_newsletter_frame = "rdte_newsletter_frame";
+		var rdte_newsletter_url = "http://webforms.redcats.com/webApp/rdtAbonnement?email=" +rdte_newsletter_email +"&urlAbonnement="+ window.location.href;
+	
+	}
+	
+	if (var_newsbtn=="#NewsletterEncEmailBtn_soldes"){
+		var valeur = $j("#NewsletterEncEmail_soldes").val();
+		var_newserror = "NewsletterEncError";
+		
+		var rdte_newsletter_email = valeur;
+		var rdte_newsletter_frame = "rdte_newsletter_frame";
+		var rdte_newsletter_url = "http://webforms.redcats.com/webApp/rdtAbonnement?email=" +rdte_newsletter_email +"&urlAbonnement="+ window.location.href;
+	
+	}
+	
+	if (var_newsbtn=="#NewsletterHeadEmailBtn"){
+		var valeur = $j("#NewsletterHeadEmail").val();
+		var_newserror = "NewsletterHeadError";
+		
+		var rdte_newsletter_email = valeur;
+		var rdte_newsletter_frame = "rdte_newsletter_frame";
+		var rdte_newsletter_url = "http://webforms.redcats.com/webApp/rdtAbonnement?email=" +rdte_newsletter_email +"&urlAbonnement="+ window.location.href;
+	}
+	
+	if (var_newsbtn=="#NewsletterFootEmailBtn"){
+		var valeur = $j("#NewsletterFootEmail").val();
+		var_newserror = "NewsletterFootError";
+		
+		var rdte_newsletter_email = valeur;
+		var rdte_newsletter_frame = "rdte_newsletter_frame";
+		var rdte_newsletter_url = "http://webforms.redcats.com/webApp/rdtAbonnement?email=" +rdte_newsletter_email +"&urlAbonnement="+ window.location.href;
+	}	
+
+
+	if (var_newsbtn=="#NewsletterDesaEmailBtn"){
+		var valeur = $j("#NewsletterEncSelect").val();
+		var querystring = window.location.href.split("=")[1] || false;
+		var_newserror = "NewsletterDesaError";
+		
+		var rdte_newsletter_case = valeur;
+		var rdte_newsletter_frame = "rdte_newsletter_frame";
+		var rdte_newsletter_url = "http://webforms.redcats.com/webApp/rdtDesabonnement?email="+ querystring +"&motifDesabo=" +rdte_newsletter_case;
+	}
+	
+	if (var_newsbtn=="#NewsletterPopUnderEmailBtn"){
+		var valeur = $j("#NewsletterPopUnderEmail").val();
+		var_newserror = "NewsletterPopUnderError";
+		
+		var rdte_newsletter_email = valeur;
+		var rdte_newsletter_frame = "rdte_newsletter_frame";
+		var rdte_newsletter_url = "http://webforms.redcats.com/webApp/rdtAbonnement?email=" +rdte_newsletter_email +"&urlAbonnement="+ window.location.href;
+	
+	}
+
+	current_email = valeur;
+	
+//	if(window.location.href.split("=")[1] == "newsletter_desabonnement&email"){
+	if(window.location.href.split("?")[0].replace("http://www.laredoute.fr/","") == "page-newsletter_desabonnement.aspx"){
+		var_newserror_msg.length = -1;
+	}else{
+		var_newserror_msg = checkField(valeur);
+	}
+	
+	
+	
+	if (var_newserror_msg.length>0){
+		displayError(var_newserror, var_newserror_msg);
+	}else{
+		try{
+				var newsletter_iframe = document.createElement("iframe");
+				newsletter_iframe.id = rdte_newsletter_frame;
+				newsletter_iframe.name = rdte_newsletter_frame;
+				newsletter_iframe.src = rdte_newsletter_url;				
+				newsletter_iframe.style.display = "none";
+				//document.body.appendChild(iframe);
+				$j("#dialog_return").empty().hide().append(newsletter_iframe);
+				document.getElementById(var_newserror).innerHTML = "";
+				document.getElementById(var_newserror).style.display = 'none';
+
+		}catch(e){
+			laredoute_newsletter_ReturnCode("ko");
+		}
+	}
+}
+
+function checkField(valeur){
+    if (valeur == null || valeur.length == 0 || valeur == "Votre adresse email" || valeur == "Saisissez votre email") {
+		return "Merci d'indiquer votre adresse e-mail.";
+	}
+	if (valeur!=null && valeur.length>65){
+		return "L'adresse email doit comporter 65 caract&egrave;res au maximum.";
+	}
+	if (valeur!=null && valeur.length<7){
+		return "L'adresse email doit comporter 7 caract&egrave;res au minimum.";
+	}
+	if (valeur!=null && !/@/.test(valeur)){
+		return "Merci de rajouter &laquo; @ &raquo; dans votre adresse e-mail.";
+	}
+	if (valeur!=null && !/^([a-zA-Z0-9_\@\-\.]+)$/.test(valeur)){
+		return "Merci de supprimer les espaces ou caract&egrave;res sp&eacute;ciaux.";
+	}
+	if (valeur!=null && !/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i.test(valeur)){
+		return "Merci de v&eacute;rifier le format de votre adresse email.";
+	}
+	
+	return "";
+}
+
+
+function displayError(error_class, message){
+	//$j("\""+error_class+"\"").style.diplay ='block';
+	//$j("\""+error_class+"\"").html() = message;
+	document.getElementById(error_class).innerHTML = message;
+	document.getElementById(error_class).style.display = 'block';
+}
+
+
+
+
+
+function laredoute_abonewsletter_neolane(){
+	var rdte_frame = "neolane_frame";
+	var rdte_url = "http://www.laredoute.fr/StaticPage/BlankContentPage.aspx?pagename=newsletter_proxy&result=" +ReturnCode;
+
+	var iframe = document.createElement("iframe");
+	iframe.id = rdte_frame;
+	iframe.name = rdte_frame;
+	iframe.src = rdte_url;
+	iframe.style.display = "none";
+	
+	if(ReturnCode == 0 ){ document.getElementById("headertext-error").appendChild(iframe); }
+	if(ReturnCode == 1 ){ document.getElementById("headertext-end").appendChild(iframe); }
+}
+
+function laredoute_desabonewsletter_neolane(){
+	var rdte_frame = "neolane_frame2";
+	var rdte_url = "http://www.laredoute.fr/StaticPage/BlankContentPage.aspx?pagename=newsletter_proxy&result=" +ReturnCode;
+
+	var iframe = document.createElement("iframe");
+	iframe.id = rdte_frame;
+	iframe.name = rdte_frame;
+	iframe.src = rdte_url;
+	iframe.style.display = "none";
+	
+	if(ReturnCode == 0 ){ document.getElementById("headertext-error").appendChild(iframe); }
+	if(ReturnCode == 1 ){ document.getElementById("headertext-end").appendChild(iframe); }
+
+}
+
+
+function laredoute_newsletter_proxy(){
+	var result, pairs;
+    var querystring = window.location.href.split("?")[1] || false;
+	//alert(querystring);
+
+    //Ensure querystring exists and has valid result identifier
+    if(!querystring || querystring.indexOf("result=") === -1){ return false; }
+ 
+    //Ensure all ampersands are single (not entities) so we can split using "&"
+    querystring = querystring.replace(/&amp;/g, "&");    
+ 
+    //Create an array of value pairs. This gives us flexibility
+    //to add more items to the querystring later.
+	result = "0";
+    pairs = querystring.split("=");
+
+    //Loop through the pairs and act on each one.
+    for(var i = 0; i < pairs.length; i++){
+        //We're currently only looking for the 'result' value
+        //We can add more if needed by adding more 'if' and 'switch' statements
+        //Find 'result' variable
+		//alert("PAIR= " + pairs[i]);
+        result = pairs[i];
+    }
+	//alert("PROXY= " +result);
+    //Only act on valid values.
+    //DO NOT try to use eval() here.  Big no-no.
+    switch(result){ 
+        //Must specify "top." before the function invocation so that
+        //the browser knows to send the JS to the topmost parent frame
+		case "0" : top.laredoute_newsletter_ReturnCode("ko"); break;
+        case "1" : top.laredoute_newsletter_ReturnCode("ok"); break;
+
+		default : top.laredoute_newsletter_ReturnCode("error"); break;
+ 
+    }
+}
+
+
+
+/*
+ * jqModal - Minimalist Modaling with jQuery
+ *   (http://dev.iceburg.net/jquery/jqModal/)
+ *
+ * Copyright (c) 2007,2008 Brice Burgess <bhb@iceburg.net>
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ * 
+ * $Version: 03/01/2009 +r14
+ */
+ 
+ 
+(function($) {
+$.fn.jqm=function(o){
+var p={
+overlay: 50,
+overlayClass: 'jqmOverlay',
+closeClass: 'jqmClose',
+trigger: '.jqModal',
+ajax: F,
+ajaxText: '',
+target: F,
+modal: F,
+toTop: F,
+onShow: F,
+onHide: F,
+onLoad: F
+};
+return this.each(function(){if(this._jqm)return H[this._jqm].c=$.extend({},H[this._jqm].c,o);s++;this._jqm=s;
+H[s]={c:$.extend(p,$.jqm.params,o),a:F,w:$(this).addClass('jqmID'+s),s:s};
+if(p.trigger)$(this).jqmAddTrigger(p.trigger);
+});};
+
+$.fn.jqmAddClose=function(e){return hs(this,e,'jqmHide');};
+$.fn.jqmAddTrigger=function(e){return hs(this,e,'jqmShow');};
+$.fn.jqmShow=function(t){return this.each(function(){t=t||window.event;$.jqm.open(this._jqm,t);});};
+$.fn.jqmHide=function(t){return this.each(function(){t=t||window.event;$.jqm.close(this._jqm,t)});};
+
+$.jqm = {
+hash:{},
+open:function(s,t){var h=H[s],c=h.c,cc='.'+c.closeClass,z=(parseInt(h.w.css('z-index'))),z=(z>0)?z:3000,o=$('<div></div>').css({height:'100%',width:'100%',position:'fixed',left:0,top:0,'z-index':z-1,opacity:c.overlay/100});if(h.a)return F;h.t=t;h.a=true;h.w.css('z-index',z);
+ if(c.modal) {if(!A[0])L('bind');A.push(s);}
+ else if(c.overlay > 0)h.w.jqmAddClose(o);
+ else o=F;
+
+ h.o=(o)?o.addClass(c.overlayClass).prependTo('body'):F;
+ if(ie6){$('html,body').css({height:'100%',width:'100%'});if(o){o=o.css({position:'absolute'})[0];for(var y in {Top:1,Left:1})o.style.setExpression(y.toLowerCase(),"(_=(document.documentElement.scroll"+y+" || document.body.scroll"+y+"))+'px'");}}
+
+ if(c.ajax) {var r=c.target||h.w,u=c.ajax,r=(typeof r == 'string')?$(r,h.w):$(r),u=(u.substr(0,1) == '@')?$(t).attr(u.substring(1)):u;
+  r.html(c.ajaxText).load(u,function(){if(c.onLoad)c.onLoad.call(this,h);if(cc)h.w.jqmAddClose($(cc,h.w));e(h);});}
+ else if(cc)h.w.jqmAddClose($(cc,h.w));
+
+ if(c.toTop&&h.o)h.w.before('<span id="jqmP'+h.w[0]._jqm+'"></span>').insertAfter(h.o);	
+ (c.onShow)?c.onShow(h):h.w.show();e(h);return F;
+},
+close:function(s){var h=H[s];if(!h.a)return F;h.a=F;
+ if(A[0]){A.pop();if(!A[0])L('unbind');}
+ if(h.c.toTop&&h.o)$('#jqmP'+h.w[0]._jqm).after(h.w).remove();
+ if(h.c.onHide)h.c.onHide(h);else{h.w.hide();if(h.o)h.o.remove();} return F;
+},
+params:{}};
+var s=0,H=$.jqm.hash,A=[],ie6=$.browser.msie&&($.browser.version == "6.0"),F=false,
+i=$('<iframe src="javascript:false;document.write(\'\');" class="jqm"></iframe>').css({opacity:0}),
+e=function(h){if(ie6)if(h.o)h.o.html('<p style="width:100%;height:100%"/>').prepend(i);else if(!$('iframe.jqm',h.w)[0])h.w.prepend(i); f(h);},
+f=function(h){try{$(':input:visible',h.w)[0].focus();}catch(_){}},
+L=function(t){$()[t]("keypress",m)[t]("keydown",m)[t]("mousedown",m);},
+m=function(e){var h=H[A[A.length-1]],r=(!$(e.target).parents('.jqmID'+h.s)[0]);if(r)f(h);return !r;},
+hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function() {
+ if(!this[c]){this[c]=[];$(this).click(function(){for(var i in {jqmShow:1,jqmHide:1})for(var s in this[i])if(H[this[i][s]])H[this[i][s]].w[i](this);return F;});}this[c].push(s);});});};
+})(jQuery);

@@ -859,7 +859,7 @@ var LXGlobalNav = {
 						
 					//this check should be at a much higher level
 
-					if(browser.isSafari) continue;
+					//if(browser.isSafari) continue;
 					
 					var divsx = element.getElementsByTagName("div");
 					

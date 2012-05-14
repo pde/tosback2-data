@@ -1573,3 +1573,19 @@ function cartGiftwrapOptions(oitemID, rp) {
 	showWindowFrame("GiftBoxChange.aspx?oitemid=" + oitemID + "&rp=" + rp + "&c=" + Math.random(), { width: 600, height: 500, title: "Gift Box Options" });
 }
 
+// Show a slidedown div with background color
+function ShowSlideDownDiv(slidDivClickClass, slidDivId, slidDivBgColor) {
+	$('.' + slidDivClickClass).click(function () {
+		if ($('#' + slidDivId).is(":hidden")) {
+			$('#' + slidDivId).slideDown('fast', function () {
+				$('#' + slidDivId).css("background-color", slidDivBgColor);
+				$('#' + slidDivId).show();
+			});
+		} else {
+			$('#' + slidDivId).slideUp('fast', function () {
+				$('#' + slidDivId).hide();
+			});
+		}
+	});
+}
+

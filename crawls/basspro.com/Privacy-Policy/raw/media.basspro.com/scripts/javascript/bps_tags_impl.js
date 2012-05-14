@@ -483,6 +483,7 @@ OmnitureTag.prototype.setVariables = function()
       {
         s.events = "purchase";
         s.purchaseID = this.Tag.order;
+	  s.products = "";
         s.eVar12 = this.Tag.order;
         s.eVar6 = PaymentTypes.getPaymentType(this.Tag.payMethods);
 
@@ -493,6 +494,12 @@ OmnitureTag.prototype.setVariables = function()
           else
             s.eVar7 = ("INTL: " + this.Tag.shipType);
         }
+        else
+	  {
+		s.eVar7 = "EMPTY";
+	  }
+
+	  var invalidProductStr = "";
 
         for(var i = 0; i < this.Tag.childSKUs.length; i++)
         {
@@ -505,7 +512,19 @@ OmnitureTag.prototype.setVariables = function()
             else
               s.products += (",;" + this.Tag.parentTextIds[i] + ";" + productArr[1] + ";" + productArr[2] + ";;eVar48=" + productArr[0]);
           }
+	    else
+	    {
+		invalidProductStr += (";" + this.Tag.childSKUs[i]);
+	    }
         }
+
+	  if(this.Tag.childSKUs.length == 0 || s.products == "")
+	  {
+		if(invalidProductStr.length > 0)
+			s.products = ";EMPTY"+invalidProductStr;
+		else
+			s.products = ";EMPTY";
+	  }
 
         s.state = this.Tag.state;
         s.zip = this.Tag.zipcode;
@@ -1125,6 +1144,23 @@ TrackingPixelTag.prototype.setConfirmPagePixels = function()
 
 TrackingPixelTag.prototype.execute = function()
 {
+try
+{
+	var removeHCStyleElements = document.getElementsByTagName('span');
+
+	for(var i = 0; i < removeHCStyleElements.length; i++)
+	{
+		if(removeHCStyleElements[i].id == 'attribute-outStock')
+		{
+			removeHCStyleElements[i].style.fontSize = '';
+			removeHCStyleElements[i].style.color = '';
+			removeHCStyleElements[i].className = 'attribute-out-of-stock';
+		}
+	}
+}
+catch(ignoreErr)
+{}
+
   if(TrackingPixelTag.enabled)
   {
     try
@@ -1156,11 +1192,100 @@ var ppddInit = 0;
 var ppException = false;
 var previousSelectionValue = "";
 
+function getDropDownSelectedValues(cDropDowns)
+{
+	var dropDownValues = new Array();
+
+	for(var i = 0; i < cDropDowns.length; i++)
+	{
+		var cDropDown = cDropDowns[i];
+		dropDownValues[i] = "";
+
+		for(var y = 0; y < cDropDown.length; y++)
+		{
+			if(cDropDown[y].selected)
+			{
+				if(cDropDown[y].value && cDropDown[y].value.length > 0)
+				{
+					dropDownValues[i] = cDropDown[y].value;
+					break;
+				}
+			}
+		}
+	}
+
+	return dropDownValues;
+}
+
+function getDropDownIDs(cDropDowns)
+{
+	var dropDownIDs = new Array();
+
+	for(var i = 0; i < cDropDowns.length; i++)
+	{
+		var cDropDown = cDropDowns[i];
+		dropDownIDs[i] = cDropDown.id;
+	}
+
+	return dropDownIDs;
+}
+
+function chartSelect()
+{
+	if(ppddEnabled)
+	{
+		try
+		{
+			var attrDropDowns = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
+			var currentSelectionValues = getDropDownSelectedValues(attrDropDowns);
+			var currentIDs = getDropDownIDs(attrDropDowns);
+			var selectedOptionOutput = "";
+
+			$.each(skuList, function(index, aSku)
+			{
+				aSku.isPossible = true;
+			});
+
+			$.each(skuList, function(index, aSku)
+			{
+				for(var i = 0; i < currentIDs.length; i++)
+				{
+					if(currentSelectionValues[i] != "" && currentSelectionValues[i] != aSku[currentIDs[i]])
+						aSku.isPossible = false;
+				}
+			});
+
+			var itemNum = "";
+			var numChildren = 0 ;
+			var resolvedCatentryId = "";
+
+			$.each(skuList, function(index, aSku)
+			{
+				if(aSku.isPossible)
+				{
+					numChildren++;
+					resolvedCatentryId = aSku.pkey;
+					itemNum = aSku.itemNumber;
+					$("#sku_"+aSku.pkey).show();
+				}
+				else
+				{
+					$("#sku_"+aSku.pkey).hide();
+				}
+			});
+		}
+		catch(ignore)
+		{}
+	}
+}
+
 function hideSelect()
 {
-try
-{
-  if(ppddEnabled && ppdType != "C")
+  try
+  {
+  if(ppdType == "C")
+	chartSelect();
+  else if(ppddEnabled && ppdType != "C")
   {
   try
   {
@@ -1607,13 +1732,13 @@ function initUpdateSelect(itemNumVal)
             if(skuList[i].itemNumber == itemNumVal && skuList[i].buyable == 'false')
             {
               document.getElementById('addToCartBtn').style.display = 'none';
-              document.getElementById('prod_outof_stock').style.fontSize = '20px';
+              document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
               break;
             }
             else
             {
               document.getElementById('addToCartBtn').style.display = 'block';
-              document.getElementById('prod_outof_stock').style.fontSize = '12px';
+              document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
             }
           }
         }
@@ -1622,7 +1747,7 @@ function initUpdateSelect(itemNumVal)
     if(skuList.length == 1 && skuList[0].buyable == 'false')
             {
               document.getElementById('addToCartBtn').style.display = 'none';
-              document.getElementById('prod_outof_stock').style.fontSize = '20px';
+              document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
             }
     else
               document.getElementById('addToCartBtn').style.display = 'block';

@@ -15,7 +15,7 @@
 $(document).ready(function(){
     try
     {
-        var category = window.location.toString().split('/');
+      /*  var category = window.location.toString().split('/');
         
         if(category[2] != category[category.length-1])
         {
@@ -110,7 +110,7 @@ $(document).ready(function(){
                 SetCurrentSub();
                 break;
             }
-        }
+        }*/
         
        
 

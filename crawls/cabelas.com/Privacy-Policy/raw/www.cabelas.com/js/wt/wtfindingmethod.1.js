@@ -122,7 +122,7 @@ function FindingMethod() {
 		}
 		
 		// MegaMenu tracking
-		$('.megaMenuList a').each(function(index) {
+		$('.megaMenuList a, .otherWaysToShop a').each(function(index) {
 			// Try to first fetch from the webTrendsCategoryId hidden value
 			catId = $(this).parents(".js-navLink").children(".webTrendsCategoryId").val();
 			if (catId == undefined) {

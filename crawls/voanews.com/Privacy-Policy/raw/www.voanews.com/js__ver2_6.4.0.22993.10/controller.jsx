@@ -1,0 +1,1 @@
+$(document).ready(function(){fixTabs();mixMail();loadzoom();for(var i=0;i<files2include.length;i++){include_once(files2include[i])}for(var i=0;i<onloadActions.length;i++){eval(onloadActions[i])}setIframes();$.getScript(formatPath("/jslocalizations{0}/Multimedia.Playlist.jsx"));if(typeof DownloadOptionsDropdown=="function"){DownloadOptionsDropdown(".downloadlink")}});;

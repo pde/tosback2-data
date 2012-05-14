@@ -1,0 +1,118 @@
+(function($, Z) {
+
+  $.fn.zventWidget = function (config) {
+    var cat       = config.cat       || ''
+    var method    = config.method    || "search";
+    var spn_limit = config.spn_limit || 1;
+
+    var $widget = $(this);
+    var widget_id = $widget.attr('id');
+
+    var loadDefault = function () {
+      var loc = '/events?re=yp&where='+ViewVariables.zvents_where+'&what=';
+      $widget.html('<ul class="list"><li class="clearfix"><span class="raquo">&raquo;</span><a href="'+loc+'Comedy">Comedy</a></li><li class="clearfix"><span class="raquo">&raquo;</span><a href="'+loc+'Fairs+and+Festivals">Fairs &amp; Festivals</a></li><li class="clearfix"><span class="raquo">&raquo;</span><a href="'+loc+'Food+and+Dining">Food &amp; Dining</a></li></ul>');
+    }
+
+    if (!Z) {
+      // Zvents didn't get loaded
+      loadDefault();
+      return;
+    }
+
+    var config = {
+      site: 'http://events.yellowpages.com',
+      id: widget_id,
+      disable_tracking: ((typeof zvents_disable_tracking == "undefined") ? false : zvents_disable_tracking),
+      partner_id: 485,
+      inline: false,
+      max_displayed: 2,
+      show_images: true,
+      max_title: 35,
+      max_venue_name: 30,
+      sort: false,
+      image_width: 44,
+      image_height: 44,
+      method: method,
+      load: {
+        ssrss: 2,
+        srss: 2,
+        spn_limit: spn_limit,
+        cat: cat,
+        where: ((typeof ViewVariables.zvents_where == "undefined") ? '' : ViewVariables.zvents_where),
+        what: ((typeof zvents_what == "undefined") ? '' : zvents_what),
+        fields: 'event.id,event.name,event.venue_id,event.starttime,event.zurl,venue.name,event.images,venue.city,event.has_tickets,venue.id',
+        image_size: 'tiny'
+      },
+      labels: {
+        sponsored: '',
+        today: 'Today',
+        tomorrow: 'Tomorrow'
+      },
+      renderers: {
+        renderLoading: function(){return '';},
+        renderListings: function(data){
+          var content = data.content;
+          if (!content.event_count && !content.sponsored_event_count){
+            $(this.selector).trigger('no-data-found');
+          }
+          else{
+            this.events = this.prepareEvents(data);
+            this.trackView("event", this.events.organic, this.events.sponsored, data.content.identifier);
+            return this.renderEvents(this.events);
+          }
+        },
+        renderEvents: function(events){
+          this.count = events.organic.length + events.sponsored.length;
+          return ['<ul>',
+            Z.Array.mapWithIndex(events.sponsored, Z.Object.bindMethod(this, this.renderEvent)).join(''),
+            Z.Array.mapWithIndex(events.organic, Z.Object.bindMethod(this, this.renderEvent)).join(''),
+            '</ul>'].join('');
+        },
+        renderEvent: function(event, i){
+          var date = this.renderDate(event);
+          var first = true;
+          var last = (i == this.count-1);
+          var ticket_icon = event.has_tickets ? '<img class="ticket" src="/images/common/icons/ico_tix_sm_blue2.gif"/>' : '';
+          return ['<li class="thumbnail-item clearfix">',
+            this.settings.show_images && event.images.length > 0 ? this.renderImage(event) : '',
+            '<p>',
+            this.renderListingLink(event,[
+              '<span class="ZventsEventName">',this.renderEventName(event),' <span class="raquo">&raquo;</span></span>',
+              '<span class="ZventsVenueName">',Z.String.truncate(event.venue.name, this.settings.max_venue_name),'</span>',
+              '<span class="ZventsVenueName">',ticket_icon,' ',this.renderTime(event),' ',date,' ','</span>'
+            ].join('')),
+            '</p>',
+            '</li>'].join('');
+        },
+        renderEventName: function(event){
+          return Z.String.truncate(event.name, this.settings.max_title + (event.images.length > 0 ? 0 : 8));
+        },
+        renderDay: function(date){
+          var day = this.count == 3 ? '{Sun}' : '{Sunday}';
+          if (date == this.today) {
+            day = this.settings.labels.today;
+          }
+          return Z.Date(date).format(day + ' {M}/{D}');
+        }
+      },
+      css: {
+      }
+    };
+
+    // config.css = JSON.parse(JSON.stringify(config.css).replace(/zvents_280x100_widget/g, widget_id))
+
+    $(this).ZventsEventList(config).one('no-data-found', function(){
+      config.load.what = "";
+      $(this).ZventsEventList(config);
+    });
+
+    // show default after 250ms
+    window.setTimeout(function () {
+      if ($widget.children().length == 0) {
+        loadDefault();
+      }
+    }, 250);
+
+  };
+
+})(jQuery, window.ZWidgets);

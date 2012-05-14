@@ -304,42 +304,63 @@ function buildAdRedirectUrl( redirectUrl, currentAdIndex, currentGoogleAd ) {
 
 
 function createGoogleAdElement(adUrl, googleAd, adFormat) {
-    var adLink = document.createElement( 'a' );    
-    adLink.href = 'javascript:void(null);'
-    adLink.style.textDecoration = 'none';
-    adLink.className = 'gasAfsText';
-    adLink.rel = 'nofollow';
-    
-    adLink.onclick = function() { 
+    var adDiv = document.createElement( 'div' );    
+    var adAnchorTag = createGASAnchorTag('gasLinkTitle', googleAd.line1 );
+    var adAnchorTag2 = createGASAnchorTag('gasLinkUrl', googleAd.visible_url );
+	
+    adAnchorTag.onclick = function() { 
         window.open(    adUrl, 
                         "_blank",
                         "width=800,height=600,toolbar=1,scrollbars=1,status=1,location=1,menubar=1,resizable=1");
     };
     
-    adLink.onmouseout = function() { 
+    adAnchorTag.onmouseout = function() { 
         window.status = '';
         return true;
     };
     
-    adLink.onmouseover = function() { 
+    adAnchorTag.onmouseover = function() { 
         window.status = 'go to ' + googleAd.visible_url;
         return true;
     };
+	
+	adAnchorTag2.onclick = function() { 
+        window.open(    adUrl, 
+                        "_blank",
+                        "width=800,height=600,toolbar=1,scrollbars=1,status=1,location=1,menubar=1,resizable=1");
+    };
     
-    adLink.appendChild( createGoogleAdLine( 'div', 'gasAfsLineOne', googleAd.line1 ) );
+    adAnchorTag2.onmouseout = function() { 
+        window.status = '';
+        return true;
+    };
     
+    adAnchorTag2.onmouseover = function() { 
+        window.status = 'go to ' + googleAd.visible_url;
+        return true;
+    };
+	
     if (adFormat == "WideFormat") { 
-        adLink.appendChild(createGoogleAdLine('div', 'gasAfsLineTwo', googleAd.line2 + ' ' + googleAd.line3));
+		adDiv.appendChild(adAnchorTag);
+        adDiv.appendChild(createGoogleAdLine('div', 'gasAfsLineTwo', googleAd.line2 + ' ' + googleAd.line3));
     } else {
-        adLink.appendChild(createGoogleAdLine('div', 'gasAfsLineTwo', googleAd.line2));
-        adLink.appendChild(createGoogleAdLine('div', 'gasAfsLineTwo', googleAd.line3));
+		adDiv.appendChild(adAnchorTag);
+        adDiv.appendChild(createGoogleAdLine('div', 'gasAfsLineTwo', googleAd.line2));
+        adDiv.appendChild(createGoogleAdLine('div', 'gasAfsLineTwo', googleAd.line3));
     }
     
-    adLink.appendChild( createGoogleAdLine( 'span', 'gasAfsSiteName', googleAd.visible_url ) );
-
-    return adLink;
+    adDiv.appendChild(adAnchorTag2);
+	
+    return adDiv;
 }
 
+function createGASAnchorTag(className, innerHTML) {
+    var anchorTag = document.createElement('a');  
+    anchorTag.setAttribute('href', 'javascript:void(null)');
+	anchorTag.setAttribute('class', className);
+	anchorTag.innerHTML = innerHTML;
+    return anchorTag;
+}
 
 function createGoogleAdLine( tagName, className, innerHTML ) {
     var line = document.createElement( tagName );  

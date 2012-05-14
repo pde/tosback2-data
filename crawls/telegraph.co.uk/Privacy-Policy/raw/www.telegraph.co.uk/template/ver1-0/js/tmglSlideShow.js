@@ -45,7 +45,7 @@ function ssNext(id) {
 
 	// hide the currently shown slide
 	$(ssObj[id].slideshow).find(".ssImg:eq("+indexShown+")").hide();
-	
+
 	// If we have reached the end of the slides, start from the beginning, otherwise show the next slide (update counters if they exist)
 	if(indexShown == $(ssObj[id].slideshow).find(".ssImg").length-1) {
 		$(ssObj[id].slideshow).find(".ssImg:eq(0)").show();
@@ -110,14 +110,14 @@ function randomFrame(id) {
 function initSS() {
 	// Get all the slideshows on the page
 	var slideshow = $(".slideshow").get();
-	
+
 	// For every slideshow found...
 	for(i in slideshow) {
-		
+
 		var slideshowRotationSpeedID = $(slideshow[i]).parent().attr("id") + 'rotationSpeed';
 		var slideshowRotationSpeed = $("#" + slideshowRotationSpeedID).text();
 		var autoFunction = "nextFrame";
-		
+
 		if( slideshowRotationSpeed == null || slideshowRotationSpeed =="" || slideshowRotationSpeed == 0)
 		{
 			slideshowRotationSpeed = null;
@@ -128,17 +128,17 @@ function initSS() {
 //		ssObj[i] = new SlideShowObj();
 
 		ssObj[i] = new SlideShowObj(slideshowRotationSpeed, autoFunction);
-		
+
 		// Save the slideshow for ready access
 		ssObj[i].slideshow = slideshow[i];
-		
+
 		// added to make sure we are dealing with a dom object and not a function
 		if (typeof(slideshow[i]) != 'object') continue;
-		
+
 		/* Retrieve setup data from the DOM */
 		/* Get the functional elements from the first comment found in the rotating element, then split it. */
 		var ssSetup = $(ssObj[i].slideshow).comments(0) != null?$(ssObj[i].slideshow).comments(0).split(","):null;
-		
+
 		if (ssSetup != null) {
 			// Get the time delay (if this is set), and save it to this slideshows' object (Generally only used if there is a function also set)
 			if(ssSetup[0] != null && ssSetup[0] != ""){
@@ -149,7 +149,7 @@ function initSS() {
 				ssObj[i].autoFunction = ssSetup[1];
 			}
 		}
-		
+
 		// Define the type of this slideshow
 		if ($(ssObj[i].slideshow).is(".epic")==true) {
 			ssObj[i].ssType = "epic";
@@ -175,6 +175,7 @@ function initSS() {
 				// Click reporting
 				dcsCleanup();
 				dcsMeta();
+				dcsMetaCustom();
 				// Click report based on slideshow type
 				if (ssObj[e.data.count].ssType == "image") {
 					// Added WT.dl = 53 parameter to flag that page is not a reload. See DIGI-1114
@@ -184,7 +185,7 @@ function initSS() {
 					dcsMultiTrack('DCSext.epicSlideshow',$(ssObj[e.data.count].slideshow).find("> .ssImg:visible > iframe").attr("src").substring($(ssObj[e.data.count].slideshow).find("> .ssImg:visible > iframe").attr("src").indexOf("=")+1,$(ssObj[e.data.count].slideshow).find("> .ssImg:visible > iframe").attr("src").length));
 					trackGoogle();
 				}
-				
+
 			});
 		}
 
@@ -202,6 +203,7 @@ function initSS() {
 				// Click reporting
 				dcsCleanup();
 				dcsMeta();
+				dcsMetaCustom();
 				// Click report based on slideshow type
 				if (ssObj[e.data.count].ssType == "image") {
 					// Added WT.dl = 53 parameter to flag that page is not a reload. See DIGI-1114

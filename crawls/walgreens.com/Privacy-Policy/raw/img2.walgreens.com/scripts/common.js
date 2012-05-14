@@ -1507,3 +1507,22 @@ $(document).ready(function () {
 					$("#ingredients-content").removeClass('hide');
 					});
 		  });
+/* Added for IN-871 - contactus */
+function calcTextLimit(obj, maxCount, showCount){
+	var charText = obj.value;
+	var len = charText.length;
+	if(len > maxCount){
+        charText = charText.substring(0, maxCount);
+        obj.value = charText;	
+        return false;
+    }
+
+	if (len > 0) document.getElementById("msg").innerHTML="character left";
+	else document.getElementById("msg").innerHTML="character max";
+	document.getElementById(showCount).innerHTML = maxCount-len;
+
+	if (len < 3925) { document.getElementById("msg").style.color='Black';	
+		document.getElementById("myCounter").style.color='Black'; }
+	else { document.getElementById("msg").style.color='Red';
+		document.getElementById("myCounter").style.color='Red'; }
+}

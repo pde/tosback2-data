@@ -66,6 +66,13 @@
 			});
 			
 			
+			//Intitate Coda Slider with tabs
+			$e.find('.widget-content .tabbed-coda-slider').codaSlider({
+				dynamicTabsPosition: "bottom",
+				autoSlide: true,
+				autoSlideInterval: 5000
+			});
+			
 			//Opens Colorbox lightbox on any link with class "lightbox". If rel of "cartoon-gallery" is on link, then permalink used for title.
 			$e.find(".widget-content a.lightbox").colorbox({
 				title: function(){

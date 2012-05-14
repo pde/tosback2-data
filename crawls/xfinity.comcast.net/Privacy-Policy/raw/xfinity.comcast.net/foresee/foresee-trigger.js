@@ -741,7 +741,7 @@ FSR.properties = {
         */
         
 		exclude: {
-            local: ['xfinityconnect.mail.comcast.net'],
+            local: ['xfinityconnect.mail.comcast.net', '/ftue'],
             referrer: []
         },        
         include: {

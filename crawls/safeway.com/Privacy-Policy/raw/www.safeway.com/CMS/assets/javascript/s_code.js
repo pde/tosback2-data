@@ -1,7 +1,7 @@
 // SiteCatalyst code version: H.23.4
 // See Sharepoint for version notes
+var sc_version="ver. 4.4";
 var s=s_gi(s_account);
-
 // *** CONFIG SECTION ***
 s.charSet="UTF-8";
 s.trackDownloadLinks=true;s.trackExternalLinks=true;s.trackInlineStats=true;
@@ -10,29 +10,35 @@ s.linkInternalFilters="javascript:,vons.com,genuardis.com,dominicks.com,pavilion
 s.linkLeaveQueryString=false;s.linkTrackVars=s.linkTrackEvents="None";s.usePlugins=true;
 var hostname=document.location.host.toLowerCase();
 var isEcom=/(shop\.safeway\.com)/i.test(hostname);
-var loginProcessed=false; isLinkTrack=false;
+var loginProcessed=false; isLinkTrack=true;
 
 // Channel Manager Config
-s._channelDomain="Facebook|facebook.com>Twitter|twitter.com>YouTube|youtube.com>theubar|theubar.co.uk>KnowYourMobile|knowyourmobile.com";
-s._channelParameter="Email|cmpid,om_u>Other|cmpid";
-s._channelPattern="Paid Search|search_>Paid Search|kw_>Social Media|sm_>Banner|di_>Email|em_>Email|om_u>Affiliate|af_>Affiliate|cj_";
+s._channelDomain="Social|facebook.com,twitter.com,digg.com,linkedin.com,myspace.com,youtube.com,plus.google.com,tumblr.com,diigo.com,yelp.com,livejournal.com,blogspot.com,wordpress.com,stumbleupon.com,reddit.com,delicious.com,flickr.com,vimeo.com,t.co";
+s._channelParameter="";
+s._channelPattern="Paid Search|search_,ps_,kw_>Social Media|sm_>Banner|di_>Email|em_>Affiliate|af_,cj_>Direct Mail|dm_>Text Messaging|tx_>Event|ev_>Public Relations|pr_>Newspaper|np_>Magazine|mg_>Trade|tr_>Phone|ph_>Onboard|ob_";
 
 // Form Analysis Config
 // List of form names to track
-s.formList="registration,deliveryAddress,frmCheckout,EmailAddressForm,airlinescomment,Delivery,Driver,Order,General Service,Ordering Online,Substitutions,Website Performance,airlinescomment,webcomment,productrequest,clubcardupdate,supplierapplication,rxrefill,rxtransfer,EditClubCardForm,ChangeUIDForm,EmailSubscriptionForm,ChangePwdForm,RegistrationMoreInfoForm,UserRegistrationForm,frmRedirector,Login,PasswordResetForm,LogOffForm,previewForm,SecurityQuestionAnswerForm,RetrievePasswordForm,ContactInfoForm,ChangePwdQAForm";
+s.formList="registration,deliveryAddress,frmCheckout,EmailAddressForm,airlinescomment,Delivery,Driver,Order,General Service,Ordering Online,Substitutions,Website Performance,airlinescomment,webcomment,productrequest,clubcardupdate,supplierapplication,rxrefill,rxtransfer,EditClubCardForm,ChangeUIDForm,EmailSubscriptionForm,ChangePwdForm,RegistrationMoreInfoForm,UserRegistrationForm,frmRedirector,Login,PasswordResetForm,LogOffForm,previewForm,SecurityQuestionAnswerForm,RetrievePasswordForm,ContactInfoForm,ChangePwdQAForm,changeSecurityQAForm";
 s.trackFormList=true;s.trackPageName=true;s.useCommerce=true;s.varUsed="eVar12";
 // Abandon,Success,Error
 s.eventList="event12,event13,event14";
 
 function s_doPlugins(s){
-	// Abort further population if 404 page
-	if ((typeof (s.pageType)!="undefined") && s.pageType.length > 0) return;
-	isLinkTrack=getIsLinkTrack(s);
-	
+	// 404 page contingency for SC15
+	if (!isBlank(s.pageType)) s.prop21=document.location.href.toLowerCase();
+		
 	s.prop19="D=g";
 	s.prop4=s.getNewRepeat(90);// 3 months
-	s.prop5="Ver. 4.3"; // s_code version
-	s.server=trimLc(getServerName());
+	s.prop5=sc_version; // s_code version
+	s.server=hostname;
+	s.prop6=trimLc(getServerName());
+	
+	try{
+		// Management of referrer for frames
+		if (s.getQueryParam('rurl')) s.referrer=s.getQueryParam('rurl');
+		else if (top.location.href!= window.location.href) s.referrer=window.parent.document.referrer;	
+	}catch(err){}
 	
 	if(s.channel)s.channel=trimLc(s.channel.replace(/(\s)|_|-/gi,""));
 	if(s.prop3)s.prop3=trimLc(s.prop3.replace(/(\s)|_|-/gi,""));// Sub Section
@@ -70,11 +76,12 @@ function s_doPlugins(s){
 	if(s.prop4&&!s.eVar8)s.eVar8="D=c4";
 	if(s.prop11&&!s.eVar23)s.eVar23="D=c11";
 	if(s.prop30&&!s.eVar52)s.eVar52="D=c30";
+	s.eVar49="D=s_vi";
 		
 	setExtCampaign(s);
 	setIntCampaign(s);
 	setIntSearch(s);
-	
+
 	if (s.events){   
 		if (/scOpen/i.test(s.events)) s.prop9='start';
 		if (/scCheckout/i.test(s.events)){s.prop9='stop';s.prop10='start';}
@@ -83,24 +90,21 @@ function s_doPlugins(s){
 		s.prop10=s.getTimeToComplete2(s.prop10,'ttco',0); // Time to Check Out
 	}
 	
-	clearVariables(s);
+	ignoreTestUsers();
+	cleanVariables(s);
 	getLoginState(s);
 	s.setupFormAnalysis();
 	pluginsCompleted=true;
 }
 
-function clearVariables(s){
+function cleanVariables(s){
 	s.pageName=s.pageName.replace(/:/g,": ");
+	if(s.eVar14&&trim(s.eVar14)==':')s.eVar14="";
 	if(s.eVar41)s.eVar41=s.eVar41.replace(/[&,]/g,"_").replace(/(| )_( |)/g,"_");
 	if(s.eVar42)s.eVar42=s.eVar42.replace(/[&,]/g,"_").replace(/(| )_( |)/g,"_");
 	if(s.eVar43)s.eVar43=s.eVar43.replace(/[&,]/g,"_").replace(/(| )_( |)/g,"_");
 	if(s.eVar45)s.eVar45=s.eVar45.replace(/[&,]/g,"_").replace(/(| )_( |)/g,"_");
 	if(s.eVar56)s.eVar56=s.eVar56.replace(/[&,]/g,"_").replace(/(| )_( |)/g,"_");
-}
-
-function getIsLinkTrack(s){
-	return true; 
-	// Need to find an accurate way to detect link track event, e.g. (!s.linkTrackVars||/None/i.test(s.linkTrackVars));
 }
 
 function getPageName(s){
@@ -143,7 +147,7 @@ function getLoginState(s){
 function setIntCmpnClick(intId) {
 	s.linkTrackVars='prop20,eVar2,events';
 	s.events=s.linkTrackEvents='event59';
-	s.eVar2=s.prop20=[s.pageName,intId].join(": ");
+	s.eVar2=s.prop20=[s.pageName,intId].join(" > ");
 	s.tl(true,'o','Internal Campaign'); 
 	s.linkTrackVars=s.linkTrackEvents='None';
 }
@@ -151,41 +155,43 @@ function setIntCmpnClick(intId) {
 function setExtCampaign(s){ 
 	s.campaign=s.getValOnce(s.getQueryParam('om_u,cmpid',':','f'),'s_campaign',0); 
 	if(s.campaign.length>0)s.eVar3="external campaign";
-	s.eVar22=s.getValOnce(s.getQueryParam('cmpid',':','f'),'s_evar22',0);
-	if (s.c_r('s_eVar22'))s.prop7=(s.eVar22)?[s.eVar22,s.pageName].join(":"):s.pageName;// Campaign pathing 
+	//s.eVar22=s.getValOnce(s.getQueryParam('cmpid',':','f'),'s_evar22',0);
 
 	// Plugin: channelManager v2.2
 	s.channelManager('cmpid,om_u',':','s_cm','0');
 	if(s._channel=="Natural Search"){
 		s._channel="Organic";		
         s.prop40=s._campaign=trimLc([s._channel,s._partner,trim(s._keywords)].join(": "));
-    }else if(s._channel=="Referrers"){
-		s._channel="Other Referrers";		
+    }else if(/(Social|Referrers)/i.test(s._channel)){
 		s.prop40=s._campaign=trimLc([s._channel,s._referringDomain].join(": "));
 	}
 
+	//if (s.c_r('s_eVar22'))s.prop7=(s.eVar22)?[s.eVar22,s.pageName].join(" > "):s.pageName;// Campaign pathing 
+	if (s.c_r('s_campaign'))s.prop7=(s._campaign)?[s._campaign,s.pageName].join(" > "):s.pageName;// Campaign pathing 
 	s.eVar36=s._channel; //Channel Manager Channel
 	//s.eVar38=s._campaign; //Channel Manager Campaign
 	if(!s.prop40&&s.eVar36)s.prop40=trimLc(s.eVar36);
-	if(s.campaign)s.prop40=trimLc([s.prop40,"cid-"+s.campaign].join(": "));
+	if(s.campaign)s.prop40=trimLc([(s.prop40)?s.prop40:"No Channel",s.campaign].join(": "));
 	s.eVar38=s.prop40;
 	
 	// Cross Visit Participation
-	s.eVar18=s.crossVisitParticipation(s.eVar38,'s_evar38cvp','90','5','>','purchase'); //campaign
-	s.eVar37=s.crossVisitParticipation(s.eVar36,'s_evar36cvp','90','5','>','purchase'); //channel
+	s.eVar18=s.crossVisitParticipation(s.eVar38,'s_evar38cvp','90','5',' > ','purchase'); //campaign
+	s.eVar37=s.crossVisitParticipation(s.eVar36,'s_evar36cvp','90','5',' > ','purchase'); //channel
 }
 
 function setIntCampaign(s){
 	if (!s.eVar2)s.eVar2=s.getValOnce(s.getQueryParam('icmpid','','f'),'s_evar2',0);
 	if (s.eVar2.length>0)s.eVar3="internal campaign";
-	if (s.c_r('s_evar2'))s.prop8=(s.eVar2)?[s.eVar2,s.pageName].join(":"):s.pageName;// Campaign pathing
+	if (s.c_r('s_evar2'))s.prop8=(s.eVar2)?[s.eVar2,s.pageName].join(" > "):s.pageName;// Campaign pathing
 }
 
 function setIntSearch(s){
 	if (!s.prop1) return;// abort if no searh term
+	if (/ecommerce/i.test(s.prop1)){s.prop1="";return;} // ignore repeating ecommerce
 	s.eVar3="internal search";
 	s.events=s.apl(s.events,'event1',',',1);// capture all search attempts
-	s.eVar1=s.prop1=[s.prop11,trimLc(s.prop1.replace(/[^\w| ]+/gi,''))].join(': ');
+	s.prop1=[s.prop11,trimLc(s.prop1.replace(/[^\w| ]+/gi,''))].join(': ');
+	s.eVar1="D=c1";
 	if (s.prop2 && /zero|0/i.test(s.prop2)) s.events=s.apl(s.events,'event8',',',1);// Null search
 }
 
@@ -194,7 +200,7 @@ function getServerName(){
 		// Different process for eCom - shop.safeway.com
 		if (isEcom){
 			var bId=trim(sc_getCookie('brandid'));
-			if(IsBlank(bId))bId='1';
+			if(isBlank(bId))bId='1';
 			
 			switch (bId){
 				case "1":return "safeway";case "2":return "vons";case "3":return "genuardis";
@@ -211,9 +217,15 @@ function getServerName(){
 }
 
 function ignoreTestUsers(){
-	var ignoreIDs={"300-369-1002548440":1,"300-368-1000169705":1,"300-368-1000669155":1,"300-368-1000669164":1};
-	var loginID=s.getAndPersistValue(null,'s_eVar27',7);	
-	if(ignoreIDs[loginID]==1) throw("Ignore TestUser");
+	var isQA=s.getAndPersistValue(s.getQueryParam('isqa'),'s_isqa',7);
+	
+	if(isQA){
+		s.sa((/ignore/i.test(isQA))?'_ignoreRS_':'sfsafewayqa')
+	}else{
+		var ignoreIDs={"300-369-1002548440":1,"300-368-1000169705":1,"300-368-1000669155":1,"300-368-1000669164":1};
+		var loginID=s.getAndPersistValue(null,'s_eVar27',7);	
+		if(ignoreIDs[loginID]==1) s.sa('_ignoreRS_');
+	}
 }
 
 function setJFUValues(s){
@@ -226,7 +238,6 @@ function setJFUValues(s){
 	
 	if (!isEcom){
 		setJFULogin(s);
-		ignoreTestUsers();
 		
 		// prop18 | eVar50	JFU Program
 		// eVar46 JFU Card Number
@@ -265,10 +276,6 @@ function setJFUValues(s){
 		}
 	}
 }
-// Trims a string
-function Trim(str){return (str)?str.replace(/^\s+|\s+$/g,""):"";}
-// Trim lowercase
-function TrimLc(str){return (str)?Trim(str).toLowerCase():"";}
 
 function setJFULogin(s){
 	if (loginProcessed) return;
@@ -279,10 +286,10 @@ function setJFULogin(s){
 		var instrParam=s.getAndPersistValue(s.getQueryParam('Instore'),'s_qsInstore',7);
 		var signinLoc='Home';
 		if(instrParam&&instrParam.match(/y/i))signinLoc='Store';
-		else if(!IsBlank(loginEvent)&&loginEvent.match(/Store/i))signinLoc='Store';
+		else if(!isBlank(loginEvent)&&loginEvent.match(/Store/i))signinLoc='Store';
 		s.eVar30=signinLoc; // Home or Store
 		
-		if(!IsBlank(loginEvent)&&loginEvent.match(/_(Home|Store)_/i)) {
+		if(!isBlank(loginEvent)&&loginEvent.match(/_(Home|Store)_/i)) {
 			var lgnParts = loginEvent.split("_");
 			// Abort if key value does not seem correct
 			if (lgnParts.length!=4)throw("loginEvent cookie invalid ["+loginEvent+"]");
@@ -374,7 +381,7 @@ setCookieSwyOmniture=sc_setCookie;
 // PLUGINS SECTION
 s.doPlugins=s_doPlugins;
 // Variable exist / blank
-function IsBlank(o, DoEval) {try{var testVal = (DoEval)? eval(o): o;if (testVal === undefined) return true;else if (testVal.length == 0) return true;return false;} catch (Err) {return true;}}
+function isBlank(o, DoEval) {try{var testVal = (DoEval)? eval(o): o;if (testVal === undefined) return true;else if (testVal.length == 0) return true;return false;} catch (Err) {return true;}}
 // Trims a string
 function trim(str){return str.replace(/^\s+|\s+$/g,"");}
 // Trim lowercase
@@ -446,10 +453,10 @@ s.fage=new Function("e","a","var s=this,f=s.fa,x=f.cnt;x=x?x+1:1;f.cnt=x;return 
 s.getTimeToComplete=new Function("v","cn","e","var s=this,d=new Date,x=d,k;if(!s.ttcr){e=e?e:0;if(v=='start'||v=='stop')s.ttcr=1;x.setTime(x.getTime()+e*86400000);if(v=='start'){s.c_w(cn,d.getTime(),e?x:0);return '';}if(v=='stop'){k=s.c_r(cn);if(!s.c_w(cn,'',d)||!k)return '';v=(d.getTime()-k)/1000;var td=86400,th=3600,tm=60,r=5,u,un;if(v>td){u=td;un='days';}else if(v>th){u=th;un='hours';}else if(v>tm){r=2;u=tm;un='minutes';}else{r=.2;u=1;un='seconds';}v=v*r/u;return (Math.round(v)/r)+' '+un;}}return '';");
 //temporary fix to get the prop10 report to populate while Omniture supplies us with updated plugin (Loryn Sep 2010)
 s.getTimeToComplete2 = new Function("v", "cn", "e", "var s=this,d=new Date,x=d,k;if(!s.ttcr2){e=e?e:0;if(v=='start'||v=='stop')s.ttcr2=1;x.setTime(x.getTime()+e*86400000);if(v=='start'){s.c_w(cn,d.getTime(),e?x:0);return '';}if(v=='stop'){k=s.c_r(cn);if(!s.c_w(cn,'',d)||!k)return '';v=(d.getTime()-k)/1000;var td=86400,th=3600,tm=60,r=5,u,un;if(v>td){u=td;un='days';}else if(v>th){u=th;un='hours';}else if(v>tm){r=2;u=tm;un='minutes';}else{r=.2;u=1;un='seconds';}v=v*r/u;return (Math.round(v)/r)+' '+un;}}return '';");
-// ver. 2.2 - Tracking External Traffic
-s.channelManager=new Function("a","b","c","V","var s=this,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,W,X,Y;g=s.referrer?s.referrer:document.referrer;g=g.toLowerCase();if(!g){h='1'}i=g.indexOf('?')>-1?g.indexOf('?'):g.length;j=g.substring(0,i);k=s.linkInternalFilters.toLowerCase();k=s.split(k,',');l=k.length;for(m=0;m<l;m++){n=j.indexOf(k[m])==-1?'':g;if(n)o=n}if(!o&&!h){p=g;q=g.indexOf('//')>-1?g.indexOf('//')+2:0;r=g.indexOf('/',q)>-1?g.indexOf('/',q):i;t=g.substring(q,r);t=t.toLowerCase();u=t;P='Referrers';v=s.seList+'>'+s._extraSearchEngines;if(V=='1'){j=s.repl(j,'oogle','%');j=s.repl(j,'ahoo','^');g=s.repl(g,'as_q','*');}A=s.split(v,'>');B=A.length;for(C=0;C<B;C++){D=A[C];D=s.split(D,'|');E=s.split(D[0],',');F=E.length;for(G=0;G<F;G++){H=j.indexOf(E[G]);if(H>-1){I=s.split(D[1],',');J=I.length;for(K=0;K<J;K++){L=s.getQueryParam(I[K],'',g);if(L){L=L.toLowerCase();M=L;if(D[2]){u=D[2];N=D[2]}else{N=t}if(V=='1'){N=s.repl(N,'#',' - ');g=s.repl(g,'*','as_q');N=s.repl(N,'^','ahoo');N=s.repl(N,'%','oogle');}}}}}}}O=s.getQueryParam(a,b);if(O){u=O;if(M){P='Paid Search'}else{P='Paid Non-Search';}}if(!O&&M){u=N;P='Natural Search'}f=s._channelDomain;if(f){k=s.split(f,'>');l=k.length;for(m=0;m<l;m++){Q=s.split(k[m],'|');R=s.split(Q[1],',');S=R.length;for(T=0;T<S;T++){W=j.indexOf(R[T]);if(W>-1)P=Q[0]}}}d=s._channelParameter;if(d){k=s.split(d,'>');l=k.length;for(m=0;m<l;m++){Q=s.split(k[m],'|');R=s.split(Q[1],',');S=R.length;for(T=0;T<S;T++){U=s.getQueryParam(R[T]);if(U)P=Q[0]}}}e=s._channelPattern;if(e){k=s.split(e,'>');l=k.length;for(m=0;m<l;m++){Q=s.split(k[m],'|');R=s.split(Q[1],',');S=R.length;for(T=0;T<S;T++){X=O.indexOf(R[T]);if(X==0)P=Q[0]}}}if(h=='1'&&!O){u=P=t=p='Direct Load'}T=M+u+t;U=c?'c':'c_m';if(c!='0'){T=s.getValOnce(T,U,0);}if(T)M=M?M:'n/a';s._referrer=T&&p?p:'';s._referringDomain=T&&t?t:'';s._partner=T&&N?N:'';s._campaignID=T&&O?O:'';s._campaign=T&&u?u:'';s._keywords=T&&M?M:'';s._channel=T&&P?P:'';");
-// Top 130
-s.seList="altavista.co|q,r|AltaVista>aol.co.uk,search.aol.co.uk|query|AOL - United Kingdom>search.aol.com,search.aol.ca|query,q|AOL.com Search>ask.com,ask.co.uk|ask,q|Ask Jeeves>www.baidu.com|wd|Baidu>daum.net,search.daum.net|q|Daum>google.co,googlesyndication.com|q,as_q|Google>google.com.ar|q,as_q|Google - Argentina>google.com.au|q,as_q|Google - Australia>google.at|q,as_q|Google - Austria>google.com.bh|q,as_q|Google - Bahrain>google.com.bd|q,as_q|Google - Bangladesh>google.be|q,as_q|Google - Belgium>google.com.bo|q,as_q|Google - Bolivia>google.ba|q,as_q|Google - Bosnia-Hercegovina>google.com.br|q,as_q|Google - Brasil>google.bg|q,as_q|Google - Bulgaria>google.ca|q,as_q|Google - Canada>google.cl|q,as_q|Google - Chile>google.cn|q,as_q|Google - China>google.com.co|q,as_q|Google - Colombia>google.co.cr|q,as_q|Google - Costa Rica>google.hr|q,as_q|Google - Croatia>google.cz|q,as_q|Google - Czech Republic>google.dk|q,as_q|Google - Denmark>google.com.do|q,as_q|Google - Dominican Republic>google.com.ec|q,as_q|Google - Ecuador>google.com.eg|q,as_q|Google - Egypt>google.com.sv|q,as_q|Google - El Salvador>google.ee|q,as_q|Google - Estonia>google.fi|q,as_q|Google - Finland>google.fr|q,as_q|Google - France>google.de|q,as_q|Google - Germany>google.gr|q,as_q|Google - Greece>google.com.gt|q,as_q|Google - Guatemala>google.hn|q,as_q|Google - Honduras>google.com.hk|q,as_q|Google - Hong Kong>google.hu|q,as_q|Google - Hungary>google.co.in|q,as_q|Google - India>google.co.id|q,as_q|Google - Indonesia>google.ie|q,as_q|Google - Ireland>google.is|q,as_q|Google - Island>google.co.il|q,as_q|Google - Israel>google.it|q,as_q|Google - Italy>google.com.jm|q,as_q|Google - Jamaica>google.co.jp|q,as_q|Google - Japan>google.jo|q,as_q|Google - Jordan>google.co.ke|q,as_q|Google - Kenya>google.co.kr|q,as_q|Google - Korea>google.lv|q,as_q|Google - Latvia>google.lt|q,as_q|Google - Lithuania>google.com.my|q,as_q|Google - Malaysia>google.com.mt|q,as_q|Google - Malta>google.mu|q,as_q|Google - Mauritius>google.com.mx|q,as_q|Google - Mexico>google.co.ma|q,as_q|Google - Morocco>google.nl|q,as_q|Google - Netherlands>google.co.nz|q,as_q|Google - New Zealand>google.com.ni|q,as_q|Google - Nicaragua>google.com.ng|q,as_q|Google - Nigeria>google.no|q,as_q|Google - Norway>google.com.pk|q,as_q|Google - Pakistan>google.com.py|q,as_q|Google - Paraguay>google.com.pe|q,as_q|Google - Peru>google.com.ph|q,as_q|Google - Philippines>google.pl|q,as_q|Google - Poland>google.pt|q,as_q|Google - Portugal>google.com.pr|q,as_q|Google - Puerto Rico>google.com.qa|q,as_q|Google - Qatar>google.ro|q,as_q|Google - Romania>google.ru|q,as_q|Google - Russia>google.st|q,as_q|Google - Sao Tome and Principe>google.com.sa|q,as_q|Google - Saudi Arabia>google.com.sg|q,as_q|Google - Singapore>google.sk|q,as_q|Google - Slovakia>google.si|q,as_q|Google - Slovenia>google.co.za|q,as_q|Google - South Africa>google.es|q,as_q|Google - Spain>google.lk|q,as_q|Google - Sri Lanka>google.se|q,as_q|Google - Sweden>google.ch|q,as_q|Google - Switzerland>google.com.tw|q,as_q|Google - Taiwan>google.co.th|q,as_q|Google - Thailand>google.bs|q,as_q|Google - The Bahamas>google.tt|q,as_q|Google - Trinidad and Tobago>google.com.tr|q,as_q|Google - Turkey>google.com.ua|q,as_q|Google - Ukraine>google.ae|q,as_q|Google - United Arab Emirates>google.co.uk|q,as_q|Google - United Kingdom>google.com.uy|q,as_q|Google - Uruguay>google.co.ve|q,as_q|Google - Venezuela>google.com.vn|q,as_q|Google - Viet Nam>google.co.vi|q,as_q|Google - Virgin Islands>icqit.com|q|icq>bing.com|q|Microsoft Bing>myway.com|searchfor|MyWay.com>naver.com,search.naver.com|query|Naver>netscape.com|query,search|Netscape Search>reference.com|q|Reference.com>seznam|w|Seznam.cz>abcsok.no|q|Startsiden>tiscali.it|key|Tiscali>virgilio.it|qs|Virgilio>yahoo.com,search.yahoo.com|p|Yahoo!>ar.yahoo.com,ar.search.yahoo.com|p|Yahoo! - Argentina>au.yahoo.com,au.search.yahoo.com|p|Yahoo! - Australia>ca.yahoo.com,ca.search.yahoo.com|p|Yahoo! - Canada>fr.yahoo.com,fr.search.yahoo.com|p|Yahoo! - France>de.yahoo.com,de.search.yahoo.com|p|Yahoo! - Germany>hk.yahoo.com,hk.search.yahoo.com|p|Yahoo! - Hong Kong>in.yahoo.com,in.search.yahoo.com|p|Yahoo! - India>yahoo.co.jp,search.yahoo.co.jp|p,va|Yahoo! - Japan>kr.yahoo.com,kr.search.yahoo.com|p|Yahoo! - Korea>mx.yahoo.com,mx.search.yahoo.com|p|Yahoo! - Mexico>ph.yahoo.com,ph.search.yahoo.com|p|Yahoo! - Philippines>sg.yahoo.com,sg.search.yahoo.com|p|Yahoo! - Singapore>es.yahoo.com,es.search.yahoo.com|p|Yahoo! - Spain>telemundo.yahoo.com,espanol.search.yahoo.com|p|Yahoo! - Spanish (US : Telemundo)>tw.yahoo.com,tw.search.yahoo.com|p|Yahoo! - Taiwan>uk.yahoo.com,uk.search.yahoo.com|p|Yahoo! - UK and Ireland>yandex|text|Yandex.ru>search.cnn.com|query|CNN Web Search>search.earthlink.net|q|Earthlink Search>search.comcast.net|q|Comcast Search>search.rr.com|qs|RoadRunner Search>optimum.net|q|Optimum Search";
+// v2.55 - Tracking External Traffic
+s.channelManager=new Function("a","b","c","d","e","f","var s=this,A,B,g,l,m,p,q,P,h,k,u,S,i,O,T,j,r,t,D,E,F,G,H,N,U,v=0,X,Y,W,n=new Date;n.setTime(n.getTime()+1800000);if(e){v=1;if(s.c_r(e))v=0;if(!s.c_w(e,1,n))s.c_w(e,1,0);if(!s.c_r(e))v=0;}g=s.referrer?s.referrer:document.referrer;g=g.toLowerCase();if(!g)h=1;i=g.indexOf('?')>-1?g.indexOf('?'):g.length;j=g.substring(0,i);k=s.linkInternalFilters.toLowerCase();k=s.split(k,',');for(m=0;m<k.length;m++){B=j.indexOf(k[m])==-1?'':g;if(B)O=B;}if(!O&&!h){p=g;U=g.indexOf('//');q=U>-1?U+2:0;Y=g.indexOf('/',q);r=Y>-1?Y:i;u=t=g.substring(q,r).toLowerCase();P='Other Natural Referrers';S=s.seList+'>'+s._extraSearchEngines;if(d==1){j=s.repl(j,'oogle','%');j=s.repl(j,'ahoo','^');g=s.repl(g,'as_q','*');}A=s.split(S,'>');for(i=0;i<A.length;i++){D=A[i];D=s.split(D,'|');E=s.split(D[0],',');for(G=0;G<E.length;G++){H=j.indexOf(E[G]);if(H>-1){if(D[2])N=u=D[2];else N=t;if(d==1){N=s.repl(N,'#',' - ');g=s.repl(g,'*','as_q');N=s.repl(N,'^','ahoo');N=s.repl(N,'%','oogle');}i=s.split(D[1],',');for(k=0;k<i.length;k++){l=s.getQueryParam(i[k],'',g).toLowerCase();if(l)break;}}}}}if(!O||f!='1'){O=s.getQueryParam(a,b);if(O){u=O;if(N)P='Paid Search';else P='Unknown Paid Channel';}if(!O&&N){u=N;P='Natural Search';}}if(h==1&&!O&&v==1)u=P=t=p='Typed/Bookmarked';g=s._channelDomain;if(g){k=s.split(g,'>');for(m=0;m<k.length;m++){q=s.split(k[m],'|');r=s.split(q[1],',');S=r.length;for(T=0;T<S;T++){Y=r[T].toLowerCase();i=j.indexOf(Y);if(i>-1)P=q[0];}}}g=s._channelParameter;if(g){k=s.split(g,'>');for(m=0;m<k.length;m++){q=s.split(k[m],'|');r=s.split(q[1],',');S=r.length;for(T=0;T<S;T++){U=s.getQueryParam(r[T]);if(U)P=q[0];}}}g=s._channelPattern;if(g){k=s.split(g,'>');for(m=0;m<k.length;m++){q=s.split(k[m],'|');r=s.split(q[1],',');S=r.length;for(T=0;T<S;T++){Y=r[T].toLowerCase();i=O.toLowerCase();H=i.indexOf(Y);if(H==0)P=q[0];}}}X=P+l+t;c=c?c:'c_m';if(c!='0')X=s.getValOnce(X,c,0);if(X){s._referrer=p?p:'n/a';s._referringDomain=t?t:'n/a';s._partner=N?N:'n/a';s._campaignID=O?O:'n/a';s._campaign=u?u:'n/a';s._keywords=l?l:N?'Keyword Unavailable':'n/a';s._channel=P?P:'n/a';}");
+// CM Top 130 Search Engines - Grouped
+s.seList="altavista.co,altavista.de|q,r|AltaVista>.aol.,suche.aolsvc.de|q,query|AOL>ask.jp,ask.co|q,ask|Ask>www.baidu.com|wd|Baidu>daum.net,search.daum.net|q|Daum>google.,googlesyndication.com|q,as_q|Google>icqit.com|q|icq>bing.com|q|Bing>myway.com|searchfor|MyWay.com>naver.com,search.naver.com|query|Naver>netscape.com|query,search|Netscape Search>reference.com|q|Reference.com>seznam|w|Seznam.cz>abcsok.no|q|Startsiden>tiscali.it,www.tiscali.co.uk|key,query|Tiscali>virgilio.it|qs|Virgilio>yahoo.com,yahoo.co.jp|p,va|Yahoo!>yandex|text|Yandex.ru>search.cnn.com|query|CNN Web Search>search.earthlink.net|q|Earthlink Search>search.comcast.net|q|Comcast Search>search.rr.com|qs|RoadRunner Search>optimum.net|q|Optimum Search";
 // Shared plugin functions
 // ver. 1.0 - s.join(v,p)| v - Array | p - formatting parameters (front,back,delim,wrap)
 s.join=new Function("v","p","var s=this;var f,b,d,w;if(p){f=p.front?p.front:'';b=p.back?p.back:'';d=p.delim?p.delim:'';w=p.wrap?p.wrap:'';}var str='';for(var x=0;x<v.length;x++){if(typeof(v[x])=='object' )str+=s.join( v[x],p);else str+=w+v[x]+w;if(x<v.length-1)str+=d;}return f+str+b;");

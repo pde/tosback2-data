@@ -75,8 +75,8 @@ function behavior_binder(){
 	$(".drop_tab li a").append('<span class="drop_tab_right"></span>');
 	
 	//converts all module_head h3's to DIN font
-	$('.module_header h3:not(.t14 h3, .t12 .activate_cufon, .c10 .activate_cufon, .c11 .activate_cufon, .t13 .activate_cufon, .st1 .activate_cufon, .st2 .activate_cufon, .st3 .activate_cufon, .c12 .module_header h3, .t14 .module_header h3)').drawFont();
-	$('.module_head h3:not(.t14 h3, .t12 .activate_cufon, .c10 .activate_cufon, .c11 .activate_cufon, .t13 .activate_cufon, .st1 .activate_cufon, .st2 .activate_cufon, .st3 .activate_cufon, .c12 .module_head h3, .t14 .module_head h3)').drawFont();
+	$('.module_header h3:not(.t15 h3, .t14 h3, .t12 .activate_cufon, .c10 .activate_cufon, .c11 .activate_cufon, .t13 .activate_cufon, .st1 .activate_cufon, .st2 .activate_cufon, .st3 .activate_cufon, .c12 .module_header h3, .t14 .module_header h3, .t15 .module_header h3)').drawFont();
+	$('.module_head h3:not(.t15 h3, .t14 h3, .t12 .activate_cufon, .c10 .activate_cufon, .c11 .activate_cufon, .t13 .activate_cufon, .st1 .activate_cufon, .st2 .activate_cufon, .st3 .activate_cufon, .c12 .module_head h3, .t14 .module_head h3, .t15 .module_head h3)').drawFont();
 	$('.module_head_links h3 a').drawFont();
 	$('#tv_listings .listings_title').drawFont();
 	$('#commenting').snasCommenting({action_function:function(){DARTad.refreshAds();}});

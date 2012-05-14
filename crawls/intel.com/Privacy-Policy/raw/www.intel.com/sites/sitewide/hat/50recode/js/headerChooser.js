@@ -1,4 +1,4 @@
-// 50recode v1.13.7, 12/04/2012
+// 50recode v1.14.6, 09/05/2012
 // Look up the URL of the calling page. If it is in the LUT give it the uNav. If not Default to legacy (LOP) nav
 
 INTELNAV = window.INTELNAV || {};
@@ -57,12 +57,12 @@ INTELNAV.UrlLookUpTable = {
 			site: "c2a.intel.com",
 			goodCulture: ActiveCultures,
 			devPathHttp: "", testPathHttp: "", testPathHttps: "", prevPathHttp: "", prevPathHttps: "", prodPathHttp: "", prodPathHttps: ""
-		},
+		},*/
 		{
-			site: "(tst1c2a|dev1c2a01).sym.cps.intel.com",
+			site: "(c2a-dev|c2a-tst).intel.com",
 			goodCulture: ActiveCultures,
 			devPathHttp: "", testPathHttp: "", testPathHttps: "", prevPathHttp: "", prevPathHttps: "", prodPathHttp: "", prodPathHttps: ""
-		},*/
+		},
 // DOWNLOADCENTER.INTEL.COM (de_DE|en_US|es_MX|fr_FR|it_IT|ja_JP|ko_KR|pt_BR|ru_RU|zh_CN|zh_TW)
 		{
 			site: "(downloadcenter|tst1downloadcenter.sym.cps|dev1downloadcenter.sym.cps|dev1downloadcenter01.sym.cps|downloadcenter-dev|downloadcenter-tst).intel.com",
@@ -141,6 +141,11 @@ INTELNAV.UrlLookUpTable = {
 			goodCulture: ActiveCultures,
 			devPathHttp: "", testPathHttp: "", testPathHttps: "", prevPathHttp: "", prevPathHttps: "", prodPathHttp: "", prodPathHttps: ""
 		},
+		{
+			site: "(intelnewsroom|intelopenport|inteleducation|intelembedded|intelchannel)(|.uat5).hosted.jivesoftware.com",
+			goodCulture: ActiveCultures,
+			devPathHttp: "", testPathHttp: "", testPathHttps: "", prevPathHttp: "", prevPathHttps: "", prodPathHttp: "", prodPathHttps: ""
+		},
 // WHERE TO BUY - APAC
 		{
 			site: "(lcb|tst1mz201.sym.cps|dev1mz201.sym.cps|mz2-dev|mz2-tst).intel.com",
@@ -172,7 +177,7 @@ INTELNAV.UrlLookUpTable = {
 			devPathHttp: "",testPathHttp: "", testPathHttps: "", prevPathHttp: "", prevPathHttps: "", prodPathHttp: "", prodPathHttps: ""
 		},
 		{
-			site: "(proto-cps.cps|preview-cps.cps|www).intel.com/distributed/modules/digital/digitaldemo/index.htm",
+			site: "(proto-cps.cps.|preview-cps.cps.|www.|www3.|)intel.com/distributed/modules/digital/digitaldemo/index.htm",
 			goodCulture: ActiveCultures,
 			devPathHttp: "", testPathHttp: "", testPathHttps: "", prevPathHttp: "", prevPathHttps: "", prodPathHttp: "", prodPathHttps: ""
 		},
@@ -182,6 +187,11 @@ INTELNAV.UrlLookUpTable = {
 			devPathHttp: "",testPathHttp: "", testPathHttps: "", prevPathHttp: "", prevPathHttps: "", prodPathHttp: "", prodPathHttps: ""
 		},*/
 // CIP (WWW.INTEL.COM/CD/)
+		{
+			site: "(www.|www3.|)intel.com/cd/consumerportal",
+			goodCulture: ActiveCultures,
+			devPathHttp: "",testPathHttp: "", testPathHttps: "", prevPathHttp: "", prevPathHttps: "", prodPathHttp: "", prodPathHttps: ""
+		},
 		{
 			site: "(fm1heron|fm1heron.cps).intel.com/cd/(consumerportal|channel/reseller|channel/distributor)",
 			goodCulture: ActiveCultures,
@@ -195,12 +205,12 @@ INTELNAV.UrlLookUpTable = {
 		},*/
 // FOR TESTING PURPOSES ONLY, ON CPS FOR GA TESTING OF HEADER PERFORMANCE
 		{
-			site: "www.intel.com/about/test/rhc-csr5-widget-implementation.htm",
+			site: "(www.|www3.|)intel.com/about/test/rhc-csr5-widget-implementation.htm",
 			goodCulture: ActiveCultures,
 			devPathHttp: "", testPathHttp: "", testPathHttps: "", prevPathHttp: "http://www.intel.com/etc/designs/intel/us/en/js/recode50.www.js", prevPathHttps: "", prodPathHttp: "", prodPathHttps: ""
 		},
 		{
-			site: "www.intel.com/sites/sitewide/unavtest/unav.htm",
+			site: "(www.|www3.|)intel.com/sites/sitewide/unavtest/unav.htm",
 			goodCulture: "ar_AE|ar_EG|ar_SA|ar_XR|cs_CZ|de_DE|en_AP|en_AU|en_IN|en_IR|en_MY|en_PH|en_SA|en_SG|en_UK|en_US|en_XA|en_XE|en_XR|en_ZA|es_ES|es_LA|es_MX|es_XL|fr_FR|he_IL|hu_HU|id_ID|it_IT|ja_JP|ko_KR|nl_NL|pl_PL|pt_BR|ro_RO|ru_RU|sv_SE|th_TH|tr_TR|uk_UA|vi_VN|zh_CN|zh_TW",
 			devPathHttp: "", testPathHttp: "", testPathHttps: "", prevPathHttp: "", prevPathHttps: "", prodPathHttp: "", prodPathHttps: ""
 		},
@@ -211,8 +221,10 @@ INTELNAV.UrlLookUpTable = {
 // Paths to the entrypoint JavaScript to start the loading of the respective header
 INTELNAV.headerPaths = {
 	recode40 : {
-				filePath: "/sites/sitewide/hat/50recode/js/assetLoader.js",
-				testDomain: "http://proto-cps.cps.intel.com"
+				devfilePath: "/sites/sitewide/hat/50recode/js/assetLoader.js",
+				devDomain: "http://proto-cps.cps.intel.com",
+				prodfilePath: "/sites/sitewide/hat/50recode/js/assetLoader.js",
+				prodDomain: "http://www.intel.com"
 	},
 	recode50 : {
 				devPathHttp: "http://pfcqcontent.cps.intel.com:4503/etc/designs/intel/us/en/js/recode50.dev.js",
@@ -224,7 +236,9 @@ INTELNAV.headerPaths = {
 				prodPathHttp: "http://www.intel.com/etc/designs/intel/us/en/js/recode50.js",
 				prodPathHttps: "https://www-ssl.intel.com/etc/designs/intel/us/en/js/recode50.js",
 				GAtest1PathHttp: "http://www.intel.com/etc/designs/intel/us/en/js/recode50.www.js",
-				GAtest1PathHttps: "https://www-ssl.intel.com/etc/designs/intel/us/en/js/recode50.www.js"
+				GAtest1PathHttps: "https://www-ssl.intel.com/etc/designs/intel/us/en/js/recode50.www.js",				
+				GAtest2PathHttp: "http://gwo-dev.intel.com/jgarber/CQ/recode50.js",
+				GAtest2PathHttps: "https://gwo-dev.intel.com/jgarber/CQ/recode50.js"
 	}
 };
 
@@ -309,10 +323,17 @@ _gaq.push(['GAtracker._setCustomVar', 1, 'HeaderVersion', 'INT.50recode', 3]);
 		switch (getParameterByName("forcetest"))
 		{
 		case "legacy":
-			domain = INTELNAV.headerPaths.recode40.testDomain;
+			domain = INTELNAV.headerPaths.recode40.devDomain;
 			INTELNAV.renderSettings.assetPathRoot = domain;
-			assetPath = domain + INTELNAV.headerPaths.recode40.filePath;
+			assetPath = domain + INTELNAV.headerPaths.recode40.devfilePath;
 			setGACustVars('LegacyDev');
+			break;
+			
+		case "legacyprod":
+			domain = INTELNAV.headerPaths.recode40.prodDomain;
+			INTELNAV.renderSettings.assetPathRoot = domain;
+			assetPath = domain + INTELNAV.headerPaths.recode40.prodfilePath;
+			setGACustVars('LegacyProd');
 			break;
 
 		case "unavdev":
@@ -402,6 +423,13 @@ _gaq.push(['GAtracker._setCustomVar', 1, 'HeaderVersion', 'INT.50recode', 3]);
 			tmpPathHttps = INTELNAV.headerPaths.recode50.GAtest1PathHttps;
 			//setGACustVars('GATest1');
 			assetPath = ((secure) ? tmpPathHttps : tmpPathHttp);
+			break;		
+			
+		case "gatest2":
+			tmpPathHttp = INTELNAV.headerPaths.recode50.GAtest2PathHttp;
+			tmpPathHttps = INTELNAV.headerPaths.recode50.GAtest2PathHttps;
+			//setGACustVars('GATest1');
+			assetPath = ((secure) ? tmpPathHttps : tmpPathHttp);
 			break;
 
 		default:
@@ -418,7 +446,7 @@ _gaq.push(['GAtracker._setCustomVar', 1, 'HeaderVersion', 'INT.50recode', 3]);
 				((secure) ? setGACustVars('uNavProd(HTTPs)') : setGACustVars('uNavProd'));
 			} 
 			else {
-				assetPath = domain + INTELNAV.headerPaths.recode40.filePath;
+				assetPath = domain + INTELNAV.headerPaths.recode40.prodfilePath;
 				setGACustVars('LegacyProd');
 			}
 			break;

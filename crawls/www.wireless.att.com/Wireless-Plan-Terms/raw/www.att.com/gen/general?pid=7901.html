@@ -413,26 +413,47 @@ menuJSON:"/SiteUtil/globalnav/globalnav_jasonxml.jsp"
 
 
 
-<!-- cmdversionid=161 -->
+<!-- cmdversionid=164 -->
+<!--Script to retrieve address_id from the url and pass it along-->
+<script type="text/javascript">
+function addURLParams(href) {
+	var queryS = location.search.slice(1);
+	var addParam = "";
+	var arrQuery = queryS.split("&");
+	for (var jj=1;jj<arguments.length;jj++) {
+		var arg = arguments[jj];
+		for (var ii=0;ii<arrQuery.length;ii++) {
+			var arrPP = arrQuery[ii].split("=");
+			if (arrPP[0] == arg) {
+				addParam += "&" + arrPP[0] + "=" + arrPP[1];
+				break;
+			}
+		}
+	}
+	location.href = href + addParam;
+	return false;
+}
+</script>
+
 <!-- ######## BEGIN EDITABLE CONTENT AREA ######## -->
 <style>
 .rotate #hero1, .rotate #hero2, .rotate #hero3 { height:206px !important; width:870px !important; }
 #ie .rotate #hero1, #ie .rotate #hero2, #ie .rotate #hero3 { height:236px !important; width:950px !important; }
+.local_ban1_text { position:relative; margin-left:402px; margin-top:88px; }
+#ie .local_ban1_text { margin-top:118px; }
 </style>
 <div id="pageID">7901</div>
 
 <!-- ### Start Marquees ### -->
 <div id="heroNoBrdr" class="first_950 rotate">
-  <div class="mod_f2 min234noPad marquee">
+	<div class="mod_f2 min234noPad marquee">
 
 <!-- ROTATING BANNER #1 -->
-    <div id="hero1" style="display:block;background:url(../Common/indc/images/marquees/107771_mrq_zookeeper_v02_BG.jpg) no-repeat;">
-			<div class="rel" style="margin-left:362px;">
-				<div style="margin-top:118px; margin-left:40px; color:black; font-size:11px;"><a href="http://www.att.com/Common/indc/popup/directv_offers.htm" style="color:#067ab4;font-size:10px;">See offer details</a>        </div>
-        <div style="margin-left:40px; margin-top:9px;">
-	<a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;onLpPgClick=1"><img src="../Common/indc/images/btn_learn_more_140x44.png" width="140" height="44" alt="Learn More" /></a>
-        </div>
-      </div>
+		<div id="hero1" style="display:block;background:url(../Common/indc/images/marquees/107771_mrq_zookeeper_v02_BG.jpg) no-repeat;">
+			<div class="local_ban1_text">
+				<div><a href="http://www.att.com/Common/indc/popup/directv_offers.htm" style="color:#067ab4;font-size:10px;">See offer details</a></div>
+				<div style="margin-top:6px;"><a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/btn_learn_more_140x44.png" width="140" height="44" alt="Learn More" /></a></div>
+			</div>
 			<div class="rotateHero" style="display:none;"><a href="general%3Fpid=7901.html#hero1"><img src="../Common/indc/images/btn_back.png" width="44" height="21" title="Back" alt="Back" /></a><a href="general%3Fpid=7901.html#heroPause"><img src="../Common/indc/images/btn_pause.gif" width="21" height="21" title="Pause" alt="Pause" /></a><a href="general%3Fpid=7901.html#hero2"><img src="../Common/indc/images/btn_next_wcounter.png" width="36" height="21" title="Next" alt="Next"/></a><img src="../Common/indc/images/ind_1of2.png" width="47" height="21" title="1 of 2" alt="1 of 2"/></div>
 		</div>
 
@@ -442,7 +463,7 @@ menuJSON:"/SiteUtil/globalnav/globalnav_jasonxml.jsp"
 				<h1 style="background:url(../Common/indc/images/marquees/mrq_hdr_dtv_wireless_421x45.gif) no-repeat;margin-bottom:5px;width:421px;height:45px;">Digital TV + Wireless = savings</h1>
 				<h1 style="background:url(../Common/indc/images/marquees/mrq_txt_dtv_wireless_392x42.gif) no-repeat;width:392px;height:42px;">Combine AT&amp;T | DIRECTV with new or existing Wireless to take advantage of bundle discounts.</h1>
 				<div class="topMar15">
-					<a href="https://connect.att.com/apps/supern/StartAction.form?source=ICBL25F010000000L&wtSourceUID=lg2871&wtExtndSource=0711_M3_Tvwir_odrnow"><img src="../Common/indc/images/marquees/btn_order_now_blue_129x40.gif" width="129" height="40" alt="Order Now" /></a>
+					<a href="https://connect.att.com/apps/supern/StartAction.form?source=ICBL25F010000000L&wtSourceUID=lg2871&wtExtndSource=0711_M3_Tvwir_odrnow" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/marquees/btn_order_now_blue_129x40.gif" width="129" height="40" alt="Order Now" /></a>
 				</div>
 			</div>
 			<div class="rotateHero" style="display:none;"><a href="general%3Fpid=7901.html#hero2"><img src="../Common/indc/images/btn_back.png" width="44" height="21" title="Back" alt="Back" /></a><a href="general%3Fpid=7901.html#heroPause"><img src="../Common/indc/images/btn_pause.gif" width="21" height="21" title="Pause" alt="Pause" /></a><a href="general%3Fpid=7901.html#hero1"><img src="../Common/indc/images/btn_next_wcounter.png" width="36" height="21" title="Next" alt="Next"/></a><img src="../Common/indc/images/ind_2of2.png" width="47" height="21" title="2 of 2" alt="2 of 2"/></div>
@@ -457,17 +478,16 @@ menuJSON:"/SiteUtil/globalnav/globalnav_jasonxml.jsp"
 <!-- ### FIRST CONTAINER ### -->
 <div class="first_310">
 	<div class="mod_d2 min355" style="padding-bottom:40px">
-		<h4 class="accent1 topPad-5">DIRECTV<sup>&#174;</sup> CHOICE XTRA&#153; Package<br /></h4>
+		<h4 class="accent1 topPad-5">DIRECTV<sup>&#174;</sup> ENTERTAINMENT Package<br /> &nbsp;</h4>
 		<div class="pricing">
-			<div><sup>$</sup>38.<sup class="cents">99*</sup></div>
+			<div><sup>$</sup>29.<sup class="cents">99*</sup></div>
 			<span class="reoccurrence twoDigit" style="left:105px;top:8px;">per month <br /> for 12 months after instant<br /> rebate with 24-month DIRECTV<br />agreement when bundled with a<br /> qualifying AT&amp;T service*</span>
 		</div><!-- .pricing -->
-		<p style="margin-top:40px">Over 205 channels of the best in movies, sports, music, family programming and local channels. Free HD DVR and 3 HD Receiver upgrades (Additional &amp; Advanced Receiver fees apply). 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME<sup>&#174;</sup>, and Cinemax<sup>&#174;</sup>, a $135 value.
-</p>
+		<p style="margin-top:40px">Over 140 channels of family programming suitable for all ages, including local channels. Free HD DVR and 3 HD Receiver upgrades (Additional &amp; Advanced Receiver fees apply). Plus save $10/mo for 12 months on Advanced Receiver service. 3 months free SHOWTIME&#174;, a $39 value.</p>
 		<div class="btmCta">
 			<a href="http://www.att.com/Common/indc/popup/directv_offers.htm" target="_blank" class="nowrap popup btnWhiteCagedArrow" style="display:block;" title="See offer details">See offer details</a>
-			<a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;wtSourceUID=tm2768&amp;wtExtndSource=0811_C1_2999_LrnMor&amp;onLpPgClick=1" class="nowrap btnWhiteCagedArrow" style="display:block;margin-top:-5px;" title="Learn more">Learn more</a>
-			<a href="http://localization.att.com/loc/controller?ltype=res&prod-snip=res_dtv_order&source=ICND25BD10000000L&wtSourceUID=tm2768&wtExtndSource=0811_C1_2999_OdrNow&onLpPgClick=1"><img src="../Common/indc/images/btn_order_now_sm_b_10x7.gif" width="93" height="18" alt="Order Now" /></a>
+			<a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;wtSourceUID=tm2768&amp;wtExtndSource=0811_C1_2999_LrnMor&amp;onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')" class="nowrap btnWhiteCagedArrow" style="display:block;margin-top:-5px;" title="Learn more">Learn more</a>
+			<a href="http://localization.att.com/loc/controller?ltype=res&prod-snip=res_dtv_order&source=ICND25BD10000000L&wtSourceUID=tm2768&wtExtndSource=0811_C1_2999_OdrNow&onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/btn_order_now_sm_b_10x7.gif" width="93" height="18" alt="Order Now" /></a>
 		</div><!-- .btmCta -->
 	</div><!-- .mod_d2 min318 -->
 </div><!-- .first_310 -->
@@ -475,16 +495,16 @@ menuJSON:"/SiteUtil/globalnav/globalnav_jasonxml.jsp"
 <!-- ### SECOND CONTAINER ### -->
 <div class="col_310">
 	<div class="mod_d2 min355" style="padding-bottom:40px">
-		<h4 class="accent1 topPad-5">DIRECTV<sup>&#174;</sup> CHOICE XTRA&#153; Package w/Advanced Receiver service</h4>
+		<h4 class="accent1 topPad-5">DIRECTV<sup>&#174;</sup> CHOICE XTRA&#153; Package<br /> &nbsp;</h4>
 		<div class="pricing">
-			<div><sup>$</sup>48.<sup class="cents">99*</sup></div>
+			<div><sup>$</sup>38.<sup class="cents">99*</sup></div>
 			<span class="reoccurrence twoDigit" style="left:105px;top:8px;">per month <br /> for 12 months after instant<br /> rebate with 24-month DIRECTV<br />agreement when bundled with a<br /> qualifying AT&amp;T service*</span>
 		</div><!-- .pricing -->
-		<p style="margin-top:40px">Over 205 channels. Free HD DVR and 3 HD Receiver upgrades (Additional &amp; Advanced Receiver fees apply). 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME<sup>&#174;</sup>, and Cinemax<sup>&#174;</sup>, a $135 value.</p>
+		<p style="margin-top:40px">Over 205 channels of the best in movies, sports, music, family programming and local channels. For a limited time this package includes 2012 NFL SUNDAY TICKET&#153; at no extra charge. Free HD DVR and 3 HD Receiver upgrades (Additional &amp; Advanced Receiver fees apply). Plus save $10/mo for 12 months on Advanced Receiver service. 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME&#174;, and Cinemax<sup>&#174;</sup>, a $135 value.</p>
 		<div class="btmCta">
 			<a href="http://www.att.com/Common/indc/popup/directv_offers.htm" target="_blank" class="nowrap popup btnWhiteCagedArrow" style="display:block;" title="See offer details">See offer details</a>
-			<a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;wtSourceUID=tm2768&amp;wtExtndSource=0811_C2_3699_LrnMor&amp;onLpPgClick=1" class="nowrap btnWhiteCagedArrow" style="display:block;margin-top:-5px;" title="Learn more">Learn more</a>
-			<a href="http://localization.att.com/loc/controller?ltype=res&prod-snip=res_dtv_order&source=ICND25BD10000000L&wtSourceUID=tm2768&wtExtndSource=0811_C2_3699_OdrNow&onLpPgClick=1"><img src="../Common/indc/images/btn_order_now_sm_b_10x7.gif" width="93" height="18" alt="Order Now" /></a>
+			<a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;wtSourceUID=tm2768&amp;wtExtndSource=0811_C2_3699_LrnMor&amp;onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')" class="nowrap btnWhiteCagedArrow" style="display:block;margin-top:-5px;" title="Learn more">Learn more</a>
+			<a href="http://localization.att.com/loc/controller?ltype=res&prod-snip=res_dtv_order&source=ICND25BD10000000L&wtSourceUID=tm2768&wtExtndSource=0811_C2_3699_OdrNow&onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/btn_order_now_sm_b_10x7.gif" width="93" height="18" alt="Order Now" /></a>
 		</div><!-- .btmCta -->
 	</div><!-- .mod_d2 min318 -->
 </div><!-- .col_310 -->
@@ -492,16 +512,16 @@ menuJSON:"/SiteUtil/globalnav/globalnav_jasonxml.jsp"
 <!-- ### THIRD CONTAINER ### -->
 <div class="col_310">
 	<div class="mod_d2 min355" style="padding-bottom:40px">
-		<h4 class="accent1 topPad-5">DIRECTV<sup>&#174;</sup> CHOICE ULTIMATE&#153; Package w/Advanced Receiver service</h4>
+		<h4 class="accent1 topPad-5">DIRECTV<sup>&#174;</sup> CHOICE ULTIMATE&#153; Package<br /> &nbsp;</h4>
 		<div class="pricing">
-			<div><sup>$</sup>54.<sup class="cents">99*</sup></div>
+			<div><sup>$</sup>44.<sup class="cents">99*</sup></div>
 			<span class="reoccurrence twoDigit" style="left:105px;top:8px;">per month <br /> for 12 months after instant<br /> rebate with 24-month DIRECTV<br />agreement when bundled with a<br /> qualifying AT&amp;T service*</span>
 		</div><!-- .pricing -->
-		<p style="margin-top:40px">Over 225 channels. 11 movie channels. With DIRECTV CINEMA<sup>TM</sup> get 400 of the newest releases. (Additional fees required for new releases.) Plus over 7000 shows and movies, at no extra charge. Free HD DVR and 3 HD Receiver upgrades (Additional & Advanced Receiver fees apply). 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME<sup>&#174;</sup>, and Cinemax<sup>&#174;</sup>, a $135 value.</p>
+		<p style="margin-top:40px">Over 225 channels. 11 movie channels. For a limited time this package includes 2012 NFL SUNDAY TICKET&#153; at no extra charge. Free HD DVR and 3 HD Receiver upgrades (Additional &amp; Advanced Receiver fees apply). Plus save $10/mo for 12 months on Advanced Receiver service. With DIRECTV On Demand you get over 7000 shows and movies, at no extra charge. 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME&#174;, and Cinemax<sup>&#174;</sup>, a $135 value.</p>
 		<div class="btmCta">
 			<a href="http://www.att.com/Common/indc/popup/directv_offers.htm" target="_blank" class="nowrap popup btnWhiteCagedArrow" style="display:block;" title="See offer details">See offer details</a>
-			<a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;wtSourceUID=tm2768&amp;wtExtndSource=0811_C3_4199_LrnMor&amp;onLpPgClick=1" class="nowrap btnWhiteCagedArrow" style="display:block;margin-top:-5px;" title="Learn more">Learn more</a>
-			<a href="http://localization.att.com/loc/controller?ltype=res&prod-snip=res_dtv_order&source=ICND25BD10000000L&wtSourceUID=tm2768&wtExtndSource=0811_C3_4199_OdrNow&onLpPgClick=1"><img src="../Common/indc/images/btn_order_now_sm_b_10x7.gif" width="93" height="18" alt="Order Now" /></a>
+			<a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;wtSourceUID=tm2768&amp;wtExtndSource=0811_C3_4199_LrnMor&amp;onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')" class="nowrap btnWhiteCagedArrow" style="display:block;margin-top:-5px;" title="Learn more">Learn more</a>
+			<a href="http://localization.att.com/loc/controller?ltype=res&prod-snip=res_dtv_order&source=ICND25BD10000000L&wtSourceUID=tm2768&wtExtndSource=0811_C3_4199_OdrNow&onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/btn_order_now_sm_b_10x7.gif" width="93" height="18" alt="Order Now" /></a>
 		</div><!-- .btmCta -->
 	</div><!-- .mod_d2 min318 -->
 </div><!-- .col_310 -->
@@ -528,6 +548,7 @@ menuJSON:"/SiteUtil/globalnav/globalnav_jasonxml.jsp"
 <script type="text/javascript">document.write('<s'+'cript type="text/javascript" src="http://view.atdmt.com/jaction/Directtvinfo"></s'+'cript>')</script><noscript><iframe src="../../view.atdmt.com/iaction/Directtvinfo.html" width="1" height="1" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0"></iframe></noscript>
 <!-- END: ATLAS TAG -->
 <!-- ######## END EDITABLE CONTENT AREA ######## -->
+
 
 
 

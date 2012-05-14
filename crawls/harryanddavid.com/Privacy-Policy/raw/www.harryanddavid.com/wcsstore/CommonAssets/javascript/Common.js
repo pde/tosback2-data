@@ -26,6 +26,9 @@ dojo.require("bec.menu.MenuContentPane");
 dojo.require("bec.widget.PopupPanelContainer");
 dojo.require("bec.widget.PopupPanel");
 dojo.require("bec.espot.ClickInfo");
+dojo.require("bec.widget.iScroller");
+
+dojo.require("bec.widget.form.SelectDropDown"); //for overriding filtering select for tablets
 
 //---------------------------------------------------------------------------------------
 // define common 
@@ -42,9 +45,10 @@ var LOADING_MESSAGE =
 	'<span class="dijitContentPaneLoading"><img class="loadingImage" src="' + eSiteImgDir + '/loading_2.gif"/></span>';
 
 dojo.addOnLoad(function() 
-{
-	dojoParseButtons();
-	dojoParseRegisteredWidgets();
+{	
+    dojoParseButtons();	
+    processTabletOverrides();    
+    dojoParseRegisteredWidgets();
 	
     try
     {
@@ -121,6 +125,7 @@ function cursor_clear()
     {
         document.body.style.cursor = 'default';		 
 		requestSubmitted = false;	//Reset the flag
+		busyCount = 0;
     }
 }
 /** 
@@ -192,6 +197,17 @@ function getResetPasswordInstance()
 	}
 }
 
+function processTabletOverrides()
+{
+    if(bec.util.browser.isTouchDevice())
+    {   //we are a touch device like tablet so do various overrides.
+        if(dijit.form.FilteringSelect && bec.widget.form.SelectDropDown)
+        {
+            dijit.form.FilteringSelect.prototype = bec.widget.form.SelectDropDown.prototype;    
+        }
+    }
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 //	From old Utils.js
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,3 +253,24 @@ function parsePrice(strPrice)
 	}	
 	return rtnNumber;
 }
+
+//This function creates or modifies a cookie.
+function updateCookie(name, value)
+{
+  dojo.cookie(name, escape(value), {path: '/'});
+}
+
+//This function reads a cookie.
+function readCookie(name) 
+{
+  return dojo.cookie(name);
+}	
+
+//Sets the expiration date of a cookie (set to zero to delete cookie).
+function expireCookie(name, minutes)
+{
+	var dateObj=new Date();
+	dateObj.setMinutes(dateObj.getMinutes()+minutes);
+	document.cookie = name + "=" + readCookie(name) + ";path=/;expires=" + dateObj;
+}
+

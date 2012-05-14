@@ -32,7 +32,7 @@ s.eventList="event37" //Abandon,Success,Error
 /* Plugin Config */
 s.usePlugins=true
 s.trackingServer="metric.marthastewart.com"
-s.trackingServerSecure="metrics.marthastewart.com"
+s.trackingServerSecure="securemetrics.marthastewart.com"
 // timeparting config variables
 s.dstStart="03/11/2012";
 s.dstEnd="11/04/2012";

@@ -261,26 +261,20 @@ function scriptfunction(productId, pSizeName, pProductColor, pProdImg, pSkuId, p
 	this.colorName = pColorName;	
 }
 
-function getProductDetailAddToBagValues() {
+function getProductDetailAddToBagValues(frmName) {
 	// get values to store as JSON
+	
+	// if is main product
 	var prodTitle = "";
-	var titleTags = $$("h2.prodTitle");
+	var titleTags = $$('form[name="' + frmName + '"] h2.prodTitle');
 	if (titleTags) {
 		titleTags.each(function(t) {
 			prodTitle = t.innerHTML;	
 		});
 	}
-	var prodSku = "";
-	var pSkuTags = $$("#productInfo p.sku");
-	if (pSkuTags) {
-		pSkuTags.each(function(pTag) {
-			if (prodSku == "") {
-				prodSku = pTag.innerHTML.replace("SKU #","");
-			}
-		});
-	}
+	
 	var prodPrice = "";
-	var pPriceTags = $$("p.price");
+	var pPriceTags = $$('form[name="' + frmName + '"] p.price');
 	if (pPriceTags) {
 		pPriceTags.each(function(pTag) {
 			if (prodPrice == "") {
@@ -288,17 +282,8 @@ function getProductDetailAddToBagValues() {
 			}
 		});
 	}
-	var promoPrices = $$("#detailMainOptions div.customPromoText1");
-	if (promoPrices) {
-		var promoPriceCounter = 0;
-		promoPrices.each(function(ppTag) {
-			if (promoPriceCounter == 0) {
-				prodPrice = ppTag.innerHTML;
-			}
-			promoPriceCounter++;
-		});
-	}
-	var salePrices = $$("p.salePrice");
+	
+	var salePrices = $$('form[name="' + frmName + '"] p.salePrice');
 	var isSalePrice = false;
 	if (salePrices) {
 		salePrices.each(function(spTag) {
@@ -308,8 +293,9 @@ function getProductDetailAddToBagValues() {
 			}
 		});
 	}
+	
 	var prodColor = "";
-	var swatches = $$("#detailSwatches a");
+	var swatches = $$('form[name="' + frmName + '"] #detailSwatches a');
 	if (swatches) {
 		swatches.each(function(s) {
 			if (s.hasClassName("selected")) {
@@ -321,8 +307,9 @@ function getProductDetailAddToBagValues() {
 			}
 		});		
 	}
+	
 	var prodQty = "";
-	var qtyMenu = $$("#qtyOption select");
+	var qtyMenu = $$('form[name="' + frmName + '"] #qtyOption select');
 	if (qtyMenu) {
 		qtyMenu.each(function(qMenu){
 			if (prodQty == "") {
@@ -330,6 +317,75 @@ function getProductDetailAddToBagValues() {
 			}
 		});
 	}
+	
+	// if family product
+	if(prodTitle.length == 0) {
+		titleTags = $$('form[name="' + frmName + '"] h5 p');
+		if(titleTags) {
+			prodTitle = titleTags[0].innerHTML;
+		}
+	}
+	
+	if(prodPrice.length == 0) {
+		pPriceTags = $$('form[name="' + frmName + '"] span.price');
+		if (pPriceTags) {
+			pPriceTags.each(function(pTag) {
+				prodPrice = pTag.innerHTML;
+			});
+		}
+	}
+	
+	if(salePrices.length == 0) {
+		salePrices = $$('form[name="' + frmName + '"] span.salePrice');
+		isSalePrice = false;
+		if (salePrices) {
+			salePrices.each(function(spTag) {
+				if (!isSalePrice) {
+					prodPrice = spTag.innerHTML;
+					isSalePrice = true;
+				}
+			});
+		}
+	}
+	
+	if(prodColor.length == 0) {
+		swatches = $$('form[name="' + frmName + '"] .swatches a');
+		if (swatches) {
+			swatches.each(function(s) {
+				if (s.hasClassName("selected")) {
+					if (prodColor == "") {
+						var tmp = s.id.replace("swatchLink_","");
+						tmp = tmp.substr(0, tmp.indexOf("_"));
+						prodColor = tmp;
+					}
+				}
+			});		
+		}
+	}
+	
+	
+	if(prodQty.length == 0) {
+		var qtyMenu = $$('form[name="' + frmName + '"] .multi_swatches select');
+		if (qtyMenu) {
+			qtyMenu.each(function(qMenu){
+				prodQty = qMenu.value;
+			});
+		}
+	}
+	
+	var prodSku = "";
+	var pSkuTags = $$('form[name="' + frmName + '"] .sku');
+	if (pSkuTags.length != 0) {
+		pSkuTags.each(function(pTag) {
+			if (prodSku == "") {
+				prodSku = pTag.innerHTML.replace("SKU #","");
+			}
+		});
+	} else {
+		prodSku = $$('form[name="' + frmName + '"] input[name="id"]')[0].getValue();
+	}
+	
+	
 	var jsonStr = '{"title":"' + prodTitle.trim() + '","price":"' + prodPrice.trim() + '","isSalePrice":"' + isSalePrice + '","sku":"' + prodSku.trim() + '","color":"' + prodColor.trim() + '","quantity":"' + prodQty + '"}';
 	return jsonStr;
 }
@@ -391,7 +447,7 @@ String.prototype.trim = function() {
 
 function addItemToBag(frmName){
 	
-	var jsonStr = getProductDetailAddToBagValues();
+	var jsonStr = getProductDetailAddToBagValues(frmName);
 	
 	//code to test if user is private safari user
 	
@@ -648,3 +704,20 @@ function setSelectedSizeForShopBySize(pProductId,pSizeName,isLeaderProduct){
 	}
 }
 //End of Code added for Trac 1997.
+/*
+(function($) {
+    $.fn.getURLParameter = function(name, url) {
+        if (url == null) {
+            url = window.location.search;
+        }
+        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+        name = "[\\?&]" + name + "=([^&#]*)";
+        var regexp = new RegExp(name);
+        var value = regexp.exec(url);
+        if (value == null) {
+            return "";
+        }
+        return value[1];
+    }
+})(jQuery);
+*/

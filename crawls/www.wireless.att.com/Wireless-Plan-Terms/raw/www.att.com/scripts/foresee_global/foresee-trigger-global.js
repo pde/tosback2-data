@@ -1,6 +1,6 @@
 var FSR = {
     'version': '6.3.0',
-    'configuration_version': '027A',
+    'configuration_version': '028A',
     'date': '12/05/2010',
     'enabled': true,
     'auto': true,

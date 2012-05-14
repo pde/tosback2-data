@@ -21,8 +21,8 @@ scMboxEnable=true
 /* Plugin Config */
 s.usePlugins=true
 s.visitorNamespace="experianinteractive"
-s.trackingServer = "smetrics.freecreditreport.com"
-s.trackingServerSecure = "metrics.freecreditreport.com"
+s.trackingServer = "smetrics.freecreditscore.com"
+s.trackingServerSecure = "metrics.freecreditscore.com"
 s.dc=122
 
 /* Page Name Plugin Config */
@@ -43,9 +43,9 @@ s.eVar17=s.prop17="";
 s.prop30=s.eVar30="";
 
 // Set page name
-s.pageName="100323:1005:privacypolicy";
+s.pageName="100323:1020:privacypolicy";
 s.eVar38=s.Section="100323";
-s.eVar2=s.prop2="1005";
+s.eVar2=s.prop2="1020";
 s.eVar20=s.prop33="";
 s.eVar3=s.prop3="";
 s.eVar43=s.prop29="privacypolicy";
@@ -209,7 +209,7 @@ function s_doPlugins(s) {
 	/* Build segment for Customers, Prospects */
 		if(s.events){
 			if(s.events.indexOf('event9')>-1)
-				s.eVar5=s.prop5=s.getAndPersistValue('Customer','sc_segment','90')
+				s.eVar5=s.prop5=s.getAndPersistValue('Customer','sc_segment','70')
 		}
 		s.eVar5=s.prop5=s.c_r('sc_segment')
 		if(!s.eVar5) 

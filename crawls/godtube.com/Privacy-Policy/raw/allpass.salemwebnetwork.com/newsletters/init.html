@@ -75,20 +75,19 @@ function getQuerystring(key, default_)
 
 
 $(function () {
+    var query = [getQuerystring(InitialEndpointParam), getQuerystring(EmailLinkParam)]
     
-    var refQuery = getQuerystring(InitialEndpointParam); 
-   
     var protocol = window.siteProtocol || location.protocol + "//";
     var domain = window.domain || location.host;
     var siteRef =  location.href.replace(protocol + domain,"");
     var path = window.path || encodeURIComponent(siteRef);;
     var receiveFromUrl = window.receiveFromUrl || 'http://allpass.salemwebnetwork.com';
 
-    if(refQuery)
-    {
-        var messageType = refQuery.substring(0,refQuery.indexOf("|"));
     
-        var dataArray = refQuery.split('|');
+    if(query[0])
+    {
+        var dataArray = query[0].split('|');
+        var messageType = dataArray[0];
         var userId = dataArray[1];
         
 		if (userId && userId != 0) {
@@ -126,15 +125,15 @@ $(function () {
         var iFrameSourceBaseUrl = window.iFrameSourceBaseUrl || "http://allpass.salemwebnetwork.com/newsletters/"; 
         var iFrameSourceUrl = iFrameSourceBaseUrl + "?u=" + userId + "&pr=" + protocol + "&d=" + domain + "&p=" + path;
 
-        getQuerystring(EmailLinkParam); 
-        if(refQuery === EmailLinkValue)
+        
+        if(query[1] === EmailLinkValue)
         {
             var path = "/";
             document.cookie = BlockCookieName + " = true; path=" +path ;
             return;
         }
         
-        else if (refQuery === DebugRefValue)
+        else if (query[1] === DebugRefValue)
         {
             iFrameSourceUrl = iFrameSourceUrl + "&v=debug";
         }
@@ -164,7 +163,7 @@ $(function () {
             createCookie(UniversalAllPassCookieName, userId, null, expirationDate);
         }
 
-        if (blockDisplayCookieName && getQuerystring(EmailLinkParam)!= DebugRefValue) {
+        if (blockDisplayCookieName && query[1]!= DebugRefValue) {
             createCookie(blockDisplayCookieName, "true");
         }
     }, receiveFromUrl);

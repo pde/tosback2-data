@@ -30,7 +30,7 @@ s.linkTrackEvents="None"
 // 2014 	03/09/2012 	11/02/2012
 // 2015 	03/08/2012 	11/01/2012
 s.dstStart="03/11/2012";
-s.dstEnd="11/04/20112";
+s.dstEnd="11/04/2012";
 
 /* Plugin Config */
 s.usePlugins=true
@@ -111,9 +111,9 @@ function s_doPlugins(s) {
 	s.prop29=ppn;
 
 	/* Look for Navigation ID - Set prop28 & 29 */
-	var ppc = s.getPreviousValue(s.channel,'gvp_p15');
+	var ppc = s.getPreviousValue(s.channel,'gvp_p51');
 	ppc = (!ppc)?'entry':ppc;
-	s.prop15=ppc+'>'+s.channel;
+	s.prop51=ppc+'>'+s.channel;
 
 	/* Look for homepage id - Set prop 27 if HP value is previous page */
 	var hpid=s.getQueryParam('hpid');
@@ -379,7 +379,16 @@ s.c_w=new Function("k","v","e",""
 +".indexOf(';')!=-1){var t1=parseInt(t.substring(t.indexOf('|')+1,t.i"
 +"ndexOf(';')));t=t.substring(t.indexOf(';')+1);ht=ht<t1?t1:ht;}d.set"
 +"Time(ht);s.c_wr(pn,pv,d);}return v==s.c_r(s.epa(k));");
-
+/*
+ * Function - Get Full Referring Domains
+ */
+s.getFullReferringDomains=new Function(""
++"var s=this,dr=window.document.referrer,n=s.linkInternalFilters.spli"
++"t(',');if(dr){var r=dr.split('/')[2],l=n.length;for(i=0;i<=l;i++){i"
++"f(r.indexOf(n[i])!=-1){r='';i=l+1;}}return r}");
+/*
+ * Function - measurementPlugin
+ */
 s.measurementPlugin=new Function("Z","B","N","Y",""
 +"var s=this,r,t,f,D,E,P,F,Q,G,H,j=Z+'&',c,d,l,S,C,T,U='',M,O=s._o2d,"
 +"V,W,X,z='prop,eVar,hier',q,p='channel,server,products,purchaseID,zi"
@@ -809,7 +818,9 @@ if (typeof(wp_news_or_commercial) != "undefined")
 }
 /* END: s.prop34 */
 
-s.prop35=(document.referrer)?(document.referrer).toString().match(/https?\:\/\/([^\/]+)\//)[1] : '' ;
+// killed 03/2012 - replaced with s.getFullReferringDomains();
+// s.prop35=(document.referrer)?(document.referrer).toString().match(/https?\:\/\/([^\/]+)\//)[1] : '' ;
+s.prop35 = s.getFullReferringDomains();
 
 s.getPersonalPostStatus = function()
 {

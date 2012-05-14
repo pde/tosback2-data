@@ -174,12 +174,11 @@ function portfolioHasItems() {
 		$("#yourPortfolio").removeClass("portfolioHasItems");
 }
 
-function GetPortfolioItemCount(portfolioId) {
-
+function GetPortfolioItemCount() {
     $.ajax({
         type: "GET",
         url: "/Portfolio/json/PortfolioItemCount.aspx",
-        data: { portfolioId: portfolioId, ms: new Date().getTime() },
+        data: { ms: new Date().getTime() },
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (msg) {
@@ -187,7 +186,6 @@ function GetPortfolioItemCount(portfolioId) {
             PortfolioItemCount = parseInt(msg.portfolioCount);
         }
     });
-
 }
 
 function GetPortfolioCount() {
@@ -283,16 +281,7 @@ function readCookie(name) {
     return null;
 }
 
-var portfolioId = readCookie("portid");
-if (portfolioId) {
-    GetPortfolioItemCount(portfolioId);
-}
-else {
-    var PortfolioCountDisplay = document.getElementById("portfolioItemCount");
-    if (PortfolioCountDisplay != null) {
-        PortfolioCountDisplay.innerHTML = '0';
-    }
-}
+GetPortfolioItemCount();
 
 /*
  * jQuery Tools 1.2.5

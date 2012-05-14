@@ -95,14 +95,24 @@ function readCookie(name) {
 	return null;
 }
 
-function createCookie(name,value,days) {
+function createCookie(name,value,days,domain,path) {
+	var expires = '';
 	if (days) {
 		var date = new Date();
 		date.setTime(date.getTime()+(days*24*60*60*1000));
-		var expires = "; expires="+date.toGMTString();
+		expires = "; expires="+date.toGMTString();
 	}
-	else var expires = "";
-	document.cookie = name+"="+value+expires+"; path=/";
+	var cookie_domain = '';
+	if(domain) {
+		cookie_domain = '; domain=' + domain;
+	}
+	var cookie_path = '; path=';
+	if(path) {
+		cookie_path += path;
+	} else {
+		cookie_path += '/';
+	}
+	document.cookie = name+"="+value+expires+cookie_domain+cookie_path;
 }
 
 function eraseCookie(name) {

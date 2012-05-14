@@ -1,3 +1,6 @@
+var shUserAgent = navigator.userAgent;
+var smUserAgent;
+if (shUserAgent.match('KTXN') == 'KTXN' || shUserAgent.match('AlertSite') == 'AlertSite'){smUserAgent = 'true'} else { smUserAgent = 'false'};
 	var dmn = intlDomain.substr(1);
 	//var dmnchk = intlDomain.substr(10);
 	//var dmnchk1 = "US";

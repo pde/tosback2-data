@@ -8,9 +8,13 @@
   <meta name="keywords" content="The Hill, Capitol Hill, Newspaper, Dick Morris, Business, Lobbying, Politics, Campaign, Political, Congress, Clinton, Obama, McCain, Giuliani, Congressional, House, Senate, Legislation, Roll Call, Lobbyists, Josh Marshall, Presidential, Election, 50 most beautiful, K Street, Pelosi, Endorsements" />
   <meta name="title" content="Privacy Policy" />
   <meta name="author" content="Administrator" />
+  <meta property="og:type" name="fbtagtype" content="article" />
+  <meta property="og:url" name="fbtagurl" content="http://thehill.com/privacy-policy" />
+  <meta property="og:description" name="fbtagdescription" content="" />
   <meta name="publication_date" content="2007-02-06" />
+  <meta property="og:title" name="fbtagtitle" content="Privacy Policy - TheHill.com" />
   <meta name="description" content="The Hill is a congressional newspaper that publishes daily when Congress is in session, with a special focus on business and lobbying, political campaigns and goings on on Capitol Hill." />
-  <meta name="generator" content="41" />
+  <meta name="generator" content="91" />
   <title>Privacy Policy - TheHill.com</title>
   <link href="templates/thehill/favicon.ico" rel="shortcut icon" type="image/x-icon" />
   <script type="text/javascript" src="plugins/system/flowplayer_r/javascripts/flowplayer-3.2.6.min.js"></script>
@@ -78,7 +82,21 @@ GA_googleFetchAds();
 </head>
 <body>
 
+    <script type="text/javascript"> 
+    (function() { 
+      var ARTICLE_URL = 'http://thehill.com' + document.location.pathname; 
+      var CONTENT_ID = 48803;
+      document.write( 
+        '<scr'+'ipt '+ 
+        'src="//clients4.google.com/survey?site=4114001'+ 
+        '&amp;url='+encodeURIComponent(ARTICLE_URL)+ 
+        (CONTENT_ID ? '&amp;cid='+encodeURIComponent(CONTENT_ID) : '')+ 
+        '&amp;random='+(new Date).getTime()+ 
+        '" type="text/javascript">'+'\x3C/scr'+'ipt>');
+    })(); 
+    </script>
     <div id="fb-root"></div>
+<script type="text/javascript" src="../social.thehill.com/js/jquery.cookie.js"></script>
 <script>
 function getURLParameter(name) {
     return decodeURI(
@@ -91,7 +109,11 @@ function getURLParameter(name) {
   js = d.createElement(s); js.id = id;
   js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=369058349794205";
   fjs.parentNode.insertBefore(js, fjs);
-  if (d.referrer.match(/facebook.com/i) && getURLParameter("get_fb_page") != '1') {
+  if (getURLParameter("set_fb_var") == '1') {
+    jQuery.cookie('set_fb_var', 'true', { expires: 7, path: '/' });
+    return true;
+  }
+  if (!jQuery.cookie('set_fb_var') && d.referrer.match(/facebook.com/i)) {
     window.fbAsyncInit = function() {
       FB.init({
         appId : '340094652706297',
@@ -100,21 +122,24 @@ function getURLParameter(name) {
         cookie: true,
         oauth: true
       });
-      FB.getLoginStatus(function (response) {
-        if (response.status == 'connected' || response.status == 'not_authorized') {
-          var url = "http://apps.facebook.com/thehillsocial/";
-          if (d.location.pathname && d.location.pathname.split("/")) {
-            var pagePath = d.location.pathname.split("/").pop();
-            if (pagePath) {
-              var contentId = RegExp('^([0-9]+)').exec(pagePath)[1];
-              if (contentId) {
-                url += "content/" + contentId;
+      
+        FB.getLoginStatus(function (response) {
+          jQuery(function() {
+            if (response.status == 'connected' || response.status == 'not_authorized') {
+              var url = "http://apps.facebook.com/thehillsocial/";
+              if (d.location.pathname && d.location.pathname.split("/")) {
+                var pagePath = d.location.pathname.split("/").pop();
+                if (pagePath) {
+                  var contentId = RegExp('^([0-9]+)').exec(pagePath)[1];
+                  if (contentId) {
+                    url += "content/" + contentId;
+                  }
+                }
               }
+              d.location = url;
             }
-          }
-          d.location = url;
-        }
-      }, true);
+          });
+        }, true);
     };
   }
 }(document, 'script', 'facebook-jssdk'));</script>
@@ -191,7 +216,7 @@ GA_googleFillSlot("LeftEar_184x90");
                         <a href="http://thehill.com/blogs" style="padding:4px 4px 0 0;margin: 0 0 0 14px;float:left;">
 <img src="images/blogs_submenu.gif" />
 </a>
-<ul class="menu_sub" id="menu_sub"><li class="item20"><a href="http://thehill.com/blogs/congress-blog"><span>Congress</span></a></li><li class="item21"><a href="http://thehill.com/blogs/pundits-blog"><span>Pundits</span></a></li><li class="item22"><a href="http://thehill.com/blogs/blog-briefing-room"><span>Briefing Room</span></a></li><li class="item23"><a href="http://thehill.com/blogs/twitter-room"><span>Twitter Room</span></a></li><li class="item669"><a href="http://thehill.com/blogs/hillicon-valley"><span>Hillicon Valley</span></a></li><li class="item729"><a href="http://thehill.com/blogs/e2-wire"><span>E2-Wire</span></a></li><li class="item785"><a href="http://thehill.com/blogs/ballot-box"><span>Ballot Box</span></a></li><li class="item819"><a href="http://thehill.com/blogs/on-the-money"><span>On The Money</span></a></li><li class="item987"><a href="http://thehill.com/blogs/healthwatch"><span>Healthwatch</span></a></li><li class="item1101"><a href="http://thehill.com/blogs/floor-action"><span>Floor Action</span></a></li><li class="item1165"><a href="http://thehill.com/blogs/transportation-report"><span>Transportation</span></a></li><li class="item1171"><a href="http://gop12.thehill.com"><span>GOP12</span></a></li><li class="item1347"><a href="http://thehill.com/blogs/defcon-hill"><span>DEFCON Hill</span></a></li></ul>
+<ul class="menu_sub" id="menu_sub"><li class="item22"><a href="http://thehill.com/blogs/blog-briefing-room"><span>Briefing Room</span></a></li><li class="item669"><a href="http://thehill.com/blogs/hillicon-valley"><span>Hillicon Valley</span></a></li><li class="item729"><a href="http://thehill.com/blogs/e2-wire"><span>E2-Wire</span></a></li><li class="item785"><a href="http://thehill.com/blogs/ballot-box"><span>Ballot Box</span></a></li><li class="item819"><a href="http://thehill.com/blogs/on-the-money"><span>On The Money</span></a></li><li class="item987"><a href="http://thehill.com/blogs/healthwatch"><span>Healthwatch</span></a></li><li class="item1101"><a href="http://thehill.com/blogs/floor-action"><span>Floor Action</span></a></li><li class="item1165"><a href="http://thehill.com/blogs/transportation-report"><span>Transportation</span></a></li><li class="item1171"><a href="http://gop12.thehill.com"><span>GOP12</span></a></li><li class="item1347"><a href="http://thehill.com/blogs/defcon-hill"><span>DEFCON Hill</span></a></li><li class="item1505"><a href="http://thehill.com/blogs/global-affairs"><span>Global Affairs</span></a></li><li class="item20"><a href="http://thehill.com/blogs/congress-blog"><span>Congress</span></a></li><li class="item21"><a href="http://thehill.com/blogs/pundits-blog"><span>Pundits</span></a></li><li class="item23"><a href="http://thehill.com/blogs/twitter-room"><span>Twitter Room</span></a></li></ul>
                     </div>
             </td>
         </tr>
@@ -249,7 +274,7 @@ GA_googleFillSlot("Pushdown_970x66_expandable");
 				<div>
 					<div>
 													<h3>Blogs</h3>
-											<ul class="menu"><li class="item20"><a href="http://thehill.com/blogs/congress-blog"><span>Congress</span></a></li><li class="item21"><a href="http://thehill.com/blogs/pundits-blog"><span>Pundits</span></a></li><li class="item22"><a href="http://thehill.com/blogs/blog-briefing-room"><span>Briefing Room</span></a></li><li class="item23"><a href="http://thehill.com/blogs/twitter-room"><span>Twitter Room</span></a></li><li class="item669"><a href="http://thehill.com/blogs/hillicon-valley"><span>Hillicon Valley</span></a></li><li class="item729"><a href="http://thehill.com/blogs/e2-wire"><span>E2-Wire</span></a></li><li class="item785"><a href="http://thehill.com/blogs/ballot-box"><span>Ballot Box</span></a></li><li class="item819"><a href="http://thehill.com/blogs/on-the-money"><span>On The Money</span></a></li><li class="item987"><a href="http://thehill.com/blogs/healthwatch"><span>Healthwatch</span></a></li><li class="item1101"><a href="http://thehill.com/blogs/floor-action"><span>Floor Action</span></a></li><li class="item1165"><a href="http://thehill.com/blogs/transportation-report"><span>Transportation</span></a></li><li class="item1171"><a href="http://gop12.thehill.com"><span>GOP12</span></a></li><li class="item1347"><a href="http://thehill.com/blogs/defcon-hill"><span>DEFCON Hill</span></a></li></ul>					</div>
+											<ul class="menu"><li class="item22"><a href="http://thehill.com/blogs/blog-briefing-room"><span>Briefing Room</span></a></li><li class="item669"><a href="http://thehill.com/blogs/hillicon-valley"><span>Hillicon Valley</span></a></li><li class="item729"><a href="http://thehill.com/blogs/e2-wire"><span>E2-Wire</span></a></li><li class="item785"><a href="http://thehill.com/blogs/ballot-box"><span>Ballot Box</span></a></li><li class="item819"><a href="http://thehill.com/blogs/on-the-money"><span>On The Money</span></a></li><li class="item987"><a href="http://thehill.com/blogs/healthwatch"><span>Healthwatch</span></a></li><li class="item1101"><a href="http://thehill.com/blogs/floor-action"><span>Floor Action</span></a></li><li class="item1165"><a href="http://thehill.com/blogs/transportation-report"><span>Transportation</span></a></li><li class="item1171"><a href="http://gop12.thehill.com"><span>GOP12</span></a></li><li class="item1347"><a href="http://thehill.com/blogs/defcon-hill"><span>DEFCON Hill</span></a></li><li class="item1505"><a href="http://thehill.com/blogs/global-affairs"><span>Global Affairs</span></a></li><li class="item20"><a href="http://thehill.com/blogs/congress-blog"><span>Congress</span></a></li><li class="item21"><a href="http://thehill.com/blogs/pundits-blog"><span>Pundits</span></a></li><li class="item23"><a href="http://thehill.com/blogs/twitter-room"><span>Twitter Room</span></a></li></ul>					</div>
 				</div>
 			</div>
 		</div>
@@ -371,10 +396,10 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
  var suffix = '';
  var attribs = '';
  var path = 'hr' + 'ef' + '=';
- var addy79258 = 'h&#101;lp' + '&#64;';
- addy79258 = addy79258 + 'th&#101;h&#105;ll' + '&#46;' + 'c&#111;m';
- document.write( '<a ' + path + '\'' + prefix + addy79258 + suffix + '\'' + attribs + '>' );
- document.write( addy79258 );
+ var addy97666 = 'h&#101;lp' + '&#64;';
+ addy97666 = addy97666 + 'th&#101;h&#105;ll' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy97666 + suffix + '\'' + attribs + '>' );
+ document.write( addy97666 );
  document.write( '<\/a>' );
  //-->
  </script><script language='JavaScript' type='text/javascript'>
@@ -437,18 +462,18 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
     <col width='50%' />
             <tr>
                                                     <td>
-                    <a href='http://thehill.com/video/house/221473-gop-rep-upton-says-obama-policies-making-gas-prices-even-worse'><span class='videospan'><img src="images/stories/news/2012/04_april/14/upton414thumb.jpg" alt="GOP Rep. Upton says Obama policies making gas prices ‘even worse’" width="130px;height=80px" border="0" /></span>GOP Rep. Upton says Obama policies making gas prices ‘even worse’</a>
+                    <a href='http://thehill.com/video/campaign/227099-obama-targets-bain-capital-in-new-television-commercial-website'><span class='videospan'><img src="images/stories/videos/2012/05/14_ObamaBain/ObamaBain_Movie.jpg" alt="Obama targets Romney tenure at Bain Capital with new ad, website" width="130px;height=80px" border="0" /></span>Obama targets Romney tenure at Bain Capital with new ad, website</a>
                 </td>
                                                                 <td>
-                    <a href='http://thehill.com/video/administration/221471-obama-buffett-rule-will-boost-growth'><span class='videospan'><img src="images/stories/news/2012/04_april/14/obama414thumb.jpg" alt="Obama: Buffett Rule will boost ‘growth’" width="130px;height=80px" border="0" /></span>Obama: Buffett Rule will boost ‘growth’</a>
+                    <a href='http://thehill.com/video/senate/227101-lieberman-announces-senate-hearings-on-secret-service-scandal'><span class='videospan'><img src="images/stories/news/2012/05_may/13/lieberman_4_13_thumb.jpg" alt="Lieberman announces Senate hearings on Secret Service scandal" width="130px;height=80px" border="0" /></span>Lieberman announces Senate hearings on Secret Service scandal</a>
                 </td>
                             </tr>
             <tr>
                                                     <td>
-                    <a href='http://thehill.com/video/campaign/221435-romney-blasts-obama-on-the-economy-at-national-rifle-association-convention'><span class='videospan'><img src="images/stories/videos/2012/04/13_Romney_NRA/Romney_NRA-MovieThumbnail.jpg" alt="Romney takes aim at winning over NRA" width="130px;height=80px" border="0" /></span>Romney takes aim at winning over NRA</a>
+                    <a href='http://thehill.com/video/campaign/227091-gop-mitt-should-shame-obama-with-israel-trip'><span class='videospan'><img src="images/stories/videos/2012/05/14_RomneyIsrael/RomneyIsrael-MovieThumbnail.jpg" alt="GOP: Israel trip can burnish Romney foreign policy credentials" width="130px;height=80px" border="0" /></span>GOP: Israel trip can burnish Romney foreign policy credentials</a>
                 </td>
                                                                 <td>
-                    <a href='http://thehill.com/video/campaign/221369-obama-aides-on-rosen-controversy-obama-willing-to-stand-up-to-his-friends-unlike-romney'><span class='videospan'><img src="images/stories/videos/2012/04/13_ObamaAdvisers/ObamaAdvisers_Movie.jpg" alt="Obama aides say Rosen shows president will take on friends" width="130px;height=80px" border="0" /></span>Obama aides say Rosen shows president will take on friends</a>
+                    <a href='http://thehill.com/video/in-the-news/227069-dimon-timing-of-jpmorgan-mistakes-unfortunate-and-inopportune'><span class='videospan'><img src="images/stories/news/2012/05_may/13/dimon_4_13.jpg" alt="Dimon: Timing of JPMorgan mistakes 'unfortunate and inopportune'" width="130px;height=80px" border="0" /></span>Dimon: Timing of JPMorgan mistakes 'unfortunate and inopportune'</a>
                 </td>
                             </tr>
             <tr>
@@ -501,17 +526,17 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 			<span>Most Viewed</span>
 		</dt>
 		<dd>
-<a href="http://thehill.com/blogs/ballot-box/house-races/221419-bachmann-reports-550k-in-first-quarter-fundraising">Bachmann reports $550K in first-quarter fundraising</a><a href="http://thehill.com/homenews/administration/221469-obama-puts-bully-in-bully-pulpit">Obama puts bully in bully pulpit</a><a href="http://thehill.com/blogs/ballot-box/presidential-races/221497-gop-strategists-puerto-rico-gov-fortuno-is-a-sleeper-vp-pick">GOP strategists: Puerto Rico Gov. Fortuno is a sleeper vice presidential pick</a><a href="http://thehill.com/business-a-lobbying/221407-nazi-party-gets-a-washington-lobbyist">Nazi Party gets a Washington lobbyist</a><a href="http://thehill.com/homenews/house/221505-lawmakers-cantors-25k-controversial-donation-may-come-up-this-week">Lawmakers: Controversial Cantor donation may come up this week</a>		</dd>
+<a href="http://thehill.com/homenews/senate/227007-vulnerable-democratic-senators-balk-at-obamas-endorsement-of-gay-marriage">Vulnerable Democratic senators balk at Obama's gay marriage endorsement</a><a href="http://thehill.com/blogs/global-affairs/asia-pacific/227035-lawmakers-largely-silent-on-chinese-takeover-of-us-bank-branches">Lawmakers stay largely silent over Chinese takeover of US bank branches</a><a href="http://thehill.com/blogs/on-the-money/economy/227075-report-says-230000-unemployed-will-lose-benefits-over-weekend">Report says 230,000 unemployed losing benefits over weekend</a><a href="http://thehill.com/blogs/hillicon-valley/technology/227039-fcc-unlikely-to-revoke-broadcasting-licenses-for-fox-say-experts">FCC unlikely to revoke broadcasting licenses for Fox, say experts</a><a href="http://thehill.com/blogs/defcon-hill/operations/227061-house-intel-chairman-white-house-chest-thumping-behind-bomb-plot-leak">House Intel chairman: Administration ‘chest-thumping’ behind bomb plot leak</a>		</dd>
 		<dt id="panel2">
 			<span>Emailed</span>
 		</dt>
 		<dd>
-<a href="http://thehill.com/business-a-lobbying/221467-judge-rules-against-nlrb-union-poster-rule">Judge rules against NLRB union poster rule</a><a href="http://thehill.com/blogs/ballot-box/presidential-races/221497-gop-strategists-puerto-rico-gov-fortuno-is-a-sleeper-vp-pick">GOP strategists: Puerto Rico Gov. Fortuno is a sleeper vice presidential pick</a><a href="http://thehill.com/business-a-lobbying/221407-nazi-party-gets-a-washington-lobbyist">Nazi Party gets a Washington lobbyist</a><a href="http://thehill.com/homenews/administration/221469-obama-puts-bully-in-bully-pulpit">Obama puts bully in bully pulpit</a><a href="http://thehill.com/blogs/e2-wire/e2-wire/221395-obama-signs-order-establishing-natural-gas-task-force">Obama order coordinates federal oversight of 'fracking,' gas development</a>		</dd>
+<a href="http://thehill.com/blogs/global-affairs/asia-pacific/227035-lawmakers-largely-silent-on-chinese-takeover-of-us-bank-branches">Lawmakers stay largely silent over Chinese takeover of US bank branches</a><a href="http://thehill.com/homenews/senate/227007-vulnerable-democratic-senators-balk-at-obamas-endorsement-of-gay-marriage">Vulnerable Democratic senators balk at Obama's gay marriage endorsement</a><a href="http://thehill.com/blogs/on-the-money/economy/227075-report-says-230000-unemployed-will-lose-benefits-over-weekend">Report says 230,000 unemployed losing benefits over weekend</a><a href="http://thehill.com/video/campaign/227047-romney-campaign-releases-new-web-ad-to-celebrate-mothers-day">Romney campaign releases new web ad to celebrate Mother’s Day</a><a href="http://thehill.com/blogs/blog-briefing-room/news/227059-newsweek-cover-shows-obama-with-rainbow-colored-halo">Newsweek: Obama ‘first gay president’</a>		</dd>
 		<dt id="panel3">
 			<span>Discussed</span>
 		</dt>
 		<dd>
-<a href="http://thehill.com/business-a-lobbying/221407-nazi-party-gets-a-washington-lobbyist">Nazi Party gets a Washington lobbyist</a><a href="http://thehill.com/homenews/administration/221469-obama-puts-bully-in-bully-pulpit">Obama puts bully in bully pulpit</a><a href="http://thehill.com/blogs/e2-wire/e2-wire/221395-obama-signs-order-establishing-natural-gas-task-force">Obama order coordinates federal oversight of 'fracking,' gas development</a><a href="http://thehill.com/blogs/blog-briefing-room/news/221493-obama-pledges-to-pursue-immigration-reform-in-second-term">Obama pledges to pursue immigration reform in second term</a><a href="http://thehill.com/blogs/defcon-hill/budget-approriations/221489-rift-opens-between-military-brass-gop-lawmakers-on-cuts-to-defense">Rift opens between military brass, Republican lawmakers on defense cuts</a>		</dd>
+<a href="http://thehill.com/homenews/senate/227007-vulnerable-democratic-senators-balk-at-obamas-endorsement-of-gay-marriage">Vulnerable Democratic senators balk at Obama's gay marriage endorsement</a><a href="http://thehill.com/blogs/e2-wire/e2-wire/226867-obama-campaign-adds-clean-coal-to-its-website-amid-gop-complaints">Obama campaign adds 'clean coal' to website after GOP complaints</a><a href="http://thehill.com/blogs/ballot-box/senate-races/226789-second-university-listed-warren-as-minority-professor">Warren found listed as a minority professor at second law school</a><a href="http://thehill.com/homenews/campaign/227033-as-romney-drifts-boehner-stays-on-message">As Mitt Romney drifts, Speaker Boehner stays focused on economic message</a><a href="http://thehill.com/blogs/ballot-box/house-races/227017-romney-only-touches-on-gay-marriage-at-evangelical-college">Romney only touches on gay marriage in graduation speech at evangelical college</a>		</dd>
 	</dl>
 	<div class="footer">
 		<table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -575,7 +600,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/blog-briefing-room"><span>Briefing Room</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/blog-briefing-room/news/221527-issa-says-more-agents-may-be-involved-in-secret-service-scandal">Issa says more agents may be involved in Secret Service scandal</a></li><li><a href="http://thehill.com/blogs/blog-briefing-room/news/221523-rnc-chairman-obama-using-shiny-objects-like-buffett-rule-to-distract-voters-">Priebus: Obama using ‘shiny objects’ like Buffett Rule to distract, divide voters </a></li><li><a href="http://thehill.com/blogs/blog-briefing-room/news/221521-gillespie-says-hes-not-running-romney-vp-search">Gillespie says he’s not running Romney's vice president search</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/blog-briefing-room/news/227059-newsweek-cover-shows-obama-with-rainbow-colored-halo">Newsweek: Obama ‘first gay president’</a></li><li><a href="http://thehill.com/blogs/blog-briefing-room/news/227053-democrats-marriage-issue-wont-hurt-obama">Democrats: Marriage issue won’t hurt Obama</a></li><li><a href="http://thehill.com/blogs/blog-briefing-room/news/227041-rand-paul-didnt-think-obamas-views-could-get-any-gayer">Sen. Rand Paul mocks Obama, says his views couldn't 'get any gayer’</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/blog-briefing-room'>More Briefing Room &raquo;</a>
 							</span>
@@ -586,7 +611,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/congress-blog"><span>Congress Blog</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/congress-blog/technology/221385-what-google-monopoly">What Google Monopoly?</a></li><li><a href="http://thehill.com/blogs/congress-blog/economy-a-budget/221375-tax-dollars-and-common-sense-">Tax dollars and common sense </a></li><li><a href="http://thehill.com/blogs/congress-blog/foreign-policy/221229-guess-who-is-coming-to-washington">Guess who is coming to Washington</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/congress-blog/economy-a-budget/226951-safe-act-necessary-in-wake-of-jp-morgan-loss">SAFE Act necessary in wake of JP Morgan loss</a></li><li><a href="http://thehill.com/blogs/congress-blog/campaign/226903-romney-cant-afford-to-lose-virginia">Romney can't afford to lose Virginia</a></li><li><a href="http://thehill.com/blogs/congress-blog/civil-rights/226895-healthcare-mandate-endangers-religious-freedom">Healthcare mandate endangers religious freedom</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/congress-blog'>More Congress Blog &raquo;</a>
 							</span>
@@ -597,7 +622,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/pundits-blog"><span>Pundits Blog</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/pundits-blog/presidential-campaign/221387-what-hilary-rosen-mitt-romney-ron-paul-and-ayn-rand-have-in-common">What Hilary Rosen, Mitt Romney, Ron Paul and Ayn Rand have in common</a></li><li><a href="http://thehill.com/blogs/pundits-blog/economy-a-budget/221371-preparing-for-the-golden-years">Preparing for the golden years</a></li><li><a href="http://thehill.com/blogs/pundits-blog/presidential-campaign/221365-mitt-romney-a-new-generation-a-new-political-era-awakens">Mitt Romney: A new generation, a new political era awakens</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/pundits-blog/economy-a-budget/226897-if-you-like-jp-morgans-2-billion-loss-you-will-like-mitt-romney-and-love-ron-paul">If you like JP Morgan's $2 billion loss, you will like Mitt Romney and love Ron Paul</a></li><li><a href="http://thehill.com/blogs/pundits-blog/the-administration/226869-fire-joe-biden">Fire Joe Biden</a></li><li><a href="http://thehill.com/blogs/pundits-blog/campaign/226845-inside-the-lugar-defeat">Inside the Lugar defeat</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/pundits-blog'>More Pundits Blog &raquo;</a>
 							</span>
@@ -608,7 +633,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/twitter-room"><span>Twitter Room</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/twitter-room/other-news/221461-one-house-dem-calls-another-sooo-uncool">One House Dem calls another ‘sooo uncool’</a></li><li><a href="http://thehill.com/blogs/twitter-room/other-news/221437-twitter-ann-romney-got-biggest-buzz-online-during-controversy">Twitter: Ann Romney got biggest buzz online during controversy</a></li><li><a href="http://thehill.com/blogs/twitter-room/other-news/221415-michelle-obama-beyonce-exchange-compliments">Michelle Obama, Beyonce exchange compliments</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/twitter-room/other-news/226963-joint-chiefs-head-thanks-wife-on-military-spouse-day">Joint Chiefs chairman thanks wife on Military Spouse Day</a></li><li><a href="http://thehill.com/blogs/twitter-room/other-news/226909-josh-romney-dad-loves-costco">Josh Romney: Dad 'loves Costco'</a></li><li><a href="http://thehill.com/blogs/twitter-room/other-news/226761-twitter-reacts-to-obamas-endorsement-of-gay-marriage">Twitter reacts to Obama's endorsement of gay marriage</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/twitter-room'>More Twitter Room &raquo;</a>
 							</span>
@@ -619,7 +644,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/hillicon-valley"><span>Hillicon Valley</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/hillicon-valley/technology/221507-activists-plan-week-of-protests-against-new-house-cybersecurity-legislation">Activists plan week of protests against new House cybersecurity legislation</a></li><li><a href="http://thehill.com/blogs/hillicon-valley/technology/221449-facebook-defends-support-of-cybersecurity-bill">Facebook defends support for House cybersecurity bill against privacy fears</a></li><li><a href="http://thehill.com/blogs/hillicon-valley/technology/221417-pew-survey-shows-1-in-5-us-adults-dont-use-internet">Pew survey shows 1 in 5 US adults don't use Internet</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/hillicon-valley/technology/227039-fcc-unlikely-to-revoke-broadcasting-licenses-for-fox-say-experts">FCC unlikely to revoke broadcasting licenses for Fox, say experts</a></li><li><a href="http://thehill.com/blogs/hillicon-valley/technology/227037-ftc-steps-in-as-obamas-chief-enforcer-on-internet-privacy">FTC steps in as Obama’s chief enforcer on Internet privacy</a></li><li><a href="http://thehill.com/blogs/hillicon-valley/technology/226933-aereo-could-kill-tv-broadcasters-say">Aereo could kill TV business model, broadcasters say</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/hillicon-valley'>More Hillicon Valley &raquo;</a>
 							</span>
@@ -630,7 +655,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/e2-wire"><span>E<sup>2</sup>-Wire (Energy)</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/e2-wire/e2-wire/221457-dems-urge-court-to-uphold-oil-speculation-limits">Democrats urge court to uphold Dodd-Frank limits on oil speculation</a></li><li><a href="http://thehill.com/blogs/e2-wire/e2-wire/221429-industry-groups-applaud-obamas-natural-gas-executive-order">Industry groups applaud Obama's natural gas executive order</a></li><li><a href="http://thehill.com/blogs/e2-wire/e2-wire/221395-obama-signs-order-establishing-natural-gas-task-force">Obama order coordinates federal oversight of 'fracking,' gas development</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/e2-wire/e2-wire/227103-news-bites-the-latest-on-chesapeake-energy-protecting-forests-from-global-warming-and-more">News bites: The latest on Chesapeake energy, protecting forests from global warming, and more</a></li><li><a href="http://thehill.com/blogs/e2-wire/e2-wire/226977-house-gop-issues-second-subpoena-over-planned-coal-mining-rules">House GOP issues second subpoena over planned coal-mining rules</a></li><li><a href="http://thehill.com/blogs/e2-wire/e2-wire/226953-report-pickens-sells-shares-in-chesapeake-energy">Report: Pickens sells shares in Chesapeake Energy</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/e2-wire'>More E<sup>2</sup>-Wire (Energy) &raquo;</a>
 							</span>
@@ -641,7 +666,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/ballot-box"><span>Ballot Box</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/ballot-box/gop-primaries/221515-gingrich-would-love-santorums-endorsement">Gingrich would 'love' Santorum’s backing</a></li><li><a href="http://thehill.com/blogs/ballot-box/presidential-races/221497-gop-strategists-puerto-rico-gov-fortuno-is-a-sleeper-vp-pick">GOP strategists: Puerto Rico Gov. Fortuno is a sleeper vice presidential pick</a></li><li><a href="http://thehill.com/blogs/ballot-box/senate-races/221479-hatch-looks-to-knock-out-tea-party-foes-at-utahs-gop-convention">Sen. Hatch looks to knock out Tea Party foes at Utah’s Republican convention</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/ballot-box/presidential-races/227049-thune-appears-cool-to-running-as-romney-veep">Thune appears cool to running as Romney VP</a></li><li><a href="http://thehill.com/blogs/ballot-box/polls/227019-poll-obama-leads-romney-by-5-in-michigan">Poll: Obama holds 5-point lead over Romney in Michigan</a></li><li><a href="http://thehill.com/blogs/ballot-box/house-races/227017-romney-only-touches-on-gay-marriage-at-evangelical-college">Romney only touches on gay marriage in graduation speech at evangelical college</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/ballot-box'>More Ballot Box &raquo;</a>
 							</span>
@@ -652,7 +677,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/on-the-money"><span>On The Money</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/on-the-money/1005-trade/221499-obama-free-trade-pact-with-colombia-a-high-standards-deal">Obama: Free-trade pact with Colombia a ‘high standards’ agreement</a></li><li><a href="http://thehill.com/blogs/on-the-money/budget/221495-sperling-ryan-redefines-chutzpah-for-suggesting-obama-rejected-simpson-bowles">Sperling: ‘Laughable’ for Rep. Ryan to criticize Obama over Bowles-Simpson</a></li><li><a href="http://thehill.com/blogs/on-the-money/1005-trade/221483-obama-to-promote-us-latin-america-trade-ties-with-business-leaders">Obama to promote US, Latin America trade ties with business leaders</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/on-the-money/1005-trade/226973-ex-im-bank-tops-senates-slate">Ex-Im Bank tops Senate’s slate</a></li><li><a href="http://thehill.com/blogs/on-the-money/economy/227075-report-says-230000-unemployed-will-lose-benefits-over-weekend">Report says 230,000 unemployed losing benefits over weekend</a></li><li><a href="http://thehill.com/blogs/on-the-money/banking-financial-institutions/227063-warren-dimon-should-resign-from-ny-federal-reserve-bank-position">Warren calls for Dimon to step down as New York Fed bank director</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/on-the-money'>More On The Money &raquo;</a>
 							</span>
@@ -663,7 +688,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/healthwatch"><span>Healthwatch</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/healthwatch/health-reform-implementation/221475-fate-of-health-laws-medicaid-expansion-hinges-on-how-much-doctors-get-paid">Fate of health law's Medicaid expansion hinges on how much doctors get paid</a></li><li><a href="http://thehill.com/blogs/healthwatch/medicaid/221427-nursing-homes-say-its-time-for-states-to-undo-medicaid-cuts">Nursing homes say it’s time for states to undo Medicaid cuts</a></li><li><a href="http://thehill.com/blogs/healthwatch/health-reform-implementation/221413-interest-groups-laud-kasich-for-work-with-new-federal-healthcare-office-">Interest groups laud Kasich for work with new federal healthcare office </a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/healthwatch/medicare/227097-news-bites-ryan-plan-for-medicare-still-an-issue-and-more">News bites: Ryan plan for Medicare still an issue, and more</a></li><li><a href="http://thehill.com/blogs/healthwatch/health-reform-implementation/226993-health-law-rule-to-yield-13-billion-in-insurance-rebates">Report: Health law rule to yield $1.3 billion in insurance rebates</a></li><li><a href="http://thehill.com/blogs/healthwatch/other/226889-advocates-warn-automatic-cuts-would-hit-medical-research">Advocates warn automatic cuts would hit medical research</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/healthwatch'>More Healthwatch &raquo;</a>
 							</span>
@@ -674,7 +699,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/floor-action"><span>Floor Action</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/floor-action/house/221465-a-closer-look-at-next-week">A closer look at next week…</a></li><li><a href="http://thehill.com/blogs/floor-action/senate/221431-sen-blunt-demands-answers-on-subpar-military-health-facilities">Sen. Blunt demands answers on subpar military health facilities</a></li><li><a href="http://thehill.com/blogs/floor-action/house/221423-blagos-brother-expected-to-testify-this-month-on-for-sale-senate-seat">Blago's brother expected to testify this month on 'for sale' Senate seat</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/floor-action/house/227001-a-closer-look-at-next-week">A closer look at next week…</a></li><li><a href="http://thehill.com/blogs/floor-action/house/226969-house-to-pass-bill-to-speed-up-arrest-of-people-who-injure-or-kill-cops">House to pass bill to speed up arrest of people who injure or kill cops</a></li><li><a href="http://thehill.com/blogs/floor-action/senate/226967-sen-corker-calls-for-congressional-hearing-of-jp-morgan-chase">Sen. Corker calls for congressional hearing of JP Morgan Chase</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/floor-action'>More Floor Action &raquo;</a>
 							</span>
@@ -685,7 +710,7 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/transportation-report"><span>Transportation</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/transportation-report/tsa/221271-woman-who-refused-tsa-patdown-to-challenge-rep-young">Woman who refused TSA pat-down to challenge Rep. Young</a></li><li><a href="http://thehill.com/blogs/transportation-report/1093-nasa/220613-space-shuttle-to-fly-over-dc-landmarks-next-tuesday">Space shuttle to fly over DC landmarks next Tuesday</a></li><li><a href="http://thehill.com/blogs/transportation-report/aviation/220551-us-brazil-to-sign-new-air-travel-deal">US, Brazil to sign new air travel deal</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/transportation-report/infrastructure/227021-hoeven-predicts-highway-bill-by-june-30-with-keystone-in">Hoeven predicts highway bill by June 30, with Keystone included</a></li><li><a href="http://thehill.com/blogs/transportation-report/highways-bridges-and-roads/226917-transit-groups-win-award-for-ad-featuring-reagan-bill-clinton-">Transit groups win award for ad featuring Reagan, Bill Clinton </a></li><li><a href="http://thehill.com/blogs/transportation-report/aviation/226907-court-to-hear-lawsuit-over-no-fly-list">Court to hear lawsuit over 'no fly' list</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/transportation-report'>More Transportation &raquo;</a>
 							</span>
@@ -696,9 +721,20 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 							<div class="title">
 								<h2><a href="http://thehill.com/blogs/defcon-hill"><span>DEFCON Hill</span></a></h2></div>
 							<ul>
-							<li><a href="http://thehill.com/blogs/defcon-hill/policy-and-strategy/221525-mccain-no-boots-on-the-ground-in-syria">McCain: No boots on the ground in Syria</a></li><li><a href="http://thehill.com/blogs/defcon-hill/navy/221509-capitol-hill-takes-aim-at-navy-shipbuilding-plan">House, Senate defense committees take aim at Navy’s 30-year shipbuilding plan</a></li><li><a href="http://thehill.com/blogs/defcon-hill/policy-and-strategy/221503-pentagon-us-troops-tied-to-secret-service-misconduct-probe">Secret Service agents placed on leave amid prostitution allegations, inquiry</a></li>							</ul><br />
+							<li><a href="http://thehill.com/blogs/defcon-hill/policy-and-strategy/227073-house-faces-fight-on-detainee-provisions-">Fight looms over detainee provisions</a></li><li><a href="http://thehill.com/blogs/defcon-hill/operations/227061-house-intel-chairman-white-house-chest-thumping-behind-bomb-plot-leak">House Intel chairman: Administration ‘chest-thumping’ behind bomb plot leak</a></li><li><a href="http://thehill.com/blogs/defcon-hill/policy-and-strategy/227043-sen-feinstein-leak-in-new-underwear-bomb-case-must-be-prosecuted">Sen. Feinstein: Leak in underwear bomb case must be prosecuted</a></li>							</ul><br />
 							<span>
 								<a href='http://thehill.com/blogs/defcon-hill'>More DEFCON Hill &raquo;</a>
+							</span>
+						</td>
+					</tr>
+									<tr>
+						<td class='blog blogbox55'>
+							<div class="title">
+								<h2><a href="http://thehill.com/blogs/global-affairs"><span>Global Affairs</span></a></h2></div>
+							<ul>
+							<li><a href="http://thehill.com/blogs/global-affairs/guest-commentary/226941-ambassador-maen-rashid-areikat-for-a-more-constructive-congress-on-palestine">Ambassador Maen Rashid Areikat: For a more constructive Congress on Palestine</a></li><li><a href="http://thehill.com/blogs/global-affairs/terrorism/227093-mondays-global-agenda-eu-votes-for-new-sanctions-on-syria">Monday's global agenda: EU votes for new sanctions on Syria</a></li><li><a href="http://thehill.com/blogs/global-affairs/middle-east-north-africa/227077-pelosi-leads-delegation-on-afghan-visit-to-discuss-security-womens-issues">Pelosi leads delegation on Afghanistan visit</a></li>							</ul><br />
+							<span>
+								<a href='http://thehill.com/blogs/global-affairs'>More Global Affairs &raquo;</a>
 							</span>
 						</td>
 					</tr>
@@ -750,20 +786,20 @@ GA_googleFillSlot("HouseTest_HPButton87x83_2");
 			</td>
 		</tr>
 <tr>		<td>
-			<a href="http://thehill.com/opinion/columnists/brent-budowsky"><h3>Brent Budowsky</h3></a>
-			<img src="images/stories/col_brent_budowsky.jpg" alt="" style="float: left;" width="49px" border="0" />			<a href="http://thehill.com/opinion/columnists/brent-budowsky/221175-conservative-crack-up"><span>Conservative crack-up</span></a>
+			<a href="http://thehill.com/opinion/columnists/juan-williams"><h3>Juan Williams</h3></a>
+			<img src="images/stories/col_juanwilliams.jpg" alt="" style="float: left;" width="49px" border="0" />			<a href="http://thehill.com/opinion/columnists/juan-williams/227085-rep-issas-monstrous-witch-hunt"><span>Issa's witch hunt</span></a>
 		</td>
 		<td>
-			<a href="http://thehill.com/opinion/columnists/ab-stoddard"><h3>A.B. Stoddard</h3></a>
-			<img src="images/stories/col_a_b_stoddard.jpg" alt="" style="float: left;" width="49px" border="0" />			<a href="http://thehill.com/opinion/columnists/ab-stoddard/221039-buffett-rule-makes-the-rounds"><span>The Gipper Rule</span></a>
+			<a href="http://thehill.com/opinion/columnists/judd-gregg"><h3>Judd Gregg</h3></a>
+			<img src="images/stories/col_greggmug.jpg" alt="" style="float: left;" width="49px" border="0" />			<a href="http://thehill.com/opinion/columnists/judd-gregg/227083-tax-hikes-will-exact-too-steep-a-price"><span>Tax hikes exact price</span></a>
 		</td>
 </tr><tr>		<td>
-			<a href="http://thehill.com/opinion/columnists/david-hill"><h3>David Hill</h3></a>
-			<img src="images/stories/col_davidhill.jpg" alt="" style="float: left;" width="49px" border="0" />			<a href="http://thehill.com/opinion/columnists/david-hill/220851-we-all-feel-compassion-fatigue"><span>Compassion fatigue</span></a>
+			<a href="http://thehill.com/opinion/columnists/brent-budowsky"><h3>Brent Budowsky</h3></a>
+			<img src="images/stories/col_brent_budowsky.jpg" alt="" style="float: left;" width="49px" border="0" />			<a href="http://thehill.com/opinion/columnists/brent-budowsky/226531-the-great-populist-wave-"><span>The great populist wave</span></a>
 		</td>
 		<td>
-			<a href="http://thehill.com/opinion/columnists/juan-williams"><h3>Juan Williams</h3></a>
-			<img src="images/stories/col_juanwilliams.jpg" alt="" style="float: left;" width="49px" border="0" />			<a href="http://thehill.com/opinion/columnists/juan-williams/220479-opinion-four-cases-will-determine-high-courts-standing-before-the-public"><span>Respect for court fading</span></a>
+			<a href="http://thehill.com/opinion/columnists/john-feehery"><h3>John Feehery</h3></a>
+			<img src="images/stories/col_johnfeehery.jpg" alt="" style="float: left;" width="49px" border="0" />			<a href="http://thehill.com/opinion/columnists/john-feehery/225879-forward"><span>‘Forward’?</span></a>
 		</td>
 </tr>		<tr>
 			<td class='more' colspan=2>
@@ -884,6 +920,6 @@ pageTracker._trackPageview();
 
             <div id="email2friend"><div>
     
-<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://d1ros97qkrwjf5.cloudfront.net/30/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-1.newrelic.com","962df17ac8",600975,"YwRXYBQFWhEEUUYNV1pOdFcSDVsMSnFdCkxRD0F3CQpAEApeXgFKGwVcRxYIVRs=",0,321,new Date().getTime()]);</script>
+<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://d1ros97qkrwjf5.cloudfront.net/31/eum/rum-staging.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-1.newrelic.com","962df17ac8",600975,"YwRXYBQFWhEEUUYNV1pOdFcSDVsMSnFdCkxRD0F3CQpAEApeXgFKGwVcRxYIVRs=",0,403,new Date().getTime()]);</script>
 </body>
 </html>

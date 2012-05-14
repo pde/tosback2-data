@@ -1,0 +1,532 @@
+var dj = new Object();
+dj.modulecheck = {};
+
+// Set the mediahost based on where this script is
+(function(){
+    var scripts  = document.getElementsByTagName('script'), re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+    if ( scripts[scripts.length-1].src.match(re) )
+	dj.mediahost = RegExp.$1;
+})();
+
+
+dj.media = function(url){
+    var host_domain = /[^.]+\.[^.]+$/.exec(document.location.hostname);
+    var secure = document.location.protocol == 'https:' ? 's' : '';
+    url.match(/^(https?:\/\/)?([^\/]*)(.*)$/);
+    var domain = RegExp.$2 || '';
+    var path   = RegExp.$3 || '';
+    if ( !dj.mediahost || (domain.length && !(new RegExp('^media(ext)?\.(djnetworks\.net|'+host_domain+')')).test(domain) ) )
+	return ( domain.length ? 'http' + secure + '://' + domain : '' ) + path;
+
+    return 'http' + secure + '://' + dj.mediahost + path;
+};
+
+
+/* dj.require Loading plan:
+       | Ready | !Ready | NojQ
+Callbk | .ajax | .ajax  | write(ignore callback)
+NoCbk  | elmnt | write  | write
+*/
+
+dj.require = function(url,async) {
+    var func = typeof(async) == 'function';
+    var check = dj.modulecheck[url];
+
+    if (check){
+	if(func){
+	    if(check.element) return alert("Error: Cannot perform a callback after previous async require");
+	    check.loaded ? async() : check.callbacks.push( async );
+	}
+	return 1;
+    }else{
+	check = dj.modulecheck[url] = { loaded: 0, callbacks: [] };
+	if( func ) check.callbacks.push( async );
+    }
+
+    if(!async){
+	if(!window['jQuery'] || !jQuery.isReady){
+	    document.write('<script type="text/javascript" src="'+ url +'"></script>');
+	    check.loaded = true;
+	    //alert('loaded ' + url + ' write' );
+	    return 1;
+	}else{ async = true };
+    }
+
+    if(async){
+	var loaded = function(){ check.loaded = true; while(check.callbacks.length){ check.callbacks.shift()() } };
+	var load = function(){
+	    if( func ){
+		jQuery.ajax({ url: url, dataType: "script", cache: true, success: loaded });
+		//alert('loaded ' + url + ' ajax' );
+	    }else{
+		var e = document.createElement('script');
+		e.type = 'text/javascript'; e.async = true; e.src = url;
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(e, s);
+		check.element = true;
+		//alert('loaded ' + url + ' async' );
+	    }
+	    return 1;
+	}
+
+	if(window['jQuery']) return load();
+	var intv;
+	intv = setInterval( function(){ if (window['jQuery']) { clearInterval(intv); load()} },100 );
+	return 1;
+    }
+
+};
+
+
+dj.cssrequire = function(libraryName) {
+    if (dj.modulecheck[libraryName]) return 1;
+    // inserting via DOM fails in Safari 2.0, so brute force approach
+    if(!window['jQuery'] || !jQuery.isReady){
+	document.write('<link href="'+libraryName+'" rel="stylesheet" type="text/css"/>');
+    }
+    else{
+	$('head').append('<link rel="stylesheet" href="'+libraryName+'" type="text/css" />');
+    }
+    dj.modulecheck[libraryName] = 1;
+};
+
+dj.requireBusta = function(){
+    var scripts  = document.getElementsByTagName('script'), re = new RegExp('^(?:f|ht)tp(?:s)?\://(?:[^/]+)(?:.*)(__busta=[0-9]+)', 'im');
+    if ( scripts[scripts.length-1].src.match(re) )
+	return RegExp.$1;
+    return '';
+};
+
+
+if (typeof(dj_require_base) == "undefined")
+    dj_require_base = "";
+
+dj.require(dj.media('/includes/javascript/jquery/jquery-source.js'));
+dj.require(dj.media('/includes/javascript/jquery/json.js'));
+
+
+dj.element = function(tag,attribs,parent){
+  //alert (tag);
+  var jqobj = $(document.createElement(tag));
+  if(attribs){
+    jqobj.attr(attribs);
+  }
+  if(parent){
+    jqobj.appendTo(parent);
+  }
+  return jqobj;
+};
+
+
+dj.formatCurrency = function(amount) {
+	var i = parseFloat(amount);
+	if(isNaN(i)) { i = 0.00; }
+	var minus = '';
+	if(i < 0) { minus = '-'; }
+	i = Math.abs(i);
+	i = parseInt((i + .005) * 100);
+	i = i / 100;
+	s = new String(i);
+	if(s.indexOf('.') < 0) { s += '.00'; }
+	if(s.indexOf('.') == (s.length - 2)) { s += '0'; }
+	s = minus + s;
+	return s;
+};
+
+dj.extractHostname = function(str) {
+    if (!str.length) return '';
+    var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+    var match = str.match(re);
+    if (match && match[1]){
+        return match[1].toString();
+    } else {
+        return '';
+    }
+};
+
+
+
+dj.ajax = function(params){
+  var data = params.data;
+  
+  var myhost  = window.location.hostname;
+  var reqhost = dj.extractHostname(params.url);
+
+  if(params.ref){	
+    if(data.length) data = data+'&';
+    data = data + 'json=' + escape($.toJSON(params.ref)).replace( /[+]/g, '%2B' );  // yuck.
+  }
+
+  var error = (params.error ? params.error : function(){dj.error('An unspecified error occurred.')} );
+
+  var success = function(r){
+	  
+
+
+
+      if(r.BADSESSION){
+	  if(dj.login){
+	      dj.login({
+		      	success: function(){ dj.ajax(params) } // Have another go
+		      });
+	  }else{
+	      dj.showmessage('You must be logged in to do that.' ,'global_error_box');
+	  }
+	  return 1;
+      }
+
+      if(r.err_message){
+	  dj.showmessage('The server returned an error message: <br>' + r.err_message ,'global_error_box');
+      } else if (params.success){
+	  params.success(r);
+      }
+  }
+
+  if (myhost == reqhost || !reqhost){
+      $.ajax({
+	      type: "POST",
+	      url: params.url,
+	      data: data,
+	      dataType: 'json',
+	      success: success,
+	      timeout : params.timeout,
+	      error : error
+	  });
+  } else {
+      $.getJSON(params.url, data + '&jsoncallback=?',success);
+  }
+
+  
+  
+};
+
+
+dj.error = function(message){
+  var caller;
+  if(dj.error.caller){
+    caller = dj.error.caller.name;
+  }else{
+    caller = 'Root';
+  }
+  dj.showmessage('Error in function '+caller+': '+ message ,'global_error_box');
+  return undefined;
+};
+
+dj.showmessage = function (message,classname,timeout){
+    dj.clearmessage();
+		
+    var div = dj.messagewindow = dj.element('div',{},'body');
+    if(!classname) classname = 'global_message_box';
+    div.attr('class',classname);
+
+    dj.element('span',{},div).html(message);
+    dj.element('br',{},div);
+    var button = dj.element('img',{src: '/includes/images/ok.png'},div).click(dj.clearmessage);
+    button.css({'float': 'right'});
+
+    dj.floatcenter(dj.messagewindow);
+
+    if (!timeout) timeout = 10000;
+    dj.messagetimer = setTimeout(dj.clearmessage,timeout);
+};
+
+dj.clearmessage = function(){
+  if(dj.messagewindow){
+    dj.messagewindow.remove();
+    delete dj.messagewindow;
+  }
+  if(dj.messagetimer){
+    clearTimeout(dj.messagetimer);
+    delete dj.messagetimer;
+  }
+};
+
+
+
+dj._emailregex = /^([A-Z0-9]+[._]?){1,}[A-Z0-9-]+\@(([A-Z0-9]+[-]?){1,}[A-Z0-9]+\.){1,}([A-Z]{2,4}|museum)$/i;
+
+dj.checkemail = function (email){
+    if (!email) return 0;
+    return dj._emailregex.test(email);
+};
+
+dj.checkfields = function(params){
+    if (!params.fields) return dj.error('no fields parameter specified');
+    if (!params.errorclass) return dj.error('no errorclass parameter specified');
+
+    var errcount = 0;
+    $.each(params.fields,function(field,spec){
+	       var obj = $(field,params.parent_obj);
+	       var value = obj.val();
+
+	       var okflag = 0;
+	       if(spec == 'email'){
+		   okflag = dj.checkemail(value);
+	       }else{ // regex
+		   var re = RegExp(spec);
+		   if (re.test(value)) okflag = 1;
+	       }
+
+	       if(okflag){
+		   obj.removeClass(params.errorclass);
+	       }else{
+		   obj.addClass(params.errorclass);
+		   errcount++;
+	       }
+		
+	   });
+
+    if(errcount){
+	if (params.errdiv) $(params.errdiv, params.parent_obj).show();
+	return 0;
+    }else{
+	if (params.errdiv) $(params.errdiv, params.parent_obj).hide();
+	return 1;
+    }
+};
+
+
+dj.floatcenter = function(obj,param){
+    var config = typeof param == 'object' && param != null ? param : { speed : param };
+
+    obj = $(obj);
+    var docwidth = $(window).width();
+    var docheight = $(window).height();
+
+    obj.css( 'position','absolute' ).show();
+    var width = obj.width();
+    var height = obj.height();
+    var cssparam;
+
+    var top = (docheight/2 - height/2);
+    var left = (docwidth/2 - width/2);
+
+    if (jQuery.browser.msie && jQuery.browser.version >= 6.0 && jQuery.browser.version < 7.0){
+
+	// Make scrolling work by hacking the document :-(
+	/* $('html').css({'overflow-y': 'hidden'});
+	$('body').css({ 'height': '100%', 'overflow-y': 'auto', 'padding': '0pt 1em 0pt 14em'});
+	obj.css({ 'position': 'absolute' });
+	*/
+
+	var positionobj = function(){
+	    document.title = dj.scrollY() + ' ' + obj.parent().get(0);
+	    obj.css({'top': top + dj.scrollY(), 'left': left + dj.scrollX()});
+	}
+
+	$(window).scroll(positionobj);
+	setTimeout(   function(){ $(window).unbind('scroll',positionobj) }   ,60000);
+
+	cssparam = { 'top': top + dj.scrollY(), 'left': left + dj.scrollX() };
+
+	obj.css({ 'position': 'absolute' });
+
+    }else{
+	cssparam = { 'top': top, 'left': left };
+	obj.css({ 'position': 'fixed' });
+    }
+
+    var speed = config.speed;
+    if(speed == 'slow')   speed = 1500;
+    if(speed == 'fast')   speed = 500;
+    if(speed){
+	obj.animate(cssparam, speed);
+    }else{
+	obj.css(cssparam);
+    }
+
+    return 1;
+};
+
+/*
+dj.handlescan
+Usage:
+$('#something').keypress(  dj.handlescan({onscan: commandfunc})  );
+
+function commandfunc(commandstring){}
+
+*/
+dj.handlescan = function (params){
+    var keybuffer = '';
+    var keytimer;
+
+    if (!params) return dj.error('params hash is required');
+    if (!params.onscan) return dj.error('onscan parameter is required');
+
+    var status = false;
+    if(params.noblock){
+	status = true;
+    }
+
+    var timeoutfunc = function(){keybuffer = ''};
+
+    var mainfunc = function (event) {
+	if (event){
+	    if(keytimer) clearTimeout(keytimer);
+	    
+	    if(event.keyCode == 13){
+		params.onscan(keybuffer);
+		keybuffer = '';
+	    }else if(event.charCode){
+		keytimer  = setTimeout(timeoutfunc,2000);
+		keybuffer = keybuffer + String.fromCharCode(event.charCode)
+	    }
+	}
+        
+	return status;
+    }
+    
+    return mainfunc;
+};
+    
+dj.scrollX =  function() {
+    var scrollX = 0;
+    if( document.documentElement && document.documentElement.scrollLeft ) {
+	scrollX = document.documentElement.scrollLeft;
+    }else if( document.body && document.body.scrollLeft ) {
+	scrollX = document.body.scrollLeft;
+    }else if( window.pageXOffset ) {
+	scrollX = window.pageXOffset;
+    }else if( window.scrollX ) {
+	scrollX = window.scrollX;
+    }
+    return scrollX;
+};
+
+dj.scrollY = function() {
+    var scrollY = 0;
+    if( document.documentElement && document.documentElement.scrollTop ) {
+	scrollY = document.documentElement.scrollTop;
+    }else if( document.body && document.body.scrollTop ) {
+	scrollY = document.body.scrollTop;
+    }else if( window.pageYOffset ) {
+	scrollY = window.pageYOffset;
+    }else if( window.scrollY ) {
+	scrollY = window.scrollY;
+    }
+    return scrollY;
+};
+
+    dj._hooks = {};
+
+dj.registerhook = function(eventname,callfunc){
+    if (!eventname) return dj.error('no eventname specified');
+    if (!callfunc)  return dj.error('no callfunc specified');
+
+    dj._hooks[eventname] = callfunc;
+
+    return 1;
+};
+
+dj.clearhook = function(eventname){
+    dj._hooks[eventname] = '';
+};
+
+dj.callhook = function(eventname){
+    if (!eventname) return dj.error('no eventname specified');
+    
+    var callfunc = dj._hooks[eventname];
+    
+    if (callfunc){
+        callfunc();
+    }
+    
+    return 1;
+};
+    
+ dj.preloadImages = function(images) {
+     $.each(images,function(index, src) { $(new Image()).attr('src', dj.media(src)); });
+     return 1;
+ };
+
+dj.keys = function(hash) {
+
+    var keys = [];
+    $.each(hash,function(key,val) {
+            
+            keys.push(key);
+        });
+        return keys;
+};
+
+dj.create = function (proto,defaults,config) {
+    function F() {};
+    F.prototype = proto;
+    var instance = new F();
+    if (config || defaults) $.extend(instance,defaults,config);
+    return instance;
+};
+
+dj.popup = function (url,x,y,name){
+    var pwy = window.screenY || window.screenTop  || 0;
+    var pwx = window.screenX || window.screenLeft || 0;
+    var wsy = window.outerHeight || document.body.clientHeight || 0;
+    var wsx = window.outerWidth  || document.body.clientWidth  || 0;
+    var winl = pwx + ((wsx - x) / 2);
+    var wint = pwy + ((wsy - y) / 2);
+    pop = window.open(url, name, 'top=' + wint+ ',left=' + winl + 'toolbar=0,directories=0,status=0,menubar=0,scrollbars=yes,resizable=0,width=' + x + ',height=' + y);
+    pop.focus();
+    return false;
+};
+
+dj.getRSS = function(url,callback){
+    $.getJSON("http" + (document.location.protocol == 'https:' ? 's' : '' ) + "://ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=?&num=10&q="+encodeURIComponent(url), function(i){
+	    i.responseData && i.responseData.feed && callback(i.responseData.feed);
+	});
+};
+
+
+(function(){
+    var done, interval;
+    function init(){
+	if (done || !window['jQuery']) return 1;
+	done = 1;
+	clearInterval(interval);
+	$(function(){
+		$('.djfocus').focus();
+		$('.djselect').attr("readonly","readonly").click(function(){$(this).select()});
+	        $('[class*=djpopup]').live('click',function(){
+			$(this).attr('class').match(/djpopup-?([^-]*)-?([^-]*)-?([^-]*)/);
+			var x = RegExp.$1 || 0,y = RegExp.$2 || 0,name = RegExp.$3 || '';
+			return dj.popup($(this).attr('href'),x,y,name);
+		    });
+		$('[class*=djdefault]').each(function(){
+			var s = $(this);
+			s.attr('class').match(/djdefault-(\S+)/);
+			var d = RegExp.$1.replace(/_/g," ");
+		        s.click(function(){
+			    if(s.val()==d){
+				s.val('');
+			    }
+			    s.removeClass('djdefault');
+			})
+			.blur(function(){
+			    if(s.val()==''){
+				s.val(d);
+			    }
+			    if(s.val()==d){
+				s.addClass('djdefault');
+			    }
+			})
+			.blur();
+			$(s.closest('form')).submit(function(){if(s.val()==d)s.val('')});
+		    });
+		var bindLast = function(){
+		    $('[class*=djgaevent]').live('click',function(e){
+			    if (e.button != 0) return;
+			    var s = $(this);
+			    var matches = s.attr('class').match(/djgaevent-([^-]+)-([^-]+)-?([^-]+)?-?(\d+)?/);
+			    var category = matches[1].replace(/_/g," "), action = matches[2].replace(/_/g," "), label = matches[3] ? matches[3].replace(/_/g," ") : undefined, value = matches[4] ? parseInt(matches[4]) : 1;
+			    _gaq.push(['_trackEvent', category.toLowerCase(), action.toLowerCase(), label.toLowerCase(), value]);
+			    if ( s.attr('href').length && !e.isDefaultPrevented() && !e.isImmediatePropagationStopped() && !e.isPropagationStopped() ){
+				_gaq.push(function(){ window.location = s.attr('href') });
+				e.preventDefault();
+			    }
+			});
+		};
+		setTimeout( bindLast, 100 );
+	    });
+    };
+
+    interval = setInterval(init,100);
+})();

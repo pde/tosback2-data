@@ -49,7 +49,7 @@ function cmCreateShopAction5Tag(productID,productName,productQuantity,productPri
 	__ex=new Array();
 	}	
 
-	cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"cc",currency,"ha1",attributes ? cm_hex_sha1(attributes) : null,"at","5","tid","4","pc","N"]); 
+	cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"cc",currency,"cm_exAttr",__ex,"ha1",attributes ? cm_hex_sha1(attributes) : null,"at","5","tid","4","pc","N"]); 
 }
 
 /*
@@ -68,7 +68,7 @@ function cmCreateShopAction9Tag(productID,productName,productQuantity,productPri
 	__ex=new Array();
 	}
 	
-	cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"cc",currency,"ha1",attributes ? cm_hex_sha1(attributes) : null,"cd",customerID,"on",orderID,"tr",orderTotal,"at","9","tid","4","pc","N"]);
+	cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"cc",currency,"cm_exAttr",__ex,"ha1",attributes ? cm_hex_sha1(attributes) : null,"cd",customerID,"on",orderID,"tr",orderTotal,"at","9","tid","4","pc","N"]);
 	cmCalcSKUString();
 }
 

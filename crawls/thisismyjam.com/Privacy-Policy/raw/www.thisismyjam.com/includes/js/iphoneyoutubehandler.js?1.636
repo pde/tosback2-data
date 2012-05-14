@@ -1,0 +1,199 @@
+IPhoneYoutubeHandler = function(player)
+{
+    this.player = player;
+}
+
+// all the active players
+IPhoneYoutubeHandler.videos = {};
+IPhoneYoutubeHandler.isFirstPlay = true;
+
+IPhoneYoutubeHandler.activeHolderID = null;
+
+IPhoneYoutubeHandler.prototype.getFreeHolderID = function()
+{
+    if(IPhoneYoutubeHandler.activeHolderID == 'iphoneYoutubeHolder1')
+        return 'iphoneYoutubeHolder2';
+    else
+        return 'iphoneYoutubeHolder1';
+}
+
+IPhoneYoutubeHandler.prototype.getActiveHolderID = function()
+{
+    return IPhoneYoutubeHandler.activeHolderID;
+}
+
+IPhoneYoutubeHandler.prototype.createPlayer = function(youtubeId, person,
+                                                       jamId, type, $fakeHolder)
+{
+    var self = this;
+
+    var holderId = this.getFreeHolderID();
+    var $holder = $("#" + holderId);
+
+    // yep, dupes
+    var tracker = function() {
+
+        if(!$('#jamHolder #artPlayer [data-youtubeid="' + youtubeId + '"]').length)
+            return;
+
+        var trackedOffset = $fakeHolder.offset();
+        trackedOffset = {left: trackedOffset.left +
+                         parseInt($fakeHolder.css("padding-left").replace(/px/, ''), 10),
+                         top: trackedOffset.top +
+                         parseInt($fakeHolder.css("padding-top").replace(/px/, ''), 10)};
+
+        var $iframe = $("iframe", $holder);
+        $iframe
+            .css("width", $fakeHolder.width() + "px")
+            .css("height", $fakeHolder.height() + "px");
+
+        $holder
+            .css("top", trackedOffset.top + "px")
+            .css("left", trackedOffset.left + "px")
+            .css("width", $fakeHolder.width() + "px")
+            .css("height", $fakeHolder.height() + "px")
+            .css("position", "absolute")
+            .css("z-index", "1");
+    }
+    tracker();
+    $holder.show();
+    $(window).resize(tracker);
+
+    var video = new YT.Player(holderId, {
+        height: $fakeHolder.height(),
+        width: $fakeHolder.width(),
+        videoId: youtubeId,
+        playerVars: {
+            showinfo: 0
+        },
+        events: {
+            onStateChange: function(event) {
+                self.stateChange(person, jamId, type, youtubeId, event.data, holderId);
+            }
+        }
+    });
+
+    IPhoneYoutubeHandler.videos[jamId] = video;
+}
+
+IPhoneYoutubeHandler.prototype.stateChange = function(person, jamId, type, youtubeId, state, holderId)
+{
+    switch(state) {
+    case -1:
+        //        this.onUnstarted();
+        break;
+    case 0:
+        this.player.jamFinished();
+        //        this.onFinish();
+        break;
+    case 1:
+
+        if(!this.player.queue ||
+           this.player.getCurrentJam().id != jamId) {
+            this.player.initFromPage({person: person, jamId: jamId, type: type}, true);
+            IPhoneYoutubeHandler.activeHolderID = holderId;
+        }
+        //        this.onPlaying();
+        break;
+    case 2:
+
+        this.player.pause();
+
+        break;
+    case 3:
+        //        this.onBuffering();
+        break;
+    case 5:
+        //        this.onCued();
+        break;
+    default:
+        // unknown state
+        break;
+    }
+}
+
+IPhoneYoutubeHandler.prototype.clearPlayers = function()
+{
+    IPhoneYoutubeHandler.videos = {};
+}
+
+IPhoneYoutubeHandler.prototype.setupVideos = function()
+{
+    var self = this;
+
+    if(typeof YT != 'undefined' && YT.Player) {
+        var $jamVatars = $("#jamHolder:not(.iphone), .jamVatar:not(.iphone)")
+            .has("#jamBackgroundYoutube");
+
+        $jamVatars.each(function() {
+            var $this = $(this);
+            var $data = $("[data-jamid]", $this);
+
+            self.createPlayer($data.attr("data-youtubeid"),
+                              $data.attr("data-person"),
+                              $data.attr("data-jamid"),
+                              $data.attr("data-type"), $this);
+        });
+    }
+    else {
+        // youtube isn't quite ready yet. hang in there
+        window.setTimeout(function() {
+            self.setupVideos();
+        }, 1000);
+    }
+}
+
+IPhoneYoutubeHandler.prototype.prepare = function(autoPlay) {
+    if(autoPlay)
+        this.player.play();
+}
+
+IPhoneYoutubeHandler.prototype.getCurrentVideo = function()
+{
+    var currentJam = this.player.getCurrentJam();
+    var video = IPhoneYoutubeHandler.videos[currentJam.id];
+    return video;
+}
+
+IPhoneYoutubeHandler.prototype.stop = function() {
+    var activeID = this.getActiveHolderID();
+
+    if(activeID)
+        $("#" + activeID).html('');
+    IPhoneYoutubeHandler.activeHolderID = null;
+}
+
+IPhoneYoutubeHandler.prototype.pause = function() {
+    var video = this.getCurrentVideo();
+    if(video) // defensive
+        video.pauseVideo();
+}
+
+IPhoneYoutubeHandler.prototype.play = function(playBackStarted, jamFinished) {
+
+    console.log('play');
+
+    var video = this.getCurrentVideo();
+    if(video) { // defensive
+        video.playVideo();
+    }
+    playBackStarted();
+}
+
+IPhoneYoutubeHandler.prototype.hide = function() {
+    $("#iphoneYoutubeHolder1").hide();
+    $("#iphoneYoutubeHolder2").hide();
+}
+
+IPhoneYoutubeHandler.prototype.show = function() {
+    $("#iphoneYoutubeHolder1").show();
+    $("#iphoneYoutubeHolder2").show();
+}
+
+IPhoneYoutubeHandler.prototype.showCurrent = function() {
+    $("#" + this.getActiveHolderID()).show();
+}
+
+IPhoneYoutubeHandler.prototype.getName = function() {
+    return 'youtube';
+}

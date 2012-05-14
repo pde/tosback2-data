@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:fb="http://www.facebook.com/2008/fbml">
 	<head>
 		<!-- Mobify ReRoute JS -->
 <script type="text/javascript"
@@ -58,8 +58,6 @@ $BTB.jshost = (document.location.protocol == "https:")?"https://ssl.":"http://st
 document.write(unescape("%3Cscript src='" + $BTB.jshost + $BTB.jsh + "' type='text/javascript'%3E%3C/script%3E"));
 </script>
 
-<script type='text/javascript' src='../../d.ads.readwriteweb.com/spcjs.php%3Fid=2&amp;block=1&amp;blockcampaign=1'></script>
-
 <!-- Tumblr Share integration -->
 <script type="text/javascript" src="../../platform.tumblr.com/v1/share.js"></script>
 <!-- RSS -->
@@ -113,13 +111,16 @@ $SA={s:11977};
 document.write(unescape("%3Cscript src='" + document.location.protocol + "//" + $SA.s + ".a.siteapps.com/" + $SA.s + ".js' type='text/javascript'%3E%3C/script%3E"));
 //]]>
 </script>
-        		<script>
+                <script type="text/javascript">
+        var _gaq = _gaq || [];
+        </script>
+		<script>
 				</script>		
 	
 	<script type="text/javascript"
 		id="admin-bootstrap"
-		data-sha="6898e0d9ef756ed866c90e09e27b5c48e7a6c9a5"
-				src="../_orion/static/6898e0d9ef756ed866c90e09e27b5c48e7a6c9a5/js/admin-bootstrap.js"
+		data-sha="77bb01a01c4d66f2792be619bfbd1648c609818f"
+				src="../_orion/static/77bb01a01c4d66f2792be619bfbd1648c609818f/js/admin-bootstrap.js"
 		>
 	</script>
 	 
@@ -135,6 +136,19 @@ document.write(unescape("%3Cscript src='" + document.location.protocol + "//" + 
 </head>
 	<body>
 
+	<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({appId: '57345927025', status: true, cookie: true,
+             xfbml: true});
+  };
+  (function() {
+    var e = document.createElement('script'); e.async = true;
+    e.src = document.location.protocol +
+      '//connect.facebook.net/en_US/all.js';
+    document.getElementById('fb-root').appendChild(e);
+  }());
+</script>
 		<!-- Stats -->
 
 <script type="text/javascript">
@@ -146,8 +160,6 @@ img.src = "http://www.readwriteweb.com/stats.php?u=" + escape(document.location.
 
 
 <script type="text/javascript">
-
-  var _gaq = _gaq || [];
   
   // RWW GA
   _gaq.push(['rww._setAccount', 'UA-421291-1']);
@@ -195,6 +207,20 @@ img.src = "http://www.readwriteweb.com/stats.php?u=" + escape(document.location.
   })();
 
 </script>
+<script type="text/javascript">
+	function trackSocial(socialEvent, href, network) {
+    	_gaq.push(['rwwSocial._setAccount', 'UA-421291-1']);
+		_gaq.push(['rwwSocial._setAllowLinker', true]); 
+		_gaq.push(['rwwSocial._setAllowHash', false]);
+		_gaq.push(['rwwSocial._setDomainName', 'none']);
+		_gaq.push(['rwwSocial._trackSocial', network, socialEvent, href]);
+		
+		var ga = document.createElement('script');     ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:'   == document.location.protocol ? 'https://ssl'   : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	}
+    </script>
+
 <!-- Woopra Async Code - JWS 11042010 -->
 <script type="text/javascript">
 
@@ -435,9 +461,7 @@ OX_4f73b3d89d207.fetchAds();
 
 	<!-- ads_top -->
 <div style="padding-bottom: 20px; text-align: center">
-<div id="RWW_ATF-ROS_AD">
-<script src="../../adserver.adtechus.com/index.html%3Fadrawdata%252F3.0%252F5108.1%252F2333791%252F0%252F0%252FADTECH%3Bloc=100%3Bnoperf=1%3B"></script>
-</div>
+<div id="RWW_ATF-ROS_AD"><script src="../../adserver.adtechus.com/index.html%3Fadrawdata%252F3.0%252F5108.1%252F2333791%252F0%252F0%252FADTECH%3Bloc=100%3Bnoperf=1%3B"></script></div>
 </div>
 <!-- ads_top -->
 
@@ -837,19 +861,6 @@ services_compact: 'email,stumbleupon,reddit,hackernews,instapaper,digg'
 </div>
 <!-- Twitter Tweet Button Async -->
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-<div id="fb-root"></div>
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({appId: '57345927025', status: true, cookie: true,
-             xfbml: true});
-  };
-  (function() {
-    var e = document.createElement('script'); e.async = true;
-    e.src = document.location.protocol +
-      '//connect.facebook.net/en_US/all.js';
-    document.getElementById('fb-root').appendChild(e);
-  }());
-</script>
 <script type="text/javascript" src="../../platform.linkedin.com/in.js"></script>
 
           
@@ -927,6 +938,47 @@ el.parentNode.insertBefore(s,el);
 <noscript>
 <img src="../../b.scorecardresearch.com/p%3Fc1=2&amp;c2=6036036&amp;cv=2.0&amp;cj=1" />
 </noscript>
+    
+		<!-- Begin FB Social Analytics tracking -->
+		<script type="text/javascript">
+			FB.Event.subscribe('edge.remove', function(href, widget) { 
+				trackSocial("Unlike", href, "Facebook");
+			});
+			FB.Event.subscribe('edge.create', function(href, widget) { 
+				trackSocial("Like", href, "Facebook");
+			});
+		</script>
+<!-- End FB Social Analytics tracking -->
+		
+<!-- Begin Twitter Social Analytics tracking -->
+		<script type="text/javascript">
+			$.getScript("http://platform.twitter.com/widgets.js", function(){
+			function handleTweetEvent(event){
+			 if (event) {
+			 	trackSocial("tweet", "", "Twitter");
+			 }
+			}
+			twttr.events.bind('tweet', handleTweetEvent);        
+				});
+		</script>
+<!-- End Twitter Social Analytics tracking -->
+
+<!-- Begin PlusOne Social Analytics tracking -->
+	<script type="text/javascript">   
+	function plusone_vote(plusone) { 
+	    trackSocial(plusone.state, "", "GooglePlus");
+	    } 
+	</script>
+<!-- End PlusOne Social Analytics tracking -->
+
+<!-- Start Tumblr Social Analytics tracking -->
+	<script type="text/javascript">   
+	$('.share-tumblr a').click(function() { 
+	    trackSocial("click", "", "tumblr");
+	 });
+	</script>
+<!-- End Tumblr Social Analytics tracking -->
+
 	
 
 </body>

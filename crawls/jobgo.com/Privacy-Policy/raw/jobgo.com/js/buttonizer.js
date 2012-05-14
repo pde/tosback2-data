@@ -44,10 +44,10 @@ function alertMessage(message, options) {
         speed = 0;
     }
 
-    if (!$('#systemMessage')[0]) {
+    if (!$('.systemMessage')[0]) {
         alert(message);
     } else {
-        var alertMsg = $('#systemMessage');
+        var alertMsg = $('.systemMessage');
         alertMsg.attr("class", type + "Message");
 
         var note = alertMsg.find(".messageBody");

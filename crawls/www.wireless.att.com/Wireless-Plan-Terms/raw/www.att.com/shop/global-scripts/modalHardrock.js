@@ -8,6 +8,9 @@ jQuery(document).ready(function(){
 				modal.preConfig({element:this, config:modal});
 				jQuery.colorbox(modal.cbConfig);
 			}
+			else {
+				window.location.href = this.attr('href');
+			}
 			e.preventDefault();e.stopPropagation();
 		});
 	}

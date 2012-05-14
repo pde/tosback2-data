@@ -1,0 +1,1277 @@
+function afficherMessage(etat){
+	if(etat == "open"){
+		document.getElementById('messageAlerte').style.display = "block";
+		document.getElementById('show').style.display = "none";
+		document.getElementById('hide').style.display = "block";
+	}
+	if(etat == "close"){
+		document.getElementById('messageAlerte').style.display = "none";
+		document.getElementById('hide').style.display = "none";
+		document.getElementById('show').style.display = "block";
+	}
+}
+
+/* Function pour afficher l'état actif du menu par section + background sous-navigation */
+function activeMenu(menu){
+	
+	//Accueil
+	if(menu=="161"){
+		$j("body").addClass('accueil');
+	}
+	//cpspecial - pour immiter l'accueil
+	//if(menu=="640"){
+		//$j("body").addClass('accueil');
+	//}
+	//Blogues
+	if(menu=="191"){
+		$j("body").addClass('blogues');
+	}
+	//Chroniques
+	if(menu=="193"){
+		$j("body").addClass('chroniques');
+	}
+	//Débat
+	if(menu=="1758"){
+		$j("body").addClass('debats');
+	}
+	//Vidéos
+	if(menu=="2546"){
+		$j("body").addClass('videos');
+		$j("#sousNavigation .ctnSousNavigation #sousMenu").addClass('sousmenu');
+		$j("#sousNavigation .ctnSousNavigation #sousMenu ul").addClass('sub-section linear');
+	}
+	//Actualités
+	if(menu=="162"){
+		$j("body").addClass('actualites');
+	}
+	//International
+	if(menu=="167"){
+		$j("body").addClass('international');
+	}
+	//Sports
+	if(menu=="171"){
+		$j("body").addClass('sports');
+	}
+	//Arts
+	if(menu=="164"){
+		$j("body").addClass('arts');
+	}
+	//Vivre
+	if(menu=="163"){
+		$j("body").addClass('vivre');
+	}
+	//Voyage
+	if(menu=="172"){
+		$j("body").addClass('voyage');
+	}
+	//Vins
+	if(menu=="550"){
+		$j("body").addClass('vins');
+	}
+	//Noel
+	if(menu=="687"){
+		$j("body").addClass('noel');
+	}
+}
+
+/*
+ * jQuery hashchange event - v1.2 - 2/11/2010
+ * http://benalman.com/projects/jquery-hashchange-plugin/
+ *
+ * Copyright (c) 2010 "Cowboy" Ben Alman
+ * Dual licensed under the MIT and GPL licenses.
+ * http://benalman.com/about/license/
+ */
+(function($,i,b){var j,k=$.event.special,c="location",d="hashchange",l="href",f=$.browser,g=document.documentMode,h=f.msie&&(g===b||g<8),e="on"+d in i&&!h;function a(m){m=m||i[c][l];return m.replace(/^[^#]*#?(.*)$/,"$1")}$[d+"Delay"]=100;k[d]=$.extend(k[d],{setup:function(){if(e){return false}$(j.start)},teardown:function(){if(e){return false}$(j.stop)}});j=(function(){var m={},r,n,o,q;function p(){o=q=function(s){return s};if(h){n=$('<iframe src="javascript:0"/>').hide().insertAfter("body")[0].contentWindow;q=function(){return a(n.document[c][l])};o=function(u,s){if(u!==s){var t=n.document;t.open().close();t[c].hash="#"+u}};o(a())}}m.start=function(){if(r){return}var t=a();o||p();(function s(){var v=a(),u=q(t);if(v!==t){o(t=v,u);$(i).trigger(d)}else{if(u!==t){i[c][l]=i[c][l].replace(/#.*/,"")+"#"+u}}r=setTimeout(s,$[d+"Delay"])})()};m.stop=function(){if(!n){r&&clearTimeout(r);r=0}};return m})()})(jQuery,this);
+
+
+/**
+ * jQuery Plugin to obtain touch gestures from iPhone, iPod Touch and iPad, should also work with Android mobile phones (not tested yet!)
+ * Common usage: wipe images (left and right to show the previous or next image)
+ *
+ * @author Andreas Waltl, netCU Internetagentur (http://www.netcu.de)
+ * @version 1.0 (15th July 2010)
+*/
+(function($){$.fn.touchwipe=function(settings){var config={min_move_x:20,wipeLeft:function(){alert("left");},wipeRight:function(){alert("next");},preventDefaultEvents:true};if(settings)$.extend(config,settings);this.each(function(){var startX;var isMoving=false;function cancelTouch(){this.removeEventListener('touchmove',onTouchMove);startX=null;isMoving=false;}function onTouchMove(e){if(config.preventDefaultEvents){e.preventDefault();}if(isMoving){var x=e.touches[0].pageX;var dx=startX-x;if(Math.abs(dx)>=config.min_move_x){cancelTouch();if(dx>0){config.wipeLeft();}else{config.wipeRight();}}}}function onTouchStart(e){if(e.touches.length==1){startX=e.touches[0].pageX;isMoving=true;this.addEventListener('touchmove',onTouchMove,false);}}this.addEventListener('touchstart',onTouchStart,false);});return this;};})(jQuery);
+
+
+var $j = jQuery.noConflict();
+
+
+
+
+    /**
+     * Cookie plugin
+     *
+     * Copyright (c) 2006 Klaus Hartl (stilbuero.de)
+     * Dual licensed under the MIT and GPL licenses:
+     * http://www.opensource.org/licenses/mit-license.php
+     * http://www.gnu.org/licenses/gpl.html
+     *
+     */
+    jQuery.cookie = function(name, value, options) {
+        if (typeof value != 'undefined') { // name and value given, set cookie
+            options = options || {};
+            if (value === null) {
+                value = '';
+                options.expires = -1;
+            }
+            var expires = '';
+            if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+                var date;
+                if (typeof options.expires == 'number') {
+                    date = new Date();
+                    date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+                } else {
+                    date = options.expires;
+                }
+                expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
+            }
+            // CAUTION: Needed to parenthesize options.path and options.domain
+            // in the following expressions, otherwise they evaluate to undefined
+            // in the packed version for some reason...
+            var path = options.path ? '; path=' + (options.path) : '';
+            var domain = options.domain ? '; domain=' + (options.domain) : '';
+            var secure = options.secure ? '; secure' : '';
+            document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+        } else { // only name given, get cookie
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    };
+
+    // permet d'intetier plusieur valeur à un cookie
+    jQuery.CkMlt = function (name,variable,value) {
+        if (typeof variable != 'undefined') {
+
+            var sep = '|' ;
+            var sep_value = '=' ;
+            var return_name_string = "";
+            var name_array ;
+            var check_add = false ;
+            if ($j.cookie(name) != null && $j.cookie(name) !="") {
+                name_array = $j.cookie(name).split(sep);
+            } else { name_array = false ; }
+            if (typeof value != 'undefined') {
+                if (name_array) {
+                    for (i=0 ; i < name_array.length ; i++ ) {
+                        if (name_array [i]!=""){
+                            name_array_item = name_array [i].split(sep_value);
+                            if (name_array_item [0] == variable) {
+                                if (value!="" && value!=null) {
+                                    return_name_string += sep+name_array_item [0] + sep_value + value ;
+                                }
+                                check_add = true ;
+                            } else { return_name_string += sep+name_array [i] ; }
+                        }
+                    }
+                    if (!check_add && value!="" && value!=null) {
+                        return_name_string += sep+variable+sep_value+value ;
+                    }
+                } else {
+                    return_name_string = variable+sep_value+value ;
+                }
+                $j.cookie(name, sep, { path: '/', expires: 1 });
+                $j.cookie(name,return_name_string, { path: '/', expires: 1 }) ;
+            } else {
+                if (name_array) {
+                    for (i=0 ; i < name_array.length ; i++ ) {
+                        name_array_item = name_array [i].split(sep_value);
+                        if (name_array_item [0] == variable) {
+                            return name_array_item [1];
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+
+    // Dans la recherche 3S permet de fair un switsh entre l'index normal et archive suivant la date utilisé
+    var verifdate = function() {
+        var date_limite = $j.datepicker._determineDate("-1y", new Date()).getTime();
+
+        if ($j(this).hasClass("ref_index")) {
+            switsh_index (this, $j(this).datepicker( 'getDate' ).getTime(), date_limite) ;
+        }
+
+        $j(this).parents(".ref_index_periode").each( function () {
+            var dates = new Array () ;
+            var index_date = 0 ;
+            var somm_date = 0 ;
+            var moyenne_date = 0;
+
+            $j("input",this).each( function () {
+                somm_date += $j(this).datepicker( 'getDate' ).getTime();
+                index_date ++ ;
+            })
+            moyenne_date = somm_date/index_date ;
+
+            switsh_index (this, moyenne_date, date_limite) ;
+        }) ;
+
+        function switsh_index (input_obj, date, date_limite) {
+            if (date <= date_limite){
+                attr_action = $j(input_obj).parents("form").attr("action");
+                attr_action = attr_action.replace("/gesca/","/archive-gesca/");
+                $j(input_obj).parents("form").attr("action", attr_action);
+            }else{
+                attr_action = $j(input_obj).parents("form").attr("action");
+                attr_action = attr_action.replace("/archive-gesca/","/gesca/");
+                $j(input_obj).parents("form").attr("action", attr_action);
+            }
+        }
+    };
+
+var BzCk = "recherche";
+var bzIdCk = 0 ;
+
+
+/*
+ * functions generique Utilisé par les objets : Galerie, obj_ongle_hierarchie, ...
+*/
+$j.fn.extend({
+    /*
+     * Functions turn conteneur : permet de switcher les contenus dans le cader d'une galerie ou d'un objet onglet
+     * Nécessite : slide_vertical, slide_horizontal
+    */
+    turnConteneur : function (settings) {
+        var set = jQuery.extend(
+            {
+                obj_root : $j("body"),
+                bouton_ongle : "slide",
+                cont_html : "cont_slide",
+                cible : null,
+                anim_direction : false,
+                anim : true,
+                auto_height : false,
+                obj_click : this,
+                call_back_slide : function (set) {},
+                event_init_end : function (set) {} ,
+                turn_end : function (set) {} ,
+                cookies : null
+            }, settings
+        );
+        var call_back = function () {
+            $j("."+set.bouton_ongle+"."+$j(this).attr("num_bt"),set.obj_root).each( function(){
+                $j(this).removeClass(set.bouton_ongle+"_on");
+                if (set.cookies) { $j.CkMlt(set.cookies, $j(this).attr("num_bt"), "" ); }
+                $j("."+set.cible+" ."+$j(this).attr("num_bt"),set.obj_root).removeAttr("style").appendTo($j(this)) ;
+            }) ;
+            $j(set.obj_root).removeClass("anim") ;
+
+            set.call_back_slide (set);
+            set.turn_end (set) ;
+        }
+        init = true ;
+        if ($j("."+set.cible+" ."+set.cont_html,set.obj_root).html()) init = false ;
+        $j(set.obj_click).addClass(set.bouton_ongle+"_on");
+        if (init) {
+            $j("."+set.cont_html,set.obj_click).prependTo($j("."+set.cible,set.obj_root));
+            set.event_init_end (set) ;
+            set.turn_end (set) ;
+        } else {
+            var new_obj = null ;
+            var old_obj = null ;
+            $j("."+set.cont_html,set.obj_click).prependTo($j("."+set.cible,set.obj_root));
+            $j("."+set.cible+" ."+set.cont_html,set.obj_root).each ( function (num) {
+                if (num==0) { new_obj = this ;  }
+                if (num==1) { old_obj = this ;  }
+                if (num>1) { $j(this).stop().removeAttr("style").each (call_back); }
+            });
+
+            $j(set.obj_root).addClass("anim") ;
+            var setting_anim = jQuery.extend({ old_obj : old_obj, call_back : call_back }, set)  ;
+            if (set.anim) {
+                switch(set.anim_type) {
+                    case "slide_horizontal":
+                      $j(new_obj).slide_horizontal(setting_anim) ;
+                      break;
+                    case "slide_vertical":
+                      $j(new_obj).slide_vertical(setting_anim) ;
+                      break;
+                    default:
+                        $j(new_obj).removeAttr("style");
+                        $j(old_obj).each (call_back) ;
+                }
+            } else {
+                $j(new_obj).removeAttr("style");
+                $j(old_obj).each (call_back) ;
+            }
+            set.anim_direction = false ;
+
+        }
+
+    },
+    /*
+     * Functions bubble : affiche une bulle jointe au curseur.
+     * S'active en hover sur le nod cyblé par $j("nod")
+     * Affiche le contenu d'un ensemble de node déterminer par un Array : ["li","img.toto","a.tata"]  (contenu dans le nod parent défini plus haut)
+     * /!\ Ne fonctionne qu'en mode 'live' :-/ objet à faire évoluer pour fonctionner en 'bind' ...
+    */
+    obj_bubble : function (settings) {
+        var set = jQuery.extend(
+            {
+                nod_view : [">*"],
+                skin : "<div />",
+                pos_x : -300,
+                pos_y : 20,
+                cond_open : function (nod) { return true ;},
+                event_hover : function (e,u) {},
+                event_outside : function (e,u) {},
+                event_mousemove : function (e,u) {}
+            }, settings
+        );
+        var bubble_on = true ;
+        $j(this).live( "mousedown mouseup hover mousemove dragstart", function(e) {
+            var nod_hover = this ;
+            if (set.cond_open(nod_hover)) {
+                if (e.type == "mouseover" && bubble_on) {
+                    $j("body").append("<div id='bubble_hover' style='position:absolute; z-index:100;display:none;' />")
+                    $j.each(set.nod_view, function (k, v) {
+                        $j("#bubble_hover").css({
+                            display : "block",
+                            top : (e.pageY+set.pos_y),
+                            left : (e.pageX+set.pos_x)
+                        }).append($j(v,nod_hover).clone());
+
+                    })
+                    $j("#bubble_hover").wrapInner(set.skin) ;
+                    set.event_hover (e,nod_hover);
+                } else if (e.type == "mouseout" || e.type == "mousedown") {
+                    if (e.type == "mousedown") {bubble_on = false ;}
+                    // else {bubble_on = true ;}
+                    $j("#bubble_hover").remove();
+                    set.event_outside (e,nod_hover);
+                } else if (e.type == "mouseup") {
+                    bubble_on = true ;
+                } else if (e.type == "mousemove") {
+                    $j("#bubble_hover").css( {
+                        top : (e.pageY+set.pos_y),
+                        left : (e.pageX+set.pos_x)
+                    })
+                };
+            }
+        })
+    },
+    /*
+     * Functions wrapp colonne : permet de wrapper un ensemble de nod en respectant un nombre de colonnes.
+    */
+    wrapp_colonnes : function (settings) {
+        var set = jQuery.extend(
+            {
+                item_name : "*",
+                nb_colonnes : 4,
+                wrap_html : "<div />",
+                auto_width : true
+            }, settings
+        );
+        $j(this).each ( function (nb) {
+            var nb_par_groupe = $j(">"+set.item_name,this).size()/set.nb_colonnes
+            var nb_par_groupe_min = Math.floor(nb_par_groupe);
+            var nb_grande_col = Math.round((nb_par_groupe - nb_par_groupe_min)*set.nb_colonnes) ;
+
+            var sep_html = "<div class='sep-gr-items' />" ;
+            var compt_col = 0 ;
+            var compt_item = 0 ;
+
+            $j(">"+set.item_name, this).each ( function (k) {
+                if (compt_col<nb_grande_col) { supplement = 1; } else { supplement = 0;}
+                nb_par_col = nb_par_groupe_min + supplement ;
+                if (compt_item==nb_par_col) { compt_item = 1 ; compt_col ++ ; }
+                else { compt_item++ ; }
+                if (compt_item==1) $j(this).before(sep_html);
+            }) ;
+            $j(".sep-gr-items", this).each (function () {
+                var col = $j(this).nextUntil(".sep-gr-items").wrapAll(set.wrap_html) ;
+                $j(this).remove();
+            }) ;
+            if (set.auto_width) $j(">*", this).each (function () { $j(this).css({width:(99.9/set.nb_colonnes)+"%"}) }) ;
+            $j(this).append ("<div class='clear' />");
+        }) ;
+    },
+    /*
+     * Functions wrapp groupe : permet de wrapper un ensemble de nod suivant un nombre d'éléments par groupe
+    */
+    wrapp_groupe : function (item_name, nb_par_groupe, wrap_html) {
+        $j(this).each ( function () {
+            $j(item_name+":nth-child("+nb_par_groupe+"n+1)", this).before("<div class='sep-gr-items' />");
+            $j(".sep-gr-items", this).each (function () {$j(this).nextUntil(".sep-gr-items").wrapAll(wrap_html);$j(this).remove();}) ;
+        });
+    },
+    /*
+     * Functions turn attribut : permet de désactiver/activer des attribut
+    */
+    turnAttr : function (name_attr,on_off) {
+        //!\ FONCTION GÉNÉRIQUE //
+        $j(this).each( function (){
+            if (on_off=="on") {
+                if ($j(this).attr(name_attr+"_off")){ $j(this).attr(name_attr,$j(this).attr(name_attr+"_off")); }
+                else { $j(this).attr(name_attr+"_off",$j(this).attr(name_attr)); }
+            }
+            if (on_off=="off") {
+                if (!$j(this).attr(name_attr+"_off")) { $j(this).attr(name_attr+"_off",$j(this).attr(name_attr)); }
+                $j(this).removeAttr(name_attr);
+            }
+        }).change();
+    },
+    /*
+     * Functions equal height : permet d'armoniser la hauteur d'un ensemble de nod
+    */
+    equalHeight : function () {
+        var tallest = 0;
+        $j(this).each(function() {
+            var thisHeight = $j(this).height();
+            if(thisHeight > tallest) {
+                tallest = thisHeight;
+            }
+        });
+        $j(this).height(tallest);
+    },
+    /*
+     * Functions input value default : permet de désactiver l'input et le remplir si il est vide. L'activer le vider, au focus
+     * pour que cette fonction marche corectement ne pas oublire attr 'value_default' dans l'input
+     * ex. : <input type="text" value_default="ecrivez un mot" value="" name="name" id="un_mt_cles"/>
+     * Nécessite : turnAttr
+    */
+    input_value_default :  function () {
+        $j(this).each ( function (){
+            $j(this)
+            .focus (function(){
+                if($j(this).attr ("value") == $j(this).attr ("value_default"))
+                    // activer l'input en lui atribuan le name
+                    $j(this).val("").turnAttr("name","on");
+            })
+            .blur (function () {
+                if($j(this).attr ("value") == "")
+                    // desactiver l'input si celui ci est vide
+                    $j(this).val($j(this).attr ("value_default")).turnAttr("name","off");
+            });
+            // si l'input est vide, lui atribuer la valeur par defaut
+            if ($j(this).attr ("value") == "")
+                $j(this).attr ({"value":$j(this).attr("value_default")}).turnAttr("name","off") ;
+        })
+    }
+});
+
+
+/*
+ * Functions annimation
+ * Est utilisé par : turnConteneur, obj_galerie, obj_galerie_multi_items
+*/
+$j.fn.extend({
+    slide_vertical : function (settings) {
+        var set = jQuery.extend( {
+            old_obj : $j(this).next(),
+            speed : 500 ,
+            call_back : function (){},
+            auto_height : false,
+            obj_cible :$j(this).parent(),
+            anim_direction: "prev"
+        }, settings );
+
+        var new_obj = this ;
+        var nod_width = $j(set.old_obj).width();
+        var new_height = $j(new_obj).outerHeight();
+        var old_height = $j(set.old_obj).outerHeight();
+        var height_tot = new_height + old_height;
+
+        var set_css = {
+            position:"absolute",
+            left:0,
+            width : nod_width
+        }
+
+        if (set.anim_direction == "prev") {
+            old_top = -new_height  ; new_top = 0;
+            old_obj_pos = new_height  ; new_obj_pos = 0;
+        }
+        if (set.anim_direction == "next") {
+            old_top = 0 ; new_top = -old_height ;
+            old_obj_pos = 0 ; new_obj_pos = old_height;
+        }
+        $j(set.obj_cible).wrapInner("<div class='slide_js' />") ;
+        $j(set.obj_cible).css ({height : old_height }) ;
+        $j(new_obj).removeAttr("style").css(set_css).css("top",new_obj_pos);
+        $j(set.old_obj).removeAttr("style").css(set_css).css("top",old_obj_pos);
+        $j(set.obj_cible).css({ overflow :"hidden" });
+        $j(">.slide_js",set.obj_cible).css({
+            position: "absolute",
+            height: height_tot,
+            left: 0,
+            top: old_top
+        }).animate({top: new_top},set.speed,function () {
+            $j(new_obj).removeAttr("style").appendTo(set.obj_cible);
+            $j(set.old_obj).each(set.call_back);
+            $j(this).remove ();
+            set.obj_cible.removeAttr("style").css({height :"100%"});
+        });
+        if (set.auto_height) $j(set.obj_cible).animate({height:new_height}) ;
+    },
+    slide_horizontal : function (settings) {
+        var set = jQuery.extend( {
+            old_obj : $j(this).next(),
+            speed : 500 ,
+            call_back : function (){},
+            auto_height : false,
+            obj_cible :$j(this).parent(),
+            anim_direction: "prev"
+        }, settings );
+
+        var cdr_w = $j(set.obj_cible).outerWidth();
+        var set_css = {
+            position:"absolute",
+            top:0,
+            width:cdr_w
+        }
+        var new_obj = this ;
+        var new_obj_pos,old_obj_pos, new_left, old_left;
+        if (set.anim_direction == "prev")
+        {
+            old_left = cdr_w*(-1); new_left = 0 ;
+            old_obj_pos = cdr_w ; new_obj_pos = 0;
+        }
+        else if (set.anim_direction == "next")
+        {
+            old_left = 0 ; new_left = cdr_w*(-1) ;
+            old_obj_pos = 0 ; new_obj_pos = cdr_w;
+        }
+
+        $j(set.obj_cible).wrapInner("<div class='slide_js' />") ;
+        $j(set.obj_cible).css ({height : $j(set.old_obj).outerHeight()})
+        $j(new_obj).removeAttr("style").css(set_css).css("left",new_obj_pos);
+        $j(set.old_obj).removeAttr("style").css(set_css).css("left",old_obj_pos);
+        $j(">.slide_js",set.obj_cible).css({
+            position: "absolute",
+            top: 0,
+            left: old_left,
+            width: cdr_w *2
+        }).animate({left: new_left},set.speed,function () {
+            $j(new_obj).removeAttr("style").appendTo(set.obj_cible);
+            $j(set.old_obj).each(set.call_back);
+            $j(this).remove ();
+            set.obj_cible.css({height :"100%"});
+            //ancre_multi_galerie ($j("."+$j(new_obj).attr("num_bt"))) ;
+        });
+        if (set.auto_height) $j(set.obj_cible).animate({height:$j(this).outerHeight()}) ;
+    }
+});
+
+/*
+ * Objet galerie 2 versions :
+    * 1 item par slide
+    * plusieurs items par slide découpé suivant le nombre d'item souhaité par slide
+ * Nécessite : turnConteneur, slide_vertical, slide_horizontal, wrapp_groupe
+*/
+var num_boite  = -1;
+$j.fn.extend({
+    obj_valeur_1_sur_6_items : function (settings) {
+        var set = jQuery.extend(
+            {
+                items : "item_img",
+                items_by_slide : 6,
+                sep_nb_items_1 : " &agrave; ",
+                sep_nb_items_2 : " / ",
+                after_nb_items : " galeries ",
+                auto_height : true ,
+                load_imgs_class : "load_img" ,
+                html_wrapp : "<div class='slide'><ul class='cont_slide'></ul></div>",
+                open_full_slide : false,
+                event_init_bt : function () {
+                    $j(this).wrapp_groupe (".item_img",3,"<li class='line'><ul></ul></li>") ;
+                    $j(".line",this).append("<span class='clear' />") ;
+                    $j(".load_img",this).each ( function () {
+                        if ($j("h3 a",$j(this).parents(".item_img")).attr("href")) {
+                            var url_img = $j(this).attr("href").replace("/924x615/", "/315x210/");
+                            $j(this).after("<a href='"+$j("h3 a",$j(this).parents(".item_img")).attr("href")+"'><span class='load_img' href='"+url_img+"' /></a>") ;
+                            $j(this).remove();
+                        }
+                    });
+
+                    var src_gr_img = $j(".load_img:first",this).attr("href").replace("/315x210/", "/641x427/");
+                    var prem_ln =  $j(".line:first",this) ;
+                    $j(".load_img:first", prem_ln).attr("href",src_gr_img) ;
+                    $j(".item_img:first", prem_ln).addClass("item_img_grande") ;
+                    $j(".item_img:first", prem_ln).nextAll(".item_img").wrapAll("<li class='item_img_col_right'><ul /></li>") ;
+
+                    $j(this).addClass ("init_bt_ready");
+					// ajouter l'html nav by num par pascale
+					$j(this).append("<span class='num_slide'><span class='fd'>"+$j(this).attr("num_slide")+"<span class='fl'></span></span></span>");	
+                }
+            }, settings
+        );
+        $j(this).obj_galerie_multi_items (set) ;
+    },
+    obj_galerie_multi_items : function (settings) {
+        var set = jQuery.extend(
+            {
+                items : "slide",
+                bouton_ongle : "slide",
+                items_by_slide : 3 ,
+                cible : null,
+                html_wrapp : "<div class='slide'><div class='cont_slide'></div></div>",
+				open_full_slide : true,	
+			   event_init_bt : function () {
+                    $j(this).append($j(this).attr("num_slide"));
+                } 
+            }, settings
+        );
+        $j(this).wrapp_groupe ("."+set.items, set.items_by_slide, set.html_wrapp );
+        $j("."+set.bouton_ongle,this).parent().append("<div class='clear'></div>") ;
+        $j(this).obj_galerie (jQuery.extend({ref_item : set.items},set)) ;
+    },
+    obj_galerie : function (settings) {
+        $j(this).addClass("obj_slider").each(function () {
+            num_boite ++ ;
+            var set = jQuery.extend(
+                {
+                    bouton_ongle : "slide",
+                    cont_html : "cont_slide",
+                    ref_item : null,
+                    cible : null,
+                    auto_height : true,
+                    anim : true,
+                    anim_type : "slide_horizontal",
+                    dynamique_url : false ,
+                    ancre_multi_boite : false,
+                    load_imgs_class : false ,
+                    load_ajax : false ,
+                    arrows : true,
+                    sep_nb_items_1 : "-" ,
+                    sep_nb_items_2 : "/",
+                    before_nb_items : "",
+                    after_nb_items : "",
+                    open_full_slide : false,
+                    txt_open_full_slide : "Ouvrir",
+
+                    /*
+                     * peut être utiliser de cette manière là : 'hover click etc ...'
+                     * /!\ ne pas oublier l'event 'click', indispensable pour le bon fonctionnement du slider
+                    */
+                    typ_event_switsh_item : 'click',
+
+                    // event retourner pour chaques boutons au moment de leurs initialisations
+                    event_init_bt : function () {} ,
+
+                    // premier event au moment du click
+                    event_click_before : function (set) {},
+
+                    // appelé par un click : event retourné quand les img sont toutes chargés
+                    event_click_ready : function (set) {},
+
+                    // event retourner avant le slide
+                    event_turn_before : function (set) {
+                        set.get_turnComteneurSlide(set) ;
+                    } ,
+
+                    // event retourné quand les img sont toutes chargés
+                    event_turn_ready : function (set) {},
+
+                    // event retourné au chargement quand tout est inicialisé
+                    event_init_end : function (set) {},
+
+                    // event retourné quand l'annimation du slide est fini
+                    event_turn_after : function () {},
+
+                    // event retourné tous les x cliques
+                    nb_event_intermittent : 0,
+                    event_intermittent : function () {}
+                }, settings
+            );
+
+            set.obj_root = this ;
+            if (!set.ref_item) { set.ref_item = set.cont_html ; }
+
+            var nb_cliques = 0;
+            var nb_intermittent = 0;
+
+            var anim_direction = false ;
+            var nb_total_items = $j("."+set.ref_item,set.obj_root).size() ;
+            $j(this).attr ("nb_total_items",nb_total_items) ;
+            $j(this).attr ("num_boite",num_boite) ;
+            var get_num_boite = num_boite;
+
+            set.call_back_slide  = function (set) {
+                var url_base = document.location.href.split("#")[1] ;
+                url_result = "#";var sep =""; exist=false ;
+
+
+                if (url_base && set.ancre_multi_boite) {
+                    url_base = url_base.split("/") ;
+                    for (i=0;i<url_base.length;i++) {
+                        if (set.obj_click.attr("href")) {
+                            if (set.obj_click.attr("href").split("-box-")[1] == url_base[i].split("-box-")[1]) {
+                                if (set.obj_click.attr("href").split("-box-")[0] == "#"+url_base[i].split("-box-")[0]) { return false ;}
+                                url_result +=  sep+set.obj_click.attr("href").split("#")[1]; exist = true ;
+                            }
+                            else { url_result += sep+url_base[i]; } sep ="/";
+                        }
+                    }
+                    if (!exist) url_result += "/"+set.obj_click.attr("href").split("#")[1];
+                } else {
+                    url_result = set.obj_click.attr("href");
+                }
+                if (set.dynamique_url) {
+                    if ($j.browser.msie && parseInt(jQuery.browser.version)<8) {
+                        if (parseInt(jQuery.browser.version)<7) { timer= 300 ; } else { timer= 150 ; }
+                        if (parseInt(jQuery.browser.version)>6) { var t=setTimeout("window.location.href = '"+url_result+"'",timer); }
+                    } else {
+                        window.location.href = url_result;
+                    }
+                }
+                set.event_turn_after (set);
+            }
+
+            /*
+             * quand le load ajax est prêt et que les appels javascript enfant son inicialisé (exemple galerie enfant)
+             * lance l'appel de la function get_turnComteneurSlide
+             * Nécessaire pour bien mesurer la bonne hauteure
+            */
+            function turnComteneurSlide (set_before) {
+                //$j(set_before.nod_click).parent().click();
+                var set_before = jQuery.extend( {
+                    get_turnComteneurSlide : get_turnComteneurSlide
+                }, set_before);
+                if (set.load_ajax && $j(set_before.nod_click).attr("url_ajax")) {
+                    $j.get($j(set_before.nod_click).attr("url_ajax"), function(data) {
+                        $j(set_before.nod_click).removeAttr ("url_ajax");
+                        $j("."+set.cont_html,set_before.nod_click).append(data) ;
+                        set.event_turn_before (set_before) ;
+                    });
+                } else {
+                    set.event_turn_before (set_before) ;
+                }
+            } ;
+
+            /*
+             * Applique le switsh des slides
+            */
+            function get_turnComteneurSlide (set_turn) {
+                var set_turn = jQuery.extend( {
+                    nod_click : false ,
+                    anim_direction : false,
+                    with_click : false
+                }, set_turn);
+
+                // vérifi si la function est correctement utilisé
+                if (set_turn.nod_click) {
+
+                    if (set.nb_event_intermittent && set.nb_event_intermittent<=nb_cliques) {
+                        nb_cliques = 1;
+                        nb_intermittent += 1;
+                        set_turn.nb_intermittent = nb_intermittent ;
+                        set_turn.event_intermittent (set_turn) ;
+                    } else {
+                        nb_cliques += 1 ;
+                        if ($j(set_turn.nod_click).parents(".bouton_ongle").size() && !set.ancre_multi_boite && set_turn.with_click) { $j(set_turn.nod_click).parents(".bouton_ongle").click(); }
+                        // vérifi si la galerie n'est pas expandé en full
+                        if (!$j(set.obj_root).hasClass("slide_open")) {
+
+                            // ---- <load imgs>
+                                var load_imgs =  Array() ;
+                                var k = 0 ;
+
+                                // load 1 image relié au slide
+                                if ($j(set_turn.nod_click).attr("url_img")) {
+                                    load_imgs [k] = false ;
+                                    $j(set.obj_root).addClass("loading") ;
+                                    var img_top = new Image();
+                                    $j(img_top).load(function () {
+                                        var nod_img = this ;
+                                        $j(set.obj_root).removeClass("loading") ;
+                                        if (set_turn.with_click && set_turn.anim) { $j("."+set_turn.cont_html, set_turn.nod_click).css({display:"none"}) ;  } ;
+                                        $j(set_turn.nod_click)
+                                            .each (function () {
+                                                $j("."+set.cont_html,this).prepend(nod_img);
+                                            })
+                                            .removeAttr("url_img")
+                                            .turnConteneur(jQuery.extend({anim_direction : set_turn.anim_direction},set));
+
+
+                                        if (set_turn.with_click) {
+                                            set_turn.event_click_ready (set_turn) ;
+                                        } else {
+                                            set.event_turn_ready (set_turn) ;
+                                        }
+
+
+
+                                    }).error(function () {
+                                        //alert ("Impossible de charger l'image");
+                                    }).attr('src', $j(set_turn.nod_click).attr("url_img")).addClass("gr_img");
+
+                                    k++ ;
+                                }
+
+                                // load plusieurs images
+                                if ( $j("."+set.load_imgs_class, set_turn.nod_click).size()) {
+                                    $j(set.obj_root).addClass("loading") ;
+
+                                    var nod_lien = Array() ;
+                                    var imgs = Array();
+                                    $j("."+set.load_imgs_class, set_turn.nod_click).each ( function () {
+                                        nod_lien[k] = $j(this) ;
+                                        load_imgs [k] = false ;
+                                        imgs[k] = new Image();
+                                        $j(imgs[k]).attr('src', nod_lien[k].attr("href")) ;
+                                        k ++ ;
+                                    }) ;
+
+                                    $j.each(imgs, function(index, img) {
+                                        if (img.complete) {
+                                            $j(img).each (on_loade) ;
+                                        } else {
+                                            $j(img).load(on_loade).error(function () {
+                                                //alert ("Impossible de charger l'image : " + $j(img).attr("src"));
+                                            });
+                                        }
+                                        function on_loade () {
+                                            $j(this).css("height",img.height);
+                                            load_imgs [index] = true ;
+                                            var map_load = true ;
+                                            nod_lien[index].after(this);
+                                            nod_lien[index].remove();
+                                            $j.each(load_imgs, function(index, value) {
+                                                if (!value){ map_load = false ;}
+                                            });
+                                            if (map_load) {
+                                                $j(set.obj_root).removeClass("loading") ;
+                                                $j(set_turn.nod_click).turnConteneur(jQuery.extend({anim_direction : set_turn.anim_direction},set));
+                                                set.event_turn_ready (jQuery.extend({anim_direction : set_turn.anim_direction},set)) ;
+                                                if (set_turn.with_click) { set_turn.event_click_ready (set_turn) ;}
+                                            }
+                                        } ;
+                                    });
+
+
+                                } else if (!$j(set_turn.nod_click).attr("url_img")) {
+                                    $j(set_turn.nod_click).turnConteneur(jQuery.extend({anim_direction : set_turn.anim_direction},set)) ;
+                                    set.event_turn_ready (jQuery.extend({anim_direction : set_turn.anim_direction},set)) ;
+                                    if (set_turn.with_click) { set_turn.event_click_ready (set_turn) ;}
+                                }
+                            // ---- </load imgs>
+
+                            /*
+                             * mise à jour de l'état des flèches
+                             * mise à jour du compteur de slide
+                            */
+                            if (set.arrows) {
+                                prem_nb_items = parseInt($j(set_turn.nod_click).attr("increment_items")) ;
+                                dern_item_slide = prem_nb_items + parseInt($j(set_turn.nod_click).attr("nb_items")) ;
+                                if (prem_nb_items != dern_item_slide)
+                                {
+                                    nb_cont = prem_nb_items+set.sep_nb_items_1+dern_item_slide;
+                                }
+                                else {
+                                    nb_cont = prem_nb_items;
+                                }
+                                $j(".nav_nb_items .nb_base",set.nav_parent).html(nb_cont);
+                                var array_num_bt = $j(set_turn.nod_click).attr("num_bt").split("_");
+                                if (!$j("."+set.bouton_ongle+"."+array_num_bt[0]+"_"+array_num_bt[1]+"_"+(parseInt(array_num_bt[2])+1),set.obj_root).size()) { $j(".next", set.nav_parent).addClass("nex_off"); } else { $j(".nav_gal .next", set.nav_parent).removeClass("nex_off"); }
+                                if (!$j("."+set.bouton_ongle+"."+array_num_bt[0]+"_"+array_num_bt[1]+"_"+(parseInt(array_num_bt[2])-1),set.obj_root).size()) { $j(".prev", set.nav_parent).addClass("prev_off"); } else { $j(".nav_gal .prev", set.nav_parent).removeClass("prev_off"); }
+                                /* Pour les Google Analytics Events
+                                */
+                                //$j(".nav_top .next").addClass("nextbas");
+                                //$j(".prev", set.nav_parent).attr('class', 'prev');
+                                //$j(".prev", set.nav_parent).addClass($j(set_turn.nod_click).attr("increment_items"));
+                                //$j(".next", set.nav_parent).attr('class', 'next');
+                                //$j(".next", set.nav_parent).addClass($j(set_turn.nod_click).attr("increment_items"));
+                                /**/
+                            }
+                        } else {
+                            // mise à jours des états quand le slider est affiché en full
+                            $j("."+set.bouton_ongle+"_on",set.obj_root).removeClass(set.bouton_ongle+"_on");
+                            $j(set_turn.nod_click).addClass(set.bouton_ongle+"_on");
+                            set.call_back_slide (jQuery.extend({nod_click : $j(set_turn.nod_click)},set));
+                        }
+                        
+                    }
+                }
+            }
+            if (!set.cible || set.cible == set.bouton_ongle+'_cible') { $j("."+set.bouton_ongle,this).parent().before('<div class="'+set.bouton_ongle+'_cible" />') ; set.cible = set.bouton_ongle+'_cible';}
+            set.obj_cible = $j("."+set.cible, set.obj_root) ;
+
+            $j(set.obj_cible).addClass("disp_ecran");
+
+            /*
+             * init des boutons :
+             * Construir les url
+             * Déterminer la direction du slide
+             * Ajouter les events sur les boutons (hover, click ...)
+             *   /!\  avoir au minimum l'event click pour que le scripte marche correctement
+            */
+            var cont_items = 0 ;
+            function event_switsh_img (nod_click) {
+                set.event_click_before (jQuery.extend( { nod_click :$j(nod_click) }, set )) ;
+                if (!$j(nod_click).hasClass(set.bouton_ongle+"_on") && !$j(set.obj_root).hasClass("loading") && !$j(set.obj_root).hasClass("anim")) {
+                    if ($j("."+set.bouton_ongle+"_on",set.obj_root).attr("num_bt")) {
+                        var id_bt_click = parseInt($j(nod_click).attr("num_bt").split("_")[2]);
+                        var id_bt_old = parseInt($j("."+set.bouton_ongle+"_on",set.obj_root).attr("num_bt").split("_")[2]);
+                        if (id_bt_click<id_bt_old) { anim_direction= "prev"; }
+                        if (id_bt_click>id_bt_old) { anim_direction= "next"; }
+                    } else { anim_direction= null ; }
+                    turnComteneurSlide (jQuery.extend({nod_click:nod_click, anim_direction:anim_direction, with_click:true},set)) ;
+                } else {
+                    set.event_click_ready (jQuery.extend({nod_click:nod_click, anim_direction:anim_direction, with_click:true},set));
+                }
+            }
+            // init affichage image
+            var ancre_bt = document.location.href.split("#")[1];
+            
+            var verif_click = false ;
+
+            // affichage des flèches
+            if (set.arrows) {
+                if (set.open_full_slide) { open_full_slide = "<div class='slidebas'><div class='open_full_slide'><span class='fd_l'><span class='fd_r'><span class='fd_picto'>"+set.txt_open_full_slide+"</span></span></span></div></div>" ;} else  { open_full_slide = "";}
+                $j(set.obj_cible).after (
+                    "<div class='nav_parent'><div class='load'></div>"
+                        +"<div class='nav_top'>"+open_full_slide+"<ul class='nav_gal'><li class='next'><span>&gt;</span></li><li class='prev'><span>&lt;</span></li></ul></div>"
+                        +"<div class='nav_nb_items'><ul class='nav_gal'><li class='next'><span>&gt;</span></li><li class='prev'><span>&lt;</span></li></ul> "+set.before_nb_items+" <span class='nb_base' /><span class='sepnb'> "+set.sep_nb_items_2+" </span><span class='nb_items'>"+nb_total_items+"</span> "+set.after_nb_items+" </div>"
+                    +"</div>"
+                );
+                set.nav_parent = $j(">.nav_parent",set.obj_root);
+
+                $j(".next",set.nav_parent).click( function () {
+                    if ( !$j(set.obj_root).hasClass("loading") && !$j(set.obj_root).hasClass("anim")) {
+                        var array_num_bt = $j("."+set.bouton_ongle+"_on",set.obj_root).attr("num_bt").split("_");
+                        $j("."+set.bouton_ongle+"."+array_num_bt[0]+"_"+array_num_bt[1]+"_"+(parseInt(array_num_bt[2])+1),set.obj_root).each( function (){ if (!$j(set.obj_root).hasClass("loading")) { event_switsh_img (this) ;} } ) ;
+                    }
+                })
+                $j(".prev",set.nav_parent).click( function () {
+                    if ( !$j(set.obj_root).hasClass("loading") && !$j(set.obj_root).hasClass("anim")) {
+                        var array_num_bt = $j("."+set.bouton_ongle+"_on",set.obj_root).attr("num_bt").split("_");
+                        $j("."+set.bouton_ongle+"."+array_num_bt[0]+"_"+array_num_bt[1]+"_"+(parseInt(array_num_bt[2])-1),set.obj_root).each( function (){ if (!$j(set.obj_root).hasClass("loading")) { event_switsh_img (this) ;} } ) ;
+                    }
+                })
+                $j(".open_full_slide",set.nav_parent).toggle( function () {
+                    $j("."+set.cont_html,set.obj_cible).each( function (){
+                        $j("."+set.bouton_ongle+"_on."+$j(this).attr("num_bt"),set.obj_root).append($j(this));
+                    })
+                    $j(set.obj_root).addClass("slide_open") ;
+                }, function () {
+                    $j(set.obj_root).removeClass("slide_open") ;
+                    $j("."+set.bouton_ongle+"_on",set.obj_root).removeClass(set.bouton_ongle+"_on").click();
+                });
+                /*
+                * Pour les Event tags de Google Analytics
+                */
+                $j(".nav_top .prev").click( function () {
+                    //alert('prevbas');
+                    secondAccount._trackEvent('slideshow', 'bas', 'flechegauche');
+                });
+                $j(".nav_top .next").click( function () {
+                    //alert('nextbas');
+                    secondAccount._trackEvent('slideshow', 'bas', 'flechedroite');
+                });
+                $j(".open").click( function () {
+                    //alert('Fermer');
+                    secondAccount._trackEvent('slideshow', 'bas', 'ouvrir');
+                });
+                $j(".close").click( function () {
+                    //alert('Ouvrir');
+                    secondAccount._trackEvent('slideshow', 'bas', 'ouvrir');
+                });
+                // autres Events dans general-jquery.js
+            }
+
+            $j("."+set.bouton_ongle,this).addClass("bouton_ongle").each( function (num) {
+
+                var obj_bt = this ; attr_href = false ;
+                $j(obj_bt).attr("increment_items", cont_items+1);
+                $j(obj_bt).attr("num_slide", num+1);
+
+                cont_items += $j("."+set.ref_item,obj_bt).size() ;
+                $j(obj_bt).attr("nb_items",($j("."+set.ref_item,obj_bt).size()-1));
+                if ($j(">.ref_slide a.ref",obj_bt).size()) {
+                    if (set.ancre_multi_boite) {
+                        ancre_href = $j(">.ref_slide a.ref",obj_bt).attr("href").split("#")[1]+"_"+num+"-box-"+num_boite;
+                    } else  {
+                        ancre_href = $j(">.ref_slide a.ref",obj_bt).attr("href").split("#")[1];
+                    }
+                    $j(">.ref_slide a.ref",obj_bt).removeAttr("href");
+                    $j(".ancre_statique",obj_bt).remove();
+                } else if ($j(">.ajax_gr_img",obj_bt).size()) {
+                    attr_href = $j(".ajax_gr_img",obj_bt).attr("href");
+                    array_href = attr_href.split("/");
+                    if (set.ancre_multi_boite) {
+                        ancre_href = array_href[array_href.length-1].split(".")[0]+"_"+num+"-box-"+num_boite ;
+                    } else {
+                        ancre_href = array_href[array_href.length-1].split(".")[0] ;
+                    }
+
+                    $j(">.ajax_gr_img",obj_bt)
+                    .attr("href","#"+ancre_href)
+                    .removeAttr("target")
+                    .click( function() {
+                        $j(obj_bt).click();
+                        return false ;
+                    })
+                } else { ancre_href = "Slide-"+num+"-box-"+num_boite;}
+                $j(obj_bt).addClass(ancre_href)
+                $j(obj_bt).attr("href","#"+ancre_href) ;
+                if (attr_href) $j(obj_bt).attr("url_img",attr_href) ;
+
+
+
+
+
+
+                /*
+                 * ref unique pour identifier le node & récupérer le node
+                 * Ajouter les événements
+                */
+                $j("."+set.cont_html,this).addClass("num_"+num_boite+"_"+num).addClass("cont_html").attr("num_bt","num_"+num_boite+"_"+num);
+
+                $j(obj_bt).addClass ("bt_slide")
+                .addClass("num_"+num_boite+"_"+num).attr("num_bt","num_"+num_boite+"_"+num)
+                .bind(set.typ_event_switsh_item,function () { event_switsh_img (this) ;});
+
+
+
+
+
+                // personnalisation exterieur
+                $j(this).each(set.event_init_bt);
+
+
+            }) ;
+
+            /*
+             * Affichage du slide au chargement
+             * 2ème bouclage sur les boutons nécessaire pour avoir tous les items initialisé : nécessair pour cibler l'item suivant
+            */
+            if ($j("."+set.bouton_ongle+"_on",this).size()) {
+                 turnComteneurSlide (jQuery.extend({nod_click:$j("."+set.bouton_ongle+"_on",this),anim_direction:false},set));
+                 verif_click = true ;
+            } else {
+                $j("."+set.bouton_ongle,this).each ( function () {
+                    if (ancre_bt) {
+                        lst_bt = ancre_bt.split("/") ;
+                        if (lst_bt.length>0) {
+                            for (y=0;y<lst_bt.length;y++) {
+                                if ((($j("."+lst_bt[y],this).size() && set.ancre_multi_boite!=true) || $j(this).hasClass(lst_bt[y])) && !verif_click ) {
+                                    turnComteneurSlide (jQuery.extend({nod_click:$j(this),anim_direction:false},set)); verif_click = true ;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+            if (!verif_click) { $j("."+set.bouton_ongle+":first-child", this).each( function () {
+                turnComteneurSlide (jQuery.extend({nod_click:this,anim_direction:false},set));
+            }); }
+
+
+            /*
+             * event changement de l'url --> turn conteneur
+             * désactivé pour IE7-IE6 car trop lent sur ces 2 versions
+            */
+            if (num_boite==0 && (!$j.browser.msie || parseInt(jQuery.browser.version)>7)) {
+                $j(window).bind( 'hashchange', function(e) {
+                    ancre_bt = location.hash.split("#")[1] ;
+                    var lst_bt = Array() ;
+                    lst_bt = ancre_bt.split("/") ;
+                    for (y=0;y<lst_bt.length;y++) {
+                        if (lst_bt[y] && $j("."+lst_bt[y]).html() && !$j("."+lst_bt[y]).hasClass(set.bouton_ongle+"_on")) { $j("."+lst_bt[y]).click(); }
+                    }
+                }) ;
+            }
+
+        });
+    }
+});
+
+
+$j.fn.extend({
+    obj_ongle_hierarchie : function (bouton_ongle,cible,cont_html,event_click_bt, call_back_actif) {
+        var set = {obj_root : $j(this), bouton_ongle : bouton_ongle, cont_html : cont_html, cible : cible, cookies : BzCk} ;
+        if (event_click_bt == null) {event_click_bt = function () {} ;}
+        if (call_back_actif == null) {call_back_actif = function () {} ;}
+        $j(this).each(function (num_boite) {
+            var cookie_existe = false ;
+            var obj_root = this ;
+            // creation d'une reference unique pour le cookie
+            var title = $j(this).attr("tt") ? $j(this).attr("tt")+"_"+num_boite : num_boite;
+            $j("."+cont_html,this).each( function (num) {
+                $j(this).attr("cookie", "ogl"+num_boite+"_"+num) ;
+            });
+            // boucle sur les boutons
+            $j("."+bouton_ongle,this).each( function (num) {
+                var num_result = "num_"+title+"_"+num ;
+                $j("."+cont_html,this).addClass("num_"+num_boite+"_"+num).attr("num_bt","num_"+num_boite+"_"+num); // ref unique pour récupérer le node
+                $j(this).addClass("num_"+num_boite+"_"+num).attr("num_bt","num_"+num_boite+"_"+num) ; // attribut pour lier bt / cookie
+                //si le cookie correspond à l'omgles
+                if($j.CkMlt(BzCk,"num_"+title+"_"+num)=="true"){
+                    cookie_existe = true ;
+
+                    $j(this).turnConteneur(set) ;
+                    if(num!=0) { call_back_actif (); $j.CkMlt(BzCk,num_result,"true"); }
+                }
+                $j(this).click(function () {
+                    $j(this).turnConteneur(set) ;
+                    $j.CkMlt(BzCk,num_result,"true");
+                    event_click_bt ();
+                    return false;
+                });
+            }) ;
+            if (!cookie_existe) {$j("."+bouton_ongle+":nth-child(1)",this).turnConteneur({obj_root : obj_root, bouton_ongle : bouton_ongle, cont_html : cont_html, cible : cible}); }
+        }).addClass("ongle_js_act");
+    },
+    drop_liste : function (bt_class) {
+        $j(this).each (function () {
+            var parent_obj = $j(this) ;
+            var class_off = bt_class+"_off";
+            $j('body').click(function() { parent_obj.addClass(class_off); });
+            parent_obj.addClass(class_off);
+            $j("."+bt_class,this).click ( function () {
+                if(parent_obj.hasClass(class_off)) { parent_obj.removeClass(class_off); }
+                else { parent_obj.addClass(class_off);  }
+                return false ;
+            });
+        })
+    },
+    folding_simple : function (item,btOp,body,mode_open, premopen, speed,event_click_bt,type_init) {
+        if (!event_click_bt) var event_click_bt = function () {};
+        if (!type_init) var type_init = "cookie";
+        var cookie_off = "";
+        if(!speed) var speed = 700 ;
+        $j(this).each ( function () {
+            //javascript:$j.CkMlt("test","test_1","test_1")
+            var true_open = true ;
+            var root = $j(this);
+            var RefCk = false ;
+            if ($j(this).attr("cookie")){ RefCk = $j(this).attr("cookie") ; }
+            $j("."+item, this).each ( function (num) {
+                if (RefCk){ var IdCk = RefCk+"_"+num; }
+                else { var IdCk = bzIdCk+"_"+num ; }
+                $j(this).attr("cookie",IdCk);
+                var obg_body = $j("."+body,this) ;
+                $j("."+btOp,this).each ( function () {
+                    function swiFold (obg_this, on_off_dep,on_off_fin) {
+                        var cookie = $j(obg_this).parents("."+item).attr("cookie");
+                        $j(obg_this).parents("."+item).removeClass(item+"_"+on_off_dep).addClass(item+"_"+on_off_fin);
+                        if ($j("."+btOp+"_txt",obg_this).html()) {
+                            $j("."+btOp+"_txt",obg_this).each ( function () {
+                                var attr_off_on = "txt_"+on_off_dep ;
+                                if ($j(this).attr("txt_"+on_off_fin)) $j(this).html($j(this).attr("txt_"+on_off_fin));
+                            })
+                        }
+                        if (on_off_fin=='on') {$j.CkMlt(BzCk,RefCk+cookie,on_off_fin) ; } else {
+                        $j.CkMlt(BzCk,RefCk+cookie,"");
+                        cookie_off += item+cookie+"\n"; };
+                    }
+                    $j(this).click (function () {
+                        var obg_btOp = this ;
+                        if ($j(this).parents("."+item+"_on").html()){
+                            if (mode_open!="single_always") obg_body.slideUp(speed,function () {swiFold (obg_btOp,'on','off');event_click_bt ();});
+                        }else{
+                            if (mode_open=="single" || mode_open=="single_always"){
+                                root.each ( function () {
+                                    $j("."+item+"_on", this).each ( function () {
+                                        var obg_bt_close = $j("."+btOp,this);
+                                        $j("."+body,this).slideUp(speed,function () {swiFold (obg_bt_close,'on','off');});
+                                    })
+                                });
+                                obg_body.slideDown(speed,function () {swiFold (obg_btOp,'off','on');event_click_bt ();});
+                            } else {
+                                obg_body.slideDown(speed,function () {swiFold (obg_btOp,'off','on');event_click_bt ();});
+                            }
+                        }
+
+                        return false;
+                    });
+                    if (type_init == "cookie" && ($j.CkMlt(BzCk,RefCk+IdCk)=="on" && true_open || premopen)) {
+                        if (mode_open=="single" || mode_open=="single_always") {true_open = false ;}
+                        swiFold (this,'off','on');
+                        premopen = false;
+                    }
+                });
+
+            })
+            bzIdCk += 1 ;
+        }).addClass(item+"_js");
+    }
+})
+
+function communicationToLightBox() {    // Pour agrandir slideshow dans article
+$j('#toggleSlide .slides_naves .slide').removeClass('slide_on');
+var pos = $j('.no1 .nb_base').html();
+$j('#toggleSlide .nb_base').html(pos);
+ var nb_items = $j('.nb_items').html();
+
+   
+    var realPosition = pos - 1; 
+    var listNameClass = 'toggleSlide .cont_slide.num_1_' + realPosition;
+    var conteneurClass = 'toggleSlide .slides_naves .slide.bouton_ongle.Slide-'+ realPosition  + '-box-1';
+    /*
+		Prend ce qui est dans le div cible qui est la liste et ensuite l'insere dans le div bouton_ongle a sa position respective
+			
+	*/
+	var valueClass = ($j('#toggleSlide .slide_cible .cont_slide').attr("class"));
+	valueClass = valueClass.substring(11,18);
+	
+	$j('#toggleSlide .slide.bouton_ongle').each(function() 
+		{
+				var valueTemp = $j(this).attr("class");
+				valueTemp = valueTemp.substring(42,49);
+				if( valueTemp == valueClass )
+				{
+				$j('#toggleSlide .slide.bouton_ongle.' + valueTemp).prepend($j('#toggleSlide .slide_cible .cont_slide'));
+				
+				}
+				
+				 
+		});
+	
+	
+    $j('#toggleSlide .slides_naves .slide.bouton_ongle.Slide-0-box-1').prepend($j('#toggleSlide .slide_cible .cont_slide'));
+    
+    $j('#toggleSlide .slide_cible').prepend($j('#' + listNameClass));
+    /*
+	var imgPath = $j('#' + listNameClass).find('.item_img_photo img').attr("src");
+    var slashAt = imgPath.charAt(0);
+	
+	if( slashAt == "/")
+	{
+		var newImgPath  = imgPath.replace("/","")
+		$j('#' + listNameClass).find('.item_img_photo img').attr("src",newImgPath);
+    }
+	*/
+    
+	if( pos < nb_items || pos > 1 )
+	{
+		
+		$j('#toggleSlide .prev').removeClass('prev_off');
+		$j('#toggleSlide .next').removeClass('nex_off');
+	}
+	
+	if ( pos == 1 ) 
+	{
+		$j('#toggleSlide .prev').addClass('prev_off');
+		$j('#toggleSlide .next').removeClass('nex_off');
+	}
+	else if ( pos == nb_items )
+	{
+		$j('#toggleSlide .prev').removeClass('prev_off');
+		$j('#toggleSlide .next').addClass('nex_off');
+	}
+	
+	//$j('#toggleSlide .slides_naves .slide').removeClass('slide_on');
+	$j('#' + conteneurClass).addClass('slide_on');
+	//$j('#toggleSlide .obj_porte_entree_un').removeClass('anim'); 
+}
+
+

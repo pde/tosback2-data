@@ -1,0 +1,55 @@
+// use this variable to see if command runs at all
+DDP041712 = false;
+
+le.uxd.ui.abtest.manager.execute('DDP041712', {
+	allocation: [0,50,25,25],
+	eVar: 'eVar40',
+	eVarFormat: function(testName, group){
+		return testName + "-_-" + group;
+	},
+	kioskGroup: 'A',
+	duration: 45,
+	command: function(group){
+		
+		// if we made it here, the ab-test error handling should take over
+		DDP041712 = true;
+		
+		$(document).ready(function(){
+			if (group == 'A' || group == 'B'){
+				$('#navigation-dropdown-container').show();
+				return;
+			}
+			
+			if (group == 'C'){
+				$('#navigation-panel-container-wrapper').addClass('dark-panel');
+				$('#navigation-panel-container-wrapper').addClass('DDP041712');
+				$('#navigation-panel-container').show();
+				return;
+			}
+			
+			if (group == 'D'){
+				$('#navigation-panel-container-wrapper').addClass('dark-panel');
+				$('#navigation-panel-container').show();
+				return;
+			}
+				
+			$('#navigation-dropdown-container').show();
+			return;
+		});
+		
+	},
+	error: function(){
+		$('#navigation-dropdown-container').show();
+		return;
+	}
+});
+
+// if error anywhere on the page show dropdowns
+$(window).error(function(){
+	setTimeout(function(){
+		if (!DDP041712 && $('#navigation-dropdown-container').css('display') == 'none' && $('#navigation-panel-container').css('display') == 'none'){
+			$('#navigation-dropdown-container').show();
+			return;
+		}
+	},5000);
+})

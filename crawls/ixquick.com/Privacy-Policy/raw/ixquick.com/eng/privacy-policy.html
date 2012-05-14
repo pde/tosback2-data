@@ -912,6 +912,7 @@ function trim(str) {
 }
 
 function check_feedback() {
+
   var feedback_text = trim(document.feedback.box.value);
   var empty_string = /^\s*$/
 
@@ -971,19 +972,22 @@ function preloadImages() {
 	}
 }
 preloadImages();
-function highlight ( urlsent,question_count) {
+function highlight () {
+    var question_count = 28;
     var url= location.href;
-    if (urlsent) {
-        url = urlsent;
-        for (var i=1;i<=question_count;i++)
-        {
-            var answer_id = "q"+i+"ab";                                                                                                                                                                           
-            if(document.getElementById(answer_id) != null) {                                                                                                                                                      
-                document.getElementById(answer_id).style.backgroundColor ="#FFFFFF";                                                                                                                             
-            } 
-        }
-    } 
-    
+  
+    for (var i = 1 ;i <= question_count ;i++)
+      {
+         var answer_id = "q"+i+"ab";                                                                                                                                                                           
+         if(document.getElementById(answer_id)) {                                                                                                                                                      
+             document.getElementById(answer_id).style.backgroundColor ="#FFFFFF";                                                                                                                             
+         } 
+         
+      }
+
+    if ( (url.indexOf("privacy") != -1) && ( document.getElementById("qgoogle_cookieab")) ) {
+        document.getElementById("qgoogle_cookieab").style.backgroundColor ="#FFFFFF";
+    }
 	var ie = (document.all)? true: false;
 	if (url.indexOf("#") != -1) {
 	var offset = url.indexOf("#");
@@ -992,10 +996,22 @@ function highlight ( urlsent,question_count) {
 		if (tagname == "lowestprice") {
 			tagname = "phone";
 		}
+        if (tagname == "google_cookie") {
+            tagname = "q" + tagname;
+        }
 		tagname += "ab";
+
 		if (document.getElementById(tagname)) {
             document.getElementById(tagname).style.backgroundColor = "#EFF3FF";
         }
+        //Added to color the question part as white on the privacy q-a page.
+        if (url.indexOf("protect-privacy") != -1) {
+            var question = url.substring(offset + 1) + "q";
+            if (document.getElementById(question)) {
+                document.getElementById(question).style.backgroundColor ="#FFFFFF";
+            }
+        }
+
 	} else {
 		for (var i=1; i < 10; i++) {
 			var fieldname = tagname + i;
@@ -1007,6 +1023,7 @@ function highlight ( urlsent,question_count) {
 		}
 	}
 	}
+    setTimeout('highlight()',200);
 }
 
 
@@ -1167,6 +1184,25 @@ function tellafriend_form_submit () {
 	}
 	return true;
 }
+
+function show_hide_browser_info_checkbox() {
+    if ( (document.getElementById('senderemail')) && (document.getElementById('senderemail').value.replace(/^\s+|\s+$/g,'').length > 0 )) {
+        if (document.getElementById('hidden_clientinfo')) {
+            document.getElementById('hidden_clientinfo').style.display='block';
+            if ((document.getElementById('clientinfo')) && (document.getElementById('clientinfo').value == 0) ){
+                document.getElementById('clientinfo').checked = true;
+                document.getElementById('clientinfo').value = 1;
+            }
+        }
+        
+    } else {
+        if (document.getElementById('hidden_clientinfo')) {
+            document.getElementById('hidden_clientinfo').style.display='none';
+            }
+    }
+    setTimeout('show_hide_browser_info_checkbox()',500);
+}
+setTimeout('show_hide_browser_info_checkbox()',500);
 
 function certifiedsecure(langID) {
     day = new Date();
@@ -1348,20 +1384,19 @@ function makeHomePage (obj, page_url) {
 <div class="separator"><hr/></div>
 <div class="subtitle" id="subTitle" >Privacy Policy</div><div id="min-width"></div>
 <div class="content" style="padding-right: 30px;"><!--BODYCONTENT--><br style='line-height: 10px;'><span>In short:</span>
-<h3 style='margin-top: 0;'> Ixquick does NOT collect or share your personal information! </h3>
+<h3 style='margin-top: 0;'> Ixquick does NOT collect or share ANY personal information!  </h3>
 <p> The longer version: <br>
-Ixquick is strongly committed to protecting the privacy of its user community.  
-This privacy policy details the information Ixquick.com ("Ixquick") may gather from the individuals who visit us, how that information is used, and our disclosure policy. </p>
+Ixquick is strongly committed to protecting the privacy of its user community.<br/><br/>This privacy policy details the - very limited - information Ixquick.com ("Ixquick") may gather and our disclosure policy. </p>
 
 <h3>IP Addresses</h3>
-<p>The IP address that is associated with your search will NOT be recorded.<BR> The only exception is for &#147;abusive&#148; (automated) queriers that rapidly submit many queries to Ixquick in a very short time.</p>
+<p>The IP address that is associated with your search will NOT be recorded.<BR>(The only exception is for &#147;abusive&#148; (automated) queriers that rapidly submit many queries to Ixquick in a very short time.)</p>
 <h3>Data Collection</h3>
-<p>Ixquick collects limited information each time you visit our site, so we can improve the overall quality of your online experience. We only collect browser and platform type and register the date and time you visited the Ixquick.com site. Like most standard Web site servers, we use log files to collect and store this anonymous user information.</p>
+<p id= 'qdataab'>Ixquick does NOT collect ANY data that can uniquely identify our users.<br/>The IP address is the most important data not to store but even browser and platform information can, combined with other information, <a href="https://panopticlick.eff.org" target="_blank">uniquely identify</a> a person. That's why we don't store those either.<br/>Even the anonymized search terms are not recorded, as they themselves could potentially contain personal information. (think of someone entering his own name or social security number)<br/>To improve the overall quality of the users' online experience we only register aggregate, non-personal search data, like the language, category and total number of searches.</p>
 <h3>Cookies</h3>
-<p>Cookies are small pieces of data that are sent and saved to your computer's hard drive when visiting sites.</p>
-<p>Ixquick uses only one anonymous cookie called "preferences". This cookie is to remember the search preferences you saved for your next visit. It expires after 90 days.</p>
-<p>You can choose to accept or refuse cookies by changing the settings of your browser. It should be noted, however, that your Ixquick.com preferences will not work properly if your cookies are turned off. It is possible to accept cookies from selected sites only.</p>
-<p>You can periodically delete cookies from your computer's hard drive, clearing out all historical data that may have been saved from your previous web surfing. If you delete cookies, you will not be recognized as a repeat visitor or viewer when returning to a site.</p><p>To promote a cookie-free internet, Ixquick has recently launched a <a href="https://ixquick.com/eng/urlgenerator-details.html" target="_blank" onclick="window.open('/eng/urlgenerator-details.html','','directories=no,location=no,scrollbars=yes,status=no,toolbar=no,menubar=no,height=500,width=1003'); return false;">URL generator</a> which eradicates the need for setting a cookie. It remembers your settings in a privacy friendly manner. It can be found at the bottom of the <a href="https://ixquick.com/do/preferences.pl?language_ui=english" target="_blank">SETTINGS</a> page.</p><h3>External Links</h3>
+<p>Cookies are small pieces of data that are sent and saved to your computer's hard drive when visiting sites.</br>
+Ixquick uses only one anonymous cookie called "preferences". This cookie is to remember the search preferences you saved for your next visit. It expires after 90 days.</br>
+You can choose to accept or refuse cookies by changing the settings of your browser. It should be noted, however, that your Ixquick.com preferences will not work properly if your cookies are turned off. It is possible to accept cookies from selected sites only.</br>
+You can periodically delete cookies from your computer's hard drive, clearing out all historical data that may have been saved from your previous web surfing. If you delete cookies, you will not be recognized as a repeat visitor or viewer when returning to a site.</br>To promote a cookie-free internet, Ixquick has recently launched a <a href="https://ixquick.com/eng/urlgenerator-details.html" target="_blank" onclick="window.open('/eng/urlgenerator-details.html','','directories=no,location=no,scrollbars=yes,status=no,toolbar=no,menubar=no,height=500,width=1003'); return false;">URL generator</a> which eradicates the need for setting a cookie. It remembers your settings in a privacy friendly manner. It can be found at the bottom of the <a href="https://ixquick.com/do/preferences.pl?language_ui=english" target="_blank">SETTINGS</a> page.<br/></p><h3>External Links</h3>
 <p>As a search engine, and as an advertising publisher, you will find various links on our site, including but not limited to search results and sponsored results. These sites are owned and maintained by independent companies, over which Ixquick has no control, and who are not covered by this privacy policy. Ixquick is not liable or responsible for the content of these sites, or their collection of information and its use. Please note that this privacy policy applies only to the Ixquick.com website.</p>
 <h3>Email addresses</h3>
 <p>When you send comments, questions, suggestions, or feedback to Ixquick via email, and include an email address and/or contact information Ixquick may use this information to respond to you. Ixquick will not sell or disclose your contact information to any third parties. We may, however, very occasionally send emails to our users regarding Ixquick company information. This service is opt-in and includes the option to unsubscribe.</p>

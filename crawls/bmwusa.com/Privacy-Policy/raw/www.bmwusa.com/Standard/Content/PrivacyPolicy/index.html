@@ -7,14 +7,15 @@
 	Overview - BMW - BMW North America
 </title><link rel="image_src" href="http://cache.bmwusa.com/image_a1fb6a42-9289-4a13-a625-522106f9d447.arox?v=13bfe254-7435-414c-be9f-f80b34b51f00" /><meta name="verify-v1" content="Zc8NW6czi0f+Wqe/UHbSVsOlSAXI41UOLs2H3l9nqGA=" /><meta name="viewport" content="width=1024" />
         <noscript><meta http-equiv="Refresh" content="0; URL=http://www.bmwusa.com/Error_NoJavaScript.aspx?enc=TwtIH4NDLtTic4I3WW2FY6wgsAHP9Pdk99PLHataMawJ4azYavhdpAeUvxeDsFsJhx1248LKwQTKiuQqUr5ft3nZlnfkimivloGh0tm5CBo=" /></noscript>
-        <link href="http://www.bmwusa.com/CSS/Bmw.css?v=201244169" rel="stylesheet" type="text/css" />
+        <link href="http://www.bmwusa.com/CSS/Bmw.css?v=2012542052" rel="stylesheet" type="text/css" />
         
         <script src="http://www.bmwusa.com/jsenvconst.ashx" type="text/javascript"></script>
         <script type="text/javascript" src="http://www.bmwusa.com/JavaScript/jQuery/jquery-1.6.2.min.js" ></script>
-        <script src="http://www.bmwusa.com/JavaScript/Bmw.js?v=201244169" type="text/javascript"></script>
+        <script src="http://www.bmwusa.com/JavaScript/knockout-2.0.0.js" type="text/javascript"></script>
+        <script src="http://www.bmwusa.com/JavaScript/Bmw.js?v=2012542052" type="text/javascript"></script>
         <script src="http://www.bmwusa.com/JavaScript/jquery.BmwButton.js" type="text/javascript"></script>
-        <script src="http://www.bmwusa.com/JavaScript/Form/DynamicAnalytics.js" type="text/javascript"></script>
         <script src="http://www.bmwusa.com/JavaScript/mbox.js" type="text/javascript"></script>
+        <script src="http://www.bmwusa.com/JavaScript/Form/DynamicAnalytics.js" type="text/javascript"></script>
         <script src="http://www.bmwusa.com/JavaScript/jQuery.MoveToTop.js" type="text/javascript"></script>
         
         <script type="text/javascript">
@@ -56,6 +57,40 @@
         
     
 <!-- Demdex Tag Insertion Manager --><script type="text/javascript">var dexBaseURL = (("https:" == document.location.protocol) ? "https://a248.e.akamai.net/demdex.download.akamai.com/varickmm/" : "http://cdn.demdex.net/varickmm/");document.write(unescape("%3Cscript src='" + dexBaseURL + "demdex.js' type='text/javascript'%3E%3C/script%3E"));</script><!-- End Demdex Insertion Manager -->
+
+    <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            $.ajax({
+                url: "/Services/MemberInfo.svc/Current/NavigationData",
+                dataType: 'json',
+                success: function (navigationData)
+                {
+                    if (navigationData.IsLoggedIn) { $('#TopNavNew .SignedOut').hide(); }
+                    else { $('#TopNavNew .SignedIn').hide(); }
+
+                    navigationData.DealerMapClick = ko.computed(function ()
+                    {
+                        return "javascript:openDealerMap('" + navigationData.DealerMapUrl + "')";
+                    });
+
+                    if (document.getElementById('LoginBoxContainer'))
+                    {
+                        ko.applyBindings(navigationData, document.getElementById('LoginBoxContainer'));
+                    }
+                },
+                error: function ()
+                {
+                    var navigationData = { IsLoggedIn: false, LoginPageUrl: "/Secured/Content/Forms/Login.aspx" };
+                    if (document.getElementById('LoginBoxContainer'))
+                    {
+                        ko.applyBindings(navigationData, document.getElementById('LoginBoxContainer'));
+                    }
+                }
+            });
+        });
+    </script>
+    
 <meta name="template" content="/Standard/Masters/T61.master" />
 
 <meta name="keywords" content="128i Conv. 135i Convertible, 128i Coupe, 135i Coupe, 328i Coupe, 328xi Coupe, 335i Coupe, 335xi Coupe, 328i Sedan, 328xi Sedan, 335i Sedan, 335xi Sedan, 328i Sports Wagon, 328xi Sports Wagon, 328i Convertible, 335i Convertible, M3 Coupe, M3 Sedan, M3 Convertible, 528i Sedan, 528xi Sedan, 535i Sedan, 535xi Sedan, 550i Sedan, 535xi Sports Wagon, M5 Sedan, X3 3.0si, X5 3.0si, X5 4.8i, 650i Coupe, 650i Convertible, M6 Coupe, M6 Convertible, 750i Sedan, 750Li Sedan, 760Li Sedan, Z4 Coupe 3.0si, Z4 Roadster 3.0i, Z4 Roadster 3.0si, Z4 M Coupe, Z4 M Roadster, BMW, BMWs, Car, Cars, Drivers, Automotive, Auto, Automobile, Autos, Automobiles, Vehicle, Vehicles, Series, Engineer, Engineering, German, Germany, European, Performance, Luxury, Autobahn, Responsive, Responsiveness, well made, manufactured, trip, accessories, Safety, Security, Power, Performance, Stopping, Braking, Cornering, Handling, dynamic stability control, ultimate, ultimate driving machine, Ultimate Service" />
@@ -65,7 +100,10 @@
 <meta name="ROBOTS" content="FOLLOW,INDEX" />
 
 <link href="http://www.bmwusa.com/CSS/NavSecondary.css" rel="stylesheet" type="text/css" /><meta name="servername" content="702" />
-<link id="ctl00_ctl00_ctl00_topNavCss" href="http://www.bmwusa.com/css/TopNav/TopNav.css" rel="stylesheet" type="text/css" /><script id="ctl00_ctl00_ctl00_hoverIntent" type="text/javascript" language="javascript" src="http://www.bmwusa.com/JavaScript/jQuery/plugins/jquery.hoverIntent.minified.js"></script><script id="ctl00_ctl00_ctl00_Modernizr" type="text/javascript" language="javascript" src="http://www.bmwusa.com/JavaScript/Modernizr-min.js"></script><script id="ctl00_ctl00_ctl00_bgiFrame" type="text/javascript" language="javascript" src="http://www.bmwusa.com/JavaScript/jQuery/plugins/jquery.bgiframe.min.js"></script><script id="ctl00_ctl00_ctl00_topNavJs" type="text/javascript" language="javascript" src="http://www.bmwusa.com/JavaScript/TopNav/TopNav.js"></script>
+<link id="ctl00_ctl00_ctl00_topNavCss" href="http://www.bmwusa.com/css/TopNav/TopNav.css" rel="stylesheet" type="text/css" /><script id="ctl00_ctl00_ctl00_hoverIntent" type="text/javascript" language="javascript" src="http://www.bmwusa.com/JavaScript/jQuery/plugins/jquery.hoverIntent.minified.js"></script><script id="ctl00_ctl00_ctl00_Modernizr" type="text/javascript" language="javascript" src="http://www.bmwusa.com/JavaScript/Modernizr-min.js"></script><script id="ctl00_ctl00_ctl00_bgiFrame" type="text/javascript" language="javascript" src="http://www.bmwusa.com/JavaScript/jQuery/plugins/jquery.bgiframe.min.js"></script><script id="ctl00_ctl00_ctl00_topNavJs" type="text/javascript" language="javascript" src="http://www.bmwusa.com/JavaScript/TopNav/TopNav.js"></script><link id="ctl00_ctl00_ctl00_topNavDataImagesCss" href="http://www.bmwusa.com/css/TopNav/TopNavDataImages.css" rel="stylesheet" type="text/css" />
+	<!--[if IE 8]>
+		<link href="/css/TopNav/IE8Problems.css" rel="stylesheet" type="text/css" />
+	<![endif]-->
 	<!--[if lt IE 8]>
 		<link href="/css/TopNav/IEOld.css" rel="stylesheet" type="text/css" />
 		<script src="/JavaScript/TopNav/TopNav-IEOld.js" type="text/javascript"></script>
@@ -84,7 +122,7 @@
 <input type="hidden" name="ctl00_ctl00_ctl00_ScriptManager1_HiddenField" id="ctl00_ctl00_ctl00_ScriptManager1_HiddenField" value="" />
 <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
 <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
-<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTM1NjQyNjIwOQ9kFgJmD2QWAmYPZBYCZg8PFgIeD1ByZXZpb3VzUGFuZWxJRGZkFgQCAQ9kFggCBQ8WAh4EVGV4dAXYAQ0KICAgICAgICA8bm9zY3JpcHQ+PG1ldGEgaHR0cC1lcXVpdj0iUmVmcmVzaCIgY29udGVudD0iMDtVUkw9L0Vycm9yX05vSmF2YVNjcmlwdC5hc3B4P2VuYz1Ud3RJSDROREx0VGljNEkzV1cyRlk2d2dzQUhQOVBkazk5UExIYXRhTWF3SjRhellhdmhkcEFlVXZ4ZURzRnNKaHgxMjQ4TEt3UVRLaXVRcVVyNWZ0M25abG5ma2ltaXZsb0doMHRtNUNCbz0iIC8+PC9ub3NjcmlwdD4NCmQCBg8WAh8BBVEgICAgICAgIDxsaW5rIGhyZWY9Ii9DU1MvQm13LmNzcz92PTIwMTI0NDE2OSIgcmVsPSJzdHlsZXNoZWV0IiB0eXBlPSJ0ZXh0L2NzcyIgLz5kAggPFgIfAQVNPHNjcmlwdCBzcmM9Ii9KYXZhU2NyaXB0L0Jtdy5qcz92PTIwMTI0NDE2OSIgdHlwZT0idGV4dC9qYXZhc2NyaXB0Ij48L3NjcmlwdD5kAhEPFgIfAQWEAzwhLS0gRGVtZGV4IFRhZyBJbnNlcnRpb24gTWFuYWdlciAtLT48c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCI+dmFyIGRleEJhc2VVUkwgPSAoKCJodHRwczoiID09IGRvY3VtZW50LmxvY2F0aW9uLnByb3RvY29sKSA/ICJodHRwczovL2EyNDguZS5ha2FtYWkubmV0L2RlbWRleC5kb3dubG9hZC5ha2FtYWkuY29tL3Zhcmlja21tLyIgOiAiaHR0cDovL2Nkbi5kZW1kZXgubmV0L3Zhcmlja21tLyIpO2RvY3VtZW50LndyaXRlKHVuZXNjYXBlKCIlM0NzY3JpcHQgc3JjPSciICsgZGV4QmFzZVVSTCArICJkZW1kZXguanMnIHR5cGU9J3RleHQvamF2YXNjcmlwdCclM0UlM0Mvc2NyaXB0JTNFIikpOzwvc2NyaXB0PjwhLS0gRW5kIERlbWRleCBJbnNlcnRpb24gTWFuYWdlciAtLT5kAgMPZBYCAgMPZBYKAgUPFgIfAQWdAjxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0Ij4NCmZ1bmN0aW9uIFZpZXdUb3VyKCkNCnsNCgl2YXIgYWNjZXNzTGV2ZWwgPSAnMSc7DQlpZiAoYWNjZXNzTGV2ZWwgPT0gJzMnIHx8IGFjY2Vzc0xldmVsID09ICc1JyB8fCBhY2Nlc3NMZXZlbCA9PSAnNycpDQoJew0KCQlWaWV3RlNUb3VyKCk7DQoJfQ0KCWVsc2UgaWYgKGFjY2Vzc0xldmVsID09ICc0JykNCgl7DQoJCVZpZXdPd25lclRvdXIoKTsNCgl9DQoJZWxzZQ0KCXsNCgkJVmlld1Zpc2l0b3JUb3VyKCkNCgl9DQp9DQo8L3NjcmlwdD4NCmQCCw8WAh8BBXQ8aW5wdXQgdHlwZT0iaGlkZGVuIiBuYW1lPSJoaWROb01vZGFsVXJsIiBpZD0iaGlkTm9Nb2RhbFVybCIgdmFsdWU9Ii9TdGFuZGFyZC9Db250ZW50L1ByaXZhY3lQb2xpY3kvRGVmYXVsdC5hc3B4IiAvPmQCDw9kFgQCAQ9kFgICAQ9kFgICAQ8PFgIeC05hdmlnYXRlVXJsBTdodHRwczovL3d3dy5ibXd1c2EuY29tL1NlY3VyZWQvQ29udGVudC9Gb3Jtcy9Mb2dpbi5hc3B4ZGQCBA9kFgJmDw8WAh4HVmlzaWJsZWhkZAIRD2QWBAIBDxYCHgVjbGFzcwUMbGlua1NlbGVjdGVkZAIRDw8WAh8BBQQyMDEyZGQCEw9kFgJmD2QWBAIBDxYCHwEFbA0KPHNjcmlwdCBsYW5ndWFnZT0iSmF2YVNjcmlwdCIgdHlwZT0idGV4dC9qYXZhc2NyaXB0IiBzcmM9Ii9KYXZhU2NyaXB0L3NfY29kZS5qcz92PTIwMTIxMjUxMzMxIj48L3NjcmlwdD4NCmQCAg8WAh8BBcAEDQogIA0KPHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiPiANCihmdW5jdGlvbigpIHsgDQogIHZhciBoID0gJ2NvbS1ibXd1c2EubmV0bW5nLmNvbSc7IA0KICB2YXIgdCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ3NjcmlwdCcpOyANCiAgdC50eXBlID0gJ3RleHQvamF2YXNjcmlwdCc7IHQuYXN5bmMgPSB0cnVlOyANCiAgdmFyIHAgPSAnaHR0cHM6Jz09ZG9jdW1lbnQubG9jYXRpb24ucHJvdG9jb2w/J2h0dHBzOi8vJzonaHR0cDovLyc7IA0KICB2YXIgbSA9IGRvY3VtZW50LnJlZmVycmVyLm1hdGNoKC9odHRwcz86XC9cLyhbYS16XStcLlthLXpcLl0rKS9pKTsgDQogIHZhciByID0gKG0gJiYgbVsxXSAhPSBkb2N1bWVudC5sb2NhdGlvbi5ob3N0bmFtZSkgPyAoJyZyZWY9JyArIGVzY2FwZShkb2N1bWVudC5yZWZlcnJlcikpIDogJyc7IA0KICB0LnNyYyA9IHAgKyBoICsgJy8/YXN5bmM9MScgKyByOyANCiAgdmFyIHMgPSBkb2N1bWVudC5nZXRFbGVtZW50c0J5VGFnTmFtZSgnc2NyaXB0JylbMF07IA0KIHMucGFyZW50Tm9kZS5pbnNlcnRCZWZvcmUodCwgcyk7IA0KfSkoKTsgDQo8L3NjcmlwdD4gZBgCBR5fX0NvbnRyb2xzUmVxdWlyZVBvc3RCYWNrS2V5X18WAwVCY3RsMDAkY3RsMDAkY3RsMDAkTWFzdGVyQ29udGVudCRMZWZ0TmF2UGFnZVRvb2xzJEFTUHhQb3B1cENvbnRyb2wxBVFjdGwwMCRjdGwwMCRjdGwwMCRNYXN0ZXJDb250ZW50JExlZnROYXZQYWdlVG9vbHMkQVNQeFBvcHVwQ29udHJvbDEkY2hrU2VuZE1lQUNvcHkFQmN0bDAwJGN0bDAwJGN0bDAwJE1hc3RlckNvbnRlbnQkTGVmdE5hdlBhZ2VUb29scyRBU1B4UG9wdXBDb250cm9sMgVKY3RsMDAkY3RsMDAkY3RsMDAkTWFzdGVyQ29udGVudCRMZWZ0TmF2UGFnZVRvb2xzJEFTUHhQb3B1cENvbnRyb2wxJG12RW1haWwPD2RmZMvim4zLRPMutACw9SR7VWqsnWRI" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTM1NjQyNjIwOQ9kFgJmD2QWAmYPZBYCZg8PFgIeD1ByZXZpb3VzUGFuZWxJRGZkFgQCAQ9kFggCBQ8WAh4EVGV4dAXYAQ0KICAgICAgICA8bm9zY3JpcHQ+PG1ldGEgaHR0cC1lcXVpdj0iUmVmcmVzaCIgY29udGVudD0iMDtVUkw9L0Vycm9yX05vSmF2YVNjcmlwdC5hc3B4P2VuYz1Ud3RJSDROREx0VGljNEkzV1cyRlk2d2dzQUhQOVBkazk5UExIYXRhTWF3SjRhellhdmhkcEFlVXZ4ZURzRnNKaHgxMjQ4TEt3UVRLaXVRcVVyNWZ0M25abG5ma2ltaXZsb0doMHRtNUNCbz0iIC8+PC9ub3NjcmlwdD4NCmQCBg8WAh8BBVIgICAgICAgIDxsaW5rIGhyZWY9Ii9DU1MvQm13LmNzcz92PTIwMTI1NDIwNTIiIHJlbD0ic3R5bGVzaGVldCIgdHlwZT0idGV4dC9jc3MiIC8+ZAIIDxYCHwEFTjxzY3JpcHQgc3JjPSIvSmF2YVNjcmlwdC9CbXcuanM/dj0yMDEyNTQyMDUyIiB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiPjwvc2NyaXB0PmQCEQ8WAh8BBYQDPCEtLSBEZW1kZXggVGFnIEluc2VydGlvbiBNYW5hZ2VyIC0tPjxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0Ij52YXIgZGV4QmFzZVVSTCA9ICgoImh0dHBzOiIgPT0gZG9jdW1lbnQubG9jYXRpb24ucHJvdG9jb2wpID8gImh0dHBzOi8vYTI0OC5lLmFrYW1haS5uZXQvZGVtZGV4LmRvd25sb2FkLmFrYW1haS5jb20vdmFyaWNrbW0vIiA6ICJodHRwOi8vY2RuLmRlbWRleC5uZXQvdmFyaWNrbW0vIik7ZG9jdW1lbnQud3JpdGUodW5lc2NhcGUoIiUzQ3NjcmlwdCBzcmM9JyIgKyBkZXhCYXNlVVJMICsgImRlbWRleC5qcycgdHlwZT0ndGV4dC9qYXZhc2NyaXB0JyUzRSUzQy9zY3JpcHQlM0UiKSk7PC9zY3JpcHQ+PCEtLSBFbmQgRGVtZGV4IEluc2VydGlvbiBNYW5hZ2VyIC0tPmQCAw9kFgICAw9kFgoCBQ8WAh8BBZ0CPHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiPg0KZnVuY3Rpb24gVmlld1RvdXIoKQ0Kew0KCXZhciBhY2Nlc3NMZXZlbCA9ICcxJzsNCWlmIChhY2Nlc3NMZXZlbCA9PSAnMycgfHwgYWNjZXNzTGV2ZWwgPT0gJzUnIHx8IGFjY2Vzc0xldmVsID09ICc3JykNCgl7DQoJCVZpZXdGU1RvdXIoKTsNCgl9DQoJZWxzZSBpZiAoYWNjZXNzTGV2ZWwgPT0gJzQnKQ0KCXsNCgkJVmlld093bmVyVG91cigpOw0KCX0NCgllbHNlDQoJew0KCQlWaWV3VmlzaXRvclRvdXIoKQ0KCX0NCn0NCjwvc2NyaXB0Pg0KZAILDxYCHwEFdDxpbnB1dCB0eXBlPSJoaWRkZW4iIG5hbWU9ImhpZE5vTW9kYWxVcmwiIGlkPSJoaWROb01vZGFsVXJsIiB2YWx1ZT0iL1N0YW5kYXJkL0NvbnRlbnQvUHJpdmFjeVBvbGljeS9EZWZhdWx0LmFzcHgiIC8+ZAIPD2QWAgIED2QWAmYPDxYCHgdWaXNpYmxlaGRkAhEPZBYEAgEPFgIeBWNsYXNzBQxsaW5rU2VsZWN0ZWRkAhEPDxYCHwEFBDIwMTJkZAITD2QWAmYPZBYEAgEPFgIfAQVsDQo8c2NyaXB0IGxhbmd1YWdlPSJKYXZhU2NyaXB0IiB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0iL0phdmFTY3JpcHQvc19jb2RlLmpzP3Y9MjAxMjEyNTEzMzEiPjwvc2NyaXB0Pg0KZAICDxYCHwEFwAQNCiAgDQo8c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCI+IA0KKGZ1bmN0aW9uKCkgeyANCiAgdmFyIGggPSAnY29tLWJtd3VzYS5uZXRtbmcuY29tJzsgDQogIHZhciB0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnc2NyaXB0Jyk7IA0KICB0LnR5cGUgPSAndGV4dC9qYXZhc2NyaXB0JzsgdC5hc3luYyA9IHRydWU7IA0KICB2YXIgcCA9ICdodHRwczonPT1kb2N1bWVudC5sb2NhdGlvbi5wcm90b2NvbD8naHR0cHM6Ly8nOidodHRwOi8vJzsgDQogIHZhciBtID0gZG9jdW1lbnQucmVmZXJyZXIubWF0Y2goL2h0dHBzPzpcL1wvKFthLXpdK1wuW2EtelwuXSspL2kpOyANCiAgdmFyIHIgPSAobSAmJiBtWzFdICE9IGRvY3VtZW50LmxvY2F0aW9uLmhvc3RuYW1lKSA/ICgnJnJlZj0nICsgZXNjYXBlKGRvY3VtZW50LnJlZmVycmVyKSkgOiAnJzsgDQogIHQuc3JjID0gcCArIGggKyAnLz9hc3luYz0xJyArIHI7IA0KICB2YXIgcyA9IGRvY3VtZW50LmdldEVsZW1lbnRzQnlUYWdOYW1lKCdzY3JpcHQnKVswXTsgDQogcy5wYXJlbnROb2RlLmluc2VydEJlZm9yZSh0LCBzKTsgDQp9KSgpOyANCjwvc2NyaXB0PiBkGAIFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYDBUJjdGwwMCRjdGwwMCRjdGwwMCRNYXN0ZXJDb250ZW50JExlZnROYXZQYWdlVG9vbHMkQVNQeFBvcHVwQ29udHJvbDEFUWN0bDAwJGN0bDAwJGN0bDAwJE1hc3RlckNvbnRlbnQkTGVmdE5hdlBhZ2VUb29scyRBU1B4UG9wdXBDb250cm9sMSRjaGtTZW5kTWVBQ29weQVCY3RsMDAkY3RsMDAkY3RsMDAkTWFzdGVyQ29udGVudCRMZWZ0TmF2UGFnZVRvb2xzJEFTUHhQb3B1cENvbnRyb2wyBUpjdGwwMCRjdGwwMCRjdGwwMCRNYXN0ZXJDb250ZW50JExlZnROYXZQYWdlVG9vbHMkQVNQeFBvcHVwQ29udHJvbDEkbXZFbWFpbA8PZGZk8px6PoOUcRMp8UGzjRjSYm+g5UU=" />
 </div>
 
 <script type="text/javascript">
@@ -168,7 +206,8 @@ function ViewTour()
             
 
 <NOINDEX>
-<?xml version="1.0" encoding="utf-8"?>
+
+
 <div id="TopNavNew">
   <div id="TopNavGrey">
     <div id="Menu" class="Menu">
@@ -201,7 +240,7 @@ function ViewTour()
                       <div class="modelSubMenuBottom">
                         <div class="Legal modelBadgeExplain">i signifies a fuel-injected engine  
                             </div>
-                        <img src="http://cache.bmwusa.com/image_6256c981-6f02-4006-bf23-5868c0fb613c.arox" alt="http://cache.bmwusa.com/cosy.arox?pov=frontside&amp;brand=WBBM&amp;vehicle=121A&amp;client=byo&amp;date=20110301&amp;paint=P0300&amp;fabric=FLWSW&amp;sa=S02D1,S0346,S0520,S0521&amp;width=407&amp;height=174&amp;quality=90&amp;width=407&amp;height=174&amp;quality=90" class="modelImage" />
+                        <img src="http://cache.bmwusa.com/image_6256c981-6f02-4006-bf23-5868c0fb613c.arox" alt="http://cache.bmwusa.com/cosy.arox?pov=frontside&amp;brand=WBBM&amp;vehicle=121A&amp;client=byo&amp;paint=P0300&amp;fabric=FLWSW&amp;sa=S02D1,S0346,S0520,S0521&amp;width=407&amp;height=174&amp;quality=90&amp;width=407&amp;height=174&amp;quality=90" class="modelImage" />
                         <div class="modelName">128i Coupe</div>
                         <div class="modelInfo">Born to perform.  Driven to please.</div>
                         <div class="modelInfo">3.0-liter, DOHC, inline 6-cylinder</div>
@@ -304,7 +343,7 @@ function ViewTour()
                 <div class="modelSubMenuBottom">
                   <div class="Legal modelBadgeExplain">i signifies a fuel-injected engine  
                                                             </div>
-                  <img src="http://cache.bmwusa.com/image_a14938b5-04ce-4581-b675-ef9fb864550f.arox" alt="" class="modelImage" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeF4FwIEIAAAAAKD9qY8AAgABdDtSRwAAAABJRU5ErkJggg==" alt="" class="modelImage" id="modelImage1" />
                   <div class="seriesName">The BMW 1 Series.</div>
                   <div class="seriesmarketText">Handsome looks with sporting intentions.</div>
                   <input type="image" src="http://cache.bmwusa.com/image_bdec1937-3069-4a73-8e02-c30e9283b7e0.arox" alt="" class="seriesCtaButton" onClick="javascript:window.location.href='/standard/content/vehicles/2012/1/default.aspx';return false;" />
@@ -346,29 +385,6 @@ function ViewTour()
                       </div>
                     </li>
                     <li>
-                      <a href="http://www.bmwusa.com/standard/content/vehicles/2011/3/328ixdrivesedan/default.aspx">328i xDrive Sedan</a>
-                      <div class="popupShadow">
-                        <div class="popupMenu">
-                          <img src="http://cache.bmwusa.com/image_2f593cd0-d891-4268-b05d-4aac94828bb6.arox" style="width: 6px; height: 8px;" alt="" />
-                          <a href="http://www.bmwusa.com/standard/content/vehicles/2011/3/328ixdrivesedan/default.aspx">Overview</a>
-                          <a href="http://www.bmwusa.com/standard/content/vehicles/2011/3/328ixdrivesedan/modelhighlights/default.aspx">Model Highlights</a>
-                          <a href="http://www.bmwusa.com/standard/content/vehicles/2011/3/328ixdrivesedan/3seriessedanmediagallery.aspx">Media Gallery</a>
-                          <a href="http://www.bmwusa.com/standard/content/vehicles/2011/3/328ixdrivesedan/features_and_specs/default.aspx">Features &amp; Specs</a>
-                          <a href="http://www.bmwusa.com/standard/content/byo/byohome.aspx?namodelcode=1147">Build Your Own</a>
-                        </div>
-                      </div>
-                      <div class="modelSubMenuBottom">
-                        <div class="Legal modelBadgeExplain">xDrive is BMW's intelligent all-wheel drive system i signifies a fuel-injected engine  
-                            </div>
-                        <img src="http://cache.bmwusa.com/image_6256c981-6f02-4006-bf23-5868c0fb613c.arox" alt="http://cache.bmwusa.com/cosy.arox?pov=frontside&amp;brand=WBBM&amp;vehicle=1147&amp;client=byo&amp;paint=P0A52&amp;fabric=FLCB4&amp;sa=S02K9,S0502,S0521&amp;width=407&amp;height=174&amp;quality=90" class="modelImage" />
-                        <div class="modelName">328i xDrive Sedan</div>
-                        <div class="modelInfo">A force of nature in any weather.</div>
-                        <div class="modelInfo">3.0-liter, inline 6-cylinder engine</div>
-                        <div class="modelInfo">xDrive, intelligent all-wheel drive</div>
-                        <div class="modelInfo">Starting at $36,600</div>
-                      </div>
-                    </li>
-                    <li>
                       <a href="http://www.bmwusa.com/standard/content/vehicles/2012/3/335isedan/default.aspx">335i Sedan</a>
                       <div class="popupShadow">
                         <div class="popupMenu">
@@ -389,29 +405,6 @@ function ViewTour()
                         <div class="modelInfo">3.0-liter,  inline 6-cylinder engine with TwinPower Turbo technology</div>
                         <div class="modelInfo">Rear-wheel drive</div>
                         <div class="modelInfo">Starting at $42,400</div>
-                      </div>
-                    </li>
-                    <li>
-                      <a href="http://www.bmwusa.com/standard/content/vehicles/2011/3/335ixdrivesedan/default.aspx">335i xDrive Sedan</a>
-                      <div class="popupShadow">
-                        <div class="popupMenu">
-                          <img src="http://cache.bmwusa.com/image_2f593cd0-d891-4268-b05d-4aac94828bb6.arox" style="width: 6px; height: 8px;" alt="" />
-                          <a href="http://www.bmwusa.com/standard/content/vehicles/2011/3/335ixdrivesedan/default.aspx">Overview</a>
-                          <a href="http://www.bmwusa.com/standard/content/vehicles/2011/3/335ixdrivesedan/modelhighlights/default.aspx">Model Highlights</a>
-                          <a href="http://www.bmwusa.com/standard/content/vehicles/2011/3/335ixdrivesedan/3seriessedanmediagallery.aspx">Media Gallery</a>
-                          <a href="http://www.bmwusa.com/standard/content/vehicles/2011/3/335ixdrivesedan/features_and_specs/default.aspx">Features &amp; Specs</a>
-                          <a href="http://www.bmwusa.com/standard/content/byo/byohome.aspx?namodelcode=1143">Build Your Own</a>
-                        </div>
-                      </div>
-                      <div class="modelSubMenuBottom">
-                        <div class="Legal modelBadgeExplain">xDrive is BMW's intelligent all-wheel drive system i signifies a fuel-injected engine  
-                            </div>
-                        <img src="http://cache.bmwusa.com/image_6256c981-6f02-4006-bf23-5868c0fb613c.arox" alt="http://cache.bmwusa.com/cosy.arox?pov=frontside&amp;brand=WBBM&amp;vehicle=1143&amp;client=byo&amp;paint=P0354&amp;fabric=FKASW&amp;sa=S02SZ,S0403,S0502,S0521,S0522&amp;width=407&amp;height=174&amp;quality=90" class="modelImage" />
-                        <div class="modelName">335i xDrive Sedan</div>
-                        <div class="modelInfo">The weather can't catch up.</div>
-                        <div class="modelInfo">3.0-liter, inline 6-cylinder engine with TwinPower Turbo technology</div>
-                        <div class="modelInfo">xDrive, intelligent all-wheel drive</div>
-                        <div class="modelInfo">Starting at $44,050</div>
                       </div>
                     </li>
                   </ul>
@@ -675,7 +668,7 @@ function ViewTour()
                 <div class="modelSubMenuBottom">
                   <div class="Legal modelBadgeExplain"> xDrive is BMW's intelligent all-wheel-drive system   i signifies a fuel-injected engine  d signifies BMW advanced diesel   
                                                             </div>
-                  <img src="http://cache.bmwusa.com/image_2013494f-a4b0-46c2-b0ed-159984d9c5ce.arox" alt="" class="modelImage" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeF4FwIEIAAAAAKD9qY8AAgABdDtSRwAAAABJRU5ErkJggg==" alt="" class="modelImage" id="modelImage3" />
                   <div class="seriesName">The BMW 3 Series.</div>
                   <div class="seriesmarketText">Measures in smiles per hour.</div>
                   <input type="image" src="http://cache.bmwusa.com/image_bdec1937-3069-4a73-8e02-c30e9283b7e0.arox" alt="" class="seriesCtaButton" onClick="javascript:window.location.href='/standard/content/vehicles/2012/3/default.aspx';return false;" />
@@ -974,7 +967,7 @@ function ViewTour()
                 <div class="modelSubMenuBottom">
                   <div class="Legal modelBadgeExplain">xDrive is BMW's intelligent all-wheel-drive system   i signifies a fuel-injected engine  
                                                             </div>
-                  <img src="http://cache.bmwusa.com/image_b5a3f6d5-5c97-4ae3-ba9e-1c48d0f68fe0.arox" alt="" class="modelImage" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeF4FwIEIAAAAAKD9qY8AAgABdDtSRwAAAABJRU5ErkJggg==" alt="" class="modelImage" id="modelImage5" />
                   <div class="seriesName">The BMW 5 Series.</div>
                   <div class="seriesmarketText">Settle for More.</div>
                   <input type="image" src="http://cache.bmwusa.com/image_bdec1937-3069-4a73-8e02-c30e9283b7e0.arox" alt="" class="seriesCtaButton" onClick="javascript:window.location.href='/standard/content/vehicles/2012/5/default.aspx';return false;" />
@@ -1064,7 +1057,7 @@ function ViewTour()
                   </ul>
                   <ul style="&#xD;&#xA;                    width: 170px&#xD;&#xA;                ">
                     <li class="bold">
-                      <a href="http://www.bmwusa.com/standard/content/Vehicles/2013/6/640iGranCoupe/default.aspx">Explore Gran Coupes </a>
+                      <a href="http://www.bmwusa.com/standard/content/vehicles/2013/6/6SeriesGranCoupeexplore.aspx">Explore Gran Coupes </a>
                     </li>
                     <li>
                       <a href="http://www.bmwusa.com/standard/content/Vehicles/2013/6/640iGranCoupe/default.aspx">640i Gran Coupe </a>
@@ -1081,7 +1074,7 @@ function ViewTour()
                       <div class="modelSubMenuBottom">
                         <div class="Legal modelBadgeExplain">i signifies a fuel-injected engine  
                             </div>
-                        <img src="http://cache.bmwusa.com/image_6256c981-6f02-4006-bf23-5868c0fb613c.arox" alt="http://cache.bmwusa.com/cosy.arox?pov=frontside&amp;brand=WBBM&amp;vehicle=136G&amp;client=byo&amp;paint=P0300&amp;fabric=FLCSW&amp;sa=S0223,S0302,S0322,S03AG,S0403,S04UR,S0508,S0524,S05A1&amp;width=407&amp;height=174&amp;quality=90" class="modelImage" />
+                        <img src="http://cache.bmwusa.com/image_6256c981-6f02-4006-bf23-5868c0fb613c.arox" alt="http://cache.bmwusa.com/cosy.arox?pov=frontside&amp;brand=WBBM&amp;vehicle=136G&amp;client=byo&amp;paint=P0A82&amp;fabric=FLCSW&amp;sa=S0223,S0302,S0322,S03AG,S0403,S04UR,S0508,S0524,S05A1&amp;width=407&amp;height=174&amp;quality=90" class="modelImage" />
                         <div class="modelName">640i Gran Coupe</div>
                         <div class="modelInfo">An Aura of Excellence</div>
                         <div class="modelInfo">3.0-liter, inline 6-cylinder engine with TwinPower Turbo technology</div>
@@ -1178,7 +1171,7 @@ function ViewTour()
                 <div class="modelSubMenuBottom">
                   <div class="Legal modelBadgeExplain">i signifies a fuel-injected engine  
                                                             </div>
-                  <img src="http://cache.bmwusa.com/image_ad549a5e-3f6b-482f-8b8e-f93dade85e9d.arox" alt="" class="modelImage" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeF4FwIEIAAAAAKD9qY8AAgABdDtSRwAAAABJRU5ErkJggg==" alt="" class="modelImage" id="modelImage6" />
                   <div class="seriesName">The BMW 6 Series.</div>
                   <div class="seriesmarketText">Live vicariously through no one.</div>
                   <input type="image" src="http://cache.bmwusa.com/image_bdec1937-3069-4a73-8e02-c30e9283b7e0.arox" alt="" class="seriesCtaButton" onClick="javascript:window.location.href='/standard/content/vehicles/2012/6/default.aspx';return false;" />
@@ -1450,7 +1443,7 @@ function ViewTour()
                 <div class="modelSubMenuBottom">
                   <div class="Legal modelBadgeExplain">i signifies a fuel-injected engine  
                                                             </div>
-                  <img src="http://cache.bmwusa.com/image_b609f44f-dbaa-42fd-84d1-2900b08ceff0.arox" alt="" class="modelImage" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeF4FwIEIAAAAAKD9qY8AAgABdDtSRwAAAABJRU5ErkJggg==" alt="" class="modelImage" id="modelImage7" />
                   <div class="seriesName">The BMW 7 Series.</div>
                   <div class="seriesmarketText">The driver's luxury car.</div>
                   <input type="image" src="http://cache.bmwusa.com/image_bdec1937-3069-4a73-8e02-c30e9283b7e0.arox" alt="" class="seriesCtaButton" onClick="javascript:window.location.href='/Standard/Content/Vehicles/2012/7/default.aspx ';return false;" />
@@ -1532,7 +1525,7 @@ function ViewTour()
                 <div class="modelSubMenuBottom">
                   <div class="Legal modelBadgeExplain">xDrive is BMW's intelligent all-wheel-drive system   i signifies a fuel-injected engine   
                                                             </div>
-                  <img src="http://cache.bmwusa.com/image_4cf5b7cf-a2ce-4a5d-a0bd-ec8edf7d7af0.arox" alt="" class="modelImage" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeF4FwIEIAAAAAKD9qY8AAgABdDtSRwAAAABJRU5ErkJggg==" alt="" class="modelImage" id="modelImageX3" />
                   <div class="seriesName">The BMW X3 SAV.</div>
                   <div class="seriesmarketText">Versatility has never looked this good.</div>
                   <input type="image" src="http://cache.bmwusa.com/image_bdec1937-3069-4a73-8e02-c30e9283b7e0.arox" alt="" class="seriesCtaButton" onClick="javascript:window.location.href='/standard/content/vehicles/2013/X3/default.aspx';return false;" />
@@ -1683,7 +1676,7 @@ function ViewTour()
                 <div class="modelSubMenuBottom">
                   <div class="Legal modelBadgeExplain">xDrive is BMW's intelligent all-wheel-drive system   i signifies a fuel-injected engine  d signifies BMW advanced diesel   
                                                             </div>
-                  <img src="http://cache.bmwusa.com/image_4a24b5d2-007f-4883-b1e6-0e61e2b6878c.arox" alt="" class="modelImage" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeF4FwIEIAAAAAKD9qY8AAgABdDtSRwAAAABJRU5ErkJggg==" alt="" class="modelImage" id="modelImageX5" />
                   <div class="seriesName">The BMW X5 SAV.</div>
                   <div class="seriesmarketText">Jack-of-all-trades. Master-of-all-roads.</div>
                   <input type="image" src="http://cache.bmwusa.com/image_bdec1937-3069-4a73-8e02-c30e9283b7e0.arox" alt="" class="seriesCtaButton" onClick="javascript:window.location.href='/standard/content/vehicles/2013/x5/default.aspx';return false;" />
@@ -1708,6 +1701,7 @@ function ViewTour()
                           <img src="http://cache.bmwusa.com/image_2f593cd0-d891-4268-b05d-4aac94828bb6.arox" style="width: 6px; height: 8px;" alt="" />
                           <a href="http://www.bmwusa.com/Standard/Content/Vehicles/2013/X6/xdrive35i/default.aspx">Overview</a>
                           <a href="http://www.bmwusa.com/standard/content/vehicles/2013/x6/xdrive35i/modelhighlights/default.aspx">Model Highlights</a>
+                          <a href="http://www.bmwusa.com/standard/content/vehicles/2013/x6/xdrive35i/x6seriessacmediagallery.aspx">Media Gallery</a>
                           <a href="http://www.bmwusa.com/standard/content/vehicles/2013/x6/xdrive35i/features_and_specs/default.aspx">Features &amp; Specs</a>
                           <a href="http://www.bmwusa.com/standard/content/byo/byohome.aspx?namodelcode=13XL">Build Your Own</a>
                         </div>
@@ -1730,6 +1724,7 @@ function ViewTour()
                           <img src="http://cache.bmwusa.com/image_2f593cd0-d891-4268-b05d-4aac94828bb6.arox" style="width: 6px; height: 8px;" alt="" />
                           <a href="http://www.bmwusa.com/Standard/Content/Vehicles/2013/X6/xdrive50i/default.aspx">Overview</a>
                           <a href="http://www.bmwusa.com/standard/content/vehicles/2013/x6/xdrive50i/modelhighlights/default.aspx">Model Highlights</a>
+                          <a href="http://www.bmwusa.com/standard/content/vehicles/2013/x6/xdrive50i/x6seriessacmediagallery.aspx">Media Gallery</a>
                           <a href="http://www.bmwusa.com/standard/content/vehicles/2013/x6/xdrive50i/features_and_specs/default.aspx">Features &amp; Specs</a>
                           <a href="http://www.bmwusa.com/standard/content/byo/byohome.aspx?namodelcode=13XM">Build Your Own</a>
                         </div>
@@ -1763,7 +1758,7 @@ function ViewTour()
                 <div class="modelSubMenuBottom">
                   <div class="Legal modelBadgeExplain">xDrive is BMW's intelligent all-wheel-drive system   i signifies a fuel-injected engine   
                                                             </div>
-                  <img src="http://cache.bmwusa.com/image_41ad671d-3f3b-4cb5-b8ec-266903178863.arox" alt="" class="modelImage" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeF4FwIEIAAAAAKD9qY8AAgABdDtSRwAAAABJRU5ErkJggg==" alt="" class="modelImage" id="modelImageX6" />
                   <div class="seriesName">The BMW X6.</div>
                   <div class="seriesmarketText">The first-ever Sports Activity Coupe.</div>
                   <input type="image" src="http://cache.bmwusa.com/image_bdec1937-3069-4a73-8e02-c30e9283b7e0.arox" alt="" class="seriesCtaButton" onClick="javascript:window.location.href='/standard/content/vehicles/2013/x6/default.aspx';return false;" />
@@ -1868,7 +1863,7 @@ function ViewTour()
                 <div class="modelSubMenuBottom">
                   <div class="Legal modelBadgeExplain">s signifies sport   i signifies a fuel-injected engine  
                                                             </div>
-                  <img src="http://cache.bmwusa.com/image_c6817fb1-5583-474c-b155-2e4216dd5ced.arox" alt="" class="modelImage" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeF4FwIEIAAAAAKD9qY8AAgABdDtSRwAAAABJRU5ErkJggg==" alt="" class="modelImage" id="modelImageZ4" />
                   <div class="seriesName">The BMW Z4.</div>
                   <div class="seriesmarketText">The power to free yourself.</div>
                   <input type="image" src="http://cache.bmwusa.com/image_bdec1937-3069-4a73-8e02-c30e9283b7e0.arox" alt="" class="seriesCtaButton" onClick="javascript:window.location.href='/standard/content/vehicles/2012/z4/default.aspx';return false;" />
@@ -1885,7 +1880,7 @@ function ViewTour()
                   <div class="GroupStacker">
                     <ul>
                       <li class="bold">
-                        <a href="http://www.bmwusa.com/Standard/Content/Vehicles/2011/M/1SeriesMCoupeExplore.aspx#highlights/">Explore 1 Series M</a>
+                        <a href="http://www.bmwusa.com/Standard/Content/Vehicles/2011/M/1SeriesMCoupeExplore.aspx">Explore 1 Series M</a>
                       </li>
                     </ul>
                     <ul>
@@ -1947,13 +1942,87 @@ function ViewTour()
                   </div>
                   <div class="GroupStacker">
                     <ul>
+                      <li class="bold">M6</li>
+                      <li>
+                        <a href="http://www.bmwusa.com/standard/content/vehicles/2012/m/M6convertible/default.aspx">M6 Convertible</a>
+                        <div class="popupShadow">
+                          <div class="popupMenu">
+                            <img src="http://cache.bmwusa.com/image_2f593cd0-d891-4268-b05d-4aac94828bb6.arox" style="width: 6px; height: 8px;" alt="" />
+                            <a href="http://www.bmwusa.com/standard/content/vehicles/2012/m/M6convertible/default.aspx">Overview</a>
+                            <a href="http://www.bmwusa.com/standard/content/vehicles/2012/m/M6convertible/modelhighlights/default.aspx">Model Highlights</a>
+                            <a href="http://www.bmwusa.com/standard/content/vehicles/2012/m/M6convertible/M6SeriesConvertibleMediaGallery.aspx">Media Gallery</a>
+                            <a href="http://www.bmwusa.com/standard/content/vehicles/2012/m/M6convertible/features_and_specs/default.aspx">Features &amp; Specs</a>
+                            <a href="http://www.bmwusa.com/standard/content/byo/byohome.aspx?namodelcode=126J">Build Your Own</a>
+                          </div>
+                        </div>
+                        <div class="modelSubMenuBottom">
+                          <div class="Legal modelBadgeExplain">  
+                            </div>
+                          <img src="http://cache.bmwusa.com/image_6256c981-6f02-4006-bf23-5868c0fb613c.arox" alt="http://cache.bmwusa.com/cosy.arox?pov=frontside&amp;brand=WBBM&amp;vehicle=126J&amp;client=byo&amp;paint=P0B51&amp;fabric=FX3SW&amp;sa=S01CC,S0223,S02N8,S0302,S0322,S0388,S03AG,S04UR,S0508,S0524,S0760&amp;width=407&amp;height=174&amp;quality=90" class="modelImage" />
+                          <div class="modelName">M6 Convertible</div>
+                          <div class="modelInfo">Top Down. Foot Down.  Eyes Wide Open.</div>
+                          <div class="modelInfo"> 4.4-liter, TwinPower Turbo V-8 engine</div>
+                          <div class="modelInfo">Rear-wheel drive</div>
+                          <div class="modelInfo">Starting at $113,100</div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="GroupStacker">
+                    <ul>
                       <li class="bold">
-                        <a href="http://www.bmwusa.com/standard/content/vehicles/2012/M/X5MX6MExplore.aspx#x5 ">Explore X5 M</a>
+                        <a href="http://www.bmwusa.com/standard/content/vehicles/2013/M/X5M/X5Mexplore.aspx">Explore X5 M</a>
+                      </li>
+                      <li>
+                        <a href="http://www.bmwusa.com/standard/content/vehicles/2013/M/X5M/default.aspx">X5 M</a>
+                        <div class="popupShadow">
+                          <div class="popupMenu">
+                            <img src="http://cache.bmwusa.com/image_2f593cd0-d891-4268-b05d-4aac94828bb6.arox" style="width: 6px; height: 8px;" alt="" />
+                            <a href="http://www.bmwusa.com/Standard/Content/Vehicles/2013/M/X5M/default.aspx">Overview</a>
+                            <a href="http://www.bmwusa.com/standard/content/vehicles/2013/m/x5m/modelhighlights/default.aspx">Model Highlights</a>
+                            <a href="http://www.bmwusa.com/standard/content/vehicles/2013/m/x5m/x5msavmediagallery.aspx">Media Gallery</a>
+                            <a href="http://www.bmwusa.com/standard/content/vehicles/2013/m/x5m/features_and_specs/default.aspx">Features &amp; Specs</a>
+                            <a href="http://www.bmwusa.com/standard/content/byo/byohome.aspx?namodelcode=13XK">Build Your Own</a>
+                          </div>
+                        </div>
+                        <div class="modelSubMenuBottom">
+                          <div class="Legal modelBadgeExplain">  
+                            </div>
+                          <img src="http://cache.bmwusa.com/image_6256c981-6f02-4006-bf23-5868c0fb613c.arox" alt="http://cache.bmwusa.com/cosy.arox?pov=frontside&amp;brand=WBBM&amp;vehicle=13XK&amp;client=byo&amp;paint=P0B05&amp;fabric=FLKA9&amp;sa=S02NT,S02VA,S0402,S0502,S0522,S0761,S0775&amp;width=407&amp;height=174&amp;quality=90" class="modelImage" />
+                          <div class="modelName">X5 M</div>
+                          <div class="modelInfo">Uncompromisingly Different.</div>
+                          <div class="modelInfo">4.4-liter, 32-valve, M TwinPower Turbo V-8 engine</div>
+                          <div class="modelInfo">M tuned xDrive all-wheel drive system</div>
+                          <div class="modelInfo">Starting at $88,850</div>
+                        </div>
                       </li>
                     </ul>
                     <ul>
                       <li class="bold">
-                        <a href="http://www.bmwusa.com/standard/content/vehicles/2012/M/X5MX6MExplore.aspx#x6">Explore X6 M</a>
+                        <a href="http://www.bmwusa.com/standard/content/vehicles/2013/M/X6M/X6Mexplore.aspx">Explore X6 M</a>
+                      </li>
+                      <li>
+                        <a href="http://www.bmwusa.com/standard/content/vehicles/2013/M/X6M/default.aspx">X6 M</a>
+                        <div class="popupShadow">
+                          <div class="popupMenu">
+                            <img src="http://cache.bmwusa.com/image_2f593cd0-d891-4268-b05d-4aac94828bb6.arox" style="width: 6px; height: 8px;" alt="" />
+                            <a href="http://www.bmwusa.com/Standard/Content/Vehicles/2013/M/X6M/default.aspx">Overview</a>
+                            <a href="http://www.bmwusa.com/standard/content/vehicles/2013/m/x6m/modelhighlights/default.aspx">Model Highlights</a>
+                            <a href="http://www.bmwusa.com/standard/content/vehicles/2013/m/x6m/x6msacmediagallery.aspx">Media Gallery</a>
+                            <a href="http://www.bmwusa.com/standard/content/vehicles/2013/m/x6m/features_and_specs/default.aspx">Features &amp; Specs</a>
+                            <a href="http://www.bmwusa.com/standard/content/byo/byohome.aspx?namodelcode=13XN">Build Your Own</a>
+                          </div>
+                        </div>
+                        <div class="modelSubMenuBottom">
+                          <div class="Legal modelBadgeExplain">  
+                            </div>
+                          <img src="http://cache.bmwusa.com/image_6256c981-6f02-4006-bf23-5868c0fb613c.arox" alt="http://cache.bmwusa.com/cosy.arox?pov=frontside&amp;brand=WBBM&amp;vehicle=13XN&amp;client=byo&amp;paint=P0A75&amp;fabric=FLKSW&amp;width=407&amp;height=174&amp;quality=90" class="modelImage" />
+                          <div class="modelName">X6 M</div>
+                          <div class="modelInfo">Uncompromisingly Different.</div>
+                          <div class="modelInfo">4.4-liter, 32-valve M TwinPower Turbo V-8 engine</div>
+                          <div class="modelInfo">M tuned xDrive all-wheel drive system</div>
+                          <div class="modelInfo">Starting at $92,900</div>
+                        </div>
                       </li>
                     </ul>
                   </div>
@@ -1971,7 +2040,7 @@ function ViewTour()
                 <div class="modelSubMenuBottom">
                   <div class="Legal modelBadgeExplain">   
                                                             </div>
-                  <img src="http://cache.bmwusa.com/image_eaf80376-bcd0-4cec-8698-7bfe764a1583.arox" alt="" class="modelImage" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeF4FwIEIAAAAAKD9qY8AAgABdDtSRwAAAABJRU5ErkJggg==" alt="" class="modelImage" id="modelImageM" />
                   <div class="seriesName">The BMW M.</div>
                   <div class="seriesmarketText">The most powerful letter in the world.</div>
                   <input type="image" src="http://cache.bmwusa.com/image_bdec1937-3069-4a73-8e02-c30e9283b7e0.arox" alt="" class="seriesCtaButton" onClick="javascript:window.location.href='/standard/content/vehicles/2012/m/default.aspx';return false;" />
@@ -2023,7 +2092,7 @@ function ViewTour()
                     <a href="http://www.bmwusa.com/standard/content/cpo/financing2.aspx" class="SubMenu">Finance and Special Offers</a>
                   </li>
                   <li>
-                    <a href="http://www.bmwusa.com/standard/content/cpo/modelsearch.aspx" class="SubMenu">Model Search</a>
+                    <a href="http://www.bmwusa.com/standard/content/cpo/certified_pre_owned_model_inventory_search.aspx" class="SubMenu">Model Search</a>
                   </li>
                   <li>
                     <a href="http://www.bmwusa.com/standard/content/cpo/dealerlocator.aspx" class="SubMenu">Dealer Locator</a>
@@ -2118,12 +2187,6 @@ function ViewTour()
                       <a href="http://www.bmwusa.com/standard/content/experience/gallery/mediagalleryvideos.aspx" class="SubMenu">Videos</a>
                     </li>
                     <li>
-                      <a href="http://www.bmwusa.com/standard/content/experience/gallery/mediagalleryimages.aspx" class="SubMenu">Images</a>
-                    </li>
-                    <li>
-                      <a href="http://www.bmwusa.com/standard/content/experience/gallery/mediagallerywallpapers.aspx" class="SubMenu">Wallpapers</a>
-                    </li>
-                    <li>
                       <a href="http://www.bmwusa.com/Standard/Content/Experience/Gallery/ringtones.aspx" class="SubMenu">BMW Ringtones </a>
                     </li>
                     <li>
@@ -2165,7 +2228,7 @@ function ViewTour()
                       <a href="http://www.bmwusa.com/standard/content/experience/events/dtad.aspx" class="SubMenu">Don't Text and Drive</a>
                     </li>
                     <li>
-                      <a href="http://www.bmwusa.com/Secured/Content/Forms/UDESummer.aspx" class="SubMenu">BMW Drive for Team USA</a>
+                      <a href="http://www.bmwusa.com/Standard/Content/Experience/Events/UDESummer.aspx" class="SubMenu">BMW Drive for Team USA</a>
                     </li>
                   </ul>
                   <ul style="&#xD;&#xA;                                                                                        width: 147px&#xD;&#xA;                                                                                    ">
@@ -2173,7 +2236,7 @@ function ViewTour()
                       <a href="http://www.bmwusa.com/standard/content/experience/sports/default.aspx" class="SubMenu bold">BMW Sports</a>
                     </li>
                     <li>
-                      <a href="http://www.bmwusa.com/standard/content/experience/bmwmotorsport/default.aspx" class="SubMenu">BMW Motorsport</a>
+                      <a href="http://www.bmwusa.com/Standard/Content/Experience/Sports/BMWMotorsports.aspx" class="SubMenu">BMW Motorsport</a>
                     </li>
                     <li>
                       <a href="http://www.bmwusa.com/standard/content/experience/sports/bmwchampionship.aspx" class="SubMenu">BMW Championship</a>
@@ -2252,48 +2315,94 @@ function ViewTour()
             <div class="SubMenuItemsShadow">
               <div class="SubMenuItemsContainer">
                 <ul>
-                  <li>
-                    <a href="http://www.bmwusa.com/standard/content/financialservices/default.aspx">Overview</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/standard/content/financialservices/exceptionalvalue.aspx">Exceptional Value</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/BenefitsofFinancing.aspx">Benefits of Financing</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/CollegeGraduateProgram.aspx">College Graduate Program</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/standard/content/financialservices/benefitsofleasing.aspx">Benefits of Leasing</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/LeaseReturnInformation.aspx">Lease Return Information</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/Offers.aspx?offer=Leasing">Lease Offers</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/Offers.aspx?offer=Financing">Financing Offers</a>
-                  </li>
-                  <li>
-                    <a href="https://creditapp.bmwusa.com/apply" target="_blank">Apply For Financing</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/standard/content/financialservices/estimateapayment.aspx">Estimate Payment</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/standard/content/financialservices/creditcard.aspx">Credit Card</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/standard/content/owner/bmwultimateprotection/ultimateprotectionoverview.aspx">BMW Ultimate Protection</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/standard/content/financialservices/insurance.aspx">Insurance</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/secured/content/forms/login.aspx">My BMW Sign In</a>
-                  </li>
+                  <div class="SignedOut">
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/default.aspx">Overview</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/exceptionalvalue.aspx">Exceptional Value</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/BenefitsofFinancing.aspx">Benefits of Financing</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/CollegeGraduateProgram.aspx">College Graduate Program</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/benefitsofleasing.aspx">Benefits of Leasing</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/LeaseReturnInformation.aspx">Lease Return Information</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/Offers.aspx?offer=Leasing">Lease Offers</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/Offers.aspx?offer=Financing">Financing Offers</a>
+                    </li>
+                    <li>
+                      <a href="https://uat.creditapp.bmwusa.com/apply" target="_blank">Apply For Financing</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/estimateapayment.aspx">Estimate Payment</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/creditcard.aspx">Credit Card</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/owner/bmwultimateprotection/ultimateprotectionoverview.aspx">BMW Ultimate Protection</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/insurance.aspx">Insurance</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/secured/content/forms/login.aspx">My BMW Sign In</a>
+                    </li>
+                  </div>
+                  <div class="SignedIn">
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/default.aspx">Overview</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/exceptionalvalue.aspx">Exceptional Value</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/benefitsoffinancing.aspx">Benefits of Financing</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/CollegeGraduateProgram.aspx">College Graduate Program</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/benefitsofleasing.aspx">Benefits of Leasing</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/LeaseReturnInformation.aspx">Lease Return Information</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/Offers.aspx?offer=Leasing">Lease Offers</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/Standard/Content/FinancialServices/Offers.aspx?offer=Financing">Financing Offers</a>
+                    </li>
+                    <li>
+                      <a href="https://uat.creditapp.bmwusa.com/apply" target="_blank">Apply For Financing</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/estimateapayment.aspx">Estimate Payment</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/creditcard.aspx">Credit Card</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/owner/bmwultimateprotection/ultimateprotectionoverview.aspx">BMW Ultimate Protection</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/financialservices/insurance.aspx">Insurance</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/secured/content/forms/logout.aspx?logout=1">My BMW Sign Out</a>
+                    </li>
+                  </div>
                 </ul>
                 <div class="ie6Marker">.</div>
               </div>
@@ -2311,16 +2420,16 @@ function ViewTour()
                     <a href="http://www.bmwusa.com/standard/content/accessories/featuredproduct.aspx">Featured Products</a>
                   </li>
                   <li>
-                    <a href="http://www.shopbmwusa.com/vehicleaccessories.aspx?utm_campaign=aactopnavoverview&amp;utm_medium=referral&amp;utm_source=bmwusa.comacclanding&amp;utm_content=">Vehicle Accessories</a>
+                    <a href="http://www.shopbmwusa.com/BMWGeneralAccessories.aspx?utm_campaign=aactopnavoverview&amp;utm_medium=referral&amp;utm_source=bmwusa.comacclanding&amp;utm_content= ">Vehicle Accessories</a>
                   </li>
                   <li>
-                    <a href="http://www.shopbmwusa.com/lifestyleaccessories.aspx?utm_campaign=aactopnavoverview&amp;utm_medium=referral&amp;utm_source=bmwusa.comacclanding&amp;utm_content=">Lifestyle Accessories</a>
+                    <a href="http://www.shopbmwusa.com/BMWLifestyle.aspx?utm_campaign=aactopnavoverview&amp;utm_medium=referral&amp;utm_source=bmwusa.comacclanding&amp;utm_content=">Lifestyle Accessories</a>
                   </li>
                   <li>
                     <a href="http://www.bmwusa.com/standard/content/accessories/bmwmotorsportparts.aspx">BMW Motorsport Parts</a>
                   </li>
                   <li>
-                    <a href="http://www.bmwusa.com/standard/content/accessories/bmwperformanceparts/default.aspx">BMW Performance Parts</a>
+                    <a href="http://www.bmwusa.com/standard/content/accessories/bmwperformance/default.aspx">BMW Performance Parts</a>
                   </li>
                 </ul>
                 <div class="ie6Marker">.</div>
@@ -2332,15 +2441,31 @@ function ViewTour()
             <div class="SubMenuItemsShadow">
               <div class="SubMenuItemsContainer">
                 <ul>
-                  <li>
-                    <a href="http://www.bmwusa.com/secured/content/forms/login.aspx">Sign in</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/secured/content/forms/signup.aspx">Sign up</a>
-                  </li>
-                  <li>
-                    <a href="http://www.bmwusa.com/secured/content/forms/signup.aspx">Learn More</a>
-                  </li>
+                  <div class="SignedOut">
+                    <li>
+                      <a href="http://www.bmwusa.com/secured/content/forms/login.aspx">Sign in</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/secured/content/forms/signup.aspx">Sign up</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/secured/content/forms/signup.aspx">Learn More</a>
+                    </li>
+                  </div>
+                  <div class="SignedIn">
+                    <li>
+                      <a href="http://www.bmwusa.com/standard/content/mybmw/accountoverview.aspx">Overview</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/secured/content/profile/myprofile.aspx">Edit My Profile</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/secured/content/profile/editcenters.aspx">Edit My BMW Center</a>
+                    </li>
+                    <li>
+                      <a href="http://www.bmwusa.com/secured/content/forms/logout.aspx?logout=1">Sign out</a>
+                    </li>
+                  </div>
                 </ul>
                 <div class="ie6Marker">.</div>
               </div>
@@ -2359,7 +2484,6 @@ function ViewTour()
 <input type="hidden" id="searchUrl" value="http://search.bmwusa.com?q=" />
 <div id="HiddenSeriesModelBottomData" class="displayNone">
 </div>
-
 <div id="modelPreLoad" style="position:absolute;top:-100;left:-100; width:1px; height:1px; overflow: hidden;">&nbsp;</div>
 </NOINDEX>
             <!-- End top navigation section - Global to the site -->
@@ -2407,21 +2531,12 @@ function ViewTour()
             
 
 <script type="text/javascript">
-function openDealerMap(url)
-{
-    window.open(url, 'DealerMap', 'height=610,width=766,top=200,left=200,toolbar=no,scrollbars=no,status=no,location=no,menubar=no,');
-}
+    function openDealerMap(url)
+    {
+        window.open(url, 'DealerMap', 'height=610,width=766,top=200,left=200,toolbar=no,scrollbars=no,status=no,location=no,menubar=no,');
+    }
 
-function updateLoginBox()
-{
-    __doPostBack('ctl00_ctl00_ctl00_MasterContent_base_siteLeftNavLoginBox','');
-}
-</script>
-
-<input name="ctl00$ctl00$ctl00$MasterContent$base_siteLeftNavLoginBox$txtHack" type="text" id="ctl00_ctl00_ctl00_MasterContent_base_siteLeftNavLoginBox_txtHack" style="display: none;" />
-
-<script type="text/javascript">
-    $(document).ready(function ()
+    function LoginBoxPostRender()
     {
         $(".LoginBoxGroupHeader").click(function ()
         {
@@ -2430,7 +2545,49 @@ function updateLoginBox()
             $(".LoginBoxGroupHeader img").attr("src", "https://cache.bmwusa.com/image_39824b12-af9a-4a24-b867-c8dd5fafdaa9.arox");
             $("img", this).attr("src", "https://cache.bmwusa.com/image_76f6fa3f-16d4-4aa9-a6b9-f8a3b771c5af.arox");
         });
-    });
+    }
+</script>
+
+<script id="loginBox-template" type="text/html">
+                <div data-bind="if: !IsLoggedIn">
+                    <div id="LoginBoxLoginFalse">
+                        <h4 id="LoginBoxWelcomeFalse">BMW Members</h4>
+                        <a class="signIn" data-bind="attr: { href: LoginPageUrl }">Sign in</a>
+                        <div id="LoginInfo">
+                            <span class="bold Bold">Not a member?</span> Sign up to access exclusive features, manage account information and save content.
+                        </div>
+                        <div id="SignAndLearn">
+                            <a href="http://www.bmwusa.com/Secured/Content/Forms/SignUp.aspx">Sign up</a>
+                            <a style="margin-left: 10px;" href="http://www.bmwusa.com/Secured/Content/Forms/SignUp.aspx">Learn more</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-bind="if: IsLoggedIn">
+                    <div id="LoginBoxLoginTrue">
+                        <h4 id="LoginBoxWelcomeTrue" data-bind="text: 'Signed in as ' + FirstName"></h4>
+                        <div id="loginNav">
+                            <div>
+                                <div class="LoginBoxGroupHeader">
+                                    My Portfolio <img src="https://cache.bmwusa.com/image_76f6fa3f-16d4-4aa9-a6b9-f8a3b771c5af.arox" alt="" />
+                                </div>
+                                <div class="LoginBoxGroupLinks">
+                                    <a href="javascript:ShowModal('/Secured/Content/Profile/SavedConfiguration.aspx', '', 785, 458, false)" data-bind="text: 'Saved Configurations (' + SavedConfigurationsCount + ')'"></a><br />
+                                    <a href="javascript:ShowModal('/Secured/Content/Profile/SavedContent.aspx', '', 785, 458, false)" data-bind="text: 'Saved Content (' + SavedContentCount + ')'"></a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="LoginBoxGroupHeader">
+                                    My Tools <img src="https://cache.bmwusa.com/image_39824b12-af9a-4a24-b867-c8dd5fafdaa9.arox" alt="" />
+                                </div>
+                                <div class="LoginBoxGroupLinks">
+                                    <a data-bind="attr: { href: DealerMapClick }">My BMW center</a><br />
+                                    <a href="javascript:PopUpWindow('/Secured/Content/Forms/TourSneakPeek.aspx', 'TourSneakPeek', 450, 885, 0)">Take a Tour</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 </script>
 
 <div id="LoginBoxContainer">
@@ -2441,26 +2598,7 @@ function updateLoginBox()
 
     <div id="LoginBoxLeftGradient">
         <div id="LoginBoxRightGradient">
-            <div id="LoginBoxContent">
-
-                <div id="ctl00_ctl00_ctl00_MasterContent_base_siteLeftNavLoginBox_loginFalse">
-	
-                    <div id="LoginBoxLoginFalse">
-                        <h4 id="LoginBoxWelcomeFalse">BMW Members</h4>
-                        <a id="ctl00_ctl00_ctl00_MasterContent_base_siteLeftNavLoginBox_lnkSignIn" class="signIn" href="https://www.bmwusa.com/Secured/Content/Forms/Login.aspx">Sign in</a>
-                        <div id="LoginInfo">
-                            <span class="bold Bold">Not a member?</span> Sign up to access exclusive features, manage account information and save content.
-                        </div>
-                        <div id="SignAndLearn">
-                            <a href="http://www.bmwusa.com/Secured/Content/Forms/SignUp.aspx">Sign up</a>
-                            <a style="margin-left: 10px;" href="http://www.bmwusa.com/Secured/Content/Forms/SignUp.aspx">Learn more</a>
-                        </div>
-                    </div>
-                
-</div>
-
-                
-
+            <div id="LoginBoxContent" data-bind="template: { name: 'loginBox-template', afterRender: LoginBoxPostRender }">
             </div>
         </div>
     </div>

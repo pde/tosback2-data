@@ -1,6 +1,5 @@
 (function(){
 var pfs={ "http://www.rollingstone.com/current-issue":{"nid":27811,"tr":1},
-"http://www.rollingstone.com/politics":{"nid":27809,"tr":1},
 "http://www.rollingstone.com/culture":{"nid":27810,"tr":1},
 "http://www.rollingstone.com/movies":{"nid":27808,"tr":1},
 "http://www.rollingstone.com/music":{"nid":27807,"tr":1},

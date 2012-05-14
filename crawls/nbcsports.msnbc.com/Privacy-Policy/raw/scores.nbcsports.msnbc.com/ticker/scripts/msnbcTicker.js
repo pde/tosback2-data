@@ -749,10 +749,7 @@
 						//for status 2, we don't want to display it if it's the date
 						var status1 = $(gamestate).attr("display_status1");
 						var status2 = $(gamestate).attr("display_status2");
-						if (gamecode == "201109170107" && status1 == $(gamestate).attr("gametime"))
-							status1 = "DLY";
-
-						else if ($(gamestate).attr("display_status1") == $(gamestate).attr("gametime")) {
+						if ($(gamestate).attr("display_status1") == $(gamestate).attr("gametime")) {
 							if ($(gamestate).attr("display_status2") == "Susp") {
 							status1 = $(gamestate).attr("display_status1") + " ET";
 							status2 = "(" + $(gamestate).attr("display_status2") + ")";

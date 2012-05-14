@@ -1,0 +1,77 @@
+/** ************* CUSTOM OMNITURE-RELATED CODE ************************* */	
+
+	var campaignCookieNVDelimiter = '~';
+	var campaignCookieEqualDelimiter = "_equal_";
+
+	// backwards compatible format
+	function getOldCampaignId(cookieStr) {
+		var campaign = null;
+		var a = cookieStr.split('~');
+		if (a != null && a.length > 0) {
+			campaign = a[0];
+		}
+		return campaign;
+	}
+	function getOldPublisherId(cookieStr) {
+		var publisher = null;
+		var a = cookieStr.split('~');
+		if (a != null && a.length > 1) {
+			publisher = a[1];
+		}
+		return publisher;
+	}
+
+	/* Version assigned getter/setter functions */
+	function getCookieValueFromName(valueName, cookieStr) {
+		var nv_tokens = cookieStr.split(campaignCookieNVDelimiter);
+		if (nv_tokens != null && nv_tokens.length > 0) {
+			var index = 0;
+			while (index < nv_tokens.length) {
+				var nv_pair = nv_tokens[index].split(campaignCookieEqualDelimiter);
+				if (nv_pair[0] == valueName) {
+					return nv_pair[1];
+				}
+				index++;
+			}
+		}
+		return null;
+	}
+
+	function getCookieVersion(cookieStr) {
+		return getCookieValueFromName("version", cookieStr);
+	}
+	function getCampaignId(cookieStr) {
+		if (getCookieVersion(cookieStr)) {
+			return getCookieValueFromName("campaign", cookieStr);
+		} else {
+			return getOldCampaignId(cookieStr);
+		}
+	}
+	function getPublisherId(cookieStr) {
+		if (getCookieVersion(cookieStr)) {
+			return getCookieValueFromName("pid", cookieStr);
+		} else {
+			return getOldPublisherId(cookieStr);
+		}
+	}
+	function getTimestamp(cookieStr) {
+		return getCookieValueFromName("timestamp", cookieStr);
+	}
+
+	/* Cookie Read/Write Functions */
+	function readTrackingCookie(name) {
+		var nameEQ = name + "=";
+		var tokens = document.cookie.split(';');
+		var index = 0;
+		while (tokens != null && (index < tokens.length)) {
+			var c = tokens[index++];
+			while (c.charAt(0)==' ') {
+				c = c.substring(1,c.length);
+			}
+			if (c.indexOf(nameEQ) == 0) {
+				return c.substring(nameEQ.length,c.length);
+			}		
+		}
+		return null;
+	}
+	

@@ -258,6 +258,90 @@ $(document).ready(function() {
         ).show();
         return false;
     });
+    if ($('.menu_sub').size())
+    {
+        $('.menu_sub').prev().css('margin',0);
+        var _count_items = $('.menu_sub li').size();
+        $('.menu_sub li').each(function(i)
+        {
+            if (i < _count_items-1)
+            {
+                $(this).after($('<li class="separator"><span>&nbsp;|&nbsp;</span></li>'));
+            }
+        });
+        var _menu_wrap_height = $('.menu_sub').parent().height();
+        var _menu_height = $('.menu_sub').height();
+        if (_menu_height > _menu_wrap_height)
+        {
+            var _more = $('<a class="more-blogs" href="#more-blogs"></a>');
+            $('.menu_sub').width(875).after(_more);
+
+            var _additons = $('<ul/>');
+            var _count_items = $('.menu_sub li').size();
+            for (var _i=_count_items-1; _i>0; _i-=2)
+            {
+                var _obj = $('.menu_sub li')[_i];
+                _additons.prepend(_obj);
+                var _obj = $('.menu_sub li')[_i-1];
+                _additons.prepend(_obj);
+                var _menu_height = $('.menu_sub').height();
+                if (_menu_height <= _menu_wrap_height) break;
+            }
+            if ($(_additons.find('li')[0]).hasClass('separator'))
+            {
+                $(_additons.find('li')[0]).remove();
+            }
+            var _c = 8;
+            var _w = 0;
+            var _dropdown_section = $('<div class="blog-dropdown-section"/>').append(_additons).hide();
+            $('.menu_sub').parent().css({overflow: 'visible', position: 'relative'}).append(_dropdown_section);
+
+            var _blogs_timer_id;
+            function _more_hover()
+            {
+                _more.css('background-position', '0 -24px');
+                _dropdown_section.show();
+                clearTimeout(_blogs_timer_id);
+                if (_w > 0) return;
+                _additons.find('li').each(function(i)
+                {
+                    if (i < _c*2)
+                    {
+                        _w += $(this).width();
+                    }
+                });
+                _dropdown_section.css('max-width',_w);
+            }
+            function _more_unhover()
+            {
+                _blogs_timer_id = setTimeout(function(){
+                    _more.css('background-position', '0 0');
+                    _dropdown_section.hide();
+                }, 1500);
+            }
+
+            _more.hover(
+                function()
+                {
+                    _more_hover();
+                },
+                function()
+                {
+                    _more_unhover();
+                }
+            );
+            _dropdown_section.hover(
+                function()
+                {
+                    _more_hover();
+                },
+                function()
+                {
+                    _more_unhover();
+                }
+            );
+        }
+    }
 });
 
 var Base64 = {

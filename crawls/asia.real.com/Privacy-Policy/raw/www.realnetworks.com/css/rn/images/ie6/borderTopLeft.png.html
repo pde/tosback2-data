@@ -30,7 +30,21 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
 
-	</script>
+
+        function recordOutboundLink(href, category, target) {
+            _gat._getTrackerByName()._trackEvent(category, action);
+            if( target == '_blank' ) {
+                setTimeout(function(){
+                    window.open(link);
+                }, 100);
+            } else {
+                setTimeout(function () {
+                    document.location.href = link;
+                }, 100);
+            }
+                
+        }
+</script> 
 
 </head>
 <body>

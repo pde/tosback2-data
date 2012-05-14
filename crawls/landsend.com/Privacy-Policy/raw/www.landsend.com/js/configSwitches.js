@@ -338,6 +338,11 @@ if(metric.omnitureActive){
 	s_omtr = new dummyOmnitureObj();
 }
 
+// modernizer script include (this UX js framework is temporarily tagging along with config swiches as it must go in the head of the html page)
+var modernizerScript = '<script type="text/javascript" src="/static/global/js/lib/modernizr.js" ></script>';
+document.writeln("");
+document.writeln(modernizerScript);
+document.writeln("");
 
 // Coremetrics is dead. Here lie the stubs for coremetrics
 function dummyCMObj() {

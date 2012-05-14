@@ -1,0 +1,56 @@
+	function fpv() {
+		try {
+			if(navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin){
+				return (navigator.plugins["Shockwave Flash 2.0"] || navigator.plugins["Shockwave Flash"]).description.replace(/\D+/g, ",").match(/^,?(.+),?$/)[1];
+			}
+		} catch(e) {}
+		return '0,0,0';
+	}
+		function gL() {
+		if (top && top != self) {
+			var loc = document.referrer || document.location;
+		} else if (window && location) {
+			var loc = window.location;
+		} else {
+			var loc = document.location;
+		}
+		loc = loc + '';
+		if (loc && loc.length > 1000) {loc = loc.substring(0,1000);}
+		
+		try {
+			if (typeof(google_page_url) == 'string') {var loc = google_page_url;}
+		} catch(e) {}
+		
+		if (loc && loc.indexOf("msn.com")) {
+			try {
+			var cC=document.cookie.split(';');
+			var TOpt = 0;var le = cC.length;
+			for (i=0;i<le;i++){
+				if (cC[i] && cC[i].indexOf("TOptOut") > -1 && cC[i].indexOf("0") == -1) {
+					TOpt = 1;break;
+				}
+			}
+			if (TOpt == 1) {loc += '&TOptOut=1';}
+			} catch(e) {}
+		}
+
+		var enLoc = encodeURIComponent(loc);
+		if (enLoc) {
+			enLoc = enLoc.replace(/%2F/g, '_@2F');enLoc = enLoc.replace(/%3F/g, '_@3F');enLoc = enLoc.replace(/%26/g, '_@26');enLoc = enLoc.replace(/%5C/g, '_');enLoc = enLoc.replace(/%255c/g, '_');
+			enLoc = enLoc.replace(/\'|\(|\)|\!/g, '');
+		} else {enLoc = '';}
+		return enLoc;
+	}
+	var wsod = {};
+		wsod.fp = fpv();
+		wsod.loc = gL();
+		wsod.w = (screen.width) ? screen.width:0;
+		wsod.h = (screen.height) ? screen.height:0;
+	if (wsod.loc && wsod.loc.indexOf('https') > -1) {
+		wsod.proto = 'https:';
+	} else {
+		wsod.proto = 'http:';
+	}
+		
+	document.write('<scr'+'ipt type="text/javascr'+'ipt" src="'+wsod.proto+'//ad.wsod.com/embed/8bec9b10877d5d7fd7c0fb6e6a631357/2687.0.js.120x30/1336997873**;'+wsod.fp+';'+wsod.w+';'+wsod.h+';'+wsod.loc+'"></scr'+'ipt>');
+	

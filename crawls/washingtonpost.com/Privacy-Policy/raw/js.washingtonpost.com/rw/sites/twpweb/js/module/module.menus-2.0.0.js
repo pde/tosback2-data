@@ -11,13 +11,11 @@
 		*/
 		
 		jQuery('#main-nav-wrapper-v2 li.politics, li.politics div.rollMe, #header-v3 .politicsAd').hover(function() {
-		  jQuery('#header-v3 .sample-ad').addClass('politicsAd');
 		  jQuery('li.politics div.rollMe, #header-v3 .sample-ad.politicsAd').css('visibility','visible');
 		  jQuery('li.politics a.top').addClass('onColor');
 		  jQuery('#slug_leaderboard *, #slug_pushdown *').addClass('adnoDisplay');
 		},
 		function() {
-		  jQuery('#header-v3 .sample-ad').removeClass('politicsAd');
 		  jQuery('li.politics div.rollMe, #header-v3 .sample-ad').css('visibility','hidden');
 		  jQuery('li.politics a.top').removeClass('onColor');
 		  jQuery('#slug_leaderboard *, #slug_pushdown *').removeClass('adnoDisplay');
@@ -25,13 +23,11 @@
 		
 		
 		jQuery('#main-nav-wrapper-v2 li.opinions, li.opinions div.rollMe, #header-v3 .opinionsAd').hover(function() {
-		  jQuery('#header-v3 .sample-ad').addClass('opinionsAd');
 		  jQuery('li.opinions div.rollMe, #header-v3 .sample-ad.opinionsAd').css('visibility','visible');
 		  jQuery('li.opinions a.top').addClass('onColor');
 		  jQuery('#slug_leaderboard *, #slug_pushdown *').addClass('adnoDisplay');
 		},		
 		function() {
-		  jQuery('#header-v3 .sample-ad').removeClass('opinionsAd');
 		  jQuery('li.opinions div.rollMe, #header-v3 .sample-ad').css('visibility','hidden');
 		  jQuery('li.opinions a.top').removeClass('onColor');
 		  jQuery('#slug_leaderboard *, #slug_pushdown *').removeClass('adnoDisplay');

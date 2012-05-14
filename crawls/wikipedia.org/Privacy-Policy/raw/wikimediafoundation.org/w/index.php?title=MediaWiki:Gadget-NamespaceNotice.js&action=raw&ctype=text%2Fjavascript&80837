@@ -1,0 +1,18 @@
+/* Show a notice inside <div id="contentSub"></div> on pages in the Talk namespace */
+if ( ( mw.config.get( 'wgNamespaceNumber' ) == 1 ) && ( mw.config.get( 'wgAction') == 'view' ) ) {
+  var text = $.getJSON(
+        wgScriptPath + '/api.php?',
+        {
+            action: 'parse',
+            prop: 'text',
+            page: 'Template:Contribute',
+            format: 'json'
+        },
+        function( data ) {
+            if ( data ) {
+                var text = data.parse.text['*'];
+                $('#contentSub').html(text).css({'margin':'1em 0', 'color':'#000'});
+            }
+        }
+  )
+}

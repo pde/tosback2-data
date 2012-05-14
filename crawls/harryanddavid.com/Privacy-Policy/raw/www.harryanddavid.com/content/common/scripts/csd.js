@@ -658,10 +658,11 @@ var media = (function ($) {
     },
     init: function (options) {
       var element;
+      if (navigator.userAgent.toLowerCase().indexOf('ipad') !== -1) { return; }
       
       // Combine all the defaults with any options passed in
       options = $.extend({}, media.options, options);
-
+      
       // Fill in any missing images if possible
       if (options.zoomer.thumb   === undefined) { options.zoomer.thumb   = Scene7.createURL({ id: options.id, type: 'image', kind: 'thumbnail' }); }
       if (options.zoomer.regular === undefined) { options.zoomer.regular = Scene7.createURL({ id: options.id, type: 'image', kind: 'regular', modifiers: options.modifiers}); }

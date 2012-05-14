@@ -10,33 +10,34 @@ var contenttypeJSON;
 var enableJSON;
 
 
-//Defines the size of each slot position
+//Defines the size of each slot position 
+//Slot positions commented out by TB per Julie Parker's request
 var slotPosition =[];
-slotPosition["OneByTwo"]=["100x100"];
+//slotPosition["OneByTwo"]=["100x100"];
 slotPosition["Top1Right"]=["234x60"];
 slotPosition["Top1"]=["728x90"];
 slotPosition["Top2"] = ["950x30"];
-slotPosition["Top3"] =["950x250"];
-slotPosition["TopLeft"]=["120x90"];
+//slotPosition["Top3"] =["950x250"];
+//slotPosition["TopLeft"]=["120x90"];
 slotPosition["Left1"] = ["120x600"];
 slotPosition["Bottom"] = ["728x90"];
 slotPosition["TopRight"]=["300x250"];
 slotPosition["Middle"]=["300x250"];
-slotPosition["Middle2"] =["300x250"];
+//slotPosition["Middle2"] =["300x250"];
 slotPosition["Middle3"] =["300x250"];
-slotPosition["x01"] = ["160x90"];
-slotPosition["x02"] = ["160x90"];
-slotPosition["x03"] = ["160x90"];
+//slotPosition["x01"] = ["160x90"];
+//slotPosition["x02"] = ["160x90"];
+//slotPosition["x03"] = ["160x90"];
 slotPosition["x04"]=["160x600"];
-slotPosition["iPhone"] =["318x60"];
+//slotPosition["iPhone"] =["318x60"];
 slotPosition["Frame1"] = ["720x300"];
-slotPosition["Frame2"] =["800x600"];
+//slotPosition["Frame2"] =["800x600"];
 slotPosition["OneByOne"] =["1x1"];
 slotPosition["PromoRight"] =["300x100"];
-slotPosition["PromoBottom"] =["336x280"];
-slotPosition["IWantItCube"] =["180x150"];
+slotPosition["PromoBottom"] =["300x250"];
+//slotPosition["IWantItCube"] =["180x150"];
 slotPosition["NavAd"] =["160x30"];
-
+//slotPosition["FourSixtyEight"] =["468x60"];
 
 
 
@@ -61,30 +62,32 @@ slotPosition["mon15"]=["168x28"];
 
 //Define Delivery Mode
 var slotDelivery =[];
-slotDelivery["OneByTwo"]=["ipatf"];
+//slotDelivery["OneByTwo"]=["ipatf"];
 slotDelivery["Top1Right"]=["ipatf"];
 slotDelivery["Top1"]=["ipatf"];
 slotDelivery["Top2"] = ["ipatf"];
-slotDelivery["Top3"] = ["ipatf"];
-slotDelivery["TopLeft"]=["ipatf"];
+//slotDelivery["Top3"] = ["ipatf"];
+//slotDelivery["TopLeft"]=["ipatf"];
 slotDelivery["Left1"] = ["ipbtf"];
 slotDelivery["Bottom"] = ["ipbtf"];
 slotDelivery["TopRight"]=["ipatf"];
 slotDelivery["Middle"]=["ipbtf"];
-slotDelivery["Middle2"]=["ipstf"];
+//slotDelivery["Middle2"]=["ipstf"];
 slotDelivery["Middle3"]=["ipstf"];
-slotDelivery["x01"]=["ipbtf"];
-slotDelivery["x02"] = ["ipbtf"];
-slotDelivery["x03"] = ["ipbtf"];
+//slotDelivery["x01"]=["ipbtf"];
+//slotDelivery["x02"] = ["ipbtf"];
+//slotDelivery["x03"] = ["ipbtf"];
 slotDelivery["x04"] = ["ipbtf"];
-slotPosition["iPhone"] =["ipatf"];
+//slotPosition["iPhone"] =["ipatf"];
 slotDelivery["Frame1"] = ["ipatf"];
-slotDelivery["Frame2"] =["ipatf"];
+//slotDelivery["Frame2"] =["ipatf"];
 slotDelivery["OneByOne"] =["ipatf"];
 slotDelivery["PromoRight"]=["ipatf"];
 slotDelivery["PromoBottom"]=["ipbtf"];
-slotDelivery["IWantItCube"] =["ipatf"];
+//slotDelivery["IWantItCube"] =["ipatf"];
 slotDelivery["NavAd"] =["ipbtf"];
+//slotDelivery["FourSixtyEight"] =["ipatf"];
+
 
 
 

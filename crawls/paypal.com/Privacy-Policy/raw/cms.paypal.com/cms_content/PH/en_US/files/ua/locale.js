@@ -16,9 +16,9 @@ var fli = link.substr(flindex+5,4);
 
 function addlang() {
 	var divs = document.getElementsByTagName("div");
-	for(var i = 0;i < divs.length; i++) {
-	    if(divs[i].id == 'page') {
-		var el = divs[i].getElementsByTagName("a");
+	for(var k = 0;k < divs.length; k++) {
+	    if(divs[k].id == 'page') {
+		var el = divs[k].getElementsByTagName("a");
 		for (var i=0;i<el.length;i++) {
 		  if(language != null) {			
 			

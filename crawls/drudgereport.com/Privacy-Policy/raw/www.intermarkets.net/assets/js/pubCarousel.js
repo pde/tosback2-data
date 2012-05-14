@@ -56,7 +56,7 @@ $(document).ready(function(){
 			  
 			  currentPosition++;
 						  
-			  $('#wrappedSlides').animate( {'margin-top' : height*(-currentPosition), opacity:0.20 }, 0, "swing", function() { });
+			  $('#wrappedSlides').stop(true, true).animate( {'margin-top' : height*(-currentPosition), opacity:0.20 }, 0, "swing", function() { });
 			  
 			  $('#wrappedSlides').animate( {opacity: 1.0 }, 500, "swing", function() { });
 			  
@@ -66,7 +66,7 @@ $(document).ready(function(){
 			  //alert('slides exceed maximum, must reset');
 				currentPosition=0;
 				
-				$('#wrappedSlides').animate( {'margin-top' : height*(-currentPosition), opacity:0.20 }, 0, "swing", function() { });
+				$('#wrappedSlides').stop(true, true).animate( {'margin-top' : height*(-currentPosition), opacity:0.20 }, 0, "swing", function() { });
 				
 				$('#wrappedSlides').animate( {opacity: 1.0 }, 500, "swing", function() { });
 							
@@ -93,7 +93,7 @@ $(document).ready(function(){
 			  currentPosition--;	
 			  
 			  
-			  $('#wrappedSlides').animate( {'margin-top' : height*(-currentPosition), opacity:0.20 }, 0, "swing", function() { });
+			  $('#wrappedSlides').stop(true, true).animate( {'margin-top' : height*(-currentPosition), opacity:0.20 }, 0, "swing", function() { });
 			  
 			  $('#wrappedSlides').animate( {opacity: 1.0 }, 500, "swing", function() { });
 			  
@@ -105,7 +105,7 @@ $(document).ready(function(){
 			  
 			  //decreaseSlides();
 			  
-			  $('#wrappedSlides').animate( {'margin-top' : height*(-currentPosition), opacity:0.20 }, 0, "swing", function() { });
+			  $('#wrappedSlides').stop(true, true).animate( {'margin-top' : height*(-currentPosition), opacity:0.20 }, 0, "swing", function() { });
 			  
 			  $('#wrappedSlides').animate( {opacity: 1.0 }, 500, "swing", function() { });
 										  

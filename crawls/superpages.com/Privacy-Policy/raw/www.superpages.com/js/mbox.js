@@ -29,7 +29,12 @@ var e = r + "//" + this.a + q;
 var s = e.indexOf('?') != -1 ? '&' : '?';
 for (var j = 0; j < this.c.length; j++) {
 var k = this.c[j];
-e += s + encodeURIComponent(k.name) + '=' + encodeURIComponent(k.value);
+//e += s + encodeURIComponent(k.name) + '=' + encodeURIComponent(k.value);
+try{
+	e+=s+ encodeURIComponent(k.name) + '=' + encodeURIComponent(k.value);
+}catch(err){
+	
+}
 s = '&'; }
 return this.t(this.d(e));};
 mboxUrlBuilder.prototype.getParameters = function() { return this.c;};

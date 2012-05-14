@@ -3,47 +3,42 @@ jQuery.noConflict();
 
 
 /* earnings */
-var currQuarter = '4Q11';
-var currPID = '262';
+var currQuarter = '1Q12';
+var currPID = '268';
 
-function renderEarnings() {
-	document.write('<h3 class="link"><a title="AT&amp;T Reports ' + currQuarter + ' Earnings -- View Results" href="/gen/investor-relations?pid=' + currPID + '">AT&amp;T Reports ' + currQuarter + ' Earnings &mdash; View Results</a></h3>');
+function renderEarningsLP() {
+document.write('<div class="top-content"><ul class="more_links" id="top_content">'
+						 + '<li><a href="http://phx.corporate-ir.net/phoenix.zhtml?c=113088&amp;p=irol-sec" title="SEC Filings">SEC Filings</a></li>'
+						 + '<li class="last">Results and Non-GAAP Reconciliations: <a href="/Investor/Earnings/'
+						 + '1q12/master_q1_12.pdf" target="_blank" title="Financial and Operational Results PDF">Adobe PDF</a> &ndash; <a href="/Investor/Earnings/'
+						 + '1q12/master_q1_12.xls" title="Non-GAAP Reconciliations (MS Excel)" target="_blank">MS Excel</a></li>'
+						 + '</ul></div>');
 }
 
 /* earnings */
 function renderEarningsList() {
-	document.write('<li><a href="http://www.att.com/gen/investor-relations?pid=262" title="4Q 2011">4Q 2011</a></li>'
+	document.write('<li><a href="http://www.att.com/gen/investor-relations?pid=268" title="1Q 2012">1Q 2012</a></li>'
+				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=262" title="4Q 2011">4Q 2011</a></li>'
 				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=290" title="3Q 2011">3Q 2011</a></li>'
 				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=282" title="2Q 2011">2Q 2011</a></li>'
-				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=268" title="1Q 2011">1Q 2011</a></li>'
 				 + '<li><a href="http://www.att.com/earnings" title="Quarterly Earnings">More</a></li>');
 }
 
 
 function renderQuarterlyTabs() {
-	//local code
-	//pid=location.href;
-//	first=pid.indexOf('_');
-//	pid=pid.substr(first+1);
-//	pid=pid.split('_');
-//	pid=pid[0];	
-	//TEAMSITE code
-	pid=location.href;
-	pid=pid.split('=');
-	pid=pid[1]; 
-	checkAnc = pid.indexOf('#');
-	if(checkAnc != '-1') {pid=pid.split('#');pid=pid[0];
-	}
-	pid = pid.toLowerCase();
-
-		document.write('<ul id="navContainer" class="tabs">'
+	document.write('<ul id="navContainer" class="tabs">'
+					+  '<li id="tab4A"'); if(pid=='268') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=268" title="1Q 2012">1Q 2012</a></li>'
 					+  '<li id="tab3A"'); if(pid=='262') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=262" title="4Q 2011">4Q 2011</a></li>'
 					+  '<li id="tab2A"'); if(pid=='290') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=290" title="3Q 2011">3Q 2011</a></li>'
 					+  '<li id="tab1A"'); if(pid=='282') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=282" title="2Q 2011">2Q 2011</a></li>'
-					+  '<li id="tab4A"'); if(pid=='268') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=268" title="1Q 2011">1Q 2011</a></li>'
 					+  '</ul>');
 	}
 	
+function renderEarnings() {
+	document.write('<h3 class="link"><a title="AT&amp;T Reports ' + currQuarter + ' Earnings -- View Results" href="/gen/investor-relations?pid=' + currPID + '">AT&amp;T Reports ' + currQuarter + ' Earnings &mdash; View Results</a></h3>');
+}
+
+
 jQuery(document).ready(function() {
 
 

@@ -16,10 +16,17 @@ function monkeyPatchAutocomplete() {
 }
 
 jQuery(document).ready(function() {
-    monkeyPatchAutocomplete();
+    if($('input[name=locale]').val() == 'es') {
+		usagov_sayt_url += 'aid=1665&';
+	}
+	else {
+		usagov_sayt_url += 'aid=1176&';
+	}
+	monkeyPatchAutocomplete();
     var position = { my: "left top", at: "left bottom", of: "#home_search", offset: "15 0", collision: "none" };
     jQuery(".usagov-search-autocomplete").autocomplete({
         source: function(request, response) {
+			//alert(usagov_sayt_url + "q=" + encodeURIComponent(request.term));
             jQuery.ajax({
                 url: usagov_sayt_url + "q=" + encodeURIComponent(request.term),
                 dataType: "jsonp",

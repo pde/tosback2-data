@@ -1168,6 +1168,9 @@ $(document).ready (function() {
 		$( 'a[href*="print.html"]' ).click( function(){
 			fireMetrics('print');
 		});
+		$( 'a[href*="FAQs.html"]' ).click( function(){
+			fireMetrics('promo_tile');
+		});
 		$( 'div.relatedResources ul.content li[class^="year_"] a' ).click( function(){
 			var href = $( this ).attr( 'href' );
 			if( href ){

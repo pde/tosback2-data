@@ -201,6 +201,11 @@ function setCustomToolTips() {
 
   $(".help-tool-tip").each(function() {
 
+    // This allows us to offset the tool tip as needed. Just add a left and/or
+    // top CSS property to #help-tool-tip. Negatives work too.
+    var leftCssOffset = $("#help-tool-tip").css("left").match(/-?\d+/);
+    var topCssOffset = $("#help-tool-tip").css("top").match(/-?\d+/);
+
     $(this).attr("tabindex", "-1");
 
     $(this).hover(function(e) {
@@ -215,6 +220,9 @@ function setCustomToolTips() {
       var tipY = $(this).position().top - $(this).outerHeight();
       var tipX = $(this).position().left + ($(this).outerWidth() + 10);
 
+      tipX = (leftCssOffset) ? parseInt(tipX) + parseInt(leftCssOffset) : tipX;
+      tipY = (topCssOffset) ? parseInt(tipY) + parseInt(topCssOffset) : tipY;
+
       $("#help-tool-tip").css({"top": tipY, "left": tipX});
       $("#help-tool-tip").stop(true, true).fadeIn("fast");
 
@@ -224,6 +232,7 @@ function setCustomToolTips() {
 
       if (rightOffset > 0) {
         tipX = (tipX - 60) - divWidth;
+
         $("#help-tool-tip").css({"top": tipY, "left": tipX}).addClass("left");
       }
 
@@ -245,38 +254,54 @@ function getPageDimensions() {
 }
 
 function setCarouselToolTips() {
+  $("*[class^='carousel-tool-tip']").each(function() {
 
-  if ($("div#help-tool-tip").length) {
+    // Add the tool tip container if it doesn't exist
+    if (!$("div#help-tool-tip").length) {
+      $('#content-primary').append('<div id="help-tool-tip" class="carousel"><div id="help-tool-tip-content" class="drop-shadow">This is a tool tip</div></div>');
+    }
 
-    $(".carousel-tool-tip").each(function() {
+    $(this).attr("tabindex", "-1");
 
-      $(this).attr("tabindex", "-1");
+    $(this).hover(function(e) {
+      $(this).attr("alt", $(this).attr("alt").replaceHtmlEntites());
+      var helpText = $(this).attr("alt").replaceHtmlEntites();
+      $("#help-tool-tip-content").html(helpText);
 
-      $(this).hover(function(e) {
-        $(this).attr("alt", $(this).attr("alt").replaceHtmlEntites());
-        var helpText = $(this).attr("alt").replaceHtmlEntites();
-        $("#help-tool-tip-content").html(helpText);
+      if (!$(this).is("img")) {
         $(this).removeAttr("alt");
+      }
 
-        // Old method:
-        // var elemLeft = $(this).position().left;
-        var elemLeft = parseInt($(this).offset().left) - parseInt($("#content-primary").offset().left);
+      // Old method:
+      // var elemLeft = $(this).position().left;
+      var elemLeft = parseInt($(this).offset().left) - parseInt($("#content-primary").offset().left);
 
-        // For debugging only
-        // console.log("left: " + $(this).position().left + " | width: " + $(this).width() + " | offset: " + parseInt($(this).offset().left));
+      // Do we need to put the tool tip on the left or right? Positioning it
+      // on the left is primarily for vertical carousels that are on the right
+      // edge of the page.
+      if ($(this).hasClass("carousel-tool-tip-left")) {
+        elemLeft -= ($("#help-tool-tip").width() + 15);
+      }
+      else {
+        elemLeft += $(this).width();
+      }
 
-        $("#help-tool-tip").css({"left": (elemLeft + $(this).width()) + "px",
-                                 "top": ($(this).offset().top - $(this).height()) + "px",
-                                 "z-index": 2000}).stop(true, true).fadeIn("fast");
+      // For debugging only
+      // console.log("left: " + $(this).position().left + " | width: " + $(this).width() + " | offset: " + parseInt($(this).offset().left));
+
+      $("#help-tool-tip").css({"left": elemLeft + "px",
+                               "top": ($(this).offset().top - $(this).height()) + "px",
+                               "z-index": 2000}).stop(true, true).fadeIn("fast");
+
+      if (!$(this).is("img")) {
         $(this).children("img").removeAttr("alt");
-      }, function() {
-        $("#help-tool-tip").stop(true, true).fadeOut("fast");
-        $(this).attr("alt", $("#help-tool-tip-content").html());
-      });
-
+      }
+    }, function() {
+      $("#help-tool-tip").stop(true, true).fadeOut("fast");
+      $(this).attr("alt", $("#help-tool-tip-content").html());
     });
 
-  }
+  });
 }
 
 function adjustOverlayPos() {

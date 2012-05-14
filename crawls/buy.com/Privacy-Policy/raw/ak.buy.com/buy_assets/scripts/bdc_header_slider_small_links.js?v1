@@ -1,0 +1,56 @@
+﻿//set akamai image path for secure and non-secure
+if (location.href.indexOf("https://") != -1) {
+    var akPath = "https://a248.e.akamai.net/f/248/845/10h/images.buy.com/buy_assets";
+} else {
+    var akPath = "http://ak.buy.com/buy_assets";
+}
+//set random number for rotating promos
+rnd.today = new Date();
+rnd.seed = rnd.today.getTime();
+
+function rnd() {
+    rnd.seed = (rnd.seed * 9301 + 49297) % 233280;
+    return rnd.seed / (233280.0);
+};
+
+function rand(number) {
+    return Math.ceil(rnd() * number);
+};
+
+
+var buyHeaderNum = rand(3);
+
+if (buyHeaderNum == 1) {
+    var header_slider_items =
+    [
+        { href: "http://www.buy.com/loc/dads-grads/64566.html", src: akPath + "/v9/campaigns/dads_and_grads/slide1.png", onclick: "header_slider_dadsgrads" },
+        { href: "signup", src: akPath + "/v9/header/slides/slide_best_deals_alert.png", onclick: "header_slider_DealsSignup" },
+        { href: "http://www.buy.com/buytv/", src: akPath + "/v9/header/slides/slide_buytv_2_14_12.png", onclick: "header_slider_BuyTv" },
+        { href: "http://www.buy.com/loc/buy-com-mobile-apps/69544.html", src: akPath + "/v9/header/slides/slide_shop_mobile.png", onclick: "header_slider_ShopMobile" },
+        { href: "http://www.buy.com/loc/return-policy/67219.html", src: akPath + "/v9/header/slides/slide_45_return.png", onclick: "header_slider_45Returns" },
+        { href: "http://www.buy.com/loc/marketplace-landing/67274.html", src: akPath + "/v9/header/slides/slide_sell_mp.png", onclick: "header_slider_SellMP" },
+        { href: "http://www.buy.com/todaysdeals/14982.html", src: akPath + "/v9/header/slides/slide_todays_deal.png", onclick: "header_slider_TodaysDeals" }
+    ];
+} else if (buyHeaderNum == 2) {
+    var header_slider_items =
+    [
+        { href: "signup", src: akPath + "/v9/header/slides/slide_best_deals_alert.png", onclick: "header_slider_DealsSignup" },
+        { href: "http://www.buy.com/loc/dads-grads/64566.html", src: akPath + "/v9/campaigns/dads_and_grads/slide1.png", onclick: "header_slider_dadsgrads" },
+        { href: "http://www.buy.com/buytv/", src: akPath + "/v9/header/slides/slide_buytv_2_14_12.png", onclick: "header_slider_BuyTv" },
+        { href: "http://www.buy.com/loc/buy-com-mobile-apps/69544.html", src: akPath + "/v9/header/slides/slide_shop_mobile.png", onclick: "header_slider_ShopMobile" },
+        { href: "http://www.buy.com/loc/return-policy/67219.html", src: akPath + "/v9/header/slides/slide_45_return.png", onclick: "header_slider_45Returns" },
+        { href: "http://www.buy.com/loc/marketplace-landing/67274.html", src: akPath + "/v9/header/slides/slide_sell_mp.png", onclick: "header_slider_SellMP" },
+        { href: "http://www.buy.com/todaysdeals/14982.html", src: akPath + "/v9/header/slides/slide_todays_deal.png", onclick: "header_slider_TodaysDeals" }
+    ];
+} else {
+    var header_slider_items =
+    [
+        { href: "signup", src: akPath + "/v9/header/slides/slide_best_deals_alert.png", onclick: "header_slider_DealsSignup" },
+        { href: "http://www.buy.com/loc/buy-com-mobile-apps/69544.html", src: akPath + "/v9/header/slides/slide_shop_mobile.png", onclick: "header_slider_ShopMobile" },
+        { href: "http://www.buy.com/loc/return-policy/67219.html", src: akPath + "/v9/header/slides/slide_45_return.png", onclick: "header_slider_45Returns" },
+        { href: "http://www.buy.com/loc/marketplace-landing/67274.html", src: akPath + "/v9/header/slides/slide_sell_mp.png", onclick: "header_slider_SellMP" },
+        { href: "http://www.buy.com/buytv/", src: akPath + "/v9/header/slides/slide_buytv_2_14_12.png", onclick: "header_slider_BuyTv" },
+        { href: "http://www.buy.com/loc/dads-grads/64566.html", src: akPath + "/v9/campaigns/dads_and_grads/slide1.png", onclick: "header_slider_dadsgrads" },
+        { href: "http://www.buy.com/todaysdeals/14982.html", src: akPath + "/v9/header/slides/slide_todays_deal.png", onclick: "header_slider_TodaysDeals" }        
+    ];
+}

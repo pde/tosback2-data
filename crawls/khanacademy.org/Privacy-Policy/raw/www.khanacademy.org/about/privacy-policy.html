@@ -3,7 +3,8 @@
 <html itemscope itemtype="http://schema.org/Organization"
     xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:og="http://opengraphprotocol.org/schema/"
     xmlns:fb="http://www.facebook.com/2008/fbml" >
-      <head>
+      <head prefix="og: http://ogp.me/ns# khanacademy:
+                        http://ogp.me/ns/apps/khanacademy#">
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
         
         <!--[if lte IE 7]><script src="/javascript/ie-warning.js"></script><script>window.onload=function(){e("/images/ie-warning/")}</script><![endif]-->
@@ -11,13 +12,14 @@
             // TODO: Sweep below into KA
             // TODO: Change USERNAME var since it is actually the user's nickname
             
-            var KA_VERSION = '2e1637746c22.358188311918780171';
+            var KA_VERSION = '0510-26f94db26ec8.358815945855095536';
             var FB_APP_ID = '160249463991765';
             var USERNAME = '';
 
             var KA = {
                 "profileRoot": "/profile/nouser/",
-                "isMobileCapable": false
+                "isMobileCapable": false,
+                "FB_APP_NAMESPACE": "khanacademy"
             };
         </script>
 
@@ -25,28 +27,31 @@
         
         <meta name="description" content="With a library of over 3,000 videos covering everything from arithmetic to physics, finance, and history and hundreds of skills to practice, we're on a mission to help you learn what you want, when you want, at your own pace." />
         <meta name="keywords" content="khan academy, learn, videos, lectures, practice, exercises, skills" />
-        <meta property="fb:page_id" content="159403248441" />
-        <meta property="og:title" content="The Khan Academy"/>
-        <meta property="og:type" content="non_profit"/>
-        <meta property="og:url" content="http://www.khanacademy.org"/>
-        <meta property="og:image" content="http://www.khanacademy.org/images/handtreehorizontal_facebook.png"/>
-        <meta property="og:site_name" content="khanacademy.org"/>
-        <meta property="fb:admins" content="100000121497109,1305017,100001572496923"/> 
+
         <meta property="fb:app_id" content="160249463991765"/>
+        <meta property="fb:admins" content="100000121497109,1305017,100001572496923"/> 
+        <meta property="og:site_name" content="Khan Academy"/>
+        
+        <meta property="og:url" content="http://www.khanacademy.org"/>
+        <meta property="og:type" content="non_profit"/>
+        <meta property="og:title" content="Khan Academy"/>
+        <meta property="og:description"
+              content="With a library of over 3,000 videos covering everything from arithmetic to physics, finance, and history and hundreds of skills to practice, we're on a mission to help you learn what you want, when you want, at your own pace."/>
+        <meta property="og:image" content="http://www.khanacademy.org/images/handtreehorizontal_facebook.png"/>
+        <meta property="fb:page_id" content="159403248441" />
+        
 
         <meta itemprop="name" content="Khan Academy">
         <meta itemprop="description" content="Watch. Practice. Learn almost anything for free.">
         <meta itemprop="image" content="http://www.khanacademy.org/images/khan-logo-vertical-transparent.png">
-        <meta property="og:description"
-              content="With a library of over 3,000 videos covering everything from arithmetic to physics, finance, and history and hundreds of skills to practice, we're on a mission to help you learn what you want, when you want, at your own pace."/>
         <link rel="shortcut icon" href="../favicon.ico%3Fleaf">
         <link rel="apple-touch-icon" href="http://www.khanacademy.org/images/apple-touch-icon.png"/>
 
         
-            <!--[if (!IE)|(gte IE 8)]><!--><link rel='stylesheet' type='text/css' href='../../khan-academy.appspot.com/stylesheets/shared-package/hashed-6fb91a52ba7b6530d049cc6b7ef4f59a.css'/><!--<![endif]--><!--[if lte IE 7]><link rel='stylesheet' type='text/css' href='http://khan-academy.appspot.com/stylesheets/shared-package/hashed-82e7a100fdcd3adcb96e2be4cecbb25a.css'/><![endif]-->
+            <!--[if (!IE)|(gte IE 8)]><!--><link rel='stylesheet' type='text/css' href='../../khan-academy.appspot.com/stylesheets/shared-package/hashed-000ae835e133f8016e3755bede9282e3.css'><!--<![endif]--><!--[if lte IE 7]><link rel='stylesheet' type='text/css' href='http://khan-academy.appspot.com/stylesheets/shared-package/hashed-82212f8d15277f043d799a66c83049c9.css'><![endif]-->
             
             
-            <script type='text/javascript' src='../../khan-academy.appspot.com/javascript/shared-package/hashed-09b457a26030507624fefcfed03be4a9.js'></script><script type='text/javascript'>if (typeof dynamicPackageLoader !== 'undefined') dynamicPackageLoader.setPackageLoaded('shared');</script>
+            <script type='text/javascript' src='../../khan-academy.appspot.com/javascript/shared-package/hashed-aca662a35686b6029d811a9f301ba4ce.js'></script><script type='text/javascript'>if (typeof dynamicPackageLoader !== 'undefined') dynamicPackageLoader.setPackageLoaded('shared');</script>
         
 
         <script type="text/javascript">
@@ -77,7 +82,7 @@ $(function(){
       _gaq.push(['_setDomainName', '.khanacademy.org']);
       _gaq.push(['_trackPageview']);
       _gaq.push(['_trackPageLoadTime']);
-       
+      
       _gaq.push(['_setCustomVar', 1, 'User Type', 'New', 1 ]);
       
       
@@ -86,10 +91,10 @@ $(function(){
       _gaq.push(['ht._setAccount', 'UA-5033010-1']);
       _gaq.push(['ht._setDomainName', '.khanacademy.org']);
       _gaq.push(['ht._trackPageview']);
- 
+
       
       
- 
+
     </script></head>
 <!--[if lt IE 7]>  <body class="ie ie6 lte9 lte8 lte7"> <![endif]-->
 <!--[if IE 7]>     <body class="ie ie7 lte9 lte8 lte7"> <![endif]-->
@@ -115,12 +120,14 @@ $(function(){
             <header>
 
                 <div id="top-header">
-                    <div id="top-header-links">
+                    <div class="top-header-links">
                         <span class="page_links" id="page_auth">
                             <span id="goals-container"></span>
-                            
-                                <a class="badge-target" href="http://www.khanacademy.org/login?continue=%2Fpostlogin%3Fcontinue%3Dhttp%253A%252F%252Fwww.khanacademy.org%252Fabout%252Fprivacy-policy&amp;direct=1">Login</a>
-                            
+                                <span id="user-info" class="badge-target">
+                                
+                                    <a href="http://www.khanacademy.org/login?continue=%2Fpostlogin%3Fcontinue%3Dhttp%253A%252F%252Fwww.khanacademy.org%252Fabout%252Fprivacy-policy&amp;direct=1">Login</a>
+                                
+                                </span>
                             <span class="separator"></span>
                             <span>
                                 <a href='http://www.khanacademy.org/donate'
@@ -133,20 +140,22 @@ $(function(){
                         </span>
                         <div class="clear"></div>
                         <div id="nav-and-search">
-                            <div id="sitewide-navigation">
+                            <div class="sitewide-navigation">
                                 <nav>
-                                  <span class="links nav-subheader">
-                                    <span class="dropdown topic-browser-dropdown">
-                                      
-                                      <a href="http://www.khanacademy.org/#browse" data-tag="Header" class="watch-link dropdown-toggle">Watch <b class="caret"></b></a>
-                                      
-                                      <a href="http://www.khanacademy.org/exercisedashboard" data-tag="Header" class=" practice-link">Practice</a>
-                                      <a href="http://www.khanacademy.org/class_profile" data-tag="Header" class=" coach-link">Coach</a>
-                                      <a href="http://www.khanacademy.org/contribute" data-tag="Header" class=" contribute-link">Volunteer</a>
-                                      <a href="http://www.khanacademy.org/about" data-tag="Header" class=" about-link">About</a>
-                                      <div style="clear: both"></div>
+                                    <span class="links nav-subheader">
+                                        <span class="dropdown topic-browser-dropdown">
+                                            
+                                            <a href="http://www.khanacademy.org/#browse" data-tag="Header" class="watch-link dropdown-toggle">Watch <span class="caret"></span></a>
+                                            
+                                            <a href="http://www.khanacademy.org/exercisedashboard" data-tag="Header" class=" practice-link">Practice</a>
+                                            
+                                            <a href="http://www.khanacademy.org/class_profile" data-tag="Header" class=" coach-link">Coach</a>
+                                            
+                                            <a href="http://www.khanacademy.org/contribute" data-tag="Header" class=" contribute-link">Volunteer</a>
+                                            <a href="http://www.khanacademy.org/about" data-tag="Header" class=" about-link">About</a>
+                                            <div style="clear: both"></div>
+                                        </span>
                                     </span>
-                                  </span>
                                 </nav>
                             </div>
                             <div id="search-box">
@@ -233,15 +242,6 @@ $(function(){
 
             <div id="end-of-page-spacer" style="height: 38px;">&nbsp;</div>
 
-
-            <div id="badge-notification-container" class="badge-award-container" style="display:none;">
-
-    
-
-</div>
-
-
-
     </div>
     </div>
     </div>
@@ -250,7 +250,7 @@ $(function(){
     <footer id="footer" class="short">
     <div id="leaves">
         <div class="inner">
-        <div id="copyright" title="Version: 2e1637746c22.358188311918780171">
+        <div id="copyright" title="Version: 0510-26f94db26ec8.358815945855095536">
             <small>
                 &copy;2012
                 
@@ -263,8 +263,10 @@ $(function(){
         <span class="footer-links">
             <a href="http://khanacademy.desk.com" id="faq-link" data-tag="Header" >FAQ</a>
             <span class="sep">|</span>
+            
             <a href="http://www.khanacademy.org/reportissue?type=Defect&amp;issue_labels=" data-tag="Footer" id="report" >Report a Problem</a>
             <span class="sep">|</span>
+            
             <a href="http://khanacademy.desk.com" data-tag="Footer" >Contact</a><a href="http://www.khanacademy.org/jobs" data-tag="Footer" >Jobs</a>
             <span class="sep">|</span>
             <a href="http://www.khanacademy.org/about/tos" title="Terms of Service" data-tag="Footer" >ToS</a> <a href="privacy-policy.html" title="Privacy Policy" data-tag="Footer" >Privacy Policy</a>
@@ -305,73 +307,73 @@ $(function(){
         "children": [
             {
                 "has_divider": false, 
-                "href": "/#arithmetic", 
+                "href": "/math/arithmetic", 
                 "level": 1, 
                 "title": "Arithmetic and Pre-Algebra"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#algebra", 
+                "href": "/math/algebra", 
                 "level": 1, 
                 "title": "Algebra"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#geometry", 
+                "href": "/math/geometry", 
                 "level": 1, 
                 "title": "Geometry"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#trigonometry", 
+                "href": "/math/trigonometry", 
                 "level": 1, 
                 "title": "Trigonometry"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#probability", 
+                "href": "/math/probability", 
                 "level": 1, 
                 "title": "Probability"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#statistics", 
+                "href": "/math/statistics", 
                 "level": 1, 
                 "title": "Statistics"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#precalculus", 
+                "href": "/math/precalculus", 
                 "level": 1, 
                 "title": "Precalculus"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#calculus", 
+                "href": "/math/calculus", 
                 "level": 1, 
                 "title": "Calculus"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#differential-equations", 
+                "href": "/math/differential-equations", 
                 "level": 1, 
                 "title": "Differential Equations"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#linear-algebra", 
+                "href": "/math/linear-algebra", 
                 "level": 1, 
                 "title": "Linear Algebra"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#brain-teasers", 
+                "href": "/math/brain-teasers", 
                 "level": 1, 
                 "title": "Brain Teasers"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#vi-hart", 
+                "href": "/math/vi-hart", 
                 "level": 1, 
                 "title": "Vi Hart"
             }
@@ -384,51 +386,57 @@ $(function(){
         "children": [
             {
                 "has_divider": false, 
-                "href": "/#biology", 
+                "href": "/science/biology", 
                 "level": 1, 
                 "title": "Biology"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#chemistry", 
+                "href": "/science/chemistry", 
                 "level": 1, 
                 "title": "Chemistry"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#organic-chemistry", 
+                "href": "/science/organic-chemistry", 
                 "level": 1, 
                 "title": "Organic Chemistry"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#healthcare-and-medicine", 
+                "href": "/science/healthcare-and-medicine", 
                 "level": 1, 
                 "title": "Healthcare and Medicine"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#physics", 
+                "href": "/science/physics", 
                 "level": 1, 
                 "title": "Physics"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#cosmology-and-astronomy", 
+                "href": "/science/cosmology-and-astronomy", 
                 "level": 1, 
                 "title": "Cosmology and Astronomy"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#computer-science", 
+                "href": "/science/computer-science", 
                 "level": 1, 
                 "title": "Computer Science"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#brit-cruise", 
+                "href": "/science/brit-cruise", 
                 "level": 1, 
                 "title": "Brit Cruise"
+            }, 
+            {
+                "has_divider": false, 
+                "href": "/science/mit-k12", 
+                "level": 1, 
+                "title": "MIT+K12"
             }
         ], 
         "href": null, 
@@ -439,67 +447,67 @@ $(function(){
         "children": [
             {
                 "has_divider": false, 
-                "href": "/#core-finance", 
+                "href": "/finance-economics/core-finance", 
                 "level": 1, 
                 "title": "Core Finance"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#valuation-and-investing", 
+                "href": "/finance-economics/valuation-and-investing", 
                 "level": 1, 
                 "title": "Valuation and Investing"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#venture-capital-and-capital-markets", 
+                "href": "/finance-economics/venture-capital-and-capital-markets", 
                 "level": 1, 
                 "title": "Venture Capital and Capital Markets"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#credit-crisis", 
+                "href": "/finance-economics/credit-crisis", 
                 "level": 1, 
                 "title": "Credit Crisis"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#paulson-bailout", 
+                "href": "/finance-economics/paulson-bailout", 
                 "level": 1, 
                 "title": "Paulson Bailout"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#geithner-plan", 
+                "href": "/finance-economics/geithner-plan", 
                 "level": 1, 
                 "title": "Geithner Plan"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#current-economics", 
+                "href": "/finance-economics/current-economics", 
                 "level": 1, 
                 "title": "Current Economics"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#banking-and-money", 
+                "href": "/finance-economics/banking-and-money", 
                 "level": 1, 
                 "title": "Banking and Money"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#currency", 
+                "href": "/finance-economics/currency", 
                 "level": 1, 
                 "title": "Currency"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#microeconomics", 
+                "href": "/finance-economics/microeconomics", 
                 "level": 1, 
                 "title": "Microeconomics"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#macroeconomics", 
+                "href": "/finance-economics/macroeconomics", 
                 "level": 1, 
                 "title": "Macroeconomics"
             }
@@ -512,19 +520,19 @@ $(function(){
         "children": [
             {
                 "has_divider": false, 
-                "href": "/#history", 
+                "href": "/humanities/history", 
                 "level": 1, 
                 "title": "History"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#american-civics", 
+                "href": "/humanities/american-civics", 
                 "level": 1, 
                 "title": "American Civics"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#art-history", 
+                "href": "/humanities/art-history", 
                 "level": 1, 
                 "title": "Art History"
             }
@@ -537,43 +545,43 @@ $(function(){
         "children": [
             {
                 "has_divider": false, 
-                "href": "/#sat-math", 
+                "href": "/test-prep/sat-math", 
                 "level": 1, 
                 "title": "SAT Math"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#gmat", 
+                "href": "/test-prep/gmat", 
                 "level": 1, 
                 "title": "GMAT"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#cahsee", 
+                "href": "/test-prep/cahsee", 
                 "level": 1, 
                 "title": "CAHSEE"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#california-standards-test", 
+                "href": "/test-prep/california-standards-test", 
                 "level": 1, 
                 "title": "California Standards Test"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#competition-math", 
+                "href": "/test-prep/competition-math", 
                 "level": 1, 
                 "title": "Competition Math"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#iit-jee", 
+                "href": "/test-prep/iit-jee", 
                 "level": 1, 
                 "title": "IIT JEE"
             }, 
             {
                 "has_divider": false, 
-                "href": "/#singapore-math", 
+                "href": "/test-prep/singapore-math", 
                 "level": 1, 
                 "title": "Singapore Math"
             }
@@ -584,7 +592,7 @@ $(function(){
     }, 
     {
         "has_divider": false, 
-        "href": "/#talks-and-interviews", 
+        "href": "/talks-and-interviews", 
         "level": 0, 
         "title": "Talks and Interviews"
     }

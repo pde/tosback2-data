@@ -1,4 +1,4 @@
-//to get the comments: check ABTestingCommented.js in ABTesting Project
+﻿//to get the comments: check ABTestingCommented.js in ABTesting Project
 var REDCATS={};
 REDCATS.ABTesting={};
 REDCATS.ABTesting.REPARTITION=0.50;
@@ -99,24 +99,14 @@ if(!group||typeof(group)!='number'||group>2)
 group=0;
 var inputZone=document.getElementById(ZoneIDs[group]);
 if((inputZone!==null)&&(inputZone.innerHTML.length>0))
-{
-
-// TT # 5718 -: AB Testing content zone should allow users to add their HTML comments
- //replace HTML Comment start and end tags with "HTMLCOMMENTSTART" and "HTMLCOMMENTEND" resp. 
- var strContent=inputZone.innerHTML.replace(/HTMLCOMMENTSTART/g,"<!--");
- strContent=strContent.replace(/HTMLCOMMENTEND/g,"-->");
-
-inputZoneContent=strContent.replace(/<!--ABTOREMOVE/,'');
+{ 
+inputZoneContent=inputZone.innerHTML.replace(/<!--ABTOREMOVE/,'');
 inputZoneContent=inputZoneContent.replace(/ABTOREMOVE-->/,'');
+inputZoneContent=inputZoneContent.replace(/&lt;!--ABTOREMOVE/,'');
+inputZoneContent=inputZoneContent.replace(/ABTOREMOVE--&gt;/,'');
 contentOutput=inputZoneContent;
-if(document.getElementById('ABTestingDisplay_'+objId))
-{
-document.getElementById('ABTestingDisplay_'+objId).innerHTML=contentOutput;
-}
-else
-{
-document.write(contentOutput);
-}
+if(contentOutput!=null)
+	document.write(contentOutput); 
 }
 }
 catch(e){

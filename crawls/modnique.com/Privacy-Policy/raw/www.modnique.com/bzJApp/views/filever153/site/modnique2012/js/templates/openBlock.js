@@ -1,0 +1,2 @@
+if(enableGigyaLoginFunctionality=="Y"&&objGigya.isReady()){objGigya.options={showTermsLink:"false",hideGigyaLink:true,height:30,width:305,containerID:"gigya_sitemap",autoDetectUserProviders:"",facepilePosition:"none",buttonsStyle:"fullLogo",UIConfig:'<config><body><controls><snbuttons buttonsize="30"></snbuttons></controls></body></config>'};
+objGigya._create("showLoginUI");jQuery(document).ready(function(a){gigya.services.socialize.addEventHandlers(objGigya.conf,{context:{str:"Logged in."},onLogin:objGigya.onLoginHandler,onLogout:objGigya.onLogoutHandler});});}

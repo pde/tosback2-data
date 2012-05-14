@@ -32,95 +32,80 @@ return AC.Tracking._pageName}}return AC.Tracking._pageNameForTitle_atHost_andPat
 if(/\s-\s/.test(f)){f=f.replace(/\s*-?\s*(apple|アップル|애플컴퓨터코리아|蘋果|蘋果電腦|apple中国|苹果中国)\s+[^-]*-?\s*/,"")
 }if(!e.match(/^\/(ws|pr|g5|go|ta|wm)\//)){e=e.replace(/^\/(\w{2}|befr|benl|chfr|chde|asia|lae)(?=\/)/,"")
 }if((e.match(/\//g).length<=2)&&!e.match(/support/)&&!h.match(/support/)&&!h.match(/selfsolve/)&&(!!e.match(/index\.html/)||!e.match(/\.html/))){f+=" - index"
-}if(/\/pr\//.test(e)){f="pr - "+f}return f};s.usePlugins=true;function s_doPlugins(ab){ab.tcall=(typeof(ab.linkType)=="undefined")?true:false;
-if(ab.pageName){var aH=escape(ab.pageName);aH=aH.replace(/(%u2018|%u2019|%u02BC|%u02BD)/g,"%27");
-aH=aH.replace(/(%u201C|%u201D|%E2%80%9C|%E2%80%9D)/g,"%22");aH=aH.replace(/(%09|%0A|%0D)/g,"");
-ab.pageName=unescape(aH)}if(!ab.d.URL.match(/(apple.com\/retail\/.+\/map\/|apple.com\/buy\/locator\/|discussions.apple.com|discussionsjapan.apple.com)/g)){ab.setupDynamicObjectIDs()
-}ab.prop5=navigator.platform;tempVar1=ab.getQueryParam("ref");if(tempVar1&&ab.tcall){ab.referrer=tempVar1
-}else{if(tempVar1&&!ab.tcall){ab.referrer=""}}ab.server=ab.getQueryParam("alias");
-if(!ab.server){ab.server="new approach"}if(!ab.campaign){ab.campaign=ab.getQueryParam("cid");
-ab.setClickMapEmail("Email_PageName,Email_OID","Email_OT");if(ab.campaign.match(/OAS-.+?-DOMAINS-/i)){var ar="http://"+ab.campaign.replace(/OAS-.+?-DOMAINS-/i,"");
-ab.referrer=(ab.tcall)?ar:""}}ab.campaign=ab.getValOnce(ab.campaign,"s_campaign",0);
-ab.prop6=(!ab.prop6)?('D="'+ab.getQueryParam("cp").toLowerCase()+': "+pageName'):ab.prop6;
-ab.prop11=ab.getQueryParam("sr");if(!ab.d.URL.match(/\/channel\//)&&!ab.prop11&&ab.c_r("s_3p")){ab.prop11=ab.c_r("s_3p");
-ab.c_w("s_3p","",-1)}ab.eVar7=(!ab.eVar7)?ab.getQueryParam("aid"):"";ab.eVar7=ab.getValOnce(ab.eVar7,"s_var_7",0);
-if(ab.eVar2){ab.events=ab.apl(ab.events,"event6",",",1)}if((!ab.d.URL.match(/apple.com\/(\w{2}|befr|benl|chfr|chde|asia|lae)\/search\//)&&!ab.d.URL.match(/apple.com\/search\//))&&(ab.d.referrer.match(/apple.com\/(\w{2}|befr|benl|chfr|chde|asia|lae)\/search\//)||ab.d.referrer.match(/apple.com\/search\//))){ab.eVar2=(ab.d.referrer.match(/\/support\//))?"acs: ":((ab.d.referrer.match(/\/store\//)?"aos: ":"www: "));
-ab.events=ab.apl(ab.events,"event7",",",1);if(ab.d.referrer.match(/apple.com\/(\w{2}|befr|benl|chfr|chde|asia|lae)\/search/)){ab.eVar2+=ab.getQueryParam("q","",ab.d.referrer).replace(/\+/g," ");
-var e=ab.d.referrer.match(/\/(\w{2}|befr|benl|chfr|chde|asia|lae)\//i);ab.eVar2+=" ("+e[0].replace(/\//g,"")+")"
-}else{ab.eVar2+=ab.getQueryParam("q","",ab.d.referrer).replace(/\+/g," ")+" (us)"
-}}if(ab.prop11=="em"&&ab.tcall){ab.referrer="imap://chatterbox.com"}if(ab.prop11=="app"&&ab.tcall){ab.referrer="file://fromApp"
-}if(document.referrer&&document.referrer.indexOf("apple.com/startpage/")>-1&&ab.tcall){ab.referrer="news://startpage.com";
-ab._1_referrer=1}ab.prop14=ab.getPreviousValue(ab.pageName,"s_pv");if(!ab.prop17){var aI=ab.getPercentPageViewed(ab.pageName);
-if(aI&&aI.length>=5&&typeof(aI[1])!="undefined"){ab.prop17=aI[1]+":"+aI[2];ab.prop28=Math.round(aI[3]/10)*10;
-ab.eVar17=ab.eVar18="";if(aI[4]){var aB=aI[4].split(/\|/g),at="";for(var V=0;V<aB.length;
-V++){if(V!=(aB.length-1)){var aj=aB[V+1].split(/:/)[0]-aB[V].split(/:/)[0];if(aj>100){at+=aB[V].split(/:/)[1];
-var Z=aj/100;while(Z>1){at+="0";Z--}}else{at+=aB[V].split(/:/)[1]}}else{at+=aB[V].split(/:/)[1]
-}}if(at.length>254){ab.eVar17=at.substring(0,254);ab.eVar18=at.substring(255,at.length)
-}else{ab.eVar17=at}}if(!ab.tcall){ab.linkTrackVars="prop17,prop28"}}}ab.prop38=ab.tcall?ab.deviceOrientationChanges(true):"";
-ab.prop32=ab.eVar32=ab.getQueryParam("psid");if(ab.prop32||ab.c_r("s_sid")){var i=new Date(),al=i.getTime();
-i.setTime(al+1825*24*60*60*1000);ab.prop32?ab.c_w("s_psid",ab.prop32,i):ab.c_w("s_psid",ab.c_r("s_sid"),i);
-ab.c_w("s_sid","",-1)}if(!ab.prop32&&!ab.c_r("s_pathLength")){ab.prop32=ab.c_r("s_psid")
-}ab.prop15=ab.c_r("PostalCode")?ab.c_r("PostalCode"):"no zip";if(!ab.prop20){var ai=navigator.userAgent.match(/foh:r\d{3}/i);
-ab.prop20=ai?("store kiosk:"+ai.toString().replace(/foh:/i,"")):"non-store kiosk"
-}ab.linkLeaveQueryString=true;var aC=ab.downloadLinkHandler();if(aC){if(aC.match(/\.rss|\.xml/)){ab.eVar16=ab.prop16="sign ups"
-}else{ab.eVar11=AC.Tracking.pageName()+" - "+aC.substring(aC.lastIndexOf("/")+1,aC.length);
-ab.eVar16=ab.prop16="downloads";ab.events=ab.apl(ab.events,"event5",",",1)}ab.linkTrackVars="prop16,eVar16,eVar11,events";
-ab.linkTrackEvents="event5"}ab.linkLeaveQueryString=false;ab.detectRIA("s_ria","prop19","","12","","");
-if(typeof(Media)!="undefined"&&ab.tcall){ab.prop18=QTCheck()}function aa(){if(ab.u.match(/windows/i)){ab.prop9="windows";
-return}if(ab.u.match(/(kindle|silk-accelerated)/i)){if(ab.u.match(/(kindle fire|silk-accelerated)/i)){ab.prop9="kindle fire"
-}else{ab.prop9="kindle"}return}if(ab.u.match(/(iphone|ipod|ipad)/i)){var b=ab.u.match(/OS [0-9_]+/i);
-ab.prop9="i"+b[0].replace(/_/g,".");return}if(ab.u.match(/android/i)){ab.prop9=ab.u.match(/android [0-9]\.?[0-9]?\.?[0-9]?/i);
-return}if(ab.u.match(/webos\/[0-9\.]+/i)){var b=ab.u.match(/webos\/[0-9]\.?[0-9]?\.?[0-9]?/i);
-ab.prop9=b[0].replace(/webos\//i,"web os ");return}if(ab.u.match(/rim tablet os [0-9\.]+/i)){var b=ab.u.match(/rim tablet os [0-9]\.?[0-9]?\.?[0-9]?/i);
-ab.prop9=b[0].replace(/rim tablet os/i,"rim os ");return}if((ab.u.match(/firefox\/(\d{2}||[3-9])/i)||ab.u.match(/AppleWebKit\//))&&ab.u.match(/Mac OS X [0-9_\.]+/)){var a=ab.u.match(/[0-9_\.]+/g);
-a=a[1].split(/_|\./);ab.prop9=a[0]+"."+a[1]+".x";return}var c=ab.u.match(/AppleWebKit\/\d*/i)&&ab.u.match(/AppleWebKit\/\d*/i).toString().replace(/AppleWebKit\//i,"");
-if(c>522){ab.prop9="10.5.x"}else{if(c>400){ab.prop9="10.4.x"}else{if(c>99){ab.prop9="10.3.x"
-}else{if(c>80){ab.prop9="10.2.x"}else{ab.prop9="mac unknown or non-safari"}}}}}aa();
-if(location.hostname.indexOf("apple.com")>-1){var aA=document.referrer;var aD=aA.indexOf("//")>-1?aA.indexOf("//")+2:0;
-var ap=aA.indexOf("/",aD)?aA.indexOf("/",aD):aA.length;var au=aA.substring(aD,ap);
-var am=au.indexOf("apple.com")==-1?au:"";ab.eVar35=am;if(!ab.campaign){var aq=au.indexOf("www.google.");
-if(aq>-1){var ah=ab.getQueryParam("q","",aA);if(ah){ab.eVar35="google: organic"
-}}var X=au.indexOf("search.yahoo.");if(X>-1){var ah=ab.getQueryParam("p","",aA);
-if(ah){ab.eVar35="yahoo: organic"}}var ae=au.indexOf("bing.com");if(ae>-1){var ah=ab.getQueryParam("q","",aA);
-if(ah){ab.eVar35="bing: organic"}}var av=au.indexOf("ask.com");if(av>-1){var ah=ab.getQueryParam("q","",aA);
-if(ah){ab.eVar35="ask: organic"}}var aw=au.indexOf(".aol.");if(aw>-1){var ah=ab.getQueryParam("query","",aA);
-if(ah){ab.eVar35="aol: organic"}}var ax=au.indexOf(".myway.com");if(ax>-1){var ah=ab.getQueryParam("searchfor","",aA);
-if(ah){ab.eVar35="myway: organic"}}var W=au.indexOf(".netscape.");if(W>-1){var ah=ab.getQueryParam("query","",aA);
-if(ah){ab.eVar35="netscape: organic"}}var aE=au.indexOf("altavista.");if(aE>-1){var ah=ab.getQueryParam("q","",aA);
-if(ah){ab.eVar35="altavista: organic"}}var ac=au.indexOf("lycos.");if(ac>-1){var ah=ab.getQueryParam("query","",aA);
-if(ah){ab.eVar35="lycos: organic"}}var aF=au.indexOf("alltheweb.");if(aF>-1){var ah=ab.getQueryParam("q","",aA);
-if(ah){ab.eVar35="alltheweb: organic"}}}}if(ab.pageName&&ab.pageName.match(/feedback - thank you/)){ab.prop16=ab.eVar16="feedback"
-}if(ab.prop13&&(ab.tcall||ab.linkType=="o"||ab.linkType=="")){if(ab.pageName&&!ab.pageName.match(/movie trailers -/)){if(ab.prop13.match(/(v@s|v@r)/i)){ab.prop16=ab.eVar16="video plays";
-ab.events="event2";if(!ab.tcall){ab.linkTrackEvents+=",event2";ab.linkTrackVars+=",events,prop16,eVar16"
-}}if(ab.prop13.match(/v@e/i)){ab.prop16=ab.eVar16="video ends";if(!ab.tcall){ab.linkTrackEvents="";
-ab.linkTrackVars+=",prop16,eVar16"}}}}ab.linkLeaveQueryString=true;var aC=ab.linkHandler("ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/|rss.support.apple.com","o");
-if(aC){ab.eVar16=ab.prop16="sign ups";ab.linkTrackVars="eVar16,prop16"}ab.linkLeaveQueryString=false;
-if(ab.tcall){var aG,ad=window.location.pathname,U=false,an=true;if(ab.c_r("iTunesPresent")||(ab.prop12&&ab.prop12=="iTunes")){aG=aG?aG+"it,":"it,"
-}if(ab.c_r("hasMobileMe")){aG=aG?aG+"mm,":"mm,"}if(ab.c_r("DefaultAppleID")||(ab.pageName&&ab.pageName.match(/iforgot - cr or email option/))){aG=aG?aG+"aid,":"aid,"
-}if(ab.c_r("trackStartpage2")){aG=aG?aG+"sp,":"sp,"}if(ab.prop11){if(ab.prop11.match("3p")){aG=aG?aG+"3p,":"3p,"
-}}if(ab.pageName){if(ab.pageName.match(/one to one - index/)){aG=aG?aG+"o2o,":"o2o,"
-}}if(ad.match("/welcomescreen/")){var ao;if(ao=ad.match("ilife.*")){ao="il"+ao.toString().match("[0-9]+")+",";
-aG=aG?aG+ao:ao}else{if(ao=ad.match("iwork.*")){ao="iwk"+ao.toString().match("[0-9]+")+",";
-aG=aG?aG+ao:ao}else{if(ao=ad.match("itunes.*")){ao="it"+ao.toString().match("[0-9]+")+",";
-aG=aG?aG+ao:ao}else{if(ao=ad.match("aperture.*")){ao="ap"+ao.toString().match("[0-9]+")+",";
-aG=aG?aG+ao:ao}}}}}if(ab.getQueryParam("sr")&&ab.getQueryParam("vr")){var ay=ab.getQueryParam("vr");
-ay=ay.substring(0,ay.indexOf("-"))+",";aG=aG?aG+ay:ay}if(typeof(aG)!="undefined"){aG=aG.substring(0,aG.length-1).toLowerCase();
-aG=aG.split(",");if(ab.c_r("s_membership")){var af=ab.c_r("s_membership").split(/:/);
-af.splice(0,1);for(V=0;V<aG.length;V++){for(j=0;j<af.length;j++){if(af[j]==aG[V]){an=false
-}}if(an){af[af.length]=aG[V];U=true}an=true}if(U){aG=af.length+":"+af.toString().replace(/,/g,":");
-var i=new Date(),al=i.getTime();i.setTime(al+1825*24*60*60*1000);ab.c_w("s_membership",aG,i);
-ab.prop31=aG}}else{aG=aG.length+":"+aG.toString().replace(/,/g,":");var i=new Date(),al=i.getTime();
-i.setTime(al+1825*24*60*60*1000);ab.c_w("s_membership",aG,i);ab.prop31=aG}}if(!ab.prop31&&!ab.c_r("s_pathLength")){ab.prop31=ab.c_r("s_membership")
-}}if(AC&&typeof(AC.Storage)!="undefined"&&ab.tcall&&!ab.prop25){ab.prop25=(AC.Storage.getItem("s_nav"))?AC.Storage.getItem("s_nav"):"other nav or none";
-AC.Storage.removeItem("s_nav");if(document.referrer.match(/(downloads|epp|store|storeint)\.apple\.com/)){ab.prop25="aos nav"
-}}if(((ab.pageName&&ab.prop14&&ab.pageName.toLowerCase()!=ab.prop14.toLowerCase())||!ab.prop14)&&ab.tcall){var ag,Y=ab.c_r("s_pathLength"),ak=(Y.indexOf(",")>-1)?Y.split(","):[],i=new Date(),al=i.getTime();
-i.setTime(al+30*60*1000);if(ab.channel){ag=ab.channel.substring(ab.channel.indexOf(".")+1,ab.channel.length);
-ag=ag.substring(ag.indexOf(".")+1,ag.length)}else{ag="no channel"}if(ak.length!=0&&ak.toString().indexOf(ag+"=")>-1){for(V=0;
-V<ak.length;V++){if(ak[V].toString().indexOf(ag+"=")>-1){var az=ak[V].split("=");
-++az[1];ak[V]=az[0]+"="+az[1];ab.prop48=az[1]}}ab.c_w("s_pathLength",ak,i)}else{var az=Y+ag+"="+1+",";
-ab.c_w("s_pathLength",az,i);ab.prop48="1"}}if(ab.tcall){ab.prop50=ab.getVisitNumPerChannel()
-}ab.hier1=ab.channel?ab.channel:"";ab.linkTrackVars=ab.apl(ab.linkTrackVars,"hier1",",",1);
-ab.prop49="D=s_vi";ab.prop4=ab.prop4?ab.prop4:"D=g";ab.manageVars("lowercaseVars","purchaseID,pageType,events,products,transactionID",2)
+}if(/\/pr\//.test(e)){f="pr - "+f}return f};s.usePlugins=true;function s_doPlugins(N){N.tcall=(typeof(N.linkType)=="undefined")?true:false;
+if(N.pageName){var Y=escape(N.pageName);Y=Y.replace(/(%u2018|%u2019|%u02BC|%u02BD)/g,"%27");
+Y=Y.replace(/(%u201C|%u201D|%E2%80%9C|%E2%80%9D)/g,"%22");Y=Y.replace(/(%09|%0A|%0D)/g,"");
+N.pageName=unescape(Y)}if(!N.d.URL.match(/(apple.com\/retail\/.+\/map\/|apple.com\/buy\/locator\/|discussions.apple.com|discussionsjapan.apple.com)/g)){N.setupDynamicObjectIDs()
+}N.prop5=navigator.platform;tempVar1=N.getQueryParam("ref");if(tempVar1&&N.tcall){N.referrer=tempVar1
+}else{if(tempVar1&&!N.tcall){N.referrer=""}}N.server=N.getQueryParam("alias");if(!N.server){N.server="new approach"
+}if(!N.campaign){N.campaign=N.getQueryParam("cid");N.setClickMapEmail("Email_PageName,Email_OID","Email_OT");
+if(N.campaign.match(/OAS-.+?-DOMAINS-/i)){var Z="http://"+N.campaign.replace(/OAS-.+?-DOMAINS-/i,"");
+N.referrer=(N.tcall)?Z:""}}N.campaign=N.getValOnce(N.campaign,"s_campaign",0);N.prop6=(!N.prop6)?('D="'+N.getQueryParam("cp").toLowerCase()+': "+pageName'):N.prop6;
+N.prop11=N.getQueryParam("sr");if(!N.d.URL.match(/\/channel\//)&&!N.prop11&&N.c_r("s_3p")){N.prop11=N.c_r("s_3p");
+N.c_w("s_3p","",-1)}N.eVar7=(!N.eVar7)?N.getQueryParam("aid"):"";N.eVar7=N.getValOnce(N.eVar7,"s_var_7",0);
+if(N.eVar2){N.events=N.apl(N.events,"event6",",",1)}if((!N.d.URL.match(/apple.com\/(\w{2}|befr|benl|chfr|chde|asia|lae)\/search\//)&&!N.d.URL.match(/apple.com\/search\//))&&(N.d.referrer.match(/apple.com\/(\w{2}|befr|benl|chfr|chde|asia|lae)\/search\//)||N.d.referrer.match(/apple.com\/search\//))){N.eVar2=(N.d.referrer.match(/\/support\//))?"acs: ":((N.d.referrer.match(/\/store\//)?"aos: ":"www: "));
+N.events=N.apl(N.events,"event7",",",1);if(N.d.referrer.match(/apple.com\/(\w{2}|befr|benl|chfr|chde|asia|lae)\/search/)){N.eVar2+=N.getQueryParam("q","",N.d.referrer).replace(/\+/g," ");
+var J=N.d.referrer.match(/\/(\w{2}|befr|benl|chfr|chde|asia|lae)\//i);N.eVar2+=" ("+J[0].replace(/\//g,"")+")"
+}else{N.eVar2+=N.getQueryParam("q","",N.d.referrer).replace(/\+/g," ")+" (us)"}}if(N.prop11=="em"&&N.tcall){N.referrer="imap://chatterbox.com"
+}if(N.prop11=="app"&&N.tcall){N.referrer="file://fromApp"}if(document.referrer&&document.referrer.indexOf("apple.com/startpage/")>-1&&N.tcall){N.referrer="news://startpage.com";
+N._1_referrer=1}N.prop14=N.getPreviousValue(N.pageName,"s_pv");if(!N.prop17){var ab=N.getPercentPageViewed(N.pageName);
+if(ab&&ab.length>=5&&typeof(ab[1])!="undefined"){N.prop17=ab[1]+":"+ab[2];N.prop28=Math.round(ab[3]/10)*10;
+N.eVar17=N.eVar18="";if(ab[4]){var F=ab[4].split(/\|/g),H="";for(var E=0;E<F.length;
+E++){if(E!=(F.length-1)){var R=F[E+1].split(/:/)[0]-F[E].split(/:/)[0];if(R>100){H+=F[E].split(/:/)[1];
+var e=R/100;while(e>1){H+="0";e--}}else{H+=F[E].split(/:/)[1]}}else{H+=F[E].split(/:/)[1]
+}}if(H.length>254){N.eVar17=H.substring(0,254);N.eVar18=H.substring(255,H.length)
+}else{N.eVar17=H}}if(!N.tcall){N.linkTrackVars="prop17,prop28"}}}N.prop38=N.tcall?N.deviceOrientationChanges(true):"";
+N.prop32=N.eVar32=N.getQueryParam("psid");if(N.prop32||N.c_r("s_sid")){var i=new Date(),W=i.getTime();
+i.setTime(W+1825*24*60*60*1000);N.prop32?N.c_w("s_psid",N.prop32,i):N.c_w("s_psid",N.c_r("s_sid"),i);
+N.c_w("s_sid","",-1)}if(!N.prop32&&!N.c_r("s_pathLength")){N.prop32=N.c_r("s_psid")
+}N.prop15=N.c_r("PostalCode")?N.c_r("PostalCode"):"no zip";if(!N.prop20){var M=navigator.userAgent.match(/foh:r\d{3}/i);
+N.prop20=M?("store kiosk:"+M.toString().replace(/foh:/i,"")):"non-store kiosk"}N.linkLeaveQueryString=true;
+var V=N.downloadLinkHandler();if(V){if(V.match(/\.rss|\.xml/)){N.eVar16=N.prop16="sign ups"
+}else{N.eVar11=AC.Tracking.pageName()+" - "+V.substring(V.lastIndexOf("/")+1,V.length);
+N.eVar16=N.prop16="downloads";N.events=N.apl(N.events,"event5",",",1)}N.linkTrackVars="prop16,eVar16,eVar11,events";
+N.linkTrackEvents="event5"}N.linkLeaveQueryString=false;N.detectRIA("s_ria","prop19","","12","","");
+if(typeof(Media)!="undefined"&&N.tcall){N.prop18=QTCheck()}function P(){if(N.u.match(/windows/i)){N.prop9="windows";
+return}if(N.u.match(/(kindle|silk-accelerated)/i)){if(N.u.match(/(kindle fire|silk-accelerated)/i)){N.prop9="kindle fire"
+}else{N.prop9="kindle"}return}if(N.u.match(/(iphone|ipod|ipad)/i)){var a=N.u.match(/OS [0-9_]+/i);
+N.prop9="i"+a[0].replace(/_/g,".");return}if(N.u.match(/android/i)){N.prop9=N.u.match(/android [0-9]\.?[0-9]?\.?[0-9]?/i);
+return}if(N.u.match(/webos\/[0-9\.]+/i)){var a=N.u.match(/webos\/[0-9]\.?[0-9]?\.?[0-9]?/i);
+N.prop9=a[0].replace(/webos\//i,"web os ");return}if(N.u.match(/rim tablet os [0-9\.]+/i)){var a=N.u.match(/rim tablet os [0-9]\.?[0-9]?\.?[0-9]?/i);
+N.prop9=a[0].replace(/rim tablet os/i,"rim os ");return}if((N.u.match(/firefox\/(\d{2}||[3-9])/i)||N.u.match(/AppleWebKit\//))&&N.u.match(/Mac OS X [0-9_\.]+/)){var b=N.u.match(/[0-9_\.]+/g);
+b=b[1].split(/_|\./);N.prop9=b[0]+"."+b[1]+".x";return}var c=N.u.match(/AppleWebKit\/\d*/i)&&N.u.match(/AppleWebKit\/\d*/i).toString().replace(/AppleWebKit\//i,"");
+if(c>522){N.prop9="10.5.x"}else{if(c>400){N.prop9="10.4.x"}else{if(c>99){N.prop9="10.3.x"
+}else{if(c>80){N.prop9="10.2.x"}else{N.prop9="mac unknown or non-safari"}}}}}P();
+if(N.pageName&&N.pageName.match(/feedback - thank you/)){N.prop16=N.eVar16="feedback"
+}if(N.prop13&&(N.tcall||N.linkType=="o"||N.linkType=="")){if(N.pageName&&!N.pageName.match(/movie trailers -/)){if(N.prop13.match(/(v@s|v@r)/i)){N.prop16=N.eVar16="video plays";
+N.events="event2";if(!N.tcall){N.linkTrackEvents+=",event2";N.linkTrackVars+=",events,prop16,eVar16"
+}}if(N.prop13.match(/v@e/i)){N.prop16=N.eVar16="video ends";if(!N.tcall){N.linkTrackEvents="";
+N.linkTrackVars+=",prop16,eVar16"}}}}N.linkLeaveQueryString=true;var V=N.linkHandler("ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/|rss.support.apple.com","o");
+if(V){N.eVar16=N.prop16="sign ups";N.linkTrackVars="eVar16,prop16"}N.linkLeaveQueryString=false;
+if(N.tcall){var K,L=window.location.pathname,O=false,G=true;if(N.c_r("iTunesPresent")||(N.prop12&&N.prop12=="iTunes")){K=K?K+"it,":"it,"
+}if(N.c_r("hasMobileMe")){K=K?K+"mm,":"mm,"}if(N.c_r("DefaultAppleID")||(N.pageName&&N.pageName.match(/iforgot - cr or email option/))){K=K?K+"aid,":"aid,"
+}if(N.c_r("trackStartpage2")){K=K?K+"sp,":"sp,"}if(N.prop11){if(N.prop11.match("3p")){K=K?K+"3p,":"3p,"
+}}if(N.pageName){if(N.pageName.match(/one to one - index/)){K=K?K+"o2o,":"o2o,"
+}}if(L.match("/welcomescreen/")){var Q;if(Q=L.match("ilife.*")){Q="il"+Q.toString().match("[0-9]+")+",";
+K=K?K+Q:Q}else{if(Q=L.match("iwork.*")){Q="iwk"+Q.toString().match("[0-9]+")+",";
+K=K?K+Q:Q}else{if(Q=L.match("itunes.*")){Q="it"+Q.toString().match("[0-9]+")+",";
+K=K?K+Q:Q}else{if(Q=L.match("aperture.*")){Q="ap"+Q.toString().match("[0-9]+")+",";
+K=K?K+Q:Q}}}}}if(N.getQueryParam("sr")&&N.getQueryParam("vr")){var X=N.getQueryParam("vr");
+X=X.substring(0,X.indexOf("-"))+",";K=K?K+X:X}if(typeof(K)!="undefined"){K=K.substring(0,K.length-1).toLowerCase();
+K=K.split(",");if(N.c_r("s_membership")){var I=N.c_r("s_membership").split(/:/);
+I.splice(0,1);for(E=0;E<K.length;E++){for(j=0;j<I.length;j++){if(I[j]==K[E]){G=false
+}}if(G){I[I.length]=K[E];O=true}G=true}if(O){K=I.length+":"+I.toString().replace(/,/g,":");
+var i=new Date(),W=i.getTime();i.setTime(W+1825*24*60*60*1000);N.c_w("s_membership",K,i);
+N.prop31=K}}else{K=K.length+":"+K.toString().replace(/,/g,":");var i=new Date(),W=i.getTime();
+i.setTime(W+1825*24*60*60*1000);N.c_w("s_membership",K,i);N.prop31=K}}if(!N.prop31&&!N.c_r("s_pathLength")){N.prop31=N.c_r("s_membership")
+}}if(AC&&typeof(AC.Storage)!="undefined"&&N.tcall&&!N.prop25){N.prop25=(AC.Storage.getItem("s_nav"))?AC.Storage.getItem("s_nav"):"other nav or none";
+AC.Storage.removeItem("s_nav");if(document.referrer.match(/(downloads|epp|store|storeint)\.apple\.com/)){N.prop25="aos nav"
+}}if(((N.pageName&&N.prop14&&N.pageName.toLowerCase()!=N.prop14.toLowerCase())||!N.prop14)&&N.tcall){var S,U=N.c_r("s_pathLength"),aa=(U.indexOf(",")>-1)?U.split(","):[],i=new Date(),W=i.getTime();
+i.setTime(W+30*60*1000);if(N.channel){S=N.channel.substring(N.channel.indexOf(".")+1,N.channel.length);
+S=S.substring(S.indexOf(".")+1,S.length)}else{S="no channel"}if(aa.length!=0&&aa.toString().indexOf(S+"=")>-1){for(E=0;
+E<aa.length;E++){if(aa[E].toString().indexOf(S+"=")>-1){var T=aa[E].split("=");
+++T[1];aa[E]=T[0]+"="+T[1];N.prop48=T[1]}}N.c_w("s_pathLength",aa,i)}else{var T=U+S+"="+1+",";
+N.c_w("s_pathLength",T,i);N.prop48="1"}}if(N.tcall){N.prop50=N.getVisitNumPerChannel()
+}N.hier1=N.channel?N.channel:"";N.linkTrackVars=N.apl(N.linkTrackVars,"hier1",",",1);
+N.prop49="D=s_vi";N.prop4=N.prop4?N.prop4:"D=g";N.manageVars("lowercaseVars","purchaseID,pageType,events,products,transactionID",2)
 }s.doPlugins=s_doPlugins;s.getVisitNumPerChannel=function(){var K=this,e=new Date(),S,T,C=0,U=false,Q=false,M="no channel",V=e.getTime(),R=V+30*60*1000,I=V+1825*24*60*60*1000,D=K.wd.location.pathname,N="us",O="",J=new Array("no channel","aos","homepage","support","itunes","myappleid.iforgot","trailers","ip","discussions","myappleid","quicktime","ipad","legal","mac","macosx","safari","ipod","developer","retailstore","macbookair","retail.concierge","macosx.downloads","ipodtouch","ios","macbookpro","webapps","search","retail.onetoone","icloud","imac","macmini","ilife","other","findouthow","jobs","mobileme","whymac","macappstore","hotnews","redirects","ipodnano","education","iwork","ipodclassic","macpro","contact","appletv","finalcutstudio","pr","productpromotions","ipodshuffle","airportexpress","environment","aperture","batteries","mac.facetime","productpromotions.rebate","timecapsule","displays","airportextreme","logicstudio","buy","about","accessibility","mightymouse","thunderbolt","html5","remotedesktop","magictrackpad","keyboard","business","retail.jointventure","itunesappstore","pro","science","logicexpress","channelprograms","startpage","advertising","financialservices","giftcards","xsan","server","battery","companystore","ali","supplier","beatles","usergroups","webbadges","procurement","802.11n","retail","itunesnews");
 if(K.wd.location.hostname.match(/apple.com.cn/)){N="cn"}else{if(!D.match(/^\/(ws|pr|g5|go|ta|wm|kb)\//)){if(D.match(/^\/(\w{2}|befr|benl|chfr|chde|asia|lae)(?=\/)/)){N=D.split("/")[1].toLowerCase()
 }}}var c="s_vnum_n2_"+N,G="s_invisit_n2_"+N;if(K.channel){M=K.channel.substring(K.channel.indexOf(".")+1,K.channel.length);

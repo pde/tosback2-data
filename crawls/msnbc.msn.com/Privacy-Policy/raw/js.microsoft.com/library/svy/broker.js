@@ -567,6 +567,13 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				_totalFreq = 0;
 				// Iterate over each URL.
 				for (var i = 0; m && i < m.length; i++) {
+					
+					//CUSTOM CODE TO DISABLE PRIVACY PAGE RECRUITMENT
+					if(_utils.location.search(/privacy\.microsoft\.com/) != -1) {
+							halt = true;		
+							break;
+					}
+					
 					var matchPrereqs = false;
 							
 					var pm = m[i];

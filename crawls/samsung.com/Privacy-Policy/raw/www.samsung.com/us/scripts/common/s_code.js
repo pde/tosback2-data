@@ -1803,3 +1803,19 @@ function trackFormAbandon()
             
             s.tl(this, "o", "add to cart");
         }
+	function getCookie(name)
+	{
+	  var search = name + "=";
+	  if (document.cookie.length > 0)
+	  {
+		offset = document.cookie.indexOf(search);
+		if (offset != -1)
+		{
+			offset += search.length;
+			end = document.cookie.indexOf(";", offset);
+		if (end == -1)
+		end = document.cookie.length;
+	        return unescape(document.cookie.substring(offset, end));
+	     }
+	  }
+	} 

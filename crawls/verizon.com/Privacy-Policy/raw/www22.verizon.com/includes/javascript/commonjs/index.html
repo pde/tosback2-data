@@ -1,6 +1,5 @@
 
 
-
 var arrHost=(window.location.hostname).split('.');
 var scbCkDom='.'+arrHost[arrHost.length-2]+'.'+arrHost[arrHost.length-1];
 
@@ -254,7 +253,7 @@ function _hbLink(){}
 function ghsearch(frm){
 	frm.q.value=trim(frm.q.value);
 	var strTerm=frm.q.value;
-	if(strTerm==''||strTerm=='Search Site & Support'||strTerm=='Search Support'){
+	if(strTerm==''||strTerm=='Search Site & Support'||strTerm=='Search Support'||strTerm=='How can we help you today?'){
 		alert('Please type a question or keyword.');
 		frm.q.focus();
 		return false;
@@ -395,8 +394,8 @@ function checkemptymyvz(frm,uid,pass,lob){
 /* header.js (mdb) */
 
 var hideTimer=0;
-function toggleTip(state){
-	var tipObj=fObj("num800");
+function toggleTip(state,divname){
+	var tipObj=fObj(divname+"num800");
 	if(tipObj){
 		if(is_ie&&!is_ie7up){
 			tipObj.style.background="url(https://www22.verizon.com/images/headerfooter/bubblesolidwhite.gif) no-repeat";
@@ -412,10 +411,12 @@ function toggleTip(state){
 }
 function hide800(){
 	var tipObj=fObj("num800");
-	tipObj.style.left="-1500px";
+	if(tipObj){tipObj.style.left="-1500px";}
+	var tipObj=fObj("scbsmbnum800");
+	if(tipObj){tipObj.style.left="-1500px";}
 }
-function show800(){
-	var tipObj=fObj("num800");
+function show800(tipObj){
+	//var tipObj=fObj(divname+"num800");
 	tipObj.style.left="0px";
 }
 function toggleMBA(mbaPos){

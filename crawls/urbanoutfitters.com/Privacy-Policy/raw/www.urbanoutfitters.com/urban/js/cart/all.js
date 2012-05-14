@@ -831,7 +831,7 @@ function validateForm(frm) {
 		var success = true;
 		var curCheckName = "";
 		var checkCounter = 0;
-		var msg = '<img src="/urban/images/2007_holiday/shipping_error.gif"> Please complete all required fields.';
+		var msg = 'Please complete all required fields.';
 		var requiredFields = $(frm).elements;
 		// loop through all form elements
 		for (var i=0; i<requiredFields.length; i++) {
@@ -899,7 +899,21 @@ function validateForm(frm) {
 						f.addClassName("err");
 						success = false;
 					}
+					
+					else if ((f.id.indexOf("FirstName")>=0 || f.id.indexOf("LastName")>=0 || f.id.indexOf("City")>=0 || f.id.indexOf("Address")>=0) && f.type == "text") {
+				
+						var isClean = checkSpecialChar(f);
+						if(!isClean) {
+							msg = 'One or more fields has special characters. Please remove them and try again.';
+							f.addClassName("err");
+							success = false;
+						}
+					}
+					
+					
+					
 				}
+				
 				// check required checkboxes
 				else if (f.type == "checkbox") {
 					if ((curCheckName != f.id) && (!f.checked)) {
@@ -940,8 +954,18 @@ function validateForm(frm) {
 				}
 			} else if (f.id.indexOf("PostalCode")>=0 && f.value != "Postal Code") {
 				// check postal code if entered
-				msg = checkZip(f, frm);
-				if (msg.length > 0) {
+				var zipMsg = checkZip(f, frm);
+				if (zipMsg.length > 0) {
+					f.addClassName("err");
+					msg = zipMsg;
+					success = false;
+				}
+			} else if ((f.id.indexOf("States")>=0 || f.id.indexOf("Address")>=0) && f.type == "text") {
+				
+				var isClean = checkSpecialChar(f);
+				if(!isClean) {
+					msg = 'One or more fields has special characters. Please remove them and try again.';
+					f.addClassName("err");
 					success = false;
 				}
 			}
@@ -969,6 +993,22 @@ function validateForm(frm) {
 	} catch (e) {
 		alert("validateForm: " + e);
 	}
+}
+
+// check if field has special characters
+function checkSpecialChar(obj) {
+	var iChars = "!@#$%^&*+=[]{}|<>?";
+	
+		if(obj.id.indexOf("Address") >= 0) {
+			iChars = "!@$%^&*+=[]{}|<>?";
+		}
+	  
+	  for (var i = 0; i < obj.value.length; i++) {
+		  if (iChars.indexOf(obj.value.charAt(i)) != -1) {
+			  return false;
+		  }
+	  }
+	  return true;
 }
 
 // validates zip code format

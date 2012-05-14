@@ -10,7 +10,7 @@ if (document.URL.indexOf('qa.ebgames.ca') > -1)
     s_account = 'gamestopcadev';
 else if (document.URL.indexOf('qa.gamestop.ca') > -1)
     s_account = 'gamestopcadev';
-else if (document.URL.indexOf('qaeb.testecom.pvt') > -1)
+else if (document.URL.indexOf('qa.ebgames.com') > -1)
     s_account = 'gamestopebgdev';
 else if (document.URL.indexOf('www.gamestop.com') > -1)
     s_account = 'gamestopprod';
@@ -28,10 +28,6 @@ else if (document.URL.indexOf('m.qa.ebgames.ca') > -1)
     s_account = 'gamestopcamobiledev';
 else if (document.URL.indexOf('m.qa.gamestop.ca') > -1)
     s_account = 'gamestopcamobiledev';
-else if (document.URL.indexOf('m.ebgames.com') > -1)
-    s_account = 'gamestopebmobileprod';
-else if (document.URL.indexOf('m.qa.ebgames.com') > -1)
-    s_account = 'gamestopebmobiledev';
 else if (document.URL.indexOf('m.gamestop.com') > -1)
     s_account = 'gamestopmobileprod';
 else if (document.URL.indexOf('m.qa.gamestop.com') > -1)

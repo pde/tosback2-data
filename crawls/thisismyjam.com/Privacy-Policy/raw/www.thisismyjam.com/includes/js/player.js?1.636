@@ -1,0 +1,1129 @@
+/**
+ * The *Continuous Player*. Implements the state machine pattern, but
+ * a couple of small fudges were needed.
+ *
+ * TODO: updateCssClasses() method in the states to
+ * removeClass('playing').addClass('paused'), etc.
+ * TODO: preloading tracks before previous track has finished.
+ */
+Player = function() {
+    this.state = new Player.DisabledState(this);
+
+    this.queue = [];
+    this.currentIndex = 0;
+    this.$playerJamLink = $("#playerJamLink");
+    this.$playerBar = $("#player-bar");
+    this.$jammer = this.$playerBar.find("#jammer");
+    this.$title = $("#track-title");
+    this.$artist = $("#artist-name");
+    this.$duration = $("#totalTime");
+    this.$by = $("#player-inner .by");
+    this.$controlLike = $("#controlLike");
+    this.handler = null;
+    this.currentIsLoved = null;
+    this.queueStartedOn = null;
+
+    this.$playButton = $("#playPause");
+    this.$backwardsButton = $("#backwards");
+    this.$forwardsButton = $("#forwards");
+    this.$footer = $("footer");
+    this.symbol = false;
+
+    var self = this;
+
+    this.$playButton.click(function() {
+        self.state.togglePlay();
+    });
+    this.$backwardsButton.click(function() {
+        self.state.previous();
+    });
+    this.$forwardsButton.click(function() {
+        self.state.next();
+    });
+    this.$controlLike.click(function() {
+        if($(this).hasClass('disabled'))
+            return false;
+        self.state.toggleLoved();
+    });
+
+    this.setupInPagePlayButtons();
+
+    //if(window.isIOS())
+    if(window.isIOS())
+        this.setupForIPhone();
+
+    this.setFeedFetcherForPage();
+};
+
+Player.prototype.isPlaying = function() {
+    return this.state.name == 'playing' || this.state.name == 'paused';
+};
+
+Player.prototype.setupForIPhone = function(clearPlayers) {
+    var handler = new IPhoneYoutubeHandler(this);
+
+    if(this.isOnHomePage())
+        handler.hide();
+
+    else { // if on jam page
+
+        handler.hide();
+        
+        if(this.isOnCurrentlyPlayingPersonsPage()) {
+
+            if(handler.getActiveHolderID()) { // we have playing video
+                handler.showCurrent();
+            }
+            else if(this.isPlaying()) { // just audio playing
+                $("#artPlayer").show();
+            }
+        }
+        else {
+            handler.setupVideos();
+        }
+    }
+};
+
+Player.prototype.setupInPagePlayButtons = function() {
+    var self = this;
+    $(".itemPlayButton").unbind("click");
+    $(".itemPlayButton:not(.disabled,.preparing)").click(function() {
+        var $this = $(this);
+            $parent = $this.parent();
+            //console.log($parent,"parent",$parent.hasClass("preparing"));
+
+        // Don't handle click if the parent elem has class "preparing" or "disabled"
+        if($parent.hasClass("preparing")){
+            //console.log("parent had disabling class");
+            return false;
+        }
+               
+        self.state.togglePlayInPage(this);
+        return false;
+    });
+};
+
+/**
+ * Show / Hide Player Bar
+ * bump footer margin according to size of player
+ */
+Player.prototype.showPlayerBar = function (show){
+    var playerHeight = this.$playerBar.height(),
+        copyHeight = $("#copyright").height(),
+        paddingHeight = playerHeight + copyHeight;
+
+
+    if(!show){
+        this.$playerBar.hide();
+        this.$footer.css({"padding-bottom":0});
+    } else {
+        this.$playerBar.show();
+        //this.$footer.css({"margin-top":"-"+combinedHeight+"px"});
+        this.$footer.css({"padding-bottom":paddingHeight+"px"});
+    }
+};
+
+
+/**
+ * called on ajax "page load". gives the current jam class "playing"
+ */
+Player.prototype.highlightActiveJam = function() {
+    this.state.highlightActiveJam();
+};
+
+Player.prototype.clearPlayer = function() {
+    this.$playerJamLink.attr("href", "#");
+    this.$title.text('');
+    this.$artist.text('');
+    this.$duration.text('');
+    this.$by.hide();
+};
+
+Player.prototype.getCurrentJam = function() {
+    if(this.currentIndex < 0 || this.currentIndex >= this.queue.length)
+        return false;
+    return this.queue[this.currentIndex];
+};
+
+/**
+ * Loads a jam, updates the jam info, and if autoPlay == true, starts playing it.
+ * If there are errors, they are logged. If the jam has been removed, or
+ * jam info returns some other error we catch this with an errorCallback.
+ */
+Player.prototype.loadCurrent = function(autoPlay, errorCallback) {
+    var jam = this.getCurrentJam();
+    if(jam) {
+        var self = this;
+
+        this.state = new Player.LoadingState(this);
+        this.$playButton.addClass("loading");
+        this.getCurrentPlayButton().addClass('loading');
+        this.clearPlayer();
+
+        var isDraft = jam.isDraft ? "&isDraft=1" : "";
+        console.log(jam);
+
+        // load jam info
+        $.ajax({
+            url: '/' + jam.person + '/jamInfo?id=' + jam.id + isDraft + "&v=" + Math.floor(Math.random()*3e10),
+            dataType: 'JSON',
+            async: false,
+            success: function(data) {
+                if(data.error) {
+                    // if there's an error, catch in callback
+                    $.post('/error/jsdebug', {data: {errorInJamInfo: data.error}});
+
+            if(!self.handler)
+            self.handler = self.getHandlerByType(jam.type);
+
+                    if(errorCallback)
+                        errorCallback();
+
+                    return false;
+                }
+
+        //console.log(data.transcodingIncomplete);
+
+        if(window.isIOS() && jam.type == 'found' && data.transcodingIncomplete) {
+
+            // No need for alert here, we do it in the template now.
+            //alert('This jam is currently being prepared for mobile playback. Please try again in a minute.');
+
+            if(!self.handler)
+            self.handler = self.getHandlerByType(jam.type);
+
+            if(errorCallback)
+            errorCallback();
+            return false;
+        }
+
+                self.currentIsLoved = data.loved;
+
+                self.showPlayerBar(true);
+                
+
+                self.handler = self.getHandlerByType(jam.type);
+                if(data.aspectRatio)
+                    self.handler.aspectRatio = data.aspectRatio;
+
+                self.handler.prepare(jam, autoPlay, function() {
+                    ///*
+                    self.$playButton.removeClass("loading");
+                    self.getCurrentPlayButton().removeClass("loading");
+                    //*/
+                }, errorCallback);
+
+                if(self.handler.updateMask)
+                    self.handler.updateMask(data.mask);
+                
+
+                self.updateJamInfo(data.title, data.artist, data.profileUrl, data.loved);
+            }
+        });
+    }
+};
+
+Player.prototype.getHandlerByType = function(type) {
+    switch(type) {
+    case 'youtube':
+        if(window.isIOS())
+            return new IPhoneYoutubeHandler(this);
+        else
+            return new YoutubeHandler(this);
+    case 'upload':
+        return new SoundManagerHandler(this);
+    case 'found':
+        return new SoundManagerHandler(this);
+    default:
+        return new SoundManagerHandler(this);
+    }
+};
+
+/**
+ * Depending on which page we are on, we have a different method
+ * of fetching the player feed. This is what enables a generalised
+ * player.
+ */
+Player.prototype.setFeedFetcherForPage = function()
+{
+    if(this.isOnHomePage())
+        this.fetchFeed = this.fetchFeedFromServer('/home/playerFeed');
+    else if(document.location.href.indexOf("test/alljams") !== -1)
+        this.fetchFeed = this.fetchFeedFromServer('/home/playerFeed?allJams=true');
+    else if(document.location.href.indexOf("jam/meta") !== -1)
+        this.fetchFeed = this.fetchFeedFromPage();
+    else if(document.location.href.indexOf("test/popularjams") !== -1)
+        this.fetchFeed = this.fetchFeedFromPage();
+    else {
+        var $element = $(".itemPlayButton");
+        var person = $element.attr("data-person");
+        var jamId = $element.attr("data-jamid");
+        var type = $element.attr("data-type");
+        var youtubeId = $element.attr("data-youtubeid");
+
+        this.fetchFeed = this.fetchFeedFromOneJam(person, jamId, type, youtubeId);
+    }
+}
+
+/**
+ * Called in general.js when landing on a new ajaxified page.
+ */
+Player.prototype.newPage = function() {
+
+    this.setFeedFetcherForPage();
+
+    this.setupInPagePlayButtons();
+    if(this.isOnHomePage()){
+        this.activeClassUpdate();
+
+        if(this.handler) {
+            if(this.getCurrentFeedJamContainer$().length)
+                this.handler.show();
+            else
+                this.handler.hide();
+        }
+
+        if(this.queueIsFromHomepage())
+            this.updateQueueToFeed();
+    }
+    else { // on profile page
+
+        if(this.handler) {
+            if(this.isOnCurrentlyPlayingPersonsPage()) {
+                if(this.handler.navigateToProfilePage)
+                    this.handler.navigateToProfilePage();
+                this.handler.show();
+            }
+            else
+                this.handler.hide();
+        }
+    }
+
+    if(window.isIOS())
+        this.setupForIPhone(true);
+
+    this.highlightActiveJam();
+};
+
+Player.prototype.activeClassUpdate = function(){
+    var currentJam = this.getCurrentJam(),
+    jamId = "#" + currentJam.id,
+    item = ".newsItem";
+    
+    if($(item).length){
+        $(item).removeClass("active");
+        $(jamId + item).addClass("active");
+    }
+};
+
+Player.prototype.isOnHomePage = function() {
+    return $("#newsFeed").length || $("#playAllJams").length;
+};
+
+Player.prototype.isOnMetaPage = function() {
+    return document.location.href.indexOf("jam/meta") !== -1;
+};
+
+Player.prototype.queueIsFromHomepage = function() {
+    return (this.queueStartedOn == '/');
+};
+
+Player.prototype.queueIndexOf = function(queue, jam) {
+    for(var i = 0; i < queue.length; i ++)
+        if(queue[i].id == jam.id &&
+           queue[i].person == jam.person)
+            return i;
+    return -1;
+};
+
+/**
+ * Syncs the queue with the currently up-to-date feed. This is
+ * so that when you start playing the home page feed and then wander
+ * around the site, when you come back and things have changed the queue
+ * reflects the current feed. Also makes it possible to keep playing songs
+ * that get ajaxed in on the feed. Downside is it's making a call to the
+ * server, which then does a horrid 101 queries to the database. (This is
+ * written pre-caching work.)
+ */
+Player.prototype.updateQueueToFeed = function() {
+    var self = this;
+    this.fetchFeed(function(queue) {
+        var currentJam = self.getCurrentJam();
+        var index = self.queueIndexOf(queue, currentJam);
+        //console.log(index);
+
+        // the currently playing jam is no longer in the queue.
+        // find the next jam that is in the current queue and set
+        // index to that one -1.
+        if(index == -1) {
+            var i = self.currentIndex;
+            //console.log(i, self.queue.length);
+            while(index == -1 && i ++ < self.queue.length) {
+                //console.log(self.queue[i]);
+                index = self.queueIndexOf(queue, self.queue[i]);
+            }
+            if(index == -1)
+                index = 0;
+            else
+                index --;
+        }
+
+        //console.log(index);
+
+        self.queue = queue;
+        self.currentIndex = index;
+    });
+};
+
+Player.prototype.init = function(queue, index, autoPlay) {
+
+    if(!index)
+        index = 0;
+
+    if(this.handler)
+        this.stop();
+
+    this.queue = queue;
+
+
+    /*
+    // TEST
+    this.queue = [{person: 'ndreasa1', id: 2956, youtubeId: 'DPyOhP1GTRQ', type: "youtube"},
+    {person: 'bwhitman', id: 2410, youtubeId: 'rft0zCbZPS8', type: 'youtube'},
+    {person: '_ralph', id: 1391},
+    {person: 'Han', id: 123},
+    {person: 'IFTFOM', id: 1445}];
+    */
+
+    
+
+    this.clearPlayer();
+    $(".itemPlayButton").removeClass("paused").removeClass("playing");
+    this.state = new Player.StoppedState(this);
+    this.setCurrentIndex(index, autoPlay);
+    
+};
+
+Player.prototype.getCurrentPlayButton = function() {
+    var id = "itemPlayButton" + this.getCurrentJam().id;
+    return $("#" + id);
+};
+
+Player.prototype.isCurrentPlayButton = function(element) {
+    return ($(element).attr("id") == this.getCurrentPlayButton().attr("id"));
+};
+
+Player.prototype.decrementCurrentIndex = function(autoPlay) {
+    this.setCurrentIndex(this.currentIndex - 1, autoPlay, -1);
+};
+
+Player.prototype.incrementCurrentIndex = function(autoPlay) {
+    this.setCurrentIndex(this.currentIndex + 1, autoPlay, 1);
+};
+
+Player.prototype.isOnCurrentlyPlayingPersonsPage = function() {
+    return ($("#artPlayer a.itemPlayButton").attr("data-jamid") ==
+            this.getCurrentJam().id);
+};
+
+Player.prototype.getCurrentFeedJamContainer$ = function() {
+    if(this.isOnHomePage())
+        return $("#" + this.getCurrentJam().id + " .jamVatar");
+    else if(this.isOnCurrentlyPlayingPersonsPage())
+        return $("#jamHolder");
+    else
+        return false;
+};
+
+/**
+ * Places the pointer on a new jam, preloads it, and optionally plays it.
+ */
+Player.prototype.setCurrentIndex = function(index, autoPlay, direction) {
+
+    //console.log('index: ' + index + ' autoPlay: ' + autoPlay);
+
+      // before we set the new index let's scrobble the current track
+      if(this.scrobbler){
+          this.scrobbler.scrobble();
+      }
+
+    this.currentIndex = index;
+
+    if(typeof autoPlay == 'undefined')
+        autoPlay = false;
+
+    // direction is used when we have to step over dodgy jams
+    if(typeof direction == 'undefined')
+        direction = 0;
+
+    // enable / disable backwards / forwards buttons
+    if(this.currentIndex <= 0) {
+        this.$backwardsButton.addClass('disabled');
+    }
+    else {
+        this.$backwardsButton.removeClass('disabled');
+    }
+    if(this.currentIndex >= this.queue.length - 1) {
+        this.$forwardsButton.addClass('disabled');
+    }
+    else {
+        this.$forwardsButton.removeClass('disabled');
+    }
+
+    // avoid under-/overflow
+    if(this.currentIndex < 0) {
+        this.currentIndex = 0;
+        autoPlay = false;
+    }
+    else if(this.currentIndex >= this.queue.length) {
+        this.currentIndex = this.queue.length - 1;
+        autoPlay = false;
+    }
+
+    // preload the track.
+    var self = this;
+    this.loadCurrent(autoPlay,
+
+                     // error callback
+                     function() {
+
+                         self.getCurrentPlayButton().removeClass('playing');
+                         self.$playButton.removeClass('playing');
+                         self.handler.stop();
+                         self.handler.hide();
+
+                         // something went wrong so we try to step over that jam
+                         // remove jam from queue
+                         self.queue.splice(self.currentIndex, 1);
+                         if(direction == -1 && self.currentIndex > 0)
+                             self.decrementCurrentIndex(autoPlay);
+                         else if(direction == -1)
+                             self.setCurrentIndex(0, autoPlay);
+                         else if(direction >= 0 && self.currentIndex <= self.queue.length - 1) {
+                             self.currentIndex --;
+                             self.incrementCurrentIndex(autoPlay);
+                         }
+                         else {
+                             // if we're playing then we just rattle through to the end and hide the bar
+                             if(autoPlay)
+                                 self.jamFinished();
+                             else {
+                                 self.setCurrentIndex(self.queue.length - 1);
+                             }
+                         }
+                     });
+};
+
+Player.prototype.updateJamInfo = function(title, artist, profileUrl, loved) {
+
+    //console.log(arguments);
+
+    //console.log(this.getCurrentJam());
+
+    this.$title.text(title);
+    this.$artist.text(artist);
+    this.$playerJamLink.attr("href", profileUrl);
+    this.$playerJamLink.attr("title", this.getCurrentJam().person + "'s jam");
+    this.$jammer.html("Posted by " + this.getCurrentJam().person + " &raquo;");
+    if(loved)
+        this.$controlLike.addClass("liked");
+    else
+        this.$controlLike.removeClass("liked");
+    this.$by.show();
+    this.$playerBar.ajaxify();
+    //this.$playerJamLink.tipsy({gravity: "s",offset: 10,opacity:1,html:true});
+
+    // Cf. activeClassUpdate
+    this.activeClassUpdate();
+};
+
+Player.prototype.updateDuration = function(durationMillis) {
+    var minutes = Math.floor(durationMillis / (1000 * 60));
+    var seconds = Math.floor(durationMillis / 1000) % 60;
+    if(seconds < 10)
+        seconds = "0" + seconds.toString();
+    this.$duration.text('('+minutes + ":" + seconds+')');
+
+    if(this.scrobbler){
+        this.scrobbler.setDuration(durationMillis/1000);
+    }
+
+};
+
+Player.prototype.play = function() {
+
+    var self = this;
+    var currentJam = self.getCurrentJam();
+    var jamId = "#" + currentJam.id;
+    var pCountSelector = ".playCounter";
+    var $profilePlayCounter = $("#plays");
+    var url = "/" + currentJam.person + "/play";
+    
+    // Increment player count
+    $.ajax({
+        url : url,
+        type : "POST",
+        dataType : "JSON",
+        success : function(d){
+            //console.log(d);
+            var $listens = $(pCountSelector,jamId);
+            var listens = d.playcount;
+            var playtxt = (listens > 1) ? " plays" : " play";
+            //console.log($listens,"listen elem");
+            if($profilePlayCounter.length){
+                $profilePlayCounter.find(".number").fadeOut(function(){
+                    $(this).html(listens);
+                }).fadeIn();
+                $profilePlayCounter.find("span").last().html(playtxt);
+            }
+
+            if($listens.length){
+                $listens.fadeOut(300,function(){
+                    $listens.html(listens + playtxt);
+                }).fadeIn();
+            }
+            if(window._gaq !==undefined){
+                if(self.isOnHomePage()){
+                    window._gaq.push(['_trackEvent',"Playback","Autoplay"]);
+                } else {
+                    window._gaq.push(['_trackEvent',"Playback","Playclick"]);
+                }
+            }
+
+
+        },
+        error : function (a,b,c) {
+            $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+        //            console.log(a,b,c);
+        }
+    });
+    
+    if(document.location.href.indexOf("test/alljams") !==-1){
+        //Ping the now playing cat
+        //To do - ping extra information, see commented out data line.
+
+        $.ajax({
+            url : "http://staging1.thisismyjam.com/test/nowplaying",
+            type : "GET",
+            //data : {"url":currentJam.profileUrl, artist : currentJam.artist, title: currentJam.title, owner: currentJam.person},
+            data : {owner: currentJam.person},
+            dataType : "JSONP",
+            success : function(){
+                //console.log("pinged!");
+            },
+            error : function (a,b,c) {
+                $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                console.log(a,b,c);
+            }
+        });
+    }
+
+    this.handler.play(
+        function() {
+            self.playbackStarted();
+        },
+        function() {
+            self.jamFinished();
+        }
+    );
+};
+
+Player.prototype.playbackStarted = function() {
+    this.state = new Player.PlayingState(this);
+
+    this.$playButton.addClass("playing").removeClass("loading").removeClass("paused");
+    this.getCurrentPlayButton().addClass("playing").removeClass("loading").removeClass("paused");
+    this.toggleTitle(true);
+
+    if(window.user_scrobbles){
+
+        var jam = this.getCurrentJam(),
+            person = $("#meAvatar").attr("alt"); //TODO build proper method for this
+        this.scrobbler = new Scrobbler(jam.id,person,this.handler);
+    }
+};
+
+Player.prototype.toggleTitle = function(){
+    var icon = this.state.getIcon();
+    var playingIcon = (new Player.PlayingState()).getIcon();
+    document.title = (document.title.indexOf(playingIcon) !== -1) ? document.title.replace(playingIcon,icon) : icon + document.title;
+};
+
+/**
+ * Called handler on finish. If we're at the end of the queue, we hide the bar.
+ */
+Player.prototype.jamFinished = function() {
+
+    //console.log("state: " + this.state.name);
+
+    if(this.scrobbler){
+      this.scrobbler.scrobble();
+    }
+
+    if(this.currentIndex >= this.queue.length - 1) {
+        this.stop();
+        this.state = new Player.DisabledState(this);
+        this.queue = [];
+        this.clearPlayer();
+        this.showPlayerBar(false); // hide player bar
+        //this.$playerBar.hide();
+        this.toggleTitle();
+    }
+    else {
+        this.state.next();
+    }
+};
+
+Player.prototype.pause = function() {
+    this.$playButton.addClass("paused").removeClass("playing").removeClass('loading');
+    this.handler.pause();
+    this.state = new Player.PausedState(this);
+    this.getCurrentPlayButton().addClass("paused").removeClass("playing").removeClass('loading');
+    this.toggleTitle();
+};
+
+Player.prototype.resume = function() {
+    this.$playButton.addClass("playing").removeClass("paused").removeClass('loading');
+    this.handler.resume();
+    this.state = new Player.PlayingState(this);
+    this.getCurrentPlayButton().addClass("playing").removeClass("paused").removeClass('loading');
+    this.toggleTitle();
+};
+
+Player.prototype.stop = function() {
+    this.$playButton.removeClass("playing").removeClass("paused").removeClass('loading');
+    this.handler.stop();
+    this.state = new Player.StoppedState(this);
+    this.getCurrentPlayButton().removeClass("playing").removeClass("paused").removeClass('loading');
+};
+
+/**
+ * Love/unlove. Synced with the love button on the profile.
+ */
+Player.prototype.toggleLoved = function() {
+    var self = this,
+    jam = this.getCurrentJam(),
+    loveSelector = ".love-"+jam.id,
+    loveAction = (this.currentIsLoved) ? "unlove" : "love";
+
+    if(loveAction == 'love')
+        $(loveSelector).addClass('active');
+    else
+        $(loveSelector).removeClass('active');
+
+    if(self.isOnHomePage()){
+                self.updateLikesInHomeFeed(self.getCurrentJam(),
+                                           self.currentIsLoved);
+    } else {
+        $.ajax({
+            url: "/" + jam.person + "/" + loveAction,
+            type: "POST",
+            dataType: "JSON",
+            success: function(data) {
+                var type = (self.currentIsLoved) ? "unlove" : "love";
+                self.currentIsLoved = (self.currentIsLoved) ? false : true;
+                if(self.currentIsLoved)
+                    self.$controlLike.addClass("liked");
+                else
+                    self.$controlLike.removeClass("liked");
+                window.updateLikeList(self.getCurrentJam().person, data.html);
+                
+                if(window._gaq !==undefined){
+                    window._gaq.push(['_trackEvent',"Actions",type,"from player"]);
+                }
+
+            }
+        });
+    }
+
+};
+
+Player.prototype.updateLoveButton = function(profilePerson, activate)
+{
+    if(profilePerson == this.getCurrentJam().person) {
+        if(activate)
+            this.$controlLike.addClass("liked");
+        else
+            this.$controlLike.removeClass("liked");
+    }
+};
+
+Player.prototype.updateLikesInHomeFeed = function(jam, activate) {
+    
+    var $loveLine = $("li#love-"+jam.id),
+        $updater = $loveLine.find(".count"),
+        $link = $loveLine.find("#love_"+jam.id);
+
+        console.log($link,"got me a link");
+        if($link.length){
+            $link.click();
+        }
+
+        return false;
+
+/*
+    var $loveElement = $("#love_" + jam.id);
+    var $loveDot = $("#lovedot-" + jam.id);
+    var $loveAnchor = $("a", $loveElement);
+    var loveCount = $loveAnchor.text();
+    var title = $loveAnchor.attr("original-title") ||
+        $loveAnchor.attr("title") || "";
+    var loggedInPerson = $("nav .avatar").attr("alt");
+
+    //console.log(title);
+
+    if(activate) {
+        if(title)
+            title = title + ", " + loggedInPerson;
+        else
+            title = loggedInPerson;
+        loveCount = parseInt(loveCount, 10) + 1;
+    }
+    else {
+        // get rid of him!
+        title = title.replace(loggedInPerson + ", ", "");
+        title = title.replace(", " + loggedInPerson, "");
+        title = title.replace(loggedInPerson, "");
+        loveCount = parseInt(loveCount, 10) - 1;
+    }
+
+    function setData() {
+        $loveAnchor.attr("original-title", "");
+        $loveAnchor.attr("title", title);
+        $loveAnchor.text(loveCount);
+    }
+
+    if(loveCount <= 0) {
+        $loveElement.fadeOut(setData);
+        $loveDot.fadeOut(setData);
+    }
+    else if(loveCount == 1 && activate) {
+        $loveElement.fadeIn();
+        $loveDot.fadeIn();
+    }
+
+    if(loveCount > 0) {
+        setData();
+        $loveAnchor.tipsy();
+    }
+*/
+};
+
+Player.prototype.initFromPage = function(element, autoPlay) {
+    var person, jamId, type, youtubeId;
+
+    this.$playButton.addClass("loading");
+    this.getCurrentPlayButton().addClass('loading');
+
+    if(element.person && element.jamId && element.type) {
+        person = element.person;
+        jamId = element.jamId;
+        type = element.type;
+        youtubeId = element.youtubeId;
+    }
+    else {
+        var $element = $(element);
+        person = $element.attr("data-person");
+        jamId = $element.attr("data-jamid");
+        type = $element.attr("data-type");
+        youtubeId = $element.attr("data-youtubeid");
+    }
+
+    var self = this;
+    this.queueStartedOn = locationPathname(); // hashbang safe
+    this.fetchFeed(
+        function(queue) {
+            // find current index
+            for(var i = 0; i < queue.length; i ++) {
+                //console.log(queue[i].person, queue[i].id);
+                if(queue[i].person == person && queue[i].id == jamId)
+                    return self.init(queue, i, autoPlay);
+            }
+            // that jam wasn't found in the queue. just play the first one
+            self.init(queue, 0, autoPlay);
+            // log to see how often this happens, to determine if we need to
+            // be more clever about it, i.e. pulling the feed as we do comments
+            $.post('/error/jsdebug', "jam not found when trying to play in the home feed");
+        }, false
+    );
+};
+
+/**
+ * Goes to the server and asks for the home page feed.
+ * We do this instead of just crawling the DOM since we want to be able to play
+ * jams that are in the load more
+ */
+Player.prototype.fetchFeedFromServer = function(url) {
+    return function(feedHandler, async) {
+        if(typeof async == 'undefined')
+            async = true;
+
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            async: async,
+            success: function(data) {
+                feedHandler(data.jams);
+            }
+        });
+    };
+};
+
+Player.prototype.fetchFeedFromPage = function() {
+    return function(feedHandler) {
+        var queue = [];
+        var playButtons = $(".itemPlayButton");
+        var elementIndex = 0;
+
+        for(var i = 0; i < playButtons.length; i ++) {
+            var $button = $(playButtons[i]);
+            var id = $button.attr("id");
+            var person = $button.attr("data-person");
+            var jamId = $button.attr("data-jamid");
+            var type = $button.attr("data-type");
+            var isDraft = $button.attr("data-isdraft");
+
+            var item = {person: person, id: jamId, type: type};
+            if(type == 'youtube')
+                item.youtubeId = $button.attr("data-youtubeid");
+            if(isDraft)
+                item.isDraft = true;
+            
+            queue.push(item);
+        }
+
+        feedHandler(queue);
+    };
+};
+
+Player.prototype.fetchFeedFromOneJam = function(person, jamId, type, youtubeId) {
+    return function(feedHandler) {
+        var item = {person: person, id: jamId, type: type};
+        if(type == 'youtube')
+            item.youtubeId = youtubeId;
+
+        feedHandler([item]);
+    };
+};
+
+/**
+ * Deprecated function that inits from the playable DOM elements. Superseded
+ * by initFromPage which is more intelligent. Leave this here for now though
+ * in case we need to revert.
+ */
+Player.prototype.initFromDom = function(element) {
+    var queue = [];
+    var playButtons = $(".itemPlayButton");
+    var elementIndex = 0;
+    for(var i = 0; i < playButtons.length; i ++) {
+        var $button = $(playButtons[i]);
+        var id = $button.attr("id");
+        var person = $button.attr("data-person");
+        var jamId = $button.attr("data-jamid");
+        var type = $button.attr("data-type");
+
+        if(!id || !person || !jamId)
+            continue;
+
+        if(id == $(element).attr("id"))
+            elementIndex = i;
+
+        var item = {person: person, id: jamId, type: type};
+        if(type == 'youtube')
+            item.youtubeId = $button.attr("data-youtubeid");
+        
+        queue.push();
+    }
+    if(queue.length > 0)
+        this.init(queue, elementIndex, autoPlay);
+    else
+        return false;
+};
+
+// below are the states for the state machine.
+
+Player.AbstractState = function() {
+
+    this.getIcon = function(){
+        return "";
+    };
+
+    this.togglePlay = function() {
+        return false;
+    };
+
+    this.togglePlayInPage = function(element) {
+        return false;
+    };
+
+    this.next = function() {
+        return false;
+    };
+
+    this.previous = function() {
+        return false;
+    };
+
+    this.highlightActiveJam = function() {
+        return false;
+    };
+
+    this.toggleLoved = function() {
+        return false;
+    };
+};
+
+Player.DisabledState = function(player) {
+    this.player = player;
+    this.name = 'disabled';
+
+    this.togglePlayInPage = function(element) {
+        this.player.initFromPage(element, true);
+        //this.player.$playerBar.show();
+    };
+};
+Player.DisabledState.prototype = new Player.AbstractState();
+
+Player.StoppedState = function(player) {
+    this.player = player;
+    this.name = 'stopped';
+
+    this.togglePlay = function() {
+        self = this;
+        this.player.loadCurrent(true, function() {
+            self.player.incrementCurrentIndex(true); // if there's an error it'll tick over to the next jam
+        });
+    };
+
+    this.togglePlayInPage = function(element) {
+        this.player.initFromPage(element, true);
+    };
+
+    this.next = function() {
+        this.player.incrementCurrentIndex();
+    };
+
+    this.previous = function() {
+        this.player.decrementCurrentIndex();
+    };
+};
+Player.StoppedState.prototype = new Player.AbstractState();
+
+Player.LoadedState = function(player) {
+    this.player = player;
+    this.name = 'loaded';
+
+    this.togglePlay = function() {
+        this.player.play();
+    };
+
+    this.togglePlayInPage = function(element) {
+        this.player.initFromPage(element, true);
+    };
+
+    this.next = function() {
+        this.player.incrementCurrentIndex();
+    };
+
+    this.previous = function() {
+        this.player.decrementCurrentIndex();
+    };
+
+    this.toggleLoved = function() {
+        this.player.toggleLoved();
+    };
+};
+Player.LoadedState.prototype = new Player.AbstractState();
+
+Player.PlayingState = function(player) {
+    this.player = player;
+    this.name = 'playing';
+
+    this.getIcon = function(){
+        return "\u25B6 | ";
+    };
+
+    this.togglePlay = function() {
+        this.player.pause();
+    };
+
+    this.togglePlayInPage = function(element) {
+        if(this.player.isCurrentPlayButton(element))
+            this.player.pause();
+        else
+            this.player.initFromPage(element, true);
+    };
+
+    this.next = function() {
+        if(this.player.currentIndex < this.player.queue.length - 1) {
+            this.player.stop();
+            this.player.incrementCurrentIndex(true);
+        }
+    };
+
+    this.previous = function() {
+        if(this.player.currentIndex > 0) {
+            this.player.stop();
+            this.player.decrementCurrentIndex(true);
+        }
+    };
+
+    this.highlightActiveJam = function() {
+        //console.log(this.player.getCurrentPlayButton());
+        this.player.getCurrentPlayButton().removeClass("paused").removeClass('loading').addClass("playing");
+    };
+
+    this.toggleLoved = function() {
+        this.player.toggleLoved();
+    };
+};
+Player.PlayingState.prototype = new Player.AbstractState();
+
+Player.PausedState = function(player) {
+    this.player = player;
+    this.name = 'paused';
+
+    this.togglePlay = function() {
+        this.player.resume();
+    };
+
+    this.togglePlayInPage = function(element) {
+        if(this.player.isCurrentPlayButton(element))
+            this.player.resume();
+        else
+            this.player.initFromPage(element, true);
+    };
+
+    this.next = function() {
+        if(this.player.currentIndex < this.player.queue.length - 1) {
+            this.player.stop();
+            this.player.incrementCurrentIndex();
+        }
+    };
+
+    this.previous = function() {
+        if(this.player.currentIndex > 0) {
+            this.player.stop();
+            this.player.decrementCurrentIndex();
+        }
+    };
+
+    this.highlightActiveJam = function() {
+        this.player.getCurrentPlayButton().removeClass("playing").addClass("paused");
+    };
+
+    this.toggleLoved = function() {
+        this.player.toggleLoved();
+    };
+};
+Player.PausedState.prototype = new Player.AbstractState();
+
+Player.LoadingState = function(player) {
+    this.player = player;
+    this.name = 'loading';
+
+    this.togglePlay = function() {
+    this.player.resume();
+    };
+};
+Player.LoadingState.prototype = new Player.AbstractState();

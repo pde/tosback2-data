@@ -101,7 +101,7 @@ Event.observe(window, 'load', function(e){
 			if (jQuery(this).val().length > CharLimit) {
 				jQuery(this).val(jQuery(this).val().substring(0,CharLimit));
 			} else {				
-				jQuery(this).next().html(CharLimit-jQuery(this).val().length);
+				jQuery("#ogm-char-limit").html(CharLimit-jQuery(this).val().length);
 			}
 		}
 		

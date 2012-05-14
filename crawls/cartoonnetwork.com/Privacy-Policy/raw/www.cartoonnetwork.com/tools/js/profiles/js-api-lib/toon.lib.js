@@ -715,9 +715,9 @@ function toon_lib(){
 		var activity 		= ''; 
 		var that 			= this;
 		if(this.base_url == 'http://staging.cartoonnetwork.com'){
-			params.staticUrl	= undefined;	
+			params.staticUrl	= this.base_url + '/social/toon_activity_stream_fetcher.json';	
 		} else {
-			params.staticUrl	= this.base_url+'/tools/includes/all_activities.json';				
+			params.staticUrl	= this.base_url+'/social/toon_activity_stream_fetcher.json';   			
 		}
 		params.ext 			= 'activities'; 
 		params.count 		= (params.count != undefined) 		? params.count : 10;
@@ -781,8 +781,7 @@ function toon_lib(){
 					var msib_id 			= activity.entry[count].user_id;
 					var badge_id 			= activity.entry[count].template_params.prev_badge_id;
 					var prod_id				= activity.entry[count].template_params.game_id;
-					var personal_ranking 	= activity.entry[count].template_params.personal_ranking;				
-					
+					var personal_ranking 	= activity.entry[count].template_params.personal_ranking;									
 					
 					// takes top personal leaderboard - filters out rest
 					if(personal_ranking == 'true'){
@@ -810,7 +809,7 @@ function toon_lib(){
 						unique_prod[prod_id] 		= prod_id;
 						product_string				+= prod_id + '|';
 					}
-					count2++;
+					count2++;			
 					if(counter != undefined){
 						if(count2 >= counter){
 							break;
@@ -840,7 +839,7 @@ function toon_lib(){
 			that.msib_id_final = data;
 			that.final_parser(s_key,callback);
 		}); 
-		this.badge_manager({badge_ids:badges, timer:0},function(data){
+		this.badge_manager({badge_ids:badges, timer:0},function(data){				
 			that.badges_final = data; 
 			that.final_parser(s_key,callback);
 		}); 
@@ -855,7 +854,9 @@ function toon_lib(){
 	} 
 	
 	this.final_parser = function(s_key,callback){
-		if(this.badges_final != '' && this.msib_id_final != '' && this.prod_final != ''){
+				
+		//if(this.badges_final != '' && this.msib_id_final != '' && this.prod_final != ''){
+		if(typeof(this.badges_final) == 'object' && typeof(this.msib_id_final) == 'object' && typeof(this.prod_final) == 'object'){
 		
 			// Both msib's and badge's data is ready for us: 
 			// Go through entire activity stream entrys: 
@@ -876,7 +877,6 @@ function toon_lib(){
 						that.final_activity_stream[count].badge_data = that.badges_final[count3];
 					} 
 				}
-				
 				if(that.final_activity_stream[count].app_id == '11'){ 
 					for(x in that.prod_final){ 
 						if(that.final_activity_stream[count].template_params.game_id == that.prod_final[x].id){ 

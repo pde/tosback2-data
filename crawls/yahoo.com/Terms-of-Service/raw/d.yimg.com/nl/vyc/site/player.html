@@ -1,0 +1,70 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Yahoo! Video Player</title>
+<style>
+body { margin: 0px; overflow:hidden }
+</style>
+</head>
+<body scroll="no">
+<div id="yahoovideoplayer"><!-- video player inserted here --></div>
+
+<script type="text/javascript" src="../../../../yui.yahooapis.com/combo%3F2.8.2r1%252Fbuild%252Fyahoo-dom-event%252Fyahoo-dom-event.js&amp;2.8.2r1%252Fbuild%252Fget%252Fget-min.js" ></script>
+<script type="text/javascript" src="player.js"></script>
+	
+<script type="text/javascript">
+
+YAHOO.util.Event.on( window, 'load', function() {
+
+	// add player data supplied
+	var config = {};
+	
+    var hashData = window.location.hash;
+	if ( hashData !== "" ) { // if we have valid data, add to the player
+
+		// convert the hash name/value paris into an object
+		var oParamData = {}; // object to represent the hash data params
+		var sData = hashData.substring(1, hashData.length); // remove # from string
+		var aData = sData.split("&");
+	    for( var i = 0; i < aData.length; i++ ) {
+		    
+	    	var aParams = aData[i].split("=");
+	    	var name = unescape( aParams[0] );
+	    	if ( name.length < 1 ) {
+		    	continue; //dont add empty data
+	    	}
+	    	var value = unescape( aParams[1] );
+	    	oParamData[name] = value;
+	    }
+		for ( var item in oParamData ) {
+    		config[item] = oParamData[item];
+        }
+	}
+
+	// extract player instance value from url 
+	var url = window.location.href;
+	var dirs = url.split('player.html');
+	config['playerUrl'] = dirs[0] + 'player.swf';
+	config['width'] = '100%';
+	config['height'] = '100%';
+	
+	var callbacks = {
+			
+		onPlayerReady : function(e) {
+			//console.log( 'CLIENT RECEIVED EVENT: ' + e.eventType );
+		},
+		onPlayerDebug : function() {
+			//console.log(arguments);
+		}
+	};
+
+	var player = new YAHOO.widget.Video( 'yahoovideoplayer', config, callbacks);
+	player.render();
+		
+});
+
+</script>
+<noscript>You must enable javascript to view this video content.</noscript>
+
+</body>
+</html>

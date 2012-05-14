@@ -250,5 +250,16 @@ $(function () {
     }
 
 
+    // track outbound links
+    $('.track').bind('click', function (e) {
+        e.preventDefault();
+        var jThis = $(this),
+            sHref = jThis.attr('href'),
+            sTarget = jThis.attr('target');
+
+        recordOutboundLink(sHref, 'outbound links', sTarget);
+    });
+
+
 });
 

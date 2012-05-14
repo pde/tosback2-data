@@ -15,11 +15,11 @@
 <script type="text/javascript" src="../js/jquery.zend.jsonrpc.js"></script>
 <script type="text/javascript" src="../js/Talentor.Event.js"></script>
 <script type="text/javascript" src="../js/buttonizer.js"></script>
+<script type="text/javascript" src="../js/jquery.form.js"></script>
 <script type="text/javascript" src="../js/JobGo.js"></script>
 <script type="text/javascript" src="../js/popupmenu.js"></script>
 <script type="text/javascript" src="../js/JobGo.Feedback.js"></script>
 <script type="text/javascript" src="../js/jquery.tools.min.js"></script>
-<script type="text/javascript" src="../js/jquery.form.js"></script>
 <script type="text/javascript" src="../js/JobGo.StaticPopup.js"></script>    
 
 <script type="text/javascript">
@@ -38,6 +38,19 @@ $(document).ready(function() {
     new JobGo.Feedback('#feedbackDialog','#feedbackShowButton','#feedbackSendButton','#feedbackTextarea','/feedback/send',{"feedbackEmpty":"feedback Feedback empty"});
     JobGo.StaticPopup.createContainer();
     JobGo.StaticPopup.OnLoad();
+    (function(){
+                JobGo['Model_Widget_ConfirmDialog_1334518228'] = new JobGo.Widget.ConfirmDialog(
+                    $('#Model_Widget_ConfirmDialog_1334518228'),
+                    $('.btn-confirmdialog')
+                );
+            })();
+        
+    new JobGo.Dialog.Modal('#Model_Widget_ConfirmDialog_1334518228', 0, {"modal":true,"buttons":[{"text":"Ok","click":function(){
+                    JobGo['Model_Widget_ConfirmDialog_1334518228'].allowAction();
+                    $(this).dialog('close');
+                },"class":"talentor-button talentor-button-blue"},{"text":"Cancel","click":function(){
+                    $(this).dialog('close');
+                },"class":"talentor-button talentor-button-gray"}],"title":"Please confirm","width":600});
     
             (function (runTheseOnInit) {
                 function runOnInit(runThese) {
@@ -123,7 +136,7 @@ $(document).ready(function() {
             
             <div class="logo"><a href="http://jobgo.com/"><img src="../images/new_layout/logo.gif" title="JobGO" alt="JobGo"/></a></div>
 
-                                <div class="JobGoWidget country Model_Locale_Widget_CountrySelection" id="Model_Locale_Widget_CountrySelection_755565849" style="">    <div class="popupmenu " style="display: none" id="country_current-popupMenu">
+                                <div class="JobGoWidget country Model_Locale_Widget_CountrySelection" id="Model_Locale_Widget_CountrySelection_960328021" style="">    <div class="popupmenu " style="display: none" id="country_current-popupMenu">
         <div class="popupmenu-left-top png">
         <div class="popupmenu-right-top png">
             <div class="popupmenu-right-bottom png">
@@ -155,7 +168,7 @@ $(document).ready(function() {
     </div>
     </div>
     <span id="country_current" class="no-shift">International</span>
-</div>                <div class="JobGoWidget language Model_Locale_Widget_LocaleSelection" id="Model_Locale_Widget_LocaleSelection_1481466921" style=""><div class="popupmenu " style="display: none" id="language_current-popupMenu">
+</div>                <div class="JobGoWidget language Model_Locale_Widget_LocaleSelection" id="Model_Locale_Widget_LocaleSelection_1886426389" style=""><div class="popupmenu " style="display: none" id="language_current-popupMenu">
         <div class="popupmenu-left-top png">
         <div class="popupmenu-right-top png">
             <div class="popupmenu-right-bottom png">
@@ -188,7 +201,7 @@ $(document).ready(function() {
     </div>
 <span id="language_current" class="no-shift"><span class="label">Language: </span>English</span></div>
             <div style="height:50px;">
-                <div class="JobGoWidget UserSection" id="JobGo_View_UiSections_SectionWidget_1495487113" style=""><div class="SectionWidget UserSection" id="JobGo_View_UiSections_SectionWidget_1495487113"><div class="JobGoWidget userbar Model_User_Widget_Login" id="Model_User_Widget_Login_533650975" style=""><div id="Model_User_Widget_Login_533650975" class="userlogin">
+                <div class="JobGoWidget UserSection" id="JobGo_View_UiSections_SectionWidget_1849094469" style=""><div class="SectionWidget UserSection" id="JobGo_View_UiSections_SectionWidget_1849094469"><div class="JobGoWidget userbar Model_User_Widget_Login" id="Model_User_Widget_Login_1436162960" style=""><div id="Model_User_Widget_Login_1436162960" class="userlogin">
     <form id="mainLoginForm" action="privacy.html" method="post">
         <input type="submit" style="position:fixed; top:-1000px; left:-1000px;"/>
 
@@ -215,7 +228,7 @@ $(document).ready(function() {
                href="http://jobgo.com/user/registration">Join</a>
         </div>
     </form>
-</div></div><div class="JobGoWidget UserActions" id="Model_User_Widget_HeaderActions_487171208" style=""></div></div></div>                <div style="clear:both;"></div>
+</div></div><div class="JobGoWidget UserActions" id="Model_User_Widget_HeaderActions_494723515" style=""></div></div></div>                <div style="clear:both;"></div>
             </div>
 
             <!-- main menu items -->
@@ -224,6 +237,7 @@ $(document).ready(function() {
                     <li class="active"><a href="http://jobgo.com/">Home</a></li>
     <li><a href="http://jobgo.com/job/search">Jobs</a></li>
     <li><a href="http://jobgo.com/company/search">Companies</a></li>
+    <li><a href="http://jobgo.com/happening">Events</a></li>
                 </ul>
             </div>
 
@@ -233,7 +247,7 @@ $(document).ready(function() {
     <!-- header :: end -->
     <div class="main-holder">
         <div class="main-wrap">
-            <div id="systemMessage" class="hidden">
+            <div class="systemMessage hidden">
     <span class="messageBody">&nbsp;</span>
     <div class="noticeClose" onclick="$(this).parent().hide(); return false;"></div>
 </div><div id="legal-text">
@@ -291,7 +305,7 @@ $(document).ready(function() {
 Copyright © 2010 Talentor Group Ltd. All rights reserved.  
 Last revision 13.1.2010
 </div>
-    <div class="side-wrap"><div class="JobGoWidget SidewidgetsSection" id="JobGo_View_UiSections_SectionWidget_752828746" style=""><div class="SectionWidget SidewidgetsSection" id="JobGo_View_UiSections_SectionWidget_752828746"><div class="JobGoWidget  JobGoWidgetViewHelper" id="JobGo_Widget_ViewHelper_898140789" style=""><div id="feedbackShowButton" class="feedbackShowButton">
+    <div class="side-wrap"><div class="JobGoWidget SidewidgetsSection" id="JobGo_View_UiSections_SectionWidget_1780997087" style=""><div class="SectionWidget SidewidgetsSection" id="JobGo_View_UiSections_SectionWidget_1780997087"><div class="JobGoWidget  JobGoWidgetViewHelper" id="JobGo_Widget_ViewHelper_1794871323" style=""><div id="feedbackShowButton" class="feedbackShowButton">
     Feedback</div>
 
 <div id="feedbackDialog" style="display:none;">
@@ -311,6 +325,7 @@ Last revision 13.1.2010
     <div class="Buttons" style="float:right;">
             <a id="feedbackSendButton"
               style=""
+       title=""
        href="privacy.html#"
        class="btn-blue"
        >
@@ -318,6 +333,7 @@ Last revision 13.1.2010
     </a>
             <a id="feedbackCloseButton"
               style=""
+       title=""
        href="privacy.html#"
        class="btn-grey CloseButton"
        >
@@ -344,7 +360,7 @@ Last revision 13.1.2010
         <div class="copy">Copyright © 2010 Talentor Group Oy. All rights reserved.</div>
     </div>
 
-<div class="JobGoWidget BottomSection" id="JobGo_View_UiSections_SectionWidget_1322731986" style=""><div class="SectionWidget BottomSection" id="JobGo_View_UiSections_SectionWidget_1322731986"></div></div>
+<div class="JobGoWidget BottomSection" id="JobGo_View_UiSections_SectionWidget_1731049081" style=""><div class="SectionWidget BottomSection" id="JobGo_View_UiSections_SectionWidget_1731049081"><div class="JobGoWidget  Model_Widget_ConfirmDialog HappeningWidget" id="Model_Widget_ConfirmDialog_1334518228" style="display:none;"><div class="confirm-dialog-content talentor-dialog-content">ssss</div></div></div></div>
 <!-- footer :: end -->
         <script type="text/javascript">
         var _gaq = _gaq || [];

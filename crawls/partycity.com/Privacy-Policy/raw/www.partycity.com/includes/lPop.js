@@ -133,7 +133,19 @@ function closePopup(){
 	this.pTP=pTP;
 	AX_Pop_Create(this);
  }
+ var uagent = function(){
+	if(
+		(navigator.userAgent.match(/Windows Phone/i))
+            || (navigator.userAgent.match(/ZuneWP7/i))
+			|| (navigator.userAgent.match(/android/i))
+			|| (navigator.userAgent.match(/iPad/i))
+			|| (navigator.userAgent.match(/iPhone/i))
+			|| (navigator.userAgent.match(/iPod/i))
+		) {return "mobile";}
+	else{return "desktop";}
+}
 function wf(){
+	if(uagent()=="mobile")dnsp=true;
 	AX_Win_Prop();
 	if(py>0){
 		for(i=1;i<=py;i++){

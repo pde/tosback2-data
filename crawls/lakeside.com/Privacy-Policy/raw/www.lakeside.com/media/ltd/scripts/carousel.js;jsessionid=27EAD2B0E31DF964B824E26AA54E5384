@@ -1,0 +1,31 @@
+$(document).ready(function() {
+	$('.jcarousel-play').click();
+});
+	var step=1
+	var moveCarouselTimeout = null;
+	function moveCarousel(){
+		$("#homePromoCarousel li.pause").removeClass("hidden");
+		$("#homePromoCarousel li.play").addClass("hidden");
+		size = $('.jcarousel-control.nav > li').size();
+		$('.jcarousel-control.nav > li').each(function(){
+			   value = $(this).attr('class');
+			   isPromo = value.charAt(0); //each button corresponding to an image has a digit as its first character
+			   if(isPromo == step)
+			   {
+				   link = $(this).find('a');
+				   link.click();
+			   }
+
+			});
+	   step = step + 1;
+	   if(step > size - 4) //there are 3 or 4 extra buttons right now that are not changing images, account for these
+		   step = 1
+	   moveCarouselTimeout = setTimeout("moveCarousel()",5000);
+	}
+
+	function stopCarousel(){
+		$("#homePromoCarousel li.play").removeClass("hidden");
+		$("#homePromoCarousel li.pause").addClass("hidden");
+		if (moveCarouselTimeout != null )clearTimeout(moveCarouselTimeout);
+		moveCarouselTimeout = null;
+	}

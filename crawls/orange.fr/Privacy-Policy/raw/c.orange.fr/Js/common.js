@@ -305,8 +305,10 @@ return true;
 } catch( e ) {}
 }
 function o_changeImgForGstat(refGstat) {
-if (o_hGetById("ImgForGstat"))
-document.images.ImgForGstat.src="http://r.orange.fr/r?ref="+refGstat+"&url=http%3A//c.orange.fr/z.gif";
+if (o_hGetById("ImgForGstat")) {
+var rnd = Math.round(Math.random()*10000000000);
+document.images.ImgForGstat.src="http://r.orange.fr/r?ref="+refGstat+"&url=http%3A//c.orange.fr/z.gif?"+rnd;
+}
 return true;  
 }
 function ref_in_string(str) {
@@ -577,8 +579,8 @@ str_footer += '<script type="text/javascript">';
 str_footer += 'if (typeof _gstat != "undefined") _gstat.audience();';
 str_footer += '</script>';
 str_footer +="<div id='o_footer' class='resize "+bgcolor+"'>";
-str_footer += "<ul class='footer'>";
-str_footer += "<li class='logo'>&nbsp;</li>";
+str_footer += "<ul id='o_footer_lgn1' class='footer'>";
+str_footer += "<li id='o_footer_logo' class='logo'>&nbsp;</li>";
 str_footer += '<li><a class="withRightBorder" href="http://r.orange.fr/r/Ohome_aproposdorange'+newPays+'" target="_blank" title="Orange en France (nouvelle fen&ecirc;tre)">Orange en France</a></li>';
 if(newPays == "_reu"){
 str_footer += '<li><a class="withRightBorder" href="http://reunion.orange.fr/publicite" target="_blank" title="publicit&eacute; (nouvelle fen&ecirc;tre)">publicit&eacute;</a></li>';
@@ -596,7 +598,7 @@ str_footer += '<li><a class="withRightBorder" href="http://r.orange.fr/r/Eintern
 str_footer += '<li><a class="withRightBorder" href="http://r.orange.fr/r/Esignaler" target="_blank" title="signaler un contenu illicite (nouvelle fen&ecirc;tre)">signaler un contenu illicite</a></li>';
 str_footer += '<li><a href="http://r.orange.fr/r/Eafa" target="_blank" title="AFA protection de l\'enfance (nouvelle fen&ecirc;tre)">AFA protection de l\'enfance</a></li>';
 str_footer += "</ul>";
-str_footer += "<div style='text-align:center;width:100%;'>";
+str_footer += "<div id='o_footer_lgn2' >";
 str_footer += "<a href='http://r.orange.fr/r/Enetplussur' target='_blank' title='Net plus s&ucirc;r (nouvelle fen&ecirc;tre)'>";
 str_footer += "<img src='"+document.location.protocol+"//c.orange.fr/Icons/Footer/logoNetSur"+bgcolor+".gif' width='28' height='28' alt='Net plus s&ucirc;r' title='Net plus s&ucirc;r' width='3%'/>";
 str_footer += "</a>";
@@ -924,42 +926,57 @@ aApres[i] = o_aOrange[i][j];
 aApres[3] = sRetourVar11+sRetourVar14+sRetourVar15+sRetourVar16;
 return aApres;
 }
-function o_iz_class(){
-this.ACCOUNT_MULTIBAL=false;
-this.ACCOUNT_PRO=false;
-this.NETWORK_TYPE="";
-this.USER_FULL_NAME="";
-this.USER_IDENT_CONTEXT=null;
-this.USER_IDENT_LEVEL="NONE";
-this.USER_IDENT_TYPE="";
-this.USER_MSISDN="";
-this.PUBPERSO_VAR1=null;
-this.PUBPERSO_VAR2=null;
-this.PUBPERSO_VAR3=null;
-this.PUBPERSO_VAR4=null;
-this.PUBPERSO_VAR5=false;
-this.PUBPERSO_VAR6=null;
-this.ACCOUNT_OPTION_OO_MAIL= false;
-this.ACCOUNT_OPTION_OO_PIM= false;
-this.ACCOUNT_OPTION_FFMV3= false;
-this.ACCOUNT_OPTION_QUAD=false; 
-this.USER_OSDAT_VAR1=null;
-this.USER_OSDAT_VAR2=null;
-this.USER_OSDAT_VAR3=null;
-this.USER_OSDAT_VAR4=null;
-this.USER_OSDAT_VAR5=null;
-this.USER_OSDAT_VAR6=null;
-this.USER_OSDAT_EXTRA=null;
-this.IMG_SERVER="http://i5.woopic.com";
-this.FLASH_SERVER="http://v3.woopic.com";
-this.IDENT_FORM_URL="http://id.orange.fr/auth_user/bin/auth_user.cgi";
-this.USER_MAIL_NB="";
-this.USER_SMS_NB="";
-this.USER_MMS_NB="";
-this.COMMON_ZIP_CODE="";
-this.USER_ZIP_CODE="";
-this.MOBILE_COMMERCIAL_SEGMENT="";
-};
+function o_iz_class() {
+this.ACCOUNT_MULTIBAL = false;
+this.ACCESS_NETWORK = "";
+this.ACCOUNT_NETWORK = "";
+this.ACCOUNT_OPTION_FFMV3 = false;
+this.ACCOUNT_OPTION_OCS = 0;
+this.ACCOUNT_OPTION_OO_MAIL = false;
+this.ACCOUNT_OPTION_OO_PIM = false;
+this.ACCOUNT_OPTION_ORANGE_OFFICE = false;
+this.ACCOUNT_OPTION_SPORT = 0;
+this.ACCOUNT_PRO = false;
+this.COMMON_ZIP_CODE = "";
+this.MOBILE_COMMERCIAL_SEGMENT = "";
+this.NETWORK_TYPE = "";
+this.PUBPERSO_VAR1 = null;
+this.PUBPERSO_VAR2 = null;
+this.PUBPERSO_VAR3 = null;
+this.PUBPERSO_VAR4 = null;
+this.PUBPERSO_VAR5 = false;
+this.PUBPERSO_VAR6 = null;
+this.USER_FULL_NAME = "";
+this.USER_IDENT_CONTEXT = null;
+this.USER_IDENT_LEVEL = "NONE";
+this.USER_IDENT_TYPE = "";
+this.USER_MSISDN = "";
+this.USER_DEFINED_MSISDN = "";
+this.USER_OOPS_APP = "";
+this.USER_PRO = false;
+this.USER_QMSISDN = "";
+this.USER_QUAD = 0;
+this.USER_DEFAULT_HOMEPAGE = -1;
+this.USER_ISFUT = 0;
+this.USER_OPTOUT = false;
+this.USER_USAGE_COMFORT_DATA = "";
+this.USER_OSDAT_VAR1 = null;
+this.USER_OSDAT_VAR2 = null;
+this.USER_OSDAT_VAR3 = null;
+this.USER_OSDAT_VAR4 = null;
+this.USER_OSDAT_VAR5 = null;
+this.USER_OSDAT_VAR6 = null;
+this.USER_OSDAT_EXTRA = "";
+this.USER_MAIL_ADDRESS = null;
+this.USER_MAIL_NB = null;
+this.USER_MMS_NB = null;
+this.USER_SMS_NB = null;
+this.USER_FSS_DATA = null;
+this.USER_ZIP_CODE = "";
+this.IMG_SERVER = "http://i5.woopic.com";
+this.FLASH_SERVER = "http://v3.woopic.com";
+this.IDENT_FORM_URL = "http://id.orange.fr/auth_user/bin/auth_user.cgi";
+} 
 o_iz_class.prototype.set=function(o){
 try{
 for(var f in o){

@@ -1,0 +1,159 @@
+/**
+ * NAV ANIMATIONS AND ACTIONS
+ */
+var $spotlightNode = NBC('#global-spotlight'), $nav=NBC("#global-nav"), $navItms = NBC("#global-nav .gnav-gbtns > li"),
+$navMrk = $nav.find(".active-marker"), navMrkStart = $navMrk.css("left"), navMrkSpeed = 400, navMrkPoss = new Array();
+
+	/* drop down close action */
+var dropdownClose = function($navItm, $dropdown) {
+    $navItm.removeClass("active"); $dropdown.fadeOut("medium");
+    $navMrk.fadeOut('medium', function(){ NBC(this).css({"left":navMrkStart});  $spotlightNode.removeClass('behind-gdropdown');  });
+};
+
+	/* get nav item center positions and bind close button event handlers */
+$navItms.each(function(){
+    var $navItm = NBC(this), key = $navItm.attr("className").replace(" featured", ""), itmLft, $dropdown = $navItm.find(".gsub");
+
+    itmLft = NBC(this).position().left; //use in case needed for subnav dropdown positioning
+    navMrkPoss[key] = Math.round( itmLft + NBC(this).width()/2 ) + "px";
+
+    $dropdown.css("left", "-" + Math.round( $nav.position().left+itmLft ) + "px" );
+    $dropdown.find(".close-gbtn").click(function(e){ dropdownClose($navItm, $dropdown); });
+});
+
+	/* easing and animation */
+$navItms.find(".gbtn").click(function(e){
+    var $navItm = NBC(this).parent(), $actvItm = $nav.find(".active"),thisActive = $navItm.is(".active"),
+    $dropdown = $navItm.find(".gsub"), key = $navItm.attr("className").replace(" featured", "");
+
+    if (key == "gnav-news" || key == "gnav-games" || key == "gnav-social" || key == "gnav-shop" || key == "gnav-extras") {
+        // NBC("#global-nav img").trigger("global-dropdown-click");
+    }
+
+    $actvItm.removeClass("active");
+    if(!thisActive) {  $navItm.addClass("active"); $dropdown.fadeIn("fast");  }
+
+    //if nav item has an .active status
+    if($actvItm.length) {
+        if(!thisActive) {
+            $navMrk.animate({"left":navMrkPoss[key]}, {
+                duration:navMrkSpeed
+                ,easing: ($actvItm.is(".gnav-extras")? "easeInOutExpo":"easeInBack")
+                ,complete: function(){ $actvItm.find(".gsub").hide(); }
+            });
+        } else { dropdownClose($navItm, $dropdown); }
+
+    } else {
+        $spotlightNode.addClass('behind-gdropdown');
+        $navMrk.fadeIn('fast'); /* don't chain */
+        $navMrk.animate({"left":navMrkPoss[key]}, {duration:navMrkSpeed , easing:"easeInExpo"});
+    }
+});
+
+/**
+ * MYNBC INTERACTIVE ACTIONS
+ */
+
+$loginBox = NBC("#global-header .global-login");
+$obj = $loginBox.find(".global-login-btn");
+/* update login state */
+if (nbcu.sn.session.isLoggedIn()) {
+    $loginBox.addClass("logged-in");
+
+    /* myNBC login text (name/title login) */
+    $loginBox.find(".global-login-btn h2").html("Hello, " + nbcu.sn.session.getUsername());
+} else {
+    $loginBox.find(".global-login-btn h2").html("myNBC Login");
+}
+
+/* login btns */
+$loginBox.find(".global-login-btn,.outside-guest .alter-status-btn").click(function(){
+	var $frameCapture = $obj.find(".login-iframe-capture");
+    $obj = $loginBox.find(".global-login-btn");
+	
+    if($obj.is(".login-opened")) {
+        $obj.removeClass("login-opened");
+    } else {
+/*        if (!nbcu.sn.session.isLoggedIn()) {
+            s.pageName = "NBC Reg: Login_Or_Sign_Up_Page";
+            s.eVar1 = "Login_Or_Sign_Up:myNBC";
+            var s_code = s.t();
+            if (s_code) {
+                document.write(s_code);
+            }
+        }
+*/
+		if (nbcu.sn.session.isLoggedIn()) {
+			var randNum = Math.floor(Math.random()*999999999);
+			$frameCapture.empty();
+			$iframe = NBC('<iframe src="/assets/esp/social/Identity/getDashboard?page=1&perPage=10&cb='+randNum+'" scrolling="no" allowtransparency="true" width="584" height="498"></iframe>');
+		} else {	
+			$iframe = NBC('<iframe src="/assets/core/themes/2011/nbc/includes/login.html" scrolling="no" allowtransparency="true" width="584" height="498"></iframe>');
+		}
+		
+		$frameCapture.html($iframe);
+		$obj.addClass("login-opened");
+    }
+});
+
+/**
+ * spotlight-on management
+ */
+//setTimeout(function(){}, 500);
+var $leaderboard = NBC("#global-spotlight .spotlight-ad-block");
+var $adObj1 = $leaderboard.find("object,embed,img,table");
+var $spotlight = NBC("#global-spotlight .spotlight");
+
+var hideSpotlight = function(){
+$adObj1.each(function(){
+var $adObj = NBC(this);
+    if ($spotlight.css("display") != "none" && ($adObj.attr("width")=="970" || $adObj.width()=="970" || $adObj.css("width")=="970px")) {
+        $spotlight.hide();
+	NBC("#global-spotlight").css({"min-height":"60px"});
+	$leaderboard.css({right:"0px"});
+    }
+  });
+};
+
+//try before document ready
+hideSpotlight();
+//try again after in case ad doesn't finish loading.
+NBC(document).ready(hideSpotlight);
+
+if(typeof nbcSpotlightOn == "undefined" || !nbcSpotlightOn) {
+	nbcSpotlightOn = undefined;
+	var $spotLt = NBC("#global-spotlight .spotlight"); 
+                                
+	NBC.ajax({
+		url:"/assets/core/themes/2011/nbc/includes/auto-generated/homepage/spotlight-on.html", 
+		dataType: "html", 
+		success: function(result){
+                                                $spotLt.html("<h2>Spotlight</h2>");     
+                                                if(NBC(result).find(".spotlight-meta").length > 0){
+                                                        $spotLt.append(result);
+                                                        return false; 
+                                                }
+        
+                                                NBC("#global-spotlight").before(result);
+                                                $spotLt.append(nbcSpotlightOn); 
+		},
+		complete:hideSpotlight
+	});
+}
+
+// Fall Preview
+fpdd = "";
+fpdd += '<div class="gsub-block clearfix">';
+fpdd += '<h2 style="background-image:url(\'/assets/core/themes/2011/nbc/images/header/fall-preview.png\'); height:60px; border-bottom: none; cursor: pointer; width: 228px; text-indent: -1000px;">New Season 2012/13</h2>';
+fpdd += '<ul class="gsub-links">';
+fpdd += '<li><a href="http://www.nbc.com/revolution/?__source=nbc-dd">Revolution</a></li>';
+fpdd += '<li><a href="http://www.nbc.com/go-on/?__source=nbc-dd">Go On</a></li>';
+fpdd += '<li><a href="http://www.nbc.com/the-new-normal/?__source=nbc-dd">The New Normal</a></li>';
+fpdd += '<li><a href="http://www.nbc.com/animal-practice/?__source=nbc-dd">Animal Practice</a></li>';
+fpdd += '<li><a href="http://www.nbc.com/guys-with-kids/?__source=nbc-dd">Guys with Kids</a></li>';
+fpdd += '<li><a href="http://www.nbc.com/chicago-fire/?__source=nbc-dd">Chicago Fire</a></li>';
+fpdd += '<li><a href="http://www.nbc.com/upcoming-shows/?__source=nbc-dd">More Shows</a></li>';
+fpdd += '</ul>';
+fpdd += '</div>';
+jqN(".gnav-shows .gsub-current-shows .gsub-block").append("<div id=\"fall-preview-dd\">" + fpdd + "</div>");
+jqN("#fall-preview-dd h2").click(function() { window.location = "/upcoming-shows/" });

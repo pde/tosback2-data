@@ -631,70 +631,68 @@ $(document).ready(function(){
 
 
 // start home page tour
-  if(typeof waTourTest != 'undefined'){
-      // add variable for test switching
-      if (waTourTest === 'tour-b') {
-        $('#hp-tour').addClass('tour-b');
-        $('.mobile_hero').hide();
-      } 
-      else if (waTourTest === 'tour-c') {
-        $('#hp-tour').addClass('tour-c');
-        $('.mobile_hero').hide();
-      } 
-      else if (waTourTest === 'default') {
-        $('#hp-tour').css('display', 'none');
-      };
-  } 
+  // if(typeof waTourTest != 'undefined'){
+  //     // add variable for test switching
+  //     if (waTourTest === 'tour-b') {
+  //       $('#hp-tour').addClass('tour-b');
+  //       $('.mobile_hero').hide();
+  //     } 
+  //     else if (waTourTest === 'tour-c') {
+  //       $('#hp-tour').addClass('tour-c');
+  //       $('.mobile_hero').hide();
+  //     } 
+  //     else if (waTourTest === 'default') {
+  //       $('#hp-tour').css('display', 'none');
+  //     };
+  // } 
   
-	// start slide show stuff
-	// start slide show stuff
+// start slide show stuff
+  $("#previous").hide();
  
   var currentPosition = 0;
-  var slideWidth = 835;
+  var slideWidth = 960;
   var slides = $(".slide");
   var numberOfSlides = slides.length;
   var slideShowWidth = slideWidth * numberOfSlides;
   
   //caching often used DOM elements
   var slideInner = $('#slideInner');
-  var caret = $('span.caret');
+  var caret = $('.caret');
   var previous = $('#previous');
   var next = $('#next');
 
   // set width of #slideinner to the width of all the slides
   $("#slideInner").css('width', slideShowWidth);
 
-  // hide left arrow when page loads
-  $('#previous, #next').hide();
-
   // autoplay commented out for the time being
-  t = setInterval(autoPlay, 5000);
-
+  var t = setInterval(autoPlay, 6000);
 
   // slideshow animations. Left or Right arrow click
   $(caret).click(function() {
-    currentPosition = ($(this).attr('id')=='next') ? currentPosition+1 : currentPosition-1; 
+    "use strict";
+    clearInterval(t);
+    currentPosition = ($(this).attr('id')==='next') ? currentPosition+1 : currentPosition-1; 
     manageControls(currentPosition);
     moveSlide(currentPosition);
-    updateNavIcon(currentPosition);
     return false;
   });
 
   // slideshow nav
-  $('#hp-tour #slide-nav a').click(function() {
-    var navMarker = $(this).attr('id');
-    var destinationPosition = parseInt(/\d/.exec(navMarker));
-    // stop auto play
-    clearInterval(t); 
-    currentPosition = destinationPosition-1;
-    updateNavIcon(currentPosition);
-    manageControls(currentPosition);
-    moveSlide(currentPosition);
-    return false;
-  });
+  // $('#hp-tour #slide-nav a').click(function() {
+  //   var navMarker = $(this).attr('id');
+  //   var destinationPosition = parseInt(/\d/.exec(navMarker));
+  //   // stop auto play
+  //   clearInterval(t); 
+  //   currentPosition = destinationPosition-1;
+  //   updateNavIcon(currentPosition);
+  //   manageControls(currentPosition);
+  //   moveSlide(currentPosition);
+  //   return false;
+  // });
 
   function manageControls(position) {
-    if (position === 0) { 
+    "use strict";
+    if (position === 0) {  //hide previous slide arrow if on first slide
      $(previous).hide();
     } 
     else {
@@ -702,7 +700,7 @@ $(document).ready(function(){
     }
 
     // hide right arrow
-    if(position === numberOfSlides-1) { 
+    if(position === numberOfSlides-1) { //hide next slide arrow if on last slide 
       $(next).hide();  
     }
     else {
@@ -711,8 +709,9 @@ $(document).ready(function(){
   } // end manageControls
   
   //create a navigation function 
-  function updateNavIcon(position) {     
-    var targetId = '#slideNumber'+ (parseInt(position) + 1);
+  function updateNavIcon(position) {
+    "use strict";
+    var targetId = '#slideNumber'+ (parseInt(position, 10) + 1);
     //first remove the indicator for currnetly highlighted 
     $('#slide-nav a.selected').removeClass('selected');
     //add indicator as to which slide is selected
@@ -720,47 +719,29 @@ $(document).ready(function(){
   } // end navigationIndicator
   
   function autoPlay() {
+    "use strict";
+    $("#previous").show();
     if (currentPosition === 2) {
       currentPosition = 0;
       moveSlide(currentPosition);
-      updateNavIcon(currentPosition);
-    } else {
+      // updateNavIcon(currentPosition);
+    } 
+    else {
       currentPosition += 1;
       moveSlide(currentPosition);
-      updateNavIcon(currentPosition);
+      // updateNavIcon(currentPosition);
     }
   } // end autoPlay
 
   function moveSlide(position) {
+    "use strict";
+    var leftPosition = (slideWidth * (-position)).toString();
     $('#slideInner').animate({
-      'left' : slideWidth * (-position)
+      "left" : leftPosition
     });
   }
 
 
-  // home page partner swithcing
-  if(typeof waPartnerTest!= 'undefined'){
-  	  // add variable for test switching
-	  if (waPartnerTest === 'default') {
-	    $('#main').addClass('default');
-	  } 
-	  else if (waPartnerTest === 'recipe-b') {
-	    $('#main').addClass('recipe-b');
-	  } 
-	  else if (waPartnerTest === 'recipe-c') {
-	    $('#main').addClass('recipe-c');
-	  }	  
-	  else if (waPartnerTest === 'recipe-d') {
-	    $('#main').addClass('recipe-d');
-	  }	  
-	  else if (waPartnerTest === 'recipe-e') {
-	  	$('#main').addClass('recipe-e');
-	  }
-	  else if (waPartnerTest === 'recipe-f') {
-	  	$('#main').addClass('recipe-f');
-	  }
-	  
-  } 
 
 }) // end doc.ready
 

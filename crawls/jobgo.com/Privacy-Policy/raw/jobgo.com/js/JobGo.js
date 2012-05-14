@@ -195,6 +195,10 @@ if (!JobGo) {
     var JobGo = {};
 }
 
+$(document).ready(function(){
+    JobGo.Notice.getContainer().fadeOut(5000);
+});
+
 JobGo.isNewWindow = function() {
     if ($.browser.mozilla) {
         return history.length == 0;
@@ -227,16 +231,15 @@ JobGo.Notice = {
         NOTICE: 'noticeMessage'
     },
     getContainer: function() {
-        return $('#systemMessage');
+        return $('.systemMessage');
     },
     display: function(msg, type) {
-
-
         var container =  this.getContainer();
         for (var t in this.types) {
             container.removeClass(this.types[t]);
         }
         container.removeClass('hidden').show().addClass(this.types[type]).find('.messageBody').html(msg);
+        container.fadeOut(5000);
     },
     setNotice: function(msg) {
         this.display(msg, 'NOTICE');
@@ -268,6 +271,9 @@ JobGo.Nav = {
     },
     goBack: function() {
         return JobGo.Nav.goToUrl(JobGo.Nav.getBackUrl());
+    },
+    reload: function() {
+        JobGo.Nav.goToUrl(document.location.href);
     }
 }
 
@@ -289,6 +295,12 @@ JobGo.Image = {
 
     FOR_COMPANY_CSS: 'cCss',
 
+    FOR_HAPPENING_HUGE: 'h166',
+    FOR_HAPPENING_BIG: 'h110',
+    FOR_HAPPENING_MEDIUM: 'h80',
+    FOR_HAPPENING_WIDGET: 'h60',
+    FOR_HAPPENING_SMALL: 'h40',
+
 
 
     staticUrl: '',
@@ -299,9 +311,11 @@ JobGo.Image = {
         this.Model_Db_Person = this.FOR_PERSON_HUGE;
         this.Model_Db_Job = this.FOR_JOB_BIG;
         this.Model_Db_MessagetypeJobApplication = this.FOR_PERSON_HUGE;
+        this.Model_Db_Happening = this.FOR_HAPPENING_BIG;
     },
     getUrlByFilename: function(pictureFile, forWhat) {
         if (!pictureFile) return JobGo.Image.getNoImageUrl(forWhat);
+
         return JobGo.Image.staticUrl + forWhat + '/' + pictureFile;
     },
     getNoImageUrl: function(forWhat)
@@ -445,13 +459,16 @@ $.extend(JobGo.Multiplier, {
                 c.find('input[type=text],input[type=hidden],textarea').each(function(i, e) {
                     $(e).val('');
                 });
+                c.find('select').each(function(){
+                    $(this).data('JobGo.Multiplier.Cleared', 1);
+                });
             });
         },
         // Call the multiplyMe event handler
         riseMultiplyMe: function (clone, multiplier) {
             clone.each(function (index, c) {
                 $(c).find("." + JobGo.Multiplier.CLASS_HASMULTIPLYME).each(function (index, mMe) {
-                    $(mMe).trigger(JobGo.Multiplier.EVENT_MULTIPLYME, [multiplier, clone]);
+                    $(mMe).trigger(JobGo.Multiplier.EVENT_MULTIPLYME, [multiplier, clone, index]);
                 });
             });
         },
@@ -551,7 +568,7 @@ $.extend(JobGo.Multiplier, {
             var me = this;
             selector = $(selector);
             $.each(me.modifiers, function(index, func) {
-                func(selector, me);
+                func(selector, me, me.getIndex());
             });
             return selector;
         },
@@ -575,6 +592,9 @@ $.extend(JobGo.Multiplier, {
                 this.clone(clone).prependTo($(container)).css('display', 'block')
             );
             return this;
+        },
+        get: function(index) {
+            return this.clones[index];
         },
         remove: function(index) {
             var clone = this.clones[index];
@@ -1510,6 +1530,51 @@ JobGo.Form = {
             }
         }
     },
+    Happening: {
+        Edit: {
+            originalPicture: '',
+            picture: '',
+            picUploadSuccess: function(file, serverData) {
+                var fileName = '';
+                for (var i in serverData.Ids) {
+                    if (serverData.Ids[i]) {
+                        fileName = serverData.Ids[i];
+                    }
+                }
+
+                JobGo.Form.Happening.Edit.picture = JobGo.Form.Happening.Edit.originalPicture = JobGo.Image.getUrlByFilename(fileName, JobGo.Image.FOR_HAPPENING_BIG);
+            },
+            init: function() {
+                $('#happening-btn-add-end-time').click(function(){$('#happening-end-time-container').show();});
+                $('#happening_save').click(function(evt){
+                    if (window.tinyMCE) {
+                        tinyMCE.triggerSave();
+                    }
+                    $(evt.target).closest('form').attr('action', '').submit();
+                    return false;
+                });
+                $("#happening_cancel").click(JobGo.Nav.goBack);
+            }
+        },
+        Sessions: {
+            init: function() {
+                $('#happening_save').click(function(evt){
+                    $(evt.target).closest('form').attr('action', '').submit();
+                    return false;
+                });
+                $("#happening_cancel").click(JobGo.Nav.goBack);
+            }
+        },
+        Participants: {
+            init: function() {
+                $('#happening_save').click(function(evt){
+                    $(evt.target).closest('form').attr('action', '').submit();
+                    return false;
+                });
+                $("#happening_cancel").click(JobGo.Nav.goBack);
+            }
+        }
+    },
     Candidate: {
         Hire: {
             init: function() {
@@ -2406,6 +2471,8 @@ JobGo.Stat = {
 
 JobGo.Dialog = {
 
+    modalDialogs: [],
+
     Modal: function(selector, autoOpen, options) {
         this.overlay = null;
         this.area = null;
@@ -2414,8 +2481,9 @@ JobGo.Dialog = {
         if (options) {
             this.options = options;
         }
-
         this.init(autoOpen);
+
+
     }
 }
 $.extend(JobGo.Dialog.Modal.prototype, {
@@ -2424,14 +2492,16 @@ $.extend(JobGo.Dialog.Modal.prototype, {
             return;
         }
 
-        var anchor = $('#systemMessage');
+        var anchor = $('.systemMessage');
         var pos = anchor.position();
 
-        if (anchor.css('display') != 'none' && pos.top) {
-            var left = pos.left + anchor.width()/2 - (this.options['width'] / 2);
-            var top = pos.top + anchor.height() + 40;
+        if (pos) {
+            if (anchor.css('display') != 'none' && pos.top) {
+                var left = pos.left + anchor.width()/2 - (this.options['width'] / 2);
+                var top = pos.top + anchor.height() + 40;
 
-            this.area.dialog('option', 'position', [left, 0]);
+                this.area.dialog('option', 'position', [left, 0]);
+            }
         }
     },
     init: function(autoOpen) {
@@ -2452,7 +2522,7 @@ $.extend(JobGo.Dialog.Modal.prototype, {
             bgiframe: true,
             autoOpen: autoOpen,
             stack:true,
-            position: ['center',20]
+            position: ['center',50]
         }, this.options);
 
         this.options = options;
@@ -2474,7 +2544,9 @@ $.extend(JobGo.Dialog.Modal.prototype, {
             }
             window.scrollTo(0, $('body').attr(0));
 
-            $(this).dialog('option', 'position', ['center',20]);
+            $(this).dialog('option', 'position', ['center',130]);
+
+
         });
 
         var closeButton = this.area.find('.CloseButton');
@@ -2834,6 +2906,613 @@ $.extend(JobGo.Message.Widget.JoinInvitation.prototype, {
     }
 });
 
+JobGo.Happening = {
+    Widthdraw: function() {
+        $('.btn-happening-withdraw').click(function(e){
+
+            if (!$(this).data('isConfirmed')) {
+                return;
+            }
+
+            e.preventDefault();
+
+
+
+            var $this = $(this);
+
+            var happeningId = $this.attr("id").substr(23);
+
+            $.post('/happening/withdraw/id/' + happeningId, {}, function(data){
+                if (data.error) {
+                    var msg = '';
+                    if (data.message.join) {
+                        msg = data.message.join(' ');
+                    } else {
+                        msg = data.message;
+                    }
+                    JobGo.Notice.setError(msg);
+                } else {
+                    if (data.message) {
+                        var msg = '';
+                        if (data.message.join) {
+                            msg = data.message.join(' ');
+                        } else {
+                            msg = data.message;
+                        }
+                        JobGo.Notice.setNotice(msg);
+                    }
+                    $this.hide();
+                    JobGo.Nav.reload();
+                    $('#btn-happening-join-' + happeningId).show();
+                }
+            });
+        });
+    },
+
+    Widget: {
+
+    }
+}
+
+JobGo.Happening.Widget.Join = function($widget, $openButtons, success, failure, params) {
+    this.widget = $widget;
+    this.openButtons = $openButtons;
+    this.openButton = null;
+    this.useAjax = false;
+    if (!params) {
+        params = {};
+    }
+    this.params = params;
+
+    if (!success) {
+        success = function() {};
+    }
+    if (!failure) {
+        failure = function() {};
+    }
+
+    this.success = success;
+    this.failure = failure;
+    this.init();
+}
+$.extend(JobGo.Happening.Widget.Join.prototype, {
+    init: function() {
+        var self = this;
+        this.getOpenButtons().each(function(i, e){
+            $(this).click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                self.openButton = $(this);
+                self.setEventId($(e.currentTarget).attr("id").substr(19));
+                self.getWidget().dialog('open');
+
+                self.setEventName($(e.currentTarget).attr("title"));
+            });
+        });
+    },
+    getUseAjax: function () {
+        return this.useAjax;
+    },
+    setUseAjax: function (flag) {
+        this.useAjax = flag;
+        if (this.formSubmitDelegated) return;
+        var self = this;
+        $(document).delegate('#' + self.getWidget().attr('id') + ' form', 'submit', function(e){
+            if (!self.useAjax) {return true;}
+            e.preventDefault();
+            var $form = $(this);
+            $.post($form.attr('action'), $form.serialize(), function(data){
+                if (typeof data == 'object') {
+                    if (!data.error) {
+                        self.getSuccess()(self, data);
+                    } else {
+                        self.getFailure()(self, data);
+                    }
+                    self.handleJsonResponse(data);
+                }
+            });
+            return false;
+        });
+
+        this.formSubmitDelegated = true;
+
+    },
+    getSuccess: function() {
+        return this.success;
+    },
+    getFailure: function() {
+        return this.failure;
+    },
+    getOpenButton: function() {
+        return this.openButton;
+    },
+    handleJsonResponse: function(data) {
+        if (data.error) {
+            var msg = '';
+            if (data.message.join) {
+                msg = data.message.join('. ');
+            } else {
+                msg = data.message;
+            }
+            JobGo.Notice.setError(msg);
+        } else {
+            if (data.message) {
+                var msg = '';
+                if (data.message.join) {
+                    msg = data.message.join('. ');
+                } else {
+                    msg = data.message;
+                }
+                JobGo.Notice.setNotice(msg);
+            }
+        }
+        this.getWidget().dialog('close');
+    },
+    setEventName: function(name) {
+        $('#ui-dialog-title-'+this.getWidget().attr('id')).find('.happening-widget-join-happeningname').html(name);
+    },
+    setEventId: function(id) {
+        this.eventId = id;
+        this.onSetEventId();
+
+    },
+    getEventId: function() {
+        return this.eventId;
+    },
+    getWidget: function() {
+        return this.widget;
+    },
+    getOpenButtons: function() {
+        return this.openButtons;
+    },
+    onSetEventId: function() {
+        if (this.params.dontFetchContents) return;
+        this.updateDialogContent();
+    },
+    updateDialogContent: function() {
+        var self = this;
+        $.get('/happening/joindialog/id/' + this.getEventId(), function(data) {
+            if (typeof data == 'object') {
+                self.handleJsonResponse(data);
+            }
+            self.getWidget().html(data);
+        });
+    }
+
+});
+
+JobGo.Happening.Meeting = {
+    Cancel: function() {
+                $('.btn-happening-meeting-cancel').click(function(e){
+                    e.preventDefault();
+                    $this = $(this);
+                    var meetingId = $this.attr("id").substr(29);
+                    $.post('/happening/cancelmeeting/id/' + meetingId, {}, function(data){
+                        if (data.error) {
+                            var msg = '';
+                            if (data.message.join) {
+                                msg = data.message.join(' ');
+                            } else {
+                                msg = data.message;
+                            }
+                            JobGo.Notice.setError(msg);
+                        } else {
+                            if (data.message) {
+                                var msg = '';
+                                if (data.message.join) {
+                                    msg = data.message.join(' ');
+                                } else {
+                                    msg = data.message;
+                                }
+                                JobGo.Notice.setNotice(msg);
+                            }
+                            $this.hide();
+                            $this.parent().prev().html('');
+                        }
+                    });
+                });
+            },
+    Widget:{}
+}
+JobGo.Happening.Meeting.Widget.Request = function($widget, $openButtons, success, failure, params) {
+    this.widget = $widget;
+    this.openButtons = $openButtons;
+    this.openButton = null;
+    this.useAjax = false;
+
+    if (!success) {
+        success = function() {};
+    }
+    if (!failure) {
+        failure = function() {};
+    }
+
+    this.success = success;
+    this.failure = failure;
+    this.init();
+}
+$.extend(JobGo.Happening.Meeting.Widget.Request.prototype, {
+    getDialogContentUrl: function() {
+        if (this.getOpenButton().hasClass('btn-happening-participant-requestmeeting-company')) {
+            return '/happening/requestmeetingdialog/happeningId/' + this.getHappeningId() + '/companyId/' + this.getCompanyId() ;
+        } else {
+            return '/happening/requestmeetingdialog/id/' + this.getParticipantId();
+        }
+    },
+    init: function() {
+        var self = this;
+        this.getOpenButtons().each(function(i, e){
+            $(this).click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                self.openButton = $(this);
+
+                if (self.openButton.hasClass('btn-happening-participant-requestmeeting-company')) {
+
+                    var ids = $(e.currentTarget).attr("id").substr(41).split('-');
+
+                    self.setHappeningId(ids[0]);
+                    self.setCompanyId(ids[1]);
+
+
+                } else {
+                    self.setParticipantId($(e.currentTarget).attr("id").substr(41));
+                }
+
+                self.getWidget().dialog('open');
+                self.setEventName($(e.currentTarget).attr("title"));
+            });
+        });
+    },
+    getCompanyId: function() {
+        return this.companyId;
+    },
+    setCompanyId: function(id) {
+        this.companyId = id;
+        this.updateDialogContent();
+    },
+    setHappeningId: function(id) {
+        this.happeningId = id;
+    },
+    getHappeningId: function () {
+        return this.happeningId;
+    },
+    getUseAjax: function () {
+        return this.useAjax;
+    },
+    setUseAjax: function (flag) {
+        this.useAjax = flag;
+        if (this.formSubmitDelegated) return;
+        var self = this;
+        $(document).delegate('#' + self.getWidget().attr('id') + ' form', 'submit', function(e){
+            if (!self.useAjax) {return true;}
+            e.preventDefault();
+            var $form = $(this);
+            $.post($form.attr('action'), $form.serialize(), function(data){
+                if (typeof data == 'object') {
+                    if (!data.error) {
+                        self.getSuccess()(self, data);
+                    } else {
+                        self.getFailure()(self, data);
+                    }
+                    self.handleJsonResponse(data);
+                }
+            });
+            return false;
+        });
+
+        this.formSubmitDelegated = true;
+
+    },
+    getSuccess: function() {
+        return this.success;
+    },
+    getFailure: function() {
+        return this.failure;
+    },
+    getOpenButton: function() {
+        return this.openButton;
+    },
+    handleJsonResponse: function(data) {
+        if (data.error) {
+            var msg = '';
+            if (data.message.join) {
+                msg = data.message.join('. ');
+            } else {
+                msg = data.message;
+            }
+            JobGo.Notice.setError(msg);
+        } else {
+            if (data.message) {
+                var msg = '';
+                if (data.message.join) {
+                    msg = data.message.join('. ');
+                } else {
+                    msg = data.message;
+                }
+                JobGo.Notice.setNotice(msg);
+            }
+        }
+        this.getWidget().dialog('close');
+    },
+    setEventName: function(name) {
+        $('#ui-dialog-title-'+this.getWidget().attr('id')).find('.happening-meeting-widget-request-happeningname').html(name);
+    },
+    setParticipantId: function(id) {
+        this.participantId = id;
+        this.onSetParticipantId();
+
+    },
+    getParticipantId: function() {
+        return this.participantId;
+    },
+
+    getWidget: function() {
+        return this.widget;
+    },
+    getOpenButtons: function() {
+        return this.openButtons;
+    },
+    onSetParticipantId: function() {
+        this.updateDialogContent();
+    },
+    updateDialogContent: function() {
+        var self = this;
+        $.get(this.getDialogContentUrl(), function(data) {
+            if (typeof data == 'object') {
+                self.handleJsonResponse(data);
+            }
+            self.getWidget().html(data);
+        });
+    }
+});
+
+
+JobGo.Happening.Meeting.Widget.Confirm = function($widget, $openButtons, success, failure, params) {
+    this.widget = $widget;
+    this.openButtons = $openButtons;
+    this.openButton = null;
+    this.useAjax = false;
+
+    if (!success) {
+        success = function() {};
+    }
+    if (!failure) {
+        failure = function() {};
+    }
+
+    this.success = success;
+    this.failure = failure;
+    this.init();
+}
+$.extend(JobGo.Happening.Meeting.Widget.Confirm.prototype, JobGo.Happening.Meeting.Widget.Request.prototype, {
+    getDialogContentUrl: function() {
+        return '/happening/confirmmeetingdialog/id/' + this.getParticipantId();
+    },
+    setEventName: function(name) {
+        $('#ui-dialog-title-'+this.getWidget().attr('id')).find('.happening-meeting-widget-confirm-happeningname').html(name);
+    }
+});
+
+
+if (typeof JobGo.Widget == 'undefined') {
+    JobGo.Widget = {
+
+    }
+}
+
+JobGo.Widget.FormDialog = function($widget, $openButtons, params) {
+    this.widget = $widget;
+    this.openButtons = $openButtons;
+    this.openButton = null;
+    this.useAjax = false;
+
+
+    this.eventSubmitSuccess = new Talentor.Event('submitSuccess');
+    this.eventSubmitFailure = new Talentor.Event('submitFailure');
+    this.eventBeforeOpen = new Talentor.Event('beforeOpen');
+    this.eventAfterOpen = new Talentor.Event('afterOpen');
+    this.eventBeforeSubmit = new Talentor.Event('beforeSubmit');
+
+
+    this.init(params);
+}
+
+$.extend(JobGo.Widget.FormDialog.prototype, {
+    init: function (params) {
+        if (params.eventBeforeOpen) {
+            this.eventBeforeOpen.bind(params.eventBeforeOpen);
+        }
+        if (params.eventAfterOpen) {
+            this.eventAfterOpen.bind(params.eventAfterOpen);
+        }
+        if (params.eventSubmitSuccess) {
+            this.eventSubmitSuccess.bind(params.eventSubmitSuccess);
+        }
+        if (params.eventSubmitFailure) {
+            this.eventSubmitFailure.bind(params.eventSubmitFailure);
+        }
+        if (params.eventBeforeSubmit) {
+            this.eventBeforeSubmit.bind(params.eventBeforeSubmit);
+        }
+
+
+
+        var self = this;
+        this.getOpenButtons().each(function(i, e){
+            $(this).click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                self.openButton = $(this);
+                self.eventBeforeOpen.trigger([self]);
+                self.getWidget().dialog('open');
+                self.eventAfterOpen.trigger([self]);
+            });
+        });
+    },
+    getWidget: function() {
+        return this.widget;
+    },
+    getOpenButtons: function() {
+        return this.openButtons;
+    },
+    getUseAjax: function () {
+        return this.useAjax;
+    },
+    setUseAjax: function (flag) {
+
+        this.useAjax = flag;
+
+        if (this.formSubmitDelegated) return;
+
+        var self = this;
+
+        $(document).delegate('#' + self.getWidget().attr('id') + ' form', 'submit', function(e){
+            if (!self.useAjax) {return true;}
+
+            e.preventDefault();
+
+            var $form = $(this);
+
+            self.eventBeforeSubmit.trigger([self, $form]);
+
+            $.post($form.attr('action'), $form.serialize(), function(data){
+                if (typeof data == 'object') {
+
+                    self.handleJsonResponse(data);
+
+                    if (!data.error) {
+                        self.eventSubmitSuccess.trigger([self, data]);
+                    } else {
+                        self.eventSubmitFailure.trigger([self, data]);
+                    }
+
+                }
+            });
+            return false;
+        });
+
+        this.formSubmitDelegated = true;
+
+    },
+    getOpenButton: function() {
+        return this.openButton;
+    },
+    handleJsonResponse: function(data) {
+
+        if (data.error) {
+            var msg = '';
+            if (data.message.join) {
+                msg = data.message.join('. ');
+            } else {
+                msg = data.message;
+            }
+
+            if (data.formErrors) {
+                var form =  $('#' + this.getWidget().attr('id') + ' form');
+                if (form) {
+                    var validator = form.validate();
+                    if (validator) {
+                        var formErrors = {};
+
+                        for (var i in data.formErrors) {
+                            formErrors[i]='';
+                            for (var j in data.formErrors[i]) {
+                                formErrors[i] += data.formErrors[i][j];
+                            }
+                        }
+                        validator.showErrors(formErrors);
+                    }
+                }
+            }
+            JobGo.Notice.setError(msg);
+        } else {
+            if (data.message) {
+                var msg = '';
+                if (data.message.join) {
+                    msg = data.message.join('. ');
+                } else {
+                    msg = data.message;
+                }
+                JobGo.Notice.setNotice(msg);
+            }
+        }
+    }
+});
+
+JobGo.Widget.ConfirmDialog = function($widget, $openButtons, params) {
+    this.widget = $widget;
+    this.openButtons = $openButtons;
+    this.openButton = null;
+
+    this.eventBeforeOpen = new Talentor.Event('beforeOpen');
+    this.eventAfterOpen = new Talentor.Event('afterOpen');
+    this.eventBeforeSubmit = new Talentor.Event('beforeSubmit');
+
+    if (!params) {
+        params = {};
+    }
+
+    this.init(params);
+}
+
+$.extend(JobGo.Widget.ConfirmDialog.prototype, {
+    init: function (params) {
+
+        if (params.eventBeforeOpen) {
+            this.eventBeforeOpen.bind(params.eventBeforeOpen);
+        }
+
+        if (params.eventAfterOpen) {
+            this.eventAfterOpen.bind(params.eventAfterOpen);
+        }
+
+        var self = this;
+        this.getOpenButtons().each(function(i, e){
+
+            $(this).click(function(e){
+                self.openButton = $(this);
+                self.event = e;
+
+                if (self.getOpenButton().data('isConfirming')) return;
+
+                e.preventDefault();
+
+
+                self.getWidget().find('.confirm-dialog-content').html(self.getOpenButton().attr('title'));
+
+                self.eventBeforeOpen.trigger([self]);
+                self.getWidget().dialog('open');
+                self.eventAfterOpen.trigger([self]);
+
+            });
+        });
+    },
+    getWidget: function() {
+        return this.widget;
+    },
+    getOpenButtons: function() {
+        return this.openButtons;
+    },
+
+    getOpenButton: function() {
+        return this.openButton;
+    },
+    allowAction: function() {
+        var event = this.event;
+        this.getOpenButton().data('isConfirming', true);
+        this.getOpenButton().data('isConfirmed', true);
+
+        console.log(this.getOpenButton());
+        this.getOpenButton().click();
+        if (this.getOpenButton().hasClass('jobgo-confirm-follow-link') && this.getOpenButton().attr('href')) {
+            JobGo.Nav.goToUrl(this.getOpenButton().attr('href'));
+        }
+        this.getOpenButton().data('isConfirming', null);
+    }
+});
+
+
 $.extend(JobGo.Form.BillingInformation.Source.Json.prototype, {
     cache: null,
     execute: function(caller) {
@@ -2848,7 +3527,7 @@ $.extend(JobGo.Form.BillingInformation.Source.Json.prototype, {
             {'id':companyId},
             function(data) {
                 if (data.code) {
-                    // error
+
                     return;
                 }
                 if (null == me.cache) {

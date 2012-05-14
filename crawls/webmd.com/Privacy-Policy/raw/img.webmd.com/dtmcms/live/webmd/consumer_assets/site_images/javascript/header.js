@@ -676,7 +676,6 @@ webmd.p.header={
 							xhr = $.ajax(_data.services.add_bookmark());
 							wmdPageLink('bkmrk-ovly-add_sub');
 						});
-						wmdPageLink('bkmrk-ovly-imp');
 					}
 				});
 		}
@@ -684,6 +683,7 @@ webmd.p.header={
 		is_overlay_loaded = webmd.p.header.is_overlay_loaded(showPromo);
 		if(is_overlay_loaded){
 			if(webmd.p.registration.isLoggedIn()){
+				wmdPageLink('bkmrk-ovly-imp');
 				show_bm_overlay();
 			}else{
 				//call login overlay function

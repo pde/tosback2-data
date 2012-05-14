@@ -1,0 +1,130 @@
+/********************************************************************************************************************
+reset.css
+********************************************************************************************************************/
+* { font-size: 100%; }
+html, body { position: relative; height: 100%; }
+html, body, h1, h2, h3, h4, h5, h6, form, fieldset, ul, ol, li, dl, dt, dd, table, caption, th, td, blockquote, p, address, iframe, div, br, hr {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+body {
+  color: #333;
+  font: 75%/1.4 arial, sans-serif;
+  white-space: normal;
+  word-spacing: 0;
+  letter-spacing: 0;
+}
+
+/*** Headings ***/
+h1, h2, h3, h4, h5, h6 { line-height: normal; }
+
+/*** Anchors ***/
+a {
+  color: #000;
+  outline: 0;
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+/*** Misc ***/
+abbr {
+  border: 0;
+  cursor: help;
+  font-variant: normal;
+}
+fieldset, img, iframe { border: 0; }
+address, cite { font-style: normal; }
+
+/*** Author Insertions ***/
+ins { background: #ff0000; }
+del { text-decoration: line-through; }
+
+/*** Quotes ***/
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: " "; content: none; }
+
+/*** Lists ***/
+ul, ol { list-style: none; }
+ul.list { margin-left: 17px; list-style: outside disc; }
+ol.list { margin-left: 27px; list-style: outside decimal; }
+
+/*** Form Controls ***/
+form * { font: 100% arial, sans-serif; white-space: normal !important; }/* Override user agent white space */
+legend { color: #000; }
+label { cursor: pointer; font-weight: normal; }
+label, input, select { vertical-align: middle; }
+textarea { vertical-align: top; }
+input[type="radio"], input[type="checkbox"],
+input[type="submit"], input[type="image"],
+input[type="button"], select { cursor: pointer; }
+input[type="text"], input[type="password"],
+textarea, select {
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: text;
+}
+
+/*** Table ***/
+table { border-collapse: collapse; }
+caption { caption-side: top; }
+caption, th { font-weight: normal; text-align: left; }
+th, td { vertical-align: top; }
+
+/*** Hiding ***/
+#document .structural {
+  position: absolute;
+  top: -9999px;
+  width: 0;
+  height: 0;
+  font-size: 0;
+}
+
+/*** Clearing ***/
+.clear:after {
+  content: " ";
+  clear: both;
+  display: block;
+  padding-top: 0.01px;
+  height: 0;
+  font-size: 0;
+}
+.clear { zoom: 1; clear:both;}
+#document .br {
+clear: both;
+overflow: hidden;
+display: block;
+margin: 0;
+padding: 0;
+height: 0;
+font-size: 0;
+}
+
+/*** Main Layout Constructs ***/
+#document {position:relative;margin:0 auto;width: 977px;background: #fff;text-align: left;}
+#content { padding:0; }
+#content-main { float: left; width: 660px; }
+#content-related { float: left; margin-left:12px;width: 300px; }
+#footer { padding: 5px 10px; }
+
+/********************************************************************************************************************
+Print Media
+********************************************************************************************************************/
+@media print {
+  body { font-size: 12pt; }
+  h1, h2, h3, h4, h5, h6, form, fieldset, ul, ol, dl, table, blockquote, p, pre, address, div {
+    page-break-before: avoid;
+    page-break-after: avoid;
+    orphans: 5;
+    widows: 5;
+  }
+}
+
+/********************************************************************************************************************
+Aural Media
+********************************************************************************************************************/
+@media aural {
+  h1, h2, h3, h4, h5, h6 { cue-after: url("http://www.foxnews.com/about/sites/foxnews.com.about/themes/foxnews_com_privacy/access/alert.wav"); }
+  abbr { speak: normal; }
+  abbr.init { speak: spell-out; }
+}

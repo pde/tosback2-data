@@ -19,10 +19,10 @@ jQuery(document).ready(function() {
 	}
 
 
-if ( pid == '2631' || pid == '22591' || pid == '22592' || pid == '22593' || pid == '11547' || pid == '22594' || pid == '22595' ) { /* ASPIRE */
+/*if ( pid == '2631' || pid == '22591' || pid == '22592' || pid == '22593' || pid == '11547' || pid == '22594' || pid == '22595' ) { // ASPIRE 
 		jQuery('#PrimaryNav #about_us_secondary_nav li').removeClass('selected');
 		jQuery('#PrimaryNav li a#au_aspire_link').parent('li').addClass('selected');	
-	}
+	}*/
 	
 	
 	if ( jQuery('#main-menu-cs div.menuContent').length != '0' ) {

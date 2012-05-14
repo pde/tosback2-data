@@ -142,14 +142,11 @@ $('#subscribeForm input[type=checkbox]').live('click',function(){
 
 	// hover over View Prices label in header
 	var headerCartLabel = $("#headerCart").find("div.label");
-	headerCartLabel.append("<div></div>");
-	headerCartLabel.hover(function() {
-			$(this).find("div").animate({opacity: "show", top: "20"}, "fast");
-			var labelHoverText = $(this).attr('data-currencyNote');
-			$(this).find("div").text(labelHoverText);
-		}, function() {
-			$(this).find("div").animate({opacity: "hide", top: "20"}, "fast");
-		}
+	var labelHoverText = $(headerCartLabel).attr('data-currencyNote');
+	headerCartLabel.append("<div>"+labelHoverText+"</div>");
+	headerCartLabel.hoverIntent(
+		function() { $(this).find("div").animate({opacity: "show", top: "20"}, "fast"); },
+		function() { $(this).find("div").animate({opacity: "hide", top: "20"}, "fast"); }
 	);
 
 }());
@@ -309,7 +306,7 @@ if (hasClass(bodyEl, 'catalog')){
 				var moreHtml = "<ul>" + $(['#',refinementId].join("")).html() + "</ul>";
 				var list = $(moreHtml).find('li');
 				var firstColLen = (list.size() - list.size() % 2) / 2;
-				if (firstColLen < list.size()/2) { firstColLen = firstColLen + 1 }; 
+				if (firstColLen < list.size()/2) { firstColLen = firstColLen + 1 };
 				var secondColLen = list.size() - firstColLen;
 				var newHtml = $('<div class="body"><div class="closeMoreRefinements">Close</div><ul class="firstCol"></ul></div>');
 				var firstColEl = $('ul.firstCol',newHtml);
@@ -353,14 +350,20 @@ if (hasClass(bodyEl, 'catalog')){
 
 			//Feature List - Animate open on mouseover of feature icon.
 			var fl = $('div.featuresList').find('img');
-			fl.mouseenter(function(evt){
+			fl.click(function(evt){
 
 				fc.animate({width:fcWidth, opacity:1}, delayOpen, 'swing');
 				var featureIconNum = $(this).index();
 
 				fs.each(function(featureNum){
 					if (featureNum != featureIconNum){ fs.eq(featureNum).animate({'width':0,'opacity':0},delayClose,'swing'); }
-					else { fs.eq(featureNum).animate({'width':fs.eq(featureNum).data('width'),'opacity':1},delayOpen,'swing'); }
+					else {
+						if (fs.eq(featureNum).width() > 0){
+							fs.eq(featureNum).animate({'width':0,'opacity':0},delayClose,'swing');
+						} else {
+							fs.eq(featureNum).animate({'width':fs.eq(featureNum).data('width'),'opacity':1},delayOpen,'swing');
+						}
+					}
 				});
 			});
 

@@ -1,0 +1,50 @@
+$(function ()
+{
+    $("#SendToDialog").dialog({
+        autoOpen: false, width: 350, modal: true, resizable: false, dialogClass: 'loginClass',
+        buttons: {
+            "küldés": function ()
+            {
+                $("#senderForm").validate();
+                if ($("#senderForm").valid())
+                {
+                    $.post("/Sender/Index", $("#senderForm").serialize(),
+                            function (data)
+                            {
+                                if (data && data == 'OK')
+                                {
+                                    $("#SendToDialog").dialog("close");
+                                }
+                                else if (data && data.startsWith('Hiba:'))
+                                {
+                                    alert(data);
+                                }
+                            });
+                }
+            },
+            "mégse": function () { $(this).dialog("close"); }
+        }
+    });
+});
+function ShowInsertForm(title, nid, content)
+{
+    $("#SendToDialog").html("");
+
+    $.ajax({
+        url: "/Sender/Create/?nid=" + nid + "&content=" + content,
+        type: "POST",
+        data: null,
+        success: function (data)
+        {
+            $("#SendToDialog").html(data);
+            if (content && content == 3)
+            {
+                HideTo();
+            }
+            $.validator.unobtrusive.parse($("#SendToDialog"));
+        }
+    });
+
+    $("#SendToDialog").dialog("option", "title", title).dialog("open");
+    return false;
+}

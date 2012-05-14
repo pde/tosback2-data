@@ -92,19 +92,19 @@
 		        		        
 			}
 			
-			var username = $("#username").attr("value");
-	    	if(username.length > 50){
-	    		 $("#username").parent().parent().find(".error_msg").text("Name cannot be longer than 50 characters.");
-				 $("#username").parent().parent().find(".error_msg").fadeIn('slow');
-				 $("#username").parent().addClass("input_error");			
-				 hasError = true;
-				 if (isFirstField == true) {
-		               	scrollToRequired($("#form_regular_user_primary"));
-		               	isFirstField = false;
-		          }
-			}else{
-				$("#username").parent().removeClass("input_error");
-			}
+//			var username = $("#username").attr("value");
+//	    	if(username.length > 50){
+//	    		 $("#username").parent().parent().find(".error_msg").text("Name cannot be longer than 50 characters.");
+//				 $("#username").parent().parent().find(".error_msg").fadeIn('slow');
+//				 $("#username").parent().addClass("input_error");			
+//				 hasError = true;
+//				 if (isFirstField == true) {
+//		               	scrollToRequired($("#form_regular_user_primary"));
+//		               	isFirstField = false;
+//		          }
+//			}else{
+//				$("#username").parent().removeClass("input_error");
+//			}
 	    	
 	    	var upgradeToDeveloper = $("#upgrade_to_developer").is(':checked');
 	    	if (upgradeToDeveloper) {
@@ -154,7 +154,7 @@
 			
 			var inputBirhdate = $("#birthdate").datepicker('getDate');
 			$("#birthdate").parent().removeClass("input_error");
-	        if (checkDateFormat($("#birthdate").attr("value")) == false) {
+	        if (inputBirhdate != null && checkDateFormat($("#birthdate").attr("value")) == false) {
                 $("#birthdate").parent().parent().find(".error_msg").text("Invalid date format");
                 $("#birthdate").parent().parent().find(".error_msg").fadeIn('slow');
                 $("#birthdate").parent().addClass("input_error");   
@@ -163,7 +163,7 @@
 	               	scrollToRequired($("#form_regular_user_details"));
 	               	isFirstField = false;
 	           	}
-            }else if (isOldEnough(inputBirhdate, 13) == false) {
+            }else if (inputBirhdate != null && isOldEnough(inputBirhdate, 13) == false) {
 	        	  $("#birthdate").parent().parent().find(".error_msg").text("You have to be 13 or older");
 				  $("#birthdate").parent().parent().find(".error_msg").fadeIn('slow');
 				  $("#birthdate").parent().addClass("input_error");
@@ -223,10 +223,13 @@
 	        var zipcodeEl = $("#zipcode");
 	        var zipcode = zipcodeEl.val();
 	        var zipcodeReg = new RegExp();
-	        zipcodeReg.compile("[0-9]");
-	        zipcodeEl.parent().removeClass("input_error");
-	        if(zipcode != '' && !zipcodeReg.test(zipcode)){
-	        	  zipcodeEl.parent().parent().find(".error_msg").text("Zipcode should contain only numbers");
+	        zipcodeReg.compile("[0-9a-zA-Z]+");	        
+	        if(zipcode == '' || !zipcodeReg.test(zipcode)){
+	        	  if (zipcode == ''){
+	        		  zipcodeEl.parent().parent().find(".error_msg").text("Required field.");
+	        	  } else {
+	        		  zipcodeEl.parent().parent().find(".error_msg").text("Zipcode should contains only alphanumeric characters.");	        		  
+	        	  }
 	        	  zipcodeEl.parent().parent().find(".error_msg").fadeIn('slow');
 	        	  zipcodeEl.parent().addClass("input_error");   
 	              hasError = true;
@@ -234,22 +237,46 @@
 	                scrollToRequired(zipcodeEl);
 	                isFirstField = false;
 	              }  
+	        } else {
+	        	 zipcodeEl.parent().removeClass("input_error");
 	        }
 	        
 			
 
-	    	var fullname = $("#fullname").attr("value");
-	    	if(fullname.length > 50){
-	    		 $("#fullname").parent().parent().find(".error_msg").text("Full name cannot be longer than 50 characters.");
-				 $("#fullname").parent().parent().find(".error_msg").fadeIn('slow');
-				 $("#fullname").parent().addClass("input_error");			
+	    	var firstName = $("#firstName").attr("value");
+	    	if(firstName == '' || firstName.length > 50){
+	    		if (firstName == '') {
+	    			$("#firstName").parent().parent().find(".error_msg").text("First name cannot empty.");
+				} else {
+					$("#firstName").parent().parent().find(".error_msg").text("First name cannot be longer than 50 characters.");					
+				}
+				 $("#firstName").parent().parent().find(".error_msg").fadeIn('slow');
+				 $("#firstName").parent().addClass("input_error");			
 				 hasError = true;
 				 if (isFirstField == true) {
-		               	scrollToRequired($("#fullname"));
+		               	scrollToRequired($("#firstName"));
 		               	isFirstField = false;
 		          }
 			}else{
-				$("#fullname").parent().removeClass("input_error");
+				$("#firstName").parent().removeClass("input_error");
+			}
+	    	
+	    	var lastName = $("#lastName").attr("value");
+	    	if(lastName == '' || lastName.length > 50){
+	    		if (lastName == '') {
+	    			$("#lastName").parent().parent().find(".error_msg").text("Last name cannot empty.");
+				} else {
+					$("#lastName").parent().parent().find(".error_msg").text("Last name cannot be longer than 50 characters.");					
+				}
+				 $("#lastName").parent().parent().find(".error_msg").fadeIn('slow');
+				 $("#lastName").parent().addClass("input_error");			
+				 hasError = true;
+				 if (isFirstField == true) {
+		               	scrollToRequired($("#lastName"));
+		               	isFirstField = false;
+		          }
+			}else{
+				$("#lastName").parent().removeClass("input_error");
 			}
 	    	
 	    	

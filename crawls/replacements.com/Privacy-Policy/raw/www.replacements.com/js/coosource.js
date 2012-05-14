@@ -520,8 +520,21 @@ fs+="}\n";
 fs+="</script>\n";
 document.write(fs);
 }
+function runFetchBack(){
+var _57="";
+_57+="<img src='http://pixel.fetchback.com/serve/fb/uat;cat=,name=landing,sid=2103";
+if(location.href.indexOf("webquote/")!=-1){
+var _58=location.href.substring((location.href.indexOf("/webquote/")+10),(location.href.indexOf(".htm")));
+_57+=",browse_products="+_58;
+}
+_57+="' border='0' alt='' width='1' height='1'/>";
+document.write(_57);
+}
 function runEveryPageIncludes(){
 runGAcode();
+if(location.href.indexOf("order/confirm")==-1&&location.href.indexOf("order/order")==-1){
+runFetchBack();
+}
 }
 function runGreyBarIncludes(){
 runAddThis();
@@ -533,8 +546,6 @@ function runPatternIncludes(){
 function runHomePageIncludes(){
 }
 function runRegFormIncludes(){
-}
-function runOrderFormIncludes(){
 }
 function runRegConfIncludes(){
 runEFRegTrack();

@@ -3,16 +3,7 @@
  * Roger Blanton (roger.blanton@mrmworldwide.com)  
 */
 $(document).ready(function(){
-	
-	$('li.webcast a').click(function(e) {
-		e.preventDefault();
-		generateWebcastModal($(this));
-	});
-	
-	$('#webcastClose').live('click' , function(e) {
-		e.preventDefault();
-		$('#iFrameModal').remove();
-	});
+//	$('li.webcast a').attr('href',' http://edge.media-server.com/m/p/5cxac6oz/lan/en');
 	
 	if ( $('body').attr('id') == 'contacts') {
 		$( '.modalPopOutTarget' ).modal({ hideOrRemove : 'hide'});
@@ -26,8 +17,8 @@ $(document).ready(function(){
 	
 	/*Analyst Coverage Table Backgrounds */
 	
-	$('div.analystCoverage tbody tr:odd').addClass('light');
-	$('div.analystCoverage tbody tr:even').addClass('dark');
+	$('div.analystCoverage tbody tr:odd, body#fundamentals table tbody tr:odd').addClass('light');
+	$('div.analystCoverage tbody tr:even, body#fundamentals table tbody tr:even').addClass('dark');
 	//dynamically update width of uppertitle so it matches the shaded container below
 	
 	$(window).resize(function() {
@@ -95,11 +86,11 @@ $(document).ready(function(){
 		//	e.preventDefault();
 		//	$form = document.forms["theForm"];
 		//	console.log('the form' , $form);
-			
-			valid = true;
+		
+				var valid = true;
 
-	        errorMsg = 'Please enter your ';
-	        errorField = [];
+	       var errorMsg = 'Please enter your ';
+	        var errorField = [];
 
 
 	        $(this).find('.blank').removeClass('blank');
@@ -108,8 +99,7 @@ $(document).ready(function(){
 	            if($.trim($(this).val()) == ''){
 	                //console.log($(this).attr('id') + '->'+$(this).next().attr('id'));
 	                $(this).next('span.requiredStar').addClass('blank');
-
-	                errorField[$(this).attr('class').replace('required _', '')] = $("label[for='" + $(this).attr('id') + "']").text()
+	                errorField[$(this).attr('class').replace('required _', '')] = $("label[for='" + $(this).attr('id') + "']").text();
 	                valid = false;
 	            }
 	        });
@@ -117,17 +107,19 @@ $(document).ready(function(){
 	        //console.log($(this).find('input.rsDoc:checked').length);
 	        if($(this).find('input.rsDoc:checked').length == 0){
 	            $(this).find('#rsDocuments').addClass('blank');
-	            errorField[5] = $("#rsDocuments-label").text()
+	            errorField[5] = $(".ui-checkbox").text();
 	            valid = false;
 	        }
+for(i in errorField){
+	console.log('field'+i+':'+errorField[i]);
 
+}
 
 	        if($.trim($(this).find('#email').val()) != '' && !validateEmail($(this).find('#email').val())){
 	            $(this).find('#email').next('span.requiredStar').addClass('blank');
-	            errorField[$(this).find('#email').attr('class').replace('required _', '')] = "Valid " + $("label[for='" + $(this).find('#email').attr('id') + "']").text()
+	            errorField[$(this).find('#email').attr('class').replace('required _', '')] = "Valid " + $("label[for='" + $(this).find('#email').attr('id') + "']").text();
 	            valid = false;
 	        }
-
 
 	        if(valid){
 	            // do nothing just let it submit
@@ -485,11 +477,3 @@ function brandIconStates(){
 	
 }
 
-function generateWebcastModal($src) {
-	
-	var iFrame = '<iframe id="iframeWebcast" height="375" frameborder="0" width="557" allowtransparency="true" src="'+$src.attr('href')+'" />';
-	
-	$('div#content').prepend(iFrame);
-	$('#iframeWebcast').wrap('<div id="iFrameModal">');
-	$('#iFrameModal').prepend('<a href="javascript:void(0);" id="webcastClose">Close</a>');
-}
