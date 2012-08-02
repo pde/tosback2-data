@@ -8,7 +8,7 @@
 	
 	amplify.request.define( "otc.quickitem", "ajax", {
 		dataType: "html",
-		url: "/ui/browse/processRequest.do?requestURI=productQuickView&sku={sku}",
+		url: "/ui/browse/processRequest.do?requestURI=productQuickView&sku={sku}&prodCatId={prodCatId}",
 		cache: 86400000 // 1 day
 	});
 	

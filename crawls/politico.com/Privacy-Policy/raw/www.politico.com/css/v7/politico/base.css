@@ -58,8 +58,9 @@ ul.reporter-alerts-list li span,
 .story-toolbar li.num-comments a, 
 .story-toolbar li.share-email a,
 .story-toolbar li.share-print a,
+.story-toolbar li.share-url a,
 ul.social-content a
-{background: transparent url(http://images.politico.com/global/v5/sprites/global-sprite.gif) no-repeat;}
+{background: transparent url(http://www.politico.com/design/sprites/global-sprite.gif) no-repeat;}
 
 /*New POLITICO Sprite*/
 .captioned-image .hide-caption, .captioned-image .show-caption, .whiteboard-options .toggle-whiteboard, .whiteboard-options .toggle-whiteboard-alt {background: url(http://www.politico.com/design/sprites/p-sprite.png) no-repeat;}
@@ -122,8 +123,8 @@ ul.breadcrumbs li.last {border-right:none;}
 .mid-line span {background: #FFFFFF;  padding-right: 10px; position:relative; top:.5em;}
 
 /*video and slideshow overlays*/
-.media-overlay {position:relative; overflow:hidden; display:block;}
-.media-overlay-button {position:absolute; display:block; width:605px; height:605px; left:0; bottom:0; text-indent:-9999em;}
+.media-overlay {position:relative; overflow:hidden; display:block; z-index:1;}
+.media-overlay-button {position:absolute; display:block; width:605px; height:605px; left:0; bottom:0; text-indent:-9999em; z-index:2;}
 .media-overlay .video {background:transparent url(http://www.politico.com/design/global/video-overlay.png) no-repeat left bottom;}
 .media-overlay .photo {background:transparent url(http://www.politico.com/design/global/photo-overlay.png) no-repeat left bottom;}
 .media-overlay:hover .media-overlay-button {cursor:pointer;}
@@ -347,23 +348,23 @@ button.search-collapse {background:url(http://www.politico.com/design/buttons/se
 .primary-nav li.current {z-index:1500;}
 .primary-nav li a:link, .primary-nav li a:visited {display: block;  color: #FFFFFF; background: #256396 url(http://www.politico.com/design/sprites/main-nav-sprite.png) no-repeat 0 0; line-height:35px;}
 
-
-
-
-
 /*widths*/
-.primary-nav li.nav-2012-live a {width:89px; background-position: -2px 0;}
-.primary-nav li.nav-44 a {width:60px;}
-.primary-nav li.nav-congress a {width:104px;}
-.primary-nav li.nav-blogs a {width:78px;}
-.primary-nav li.nav-arena a {width:75px}
-.primary-nav li.nav-opinion a {width:89px}
-.primary-nav li.nav-policy a {width:80px}
-.primary-nav li.nav-video a {width:73px}
-.primary-nav li.nav-headlines a {width:90px;}
-.primary-nav li.nav-photos a {width:90px;}
-.primary-nav li.nav-bookshelf a {width:115px;}
+.primary-nav li.nav-2012 a {width:60px; background-position: -2px 0;}
+.primary-nav li.nav-44 a {width:58px;}
+.primary-nav li.nav-congress a {width:100px;}
+.primary-nav li.nav-blogs a {width:74px;}
+.primary-nav li.nav-arena a {width:70px;}
+.primary-nav li.nav-opinion a {width:80px;}
+.primary-nav li.nav-policy a {width:76px;}
+.primary-nav li.nav-video a {width:66px;}
+.primary-nav li.nav-photos a {width:80px;}
+.primary-nav li.nav-bookshelf a {width:113px;}
+.primary-nav li.nav-events a {width:76px;}
 .primary-nav li.nav-politico-pro a:link, .primary-nav li.nav-politico-pro a:visited {width:146px; text-indent:-9999em; background-position:-594px 0; overflow:hidden;}
+
+/*old widths (removed nav items; keeping styles to prevent flattened pages from breaking)*/
+.primary-nav li.nav-2012-live a {width:136px; background-position: -2px 0;} /*Leave as is, or use to house extra space*/
+.primary-nav li.nav-headlines a {width:80px;} /*Must be same width as .nav-photos, as it replaced .nav-headlines.*/
 
 /*current page*/
 .primary-nav li.current a:link, .primary-nav li.current a:visited {border-bottom: 1px solid #aa0101; background-position:-400px 0; margin-bottom:-1px;}
@@ -402,12 +403,13 @@ li.nav-policy .main-nav-sub {width:330px;}
 .announcement img {display:block;}
 .ie8 .announcement img {display:inline-block;}
 
-.p-breaking-news {background:#c90f0f url(http://www.politico.com/design/announcements/breaking-news-bg.png) repeat-x left bottom; font-size: 1.43em;color: #fff; border:1px solid #7c1e1e; border-bottom: 1px solid #6a0000; border-top:1px solid #883333; line-height:1;text-shadow: 0 2px 0 rgba(0,0,0,.5);
+.p-breaking-news {background:#c90f0f url(http://www.politico.com/design/announcements/breaking-news-bg.png) repeat-x left bottom; font-size:1.43em; color: #fff; border:1px solid #7c1e1e; border-bottom: 1px solid #6a0000; border-top:1px solid #883333; line-height:1;text-shadow: 0 2px 0 rgba(0,0,0,.5);
 	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 	   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 	     -o-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 	        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
+.p-breaking-news.urgent {font-size:2.25em; line-height: 1.5}
 .p-breaking-news a:link, .p-breaking-news a:visited {color: #fff; display:block; width:100%; height:100%; background: url(http://www.politico.com/design/announcements/breaking-news-arrow.png) no-repeat 98% center;text-shadow: 0 2px 3px rgba(0,0,0,.5); 
 	-webkit-transition: all 0.2s ease-in-out; 
 	   -moz-transition: all 0.2s ease-in-out; 
@@ -419,7 +421,6 @@ li.nav-policy .main-nav-sub {width:330px;}
 .p-breaking-news a:hover {text-decoration:none; background-position: 98.5% center; text-shadow: 0 2px 3px rgba(0,0,0,.9); color: #fff;}
 .ie6 .p-breaking-news a:hover {text-decoration:underline;}
 .p-breaking-news p {padding: 10px; font-weight:bold;}
-.non-urgent {font-size:1.14em;}
 
 .feature-promo-banner {border-top:1px solid #fff; margin-top:-6px; position:relative; z-index:500;}
 .has-section-masthead .feature-promo-banner {margin-bottom:-5px;}
@@ -509,6 +510,9 @@ li.nav-policy .main-nav-sub {width:330px;}
 .photo-slideshow-nav a:hover {text-decoration:none; color:#fff;}
 .photo-slideshow-nav li.current a:link, .photo-slideshow-nav ul li.current a:visited {cursor:default; color:#fff;}
 .photo-slideshow-nav li.current a:hover {text-decoration:none;}
+
+.p-content .captioned-image {margin-bottom:1em;}
+.p-content .captioned-image img {margin-bottom:0;}
 
 /*=======================================================================================
 	SPLIT COLUMNS
@@ -694,10 +698,41 @@ h2.special-sectionNoImage {width: 605px; height:0px; text-indent: -9999em;}
 .story-toolbar .toolbar-main li {float:left; display:inline; margin-right:10px; padding: 3px 0;}
 .story-toolbar .toolbar-secondary {float:right; display:inline; }
 .story-toolbar .toolbar-secondary li {float:left; display:inline; margin-left:15px;}
+.story-toolbar .toolbar-secondary li a {line-height:20px; display:block;}
 .story-toolbar li.social-sharing {position:relative; top:-3px}
 .story-toolbar li.num-comments a{ color: #171717;  background-position: 0 -609px; padding-left:20px; }
-.story-toolbar li.share-email a{background-position: 0 -482px; padding-left:20px; }
-.story-toolbar li.share-print a{background-position: 0 -545px; padding-left:22px; }
+.story-toolbar li.share-email a{background-position: 0 -480px; padding-left:20px; }
+.story-toolbar li.share-print a{background-position: 0 -543px; padding-left:22px; }
+
+/*Short URL*/
+
+.story-toolbar li.share-url {position:relative;}
+.story-toolbar li.share-url a {background-position: 0 -958px; padding-left:18px;}
+
+.story-toolbar li.share-url form {position:absolute; left:-9999px; top:-60px; background:#666 url(http://www.politico.com/design/story/short-url-tooltip.gif) repeat-x left bottom; border:1px solid #333; padding:5px 10px; width:220px; opacity:0;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    -webkit-box-shadow:0 2px 5px rgba(0,0,0,.25);
+    -moz-box-shadow:0 2px 5px rgba(0,0,0,.25);
+    box-shadow:0 2px 5px rgba(0,0,0,.25);
+    -webkit-transition:top 0.4s ease, opacity 0.4s ease;
+    -moz-transition:top 0.4s ease, opacity 0.4s ease;
+    transition:top 0.4s ease, opacity 0.4s ease;
+	-webkit-backface-visibility:hidden;
+}
+.story-toolbar li.share-url-visible form {left:-115px; top:-50px; opacity:1;}
+.story-toolbar li.share-url form:after {content:''; display:block; width:18px; height:10px; position:absolute; left:50%; bottom:-10px; margin-left:-9px; background:transparent url(http://www.politico.com/design/story/short-url-arrow.png) no-repeat left top;}
+.story-toolbar li.share-url label, .story-toolbar li.share-url input {float:left;}
+.story-toolbar li.share-url label {margin-right:10px; color:#fff; font-weight:bold; text-shadow:0 1px 0 rgba(0,0,0,.75); line-height:25px;}
+.story-toolbar li.share-url input {border:1px solid #333; font:normal 1em 'Helvetica Neue', Helvetica, Arial, sans-serif; width:136px; padding:0 7px; height:25px; line-height:25px;}
+.story-toolbar li.share-url button {float:right; display:block; width:16px; height:16px; text-indent:-9999em; background:transparent url(http://www.politico.com/design/story/short-url-close.png) no-repeat left top; margin-top:5px; opacity:.5;
+    -webkit-transition:all 0.2s ease;
+    -moz-transition:all 0.2s ease;
+    transition:all 0.2s ease;
+	-webkit-backface-visibility:hidden;
+}
+.story-toolbar li.share-url button:hover {opacity:1;}
 
 /*Override FB opacity hover thing*/
 .addthis_button_facebook_like  {opacity:1 !important;}

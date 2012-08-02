@@ -73,10 +73,13 @@ function renderGNBottom() {
 				 + '</div>'
 				 + '<div class="w346 last dotSites"> <span class="dotCom"><a href="http://www.att.com/"><img src="//www.att.com/images/global/footer/logoATTdotcom.png" alt="att.com. Shop. Service. Support" /></a></span> <span class="dotNet"><a href="http://www.att.net/"><img src="//www.att.com/images/global/footer/logoATTdotnet.png"  alt="att.net. E-mail, News, Weather &amp; More" /></a></span> </div>'
 				 + '<div class="clear"></div>'
-				 + '<div class="logos"> <a href="http://www.ctia.org/" class="firstLogo"><img src="//www.att.com/homepage/Common/indc/homepage/images/footer/CTIA.gif" alt="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org" /></a> <a href="https://www.bbb.org/online/consumer/cks.aspx?id=110020911221" target="_blank" ><img src="//www.att.com/homepage/Common/indc/homepage/images/footer/BBB.gif" alt="Click to verify BBB accreditation and to see a BBB report." title="Click to verify BBB accreditation and to see a BBB report."/></a> <a href="http://clicktoverify.truste.com/pvr.php?page=validate&amp;companyName=AT%26T&amp;sealid=101" target="_blank"><img src="//www.att.com/homepage/Common/indc/homepage/images/footer/Truste.gif" alt="This site is certified by TRUSTe" title="This site is certified by TRUSTe" /></a> <a href="http://www.yellowpages.com" target="_blank"><img src="//www.att.com/homepage/Common/indc/homepage/images/footer/ypcom.gif" alt="YP.com - the new yellowpages.com" title="YP.com - the new yellowpages.com" /> </a> <a href="http://www.realpageslive.com" target="_blank"><img src="//www.att.com/homepage/Common/indc/homepage/images/footer/DWYPgs.gif" alt="Digital White &amp; Yellow Pages" title="Digital White &amp; Yellow Pages" class="yellowpages" /></a> <a href="http://www.att.net/teamusa"><img src="//www.att.com/homepage/Common/indc/homepage/images/footer/usa_sponsor.gif" alt="Proud Sponsor of the U.S. Olympic Team" /></a> </div>'
+				 + '<div class="logos"> <a href="http://www.ctia.org/" class="firstLogo"><img src="//www.att.com/media/att/2011/global/nav/en_US/logoCTIA.png" alt="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org" /></a> <a href="https://www.bbb.org/online/consumer/cks.aspx?id=110020911221" target="_blank" ><img src="//www.att.com/media/att/2011/global/nav/en_US/logoBBB.png" alt="Click to verify BBB accreditation and to see a BBB report." title="Click to verify BBB accreditation and to see a BBB report."/></a> <a href="http://clicktoverify.truste.com/pvr.php?page=validate&companyName=AT%26T&sealid=101" target="_blank"><img src="//www.att.com/media/att/2011/global/nav/en_US/logoTRUSTe.png" alt="This site is certified by TRUSTe" title="This site is certified by TRUSTe" /></a> <a href="http://www.yellowpages.com" target="_blank"><img src="//www.att.com/media/att/2011/global/nav/en_US/logoYP.png" alt="YP.com - the new yellowpages.com" title="YP.com - the new yellowpages.com" /></a> <a href="http://www.realpageslive.com" target="_blank"><img src="//www.att.com/media/att/2011/global/nav/en_US/logoDigitalWhiteYellowPages.png" alt="Digital White &amp; Yellow Pages" title="Digital White &amp; Yellow Pages" class="yellowpages" /></a> <a href="http://www.att.net/teamusa"><img src="//www.att.com/media/att/2011/global/nav/en_US/logoOlympics.png" alt="Proud Sponsor of the U.S. Olympic Team" /></a> </div>'
 				 + '</div>'
 				 + '</div>');
 }
+
+
+
 function renderPrimaryNav() {
 	
 	if (thomson != '-1') { 
@@ -126,7 +129,8 @@ function renderPrimaryNav() {
  	document.write('</li>'
 				 + '<li');
 				 if (pid == 'consumerblog') { document.write(' class="selected"'); }
- 	document.write('><a href="http://blogs.att.net/consumerblog" title="Consumer Blog" id="au_consumer_blog">Consumer Blog</a></li>'
+	document.write('><a href="http://blogs.att.net/consumerblog" title="Consumer Blog" id="au_consumer_blog">Consumer Blog</a></li>'
+				 + '<li><a href="http://networkingexchangeblog.att.com/ " title="Networking Exchange Business Blog" id="au_network_blog">Networking Exchange Business Blog</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=11366" title="Serving Customers">Serving Customers</a></li>'
 				 + '<li');
 				 if (pid == 'CSRBrochure10') { document.write(' class="selected"'); }

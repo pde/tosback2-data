@@ -1,5 +1,6 @@
 /*
-
+State of California
+Version 2012.06.27
 */
 
 
@@ -93,7 +94,6 @@ initNavigation = function() {
 			levelOneLink.innerHTML = "";
 			newSpanNode.innerHTML = tempContent;
 			levelOneLink.appendChild(newSpanNode);
-			//alert(node.querySelector(".find_width").offsetWidth);
 			navItemWidths[i] = node.querySelector(".find_width").offsetWidth;
 			navTotalWidth += navItemWidths[i];
 
@@ -114,7 +114,6 @@ initNavigation = function() {
 					ev.stopPropagation();
 					counterC++;
 
-					//alert(this.querySelector(".nav_panel").className);
 					var navigPanel = this.parentNode.querySelector(".nav_panel");
 
 					if ((navigPanel && navigPanel.className.match(/mo_display/)) || (this.offsetWidth == navRoot.offsetWidth)) {// is panel already open, or mobile layout
@@ -218,7 +217,6 @@ initNavigation = function() {
 		tallyPreviousWidths = 0;
 		for (var i=0; i<arrayNavLI.length; i++) { // Loop over main list items
 			node = arrayNavLI[i];
-			//node.style.width = (navItemWidths[i] / navTotalWidth) * 100 + "%";
 
 			dynSSRules += " #nav_list > li:nth-child(" + (i+1) + ") {width:" + (navItemWidths[i] / navTotalWidth * 100) + "%}";
 
@@ -233,6 +231,7 @@ initNavigation = function() {
 			tallyPreviousWidths += navItemWidths[i];
 
 		}
+
 		document.getElementsByTagName('head')[0].appendChild(dynStylesheet);
 		if (dynStylesheet.styleSheet) { // IE
 			dynStylesheet.styleSheet.cssText = dynSSRules;
@@ -241,6 +240,23 @@ initNavigation = function() {
 			dynStylesheet.appendChild(dynSSTextNode);
 		}
 
+		// Create styles for phone nav
+		dynStylesheet = document.createElement('style');
+		dynStylesheet.type="text/css";
+		dynStylesheet.media="";
+		dynSSRules = "#navigation.phone_show_nav {	height:" + (arrayNavLI[0].offsetHeight + 2) * (arrayNavLI.length-1) + "px;}";
+
+		if (navigator.userAgent.toLowerCase().indexOf('chrome') > 0) {
+			dynSSRules += " #navigation {-webkit-transition: height 1s;}"; // works in chrome but not safari
+		}
+
+		document.getElementsByTagName('head')[0].appendChild(dynStylesheet);
+		if (dynStylesheet.styleSheet) { // IE
+			dynStylesheet.styleSheet.cssText = dynSSRules;
+		} else { // proper browsers
+			dynSSTextNode = document.createTextNode(dynSSRules);
+			dynStylesheet.appendChild(dynSSTextNode);
+		}
 	}
 
 }
@@ -249,7 +265,6 @@ function closeAllPanels() {
 	var arrayPanel = document.getElementById("nav_list").querySelectorAll(".mo_display, .mo_opacity");
 	for (var counterA = 0; counterA < arrayPanel.length; counterA++) {
 		arrayPanel[counterA].className = arrayPanel[counterA].className.replace(/mo_opacity/g, "");
-		//arrayPanel[counterA].outTimerID = setTimeout(function(){arrayPanel[counterA].className = arrayPanel[counterA].className.replace(/mo_display/g, "");},200);
 		arrayPanel[counterA].outTimerID = setTimeout(removeDisplay,200,arrayPanel[counterA]);
 	}
 }
@@ -451,12 +466,10 @@ var CAGOVLocation = {
 	processXML:function() {
 		var objTempLocation = new this.XML2Object();
 		//document.domain = "ca.gov";
-		//alert(objTempLocation.cty);
 		if (!objTempLocation.cty || objTempLocation.error > 0) {
 			this.closePopup();
 		} else {
 			this.objLocation = objTempLocation;
-			//alert(this.objLocation.cty);
 			if (this.tempInputType=="zip") {
 				// save cookies & close popup
 				this.saveGeo();
@@ -477,7 +490,6 @@ var CAGOVLocation = {
 			if (tmpElement != null)
 				eval("this." + properties[i] + "=tmpElement.getAttribute('data')");
 		}
-		//alert(this.cty);
 	},
 	
 	submitZip:function() {
@@ -667,11 +679,19 @@ function breadcrumbs()
 	}
 }
 
-function initPage() {
-//	if (document.querySelector(".content_right_column")) {
-//		document.getElementById("img_ribbon").style.backgroundImage = "/images/template2012/ribbon_home_two_column.png";
-//	}
+function toggle_menu() {
+	var navContainer = document.getElementById("navigation");
 
+	if (navContainer.className == "") {
+		// apply class "phone_show_nav" to nav
+		navContainer.className = "phone_show_nav";
+	} else {
+		// remove class
+		navContainer.className = "";
+	}
+}
+
+function initPage() {
 	initNavigation();
 	headerPhoto();
 	CAGOVLocation.initLocation();

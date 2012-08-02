@@ -53,7 +53,7 @@ function displayEditZipCodePIPError(zipCode, storeId) {
      
 ///////////////////////////////////////////////////////////
 function psCheckAvailabilityCallback(text) { 	 
-	document.getElementById('tab-parts_services').innerHTML = text; 
+
 	// Start - WCS7UP - Code Merge_Apr20
 	//Check if the div tag is present, else hide view parts button.
 	if(text != null && text.indexOf('hdr-appliance-required-parts') > 0)
@@ -110,7 +110,7 @@ function psCheckAvailability (form) {
 }
  
  if (zipCodeValidator(zipCode)) {  
-   document.getElementById('tab-parts_services').innerHTML = '<img src=\"/static/images/pleasewait_3a.gif\" width=\"335\" height=\"65\" />';
+ 
  
    //set up to call ajax
    var url = '/webapp/wcs/stores/servlet/AOLPIPRelatedServicesLookup?storeId='+storeId+'&productId='+productId+'&zipCode='+zipCode+'&modelNumber='+modelNumber+'&vendorNumber='+vendorNumber+'&classNumber='+classNumber+'&subClassNumber='+subClassNumber;
@@ -153,7 +153,7 @@ function doubleCheckAvailability (form, src) {
  
  
  if (zipCodeValidator(zipCode)) {  
-	document.getElementById('tab-parts_services').innerHTML = '<img src=\"/static/images/pleasewait_3a.gif\" width=\"335\" height=\"65\" />';
+	
 	//document.getElementById('pip-appliance-deliveryb1').innerHTML = '<img style=\"float:left\" src=\"/static/images/layout/animationloader-1.png\" width=\"70\" height=\"10\" />';
  
    // initialize our working vars
@@ -210,7 +210,7 @@ function updatePIPElements() {
 	//if(availCheckDone && partsServicesCheckDone) {
 	if(partsServicesCheckDone) {
 	
-		document.getElementById('tab-parts_services').innerHTML = partsServicesCheckResponseText; 
+		
 		//document.getElementById('appliance_fragment').innerHTML = availCheckResponseText;
 	}
 	else {
@@ -218,20 +218,7 @@ function updatePIPElements() {
 		if(numPolls <= maxPolls) {
 			setTimeout('updatePIPElements()', 1000);
 		}
-		else {
-			if(partsServicesCheckDone) {
-				document.getElementbYId('tab-parts_services').innerHTML = partsServicesCheckResponseText;
-			}
-			else {
-				var text = '<h5 class="tab-alt-heading"><a name="parts_services"><fmt:message key="ITEM_DISP_PARTS_SERVICES_TAB_TITLE" bundle="${storeText}" /></a></h5>';
-				text +='    <p class="pip-appliance-tab-msg">';
-				text +='					An error occurred retrieving parts and services.';
-				text +='	</p>';
-				document.getElementById('tab-parts_services').innerHTML = text;
-			}
 
-
-		}
 	}
    // Added for Requirement# THD_WCS_007 - Add Omniture tracking on the Availability Check Page - Start
    var APP_AVAI_CHECK_VAL = '> appliance availability check';   
@@ -442,11 +429,10 @@ function displayCheckAvailabilityForm()
 		text +='					<div style="float: left; display: inline; margin-left: 20px; width: 69px; margin-top: 1px;"><img style="cursor: pointer;cursor: hand;" src="/static/images/btn_check_green.gif" width="69" height="20" name="Check" alt="Check" onclick="doubleCheckAvailability(document.OrderItemAddForm);"/></div>';
 		text +='					<div class="clr"><!--  --></div>';
 		text +='				</div>';
-		text +='				<div class="pip-appliance-area-msg" style="float:left;">Enter Delivery Zip Code to learn about Options for this item. </div>'; //defect #16229: added float left for temp fix
+		text +='				<div class="pip-appliance-area-msg" style="float:left;">Enter Delivery Zip Code to learn about Options for this item. </div>';
 	}
-	if(isMajorAppliance){
-		document.getElementById('tab-parts_services').innerHTML = text; 
-	}
+
+
 }
 
 

@@ -1,0 +1,152 @@
+﻿// ----------------------------------------------
+// File:		SearchValidationService.js
+// Author:		Nathan Derksen
+// Description:	A class that holds the available service methods, along with response handlers.
+// Example:
+// SearchValidationService.getInstance().isSearchEmpty();
+// ----------------------------------------------
+
+SearchValidationService_selectedFilters = "";
+
+// ----------------------------------------------
+// Function:	SearchService
+// Author:		Nathan Derksen
+// Description:	Base class
+// Inputs:		<none>
+// Returns:		<nothing>
+// ----------------------------------------------
+function SearchValidationService()
+{
+}
+
+// ----------------------------------------------
+// Function:	SearchValidationService.isSearchEmpty
+// Author:		Nathan Derksen
+// Description:	Calls the service to find if the given search is an empty search or not
+// Inputs:		<Object> searchCriteria - An object of properties to search on
+//				<Number> startIndex - The zero-based index of which row to start at in the total results
+//				<Number> maxResults - The maximum number of results to return
+// Returns:		<nothing>
+// ----------------------------------------------
+SearchValidationService.prototype.isSearchEmpty = function(searchTerm, searchCriteria)
+{
+	try
+	{
+		SearchValidationService_selectedFilters = "";
+		if (searchCriteria != null && typeof (searchCriteria) != "undefined")
+		{
+			var criteriaNames = ["categories", "collections", "gemstones", "materials", "priceRanges", "preciousMetals", "pearlTypes", "gender", "dial", "movementType", "braceletStrap"];
+
+			for (var i = 0; i < criteriaNames.length; i++)
+			{
+				if (typeof (searchCriteria[criteriaNames[i]]) == "undefined")
+				{
+					searchCriteria[criteriaNames[i]] = 0;
+				}
+			}
+
+			var categories = Number(searchCriteria["categories"]);
+			var collections = Number(searchCriteria["collections"]);
+			var gemstones = Number(searchCriteria["gemstones"]);
+			var materials = Number(searchCriteria["materials"]);
+			var priceRanges = Number(searchCriteria["priceRanges"]);
+			var preciousMetals = Number(searchCriteria["preciousMetals"]);
+			var pearlTypes = Number(searchCriteria["pearlTypes"]);
+			var gender = Number(searchCriteria["gender"]);
+			var dial = Number(searchCriteria["dial"]);
+			var movementType = Number(searchCriteria["movementType"]);
+			var braceletStrap = Number(searchCriteria["braceletStrap"]);
+
+			var optionArray = [];
+			for (var option in searchCriteria)
+			{
+				if (Number(searchCriteria[option]) > 0)
+				{
+					optionArray.push(searchCriteria[option]);
+				}
+			}
+
+			if (searchTerm != "" || (searchTerm == "" &&
+				(categories > 0) || (gemstones > 0) ||
+				(materials > 0) || (priceRanges > 0) ||
+				(preciousMetals > 0) || (pearlTypes > 0) ||
+				(gender > 0) || (dial > 0) ||
+				(movementType > 0) || (braceletStrap > 0) ||
+				(collections > 0)
+				)
+			)
+			{
+				SearchValidationService_selectedFilters = optionArray.join("+");
+				generateEvent("onSearchCheckInitiated");
+				PageMethods.GetCategoriesXmlForAdvancedSearch(searchTerm, collections, categories, gemstones, materials, priceRanges, preciousMetals, pearlTypes, gender, dial, movementType, braceletStrap, this.onResult, this.onError);
+			}
+		}
+		else if (searchTerm != "")
+		{
+			generateEvent("onSearchCheckInitiated");
+			PageMethods.GetCategoriesXmlForSearch(searchTerm, this.onResult, this.onError);
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+};
+
+// ----------------------------------------------
+// Function:	SearchValidationService.onResult
+// Author:		Nathan Derksen
+// Description:	Callback from the successful completion of the service call
+// Inputs:		<XMLElement> result - Handle to the results xml object
+// Returns:		<nothing>
+// ----------------------------------------------
+SearchValidationService.prototype.onResult = function(result)
+{
+	try
+	{
+		if (result)
+		{
+			var resultElements = result.documentElement;
+			var isEmpty = SearchFactory.getIsEmptyFromXML(resultElements);
+			var errorMessage = SearchFactory.getErrorMessageFromXML(resultElements);
+			var searchCriteria = SearchFactory.getSearchParamsFromXML(resultElements);
+			var redirect = SearchFactory.getRedirectFromXML(resultElements);
+			var didYouMean = SearchFactory.getDidYouMeanFromXML(resultElements);
+			var itemSku = SearchFactory.getItemSkuFromXML(resultElements);
+
+			generateEvent("onSearchCheckComplete", isEmpty, errorMessage, searchCriteria, redirect, didYouMean.keyword, didYouMean.qs, itemSku, SearchValidationService_selectedFilters);
+		}
+		else
+		{
+			var error = new Object();
+			error.name = "Service 'SearchValidationService' returned with no results";
+			error.message = error.name;
+			error.fileName = "SearchValidationService.js";
+			error.lineNumber = "";
+			Debug.error(error);
+		}
+	}
+	catch (err)
+	{
+		Debug.error(err);
+	}
+};
+
+// ----------------------------------------------
+// Function:	SearchValidationService.onError
+// Author:		Nathan Derksen
+// Description:	Callback from the unsuccessful completion of the service call
+// Inputs:		<XMLElement> result - Handle to the results xml object
+// Returns:		<nothing>
+// ----------------------------------------------
+SearchValidationService.prototype.onError = function(result)
+{
+	var error = new Object();
+	error.name = "Service 'SearchValidationService' returned with an error";
+	error.message = result.get_message();
+	error.fileName = "SearchValidationService.js";
+	error.lineNumber = "";
+	Debug.error(error);
+	if (error.message.indexOf("Authentication") >= 0)
+	    window.location = rootUrl + "/Default.aspx";
+};

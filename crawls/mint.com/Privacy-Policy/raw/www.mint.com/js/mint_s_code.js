@@ -1,14 +1,12 @@
 /*Mint Analytics Code Base*/
 if ("undefined" == typeof(wa)) {wa = new Object();}
-wa.lastUpdate="20120214";
-/* Last update: URS update for Google encrypted | check for Mint object outside of product (bcj|2/14/2012) */
-
-(document.getElementById('buildNumber')) ? wa.buildNum=document.getElementById('buildNumber').innerHTML.toLowerCase() : wa.buildNum="build undefined";
+wa.lastUpdate="20120719";
+/* Last update: update internalDomains; remove wa.buildNum | (bcj|Evolytics, LLC) */
 
 /************************** START CONFIG SECTION **************************/
 wa.reportSuiteQA="intuitmintqa"
 wa.reportSuiteProd="intuitmintprod"
-wa.internalDomains="data.mint.com,www.mint.com,wwws.mint.com,forums.mint.com,maintenance.mint.com,blog.mint.com,satisfaction.mint.com,getsatisfaction.com,fool.mint.com,answers.mint.com,stage-mini-www.mint.com,stage-www.mint.com,stage-mini.mint.com,stage.mint.com";  //comma seperate list
+wa.internalDomains="safe-secure.mint.com,lp.mint.com,free.mint.com,data.mint.com,www.mint.com,wwws.mint.com,forums.mint.com,maintenance.mint.com,blog.mint.com,satisfaction.mint.com,getsatisfaction.com,fool.mint.com,answers.mint.com,stage-mini-www.mint.com,stage-www.mint.com,stage-mini.mint.com,stage.mint.com";  //comma seperate list
 wa.defaultSiteName="mint";
 wa.defaultSiteGroup="mktg";
 wa.bu=""; //optional if site aligns with larger business unit
@@ -17,7 +15,7 @@ wa.bu=""; //optional if site aligns with larger business unit
 //change s_account to prod if hostname begins with one of the production hosts listed in wa.internalDomains
 	var hostname = window.location.hostname;
 	wa.hostname=hostname;
-	wa.isHostProd = wa.hostname.search(/^data.mint.com|^www.mint.com|^wwws.mint.com|^forums.mint.com|^maintenance.mint.com|^blog.mint.com|^satisfaction.mint.com|^getsatisfaction.com|^fool.mint.com|^answers.mint.com/);
+	wa.isHostProd = wa.hostname.search(/^data.mint.com|^www.mint.com|^wwws.mint.com|^forums.mint.com|^maintenance.mint.com|^blog.mint.com|^satisfaction.mint.com|^getsatisfaction.com|^fool.mint.com|^answers.mint.com|^safe.secure-mint.com/);
 	if (wa.isHostProd == 0) { s_account=wa.reportSuiteProd; } else { s_account=wa.reportSuiteQA; }
 	var s=s_gi(s_account)
 	
@@ -216,35 +214,49 @@ wa.isTrackable=function(pv_guid,pv_regEx1, pv_regEx2){
     theGuidPos1=theGuid.substr(0,1);    	//grab 1st digit
     theGuidPos2=theGuid.substr(1,1);    	//grab 2nd digit
 
-    if(theGuidPos1.search(pv_regEx1)>-1) {	//digit must equal 0 or 1 >> /[0-1]/
-        if(theGuidPos2.search(pv_regEx2)>-1) { rtn_isTrackable=true; } //digit must be 0-9, or A-C >> /[0-9]|[A-C]/
+    if(theGuidPos1.search(pv_regEx1)>-1) {	//digit must exist in pv_regEx1 range
+        if(theGuidPos2.search(pv_regEx2)>-1) { rtn_isTrackable=true; } //digit must exist in pv_regEx2 range
 		else { rtn_isTrackable=false; }
     } else { rtn_isTrackable=false; }
 	
     return(rtn_isTrackable);
 }
 
-if(wa.isHostProd>-1) { //sample impressions in production...
+if(wa.isHostProd>-1) { //sample in production...
     if(wa.siteGroup=="app") { //sample impression tracking (10%) in-product
-		wa.trackImpressions=wa.isTrackable(wa.userGuid,/[0-1]/,/[0-9]|[A-C]/); //return [true|false]
-			//first digit must equal 0 or 1 >> /[0-1]/
-			//second digit must be 0-9, or A-C >> /[0-9]|[A-C]/
-		(wa.trackImpressions) ? s.prop62="impr(10pct)":s.prop62="";
-		(s.prop62) ? s.prop63='D=pageName+"--"+c62':s.prop63="";
+		//impression tracking
+            wa.trackImpressions=wa.isTrackable(wa.userGuid,/[0-1]/,/[0-5]/); //return [true|false]
+                //5%: first digit must equal 0 or 1 >> /[0-1]/ || second digit must be 0-5 >> /[0-5]/
+            (wa.trackImpressions) ? s.prop62="impr(5pct)":s.prop62="";
+            (s.prop62) ? s.prop63='D=pageName+"--"+c62':s.prop63="";
+        
+        //overview page link tracking
+            wa.sampleLinkTrack=wa.isTrackable(wa.userGuid,/[2-3]/,/[0-5]/); //return [true|false]
+                //5%: first digit must equal 0 or 1 >> /[2-3]/ || second digit must be 0-5 >> /[0-5]/
+            (wa.sampleLinkTrack) ? s.prop62="link(5pct)":s.prop62="";
+            (s.prop62) ? s.prop63='D=pageName+"--"+c62':s.prop63="";
 	} else { //track 100% of impressions outside the product (public/mktg sites)
-		wa.trackImpressions=true;
+		wa.trackImpressions=true;   //impression sampling
+        wa.sampleLinkTrack=true; //overview page link sampling
 		s.prop62=s.prop63="";
 	}
-} else { //track ALL (100%) impressions in dev/qa
-    wa.trackImpressions=wa.isTrackable(wa.userGuid,/[0-1]/,/[0-9]|[A-C]/); //would user be tracked in production?
-	s.prop62="impr(10pct) ["+wa.trackImpressions+"]";
-	(s.prop62) ? s.prop63='D=pageName+"--"+c62':s.prop63="";
-	wa.trackImpressions=true; //track ALL impressions, regardless of what wa.isTrackable() call above returns
+} else { //track ALL (100%) in dev/qa
+    //impression tracking
+        wa.trackImpressions=wa.isTrackable(wa.userGuid,/[0-1]/,/[0-5]/); //would user be tracked in production?
+        s.prop62="impr(5pct) ["+wa.trackImpressions+"]";
+        (s.prop62) ? s.prop63='D=pageName+"--"+c62':s.prop63="";
+        wa.trackImpressions=true; //track ALL impressions in dev/qa
+        
+    //overview page link tracking
+        wa.sampleLinkTrack=wa.isTrackable(wa.userGuid,/[2-3]/,/[0-5]/); //return [true|false]
+        s.prop62="link(5pct) ["+wa.sampleLinkTrack+"]";
+        (s.prop62) ? s.prop63='D=pageName+"--"+c62':s.prop63="";
+        wa.sampleLinkTrack=true; //track ALL overview page links in dev/qa
 }
 
 /***********  END CALL SAMPLING LOGIC  ***********/
   
-  
+
  
  
   
@@ -275,7 +287,6 @@ s.eVar16=s.eVar19="D=g";  //entry URL
 if(!isVarEmpty(wa.testCell)) { wa.testCell=wa.testCell.toLowerCase(); s.eVar47=wa.testCell; } //test&target
 
 if (isInternalDomain == -1) {
-	
 	s.eVar17="D=r"; //referring url/visit
 	s.eVar18="D=r"; //referring url/visitor
 } else  {
@@ -452,8 +463,11 @@ function s_doPlugins(s) {
 		s.campaign = cid;
 		s.campaign=s.getValOnce(s.campaign,'s_cmp',0);
 		
-		if(!isVarEmpty(s.campaign)) { s.prop25=s.eVar25="D=v0"; }
-		s.prop42=waCrossVisitParticipation('wa_cpm',cid,7,'>',180);if(!isVarEmpty(s.prop42)) { s.eVar42="D=c42"; }
+		//set var to prevent replacing cid with referring domain (cleanDomain) on calls where page does not reload
+		if(s.campaign==""&&cid==getCookie("s_cmp")){ var isExistingCampaign=true; } 
+		
+		(!isVarEmpty(s.campaign)) ? s.prop25=s.eVar25="D=v0" : s.prop25=s.eVar25="";
+		s.prop42=waCrossVisitParticipation('wa_cpm',cid,7,'>',180); (!isVarEmpty(s.prop42)) ? s.eVar42="D=c42" : s.eVar42="";
 	}
 
 	/*
@@ -464,8 +478,11 @@ function s_doPlugins(s) {
 	 var ppcdomain="";
      var natkw="";
      if (s.campaign) {ursvar = s.campaign}
-     if (s.campaign==""&&cleanDomain == "") {ursvar = ""; }
-     else		
+	if(isExistingCampaign) { 
+		ursvar=s.eVar28=s.eVar29=s.eVar30=s.eVar42="";
+	}
+	else if (s.campaign==""&&cleanDomain == "") {ursvar = ""; }
+	else		
          { orgDomains = new Array ("bing.","q","a9.","*,q","abacho.","q","ah-ha.","q","alexa.","q","allesklar.","wo,words","alltheweb.","q,query","altavista.","q","aol.","query","arianna.","query,b1","asiaco.","query,qry","ask.","q,ask","atlas.","q","austronaut.","begriff,suche","auyantepui.","clave","bluewin.","qry,q","centrum.","q","club-internet.","q","dino-online.","query","dir.com.","req","dmoz.","search","dogpile.","q,qkw","eniro.","q","euroseek.","string,query","exalead.","q","excite.","search,s,qkw","findlink.","key","findwhat.","mt","fireball.","q","freeserve.","q","gigablast.","q","go2net.","general","goeureka.","key","google.","q,as_q,as_epq,as_oq","googlesyndication.","url","greekspider.","keywords","hotbot.","query,mt","ilor.","q","iltrovatore.","q","index.nana.co.il.","q","infoseek.","qt,q","infospace.","qkw","intuitsearch.","q","iwon.","searchfor","ixquick.","query","jubii.","query,soegeord","jyxo.","s","kanoodle.","query","kataweb.","q","kvasir.","q","live.","q","looksmart.","qt,key,querystring","lycos.","query,mt,q,qry","mamma.","query","metacrawler.","q,general,qry","msn.","q,mt","mywebsearch.","searchfor","mysearch.","searchfor","netex.","srchkey,keyword","netscape.","search,searchstring,query","netster.","keywords","nettavisen.","query,q","ninemsn.","q","nlsearch.","qr","nomade.","mt,s","northernlight.","qr","oozap.","query","overture.","keywords","ozu.","q","passagen.","q","quick.","ftxt_query","savvy.","s","scrubtheweb.","keyword,q","www.search.com.","q","searchalot.","q","searchhippo.","q","sensis.","find","seznam.","w","soneraplaza.","qt","splatsearch.","searchstring","sprinks.","terms","spray.","query","srch.","q","supereva.","q","teoma.","q","thunderstone.","q","tiscali.ch.","key","tjohoo.","soktext,mt,query","track.","qr","truesearch.","query","tygo.","s","vinden.","query","virgilio.","qs","vivisimo.","query","voila.","kw","walla.","q","wanadoo.","fkw","web.","su","webcrawler.","qkw,search,searchtext","webwatch.","findindb","wepa.","query","wisenut.","q","xpsn.","kwd","ya.","q","yahoo.","p,va,vp,vo","ynet.","q","zerx.","search");
            domainFound = "";
            for ( var i=0; i<orgDomains.length; ++i )
@@ -503,14 +520,12 @@ function s_doPlugins(s) {
 				cleanDomain.indexOf("mail")>-1 ? ursvar=waSpliceDelimitedString(cleanDomain,'.',3) +" [ref]" : ursvar=cleanDomain+" [ref]";
 			}
          }
-
-		s.prop28=s.getValOnce(ursvar,'c_28',0);if(!isVarEmpty(s.prop28)) { s.eVar28="D=c28"; }
-		s.prop42=waCrossVisitParticipation('wa_cpm',ursvar,7,'>',180);if(!isVarEmpty(s.prop42)) { s.eVar42="D=c42"; }
-		s.prop29=ppckw;if(!isVarEmpty(s.prop29)) { s.eVar29="D=c29"; } 
+		s.prop28=s.getValOnce(ursvar,'c_28',0); (!isVarEmpty(s.prop28)) ? s.eVar28="D=c28" : s.eVar28="";
+		s.prop42=waCrossVisitParticipation('wa_cpm',ursvar,7,'>',180); (!isVarEmpty(s.prop42)) ? s.eVar42="D=c42" : s.eVar42="";
+		s.prop29=ppckw; (!isVarEmpty(s.prop29)) ? s.eVar29="D=c29" : s.eVar29="";
 		if(!isVarEmpty(ppcdomain)) { s.eVar51=ppcdomain; }
-
 		if(!isVarEmpty(natkw)) { natkw=natkw.replace(/\n|\t/g," "); } // \n\r=crlf, \n=new line, \t=tab - natkw.replace(/\#|\?|\%|\"|\'|\n|\t/g," "));	
-		s.prop30=natkw;if(!isVarEmpty(s.prop30)) { s.eVar30="D=c30"; }
+		s.prop30=natkw; (!isVarEmpty(s.prop30)) ? s.eVar30="D=c30" : s.eVar30="";
 	
 	//Build Page Detail
 	stickyCid = wa.stickyCid = s.getAndPersistValue(ursvar,'ursvar')
@@ -636,6 +651,9 @@ function s_doPlugins(s) {
 	if(wa.isTourDisplayed) {
 		if(wa.pageDetail=="overview") { s.prop26=waBuildPageDetail("tour"); }
 	}
+    if(wa.billpayWelcomeMat) {
+        if(wa.pageDetail=="overview") { s.prop26=waBuildPageDetail((wa.billpayPrice)?"billpay/"+wa.billpayPrice:"billpay"); }
+    }
 }  
 //End do_plugins
 
@@ -728,7 +746,32 @@ if($M.POI.sneakPreviewOverviewPageEvent){
 			waLinkClick(this,'billreminders','link',task);
 		}
 	});
-} 
+}
+
+wa.billpayOverlayActions=function(pv_location,pv_action) {
+    //capture overview page state before making any modifications
+    waCaptureContainerVariables('capture');
+ 
+    wa.pageDir="overview";
+    wa.pageSubDir="billpay";
+    wa.pageDetail=pv_location;
+    (pv_action) ? wa.pageDetail=wa.pageDetail+"/"+pv_action : wa.pageDetail=wa.pageDetail;
+    (wa.billpayPrice) ? wa.pageDetail=wa.billpayPrice+"/"+wa.pageDetail : wa.pageDetail=wa.pageDetail;
+    waSetDefaultVariables();
+    s.t(); //send sitecatalyst call
+    
+    //restore pre-billpay state before making any other calls from overview page
+    waCaptureContainerVariables('restore');
+}
+
+if($M.POI.billpayOverviewPageEvent) {
+    $M.POI.billpayOverviewPageEvent.addListener(function(tData) {
+        var location=tData.location;
+        var action=tData.action;
+        
+        wa.billpayOverlayActions(location,action);
+    });
+}
 
 // BEGIN Build dynamic mboxes for T&T //
 	//Welcome page / first user experience (fue)
@@ -1076,7 +1119,7 @@ wa.linkName = false;
 					break;
 				}
 			//if (stickyCid) {s.prop26= stickyCid+" -- "+wa.pageDetail+"/"+linkName+"|"+s.prop3;}else {s.prop26= wa.pageDetail+"/"+linkName+"|"+s.prop3; }
-			
+
 			if(wa.linkTrackVars) { s.linkTrackVars=s.linkTrackVars+","+wa.linkTrackVars; }
 
 			//s=s_gi(s_account);
@@ -1110,6 +1153,32 @@ wa.linkName = false;
             break;
     }
 }
+
+    //generic click track event listener for use with Mint.POI, calls waLinkClick function
+    if($M.POI.genericLinkTrackEvent) {
+        $M.POI.genericLinkTrackEvent.addListener(function(o) {
+            if(!o.linkNode) { o.linkNode = true; } //will NOT insert 500ms delay
+            
+            if(o.eventName) { //only send the call if linkName is populated
+                waLinkClick(o.linkNode,o.eventName,'link',o.eventDetail);
+                //OUTPUT:  s.prop7=[currentPage]:[linkName]_[linkDetail]
+            }
+        });
+    }
+    
+    //new overview page link tracking, created outside of generic poi event (above) due to CALL SAMPLING requirements (june 2012)
+    if($M.POI.genericLinkSampledTrackEvent) {
+        $M.POI.genericLinkSampledTrackEvent.addListener(function(o) {
+            if(wa.sampleLinkTrack) { //only send calls if user meets sampling requirements
+                if(!o.linkNode) { o.linkNode = true; } //will NOT insert 500ms delay
+
+                if(o.eventName) { //only send the call if eventName is populated
+                    waLinkClick(o.linkNode,o.eventName,'link',o.eventDetail);
+                }
+            }
+        });
+    }
+
 	
 	/*
 		waPageTrack() - Send page call after s_code file has loaded (on click or any other need)
@@ -1120,7 +1189,7 @@ wa.linkName = false;
 	waPageTrack=function(pv_pageName, pv_pageDetail, pv_event) {
 		if(!isVarEmpty(pv_pageName)) {
 			//wa.clearVars(true); //pass pv_exclude=true to prevent c1,c2,c3,v1,v2,v3 from being cleared
-			pv_pageName=pv_pageName.toLowerCase(); 
+			pv_pageName=pv_pageName.toLowerCase();
 			
 			if(!isVarEmpty(pv_pageDetail)) { 
 				pv_pageName=pv_pageName+"/"+pv_pageDetail.toLowerCase();
@@ -1242,7 +1311,7 @@ function element_click(event){
 		// return time as a string
 		return(serverDate.getFullYear() + "|" + (serverDate.getMonth()+1) + "|" + serverDate.getDate());
 	 }
-
+     
 /* GOALS */
 //Scope:  Overview page
 function waOverviewActions(pv_action,pv_details,pv_linkDestination,pv_ttSku,pv_linkObj) {
@@ -2257,6 +2326,30 @@ function waTrendActions(pv_action,pv_details) {
 	s.prop7="";
 }
 
+wa.trendActions = function(pv_obj,pv_location,pv_category,pv_details) {
+	var obj,location,category,details;
+	var prefix=wa.pageDetail;
+	
+	(pv_obj) ? obj=pv_obj : obj=true;
+	(pv_location) ? location=pv_location.toLowerCase() : location="";
+	(pv_category) ? category=pv_category.toLowerCase() : category="";
+	(pv_details) ? details=pv_details.toLowerCase() : details="";
+	
+	s.prop7=prefix+":"+location+"_"+category+"_"+details;
+	
+	s.linkTrackVars=s.linkTrackVars+",prop7";
+	s.tl(obj,'0','waTrendActions2');
+	
+	s.linkTrackVars=s.linkTrackVars.replace(",prop7","");
+	s.prop7="";
+}
+
+if($M.POI.trendClickEvent) {
+	$M.POI.trendClickEvent.addListener(function(pv_linkObj,pv_location,pv_action,pv_details) {
+		wa.trendActions(pv_linkObj,pv_location,pv_action,pv_details);
+	});
+}
+
 //TREND Page:  Uncategorized Transactions
 //pass event68 if link is to be displayed (fires after page load, therefore requires s.tl call)
 if($M.POI.uncategorizedTxnsTrendsPageAvailableEvent) {
@@ -2290,6 +2383,15 @@ if($M.POI.uncategorizedTxnsTrendsPageClickEvent) {
 			s.tl(this,'o','trendCategorizeTxnsClick');
 		}	
 	});
+}
+
+//reference mint API to capture clicks on social share buttons (facebook, twitter, pinterest) 
+    //after successfully creating a new goal
+if($M.POI.goalCreatedSocialButtonClickEvent) {
+	$M.POI.goalCreatedSocialButtonClickEvent.addListener(function(pv_socialNetwork) {
+		var waSocialNetwork=pv_socialNetwork;
+		waLinkClick(true,'social share','link',waSocialNetwork);
+    });
 }
 
 //reference mint API to capture successful FI Add
@@ -2487,7 +2589,9 @@ function waAdviceActions(pv_action,pv_adviceIDs,pv_details) {
 				waLinkClick(this,'advice'+pv_action,'link');
 				wa.events=s.events='';
 				s.prop7='';		
-			}
+			} else {
+                s.prop7='';
+            }
 		} else {
 			waLinkClick(this,'advice'+pv_action,'link');
 			wa.events=s.events='';

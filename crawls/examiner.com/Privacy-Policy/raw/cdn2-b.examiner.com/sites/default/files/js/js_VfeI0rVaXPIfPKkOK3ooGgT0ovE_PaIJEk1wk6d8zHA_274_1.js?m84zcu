@@ -1,0 +1,25 @@
+/*! sites/all/modules/custom/ex_carousel/ex_carousel.js */
+(function($,Drupal){Drupal.behaviors.exCarousel={attach:function(context,settings){var hop=Object.prototype.hasOwnProperty,property,callback=/Callback$/,eventCallback=/^on/,eventHandlers={},carousels=settings.ex_carousel&&settings.ex_carousel.carousels;function prepareCarousel(options){return function(){var carousel=$(this),callbackFunction,callbackParents,property,option,i,l,wrapper,scrollable,navigator;for(property in options){option=options[property];if(hop.call(options,property)&&typeof option==='string'&&callback.test(property)){callbackFunction=window;callbackParents=option.split('.');for(i=0,l=callbackParents.length;i<l;i+=1){callbackFunction=callbackFunction&&callbackFunction[callbackParents[i]];}
+options[property]=callbackFunction;if(eventCallback.test(property)){eventHandlers[property.replace(callback,'')]=callbackFunction;}}}
+wrapper=carousel.wrap('<div class="carousel-clip"></div>').parent();wrapper.parent().append('<span class="carousel-prev"/>').append('<span class="carousel-next"/>');scrollable=wrapper.scrollable({items:carousel,speed:options.speed||400,size:options.visible||1,next:'.carousel-next',prev:'.carousel-prev',touch:false,circular:!!options.wrap,clickable:options.clickable}).data('scrollable');if(options.auto){wrapper.autoscroll({interval:options.auto*1000,steps:options.scroll||1,autoplay:true,autopause:true});}
+if(options.navigation){navigator=$('<ul class="carousel-controls">').appendTo(wrapper);wrapper.navigator({navi:'.carousel-controls',naviItem:'li'});navigator.children().text('\u25cf');}
+if($.fn.touchwipe){wrapper.touchwipe({wipeLeft:function(){$('.carousel-next').click();},wipeRight:function(){$('.carousel-prev').click();}});}
+for(property in eventHandlers){option=eventHandlers[property];if(option&&hop.call(eventHandlers,property)){scrollable[property]=option;}}
+if(options.initCallback){options.initCallback.call(scrollable,scrollable);}};}
+if(carousels){settings=settings||Drupal.settings;for(property in carousels){if(hop.call(carousels,property)){$('.'+property,context).once('ex-carousel',prepareCarousel(carousels[property]));}}}}};}(jQuery,Drupal));;
+/*! sites/all/modules/custom/ex_comment/ex-comment.comment-form.js */
+(function($,window,document){Drupal.behaviors.commentForm={attach:function(context,settings){$('#comment-form').once('comment-form',function(){$(this).find('#edit-comment-body-und-0-value.no-wysiwyg').characterCount(1500);});},};}(jQuery,this,document));;
+/*! sites/all/libraries/jquery.charactercount.js */
+(function($,window){$.fn.extend({'characterCount':function(count){count=count&&Number(count);if(!count||isNaN(count)){return this;}
+this.each(function(){var counter_id='count-'+
+this.id||this.name||this.className.replace('/[\n\r\t ]+/g','-')||count,el=$(this),counter=$('#'+counter_id);if(!counter.length){counter=$('<div id="'+
+('count-'+counter_id)+'" class="character-counter">'+
+(count-((el.val()&&el.val().length)||0))+'</div>').insertBefore(this);}
+el.bind('keyup blur keypress',function(event){var value=el.val(),length=(value&&value.length)||0,diff=count-length;switch(event.type){case'keyup':if(diff>=0){counter.removeClass('character-counter-error').html(diff);}
+break;case'blur':if(diff<0){el.val(value.substr(0,count));}
+counter.removeClass('character-counter-error');break;case'keypress':if(diff<=0&&event.charCode){event.preventDefault();}
+counter.removeClass('character-counter-error').html(diff);break;}});if(window.CKEDITOR&&(typeof window.CKEDITOR.on==='function')){window.CKEDITOR.on('instanceReady',function(event){var editor=event.editor;setTimeout(function(){if(!editor.element){setTimeout(arguments.callee,100);return;}
+if(editor.element.$===el[0]){function dataChanged(event){var data=editor.getData(),length=data&&data.length||0,diff=count-length;if(diff<0){counter.addClass('character-counter-error');event.cancel();}
+else{counter.removeClass('character-counter-error');}
+counter.html(diff);}
+editor.on('afterSetData',dataChanged);editor.on('afterCommandExec',dataChanged);editor.on('saveSnapshot',dataChanged);editor.document.on('keydown',dataChanged);editor.document.on('paste',dataChanged);editor.on('mode',dataChanged);editor.on('beforeModeUnload',dataChanged);}},0);},null,null,9999);}});return this;}});}(jQuery,this));;

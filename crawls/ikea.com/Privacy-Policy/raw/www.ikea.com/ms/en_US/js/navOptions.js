@@ -1,4 +1,5 @@
 
+var seasonalStyleArray = new Array();   
 
 function getProducts() {
     
@@ -235,7 +236,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/seasonal/summer"><img src="/ms/img/menu/products/32x32/summer_32x32.gif" alt="" border="0" /><span class="seasonal" style="color:#444444">Summer</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/seasonal/back_to_college"><img src="/ms/img/menu/products/32x32/back_to_collage_32x32.gif" alt="" border="0" /><span class="seasonal" style="color:#444444">Back to College</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -284,8 +285,12 @@ IRW.search.localConfig = {
 
 
 neroTrackingLocal = {
-    
+    isEnabled: false,
     labels: [
+        {
+            category: " ",
+            value: "Tracking value"
+        }
     ]
 };
 
@@ -328,6 +333,8 @@ com.ikea.irw.askAnna.Translations.USEN = {
     'dialog_request_error_message' : 'I&#39;m sorry, there was a problem sending your details.',
     'custom_form_error' : 'Sorry, there was a problem submitting the form details. If you want you can try again',
     'knowledge_server_down_message' : 'Sorry, my knowledge is currently being updated. Please try later, thanks!',
+    'unsupported_browser_message' : 'Your browser is not supported by Anna and some things may not work correctly.\nPlease update to Internet Explorer 7 or higher or another modern browser.',
+    'cookies_storage_required_message' : 'Anna requires cookies or local storage to be enabled in order to work.\nPlease activate it and try again.',
     'unsupported_browser_message' : 'Your browser is not supported by Anna and some things may not work correctly.\nPlease update to Internet Explorer 7 or higher or another modern browser.',
     'cookies_storage_required_message' : 'Anna requires cookies or local storage to be enabled in order to work.\nPlease activate it and try again.'
     
@@ -389,3 +396,26 @@ com.ikea.irw.askAnna.Settings.active = true;
 com.ikea.irw.askAnna.Settings.reference = 'US';
 
 
+function backimage() {
+    "use strict";
+    var str, endte, start, end, d, today, month, day;
+    str = "2012-08-01";
+    endte = "2012-12-31";
+    start = str.replace(/-/g, "");
+    end = endte.replace(/-/g, "");
+    d = new Date();
+    month = d.getMonth() + 1;
+    day = d.getDate();
+    today = d.getFullYear() +
+        ((month.toString()).length < 2 ? '0' : "") + month +
+        ((day.toString()).length < 2 ? '0' : "") + day;
+    if (today >= start) {
+        if (end >= today) {
+            document.observe("dom:loaded", function () {
+                com.ikea.irw.GUI.background.changeBackground("url(/ms/img/homepage_background/bg01.jpg)");
+            }
+                );
+        }
+    }
+}
+window.onload = backimage();

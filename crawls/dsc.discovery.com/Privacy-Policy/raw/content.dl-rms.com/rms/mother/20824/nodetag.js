@@ -1,6 +1,5 @@
 (function(){
-var pfs={ "http://planetgreen.discovery.com/":{"nid":17607,"tr":1},
-"planetgreen.discovery.com/":{"nid":30726,"tr":1} },d=document,w=window,u=(w.gm_fake_href)?w.gm_fake_href:w.location.href;
+var pfs={ "planetgreen.discovery.com/":{"nid":30726,"tr":1} },d=document,w=window,u=(w.gm_fake_href)?w.gm_fake_href:w.location.href;
 
 function z(n){
 var s,u;

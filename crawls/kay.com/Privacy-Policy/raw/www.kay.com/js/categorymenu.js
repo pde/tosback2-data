@@ -9,6 +9,7 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|1505
 document.writeln('<li><a href="javascript: getR2netRedirectUrl(\'//design.kay-diamonds.com/engagement-rings/?\');">&nbsp; Kay Design-A-Ring&#x2122;</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15058|15051|15051.15058|Y">&nbsp; Wedding and Anniversary</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15059|0|1|Category|15059|15051|15051.15059">&nbsp; 3-Stone Diamond Rings</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|22284|0|1|Category|22284|15051|15051.22284">&nbsp; Promise</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProductsAll|10101|10001|-1|15051|0|1|Category|15051|15051|15051">&nbsp; View All</a></li>');
 document.writeln('</ul>');
 document.writeln('</ul>');
@@ -31,6 +32,8 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|2295
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|23056|0|1|Category|23056|22137|22137.23056">&nbsp; Diamond Revelations</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22200|22137|22137.22200|Y">&nbsp; Birthstone Collection</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|23098|0|1|Category|23098|22137|22137.23098">&nbsp; Stackable Rings</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|23125|0|1|Category|23125|22137|22137.23125">&nbsp; Color Obsession&#x2122;</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|23127|0|1|Category|23127|22137|22137.23127">&nbsp; Blue Diamond Fashion</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|22213|0|1|Category|22213|22137|22137.22213">&nbsp; Playful Expressions</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22214|22137|22137.22214|Y">&nbsp; Promise Collection</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22221|22137|22137.22221|Y">&nbsp; Colors of Diamonds</a></li>');
@@ -66,6 +69,7 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|1512
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15127|0|1|Category|15127|15064|15064.15127">&nbsp; Men\'s Jewelry</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|20564|15064|15064.20564|Y">&nbsp; Colors of Diamonds</a></li>');
 document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:diamond_jewelry">&nbsp; Personalized Jewelry</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15125|0|1|Category|15125|15064|15064.15125">&nbsp; More Diamond Jewelry</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProductsAll|10101|10001|-1|15064|0|1|Category|15064|15064|15064">&nbsp; View All</a></li>');
 document.writeln('</ul>');
 document.writeln('</ul>');
@@ -80,7 +84,7 @@ document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:person
 document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:personalized_necklaces_and_pendants">&nbsp; Personalized Necklaces and Pendants</a></li>');
 document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:personalized_bracelets">&nbsp; Personalized Bracelets</a></li>');
 document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:personalized_earrings">&nbsp; Personalized Earrings</a></li>');
-document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:couples_jewelry">&nbsp; Couple\'s Jewelry</a></li>');
+document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:couples_jewelry">&nbsp; Couples and Promise Jewelry</a></li>');
 document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:engravable_jewelry">&nbsp; Engravable Jewelry</a></li>');
 document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:wedding_bands">&nbsp; Engravable Wedding Bands</a></li>');
 document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:initials">&nbsp; Initial and Name Jewelry</a></li>');
@@ -119,9 +123,9 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|1509
 document.writeln('<ul>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15468|0|1|Category|15468|15095|15095.15468">&nbsp; Men\'s</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15469|0|1|Category|15469|15095|15095.15469">&nbsp; Women\'s</a></li>');
-document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|23055|0|1|Category|23055|15095|15095.23055">&nbsp; Citizen Signature</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|18153|15095|15095.18153|Y">&nbsp; Movado</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15471|15095|15095.15471|Y">&nbsp; Citizen</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|23055|15095|15095.23055|Y">&nbsp; Citizen Signature</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15470|15095|15095.15470|Y">&nbsp; Bulova</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|21582|15095|15095.21582|Y">&nbsp; BulovaAccutron</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22376|15095|15095.22376|Y">&nbsp; Bulova Precisionist</a></li>');

@@ -804,27 +804,29 @@ float:left;
 	margin: 5px 0 12px;
 	background-color: #fcfcfc;
 }
-.productCell a.variantSalePrice {
+.productCell a.variantSalePrice,
+.productCell .salePrice
+ {
 	color: #b5272e;
 	font-weight: bold;
 }
-span.wasPrice {
+span.wasPrice,
+.productCell .originalPrice {
 	display: block;
 }
 .productCell .productSalesMessaging {
 	display: inline;
 	float: left;
 }
-span.saleAmount {
+span.saleAmount,
+.productCell .percentOff {
 	color: #fff;
 	background: #b5272e;
 	padding: 2px;
 }
 img.saleTag {
 	display: block;
-	background: url(../../Content/images/results/tag-sale.gif) no-repeat;
-	width: 38px;
-	height: 16px;
+	background: url(../../Content/images/results/tag-sale.gif) no-repeat; width: 38px; height: 16px;
 	padding: 0;
 	margin: 2px 0;
 	/*position: absolute;
@@ -887,7 +889,9 @@ p.reviewsWrapper
 {
 	margin:0px;
 }
-span.averageReview
+span.averageReview,
+/* new results markup */
+.productCell .rating
 {
 	display: inline;
 	width: 64px;
@@ -896,10 +900,13 @@ span.averageReview
 	float: left;
 	margin: 3px 3px 0 0;
 }
-span.reviewsTail {
+span.reviewsTail,
+/* new results markup */
+.productCell .moreReviews {
 	display: inline;
 	float: left;
 	width: 90px;
+	font-weight: bold;
 }
 div.productPrice {
 	clear: both;
@@ -934,10 +941,6 @@ span.starRating45 {
 span.starRating50 {
     background-position: -128px -492px; width: 64px; height: 11px;
 }
-span.reviewsTail
-{
-	font-weight: bold;
-}
 
 .resultsPage .magic {
 	clear: both;
@@ -948,6 +951,29 @@ span.reviewsTail
 	overflow: auto;
 	/*1px solid #ecebea;*/
 }
+
+
+/* new results markup */
+.productCell .productImage .badge {
+	display: block;
+	padding: 0;
+	margin: 2px 0;
+	/*position: absolute;
+	top: 134px;*/
+}
+.productCell.s-sale .productImage .badge {
+background: url(../../Content/images/results/tag-sale.gif) no-repeat; width: 38px; height: 16px;	
+}
+.productCell.s-new .productImage .badge {
+	background-position: -340px -214px; width: 38px; height: 16px;	
+}
+.productCell.s-clearance .productImage .badge {
+	background: url(../../Content/images/results/tag-clearance.gif) no-repeat; width: 74px; height: 16px;
+}
+.productCell .productBrandTitleColor .name {display:block;}
+
+/* end new results markup */
+
 
 
 /* @group Notify Me */
@@ -3391,8 +3417,10 @@ chkout-shipDetails {
 	padding: 5px 10px;
 }
 .chkout-shipNotes {
-	height:45px;
+	/*height:45px;*/
 	margin:5px 130px 15px;
+	width:auto;
+	overflow: hidden;
 }
 .chkout-shipDetails {
 	margin:5px 130px 0pt;
@@ -9030,3 +9058,22 @@ a#BVDefaultLink:hover, #BVQASummaryBoxViewQuestionsID a:hover,  #bvProfile .upda
 .productdetailsPage a#BVDefaultLink, .productdetailsPage #BVQASummaryBoxViewQuestionsID a, .productdetailsPage #bvProfile .updateProfileLink a { background-color:#F1EFED; color:#6B6B6B; border:none; }
 
 div.nav-section-wrapper div.nav-banner-all-depts, div.nav-section-wrapper div.nav-banner-mens, div.nav-section-wrapper div.nav-banner-womens, div.nav-section-wrapper div.nav-banner-girls, div.nav-section-wrapper div.nav-banner-boys, div.nav-section-wrapper div.nav-banner-accessories, div.nav-section-wrapper div.nav-banner-bags { background:url(../../Content/core/content-nav/bg-selDept.gif) top left no-repeat; }
+
+.productdetailsPage #ProductDescription ul br {display: none;}
+
+/*Turn To Addition -- Product Details Page*/
+#TT2ILTbox {margin:20px 0 0;}
+.productdetailsPage .chooseBox .TurnToItemTeaser {display:block; margin:30px 0 -30px -30px; background:white; padding:15px 0 0;width:400px;}
+#TT2ILTbox a,#TT2ILTbox p,#TT2ILTbox h2 {font-size:12px;font-weight:normal}
+#TT2ILTbox u {text-decoration:none;}
+#TT2ILTbox h2 {margin:0;}
+#TT2ILTbox p {margin:0 3px;}
+#TT2ILTbox #TT2ILTbutton-holder a { font-size:14px; font-weight:bold;}
+#TT2ILTbox #TT2ILTcount-line p:before {content:' - ';color:#F0820B; font-weight:normal;}
+#TT2ILTbox #TT2ILTcount-line strong {font-weight:normal;}
+#TT2ILTbox a {color:#F0820B; text-decoration:none;}
+#TT2ILTbox a:hover, #TT2ILTbox a:focus {text-decoration:underline;}
+
+#TT2ILTbox #TT2ILTbutton-holder,
+#TT2ILTbox #TT2ILTcount-line {display:inline-block; font-weight:normal;}
+

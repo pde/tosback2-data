@@ -1,4 +1,5 @@
-
+if(typeof(async_site_pixel_request_sent) == "undefined") {
+    
 var fmJsHost = (("https:" == document.location.protocol) ? "https://" : "http://");
 
 
@@ -43,28 +44,6 @@ if (typeof(federated_media_section) == "string") {
 }
 document.write('<div style="position:absolute;left:0px;top:0px;visibility:hidden;"><img src="' + fmJsHost + 'tenzing.fmpub.net/?t=s&amp;n=430' + (federated_media_section_source != "" ? "&amp;s=" + federated_media_section_source : "") + '&amp;fleur_de_sel=' + Math.floor(Math.random()*10000000000000000) + '" alt="" style="width:0px;height:0px;" height="0" width="0" /></div>');
 
-// comScore network tag
-var _comscore = _comscore || [];
-_comscore.push({ c1: "8", c2: "3005693", c3: "3", c4: "http%3A%2F%2Fimgur.com%2F" });
-
-(function() {
-  var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
-  s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
-  el.parentNode.insertBefore(s, el);
-})();
-
-// lijit tag 
-document.write('<' + 'script type="text/javascript" src="http://www.lijit.com/blog_wijits?json=0&id=trakr&uri=http%3A%2F%2Fwww.lijit.com%2Fusers%2Ffm_audience&js=1"></scr' + 'ipt>');
-
-// quantcast tag
-_qoptions = {
-tags: 'Real Time Web',
-qacct: 'p-9dsZX-5zhUuTg'
-};
-var __qc_req = document.createElement('script'); __qc_req.type = 'text/javascript'; __qc_req.async = true; __qc_req.src = fmJsHost +'pixel.quantserve.com/seg/' + _qoptions.qacct + '.js';
-var __qcs = document.getElementsByTagName('script')[0]; __qcs.parentNode.insertBefore(__qc_req, __qcs);
-var __qc_req2 = document.createElement('script'); __qc_req2.type = 'text/javascript'; __qc_req2.async = true; __qc_req2.src = fmJsHost +'edge.quantserve.com/quant.js';
-var __qcs2 = document.getElementsByTagName('script')[0]; __qcs2.parentNode.insertBefore(__qc_req2, __qcs2);
 
 // comScore publisher tag
 var _comscore = _comscore || [];
@@ -77,11 +56,28 @@ _comscore.push({ c1: "2", c2: "3005693", c3: "3", c4: "http%3A%2F%2Fimgur.com%2F
 })();
 
 
-// CS tracking
+// Quantcast
+_qoptions = { tags: 'Real Time Web', qacct: 'p-9dsZX-5zhUuTg' };
+var __qc_req = document.createElement('script'); __qc_req.type = 'text/javascript'; __qc_req.async = true; __qc_req.src = fmJsHost +'pixel.quantserve.com/seg/' + _qoptions.qacct + '.js';
+var __qcs = document.getElementsByTagName('script')[0]; __qcs.parentNode.insertBefore(__qc_req, __qcs);
+var __qc_req2 = document.createElement('script'); __qc_req2.type = 'text/javascript'; __qc_req2.async = true; __qc_req2.src = fmJsHost +'edge.quantserve.com/quant.js';
+var __qcs2 = document.getElementsByTagName('script')[0]; __qcs2.parentNode.insertBefore(__qc_req2, __qcs2);
+
+// comScore network tag
+var _comscore = _comscore || [];
+_comscore.push({ c1: "8", c2: "3005693", c3: "3", c4: "http%3A%2F%2Fimgur.com%2F" });
+
+(function() {
+  var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+  s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+  el.parentNode.insertBefore(s, el);
+})();
+
+// Crowdscience tracking
 var cs = document.createElement('script'); cs.type = 'text/javascript'; cs.async = true; cs.src = ('https:' == document.location.protocol ?  'https://secure-' : 'http://') + 'static.crowdscience.com/start-5c5c650d27.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cs,s);
 
-// CS targeting
+// Crowdscience targeting
 if (!document.cookie || document.cookie.indexOf("_fm_crowdscience=") < 0) {
   _crowdscience_callback = function(data) {
     if (data && data.segments) {
@@ -98,3 +94,7 @@ if (!document.cookie || document.cookie.indexOf("_fm_crowdscience=") < 0) {
   document.write('<' + 'script type="text/javascript" src="' + (document.location.protocol == 'https:' ? 'https://' : 'http://') + 'static.crowdscience.com/max-5c5c650d27.js?callback=_crowdscience_callback"></scr' + 'ipt>');
 }
 
+// Lijit
+document.write('<' + 'script type="text/javascript" src="http://www.lijit.com/blog_wijits?json=0&id=trakr&uri=http%3A%2F%2Fwww.lijit.com%2Fusers%2Ffm_audience&js=1"></scr' + 'ipt>');
+    var async_site_pixel_request_sent = 1;
+}

@@ -6,13 +6,13 @@ var pmk,pmglb,pmfa,pmad,pmdebug_c;pmglb=pmglb||null;pmfa=pmfa||null;pmad=pmad||n
 
 (function(){
   var sc='script',doc=document;
-  doc.writeln('<'+sc+' src="http://widget.perfectmarket.com/agweb/pmk-e16d5628e9afa309a33beae1084c2d19d8069cea.js"></'+sc+'>');
+  doc.writeln('<'+sc+' src="http://widget.perfectmarket.com/agweb/pmk-1.3.js"></'+sc+'>');
 })();
 
 function pmws_request_done(){
   var sc="script",doc=document;
   if (doc.all && !window.opera){doc.write('<'+sc+' type="text/javascript" id="contentloadtag" defer="defer" src="javascript:void(0)"><\/'+sc+'>');var contentloadtag = doc.getElementById("contentloadtag");contentloadtag.onreadystatechange = function() { if (this.readyState=="complete") return; } }
-  doc.writeln('<'+sc+' src="http://widget.perfectmarket.com/agweb/pmk-e16d5628e9afa309a33beae1084c2d19d8069cea.js"></'+sc+'>');
+  doc.writeln('<'+sc+' src="http://widget.perfectmarket.com/agweb/pmk-1.3.js"></'+sc+'>');
 }
 
 }

@@ -53,6 +53,7 @@ jQuery(function($) {
 	};
 });
 
+
 /*
  * jQuery Easing v1.1.1 - http://gsgd.co.uk/sandbox/jquery.easing.php
  *
@@ -131,7 +132,7 @@ jQuery(function($){
 	
 	if($('.toggle').length != 0) toggle();
 	if($('.toggleAll').length != 0) toggleAll();
-	if($('.popUp, #footer a').length != 0) popUp();
+	//if($('.popUp, #footer a').length != 0) popUp();	Removed as the same thing is called in /scripts/global.js which triggers the event twice.
 	if($('.autoSize').length != 0) setAutoHeight();
 	if($('.meterwrapper').length != 0) initMeters();
 	if($('.stripe').length !=0) stripe();
@@ -358,7 +359,7 @@ function toggle(){
 	
 	jQuery('.collapseImg').each(function(){
 		var a = jQuery(this), label = a.attr('title').split('|'), id = a.attr('href');
-		a.html('<img src="images/global/iconCollapse.png" width="20px" height="20px"/>');
+		a.html('<img src="/esupport/images/fttx/iconCollapse.png" width="20px" height="20px"/>');
 		if ( a.hasClass('off-page') ){
 			a.removeClass('off-page');
 		}
@@ -368,12 +369,12 @@ function toggle(){
 		a.toggle(
 			function(){
 				jQuery(id).slideUp('fast');
-				a.html('<img src="images/global/iconExpand.png" width="20px" height="22px"/>');
+				a.html('<img src="//www.att.com/images/global/iconExpand.png" width="20px" height="22px"/>');
 				a.attr({ 'alt' : label[1], 'title' : label[1] });
 			}, 
 			function(){
 				jQuery(id).slideDown('fast');
-				a.html('<img src="images/global/iconCollapse.png" width="20px" height="20px"/>');
+				a.html('<img src="/esupport/images/fttx/iconCollapse.png" width="20px" height="20px"/>');
 				a.attr({ 'alt' : label[0], 'title' : label[0] });
 			}
 		);							 
@@ -408,7 +409,7 @@ function toggle(){
 	jQuery('.expandImg').each(function(){
 		var a = jQuery(this), label = a.attr('title').split('|'), id = a.attr('href');
 		jQuery(id).hide();
-		a.html('<img src="images/global/iconExpand.png" width="20px" height="22px" alt="Show Details" title="Show Details" />');
+		a.html('<img src="//www.att.com/images/global/iconExpand.png" width="20px" height="22px" alt="Show Details" title="Show Details" />');
 		if ( a.hasClass('off-page') ){
 			a.removeClass('off-page');
 		}
@@ -418,12 +419,12 @@ function toggle(){
 		a.toggle(
 			function(){
 				jQuery(id).slideDown('fast');
-				a.html('<img src="images/global/iconCollapse.png" width="20px" height="22px" />');
+				a.html('<img src="/esupport/images/fttx/iconCollapse.png" width="20px" height="22px" />');
 				a.attr({ 'alt' : label[1], 'title' : label[1] });
 			},
 			function(){
 				jQuery(id).slideUp('fast');
-				a.html('<img src="images/global/iconExpand.png" width="20px" height="20px" />');
+				a.html('<img src="//www.att.com/images/global/iconExpand.png" width="20px" height="20px" />');
 				a.attr({ 'alt' : label[0], 'title' : label[0] });
 			} 
 			
@@ -487,12 +488,13 @@ function toggleAll(){
 }
 
 // creates pop up windows - add class="popUp" to anchor tag or by default, sets links in footer to pop up
-function popUp(){
+//Removed as the same thing is called in /scripts/global.js which triggers the event twice.
+/*function popUp(){
 	jQuery('.popUp, #footer a').click(function(){
 		window.open(this.href);
 		return false;
 	});
-}
+}*/
 
 // sets heights of all promos in a row to same height
 function sortDesc(a,b){

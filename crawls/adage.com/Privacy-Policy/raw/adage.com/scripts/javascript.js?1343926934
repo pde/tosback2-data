@@ -1,0 +1,1337 @@
+/* global js vars */
+var img_path="/img";
+
+function ltrim(s) { return s.replace( /^\s*/, "" ); }
+function rtrim(s) { return s.replace( /\s*$/, "" ); }
+function trim(s) { return rtrim(ltrim(s)); }
+function putCursor(obj) { if(window.focus)obj.focus(); }
+function putSelection(obj) { putCursor(obj); if(window.select)obj.select(); }
+function setCursor(field,value) { if(field.value==value) { field.value=""; } }
+function checkCursor(field,value) { if(isBlank(field.value)) { field.value=value; } }
+
+function isBlank(s) {
+	if(s.length==0)return true;
+	for(var i=0; i<s.length; i++) {
+		if(s.charAt(i)!=" ")return false;
+	}
+	return true;
+}
+
+function isNumeric(str) {
+	str=str+"";
+	digits="0123456789.-";
+	for (var i=0; i<str.length; i++) {
+		if (digits.indexOf(str.charAt(i))==-1) {
+			return false;
+		}	
+	}
+	return true;
+}
+
+function getRadioValue(set) {
+	for(var n=0; n<set.length; n++) {
+		if(set[n].checked) {
+			return set[n].value;
+		}
+	}
+	return "";
+}
+
+function getRadioIndex(set,value) {
+	for(var n=0; n<set.length; n++) {
+		if(set[n].value==value) {
+			return n;
+		}
+	}
+	return -1;
+}
+
+function getCheckedRadioIndex(set) {
+	for(var n=0; n<set.length; n++) {
+		if(set[n].checked) {
+			return n;
+		}
+	}
+	return -1;
+}
+
+function checkedRadio(set) {
+	checked=false;
+	for(var n=0; n<set.length; n++) {
+		if(set[n].checked) {
+			checked=true;
+			break;
+		}
+	}
+	return checked;
+}
+
+function checkBox(box) {
+	box.checked=(box.checked)?false:true;
+}
+
+function getPath(loc) {
+    var loc=loc.toString();
+	var normal=loc.lastIndexOf("/");
+	var reverse=loc.lastIndexOf("\\");
+	return (reverse>normal)?loc.substring(0,reverse+1):loc.substring(0,normal+1);
+}
+
+function getFilename(loc) {
+	var loc=loc.toString();
+	return loc.substring(loc.lastIndexOf('/')+1,loc.length);
+}
+
+function getLocationHash(loc) {
+	loc=(!loc) ? window.location : loc;
+	loc=(loc.hash) ? loc.hash : loc;
+	loc=loc.toString();
+	return (loc.indexOf('#')!=-1) ? loc.substring(loc.indexOf('#')+1, loc.length) : null;
+}
+
+function error(msg) {
+	if(document.getElementById) {
+		errm=getLayer('errmsg');
+		errm.innerHTML=msg;
+	} else {
+		alert(msg);
+	}
+}
+
+function getLayer(lyr) {
+	if(document.getElementById) return document.getElementById(lyr);
+	if(document.layers) return document.layers[lyr];
+	if(document.all) return document.all[lyr];
+	return null;
+}
+
+function getLyrObj(lyr) {
+	if(document.getElementById) return document.getElementById(lyr).style;
+	if(document.layers) return document.layers[lyr];
+	if(document.all) return document.all[lyr].style;
+	return null;
+}
+
+function swapClass(id,name) {
+    lyr=getLayer(id);
+    if(lyr != null) {
+        lyr.className=name;
+    }
+}
+
+function write(lyr,html) {
+	lyr=getLayer(lyr);
+	if (document.layers) {
+		with(lyr.document) { open(); write(html); close(); }
+	} else {
+		lyr.innerHTML=html;
+	}
+}
+
+function writeHTML(lyr,html) {
+	lyr=getLayer(lyr);
+	if (document.layers) {
+		with(lyr.document) { open(); write(html); close(); }
+	}
+	else {
+		lyr.innerHTML=html;
+	}
+}
+
+function isEmail(email) {
+	if(email.trim()=='') { //check if email field is blank
+		return false;
+	}
+	if(email.indexOf('@')==-1 || email.indexOf('.')==-1) { //make sure the field has an '@' and a '.'
+		return false;
+	}
+	if (email.indexOf('@') > email.lastIndexOf('.')) { //then make sure the '@' is before the last occurence of the '.'
+		return false;
+	}
+	if (email.indexOf('@') < 1) { // make sure there's at least one char before the '@' symbol
+		return false;
+	}
+	if ((email.lastIndexOf('.') - email.indexOf('@')) < 3) { // check if there's at least 2 chars between the '@' and the '.'
+		return false;
+	}
+	if ((email.length - email.lastIndexOf('.')) < 3) { // and make sure there are at least 2 chars between the '.' and the end
+		return false;
+	}
+	return true;
+}
+
+function getCreativityVideo(dom_id, id) {
+	var width = 480;
+	var height = 270;
+
+	var embed = [
+		'<embed src="http://creativity-online.com/video/player.swf" quality="high" bgcolor="#869ca7"',
+		'width="', width, '" height="', height, '" name="player" align="middle" play="true" loop="false" quality="high" allowFullScreen="true" allowScriptAccess="always"',
+		'flashVars="config=http://creativity-online.com/xml/config.player.php&p=', id,'" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer"></embed>'
+	];
+
+	if(document.getElementById(dom_id)) {
+		document.getElementById(dom_id).innerHTML = embed.join(' ');
+	}
+}
+function getYouTubeVideo(dom_id, id, width, height) {
+	var embed = [
+		'<iframe class="youtube-player" type="text/html" width="', width, '" height="', height, '" src="http://www.youtube.com/embed/', id,'" frameborder="0"></iframe>'
+	];
+
+	if(document.getElementById(dom_id)) {
+		document.getElementById(dom_id).innerHTML = embed.join('');
+	}
+}
+
+function getBrightcoveVideoAppend(dom_id, id, width, height) {
+	var obj = document.createElement('object');
+	obj.setAttribute('id', 'myExperience' + id);
+	obj.setAttribute('class', 'BrightcoveExperience');
+
+	var param1 = document.createElement("param");
+	param1.setAttribute("name", "bgcolor");
+	param1.setAttribute("value", "#FFFFFF");
+	obj.appendChild(param1);
+
+	var param2 = document.createElement("param");
+	param2.setAttribute("name", "width");
+	param2.setAttribute("value", width);
+	obj.appendChild(param2);
+
+	var param3 = document.createElement("param");
+	param3.setAttribute("name", "height");
+	param3.setAttribute("value", height);
+	obj.appendChild(param3);
+
+	var param4 = document.createElement("param");
+	param4.setAttribute("name", "playerID");
+	param4.setAttribute("value", "792865957001");
+	obj.appendChild(param4);
+
+	var param4 = document.createElement("param");
+	param4.setAttribute("name", "videoID");
+	param4.setAttribute("value", id);
+	obj.appendChild(param4);
+
+	var param5 = document.createElement("param");
+	param5.setAttribute("name", "playerKey");
+	param5.setAttribute("value", "AQ~~,AAAAABaD_Us~,27iukNn8neTiu2V3RNN9cU_M67_q36be");
+	obj.appendChild(param5);
+
+	var param6 = document.createElement("param");
+	param6.setAttribute("name", "isVid");
+	param6.setAttribute("value", "true");
+	obj.appendChild(param6);
+
+	var param7 = document.createElement("param");
+	param7.setAttribute("name", "isUI");
+	param7.setAttribute("value", "true");
+	obj.appendChild(param7);
+
+	var param8 = document.createElement("param");
+	param8.setAttribute("name", "dynamicStreaming");
+	param8.setAttribute("value", "true");
+	obj.appendChild(param8);
+
+	document.getElementById(dom_id).appendChild(obj);
+}
+
+function getBrightcoveVideo(dom_id, id, width, height) {
+	var embed = [
+		'<object id="myExperience', id,'" class="BrightcoveExperience"><param name="bgcolor" value="#FFFFFF" /><param name="width" value="', width, '" /><param name="height" value="', height, '" /><param name="playerID" value="792865957001" /><param name="videoID" value="', id,'" /><param name="playerKey" value="AQ~~,AAAAABaD_Us~,27iukNn8neTiu2V3RNN9cU_M67_q36be" /><param name="isVid" value="true" /><param name="isUI" value="true" /><param name="dynamicStreaming" value="true" /></object>'
+	];
+
+	if(document.getElementById(dom_id)) {
+		document.getElementById(dom_id).innerHTML = embed.join('');
+	}
+	//setTimeout(function() { }, 0);
+}
+
+function str_replace(needle, replacement, haystack) {
+	var temp = haystack.split(needle);
+	return temp.join(replacement);
+}
+
+/**
+ * @author: Timothy Dalbey
+ * @date: 
+ * 
+ */
+function matchAll(string, d_s, d_e){
+	var pattern = new RegExp(d_s+'[^'+d_e+']*'+d_e,'g');
+	var mathces =  [];
+	matches = string.match(pattern);
+	for (i in matches) {
+		if(typeof matches[i] == 'string') {
+			matches[i] = matches[i].substring(d_s.length,matches[i].length - (d_e.length));
+		}
+	}
+	return matches;
+}
+
+function getElementIdsByRegExpId(a_regexp, a_tagname, a_dom_element) {
+	
+	// SPECIFY THE KIND OF TAG (REDUCES THE NUMBER OF OPERATIONS)
+	var a_tagname = (a_tagname === undefined)?'*':a_tagname;
+	
+	// SPECIFY THE ELEMENT TO SEARCH WITHIN (REDUCES OPERATIONS)
+	var a_dom_element = (a_dom_element === undefined)?document:a_dom_element;
+	
+	// GET ALL ELEMENTS THAT MATCH THE TAG NAME
+	var elements = a_dom_element.getElementsByTagName(a_tagname);
+	
+	// GET COUNT OF ELEMENTS THAT MATCH THE TAG NAME
+	var element_count = elements.length;
+	
+	// RETURN RECEPTICLE
+	var return_array = [];
+	
+	// SEARCH THE MATCHING TAGS
+	for(var i = 0; i < element_count; i++) {
+		
+		// IF THE SPECIFIC ELEMENT HAS AN ID
+		if(elements.item(i).id){
+			
+			// IF THE ID MATCHES THE REGULAR EXPRESSION
+			if(elements.item(i).id.match(a_regexp)) {
+			
+				return_array.push(elements.item(i).id);
+				
+			}
+			
+		}
+		
+	}
+	
+	return return_array;
+	
+}
+
+function getGETParams() {
+	params={};
+
+	// see if string is being passed;  otherwise, grab location URL
+	get_string=(getGETParams.arguments[0])?getGETParams.arguments[0]:window.location;
+
+	// force string conversion
+	get_string=get_string.toString();
+
+	// chop up GET string into name/value pairs
+	get_string=get_string.split('&');
+
+	// loop through all name/value pairs
+	for(var n=0; n<get_string.length; n++) {
+
+		// split name/value pair by '=' sign
+		get_param=get_string[n].split('=');
+
+		// set params
+		params[get_param[0]]=get_param[1];
+	}
+	return params;
+}
+
+function isArray(obj) {
+	if(obj.constructor.toString().indexOf("Array")==-1) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+function isObject(obj) {
+	if(obj.constructor.toString().indexOf("Object")==-1) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+/**
+ * JavaScript class extensions
+ *
+ */
+String.prototype.trim=function() {
+	a=this.replace(/^\s+/,'');
+	return a.replace(/\s+$/,'');
+}
+
+String.prototype.ucfirst=function() {
+	return this.charAt(0).toUpperCase() + this.substring(1,this.length).toLowerCase();
+}
+
+String.prototype.autolink = function() {
+	var hlink = /\s(ht|f)tp:\/\/([^ \,\;\:\!\)\(\"\'\<\>\f\n\r\t\v])+/g;
+	return this.replace (
+		hlink, function ($0, $1, $2) {
+			s = $0.substring(1, $0.length);
+
+			// remove trailing dots, if any
+			while (s.length > 0 && s.charAt(s.length-1)=='.') {
+				s = this.substring(0, s.length-1);
+			}
+			// add hlink
+			return " " + s.link(s); 
+		}
+	);
+}
+
+// returns the index of an array element, -1 if element not found
+Array.prototype.indexOf=function(el) {
+	for(var n=0; n<this.length; n++) {
+		if(this[n]==el) {
+			return n;
+		}
+	}
+	return -1;
+}
+
+// search each array element for existence of string (case-sensitive), returns array index or -1
+Array.prototype.search=function(str) {
+	for(var n=0; n<this.length; n++) {
+		if(typeof this[n] == 'string' && this[n].indexOf(str)!=-1) {
+			return n;
+		}
+	}
+	return -1;
+}
+
+// search each array element for existence of string (case-insensitive), returns array index or -1
+Array.prototype.searchNoCase=function(str) {
+	for(var n=0; n<this.length; n++) {
+		if(typeof this[n] == 'string' && this[n].toLowerCase().indexOf(str.toLowerCase())!=-1) {
+			return n;
+		}
+	}
+	return -1;
+}
+
+// see if array contains an item
+Array.prototype.contains=function(el) {
+	return (typeof this == 'string') ? this.indexOf(el)!=-1 : -1;
+}
+
+// return last item from array
+Array.prototype.last=function() {
+	return (typeof this == 'object') ? this[this.length-1] : null;
+}
+
+// routine to clear an array
+Array.prototype.clear=function() {
+	if(typeof this == 'object' && this.length) {
+		this.length=0;
+	}
+	return this;
+}
+
+Array.prototype.arrange=function() {
+	minor=[];
+	major=[];
+
+	// split array into two arrays (a 1 char array, and a 2+ char array)
+	for(var i=0; i<this.length; i++) {
+		if(this[i].toString().trim().length==1) {
+			minor[minor.length]=this[i];
+		}
+		else {
+			major[major.length]=this[i];
+		}
+	}
+
+	minor.sort(); // sort 1 char array
+	major.sort(); // sort 2+ char array
+	this.clear(); // clear current array
+
+	// rebuild current array
+	for(var i=0; i<minor.length; i++) { this[this.length]=minor[i]; }
+	for(var i=0; i<major.length; i++) { this[this.length]=major[i]; }
+
+	// cleanup
+	minor.clear();
+	major.clear();
+}
+
+/**
+ * DOM Routines
+ *
+ * create our own DOM object to centralize DOM-based routines
+ *
+ */
+var DOM = {
+	getElementById:function(id, tag, parent) {
+		if(document.getElementById(id)) {
+			return document.getElementById(id);
+		}
+		else if(document.layers && document.layers[id]) {
+			return document.layers[id];
+		}
+		else if(document.all && document.all[id]) {
+			return document.all[id];
+		}
+		else if(document[id]) {
+			return document[id];
+		}
+		else if(window[id]) {
+			return window[id];
+		}
+		if(this.createElement) {
+			tag=(tag)? tag : 'div';
+			el=this.createElement(tag);
+			el.setAttribute('id', id);
+			parent=(parent)? parent : 'body';
+			this.getElementsByTagName(parent)[0].appendChild(el);
+			return el;
+		}
+		return null;
+	},
+	getElementsByTagName:function(tag, el) {
+		var el=(el)? el : document;
+		if(el.getElementsByTagName) { return el.getElementsByTagName(tag); }
+		return null;
+	},
+	createElement:function(el) {
+		if(document.createElement) { return document.createElement(el); }
+		return null;
+	},
+	getTagNameFromElement:function(el) {
+		if(el.tagName) { return el.tagName.toLowerCase(); }
+		if(el) { return el.toString().toLowerCase(); }
+		return null;
+	},
+	setOpacity:function(id, opacity) {
+    	el=this.getElementById(id);
+		el.style.opacity=(opacity / 100);
+		el.style.MozOpacity=(opacity / 100);
+		el.style.KhtmlOpacity=(opacity / 100);
+		el.style.filter="alpha(opacity=" + opacity + ")";
+	},
+	getInclude:function(src) {
+		if(document.createElement) {
+			var js=document.createElement('script');
+			js.setAttribute('type', 'text/javascript');
+			js.setAttribute('src', src);
+			document.getElementsByTagName('head')[0].appendChild(js);
+		}
+	},
+	getCSS:function(src) {
+		if(document.createElement) {
+			var js=document.createElement('link');
+			js.setAttribute('type', 'text/css');
+			js.setAttribute('rel', 'stylesheet');
+			js.setAttribute('media', 'all');
+			js.setAttribute('src', src);
+			document.getElementsByTagName('head')[0].appendChild(js);
+		}
+	},
+	setClass:function(id, className) {
+		this.getElementById(id).className=className;
+	}
+};
+
+/**
+ * DHTML Routines
+ *
+ * create our own DHTML object to centralize cross-browser DHTML routines
+ *
+ */
+var DHTML={
+	// centralize inner window width/height
+	getInnerWidth:function() {
+		if(window.innerWidth) { return innerWidth; }
+		if(document.body.offsetWidth) { return document.body.offsetWidth; }
+		return null;
+	},
+	getInnerHeight:function() {
+		if(window.innerHeight) { return innerHeight; }
+		if(document.body.clientWidth) { return document.body.clientWidth; }
+		if(document.body.offsetHeight) { return document.body.offsetHeight; }
+		return null;
+	},
+	// centralize number of pixels scrolled to
+	getScrollX:function() {
+		if(window.pageXOffset) { return pageXOffset; }
+		if(document.body.scrollLeft) { return document.body.scrollLeft; }
+		if(document.documentElement.scrollLeft) { return document.documentElement.scrollLeft; }
+		return null;
+	},
+	getScrollY:function() {
+		if(window.pageYOffset) { return pageYOffset; }
+		if(document.body.scrollTop) { return document.body.scrollTop; }
+		if(document.documentElement.scrollTop) { return document.documentElement.scrollTop; }
+		return null;
+	},
+	getPageX:function(e) {
+		if(!e) { var e=window.event; }
+		if(e.pageX) { return e.pageX; }
+		if(e.clientX) { return e.clientX + DHTML.getScrollX(); }
+		if(e.offsetLeft) { return e.offsetLeft; }
+		return null;
+	},
+	getPageY:function(e) {
+		if(!e) { var e=window.event; }
+		if(e.pageY) { return e.pageY; }
+		if(e.clientY) { return e.clientY + DHTML.getScrollY(); }
+		if(e.offsetTop) { return e.offsetTop; }
+		return null;
+	},
+	getPosX:function(obj) {
+		posX=0;
+		if(obj.offsetParent) { // loop through parent elements
+			while(obj.offsetParent) {
+				posX+=obj.offsetLeft;
+				if(!obj.offsetParent) {
+					break; // no more parents
+				}
+				obj=obj.offsetParent;
+			}
+		}
+		else if(obj.x) {
+			posX+=obj.x;
+		}
+		return parseInt(posX);
+	},
+	getPosY:function(obj) {
+		posY=0;
+		if(obj.offsetParent) { // loop through parent elements
+			while(obj.offsetParent) {
+				posY+=obj.offsetTop;
+				if(!obj.offsetParent) {
+					break; // no more parents
+				}
+				obj=obj.offsetParent;
+			}
+		}
+		else if(obj.y) {
+			posX+=obj.y;
+		}
+		return parseInt(posY);
+	},
+	fade:function(id, start, end, time) {
+		var speed=Math.round(time / 100);
+		var timer=0;
+
+		if(start > end) {
+			for(var i=start; i>=end; i--) {
+				//setTimeout(function() { DOM.setOpacity(id, i); }, (timer * speed));
+				setTimeout("DOM.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+			}
+		}
+		else if(start < end) {
+			for(var i=start; i <= end; i++) {
+				//setTimeout(function() { DOM.setOpacity(id, i); }, (timer * speed));
+				setTimeout("DOM.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+			}
+		}
+	},
+	getElementByEvent:function(e) {
+		if(!e) { var e=window.event; }
+		if(e.srcElement) { return e.srcElement; }
+		if(e.target) { return e.target; }
+		return null;
+	},
+	getKeyCode:function(e) {
+		if(!e) { var e=window.event; }
+		return (e.keyCode)? e.keyCode : e.which;
+	}
+};
+
+/**
+ * AJAX Routines
+ *
+ * create our own AJAX object to centralize cross-browser AJAX routines
+ *
+ */
+
+var AJAX={};
+
+// return HTTP responses
+AJAX.ReadyState={};
+AJAX.ReadyState['Uninitialized']=0;
+AJAX.ReadyState['Loading']		=1;
+AJAX.ReadyState['Loaded']		=2;
+AJAX.ReadyState['Interactive']	=3;
+AJAX.ReadyState['Complete']		=4;
+
+// initialize cross-browser HTTP request
+AJAX.getHTTPRequest=function() {
+	if(window.XMLHttpRequest) { return new XMLHttpRequest(); }
+	if(window.ActiveXObject) {
+		try { return new ActiveXObject("Msxml2.XMLHTTP"); }
+		catch(e) { return new ActiveXObject("Microsoft.XMLHTTP"); }
+	}
+	return null;
+}
+
+// Constructor to setup HTTP file requests
+AJAX.FileRequest=function(url, onload, onerror, method, params, contentType) {
+	this.url=url;
+	this.params=(params)? params : null;
+	this.method=(method)? method : 'get';
+
+	this.url+=(this.params!=null && this.method.toLowerCase()=='get')?'?'+this.params:'';
+	this.contentType=(contentType)? contentType : "application/x-www-form-urlencoded";
+	this.contentType=(!this.contentType && this.method.toLowerCase()=='post')? "application/x-www-form-urlencoded" : this.contentType;
+
+	this.request=null;
+	this.response=null;
+	this.onload=(onload)? onload : this.OnLoad;
+	this.onerror=(onerror)? onerror : this.OnError;
+	this.sendFileRequest();
+}
+
+// method to generate an HTTP request for selected file
+AJAX.FileRequest.prototype.sendFileRequest=function() {
+	this.request=AJAX.getHTTPRequest();
+	if(this.request) {
+		try {
+			// pass reference of current instance to event handler
+			var ref=this;
+			this.request.onreadystatechange = function() {
+				ref.onReadyState.call(ref);
+				delete ref;
+			}
+
+			// open HTTP connection
+			this.request.open(this.method, this.url, 1);
+
+			// set content-type header
+			if(this.contentType) { this.request.setRequestHeader('content-type', this.contentType); }
+
+			// send request
+			this.request.send(this.params);
+		}
+		catch(err) {
+			//alert('err 1')
+			this.onerror.call(this);
+		}
+	}
+}
+AJAX.FileRequest.prototype.onReadyState=function() {
+	if(this.request) {
+		if(this.request.readyState == AJAX.ReadyState['Complete']) {
+			if(this.request.status==200 || this.request.status==0) {
+				this.response=this.request.responseText;
+				this.onload.call(this);
+			}
+			else {
+				//alert('err 2')
+				this.onerror.call(this);
+			}
+		}
+		else {
+			//this.response=AJAX.ReadyState.getKeyProperty(this.request.readyState);
+			//this.onload.call(this);
+		}
+	}
+	else {
+		//alert('err 3')
+		this.onerror.call(this);
+	}
+}
+AJAX.FileRequest.prototype.OnError=function() {
+	if(this.request) {
+		alert(
+			"Error fetching data"
+			+ "\n\tReadyState: " + this.request.readyState
+			+ "\n\tStatus: " + this.request.status
+			+ "\n\tHeaders: " + this.request.getAllResponseHeaders()
+		);
+	}
+}
+AJAX.FileRequest.prototype.OnLoad=function() {
+	if(this.request) {
+		alert(this.response);
+	}
+}
+
+// parse XML tree
+AJAX.parseXML=function(xml) {
+	var doc=null;
+	if(window.DOMParser) {
+		try { 
+			doc=(new DOMParser()).parseFromString(xml, "text/xml"); 
+		} 
+		catch (e) { doc=null; }
+	}
+	else if (window.ActiveXObject) {
+		try {
+			doc=new ActiveXObject('Microsoft.XMLHTTP');
+			doc.async=false;
+			if(!doc.loadXML(xml)) {
+				//doc=doc.parseError.reason + doc.parseError.srcText;
+				doc=null;
+			}
+		} 
+		catch (e) { doc=null; }
+	}
+	return doc;
+}
+
+/**
+ * JSON Routines
+ *
+ * create our own JSON object to centralize cross-browser routines
+ *
+ */
+var JSON;
+if (!JSON) {
+    JSON = {};
+}
+
+(function () {
+	'use strict';
+
+	function f(n) {
+		// Format integers to have at least two digits.
+		return n < 10 ? '0' + n : n;
+	}
+
+	if(typeof Date.prototype.toJSON !== 'function') {
+
+		Date.prototype.toJSON = function (key) {
+			return isFinite(this.valueOf())
+				? this.getUTCFullYear()     + '-' +
+					f(this.getUTCMonth() + 1) + '-' +
+					f(this.getUTCDate())      + 'T' +
+					f(this.getUTCHours())     + ':' +
+					f(this.getUTCMinutes())   + ':' +
+					f(this.getUTCSeconds())   + 'Z'
+				: null;
+		};
+
+		String.prototype.toJSON		=
+		Number.prototype.toJSON		=
+		Boolean.prototype.toJSON	= function (key) {
+			return this.valueOf();
+		};
+	}
+
+	var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+		escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+		gap,
+		indent,
+		meta = { // table of character substitutions
+			'\b': '\\b',
+			'\t': '\\t',
+			'\n': '\\n',
+			'\f': '\\f',
+			'\r': '\\r',
+			'"' : '\\"',
+			'\\': '\\\\'
+		},
+		rep;
+
+	function quote(string) {
+
+// If the string contains no control characters, no quote characters, and no
+// backslash characters, then we can safely slap some quotes around it.
+// Otherwise we must also replace the offending characters with safe escape
+// sequences.
+
+		escapable.lastIndex = 0;
+		return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
+			var c = meta[a];
+			return typeof c === 'string'
+				? c
+				: '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+        }) + '"' : '"' + string + '"';
+    }
+
+    function str(key, holder) {
+
+// Produce a string from holder[key].
+
+        var i,          // The loop counter.
+            k,          // The member key.
+            v,          // The member value.
+            length,
+            mind = gap,
+            partial,
+            value = holder[key];
+
+// If the value has a toJSON method, call it to obtain a replacement value.
+
+        if (value && typeof value === 'object' && typeof value.toJSON === 'function') {
+            value = value.toJSON(key);
+        }
+
+// If we were called with a replacer function, then call the replacer to
+// obtain a replacement value.
+
+        if (typeof rep === 'function') {
+            value = rep.call(holder, key, value);
+        }
+
+// What happens next depends on the value's type.
+
+        switch (typeof value) {
+        case 'string':
+            return quote(value);
+
+        case 'number':
+
+// JSON numbers must be finite. Encode non-finite numbers as null.
+
+            return isFinite(value) ? String(value) : 'null';
+
+        case 'boolean':
+        case 'null':
+
+// If the value is a boolean or null, convert it to a string. Note:
+// typeof null does not produce 'null'. The case is included here in
+// the remote chance that this gets fixed someday.
+
+            return String(value);
+
+// If the type is 'object', we might be dealing with an object or an array or
+// null.
+
+        case 'object':
+
+// Due to a specification blunder in ECMAScript, typeof null is 'object',
+// so watch out for that case.
+
+            if (!value) {
+                return 'null';
+            }
+
+// Make an array to hold the partial results of stringifying this object value.
+
+            gap += indent;
+            partial = [];
+
+// Is the value an array?
+
+            if (Object.prototype.toString.apply(value) === '[object Array]') {
+
+// The value is an array. Stringify every element. Use null as a placeholder
+// for non-JSON values.
+
+                length = value.length;
+                for (i = 0; i < length; i += 1) {
+                    partial[i] = str(i, value) || 'null';
+                }
+
+// Join all of the elements together, separated with commas, and wrap them in
+// brackets.
+
+                v = partial.length === 0
+                    ? '[]'
+                    : gap
+                    ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
+                    : '[' + partial.join(',') + ']';
+                gap = mind;
+                return v;
+            }
+
+// If the replacer is an array, use it to select the members to be stringified.
+
+            if (rep && typeof rep === 'object') {
+                length = rep.length;
+                for (i = 0; i < length; i += 1) {
+                    if (typeof rep[i] === 'string') {
+                        k = rep[i];
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                        }
+                    }
+                }
+            }
+            else {
+
+// Otherwise, iterate through all of the keys in the object.
+
+                for (k in value) {
+                    if (Object.prototype.hasOwnProperty.call(value, k)) {
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                        }
+                    }
+                }
+            }
+
+// Join all of the member texts together, separated with commas,
+// and wrap them in braces.
+
+            v = partial.length === 0
+                ? '{}'
+                : gap
+                ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
+                : '{' + partial.join(',') + '}';
+            gap = mind;
+            return v;
+        }
+    }
+
+// If the JSON object does not yet have a stringify method, give it one.
+
+    if (typeof JSON.stringify !== 'function') {
+        JSON.stringify = function (value, replacer, space) {
+
+// The stringify method takes a value and an optional replacer, and an optional
+// space parameter, and returns a JSON text. The replacer can be a function
+// that can replace values, or an array of strings that will select the keys.
+// A default replacer method can be provided. Use of the space parameter can
+// produce text that is more easily readable.
+
+            var i;
+            gap = '';
+            indent = '';
+
+// If the space parameter is a number, make an indent string containing that
+// many spaces.
+
+            if (typeof space === 'number') {
+                for (i = 0; i < space; i += 1) {
+                    indent += ' ';
+                }
+
+// If the space parameter is a string, it will be used as the indent string.
+
+            }
+            else if (typeof space === 'string') {
+                indent = space;
+            }
+
+// If there is a replacer, it must be a function or an array.
+// Otherwise, throw an error.
+
+            rep = replacer;
+            if (replacer && typeof replacer !== 'function' && (typeof replacer !== 'object' || typeof replacer.length !== 'number')) {
+                throw new Error('JSON.stringify');
+            }
+
+// Make a fake root object containing our value under the key of ''.
+// Return the result of stringifying the value.
+
+            return str('', {'': value});
+        };
+    }
+
+
+// If the JSON object does not yet have a parse method, give it one.
+
+    if (typeof JSON.parse !== 'function') {
+        JSON.parse = function (text, reviver) {
+
+// The parse method takes a text and an optional reviver function, and returns
+// a JavaScript value if the text is a valid JSON text.
+
+            var j;
+
+            function walk(holder, key) {
+
+// The walk method is used to recursively walk the resulting structure so
+// that modifications can be made.
+
+                var k, v, value = holder[key];
+                if (value && typeof value === 'object') {
+                    for (k in value) {
+                        if (Object.prototype.hasOwnProperty.call(value, k)) {
+                            v = walk(value, k);
+                            if (v !== undefined) {
+                                value[k] = v;
+                            } else {
+                                delete value[k];
+                            }
+                        }
+                    }
+                }
+                return reviver.call(holder, key, value);
+            }
+
+
+// Parsing happens in four stages. In the first stage, we replace certain
+// Unicode characters with escape sequences. JavaScript handles many characters
+// incorrectly, either silently deleting them, or treating them as line endings.
+
+            text = String(text);
+            cx.lastIndex = 0;
+            if (cx.test(text)) {
+                text = text.replace(cx, function (a) {
+                    return '\\u' +
+                        ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+                });
+            }
+
+// In the second stage, we run the text against regular expressions that look
+// for non-JSON patterns. We are especially concerned with '()' and 'new'
+// because they can cause invocation, and '=' because it can cause mutation.
+// But just to be safe, we want to reject all unexpected forms.
+
+// We split the second stage into 4 regexp operations in order to work around
+// crippling inefficiencies in IE's and Safari's regexp engines. First we
+// replace the JSON backslash pairs with '@' (a non-JSON character). Second, we
+// replace all simple value tokens with ']' characters. Third, we delete all
+// open brackets that follow a colon or comma or that begin the text. Finally,
+// we look to see that the remaining characters are only whitespace or ']' or
+// ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
+
+            if (/^[\],:{}\s]*$/
+                    .test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
+                        .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+                        .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+
+// In the third stage we use the eval function to compile the text into a
+// JavaScript structure. The '{' operator is subject to a syntactic ambiguity
+// in JavaScript: it can begin a block or an object literal. We wrap the text
+// in parens to eliminate the ambiguity.
+
+                j = eval('(' + text + ')');
+
+// In the optional fourth stage, we recursively walk the new structure, passing
+// each name/value pair to a reviver function for possible transformation.
+
+                return typeof reviver === 'function'
+                    ? walk({'': j}, '')
+                    : j;
+            }
+
+// If the text is not JSON parseable, then a SyntaxError is thrown.
+
+            throw new SyntaxError('JSON.parse');
+        };
+    }
+}());
+
+
+/* custom routines */
+
+function toggleOpinion(id) {
+	var expand=(document["opinion_img_"+id].src.indexOf("plus.gif")!=-1);
+	document["opinion_img_"+id].src=(expand)?img_path+"/minus.gif":img_path+"/plus.gif";
+
+	var comments=getLyrObj("comments_"+id);
+	comments.display=(expand)?"block":"none";
+}
+
+function popURL(file,w,h) {
+	new_win=window.open(file,'','width='+w+',height='+h+',top=0,menubar=no,toolbar=no,scrollbars=yes,resizable=yes,location=yes,status=no');
+	return false;
+}
+
+function pop(file,w,h) {
+	if(file.indexOf('datapopup.php')!=-1) {
+	//if(file=='datapopup.php') {
+		file='/datacenter/'+file;
+	}
+	var admin_win=window.open(file,'','width='+w+',height='+h+',top=0,menubar=no,toolbar=yes,scrollbars=yes,resizable=yes,location=no,status=no');
+}
+
+function popWin(file,w,h) {
+	var admin_win=window.open(file,'','width='+w+',height='+h+',top=0,location=no,directories=no,menubar=no,status=no,titlebar=no,resizable=yes,location=no,status=no');
+}
+
+function popImage(path) {
+	$.fancybox(path, {type: 'image'});
+}
+
+function popImageFull(path) {
+	$.fancybox(path, {type: 'image',autoDimensions: false, autoScale: false});
+}
+/*
+function captureEventAtMouse() {
+	if(window.Event) { document.captureEvents(Event.MOUSEMOVE); }
+}
+function releaseEventAtMouse() {
+	if(window.Event) { document.releaseEvents(Event.MOUSEMOVE); }
+}
+*/
+function popImageAtMouse(path) {
+	new AJAX.FileRequest(
+		'/functions/ajax/get_image_pop.php',
+		function() {
+			if(this.request && this.response) {
+				image = JSON.parse(this.response);
+				if(image){
+					img_pop	= DOM.getElementById('image_popup');
+					
+					img_pop.style.width 	= parseInt(image['width']) + 20 + "px";
+					img_pop.style.height 	= parseInt(image['height']) + 30 + "px";
+					img_pop.style.top		= (mapMouseY - (parseInt(image['height']) + 40)) + "px";
+					img_pop.style.left		= (mapMouseX - (parseInt(image['width']) / 2)) + "px";
+					
+					DOM.getElementById('image_popup_image_tag').innerHTML = image['template'];
+					img_pop.style.visibility = 'visible';
+					img_pop.style.display = "block";
+
+				}else{
+					alert('Could not parse response: '+this.response);
+				}
+			}else{
+				alert(this.response);
+			}
+		},
+		null,
+		'get',
+		'path='+path
+	);
+}
+
+/*
+function imagePopup() {
+	if(this.request && this.response) {
+		image=getGETParams(this.response);
+		if(image["path"] && image["width"] && image["height"]) {
+			img=DOM.getElementById('image-pop');
+			//img.className='story-photo';
+			img.style.width=parseInt(image["width"]);
+			img.style.height=parseInt(image["height"]);
+			HTML=[
+				'<a href="javascript:imagePopClose()" title="Click to Close"><img src="', image["path"], '" width="', image["width"], '" height="', image["height"], '" alt="" /></a>'
+			];
+			img.innerHTML=HTML.join('');
+			img.style.top=(DHTML.getScrollY() + 120) + "px";
+			img.style.left=(DHTML.getInnerWidth() / 4) + "px";
+			img.style.visibility="visible";
+		}
+		else {
+			alert('We\'re sorry, this image is temporarily unavailable');
+		}
+	}
+	else {
+		alert('We\'re sorry, un expected error occurred');
+	}
+}
+*/
+function imagePopClose() {
+	img_pop=DOM.getElementById('image_popup');
+	img_pop.style.display="none";
+	//img=DOM.getElementById('image-pop');
+	//img.style.visibility="hidden";
+}
+
+function previewContent(content) {
+	var preview_content=window.open('','preview_content','width=640,height=480,toolbar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+	with(preview_content.document) {
+		open(); write(content); close();
+	}
+	if(preview_content.focus)preview_content.focus();
+}
+
+function clear(menu) {
+	for(var j=0; j<menu.options.length; j++) {
+		menu.options[j]=null;
+	}
+	menu.options.length=0;
+	menu.options[0]=new Option("*Select from list*",0);
+}
+
+function set(menu) {
+	var n=1;
+	for(var i=1; i<set.arguments.length; i++) {
+		entry=set.arguments[i].split("__");
+		menu.options[n]=new Option(entry[1],entry[0]);
+		n++;
+	}
+	//menu.options[1].selected=true;
+}
+
+var submitting=0;
+function nice(form) {
+	if(!submitting) {
+		submitting=1;
+		form.submit_btn.disabled=true;
+		return true;
+	}
+	return false;
+}
+function popupWindow_middlecenter(purl,pname,pwidth,pheight,dx,dy,pstr) {
+	var availWidth=window.screen.availWidth;
+	var availHeight=window.screen.availHeight;
+
+	if (window.screen.availWidth>1600) {
+		availWidth-=window.screen.availWidth/2;
+	}
+    var px=(availWidth -pwidth )/2 + dx;
+    var py=(availHeight-pheight)/2 + dy;
+
+    PopupWindow_middlecenter = 
+    window.open(purl,pname,'left='+px+',top='+py+',width='+pwidth+',height='+pheight+','+pstr+'');
+	PopupWindow_middlecenter.focus();
+
+}
+
+// rss menu
+var rssTimer=null;
+function getRSSMenu() {
+	hideRSSMenu();
+
+	rssMenu=DOM.getElementById('rss-toolbar');
+	rssButton=DOM.getElementById('toolbar-rss-button');
+
+	rssMenu.style.top=parseInt(DHTML.getPosY(rssButton) + 10)+'px';
+	rssMenu.style.left=parseInt(DHTML.getPosX(rssButton) - 275) +'px';
+	rssMenu.style.visibility='visible';
+}
+function hideRSSMenu() {
+	rssMenu=DOM.getElementById('rss-toolbar');
+	rssMenu.style.visibility='hidden';
+	if(rssTimer!=null) { clearTimeout(rssTimer); }
+}
+function toggleRSSMenu() {
+	rssMenu=DOM.getElementById('rss-toolbar');
+	if(rssMenu.style.visibility=='hidden' || rssMenu.style.visibility=='') {
+		getRSSMenu();
+	}
+	else {
+		hideRSSMenu();
+	}
+}
+function offMenu() {
+	rssTimer=setTimeout('hideRSSMenu()','3000');
+}
+
+// sponsorship tag
+var sponsorTimer=null;
+function hideSponsorTag() {
+	st=DOM.getElementById('sponsorTag');
+	st.style.visibility='hidden';	
+	if(sponsorTimer!=null) { clearTimeout(sponsorTimer); }
+}
+function getSponsorTag() {
+	st=DOM.getElementById('sponsorTag');
+	eggnetwork_bird=DOM.getElementById('aa_eggnetwork_bird');
+
+	st.innerHTML='Advertisement';
+	st.style.top=parseInt(DHTML.getPosY(eggnetwork_bird) + 25)+'px';
+	st.style.left=parseInt(DHTML.getPosX(eggnetwork_bird) - 75)+'px';
+	st.style.visibility='visible';
+	sponsorTimer=setTimeout('hideSponsorTag()','2000');
+}
+
+function toggleMost() {
+	most_read=DOM.getElementById('most-read');
+	most_emailed=DOM.getElementById('most-emailed');
+
+	if(most_read.style.display=='block' || most_read.style.display=='') {
+		most_read.style.display='none';
+		most_emailed.style.display='block';
+	}
+	else {
+		most_read.style.display='block';
+		most_emailed.style.display='none';
+	}
+}
+function addCommas(string){
+	string += '';
+	x = string.split('.');
+	x1 = x[0];
+	if(x.length > 1){
+		x2 = '.' + x[1];
+	}else{
+		x2 = '';
+	}
+	var regex = /(\d+)(\d{3})/;
+	while (regex.test(x1)) {
+		x1 = x1.replace(regex, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+}

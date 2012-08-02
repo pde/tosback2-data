@@ -77,8 +77,6 @@ function SetCookie(sName, sSub, sNewValue, sPath, isPermanent)
 		sCookie = "";
 		
 	var sNewCookie = sNewValue;
-	var sDomain = "comcast.com";
-
 
 	if(sSub)
 	{
@@ -122,11 +120,11 @@ function SetCookie(sName, sSub, sNewValue, sPath, isPermanent)
 	
 	if(isPermanent && isPermanent == 'true')
 	{
-		document.cookie = sName + '=' + sNewCookie + '; expires=Fri, 31 Dec 2020 23:59:59 GMT; path=' + sPath + ";domain=" + sDomain + ';';
+		document.cookie = sName + '=' + sNewCookie + '; expires=Fri, 31 Dec 2020 23:59:59 GMT; path=' + sPath + ';';
 	}
 	else
 	{
-		document.cookie = sName + "=" + sNewCookie + "; path=" + sPath + ";domain=" + sDomain + ";";
+		document.cookie = sName + "=" + sNewCookie + "; path=" + sPath + ";";
 	}
 }
 

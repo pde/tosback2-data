@@ -216,26 +216,6 @@ if (hasClass(bodyEl,'custserv')){
 /*** Browse-path scripts ***/
 if (hasClass(bodyEl, 'catalog')){
 
-	/*
-	//Sorting (catalog_sort_by_option)
-	$("select.sortItemOptions").change(function(evt){
-		var sortUrl = window.location.search;
-		sortUrl = site.removeParamValue(sortUrl,"sortByColumnName");
-
-		if($.browser.queryParams.currentIndex !== null) {
-			sortUrl = site.removeParamValue(sortUrl,"currentIndex");
-			sortUrl += "&currentIndex=0";
-		}
-		sortUrl += "&sortByColumnName=" + this.options[this.selectedIndex].value;
-		if (sortUrl.indexOf("?") === -1) {
-			sortUrl = "?" + sortUrl;
-		}
-
-		window.location.search = sortUrl;
-	});
-	$("select.sortItemOptions option[value="+ (site.sortByColumnName || "") +"]").attr("selected", "true");
-	*/
-
 	// category Nav Boot Type and Skin
 	$('#refinementContainer .refinementHeading').each(function(){
 		if($(this).text() == "Style"){
@@ -245,9 +225,6 @@ if (hasClass(bodyEl, 'catalog')){
 			$(this).prepend('<a href="/custserv/custserv_popup.jsp?pageName=skinHelp" class="openAjaxLayer"><span id="helpSkin"></span></a>');
 		}
 	});
-
-	// All non-widget filmstrips including cms-created and Recently-Viewed.
-	//$('div.thumbCarousel').thumbCarousel({'preload':4});
 
 	//Recently-viewed panel
 	(function(){
@@ -337,7 +314,7 @@ if (hasClass(bodyEl, 'catalog')){
 			var delayOpen = 500;
 			var delayClose = 300;
 			//Features container
-			var fc = $('div.descriptionContainer').find('div.featuresContainer');
+			var fc = $('div.descriptionContainer').find('div.featuresContainer').css('display','block');
 			var fcWidth = fc.width();
 
 			//Features
@@ -457,7 +434,7 @@ if (hasClass(bodyEl, 'catalog')){
 					var name = $(this).val();
 					var el = $(this);
 					setTimeout(function(){
-						el.closest('.VariantDropdownWithSwatchList').find('ul.swatches li[title='+name+']').click();
+						el.closest('.VariantDropdownWithSwatchList').find('ul.swatches li[title="'+name+'"]').click();
 					},11); //Widgets have a 10ms delay on the built-in click event.
 				});
 
@@ -529,5 +506,16 @@ if (hasClass(bodyEl,'personalInfo')){
 	select.val($('options:first', select).val());
 }
 
+/* Left Nav Show/Hide Refinement Section */
+if (bodyId === 'category' || bodyId === 'thumbnail' ){
+    $('#refinementContainer').delegate( "h3.refinementHeading","click", function(event){
+        var headerParent = $(this).parent().attr('class');
+        if(headerParent == "refViewState" || headerParent == "ErefViewState"){
+            $(this).parent().attr('class', 'CrefViewState');
+        }else{
+            $(this).parent().attr('class', 'refViewState');
+        }
+    });
+}
 
 

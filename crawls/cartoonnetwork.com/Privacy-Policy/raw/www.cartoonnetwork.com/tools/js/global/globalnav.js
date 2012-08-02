@@ -59,6 +59,36 @@ function doTrayNav() {
 
 jQuery(document).ready(function() {
 
+	//////////////////////////////////////////////////////////////////////////
+	// Mobile check
+	
+			var uaCheck = navigator.userAgent.toLowerCase();
+			var isAndroid = uaCheck.indexOf("android") > -1;
+			var isATab = uaCheck.indexOf("mobile") > -1;
+			
+			if (isAndroid == true && isATab == true) {
+				var isAndroidCheck = true;	
+			}
+			
+//		if ((navigator.userAgent.match(/iPhone/i)) || isAndroidCheck ){
+		if ((navigator.userAgent.match(/iPhone/i)) ) {
+			
+				  var mMobilePref = readCookie("mobile_pref");
+				 if ((mMobilePref != null) && (mMobilePref != '')) {
+					if (mMobilePref = "full") { 
+					 } else if (mMobilePref = "mobile") {
+						location.replace("http://www.cartoonnetwork.com/m");
+						
+					}
+						
+				} else {
+
+						location.replace("http://www.cartoonnetwork.com/m");
+				}
+
+		}
+
+		
 	/////////////////////////////////////////////////////////////////////////
 	//  Auto Update the Copyright Year, hardcode year is currently stuck  at 2011.
 		var d				= new Date();
@@ -67,6 +97,10 @@ jQuery(document).ready(function() {
 			var newlegalcopy		= legalcopy.replace(/2011+/g, d.getFullYear());
 			jQuery("#legalWrapper .legalSub").html(newlegalcopy);
 		}
+		
+		
+
+	
 	/////////////////////////////////////////////////////////////////////////
 	// move the alllshows tray to the footer after page load
 	
@@ -128,8 +162,8 @@ jQuery(document).ready(function() {
 			gnLength = jQuery(data).find('PropertyMaster').length;
 			jQuery(data).find('PropertyMaster').each(function() {
 				var gnLinkText = jQuery(this).find('Title').text();
-				var clickMapName = gnLinkText.replace(/\s/g,'-');
-				clickMapName = "?atclk_gn=link_shw_" + clickMapName.replace('\'','');
+				var clickMapName = gnLinkText.replace(/\s/g,'_');
+				clickMapName = "?atclk_gn=picker_" + clickMapName.replace('\'','');
 				var gnLinkURL = jQuery(this).find('CanonicalTag:first').text();
 				if (window.location.hostname.indexOf('staging') > -1) {
 					gnLinkURL = gnLinkURL.replace(/www/,'staging');
@@ -147,7 +181,7 @@ jQuery(document).ready(function() {
 
 				if (i == jQuery(data).find('PropertyMaster').length) {
 					//doTrayNav();
-					jQuery('img[title]').tooltip({ position: 'bottom right', offset:[-8,-33], tipClass: 'tooltip' });
+					jQuery('img[title]').tooltip({position:'bottom right', offset:[-8,-33], tipClass:'tooltip'});
 					jQuery('.navWrapper .floater .navcarousel .outer .inner').css('width',690);
 				}
 				i++;
@@ -267,4 +301,20 @@ function mnShowSearch() {
 
 function mnHideSearch() {
 		jQuery('#mn_searchbox').hide();
+}
+
+
+function smartBuffer(bufUrl, bufTime) {
+  var bufferC = readCookie("CNSBuf");
+	 if ((bufferC != null) && (bufferC != '')) {
+		deleteCookie("CNSBuf");
+    }
+	
+	setCookie("CNSBuf", bufUrl);
+	
+	if (bufTime == null ){
+	window.location.href = "/redirects/index.html?time=8";
+	} else {
+	window.location.href = "/redirects/index.html?time=" + bufTime;
+	}
 }

@@ -107,7 +107,7 @@ function ensureDotNetVariablesExist()
 		sfield = oObject.value
 		sfield = sfield.replace(/^\s*|\s*$/g,"");
 		
-		if (sfield.toLowerCase() == "enter keyword" || sfield.toLowerCase() == "enter keyword or item number") 
+		if (sfield.toLowerCase() == "enter keyword" || sfield.toLowerCase() == "enter keyword or item number" || sfield.toLowerCase() == "search within the club store") 
 			{
 				oObject.value = '';
 			}

@@ -39,7 +39,6 @@ Enjoy!
       hoverClass: 'hover',
       useID: true,
       idPrefix: 'uniform',
-	  spanPrefix: 'SpanUniform',//Added for OC2PA dropdown truncate function
       resetSelector: false
     },
     elements: []
@@ -169,24 +168,15 @@ Enjoy!
     }
 
     function doSelect(elem){
-	  var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1,
-	  is_safari = navigator.userAgent.toLowerCase().indexOf('safari') > -1,
-	  is_mac = navigator.userAgent.match(/mac/i),
-        divTag = $('<div />'),
-        spanTag = $('<span />');
-	/*newly Added code for OC2PA dropdown truncate function starts*/
-	  if(elem.hasClass('fixwidtrun')) {
-	  var selcla= 1;
-	  }
-	  else {
-	  var selcla= 2;
-	  }
-	  /*newly Added code for OC2PA dropdown truncate function ends*/
+	  var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+	  var is_safari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
+      var divTag = $('<div />'),
+          spanTag = $('<span />');
+
       divTag.addClass(options.selectClass);
 
       if(options.useID && elem.attr("id") != ""){
         divTag.attr("id", options.idPrefix+"-"+elem.attr("id"));
-		spanTag.attr("id", options.spanPrefix+"-"+elem.attr("id"));//Added for OC2PA dropdown truncate function
       }
       
       var selected = elem.find(":selected:first");
@@ -206,47 +196,14 @@ Enjoy!
 		if (is_chrome) {
 			spanTag.css('width',eval(elem.widestSize()-26)+'px'); //alert('chrome'); //chrome detects as safari so put chrome first  
 		} else if(is_safari) {
-			if(!!is_mac) {
-				spanTag.css('width',eval(elem.widestSize()-26)+'px');
-			}else {
-				spanTag.css('width',eval(elem.widestSize()-26)+'px'); //alert('safari'); //safari doesnt like the width of the selects so dont add pixels
-			}
+			spanTag.css('width',eval(elem.widestSize()-26)+'px'); //alert('safari'); //safari doesnt like the width of the selects so dont add pixels
 		} else {
 			spanTag.css('width',eval(elem.widestSize()-26)+'px'); //other browsers IE and FF same as chrome
-			
-			
 		}
-		/*newly Added code for OC2PA dropdown truncate function starts*/
-		if(selcla == 1){
-		var spanlen=spanTag.width() - 18;
-		var selitm=elem.find(":selected:first").text();
-		var selwid=elem.find(":selected:first").width();
-		//var sellen=selitm.length;
-		var txt=constrain(selitm, spanlen);
-		spanTag.html(txt)
-		}
-		/*newly Added code for OC2PA dropdown truncate function ends*/
       elem.bind({
         "change.uniform": function() {
-		/*newly Added code for OC2PA dropdown truncate function starts*/
-		if(elem.hasClass('fixwidtrun')) {
-	  var selcla= 1;
-	  }
-	  else {
-	  var selcla= 2;
-	  }
-		if(selcla == 1){
-		var spanlen=spanTag.width() - 18;
-		var selitm=elem.find(":selected").text();
-		var selwid=elem.find(":selected").width();
-		var txt=constrain(selitm, spanlen);
-         spanTag.html(txt);
-		  }
-		  else{
           spanTag.text(elem.find(":selected").text());
-		  }          
-		  divTag.removeClass(options.activeClass);
-		  /*newly Added code for OC2PA dropdown truncate function ends*/
+          divTag.removeClass(options.activeClass);
         },
         "focus.uniform": function() {
           divTag.addClass(options.focusClass);
@@ -526,7 +483,6 @@ Enjoy!
 
       //handle defaults
       if($el.attr("disabled")){
-
         //box is checked by default, check our box
         divTag.addClass(options.disabledClass);
       }
@@ -723,25 +679,4 @@ Enjoy!
       }
     });
   };
-  
-  /*newly Added code for OC2PA dropdown truncate function starts*/
-  function constrain(text, ideal_width){
-	var ideal_width_fin=ideal_width - 5;
-    var temp_item = ('<span class="tphd_hide" style="display:none;">'+ text +'</span>');
-    $(temp_item).appendTo('body');
-    var item_width = $('span.tphd_hide').width();
-	var ideal = parseInt(ideal_width_fin);
-    var smaller_text = text;
-    if ((item_width>ideal) || (item_width==ideal )){
-        while (item_width > ideal) {
-            smaller_text = smaller_text.substr(0, (smaller_text.length-1));
-            $('.tphd_hide').html(smaller_text);
-            item_width = $('span.tphd_hide').width();
-        }
-        smaller_text = smaller_text;
-    }
-    $('span.tphd_hide').remove();
-    return smaller_text;
-}
-/*newly Added code for OC2PA dropdown truncate function ends*/
 })(jQuery);

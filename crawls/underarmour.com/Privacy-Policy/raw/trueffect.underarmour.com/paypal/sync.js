@@ -7,8 +7,9 @@ var ppDataSync = {
     event: '',
     tag: '',
     domain: '',
+    controlid: '',
     URL: "https://offers.paypal.com/c_banner/retarg?h=##MERCHANTID##&s=##PREFID##&t=N",
-    PixelURL: "/ping?spacedesc=##TAG##&db_afcr=123&group=##GROUP##&event=##EVENT##&x_pp_id=##ID##&x_pp_mid=##MERCHANTID##&x_pp_data=##DATA##",
+    PixelURL: "/ping?spacedesc=##TAG##&db_afcr=123&group=##GROUP##&event=##EVENT##&x_pp_id=##ID##&x_pp_mid=##MERCHANTID##&x_pp_data=##DATA##&x_pp_controlid=##CONTROLID##",
     SyncAttempts: 0,
     SyncMaxAttempts: 3,
     SyncDelay: 2000,
@@ -42,14 +43,20 @@ var ppDataSync = {
             ppDataSync.tag = ppDataSync.GetQuerystring('Tag', "@@TAG@@");
         }
 
+        if (ppDataSync.controlid == '') {
+            ppDataSync.controlid = ppDataSync.GetQuerystring('ControlID', "@@CONTROLID@@");
+        }
+
         if (ppDataSync.merchantid == undefined || ppDataSync.merchantid == "") {
             ppDataSync.Log('No merchant id was found in the request!');
             return;
         }
+
         if (ppDataSync.group == undefined || ppDataSync.event == undefined || ppDataSync.group == "" || ppDataSync.event == "") {
             ppDataSync.Log('No group or event was found in the request!');
             return;
         }
+
         if (ppDataSync.data == undefined || ppDataSync.data == "") {
             ppDataSync.data = "|null|null|null|";
         }
@@ -120,12 +127,12 @@ var ppDataSync = {
         if (spacedesc == '') { ppDataSync.Log('spacedesc not in querystring'); return; }
 
         var img = new Image();
-        img.src = ppDataSync.ParseDomain() + ppDataSync.PixelURL.replace('##TAG##', spacedesc).replace('##MERCHANTID##', ppDataSync.merchantid).replace('##ID##', ppDataSync.id).replace('##DATA##', ppDataSync.data).replace('##GROUP##', ppDataSync.group).replace('##EVENT##', ppDataSync.event);
+        img.src = ppDataSync.ParseDomain() + ppDataSync.PixelURL.replace('##TAG##', spacedesc).replace('##MERCHANTID##', ppDataSync.merchantid).replace('##ID##', ppDataSync.id).replace('##DATA##', ppDataSync.data).replace('##GROUP##', ppDataSync.group).replace('##EVENT##', ppDataSync.event).replace('##CONTROLID##', ppDataSync.controlid);
 
         ppDataSync.Log('complete');
     },
     SyncFrame: function () {
-        var url = ppDataSync.ParseDomain() + '/paypal/sync.htm?Tag=' + ppDataSync.tag + '&MerchantID=' + ppDataSync.merchantid + '&Data=' + ppDataSync.data + '&Group=' + ppDataSync.group + '&Event=' + ppDataSync.event;
+        var url = ppDataSync.ParseDomain() + '/paypal/sync.htm?Tag=' + ppDataSync.tag + '&MerchantID=' + ppDataSync.merchantid + '&Data=' + ppDataSync.data + '&Group=' + ppDataSync.group + '&Event=' + ppDataSync.event + '&ControlID=' + ppDataSync.controlid;
 
         var iframe = document.createElement('iframe');
         iframe.src = url;

@@ -1,0 +1,2 @@
+jQuery(document).ready(function(a){a("form#helpPageForm").validate({rules:{firstName:"required",email:{required:true,email:true},password:"required",termsConditionsAgreeCheckbox:"required"},messages:{firstName:"Please enter your first name",email:"Please enter a valid email.",password:"Please enter your password.",termsConditionsAgreeCheckbox:"You must agree with Modnique.com terms"},errorPlacement:function(b,c){b.addClass("negative");
+b.appendTo(c.parent());}});});

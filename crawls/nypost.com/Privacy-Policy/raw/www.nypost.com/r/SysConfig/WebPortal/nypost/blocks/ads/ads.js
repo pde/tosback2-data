@@ -27,6 +27,7 @@ function ad_tag(pos,sz,admode,dcopt,custom_params){
        ad += "pos="+pos+";";
        ad += "ref="+referrer+";";       
        ad += "popup="+popup+";";
+       ad += crtg_content;       
        if (custom_params.length > 0) {
           ad += custom_params+";";
        }

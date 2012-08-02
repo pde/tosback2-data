@@ -47,6 +47,17 @@ function populatePrices(a) {
       rrItemInfo[thisItem].pidForDisplay = a.prices[b].pidForDisplay; // add pid for display to object
 
 			if (a.prices[b].valid === "true") { // if JSON response object item is valid
+				//do rating stuff
+				var rating = a.prices[b].rating;
+				if (rating > 0){
+					$("#rrRating" + a.prices[b].pid).addClass("bv" + rating*10);
+					$("#rrReview" + a.prices[b].pid).html("Read all " + a.prices[b].reviewCount +" reviews");
+					$("#rrRatingBox" + a.prices[b].pid).show();
+				}else{
+					$("#rrRatingBox" + a.prices[b].pid).html('<a href="' + rrLink +'%23reviewTab" class="underline">Write the first review</a>');
+					$("#rrRatingBox" + a.prices[b].pid).show();
+				}
+								
 				var bulkStr = "";
 				if (a.prices[b].hasBulkPricingAvailable === "true") { // if has bulk pricing messaging
 					bulkStr = rrStr.asLowAs;
@@ -66,8 +77,6 @@ function populatePrices(a) {
 					rrPriceBlock.push('<span class="merchPrice"><label class="price_title">' + bulkStr + '</label>');
 					rrPriceBlock.push('<span class="main_price">' + a.prices[b].price + '<br/>' + rrUOM + '</span></span>');
 				}
-
-
 				rrPriceBlock.push('<input type="hidden" value="'+rrGetCMTag(rrLink)+'" name="trackingCategory">'); // add CM input tag to form for tracking
 				$(".rrPriceElement" + a.prices[b].pid).html(rrPriceBlock.join('')); // join the elements of the array
 				$(".item_atc_rrSKU" + a.prices[b].pid).html(a.prices[b].pidForDisplay); // update the pid for display

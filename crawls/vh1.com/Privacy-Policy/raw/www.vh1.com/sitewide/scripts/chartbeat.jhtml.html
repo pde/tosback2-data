@@ -1,0 +1,43 @@
+var file = window.location.pathname;
+var _sf_async_config = {};
+_sf_async_config.useCanonical = true;
+_sf_async_config.uid = 37728;
+_sf_async_config.path = file;
+_sf_async_config.domain = 'vh1.com';
+_sf_async_config.authors = '';
+if ((file.indexOf("/home/") == 0) || ((file.indexOf("/") == 0) && (file.length == 1)) || ((file.indexOf("/video/") == 0) && (file.length == 7)) || ((file.indexOf("/music/") == 0) && (file.length == 7)) || ((file.indexOf("/shows/") == 0) && (file.length == 7))) {
+_sf_async_config.sections = 'VH1 Hub Pages';
+} else if (file.indexOf("/video/") == 0) {
+_sf_async_config.sections = 'VH1 Video';
+} else if (file.indexOf("/music/") == 0) {
+_sf_async_config.sections = 'VH1 Music';
+} else if (file.indexOf("/shows/") == 0) {
+_sf_async_config.sections = 'VH1 Shows';
+} else if ((file.indexOf("/shows/events/") == 0) || (file.indexOf("/shows/pepsi_superbowl_2012/series.jhtml") == 0) || window.location.hostname == "www.omusicawards.com") {
+_sf_async_config.sections = 'VH1 Events';
+} else if (file.indexOf("/music/vh1classic/main.jhtml") == 0) {
+_sf_async_config.sections = 'VH1 Classic';
+} else if (file.indexOf("/celebrity/") == 0) {
+_sf_async_config.sections = 'VH1 Celebrity';
+} else if (file.indexOf("/music/tuner/") == 0) {
+_sf_async_config.sections = 'Tuner';
+} else if (window.location.hostname == "blog.vh1.com") {
+_sf_async_config.sections = 'VH1 Blog';
+} else {
+_sf_async_config.sections = '';
+}
+(function() {
+function loadChartbeat() {
+window._sf_endpt = (new Date()).getTime();
+var e = document.createElement('script');
+e.setAttribute('language', 'javascript');
+e.setAttribute('type', 'text/javascript');
+e.setAttribute('src', (('https:' == document.location.protocol) ? 'https://a248.e.akamai.net/chartbeat.download.akamai.com/102508/': 'http://static.chartbeat.com/') + 'js/chartbeat.js');
+document.body.appendChild(e);
+}
+var oldonload = window.onload;
+window.onload = (typeof window.onload != 'function') ? loadChartbeat: function() {
+oldonload();
+loadChartbeat();
+};
+})();

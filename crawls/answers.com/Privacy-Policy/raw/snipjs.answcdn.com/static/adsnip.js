@@ -735,7 +735,7 @@ var Adsnip = (function(){
 		click_url: function(unit, feed_id) {
 			var payload = {
 				'url': escape(unit.url),
-				'display_url': unit.visible_url,
+				'display_url': escape(unit.visible_url),
 				'rank': unit.n,
 				'feed_request_id': Adsnip.get_feed_request_id(feed_id),
 				'feed_id': feed_id,

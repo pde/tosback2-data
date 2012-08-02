@@ -31,29 +31,7 @@ TSC.util={
 		return puc;
 		 }
 	,
-    getCookiePuc: function(){
-		var puc = "";
-	    try {
-            var puctimestring= YAHOO.util.Cookie.get("pucCookie");
-            if (TSC.util.isDefined(puctimestring)){
-                var puctimeregex = /(.+)--(.+)/i;
-                var resultPucTimeRegex = puctimeregex.exec(puctimestring);
-                var extractedtime=Date.parse(resultPucTimeRegex[1]);
-                var rightNow = new Date().getTime();
-                if (extractedtime > rightNow){
-                    puc=resultPucTimeRegex[2];
-                }
-                YAHOO.util.Cookie.remove("pucCookie", {path:"/", domain: "thestreet.com" });
-            }
-        }catch(e){}
-        if (puc.indexOf("--") !=-1){
-            return "";
-        }
-        else {
-            return puc;
-        }
-         }
-	,
+
    	isValidPuc: function(checkPuc){
 	  if (TSC.util.isDefined(checkPuc)){
 				if (checkPuc.indexOf("txt")!=-1 || checkPuc.indexOf("html")!=-1 || checkPuc.indexOf("text")!=-1 || checkPuc.indexOf("tscrmb")!=-1){
@@ -258,7 +236,7 @@ TSC.reporting.config=function(o){
 		if (!TSC.util.isDefined(s.prop25)){
 			s.prop25=TSC.util.getPuc();
 		}
-        s.eVar23=TSC.util.getCookiePuc();
+        //s.eVar23=TSC.util.getCookiePuc();
         s.prop42=s.eVar23;
         if(TSC.util.isDefined(document)){
 			s.prop27=document.URL;

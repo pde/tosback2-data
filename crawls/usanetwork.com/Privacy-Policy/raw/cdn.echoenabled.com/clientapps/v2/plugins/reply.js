@@ -7,7 +7,7 @@
  * implied, including fitness for a particular purpose. In no event shall
  * the author be liable for any damages arising in any way out of the use
  * of this software, even if advised of the possibility of such damage.
- * $Id: reply.js 37012 2011-12-16 06:57:23Z snaky $
+ *
  */
 
 (function($) {

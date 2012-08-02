@@ -27,8 +27,19 @@ try {
             }
         } catch(er) {
       }
+       var t = encodeURIComponent(d.title);
+        l += "&t=" + t;
      var u = encodeURIComponent(d.URL);
         l += "&u=" + u;
+try {
+            var c = d.getElementsByTagName('META');
+            var m = '';
+            for (i in c) {
+                m += (c[i].content || '');
+            }
+            l += "&m=" + encodeURIComponent(m);
+        } catch(er) {
+}
 try {
             var g=d.createElement('IFRAME');
             g.width=1;

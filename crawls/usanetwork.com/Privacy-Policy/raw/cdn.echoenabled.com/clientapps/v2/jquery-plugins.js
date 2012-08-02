@@ -1,5 +1,5 @@
 // vim: set ts=8 sts=8 sw=8 noet:
-// $Id: jquery-plugins.js 38252 2012-04-26 06:37:27Z jskit $
+//
 
 
 /*!

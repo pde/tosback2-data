@@ -57,11 +57,12 @@ Other changes includes several minor performance enhancements and code refactori
 					var option = $(this).text();
 					//add first letter of each word to array
 					keys.push(option.charAt(0).toLowerCase());
-					if ($(this).attr('selected') == true){
+					if ($(this).attr('selected') == 'selected'){
 						opts.defaultText = option;
+						$containerText.text(option);
 						currentIndex = i;
 					}
-					newListItems += '<li>'+option+'</li>';
+					newListItems += '<li rel="'+$(this).val() +'">'+option+'</li>';
 				});
 				//add new list items to ul
 				$newUl.html(newListItems);
@@ -73,7 +74,7 @@ Other changes includes several minor performance enhancements and code refactori
 				$input.children('optgroup').each(function(i){
 
 					var optionTitle = $(this).attr('label'),
-						$optGroup = $('<li class="newListOptionTitle">'+optionTitle+'</li>');
+						$optGroup = $('<li class="newListOptionTitle" rel="'+$(this).val() +'">'+optionTitle+'</li>');
 
 					$optGroup.appendTo($newUl);
 					var $optGroupList = $('<ul></ul>');
@@ -88,7 +89,7 @@ Other changes includes several minor performance enhancements and code refactori
 							opts.defaultText = option;
 							currentIndex = itemIndex;
 						}
-						newListItems += '<li>'+option+'</li>';
+						newListItems += '<li rel="'+$(this).val() +'">'+option+'</li>';
 					})
 					//add new list items to ul
 					$optGroupList.html(newListItems);
@@ -183,15 +184,16 @@ if($input.children().length > 9) {
 				$newLi.removeClass('newListHover')
 					.eq(currentIndex)
 					.addClass('newListHover');
-				var text = $newLi.eq(currentIndex).text();
+				var textChange = $newLi.eq(currentIndex).text();
+				var text = $newLi.eq(currentIndex).attr('rel');
 				//page load
 				if (init == true){
 					$input.val(text);
-					$containerText.text(text);
+					$containerText.text(textChange);
 					return false;
 				}
 				$input.val(text).change();
-				$containerText.text(text);
+				$containerText.text(textChange);
 
 			};
 

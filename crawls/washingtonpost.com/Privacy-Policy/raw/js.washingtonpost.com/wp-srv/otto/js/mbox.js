@@ -1011,7 +1011,7 @@ if ( !Otto.mboxCalledAlready ) {
     "placeGlobalOttoTest","placeOttoTest","getInformation","alertInformation","alertInfo"];
     
     Otto.mboxFunctionText =
-        "if(!!console && !!console.log){"+
+        "if(!!window.console && !!console.log){"+
             "var args = Array.prototype.slice.call(arguments);"+
             "console.log('All mbox funtions temporarily deactivated including this call:');"+
             "console.log(arguments.callee.name+'('+args+')');"+
@@ -1024,7 +1024,7 @@ if ( !Otto.mboxCalledAlready ) {
             eval( "function "+fn+"(){"+Otto.mboxFunctionText+"}" );
         }
         Otto.ottoFunctionText =
-            "if(!!console && !!console.log){"+
+            "if(!!window.console && !!console.log){"+
                 "var args = Array.prototype.slice.call(arguments);"+
                 "console.log(\\'All otto.mbox funtions permanently deactivated including this call:\\');"+
                 "console.log(\\'otto."+fn+"(\\'+args+\\')\\');"+

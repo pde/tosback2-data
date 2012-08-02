@@ -64,9 +64,9 @@
 			this.searchAction = "//shop.lenovo.com/SEUILibrary/controller/e/veind/LenovoPortal/es_VE/site.workflow:SimpleSiteSearch";
 	}
 	else if (country.toUpperCase() == 'AT' && language.toLowerCase() == 'de')  {
-			this.menuXml= '/includes/menus/MenusExport_atind_de_AT.xml';
+			this.menuXml= '/includes/menus/MenusExport_atweb_de_AT.xml';
 			this.searchValue = "Search";
-			this.searchAction = "//shop.lenovo.com/SEUILibrary/controller/e/atind/LenovoPortal/de_AT/site.workflow:SimpleSiteSearch";
+			this.searchAction = "//shop.lenovo.com/SEUILibrary/controller/e/atweb/LenovoPortal/de_AT/site.workflow:SimpleSiteSearch";
 	}
 	else if (country.toUpperCase() == 'AU' && language.toLowerCase() == 'en')  {
 			this.menuXml= '/includes/menus/MenusExport_auweb_en_AU.xml';
@@ -245,7 +245,7 @@
 	}
 	else if (country.toUpperCase() == 'PL' && language.toLowerCase() == 'pl')  {
 			this.menuXml= '/includes/menus/MenusExport_plind_pl_PL.xml';
-			this.searchValue = "Syukaj";
+			this.searchValue = "Szukaj";
 			this.searchAction = "//shop.lenovo.com/SEUILibrary/controller/e/plind/LenovoPortal/pl_PL/site.workflow:SimpleSiteSearch";
 	}
 	else if (country.toUpperCase() == 'RO' && language.toLowerCase() == 'en')  {

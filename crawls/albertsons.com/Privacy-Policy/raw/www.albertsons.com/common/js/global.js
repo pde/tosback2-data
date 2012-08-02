@@ -1,70 +1,190 @@
-﻿/*
-  Global.js
-  Defines platform-wide functionality. Nothing banner- or page-specific.
-  Note: this is the first script that will be executed; jQuery will NOT be available to authors.
-*/
+﻿/* [global.js] Defines platform-wide functionality. */
 
-// Custom code used globally by SVU
-$(document).ready(function() {
+// The following line is paired with a line at the bottom of the file
+// to prevent redundant, and consequentially problematic, code execution.
+/* ^ */ if (typeof self.svuFile == 'undefined') { // Verifies an (arbitrary) object, instantiated by this very code.
 
-  try {
-    setDropDownMenus();
-  }
-  catch(e) {
-  }
+$(self.document).ready(
+  function () {
 
-  try {
-    initShoppingListWidget();
-  }
-  catch(err) {
-  }
-
-  // Global search
-  $("#frm-search").submit(function() {
-    if ($("#frm-search #inp-search").val() == "Search" || $("#frm-search #inp-search").val() == "") {
-      alert("Please enter a search term.");
-      return false;
+    var $searchForm = $('form[id*="search"]:first'); // Assumes a particular mark-up structure.
+    if ($searchForm instanceof jQuery) {
+      // Validates search criteria prior to submitting a query.
+      $searchForm.bind('submit',
+        function(eventData) {
+          var $searchInput = $searchForm.find('input:first'); // Assumes a particular mark-up structure.
+          if ($searchInput instanceof jQuery) {
+            var searchCriteria = $.trim($searchInput.val());
+            // Can't be the Empty String nor the default field value.
+            if (searchCriteria === '' || /search/i.test(searchCriteria)) {
+              alert('Please provide search criteria.');
+              return false;
+            }
+          }
+          return true;
+        }
+      );
     }
-    else {
-      return true;
-    }
-  });
 
-  try {
-    // Initialize any custom tool tips
-    setCustomToolTips();
-  }
-  catch(e) {
-  }
+    // Prevents form elements with a class value that includes specific text from submitting more than once.
+    // Note: If validation is necessary, call #isFormUnlocked within validation code, instead of binding in this way.
+    $('form[class]').filter(
+      function (index) {
+        var classNameKeyword = 'submit'; // Currently identifies "preventMultipleSubmit", "submitOnce", etc.
+        return new RegExp(classNameKeyword.makePatternSafe(), 'i').test(this.className);
+      }
+    ).bind('submit',
+      function (eventData) {
+        return isFormUnlocked(this);
+      }
+    );
 
-  try {
-    // Initialize any carousel tool tips
+    $(window).bind('resize', adjustOverlayPos);
+
     setCarouselToolTips();
-  }
-  catch(e) {
-  }
 
-  try {
-    setAddCouponOverlay();
-  }
-  catch(e) {
-  }
+    setCustomToolTips();
 
-  $(window).resize(function() {
+    setDropDownMenus();
+
+    try {initShoppingListWidget();} catch (errorData) {} // Defined in shopping-list-ajax.js.
+
+    try {setAddCouponOverlay();} catch (errorData) {} // Defined in shopping-list-ajax.js.
+
+    try {when_jquery();} catch (errorData) {} // Defined in svuWidget-find-store.js.
+
     try {
-      adjustOverlayPos();
-    }
-    catch(e) {
-    }
-  });
+      // Dynamically load Fancybox only if it's not already loaded
+      if (!$("link[href='/common/fancybox/jquery.fancybox-1.3.1.css']").length) {
+        svuFile.load('/common/fancybox/jquery.fancybox-1.3.1.css');
+      }
+      if ($.fancybox == undefined) {
+        svuFile.load('/common/fancybox/jquery.fancybox-1.3.1.pack.js');
+      }
+      svuFile.load('/common/js/jquery.cookie.js');
+      svuFile.load('/common/js/svuMailingListSubscriber.js', setHeaderEmailSend);
 
-  // call page-specific scripts
-  if (typeof when_jquery == "function") {
-    when_jquery();
+      // Dynamically loads files that are utilized site-wide.
+      //svuFile.loadMultiple([
+      //  '/common/js/jquery.cookie.js',
+      //  '/common/js/svuMailingListSubscriber.js'
+      //]);
+    }
+    catch (errorData) {
+    }
   }
+);
 
-});
+// Disallows the submittal of forms that have already been submitted.
+// Note: Should be invoked when a form submits, in order to set the flag that can prevent redundant submittals.
+function isFormUnlocked(formData) { // Accepts HTMLElement, jQuery, or (jQuery selector) String data.
+  var status = false;
+  var $form = getJqueryCollection(formData);
+  if (isJqueryData($form)) {
+    var formElement = $form.get(0);
+    var formDataName = 'submitStatus'; // Arbitrary name for the submittal flag stored on the form element.
+    if ($.data(formElement, formDataName) !== true) { // jQuery permits Boolean "extra" data.
+      // Processes all buttons, except reset ones, within a form.
+      $('button, input[type="button"], input[type="image"], input[type="submit"]', formElement).each(
+        function (index, element) {
+          $(element).unbind('click').bind('click',
+            function (eventData) {
+              eventData.preventDefault();
+              eventData.stopImmediatePropagation();
+              log('[isFormUnlocked] The form can\'t be submitted.');
+              $(this).attr('disabled', 'disabled');
+            }
+          )
+        }
+      );
+      status = true;
+      $.data(formElement, formDataName, true); // Flags the form as already submitted.
+    }
+  }
+  return status;
+}
 
+function unlockForm(formData) { // Accepts HTMLElement, jQuery, or (jQuery selector) String data.
+  var $form = getJqueryCollection(formData);
+  if (isJqueryData($form)) {
+    // log('[unlockForm] The form can be submitted.');
+    $form = $form.first(); // Merely a safety precaution.
+    $form.removeData();
+  }
+}
+
+function doesFormValidate(formData) { // Accepts HTMLElement, jQuery, or (jQuery selector) String data.
+  var status = false; // Disallows form submittal.
+  var $form = getJqueryCollection(formData);
+  if (isJqueryData($form)) {
+    var $messageElement = $('#error-message-container');
+    if (isJqueryData($messageElement)) {
+      $form = $form.first(); // Merely a safety precaution.
+      if (isUsableData(self.aErrors) && self.aErrors.length > 0) { // Assumes #aErrors is an array.
+        var message = '<h4>Please correct the following:</h4><ul><li>' + self.aErrors.join('</li><li>') + '</li></ul>';
+        $messageElement.removeClass('displaynone').html(message);
+        if (isUsableData(self.aBadFields)) { // Assumes #aBadFields is an array.
+          $form.find('[aria-invalid]').attr('aria-invalid', 'false');
+          for (var index = 0, totalFields = self.aBadFields.length; index < totalFields; ++index) {
+            $('#' + self.aBadFields[index]).attr('aria-invalid', 'true');
+          }
+        }
+        $('html, body').animate({scrollTop: 0}, 250);
+        unlockForm($form);
+      } else {
+        $messageElement.addClass('displaynone').children().remove();
+        status = isFormUnlocked($form); // Likely allows form submittal.
+      }
+    }
+  }
+  return status;
+}
+
+function addErrorMessage(fieldData, errorMessage) {
+  if (isUsableData(self.aBadFields) && isUsableData(self.aErrors)) {
+    if (isUsableString(errorMessage)) {
+      var isRequestValid = false;
+      if ($.isArray(fieldData)) {
+        self.aBadFields.concat(fieldData);
+        isRequestValid = true;
+      } else {
+        if (isUsableString(fieldData)) {
+          self.aBadFields.push(fieldData);
+          isRequestValid = true;
+        }
+      }
+      if (isRequestValid) {
+        self.aErrors.push(errorMessage);
+      }
+    }
+  }
+}
+
+// Outputs (troubleshooting) messages to the browser console and/or an alert dialog.
+function log(message, resortToAlert) { // [String] message
+  if (isUsableString(message)) try {console.log(message);} finally {if (resortToAlert === true) alert(message);}
+}
+
+// Munges text to make it safe for use within Regular Expression patterns.
+// Prefixes a backslash (reverse solidus) to all special-purpose "pattern" characters.
+String.prototype.makePatternSafe = function () {
+  var escapedSpecialCharacters = '$()*+-./?[\\]^{|}'.split('').join('\\');
+  return this.replace(new RegExp('([' + escapedSpecialCharacters + '])', 'g'), '\\$1');
+};
+
+// Determines whether text includes (potentially) detrimental characters.
+// Flags text with characters that are:
+// - explicitly disapproved (within the function definition).
+// - outside of an approved character set -- ASCII range 32 to 126.
+String.prototype.isHazardous = function () {
+  // Specifies characters to exclude from the approved character set.
+  var disapprovedCharacters = '<>[]{|}';
+  // Blesses specified characters, exempting them from evaluation by removing them.
+  var modifiedText = this.replace(/[\u000A\u000D]/g, ''); // LF and CR -- ASCII values 10 and 13
+  return new RegExp('[' + disapprovedCharacters.makePatternSafe() + ']|[^\\u0020-\\u007E]').test(modifiedText);
+};
+
+/*
 String.prototype.isHazardous = function() {
   var result = false;
 
@@ -80,17 +200,40 @@ String.prototype.isHazardous = function() {
 
   return result;
 };
+*/
 
 String.prototype.isZipCode = function() {
+  // U.S. postal codes.
   return /^\d{5}(\-\d{4})?$/.test(this);
 };
 
+String.prototype.isPhoneNumber = function () {
+  // U.S. phone numbers.
+  // Must be 10 digits, and can't have an invalid area code or prefix.
+  return /^\d{10}$/.test(this) && !/^((800|866|877|888|900|976|0|1)|(.{3}555))/.test(this);
+};
+
+/*
 String.prototype.isPhoneNumber = function() {
   if (!/^\d{10}$/.test(this)) return false;
   if (/^(800|866|877|888|900|976|0|1)/.test(this)) return false;
   if (/^\d{3}555/.test(this)) return false;
   return true;
 };
+*/
+
+/*String.prototype.isEmailAddress = function () {
+  var token = '[0-9]*[a-z][\\-\\w]*'; // 64 valid characters (assuming no case sensitivity).
+  // Local and Domain parts use the same simple and restricted pattern, calculated to validate most addresses.
+  // Note: Additional address permutations are theoretically possible, though not very common.
+  var part = token + '(\\.' + token + ')*';
+  // These TLD categories are validated: "country-code", "generic", "generic-restricted", "infrastructure", and "sponsored".
+  // Only Latin alphabet TLDs are considered. Source: http://www.iana.org/domains/root/db/.
+  // Warning: Any two-letter TLD can pass validation without actually being valid, using this pattern.
+  var tld = '([a-z]{2}|(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|xxx))';
+  return new RegExp('^' + part + '@' + part + '\\.' + tld + '$', 'i').test(this);
+};*/
+
 
 String.prototype.isEmailAddress = function() {
   // Notes:
@@ -101,10 +244,12 @@ String.prototype.isEmailAddress = function() {
   //   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|ws|us|tv|cc|aero|name|coop|info|pro|museum|jobs|travel|nato))$/.test(this);
   //
   // - This performs MUCH better:
-  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|ws|us|tv|cc|aero|name|coop|info|pro|museum|jobs|travel|nato))$/;
+  // var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|ws|us|tv|cc|aero|name|coop|info|pro|museum|jobs|travel|nato))$/;
+  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|ws|us|tv|cc|aero|name|coop|info|pro|museum|jobs|travel|nato))$/i;
 
   return re.test(this);
 };
+
 
 String.prototype.isDate = function() {
   // Supports the MM/DD/YYYY format only
@@ -171,17 +316,6 @@ String.prototype.replaceHtmlEntites = function() {
   }));
 }
 
-function addErrorMessage(field, message) {
-  if (field instanceof Array) {
-    aBadFields.concat(field);
-  }
-  else {
-    aBadFields.push(field);
-  }
-
-  aErrors.push(message);
-}
-
 function toggleDisable(containerJqSel, disabled) {
   if (disabled) {
     $(containerJqSel + " :input").attr("disabled", "disabled");
@@ -192,9 +326,12 @@ function toggleDisable(containerJqSel, disabled) {
 }
 
 function trimAllTextFields() {
-  $("input, textarea").each(function() {
-    $(this).val($.trim($(this).val()));
-  });
+  $('input, textarea').each(
+    function (index, element) {
+      var $element = $(element);
+      $element.val($.trim($element.val()));
+    }
+  );
 }
 
 function setCustomToolTips() {
@@ -304,10 +441,16 @@ function setCarouselToolTips() {
   });
 }
 
+// Horizontally re-centers a Fancybox overlay.
 function adjustOverlayPos() {
-  var contentLeft = parseInt($("#wrapper").offset().left);
-  var overlayLeft = parseInt($("#fancybox-wrap").css("left"));
-  $('#fancybox-wrap').css({left: overlayLeft - contentLeft});
+  // Collects the first div element, regardless of ID. (It may not be called "wrapper".)
+  var $layoutWrapper = $('body div[id]');
+  var $overlayWrapper = $('#fancybox-wrap');
+  if ($layoutWrapper instanceof jQuery && $overlayWrapper instanceof jQuery) {
+    var layoutLeft = Math.round($layoutWrapper.offset().left);
+    var overlayLeft = parseInt($overlayWrapper.css('left'), 10); // Assumes pixel units.
+    $overlayWrapper.css({left: overlayLeft - layoutLeft});
+  }
 }
 
 function setDropDownMenus() {
@@ -328,5 +471,237 @@ function setDropDownMenus() {
 }
 
 function scrollIntoView(elemId) {
-  $('html,body').animate({scrollTop: $("#" + elemId).offset().top}, 'slow');
+  $('html, body').animate({scrollTop: $('#' + elemId).offset().top}, 'slow');
 }
+
+function isJqueryData(data) {return data instanceof jQuery;}
+
+function isUsableData(data) {return !(data === null || typeof data == 'undefined');}
+
+function isString(data) {return typeof data == 'string';}
+
+function isUsableString(data) {return isString(data) && data.length > 0;}
+
+function isElement(data) {return $.browser.msie ? isUsableData(data) && data.nodeType === 1 : data instanceof HTMLElement;}
+
+// Retrieves a jQuery collection, using specified HTMLElement, jQuery, or (jQuery selector) String data.
+// Can't return an empty jQuery collection. Passing in the Empty String returns Null.
+function getJqueryCollection(data) { // [HTMLElement]|[jQuery]|[String]data
+  var $collection = null;
+  if (isJqueryData(data)) $collection = data;
+  else if (isUsableString(data) || isElement(data)) $collection = $(data);
+  return $collection;
+}
+
+// Retrieves a trimmed value corresponding to an element specified by HTMLElement, jQuery, or (jQuery selector) String data.
+// Can be used to prevent "incorrect data type" errors because it _always_ returns String data.
+function getValidValue(elementSpecifierData) { // [HTMLElement]|[jQuery]|[String]elementSpecifierData
+  var $element = getJqueryCollection(elementSpecifierData);
+  if (isJqueryData($element)) var value = $element.first().val();
+  return isString(value) ? $.trim(value.replace(/[\t ]+/, ' ')) : '';
+}
+
+function setHeaderEmailSend() {
+  if ($("#header #frm-email #inp-email").length) {
+    $("#header #frm-email").submit(
+      function (eventData) {
+        eventData.preventDefault();
+        eventData.stopImmediatePropagation();
+        return svuMailingListSubscriber.sendEmailAddress($(this).find('input:first').val());
+      }
+    );
+  }
+}
+
+/**
+ * [svuFile] Facilitates loading files at run time.
+ *
+ * Relies on the jQuery framework.
+ *
+ * @see #load
+ * @see #loadMultiple
+ */
+var svuFile = (
+  function () {
+    'use strict';
+
+    /* ---- BEGIN::"Private" IIFE Code */
+
+    var queue = [];
+
+    var urlGroupings = {}; // Used when validating and organizing URLs.
+
+    var none = '\u0006'; // Arbitrary String data. Referenced multiple times within code.
+
+    // Identifies file extensions for "loadable" files.
+    // Obs: Files without an extension are permitted, but are presumed to be auxiliary JSON data.
+    var fileExtensionList = ['css', 'js', none];
+
+    function isString(data) {return typeof data == 'string';}
+
+    function isUsableString(data) {return isString(data) && data.length > 0;}
+
+    if (!window.console) console = {log: function() {}};
+
+    function log(message, resortToAlert) {if (isUsableString(message)) try {console.log(message);} finally {if (resortToAlert === true) alert(message);}}
+
+    function announce(type, url) {
+      var message = '';
+      switch (type) {
+        case 'disapproved':
+          message = 'Skip: ';
+          break;
+        case 'extraneous': // Case fall-through is intentional.
+          message = 'Mark-up contains: ';
+        case 'approved':
+          message += 'Load: ';
+          break;
+      }
+      log(message + url);
+    }
+
+    function getFileName(url) {return isString(url) ? url.replace(/^(.*[\/\\])?(\w+\.\w+)$/, '$2') : '';}
+
+    function getSortedUrls() {
+      return [].concat(urlGroupings.css, urlGroupings[none], urlGroupings.js); // Relies on #urlGroupings.
+    }
+
+    // Determines whether the page's mark-up references a specified URL in a standard load context.
+    function isReferencedInHtml(url) {
+      var status = false;
+      $('[href], [src]').each(
+        function (index, element) {
+          var $element = $(element);
+          var attributeValue = $element.attr('href') || $element.attr('src');
+          if (isUsableString(attributeValue) && getFileName(attributeValue) == getFileName(url)) status = true;
+        }
+      );
+      return status;
+    }
+
+    // Obs: Returns Null, the Empty String, or the file extension of a qualified (See #fileExtensionList.) file.
+    function getFileExtension(url) {
+      var extension = null;
+      if (isUsableString(url)) {
+        var mungedUrl = url.replace(/[^\-\.\/\d_a-z]/gi, '');
+        if (url === mungedUrl) {
+          mungedUrl = url.replace(/^.+\.(\w+)$/, '$1');
+          if (mungedUrl === url) {
+            extension = '';
+          } else {
+            if ($.isArray(urlGroupings[mungedUrl])) extension = mungedUrl.toLowerCase();
+          }
+        }
+      }
+      return extension; // String data means a file is loadable.
+    }
+
+    function processUrlList(urlList) {
+      var extension = '';
+      for (var index = 0; index < urlList.length; ++index) {
+        if (isString(urlList[index])) {
+          extension = getFileExtension(urlList[index]);
+          if (isString(extension)) {
+            urlGroupings[extension.length > 0 ? extension : none].push(urlList[index]);
+          } else {
+            announce('disapproved', urlList[index]);
+          }
+        }
+      }
+      return getSortedUrls();
+    }
+
+    // Initializes the URL groupings object.
+    $.each(fileExtensionList, function (index, value) {if (isUsableString(value)) urlGroupings[value] = [];});
+
+    /* ---- END::"Private" IIFE Code */
+
+    return { /* ---- BEGIN::"Public" Functions */
+
+      load: function (url, onComplete) {
+        if (isUsableString(url)) {
+          var invokeHandler = function () {
+                                try {
+                                  log("Done: " + url);
+                                  onComplete();
+                                }
+                                catch (errorData) {
+                                  if (errorData.description != undefined) {
+                                    log("Fail: " + url + ": " + errorData.description);
+                                  }
+                                }
+                              };
+          if (!isReferencedInHtml(url)) {
+            var extension = getFileExtension(url);
+            switch (extension) {
+              case '': // Case fall-through is intentional.
+                // URLs without a file extension are assumed to carry JSON data.
+              case 'js':
+                // IE 7/8 need special handling
+                if ($.browser.msie & $.browser.version < 9) {
+                  svuFile.loadIeScript(url, onComplete);
+                }
+                else {
+                  $.ajax({
+                    cache: true,
+                    complete: invokeHandler,
+                    dataType: extension.length > 0 ? 'script' : 'json',
+                    url: url
+                  });
+                }
+                announce('approved', url);
+                break;
+              case 'css': // Case fall-through is intentional.
+                // IE 7/8 need special handling
+                if ($.browser.msie & $.browser.version < 9) {
+                  svuFile.loadIeCss(url);
+                }
+                else {
+                  $('head').append('<link rel="stylesheet" type="text/css" href="" />');
+                  $('head link:last').attr('href', url); // Separate, because IE won't assign an "href" value at node creation time.
+                }
+                announce('approved', url);
+              default: // Handles a Null case.
+                if (extension === null) announce('disapproved', url);
+                invokeHandler();
+                break;
+            }
+          } else {
+            announce('extraneous', url);
+            invokeHandler();
+          }
+        }
+      },
+
+      loadMultiple: function (urlList) {
+        if ($.isArray(urlList) && urlList.length > 0) queue = processUrlList(urlList);
+        svuFile.load(queue.shift(), svuFile.loadMultiple); // Recursive.
+      },
+
+      loadIeCss: function(url) {
+        if (document.createStyleSheet) {
+          document.createStyleSheet(url);
+        }
+        else {
+          $("head").append($("<link rel='stylesheet' href='" + url + "' type='text/css' />"));
+        }
+      },
+
+      loadIeScript: function(url, onComplete) {
+        var script = document.createElement('script');
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("onreadystatechange", onComplete);
+        script.setAttribute("onload", onComplete);
+        script.setAttribute("src", url);
+        if (typeof script != "undefined") {
+          document.getElementsByTagName("head")[0].appendChild(script);
+        }
+      }
+
+    }; /* ---- END::"Public" Functions */
+  }()
+); /* ---- END::svuFile Definition */
+
+// The following line is paired with a line at the top of the file
+// to prevent redundant, and consequentially problematic, code execution.
+/* ^ */ }

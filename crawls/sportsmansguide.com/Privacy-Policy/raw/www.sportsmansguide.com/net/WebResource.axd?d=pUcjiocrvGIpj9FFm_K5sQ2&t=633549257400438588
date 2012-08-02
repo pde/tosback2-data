@@ -83,7 +83,7 @@ function WebForm_DoCallback(eventTarget, eventArgument, eventCallback, context, 
         xmlRequest.onreadystatechange = WebForm_CallbackComplete;
         callback.xmlRequest = xmlRequest;
         xmlRequest.open("POST", theForm.action, true);
-        xmlRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xmlRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
         xmlRequest.send(postData);
         return;
     }
@@ -156,7 +156,7 @@ function WebForm_DoCallback(eventTarget, eventArgument, eventCallback, context, 
     }, 10);
 }
 function WebForm_CallbackComplete() {
-    for (i = 0; i < __pendingCallbacks.length; i++) {
+    for (var i = 0; i < __pendingCallbacks.length; i++) {
         callbackObject = __pendingCallbacks[i];
         if (callbackObject && callbackObject.xmlRequest && (callbackObject.xmlRequest.readyState == 4)) {
             WebForm_ExecuteCallback(callbackObject);
@@ -251,7 +251,7 @@ function WebForm_InitCallbackAddField(name, value) {
     nameValue.name = name;
     nameValue.value = value;
     __theFormPostCollection[__theFormPostCollection.length] = nameValue;
-    __theFormPostData += name + "=" + WebForm_EncodeCallback(value) + "&";
+    __theFormPostData += WebForm_EncodeCallback(name) + "=" + WebForm_EncodeCallback(value) + "&";
 }
 function WebForm_EncodeCallback(parameter) {
     if (encodeURIComponent) {
@@ -289,19 +289,22 @@ function WebForm_ReDisableControls() {
     }
 }
 function WebForm_FireDefaultButton(event, target) {
-        if (event.keyCode == 13 && !(event.srcElement && (event.srcElement.tagName.toLowerCase() == "textarea"))) {
-        var defaultButton;
-        if (__nonMSDOMBrowser) {
-            defaultButton = document.getElementById(target);
-        }
-        else {
-            defaultButton = document.all[target];
-        }
-        if (defaultButton && typeof(defaultButton.click) != "undefined") {
-            defaultButton.click();
-            event.cancelBubble = true;
-            if (event.stopPropagation) event.stopPropagation();
-            return false;
+    if (event.keyCode == 13) {
+        var src = event.srcElement || event.target;
+        if (!src || (src.tagName.toLowerCase() != "textarea")) {
+            var defaultButton;
+            if (__nonMSDOMBrowser) {
+               defaultButton = document.getElementById(target);
+            }
+            else {
+                defaultButton = document.all[target];
+            }
+            if (defaultButton && typeof(defaultButton.click) != "undefined") {
+                defaultButton.click();
+                event.cancelBubble = true;
+                if (event.stopPropagation) event.stopPropagation();
+                return false;
+            }
         }
     }
     return true;
@@ -388,38 +391,24 @@ function WebForm_TextBoxKeyHandler(event) {
     }
     return true;
 }
+function WebForm_TrimString(value) {
+    return value.replace(/^\s+|\s+$/g, '')
+}
 function WebForm_AppendToClassName(element, className) {
-    var current = element.className;
-    if (current) {
-        if (current.charAt(current.length - 1) != ' ') {
-            current += ' ';
-        }
-        current += className;
+    var currentClassName = ' ' + WebForm_TrimString(element.className) + ' ';
+    className = WebForm_TrimString(className);
+    var index = currentClassName.indexOf(' ' + className + ' ');
+    if (index === -1) {
+        element.className = (element.className === '') ? className : element.className + ' ' + className;
     }
-    else {
-        current = className;
-    }
-    element.className = current;
 }
 function WebForm_RemoveClassName(element, className) {
-    var current = element.className;
-    if (current) {
-        if (current.substring(current.length - className.length - 1, current.length) == ' ' + className) {
-            element.className = current.substring(0, current.length - className.length - 1);
-            return;
-        }
-        if (current == className) {
-            element.className = "";
-            return;
-        }
-        var index = current.indexOf(' ' + className + ' ');
-        if (index != -1) {
-            element.className = current.substring(0, index) + current.substring(index + className.length + 2, current.length);
-            return;
-        }
-        if (current.substring(0, className.length) == className + ' ') {
-            element.className = current.substring(className.length + 1, current.length);
-        }
+    var currentClassName = ' ' + WebForm_TrimString(element.className) + ' ';
+    className = WebForm_TrimString(className);
+    var index = currentClassName.indexOf(' ' + className + ' ');
+    if (index >= 0) {
+        element.className = WebForm_TrimString(currentClassName.substring(0, index) + ' ' +
+            currentClassName.substring(index + className.length + 1, currentClassName.length));
     }
 }
 function WebForm_GetElementById(elementId) {

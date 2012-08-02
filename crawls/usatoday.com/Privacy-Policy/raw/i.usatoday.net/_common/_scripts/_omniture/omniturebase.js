@@ -1059,6 +1059,18 @@ if (window.usat_analytics_partner_url) {
 	s_ut.prop8=partnerName;
 }
 
+//populate prop42 with storyID
+if (uopath.indexOf('/story/') != -1) {
+	var pathArray = uopath.split('/');
+	var pathLength = pathArray.length;
+	var storyID = pathArray[pathLength - 2];	
+	var isNotNumber = new Boolean();
+	isNotNumber = isNaN(storyID);
+	if (isNotNumber == false) {
+		s_ut.prop42=storyID;			
+	}	
+}
+
 //populate props 43 and 45 if photo gallery page
 if (window.usat_analytics_gallery) {
 	

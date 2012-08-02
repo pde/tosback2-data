@@ -217,9 +217,17 @@ object {
 	border: 0;
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 308px;
+	max-width: 310px;
+	/* 	BGLOBE-2358 - 5/29 edit */
+	min-height: 265px;
 	padding: 0;
 }
+/* BGLOBE-2358 5/29 edit */
+.section-nav .ad iframe,
+.section-nav .ad div {
+	min-height: 85px;
+}
+
 address cite {
 	font-style: normal;
 }
@@ -806,6 +814,7 @@ a.bostoncom {
 	Utilities
 */
 .utils {
+	color: #999;
 	position: absolute;
 	top: 1em;
 	right: 1em;
@@ -834,9 +843,6 @@ a.bostoncom {
 .utils ul,
 .utils li a {
 	font-size: 1em;
-}
-.utils li.text-size {
-	border-left: none;
 }
 .utils a {
 	color: #999;
@@ -954,6 +960,9 @@ a.bostoncom {
 	margin-left: .6em;
 	right: auto;
 }
+.utils .no-border {
+	border: none;
+}
 .utils .text-size a.now,
 .utils .text-size a.now:hover {
 	background: #FFF url("../../c.o0bg.com/rw/SysConfig/WebPortal/BostonGlobe/Framework/images/check.gif") no-repeat 5px 9px;
@@ -967,7 +976,7 @@ a.bostoncom {
 	margin-right: 5px;
 }
 .utils .text-size a.top {
-	padding-left: 10px;
+	/*padding-left: 10px;*/
 	padding-right: 15px;
 }
 .text-size a.med {
@@ -977,8 +986,19 @@ a.bostoncom {
 	font-size: 1.3em;
 	padding-top: 0.4em;
 	padding-bottom: 0.4em;
+}/*
+/*
+	Subscribe CTA
+*/
+li.headerSubscribe{
+	}
+li.headerSubscribe.first {
+	border-left: none;
+	margin-left: 0px;
 }
-
+li.headerSubscribe a{
+	color:#9B1418;	
+}
 /*
 	Search
 */
@@ -1231,8 +1251,22 @@ body.type-home #masthead .collapsible-heading-status {
 	.type-internal #masthead.collapsible-expanded h1 {
 		margin-bottom: 0;
 	}
+	.headerSubscribe{
+		left: -1000em;
+		position: absolute;
+	}	
+	.headerSubscribe{
+		left: -1000em;
+		position: absolute;
+	}	
 }
 
+@media screen and (max-width: 760px), print {
+	li.mini-menu.subCTA{
+		left: -1000em;
+		position: absolute;
+	}
+}
 @media screen and (min-width: 380px) {
 	.enhanced .weather img,
 	.weather img {
@@ -1319,6 +1353,12 @@ body.type-home #masthead .collapsible-heading-status {
 	.title-char19 #masthead h1 {
 		font-size: 2em;
 		margin-bottom: -1.2em;
+	}
+}
+
+@media screen and (max-width: 540px), print  {
+	.manage-account {
+		display: none;
 	}
 }
 
@@ -4285,9 +4325,10 @@ i.by cite {
 }
 .ie7 .videoplayer object {
 	width: 100%;
-  	height: auto;
+  	height: 100%; /* 6/5/12 */
   	zoom: 1;
 }
+
 .section-video .inside .feat-thumb {
 	text-align: left;
 }
@@ -6913,12 +6954,20 @@ a.article-bar span{
 .article-body .instructions li p {
 	font-weight: normal;
 }
-/* Article Body Float Fixes for IE7 */
+/* START Article Body Float Fixes for IE7 */
+.ie7 .article-body {
+	position: relative;
+	zoom: 1;
+	display: inline-block;
+}
 .ie7 .article-body > p {
 	display:inline;
 	zoom:1;
 	margin-bottom:1.125em;
+	position: relative;
+	min-width: 51%; /* Stops short lines from inlining against each other */
 }
+/* END Article Body Float Fixes for IE7 */
 .notfound-suggestions li {
 	list-style-type: square;
 	font-size: 1.5em;
@@ -9700,6 +9749,7 @@ table.recipe td.left{
 	.p-less {
 		width: 34.2812006%;			/* 217/633 */
 	}
+
 	.article {
 		float: right;
 		margin-right: 6.35416667%;							/* 61px / 960px */
@@ -10083,19 +10133,20 @@ table.recipe td.left{
 		padding-bottom: 0;
 	}
 	.promo-sub .login-form {
-		float: left;
+		/* float: left;
 		zoom: 1;
 		width: 75%;
+		*/
 	}
 	.promo-sub .stub-login h2 {
-		float: left;
-		width: 25%;
+		/*float: left*/;
+		width: 100%;
 	}
 	.promo-sub .stub-login  p {
-		float: left;
+		/*float: left*/;
 		padding: 0 2%;
 		margin: 0;	
-		width: 34%;	
+		/*width: 34%*/;	
 	}
 	.ie7 .promo-sub .stub-login p input {
 		width: auto;
@@ -10105,9 +10156,9 @@ table.recipe td.left{
 		padding-top: 0;
 	}
 	.promo-sub  .stub-login .submit-group {
-		float: left;
-		width: 20%;
-		margin-left: 2%;
+		/*float: left*/;
+		/*width: 20%*/;
+		/*margin-left: 2%*/;
 		margin-bottom: 1em;
 	}
 	.ie7 .promo-sub .submit-group {
@@ -10488,7 +10539,8 @@ table.recipe td.left{
 
 /* table layout */
 .pol2012-leaderboard table { width: 100% }
-.pol2012-leaderboard td { width: 18.75% }
+/* .pol2012-leaderboard td { width: 18.75% } */
+.pol2012-leaderboard td { width: 14.75% }
 .pol2012-leaderboard .pol2012-state { width: 25% }
 
 .ie8 .pol2012-leaderboard .pol2012-state { width: 28% }
@@ -10502,7 +10554,8 @@ table.recipe td.left{
 /* colors and backgrounds */
 .pol2012-leaderboard thead td { background: #fff }
 .pol2012-candidate-name { color: #000 }
-.pol2012-leaderboard .pol2012-percent { background: #f2f2e8 }
+/* .pol2012-leaderboard .pol2012-percent { background: #f2f2e8 } */
+.pol2012-leaderboard .pol2012-percent { background: none }
 .pol2012-leaderboard .leading { background: #c7c79c }
 .pol2012-leaderboard .winner { 
 	background: #979755; 
@@ -10554,7 +10607,8 @@ table.recipe td.left{
 	font-weight: normal
 }
 .pol2012-percent {
-	font-weight: bold;
+	/* font-weight: bold; */
+	font-weight: normal;
 	font-size: 1.2em;
 	vertical-align: middle
 }
@@ -10567,6 +10621,13 @@ tbody .pol2012-state { font-weight: normal }
 .pol2012-percent { text-shadow: 0 1px 0 white }
 .pol2012-leaderboard .winner { text-shadow: 0 -1px 0 black }
 .pol2012-counter { font-size: 1.2em }
+
+.pol2012-leaderboard thead th {
+	text-transform: uppercase;
+	vertical-align: bottom;
+	letter-spacing: 1px;
+	font-size: 0.95em;
+}
 
 
 /* key */

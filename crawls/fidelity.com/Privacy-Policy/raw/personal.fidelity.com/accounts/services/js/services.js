@@ -302,7 +302,6 @@ function checkZip() {
 	var error = "";
 	var zipForm = document.theform;
 	var str = document.getElementById("zip").value;
-	var url = "/misc/framesets/branchlocator_frameset.shtml?zip=" + str;
 	if ( str == "" ) {
 		error = "Please provide a ZIP code.";
 		alert(error);
@@ -312,8 +311,7 @@ function checkZip() {
 		alert(error);
 		return false;
 	}
-	zipForm.action ="/misc/framesets/branchlocator_frameset.shtml?zip=" + str;
-	zipForm.submit();
+	window.location.replace(branchRedirect + "/branchlocator/index.shtml?startAddress=" + str);
 }
 
 showMessage = function (obj) {

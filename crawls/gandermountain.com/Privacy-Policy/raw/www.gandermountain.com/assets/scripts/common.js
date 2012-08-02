@@ -232,10 +232,22 @@ function gndr_set_nav_exp(gndrNavVal) {
 }
 
 thirdPartyCookie("source","linkconn","linkconn",1,30,domain); // if source==linkconn in queryString, set the linkconn cookie to 1
-if (location.protocol === 'https:')
-{ document.write('<script type="text/javascript" src="https://www.linkconnector.com/member/JS/traffic_link_client.php?mid=25837&cid=3679"></script>'); }
-else
-{ document.write('<script type="text/javascript" src="http://www.linkconnector.com/member/JS/traffic_link_client.php?mid=25837&cid=3679"></script>'); }
+
+(function() {
+    function async_load(){
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        lc_protocol= ((location.protocol == "https:") ? "https://" : "http://");
+        s.src = lc_protocol + 'www.linkconnector.com/member/JS/traffic_link_client_async.php?mid=25837&cid=3679';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+    }
+    if (window.attachEvent)
+        window.attachEvent('onload', async_load);
+    else
+        window.addEventListener('load', async_load, false);
+})();
 
 var pr_facebook_like_button_url="";
 

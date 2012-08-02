@@ -36,6 +36,7 @@ if(pageSection.length > 0 && leftnavtitle < 0){ // check if there is already a t
 	$('#leftnav_inc > ul').prepend('<li style="background: none; margin: 0;"><h4 style="margin: 0 0 0 5px;">'+ pageSection +'</h4></li>');
 }
 }
+$('#leftnav_inc>ul>li>h4>br').replaceWith('&nbsp;');
 }
 
 
@@ -199,6 +200,13 @@ function activePage(){
 			else if($("#leftnav200 li").length < 1){ // no left nav, match top nav only
 				matchTopNavOnlyByRecursion();	
 			}
+			if(window.location.toString().indexOf("marketing-services") != -1){
+				if($('.subnav subnavext li').hasClass('subnavcol active')){
+			$('#nav li').addClass('active')}
+			else{
+			return false;}	
+			}
+			
 		}
 		setPageSection(); // sets pageId.section for site catalyst
 		
@@ -297,6 +305,9 @@ function UrlObj(){
 				case "wt.srch":
 					this.wtsrch = pair[1];
 					break;
+				case "cmpid":
+					this.cmpid = pair[1];
+					break;		
 				case "bvdisplaycode":
 					this.bvdisplaycode = pair[1];
 					break;

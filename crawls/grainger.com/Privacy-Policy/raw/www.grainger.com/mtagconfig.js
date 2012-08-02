@@ -129,3 +129,5 @@ lpMTagConfig.dynButton[lpMTagConfig.dynButton.length] = {'name':'chat-header-'+l
 lpMTagConfig.dynButton[lpMTagConfig.dynButton.length] = {'name':'voice-header-'+lpUnit+'-'+lpLanguage,'pid':'voiceLPButtonHeader','afterStartPage': true,'ovr':'lpMTagConfig.db1'};
 lpMTagConfig.dynButton[lpMTagConfig.dynButton.length] = {'name':'chat-stalker-'+lpUnit+'-'+lpLanguage,'pid':'chatLPButtonStalker','afterStartPage': true,'ovr':'lpMTagConfig.db1'};
 lpMTagConfig.dynButton[lpMTagConfig.dynButton.length] = {'name':'voice-stalker-'+lpUnit+'-'+lpLanguage,'pid':'voiceLPButtonStalker','afterStartPage': true,'ovr':'lpMTagConfig.db1'};
+lpMTagConfig.dynButton[lpMTagConfig.dynButton.length] = {'name':'chat-LSSLightbox-'+lpUnit+'-'+lpLanguage,'pid':'chatLPButtonLSSLightbox','afterStartPage': true,'ovr':'lpMTagConfig.db1'};
+lpMTagConfig.dynButton[lpMTagConfig.dynButton.length] = {'name':'voice-LSSLightbox-'+lpUnit+'-'+lpLanguage,'pid':'voiceLPButtonLSSLightbox','afterStartPage': true,'ovr':'lpMTagConfig.db1'};

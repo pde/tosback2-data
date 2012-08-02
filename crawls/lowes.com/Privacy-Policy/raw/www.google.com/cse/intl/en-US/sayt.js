@@ -4,8 +4,8 @@
  * Initialize SAYT.
  *
  * @param {string} cx commerce search engine identifier.
- * @param {string} apiKey Developer API key.
- * @param {Dictionary} opt_saytParams parameters for SAYT. The keys we look for
+ * @param {string} apiKey Search API For Shopping Key.
+ * @param {Object} opt_saytParams parameters for SAYT. The keys we look for
  *     are:
  *   country: 2 letter country code.  Defaults to 'us'.
  *   language: BCP-47 language code.  If not provided, the default language
@@ -160,28 +160,28 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
     }
     var result = [];
     if (isPromotion) {
-      result.push('<tr class=cse-sayt-promotion>');
+      result.push('<tr class="cse-sayt-promotion">');
     } else {
-      result.push('<tr class=cse-sayt-result>');
+      result.push('<tr class="cse-sayt-result">');
     }
     result.push('<td>');
     if (thumb) {
       // Do not escapeUrl(thumb), because it may be a data URI.
-      result.push('<div class=cse-sayt-image>');
-      result.push('<a class=url title="' + title + '"' + ' href="' + link +
-                  '"><img src="' + thumb + '" border=0></a></div>');
+      result.push('<div class="cse-sayt-image">');
+      result.push('<a class="url" title="' + title + '"' + ' href="' + link +
+                  '"><img src="' + thumb + '" border="0"></a></div>');
     }
     result.push('</td>');
-    result.push('<td class=cse-sayt-text>');
+    result.push('<td class="cse-sayt-text">');
     if (title) {
-      result.push('<div class=cse-sayt-title>');
+      result.push('<div class="cse-sayt-title">');
       result.push('<a href="' + link + '">' + title + '</a></div>');
     }
     if (description) {
-      result.push('<div class=cse-sayt-descr>' + description + '</div>');
+      result.push('<div class="cse-sayt-descr">' + description + '</div>');
     }
     if (price) {
-      result.push('<div class=cse-sayt-price>' + price + '</div>');
+      result.push('<div class="cse-sayt-price">' + price + '</div>');
     }
     result.push('</td>');
     result.push('</tr>');
@@ -239,8 +239,6 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
                                      product['inventories'][0]['currency']);
       var price = findAttributeByName(product, priceConfig, defaultPrice);
 
-      // TODO(tianyu): fix below image thumb logic, once backend also
-      // supports returning data URI for product promotions.
       var thumb = getValueOrNull(product, 'images', 0, 'thumbnails', 0, 'link');
       thumb = thumb ? escapeUrl(thumb) : '';
       return formatEntry(title, product['link'], description, thumb, price,
@@ -260,7 +258,7 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
   var formatSaytDef = function(response) {
     var numResults = 0;
     var sayt = [];
-    sayt.push('<table class=cse-sayt>');
+    sayt.push('<table class="cse-sayt">');
     // Format and add promotion results first.
     if (response['promotions']) {
       for (var i = 0; i < response['promotions']['length'] &&
@@ -497,6 +495,7 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
       'sayt.useGcsConfig': thumbnailAsData,
       'useCase': useCase,
       'attributeFilter': attributeFilter,
+      'app': 'sayt',
       // We always want the following default top level fields.
       'productFields': 'title,description,link,inventories,images'
     };
@@ -548,6 +547,7 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
       'sayt': {'enabled': thumbnailAsData, 'useGcsConfig': thumbnailAsData},
       'useCase': useCase,
       'attributeFilter': attributeFilter,
+      'app': 'sayt',
       // We always want the following default top level fields.
       'productFields': 'title,description,link,inventories,images'
     };
@@ -632,4 +632,35 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
     // status variables, needed for testing.
     'thumbnailsSupported': thumbnailAsData
   };
+};
+
+/**
+ * Initialize SAYT in a more self-contained way.
+ *
+ * @param {string} cx Commerce search engine identifier.
+ * @param {string} apiKey Search API For Shopping Key.
+ * @param {Array} googleAnalyticsQueue The Google Analytics tracking queue.
+ * @param {string} searchText The Id of the search box input.
+ * @param {string} searchForm The Id of the search box form.
+ * @param {Object} opt_styleOptions Style options of the search box.
+ * @param {Object} opt_saytParams parameters for SAYT, which will be passed
+ * to sayInitialize.
+ */
+var setupSayt = function(cx,
+                         apiKey,
+                         googleAnalyticsQueue,
+                         searchText,
+                         searchForm,
+                         opt_styleOptions,
+                         opt_saytParams) {
+  sayt = saytInitialize(cx, key, opt_saytParams);
+  var opt_options = {
+    saytActor: sayt.saytSubmit,
+    styleOptions: opt_styleOptions
+  };
+  google.load('search', '1');
+  google.setOnLoadCallback(function() {
+    google.search.CustomSearchControl.attachAutoCompletionWithOptions(
+      cx, document.getElementById(searchText), searchForm, opt_options);
+  });
 };

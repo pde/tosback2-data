@@ -954,7 +954,7 @@ function gvpUtils() {
 		body = document.getElementsByTagName('body')[0];
 		if(arguments.length >= 4) {
 			
-			if(arguments.length == 5) {
+			if(arguments.length >= 5) {
 				if(playerType == '360') {
 					pSku = mSkuOrPath;
 					pWidth = 600;

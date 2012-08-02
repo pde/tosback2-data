@@ -63,7 +63,7 @@ $(window).load(function () {
 
 function candidates_carousel_initCallback(carousel)
 {
-    carousel.options.scroll = 5;
+    //carousel.options.scroll = 5;
 
     $('.candidates_carousel_nav li').click(function(){
         var _obj = $(this);
@@ -110,7 +110,7 @@ function candidates_carousel_initCallback(carousel)
     $('.candidates_carousel_nav, .jcarousel-container').hover(function() {
         carousel.stopAuto();
     }, function() {
-        carousel.startAuto(2);
+        carousel.startAuto(Number($('#candidates_carousel_auto').val()) > 0 ? Number($('#candidates_carousel_auto').val()) : 0);
     });
 
 }
@@ -120,53 +120,83 @@ $(document).ready(function() {
     if ($('.candidates_carousel').size())
     {
         $('.candidates_carousel').each(function(){
-            if ($(this).find('li').size() < 5)
+            var _max_w = 0;
+            var _full_w = 0;
+            $(this).find('li').each(function()
+            {
+                var _w = $(this).find('img').outerWidth();
+                if (_w > _max_w) _max_w = _w;
+                _full_w += _w;
+            });
+            var _total_w = 658;
+            var _count = Math.floor(_total_w / _max_w);
+            var _total_count = Math.ceil($(this).find('li').size() / _count);
+            _max_w = _total_w / _count - 1;
+            $(this).find('li').each(function()
+            {
+                if (_max_w > 0) $(this).css('width',(_max_w));
+            });
+            var _nav_wrap = $(this).parent().parent().find('.candidates_carousel_nav_wrap');
+            if (_total_count < 2)
+            {
+                _nav_wrap.remove();
+            }
+            else
+            {
+                for (var _i = 2; _i <= _total_count; _i++)
+                {
+                    _nav_wrap.find('.candidates_carousel_nav').append($('<li id="goto_'+((_i-1)*_count+1)+'"></li>'));
+                }
+            }
+            if (_full_w < _total_w)
             {
                 var _c = $(this).find('li').size();
-                var _w = 658;
-                _w = _w - _c*2; // - marginRight
+                _w = _total_w - _c*2; // - marginRight
                 _w = _w / _c;
                 $(this).find('li').width(_w);
             }
-        });
-        var _i = 1;
-        jQuery('.candidates_carousel').jcarousel({
-            initCallback: candidates_carousel_initCallback,
-            /*animation: 800,*/
-            auto: Number($('#candidates_carousel_auto').val()) > 0 ? Number($('#candidates_carousel_auto').val()) : 0,
-            wrap: 'both',
-            buttonNextHTML: "<li class='next'></li>",
-            buttonPrevHTML: "<li class='prev'></li>",
-            autoScrollCallback: function(obj, i, _type) { 
-                if (_type == 'auto')
-                {
-                    if (i != 1 || i == _i)
+            var _i = 1;
+            jQuery(this).jcarousel({
+                initCallback: candidates_carousel_initCallback,
+                /*animation: 800,*/
+                auto: Number($('#candidates_carousel_auto').val()) > 0 ? Number($('#candidates_carousel_auto').val()) : 0,
+                wrap: 'both',
+                scroll: _count,
+                buttonNextHTML: "<li class='next'></li>",
+                buttonPrevHTML: "<li class='prev'></li>",
+                autoScrollCallback: function(obj, i, _type) { 
+                    console.log(i);
+                    if (_type == 'auto')
+                    {
+                        if (i != 1 || i == _i)
+                        {
+                            $('.candidates_carousel_nav li').removeClass('active');
+                            $('.candidates_carousel_nav li#goto_'+i).addClass('active');
+                        }
+                        _i = i;
+                    }
+                    else if (_type == 'prev')
+                    {
+                        if ($('.candidates_carousel_nav li.active').prev().hasClass('prev'))
+                        {
+                            i = $('.candidates_carousel_nav li.next').prev().attr('id').replace('goto_','');
+                        }
+                        else
+                        {
+                            i = $('.candidates_carousel_nav li.active').prev().attr('id').replace('goto_','');
+                        }
+                        $('.candidates_carousel_nav li').removeClass('active');
+                        $('.candidates_carousel_nav li#goto_'+i).addClass('active');
+                    }
+                    else
                     {
                         $('.candidates_carousel_nav li').removeClass('active');
                         $('.candidates_carousel_nav li#goto_'+i).addClass('active');
                     }
-                    _i = i;
                 }
-                else if (_type == 'prev')
-                {
-                    if ($('.candidates_carousel_nav li.active').prev().hasClass('prev'))
-                    {
-                        i = $('.candidates_carousel_nav li.next').prev().attr('id').replace('goto_','');
-                    }
-                    else
-                    {
-                        i = $('.candidates_carousel_nav li.active').prev().attr('id').replace('goto_','');
-                    }
-                    $('.candidates_carousel_nav li').removeClass('active');
-                    $('.candidates_carousel_nav li#goto_'+i).addClass('active');
-                }
-                else
-                {
-                    $('.candidates_carousel_nav li').removeClass('active');
-                    $('.candidates_carousel_nav li#goto_'+i).addClass('active');
-                }
-            }
+            });
         });
+
     }
 
     if ($('.module_campaign_news.small').size())
@@ -174,7 +204,25 @@ $(document).ready(function() {
         $('.module_campaign_news.small').each(function(i){
             if (i % 2 == 1)
             {
-                $(this).css({float: 'right'});
+                $(this).css({float: 'right', 'border-right': 'none'});
+            }
+        });
+    }
+    if ($('.tampa_locator_map').size())
+    {
+        $('.tampa_locator_map').each(function(i){
+            if (i % 2 == 1)
+            {
+                $(this).css({float: 'right', 'border-right': 'none'});
+            }
+        });
+    }
+    if ($('.delegates_by_state').size())
+    {
+        $('.delegates_by_state').each(function(i){
+            if (i % 2 == 1)
+            {
+                $(this).css({float: 'right', 'border-right': 'none'});
             }
         });
     }
@@ -342,7 +390,141 @@ $(document).ready(function() {
             );
         }
     }
+
+    if ($('.custom-list-wrap').size())
+    {
+        $('.custom-list li').each(function()
+        {
+            var _w = 0;
+            if ($(this).find('img'))
+            {
+                _w = $(this).find('img').outerWidth(true);
+            }
+            if (_w > 0) 
+            {
+                $(this).width(_w);
+            }
+        });
+    }
 });
+
+function initialize_map()
+{
+    if ($('#map').size())
+    {
+        COORDINATE_CATEGORY = $('.locator-tabs-header a').first().attr('class').replace("locator-tab-","");
+        var _default_zoom = 11;
+        var _zoom = 1;
+        var _center = new google.maps.LatLng(0, 0);
+        if (typeof(COORDINATES) == 'undefined' || typeof(COORDINATE_CATEGORY) == 'undefined' || typeof(COORDINATES[COORDINATE_CATEGORY]) == 'undefined')
+        {
+            return false;
+        }
+        /*
+        if (COORDINATES[COORDINATE_CATEGORY].length == 1)
+        {
+            _zoom = _default_zoom;
+            for (var i in COORDINATES[COORDINATE_CATEGORY]) 
+            {
+                _center = new google.maps.LatLng(COORDINATES[COORDINATE_CATEGORY][i].lat, COORDINATES[COORDINATE_CATEGORY][i].lng);
+            }
+        }
+        */
+        var myMapOptions = { zoom: _zoom, center: _center, scrollwheel: false, mapTypeId: google.maps.MapTypeId.ROADMAP };
+        var theMap = new google.maps.Map(document.getElementById("map"), myMapOptions);
+        var myOptions = { content: '', disableAutoPan: false, maxWidth: 0, pixelOffset: new google.maps.Size(-140, 0), zIndex: null, closeBoxMargin: "0px", closeBoxURL: "/templates/thehill/images/close.png", infoBoxClearance: new google.maps.Size(1, 1), isHidden: true, pane: "floatPane", enableEventPropagation: false };
+        var ib = new InfoBox(myOptions);
+        var markers = ({});
+        var bounds = new google.maps.LatLngBounds();
+        var geocoder = new google.maps.Geocoder();
+
+        for (_cat in COORDINATES)
+        {
+            for (var i in COORDINATES[_cat])
+            {
+                var marker = new google.maps.Marker({
+                    map: theMap,
+                    draggable: false,
+                    position: new google.maps.LatLng(COORDINATES[_cat][i].lat, COORDINATES[_cat][i].lng),
+                    title: COORDINATES[COORDINATE_CATEGORY][i].title,
+                    visible: true,
+                    cat: _cat
+                });
+                markers[(_cat*1000+Number(i))] = marker;
+                mapaDetails2(ib, COORDINATES[_cat][i], marker, theMap);
+                bounds.extend( new google.maps.LatLng(COORDINATES[_cat][i].lat, COORDINATES[_cat][i].lng) );
+            }
+        }
+        theMap.fitBounds(bounds);
+
+        var mcOptions = { gridSize: 45 };
+        var markerCluster = new MarkerClusterer(theMap, markers, mcOptions); /* can be commented */
+    }
+    function mapaDetails2(ib, row, marker, theMap)
+    {
+        var _title = row.title;
+        var _description = row.description;
+        var boxText = document.createElement("div");
+        boxText.style.cssText = "box-shadow: 4px 4px 4px #a28b68; -moz-box-shadow: 4px 4px 4px #a28b68; -webkit-box-shadow: 4px 4px 4px #a28b68;";
+        $(boxText).append($('<h3>'+_title+'</h3>'));
+        $(boxText).append($('<p>'+_description+'</p>'));
+        google.maps.event.addListener(marker, "click", function(e) {
+            ib.setContent(boxText);
+            ib.open(theMap, this);
+            ib.show();
+        });
+    }
+    if ($('.locator-tabs-header').size())
+    {
+        $('.locator-tabs-header a').each(function()
+        {
+            $(this).click(function()
+            {
+                $('.locator-tabs-header a').removeClass('active');
+                $('.locator-tabs-body ul').hide();
+                var _id = $(this).attr('class').replace("locator-tab-","");
+                $('.locator-bodt-cat-'+_id).show();
+                $(this).addClass('active');
+                COORDINATE_CATEGORY = _id;
+                if (typeof(markers) != 'undefined')
+                {
+                    var _new_markers = [];
+                    for (var i in markers) 
+                    {
+                        markers[i].setVisible(false);
+                        if (COORDINATE_CATEGORY == markers[i].cat)
+                        {
+                            markers[i].setVisible(true);
+                            _new_markers.push(markers[i]);
+                        }
+                    }
+                    if (typeof(markerCluster) != 'undefined')
+                    {
+                        markerCluster.clearMarkers();
+                        markerCluster.addMarkers(_new_markers);
+                    }
+                }
+            });
+        });
+        $('.locator-tabs-header a').first().click();
+    }
+    if ($('.locator-tabs-body li').size())
+    {
+        $('.locator-tabs-body li span').each(function()
+        {
+            $(this).click(function()
+            {
+                var _key = $(this).attr('class').replace('title','').replace('item-id-','');
+                _key = Number(_key);
+                if (typeof(markers[(COORDINATE_CATEGORY*1000+_key)]) == 'object')
+                {
+                    theMap.setOptions({"zoom": _default_zoom, "center": new google.maps.LatLng(COORDINATES[COORDINATE_CATEGORY][_key].lat, COORDINATES[COORDINATE_CATEGORY][_key].lng) });
+                    google.maps.event.trigger(markers[(COORDINATE_CATEGORY*1000+_key)], 'click');
+                }
+            });
+        });
+    }
+}
 
 var Base64 = {
 

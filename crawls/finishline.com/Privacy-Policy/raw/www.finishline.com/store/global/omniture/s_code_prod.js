@@ -1,7 +1,6 @@
-
-/* SiteCatalyst code version: H.24.3.
-Copyright 1997-2009 Omniture, Inc. More info available at
-http://www.omniture.com */
+/* SiteCatalyst code version: H.23.8.
+Copyright 1996-2011 Adobe, Inc. All Rights Reserved
+More info available at http://www.omniture.com new test file */
 
 
 var s_account="finishlineprod"
@@ -44,9 +43,30 @@ s.linkTrackEvents="None"
 /* Plugin Config */
 s.usePlugins=true
 
-s.successfulSearchEvent 		= 'event1';
-s.nullSearchEvent 				= 'event2';
-s.searchTermVariable		    = 'eVar1';
+s.successfulSearchEvent 	= 'event1';
+s.nullSearchEvent 		= 'event2';
+s.searchTermVariable		= 'eVar1';
+
+/* getPageName Plugin Config */
+s.siteID="";
+s.defaultPage="home";
+s.queryVarsList="";
+s.pathExcludeDelim="/_";
+	if(!s.pathExcludeDelim){
+		s.pathExcludeDelim="/";
+	}
+
+s.pathConcatDelim="|";
+
+/*Channel Manager Config */
+s._channelDomain="Social Media|facebook.com,twitter.com,digg.com,linkedin.com,myspace.com";
+s._channelPattern="Affiliates|AFL->Content|CON->Display Ads|DSP->E-mail|EM->Paid Search|PPC->Shopping Comparison|SCC->Social Media|SM->Text Messages|TXT-";
+
+/*Media Module Config */
+s.loadModule("Media")
+s.Media.autoTrack=true
+s.Media.trackVars="None"
+s.Media.trackEvents="None"
 
 function s_doPlugins(s) {
 	if(!s.campaign){
@@ -98,6 +118,54 @@ function s_doPlugins(s) {
 			s.products=';';
 	}
 	
+	/*Channel Manager Configuration*/
+	s.channelManager('cmp,cid',':','s_cm');
+   s.eVar50=s.getValOnce(s._referrer,'s_cm_ref',0);
+   s.eVar51=s.eVar57=s.getValOnce(s._referringDomain,'s_cm_refd',0);
+   s.eVar52=s.getValOnce(s._partner,'s_cm_ptn',0);
+   s.eVar53=s.getValOnce(s._campaign,'s_cm_camp',0);
+   s.eVar54=s.getValOnce(s._keywords,'s_cm_kw',0);
+    
+	/*Check for Affiliate*/
+	var sourceID=s.getQueryParam('sourceid');
+	if (sourceID && sourceID.toLowerCase() == 'affiliate'){
+		s.eVar55=s.eVar56=s.getValOnce('Affiliates','s_cm_chl',0);
+	}
+	else{
+		s.eVar55=s.eVar56=s.getValOnce(s._channel,'s_cm_chl',0);
+	}
+	/*Parse out Additional Campaign Levels
+      eVar58 - Level 2
+      eVar59 - Level 3
+      eVar60 - Level 4
+      
+      Variables only populate if the campaign and channel are both set, and if the level exists*/
+    if(typeof(s.eVar53) !== "undefined" && s.eVar53 !== "" && typeof(s.eVar55) !== "undefined" && s.eVar55 !== ""){
+        var hierarchy = s.eVar53.split('-'),
+            numTiers = hierarchy.length;
+        for(var i = 1; i < numTiers; i++){
+            s["eVar"+(i+57)] = hierarchy[i];
+        }
+    }
+	/*Get Cross-Channel Query Parameter*/
+	s.eVar65 = s.getValOnce(s.getQueryParam('CC'), 's_eVar65', 0);
+	/*Get Internal Campaign Query Parameter*/
+	s.eVar66 = s.getValOnce(s.getQueryParam('ICMP'), 's_eVar66', 0);
+	/*Parse out Additional Internal Campaign Levels
+      eVar61 - Channel
+      eVar62 - Level 2
+      eVar63 - Level 3
+      eVar63 - Level 4
+	  
+      Variables only populate if the campaign and channel are both set, and if the level exists*/
+    if(typeof(s.eVar66) !== "undefined" && s.eVar66 !== ""){
+        var hierarchy = s.eVar66.split('-'),
+            numTiers = hierarchy.length;
+        for(var i = 0; i < numTiers; i++){
+            s["eVar"+(i+61)] = hierarchy[i];
+        }
+    }
+	
 	
 	/* Set Time Parting Variables */
 		var theDate=new Date()
@@ -121,7 +189,48 @@ function s_doPlugins(s) {
 		s.eVar69=s.omnivisID
 		/* Conversion bounce conversion events */		
 		s.setLPVandClickPast('event54','event55');
+	if(!s.pageName){
+		s.pageName = "";
+	}
+		
+	/* Search Result Pages: PageName begins with Search Results: */
+	if(s.pageName.substring(0,15) == "search results:"){
+		s.prop24 = "product details page";
+		}
+	/* Internal Campaign Pages: eVar3=Internal Campaign and PageName begins with Search: */
+	if(s.pageName.substring(0,7) == "search:" && s.eVar3.substring(0,17) == "internal campaign"){
+		s.prop24 = s.eVar3;
+		}
+		
+	{
+	/* Page Name: IF pageName is not the HomePage, ShoppingCart or MyAccount Page then clear name and repopulate */
+	if(s.pageName =="Shopping Cart: Thank You" || s.pageName =="Shopping Cart: Shipping" || s.pageName =="Shopping Cart: Order Review" || s.pageName =="Shopping Cart: Checkout" || s.pageName =="Shopping Cart: Sign In" ||
+	s.pageName =="Shopping Cart: Billing" || s.pageName =="e-gift card: shopping cart" || s.pageName =="e-gift card: shopping cart:billing" || s.pageName =="e-gift card: shopping cart: confirmation" || s.pageName =="e-gift card: shopping cart: confirmation" ||
+	s.pageName =="Home Page" || s.pageName =="My Account: SignIn Page" || s.pageName =="My Account: Landing Page" || s.pageName =="My Account: Register Page" || s.pageName =="My Account: Order Inquiry" || s.pageName =="My Account: Order Details" || s.pageName =="My Account: Thank-You" || 
+	s.pageName =="My Account: Personal Profile" || s.pageName =="My Account: Catalog Request" || s.pageName =="My Account: Gift Cards" || s.pageName =="product details page"  || s.pageName == s.eVar3)
+	{
+	s.prop24 = s.pageName;
+	}
+	else 
+	{
+	if(!s.prop24 || s.prop24==""){
+		s.prop24 = s.getPageName();
+			}
+		}
+	}
 	
+	/* External Source Landing Page */
+	if(s.prop24 == "store|catalog|product.jsp"){
+		s.prop24 = "Campaign Landing";
+		var temp1 = s.getQueryParam('productId');
+		s.eVar30 = "Campaign Landing:" + temp1
+		}
+	
+
+
+		
+
+
 	/* Code to track Secure Google Search Keywords */
 	var kr=document.referrer,kk=s.getQueryParam("q","",kr),ks=s.getQueryParam("esrc","",kr);if(kr.indexOf("www.google.com")&&!kk&&ks=="s"){var ksr=kr.split("q="),kq="q=Google%20Secure%20Search";s.referrer=ksr[0]+kq+ksr[1]};
 }
@@ -136,6 +245,21 @@ s.loadModule("Media")
 s.Media.autoTrack=true
 s.Media.trackVars="None"
 s.Media.trackEvents="None"
+
+/*
+ * Plugin: getPageName v2.1 - parse URL and return
+ */
+s.getPageName=new Function("u",""
++"var s=this,v=u?u:''+s.wd.location,x=v.indexOf(':'),y=v.indexOf('/',"
++"x+4),z=v.indexOf('?'),c=s.pathConcatDelim,e=s.pathExcludeDelim,g=s."
++"queryVarsList,d=s.siteID,n=d?d:'',q=z<0?'':v.substring(z+1),p=v.sub"
++"string(y+1,q?z:v.length);z=p.indexOf('#');p=z<0?p:s.fl(p,z);x=e?p.i"
++"ndexOf(e):-1;p=x<0?p:s.fl(p,x);p+=!p||p.charAt(p.length-1)=='/'?s.d"
++"efaultPage:'';y=c?c:'/';while(p){x=p.indexOf('/');x=x<0?p.length:x;"
++"z=s.fl(p,x);if(!s.pt(s.pathExcludeList,',','p_c',z))n+=n?y+z:z;p=p."
++"substring(x+1)}y=c?c:'?';while(g){x=g.indexOf(',');x=x<0?g.length:x"
++";z=s.fl(g,x);z=s.pt(q,'&','p_c',z);if(z){n+=n?y+z:z;y=c?c:'&'}g=g.s"
++"ubstring(x+1)}return n");
 
 /*
 * Plugin Get Visit Number
@@ -279,6 +403,7 @@ s.escape=new Function("v",""
 s.split=new Function("l","d",""
 +"var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
 +"++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
+
 /*
  * Plugin Utility: apl v1.1
  */
@@ -313,7 +438,116 @@ s.repl=new Function("x","o","n",""
 +"var i=x.indexOf(o),l=n.length;while(x&&i>=0){x=x.substring(0,i)+n+x."
 +"substring(i+o.length);i=x.indexOf(o,i+l)}return x");
 
-
+/*
+ * channelManager v2.45 - Tracking External Traffic
+ */
+s.channelManager=new Function("a","b","c","d","e","f",""
++"var s=this,A,B,g,l,m,M,p,q,P,h,k,u,S,i,O,T,j,r,t,D,E,F,G,H,N,U,v=0,"
++"X,Y,W,n=new Date;n.setTime(n.getTime()+1800000);if(e){v=1;if(s.c_r("
++"e))v=0;if(!s.c_w(e,1,n))s.c_w(e,1,0);if(!s.c_r(e))v=0;}g=s.referrer"
++"?s.referrer:document.referrer;g=g.toLowerCase();if(!g)h=1;i=g.index"
++"Of('?')>-1?g.indexOf('?'):g.length;j=g.substring(0,i);k=s.linkInter"
++"nalFilters.toLowerCase();k=s.split(k,',');l=k.length;for(m=0;m<l;m+"
++"+){B=j.indexOf(k[m])==-1?'':g;if(B)O=B;}if(!O&&!h){p=g;U=g.indexOf("
++"'//');q=U>-1?U+2:0;Y=g.indexOf('/',q);r=Y>-1?Y:i;t=g.substring(q,r)"
++";t=t.toLowerCase();u=t;P='Referrers';S=s.seList+'>'+s._extraSearchE"
++"ngines;if(d==1){j=s.repl(j,'oogle','%');j=s.repl(j,'ahoo','^');g=s."
++"repl(g,'as_q','*');}A=s.split(S,'>');T=A.length;for(i=0;i<A.length;"
++"i++){D=A[i];D=s.split(D,'|');E=s.split(D[0],',');for(G=0;G<E.length"
++";G++){H=j.indexOf(E[G]);if(H>-1){if(D[2])N=u=D[2];else N=t;if(d==1)"
++"{N=s.repl(N,'#',' - ');g=s.repl(g,'*','as_q');N=s.repl(N,'^','ahoo'"
++");N=s.repl(N,'%','oogle');}i=s.split(D[1],',');for(k=0;k<i.length;k"
++"++){M=s.getQueryParam(i[k],'',g).toLowerCase();if(M)break;}}}}}if(!"
++"O||f!='1'){O=s.getQueryParam(a,b);if(O){u=O;if(M)P='Paid Search';el"
++"se P='Paid Non-Search';}if(!O&&N){u=N;P='Natural Search'}}if(h==1&&"
++"!O&&v==1)u=P=t=p='Direct Load';X=M+u+t;c=c?c:'c_m';if(c!='0'){X=s.g"
++"etValOnce(X,c,0);}g=s._channelDomain;if(g&&X){k=s.split(g,'>');l=k."
++"length;for(m=0;m<l;m++){q=s.split(k[m],'|');r=s.split(q[1],',');S=r"
++".length;for(T=0;T<S;T++){Y=r[T];Y=Y.toLowerCase();i=j.indexOf(Y);if"
++"(i>-1)P=q[0];}}}g=s._channelParameter;if(g&&X){k=s.split(g,'>');l=k"
++".length;for(m=0;m<l;m++){q=s.split(k[m],'|');r=s.split(q[1],',');S="
++"r.length;for(T=0;T<S;T++){U=s.getQueryParam(r[T]);if(U)P=q[0]}}}g=s"
++"._channelPattern;if(g&&X){k=s.split(g,'>');l=k.length;for(m=0;m<l;m"
++"++){q=s.split(k[m],'|');r=s.split(q[1],',');S=r.length;for(T=0;T<S;"
++"T++){Y=r[T];Y=Y.toLowerCase();i=O.toLowerCase();H=i.indexOf(Y);if(H"
++"==0)P=q[0];}}}if(X)M=M?M:N?'Keyword Unavailable':'n/a';p=X&&p?p:'';"
++"t=X&&t?t:'';N=X&&N?N:'';O=X&&O?O:'';u=X&&u?u:'';M=X&&M?M:'';P=X&&P?"
++"P:'';s._referrer=p;s._referringDomain=t;s._partner=N;s._campaignID="
++"O;s._campaign=u;s._keywords=M;s._channel=P;");
+/* Top 130 Search Engines*/
+s.seList="altavista.co|q,r|AltaVista>aol.co.uk,search.aol.co.uk|query"
++"|AOL - United Kingdom>search.aol.com,search.aol.ca|query,q|AOL.com "
++"Search>ask.com,ask.co.uk|ask,q|Ask Jeeves>www.baidu.com|wd|Baidu>da"
++"um.net,search.daum.net|q|Daum>google.co,googlesyndication.com|q,as_"
++"q|Google>google.com.ar|q,as_q|Google - Argentina>google.com.au|q,as"
++"_q|Google - Australia>google.at|q,as_q|Google - Austria>google.com."
++"bh|q,as_q|Google - Bahrain>google.com.bd|q,as_q|Google - Bangladesh"
++">google.be|q,as_q|Google - Belgium>google.com.bo|q,as_q|Google - Bo"
++"livia>google.ba|q,as_q|Google - Bosnia-Hercegovina>google.com.br|q,"
++"as_q|Google - Brasil>google.bg|q,as_q|Google - Bulgaria>google.ca|q"
++",as_q|Google - Canada>google.cl|q,as_q|Google - Chile>google.cn|q,a"
++"s_q|Google - China>google.com.co|q,as_q|Google - Colombia>google.co"
++".cr|q,as_q|Google - Costa Rica>google.hr|q,as_q|Google - Croatia>go"
++"ogle.cz|q,as_q|Google - Czech Republic>google.dk|q,as_q|Google - De"
++"nmark>google.com.do|q,as_q|Google - Dominican Republic>google.com.e"
++"c|q,as_q|Google - Ecuador>google.com.eg|q,as_q|Google - Egypt>googl"
++"e.com.sv|q,as_q|Google - El Salvador>google.ee|q,as_q|Google - Esto"
++"nia>google.fi|q,as_q|Google - Finland>google.fr|q,as_q|Google - Fra"
++"nce>google.de|q,as_q|Google - Germany>google.gr|q,as_q|Google - Gre"
++"ece>google.com.gt|q,as_q|Google - Guatemala>google.hn|q,as_q|Google"
++" - Honduras>google.com.hk|q,as_q|Google - Hong Kong>google.hu|q,as_"
++"q|Google - Hungary>google.co.in|q,as_q|Google - India>google.co.id|"
++"q,as_q|Google - Indonesia>google.ie|q,as_q|Google - Ireland>google."
++"is|q,as_q|Google - Island>google.co.il|q,as_q|Google - Israel>googl"
++"e.it|q,as_q|Google - Italy>google.com.jm|q,as_q|Google - Jamaica>go"
++"ogle.co.jp|q,as_q|Google - Japan>google.jo|q,as_q|Google - Jordan>g"
++"oogle.co.ke|q,as_q|Google - Kenya>google.co.kr|q,as_q|Google - Kore"
++"a>google.lv|q,as_q|Google - Latvia>google.lt|q,as_q|Google - Lithua"
++"nia>google.com.my|q,as_q|Google - Malaysia>google.com.mt|q,as_q|Goo"
++"gle - Malta>google.mu|q,as_q|Google - Mauritius>google.com.mx|q,as_"
++"q|Google - Mexico>google.co.ma|q,as_q|Google - Morocco>google.nl|q,"
++"as_q|Google - Netherlands>google.co.nz|q,as_q|Google - New Zealand>"
++"google.com.ni|q,as_q|Google - Nicaragua>google.com.ng|q,as_q|Google"
++" - Nigeria>google.no|q,as_q|Google - Norway>google.com.pk|q,as_q|Go"
++"ogle - Pakistan>google.com.py|q,as_q|Google - Paraguay>google.com.p"
++"e|q,as_q|Google - Peru>google.com.ph|q,as_q|Google - Philippines>go"
++"ogle.pl|q,as_q|Google - Poland>google.pt|q,as_q|Google - Portugal>g"
++"oogle.com.pr|q,as_q|Google - Puerto Rico>google.com.qa|q,as_q|Googl"
++"e - Qatar>google.ro|q,as_q|Google - Romania>google.ru|q,as_q|Google"
++" - Russia>google.st|q,as_q|Google - Sao Tome and Principe>google.co"
++"m.sa|q,as_q|Google - Saudi Arabia>google.com.sg|q,as_q|Google - Sin"
++"gapore>google.sk|q,as_q|Google - Slovakia>google.si|q,as_q|Google -"
++" Slovenia>google.co.za|q,as_q|Google - South Africa>google.es|q,as_"
++"q|Google - Spain>google.lk|q,as_q|Google - Sri Lanka>google.se|q,as"
++"_q|Google - Sweden>google.ch|q,as_q|Google - Switzerland>google.com"
++".tw|q,as_q|Google - Taiwan>google.co.th|q,as_q|Google - Thailand>go"
++"ogle.bs|q,as_q|Google - The Bahamas>google.tt|q,as_q|Google - Trini"
++"dad and Tobago>google.com.tr|q,as_q|Google - Turkey>google.com.ua|q"
++",as_q|Google - Ukraine>google.ae|q,as_q|Google - United Arab Emirat"
++"es>google.co.uk|q,as_q|Google - United Kingdom>google.com.uy|q,as_q"
++"|Google - Uruguay>google.co.ve|q,as_q|Google - Venezuela>google.com"
++".vn|q,as_q|Google - Viet Nam>google.co.vi|q,as_q|Google - Virgin Is"
++"lands>icqit.com|q|icq>bing.com|q|Microsoft Bing>myway.com|searchfor"
++"|MyWay.com>naver.com,search.naver.com|query|Naver>netscape.com|quer"
++"y,search|Netscape Search>reference.com|q|Reference.com>seznam|w|Sez"
++"nam.cz>abcsok.no|q|Startsiden>tiscali.it|key|Tiscali>virgilio.it|qs"
++"|Virgilio>yahoo.com,search.yahoo.com|p|Yahoo!>ar.yahoo.com,ar.searc"
++"h.yahoo.com|p|Yahoo! - Argentina>au.yahoo.com,au.search.yahoo.com|p"
++"|Yahoo! - Australia>ca.yahoo.com,ca.search.yahoo.com|p|Yahoo! - Can"
++"ada>fr.yahoo.com,fr.search.yahoo.com|p|Yahoo! - France>de.yahoo.com"
++",de.search.yahoo.com|p|Yahoo! - Germany>hk.yahoo.com,hk.search.yaho"
++"o.com|p|Yahoo! - Hong Kong>in.yahoo.com,in.search.yahoo.com|p|Yahoo"
++"! - India>yahoo.co.jp,search.yahoo.co.jp|p,va|Yahoo! - Japan>kr.yah"
++"oo.com,kr.search.yahoo.com|p|Yahoo! - Korea>mx.yahoo.com,mx.search."
++"yahoo.com|p|Yahoo! - Mexico>ph.yahoo.com,ph.search.yahoo.com|p|Yaho"
++"o! - Philippines>sg.yahoo.com,sg.search.yahoo.com|p|Yahoo! - Singap"
++"ore>es.yahoo.com,es.search.yahoo.com|p|Yahoo! - Spain>telemundo.yah"
++"oo.com,espanol.search.yahoo.com|p|Yahoo! - Spanish (US : Telemundo)"
++">tw.yahoo.com,tw.search.yahoo.com|p|Yahoo! - Taiwan>uk.yahoo.com,uk"
++".search.yahoo.com|p|Yahoo! - UK and Ireland>yandex|text|Yandex.ru>s"
++"earch.cnn.com|query|CNN Web Search>search.earthlink.net|q|Earthlink"
++" Search>search.comcast.net|q|Comcast Search>search.rr.com|qs|RoadRu"
++"nner Search>optimum.net|q|Optimum Search";
 
 
 
@@ -497,5 +731,4 @@ w.s_ft=new Function("c","c+='';var s,e,o,a,d,q,f,h,x;s=c.indexOf('=function(');w
 +"'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
 c=s_d(c);if(e>0){a=parseInt(i=v.substring(e+5));if(a>3)a=parseFloat(i)}else if(m>0)a=parseFloat(u.substring(m+10));else a=parseFloat(v);if(a<5||v.indexOf('Opera')>=0||u.indexOf('Opera')>=0)c=s_ft(c);if(!s){s=new Object;if(!w.s_c_in){w.s_c_il=new Array;w.s_c_in=0}s._il=w.s_c_il;s._in=w.s_c_in;s._il[s._in]=s;w.s_c_in++;}s._c='s_c';(new Function("s","un","pg","ss",c))(s,un,pg,ss);return s}
 function s_giqf(){var w=window,q=w.s_giq,i,t,s;if(q)for(i=0;i<q.length;i++){t=q[i];s=s_gi(t.oun);s.sa(t.un);s.setTagContainer(t.tagContainerName)}w.s_giq=0}s_giqf()
-
 

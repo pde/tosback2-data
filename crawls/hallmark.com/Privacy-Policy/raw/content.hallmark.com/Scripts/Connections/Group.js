@@ -133,7 +133,7 @@ if(IsAddOrEditGroups=="AddGroups"){$('#SelectedGroupID').val("-1");$('#SelectedG
 var params="Group.GroupName="+$("#GroupName").val()+"&Group.PrivacyLevel="
 +grpType+"&SelectedContactIDs="+$('#SelectedContactIDs').val()+"&DeSelectedContactIDs="+$('#DeSelectedContactIDs').val()+"&SelectedGroupID="+$('#SelectedGroupID').val();$.ajax({type:'POST',contentType:"application/x-www-form-urlencoded",url:"/Group/SaveGroups",data:params,dataType:'json',cache:false,error:function(e){},success:function(data){if(null!=data.validationErrors&&data.validationErrors.length>0){displayErrorMessagesOnReLoad(data.validationErrors,errorPage)
 hallmarkBehaviors.hmkEnableButton('.JQDisableAction');scrollToElement("msgDiv\\.AddEditGroups");s.prop14=data.validationErrors[0].Message;evalOmniture();s.prop14='';}
-else{if(data!=""){$('#groupPageNumber').val(data.Groups.CurrentPageNumber);if(data.validationErrors!=null&&data.validationErrors.length>0){displayErrorMessagesOnReLoad(data.validationErrors,errorPage);$('#AddEditGroupsOverlay').find('div.close').show();viewName="AddEditGroups";}
+else{if(data!=""){$('#groupPageNumber').val(data.Groups.CurrentPageNumber);selectedContactIDs=[];deSelectedContactIDs=[];if(data.validationErrors!=null&&data.validationErrors.length>0){displayErrorMessagesOnReLoad(data.validationErrors,errorPage);$('#AddEditGroupsOverlay').find('div.close').show();viewName="AddEditGroups";}
 else{if(viewName=="AddEditGroups"){GetGroupsPaged();}
 else if(viewName=="EditGroups"){viewName="AddressBook";window.location.reload();}
 else{if($('div.secondLevel').find('.secHead_Groups').hasClass('selected')){window.location.reload();}

@@ -28,8 +28,21 @@ div.validationSummary ul li {  }
 #branding2, #branding3 { height: auto; width: 100%; margin: 0px; position: absolute; left: auto; top: 0px; z-index: 4000;}	
  #branding { height: auto; width: 960px;margin: 0px; position: absolute; left: 0px; top: 0px; z-index: 1000;}
 #branding_wrapper { width: 930px; margin: 0px 0px 15px 0px;float:none; }
-			
-	#nav_main { /*float: left; width: 120px;*/ position: absolute; left: 10px; width: 131px; }
+		/*WCS-520 Start*/	
+	#nav_main { /*float: left; width: 120px;*/ position: fixed; left: 10px; width: 131px; }
+* html {
+	background-image: url('http://www.coach.com/wcsstore/Coach_US/images/x.gif');
+}
+
+* html #nav_main {
+	position: absolute; /* position fixed for ie6 */
+	top: expression(0 (( e = document . documentElement . scrollTop) ? e :
+		document . body . scrollTop ) + 'px' );
+	left: expression(0 +(( e = document . documentElement . scrollLeft) ? e
+		: document . body . scrollLeft ) + 'px' );
+} /*WCS-520 end*/
+
+
 	#nav_main dl dd { position: relative; }
 	#nav_main ul{display:block; background: #fff; zoom: 1;opacity: 0.8; filter: alpha(opacity = 80); position: absolute; left: 130px; width: 120px; padding: 0px 0px 0px 9px !important; top: -10px; display: none; }
 			#nav_main ul { margin-left: 0px !important; padding: 0px 0px 0px 9px !important; }
@@ -215,7 +228,7 @@ div.validationSummary ul li {  }
 							.register_modal #register_right .pop_frm input, #nav_utility .pop_frm span { float: left; clear: left; }
 						.register_modal #register_right .utility_pop{width:auto;}
 						
-	#branding2, #branding3 { height: auto; width: 99%; margin: 0px; position: absolute; left: auto; text-align: right; top: 0px; z-index: 4000;}	
+	#branding2, #branding3 { height: auto; width: 99%; margin: 0px; position: absolute; left: auto; text-align: right; top: 0px; z-index: 10001;}	
 		#branding2 #branding_wrapper, #branding3 #branding_wrapper { width: auto; margin: 0px; float: none; }
 			#branding2 #search_main { width: 980px; margin: 0px auto; float: right; left: auto; position: relative; }
 			#branding3 #search_main{ width: 980px;  float: right;  position: relative; }
@@ -2297,4 +2310,35 @@ ul.swatch_list li { display: inline !important; }
 	#nav_main dd ul li a, #nav_main dd ul li li a { font-size: 11px; line-height: 12px; letter-spacing: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #3f3b36 !important; }
 	#nav_main dd ul li a:hover, #nav_main dd ul li li a:hover { color: #3f3b36 !important; font-weight:bold; }	
 	#nav_main dt {padding:0px 0px 10px 0px;}
-	#zip_list { z-index:10001!important; }
+	#zip_list { z-index:10004!important; }
+
+
+	/*Begin Style Changes for View All #view_all_wrapper #layout.legacyViewall*/
+	/* .column3{width:279px; display:inline-block; float:left; margin:0;}
+	*/
+	#view_all_wrapper #layout.legacyViewall { min-width:850px; margin-left:6px;}
+	#view_all_wrapper #layout.legacyViewall .legacyoneByOne {
+		width:94px; height:94px; border:none; display:inline-block; overflow:hidden; list-style-type:none;
+		*float:left; /* IE7 and below */ }
+	#view_all_wrapper #layout.legacyViewall .legacyoneByOne legacyoneByOneImg {
+		width:82px; height:82px; display:inline-block; overflow:hidden; list-style-type:none; border:0;}
+	#view_all_wrapper #layout.legacyViewall .large-thumb img {
+		width:100%; height:100%; display:none; overflow:scroll; list-style-type:none; border:0;}
+	#view_all_wrapper #layout.legacyViewall .large-thumb{
+		disply:none;
+		pointer-events: none!important;
+		visibility:hidden;
+		position:fixed;
+		border:1px solid #CFCFCF;
+		vertical-align:middle;
+		text-align:center;
+		background-align:center;
+		backgound-size:auto;
+        z-index:1;
+	}
+
+	@media only screen and (device-width: 1024px) {
+		#view_all_wrapper #layout.legacyViewall{max-width:1024px;}
+	}
+	
+   /*End Style Changes for View All*/

@@ -80,33 +80,14 @@ s.doPlugins=s_doPlugins;
 
 s.loadModule("Media");
 s.Media.autoTrack=false;
-s.Media.trackSeconds = 30;
-s.Media.trackWhilePlaying=true;
-s.Media.trackMilestones="25,50,75";
+s.Media.trackSeconds = null;
+s.Media.trackWhilePlaying=false;
 s.Media.playerName="JW Player - SiteCatalyst 15";
-s.Media.segmentByMilestones = true;
-s.Media.trackUsingContextData = true;
-s.Media.contextDataMapping = {
-	"a.media.name":"eVar49,prop49",
-	"a.media.segment":"eVar50",
-	"a.contentType":"eVar2",
-	"a.media.timePlayed":"event1",
-	"a.media.view":"event2",
-	"a.media.segmentView":"event12",
-	"a.media.complete":"event10",
-	"a.media.milestones":{
-		25:"event13",
-		50:"event14",
-		75:"event15"
-	}
-};
+s.Media.segmentByMilestones = false;
+s.Media.trackUsingContextData = false;
 s.Media.trackVars = "None";
-s.Media.trackEvents = "None"; 
-
-/* Turn on and configure debugging here */
-/* JC turned off debugging*/
+s.Media.trackEvents = "None";
 s.debugTracking = false;
-s.trackLocal = false;
 
 
 /************************** PLUGINS SECTION *************************/

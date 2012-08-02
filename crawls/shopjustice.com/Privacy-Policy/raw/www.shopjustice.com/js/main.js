@@ -397,3 +397,8 @@ YAHOO.util.Event.onDOMReady(
 						_p.value = _p.value.toLowerCase()
 					}, searchBox);
 		});
+
+function openCheckage()
+{
+    window.open('http://www.shopjustice.com/account/checkage');
+}

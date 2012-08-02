@@ -1,0 +1,44 @@
+avast.navContent = "";
+$(document).ready(function(){
+  var tooltip = avast.tooltip;
+  if(!avast.disableTooltip && typeof tooltip.init != 'undefined') tooltip.init();
+  
+  var tabs = avast.tabs;
+  if(!avast.disableTabs  && typeof tabs.init != 'undefined') tabs.init("#tabs");
+  
+  var languageSelector = avast.languageSelector;
+  if(!avast.disableLanguageSelector && typeof languageSelector.init != 'undefined') languageSelector.init();
+  
+  var navigation = avast.navigation;
+  if(!avast.disableNavigation && typeof navigation.init != 'undefined') navigation.init({navContent:avast.navContent});
+  
+  var gaTracking = avast.gaTracking;
+  if(!avast.disableGaTracking && typeof gaTracking.init != 'undefined') gaTracking.init();
+  
+  var avastCounter = avast.counter;
+  if(!avast.disableCounter && typeof avastCounter.init != 'undefined') avastCounter.init();
+  
+	/*
+	 * Bind sharebox events
+	 */
+	$('#btnShareboxFooter').bind('mouseover click', function(){
+		if( $('#blockShareboxFooter').length > 0 ){
+			avast.sharebox.add( 
+				$(this),
+				'#blockShareboxFooter',
+				{
+					title : $('body').find('h1').text(),
+					ref : document.location.href,
+					msg : $('body').find('h2').text(),
+					effect : 'fade',
+					xPos : 'left',
+					yPos : 'top',
+					yFix : 10,
+					xFix : 0
+				}
+			);
+			return false;
+		}
+	});
+
+});

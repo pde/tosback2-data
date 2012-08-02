@@ -1,5 +1,5 @@
 $(document).ready( function(){
-	$( "div#auxiliaryNavigation" ).minWidth();
+	//$( "div#auxiliaryNavigation" ).minWidth();
 
 	$( 'div#auxiliaryNavigation ul li a' ).each( function(){
 		if( typeof( Cufon ) == 'function' && Cufon.replace ){
@@ -8,11 +8,23 @@ $(document).ready( function(){
 
 	});
 	
+	/* Dealer Locator 1 Result Only Fix */
+	
+	if ( $('#numberOfDealersFound') ) {
+		var count = $('#numberOfDealersFound').html();
+		if ( count == "1" ) {
+			$('html.ie7 h2.dealerName').css({
+				'width' : '100%',
+				'top'   : '-20px'
+			});
+		}
+	}
+	
 // set footer to page content bottom for subset of pages on ipad ver<5
 // ipad ver<5 footer set to static position in giPad.css (ver 5+ inherits global fixed)(jason.campbell)
 
-var locations=['aboutGM', 'article', 'toolbar','vision', 'article']; //page groups that need the footer inserted after shadedContainer
-var exclusions=['GM_Corporate_Officers', 'board_of_directors0', 'design_technology.html','environment1', 'community_education', 'contactUsForm','designing_for_physically_challenged']; //sub-groups to exclude from locations groups 
+var locations=['aboutGM', 'article', 'toolbar', 'vision', 'article','vehicles']; //page groups that need the footer inserted after shadedContainer
+var exclusions=['GM_Corporate_Officers', 'board_of_directors0', 'design_technology.html','environment1', 'contactUsForm','designing_for_physically_challenged']; //sub-groups to exclude from locations groups 
 var inclusions=['daniel_f_akerson', 'daniel_akerson', 'article', 'corporate_citizenship', 'archive.display-']; //sub-groups of exclusions to include with locations 
 var target=false;
 var url=window.location.href;
@@ -51,11 +63,30 @@ for(i in formPageId){
 		target=false;
 	}
 }
-if($('body').hasClass('ver4') && target==true){
-    $("#auxiliaryNavigation").insertAfter($("#content>.shadedContainer"));
-	$("#auxiliaryNavigation").css('position','relative');
+if($('body').hasClass('visionpage') && $('body').hasClass('ver4')){
+	$("#auxiliaryNavigation").insertAfter($('#background'));
+	target=false;
 }
 
+if($('body').hasClass('ver4') && target==true){
+    $("#auxiliaryNavigation").insertAfter($("#content>.shadedContainer"));
+	$("#auxiliaryNavigation").css('position','relative !important');
+}
+
+// set header / footer width for fat pages
+if($('body').hasClass('ipad')){
+	if($('#content > .shadedContainer').width()>980){
+		var scWidth=$('#content > .shadedContainer').width()+'px';
+		$('#primaryNavigation').css('width',scWidth);
+		$('#primaryNavigation > ul').css('width',scWidth);
+		$('#auxiliaryNavigation').css('width',scWidth);
+	}
+	else{
+		$('#primaryNavigation').css('width','980px');
+		$('#primaryNavigation > ul').css('width','980px');
+		$('#auxiliaryNavigation').css('width','980px');
+	}
+}
  //hide vignette / show iframes on investor pages
 (function(){
 	if(window.location.href.indexOf('/investors')>-1){
@@ -63,6 +94,8 @@ if($('body').hasClass('ver4') && target==true){
 		$('iframe').css('display','block');
 	}
 })()
+// setInterval(function(){alert($('#primaryNavigation').css('width'));},2000);
+ //alert($('#auxiliaryNavigation').css('position'));
+//setInterval(function(){alert($(".shadedContainer").css("width"));},2000);
 });
-
 

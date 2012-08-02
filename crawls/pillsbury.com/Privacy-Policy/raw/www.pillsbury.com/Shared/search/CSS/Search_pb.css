@@ -1,0 +1,636 @@
+﻿
+/* Overlays */
+.ui-widget-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.ui-autocomplete { position: absolute; cursor: default; z-index:1000; }	
+.ui-autocomplete-loading { background: white; }
+/* workarounds */
+* html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */
+/* Menu
+----------------------------------*/
+.ui-menu {list-style:none;margin: 0;display:block; /*background:white;*/ color:#222222; width:222px; /*border:1px solid #000000;*/padding-left:0}
+.ui-menu .ui-menu {margin-top: -3px;}
+.ui-menu .ui-menu-item {margin:0;padding: 0;zoom: 1;float: left;clear: left;width: 100%;font:menu;}
+.ui-menu .ui-menu-item a {text-decoration:none;display:block;padding:.2em .4em;	zoom:1;font-weight: normal;color:#222222;}
+.ui-menu .ui-menu-item a.ui-state-hover,.ui-menu .ui-menu-item a.ui-state-active {font-weight: normal;background-color: #3B75D3;color:#FFFFFF;}
+/*Search result styles for Betty Crocker and Sub category filter*/
+.rcpcatFilterTop{background-image:url(../../Search/Images/gray-round-top.gif); background-repeat:no-repeat;margin:0px;padding:0px;}
+.rcpcatFilter{padding:0;border-right:1px solid #C0C0C0;border-left:1px solid #C0C0C0;border-bottom:1px solid #C0C0C0;overflow:hidden;}
+.rcpcatFilter h1 {font-size:20px;padding:0;margin:0;}
+.rcpcatFilter .sortListItem{padding:10px 22px 0 22px;}
+.rcpcatFilter .sort {padding:0; overflow:hidden;width:235px;float:left;margin: 10px 0;}
+.rcpcatFilter .sort select{width:235px; padding:0; margin:0;}
+.rcpcatFilter .sort .sortingList {width:233px;}
+.rcpcatFilter  .ShPagination{float:right;margin-top:10px;width:250px;}
+.rcpcatFilter .viewPageSize{margin:10px 5px 10px 0; float:left;padding:0 0 0 3px;width:65px;}
+.rcpcatFilter .gmiBottomPagination .ShPagination{margin:10px 0;float:right;}
+.rcpcatFilter .gmiBottomPagination {margin:0;}
+.rcpcatFilterLst{border-bottom:1px solid #e7e7e7; color:#000; float:left; margin:0 0 0 -10px; padding:11px 10px; width:100%; overflow:auto;}
+.rcpcatFilterLst .thumbnail {float:left; height:80px; margin:0; width:110px}
+.rcpcatFilterLst .thumbnail img{height:80px;width:110px;}
+.rcpcatFilterLst .thumbnail a{display:block}
+.rcpcatFilterLst .description {float:left;margin: 5px 14px 0 20px; width:288px}
+.rcpcatFilterLst .description h3{margin:0; padding:0} /*This should be removed after defining global styles*/
+.rcpcatFilterLst .description h3 a{font-size: 14px;font-weight: bold;}
+.rcpcatFilterLst .description h3 a.menExcl{background:url("../../Search/Images/BettyCrockerIcon.png") no-repeat scroll 0 0 transparent;padding-left: 18px;}
+.rcpcatFilterLst .description .desc{padding:0; margin:7px 0}
+.rcpcatFilterLst .description .preTime{margin:0;}
+.rcpcatFilterLst .mRecipeExclusive {width:451px;background-color:#F1C03B;clear:both;float:right;HEIGHT:21px;}
+.rcpcatFilterLst .mRecipeExclusive img{ float:right;}
+.rcpcatFilterLst .rcpDesc {background-color: #F8EED0;float: right;width: 451px;}
+.rcpcatFilterLst .ratings{float:left;margin: 5px 0 0}
+.rcpcatFilterLst .recipeRating, .rcpcatFilterLst .recipeRating a {font-size: 11px;font-weight: normal;}
+.rcpcatFilterLst .recipeRating {float: left; width: 125px;}
+.rcpcatFilterLst .recipeRating .recipeSpoons {float: none;margin-bottom: 6px;margin-top: 2px;width: auto ;display:inline-block;}
+.rcpcatFilterLst .preTime dt,
+.rcpcatFilterLst .preTime dd{display:inline; font-weight:bold; margin:0 0 0 20px; padding:0}
+.rcpcatFilterLst .preTime dt:first-child{margin:0}
+.rcpcatFilterLst .preTime dd{font-weight:normal; margin:0}
+.rcpDesc{background-color:#F8EED0;float:right;}
+.mRecipeExclusive img{ float:right;}
+.mRecipeExclusive {background-color:#F1C03B;clear:both;float:right;HEIGHT:21px;width:455px;}
+a.menExcl{background:url("../../Search/Images/BettyCrockerIcon.png") no-repeat scroll 0 0 transparent;padding-left: 18px;}
+.catFilterDesc{float:right;width:451px;overflow:hidden;}
+/*pagination*/
+.gmiTopPagination {float:right;margin:5px 120px 0 0;}
+.viewPageSize{margin:0; float:left;padding:0 0 0 3px;}
+.viewPageSize select{margin:0; padding:0;}
+.ShPagination ul{ margin:0;padding:0;float:right}
+.ShPagination li{list-style:none; margin:4px 0 0 0;padding:0 0 0 5px;float:left}
+.ShPagination a{color:#df182f}
+.ShPagination .colorSelect {color:black;font-weight:bold;}
+.gmiBottomPagination {margin:10px 0 0 0;}
+.gmiBottomPagination .viewPageSize{float:right;}
+
+/* common styles */
+.clearfix:after {content: ".";display: block;height: 0;clear: both;visibility: hidden;}
+.clearfix {display: inline-block;}  /* for IE/Mac */
+.clearfix {display: block;}
+.CL { clear:both; }
+.BO-0{ border:none}
+.MA0{ margin:0}
+.MT5{ margin-top:5px}
+.mt10{ margin-top:10px }
+
+/* Search Box  right corner*/
+.search{float:right;width: 234px; height: 46px;background: url("../../Search/Images/searchBack.png") top left repeat-x;padding: 4px 2px 4px 4px;position: relative;}
+.search{*margin-top:2px}
+.search .searchTextBox,.search .normal{width:222px;padding: 1px 2px;font-size: 11px; margin-bottom: 0;}
+.search .advSearchCnt {float:left;padding-top: 10px;width:auto !important;}
+.search .searchBtn{padding:3px 0px 0px 0px;float:right;}
+.SearchContainer { position: absolute; right: 5px; top: 25px; /*z-index: 999;*/ }
+.SearchContainer * { margin: 0; padding: 0; }
+.SearchDropDown { position: relative; min-width: 120px; padding-top: 3px; padding-left: 4px; z-index:1000 }
+.SearchDropDownTop { background:url('../../Search/Images/siteSearchDropDown.png') no-repeat scroll 0px 0px transparent; height:4px; width:125px; font-size: 0px;}
+.SearchDropDownTile { background:url('../../Search/Images/siteSearchDropDownTile.png') repeat-y scroll 0 0 transparent; padding: 0 0 0 5px; width:120px; min-height: 15px; }
+a.SearchTermFilter { background:url('../../Search/Images/siteSearchButton.png') no-repeat scroll 0 0 transparent; width:90px; height:15px; border:0px; color: #FFFFFF; font-weight: bold; font-size: 12px; text-align:left; text-transform: uppercase; cursor:pointer; float: left; }
+.SearchDropDownTile a, .SearchDropDownTile a:hover {padding-left: 10px;text-decoration:none;}
+.SearchDropDownTile img {float:right;padding-top:5px;padding-right:6px;cursor:pointer;}
+.SearchTbOptions { display:none; width:120px; }
+.SearchTbOptions ul { margin:0 2px;} 
+.SearchTbOptions ul li{display:block;list-style-type:none;}
+.SearchTbOptions ul li a {font:12px Arial, Helvetica, sans-serif; color:#000; padding:1px 10px; display:inline-block; margin-top:1px; }
+.searchTbOptions .on{ background:#ccc; }
+.SearchTbOptions .current{ font-weight:bold; color:#000 }
+.SearchDropDownBottom { background:url('../../Search/Images/siteSearchDropDown.png') no-repeat scroll transparent; background-position: -0px -18px; height:4px; width:125px; font-size: 0px;}
+/* Header Search Box  right corner*/
+/*.search .searchTextBoxCnt { background:url('/Shared/Search/Images/search_hdr_bg.png') no-repeat; width:204px; height:22px; padding:3px 2px 2px 2px; float:left; }*/
+.search .searchTextBoxCnt .searchTextBox {font-size: 11px; margin-bottom: 0; padding: 2px 2px; border:none; background:#fff; outline:none; width: 176px; float:left; }
+.search .searchTextBoxCnt .SearchContainer { display: none; right: 31px;}
+.search .searchTextBoxCnt .SearchTbOptions { display: block; }
+.search .searchTextBoxCnt .SearchDropDownTop { background: none; background-color: #fff; border-top: 1px solid gray; border-left: 1px solid gray; border-right: 1px solid gray; height:4px; width:120px; font-size: 0px;}
+.search .searchTextBoxCnt .SearchDropDownTile { background: none; background-color: #fff; border-left: 1px solid gray; border-right: 1px solid gray; width:120px; min-height: 15px; padding: 0px; }
+.search .searchTextBoxCnt .SearchDropDownBottom { background: none; background-color: #fff; border-bottom: 1px solid gray; border-left: 1px solid gray; border-right: 1px solid gray; height:4px; width:120px; font-size: 0px;}
+.search .search_btn { float:left; background: url("../../Search/Images/search_btn.png") no-repeat; height: 22px; width: 23px; display: inline-block; text-indent: -1000em; }
+.search .search_btn a.SearchTermFilter { background:none; width: 39px; height:34px; border: none; outline: none; }
+.search .advSearchHeaderCnt { padding-top: 2px;}
+/* search box middle */
+.searchTopWrap{background:#E7E7E7 url("../../Search/Images/search_bg_cur.png") no-repeat scroll left top;padding-top:10px;margin-top:10px;width:806px;}
+.searchBottomWrap{background:#E7E7E7 url("../../Search/Images/search_bg_cur2.png") no-repeat scroll left bottom;padding-bottom:10px;width:806px;}
+.searchBottomWrap .search{background:#E7E7E7;clear:both;float:none;height:auto;padding:0 10px;position:static;width:auto;width:786px;}
+.searchBottomWrap .searchInput,.searchBottomWrap .normal {background: url("../../Search/Images/search_txt.png") no-repeat scroll 0 0 transparent;border: medium none;color: #666666;float: left;font: bold 14px Arial;height:14px;margin-right: 5px;padding:6px 9px;width: 361px;vertical-align:middle;}
+.searchBottomWrap .search .searchingText {color: #666666;float: left;font-size:18px;font-weight: bold;width: 210px;}
+.searchBottomWrap .SearchDropDownCnt{ position: relative;right: 0px;top: 0px;z-index: 1;float: left;width: 178px;}
+.searchBottomWrap .SearchDropDownCnt .srchDropDown{min-width:120px;padding:0;position:absolute;}
+.searchBottomWrap .SearchDropDownCnt .srchDropDownTop,.searchBottomWrap .SearchDropDownCnt .srchDropDownBottom{width:178px;}
+.searchBottomWrap .search 	.SearchDropDownCnt .srchDropDownTile {background: url("../../Search/Images/searchDropDownTile.png") repeat-y scroll 0 0 transparent;width: 169px;min-height:18px;height:auto;padding:0 5px;}
+.searchBottomWrap .srchDropDownTile a, .searchBottomWrap .srchDropDownTile a:hover{display: inline-block;float:none;vertical-align:middle;}
+.searchBottomWrap .search 	.SearchDropDownCnt .srchDropDownTile img {cursor: pointer;float: none;padding:0}
+.searchBottomWrap .srchTermFilter {background: url("../../Search/Images/search_recipes_btn.png") no-repeat scroll 0 0 transparent;border: 0 none;color: #FFFFFF;cursor: pointer;font-size: 12px;font-weight: bold;height: 18px;
+padding: 0 0 1px 10px;text-align: left;float:left;text-transform: uppercase;width: 140px;}
+.searchBottomWrap .srchTermFilter img{float:left;}
+.searchBottomWrap .advSearchCnt{display:none;}
+.searchTopWrap .searchGrid{padding-top:0;clear:both}
+.SearchAction { background: url(../../Search/Images/search_action.png) no-repeat scroll 0 0 transparent; float: right; text-indent: -1000em; height:39px; width: 37px; position: absolute; right: -2px; top: -1px;}  
+.SearchAction a.SearchTermFilter { height: 39px; width: 37px; display:block;}
+/* Search Results Grid */
+.searchGrid {/*width:806px;*/padding:0 0 5px 0; clear:both}
+.searchGrid.listView{padding-top:0}
+/*.searchGrid *{ margin:0; padding:0;}*/
+.leftCont{ float:left; width:176px; margin:0;}
+.midCont{float:left;  margin: 0 0 0 15px; width:557px;}
+.leftColumn{float: left;width: 175px;margin-right: 12px;margin-top: 5px;}
+.searchRightColumn{width: 610px;float: left;}
+h2.noExpandCollapse{margin-bottom:10px; font-size:16px; font-weight:bold; color:#434242}
+/*left side facet */
+.listFilterContainer.refine  {  border:1px solid #bbbaba; padding:10px; color: #000000;}
+.listFilterContainer{ margin-bottom:10px}
+.listFilterContainer.refine select{width: 206px;}
+.listFilterContainer.refine .title{ font-size: 14px; font-weight: bold;  margin: 10px 0px 10px 0px;}
+.listFilterContainer.refine h3{ font:bold 16px Arial, Helvetica, sans-serif !important;text-transform:capitalize;color:#000;}
+.listFilterContainer.refine span,.listFilterContainer.slidingBars span, .leftColumn .refine span{ margin-bottom:3px;display: block; font-size: 11px; }
+.listFilterContainer.refine span input,.listFilterContainer.slidingBars span input{ margin: 0px 4px 0 0px; vertical-align: middle;}
+.listFilterContainer.slidingBars h3 { background:#94c5e1 url("../../Search/Images/up_arrow.png") no-repeat 90% 50%; padding: 5px 20px 5px 5px; font:bold 14px Arial, Helvetica, sans-serif; color:#fff; margin-top:0; cursor:pointer;}
+.leftColumn .listFilterContainer.slidingBars h3{margin:0px;}
+.leftColumn .listFilterContainer.slidingBars {margin-bottom:10px;}
+.listFilterContainer.slidingBars .down{ background:#94c5e1 url("../../Search/Images/down_arrow.png") no-repeat 90% 50%;}
+.listFilterContainer.slidingBars h3 input{margin-right:5px;}
+.listFilterContainer.slidingBars h5{ font:bold 14px Arial, Helvetica, sans-serif; color:#000; padding:5px; margin-top: 10px;margin-bottom: 10px;}
+.listFilterContainer.slidingBars .filterWindow{ border:1px solid #bbbaba; display:none;padding:10px;color:#333333; }
+.prepLabels label { font:bold 12px Arial, Helvetica, sans-serif; color:#000; padding-left: 10px;padding-right:2px;}
+.totalLabels label { font:bold 12px Arial, Helvetica, sans-serif; color:#000; padding-left: 9px;padding-right:2px;}
+.listFilterContainer.slidingBars .filterWindow .totalLabels label {/*padding-left: 12px;*/}
+.listFilterContainer.slidingBars .filterWindow #prepSlider,.slidingBars .filterWindow #totalSlider{ margin: 12px 0px 0px 5px; /*width:195px;*/border:0px;}
+.listFilterContainer.slidingBars .filterWindow #totalSlider{ margin: 20px 0px 15px 5px;}
+.listFilterContainer.slidingBars .moreLinks{ float:left; margin-top:10px;}
+.listFilterContainer.slidingBars .filterWindow .rating{ float:left; margin:10px;}
+.listFilterContainer.slidingBars .filterWindow #ratingSlider{ float:left; margin:25px 20px 10px 15px; width:10px; height:125px;}
+.listFilterContainer.slidingBars .srcRstPrepTime,.listFilterContainer.slidingBars .srcRstTotalTime{margin-left:-10px;}
+.advSrchLink{display:block;margin-top:10px;}
+.ui-slider { position: relative; text-align: left; }
+.ui-slider-horizontal { background: url("../../Search/Images/graySliderBar.png") no-repeat; height: .8em; }
+.ui-slider-horizontal .ui-slider-handle { background: url("../../Search/Images/redSliderHandle.png") no-repeat; position: absolute; top: -10px; z-index: 2; width: 1.2em; height: 3.2em; cursor: pointer; }
+.ui-slider-horizontal .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; top: 0; height: 100%; }
+.ui-slider-horizontal .ui-slider-range-min { left: 0; }
+.ui-slider-horizontal .ui-slider-range-max { right: 0; }
+.ui-slider-vertical { background: url("../../Search/Images/graySliderBarVert.png") no-repeat; }
+.ui-slider-vertical .ui-slider-handle { background: url("../../Search/Images/redSliderHandleHorz.png") no-repeat; position: absolute; left:-13px; z-index: 2; width: 35px; height: 15px; cursor: pointer; }
+.ui-slider-vertical .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; top: 0; height: 100%; }
+.ui-slider-vertical .ui-slider-range-min { bottom: 0; }
+.ui-slider-vertical .ui-slider-range-max { top: 0; }
+
+/* middle facet */
+.narrowSrchRsltBtn{background:url(../../Search/Images/narrowSearch_btn.png) no-repeat; width:135px;float:left; padding:5px 11px; color:#fff; text-transform:uppercase; font-weight:bold; margin-top: 4px;}
+.narrowSrchRsltBtn span{background:url('../../Search/Images/srchNarrow-arrows.png') no-repeat right; display:block;cursor:pointer}
+.narrowSrchRsltBtn span.filterRecipeOnimg{background-position:right 0}
+.narrowSrchRsltBtn span.filterRecipeOffimg{background-position:right -18px}
+.filterSortLft{position:relative; margin:0 0 20px 0;}
+/*.narrowSrchRsltBtnGalleryView{ padding:20px; text-align:center;}*/
+.narrowSrchRsltBtnGalleryView img {cursor:pointer;}
+.narrowSrchRsltGallery{ clear:both;background:url(../../Search/Images/narrow_search_bg.png) no-repeat; width:760px; height:230px; padding:30px 25px 30px 10px; margin:2px 0 0 5px; display:none;}
+.narrowSrchRsltGallery .resetFacetFilters{position:absolute; right:0px; top: 45px; display: block;}
+/* new css */
+.narrowSrchRsltGallery .listFilterContainer.slidingBars{*width:100%;  width: 100%;}
+.noResults{margin:10px 0;}
+.narrowSrchRsltGallery .listFilterContainer.refine span, .narrowSrchRsltGallery .listFilterContainer.slidingBars span{float:left; *width:100%}
+.narrowSrchRsltGallery .slidingBars h3 {background:none;color:#fff;/*font: bold 16px Arial,Helvetica,sans-serif !important;*/margin-top: 0px;margin-bottom:10px;padding: 2;text-transform:uppercase;}
+.narrowSrchRsltGallery .slidingBars .filterWindow{border:none;float:left;padding:0;}
+.narrowSrchRsltGallery .slidingBars .filterWindow label{color:#000000;font:bold 14px Arial,Helvetica,sans-serif;padding: 0 13px 0 5px;}
+.narrowSrchRsltGallery .slidingBars{clear:both;float:left;/*margin-bottom:20px;*/}
+.narrowSrchRsltGallery .srcRstPrepTime{float: left;height: 71px;margin-right: 50px;width: 336px;}
+.narrowSrchRsltGallery .srcRstTotalTime{float: left;height: 71px;margin-left: 15px;width: 336px;}
+.narrowSrchRsltGallery .srcRstPrepTime .prepLabels label { font:bold 14px Arial, Helvetica, sans-serif; color:#000; padding-left: 29px;padding-right:0;}
+.narrowSrchRsltGallery .srcRstTotalTime .totalLabels label { font:bold 14px Arial, Helvetica, sans-serif; color:#000; padding-left: 28px;padding-right:2px;}
+.narrowSrchRsltGallery .slidingBars .filterWindow #prepSlider{ margin: 15px 0px 0px 25px; width:285px;}
+.narrowSrchRsltGallery .slidingBars .filterWindow #totalSlider{ margin: 15px 0px 0px 30px; width:285px;}
+.narrowSrchRsltGallery .listFilterContainer.slidingBars .srcRstPrepTime, .narrowSrchRsltGallery .listFilterContainer.slidingBars .srcRstTotalTime {margin-left: 0px;}
+.narrowSrchRsltGallery .listFilterContainer.slidingBars .filterWindow .prepLabels label, .narrowSrchRsltGallery .slidingBars .filterWindow .totalLabels label{padding-left:30px;}
+
+/* middles content*/
+/* mid content menu part */
+.srchGalleryViewCnt #SortingViewRslt{/*border: 1px solid #D3D3D3;*/ float: left;  margin: 0 5px;/*width: 480px;*/}
+.midCont .menuSrchMenuLst, .srchGalleryViewCnt .menuSrchMenuLst{ background:none;  float:left; border:1px solid #e2e2e2; padding:2px;}
+.srchGalleryViewCnt .sort select{margin-top:2px;}
+.menuSrchMenuLst{ /*background:url(/Shared/Search/Images/search_menu_bg.png) no-repeat;*/ height:19px; float:left;}
+.menuSrchMenuLst ul li{ display:block;float:left}
+.menuSrchMenuLst ul li a, .menuSrchMenuLst .on{ font:12px Arial, Helvetica, sans-serif; color:#000; text-transform:uppercase; padding:1px 16px; display:block; margin-top:1px; border-left:1px solid #E7E7E7;cursor: pointer;}
+.menuSrchMenuLst ul li:first-child a{border-left:none;}
+.menuSrchMenuLst .on, .menuSrchMenuLst .sortHeader{ background:#E7E7E7; display:block; font-weight:bold;/*margin-right:3px;*/}
+.menuSrchMenuLst .current {font-weight: bold;border-left:1px solid #E7E7E7;}
+.menuMoreLst { display:none; background-color: #fff; border: 1px solid #E7E7E7; position:absolute; width:130px; z-index:100; padding: 2px;}
+.menuMoreLst ul { margin:0 2px;}
+.menuMoreLst ul li{ display:block; width:auto;border-top:1px solid #E7E7E7; }
+.menuMoreLst ul li:first-child{border:none;}
+.menuMoreLst ul li a {font:12px Arial, Helvetica, sans-serif; color:#000; text-transform:uppercase; padding:1px 12px; display:inline-block; margin-top:1px;}
+.menuMoreLst .on{ background:#E7E7E7; font-weight:bold;}
+/* gallery link in the menu*/
+.galleryLink{background-color: #f8f3ec; border: 1px solid #D3D3D3; float:right;  height:25px; padding: 6px 15px 0 15px; margin:0; width: 76px;}
+.galleryLink a{font:bold 11px Arial, Helvetica, sans-serif;padding:3px 25px 3px 0; background: url("../../Search/Images/PBgalleryview.gif") no-repeat scroll right 1px transparent; display:inline-block}
+.galleryLink img{ vertical-align:middle}
+/* Error messaging part */
+
+#searchingMessage {background-color: #E2E2E2;border: 1px solid #005daa;border-radius: 4px 4px 4px 4px;color: #333333;display: none; font-family/*: Tahoma,"Lucida Grande",Sindbad,Kalimati,Verdana,Arial,sans-serif;*/font-size: 20px;font-weight: bold;margin: 10px 0 0 115px;padding: 36px 120px;vertical-align: middle;width: 350px;position: fixed !important;z-index: 2000;}
+.listviewmessage {margin: 0;}
+#retResults,#errResults { display:none;}
+#retResults a, #errResults a { display:block; font:normal 11px Arial, Helvetica, sans-serif; text-align:right;}
+/*   No Results Area   */
+.noResultsCnt{float: left;width: 100%;display:none;}
+.noResults .container,.noResultsCnt .container{padding: 15px;border: solid 1px #c1c0c0;margin-right: 4px;width: auto;}
+.noResults .container .errorMsg,.noResultsCnt .container .errorMsg{padding-bottom:15px;}
+.noResults .searchHeader,.noResultsCnt .searchHeader{height: 40px;float: left;}
+.noResults .searchHeaderTitle,.noResultsCnt .searchHeaderTitle{float: left;background-color: #67aad3;height: 20px;padding: 5px 0 0 5px;width: 590px;}
+.noResults .searchHeaderTitle h2,.noResultsCnt .searchHeaderTitle h2{margin: 0px;}
+.noResults .searchHeaderButton,.noResultsCnt .searchHeaderButton{float: left;height: 35px;}
+.noResults .container a:link,.noResultsCnt .container a:link{color: #e01831;font-size: inherit;text-decoration: underline;}
+.spoonStar{width: 20px;float: left;margin-right: 5px; background:url('../../Search/Images/spoonstar.gif') no-repeat; padding-bottom:4px; height:19px}
+.suggestions{float: left;width: 365px;margin-top: 3px;margin-bottom: 15px;}
+/* search result area*/
+.rcpiDetails2, .rcpiDetails3, rcpiDetails{border: 1px solid #CCCCCC; margin: 10px 0;padding: 10px;}
+.rcpiDetails2 .recpsmallImg{float:left;width:200px;margin-right:10px;}
+.rcpiDetails3 .recpsmallImg{float:left;width:200px;margin-right:10px;}/* {float: right;margin-left: 10px;width: 200px;margin-right:0px;}*/
+.rcpiDetails3 .recpsmallImg img, .rcpiDetails2 .recpsmallImg img, .imgfix img{/*width:200px; height:150px*/}
+.rcpiDetails2 .RB-rating, .rcpiDetails3 .RB-rating{ float:none; margin:10px 0 0;}
+.rcpiDetails2 .RB-rating a, .rcpiDetails3 .RB-rating a{ font:normal 11px Arial, Helvetica, sans-serif;margin-left: 22px;}
+.recpDeta{ margin:10px 0 0 0; width:230px;}
+.rcpiDetails2 .recpDeta{float:left;width:330px;margin:0;}
+.rcpiDetails3 .recpDeta{float:left;width:330px;margin:0;}/*{float:right;width:330px;margin:0;}*/
+.recpDeta a{ font:bold 14px Arial, Helvetica, sans-serif;}
+.recpHead a{ font:bold 18px Arial, Helvetica, sans-serif; color:#bd2f2a;}
+.recpDeta p{ margin:0 0 5px; font:11px Arial, Helvetica, sans-serif; color:#000}
+.recpDeta p.blk12{font:12px Arial, Helvetica, sans-serif; color:#000; margin-top:20px}
+.rcpiDetails2 .recpDeta p, .rcpiDetails3 .recpDeta p{ font:12px Arial, Helvetica, sans-serif;}
+.rcpiDetails2 .MER, .rcpiDetails3 .MER { background:#fcf0ce}
+.merimg{ margin-top:5px;}
+.submitedby img{ vertical-align:middle; border-right:5px solid #fff;}
+.submitedby { vertical-align:middle; background:#efefef; margin-top:5px }
+.recipe_member_generated {float: right;width: 260px;}
+.recipe_member_generated div img {float: left;height: 40px;padding-right: 5px;width: 40px;}
+.report_abuse {background: url("http://www.pillsbury.com/Shared/Search/Images/recipe_images.png") no-repeat scroll -200px -70px transparent;float: right;height: 10px;margin-top: 3px;text-indent: -1000em;width: 56px;}
+/* Pagination*/
+.srchListViewCnt .pagenation{ padding:8px; border:1px solid #ccc; margin-top:25px }
+.srchListViewCnt .pagenation .fltRght{float:right;}
+.srchListViewCnt .pagenation span{color:#999999; }
+.srchListViewCnt .pagenation a{ text-decoration:underline; cursor: pointer;}
+.srchListViewCnt .pagenation a.on{ color:#000;text-decoration:none}
+.srchListViewCnt .pagenation #PrevPage, .pagenation #NextPage{ display:none;}
+.srchListViewCnt #NextPages, #PrevPages {display:none;}
+/* Video/article part at the end */
+.srchListViewCnt .videoArticle{ padding:10px; font:16px Arial, Helvetica, sans-serif; color: #333; display:none; }
+.srchListViewCnt .videoArticle #sep{ padding:0px 10px 0px 10px;}
+/* other styles*/
+.editorPic{ margin-bottom:15px;}
+.results_muted {opacity:.5;filter: alpha(opacity=50);}
+.ratingBestOfCnt{float:right;width:129px;margin-top:5px}
+.fullSrchBestOf{clear:both;float:right;width:129px;}
+.bestOfContainer { position:relative; }
+.bestOfContainer a{color:#666666;text-decoration:none;font-size:11px;}
+.bestOfContainer a span{margin: 0 2px 0 0;}
+.bestOfImage { width:129px; height:44px; background-color:White; background-image:url('../../Search/Images/BestOfSearchResults.ashx.png'); background-repeat:no-repeat; position:relative; }
+.bestOfContestYear { top:18px; left:11px; position:absolute; font-size:11px; font-weight:bold; text-decoration:none; color:#666666; }
+.bestOfContestName { top:20px; left:48px; position:absolute; font-size:11px; font-weight:bold; text-decoration:none; color:#666666; }
+/*gallery view*/
+.srchGalleryViewCnt .viewaslist{ /*background:url(/Shared/Search/Images/view_list_box_bg.png) no-repeat;*/text-align:center;background-color:#fff;border:#d3d3d3 1px solid; height:23px; padding: 8px 15px 0 5px; margin:0; width: 90px; float: left;}
+.srchGalleryViewCnt .viewaslist a{font:bold 11px Arial, Helvetica, sans-serif !important;padding:0 18px 3px 0; background:url('../../Search/Images/list_view.png') no-repeat right 1px; display:inline-block}
+.srchGalleryViewCnt .viewaslist img{ vertical-align:middle; padding:0px 1px 0px 2px;}
+.srchGalleryViewCnt .serchRslt{ margin:20px 0;}
+.srchGalleryViewCnt .serchRsltBox{float: left; margin-right: 15px; position: relative;width: 230px; }
+.srchGalleryViewCnt .serchRsltBox.MA0 {margin:0px;}
+.srchGalleryViewCnt .recpcont{ height:50px; font:bold 14px/20px Arial, Helvetica, sans-serif; color:#db1e1e !important; padding:10px 0; text-align: center;}
+.srchGalleryViewCnt .recpcont a{color:#055daa !important;}
+.srchGalleryViewCnt .srchMore a{ background:#e2e2e2; padding:10px; font:bold 16px/20px Arial, Helvetica, sans-serif; color:#db1e1e !important; display:block; border:1px solid #ccc; text-align:center;}
+.srchGalleryViewCnt .srchMore a:hover{ background:#ccc; text-decoration:none; }
+.srchGalleryViewCnt .rcpiDetails{ position:absolute; z-index:200; top:0; left:0; display:none; padding-left:5px; background-color:#fff}
+.srchGalleryViewCnt .rcpiDetails_top{ background:#fff url(../../Search/Images/hover_top.png) no-repeat; width:258px; height:12px;}
+.srchGalleryViewCnt .rcpiDetails_tile{ background:#fff  url(../../Search/Images/hover_tile.png) repeat-y; width:240px; padding:0 10px;min-height:170px;}
+.srchGalleryViewCnt .rcpiDetails_bottom{ background:#fff url(../../Search/Images/hover_bottom.png) no-repeat; width:258px; height:12px;}
+.srchGalleryViewCnt .rcpiDetails a{color:#055daa;}
+.srchGalleryViewCnt .recpsmallImg{ float:left; }
+.srchGalleryViewCnt .rcpiDetails .recpsmallImgGallery a.recipeLink img{ width:67px; height:40px}
+.srchGalleryViewCnt .recpsmallImgGallery{ float:left; margin-right:10px; }
+.srchGalleryViewCnt .RB-rating{ font:11px Arial, Helvetica, sans-serif;}
+.srchGalleryViewCnt .RB-rating a{ font-weight:normal; }
+.srchGalleryViewCnt .rcpiDetails .RB-rating p{ max-width:150px; overflow:hidden; padding-bottom: 5px; }
+.srchGalleryViewCnt .SrchView{ background:url(../../Search/Images/view_print_save.png) no-repeat; width:73px; height:22px; float:left ; margin-right:5px; }
+.srchGalleryViewCnt .SrchPrint{ background:url(../../Search/Images/view_print_save.png) no-repeat -73px 0; width:73px; height:22px; float:left; margin-right:5px; }
+.srchGalleryViewCnt .SrchSave{ background:url(../../Search/Images/view_print_save.png) no-repeat -146px 0; width:73px; height:22px; float:left;  margin-right:0px;}
+/*extra styles for gallery */
+.searchResults{margin-left: 5px;}
+.searchResults .searchResultsAd{margin-top: 10px;padding-bottom: 10px;border-bottom: 1px solid #DDDBDC;}
+.searchResults .searchResultsJumpTo{padding-bottom: 10px;}
+.searchResults .searchResultsJumpToBorder{border-bottom: 1px solid #DDDBDC;}
+.searchResults .searchResultsJumpToLeft{padding-left: 10px;}
+.searchResults .searchResultsJumpToMiddle{padding-left: 10px;padding-right: 10px;}
+.searchResults .searchResultsJumpToRight{padding-right: 10px;}
+.tabSuggestions{float: left;overflow: visible;width: 227px;}
+.pager{font-weight: bold;color: #636363;}
+.pageNextPrevious{padding-left: 4px;padding-right: 4px;}
+.topPagination table, .bottomPagination table{width: 100%;}
+.topPagination td, .bottomPagination td{text-align: right;}
+.paginatedResults .topPagination{clear:both;position:absolute;top:-40px;right:0;}
+.paginatedResults .bottomPagination{clear:both;padding-top:5px;position:absolute;right:0;}
+.nestedPaginatedResults .topPagination {float: right;margin-top: -40px;}
+.nestedPaginatedResults .bottomPagination {float: right;}
+.bottomResultsDropDown {float: right;margin:5px 40px 0 0;}
+/* extra styles*/
+.ads{padding: 10px 8px;background-color: #efedd3;text-align: center;}
+.couponBackground{height: 126px;width: 160px;background-color: #67aad3;text-align: center;padding-top: 1px;padding-bottom: 7px;margin-left: 7px; *margin-left:4px;}
+.couponIncentiveBackground{background: url(../../Search/Images/background_searchCoupon.jpg) no-repeat;height: 84px;width: 145px;margin: 7px;}
+.couponIncentiveCTA{font-size: 16px;font-weight: bold;}
+.couponIncentiveAmount{font-size: 30px;font-weight: bold;}
+.couponButton{width: 100px;height: 30px;border: 0px;}
+
+/* search header */
+.searchHdrTxt {border-right:1px solid #000000;float:left;width:155px;}
+.searchHdrTxt h1 {color: #000000;font-family: "Arial","Helvetica",sans-serif;font-size: 20px;font-weight: bold;margin: 0;padding: 0;}
+div.searchheadingDesc {display: block;float: left;margin: 0 0 6px;max-width: 576px;padding: 8px 0 0 10px;font-weight:bold;line-height: 14px;height:22px;}
+
+
+/* Right Column */
+.marRght5{margin-right:5px;}
+.marLft5{margin-left:5px;}
+.marLftRght5{margin:0 5px;}
+.SearchBoxCnt{background:#EAEAEA;margin-top:5px;}
+.SearchBoxInCnt{background:#67AAD3;}
+.SearchBoxCnt span{vertical-align:middle;float:left;display:block;}
+.SearchBoxCnt input{vertical-align:top;}
+.SearchBoxCnt .searchHeaderTitle{padding:3px 0 0 5px;width:389px;color:#FFFFFF;font-size:14px;background:#67AAD3;font-weight:bold;float:left;height:20px;}
+.SearchBoxCnt .searchInputBoxWrap{background:#67AAD3;float:left;height:23px;width:145px;}
+.SearchBoxCnt .searchInputBox {border:1px solid #CECECE;width: 130px; }
+.SearchBoxCnt .searchImage{float:left;position:relative;top:-5px;width:71px;height:35px;}
+.SearchResultCnt{margin:-12px 0 20px;border: 1px solid #C0C0C0;border-top:none;clear:both;}
+.searchMultiOptionCnt{/*background:#EAEAEA;*/clear:both;font-weight:bold;padding:10px 10px 0;}
+.searchMultiOptionCnt .black{color:#000000;}
+.searchTermDescription{color:#000000;padding-left:5px;}
+.searchMultiOption{margin:10px 10px 32px 0; float:right;  font-weight: bold;}
+.searchMultiOption ul#SearchResultCountSectionBottom{margin:0 0 20px 0; height:25px}
+.searchMultiOption a{text-decoration:none;}
+.sortCnt{clear:both;margin:0;padding:0;float:left;margin-bottom:0;}
+.sortCnt .sort{float:left;margin-top:0;overflow:hidden;width:235px;}
+.sortCnt .sort select{width:80%;}
+.sortCnt.bottomSort{margin-left:100px;background:#EAEAEA;margin:0;padding: 10px 10px 10px 250px;}
+.SearchResultCnt .pagination {float:right;margin-top: 15px;width:330px;}
+.SearchResultCnt .pagination .ShPagination{margin-right:20px;}
+.SearchResultCnt .pagination .viewPageSize{}
+.SearchResultCnt .bottomPagination{background:#EAEAEA; padding-bottom: 10px;}
+.paginatedSearchResults{margin:0 10px;position:relative;clear:both;margin:0}
+.searchResultItem {border: 1px solid #DDDBDC;color: #000000; margin:10px 0;padding: 12px 10px; clear:both}
+.paginatedSearchResults .pagination .current,.paginatedSearchResults .bottomPagination .current{color:Black;font-weight:bold;}
+.searchResultItem .image{float: left;width: 110px;}
+.searchResultItem .searchInfo {float: left;margin:0 18px 0 20px;width:390px;}
+.searchResultItem .searchInfo a, .allRslRecpDetails .des a{color: #BD2F2A;  font: bold 18px Arial,Helvetica,sans-serif;}
+.searchResultItem .allRes{background:#ffffff;}
+.searchResultItem .allRes .rcpDesc{background-color: #F8EED0;float: right;width: 477px;}
+.searchResultItem .allRes .mRecipeExclusive{width:477px;float:right;}
+.searchResultItem .image img{height:80px;width:110px;}
+.searchResultItem .recipeInfo{width:288px;}
+.searchResultItem .recipeInfo a{font-size:14px;}
+.bold{font-weight:bold;}
+.padLeft20{padding-left:20px;}
+.searchResultItem .recipeRating,.searchResultItem .recipeRating a {font-size: 11px;font-weight: normal;}
+#ReviewLinkPanel{width:130px; float:left; padding-top:4px;}
+.searchResultItem .recipeRating .recipeSpoons, .recipeSpoons {width:150; margin-right:15px; float: left;}
+.searchResultItem .recipeInfo .des {margin-bottom:10px;}
+.memberExclusiveBox{background-color:#F8EED0;width: 455px;}
+.memberExclusiveFooter{background-color: #F1C03B;float:right;text-align:right;width: 455px;}
+.fltLft{float:left;}
+.advSearchInfoCnt{background:#EFF7FF;padding:8px 20px;border:none;}
+.advSearchInfo{font-weight:bold;color:#000000;margin: 0 0 5px 0;}
+.advSearchSortCnt{margin:10px 0 0 0;float:left;}
+.advSearchSortCnt .pagination{margin-top:10px;}
+.advSearchSortCnt .sortCnt{background:#eaeaea;margin-top:10px;}
+.searchResultItem .recipeInfo .memberGenerated{color: #666666;margin-top: 7px; clear:both}
+.memberGenerated img, .memberGenerated .memberGeneratedIcon{ width:30px; height:30px}
+.memberGenerated .creator {background-color: #efefef; float: right; padding: 8px; width: 480px;}
+.searchResult .recipeInfo a {font-size: 14px;font-weight: bold;}
+.memberGeneratedIcon {    background: url("../../Search/Images/MemberRecipeIcon.png") no-repeat scroll center center transparent;
+    border: 1px solid #EFEFEF; display: block; float: left; height: 30px; margin-right: 2px; width: 30px;}
+/* Tabs removed to get new style*/
+/*
+.tabUnselected,.tabSelected{color: #FFFFFF;cursor: pointer;font-weight: bold;}
+.tabUnselected .tabLeft,.tabSelected .tabLeft{float: left;height: 25px;margin-left: 5px;width: 12px;}
+.tabUnselected .tabLeft{background: url("/Shared/Search/Images/tab_unselected_left.gif") no-repeat scroll 0 0 transparent;}
+.tabSelected .tabLeft {background: url("/Shared/Search/Images/tab_selected_left.gif") no-repeat scroll 0 0 transparent;}
+.tabUnselected .tabCenter,.tabSelected .tabCenter {background: #E01831;float: left;height: 21px;min-width: 100px;padding-top: 4px;text-align:center;}
+.tabSelected .tabCenter{background:#860616;}
+.tabUnselected .tabRight,.tabSelected .tabRight{float: left;height: 25px;width:12px;}
+.tabUnselected .tabRight {background: url("/Shared/Search/Images/tab_unselected_right.gif") no-repeat scroll 0 0 transparent;}
+.tabSelected .tabRight {background: url("/Shared/Search/Images/tab_selected_right.gif") no-repeat scroll 0 0 transparent;}
+a.tabSelectedLink, .tabSelected{cursor:text;}*/
+.tabsList li{padding-right:12px; font-size:14px}
+a.tabSelectedLink, a:visited.tabSelectedLink{color:#a6a6a6; cursor:text}
+span.SearchResultCounts{color:#a6a6a6;}
+.simliarReci{margin-top:0;}
+.simliarReci .sortCnt{margin-top:15px;}
+.simliarReci .paginatedSearchResults{ margin: 0 10px;}
+.simliarReci .searchResultItem{ width: 565px;}
+.simliarReci .pagenos{ font-weight: bold;font-size: 14px;}
+.simliarReci .pagination{float:left;}
+.simliarReci .pagination .ShPagination{padding:10px 0;float:right;margin: 20px 0;}
+.simliarReci .bottomPagination{ background: #fff;}
+.simliarReci .bottomPagination .pagination{float:right;}
+.simliarReci .ratingDetails{float: left;margin-left: 54px;margin-top: -20px;}
+.simliarReci .reviewRating .ratingDetails .ratingDetailsCnt{margin-left:-5px;}
+.simliarReci .reviewRating .ratingDetails .ratingDetailsCnt a{color:#000000;text-decoration:none;cursor:default;}
+.simliarReci  a.memReviews{ display: block;float: left;margin-left: -55px;margin-top: 6px;width:85px;}
+.simliarReci span.memReviewsCount{ float: left;margin-top: 6px;margin-left: 0px;}
+.simliarReci span.memReviewsCntleft{ float: left;margin-top: 6px;margin-left: 2px;}
+.simliarReci span.memReviewsCntright{ float: left;margin-top: 6px;margin-left: 0px;}
+.narrowSrchCntnt{border:1px solid silver;border-top:none;margin-bottom:20px;padding:10px 10px 10px 15px;}
+.simliarReci .SearchResultCnt .pagination{float:left;}
+.simliarReci .bottomPagination .pagination .ShPagination {float: right;margin: 10px 30px 0 0;padding: 0;}
+.simliarReci .recipeInfo h3{margin:0;}
+.simliarReci .sortCnt{margin-left:17px;}
+.narrowCnt .similarReciImg  img{height: 80px;width: 110px; margin:0 0 5px 0;}
+.narrowCnt{margin:0;}
+.narrowCnt .header{background:#67aad4 url("../../Search/Images/box2-upright.gif") no-repeat right 0;}
+.narrowCnt .header h3{color:#fff;background:transparent url("../../Search/Images/box2-upleft.gif") no-repeat 0 0;font-size:13px;font-weight:bold;margin:0;overflow:hidden;padding:5px 5px 5px 10px;}
+/* search box in article  and commnunity page */
+.videoCommSrch{margin-bottom:12px;}
+.videoCommSrch .searchHeaderTitle{width:387px;position:relative;float:left;}
+.videoCommSrch .search{background: #67AAD3;float: right;height: auto;padding: 0;padding-bottom:3px;position: relative;width: 218px;}
+.videoCommSrch .advSearchCnt{display:none;}
+.videoCommSrch .search .searchTextBox,.videoCommSrch .search .normal {font-family:Arial;font-size: 12px;margin: 0;padding: 0;background: #ffffff;float: left;border: 1px solid #CECECE;
+width: 130px;display: block;height:16px;vertical-align: middle;margin:2px 15px 0 0;float:left;}
+.videoCommSrch .SearchContainer {position: absolute;right:0;top: -5px;z-index: 1;width:71px;height:35px;float:left;}
+.videoCommSrch .SearchDropDown {min-width: 0;padding: 0;position: static;}
+.videoCommSrch .SearchDropDownTile {background: none;min-height: 0;padding: 0;width: auto;}
+.videoCommSrch .SearchTermFilter {background: transparent url(../../Search/Images/btnSearchBlueRed.gif) no-repeat 0 0;border: 0 none;color: #FFFFFF;cursor: pointer;float: none;font-size: 12px;font-weight:bold;height:35px;width:71px;}
+.videoCommSrch .SearchDropDownTile img,.videoCommSrch .SearchTbOptions{display:none;}
+.videoCommSrch .SearchDropDownTile a, .videoCommSrch .SearchDropDownTile a:hover {color: #FFFFFF;padding-left: 0;display:block;width:71px;height:35px;text-indent:-1000em;float:left;}
+.videoCommSrch .SearchDropDownTop,.videoCommSrch .SearchDropDownBottom{display:none;}
+.red14A{color: #E01831;font: 14px Arial,Helvetica,sans-serif;}
+.advSearchFormBg .advSrchBut .srchBut{height:29px;width:138px;border-width:0px;background:transparent url("../../Search/Images/adv_search.ashx.gif") no-repeat 0 0;text-indent:-1000em;outline:none;display:inline-block;vertical-align:middle;}
+.advSrchBut .reset{display:inline-block;vertical-align:middle;margin-right: 10px;}
+.advSearchFacetsDiv {padding-bottom:20px;}
+.searchTips h4 {color: #2E2E2E;font: bold 14px Arial,Helvetica,sans-serif;margin: 0;padding: 0;}
+.searchTips p {color: #2E2E2E;font: 12px Arial,Helvetica,sans-serif;margin: 0 0 10px;padding: 0;}
+.searchTips ul li {color: #2E2E2E;font: 12px Arial,Helvetica,sans-serif;list-style: square outside none;margin: 0 0 0 10px;padding: 0;}
+/*popular recipe*/
+.popularRecipe h3 {margin: 20px 0 10px;padding: 0;}
+.popular {float: left;margin: 0 0 10px 25px;padding: 0;width: 220px;}
+.popular li {color: #2E2E2E;font: bold 12px Arial,Helvetica,sans-serif;list-style: none outside none;margin: 0;padding-bottom: 4px;}
+.popular li a {color: #E01831;font: 12px Arial,Helvetica,sans-serif;text-decoration: none;}
+/*Footer */
+#Footer{margin-top:10px;}
+/*  save recipe */
+.saveRecipe h2{font-size:18px; margin:0;font-weight:normal;}
+.recipeBoxSaveCancel,.RecipeBoxSaveCancel,.saveRecipeTextClose,.SaveRecipeTextClose{float:right;display:block;margin-bottom:30px;}
+.recipeBoxSaveCancel a,.RecipeBoxSaveCancel a,.addToFolder{vertical-align:bottom;font-size:14px;font-weight:bold;}
+.selectaddToFolder{width:190px;font-size:14px;font-weight:bold;}
+.saveRecipe .selectaddToFolder,.saveRecipe .selectaddToFolder  option{font-size:14px;font-weight:bold;}
+.saveRecipeButton{position:relative;top:10px;margin-left:10px;}
+.saveToRecipeInputBox{margin:10px 0 0 102px;width:190px;}
+.saveRecipeText{font-size:14px;padding:0 0 10px 0}
+.SaveRecipeTextClose a img{padding-left:10px;}
+
+/*flex content*/
+#flexContentBox select{width:auto;overflow:hidden}
+#flexContentBoxBottom{position:relative !important;float:left}
+#flexNewPopularContent #flexContentBox{width:153px}
+/*top menu*/
+ul#member{z-index:1000;}
+ul#member li.mega .popUpPosition{position:absolute;top:10px;}
+ul#menu .subMenu .navGradient {background-image:url(../../Search/Images/gradientBack.gif);filter:alpha(opacity=100) !important;zoom:100%}
+.fb_edge_widget_with_comment{z-index:700 !important;}
+.flexCallout div.moduleDesc{font-size:0}
+.flexCallout div.moduleDesc *{font-size:12px;}
+#main_0_leftcolumn_0_SalutationRadioList{float:left;}
+#main_0_leftcolumn_0_SalutationRadioList input{vertical-align:middle;margin-top:0;}
+#main_0_leftcolumn_0_SalutationRequiredFieldValidator{position:relative;top:4px;}
+.share_panel_container{z-index:1000;}
+.sponsorLogoCnt{border-bottom: 1px solid #C0C0C0;padding:0 22px 10px;}
+.sponsorLogoCnt > div.sponsor{float:right;}
+.sponsorLogoCnt .sponsorDesc{clear:left;}
+#homePageRotatingFeature{border: solid 1px #CCCCCC;margin-bottom: 20px;zoom:1;width:813px;}
+.tabsList{margin:0;padding:0}
+.tabsList li{list-style:none;display:block;float:left}
+.sortHeader{background:#94C5E1;border-left: 1px solid #CCCCCC;color: #000000;display: block;font: 12px Arial,Helvetica,sans-serif;margin-top: 1px;padding: 1px 14px; text-transform: uppercase;font-weight:bold}
+.allRslRecpDetails {float: left; margin: 0;width: 320px;}
+.allRecpsmallImg {float: left;margin-right: 10px;width: 200px;}
+.allRslRecpDetails .blk12{margin-top:20px}
+/*.srchrsltDescPanel .blk12 .bold{ text-transform:uppercase}*/
+.allResult .ratingBestOfCnt, .allResult .bestOfContainer{float:none; width:auto}
+.allResult .bestOfContainer{margin:8px 0; clear:both}
+.menuSrchMenuLst ul li{position:relative}
+#menuSrchMenuId ul li div {background-color: #FFFFFF;border: 1px solid #E2E2E2;display: none;padding: 2px;position: absolute;width: 140px;z-index: 100;}
+#menuSrchMenuId ul li div ul li{display: block;width: 140px;}
+.menuSrchMenuLst ul li div ul li a, .menuSrchMenuLst ul li div ul li:first-child, .menuSrchMenuLst ul li div ul li a.on{border:none; margin:0}
+.menuSrchMenuLst ul li div ul li {border-top: 1px solid #E7E7E7;}
+#srchRslts{margin-top:14px}
+/*new css for searchbox*/
+.searchHead .search {background:#FFFFFF;border:solid 3px #900; border-radius:8px;-moz-border-radius:8px;-webkit-border-radius:8px;height: 32px;padding: 3px;width:534px;z-index: 901;   margin-top:3px;float:none;}
+.searchHead .search .searchTextBox {background-color: #FFFFFF;background:none;border: 0 none;color: #A6A6AD;float: left;font-size: 14px;/* font-weight: bold;*/padding: 3px 5px;    width: 355px;font-size: 14px;}
+.searchHead .searchTextBox {background-color: #FFFFFF;color: #626262;padding: 5px;width: 360px;}
+.searchHead #siteSearchOptionsButtonDiv, .searchHead .searchBottomWrap .search .SearchDropDownCnt {max-width: 175px;padding: 3px 5px;position: absolute;right: 41px;top: 6px; z-index: 19;float:left}
+.searchHead #siteSearchOptionsButtonDiv {border-left: 1px dashed #CCCCCC;width: 110px;padding:5px 0 6px 15px;font-weight:bold}
+.searchHead #siteSearchOptionsButtonDiv img, .searchHead .srchDropDownTile img {cursor: pointer;float: left;padding: 3px 2px;vertical-align: top;}
+.searchHead #siteSearchOptionsButtonDiv img {left: -8px;position: absolute;top: 3px;}
+.searchHead .SearchAction, .searchHead .search_btn {background: url("../../Search/Images/search_action.png") no-repeat scroll 0 0 transparent;float: right;height: 34px;position: absolute;right: 2px;text-indent: -1000em; top: 2px;width: 39px;}
+.searchHead .searchTextBoxCnt{width:auto; background:none; color: #A6A6A6;}
+.searchHead .search .SearchDropDownCnt {background-color: #FFFFFF;display: none;position: absolute;right: 41px;top: 46px;z-index: 1;}
+.searchHead .SearchDropDown, .searchHead .srchDropDownBottom, .searchHead .SearchDropDownTop, .searchHead .SearchDropDownTile, .searchHead .srchDropDownTile, .searchHead .srchDropDownFilter {background: none repeat scroll 0 0 transparent; height: auto;min-height: 0; min-width: 0;padding: 0; width: auto;}
+.searchHead .srchDropDownTile {vertical-align: middle;white-space: nowrap;}
+.searchHead .search .SearchDropDownCnt .SearchTbOptions {display: block;}
+.searchHead .search .SearchDropDownCnt ul{position:absolute;padding:15px 10px 15px 10px;background-color:#fff;border:1px solid #d1d9e4;border-top-width:0;top:-5px;right:-2px;width:105px;-moz-box-shadow:2px 2px 2px #ddd;-webkit-box-shadow:2px 2px 2px #ddd;box-shadow:2px 2px 2px #ddd;}
+.searchHead .search .SearchDropDownCnt ul li:first-child {padding: 0;}
+.searchHead .search .SearchDropDownCnt ul li {padding-top: 7px;}
+.searchHead .search .SearchDropDownCnt ul li a {color: #666666;font-size: 12px;}
+.pageContainer ul#subMenu, .pageContainer ul#menu{width:980px; clear:both;}
+.freeFormModule{margin-bottom:20px; clear:both;}
+select.inclusive{width:205px}
+#PageNumbers{padding: 0px}
+#PrevPage, #PrevPages{margin: 0px}
+#NextPage, #NextPages{margin: 0px}
+/* badge styles*/
+.searchGrid .ratingLeftCol{width:290px;float:left;}
+.searchGrid .bdgeRhtCol{float:right;width:300px;margin-bottom:5px}
+.searchGrid ul.badgeListSec {/*padding:15px 0 0 0;*/clear:both;text-align:left}
+.searchGrid div.catFilterDesc ul.badgeListSec {clear:both; margin:0 0 0 20px;padding-top:6px}
+.searchGrid ul.badgeListSec li{display:inline-block;list-style:none;white-space:nowrap;/*padding:0 10px 8px 0;*/*display: inline; zoom:1;z-index:1000}
+.searchGrid ul.badgeListSec li div{position:relative;display:inline; z-index:1024}
+.searchGrid ul.badgeListSec li a img{border:none;vertical-align:middle}
+.searchGrid ul.badgeListSec li span {background: url("../../Recipe/Images/badge_pop_content.png") no-repeat scroll 0 0 transparent;color: #000000;display: none;height: 135px;
+    left:0;padding: 10px;position: absolute;text-align: left;bottom:10px;width: 180px;white-space: normal;z-index:4000}
+.searchGrid ul.badgeListSec li span p {font-size: 12px;margin: 0;width: 180px;white-space: normal;}
+.recipeWidget{clear:both}
+.searchGrid ul.badgeListSec li span a:link, ul.badgeListSec li span a:visited{font-size:12px}
+#srchRslts .memberGenerated{clear:both;padding-top:10px}
+.srchRsltsGridView{clear:both}
+.srchGalleryViewCnt .MER { left: 0; position: absolute;top: 0;}
+.videoItem{position:relative}
+.videoItem .playIcon{background: url("../../Search/Images/videoPlayIcon.png") no-repeat scroll center center transparent;height: 45px;left: 82px;position: absolute;top: 65px;width: 44px;}
+.strong.sortingHeader{padding-right:10px; color:#000}
+select#ResultsPerPage option{padding:0 5px}
+.srchRsltsGridView .recpImg img{ /*height: 129px;*/ width: 230px;}
+#searchingLoadingImage {padding-right: 5px;vertical-align: middle;}
+.searchHints{border:1px solid #000000; padding:2px; background:#fff}
+.searchHints ul{margin:0;padding:0}
+.searchHints ul li.search, li.recipe, .searchHints ul li{background:none; float:none; padding:0; height:auto; list-style:none; width:100%}
+.searchHints ul li.search a, li.recipe a, .searchHints ul li.search a:link, .searchHints ul li.search a:active, .searchHints ul li.search a:visited, .searchHints ul li a:link {color: #222222;display: block;font-weight: normal;padding: 0.2em 0.4em;text-decoration: none;font:menu}
+.searchHints ul li.search a:hover, li.recipe a:hover, .searchHints ul li a:hover{ background-color:#3B75D3; color:#fff}
+.searchHints ul li.search a em, li.recipe a em, .searchHints ul li a em{font-weight:bold; font-style:normal}
+.memberExclusiveRcp{background-color:#fdf0ce}
+.bcHead .searchHead{bottom:-10px !important; right:5px !important}
+.smallImgPanel {float: left;margin-right: 10px;width: 200px;}
+.smallImgPanel img{width:200px; border:0}
+.srchrsltDescPanel {float: left;margin: 0;width: 315px;}
+.srchrsltDescPanel .recpHead a, a.descHeadLnk {color: #005DAA;font: bold 18px Arial,Helvetica,sans-serif;margin-bottom:4px}
+.srchrsltDescPanel .ratingBestOfCnt, .srchrsltDescPanel .bestOfContainer{float:none; width:auto; height: 25px;}
+.srchrsltDescPanel .blk12 {margin: 20px 0 20px; font-weight: bold;}
+.srchrsltDescPanel .marginLeft{ margin-left:14px}
+.rcpiDetails2, .rcpiDetails3, rcpiDetails, .searchResultItem{margin:0;}
+.bcHead .searchHead{bottom:-15px !important; right:15px !important; z-index:990}
+.marginRht{margin-right:14px}
+/*udpade*/
+.searchHints ul li.search, li.recipe, .searchHints ul li{background: none repeat scroll 0 0 transparent;float: none;height: auto;list-style: none outside none;
+padding: 0;width: 100%;}
+.searchHints ul li a, li.recipe a, .searchHints ul li a:link, .searchHints ul li a:active, .searchHints ul li a:visited {
+color: #222222;display: block;font: menu;padding: 0.2em 0.4em;text-decoration: none;}
+.blk12 .bold{ font-weight: normal;}   /* Needs to be rewritten in mark up to be a class name and let site define if something is bold */
+.menuSrchMenuLst ul li a, .menuSrchMenuLst .on{padding: 5px 15px}
+/*added*/
+.searchBottomWrap .searchHead {width:auto;float:none;margin:0 10px;color:#666}
+.searchBottomWrap .searchHead .searchingText {color: #666666;float: left;font-size: 18px;font-weight: bold;width: 210px;}
+.searchBottomWrap .searchHead .search .searchTextBox {width: 370px;}
+.searchBottomWrap .searchHead .search_btn {background: url("../../Search/Images/search_actionSml.png") no-repeat scroll 0 0 transparent;float: right;height: 27px;position: absolute;
+	right:5px;text-indent: -1000em;top:0;width: 30px;cursor:pointer}
+.searchBottomWrap .search .searchTextBoxCnt .SearchDropDownTile {background: none repeat scroll 0 0 #FFFFFF;border-left: 1px solid gray;border-right: 1px solid gray;min-height: 15px;
+	padding: 0;	width: 120px;}
+.searchBottomWrap .search {	clear:none;	float:right;background: url("../../Search/Images/middleSrchBox.png") no-repeat scroll 0 0 transparent;border: medium none;color: #666666;	font: bold 14px Arial;height: 14px;margin-right: 5px;padding:3px 9px 9px 6px;vertical-align: middle;width: 512px;margin:0;margin-right:25px;border-radius: 0;}
+.searchBottomWrap .SearchContainer {position: absolute;right: 5px;top:-16px;/*z-index: 999;*/}
+.searchBottomWrap .searchHead #siteSearchOptionsButtonDiv, .searchBottomWrap .searchHead .searchBottomWrap .search .SearchDropDownCnt {top:1px}
+.searchBottomWrap .searchHead #siteSearchOptionsButtonDiv {padding: 5px 0 1px 15px;}
+.searchBottomWrap .srchTermFilter {background: none;color: #666666;font-size: 11px;}
+.searchBottomWrap .search .SearchDropDownCnt .srchDropDownTile {background:none}
+.searchBottomWrap .searchHead .search .SearchDropDownCnt ul {width:80px; z-index:19}
+.searchBottomWrap .searchHead #siteSearchOptionsButtonDiv {width:90px;}
+.searchBottomWrap #siteSearchOptionsButtonDiv span {font-size:12px}
+.searchBottomWrap .searchHead #siteSearchOptionsButtonDiv img {width:11px;top:4px}
+.relatedRecipesCnt .searchHead{width:100%}
+.relatedRecipesCnt #siteSearchOptionsButtonDiv{display:none}
+.relatedRecipesCnt .searchHead .search {border: medium none;width: 310px;}
+.relatedRecipesCnt .searchHead .search .searchTextBox {border: 1px solid #CCCCCC;margin-top: 8px;}
+.relatedRecipesCnt .searchHead .search_btn{right:30px}
+/*pb css*/
+/*a:link, a:visited{color:#005daa}*/
+.narrowSrchRsltBtn{background:#005daa}
+/*.srchGalleryViewCnt .viewaslist{background-color:#f8f3ec}*/
+/*.menuSrchMenuLst ul li a, .menuSrchMenuLst .on{ color:#434343}*/
+.menuSrchMenuLst .on, .menuSrchMenuLst .sortHeader{background-color:#d3d3d3; color:#434343}
+.searchHead{ margin-right: 120px; width: 295px; float: right; margin-top: 13px; position: relative;}
+.searchBottomWrap .searchHead .search_btn { background: url("../../Search/Images/PBsearch_actionSml.png") no-repeat scroll 0 0 transparent;} .searchHead .search {border:none;	background:transparent url(../../Search/Images/PBtop_search_bg.gif) no-repeat;padding:6px; width:410px;}
+/*.searchHead .search .searchTextBox {color: #a6a6ad;}*/
+.searchHdngTxt{color:#fff; font-size: 14px; padding-bottom: 3px;}
+.srchGalleryViewCnt .srchMore a{ background-color:#005daa; color:#fff !important;border-radius:8px;-moz-border-radius:8px;-webkit-border-radius:8px;}
+.searchHead .SearchAction, .searchHead .search_btn {background: url("../../Search/Images/PBsearch_action.png") no-repeat scroll 0 0 transparent;right: 6px;}
+.midCont .menuSrchMenuLst, .srchGalleryViewCnt .menuSrchMenuLst{border-color:#d3d3d3;   height: 27px;}
+/*.noResults .container a:link, .noResultsCnt .container a:link, .srchGalleryViewCnt .recpcont a, a.tabUnselectedLink, .srchGalleryViewCnt .rcpiDetails a, .srchGalleryViewCnt a, .srchrsltDescPanel .recpHead a, a.descHeadLnk{color:#005daa}*/
+.srchGalleryViewCnt .SrchView {background: url("../../Search/Images/PBview_print_save.gif") no-repeat scroll 0 0 transparent;}
+.srchGalleryViewCnt .SrchPrint {background: url("../../Search/Images/PBview_print_save.gif") no-repeat scroll -73px 0 transparent;}
+.srchGalleryViewCnt .SrchSave {background: url("../../Search/Images/PBview_print_save.gif") no-repeat scroll -146px 0 transparent;}
+.srchGalleryViewCnt .viewaslist a {background: url("../../Search/Images/PBlist_view.gif") no-repeat scroll right 1px transparent;}
+.listFilterContainer.slidingBars .down { background: url("../../Search/Images/PBup_arrow.gif") no-repeat scroll 97% 50% #005DAA;   min-height: 20px;}
+.listFilterContainer.slidingBars h3 { background: url("../../Search/Images/PBdown_arrow.gif") no-repeat scroll 97% 50% #005DAA;}
+.rcpiDetails2, .rcpiDetails3, rcpiDetails{border:none; border-bottom:#d3d3d3 1px solid}
+/*.galleryLink a {background: url("/Shared/Search/Images/PBgalleryview.gif") no-repeat scroll right 1px transparent;}*/
+.listFilterContainer.slidingBars .filterWindow, .listFilterContainer.refine{border:none}
+.narrowSrchRsltGallery .slidingBars h5 {background: none repeat scroll 0 0 transparent;color: #000; margin: 0;}
+.searchTopWrap {background: url("../../Search/Images/PBsearch_bg_cur.gif") no-repeat scroll left top #f9f3d8;width:750px}
+.searchBottomWrap {background: url("../../Search/Images/PBsearch_bg_cur2.gif") no-repeat scroll left bottom #f9f3d8;width:750px}
+.searchBottomWrap .searchHead .searchingText{color:#935e3e}
+.searchBottomWrap .search { background: url("../../Search/Images/PBmiddleSrchBox.gif") no-repeat scroll 0 0 transparent; width:442px;}
+.searchBottomWrap .searchHead .search .searchTextBox { width:312px;padding-top:0}
+.searchHead .search .SearchDropDownCnt ul{top:-7px}
+.searchBottomWrap .searchHead .search .SearchDropDownCnt ul{top:-5px}
+.searchHead #siteSearchOptionsButtonDiv{color:#666666}
+/*.bottomHeaderNav{z-index:1; height:auto}
+.hero_content, .hero_container{z-index:0}*/

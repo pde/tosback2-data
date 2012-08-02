@@ -1,17 +1,3 @@
-function calcBlogImageWidth(image) {
-	var ratio = 165 / parseInt(image.height);
-	image.width = Math.round(parseInt(image.width) * ratio);
-	image.height = 165;
-}
-
-function isOkLandscapeBlogImage(image) {
-	return ((image.width >= image.height) && (image.width <= 270));
-}
-
-function isOkPortraitBlogImage(image) {
-	return ((image.width < image.height) && (image.width <= 130));
-}
-
 function shortenDescription(text, maxlength)
 {
 	text = text.replace(/<.*?>/g, '');
@@ -32,15 +18,15 @@ function shortenDescription(text, maxlength)
 	return text;
 }
 
-function determinePadding(width)
-{
-	var baselinePadding = 9;
-	var baselineWidth = 250;
-	return newPadding = baselinePadding + Math.round((baselineWidth-width)/2);
-}
-
 function createLandscapeBlogImgPnl(photopost, divClass)
 {
+	function determinePadding(width)
+	{
+		var baselinePadding = 9;
+		var baselineWidth = 250;
+		return newPadding = baselinePadding + Math.round((baselineWidth-width)/2);
+	}
+	
 	var img = photopost.photos[0].alt_sizes[2];
 	var html = '';
 	html += '<a href="';
@@ -90,10 +76,15 @@ function createTextBlogPanel(textposts, divClass)
 		html += '</a></li>';
 		return html;
 	}
+	
 	var html = "";
 	var count = textposts.length;
-	for (var i=0; i<4; i++) {
-		html += generateLink(textposts[i]);
+	var linksgenerated = 0;
+	for (var i=0; linksgenerated < 4 && i < count; i++) {
+		if ($.inArray("question",textposts[i].tags) == -1) {
+			html += generateLink(textposts[i]);
+			linksgenerated++;
+		}
 	}
 	$(divClass).html(html);
 }
@@ -106,6 +97,23 @@ function displayTextPosts(data)
 
 function displayPhotoPosts(data)
 {
+	function calcBlogImageWidth(image) 
+	{
+		var ratio = 165 / parseInt(image.height);
+		image.width = Math.round(parseInt(image.width) * ratio);
+		image.height = 165;
+	}
+	
+	function isOkLandscapeBlogImage(image) 
+	{
+		return ((image.width >= image.height) && (image.width <= 270));
+	}
+	
+	function isOkPortraitBlogImage(image) 
+	{
+		return ((image.width < image.height) && (image.width <= 130));
+	}
+
 	var photoposts = data.response.posts;
 	var count = photoposts.length;
 	var pnl1 = false; //ture once first blog panel is complete
@@ -141,15 +149,13 @@ function displayPhotoPosts(data)
 }
 
 $.ajax({
-	url: 'http://www.usa.gov/tumblrxml/textposts.js',
-	//url: 'http://api.tumblr.com/v2/blog/usagov.tumblr.com/posts/?api_key=7Fegl36knwWoZiQ8jvVP8z91WgPvaVpH8A1sNxkPUsjPcBs3ez&type=text&limit=4',
+	url: 'http://www.usa.gov/tumblrxml/textposts.js',	
 	dataType: 'jsonp',
 	jsonp: 'jsonp',
 	jsonpCallback: 'displayTextPosts'
 });
 $.ajax({
-	url: 'http://www.usa.gov/tumblrxml/photoposts.js',
-	//url: 'http://api.tumblr.com/v2/blog/usagov.tumblr.com/posts/?api_key=7Fegl36knwWoZiQ8jvVP8z91WgPvaVpH8A1sNxkPUsjPcBs3ez&type=photo',
+	url: 'http://www.usa.gov/tumblrxml/photoposts.js',	
 	dataType: 'jsonp',
 	jsonp: 'jsonp',
 	jsonpCallback: 'displayPhotoPosts'

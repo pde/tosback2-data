@@ -469,7 +469,7 @@ function sn_displayUserNavigation(userName)
 	$('.login_link').empty();
 	$('.login_link').append(((sn_user.d == 'ams-202') ? '<span class="welcome_text">Bienvenida</span>' : '<span class="welcome_text">Bienvenido</span>') + ' <a href="' + wr + '/registro?act=settings">'+userName+'</a>');
 	$('.register_link').empty();
-	$('.register_link').append('<a href="#" onclick="sn_logOut();">salir</a>');
+	$('.register_link').append('<a href="javascript:return false;">salir</a>');
 	$('#login_form').slideUp("fast");
 	$('#media_links').show();
 

@@ -1,0 +1,296 @@
+function Stub() { //{{{
+    this.survey = "/survey/qst/qst10001";
+    this.rawUrl = "http://survey.questus.com/survey/qst/qst10001";
+    this.urlSettings = questusSurveyConfig.stealthPages;
+    this.site = decipher.checkClick(window.location);
+    this.domain = document.location.hostname.match(/[^.]+\.[^.]+$/)[0];
+    
+    this.stealthLink = this.urlSettings[this.domain] || this.urlSettings[this.site];
+    this.exiturl = document.location.protocol + '//' + document.location.host + this.stealthLink;
+    this.chance = 1.00;  // percent chance that popup appears (e.g.: 0.1==10%)
+    this.markup = '<div id="decipherInviteBox" style="background-color: #fff; display:none; border: 2px outset #335EAC; position: absolute; z-index: 99999999; top: 100px; left: 370px; width: 320px; height:240px; text-align: left;"><img style="border:0px" src="/assets/img/global/logo/capone.gif" usemap="#decipherInviteMap"/><style type="text/css">.intercept-p { font-family: Arial, Helvetica, sans-serif; text-align:center; }.intercept-buttons { font-family: Arial, Helvetica, sans-serif; border-style: none; width: 100px; color:white; background: #00A2C0; cursor: pointer; text-align: center; font-weight:bold; font-size: 14px; font-weight:bold; padding-top: 10px; padding-bottom: 10px; padding-left: 15px; padding-right: 15px; }</style><div class="intercept-p" style="color:#023D75; font-size: 24px; letter-spacing: -1px; padding-left: 8px; padding-right: 8px; padding-bottom: 15px; font-weight: bold;">Tell us what you think!</div><div class="intercept-p" style="color:#023D75; font-size: 14px; line-height: 18px; text-align: left; padding-left: 8px; padding-right: 8px;">Capital One wants your feedback to improve our website. Will you take a short survey upon exiting our site?</div><br/><table style="width: 320px; border:0;"><tr><td style="text-align:center; border:0;"><input class="intercept-buttons" id="interceptYes" value="Yes, I\'ll help!" href="#" onclick="decipherServe.stealthWindow(); decipher.hide();"></input></td><td style="text-align:center; border:0;"><input class="intercept-buttons" id="interceptNo" value="No, thanks!" href="#" onclick="decipher.hide(); decipherServe.yesDisable();"></input></td></tr></table></div>';
+
+    // cookie settings
+    this.cookie = {
+        name: "decipherinc_seen_popup",
+        value: "set",
+        path: "/",
+        expire: ""
+    };
+} //}}}
+
+Stub.prototype = {
+    stealthWindow : function (force) {
+        //this.focusWindow();
+        this.win2 = window.open(this.exiturl,'stealth','height=280,width=280,scrollbars=yes,toolbars=no,location=no,resizable=yes,status=no');
+        window.decipherWin2 = this.win2;
+        this.win2.screenX = screen.width;
+        this.win2.screenY = screen.height;
+        this.win2.blur();
+        if (!this.win2 || this.win2.closed) {
+           window.focus();
+        } else { // window already exists, so bring it forward: Does not work for chrome or FF ubuntu
+           setTimeout(window.focus, 200);
+        }   
+        if (this.win2.focus()) {
+           window.focus();
+        }
+        
+        if (force) {
+            return false;
+        }
+    },
+    setCookie: function() {
+        var c=this.cookie;
+        var now=new Date();
+        now.setTime(now.getTime()+1000*60*60*24*90);
+        document.cookie=[c.name,"=",escape(c.value),"; expires=",c.expires ? c.expires : now.toGMTString(),c.path ? "; path=" + c.path : ''].join('');
+    },
+    getCookie: function(name) {
+        var cookies = document.cookie;
+        var startAt = cookies.indexOf(name + "=");
+        if(startAt !== -1) {
+            startAt = startAt + name.length + 1;
+            var endAt = cookies.indexOf(";", startAt);
+            if (endAt == -1) {
+                endAt = cookies.length;
+            }
+            return unescape(cookies.substring(startAt, endAt));
+        }
+        return null;
+    },
+    getFakeArgs: function() { //Parse extra variables from the script tag
+        var sx, gotUrl, qmIndex;
+        var rex = new RegExp('intercept.js');
+        var matchUrl = function (s) {
+            if (!s) {
+                return false;
+            }
+            return s.search(rex) >= 0;
+        };
+        scripts = document.getElementsByTagName('script');
+        for (var i=0; i<scripts.length; i++) {
+            sx = scripts[i];
+            if (matchUrl(sx.getAttribute('src'))) {
+                break;
+            }
+        }
+        gotUrl = sx.getAttribute('src');
+        if (gotUrl.indexOf('#') != -1) {
+            qmIndex = gotUrl.indexOf('#');
+        } else if (gotUrl.indexOf('?') != -1) {
+            qmIndex = gotUrl.indexOf('?');
+        }
+        if (qmIndex < 0) {
+            return '';
+        }
+        var ret = gotUrl.slice(qmIndex + 1);
+
+        var urlSetting = decipher.getConfig(window.location);
+        var list = decipher.config.includeUrls[urlSetting].list;
+        if (ret.indexOf('?') === -1){
+            return 'list=' + list + '&' + ret;
+        } else if (ret.indexOf('?') === 0){
+            return 'list=' + list + '&' + ret.slice(1);
+        }
+    },
+    mergeUrl: function(url, args) {
+        if (String(url).search('#')){
+            url = url.split('#')[0];
+        }
+        if (args == "") {
+            return url;
+        }
+        var qmIndex = url.indexOf('?');
+        if (qmIndex < 0) {
+            return url + '?' + args;
+        }
+        return url + '&' + args;
+    },
+    yesDisable: function() { //create cookie when survey is taken
+        this.setCookie();
+    },
+    getPopupUrl: function () {
+       var fakeArgs = this.getFakeArgs();
+       return this.mergeUrl(this.rawUrl, fakeArgs);
+    },
+    reOpenWindow: function () {
+    if (this.getCookie('homePage') !== true) {
+        return false;
+    }
+    return true;
+    },
+    newMouseMove: function () {
+        var fn = {};
+
+        var oldMouse = $.fn.click;
+        $.fn.mousemove = function(f) {
+        if(f) {
+            this.addClass("mousemove");
+        }
+        return oldMouse.apply(this, [f]);
+        };
+    },
+    begin: function() {
+        var newWindow = this.reOpenWindow();
+        // TODO - make this if true
+        if (!newWindow) {
+            //this.stealthWindow('force');
+            var $label = $('<label onclick="decipherServe.stealthWindow();"/>');
+            var bod = jQuery.find('body');
+            var clickMe = $(bod).append($label);
+            //$label.click();
+        }
+        var urlSettings = questusSurveyConfig.includeUrls;
+        var showPopup = decipher.checkClick(window.location);
+        var chance = urlSettings[showPopup].ratio;
+        var fakeArgs = this.getFakeArgs();
+
+        var forceSet = document.location.href.match('force=1');
+        var windowOpen = (window.win2 && !window.win2.closed);
+
+        if((this.getCookie(this.cookie.name) != "set" || forceSet) && (showPopup.length > 1) && (!windowOpen)) {
+            var r = Math.random();
+            if (r >= (1.0 - chance) || forceSet) { // chance is equal to 1-n
+                this.setCookie(this.cookie);
+                var surveyUrl = this.mergeUrl(this.rawUrl, fakeArgs);
+                var markup = this.markup.replace('__SURVEY_URL__', surveyUrl);
+                jQuery("body").append(jQuery(markup));
+            }
+        }
+    }
+};
+
+var decipherServe;
+
+decipher = {
+    sucess: function () { //Page loaded, now run everything
+        decipherServe = new Stub();
+        decipherServe.begin();
+        this.show();
+    },
+    init: function () {
+        var me = this;
+        me.config = questusSurveyConfig;
+        me.editLinks();
+        var urlSetting = me.getConfig(window.location);
+        var delay = me.config.includeUrls[urlSetting].delay;
+         if (urlSetting) {
+            setTimeout(function () { me.sucess() }, delay);
+        }
+    },
+    editLinks: function () { //Bind a click event to every anchor tag
+        var me = this;
+
+        // Bind anchors to check for destination in kill url list
+        jQuery('a').click(function () {
+            var link = jQuery(this).attr('href');
+            me.isBadUrl(link);
+        });
+
+        var selectors = me.config.killSelectors;
+        
+        //kill intercept for all selectors in the config.js file: questusSurveyConfig.killSelectors
+        jQuery.each(selectors, function (_, selector ) {
+            jQuery(selector).click(function () {
+                me.killIntercept();
+                //me.checkClick(link);
+            });
+        });
+    },
+    isGoodUrl: function (link) {
+        var goodUrl = this.findUrlMatch(link, this.config.includeUrls);
+        return (goodUrl ? goodUrl : false);
+    },
+    isBadUrl: function (link) {
+        var badUrl = this.findUrlMatch(link, this.config.killUrls, true);
+        if (badUrl) {
+            if (window.win2 && !window.win2.closed) {
+                window.win2.close();
+            }
+            return true;
+        }
+        return false;
+    },
+    killIntercept: function () {
+        //Kill the intercept
+        var popup = window.win2 || decipherServe.win2;
+        if (popup && !popup.closed) {
+            popup.close();
+        }
+        if (decipherServe.getCookie(decipherServe.cookie.name) != "set") {
+            decipherServe.setCookie(decipherServe.cookie);
+        }
+    },
+    checkClick: function (link) { //Check all anchor tags against good list and bad list
+        if (this.isBadUrl(link)) {
+            return false;
+        }
+        return this.isGoodUrl(link);
+    },
+    getOrderedUrls: function (urls, isArray) {
+        var orderedUrls = [];
+        if (isArray) {
+            orderedUrls = urls.slice();
+        } else {
+            jQuery.each(urls, function (url, _) {
+                orderedUrls.push(url);
+            });
+        }
+        // create list with longest string first; ugly code for IE bug
+        orderedUrls.sort(function (a, b) {
+            var aL = a.length;
+            var bL = b.length;
+            if (aL < bL) return 1;
+            if (aL > bL) return -1;
+            return 0;
+        });
+        return orderedUrls;
+    },
+    findUrlMatch: function (link, urls, isArray) {
+        var sortedUrls = this.getOrderedUrls(urls, isArray);
+        var regEx;
+        for (var x in sortedUrls) {
+            regEx = new RegExp(sortedUrls[x]);
+            if (regEx.test(link)) {
+                return sortedUrls[x];
+            }
+        }
+        return false;
+    },
+    getConfig: function (link) { //Return object from config file based on url or href
+        return this.findUrlMatch(link, this.config.includeUrls);
+    },
+    hide: function() { //Hide the decipher div
+        jQuery("#decipherInviteBox").hide();
+        /* just comment this out only need if popup window might give 404 - error 
+        var popup = window.win2 || decipherServe.win2;
+        var counter = 0;
+        if (popup) {
+            var kill = setInterval(function () {
+                if (!window.lurker && window.lurker === undefined) {
+                    counter++;
+                } else {
+                    clearInterval(kill);
+                }
+            }, 500);
+            if (counter === 50){
+                if (!window.lurker && window.lurker === undefined) {
+                    setTimeout(function () {decipher.killIntercept();}, 1000);
+                    clearInterval(kill);
+                } else {
+                    clearInterval(kill);
+                }
+            }
+        }
+        */
+    },
+    show: function () {
+            jQuery("#decipherInviteBox").fadeIn(1000);
+            jQuery("#decipherInviteBox").show();
+    }
+};
+
+jQuery(document).ready(function () {
+    decipher.init();
+})

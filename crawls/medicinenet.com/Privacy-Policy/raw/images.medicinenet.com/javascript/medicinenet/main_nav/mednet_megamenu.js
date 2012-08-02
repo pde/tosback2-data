@@ -56,11 +56,11 @@ showmenu:function(e, megamenu_pos){
 		});
 		
 		//When Tab has class on background-position is left 0 
-		if ((label=='nav-images' || label=='nav-slide' || label=='nav-quiz' || label=='nav-medications' || label=='nav-disease') && $anchor.hasClass('on'))
+		if ((label=='nav-images' || label=='nav-slide' || label=='nav-quiz' || label=='nav-medications' || label=='nav-disease' || label=='nav-health') && $anchor.hasClass('on'))
 			$anchor.css({
 				"background-position" : "left 0px",
 				"color" : "#000",
-				"text-shadow" : "0 -1px 0 #fff"
+				"text-shadow" : "0 1px 0 #fff"
 			});
 	
 		//If the incoming anchor has on state then unconditionally set the menu for it to on state as well

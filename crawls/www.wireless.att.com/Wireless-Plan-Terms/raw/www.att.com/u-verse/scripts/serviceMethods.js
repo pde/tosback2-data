@@ -1,7 +1,8 @@
 if (!window.Modal) {
 	//ensure that service objects are available
+	//Fix PROD11-1873
 	var script = document.createElement('script');
-	script.src = 'serviceObjects.js';
+	script.src = window.location.host+"/u-verse/scripts/serviceObjects.js";
 	script.type = 'text/javascript';
 	var head = document.getElementsByTagName('head')[0];
 	head.appendChild(script);

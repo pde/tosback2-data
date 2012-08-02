@@ -1,7 +1,7 @@
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="en" lang="en">
 <head>
-<title>Deposit Files</title>
+<title>DepositFiles</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta property="og:title" content="Deposit Files" />
 <meta property="og:image" content="http://img3.depositfiles.com/images/speed_small_gold.gif" />
@@ -16,14 +16,24 @@
 <script type="text/javascript">
 	var http_abs_path = 'http://depositfiles.com';
 	var http_static_path = 'http://img3.depositfiles.com';
+	var ssl_static_path = 'https://ssl3.depositfiles.com';
 	var http_ads_path = 'http://img2.depositfiles.com/adroot';
 	var lang = 'en';
+	var user_country = 'US';
 	document.domain = 'depositfiles.com';
 	
 	var RecaptchaOptions = {
 		theme : 'white',
 		lang : 'en'
 	};
+	
+	$(document).ready(function(){
+		$(window).resize(function() {
+			var height = self.innerHeight || (document.documentElement && document.documentElement.clientHeight) || document.body.clientHeight;
+			$('#main').css('min-height', height - parseInt($('#main').css('padding-top')) - parseInt($('#main').css('padding-bottom')) - $('#foobar').outerHeight(true));
+		});
+		$(window).resize();
+	});
 	
 </script>
 
@@ -46,8 +56,7 @@
 			<li><a href="http://depositfiles.com/uploader.html">DepositFiles Uploader</a></li>
 					</ul>
 	</li>
-	<li><a href="http://depositfiles.com/earn.html" >Earn</a></li>
-	<li>
+		<li>
 		<a href="http://depositfiles.com/loyalty.html">Loyalty</a>
 		<ul>
 			<li><a href="http://depositfiles.com/current_bonus_program_action.php">Promotions &amp; Prizes</a></li>
@@ -60,7 +69,7 @@
 			<li><a href="http://depositfiles.com/signup.php" >Sign Up</a></li>
 	</ul>
 
-			<div class="lang"><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=ru">русский</a><a href="confid.html#" onclick="return false;" class="active">english</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=de">deutsch</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=es">español</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=pt">portuguese</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=fr">français</a></div>		</div>
+			<div class="lang"><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=ru">русский</a><a href="confid.html#" onclick="return false;" class="active">english</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=de">deutsch</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=es">español</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=pt">portuguese</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=fr">français</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=ja">日本語</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=nl">nederlandse</a><a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=it">italiano</a></div>		</div>
 		
 				
 				
@@ -70,11 +79,11 @@
 	
 		<div class="loginoruser">
 		<div class="registration">
-						<div class="row"><span>Login:</span><input type="text" name="login" value=""/><br class="separator" /></div>
-			<div class="row"><span>Password:</span><input type="password" name="password"/><br class="separator" /></div>
+						<div class="row"><span>Login:</span><input type="text" name="login" class="nopopup" value=""/><br class="separator" /></div>
+			<div class="row"><span>Password:</span><input class="nopopup" type="password" name="password"/><br class="separator" /></div>
 			<div class="forgotpassword">
 				<a href="http://depositfiles.com/gold/forgot.php" class="forget">Forgot password?</a>
-				<input class="btn_login" type="submit" value="enter"/>
+				<input class="btn_login nopopup" type="submit" value="enter"/>
 				<br class="separator" />
 			</div>
 		</div>
@@ -93,10 +102,10 @@
 			Login with:
 		</div>
 		<div class="oauth_login">
-	<a id="facebook" class="button-facebook oauthbt" onclick="return oauth_login('fb');" href="confid.html#" alt="Facebook" title="Facebook"></a>
-	<a id="twitter" class="button-twitter oauthbt" onclick="return oauth_login('tw');" href="confid.html#" alt="Twitter" title="Twitter"></a>
-	<a id="twitter" class="button-google oauthbt" onclick="return oauth_login('ga');" href="confid.html#" alt="Google" title="Google"></a>
-	<a id="vkontakte" class="button-vkontakte oauthbt" onclick="return oauth_login('vk');" href="confid.html#" alt="VKontakte" title="VKontakte"></a>
+	<a id="facebook" class="button-facebook oauthbt nopopup" onclick="return oauth_login('fb');" href="confid.html#" alt="Facebook" title="Facebook"></a>
+	<a id="twitter" class="button-twitter oauthbt nopopup" onclick="return oauth_login('tw');" href="confid.html#" alt="Twitter" title="Twitter"></a>
+	<a id="twitter" class="button-google oauthbt nopopup" onclick="return oauth_login('ga');" href="confid.html#" alt="Google" title="Google"></a>
+	<a id="vkontakte" class="button-vkontakte oauthbt nopopup" onclick="return oauth_login('vk');" href="confid.html#" alt="VKontakte" title="VKontakte"></a>
 
 	</div>
 
@@ -105,33 +114,58 @@
 											</div>
 				
 		<div class="content left body">
-												
-				<div class="banner1" style="text-align:center;">
-					<iframe src="../ads.depositfiles.com/ad.php%3Fz=6&amp;c=US&amp;g=.html" width="728px" height="91px" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" hspace="0" vspace="0"></iframe>
-				</div>
-		
 													<div class="content_body">	<div class="title1"><ins>Privacy Policy:</ins></div>	<div class="static ">
-		<b>1. The following information is collected during rendering services DepositFiles confidential and undisclosed unless stated otherwise:</b><br/><br/> <b>1.1. IP addresses.</b><br/> IP address of your browser is detected due to the use of Internet-protocols. Such IP address is stored by DepositFiles servers for internal use (usage registration, optimal downloads use, statistics etc.);<br/><br/> <b>1.2. E-mail.</b><br/> DepositFiles servers store and sort user e-mails for the purposes of registration and statistics. DepositFiles does not lease, sell, or provide your e-mails to any third parties;<br/><br/> <b>1.3. Cookies use.</b><br/> You explicitly authorize DepositFiles to create and store cookies at your web-client. Such cookies are exclusively used for your comfort in order to save the browser settings. DepositFiles does not use any methods for tracking users (the so-called "spy" or "1x1" gif images etc.);<br/><br/> <b>1.4. Safe operation.</b><br/> We have taken the security measures at the server's physical location to protect from loss, incorrect usage, or change of information provided to us by the users of the service. Files, saved at the servers of DepositFiles can be accessible only to DepositFiles staff members or via a URL initially provided to the uploader. Any files saved by our service are deleted (I) after a certain term of disuse; (II) for violation of User agreement, its supplemental agreements or any applicable legislation; or (III) deleted via a special URL initially provided to the uploader.<br/><br/> <b>1.5. Credit card information.</b><br/> Any financial transfers between you and DepositFiles are handled by third party, payment services. Your payment details are disclosed to such third parties for the aim of completion of each transaction. The security and non-disclosure of such information is handled by such third parties under their current policies. DepositFiles does not sort or store numbers or any information related to your banking card.<br/><br/> <b>1.6. Advertisers' access to information.</b><br/> Advertisements located on our website can be posted and/or hosted by a third party, advertisers or their agents. These persons can use the information regarding your visits obtained due to common use of Internet-protocols (geographical location, IP, language and other information automatically disclosed by your browser) to place an advertisement of goods and services that might be interest you. Any information collected at the pages owned by third parties is not subject to this Privacy Policy.<br/> <p> <b>2. DISCLOSURE.</b><br/> DEPOSITFILES MAY DISCLOSE YOUR PERSONAL INFORMATION IN CASE IT BECOMES NECESSARY TO DEFEND ITS JURIDICAL RIGHTS.<br/> IN CASE YOU ACTIONS LEAD TO SUSPICION OF TANGIBLE OR ASSUMED SABOTEUR ACTIONS OR POSES A POTENTIAL THREAT TO ANY PERSON'S PHYSICAL SAFETY OR ANY OTHER GRAVE CRIME, ALL YOUR KNOWN INFORMATION (INCLUDING BUT NOT LIMITED TO PERSONAL DETAILS, IP ADDRESSES, PAYMENT DATA) MAY BE DISCLOSED TO LAW ENFORCEMENT ORGANIZATIONS AND/OR MEMBERS OF THE ISP WITHOUT PRIOR NOTICE.<br/> IN CASE OF ANY EVIDENCE OF DISTRIBUTION OF THE FILES CONTAINING MATERIALS WHICH APPEAR INVOLVING CHILD EXPLOITATION, THE ACCOUNT BELONGING TO THE USER WHO UPLOADED SUCH FILES WILL BE IMMEDIATELY DELETED AND ALL KNOWN INFORMATION (INCLUDING BUT NOT LIMITED TO PERSONAL DETAILS, IP ADDRESSES, PAYMENT DATA) WILL BE DIRECTED TO THE NATIONAL CENTER FOR MISSING & EXPLOITED CHILDREN, AS WELL AS LAW ENFORCEMENT ORGANIZATIONS AND/OR MEMBERS OF THE ISP WITHOUT PRIOR NOTICE.<br/> DISCLOSURE OF YOUR INFORMATION CAN BE LAWFUL AS A RESULT OF A LEGAL PROCESS.<br/> </p> 
+		<div class="confid">
+<b>1. The following information is collected during rendering services DepositFiles confidential and undisclosed unless stated otherwise:</b><br/><br/> <b>1.1. IP addresses.</b><br/> IP address of your browser is detected due to the use of Internet-protocols. Such IP address is stored by DepositFiles servers for internal use (usage registration, optimal downloads use, statistics etc.);<br/><br/> <b>1.2. E-mail.</b><br/> DepositFiles servers store and sort user e-mails for the purposes of registration and statistics. DepositFiles does not lease, sell, or provide your e-mails to any third parties;<br/><br/> <b>1.3. Cookies use.</b><br/> You explicitly authorize DepositFiles to create and store cookies at your web-client. Such cookies are exclusively used for your comfort in order to save the browser settings. DepositFiles does not use any methods for tracking users (the so-called "spy" or "1x1" gif images etc.);<br/><br/> <b>1.4. Safe operation.</b><br/> We have taken the security measures at the server's physical location to protect from loss, incorrect usage, or change of information provided to us by the users of the service. Files, saved at the servers of DepositFiles can be accessible only to DepositFiles staff members or via a URL initially provided to the uploader. Any files saved by our service are deleted (I) after a certain term of disuse; (II) for violation of User agreement, its supplemental agreements or any applicable legislation; or (III) deleted via a special URL initially provided to the uploader.<br/><br/> <b>1.5. Credit card information.</b><br/> Any financial transfers between you and DepositFiles are handled by third party, payment services. Your payment details are disclosed to such third parties for the aim of completion of each transaction. The security and non-disclosure of such information is handled by such third parties under their current policies. DepositFiles does not sort or store numbers or any information related to your banking card.<br/><br/> <b>1.6. Advertisers' access to information.</b><br/> Advertisements located on our website can be posted and/or hosted by a third party, advertisers or their agents. These persons can use the information regarding your visits obtained due to common use of Internet-protocols (geographical location, IP, language and other information automatically disclosed by your browser) to place an advertisement of goods and services that might be interest you. Any information collected at the pages owned by third parties is not subject to this Privacy Policy.<br/> <p> <b>2. DISCLOSURE.</b><br/> DEPOSITFILES MAY DISCLOSE YOUR PERSONAL INFORMATION IN CASE IT BECOMES NECESSARY TO DEFEND ITS JURIDICAL RIGHTS.<br/> IN CASE YOU ACTIONS LEAD TO SUSPICION OF TANGIBLE OR ASSUMED SABOTEUR ACTIONS OR POSES A POTENTIAL THREAT TO ANY PERSON'S PHYSICAL SAFETY OR ANY OTHER GRAVE CRIME, ALL YOUR KNOWN INFORMATION (INCLUDING BUT NOT LIMITED TO PERSONAL DETAILS, IP ADDRESSES, PAYMENT DATA) MAY BE DISCLOSED TO LAW ENFORCEMENT ORGANIZATIONS AND/OR MEMBERS OF THE ISP WITHOUT PRIOR NOTICE.<br/> IN CASE OF ANY EVIDENCE OF DISTRIBUTION OF THE FILES CONTAINING MATERIALS WHICH APPEAR INVOLVING CHILD EXPLOITATION, THE ACCOUNT BELONGING TO THE USER WHO UPLOADED SUCH FILES WILL BE IMMEDIATELY DELETED AND ALL KNOWN INFORMATION (INCLUDING BUT NOT LIMITED TO PERSONAL DETAILS, IP ADDRESSES, PAYMENT DATA) WILL BE DIRECTED TO THE NATIONAL CENTER FOR MISSING & EXPLOITED CHILDREN, AS WELL AS LAW ENFORCEMENT ORGANIZATIONS AND/OR MEMBERS OF THE ISP WITHOUT PRIOR NOTICE.<br/> DISCLOSURE OF YOUR INFORMATION CAN BE LAWFUL AS A RESULT OF A LEGAL PROCESS.<br/> </p> </div>
+
 	</div>
 </div>
 					</div>
-						<div class="content left">
-					</div>
-				<br class="separator" />
+						<br class="separator" />
 	</div>
-		<div style="clear: both;"></div>
-	<div id="foobar">
-		<span class="copyright">&copy; 2006-2012 Depositfiles.com</span>
-		<ul class="main_menu">
-						<li><a href="http://depositfiles.com/aplace.html">Advertise with us</a></li>
-					<li><a href="http://depositfiles.com/agreem.html">User agreement</a></li>
-					<li><a href="confid.html">Privacy policy</a></li>
-			<li><a href="http://depositfiles.com/abuse_copyr.html">Copyright policy</a></li>
-			<li><a href="http://depositfiles.com/payment_policy.html">Payment policy</a></li>
+	<div style="clear: both;"></div>
+<div id="foobar">
+	<div class="foobar_line1">
+		<ul class="main_menu main_menu_left">
+						<li><a href="http://depositfiles.com/confid.html?mobile=yes" class="red">Mobile version</a></li>
 		</ul>
+	
+		<ul class="main_menu">
+						
+						<li><a href="http://depositfiles.com/aplace.html">Advertise with us</a></li>
+			
+			<li>
+				<a class="agreem_link" href="confid.html#" onclick="return false;">Agreement and policies</a>
+				<ul class="agreem_list">
+																<li><a href="http://depositfiles.com/agreem.html">User agreement</a></li>
+										<li><a href="confid.html">Privacy policy</a></li>
+					<li><a href="http://depositfiles.com/abuse_copyr.html">Copyright policy</a></li>
+					<li><a href="http://depositfiles.com/payment_policy.html">Payment policy</a></li>
+				</ul>
+			</li>
+		</ul>
+		<div style="clear: both;"></div>
 	</div>
+	<div class="lang_flags">
+					<a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=ru" class="flag_ru" title="русский"></a>
+					<a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=en" class="flag_en active" title="english"></a>
+					<a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=de" class="flag_de" title="deutsch"></a>
+					<a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=es" class="flag_es" title="español"></a>
+					<a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=pt" class="flag_pt" title="portuguese"></a>
+					<a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=fr" class="flag_fr" title="français"></a>
+					<a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=ja" class="flag_ja" title="日本語"></a>
+					<a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=nl" class="flag_nl" title="nederlandse"></a>
+					<a href="http://depositfiles.com/switch_lang.php?return_url=%2Fconfid.html&amp;lang=it" class="flag_it" title="italiano"></a>
+			</div>
+	<div class="foobar_line2">
+		<span class="copyright">&copy; 2006-2012 Depositfiles.com</span>
+	</div>
+	
 					
-	<!-- 1336997875 -->			<script type="text/javascript">
+	<!-- 1343939737 -->
+</div>
+
+			<script type="text/javascript">
 var pageTracker = false;
 </script></body>
 </html>

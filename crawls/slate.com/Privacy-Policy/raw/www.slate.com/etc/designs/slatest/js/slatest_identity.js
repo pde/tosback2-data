@@ -48,9 +48,10 @@ if (typeof(WCMMode) == "undefined" || WCMMode != "EDIT") {
 				"moreButtonSlideTimeout": 400,
 				"itemsSlideTimeout": 400
 			},
+			"streamStateToggleBy": "button",
 			"streamStateLabel": {
-				"icon": false,
-				"text": false
+				"icon": true,
+				"text": true
 			},
 			"viaLabel": {
 				"icon": false,
@@ -69,7 +70,8 @@ if (typeof(WCMMode) == "undefined" || WCMMode != "EDIT") {
 				{"name": "Like"},
 				{"name": "CommunityFlag"},
 				{"name": "Curation"},
-				{"name": "UserBan"}
+				{"name": "UserBan"},
+				{"name": "Edit"}
 			],
 			"reTag": false,
 			"maxBodyCharacters": 10000,

@@ -2,75 +2,27 @@
 <html lang="en" >
 	<head>
 		<title>Customer Service - Sheplers</title>
-		<meta http-equiv="X-UA-Compatible" content="IE=8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=9" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="../css/sheplers.jsp.css" rel="stylesheet" type="text/css"/><link href="../css/cms.jsp.css" rel="stylesheet" type="text/css"/><!--[if IE 7]>
 		<link href="/css/ie7.css" rel="stylesheet" type="text/css"/><![endif]-->
 
-		<script src="../js/ocpsdk/base.js" type="text/javascript"></script><script src="../js/ocpsdk/jquery/jquery.js" type="text/javascript"></script><script type="text/javascript">
-			//Script to detect widget health.
-			var widgetHealth = { timeout:10000 };
-			widgetHealth.timers = ['start', 'variantDropDownWidgetStart', 'variantDropDownWidgetEnd', 'pageEnd', 'domready'];
-			widgetHealth.logUrl = "/widgetHealthLog.jsp";
-
-			widgetHealth.start = { time:new Date().getTime() };
-			widgetHealth.validate = function(){
-				if (document.getElementById('product')){
-					var allHere = true;
-					var now = new Date().getTime();
-					//check to see if all values have returned. If not, give more time, then log error.
-					for (var item in widgetHealth.timers){
-						// If any items are missing, then page has failed.
-						if (!widgetHealth[widgetHealth.timers[item]]) {
-							allHere = false;
-						}
-						//if variantDropDownWidget has no values, then page has failed.
-						if (!widgetHealth.variantDropDownWidgetStart || !widgetHealth.variantDropDownWidgetStart.size) {
-							allHere = false;
-						}
-					}
-					//if timer expired, but not all functions have reported, then give 2 more seconds.
-					if (!allHere){
-						var querystring = "";
-						for (var item in widgetHealth.timers){
-							if (widgetHealth[widgetHealth.timers[item]]){
-								querystring += widgetHealth.timers[item] + "=" + widgetHealth[widgetHealth.timers[item]].time + "&";
-							}
-						}
-						//Specifically log variantDropDownWidgetStart.size
-						querystring += "variantDropDownWidgetStart_size=" + (widgetHealth.variantDropDownWidgetStart ? widgetHealth.variantDropDownWidgetStart.size : "undefined") + "&";
-						//Specifically log page URL
-						querystring += "pageURL=" + window.location;
-						$.get(widgetHealth.logUrl, querystring, function(data){ console.log('widgetHealth failure. Condition logged.', data); })
-					}
-
-				}
-			};
-
-			setTimeout(widgetHealth.validate, widgetHealth.timeout);
-			$(function(){widgetHealth.domready = { time:new Date().getTime() };});
-
+		<script src="../js/ocpsdk/base.js" type="text/javascript"></script><script src="../js/ocpsdk/jquery/jquery.js" type="text/javascript"></script><script src="../js/ocpsdk/jquery/ext/jquery.widget.jsp" type="text/javascript"></script><script src="../js/site_lib.js" type="text/javascript"></script><script type="text/javascript">
+			site.imageUrlTemplate = "http://s7d9.scene7.com/is/image/sheplers/{fileName}?hei={fileHeight}&qlt=85,1&wid={fileWidth}&fmt=jpeg&resMode=bicub&op_sharpen=1";
 		</script>
-		<script src="../js/ocpsdk/jquery/ext/jquery.widget.jsp" type="text/javascript"></script><script src="../js/site_lib.js" type="text/javascript"></script><script src="../js/s_code.js" type="text/javascript"></script>
+		<script src="../js/s_code.js" type="text/javascript"></script>
 <meta name="keywords" content="Privacy and Security, Sheplers, Cowboy Boots, October 13"/>
-		<meta name="description" content='Privacy and Security'/>
-			<!-- Begin Monetate tag v6. Place at start of document head. DO NOT ALTER. -->
-		<script type="text/javascript">
-		var monetateT = new Date().getTime();
-		(function() {
-			 var p = document.location.protocol;
-			 if (p == "http:" || p == "https:") {
-				  var m = document.createElement('script'); m.type = 'text/javascript'; m.async = true; m.src = (p == "https:" ? "https://s" : "http://") + "b.monetate.net/js/1/a-dbada049/p/sheplers.com/" + Math.floor((monetateT + 2789065) / 3600000) + "/g";
-				  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(m, s);
-			 }
-		})();
-		</script>
-		<!-- End Monetate tag. -->
-
-
-
-	</head>
+		<meta name="description" content="Privacy and Security"/>
+			<script type="text/javascript">
+			var monetateT = new Date().getTime();
+			(function() {
+				var p = document.location.protocol;
+				if (p == "http:" || p == "https:") {
+					var m = document.createElement('script'); m.type = 'text/javascript'; m.async = true; m.src = (p == "https:" ? "https://s" : "http://") + "b.monetate.net/js/1/a-dbada049/p/sheplers.com/" + Math.floor((monetateT + 2789065) / 3600000) + "/g";
+					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(m, s);
+				}
+			})();
+			</script>
+			</head>
 	<body id='' class="custserv">
 
 		<div id="pageWrap">
@@ -92,7 +44,8 @@
 <li class="first"><a tabindex="0" href="https://www.sheplers.com/user/main.jsp">My Account</a></li><li id="signInContainer"><a class="signIn" href="https://www.sheplers.com/user/login.jsp">Sign In</a></li>
 			</ul>
 			<div id="headerCart" class="ie6png">
-				<a class="cartCount" id="widget-ucart-item-count" href="http://www.sheplers.com/checkout/basket.jsp"><span class="label">Cart</span>(<span id="headerItemCount">0</span> item(s))</a><div class="currency">
+
+				<div class="currency">
 					<div class="label" data-currencyNote="This is an estimated currency conversion based on this morning's exchange rate. Your actual cost will be based on the exchange rate at the time we process your credit card.">View Prices In:</div>
 					<div class="menu">
 						<div class="header">U.S. Dollars</div>
@@ -114,9 +67,10 @@
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<form class="overlabel" id="searchForm" action="http://www.sheplers.com/catalog/search.cmd" method="get" name="searchForm"><input type='hidden' name='form_state' value='searchForm'/><label for="keyword">Enter Keyword or Item #</label>
+				<a class="cartCount" id="widget-ucart-item-count" href="http://www.sheplers.com/checkout/basket.jsp"><span class="label">Cart</span>(<span id="headerItemCount">0</span> item(s))</a></div>
+
+			<form id="searchForm" action="http://www.sheplers.com/catalog/search.cmd" method="get" name="searchForm"><input type='hidden' name='form_state' value='searchForm'/><label for="keyword">Enter Keyword or Item #</label>
 				<input class="overlabel" id="keyword" name="keyword" type="search" value="" maxlength="40" autocapitalize="off"/><button name="go" type="submit"><img src="../assets/images/btn/headerSearch.gif" alt="Search"/></button>
 				<div class="error"></div>
 			</form></div>
@@ -168,16 +122,14 @@
 							<a class="root" href="http://www.sheplers.com/Kids/3.sec">Kids'</a><div class="subNav">
 									<ul class="subNavFeed">
 										<li><h3><a href="http://www.sheplers.com/Kids/Kids-Boots-Shoes/pc/3/150.cat">Kids' Boots & Shoes</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Kids/Boys-Clothing-Size-4-7/pc/3/158.cat">Boys' Clothing Size 4-7</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Kids/Boys-Clothing-Size-8-18/pc/3/163.cat">Boys' Clothing Size 8-18</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Kids/Girls-Clothing-Size-4-6X/pc/3/175.cat">Girls' Clothing Size 4-6X</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Kids/Girls-Clothing-Size-7-14/pc/3/168.cat">Girls' Clothing Size 7-14</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Kids/Boys-Clothing/pc/3/158.cat">Boys' Clothing</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Kids/Girls-Clothing/pc/3/168.cat">Girls' Clothing</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Kids/Infant-Clothing/pc/3/147.cat">Infant Clothing</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Kids/Toddler-Clothing/pc/3/144.cat">Toddler Clothing</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Kids/Kids-Hats/pc/3/142.cat">Kids' Hats</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Kids/Kids-Belts/pc/3/141.cat">Kids' Belts</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Kids/Kids-Toys/pc/3/143.cat">Kids' Toys</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/Kids/Kids-On-Sale/pc/3/199.cat">Kids' On Sale</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Kids-On-Sale">Kids' On Sale</a></h3></li>
 										</ul>
 									<div class="navColumns"></div>
 								</div>
@@ -188,6 +140,7 @@
 										<li><h3><a href="http://www.sheplers.com/Cowboy-Boots-Shoes/Mens-Boots-Shoes/pc/448/449.cat">Men's Boots & Shoes</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Cowboy-Boots-Shoes/Womens-Boots-Shoes/pc/448/459.cat">Women's Boots & Shoes</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Cowboy-Boots-Shoes/Kids-Boots-Shoes/pc/448/469.cat">Kids' Boots & Shoes</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Cowboy-Boots-Shoes/Exotic-Skin-Boots/pc/448/1384.cat">Exotic Skin Boots</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/Cowboy-Boots-Shoes/Boots-Shoes-On-Sale/pc/448/1070.cat">Boots & Shoes On Sale</a></h3></li>
 										</ul>
 									<div class="navColumns"></div>
@@ -251,7 +204,6 @@
 										<li><h3><a href="http://www.sheplers.com/chippewa-boots.html">Chippewa</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/cinch-jeans.html">Cinch</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/corral-boots.html">Corral</a></h3></li>
-										<li><h3><a href="http://www.sheplers.com/cowboys-of-faith.html">Cowboys of Faith</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/cowgirl-tuff.html">Cowgirl Tuff</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/cripple-creek.html">Cripple Creek</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/cruel-girl-jeans.html">Cruel Girl</a></h3></li>
@@ -261,6 +213,8 @@
 										<li><h3><a href="http://www.sheplers.com/double-h-boots.html">Double H</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/durango-boots.html">Durango</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/ely-cattleman.html">Ely Cattleman</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Brands/Gameday-Boots/pc/447/1126.cat">Gameday Boots</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Brands/Grace-in-LA/pc/447/1398.cat">Grace in LA</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/georgia-work-boots.html">Georgia</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/harley-davidson-boots.html">Harley Davidson</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/interstate-motorcycle-apparel.html">Interstate Motorcycle</a></h3></li>
@@ -272,6 +226,7 @@
 										<li><h3><a href="http://www.sheplers.com/lawman-jeans.html">Lawman</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/lee-jeans.html">Lee Jeans</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/milwaukee-apparel.html">Milwaukee Motorcycle</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Brands/Minnetonka-Moccasins/pc/447/1402.cat">Minnetonka Moccasins</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/miss-me-jeans.html">Miss Me</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/montana-silversmiths.html">Montana Silversmith</a></h3></li>
 										<li><h3><a href="http://www.sheplers.com/nocona-boots.html">Nocona</a></h3></li>
@@ -295,7 +250,19 @@
 								</div>
 							</li>
 					<li id='navCat552'>
-							<a class="root" href="http://www.sheplers.com/Sale/552.sec">Sale</a></li>
+							<a class="root" href="http://www.sheplers.com/Sale/552.sec">Sale</a><div class="subNav">
+									<ul class="subNavFeed">
+										<li><h3><a href="http://www.sheplers.com/Sale/Mens/pc/552/1261.cat">Men's</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Sale/Womens/pc/552/1277.cat">Women's</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Sale/Kids/pc/552/1290.cat">Kids'</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Sale/Cowboy-Boots-Shoes/pc/552/1302.cat">Cowboy Boots & Shoes</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Sale/Jeans/pc/552/1307.cat">Jeans</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Sale/Cowboy-Hats/pc/552/1312.cat">Cowboy Hats</a></h3></li>
+										<li><h3><a href="http://www.sheplers.com/Sale/Brands/pc/552/1328.cat">Brands</a></h3></li>
+										</ul>
+									<div class="navColumns"></div>
+								</div>
+							</li>
 					<li id="cmsHeaderNav">
 						</li>
 				</ul>
@@ -304,7 +271,7 @@
 		</div>
 	<div id="headerSubContent">
 		<div id="cmsCrossChannelEvents">
-			<a href="http://www.sheplers.com/custserv/custserv.jsp?pageName=FreeShipping" title="Free Domestic Ground Shipping"><img src="../assets/images/sections/header/header_freeshipping.png" alt="Free Domestic Ground Shipping Over $125" border="0"></a></div>
+			<a href="http://www.sheplers.com/custserv/custserv.jsp?pageName=FreeShipping" title="Free Domestic Ground Shipping"><img src="../assets/images/sections/header/header_89ship.gif" alt="Free Domestic Ground Shipping Over $89 - use code 89SHIP" border="0"></a></div>
 		<div id="cmsGlobalPromotion">
 			<!---WORLD'S LARGEST Western Wear Warehouse---></div>
 	</div>
@@ -351,7 +318,32 @@
 		<li><h3><a href="http://a60.g.akamai.net/f/60/7267/1d/sheplers.download.akamai.com/7267/g/pdf/int_of_new.pdf" target="_blank" title="International Order Form">International Order Form</a></h3></li>
 
 	</ul>
-</div><style>
+</div><!-- SiteCatalyst code version: H.22.1.
+Copyright 1996-2011 Adobe, Inc. All Rights Reserved
+More info available at http://www.omniture.com -->
+<script language="JavaScript" type="text/javascript"><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+	 s.pageName="browse: Customer Service > Privacy and Security";
+	 s.channel="Customer Service";
+	 s.prop1="browse";
+	 s.prop2="Customer Service > Privacy and Security";
+	 s.prop3="Customer Service > Privacy and Security";
+	 s.eVar4="Customer Service";
+	 s.eVar5="Customer Service > Privacy and Security";
+	 s.eVar6="Customer Service > Privacy and Security";
+	 s.eVar7="Customer Service > Privacy and Security";
+/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+var s_code=s.t();if(s_code)document.write(s_code)//--></script>
+
+<script language="JavaScript" type="text/javascript"><!--
+if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+//--></script><noscript><img src="http://www.sheplers.com/custserv/&lt;will&#32;be&#32;provided&#32;when&#32;you&#32;generate&#32;this&#32;code&gt;"
+height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
+<!-- End SiteCatalyst code version: H.22.1. -->
+
+
+<style>
 	.custServMain h3 {font: bold 1.2em arial;}
 </style>
 <div class="main custServMain">
@@ -647,11 +639,24 @@ safe as giving your credit card number over the telephone.
 		<div id="cmsFooterArea2">
 			<div class="foot">
   <a class="facebook" href="http://www.facebook.com/sheplersFan" target="_blank"><img src="../assets/images/img/footerFacebook.png" class="ie6png" /> </a>
-			
+
+<p style="float: left; margin: 0 10px 0 0;">
+<!-- START SCANALERT CODE -->
+<a target="_blank" href="https://www.mcafeesecure.com/RatingVerify?ref=www.sheplers.com"><img width="68" height="44" border="0" src="../../images.scanalert.com/meter/www.sheplers.com/75.gif" alt="McAfee SECURE sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams" oncontextmenu="alert('Copying Prohibited by Law - McAfee SECURE is a Trademark of McAfee, Inc.'); return false;"></a>
+<!-- END SCANALERT CODE --> 
+</p>
+
   <p>Sheplers Ships Internationally to: Australia, UK, Canada, Japan, Italy, New Zealand <a href="http://www.sheplers.com/custserv/custserv.jsp?pageName=Shipping">and more</a>.</p>
 			
   <p>Copyright 1998-2012 Sheplers, Inc. Customer Service / Order by Phone <span class="phone">1-888-835-4004</span>
-</div></div>
+</div>
+
+  <script language="javascript">
+  	if (screen.width > 766)
+	{
+		document.write('<div style="position: fixed; bottom: 0px; right: 0px; z-index: 9999;" id="feedbackmodule"><a href="http://www.sheplers.com/custserv/custserv_popup.jsp?pageName=feedback" class="openAjaxLayer"><img src="../assets/images/sections/footer/feedback_btn.png" alt="Feedback"></a></div>');
+	}
+  </script></div>
 	</div>
 </div></div>
 		<script src="../js/site_ready.js" type="text/javascript"></script><div class="siteTags"><!-- Google Analytics -->
@@ -670,14 +675,5 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 	} catch(err) { }
 	</script>
 </div>
-		<!-- Begin ClickTracks -->
-      <!-- End ClickTracks -->
-      <!-- Begin SurveyMonkey -->
-      <!-- End SurveyMonkey -->
-      <!-- Begin UserVoice -->
-      <!-- End UserVoice -->
-	  <script type="text/javascript">
-		  widgetHealth.pageEnd = { time:new Date().getTime() };
-	  </script>
-	</body>
+		</body>
 </html>

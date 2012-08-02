@@ -57,20 +57,17 @@
 				
 			}
 			
-			if($(this).html()!=''){
-				var qs=settings.drawFontBase+'?'+$.fn.drawFont.createQuery($(this).html());
-				if(settings.fixIEPNG && $.browser.msie && $.browser.version<7){
+			var html = $(this).html();
+			if (html != '' && $(this).find('img').size() == 0) {
+				var qs=settings.drawFontBase+'?'+$.fn.drawFont.createQuery(html);
+				if (settings.fixIEPNG && $.browser.msie && $.browser.version<7) {
 					//this turns on the filter for IE6
-
-					$(this).html('<img src="'+settings.blankImageForIE+'" alt="'+$(this).html()+'" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'' + qs + '\', sizingMethod=\'image\')"/>');
-
-				}
-				else{
-					$(this).html('<img src="'+qs+'" alt="'+$(this).html()+'"/>');
+					$(this).html('<img src="'+settings.blankImageForIE+'" alt="" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'' + qs + '\', sizingMethod=\'image\')"/>');
+				} else {
+					$(this).html('<img src="'+qs+'" alt="" />');
 				}
 				$(this).css('visibility','visible');
 			}
-
 		});
 	};
 	$.fn.drawFont.createQuery = function(message){

@@ -7,7 +7,7 @@
  * implied, including fitness for a particular purpose. In no event shall
  * the author be liable for any damages arising in any way out of the use
  * of this software, even if advised of the possibility of such damage.
- * $Id: submit.js 38006 2012-04-05 07:26:19Z snaky $
+ *
  */
 
 (function($) {
@@ -28,6 +28,7 @@ if (!Echo.Vars) Echo.Vars = {
 	"regexps": {
 		"matchLabel": /{Label:([^:}]+[^}]*)}/g,
 		"matchData": /{Data:(([a-z]+\.)*[a-z]+)}/ig,
+		"matchSelf": /{Self:(([a-z_]+\.)*[a-z_]+)}/ig,
 		"mobileUA": /mobile|midp-|opera mini|iphone|ipad|blackberry|nokia|samsung|docomo|symbian|windows ce|windows phone|android|up\.browser|ipod|netfront|skyfire|palm|webos|audiovox/i,
 		"parseUrl": /^((([^:\/\?#]+):)?\/\/)?([^\/\?#]*)?([^\?#]*)(\?([^#]*))?(#(.*))?/,
 		"w3cdtf": /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)Z$/
@@ -586,6 +587,11 @@ Echo.Object.prototype.cssPrefix = "echo-";
 
 Echo.Object.prototype.substitute = function(template, data) {
 	var self = this;
+	template = template.replace(Echo.Vars.regexps.matchSelf, function($0, $1) {
+		return $.getNestedValue($1, self) ||
+			$.getNestedValue($1, self.data || {}) ||
+			self.config.get($1, "");
+	});
 	template = template.replace(Echo.Vars.regexps.matchLabel, function($0, $1) {
 		return self.label($1);
 	});
@@ -1183,7 +1189,7 @@ Echo.User.prototype.assemble = function() {
 	var account = accounts[0] || {};
 	return $.extend(this.data, {
 		"id": account.identityUrl || this.data.poco.entry.id || account.userid,
-		"name": this.data.poco.entry.displayName || account.username,
+		"name": account.displayName || account.username,
 		"avatar": $.foldl(undefined, account.photos || [], function(img) {
 			if (img.type == "avatar") return img.value;
 		}),
@@ -1393,7 +1399,72 @@ if (!Echo.UI) Echo.UI = {
 
 
 
+(function($) {
+
+// jQuery Mobile uses jQuery 1.6.4+
+if ($.fn.jquery && $.fn.jquery < "1.6.4") return;
+
+Echo.UI.MobileButton = function(element, states) {
+	this.states = states || {};
+	this.element = $(element);
+	this.addCss();
+	var data = this.prepareData(this.states.normal || {});
+	if (data.label) {
+		this.setLabel(data.label);
+	} else {
+		this.states.normal = $.extend(this.states.normal || {}, { "label": this.element.html() });
+	}
+	this.element.button();
+	this.wrapper = this.element.parent();
+	this.wrapper.addClass("echo-mobilebutton");
+	this.setIcon(data.icon);
+}
+
+Echo.UI.MobileButton.prototype = new Echo.Object();
+
+Echo.UI.MobileButton.prototype.setState = function(name) {
+	var data = this.prepareData(this.states[name]);
+	this.setLabel(data.label);
+	this.setIcon(data.icon);
+	this.element.is(":visible") && this.element.button("refresh");
+}
+
+Echo.UI.MobileButton.prototype.setIcon = function(icon) {
+	if ($('.ui-icon', this.wrapper).length) {
+		$('.ui-icon', this.wrapper).removeClass().addClass(icon + " ui-icon");
+	} else {
+		$("<div>").addClass(icon + " ui-icon").prependTo(this.wrapper);
+	}
+}
+
+Echo.UI.MobileButton.prototype.setLabel = function(label) {
+	this.element.html(label);
+}
+
+Echo.UI.MobileButton.prototype.prepareData = function(state) {
+	return {
+		"label": state.label || "",
+		"icon": (state.icons && state.icons.primary) ? state.icons.primary : ""
+	};
+}
+
+Echo.UI.MobileButton.prototype.addCss = function() {
+	$.addCss(
+		'.echo-mobilebutton .ui-icon { position: absolute; top: 50%; background: none; margin: -7px 0px 0px 5px; float: left; }' +
+		'.echo-mobilebutton .ui-icon-arrow-right { background: no-repeat center url(//cdn.echoenabled.com/images/curation/button/apply_normal.png);  float: left; }' +
+		'.echo-mobilebutton .ui-icon-save { background: no-repeat center url(//cdn.echoenabled.com/images/curation/button/save_normal.png); float: left;  margin-right: 5px; }' +
+		'.echo-mobilebutton .ui-icon-waiting { background: no-repeat center url(//cdn.echoenabled.com/images/loading.gif);  float: left; margin-right: 5px;}' +
+		'.echo-mobilebutton .ui-btn-inner { padding: 0.6em 25px; }' +
+		'.ui-page .ui-content { overflow-y: hidden}'
+	, 'ui-buttons-icons');
+};
+})(jQuery);
+
+
+
 Echo.UI.Button = function(element, states) {
+	// if jquery mobile is used
+	if ($.mobile) return new Echo.UI.MobileButton(element, states);
 	this.states = states || {};
 	this.element = $(element);
 	this.addCss();
@@ -1763,6 +1834,9 @@ Echo.Submit.prototype.post = function() {
 					: get("anonymousUserInfoUrl").val())),
 			"verb" : "post"
 		};
+		if (self.config.get("type")) {
+			content.type = self.config.get("type");
+		}
 		if (self.config.get("itemURIPattern")) {
 			content.itemURIPattern = self.config.get("itemURIPattern");
 		}

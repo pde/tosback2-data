@@ -1,15 +1,25 @@
 /* Used with jquery 1.3.2.min.js and jquery.simplemodal-1.2.3.min.js to handle contact form submit and jquery effects on product-detail template. */
 
+
+
+
 $(document).ready(function() {
 	if($('#contactForm form').length>0){
 		$('#contactForm form').each(function(){
-			initAjaxForm($(this));
+			initAjaxForm($(this));			
 		});
 	}
 	
 	// legacy forms require these additional hidden fields
 	$("#productContactForm").prepend("<input type=\"hidden\" name=\"page\" value=\"" + document.URL + "\"></input><input type=\"hidden\" name=\"recipient_email\" value=\"8O9EH7YrwArpFgUuB7bxggJPiiljwIBNK7fhC9pQm1c=\"></input>");
-});  
+	
+	//if(document.URL.match(/[local|stg1|www].experian.com/)){ 
+	if(document.location.hostname == 'www.experian.com' || document.location.hostname == 'stg1.experian.com'){
+		trackExternalCampaigns();
+		trackInternalCampaigns();
+	}	
+}); 
+
 
 function initAjaxForm(jCurrentForm){
 	var postToUrl;
@@ -108,6 +118,18 @@ function submitAjaxForm (jCurrentForm, postToUrl, expFormName){
 			jCurrentForm.find('#StreetAddress_input').attr('name','street_address'); // correct for legacy form
 			jCurrentForm.append('<input type="hidden" name="enc" value="&#153;">'); // forces IE to submit form as UTF8
 			
+			// Append campaign values for experian.com
+			//if(document.URL.match(/[local|stg1|www].experian.com/)){ 
+			 if(document.location.hostname == 'www.experian.com' || 
+			 document.location.hostname == 'stg1.experian.com') {
+			 var externalcampaigns = readCampaignsFromCookies('extrnl_cmpcd_');
+			 var internalcampaigns = readCampaignsFromCookies('intrnl_cmpcd_');			 
+			 	jCurrentForm.append('<input type="hidden" name="extrnl_campaign">');
+				jCurrentForm.append('<input type="hidden" name="intrnl_campaign">');
+				jCurrentForm.find('input[name="extrnl_campaign"]').val(externalcampaigns);
+				jCurrentForm.find('input[name="intrnl_campaign"]').val(internalcampaigns);				
+			}
+			
 			//construct leadData object
 			var leadData = new Object();
 			leadData.firstName = firstNameValue; 
@@ -134,11 +156,11 @@ function submitAjaxForm (jCurrentForm, postToUrl, expFormName){
 				}
 				
 				else if(jCurrentForm.find('input[type="hidden"][name="tt"]').val() == 'yes-enterprise'){
-					try{
-						mboxDefineExperianBus(jCurrentForm.find('.formConfirmation').attr('id'),pageUrl.pageId+'_modal_form-success');
-						mboxUpdateExperianBus(pageUrl.pageId+'_modal_form-success');
-					} 
-					catch(e){}
+					//try{
+					//	mboxDefineExperianBus(jCurrentForm.find('.formConfirmation').attr('id'),pageUrl.pageId+'_modal_form-success');
+					//	mboxUpdateExperianBus(pageUrl.pageId+'_modal_form-success');
+				//	} 
+				//	catch(e){}
 				}
 				
 				try{
@@ -567,3 +589,122 @@ function displayFormSummary(jCurrentForm){
 		jCurrentForm.find(".formsummaryDetails").empty();
 	});
 }
+
+
+
+function setCookie( name, value, date)
+{
+// set time, it's in milliseconds
+var today = new Date();
+today.setTime( today.getTime() );
+
+//var expires = 1 * 1000 * 60 * 60 * 24;
+var expires = 30 * 1000 * 60 * 60 * 24;
+
+var expires_date = new Date( today.getTime() + (expires) );
+var path = "/";
+
+document.cookie = name + "=" +escape( value ) +
+( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) +
+( ( path ) ? ";path= /"  : "" );
+}
+
+
+
+function getCookie(name) {
+
+var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) 
+			return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+
+
+function checkCookie(cookie_val,cookie_type) { 
+ 
+ //alert('in check cookie' + cookie_val);
+ 
+ var ext_cookie_name='extrnl_cmpcd_';  
+ var int_cookie_name='intrnl_cmpcd_'; 
+ 
+ var  prefix_cookie_name = '';
+ 
+ if(cookie_type == 'E')  {
+ prefix_cookie_name = ext_cookie_name;
+ } else {
+ prefix_cookie_name=int_cookie_name;
+ }
+ 
+ var cookie_name=null; 
+ var ext_cookie_val = null;
+ var current_cookie_pos = 0;
+ var curr_cookie_pos = 0;
+ 
+ //Loop Exterior cookie
+ for(i=1;i<100;i++) { 
+ cookie_name = prefix_cookie_name + i;  
+ //alert('cookie_name in the loop:' + cookie_name);
+ ext_cookie_val = getCookie(cookie_name);
+ if(ext_cookie_val == null) {
+	curr_cookie_pos = i;
+	//alert('current cookie pos:' + curr_cookie_pos);
+	break;
+ }
+} 
+ 
+ //write cookie with curr postion
+ //Increment cookie position  
+ //alert('cookie pos:' + curr_cookie_pos);
+ cookie_name= prefix_cookie_name + curr_cookie_pos;  
+ //alert('cookie name to write:' + cookie_name);
+ // alert('cookie val:' + cookie_val);
+ setCookie(cookie_name,cookie_val,new Date());
+ // alert('Done');
+}
+
+function trackExternalCampaigns() {
+if(pageUrl.cmpid != null) {	
+	//alert('External Campaign value CMPID:' + pageUrl.cmpid);
+	checkCookie(pageUrl.cmpid,'E');
+} 
+
+if (pageUrl.wtsrch != null) {	
+	//alert('External Campaign value WT.srch:' + pageUrl.wtsrch);
+	checkCookie(pageUrl.wtsrch,'E');
+}
+
+}
+
+function trackInternalCampaigns() {
+if(pageUrl.intcmp != null) {	
+	//alert('Internal Campaign value:' + pageUrl.intcmp);
+	checkCookie(pageUrl.intcmp,'I');
+}
+
+}
+
+function readCampaignsFromCookies(prefix_cookie_name) {
+//alert(prefix_cookie_name);
+var cookie_name;
+var all_cookie_values;
+var cookie_value;
+	for(i=100;i>0;i--) { 
+	 cookie_name = prefix_cookie_name + i;  	 
+	 cookie_value = getCookie(cookie_name);
+		 if(cookie_value != null) {		
+			if(all_cookie_values !=null) {
+				all_cookie_values = all_cookie_values + ", " + cookie_value;
+			} else {
+				all_cookie_values = cookie_value;
+			}
+		}
+	}
+//alert('Cookie values:' + all_cookie_values);
+return all_cookie_values;	
+} 

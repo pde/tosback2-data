@@ -638,25 +638,24 @@ function fn_goSignUp() {
     return true;
 }
 
-function searchClear() 
-{
-    $("ihKeyword").value = "";
-    $("ihKeyword").focus();
+function searchClear() {
+    document.getElementById("ihKeyword").value = "";
+    document.getElementById("ihKeyword").focus();
 }
 
 function search_go() 
 {
-    var kyeValue = $("ihKeyword").value;
+    var kyeValue = document.getElementById("ihKeyword").value;
     
     if (ReplaceStr(kyeValue," ","") == "enterkeywordoritem#") {
         alert('please enter the keyword');
-        $("ihKeyword").focus();
+        document.getElementById("ihKeyword").focus();
         return false;
     }
 
     if (kyeValue == '') {
         alert('please enter the keyword');
-        $("ihKeyword").focus();
+        document.getElementById("ihKeyword").focus();
         return false;
     }
 
@@ -670,11 +669,11 @@ function search_go()
         else if (sCurrentUrl.lastIndexOf("&keyword=") != -1) {
             sBr = sCurrentUrl.substring(sCurrentUrl.lastIndexOf("br=") + 3, sCurrentUrl.indexOf("&keyword=")).toLowerCase();
         }
-        location.href = AppPath+ "/Search/Search.aspx?br=" + sBr + "&keyword=" + $("ihKeyword").value;
+        location.href = AppPath + "/Search/Search.aspx?br=" + sBr + "&keyword=" + document.getElementById("ihKeyword").value;
 
     }
     else {
-        location.href = AppPath + "/Search/Search.aspx?" + "keyword=" + $("ihKeyword").value;
+        location.href = AppPath + "/Search/Search.aspx?" + "keyword=" + document.getElementById("ihKeyword").value;
     }
 }
 

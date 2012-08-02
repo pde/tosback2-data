@@ -121,4 +121,748 @@ jQueryFry.triggerElementSuffix = "_trigger";
 jQueryFry.widgetExecPath = "/widget/ocpsdk/exec.jsp";
 jQueryFry.jQLocation = "/js/ocpsdk/jquery/jquery.js";
 
-eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('$("1n",r).1M($("<16 X=\'17/1N\'>p.R { 1o: 1p; } #1q { 17-1O: 18; S-18: T; S-1P: T; } 1r.1Q { 1s: 1R 1t 19; S-1S: T; 1T: 1U; }</16>"));4 2r(){3 w=L.2s("","2t","2u=2v,2w=2x,2y=1V,2z=1V");$("1n",w.r).1M($("<16 X=\'17/1N\'>"+"u { 1u: 2A \'1W 2B\',1W,2C; } "+"p.R { 1o: 1p; } "+"#1q { 17-1O: 18; S-18: T; S-1P: T; } "+"1r.1X { 1Y: 19; 1Z: 20; 1u-21: 2D; } "+".1X .2E { 2F: 2G; 1u-21: 2H; 1Y: 20; 1s: 2I 1t 19; 1Z: 2J; 1o: 1p; } "+"1r.1Q { 1s: 1R 1t 19; S-1S: T; 1T: 1U; }</16>"));$("u",w.r).1a($("#1q").1a());w["$"]=2;w.2K()};2.H({v:"R",z:"1b",22:"2L",1c:"1d",1v:4(a){a[2.z]={};a[2.z][2.22]="#"+a.M;a[2.z][2.1c]=8;9 a[2.z]},Y:[],2M:4(a){a=a?a.Z("|"):[];$.Y=($.Y.I==0?a:$.Y.2N(a))},2O:4(b,c,d,e){6($("1a").10("1w")=="1e"){A.23("#2P# ",N)}3 a=[c];E(3 x=0;x<b.I;x++){a.1x(b[x])}3 f=(e?e.Z("."):[]);6(f.I>0){f.2Q();2R{f=L[f.24(".")];6(f==11||f==8){f=L}}2S(2T){f=L}}y{f=L}d.12(f,a)},25:4(l){3 m=[],13=[];6((F A!="11")&&$.U.1f){A.1y(">> 26 2U")}2.2V(l,"R",4 2W(c,d){3 e=c.q();6((F A!="11")&&$.U.1f&&$.U.2X>1){A.1w("26 q: ",e)}3 f=d.1z,O=d.O;V d.1z;V d.O;3 g=d.1d;3 h=L[g];3 i=d.27||"2Y";V d.1d;V d.27;6(h){h.2Z=g;3 j=e?(e[0].M?"#"+e[0].M:e):8;6(j){6(d.28){30.31(h,j);V d.28}3 k=4(){3 a="<b>"+h.32()+"</b> 33 "+j+"<34/><29>";E(3 b G d){a+="<2a>"+b+": "+d[b]+"</2a>"}9 a+"</29>"};6(h["2b"]){2c(4 2d(){h.2b(j,d)},k)}6(h[i]){2c(4 2d(){h[i](j,d)},k)}}y{1A 1B 1C("35 36 37 38 1D 39 3a q B!");}}6(f){E(3 b G f){m.1x(f[b])}}6(O){E(3 b G O){13.1x(O[b])}}});$(r).2e(4(){6((F A!="11")&&$.U.1f){A.1y(">> 2f 3b 1z...")}E(3 b G m){3 c=m[b];3 d=3c("(4(){ 3 W = "+c.W+"; 9 W;})()");$(c.1E).1g(c.X,d)}6((F A!="11")&&$.U.1f&&13.I){A.1y(">> 2f 3d O")}E(3 b G 13){3 e=13[b];3 d=4(){3 a=N.3e;$(a.2g).1F(a.2h,(a.1G?a.1G:N))};d.2g=e.1F;d.2h=e.X;d.1G=e.t;$(e.1E).1g(e.X,d)}})}});2.H(2.3f[\':\'],{q:"(\' \'+a.3g+\' \').2i(\' q-B \')"});2.1H=4(o){3 a=o.C;o.C=4(){6(a){a.12(7,N)}2.3h(2.1H,"1h")};2([2.1H]).3i("1h",4(){2.1h(o)})};2.14=4(o){3 a=2.14.W,t=2.14.t,D=a.I;a[D]={J:o.J,K:o.K,C:o.C,1I:3j};t[D]={J:[],K:[],C:[]};o.J=4(){t[D].J=N};o.K=4(){t[D].K=N};o.C=4(){t[D].C=N;a[D].1I=1e;6(D==0||!a[D-1]){E(3 i=D;i<a.I&&a[i].1I;i++){6(a[i].J){a[i].J.12(2,t[i].J)}6(a[i].K){a[i].K.12(2,t[i].K)}6(a[i].C){a[i].C.12(2,t[i].C)}a[i]=8;t[i]=8}}};9 2.1h(o)};2.14.W=[];2.14.t=[];2.W.H({q:4(){6(2(7).2j(".q-B")){9 2(7)}9 2(7.1i(".q-B")[0])},2k:4(){9(2(7).q().I!=0)},3k:4(){9 2(7).q().10("M")},P:4(){9 2(7).q()[0]},15:4(a){9 2(a,2(7).q())},3l:4(a){9 2(7).15(a)[0]},3m:4(a){6(a!=8){9 2(2(7).q().1i(a+".q-B")[0])}y{9 2(2(7).q().1i(".q-B")[0])}},3n:4(a){6(a!=8){9 2(2(7).15(a+".q-B")[0])}y{9 2(2(7).15(".q-B")[0])}},R:4(a,b){6(a!=8&&(F a=="2l")&&b==8){3 s=2(7[0]).P()[2.v];9(s!=8?s[a]:8)}y 6(a==8&&b==8){3 e=2(7[0]).P();3 s=e[2.v];6(s==8){s={};e[2.v]=s}9 e[2.v]}y{9 7.Q(4(){3 e=2(7).P();6(!e[2.v]){e[2.v]={}}6(F a!=\'2m\'){e[2.v][a]=b}y{e[2.v]=2.H(e[2.v],a)}})}},1b:4(a,b){6(a!=8&&(F a=="2l")&&b==8){3 c=2(7[0]).P()[2.z];9(c!=8?c[a]:8)}y 6(a==8&&b==8){3 e=2(7[0]).P();3 c=e[2.z];6(c==8){c=2.1v(e);e[2.z]=c}9 c}y{9 7.Q(4(){3 e=2(7).P();3 d=e[2.z]||2.1v(e);6(F a!=\'2m\'){d[a]=b}y{e[2.z]=2.H(d,a)}})}},1d:4(a){6(a){9 7.Q(4(){2(7).1b(2.1c,a)})}9 2(7).1b(2.1c,8)},3o:4(a,b){3 w=2(7).q();6(L.3p){6($("1a").10("1w")=="1e"){A.23("--- 3q 3r \'"+a+"\' 3s 3t()")}9}3 c=w.10("M");6(c!=8){2("#"+c+1J.2n).1F(a,b)}},3u:4(b,c,d){9 2(7).Q(4(){3 a=2(7).q().10("M");6(a!=8){2("#"+a+1J.2n).1g(b,c,d)}})},1j:4(b,c,d,e,f,g){3 h=2(7);3 i=2.3v(2(b).R());6(e){3 p={};E(3 a G e.Z(",")){3 k=i[e.Z(",")[a].3w()];$.H(p,k)}i=p}V i[2.v];3 j={},1K="",1k=c;1K=c.3x().2i("2o:")==-1?"q":(4(){1k=1k.3y(5);9"2o"})();j[1K]=1k;$.H(i,j);6(F f!="4"){$.H(i,f)}y{g=f}i.3z=$.Y.24("\\n");9 h.3A(1J.3B+(d?" "+d:""),i,g)},1L:4(a,b,c,d){3 e=2(7);6(!e.2k()){1A 1B 1C("3C 1E 2j 3D a q G 2p 1D 1L()");}6(!b){1A 1B 1C("3E 2q 3F G 2p 1D 1L()");}9 e.15(b).1j(e,a,8,8,c,d)},3G:4(b,c,d){3 e=2(7).q();3 f=e[0];3 g=8;$(".3H-2q",e).Q(4(){3 a=$(7);a.1i(".q-B").Q(4(){6(7==f){g=a}})});6(g){9 g.1j(e,b,8,8,c,d)}9 e.1j(e,b,".q-B:3I > *",8,c,d)}});2(r).2e(4(){$.25();6($.U.3J){r.u.1l={};$("u",r).1g("3K",4(a){$(".3L",a.3M).Q(4(){6(r.u.1m){3N(r.u.1m)}r.u.1l[7.M]=1e;r.u.1m=3O(4(){r.u.1m=8;E(3 e G r.u.1l){6($("#"+e).I==0){3 n=e.Z("3P")[1];$("#3Q"+n,"1n").3R()}}r.u.1l={}},3S)})})}});',62,241,'||jQuery|var|function||if|this|null|return|||||||||||||||||widget|document||data|body|WIDGET_STATE_KEY|||else|WIDGET_DATA_KEY|console|root|complete|pos|for|typeof|in|extend|length|error|success|window|id|arguments|bubbles|widgetElement|each|widgetState|margin|10px|browser|delete|fn|type|_ajaxedWidgets|split|attr|undefined|apply|allBubbles|ajaxSync|widgetChild|style|text|left|red|html|widgetData|WIDGET_CLASS_KEY|widgetClass|true|debugging|bind|ajax|parents|widgetAjax|value|cleanupIds|cleanTimer|head|display|none|jsExceptions|div|border|solid|font|_initialWidgetData|debug|push|info|bindings|throw|new|Error|to|element|trigger|eData|ajaxQueue|done|jQueryFry|key|widgetTargetLoad|append|css|align|right|jsExceptionMsg|2px|bottom|padding|5px|yes|Courier|stackTrace|background|color|white|weight|WIDGET_SELECTOR_KEY|warn|join|initWidgets|Initializing|widgetInitMethod|persistentStorage|ul|li|construct|trapJavascriptErrors|initWidget|ready|Processing|eTrigger|eType|indexOf|is|isWidget|string|object|triggerElementSuffix|path|call|target|showJavascriptErrorWindow|open|exceptions|width|640|height|480|resizable|scrollbars|10pt|New|fixed|bold|stackMessage|overflow|auto|normal|1px|black|focus|widgetSelector|storeWidgets|concat|fnProxy|PROXY|pop|try|catch|ex|widgets|readData|initFromState|debugLevel|create|widgetClassName|PersistentStorage|register|getWidgetClassName|Id|br|Widget|cannot|constructed|due|no|known|deferred|eval|Event|callee|expr|className|dequeue|queue|false|widgetId|widgetChildElement|outerWidget|innerWidget|widgetTrigger|PERSISTENT_STORAGE_RESTORING|Skipped|event|during|restoreState|widgetBind|dupe|trim|toLowerCase|substr|clientWidgets|load|widgetExecPath|Specified|not|No|specified|widgetLoad|ahah|first|webkit|DOMNodeRemoved|webkitCleanup|relatedNode|clearTimeout|setTimeout|_|style_|remove|1000'.split('|'),0,{}));
+$("head", document).append($("<style type='text/css'>p.widgetState { display: none; } #jsExceptions { text-align: left; margin-left: 10px; margin-right: 10px; } div.jsExceptionMsg { border: 2px solid red; margin-bottom: 10px; padding: 5px; }</style>"));
+
+function showJavascriptErrorWindow() {
+	var w = window.open("", "exceptions", "width=640,height=480,resizable=yes,scrollbars=yes");
+	$("head", w.document)
+      .append($("<style type='text/css'>" +
+						"body { font: 10pt 'Courier New',Courier,fixed; } " +
+						"p.widgetState { display: none; } " +
+						"#jsExceptions { text-align: left; margin-left: 10px; margin-right: 10px; } " +
+                  "div.stackTrace { background: red; color: white; font-weight: bold; } " +
+                  ".stackTrace .stackMessage { overflow: auto; font-weight: normal; background: white; border: 1px solid red; color: black; display: none; } " +
+                  "div.jsExceptionMsg { border: 2px solid red; margin-bottom: 10px; padding: 5px; }</style>"));
+	$("body", w.document).html($("#jsExceptions").html());
+
+   w["$"] = jQuery;
+
+   w.focus();
+};
+
+jQuery.extend({
+
+	/*
+		The place we'll keep track of the widget's state on the DOM element.
+		Note that "state" is used for things that potentially need to be
+		passed back to the server side each time a widget is reloaded via AHAH.
+	*/
+	WIDGET_STATE_KEY: "widgetState",
+
+	/*
+		The place we'll keep track fo the widget's data on the DOM element.
+		Note that "data" is used for things that are needed to be known
+		by the client side code only.
+	*/
+	WIDGET_DATA_KEY: "widgetData",
+
+	/* Name of the selector key in the widget data */
+	WIDGET_SELECTOR_KEY: "widgetSelector",
+
+	/* Widget class name key in the widget data */
+	WIDGET_CLASS_KEY: "widgetClass",
+
+	/**
+	 * Initial data of the widget.  Contains the Id of the
+	 * widget when it was initially created.  If the Id is changed,
+	 * this value is not updated.
+	 * @private
+	 */
+	_initialWidgetData: function(widget) {
+		widget[jQuery.WIDGET_DATA_KEY] = {};
+		widget[jQuery.WIDGET_DATA_KEY][jQuery.WIDGET_SELECTOR_KEY] = "#" + widget.id;
+		widget[jQuery.WIDGET_DATA_KEY][jQuery.WIDGET_CLASS_KEY] = null;
+		return widget[jQuery.WIDGET_DATA_KEY];
+	},
+
+   /**
+    * We'll use this as a quick lookup for widgets that have been loaded.  We can use this
+    * to flag the server and let it know that we've already gotten the Javascript for a
+    * particular widget and it doesn't need to resend it...
+    * @private
+    */
+   _ajaxedWidgets: [],
+
+   storeWidgets: function(widgets) {
+      widgets = widgets ? widgets.split("|") : [];
+      $._ajaxedWidgets = ($._ajaxedWidgets.length == 0 ? widgets : $._ajaxedWidgets.concat(widgets));
+   },
+
+   /**
+	 * A function proxy to simplify the event handler code
+	 */
+	fnProxy: function(args,selector,funcRef,fStr) {
+
+		if ($("html").attr("debug") == "true") {
+			// Debugging
+			console.warn("#PROXY# ", arguments);
+		}
+
+		var a = [selector];
+		for (var x = 0; x < args.length; x++)
+		{
+			a.push(args[x]);
+		}
+		var ns = (fStr ? fStr.split(".") : []);
+		if (ns.length > 0) {
+			ns.pop();
+			try
+			{
+				ns = window[ns.join(".")];
+				if (ns == undefined || ns == null)
+				{
+					ns = window;
+				}
+			}
+			catch(ex) { ns = window; }
+		} else {
+			ns = window;
+		}
+		funcRef.apply(ns, a);
+	},
+
+	/**
+	 * Copies data from a <tt>&lt;p&gt;</tt> element that has the class <tt>widgetState</tt> on it,
+	 * and calls the widget's create method, passing widgetState as the second argument.
+	 */
+	initWidgets: function(jQ) {
+		var allBindings = [], allBubbles = [];
+		if ((typeof console != "undefined") && $.browser.debugging) {
+			console.info(">> Initializing widgets");
+		}
+
+		jQuery.readData(jQ, "widgetState", function initFromState(parent, data) {
+
+			var pWidget = parent.widget();
+			if ((typeof console != "undefined") && $.browser.debugging && $.browser.debugLevel > 1) {
+				console.debug("Initializing widget: ", pWidget);
+			}
+
+			// If there were bindings, remove them so they aren't passed to the
+			// widget's create() method
+			var bindings = data.bindings, bubbles = data.bubbles;
+			delete data.bindings;
+			delete data.bubbles;
+
+			// Get the widget class, and a pointer to its init method (if any)
+			var widgetClassName = data.widgetClass;
+			var widgetClass = window[widgetClassName];
+			var initMethod = data.widgetInitMethod || "create";
+
+			// Remove "widgetClass" and "widgetInitMethod" from the data
+			delete data.widgetClass;
+			delete data.widgetInitMethod;
+
+			if (widgetClass ) {
+
+				// Make sure BaseWidget.js knows what class this really is
+				widgetClass.widgetClassName = widgetClassName;
+
+				// If the parent's widget has an Id, use that as the selector,
+				// otherwise, use the parent itself
+				var selector = pWidget ? (pWidget[0].id ? "#" + pWidget[0].id : pWidget) : null;
+
+				if (selector) {
+					// Do they need persistent storage?
+					if (data.persistentStorage) {
+						PersistentStorage.register(widgetClass, selector);
+						delete data.persistentStorage;
+					}
+
+					// We'll reuse the same error handler for both constructing and initializing the widget
+					var widgetErrorHandler = function() {
+						var err = "<b>" + widgetClass.getWidgetClassName() + "</b> Id " + selector + "<br/><ul>";
+						for (var dx in data) {
+							err += "<li>" + dx + ": " + data[dx] + "</li>";
+						}
+						return err + "</ul>";
+					};
+
+					// First, auto-construct the widget to setup the widget class and settings automatically
+					if(widgetClass["construct"]) {
+						trapJavascriptErrors(function initWidget() {
+														widgetClass.construct(selector, data);
+													}, widgetErrorHandler);
+					}
+
+					// Second, auto-initialize the widget to allow it to do it's own event bindings or other initialization logic
+					if (widgetClass[initMethod]) {
+						trapJavascriptErrors(function initWidget() {
+														widgetClass[initMethod](selector, data);
+													}, widgetErrorHandler);
+					}
+				} else {
+					throw new Error("Widget cannot constructed due to no known widget root!");
+				}
+			}
+
+			// Defer bindings
+			if (bindings) {
+				for (var b in bindings) {
+					allBindings.push(bindings[b]);
+				}
+			}
+
+			// Defer event bubbles
+			if (bubbles) {
+				for (var b in bubbles) {
+					allBubbles.push(bubbles[b]);
+				}
+			}
+		});
+
+		// Process bindings and bubbles
+		$(document).ready(function() {
+
+			if ((typeof console != "undefined") && $.browser.debugging) {
+				console.info(">> Processing deferred bindings...");
+			}
+
+			for (var b in allBindings) {
+				var binding = allBindings[b];
+				var fn = eval("(function(){ var fn = " + binding.fn + "; return fn;})()");
+				$(binding.element).bind(binding.type, fn);
+			}
+
+			if ((typeof console != "undefined") && $.browser.debugging && allBubbles.length) {
+				console.info(">> Processing Event bubbles");
+			}
+
+			for (var b in allBubbles) {
+				var bubble = allBubbles[b];
+				var fn = function() {
+					var ac = arguments.callee;
+					$(ac.eTrigger).trigger(ac.eType, (ac.eData ? ac.eData : arguments));
+				};
+				fn.eTrigger = bubble.trigger;
+				fn.eType = bubble.type;
+				fn.eData = bubble.data;
+
+				$(bubble.element).bind(bubble.type, fn);
+			}
+		});
+	}
+});
+
+// Make widgets selectable by expression
+jQuery.extend(jQuery.expr[':'],
+{
+	widget: "(' '+a.className+' ').indexOf(' widget-root ')"
+});
+
+/*
+ * Ajax Queue Plugins, from jQuery plug-in site
+ * Homepage: http://jquery.com/plugins/project/ajaxqueue
+ * Documentation: http://docs.jquery.com/AjaxQueue
+ */
+
+/*
+ * Queued Ajax requests.
+ * A new Ajax request won't be started until the previous queued
+ * request has finished.
+ */
+jQuery.ajaxQueue = function(o){
+	var _old = o.complete;
+	o.complete = function(){
+		if ( _old ) {
+			_old.apply( this, arguments );
+		}
+		jQuery.dequeue( jQuery.ajaxQueue, "ajax" );
+	};
+
+	jQuery([ jQuery.ajaxQueue ]).queue("ajax", function(){
+		jQuery.ajax( o );
+	});
+};
+
+/*
+ * Synced Ajax requests.
+ * The Ajax request will happen as soon as you call this method, but
+ * the callbacks (success/error/complete) won't fire until all previous
+ * synced requests have been completed.
+ */
+jQuery.ajaxSync = function(o){
+	var fn = jQuery.ajaxSync.fn, data = jQuery.ajaxSync.data, pos = fn.length;
+
+	fn[ pos ] = {
+		error: o.error,
+		success: o.success,
+		complete: o.complete,
+		done: false
+	};
+
+	data[ pos ] = {
+		error: [],
+		success: [],
+		complete: []
+	};
+
+	o.error = function(){ data[ pos ].error = arguments; };
+	o.success = function(){ data[ pos ].success = arguments; };
+	o.complete = function(){
+		data[ pos ].complete = arguments;
+		fn[ pos ].done = true;
+
+		if ( pos == 0 || !fn[ pos-1 ] ) {
+			for ( var i = pos; i < fn.length && fn[i].done; i++ ) {
+				if ( fn[i].error ) {
+					fn[i].error.apply( jQuery, data[i].error );
+				}
+				if ( fn[i].success ) {
+					fn[i].success.apply( jQuery, data[i].success );
+				}
+				if ( fn[i].complete ) {
+					fn[i].complete.apply( jQuery, data[i].complete );
+				}
+
+				fn[i] = null;
+				data[i] = null;
+			}
+		}
+	};
+
+	return jQuery.ajax(o);
+};
+
+jQuery.ajaxSync.fn = [];
+jQuery.ajaxSync.data = [];
+
+jQuery.fn.extend({
+
+	/**
+	 * Return the jQuery object that represents the root DOM element
+	 * of the widget that the current selector is inside of.
+	 */
+	widget: function() {
+		if (jQuery(this).is(".widget-root")) {
+			return jQuery(this);
+		}
+		return jQuery(this.parents(".widget-root")[0]);
+	},
+
+	/**
+	 * Returns <tt>true</tt> if the selector is a widget.
+	 */
+	isWidget: function() {
+		return (jQuery(this).widget().length != 0);
+	},
+
+	/**
+	 * Get the id of the DOM element that represents the root element
+	 * of the widget that the current selector is inside of.
+	 */
+	widgetId: function() {
+		return jQuery(this).widget().attr("id");
+	},
+
+	/**
+	 * Get DOM element that represents the root element
+	 * of the widget that the current selector is inside of
+	 */
+	widgetElement: function() {
+		return jQuery(this).widget()[0];
+	},
+
+	/**
+	 * Find an element within the same widget as the current selected
+	 * set which matches the given selector.  Useful when attempting
+	 * to find a set of other elements that are within the same widget
+	 * as an element set to receive event notifications.  i.e.
+	 * $(".left-button").click(function() {
+	 *    $(this).widgetChild(".right-button").show();
+	 * });
+	 */
+	widgetChild: function (selector) {
+		return jQuery(selector, jQuery(this).widget());
+	},
+
+	/**
+	 * Helper method which does the same as "widgetChild()" but then
+	 * returns the DOM element associated with the found object.
+	 */
+	widgetChildElement: function(selector) {
+		return jQuery(this).widgetChild(selector)[0];
+	},
+
+	/**
+	 * Return the first jQuery object that represents the root DOM element
+	 * of the widget that the current widget is inside of.  An optional
+	 * selector can be specified, for which the outer widget must also
+	 * qualify.
+	 */
+	outerWidget: function(selector) {
+		if (selector != null)
+		{
+			return jQuery(jQuery(this).widget().parents(selector + ".widget-root")[0]);
+		}
+		else
+		{
+			return jQuery(jQuery(this).widget().parents(".widget-root")[0]);
+		}
+	},
+
+	/**
+	 * Return the first jQuery object that represents the root DOM element
+	 * of a widget that is inside of the widget defined by the DOM element
+	 * which contains this element.  An optional selector can be specified,
+	 * for which the inner widget must also qualify.
+	 *
+	 * @param selector {String} A CSS selector to aid in locating the widget
+	 */
+	innerWidget: function(selector) {
+		if (selector != null)
+		{
+			return jQuery(jQuery(this).widgetChild(selector + ".widget-root")[0]);
+		}
+		else
+		{
+			return jQuery(jQuery(this).widgetChild(".widget-root")[0]);
+		}
+	},
+
+
+	/**
+	 * If one argument is provided which is an object, the given state object will be
+	 * set on the root widget element as state data to be stored for later retrievel.
+	 * Or, if no argument is provided, then the widget's state data
+	 * will be returned (or an empty object if no state was stored
+	 * on the widget).  If one argumenent is given and it is not an object
+	 * then the value of that key in the state will be returned.  If two
+	 * arguments are provided, then they will be treated as a simple key/value
+	 * pair to store on the state of the widget.
+	 * <pre>
+	 * $(document).ready(function() {
+	 *    $(".mywidget").
+	 *       widgetState({ name: "Thing", speed: 1000 }).
+	 *       click(function() {
+	 *          alert($(this).widgetState().name);
+	 *       });
+	 *       widgetState("speed", 500);
+	 *       var speed = widgetState("speed");
+	 * });
+	 * </pre>
+	 * <p/>
+	 * Note that "widget state" adds the additional intelligence of passing any
+	 * values stored in the state back to the server when the widget is reloaded
+	 * via an AHAH request (normally via a call to the widgetLoad() method.)  If
+	 * you really only need to keep track of data on the widget itself, but don't
+	 * need it passed back to the server on each AHAH then use the "widgetData"
+	 * method instead.
+	 * <p/>
+	 *
+	 * @param key {String|Object} If you pass the data, the key must be a String that
+	 *                            represents the key to set.  Otherwise, passing a
+	 *                            JavaScript object will merge it into any existing
+	 *                            widgetState already assigned, or assign it if it
+	 *                            doesn't exist.  If a key as a string is passed by
+	 *                            itself, then the value at the given key will be returned.
+	 * @param data {Object}       The value to assign to the key specified.
+	 */
+	widgetState: function(key, data) {
+		if(key != null && (typeof key == "string") && data == null) {
+			var s = jQuery(this[0]).widgetElement()[jQuery.WIDGET_STATE_KEY];
+			return (s != null ? s[key] : null);
+		} else if (key == null && data == null) {
+			var e = jQuery(this[0]).widgetElement();
+			var s = e[jQuery.WIDGET_STATE_KEY];
+			if(s == null) {
+				s = {};
+				e[jQuery.WIDGET_STATE_KEY] = s;
+			}
+			return e[jQuery.WIDGET_STATE_KEY];
+		} else {
+		 	return this.each(function() {
+				var e = jQuery(this).widgetElement();
+				if (!e[jQuery.WIDGET_STATE_KEY]) {
+					e[jQuery.WIDGET_STATE_KEY] = {};
+				}
+				if (typeof key != 'object') {
+					e[jQuery.WIDGET_STATE_KEY][key] = data;
+				} else {
+					e[jQuery.WIDGET_STATE_KEY] = jQuery.extend(e[jQuery.WIDGET_STATE_KEY], key);
+				}
+		 	});
+		}
+	},
+
+	/**
+	 * Retrieves the values in the data block associated with the root widget
+	 * of the currently selected element.  Note that "widget data" is only
+	 * maintained in the DOM for use by the client side, where as "widget state"
+	 * adds the additional intelligence of also being passed back to the server
+	 * when a widget is reloaded via an AHAH request (normally via the widgetLoad()
+	 * method).
+	 * <p>
+	 * If one argument is provided which is an object, the given data object will be
+	 * set on the root widget element as data to be stored for later retrievel.
+	 * Or, if no argument is provided, then the widget's data
+	 * will be returned (or an empty object if no data was stored
+	 * on the widget).  If one argumenent is given and it is not an object
+	 * then the value of that key in the data will be returned.  If two
+	 * arguments are provided, then they will be treated as a simple key/value
+	 * pair to store on the data of the widget.
+	 * <pre>
+	 * $(document).ready(function() {
+	 *    $(".mywidget").
+	 *       widgetData({ name: "Thing", speed: 1000 }).
+	 *       click(function() {
+	 *          alert($(this).widgetData().name);
+	 *       });
+	 *       widgetData("speed", 500);
+	 *       var speed = widgetData("speed");
+	 * });
+	 * </pre>
+	 * <p/>
+	 * Additionally, automatically, a data setting called <tt>widgetSelector</tt> will be
+	 * added to each element which represents a CSS selector that can be passed to jQuery
+	 * to select this element.
+	 *
+	 * @param key {String|Object} If you pass the data, the key must be a String that
+	 *                            represents the key to set.  Otherwise, passing a
+	 *                            JavaScript object will merge it into any existing
+	 *                            widgetState already assigned, or assign it if it
+	 *                            doesn't exist.  If a key as a string is passed by
+	 *                            itself, then the value at the given key will be returned.
+	 * @param data {Object}       The value to assign to the key specified.
+	 *
+	 * @type Object
+	 */
+	widgetData: function(key, data) {
+		if(key != null && (typeof key == "string") && data == null) {
+			var wD = jQuery(this[0]).widgetElement()[jQuery.WIDGET_DATA_KEY];
+			return (wD != null ? wD[key] : null);
+		} else if (key == null && data == null) {
+			var e = jQuery(this[0]).widgetElement();
+			var wD = e[jQuery.WIDGET_DATA_KEY];
+			if(wD == null) {
+				wD = jQuery._initialWidgetData(e);
+				e[jQuery.WIDGET_DATA_KEY] = wD;
+			}
+			return wD;
+		} else {
+			return this.each(function() {
+				var e = jQuery(this).widgetElement();
+				var d = e[jQuery.WIDGET_DATA_KEY] || jQuery._initialWidgetData(e);
+				if (typeof key != 'object') {
+					d[key] = data;
+				} else {
+					e[jQuery.WIDGET_DATA_KEY] = jQuery.extend(d, key);
+				}
+		 	});
+		}
+	},
+
+	/**
+	 * If an argument is provided the given function pointer will be
+	 * set on the root widget element as the widget's logical "class".
+	 * Or, if no argument is provided, then the widget's logical class
+	 * will be returned.
+	 *
+	 * @param clazz {Function} The object which implements the widget on the client
+	 */
+	widgetClass: function(clazz) {
+		if(clazz) {
+			return this.each(function() {
+				jQuery(this).widgetData(jQuery.WIDGET_CLASS_KEY, clazz);
+			});
+		}
+		return jQuery(this).widgetData(jQuery.WIDGET_CLASS_KEY, null);
+	},
+
+	/**
+	 * Trigger an event on a widget by locating it's widget trigger element and
+	 * firing the requested event.  The optional data array will be passed to the
+	 * event handler.
+	 */
+	widgetTrigger: function(type, data) {
+		var w = jQuery(this).widget();
+
+		if (window.PERSISTENT_STORAGE_RESTORING)
+		{
+			// This only occurs during a "restoreState()" operation
+			if ($("html").attr("debug") == "true") {
+				console.warn("--- Skipped event '" + type + "' during restoreState()");
+			}
+			return;
+		}
+
+		var id = w.attr("id");
+		if (id != null)
+		{
+			jQuery("#" + id + jQueryFry.triggerElementSuffix).trigger(type, data);
+		}
+	},
+
+	/**
+	 * Bind an event handler to a widget by locating it's widget trigger element and
+	 * attaching the handler.  The optional data array will be passed to the
+	 * event handler whenever the event is triggered.
+	 */
+	widgetBind: function(type, data, fn) {
+		return jQuery(this).each(function() {
+			var id = jQuery(this).widget().attr("id");
+			if (id != null)
+			{
+				jQuery("#" + id + jQueryFry.triggerElementSuffix).bind(type, data, fn);
+			}
+		});
+	},
+
+   /**
+	 * Load the specified <tt>widgetName</tt> into the element.  You will need to specify
+	 * the <tt>widgetSelector</tt> which is used to retrieve the widget state.  This technique
+	 * allows for partial loading of data into an existing DOM structure, such as loading
+	 * additional table rows and/or cells to do a partial update.  When you use this
+	 * technique, you will need to call <tt>jQuery.initElementData();</tt> to assure that
+	 * any element data attached to incoming elements is processed properly after loading
+	 * the AJAX content.
+	 * <p/>
+	 * Any values stored in the widget's state will be appended to the specified parameters.
+	 * If <tt>subStateKeys</tt> is specified, only the keys (and, subsequently, all of its
+	 * sub-keys) will be passed as the state to the widget being executed.  Each key should
+	 * represent an object itself.  You may specify more than one key to build a structure
+	 * which represents a single flattened state.  What this means is that if you specify
+	 * a key, or multiple keys, the sub-keys of those top-level keys will be appended as the
+	 * top-level keys of a new state object.  i.e:
+	 * <pre>
+	 *    state = { top1: { field1: "data1", field2: "data2" },
+	 *              top2: { field3: "data3" },
+	 *              top3: "data4",
+	 *              top4: "data5"};
+	 * </pre>
+	 * If the state were represented as above, passing "top1" and "top2" as the <tt>subStateKeys</tt>
+	 * would then pass the widget state as:
+	 * <pre>
+	 *    state = { field1: "data1", field2: "data2", field3: "data3" };
+	 * </pre>
+	 *
+	 * @param widgetSelector {Object} The selector or jQuery for the widget which contains the state.
+	 * @param widgetName {String} The widget class to load into the target element, or a path marked with
+	 *                   the "path:" indicator <i>(special use case)</i>.
+	 * @param selector {String} The selector to use to extract elements from the HTML retrieved, or
+	 *                 <tt>null</tt> to use all returned HTML.
+	 * @param subStateKeys {String} Comma delimited list of keys, within the widget state, to pass to
+	 *                     the widget being executed, or <tt>null</tt> to use the entire widget's state.
+	 * @param [params] {Object} A set of key/value pairs to be passed to the widget being executed.
+	 * @param [fn] {Function} A function to call after the load has completed.
+	 */
+	widgetAjax: function(widgetSelector, widgetName, selector, subStateKeys, params, fn) {
+		var jQ = jQuery(this);
+		var loadParams = jQuery.dupe(jQuery(widgetSelector).widgetState());
+		if (subStateKeys) {
+			var p = {};
+			for (var a in subStateKeys.split(",")) {
+				var k = loadParams[subStateKeys.split(",")[a].trim()];
+				$.extend(p, k);
+			}
+			loadParams = p;
+		}
+
+		delete loadParams[jQuery.WIDGET_STATE_KEY];
+		var loadItem = {}, key = "", value = widgetName;
+		key = widgetName.toLowerCase().indexOf("path:") == -1 ? "widget" :
+				(function() { value = value.substr(5); return "path"; })();
+		loadItem[key] = value;
+		$.extend(loadParams, loadItem);
+
+		// Add additional parameters, if specified
+		if (typeof params != "function") {
+			$.extend(loadParams, params);
+		} else {
+			fn = params;
+		}
+
+      // Let the server know which widgets we've already received the code for
+      loadParams.clientWidgets = $._ajaxedWidgets.join("\n");
+
+      return jQ.load(jQueryFry.widgetExecPath + (selector ? " " + selector : ""), loadParams, fn);
+	},
+
+	/**
+	 * Load the specified <tt>widgetClass</tt> into the specified target element.
+	 * Any values stored in the widgetState will be appended to the specified parameters.
+	 *
+	 * @param widgetName {String} The widget class to load into the target element
+	 * @param target {String} The jQuery selector for the target to receive the HTML
+	 * @param [params] {Object} A set of key/value pairs to be passed to the widget being executed
+	 * @param fn {Function} A function to call after the load has completed.
+	 */
+	widgetTargetLoad: function(widgetName, target, params, fn) {
+		var jQ = jQuery(this);
+		if (!jQ.isWidget()) {
+			throw new Error("Specified element is not a widget in call to widgetTargetLoad()");
+		}
+		if (!target) {
+			throw new Error("No target specified in call to widgetTargetLoad()");
+		}
+
+		return jQ.widgetChild(target).widgetAjax(jQ, widgetName, null, null, params, fn);
+	},
+
+	/**
+	 * Load the specified <tt>widgetName</tt> into the 'ahah-target' element specified by this widget.
+	 * Any values stored in the widgetState will be appended to the specified parameters.
+	 *
+	 * @param widgetName {String} The widget class to load into the target element
+	 * @param [params] {Object} A set of key/value pairs to be passed to the widget being executed
+	 * @param fn {Function} A function to call after the load has completed.
+	 */
+	widgetLoad: function(widgetName, params, fn) {
+		var jQ = jQuery(this).widget();
+
+		// Find our .ahah-target, if there isn't one, target ourselves
+		var jQe = jQ[0];
+		var ourTarget = null;
+		$(".ahah-target", jQ).each(function() {
+			var target = $(this);
+			target.parents(".widget-root").each(function() {
+				if (this == jQe) {
+					ourTarget = target;
+				}
+			});
+		});
+
+		if (ourTarget) {
+			// We found a target within ourselves, load into it
+			return ourTarget.widgetAjax(jQ, widgetName, null, null, params, fn);
+		}
+
+		// No target, so we become the target
+		return jQ.widgetAjax(jQ, widgetName, ".widget-root:first > *", null, params, fn);
+	}
+
+});
+
+/*
+ * This will cause the initialization of widgets to occur for widgets that don't call
+ * <tt>[widgetClass].create(...)</tt>.
+ */
+jQuery(document).ready(function() {
+	if (!window.site || !site.wigetsInitialized) {
+		$.initWidgets();
+		site.widgetsInitialized = true;
+	}
+
+   if ($.browser.webkit) {
+      document.body.cleanupIds = {};
+      $("body", document).bind("DOMNodeRemoved", function(evt) {
+         $(".webkitCleanup", evt.relatedNode).each(function() {
+            if (document.body.cleanTimer) {
+               clearTimeout(document.body.cleanTimer);
+            }
+            document.body.cleanupIds[this.id] = true;
+            document.body.cleanTimer = setTimeout(function() {
+               document.body.cleanTimer = null;
+               for (var e in document.body.cleanupIds) {
+                  if ($("#" + e).length == 0) {
+                     // Remove styles that were added via AHAH
+                     var n = e.split("_")[1];
+                     $("#style_" + n, "head").remove();
+                  }
+               }
+               document.body.cleanupIds = {};
+            }, 1000);
+         });
+      });
+   }
+});

@@ -3,12 +3,8 @@
 <html>
 	<head>
         
-<!-- Cached response served at Mon May 14 05:07:13 PDT 2012
+<!-- Response served Thu Aug 02 13:24:17 PDT 2012
      App Server: mpecdb7Cell01\WC_becprod2_node\WC_becprod2 -->
-<!-- JSP fragment /CommonAssets/ShoppingArea/CatalogSection/CatalogEntrySubsection/BECProductDisplay.jsp
-     Generated Mon May 14 00:12:02 PDT 2012
-     App Server: mpecdb7Cell01\WC_becprod1_node\WC_becprod1 -->
-
 <script> 	
 	djConfig = {parseOnLoad: false, debugAtAllCosts: false, isDebug: false,
  useCommentedJson: true, searchIds: [], modulePaths: {"wc": "../wc", "bec": "../../CommonAssets/javascript/bec", "bec.mobile": "../../CommonAssets/mobile/javascript/bec/mobile"}, locale: 'en-us'}; 
@@ -31,16 +27,40 @@
 <script type="text/javascript" src="../../wcsstore/CommonAssets/javascript/bec/beccommon.js"></script>
 <script type="text/javascript" src="../../wcsstore/CommonAssets/javascript/Common.js"></script>
 <!-- START IMPORT: tagman.jsp -->
-<script language="JavaScript" type="text/javascript">
-	var tmEnabled = false;  //Default
-</script><!-- TagMan -->
 	<script language="JavaScript" type="text/javascript">
-		tmEnabled = true;		
+		var tmEnabled = true;
+		dojo.require("bec.vendors.TagMan");
+	</script>
+	
+
+<script language="JavaScript" type="text/javascript">
+var tmParams = null;
+
+tmParams = {
+	grandTotal: '',
+	productTotal: '',
+	productIds: '',
+	itemNumbers: '',
+	superItems: '',
+	qtys: '',
+	adjustedProductPrice: '',
+	prices: '',
+	orderNumber: '',
+	nxjcsid: '',
+	smcid: '',
+	cid: '',
+	nxjstrde: '',
+	catPath: ''
+};
+</script>
+<!--  BEGIN Partner Feed PartnerFeedSiteWideTagManHead -->
+	<!-- TagMan -->
+	<script language="JavaScript" type="text/javascript">				
 		(function (w) {
 			w.tm2BootPosition = 0;
 			w.tm2BootAsync = true;
 			w.tmPageId = 3;
-			w.tmParam = {tm_prtot : '',tm_smcid : '',levrev : '',tm_amts : '',tm_promocode : '',tm_productids : '',tm_items : '',tm_qty : '',tm_prices : '',tm_cid : '',tm_quantities : '',levordref : '',tm_superitem : '',tm_nxjstrde : '',tm_nxjcsid : '',tm_criteo : '',tm_adjustproductamt: ''};
+			w.tmParam = {tm_prtot : tmParams.productTotal,tm_smcid : tmParams.smcid,levrev : tmParams.grandTotal,tm_amts : tmParams.amounts,tm_promocode : tmParams.itemNumbers,tm_productids : tmParams.productIds,tm_items : tmParams.productIds,tm_qty : tmParams.qtys,tm_prices : tmParams.prices,tm_cid : tmParams.cid,tm_quantities : tmParams.qtys,levordref : tmParams.orderNumber,tm_superitem : tmParams.productIds,tm_nxjstrde : tmParams.nxjstrde,tm_nxjcsid : tmParams.nxjcsid,tm_criteo : tmParams.superItems,tm_adjustproductamt: tmParams.adjustedProductPrice,tm_categorypath: tmParams.catPath};
 			var conf = { host: 'pfna.levexis.com',
 				account: 'harryanddavid',
 				version: '3',
@@ -80,7 +100,8 @@
 			     document.write('<script src="'&#32;+&#32;tm&#32;+&#32;'.html"><\/script>');
 			}
 		})(window);
-	</script><!-- END IMPORT: tagman.jsp --><!--  BEGIN Partner Feed PartnerFeedSiteWideHeadTop --><script>TMAN.doTags(TMAN.position.TOP_HEAD);</script><!--  END Partner Feed PartnerFeedSiteWideHeadTop --><script type="text/javascript">
+	</script>
+<!--  END Partner Feed PartnerFeedSiteWideTagManHead --><!-- END IMPORT: tagman.jsp --><!--  BEGIN Partner Feed PartnerFeedSiteWideHeadTop --><script>TMAN.doTags(TMAN.position.TOP_HEAD);</script><!--  END Partner Feed PartnerFeedSiteWideHeadTop --><script type="text/javascript">
 	dojo.addOnLoad(function(e)
 	{ 
 		catalogQuickOrder = new bec.order.CatalogQuickOrder();
@@ -185,7 +206,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 <!--  END Partner Feed PartnerFeedSiteWideHead --><!--  BEGIN Partner Feed PartnerFeedSiteWideHeadBottom --><script>TMAN.doTags(TMAN.position.BOTTOM_HEAD);</script><!--  END Partner Feed PartnerFeedSiteWideHeadBottom -->
                     <link rel="canonical" href="http://www.harryanddavid.com/gifts/store/view____custserv-security.html" />
                 <title>Customer Service | Privacy Policy</title>
-    <link rel="stylesheet" type="text/css" href="../../include/styles/custserv.css" />
+    <link rel="stylesheet" type="text/css" href="../../content/Hand/include/styles/information.css" />
 	</head>
 	<body>
 	
@@ -284,6 +305,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 		titleText="Sign In"
 		placementContainerId="header"
 		width="270"
+		focusField="logonId"
 		></div>
 		
 	<div id="forgotPassword" 
@@ -293,6 +315,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 		titleText="Sign In - Forgot Password"
 		placementContainerId="header"
 		width="270"
+		focusField="userName_logonId"
 		></div>
 </div>
 
@@ -302,6 +325,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 	titleText="Email Sign-up"
 	placementContainerId="header"
 	width="270"
+	focusField="email"
 	></div>
 
 <div dojoType="wc.widget.RefreshArea" id="minicart" class="panel" style="display:none;" controllerId="itemAddAreaController">
@@ -325,29 +349,129 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 </script>
 		
 	
-	<div id="page" class="clearfix"><div class="strip-left"></div><div class="strip-right"></div> <!-- No espot named espotCompanyBanner found. --><!-- No espot named espotHeaderBanner found. --><!-- End Header.jsp -->
+	<div id="page" class="clearfix"><div class="strip-left"></div><div class="strip-right"></div> <!-- No espot named espotCompanyBanner found. --><!-- BEGIN: Espot [espotHeaderBanner] -->
+		<div id="espotHeaderBanner" class="genericESpot">
+			<div class="caption" style="display:none">[espotHeaderBanner]</div>
+				
+						<span id="espotHeaderBanner_72335_contSWbirthdaybanner">			
+							<a id="banner" href="http://www.harryanddavid.com/gifts/store/gift__10455_10002_occasion-holiday-gifts_birthday-gifts?cm_sp=sitewide-_-bb-_-Birthday"><img src="../../images/espots/belt/120727-920x65-Birthdays.png" /></a>
+	<div dojoType="bec.espot.ClickInfo" id="clickInfoespotHeaderBanner72335" 
+		espotId="espotHeaderBanner_72335_contSWbirthdaybanner"
+		clickInfoURL="http://www.harryanddavid.com/gifts/store/ClickInfo?evtype=CpgnClick&mpe_id=10013&intv_id=72335&storeId=10455&catalogId=10002">
+	</div>
+	<script type="text/javascript">
+		dojoParse("clickInfoespotHeaderBanner72335", "bec.espot.ClickInfo");
+	</script>
+	
+						</span>
+						
+		</div>	
+		<!-- END: Espot [espotHeaderBanner] --><!-- End Header.jsp -->
 	<div id="navigation">
-		<!-- START INCLUDE FILE: custserv-menu.html -->
+		<!-- START INCLUDE FILE: i-include.html -->
 
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_customerserv.html">Customer Service</a></div></div>
-<!--<div class="close"><div class="level-1"><a href="/gifts/store/view__10455_10002_custserv-affiliates.html">Affiliate Program</a></div></div>-->
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-howto.html">How to Place An Order</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-ordhist.html">View Tracking History</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-cutoff.html">Holiday Shipping Cut-Off Dates</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-handling.html">Delivery and Processing</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-arrival.html">Arrival Dates</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_wineship.html">Items with Wine</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-tax.html">Sales Tax</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-payment.html">Payment</a></div></div>
-<div class="close"><div class="level-1"><a href="view__10455_10002_custserv-security.html">Privacy Policy</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-termsofuse.html">Terms of Use</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-browser.html">Browser Requirements</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_harvest-report.html">Harvest Report</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-faq.html">Frequently Asked Questions</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-guarantee.html">Our Guarantee</a></div></div>
-<div class="close"><div class="level-1"><a href="http://www.harryanddavid.com/gifts/store/contact-us__10455_10002_">Contact Us</a></div></div>
+<div class="close">
+  <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_information.html">Community Information</a>
+  <div class="collapse">
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_whats-new.html">What&rsquo;s New</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_harvest-report.html">Harvest Report</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_s-recipe.html">Recipes</a>
+    <div class="collapse">
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_stores-featured-recipes.html">Featured in Stores</a>
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_Recipes-Appetizers.html">Appetizers</a>
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_Recipes-Beverages.html">Beverages</a>
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_Recipes-Salads.html">Salads</a>
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_Recipes-SideDishes.html">Side Dishes</a>
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_Recipes-Entrees.html">Entr&eacute;es</a>
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_Recipes-Desserts.html">Desserts</a>
+    </div>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_videos.html">Videos for Easy Entertaining</a>
+  </div>
+</div>
+<div class="close">
+  <a class="bypass" href="http://www.harryanddavid.com/gifts/store/view__10455_10002_storefront.html">Our Stores</a>
+  <div class="collapse">
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_storefront.html">Store Locations</a>
+    <!-- <a href="view__10455_10002_s-friends-family.html">Friends &amp; Family</a>-->
+    <!-- <a href="view__10455_10002_s-features-of-the-month.html">Features of the Month</a>-->
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_stores-featured-recipes.html">Featured Store Recipes</a>
+    <a class="bypass" href="http://www.harryanddavid.com/gifts/store/view__10455_10002_s-event-calendar.html">Events Calendar</a>
+    <div class="collapse">
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_s-event-calendar.html">Current Month</a>
+      <!-- <a href="view__10455_10002_s-event-calendar-next.html">Next Month</a> -->
+    </div>
+    <!--<a href="view__10455_10002_s-ecatalog.html">Home. Grown. Happiness. eCatalog</a>-->
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_s-career.html">Retail Careers</a>
+    <div class="collapse">
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_s-jobinfo.html">Position Overviews</a>
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_s-jobbenefits.html">Career Benefits</a>
+    </div>
+  </div>
+</div>
+<div class="close">
+  <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_gift-services.jsp">Shopping Services</a>
+  <div class="collapse">
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_harry-david-coupons.html">Coupons</a>
+    <a href="http://www.harryanddavid.com/gifts/store/BECGiftListItemDisplay?storeId=10455&amp;catalogId=10002&amp;giftlist=1&amp;URL=BECGiftListView">Gift List<sup>&trade;</sup></a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_gc-giftcardland.html">Gift Cards</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_4ys-cards.html">Greeting Cards</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_gift-announce.html">Gift eNouncements</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_worldwide.html">International Gifts</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_ecatalog.html">Online Catalog</a>
+    <a href="http://www.harryanddavid.com/gifts/store/BECCatalogRequestView?catalogId=10002&amp;langId=-1&amp;storeId=10455">Request a Catalog</a>
+    <a href="http://www.harryanddavid.com/gifts/store/UserAccountView?storeId=10455&amp;catalogId=10002">My Account</a>
+  </div>
+</div> 
+<div class="close">
+  <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_b2bHome.html">Business Sales</a>
+  <div class="collapse">
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_b2b-customgifts.html">Personalized Gifts</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_b2b-popular.html">Shop Popular Business Gifts</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_b2b-greetingcards.html">Branded and Personalized Greeting Cards</a>
+    <div class="collapse">
+      <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_4ys-cards-b2b.html">Cards</a>
+    </div>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_b2b-accountservices.html">Account Services</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_b2b-largeorder.html">Large Order Services</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_b2b-deliveryservices.html">Delivery Services</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_b2b-contactus.html">Contact Us</a>
+    <div class="note"><b>Call 1-800-248-5567</b> for easy ordering, or to discuss custom options.</div>
+  </div>
+</div>
+<div class="close">
+  <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_about01.html">About Us</a>
+  <div class="collapse">
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_hdgreenpromise.html">Green Promise</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_tours.html">Factory Tours</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_a-career.html">Career Opportunities</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_a-corporate-locations.html">Corporate Locations</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_a-investor-relations.html">Investor Relations</a>
+    </div>
+</div>
+<div class="close">
+  <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_customerserv.html">Customer Service</a>
+  <div class="collapse">
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-howto.html">How to Place An Order</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-ordhist.html">View Tracking History</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-cutoff.html">Holiday Shipping Cut-Off Dates</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-handling.html">Delivery and Processing</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-arrival.html">Arrival Dates</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_wineship.html">Items with Wine</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-tax.html">Sales Tax</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-payment.html">Payment</a>
+    <a href="view__10455_10002_custserv-security.html">Privacy Policy</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-termsofuse.html">Terms of Use</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-browser.html">Browser Requirements</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-faq.html">Frequently Asked Questions</a>
+    <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-guarantee.html">Our Guarantee</a>
+  </div>
+</div>
+<div class="close">
+  <a href="http://www.harryanddavid.com/gifts/store/contact-us__10455_10002_">Contact Us</a>
+</div>
+  
+<!-- END INCLUDE FILE: i-include.html -->
 
-<!-- END INCLUDE FILE: custserv-menu.html -->
 	</div>
 		
 	<div id="content">
@@ -357,16 +481,37 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
       <div class="top"></div>
       <div class="middle">
         <h2>Privacy Policy</h2>
-        <p>Effective: October 15, 2011</p>
-        
-        <div class="TOC"></div>
-        
-        <p>Harry &amp; David and all of our brands recognize that your privacy is important to you and
-        are committed to maintaining and using your information responsibly. Our privacy policy describes
-        the information we collect and how we use it. </p>
-  
-        <a id="contact"></a>
+        <p>Effective: July 18, 2012</p>
+        <ul class="contents">
+          <li><a href="view__10455_10002_custserv-security.html#InfoCollect">Information We Collect</a></li>
+          <li><a href="view__10455_10002_custserv-security.html#Using">Using the Information We Collect</a></li>
+          <li><a href="view__10455_10002_custserv-security.html#InfoShare">Information We Share with Others</a></li>
+          <li>
+            <a href="view__10455_10002_custserv-security.html#Your">Your Choices</a>
+            <ul style="list-style:circle;">
+              <li><a href="view__10455_10002_custserv-security.html#Remove">Remove Your Name From Our Lists At Any Time</a></li>
+              <li><a href="view__10455_10002_custserv-security.html#California">Your California Rights</a></li>
+            </ul>
+          </li>
+          <li><a href="view__10455_10002_custserv-security.html#Cookies">Cookies</a></li>
+          <li><a href="view__10455_10002_custserv-security.html#Changing">Changing or Deleting Information</a></li>
+          <li><a href="view__10455_10002_custserv-security.html#Sweepstakes">Sweepstakes</a></li>
+          <li><a href="view__10455_10002_custserv-security.html#Child">Child Privacy</a></li>
+          <li><a href="view__10455_10002_custserv-security.html#Security">Security</a></li>
+          <li><a href="view__10455_10002_custserv-security.html#Links">Links to Other Sites</a></li>
+          <li><a href="view__10455_10002_custserv-security.html#Notification">Notification of Changes</a></li>
+          <li><a href="view__10455_10002_custserv-security.html#Website">Website Terms of Use</a></li>
+          <li><a href="view__10455_10002_custserv-security.html#Questions">Questions or Comments?</a></li>
+        </ul>
+      
+        <p>
+          Harry &amp; David and all of our brands recognize that your privacy is important to you and are committed
+          to maintaining and using your information responsibly. Our privacy policy describes the information we
+          collect and how we use it.
+        </p>
+      
         <p>For privacy-related issues, please contact us at:</p>
+        <a id="contact"></a>
         <p>
           <b>Harry &amp; David</b>:
           <dl>
@@ -456,58 +601,60 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
             </div>
           </dl>
         </p>
-  
-        <p>Our toll-free customer service lines are available 5am to 10pm, 7 days a week (subject to change).</p>
-  
+      
         <p>
-          By providing personal information through this Website you explicitly agree to our collection and use of all such
-          information as described in this privacy policy. You agree that we may use the personal information you provide to
-          respond to your inquiries, process orders, contact you regarding customer service, let you know about products or
-          services which may be of interest to you or to personalize our service to meet your needs or preferences. This may
-          involve sharing certain information with affiliated companies or third parties. You also agree that we may share
-          your personal information with our affiliated companies and third parties as described in this Privacy Policy. You
-          further agree that the information you provide is current, accurate and complete and that you will update it if
-          there are any changes.
+          Our toll-free customer service lines are available 5 AM - 10 PM PST, Monday thru Saturday and 6 AM - 6 PM PST
+          on Sunday (subject to change).
         </p>
-  
+        <p>
+          By providing personal information through this Website you explicitly agree to our collection and use of all
+          such information as described in this privacy policy. You agree that we may use the personal information you
+          provide to respond to your inquiries, process orders, contact you regarding customer service, let you know
+          about products or services which may be of interest to you or to personalize our service to meet your needs
+          or preferences. This may involve sharing certain information with affiliated companies or third parties. You
+          also agree that we may share your personal information with our affiliated companies and third parties as
+          described in this Privacy Policy. You further agree that the information you provide is current, accurate
+          and complete and that you will update it if there are any changes.
+        </p>
+      
         <a id="InfoCollect"></a>
         <h3>Information We Collect</h3>
         <p>
           We may collect information (including name, address, telephone number, email address, IP address, user name,
-          password, answer to security questions, information about your company or business, name and contact information
-          about gift recipients, and, when necessary, date of birth and credit card and/or other payment/ordering information)
-          when you:
-        </p> 
+          password, answer to security questions, information about your company or business, name and contact
+          information about gift recipients, and, when necessary, date of birth and credit card and/or other
+          payment/ordering information) when you:
+        </p>
         <ul>  
-          <li>Place an order from our catalogs or on our Websites </li>
-          <li>Make a purchase at one of our retail stores </li>
-          <li>Return an item or make an exchange </li>
-          <li>Inquire about our services or products </li>
-          <li>Subscribe to receive communications from us via email or register for an account on our Websites </li>
-          <li>Join the Harry &amp; David Preferred Customer Program </li>
-          <li>Participate in one of our surveys, contests or other marketing events </li>
-          <li>Are referred to us though a marketing promotion or third-party business relationship </li>
+          <li>Place an order from our catalogs or on our Websites</li>
+          <li>Make a purchase at one of our retail stores</li>
+          <li>Return an item or make an exchange</li>
+          <li>Inquire about our services or products</li>
+          <li>Subscribe to receive communications from us via email or register for an account on our Websites</li>
+          <li>Join the Harry &amp; David Preferred Customer Program</li>
+          <li>Participate in one of our surveys, contests or other marketing events</li>
+          <li>Are referred to us though a marketing promotion or third-party business relationship</li>
           <li>Request one of our catalogs </li>
           <li>Are sent our products as a gift </li>
           <li>Enroll in our Affiliate Program </li>
           <li>Submit information for employment consideration </li>
         </ul>
         <p>
-          We also may gather information about how visitors navigate through our Websites by using clickstream data gathered
-          with &ldquo;cookies&rdquo; and/or other online tools such as &ldquo;pixel tags.&rdquo; See <a href="view__10455_10002_custserv-security.html#Cookies">Cookies</a>
-          for further information.
+          We also may gather information about how visitors navigate through our Websites by using clickstream data
+          gathered with &ldquo;cookies&rdquo; and/or other online tools such as &ldquo;pixel tags.&rdquo; See
+          <a href="view__10455_10002_custserv-security.html#Cookies">Cookies</a> for further information.
         </p>
-  
+      
         <a id="Using"></a>
         <h3>Using the Information We Collect</h3>
         <p>
-          The use of your information is subject to the privacy policy and terms of use in effect at the time you use this
-          Website.  We collect information that allows us, among other things, to:
+          The use of your information is subject to the privacy policy and terms of use in effect at the time you
+          use this Website. We collect information that allows us, among other things, to:
         </p>
         <ul>
           <li>
-            Send you catalogs and newsletters and/or communicate promotional offers that may be of interest to you about all
-            of our Harry &amp; David brands or third parties
+            Send you catalogs and newsletters and/or communicate promotional offers that may be of interest to you
+            about all of our Harry &amp; David brands or third parties
           </li>
           <li>Process and fill your orders </li>
           <li>Contact you regarding the processing of your order </li>
@@ -515,192 +662,196 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
           <li>Send a catalog to a gift recipient </li>
         </ul>
         <p>
-          We may use aggregated data that does not identify you personally for any purposes, including without limitation,
-          research, commercial purposes or improving our Websites. We may use your email address to contact you to respond
-          to your inquiries, to provide notices to you or to give you information about our products or services.
+          We may use aggregated data that does not identify you personally for any purposes, including without
+          limitation, research, commercial purposes or improving our Websites. We may use your email address to
+          contact you to respond to your inquiries, to provide notices to you or to give you information about
+          our products or services.
         </p>
-        
+      
         <a id="InfoShare"></a>
         <h3>Information We Share with Others</h3>
         <p>
-          We may partner with another party to provide specific services for us, such as credit card processing, shipping,
-          promotional or other support services. We will provide contact or other information necessary for the third party
-          to provide these services for us. These parties are generally not allowed to use personally identifiable
-          information except for the purpose of providing these services.
+          We may partner with another party to provide specific services for us, such as credit card processing,
+          shipping, promotional or other support services. We will provide contact or other information necessary
+          for the third party to provide these services for us. These parties are generally not allowed to use
+          personally identifiable information except for the purpose of providing these services.
         </p>
-  
         <p>
-          We may share customer information with our affiliated companies.  We may also share and cross-reference our customer
-          information with other companies that provide goods or services that may be of interest to you. If you prefer that
-          we not share this information, please follow the instructions in Your Choices below.
+          We may share customer information with our affiliated companies. We may also share and cross-reference
+          our customer information with other companies that provide goods or services that may be of interest
+          to you. If you prefer that we not share this information, please follow the instructions in Your Choices
+          below.
         </p>
-  
         <p>
-          We may share personally identifiable information with unaffiliated third parties if (1) you request or authorize it,
-          (2) the information is provided to help complete a transaction for you, (3) the information is provided to comply
-          with the law, applicable regulations, court orders or subpoenas, to enforce our Terms of Use or other agreements,
-          or to protect our rights, property or safety, or the rights, property or safety of our users or others, (4) the
-          disclosure is done as part of a purchase, transfer or sale of services or assets (e.g., in the event that we sell
-          assets to another party, customer information may be one of the transferred assets), (5) the information is provided
-          to our agents, outside vendors or service providers to perform functions on our behalf, (6) the third parties provide
-          goods or services that we believe may be of interest to you, or (7) the information is provided to such third parties
-          as otherwise described in this privacy policy.
+          We may share personally identifiable information with unaffiliated third parties if (1) you request or
+          authorize it, (2) the information is provided to help complete a transaction for you, (3) the information
+          is provided to comply with the law, applicable regulations, court orders or subpoenas, to enforce our
+          Terms of Use or other agreements, or to protect our rights, property or safety, or the rights, property
+          or safety of our users or others, (4) the disclosure is done as part of a purchase, transfer or sale of
+          services or assets (e.g., in the event that we sell assets to another party, customer information may be
+          one of the transferred assets), (5) the information is provided to our agents, outside vendors or service
+          providers to perform functions on our behalf, (6) the third parties provide goods or services that we
+          believe may be of interest to you, or (7) the information is provided to such third parties as otherwise
+          described in this privacy policy.
         </p>
-  
+        
         <a id="Your"></a>
         <h3>Your Choices</h3>
-        
+      
         <a id="Remove"></a>
-        <h4>Remove Your Name From Our Lists At Any Time</h4>
+        <p><b>Remove Your Name From Our Lists At Any Time</b></p>
         <p>
-          If you prefer not to receive catalogs or other communications from Harry &amp; David or one of our brands via
-          <abbr title="United States">U.S.</abbr> mail or telephone, please email Customer Service or
-          <a href="view__10455_10002_custserv-security.html#contact">contact us</a> at the address shown above.
+          If you prefer not to receive catalogs or other communications from Harry &amp; David or one of our brands
+          via U.S. mail or telephone, please email Customer Service or contact us at the address shown above.
         </p>
         <p>
-          Because customer communications are often prepared well in advance of deployment (sometimes several months before
-          the communication is made), you may continue to receive some communications after you send us a request not to use
-          your information. We appreciate your patience during this time.
+          Because customer communications are often prepared well in advance of deployment (sometimes several months
+          before the communication is made), you may continue to receive some communications after you send us a
+          request not to use your information. We appreciate your patience during this time.
         </p>
         <p>
-          If you no longer wish to receive email communications from us regarding our Websites, partner offers, special offers
-          or services, products, and/or newsletters, you may choose to stop receiving these emails at any time. Information on
-          how to opt out of receiving marketing email is provided in every email, or you may email Customer Service, or you may
-          write us at the address provided above. Please be sure to include your full name, email address, and specifically what
-          type of information you do not want to receive. If you opt out of receiving marketing email, we will continue to send
-          you emails regarding order confirmation and shipment notification when you place an order with us.
+          If you no longer wish to receive email communications from us regarding our Websites, partner offers,
+          special offers or services, products, and/or newsletters, you may choose to stop receiving these emails
+          at any time. Information on how to opt out of receiving marketing email is provided in every email, or
+          you may email Customer Service, or you may write us at the address provided above. Please be sure to
+          include your full name, email address, and specifically what type of information you do not want to
+          receive. If you opt out of receiving marketing email, we will continue to send you emails regarding order
+          confirmation and shipment notification when you place an order with us.
         </p>
         <p>
-          Please Note: If you are a member of the Harry &amp; David Preferred Customer Program and you opt out of receiving
-          communications via email, this may reduce or eliminate the offers and other promotional benefits you receive as a
-          Preferred Customer.
+          Please Note: If you are a member of the Harry &amp; David Preferred Customer Program and you opt out of
+          receiving communications via email, this may reduce or eliminate the offers and other promotional
+          benefits you receive as a Preferred Customer.
         </p>
-  
+      
         <a id="California"></a>
-        <h4>Your California Rights</h4>
+        <p><b>Your California Rights</b></p>
         <p>
-          Harry &amp; David and our brands may disclose your personal information to third parties for their use in marketing to
-          you unless you tell us not to. In order to opt out of such sharing or for further information, please write to us at
-          Harry &amp; David, <abbr title="Post Office">PO</abbr> Box 712, Medford, OR 97501. Please be sure to include your full
-          name, address, email address and specifically what type of information you do not want to receive. Please allow up to
-          6 to 8 weeks to process your request from the date of receipt.
+          Harry &amp; David and our brands may disclose your personal information to third parties for their use
+          in marketing to you unless you tell us not to. In order to opt out of such sharing or for further
+          information, please write to us at Harry &amp; David, PO Box 712, Medford, OR 97501. Please be sure to
+          include your full name, address, email address and specifically what type of information you do not want
+          to receive. Please allow up to 6 to 8 weeks to process your request from the date of receipt.
         </p>
-  
+      
         <a id="Cookies"></a>
         <h3>Cookies</h3>
         <p>
-          A cookie is a piece of data stored on your hard drive that contains information about your computer. Cookies may be
-          used to enable us to track and target your interests for the purpose of enhancing your experience on our Websites.
-          Some cookies are deleted once you leave our Website (&ldquo;Session cookies&rdquo;) while other cookies remain after
-          your leave our Website (&ldquo;Persistent cookies&rdquo;) so that you are recognized when you return to the Website.
-          We may use persistent cookies to enable us to provide services to you, including, &ldquo;Remember Me,&rdquo; order
-          history, address book, My Giftlist, etc. If you would like to deactivate our ability to analyze your browsing activity,
-          please email Customer Service. If you reject certain cookies, you may still browse our Website; however, you may not
-          be able to purchase or have access to all of our services.
+          A cookie is a piece of data stored on your hard drive that contains information about your computer.
+          Cookies may be used to enable us to track and target your interests for the purpose of enhancing your
+          experience on our Websites. Some cookies are deleted once you leave our Website (&ldquo;Session
+          cookies&rdquo;) while other cookies remain after your leave our Website (&ldquo;Persistent cookies&rdquo;)
+          so that you are recognized when you return to the Website. We may use persistent cookies to enable us to
+          provide services to you, including, &ldquo;Remember Me,&rdquo; order history, address book, My Giftlist,
+          etc. If you would like to deactivate our ability to analyze your browsing activity, please email Customer
+          Service. If you reject certain cookies, you may still browse our Website; however, you may not be able to
+          purchase or have access to all of our services.
         </p>
         <p>
-          We may use third-party service providers to serve ads on our behalf across the Internet and sometimes on this Website.
-          These companies may use information (not including your name, address, email address or telephone number) about your
-          visits to this and other Web sites in order to provide advertisements about goods and services. This information is
-          collected through the use of pixel tags or cookies. If you would like more information about this practice and to know
-          your choices about not having this information used by these companies, you can visit
-          <a href="http://www.networkadvertising.org/">http://www.networkadvertising.org/</a>. 
+          We may use third-party service providers to serve ads on our behalf across the Internet and sometimes on
+          this Website. These companies may use information (not including your name, address, email address or
+          telephone number) about your visits to this and other Web sites in order to provide advertisements about
+          goods and services. This information is collected through the use of pixel tags or cookies. If you would
+          like more information about this practice and to know your choices about not having this information used
+          by these companies, you can visit
+          <a href="http://www.networkadvertising.org/">http://www.networkadvertising.org/</a>.
         </p>
-  
+      
         <a id="Changing"></a>
         <h3>Changing or Deleting Information</h3>
         <p>
-          To update your customer information, please either email Customer Service, <a href="view__10455_10002_custserv-security.html#contact">contact us</a> at the
-          address above, or, if you have registered for an Account on our Website, you may also update your customer information
-          by accessing the Account Services section located on the My Account tab at the top of our Web page. You can direct us
-          to remove your name from our lists by following the instructions in Your Choices above.
+          To update your customer information, please either email Customer Service, <a href="view__10455_10002_custserv-security.html#contact">contact us</a>
+          at the address above, or, if you have registered for an Account on our Website, you may also update your
+          customer information by accessing the Account Services section located on the My Account tab at the top of
+          our Web page. You can direct us to remove your name from our lists by following the instructions in Your
+          Choices above.
         </p>
         <p>
-          For your security you will be asked to provide certain information to identify yourself before we will accept changes
-          to your information. To help us more effectively respond to any request by you with regard to use of your customer
-          information, we ask that you <a href="view__10455_10002_custserv-security.html#contact">contact us</a> personally (e.g. via your email address as listed in
-          our customer records or via a letter signed by you) rather than utilizing a third party to do so. If we receive a
-          request from a third party regarding, or requesting a change in, use of your customer information, we reserve the
-          right, in our sole discretion, to not grant the request from such third party (unless required to do so by law) and/or
-          to require that you personally confirm the third party request.
+          For your security you will be asked to provide certain information to identify yourself before we will
+          accept changes to your information. To help us more effectively respond to any request by you with regard
+          to use of your customer information, we ask that you <a href="view__10455_10002_custserv-security.html#contact">contact us</a> personally (e.g.
+          via your email address as listed in our customer records or via a letter signed by you) rather than
+          utilizing a third party to do so. If we receive a request from a third party regarding, or requesting a
+          change in, use of your customer information, we reserve the right, in our sole discretion, to not grant
+          the request from such third party (unless required to do so by law) and/or to require that you personally
+          confirm the third party request.
         </p>
-  
+        
         <a id="Sweepstakes"></a>
         <h3>Sweepstakes</h3>
         <p>
-          From time to time we may offer promotions, contests or sweepstakes on our Website. If you choose to participate we may
-          collect information including your name, address, age, telephone number, email address or other contact information.
-          We may also request other information some of which may be optional. Participation is subject to the Official Rules
-          governing that promotion. The information may be used to conduct the promotion and for other business purposes which
-          may include marketing and may be shared with our affiliates, vendors, or third parties in accordance with this privacy
-          policy and the Official Rules.
+          From time to time we may offer promotions, contests or sweepstakes on our Website. If you choose to
+          participate we may collect information including your name, address, age, telephone number, email address
+          or other contact information. We may also request other information some of which may be optional.
+          Participation is subject to the Official Rules governing that promotion. The information may be used to
+          conduct the promotion and for other business purposes which may include marketing and may be shared with
+          our affiliates, vendors, or third parties in accordance with this privacy policy and the Official Rules.
         </p>
-  
+      
         <a id="Child"></a>
         <h3>Child Privacy</h3>
         <p>
-          Our Websites are not designed to appeal to minors, and you are required to be 18 years of age in order to use this
-          Website or provide information to us. Therefore we do not knowingly attempt to solicit or receive any information
-          from children under 18.
+          Our Websites are not designed to appeal to minors, and you are required to be 18 years of age in order
+          to use this Website or provide information to us. Therefore we do not knowingly attempt to solicit or
+          receive any information from children under 18.
         </p>
-  
+        
         <a id="Security"></a>
         <h3>Security</h3>
         <p>
-          We use encryption technologies when transferring and receiving data from you through our Websites. We also have
-          appropriate security measures in place in our physical facilities to protect against the loss, misuse or alteration
-          of information that we have collected from you. Because data transmission over the internet is never 100% secure we
-          cannot guarantee the security of any information you transmit to us or from our Websites and therefore you use our
-          Websites at your own risk.
+          We use encryption technologies when transferring and receiving data from you through our Websites. We
+          also have appropriate security measures in place in our physical facilities to protect against the loss,
+          misuse or alteration of information that we have collected from you. Because data transmission over the
+          internet is never 100% secure we cannot guarantee the security of any information you transmit to us or
+          from our Websites and therefore you use our Websites at your own risk.
         </p>
         <p>
-          You play a significant role in protecting your information. After you register on our Website you are responsible
-          for protecting the security of your user name and password. You are responsible for any transaction made using your
-          user name and password.
+          You play a significant role in protecting your information. After you register on our Website you are
+          responsible for protecting the security of your user name and password. You are responsible for any
+          transaction made using your user name and password.
         </p>
         <p>
           If you need to communicate with us regarding your credit card or other payment information please
-          <a href="view__10455_10002_custserv-security.html#contact">contact us</a> by mail at the address above.
+          contact us by mail at the address above.
         </p>
         <p>
-          We are not responsible for maintaining the confidentiality of any non-public information that you provide us or post
-          on the Website. If there is information that you wish to protect from disclosure to others, please do not provide it
-          to us.
+          We are not responsible for maintaining the confidentiality of any non-public information that you
+          provide us or post on the Website. If there is information that you wish to protect from disclosure
+          to others, please do not provide it to us.
         </p>
-  
+      
         <a id="Links"></a>
         <h3>Links to Other Sites</h3>
         <p>
-          Our Website may contain links to other sites over which we have no control. Privacy policies on such linked sites may
-          be different from our privacy policy. We encourage you to review the privacy policy at any site you visit.
+          Our Website may contain links to other sites over which we have no control. Privacy policies on such
+          linked sites may be different from our privacy policy. We encourage you to review the privacy policy
+          at any site you visit.
         </p>
-  
+      
         <a id="Notification"></a>
         <h3>Notification of Changes</h3>
         <p>
-          The use of your information is subject to the privacy policy in effect at the time of use. We may amend this privacy
-          policy from time to time. We post the current effective date of this policy at the top of the policy.  Changes to the
-          policy will be posted in the revised privacy policy with a new effective date on our Websites. We encourage you to
-          review our privacy policy periodically, because by visiting our Website you agree to accept any such changes.
+          The use of your information is subject to the privacy policy in effect at the time of use. We may amend
+          this privacy policy from time to time. We post the current effective date of this policy at the top of
+          the policy. Changes to the policy will be posted in the revised privacy policy with a new effective date
+          on our Websites. We encourage you to review our privacy policy periodically, because by visiting our
+          Website you agree to accept any such changes.
         </p>
-  
+      
         <a id="Website"></a>
         <h3>Website Terms of Use</h3>
         <p>
-          This privacy policy is part of our Terms of Use. Any dispute over privacy is subject to this Privacy Policy and our
-          Terms of Use.
+          This privacy policy is part of our Terms of Use. Any dispute over privacy is subject to this Privacy
+          Policy and our Terms of Use.
         </p>
-  
+      
         <a id="Questions"></a>
         <h3>Questions or Comments?</h3>
         <p>
-          This Website is owned by Harry &amp; David. For questions, comments, or assistance, we invite you to write us at the
-          address provided above or <a href="view__10455_10002_custserv-security.html#contact">contact us</a>.
+          This Website is owned by Harry &amp; David. For questions, comments, or assistance, we invite you to
+          write us at the address provided above or <a href="view__10455_10002_custserv-security.html#contact">contact us</a>.
         </p>
-        
-        <p>&copy;2011, Harry and David.  All rights reserved.</p>
-  
-        <a href="http://www.harryanddavid.com/gifts/store/home__10455_10002_" class="btn">Click here to go shopping</a>
+        <p>&copy;2012, Harry and David, LLC. All rights reserved.</p>
       </div>
       <div class="bottom"></div>
     </div>
@@ -719,9 +870,9 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 	
 		<div class="banners cleafix">
 			<!-- No espot named espotFooterBanner1 found. -->
-					<div class="spacer"><img src="../../content/Hand/images/spacer.gif" /></div>
+					<div class="spacer"><img src="../../content/common/images/spacer.gif" /></div>
 				<!-- No espot named espotFooterBanner2 found. -->
-					<div class="spacer"><img src="../../content/Hand/images/spacer.gif" /></div>
+					<div class="spacer"><img src="../../content/common/images/spacer.gif" /></div>
 				<!-- No espot named espotFooterBanner3 found. -->
 			<div class="clear"></div>
 			<div class="banner">
@@ -779,12 +930,11 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
       </ul>
     </li>
     <li>
-      <h4><a href="http://www.harryanddavid.com/gifts/store/view____s-events.html">In Our Stores</a></h4>
+      <h4><a href="http://www.harryanddavid.com/gifts/store/view____s-event-calendar.html">In Our Stores</a></h4>
       <ul>
         <li><a href="http://www.harryanddavid.com/gifts/store/view____storefront.html">Store Locator</a></li>
         
-        <li><a href="http://www.harryanddavid.com/gifts/store/view____s-events.html">Features of the Month</a></li>
-        <li class="more"><a href="http://www.harryanddavid.com/gifts/store/view____s-events.html">&gt; more</a></li>
+        <li class="more"><a href="http://www.harryanddavid.com/gifts/store/view____storefront.html">&gt; more</a></li>
       </ul>
     </li>
     <li>
@@ -801,7 +951,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
         <li><a href="http://www.harryanddavid.com/gifts/store/view____s-recipe.html">Recipes</a></li>
         <li><a href="http://www.harryanddavid.com/gifts/store/view____harvest-report.html">Harvest Report &amp; Club<br/>Arrival Updates</a></li>
 		<li><a href="http://www.harryanddavid.com/gifts/store/view____about01.html">About Us</a></li>         
-        <li><a href="http://www.hndcorp.com/">Investor Information</a></li> 
+        <li><a href="http://www.harryanddavid.com/gifts/store/view____a-investor-relations.html">Investor Information</a></li> 
 	    <li><a href="http://www.harryanddavid.com/gifts/store/site-map___">Site Map</a></li>
 	   	<li class="more"><a href="http://www.harryanddavid.com/gifts/store/view____information.html">&gt; more</a></li>
       </ul>
@@ -836,7 +986,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 </div>
 
 <div class="left copyright">
-  &copy; 2012, Harry and David. All Rights Reserved.
+  &copy; 2012, Harry and David, LLC. All Rights Reserved.
   <a href="http://www.harryanddavid.com/gifts/store/view__10455_10002_custserv-termsofuse.html" class="norm">Terms of Use</a> | 
   <a href="view__10455_10002_custserv-security.html" class="norm">Privacy Policy</a>
   <div class="mobile" style="margin-bottom: 20px"><a class="btn btn-big" href="http://www.harryanddavid.com/gifts/store/home__10455_10002?devicePref=MOBILE&amp;cm_sp=Footer-_-MobileSiteLink-_-GoToMobileSite">Go To Mobile Site</a></div>
@@ -1024,21 +1174,6 @@ catch(e)
 {
 	console.error("Failed to fire 'Footer Site-Wide' MediaMath tag: " + e);
 }
-</script>
-
-<script type="text/javascript">
-dojo.addOnLoad(function() {    
-    var footerLinks = dojo.query("a", dojo.byId("footer"));
-    
-    dojo.forEach(footerLinks, function(node,idx) {
-        if(node.href.indexOf("allreviews.htm") != -1)
-        {
-            nodeParent = dojo.query(node)[0].parentElement;
-            
-            dojo.style(nodeParent, {"display":"none"});
-        }
-    }); 
-});
 </script>
 
 <!-- Google Code for People who visited site Remarketing List -->

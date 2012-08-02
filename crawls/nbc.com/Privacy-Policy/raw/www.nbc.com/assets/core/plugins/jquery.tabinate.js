@@ -32,8 +32,8 @@
 						$tabNode.html($tabUL);
 
 						$obj.find(".tabbed").each(function(){
-							var cssClass = $(this).attr("className").replace(/tabbed| |active/g,''); 
-							var $btnSpan = $(document.createElement('span')).text($(this).attr("title"));
+							var cssClass = $(this).prop("className").replace(/tabbed| |active/g,''); 
+							var $btnSpan = $(document.createElement('span')).text($(this).prop("title"));
 							var $btn = $(document.createElement('a')).html($btnSpan);
 							var $li = $(document.createElement('li')).html($btn).addClass(cssClass);
 							
@@ -43,7 +43,7 @@
 							$btn.click(function(e){
 								$chosenTab = $(this).parent(); 
 								if(!$chosenTab.is(".active")) {
-									var activeClass = $chosenTab.attr("className").replace(/tabbed| /g,''); 
+									var activeClass = $chosenTab.prop("className").replace(/tabbed| /g,''); 
 									$obj.find(".active").removeClass("active");
 									$tabNode.find(".active").removeClass("active");
 									

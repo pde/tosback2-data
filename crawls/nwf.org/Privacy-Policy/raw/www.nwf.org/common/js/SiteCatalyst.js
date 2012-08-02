@@ -55,13 +55,42 @@ function s_doPlugins(s) {
     var file = path.split("/").pop();
     var re;
 
-    // Convio-sepecific logic
-    if (s.server == "online") {
+    // 7-11-2011 DFR: tracking for Convio Action Alert forms
+    if (window.location.href.match("online.nwf.org/site/Advocacy")) {
+        if (window.location.href.match("OnScreenThanks")) {
+            s.events = s.apl(s.events, "event6", ",", 1);   // Form Completed
+            s.events = s.apl(s.events, "event21", ",", 1);   // Alert Response
+            s.eVar38 = s.getQueryParam("id");
+        }
+        else if (window.location.href.match("ActionAlertTakenPage")) {
+            s.events = s.apl(s.events, "event6", ",", 1);   // Form Completed
+            s.events = s.apl(s.events, "event21", ",", 1);   // Alert Response
+            s.eVar38 = s.getQueryParam("id");
+        }
+        else {
+            s.events = s.apl(s.events, "event5", ",", 1);   // Form Started
+            s.eVar38 = s.getQueryParam("id");        
+        }
+    }
 
+    // 7-11-2011 DFR: tracking for Convio eCards
+    if (window.location.href.match("online.nwf.org/site/Ecard")) {
+        if (window.location.href.match("thank_you")) {
+            s.events = s.apl(s.events, "event6", ",", 1);   // Form Completed
+            s.events = s.apl(s.events, "event28", ",", 1);   // eCard Sent
+            s.eVar28 = s.getQueryParam("ecard_id");
+        }
+        else {
+            s.events = s.apl(s.events, "event5", ",", 1);   // Form Started
+            s.eVar28 = s.getQueryParam("ecard_id");
+        }
+    }
+
+    // Convio-specific logic
+    if (s.server == "online") {
         var transactionId = (window.transactionId !== undefined) ? parseInt(window.transactionId) : 0;
         var donationAmount = (window.donationAmount !== undefined) ? parseFloat(window.donationAmount.replace(/[($)]/g, "")) : 0;
         var formId = (window.formId !== undefined) ? window.formId : s.getQueryParam("df_id");
-
 
         // Convio Donation Tracking
         if (transactionId > 0 &&
@@ -222,6 +251,10 @@ function s_doPlugins(s) {
 		/* Set de-duped onsite search event */
 	    var t_search = s.getValOnce(s.eVar1, 'ev1', 0);
 	    if (t_search) s.events = s.apl(s.events, 'event1', ',', 1);
+	}
+	/* DFR 6/7/2012: Get CDS response_key */
+	if (!s.eVar2) {
+	    s.eVar2 = s.getQueryParam('response_key');
 	}
 	/* DFR 9/18/2008: copy the Search Type prop to eVar */
 	if (s.prop3) {

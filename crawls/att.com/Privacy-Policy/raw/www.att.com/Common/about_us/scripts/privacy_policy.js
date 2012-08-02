@@ -416,7 +416,7 @@ document.write('#definitions">Personal Information</a> only as long as needed fo
 			+ '                               		<p>The FTC maintains a National Do Not Call Registry at  <a href="https://www.donotcall.gov/">https://www.donotcall.gov/</a>, and your state may maintain its own Do Not Call Registry. Putting your number on these Registries also may limit our telemarketing calls to that number.</p>'
 			+ '                               		<p><a href="'); if ( pid == '13692' ) { document.write('/gen/privacy-policy?pid=2566'); } else { document.write('#cpni2'); } document.write('" title="CPNI">View information</a> about your ability to restrict our use of your CPNI for certain marketing purposes.</p>'
 			+ '                               		<p>Our practices as described above  are designed to satisfy state and federal legal requirements limiting marketing contacts. You should know that those laws and regulations &mdash; such as the requirements governing the state and federal "Do Not Call" lists &mdash; generally permit companies to contact their own current and, in some cases, former customers, even when those customers are listed on the federal and state "Do Not Call" lists. Similarly, restricting our use of your CPNI will not eliminate all types of AT&amp;T marketing contacts.</p>'
-			+ '                               		<p>To limit postal mail solicitations, contact us at <a href="' + contactURL + '" title="CPNI">one of the numbers listed here</a>. With this limitation you will continue to receive billing statements, legal notices, product updates and other similar correspondence, and you may still receive some promotional mailings.</p></li>'
+			+ '                               		<p>To limit postal mail solicitations, contact us at <a href="/gen/privacy-policy?pid=22975" title="CPNI">the number listed here</a>. With this limitation you will continue to receive billing statements, legal notices, product updates and other similar correspondence, and you may still receive some promotional mailings.</p></li>'
 			+ '                               		<li><p class="number">What can I do to limit junk e-mails and unwanted text messages?</p>'
 			+ '                               		<p>AT&amp;T works hard to detect and prevent junk e-mails (also referred to as "spam" e-mails) from ever reaching your computer. However, if you are receiving unwanted spam at an AT&amp;T e-mail address, please contact us for assistance at the appropriate link below:</p>'
 			+ '                                <ul class="bullet">'
@@ -469,9 +469,7 @@ document.write('#definitions">Personal Information</a> only as long as needed fo
 			+ '<p>For assistance in other languages, please visit <a href="http://world.att.com" target="_blank" title="AT&T World">world.att.com</a>.</p>'
 			+ '<p>Legacy AT&T Consumer - 1-800-222-0300</p>'
 
-			+ '<p>Restricting our use of your CPNI for marketing purposes will not affect the provision of any AT&amp;T products or services to which you subscribe, nor will it eliminate all types of AT&amp;T marketing contacts.</p>');      
-	 
-	 
+			+ '<p>Restricting our use of your CPNI for marketing purposes will not affect the provision of any AT&amp;T products or services to which you subscribe, nor will it eliminate all types of AT&amp;T marketing contacts.</p>');      	 
 	 
 if ( pid == 'printversion' ) {
 document.write('<h3 class="accent1" style="margin-top:30px;" id="att-contact">Customer Service Contact Numbers</h3>'
@@ -487,13 +485,27 @@ document.write('<h3 class="accent1" style="margin-top:30px;" id="att-contact">Cu
 			 + '<p><strong>Ether</strong> &#8212; Please contact Ether using the <a href="http://www.ether.com/Help/Support.aspx" title="Customer Support request" target="_blank">Customer Support request</a>.</p>'
 			 + '<p><strong>Keen</strong> &#8212; Please contact Keen using the <a href="http://www.keen.com/Help/Support.aspx" title="Customer Support form" target="_blank">Customer Support form</a>.</p>'
 			 + '<p><strong>AT&amp;T Internet Services</strong> &#8212; Customers can manage newsletter subscriptions or other e-mail communications from Yahoo! by modifying their <a href="http://login.yahoo.com/config/login?.done=http%3a//subscribe.yahoo.com/showaccount%3f.done=http%3a//edit.yahoo.com/config/eval_profile%3f.src=csphub%26.scrumb=Vv/Y0QWBDM/%26.partner=sbc%26.done=http%3a//edit.client.yahoo.com/sbc/hub&amp;.partner=sbc&amp;.intl=us" title="AT&amp;T Yahoo! Marketing Preferences" target="_blank">AT&amp;T Yahoo! Marketing Preferences</a>.</p>');
+} 
+
 }
-	 
-	 
-	 
-	 
- }
- 
+
+function renderDNM() {
+document.write('<p>AT&amp;T will maintain a company-specific (Internal) DNM list of existing and prospective residential customers who request not to receive any AT&amp;T marketing materials via US Postal Mail.'
+			+ '<ul class="bullet">'
+			+ '<li style="margin-bottom:18px;">Consumers must contact the AT&amp;T residential care center at 1-800-288-2020 and specify each individual member of the household and each associated address to be added to the DNM list.</li>'
+			+ '<li style="margin-bottom:18px;">Generally AT&amp;T processes DNM requests within 30 days. However, because our mailings are processed well in advance, you may continue to receive additional offers for some time after the request date.'
+			+ '<ul style="margin-top:6px;margin-bottom:6px;">'
+			+ '<li>Please note that AT&amp;T may direct mail market to certain neighborhoods or zip codes. These offerings are delivered to all homes in a neighborhood or zip code. You may continue to receive this type of mailing even if you opt-out of receiving marketing related postal mailings from AT&amp;T.</li>'
+			+ '</ul>'
+			+ '</li>'
+			+ '<li style="margin-bottom:18px;">DNM requests for an individual consumer at a residential address will remain in effect for THREE years from the date of request.</li>'
+			+ '<li style="margin-bottom:18px;">AT&amp;T does not accept DNM requests from third party providers.</li>'
+			+ '<li>AT&amp;T DNM requests will expire upon change of address.</li>'
+			+ '</ul>'
+			+ '<p>AT&amp;T will not share or disclose DNM information with any third party other than AT&amp;T vendors responsible for direct mail marketing on AT&amp;T&rsquo;s behalf.</p>'
+			+ '<p>Notifications and other non-solicitation mail pieces are exempt from this Consumer Marketing Residential DNM Policy.</p>'
+			+ '<p>AT&amp;T reserves the right to discontinue this Consumer Marketing Residential DNM policy, and may cease accepting DNM requests or otherwise modify this Consumer Marketing Residential DNM policy.</p>');
+	 } 
  
  function renderPrivacyRightCol() {
 
@@ -504,11 +516,14 @@ if (pid == '2506') {
 			+ '<a class="return" href="http://espanol.att.com/privacy_policy/index.html">En Espa&ntilde;ol</a>'
 			+ '</div>'
 			+ '<div  class="mod_f">'
-			+ '<p><strong>Welcome.</strong> This updated AT&amp;T Privacy Policy, effective March 1, 2011, includes changes first posted for your feedback in November of 2010, as well as some additional changes made during the feedback period. We listened to those of you who took time to send us your thoughts and questions about our policy – and if you are one of those who did, thank you. We invite you to learn more about our commitments, safeguards and customer choices by reviewing our AT&amp;T Policy.</p>'
+			+ '<p><strong>Welcome.</strong> The AT&amp;T Privacy Policy lays out our commitments to privacy and describes our policies for helping to protect personal information. We invite you to learn more about our commitments, safeguards and customer choices by reviewing our AT&amp;T Policy, and we welcome your feedback.</p>'
 //			+ '<p><a href="/Common/about_us/privacy_policy/print_policy_aug2009.html" target="_blank" title="View the current AT&amp;T privacy policy">View the current AT&amp;T privacy policy</a></p>'
 //			+ '<h3 class="accent1">Welcome to the AT&amp;T Privacy Policy,</h3><p>effective date <strong>11/18/2010</strong>. We invite you to learn more about our commitments, safeguards and customer choices.</p> '
 	//		+ '<p><strong>Welcome to the AT&amp;T Privacy Policy. We will provide a preview of the updated privacy policy – before it goes into effect. Please check back soon for updates. The policy on these pages has an effective date of 11/18/2010. </strong></p>'
 			+ '</div>'
+			+ '<div  class="mod_f">'
+			+ '<p><strong>Lost or stolen phone?</strong><br> For help on what to do, visit <a href="http://www.att.com/stolenphone" title="Lost or stolen phone?" target=_blank>att.com/stolenphone.</a></p>'
+			+ '</div>'			
 			+ '<div  class="mod_f">'
 			+ '<p><strong>Please Be Aware</strong> AT&amp;T will never contact you by e-mail to ask for your personal information. If you receive such an e-mail, do not reply. Learn more about how to <a href="http://www.att.net/s/editorial.dll?bfromind=19023&eeid=7626712&_sitecat=2009&dcatid=0&eetype=article&render=y&ac=0&ck=&ch=smartcontrol&cat=smct&topic=is" title="protect yourself from phishing attacks" target=_blank>protect yourself from phishing attacks</a>.</p>'
 			+ '</div>'
@@ -520,7 +535,9 @@ if (pid == '2506') {
 			+ '<p>We will post privacy policy updates, items of interest and notice of any changes here, so check back often. Contact us for <a href="/gen/privacy-policy?pid=13692#contact" title="questions about our Privacy Policy">questions about our Privacy Policy</a>, and for <a href="http://localization.att.com/loc/controller?cdvn=landinglocalization&pid=1080&cookieResetted=true&ltype=contactus" title="questions about AT&amp;T products and services">questions about AT&amp;T products and services</a>.</p>'
 			+ '<div class="scroll-box">'
 			+ '<div class="inner-scroll">'
-			+ '<p style="color: red;">Updated 08/05/2011</p>'
+			+ '<p style="color: red;">Updated 06/21/2012</p>'
+			+'<p><strong>Q.</strong>  What is your policy on limiting AT&amp;T marketing materials sent by U.S. mail?<br />'
+			+'<p><strong>A.</strong>  Customers can unsubscribe from marketing materials sent by U.S. mail <a href="/gen/privacy-policy?pid=22975" title="Residential Do Not Mail (DNM) Statement">here.</a></p> '			
 			+'<p><strong>Q.</strong>  What changes are you making to your password policy for voicemail?<br />'
 			+'<p><strong>A.</strong>  Today, customers have the option and are strongly encouraged to password-protect access to their wireless voicemail. Beginning August 5, voicemail accounts for new customers, those who change phone numbers, upgrade to Visual Voice Mail, or create a new voicemail box will default to a password required setting to check voicemail from their wireless or any other device.</p> '
 			+'<p>Although AT&T strongly recommends using a password, customers want a choice. Customers may opt out of using a password, but only after the initial password is established and they affirmatively turn off the password feature from the main menu. </p>'

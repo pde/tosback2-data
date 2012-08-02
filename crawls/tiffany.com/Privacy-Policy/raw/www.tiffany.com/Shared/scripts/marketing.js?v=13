@@ -75,13 +75,9 @@ function openMarketingPopUpFollowup(popUpName, popupArguments)
 			break;
 		case "linkjewelrycare":
 			switch (locale) {
-				case "ja-JP":
-					createPopUp(780, 477, true, this, 105, '/Service/Care/AboutGeneralCare.aspx');
-					break;
-				case "zh-CN":
-					createPopUp(780, 477, true, this, 105, '/Service/Care/AboutGeneralCare.aspx');
-					break;
-	            
+	            case "ja-JP-Trade":
+	                createPopUp(780, 477, true, this, 105, '/Service/Care/AboutGeneralCare.aspx');
+	                break;
 				default:
 					createPopUp(780, 477, true, this, 105, '/Service/Care/AboutDefault.aspx');
 					break;
@@ -896,7 +892,7 @@ function openMarketingPopUpFollowup(popUpName, popupArguments)
             if (popupArguments[1]) {
                 omnicode = "?hppromo=" + popupArguments[1];
             }
-            createBlueOverlay(860, 550, true, this, 58, '/Seasonal/Videos/TheTiffanyStory/Default.aspx' + omnicode, '', false)
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/TheTiffanyStory/Default.aspx' + omnicode, '', false)
             foundPopUp = true;
             break;
 	    case "linkholiday2010video":
@@ -970,6 +966,14 @@ function openMarketingPopUpFollowup(popUpName, popupArguments)
                 omnicode = "?hppromo=" + popupArguments[1];
             }
             createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/CSR/Default.aspx' + omnicode, '', false)
+            foundPopUp = true;
+            break;
+        case "linkdiamondvideo":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/TiffanyDiamond/Default.aspx', '', false);
             foundPopUp = true;
             break;
 	case "linkjpbridalfair":
@@ -1250,6 +1254,7 @@ function linkWMLTConfirm(omnid) { openMarketingPopUp("linkWMLTConfirm", omnid); 
 function linkEngravingFairJP(omnid) { openMarketingPopUp("linkEngravingFairJP", omnid); }
 function linkStoreReOpeningAU(omnid) { openMarketingPopUp("linkStoreReOpeningAU", omnid); }
 function linkCSRVideo(omnid) { openMarketingPopUp("linkCSRVideo", omnid); }
+function linkDiamondVideo(omnid) { openMarketingPopUp("linkDiamondVideo", omnid); }
 
 //Resolved bug 724
 function linkitradeemailthispage(linkSrc) { openMarketingPopUp("linkitradeemailthispage", linkSrc); }
@@ -1319,19 +1324,18 @@ function createEmailPopUp (href,layerType,pwidth,pheight,ptop,pleft,pbgcolor,pbr
     
 }
 
-function closeEmailPopUp()
-{
-		if (typeof(divEmailPopupHolder) != "undefined")
-	{
-		divEmailPopupHolder.innerHTML = "";
-		document.body.removeChild(divEmailPopupHolder);
-		divEmailMaskHolder.innerHTML = "";
-		document.body.removeChild(divEmailMaskHolder);
+
+function closeEmailPopUp() {
+    if (typeof (divEmailPopupHolder) != "undefined") {
+        if (document.getElementById(divEmailPopupHolder.id) != null) {
+            divEmailPopupHolder.innerHTML = "";
+            document.body.removeChild(divEmailPopupHolder);
+            divEmailMaskHolder.innerHTML = "";
+            document.body.removeChild(divEmailMaskHolder);
+        }
 	}
-	
 		
 }
-
 function initScrollLayer() {
 
 	checkOverlaySize();

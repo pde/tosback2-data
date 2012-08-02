@@ -34,8 +34,8 @@ function showStatus(profile, context){
         queryString = profile.queryString;
         requestURL = profile.requestURL;
         var liveHelpURL = 'onclick="' + "window.open('https://service.liveperson.net/hc/88287119/?cmd=file&file=visitorWantsToChat&site=88287119&imageUrl=http://service.liveperson.net/hcp/Gallery/ChatButton-Gallery/English/General/1a&referrer=" + requestURL + queryString + "', 'liveHelp','height=320,width=472')" + ';"';
-		if (status == '1'){
-			welcomeMsg = 'Welcome, '+ firstName +'. <a href="/store/?_DARGS=/store/views/common/header/header.jsp.1_AF&_dynSessConf='+sc+'&/vcs/userprofiling/VCSProfileFormHandler.logoutSuccessURL=' + requestURL + '&/vcs/userprofiling/VCSProfileFormHandler.logout=true&_D%3A/vcs/userprofiling/VCSProfileFormHandler.logout=+&_D%3A/vcs/userprofiling/VCSProfileFormHandler.logoutSuccessURL=+">(Not '+ firstName +'?)</a> <a href="' + profileUrl + '" class="account-link">My Account</a> | <a href="#" ' + liveHelpURL + '>Live Help<span class="livehelpicon"> </span> </a>';
+		if (status == '1'){			
+			welcomeMsg = 'Welcome, '+ firstName +'. <a href="/store/?_DARGS=/store/views/common/header/header.jsp_AF&_dynSessConf='+sc+'&/vcs/userprofiling/VCSProfileFormHandler.logout=true&_D%3A/vcs/userprofiling/VCSProfileFormHandler.logoutSuccessURLCode=+&_D%3A/vcs/userprofiling/VCSProfileFormHandler.logout=+&/vcs/userprofiling/VCSProfileFormHandler.logoutSuccessURLCode=logoutSuccessURL">(Not '+ firstName +'?)</a> <a href="' + profileUrl + '" class="account-link">My Account</a> | <a href="#" ' + liveHelpURL + '>Live Help<span class="livehelpicon"> </span> </a>';
 		} else {
 			welcomeMsg = '<a href="' + loginUrl + '">Sign In</a> / <a href="' + loginUrl + '">Register</a> now | <a href="#" ' + liveHelpURL + '>Live Help<span class="livehelpicon"> </span> </a>';
 		}

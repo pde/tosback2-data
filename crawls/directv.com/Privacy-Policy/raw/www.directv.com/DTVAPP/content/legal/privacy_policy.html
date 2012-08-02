@@ -64,6 +64,12 @@
 
 
 
+
+
+
+
+
+
 	
 	 
 		
@@ -174,6 +180,60 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en" class="en-US" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:dtv="http://www.directv.com/ns#" >
 <head>
+	<script>
+(function (w) {
+	w.tm2BootPosition = 0;
+	w.tm2BootAsync = true;
+	w.tmPageId = 1;
+	w.tmParam = {levrev : '',levordref : '',tm_custom_5 : '',tm_custom_4 : '',tm_custom_1 : '',tm_custom_3 : '',tm_custom_2 : '',tm_pagetype : ''};
+	var conf = { host: 'pfna.levexis.com',
+		account: 'directv',
+		version: '3',
+		async: true,
+		cdn: (location.protocol === 'https:') ? 'sec.levexis.com' : 'res.levexis.com',
+		waitService: 'wt.tagman.com',
+		waitTest: false,
+		bootstrap: true,
+		param: w.tmParam || {} };
+	// do not change values below this line
+	function ap(sr , ol) {
+	     var e = document.createElement('script'); 
+	     e.src = sr;
+	     e.async = true;
+	     if (ol) {
+	    	e.onload = e.onerror = function() { if (!this.loaded) { ol(); this.loaded = true; } };
+		e.onreadystatechange = function() { if (this.readyState === 'complete' || this.readyState === 'loaded') { this.onload(); } };
+	     }
+	     var s = document.getElementsByTagName('script')[0];
+	     s.parentNode.insertBefore( e , s);
+	}	
+	w.TMAN = w.TMAN || {};	
+     	w.TMAN.startTime = +new Date();
+	w.TMAN.asyncLoader = function() {
+	      TMAN.addContainer( new TMAN.Container(conf.account, w.tmPageId, conf) );
+	};
+	var tm = '//' + conf.cdn + '/clientfiles/v' + conf.version + '/' + conf.account + '.js'; 
+	if (conf.waitService && conf.waitTest) ap ( '//' + conf.waitService + '/wait/0/' + Math.random() , function() { TMAN.waitLatency=new Date() - TMAN.startTime; } );
+	if (conf.async) {
+	     w.TMAN.position = {};
+	     w.TMAN.doTags = function(p) { TMAN.currentPosition = p; };
+	     w.TMAN.addParam = function(n,v) {
+		w.tmParam[n]=v;
+	     };
+             w.TMAN.addParams = function(c,p) {
+               for (var n in p) {
+                 w.tmParam[n] = p[n];
+               }
+             };
+	     ap(tm);	
+	} else {
+	     document.write('<script src="http://www.directv.com/DTVAPP/content/legal/'&#32;+&#32;tm&#32;+&#32;'"><\/script>');
+	}
+})(window);</script>
+	<script> 
+	TMAN.doTags(TMAN.position.TOP_HEAD); 
+	</script> 
+
 	<!-- source: layout/contentPageLayout.jsp -->
 	<title>Privacy Policy</title>
 	
@@ -230,7 +290,7 @@
 <meta name="page_alt_lang_url" content="/DTVAPP/content/legal/politica_de_privacidad" />
 <meta property="og:title" content="Privacy Policy" />
 <meta property="og:type" content="company" />
-<meta property="og:url" content="www.directv.com" />
+<meta property="og:url" content="http://www.directv.com/DTVAPP/content/legal/privacy_policy" />
 <meta property="og:site_name" content="DIRECTV" />
 <meta property="fb:app_id" content="176609409056989" />
 <meta name="description" content="DIRECTV is dedicated to protecting consumer privacy. This Policy explains how DIRECTV collects, uses, and discloses information about you when you subscribe to our services and you visit our Web sites. Your use or receipt of DIRECTV® products or services (including our Web sites) constitutes acceptance of this Policy." />
@@ -248,9 +308,9 @@ type="image/x-icon" />
 <link rel="apple-touch-icon"
 href="http://cdn.directv.com/images/common/icons/apple-touch-icon.png"
 type="image/png" />
-<link rel="stylesheet" type="text/css" href="../../../../cdn.directv.com/resources/css/compressed/global.css%3F64789.css" media="all" />
+<link rel="stylesheet" type="text/css" href="../../../../cdn.directv.com/resources/css/compressed/global.css%3F65964.css" media="all" />
 <link rel="stylesheet" type="text/css"
-href="../../../../cdn.directv.com/resources/css/compressed/cart.css%3F64789.css"
+href="../../../../cdn.directv.com/resources/css/compressed/cart.css%3F65964.css"
 media="all" />
 <script type="text/javascript">window.$profile = function(){};$profile.stop = function(){};$profile.loggers = {};</script>
 <script type="text/javascript">
@@ -260,23 +320,31 @@ var logjs = false;
 if(false||dtvServer!=dtvProd){logjs=true}
 </script>
 <script type="text/javascript"
-src="../../../../cdn.directv.com/resources/js/compressed/bundles/tealeaf.js%3F64789"></script>
+src="../../../../cdn.directv.com/resources/js/compressed/bundles/tealeaf.js%3F65964"></script>
 <script type="text/javascript"
-src="../../../../cdn.directv.com/resources/js/compressed/bundles/directv-header.js%3F64789"></script>
+src="../../../../cdn.directv.com/resources/js/compressed/bundles/directv-header.js%3F65964"></script>
 <script type="text/javascript">
 $profile.loggers.mbox = $profile("mbox", "download + execution time", "brown");
 </script>
 <script type="text/javascript"
-src="../../../../cdn.directv.com/resources/js/mbox/mbox.js%3F64789"></script>
+src="../../../../cdn.directv.com/resources/js/mbox/mbox.js%3F65964"></script>
 <script type="text/javascript">
 $profile.stop("mbox");
 $profile.loggers.waitingReady = $profile("head scripts executed, waiting for DOM ready", "The time difference between when the head scripts were executed and when the dom became ready", "olive");
 </script>
 
 
+			
 	
-	<link rel="stylesheet" type="text/css" href="../../../../cdn.directv.com/resources/css/compressed/eportal/eportal.css%3F64789.css" media="all">
 	
+		
+			<link rel="canonical" href="privacy_policy.html">	
+		
+		
+	
+	
+	<link rel="stylesheet" type="text/css" href="../../../../cdn.directv.com/resources/css/compressed/eportal/eportal.css%3F65964.css" media="all">
+
 	
 	
 		<script language="javascript" type="text/javascript" src="../../../../directv.inq.com/chatskins/launch/inqChatLaunch146.js"></script>
@@ -325,13 +393,20 @@ $profile.loggers.waitingReady = $profile("head scripts executed, waiting for DOM
 
 
 
-	
+
 	
 		<link rel="stylesheet" type="text/css" href="../../../../cdn.directv.com/cms2/css/content.css" media="all" />
 		<link rel="stylesheet" type="text/css" href="../../../../cdn.directv.com/cms2/css/customer_support.css" media="all" />
 	
+	<script> 
+	TMAN.doTags(TMAN.position.BOTTOM_HEAD); 
+	</script> 
 </head>
 <body id="content_page_layout" class="non-mobile non-touch gecko firefox  cms-layout-403 ctl-xbbb prospect  en-US light-theme ">	
+<div id="TMAN_TOP_BODY"></div>
+	<script> 
+	TMAN.doTags(TMAN.position.TOP_BODY); 
+	</script>
 	
 
 
@@ -385,7 +460,6 @@ $profile.loggers.waitingReady = $profile("head scripts executed, waiting for DOM
 
 
 	<div class="mboxDefault"></div>
-		
 		
 	<!-- contentPageLayout.jsp -->
 	<div id="dtv_tup">
@@ -450,9 +524,9 @@ $profile.loggers.waitingReady = $profile("head scripts executed, waiting for DOM
 
 
 <!-- DBUG
-SNAME:PXDTPW03C
-PID:ANON:2738892714
-LID:2734476516
+SNAME:DXDTPW10D
+PID:ANON:2847695157
+LID:2870041251
 
 
 isPr:false
@@ -462,12 +536,12 @@ isAuto:false
 
 -->
 <ul id="DBUG" style="display:none;font-size:1px;">
-	<li id="DBUG_SNAME">PXDTPW03C</li>
+	<li id="DBUG_SNAME">DXDTPW10D</li>
 	
-	<li id="DBUG_PID_ANON">2738892714</li>
+	<li id="DBUG_PID_ANON">2847695157</li>
 	
 	
-	<li id="DBUG_LID">2734476516</li>
+	<li id="DBUG_LID">2870041251</li>
 
 
 	<li id="DBUG_isPr">false</li>
@@ -551,8 +625,7 @@ isAuto:false
             
             
             
-        <span><a href="http://www.directv.com/hd" name="&lid=PRHP_txt_200HD">DIRECTV has the most HD channels &mdash; now over 170 of your favorite channels in crystal-clear HD.</a>
-</span>
+        <span><a href="http://www.directv.com/DTVAPP/new_customer/base_packages.jsp?footernavtype=-1" name="&lid=PRHP_txt_OnlineExclusive">Online orders only! Get FREE Shipping & Handling &#151; a $20 value. </a></span>
             
         
     
@@ -717,7 +790,7 @@ isAuto:false
 					
 					<li class="dtv-topnav-title">Get DIRECTV for:
 <script type="text/javascript" src="../../../../cdn.directv.com/cms2/global/js/img_obj.js"></script><!-- @key: global.nav.getDirectv.label --></li>
-					<li ><a href="http://www.directv.com/DTVAPP/content/contentPage.jsp?_DARGS=/DTVAPP/layout/component/topnav.jsp_A&amp;_DAV=2&amp;_dynSessConf=586709903993121295&amp;assetId=P6610034">Building Owners<!-- @key: global.nav.building_owners.label --></a></li>
+					<li ><a href="http://www.directv.com/DTVAPP/content/contentPage.jsp?_DARGS=/DTVAPP/layout/component/topnav.jsp_A&amp;_DAV=2&amp;_dynSessConf=-1009129012289295916&amp;assetId=P6610034">Building Owners<!-- @key: global.nav.building_owners.label --></a></li>
 					<li >
 					<a href="http://www.directv.com/DTVAPP/content/contentPage.jsp?topnavtype=3&amp;assetId=P6500009">
 					Businesses<!-- @key: global.nav.businesses.label --></a></li>
@@ -791,10 +864,9 @@ isAuto:false
 "dotcomSecureHost": "cdns.directv.com",
 "maxDisplayItems": 6,
 "zipCode": "26105",
-"topMatchLabel": "TOP MATCHES:<!-- @key: ep.search.top_match.label -->",
-"emptyTextLookup": {"1": "movies, tv, sports, actors", 
-"2": "directv.com pages", 
-"3": "tech forum, support"},
+"emptyText": "Search Movies, Shows, Products, Support",
+"entertainmentLabel" : "TOP ENTERTAINMENT MATCHES:<!-- @key: global.search.top_match.entertainment.label -->",
+"supportLabel" : "TOP PRODUCT & SUPPORT MATCHES:<!-- @key: global.search.top_match.support.label -->",
 "kindMapping": {"1": "TV SHOWS",
 "2": "MOVIES",
 "3": "PERSON",
@@ -806,22 +878,11 @@ isAuto:false
 <div id="global_type_ahead" class="type-ahead">
 <span class="label">Search:</span>
 <div class="search">
-<input class="bottom empty" value="directv.com pages" id="global_type_ahead_text_btm" />
+<input class="bottom " value="" id="global_type_ahead_text_btm" />
 <input class="top" value="" id="global_type_ahead_text" />
 </div>
-<div class="search-domain-select" id="global_type_ahead_domain_select">
-<div class="active"><span id="global_type_ahead_dropdown_text">Products<!-- @key: global.search.tab.site.label --></span></div>
-<div class="dropdown" id="global_type_ahead_dropdown" style="display:none">
-<ul>
-<label>Search In:<!-- @key: global.search.search_box.type_ahead.label --></label>
-<li id="global_type_ahead_cat_1" ><span id="global_type_ahead_cat_1_lbl">Entertainment<!-- @key: global.search.tab.whats_on.label --></span><var>{"type":1}</var></li>
-<li id="global_type_ahead_cat_2" class="selectedSearchCategory"><span id="global_type_ahead_cat_2_lbl">Products<!-- @key: global.search.tab.site.label --></span><var>{"type":2}</var></li>
-<li id="global_type_ahead_cat_3" ><span id="global_type_ahead_cat_3_lbl">Help<!-- @key: global.search.tab.help.label --></span><var>{"type":3}</var></li>
-</ul>
-</div>
-</div>
 <div id="global_type_ahead_search_btn" class="submit"></div>
-<div class="choices dropdown" style="display:none;"></div>
+<div class="choices dropdown" style="display:none;"></div> 
 </div>
 <div id="dtv_topnav_util_nav" class="dtv-topnav">
 <ul>
@@ -836,7 +897,8 @@ isAuto:false
 <li><a href="http://www.directv.com/entertainment/tv/" target="_self">TV Shows</a></li>
 <li><a href="http://www.directv.com/entertainment/events/" target="_self">Live Events</a></li>
 <li><a href="http://www.directv.com/entertainment/adult/" target="_self">Adult</a></li>
-<li><a href="http://www.directv.com/entertainment/on_demand/" target="_self">On Demand</a></li>
+<li><a href="http://www.directv.com/entertainment/on_demand/" target="_self">On Demand Movies &amp; TV</a></li>
+<li><a href="http://www.directv.com/entertainment/cinema_overnight_delivery" target="_self">CINEMA Overnight Delivery</a></li>
 <li class=" spacer"></li>
 <li><a href="http://www.directv.com/entertainment/guide" target="_self">The Guide</a></li>
 <li class="bottom"></li>
@@ -991,7 +1053,8 @@ isAuto:false
 <span><div>Sports</div></span></a>
 <div id="dtv_subnav_dropdown_sports" class="dtv-subnav">
 <ul>
-<li class="first"><a href="http://www.directv.com/DTVAPP/content/sports/nfl?footernavtype=-1" id="topnav_link_3950068_3950069" target="_self">NFL SUNDAY TICKET</a></li>
+<li class="first"><a href="http://www.directv.com/DTVAPP/content/sports/olympics?footernavtype=-1" id="topnav_link_3950068_5990001" target="_self">2012 London Olympics</a></li>
+<li><a href="http://www.directv.com/DTVAPP/content/sports/nfl?footernavtype=-1" id="topnav_link_3950068_3950069" target="_self">NFL SUNDAY TICKET</a></li>
 <li><a href="http://www.directv.com/DTVAPP/content/sports/mlb?footernavtype=-1" id="topnav_link_3950068_3950073" target="_self">MLB</a></li>
 <li><a href="http://www.directv.com/DTVAPP/content/sports/nba?footernavtype=-1" id="topnav_link_3950068_3950075" target="_self">NBA</a></li>
 <li><a href="http://www.directv.com/DTVAPP/content/sports/nhl?footernavtype=-1" id="topnav_link_3950068_3950076" target="_self">NHL</a></li>
@@ -1114,8 +1177,7 @@ isAuto:false
 		
 		<!-- assetId: P6470131 -->
 		
-		<div id="dtv_body_tup">
-			
+		<div id="dtv_body_tup">		
 			
 			
 			
@@ -1193,7 +1255,7 @@ isAuto:false
 <p>We look forward to sending you the latest news and offers tailored to your specific interests.</p>
 </div>
 <div id="email_signup_form_container">
-<form id="email_signup_form" action="http://www.directv.com/DTVAPP/content/contentPage.jsp?_DARGS=/DTVAPP/content/component/emailSignup.jsp" method="post"><div style="display:none"><input name="_dyncharset" value="UTF-8" type="hidden"/> </div><div style="display:none"><input name="_dynSessConf" value="586709903993121295" type="hidden"/> </div>
+<form id="email_signup_form" action="http://www.directv.com/DTVAPP/content/contentPage.jsp?_DARGS=/DTVAPP/content/component/emailSignup.jsp" method="post"><div style="display:none"><input name="_dyncharset" value="UTF-8" type="hidden"/> </div><div style="display:none"><input name="_dynSessConf" value="-1009129012289295916" type="hidden"/> </div>
 <h4>Get the Inside Scoop</h4>
 <div id="email_interest_message_container">
 <div class="dtv-message-tup js_message_wrapper error-message" style="display:none">
@@ -1279,7 +1341,7 @@ isAuto:false
 
 						
 						
-					</div>			
+					</div>
 					
 						
 					
@@ -1473,12 +1535,14 @@ isAuto:false
 							
 						
 						
+													
 						
-						   
-						   
-						                        
-					</div>					
-                    					
+						
+							
+							
+						
+					</div>
+										
 					<div id="ctl_area_tup" class="ctl-area-tup">
 						<div id="ctl_area_a" class="ctl-area-a ctl-area-a-top ">
 							
@@ -1594,6 +1658,8 @@ isAuto:false
 
 
 
+
+
 <div class="leftnav-title">
 <span>My Account<span>My Account</span></span>
 </div>
@@ -1619,11 +1685,11 @@ isAuto:false
 								
 								
 							
-                            
-    							
-    								
-    								
-    							
+							
+								
+									
+									
+								
 
 
 
@@ -1661,7 +1727,7 @@ isAuto:false
 
 
 
-                            
+							
 							<div class="clear"></div>
 						</div>
 						<div id="ctl_area_b" class="ctl-area-b ">
@@ -1712,10 +1778,10 @@ isAuto:false
 							
 							
 							
-                                
-    								
-    								
-    							
+								
+									
+									
+								
 
 
 
@@ -1752,7 +1818,10 @@ isAuto:false
 
 
 
-<var>cms2HtmlModule</var>
+<!-- 
+//SDP 2025728 
+<var style="display: none;">cms2HtmlModule</var>
+-->
 <div id="mod_106076_2" class="ctm-tup colspan-3 cms2HtmlModule js-cms-module">
 <var title="cmsModuleName">"Legal : Privacy Policy"</var>
 <div class="ctm-html-module ctm-content-module">
@@ -1762,8 +1831,8 @@ isAuto:false
 <div class="inner-skin">
 <div class="body">
 <div class="content">
-<div><span></span><div class="text-header">Privacy Policy</div> <p> <a href="http://www.directv.com/learn/pdf/SUBSCRIBER_PRIVACY_POLICY.pdf" class="print" target="_blank">Printable Privacy Policy (English)</a>&nbsp;&nbsp; &nbsp; <a target="_blank" class="print" href="http://www.directv.com/learn/pdf/DIRECTV_PRIVACY_POLICY_4-24-2011.pdf">View Current Privacy Policy (English)</a> </p>
-<p> <a href="http://www.directv.com/learn/pdf/DIRECTV_PRIVACY_POLICY_FINAL_ES.pdf" class="print" target="_blank">Printable Privacy Policy (Spanish)</a> &nbsp;&nbsp; &nbsp; <a target="_blank" class="print" href="http://www.directv.com/learn/pdf/DIRECTV_POLITICA_DE_PRIVACIDAD_4-24-2011.pdf">View Current Privacy Policy (Spanish)</a> </p>
+<div><span></span><div class="text-header">Privacy Policy</div> <p> <a href="http://www.directv.com/learn/pdf/SUBSCRIBER_PRIVACY_POLICY.pdf" class="print" target="_blank">Printable Privacy Policy (English)</a> </p>
+<p> <a href="http://www.directv.com/learn/pdf/DIRECTV_PRIVACY_POLICY_FINAL_ES.pdf" class="print" target="_blank">Printable Privacy Policy (Spanish)</a> </p>
 <p>Effective as of May 15, 2012, until replaced</p> 
 <p>DIRECTV is dedicated to protecting our subscribers' privacy. This Privacy Policy (this "Policy") explains how DIRECTV collects, uses, and discloses information about our subscribers when they subscribe to, access, or use our products and services, such as through: a set-top box or other satellite service receiving equipment (each, a "DIRECTV Receiver"); any other device (such as a mobile device or game console) authorized to receive our services (each, an "Authorized Device"); or our services directed at subscribers through any software application, mobile application or website authorized to receive our services (each, an "Authorized Application"). Your use of any of these DIRECTV products or services constitutes your acceptance of this Policy.</p>
 <p>This Policy does not apply to the areas of DIRECTV websites that are accessible to the general public, which are governed by the DIRECTV website privacy policy (available at www.directv.com). This Policy also does not apply to information about you that you provide or you authorize us to provide on your behalf to, or that is collected by, other companies that allow you to purchase or use goods or services through a DIRECTV Receiver, an Authorized Device, or an Authorized Application. Please contact or visit the websites of the providers of those goods or services to obtain copies of their privacy policies.</p>
@@ -1837,6 +1906,7 @@ Greenwood Village, CO<br />
 </div>
 </div>
 </div>
+<!-- omr true na Legal : Privacy Policy mt cms2HtmlModule -->
 <script type="text/javascript"> 
 var Reporting = Reporting ? Reporting : new Object();
 Reporting.ModuleIds = Reporting.ModuleIds ? Reporting.ModuleIds : [];
@@ -1844,15 +1914,15 @@ Reporting.ModuleIds[Reporting.ModuleIds.length] = "Legal : Privacy Policy";
 </script>
 
 							
-                            <div class="clear"></div>
+							<div class="clear"></div>
 						</div>
 						<div id="ctl_area_c" class="ctl-area-c">
-                            
 							
-    							
-    								
-    								
-    							
+							
+								
+									
+									
+								
 
 
 
@@ -1890,7 +1960,7 @@ Reporting.ModuleIds[Reporting.ModuleIds.length] = "Legal : Privacy Policy";
 
 
 
-                            
+							
 							<div class="clear"></div>
 						</div>
 						<div class="clear"></div>
@@ -1979,10 +2049,10 @@ Reporting.ModuleIds[Reporting.ModuleIds.length] = "Legal : Privacy Policy";
 <h3>About Us</h3>
 <ul>
 <li><a href="http://www.directv.com/DTVAPP/content/about_us/our_company">Our Company</a></li>
-<li><a href="http://www.directv.com/DTVAPP/content/support/customer_promise">DIRECTV Customer Promise</a></li>
+<li><a href="http://directvpromise.com">DIRECTV Promise</a></li>
 <li><a href="http://www.directv.com/DTVAPP/content/careers">Careers</a></li>
 <li><a href="http://investor.directv.com/">Investor Relations</a></li>
-<li><a href="http://www.directvadsales.com/">Ad Sales</a></li>
+<li><a href="http://www.directvadsales.com/">Advertise on DIRECTV</a></li>
 <li><a href="http://www.directv.com/DTVAPP/content/sitemap">Site Map</a></li>
 </ul>
 </li>
@@ -2005,7 +2075,7 @@ Reporting.ModuleIds[Reporting.ModuleIds.length] = "Legal : Privacy Policy";
 <li><a href="http://www.directv.com/DTVAPP/content/sports/overview">DIRECTV Sports</a></li>
 <li><a href="http://www.directv.com/DTVAPP/content/technology/overview">DIRECTV Technology</a></li>
 <li><a href="http://www.directv.com/DTVAPP/content/social">DIRECTV Social Media</a></li>
-<li><a href="http://www.directv.com/entertainment/">My DIRECTV</a>
+<li><a href="http://www.directv.com/entertainment/">DIRECTV Everywhere</a>
 </ul>
 </li>
 <li>
@@ -2356,7 +2426,7 @@ mboxDefine("mboxLangToggle", "languageSwap");
 
 
 	</div>
-	
+
 	<div id="video_lightbox" style="display:none">
 		
 
@@ -2534,7 +2604,7 @@ mboxDefine("mboxLangToggle", "languageSwap");
 
 
 	</div>
-	
+
 	<div id="photo_lightbox" style="display:none">
 		
 
@@ -2788,6 +2858,22 @@ mboxDefine("mboxLangToggle", "languageSwap");
 	
 	
 	
+	
+	
+	
+		
+	
+		
+			
+				
+		
+	
+	
+	<!-- DEBUG: Closing Offer: false -->
+    
+
+	
+	
 
 
 
@@ -2835,7 +2921,7 @@ mboxDefine("mboxLangToggle", "languageSwap");
 					
 	
 
-	
+
 	
 
 
@@ -2882,7 +2968,7 @@ cdnBaseUrl: "http://cdn.directv.com"
 <script type="text/javascript" src="../../../../directv.vo.llnwd.net/e5/cinema/apps/CMP.js"></script>
 <script type="text/javascript" src="../../../../directv.vo.llnwd.net/e5/cinema/apps/CMPPlugin.js"></script>
 <script type="text/javascript" src="../../../../directv.vo.llnwd.net/e5/cinema/apps/CMPPluginDetection.js"></script>
-<script type="text/javascript" src="../../../../cdn.directv.com/resources/js/compressed/bundles/directv-footer.js%3F64789"></script>
+<script type="text/javascript" src="../../../../cdn.directv.com/resources/js/compressed/bundles/directv-footer.js%3F65964"></script>
 <div id="fb-root"></div>
 <script>
 window.fbAsyncInit = function(){
@@ -2924,17 +3010,17 @@ document.getElementById('fb-root').appendChild(e);
 </script>
 
 
-	
+
 	
 		
 		
-			<script type="text/javascript" src="../../../../cdn.directv.com/resources/js/compressed/bundles/directv-cms.js%3F64789"></script>
+			<script type="text/javascript" src="../../../../cdn.directv.com/resources/js/compressed/bundles/directv-cms.js%3F65964"></script>
 		
 	
+
 	
 	
-	
-	
+
 	
 	
 
@@ -2990,7 +3076,7 @@ document.getElementById('fb-root').appendChild(e);
 
 
 
-<!-- START 1336997715746  -->
+<!-- START 1343939581301  -->
 
 
 	
@@ -3284,7 +3370,7 @@ s.prop51 = overlayData.reportingModuleName+"|"+overlayData.reportingElementName;
 }
 }
 Reporting.PageData.accountNumber = "";
-Reporting.PageData.prospectAccountNumber = "2738892714";
+Reporting.PageData.prospectAccountNumber = "2847695157";
 Reporting.PageData.userType = "Prospect";
 Reporting.PageData.nudgeSegment= "n/a";
 Reporting.PageData.language = "English"; 
@@ -3375,12 +3461,12 @@ document.observe('dom:loaded',Reporting.reportPageData);
 if ($profile.loggers.omniture) $profile.loggers.omniture.stop();
 //-->
 </script>
-<!-- END 1336997715751 -->
+<!-- END 1343939581303 -->
 
 
 
 
-	
+
 	<!-- SDR 1972227 adding floodlight pixels -->
 	
 		
@@ -3423,16 +3509,9 @@ if ($profile.loggers.omniture) $profile.loggers.omniture.stop();
 
 
 
-
-
-
-
 <script type="text/javascript">
 </script>
 
-
-
-	
 
 
 <script type="text/javascript">
@@ -3443,6 +3522,15 @@ $$('div.ctm-tup .stroke-gradient, div.ctm-tup .stroke-only, div.ctm-tup .stroke-
 
 
 
+
+
+
+
+
+<div id="TMAN_BOTTOM_BODY"></div>
+<script>
+TMAN.doTags(TMAN.position.BOTTOM_BODY); 
+</script>
 </body>
 </html>
 

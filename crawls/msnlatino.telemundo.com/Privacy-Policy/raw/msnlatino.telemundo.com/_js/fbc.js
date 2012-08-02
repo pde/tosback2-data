@@ -90,6 +90,7 @@ function sn_logOut_bkp()
 
 function sn_logOut() {
         var url = '';
+	redirectUrl = '';
 	FB.getLoginStatus(function(response) {
 		if (response.authResponse) {
         		FB.logout(function(response) {
@@ -98,7 +99,9 @@ function sn_logOut() {
                         		url += '&redirectUrl='+redirectToLogin;
                 		}
                 		// user is now logged out
-                		window.location.href = url
+                	//	window.location.href = url
+				redirectUrl = url;
+				register_popup(redirectUrl);
         		});	
 		} else {
                 	url = '/registro?act=logout&refresh=' + getRefresh();
@@ -106,9 +109,12 @@ function sn_logOut() {
                         	url += '&redirectUrl='+redirectToLogin;
                 	}
                 	// user is now logged out
-                	window.location.href = url
+                	//window.location.href = url
+			redirectUrl = url;
+			register_popup(redirectUrl);
 		}
 	});
+	//return redirectUrl;
 }
 
 
@@ -188,7 +194,7 @@ function facebook_onlogin_ready()
 				refreshXFBML();
 			  //alert('success2');
 		  }
-  }, {scope:'read_stream,publish_stream,offline_access'});
+  }, {scope:'read_stream,publish_stream,offline_access,email'});
 	
 }
 
@@ -206,7 +212,8 @@ function fbcCheckUserExists()
 		{
 			$('div.fb_loginButton').prepend('<span class="progressIndicator"><span class="text">Please wait... </span><span class="img"><img src="' + nbcudps_ajaxURL + '/_images/ajax_busy.gif" /></span></span>');
 		}
-		
+		$('#sn_accountRegisterForm').css('display','none');
+		$('.reg_model_content div.reg_btn_facebook').addClass('addPadding');
 		$.ajax({
 		   type: "GET",
 		   dataType : "json",
@@ -241,7 +248,7 @@ function fbcCheckUserExists()
 					
 					if (nbcudps_contestFlag)
 					{
-						var code = "window.location.href = '/" + nbcudps_contestWrapperName + "?contest=" + cf + "&act=fbclogin&url=/" + nbcudps_contestWrapperName + "?contest=" + cf + "&token=" + msg.token + "';";
+						var code = "window.top.location.href = '/" + nbcudps_contestWrapperName + "?contest=" + cf + "&act=fbclogin&url=/" + nbcudps_contestWrapperName + "?contest=" + cf + "&token=" + msg.token + "';";
 						setTimeout(code, 2000);
 						break;
 					}
@@ -260,20 +267,20 @@ function fbcCheckUserExists()
 						patternMatch = (window.location.href).match(pattern);
 						if (!patternMatch)
 						{
-							redirectUrl = window.location.href;
+							redirectUrl = window.top.location.href;
 						}
 					}
 					
 				    if (redirectUrl != '')
 				    {
-				    	var code = "window.location.href = '" + nbcudps_appURL + "?act=fbclogin&url=" + redirectUrl + "&token=" + msg.token + "';";
+				    	var code = "window.top.location.href = '" + nbcudps_appURL + "?act=fbclogin&url=" + redirectUrl + "&token=" + msg.token + "';";
 				    }
 				    else
 				    {
 				    	//var code = "window.location.href = '" + nbcudps_appURL + "?act=fbclogin&url=/tu_mundo/&token=" + msg.token + "';";
 				
 					
-					var code = "window.location.href = '" + readCookie('tm_reg_referrer') +"'";
+					var code = "window.top.location.href = '" + readCookie('tm_reg_referrer') +"'";
 				    }
 				    
 					setTimeout(code, 2000);
@@ -282,6 +289,8 @@ function fbcCheckUserExists()
 				default:
 					$('div.fb_loginButton span.progressIndicator span.text').html('There was an unknown error. Please try again.');
 					$('div.fb_loginButton span.progressIndicator span.img').remove();
+					$('#sn_accountRegisterForm').css('display','block');
+					$('.reg_model_content div.reg_btn_facebook').addClass('addPadding');
 					break;
 			}
 		     }

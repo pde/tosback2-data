@@ -1,33 +1,33 @@
 /**
  * Copyright (c) 2009-2011 Rachael Ray Digital, John Shearer
- * 
+ *
  */
- 
+
 /**
  * @namespace
  * The top-level namespace for rachaelray.com
  */
 var RR = (function () {
-  
+
   // private attributes
       // read-only values
   var ro = {
         version:      "0.1 alpha",
         flashVersion: "8"             // min flash version for swfobject
       },
-      
+
       // read/write variables
       rw = {
         section:    "",
         subsection: "",
         error:      ""
       },
-      
+
       // the return object
       my = {};
   // end var
-  
-  
+
+
   // public methods
   /**
    * Getter function for RR top-level attributes, looks for the
@@ -45,10 +45,10 @@ var RR = (function () {
     }
     return;
   };
-  
+
   /**
    * Setter function for RR top-level read/write attributes
-   * 
+   *
    * @param {String} name The name of the attribute to set
    * @param {Mixed} value The value to set the attribute to
    * @return {Object} Returns this
@@ -59,7 +59,7 @@ var RR = (function () {
     }
     return this;
   };
-  
+
   return my;
-  
+
 })();

@@ -49,7 +49,7 @@
 		<script type='text/javascript' src='../dwr/interface/DWRRequestManager.js'></script>
 		<script type='text/javascript' src='../dwr/engine.js'></script>
 		<script type='text/javascript' src='../dwr/util.js'></script>
-		<script type='text/javascript' src='http://www.att.com/media/gvp/gvpUtils.js'></script>
+		<script type='text/javascript' src='../../media/gvp/gvpUtils.js'></script>
 		
 		<script>
 			gZip = '';
@@ -183,7 +183,19 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
+<!--Wireless CTN capture start -->
 
+
+
+
+	
+	
+	
+	
+		
+	
+
+<!--Wireless CTN capture end -->
 
 
 
@@ -253,14 +265,17 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
+
+
+
 <meta NAME="DCSext.wtStatusCode" 			CONTENT="" />
 
 
 
-<meta NAME="DCSext.sessionid" 				CONTENT="R3nDPw3f3GCGgvHGCCk3BffN!-350026533!1336997663080" />
+<meta NAME="DCSext.sessionid" 				CONTENT="xf8jQhjfhLn3bMlyC8w49vw0!410118374!1343939551091" />
 <meta NAME="DCSext.flowtype" 				CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" 				CONTENT="Consumer">
-<meta NAME="DCSext.wtCustTypeSub"  			CONTENT="residential" />
+<meta NAME="DCSext.wtCustTypeSub" 			CONTENT="residential" />
 <meta NAME="DCSext.wtCreditClass" 			CONTENT="" />
 <meta NAME="DCSext.wtUverse_DA_User" 		CONTENT="" />
 <meta NAME="DCSext.wtUverse_CSIExcept" 		CONTENT="" />
@@ -313,14 +328,39 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
+			
+		
+			
+		
+			
+        
+	
+	
+	
+		
+		
+			
+		
+	
+
+	
+	
+		
+		
+			
+		
+	
+	
 
 
 
 
 
 <meta NAME="DCSext.wtBuyFlowType" 			CONTENT="PROVIDE" />
-<meta NAME="DCSext.wtReferral_PackageID" 	CONTENT="" />
-<meta NAME="DCSext.Referral_app_id" 		CONTENT="" />
+<meta NAME="DCSext.Referral_app_id" CONTENT="" />
+
+
+
 	
 
 
@@ -353,7 +393,9 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
+<!-- Fix for PROD11-3183 START  -->
 
+<!-- Fix for PROD11-3183 END  -->
 <script>
 var reporting_ready = window.reporting_ready || new jQuery.Deferred();
 jQuery.when(reporting_ready).then(function (reporting) {
@@ -438,10 +480,16 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		//{selector: 'head:page(multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_MultipleAddress'},
 		// Fix for Prod11-3183 :check availability success flag 
 		{selector: 'head:page(multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value:function() {
-		if ('unknown'=='green') 
-		return '';
-		else
-		return 'UV_MultipleAddress';
+			if(''=='red')
+			return 'UV_MultipleAddress';
+			else 
+			return '';
+		}},
+		{selector: 'head:page(pending-order)', type: 'wtmeta', name: 'wtStatusMsg', value:function() {
+			if(''=='red')
+			return 'UV_PendingOrder';
+			else 
+			return '';
 		}},
 		//End of Fix for Prod11-3183 :check availability success flag 
 		{selector: 'head:page(address-changed)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_AddressChanged'},
@@ -526,6 +574,8 @@ jQuery.when(reporting_ready).then(function (reporting) {
 			return window.appliedCouponName.value;
 			}
 		},
+		{selector: 'head:page(customize)', type: 'wtmeta', name: 'wtiNIDFlag', value: '0'},
+		{selector: 'head:page(customize)', type: 'wtmeta', name: 'wtWifiRecFlag', value: '0'},
 		{selector: 'img[src*=btn_mrq_Review-Checkout_grn_AA000DZZ]', type: 'wtevent', name: 'Uverse_Cart_Save_Submit', params: 'wtCouponCode'},
 
 		//sweepstakes
@@ -535,9 +585,16 @@ jQuery.when(reporting_ready).then(function (reporting) {
 
 		{selector: 'head:page(combined-billing)', type: 'wtmeta', name: 'wtSysRespCode', value: ''},
 		//ECOM1203-134 Fix
-		{selector: 'head:page(creditcard-information)', type: 'wtmeta', name: 'wtSysRespCode', value: ''}
+		{selector: 'head:page(creditcard-information)', type: 'wtmeta', name: 'wtSysRespCode', value: ''},
+		//Wireless CTN Capture Changes Start
+		{selector: 'head:page(wdeu-billing-success)', type: 'wtmeta', name: 'wtCTN', value: ''},
 		
-		
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtLinkName', value: 'See Details'},
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse_Uverse_NoInstall_OrderSummary_Pg_Body'},
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtNoHit', value: '1'},
+		{selector: '#seeDetailsLink', type: 'wtlink', name: '', params: 'wtLinkName,wtLinkLoc,wtNoHit', trigger: 'mousedown'},
+		{selector: 'head:page(combined-billing-ineligible)', type: 'wtmeta', name: 'wtStatusMsg', value: ''}		
+		//Wireless CTN Capture Changes End		
 	]);
 
 	reporting.tag.perform('inline');
@@ -560,14 +617,16 @@ function getHiddenWebTrendEvents(str) {
 }
 
 function firePopupWebTrendPageView(str, title, url) {
-	if (/class=.wtpn\s/.test(str) == false) {
+	//Added new condition for Wireless CTN capture
+	if (/class=.wtpn\s/.test(str) == false && !title.match('style')) {
 		var wtPN = 'Uverse_' + title.replace(/\W/g,'_') + '_Modal_Pg';
 		var dcsuri = url || title.replace(/\W/g,'-').toLowerCase() + '-modal.jsp';
-		if (!/class=.wtpn /.test(str) && webTrendTag) webTrendTag(wtPN, 0, 'System', 'dcsuri', dcsuri, 'wtBuyFlowType', 'PROVIDE', 'flowtype', 'UVERSE');
+		//ECOM1207-25 -Wireless CTN capture fix
+		var wtZipCode = '';
+		if (!/class=.wtpn /.test(str) && webTrendTag) webTrendTag(wtPN, 0, 'System','wtZipCode',wtZipCode, 'dcsuri', dcsuri, 'wtBuyFlowType', 'PROVIDE', 'flowtype', 'UVERSE');
 		return wtPN;
 	}
 }
-
 function captureLastFieldInteracted() {
 	commonFunc.eventObserve(document, 'blur', handleLastFieldInteracted, false);
 	commonFunc.eventObserve(document, 'change', handleLastFieldInteracted, false);
@@ -627,7 +686,7 @@ function handleLastFieldInteracted(e) {
 <script type="text/javascript" charset="utf-8">
 	function SessionVars() {
 		this.getCurrSessId = function() {
-			var pSessionId = 'R3nDPw3f3GCGgvHGCCk3BffN!-350026533!1336997663080';
+			var pSessionId = 'xf8jQhjfhLn3bMlyC8w49vw0!410118374!1343939551091';
 			return pSessionId;
 		};
 
@@ -667,7 +726,7 @@ function handleLastFieldInteracted(e) {
 	var forceFlashDebugMode = false;
 	var getTimeOffset = function() {
 		var offset = new Number();
-		var servertime = 1336997702910;
+		var servertime = 1343939575897;
 		var clientdateObj = new Date();
 		var clienttime = clientdateObj.getTime();
 		offset = clienttime - servertime;
@@ -753,6 +812,10 @@ function handleLastFieldInteracted(e) {
 	
 	
 	
+	
+	
+	
+
 
 	
 
@@ -782,6 +845,7 @@ function handleLastFieldInteracted(e) {
 
 
 
+
 	
 
 
@@ -796,6 +860,72 @@ function handleLastFieldInteracted(e) {
 		
 	
 
+
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
 
 <script type="text/javascript">
 	var globalNavDefaultSelections = {
@@ -815,12 +945,17 @@ function handleLastFieldInteracted(e) {
 	};
 	
 	var customGlobalNavResources = {
-		"userInfo": "/globalnav/includes/user_info.jsp",
+		"userInfo":
+						
+						"/globalnav/includes/user_info.jsp",
+					
 		"segmentationMenu": "/globalnav/includes/segmentation_menu.jsp",
 		"menuJSON": globalNavDefaultSelections.urls.navService,
 		"failSafeJSON": "/globalnav/resources/json/GlobalnavLinksInJsonString.txt"
 	};
-
+	
+	var globalNavResourceParams = {};
+	
 </script>
 
 <div id="globalNav" class="en_US xRock">
@@ -835,6 +970,7 @@ function handleLastFieldInteracted(e) {
 						
 						
 					
+
 
 
 
@@ -923,6 +1059,11 @@ function handleLastFieldInteracted(e) {
 											
 												
 													
+														
+														
+															
+														
+													
 												
 												
 												
@@ -977,24 +1118,25 @@ function handleLastFieldInteracted(e) {
 				<div id="globalNavUserInfo">
 					
 						
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
 						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-					
 
 
 
@@ -1004,6 +1146,38 @@ function handleLastFieldInteracted(e) {
 
 
 
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -1024,6 +1198,11 @@ function handleLastFieldInteracted(e) {
 
 
 	
+	
+	
+	
+	
+		
 	
 	
 	
@@ -1076,6 +1255,10 @@ function handleLastFieldInteracted(e) {
 	
 	
 		
+			
+			
+			
+		
 	
 	
 	
@@ -1099,7 +1282,9 @@ function handleLastFieldInteracted(e) {
 	
 	
 	
-
+	
+	
+	
 	
 	
 	
@@ -1141,7 +1326,7 @@ function handleLastFieldInteracted(e) {
 			
 				
 					
-						<a href="http://www.att.com/accounts/">Log In</a> | <a href="http://www.att.com/accounts/">Register</a>
+						<a href="http://www.att.com/accounts/" class="">Register</a> 
 					
 					
 					
@@ -1157,18 +1342,13 @@ function handleLastFieldInteracted(e) {
 					
 					
 						
+							
+								
+									 | <a href="http://www.att.com/u-verse/start/" class="">Enter ZIP</a>
+								
+								
+							
 						
-							
-								
-								
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="globalnav_State">CA</span>
-								
-								
-								
-							
-							
-							 | <a href="http://www.att.com/u-verse/availability/">Change</a>
-							
 						
 					
 					
@@ -1190,14 +1370,24 @@ function handleLastFieldInteracted(e) {
 				
 			
 		
+		
+			&nbsp;<a href="http://www.att.com/accounts/" class="" style="position: relative;top: -4px;"><img src="../../media/att/2012/global/nav/btn-login-en-blu24.png" style="vertical-align:top" alt="Log In"/></a>
+			
+		
 	</div>
 
+					
 				</div>
 				<div id="tieredNav">
 					<div id="primaryMenu">
 						<ul>
 							<li id="primary_ATTLogo">
-								<a class="primaryMenuItem" title="AT&amp;T Home" href="../../index.html">&nbsp;</a>
+								
+									
+									
+										<a class="primaryMenuItem" title="AT&amp;T Home" href="../../index.html">&nbsp;</a>
+									
+								
 							</li>
 							
 								
@@ -1211,14 +1401,14 @@ function handleLastFieldInteracted(e) {
 								
 								
 								
-								<li class=" selected"><a href="../../shop/index.jsp.html" id="primary_Shop" name="Shop" class="primaryMenuItem">Shop<span></span></a>
+								<li class=" selected"><a href="../../shop/index.html" id="primary_Shop" name="Shop" class="primaryMenuItem">Shop<span></span></a>
 									
 										<ul id="secondaryMenu_Shop" class="secondaryMenu">
 											
 												
 												
 												<li>
-													<a class="secondaryMenuItem" href="../../shop/wireless/index.html" name="Shop_Wireless" >Wireless</a>
+													<a class="secondaryMenuItem" href="../../shop/wireless.html" name="Shop_Wireless" >Wireless</a>
 													
 														
 															
@@ -1229,7 +1419,7 @@ function handleLastFieldInteracted(e) {
 														<div class="trayContentItem trayFiveCol">
 															<div class="firstColumn">
 																<div class="columnContent">
-																	<img src='../../media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' />
+																	<img src='http://www.att.com/media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' />
 																</div>
 															</div>
 															
@@ -1245,23 +1435,23 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phones/index.html" name="Shop_Wireless_Shop By Category" >Shop By Category</a></li>
+																				<li><a href="../../shop/wireless/devices.html" name="Shop_Wireless_Shop By Category" >Shop By Category</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phones/pda-phones-smartphones.jsp.html" name="Shop_Wireless_Smartphones" >Smartphones</a></li>
+																				<li><a href="../../shop/wireless/devices/smartphones.html" name="Shop_Wireless_Smartphones" >Smartphones</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/specials/netbooks.jsp.html" name="Shop_Wireless_Tablets and Internet Devices" >Tablets and Internet Devices</a></li>
+																				<li><a href="../../shop/wireless/devices/tablets.html" name="Shop_Wireless_Tablets and Internet Devices" >Tablets and Internet Devices</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/packages/index.jsp.html" name="Shop_Wireless_Packages &amp; Deals" >Packages &amp; Deals</a></li>
+																				<li><a href="../../../www.wireless.att.com/cell-phone-service/go-phones/index.jsp.html" name="Shop_Wireless_Prepaid GoPhone&reg;" >Prepaid GoPhone&reg;</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phones/cell-phones.jsp.html" name="Shop_Wireless_View All Devices" >View All Devices</a></li>
+																				<li><a href="../../shop/wireless/devices/cellphones.html" name="Shop_Wireless_View All Cell Phones" >View All Cell Phones</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1279,23 +1469,23 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phone-plans/index.jsp.html" name="Shop_Wireless_Shop By Category" >Shop By Category</a></li>
+																				<li><a href="../../shop/wireless/data-plans.html#tab2" name="Shop_Wireless_Mobile Share Plans" >Mobile Share Plans</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phone-plans/individual-cell-phone-plans.jsp.html" name="Shop_Wireless_Individual Plans" >Individual Plans</a></li>
+																				<li><a href="../../shop/wireless/plans/individualplans.html" name="Shop_Wireless_Individual Plans" >Individual Plans</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phone-plans/family-cell-phone-plans.jsp.html" name="Shop_Wireless_Family Plans" >Family Plans</a></li>
+																				<li><a href="../../shop/wireless/plans/familyplans.html" name="Shop_Wireless_Family Plans" >Family Plans</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/go-phones/index.jsp.html" name="Shop_Wireless_Prepaid GoPhone&reg; Plans" >Prepaid GoPhone&reg; Plans</a></li>
+																				<li><a href="../../shop/wireless/data-plans.html" name="Shop_Wireless_Data Plans" >Data Plans</a></li>
 																			
 																				
 																				
-																				<li><a href="../../shop/wireless/plans/data-plans.jsp.html" name="Shop_Wireless_Data Plans" >Data Plans</a></li>
+																				<li><a href="../../shop/wireless/international.html" name="Shop_Wireless_International Plans" >International Plans</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1313,19 +1503,19 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/accessories/index.jsp.html" name="Shop_Wireless_Accessories" >Accessories</a></li>
+																				<li><a href="../../shop/wireless/accessories.html" name="Shop_Wireless_Accessories" >Accessories</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/services/index.jsp.html" name="Shop_Wireless_Messaging, Data &amp; More" >Messaging, Data &amp; More</a></li>
+																				<li><a href="../../shop/wireless/services.html" name="Shop_Wireless_Messaging, Data &amp; More" >Messaging, Data &amp; More</a></li>
 																			
 																				
 																				
-																				<li><a href="../../shop/apps/index.jsp.html" name="Shop_Wireless_Ringtones &amp; Apps" >Ringtones &amp; Apps</a></li>
+																				<li><a href="../../shop/apps.html" name="Shop_Wireless_Ringtones &amp; Apps" >Ringtones &amp; Apps</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/transfer-your-number/index.html" name="Shop_Wireless_Transfer My Number" >Transfer My Number</a></li>
+																				<li><a href="../../shop/wireless/transferyournumber.html" name="Shop_Wireless_Transfer My Number" >Transfer My Number</a></li>
 																			
 																				
 																				
@@ -1347,11 +1537,11 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../olam/passthroughAction.myworld%3FactionType=UpgradePhone.html" name="Shop_Wireless_Upgrade Phone" >Upgrade Phone</a></li>
+																				<li><a href="../../shop/wireless/upgradephone.html" name="Shop_Wireless_Upgrade Phone" >Upgrade Phone</a></li>
 																			
 																				
 																				
-																				<li><a href="../../olam/passthroughAction.myworld%3FactionType=AddALine.html" name="Shop_Wireless_Add a Line to My Account" >Add a Line to My Account</a></li>
+																				<li><a href="../../shop/wireless/addaline.html" name="Shop_Wireless_Add a Line to My Account" >Add a Line to My Account</a></li>
 																			
 																				
 																				
@@ -1359,11 +1549,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../olam/passthroughAction.myworld%3FactionType=ManageFeatures.html" name="Shop_Wireless_Manage Features" >Manage Features</a></li>
-																			
-																				
-																				
-																				<li><a href="../../../www.wireless.att.com/learn/international/index.html" name="Shop_Wireless_International" >International</a></li>
+																				<li><a href="../../olam/passthroughAction.myworld%3FactionType=ManageFeatures.html" name="Shop_Wireless_Add or Change Services" >Add or Change Services</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1376,7 +1562,7 @@ function handleLastFieldInteracted(e) {
 												
 												
 												<li>
-													<a class="secondaryMenuItem" href="../../shop/bundles/index.html" name="Shop_Bundles" >Bundles</a>
+													<a class="secondaryMenuItem" href="../../shop/bundles.html" name="Shop_Bundles" >Bundles</a>
 													
 														
 															
@@ -1387,7 +1573,7 @@ function handleLastFieldInteracted(e) {
 														<div class="trayContentItem trayFourCol">
 															<div class="firstColumn">
 																<div class="columnContent">
-																	<img src='../../media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' />
+																	<img src='http://www.att.com/media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' />
 																</div>
 															</div>
 															
@@ -1407,11 +1593,11 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../shop/index.jsp%3FshopFilterId=100003.html#fbid=" name="Shop_Bundles_U-verse TV and Internet" >U-verse TV and Internet</a></li>
+																				<li><a href="../shop/index.jsp%3FshopFilterId=100003.html" name="Shop_Bundles_U-verse TV and Internet" >U-verse TV and Internet</a></li>
 																			
 																				
 																				
-																				<li><a href="../shop/index.jsp%3FshopFilterId=200001.html#fbid=" name="Shop_Bundles_U-verse TV, Internet and Phone" >U-verse TV, Internet and Phone</a></li>
+																				<li><a href="../shop/index.jsp%3FshopFilterId=200001.html" name="Shop_Bundles_U-verse TV, Internet and Phone" >U-verse TV, Internet and Phone</a></li>
 																			
 																				
 																				
@@ -1459,7 +1645,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../olam/loginAction.olamexecute.html" name="Shop_Bundles_Change My Service" >Change My Service</a></li>
+																				<li><a href="../../accounts/index.html%3Fsource=IC4425j4900s2000.html" name="Shop_Bundles_Change My Service" >Change My Service</a></li>
 																			
 																				
 																				
@@ -1487,7 +1673,7 @@ function handleLastFieldInteracted(e) {
 														<div class="trayContentItem trayFourCol">
 															<div class="firstColumn">
 																<div class="columnContent">
-																	<img src='../../media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' />
+																	<img src='http://www.att.com/media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' />
 																</div>
 															</div>
 															
@@ -1507,7 +1693,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../shop/channel-lineup.jsp.html" name="Shop_Digital TV_U-verse Channel Lineup" >U-verse Channel Lineup</a></li>
+																				<li><a href="../shop/channel-lineup.jsp.html" name="Shop_Digital TV_U-verse Channel Line-up" >U-verse Channel Line-up</a></li>
 																			
 																				
 																				
@@ -1515,7 +1701,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../Common/PDF/DIRECTV_English_Channel_Lineup.pdf" name="Shop_Digital TV_DIRECTV&reg; Channel Lineup (PDF)" >DIRECTV&reg; Channel Lineup (PDF)</a></li>
+																				<li><a href="../../Common/PDF/DIRECTV_English_Channel_Lineup.pdf" name="Shop_Digital TV_DIRECTV&reg; Channel Line-up (PDF)" >DIRECTV&reg; Channel Line-up (PDF)</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1534,10 +1720,6 @@ function handleLastFieldInteracted(e) {
 																				
 																				
 																				<li><a href="../../remotes.html" name="Shop_Digital TV_U-verse Remotes" >U-verse Remotes</a></li>
-																			
-																				
-																				
-																				<li><a href="wireless-receiver.jsp.html" name="Shop_Digital TV_U-verse Wireless Receiver" >U-verse Wireless Receiver</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1595,7 +1777,7 @@ function handleLastFieldInteracted(e) {
 														<div class="trayContentItem trayFiveCol">
 															<div class="firstColumn">
 																<div class="columnContent">
-																	<img src='../../media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' />
+																	<img src='http://www.att.com/media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' />
 																</div>
 															</div>
 															
@@ -1619,7 +1801,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../dsl/shop/plansDirect.jsp.html" name="Shop_Internet_Internet Without a Phone Line" >Internet Without a Phone Line</a></li>
+																				<li><a href="../../dsl/shop/plansDirect.jsp%3Fref_from=shop.html" name="Shop_Internet_Internet Without a Phone Line" >Internet Without a Phone Line</a></li>
 																			
 																				
 																				
@@ -1697,7 +1879,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../localization.att.com/loc/controller%3Fprod-snip=res_dsl_upgrd_promo.html" name="Shop_Internet_Change My Plan" >Change My Plan</a></li>
+																				<li><a href="../../dsl.1.html" name="Shop_Internet_Change My Plan" >Change My Plan</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1721,7 +1903,7 @@ function handleLastFieldInteracted(e) {
 														<div class="trayContentItem trayFourCol">
 															<div class="firstColumn">
 																<div class="columnContent">
-																	<img src='../../media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' />
+																	<img src='http://www.att.com/media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' />
 																</div>
 															</div>
 															
@@ -1810,21 +1992,21 @@ function handleLastFieldInteracted(e) {
 												
 												
 												<li>
-													<a class="secondaryMenuItem" href="../../shop/u-verse/index.html" name="Shop_U-verse" >U-verse</a>
+													<a class="secondaryMenuItem" href="../../shop/u-verse.html" name="Shop_U-verse" >U-verse</a>
 													
 												</li>
 											
 												
 												
 												<li>
-													<a class="secondaryMenuItem" href="../../shop/special-offers/index.html" name="Shop_Special Offers" >Special Offers</a>
+													<a class="secondaryMenuItem" href="../../shop/special-offers.html" name="Shop_Special Offers" >Special Offers</a>
 													
 												</li>
 											
 												
 												
 												<li>
-													<a class="secondaryMenuItem" href="../../shop/help/index.html" name="Shop_Shopping Help" >Shopping Help</a>
+													<a class="secondaryMenuItem" href="../../shop/help.html" name="Shop_Shopping Help" >Shopping Help</a>
 													
 												</li>
 											
@@ -1906,7 +2088,7 @@ function handleLastFieldInteracted(e) {
 										
 										
 										<li class="">
-											<a class="secondaryMenuItem" href="../../shop/wireless/index.html" name="Shop_Wireless" >Wireless</a>
+											<a class="secondaryMenuItem" href="../../shop/wireless.html" name="Shop_Wireless" >Wireless</a>
 										</li>
 									
 										
@@ -1914,7 +2096,7 @@ function handleLastFieldInteracted(e) {
 										
 										
 										<li class="">
-											<a class="secondaryMenuItem" href="../../shop/bundles/index.html" name="Shop_Bundles" >Bundles</a>
+											<a class="secondaryMenuItem" href="../../shop/bundles.html" name="Shop_Bundles" >Bundles</a>
 										</li>
 									
 										
@@ -1946,7 +2128,7 @@ function handleLastFieldInteracted(e) {
 										
 										
 										<li class="">
-											<a class="secondaryMenuItem" href="../../shop/u-verse/index.html" name="Shop_U-verse" >U-verse</a>
+											<a class="secondaryMenuItem" href="../../shop/u-verse.html" name="Shop_U-verse" >U-verse</a>
 										</li>
 									
 										
@@ -1954,7 +2136,7 @@ function handleLastFieldInteracted(e) {
 										
 										
 										<li class="">
-											<a class="secondaryMenuItem" href="../../shop/special-offers/index.html" name="Shop_Special Offers" >Special Offers</a>
+											<a class="secondaryMenuItem" href="../../shop/special-offers.html" name="Shop_Special Offers" >Special Offers</a>
 										</li>
 									
 										
@@ -1962,7 +2144,7 @@ function handleLastFieldInteracted(e) {
 										
 										
 										<li class="">
-											<a class="secondaryMenuItem" href="../../shop/help/index.html" name="Shop_Shopping Help" >Shopping Help</a>
+											<a class="secondaryMenuItem" href="../../shop/help.html" name="Shop_Shopping Help" >Shopping Help</a>
 										</li>
 									
 								</ul>
@@ -1995,13 +2177,14 @@ function handleLastFieldInteracted(e) {
 	<div id="globalNavShadows" style="height:15px;*height:40px;" ></div>
 </div>
 
-	<div id="wrapper">
-		<div id="main-container">
-			<div class="bg-top-shadow"></div>
-				<div class="bg-mid-shadow">
-					<div id="wrapperContentDiv" style="padding: 0pt 11px;">
-						<div id="container2">
-							<div class="searchNav">
+	
+		<div id="wrapper">
+			<div id="main-container">
+				<div class="bg-top-shadow"></div>
+					<div class="bg-mid-shadow">
+						<div id="wrapperContentDiv" style="padding: 0pt 11px;">
+							<div id="container2">
+								<div class="searchNav">
 	
 		
 		
@@ -2862,7 +3045,7 @@ Have it all for one low price!</p>
 	<div class="horizRule" style="width:790px; font-size:0.9em; line-height:1.4em;">
 		<ol style="list-style-type:decimal;  padding-left:8px;"><br />
 			<li>AT&amp;T U-verse Voice works with your regular touch-tone phones; however, battery backup power is required for the service, including 911 dialing, to function during a power outage.</li>
-			<li>Standard Installation Included with Most TV Packages: Offer ends 7/14/12. Credit qualified customers only. Installation not included with U-basic package.</li>
+			<li>Standard Installation Included with Most TV Packages: Offer ends 11/3/12. Credit qualified customers only. Installation not included with U-basic package.</li>
 			<li>Voice Self-Installation available in limited areas.</li>
 			<li>International calls billed at additional per-minute rates; higher rates may apply for calls terminating on mobile phones or other wireless devices.</li>
 			<li>U-verse Voice in all-fiber neighborhoods, battery backup power for the Optical Network Terminal (ONT) is also required for service to function during a power outage. (ONT &ndash; equipment box on side of home or in garage, where AT&amp;T's fiber network terminates.)</li>
@@ -3233,7 +3416,7 @@ Have it all for one low price!</p>
 					<div style="text-align:right;" id="popCloseButton"><a href="javascript:closePopup()">Close</a> <img src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif" onclick="closePopup();"/></div>
 				</div>
 			</div>
-			<div id="mainPopupBody" style="padding:10px; border:#CCCCCC solid 1px; margin:10px; min-height:575px;"></div>
+			<div id="mainPopupBody" style="padding:10px; border:#CCCCCC solid 1px; margin:10px;"></div>
 			<div id="mainPopupButton" style="padding-right:10px;padding-bottom:8px;"></div>
 		</div>
 		
@@ -3544,7 +3727,19 @@ Have it all for one low price!</p>
 
 
 
+<!--Wireless CTN capture start -->
 
+
+
+
+	
+	
+	
+	
+		
+	
+
+<!--Wireless CTN capture end -->
 
 
 
@@ -3614,14 +3809,17 @@ Have it all for one low price!</p>
 
 
 
+
+
+
 <meta NAME="DCSext.wtStatusCode" 			CONTENT="" />
 
 
 
-<meta NAME="DCSext.sessionid" 				CONTENT="R3nDPw3f3GCGgvHGCCk3BffN!-350026533!1336997663080" />
+<meta NAME="DCSext.sessionid" 				CONTENT="xf8jQhjfhLn3bMlyC8w49vw0!410118374!1343939551091" />
 <meta NAME="DCSext.flowtype" 				CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" 				CONTENT="Consumer">
-<meta NAME="DCSext.wtCustTypeSub"  			CONTENT="residential" />
+<meta NAME="DCSext.wtCustTypeSub" 			CONTENT="residential" />
 <meta NAME="DCSext.wtCreditClass" 			CONTENT="" />
 <meta NAME="DCSext.wtUverse_DA_User" 		CONTENT="" />
 <meta NAME="DCSext.wtUverse_CSIExcept" 		CONTENT="" />
@@ -3674,14 +3872,39 @@ Have it all for one low price!</p>
 
 
 
+			
+		
+			
+		
+			
+        
+	
+	
+	
+		
+		
+			
+		
+	
+
+	
+	
+		
+		
+			
+		
+	
+	
 
 
 
 
 
 <meta NAME="DCSext.wtBuyFlowType" 			CONTENT="PROVIDE" />
-<meta NAME="DCSext.wtReferral_PackageID" 	CONTENT="" />
-<meta NAME="DCSext.Referral_app_id" 		CONTENT="" />
+<meta NAME="DCSext.Referral_app_id" CONTENT="" />
+
+
+
 	
 
 
@@ -3714,7 +3937,9 @@ Have it all for one low price!</p>
 
 
 
+<!-- Fix for PROD11-3183 START  -->
 
+<!-- Fix for PROD11-3183 END  -->
 <script>
 var reporting_ready = window.reporting_ready || new jQuery.Deferred();
 jQuery.when(reporting_ready).then(function (reporting) {
@@ -3799,10 +4024,16 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		//{selector: 'head:page(multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_MultipleAddress'},
 		// Fix for Prod11-3183 :check availability success flag 
 		{selector: 'head:page(multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value:function() {
-		if ('unknown'=='green') 
-		return '';
-		else
-		return 'UV_MultipleAddress';
+			if(''=='red')
+			return 'UV_MultipleAddress';
+			else 
+			return '';
+		}},
+		{selector: 'head:page(pending-order)', type: 'wtmeta', name: 'wtStatusMsg', value:function() {
+			if(''=='red')
+			return 'UV_PendingOrder';
+			else 
+			return '';
 		}},
 		//End of Fix for Prod11-3183 :check availability success flag 
 		{selector: 'head:page(address-changed)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_AddressChanged'},
@@ -3887,6 +4118,8 @@ jQuery.when(reporting_ready).then(function (reporting) {
 			return window.appliedCouponName.value;
 			}
 		},
+		{selector: 'head:page(customize)', type: 'wtmeta', name: 'wtiNIDFlag', value: '0'},
+		{selector: 'head:page(customize)', type: 'wtmeta', name: 'wtWifiRecFlag', value: '0'},
 		{selector: 'img[src*=btn_mrq_Review-Checkout_grn_AA000DZZ]', type: 'wtevent', name: 'Uverse_Cart_Save_Submit', params: 'wtCouponCode'},
 
 		//sweepstakes
@@ -3896,9 +4129,16 @@ jQuery.when(reporting_ready).then(function (reporting) {
 
 		{selector: 'head:page(combined-billing)', type: 'wtmeta', name: 'wtSysRespCode', value: ''},
 		//ECOM1203-134 Fix
-		{selector: 'head:page(creditcard-information)', type: 'wtmeta', name: 'wtSysRespCode', value: ''}
+		{selector: 'head:page(creditcard-information)', type: 'wtmeta', name: 'wtSysRespCode', value: ''},
+		//Wireless CTN Capture Changes Start
+		{selector: 'head:page(wdeu-billing-success)', type: 'wtmeta', name: 'wtCTN', value: ''},
 		
-		
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtLinkName', value: 'See Details'},
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse_Uverse_NoInstall_OrderSummary_Pg_Body'},
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtNoHit', value: '1'},
+		{selector: '#seeDetailsLink', type: 'wtlink', name: '', params: 'wtLinkName,wtLinkLoc,wtNoHit', trigger: 'mousedown'},
+		{selector: 'head:page(combined-billing-ineligible)', type: 'wtmeta', name: 'wtStatusMsg', value: ''}		
+		//Wireless CTN Capture Changes End		
 	]);
 
 	reporting.tag.perform('inline');
@@ -3921,14 +4161,16 @@ function getHiddenWebTrendEvents(str) {
 }
 
 function firePopupWebTrendPageView(str, title, url) {
-	if (/class=.wtpn\s/.test(str) == false) {
+	//Added new condition for Wireless CTN capture
+	if (/class=.wtpn\s/.test(str) == false && !title.match('style')) {
 		var wtPN = 'Uverse_' + title.replace(/\W/g,'_') + '_Modal_Pg';
 		var dcsuri = url || title.replace(/\W/g,'-').toLowerCase() + '-modal.jsp';
-		if (!/class=.wtpn /.test(str) && webTrendTag) webTrendTag(wtPN, 0, 'System', 'dcsuri', dcsuri, 'wtBuyFlowType', 'PROVIDE', 'flowtype', 'UVERSE');
+		//ECOM1207-25 -Wireless CTN capture fix
+		var wtZipCode = '';
+		if (!/class=.wtpn /.test(str) && webTrendTag) webTrendTag(wtPN, 0, 'System','wtZipCode',wtZipCode, 'dcsuri', dcsuri, 'wtBuyFlowType', 'PROVIDE', 'flowtype', 'UVERSE');
 		return wtPN;
 	}
 }
-
 function captureLastFieldInteracted() {
 	commonFunc.eventObserve(document, 'blur', handleLastFieldInteracted, false);
 	commonFunc.eventObserve(document, 'change', handleLastFieldInteracted, false);

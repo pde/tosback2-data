@@ -41,34 +41,35 @@ if(w.resultsContainer.length>0){p=UPX_searchResults.getDimAutoFilters();
 $(window).unbind("hashchange.UPX_searchResults").bind("hashchange.UPX_searchResults",function(){UPX_searchResults.checkAnchorHash()
 });
 UPX_searchResults.runQuery(H,0)
-}},bindEvents:function(){(w.searchField).unbind("focus.UPX_searchResults").bind("focus.UPX_searchResults",function(){if($(this).val()&&($(this).val()===z.inputDefaultText)){$(this).val("")
+}},bindEvents:function(){(w.searchField).off("focus.UPX_searchResults").on("focus.UPX_searchResults",function(B){var A=$(B.target);
+if(A.val()&&A.val().match(/Search/)){A.val("")
 }});
-(w.searchField).unbind("blur.UPX_searchResults").bind("blur.UPX_searchResults",function(){if(!$(this).val()||$(this).val()===""){$(this).val(z.inputDefaultText)
+(w.searchField).off("blur.UPX_searchResults").on("blur.UPX_searchResults",function(B){var A=$(B.target);
+if(!A.val()||A.val()===""){A.val(z.inputDefaultText)
 }});
-(w.searchForm).submit(function(A){var A=A||window.event;
-A.preventDefault();
-if($("body.alternate").length){UPX_searchResults.followEventBoundLink(w.searchField.val())
-}UPX_searchResults.runQuery("&q="+UPX_searchResults.escapeUrlForSearch(w.searchField.val()),0)
+(w.searchForm).off("submit.UPX_searchResults").on("submit.UPX_searchResults",function(B){var B=B||window.event;
+var A=$(B.target);
+B.preventDefault();
+UPX_searchResults.followEventBoundLink(A.find(".searchField").val())
 });
-(w.searchField).unbind("keyup.UPX_searchResults").bind("keyup.UPX_searchResults",function(A){if(A.keyCode==13){if($("body.alternate").length){UPX_searchResults.followEventBoundLink(w.searchField.val())
-}else{(w.searchField).blur()
-}}});
-UPX_autoComplete.init({searchInput:w.searchField,url:l+"/?wt=json&json.wrf=?&jsoncallback=?",delay:300,resultFn:function(A){if($("body.alternate").length){UPX_searchResults.followEventBoundLink(w.searchField.val())
-}else{UPX_searchResults.runQuery("&q="+UPX_searchResults.escapeUrlForSearch(A),0)
-}}})
+(w.searchField).off("keyup.UPX_searchResults").on("keyup.UPX_searchResults",function(B){var A=$(B.target);
+if(B.keyCode==13){UPX_searchResults.followEventBoundLink(A.val())
+}});
+UPX_autoComplete.init({searchInput:w.searchField,url:l+"/?wt=json&json.wrf=?&jsoncallback=?",delay:300,resultFn:function(A){UPX_searchResults.followEventBoundLink(A)
+}})
 },cacheFormElements:function(){w.resultsFacets=$("#apts_search_results_facets");
 w.resultsContainer=$("#apts_search_page_frame");
 w.totalCount=$("#apts_total_count");
-w.searchField=$("#alternatesiteSearchInput");
-w.searchSubmit=$("#alternatesiteSearchSubmit");
-w.searchForm=$("#alternatesiteSearch form")
+w.searchField=$(".searchField");
+w.searchSubmit=$(".searchSubmit");
+w.searchForm=$(".searchForm")
 },runQuery:function(B,A){var C=k+"/?wt=json&json.wrf=?&jsoncallback=?&"+B+p;
 var E="/search/";
 if(g){C+="&sort=page_views desc"
 }if(!b){b=0
 }var D=(A*b);
 C+="&rows="+b+"&start="+D;
-$.getJSON(C,{},function(W){var ag;
+COMMONAjaxUtilities.doJSON(C,{},function(W){var ag;
 var Y=0;
 var S=W.response.docs;
 var F=i.exec(B);
@@ -228,19 +229,23 @@ A=A.replace("\\:",":")
 }return A
 },removeLeftColumn:function(){w.resultsFacets.html("");
 w.resultsContainer.removeClass("bordered")
-},showLeftColumn:function(G,Q,E,F,M,P,C){if(F===null){if(C>0){if(P&&P.length<=0){var O="/bin/servlet/SearchServlet.categories.json/f/site/ac";
-jQuery.ajax({url:O,type:"GET",dataType:"json",async:false,timeout:500,success:function(U){var R=U.categories;
-var T=R.length;
+},showLeftColumn:function(C,A,G,E,F,B,D){if(E===null){if(D>0){if(B&&B.length<=0){var H="/bin/servlet/SearchServlet.categories.json/f/site/ac";
+COMMONAjaxUtilities.doAjax({url:H,type:"GET",dataType:"json",async:false,timeout:500,success:function(L){var I=L.categories;
+var K=I.length;
 for(iCatLoop=0;
-iCatLoop<T;
-iCatLoop++){var S=R[iCatLoop];
-if(S.searchFacet){P[S.facetOrder]=S.title.toLowerCase()
-}}if(P.length===2){P=aDefaultCategoryStrings
-}},failure:function(R){P=aDefaultCategoryStrings
-},statusCode:{404:function(){P=aDefaultCategoryStrings
-},500:function(){P=aDefaultCategoryStrings
+iCatLoop<K;
+iCatLoop++){var J=I[iCatLoop];
+if(J.searchFacet){B[J.facetOrder]=J.title.toLowerCase()
+}}if(B.length===2){B=aDefaultCategoryStrings
+}UPX_searchResults.populateLeftColumn(B,C,A,G,E,F,B,D)
+},error:function(I){B=aDefaultCategoryStrings;
+UPX_searchResults.populateLeftColumn(B,C,A,G,E,F,B,D)
+},statusCode:{404:function(){B=aDefaultCategoryStrings;
+UPX_searchResults.populateLeftColumn(B,C,A,G,E,F,B,D)
+},500:function(){B=aDefaultCategoryStrings;
+UPX_searchResults.populateLeftColumn(B,C,A,G,E,F,B,D)
 }}})
-}}var L="";
+}}}},populateLeftColumn:function(O,G,P,E,F,M,O,C){var L="";
 var N="";
 N+="<h2>Narrow Your Results</h2>";
 var I=[];
@@ -251,12 +256,12 @@ facetQry="&q="+UPX_searchResults.escapeUrlForSearch(M)+"&fq=category:%22"+UPX_se
 N+="<li id='searchResultsCategoryName'><span id='searchResults_viewCategory'>"+UPX_searchResults.unescapeUrlFromSearch(E)+"</span></li>"
 }else{N+="<li><span id='searchResults_viewAllResults'>&nbsp;</span></li>"
 }for(countFacetsLoopCount=0;
-countFacetsLoopCount<Q;
+countFacetsLoopCount<P;
 countFacetsLoopCount++){var B=G[countFacetsLoopCount];
 var H=true;
 if((countFacetsLoopCount%2)===0){if($.inArray(B.toLowerCase(),d)>=0){H=false;
 countFacetsLoopCount++
-}if(E===null&&H){var A=$.inArray(B.toLowerCase(),P);
+}if(E===null&&H){var A=$.inArray(B.toLowerCase(),O);
 if(A>=0){facetQry="&q="+UPX_searchResults.escapeUrlForSearch(M)+"&fq=category:%22"+UPX_searchResults.escapeUrlForSearch(B)+"%22";
 L="<a id='searchResultsFacet_"+B+"' href=\"javascript:UPX_searchResults.followFacetLink('searchResultsFacet_"+B+"','"+facetQry+"',0)\">"+B
 }else{countFacetsLoopCount++
@@ -272,5 +277,5 @@ K++){var D=I[K];
 if(D&&D!=undefined){N+=D
 }}}N+="</ul>";
 w.resultsFacets.html(N)
-}}}
+}}
 }();

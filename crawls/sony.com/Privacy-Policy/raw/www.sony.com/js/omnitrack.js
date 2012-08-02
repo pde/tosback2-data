@@ -1,11 +1,12 @@
 var bLinked = false;
 
-function trackNavLink(prop2,prop3,prop13){
+function trackNavLink(prop2,prop3,prop13,hier1){
 	s.prop1='top nav';
 	s.prop2= prop2;
 	s.prop3= prop3;
-	s.prop13 = prop13
-	s.linkTrackVars='prop1,prop2,prop3,prop13';
+	s.prop13 = prop13;
+	s.hier1 = hier1;
+	s.linkTrackVars='prop1,prop2,prop3,prop13,hier1';
 	s.tl(this,'o',prop13);
 }
 

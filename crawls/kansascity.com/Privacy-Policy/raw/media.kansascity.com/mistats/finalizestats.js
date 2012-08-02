@@ -310,8 +310,12 @@ else {
    };
 
    // Interaction Tracking for MIA pilot test -- 2012-01-31 JG
-   if (mistats.bizunit && mistats.bizunit.match(/MIA|ELN|KEN|IDA|CDT|BRA|LED|MAC|RHH|TCH/) && mistats.InteractionTracker)
+   if (mistats.bizunit && mistats.bizunit.match(/NAO|SAC|MER|MIA|ELN|KEN|IDA|CDT|BRA|LED|MAC|RHH|TCH|TBH|SUN|BEL|CLT/) && mistats.InteractionTracker)
       mistats.interactionTracker = new mistats.InteractionTracker();
+
+   // Track surveywall on CharlotteObserver
+   if (mistats.GCSTracker && mistats.bizunit && mistats.bizunit === 'CLT')
+      mistats.gcsTracker = new mistats.GCSTracker();
 
    // Post Load Omniture Tracking
    mistats.updateTracking = function()
@@ -328,6 +332,9 @@ else {
                mistats.galleryTracker = new mistats.GalleryTracker();
             mistats.galleryTracker.increment(1);
          }
+
+         if (mistats.gcsTracker)
+            mistats.gcsTracker.track(true);
 
          if (mistats.bizunit && !mistats.bizunit.match(/MIA|ELN/))
          {
@@ -407,42 +414,77 @@ else {
       s.prop48 = s.prop48.join('|');
    }
 
-   if (location.href.match(/mcclatchydc\.com\/2011\/11\/13\/130169\/occupy-wall-street-is-many-things|bradenton\.com\/2011\/11\/10\/3641446\/4-burglary-suspects-arrested-in\.html/i)
-    && s.prop49.match(/no referrer|external opener/)
-    && document.hasFocus
-    && !document.hasFocus())
+   mistats.botTracker = function ()
    {
-      mistats.deferredTracking = function ()
+      var tagSent;
+
+      function bind(pObj, pType, pCallout)
       {
-         if (mistats.deferredTracker)
-            clearTimeout(mistats.deferredTracker);
-
-         if (window.removeEventListener)
-            window.removeEventListener('focus', mistats.deferredTracking, false);
-         else if (window.detachEvent)
-            window.detachEvent('onfocus', mistats.deferredTracking)
-         else
-            window.onfocus = null;
-
-         if (mistats.deferredTagSent)
-            return;
-
-         mistats.deferredTagSent = true;
-         s.prop11 = 'onfocus';
-         s.t();
+         if (pObj.addEventListener)
+            pObj.addEventListener(pType, pCallout, false);
+         else if (pObj.attachEvent)
+            pObj.attachEvent('on' + pType, pCallout);
       };
 
-      mitagsent = true;
-      
-      if (window.addEventListener)
-         window.addEventListener('focus', mistats.deferredTracking, false);
-      else if (window.attachEvent)
-         window.attachEvent('onfocus', mistats.deferredTracking)
-      else
-         window.onfocus = mistats.deferredTracking;
+      function unbind(pObj, pType, pCallout)
+      {
+         if (pObj.removeEventListener)
+            pObj.removeEventListener(pType, pCallout, false);
+         else if (pObj.detachEvent)
+            pObj.detachEvent('on' + pType, pCallout);
+      };
 
-      mistats.deferredTracker = setTimeout(mistats.deferredTracking, 25000);
-   }
+      function bindEvents(pState)
+      {
+         var toggle;
+
+         toggle = (pState) ? bind : unbind;
+
+         toggle(window, 'focus', valid);
+         toggle(document.documentElement, 'mousemove', valid);
+         toggle(window, 'beforeunload', invalid);
+      };
+
+      function valid(pEvent)
+      {
+         bindEvents(false);
+
+         if (tagSent)
+            return;
+
+         s.prop11 = 'botFilter: real: Event: ' + pEvent.type;
+         s.t();
+
+         tagSent = true;
+      };
+
+      function invalid(pEvent)
+      {
+         bindEvents(false);
+
+         if (tagSent)
+            return;
+
+         s.prop11 = 'botFilter: suspect: Event: ' + pEvent.type;
+//         s.t();
+
+         tagSent = true;
+      };
+
+      function init()
+      {
+         if (!(s.prop49.match(/no referrer|external opener/) && document.hasFocus && !document.hasFocus()))
+            return;
+
+         bindEvents(true);
+         window.mitagsent = true;
+      };
+
+      init();
+   };
+
+   if (location.href.match(/mcclatchydc\.com\/2011\/11\/13\/130169\/occupy-wall-street-is-many-things|bradenton\.com\/2011\/11\/10\/3641446\/4-burglary-suspects-arrested-in\.html/i))
+      mistats.botTracker();
 
    s.prop11 = mistats.bizunit + ': ' + location.hostname.replace(/^www\./i, '') + ': hasFocus: ';
       
@@ -453,8 +495,52 @@ else {
 
    s.prop11 += ': hasReferrer: ' + ((s.prop49.match(/no referrer|external opener/)) ? 'no' : 'yes');
 
+   s.prop12 = function ()
+   {
+      var n;
+      
+      for (n in navigator)
+         if (navigator[n] && typeof navigator[n] === 'string')
+         {
+            if (navigator[n].match(/gomez/i))
+               return 'GomezAgent: ' + mistats.bizunit + ': ' + location.hostname.replace(/^www\./i, '');
+            else if (navigator[n].match(/facebookexternal/i))
+               return 'FacebookAgent: ' + mistats.bizunit + ': ' + location.hostname.replace(/^www\./i, '');
+         }
+
+      return null;
+   }();
+
+/*
    if (navigator.userAgent.match(/gomez/i))
       s.prop12 = 'GomezAgent: ' + mistats.bizunit + ': ' + location.hostname.replace(/^www\./i, '');
+
+   if (navigator.userAgent.match(/facebookexternal/i))
+      s.prop12 = 'FacebookAgent: ' + mistats.bizunit + ': ' + location.hostname.replace(/^www\./i, '');
+*/
+
+   // Do not execute Omniture tag if this is a footer Iframe for an Aurora site
+   if (location.pathname.match(/\/footer/i)
+    && mistats.bizunit
+    && mistats.bizunit.match(/KEN|IDA|CDT|BRA|LED|MAC|RHH|TCH|TBH|SUN|BEL/))
+      mitagsent = true;
+
+//   if (mistats.bizunit && mistats.bizunit === 'OLY' && location.pathname.match(/\/v-vendor/i))
+//      mitagsent = true;
+
+   // Capture Tacoda tag
+   s.prop47 = function ()
+   {
+      var s
+      var scripts;
+      
+      scripts = document.getElementsByTagName('script');
+      for (s = 0; s < scripts.length; s++)
+         if (scripts[s].src && scripts[s].src.match(/tacoda\.net\/.*slf\.js/i))
+            return 'TacodaTag: ' + location.hostname + location.pathname;
+
+      return '';
+   }();
 
 	// IMG tag call
 	// Double Tag Check - Added 11/31/2007 - JJ
@@ -464,6 +550,18 @@ else {
 		var s_code=s.t();if(s_code)document.write(s_code)
 		var mitagsent = true;
 	}
+
+
+   // Log data to V15 suite for Merced
+   if (!mistats.tagSentV15 && mistats.bizunit && mistats.bizunit === 'MER')
+   {
+      mistats.tagSentV15 = true;
+      s.sa('nmv15-Merced');
+      s_code = s.t();
+      if (s_code)
+         document.write(s_code);
+      s.sa(mistats.account);
+   }
 
 /*
    // Temporary "survey" for No Referrer traffic

@@ -1,0 +1,448 @@
+function SwfUploadHelper(config) {
+
+    var freeSpace = -1;
+
+    function updateFreeSpace() {
+        $.getJSON(
+                '/web/account/AjaxFacade/freeSpace?ms=' + new Date().getTime() + 'sId=' + settings_object.sId,
+                 function(data) {
+                     freeSpace = data.freeSpace;
+                 }
+                );
+    }
+    
+    var settings_object = {
+        static_resources_base: '/',
+        sId: '',
+        file_types: '*',
+        prevent_swf_caching: false,
+        flash_url : 'flash/swfupload-2.2.0.1/swfupload.swf',
+        minimum_flash_version : '9.0.28',
+        file_post_name:'fff0',
+        file_queued_handler : fileQueued,
+        file_queue_error_handler : fileQueueError,
+        file_dialog_complete_handler : fileDialogComplete,
+        upload_start_handler : uploadStart,
+        upload_progress_handler : uploadProgress,
+        upload_error_handler : uploadError,
+        upload_success_handler : uploadSuccess,
+        upload_complete_handler : uploadComplete,
+        queue_complete_handler : queueComplete,
+        swfupload_load_failed_handler: swfuploadLoadFailed,
+
+        after_success_handler: function() {
+        },
+        localized_messages: {
+            freeSpaceError: 'You have insufficient free space.',
+            fileSizeLimitError: 'File size exceeds limit',
+            uploading: 'Uploading',
+            complete: 'Complete',
+            pending: 'Pending',
+            canceled: 'Canceled',
+            stopped: 'Stopped'
+        }
+    };
+
+    settings_object = jQuery.extend(true, settings_object, config);
+    updateFreeSpace();
+      
+    $.each(['button_image_url','flash_url'], function(index, value) {
+        settings_object[value] = settings_object.static_resources_base + '/' + settings_object[value];
+    });
+
+    SWFUpload.onload = function () {
+
+        this.swfu = new SWFUpload(settings_object);
+        SWFUpload.prototype.debug = function(msg) {
+            var a = msg;
+        }
+    };
+    /* Demo Note:  This demo uses a FileProgress class that handles the UI for displaying the file name and percent complete.
+     The FileProgress class is not part of SWFUpload.
+     */
+
+
+    /*
+     A simple class for displaying file information and progress
+     Note: This is a demonstration only and not part of SWFUpload.
+     Note: Some have had problems adapting this class in IE7. It may not be suitable for your application.
+     */
+
+    // Constructor
+    // file is a SWFUpload file object
+    // targetID is the HTML element id attribute that the FileProgress HTML structure will be added to.
+    // Instantiating a new FileProgress object with an existing file will reuse/update the existing DOM elements
+    function FileProgress(file, targetID) {
+
+        var that = this;
+
+        that.fileProgressID = file.id;
+
+        that.opacity = 100;
+        that.height = 0;
+
+
+        that.setTimer = function (timer) {
+            that.fileProgressElement["FP_TIMER"] = timer;
+        };
+
+        that.getTimer = function (timer) {
+            return that.fileProgressElement["FP_TIMER"] || null;
+        };
+
+        that.reset = function () {
+            that.fileProgressElement.className = "progressContainer";
+
+            $(that.progressStatusText).html("&nbsp;");
+            that.progressStatusText.className = "progressBarStatus";
+
+            that.fileProgressElement.childNodes[3].className = "progressBarInProgress";
+            that.fileProgressElement.childNodes[3].style.width = "0%";
+
+            that.appear();
+        };
+
+
+        that.setProgress = function (percentage) {
+            that.fileProgressElement.className = "progressContainer progressGreen";
+            $(that.fileProgressElement.childNodes[3]).attr("className", "progressBarInProgress");
+            $(that.fileProgressElement.childNodes[3]).css('width', percentage + "%");
+
+            that.appear();
+        };
+        that.setComplete = function () {
+            that.fileProgressElement.className = "progressContainer progressBlue";
+            that.fileProgressElement.childNodes[3].className = "progressBarComplete";
+            that.fileProgressElement.childNodes[3].style.width = "";
+
+            that.setTimer(setTimeout(function () {
+                that.disappear();
+            }, 5000));
+        };
+
+        that.setError = function () {
+            that.fileProgressElement.className = "progressContainer progressRed";
+            that.fileProgressElement.childNodes[3].className = "progressBarError";
+            that.fileProgressElement.childNodes[3].style.width = "";
+
+            that.setTimer(setTimeout(function () {
+                that.disappear();
+            }, 5000));
+        };
+
+        that.setCancelled = function () {
+            that.fileProgressElement.className = "progressContainer";
+            that.fileProgressElement.childNodes[3].className = "progressBarError";
+            that.fileProgressElement.childNodes[3].style.width = "";
+
+            that.setTimer(setTimeout(function () {
+                that.disappear();
+            }, 2000));
+        };
+
+        that.setStatus = function (status) {
+            $(that.progressStatusText).html(status);
+        };
+
+        // Show/Hide the cancel button
+        that.toggleCancel = function (show, swfUploadInstance) {
+            that.fileProgressElement.childNodes[0].style.visibility = show ? "visible" : "hidden";
+            if (swfUploadInstance) {
+                var fileID = that.fileProgressID;
+                that.fileProgressElement.childNodes[0].onclick = function () {
+                    swfUploadInstance.cancelUpload(fileID);
+                    return false;
+                };
+            }
+        };
+
+        that.appear = function () {
+            if (that.getTimer() !== null) {
+                clearTimeout(that.getTimer());
+                that.setTimer(null);
+            }
+
+            if (that.fileProgressWrapper.filters) {
+                try {
+                    that.fileProgressWrapper.filters.item("DXImageTransform.Microsoft.Alpha").opacity = 100;
+                } catch (e) {
+                    // If it is not set initially, the browser will throw an error.  This will set it if it is not set yet.
+                    that.fileProgressWrapper.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=100)";
+                }
+            } else {
+                that.fileProgressWrapper.style.opacity = 1;
+            }
+
+            that.fileProgressWrapper.style.height = "";
+
+            that.height = that.fileProgressWrapper.offsetHeight;
+            that.opacity = 100;
+            that.fileProgressWrapper.style.display = "";
+
+        };
+
+        // Fades out and clips away the FileProgress box.
+        that.disappear = function () {
+
+            var reduceOpacityBy = 15;
+            var reduceHeightBy = 4;
+            var rate = 30;	// 15 fps
+
+            if (that.opacity > 0) {
+                that.opacity -= reduceOpacityBy;
+                if (that.opacity < 0) {
+                    that.opacity = 0;
+                }
+
+                if (that.fileProgressWrapper.filters) {
+                    try {
+                        that.fileProgressWrapper.filters.item("DXImageTransform.Microsoft.Alpha").opacity = that.opacity;
+                    } catch (e) {
+                        // If it is not set initially, the browser will throw an error.  This will set it if it is not set yet.
+                        that.fileProgressWrapper.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=" + that.opacity + ")";
+                    }
+                } else {
+                    that.fileProgressWrapper.style.opacity = that.opacity / 100;
+                }
+            }
+
+            if (that.height > 0) {
+                that.height -= reduceHeightBy;
+                if (that.height < 0) {
+                    that.height = 0;
+                }
+
+                that.fileProgressWrapper.style.height = that.height + "px";
+            }
+
+            if (that.height > 0 || that.opacity > 0) {
+                that.setTimer(setTimeout(function () {
+                    that.disappear();
+                }, rate));
+            } else {
+                that.fileProgressWrapper.style.display = "none";
+                that.setTimer(null);
+            }
+        };
+
+
+        that.fileProgressWrapper = document.getElementById(that.fileProgressID);
+        if (!that.fileProgressWrapper) {
+            that.fileProgressWrapper = document.createElement("div");
+            that.fileProgressWrapper.className = "";
+            that.fileProgressWrapper.id = that.fileProgressID;
+
+            that.fileProgressElement = document.createElement("div");
+            that.fileProgressElement.className = "progressContainer";
+
+            var progressCancel = document.createElement("a");
+            progressCancel.className = "progressCancel";
+            progressCancel.href = "#";
+            progressCancel.style.visibility = "hidden";
+            var imgCancel = document.createElement('img');
+            $(imgCancel).attr('src', '/images/cancel.png');
+            $(imgCancel).css('width', '10px');
+            $(imgCancel).css('height', '10px');
+            progressCancel.appendChild(imgCancel);
+
+            var progressText = document.createElement("div");
+            progressText.className = "progressName";
+            $(progressText).append(document.createTextNode(file.name));
+
+            var progressBar = document.createElement("div");
+            progressBar.className = "progressBarInProgress";
+
+            that.progressStatusText = document.createElement("div");
+            that.progressStatusText.className = "progressBarStatus";
+            $(that.progressStatusText).html("&nbsp;");
+
+            $(that.fileProgressElement).append(progressCancel);
+            $(that.fileProgressElement).append(progressText);
+            $(that.fileProgressElement).append(that.progressStatusText);
+            $(that.fileProgressElement).append(progressBar);
+
+            $(that.fileProgressWrapper).append(that.fileProgressElement);
+
+            $('#' + targetID).append(that.fileProgressWrapper);
+        } else {
+            that.fileProgressElement = that.fileProgressWrapper.firstChild;
+            that.progressStatusText = that.fileProgressElement.childNodes[2];
+            that.reset();
+        }
+
+        that.height = that.fileProgressWrapper.offsetHeight;
+        that.setTimer(null);
+    }
+
+    function swfuploadLoadFailed() {
+    }
+
+    /* **********************
+     Event Handlers
+     These are my custom event handlers to make my
+     web application behave the way I went when SWFUpload
+     completes different tasks.  These aren't part of the SWFUpload
+     package.  They are part of my application.  Without these none
+     of the actions SWFUpload makes will show up in my application.
+     ********************** */
+    function fileQueued(file) {
+        var progress = new FileProgress(file, this.customSettings.progressTarget);
+        progress.setStatus(settings_object.localized_messages.pending + '...');
+        progress.toggleCancel(true, this);
+    }
+
+    function fileQueueError(file, errorCode, message) {
+
+        if (errorCode === SWFUpload.QUEUE_ERROR.QUEUE_LIMIT_EXCEEDED) {
+            alert("You have attempted to queue too many files.\n" + (message === 0 ? "You have reached the upload limit." : "You may select " + (message > 1 ? "up to " + message + " files." : "one file.")));
+            return;
+        }
+
+        var progress = new FileProgress(file, this.customSettings.progressTarget);
+        progress.setError();
+        progress.toggleCancel(false);
+
+        switch (errorCode) {
+            case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
+                progress.setStatus(settings_object.localized_messages.fileSizeLimitError);
+                this.debug("Error Code: File too big, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+                break;
+            case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
+                progress.setStatus("Cannot upload Zero Byte files.");
+                this.debug("Error Code: Zero byte file, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+                break;
+            case SWFUpload.QUEUE_ERROR.INVALID_FILETYPE:
+                progress.setStatus("Invalid File Type.");
+                this.debug("Error Code: Invalid File Type, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+                break;
+            default:
+                if (file !== null) {
+                    progress.setStatus("Unhandled Error");
+                }
+                this.debug("Error Code: " + errorCode + ", File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+                break;
+        }
+
+    }
+
+    function fileDialogComplete(numFilesSelected, numFilesQueued) {
+        if (numFilesSelected > 0) {
+            document.getElementById(this.customSettings.cancelButtonId).disabled = false;
+        }
+
+        var bytesTotal = calculateTotalUploadSize(numFilesQueued);
+
+        if (freeSpace >= 0 && bytesTotal > freeSpace) {
+            alert(settings_object.localized_messages.freeSpaceError);
+            updateFreeSpace();
+            swfu.cancelQueue();
+        } else {
+            this.startUpload();
+        }
+    }
+
+    /*  Calculates  total size of all files to be uploaded */
+    function calculateTotalUploadSize(numOfFiles) {
+        var totalSize = 0;
+        for (var i = 0; i < numOfFiles; i++) {
+            totalSize += swfu.getFile(i).size;
+        }
+        return totalSize;
+    }
+
+    function uploadStart(file) {
+        /* I don't want to do any file validation or anything,  I'll just update the UI and
+         return true to indicate that the upload should start.
+         It's important to update the UI here because in Linux no uploadProgress events are called. The best
+         we can do is say we are uploading.
+         */
+        var progress = new FileProgress(file, this.customSettings.progressTarget);
+        progress.setStatus(settings_object.localized_messages.uploading + '...');
+        progress.toggleCancel(true, this);
+
+        return true;
+    }
+
+    function uploadProgress(file, bytesLoaded, bytesTotal) {
+        var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
+
+        var progress = new FileProgress(file, this.customSettings.progressTarget);
+        progress.setProgress(percent);
+        var humanReadableSize = UploadModule.readablizeBytes(file.size);
+        progress.setStatus(settings_object.localized_messages.uploading + '... (' + humanReadableSize + ') - ' + percent + '%');
+    }
+
+    function uploadSuccess(file, serverData) {
+        var progress = new FileProgress(file, this.customSettings.progressTarget);
+        progress.setComplete();
+        progress.setStatus(settings_object.localized_messages.complete + ".");
+        progress.toggleCancel(false);
+    }
+
+    function uploadError(file, errorCode, message) {
+
+        var progress = new FileProgress(file, this.customSettings.progressTarget);
+        progress.setError();
+        progress.toggleCancel(false);
+
+        switch (errorCode) {
+            case SWFUpload.UPLOAD_ERROR.HTTP_ERROR:
+                progress.setStatus("Upload Error: " + message);
+                this.debug("Error Code: HTTP Error, File name: " + file.name + ", Message: " + message);
+                break;
+            case SWFUpload.UPLOAD_ERROR.UPLOAD_FAILED:
+                progress.setStatus("Upload Failed.");
+                this.debug("Error Code: Upload Failed, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+                break;
+            case SWFUpload.UPLOAD_ERROR.IO_ERROR:
+                progress.setStatus("Server (IO) Error");
+                this.debug("Error Code: IO Error, File name: " + file.name + ", Message: " + message);
+                break;
+            case SWFUpload.UPLOAD_ERROR.SECURITY_ERROR:
+                progress.setStatus("Security Error");
+                this.debug("Error Code: Security Error, File name: " + file.name + ", Message: " + message);
+                break;
+            case SWFUpload.UPLOAD_ERROR.UPLOAD_LIMIT_EXCEEDED:
+                progress.setStatus("Upload limit exceeded.");
+                this.debug("Error Code: Upload Limit Exceeded, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+                break;
+            case SWFUpload.UPLOAD_ERROR.FILE_VALIDATION_FAILED:
+                progress.setStatus("Failed Validation.  Upload skipped.");
+                this.debug("Error Code: File Validation Failed, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+                break;
+            case SWFUpload.UPLOAD_ERROR.FILE_CANCELLED:
+                // If there aren't any files left (they were all cancelled) disable the cancel button
+                if (this.getStats().files_queued === 0) {
+                    document.getElementById(this.customSettings.cancelButtonId).disabled = true;
+                }
+                progress.setStatus(settings_object.localized_messages.canceled + '.');
+                progress.setCancelled();
+                break;
+            case SWFUpload.UPLOAD_ERROR.UPLOAD_STOPPED:
+                progress.setStatus(settings_object.localized_messages.stopped + '.');
+                break;
+            default:
+                progress.setStatus("Unhandled Error: " + errorCode);
+                this.debug("Error Code: " + errorCode + ", File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+                break;
+        }
+    }
+
+    function uploadComplete(file) {
+        if (this.getStats().files_queued === 0) {
+            document.getElementById(this.customSettings.cancelButtonId).disabled = true;
+        }
+    }
+
+    // This event comes from the Queue Plugin
+    function queueComplete(numFilesUploaded) {
+        updateFreeSpace();
+        var status = document.getElementById(settings_object.custom_settings.divStatus);
+        if (status) {
+            $(status).html(numFilesUploaded + " file" + (numFilesUploaded === 1 ? "" : "s") + " uploaded.");
+        }
+        if (numFilesUploaded > 0) {
+            settings_object.after_success_handler();
+        }
+    }
+}

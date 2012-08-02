@@ -1,4 +1,4 @@
-/* SiteCatalyst code version: H.22.1.
+/* SiteCatalyst code version: H.24.4.
 Copyright 1996-2010 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 /* 22/11/2010 GH  Initial Baseline                                                            */
@@ -21,6 +21,9 @@ More info available at http://www.omniture.com */
 /* 17/11/2011 IB scCheckout workaround */
 /* 05/12/2011 MW scCheckout workaround pageName amendment*/
 /* 07/02/2012 RAG Implement brand name SEO tracking */
+/* 28/05/2012 RA Page Load speeds */
+/* 28/06/2012 AM Update to H.24.4 Copying prop9 (WebsphereID) into s.TransactionID */
+/* 28/06/2012 AM Amended Channel.Manager plugin code eVar conversion from 14 to 30 days */
 
 //var s_account="argosuat"
 
@@ -33,6 +36,8 @@ if(s_account){
 
 
 var s=s_gi(s_account)
+
+
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
 s.cookieDomainPeriods="3"
@@ -68,6 +73,13 @@ s.usePlugins=true
 function s_doPlugins(s) {
 	var bMercadoSearchRedirect=false;
 	var prev_merc_search = s.c_r('s_mercsearch');
+	
+	// opt = "header" or "browserapi"
+	// e1 = event to store page load time in ms > Event 44
+	// e2 = event to store page load time denominator > Event 45
+	
+	s.eVar40 = s.getLoadTime("browserapi","event44","event45");
+
 	
 	//set referrer
 	if(s.getQueryParam('sRefURL')){
@@ -194,9 +206,9 @@ function s_doPlugins(s) {
 	s.prop8=s.getQueryParam('et_rid');
 	s.prop13=s.getQueryParam('et_cid');
 	
-	if(!s.eVar63) s.eVar63=s.crossVisitParticipation(s.campaign,'s_cmx','14','5',' > ','','1');
-	if(!s.eVar64 && s.eVar61 && isSeoBrandAlone && !isChannelStackModified) s.eVar64=s.crossVisitParticipation(s.eVar61,'s_chx','14','5',' > ','','1');
-	if(!s.eVar65 && s.eVar62) s.eVar65=s.crossVisitParticipation(s.eVar62,'s_kwx','14','5',' > ','','1');		
+	if(!s.eVar63) s.eVar63=s.crossVisitParticipation(s.campaign,'s_cmx','30','5',' > ','','1');
+	if(!s.eVar64 && s.eVar61 && isSeoBrandAlone && !isChannelStackModified) s.eVar64=s.crossVisitParticipation(s.eVar61,'s_chx','30','5',' > ','','1');
+	if(!s.eVar65 && s.eVar62) s.eVar65=s.crossVisitParticipation(s.eVar62,'s_kwx','30','5',' > ','','1');		
 
 	// Product Details Socical Widget 
 	s.eVar53=s.getQueryParam('soc');
@@ -412,6 +424,11 @@ function s_doPlugins(s) {
 	}
 
 	s.tnt = s.trackTNT();
+
+/* Copying prop9 (WebsphereID) into transactionID */
+	if (s.prop9) {
+		s.transactionID = s.prop9;
+	}
 }
 
 /* DynamicObjectIDs config */
@@ -424,6 +441,42 @@ s.getObjectID=s_getObjectID;
 s.doPlugins=s_doPlugins;
 
 /************************** PLUGINS SECTION *************************/
+
+/*
+ * Plugin: getLoadTime 1.0
+ */
+s.getLoadTime=new Function("opt","e1","e2",""
++"var s=this;if(opt=='header'&&!(typeof s_preLoad==='undefined'))var "
++"loadTime=((new Date()).getTime()-s_preLoad);else if(opt=='browserap"
++"i'&&!(typeof performance==='undefined'))var loadTime=((new Date())."
++"getTime()-performance.timing.navigationStart);else return;s.events="
++"s.apl(s.events,e1+'='+Math.round(loadTime)+','+e2,',',2);var nVer=n"
++"avigator.appVersion;var nAgt=navigator.userAgent;var browserName=na"
++"vigator.appName;var fullVersion=''+parseFloat(navigator.appVersion)"
++";var majorVersion=parseInt(navigator.appVersion,10);var nameOffset,"
++"verOffset,ix;if((verOffset=nAgt.indexOf('Opera'))!=-1){browserName="
++"'Opera';fullVersion=nAgt.substring(verOffset+6);if((verOffset=nAgt."
++"indexOf('Version'))!=-1)fullVersion=nAgt.substring(verOffset+8);}el"
++"se if((verOffset=nAgt.indexOf('MSIE'))!=-1){browserName='Microsoft "
++"Internet Explorer';fullVersion=nAgt.substring(verOffset+5);}else if"
++"((verOffset=nAgt.indexOf('Chrome'))!=-1){browserName='Chrome';fullV"
++"ersion=nAgt.substring(verOffset+7);}else if((verOffset=nAgt.indexOf"
++"('Safari'))!=-1){browserName='Safari';fullVersion=nAgt.substring(ve"
++"rOffset+7);if((verOffset=nAgt.indexOf('Version'))!=-1)fullVersion=n"
++"Agt.substring(verOffset+8);}else if((verOffset=nAgt.indexOf('Firefo"
++"x'))!=-1){browserName='Firefox';fullVersion=nAgt.substring(verOffse"
++"t+8);}else if((nameOffset=nAgt.lastIndexOf(' ')+1)<(verOffset=nAgt."
++"lastIndexOf('/'))){browserName=nAgt.substring(nameOffset,verOffset)"
++";fullVersion=nAgt.substring(verOffset+1);if(browserName.toLowerCase"
++"()==browserName.toUpperCase())browserName=navigator.appName;}else{b"
++"rowserName='Other Unknown Browser';fullVersion='';}if((ix=fullVersi"
++"on.indexOf(';'))!=-1)fullVersion=fullVersion.substring(0,ix);if((ix"
++"=fullVersion.indexOf(' '))!=-1)fullVersion=fullVersion.substring(0,"
++"ix);majorVersion=parseInt(''+fullVersion,10);if(isNaN(majorVersion)"
++"){fullVersion=''+parseFloat(navigator.appVersion);majorVersion=pars"
++"eInt(navigator.appVersion,10);}return browserName+' '+majorVersion;");
+
+
 /*
  * Plugin: getQueryParam 2.4
  */

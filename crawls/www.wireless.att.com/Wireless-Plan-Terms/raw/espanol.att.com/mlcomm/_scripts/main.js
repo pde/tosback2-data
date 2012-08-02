@@ -107,6 +107,8 @@ function renderGlobalNav() {
 	}
 	document.write('.jpg"  alt="Noticias" /></a>'); 
 	document.write('</li>');
+	
+	
 	if(state == 'nostate') {document.write('<li><a  href="/about_att/index.html" title="Informaci&oacute;n corporativa sobre AT&amp;T"> <img src="/mlcomm/_images/template/global_nav/global_acerca');}
 	else {	
 	document.write('<li><a href="/about_att/index.html?id=' + state + '" title="Informaci&oacute;n corporativa sobre AT&amp;T"> <img src="/mlcomm/_images/template/global_nav/global_acerca');
@@ -115,6 +117,22 @@ function renderGlobalNav() {
 	document.write('_on');
 	}
 	document.write('.jpg"  alt="Acerca de AT&amp;T" /></a>'); 
+	document.write('</li>');
+	
+	
+	
+	//OLYMPICS LINK
+//	if(state == 'nostate') {document.write('<li><a  href="/MiTrayecto/index.html" title="Informaci&oacute;n corporativa sobre AT&amp;T"> <img src="/mlcomm/_images/template/global_nav/global_acerca');}
+//	else {	
+//	document.write('<li><a href="/MiTrayecto/index.html?id=' + state + '" title="Olimpiadas"> <img src="/mlcomm/_images/template/global_nav/global_acerca');
+//	}
+//	if(section == 'about_att') {
+//	document.write('_on');
+//	}
+//	document.write('.jpg"  alt="Olímpiadas" /></a>'); 
+//	document.write('</li>');
+	
+	
 	document.write('</ul>');
 	document.write('<div id="follow-fb-btn">')
 	document.write('<a href="http://www.facebook.com/attlatino?v=app_4949752878" target="_blank" title="S&iacute;guenos en Facebook"><img src="/mlcomm/_images/content/btn_facebook_homepage.png" title="S&iacute;guenos en Facebook" alt="S&iacute;guenos en Facebook" ></a>')
@@ -428,7 +446,7 @@ document.write('                <li><a ');
 document.write('                <li><a ');
 		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'move_att\')"') } else {document.write(' href="/help/att_move/index.html?id=' + state  + '" ');}
 												document.write(' title="AT&amp;T facilita toda tu mudanza">AT&amp;T facilita toda tu mudanza</a></li>');
-document.write('                <li><a href="http://elportal.att.net/" title="Mi Portal &ndash; entretenimiento y m&aacute;s">Mi Portal â€" entretenimiento y m&aacute;s</a></li>');
+document.write('                <li><a href="http://elportal.att.net/" title="Mi Portal &ndash; entretenimiento y m&aacute;s">Mi Portal  &ndash; entretenimiento y m&aacute;s</a></li>');
 document.write('                <li><a ');
 		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'legal_home\')"') } else {document.write(' href="/legal_terms/index.html?id=' + state  + '" ');}
 												document.write(' title="T&eacute;rminos y condiciones">T&eacute;rminos y condiciones</a></li>');
@@ -518,7 +536,7 @@ document.write(' <ul>');
 document.write(' <li>');
 document.write(' <ul id="rss-menu">');
 document.write(' <li><a href="http://att.centralcast.net/rssespanol/" target="_blank" title="RSS">RSS</a></li>');
-document.write(' <li class="nb"><a href="http://att.centralcast.net/rssespanol/" target="_blank" title="&iquest;Qu&eacute; es RSS?">¿Qu&eacute; es RSS?</a></li>');
+document.write(' <li class="nb"><a href="http://att.centralcast.net/rssespanol/" target="_blank" title="&iquest;Qu&eacute; es RSS?">&iquest;Qu&eacute; es RSS?</a></li>');
 document.write(' </ul>');
 document.write(' <div class="clear"></div>');
 document.write(' </li>');
@@ -536,7 +554,42 @@ document.write(' </div>     ');
 
 function renderLatestReleases() {
 document.write('<div class="section nbb">');
-document.write('<h6>Titulares</h6>');  
+document.write('<h6>Titulares</h6>');
+document.write('<div class="rc-release-box">');
+document.write('<p>26 de julio de 2012<br />');
+document.write('<a href="/newsroom/news_releases/miami_4g_lte_7_24_12.html?id=' + state + '" title="4G LTE de AT&amp;T ahora en Miami">4G LTE de AT&amp;T ahora en Miami</a></p>');
+document.write('</div>');
+document.write('<div class="rc-release-box">');
+document.write('<p>18 de julio de 2012<br />');
+document.write('<a href="/newsroom/news_releases/shared_data_7_18_12.html?id=' + state + '" title="AT&#38;T ofrece m&#225;s opciones con los nuevos planes de datos compartidos del servicio m&#243;vil">AT&#38;T ofrece m&#225;s opciones con los nuevos planes de datos compartidos del servicio m&#243;vil</a></p>');
+document.write('</div>');
+document.write('<div class="rc-release-box">');
+//<<<<<<< .mine
+document.write('<p>11 de julio de 2012<br />');
+document.write('<a href="/newsroom/news_releases/philly_network_excellence_7_2_12.html?id=' + state + '" title="Aumentan las mejoras al servicio m&#243;vil de AT&#38;T gracias a nuevas torres en Filadelfia">Las inversiones de AT&#38;T en el &#225;rea metropolitana de Filadelfia redundan en mejor rendimiento de los servicios de voz y datos</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">');
+document.write('<p>2 de julio de 2012<br />');
+document.write('<a href="/newsroom/news_releases/tampa_network_upgrade_7_2_12.html?id=' + state + '" title="AT&#38;T ampl&#237;a sus servicios de internet m&#243;vil en el &#225;rea de Tampa Bay">AT&#38;T ampl&#237;a sus servicios de internet m&#243;vil en el &#225;rea de Tampa Bay</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">');
+//=======
+document.write('<p>1 de julio de 2012<br />');
+document.write('<a href="/newsroom/news_releases/dallas_network_excellence_7_2_12.html?id=' + state + '" title="Nuevas mejoras al servicio m&#243;vil de AT&T gracias a la instalaci&#243;n de nuevas torres en Dallas">Las inversiones de AT&#38;T en Dallas&#45;Fort Worth redundan en mejor rendimiento de los servicios de voz y datos</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">');
+//>>>>>>> .r71
+document.write('<p>23 de mayo de 2012<br />');
+document.write('<a href="/newsroom/news_releases/galaxy_appeal_5-23-12.html?id=' + state + '" title="AT&amp;T anuncia su primer equipo smartphone slider prepagado, el Samsung Galaxy Appeal&trade;">AT&amp;T anuncia su primer equipo smartphone slider prepagado, el Samsung Galaxy Appeal&trade;</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">');
+document.write('<p>16 de mayo de 2012<br />');
+document.write('<a href="/newsroom/news_releases/los_riesgos_de_textear_y_conducir_05_16_12.html?id=' + state + '" title="Nueva encuesta: los adolescentes hispanos est&aacute;n claramente conscientes de los peligros de enviar mensajes de texto al conducir, pero incluso as&iacute;, un 54% incurre en esta riesgosa conducta">Nueva encuesta: los adolescentes hispanos est&aacute;n claramente conscientes de los peligros de enviar mensajes de texto al conducir, pero incluso as&iacute;, un 54% incurre en esta riesgosa conducta</a></p>');
+document.write('</div>');
 
 document.write('<div class="rc-release-box">');
 document.write('<p>24 de abril de 2012<br />');
@@ -545,32 +598,9 @@ document.write('</div>');
 
 document.write('<div class="rc-release-box">');
 document.write('<p>11 de abril de 2012<br />');
-document.write('<a href="/newsroom/news_releases/el_poder_del_cliente_04_11_12.html?id=' + state + '" title="El Poder del Cliente al Frente de la Nueva Campa&ntilde;a Publicitaria de AT&amp;T, Que Incluye Avisos a Nivel Nacional en las Principales Cadenas en Espa&ntilde;ol">El Poder del Cliente al Frente de la Nueva Campa&ntilde;a Publicitaria de AT&amp;T, Que Incluye Avisos a Nivel Nacional en las Principales Cadenas en Espa&ntilde;ol</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">');
-document.write('<p>5 de abril de 2012<br />');
-document.write('<a href="/newsroom/news_releases/nuestra_belleza_latina_4-05-12.html?id=' + state + '" title="AT&T Ofrece a los Fanáticos la Oportunidad de Ganar $10,000 y Ver en Su Equipo Móvil Compatible Toda la Acción del Detrás de Escena de Nuestra Belleza Latina">AT&T Ofrece a los Fanáticos la Oportunidad de Ganar $10,000 y Ver en Su Equipo Móvil Compatible Toda la Acción del Detrás de Escena de "Nuestra Belleza Latina"</a></p>');
+document.write('<a href="/newsroom/news_releases/el_poder_del_cliente_04_11_12.html?id=' + state + '" title="El poder del cliente al Frente de la nueva campa&ntilde;a publicitaria de AT&amp;T, que Incluye avisos a nivel nacional en las principales cadenas en Espa&ntilde;ol">El poder del cliente al Frente de la nueva campa&ntilde;a publicitaria de AT&amp;T, que Incluye avisos a nivel nacional en las principales cadenas en Espa&ntilde;ol</a></p>');
 document.write('</div>');
  
-
-document.write('<div class="rc-release-box">');
-document.write('<p>19 de marzo del 2012<br />');
-document.write('<a href="/newsroom/news_releases/att_aspire_3-19-12.html?id=' + state + '" title="AT&amp;T Anuncia Expansi&oacute;n de Compromiso con la Educaci&oacute;n de 250 Millones de D&oacute;lares">AT&amp;T Anuncia Expansi&oacute;n de Compromiso con la Educaci&oacute;n de 250 Millones de D&oacute;lares</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">');
-document.write('<p>21 del febrero del 2012<br />');
-document.write('<a href="/newsroom/news_releases/att_aspire_2-21-12.html?id=' + state + '" title="Asociaci&oacute;n de Hispanos y Latinos de AT&amp;T Inspira a Adolescentes a Seguir Carreras en Ciencias e Ingenier&iacute;a con la Jornada Nacional de Alta Tecnolog&iacute;a">Asociaci&oacute;n de Hispanos y Latinos de AT&amp;T Inspira a Adolescentes a Seguir Carreras en Ciencias e Ingenier&iacute;a con la Jornada Nacional de Alta Tecnolog&iacute;a</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">');
-document.write('<p>11 del enero del 2012<br />');
-document.write('<a href="/newsroom/news_releases/inclusion_of_hispanics_01-11-2012.html?id=' + state + '" title="AT&amp;T Recibe Puntaje Alto Por Inclusi&oacute;n De Hispanos">AT&amp;T Recibe Puntaje Alto Por Inclusi&oacute;n De Hispanos</a></p>');
-document.write('</div>');
-
-
-
 document.write('<div class="rc-release-box">');
 document.write('<p class="arrow"> <a href="/newsroom/news_archive.html?id=' + state + '" title="Ver archivos">Ver archivos</a></p>');
 document.write('</div>');
@@ -598,9 +628,9 @@ function renderAyudaRightCol() {
  						document.write('<h6>Facturaci&oacute;n y Pago</h6>');
 						document.write('<p><a href="/help/faqs/billing.html?id=' + state + '" title="Informaci&oacute;n sobre opciones de facturaci&oacute;n y pago">Informaci&oacute;n sobre opciones de facturaci&oacute;n y pago</a>.</p>');
  						document.write('<h6>Nuevo Servicio Telef&oacute;nico</h6>');
-						document.write('<p><a href="https://www.att.com/Common/espanol/order_form.html?id=' + state + '&prod=new_phone_service" title="&iquest;Cliente nuevo? Suscr&iacute;bete aqu&iacute;.">¿Cliente nuevo? SuscrÃ­bete aquÃ­</a>.</p>');
+						document.write('<p><a href="https://www.att.com/Common/espanol/order_form.html?id=' + state + '&prod=new_phone_service" title="&iquest;Cliente nuevo? Suscr&iacute;bete aqu&iacute;.">&iquest;Cliente nuevo? Suscr&iacute;bete aqu&iacute;</a>.</p>');
  						document.write('<h6>AT&amp;T facilita toda tu mudanza</h6>');
-						document.write('<p><a href="/help/att_move/index.html?id=' + state + '" title="&iquest;Te est&aacute;s mudando? Con AT&amp;T facilita toda tu mudanza, encontrar&aacute;s todo lo necesario para mudarte a tu nueva casa.">¿Te est&aacute;s mudando? Con AT&amp;T Facilita Toda Tu Mudanza, encontrar&aacute;s todo lo necesario para mudarte a tu nueva casa.</a>.</p>');
+						document.write('<p><a href="/help/att_move/index.html?id=' + state + '" title="&iquest;Te est&aacute;s mudando? Con AT&amp;T facilita toda tu mudanza, encontrar&aacute;s todo lo necesario para mudarte a tu nueva casa.">&iquest;Te est&aacute;s mudando? Con AT&amp;T Facilita Toda Tu Mudanza, encontrar&aacute;s todo lo necesario para mudarte a tu nueva casa.</a>.</p>');
  						document.write('<h6>La Casa Conectada</h6>');
 						document.write('<p><a href="/help/conectada/index.html?id=' + state + '" title="Columna con informaci&oacute;n relevante a tus necesidades, consejos y preguntas m&aacute;s comunes.">Columna con informaci&oacute;n relevante a tus necesidades, consejos y preguntas m&aacute;s comunes</a>.</p>');
 						document.write('</div>');
@@ -610,8 +640,8 @@ function renderAyudaRightCol() {
 function renderMoveRightCol() {
 						document.write('<div class="section nbb">');
 						document.write('<h6>Recursos Adicionales</h6>');
-						document.write('<p>GuÃ­a de mudanza para negocios<br /><a href="/help/att_move/moving_tips.html?id=' + state + '" title="Gu&iacute;a de mudanza para negocios"  >M&aacute;s Informaci&oacute;n >> </a> </p>');
-						document.write('<p>GuÃ­a de mudanza para negocios<br /><a href="/mlcomm/documents/att_moving_guide.pdf"  title="Gu&iacute;a de mudanza para negocios PDF " target="_blank">Descargar el PDF >>  </a></p>');
+						document.write('<p>Gu&iacute;a de mudanza para negocios<br /><a href="/help/att_move/moving_tips.html?id=' + state + '" title="Gu&iacute;a de mudanza para negocios"  >M&aacute;s Informaci&oacute;n >> </a> </p>');
+						document.write('<p>Gu&iacute;a de mudanza para negocios<br /><a href="/mlcomm/documents/att_moving_guide.pdf"  title="Gu&iacute;a de mudanza para negocios PDF " target="_blank">Descargar el PDF >>  </a></p>');
 						document.write('</div>');
 }
 
@@ -645,7 +675,7 @@ function renderFooter() {
 	document.write('    	<li><a href="http://www.att.com/gen/careers?pid=1" title="Empleos">Empleos</a></li>');
 	document.write('    	<li><a href="http://www.wireless.att.com/find-a-store/" title="Buscar tienda">Buscar tienda</a></li>');
 	document.write('    	<li><a href="/help/contact_us.html?id=' + state + '" title="Cont&aacute;ctanos">Cont&aacute;ctanos</a></li>');
-	document.write('    	<li><a href="/privacy_policy/index.html?id=' + state + '" title="Pol&iacute;tica de privacidad">PolÃ­tica de privacidad</a></li>');
+	document.write('    	<li><a href="/privacy_policy/index.html?id=' + state + '" title="Pol&iacute;tica de privacidad">Pol&iacute;tica de privacidad</a></li>');
 	document.write('    	<li><a href="/privacy_policy/privacy_terms_of_use.html?id=' + state + '" title="T&eacute;rminos de uso">T&eacute;rminos de uso</a></li>');
 	document.write('    	<li><a href="/residential_customers/att_internet/index.html?id=' + state + '" class="nb" title="Broadband Management">Broadband Management</a></li>');
 	document.write('    </ul>');
@@ -666,7 +696,7 @@ function renderFooterOrderForm() {
 	document.write('    	<li><a href="http://www.att.com/gen/careers?pid=1" title="Empleos">Empleos</a></li>');
 	document.write('    	<li><a href="http://www.wireless.att.com/find-a-store/" title="Buscar Tienda">Buscar Tienda</a></li>');
 	document.write('    	<li><a href="http://espanol.att.com/help/contact_us.html?id=' + state + '" title="Cont&aacute;ctanos">Cont&aacute;ctanos</a></li>');
-	document.write('    	<li><a href="/privacy_policy/index.html?id=' + state + '" title="Pol&iacute;tica de Privacidad">PolÃ­tica de Privacidad</a></li>');
+	document.write('    	<li><a href="/privacy_policy/index.html?id=' + state + '" title="Pol&iacute;tica de Privacidad">Pol&iacute;tica de Privacidad</a></li>');
 	document.write('    	<li><a href="/privacy_policy/privacy_terms_of_use.html?id=' + state + '" title="T&eacute;rminos de uso">T&eacute;rminos de uso</a></li>');
 	document.write('    	<li><a href="/residential_customers/att_internet/index.html?id=' + state + '" class="nb" title="Broadband Management">Broadband Management</a></li>');
 	document.write('    </ul>');
@@ -693,7 +723,7 @@ function renderUverseProductMenu() {
 	document.write('</div>');
                     
 	document.write('<div class="section ">');
-	document.write('<h6>GuÃ­a de Canales</h6>');
+	document.write('<h6>Gu&iacute;a de Canales</h6>');
 	document.write('<p id="channel-guide"><a href="#canales" onclick="open(\'http://www.udigtv.com/urock/lineup/urd5.aspx?urockz\',\'\',\'width=775,height=750\')"  title="Ver los Canales">Ver los Canales</a><br />(en ingl&eacute;s)</p>');
             
 	document.write('</div>');
@@ -707,12 +737,12 @@ function renderUverseProductMenu() {
 
 function renderLandingPageBottom() {
 	document.write('<div id="all-products-box" class="content-box-half"> ');
-	document.write('<h6>¿Tienes una pregunta con respecto a los productos y servicios de AT&amp;T?</h6>');
+	document.write('<h6>&iquest;Tienes una pregunta con respecto a los productos y servicios de AT&amp;T?</h6>');
 	document.write('<p><a href="/help/index.html?id=' + state + '" title="M&aacute;s informaci&oacute;n">M&aacute;s informaci&oacute;n >></a></p>');
 	document.write('</div>');
                 
 	document.write('<div id="move-att-box" class="content-box-half last"> ');
-	document.write('<h6><em>¿Te est&aacute;s mudando?</em> AT&amp;T facilita toda tu mudanza</h6>');
+	document.write('<h6><em>&iquest;Te est&aacute;s mudando?</em> AT&amp;T facilita toda tu mudanza</h6>');
 	document.write('<p><a href="/help/att_move/index.html?id=' + state + '" title="M&aacute;s informaci&oacute;n">M&aacute;s informaci&oacute;n >></a></p>');
 	document.write('</div>');
 }

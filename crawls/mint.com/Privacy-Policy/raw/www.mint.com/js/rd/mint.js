@@ -741,6 +741,56 @@ $(document).ready(function(){
     });
   }
 
+var changeTestimonial = function() {
+    var allTestimonials = $("#testimonials .testimonial"),
+        currentPosition =  ($("#testimonials .show").attr("data-quote")) * 1;
+        allTestimonials = $("#testimonials .testimonial");
+
+    // if we're at the last position start over at the begining. 
+    if(currentPosition === allTestimonials.length) {
+
+      var theQuote = $("#testimonials").find("[data-quote='" + currentPosition + "']");
+
+      theQuote.fadeOut(function() {
+
+        $(this).removeClass("show");
+        $(".dot-nav").find("[data-num='" + currentPosition + "']")
+            .removeClass("green");
+
+        // reset the position to 1 (the beginning)
+        currentPosition = 1;
+
+        $("#testimonials").find("[data-quote='" + currentPosition + "']")
+          .fadeIn()
+          .addClass("show");
+          $(".dot-nav").find("[data-num='" + currentPosition + "']")
+            .addClass("green")
+
+      });
+
+    } else {
+
+      currentPosition = currentPosition;
+
+      var theQuote = $("#testimonials").find("[data-quote='" + currentPosition + "']");
+      // console.log(theQuote);
+      theQuote.fadeOut(function() {
+        theQuote.removeClass("show")
+          .next()
+          .fadeIn()
+          .addClass("show");
+
+          $(".dot-nav").find("[data-num='" + currentPosition + "']")
+            .removeClass("green")
+            .next()
+            .addClass("green");
+      })
+
+    }
+  }
+
+  var t = setInterval(changeTestimonial , 3000);	
+
 
 
 }) // end doc.ready

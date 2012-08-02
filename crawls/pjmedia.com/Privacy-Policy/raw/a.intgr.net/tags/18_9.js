@@ -1,0 +1,1 @@
+document.write('<img src="http://a.intgr.net/tags/18_13_9.gif" height="0" width="0" border="0" class="im_t">');

@@ -16,7 +16,8 @@ s.eVar2=s.prop1;s.eVar3=s.prop4;s.events=s.apl(s.events,'event8',',',2)
 s.eVar25=s.getNewRepeat();var temp=s.getQueryParam('adonVars');if(temp!="")
 s.eVar27=temp;else
 {temp=s.getQueryParam('AID');if(temp!="")
-s.eVar28=temp;}}
+s.eVar28=temp;}
+var kr=document.referrer,kk=s.getQueryParam("q","",kr),ks=s.getQueryParam("esrc","",kr);if(kr.indexOf("www.google.com")&&!kk&&ks=="s"){var ksr=kr.split("q="),kq="q=Google%20Secure%20Search";s.referrer=ksr[0]+kq+ksr[1]};}
 s.doPlugins=s_doPlugins
 s.getNewRepeat=new Function(""
 +"var s=this,e=new Date(),cval,ct=e.getTime(),y=e.getYear();e.setTime"

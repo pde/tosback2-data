@@ -110,6 +110,12 @@ $(document).ready(function() {
 	/*
 	 * LOAD SUPPORT FILES
 	 */
+	// initialize video.js
+/*
+	if($('video').length) {
+		PGUtil.loadJS('http://vjs.zencdn.net/c/video.js');
+	}
+*/
 	// initialize overlay
 	if($('a[rel=overlay]').length) {
 		PGUtil.loadJS(PGUtil.basePath + '_scripts/lib/jquery.blockUI.js', PGUtil.basePath + '_scripts/overlay.js');
@@ -145,7 +151,7 @@ $(document).ready(function() {
 		return false;
 	});
 	//track investor links
-	$('a[href^=http://www.pginvestor.com]').click(function() {
+	$('a[href^="http://www.pginvestor.com"]').click(function() {
 		PGUtil.trackPage(this.href);
 		return true;
 	});
@@ -224,32 +230,34 @@ $(document).ready(function() {
 		.each(function() {
 			//apply using each to have access to element through $(this)
 			var isLeft = $(this).hasClass('.tooltip_left');
-			$(this).qtip({
-				content: $(this).parents('.vcard').html(),
-				position: {
-					corner: {
-						tooltip: isLeft ? 'rightMiddle' : 'leftMiddle',
-						target:  isLeft ? 'leftMiddle' : 'rightMiddle'
-					}
-				},
-				hide: {
-					fixed: true
-				},
-				style: { 
-					width: 350,
-					padding: 10,
-					background: '#00AF3F',
-					color: 'white',
-					textAlign: 'left',
-					border: {
-						width: 1,
-						radius: 1,
-						color: '#00AF3F'
-					},
-					tip: isLeft ? 'rightMiddle' : 'leftMiddle',
-					name: 'dark'
-				}						
-			});
+                        if ($.fn.qtip) {
+                            $(this).qtip({
+                                    content: $(this).parents('.vcard').html(),
+                                    position: {
+                                            corner: {
+                                                    tooltip: isLeft ? 'rightMiddle' : 'leftMiddle',
+                                                    target:  isLeft ? 'leftMiddle' : 'rightMiddle'
+                                            }
+                                    },
+                                    hide: {
+                                            fixed: true
+                                    },
+                                    style: { 
+                                            width: 350,
+                                            padding: 10,
+                                            background: '#00AF3F',
+                                            color: 'white',
+                                            textAlign: 'left',
+                                            border: {
+                                                    width: 1,
+                                                    radius: 1,
+                                                    color: '#00AF3F'
+                                            },
+                                            tip: isLeft ? 'rightMiddle' : 'leftMiddle',
+                                            name: 'dark'
+                                    }						
+                            });
+                        }
 		});
 
 //end .ready

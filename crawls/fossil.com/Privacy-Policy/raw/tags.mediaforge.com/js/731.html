@@ -1,0 +1,53 @@
+_mf_tag = 
+{
+	"init": function()
+	{
+		var id = 'mf_div';
+		var div = this.create_element(document, ['div', 'id', id]);
+		if(div)
+		{
+			div.style.display = "none";
+			var body = document.getElementsByTagName('body')[0].firstChild;
+			if(body) body.parentNode.insertBefore(div, body);
+
+			var iframe = '<' + 'iframe src="' + window.location.protocol + '//tags.mediaforge.com/pix/731?type=pos" width="0" height="0"></iframe>';
+			this.inner_html(id, iframe);
+			this.set_timeout(3000);
+		}
+	},
+	"create_element": function(doc, def, parent)
+	{
+		var el = null;
+		if(typeof doc.createElementNS != "undefined")
+		el = doc.createElementNS('http://www.w3.org/1999/xhtml', def[0]);
+		else if(typeof doc.createElement != "undefined")
+		el = doc.createElement(def[0]);
+
+		if(!el)
+		return false;
+
+		for(var i = 1; i < def.length; i++)
+		el.setAttribute(def[i++], def[i]);
+
+		if(parent)
+		parent.appendChild(el);
+
+		return el;
+	},
+	"set_timeout": function(t)
+	{
+		this.timeout = setTimeout('timeout_mf()', t ? t : 3000);
+	},
+	"inner_html": function(id, html)
+	{
+		document.getElementById(id).innerHTML = html;
+	}
+};
+
+function timeout_mf()
+{
+	var t = _mf_tag.timeout;
+	if(t) _mf_tag.inner_html('mf_div', '');
+}
+
+_mf_tag.init();

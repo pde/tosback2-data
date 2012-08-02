@@ -1,39 +1,12 @@
 /*
-    $Rev: 150789 $
+    $Rev: 165112 $
     XXX: REQUIREMENTS
         -- OOP.js
 */
 
-function fixWallPostBug() {
-    /* FB has a bug with FB.ui.stream.publish() when it does a POST
-        instead of a GET. (a POST will occur when request > 2000 chars).
-
-        FB's code doesn't encode the params during a POST.
-
-        http://forum.developers.facebook.com/viewtopic.php?id=60382
-        http://bugs.developers.facebook.com/show_bug.cgi?id=10180
-        http://github.com/facebook/connect-js/issues/#issue/65
-    */
-
-    // save off original
-    origPostTarget = FB.Content.postTarget;
-
-    // insert *working* version
-    FB.Content.postTarget = function(opts) {
-        FB.Array.forEach(opts.params, function(val, key) {
-            if (typeof val == "object" || typeof val == "array") {
-                opts.params[key] = FB.JSON.stringify(val);
-            }
-        });
-
-        // call original after params are properly encoded
-        origPostTarget(opts);
-    };
-}
-
 function makeTokenObject(authResponse) {
     /*
-       Get any data we need from the OAuth 2.0 
+       Get any data we need from the OAuth 2.0
        authorization response object.
     */
     var tokenObject = {};
@@ -92,25 +65,26 @@ var CommonInterface = {
         this.appId = undefined; // set by initFacebook()
 
         this._initPageIds(pageAttrs.pageIds);
+        this.completeFriendsList = '';
+        this.numColsShow = '';
 
-        // "{n}" is how FB.Data.query does param substitution
         this.FQLQueries = {
             user: 'SELECT name, birthday, pic_square_with_logo, uid ' +
-                'FROM user WHERE uid={0}',
+                'FROM user WHERE uid = me()',
 
             friends: 'SELECT name, birthday, birthday_date, ' +
                 'pic_square_with_logo, uid ' +
                 'FROM user WHERE uid IN ' +
-                    '(SELECT uid2 FROM friend WHERE uid1={0}) ' +
+                    '(SELECT uid2 FROM friend WHERE uid1 = me()) ' +
                 'ORDER BY name',
 
             friendsAndBirthdays: 'SELECT name, birthday, birthday_date, ' +
                 'pic_square_with_logo, uid ' +
                 'FROM user WHERE birthday_date != "" and uid IN ' +
-                    '(SELECT uid2 FROM friend WHERE uid1={0}) ' +
+                    '(SELECT uid2 FROM friend WHERE uid1 = me()) ' +
                 'ORDER BY birthday_date ASC',
 
-            permissions: 'SELECT {0} from permissions WHERE uid={1}'
+            permissions: 'SELECT {0} from permissions WHERE uid = me()'
         };
     },
 
@@ -201,6 +175,7 @@ var CommonInterface = {
            calls ``this.parent()`` (which it absolutely should)
         */
         this.tokenObject = undefined;
+        this.completeFriendsList = {};
         this._showLoggedOut();
     },
 
@@ -255,11 +230,6 @@ var CommonInterface = {
             */
             this.tokenObject = makeTokenObject(response.authResponse);
             this.onLoggedIn();
-
-            // has necessary permission ?
-            //  -- If yes, this.onLoggedOn(); else, this.onLoggedOut();
-            // XXX: FB continues to make baby Jesus cry :(
-            //this._checkPermissionsThenAct(response.perms);
         }
         else {
             /* User is logged out (or doesn't have necessary perms).
@@ -268,26 +238,6 @@ var CommonInterface = {
                     ``this.parent()`` (inside onLoggedOut)
             */
             this.onLoggedOut();
-        }
-    },
-
-    _checkPermissionsThenAct: function(responsePerms) {
-        /* Query FB to see what perms the user has granted our app.
-            -- loop through perms that are returned;
-
-        */
-        if (!this.perms) {
-            this.onLoggedOn();
-        }
-
-        if (responsePerms) {
-            this.__checkPermissionsFromSession(responsePerms);
-        }
-        else {
-            var permissionQuery = FB.Data.query(this.FQLQueries.permissions,
-                    this.perms, this.tokenObject.uid);
-            permissionQuery.wait(OOP.hitch(
-                        this.__checkPermissionsFromDB, this));
         }
     },
 
@@ -342,6 +292,13 @@ var CommonInterface = {
     },
 
     renderFriends: function (users, friendTemplate, numShow, numCols) {
+        if (this.completeFriendsList == ''){
+            this.completeFriendsList = users;
+        }
+        /* Set the reset friends list for search and only set it if it
+            has never been set before.
+        */
+        this.numColsShow = numCols;
         /* Build HTML markup for a user's friends; display grid or list
 
            -- If ``numCols`` is specified, a graph will be rendered;
@@ -350,7 +307,10 @@ var CommonInterface = {
         if (!numShow || numShow == 'all') {
             numShow = users.length;
         }
-
+        /* if searchBox isn't defined under pageIds: attaching this does nothing
+            so it is safe for sites which aren't ready yet.
+        */
+        this._attachSearchEvents();
         return this.friendRenderer.makeMarkup(
                 users, friendTemplate, numShow, numCols);
     },
@@ -363,7 +323,6 @@ var CommonInterface = {
             else return list.
         */
         term = term.replace(/ /g, '');
-
         var foundUsers = [];
         for (var i=0; i < users.length; i++) {
 
@@ -388,6 +347,103 @@ var CommonInterface = {
         callback(foundUsers);
     },
 
+    SendAsMessage: function(host, productnum, custnum, source, fbThumb, producttype){
+
+        /* Distinguish between sending a [private] message and posting to a
+        * friend's wall or your wall. */
+        delivMethod = document.getElementById('deliverymethod');
+        delivMethod.value = "SHAREMESSAGE";
+
+        usageNum = this.giveMeUsageNumber();
+        var fbPostThumb = "http://www.imgag.com/"+fbThumb;
+        var messagePickupPage = host+'/view_facebook.pd?p=' + productnum +
+                '&m='+custnum+'&i='+usageNum+'&source='+source+'&isFaceBookRequest=true';
+
+        /*R7 are postcards which do not have a view_facebook.pd experience. Also all
+        postcards are supposed to use f.jpg instead of t.gif per brand.
+        */
+        if (producttype == 'R7') {
+            messagePickupPage = host+'/ecards/postcards';
+            fbPostThumb = fbPostThumb.replace('t.gif','f.jpg');
+        }
+
+        var messageAttachment = {
+             href: messagePickupPage
+        };
+
+        messagePickup = this.generateShortUrl(messageAttachment);
+
+        FB.ui({
+            method:'send',
+            name:productTitle,
+            description:'Become a fan:bluemountain.com',
+            picture:fbPostThumb,
+            link:messagePickup
+        },
+        function(resp) {
+            var url=null;
+            if (resp != null) {
+                url = this.ahost + '/fb/usage/' + usageNum + '/status/mailed';
+            } else {
+                url = this.ahost + '/facebook/usage/' + usageNum + '/status/cancel';
+            }
+            var ajax = new Requester(url, 'POST', false, false);
+            ajax.sendRequest();
+        });
+    },
+
+    giveMeUsageNumber: function() {
+        var usageNumber = this.insertUsageRecord(
+                this.ahost + this.processUsagePage,
+                document.facebookHiddens);
+        return (usageNumber);
+    },
+
+    _attachSearchEvents: function() {
+        /* In addition to wiring up the various searchbox events, set the
+           default search text.
+        */
+        if (this.searchBoxId) {
+            var box = document.getElementById(this.searchBoxId);
+            box.onkeydown = OOP.hitch(this.enterOnSearch, this);
+            box.onkeyup = OOP.hitch(this.searchAgiUsers, this);
+            box.onclick = OOP.hitch(this.toggleDefaultSearchText, this);
+            box.onblur = OOP.hitch(this.toggleDefaultSearchText, this);
+            this.defaultSearchText = box.value;
+            this.searchBox = box;
+        }
+    },
+
+    enterOnSearch: function(event) {
+        if (event.keyCode == 13)  {
+            /*13 is "Enter" or "Return"
+                we have to make it not submit the page
+                with multiple commands for browser compatability.
+            */
+            event.returnValue=false;
+            return false;
+            event.cancel = true;
+        }
+    },
+
+    toggleDefaultSearchText: function() {
+        if (this.searchBox.value == this.defaultSearchText) {
+            this.searchBox.value = '';
+        }
+        else if (this.searchBox.value == '') {
+            this.searchBox.value = this.defaultSearchText;
+        }
+    },
+
+    searchAgiUsers: function(evt) {
+        /* Based upon user inputted text, search against full list of friends.
+           Then display the users whose names contain search term.
+        */
+        var searchedUsers =
+                this.searchUsers(this.completeFriendsList, this.searchBox.value);
+        this.renderFriends(searchedUsers, this.friendTemplate, 'all', this.numColsShow);
+    },
+
     postProduct: function(friendId) {
         /* Post a product to a friend's (or the user's) FB Wall.
                 -- Insert usage
@@ -400,6 +456,9 @@ var CommonInterface = {
 
         // make copy so we can re-use ``this.attachment``
         var attachment = clone(this.attachment);
+
+        delivMethod = document.getElementById('deliverymethod');
+        delivMethod.value = friendId ? 'SHAREFRIEND' : 'SHARESELF';
 
         // Insert record + retrieve usage number
         var usageNumber = this.insertUsageRecord(
@@ -428,19 +487,40 @@ var CommonInterface = {
             }
         }
 
+        this._callFacebookUI(friendId, attachment, usageNumber);
+    },
+
+    _callFacebookUI: function(friendId, attachment, usageNumber) {
         // Pop dialog (for posting to FB Wall)
+        var url = null;
         FB.ui(
             {
             method: 'stream.publish',
             target_id: friendId,
+            display: 'popup',
             message: '',
             user_message_prompt: '',
             attachment: attachment,
             action_links: attachment.action_links || [{
                 'text': this.site,
                 'href': this.ahost + '?source=' + this.source
-            }]
-        });
+                }]
+            },
+            function(response) {
+                if (response && response.post_id) {
+                    url = this.ahost + '/fb/usage/' + usageNumber + '/status/mailed';
+                } else if (response === null){
+                    url = this.ahost + '/facebook/usage/' + usageNumber + '/status/cancel';
+                } else if (response === undefined) {
+                    // Do nothing. i.e. leave status as 'pending';
+                    url = '';
+                }
+                if (url) {
+                    var ajax = new Requester(url, 'POST', false, false);
+                    ajax.sendRequest();
+                }
+            }
+        );
     },
 
     generateShortUrl: function(attachment) {
@@ -524,6 +604,9 @@ var CommonInterface = {
         // ``media`` list
         for (var i=0; i < attachment.media.length; i++) {
             attachment.media[i].href = attachment.href;
+            if (typeof attachment.media[i].swfsrc !== "undefined") {
+                attachment.media[i].swfsrc = attachment.media[i].swfsrc.replace(/USAGENUM/g, usageNumber);
+            }
         }
     },
 

@@ -19,6 +19,13 @@ h1 { font-size: 3em; }
 .webs_public_width { width: 975px; margin: 0 auto; position: relative; }
 .webs_public_content_wrap { padding-top: 10px; background: #f2f0ea; }
 
+#gwo_header2_head,
+.webs_public_header_wrap,
+.webs_public_content_wrap {
+	position: relative;
+	z-index: 1;
+}
+
 /* ------------| WRAPPER & GENERICS */
 div.webs_public_header_wrap { height: 93px; background: #3b3b3b url('../images/subpage_tile.jpg') repeat left top; }
 div.webs_public_header_contain { 
@@ -48,7 +55,12 @@ h3.webs_public_tagline {
 
 
 /* ================================| HEADER |================================ */
-#webs_public_head { background: transparent url('../images/headerfooter.png') repeat-x left top; height: 71px; }
+#webs_public_head {
+	position: relative;
+	z-index: 2;
+	height: 71px;
+	background: transparent url('../images/headerfooter.png') repeat-x left top;
+}
 #webs_public_nav_container { position: relative; }
 
 #logo_replace {
@@ -58,6 +70,10 @@ h3.webs_public_tagline {
 	height: 70px;
 	float: left;
 }
+	#logo_replace.vistaprint {
+		background-image: url('../images/logo_vista.png');
+		background-position: 0 8px;
+	}
 
 /* top-header navigation */ /* TOP BAR */
 
@@ -75,9 +91,19 @@ h3.webs_public_tagline {
 	font-size: 18px;
 }
 
-#webs_public_nav #sign_in_nav { padding: 0; margin: 19px 0px 0px 25px; }
-#webs_public_nav #sign_in_nav:hover { background-position: left bottom; }
+#webs_public_nav .sign_in_wrap {
+	position: relative;
+	float: left;
+}
 
+#webs_public_nav #sign_in_nav {
+	position: relative;
+	z-index: 2;
+	margin: 19px 0px 0px 25px;
+	padding: 0;
+	min-width: 113px;
+	box-sizing: border-box;
+}
 
 
 
@@ -92,9 +118,9 @@ h3.webs_public_tagline {
 	border: 0;
 	padding: 0 24px;
 }
-#webs_public_nav #sign_in_nav { 
-	padding: 0;	
-	margin: 20px 0 0 25px; 
+#webs_public_nav #sign_in_nav {
+	padding: 0;
+	margin: 20px 0 0 25px;
 	width: 100px;
 	text-align: center;
 }
@@ -117,40 +143,147 @@ h3.webs_public_tagline {
 #webs_public_body { padding-top: 20px; }
 
 /* ------------| Login Leaf */ 
-a.signinNoBg { background-image: none !important; }
-a.signinNoBg span { background-image: none !important; }
+a.signinNoBg {
+	padding: 0 !important;
+	height: 42px;
+	font-size: 18px;
+	font-weight: 300;
+	background: #fff !important;
+	border-right: 1px solid #aaa\9;
+	-moz-border-radius: 3px 3px 0 0 !important;
+	-webkit-border-radius: 3px 3px 0 0 !important;
+	border-radius: 3px 3px 0 0 !important;
+}
+a.signinNoBg span {
+	margin-left: 0 !important;
+	font-weight: normal !important;
+	line-height: 36px;
+	color: #333 !important;
+	text-shadow: none !important;
+	background-image: none !important;
+}
 
 #webs_login_wrapper {
-	background: transparent url('../images/loginbox.png') no-repeat center -1px;
-	height: 72px; position: relative; visibility: hidden; z-index: 2;
+	visibility: hidden;
+	position: absolute;
+	top: 63px;
+	right: 0;
+	z-index: 1;
+	height: 72px;
 }
-#webs_login_container { position: relative; }
-#login_leaf { position: absolute; right: 0; width: 375px; padding: 4px 20px; z-index: 1000; }
 
-.sign_in_fields { padding-top: 10px; margin: 0; }
-#FWloginUsername, #FWloginPassword, #FWloginPassword2 { background-color: #353535; color: #666; border: 1px solid #201f1f; width: 131px; height: 20px; padding: 0 5px; }
-#FWloginUsername { float: left; margin-right: 9px; }
-#FWloginPassword, #FWloginPassword2 { float: left; }
-#FWloginPassword2 { display: none; color: #fff; }
-#sign_in_rearrange { float: right; }
-#login_loadingText { display: none; color: #A7A9AC; line-height: 0; font-size: 11px; padding-top: 11px; }
-.login_extra {
-	text-transform:none; 
-	font-weight:bold;
-	line-height: 30px;
-	color: #a7a9ac; font-size: 10px;
+#webs_login_container { position: relative; }
+#login_leaf {
+	position: absolute;
+	top: -1px;
+	right: 0;
+	padding: 15px 0;
+	width: 267px;
+	height: auto;
+	background: #fff;
+	border: solid #aaa;
+	border-width: 0 0 1px 1px;
+	border-width: 0 1px 1px\9;
+
+	-moz-border-radius: 3px 0 3px 3px;
+	-webkit-border-radius: 3px 0 3px 3px;
+	border-radius: 3px 0 3px 3px;
+
+	-moz-box-shadow: 0 4px 18px hsla(0, 0%, 0%, 0.3);
+	-webkit-box-shadow: 0 4px 18px hsla(0, 0%, 0%, 0.3);
+	box-shadow: 0 4px 18px hsla(0, 0%, 0%, 0.3);
 }
-#remember_me_wrap { float: left; clear: left; margin-left:5px;}
-#lost_password a, #lost_password a:visited { color: #048dd4; }
+	#sign_in_leaf {
+		width: auto;
+		line-height: 33px;
+	}
+
+.sign_in_fields {
+	margin: 0;
+	padding: 0 18px 15px;
+}
+
+#login_leaf .sign_in_fields > label,
+#login_leaf .sign_in_fields > input {
+	width: 225px;
+	float: left;
+	clear: both;
+	font-size: 13px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: #555;
+}
+#login_leaf .sign_in_fields label {
+	margin-bottom: 4px;
+	font-weight: bold;
+}
+#login_leaf .sign_in_fields input {
+	margin: 0 0 8px 0;
+}
+#FWloginUsername,
+#FWloginPassword,
+#FWloginPassword2 {
+	padding: 0 5px;
+	height: 29px;
+	line-height: 29px;
+	color: #555;
+	background: #fff;
+	border: 1px solid #d9d9d9;
+
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+#FWloginPassword2 { display: none; }
+
+#sign_in_rearrange { float: right; }
+
+#login_loadingText {
+	display: none;
+	padding-top: 0;
+	font-size: 12px;
+	line-height: 36px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	color: #555;
+}
+.login_extra {
+	border-top: 1px solid #e2e2e2;
+	padding: 15px 20px 0;
+	line-height: 36px;
+}
+
+#remember_me_wrap {
+	margin-left: 0;
+	*margin-right: 5px;
+	float: left;
+	clear: left;
+}
+
+
 #remember_me,
 #lost_password {
-	font-size:11px;
+	font-size: 12px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-#lost_password {
-	width: 216px; float: right; 
-}
-.webs_public_header_wrap { margin-top: -72px; }
 
+#remember_me {
+	display: inline-block;
+	font-weight: normal;
+	color: #555;
+}
+
+#lost_password {
+	font-weight: bold;
+}
+	#lost_password a {
+		padding: 0;
+		color: #248dc4;
+		text-shadow: none;
+		text-decoration: none;
+	}
+	#lost_password a:hover {
+		color: inherit;
+	}
 
 /*================================| CONTENT |================================*/
 
@@ -177,13 +310,14 @@ a.signinNoBg span { background-image: none !important; }
 
 /*================================| Footer |================================*/
 #webs_public_footer {
-		position: relative;
+	position: relative;
+	z-index: 3;
 	background: #222021 url("../images/headerfooter.png") repeat-x 0 -71px !important;
 	border-top: 1px solid #ababab;
 }
 #webs_public_fixfoot { clear:both; height: 10px; padding-bottom: 500px; }
 #webs_public_fixfootlite { clear:both; height: 10px; padding-bottom: 270px; }
-.webs_public_footlite { background-position: 0 -71px !important; height: 274px !important; margin-top: -262px !important; }
+.webs_public_footlite { background-position: 0 -71px !important; height: 274px !important; margin-top: -274px !important; }
 
 #webs_public_sitemap { width: 960px; margin: 37px auto 0; }
 #webs_public_sitemap dl { float: left; width: 145px; margin-right: 32px; }

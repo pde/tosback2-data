@@ -198,19 +198,6 @@ function getCookieValue(c_name)	{
   return "";
 }
 
-function emptykey()
-{	
-	var searchkey = document.getElementById('qsearch').value.replace(/^\s+|\s+$/g, ''); 
-	if(searchkey=="enter search criteria"||searchkey=="")
-	{
-		window.alert('No search criteria was entered in the search field');
-		return false;
-	} else {
-		document.getElementById('keyword').value = '_usrch:' + searchkey;
-	}
-     
-}
-
 function pageScroll() {
     	window.scrollBy(0,700); // horizontal and vertical scroll increments
     	}  

@@ -7,7 +7,7 @@
 #nav { z-index: 1000 }
 
 /* Styles for the top Primary Horizonal Menu in the header */
-ul.headerHorzMenuPrimary { padding: 15px 20px 0 0; float: right; color: #333;  }
+ul.headerHorzMenuPrimary { padding: 15px 20px 0 0; float: right; color: #333; }
 ul.headerHorzMenuPrimary li { float: left; padding: 0 8px; border-right: solid 1px #999; }
 ul.headerHorzMenuPrimary li a { font-weight: bold; }
 ul.headerHorzMenuPrimary li.end { border-right: none; padding-right: 0; }
@@ -115,6 +115,7 @@ ul.footerHorzMenu li.end { border-right: none; }
 .container_30 .footerBorderTopBottom { border:0px solid #EEE; border-width:1px 0; } /* QC Defect #13927 Applied to all pages */
 .footer h3.title, .footer h3.title a { font-size: 13px; font-weight: bold; margin-bottom: 7px; text-transform: uppercase; }
 .footer h3.prepend, .footer h3.prepend a { padding-top: 25px; }
+.footer .footerRail h3.title {font-weight: normal;}
 
 .footer ul.socialList li {
 	padding-left: 25px;
@@ -204,7 +205,7 @@ ul.footerHorzMenu li.end { border-right: none; }
 #nav #typeahead a.video2 {
 	background:url(../images/headerFooter/video_link.png) no-repeat scroll 0 4px transparent;
 	margin:0;
-	padding:2px 0 0 14px
+	padding:2px 0 0 18px
 }
 
 #nav #typeahead .tab {
@@ -222,11 +223,22 @@ ul.footerHorzMenu li.end { border-right: none; }
 /* Navigation Flyout (always close - default) Start     */
 /****************************************************************/
 
+/* Media Query for iPad    */
+/****************************************************************/
+@media screen and (max-width: 1024px){
+	#hd-deptNav ul li:hover div.flyout { display: block; }
+	#hd-deptNav .item {background: url("../images/headerFooter/navarrow.png") no-repeat 0 0;}
+	#hd-deptNav .item:hover {background: #e6781e url("../images/headerFooter/navarrow_hover.png") no-repeat 0 0;}
+}
+
+
+
 #hd-deptNav { background: none repeat scroll 0 0 transparent; color: #fff; float: left; font-weight: bold; height: 32px; width: 171px; z-index:1000; text-decoration: none; list-style: none; margin-left:20px; position: relative;}
 #hd-deptNav ul { list-style-type: none; }
-#hd-deptNav ul li:hover div.flyout { display: block; }
+#hd-deptNav .active div.flyout { display: block; }
 #hd-deptNav ul ul li:hover { background-color: #555; color: #fff; }
-#hd-deptNav div li:hover { background-color: #e6781e; text-decoration: none; }
+#hd-deptNav div li:hover { text-decoration: none; }
+#hd-deptNav .active a.L1, #hd-deptNav .active:hover {background: #e6781e url("../images/headerFooter/navarrow_hover.png") no-repeat 0 0;}
 #hd-deptNav div ul { list-style: none; width: 220px; float:left; padding-right: 20px; }
 #hd-deptNav ul ul li a { font-size: 11px; }
 #hd-deptNav ul ul li a:hover { text-decoration: underline; color: #fff !important; }
@@ -261,25 +273,26 @@ ul.footerHorzMenu li.end { border-right: none; }
 #flyoutPop16{margin-top: 134px;}
 
 a.L1 {
-	background: url("../images/headerFooter/navarrow.png") no-repeat 0 0;
 	padding-left: 10px;
 	color: #fff;
 	display: block;
 	height: 27px;
-	line-height: 27px;
+	line-height: 25px;
 	text-decoration: none;
 	font-weight: bold;
 	border-bottom: 1px solid #787878;
 	font-family: Helvetica,Arial,Sans-serif,sans-serif;
+	background: url("../images/headerFooter/navarrow.png") no-repeat 0 0;
 }
+
 a.L1:hover, a.L1.stay {
-	background: #e6781e url("../images/headerFooter/navarrow_hover.png") no-repeat 0 0;
+	background: url("../images/headerFooter/navarrow_hover.png") no-repeat 0 0;
 }
 
 #hd-deptNav a.NavLevel1 {
 	background: url("../images/headerFooter/navarrow.png") no-repeat 0 0; background-color:#00AE4D;}
 	
-#hd-deptNav a.NavLevel1:hover, #hd-deptNav a.NavLevel1.stay { 
+#hd-deptNav a.NavLevel1:hover, #hd-deptNav .active a.NavLevel1:hover, #hd-deptNav .active a.NavLevel1, #hd-deptNav a.NavLevel1.stay { 
 	background: url("../images/headerFooter/navarrow_hover.png") no-repeat 0 0;background-color:#00AE4D;}
 
 a.L2 {
@@ -376,3 +389,7 @@ line-height: 27px;
 /****************************************************************/
 /* Global Search End                        */
 /****************************************************************/
+
+
+/*Global Footer Verisign logo*/
+#versignFooter{margin:15px auto; width:100px; height:72px;}

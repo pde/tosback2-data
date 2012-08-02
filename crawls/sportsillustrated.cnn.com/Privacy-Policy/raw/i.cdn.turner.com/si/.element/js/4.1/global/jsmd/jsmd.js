@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "si.145.904.20120411",
+	version: "si.158.904.20120629",
 	release: "0",
 	dictionary: {
 		init: {
@@ -119,7 +119,7 @@ var _jsmd_default={
 					this.push("page.events","search.internal.page");
 				}
 
-				var cn = this.get("business.si.column.name");
+				var cn = (this.get("business.si.column.name") ? this.get("business.si.column.name") : "");
 				if(window.location.pathname.indexOf("/writers/") > -1){
 					this.set("business.si.column.name",cn.replace("."," "));
 				}
@@ -240,6 +240,7 @@ var _jsmd_default={
 				"currencyCode":						"USD"
 			},
 			filters: {
+				"mlbtab-click":		{ include: ["game.name"] },
 				"gallery-click":	{ include: ["business.si.gallery_info","page.template_type","page.content_type"] },
 				"social-click":		{ include: ["business.si.social_type"] }
 			},
@@ -309,6 +310,9 @@ var _jsmd_default={
 			}
 		},
 		adbp: {
+			filters: {
+				"mlbtab-click":		{ include: ["nothing"] }
+			},
 			settings: {
 				"trackInlineStats":				true,
 				"linkLeaveQueryString":		    false
@@ -1444,6 +1448,12 @@ cookie: {
 			this.set("page.template_type",this.plugin.gJObj(data,"template_type"));
 			this.set("page.name",this.plugin.gADBPPageName());
 			this.push("page.events","search.internal.page");
+			this.send();
+		},
+		"mlbtab-click": function(data) {
+			this.set("business.si.game.name",data.tab_name);	//prop12,eVar12
+			this.set("action","link");
+			this.set("link",{name: "mlbtab-click: " + data.tab_name, type: "o"});
 			this.send();
 		},
 		"gallery-click": function(data) {

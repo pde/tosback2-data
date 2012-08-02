@@ -192,6 +192,18 @@
                 }
                 control.src = getUrlWithParams(url, params);
             }
+        },
+
+        unitTest: function() {
+            var functions = {};
+            functions.getFormActionHostName = getFormActionHostName;
+            functions.getFormActionResourceUri = getFormActionResourceUri;
+            functions.getFormActionResourceName = getFormActionResourceName;
+            functions.isTargetNonBlank = isTargetNonBlank;
+            functions.isUrlStartsWith =  isUrlStartsWith;
+            functions.isUrlStartsWithBrandDomainScheme = isUrlStartsWithBrandDomainScheme;
+            functions.isBrandedDomain = isBrandedDomain;
+            return functions;
         }
     };
 
@@ -686,7 +698,9 @@
             }
 
             if (isBrandedDomain(url, brandedDomains)) {
+                var innerHTML= tags[i].innerHTML;
                 tags[i].href = getUrlWithParams(url, params);
+                tags[i].innerHTML=innerHTML;
             }
         }
     }
@@ -703,7 +717,32 @@
     }
 
     function isUrlStartsWithBrandDomainScheme(url, metaDomain) {
-        return isUrlStartsWith(url, "http://" + metaDomain) || isUrlStartsWith(url, "https://" + metaDomain);
+        url = url.toLowerCase();
+        metaDomain = metaDomain.toLowerCase();
+        var stripMetaDomain = stripMetaDomainWebProtocol(metaDomain);
+        var stripUrl = stripUrlPrefixScheme(url);
+        return isUrlStartsWith(stripUrl, stripMetaDomain);
+    }
+
+     function stripMetaDomainWebProtocol(metaDomain) {
+        metaDomain = metaDomain.replace(/^\s+|\s+$/g, "");
+        if (metaDomain.indexOf("www.") === 0) {
+            metaDomain = metaDomain.substring(metaDomain.indexOf("www.") + 4, metaDomain.length);
+        }
+        return metaDomain;
+    }
+
+    function stripUrlPrefixScheme(url) {
+        if (url.indexOf("https://") === 0) {
+            url = url.substring(url.indexOf("https://") + 8, url.length);
+        }
+        if (url.indexOf("http://") === 0) {
+            url = url.substring(url.indexOf("http://") + 7, url.length);
+        }
+        if (url.indexOf("www.") === 0) {
+            url = url.substring(url.indexOf("www.") + 4, url.length);
+        }
+        return url;
     }
 
     function isUrlStartsWith(url, prefix) {

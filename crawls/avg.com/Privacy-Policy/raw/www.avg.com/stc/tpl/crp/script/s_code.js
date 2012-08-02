@@ -29,7 +29,7 @@ function getInternalFilters(accountID){
   var returnVar;
   // define available suites
   var accountList=new Array(27);
-  accountList[0]=new Array("avgcorporatepublicww","javascript:,scode-tracking.web2011-dev.grisoft.cz,www.grisoft.es,www.avg.es,www.avg.com,www.avgbrasil.com.br,www.avg.co.uk,www.avg.ie,www.avg.de,www.avg.fr,www.avgfrance.com,www.avg.cz,www.grisoft.cz,www.avg.sk,www.grisoft.sk,www.grisoft.jp,secure.avg.com,static.avg.com,static.avg.co.uk,shop.avg.com,sshop.avg.com,sshop.element5.com,securesuite.co.uk,lloydstsb.com,barclaycard.co.uk,barclays.co.uk,arcot.com,verifiedbyvisa-mastercardsecurecode.com,securecode.com,ashop.avg.com,ideal.ing.nl,paypal.com,securesuite.co.uk,clicksafe.lloydstsb.com,upclick.com");
+  accountList[0]=new Array("avgcorporatepublicww","javascript:,scode-tracking.web2011-dev.grisoft.cz,www.grisoft.es,www.avg.es,www.avg.com,free.avg.com,www.avgbrasil.com.br,www.avg.co.uk,www.avg.ie,www.avg.de,www.avg.fr,www.avgfrance.com,www.avg.cz,www.grisoft.cz,www.avg.sk,www.grisoft.sk,www.grisoft.jp,secure.avg.com,static.avg.com,static.avg.co.uk,shop.avg.com,sshop.avg.com,sshop.element5.com,securesuite.co.uk,lloydstsb.com,barclaycard.co.uk,barclays.co.uk,arcot.com,verifiedbyvisa-mastercardsecurecode.com,securecode.com,ashop.avg.com,ideal.ing.nl,paypal.com,securesuite.co.uk,clicksafe.lloydstsb.com,upclick.com");
   accountList[1]=new Array("avgfreepublicww","javascript:,free.avg.com");
   accountList[2]=new Array("avgdev","javascript:,scode-tracking.web2011-dev.grisoft.cz,web2008-dev.grisoft.cz,web2008-dev,web2008-master.grisoft.cz,web2008-master,free2008-dev.grisoft.cz,free2008-dev,free2008-master.grisoft.cz,free2008-master");
   accountList[3]=new Array("avgforumfree","javascript:,www.grisoft.es,www.avg.es,www.avg.com,www.avgbrasil.com.br,www.avg.co.uk,www.avg.ie,www.avg.de,www.avg.fr,www.avgfrance.com,www.avg.cz,www.grisoft.cz,www.avg.sk,www.grisoft.sk,www.grisoft.jp,secure.avg.com,static.avg.com,static.avg.co.uk,shop.avg.com,sshop.avg.com,sshop.element5.com,securesuite.co.uk,lloydstsb.com,barclaycard.co.uk,barclays.co.uk,arcot.com,verifiedbyvisa-mastercardsecurecode.com,securecode.com,ashop.avg.com,ideal.ing.nl,paypal.com,securesuite.co.uk,clicksafe.lloydstsb.com,upclick.com");
@@ -188,6 +188,26 @@ if(!s.eVar53){
 if(!s.eVar65){
 	s.eVar65=s.getQueryParam('inappid')
 }
+if(!s.eVar30){
+	s.eVar30=s.getQueryParam('popup')
+}
+if(!s.eVar51){
+	s.eVar51=s.getQueryParam('app-ai')
+}
+if(!s.eVar57){
+	s.eVar57=s.getQueryParam('app-be')
+}
+if(!s.eVar63){
+	s.eVar63=s.getQueryParam('app-prtype')
+}
+if(!s.eVar60){
+	s.eVar60=s.getQueryParam('app-ver')
+}
+if(!s.eVar11){
+	s.eVar11=s.getQueryParam('lcinfo')
+}
+
+s.prop53=s.getAndPersistValue(s.campaign,'s_campaign_per',0);
 
 
 if(s.pageName){
@@ -209,19 +229,19 @@ if(s.eVar22){
                                                   if(s.eVar22.indexOf('special-uninstallation-feedback-trial')>-1){
                                                                                                                                
                                                                 s.events=s.apl(s.events,'event36,event39',',',1); 
-                                                                s.eVar52 = "trial";                                               
+                                                                s.prop54 = "trial";                                               
                                                 }else if(s.eVar22.indexOf('special-uninstallation-feedback-appf')>-1){
                                                                                                 
                                                                 s.events=s.apl(s.events,'event36,event38',',',1);
-                                                                s.eVar52 = "free";  
+                                                                s.prop54 = "free";  
                                                 }else if(s.eVar22.indexOf('special-uninstallation-feedback-app')>-1){
                                                                 
                                                                 s.events=s.apl(s.events,'event36,event37',',',1);
-                                                                s.eVar52 = "paid";
+                                                                s.prop54 = "paid";
                                                 }else if(s.eVar22.indexOf('special-uninstallation')>-1){
                                                                 
                                                                 s.events=s.apl(s.events,'event36,event40',',',1);
-                                                                s.eVar52 = "other";                                                                
+                                                                s.prop54 = "other";                                                                
                                                 }
                                                 
                                                 /* Uninstallation URL's section end */
@@ -906,6 +926,18 @@ s.prop9='down_free_ls-mac_'+server+'_'+docid;
 s.events='event9,event14'; 
 s.tl(this,'o','download_linkscanner');
 }
+
+function dwn_trial_dupdt(obj, server, docid)
+{  
+var s=s_gi('avgcorporatepublicww'); 
+s.linkTrackVars='prop9,eVar9,events'; 
+s.linkTrackEvents='event9,event12'; 
+s.eVar9='dwn_trial_dupdt_'+server+'_'+docid;  
+s.prop9='dwn_trial_dupdt_'+server+'_'+docid;  
+s.events='event9,event12'; 
+s.tl(this,'o','download_trial');
+}
+
 
 function get_cookie ( cookie_name ){var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );if ( results )return ( unescape ( results[2] ) ); else return null;}     
 

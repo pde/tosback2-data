@@ -1,7 +1,7 @@
 //simple hide and show flyout function
 if ($().jquery == '1.3.2'){
 		
-			$(document).ready(function(){
+	$(document).ready(function(){
 	// Add listener for hover. 
 		$("#flyout-trigger").hover(function() {
 			// Show panel but only if it's not already animated
@@ -10,6 +10,14 @@ if ($().jquery == '1.3.2'){
 		function() {
 		// Hide panel.
 			$(this).find("#product-flyout").slideUp('fast'); 
+		});
+		$("#connected-trigger").hover(function() {
+			// Show panel but only if it's not already animated
+			$(this).find("#connected-flyout").filter(':not(:animated)').slideDown('fast');
+		}, 
+		function() {
+		// Hide panel.
+			$(this).find("#connected-flyout").slideUp('fast'); 
 		});
 	});
 
@@ -24,6 +32,14 @@ if ($().jquery == '1.3.2'){
 			}).live('mouseleave',function(){
 				$flyout.slideUp('fast');
 			});
+		var $connectedTrigger = $("#connected-trigger");
+		var $connectedFlyout = $("#connected-flyout");
+		//var animationFlag = false;
+		$connectedTrigger.live('mouseenter',function() {
+				$connectedFlyout.slideDown('fast');
+			}).live('mouseleave',function(){
+				$connectedFlyout.slideUp('fast');
+		});
 	});
 }
 

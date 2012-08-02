@@ -348,9 +348,108 @@ if ($('close_3') != null) {
 
 /* =======[ END 404 CODE ]========================== */
 
+var GatewayScrollbox = new Class({
+	contentEl:null, 
+	sliderEl:null, 
+	sliderHandleEl:null, 
+	slider:null, 
+	initialize:function(contentEl, sliderEl, sliderHandleEl) {
+		var me = this;
+		this.contentEl = contentEl;
+		this.sliderEl = sliderEl; 
+		this.sliderHandleEl = sliderHandleEl;
+		
+		// Determine if this item needs a scroll
+		var contentSize = this.contentEl.getScrollSize().y;
+		if(contentSize <= this.contentEl.getSize().y) { return;};
+		
+		// Add some padding to the content so the scrollbar isn't covering anything
+		var rightPad = this.contentEl.getStyle('padding-right').toInt();
+		if(!$chk(rightPad) || rightPad == 'NaN') rightPad = 0;
+		rightPad += 8;
+		this.contentEl.setStyle('padding-right', rightPad+'px');
+		
+		// Display the scrollbar to the right of the contentEl
+		var offsetParent = this.contentEl.getOffsetParent();
+		var coords = null;
+		if(offsetParent)
+			coords = this.contentEl.getCoordinates(offsetParent);
+		else
+			coords = this.contentEl.getCoordinates();
+			
+		// arturp: updated the top coords to include eventual initial scroll position of news article, if called with url with anchor:
+//alert("here:" + " " + this.contentEl.scrollTop);
+		this.sliderEl.setStyles({
+			display:"block", 
+			height:coords.height, 
+			position:'absolute', 
+			top:(coords.top+this.contentEl.scrollTop)+'px', 
+			left:coords.right+'px'
+		});
+
+				
+		// Connect the scrolling functionality
+		this.slider = new Slider(this.sliderEl, this.sliderHandleEl, {
+			wheel: true,
+			snap: false,
+			steps: contentSize-coords.height,
+			mode: 'vertical', 
+			onChange: function(pos){
+				//alert(me.contentEl.id + " " + pos);
+				me.contentEl.scrollTo(0, pos);
+				//alert(me.contentEl.getPosition().y);
+			}
+		});
+
+		// arturp: set the initial value of slider's knob to current newsroom article scroll position:
+		this.slider.set(this.contentEl.scrollTop);
+		
+		// arturp: add scrollbox object to content element, in order to have it accessible
+		contentEl.scrollbox = this;
+
+		// arturp: add onscroll event, so that when anchor link is clicked on the article, scroller gets to be updated
+		this.contentEl.addEvent('scroll', function(){ /*alert(this.scrollTop); */ this.scrollbox.slider.set(this.scrollTop); });
+		
+		
+		// Scroll the content element when the mousewheel is used within the scrollable content.
+		this.contentEl.addEvent('mousewheel', function(e){	
+				e = new Event(e).stop();
+				var step = me.slider.step - e.wheel * 30;	
+				me.slider.set(step);					
+			});
+			
+		// Make text inside scroller area selectable by dragging mouse
+		this.contentEl.addEvent('mousedown', function(e){	
+				var yStart = e.client.y;
+				me.contentEl.addEvent('mousemove',function(e){
+					if (e.client.y >= yStart + 1) {
+						var step1 = me.slider.step + 10;	
+						me.slider.set(step1);
+					}
+					if (e.client.y < yStart - 1) {
+					    var step1 = me.slider.step - 10;	
+						me.slider.set(step1);
+					}
+					yStart = e.client.y;
+					});
+				me.contentEl.addEvent('mouseup',function(e){
+					me.contentEl.removeEvents('mousemove');
+					});
+			});	
+				
+					
+				
+	}
+		
+});
+
+document.getElements(".scrollbox_slider").each(function(slider) {
+				new GatewayScrollbox($(slider.get('rel')), slider, slider.getElements(".handle")[0]);
+			});
+
 /* UnCompressed - Reason: UNKNOWN REASON */
 
 /*
-Date: 2/27/2012 2:15:10 PM
+Date: 5/29/2012 10:02:02 AM
 All images published
 */

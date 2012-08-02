@@ -1,28 +1,42 @@
-/***************************************************************************************************************************************************
-	Author          :  PA
-	Version         :  1.0
-	Date Created
-	
-	Change history 
-		
-	Task/Bug                    Date(mm-dd-yyyy)        Author             Change Description
-	
-	Phone numbers in Account
-	menu page are not 
-	displaying properly         04-01-2009              HAlagesan          formatPhoneNumber() function is added to display phone number with (xxx)xxx-xxxx format.
-	
-	Trac 1535                   04-17-2009              BTellajeera        function displayOrderNumber(pSubject) added.
-	
-	Trac 1598                   05-05-2009              HAlagesan          function formatPhoneNumber(phone)is modified and function ReplaceAll(Source,stringToFind,stringToReplace) is added.
-	    
-	Trac 1997                   01-04-2010              SGopidinne         functions changeProductColor(),chooseSorting,resetSelect(),changeProductSize(),setSelectedSizeForShopBySize() added.
-	
-	JavaScript error            04-02-2010              SGopidinne         resetSelect() modified to add null check.
-      
-      Trac 2601                   20-12-2010              Swaroop Kaushik    modified the chooseSorting and changeProductSize
-      
-      Trac 3247                   11-06-2011              Niranjani    modified for look book form to add each item
-****************************************************************************************************************************************************/
+/* 
+ * 
+ * Common: Shared Page Functionality
+ * 
+ */
+ 
+(function($) {
+    $(document).ready(function() {
+        $.fn.placeholders();
+    });
+    
+    $.support.placeholder = (function() {
+        var input = document.createElement("input");
+        return "placeholder" in input;
+    })();
+    
+    $.fn.placeholders = function() {
+        if (! $.support.placeholder) {
+            
+            // Browser doesn't support placeholder attribute; simulate placeholders. 
+            var placeholderElements = $("input, textarea");
+            placeholderElements.focus(function() {
+                if ($(this).val() == $(this).attr("placeholder")) {
+                    $(this).val("");
+                }
+            }).blur(function() {
+                if ($(this).val() == "" && $(this).attr("placeholder") != "") {
+                    $(this).val($(this).attr("placeholder"));
+                }
+            }).blur();
+            
+            // Remove simulated placeholders before submitting forms.
+            $("form").submit(function() {
+                placeholderElements.focus();
+            });
+        }
+    };
+})(jQuery);
+
 
 function imgClicked(imgId, imgElem){ 
  unselectAll(imgId);

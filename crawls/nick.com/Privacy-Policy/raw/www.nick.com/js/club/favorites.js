@@ -123,6 +123,7 @@ NICK.club.favorites.saveMergedFavorites = function(itemId, response, profileAttr
 				case "fav_games":
 					section = "games";
 					msg = "This is now one of your favorite games!<br />You can find your other favorites on your Profile!";
+					NICK.club.setFavoriteItemButton();
 					break;
 				case "fav_videos":
 					section = "videos";
@@ -131,6 +132,7 @@ NICK.club.favorites.saveMergedFavorites = function(itemId, response, profileAttr
 				case "fav_shows":
 					section = "shows";
 					msg = "You are now a fan of this show! Your profile will show an exclusive badge and you'll get even more fan exclusives in the future!";
+					NICK.club.favorites.setFavoriteButtonText();
 					break;
 				case "fav_stars":
 					section = "star";
@@ -141,7 +143,6 @@ NICK.club.favorites.saveMergedFavorites = function(itemId, response, profileAttr
 					msg = "This is now one of your favorites!<br />You can find your other favorites on your Profile!";
 			}
 			
-			NICK.club.favorites.setFavoriteButtonText();
 			
 			setTimeout( function() {
 				NICK.club.favorites.saveOverlay( msg, section );
@@ -171,6 +172,12 @@ NICK.club.favorites.resetFavoriteButtonText = function (){
 		$("#become-a-fan").removeClass("isFan");
 		$("#become-a-fan a").html($("#become-a-fan a").html().replace("You are a",'Become a') );
 	}
+}
+NICK.club.setFavoriteItemButton = function(){
+	$('div.favorite-button').find('a.icon-favorite').addClass('favorited');
+}
+NICK.club.resetFavoriteItemButton = function(){
+	$('div.favorite-button').find('a.icon-favorite').removeClass('favorited');
 }
 
 NICK.club.favorites.getFavoritesArray = function( strFavoriteList ) {

@@ -71,6 +71,7 @@ function dartAds(codes){
 
 dartAds.prototype.reconstruct = function(codes){
 	this.codes=codes;
+	var default_dart_site = this.codes.params.dart_site;
 	//sets the random value for this iteration
 	this.getRandom();
 
@@ -78,10 +79,9 @@ dartAds.prototype.reconstruct = function(codes){
 	this.iframe_url=this.codes.iframe_url;
 	//base url for all add calls, consists of combining the json values shown above
 	this.base_dart_url=
-		this.codes.ad_base+
-		this.codes.params.dart_site+'/'+
+		this.codes.ad_base+'___DS___/'+
 		this.codes.params.ad_tag_page_name;
-	var params={site:false,sect:false,sub:false,sub2:false,sport:false,cat:false,cls:false,mod:false,yr:false,pageid:false};
+	var params={site:false,sect:false,sub:false,sub2:false,fold:false,sport:false,cat:false,cls:false,mod:false,yr:false,pageid:false};
 	if (top === self) {
 		params.tandomad=(top.eTandomAd||'none');
 	}
@@ -97,7 +97,7 @@ dartAds.prototype.reconstruct = function(codes){
 		}
 	}
 	//the ___OE___ is a replacement token that gets taken out and replaced with local category excludes
-	this.base_dart_url+=';'+this.codes.params.category_excludes+'___OE___';
+	this.base_dart_url+=';___OE___';
 	//add the pixelman code
 	if(top === self && top.__nbcudigitaladops_dtparams!==undefined){
 		this.base_dart_url+=';'+(top.__nbcudigitaladops_dtparams||'');
@@ -113,6 +113,9 @@ dartAds.prototype.reconstruct = function(codes){
 					if(j==='category_excludes'){
 						base=base.replace(/___OE___/,this.codes.sizes[i][j]);
 					}
+					else if(j==='dart_site'){
+						base=base.replace(/___DS___/,this.codes.sizes[i][j]);
+					}
 					else{
 						url+=';'+this.codes.sizes[i][j];
 					}
@@ -120,6 +123,7 @@ dartAds.prototype.reconstruct = function(codes){
 				}
 			}
 			base=base.replace(/___OE___/,'');
+			base=base.replace(/___DS___/,default_dart_site);
 			this.dart_urls[i]=base+url+';ord='+this.randDartNumber+'?';
 			this.dart_urls[i]=this.dart_urls[i].replace(/;;/g,';');
 		}
@@ -127,6 +131,7 @@ dartAds.prototype.reconstruct = function(codes){
 };
 //This displays an ad, and must be called inline where you want the ad to appear
 dartAds.prototype.displayAd = function(size){
+	//console.log( this.dart_urls );
 	if(this.dart_urls[size]!==undefined){
 		var divId;
 		if(this.found[size]===undefined){
@@ -152,11 +157,10 @@ dartAds.prototype.displayAd = function(size){
 dartAds.prototype.getRandom = function(){
 	this.randDartNumber=Math.round(Math.random()*10000000);
 };
-dartAds.prototype.refreshAds = function(){
-	if(arguments[0]!==undefined && !isNaN(arguments[0])){
-		this.randDartNumber=arguments[0];
-	}
-	else{
+dartAds.prototype.refreshAds = function(ord){
+	if (ord !== undefined && ord !== null && !isNaN(ord)) {
+		this.randDartNumber = ord;
+	} else {
 		this.getRandom();
 	}
 
@@ -165,7 +169,10 @@ dartAds.prototype.refreshAds = function(){
 	for(var i in this.found){
 		
 		if(this.found.hasOwnProperty(i)){
+			var iframeLoad="";
 			var wh=i.split(/x/);
+			wh[1]=wh[1].indexOf("_") != -1 ? wh[1].substr(0,wh[1].indexOf("_")) : wh[1];
+			
 			var url=this.dart_urls[i].replace(/;ord=\d+\?/,';ord='+this.randDartNumber+'?'); //setting the random number
 			var divId=this.found[i];
 			//this block finds the item with the 'beforeAd' class and uses that to find the parent container of the ad
@@ -175,20 +182,22 @@ dartAds.prototype.refreshAds = function(){
 				$('#'+divId).css({width:parseInt(wh[0]),height:parseInt(wh[1]),overflow:'hidden'});
 			}
 			//empty out the adHolder div, and add the iframe
+			if ( wh[0] == 970 ){
+				iframeLoad = ' onLoad="$(this).contents().find(\'img\').width() == 728 ? $(this).css({\'width\':\'728px\',\'margin-left\':\'115px\'}) : $(this).width($(this).contents().find(\'img\').width());"';
+			}
+			
 			$('div#'+divId).html();
 			if($.browser.msie){
-				$('div#'+divId).html('<iframe class="adframe" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" frameborder="0" src="' +this.iframe_url + '?c=' + escape(url) + '" width="'+wh[0]+'" height="'+wh[1]+'"></iframe>');
+				$('div#'+divId).html('<iframe class="adframe" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" frameborder="0" '+iframeLoad+' src="' +this.iframe_url + '?c=' + escape(url) + '" width="'+wh[0]+'" height="'+wh[1]+'"></iframe>');
 			}
 			else{
-				$('div#'+divId).html('<iframe id="'+divId+'_iframe" class="adframe" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" frameborder="0" width="'+wh[0]+'" height="'+wh[1]+'"></iframe>');
+				$('div#'+divId).html('<iframe id="'+divId+'_iframe" class="adframe" marginheight="0" marginwidth="0" frameborder="0" '+iframeLoad+' scrolling="no" frameborder="0"  width="'+wh[0]+'" height="'+wh[1]+'"></iframe>');
 				var ifrm = document.getElementById(divId+'_iframe');
 	            ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
 	            ifrm.document.open();
 				ifrm.document.write('<scr'+'ipt type="text/javascript" charset="utf-8" src="'+url+'"></s'+'cript>');
 	            ifrm.document.close();
 			}
-		
-
 		
 		}
 	}

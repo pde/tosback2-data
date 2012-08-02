@@ -56,7 +56,8 @@ function WapoEnv() {
 
 		this.jskit_commenting_group = 'default';
 		this.jskit_consumer_key = 'prod.slate.com';
-		this.wapo_reg_url = 'http://id.slate.com/identity/public/login/options?';
+		this.wapo_reg_url = 'http://id.slate.com/identity/public/login/options?next_url=';
+                this.commenting_edit_profile_url = 'https://id.slate.com/identity/siteRegistration/addRegistration?reg_group=default&next_url=';
                 this.event_name_fb_async_init = 'wapoFbAsyncInit';
 
 }

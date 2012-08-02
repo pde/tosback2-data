@@ -1,4 +1,4 @@
-/*file created at Mon May 14 08:10:01 2012*/
+/*file created at Thu Aug  2 16:10:08 2012*/
 
 var adn_tr_company = new Array({adn_tr_link:'http://www.apartments.com/partner/Results.aspx?page=results&p=anchnews&area2=y&cont.x=42&cont.y=17&state=ak&rgn2=190&partner=anchnews&subarea1=y&subarea2=y&prvpg=5&Rent_Minimum=0&Rent_Maximum=99999', adn_tr_name:'Top Rentals'});
 

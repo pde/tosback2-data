@@ -1,21 +1,18 @@
 /**
- * AE Widget Module - overShow
- * Copyright (c) 2011 Alibaba.Com, Inc.
- * MIT Licensed
+ * AE Widget Module - overShow <br />
+ * 适用场景：需要遮挡表单元素，内容区块有关闭按钮，需要显示前后自定义事件<br />
+ * <a href="http://style.aliui.com/js/5v/app/over_show/demo/demo.html" target="_blank">点击查看demo</a><br />
+ * ※ 控件使用请注意：	<br />
+ * - 为了解决IE6表单控件穿出问题，maskIframe样式为必须。<br />
+ * - 为了解决IE HTTPS下IFRAME报错，空白页（globalImgServer + "/js/blank.html"）为必须。<br />
+ * - config.targetId的z-index为必须，iframe和content的z-index值将参照其自动设定
  * @module AE.widget.overShow
  */
 
 ;(function () {
 	/**
-		 AE Widget Module - overShow <br />
-		 适用场景：需要遮挡表单元素，内容区块有关闭按钮，需要显示前后自定义事件<br />
-		 <a href="http://style.aliui.com/js/5v/app/over_show/demo/demo.html" target="_blank">点击查看demo</a><br />
-		※ 控件使用请注意：	<br />
-		- 为了解决IE6表单控件穿出问题，maskIframe样式为必须。<br />
-		- 为了解决IE HTTPS下IFRAME报错，空白页（globalImgServer + "/js/blank.html"）为必须。<br />
-		- config.targetId的z-index为必须，iframe和content的z-index值将参照其自动设定
-		 @class AE.widget.overShow
-	 */
+	  * @class AE.widget.overShow
+	  */
 	function OverShow() {
 		var _self = this;
 

@@ -1,0 +1,17 @@
+$(function() {
+  attachTips(false);
+   });
+
+function attachTipsForPopup(dynamicClass){
+  dynamicClass = dynamicClass + '[title!=]'
+  var leftConfig = {defaultPosition: "left",  delay: 300, fadeOut: 100};
+  var rightConfig = {defaultPosition: "right",  delay: 300, fadeOut: 100};
+  var isArabic = Config.isRTLLanguage;
+  $(".showTip" + dynamicClass).tipTip({delay: 300, fadeOut: 100});
+  $(".showTipLeft" + dynamicClass).tipTip(isArabic? rightConfig : leftConfig);
+  $(".showTipRight" + dynamicClass).tipTip(isArabic? leftConfig : rightConfig);
+}
+
+function attachTips(onlyDynamic){
+  attachTipsForPopup(onlyDynamic ?"Dynamic":"");
+}

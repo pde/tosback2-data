@@ -49,7 +49,7 @@
 		<script type='text/javascript' src='../dwr/interface/DWRRequestManager.js'></script>
 		<script type='text/javascript' src='../dwr/engine.js'></script>
 		<script type='text/javascript' src='../dwr/util.js'></script>
-		<script type='text/javascript' src='http://www.att.com/media/gvp/gvpUtils.js'></script>
+		<script type='text/javascript' src='../../media/gvp/gvpUtils.js'></script>
 		
 		<script>
 			gZip = '';
@@ -183,7 +183,19 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
+<!--Wireless CTN capture start -->
 
+
+
+
+	
+	
+	
+	
+		
+	
+
+<!--Wireless CTN capture end -->
 
 
 
@@ -253,14 +265,17 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
+
+
+
 <meta NAME="DCSext.wtStatusCode" 			CONTENT="" />
 
 
 
-<meta NAME="DCSext.sessionid" 				CONTENT="R3nDPw3f3GCGgvHGCCk3BffN!-350026533!1336997663080" />
+<meta NAME="DCSext.sessionid" 				CONTENT="xf8jQhjfhLn3bMlyC8w49vw0!410118374!1343939551091" />
 <meta NAME="DCSext.flowtype" 				CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" 				CONTENT="Consumer">
-<meta NAME="DCSext.wtCustTypeSub"  			CONTENT="residential" />
+<meta NAME="DCSext.wtCustTypeSub" 			CONTENT="residential" />
 <meta NAME="DCSext.wtCreditClass" 			CONTENT="" />
 <meta NAME="DCSext.wtUverse_DA_User" 		CONTENT="" />
 <meta NAME="DCSext.wtUverse_CSIExcept" 		CONTENT="" />
@@ -313,14 +328,39 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
+			
+		
+			
+		
+			
+        
+	
+	
+	
+		
+		
+			
+		
+	
+
+	
+	
+		
+		
+			
+		
+	
+	
 
 
 
 
 
 <meta NAME="DCSext.wtBuyFlowType" 			CONTENT="PROVIDE" />
-<meta NAME="DCSext.wtReferral_PackageID" 	CONTENT="" />
-<meta NAME="DCSext.Referral_app_id" 		CONTENT="" />
+<meta NAME="DCSext.Referral_app_id" CONTENT="" />
+
+
+
 	
 
 
@@ -353,7 +393,9 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
+<!-- Fix for PROD11-3183 START  -->
 
+<!-- Fix for PROD11-3183 END  -->
 <script>
 var reporting_ready = window.reporting_ready || new jQuery.Deferred();
 jQuery.when(reporting_ready).then(function (reporting) {
@@ -438,10 +480,16 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		//{selector: 'head:page(multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_MultipleAddress'},
 		// Fix for Prod11-3183 :check availability success flag 
 		{selector: 'head:page(multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value:function() {
-		if ('unknown'=='green') 
-		return '';
-		else
-		return 'UV_MultipleAddress';
+			if(''=='red')
+			return 'UV_MultipleAddress';
+			else 
+			return '';
+		}},
+		{selector: 'head:page(pending-order)', type: 'wtmeta', name: 'wtStatusMsg', value:function() {
+			if(''=='red')
+			return 'UV_PendingOrder';
+			else 
+			return '';
 		}},
 		//End of Fix for Prod11-3183 :check availability success flag 
 		{selector: 'head:page(address-changed)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_AddressChanged'},
@@ -526,6 +574,8 @@ jQuery.when(reporting_ready).then(function (reporting) {
 			return window.appliedCouponName.value;
 			}
 		},
+		{selector: 'head:page(customize)', type: 'wtmeta', name: 'wtiNIDFlag', value: '0'},
+		{selector: 'head:page(customize)', type: 'wtmeta', name: 'wtWifiRecFlag', value: '0'},
 		{selector: 'img[src*=btn_mrq_Review-Checkout_grn_AA000DZZ]', type: 'wtevent', name: 'Uverse_Cart_Save_Submit', params: 'wtCouponCode'},
 
 		//sweepstakes
@@ -535,9 +585,16 @@ jQuery.when(reporting_ready).then(function (reporting) {
 
 		{selector: 'head:page(combined-billing)', type: 'wtmeta', name: 'wtSysRespCode', value: ''},
 		//ECOM1203-134 Fix
-		{selector: 'head:page(creditcard-information)', type: 'wtmeta', name: 'wtSysRespCode', value: ''}
+		{selector: 'head:page(creditcard-information)', type: 'wtmeta', name: 'wtSysRespCode', value: ''},
+		//Wireless CTN Capture Changes Start
+		{selector: 'head:page(wdeu-billing-success)', type: 'wtmeta', name: 'wtCTN', value: ''},
 		
-		
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtLinkName', value: 'See Details'},
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse_Uverse_NoInstall_OrderSummary_Pg_Body'},
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtNoHit', value: '1'},
+		{selector: '#seeDetailsLink', type: 'wtlink', name: '', params: 'wtLinkName,wtLinkLoc,wtNoHit', trigger: 'mousedown'},
+		{selector: 'head:page(combined-billing-ineligible)', type: 'wtmeta', name: 'wtStatusMsg', value: ''}		
+		//Wireless CTN Capture Changes End		
 	]);
 
 	reporting.tag.perform('inline');
@@ -560,14 +617,16 @@ function getHiddenWebTrendEvents(str) {
 }
 
 function firePopupWebTrendPageView(str, title, url) {
-	if (/class=.wtpn\s/.test(str) == false) {
+	//Added new condition for Wireless CTN capture
+	if (/class=.wtpn\s/.test(str) == false && !title.match('style')) {
 		var wtPN = 'Uverse_' + title.replace(/\W/g,'_') + '_Modal_Pg';
 		var dcsuri = url || title.replace(/\W/g,'-').toLowerCase() + '-modal.jsp';
-		if (!/class=.wtpn /.test(str) && webTrendTag) webTrendTag(wtPN, 0, 'System', 'dcsuri', dcsuri, 'wtBuyFlowType', 'PROVIDE', 'flowtype', 'UVERSE');
+		//ECOM1207-25 -Wireless CTN capture fix
+		var wtZipCode = '';
+		if (!/class=.wtpn /.test(str) && webTrendTag) webTrendTag(wtPN, 0, 'System','wtZipCode',wtZipCode, 'dcsuri', dcsuri, 'wtBuyFlowType', 'PROVIDE', 'flowtype', 'UVERSE');
 		return wtPN;
 	}
 }
-
 function captureLastFieldInteracted() {
 	commonFunc.eventObserve(document, 'blur', handleLastFieldInteracted, false);
 	commonFunc.eventObserve(document, 'change', handleLastFieldInteracted, false);
@@ -627,7 +686,7 @@ function handleLastFieldInteracted(e) {
 <script type="text/javascript" charset="utf-8">
 	function SessionVars() {
 		this.getCurrSessId = function() {
-			var pSessionId = 'R3nDPw3f3GCGgvHGCCk3BffN!-350026533!1336997663080';
+			var pSessionId = 'xf8jQhjfhLn3bMlyC8w49vw0!410118374!1343939551091';
 			return pSessionId;
 		};
 
@@ -667,7 +726,7 @@ function handleLastFieldInteracted(e) {
 	var forceFlashDebugMode = false;
 	var getTimeOffset = function() {
 		var offset = new Number();
-		var servertime = 1336997699286;
+		var servertime = 1343939566460;
 		var clientdateObj = new Date();
 		var clienttime = clientdateObj.getTime();
 		offset = clienttime - servertime;
@@ -711,14 +770,14 @@ function handleLastFieldInteracted(e) {
 			_gaq.push(['_trackPageview']);
 			(function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();
 		</script>
+		<script src="../../global/scripts/AC_RunActiveContent.js" type="text/javascript"></script>
+    	<script src="../../global/scripts/AC_ActiveX.js" type="text/javascript"></script>
 		
 		
 						
 	
 	
     	<a name="backtotop"></a>    	
-    	<script src="../../global/scripts/AC_RunActiveContent.js" type="text/javascript"></script>
-    	<script src="../../global/scripts/AC_ActiveX.js" type="text/javascript"></script>
 					
 		<!-- GLOBAL NAV -->
 		<div class="globalNavHtml">
@@ -763,6 +822,10 @@ function handleLastFieldInteracted(e) {
 	
 	
 	
+	
+	
+	
+
 
 	
 
@@ -792,6 +855,7 @@ function handleLastFieldInteracted(e) {
 
 
 
+
 	
 
 
@@ -806,6 +870,72 @@ function handleLastFieldInteracted(e) {
 		
 	
 
+
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
 
 <script type="text/javascript">
 	var globalNavDefaultSelections = {
@@ -825,12 +955,17 @@ function handleLastFieldInteracted(e) {
 	};
 	
 	var customGlobalNavResources = {
-		"userInfo": "/globalnav/includes/user_info.jsp",
+		"userInfo":
+						
+						"/globalnav/includes/user_info.jsp",
+					
 		"segmentationMenu": "/globalnav/includes/segmentation_menu.jsp",
 		"menuJSON": globalNavDefaultSelections.urls.navService,
 		"failSafeJSON": "/globalnav/resources/json/GlobalnavLinksInJsonString.txt"
 	};
-
+	
+	var globalNavResourceParams = {};
+	
 </script>
 
 <div id="globalNav" class="en_US xRock">
@@ -845,6 +980,7 @@ function handleLastFieldInteracted(e) {
 						
 						
 					
+
 
 
 
@@ -933,6 +1069,11 @@ function handleLastFieldInteracted(e) {
 											
 												
 													
+														
+														
+															
+														
+													
 												
 												
 												
@@ -987,24 +1128,25 @@ function handleLastFieldInteracted(e) {
 				<div id="globalNavUserInfo">
 					
 						
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
 						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-					
 
 
 
@@ -1014,6 +1156,38 @@ function handleLastFieldInteracted(e) {
 
 
 
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -1034,6 +1208,11 @@ function handleLastFieldInteracted(e) {
 
 
 	
+	
+	
+	
+	
+		
 	
 	
 	
@@ -1086,10 +1265,6 @@ function handleLastFieldInteracted(e) {
 	
 	
 		
-			
-			
-			
-		
 	
 	
 	
@@ -1113,7 +1288,9 @@ function handleLastFieldInteracted(e) {
 	
 	
 	
-
+	
+	
+	
 	
 	
 	
@@ -1155,7 +1332,7 @@ function handleLastFieldInteracted(e) {
 			
 				
 					
-						<a href="http://www.att.com/accounts/">Log In</a> | <a href="http://www.att.com/accounts/">Register</a>
+						<a href="http://www.att.com/accounts/" class="">Register</a> 
 					
 					
 					
@@ -1171,13 +1348,18 @@ function handleLastFieldInteracted(e) {
 					
 					
 						
-							
-								
-									 | <a href="http://www.att.com/u-verse/start/">Enter ZIP</a>
-								
-								
-							
 						
+							
+								
+								
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="globalnav_State">CA</span>
+								
+								
+								
+							
+							
+							 | <a href="http://www.att.com/u-verse/availability/" class="">Change</a>
+							
 						
 					
 					
@@ -1199,14 +1381,24 @@ function handleLastFieldInteracted(e) {
 				
 			
 		
+		
+			&nbsp;<a href="http://www.att.com/accounts/" class="" style="position: relative;top: -4px;"><img src="../../media/att/2012/global/nav/btn-login-en-blu24.png" style="vertical-align:top" alt="Log In"/></a>
+			
+		
 	</div>
 
+					
 				</div>
 				<div id="tieredNav">
 					<div id="primaryMenu">
 						<ul>
 							<li id="primary_ATTLogo">
-								<a class="primaryMenuItem" title="AT&amp;T Home" href="../../index.html">&nbsp;</a>
+								
+									
+									
+										<a class="primaryMenuItem" title="AT&amp;T Home" href="../../index.html">&nbsp;</a>
+									
+								
 							</li>
 							
 								
@@ -1220,14 +1412,14 @@ function handleLastFieldInteracted(e) {
 								
 								
 								
-								<li class=" selected"><a href="../../shop/index.jsp.html" id="primary_Shop" name="Shop" class="primaryMenuItem">Shop<span></span></a>
+								<li class=" selected"><a href="../../shop/index.html" id="primary_Shop" name="Shop" class="primaryMenuItem">Shop<span></span></a>
 									
 										<ul id="secondaryMenu_Shop" class="secondaryMenu">
 											
 												
 												
 												<li>
-													<a class="secondaryMenuItem" href="../../shop/wireless/index.html" name="Shop_Wireless" >Wireless</a>
+													<a class="secondaryMenuItem" href="../../shop/wireless.html" name="Shop_Wireless" >Wireless</a>
 													
 														
 															
@@ -1238,7 +1430,7 @@ function handleLastFieldInteracted(e) {
 														<div class="trayContentItem trayFiveCol">
 															<div class="firstColumn">
 																<div class="columnContent">
-																	<img src='../../media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' />
+																	<img src='http://www.att.com/media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' />
 																</div>
 															</div>
 															
@@ -1254,23 +1446,23 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phones/index.html" name="Shop_Wireless_Shop By Category" >Shop By Category</a></li>
+																				<li><a href="../../shop/wireless/devices.html" name="Shop_Wireless_Shop By Category" >Shop By Category</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phones/pda-phones-smartphones.jsp.html" name="Shop_Wireless_Smartphones" >Smartphones</a></li>
+																				<li><a href="../../shop/wireless/devices/smartphones.html" name="Shop_Wireless_Smartphones" >Smartphones</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/specials/netbooks.jsp.html" name="Shop_Wireless_Tablets and Internet Devices" >Tablets and Internet Devices</a></li>
+																				<li><a href="../../shop/wireless/devices/tablets.html" name="Shop_Wireless_Tablets and Internet Devices" >Tablets and Internet Devices</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/packages/index.jsp.html" name="Shop_Wireless_Packages &amp; Deals" >Packages &amp; Deals</a></li>
+																				<li><a href="../../../www.wireless.att.com/cell-phone-service/go-phones/index.jsp.html" name="Shop_Wireless_Prepaid GoPhone&reg;" >Prepaid GoPhone&reg;</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phones/cell-phones.jsp.html" name="Shop_Wireless_View All Devices" >View All Devices</a></li>
+																				<li><a href="../../shop/wireless/devices/cellphones.html" name="Shop_Wireless_View All Cell Phones" >View All Cell Phones</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1288,23 +1480,23 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phone-plans/index.jsp.html" name="Shop_Wireless_Shop By Category" >Shop By Category</a></li>
+																				<li><a href="../../shop/wireless/data-plans.html#tab2" name="Shop_Wireless_Mobile Share Plans" >Mobile Share Plans</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phone-plans/individual-cell-phone-plans.jsp.html" name="Shop_Wireless_Individual Plans" >Individual Plans</a></li>
+																				<li><a href="../../shop/wireless/plans/individualplans.html" name="Shop_Wireless_Individual Plans" >Individual Plans</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/cell-phone-plans/family-cell-phone-plans.jsp.html" name="Shop_Wireless_Family Plans" >Family Plans</a></li>
+																				<li><a href="../../shop/wireless/plans/familyplans.html" name="Shop_Wireless_Family Plans" >Family Plans</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/go-phones/index.jsp.html" name="Shop_Wireless_Prepaid GoPhone&reg; Plans" >Prepaid GoPhone&reg; Plans</a></li>
+																				<li><a href="../../shop/wireless/data-plans.html" name="Shop_Wireless_Data Plans" >Data Plans</a></li>
 																			
 																				
 																				
-																				<li><a href="../../shop/wireless/plans/data-plans.jsp.html" name="Shop_Wireless_Data Plans" >Data Plans</a></li>
+																				<li><a href="../../shop/wireless/international.html" name="Shop_Wireless_International Plans" >International Plans</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1322,19 +1514,19 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/accessories/index.jsp.html" name="Shop_Wireless_Accessories" >Accessories</a></li>
+																				<li><a href="../../shop/wireless/accessories.html" name="Shop_Wireless_Accessories" >Accessories</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/services/index.jsp.html" name="Shop_Wireless_Messaging, Data &amp; More" >Messaging, Data &amp; More</a></li>
+																				<li><a href="../../shop/wireless/services.html" name="Shop_Wireless_Messaging, Data &amp; More" >Messaging, Data &amp; More</a></li>
 																			
 																				
 																				
-																				<li><a href="../../shop/apps/index.jsp.html" name="Shop_Wireless_Ringtones &amp; Apps" >Ringtones &amp; Apps</a></li>
+																				<li><a href="../../shop/apps.html" name="Shop_Wireless_Ringtones &amp; Apps" >Ringtones &amp; Apps</a></li>
 																			
 																				
 																				
-																				<li><a href="../../../www.wireless.att.com/cell-phone-service/transfer-your-number/index.html" name="Shop_Wireless_Transfer My Number" >Transfer My Number</a></li>
+																				<li><a href="../../shop/wireless/transferyournumber.html" name="Shop_Wireless_Transfer My Number" >Transfer My Number</a></li>
 																			
 																				
 																				
@@ -1356,11 +1548,11 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../olam/passthroughAction.myworld%3FactionType=UpgradePhone.html" name="Shop_Wireless_Upgrade Phone" >Upgrade Phone</a></li>
+																				<li><a href="../../shop/wireless/upgradephone.html" name="Shop_Wireless_Upgrade Phone" >Upgrade Phone</a></li>
 																			
 																				
 																				
-																				<li><a href="../../olam/passthroughAction.myworld%3FactionType=AddALine.html" name="Shop_Wireless_Add a Line to My Account" >Add a Line to My Account</a></li>
+																				<li><a href="../../shop/wireless/addaline.html" name="Shop_Wireless_Add a Line to My Account" >Add a Line to My Account</a></li>
 																			
 																				
 																				
@@ -1368,11 +1560,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../olam/passthroughAction.myworld%3FactionType=ManageFeatures.html" name="Shop_Wireless_Manage Features" >Manage Features</a></li>
-																			
-																				
-																				
-																				<li><a href="../../../www.wireless.att.com/learn/international/index.html" name="Shop_Wireless_International" >International</a></li>
+																				<li><a href="../../olam/passthroughAction.myworld%3FactionType=ManageFeatures.html" name="Shop_Wireless_Add or Change Services" >Add or Change Services</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1385,7 +1573,7 @@ function handleLastFieldInteracted(e) {
 												
 												
 												<li>
-													<a class="secondaryMenuItem" href="../../shop/bundles/index.html" name="Shop_Bundles" >Bundles</a>
+													<a class="secondaryMenuItem" href="../../shop/bundles.html" name="Shop_Bundles" >Bundles</a>
 													
 														
 															
@@ -1396,7 +1584,7 @@ function handleLastFieldInteracted(e) {
 														<div class="trayContentItem trayFourCol">
 															<div class="firstColumn">
 																<div class="columnContent">
-																	<img src='../../media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' />
+																	<img src='http://www.att.com/media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' />
 																</div>
 															</div>
 															
@@ -1416,11 +1604,11 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../shop/index.jsp%3FshopFilterId=100003.html#fbid=" name="Shop_Bundles_U-verse TV and Internet" >U-verse TV and Internet</a></li>
+																				<li><a href="../shop/index.jsp%3FshopFilterId=100003.html" name="Shop_Bundles_U-verse TV and Internet" >U-verse TV and Internet</a></li>
 																			
 																				
 																				
-																				<li><a href="../shop/index.jsp%3FshopFilterId=200001.html#fbid=" name="Shop_Bundles_U-verse TV, Internet and Phone" >U-verse TV, Internet and Phone</a></li>
+																				<li><a href="../shop/index.jsp%3FshopFilterId=200001.html" name="Shop_Bundles_U-verse TV, Internet and Phone" >U-verse TV, Internet and Phone</a></li>
 																			
 																				
 																				
@@ -1468,7 +1656,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../olam/loginAction.olamexecute.html" name="Shop_Bundles_Change My Service" >Change My Service</a></li>
+																				<li><a href="../../accounts/index.html%3Fsource=IC4425j4900s2000.html" name="Shop_Bundles_Change My Service" >Change My Service</a></li>
 																			
 																				
 																				
@@ -1496,7 +1684,7 @@ function handleLastFieldInteracted(e) {
 														<div class="trayContentItem trayFourCol">
 															<div class="firstColumn">
 																<div class="columnContent">
-																	<img src='../../media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' />
+																	<img src='http://www.att.com/media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' />
 																</div>
 															</div>
 															
@@ -1516,7 +1704,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../shop/channel-lineup.jsp.html" name="Shop_Digital TV_U-verse Channel Lineup" >U-verse Channel Lineup</a></li>
+																				<li><a href="../shop/channel-lineup.jsp.html" name="Shop_Digital TV_U-verse Channel Line-up" >U-verse Channel Line-up</a></li>
 																			
 																				
 																				
@@ -1524,7 +1712,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../Common/PDF/DIRECTV_English_Channel_Lineup.pdf" name="Shop_Digital TV_DIRECTV&reg; Channel Lineup (PDF)" >DIRECTV&reg; Channel Lineup (PDF)</a></li>
+																				<li><a href="../../Common/PDF/DIRECTV_English_Channel_Lineup.pdf" name="Shop_Digital TV_DIRECTV&reg; Channel Line-up (PDF)" >DIRECTV&reg; Channel Line-up (PDF)</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1543,10 +1731,6 @@ function handleLastFieldInteracted(e) {
 																				
 																				
 																				<li><a href="../../remotes.html" name="Shop_Digital TV_U-verse Remotes" >U-verse Remotes</a></li>
-																			
-																				
-																				
-																				<li><a href="wireless-receiver.jsp.html" name="Shop_Digital TV_U-verse Wireless Receiver" >U-verse Wireless Receiver</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1604,7 +1788,7 @@ function handleLastFieldInteracted(e) {
 														<div class="trayContentItem trayFiveCol">
 															<div class="firstColumn">
 																<div class="columnContent">
-																	<img src='../../media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' />
+																	<img src='http://www.att.com/media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' />
 																</div>
 															</div>
 															
@@ -1628,7 +1812,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../dsl/shop/plansDirect.jsp.html" name="Shop_Internet_Internet Without a Phone Line" >Internet Without a Phone Line</a></li>
+																				<li><a href="../../dsl/shop/plansDirect.jsp%3Fref_from=shop.html" name="Shop_Internet_Internet Without a Phone Line" >Internet Without a Phone Line</a></li>
 																			
 																				
 																				
@@ -1706,7 +1890,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../localization.att.com/loc/controller%3Fprod-snip=res_dsl_upgrd_promo.html" name="Shop_Internet_Change My Plan" >Change My Plan</a></li>
+																				<li><a href="../../dsl.1.html" name="Shop_Internet_Change My Plan" >Change My Plan</a></li>
 																			
 																		</ul>
 																	</div>
@@ -1730,7 +1914,7 @@ function handleLastFieldInteracted(e) {
 														<div class="trayContentItem trayFourCol">
 															<div class="firstColumn">
 																<div class="columnContent">
-																	<img src='../../media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' />
+																	<img src='http://www.att.com/media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' />
 																</div>
 															</div>
 															
@@ -1819,21 +2003,21 @@ function handleLastFieldInteracted(e) {
 												
 												
 												<li>
-													<a class="secondaryMenuItem" href="../../shop/u-verse/index.html" name="Shop_U-verse" >U-verse</a>
+													<a class="secondaryMenuItem" href="../../shop/u-verse.html" name="Shop_U-verse" >U-verse</a>
 													
 												</li>
 											
 												
 												
 												<li>
-													<a class="secondaryMenuItem" href="../../shop/special-offers/index.html" name="Shop_Special Offers" >Special Offers</a>
+													<a class="secondaryMenuItem" href="../../shop/special-offers.html" name="Shop_Special Offers" >Special Offers</a>
 													
 												</li>
 											
 												
 												
 												<li>
-													<a class="secondaryMenuItem" href="../../shop/help/index.html" name="Shop_Shopping Help" >Shopping Help</a>
+													<a class="secondaryMenuItem" href="../../shop/help.html" name="Shop_Shopping Help" >Shopping Help</a>
 													
 												</li>
 											
@@ -1915,7 +2099,7 @@ function handleLastFieldInteracted(e) {
 										
 										
 										<li class="">
-											<a class="secondaryMenuItem" href="../../shop/wireless/index.html" name="Shop_Wireless" >Wireless</a>
+											<a class="secondaryMenuItem" href="../../shop/wireless.html" name="Shop_Wireless" >Wireless</a>
 										</li>
 									
 										
@@ -1923,7 +2107,7 @@ function handleLastFieldInteracted(e) {
 										
 										
 										<li class="">
-											<a class="secondaryMenuItem" href="../../shop/bundles/index.html" name="Shop_Bundles" >Bundles</a>
+											<a class="secondaryMenuItem" href="../../shop/bundles.html" name="Shop_Bundles" >Bundles</a>
 										</li>
 									
 										
@@ -1955,7 +2139,7 @@ function handleLastFieldInteracted(e) {
 										
 										
 										<li class="">
-											<a class="secondaryMenuItem" href="../../shop/u-verse/index.html" name="Shop_U-verse" >U-verse</a>
+											<a class="secondaryMenuItem" href="../../shop/u-verse.html" name="Shop_U-verse" >U-verse</a>
 										</li>
 									
 										
@@ -1963,7 +2147,7 @@ function handleLastFieldInteracted(e) {
 										
 										
 										<li class="">
-											<a class="secondaryMenuItem" href="../../shop/special-offers/index.html" name="Shop_Special Offers" >Special Offers</a>
+											<a class="secondaryMenuItem" href="../../shop/special-offers.html" name="Shop_Special Offers" >Special Offers</a>
 										</li>
 									
 										
@@ -1971,7 +2155,7 @@ function handleLastFieldInteracted(e) {
 										
 										
 										<li class="">
-											<a class="secondaryMenuItem" href="../../shop/help/index.html" name="Shop_Shopping Help" >Shopping Help</a>
+											<a class="secondaryMenuItem" href="../../shop/help.html" name="Shop_Shopping Help" >Shopping Help</a>
 										</li>
 									
 								</ul>
@@ -2004,13 +2188,14 @@ function handleLastFieldInteracted(e) {
 	<div id="globalNavShadows" style="height:15px;*height:40px;" ></div>
 </div>
 
-	<div id="wrapper">
-		<div id="main-container">
-			<div class="bg-top-shadow"></div>
-				<div class="bg-mid-shadow">
-					<div id="wrapperContentDiv" style="padding: 0pt 11px;">
-						<div id="container2">
-							<div class="searchNav">
+	
+		<div id="wrapper">
+			<div id="main-container">
+				<div class="bg-top-shadow"></div>
+					<div class="bg-mid-shadow">
+						<div id="wrapperContentDiv" style="padding: 0pt 11px;">
+							<div id="container2">
+								<div class="searchNav">
 	
 		
 		
@@ -2403,7 +2588,7 @@ function handleLastFieldInteracted(e) {
 									</div>
 								
 	    					
-									<h1>AT&T U-verse High Speed Internet </h1>
+									<h1>AT&T U-verse High Speed Internet</h1>
 																			
 							
 							<table border="0" width="790">
@@ -2453,7 +2638,7 @@ function handleLastFieldInteracted(e) {
 							
 							
 
-<meta NAME="DCSext.wtSlotContent" CONTENT="1~003AS8">
+<meta NAME="DCSext.wtSlotContent" CONTENT="1~007KNC"/>
 			
 		
 				
@@ -2469,13 +2654,14 @@ function handleLastFieldInteracted(e) {
 								
 										
 																						
-												<p>AT&amp;T U-verse High Speed Internet provides the security, protection, and amazing speed you deserve, along with built-in wireless home networking. All with no contract term to sign.</p>
+												<p>AT&amp;T U-verse High Speed Internet provides the security, protection, and amazing speed you deserve, along with built-in wireless home networking. </p>
 
 				
 											
 																			
 								
-										<p><a class="arrow-list" href="http://www.att.com/u-verse/explore/uverse-difference.jsp?wtSlotClick=1-003AS8-0-1&amp;WT.svl=calltoaction" onclick="">Why switch to AT&amp;T U-verse?</a></p>
+										
+										<p><a class="arrow-list" href="http://www.att.com/u-verse/explore/uverse-difference.jsp?wtSlotClick=1-007KNC-0-1&amp;WT.svl=calltoaction" onclick="">Why switch to AT&amp;T U-verse?</a></p>
 																	
 											
 					
@@ -2599,11 +2785,48 @@ function handleLastFieldInteracted(e) {
 											
 									</td>
 								</tr>
-							</table>							
+							</table>
+                            
+                             					
 							
+							 
+							
+								
+					
+								
 									
-																					
-											<script>function viewDetails(id) {
+									
+									
+									
+									
+									
+									
+									
+									
+								
+									
+									
+									
+									
+									
+									
+									
+										
+										
+
+<meta NAME="DCSext.wtSlotContent" CONTENT="1~007JYD"/>
+			
+		
+				
+						
+								
+										
+												
+																	
+																
+																		
+																									
+																				<script>function viewDetails(id) {
                                                    var table = document.getElementById(id);
                                                    var tag = document.getElementById('openOut');
                                                    if(table.style.display == 'block'){
@@ -2623,6 +2846,8 @@ function handleLastFieldInteracted(e) {
 	th.subHeader {padding:0 3px; vertical-align:top; text-align:left;}
 	td.col0 {padding:1px 3px; vertical-align:top; text-align:left; font-size:9px; background-color:#e5e5ed;}
 	td.centermiddle {text-align:center; vertical-align:middle; font-size:10px; background-color:#FFFFFF; border-width:thin;}
+	tr.ms4969 td {height:32px; border-top:2px solid #ccc;}
+	td.price4969 {color:#ff7200; font-family:Verdana, Geneva, sans-serif; font-size:14px;}
 </style>
 
 		<!-- begin: CONTENT TEXT -->
@@ -2638,144 +2863,197 @@ function handleLastFieldInteracted(e) {
 <p style="color:#067ab4"><b>Compare Internet Packages</b></p>
 
 <table class="table-gen" cellspacing="0" cellpadding="0" width="100%" border="0">
+	<tr>
+<td style="background:url(http://www.att.com/media/att/2012/shop/dsl/landing/img_gradientTop_forExplore_AA001NIA.jpg) 0 0 repeat-x transparent" colspan="7">&nbsp;</td>
+</tr>
+				
+<tr>
+						
+<th class="subHeader" id="h1">&nbsp;</th>	
+
+<th width="90" id="h7"><div style="font-family:Verdana, Geneva, sans-serif;font-size:14px"><strong>Max Turbo</strong></div></th>
+
+<th width="90" id="h6"><div style="font-family:Verdana, Geneva, sans-serif;font-size:14px"><strong>Max Plus</strong></div></th>
+
+<th width="90" id="h5"><div style="font-family:Verdana, Geneva, sans-serif;font-size:14px"><strong>Max</strong></div></th>
+
+<th width="90" id="h4"><div style="font-family:Verdana, Geneva, sans-serif;font-size:14px"><strong>Elite</strong></div></th>
 					
-<tr bgcolor="#e5e5ed">
+<th width="90" id="h3"><div style="font-family:Verdana, Geneva, sans-serif;font-size:14px"><strong>Pro</strong></div></th>
 						
-<th class="subHeader" id="h1">&nbsp;</th>						
-<th width="90" id="h3">Pro</th>
-						
-<th width="90" id="h4">Elite</th>
-						
-<th width="90" id="h5">Max</th>
-						
-<th width="90" id="h6">Max Plus</th>
-						
-<th width="90" id="h7">Max Turbo</th>						
+					
 					</tr>
+                    	
 					<tr>
 
-<td class="col0" style="padding-top:22px;"><b>Standard Monthly Rate</b></td>						
-<td class="centermiddle" style="padding:5px 0;"><img src="../../images/Wireless/SectionAssets/U-verse/Common/ico_sl_ispeed_pro_AA0009XQ.gif" alt="Pro" border="0" /><br />
-						<b>$38*</b></td>
-						<td class="centermiddle" style="padding:5px 0;"><img src="../../images/Wireless/SectionAssets/U-verse/Common/ico_sl_ispeed_elite_AA0009XM.gif" alt="Elite" border="0" /><br />
-						<b>$43*</b></td>
-						<td class="centermiddle" style="padding:5px 0;"><img src="../../images/Wireless/SectionAssets/U-verse/Common/ico_sl_ispeed_max_AA0009XO.gif" alt="Max" border="0" /><br />
-						<b>$48*</b></td>
-						<td class="centermiddle" style="padding:5px 0;"><img src="../../images/Wireless/SectionAssets/U-verse/Common/ico_sl_ispeed_max18_AA0009XP.gif" alt="Max Plus" border="0" /><br />
-						<b>$53*</b></td>
-						<td class="centermiddle" style="padding:5px 0;"><img src="../../images/Wireless/SectionAssets/U-verse/Common/ico_sl_ispeed_maxTurbo_AA000E83.gif" alt="Max Turbo" border="0" /><br />
-						<b>$63*</b></td>
+<td style="padding-top:22px;">&nbsp;</td>	
+
+	<td align="center" style="padding:5px 0;"><img src="../../images/U-verse/Common/att-uverse-high-speed-internet-max-turbo-91x54_AA001KYU.png" alt="Max Turbo" border="0" /><br /></td>
+						<td align="center" style="padding:5px 0;"><img src="../../images/U-verse/Common/att-uverse-high-speed-internet-max-plus-91x54_AA001KYS.png" alt="Max Plus" border="0" /><br /></td>
+						<td align="center" style="padding:5px 0;"><img src="../../images/U-verse/Common/att-uverse-high-speed-internet-max-91x54_AA001KYQ.png" alt="Max" border="0" /><br /></td>
+						<td align="center" style="padding:5px 0;"><img src="../../images/U-verse/Common/att-uverse-high-speed-internet-elite-91x54_AA001KYO.png" alt="Elite" border="0" /><br /></td>
+						<td align="center" style="padding:5px 0;"><img src="../../images/U-verse/Common/att-uverse-high-speed-internet-pro-91x54_AA001KYM.png" alt="Pro" border="0" /></td>
 					</tr>
 					
 					<tr>
 						
-<td class="col0" style="padding-top:5px;">Downstream Speed</td>
+<td style="padding-top:5px;"><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#666666">Downstream Speed up to</div></td>
 						
-<td class="centermiddle">Up to 3 Mbps</td>
+<td align="center"><div style="font-family:Verdana, Geneva, sans-serif;font-size:12px"><strong>24</strong><br>
+  Mbps</div></td>
 						
-<td class="centermiddle">Up to 6 Mbps</td>
+<td align="center"><div style="font-family:Verdana, Geneva, sans-serif;font-size:12px"><strong>18</strong><br>
+    Mbps</div></td>
 						
-<td class="centermiddle">Up to 12 Mbps</td>
+<td align="center"><div style="font-family:Verdana, Geneva, sans-serif;font-size:12px"><strong>12</strong><br>
+    Mbps</div></td>
 						
-<td class="centermiddle">Up to 18 Mbps</td>
-						
-<td class="centermiddle">Up to 24 Mbps</td>
+<td align="center"><div style="font-family:Verdana, Geneva, sans-serif;font-size:12px"><strong>6</strong><br>
+    Mbps</div></td>
+
+<td align="center"><div style="font-family:Verdana, Geneva, sans-serif;font-size:12px"><strong>3</strong><br>
+    Mbps</div></td>
+					</tr>
+                    <tr>
+
+<td style="padding-top:22px;"><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#666666">Standard Monthly Rate</div></td>	
+
+	<td class="price4969" align="center" style="padding-top:22px;">
+		 <div>$63*</div></td>
+						<td class="price4969" align="center" style="padding-top:22px;">
+						<div>$53*</div></td>
+						<td class="price4969" align="center" style="padding-top:22px;;">
+						<div>$48*</div></td>
+						<td class="price4969"  align="center" style="padding-top:22px;">
+						<div>$43*</div></td>
+						<td class="price4969" align="center" style="padding-top:22px;">
+						<div>$38*</div></td>
 					</tr>
 					<tr>
-						<td class="col0" style="padding-top:10px;">Emailing</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					 <td style="padding-top:22px;"><div style="font-family:Verdana, Geneva, sans-serif;font-size:14px;color:#6ebb1f"><font color="#6ebb1f">Best Choice For:&#x2020;</font></div></td>
+					  <td align="center">&nbsp;</td>
+					  <td align="center">&nbsp;</td>
+					  <td align="center">&nbsp;</td>
+					  <td align="center">&nbsp;</td>
+  </tr>
+					<!--<tr bgcolor="#F5F5F5">
+						<td style="padding-top:10px;"><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px";"color:#333333">Multiple Wireless Devices</div></td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+                        <td align="center">&nbsp;</td>
 					</tr>
 					<tr>
-						<td class="col0" style="padding-top:10px;">Downloading Music</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td style="padding-top:10px;"><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px";"color:#333333">Streaming HD Video</div></td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+                        	<td align="center">&nbsp;</td>
+					</tr> -->
+					<tr class="ms4969">
+						<td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Video Chat</div></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+                        	<td align="center">&nbsp;</td>
 					</tr>
-					<tr>
-						<td class="col0" style="padding-top:10px;">Social Networking</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					<tr class="ms4969">
+						<td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Online Gaming</div></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+                        	<td align="center">&nbsp;</td>
 					</tr>
-					<tr>
-						<td class="col0" style="padding-top:10px;">Sharing Photos</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					<tr class="ms4969">
+						<td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Streaming SD Video</div></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+                        	<td align="center">&nbsp;</td>
 					</tr>
-					<tr>
-						<td class="col0" style="padding-top:10px;">Internet gaming</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					<tr class="ms4969">
+						<td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Downloading Movies</div></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center">&nbsp;</td>
+                        	<td align="center">&nbsp;</td>
 					</tr>
-					<tr>
-						<td class="col0" style="padding-top:10px;">Online Conferencing</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					<tr class="ms4969">
+						<td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Emailing Large Files</div></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center">&nbsp;</td>
+                        	<td align="center">&nbsp;</td>
 					</tr>
-					<tr>
-						<td class="col0" style="padding-top:10px;">Watching TV / Video Clips</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					<tr class="ms4969">
+						<td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Watching Video Clips</div></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+                        	<td align="center">&nbsp;</td>
 					</tr>
-					<tr>
-						<td class="col0" style="padding-top:10px;">Emailing / Uploading Files</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					<tr class="ms4969">
+						<td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Online Meetings</div></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+                        	<td align="center">&nbsp;</td>
 					</tr>
-					<tr>
-						<td class="col0" style="padding-top:10px;">Downloading Movies</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					<tr class="ms4969">
+						<td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Music Downloading &amp; Streaming</div></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+                        	<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
 					</tr>
-					<tr>
-						<td class="col0" style="padding-top:10px;">Streaming Video</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					<tr class="ms4969">
+					  <td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Sharing Photos</div></td>
+					  <td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					  <td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					  <td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					  <td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					  <td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+  </tr>
+					<tr class="ms4969">
+					  <td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Social Networking</div></td>
+					  <td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					  <td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					  <td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					  <td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+					  <td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+  </tr>
+					<tr class="ms4969">
+						<td><div style="font-family:Verdana, Geneva, sans-serif;font-size:10px;color:#333333">Web Surfing &amp; Emailing</div></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+						<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
+                        	<td align="center"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
 					</tr>
-					<tr>
-						<td class="col0" style="padding-top:10px;">Video Conferencing</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle">&nbsp;</td>
-						<td class="centermiddle"><img src="../../images/Wireless/SectionAssets/Add_a_Line/icon_check_AA000NED.gif" alt="Yes" border="0" /></td>
-					</tr>
+                     <tr class="ms4969">
+						<td colspan="7">&nbsp;</td>
+                                             </tr>
 				</table>
+
+
 <br />
 
 <div id="hsia-flash-chart" style="margin-left:30px;">
 
 <ul style="cursor: pointer;" onclick="openClose('tableClose');hsiaFlashLoad();">
- 
+<!--
+<li id="openOut" style="padding:0 0 0 16px;background: url('/images/Wireless/GlobalAssets/Buttons-Icons/English/btn_toggle_plus_AA000ENF.png') no-repeat scroll 0 0 transparent;">
+--> 
 <li id="openOut" style="background: none; list-style-image: url('../../images/Wireless/GlobalAssets/Buttons-Icons/English/btn_toggle_plus_AA000ENF.png');">
 
 <a name="compareSpeeds"><span style="color: rgb(10, 148, 214); font-weight: bold;">Compare Downstream Speeds</span></a></li>
@@ -2789,7 +3067,9 @@ function handleLastFieldInteracted(e) {
 
 <div id="tableClose" style="visibility:none;width:642px;height:322px;padding:0px;">
 <div id="hsiaCompare"></div>
-
+<!-- TODO: Temp Hardcoded EMBED tag for now, so they can QA the UI 
+<embed height="320" width="640" id="HSIAdl" wmode="transparent" bgcolor="#ffffff" pluginspage="https://www.macromedia.com/go/getflashplayer" swliveconnect="true" type="application/x-shockwave-flash" quality="high" src="/media/en_US/swf/uverse_center/internet_speed_compare.swf">
+-->
 <embed height="320" width="640" id="HSIAdl" wmode="transparent" bgcolor="#ffffff" pluginspage="https://www.macromedia.com/go/getflashplayer" swliveconnect="true" type="application/x-shockwave-flash" quality="high" src="../../media/en_US/swf/uverse_center/internet_speed_compare.swf">
 
 </div>
@@ -2859,15 +3139,34 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 </div>
 		<!-- end: CONTENT TEXT -->
 
-										
+
+																			
+																	
 															
-												
-								
-										</div>
+													
+											
 									
-							           																					
+											
 					
-							</div>								
+			
+	
+
+									
+									
+									
+								
+					
+				 					
+							
+									
+																					
+
+
+</div>
+
+
+
+</div>
 							<!-- FOOTER -->
 							<div class="globalFooterHtml">
 								</div>
@@ -3234,9 +3533,7 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
             <div id="mainPopupBody2" style="padding:10px; border:#CCCCCC solid 1px; margin:10px;"></div>
             <div id="mainPopupButton2" style="padding-right:10px;padding-bottom:8px;"></div>
         </div>
-		
-		<div id="mainPopupDivIDM" style="position: absolute; visibility: hidden; width: 934px; top:0px; left:0px; margin: auto; z-index: 92; border: 2px solid #CCCCCC; background-color: #FFFFFF;">
-			
+		<div id="mainPopupDivIDM" style="position: absolute; visibility: hidden; width: 934px; top:0px; left:0px; margin: auto; z-index: 90; border: 2px solid #CCCCCC; background-color: #FFFFFF;">
             <div id="mainPopupHeaderIDM" style="height:37px; overflow: hidden; background-image:url(../../media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
             	 
 
@@ -3336,9 +3633,7 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 
             </div>
 		</div>
-		
-		<div id="mainPopupDivIDM2" style="position: absolute; visibility: hidden; width: 934px; top:0px; left:0px; margin: auto; z-index: 92; border: 2px solid #CCCCCC; background-color: #FFFFFF;">
-			
+		<div id="mainPopupDivIDM2" style="position: absolute; visibility: hidden; width: 934px; top:0px; left:0px; margin: auto; z-index: 90; border: 2px solid #CCCCCC; background-color: #FFFFFF;">
             <div id="mainPopupHeaderIDM2" style="height:37px; overflow: hidden; background-image:url(../../media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
 				<div style="height: 37px; padding-left: 10px; padding-right: 10px;">
 					<div style="text-align: right; padding-top: 10px;"><span onClick="closeIDMPopup()"><img style="cursor: pointer; cursor: hand;" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/></span></div>
@@ -3421,7 +3716,7 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 		</div>
 		<div id="sessionTimeOutButton" style="width:450px;display:none;" >
 			<table border="0" width="100%">
-				<tr><td align="right"><img src="../../media/en_US/images/btn/btn_continue_AA0009Q1.gif" onclick="location.href='/u-verse/shop/'" alt="Continue"></img></td></tr>
+				<tr><td align="right"><img src="../../media/en_US/images/btn/btn_continue_AA0009Q1.gif" onclick="location.href='/u-verse/'" alt="Continue"></img></td></tr>
 			</table>
 		</div>		
 		
@@ -3439,7 +3734,10 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 				<tr><td align="right"><img src="../../media/en_US/images/btn/btn_continue_AA0009Q1.gif" onclick="closePopup();keepBackAlive();setTimeOutWarning();" alt="Continue"></img></td></tr>
 			</table>
 		</div>
-		
+		<!-- BEGIN BAYNOTE INCLUDES -->
+		<script type="text/javascript" src="../../global/scripts/baynote.js"></script>
+		<script type="text/javascript" src="../../global/scripts/baynote-observer.js"></script>
+		<!-- END BAYNOTE INCLUDES -->
 	
 			
 			
@@ -3628,7 +3926,19 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 
 
 
+<!--Wireless CTN capture start -->
 
+
+
+
+	
+	
+	
+	
+		
+	
+
+<!--Wireless CTN capture end -->
 
 
 
@@ -3698,14 +4008,17 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 
 
 
+
+
+
 <meta NAME="DCSext.wtStatusCode" 			CONTENT="" />
 
 
 
-<meta NAME="DCSext.sessionid" 				CONTENT="R3nDPw3f3GCGgvHGCCk3BffN!-350026533!1336997663080" />
+<meta NAME="DCSext.sessionid" 				CONTENT="xf8jQhjfhLn3bMlyC8w49vw0!410118374!1343939551091" />
 <meta NAME="DCSext.flowtype" 				CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" 				CONTENT="Consumer">
-<meta NAME="DCSext.wtCustTypeSub"  			CONTENT="residential" />
+<meta NAME="DCSext.wtCustTypeSub" 			CONTENT="residential" />
 <meta NAME="DCSext.wtCreditClass" 			CONTENT="" />
 <meta NAME="DCSext.wtUverse_DA_User" 		CONTENT="" />
 <meta NAME="DCSext.wtUverse_CSIExcept" 		CONTENT="" />
@@ -3758,14 +4071,39 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 
 
 
+			
+		
+			
+		
+			
+        
+	
+	
+	
+		
+		
+			
+		
+	
+
+	
+	
+		
+		
+			
+		
+	
+	
 
 
 
 
 
 <meta NAME="DCSext.wtBuyFlowType" 			CONTENT="PROVIDE" />
-<meta NAME="DCSext.wtReferral_PackageID" 	CONTENT="" />
-<meta NAME="DCSext.Referral_app_id" 		CONTENT="" />
+<meta NAME="DCSext.Referral_app_id" CONTENT="" />
+
+
+
 	
 
 
@@ -3798,7 +4136,9 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 
 
 
+<!-- Fix for PROD11-3183 START  -->
 
+<!-- Fix for PROD11-3183 END  -->
 <script>
 var reporting_ready = window.reporting_ready || new jQuery.Deferred();
 jQuery.when(reporting_ready).then(function (reporting) {
@@ -3883,10 +4223,16 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		//{selector: 'head:page(multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_MultipleAddress'},
 		// Fix for Prod11-3183 :check availability success flag 
 		{selector: 'head:page(multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value:function() {
-		if ('unknown'=='green') 
-		return '';
-		else
-		return 'UV_MultipleAddress';
+			if(''=='red')
+			return 'UV_MultipleAddress';
+			else 
+			return '';
+		}},
+		{selector: 'head:page(pending-order)', type: 'wtmeta', name: 'wtStatusMsg', value:function() {
+			if(''=='red')
+			return 'UV_PendingOrder';
+			else 
+			return '';
 		}},
 		//End of Fix for Prod11-3183 :check availability success flag 
 		{selector: 'head:page(address-changed)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_AddressChanged'},
@@ -3971,6 +4317,8 @@ jQuery.when(reporting_ready).then(function (reporting) {
 			return window.appliedCouponName.value;
 			}
 		},
+		{selector: 'head:page(customize)', type: 'wtmeta', name: 'wtiNIDFlag', value: '0'},
+		{selector: 'head:page(customize)', type: 'wtmeta', name: 'wtWifiRecFlag', value: '0'},
 		{selector: 'img[src*=btn_mrq_Review-Checkout_grn_AA000DZZ]', type: 'wtevent', name: 'Uverse_Cart_Save_Submit', params: 'wtCouponCode'},
 
 		//sweepstakes
@@ -3980,9 +4328,16 @@ jQuery.when(reporting_ready).then(function (reporting) {
 
 		{selector: 'head:page(combined-billing)', type: 'wtmeta', name: 'wtSysRespCode', value: ''},
 		//ECOM1203-134 Fix
-		{selector: 'head:page(creditcard-information)', type: 'wtmeta', name: 'wtSysRespCode', value: ''}
+		{selector: 'head:page(creditcard-information)', type: 'wtmeta', name: 'wtSysRespCode', value: ''},
+		//Wireless CTN Capture Changes Start
+		{selector: 'head:page(wdeu-billing-success)', type: 'wtmeta', name: 'wtCTN', value: ''},
 		
-		
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtLinkName', value: 'See Details'},
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse_Uverse_NoInstall_OrderSummary_Pg_Body'},
+		{selector: '#seeDetailsLink', type: 'wtparam', name: 'wtNoHit', value: '1'},
+		{selector: '#seeDetailsLink', type: 'wtlink', name: '', params: 'wtLinkName,wtLinkLoc,wtNoHit', trigger: 'mousedown'},
+		{selector: 'head:page(combined-billing-ineligible)', type: 'wtmeta', name: 'wtStatusMsg', value: ''}		
+		//Wireless CTN Capture Changes End		
 	]);
 
 	reporting.tag.perform('inline');
@@ -4005,14 +4360,16 @@ function getHiddenWebTrendEvents(str) {
 }
 
 function firePopupWebTrendPageView(str, title, url) {
-	if (/class=.wtpn\s/.test(str) == false) {
+	//Added new condition for Wireless CTN capture
+	if (/class=.wtpn\s/.test(str) == false && !title.match('style')) {
 		var wtPN = 'Uverse_' + title.replace(/\W/g,'_') + '_Modal_Pg';
 		var dcsuri = url || title.replace(/\W/g,'-').toLowerCase() + '-modal.jsp';
-		if (!/class=.wtpn /.test(str) && webTrendTag) webTrendTag(wtPN, 0, 'System', 'dcsuri', dcsuri, 'wtBuyFlowType', 'PROVIDE', 'flowtype', 'UVERSE');
+		//ECOM1207-25 -Wireless CTN capture fix
+		var wtZipCode = '';
+		if (!/class=.wtpn /.test(str) && webTrendTag) webTrendTag(wtPN, 0, 'System','wtZipCode',wtZipCode, 'dcsuri', dcsuri, 'wtBuyFlowType', 'PROVIDE', 'flowtype', 'UVERSE');
 		return wtPN;
 	}
 }
-
 function captureLastFieldInteracted() {
 	commonFunc.eventObserve(document, 'blur', handleLastFieldInteracted, false);
 	commonFunc.eventObserve(document, 'change', handleLastFieldInteracted, false);

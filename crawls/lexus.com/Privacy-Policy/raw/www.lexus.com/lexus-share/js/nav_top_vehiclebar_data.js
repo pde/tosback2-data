@@ -68,7 +68,7 @@
 	 
     
     newNavLexusS.categoryModelIS= 'IS';
-    newNavLexusS.categoryModelPriceIS= 'Starting at $33,595';
+    newNavLexusS.categoryModelPriceIS= 'Starting at $33,795';
     newNavLexusS.categoryModelEndPriceIS= '';
     newNavLexusS.categoryModelCodeIS= '95';
     
@@ -191,7 +191,7 @@
 	 
     
     newNavLexusLU.categoryModelGX= 'GX';
-    newNavLexusLU.categoryModelPriceGX= 'Starting at $53,245';
+    newNavLexusLU.categoryModelPriceGX= 'Starting at $53,445';
     newNavLexusLU.categoryModelEndPriceGX= '';
     newNavLexusLU.categoryModelCodeGX= '97';
     
@@ -291,29 +291,9 @@
                       
                 newNavLexusH.RXhFeature3='0-60 mph in 7.4 or 7.8 sec <span class="span_disclaim" name="PREMIUMFUEL">[<a href="#RXh_Disclaimer_1" class="link_disclaim">1</a>]</span><span class="span_disclaim" name="PERFFIGS">[<a href="#RXh_Disclaimer_2" class="link_disclaim">2</a>]</span>';
                       
-                newNavLexusH.RXhFeature4='FWD';
+                newNavLexusH.RXhFeature4='FWD or AWD';
                       
                 newNavLexusH.RXhFeature5='32/28 City/Hwy MPG';
-        
-	 
-    
-    newNavLexusH.categoryModelHSh= 'HSh';
-    newNavLexusH.categoryModelPriceHSh= 'Starting at $37,030';
-    newNavLexusH.categoryModelEndPriceHSh= '';
-    newNavLexusH.categoryModelCodeHSh= '98';
-    
-                      
-                newNavLexusH.HShFeature0='2.4-Liter Hybrid Inline-4';
-                      
-                newNavLexusH.HShFeature1='187 hp (Total Output) <span class="span_disclaim" name="PREMIUMFUEL">[<a href="#HSh_Disclaimer_1" class="link_disclaim">1</a>]</span>';
-                      
-                newNavLexusH.HShFeature2='';
-                      
-                newNavLexusH.HShFeature3='0-60 mph in 8.4 sec <span class="span_disclaim" name="PREMIUMFUEL">[<a href="#HSh_Disclaimer_1" class="link_disclaim">1</a>]</span> <span class="span_disclaim" name="PERFFIGS">[<a href="#HSh_Disclaimer_2" class="link_disclaim">2</a>]</span>';
-                      
-                newNavLexusH.HShFeature4='FWD';
-                      
-                newNavLexusH.HShFeature5='35/34 City/Hwy MPG';
         
 	 
     

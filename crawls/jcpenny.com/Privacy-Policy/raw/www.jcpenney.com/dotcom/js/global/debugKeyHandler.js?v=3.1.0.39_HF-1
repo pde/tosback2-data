@@ -1,0 +1,1 @@
+function openSupportPage(){window.open("/dotcom/jsp/cca/jcpSupportCapture.jsp","","toolbar=1,height=400,width=800");}function keyHandler(d){var c;if(document.all){d=window.event;}if(document.layers||d.which){c=d.which;}if(document.all){c=d.keyCode;}if(d.ctrlKey&&c==56){openSupportPage();}}document.onkeydown=keyHandler;

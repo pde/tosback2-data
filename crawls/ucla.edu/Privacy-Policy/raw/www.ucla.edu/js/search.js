@@ -1,31 +1,82 @@
-//short id search
-function submitform()
-{
-  var searchterm= document.searchform.q.value;
-  if (IsNumeric(searchterm) == true && searchterm.length>4){ 
-    document.searchform.method='post';
-	document.searchform.action='http://map.ais.ucla.edu/go/'+searchterm+'';
-  }else{
-    document.searchform.action='http://gsa.search.ucla.edu/search';
-  }
-  document.searchform.submit();
+//Run search appliance
+function runSearch() {
+	var searchTerm = document.searchform.q.value;
+	
+	if (isNumeric(searchTerm) == true && searchTerm.length > 4) { 
+		document.searchform.method='post';
+		document.searchform.action='http://map.ais.ucla.edu/go/'+searchTerm+'';
+	} else {
+		document.searchform.action='http://gsa.search.ucla.edu/search'; //run search
+	}
+	document.searchform.submit();
 }
-function IsNumeric(strString)
-     {
-   var strValidChars = "0123456789.-";
-   var strChar;
-   var blnResult = true;
 
-   if (strString.length == 0) return false;
-
-   //  test strString consists of valid characters listed above
-   for (i = 0; i < strString.length && blnResult == true; i++)
-      {
-      strChar = strString.charAt(i);
-      if (strValidChars.indexOf(strChar) == -1)
-         {
-         blnResult = false;
-         }
-      }
-   return blnResult;
+//Test for numeric values
+function isNumeric(strString) {
+	var strValidChars = "0123456789.-";
+	var strChar;
+	var blnResult = true;
+	
+	if (strString.length == 0) return false;
+	
+	//test strString consists of valid characters listed above
+	for (i = 0; i < strString.length && blnResult == true; i++) {
+		strChar = strString.charAt(i);
+		if (strValidChars.indexOf(strChar) == -1) {
+			blnResult = false;
+		}
+	}
+	return blnResult;
 }
+
+
+//Return url parameters
+$.urlParam = function(param) {
+	var key = new RegExp("[\\?&]"+param+"=([^&#]*)").exec(window.location.href);
+	if (key!=null) {
+		return key[1]
+	} else {
+		return null
+	}
+};
+
+
+//DOM loaded
+$(document).ready(function() {
+
+
+	var searchInput = $(".google-search");
+
+	//Add query to searchbox if present in URL
+	var searchQuery = $.urlParam('q');
+	if (searchQuery != null) {
+		var decodedQuery = decodeURIComponent(searchQuery.replace(/\+/g,' '));
+
+		$(window).load(function() {
+			$(searchInput).val(decodedQuery).addClass("focus");
+		});
+	}	
+	
+	//"Google Campus Search" remove/add on blur/focus
+	$(searchInput).focus(function() {
+		$(this).addClass("focus"); //removes bg image
+	});	
+	$(searchInput).blur(function() {
+		if ( !$(searchInput).val() ) {
+			$(this).removeClass("focus");
+		}
+	});
+	
+	//If value exists on page load, remove "Google Campus Search"
+	if ( $(searchInput).val() ) {
+		$(searchInput).addClass("focus");
+	}
+	
+
+	//Call search function
+	$("#searchform").submit(function() {
+		runSearch();
+	});
+
+
+});

@@ -1,0 +1,75 @@
+//	name:			searchbox.js 
+//	description:	jquery function to hide and revel searchbox. search bow is toggled
+//					by seach menu item in the top menu 
+//	author:			werner glinka
+//	email:			werner@bussedesign.com
+
+
+$(document).ready(function() {
+
+// slide-out search box
+						   
+//	$("#block-nice_menus-2 ul#nice-menu-2 li#menu-397 a").toggle(function(){	
+//		$("div#search").show();	// slide search box out
+//	}, function() {
+//		$("div#search").hide();	// slide search box up	
+//});
+
+	$("#search").hide();		// hide search box initially
+
+	$("#block-nice_menus-2 ul#nice-menu-2 li#menu-397 a").click(function() {
+		$("div#search").show();	// show search box
+		return false;
+		});
+
+	$("#search").click(function(event) {
+		event.stopPropagation();
+	});	
+
+// share and print link
+
+	$('ul#tools').removeClass('hidden');    // if js is not enabled this will stay hidden
+	
+	$('ul#tools li.print a').click(function() {
+		window.print();
+		return false;
+	});
+	
+// prepare the share link
+
+	$('a.sharePage').click(function() {
+		var link = $(this).attr("href");
+		var sharePageURL = window.location.href;
+		
+		link = link+sharePageURL
+		
+		$(this).attr("href",link);
+	});	
+	
+	
+	
+// it is "case studies" not "case studys"	
+	if ($("h3[class*='views-accordion-knowledge_center']").text()) {
+	
+	var	what;
+		for (i=0; what = $("h3[class*='views-accordion-knowledge_center']").eq(i).text();i++) {
+			if ( what == "Case Studys" ) {
+				$("h3[class*='views-accordion-knowledge_center']").eq(i).html('Case Studies');	
+				break;
+			}
+		}
+	}
+	
+
+	
+}); // end of document ready function
+
+
+
+
+$(document).click(function() { // event handler attached to document handles clicks outside the popup to hide the popup		
+	$("#search").hide();
+});
+
+
+

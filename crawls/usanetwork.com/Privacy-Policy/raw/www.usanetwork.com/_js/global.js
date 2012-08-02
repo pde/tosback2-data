@@ -911,6 +911,7 @@ var usa_meeboEnableMeebo = true;
 function usa_setupMeebo()
 {
 	var url = window.location.href;
+	var meeboNetwork = 'usanetwork';
 	
 	if (!usa_meeboEnableMeebo)
 	{
@@ -920,6 +921,10 @@ function usa_setupMeebo()
 	if (url.indexOf('www.usanetwork.com') != -1 || url.indexOf('test.usanetwork.com') != -1 || url.indexOf('3.44.121.221') != -1)
 	{
 		// valid location
+		if (url.indexOf('test.usanetwork.com') != -1 || url.indexOf('3.44.121.221') != -1)
+		{
+			//meeboNetwork = 'usanetwork:notifications';
+		}
 	}
 	else
 	{
@@ -946,7 +951,7 @@ function usa_setupMeebo()
 	b.allowTransparency="true";v[j](b);try{b.contentWindow[g].open()}catch(w){c[e]=
 	d[e];o="javascript:var d="+g+".open();d.domain='"+d.domain+"';";b[k]=o+"void(0);"}try{var t=
 	b.contentWindow[g];t.write(p());t.close()}catch(x){b[k]=o+'d.write("'+p().replace(/"/g,
-	'\\"')+'");d.close();'}a.T(1)}({network:"usanetwork"});
+	'\\"')+'");d.close();'}a.T(1)}({network:meeboNetwork});
 
 	// Facebook Fan Page
 	if (typeof usa_meeboFbFanPage != 'undefined')
@@ -999,6 +1004,36 @@ function usa_setupMeebo()
         onClick: function(){ parent.location.href = 'http://www.characterarcade.com/'; }
 	});
 	
+	// Featured Graphic Promote
+	usa_meeboButtons.buttons.push({
+		id: "usa-featured_1-button",
+        type: "widget",
+        isIcon: true,
+        icon: "/_img/rp_summerextras_150x30.png",
+        label: "",
+        width: 900,
+        height: 400,
+        iframe: "/meebo/rp-summer-extras.html",
+        onHide: function(widget, element) {
+            //console.log (widget);
+            console.log (element);
+            console.log (element.contentWindow);
+            if (typeof element.contentWindow.hideVideo != 'undefined')
+            {
+            	element.contentWindow.hideVideo();
+            }
+        },
+        onShow: function(widget, element) {
+            //console.log (widget);
+            console.log (element);
+            console.log (element.contentWindow);
+            if (typeof element.contentWindow.showVideo != 'undefined')
+            {
+            	element.contentWindow.showVideo();
+            }
+        },
+	});
+	
 	var usa_meeboSectionValue = ad_section + ((ad_subcategory != '') ? ('_' + ad_subcategory) : '');
 	Meebo.partnerTakeover = {section:usa_meeboSectionValue};
 	
@@ -1019,7 +1054,10 @@ function usa_setupMeebo()
 						label: usa_meeboButtons.buttons[i].label,
 						width: usa_meeboButtons.buttons[i].width,
 						height: usa_meeboButtons.buttons[i].height,
-						iframe: usa_meeboButtons.buttons[i].iframe 
+						iframe: usa_meeboButtons.buttons[i].iframe,
+						isIcon: (usa_meeboButtons.buttons[i].isIcon) ? usa_meeboButtons.buttons[i].isIcon : false,
+						onHide: (usa_meeboButtons.buttons[i].onHide) ? usa_meeboButtons.buttons[i].onHide : null,
+						onShow: (usa_meeboButtons.buttons[i].onShow) ? usa_meeboButtons.buttons[i].onShow : null
 					});
 				}
 				else if (usa_meeboButtons.buttons[i].type == 'action')
@@ -1029,7 +1067,8 @@ function usa_setupMeebo()
 						type: usa_meeboButtons.buttons[i].type,
 						icon: usa_meeboButtons.buttons[i].icon,
 						label: usa_meeboButtons.buttons[i].label,
-						onClick: usa_meeboButtons.buttons[i].onClick 
+						onClick: usa_meeboButtons.buttons[i].onClick,
+						isIcon: (usa_meeboButtons.buttons[i].isIcon) ? usa_meeboButtons.buttons[i].isIcon : false 
 					});
 				}
 			}

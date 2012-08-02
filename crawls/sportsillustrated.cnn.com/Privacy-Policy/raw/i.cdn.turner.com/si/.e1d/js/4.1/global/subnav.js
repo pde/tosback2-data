@@ -352,7 +352,7 @@ siNav.load({
 		{ "u": "http://www.golf.com/tours_news/tourschedule?eref=sinav",			"l":"Schedules &amp; Results" },
 		{ "u": "http://www.golf.com/tours_news/tourstats?eref=sinav",			"l":"Stats" },
 		{ "u": "http://www.golf.com/tours_news?eref=sinav",			"l":"Golf News" },
-		{ "u": "http://www.golf.com/search/apachesolr_search/pga%20tour%20confidential?filters=is_cck_field_article_contributor_ref:151111&solrsort=created%20desc?eref=sinav",			"l":"PGA Tour Confidential" },
+		{ "u": "http://www.golf.com/search/apachesolr_search/pga%20tour%20confidential?filters=is_cck_field_article_contributor_ref:151111&solrsort=created%20desc",			"l":"PGA Tour Confidential" },
 		{ "u": "http://www.golf.com/instruction",			"l":"Instruction",
 			"s": [
 				{ "u":"http://www.golf.com/instruction/power?eref=sinav",			"l":"Power" },
@@ -503,14 +503,15 @@ siNav.load({
 				{ "u": "http://sports.sportsillustrated.cnn.com/tennis/rankings.asp?tour=WTA&eref=sinav",			"l":"Women's Players" },
 				{ "u":"#",			"l":"&#160;" }
 			]
-		}
+		},
+		{ "u": "/podcasts/tennis/?eref=sinav",			"l":"Podcasts" }
 	],
 	"more" : [
 		{ "u": "/cycling/wires/?eref=sinav",			"l":"Cycling" },
 		{ "u": "http://sports.sportsillustrated.cnn.com/cfl/scoreboard.asp?eref=sinav",			"l":"CFL" },
 		{ "u": "http://sports.sportsillustrated.cnn.com/cricketfront.asp?eref=sinav",			"l":"Cricket" },
 		{ "u": "/horse_racing/wires/?eref=sinav",			"l":"Horse Racing" },
-		{ "u": "/olympics/2010/?eref=sinav",			"l":"Olympics" },
+		{ "u": "/olympics/?eref=sinav",			"l":"Olympics" },
 		{ "u": "/track_field/wires/?eref=sinav",			"l":"Track &amp; Field" },
 		{ "u": "/figure_skating/wires/?eref=sinav",			"l":"Figure Skating" },
 		{ "u": "http://sports.sportsillustrated.cnn.com/wcbkfront.asp?eref=sinav",			"l":"Women's College Basketball" },
@@ -518,9 +519,11 @@ siNav.load({
 		{ "u": "/magazine/sportsman/?eref=sinav",			"l":"Sportsman" }
 	],
 	"video" : [
+		{ "u": "/specials/futuregamechangers/?eref=sinav",			"l":"Future Game Changers" },
 		{ "u": "/behindthemic/?eref=sinav",			"l":"Behind The Mic" },
 		{ "u": "/specials/just-askin/?eref=sinav",			"l":"Just Askin'" },
 		{ "u": "/video/inside_report/?eref=sinav",			"l":"Inside Report" },
-		{ "u": "/2012_swimsuit/video/kate-upton-profile.html?eref=sinav",			"l":"Swimsuit" }
+		{ "u": "/2012_swimsuit/video/kate-upton-profile.html?eref=sinav",			"l":"Swimsuit" },
+		{ "u": "/video/the-daily-fix/?eref=sinav",			"l":"The Daily Fix" }
 	]
 });

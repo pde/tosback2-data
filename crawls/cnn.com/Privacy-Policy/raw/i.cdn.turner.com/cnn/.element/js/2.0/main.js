@@ -1146,7 +1146,7 @@ function cnnSearch( frm ) {
 			strSearchLoc += '&';
 			strSearchLoc += 'primaryType=mixed';
 			strSearchLoc += '&';
-			strSearchLoc += 'sortBy=date';
+			strSearchLoc += 'sortBy=relevance';
 			if(location.hostname.indexOf('edition') < 0) {
 				strSearchLoc += '&';
 				strSearchLoc += 'intl=false';
@@ -1199,7 +1199,7 @@ function cnnFootSearch( frm ) {
 			strSearchLoc += '&';
 			strSearchLoc += 'primaryType=mixed';
 			strSearchLoc += '&';
-			strSearchLoc += 'sortBy=date';
+			strSearchLoc += 'sortBy=relevance';
 			if(location.hostname.indexOf('edition') < 0) {
 				strSearchLoc += '&';
 				strSearchLoc += 'intl=false';

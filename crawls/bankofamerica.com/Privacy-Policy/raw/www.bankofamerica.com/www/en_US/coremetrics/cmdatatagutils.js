@@ -1,5 +1,5 @@
 /* cmdatatagutils.js
-* $Id: cmdatatagutils-Comprehensive-Condensed-master.txt 169225 2011-04-27 17:42:22Z cterrell $
+* $Id: cmdatatagutils-Comprehensive-Condensed-master.txt 194183 2012-04-16 20:23:08Z whbird $
 *
 * Coremetrics Tag v4.0, 8/11/2006
 * COPYRIGHT © 1999-2011 COREMETRICS, AN IBM COMPANY.
@@ -9,11 +9,11 @@
 * Legacy changelist is available from BAC CM Team.
 *
 * Date:			Name:			Description:
-* 05/18/2010	Corey Terrell	Added timestamp randomization and force mmc to lowercase to MakeTag.
-* 06/28/2010	Corey Terrell	Modified data direction functions to handle new test system.
 * 09/28/2010	Corey Terrell	Migrate to first party Coremetrics-managed data collection.
 * 03/24/2011	Corey Terrell	Modified product tags to accept mutiple quantities of a single product.
 * 04/27/2011	Corey Terrell	Modified Registration and Shop 9 tags to set and use new cookie instead of BOA_0020.
+* 04/09/2012	Corey Terrell	Modified path to TouchClarity libraries for migration to Borneo.
+* 04/12/2012	Corey Terrell	Modified TouchClarity _4 variable to force secure reference. Cleaned extraneous variable instantiations.
 */
 
 document.hitImage = new Array();
@@ -743,17 +743,13 @@ if (typeof(cm_Touch) == "undefined"){
 		var _1={Version:"4.2.1#323",Vendor:"Touch Clarity",Filename:"eluminate.js"};
 		_1.Loader=function(){
 			var _2=this;
-			var _3={server:"www.bankofamerica.com",path:"/www/global/js/tc_logging",args:""};
+			var _3={server:"www.bankofamerica.com",path:"/pa/global-assets/external/tc/tc_logging",args:""};
 			this.init=function(){
 				return _buildScriptTag();
 			};
 			function _buildScriptTag(){
-				var _4="";
-				var _5="";
-				if(_3.server){
-					_4="http"+(window.location.href.substring(0,6)=="https:"?"s":"")+"://";
-				}
-				_5=""+_4+_3.server+_3.path+".js?"+_3.args;
+				var _4="https://";
+				var _5=""+_4+_3.server+_3.path+".js?"+_3.args;
 				if (typeof(tc_override) == "undefined"){
 					document.write("<scr" + "ipt type=\"text/javascript\" src=\""+_5+"\"></scr" + "ipt>");
 				} else {

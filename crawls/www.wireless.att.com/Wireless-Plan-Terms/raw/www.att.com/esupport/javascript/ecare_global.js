@@ -271,6 +271,7 @@ function prepareChatLink() {
 	{
 		var serviceCode = jQuery('input#additionalSupportServiceCodeForChat').val();
 		var regionCode = jQuery('input#additionalSupportRegionFolderCode').val();
+		var pageName = jQuery('input#pageNameForChat').val();
 
 		if( serviceCode != '820' && serviceCode != '821' ){
 			var url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_sw.aspx';
@@ -279,7 +280,14 @@ function prepareChatLink() {
 					serviceCode == '813' ||
 					serviceCode == '814' ) {
 				url = 'https://pattta.att.motive.com/netagent/questionnaire_uverse.aspx';
-			} else if ( regionCode.indexOf('71') == 0 ) {
+			}else if ( regionCode.indexOf('71') == 0 && serviceCode == '801' && pageName == 'main') {
+				url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_se.aspx?ChatRefId=61';
+			}else if ( regionCode.indexOf('71') == 0 && serviceCode == '801' && pageName == 'wifi') {
+				url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_se.aspx?ChatRefId=61';
+			}
+			else if ( regionCode.indexOf('71') == 0 && serviceCode == '801' && pageName == 'article') {
+				url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_se.aspx?ChatRefId=64';
+			}else if ( regionCode.indexOf('71') == 0 ) {
 				url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_se.aspx';
 			}
 			var popup_options = 'menubar=no,toolbar=no,scrollbars=no,resizable=no,width=472,height=350';

@@ -1,10 +1,11 @@
-<!doctype html> 
-<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]--> 
-<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]--> 
-<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]--> 
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]--> 
-    <head> 
-        <meta charset="utf-8"> 
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+
+        <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         
 
@@ -12,27 +13,22 @@
 
         <title>
 Privacy | This Is My Jam        </title>
-        <link rel="shortcut icon" href="includes/image/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="http://www.thisismyjam.com/includes/image/favicon.ico" />
+        <link rel="icon" type="image/png" href="http://www.thisismyjam.com/includes/image/favicon.png" />
         <link rel="apple-touch-icon" href="http://www.thisismyjam.com/includes/image/apple-touch-icon.png" />
         <link rel="apple-touch-icon" sizes="72x72" href="http://www.thisismyjam.com/includes/image/apple-touch-icon@ipad.png" />
         <link rel="apple-touch-icon" sizes="114x114" href="http://www.thisismyjam.com/includes/image/apple-touch-icon@2x.png" />
         <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="../static03.thisismyjam.com/css/all_14649a77eb6d780ce8539f060e6c31d92260ef52.css" type="text/css" media="all"/>
+            
         
-        <link rel="stylesheet" href="includes/css/skeleton.css%3F1.635.css" type="text/css" media="all">
-        <link rel="stylesheet" href="includes/css/buttons.css%3F1.635.css" type="text/css" media="all">
-        <link rel="stylesheet" href="includes/css/main.css%3F1.635.css" type="text/css" media="all">
-        <link rel="stylesheet" href="includes/css/boxy.css" type="text/css" media="screen">
-
-        
-        
-                <script type="text/javascript" src="includes/js/lib/custom.modernizr.2.5.3.js"></script>  
+                <script type="text/javascript" src="includes/js/lib/custom.modernizr.2.5.3.js"></script>
 
     	<!-- special IE-only canvas fix -->
 		<!--[if IE]><script type="text/javascript" src="/includes/js/lib/excanvas.js"></script><![endif]-->
         
             </head>
     <body>
-    
     
     <div id="messageStripe" style="display:none;"><div class="container">
     
@@ -43,14 +39,13 @@ Privacy | This Is My Jam        </title>
     
 
     </div></div>
-    
+
 
 <header > 
 
     <div id="topNav" class="container" >
         <nav class="nine columns omega">
                 <ul>
-
                     
                             <li><a href="http://www.thisismyjam.com/">Home</a></li>
                             <li><a href="http://www.thisismyjam.com/about">About</a></li>
@@ -64,6 +59,9 @@ Privacy | This Is My Jam        </title>
 
 
     <div id="content" class="clearfix footerFix">
+
+
+<div id="jamError" style="display:none;"></div>
 
 <div class="layer texture_light">
     <div class="container">
@@ -141,33 +139,44 @@ Privacy | This Is My Jam        </title>
     </div>
 </div>
 
-            
-<br class="clearfix" />
+            <br class="clearfix" />
 
- </div> 
-  <div id="player-bar">
-	<hr class="hairline" />
-	<div id="player-inner" class="container nine columns flush">
-		<ul id="controls">
-			<li id="backwards" class=""></li>
-			<li id="playPause" class="paused"></li>
-			<li id="controlLike" class="liked disabled"></li>
-			<li id="forwards" class="disabled"></li>
-		</ul>
-		<div class="now-playing">
-				<span id="track-title"></span>
-				<span class="by">by</span>
-				<span id="artist-name"></span>
-				<span class="detail" id="totalTime"></span>
-				<a id="playerJamLink" href="privacy.html#">
-				<span id="jammer"></span>
-			</a>
-		</div>
-	</div>
+</div> 
+    <div id="player-bar" class="glossy">
+    <hr class="hairline" />
+    <div id="player-inner" class="container nine columns flush">
+        <ul id="controls">
+            <li id="backwards" class=""></li>
+            <li id="playPause" class="paused"></li>
+            <li id="controlLike" class="liked disabled"></li>
+            <li id="forwards" class="disabled"></li>
+
+            <li class="js-gotoCurrent left control" title="Go to current jam"></li>
+
+        </ul>
+        <a class="now-playing js-jamlink glossy relative">
+            <span id="timeAndJammer">
+                <span class="detail" id="currentTime"></span>
+                <span class="detail" id="totalTime"></span>
+                <span class="detail larger">·</span>
+                <span id="jammer"></span>
+            </span>
+            <br />
+            <div class="track-wrap">
+                <span id="track-title"></span>
+                <span class="by">by</span>
+                <span id="artist-name"></span>
+            </div>
+        </a>
+
+        <a class="js-gotoCurrent left control gotoOuter" title="Go to current jam" href="privacy.html#"></a>
+
+        <div data-muted="0" data-volume="100" id="volumeControlWrapper">
+        </div>
+    </div>
 </div>
-
 <footer>
-        <ul class="yellowTextShadow">
+        <ul class="upperBook yellowTextShadow">
     <li><a href="http://www.thisismyjam.com/about">About</a></li>
     <li><a href="http://www.thisismyjam.com/contact" >Contact</a></li>
     <li><a href="http://www.thisismyjam.com/help">Help</a></li>
@@ -184,13 +193,14 @@ Privacy | This Is My Jam        </title>
     
     </footer>
 
-
-
     
+    <script src="http://ec2-50-19-158-76.compute-1.amazonaws.com:8080/socket.io/socket.io.js"></script>
+
+
     <script src="../ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="includes/js/lib/jquery-1.7.2.min.js"><\/script>')</script>
 
-   
+
    
       <div id="sign-in-box" style="display:none">
            
@@ -253,7 +263,7 @@ Privacy | This Is My Jam        </title>
     </div>
     <div class="button-column">
         <form id="emailForm_signUp" method="POST" action="http://www.thisismyjam.com/signin/emailsignup">
-            <label for="email" class="FuturaBT-Book lighter smaller uppercase letter-spaced">Enter Your Email address</label>
+            <label for="email" class="Gibson-Regular lighter smaller uppercase letter-spaced">Enter Your Email address</label>
             <input id="email" name="email" type="email" />
             <br />
             <input type="submit" value="Next" class="right" />
@@ -262,39 +272,24 @@ Privacy | This Is My Jam        </title>
     <div class="fullwidth left box-checker">
         <p class="smaller lighter left">Already signed up? <a href="privacy.html#sign-in-box" title="Sign In" id="overlaySignIn" class="sign-in">Sign in to your account.</a></p>
     </div>
-</section> 
-   </div>
+</section>   </div>
 
 
-    <script src="includes/js/emailsignin.js"></script>
-    <script src="includes/js/plugins/jquery.cookie.js"></script>
+    <script src="http://ec2-50-19-158-76.compute-1.amazonaws.com:8080/socket.io/socket.io.js"></script>
 
-    <script src="includes/js/lib/soundmanager/soundmanager2.js%3F1.636"></script>
-    <script src="includes/js/plugins/jquery.tipsy.js%3F1.636"></script>
-    <script src="includes/js/plugins/jquery.playable.js%3F1.636"></script>
-    <script src="includes/js/plugins/jquery.form.js%3F1.636"></script>
-    <script src="includes/js/lib/jquery.history.js%3F1.636"></script>
-    <script src="includes/js/plugins.js%3F1.636"></script>
-    <script src="includes/js/general.js%3F1.636"></script>
-    <script src="includes/js/history_handler.js%3F1.636"></script>
-    <script src="includes/js/player.js%3F1.636"></script>
-    <script src="includes/js/youtubeplayer.js%3F1.636"></script>
-    <script src="includes/js/youtubehandler.js%3F1.636"></script>
-    <script src="includes/js/iphoneyoutubehandler.js%3F1.636"></script>
-    <script src="includes/js/soundmanagerhandler.js%3F1.636"></script>
-    <script src="includes/js/lib/swfobject.js"></script>
+        <script src="../static03.thisismyjam.com/js/all_d152bc4a587dc295d7e81b26ad8bba7fce4d938d.js"></script>
+    
+<script>
+    window.realtime = new Realtime('ec2-50-19-158-76.compute-1.amazonaws.com', 8080);
+</script>        
 
-    <script src="includes/js/plugins/jquery.boxy.js%3F1.636"></script>
-                                  
 
-  
-    <script>    
+    <script>
           var user_scrobbles = false;
       </script>
 
-                                  
-  
 
+  
         <div id="fb-root"></div>
         <script>
 
@@ -342,7 +337,7 @@ Privacy | This Is My Jam        </title>
                     return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f); } });
                 }(document, "script", "twitter-wjs"));
 
-fbDefaultScope = 'user_about_me,user_likes,email,publish_stream,offline_access';
+fbDefaultScope = 'user_about_me,user_likes,email,publish_stream';
 
 function userIsConnectedToFacebook() {
     return !!'';
@@ -351,16 +346,13 @@ function userIsConnectedToFacebook() {
         </script>
 
 
-
  <div class="ytContainer" id="ytContainer">
   <div id="ytPlayer"></div>
-  <img class="ytMask black" src="includes/image/c/mask_black.png" />
 </div>
 
 
 <div class="ytContainer" id="jamYtContainer">
   <div id="jamYtPlayer"></div>
-  <img  class="ytMask black" src="includes/image/c/mask_black.png" />
 </div>
 
 
@@ -392,6 +384,8 @@ soundManager.useHTML5Audio = true;
 soundManager.preferFlash = true;
 soundManager.flashLoadTimeout = 8000; // 8 seconds for user to click before trying flash out again in flashblock mode
 soundManager.debugMode = false;
+soundManager.consoleOnly = true;
+
 
 window.ytPlayer = new YoutubePlayer('ytPlayer', $("#ytContainer"), !window.hasFlash());
 
@@ -403,13 +397,24 @@ if(!window.hasFlash() || window.isIOS()) {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
 
+$(function() {
+    window.player.init();
+});
+window.youtubePlaybackHandler = window.isIOS() ?
+    new IOSYoutubePlaybackHandler() : new YoutubePlaybackHandler();
+window.audioPlaybackHandler = new AudioPlaybackHandler();
+window.player = new Player();
+window.player.muted = 0;
+window.player.volume = 100;
+window.playerView = new PlayerView();
+window.playlistBag = new PlaylistBag();
 
 $(function(){
 
     sexyPreloadAnImg(["/includes/image/ajax-loader.gif"]);
-    
+
     window.soundManager.onready(function() {
-        window.player = new Player();
+            //        window.player = new Player();
     });
 
     // soundmanager not quite ready yet
@@ -455,7 +460,7 @@ function bg(path) {
 window.onerror = function(error, url, line)
 {
     // only send to server 1% of the time.
-    if(Math.random() * 100 > 100)
+    if(Math.random() * 100 > 0)
         return;
 
     // using old fashioned xhr just in case there are
@@ -512,7 +517,7 @@ window.onerror = function(error, url, line)
 };
 
 
-      
+
 </script>
 
 
@@ -521,15 +526,14 @@ window.onerror = function(error, url, line)
       _gaq.push(['_setAccount', 'UA-3675615-25']);
       // custom variables
               _gaq.push(['_setCustomVar', 1, "Logged-in", "No", 2]);
-            // NOTE: pageview tracking now happens in general.js
+                        // NOTE: pageview tracking now happens in general.js
       (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
     </script>
-
-
+  
 
   
 

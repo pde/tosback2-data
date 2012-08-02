@@ -1,0 +1,488 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>HTML Thumbnail Launcher</title>
+<!--[if IE]>
+         <link href="http://assets.newsinc.com/launchers/20120621/thumbLauncher4ie.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<!--[if !IE]><!-->
+        <link href="../../assets.newsinc.com/launchers/20120621/thumbLauncher4.css" rel="stylesheet" type="text/css" />
+<!--<![endif]-->
+<script type='text/javascript'>    var _parent;</script>
+<script type='text/javascript' src='../../assets.newsinc.com/launchers/20120621/jquery-1.6.4.min.js'></script>
+<script type='text/javascript' src='../../assets.newsinc.com/launchers/20120621/jquery.scrollTo-min.js'></script>
+<script type='text/javascript' src='../../assets.newsinc.com/launchers/20120621/jquery.timers.js'></script> 
+<script type='text/javascript' src="../../assets.newsinc.com/launchers/20120621/jquery.ServiceCalls.js"></script>
+<script type="text/javascript" src="../../assets.newsinc.com/ndn.2.js"></script>
+<script type="text/javascript" language="javascript">
+    function getUrlVars() {
+        var vars = {};
+        var parts = 'http://assets.newsinc.com/launchers/20120621/thumbnailLauncher5.html?wid=10984&freewheel=45981&sitesection=sfgate_nws_non_sec&width=300&height=250&thumbid=slider&zoneid=50912'.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+            if (value.charAt(value.length - 1) == "#") {
+                value = value.substring(0, value.length - 1);
+            }
+            vars[key.toLowerCase()] = value;
+        });
+        return vars;
+    }
+</script>
+<script type="text/javascript" src="../../assets.newsinc.com/launchers/20120621/processThumbs5_iframe.js"></script>
+<script type="text/javascript" src="../../assets.newsinc.com/swfobject.js"></script>
+<script>
+function sendLegalos(dart) {
+	thisMovie("ndn_adbox").sendLegalos(dart);
+}
+	ndn = {};
+	
+	var firstLoad = new Boolean(true);
+	var auditudeLoaded = new Boolean(false);
+	
+	var firstThumbLoaded = new Boolean(false);
+	
+	var linearAdPlayed = new Boolean(false);
+	
+	var eventid = 0;
+	var eventvalue = "";
+	var analyticsString = "";
+	var GAC = "";
+
+	switchToWidgetTimeout = null;
+
+	timer = {
+		loadTime: new Date(),
+		breakBeginTime: null,
+		breakEndTime: null
+	};
+
+	function CreateTimer(TimerID, Time) {
+			Timer = document.getElementById(TimerID);
+			TotalSeconds = Time;
+			
+			UpdateTimer()
+			window.setTimeout("Tick()", 1000);
+		}
+
+	function UpdateTimer() {
+		var Seconds = TotalSeconds;
+		
+		var Minutes = Math.floor(Seconds / 60);
+		Seconds -= Minutes * (60);
+
+
+		var TimeStr = LeadingZero(Minutes) + ":" + LeadingZero(Seconds)
+
+
+		Timer.innerHTML = "Today's top videos available in " + TimeStr;
+	}
+
+	function LeadingZero(Time) {
+
+		return (Time < 10) ? "0" + Time : + Time;
+
+	}
+
+	function Tick() {
+		if (TotalSeconds <= 0) {
+			//alert("Time's up!")
+			return;
+		}
+
+		TotalSeconds -= 1;
+		UpdateTimer()
+		window.setTimeout("Tick()", 1000);
+	}
+	var switchToWidget = function () {
+		if (isMobile != true && thumbId != "horizontal500" && thumbId != "horizontal400" && thumbId != "vertical"){
+			rdm = String(Math.floor(Math.random()*1000000000));
+			eventid = "6";
+			eventvalue = "complete";
+			analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ltype=1&ptype=0&plid="+cid+"&eventid="+eventid+"&eventvalue="+eventvalue+"&rdm="+rdm);
+			loadPage('swfviewFRM', null,analyticsString);
+		}
+		//alert("switchToWidget -3");
+		clearTimeout(switchToWidgetTimeout);
+		$('div[id*=aud_container_]').hide().empty().remove();
+		$('#ndn_adchoice', _parent).attr('style', 'visibility:hidden;');
+		$('#ndn_adbox', _parent).attr('style', 'height:0px;width:0px;overflow:hidden;');
+		//loadThumbs();
+		$('#ndn_container', _parent).show();
+	}
+	
+	
+	ndn.auditudeCallback = function (type, params) {
+			switch (type) {
+			case 'initComplete':
+				rdm = String(Math.floor(Math.random()*1000000000));
+				if (thumbId == "horizontal500" || thumbId == "horizontal400" || thumbId == "vertical"){
+					eventid = "5";
+				}else{
+					eventid = "2";
+				}
+				eventvalue = "LoadComplete";
+				analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ltype="+ltype+"&plid="+cid+"&device="+did+"&vid="+vidId+"&eventid="+eventid+"&eventvalue="+eventvalue+"&rdm="+rdm);
+				loadPage('swfviewFRM', null,analyticsString);
+				if(params.banner)
+					if (isMobile == true && ((thumbId != "horizontal500") && (thumbId != "horizontal400") && (thumbId != "vertical"))){
+						hasBanner = false;
+					}else{
+						hasBanner = true;
+					}
+				break;
+			case 'breakBegin':
+				if (thumbId != "horizontal500"){
+					if (thumbId != "horizontal400"){
+						if (thumbId != "vertical"){
+							switchToWidgetTimeout = setTimeout(switchToWidget, 10 * 1000);
+						}
+					}
+				}
+				break;
+			case 'breakEnd':
+				if (linearAdPlayed == true){
+					switchToWidget();
+				}else if (params.hasBanner == true){
+				}else if (thumbId == "horizontal500" || thumbId == "horizontal400" || thumbId == "vertical"){
+					if (thumbId == "vertical"){
+						document.getElementById('ndn_container').remove(getElementById('ndn_adbox'));
+						document.getElementById('thumb_ad_0').style.marginTop = "0px";
+						document.getElementById('thumb_ad_0').style.backgroundPosition = "10px 5px";
+						document.getElementById('thumb_ad_0').innerHTML = "<a href='http://www.newsinc.com' target='_blank'><img src='../../assets.newsinc.com/ndnThumb2.jpg' border='0' style='margin-top:5px;'></a>";
+					}else{
+						document.getElementById('thumb_ad_0').style.marginTop = "0px";
+						document.getElementById('thumb_ad_0').style.backgroundPosition = "10px 5px";
+						document.getElementById('thumb_ad_0').innerHTML = "<a href='http://www.newsinc.com' target='_blank'><img src='../../assets.newsinc.com/ndnThumb.jpg' border='0' style='margin-top:5px;'></a>";
+					}
+					
+				}else{
+					switchToWidget();
+				}
+				break;
+			case 'linearAdBegin':
+				linearAdPlayed = true;
+				clearTimeout(switchToWidgetTimeout);
+				switchToWidgetTimeout = setTimeout(switchToWidget, 45 * 1000);
+				if (thumbId == "horizontal500" || thumbId == "horizontal400"|| thumbId == "vertical"){
+					if (thumbId == "vertical"){
+						document.getElementById('thumb_ad_0').innerHTML = "<a href='http://www.newsinc.com' target='_blank'><img src='../../assets.newsinc.com/ndnThumb2.jpg' border='0' style='margin-top:-2px;'></a>";
+						document.getElementById('thumb_ad_0').style.top = "5px";
+						document.getElementById('thumb_ad_1').style.top = "5px";
+					}else{
+						document.getElementById('thumb_ad_0').innerHTML = "<a href='http://www.newsinc.com' target='_blank'><img src='../../assets.newsinc.com/ndnThumb.jpg' border='0'></a>";
+					}
+				}else{
+					rdm = String(Math.floor(Math.random()*1000000000));
+					eventid = "2";
+					eventvalue = "start";
+					analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ltype="+ltype+"&plid="+cid+"&device="+did+"&vid="+vidId+"&eventid="+eventid+"&eventvalue="+eventvalue+"&rdm="+rdm);
+					loadPage('swfviewFRM', null,analyticsString);
+					if (thumbId == "apslider"){
+						document.getElementById('ndn_adchoice').style.top = "-170px";
+					}else{
+						document.getElementById('ndn_adchoice').style.top = "-300px";
+					}
+					document.getElementById('ndn_adchoice').style.visibility = "visible";
+					callComscore();  // Added this line for ComScore -- 10-28-2011 -- NB
+				}
+				break;
+			case 'linearAdEnd':
+				rdm = String(Math.floor(Math.random()*1000000000));
+				eventid = "2";
+				eventvalue = "complete";
+				analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ltype="+ltype+"&plid="+cid+"&device="+did+"&vid="+vidId+"&eventid="+eventid+"&eventvalue="+eventvalue+"&rdm="+rdm);
+				loadPage('swfviewFRM', null,analyticsString);
+				document.getElementById('ndn_adchoice').style.visibility = "hidden";
+				break;
+			case 'showBanner':
+				clearTimeout(switchToWidgetTimeout);
+				if (linearAdPlayed != true){
+					if (thumbId == "slider"){
+						var ndn_countdownboxy = "-535px";
+						document.getElementById('ndn_adchoice').style.top = "-285px";
+					} else if (thumbId == "apslider"){
+						var ndn_countdownboxy = "-535px";
+						document.getElementById('ndn_adchoice').style.top = "-285px";
+					} else if (thumbId == "headline"){
+						var ndn_countdownboxy = "-531px";
+						document.getElementById('ndn_adchoice').style.top = "-280px";
+					} else if (thumbId == "plist"){
+						if (isPlaylistArr == true){
+							var ndn_countdownboxy = "-551px";
+							document.getElementById('ndn_adchoice').style.top = "-301px";
+						}else{
+							var ndn_countdownboxy = "-548px";
+							document.getElementById('ndn_adchoice').style.top = "-298px";
+						}
+					}				
+					if (thumbId != "horizontal500"){
+						if (thumbId != "horizontal400"){
+							if (thumbId != "vertical"){
+								document.getElementById('ndn_adchoice').style.zIndex = "90";
+								document.getElementById('ndn_countdown').style.zIndex = "70";
+								document.getElementById('ndn_countdown').style.top = ndn_countdownboxy;
+								document.getElementById('ndn_countdown').style.visibility = "visible";
+								document.getElementById('ndn_adchoice').style.visibility = "visible";
+								myC5 = "12";
+								callComscore();
+								switchToWidgetTimeout = setTimeout(switchToWidget, 15 * 1000);
+							}
+						}
+					}
+				}
+				break;
+			case 'initFailed':
+				rdm = String(Math.floor(Math.random()*1000000000));
+				if (thumbId == "horizontal500" || thumbId == "horizontal400" || thumbId == "vertical"){
+					eventid = "5";
+				}else{
+					eventid = "2";
+				}
+				eventvalue = "LoadFail";
+				analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ltype="+ltype+"&plid="+cid+"&device="+did+"&vid="+vidId+"&eventid="+eventid+"&eventvalue="+eventvalue+"&rdm="+rdm);
+				loadPage('swfviewFRM', null,analyticsString);
+				switchToWidget();
+				break;
+			case 'pluginError':
+				rdm = String(Math.floor(Math.random()*1000000000));
+				if (thumbId == "horizontal500" || thumbId == "horizontal400" || thumbId == "vertical"){
+					eventid = "5";
+				}else{
+					eventid = "2";
+				}
+				eventvalue = "PluginError";
+				analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ltype="+ltype+"&plid="+cid+"&device="+did+"&vid="+vidId+"&eventid="+eventid+"&eventvalue="+eventvalue+"&rdm="+rdm);
+				loadPage('swfviewFRM', null,analyticsString);
+				switchToWidget();
+				break;
+		}
+	}
+	
+	var _getViewportHeight = function () {
+		if ($.browser.msie) { if (!(document.documentElement.clientHeight) || (document.documentElement.clientHeight === 0)) { return document.body.clientHeight; } else { return document.documentElement.clientHeight } } else { return window.innerHeight; }
+	};
+	var _getViewportWidth = function () {
+		return $.browser.msie ? (!(document.documentElement.clientWidth) || (document.documentElement.clientWidth === 0)) ? document.body.clientWidth : document.documentElement.clientWidth : window.innerWidth;{0}
+	};
+
+	var external_url = document.referrer;
+	if (external_url == ""){
+		external_url =window.location.href.split('?')[0];
+		//external_url = window.location.href;
+	}
+	
+	
+	setupAutoPlay = function () {
+		if ((DistributorName != "") && (adCalled == false)){
+			adCalled = true;
+			var siteSectionParts = sitesection.split('_');
+			var sec = (siteSectionParts.length >= 2) ? siteSectionParts[1] : "oth";
+			var sub = (siteSectionParts.length >= 3) ? siteSectionParts[2] : "";
+			var viewportWidth = _getViewportWidth();
+			var viewportHeight = _getViewportHeight();
+			var adWidth = document.getElementById('ndn_adchoice').style.width;
+			var adHeight = document.getElementById('ndn_adchoice').style.height;
+			var auditudeLibURL = "http://adunit.cdn.auditude.com/player/js/lib/display/1.0/auditudeDisplayLib.js" +
+			   "?callback=ndn.auditudeCallback" +
+					"&width=" + playerWidth +
+					"&height=" + playerHeight +
+					"&version=adunit-1.0&domain=auditude.com" +
+					"&zoneId=" + (ZoneID != "0" ? ZoneID : "50974") +
+					"&mediaId=23408962" +
+					"&parentNode=auditudeContent" +
+					"&keyValues=" +
+						"dpid=" + freewheel +
+						";sitesection=" + sitesection +
+						";sec=" + sec +
+						";sub=" + sub +
+						";wgt=1" +
+						";adtype=1" + 
+						";width=" + (adWidth == null || adWidth == '' || adWidth == 0 || adWidth == '0' ? playerWidth : adWidth) +
+						";height=" + (adHeight == null || adHeight == '' || adHeight == 0 || adHeight == '0' ? playerHeight : adHeight)+
+					"&customParams="+
+					"external_url=" + encodeURI(external_url) +
+					"&autoPlay=true" +
+					"&ndnR=" + Math.round(Math.random() * 10000) + "&countdownMessage=Todays Top Videos available in {countdown}" +
+					"&videotype=FLASH&enableOnPageOnlyIfNoPreroll=false";
+					
+			var script = document.createElement("script");
+			script.id = "auditudeScript";
+			script.type = "text/javascript";
+			script.src = auditudeLibURL;
+			rdm = String(Math.floor(Math.random()*1000000000));
+			eventid = "2";
+			eventvalue = "LoadRequest";
+			analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ltype="+ltype+"&plid="+cid+"&device="+did+"&vid="+vidId+"&eventid="+eventid+"&eventvalue="+eventvalue+"&rdm="+rdm);
+			loadPage('swfviewFRM', null,analyticsString);			
+			$('#ndn_adbox', _parent)[0].appendChild(script);
+		}
+	}
+	
+	showThumbAd = function (type) {
+		var thumbType = type;
+		var siteSectionParts = sitesection.split('_');
+		var sec = (siteSectionParts.length >= 2) ? siteSectionParts[1] : "oth";
+		var sub = (siteSectionParts.length >= 3) ? siteSectionParts[2] : "";
+		if (thumbType == "vertical"){
+			var tWidth = 140;
+			var tHeight = 95;
+		}else{
+			var tWidth = 115;
+			var tHeight = 84;
+		}
+		var auditudeLibURL = "http://adunit.cdn.auditude.com/player/js/lib/display/1.0/auditudeDisplayLib.js" +
+		   "?callback=ndn.auditudeCallback" +
+				"&width=" + tWidth +
+				"&height=" + tHeight +
+				"&version=adunit-1.0&domain=auditude.com" +
+				"&zoneId=" + (ZoneID != "0" ? ZoneID : "50974") +
+				"&mediaId=23408962" +
+				"&parentNode=auditudeContent" +
+				"&keyValues=" +
+					"dpid=" + freewheel +
+					//"dpid=33445" +
+					";sitesection=" + sitesection +
+					";sec=" + sec +
+					";sub=" + sub +
+					";wgt=8" +
+					";adtype=2" + 
+					";width=" + tWidth +
+					";height=" + tHeight + 
+					";external_url=" + encodeURI(external_url) +
+				"&customParams="+
+				"external_url=" + encodeURI(external_url) +
+				"&ndnR=" + Math.round(Math.random() * 10000);
+				//"&external_url=" + document.referrer +
+		var script = document.createElement("script");
+		script.id = "auditudeScript";
+		script.type = "text/javascript";
+		script.src = auditudeLibURL;
+		//;url=" + window.location.href +
+		//$('#ndn_thumb_ad', _parent)[0].appendChild(script);
+		rdm = String(Math.floor(Math.random()*1000000000));
+		eventid = "5";
+		eventvalue = "LoadRequest";
+		analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ltype="+ltype+"&plid="+cid+"&device="+did+"&vid="+vidId+"&eventid="+eventid+"&eventvalue="+eventvalue+"&rdm="+rdm);
+		loadPage('swfviewFRM', null,analyticsString);			
+		$('#thumb_ad_0', _parent)[0].appendChild(script);
+		
+		//alert(ThumbAdNum);
+		//document.getElementById('ndn_thumb_ad').style.visibility = "visible";
+		firstThumbLoaded = true;
+	}
+	
+	adComscore = function (value){
+		myC5 = value;
+		callComscore();
+	}
+	sendToJavaScript = function (value) {
+		//alert("ActionScript says: " + value);
+		//$('div[id*=rmm]').hide().empty().remove();
+		//$('div[id*=rmm]').hide().collapse();
+		switchToWidget();
+		if (thumbId == "plist"){
+			if (autoScroll == true && lastThumb > 4){
+				autoScrollStart();
+				autoScroll = false;
+			}else{
+				$(".ndn_thumbScroller").stopTime('autoScroll');
+			}
+		}
+		if (thumbId == "slider" || thumbId == "apslider"){
+			/*thumbScroller2.innerHTML = thumbContent;
+			$(".ndn_thumbContainer").oneTime(7000, "scroll", function() {
+				scrollDivDown("ndn_thumbContainer");
+			});*/
+			autoScrollStart();
+			autoScroll = false;			
+		}
+	}
+	startJavaScript = function (value) {
+		flashInit = true;
+		if ((DistributorName != "") && (adCalled == false) && (htmlInit == true)){
+			adCalled = true;	
+			sendToActionScript();
+		}
+	}
+
+	setWaypoints = function () {
+		$('#ndn_container',_parent).waypoint(function (event) {
+			setTimeout(pageInit, 100);
+			event.stopPropagation();
+		}, {
+			triggerOnce: true,
+			offset: 'bottom-in-view'
+		}); 
+	};
+	  
+	$(document).ready(function() {
+		var flashvars = new Object();
+		var params = new Object();
+		params.allowfullscreen = "true";
+		params.AllowScriptAccess = "always";
+		params.wmode = "transparent";
+		
+		
+							  
+		if (thumbId != "" && (thumbId == "vertical" || thumbId == "horizontal" || thumbId == "horizontal500" || thumbId == "horizontal400")) {
+			loadThumbs();
+		} else {
+			swfobject.embedSWF("http://assets.newsinc.com/launchers/20120621/bumper.swf", "ndn_adbox", "300", "250", "9.0.115", "#FFFFFF", flashvars, params);
+			if (navigator.userAgent.match(/(iphone|ipod|ipad)/i)) {
+				loadThumbs();
+			} else {
+				if ($('#ndn_container', _parent).length > 0 && $('#ndn_container', _parent).position().top > _getViewportHeight()) {
+					if ($.waypoints) {
+						setWaypoints();
+					} else {
+						setTimeout(setWaypoints, 100);
+					}
+				} else {
+					setTimeout(pageInit, 100);
+				}
+				if (firstLoad == true){
+					firstLoad = false;
+					loadThumbs();
+				}
+			}
+		}
+		
+	});
+</script>
+<style type="text/css">
+	#ndn_adbox {
+		background-image: url("../../assets.newsinc.com/launchers/images/NDNLogo.gif");
+		background-repeat: no-repeat;
+	}
+</style>
+</head>
+<body style="margin:0px;">
+<div id="ndn_container" style="overflow:hidden;v-align:top;">
+	<div id="ndn_adbox"></div>
+	<div id="ndn_thumbContainer" class="ndn_thumbContainer"> 
+		<div id="ndn_thumbScroller" class="ndn_thumbScroller"></div>
+		<div id="ndn_thumbScroller2" class="ndn_thumbScroller2"></div>
+		<div id="ndn_thumbScroller3" class="ndn_thumbScroller"></div>
+		<div id="ndn_thumbScroller4" class="ndn_thumbScroller2"></div>
+	</div>
+	<div id="ndn_selector" class="ndn_selector" style="visibility:hidden"><select class="ndn_playlistSelector" id="ndn_playlistSelector" onChange="getPlaylist();"> </select></div>
+	<div id="ndn_thumbControls" class="ndn_thumbControls"></div>
+    <div id="ndn_adchoice" class="ndn_adchoice" style="visibility:hidden;left:0px;z-index:80;position:relative;"><a href="http://assets.newsinc.com/info/adchoices.html" target="_blank"><img src="../../assets.newsinc.com/CollisionAdMarker.png" border="0"></a></div>
+    <div id="ndn_thumb_ad" class="ndn_thumb_ad" style="visibility:hidden;z-index:80;position:relative;"></div>
+	<div id="ndn_countdown" class="ndn_countdown">Advertisement countdown</div>
+    <script type="text/javascript">        CreateTimer("ndn_countdown", 15);</script>
+</div>
+<iframe name="swfviewFRM" id="swfviewFRM" width="0" height="0" frameborder="0"></iframe> 
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+    _qoptions = {
+        qacct: "p-573scDfDoUH6o"
+    };
+</script>
+<script type="text/javascript" src="../../edge.quantserve.com/quant.js"></script>
+<noscript>
+    <img src="../../pixel.quantserve.com/pixel/p-573scDfDoUH6o.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast" />
+</noscript>
+<!-- End Quantcast tag -->
+</body>
+</html>

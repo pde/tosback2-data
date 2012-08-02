@@ -84,8 +84,19 @@ Modal = function (service, name, title, options) {
 			if (reset) this.reset = -10;
 			if (this.reset) save = true, this.reset++;
 			if (save || !this.saved) this.saved = x.toString();
-			if (this.saved != x.toString()) return true;
-			else return false;
+			
+			//This is the fix for comparing this.saved and x.string() if the order is not same. 
+			//Below code will put the comma separated values in arrays and then sort it and then convert to string and then compare if there is any change
+			var savedArray = new Array();
+			savedArray = this.saved.toString().split(',');
+			var xArray = new Array();
+			xArray = x.toString().split(',');
+			savedArray = savedArray.sort();
+			xArray = xArray.sort();
+			if (xArray.join('') != savedArray.join('')) {
+				return true;
+			}
+			return false;
 		}
 	};
 }

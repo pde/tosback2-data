@@ -1244,7 +1244,7 @@ function makeHomePage (obj, page_url) {
      else if (agentname.toLowerCase().indexOf('firefox') != -1) {
          nWin.resizeTo(650,300);
          out_str += 'To set your homepage in Firefox, follow these steps:';
-         out_str += '<ol><li>Start by double-clicking the Mozilla Firefox icon on your desktop.</li>';
+         out_str += '<ol>';
          if (BrowserDetect.OS.indexOf('Linux') != -1) {
             out_str += '<li>Click on the Edit Menu.</li>';
             out_str += '<li>Select Preferences.</li>';
@@ -1264,25 +1264,81 @@ function makeHomePage (obj, page_url) {
      else if (agentname.toLowerCase().indexOf('chrome') != -1) {
          nWin.resizeTo(650,300);
          out_str += 'To set your homepage in Chrome, follow these steps:';
+         // checking for mac OS 
          if (BrowserDetect.OS.indexOf('Mac') != -1) {
-         out_str += '<ol><li>Go to the Chrome Preferences.</li>';
-         } else {
-         out_str += '<ol><li>Click the wrench menu icon, located in the top right corner of the browser.</li>';
-         if (BrowserDetect.OS.indexOf('Window') != -1) {
-         out_str += '<li>Select "Options".</li>';
-         } else {
-         out_str += '<li>Select "Preferences".</li>';
-         }
-         }
-         out_str += '<li>Click the "Basics" tab.</li>';
+         // if version is beetween 3 and 18 
+         if(BrowserDetect.version >= 3 && BrowserDetect.version <= 18) {
+         out_str += '<ol><li>Click the wrench icon</li>';
+         out_str += '<li>Go to Preferences -> Basics.</li>';
          out_str += '<li>Select the option "Open this page" in the "Home page" section.</li>';
-         out_str += '<li>Enter <!--HOME-->/eng/<!--/HOME--> in the home page box.</li>';
+         out_str += '<li>Enter <!--HOME-->/eng/<!--/HOME--> in the "Open this page" text box.</li>';
          out_str += '<li>To see your home page every time you start up Google Chrome, select "Open the home page" in the "On startup" section.</li>';
-         if (BrowserDetect.OS.indexOf('Mac') != -1) {
-         out_str += '<li>Close window.</li>';
+         if( BrowserDetect.version <= 9) {
+         out_str += '<li>Close Preferences.</li>';
          } else {
-         out_str += '<li>Click "Close".</li>';
+         out_str += '<li>Close Preferences tab.</li>';
          }
+ }
+ else {
+         // for version greater than or equal to 19 
+         if(BrowserDetect.version >= 19) {
+         out_str += '<ol><li>Go to the Wrench icon -> Settings.</li>';
+         out_str += '<li>Click on "Set pages" in the "On startup" section.</li>';
+         out_str += '<li>Enter <!--HOME-->/eng/<!--/HOME--> in the "Add a new page" text field.</li>';
+         out_str += '<li>Click OK.</li>';
+         } 
+ } 
+ } else {
+         //  check for windows OS 
+         if (BrowserDetect.OS.indexOf('Window') != -1) {
+         // for version beetween 3 and 18 
+         if(BrowserDetect.version >= 3 && BrowserDetect.version <= 18) {
+         out_str += '<ol><li>Click the wrench icon</li>';
+         out_str += '<li>Go to Options -> Basics</li>';
+         out_str += '<li>Select the option "Open this page" in the "Home page" section.</li>';
+         out_str += '<li>Enter <!--HOME-->/eng/<!--/HOME--> in the "Open this page" text box.</li>';
+         out_str += '<li>To see your home page every time you start up Google Chrome, select "Open the home page" in the "On startup" section.</li>';
+         if( BrowserDetect.version <= 9) {
+         out_str += '<li>Click "Close".</li>';
+         } else {
+         out_str += '<li>Close this settings tab.</li>';
+         }
+ } else {
+         // for version greater than 18 
+         if(BrowserDetect.version >= 19) {
+         out_str += '<ol><li>Go to the Wrench icon -> Settings.</li>';
+         out_str += '<li>Click on "Set pages" in the "On startup" section.</li>';
+         out_str += '<li>Enter <!--HOME-->/eng/<!--/HOME--> in the "Add a new page" text field.</li>';
+         out_str += '<li>Click OK.</li>';
+         } 
+ }
+ } else {
+          // checking for Linux OS 
+         if(BrowserDetect.version >= 3 && BrowserDetect.version <= 18) {
+         out_str += '<ol><li>Click the wrench icon</li>';
+         if(BrowserDetect.version  <= 9) {
+         out_str += '<li>Go to Settings -> Basics.</li>';
+         } else {
+         out_str += '<li>Go to Preferences -> Basics.</li>';
+         }
+          out_str += '<li>Select the option "Open this page" in the "Home page" section.</li>';
+         out_str += '<li>Enter <!--HOME-->/eng/<!--/HOME--> in the "Open this page" text box.</li>';
+         out_str += '<li>To see your home page every time you start up Google Chrome, select "Open the home page" in the "On startup" section.</li>';
+         if( BrowserDetect.version <= 9) {
+         out_str += '<li>Click "Close".</li>';
+         } else {
+         out_str += '<li>Close Preferences tab.</li>';
+         } 
+ } else {
+         if(BrowserDetect.version >= 19) {
+         out_str += '<ol><li>Go to the Wrench icon -> Settings.</li>';
+         out_str += '<li>Click on "Set pages" in the "On startup" section.</li>';
+         out_str += '<li>Enter <!--HOME-->/eng/<!--/HOME--> in the "Add a new page" text field.</li>';
+         out_str += '<li>Click OK.</li>';
+         } 
+ }
+ } 
+ }
          out_str += '</ol></font><br></body></html>';
      }
          else if ((agentname.toLowerCase().indexOf('seamonkey') != -1) && (BrowserDetect.OS.indexOf('Mac') != -1)) {
@@ -1380,7 +1436,7 @@ function makeHomePage (obj, page_url) {
   </tr>
   <tr>
 <td class="tdcontent" valign="top" id="td_content" name="td_content">
-<div style='float:right;margin:60px 15px 0 0;'>Latest revision: February 2010</div><div style='background:none;padding-bottom:5px;' class="title" style="height:auto; padding-bottom:2px;">PRIVACY</div>
+<div style='float:right;margin:60px 15px 0 0;'>Latest revision: May 2012</div><div style='background:none;padding-bottom:5px;' class="title" style="height:auto; padding-bottom:2px;">PRIVACY</div>
 <div class="separator"><hr/></div>
 <div class="subtitle" id="subTitle" >Privacy Policy</div><div id="min-width"></div>
 <div class="content" style="padding-right: 30px;"><!--BODYCONTENT--><br style='line-height: 10px;'><span>In short:</span>
@@ -1391,7 +1447,7 @@ Ixquick is strongly committed to protecting the privacy of its user community.<b
 <h3>IP Addresses</h3>
 <p>The IP address that is associated with your search will NOT be recorded.<BR>(The only exception is for &#147;abusive&#148; (automated) queriers that rapidly submit many queries to Ixquick in a very short time.)</p>
 <h3>Data Collection</h3>
-<p id= 'qdataab'>Ixquick does NOT collect ANY data that can uniquely identify our users.<br/>The IP address is the most important data not to store but even browser and platform information can, combined with other information, <a href="https://panopticlick.eff.org" target="_blank">uniquely identify</a> a person. That's why we don't store those either.<br/>Even the anonymized search terms are not recorded, as they themselves could potentially contain personal information. (think of someone entering his own name or social security number)<br/>To improve the overall quality of the users' online experience we only register aggregate, non-personal search data, like the language, category and total number of searches.</p>
+<p id= 'qdataab'><i>We don't collect any personal information on our visitors. Nada. Zilch. Zero.</i><br/><br/>When you use Ixquick, we do not record your IP address, we do not record which browser you are using (Internet Explorer, Safari, Firefox, etc.), we do not record your computer platform (Windows, Mac, Linux, etc.), and we do not record your search words or phrases. In fact, the only information we do record is an aggregate total of how many searches are performed on our website each day (a measure of overall traffic), and those overall traffic numbers broken down by language.<br/><br/>Our zero data collection policy protects your privacy, since your IP address, browser, and platform information can be combined with other data to <a href="https://panopticlick.eff.org" target="_blank">uniquely identify</a> your computer, your location, or you. It is also important not to record search terms, since they can convey personal information as well. (Think of someone entering their own name and/or social security number.)</p>
 <h3>Cookies</h3>
 <p>Cookies are small pieces of data that are sent and saved to your computer's hard drive when visiting sites.</br>
 Ixquick uses only one anonymous cookie called "preferences". This cookie is to remember the search preferences you saved for your next visit. It expires after 90 days.</br>

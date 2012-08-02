@@ -970,7 +970,9 @@ var LXGlobalNav = {
 							//$g("sitesWrap").style.display = "none";
 					});
 				});
-				$("sitesLink").className = $("sitesLink").className.replace(/on/g,"");				
+				try{
+					$("sitesLink").className = $("sitesLink").className.replace(/on/g,"");	
+				} catch (e){}
 			}
 		}
 	},
@@ -1965,7 +1967,7 @@ function animationVehicles(e,callback) {
 			//LXSetTimeout("aniVehiclesC('future','gsfs',60, 100)",150);
 			 LXSetTimeout("aniVehiclesC('future','concept',20, 100)",200);
              LXSetTimeout("aniVehiclesC('future','fes',40, 100)",200);
-             LXSetTimeout("aniVehiclesC('future','fesh',60, 100)",200);
+			 LXSetTimeout("aniVehiclesC('future','fls',60, 100)",200);
 			lxShowPromo(e);
 		  break;
 	}
@@ -2054,7 +2056,7 @@ function animationVehicles1(e) {
 			//aniVehicles('future','gsfs');
 			aniVehicles('future','concept');
             aniVehicles('future','fes');
-            aniVehicles('future','fesh');
+			aniVehicles('future','fls');
 		  break;
 		default:
 		  break;

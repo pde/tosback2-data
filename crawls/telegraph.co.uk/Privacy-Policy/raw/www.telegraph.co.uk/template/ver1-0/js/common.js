@@ -20,8 +20,9 @@
 * 12/04/2011 S Gadhiraju    DIGI-73 Replacing the hardcoded Disqus forum id with the section parameter value.
 * 01/06/2011   Harish K M   DIGI-628 When the video loads at the moment there is no sound, despite the volume being set to maximum. Sound only appears when you adjust the volume.
 ***************************************************************************/
-
-document.domain="telegraph.co.uk";
+if(document.domain == "telegraph.co.uk"){
+	document.domain="telegraph.co.uk";
+}
 
 /* JQuery plugin to retrieve the outer HTML of any given element */
 jQuery.fn.outerHTML = function() {
@@ -1351,6 +1352,8 @@ function hideEditorsChoiceDiv() {
 }
 $(document).ready(function() {
 	setTimeout(hideEditorsChoiceDiv, 1000);
+	$('.borderRollover').parent().parent().parent().addClass("padDown");
+	$('.borderRollover').parent().parent().parent().after("<div class='cl'></div>");
 });
 
 
@@ -1374,3 +1377,4 @@ function loadScript(url, callback) {
     };
     head.appendChild(script);
 }
+

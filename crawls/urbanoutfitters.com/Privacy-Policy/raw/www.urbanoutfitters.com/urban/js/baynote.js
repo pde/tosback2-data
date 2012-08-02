@@ -7,6 +7,12 @@ var baynoteActiveSection = "none";
 		foo = foo.replace( "header-nav-", "");
 		baynoteActiveSection = foo;
 	}
+/* create div for baynote recs*/
+  var w = window.location;
+   if (w.href.indexOf('catalog/category.jsp') > 0 && w.search.indexOf('BRANDS') === -1 && $('#bn_justforyou').length == 0 ) {
+      $('#category-content').append('<div id="bn_justforyou"></div>')
+    }
+	
 })(jQuery);
 
 var BaynoteJSVersion="$Revision: 3.19 $";var BaynoteIgnored=false;var BN_READY_SIGNAL="ReadySignal";var Strategy={"ScriptDOMInject":2,"OnLoadInject":3};if(typeof(baynote_globals)=="undefined")var baynote_globals=new Object();baynote_globals.CommonResourceURL="/baynote/tags3/common";baynote_globals.CommonResourceID="Common";baynote_globals.PolicyResourceID="Policy";baynote_globals.CustomerStatus="/baynote/customerstatus2";baynote_globals.CommonScriptId="commonScriptId";if(typeof(baynote_inject_strategy)!="undefined"){baynote_globals.DefaultInjectStrategy=baynote_inject_strategy;}else{baynote_globals.DefaultInjectStrategy=Strategy.ScriptDOMInject;}

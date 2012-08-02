@@ -1,6 +1,7 @@
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
+<html xmlns:fb="http://www.facebook.com/2008/fbml">
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# epinions: http://ogp.me/ns/fb/epinions#">
 <title>Epinions.com - Help Center: Privacy Policy</title>
 
 
@@ -31,15 +32,55 @@
     <link rel="stylesheet" type="text/css" href="/css/ie7.css" />
 <![endif]-->
 
-
 <script type="text/javascript" src="../js/head.js"></script>
-<script type="text/javascript">head.js('http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js','/js/extras.js?v=1','/js/scripts.js?v=1');</script>
+<script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript">head.js('/js/extras.js?v=1','/js/scripts.js?v=1');</script>
 <script type="text/javascript" src="../../img.epinions.com/images/epi_images/js/functions.js%3Fv=1"></script>
-
+<script src="../../connect.facebook.net/en_US/all.js"></script>
 <script type="text/javascript" src="../js/triggerParams.js"></script>
 <script type="text/javascript" src="../js/stdLauncher.js"></script>
 
 <script type="text/javascript">
+
+var clogd = false;
+
+function consoleLog(msg) {
+    if (typeof(console) != "undefined" && clogd) {
+        console.log(debugGetTimeDelta() + " " + msg);
+    }
+}
+
+/* Leader Board iFrame Area - Hides default doubleclick ad if no other ad loaded. */
+function collapseAdDisplay(iFrameArea,leaderBoardArea) {
+    $("#"+iFrameArea).hide();
+    if (typeof(leaderBoardArea) != 'undefined' && (leaderBoardArea != '')){
+        $("#"+leaderBoardArea).hide();
+    }
+    showHideAdChoice(iFrameArea, false);
+}
+
+
+function showHideAdChoice(adName, showAd){
+    /*if showAd is true means , ad is loded and adchoice should be visible.
+     * If ad is not loded, hide the iframe for ad
+     * */
+    if(showAd){
+        $("#"+adName).parent().find(".adChoice").show();
+    }else{
+        $("#"+adName).hide();
+    }
+}    
+
+/**
+ * avoids adding iframe location to browser history and breaking the back button.
+ * @param iframeId
+ * @param untrackedUrl
+ */
+function replaceIframeUrl(iframeId, untrackedUrl) {
+   var w = document.getElementById(iframeId)
+   w.contentWindow.location.replace(untrackedUrl);
+}
+
 triggerParms["cpp_5"] = "LoginStatus:";
 triggerParms["cpp_6"] = "TrafficSource:";
 triggerParms["cpp_7"] = "PageType:";
@@ -67,21 +108,19 @@ function submitSearch(searchValue){
 <body bgcolor="#FFFFFF"   leftmargin=10>
 
 <a name="top"></a>
-
-<gc3 action="start" name="dtpx"/><gc3 action="args" "+++EPV_WbSrvRqsTms___05%2F14%2F12%2008%3A06%3A20%20AM^^^EPV_HTTPTrg___%252Fhelp%252Fshow_%257Eprivacy^^^EPV_HTTPQryStr___sb%253D1^^^EPV_BrnID___2253^^^EPV_DTFrmID___^^^EPV_EPFrmID___^^^EPV_WbSrvIP___10.59.8.173^^^EPV_EvnTyp___EPV^^^EPV_SrvPgTyp___epiother^^^EPV_LI_LnkInID___^^^EPV_LI_SbmKyw___^^^EPV_LI_SbmFrmID___^^^EPV_LI_RslKyw___^^^EPV_LI_IsLnkInID___N^^^EPV_UrlID___-1^^^EPV_PgVwID___aaa0cb27304ad0d54c0fd6f8^^^EPV_EPMmbID___-1^^^EPV_LI_PrtTrm___^^^EPV_HTTPRfr___^^^group_EPV___1^^^group_ESSR___1+++"/>
+<gc3 action="start" name="dtpx"/><gc3 action="args" "+++EPV_WbSrvRqsTms___08%2F02%2F12%2004%3A23%3A26%20PM^^^EPV_HTTPRfr___^^^EPV_HTTPTrg___%2Fhelp%2Fshow_%7Eprivacy^^^EPV_HTTPQryStr___sb%3D1^^^EPV_BrnID___2253^^^EPV_DTFrmID___^^^EPV_EPFrmID___^^^EPV_WbSrvIP___10.59.8.169^^^EPV_EvnTyp___EPV^^^EPV_SrvPgTyp___epiother^^^EPV_LI_LnkInID___^^^EPV_LI_SbmKyw___^^^EPV_LI_SbmFrmID___^^^EPV_LI_RslKyw___^^^EPV_LI_IsLnkInID___N^^^EPV_UrlID___-1^^^EPV_PgVwID___c02e67681eed31f688a5a982^^^EPV_EPMmbID___-1^^^EPV_LI_PrtTrm___^^^group_EPV___1^^^group_ESSR___1+++"/>
 <script language="JavaScript">
 <!--
 	var abc = Math.random() + '';
 	var random = abc.substring(2,11);
-	var pixel = "http://stat.dealtime.com/pixel/" + random + "?EPV_WbSrvRqsTms=05%2F14%2F12%2008%3A06%3A20%20AM&EPV_HTTPTrg=%252Fhelp%252Fshow_%257Eprivacy&EPV_HTTPQryStr=sb%253D1&EPV_BrnID=2253&EPV_DTFrmID=&EPV_EPFrmID=&EPV_WbSrvIP=10.59.8.173&EPV_EvnTyp=EPV&EPV_SrvPgTyp=epiother&EPV_LI_LnkInID=&EPV_LI_SbmKyw=&EPV_LI_SbmFrmID=&EPV_LI_RslKyw=&EPV_LI_IsLnkInID=N&EPV_UrlID=-1&EPV_PgVwID=aaa0cb27304ad0d54c0fd6f8&EPV_EPMmbID=-1&EPV_LI_PrtTrm=&EPV_HTTPRfr=";
+	var pixel = "http://stat.dealtime.com/pixel/" + random + "?EPV_WbSrvRqsTms=08%2F02%2F12%2004%3A23%3A26%20PM&EPV_HTTPRfr=&EPV_HTTPTrg=%2Fhelp%2Fshow_%7Eprivacy&EPV_HTTPQryStr=sb%3D1&EPV_BrnID=2253&EPV_DTFrmID=&EPV_EPFrmID=&EPV_WbSrvIP=10.59.8.169&EPV_EvnTyp=EPV&EPV_SrvPgTyp=epiother&EPV_LI_LnkInID=&EPV_LI_SbmKyw=&EPV_LI_SbmFrmID=&EPV_LI_RslKyw=&EPV_LI_IsLnkInID=N&EPV_UrlID=-1&EPV_PgVwID=c02e67681eed31f688a5a982&EPV_EPMmbID=-1&EPV_LI_PrtTrm=";
 	document.write('<img src="' + pixel + '" width="1" height="1" border="0"/><br>');
 	// -->
 </script>
 <noscript>
-	<img src="../../stat.dealtime.com/pixel/2785%3FEPV_WbSrvRqsTms=05%252F14%252F12%252008%253A06%253A20%2520AM&amp;EPV_HTTPTrg=%25252Fhelp%25252Fshow_%25257Eprivacy&amp;EPV_HTTPQryStr=sb%25253D1&amp;EPV_B" width="1" height="1" border="0"/><br>
+	<img src="../../stat.dealtime.com/pixel/2901%3FEPV_WbSrvRqsTms=08%252F02%252F12%252004%253A23%253A26%2520PM&amp;EPV_HTTPRfr=&amp;EPV_HTTPTrg=%252Fhelp%252Fshow_%257Eprivacy&amp;EPV_HTTPQryStr=sb%253D1&amp;" width="1" height="1" border="0"/><br>
 </noscript>
 <gc3 action="end" name="dtpx"/>
-
 
 
 
@@ -241,50 +280,39 @@ Epinions Site Status
 
 <span class="d-s">
 
-<a href="http://www.epinions.com/member">Epinions iPad 3 Giveaway Sweepstakes!</a> - 03/30/2012
+<a href="http://www.epinions.com/member">Epinions Read Only Mode July 2, 2012</a> - 07/02/2012
 </span>
 
 <p>
 
 <span class="f-s"><b>Eroyalties System</b></span><br>
-<span class="d-s">May<br>
+<span class="d-s">Income Share (including bonus for Leads, Moderators, and Advisers) is processed by the 15th of each month. Checks are processed on the 15th and mailed out soon after.
+
+<br><br>
+
+July<br>
+June Sweepstakes Payout - 07/17/2012<br>
+Most Popular Lists - 07/09/2012<br>
+Advisor Bonus - 07/09/2012<br>
+Income Share - 07/06/2012<br>
+Mod & CL Bonus - 07/06/2012<br>
+
+<br>
+
+June<br>
+Most Popular Lists - 06//2012<br>
+Advisor Bonus - 06//2012<br>
+Income Share - 06//2012<br>
+Mod & CL Bonus - 06//2012<br>
+
+<br>
+
+May<br>
+Most Popular Lists - 05/14/2012<br>
+Advisor Bonus - 05/14/2012<br>
+Income Share - 05/03/2012<br>
 Mod & CL Bonus - 05/03/2012<br>
-
-<br>
-
-April<br>
-Most Popular Lists - 04/06/2012<br>
-Advisor Bonus - 04/06/2012<br>
-Income Share - 04/05/2012<br>
-Mod & CL Bonus - 04/05/2012<br>
-March First Review Payout - 04/05/2012<br>
-
-<br>
-
-March<br>
-February Lean & Mean Payout - 03/19/2012<br>
-Advisor Bonus - 03/12/2012<br>
-Most Popular Lists - 03/12/2012<br>
-Income Share - 03/09/2012<br>
-Mod & CL Bonus - 03/09/2012<br>
-
-<br>
-
-February<br>
-Most Popular Lists - 02/06/2012<br>
-Advisor Bonus - 02/03/2012<br>
-Mod & CL Bonus - 02/03/2012<br>
-January First Review Payout - 02/03/2012<br>
-Income Share - 02/03/2012<br>
-
-<br>
-
-January<br>
-December First Review Payout - 01/10/2012<br>
-Advisor Bonus - 01/10/2012<br>
-Most Popular Lists - 01/10/2012<br>
-Income Share - 01/05/2012<br>
-Mod & CL Bonus - 01/05/2012<br> </span>
+ </span>
 
 <p>
 
@@ -408,24 +436,24 @@ Mod & CL Bonus - 01/05/2012<br> </span>
 
 </div>
 
-	<footer id="footer">
-		<div class="inner">
-			
-			<ul class="links-a">
-				<li><a href="http://www.epinions.com/about/">About Epinions</a></li>
-				<li><a href="http://www.epinions.com/help/">Help</a></li>
-				<li><a href="http://www.epinions.com/member/">Member Center</a></li>
-				<li><a href="http://www.epinions.com/help/faq/show_~faq_site_usage">Site Rules</a></li>
-				<li><a href="http://www.epinions.com/help/show_~useragreement">User Agreement</a></li>
-				<li><a href="show_~privacy.html">Privacy Policy</a></li>
-				<li><a href="http://www.epinions.com/help/show_~siteindex">Site Index</a></li>
-				<li><a href="http://www.epinions.com/topics">Topic Index</a></li>
-				<li><a href="http://www.epinions.com/dt_network/show_~info">Advertising</a></li>
-			</ul>
-			<p class="copys"><a href="http://www.shopping.com" class="network">Shopping.com Network</a> &copy; 1999-2012 <a href="http://www.shopping.com">Shopping.com</a>, Inc <span>|</span> <a href="http://www.epinions.com/about/show_~trademark">Trademark Notice</a> <span>|</span> Follow us on <a href="http://www.facebook.com/Epinions" target="_blank" class="icon facebook">Facebook</a> <a href="https://plus.google.com/b/117381744271320491779/" target="_blank" class="icon plus">Google+1</a> <a href="http://www.twitter.com/epinions" target="_blank" class="icon twitter">Twitter</a>
+    <footer id="footer">
+        <div class="inner">
+            
+            <ul class="links-a">
+                <li><a href="http://www.epinions.com/about/">About Epinions</a></li>
+                <li><a href="http://www.epinions.com/help/">Help</a></li>
+                <li><a href="http://www.epinions.com/member/">Member Center</a></li>
+                <li><a href="http://www.epinions.com/help/faq/show_~faq_site_usage">Site Rules</a></li>
+                <li><a href="http://www.epinions.com/help/show_~useragreement">User Agreement</a></li>
+                <li><a href="show_~privacy.html">Privacy Policy</a></li>
+                <li><a href="http://www.epinions.com/help/show_~siteindex">Site Index</a></li>
+                <li><a href="http://www.epinions.com/topics">Topic Index</a></li>
+                <li><a href="http://www.epinions.com/dt_network/show_~info">Advertising</a></li>
+            </ul>
+            <p class="copys"><a href="http://www.shopping.com" class="network">Shopping.com Network</a> &copy; 1999-2012 <a href="http://www.shopping.com">Shopping.com</a>, Inc <span>|</span> <a href="http://www.epinions.com/about/show_~trademark">Trademark Notice</a> <span>|</span> Follow us on <a href="http://www.facebook.com/Epinions" target="_blank" class="icon facebook">Facebook</a> <a href="https://plus.google.com/b/117381744271320491779/" target="_blank" class="icon plus">Google+1</a> <a href="http://www.twitter.com/epinions" target="_blank" class="icon twitter">Twitter</a>
   <a href="http://www.stumbleupon.com/discover/epinions" target="_blank" class="icon su">StumbleUpon</a></p>
-		</div>
-	</footer><!-- #footer -->
+        </div>
+    </footer><!-- #footer -->
 
 
 <!--
@@ -449,6 +477,17 @@ A06544.DM_tag();
 
 <!-- end revenue science -->
 
+
+    <script type="text/javascript">
+      $(window).load(function() {
+          setTimeout(function() {
+          	
+              replaceIframeUrl("doubleClickAds_", "/static/ads/adFrameCommon.html?doubleClickAds_&false");
+              
+          },1);
+      });
+    </script>
+
 <!-- begin google analytics -->
 <script type="text/javascript">
 
@@ -464,10 +503,13 @@ A06544.DM_tag();
 
 </script>
 <script type="text/javascript">
-	//if(((document.getElementById('search_text').value).length) > 0){
-		changeHeaderText(document.getElementById("option_select").options[document.getElementById("option_select").selectedIndex].text);
-	//}
+    //if(((document.getElementById('search_text').value).length) > 0){
+        changeHeaderText(document.getElementById("option_select").options[document.getElementById("option_select").selectedIndex].text);
+    //}
 </script>
 <!-- end google analytics -->
-</body></html>
+<!-- Pinterest script -->
+<script type="text/javascript" src="../../assets.pinterest.com/js/pinit.js"></script>
+</body>
+</html>
 

@@ -278,6 +278,7 @@ MATTEL.tracker.Tracker = {
 	//SyncSites: ["fisherprice","fisherprice_au","fisherprice_be","fisherprice_br","fisherprice_ca","fisherprice_cafr","fisherprice_cn","fisherprice_cz","fisherprice_de","fisherprice_dk","fisherprice_easylink","fisherprice_ecomm","fisherprice_es","fisherprice_facebook","fisherprice_fi","fisherprice_fi","fisherprice_gr","fisherprice_hu","fisherprice_il","fisherprice_in","fisherprice_it","fisherprice_jp","fisherprice_kr","fisherprice_luvuzoo","fisherprice_matla","fisherprice_media_us","fisherprice_mx","fisherprice_nl","fisherprice_no","fisherprice_pl","fisherprice_pt","fisherprice_ru","fisherprice_se","fisherprice_sea","fisherprice_thomas_au","fisherprice_toystore","fisherprice_tr","fisherprice_tw","fisherprice_uk","fisherprice_usp","fisherprice_ve","littlepeople_au","littlepeople_de","littlepeople_es","littlepeople_fr","littlepeople_it","littlepeople_nl","littlepeople_pl","littlepeople_uk","xtractaurs"] ,
 	//DoubleTrackedSites: ["hotwheels_au","hotwheels_be","hotwheels_ca","hotwheels_cn","hotwheels_de","hotwheels_dk","hotwheelses","hotwheels_fi","hotwheels_fr","hotwheels_gr","hotwheels_hk","hotwheels_hu","hotwheels_in","hotwheels_intl","hotwheels_it","hotwheels_jp","hotwheels_kr","hotwheels_mx","hotwheels_nl","hotwheels_no","hotwheels_pl","hotwheels_ru","hotwheels_se","hotwheels_tr","hotwheels_tw","hotwheels_uk","fisherprice_ve","fisherprice_usp","fisherprice_uk","fisherprice_tw","fisherprice_tr","fisherprice_toystore","fisherprice_thomas_au","fisherprice_sea","fisherprice_se","fisherprice_pt","fisherprice_pl","fisherprice_no","fisherprice_nl","fisherprice_mx","fisherprice_media_us","fisherprice_matla","fisherprice_luvuzoo","fisherprice_kr","fisherprice_jp","fisherprice_it","fisherprice_in","fisherprice_il","fisherprice_hu","fisherprice_gr","fisherprice_fr","fisherprice_fi","fisherprice_facebook","fisherprice_es","fisherprice_ecomm","fisherprice_easylink","fisherprice_dk","fisherprice_de","fisherprice_cz","fisherprice_cn","fisherprice_cafr","fisherprice_ca","fisherprice_br","fisherprice_be","fisherprice_au","fisherprice"] ,
 	DoubleTrackedSites: ["fisherprice","fisherprice_au","fisherprice_be","fisherprice_br","fisherprice_ca","fisherprice_cafr","fisherprice_cn","fisherprice_cz","fisherprice_de","fisherprice_dk","fisherprice_easylink","fisherprice_ecomm","fisherprice_es","fisherprice_facebook","fisherprice_fi","fisherprice_fr","fisherprice_gr","fisherprice_hu","fisherprice_il","fisherprice_in","fisherprice_it","fisherprice_jp","fisherprice_kr","fisherprice_luvuzoo","fisherprice_matla","fisherprice_media_us","fisherprice_mx","fisherprice_nl","fisherprice_no","fisherprice_pl","fisherprice_pt","fisherprice_ru","fisherprice_se","fisherprice_sea","fisherprice_thomas_au","fisherprice_toystore","fisherprice_tr","fisherprice_tw","fisherprice_uk","fisherprice_usp","fisherprice_ve","littlepeople_au","littlepeople_de","littlepeople_es","littlepeople_fr","littlepeople_it","littlepeople_nl","littlepeople_pl","littlepeople_uk","xtractaurs","fisherprice_sa"] ,
+	IPMaskingSites: ["barbie_de","barbiestyle_de","barbiegirls_de","battleForce5_de","girltech_de","HotWheels_DE","monsterhigh_de","myscene_de","pixelchix_de","PollyPocket_DE","snorta_de","funkeys_de","letsplayuno_de","mattelscrabble_de","worldoflittlepeople_de","fisherprice_de","thesingamajigs_de"],
 	
 	currentTrackedSite : 'corpmattel'  ,
 			
@@ -489,6 +490,18 @@ MATTEL.tracker.Tracker = {
 
 		}
 		
+		//Check whether the current site is in the IP Masking sites list.
+		var isIPMaskingEnabledSite = false;
+		for (var index=0; index < Tracker.IPMaskingSites.length; index++) 
+		{
+		
+			if(Tracker.currentTrackedSite.toLowerCase() == Tracker.IPMaskingSites[index].toLowerCase())
+			{
+				isIPMaskingEnabledSite = true;
+				break;						
+			}
+		
+		}
         	
 
         //setup defaults
@@ -519,6 +532,12 @@ MATTEL.tracker.Tracker = {
                     //var url = Tracker.addParamsToGA(pageTracker, isSyncEnabled);
                     var url = Tracker.addParamsToGA(pageTracker, isDoubleTrackingEnabled);
                     var trackname = Tracker.name;					
+                    
+                    // If the current site is present in the IPMaskingSites array then remove the IP Address of the site.
+                    if(isIPMaskingEnabledSite == true)
+                    {
+                    	_gaq.push(['_gat._anonymizeIp']);                    	
+                    }
                     
                     //Landing Page is not marked for some international websites, we have to continue to do double tracking for those sites in exception array
 		    if( isDoubleTrackingEnabled == true)

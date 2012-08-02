@@ -1,0 +1,77 @@
+function eraseUnwantedCookieForAllBrowser()
+{
+	try
+	{
+		var cookieNames = jQuery("#cookiesToBeErasedForAllBrowser").val();
+		var cookieArray = null;
+		if(cookieNames !=null && jQuery.trim(cookieNames)!="")
+		{
+			cookieArray = cookieNames.split(',');
+			if(cookieArray !=null)
+			{
+				for(i = 0 ; i < cookieArray.length ; i ++)
+				{
+					deleteCookie(cookieArray[i]);
+				}
+			}
+		}
+	}
+	catch(exception)
+	{
+		// Nothing to be done , as it should allow login.
+	}
+}
+
+function eraseUnwantedCookieByRegExp() 
+{
+	try
+	{
+	    var cookieString = document.cookie;
+	    var filterResult = cookieString.match(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/gi);
+	    if(filterResult !=null)
+		{
+			for(i = 0 ; i < filterResult.length ; i ++)
+			{
+				deleteCookie(filterResult[i]);
+			}
+		}
+	}
+	catch(exception)
+	{
+		// Nothing to be done , as it should allow login.
+	}
+}
+
+function eraseUnwantedCookieForSpecificBrowser()
+{
+	try
+	{
+		if(BrowserDetect.browser=='Safari' || (BrowserDetect.browser=='Explorer' && BrowserDetect.version == 7))
+		{
+			var cookieNames = jQuery("#cookiesToBeErasedForSpecificBrowser").val();
+			var cookieArray = null;
+			if(cookieNames !=null && jQuery.trim(cookieNames)!="")
+			{
+				cookieArray = cookieNames.split(',');
+				if(cookieArray !=null)
+				{
+					for(i = 0 ; i < cookieArray.length ; i ++)
+					{
+						deleteCookie(cookieArray[i]);
+					}
+				}
+			}
+		}
+	}
+	catch(exception)
+	{
+		// Nothing to be done , as it should allow login.
+	}
+}
+
+
+function deleteCookie(name) 
+{
+	document.cookie = name +'=;expires=Thu, 01-Jan-1970 00:00:01 GMT;path=/;domain=.att.com';
+	document.cookie = name +'=;expires=Thu, 01-Jan-1970 00:00:01 GMT;path=/';
+}

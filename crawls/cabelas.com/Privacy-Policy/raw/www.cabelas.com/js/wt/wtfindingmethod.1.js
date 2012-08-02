@@ -110,16 +110,42 @@ function FindingMethod() {
 		
 		// Handle the no search results
 		if (fm.wtTags.z_pg == 'NoSearchResults') {
-			$('#searchResults .layoutCenterColumn a').each(function(index) {
+			$('#searchResults .layoutCenterColumn a').each(function(index) {			
 				$(this).bind(fm.bindFunc, fm.bind(function() {
 					url = fm.parseUrl($(this).attr('href'));
 					if (fm.isValidLink(url)) {
-						url.params['WTz_l'] = "Search No items Found";
+						url.params['WTz_l'] = "Header;Search-No items Found-" + $("#searchBy option:selected").text();
 						$(this).attr('href', $.url.build(url));
 					}
 				}, this, fm));
 			});
 		}
+		
+		//handle the related links
+        $('.refinements h4').each(function(index) {
+        	if($(this).html() == "Related Links"){
+        		$(this).next('ul').children('li').children('a').each(function(index) {	
+        			$(this).bind(fm.bindFunc, fm.bind(function() {
+        				url = fm.parseUrl($(this).attr('href'));
+        				if (fm.isValidLink(url) && fm.wtTags.z_l.lastIndexOf("RL") == -1) {
+        					url.params['WTz_l'] = fm.wtTags.z_l + ";RL";
+        					$(this).attr('href', $.url.build(url));
+        				}
+        			}, this, fm));
+        		});
+        	}
+		});	
+		
+		// Handle the did you mean link
+		$('.didYouMean a').each(function(index) {
+			$(this).bind(fm.bindFunc, fm.bind(function() {
+				url = fm.parseUrl($(this).attr('href'));
+				if (fm.isValidLink(url)) {
+					url.params['WTz_l'] += ";DYM";
+					$(this).attr('href', $.url.build(url));
+				}
+			}, this, fm));
+		});
 		
 		// MegaMenu tracking
 		$('.megaMenuList a, .otherWaysToShop a').each(function(index) {
@@ -170,6 +196,21 @@ function FindingMethod() {
 					if (fm.wtTags.z_typ != undefined && fm.wtTags.z_typ != "") {
 						wtzl += ";"+fm.wtTags.z_typ;
 					}
+					if (fm.wtTags.pn_sku != undefined && fm.wtTags.pn_sku != "") {
+						wtzl += ";"+fm.wtTags.pn_sku;
+					}
+					url.params['WTz_l'] = wtzl;
+					$(this).attr('href', $.url.build(url));
+				}
+			}, this, fm));
+		});
+		
+		// Handle the Customer Who Bought Also Bought
+		$('#itemAddedToCartTemplate .relatedItems a').each(function(index) {
+			$(this).bind(fm.bindFunc, fm.bind(function() {
+				url = fm.parseUrl($(this).attr('href'));
+				if (fm.isValidLink(url)) {
+					var wtzl = "CWBAB";
 					if (fm.wtTags.pn_sku != undefined && fm.wtTags.pn_sku != "") {
 						wtzl += ";"+fm.wtTags.pn_sku;
 					}
@@ -239,6 +280,9 @@ function FindingMethod() {
 		$("#js-headerSearchForm").bind('submit', function() {
 				$('#searchWTz_l').val($('#searchWTz_l').val() + ';Search-'+$("#searchBy option:selected").text());
 			});
+		
+		// Inject an input param into the search within form
+		$("#js-searchWithinForm").append("<input type=\"hidden\" name=\"WTz_l\" id=\"searchWithinWTz_l\" value=\"" + fm.wtTags.z_l +";SearchWithin\" />");
 		
 		// Handle the catalog left nav
 		$('.catalogNavigation a').each(function(index) {

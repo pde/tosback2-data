@@ -1,0 +1,48 @@
+(function() {
+	var minidaum_config = new function() {
+		var minidaum_opts = {
+			nick: '',
+			logInStatus: 'logoff',
+			referer: document.referrer,
+			loginUrl: 'http://login.daum.net/accounts/loginform.do',
+			logoutUrl: 'https://logins.daum.net/accounts/logout.do?url=http://www.daum.net/?nil_profile=logout',
+			logoutUrlSvc: 'https://logins.daum.net/accounts/logout.do?url=' + encodeURIComponent(document.referrer),
+			isHttps: (window.location.protocol === 'https:') ? 'yes':'no',
+			tracker:'on',
+			uimode:'',
+			returnSvc: '',
+			homepage: 'on',
+			usecss: '',
+			usebg: '',
+			userank: '',
+			shield: ' ',
+			moreHTML: '',
+			issueHTML: '<li><a href="http://search.daum.net/search?w=tot&rtupcate=issue&q=%ED%8C%8C%EB%B9%84%EC%95%99+%EB%8F%85%EB%8F%84&guide=rissue&rtupcoll=DQP,NNS&DA=MMRR&nil_profile=mini&nil_src=searchword1"   class="minidaum_word">파비앙 독도</a><span class="minidaum_status minidaum_up">상승</span><span class="minidaum_num">134</span></li><li><a href="http://search.daum.net/search?w=tot&rtupcate=issue&q=%EC%95%88%EC%9E%AC%EB%AF%BC+%EC%9D%80%EC%A0%95+%EC%9C%84%EB%A1%9C&guide=rissue&rtupcoll=DQP,NNS&DA=MMRR&nil_profile=mini&nil_src=searchword2"   class="minidaum_word">안재민 은정 위로</a><span class="minidaum_status minidaum_up">상승</span><span class="minidaum_num">141</span></li><li><a href="http://search.daum.net/search?w=tot&rtupcate=issue&q=%EA%B0%95%EA%B8%88%EC%9B%90+%EB%B3%84%EC%84%B8&guide=rissue&rtupcoll=DQP,NNS&DA=MMRR&nil_profile=mini&nil_src=searchword3"   class="minidaum_word">강금원 별세</a><span class="minidaum_status minidaum_up">상승</span><span class="minidaum_num">16</span></li><li><a href="http://search.daum.net/search?w=tot&rtupcate=issue&q=%ED%95%9C%EC%88%9C%EC%B2%A0&guide=rissue&rtupcoll=DQP,NNS&DA=MMRR&nil_profile=mini&nil_src=searchword4"   class="minidaum_word">한순철</a><span class="minidaum_status minidaum_up">상승</span><span class="minidaum_num">66</span></li><li><a href="http://search.daum.net/search?w=tot&rtupcate=issue&q=%EC%88%98%EA%B5%AC+%EB%B0%A9%EC%86%A1%EC%82%AC%EA%B3%A0&guide=rissue&rtupcoll=DQP,NNS&DA=MMRR&nil_profile=mini&nil_src=searchword5"   class="minidaum_word">수구 방송사고</a><span class="minidaum_status minidaum_up">상승</span><span class="minidaum_num">33</span></li><li><a href="http://search.daum.net/search?w=tot&rtupcate=issue&q=%EC%A0%95%EC%88%98%EC%A0%95+%ED%94%BC%EB%9D%BC%EB%83%90&guide=rissue&rtupcoll=DQP,NNS&DA=MMRR&nil_profile=mini&nil_src=searchword6"   class="minidaum_word">정수정 피라냐</a><span class="minidaum_status minidaum_up">상승</span><span class="minidaum_num">99</span></li><li><a href="http://search.daum.net/search?w=tot&rtupcate=issue&q=%EC%9D%B4%ED%98%84%EC%9D%BC+%EC%A4%80%EA%B2%B0%EC%8A%B9%EC%A7%84%EC%B6%9C&guide=rissue&rtupcoll=DQP,NNS&DA=MMRR&nil_profile=mini&nil_src=searchword7"   class="minidaum_word">이현일 준결승진출</a><span class="minidaum_status minidaum_up">상승</span><span class="minidaum_num">165</span></li><li><a href="http://search.daum.net/search?w=tot&rtupcate=issue&q=%EC%98%A4%ED%95%98%EB%82%98&guide=rissue&rtupcoll=DQP,NNS&DA=MMRR&nil_profile=mini&nil_src=searchword8"   class="minidaum_word">오하나</a><span class="minidaum_status minidaum_up">상승</span><span class="minidaum_num">63</span></li><li><a href="http://search.daum.net/search?w=tot&rtupcate=issue&q=%EC%B0%A8%ED%98%95%EC%82%AC&guide=rissue&rtupcoll=DQP,NNS&DA=MMRR&nil_profile=mini&nil_src=searchword9"   class="minidaum_word">차형사</a><span class="minidaum_status minidaum_up">상승</span><span class="minidaum_num">78</span></li><li><a href="http://search.daum.net/search?w=tot&rtupcate=issue&q=%EC%8B%A0%EB%AF%BC%EC%95%84+%EC%97%B0%EC%A7%80&guide=rissue&rtupcoll=DQP,NNS&DA=MMRR&nil_profile=mini&nil_src=searchword10"   class="minidaum_word">신민아 연지</a><span class="minidaum_status minidaum_new">new</span><span class="minidaum_num"></span></li>',
+			callback: '',
+			version: ''
+		};
+		var minidaum_custom_opts = (typeof window.minidaum_options == 'object') ? window.minidaum_options : {};
+		
+		this.getServerOpts = function() {
+			return minidaum_opts;
+		};
+		this.getCustomOpts = function() {
+			return minidaum_custom_opts;
+		};
+		this.setMoreHTML = function(str) {
+			minidaum_opts.moreHTML = str;
+		};
+	};
+	function loadScript(url) {
+		var script = document.createElement('script');
+		var head = document.getElementsByTagName ("head")[0] || document.documentElement;
+			script.charset = 'utf-8';
+			script.type = 'text/javascript';
+			script.src = url;
+
+			head.insertBefore(script, head.firstChild);
+	};
+	window.minidaum_config = minidaum_config;
+	var jsurl = (window.location.protocol === 'https:') ? 'https://go.daum.net/minidaum/js/summoner_20120716v1.min.js':'http://s1.daumcdn.net/go/minidaum/js/summoner_20120716v1.min.js';
+	loadScript(jsurl + '?1342426809004');
+})();

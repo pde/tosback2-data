@@ -26,6 +26,7 @@ var BF_NO_QS = true;
 // Visual Revenue Script
 var _vrq = _vrq || [];
 _vrq.push(['id', 119]);
+_vrq.push(['automate', true]);
 _vrq.push(['track', function(){}]);
 (function(d, a) {
 	var s = d.createElement(a),

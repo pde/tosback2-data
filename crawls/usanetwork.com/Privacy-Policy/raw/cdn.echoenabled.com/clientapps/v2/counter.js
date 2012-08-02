@@ -7,7 +7,7 @@
  * implied, including fitness for a particular purpose. In no event shall
  * the author be liable for any damages arising in any way out of the use
  * of this software, even if advised of the possibility of such damage.
- * $Id: counter.js 38006 2012-04-05 07:26:19Z snaky $
+ *
  */
 
 (function($) {
@@ -28,6 +28,7 @@ if (!Echo.Vars) Echo.Vars = {
 	"regexps": {
 		"matchLabel": /{Label:([^:}]+[^}]*)}/g,
 		"matchData": /{Data:(([a-z]+\.)*[a-z]+)}/ig,
+		"matchSelf": /{Self:(([a-z_]+\.)*[a-z_]+)}/ig,
 		"mobileUA": /mobile|midp-|opera mini|iphone|ipad|blackberry|nokia|samsung|docomo|symbian|windows ce|windows phone|android|up\.browser|ipod|netfront|skyfire|palm|webos|audiovox/i,
 		"parseUrl": /^((([^:\/\?#]+):)?\/\/)?([^\/\?#]*)?([^\?#]*)(\?([^#]*))?(#(.*))?/,
 		"w3cdtf": /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)Z$/
@@ -586,6 +587,11 @@ Echo.Object.prototype.cssPrefix = "echo-";
 
 Echo.Object.prototype.substitute = function(template, data) {
 	var self = this;
+	template = template.replace(Echo.Vars.regexps.matchSelf, function($0, $1) {
+		return $.getNestedValue($1, self) ||
+			$.getNestedValue($1, self.data || {}) ||
+			self.config.get($1, "");
+	});
 	template = template.replace(Echo.Vars.regexps.matchLabel, function($0, $1) {
 		return self.label($1);
 	});
@@ -833,7 +839,7 @@ Echo.User.prototype.assemble = function() {
 	var account = accounts[0] || {};
 	return $.extend(this.data, {
 		"id": account.identityUrl || this.data.poco.entry.id || account.userid,
-		"name": this.data.poco.entry.displayName || account.username,
+		"name": account.displayName || account.username,
 		"avatar": $.foldl(undefined, account.photos || [], function(img) {
 			if (img.type == "avatar") return img.value;
 		}),

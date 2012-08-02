@@ -76,22 +76,21 @@ http://www.iconico.com
 
             //create main data table
             out.push('<div class="iScheduleShows">');
-            out.push('<table cellpadding="0" cellspacing="0" border="0" id="tblData">');
+            out.push('<div style = "width : 7008px" id="tblData">');
             start = true;
 
             //top row
             var am = true;
             var hour = 6;
             var time;
-            out.push('<tr>');
+            out.push('<div>');
             for (var h = 0; h < 24; h++) {
 
                 //build matching time string
                 time = hour + ':00 ' + (am ? 'A' : 'P') + 'M';
 
                 //write out
-                out.push('<td class="iScheduleShow iScheduleShowTop">' + time + '</td>');
-
+                out.push('<div class="iScheduleShow iScheduleShowTop"><div style = "display:table-cell;vertical-align:middle;height:inherit">' + time + '</div></div>');
                 //set next
                 hour++;
                 if (hour == 12) {
@@ -101,135 +100,184 @@ http://www.iconico.com
                     hour = 1;
                 }
             }
-            out.push('</tr>');
+            out.push('</div>');
 
             //loop over each day
             $.each(json.data, function (iDate, itemDate) {
-
                 //set up row
                 var dateObj = new Date(iDate);
                 if (start) {
-                    out.push('<tr class="iScheduleToday">');
+                    out.push('<div class="iScheduleToday">');
                 } else {
-                    out.push('<tr>');
+                    out.push('<div>');
                 }
 
                 //set tracking hours
-                var am = true;
+                var amSuffix = true;
                 var hour = 6;
                 var time = '';
                 var prevItemTime;
                 var thisItemTime;
+				var nextItem = false;
+				var showLength = 4;
+				var thisItemStartHour = '';
+				var thisItemStartMin = '';
 
-                for (var h = 0; h < 24; h++) {
+                for (var h = 0; h < 25; h++) 
+				{
+					for (var min = 0; min < 60; min = min + parseInt(15)) 
+					{	
+						thisItemTime = null;
+						
+						//build matching time string
+						time = (hour < 10 ? '0' + hour : '' + hour) + (min < 10 ? '0' + min : '' + min) + (amSuffix ? 'A' : 'P') + 'M';	
 
-                    thisItemTime = null;
+						//loop over each show and find matching one
+						$.each(itemDate, function (iTime, itemTime) {
+						fields = iTime.split(':');
+						iTimeHours  = fields[0];
+						iTimeApproxMin = fields[1];
+						fieldsTwo = iTimeApproxMin.split(' ');
+						iTimeApproxMin = fieldsTwo[0];
+						iTimeSuffix = fieldsTwo[1];
+						
+						var iTimeExactMin = (Math.round(iTimeApproxMin/15) * 15);
+						iTime = iTimeHours  + (iTimeExactMin < 10 ? '0' + iTimeExactMin : iTimeExactMin) + iTimeSuffix;	
+								
+							//use last good time if one not present
+							if (iTime == time) 
+							{
+								if (nextItem) 
+								{
+									nextItemStartHour = parseInt(trimNumber(iTimeHours));
+									nextItemStartMin = parseInt(iTimeExactMin);
+									hourDiff = nextItemStartHour - thisItemStartHour;
+									minDiff = ((nextItemStartHour*60) + nextItemStartMin) - ((thisItemStartHour*60) + thisItemStartMin);
+									showLength = parseInt(minDiff/15);
+									nextItem = false;
+									var index = $.inArray('style = "width:auto"',out); 
+									out[index] = 'style = "width:'+((showLength*73)-1)+'px"';
 
-                    //build matching time string
-                    time = (hour < 10 ? '0' + hour : hour) + ':00 ' + (am ? 'A' : 'P') + 'M';
+								}							
+								thisItemTime = itemTime;
+								thisItemStartHour =(parseInt(trimNumber(iTimeHours)) == 12 ) ? 0 : parseInt(trimNumber(iTimeHours));
+								thisItemStartMin = parseInt(iTimeExactMin);
+								nextItem = true;
+							    return false;
+							   
+							}
 
-                    //loop over each show and find matching one
-                    $.each(itemDate, function (iTime, itemTime) {
+						});
 
-                        //use last good time if one not present
-                        if (iTime == time) {
-                            thisItemTime = itemTime;
-                            return false;
-                        }
+						if (!thisItemTime) {
+							thisItemTime = prevItemTime;
+						}
+						if (!thisItemTime) {
+							thisItemTime = { show: 'n/a', episode: 'n/a' }
+						}
 
-                    });
+						//write out
+						if(prevItemTime != thisItemTime && h != 24) 
+						{
 
-                    if (!thisItemTime) {
-                        thisItemTime = prevItemTime;
-                    }
-                    if (!thisItemTime) {
-                        thisItemTime = { show: 'n/a', episode: 'n/a' }
-                    }
+							out.push('<div class="iScheduleShowData' + (h > 13 && h < 18 ? ' iSchedulePrime' : '') + '"');
+							out.push('style = "width:auto"');
+							out.push('><div class = "showContent" ><div id="iS_' + escape($.trim(thisItemTime.show)).replace(/\%/gi, '') + '">');
 
-                    //write out
-                    out.push('<td class="iScheduleShow' + (h > 13 && h < 18 ? ' iSchedulePrime' : '') + '"><div id="iS_' + escape($.trim(thisItemTime.show)).replace(/\%/gi, '') + '">');
+							if (thisItemTime.show != 'null') 
+							{
+								var showLinkArray = [
+								'series/burnnotice',
+								'series/csi/',
+								'series/criminalintent',
+								'series/covertaffairs',
+								'series/fairlylegal',
+								'series/house',
+								'series/inplainsight',
+								'series/necessaryroughness',
+								'series/ncisla',
+								'series/ncis',
+								'series/psych',
+								'sports/wwe',
+								'series/royalpains',
+								'series/suits',
+								'series/svu',
+								'series/toughenough',
+								'series/whitecollar',
+								'movies',
+								'series/monk',
+								'series/becker',
+								'sports/wwe',
+								'series/commonlaw',
+								'series/politicalanimals'
+								];
+								var showSearchArray = [
+								'^BURN NOTICE',
+								'^CSI',
+								'^LAW \& ORDER\: CRIMINAL INTENT',
+								'^COVERT AFFAIRS',
+								'^FAIRLY LEGAL',
+								'^HOUSE',
+								'^IN PLAIN SIGHT',
+								'^NECESSARY ROUGHNESS',
+								'^NCIS: LOS ANGELES',
+								'^NCIS',
+								'^PSYCH',
+								'^WWE MONDAY NIGHT RAW',
+								'^ROYAL PAINS',
+								'^SUITS',
+								'^LAW \& ORDER\: SVU',
+								'^WWE TOUGH ENOUGH',
+								'^WHITE COLLAR',
+								'^USA MOVIE',
+								'^MONK',
+								'^BECKER',
+								'^WWE A.M. RAW',
+								'^COMMON LAW',
+								'^POLITICAL ANIMALS'
+								];
 
-                    if (thisItemTime.show != 'null') {
-                        var showLinkArray = [
-                            'series/burnnotice',
-                            'series/csi/',
-                            'series/criminalintent',
-                            'series/covertaffairs',
-                            'series/fairlylegal',
-                            'series/house',
-                            'series/inplainsight',
-                            'series/necessaryroughness',
-                            'series/ncis',
-                            'series/psych',
-                            'series/wwe',
-                            'series/royalpains',
-                            'series/suits',
-                            'series/svu',
-                            'series/toughenough',
-                            'series/whitecollar',
-                            'movies'
-                        ];
-                        var showSearchArray = [
-                            '^BURN NOTICE',
-                            '^CSI',
-                            '^LAW \& ORDER\: CRIMINAL INTENT',
-                            '^COVERT AFFAIRS',
-                            '^FAIRLY LEGAL',
-                            '^HOUSE',
-                            '^IN PLAIN SIGHT',
-                            '^NECESSARY ROUGHNESS',
-                            '^NCIS',
-                            '^PSYCH',
-                            '^WWE MONDAY NIGHT RAW',
-                            '^ROYAL PAINS',
-                            '^SUITS',
-                            '^LAW \& ORDER\: SVU',
-                            '^WWE TOUGH ENOUGH',
-                            '^WHITE COLLAR',
-                            '^USA MOVIE'
-                        ];
+								var found = false;
+								for (s = 0; s < showSearchArray.length; s++) 
+								{
+									var re = new RegExp(showSearchArray[s]);
+									if (thisItemTime.show.match(re, 'i')) 
+									{
+										out.push('<a href="http://www.usanetwork.com/' + showLinkArray[s] + '">' + thisItemTime.show + '</a>');
+										found = true;
+										break;
+									}
+								}
+								if (!found) {
+								out.push(thisItemTime.show);
+								}
+							}
+							out.push('</div><div>');
+							if (thisItemTime.episode != 'null') out.push(thisItemTime.episode);
+							out.push('<span id="iSNEW_' + escape($.trim(thisItemTime.show)).replace(/\%/gi, '') + '_' + escape($.trim(thisItemTime.episode)).replace(/\%/gi, '') + '">(NEW)</span>');
+							out.push('</div></div></div>');
+						}
+						prevItemTime = thisItemTime;
+					}
 
-                        var found = false;
-                        for (s = 0; s < showSearchArray.length; s++) {
-                            var re = new RegExp(showSearchArray[s]);
-                            if (thisItemTime.show.match(re, 'i')) {
-                                out.push('<a href="http://www.usanetwork.com/' + showLinkArray[s] + '">' + thisItemTime.show + '</a>');
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            out.push(thisItemTime.show);
-                        }
-                    }
-                    out.push('</div><div>');
-                    if (thisItemTime.episode != 'null') out.push(thisItemTime.episode);
-                    out.push('<span id="iSNEW_' + escape($.trim(thisItemTime.show)).replace(/\%/gi, '') + '_' + escape($.trim(thisItemTime.episode)).replace(/\%/gi, '') + '">(NEW)</span>');
-                    out.push('</div></td>');
-
-                    //set next
-                    hour++;
-                    if (hour == 12) {
-                        am = !am;
-                    }
-                    if (hour == 13) {
-                        hour = 1;
-                    }
-                    prevItemTime = thisItemTime;
-
-                }
-
+						hour++;
+						if (hour == 12) {
+							amSuffix = !amSuffix;
+						}
+						if (hour == 13) {
+							
+							hour = 1;
+						}					
+				}
                 //finish row
-                out.push('</tr>');
+                out.push('</div>');
                 start = false;
             });
-            out.push('</table>');
+            out.push('</div>');
             out.push('</div>');
 
             //footer
             out.push('<div class="iScheduleFoot">Schedule is subject to change<div></div></div>');
-
-
 
             iBox.append(out.join(''));
 
@@ -244,21 +292,21 @@ http://www.iconico.com
             } else {
                 hours = hours - 6;
             }
-            iBox.find('.iScheduleShows table').css({ 'marginLeft': -293 * hours });
+            iBox.find('.iScheduleShows #tblData').css({ 'marginLeft': -293 * hours });
 
             //set up events
             iBox.find('.iScheduleNext').click(function () {
                 if (!animated) {
                     animated = true;
-                    var left = parseInt(iBox.find('.iScheduleShows table').css('marginLeft'));
+                    var left = parseInt(iBox.find('.iScheduleShows #tblData').css('marginLeft'));
                     left -= 293;
                     if (left < -6153) {
                         animated = false;
                     } else {
-                        iBox.find('.iScheduleShows table').animate({ 'marginLeft': left }, 300, function () {
+                        iBox.find('.iScheduleShows #tblData').animate({ 'marginLeft': left }, 300, function () {
                             // Animation complete.
                             animated = false;
-                            var left = parseInt(iBox.find('.iScheduleShows table').css('marginLeft'));
+                            var left = parseInt(iBox.find('.iScheduleShows #tblData').css('marginLeft'),10);
                             left -= 293;
                             if (left < -6153) {
                                 iBox.find('.iScheduleNext').fadeOut(300);
@@ -278,15 +326,15 @@ http://www.iconico.com
             iBox.find('.iSchedulePrev').click(function () {
                 if (!animated) {
                     animated = true;
-                    var left = parseInt(iBox.find('.iScheduleShows table').css('marginLeft'));
+                    var left = parseInt(iBox.find('.iScheduleShows #tblData').css('marginLeft'));
                     left += 293;
                     if (left > 0) {
                         animated = false;
                     } else {
-                        iBox.find('.iScheduleShows table').animate({ 'marginLeft': left }, 300, function () {
+                        iBox.find('.iScheduleShows #tblData').animate({ 'marginLeft': left }, 300, function () {
                             // Animation complete.
                             animated = false;
-                            var left = parseInt(iBox.find('.iScheduleShows table').css('marginLeft'));
+                            var left = parseInt(iBox.find('.iScheduleShows #tblData').css('marginLeft'),10);
                             left += 293;
                             if (left < -6153) {
                                 iBox.find('.iScheduleNext').fadeOut(300);
@@ -327,6 +375,13 @@ http://www.iconico.com
 	    	$('#ui-datepicker-div').mouseleave(function(event){
 	    		usa_beginHideMenu('schedule');
 	    	});
+	    	
+	    	// add the close button
+	    	if ($('#usa_globalHeaderSubNav_schedule div.iSchedule .globalHeaderCloseBtn').length == 0)
+	    	{
+	    		$('#usa_globalHeaderSubNav_schedule div.iSchedule').append('<a href="javascript:void(0);" onclick="usa_hideMenuAll()" class="globalHeaderCloseBtn"><span>Close Menu</span></a>');
+	    	}
+	    	
         }
     }
 
@@ -344,5 +399,11 @@ http://www.iconico.com
     $.fn.ischedule.defaults = {
         jsonfile: '' 		// url to json file
     }
+
+	//Added for Table to div conversion
+	function trimNumber(s) {
+	  while (s.substr(0,1) == '0' && s.length>1) { s = s.substr(1,9999); }
+	  return s;
+	}
 
 })();

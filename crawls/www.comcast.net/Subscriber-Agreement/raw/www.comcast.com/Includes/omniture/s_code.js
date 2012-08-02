@@ -1,3 +1,94 @@
+/***TouchCommerce Listeners
+* 
+* Code below to capture event listeners as outlined by TouchCommerce in
+* prop54 (Proactive Chat Group),prop55 (Proactive Chat Targeted), prop56 (Proactive Chat Exposed)
+* To capture interacted whe will use event40.
+* 
+****/
+
+var chatLaunchedListener = {
+    onChatLaunched: function (evt) {
+        s.prop56 = 'tc:exposed';
+        s.linkTrackVars = 'prop56,prop55,prop54';
+        s.linkType = 'o';
+        s.linkName = 'TC:Chat Exposed Assignment';
+        s.lnk = true;
+        s.t();
+    }
+};
+
+var groupAssignmentListener = {
+    onGroupAssignment: function (evt) {
+        s.prop54 = 'tc:' + evt.group.toString().toLowerCase();
+        s.linkTrackVars = 'prop54';
+        s.linkType = 'o';
+        s.linkName = 'TC:Chat Group Assignment';
+        s.lnk = true;
+        s.t();
+    }
+};
+
+var targetedListener = {
+    onTargeted: function (evt) {
+        s.prop55 = 'tc:' + evt.group.toString().toLowerCase() + ':targeted';
+        s.prop54 = 'tc:' + evt.group.toString().toLowerCase();
+        s.linkTrackVars = 'prop55,prop54';
+        s.linkType = 'o';
+        s.linkName = 'TC:Chat Targeted Assignment';
+        s.lnk = true;
+        s.t();
+    }
+};
+
+var saleLandingListener = {
+    onSaleEvent: function (evt) {
+        s.linkTrackVars = 'prop54,prop55,prop56,events';
+        s.linkTrackEvents = 'event40';
+        s.events = 'event40';
+        s.linkType = 'o';
+        s.linkName = 'TC:Chat Interacted';
+        s.lnk = true;
+        s.t();
+    }
+};
+
+if (typeof (InqRegistry) == 'undefined') {
+    var InqRegistry = { chatListeners: [chatLaunchedListener],
+        incrementalityListeners: [groupAssignmentListener, targetedListener],
+        saleListeners: [saleLandingListener]
+    };
+}
+else // TC already initialized this variable, so append to the existing listeners.
+{
+    var chatEventListeners = [chatLaunchedListener];
+    var incrementalityEventListeners = [groupAssignmentListener, targetedListener];
+    var saleEventListeners = [saleLandingListener];
+
+    if (typeof (InqRegistry.chatListeners) != 'undefined') {
+        for (counter = 0; counter < InqRegistry.chatListeners.length; counter++) {
+            chatEventListeners.push(InqRegistry.chatListeners[counter]);
+        }
+    }
+
+    if (typeof (InqRegistry.incrementalityListeners) != 'undefined') {
+        for (counter = 0; counter < InqRegistry.incrementalityListeners.length; counter++) {
+            incrementalityEventListeners.push(InqRegistry.incrementalityListeners[counter]);
+        }
+    }
+
+    if (typeof (InqRegistry.saleListeners) != 'undefined') {
+        for (counter = 0; counter < InqRegistry.saleListeners.length; counter++) {
+            saleEventListeners.push(InqRegistry.saleListeners[counter]);
+        }
+    }
+
+
+    InqRegistry = { chatListeners: chatEventListeners,
+        incrementalityListeners: incrementalityEventListeners,
+        saleListeners: saleEventListeners
+    };
+}
+
 /* SiteCatalyst code version: H.22.1.
 Copyright 1996-2010 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
@@ -5,12 +96,26 @@ More info available at http://www.omniture.com */
 /* Specify the Report Suite ID(s) to track here */
 var s_account = "comcastdotcomqa";  //qa environment, staging environment
 if (location.href.indexOf('localhost') > -1) s_account = "comcastdotcomdev";    //local environment
-if (location.href.indexOf('ccqa4') > -1 || location.href.indexOf('ccperf') > -1 || location.href.indexOf('ccpfix') > -1 ||
-    location.href.indexOf('ccbeta') > -1 || location.href.indexOf('stage-user-comcastcom.cable.comcast.com') > -1 ||
-    location.href.indexOf('wcstg.comcast.com') > -1 || location.href.indexOf('verify.comcast.com') > -1) {
+if (location.href.indexOf('ccqa4') > -1 ||
+	location.href.indexOf('ccperf') > -1 ||
+	location.href.indexOf('ccpfix') > -1 ||
+    location.href.indexOf('ccbeta') > -1 ||
+    location.href.indexOf('qa-3.comcast.com') > -1 ||
+    location.href.indexOf('qa-2.comcast.com') > -1 ||
+    location.href.indexOf('qa-1.comcast.com') > -1 ||
+    location.href.indexOf('qa-4.comcast.com') > -1 ||
+    location.href.indexOf('qa-5.comcast.com') > -1 || 
+    location.href.indexOf('stage-user-comcastcom.cable.comcast.com') > -1 ||
+    location.href.indexOf('wcstg.comcast.com') > -1 ||
+    location.href.indexOf('verify.comcast.com') > -1) {
+
     s_account = "comcastdotcomqa";  //qa environment, staging environment
 }
-else if (location.href.indexOf('comcast.com') > -1 || location.href.indexOf('comcast.convergentcare.com') > -1 || location.href.indexOf('comcastvoices.com') > -1 || location.href.indexOf('mylocalcomcast.com') > -1) {
+else if (location.href.indexOf('.comcast.com') > -1 ||
+		 location.href.indexOf('comcast.convergentcare.com') > -1 ||
+		 location.href.indexOf('comcastvoices.com') > -1 ||
+		 location.href.indexOf('mylocalcomcast.com')) {
+
     s_account = "comcastdotcomprod";    //production environment
 }
 
@@ -66,7 +171,7 @@ if (typeof (ForeSee) != "undefined") {
     }
 }
 
-s.addToCart = function(p, i) {
+s.addToCart = function (p, i) {
     var s = this;
     s.events = i > 0 ? "scAdd" : "scAdd,scOpen";
     s.products = ";" + p;
@@ -75,7 +180,7 @@ s.addToCart = function(p, i) {
     s.tl(true, "o", "Add to Cart");
 };
 
-s.removeFromCart = function(p) {
+s.removeFromCart = function (p) {
     var s = this;
     s.events = "scRemove";
     s.products = ";" + p;
@@ -223,7 +328,7 @@ function s_doPlugins(s) {
     s.setupDynamicObjectIDs();
 
     /* Channel Stacking and treat natural search as a campaign*/
-    s.channelManager('cmp,dfaid,mid', '', 's_campaign');
+    s.channelManager('cmp,dfaid,mid', '', '0');
 
 
     if (s._channel == "Paid Non-Search") { s._channel = s._campaign.substring(0, 3) }
@@ -362,16 +467,44 @@ function s_doPlugins(s) {
         if (url.indexOf('business.comcast.com') > -1) s.linkName = "exit to business class link";
     }
 
-
+    s.socialPlatforms('eVar58');
 }
 s.doPlugins = s_doPlugins
 
-/* Utility Function: split v1.5 - split a string (JS 1.0 compatible) */
-s.split = new Function("l", "d", ""
-+ "var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
-+ "++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
-
 /************************** PLUGINS SECTION *************************/
+
+/*
+* Plugin: socialPlatforms v1.0
+*/
+s.socialPlatforms = new Function("a", ""
++ "var s=this,g,K,D,E,F;g=s.referrer?s.referrer:document.referrer;g=g."
++ "toLowerCase();K=s.split(s.socPlatList,'|');for(i=0;i<K.length;i++){"
++ "D=s.split(K[i],'>');if(g.indexOf(D[0])!=-1){if(a){s[a]=D[1];}}}");
+s.socPlatList = "facebook.com>Facebook|twitter.com>Twitter|t.co/>Twitter|youtube.com>Youtube|clipmarks.com>Clipmarks|dailymotion.com>Dailymotion|delicious.com>Delicious|digg.com>Digg|diigo.com>Diigo|flickr.com>Flickr|flixster.com>Flixster|fotolog.com>Fotolog|friendfeed.com>FriendFeed|google.com/buzz>Google Buzz|buzz.googleapis.com>Google Buzz|plus.google.com>Google+|hulu.com>Hulu|identi.ca>identi.ca|ilike.com>iLike|intensedebate.com>IntenseDebate|myspace.com>MySpace|newsgator.com>Newsgator|photobucket.com>Photobucket|plurk.com>Plurk|slideshare.net>SlideShare|smugmug.com>SmugMug|stumbleupon.com>StumbleUpon|tumblr.com>Tumblr|vimeo.com>Vimeo|wordpress.com>WordPress|xanga.com>Xanga";
+/*
+* socialAuthors v1.1
+*/
+s.socialAuthors = function () {
+    var s = this, g, tco;
+    g = s.referrer ? s.referrer : document.referrer;
+    if (g.indexOf('t.co') != -1) {
+        s.tco = escape(s.split(g, "/")[3]);
+        s.Integrate.add("SocialAuthor");
+        s.Integrate.SocialAuthor.tEvar = 'eVar59';
+        s.Integrate.SocialAuthor.get("http://search.twitter.com/search.json?var=[VAR]&callback=s.twitterSearch&q=http%3A%2F%2Ft.co%2F" + s.tco);
+        s.Integrate.SocialAuthor.delay();
+        s.Integrate.SocialAuthor.setVars = function (s, p) {
+            s[p.tEvar] = s.user;
+        }
+    }
+}
+
+s.twitterSearch = function (obj) {
+    if (typeof obj == 'undefined' || obj.results.length == 0) { s.user = 'Not Found'; return; }
+    s.user = obj.results[0].from_user;
+    resultNum = obj.results;
+    s.Integrate.SocialAuthor.ready();
+}
 
 /* Function - read combined cookies v 0.3*/
 if (!s.__ccucr) {
@@ -420,41 +553,41 @@ s.p_fo = new Function("n", ""
 + "new Object;return 1;}else {return 0;}");
 
 /*
-* channelManager - Tracking External Traffic
+* channelManager v2.45 - Tracking External Traffic
 */
 s.channelManager = new Function("a", "b", "c", "d", "e", "f", ""
-+ "var s=this,A,B,g,l,m,p,q,P,h,k,u,S,i,O,T,j,r,t,D,E,F,G,H,N,U,v=0,X,"
-+ "Y,W,n=new Date;n.setTime(n.getTime()+1800000);if(e){v=1;if(s.c_r(e)"
-+ ")v=0;if(!s.c_w(e,1,n))s.c_w(e,1,0);if(!s.c_r(e))v=0;}g=s.referrer?s"
-+ ".referrer:document.referrer;g=g.toLowerCase();if(!g)h=1;i=g.indexOf"
-+ "('?')>-1?g.indexOf('?'):g.length;j=g.substring(0,i);k=s.linkInterna"
-+ "lFilters.toLowerCase();k=s.split(k,',');for(m=0;m<k.length;m++){B=j"
-+ ".indexOf(k[m])==-1?'':g;if(B)O=B;}if(!O&&!h){p=g;U=g.indexOf('//');"
-+ "q=U>-1?U+2:0;Y=g.indexOf('/',q);r=Y>-1?Y:i;u=t=g.substring(q,r).toL"
-+ "owerCase();P='Other Natural Referrers';S=s.seList+'>'+s._extraSearc"
-+ "hEngines;if(d==1){j=s.repl(j,'oogle','%');j=s.repl(j,'ahoo','^');g="
-+ "s.repl(g,'as_q','*');}A=s.split(S,'>');for(i=0;i<A.length;i++){D=A["
-+ "i];D=s.split(D,'|');E=s.split(D[0],',');for(G=0;G<E.length;G++){H=j"
-+ ".indexOf(E[G]);if(H>-1){if(D[2])N=u=D[2];else N=t;if(d==1){N=s.repl"
-+ "(N,'#',' - ');g=s.repl(g,'*','as_q');N=s.repl(N,'^','ahoo');N=s.rep"
-+ "l(N,'%','oogle');}i=s.split(D[1],',');for(k=0;k<i.length;k++){l=s.g"
-+ "etQueryParam(i[k],'',g).toLowerCase();if(l)break;}}}}}if(!O||f!='1'"
-+ "){O=s.getQueryParam(a,b);if(O){u=O;if(N)P='Paid Search';else P='Unk"
-+ "nown Paid Channel';}if(!O&&N){u=N;P='Natural Search';}}if(h==1&&!O&"
-+ "&v==1)u=P=t=p='Typed/Bookmarked';g=s._channelDomain;if(g){k=s.split"
-+ "(g,'>');for(m=0;m<k.length;m++){q=s.split(k[m],'|');r=s.split(q[1],"
-+ "',');S=r.length;for(T=0;T<S;T++){Y=r[T].toLowerCase();i=j.indexOf(Y"
-+ ");if(i>-1)P=q[0];}}}g=s._channelParameter;if(g){k=s.split(g,'>');fo"
-+ "r(m=0;m<k.length;m++){q=s.split(k[m],'|');r=s.split(q[1],',');S=r.l"
-+ "ength;for(T=0;T<S;T++){U=s.getQueryParam(r[T]);if(U)P=q[0];}}}g=s._"
-+ "channelPattern;if(g){k=s.split(g,'>');for(m=0;m<k.length;m++){q=s.s"
-+ "plit(k[m],'|');r=s.split(q[1],',');S=r.length;for(T=0;T<S;T++){Y=r["
-+ "T].toLowerCase();i=O.toLowerCase();H=i.indexOf(Y);if(H==0)P=q[0];}}"
-+ "}X=P+l+t;c=c?c:'c_m';if(c!='0')X=s.getValOnce(X,c,0);if(X){s._refer"
-+ "rer=p?p:'n/a';s._referringDomain=t?t:'n/a';s._partner=N?N:'n/a';s._"
-+ "campaignID=O?O:'n/a';s._campaign=u?u:'n/a';s._keywords=l?l:N?'Keywo"
-+ "rd Unavailable':'n/a';s._channel=P?P:'n/a';}");
-
++ "var s=this,A,B,g,l,m,M,p,q,P,h,k,u,S,i,O,T,j,r,t,D,E,F,G,H,N,U,v=0,"
++ "X,Y,W,n=new Date;n.setTime(n.getTime()+1800000);if(e){v=1;if(s.c_r("
++ "e))v=0;if(!s.c_w(e,1,n))s.c_w(e,1,0);if(!s.c_r(e))v=0;}g=s.referrer"
++ "?s.referrer:document.referrer;g=g.toLowerCase();if(!g)h=1;i=g.index"
++ "Of('?')>-1?g.indexOf('?'):g.length;j=g.substring(0,i);k=s.linkInter"
++ "nalFilters.toLowerCase();k=s.split(k,',');l=k.length;for(m=0;m<l;m+"
++ "+){B=j.indexOf(k[m])==-1?'':g;if(B)O=B;}if(!O&&!h){p=g;U=g.indexOf("
++ "'//');q=U>-1?U+2:0;Y=g.indexOf('/',q);r=Y>-1?Y:i;t=g.substring(q,r)"
++ ";t=t.toLowerCase();u=t;P='Referrers';S=s.seList+'>'+s._extraSearchE"
++ "ngines;if(d==1){j=s.repl(j,'oogle','%');j=s.repl(j,'ahoo','^');g=s."
++ "repl(g,'as_q','*');}A=s.split(S,'>');T=A.length;for(i=0;i<A.length;"
++ "i++){D=A[i];D=s.split(D,'|');E=s.split(D[0],',');for(G=0;G<E.length"
++ ";G++){H=j.indexOf(E[G]);if(H>-1){if(D[2])N=u=D[2];else N=t;if(d==1)"
++ "{N=s.repl(N,'#',' - ');g=s.repl(g,'*','as_q');N=s.repl(N,'^','ahoo'"
++ ");N=s.repl(N,'%','oogle');}i=s.split(D[1],',');for(k=0;k<i.length;k"
++ "++){M=s.getQueryParam(i[k],'',g).toLowerCase();if(M)break;}}}}}if(!"
++ "O||f!='1'){O=s.getQueryParam(a,b);if(O){u=O;if(M)P='Paid Search';el"
++ "se P='Paid Non-Search';}if(!O&&N){u=N;P='Natural Search'}}if(h==1&&"
++ "!O&&v==1)u=P=t=p='Direct Load';X=M+u+t;c=c?c:'c_m';if(c!='0'){X=s.g"
++ "etValOnce(X,c,0);}g=s._channelDomain;if(g&&X){k=s.split(g,'>');l=k."
++ "length;for(m=0;m<l;m++){q=s.split(k[m],'|');r=s.split(q[1],',');S=r"
++ ".length;for(T=0;T<S;T++){Y=r[T];Y=Y.toLowerCase();i=j.indexOf(Y);if"
++ "(i>-1)P=q[0];}}}g=s._channelParameter;if(g&&X){k=s.split(g,'>');l=k"
++ ".length;for(m=0;m<l;m++){q=s.split(k[m],'|');r=s.split(q[1],',');S="
++ "r.length;for(T=0;T<S;T++){U=s.getQueryParam(r[T]);if(U)P=q[0]}}}g=s"
++ "._channelPattern;if(g&&X){k=s.split(g,'>');l=k.length;for(m=0;m<l;m"
++ "++){q=s.split(k[m],'|');r=s.split(q[1],',');S=r.length;for(T=0;T<S;"
++ "T++){Y=r[T];Y=Y.toLowerCase();i=O.toLowerCase();H=i.indexOf(Y);if(H"
++ "==0)P=q[0];}}}if(X)M=M?M:N?'Keyword Unavailable':'n/a';p=X&&p?p:'';"
++ "t=X&&t?t:'';N=X&&N?N:'';O=X&&O?O:'';u=X&&u?u:'';M=X&&M?M:'';P=X&&P?"
++ "P:'';s._referrer=p;s._referringDomain=t;s._partner=N;s._campaignID="
++ "O;s._campaign=u;s._keywords=M;s._channel=P;");
 /* Top 130 Search Engines - Grouped */
 s.seList = "altavista.co,altavista.de|q,r|AltaVista>.aol.,suche.aolsvc."
 + "de|q,query|AOL>ask.jp,ask.co|q,ask|Ask>www.baidu.com|wd|Baidu>daum."
@@ -572,10 +705,10 @@ s.p_gvf = new Function("t", "k", ""
 
 
 
-///* Utility Function: split v1.5 - split a string (JS 1.0 compatible) */
-//s.split = new Function("l", "d", ""
-//+ "var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
-//+ "++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
+/* Utility Function: split v1.5 - split a string (JS 1.0 compatible) */
+s.split = new Function("l", "d", ""
++ "var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
++ "++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
 
 
 /* Plugin Utility: apl v1.1 */
@@ -807,8 +940,9 @@ var dfa_newRsidsProp; //="prop34"; // Stores the new report suites that need the
 /************************ END DFA Variables ************************/
 
 s.loadModule("Integrate")
-s.Integrate.onLoad = function(s, m) {
+s.Integrate.onLoad = function (s, m) {
 
+    s.socialAuthors();
 
     var dfaCheck = s.partnerDFACheck(dfa_visitCookie, dfa_overrideParam, dfa_newRsidsProp);
     if (dfaCheck) {
@@ -819,7 +953,7 @@ s.Integrate.onLoad = function(s, m) {
         s.Integrate.DFA.CSID = dfa_CSID;
         s.Integrate.DFA.SPOTID = dfa_SPOTID;
         s.Integrate.DFA.get(dfa_requestURL);
-        s.Integrate.DFA.setVars = function(s, p) {
+        s.Integrate.DFA.setVars = function (s, p) {
             if (window[p.VAR]) { // got a response
                 if (!p.ec) { // no errors
                     s[p.tEvar] = "DFA-" + (p.lis ? p.lis : 0) + "-" + (p.lip ? p.lip : 0) + "-" + (p.lastimp ? p.lastimp : 0) + "-" + (p.lastimptime ? p.lastimptime : 0) + "-" + (p.lcs ? p.lcs : 0) + "-" + (p.lcp ? p.lcp : 0) + "-" + (p.lastclk ? p.lastclk : 0) + "-" + (p.lastclktime ? p.lastclktime : 0)
@@ -998,3 +1132,9 @@ w = window, l = w.s_c_il, n = navigator, u = n.userAgent, v = n.appVersion, e = 
 + "'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
     c = s_d(c); if (e > 0) { a = parseInt(i = v.substring(e + 5)); if (a > 3) a = parseFloat(i) } else if (m > 0) a = parseFloat(u.substring(m + 10)); else a = parseFloat(v); if (a >= 5 && v.indexOf('Opera') < 0 && u.indexOf('Opera') < 0) { w.s_c = new Function("un", "pg", "ss", "var s=this;" + c); return new s_c(un, pg, ss) } else s = new Function("un", "pg", "ss", "var s=new Object;" + s_ft(c) + ";return s"); return s(un, pg, ss)
 }
+
+
+try {
+    mboxLoadSCPlugin(s);
+    // Call 'SiteCatalyst: event' or 'SiteCatalyst: purchase' mbox with SC variables as mbox params
+} catch (e) { }

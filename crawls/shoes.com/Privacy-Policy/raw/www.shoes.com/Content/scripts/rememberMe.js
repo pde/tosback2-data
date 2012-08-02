@@ -2,7 +2,6 @@ var cookieManager = new CookieManager();
 var rememberMe = cookieManager.getValueIgnoreCase('rememberMe');
 var LoggedInUser = cookieManager.getValueIgnoreCase('Login');
     if (rememberMe) {
-        var name = null;
         var item = null;
         var split = rememberMe.split('&');
         var i = 0;

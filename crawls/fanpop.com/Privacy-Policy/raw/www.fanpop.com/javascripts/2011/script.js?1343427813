@@ -1,0 +1,295 @@
+jQuery( function($) {
+	// This is just a general class I use. nc = no click. It's good for buttons that will also have javascript attached to them. I usually give the buttons a real href value so for browsers with javascript turned off, they still do something.
+	$('a.nc').live('click', function() {
+		return false;
+	});
+	
+	// These are the little tooltips on images in the My Gallery page. This makes sure they're centered.
+	$('.pop-over').each( function() {
+		$(this).css('margin-left', 0-($(this).outerWidth()/2) );
+	});
+	
+	// This makes for styling the custom select boxes.
+	$('select.replace').wrap('<span class="select-wrap" />').selectbox();
+	
+	// This makes the input appear at the bottom of wall posts.
+	$('.post-footer .controls .comment a').click( function() {
+		$(this).parent().parent().addClass('comment').siblings('form.comment').show().children('input').focus();
+		$(this).parent().hide();
+		$(this).parent().parent().siblings('div.report').hide();
+		return false;
+	});
+	
+	// This makes the reporting box appear at the bottom of wall posts.
+	$('#my-wall .post-footer .controls .report a, #wall .post-footer .controls .report a').click( function() {
+		$(this).parent().parent().removeClass('comment').siblings('form.comment').hide();
+		$(this).parent().siblings('li.comment').show();
+		$(this).parent().parent().siblings('div.report').show();
+		return false;
+	});
+	
+	// This makes the wall post form appear when dummy input form is clicked on 
+	$('#wallpostformd').click( function () {
+		$(this).hide();
+		$(this).parent().siblings('#wallpostforme').show();
+		$(this).siblings('#wallpostformr').show().children('#wf_message').focus();
+	});
+	
+	// This makes the wall post form invoke js checks and updates when typing occurs
+	$('#wf_message').keyup( function() {
+		expand_wall_mess();
+	});
+	
+	// For link reporting - hides other control elements and displays report box
+	$('.link-footer .report').click( function() {
+		$(this).parent().siblings('.controlboxes .confirm_box').children().hide();
+		$(this).parent().siblings('.controlboxes').children(".report").show();
+		return false;
+	});
+		
+	// For generic report, delete buttons - this makes the other control elements hidden and correct box appear
+	$('.post-footer .controls .report a').click( function() {
+		$(this).parent().parent().siblings('.controlboxes .confirm_box').children().hide();
+		$(this).parent().parent().siblings('.controlboxes').children(".report").show();
+		return false;
+	});
+	$('.post-footer .controls .delete a').click( function() {
+		$(this).parent().parent().siblings('.controlboxes .confirm_box').children().hide();
+		$(this).parent().parent().siblings('.controlboxes').children(".delete").show();
+		return false;
+	});
+	//#this makes prop captions underline when mouse over prop image in wall form prop selector
+	$('.wf_prop_choice').hover( function() {
+		$(this).siblings('div').children('a').addClass('hover');
+		$(this).addClass('hover');
+	}, function() {
+		$(this).siblings('div').children('a').removeClass('hover');
+		$(this).removeClass('hover');
+	});
+	$('.wf_prop_choice').siblings('div').children('a').hover (function() {
+		$(this).parent().siblings('img').addClass('hover');
+	}, function() {
+		$(this).parent().siblings('img').removeClass('hover');
+	});	
+	
+	// On the search results page, this is the toggle ability.
+	$('#search-results .section-heading').click( function() {
+		$(this).parent().toggleClass('open').toggleClass('closed');
+		$(this).next().slideToggle();
+	}).parent().addClass('open');
+	
+	// The "Filter by Keyword" button on the photo gallery page.
+	$('div.keywords').hover( function(){}, function() {
+		$(this).removeClass('open');
+	}).children('span').hover( function() {
+		$(this).parent().addClass('open');
+	}, function() {});
+	
+	
+	// These two sections are for toggling between the image and video sections of that dropdown. It's flexible enough so you can build your own combo dropdowns if you'd like.
+	$('.input-dropdown .popup').each( function() {
+		if( $(this).children('div').length > 1 ) {
+			$(this).children('div').hide().first().show();
+			$ul = $('<ul class="controls list cf" />').prependTo( $(this) );
+			$(this).children('div').each( function() {
+				$('<a href="#" class="nc ir" />').appendTo( $ul ).wrap('<li />').addClass( $(this).attr('class') ).attr('rel', $(this).attr('class') );
+			});
+			
+			$ul.children().first().addClass('active');
+		}
+	});
+	
+	$('.input-dropdown .controls a', this).live('click', function() {
+		div = $(this).attr('rel');
+		$(this).parent().addClass('active').siblings().removeClass('active');
+		$(this).parent().parent().parent().children('div.'+div).show().siblings('div').hide();
+	});
+	
+	// This adds the styling for when a smiley is selected in the smiley dropdown.
+	$('.input-dropdown .smileys li').click( function() {
+		$(this).toggleClass('active').siblings('.active').removeClass('active');
+	});
+	
+	// This is for the link page. The input that says Copy this link's URL. If you click on it, the text gets selected for easy copying.
+	$('input.select').click( function() {
+		$(this).select();
+	});
+	
+	// This adds new inputs to the New Pick module.
+	$('#new-pick a.more-answers').click( function() {
+		$(this).siblings('div.input').last().clone()
+			.find('input[type=text],input[type=file]').val('').end()
+			.find('.input-dropdown').hoverIntent({
+				over: function() {
+						$(this).addClass('hover');
+					}, 
+				timeout: 250,
+				out: function() {
+					$(this).removeClass('hover');
+					}
+			}).end()
+			.insertBefore( this );
+	});
+	
+	// For the View Photo modal, if editable, this makes sure the text input adjusts to fit the width of the image.
+	$('.view-photo-module').each( function() {
+		$(this).parent().show();
+		
+		if( $.browser.msie && $.browser.version.substr(0,1) <= 7 ) {
+			$('input[type=text]', this).width( $('img',this).width() - 143 );
+		}else {
+			$('input[type=text]', this).width( $('img',this).width() - 124 );
+		}
+		
+		$(this).parent().width( $('img',this).width() ).hide();
+	});
+
+/*	
+	// For the search hints to show up.
+	$('#search input').keypress( function() {
+		$('#search ul').css('left', 0 ).hide().fadeIn('fast');
+	}).blur( function() {
+		$('#search ul').fadeOut('fast', function(){
+			$(this).css('left', "-999em" );
+		});
+	});
+*/
+
+	// Modal-alert is the little popup in the bottom right corner. In the PSD it was notifying the user that they received a new badge.
+	if( $('.modal-alert').length > 0 ) {
+		if( $('#lean_overlay').length == 0 ) {
+			$('body').append('<div id="lean_overlay"></div>');
+		}
+		$('#lean_overlay').fadeTo('fast','.5');
+		$('.modal-alert').fadeIn();
+		
+		$('.modal-alert .close, #lean_overlay').click( function() {
+			$('#lean_overlay, .modal-alert').fadeOut();
+		});
+	}
+	
+	// Adding functionality to the modals to close them.
+	$('.module-close').click( function() {
+		$('#lean_overlay').fadeOut();
+		$(this).parent().parent().fadeOut();
+	});
+	
+	// These two sections are for the little floating callout on the left side of the screen.
+	$('#popout .open').click( function() {
+		$(this).hide();
+		$('#popout').css('left', -$('#popout .module').show().width() ).animate({
+			'left': 0
+		});
+	});
+	
+	$('#popout .close').click( function() {
+		$('#popout').animate({
+			'left': -$('#popout .module').width()
+		}, function() {
+			$(this).css('left', 0)
+				.find('.module').hide().end()
+				.find('.open').show();
+		});
+	});
+	
+	// The read more buttons in the FAQ pages
+	$('.faq dt span').click( function() {
+		$target = $(this).parent().next();
+		if( $target.is('dd') ) {
+			$target.children().slideToggle('fast');
+			if( $(this).text() == "Read More" ) {
+				$(this).text('Read Less');
+			}else if ( $(this).text() == "Read Less") {
+				$(this).text('Read More');
+			}
+		}
+	});
+	
+	// To make sure all the bios are the same height.
+	$('#about ul.bio li').equalHeights();
+	
+	// On the homepage, this is the news slideshow. The slider is using a plugin and is in plugins.js. This bit is just for clicking on the thumbnails and the top image changing.
+	$('#home-content .controls a').click( function() {
+		finalIndex = ($(this).index() +1) + ( $(this).parent().index() * 5 ) - 1;
+		$('#home-content .main li').eq( finalIndex ).addClass('active').hide().fadeIn().siblings('.active').removeClass('active').show().fadeOut();
+		$('a.active', $(this).parent().parent() ).removeClass('active');
+		$(this).addClass('active');
+	});
+	
+	/* auto-resize textarea box for comments and forum replies - run once on keypress for response prior to character display; run again on keyup for accuracy */
+	$('.reply_form .reply_ta').keypress( function(e) {
+		key_pressed = (typeof e.which == "number") ? e.which : e.keyCode;
+		if (key_pressed != 13) {
+			form_value = $(this).val() + String.fromCharCode(key_pressed);
+		} else {
+			form_value = $(this).val() + "<br />";
+		}
+		form_value = form_value.replace(/[\n]/g, "<br />");
+		form_value = form_value.replace(/[\r]/g, "");
+		form_value = form_value.replace(/<br \/>$/, "<br /> ");
+		if (form_value == "") { form_value = " "; }
+		$(this).parent().siblings('.reply_hta').html(form_value);
+		$(this).height($(this).parent().siblings('.reply_hta').height());
+	});
+	$('.reply_form .reply_ta').keyup( function() {
+		form_value = $(this).val();
+		form_value = form_value.replace(/[\n]/g, "<br />");
+		form_value = form_value.replace(/[\r]/g, "");
+		form_value = form_value.replace(/<br \/>$/, "<br /> ");
+		if (form_value == "") { form_value = " "; }
+		$(this).parent().siblings('.reply_hta').html(form_value);
+		$(this).height($(this).parent().siblings('.reply_hta').height());
+	});
+	
+	// Script to hide ad-unit when nav dropdown is open
+	$('nav .dropdown').hover( function() {
+		$('#adunit_1').css('left', '-9999em').css('position', 'absolute');
+	}, function () {
+		$('#adunit_1').css('position', 'static').css('left', '');
+	});
+	
+	// Script to expand solve media when a username is added
+	$('#LoginBox input#user_email').keyup( function() {
+			if ($('#LoginBox #login_captcha').css('display')=='none' && $('#LoginBox #submissiontype').val()=="register") {
+				$('#LoginBox #login_captcha').slideToggle('slow');
+			}
+	});
+	
+	// The text gradient. It's buggy in IE7.
+	if( !$.browser.msie || $.browser.version.substr(0,1) > 7 ) {
+		rainbows.init({
+			selector: '.text-shadow',
+			highlight: true,
+			shadow: false,
+			from: '#ffffff',
+			to: '#999999'
+		});
+	}
+	
+	// Javascript to fix CSS browser support in IE
+	if( $.browser.msie ) {
+		if( $.browser.version.substr(0,1) <= 7 ) {
+			$('.club-controls td:last-child').addClass('last-child');
+		}
+		if( $.browser.version.substr(0,1) <= 8 ) {
+			$('div#my-updates .updates ul:even').addClass('even');
+		}
+	}
+});
+
+jQuery.fn.equalHeights = function(minHeight, maxHeight) {
+	tallest = (minHeight) ? minHeight : 0;
+	this.each(function() {
+		if($(this).height() > tallest) {
+			tallest = $(this).height();
+		}
+	});
+	if((maxHeight) && tallest > maxHeight) tallest = maxHeight;
+	return this.each(function() {
+		$(this).height(tallest+5);
+	});
+}
+
+function classExists(c) {
+    return typeof(c) == "function" && typeof(c.prototype) == "object" ? true : false;
+} 

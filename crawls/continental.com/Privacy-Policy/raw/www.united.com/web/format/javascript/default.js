@@ -1,16 +1,16 @@
-﻿startList=function(){
-	if (document.all&&document.getElementById){
-		var i,navRoot=document.getElementById("nav");
-		if(navRoot!=null){
-			for(i=0;i<navRoot.childNodes.length;i++){
-				var node=navRoot.childNodes[i];
-				if(node.nodeName=="LI"){
-					node.onmouseover=function(){this.className+=" over";}
-					node.onmouseout=function(){this.className=this.className.replace(" over","");}
-				}
-			}
-		}
-	}
+﻿startList = function () {
+    if (document.all && document.getElementById) {
+        var i, navRoot = document.getElementById("nav");
+        if (navRoot != null) {
+            for (i = 0; i < navRoot.childNodes.length; i++) {
+                var node = navRoot.childNodes[i];
+                if (node.nodeName == "LI") {
+                    node.onmouseover = function () { this.className += " over"; }
+                    node.onmouseout = function () { this.className = this.className.replace(" over", ""); }
+                }
+            }
+        }
+    }
 }
 window.onload = startList; setCookie("ctest", "1");
 
@@ -601,7 +601,7 @@ if(gblnAbandonPopUp & gblnInvokeAbandon){
 		strSID=document.forms[0].hdnSID.value;
 	}
 	if (gstrLangCode!="es" && gstrLangCode!="de-DE" && gstrLangCode!="ja-JP" && gstrLangCode!="zh-CN" && gstrLangCode!="fr" && gstrLangCode!="pt" && gstrLangCode!="en-US"){gstrLangCode="en-US";}
-	var strURL="/web/"+gstrLangCode+"/apps/booking/flight/call.aspx?SID="+strSID+"&ConfNum="+gstrConfNum+"&LangCode="+gstrLangCode;
+	var strURL="/web/"+gstrLangCode+"/apps/booking/flight/call.aspx?ConfNum="+gstrConfNum+"&LangCode="+gstrLangCode;
 	window.open(strURL,"CallCO","toolbar=0,status=0,menubar=0,location=0,scrollbars=0,resizable=1,width=500,height=300,top=50,left=50");
 	}
 }
@@ -786,14 +786,22 @@ function SetItemByValue(objItem,arrValues,listId,arrIdValues,removeItem){
 		}
 	}
 }
-verbiageChange = function () {
-	if (window.location.href.toLowerCase().indexOf("/apps/reservation/default.aspx") > -1
-			|| window.location.href.toLowerCase().indexOf("/apps/reservation/import.aspx") > -1) {
-		var oc = document.getElementById("ctl00_ContentInfo_FindRes_div1");
-		if (oc) {
-			oc.innerHTML = oc.innerHTML.replace("1-800-396-1751", "1-800-UNITED-1 (1-800-864-8331)")
-			oc.innerHTML = oc.innerHTML.replace("1-800-296-1751", "1-800-UNITED-1 (1-800-864-8331)")
-		}
+AddEventHandlerElement(window, 'load', function () {
+if (typeof Sys != "undefined" && typeof Sys.Browser != "undefined") {
+	Sys.Browser.WebKit = {};
+	if (navigator.userAgent.indexOf('WebKit/') > -1) {
+		Sys.Browser.agent = Sys.Browser.WebKit;
 	}
 }
-AddEventHandlerElement(window, 'load', verbiageChange);
+});
+AddEventHandlerElement(window, 'load', function () {
+	if (new Date() < new Date(2012, 9, 10) && window.location.href.toLowerCase().indexOf("/web/en-us/") > -1 && GetValue("hdnPOS").toLowerCase() == "us") {
+		var oFooter = document.getElementById("footer");
+		var oLnkFull = document.getElementById("ctl00_CustomerFooter_lnkFull");
+		if (oFooter && !oLnkFull) {
+			var oDiv = document.createElement("div");
+			oDiv.innerHTML = '<a href="http://ad.doubleclick.net/clk;259900089;84124210;d" target="_blank"><img src="/web/format/img/footer/logo-usa-rings-tag-2012.gif" width="276" height="43" style="margin-bottom:-.3333em" alt="Proud to fly Team USA for over 30 years."/></a>';
+			oFooter.insertBefore(oDiv, oFooter.childNodes[0]);
+		}
+	}
+});

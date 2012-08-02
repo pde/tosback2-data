@@ -22,7 +22,9 @@
         $('#textArea').removeClass(); $('#textArea').addClass('copyLarge'); $.cookie("fontSize", "large");
     });
     //alert( $.cookie("fontSize") );			
-    if ($.cookie('fontSize') == 'normal') {
+    if ($.cookie('fontSize') == null) {
+        $('.fontSizer a').removeClass('active'); $('.fontSizer a.smlFont').addClass('active'); $('#textArea').addClass('copyNormal');
+    } else if ($.cookie('fontSize') == 'normal') {
         $('.fontSizer a').removeClass('active'); $('.fontSizer a.smlFont').addClass('active'); $('#textArea').addClass('copyNormal');
     } else if ($.cookie('fontSize') == 'medium') {
         $('.fontSizer a').removeClass('active'); $('.fontSizer a.medFont').addClass('active'); $('#textArea').addClass('copyMedium');

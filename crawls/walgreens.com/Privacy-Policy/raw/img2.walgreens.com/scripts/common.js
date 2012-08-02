@@ -141,16 +141,16 @@ function initializeZIP(){
     });
 }
 $(document).ready(function(){
-	
+	if($.browser.msie){$('.pharmacy_ab, .photo_ab').corner('top')};	
     //Eternal Links
 	if($('#query')) {
 		var winloc = window.location+'';
 		var showtext = '';
 		if(winloc.indexOf('webpickup')!=-1)showtext = 'Search your local store'; 
-		else showtext = 'Search Site';
+		else showtext = 'Enter keyword or item #';
 		if($('#query').val()=='') {
 			$('#query').val(showtext);
-			$('#query').attr('style','color:#6b747c');
+			$('#query').attr('style','color:#898989');
 			pht=1;
 		}
 		if($("#search_block").length){			
@@ -178,7 +178,7 @@ $(document).ready(function(){
 					$('#query').val('');
 					$('#query').attr('style','color:#464646');
 					pht=0;
-					}
+				}
 			}
 		});
 		$('#query').keydown(function(){
@@ -197,7 +197,7 @@ $(document).ready(function(){
 				}
 			}
 		});
-		$('#query').blur(function(){			
+		$('#query').blur(function(){
 			if(mobileSiteSearch == 'true'){
 				if ($("#query").val() == '') {
 					$("#query").animate( {
@@ -209,11 +209,10 @@ $(document).ready(function(){
 					$('#query').val(showtext);
 					return false;
 				}
-			}
-			else {
+			} else {
 				if($('#query').val()=='') {
 					$('#query').val(showtext);
-					$('#query').attr('style','color:#6b747c');
+					$('#query').attr('style','color:#898989');
 					pht=1;
 				}
 			}
@@ -590,8 +589,10 @@ function QuickLook(el){
                 width: '107px'
             }
         })
+        var pageURL = '/store/browse/overlays/quick_view_details.jsp';
+        if(document.location.href.indexOf('/iso')!=-1) pageURL = '/iso/product/quick_look_iso.jsp';
         var quickLook = $('<a/>', {
-            href: '/store/browse/overlays/quick_view_details.jsp' + qs,
+            href: pageURL + qs,
             'class': 'quick-look-trigger mb vpdmb',
             alt: 'Quick Look - Opens a simulated dialog',
             title: 'Quick Look - Opens a simulated dialog',
@@ -880,13 +881,13 @@ function trim(s){
 var cartItem = 0;
 var loginStat = false;
 function getSessionTimeoutCookieInfo(){
-    var nameLOGIN = "ACO_LOGIN" + "=";
+    var nameLOGIN = "ACO_LOGIN" + "=true";
     
     var cks = document.cookie.split(';');
     for (var i = 0; i < cks.length && (!loginStat); i++) {
         var c = trim(cks[i]);
         if (c.indexOf(nameLOGIN) == 0) {
-            loginStat = c.substring(nameLOGIN.length, c.length);
+            loginStat = true;
         }
     }
 }
@@ -1185,29 +1186,49 @@ $(document).ready(function () {
 	/* Search box auto-complete */
 	$('<ul/>',{'id':'searchResultsBox'}).appendTo('#termAutoComp'); 
 	var currentSearchResults = '';
+	var submit_url;
+	var iso_page=String(document.getElementById("iso_page"));
 	var listCount;
 	var $searchBox = $('#termAutoComp input.textfield');
 	$searchBox.data('oldVal', $searchBox);
 	$searchBox.bind('propertychange keyup input paste', function(e){
 		var currentSearchValue = $searchBox.val();
+		
+		if(iso_page==''||iso_page=='null'||iso_page=='undefined') 
+		{
+			submit_url='/marketing/termsearch/termquery.html?query='+currentSearchValue;  
+		}
+		else
+		{
+			submit_url='/marketing/termsearch/termquery.html?query='+currentSearchValue+"&iso_flag="+"isoheadersearch";
+		}
 		if ($searchBox.data('oldVal') != currentSearchValue) {
 			$searchBox.data('oldVal', currentSearchValue);
 			if(currentSearchValue.length >= 3){
 				$.ajax({
-					url:'/marketing/termsearch/termquery.html?query='+currentSearchValue,
+					url:submit_url,
 					dataType:'json',
 					error:function(){$('#searchResultsBox').empty().hide();currentSearchResults='';},
 					success:function(data) {
 						var numberOfResults = (data.ResultSet.totalResultsAvailable);
-						
+						var isISo='no';
 						if(numberOfResults>=1){
 							$('#searchResultsBox').empty();
 							currentSearchResults='';
 							listCount=0;
-							if (numberOfResults >10){numberOfResults=12;}
+							if (numberOfResults >10){
+								if(data.ResultSet.Result[2].Term.toLowerCase().indexOf('/iso')!=-1){
+									isISo='yes';
+								}
+								numberOfResults=12;
+								}
 							for(x=0;x<=numberOfResults-1;x++){
-								var resultTerm = data.ResultSet.Result[x].Term;
-								
+								/*
+								 * This line verifies the resultSet Array object is null or not.
+								 * If not null then only this will populate the sugesstions with relevant URLs
+								 */
+								if(data.ResultSet.Result[x]!=null){
+								var resultTerm = data.ResultSet.Result[x].Term;								
 								if(resultTerm.toLowerCase().indexOf('<a')!=-1){
 									currentSearchResults += '<li class="categories" style="font-size:12px">' + resultTerm + '</li>';
 								} else {
@@ -1215,15 +1236,27 @@ $(document).ready(function () {
 										currentSearchResults += '<li style="font-size:12px"><a href="javascript:void(0)">' + resultTerm + '</a></li>';
 									} else {
 										var loc = window.location+'';
+										
 										if(loc.indexOf('webpickup')!=-1) {
 											var resultText = resultTerm.replace(currentSearchValue,'<b>' + currentSearchValue + '</b>');
 											currentSearchResults += '<li style="font-size:12px"><a href="/webpickup/browse/search_results.jsp?Ntt=' + resultTerm + '">' + resultText + '</a></li>';
-										} else {
+										}
+										else if(loc.indexOf('iso')!=-1) {
+											var resultText = resultTerm.replace(currentSearchValue,'<b>' + currentSearchValue + '</b>');
+											if(isISo=='yes'){
+												currentSearchResults += '<li style="font-size:12px"><a href="/iso/search/results.jsp?Ntt=' + resultTerm + '">' + resultText + '</a></li>';
+											}
+											else{
+												currentSearchResults += '<li style="font-size:12px"><a href="/search/results.jsp?Ntt=' + resultTerm + '">' + resultText + '</a></li>';
+											}												
+										}
+										else {
 											var resultText = resultTerm.replace(currentSearchValue,'<b>' + currentSearchValue + '</b>');
 											currentSearchResults += '<li style="font-size:12px"><a href="/search/results.jsp?Ntt=' + resultTerm + '">' + resultText + '</a></li>';
-										}									}
+										}
+									}
 								}
-								
+								}
 							}
 							if($('#searchResultsBox').is(':hidden')){$('#searchResultsBox').show()}
 							$('#searchResultsBox').html(currentSearchResults);
@@ -1352,7 +1385,7 @@ $(document).ready(function () {
 	$(".mb").wOverlay();
 	
 	$('#frmHeaderSearch').submit(function() {
-		if ($('#query').val() == 'Search Site' || $('#query').val() == 'Search your local store'){
+		if ($('#query').val() == 'Enter keyword or item #' || $('#query').val() == 'Search your local store'){
 			$('#query').val('');
 		}
 		  return true;
@@ -1390,7 +1423,395 @@ $(document).ready(function () {
 			parent.location.href=$('#back-clickView')[0].href;
 			self.window.close();
 		});
-	}	
+	}
+	
+	
+	/*type ahead in drug search page begins*/
+	$('<ul/>',{'id':'searchResultsBox_new'}).appendTo('#termAutoComp1'); 
+	var currentSearchResults = '';
+	var listCount;
+	var $searchBox_new = $('#termAutoComp1 input.textfield');
+	$searchBox_new.data('oldVal', $searchBox_new);
+	$searchBox_new.bind('propertychange keyup input paste', function(e){
+		var currentSearchValue = $searchBox_new.val();
+				
+		if ($searchBox_new.data('oldVal') != currentSearchValue) {
+			$searchBox_new.data('oldVal', currentSearchValue);
+			if(currentSearchValue.length >= 3){
+				
+				
+				var testFlag="drug";
+				$.ajax({
+					url:'/marketing/termsearch/termquery.html?query='+currentSearchValue+"&pharmacy_flag="+"testFlag",
+					dataType:'json',
+					error:function(){$('#searchResultsBox_new').empty().hide();currentSearchResults='';},
+					success:function(data) {
+						var numberOfResults = (data.ResultSet.totalResultsAvailable);
+						
+						if(numberOfResults>=1){
+							$('#searchResultsBox_new').empty();
+							currentSearchResults='';
+							listCount=0;
+							if (numberOfResults >10){numberOfResults=12;}
+							for(x=0;x<=numberOfResults-1;x++){
+								/*
+								 * This line verifies the resultSet Array object is null or not.
+								 * If not null then only this will populate the sugesstions with relevant URLs
+								 */
+								if(data.ResultSet.Result[x]!=null){
+								var resultTerm = data.ResultSet.Result[x].Term;								
+								if(resultTerm.toLowerCase().indexOf('<a')!=-1){
+									currentSearchResults += '<li class="categories" style="font-size:12px">' + resultTerm + '</li>';
+								} else {
+									if(resultTerm.toLowerCase().indexOf('categories')!=-1){
+										currentSearchResults += '<li style="font-size:12px"><a href="javascript:void(0)">' + resultTerm + '</a></li>';
+									} else {
+										var loc = window.location+'';
+										
+										if(loc.indexOf('webpickup')!=-1) {
+											var resultText = resultTerm.replace(currentSearchValue,'<b>' + currentSearchValue + '</b>');
+											currentSearchResults += '<li style="font-size:12px"><a href="/marketing/library/finddrug/search/search_results_drug.jsp?term=' + resultTerm + '">' + resultText + '</a></li>';
+										}
+										else if(loc.indexOf('iso')!=-1) {
+											var resultText = resultTerm.replace(currentSearchValue,'<b>' + currentSearchValue + '</b>');
+											currentSearchResults += '<li style="font-size:12px"><a href="/iso/search/results.jsp?Ntt=' + resultTerm + '">' + resultText + '</a></li>';
+										}
+										else {
+											var resultText = resultTerm.replace(currentSearchValue,'<b>' + currentSearchValue + '</b>');
+											currentSearchResults += '<li style="font-size:12px"><a href="/marketing/library/finddrug/search/search_results_drug.jsp?term=' + resultTerm + '">' + resultText + '</a></li>';
+										}
+									}
+								}
+								}
+							}
+							if($('#searchResultsBox_new').is(':hidden')){$('#searchResultsBox_new').show()} 
+							$('#searchResultsBox_new').html(currentSearchResults);
+						} else {$('#searchResultsBox_new').empty().hide();currentSearchResults='';}
+					}
+				});
+				
+			} else {$('#searchResultsBox_new').empty().hide();currentSearchResults='';} 
+	  	}
+	});
+
+	$('#searchResultsBox_new').width(250); //Set the width of the suggestion box
+
+	$searchBox_new.keydown(function(e){
+		switch(e.which){
+			case 40: // down arrow
+				e.preventDefault();
+				//if($('#searchResultsBox_new').is(':hidden')){$('#searchResultsBox_new').show();}
+				$('#searchResultsBox_new a:first').focus();					
+				$('#searchResultsBox_new li:first').addClass('autocompleter-selected');
+				
+				break;
+			case 38: // up arrow
+				e.preventDefault();
+				$('#searchResultsBox_new').hide();currentSearchResults='';
+				break;
+			case 27: // escape key
+				$('#searchResultsBox_new').hide();currentSearchResults='';
+				break;
+		}
+	});
+
+	$('#searchResultsBox_new li').live('hover',function(){			
+	if($('#searchResultsBox_new li').hasClass('autocompleter-selected')){
+		$('#searchResultsBox_new li').removeClass('autocompleter-selected');
+		$('#searchResultsBox_new li a').blur();  
+	}
+	});
+
+	$('#searchResultsBox_new li').live('click',function(){
+	$searchBox_new.data('oldVal',$(this).text());
+	$searchBox_new.val($(this).children('a').text());
+	location.href=$(this).children('a').attr("href");
+	
+	});	
+	$('#searchResultsBox_new a').live('focus',function(){
+	$searchBox_new.data('oldVal',$(this).text());
+
+	if($.trim($(this).text()) == "SUGGESTED CATEGORIES")
+	{
+		$searchBox_new.val($('#searchResultsBox_new li:first').text());		
+	}
+	else
+	{
+		$searchBox_new.val($(this).text());
+	}
+
+
+	});
+
+	$('#searchResultsBox_new a').live('keydown',function(e){
+	switch(e.which){
+		case 40: // down arrow 
+			e.preventDefault();
+			if($(this).parent().not(':last-child')){
+				$(this).parent().next().children('a').focus();
+				listCount++;
+				if(listCount > $('#searchResultsBox_new li').size()-1){
+					listCount = $('#searchResultsBox_new li').size()-1;
+				}
+				
+				$('#searchResultsBox_new li').eq(listCount).prevAll().removeClass('autocompleter-selected');
+				$('#searchResultsBox_new li').eq(listCount).addClass('autocompleter-selected');
+				
+			}
+			break;
+		case 38: // up arrow
+			e.preventDefault();
+			if($(this).parent().is(':first-child')){
+				$('#searchResultsBox_new').hide();currentSearchResults='';
+				$searchBox_new.focus();
+			} else {
+				
+				listCount--;
+				$(this).parent().prev().children('a').focus();
+				$('#searchResultsBox_new li').eq(listCount).nextAll().removeClass('autocompleter-selected');
+				$('#searchResultsBox_new li').eq(listCount).addClass('autocompleter-selected');
+			}
+			break;
+		case 27: // escape key
+			$('#searchResultsBox_new').empty().hide();currentSearchResults='';
+			$searchBox_new.focus();
+		break;
+	}
+	});
+	/*$('#searchResultsBox_new a').live('hover',function(e){
+
+	$("#finddrug").val($(this).text());
+
+	});*/
+
+	$(document).click(function(event) {
+		if ($(event.target).closest('#searchResultsBox_new').get(0) == null) {
+		$('#searchResultsBox_new').hide();currentSearchResults='';
+	}
+	});
+			
+	
+	/*type ahead in drug search page ends*/
+	
+	
+	$('input.prescriptionNameFld').keydown(function(){
+		//alert('in');
+		var pres_id = this.id;
+		var toRemove = 'prescriptionName';
+		var toAdd = '#termAutoComp_transfer';
+		var count = pres_id.replace(toRemove,'');
+		var pres_id = pres_id.replace(toRemove,toAdd);
+		//var presc_id = "'"+pres_id+"'";
+		//alert(pres_id);
+		$(pres_id).css("position","relative");
+		if(!($('#searchResultsBox_transfer'+count).length)){
+			$('<ul/>',{'id':'searchResultsBox_transfer'+count,'class':'searchResultsBox_transfer'}).appendTo(pres_id); 
+		}
+		var currentSearchResults = '';
+		var listCount;
+		var input_pres_id = pres_id+" input.textfield";
+		//alert(input_pres_id);
+		var $searchBox_new_transfer = $(input_pres_id);
+		$searchBox_new_transfer.data('oldVal', $searchBox_new_transfer);
+		$searchBox_new_transfer.bind('keyup input paste', function(){
+			var currentSearchValue = $searchBox_new_transfer.val();
+			if ($searchBox_new_transfer.data('oldVal') != currentSearchValue) {
+				$searchBox_new_transfer.data('oldVal', currentSearchValue);
+				if(currentSearchValue.length >= 3){
+					var testFlag="drug";
+					$.ajax({
+						url:'/marketing/termsearch/termquery.html?query='+currentSearchValue+"&pharmacy_flag="+"testFlag",
+						dataType:'json',
+						error:function(){$('#searchResultsBox_transfer'+count).empty().hide();currentSearchResults='';},
+						success:function(data) {
+							var numberOfResults = (data.ResultSet.totalResultsAvailable);
+							//alert(numberOfResults);
+							if(numberOfResults>=1){
+								$('#searchResultsBox_transfer'+count).empty();
+								currentSearchResults='';
+								listCount=0;
+								if (numberOfResults >10){numberOfResults=12;}
+								for(x=0;x<=numberOfResults-1;x++){
+									/*
+									 * This line verifies the resultSet Array object is null or not.
+									 * If not null then only this will populate the sugesstions with relevant URLs
+									 */
+									if(data.ResultSet.Result[x]!=null){
+									
+									var resultTerm = data.ResultSet.Result[x].Term;								
+									if(resultTerm.toLowerCase().indexOf('<a')!=-1){
+										
+										currentSearchResults += '<li class="categories" style="font-size:12px">' + resultTerm + '</li>';
+										
+									} else {
+										if(resultTerm.toLowerCase().indexOf('categories')!=-1){
+											currentSearchResults += '<li style="font-size:12px"><a href="javascript:void(0)">' + resultTerm + '</a></li>';
+											currentSearchResults
+										} else {
+											var loc = window.location+'';
+											
+											if(loc.indexOf('webpickup')!=-1) {
+											
+												var resultText = resultTerm.replace(currentSearchValue,'<b>' + currentSearchValue + '</b>');
+												currentSearchResults += '<li style="font-size:12px"><a href="javascript:void(0)">' + resultText + '</a></li>';
+											}
+											else if(loc.indexOf('iso')!=-1) {
+												
+												var resultText = resultTerm.replace(currentSearchValue,'<b>' + currentSearchValue + '</b>');
+												currentSearchResults += '<li style="font-size:12px"><a href="javascript:void(0)">' + resultText + '</a></li>';
+											}
+											else {
+												
+												var resultText = resultTerm.replace(currentSearchValue,'<b>' + currentSearchValue + '</b>');
+												
+												currentSearchResults += '<li style="font-size:12px"><a href="javascript:void(0)">' + resultText + '</a></li>';
+											}
+										}
+									}
+									}
+								}
+								if($('#searchResultsBox_transfer'+count).is(':hidden')){$('#searchResultsBox_transfer'+count).show()} 
+								$('#searchResultsBox_transfer'+count).html(currentSearchResults);
+							} else {$('#searchResultsBox_transfer'+count).empty().hide();currentSearchResults='';}
+						}
+					});
+					
+				} else {$('#searchResultsBox_transfer'+count).empty().hide();currentSearchResults='';} 
+		  	}
+		});
+
+		$('#searchResultsBox_transfer'+count).width(250); //Set the width of the suggestion box
+
+		$searchBox_new_transfer.keydown(function(e){
+			switch(e.which){
+				case 40: // down arrow
+					e.preventDefault();
+					//if($('#searchResultsBox_transfer').is(':hidden')){$('#searchResultsBox_transfer').show();}
+					$('#searchResultsBox_transfer'+count+' a:first').focus();					
+					$('#searchResultsBox_transfer'+count+' li:first').addClass('autocompleter-selected');
+					
+					break;
+				case 38: // up arrow
+					e.preventDefault();
+					$('#searchResultsBox_transfer'+count).hide();currentSearchResults='';
+					break;
+				case 27: // escape key
+					$('#searchResultsBox_transfer'+count).hide();currentSearchResults='';
+					$(pres_id).css("position","");
+					break;
+			}
+		});
+
+		/*$('#searchResultsBox_transfer'+count+' li').live('hover',function(){			
+		if($('#searchResultsBox_transfer'+count+' li').hasClass('autocompleter-selected')){
+			$('#searchResultsBox_transfer'+count+' li').removeClass('autocompleter-selected');
+			$('#searchResultsBox_transfer'+count+' a').blur();  
+			
+		}
+		$("#termAutoComp_transfer"+count+" > #prescriptionName"+count).attr("value",$(this).text());
+		
+		});*/
+		
+		$("#searchResultsBox_transfer"+count+" li").live('mouseover mouseout',function(event) {
+			if (event.type == 'mouseover') {
+				if($('#searchResultsBox_transfer'+count+' li').hasClass('autocompleter-selected')){
+					$('#searchResultsBox_transfer'+count+' li').removeClass('autocompleter-selected');
+					$('#searchResultsBox_transfer'+count+' a').blur();
+				}
+				$(this).children('a').focus();
+			  } else {
+				  $("#prescriptionName"+count).focus();
+			  }
+		});
+
+		$('#searchResultsBox_transfer'+count+' li').live('click',function(){
+		$searchBox_new_transfer.data('oldVal',$(this).text());
+		//$("#termAutoComp_transfer > #prescriptionName1").attr("value",$(this).text());
+		
+		$searchBox_new_transfer.val($(this).children('a').text());
+		//$("#prescriptionName1").val($(this).text());
+		$('#searchResultsBox_transfer'+count).hide();
+		$(pres_id).css("position","");
+		});	
+		
+		
+		$('#searchResultsBox_transfer'+count+' a').live('focus',function(){
+		$searchBox_new_transfer.data('oldVal',$(this).text());
+
+		if($.trim($(this).text()) == "SUGGESTED CATEGORIES")
+		{
+			$searchBox_new_transfer.val($('#searchResultsBox_transfer'+count+' li:first').text());		
+		}
+		else
+		{
+			$searchBox_new_transfer.val($(this).text());
+		}
+
+
+		});
+
+		$('#searchResultsBox_transfer'+count+' a').live('keydown',function(e){
+		switch(e.which){
+			case 40: // down arrow 
+				e.preventDefault();
+				if($(this).parent().not(':last-child')){
+					$(this).parent().next().children('a').focus();
+					listCount++;
+					if(listCount > $('#searchResultsBox_transfer'+count+' li').size()-1){
+						listCount = $('#searchResultsBox_transfer'+count+' li').size()-1;
+					}
+					
+					$('#searchResultsBox_transfer'+count+' li').eq(listCount).prevAll().removeClass('autocompleter-selected');
+					$('#searchResultsBox_transfer'+count+' li').eq(listCount).addClass('autocompleter-selected');
+					
+				}
+				break;
+			case 38: // up arrow
+				e.preventDefault();
+				if($(this).parent().is(':first-child')){
+					$('#searchResultsBox_transfer'+count).hide();currentSearchResults='';
+					$searchBox_new_transfer.focus();
+				} else {
+					
+					listCount--;
+					$(this).parent().prev().children('a').focus();
+					$('#searchResultsBox_transfer'+count+' li').eq(listCount).nextAll().removeClass('autocompleter-selected');
+					$('#searchResultsBox_transfer'+count+' li').eq(listCount).addClass('autocompleter-selected');
+				}
+				break;
+			case 27: // escape key
+				$('#searchResultsBox_transfer'+count).empty().hide();currentSearchResults='';
+				$searchBox_new_transfer.focus();
+				$(pres_id).css("position","");
+			break;
+		}
+		});
+		//$('#searchResultsBox_transfer'+count+' a').live('hover',function(e){
+
+		//$("#prescriptionName"+count).val($(this).text());
+
+		//});
+
+		$(document).click(function(event) {
+			if ($(event.target).closest('#searchResultsBox_transfer'+count).get(0) == null) {
+			$('#searchResultsBox_transfer'+count).hide();currentSearchResults='';
+			$(pres_id).css("position","");
+		}
+		});
+		
+	});
+	
+	
+	/* type ahead implementation in transfer prescription page ends */
+	
+	
+	
+	/* type ahead implementation in transfer prescription page ends */
+
+	
+	
+	
+	
 });
 //Tab implementation
 	$().ready(function() {
@@ -1526,3 +1947,4 @@ function calcTextLimit(obj, maxCount, showCount){
 	else { document.getElementById("msg").style.color='Red';
 		document.getElementById("myCounter").style.color='Red'; }
 }
+(function(a){function l(a,b,c){switch(a){case"round":return Math.round(c*(1-Math.cos(Math.asin(b/c))))}}function k(b){while(b){var c=a.css(b,"backgroundColor"),d;if(c&&c!="transparent"&&c!="rgba(0, 0, 0, 0)"){if(c.indexOf("rgb")>=0){d=c.match(/\d+/g);return"#"+j(d[0])+j(d[1])+j(d[2])}return c}if(b.nodeName.toLowerCase()=="html")break;b=b.parentNode}return"#ffffff"}var b=document.createElement("div").style,c=b["MozBorderRadius"]!==undefined,d=b["WebkitBorderRadius"]!==undefined,e=b["borderRadius"]!==undefined||b["BorderRadius"]!==undefined,f=document.documentMode||0,g=a.browser.msie&&(a.browser.version<8&&!f||f<8),h=a.browser.msie&&function(){var a=document.createElement("div");try{a.style.setExpression("width","0+0");a.style.removeExpression("width")}catch(b){return false}return true}();a.support=a.support||{};a.support.borderRadius=c||d||e;a.fn.corner=function(b){if(this.length==0){if(!a.isReady&&this.selector){var f=this.selector,j=this.context;a(function(){a(f,j).corner(b)})}return this}return this.each(function(f){var j=a(this),m=[j.attr(a.fn.corner.defaults.metaAttr)||"",b||""].join(" ").toLowerCase(),n=/keep/.test(m),o=(m.match(/cc:(#[0-9a-f]+)/)||[])[1],p=(m.match(/sc:(#[0-9a-f]+)/)||[])[1],q=parseInt((m.match(/(\d+)px/)||[])[1])||10,r=/round|bevelfold|bevel|notch|bite|cool|sharp|slide|jut|curl|tear|fray|wicked|sculpt|long|dog3|dog2|dogfold|dog|invsteep|steep/,s=(m.match(r)||["round"])[0],t=/dogfold|bevelfold/.test(m),u={T:0,B:1},v={TL:/top|tl|left/.test(m),TR:/top|tr|right/.test(m),BL:/bottom|bl|left/.test(m),BR:/bottom|br|right/.test(m)},w,x,y,z,A,B,C,D,E,F,G,H,I,J;if(!v.TL&&!v.TR&&!v.BL&&!v.BR)v={TL:1,TR:1,BL:1,BR:1};w=document.createElement("div");a(w).css({overflow:"hidden",height:"1px",minHeight:"1px",fontSize:"1px",backgroundColor:p||"transparent",borderStyle:"solid"});x={T:parseInt(a.css(this,"paddingTop"))||0,R:parseInt(a.css(this,"paddingRight"))||0,B:parseInt(a.css(this,"paddingBottom"))||0,L:parseInt(a.css(this,"paddingLeft"))||0};if(typeof this.style.zoom!=undefined)this.style.zoom=1;if(!n)this.style.border="none";w.style.borderColor=o||k(this.parentNode);y=a(this).outerHeight();for(z in u){A=u[z];if(A&&(v.BL||v.BR)||!A&&(v.TL||v.TR)){w.style.borderStyle="none "+(v[z+"R"]?"solid":"none")+" none "+(v[z+"L"]?"solid":"none");B=document.createElement("div");a(B).addClass("jquery-corner");C=B.style;A?this.appendChild(B):this.insertBefore(B,this.firstChild);if(A&&y!="auto"){if(a.css(this,"position")=="static")this.style.position="relative";C.position="absolute";C.bottom=C.left=C.padding=C.margin="0";if(h)C.setExpression("width","this.parentNode.offsetWidth");else C.width="100%"}else if(!A&&a.browser.msie){if(a.css(this,"position")=="static")this.style.position="relative";C.position="absolute";C.top=C.left=C.right=C.padding=C.margin="0";if(h){C.setExpression("width","this.parentNode.offsetWidth - "+D+'+ "px"')}else C.width="100%"}else{C.position="relative";C.margin=!A?"-"+x.T+"px -"+x.R+"px "+(x.T-q)+"px -"+x.L+"px":x.B-q+"px -"+x.R+"px -"+x.B+"px -"+x.L+"px"}for(E=0;E<q;E++){F=Math.max(0,l(s,E,q));G=w.cloneNode(false);G.style.borderWidth="0 "+(v[z+"R"]?F:0)+"px 0 "+(v[z+"L"]?F:0)+"px";A?B.appendChild(G):B.insertBefore(G,B.firstChild)}if(t&&a.support.boxModel){if(A&&g)continue;for(H in v){if(!v[H])continue;if(A&&(H=="TL"||H=="TR"))continue;if(!A&&(H=="BL"||H=="BR"))continue;I={position:"absolute",border:"none",margin:0,padding:0,overflow:"hidden",backgroundColor:w.style.borderColor};J=a("<div/>").css(I).css({width:q+"px",height:"1px"});switch(H){case"TL":J.css({bottom:0,left:0});break;case"TR":J.css({bottom:0,right:0});break;case"BL":J.css({top:0,left:0});break;case"BR":J.css({top:0,right:0});break}B.appendChild(J[0]);var K=a("<div/>").css(I).css({top:0,bottom:0,width:"1px",height:q+"px"});switch(H){case"TL":K.css({left:q});break;case"TR":K.css({right:q});break;case"BL":K.css({left:q});break;case"BR":K.css({right:q});break}B.appendChild(K[0])}}}}})};a.fn.corner.defaults={useNative:true,metaAttr:"data-corner"}})(jQuery)

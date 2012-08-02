@@ -375,7 +375,8 @@ if (e9Manager === undefined)
 	  'imgURL',
           'flushMedia',
 	  'async',
- 	  'noAdChoice'
+ 	  'noAdChoice',
+	  'env'
 	 ];
 
 	var validCombineFields =
@@ -509,6 +510,7 @@ if (e9Manager === undefined)
 		p.setPageData();
 		p.center = 1;
 		p.async = true;
+		p.env = "display";
 		p.pageId = p.pageData.pageId;
 
 		p.setPageParams();
@@ -747,6 +749,7 @@ if (e9Manager === undefined)
 			cpx(t,'adParams','size', t.filterValidSizesAndSetSizeFrame());
 
 			cpex(t,'adParams','clickTrackURL', adSpec.clickTrackURL);
+			cpx(t,'adParams','env', adSpec.env || p.env);
 		      },
 
 		   copyFixedBehaviors:
@@ -786,11 +789,14 @@ if (e9Manager === undefined)
 		      },
 
 
-		   validSizes:    ["468x60", "234x60",  "120x240", "120x90",
-				   "120x60", "88x31",   "392x72",  "125x125",
-				   "230x33", "120x600", "160x600", "160x160",
-				   "728x90", "336x280", "1x1", 	   "300x250",
-				   "300x600","425x600", "180x150", "0x0"],
+		   validSizes:    [ "468x60",  "234x60",   "120x240",  "120x90",
+				    "120x60",  "88x31",    "392x72",   "125x125",
+				    "230x33",  "120x600",  "160x600",  "160x160",
+				    "728x90",  "336x280",  "1x1",      "300x250",
+				    "300x600", "425x600",  "180x150",  "0x0",
+                                    "320x480", "1024x768", "320x50",   "768x66",
+                                    "1024x66", "300x50",   "1024x90",  "768x60",
+                                    "480x32" ],
 
                    filterSizeToFrameWxH:
 		     function(size,frame)

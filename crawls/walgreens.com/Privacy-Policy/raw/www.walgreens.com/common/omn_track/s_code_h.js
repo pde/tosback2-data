@@ -6,6 +6,10 @@ var s_account="walgrns"
 
 var u=window.location.host+window.location.pathname;
 
+/*Added for EO-21762 Start */
+if(u.indexOf('development.goosiecards.com')>-1)
+	s_account="devwalgrnsstaging"; 
+/*Added for EO-21762 End */
 /*Added for EO-19559  Start */
 if(u.indexOf('snapsbywalgreens.com')>-1)
 	s_account="walgrns"; 
@@ -93,8 +97,10 @@ if(u.indexOf('bloom.pniqa.com')>-1)
 	s_account="walgrnsfoldedwordsstage";
 if(u.indexOf('wgrus-tprev.pnimedia.com')>-1)
 	s_account="walgrnsfoldedwordsstage";
+/*Modified for EO-22018  Start */
 if(u.indexOf('foldedwords.com')>-1)
-	s_account="walgrnsfoldedwords";
+	s_account="walgrnsfoldedwords,walgrns";
+/*Modified for EO-22018 End */
 /*EO-17872 Update S_Code to allow tracking of new Folded Words Microsite END */
 /*Added for EO-12569  Start */
 if(u.indexOf('walgreens.eqal.com')>-1)
@@ -108,6 +114,19 @@ if(u.indexOf('walk.walgreens.com')>-1)
 if(u.indexOf('staff.walgreens.com')>-1)
     s_account="walgrns";
 /*Added for EO-21604  End */
+
+/*Added for EO-22751  Start */
+if(u.indexOf('int1.walgreens.com')>-1) 
+	s_account="devwalgrnsstaging"; 
+
+if(u.indexOf('int2.walgreens.com')>-1) 
+	s_account="devwalgrnsstaging"; 
+
+if(u.indexOf('int3.walgreens.com')>-1) 
+	s_account="devwalgrnsstaging"; 
+/*Added for EO-22751  End */
+
+
 var s=s_gi(s_account)
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
@@ -156,6 +175,9 @@ function s_doPlugins(s)
 	
 	if(!s.eVar1)
 		s.eVar1=s.getQueryParam('ban');	
+	/* EO-21920 Capture omniture when Loyalty user successful logs in */
+	if(!s.eVar65)
+		s.eVar65=s.getQueryParam('loyaltyId');
 	if(!s.eVar2)
 		s.eVar2=s.getQueryParam('nug');	
 	if(!s.eVar3)

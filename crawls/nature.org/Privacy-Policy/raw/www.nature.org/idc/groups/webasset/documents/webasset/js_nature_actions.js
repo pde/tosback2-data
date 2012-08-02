@@ -1,6 +1,7 @@
 $(document).ready( function(){ 
-	
+
 	//When page loads...
+	$("#shadowboxClose").append("#sb-title");
 	$(".panel").hide(); //Hide all content
 	$("ul.tabbedContentNav li:first").addClass("active").show(); //Activate first tab
 	$(".panel:first").show(); //Show first tab content
@@ -25,19 +26,20 @@ $(document).ready( function(){
 	$(".answer").hide();
 	$(".correct").hide();
 	$(".directions").hide();
+	$("ul#pressList>li").tsort("span.pressDate",{order:"desc"});
+	$("ul#pressList li div").addClass("hr");
+	$("ul#pressList li:last-child div").removeClass("hr");
 	$("ul.eventList>li").tsort("span.eventDate",{order:"asc"});
 	$("ul.eventList li:last-child div").removeClass("hr");
+	$(".multimediaText .multimediaVideo1 a.clickToSeeMore").replaceWith("<a rel=\"shadowbox;width=640;height=390\" href=\"#video1\" class=\"clickToSeeMore\">" + $(".multimediaText .multimediaVideo1 a.clickToSeeMore").text() + "</a>");
+	$(".multimediaText .multimediaVideo2 a.clickToSeeMore").replaceWith("<a rel=\"shadowbox;width=640;height=390\" href=\"#video2\" class=\"clickToSeeMore\">" + $(".multimediaText .multimediaVideo2 a.clickToSeeMore").text() + "</a>");  
+	var ad1 = $('#adBox img:first').attr('id');
 	// Photo Credit
 	$(".photoCredit").hover(
 	function() { $(this).contents("span:last-child").css({ display: "block" }); },
 	function() { $(this).contents("span:last-child").css({ display: "none" }); }
 	);
-	$("ul#pressList>li").tsort("span.pressDate",{order:"desc"});
-	$("ul#pressList li div").addClass("hr");
-	$("ul#pressList li:last-child div").removeClass("hr");
-	$(".multimediaText .multimediaVideo1 a.clickToSeeMore").replaceWith("<a rel=\"shadowbox;width=640;height=390\" href=\"#video1\" class=\"clickToSeeMore\">" + $(".multimediaText .multimediaVideo1 a.clickToSeeMore").text() + "</a>");
-	$(".multimediaText .multimediaVideo2 a.clickToSeeMore").replaceWith("<a rel=\"shadowbox;width=640;height=390\" href=\"#video2\" class=\"clickToSeeMore\">" + $(".multimediaText .multimediaVideo2 a.clickToSeeMore").text() + "</a>"); 
-	$("a.popup").attr("rel", "shadowbox;width=640;height=390");	
+		
 	// Pagination 	
 	var show_per_page = 10;
 	var number_of_items = $('#pressList').children().size();
@@ -59,7 +61,7 @@ $(document).ready( function(){
 	
 	// Pagination 2
 	
-	var show_per_page_1 = 20;
+	var show_per_page_1 = 10;
 	var number_of_items_1 = $('#latestNews').children().size();
 	var number_of_pages_1 = Math.ceil(number_of_items_1/show_per_page_1);
 	$('#current_page_1').val(0);
@@ -78,14 +80,21 @@ $(document).ready( function(){
 	$('#latestNews').children().slice(0, show_per_page_1).css('display', 'block');
 	
 	var newText = $(".pressDate").text().split(" ").join("</span> <span>");
+  	//newText = "<span>" + newText + "</span>";
+  	//$(".pressDate").html(newText);
   	var adList = $(".ad a").map(function () {return this.id;}).get().join(',');
+   
 	//On Click Events
-	
+	$("#skip-bt").one( "click", function () {
+		$("#sb-container").hide;
+		$("#sb-overlay").css("display", "none");
+	});
 	$("#siteSearch").click(function() {
 		$("#searchForm").submit();
 	});
 	$("#viewGive").click(function() {
 		$("#waysToGive ul").css('display', 'block');
+		s_tabView('View All Ways to Give');
 	});
 	$("#languages").click(function() {
 		$("#languages").toggleClass("languageClose");
@@ -96,6 +105,7 @@ $(document).ready( function(){
 	});
 	$("#explorePlacesBox").click(function() {
 		$("#explorePlaces ul").css('display', 'block');
+		s_tabView('Explore Places');
 	});
 	$("a.exploreClose").click(function() {
 		$("#explorePlaces ul").css('display', 'none');
@@ -131,14 +141,14 @@ $(document).ready( function(){
 		var activeTab = $("#preserveTab3"); 
 		$(activeTab).fadeIn(); 
 		document.location='#thingsToDo';
-		$(".preserveMap").load(location.href + " .preserveMap > *");
+		$(".preserveMap").load(location.href + " .preserveMap");
 		return false;
 	});	
 	$(".visitTab h4 a").click(function() {	
-	$(".preserveMap").load(location.href + " .preserveMap > *");	
+	$(".preserveMap").load(location.href + " .preserveMap");	
 	});
 	$(".mapTab h4 a").click(function() {	
-	$(".featureMap").load(location.href + " .featureMap > *");	
+	$(".featureMap").load(location.href + " .featureMap");	
 	});
 	$(".fullBio").click(function() {
 		$("ul.tabbedContentNav2 li").removeClass("active2"); 
@@ -218,6 +228,10 @@ $(document).ready( function(){
 	$("#ssLastButton").click(function() {
 		$.last();
 	});
+	
+	$(".ad a").click(function () {
+    s_adClicked(this.id);
+    });
                                                                 	                                                           	                    
 });
 
@@ -233,7 +247,7 @@ function next(){
 	//if there is an item after the current active link run the function
 	if($('.active_page').next('.page_link').length==true){
 		go_to_page(new_page);
-	}
+	} 
 }
 function go_to_page(page_num){
 	//get the number of items shown per page
@@ -280,4 +294,4 @@ function go_to_page_1(page_num_1){
 +']').addClass('active_page_1').siblings('.active_page_1').removeClass('active_page_1');
 	//update the current page input field
 	$('#current_page_1').val(page_num_1);
-}	
+}

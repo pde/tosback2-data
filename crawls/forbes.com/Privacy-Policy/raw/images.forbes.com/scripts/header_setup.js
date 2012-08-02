@@ -1611,17 +1611,17 @@ var main_tab;
 
         document.write('<tr>');
         document.write('<td>');
-        document.write('<form id="searchbox_global" method="get" name="SearchMain" action="http://search.forbes.com/search/find" target="_top" onsubmit="javascript:formSubmitted();"/>');
-        document.write('<input name="tab" value="searchtabgeneraldark" type="hidden" />');
+        document.write('<form id="searchbox_global" method="get" name="SearchMain" action="http://www.forbes.com/search/" target="_top" onsubmit="javascript:formSubmitted();"/>');
+        //document.write('<input name="tab" value="searchtabgeneraldark" type="hidden" />');
 
         if (pageTypeForSlide)
-                document.write('<input id="search_panel1" class="textbox" name="MT" type="text" autocomplete="off" onBlur="termChanged(this.value,\'panel1\');"  onChange="termChanged(this.value,\'panel1\');" onkeyup ="termChanged(this.value,\'panel1\');" onkeypress ="termChanged(this.value,\'panel1\');" onfocus="stopSlideshow();"/>');
+                document.write('<input id="search_panel1" class="textbox" name="q" type="text" autocomplete="off" onBlur="termChanged(this.value,\'panel1\');"  onChange="termChanged(this.value,\'panel1\');" onkeyup ="termChanged(this.value,\'panel1\');" onkeypress ="termChanged(this.value,\'panel1\');" onfocus="stopSlideshow();"/>');
         else
-                 document.write('<input id="search_panel1" class="textbox" name="MT" type="text" autocomplete="off" onBlur="termChanged(this.value,\'panel1\');"  onChange="termChanged(this.value,\'panel1\');" onkeyup ="termChanged(this.value,\'panel1\');" onkeypress ="termChanged(this.value,\'panel1\');" />');
+                 document.write('<input id="search_panel1" class="textbox" name="q" type="text" autocomplete="off" onBlur="termChanged(this.value,\'panel1\');"  onChange="termChanged(this.value,\'panel1\');" onkeyup ="termChanged(this.value,\'panel1\');" onkeypress ="termChanged(this.value,\'panel1\');" />');
 
 
         if (main_tab == 'panel1' && main_srch!=null && main_srch!= 'undefined')
-                document.SearchMain.MT.value = main_srch;
+                document.SearchMain.q.value = main_srch;
 
         document.write('<span class="searchbutton"><a href="javascript:document.SearchMain.submit()" onclick="javascript:formSubmitted()">Search</a></span>');
         document.write('<div style="clear:both;"></div>');

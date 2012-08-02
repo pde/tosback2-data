@@ -586,9 +586,14 @@ if($defined(this.results))
 {this.results.loadData(data);}},getDataFailHandler:function(data){alert('Get Data Failure - '+JSON.encode(data));},resizeHandler:function(size){},resizeHandlerThreshold:function(size){}});var PopupManager=new Class({popups:[],add:function(popup){this.popups.push(popup);popup.addEvent("onshow",function(){for(var i=0;i<this.popups.length;i++){var p=this.popups[i];if(p!=popup&&p.isOpen){p.hide();}}}.bind(this));return popup;},addAll:function(popups){popups.each(function(popup){this.add(popup);}.bind(this))}});var PopupAccessibility=new Class({addSimpleAccessibility:function(){var links=this.targetEl.getElements("a");if(links&&links.length>0){this.addAccessibility(links[0],links[links.length-1]);}},addAccessibility:function(firstLink,lastLink){if(firstLink){this._addFirstLinkEvents(firstLink);}
 if(lastLink){this._addLastLinkEvents(lastLink);}},addKeyPressHandler:function(){this._triggerLink().addEvent("keypress",function(event){if(event.key!='enter'||this.inTransition){return true;}
 if(this.isOpen){this.hide();}else{this.show();}
-return true;}.bind(this));},_addFirstLinkEvents:function(firstLink){this.addEvent('onshow',function(){firstLink.focus();});firstLink.addEvent('keypress',function(event){if(event.key=='tab'&&event.shift){this.hide();this._triggerLink().focus();}}.bind(this));},_addLastLinkEvents:function(lastLink){lastLink.addEvent('keypress',function(event){if(event.key=='tab'&&!event.shift){this.hide();this._triggerLink().focus();}}.bind(this));},_triggerLink:function(){return this.triggerEl.nodeName=="A"?this.triggerEl:this.triggerEl.getElement("a");}});
+return true;}.bind(this));},_addFirstLinkEvents:function(firstLink){this.addEvent('onshow',function(){firstLink.focus();});firstLink.addEvent('keypress',function(event){if(event.key=='tab'&&event.shift){this.hide();this._triggerLink().focus();}}.bind(this));},_addLastLinkEvents:function(lastLink){lastLink.addEvent('keypress',function(event){if(event.key=='tab'&&!event.shift){this.hide();this._triggerLink().focus();}}.bind(this));},_triggerLink:function(){return this.triggerEl.nodeName=="A"?this.triggerEl:this.triggerEl.getElement("a");}});var euck_jsScript;if(typeof hpeuck_loaded==='undefined'){var hpeuck_loaded=false;}
+if(document.location.protocol=="https:"){euck_jsScript="https://ssl.www8.hp.com/uk/en/system/include/privacy_cookie.JS";}else{euck_jsScript="http://www8.hp.com/uk/en/system/include/privacy_cookie.JS"}
+function euckLoadScript(url,callback){var script=document.createElement("script")
+script.type="text/javascript";if(script.readyState){script.onreadystatechange=function(){if(script.readyState=="loaded"||script.readyState=="complete"){script.onreadystatechange=null;callback();}};}else{script.onload=function(){callback();};}
+script.src=url;document.getElementsByTagName("head")[0].appendChild(script);};if(!hpeuck_loaded){euckLoadScript(euck_jsScript,function(){});}
 
 /*
-Date: 2/24/2012 7:05:45 AM
-All images published
+Date: 6/13/2012 8:48:19 PM
+Non-published images:
+/webdav/17%20United%20States-English%20Web/Building%20Blocks/System/00%20Shared/Content/CSS/i/head
 */

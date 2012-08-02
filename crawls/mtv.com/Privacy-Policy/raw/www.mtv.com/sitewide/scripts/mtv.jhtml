@@ -970,7 +970,7 @@ if(typeof btg=="undefined")var btg = {};
 btg.config={
 version:'3',
 defferedAdLoading: false,
-enablePOE: false,
+enablePOE: true,
 Omniture:{
 enabled: true,
 account: (typeof com_mtvi_mtv2flag!="undefined"&&com_mtvi_mtv2flag==true?'viamtv,viamtv2onmtv':'viamtv'),
@@ -991,13 +991,13 @@ enableFirstPartyCookie: false,
 tabletAccount: '',
 timezone: '-5',
 trackExternalLinks: 'true',
-fluxCommunityId:'D3FCFFFF0002D51D0002FFFFFCD3'
+fluxCommunityId: ((typeof(ucidOverride) == "string")?ucidOverride:'D3FCFFFF0002D51D0002FFFFFCD3')
 },
 Nielsen:{
 enabled: false,
 cid: 'us-400235',
 videoCensusId: 'c02',
-idSynchFreq: 'never'
+idSynchFreq: 'session'
 },
 GoogleAnalytics:{
 enabled: false,
@@ -1026,10 +1026,10 @@ profileId:"1280552002.1191903563"
 },
 DoubleClick:{
 enabled: true,
-dartSite: 'mtv.mtvi',
+dartSite: ((typeof(is6x6DartOverride) == "string")?is6x6DartOverride:'mtv.mtvi'),
 enabledMobileAdDomain: false
 },
-FreeWheel:{ 
+FreeWheel:{
 enabled: false,
 type: 'MRM'
 },
@@ -1059,7 +1059,7 @@ enabled:false
 
 //Including Coda 3 build.
 /**
-* Coda v.3.3.70 - Build 82 - Patched - 05/03/2012 
+* Coda v.3.3.73 - Build 87 (Patched) - 06/06/2012 
 */
 var btg=typeof btg==="object"?btg:{};btg.config=typeof btg.config==="object"?btg.config:{};btg.isCoreLoaded=false;
 btg.DOM={Events:{addListener:function(c,d,e){if(d=="DOMContentLoaded"&&!c.addEventListener)document.onreadystatechange=function(){if(document.readyState=="complete")e()};else if(c.attachEvent)c.attachEvent("on"+d,e);else if(c.addEventListener)c.addEventListener(d,e,false);else c["on"+d]=e},removeListener:function(c,d,e){if(c.detachEvent)c.detachEvent("on"+d,e);else if(c.removeEventListener)c.removeEventListener(d,e,false);else c["on"+d]=null}},Storage:{set:function(c,d,e){var f=btg.String.isDefined,
@@ -1128,7 +1128,7 @@ function(){if(c.read("vmn_3pc")=="0")return;this.dependencies.checkDependency("d
 if(this.dependencies.hasDependency()){this.dependencies.addToCallQueue(this,this.sendSocialCall,d);return}this.canSendRequest=false;var e="//mtvn.demdex.net"+"/event?",j={d_rtbd:"json",d_dst:1,d_cts:1,d_cb:"btg.Demdex.response",c_uuid:c.read("vmn_uuid")};if(d&&typeof d==="object")for(var l in d)if(d.hasOwnProperty(l)&&d[l])j["c_"+l]=f.encode(f.decode(d[l]));btg.DOM.loadScript(e+btg.Object.toString(j,"&"))};this.getFWSegment=function(){return this.getSegment("fw")};this.getSegment=function(c){var d=
 this.data,e=btg.String,f=btg.Object,k;if(f.isDefined(d)&&f.isDefined(d.stuff)&&e.isDefined(c))for(var d=d.stuff,n=0,p=d.length;n<p;n++)if(f.isDefined(d[n])&&e.isDefined(d[n].cn)&&d[n].cn==c&&e.isDefined(d[n].cv)){k=d[n].cv;break}return k};this.setSegment=function(c,d){var e=btg.String.isDefined,f=btg.Object.isDefined;if(e(c)&&e(d)){this.data=f(this.data)?this.data:{};if(!f(this.data.stuff)||this.data.stuff.length<=0)this.data.stuff=[{cn:c,cv:d}];else for(var k=this.data.stuff,n=0,p=k.length;n<p;n++)if(f(k[n])&&
 e(k[n].cn)&&k[n].cn==c){this.data.stuff[n].cv=d;break}}};this.setData=function(){this.setSegment("dfp",btg.DOM.Storage.get("demdexDFP"));this.setSegment("fw",btg.DOM.Storage.get("demdexFW"))};this.saveToDOM=function(){var c=btg.String.isDefined,d=this.getSegment("dfp"),e=this.getSegment("fw");if(c(d))btg.DOM.Storage.set("demdexDFP",d);if(c(e))btg.DOM.Storage.set("demdexFW",e)};this.response=function(c){this.data=c;this.saveToDOM();btg.Demdex.canSendRequest=true;if(!e){btg.DOM.appendIframe({src:location.protocol+
-"//fast.mtvn.demdex.net/DSD-gz/mtvn-dest.html?targus=1&targusvalidttl=14400&bizo=1&bizovalidttl=14400&nexac=1&nexacvalidttl=14400"});e=true}btg.MediaPlayer.setDemdexFWSegment(c);a:{if(!btg.Demdex.data)break a;if(!btg.Demdex.data.dests)break a;for(var c=btg.Demdex.data.dests,d=0;d<c.length;d++){var f=document.createElement("img");f.src=c[d].c;document.body.appendChild(f)}}}};
+"//fast.mtvn.demdex.net/DSD-gz/mtvn-dest.html?targus=1&targusvalidttl=14400&bizo=1&bizovalidttl=14400&nexac=1&nexacvalidttl=14400&acx=1&acxvalidttl=14400&addthis=1&addthisvalidttl=14400&is_exelate=1&exvalidttl=302400"});e=true}btg.MediaPlayer.setDemdexFWSegment(c);a:{if(!btg.Demdex.data)break a;if(!btg.Demdex.data.dests)break a;for(var c=btg.Demdex.data.dests,d=0;d<c.length;d++){var f=document.createElement("img");f.src=c[d].c;document.body.appendChild(f)}}}};
 btg.GUID=new function(){var c=null,d=null,e=function(){var c=btg.Cookie.read("vmn_uuid");if(typeof c=="string")d=c;return typeof d=="string"},f=function(){return typeof btg.config.Omniture.enableGuidPlugin=="boolean"&&btg.config.Omniture.enableGuidPlugin};this.isGUIDReported=false;this.hasGUIDCookie=function(){return e()};this.get3pcCookie=function(){var c=btg.Cookie.read("vmn_3pc");return!btg.String.isDefined(c)?null:c};this.init=function(d){c=d;if(!f()){btg.Cookie.set("vmn_uuid","","Thu, 01-Jan-70 00:00:01 GMT;");
 btg.Cookie.set("mtvn_guid","","Thu, 01-Jan-70 00:00:01 GMT;");return false}if(typeof c.guidIdVarMap=="undefined")c.guidIdVarMap=["eVar57"];if(typeof c.guidIdVarMap=="string")c.guidIdVarMap=c.guidIdVarMap.split(",");return true};this.run=function(g){if(!f())return g;if(!e()){new btg.Alert("Failed to find the UUID value.");return g}for(var h=0,k=c.guidIdVarMap.length;h<k;h++)g[c.guidIdVarMap[h]]=d;this.isGUIDReported=true;return g};this.guidScript=function(){var c=btg.GUID;btg.Controller.init();if(c.hasGUIDCookie()&&
 !c.isGUIDReported){c.sendLinkEventCall();return c.isGUIDReported=true}return false};this.sendLinkEventCall=function(){var c={linkName:"GUID reporting",linkType:"o"},c=btg.GUID.run(c);if(f)btg.Controller.sendLinkEvent(c)};if(f())try{var g="http"+("https:"==document.location.protocol?"s":"")+"://btg.mtvnservices.com/aria/uuid.html";if(!this.get3pcCookie())btg.DOM.loadScript(g)}catch(h){}};
@@ -1333,21 +1333,21 @@ mtvn.btg.ads=typeof mtvn.btg.ads==="object"?mtvn.btg.ads:{};mtvn.btg.ads.FreeWhe
 (function(c){c.KeyValues=function(){return{add:function(d){if(typeof d!=="string"||!(d.indexOf("=")>-1))return false;for(var e=c.config.DoubleClick.keyValues||mtvn.btg.config.AdSettings.DoubleClick.keyValues,d=d.split(";"),f=d.length,g=[],e=e?e:"",h=0;h<f;h++){var j=d[h];if(j.indexOf("=")>-1&&e.indexOf(j)===-1)g.push(j)}g=g.join(";");e+=e.lastIndexOf(";")===e.length-1?g:";"+g;if(c.config.DoubleClick)c.config.DoubleClick.keyValues=e;else if(mtvn.btg.config.AdSettings.DoubleClick)mtvn.btg.config.AdSettings.DoubleClick.keyValues=
 e},get:function(){return c.config.DoubleClick.keyValues||mtvn.btg.config.AdSettings.DoubleClick.keyValues}}}()})(btg);
 btg.DoubleClick=function(c){this.isStr=btg.String.isDefined;this.isObj=btg.Object.isDefined;this.gv=btg.globalvars;this.qsToObj=btg.String.queryStringToObject;this.mockItUp=btg.String.mockItUp;if(this.isObj(c))this.config=c;this.server="ad.doubleclick.net";this.ssl=false;this.contentType="adj";this.mediaType="standard";this.keyValues="";this.zoneOverride=null;this.additionalKeyValues=[];this.exclusions=[];this.reservedKeyValues={};if(this.isObj(c))this.autoDcopt=c.autoDcopt?true:false;if(this.isObj(btg.AdManager)&&
-!btg.AdManager.dcoptOn)btg.AdManager.dcoptOn=false;this.isDevEnv=false;if(btg.globalvars.IS_TOP_ACCESSIBLE&&top.location.hostname.indexOf("mtvi.com")>-1)this.isDevEnv=true;if(this.isObj(c))for(var d in c)if(this.isStr(c[d])&&(typeof c[d]=="string"||typeof c[d]=="number"))if(d=="sections")this.setSections(c[d]);else if(d=="keyValues")this.setKeyValues(c[d]);else if(d=="positionThreshold")this.setPositionThreshold(c[d]);else this[d]=c[d]};
+!btg.AdManager.dcoptOn)btg.AdManager.dcoptOn=false;this.isDevEnv=false;if(btg.globalvars.IS_TOP_ACCESSIBLE&&top.location.hostname.indexOf("mtvi.com")>-1)this.isDevEnv=true;if(this.isObj(c))for(var d in c)if(this.isStr(c[d])||btg.Number.isInt(c[d]))if(d=="sections")this.setSections(c[d]);else if(d=="keyValues")this.setKeyValues(c[d]);else if(d=="positionThreshold")this.setPositionThreshold(c[d]);else this[d]=c[d]};
 btg.DoubleClick.prototype={formatUrl:function(c){var d="",d=c.dartSite+"/"+c.zone+";";if(d.length>64)c.zone=c.zone.substring(0,c.zone.length-(d.length-64));d=[[c.protocol+c.server,c.contentType,c.dartSite,c.zone].join("/"),c.sections];if(this.isStr(c.keyValues))d.push(c.keyValues);if(c.ord>0)d.push("ord="+c.ord+"?");return d=d.join(";")},setKeyValues:function(c){c=c.replace(/[^\/\w=!;|-]/g,"_");this.keyValues=c.replace(/^;+|;+$/g,"");if(this.keyValues.indexOf("mtype=")>-1)this.setMediaType(this.getKeyValue("mtype="));
 if(this.keyValues.indexOf("pos=")>-1)this.setPosition(this.getKeyValue("pos="));else if(this.keyValues.indexOf("threshold=")>-1)this.setPositionThreshold(this.getKeyValue("threshold="))},setZoneOverride:function(c){this.zoneOverride=c},setId:function(c){this.id=c},setServer:function(c){this.server=c},setSsl:function(){this.ssl=true},setDartSite:function(c){this.dartSite=btg.DartSite.getValue(c)},setContentType:function(c){this.contentType=c},setMediaType:function(c){this.mediaType=c},setPosition:function(c){this.position=
 c},setSections:function(c){for(var c=c=="/"?c:btg.String.charTrim(c,"/"),d=this.isObj(btg.config)&&this.isStr(btg.config.defaultIndexFileName)?btg.config.defaultIndexFileName:"index",d=btg.String.stripFileExtension(d),d=["/",d,"home/"+d],e=0,f=d.length;e<f;e++)if(c.indexOf(d[e])==0&&c.length==d[e].length){c=c.replace(d[e],"_hp");break}for(c=c.replace(/[^\/\w=!;|-]/g,"_");c.match(/\/\d/);)c=c.replace(/\/\d/,RegExp.lastMatch.substring(0,1)+"_"+RegExp.lastMatch.substring(1,2));c=c.replace(/^\d/,"_"+
 c.match(/^\d/,"_"));this.sections=c.replace(/^\/+|\/+$/g,"");if(this.sections.indexOf(".")>-1)this.sections=this.sections.split(".")[0]},setSize:function(c){this.size=c},setRealSize:function(c){this.realSize=c},setTile:function(c){this.tile=c},setPositionThreshold:function(c){if(isNaN(parseInt(c)))this.positionThreshold=null;else this.positionThreshold=parseInt(c)},setOrd:function(c){this.ord=c},setPartner:function(c){this.partner=c},addExclusionCategory:function(c){var c=c.replace(/^;+|;+$/g,""),
 d=false;if(this.exclusions.length>0){for(var e=0,f=this.exclusions.length;e<f;e++)if(this.exclusions[e].match(new RegExp("category="+c,"ig"))){d=true;break}if(!d)this.exclusions.push("!category="+c)}else this.exclusions.push("!category="+c)},addKeyValues:function(c){if(this.isStr(c)&&c.indexOf("=")>-1)this.additionalKeyValues.push(c)},appendKeyValue:function(c,d){if(!this.isStr(c))c="";if(!this.isStr(d))d="";c=c.replace(/^;+|;+$/g,"");d=d.replace(/^;+|;+$/g,"");if(c.indexOf("=")>-1)d+=";"+c;return d=
 d.replace(/^;+|;+$/g,"")},removeKeyValue:function(c){if(this.isStr(this.getKeyValue(c))){var d=";"+c+this.getKeyValue(c);if(this.keyValues.indexOf(d)==-1){d=c+this.getKeyValue(c)+";";if(this.keyValues.indexOf(d)==-1)d=c+this.getKeyValue(c)}this.keyValues=this.keyValues.replace(new RegExp(d,"g"),"");this.removeKeyValue(c)}},getProtocol:function(){return this.ssl?"https://":"http://"},getPosition:function(){var c="unk";if(this.isStr(this.position))if(this.position.indexOf("atf")>-1)c="atf";else{if(this.position.indexOf("btf")>
--1)c="btf"}else if(btg.String.isDefined(this.containerAdId)){var d=document.getElementById(this.containerAdId),d=parseInt(d.offsetTop),e=parseInt(document.documentElement.clientHeight);if(!isNaN(d)&!isNaN(e))if(d<e)c="atf";else c="btf"}else if(this.isStr(this.positionThreshold))c=this.tile<=this.positionThreshold?"atf":"btf";return c},getKeyValue:function(c){var d;if(this.keyValues.indexOf(c)>-1){c=this.keyValues.split(c);if(c.length>0)if(c[1].indexOf(";")>-1)d=c[1].substring(0,c[1].indexOf(";"));
+-1)c="btf"}else if(btg.String.isDefined(this.containerAdId)){var d=document.getElementById(this.containerAdId),d=parseInt(d.offsetTop),e=parseInt(document.documentElement.clientHeight);if(!isNaN(d)&!isNaN(e))if(d<e)c="atf";else c="btf"}else if(btg.Number.isInt(this.positionThreshold))c=this.tile<=this.positionThreshold?"atf":"btf";return c},getKeyValue:function(c){var d;if(this.keyValues.indexOf(c)>-1){c=this.keyValues.split(c);if(c.length>0)if(c[1].indexOf(";")>-1)d=c[1].substring(0,c[1].indexOf(";"));
 else d=c[1]}return d},getSections:function(){return this.sections},getContentTypeAbbreviation:function(){var c="";if(this.contentType=="pfadx")c="p";if(this.contentType=="adj")c="j";if(this.contentType=="adi")c="i";if(this.contentType=="adx")c="x";if(this.contentType=="ad")c="a";return c},getExclusions:function(){return this.exclusions.join(";")},isValidDcopt:function(c){var d=false;if(this.isStr(c))for(var e=0,f=btg.globalvars.VALID_DCOPT.length;e<f;e++)if(c==btg.globalvars.VALID_DCOPT[e]){d=true;
 break}return d},formatReserved:function(){for(var c=this.keyValues,d=["dcmt","dcopt","dcove"],e=0,f=d.length;e<f;e++)if(c.indexOf(d[e]+"=")>-1){for(var g=this.getKeyValue(d[e]+"="),c=c.split(d[e]+"="+g),h=0,f=c.length;h<f;h++)c[h]=c[h].replace(/^;+|;+$/g,"");if(d[e]=="dcopt"&&this.isValidDcopt(g)!=true){this.keyValues=c.join(";");return this.formatReserved()}this.reservedKeyValues[d[e]]=g;c=c.join(";")}if(c.lastIndexOf(";")==c.length-1)c=c.substring(0,c.length-1);return c},getAdditionalKeyValues:function(){return this.additionalKeyValues.join(";")},
 applyTestbedValues:function(){var c=btg.Cookie.read("mtvn_btg_atb");if(c!=null&&c.indexOf("daDart:")>=0){c=c.split(",")[0].split(":")[1];this.dartSite=c=="auto"?this.dartSite="atb_"+this.dartSite:c}},getValues:function(){this.applyTestbedValues();var c=this.isStr(this.zoneOverride)?this.zoneOverride:this.formatZone(),d=this.formatKeyValues(),e=this.formatSectionValues();return{id:this.id,protocol:this.getProtocol(),server:this.server,dartSite:this.dartSite,contentType:this.contentType,mediaType:this.mediaType,
 zone:c,sections:e,keyValues:d,ord:this.ord}},getRealWidth:function(){return this.realSize.substr(0,this.realSize.indexOf("x"))},getRealHeight:function(){return this.realSize.substr(this.realSize.indexOf("x")+1,this.realSize.length)},getWidth:function(){return this.size.substr(0,this.size.indexOf("x"))},getHeight:function(){return this.size.substr(this.size.indexOf("x")+1,this.size.length)},getUrl:function(){return this.formatUrl(this.getValues())},getJson:function(){var c=this.getValues();c.url=this.formatUrl(c);
-return c},getXml:function(){var c=[],d=this.getValues();d.url=this.formatUrl(d);for(var e in d)if(typeof(d[e]=="string"))c.push("<"+e+">"+"</"+d[e]+">");return"<DoubleClick>"+c.join("")+"</DoubleClick>"},init:function(c){if(typeof c==="object"){if(this.isStr(c.zoneOverride))this.setZoneOverride(c.zoneOverride);if(this.isStr(c.id+""))this.setId(c.id);if(this.isStr(c.server))this.setServer(c.server);if(this.isStr(c.ssl))this.setSsl(c.ssl);if(this.isStr(c.dartSite))this.setDartSite(c.dartSite);if(this.isStr(c.contentType))this.setContentType(c.contentType);
-if(this.isStr(c.mediaType))this.setMediaType(c.mediaType);if(this.isStr(c.position))this.setPosition(c.position);if(this.isStr(c.sections))this.setSections(c.sections);if(this.isStr(c.keyValues))this.setKeyValues(c.keyValues);if(this.isStr(c.size))this.setSize(c.size);else{this.setSize("[ERROR: Size Not Defined!]");btg.Error.log("Coda ERROR: btg.DoubleClick: Size Not Defined!")}if(this.isStr(c.realSize))this.setRealSize(c.realSize);else this.setRealSize(this.size);if(this.isStr(c.tile+""))this.setTile(c.tile);
-if(this.isStr(c.positionThreshold+""))this.setPositionThreshold(c.positionThreshold);if(this.isStr(c.ord+""))this.setOrd(c.ord);if(this.isStr(c.partner))this.setPartner(c.partner)}},createIframe:function(c){var d=document.getElementById(c.adId),e=null;if(d){c.frameBorder="0";c.marginHeight="0";c.marginWidth="0";c.scrolling="no";c.onload=function(){btg.AdManager.adLoadNotify(this.id)};c.parent=d;c.style={height:c.height+"px",width:c.width+"px","border-width":"0",overflow:"hidden"};if(this.gv.IS_TOP_ACCESSIBLE&&
+return c},getXml:function(){var c=[],d=this.getValues();d.url=this.formatUrl(d);for(var e in d)if(typeof(d[e]=="string"))c.push("<"+e+">"+"</"+d[e]+">");return"<DoubleClick>"+c.join("")+"</DoubleClick>"},init:function(c){if(typeof c==="object"){if(this.isStr(c.zoneOverride))this.setZoneOverride(c.zoneOverride);if(this.isStr(c.id+""))this.setId(c.id);if(this.isStr(c.server))this.setServer(c.server);if(this.isStr(c.position))this.setPosition(c.position);if(this.isStr(c.ssl))this.setSsl(c.ssl);if(this.isStr(c.dartSite))this.setDartSite(c.dartSite);
+if(this.isStr(c.contentType))this.setContentType(c.contentType);if(this.isStr(c.mediaType))this.setMediaType(c.mediaType);if(this.isStr(c.sections))this.setSections(c.sections);if(this.isStr(c.keyValues))this.setKeyValues(c.keyValues);if(this.isStr(c.size))this.setSize(c.size);else{this.setSize("[ERROR: Size Not Defined!]");btg.Error.log("Coda ERROR: btg.DoubleClick: Size Not Defined!")}if(this.isStr(c.realSize))this.setRealSize(c.realSize);else this.setRealSize(this.size);if(this.isStr(c.tile+""))this.setTile(c.tile);
+if(btg.Number.isInt(c.positionThreshold))this.setPositionThreshold(c.positionThreshold);if(this.isStr(c.ord+""))this.setOrd(c.ord);if(this.isStr(c.partner))this.setPartner(c.partner)}},createIframe:function(c){var d=document.getElementById(c.adId),e=null;if(d){c.frameBorder="0";c.marginHeight="0";c.marginWidth="0";c.scrolling="no";c.onload=function(){btg.AdManager.adLoadNotify(this.id)};c.parent=d;c.style={height:c.height+"px",width:c.width+"px","border-width":"0",overflow:"hidden"};if(this.gv.IS_TOP_ACCESSIBLE&&
 this.qsToObj(top.location.search).mockupMode=="true"){c.parent=document.createElement("div");e=btg.DOM.appendIframe(c);d.innerHTML=this.mockItUp(e.parentNode.innerHTML)}else e=btg.DOM.appendIframe(c);e.setAttribute("allowtransparency",true)}}};btg.DomesticDc=function(){this.type="DomesticDc"};
 btg.DomesticDc.prototype={formatSectionValues:function(){try{var c=this.sections.split("/")}catch(d){c=["[ERROR: Sections Not Defined!]"];btg.Error.log("Coda ERROR: btg.DomesticDc: Sections Not Defined!")}for(var e=0,f=[],g=0,h=c.length;g<h;g++)if(btg.String.isDefined(c[g])){f.push("sec"+e+"="+c[g]);e++}return f.join(";")},formatZone:function(){var c=this.getPosition()+"_"+this.getContentTypeAbbreviation()+"_"+this.mediaType.substr(0,1)+"/",d=this.getSections();if(this.isStr(this.keyValues)){if(this.keyValues.indexOf("partner=")>
 -1){var e=this.getKeyValue("partner=");if(this.isStr(e)&&e!="null"){c+=e+"/";this.addExclusionCategory(e);this.addExclusionCategory("partner")}else this.keyValues=this.keyValues.replace(/(partner=;)|partner=$/ig,"partner=null;")}if(this.keyValues.indexOf("vertical=")>-1){e=this.getKeyValue("vertical=");if(this.isStr(e)){d=e+"/"+d;this.setSections(d)}}if(this.keyValues.indexOf("synd=")>-1){e=this.getKeyValue("synd=");if(this.isStr(e))this.addExclusionCategory(e)}}c=c.replace(/^\d/,"_"+c.match(/^\d/,
@@ -1366,8 +1366,8 @@ c.keyword;else this.keyValues+=";search_kw=none";if(this.isStr(c.vid))this.keyVa
 if(!this.isStr(this.id))this.setId("ad"+this.tile);if(btg.config.defferedAdLoading&&!c.isSurrogate)this.createIframe({allowtransparency:"true",id:this.id,name:this.id,width:this.getRealWidth(),height:this.getRealHeight(),src:this.getUrl(),adType:this.contentType,adId:c.adId});else if(this.contentType=="adi"){var d="<ifr"+'ame allowtransparency="true" onload="btg.AdManager.adLoadNotify(\''+this.id+'\');" id="'+this.id+'" name="'+this.id+'" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" width="'+
 this.getRealWidth()+'" height="'+this.getRealHeight()+'" src="'+this.getUrl()+'"></ifr'+"ame>";if(this.gv.IS_TOP_ACCESSIBLE&&this.qsToObj(top.location.search).mockupMode=="true")d=this.mockItUp(d);if(this.isStr(c)&&this.isStr(c.reloadableAdId))return d;else if(typeof exposeTestFunctionNames=="undefined")document.write(d)}else{d="<scr"+'ipt type="text/javascript" id="'+this.id+"\" onreadystatechange=\"if(this.readyState=='complete')btg.AdManager.adLoadNotify('"+this.id+"');\" onload=\"btg.AdManager.adLoadNotify('"+
 this.id+'\');" src="'+this.getUrl()+'"></scr'+"ipt>";if(this.gv.IS_TOP_ACCESSIBLE&&this.qsToObj(top.location.search).mockupMode=="true")d=this.mockItUp(d);if(this.isStr(c)&&this.isStr(c.reloadableAdId))return d;else if(typeof exposeTestFunctionNames=="undefined")document.write(d)}}};btg.InternationalDc=btg.Class.inheritFrom(btg.DoubleClick,btg.InternationalDc);
-btg.SurrogateAd=new function(){var c={poe:{tile:"0",size:"6x6",cookieName:"vmn_poe",contentType:"adj",position:"btf",isAllowed:function(){if(typeof btg.config.enablePOE=="undefined"||!btg.config.enablePOE)return false;if(typeof btg.config.DoubleClick.keyValues!="undefined"&&/\!category\=poe/.test(btg.config.DoubleClick.keyValues))return false;return true}()}};this.load=function(d){if(btg.String.isDefined(d)&&btg.Object.isDefined(c[d])&&btg.Object.isConfigDefined(btg.config.DoubleClick)){d=c[d];d.isSurrogate=
-true;if(typeof d.isAllowed!="undefined"&&!d.isAllowed)return;if(btg.String.isDefined(d.cookieName)){if(btg.Cookie.read(d.cookieName)==null){btg.AdManager.placeAd(d);btg.Cookie.set(d.cookieName,d.size)}}else btg.AdManager.placeAd(d)}}};if(typeof mtvn=="undefined")mtvn={};
+btg.SurrogateAd=new function(){var c={poe:{tile:"0",size:"6x6",cookieName:"vmn_poe",contentType:"adj",position:"btf",isAllowed:function(){if(typeof btg.config.enablePOE=="undefined"||!btg.config.enablePOE)return false;if(typeof btg.config.DoubleClick.keyValues!="undefined"&&/\!category\=poe/.test(btg.config.DoubleClick.keyValues))return false;return true}}};this.load=function(d){btg.Controller.init();if(btg.String.isDefined(d)&&btg.Object.isDefined(c[d])&&btg.Object.isConfigDefined(btg.config.DoubleClick)){d=c[d];d.isSurrogate=
+true;if(typeof d.isAllowed!="undefined"&&!d.isAllowed())return;if(btg.String.isDefined(d.cookieName)){if(btg.Cookie.read(d.cookieName)==null){btg.AdManager.placeAd(d);btg.Cookie.set(d.cookieName,d.size)}}else btg.AdManager.placeAd(d)}}};if(typeof mtvn=="undefined")mtvn={};
 mtvn.btg={Controller:btg.Controller,managers:{DependencyManager:btg.DependencyManager,PluginManager:btg.PluginManager,QueueManager:btg.QueueManager},ads:{AdManager:btg.AdManager,games:{GameAdLoader:btg.GameAdLoader,GameAdManager:btg.GameAdManager,GameDc:btg.GameDc},freewheel:{FreeWheelAd:btg.FreeWheelAd,FreeWheelAdInterface:btg.FreeWheelAdInterface}},reporting:{ABTest:btg.ABTest,ChoiceStream:btg.ChoiceStream,ComScore:btg.ComScore,FluxHosted:btg.FluxHosted,FluxState:btg.Flux,GoogleAnalytics:btg.GoogleAnalytics,
 Nielsen:btg.Nielsen,Omniture:btg.Omniture,Photos:btg.Photos,QuantCast:btg.QuantCast,RecsABTesting:btg.Recommendations,ReportingManager:btg.ReportingManager,Search:btg.Search,SEO:btg.SEO,TestAndTarget:btg.TestAndTarget,UserSegment:btg.UserSegment,Demdex:btg.Demdex,omniture:{Hcode:btg.Hcode},player:{Loadtime:btg.Loadtime,MediaPlayer:btg.MediaPlayer,Preload:btg.Preload},games:{GameEventMediator:btg.GameEventMediator,GameEventVO:btg.GameEventVO,GameReporter:btg.GameReporter,GameReportingManager:btg.GameReportingManager}},
 util:{Alert:btg.Alert,Beacon:btg.Beacon,Class:btg.Class,Cookie:btg.Cookie,DOM:btg.DOM,Events:btg.Events,JSON:btg.JSON,Math:btg.Math,Object:btg.Object,String:btg.String,Timer:btg.Timer,TimeTracker:btg.TimeTracker,Window:btg.Window,Sections:btg.Sections},plugins:{GUID:btg.GUID,Meteor:btg.Meteor}};if(typeof mtvn.btg.config=="undefined")mtvn.btg.config={};
@@ -1389,8 +1389,6 @@ com.mtvi.reporting.Dispatcher=function(){this.getValOnce=function(){return true}
 c[d])};this.send=function(c){btg.Controller.sendPageCall(c)};this.setDefaultData=function(){};this.clearProps=function(){};this.clearAllVars=function(){}};com.mtvi.reporting.FluxWidgeted={setVars:function(){return true}};com.mtvi.reporting.GoogleAnalytics={makeCall:function(){(new btg.GoogleAnalytics(btg.GoogleAnalytics)).sendPageCall();return true}};com.mtvi.reporting.MediaPlayer={addPlayer:btg.MediaPlayer.addPlayer};
 mtvn.btg.reporting.MediaPlayer={setEndSlateClick:mtvn.btg.reporting.player.MediaPlayer.setEndSlateClick,getEndSlateClick:mtvn.btg.reporting.player.MediaPlayer.getEndSlateClick};com.mtvi.reporting.QuantCast=new function(){this.sendQuantCastCall=function(){(new btg.QuantCast(btg.config.QuantCast)).sendPageCall();return true}};com.mtvi.reporting.Search=btg.Search;com.mtvi.reporting.Search.setVars=btg.Search.setData;
 btg.isCoreLoaded=function(){btg.Events.CORE_LOADED.fire();btg.SurrogateAd.load("poe");return true}();
-
-document.write('<scr' + 'ipt type="text/javascript" src="http://www.mtv.com/global/scripts/special/projx.jhtml?channelname=MTV"></script>');
 
 MTV.BTG = new function(){
 var self = this;
@@ -1592,7 +1590,20 @@ self.data["campaign"] = mtvn.btg.reporting.campaign;
 this.report = function(){
 self.addAttributes(self.dispatcherAttributes);
 self.addAttributes(MTVN.Ads.additionalValues, false);
+
+if (typeof(detectSafariTopSites) == "function") {
+var isTopSitesReq = detectSafariTopSites();
+
+if (isTopSitesReq != null && !isTopSitesReq)
 mtvn.btg.Controller.sendPageCall(self.data);
+else if (isTopSitesReq == null)
+mtvn.btg.Controller.sendPageCall(self.data);
+
+}
+
+else
+mtvn.btg.Controller.sendPageCall(self.data);
+
 }
 this.addAttributes = function(aString, aPassThru){
 if (aString.length < 1)
@@ -2184,7 +2195,7 @@ MTV.Utils.Cookies.create(name,"",-1);
 }
 }
 function openAndFocus(url,name,features){
-var o = window.open(url, name, features);
+var o = window.open(url.replace("#", "%23"), name, features);
 o.focus();
 }
 
@@ -2193,7 +2204,7 @@ function runMiniAdBanner()
 var opaWidth = $j("#ad-728x90").outerWidth();
 var getData = 
 
-{"module":{"items":{"item":{"images":{"img":{"width":"239","height":"90","src":"http://www.mtv.com/shared/promoimages/bands/t/t_mills/push/hp/mini//239x90.jpg"}},"title":"T. Mills","link":{"args":"http://buzzworthy.mtv.com/category/push/"}}},"name":"minipromos"}}
+{"module":{"items":{"item":{"images":{"img":{"width":"239","height":"90","src":"http://www.mtv.com/shared/promoimages/bands/m/maynard_conor/push/mini_banner//239x90.jpg"}},"title":"Conor Maynard","link":{"args":"http://buzzworthy.mtv.com/2012/07/30/push-conor-maynard"}}},"name":"minipromos"}}
 ;
 if(getData.module!=undefined && getData.module.items!=null){
 var total = getData.module.items.item.length;
@@ -2252,7 +2263,7 @@ this.bannerRate;
 this.billboardRate;
 
 this.setAdRefreshRate = function() {
-var getData = {"adRefresh":{"items":{"item":{"ad":{"banner":"60","billboard":"60"}}}}};
+var getData = {"adRefresh":{"items":{"item":{"ad":{"banner":"90","billboard":"90"}}}}};
 
 this.bannerRate = parseInt(getData.adRefresh.items.item.ad.banner) * 1000;
 this.billboardRate = parseInt(getData.adRefresh.items.item.ad.billboard) * 1000;
@@ -3275,7 +3286,7 @@ var _this = this;
 var initPlayer = function(){
 $j("div.player-placeholder").each(function(i){
 $this = $j(this);
-
+var isrc = $this.attr("isrc");
 var playerArgs = _this.playerArgs;
 var flashVars;
 var configParams = "";
@@ -3326,7 +3337,7 @@ else flashVars = "configParams=" + escape(playerArgs);
 var width = (typeof $this.attr("width") == 'undefined') ? _this.width: $this.attr("width");
 var height = (typeof $this.attr("height") == 'undefined') ? _this.height: $this.attr("height");
 
-this.innerHTML = _this.generatePreloadHTML("playerPlaceholder", width, height, uri, flashVars, imageUri.replace("videolist", "content"), paramsFromId.freewheelId);
+this.innerHTML = _this.generatePreloadHTML("playerPlaceholder", width, height, uri, flashVars, imageUri.replace("videolist", "content"), paramsFromId.freewheelId,isrc);
 
 // Fix for IE breaking when leaving a page where a player has been loaded with litePlayer
 (function(){var s=function(){__flash__removeCallback=function(i,n){if(i)i[n]=null;};window.setTimeout(s,10);};s();})();
@@ -3336,14 +3347,14 @@ this.init = function(){};
 
 this.init = initPlayer;
 
-this.generatePreloadHTML = function(className, width, height, playerUri, flashVars, imageServerUri, freewheelId){
+this.generatePreloadHTML = function(className, width, height, playerUri, flashVars, imageServerUri, freewheelId,isrc){
 
 var playButtonCenterX = Math.floor(width / 2) - 46;
 var playButtonCenterY = Math.floor(height / 2) - 36;
 
 var controlBarTop = height - 31;
 
-var html = '<div style="position: relative; width: ' + width + 'px; height: ' + height + 'px; cursor: pointer;" class="' + className + '" width="' + width + '" height="' + height + '"' + ((freewheelId != null) ? (' fwId="' + freewheelId + '"') : '') + ' id="' + playerUri + '" flashVars="' + flashVars + '">';
+var html = '<div style="position: relative; width: ' + width + 'px; height: ' + height + 'px; cursor: pointer;" class="' + className + '" width="' + width + '" height="' + height + '"' + ((freewheelId != null) ? (' fwId="' + freewheelId + '"') : '') + ((isrc != null) ? (' isrc="' + isrc + '"') : '') + ' id="' + playerUri + '" flashVars="' + flashVars + '">';
 
 html += '<img style="position: absolute; top: ' + playButtonCenterY + 'px; left: ' + playButtonCenterX + 'px;" sr' +'c="'+ MTVN.LitePlayer.affilatedHost +'/global/music/player/images/bttn_play-big.png" />';
 
@@ -3372,6 +3383,7 @@ hostname = "http://media.mtvnservices.com";
 $j(".playerPlaceholder").one("click", function() {
 var $this = $j(this);
 var id = this.id;
+var isrc = $this.attr("isrc");
 var flashVars = $this.attr("flashVars");
 var fwId = $this.attr("fwId");
 
@@ -3390,6 +3402,35 @@ fwId = "MTV_Videos";
 }
 
 var embed = "";
+
+if (isrc != null) {
+
+embed += '<embed src="' + 'http://videoplayer.vevo.com/embed/embedded?videoId=';
+embed += isrc;
+embed += '&playlist=false';
+embed += '&autoplay=1';
+embed += '&enableDomScan=true';
+embed += '&siteSection=MTV_2012VMAs_mtv.com';
+embed += '&endScreen=play';
+embed += '&cc=US';
+embed += '&cultureName=en-US';
+embed += '&cultureIsRTL=False';
+embed += '&sbId=14A00605-7DB5-4492-B67B-CB2093BD89DD';
+embed += '&playerId=62FF0A5C-0D9E-4AC1-AF04-1D9E97EE3961';
+embed += '&playerType=embedded"';
+embed += 'type="application/x-shockwave-flash"';
+embed += 'wmode="opaque"';
+embed += 'name="'+id+'"';
+embed += 'id="'+id+'"';
+embed += 'width="'+w+'"';
+embed += 'height="'+h+'"';
+embed += 'bgcolor="'+bgcolor+'"';
+embed += 'allowFullscreen="true"';
+embed += 'allowScriptAccess="always">';
+embed += '</embed>';
+}
+
+else {
 embed += '<embed src="' + hostname + '/'+id + '/cp~' + flashVars.replace("configParams=", "") +'"';
 embed += 'type="application/x-shockwave-flash"';
 embed += 'wmode="opaque"';
@@ -3402,7 +3443,7 @@ embed += 'allowFullscreen="true"';
 embed += 'flashVars="autoPlay=true' + '&sid=' + fwId + '"';
 embed += 'allowScriptAccess="always">';
 embed += '</embed>';
-
+}
 $this.html(embed);
 
 });	
@@ -3872,7 +3913,7 @@ $j("<img/>").attr({"src":trackingCode, "border": 0, "width": 1, "height": 1}).ap
 function ThemeScheduler(){ 
 this.scheduledTheme = null;
 this.makeSchedule = function(){
-var xmlString = "<themes> <theme> <start>11 24 2010 00 00</start> <end>11 29 2010 00 00</end> <pageurl>/</pageurl> <url>/sitewide/css/charlie/themes/hp-takeover/thanksgiving/0/theme.jhtml</url> <oparamName>thanksgiving</oparamName> </theme> <theme> <start>01 13 2011 14 57</start> <end>01 13 2011 15 11</end> <pageurl>1654756</pageurl> <url>/sitewide/css/charlie/themes/hp-takeover/thanksgiving/0/theme.jhtml</url> <oparamName>C3Event</oparamName> </theme> <theme> <start>01 14 2011 22 00</start> <end>01 14 2011 22 10</end> <pageurl>/music/unplugglaye/</pageurl> <url>/sitewide/css/charlie/themes/hp-takeover/thanksgiving/0/theme.jhtml</url> <oparamName>unplugged</oparamName> </theme> <!-- SITE BUCKETS --> <!-- MOVIES THEME ONE OFF --> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/shows/after_hours_josh_horowitz/*</pageurl> <url>/sitewide/css/charlie/themes/movies/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!-- MOVIES THEME ONE OFF END --> <!--HUBS--> <theme> <start>12 23 2011 00 00</start> <end>01 01 2012 00 00</end> <pageurl>/</pageurl> <url>/sitewide/css/charlie/themes/buckets/hubs/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/</pageurl> <url>/sitewide/css/charlie/themes/buckets/hubs/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/ontv/</pageurl> <url>/sitewide/css/charlie/themes/buckets/hubs/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/sites/</pageurl> <url>/sitewide/css/charlie/themes/buckets/hubs/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--HUBS END--> <!--UTILITY--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/sitewide/legal/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/utility/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--UTILITY END--> <!--NEWS--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/news/photo/index.jhtml</pageurl> <url>/sitewide/css/charlie/themes/buckets/news/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/news/correspondents/kash/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/news/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/news/correspondents/sway/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/news/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--NEWS END--> <!--MUSIC--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/artists/browse.jhtml*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/artist/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/playlibs/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/live_performances/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/artists/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/artists/most_popular.jhtml*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/photos/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/videos/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/videos/premieres/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/playlists/index.jhtml?contentId=1654462</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/most-popular/music-videos/?category=pop*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/rock/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/hiphop/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/indie/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/radio/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/lyrics/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--MUSIC END--> <!--SHOWS--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/videos/home.jhtml</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/ontv/schedule/</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/ontv/all/</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/most-popular/tv-show-videos/?category=full*</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/shows/celebrity_deathmatch/series.jhtml</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/ontv/castingcall/</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--SHOWS END--> <!--MISC--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/games/arcade/</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/mobile/</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/most-popular/photos/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2010 00 01</end> <pageurl>/partners/mtv_tribe/index.jhtml</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/sweepstakes/</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/rss/</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/partners/newsletters/index.jhtml</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--MISC END--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/shows/after_hours_josh_horowitz/series.jhtml</pageurl> <url>/sitewide/css/charlie/themes/movies/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!-- SITE BUCKETS END--> </themes>";
+var xmlString = "<themes> <theme> <start>11 24 2010 00 00</start> <end>11 29 2010 00 00</end> <pageurl>/</pageurl> <url>/sitewide/css/charlie/themes/hp-takeover/thanksgiving/0/theme.jhtml</url> <oparamName>thanksgiving</oparamName> </theme> <theme> <start>01 13 2011 14 57</start> <end>01 13 2011 15 11</end> <pageurl>1654756</pageurl> <url>/sitewide/css/charlie/themes/hp-takeover/thanksgiving/0/theme.jhtml</url> <oparamName>C3Event</oparamName> </theme> <theme> <start>01 14 2011 22 00</start> <end>01 14 2011 22 10</end> <pageurl>/music/unplugglaye/</pageurl> <url>/sitewide/css/charlie/themes/hp-takeover/thanksgiving/0/theme.jhtml</url> <oparamName>unplugged</oparamName> </theme> <!-- SITE BUCKETS --> <!-- MOVIES THEME ONE OFF --> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/shows/after_hours_josh_horowitz/*</pageurl> <url>/sitewide/css/charlie/themes/movies/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!-- MOVIES THEME ONE OFF END --> <!--HUBS--> <theme> <start>12 23 2011 00 00</start> <end>01 01 2012 00 00</end> <pageurl>/</pageurl> <url>/sitewide/css/charlie/themes/buckets/hubs/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/</pageurl> <url>/sitewide/css/charlie/themes/buckets/hubs/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/ontv/</pageurl> <url>/sitewide/css/charlie/themes/buckets/hubs/default/theme.jhtml</url> <oparamName>default</oparamName> </theme--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/sites/</pageurl> <url>/sitewide/css/charlie/themes/buckets/hubs/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--HUBS END--> <!--UTILITY--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/sitewide/legal/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/utility/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--UTILITY END--> <!--NEWS--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/news/photo/index.jhtml</pageurl> <url>/sitewide/css/charlie/themes/buckets/news/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/news/correspondents/kash/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/news/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/news/correspondents/sway/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/news/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--NEWS END--> <!--MUSIC--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/artists/browse.jhtml*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/artist/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/playlibs/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/live_performances/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/artists/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/artists/most_popular.jhtml*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/photos/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/videos/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/videos/premieres/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/playlists/index.jhtml?contentId=1654462</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/most-popular/music-videos/?category=pop*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/rock/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/hiphop/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/indie/</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/radio/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/music/lyrics/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/music/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--MUSIC END--> <!--SHOWS--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/videos/home.jhtml</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/ontv/schedule/</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/ontv/all/</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/most-popular/tv-show-videos/?category=full*</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/ontv/castingcall/</pageurl> <url>/sitewide/css/charlie/themes/buckets/shows/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--SHOWS END--> <!--MISC--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/games/arcade/</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/mobile/</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/most-popular/photos/*</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2010 00 01</end> <pageurl>/partners/mtv_tribe/index.jhtml</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/sweepstakes/</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/rss/</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/partners/newsletters/index.jhtml</pageurl> <url>/sitewide/css/charlie/themes/buckets/misc/default/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!--MISC END--> <theme> <start>01 01 2010 00 00</start> <end>01 01 2020 00 00</end> <pageurl>/shows/after_hours_josh_horowitz/series.jhtml</pageurl> <url>/sitewide/css/charlie/themes/movies/theme.jhtml</url> <oparamName>default</oparamName> </theme> <!-- SITE BUCKETS END--> </themes>";
 var loc = window.location.pathname+window.location.search; 
 var sn = new Object();
 window.location.search.replace( new RegExp( "([^?=&]+)(=([^&]*))?", "g" ), function( $0, $1, $2, $3 ){ sn[ $1 ] = $3; } );
@@ -4008,7 +4049,8 @@ $j(this).parent().addClass('selected');
 }
 });
 
-$j(".geekFlux4Widget").flux4();
+if (typeof($j(".geekFlux4Widget").sm4) == "function") $j(".geekFlux4Widget").sm4();
+else if (typeof($j(".geekFlux4Widget").flux4) == "function") $j(".geekFlux4Widget").flux4();
 }
 
 MTV.loadFluxLibs = function(){
@@ -4034,12 +4076,14 @@ MTVN.Flux.widgetDelayLoad("load");
 */
 
 $j(function() {
+/* Only video pages are using flux4 plugin. The rest of mtv is using sm4 plugin. */
 
-$j(".flux4Widget").flux4();
-}); 
+if (typeof($j(".flux4Widget").sm4) == "function") $j(".flux4Widget").sm4();
+else if (typeof($j(".flux4Widget").flux4) == "function") $j(".flux4Widget").flux4();
+
+});
 
 }
-
 function postedDateTime(postedDateTime) {
 var utc = new Date(postedDateTime);
 var offset = -utc.getTimezoneOffset()*60;
@@ -4060,14 +4104,33 @@ document.write("Posted " + (posted.getMonth()+1) + "/" + posted.getDate() + "/" 
 //usage: postedDateTime("2011-07-19T15:58:17Z") - returns: Posted 7/19/2011 3:58pm EST
 
 /* FLUX4 Core */
-
-var MTVN = MTVN || {};
+MTVN = MTVN || {};
 MTVN.conf = MTVN.conf || {};
 MTVN.conf.flux4 = MTVN.conf.flux4 || {};
+MTVN.conf.sm4 = MTVN.conf.sm4 || {};
+MTVN.conf.sm4["ucid"] = "D3FCFFFF0002D51D0002FFFFFCD3";
+MTVN.conf.flux4["ucid"] = MTVN.conf.sm4["ucid"];
 
-MTVN.conf.flux4["ucid"] = "D3FCFFFF0002D51D0002FFFFFCD3";
+MTVN.conf.watch = function (obj, prop, handler) { // make this a framework/global function
+var currval = obj[prop];
+function callback() {
+if (obj[prop] != currval) {
+var temp = currval;
+currval = obj[prop];
+handler(temp, currval);
+}
+}
+return callback;
+}
 
-MTVN.conf.flux4["widgets"] = {
+MTVN.conf.ucidOnChange = function (oldval, newval) {
+//do something
+MTVN.conf.sm4["ucid"] = MTVN.conf.flux4["ucid"];
+};
+
+var intervalH = setInterval(MTVN.conf.watch(MTVN.conf.flux4, 'ucid', MTVN.conf.ucidOnChange), 100);
+
+MTVN.conf.sm4["widgets"] = {
 "userBar": {
 "name": "UserBar",
 "opts": {
@@ -4116,6 +4179,19 @@ fbPublishing:true
 }
 },
 
+"maShare": {
+"name": "Share",
+"opts": {
+title: "Share this page ",
+layout: 'horizontal',
+elements: [
+{ id: 'Facebook', layout:'button_count', type: 'fblike', colorScheme: 'dark', send: false },
+{ id: 'Twitter', originalButton: true, urlSettings: { related: 'mtvnews',via: "MTV", count: 'none'} },
+{ id: 'GooglePlusOne', count:false}
+]
+}
+},
+
 "userProfile": {
 "name": "UserProfile",
 "opts": {
@@ -4134,7 +4210,7 @@ tabs: [
 "name": "Follow",
 "opts": {
 title: '',
-contentUri: MTVN.conf.flux4.ucid,
+contentUri: MTVN.conf.sm4.ucid,
 layout: 'horizontal',
 elements: [{ id: 'facebook', layout:'button_count'}, { id: 'twitter', width:'130px'}, { id: 'flux', title: 'My MTV', showCounter: false}]
 },
@@ -4151,7 +4227,7 @@ $j('#wFollowContent').appendTo('#wFollow');
 "opts": {
 title: '',
 followParent: true,
-contentUri: MTVN.conf.flux4.ucid,
+contentUri: MTVN.conf.sm4.ucid,
 layout: 'horizontal',
 elements: [{ id: 'facebook', layout:'button_count'}, { id: 'twitter', width:'130px'}, { id: 'flux', title: 'My MTV', showCounter: false}]
 },
@@ -4199,10 +4275,17 @@ defaultFilter: 'Comments',
 enableComments: true,
 topOrder: true,
 showPostToFacebook: false,
-commentMessage: 'Join the conversation ...'
+commentMessage: 'Join the conversation ...', 
+showPopularActivities: true,
+popularActivitiesFilter: 'CommentContent',
+popularActivitiesCount: 3,
+popularHeaderText: 'Top Comments'
 },
 "onLoad": function(widget) {
 setTimeout(function() {
+$j('ol.popularActivitiesList .repliesContainer .replyLink').each(function(index) {
+$j(this).html('Reply');
+}),	
 $j('ol.activityList .repliesContainer .replyLink').each(function(index) {
 $j(this).html('Reply');
 })	
@@ -4253,10 +4336,24 @@ elements: [
 title: " ",
 layout: 'horizontal',
 elements: [
-{ id: 'Facebook', layout:'button_count', type: 'fblike', colorScheme: 'light', send: false },
+{ id: 'Facebook', layout:'button_count', type: 'fblike', colorScheme: 'dark', send: false },
 { id: 'Twitter', originalButton: true, urlSettings: { related: 'mtvnews',via: "MTV" } },
 { id: 'GooglePlusOne', count:false},	
-{ id: 'Tumblr' },
+//{ id: 'Tumblr' },
+{ id: 'More', title: 'More&raquo;' }
+]
+}
+},
+
+"photoShareNEW": {
+"name": "Share",
+"opts": {
+title: " ",
+layout: 'horizontal',
+elements: [
+{ id: 'Facebook', layout:'button_count', type: 'fblike', colorScheme: 'dark', send: false },
+{ id: 'Twitter', originalButton: true, urlSettings: { related: 'mtvnews',via: "MTV" } },
+{ id: 'GooglePlusOne', count:false},	
 { id: 'More', title: 'More&raquo;' }
 ]
 }
@@ -4403,7 +4500,7 @@ title: " ",
 layout: 'horizontal',
 elements: [
 { id: 'Facebook', layout:'button_count', type: 'fblike', action: 'recommend', colorScheme: 'light', send: false },
-{ id: 'Twitter', originalButton: true, urlSettings: { related: 'mtvnews', via: "MTV" } },
+{ id: 'Twitter', originalButton: true, urlSettings: { related: 'mtvnews', via: "MTVNews" } },
 { id: 'GooglePlusOne', count:false},	
 { id: 'MyEmail' },
 { id: 'More', title: 'More&raquo;' }
@@ -4419,7 +4516,7 @@ layout: 'horizontal',
 containerId: 'articleShareFooter',
 elements: [
 { id: 'Facebook', layout:'button_count', type: 'fblike', action: 'recommend', colorScheme: 'light', send: false },
-{ id: 'Twitter', originalButton: true, urlSettings: { related: 'mtvnews', via: "MTV" } },
+{ id: 'Twitter', originalButton: true, urlSettings: { related: 'mtvnews', via: "MTVNews" } },
 { id: 'GooglePlusOne', count:false},	
 { id: 'MyEmail' },
 { id: 'More', title: 'More&raquo;' }
@@ -4453,7 +4550,7 @@ widget.postReadToTimeline('mtvi_com:view','flipbook', 'onTime', 5);
 containerId: 'facebookTimeline-widget'
 },
 "onLoad": function(widget) {
-widget.postReadToTimeline('video.watches','video', 'onTime', 5);
+widget.postReadToTimeline('video.watches','video', 'onTime', 10);
 }
 },
 
@@ -4474,69 +4571,100 @@ enableComments: false
 }
 };
 
+document.write('<scr' + 'ipt type="text/javascript" src="http://btg.mtvnservices.com/lib/yepnope/1.0.1/yepnope.min.js"></script>');	
+<!--droplet src="/global/flux/js/jquery-flux4/0.11/flux4.js" /-->	
 ;(function($, w) {
+// do not redefine if the plugin is already there
+if ($.fn.sm4)
+return false
 
-var configured, conf, stub, loading, extant = {}, _guid = 0; waiting = $();
+var configured, conf = {}, stub, debugMode = false, extant = {}, _guid = 1; waiting = $();
 var version = "0.1";
+
+function log () {
+if (!debugMode)
+return false;
+
+if (typeof console == 'undefined') {
+return false;
+}
+
+console.log( Array.prototype.slice.call(arguments) );
+
+}
+
+// check to see if jQuery greater than 1.4.3, return and log error if not
+if ($().jquery < "1.4.4") {
+return log("Social Media 4 jQuery Plugin requires jQuery version 1.4.4 or higher");
+}
+
+// check to see if we are in debug mode
+
+var setDebugMode = function(url) {
+var test, qs, i;
+if (test = url) {
+qs = test.split("&")
+for (i = 0; i < qs.length; i ++) {
+if (qs[i] == "enableWidgetsDebug=true") {
+debugMode = true;
+return debugMode
+
+}
+}
+}
+debugMode = false
+return debugMode
+
+};
+
+setDebugMode(document.location.search.substr(1)) 
 
 var createConf = function() {
 
-if (w.MTVN && w.MTVN.conf && w.MTVN.conf.flux4) {
-$.extend(conf, w.MTVN.conf.flux4);
+if (w.MTVN && w.MTVN.conf && w.MTVN.conf.sm4) {
+$.extend(conf, w.MTVN.conf.sm4);
 configured = true;
 }
 
 }
 
-var loadScript = function(url, callback) {
-
-var script = document.createElement("script"),
-body = document.body;
-script.type = "text/javascript";
-
-if ( script.readyState ) { //IE <= 8
-script.onreadystatechange = function() {
-if ( script.readyState == "loaded" || script.readyState == "complete" ) {
-script.onreadystatechange = null;
-
-w.setTimeout(function() {
-callback();
-}, 500);	
+function tryCB (f) {
+if ($.isFunction(f)) {
+f();
 }
-};
-}
-else { //Others
-script.onload = function() {
-callback();
-};
 }
 
-body.insertBefore(script, body.firstChild);
-script.src = url;
+var loadCore = function(callback) {
 
+if(!window.yepnope) {
+return false
 }
 
-var loadCore = function() {
-
-var core = (MTVN.conf.flux4.staging) ? 
-"http://widgets4.flux-staging.com/Core?includeJquery=false&enableWidgetsDebug=true":
+var core = (MTVN.conf.sm4.staging) ? 
+"http://widgets4.flux-staging.com/Core?includeJquery=false":
 "http://widgets4.flux.com/Core?includeJquery=false";
 
-loading = true;
+if (debugMode) {
+core = core + "&enableWidgetsDebug=true";
+}
 
-// flux needs an id on a script tag to figure out the UCID, so we add an empty one to the document
+// Social Media Core.js needs an id on a script tag to figure out the UCID, so we add an empty one to the document
 stub = document.createElement("script");
 stub.setAttribute('id', conf.ucid);
 stub.setAttribute('widgets4Debug', "true");
 document.body.appendChild(stub)
 
-loadScript(core, function () {
-loading = false;
-if (w.Flux4) {
+window.yepnope({
+load: core,
+complete: function () {
 
-waiting.trigger("Flux4.coreLoad", [true]);
+tryCB(callback);
+
+if (w.Flux4) {
+waiting.trigger("sm4.coreLoad", [true]);
 } else {
-waiting.trigger("Flux4.coreLoad", [false]);
+waiting.trigger("sm4.coreLoad", [false]);
+}
 }
 });
 
@@ -4556,7 +4684,7 @@ var wContentUri = el.data("contenturi");
 
 if (conf.widgets[wName]) {
 
-var opts = $.extend({"container": element}, conf.widgets[wName].opts)
+var opts = $.extend({}, conf.widgets[wName].opts)
 
 if (wContentUri) {
 opts.contentUri = wContentUri;
@@ -4568,30 +4696,37 @@ extant[wGuid] = wName + "|" + wContentUri;
 
 el.empty();
 
-if (window.console) {
-console.log("jQuery plugin loading widget: ")
-console.log(conf.widgets[wName]["name"])
-console.log(opts)
+log("creating: " + conf.widgets[wName]["name"] + " with opts: ");
+if (typeof JSON == 'undefined') {
+log(opts);
+} else {
+log(JSON.stringify(opts, null, 2));
 }
 
+opts["container"] = element;
+
 w.Flux4.createWidget(conf.widgets[wName]["name"], opts, function(widget) {
+
+log(conf.widgets[wName]["name"] + " success");
 
 if (conf.widgets[wName]["onLoad"]) {
 conf.widgets[wName]["onLoad"](widget);	
 }
-el.trigger("Flux4.widget.load", [widget, true, conf.widgets[wName]["name"], opts]);
+el.trigger("sm4.widget.load", [widget, true, conf.widgets[wName]["name"], opts]);
 
 });
 } else {	
-el.trigger("Flux4.widget.load", [undefined, false, conf.widgets[wName]["name"], opts]);
+
+log(conf.widgets[wName]["name"] + " fail");
+
+el.trigger("sm4.widget.load", [undefined, false, conf.widgets[wName]["name"], opts]);
 }
 } 
 }
 
-var init = function() {
+var reset = function() {
 
 configured = false;
-loading = false;
 extant = {};
 waiting = $();
 
@@ -4603,14 +4738,34 @@ stub = undefined;
 }
 }
 
-init();
+$.fn.sm4 = function(cmd) {
 
-$.fn.flux4 = function(cmd) {
+var checkAPIcount = 0;
+
+var checkAPI = function() {
+if (window.Flux4) {
+
+filtered.each(function() {
+loadElement(this);
+});
+
+} else {
+
+if (checkAPIcount++ > 4) {
+return false;	
+}
+
+loadCore(function () {
+checkAPI();
+});
+}
+}
+
 var filtered;	
 
-if (cmd == "init") {
+if (cmd == "reset") {
 
-init();
+reset();
 return this;
 
 } else if (cmd == "debug") {
@@ -4618,11 +4773,13 @@ return this;
 return {
 configured: configured,
 extant: extant,
-waiting: waiting
+waiting: waiting,
+version: version,
+setDebugMode: setDebugMode
+
 }
 
 } else {
-
 if (configured !== true) {
 createConf();
 }
@@ -4641,41 +4798,14 @@ return false;
 
 waiting = waiting.add(filtered);
 
-if (filtered.length) {
-
-if (!window.Flux4) {
-
-if (!loading) {
-loadCore(filtered);
-}
-
-filtered.bind("Flux4.coreLoad", function(){
-
-loadElement(this);
-});
-
-} else {
-
-filtered.each(function() {
-loadElement(this);
-});
-
-}
-} 
+checkAPI();
 }
 
 return filtered;
 
 };
 
-})(jQuery, window);
-
-var adlSite='autres-sites-mtv.com';
-var adlZone='ros';
-var adlKv='';
-var adlHasDcopt = false;
-var adlPro=window.location.protocal=='https:'?'https:':'http:';
-document.write('<'+'sc'+'ript type="text/javascript" src="'+adlPro+'//js.himediads.com/js?lang=fr&s='+adlSite+'&z='+adlZone+'&d='+Math.floor(Math.random()*10000000000)+'"><\/'+'sc'+'ript>');	
+})(window["jQuery"] || window["Zepto"], window);
 
 function loadimgcarousel(obj){
 var carouselDiv= $j(obj).parents('.h-wrap').parent();
@@ -4710,3 +4840,5 @@ $j(this).attr("src",tmpLongDesc)[0].removeAttribute("longdesc",0);
 }
 });
 
+MTVN.backloc = MTVN.Utils.Cookies.read('mtvnbackloc')+'';
+MTVN.Utils.Cookies.create('mtvnbackloc',window.location.href+'');

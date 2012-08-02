@@ -13,38 +13,24 @@ $(document).ready(function() {
 	
 	
 	var isAnimateOut = false;		//set the variable to false to show that the slide menu is "in"
-	$("#slideMenuTag").hover(function(){		//calls the hover function for the sliderTag id
-			if ( !isAnimateOut ) {
-			$( "#slideMenu" ).stop(true, false).animate({
-				marginLeft: 0
-			}, 'slow', 'swing', function(){
-				isAnimateOut = true;
-				$( "#slideMenu" ).show(function () {
-					$(this).css ( 'margin-left', '0px' )
-				});
-			});
-			//$("#topMenuImage").html('<img src="/etc/designs/gmcom/images/labelOut.jpg"/>');
-			$("div.slidermenu-arrow-top").removeClass().addClass("slidermenu-arrow-top-mo");
-			$("div.slidermenu-arrow-btm").removeClass().addClass("slidermenu-arrow-btm-mo");
-		
-		}
-	},function(){
-        if ( isAnimateOut ) {
-			$( "#slideMenu" ).animate({
-				marginLeft: offsetSet()
-			}, 'slow', 'swing', function(){
-			//$("#topMenuImage").html('<img src="/etc/designs/gmcom/images/labelIn.jpg"/>');
-			$("div.slidermenu-arrow-top-mo").removeClass().addClass("slidermenu-arrow-top");
-			$("div.slidermenu-arrow-btm-mo").removeClass().addClass("slidermenu-arrow-btm");
-
-				$("#openCloseIdentifier").hide();
-				isAnimateOut = false;
-			});
-		}
-	})
+	
 	if($('body').hasClass('mobile')){
 		 $("#slideMenuTag").click(function(){
-			if ( isAnimateOut ) {
+			if ( !isAnimateOut ) {
+				$( "#slideMenu" ).stop(true, false).animate({
+					marginLeft: 0
+				}, 'slow', 'swing', function(){
+					isAnimateOut = true;
+					$( "#slideMenu" ).show(function () {
+						$(this).css ( 'margin-left', '0px' )
+					});
+				});
+				//$("#topMenuImage").html('<img src="/etc/designs/gmcom/images/labelOut.jpg"/>');
+				$("div.slidermenu-arrow-top").removeClass().addClass("slidermenu-arrow-top-mo");
+				$("div.slidermenu-arrow-btm").removeClass().addClass("slidermenu-arrow-btm-mo");
+			
+			}
+			else {
 				$( "#slideMenu" ).animate({
 					marginLeft: offsetSet()
 				}, 'slow', 'swing', function(){
@@ -56,10 +42,40 @@ $(document).ready(function() {
 					isAnimateOut = false;
 				});
 			}
-			else
-				return;
 		});
 	}
+	else{
+		$("#slideMenuTag").hover(function(){		//calls the hover function for the sliderTag id
+				if ( !isAnimateOut ) {
+				$( "#slideMenu" ).stop(true, false).animate({
+					marginLeft: 0
+				}, 'slow', 'swing', function(){
+					isAnimateOut = true;
+					$( "#slideMenu" ).show(function () {
+						$(this).css ( 'margin-left', '0px' )
+					});
+				});
+				//$("#topMenuImage").html('<img src="/etc/designs/gmcom/images/labelOut.jpg"/>');
+				$("div.slidermenu-arrow-top").removeClass().addClass("slidermenu-arrow-top-mo");
+				$("div.slidermenu-arrow-btm").removeClass().addClass("slidermenu-arrow-btm-mo");
+			
+			}
+		},function(){
+					if ( isAnimateOut ) {
+				$( "#slideMenu" ).animate({
+					marginLeft: offsetSet()
+				}, 'slow', 'swing', function(){
+				//$("#topMenuImage").html('<img src="/etc/designs/gmcom/images/labelIn.jpg"/>');
+				$("div.slidermenu-arrow-top-mo").removeClass().addClass("slidermenu-arrow-top");
+				$("div.slidermenu-arrow-btm-mo").removeClass().addClass("slidermenu-arrow-btm");
+	
+					$("#openCloseIdentifier").hide();
+					isAnimateOut = false;
+				});
+			}
+		});
+	}
+	
 	$( window ).resize( function() {
 		if(!isAnimateOut){
 			$( "#slideMenu" ).css({ marginLeft: offsetSet() });

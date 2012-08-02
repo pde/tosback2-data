@@ -23,6 +23,8 @@ else if ( window.location.host == "p15dev.samsung.com" ) s_account = "sssamsungn
 else if ( window.location.host == "p15stgapp.samsung.com" ) s_account = "sssamsungnewusdev";
 else if ( window.location.host == "p15stgweb.samsung.com" ) s_account = "sssamsungnewusdev";
 else if ( window.location.host == "p15prod.samsung.com" ) s_account = "sssamsungnewusdev";
+else if ( window.location.host == "appstore.samsung.com" ) s_account = "sssamsungnewusdev";
+else if ( window.location.host == "cho.samsung.com:8480" ) s_account = "sssamsungnewusdev";
 else s_account = "sssamsungnewusdev"; 
 
 
@@ -277,6 +279,12 @@ if(typeof(omn_ss_supportProductSubType) != 'undefined' && omn_ss_supportProductS
 if(typeof(omn_ss_howToGuide) != 'undefined' && omn_ss_howToGuide.length > 0)
 {
     s.eVar16 = omn_ss_howToGuide.toLowerCase();
+}
+
+
+if(typeof(omn_ss_appname) != 'undefined' && omn_ss_appname.length > 0)
+{
+    s.eVar42 = omn_ss_appname.toLowerCase();
 }
 
 /*1.0.5*/

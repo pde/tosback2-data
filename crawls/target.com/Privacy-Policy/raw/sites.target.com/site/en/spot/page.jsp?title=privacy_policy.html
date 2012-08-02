@@ -287,69 +287,176 @@ var scriptURL_Global = "";
 		
 		
           <div id="LogoWrapper"> <a href="http://www.target.com/"><span class="screen-reader-only">Target</span></a> </div>
-          <div class="tgt_gn_acc_title"> </div>
+         <div class="tgt_gn_acc_title">
+   
+</div>
 
-  
-		  
 <div id="userWrapper">
-	<ul id="UserMenu">	
-	  <li> <a href="https://www-secure.target.com/EverestLoginView?langId=-1&storeId=10151&catalogId=10051" title="sign in" id="" rel="nofollow">sign in</a> </li>
-	  <li> <a id="headerGuest" href="https://www-secure.target.com/GuestRegistration?langId=-1&storeId=10151&catalogId=10051" title="new guest" rel="nofollow">new guest?</a> </li>
-	  <li> <a id="headerMyAccount" href="https://www-secure.target.com/EverestLoginView?langId=-1&storeId=10151&catalogId=10051" title="my account" rel="nofollow">my account</a> </li>
-	</ul>
-</div> 
-  
-<script type="text/javascript">
-		Target.globals.mediapath = 'http://Img2.targetimg2.com/wcsstore/TargetSAS/';	
-		Target.globals.loginWrapper={
 
-	"guestUser":{
-		"welcomeGuestUser":"hello guest",
-		"welcome":
-			{"id":"OpenLoginPopup","title":"sign in","url":"javascript:void(0)","text":"sign in"},
-		"myAccount":
-			{"id":"headerMyAccount","title":"my account","url":"https://www-secure.target.com/EverestLoginView?langId=-1&storeId=10151&catalogId=10051","text":"my account"},
-		"loginStatus":
-			{"id":"headerGuest","title":"new guest","url":"https://www-secure.target.com/GuestRegistration?langId=-1&storeId=10151&catalogId=10051","text":"new guest?"}					
-	},
-	"LoggedUser":{
-		"welcomeLoggedUser":"hello ",
-		"welcome":
-			{"id":"headerWelcome","title":"","url":"","text":"Hello "},		
-		"loginStatus":
-			{"id":"headerMyAccount","title":"my account","url":"https://www-secure.target.com/UserHome?langId=-1&storeId=10151&catalogId=10051","text":"my account"},		
-		"myAccount":
-			{"id":"headerGuest","title":"sign out","url":"https://www-secure.target.com/Logoff?langId=-1&storeId=10151&catalogId=10051&cmdName=LogOff&URL=EverestLoginView","text":"sign out"}	
-	}
+ 	<ul id="UserMenu">
+		<li>
+			
+					<a href="javascript:void(0);" title="sign in" id="OpenLoginPopup" rel="nofollow">sign in</a>
+					<div id="Login-container">
+						
+<ul>
+    <li><a id="CloseLoginPopup" href="page.jsp%3Ftitle=privacy_policy.html#">sign in</a></li>
+</ul>
+<div class="box">
+	<form action="https://www-secure.target.com/EverestLoginoverlay" id="OverlayLoginForm" class="autocomplete no-summary" method="post" > 
+		<fieldset>
+			<input type="hidden" name="storeId" value="10151" />
+			<input type="hidden" name="catalogId" value="10051" />					
+			<input type="hidden" name="langId" value="-1" />
+			<input type="hidden" name="reLogonURL" value="EverestLoginView" />
+			<input type="hidden" name="rememberMe" value="true" />
+			<input type="hidden" name="migrationRequired" value="" />
+			<input type="hidden" name="redirectToURL" value="" />
+			<input type="hidden" name="isReqURLDecode" value="false" />
+			<input type="hidden" name="authToken" value="" id="WC_OverlayLoginForm_authToken_1"/>
+			
+				 	<input type="hidden" name="currentUrl" value="" id="currentUrl" />					
+				 
+					<input type="hidden" id="currentView" name="currentView" value="CatalogSearchView" />	
+				
+			
+			<ul class="formRows">
+                <li class="formRow">
+                	<label for="EmailPopup"><span class="input-required-mark">*</span>email:</label>
+		 			<input type="text" name="logonEmailId" maxlength="254" value="" id="email-address" class="autocomplete">            
+                </li>
+                <li class="formRow">
+                	<label for="PasswordPopup"><span class="input-required-mark">*</span>password:</label>
+					<input type="password" name="logonPwd" maxlength="20" value="" id="password" class="autocomplete">
+                </li>
+            </ul>
+            	
+           	<input type="hidden" name="Login" value="Login" />	
+
+			<ul class="buttonList">
+				<li class="buttonUnit">
+					<button id="ButtonPopupLogin" class="button" type="submit">
+						<span class="buttonText">sign in</span>
+					</button>                
+				</li>	
+			</ul>		
+				
+		</fieldset>
+		
+ 		<p><a href="https://www-secure.target.com/RecoverPasswordView?langId=-1&storeId=10151&catalogId=10051" title="Forgot your password? Opens password retrieval page.">Forgot your&nbsp;password?</a></p>
+           <p>Don't have an account? <a href="https://www-secure.target.com/GuestRegistration?langId=-1&storeId=10151&catalogId=10051" title="Create an account. Opens account registration page">create one now</a></p>
+
+ 		
+	</form>
+	<!-- DNE comment --><style>
+#REDCard_March {background: url("../../../../tgtfiles.target.com/2012/iH/REDCard/redcardLogo.png") no-repeat scroll 0 0 transparent; height: 35px; margin: 0 auto 15px; padding-left: 55px; width: 240px;}
+#REDCard_March p {color: #999999; font-size: 12px; line-height: 16px;}
+#Header #REDCard_March p a:link {color: #0069ff}
+</style>
+<div id="REDCard_March">
+<p><a href="http://www.target.com/redcard/manage">Manage my REDcards</a></p>
+<p>5% off today and everyday. <a href="http://www.target.com/redcard/benefits-target-rewards">Learn more</a></p>
+</div>
+</div>
+
+
+<input type="hidden" id="loginOverlayURL" value="https://www-secure.target.com/EverestLogin?langId=-1&storeId=10151&catalogId=10051" />
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#OverlayLoginForm").validate({
+			rules: {
+				logonEmailId: {
+				    required:true,
+				    email:true
+				},
+				logonPwd: {
+				    required: true
+				}
+			},
+			messages: {
+				logonEmailId: {
+				    required:'Please enter e-mail Address.',
+				    email:'Make sure your email is correct, and that it is in this format: name@provider.com.'
+				},
+				logonPwd: {
+				    required: 'Password is required.'
+				}
+			}
+		});
+	});
 	
-	}
+	//load curtain on click of submit button
+		$('#ButtonPopupLogin').live("click",function(e){
+			$('body').showCurtain();
+		});
 </script>
+					</div>
+				
+		</li> 
+    	<li>
+    		<a id="headerGuest" href="https://www-secure.target.com/GuestRegistration?langId=-1&storeId=10151&catalogId=10051" title="new guest" rel="nofollow">new guest?</a>
+    	</li>
+    	<li>
+    		<a id="headerMyAccount" href="https://www-secure.target.com/EverestLoginView?langId=-1&storeId=10151&catalogId=10051" title="my account" rel="nofollow">my account</a>
+    	</li>
+  	</ul>
+</div>
+
+ 
+		<script type="text/javascript">
+			Target.globals.mediapath = 'http://Img2.targetimg2.com/wcsstore/TargetSAS/';	
+			Target.globals.loginWrapper={
 	
+		"guestUser":{
+			"welcomeGuestUser":"hello guest",
+			"welcome":
+				{"id":"OpenLoginPopup","title":"sign in","url":"javascript:void(0)","text":"sign in"},
+			"myAccount":
+				{"id":"headerMyAccount","title":"my account","url":"https://www-secure.target.com/EverestLoginView?langId=-1&storeId=10151&catalogId=10051","text":"my account"},
+			"loginStatus":
+				{"id":"headerGuest","title":"new guest","url":"https://www-secure.target.com/GuestRegistration?langId=-1&storeId=10151&catalogId=10051","text":"new guest?"}					
+		},
+		"LoggedUser":{
+			"welcomeLoggedUser":"hello ",
+			"welcome":
+				{"id":"headerWelcome","title":"","url":"","text":"Hello "},		
+			"loginStatus":
+				{"id":"headerMyAccount","title":"my account","url":"https://www-secure.target.com/UserHome?langId=-1&storeId=10151&catalogId=10051","text":"my account"},		
+			"myAccount":
+				{"id":"headerGuest","title":"sign out","url":"https://www-secure.target.com/Logoff?langId=-1&storeId=10151&catalogId=10051&cmdName=LogOff&URL=EverestLoginView","text":"sign out"}	
+		}
+		
+		}
+	</script>
 	
-    	  <!-- Menu Started -->
-    	  <div>
-    <form name="CatalogSearchForm" action="http://sites.target.com/s" method="get" id="Search">
+
+
+
+
+<div>	
+    <form name="CatalogSearchForm" action="http://www.target.com/s" method="get" id="Search">
       <fieldset>
         <label for="SearchField" class="screen-reader-only">search</label>
         <input id="searchTerm" name="searchTerm"
 	type="text" class="text" value="" maxlength="50" autocomplete="off"/>
         <a id="SearchCategories" href="page.jsp%3Ftitle=privacy_policy.html#searchCategories"> <span id="selectedCategory">all categories</span> <span id="categoryListTypeVal" class="screen-reader-only">Expand List</span> </a>
-        <input type="hidden" value="0|All|matchallany|all categories" id="category" name="category">
+        <input type="hidden" value="0|All|matchallpartial|all categories" id="category" name="category">
         <div id="SearchCategoryList">
           <ul>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="1" name="category" title="all categories" value="0|All|matchallany|all categories"  class="checked">all categories</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="4618" name="category" title="women" value="9975783|All|matchallany|women">women</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="3663" name="category" title="men" value="9976707|All|matchallany|men">men</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="4258" name="category" title="baby" value="9976102|All|matchallany|baby">baby</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="3809" name="category" title="kids" value="9976561|All|matchallany|kids">kids</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="3929" name="category" title="home" value="9976441|All|matchallany|home">home</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="3948" name="category" title="furniture" value="9976167|All|matchallany|furniture">furniture</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="4169" name="category" title="patio" value="9976257|All|matchallany|patio">patio</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="4476" name="category" title="electronics" value="9975894|All|matchallany|electronics">electronics</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="9501" name="category" title="entertainment" value="9975218|All|matchallany|entertainment">entertainment</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="4694" name="category" title="toys" value="9975708|All|matchallany|toys">toys</a> </li>
-            <li> <a href="page.jsp%3Ftitle=privacy_policy.html#" id="3703" name="category" title="health & beauty" value="9976667|All|matchallany|health & beauty">health & beauty</a> </li>
-          </ul>
+              <li> <a class="checked" value="0|All|matchallpartial|all categories" title="all categories" name="category" id="1" href="page.jsp%3Ftitle=privacy_policy.html#">all categories</a> </li>
+              <li> <a value="9975783|All|matchallpartial|women" title="women" name="category" id="4618" href="page.jsp%3Ftitle=privacy_policy.html#">women</a> </li>
+              <li> <a value="9976707|All|matchallpartial|men" title="men" name="category" id="3663" href="page.jsp%3Ftitle=privacy_policy.html#">men</a> </li>
+              <li> <a value="9976102|All|matchallpartial|baby" title="baby" name="category" id="4258" href="page.jsp%3Ftitle=privacy_policy.html#">baby</a> </li>
+              <li> <a value="9976561|All|matchallpartial|kids" title="kids" name="category" id="3809" href="page.jsp%3Ftitle=privacy_policy.html#">kids</a> </li>
+              <li> <a value="9976441|All|matchallpartial|home" title="home" name="category" id="3929" href="page.jsp%3Ftitle=privacy_policy.html#">home</a> </li>
+              <li> <a value="9976167|All|matchallpartial|furniture" title="furniture" name="category" id="3948" href="page.jsp%3Ftitle=privacy_policy.html#">furniture</a> </li>
+              <li> <a value="9976257|All|matchallpartial|patio" title="patio" name="category" id="4169" href="page.jsp%3Ftitle=privacy_policy.html#">patio</a> </li>
+              <li> <a value="9975894|All|matchallpartial|electronics" title="electronics" name="category" id="4476" href="page.jsp%3Ftitle=privacy_policy.html#">electronics</a> </li>
+              <li> <a value="9975218|All|matchallpartial|entertainment" title="entertainment" name="category" id="9501" href="page.jsp%3Ftitle=privacy_policy.html#">entertainment</a> </li>
+              <li> <a value="9975708|All|matchallpartial|toys" title="toys" name="category" id="4694" href="page.jsp%3Ftitle=privacy_policy.html#">toys</a> </li>
+              <li> <a value="9976667|All|matchallpartial|health &amp; beauty" title="health &amp; beauty" name="category" id="3703" href="page.jsp%3Ftitle=privacy_policy.html#">health &amp; beauty</a> </li>
+            </ul>
         </div>
         <button type="submit" id="searchMagnify">Search</button>
       </fieldset>
@@ -2371,7 +2478,7 @@ Added		: 11/10/11
 </style>
     <div id="globalPromise" class="GblHdrPrms1_111311"> <a href="http://dailydeals.target.com"> <span>daily deals. one day only. always free shipping.</span> </a> </div>
     <ul id="ShopMenu">
-      <li class="shop-menu-item"> <a href="http://sites.target.com/site/en/spot/page.jsp?title=store_locator_new" title="find a store"> find a store </a> </li>
+      <li class="shop-menu-item"> <a href="http://www.target.com/store-locator/find-stores" title="find a store"> find a store </a> </li>
       <li class="shop-menu-item"> <a href="http://weeklyad.target.com/" title="Weekly Ad"> Weekly Ad </a> </li>
       <li class="shop-menu-item"> <a href="http://www.target.com/c/GiftCards/-/N-5xsxu" title="GiftCards"> GiftCards </a> </li>
       <li class="shop-menu-item default"> <a href="http://www.target.com/GenericRegistryPortalView?registryType=R&pageName=GenericRegistryPortalView" grda="http://www.target.com/GenericRegistryPortalView?registryType=R&pageName=GenericRegistryPortalView" class="grdaHover" title="registries">registries</a>
@@ -2905,7 +3012,7 @@ Added		: 11/10/11
                   <h3>Target stores</h3>
                   <div class="submenu">
                     <ul>
-                      <li><a href="http://sites.target.com/site/en/spot/page.jsp?title=store_locator_new">find a store</a></li>
+                      <li><a href="http://www.target.com/store-locator/find-stores">find a store</a></li>
                       <li><a href="http://sites.target.com/site/en/spot/page.jsp?title=clinic_home&ref=nav_phrm_2_1">clinic</a></li>
                       <li><a href="http://sites.target.com/site/en/spot/page.jsp?title=optical&ref=nav_t_15_12">optical</a></li>
                       <li><a href="http://sites.target.com/site/en/spot/page.jsp?title=pharmacy_landing">pharmacy</a></li>
@@ -2958,15 +3065,15 @@ Added		: 11/10/11
                   <h3>the REDcard</h3>
                   <div class="submenu">
                     <ul>
-                      <li><a rel="nofollow" href="https://redcard.target.com/redcard/content/rcw_benefits_tgt_rewards">card benefits</a></li>
-                      <li><a rel="nofollow" href="https://redcard.target.com/redcard/content/rcw_tck_application">how to apply</a></li>
+                      <li><a rel="nofollow" href="http://www.target.com/redcard/benefits-target-rewards">card benefits</a></li>
+                      <li><a rel="nofollow" href="http://www.target.com/redcard/application">how to apply</a></li>
                       <li><a rel="nofollow" href="https://rcam.target.com">manage my REDcard</a></li>
                     </ul>
                   </div>
                   <div id="redcard">
                     <p class="S_Gray_Dark_Bold_16px_333333">5% off</p>
                     <p><span class="S_Black_10px_000000">plus everyday free shipping</span></p>
-                    <a rel="nofollow" href="https://redcard.target.com/redcard/content/rcw_benefits_tgt_rewards">learn more</a> </div>
+                    <a rel="nofollow" href="http://www.target.com/redcard/benefits-target-rewards">learn more</a> </div>
                 </div>
               </div>
             </div>

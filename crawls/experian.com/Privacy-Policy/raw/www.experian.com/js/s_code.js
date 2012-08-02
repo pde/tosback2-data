@@ -176,11 +176,13 @@ function s_doPlugins(s) {
 
 	if(s.channel) {
 		switch(s.channel.toLowerCase()) {
-			case 'consumer': s.eVar46 = '+1'; break;
-			case 'enterprise': s.eVar46 = '-1'; break;
-			case 'small business': s.eVar46 = '-1'; break;
-			case 'ecd': if(s.events.match(/purchase/i)) { s.eVar46 = '+5' } else { s.eVar46 = '+2' }; break;
-			case 'ecaps': s.eVar46 = '+2'; break;
+			case 'consumer': s.eVar46 = '+1'; s.eVar48 = '+1'; break;
+			case 'enterprise': s.eVar46 = '-1'; s.eVar49 = '+1'; break;
+			case 'small business': s.eVar46 = '-1'; s.eVar49 = '+1'; break;
+			case 'ecd': if(s.events.match(/purchase/i)) { s.eVar46 = '+5' } else { s.eVar46 = '+2' }; s.eVar48 = '+1'; break;
+			case 'ecaps': s.eVar46 = '+2'; s.eVar12 = '+1'; break;
+			case 'corporate': s.eVar34 = '+1'; break;
+			case 'connect': s.eVar25 = '+1'; break;
 		}
 	}
 	if(s.events.match(/event11/i)) { s.eVar46 = '+1' }

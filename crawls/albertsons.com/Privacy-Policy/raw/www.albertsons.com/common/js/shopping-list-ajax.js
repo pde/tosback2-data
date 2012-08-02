@@ -1,4 +1,6 @@
-var maxVisibleItems = 10;
+if (typeof maxVisibleItems === "undefined") {
+  var maxVisibleItems = 10;
+}
 
 function addShoppingListItem(oShoppingListItem, fCallback) {
 

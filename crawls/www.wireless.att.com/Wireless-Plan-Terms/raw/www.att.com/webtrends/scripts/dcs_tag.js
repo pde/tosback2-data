@@ -1,6 +1,8 @@
 // -- START WebTrends --
 //  DATE     MODIFICATION                                                                       Author
 //===========================================================================================================
+//  07/23/2012 1) Ignore the erroneous parms coming through from B2C's 'reporting.js'               ms
+//             2) append leading slash if it is missing
 //  02/21/2012 per jira ECAP-1446 added function dcsSrcImpExt to support 'wtSourceUID' & 'wtExtndSource'   ms 
 //  08/16/2011 add processing for cookie 'fsr.s'                                                    ms
 /// 07/27/2011 added '/olam/uverseDashboardAction.olamexecute' for source code impression           ms
@@ -305,6 +307,8 @@
 
 		    DCS.dcssip=window.location.hostname;
 			DCS.dcsuri=window.location.pathname;
+			//MS 07/23/2012 due to browser caused issue append leading slash if it is missing:
+			DCS.dcsuri=(DCS.dcsuri.substring(0,1)!= "/") ? "/"+DCS.dcsuri:DCS.dcsuri;
 
 			// See if any parms are on the URL:
 			if (window.location.search){
@@ -523,7 +527,10 @@
 			}
 
 			for (N in DCSext){
-				if (DCSext[N]) {
+				//MS 07/23/2012  Ignore the erroneous parms coming through from B2C's 'reporting.js':
+				chkNValFunc=String(DCSext[N]).indexOf("function");
+				chkNValBrkt=String(DCSext[N]).indexOf("{");
+				if ( (DCSext[N]) && (chkNValFunc == -1 && chkNValBrkt == -1) ) {
 
 					//MS 01/20/2010  Check for "wtaka..." parm(s):
 					if (N.indexOf("wt_aka_") >= 0) {
@@ -532,10 +539,7 @@
 						if (typeof(wtAkaVal) == "undefined")
 							{
 							// wtAkaVal NOT found, drop a session cookie & continue to allow wtaka parms to be written:
-							
-							///mitch check this domain before going to prod:
-							dcsSetCookie("wtAka","y","","","","/",".cingular.net","");
-							//dcsSetCookie("wtAka","y","","","","/",".att.com","");
+							dcsSetCookie("wtAka","y","","","","/",".att.com","");
 
 							// use this to override the omission of writing it on the first page where we set the session cookie, check for it way below this:
 							var wtAkaPass1="y";

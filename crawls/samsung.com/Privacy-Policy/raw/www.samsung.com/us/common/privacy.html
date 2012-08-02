@@ -44,15 +44,104 @@ var omn_ss_loggedin = "not logged in";
 			
 	<div id="main-nav">
 	    <div class="nav-container">
-				<link rel="stylesheet" type="text/css" href="../css/badgeville.css"/>
-<link rel="stylesheet" type="text/css" href="../css/badgeville2.css"/>
-<link href="../css/cesphotobrowser.css" rel="stylesheet" type="text/css" />
-
+				<script type="text/javascript" src="../scripts/swfobject.js"></script>
 <script type="text/javascript" src="../scripts/common/cookie.js"></script>
-<script type="text/javascript" src="../scripts/swfobject.js"></script>
 <script type="text/javascript" src="../scripts/common/recently_view.js"></script>
 
+<script language="javascript" type="text/javascript">
 
+// remove the country prefix (e.g. US_xxxx) so we are left only with the original SKU
+	function psGetSKU(params)
+	{
+		var sku = params ? params.sku : null;
+
+		if (sku && sku.length > 3 && sku[2] == '_')
+			sku = sku.substr(3);
+
+		return sku;
+	}
+
+	function psGetUniqueID(params)
+	{
+		// concat the sellerID and the widgets impression Id. impression Id is unique per pageview.
+		var uniqueID =
+			'' +
+			(params.sellerId > 0 ? params.sellerId : '') +
+			(document._ps_ImpressionId && document._ps_ImpressionId.length >= 23 ? 
+				document._ps_ImpressionId.substr(0, 8) +
+					document._ps_ImpressionId.substr(9, 4) +
+					document._ps_ImpressionId.substr(14, 4) +
+					document._ps_ImpressionId.substr(19, 4) : 
+				'');
+
+		// truncate to the first 20 chars
+		uniqueID = uniqueID.substr(0, 20);
+
+		return uniqueID;
+	}
+
+	// This function will be called when the user is redirected to an online retailer. 
+	// The passed params object would contain details about the product and seller: sku, seller name, price, etc  
+	function psWidgetSellerRedirect(params)
+	{
+	    var sku = psGetSKU(params);
+		var uniqueId = psGetUniqueID(params);
+
+		var s = s_gi(s_account);
+		s.linkTrackVars = 'eVar27,eVar32,products,events';
+		s.linkTrackEvents = 'purchase,event10,event33:' + uniqueId;
+		s.events = 'purchase,event10,event33:' + uniqueId;
+		s.eVar27 = params.sellerName;
+		s.eVar32 = 'online external';
+		s.products = ';' + sku + ';1;0;event10=' + (params.price ? params.price : '');
+		s.tl(null, 'e', 'buy online');
+	}
+
+	// This function will be called when the user requests driving directions to a particular brick and mortar store
+	// The passed params object would contain details about the product and seller: sku, seller name, price, etc  
+	function psWidgetGetDirections(params)
+	{
+		var sku = psGetSKU(params);
+		var uniqueId = psGetUniqueID(params);
+
+		var s = s_gi(s_account);
+		s.linkTrackVars = 'eVar27,eVar32,products,events';
+		s.linkTrackEvents = 'purchase,event10,event35:' + uniqueId;
+		s.events = 'purchase,event10,event35:' + uniqueId;
+		s.eVar27 = params.sellerName;
+		s.eVar32 = 'in store';
+		s.products = ';' + sku + ';1;0;event10=' + (params.price ? params.price : '');
+		s.tl(null, 'e', 'buy in-store');
+	}
+
+	// Added by Shanth
+
+$(document).ready (function () {
+	var uriString = location.href;
+	recently_view_cookie_init();
+	callRecentlyViewData ();
+	if( uriString.match( 'samsung.com/us/support' + '$' ) == 'samsung.com/us/support'  ||
+		uriString.match( 'samsung.com/us/support/' + '$' ) == 'samsung.com/us/support/' )
+	{
+		$(".input_txt #searchInputBox").val("Search by Product Name or Model Number");
+		$("#searchFrm fieldset div.find_txt.textHidden").text("Find Your Product");
+	}
+});
+
+
+$(document).ready (function () {
+	var uriString = location.href;
+	recently_view_cookie_init();
+	callRecentlyViewData ();
+	if( uriString != undefined && uriString.match( 'samsung.com/us/support' + '$' ) == 'samsung.com/us/support'  ||
+		uriString.match( 'samsung.com/us/support/' + '$' ) == 'samsung.com/us/support/' )
+	{
+		$(".input_txt #searchInputBox").val("Search by Product Name or Model Number");
+		$("#searchFrm fieldset div.find_txt.textHidden").text("Find Your Product");
+	}
+});
+
+</script>
 
 <!-- OPTIMOST PAGE CODE V2.7 - Copyright 2002-2010 Autonomy Optimost -->
 <script language="javascript" type="text/javascript"><!--
@@ -97,134 +186,18 @@ if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opM
 		optimost.displayModule(opModulesArray[i]);
 	}
 }
-//--></script>
-
-<script type="text/javascript">
-
-	
-	
-(function(){
-  // if firefox 3.5+, hide content till load (or 3 seconds) to prevent FOUT
-  var d = document, e = d.documentElement, s = d.createElement('style');
-  if (e.style.MozTransform === ''){ // gecko 1.9.1 inference
-    s.textContent = 'body{visibility:hidden}';
-    e.firstChild.appendChild(s);
-    function f(){ s.parentNode && s.parentNode.removeChild(s); }
-    addEventListener('load',f,false);
-    setTimeout(f,3000); 
-  }
-})();
-</script>
-<script type="text/javascript">
-$(document).ready (function () {
-	var uriString = location.href;
-	recently_view_cookie_init();
-	callRecentlyViewData ();
-	if( uriString.match( 'samsung.com/us/support' + '$' ) == 'samsung.com/us/support'  ||
-		uriString.match( 'samsung.com/us/support/' + '$' ) == 'samsung.com/us/support/' )
-	{
-		$(".input_txt #searchInputBox").val("Search by Product Name or Model Number");
-		$("#searchFrm fieldset div.find_txt.textHidden").text("Find Your Product");
-	}
-});
-</script>
-<script type="text/javascript">
-		// remove the country prefix (e.g. US_xxxx) so we are left only with the original SKU
-	function psGetSKU(params)
-	{
-		var sku = params ? params.sku : null;
-
-		if (sku && sku.length > 3 && sku[2] == '_')
-			sku = sku.substr(3);
-
-		return sku;
-	}
-
-	function psGetUniqueID(params)
-	{
-		// concat the sellerID and the widgets impression Id. impression Id is unique per pageview.
-		var uniqueID =
-			'' +
-			(params.sellerId > 0 ? params.sellerId : '') +
-			(document._ps_ImpressionId && document._ps_ImpressionId.length >= 23 ? 
-				document._ps_ImpressionId.substr(0, 8) +
-					document._ps_ImpressionId.substr(9, 4) +
-					document._ps_ImpressionId.substr(14, 4) +
-					document._ps_ImpressionId.substr(19, 4) : 
-				'');
-
-		// truncate to the first 20 chars
-		uniqueID = uniqueID.substr(0, 20);
-
-		return uniqueID;
-	}
-	
-	
-	
-	// This function will be called when the user is redirected to an online retailer. 
-	// The passed params object would contain details about the product and seller: sku, seller name, price, etc  
-	function psWidgetSellerRedirect(params)
-	{
-	    var sku = psGetSKU(params);
-		var uniqueId = psGetUniqueID(params);
-
-		var s = s_gi(s_account);
-		s.linkTrackVars = 'eVar27,eVar32,products,events';
-		s.linkTrackEvents = 'purchase,event10,event33:' + uniqueId;
-		s.events = 'purchase,event10,event33:' + uniqueId;
-		s.eVar27 = params.sellerName;
-		s.eVar32 = 'online external';
-		s.products = ';' + sku + ';1;0;event10=' + (params.price ? params.price : '');
-		s.tl(null, 'e', 'buy online');
-	}
-
-	// This function will be called when the user requests driving directions to a particular brick and mortar store
-	// The passed params object would contain details about the product and seller: sku, seller name, price, etc  
-	function psWidgetGetDirections(params)
-	{
-		var sku = psGetSKU(params);
-		var uniqueId = psGetUniqueID(params);
-
-		var s = s_gi(s_account);
-		s.linkTrackVars = 'eVar27,eVar32,products,events';
-		s.linkTrackEvents = 'purchase,event10,event35:' + uniqueId;
-		s.events = 'purchase,event10,event35:' + uniqueId;
-		s.eVar27 = params.sellerName;
-		s.eVar32 = 'in store';
-		s.products = ';' + sku + ';1;0;event10=' + (params.price ? params.price : '');
-		s.tl(null, 'e', 'buy in-store');
-	}
-	
-	
-	// Added by Shanth
-
-	$(document).ready (function () {
-		
-		var hostName = location.hostname;
-			
-		if(hostName.indexOf('devus') != -1 || hostName.indexOf('devwww') != -1 || hostName.indexOf('dev') != -1) {
-			 document.getElementById('logout').href = 'http://sso-dev.us.samsung.com/sso/logout';
-		}
-		else if(hostName.indexOf('stgwww') != -1 || hostName.indexOf('stgapp') != -1) {
-			document.getElementById('logout').href = 'http://sso-stg.us.samsung.com/sso/logout';
-		}
-		else if(hostName.indexOf('stgweb') != -1) {
-			document.getElementById('logout').href = 'http://sso-us.samsung.com/sso/logout';
-		}
-		else {
-			document.getElementById('logout').href = 'http://sso-us.samsung.com/sso/logout';
-		}
-	
-	});
-	
-
+//-->
 </script>
 
+<div id="main-logo">
+	<ul class="centered-logo">
+		<li><a onclick="ss_link_click_track_2('','','','','top nav','o','samsung');" href="http://www.samsung.com/us/">SAMSUNG</a></li>
+	</ul>
+</div>
 
 <ul class="main">
-	<li class="products" id="flyout-trigger"><a onclick="ss_link_click_track_2('','','','','top nav','o','products');" href="privacy.html#" title="PRODUCTS" class="active">PRODUCTS</a>
+	<li class="products" id="flyout-trigger"><a onclick="ss_link_click_track_2('','','','','top nav','o','products');" href="privacy.html#" title="PRODUCTS" class="active">SHOP PRODUCTS</a>
 
-<!-- TODO: re-integrate tracking links/ominture tags -->
 		<div id="product-flyout" class="hide">
 			<div id="flyout-top"></div>
 			<div class="flyout-content">
@@ -245,7 +218,7 @@ $(document).ready (function () {
 							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:mobile:tablets');" href="http://www.samsung.com/us/mobile/galaxy-tab">Tablets</a></li>
 							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:mobile:galaxy note');" href="http://www.samsung.com/us/mobile/galaxy-note">Galaxy Note</a></li>
 							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:mobile:laptops');" href="http://www.samsung.com/us/computer/laptops">Laptops</a></li>
-							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:mobile:chromebook');" href="http://www.samsung.com/us/computer/chromebook">Chromebook</a></li>
+							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:mobile:chromebook');" href="http://www.samsung.com/us/computer/chrome-os-devices">Chrome Devices</a></li>
 						<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:mobile:mp3 players');" href="http://www.samsung.com/us/mobile/mp3-players">Media Players</a></li>
 						</ul>
 					</li>
@@ -267,7 +240,7 @@ $(document).ready (function () {
 							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:computing:tablet pcs');" href="http://www.samsung.com/us/computer/tablet-pcs/">Tablet PCs</a></li>
 							
 							
-							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:computing:chromebook');" href="http://www.samsung.com/us/computer/chromebook">Chromebook</a></li>
+							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:computing:chrome devices');" href="http://www.samsung.com/us/computer/chrome-os-devices">Chrome Devices</a></li>
 							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:computing:monitors');" href="http://www.samsung.com/us/computer/monitors">Monitors</a></li>
 							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:computing:printers');" href="http://www.samsung.com/us/computer/printers">Printers</a></li>
 						<!--	<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:computing:projectors');" href="/us/computer/projectors">Projectors</a></li> -->
@@ -282,6 +255,7 @@ $(document).ready (function () {
 							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:home appliances:microwaves');" href="http://www.samsung.com/us/appliances/microwaves">Microwaves</a></li>
 							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:home appliances:dishwashers');" href="http://www.samsung.com/us/appliances/dishwashers">Dishwashers</a></li>
 							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:home appliances:oven ranges');" href="http://www.samsung.com/us/appliances/oven-ranges">Ranges</a></li>
+							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:home appliances:vacuums');" href="http://www.samsung.com/us/appliances/vacuums">Vacuums</a></li>
 							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:home appliances:led lighting');" href="http://www.samsung.com/us/appliances/led-lighting">LED Lighting</a></li>
 						</ul>
 					</li>
@@ -329,48 +303,32 @@ $(document).ready (function () {
 
 	                        </div>
 	                    </li>
-	                    <li class="business"><a onclick="ss_link_click_track_2('','','','','top nav','o','business');" href="http://www.samsung.com/us/business" title="BUSINESS">BUSINESS</a></li>
-	                    <li class="apps"><a onclick="ss_link_click_track_2('','','','','top nav','o','apps');" href="http://www.samsung.com/us/appstore" title="APPS">APPS</a></li>
-						<li class="logo"><a onclick="ss_link_click_track_2('','','','','top nav','o','samsung');" href="http://www.samsung.com/us/">SAMSUNG</a></li>
-	                    <li class="support"><a onclick="ss_link_click_track_2('','','','','top nav','o','support');" href="http://www.samsung.com/us/support" title="SUPPORT">SUPPORT</a></li>
-	                    <li><a onclick="ss_link_click_track_2('','','','','top nav','o','my account');" href="http://www.samsung.com/us/support/account" title="MY ACCOUNT">MY ACCOUNT</a></li>
+	                    <li class="business"><a onclick="ss_link_click_track_2('','','','','top nav','o','business');" href="http://www.samsung.com/us/business" title="BUSINESS">BUSINESS SOLUTIONS</a></li>
+	                    <li class="apps" id="connected-trigger"><a onclick="ss_link_click_track_2('','','','','top nav','o','connected living');" href="privacy.html#" title="CONNECTED LIVING">CONNECTED LIVING</a>
+	      <div id="connected-flyout" class="hide">
+			<div id="flyout-top"></div>
+			<div class="flyout-content">
+				<ul class="top-list">
+					              
+	                    
+						<li class="connected-devices"><a onclick="ss_link_click_track_2('','','','','top nav','o','connecteddevices');" href="http://www.samsung.com/us/connected-devices">Connected Devices</a></li>
+	                    <li class="appstore"><a onclick="ss_link_click_track_2('','','','','top nav','o','appstore');" href="http://www.samsung.com/us/appstore" title="TV & Blu Ray Apps">TV & Blu-Ray Apps</a></li>
+	                    <li class="appstore"><a onclick="ss_link_click_track_2('','','','','top nav','o','allshare');" href="http://www.samsung.com/us/2012-allshare-play/" title="TV & Blu Ray Apps">AllShare Play</a></li>
+	                   
 
 	                </ul>
-	                
-			<script type='text/javascript'>
+	          </div>
 			
-			
-	
-	
-	
-			//<![CDATA[
-				if(!isLogin()){
-					$("#gnbLogOutArea").hide();
-					$("#gt_welcome").hide();
-					$("#gnbLogInArea").show();
-					$("#gnb_my").hide();
-					$("#gnb_ow").show();
+			<div id="flyout-bottom"></div>     
+	          </div>
+	          </li>
+	          			<li class="myaccount"><a onclick="ss_link_click_track_2('','','','','top nav','o','my account');" href="http://www.samsung.com/us/support/account" title="MY ACCOUNT">MY ACCOUNT</a></li>
+	                    <li class="support"><a onclick="ss_link_click_track_2('','','','','top nav','o','support');" href="http://www.samsung.com/us/support" title="SUPPORT">SUPPORT</a></li>
+	                    </ul>
+	                    
 
-				}else{
-					$("#gnbLogInArea").hide();
-					$("#gt_welcome").show();
-					$("#gnbLogOutArea").show();
-					$("#gnb_ow").hide();
-					$("#gnb_my").show();
-
-				}
-			//]]>
-			</script>
 			<div id="search">
-				<style>
-.listbox span {color:#00a9e0;}
-.listbox a.on { background:#d7f0fc;}
-</style>
-<script language="javascript" src="../scripts/search/spt.js" type="text/javascript"></script>
-<script language="javascript" src="../scripts/search/trans.js" type="text/javascript"></script>
-<script language="javascript" src="../scripts/search/bl.js" type="text/javascript"></script>
-<script language="javascript" src="../scripts/search/qs2.js" type="text/javascript"></script>
-
+				﻿
 <ul>
 	<li class="no_bg first"><a href="http://www.samsung.com/us/news/newsList.do?gltype=localnews">News</a></li>
 	<li><a href="http://www.samsung.com/us/aboutsamsung/">About Samsung</a></li>
@@ -383,7 +341,7 @@ $(document).ready (function () {
 	<fieldset>
 		<input name="input_keyword" id="search_input" type="text" onfocus="clearDefaultText(this, 'Search');" onblur="restoreDefaultText(this, 'Search');" autocomplete="off" value="Search" />
 		<input name="keywords" type="hidden" id="keywords" />
-		<a href="privacy.html#"><img src="../images/common/icon-search.png" alt="Search" id="search-icon" onClick="javascript:doSubmit()"/></a>
+		<a href="privacy.html#"><img src="../images/common/icon-search.png" alt="Search" id="search-icon" onClick="javascript:doSubmit('general')"/></a>
 		
 		<!-- search quick result layer -->
 		<div id="searchLayer" class="search_layer">
@@ -393,77 +351,7 @@ $(document).ready (function () {
 	</fieldset>
 </form>
 
-<script>
-//<![CDATA[
-//function showListener1(showFlag) {
-var showListener1 = function(showFlag) {	
-	if(showFlag) {
-		document.getElementById('searchLayer').style.display='block'; // �� ���̾� ���� x ��ư ���̱�
-	} else {
-		document.getElementById('searchLayer').style.display='none'; // �� ���̾� ���� x ��ư ���߱�
-	}		
-};
 
-function fnClickRecenkKeyword(recentKeyword) {
-	document.getElementById("search_form").input_keyword.value = recentKeyword;
-	doSubmit();
-}
-
-var searchFired = false;
-
-function doSubmit(id) {
-	var val = document.search_form.input_keyword.value;
-	if(id == 'footer') {
-		val = $("#" + id + "_search_input").val();
-		$("#search_input").val(val);
-	} 
-	
-	if(!searchFired) {
-		ss_search_click(val,"general",1);
-		searchFired= true;
-	}
-
-	$("#footer_keywords").val(val);
-	document.search_form.keywords.value=val;
-	document.search_form.submit();
-}
-function hideSearchText(){
-	$("#footer .search_input").attr("style", "background-image:none"); 
-};
-
-
-var sqs = new QuerySuggester("/us/function/espsearch/autoComplete.do?c=querycompletions_us&q=", 
-						document.getElementById("search_layer_body"), 
-						"search_input");
-sqs.setSubmitFunc(doSubmit);
-sqs.setShowListenerFunc(showListener1);
-sqs.setTooltipAbsolutePosition(true);
-if(sqs.setUnexpectedKeywordClickCallbackFunc)
-	sqs.setUnexpectedKeywordClickCallbackFunc(fnClickRecenkKeyword);
-	
-$('#search_input').keypress(function(event) {
-	if(event && event.keyCode  == 13) {
-		doSubmit();
-	}
-});
-
-$(window.document.body).click(function() {  
-	sqs.hide();
-});
-//]]>
-</script>
-
-<script type='text/javascript'>
-//<![CDATA[
-	if(!isLogin()){
-		$("#gnbLogOutArea").hide();
-		$("#gnbLogInArea").show();
-	}else{
-		$("#gnbLogInArea").hide();
-		$("#gnbLogOutArea").show();						
-	}
-//]]>
-</script>	
 			</div>
 		</div>
 	</div>
@@ -694,50 +582,57 @@ This Privacy Policy is effective as of March 26, 2012, and complies with Samsung
 	</div>
 	<hr />
 	<div id="footer">
-		<!-- survey for iPerception/ForeSee begins -->
+		<script type="text/javascript" src="../scripts/lazyload-min.js"></script>
+
+<!-- survey for iPerception/ForeSee begins -->
 <script type="text/javascript" src="../scripts/survey/survey.js"></script>
 <!-- survey for iPerception/ForeSee ends -->
-<!-- OPTIMOST PAGE CODE ATTRIBUTE CODE -->
-<script language="javascript" type="text/javascript"><!--
-if(typeof(omn_ss_pagetype) != 'undefined' && omn_ss_pagetype.length > 0)
-    var opPageID = omn_ss_pagetype.toLowerCase();
-//--></script>
+<script type="text/javascript">
 
-<!-- OPTIMOST PAGE CODE V2.7 - Copyright 2002-2010 Autonomy Optimost -->
-<script language="javascript" type="text/javascript"><!--
-var optimost={A:{},C:{},D:document,L:document.location,M:[],Q:{},T:new Date(),U:'',V:'2.7',Enabled:true,ST:"script",SA:
-{"type":"text/javascript"},I:function(){var s=this.L.search;var c=this.D.cookie;if(s.length>3){for(var a=s.substring(1)
-.split("&"),i=0,l=a.length;i<l;i++){var p=a[i].indexOf("=");if(p>0)this.Q[a[i].substring(0,p)]=unescape(a[i].substring(
-p+1));}}if(c.length>3){for(var a=c.split(";"),i=0,b=a.length;i<b;i++){var v=a[i].split("=");while(v[0].substring(0,
-1)==" ")v[0]=v[0].substring(1,v[0].length);if(v.length==2)this.C[v[0]]=unescape(v[1]);}}},B:function(){var n;this.A={
-};var _o=this;this.A.D_ts=Math.round(_o.T.getTime()/1000);this.A.D_tzo=_o.T.getTimezoneOffset();this.A.D_loc=_o.L.protocol+
-"//"+_o.L.hostname+_o.L.pathname;this.A.D_ckl=_o.D.cookie.length;this.A.D_ref=_o.D.referrer;if(typeof optrial=="object")
-for(n in optrial)this.A[n]=optrial[n];for(n in this.Q)this.A[n]=this.Q[n];for(n in this.C)if(n.substring(0,2)=="op")this.A[n]=
-this.C[n];},S:function(){var q='';for(var n in this.A)if(this.A[n]!=null && this.A[n]!="")q+=(q.length>0?"&":(this.U.indexOf(
-"?")>0?"&":"?"))+n+"="+escape(this.A[n]);return this.U+q;},SC:function(n,v,e,d){var de=new Date();de.setTime(
-de.getTime()+e * 1000);this.D.cookie=n+"="+escape(v)+((e==null)?"":("; expires="+de.toGMTString()))+"; path=/"+((d==
-null)?"":(";domain="+d));},SLD:function(){var sld=this.D.domain;var dp=sld.split(".");var l=dp.length;if(l<2)sld=null;
-else if(!isNaN(dp[l-1])&&!isNaN(dp[l-2]))sld=null;else sld="."+dp[l-2]+"."+dp[l-1];return sld;},R:function(r,c,d,
-e){if(this.Enabled){var b=true;if(r<1000){b=(Math.floor(Math.random()*1000)<r);if(c!=null){if(this.C[c]!=null)b=(this.C[c]!=
-"mvt-no");else this.SC(c,b?"mvt-yes":"mvt-no",e,d);}}if(b){var t='<'+this.ST+' src="'+this.S()+'"';for(n in this.SA)
-t+=(" "+n+'="'+this.SA[n]+'"');t+='><\/'+this.ST+'>';this.D.write(t);}}},addModule:function(s,f){this.M[s]=f;
-},displayModule:function(s){if(typeof this.M[s]=="function")this.M[s]();},hasModules:function(){return count(this.M)>0;
-}};optimost.I();
-//--></script>
-<!-- END OPTIMOST PAGE CODE -->
+var urlValue = String(window.location.href);
+var urlValueSplit = urlValue.split('/');
 
-<!-- OPTIMOST SELECTOR CODE V2.7 - Copyright 2002-2010 Autonomy Optimost -->
-<script language="javascript" type="text/javascript"><!--
-var optSelector = {};
-optSelector.path = "http://es.optimost.com/";
-if(window.location && window.location.protocol && window.location.protocol.toLowerCase().indexOf("https") > -1)optSelector.path = "https://by.essl.optimost.com/";
-optSelector.url_live = "es/665/c/9/u/Samsung_Live.js";optSelector.url_qa = "es/665/c/9/u/Samsung_Staging.js"; optSelector.url = optSelector.url_live;
-if (typeof(optimost)=='object') {optSelector.qc = optimost.Q["opselect"] || optimost.C["opselect"] || "none";if(optSelector.qc.toLowerCase() == "qa"){optSelector.url = optSelector.url_qa;}else if(optSelector.qc.toLowerCase() == "live"){optSelector.url = optSelector.url_live;}}
-if(optSelector.url.toLowerCase().indexOf("http") == -1)optSelector.url = optSelector.path + optSelector.url 
-document.write('<' +'script type="text/javascript" src="' + optSelector.url +'"><\/' +'script>');
-//--></script>
-<!-- END OPTIMOST SELECTOR CODE -->
+if (document.createStyleSheet)
+{
+    document.createStyleSheet("/us/css/badgeville.css");
+    document.createStyleSheet("/us/css/badgeville2.css");
+}
+else
+{
+    $('head').append('<link rel="stylesheet" href="../css/badgeville.css" type="text/css" />');
+	$('head').append('<link rel="stylesheet" href="../css/badgeville2.css" type="text/css" />');
+}
+if(urlValue.match('reviews') && !urlValue.match('accessories')){
 
+	$(function(){
+		
+		$('head').append('<link rel="stylesheet" href="../css/support/support_stylesheet.css" type="text/css" />');
+		
+	});
+	
+}
+
+if(urlValue.match('reviews') && urlValue.match('accessories')){
+
+	$(function(){
+		
+		$('#footer').append('<link rel="stylesheet" href="../css/support/support_stylesheet.css" type="text/css" />');
+		
+	});
+	
+}
+
+if(urlValueSplit[4] == 'support'){
+	
+	$(function(){
+		
+		$('head').append('<link rel="stylesheet" href="../css/support/support_stylesheet.css" type="text/css" />');
+		
+	});
+	
+}
+
+</script>
 		
 		<ul class="site_links">
 			<li class="left_group">
@@ -760,7 +655,7 @@ document.write('<' +'script type="text/javascript" src="' + optSelector.url +'">
 						<ul>
 							<li><a href="http://www.samsung.com/us/video/tvs" onclick="javascript:omnLinkTag('TVs,','>TVs,','>bottom nav>TVs,TVs,','>TVs,','>bottom nav>TVs','TVs');">TVs</a></li>
 							<li><a href="http://www.samsung.com/us/video/blu-ray-dvd" onclick="javascript:omnLinkTag('Blu-ray &amp; DVD Players,','>Blu-ray &amp; DVD Players,','>bottom nav>Blu-ray &amp; DVD Players,Blu-ray &amp; DVD Players,','>Blu-ray &amp; DVD Players,','>bottom nav>Blu-ray &amp; DVD Players','Blu-ray &amp; DVD Players');">Blu-ray &amp;<br />DVD Players</a></li>
-						<!--	<li><a href="/us/video/projectors" onclick="javascript:omnLinkTag('Projectors,','>Projectors,','>bottom nav>Projectors,Projectors,', '>Projectors,', '>bottom nav>Projectors','Projectors');">Home Projectors</a></li> -->
+						
 							<li><a href="http://www.samsung.com/us/video/home-theater" onclick="javascript:omnLinkTag('Home Theater Systems,', '>Home Theater Systems,','>bottom nav>Home Theater Systems,Home Theater Systems,','>Home Theater Systems,', '>bottom nav>Home Theater Systems','Home Theater Systems');">Home Theater<br />Systems</a></li>
 
 						</ul>
@@ -805,7 +700,7 @@ document.write('<' +'script type="text/javascript" src="' + optSelector.url +'">
 							<li><a href="http://www.samsung.com/us/computer/chromebook" onclick="javascript:omnLinkTag('Chromebook,' , '>Chromebook,' , '>bottom nav>Chromebook,Chromebook,' , '>Chromebook,' , '>bottom nav>Chromebook','Chromebook');">Chromebook</a></li>
 							<li><a href="http://www.samsung.com/us/computer/monitors" onclick="javascript:omnLinkTag('Monitors,' , '>Monitors,' , '>bottom nav>Monitors,Monitors,' , '>Monitors,', '>bottom nav>Monitors','Monitors');">Monitors</a></li>
 							<li><a href="http://www.samsung.com/us/computer/printers" onclick="javascript:omnLinkTag('Printers,' , '>Printers,' ,'>bottom nav>Printers,Printers,' , '>Printers,' , '>bottom nav>Printers','Printers');">Printers</a></li>
-					<!--		<li><a href="/us/computer/projectors" onclick="javascript:omnLinkTag('Projectors,' , '>Projectors,' , '>bottom nav>Projectors,Projectors,', '>Projectors,' , '>bottom nav>Projectors','Projectors');">Projectors</a></li> -->
+					
 							<li><a href="http://www.samsung.com/us/computer/memory-storage" onclick="javascript:omnLinkTag('Memory &amp; Storage,' , '>Memory &amp; Storage,' , '>bottom nav>Memory &amp; Storage,Memory &amp; Storage,' , '>Memory &amp; Storage,' , '>bottom nav>Memory &amp; Storage','Memory &amp; Storage');">Memory &amp; Storage</a></li>
 						</ul>
 
@@ -819,8 +714,9 @@ document.write('<' +'script type="text/javascript" src="' + optSelector.url +'">
 							<li><a href="http://www.samsung.com/us/appliances/microwaves" onclick="javascript:omnLinkTag('Microwaves,' , '>Microwaves,' , '>bottom nav>Microwaves,Microwaves,' , '>Microwaves,' , '>bottom nav>Microwaves','Microwaves');">Microwaves</a></li>
 							<li><a href="http://www.samsung.com/us/appliances/dishwashers" onclick="javascript:omnLinkTag('Dishwashers,' , '>Dishwashers,' , '>bottom nav>Dishwashers,Dishwashers,' , '>Dishwashers,' , '>bottom nav>Dishwashers','o','Dishwashers');">Dishwashers</a></li>
 							<li><a href="http://www.samsung.com/us/appliances/oven-ranges" onclick="javascript:omnLinkTag('Ranges,' , '>Ranges,', '>bottom nav>Ranges,Ranges,' , '>Ranges,' , '>bottom nav>Ranges','Ranges');">Ranges</a></li>
+							<li><a onclick="javascript:ss_link_click_track_2('','','','','top nav','o','products:home appliances:vacuums');" href="http://www.samsung.com/us/appliances/vacuums">Vacuums</a></li>
 							<li><a href="http://www.samsung.com/us/appliances/led-lighting" onclick="javascript:omnLinkTag('led lighting,' , '>led Lighting,' , '>bottom nav>LED Lighting,LED Lighting,' , '>LED Lighting,' , '>bottom nav>LED Lighting','LED Lighting');">LED Lighting</a></li>
-							<!-- <li><a href="/us/appliances/air-conditioners" onclick="javascript:omnLinkTag('Air Conditioners,' , '>Air Conditioners,' , '>bottom nav>Air Conditioners,Air Conditioners,' , '>Air Conditioners,' , '>bottom nav>Air Conditioners','Air Conditioners');">Air Conditioners</a></li> -->
+							
 						</ul>
 					</li>
 
@@ -837,6 +733,8 @@ document.write('<' +'script type="text/javascript" src="' + optSelector.url +'">
 					<li><a href="http://www.samsung.com/us/support/account" onclick="javascript:omnLinkTag('Owner benefits,' , '>Owner benefits,' , '>bottom nav>Owner benefits,Owner benefits,' , '>Owner benefits,' , '>bottom nav>Owner benefits','Owner benefits');">Owner benefits</a></li>
 					<li><a href="http://www.samsung.com/us/article" onclick="javascript:omnLinkTag('Articles,' , '>Articles,' , '>bottom nav>Articles,Articles,' , '>Articles,' , '>bottom nav>Articles','Articles');">Articles</a></li>
 					<li><a href="http://www.samsung.com/us/article/samsung/shopping-guides" onclick="javascript:omnLinkTag('Shopping Guides,' , '>Shopping Guides,' , '>bottom nav>Shopping Guides,Shopping Guides,' , '>Shopping Guides,' , '>bottom nav>Shopping Guides','Shopping Guides');">Shopping guides</a></li>
+					<li><a href="http://www.samsung.com/us/consumer/learningresources/mobile/accessibility/pop_accessibility.html" onclick="javascript:omnLinkTag('Samsung Wireless Accessibility,' , '>Samsung Wireless Accessibility,', '>bottom nav>Samsung Wireless Accessibility,Samsung Wireless Accessibility,', '>Samsung Wireless Accessibility,' , '>bottom nav>Samsung Wireless Accessibility','Samsung Wireless Accessibility');">Samsung Wireless Accessibility</li>
+
 										<li><a href="http://www.samsung.com/us/support/contact" onclick="javascript:omnLinkTag('Contact us,' , '>Contact us,', '>bottom nav>Contact us,Contact us,', '>Contact us,' , '>bottom nav>Contact us','Contact us');">Contact us</a></li>
 
 				</ul>
@@ -859,7 +757,7 @@ document.write('<' +'script type="text/javascript" src="' + optSelector.url +'">
 					<li>Follow Us:</li>
 
 					<li><a href="http://www.facebook.com/SamsungUSA" target="_"><img src="../images/common/ftr-icon-facebook.png" /></a></li>
-					<li><a href="http://twitter.com/samsungtweets" target="_"><img src="../images/common/ftr-icon-twitter.png" /></a></li>
+					<li><a href="http://twitter.com/samsungtweets" target="_"><img src="../images/common/ftr-icon-twitter-v2.png" /></a></li>
 					<li><a href="http://www.youtube.com/samsungusatube" target="_"><img src="../images/common/ftr-icon-youtube.png" /></a></li>		
 					<li><a href="https://plus.google.com/104794915167914988036?prsrc=3" style="text-decoration:none;"><img src="../../../ssl.gstatic.com/images/icons/gplus-16.png" alt="" style="border:0;width:16px;height:16px;"/></a></li>
  
@@ -871,7 +769,7 @@ document.write('<' +'script type="text/javascript" src="' + optSelector.url +'">
 				<li><a href="http://www.samsung.com/us/business">Business</a></li>
 
 				<li><a href="http://www.samsung.com/us/appstore">Apps</a></li>
-				<!-- <li><a href="#">Marketplace</a></li> -->
+				
 				<li><a href="privacy.html">Privacy</a></li>
 				<li><a href="http://www.samsung.com/us/common/legal.html">Legal</a></li>
 				<li><a href="http://www.samsung.com/us/common/sitemap.html">Sitemap</a></li>
@@ -889,74 +787,83 @@ document.write('<' +'script type="text/javascript" src="' + optSelector.url +'">
 
 		</div>
 
-		
-		
-		
-		
-		<script type="text/javascript" src="../scripts/lazyload-min.js"></script>
-		<script type="text/javascript" src="../scripts/common/mainNavigation.js"></script>
-		<script type="text/javascript" src="../scripts/common/s_code.js"></script>
-		<!-- survey for iPerception/ForeSee begins -->
-		<script type="text/javascript" src="../foresee/foresee-trigger.js"></script>
-		<!-- survey for iPerception/ForeSee ends -->
-	
-		<script type="text/javascript">
-		
+
+<script type="text/javascript" src="../scripts/search/search.min.js"></script>
+
+<script type="text/javascript" src="../scripts/common/mainNavigation.js"></script>
+<script type="text/javascript" src="../scripts/common/s_code.js"></script>
+<script type="text/javascript" src="../scripts/modal.js"></script>
 
 
-
-		function modal(filePath, width, height, print, tvtype){
-		
-			$('body').append('<div id="modal_cover" onclick="hide_Modal()" style="margin: 0; width:100%; height:100%; display:block; z-index:2147483602 !important; position:fixed; top: 0; left: 0; background: #000000; opacity: 0.8; filter: alpha(opacity=80);"></div>');
-
-			$('body').append('<div id="modal_wrapper" style="width:' + width + 'px; height:' + height + 'px; margin: -' + height / 2 + 'px 0 0 -' + width / 2 + 'px; display:block; z-index: 2147483647 !important; position:fixed; top: 50%; left: 50%; border:solid 1px black; background: #ffffff; overflow: hidden;"></div>');
-		
-			$('#modal_wrapper').load(filePath);
-			
-			$('body').append('<a href="javascript:void(0);" class="btn_close_popup" onclick="hide_Modal()" style="margin: -' + (height / 2 + 15) + 'px 0 0 -' + width / 2 + 'px; display:block; z-index:2147483647; position:fixed; top: 50%; left: 50%; color: #FFFFFF;">close layer</a>');
-		//$("div#myPrintArea").printArea([options])
-			if(print == 'print_yes' && tvtype == 'plasma'){
-				$('body').append('<a class="print_button" href="http://www.samsung.com/us/module/2011_tv_spec_grids/plasma-print.html" target="_blank" style="margin: -' + (height / 2 + 15) + 'px 0 0 -' + (width / 2 - 85) + 'px; display:block; z-index:2147483647; position:fixed; top: 50%; left: 50%; color: #FFFFFF;">printer-friendly version</a>');
-			}
-			
-			if(print == 'print_yes' && tvtype == 'led'){
-				$('body').append('<a class="print_button" href="http://www.samsung.com/us/module/2011_tv_spec_grids/led-print.html" target="_blank" style="margin: -' + (height / 2 + 15) + 'px 0 0 -' + (width / 2 - 85) + 'px; display:block; z-index:2147483647; position:fixed; top: 50%; left: 50%; color: #FFFFFF;">printer-friendly version</a>');
-			}
-			if(print == 'print_yes' && tvtype == 'lcd'){
-				$('body').append('<a class="print_button" href="http://www.samsung.com/us/module/2011_tv_spec_grids/lcd-print.html" target="_blank" style="margin: -' + (height / 2 + 15) + 'px 0 0 -' + (width / 2 - 85) + 'px; display:block; z-index:2147483647; position:fixed; top: 50%; left: 50%; color: #FFFFFF;">printer-friendly version</a>');
-			}
-			if(print == 'print_yes' && tvtype == 'hometheater'){
-				$('body').append('<a class="print_button" href="http://www.samsung.com/us/module/2011_tv_spec_grids/hometheater-print.html" target="_blank" style="margin: -' + (height / 2 + 15) + 'px 0 0 -' + (width / 2 - 85) + 'px; display:block; z-index:2147483647; position:fixed; top: 50%; left: 50%; color: #FFFFFF;">printer-friendly version</a>');
-			}
-
-		}
-		
-		function iframeModal(filePath, width, height, ifWidth, ifHeight){
-		
-			$('body').append('<div id="modal_cover" onclick="hide_Modal()" style="margin: 0; width:100%; height:100%; display:block; z-index:2147483602 !important; position:fixed; top: 0; left: 0; background: #000000; opacity: 0.8; filter: alpha(opacity=80);"></div>');
-
-			$('body').append('<div id="modal_wrapper" style="width:' + width + 'px; height:' + height + 'px; margin: -' + height / 2 + 'px 0 0 -' + width / 2 + 'px; display:block; z-index: 2147483647 !important; position:fixed; top: 50%; left: 50%; border:solid 1px black; background: #ffffff; overflow: auto;"><iframe src='http://www.samsung.com/us/common/+filePath+' scrolling=no width='+ifWidth+' height='+ifHeight+' border=0 ></iframe></div>');
-		
-			$('#modal_wrapper').load(filePath);
-			
-			$('body').append('<a href="javascript:void(0);" class="btn_close_popup" onclick="hide_Modal()" style="margin: -' + (height / 2 + 15) + 'px 0 0 -' + width / 2 + 'px; display:block; z-index:2147483647; position:fixed; top: 50%; left: 50%; color: #FFFFFF;">close layer</a>');
-		}
-
-		function hide_Modal(){
-			$("#modal_wrapper").remove();
-			$(".btn_close_popup").remove();
-			$("#modal_cover").remove();
-			$(".print_button").remove();
-		}
-		
-		
-var urlValue = String(window.location.href);
-var urlValueSplit = urlValue.split('/');
-
-</script>
+<!-- survey for iPerception/ForeSee begins -->
+<script type="text/javascript" src="../foresee/foresee-trigger.js"></script>
+<!-- survey for iPerception/ForeSee ends -->
 
 <script type="text/javascript">
-LazyLoad.js(["http://api.v2.badgeville.com/v2/badgeville-current.js?key=cdcbee16f671f20a8e8c094b9adc13d7&domain=samsung.com","/us/scripts/tooltipsy.min.js","/us/scripts/jquery.xdomainajax.js","/us/scripts/redirects.js"], function(){
+
+
+	$(document).ready (function () {
+	
+	
+		if(!isLogin()){
+			$("#gnbLogOutArea").hide();
+			$("#gt_welcome").hide();
+			$("#gnbLogInArea").show();
+			$("#gnb_my").hide();
+			$("#gnb_ow").show();
+
+		}else{
+			$("#gnbLogInArea").hide();
+			$("#gt_welcome").show();
+			$("#gnbLogOutArea").show();
+			$("#gnb_ow").hide();
+			$("#gnb_my").show();
+
+		}
+
+	
+	
+		if((urlValueSplit[4] == "appstore") || (urlValueSplit[4] == "connected-devices")){
+		  	$('#main-nav li.products a').removeClass('active');
+		  	$('#main-nav li.apps a:first').addClass('active');
+		}
+		
+		if((urlValueSplit[4] == "support") ){
+			$('#main-nav li.products a').removeClass('active');
+		  	$('#main-nav li.support a:first').css('background', 'url(/us/images/common/icon-nav-arrow.png) center bottom no-repeat');
+		}
+		
+		if(urlValueSplit[5] == "account"){
+			$('#main-nav li.products a').removeClass('active');
+			$('#main-nav li.myaccount a').css('background', 'url(/us/images/common/icon-nav-arrow.png) center bottom no-repeat');
+		}
+		
+		if(urlValue.match('myAccountYourProducts.do')){
+			$('#main-nav li.products a').removeClass('active');
+			$('#main-nav li.support a').css('background', 'none');
+			$('#main-nav li.myaccount a').css('background', 'url(/us/images/common/icon-nav-arrow.png) center bottom no-repeat');
+		}
+
+				
+		var hostName = location.hostname;
+			
+		if(hostName.indexOf('devus') != -1 || hostName.indexOf('devwww') != -1 || hostName.indexOf('dev') != -1) {
+			 document.getElementById('logout').href = 'http://sso-dev.us.samsung.com/sso/logout';
+		}
+		else if(hostName.indexOf('stgwww') != -1 || hostName.indexOf('stgapp') != -1) {
+			document.getElementById('logout').href = 'http://sso-stg.us.samsung.com/sso/logout';
+		}
+		else if(hostName.indexOf('stgweb') != -1) {
+			document.getElementById('logout').href = 'http://sso-us.samsung.com/sso/logout';
+		}
+		else {
+			document.getElementById('logout').href = 'http://sso-us.samsung.com/sso/logout';
+		}
+	
+	});
+
+
+LazyLoad.js(["http://api.v2.badgeville.com/v2/badgeville-current.js?key=cdcbee16f671f20a8e8c094b9adc13d7&domain=samsung.com","/us/scripts/tooltipsy.min.js","/us/scripts/jquery.xdomainajax.js","/us/scripts/redirects.js","http://platform.twitter.com/anywhere.js?id=oQYqWBpP2udteN5A86dCag&v=1.1.2", "https://apis.google.com/js/plusone.js"], function(){
 
 		//Check for existence of badgeville
 		if(typeof Badgeville === 'undefined'){
@@ -989,16 +896,16 @@ LazyLoad.js(["http://api.v2.badgeville.com/v2/badgeville-current.js?key=cdcbee16
 
 			function refreshIt() {
 			    Badgeville.refreshWidgets();
-			  	//console.log('timing');
+			  	
 			   	if ($('#horizontalLeaderboard').length) {
 			    	setTimeout(function(){Badgeville.refreshWidgets();}, 5000);
 			        clearInterval(t);
-			        //console.log('done');
+			        
 			   }
 			}
 			
 			t = setInterval(refreshIt,500);
-			//setTimeout(function(){Badgeville.refreshWidgets();}, 5000);
+			
 			
 		} 
 		
@@ -1006,39 +913,36 @@ LazyLoad.js(["http://api.v2.badgeville.com/v2/badgeville-current.js?key=cdcbee16
 	});
 
 if (urlValueSplit[4] == ''){
-	LazyLoad.js(["/us/scripts/jquery.smooth-scroll.min.js","/us/scripts/jcarousellite_original.js","http://platform.twitter.com/anywhere.js?id=oQYqWBpP2udteN5A86dCag&v=1.1.2"], function () {
-  		//console.log('foo');
+	LazyLoad.js(["/us/scripts/jquery.smooth-scroll.min.js","/us/scripts/jcarousellite_original.js"], function () {
+  		
 	});
 }
 
 if (urlValueSplit[4] == 'news'){
 	LazyLoad.js("/us/scripts/cesphotobrowser.js", function () {
-  		//console.log('foo');
+  		
 	});
-}
-</script>
-<script type="text/javascript">
+		LazyLoad.css("/us/css/cesphotobrowser.css", function () {
+  		
+	});
 	
-	// below setting is necessary to fix known issue with twitter and IE
- 	if (typeof(twttr) != 'undefined') {
-		if (typeof(omn_ss_pagetype) != 'undefined' && omn_ss_pagetype == 'Homepage') {
-				//do nothing - homepage twitter tab does not work if document.domain is set to "samsung.com"
-		}
-		else {
-			document.domain = 'samsung.com';
-			twttr.anywhere.config({ domain: document.domain });
-		}
+}
+	
+// below setting is necessary to fix known issue with twitter and IE
+	if (typeof(twttr) != 'undefined') {
+	if (typeof(omn_ss_pagetype) != 'undefined' && omn_ss_pagetype == 'Homepage') {
+			//do nothing - homepage twitter tab does not work if document.domain is set to "samsung.com"
 	}
+	else {
+		document.domain = 'samsung.com';
+		twttr.anywhere.config({ domain: document.domain });
+	}
+}
 
 </script>
-</script>
-<script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
+
+
+
 	</div>
 </div>
 </body>

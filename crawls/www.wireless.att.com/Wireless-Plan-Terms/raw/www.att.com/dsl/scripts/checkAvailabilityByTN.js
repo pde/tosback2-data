@@ -68,7 +68,6 @@ function clearErrorMessagesTN(){
 
 }
 
-
 function displayErrorMessagesTN(data){
 
 	//alert('now in displayErrorMessagesTN');
@@ -320,7 +319,6 @@ function serviceQualTN(data){
 		}
 		*/
 	
-	}
-	 
+	}	 
 }
 

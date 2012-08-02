@@ -3493,6 +3493,7 @@ function bindCalendar(){
 
 
     $(".searchBoxElement .txtDateCls").datepicker({ yearRange: "2011-2012", minDate: new Date(StartDates), maxDate: new Date(EndDates), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: noWeekendsOrHolidays, showStatus: false, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: "<div class='dpHelpText' style='font-size:0.8em;text-align:left;background-color:#FAEAC8;'><strong>Standard Arrival Dates</strong><br />Monday 4 nights | Saturday 7 nights<br />Friday 3 &amp; 7 nights</div>", weekStatus: "" });
+    $(".txtDateClsNoRes").datepicker({ yearRange: "2011-2012", minDate: new Date(StartDates), maxDate: new Date(EndDates), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: noWeekendsOrHolidays, showStatus: false, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: "<div class='dpHelpText' style='font-size:0.8em;text-align:left;background-color:#FAEAC8;'><strong>Standard Arrival Dates</strong><br />Monday 4 nights | Saturday 7 nights<br />Friday 3 &amp; 7 nights</div>", weekStatus: "" });
     
     $(".arrDtTextBox").datepicker({ yearRange: "2011-2012", minDate: minCalDate, maxDate: new Date(2012, 10 - 1, 26), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: nationalDays, showStatus: true, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: '<div class="holidayHelpText">Bank Holidays are marked in yellow</div>', weekStatus: "" });
     
@@ -4108,10 +4109,15 @@ function getRegionFilterSession()
 function bindRegionClick()
 {
 $("#regionStep1 UL LI A").live('click', function(ev)
-{     ev.preventDefault();	     
+{
+     ev.preventDefault();	     
      //alert("2");
-     var categoryId = $(this).attr("name");     regionName = $("DIV#RegionNameForFilterBox").html();
-     //PageMethods.CategoryClick(regionName, categoryId, OnSucceeded, OnFailed);       setRegionFilterSession(regionName, categoryId, "", "");     OnSucceeded("","","CategoryClick")     return false;
+     var categoryId = $(this).attr("name");
+     regionName = $("DIV#RegionNameForFilterBox").html();
+     //PageMethods.CategoryClick(regionName, categoryId, OnSucceeded, OnFailed);  
+     setRegionFilterSession(regionName, categoryId, "", "");
+     OnSucceeded("","","CategoryClick")
+     return false;
 });
 }
 

@@ -1,0 +1,443 @@
+var delayedAdd;
+
+//HTML5 autofocus plugin, Copyright (c) 2009, Mike Taylor, http://miketaylr.com, MIT licensed
+(function($){ $.fn.autofocus=function(){return (this.first().autofocus!==true)?this.focus():this;};})(jQuery);
+
+var updateInterval = 0;
+
+function pageLoadBarInit() {
+	$.blockUI({ 
+		message: '<div id="progressbar"></div>',
+		css: { 
+			left: '35%',
+			width: '30%'
+			}
+	});
+	$( "#progressbar" ).progressbar({value: 1});
+	updateInterval = setInterval ( "updateProgressBar()" , 50 );
+}
+
+function updateProgressBar() {
+	var current = $( "#progressbar" ).progressbar( "value" );
+	if (current<99) {
+		current += 1.5 / current;
+		$( "#progressbar" ).progressbar( "value", current );
+	} else
+		clearInterval ( updateInterval );
+		
+}
+
+
+$(function () {
+    // setup js placeholder for browser that don't support html5 native one
+    setupPlaceholder();
+    $("[autofocus]").autofocus();
+    $("form").not('#dir_apply_form,#directory-form,#set_user_id').submit(pageLoadBarInit);
+    $("#suggestions ul li a, #profile_summary .relationships a").click(function(e) {
+    	if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey)
+    		pageLoadBarInit();
+    });
+   
+    // show list of removed profiles
+    $('#show_removed').click(function () {
+        $('#removed').show();
+        $(this).remove();
+        return false;
+    });
+    
+    // show/hide more options
+    $('div#advanced_search div.deepnc a').click( function() {
+    	var $divs = $('div#advanced_search div.inputs');
+    	var $button = $(this);
+    	var currentVal = $button.html()
+    	$button.html($button.attr('data-alt'));
+    	$button.attr('data-alt',currentVal)
+    	if ($button.hasClass('more')) {
+    		$divs.slideDown().children('input').removeAttr("disabled");
+    	} else {
+    		$divs.not(':has(input[value!=""])').not('.error').slideUp().children('input').attr("disabled","disabled");
+    	}
+    	$button.toggleClass('more');
+    	
+    });
+    
+    //first initialization for disabled fields..
+    var $divs = $('div#advanced_search div.inputs');
+    $divs.not(':has(input[value!=""])').not('.error').children('input').attr("disabled","disabled");
+    
+    $('div#advanced_search div.displayoptions a.less').click( function() {
+    	
+    });
+
+
+
+    
+
+    // autocomplete for search boxes
+   /* $("input.autocomplete").autocomplete({
+		minLength: 2,
+		delay: 500,
+		source: function( request, response ) {
+			var term = request.term;
+			request.limit = maxResults;
+			if ( term in cache ) {
+				response( cache[ term ] );
+				return;
+			}
+
+			lastXhr = $.getJSON( "/autocomplete/", request, function( data, status, xhr ) {
+				cache[ term ] = data;
+				if ( xhr === lastXhr ) {
+					response( data );
+				}
+			});
+		}
+		
+	});
+    $(".autocomplete").autocomplete("/autocomplete/", {
+        width: 260,
+        selectFirst: false,
+        // format autocomplete output
+        formatItem: function (data, i, n, value) {
+            return "<span class='ac_item'><img width='30' height='30' src='" + value.split("*")[2] + "'/> " + value.split("*")[0] + ' info: ' +
+				value.split("*")[1] + '</span>';
+        },
+        formatResult: function (data, value) {
+            return value.split("*")[0];
+        }
+    });*/
+    
+    function filter_submit(form)
+    {
+    	form.submit();
+    }
+    //selected all(remove filters)
+    $("div.filters input.all").bind('change', function(e) {
+    	if ($(this).is(':checked')) {
+    		$(this).closest('li').addClass('selected').closest('ul.first').find('li.selected').not('.all').removeClass('selected').find('input.filterselect').removeAttr("checked");
+    		filter_submit($(this).parents("form"));
+    	}
+	});
+  //selected filter
+	$("div.filters input.filterselect").bind('change', function(e) {
+		if ($(this).is(':checked')) {
+			//clear "all"
+			$(this).closest('ul.first').children('li.all').removeClass('selected').find('input.all').removeAttr("checked");
+			
+			//clear parents&children
+			$(this).parents('li').removeClass('selected').children('label').children('input.filterselect').removeAttr("checked"); //parents and this
+			$(this).closest('li').addClass('selected').children('ul').find('li.selected').removeClass('selected').find('input.filterselect').removeAttr("checked"); //children
+			$(this).attr("checked","checked"); //this one has been checked
+		}
+			
+		
+		var form = $(this).parents("form");
+		if ($(this).attr('name') == 'floc')
+			form.find("#adv_in").val('10');
+		else
+			form.find("#adv_in").val('11');
+		
+		filter_submit(form);
+	});
+    
+    // filter results "accordion" effect
+    $('.accordion .he a,.accordion .collapsed a').click(function () {
+        var _this = $(this);
+        if ($(this).parent().height() != '33') { $(_this).parent().animate({ 'height': '33px' }) } else { $(_this).parent().animate({ 'height': '100%' }) }
+        
+    });
+    
+    function setfilter(value, $nodes)
+    {
+    	var $siblings = $nodes.siblings('.added');
+    	$nodes.val("");
+		$siblings.attr('value', value);
+		$siblings.removeAttr("disabled");
+    }
+    function removeFilter($nodes) {
+    	var $siblings = $nodes.siblings('.added');
+		$siblings.attr('value', "");
+		$siblings.attr("disabled","disabled");
+    }
+    
+    function simpleValueClean(term)
+    {
+    	return term.toLowerCase().replace(/,/gi, "").replace(/-/gi, ""); //anything else?
+    }
+    
+    var cache = {},lastXhr, maxResults=15;
+    function getSource(request, response)
+    {
+    	var term = request.term, closestTerm;
+		request.limit = maxResults;
+		if ( term in cache ) {
+			response( cache[ term ] );
+			return;
+		} else {
+			//get closest term that exists in cache
+			closestTerm = term.substring(0,term.length-1)
+			for(closestTerm = term.substring(0,term.length-1); closestTerm; closestTerm=closestTerm.substring(0,closestTerm.length-1))
+				if ( closestTerm in cache )
+					break;
+			
+			if (closestTerm) {
+				//filter specific cached response
+				var list = cache[ closestTerm ], newList = [], cleanTerm = simpleValueClean(term);
+				for (var i=0; i<list.length; i++)
+					if (simpleValueClean(list[i].value).indexOf(cleanTerm) > -1)
+						newList.push(list[i]);
+				
+				response(newList)
+			}
+			
+			
+		}
+		
+		if (typeof lastXhr !== "undefined")
+			lastXhr.abort();
+
+		lastXhr = $.getJSON( "/locationautocomplete/", request, function( data, status, xhr ) {
+			cache[ term ] = data;
+			if ( xhr === lastXhr ) {
+				response( data );
+			}
+		});
+    }
+    	
+    // autocomplete for main search
+    $("#findlocation").focus(function (){
+    	$("#sloc").val("");
+    }).autocomplete({
+		minLength: 2,
+		delay: 70,
+		autoFocus: true,
+		source: getSource,
+		select: function( event, ui ) {
+			lastXhr.abort();
+			$("#sloc").val(ui.item.id);
+		},
+		search: function(event, ui) {
+			$("#sloc").val("");
+		}
+		
+	});
+    
+    // autocomplete for filters
+    $("#filter-add-loc").autocomplete({
+		minLength: 2,
+		delay: 70,
+		autoFocus: true,
+		source: getSource,
+		select: function( event, ui ) {
+			lastXhr.abort();
+			var form = $(this).parents("form");
+			form.find("#adv_in").val('10');
+			setfilter(ui.item.id, $(this));
+			filter_submit(form);
+		},
+		search: function(event, ui) {
+			removeFilter($(this));
+		}
+		
+	});
+    
+	
+	
+	$('div.filters li:not(.selected)').children('label').children('input').removeAttr("checked");
+	//disable lock
+	$('div.filters').unblock();
+	
+    // sign in, sign up, password reset
+    $('.inside_popup').live('click', function () {
+    	$('#popup_inner').block();
+        $('#popup_inner').load($(this).attr('href') + ' #inner_popup', function() {
+        	$('#popup_inner').unblock();
+        	setupPlaceholder();
+        });
+        return false;
+    });
+    // sign out
+    $('#sign_out').live('click', function () {
+    	$.blockUI();
+        $('#top_bar').load($(this).attr('href') + ' #top_bar', function() {
+        	if ($('li.result_item').find('.mypiplicon').filter(':visible').length > 0)
+        		location.reload(true);
+        	else if	($('div#profile_summary').find('.rem').filter(':visible').length > 0)
+        		location.replace(location.protocol + '//' + location.host);
+        	else
+        		$.unblockUI();
+        });
+        // remove all "mypipl" icons
+        user = false;
+        return false;
+    });
+    // sign in
+    $('#sign_in').live('click', function () {
+    	signIn.call(this);
+        return false;
+    });
+    // close popup
+    $('.exit').live('click', function () {
+        delayedAdd = '';
+        close_popup();
+    });
+    //feedback call
+    $('#feedback').live('click', function () {
+    	$.blockUI();
+        // populate popup with login form
+        $('#popup_inner').load($(this).attr('href') + ' #inner_popup', function(){
+        	 $.unblockUI();
+        	 $('body').prepend($('#wrapper_alert'));
+             //behavior loaded form
+        	 
+        	 $('#comboboxes-wrapper').hide();
+             $('.combobox').hide();
+             $('#wrapper_alert .inner .footer').hide();
+             $('.smiles-block button').live('click',function(){
+                $('.smiles-block button.active').removeClass('active');
+                $(this).addClass('active');
+                $('#id_rate').val( $(this).index()+1);
+                
+                $('#comboboxes-wrapper').show();
+                $('.field_feedback_type').slideDown("fast");
+                $('.field_feedback_subject').slideDown("fast");
+             });
+             
+             $('.combobox').change(function(){
+                if ( $('.field_feedback_type select option:selected').val() != '' && $('.field_feedback_subject select option:selected').val()!='' ){
+                    $('.field_text').slideDown("fast");
+                    $('#wrapper_alert .inner .footer').slideDown("fast");
+                }
+             })
+        });
+        //cancel a
+        return false;
+    });
+    
+    $('#window').live('click',function(){
+        close_popup();
+    });
+    
+    
+
+    var options = {
+        success: showResponse,  // post-submit callback 
+        beforeSubmit: ajaxFormBlockUI
+    };
+    var optionsFeedback = {
+        success: showResponseFeedback,  // post-submit callback  feedback
+        beforeSubmit: ajaxFormBlockUI
+    };
+
+    // bind form using 'ajaxForm' 
+    $('#popup_inner form:not(.feedback)').livequery(function(){
+        $(this).ajaxForm(options);
+        setupPlaceholder();         //update input list for placeholders 
+    });
+    $('#popup_inner form.feedback').livequery(function(){
+        $(this).ajaxForm(optionsFeedback);
+        setupPlaceholder();         //update input list for placeholders 
+    });
+    
+    
+        
+        
+      
+});
+
+        
+          
+/*
+ * hack for browsers without html5 placeholder support
+ */
+function setupPlaceholder(inputid) {
+	// if browser supports placeholder natively, nothing should be done
+	if(supports_input_placeholder())
+		return;
+	$(":input[placeholder]").placeholder();
+    
+}
+// check if browser suppoorts placeholders natively
+function supports_input_placeholder() { 
+	var i = document.createElement('input'); 
+	return 'placeholder' in i; 
+}
+
+function signIn(){
+	// show login form, take it from invisible div and show
+		$.blockUI();
+		$('#popup_inner').load($(this).attr('href')+' #inner_popup', function() {
+				$('body').prepend($('#wrapper_alert'));
+        		$.unblockUI();
+        		setupPlaceholder();
+        });
+	
+}
+
+function close_popup() {
+	// hide login form, move to invisible div
+	$('#lf').append($('#wrapper_alert'));
+}
+
+
+// proceed ajax login response in popup
+function showResponse(responseText, statusText, xhr, $form)  {
+	var data = $(responseText);
+	// if not inner_popup found
+	if (!$('#inner_popup', data).length) {
+		// close popup, reload bar
+		close_popup();
+		user = true;
+		
+		if (delayedAdd) {
+			$(delayedAdd).trigger('click');
+			delayedAdd = '';
+		}
+	} else {
+		// update popup
+		$('#popup_inner').empty().append($('#inner_popup', data));
+	}
+	$('#top_bar').empty().append($('#top_bar', data));
+	ajaxFormUnBlockUI();
+}
+
+
+function showResponseFeedback(responseText, statusText, xhr, $form){ 
+	var data = $(responseText);
+	$('#popup_inner').empty().append(data).find('.smiles-block button').eq($('#id_rate').val()-1).addClass('active');
+	ajaxFormUnBlockUI();
+}
+
+function ajaxFormBlockUI() {
+	$('#popup_inner').block();
+}
+
+function ajaxFormUnBlockUI() {
+	$('#popup_inner').unblock();
+}
+
+function lockButtons() {
+	locked = true;
+}
+function updateSummary(data) {
+	$('#profile_summary').load('/summary/'+data);
+	locked = false;
+}
+
+var notify_popup=null;
+
+$(function(){
+	notify_popup=$('#notify-popup');
+	var close_func=function(){
+		notify_popup.hide();
+	}
+	$('.close-btn',notify_popup).click(close_func);
+	$('.ok-btn',notify_popup).click(close_func);
+});
+
+function user_notify(message,title)
+{
+	$('.head p',notify_popup).text(title);
+	$('.content',notify_popup).html(message);
+	notify_popup.show();
+}

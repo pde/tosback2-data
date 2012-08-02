@@ -66,6 +66,14 @@ function toon_lib(){
 		}else{
 			this.base_url = 'http://www.cartoonnetwork.com'; 
 		}
+		
+		if (location.hostname == 'blog.cartoonnetwork.com') {
+			this.base_url = 'http://www.cartoonnetwork.com'; 
+		} else if (location.hostname != undefined) {
+			this.base_url = 'http://'+location.hostname;
+		} else {
+			this.base_url = 'http://www.cartoonnetwork.com'; 
+		} 		
 		*/
 		
 		if(location.hostname != undefined){
@@ -1507,7 +1515,8 @@ function toon_lib(){
 	}
 	
 	this.user_badges = function(params,callback){ 
-		params.ext 		= 'client/badges/'+params.msib_id+'/@self';
+//		params.ext 		= 'client/badges/'+params.msib_id+'/@self';
+		params.ext 		= 'client/badges/'+params.msib_id;
 		var that 		= this;
 		var s_key 		= 'user_badges_'+params.msib_id;
 		
@@ -1673,12 +1682,21 @@ function toon_lib(){
 	}
 	
 	this.last_games_badged = function(params, callback){
-	
+
+		/*
 		if(params.with_data == true){
 			params.ext 					= 'client/badges/' + params.msib_id + '/@self?sort[0]=update_date|desc';
 		}else{ 
 			params.ext 					= 'client/badges/' + params.msib_id + '/@self';
 		} 
+		*/
+		
+		if(params.with_data == true){
+			params.ext 					= 'client/badges/' + params.msib_id + '?sort[0]=update_date|desc';
+		}else{ 
+			params.ext 					= 'client/badges/' + params.msib_id;
+		} 
+		
 		params.count		 		= (params.count != undefined) 		? params.count : 3;
 		params.with_data		 	= (params.with_data != undefined) 	? params.with_data : false;
 		params.timeline		 		= (params.timeline != undefined) 	? params.timeline : 'alltime';

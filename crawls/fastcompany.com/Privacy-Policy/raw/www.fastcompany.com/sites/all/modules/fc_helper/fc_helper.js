@@ -8,42 +8,44 @@
  */
 function mobileRedirect(mobileURL) {
 
-    // removed ipod/iphone, we want this traffic
+    // adding back iphone and ipod for sold mobile advertising
 
     var mobiles = [];
-    mobiles[0] = "smartphone";
-    mobiles[1] = "playstation";
-    mobiles[2] = "wap";
-    mobiles[3] = "windows ce";
-    mobiles[4] = "wm5 pie";
-    mobiles[5] = "iemobile";
-    mobiles[6] = "series60";
-    mobiles[7] = "symbian";
+    mobiles[0] = "iphone";
+    mobiles[1] = "ipod";
+    mobiles[2] = "smartphone";
+    mobiles[3] = "playstation";
+    mobiles[4] = "wap";
+    mobiles[5] = "windows ce";
+    mobiles[6] = "wm5 pie";
+    mobiles[7] = "iemobile";
     mobiles[8] = "series60";
-    mobiles[9] = "series70";
-    mobiles[10] = "hiptop";
-    mobiles[11] = "series80";
-    mobiles[12] = "series90";
-    mobiles[13] = "blackberry";
-    mobiles[14] = "android";
-    mobiles[15] = "midp";
-    mobiles[16] = "wml";
-    mobiles[17] = "brew";
-    mobiles[18] = "palm";
-    mobiles[19] = "xiino";
-    mobiles[20] = "blazer";
-    mobiles[21] = "pda";
-    mobiles[22] = "nitro";
-    mobiles[23] = "netfront";
-    mobiles[24] = "sonyericsson";
-    mobiles[25] = "ericsson";
-    mobiles[26] = "sec-sgh";
-    mobiles[27] = "docomo";
-    mobiles[28] = "kddi";
-    mobiles[29] = "vodafone";
-    mobiles[30] = "opera mini";
-    mobiles[31] = "motorola";
-    mobiles[32] = "nokia";
+    mobiles[9] = "symbian";
+    mobiles[10] = "series60";
+    mobiles[11] = "series70";
+    mobiles[12] = "hiptop";
+    mobiles[13] = "series80";
+    mobiles[14] = "series90";
+    mobiles[15] = "blackberry";
+    mobiles[16] = "android";
+    mobiles[17] = "midp";
+    mobiles[18] = "wml";
+    mobiles[19] = "brew";
+    mobiles[20] = "palm";
+    mobiles[21] = "xiino";
+    mobiles[22] = "blazer";
+    mobiles[23] = "pda";
+    mobiles[24] = "nitro";
+    mobiles[25] = "netfront";
+    mobiles[26] = "sonyericsson";
+    mobiles[27] = "ericsson";
+    mobiles[28] = "sec-sgh";
+    mobiles[29] = "docomo";
+    mobiles[30] = "kddi";
+    mobiles[31] = "vodafone";
+    mobiles[32] = "opera mini";
+    mobiles[33] = "motorola";
+    mobiles[34] = "nokia";
     
     var uagent = navigator.userAgent.toLowerCase();
     for(i=0; i<mobiles.length; i++) {

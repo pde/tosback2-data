@@ -1,0 +1,111 @@
+
+function getWindowSize() {    
+    var windowWidth = 0, windowHeight = 0;
+    if ( typeof( window.innerWidth ) == 'number' ) {
+        //Non-IE
+        windowWidth = window.innerWidth;
+        windowHeight = window.innerHeight;
+    } else if ( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+        //IE 6+ in 'standards compliant mode'
+        windowWidth = document.documentElement.clientWidth;
+        windowHeight = document.documentElement.clientHeight;
+    } else if ( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+        //IE 4 compatible
+        windowWidth = document.body.clientWidth;
+        windowHeight = document.body.clientHeight;
+    }
+    var windowSize = new Array(windowWidth, windowHeight);
+    return windowSize;
+}
+// Determine the size of the window
+var windowSize = getWindowSize();
+var X = windowSize['0'];
+var Y = windowSize['1']; 
+var ad4GamePopUnderWindow = true;
+var sUrl = 'http://ads.ad4game.com/www/delivery/ck.php?oaparams=2__bannerid=58746__zoneid=24923__OXLCA=1__ver=3.3__cb=f31828dfc2__zt=zt__oadest=http%3A%2F%2Fwww.evony.com%2Fevonyea29.html%3Fad4gamenewcpa%26site%3D24923'; 
+var puShown = false;
+var PopFocus = 0;
+var _Top = null;
+function doOpen(url) {
+    var popURL = 'about:blank';
+    var popID = 'ad4game_popunder_' + Math.floor(89999999*Math.random()+10000000);
+    if (puShown == true) {
+        return true;
+    }
+    var PopWin=_Top.window.open(popURL,popID,'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resiza ble=1,top=0,left=0,width=' + X + ',height=' + Y);
+    if (PopWin) {
+        puShown = true;
+        if (PopFocus == 0) {
+	        PopWin.blur();
+	        if (navigator.userAgent.toLowerCase().indexOf('applewebkit') > -1) {
+	            _Top.window.blur();
+	            _Top.window.focus();
+	        }
+        }
+        PopWin.Init = function(e) {
+	        with (e) {
+                Params = e.Params;
+	            Main = function() {
+                    if (typeof window.mozPaintCount != 'undefined') {
+                        var x = window.open('about:blank');
+                        x.close();
+                    }
+                    var popURL = Params.PopURL;
+	               try { opener.window.focus(); }
+	               catch (err) { }
+	               window.location = popURL;
+	            }
+	            Main();
+	        }   
+        };
+	    PopWin.Params = {
+	        PopURL: url
+	    }
+        PopWin.Init(PopWin);
+    }
+    return PopWin;
+}
+function initPu(){
+    _Top = self;
+    if (top != self) {
+        try {
+        if (top.document.location.toString())
+            _Top = top;
+        }catch(err) { }
+    }
+    if ( document.attachEvent ) {
+        document.attachEvent( 'onclick', checkTarget );
+    } else if ( document.addEventListener ){
+        document.addEventListener( 'click', checkTarget, false );
+    }
+}
+function checkTarget(e){
+    x = document.body;
+    if (x  && readCookie('ad4GamePopUnderWindow') == '') {
+        createCookie('ad4GamePopUnderWindow','ad4GamePopUnderWindow');
+        var img = document.createElement('IMG');
+        img.src = 'http://ads.ad4game.com/www/delivery/lg.php?bannerid=58746&campaignid=3614&zoneid=24923&OABLOCK=86400&OASCAP=2&OAZBLOCK=86400&OASZCAP=1&loc=http%3A%2F%2Fwww.freeonlinegames.com%2Fprivacypolicy.php&cb=f31828dfc2';
+        img.style.height = '0px';
+        img.style.width = '0px';
+        img.style.display = 'none';
+        x.appendChild(img); 
+        var e = e || window.event;
+        ad4GamePopUnderWindow = false;
+        var win = doOpen('http://ads.ad4game.com/www/delivery/ck.php?oaparams=2__bannerid=58746__zoneid=24923__OXLCA=1__ver=3.3__cb=f31828dfc2__zt=zt__oadest=http%3A%2F%2Fwww.evony.com%2Fevonyea29.html%3Fad4gamenewcpa%26site%3D24923');
+    }          
+}
+function createCookie(name,value) {
+    var expires = '';
+    document.cookie = name+"="+value+expires+"; path=/";
+}
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return '';
+}
+initPu();

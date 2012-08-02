@@ -6,6 +6,7 @@ function usa_outputAd(options)
 	try {
 		var p_ad_section = (typeof parent.ad_section != 'undefined') ? parent.ad_section : ad_section;
 		var p_ad_subcategory = (typeof parent.ad_subcategory != 'undefined') ? parent.ad_subcategory : ad_subcategory;
+		var p_ad_subcategory2 = (typeof parent.ad_subcategory2 != 'undefined') ? parent.ad_subcategory2 : ad_subcategory2;
 		var p_ad_genre = (typeof parent.ad_genre != 'undefined') ? parent.ad_genre : ad_genre;
 		var p_ad_uri = (typeof parent.ad_uri != 'undefined') ? parent.ad_uri : ad_uri;
 		var p_ad_override_category = (typeof parent.ad_override_category != '') ? parent.ad_override_category : ad_override_category;
@@ -27,6 +28,7 @@ function usa_outputAd(options)
 	var default_args = {
 		'ad_section'		:	(typeof p_ad_section != 'undefined') ? p_ad_section : ad_section,
 		'ad_subcategory'	:	(typeof p_ad_subcategory != 'undefined') ? p_ad_subcategory : ad_subcategory,
+		'ad_subcategory2':	(typeof p_ad_subcategory2 != 'undefined') ? p_ad_subcategory2 : ad_subcategory2,
 		'ad_genre'			:	(typeof p_ad_genre != 'undefined') ? p_ad_genre : ad_genre,
 		'ad_uri'			:	(typeof p_ad_uri != 'undefined') ? p_ad_uri : ad_uri,
 		'ad_override_category':	(typeof p_ad_override_category != '') ? p_ad_override_category : ad_override_category,
@@ -133,12 +135,12 @@ function usa_outputAd(options)
 	if (!options['create_iframe'])
 	{
 		// standalone
-		//document.write('<sc'+'ript language=\'JavaScript1.1\' src="http://ad.doubleclick.net/adj/nbcu.'+options['ad_root']+'/'+options['ad_section']+'_'+options['ad_subcategory']+';site=usa;sect='+options['ad_section']+';sub='+options['ad_subcategory']+';genre='+options['ad_genre']+';daypart=;!category='+options['ad_override_category']+';!category='+options['ad_section']+';!category=js;!category=usa;network=tvn;'+railsTag+'sz='+options['ad_size']+';uri='+options['ad_uri']+';pos='+options['pos']+';tile='+options['tile']+';'+(options['adops_params']||'')+'ord=' + options['randDARTNumber'] + '?"></s'+'cript>');
+		//document.write('<sc'+'ript language=\'JavaScript1.1\' src="http://ad.doubleclick.net/adj/nbcu.'+options['ad_root']+'/'+options['ad_section']+'_'+options['ad_subcategory']+';site=usa;sect='+options['ad_section']+';sub='+options['ad_subcategory']+';sub2='+options['ad_subcategory2']+';genre='+options['ad_genre']+';daypart=;!category='+options['ad_override_category']+';!category='+options['ad_section']+';!category=js;!category=usa;network=tvn;'+railsTag+'sz='+options['ad_size']+';uri='+options['ad_uri']+';pos='+options['pos']+';tile='+options['tile']+';'+(options['adops_params']||'')+'ord=' + options['randDARTNumber'] + '?"></s'+'cript>');
 		
 		if (options['device'] == 'desktop')
 		{
 			// desktop
-			var dblClkUrl = 'http://ad.doubleclick.net/adj/nbcu.'+options['ad_root']+'/'+options['ad_section']+'_'+options['ad_subcategory']+';site=usa;sect='+options['ad_section']+';sub='+options['ad_subcategory']+';genre='+options['ad_genre']+';daypart=;!category='+options['ad_override_category']+';!category='+options['ad_section']+';!category=js;!category=usa;network=tvn;'+railsTag+'sz='+options['ad_size']+';uri='+options['ad_uri']+';pos='+options['pos']+';tile='+options['tile']+';'+(options['adops_params']||'')+'ord=' + options['randDARTNumber'] + '?'; 
+			var dblClkUrl = 'http://ad.doubleclick.net/adj/nbcu.'+options['ad_root']+'/'+options['ad_section']+'_'+options['ad_subcategory']+';site=usa;sect='+options['ad_section']+';sub='+options['ad_subcategory']+';sub2='+options['ad_subcategory2']+';genre='+options['ad_genre']+';daypart=;!category='+options['ad_override_category']+';!category='+options['ad_section']+';!category=js;!category=usa;network=tvn;'+railsTag+'sz='+options['ad_size']+';uri='+options['ad_uri']+';pos='+options['pos']+';tile='+options['tile']+';'+(options['adops_params']||'')+'ord=' + options['randDARTNumber'] + '?'; 
 			
 			if (!options['return_url_only'])
 			{
@@ -177,7 +179,7 @@ function usa_outputAd(options)
 			var ip = ''; // '64.210.199.231'; // ;&ip='+ip+'&r=h&c=it&ua='+ua+'			
 			var dblClkUrl = 'http://ad.doubleclick.net/adj/nbcu.'+options['ad_root']+'/'+options['ad_section'];
 			dblClkUrl += (options['ad_subcategory'].length > 0) ? '_'+options['ad_subcategory'] : '';
-			dblClkUrl += '_tablet;site=usa;sect='+options['ad_section']+';sub='+options['ad_subcategory']+';type=tablet;genre='+options['ad_genre']+';dev='+options['device']+';daypart=;!c='+options['ad_section']+';!c=usa;!c=tablet;sz='+options['ad_size']+';pos='+options['pos']+';tile='+options['tile']+';ord=' + options['randDARTNumber'] + '?';
+			dblClkUrl += '_tablet;site=usa;sect='+options['ad_section']+';sub='+options['ad_subcategory']+';sub2='+options['ad_subcategory2']+';type=tablet;genre='+options['ad_genre']+';dev='+options['device']+';daypart=;!c='+options['ad_section']+';!c=usa;!c=tablet;sz='+options['ad_size']+';pos='+options['pos']+';tile='+options['tile']+';ord=' + options['randDARTNumber'] + '?';
 			var adURL = '<sc'+'ript language=\'JavaScript1.1\' src="'+dblClkUrl+'"></s'+'cript>';
 			if (typeof console != 'undefined')
 			{

@@ -1,19 +1,2 @@
-// Lotame Data Collector Call
-$(function(){
-	webmd = window.webmd || {};
-
-	var ldcc_string;
-
-	window.processauds = function(ldcc_response){
-		ldcc_string = 'segvar';
-
-		$.each(ldcc_response["Profile"]["Audiences"]["Audience"], function(k, v){
-			ldcc_string += 'l_' + (ldcc_response["Profile"]["Audiences"]["Audience"][k]["abbr"]) + 'x';
-		});
-
-		webmd.cookie.setJson('ads_perm', {"segvar": ldcc_string}, {domain: "webmd.com"});
-	};
-
-	webmd.load({js: '//ad.crwdcntrl.net/5/c=932/pe=y/callback=processauds'});
-	webmd.load({js: '//tags.crwdcntrl.net/c/932/cc_af.js'});
-});
+/*! Revision: 12aa629 */
+$(function(){var a;window.processauds=function(d){a="segvar";$.each(d.Profile["Audiences"]["Audience"],function(f,e){a+="l_"+(d.Profile["Audiences"]["Audience"][f]["abbr"])+"x"});webmd.cookie.setJson("ads_perm",{segvar:a},{domain:"webmd.com"})};webmd.load({js:"//ad.crwdcntrl.net/5/c=932/pe=y/callback=processauds"});var c=document.createElement("script");c.type="text/javascript";c.async=true;c.id="LOTCC_932";c.src="//tags.crwdcntrl.net/c/932/cc.js?ns=_cc932&autobcp=1";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(c,b)});

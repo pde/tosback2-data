@@ -61,7 +61,7 @@ lithe.DOM.ready(function() {
 
 		lithe.Events.add(publicHome.usernamebox, "focus", function() {
 			if(publicHome.usernamebox.value === publicHome.usernameprompt) publicHome.usernamebox.value = "";
-			publicHome.usernamebox.style.cssText = "color: #fff;";
+			publicHome.usernamebox.style.cssText = "color: #555;";
 		});
 
 		lithe.Events.add(publicHome.usernamebox, "blur", function() {
@@ -107,4 +107,10 @@ lithe.DOM.ready(function() {
 	    });
 
     }
+});
+
+// hide the login box when we click on something that may be of interest below it:
+$('.webs_public_header_wrap, .webs_public_content_wrap, #webs_public_spotlight_container, #webs_public_body').click(function(event){
+	$('#sign_in_nav').removeClass('signinNoBg');
+	$('#webs_login_wrapper').css('visibility','hidden');
 });

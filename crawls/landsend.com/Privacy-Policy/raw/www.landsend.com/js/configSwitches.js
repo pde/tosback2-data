@@ -95,6 +95,10 @@ metric.sendMonetate = function() {
 };
 
 metric.sendCriteo = function() {
+	// don't send criteo tags if engaged in a vee24 chat
+	if (typeof vee24 != 'undefined' && typeof vee24.api != 'undefined' && vee24.api.iAmEngaged()) {
+		return;
+	}
 	if (window.location.pathname.indexOf("/pp/") != -1 && resx.itemid != null) {
 		// Product Tag
 		var itemid = resx.itemid.split(":", 1);

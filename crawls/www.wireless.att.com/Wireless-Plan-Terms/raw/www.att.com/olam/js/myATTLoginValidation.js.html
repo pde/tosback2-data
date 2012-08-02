@@ -249,6 +249,7 @@ function hideUserIDPopup()
 
 function userIDOnFoucs()
 {
+	userIDDefaultVal = jQuery('#userIDDefaultVal').val(); // resetting this value
 	var userIDValue = null;
 	if(tGuardOn == "false") {
 		userIDValue = jQuery.trim(jQuery("#wireless_num").val());
@@ -316,7 +317,7 @@ function validateUserID()
 		{
 			userID = userID.replace(/[^a-zA-Z 0-9 @._ -]+/g,"");
 			var userIDtemp = userID.split('-').join('');
-			//userIDtemp = userIDtemp.split('.').join('');
+			userIDtemp = userIDtemp.split('.').join('');
 			//userIDtemp = userIDtemp.split('_').join('');
 			if(!isNaN(userIDtemp))
 			{
@@ -662,35 +663,6 @@ function isCookieEnabled()
 	}
 }
 
-function eraseUnwantedCookie()
-{
-	try
-	{
-		var cookieNames = jQuery("#cookiesToBeErased").val();
-		var cookieArray = null;
-		if(cookieNames !=null && jQuery.trim(cookieNames)!="")
-		{
-			cookieArray = cookieNames.split(',');
-			if(cookieArray !=null)
-			{
-				for(i = 0 ; i < cookieArray.length ; i ++)
-				{
-					deleteCookie(cookieArray[i]);
-				}
-			}
-		}
-	}
-	catch(exception)
-	{
-		// Nothing to be done , as it should allow login.
-	}
-}
-
-function deleteCookie(name) 
-{
-	document.cookie = name +'=;expires=Thu, 01-Jan-1970 00:00:01 GMT;path=/;domain=.att.com';
-}
-
 
 /*
  * Specific to Passthrough Page Pages
@@ -735,3 +707,4 @@ function appendSLIDDomainForSuperNLogin()
 		}
 	}
 }
+

@@ -3,34 +3,34 @@ jQuery.noConflict();
 
 
 /* earnings */
-var currQuarter = '1Q12';
-var currPID = '268';
+var currQuarter = '2Q12';
+var currPID = '282';
 
 function renderEarningsLP() {
 document.write('<div class="top-content"><ul class="more_links" id="top_content">'
 						 + '<li><a href="http://phx.corporate-ir.net/phoenix.zhtml?c=113088&amp;p=irol-sec" title="SEC Filings">SEC Filings</a></li>'
 						 + '<li class="last">Results and Non-GAAP Reconciliations: <a href="/Investor/Earnings/'
-						 + '1q12/master_q1_12.pdf" target="_blank" title="Financial and Operational Results PDF">Adobe PDF</a> &ndash; <a href="/Investor/Earnings/'
-						 + '1q12/master_q1_12.xls" title="Non-GAAP Reconciliations (MS Excel)" target="_blank">MS Excel</a></li>'
+						 + '2q12/master_2q12.pdf" target="_blank" title="Financial and Operational Results PDF">Adobe PDF</a> &ndash; <a href="/Investor/Earnings/'
+						 + '2q12/master_2q12.xls" title="Non-GAAP Reconciliations (MS Excel)" target="_blank">MS Excel</a></li>'
 						 + '</ul></div>');
 }
 
 /* earnings */
 function renderEarningsList() {
-	document.write('<li><a href="http://www.att.com/gen/investor-relations?pid=268" title="1Q 2012">1Q 2012</a></li>'
+	document.write('<li><a href="http://www.att.com/gen/investor-relations?pid=282" title="2Q 2012">2Q 2012</a></li>'
+				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=268" title="1Q 2012">1Q 2012</a></li>'
 				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=262" title="4Q 2011">4Q 2011</a></li>'
 				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=290" title="3Q 2011">3Q 2011</a></li>'
-				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=282" title="2Q 2011">2Q 2011</a></li>'
 				 + '<li><a href="http://www.att.com/earnings" title="Quarterly Earnings">More</a></li>');
 }
 
 
 function renderQuarterlyTabs() {
 	document.write('<ul id="navContainer" class="tabs">'
+					+  '<li id="tab1A"'); if(pid=='282') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=282" title="2Q 2012">2Q 2012</a></li>'
 					+  '<li id="tab4A"'); if(pid=='268') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=268" title="1Q 2012">1Q 2012</a></li>'
 					+  '<li id="tab3A"'); if(pid=='262') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=262" title="4Q 2011">4Q 2011</a></li>'
 					+  '<li id="tab2A"'); if(pid=='290') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=290" title="3Q 2011">3Q 2011</a></li>'
-					+  '<li id="tab1A"'); if(pid=='282') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=282" title="2Q 2011">2Q 2011</a></li>'
 					+  '</ul>');
 	}
 	
@@ -241,7 +241,7 @@ function au_corporate_profile_nav() {
 				 + '<ul>'
 				 + '<li><a href="' + site + '/gen/investor-relations?pid=5711" title="Company Overview">Company Overview</a></li>'
 				 + '<li><a href="' + site + '/gen/general?pid=20344" title="Corporate Awards">Corporate Awards</a></li>'
-				 + '<li><a href="' + site + '/Common/about_us/public_policy/btn_nov-2011.pdf" title="By The Numbers" target="_blank">By The Numbers</a></li>'
+				 + '<li><a href="' + site + '/Common/about_us/pdf/att_btn.pdf" title="By The Numbers" target="_blank">By The Numbers</a></li>'
 				 + '</ul>'
 				 + '</li>'
 				 + '<li class="col2"><strong>Leadership Profiles</strong>'
@@ -265,7 +265,7 @@ function au_corporate_profile_nav() {
 				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=7738" title="Diversity Management">Diversity Management</a></li>'
 				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=17725" title="Workforce Inclusion">Workforce Inclusion</a></li>'
 //				 + '<li><a href="' + site + '/gen/press-room?pid=2684" title="Our People">Our People</a></li>'
-				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=22018" title="The People of AT&amp;T Report">The People of AT&amp;T Report</a></li>'
+//				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=22018" title="The People of AT&amp;T Report">The People of AT&amp;T Report</a></li>'
 				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=17721" title="Diversity Awards and Recognition">Diversity Awards and Recognition</a></li>'
 				 + '</ul>'
 				 + '</li>'
@@ -273,6 +273,35 @@ function au_corporate_profile_nav() {
 }
 
 function au_sustainability_nav() {
+    document.write('<ul class="tertiaryNav cols3" id="au_sustainability_nav">'
+				 + '<li class="image" style="background-image:url(' + site + '/Common/global/images/about_us/tray/bkg_tray_sustainability.jpg) !important;">&nbsp;</li>'
+				 + '<li class="col1"><strong>2011 Sustainability Report</strong>'
+				 + '<ul>'
+				 + '<li><a href="' + site + '/gen/landing-pages?pid=22872" title="Interactive 2011 Sustainability Report">Interactive 2011 Sustainability Report</a></li>'
+				 + '<li><a href="' + site + '/gen/landing-pages?pid=7735" title="Sustainability Report Website">Sustainability Report Website</a></li>'
+				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=17196" title="Frequently Requested Information">Frequently Requested Information</a>'
+				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=18039" title="Issue Brief Library">Issue Brief Library</a></li>'
+				 + '</ul>'
+				 + '</li>'
+				 + '<li class="col2"><strong>Sustainability Pillars</strong>'
+				 + '<ul>'
+				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=12307" title="People and Community">People and Community</a></li>'
+				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=8506" title="Environmental Sustainability">Environment</a></li>'
+				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=17920" title="Sustainable Technology">Technology</a></li>'
+				 + '</ul>'
+				 + '</li>'
+				 + '<li class="col3"><strong>Additional Resources</strong>'
+				 + '<ul>'
+				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=17196" title="Frequently Requested Information">Frequently Requested Information</a>'
+				 + '<li><a href="' + site + '/gen/press-room?pid=2644" title="Sustainability Media Kit">Sustainability Media Kit</a></li>'
+				 + '<li><a href="' + site + '/gen/landing-pages?pid=22260" title="AT&amp;T EcoSpace">AT&amp;T EcoSpace</a></li>'
+				 + '<li><a href="' + site + '/gen/press-room?pid=7930" title="Support Our Troops">Support Our Troops</a></li>'
+				 + '</ul>'
+				 + '</li>'
+				 + '</ul>');
+}
+
+/*function au_sustainability_nav() {
     document.write('<ul class="tertiaryNav cols4" id="au_sustainability_nav">'
 				 + '<li class="image" style="background-image:url(' + site + '/Common/global/images/about_us/tray/bkg_tray_sustainability.jpg) !important;">&nbsp;</li>'
 				 + '<li class="col1"><strong>People and Communities</strong>'
@@ -289,6 +318,7 @@ function au_sustainability_nav() {
 				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=17896" title="Energy and Water">Energy and Water</a></li>'
 				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=17902" title="Waste Management">Waste Management</a></li>'
 				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=17914" title="Product Stewardship">Product Stewardship</a></li>'
+				 + '<li><a href="' + site + '/gen/landing-pages?pid=22260" title="AT&amp;T EcoSpace">AT&amp;T EcoSpace</a></li>'
 				 + '</ul>'
 				 + '</li>'
 				 + '<li class="col3"><strong>Technology</strong>'
@@ -306,7 +336,7 @@ function au_sustainability_nav() {
 				 + '</ul>'
 				 + '</li>'
 				 + '</ul>');
-}
+}*/
 
 function au_innovation_nav() {
     document.write('<ul class="tertiaryNav cols2" id="au_innovation_nav">'
@@ -380,7 +410,7 @@ function au_careers_nav() {
 				 + '<li><a href="' + site + '/gen/investor-relations?pid=5711" title="Corporate Profile">Corporate Profile</a></li>'
 				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=7738" title="Our Diversity Commitment">Our Diversity Commitment</a></li>'
 				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=7770" title="Investing in our People">Investing in our People</a></li>'
-				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=22018" title="The People of AT&amp;T Report">The People of AT&amp;T Report</a></li>'
+//				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=22018" title="The People of AT&amp;T Report">The People of AT&amp;T Report</a></li>'
 				 + '</ul>'
 				 + '</li>'
 				 + '</ul>');
@@ -526,11 +556,13 @@ function w_wireless_innovation_nav() {
 				 + '<li><a href="' + site + '/gen/press-room?pid=13434" title="Emerging Devices">Emerging Devices</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=1574" title="iPhone">iPhone</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=2638" title="GoPhone">GoPhone</a></li>'
+				 + '<li><a href="' + site + '/gen/landing-pages?pid=22260" title="AT&amp;T EcoSpace">AT&amp;T EcoSpace</a></li>'
 				 + '</ul>'
 				 + '</li>'
-				 + '<li class="col2"><strong>Texting</strong>'
+				 + '<li class="col2"><strong>Wireless Safety Resources</strong>'
 				 + '<ul>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=2964" title="Dangers of Texting and Driving">Dangers of Texting and Driving</a></li>'
+				 + '<li><a href="' + site + '/gen/press-room?pid=1748" title="AT&amp;T Mobile Safety">AT&amp;T Mobile Safety</a></li>'
 				 + '</ul>'
 				 + '</li>'
 				 + '<li class="col3"><strong>Wireless Options</strong>'
@@ -719,6 +751,7 @@ function bn_small_business_nav() {
 				 + '<li class="image" style="background-image:url(' + site + '/Common/global/images/about_us/tray/bkg_tray_small_business.jpg) !important;">&nbsp;</li>'
 				 + '<li class="col1"><strong>Small Business Media Kits</strong>'
 				 + '<ul>'
+				 + '<li><a href="' + site + '/gen/press-room?pid=22820" title="Safeguard Your Business">Safeguard Your Business</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=2936" title="Small Business Basics">Small Business Basics</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=12201" title="Business Customer News">Business Customer News</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=17789" title="Small Business Mobility Overview">Small Business Mobility Overview</a></li>'

@@ -1014,7 +1014,10 @@ $(document).ready(function() {
  }
  function eventFinderSubmit() {
 	 if(dmnchk=="US"){
-     url = "/search/doSearch?pageNumber=1&rows=50&searchMode=event";
+     if(typeof(searchaeparam) != 'undefined' && searchaeparam == "ae2"){
+     url = "/search/doSearch?pageNumber=1&rows=50&ae=2&searchMode=event";}
+	 else
+		{url = "/search/doSearch?pageNumber=1&rows=50&searchMode=event";}
      var  e = $("#SearchLocation").attr("value");   
      var p =String(e); 
       if ($("#keyword").val() == "Keyword (optional)") 

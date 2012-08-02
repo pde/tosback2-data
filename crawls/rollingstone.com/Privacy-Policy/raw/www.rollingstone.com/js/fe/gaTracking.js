@@ -12,8 +12,8 @@ $(document).ready(function() {
 			//find the closest element with data-category set and use that value, starting with the current element
 			var category = element.closest('[data-category]').attr('data-category');
 			var action = element.closest('[data-action]').attr('data-action');
-
 			var label = element.attr('data-label');
+			
 			if(!label) {//if the label is not set, use the element's href attribute
 				label = element.attr('href');
 			} else if(label == 'window.location') {//if the label is set to 'window.location' use the current url
@@ -26,10 +26,12 @@ $(document).ready(function() {
 			}
 		});
 	}
+	
 	//track any element that has the attribute data-track-me="true"
 	jQuery('[data-track-me="true"]').each(function(index, element) {
 		GaTracking.track(element);
 	});
+	
 	//track any tags that are children of a container that has a list of tags to track in data-track-tags="[list of tags]"
 	jQuery('[data-track-tags]').each(function(index, container) {
 		container = jQuery(container);

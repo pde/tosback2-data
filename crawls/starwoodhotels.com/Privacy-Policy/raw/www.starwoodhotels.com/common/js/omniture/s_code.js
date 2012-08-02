@@ -178,6 +178,23 @@ function s_doPlugins(s) {
         s.prop50 = s.eVar50=temp_arrivalDate+":"+temp_departureDate; //dates searched
     }
 
+	if(!s.campaign){
+		var em_c = s.getQueryParam("EM");
+		var ps_c = s.getQueryParam("PS");
+		s.campaign = (em_c.length > 0 && ps_c.length > 0) ? em_c + ":" + ps_c : em_c + ps_c;
+	};
+
+	if(!s.eVar30){
+		s.eVar30 = s.getQueryParam("IM");
+	}
+
+	if(!s.eVar31){
+		var es_c = s.getQueryParam("ES");
+		var ep_c = s.getQueryParam("EP");
+		s.eVar31 = (es_c.length > 0 && ep_c.length > 0) ? es_c + ":" + ep_c : es_c + ep_c;
+	}
+
+
 
     /* Multi Marketing Touchpoint Tracking v.1.5
     This adds the ability to track how many marketing touchpoints were touched prior to a user booking -> provided by OMTR

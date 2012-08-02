@@ -63,5 +63,5 @@ include('jquery.tiptip.js');
 printCSS('tiptip.css');
 
 include('urchin.js');
-
+include2('http://www.pepsico.com/scripts/globalnav.js');
 include('localcore.js');

@@ -5,6 +5,7 @@ var s_account="nbcusyfydev";
 var url=String(window.location);
 
 if (url.match('http://www.syfy.com')
+ || url.match('.defiance.com')
  || url.match('http://dvice.com')
  || url.match('http://blastr.com')
  || url.match('http://mt4-blogs.syfy.com/global/')
@@ -18,6 +19,7 @@ if (url.match('http://www.syfy.com')
  || url.match('http://alphapowers.com')
  || url.match('http://syfyigniters.com')
  || url.match('http://www.syfyigniters.com')
+ || url.match('.bigpoint.com')
  || url.match('.letsimaginegreater.com') 
  || url.match('http://video.syfy.com')) {
     s_account="nbcuglobal,nbcuscifid,nbcuscifibu"

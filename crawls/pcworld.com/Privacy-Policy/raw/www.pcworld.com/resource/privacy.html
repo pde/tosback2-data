@@ -147,6 +147,25 @@
 	});
 	</script>
 
+	<script type="text/javascript">
+	PCWAds.DisplayAdManager.init();
+	</script>
+  <script type="text/javascript">
+    var deferredAdCallback = function(DB_params) {
+        if (null != PCWAds.DisplayAdManager.getDeferredAds() && PCWAds.DisplayAdManager.getDeferredAds().length > 0) {
+    		var adParams = new Object();
+    		if (DB_params && DB_params.forbes_2000 == true) {
+    			adParams.f2k=1;
+    		}
+        	for (var i=0; i<PCWAds.DisplayAdManager.getDeferredAds().length; i++) {
+        		var url = PCWAds.DisplayAdManager.getDeferredAds()[i].url;
+        		var adId = PCWAds.DisplayAdManager.getDeferredAds()[i].adId;
+        		PCWAds.DisplayAdManager.callDeferredAd(adId,url,adParams);
+        	}
+        }
+    };
+  </script>
+
 </head>
 
 <body id="template_resource" class="">
@@ -300,28 +319,28 @@ $(document).ready(function(){
 	<a href="http://www.pcworld.com/products/tablets.html" onclick="s_objectID='trending nav tablets'">Tablets</a>
 	<span class="topicnavDelimiter">&#124;</span>
 
+	<a href="http://www.pcworld.com/products/web/social_media.html" onclick="s_objectID='trending nav social media'">Social Media</a>
+	<span class="topicnavDelimiter">&#124;</span>
+
+	<a href="http://www.pcworld.com/products/computers.html" onclick="s_objectID='trending nav computers'">Computers</a>
+	<span class="topicnavDelimiter">&#124;</span>
+
 	<a href="http://www.pcworld.com/products/computers/laptops.html" onclick="s_objectID='trending nav laptops'">Laptops</a>
-	<span class="topicnavDelimiter">&#124;</span>
-
-	<a href="http://www.pcworld.com/products/storage/hard_drives.html" onclick="s_objectID='trending nav hard drives'">Hard Drives</a>
-	<span class="topicnavDelimiter">&#124;</span>
-
-	<a href="http://www.pcworld.com/topics/gadgets.html" onclick="s_objectID='trending nav gadgets'">Gadgets</a>
 	<span class="topicnavDelimiter">&#124;</span>
 
 	<a href="http://www.pcworld.com/products/software/games.html" onclick="s_objectID='trending nav games'">Games</a>
 	<span class="topicnavDelimiter">&#124;</span>
 
-	<a href="http://www.pcworld.com/products/networking_and_wireless.html" onclick="s_objectID='trending nav networking & wireless'">Networking & Wireless</a>
-	<span class="topicnavDelimiter">&#124;</span>
-
-	<a href="http://www.pcworld.com/products/web/search.html" onclick="s_objectID='trending nav search engines'">Search Engines</a>
+	<a href="http://www.pcworld.com/products/software/operating_systems.html" onclick="s_objectID='trending nav operating systems'">Operating Systems</a>
 	<span class="topicnavDelimiter">&#124;</span>
 
 	<a href="http://www.pcworld.com/topics/windows.html" onclick="s_objectID='trending nav windows'">Windows</a>
 	<span class="topicnavDelimiter">&#124;</span>
 
-	<a href="http://www.pcworld.com/topics/security.html" onclick="s_objectID='trending nav security'">Security</a>
+	<a href="http://www.pcworld.com/topics/gadgets.html" onclick="s_objectID='trending nav gadgets'">Gadgets</a>
+	<span class="topicnavDelimiter">&#124;</span>
+
+	<a href="http://www.pcworld.com/products/web/productivity_apps.html" onclick="s_objectID='trending nav productivity apps'">Productivity Apps</a>
 	<span class="topicnavDelimiter">&#124;</span>
 
 <a class="moreTrends radius_3" id="topicNavSiteMapOpener" href="javascript:void(0)">MORE</a>
@@ -371,7 +390,7 @@ $(document).ready(function(){
 					
 						
 							
-						<div  class="leaderboardAd"><script type="text/javascript">document.write('<iframe name="ad728leader" id="ad728leader" src="../../ad.doubleclick.net/adi/pcw.default/%3Bpos=728leader%3Btile=1%3Bsz=728x90%3Bord='+ord+''+_jsCustomArg+'.html" width="728" height="90" marginheight="0" marginwidth="0" scrolling="no" frameborder="0" allowTransparency="true" style="z-zindex:200"></iframe>')</script><noscript><iframe name="ad728leader" id="ad728leader" src="../../ad.doubleclick.net/adi/pcw.default/%3Bpos=728leader%3Btile=1%3Bsz=728x90%3Bord=51248116'+_jsCustomArg+'.html" width="728" height="90" marginheight="0" marginwidth="0" scrolling="no" frameborder="0" allowTransparency="true"></iframe></noscript></div>
+						<div  class="leaderboardAd"><script type="text/javascript">document.write('<iframe name="ad728leader" id="ad728leader" src="../../ad.doubleclick.net/adi/pcw.default/%3Bpos=728leader%3Btile=1%3Bsz=728x90%3Bord='+ord+''+_jsCustomArg+'.html" width="728" height="90" marginheight="0" marginwidth="0" scrolling="no" frameborder="0" allowTransparency="true" style="z-zindex:200"></iframe>')</script><noscript><iframe name="ad728leader" id="ad728leader" src="../../ad.doubleclick.net/adi/pcw.default/%3Bpos=728leader%3Btile=1%3Bsz=728x90%3Bord=28727305'+_jsCustomArg+'.html" width="728" height="90" marginheight="0" marginwidth="0" scrolling="no" frameborder="0" allowTransparency="true"></iframe></noscript></div>
 					
 				
 		    </div>	    
@@ -714,16 +733,6 @@ function doGigyaAjax(res) {
 				
 			
 		
-			
-				
-				
-					
-						<li><a href="http://www.pcworld.com/blogs/id,83/resolution2012.html">Symantec Resolution 2012</a></li>
-					
-					
-				
-			
-		
 		</ul>
 	</div>
 
@@ -802,172 +811,158 @@ function doGigyaAjax(res) {
 	<h1>About Ad Choices <img src="../../zapp0.staticworld.net/images/shared/icons/ad_choices_icon.png" alt="Ad Choices" /></h1>
     
 	<h4>About Our Advertising</h4>
-		<p>PCWorld strives to deliver the most relevant content and ads to our readers. The advertising included on our site enables us to deliver the reporting resources required to create the high-quality journalism, research and analysis our audience expects from us.</p>
-		<p>Advertisements displayed on this site may be based on the content of pages you view or may be delivered by third parties and tailored to your interests. These third parties may also collect anonymous, non-personally identifiable information through cookies, Web beacons, and other technologies about your online activities on this site, in order to deliver advertisements that are relevant to your interests.</p>
-        <h4>Our Policies</h4>
-        <p>PCWorld follows the Self Regulatory Principles for Online Behavioral advertising. More information on the principles, and information and choices about interest-based advertising, can be found at the <a href="http://www.aboutads.info" target="_blank">Self Regulatory Program site</a>, including links to opt-out from services that deliver online behavioral ads.</p>
 
-        <p>For additional information on cookies, Web beacons and our collection and use of information, please read our Privacy Policy below.</p>
+PCWorld strives to deliver the most relevant content and ads to our readers. The advertising included on our site enables us to deliver the reporting resources required to create the high-quality journalism, research and analysis our audience expects from us.
 
+<br><br>
+Advertisements displayed on this site may be based on the content of pages you view or may be delivered by third parties and tailored to your interests. These third parties may also collect anonymous, non-personally identifiable information through cookies, Web beacons, and other technologies about your online activities on this site, in order to deliver advertisements that are relevant to your interests.
+
+<h4>Our Policies</h4>
+
+PCWorld follows the Self Regulatory Principles for Online Behavioral advertising. More information on the principles, and information and choices about interest-based advertising, can be found at the <a href="http://www.aboutads.info" target="_blank">Self Regulatory Program site</a>, including links to opt-out from services that deliver online behavioral ads.
+<br><br>
+For additional information on cookies, Web beacons and our collection and use of information, please read our Privacy Policy below.
 
 <hr />
+
 <a name="privacypolicy" id="privacypolicy"></a>
-<h1>PCWorld.com Privacy Policy</h1><br />
-  At PCWorld, we understand that privacy is important, and we've created this policy to give you information about how we collect and use personal information. Our policy is divided into three main sections: Section 1 describes how we collect and use data from users of the PCWorld Web site. Section 2 describes how we collect and use data from subscribers to the print and electronic editions of PCWorld magazine. And because PCWorld is owned by International Data Group (IDG) and is part of the IDG Publishing Network of technology publications, Section 3 presents the privacy policy for the IDG Publishing Network.<br />
-  <br />
-  We reevaluate this policy on an ongoing basis, and we value your feedback. If you have questions or concerns regarding our privacy policy, we ask that you contact us at:<br /><br />
-  
-  
+<h1>PCWorld.com Privacy Policy</h1>
+
+This website and associated websites are maintained by:<br><br>
+
+<em>PCWorld<br>
+c/o  IDG Consumer & SMB, Inc.<br>
+501 Second St.<br>
+San Francisco, CA 94107 <br>
+U.S.A.</em><br>
+<br>
+The terms of the PCWorld Online Privacy Policy and the IDG Publishing Network Privacy Policy, both of which are set forth below, shall apply to the PCWorld website.
+<br><br>
+At PCWorld, we understand that privacy is important, and we've created this policy to give you information about how we collect and use personal information. Our policy is divided into two main sections: Section 1 describes how we collect and use data from users of the PCWorld Web site. And because PCWorld is owned by International Data Group (IDG) and is part of the IDG Publishing Network of technology publications, Section 2 presents the privacy policy for the IDG Publishing Network.
+<br><br>
+We reevaluate this policy on an ongoing basis, and we value your feedback. If you have questions or concerns regarding our privacy policy, we ask that you contact us at:<br><br>
 <em>
-  Customer Service<br />
-  PCWorld Communications, Inc.<br />
-  501 Second Street<br />
-  San Francisco, CA 94107<br />
+Customer Service<br>
+PCWorld<br>
+c/o IDG Consumer & SMB, Inc.<br>
+501 Second Street<br>
+San Francisco, CA 94107<br>
 e-mail: <a href="mailto:webmaster@pcworld.com">webmaster@pcworld.com</a></em>
-  </p>
-  <br /><br />
-<p>Please note that this privacy policy may change from time to time. We will post the new policy on this page, and, if the changes allow us to use personally identifying information in ways that are different from the ways specified at the time the information was originally collected, our Web site will contain a special notice about the changes. Each version of this privacy policy will be identified by its effective date, which you can find at the bottom of the page.<br />
-  
-  
-<h2>1. PCWorld Online Privacy Policy</h2><br />
-  PCWorld collects data, including personally identifying information, from people who use the PCWorld Web site. This section of our privacy policy explains how we collect and use this data. In addition, from time to time we may add other information that we collect from third party sources to enhance the information that you provided to PCWorld. Please note that PCWorld subscriber data is maintained separately from data gathered from our online users. This means that users of the PCWorld Web site who also subscribe to PCWorld magazine, in either print or electronic form, should read both this section and Section 2 (PCWorld Subscriber Privacy Policy) in order to have a full understanding of our privacy practices.<br />
-  
-  <h4>Information we collect and how we use it</h4><br />
-  When you visit the PCWorld Web site, PCWorld collects several forms of usage data, including:<br />
-  
- <ul> 
-  <li>Log data. Our servers automatically record certain information sent by your browser, such as your Web request, your Internet Protocol address, your referring URL, your browser type and language, and the date and time of your request. <br /></li>
-  <li>Cookie data. When you visit the PCWorld Web site, PCWorld or one of our IDG affiliates or third-party partners may send one or more "cookies"-small files containing a string of characters-to your computer to identify you as a unique user. If you have registered with PCWorld, the information in your cookie is used to provide a more personalized experience on our site, for example by allowing you to customize portions of the site. If you haven't registered, the cookie identifies you as a unique user and helps ensure a smoother experience on the site, such as by limiting the number of times that you see certain subscription offers. If you have not registered on our site, we cannot link the user ID in the cookie with personal identifying information and data about you, such as your name or e-mail address. We may also share this cookie data with participating third party service providers, or allow such service providers to collect the cookie data from our site, so that advertising that is served to you, on our site or on third party sites, may be tailored to your interests. In addition, we may combine certain non-personal identifying information with data collected from other sources to supplement the cookie data. Whether or not we can link the user ID in the cookie with personal identifying information when you visit our site, the cookie data that is shared (as described above) does not contain personal identifying information. For information on how to opt out of cookie-based data collection please see the section below entitled "About Ads/Consumer Choice". To disable your cookies, please see the section below entitled "Blocking the use of Cookies". <br /></li>
-  <li>Traffic and advertising data. Other cookies are used to enable PCWorld and our advertisers and service providers to gather and analyze site traffic and usage information, and to manage the content and advertisements presented. These cookies sometimes work in conjunction with other techniques, such as clear GIFs or pixel tags. The cookies placed by PCWorld do not contain personally identifying information, but they may gather information about what sites and types of content you have visited and use that information to determine which content and ads appear when you visit various Web sites, including the PCWorld site. <br /></li>
-  <li>Third party advertising companies. We use third-party advertising companies and advertising networks to serve ads to you on our behalf when you visit the PCWorld site. In order to tailor advertising to your interests, some of these companies and advertising networks use cookies, web beacons or similar technologies that allow them to collect and use information about you and your visits to the PCWorld site and other sites. <br />
-</li>
-</ul>  
-  
-  Blocking the use of cookies.  Browsers or third-party software can allow you to block the use of cookies while you surf our site. Or you can use third-party anonymizer services to mask information in your cookies or even general data such as your IP address. In such cases you would not be able to take advantage of most of the personalization services offered on the PCWorld Web site.<br />
-  <br />
-About Ads/Consumer Choice. PCWorld follows the Self-Regulatory Principles for Online Behavioral Advertising. More information on the Principles, and information about interest-based advertising and how to opt-out  can be found here <a href="http://www.aboutads.info/">http://www.aboutads.info/</a>.  To learn more about online interest-based advertising, privacy, cookies, you  can also visit the website of the Network Advertising Initiative here. <a href="http://www.networkadvertising.org/index.asp">http://www.networkadvertising.org/index.asp</a>
-<p>The aggregated information we collect is used for a number of purposes including the following:<br />
+<br>
+<br>
+Please note that this privacy policy may change from time to time. We will post the new policy on this page, and, if the changes allow us to use personally identifying information in ways that are different from the ways specified at the time the information was originally collected, our Web site will contain a special notice about the changes. Each version of this privacy policy will be identified by its effective date, which you can find at the bottom of the page.
+<br><br>
+<h2>1. PCWorld Online Privacy Policy</h2>
 
-<ol>
-  <li>	To improve the content and design of the PCWorld Web site. <br /></li>
-  <li>	To enable our audit bureau to verify our claims of traffic to the site. <br /></li>
-  <li>	To help advertisers, potential advertisers or marketers assess the suitability of the site for their ad campaigns. <br /></li>
-  <li>	To help us understand more about the interests of our users, so that we can offer goods and services we believe may be of interest. <br /></li>
-</ol>  
-  
-  Many portions of the PCWorld site can be used without registering or giving us any personal information such as (but not limited to) your name and e-mail address. However, PCWorld does collect personally identifying information regarding our online users, including in the following ways:<br />
-  
-  <ul>
-  <li>When you provide it to us, such as (but not limited to) by entering a contest, becoming a registered member, buying a product, signing up for a newsletter, tutorial, or email or mobile alerts, or otherwise contacting us. <br /></li>
-  <li>When you provide it to a company that powers a portion of our site or provides a special feature, such as a contest registration or a white paper library, that appears on our site. <br /></li>
-  <li>When you provide information about yourself or your company to PCWorld in connection with a subscription order, or when you provide information to any other IDG Publishing Network affiliate, that information may be included in your PCWorld user record, if one exists. <br /></li>
-  <li>If you have previously registered with another IDG Publishing Network affiliate and you begin to fill out certain forms on the PCWorld Web site, the site may recognize you and automatically complete the form, and this auto-fill data will then be included in your PCWorld user record. <br /></li>
-  <li>If you have provided information to PCWorld, from time to time we may enhance that information with other information that we collect from third-party sources. <br /></li>
-  </ul>
-  
-  The personal information we collect may be linked to information regarding your use of the PCWorld Site, such as which newsletters or alerts you subscribe to or which categories of white paper content you have downloaded. This combined data helps us recommend content to you and target our communications to topics that interest you. The personal information and related data may be used in a number of ways, including the following:<br />
-  
+PCWorld collects data, including personally identifying information, from people who use the PCWorld Web site. This section of our privacy policy explains how we collect and use this data. In addition, from time to time we may add other information that we collect from third party sources to enhance the information that you provided to PCWorld. 
+
+  <h4>Information we collect and how we use it</h4>
+
+When you visit the PCWorld Web site, PCWorld collects several forms of usage data, including:
+
+<ul><li>Log data. Our servers automatically record certain information sent by your browser, such as your Web request, your Internet Protocol address, your referring URL, your browser type and language, and the date and time of your request. <br /></li>
+
+	<li>Cookie data. When you visit the PCWorld Web site, PCWorld or one of our IDG affiliates or third-party partners may send one or more "cookies"-small files containing a string of characters-to your computer to identify you as a unique user. If you have registered with PCWorld, the information in your cookie is used to provide a more personalized experience on our site, for example by allowing you to customize portions of the site. If you haven't registered, the cookie identifies you as a unique user and helps ensure a smoother experience on the site, such as by limiting the number of times that you see certain subscription offers. If you have not registered on our site, we cannot link the user ID in the cookie with personal identifying information and data about you, such as your name or e-mail address. We may also share this cookie data with participating third party service providers, or allow such service providers to collect the cookie data from our site, so that advertising that is served to you, on our site or on third party sites, may be tailored to your interests. In addition, we may combine certain non-personal identifying information with data collected from other sources to supplement the cookie data. Whether or not we can link the user ID in the cookie with personal identifying information when you visit our site, the cookie data that is shared (as described above) does not contain personal identifying information. For information on how to opt out of cookie-based data collection please see the section below entitled "About Ads/Consumer Choice". To disable your cookies, please see the section below entitled "Blocking the use of Cookies". <br /></li>
+	<li>Traffic and advertising data. Other cookies are used to enable PCWorld and our advertisers and service providers to gather and analyze site traffic and usage information, and to manage the content and advertisements presented. These cookies sometimes work in conjunction with other techniques, such as clear GIFs or pixel tags. The cookies placed by PCWorld do not contain personally identifying information, but they may gather information about what sites and types of content you have visited and use that information to determine which content and ads appear when you visit various Web sites, including the PCWorld site. <br /></li>
+
+  <li>Third party advertising companies. We use third-party advertising companies and advertising networks to serve ads to you on our behalf when you visit the PCWorld site. In order to tailor advertising to your interests, some of these companies and advertising networks use cookies, web beacons or similar technologies that allow them to collect and use information about you and your visits to the PCWorld site and other sites.</li></ul> 
+
+Blocking the use of cookies. Browsers or third-party software can allow you to block the use of cookies while you surf our site. Or you can use third-party anonymizer services to mask information in your cookies or even general data such as your IP address. In such cases you would not be able to take advantage of most of the personalization services offered on the PCWorld Web site.
+<br>
+<br>
+About Ads/Consumer Choice. PCWorld follows the Self-Regulatory Principles for Online Behavioral Advertising. More information on the Principles, and information about interest-based advertising and how to opt-out can be found here <a href="http://www.aboutads.info/">http://www.aboutads.info/</a>. To learn more about online interest-based advertising, privacy, cookies, you can also visit the website of the Network Advertising Initiative here. <a href="http://www.networkadvertising.org/index.asp ">http://www.networkadvertising.org/index.asp</a>
+<br /><br />
+The aggregated information we collect is used for a number of purposes including the following:
 <ul>
-  <li>To improve the content of the PCWorld Site, including by allowing PCWorld's editors to consult with readers. <br /></li>
-  <li>To communicate with users about registration and other customer service issues. <br /></li>
-  <li>To promote products and services of PCWorld, our parent company IDG, and our sibling IDG companies, as described in more detail below. <br /></li>
-  <li>To conduct research surveys on behalf of PCWorld, IDG, and its subsidiaries and affiliates. <br /></li>
-</ul>
-  
-  <h4>Information sharing</h4><br />
-   
-   
-  PCWorld may share aggregated, nonpersonal information, such as Web site traffic figures, with third parties. This aggregated information does not identify you individually. We may also share cookie data as described above ("Information we collect and how we use it&quot;).  Further, we may share personal information with your consent or in order to provide products or services you have requested. In addition, by using the site you agree that we may also share personal information in any of the following circumstances:<br />
-  
-  <ul>
-  <li>We may use or disclose personal information if we have a good-faith belief that the disclosure is reasonably necessary (a) to satisfy applicable law, regulation, legal process, or enforceable governmental request, (b) to enforce agreements we have with you, (c) to address fraud or security issues, or (d) to protect against harm to the rights, property, or safety of PCWorld or our employees or customers. <br /></li>
-  <li>We may share personal information with trusted affiliates or third parties, such as credit card processors or fulfillment providers, who process information or perform services on our behalf. <br /></li>
-  <li>If you submit personal information on a portion of our site that is operated by a third party, such as our price comparison service, we may share the information you submit with the third party, and the information may be used by that party as permitted under that party's privacy policy. PCWorld and its parent and affiliate companies are not responsible for the third party's actions or policies. Portions of the site operated by third parties normally include a &quot;Powered by&quot; logo naming the third party, or include links to the third party's privacy policy. <br /></li>
-  <li>We may transfer personal information from your user record to your subscriber record, if one exists, provided that we also transfer any preferences you have set for how that personal information is used. Any information transferred to the subscriber database will be governed by Section 2 (PCWorld Subscriber Privacy Policy). <br /></li>
-  <li>As part of the IDG Publishing Network, we share personal information with our parent company, IDG, for promotional and other purposes. Section 3 (IDG Publishing Network Privacy Policy) explains how the IDG Publishing Network uses this information. <br /></li>
-  <li>We may share information with third parties for promotional purposes, as described below. <br /></li>
- </ul> 
-  
-  In addition, you should be aware that when you disclose personal information such as your name or e-mail address in a forum, blog comment, or other area that is publicly accessible by others, that information can be collected and used by others. PCWorld and its parent and affiliate companies are not responsible for any information that you provide in the above areas.<br />
-  
-  <h4>Use of data for promotions, and choices for personal information</h4><br />
-  When you provide your e-mail address to us, you agree to receive e-mail from PCWorld, its sibling IDG companies, and the IDG Publishing Network; however, you can unsubscribe from these e-mails at any time simply by following the instructions at the bottom of the e-mail. We allow you to opt out of receiving e-mail regarding third-party offers, both when e-mail information is collected and with each use of your address. If you do not opt out at the time your e-mail address is collected, or do not respond to the questions concerning how we may use your e-mail address, your address may be used for third-party offers. Offers for which the e-mail address is rented and/or licensed for use are screened and the users are required to target their offers carefully.<br />
-  <br />
-  You may have the opportunity to provide us with your mobile phone number, whether by responding to a form that asks for a mobile number or by using your phone to send us certain kinds of communications, such as a shortcode, SMS or other mobile message. We use your mobile phone number to provide the products and services you've specifically requested, such as content delivery to your phone, and for customer service regarding those products and services. We may use your mobile phone number to promote other products and services of PCWorld and its sibling IDG companies if you have expressly consented to receive our promotions via your phone. Similarly, we may use your mobile phone number to promote products and services of carefully chosen third parties if you have expressly consented to receive third party promotions via your phone. Your preferences for receiving promotions via your mobile phone are separate from your preferences for receiving promotions via other means, and you can update your mobile phone preferences at any time simply by following the instructions included in the messages we send to your mobile phone. Please note that the privacy practices described in this paragraph apply only to mobile phone numbers provided to us in the ways described above. If you provide your mobile phone number in other contexts, such as by entering a mobile phone number in a form that asks for your home or business number, we will not be able to identify the number as a mobile number, and the practices described in this paragraph will not apply. Also, please be aware that many mobile phone companies recycle phone numbers, so if you have a new phone number it is possible that you might receive messages that the previous holder of the number had signed up for or consented to receive.<br />
-  <br />
-  Postal addresses and telephone numbers (other than mobile phone numbers described above) will be used to promote PCWorld and IDG companies products and services, and may be rented and/or licensed to selected outside firms for promotional purposes. Offers for which the postal addresses and telephone numbers are rented and/or licensed for use are screened and the users are required to target their offers carefully. Fax numbers may be used for surveys for PCWorld and third parties, but are not rented and/or licensed to outside firms except as expressly set forth in this policy.<br />
-  <br />
-  In addition to the methods outlined above, you may change your preferences regarding use of personal data by sending an e-mail to <a href="mailto:webmaster@pcworld.com">webmaster@pcworld.com</a>.<br />
-  If PCWorld or any of its products is involved in a merger, acquisition, or sale of some or all of its assets, all personally identifying information and other data will be transferred to the new owner.<br />
-  
-  
-<h2>2. PCWorld Subscriber Privacy Policy</h2><br />
-  PCWorld collects personally identifying information and data from people who subscribe to PCWorld magazine, whether in print or via an electronic edition. This section of our privacy policy explains how we collect and use subscriber information. In addition, from time to time we may add other information that we collect from third party sources to enhance the information that you provided to PCWorld. Please note that PCWorld subscriber data is maintained separately from data gathered from our online users. This means that subscribers who also use the PCWorld Web site should read both this section and Section 1 (PCWorld Online Privacy Policy) in order to have a full understanding of our privacy practices.<br />
-  <br />
-  <h4>Information we collect and how we use it</h4><br />
 
-  <p>We collect personally identifying information regarding subscribers in three main ways:<br />
-  </p>
-  <ul>
-  <li>When you provide it to us, such as by ordering a subscription, entering a contest, signing up for a newsletter or otherwise contacting us. <br /></li>
-  <li>When you provide information about yourself or your company to the PCWorld Web site or when you register for any other IDG Publishing Network products, your information may be included in your PCWorld subscriber record. <br /></li>
-  <li>From time to time we may add other information that we collect from third-party sources to enhance the information that you provided to PCWorld. <br /></li>
-  </ul>
-  When you subscribe to PCWorld, you must provide your postal address (for print subscribers) or e-mail address (for electronic edition subscribers), and you may choose to provide us with additional personal information, such as your telephone or fax number, and with demographic information, all of which becomes part of your subscription record. The data in your subscription record is used in a number of ways, including the following:<br />
-  
+  <li>
+To improve the content and design of the PCWorld Web site. </li>
+<li>
+To enable our audit bureau to verify our claims of traffic to the site. </li>
+<li>
+To help advertisers, potential advertisers or marketers assess the suitability of the site for their ad campaigns. </li>
+<li>
+To help us understand more about the interests of our users, so that we can offer goods and services we believe may be of interest.</li></ul>
+Many portions of the PCWorld site can be used without registering or giving us any personal information such as (but not limited to) your name and e-mail address. However, PCWorld does collect personally identifying information regarding our online users, including in the following ways:
+When you provide it to us, such as (but not limited to) by entering a contest, becoming a registered member, buying a product, signing up for a newsletter, tutorial, or email or mobile alerts, or otherwise contacting us. 
+When you provide it to a company that powers a portion of our site or provides a special feature, such as a contest registration or a white paper library, that appears on our site. 
+<br /><br />
+When you provide information about yourself or your company to PCWorld in connection with a subscription order, or when you provide information to any other IDG Publishing Network affiliate, that information may be included in your PCWorld user record, if one exists. 
+<br /><br />
+If you have previously registered with another IDG Publishing Network affiliate and you begin to fill out certain forms on the PCWorld Web site, the site may recognize you and automatically complete the form, and this auto-fill data will then be included in your PCWorld user record. 
+<br /><br />
+If you have provided information to PCWorld, from time to time we may enhance that information with other information that we collect from third-party sources. <br /><br />
+The personal information we collect may be linked to information regarding your use of the PCWorld Site, such as which newsletters or alerts you subscribe to or which categories of white paper content you have downloaded. This combined data helps us recommend content to you and target our communications to topics that interest you. The personal information and related data may be used in a number of ways, including the following:
 <ul>
-  <li>To deliver your subscription. <br /></li>
-  <li>To improve the content of PCWorld, including by allowing PCWorld's editors to consult with readers. <br /></li>
-  <li>To notify subscribers about renewals and other customer service issues. <br /></li>
-  <li>To help our audit bureau verify cumulative circulation and demographic statistics. <br /></li>
-  <li>To conduct research surveys on behalf of PCWorld, IDG, and its subsidiaries and affiliates. <br /></li>
+<li>
+To improve the content of the PCWorld site, including by allowing PCWorld's editors to consult with readers. </li>
+<li>
+To communicate with users about registration and other customer service issues. </li>
+<li>
+To promote products and services of PCWorld, our parent company IDG, and our sibling IDG companies, as described in more detail below. </li>
+<li>
+To conduct research surveys on behalf of PCWorld, IDG, and its subsidiaries and affiliates. </li>
 </ul>
-  
-  <h4>Information sharing</h4><br />
-  PCWorld may share aggregated, nonpersonal information, such as total magazine circulation or circulation in a particular state or zip code, with third parties. This aggregated information does not identify you individually. We may share personal information with your consent or in order to provide products or services you have requested. We may also share personal information in any of the following circumstances:<br />
-  <ul>
-  <li>We may use or disclose personal information if we have a good-faith belief that the disclosure is reasonably necessary (a) to satisfy applicable law, regulation, legal process, or enforceable governmental request, (b) to enforce agreements we have with you, (c) to address fraud or security issues, or (d) to protect against harm to the rights, property, or safety of PCWorld or our employees or customers. <br /></li>
-  <li>We may share personal information with trusted affiliates or third parties, such as credit card processors or fulfillment providers, who process information or perform services on our behalf. <br /></li>
-  <li>We may transfer personal information from your subscriber record to our online user database, provided that we also transfer any preferences you have set for how that personal information is used. Any information transferred to the online user database will be governed by Section 1 (PCWorld Online Privacy Policy). <br /></li>
-  <li>As part of the IDG Publishing Network, we share personal information with our parent company, IDG, for promotional and other purposes. Section 3 (IDG Publishing Network Privacy Policy) explains how the IDG Publishing Network uses this information. <br /></li>
-  <li>We may share information with third parties for promotional purposes, as described below. <br /></li>
-  </ul>
-  
+
+  <h4>Information sharing</h4>
+
+
+PCWorld may share aggregated, nonpersonal information, such as Web site traffic figures, with third parties. This aggregated information does not identify you individually. We may also share cookie data as described above ("Information we collect and how we use it"). Further, we may share personal information with your consent or in order to provide products or services you have requested. In addition, by using the site you agree that we may also share personal information in any of the following circumstances:
+<ul>
+<li>
+We may use or disclose personal information if we have a good-faith belief that the disclosure is reasonably necessary (a) to satisfy applicable law, regulation, legal process, or enforceable governmental request, (b) to enforce agreements we have with you, (c) to address fraud or security issues, or (d) to protect against harm to the rights, property, or safety of PCWorld or our employees or customers. </li>
+<li>
+In the case that disclosure is necessary to satisfy applicable law, regulation, legal process, or enforceable governmental request, we will notify you via email in advance of such disclosure, to the extent it is legally permissible for us to do so.
+We may share personal information with trusted affiliates or third parties, such as credit card processors or fulfillment providers, who process information or perform services on our behalf. </li>
+<li>
+In addition, we make available a large library of content provided to us from third parties. In return for access to this content, we may ask you to provide us with personal information. When accessing content contributed by a third party, your personal information may be shared with those third parties, and the information will be governed by those parties' privacy policies as well as ours. PCWorld, nor its parent company, or any of its subsidiaries or affiliates, does not bear any responsibility for any actions or policies of such third parties. If you do not wish to have your information shared with a third party, please do not access third party content on our site.</li>
+<li>
+If you submit personal information on a portion of our site that is operated by a third party, such as our price comparison service, we may share the information you submit with the third party, and the information may be used by that party as permitted under that party's privacy policy. PCWorld and its parent and affiliate companies are not responsible for the third party's actions or policies. Portions of the site operated by third parties normally include a "Powered by" logo naming the third party, or include links to the third party's privacy policy. </li>
+</ul>
+Social Log-In.  Social Login allows you to log into PCWorld using your preferred social network user name and password. With Social Login, you don't need to remember a new set of site credentials, or fill out additional registration forms.  If you choose to log into your PCWorld account using one of your social network accounts, such as Twitter, Google, Yahoo!, Facebook or Linked-In, your PCWorld profile and connections information will be shared with your social network, and in turn, your social network will share your social network profile and connections with PCWorld.  The profile data that is shared with PCWorld through your social network will vary based on which social network you use. Your social network may also offer data from your contacts list, however, PCWorld does not capture, store, or share any data from a registrants contact list. Please refer to your social networks privacy policies for more information. Social Login on this site is provided by our partner, Gigya. Learn more about <a href="http://www.gigya.com/social-login/">Social Login</a>. 
+
+<br><br>
+As part of the IDG Publishing Network, we share personal information with our parent company, IDG, for promotional and other purposes. Section 2, IDG Publishing Network Privacy Policy, explains how the IDG Publishing Network uses this information. 
+<br><br>
+We may share information with third parties for promotional purposes, as described below. 
+<br><br>
+In addition, you should be aware that when you disclose personal information such as your name or e-mail address in a forum, blog comment, or other area that is publicly accessible by others, that information can be collected and used by others. PCWorld and its parent and affiliate companies are not responsible for any information that you provide in the above areas.
+<br>
   <h4>Use of data for promotions, and choices for personal information</h4><br />
-  Postal addresses will be used to promote PCWorld and IDG companies' products and services, and may be rented and/or licensed to selected outside firms for promotional purposes. Offers for which the postal address data is rented and/or licensed for use are screened and the users are required to target their offers carefully.<br />
-  <br />
-  When you provide your e-mail address to us, you agree to receive promotional e-mail from PCWorld, its sibling IDG companies, and the IDG Publishing Network; however, you can unsubscribe from these e-mails at any time simply by following the instructions at the bottom of the e-mail. We allow you to opt out of receiving e-mail regarding third-party offers, both when e-mail information is collected and with each use of your address. If you do not opt out at the time your e-mail address is collected, or do not respond to the questions concerning how we may use your e-mail address, your address may be used for third-party offers. Offers for which the e-mail address is rented and/or licensed for use are screened and the users are required to target their offers carefully.<br />
-  <br />
-  Subscribers who do not want their personal information used for third-party promotions may write and ask to be removed from such promotion lists. Requests should be sent to:<br /><br />
-  <em>
-  PCWorld<br />
-  Attn: Subscriber Services<br />
-  P.O. Box 37571<br />
-  Boone, IA 50037-0571 </p>
-  </em>
-  <br /><br />
-<p>If PCWorld or any of its products is involved in a merger, acquisition, or sale of some or all of its assets, all personally identifying information and other data will be transferred to the new owner.<br />
+
+When you provide your e-mail address to us, you agree to receive e-mail from PCWorld, its sibling IDG companies, the IDG Publishing Network , as well as select third party offers; however, you can unsubscribe from these e-mails at any time simply by following the instructions at the bottom of the e-mail. Offers for which the e-mail address is rented and/or licensed for use are screened and the users are required to target their offers carefully.
+<br><br>
+You may have the opportunity to provide us with your mobile phone number, whether by responding to a form that asks for a mobile number or by using your phone to send us certain kinds of communications, such as a shortcode, SMS or other mobile message. We use your mobile phone number to provide the products and services you've specifically requested, such as content delivery to your phone, and for customer service regarding those products and services. We may use your mobile phone number to promote other products and services of PCWorld and its sibling IDG companies if you have expressly consented to receive our promotions via your phone. Similarly, we may use your mobile phone number to promote products and services of carefully chosen third parties if you have expressly consented to receive third party promotions via your phone. Your preferences for receiving promotions via your mobile phone are separate from your preferences for receiving promotions via other means, and you can update your mobile phone preferences at any time simply by following the instructions included in the messages we send to your mobile phone. Please note that the privacy practices described in this paragraph apply only to mobile phone numbers provided to us in the ways described above. If you provide your mobile phone number in other contexts, such as by entering a mobile phone number in a form that asks for your home or business number, we will not be able to identify the number as a mobile number, and the practices described in this paragraph will not apply. Also, please be aware that many mobile phone companies recycle phone numbers, so if you have a new phone number it is possible that you might receive messages that the previous holder of the number had signed up for or consented to receive.<br><br>
+
+Postal addresses and telephone numbers (other than mobile phone numbers described above) will be used to promote PCWorld and IDG companies products and services, and may be rented and/or licensed to selected outside firms for promotional purposes. Offers for which the postal addresses and telephone numbers are rented and/or licensed for use are screened and the users are required to target their offers carefully. Fax numbers may be used for surveys for PCWorld and third parties, but are not rented and/or licensed to outside firms except as expressly set forth in this policy.<br><br>
+
+In addition to the methods outlined above, you may change your preferences regarding use of personal data by sending an e-mail to webmaster@ pcworld.com.  If you request that we terminate your registration and/or cancel your account, PCWorld will delete your personal data that we have in our records. 
+<br><br>
+If PCWorld or any of its products is involved in a merger, acquisition, or sale of some or all of its assets, all personal information and other data will be transferred to the new owner.
+<br><br>
+
+<h2>2. IDG Publishing Network Privacy Policy</h2>
+
+PCWorld is part of the IDG Publishing Network, a group of Web sites for the IDG family of technology publications. The policy below governs the use of personally identifying information collected by the IDG Publishing Network from registered members of sites that are part of the IDG Publishing Network and from subscribers to IDG publications. For information on PCWorld's privacy practices, please see Section 1 (PCWorld Online Privacy Policy).
+<br>
+<h4>IDG Publishing Network Privacy Policy</h4>
 
 
-<h2>3. IDG Publishing Network Privacy Policy</h2><br />
-  PCWorld is part of the IDG Publishing Network, a group of Web sites for the IDG family of technology publications. The policy below governs the use of personally identifying information collected by the IDG Publishing Network from registered members of sites that are part of the IDG Publishing Network and from subscribers to IDG publications. For information on PCWorld's privacy practices, please see Section 1 (PCWorld Online Privacy Policy) and Section 2 (PCWorld Subscriber Privacy Policy).<br />
-  
-  <h4>IDG Publishing Network Privacy Policy</h4><br />
-  Below is the current policy regarding the usage of personally identifying information and data collected by the IDG Publishing Network. We reevaluate this policy on an ongoing basis based on feedback from readers. The IDG Publishing Network reserves the right to change its privacy policy. However, if there are any changes to the use of personally identifiable information and data that is different from that stated at the time of collection, we will notify you by posting a notice on <a href="http://www.idg.com">www.idg.com</a>.<br />
-  
-  
-  <h4>About the IDG Publishing Network</h4><br />
-  The International Data Group, Inc. (IDG) family of on-line and print publications consists of hundreds of award-winning titles including PCWorld, Macworld, PCWorld, CIO, CSO, Game Pro, and Network World. The IDG Publishing Network is a growing collection of IDG Web sites that presently includes pcworld.com, macworld.com, cio.com, csoonline.com, PCWorld.com, infoworld.com, and networkworld.com. A complete listing is available at <a href="http://www.idg.com">www.idg.com</a>.<br />
-  <br />
-  To access restricted content on any IDG Publishing Network Web site, you must be a member of the IDG Publishing Network. To become a member of the IDG Publishing Network, you need to provide certain information about yourself. Any of the IDG Publishing Network sites may use this identifying information for internal analytical and business development purposes and to send you e-mail. However, other forms of communication, including postal mail, may be directed to you pursuant to the specific privacy policy of the site to which you provided the information, as may be updated from time to time.<br />
-  <br />
-  You can opt out of receiving further e-mail by clicking the appropriate links that appear at the bottom of any e-mail you receive. If you do not want to receive other types of communication, including as applicable, postal mail, from the editor and publisher of the site to which you provided the information, please refer to the site's privacy policy for the procedure to follow.<br />
-  <br />
-  The IDG Publishing Network is intended for individuals age 13 and over. Personal information may not be provided by anyone under 13 years of age. Further no one under 13 years old may participate in the forums or chat rooms or any other areas where public discussions may take place. In addition no one under the age of 18 may conduct any transactions for the purposes of purchasing or selling any items. Parents should be sure that their children are not conducting any of the above activities on the IDG Publishing Network.<br />
-  <br />
-  If you have any questions or comments regarding the IDG Publishing Network or its use of information please send email to <a href="mailto:postmasterhelp@idgcommunications.com">postmasterhelp@idgcommunications.com</a> or write to us at IDG Publishing Network, C/O Customer Service, TSG, IDG Communications, Inc., 5 Speen St., Framingham, MA 01701.<br />
-  <br />
-Last updated: December 8, 2011.</p>
+Below is the current policy regarding the usage of personally identifying information and data collected by the IDG Publishing Network. We reevaluate this policy on an ongoing basis based on feedback from readers. The IDG Publishing Network reserves the right to change its privacy policy. However, if there are any changes to the use of personally identifiable information and data that is different from that stated at the time of collection, we will notify you by posting a notice on www.idg.com.
+
+<h4>About the IDG Publishing Network</h4>
+
+The International Data Group, Inc. (IDG) family of on-line and print publications consists of hundreds of award-winning titles including PCWorld, Macworld, TechHive, CIO, CSO, and Network World. The IDG Publishing Network is a growing collection of IDG Web sites that presently includes PCWorld.com, techhive.com, macworld.com, cio.com, csoonline.com, infoworld.com, and networkworld.com. A complete listing is available at www.idg.com.
+<br><br>
+To access restricted content on any IDG Publishing Network Web site, you must be a member of the IDG Publishing Network. To become a member of the IDG Publishing Network, you need to provide certain information about yourself. Any of the IDG Publishing Network sites may use this identifying information for internal analytical and business development purposes and to send you e-mail. However, other forms of communication, including postal mail, may be directed to you pursuant to the specific privacy policy of the site to which you provided the information, as may be updated from time to time.
+<br><br>
+You can opt out of receiving further e-mail by clicking the appropriate links that appear at the bottom of any e-mail you receive. If you do not want to receive other types of communication, including as applicable, postal mail, from the editor and publisher of the site to which you provided the information, please refer to the site's privacy policy for the procedure to follow.
+<br><br>
+The IDG Publishing Network is intended for individuals age 13 and over. Personal information may not be provided by anyone under 13 years of age. Further no one under 13 years old may participate in the forums or chat rooms or any other areas where public discussions may take place. In addition no one under the age of 18 may conduct any transactions for the purposes of purchasing or selling any items. Parents should be sure that their children are not conducting any of the above activities on the IDG Publishing Network.
+<br><br>
+If you have any questions or comments regarding the IDG Publishing Network or its use of information please send email to <a href="mailto:postmasterhelp@idgcommunications.com">postmasterhelp@idgcommunications.com</a> or write to us at IDG Publishing Network, C/O Customer Service, TSG, IDG Communications, Inc., 5 Speen St., Framingham, MA 01701.
+<br><br>
+Last updated June 1, 2012. 
 </div>
 		</div> <!-- END #leftColumn -->
 
@@ -1072,109 +1067,109 @@ Last updated: December 8, 2011.</p>
 		 			<li class="" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255546/samsungs_galaxy_tab_2_101_whats_different.html"><img src="../../zapp3.staticworld.net/images/article/2012/05/galaxy-tab-2-10.1-thumb180-11359803.jpg" /></a>
+									<a href="http://www.pcworld.com/article/260272/put_an_old_phone_to_good_usemake_it_a_lego_nxt_telepresence_robot.html"><img src="../../zapp2.staticworld.net/images/article/2012/08/robotthumb-11392642.jpg" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255546/samsungs_galaxy_tab_2_101_whats_different.html">Samsung's Galaxy Tab 2 10.1: What's Different</a>
+                        <a href="http://www.pcworld.com/article/260272/put_an_old_phone_to_good_usemake_it_a_lego_nxt_telepresence_robot.html">Put an Old Phone to Good Use--Make it a Lego NXT Telepresence Robot</a>
 		   			</li>
 				
 		 			<li class="" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255495/12_tips_to_cut_your_cell_phone_bill.html"><img src="../../zapp2.staticworld.net/images/article/2012/05/cell_phone_cut_costs-11359422.jpg" /></a>
+									<a href="http://www.pcworld.com/article/259965/dk_crayon_crumble_font_makes_you_feel_like_a_kid_again.html"><img src="../../zapp1.staticworld.net/images/article/2012/07/crayon20crumble_screnshot-180-11390081.jpg" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255495/12_tips_to_cut_your_cell_phone_bill.html">12 Tips to Cut Your Cell Phone Bill</a>
+                        <a href="http://www.pcworld.com/article/259965/dk_crayon_crumble_font_makes_you_feel_like_a_kid_again.html">DK Crayon Crumble Font Makes You Feel Like a Kid Again</a>
 		   			</li>
 				
 		 			<li class="" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255224/how_to_partition_your_hard_drive_to_optimize_performance.html"><img src="../../zapp0.staticworld.net/images/article/2012/05/wdvelociraptor_180-11359547.jpg" /></a>
+									<a href="http://www.pcworld.com/article/260270/lego_motorized_wheelchair_doubles_as_the_nerdiest_throne_ever.html"><img src="../../zapp3.staticworld.net/images/article/2012/08/lego20chair-11392609.jpg" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255224/how_to_partition_your_hard_drive_to_optimize_performance.html">How to Partition Your Hard Drive to Optimize Performance</a>
+                        <a href="http://www.pcworld.com/article/260270/lego_motorized_wheelchair_doubles_as_the_nerdiest_throne_ever.html">Lego Motorized Wheelchair Doubles as the Nerdiest Throne Ever</a>
 		   			</li>
 				
 		 			<li class="" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255544/scott_thompson_out_as_yahoo_ceo.html"><img src="../../zapp2.staticworld.net/images/article/2012/04/scott-thompson-yahoo-11343290.jpg" /></a>
+									<a href="http://www.pcworld.com/article/260269/rim_unveils_its_new_4g_blackberry_playbook_tablet.html"><img src="../../zapp0.staticworld.net/images/article/2012/08/1343155721895-11392601.png" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255544/scott_thompson_out_as_yahoo_ceo.html">Scott Thompson out as Yahoo CEO</a>
+                        <a href="http://www.pcworld.com/article/260269/rim_unveils_its_new_4g_blackberry_playbook_tablet.html">RIM Unveils Its New 4G BlackBerry PlayBook Tablet</a>
 		   			</li>
 				
 		 			<li class="" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255542/yahoo_ceo_thompson_reportedly_quits.html"><img src="../../zapp2.staticworld.net/images/article/2012/04/scott-thompson-yahoo-11343290.jpg" /></a>
+									<a href="http://www.pcworld.com/article/260046/lg_55lm6700_review_featurefilled_hdtv_is_frustrating.html"><img src="../../zapp3.staticworld.net/images/article/2012/07/lg_180-11391050.jpg" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255542/yahoo_ceo_thompson_reportedly_quits.html">Yahoo CEO Thompson Reportedly Quits</a>
+                        <a href="http://www.pcworld.com/article/260046/lg_55lm6700_review_featurefilled_hdtv_is_frustrating.html">LG 55LM6700 Review: Feature-Filled HDTV Is Frustrating</a>
 		   			</li>
 				
 		 			<li class="last" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255538/android_trojan_mimics_pc_driveby_malware_attack.html"><img src="../../zapp0.staticworld.net/images/article/2011/11/android-malware-thumb180-5240067.jpg" /></a>
+									<a href="http://www.pcworld.com/article/260263/google_street_view_lands_at_kennedy_space_center.html"><img src="../../zapp1.staticworld.net/images/article/2012/08/nasacover-11392560.png" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255538/android_trojan_mimics_pc_driveby_malware_attack.html">Android Trojan Mimics PC Drive-by Malware Attack</a>
+                        <a href="http://www.pcworld.com/article/260263/google_street_view_lands_at_kennedy_space_center.html">Google Street View Lands at Kennedy Space Center</a>
 		   			</li>
 				
 		 			<li class="" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/businesscenter/article/255537/apple_beats_proviews_trademark_claim_in_california.html"><img src="../../zapp2.staticworld.net/news/graphics/160248-apple_logo-black._180jpeg" /></a>
+									<a href="http://www.pcworld.com/article/260262/as_cyanogenmod_9_rolls_out_snapdragon_s1_devices_miss_out.html"><img src="../../zapp4.staticworld.net/images/article/2012/08/cmthumb-11392536.png" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/businesscenter/article/255537/apple_beats_proviews_trademark_claim_in_california.html">Apple Beats Proview's Trademark Claim in California</a>
+                        <a href="http://www.pcworld.com/article/260262/as_cyanogenmod_9_rolls_out_snapdragon_s1_devices_miss_out.html">As CyanogenMod 9 Rolls Out, Snapdragon S1 Devices Miss Out</a>
 		   			</li>
 				
 		 			<li class="" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255541/verizon_defends_customer_privacy_in_publishers_suit.html"><img src="../../zapp2.staticworld.net/news/graphics/211162-copyright_digital_original.jpg" /></a>
+									<a href="http://www.pcworld.com/article/260260/facebook_reports_80m_accounts_are_bogus.html"><img src="../../zapp1.staticworld.net/images/article/2012/08/fake_facebook2-11392520.png" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255541/verizon_defends_customer_privacy_in_publishers_suit.html">Verizon Defends Customer Privacy in Publisher's Suit</a>
+                        <a href="http://www.pcworld.com/article/260260/facebook_reports_80m_accounts_are_bogus.html">Facebook Reports 80M Accounts Are Bogus</a>
 		   			</li>
 				
 		 			<li class="" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255539/microsoft_pledges_to_go_carbon_neutral_in_july.html"><img src="../../zapp3.staticworld.net/news/graphics/198661-savingenergy_bulb_thumb_original.jpg" /></a>
+									<a href="http://www.pcworld.com/article/260259/ipad_helps_push_apple_to_lead_global_market_with_19_share_of_pc_shipments.html"><img src="../../zapp1.staticworld.net/images/article/2012/08/apple_desktops_notebooks-11392514.png" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255539/microsoft_pledges_to_go_carbon_neutral_in_july.html">Microsoft Pledges to Go Carbon Neutral in July</a>
+                        <a href="http://www.pcworld.com/article/260259/ipad_helps_push_apple_to_lead_global_market_with_19_share_of_pc_shipments.html">iPad Helps Push Apple to Lead Global Market With 19% Share of PC Shipments</a>
 		   			</li>
 				
 		 			<li class="" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255540/report_lightsquared_prepares_for_bankruptcy_filing.html"><img src="../../zapp3.staticworld.net/images/article/2011/12/lightsquared_logo-6114337.jpg" /></a>
+									<a href="http://www.pcworld.com/article/260258/googles_android_40_being_ported_to_25_raspberry_pi_pc.html"><img src="../../zapp3.staticworld.net/images/article/2012/08/rasberry_pc-11392510.png" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255540/report_lightsquared_prepares_for_bankruptcy_filing.html">Report: LightSquared Prepares for Bankruptcy Filing</a>
+                        <a href="http://www.pcworld.com/article/260258/googles_android_40_being_ported_to_25_raspberry_pi_pc.html">Google's Android 4.0 Being Ported to $25 Raspberry Pi PC</a>
 		   			</li>
 				
 		 			<li class="" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255536/gamers_can_test_skill_with_backgammon_app_for_apple_devices.html"><img src="../../zapp3.staticworld.net/images/article/2012/05/faceme-11359740.jpg" /></a>
+									<a href="http://www.pcworld.com/article/260226/guild_wars_2_final_beta_weekend_pvp.html"><img src="../../zapp1.staticworld.net/images/article/2012/08/logo-11392222.png" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255536/gamers_can_test_skill_with_backgammon_app_for_apple_devices.html">Gamers Can Test Skill With Backgammon App for Apple Devices</a>
+                        <a href="http://www.pcworld.com/article/260226/guild_wars_2_final_beta_weekend_pvp.html">Guild Wars 2 Final Beta Weekend: PvP</a>
 		   			</li>
 				
 		 			<li class="last" style="width: 161px;">
 		 				<div class="image">
 							
-									<a href="http://www.pcworld.com/article/255532/iphone_and_ipad_app_makes_it_easier_to_follow_content_on_sports_teams.html"><img src="../../zapp1.staticworld.net/images/article/2012/05/bleacherreport-24_o-11359719.jpg" /></a>
+									<a href="http://www.pcworld.com/article/259756/remove_an_unwanted_email_address_in_outlook.html"><img src="../../zapp3.staticworld.net/images/article/2012/07/080220thumb-11388685.jpg" /></a>
 							
 						</div>
-                        <a href="http://www.pcworld.com/article/255532/iphone_and_ipad_app_makes_it_easier_to_follow_content_on_sports_teams.html">iPhone and iPad App Makes it Easier to Follow Content on Sports Teams</a>
+                        <a href="http://www.pcworld.com/article/259756/remove_an_unwanted_email_address_in_outlook.html">Remove an Unwanted Email Address in Outlook</a>
 		   			</li>
 				
 			</ul>
@@ -1246,9 +1241,7 @@ Last updated: December 8, 2011.</p>
 		                <li><a href="http://jobs.pcworld.com/" target="_blank">Search for Tech Jobs</a></li>
 		                <li><a href="http://careers.idg.com/" target="_blank">Careers at IDG</a></li>
 		                <li><a href="http://www.macworld.com/" target="_blank">Macworld</a></li>
-		                <li><a href="http://www.macuser.com/" target="_blank">MacUser</a></li>
-		                <li><a href="http://www.osxhints.com/" target="_blank">Mac OS X Hints</a></li>
-		                <li><a href="http://iphone.macworld.com/" target="_blank">iPhone Central</a></li>
+		                <li><a href="http://www.techhive.com/" target="_blank">TechHive</a></li>
 		            </ul>
 		        </li>
 		        <li class="col">
@@ -1299,7 +1292,7 @@ Last updated: December 8, 2011.</p>
 		                <option value="http://www.idgtechnetwork.com" target="_blank">IDG TechNetwork</option>
 		                <option value="http://www.pcworld.com/resource/idg_intl.html" target="_blank">IDG International Sites</option>
 		            </select></p>                    
-		        <p>&copy; 1998-2012, PCWorld Communications, Inc.</p>
+		        <p>&copy; 1998-2012, IDG Consumer & SMB</p>
 		    </div>
 		</div> <!-- END directory --> 
 		
@@ -1385,7 +1378,7 @@ Last updated: December 8, 2011.</p>
 
 
 <!--
-ts:Mon May 14 04:47:20 PDT 2012
+ts:Thu Aug 02 13:31:00 PDT 2012
 ad:pcw.default/;pos=336showcase;tile=2;sz=336x280;
 mlc: 
 pn: 

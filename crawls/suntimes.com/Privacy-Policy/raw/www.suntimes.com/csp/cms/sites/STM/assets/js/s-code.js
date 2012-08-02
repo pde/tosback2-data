@@ -2,6 +2,8 @@
 //Copyright 1996-2011 Adobe, Inc. All Rights Reserved
 //More info available at http://www.omniture.com -->
 
+var chartbeat_on = '';
+
 // Which Omniture suite?
 
 var s_account='digchchicagosuntimes';
@@ -193,7 +195,7 @@ if (document.URL.match(/rogerebert\./i)) {
 } else if (document.URL.match(/\.com\/community\//i)) {
 	s_account='digchtncnetwork';	communityName='suntimes.com';
 	linkInternalFilters="javascript:,www.suntimes.com";
-} else if (document.URL.match(/\.com\/travel\//i)) {
+} else if (document.URL.match(/\.com\/travel\//i) || document.URL.match(/travel\./i)) {
 	s_account='digchtncnetwork';	communityName='suntimes.com';
 	linkInternalFilters="javascript:,www.suntimes.com";
 }
@@ -950,3 +952,41 @@ if (document.URL.match(/ui\.ppjol\.com/i)) {
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code=s.t();if(s_code)document.write(s_code)
 //<!-- End SiteCatalyst code version: H.23.3. -->
+
+
+
+
+<!-- ChartBeat tag -->
+switch (window.location.host) {
+case "www.suntimes.com": chartbeat_on = window.location.host;
+	break;
+case "blogs.suntimes.com": chartbeat_on = window.location.host;
+	break;
+default: 
+	chartbeat_on = '';
+}	
+
+if (chartbeat_on != '') {
+    var _sf_async_config={};
+    /** CONFIGURATION START **/
+    _sf_async_config.uid = 38241;
+    _sf_async_config.domain = chartbeat_on;
+    _sf_async_config.sections = s.channel;  //CHANGE THIS
+    _sf_async_config.authors = s.prop8;    //CHANGE THIS
+    /** CONFIGURATION END **/
+    (function(){
+      function loadChartbeat() {
+        window._sf_endpt=(new Date()).getTime();
+        var e = document.createElement('script');
+        e.setAttribute('language', 'javascript');
+        e.setAttribute('type', 'text/javascript');
+        e.setAttribute('src',
+           (('https:' == document.location.protocol) ? 'https://a248.e.akamai.net/chartbeat.download.akamai.com/102508/' : 'http://static.chartbeat.com/') +
+           'js/chartbeat.js');
+        document.body.appendChild(e);
+      }
+      var oldonload = window.onload;
+      window.onload = (typeof window.onload != 'function') ?
+         loadChartbeat : function() { oldonload(); loadChartbeat(); };
+    })();
+}

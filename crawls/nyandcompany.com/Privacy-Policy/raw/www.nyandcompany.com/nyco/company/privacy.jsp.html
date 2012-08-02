@@ -126,10 +126,11 @@
   <script language="JavaScript" src="../javascript/s_code.js"></script>
   <script language="JavaScript" src="../javascript/page_code.js"></script>
   <script language="javascript">
+    var chn = ""; 
   	setOmnitureInternalCampaignId();
   	setOmnitureProp6();
   	setOmnitureProp3();
-  	setOmnitureProp10();
+  	//setOmnitureProp10();
 	
   function setOmnitureCartAdd(skuId,sClass,sStyle,page){
     /*This function setOmnitureCartAdd(skuId) is used in the nyco/myacccount/giftListRow.jsp, nyco/browse/gadgets/picker_addToCart.jspf, nyco/browse/picker_addToGiftList.jspf 
@@ -137,52 +138,106 @@
 	var qty = ""; 
 	if(page == "pdp"){
 		qty = document.getElementById("atg_b2cblueprint_quantityField");
-	}else{
+	}
+	if(page == "quickshop"){
 		qty = document.getElementById("qb_quantityField");
 	}
-	if(qty!="" && qty.value > 0) {
+	if(page == "wishlist"){
+		qty = document.getElementById("quantityX");
+	}
+	if(page == "later"){
+		qty = "1";
+	}
+
+	if((qty!="" && qty.value > 0)||qty=="1") {
 		
 
 		setOmnitureCartAddEvent(page);
 		var eVar3=getOmnitureBrowseSection();
-		if(eVar3 != "") {
+
+		if(eVar3 != "" && page!= "later" && page!= "wishlist") {
 		 s.products = ";" + sClass+sStyle + ";;;;evar3=" + eVar3 + "|evar20=" + skuId;
 		}else {
-		 s.products = ";" + sClass+sStyle + ";;;;|evar20=" + skuId;
+		 s.products = ";" + sClass+sStyle + ";;;;evar20=" + skuId;
 		}
 		s.eVar27="["+""+""+"]";
 		if(page == "quickshop"){
+			
+			 s.products = s.products + "|eVar6="+"Product Quick View";
 			 s.tl(this,'o','Quick Shop Add to Cart');
 		}
 		if(page == "pdp"){
+			 
+			  s.products = s.products + "|eVar6="+"Product Details Page";
 			  s.tl(this,'o','Add to Cart');
-		}         
-		var s_code=s.t();if(s_code)document.write(s_code)
+		}
+		if(page == "wishlist"){
+			
+			 s.eVar28='Wish List';
+			 s.products = s.products + "|eVar6="+"Wish List"+"|eVar28= WishList";
+			 s.linkTrackVars='eVar28,products';
+			 s.tl(this,'o','Wishlist Add to Cart');
+		}
+		if(page == "later"){
+			 
+			  s.products = s.products + "|eVar6="+"Save for Later"+"|eVar28=SaveForLater";
+			  s.linkTrackVars='eVar28,products';
+			  s.eVar28='Save for Later';
+			  s.tl(this,'o','Save for Later Add to Cart');
+		}
+		//var s_code=s.t();if(s_code)document.write(s_code)
 	}	
   }
 
   function setOmnitureCartAddEvent(page){
     //This function setOmnitureCartRemove(skuId) is used in the nyco/cart/gadgets/itemListingButtons.jsp to set the Omniture variables
-  	var qty = ""; 
-	if(page == "pdp"){
-		qty = document.getElementById("atg_b2cblueprint_quantityField");
-	}else{
-		qty = document.getElementById("qb_quantityField");
-	}
-	if(qty !="" && qty.value > 0) {
-	    
-	
-		var countCI = 0;
-		if(countCI > 0){
-			
-			s.events="scAdd,event37";
+	  	var qty = "";
+		if(page == "pdp"){
+			qty = document.getElementById("atg_b2cblueprint_quantityField");
 		}
-		if(countCI == 0){
-			
-			s.events="scAdd,scOpen,event37";
+		if(page == "quickshop"){
+			qty = document.getElementById("qb_quantityField");
 		}
-		s.linkTrackVars='events,products';
-		s.linkTrackEvents="scAdd,scOpen,event37";
+		if(page == "wishlist"){
+			qty = document.getElementById("quantityX");
+		}
+		if(page == "later"){
+			qty = "1";
+		}
+		if(page == "outFit"){
+			qty = "1";
+		}
+
+		if((qty!="" && qty.value > 0)||qty=="1") {
+		    
+		
+			var countCI = 0;
+			var omnitureEvent = "";
+			if(countCI > 0){
+				if(page == "quickshop"){
+					
+						omnitureEvent = "scAdd,event37";
+				}
+				if(page == "pdp" || page =="wishlist" || page == "later" || page == "outFit"){
+					
+						omnitureEvent = "scAdd";
+				}
+				s.events=omnitureEvent;
+			}
+			if(countCI == 0){
+				if(page == "quickshop"){
+					
+						omnitureEvent = "scAdd,scOpen,event37";
+				}
+				if(page == "pdp" || page =="wishlist" || page == "later" || page == "outFit"){
+					
+						omnitureEvent = "scAdd,scOpen";
+				}
+				s.events=omnitureEvent;
+
+			}
+			s.linkTrackVars='events,products';
+			s.linkTrackEvents=omnitureEvent;
 	}
   }
 
@@ -205,10 +260,17 @@
 	  s.events='event26';  	  
   }	 
   function setOmnitureContinueShoppingPageEvent(){
-	  s.events='event28';  	  
-  }	 
+	  s.events='event28';
+	  var s_code=s.t();if(s_code)document.write(s_code) 
+  }	
+  function setOmnitureCartPageEventDropDown(){ 
+	  setOmnitureCartPageEvent();
+	  
+	  }
   function setOmnitureCartPageEvent(){
-	 s.events='scView';  	  
+			 s.events='scOpen,scView';
+			 
+			 //var s_code=s.t();if(s_code)document.write(s_code)
   }	
  function setOmnitureSaveforLater(sClass,sStyle){
     //This function setOmnitureSaveforLater(skuId) is used in the nyco/browse/gadgets/itemListingButtons.jsp to set the Omniture variables
@@ -321,53 +383,60 @@ function setOmnitureCheckout(){
   s.events="scCheckout";
 
 
-      s.eVar4 = "Continuing with a Existing Account";
-    
   //alert("s.eVar4 :"+s.eVar4 );
   //alert("s.products :"+s.products );
  }
 
-function setOmnitureCheckoutConfirmation(){
+function setOmnitureCheckoutConfirmation(events,products,evar47,evar48,evar16){
   //This function setOmnitureCheckoutConfirmation() is used in the nyco/checkout/confirmResponse.jsp to set the Omniture variables
       
-      s.events = "purchase,event5,event6,event16";
-      if (""!="" && ""!="null") {
-        
-        s.events = s.events + ",event8";               
-      }
+
       s.purchaseID = "";
       s.eVar11 = "";
       s.eVar14 = "";
       s.eVar15 = "";
-      var couponCode = "";
-      var amountSavedFlag="";
+
       
-	  
-      s.eVar17 = "";
-      var multipleProducts='';
-      
-      if(amountSavedFlag == true){
-		s.events = s.events + ",event35"; 
-      }
-      
-      
-      
-   //alert("s.eVar17 : "+s.eVar17);
-   //alert("s.products : "+s.products);
+
+	s.events = events;
+	s.products = products;
+	s.eVar47 = evar47;
+	s.eVar48 = evar48;
+	s.eVar16 = evar16;
 }
 
 function setOmnitureCrossSellVariables(referredProductIdClass,referredProductIdStyle,suggestingProductIdClass,suggestingProductIdStyle) {
-	s_crossSell(suggestingProductIdClass+suggestingProductIdStyle);
+	s_crossSell(referredProductIdClass+referredProductIdStyle);
 }
 
  function setOmnitureProductDetail(productClass,productStyle){
    //This function setOmnitureProductDetail() is used in the nyco/browse/productDetailWithPicker.jsp to set the Omniture variables
    
    s.events ="prodView,event15";
+   	
+   s.products = ";"+productClass+productStyle;
+   
    s.products = ";"+productClass+productStyle;
    //alert("s.products:"+s.products);
    setOmnitureBrowseSection();
  }
+
+ function setOmnitureQuickViewDetail(productClass,productStyle,productRating){
+     //s.events ='event40';
+     s.products = ";"+productClass+productStyle;
+	 if(productRating=="" || productRating==null){
+	      s.eVar42='no rating';
+	   } else {
+		  s.eVar42=productRating;
+	   }
+     s.eVar28='Quick View';
+     setOmnitureBrowseSection();
+	 var s_code=s.t();if(s_code)document.write(s_code);
+	 } 
+
+ function setOmnitureQuickBuyCount(productClass,productStyle){
+     s.events ='event40';
+     }
 
   function setOmnitureProfileMailOptOnPageLoad(){
     //This function setProfileMailOptOnPageLoad() is used in the nyco/myaccount/profile.jsp to set the Omniture variables
@@ -381,7 +450,6 @@ function setOmnitureCrossSellVariables(referredProductIdClass,referredProductIdS
 
 function getOmnitureChannel() {
   var channel;
-
   
   var reqURI= "/nyco/company/privacy.jsp";
   var reqURL= "null";
@@ -389,6 +457,10 @@ function getOmnitureChannel() {
   channel=getChannel(reqURI, reqURL);
   if(channel=="Browse") {
     channel=getOmnitureChannelSection();
+  }
+  if (channel=="" || channel=="null")
+  {
+	  channel= chn;
   }
   return channel;
 }
@@ -431,7 +503,15 @@ function getOmniturePageName() {
         pageName+=productName;
       }
     }
-  }else {
+  }else if (channel=="Article")
+  {
+	 
+     var pageUrl = '';
+	 var temp = pageUrl.split("/");
+	 var pageUrlResult = temp[temp.length-1];
+	 var result = pageUrlResult.split(".");
+	 pageName = result[0];
+   }else {
     pageName= getPageName(reqURI, reqURL);
   }
   return pageName;
@@ -446,34 +526,55 @@ function getOmnitureProp3()
 {
   var channel;
   var prop3="";
+  var prop10="";
+  var prop21="";
+  var productName;
   
   var reqURI= "/nyco/company/privacy.jsp";
   var reqURL= "null";
 
   channel=getChannel(reqURI, reqURL);
   
-  if(channel=="Browse") {
+  if(channel=="Browse") 
+  {
     
 		
-    if(""!="") {
-      if(""=="Commerce Root") {
+    if(""!="") 
+	{
+      if(""=="Commerce Root") 
+	  {
         prop3="";
-        }else if(""=="Commerce Root") {
-          prop3=""+":" +"";
-          }else {
-            prop3=""+":"+""
-          }
-          
-    }else{
+		s.prop10=s.prop21= prop3;
+        }
+		else if(""=="Commerce Root") 
+		{
+          prop3="";
+          s.prop10 = "";
+		  s.prop21 = s.prop10;
+          } 	  
+		  else
+			{
+				prop3="";
+				s.prop10 = "";
+				s.prop21="";
+            }
+  }
+  
+	else
+	{
 		
       prop3= getPageName(reqURI, reqURL);
       
     }
+   
   }
+
   
-  if( prop3 == ""){
+  if( prop3 == "")
+  {
 		prop3 = getOmnitureProp6();
-		if( prop3 == "Checkout"){
+		if( prop3 == "Checkout")
+		{
 			//alert("yes");
 			prop3 = getOmniturePageName();
 		}
@@ -481,7 +582,6 @@ function getOmnitureProp3()
   //alert("s.prop3==" +prop3);
   return prop3;
 }
-
 function setOmnitureProp3()
 {
   s.prop3=getOmnitureProp3();
@@ -491,11 +591,10 @@ function getOmnitureProductOrOutfitName()  {
 
   var productName="";  
   
-  
-    if(""!=""){
+	
+ if(""!=""){
       productName=":Details"+":";
       }
-  //alert("productName : "+productName);
   return productName;
 }
 
@@ -513,7 +612,7 @@ function setOmnitureProp4(){
   
       if("Company" == "Checkout" || "Company" == "Cart") {
           //alert("Cart Fallout Page :")
-         // s.prop4 = "Browse:Supercategory";
+         // s.prop4 = "Browse:ProductDetailWithPicker";
 		 s.prop4=getOmnitureProp3();
         }
         
@@ -539,6 +638,9 @@ function setOmnitureProp4(){
     s.prop1="";
     s.prop2="";
     s.eVar1="";
+    if(""==""){
+      s.eVar1=s.prop1="blank search";
+    }
   }
 
 function setOmnitureFacetFilterValues()
@@ -563,7 +665,7 @@ function setOmnitureFacetFilterValues()
 function setOmnitureProductDetailRating(productClass,productStyle,productRating,productId) {
 	if((productRating != "") && (productRating != null)){
 		
-		s.events ="prodView,event3,event27";
+		s.events ="prodView,event15,event27";
 	   	s.products = ";" + productClass+productStyle + ";;;event27=" + productRating;
 	}else{
 		s.products = ";" + productClass+productStyle;
@@ -572,19 +674,72 @@ function setOmnitureProductDetailRating(productClass,productStyle,productRating,
 }
 function getOmnitureProp6(){
 	var prop6 = "";
+	var pageName = "";
 	
 	var reqURI= "/nyco/company/privacy.jsp";
 	var reqURL= "null";
-
 	channel=getChannel(reqURI, reqURL);
-	if(channel=="Browse") {
-		prop6 = "Department";
+    pageName= getPageName(reqURI, reqURL);
+	
+  
+   if(prop6 =="" || channel=="Browse") {
+    
+		
+    if(""!="") {
+      if(""=="Commerce Root") {
+        prop6 = "Category";
+        }else if(""=="Commerce Root") {
+          prop6= "Sub-Category";
+          }else {
+            prop6= "Sub-Sub-Category";
+          }
+    }
+  }
+    if (prop6 == "" && pageName == "Browse:CustomerService")
+    {   
+		prop6 = "Customer Service";
+    }
+	if (prop6 == "" && channel == "Myaccount")
+	{ 
+	    
+		if (pageName == "Myaccount:GiftListHome")
+	    {   
+			prop6 = "WishList";
+        } 
+		else
+	    {
+		     prop6 = "My Account";
+        } 
+	}
+	if (prop6 == "" )
+	{
+		switch (channel)
+		{
+		case "Home Page" : prop6 = "Home Page";
+		                   break;
+	   
+		case "Facet"	 : prop6 = "Search Result";			   
+		                   break;
+		
+		case "Cart"	     : prop6 = "Cart";			   
+		                   break;
+						   				   
+        case "Article"	 : prop6 = "Customer Service";
+		                   break;			
+		}
 	}
 	
-	
-	
 	if( prop6 == "" && channel != "Home Page")
-		prop6 = "Checkout";
+	{   
+		if (pageName=="Checkout:ConfirmResponse")
+		{
+			prop6 = "Checkout Confirmation";
+		}
+		else
+		{
+		      prop6 = "Checkout";
+		}
+	}
 	return prop6;
 	
 }
@@ -593,18 +748,178 @@ function setOmnitureProp6() {
   s.prop6=getOmnitureProp6();
 }
 
-function getOmnitureProp10() {
-   var prop10 = "";
-   var pageName = getOmniturePageName();
-   var temp = pageName.split(":Details");
-   prop10 = temp[0];
-   return prop10;
+
+
+function setAddGiftWrap() {
+		s.linkTrackVars="events";
+		s.linkTrackEvents="event30";
+		s.events="event30";
+		s.tl(this,'o','Add Gift Wrap');
+	}
+
+function setAddGiftMessage() {
+		s.linkTrackVars="events";
+		s.linkTrackEvents="event31";
+		s.events="event31";
+		s.tl(this,'o','Add Gift Message');
+	}
+function setOmnitureContinueShoppingPDP(prClass,prStyle){
+	s.linkTrackVars='events'
+	s.linkTrackEvents='event34,event28'
+	s.events='event34,event28';
+	s.products=";" + prClass+prStyle;
+	s.tl(this,'o','Return to Product');
+	//alert("s.products"+s.products);
+	}
+
+function setOmnitureNavigationBarLabels(label){
+	s_topNavHomePage(label);
+	}
+
+function setOmnitureCartUpdate(events,products){
+	s.events = events;
+	s.products = products;
+	var s_code=s.t();if(s_code)document.write(s_code);
+	s.events = "";
+	s.products = "";
+	}
+function setOmnitureCartUpdateClick(events,products){
+	s.linkTrackVars='events'
+	s.linkTrackEvents='event29'
+	s.events='event29';
+	s.tl(this,'o','Update Bag');
+	}
+function setOmnitureGiftWrap(){
+	s.linkTrackVars='events'
+	s.linkTrackEvents='event30'
+	s.events='event30';
+	s.tl(this,'o','Add Gift Wrap');
+}
+function setOmnitureAddGiftMessage(){
+	s.linkTrackVars='events'
+	s.linkTrackEvents='event31'
+	s.events='event31';
+	s.tl(this,'o','Add Gift Message');
 }
 
-function setOmnitureProp10() {
-  s.prop10=getOmnitureProp10();
+function getOmnitureDaysSinceLastPurchase(){
+	var eVar41 = "";
+	   
+   return eVar41;    			
 }
 
+function setOmnitureDaysSinceLastPurchase(){
+	s.eVar41 = getOmnitureDaysSinceLastPurchase();
+	//s.eVar41 = 0;
+	//alert("eVar41:"+s.eVar41);
+}
+function getOmnitureDemographics(){
+	var prop14 = "";
+	var prop15 = "";
+	var prop16 = "";
+	var prop17 = "";
+	var prop18 = "";
+	var prop19 = "";
+    var prop20 = "";
+	   
+}
+
+function setOmnitureDemographics(){
+	getOmnitureDemographics();
+}
+
+function getOmnitureServerName()
+{   
+	var server = "";
+	server = document.domain;
+	return server;
+}
+
+function setOmnitureServerName()
+{
+	  s.server = getOmnitureServerName();
+}
+
+function getOmnitureWishListUsers()
+{
+	 
+       
+}
+function setOmnitureWishListUsers()
+{
+	s.eVar38 = getOmnitureWishListUsers();
+}
+
+function setOmnitureUserTypeExistingUser()
+{   
+   
+   s.eVar4 = 'Continuing with a Existing Account';
+   //alert(s.eVar4);
+   var s_code=s.t();if(s_code)document.write(s_code);
+
+}
+
+function setOmnitureUserTypeAnonymousUser()
+{
+  
+  s.eVar4 = 'Continue without an Account';
+  //alert(s.eVar4);
+  var s_code=s.t();if(s_code)document.write(s_code);
+
+}
+function setOmnitureOutfitDetail(prod){
+	
+   s.events ="prodView,event15,event21";
+   s.products = prod;   
+   //alert("s.products:"+s.products);
+   setOmnitureBrowseSection();
+}
+
+function setOmnitureOutfitDetail(prod){
+	
+   s.events ="prodView,event15,event21";
+   s.products = prod;   
+   //alert("s.products:"+s.products);
+   setOmnitureBrowseSection();
+}
+function setOmnitureOutfitAddCart(){
+	var qtyStr = document.getElementById("selectedQtys").value;
+	var skuStr = document.getElementById("selectedSkus").value;
+	var styleStr = document.getElementById("selectedStyles").value;
+	var qty = qtyStr.split("|");
+	var styles = styleStr.split("|");
+	var sku = skuStr.split("|");
+	var prod = "";
+
+		setOmnitureCartAddEvent('outFit');
+		var eVar3=getOmnitureBrowseSection();
+
+	for(var i=0;i<qty.length;i++){
+		if(qty[i] != '0'){
+
+			if(prod == ""){
+				
+				if(eVar3 != "") {
+					 prod = ";" + styles[i] + ";;;;evar3=" + eVar3 + "|evar20=" + sku[i]+"|eVar6=Collection View Page";
+				}else {
+					prod = ";" + styles[i] + ";;;;evar20=" + sku[i]+"|eVar6=Collection View Page";
+				}
+			}else{
+				if(eVar3 != "") {
+					 prod = prod +"," + ";" + styles[i] + ";;;;evar3=" + eVar3 + "|evar20=" + sku[i]+"|eVar6=Collection View Page";
+				}else {
+					prod = prod +"," + ";" + styles[i] + ";;;;evar20=" + sku[i]+"|eVar6=Collection View Page";
+				}
+			
+			}
+		  }
+	    }
+   //s.events ='scAdd';
+   s.products = prod;
+   var s_code=s.t();if(s_code)document.write(s_code);
+   s.events ='';
+   s.products='';
+}
 </script>
 <script type="text/javascript">
 	setOmnitureProp4();
@@ -617,7 +932,7 @@ function setOmnitureProp10() {
     </div>
   
 <div id="search_wrapper" class="clearfix">
-    <form action="http://www.nyandcompany.com/nyco/atgsearch/searchRedirect.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF" name="search" method="get"><div><input value="UTF-8" type="hidden" name="_dyncharset"/> </div><div><input value="2047136085028435887" type="hidden" name="_dynSessConf"/> </div><input value="-1" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.pageSize"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.pageSize"/><input value="" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.docSort"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.docSort"/><input value="exec" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.ruleMode"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.ruleMode"/><input value="/nyco/atgsearch/searchRedirect.jsp" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.successURL"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.successURL"/><input value="/nyco/atgsearch/searchRedirect.jsp" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.errorURL"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.errorURL"/><input value="&#32;Enter Keyword" type="text" class="search_box" onfocus="if ( this.value==' Enter Keyword') this.value=''" name="trailtext" id="atg_b2cprint_searchInput"/><input value=" " type="hidden" name="_D:trailtext"/><input value="Find" type="image" src="../../images/button_search.gif" name="/atg/commerce/search/ProductCatalogQueryFormHandler.search" id="atg_bc2blueprint_search"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.search"/><input value="true" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.enableReportData"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.enableReportData"/><div><input value="/nyco/atgsearch/gadgets/atgsearchSimpleSearch.jsp.search" type="hidden" name="_DARGS"/> </div></form></div>
+    <form action="http://www.nyandcompany.com/nyco/atgsearch/searchRedirect.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812" name="search" method="get"><div><input value="UTF-8" type="hidden" name="_dyncharset"/> </div><div><input value="2112940193964088542" type="hidden" name="_dynSessConf"/> </div><input value="-1" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.pageSize"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.pageSize"/><input value="" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.docSort"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.docSort"/><input value="exec" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.ruleMode"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.ruleMode"/><input value="/nyco/atgsearch/searchRedirect.jsp" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.successURL"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.successURL"/><input value="/nyco/atgsearch/searchRedirect.jsp" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.errorURL"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.errorURL"/><input value="&#32;Enter Keyword" type="text" class="search_box" onfocus="if ( this.value==' Enter Keyword') this.value=''" name="trailtext" id="atg_b2cprint_searchInput"/><input value=" " type="hidden" name="_D:trailtext"/><input value="Find" type="image" src="../../images/button_search.gif" name="/atg/commerce/search/ProductCatalogQueryFormHandler.search" id="atg_bc2blueprint_search"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.search"/><input value="true" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.enableReportData"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.enableReportData"/><div><input value="/nyco/atgsearch/gadgets/atgsearchSimpleSearch.jsp.search" type="hidden" name="_DARGS"/> </div></form></div>
   <div id="ecommerce_wrapper" class="clearfix">
       <div class="mboxDefault">
 	  <div id="loyalty_rewards_img" class="clearfix">
@@ -634,21 +949,21 @@ function setOmnitureProp10() {
 		
 	
 	    <li>
-          <a href="http://www.nyandcompany.com/nyco/global/util/login_redirect.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?_DARGS=/nyco/navigation/gadgets/login_logout.jsp_A&amp;_DAV=&amp;_dynSessConf=2047136085028435887" title="Go to the sign in/Register page" class="atg_b2cblueprint_navLogin">sign in/Register</a></li>
+          <a href="http://www.nyandcompany.com/nyco/global/util/login_redirect.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?_DARGS=/nyco/navigation/gadgets/login_logout.jsp_A&amp;_DAV=&amp;_dynSessConf=2112940193964088542" title="Go to the sign in/Register page" class="atg_b2cblueprint_navLogin">sign in/Register</a></li>
         <li>
-	        <a href="http://www.nyandcompany.com/nyco/myaccount/profile.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF" title="Go to the My Account page" class="atg_b2cblueprint_navAccount">My Account</a></li>
+	        <a href="http://www.nyandcompany.com/nyco/myaccount/profile.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812" title="Go to the My Account page" class="atg_b2cblueprint_navAccount">My Account</a></li>
     
     
           <li> 
-            <a href="http://www.nyandcompany.com/nyco/myaccount/nycoOrderTracking.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF" title="Order Status">Order Status</a></li>
+            <a href="http://www.nyandcompany.com/nyco/myaccount/nycoOrderTracking.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812" title="Order Status">Order Status</a></li>
     
           <li class="inline-last">
-		    <a href="http://www.nyandcompany.com/nyco/browse/customerService.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF" title="Customer Service">Customer Service</a></li>
+		    <a href="http://www.nyandcompany.com/nyco/browse/customerService.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812" title="Customer Service">Customer Service</a></li>
       </ul>
       <ul id="shopping_links">
       <li class="first">
        
-       <a href="http://www.nyandcompany.com/nyco/myaccount/giftListHome.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF" title="My Wish List">My Wish List</a></li>
+       <a href="http://www.nyandcompany.com/nyco/myaccount/giftListHome.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812" title="My Wish List">My Wish List</a></li>
        
        <li class="last">
         <span id="atg_b2cblueprint_richcart"></span>
@@ -676,9 +991,9 @@ function setOmnitureProp10() {
       data: {"itemCount":0},
       i18n: {"checkout":"Checkout","subtotal":"TOTAL","myCartSummary":"My Cart Summary","close":"Close","cartIsEmpty":"Your shopping bag is empty","addingToCart":"Adding...","continueShopping":"Continue Shopping","ViewShopping":"Click on View Shopping bag to see the saved items","cartTitle":"My shopping bag","viewShoppingBag":"View Shopping Bag"},
       url:{
-        checkout: "/nyco/checkout/shipping.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF",
-        error: "/nyco/cart/cart.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF",
-		cart: "/nyco/cart/cart.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF"
+        checkout: "/nyco/checkout/shipping.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812",
+        error: "/nyco/cart/cart.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812",
+		cart: "/nyco/cart/cart.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812"
       },
       duration:{
         // Durations in ms of animation elements
@@ -721,23 +1036,23 @@ function setOmnitureProp10() {
       <table id="topnav">
       <tr>
       <td>						
-                        	<a href="http://www.nyandcompany.com/nyco/cat/Latest-Trends;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?addFacet=1002%3Acat60010" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);return false;">Latest Trends</a></td>
+                        	<a href="http://www.nyandcompany.com/nyco/cat/Latest-Trends;jsessionid=E8773AB971F857B11A1208CDFBFA0812?addFacet=1002%3Acat60010" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);setOmnitureNavigationBarLabels('Latest Trends');return false;">Latest Trends</a></td>
                       <td>						
-                        	<a href="http://www.nyandcompany.com/nyco/cat/New-Arrivals;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?addFacet=1002%3Acat840014" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);return false;">New Arrivals</a></td>
+                        	<a href="http://www.nyandcompany.com/nyco/cat/New-Arrivals;jsessionid=E8773AB971F857B11A1208CDFBFA0812?addFacet=1002%3Acat840014" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);setOmnitureNavigationBarLabels('New Arrivals');return false;">New Arrivals</a></td>
                       <td>						
-                        	<a href="http://www.nyandcompany.com/nyco/cat/Apparel;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?addFacet=1002%3Acat60036" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);return false;">Apparel</a></td>
+                        	<a href="http://www.nyandcompany.com/nyco/cat/Apparel;jsessionid=E8773AB971F857B11A1208CDFBFA0812?addFacet=1002%3Acat60036" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);setOmnitureNavigationBarLabels('Apparel');return false;">Apparel</a></td>
                       <td>						
-                        	<a href="http://www.nyandcompany.com/nyco/cat/Tops;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?addFacet=1002%3Acat840002" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);return false;">Tops</a></td>
+                        	<a href="http://www.nyandcompany.com/nyco/cat/Tops;jsessionid=E8773AB971F857B11A1208CDFBFA0812?addFacet=1002%3Acat840002" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);setOmnitureNavigationBarLabels('Tops');return false;">Tops</a></td>
                       <td>						
-                        	<a href="http://www.nyandcompany.com/nyco/cat/Pants;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?addFacet=1002%3Acat1890008" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);return false;">Pants</a></td>
+                        	<a href="http://www.nyandcompany.com/nyco/cat/Pants;jsessionid=E8773AB971F857B11A1208CDFBFA0812?addFacet=1002%3Acat1890008" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);setOmnitureNavigationBarLabels('Pants');return false;">Pants</a></td>
                       <td>						
-                        	<a href="http://www.nyandcompany.com/nyco/cat/Petite;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?addFacet=1002%3Acat580006" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);return false;">Petite</a></td>
+                        	<a href="http://www.nyandcompany.com/nyco/cat/Petite;jsessionid=E8773AB971F857B11A1208CDFBFA0812?addFacet=1002%3Acat580006" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);setOmnitureNavigationBarLabels('Petite');return false;">Petite</a></td>
                       <td>						
-                        	<a href="http://www.nyandcompany.com/nyco/cat/Tall;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?addFacet=1002%3Acat880004" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);return false;">Tall</a></td>
+                        	<a href="http://www.nyandcompany.com/nyco/cat/Tall;jsessionid=E8773AB971F857B11A1208CDFBFA0812?addFacet=1002%3Acat880004" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);setOmnitureNavigationBarLabels('Tall');return false;">Tall</a></td>
                       <td>						
-                        	<a href="http://www.nyandcompany.com/nyco/cat/Accessories;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?addFacet=1002%3Acat70094" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);return false;">Accessories</a></td>
+                        	<a href="http://www.nyandcompany.com/nyco/cat/Accessories;jsessionid=E8773AB971F857B11A1208CDFBFA0812?addFacet=1002%3Acat70094" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);setOmnitureNavigationBarLabels('Accessories');return false;">Accessories</a></td>
                       <td>						
-                        	<a href="http://www.nyandcompany.com/nyco/cat/Sale;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?addFacet=1002%3Acat60162" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);return false;">Sale</a></td>
+                        	<a href="http://www.nyandcompany.com/nyco/cat/Sale;jsessionid=E8773AB971F857B11A1208CDFBFA0812?addFacet=1002%3Acat60162" onclick="mboxTrackLink('topNavEvents','profile.topNavAffinity='+this.innerHTML,this.href);setOmnitureNavigationBarLabels('Sale');return false;">Sale</a></td>
                       </tr>
       </table> 
       </div><script type="text/javascript">
@@ -765,7 +1080,7 @@ function setOmnitureProp10() {
 						src='../../images/button_close_minicart.gif' /></a></td>
 				</tr>
 				<tr>
-					<td class='promo_text'>40% off Everything excludes: Sale, Clearance, Gift Cards, NY&amp;C Great Finds, 58andLEX Shoe Collection – use promo code 2016. Plus, enjoy free shipping on your purchase of $100 or more – no code needed.</td>
+					<td class='promo_text'>Semi-Annual Event! All Pants &amp; Jeans, Buy One Get One Free. Mix &amp; Match. Higher Price Prevails. Excludes Clearance, Streetwear, Yoga &amp; Lounge &amp; NY&amp;C Great Finds. Plus, Free Shipping on your orders over $100 - no code needed. </td>
 				</tr>
 			</table>
 			</div>
@@ -775,10 +1090,10 @@ function setOmnitureProp10() {
 					<td><script language="javascript" src="../javascript/swfobject.js"></script>
         <div id="flashcontent16700004" style="margin-bottom:0px;width:100%;" title="">
 		<NOSCRIPT></NOSCRIPT>
-         <img src="../images/Global_Nav_Promo_Image.gif" height="35" width="569"/>
+         <img src="../images/Global_Nav_Promo_Image.gif" height="35" width="810"/>
         <script type="text/javascript">
               // <![CDATA[
-              var so = new SWFObject("/nyco/images/Global_Nav_Promo_Image.gif", "flashelement", "569", "35", "7", "#FFFFFF");
+              var so = new SWFObject("/nyco/images/Global_Nav_Promo_Image.gif", "flashelement", "810", "35", "7", "#FFFFFF");
               var divid="flashcontent16700004"
               so.addParam("wmode", "opaque"); 
               so.addParam("menu", "false");
@@ -807,74 +1122,74 @@ function setOmnitureProp10() {
 			</B></div>
             <ul id="leftnav">
                     <li class="selected"><span>
-								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000577&amp;pageUrl=/browse/csOrderShipping.jsp&amp;heading=wheres_my_order">Ordering &amp; Shipping Info</a></span>								   
+								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000577&amp;pageUrl=/browse/csOrderShipping.jsp&amp;heading=wheres_my_order">Ordering &amp; Shipping Info</a></span>								   
 							   					<ul>
-                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000577&amp;selectedArticle=nyar2000421&amp;pageUrl=/browse/csOrderShipping.jsp&amp;heading=wheres_my_order">Where&#39;s My Order?</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000577&amp;selectedArticle=nyar2000423&amp;pageUrl=/browse/csOrderShipping.jsp&amp;heading=shipping_rates">Shipping Rates &amp; Info</a></li>
+                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000577&amp;selectedArticle=nyar2000421&amp;pageUrl=/browse/csOrderShipping.jsp&amp;heading=wheres_my_order">Where&#39;s My Order?</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000577&amp;selectedArticle=nyar2000423&amp;pageUrl=/browse/csOrderShipping.jsp&amp;heading=shipping_rates">Shipping Rates &amp; Info</a></li>
                                                 </ul>
                             </li>
                 <li class="selected"><span>
-								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000579&amp;pageUrl=/browse/customerService/returns.jsp&amp;heading=return_policy">Returns &amp; Exchanges</a></span>								   
+								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000579&amp;pageUrl=/browse/customerService/returns.jsp&amp;heading=return_policy">Returns &amp; Exchanges</a></span>								   
 							   					<ul>
-                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000579&amp;selectedArticle=nyar2000425&amp;pageUrl=/browse/customerService/returns.jsp&amp;heading=return_policy">Return Policy &amp; How to Return A Purchase</a></li>
+                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000579&amp;selectedArticle=nyar2000425&amp;pageUrl=/browse/customerService/returns.jsp&amp;heading=return_policy">Return Policy &amp; How to Return A Purchase</a></li>
                                                 </ul>
                             </li>
                 <li class="selected"><span>
-								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000581&amp;pageUrl=/browse/csShopping.jsp&amp;heading=place_order">Shopping</a></span>								   
+								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000581&amp;pageUrl=/browse/csShopping.jsp&amp;heading=place_order">Shopping</a></span>								   
 							   					<ul>
-                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000581&amp;selectedArticle=nyar2000427&amp;pageUrl=/browse/csShopping.jsp&amp;heading=place_order">How to Place An Order</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000581&amp;selectedArticle=nyar2000429&amp;pageUrl=/browse/csShopping.jsp&amp;heading=promo_code">How to Use A Promo Code</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000581&amp;selectedArticle=nyar2000431&amp;pageUrl=/browse/csShopping.jsp&amp;heading=search_item">How to Search For An Item</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000581&amp;selectedArticle=nyar2000433&amp;pageUrl=/browse/csShopping.jsp&amp;heading=size_chart">Size Chart</a></li>
+                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000581&amp;selectedArticle=nyar2000427&amp;pageUrl=/browse/csShopping.jsp&amp;heading=place_order">How to Place An Order</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000581&amp;selectedArticle=nyar2000429&amp;pageUrl=/browse/csShopping.jsp&amp;heading=promo_code">How to Use A Promo Code</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000581&amp;selectedArticle=nyar2000431&amp;pageUrl=/browse/csShopping.jsp&amp;heading=search_item">How to Search For An Item</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000581&amp;selectedArticle=nyar2000433&amp;pageUrl=/browse/csShopping.jsp&amp;heading=size_chart">Size Chart</a></li>
                                                 </ul>
                             </li>
                 <li class="selected"><span><a href="https://www.nyandcompany.com/nyco/myaccount/profile.jsp">My Account</a></span>
                                             <ul>
-                            <li><a href="http://www.nyandcompany.com/nyco/myaccount/login.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF">Sign In/Create An Account</a></li>
-                                                  <li><a href="http://www.nyandcompany.com/nyco/myaccount/profile.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF">Change Account Info</a></li>
+                            <li><a href="http://www.nyandcompany.com/nyco/myaccount/login.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812">Sign In/Create An Account</a></li>
+                                                  <li><a href="http://www.nyandcompany.com/nyco/myaccount/profile.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812">Change Account Info</a></li>
                                                   <li><a href="http://email.nyandcompany.com/p/NYandCompany/Email_SignUp_part2">Email Sign-Up</a></li>
                                                   </ul>
                             </li>
                 <li class="selected"><span>
-								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000585&amp;pageUrl=/browse/customerService/creditcard.jsp&amp;heading=apply_now">NY&amp;C Rewards Credit Card</a></span>								   
+								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000585&amp;pageUrl=/browse/customerService/creditcard.jsp&amp;heading=apply_now">NY&amp;C Rewards Credit Card</a></span>								   
 							   					<ul>
-                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000585&amp;selectedArticle=nyar2000441&amp;pageUrl=/browse/customerService/creditcard.jsp&amp;heading=apply_now">Apply Now / Manage Account</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000585&amp;selectedArticle=nyar2000443&amp;pageUrl=/browse/customerService/creditcard.jsp&amp;heading=benefits">Benefits</a></li>
+                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000585&amp;selectedArticle=nyar2000441&amp;pageUrl=/browse/customerService/creditcard.jsp&amp;heading=apply_now">Apply Now / Manage Account</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000585&amp;selectedArticle=nyar2000443&amp;pageUrl=/browse/customerService/creditcard.jsp&amp;heading=benefits">Benefits</a></li>
                                                 <li><a href="https://onlineaccess2.mycreditcard.cc/newyorkandcompany">View Account</a></li>
                                                   <li><a href="https://onlineaccess2.mycreditcard.cc/newyorkandcompany">Make A Payment</a></li>
-                                                  <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000585&amp;selectedArticle=nyar2000449&amp;pageUrl=/browse/customerService/creditcard.jsp&amp;heading=company_info">Credit Card Contact Info</a></li>
+                                                  <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000585&amp;selectedArticle=nyar2000449&amp;pageUrl=/browse/customerService/creditcard.jsp&amp;heading=company_info">Credit Card Contact Info</a></li>
                                                 </ul>
                             </li>
                 <li class="selected"><span>
-								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000573&amp;pageUrl=/browse/csGiftCards.jsp&amp;heading=shop_gift_cards">Gifts</a></span>								   
+								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000573&amp;pageUrl=/browse/csGiftCards.jsp&amp;heading=shop_gift_cards">Gifts</a></span>								   
 							   					<ul>
-                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000573&amp;selectedArticle=nyar2000413&amp;pageUrl=/browse/csGiftCards.jsp&amp;heading=shop_gift_cards">Shop Gift Cards</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000573&amp;selectedArticle=nyar2000415&amp;pageUrl=/browse/csGiftCards.jsp&amp;heading=about_gift_cards">About Gift Cards</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000573&amp;selectedArticle=nyar2000417&amp;pageUrl=/browse/csGiftCards.jsp&amp;heading=gift_card_balance">Check Your Gift Card Balance</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000573&amp;selectedArticle=nyar2000419&amp;pageUrl=/browse/csGiftCards.jsp&amp;heading=gift_wrap">Gift Wrap</a></li>
+                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000573&amp;selectedArticle=nyar2000413&amp;pageUrl=/browse/csGiftCards.jsp&amp;heading=shop_gift_cards">Shop Gift Cards</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000573&amp;selectedArticle=nyar2000415&amp;pageUrl=/browse/csGiftCards.jsp&amp;heading=about_gift_cards">About Gift Cards</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000573&amp;selectedArticle=nyar2000417&amp;pageUrl=/browse/csGiftCards.jsp&amp;heading=gift_card_balance">Check Your Gift Card Balance</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000573&amp;selectedArticle=nyar2000419&amp;pageUrl=/browse/csGiftCards.jsp&amp;heading=gift_wrap">Gift Wrap</a></li>
                                                 </ul>
                             </li>
                 <li class="selected"><span>
-								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000589&amp;pageUrl=/browse/customerService/aboutus.jsp&amp;heading=company_info">About Us</a></span>								   
+								   				<a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000589&amp;pageUrl=/browse/customerService/aboutus.jsp&amp;heading=company_info">About Us</a></span>								   
 							   					<ul>
-                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000589&amp;selectedArticle=nyar2000455&amp;pageUrl=/browse/customerService/aboutus.jsp&amp;heading=company_info">Company Info / Careers</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000589&amp;selectedArticle=nyar2000457&amp;pageUrl=/html/catalog/investorrelations.htm&amp;heading=investor">Investor Relations</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000589&amp;selectedArticle=nyar2000459&amp;pageUrl=/browse/customerService/aboutus.jsp&amp;heading=affiliates">Affiliate Program</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000589&amp;selectedArticle=nyar2000461&amp;pageUrl=/browse/customerService/aboutus.jsp&amp;heading=philanthropy">Philanthropy</a></li>
-                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000589&amp;selectedArticle=nyar2000463&amp;pageUrl=/browse/customerService/aboutus.jsp&amp;heading=special_offers">Special Offers</a></li>
+                            <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000589&amp;selectedArticle=nyar2000455&amp;pageUrl=/browse/customerService/aboutus.jsp&amp;heading=company_info">Company Info / Careers</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000589&amp;selectedArticle=nyar2000457&amp;pageUrl=/html/catalog/investorrelations.htm&amp;heading=investor">Investor Relations</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000589&amp;selectedArticle=nyar2000459&amp;pageUrl=/browse/customerService/aboutus.jsp&amp;heading=affiliates">Affiliate Program</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000589&amp;selectedArticle=nyar2000461&amp;pageUrl=/browse/customerService/aboutus.jsp&amp;heading=philanthropy">Philanthropy</a></li>
+                                                <li><a href="http://www.nyandcompany.com/nyco/article/articleTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000589&amp;selectedArticle=nyar2000463&amp;pageUrl=/browse/customerService/aboutus.jsp&amp;heading=special_offers">Special Offers</a></li>
                                                 </ul>
                             </li>
                 <li><span>
-													 <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000591&amp;pageUrl=/html/catalog/store_locator.html&amp;heading=">Store Locator</a></span>
+													 <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000591&amp;pageUrl=/html/catalog/store_locator.html&amp;heading=">Store Locator</a></span>
 										  			</li>
                 <li><span>
-													 <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000593&amp;pageUrl=/html/catalog/contactus.html&amp;heading=">Contact Us</a></span>
+													 <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000593&amp;pageUrl=/html/catalog/contactus.html&amp;heading=">Contact Us</a></span>
 										  			</li>
                 <li><span>
-													 <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000273&amp;pageUrl=/html/catalog/faqs.html&amp;heading=FAQs">FAQs</a></span>
+													 <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000273&amp;pageUrl=/html/catalog/faqs.html&amp;heading=FAQs">FAQs</a></span>
 										  			</li>
                 <li><span>
-													 <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=nyco2000277&amp;pageUrl=/navigation/gadgets/sitemap.jsp&amp;heading=Site+Map">Site Map</a></span>
+													 <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=nyco2000277&amp;pageUrl=/navigation/gadgets/sitemap.jsp&amp;heading=Site+Map">Site Map</a></span>
 										  			</li>
                 <li class="buffer last"></li>
                    </ul>
@@ -1051,6 +1366,10 @@ We may combine the information we collect through cookies, pixel tags and JavaSc
     setOmnitureChannel();
     setOmnitureProp3();  
 	setOmnitureProp4();
+	setOmnitureDemographics();
+	setOmnitureDaysSinceLastPurchase();
+	setOmnitureServerName();
+	setOmnitureWishListUsers();
     var s_code=s.t();if(s_code)document.write(s_code)  
     </script>
   <div class="borderTop"> <div class="left newarrivals">
@@ -1091,21 +1410,21 @@ We may combine the information we collect through cookies, pixel tags and JavaSc
      
       <li>1.800.961.9906</li>	  
 	    <li>
-        <a href="http://www.nyandcompany.com/nyco/browse/customerService.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF" title="Customer Service ">Customer Service </a></li>
+        <a href="http://www.nyandcompany.com/nyco/browse/customerService.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812" title="Customer Service ">Customer Service </a></li>
 	  	    <li>
-        <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?pageUrl=/html/catalog/creditcard.html" title="NY&amp;C Rewards Credit Card">NY&amp;C Rewards Credit Card</a></li>
+        <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?pageUrl=/html/catalog/creditcard.html" title="NY&amp;C Rewards Credit Card">NY&amp;C Rewards Credit Card</a></li>
       
       <li>
-      <a href="http://www.nyandcompany.com/nyco/cat/Accessories/Gift-Cards;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?addFacet=1002%3Acat190012" title="Gift Cards">Gift Cards</a></li>
+      <a href="http://www.nyandcompany.com/nyco/cat/Accessories/Gift-Cards;jsessionid=E8773AB971F857B11A1208CDFBFA0812?addFacet=1002%3Acat190012" title="Gift Cards">Gift Cards</a></li>
 
 	   <li>
-        <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?pageUrl=/html/catalog/store_locator.html&amp;heading=Store+Locator" title="Store Locator">Store Locator</a></li>
+        <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?pageUrl=/html/catalog/store_locator.html&amp;heading=Store+Locator" title="Store Locator">Store Locator</a></li>
       
       <li>
-        <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?pageUrl=/html/catalog/aboutus.html" title="About NY&amp;C">About NY&amp;C</a></li>
+        <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?pageUrl=/html/catalog/aboutus.html" title="About NY&amp;C">About NY&amp;C</a></li>
       
       <li>
-        <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?pageUrl=/html/catalog/contactus.html" title="Contact Us">Contact Us</a></li> 
+        <a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?pageUrl=/html/catalog/contactus.html" title="Contact Us">Contact Us</a></li> 
       
       <li class="last">
         <a onclick="window.open('http://www.nyandcompanycareers.com')" href="privacy.jsp.html#" title="Careers">
@@ -1121,18 +1440,18 @@ We may combine the information we collect through cookies, pixel tags and JavaSc
 
     <div id="footer-search">
       <ul>
-        <li><a href="http://www.nyandcompany.com/nyco/company/privacy.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF" title="Privacy Policy">Privacy Policy</a></li>
-        <li><a href="http://www.nyandcompany.com/nyco/company/privacy.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF#6" title="California Privacy Rights">
+        <li><a href="http://www.nyandcompany.com/nyco/company/privacy.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812" title="Privacy Policy">Privacy Policy</a></li>
+        <li><a href="http://www.nyandcompany.com/nyco/company/privacy.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812#6" title="California Privacy Rights">
             California Privacy Rights
           </a></li>
-        <li><a href="http://www.nyandcompany.com/nyco/navigation/gadgets/supplyChainTransparency.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF" title="Supply Chain Transparency">
+        <li><a href="http://www.nyandcompany.com/nyco/navigation/gadgets/supplyChainTransparency.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812" title="Supply Chain Transparency">
             Supply Chain Transparency
           </a></li>
-        <li><a href="http://www.nyandcompany.com/nyco/company/terms.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF" title="Terms &amp; Conditions">Terms &amp; Conditions</a></li>
-        <li class="last"><a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF?selectedTopic=200016&amp;pageUrl=/navigation/gadgets/sitemap.jsp&amp;heading=Site+Map" title="Site Map">Site Map</a></li>
+        <li><a href="http://www.nyandcompany.com/nyco/company/terms.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812" title="Terms &amp; Conditions">Terms &amp; Conditions</a></li>
+        <li class="last"><a href="http://www.nyandcompany.com/nyco/article/topicTemplate.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812?selectedTopic=200016&amp;pageUrl=/navigation/gadgets/sitemap.jsp&amp;heading=Site+Map" title="Site Map">Site Map</a></li>
       </ul>
       <div class="fieldset">
-        <form action="http://www.nyandcompany.com/nyco/atgsearch/searchRedirect.jsp;jsessionid=14638BEB6DF7F8934BFCAD9F577F11CF" name="search" method="get"><div><input value="UTF-8" type="hidden" name="_dyncharset"/> </div><div><input value="2047136085028435887" type="hidden" name="_dynSessConf"/> </div><input value="-1" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.pageSize"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.pageSize"/><input value="" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.docSort"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.docSort"/><input value="exec" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.ruleMode"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.ruleMode"/><input value="/nyco/atgsearch/searchRedirect.jsp" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.successURL"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.successURL"/><input value="/nyco/atgsearch/searchRedirect.jsp" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.errorURL"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.errorURL"/><input value="&#32;Enter Keyword" type="text" class="search_box" onfocus="if ( this.value==' Enter Keyword') this.value=''" name="trailtext" id="atg_b2cprint_searchInput"/><input value=" " type="hidden" name="_D:trailtext"/><input value="Find" type="image" src="../../images/button_search.gif" name="/atg/commerce/search/ProductCatalogQueryFormHandler.search" id="atg_bc2blueprint_search"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.search"/><input value="true" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.enableReportData"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.enableReportData"/><div><input value="/nyco/atgsearch/gadgets/atgsearchSimpleSearch.jsp.search" type="hidden" name="_DARGS"/> </div></form></div>
+        <form action="http://www.nyandcompany.com/nyco/atgsearch/searchRedirect.jsp;jsessionid=E8773AB971F857B11A1208CDFBFA0812" name="search" method="get"><div><input value="UTF-8" type="hidden" name="_dyncharset"/> </div><div><input value="2112940193964088542" type="hidden" name="_dynSessConf"/> </div><input value="-1" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.pageSize"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.pageSize"/><input value="" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.docSort"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.docSort"/><input value="exec" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.ruleMode"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.requestAttributes.ruleMode"/><input value="/nyco/atgsearch/searchRedirect.jsp" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.successURL"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.successURL"/><input value="/nyco/atgsearch/searchRedirect.jsp" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.errorURL"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.errorURL"/><input value="&#32;Enter Keyword" type="text" class="search_box" onfocus="if ( this.value==' Enter Keyword') this.value=''" name="trailtext" id="atg_b2cprint_searchInput"/><input value=" " type="hidden" name="_D:trailtext"/><input value="Find" type="image" src="../../images/button_search.gif" name="/atg/commerce/search/ProductCatalogQueryFormHandler.search" id="atg_bc2blueprint_search"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.search"/><input value="true" type="hidden" name="/atg/commerce/search/ProductCatalogQueryFormHandler.enableReportData"/><input value=" " type="hidden" name="_D:/atg/commerce/search/ProductCatalogQueryFormHandler.enableReportData"/><div><input value="/nyco/atgsearch/gadgets/atgsearchSimpleSearch.jsp.search" type="hidden" name="_DARGS"/> </div></form></div>
     </div>
 
     <div id="copyright">

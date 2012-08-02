@@ -66,6 +66,7 @@ overlayConfigs.quickview = $.extend(true, {}, overlayConfigs.modal, {
 overlayConfigs.gallery = $.extend(true, {}, overlayConfigs.modal, {
 	'width':898,
 	'height':601,
+
 	'type':'iframe'
 });
 
@@ -199,83 +200,50 @@ overlayConfigs.bopis = $.extend(true, {}, overlayConfigs.modal, {
 		$("#fancybox-wrap").unbind('mousewheel.fb');
 	}
 });
+//PLUGIN THAT TAKES PARENT EL & CHILD EL TO MAKE EQUAL HEIGHT COLS
+//USED IN FIXPODHEIGHTS
+function _EqualColHeights(parentElement,childElement){
+     $(parentElement).each(function(index){
+  		thisParentsChild = $(this).children(childElement);
+          	var numOfChildern = thisParentsChild.length;
+			if(numOfChildern > 1){
+               childHeights = new Array(); 
+                    thisParentsChild.each(function(i){
+                         ThisHeight = $(this).height(); 
+                         childHeights[i]=ThisHeight;
+                    });
+               tallestChild = Math.max.apply(Math, childHeights); // find tallest height out of this row's array
+               thisParentsChild.height(tallestChild); //give all this row's child pods the height of tallest pod
+          }
+     });
+};
+
 
 // Call on window.load by default. Can also be called any time to dynamically
 // adjust the heights of all the pods.
 function fixPodHeights(){
-	var $rowsWithRail = $('.rail').parent('.row'),
-	$rowsWithoutRail = $('.row').not(":has(.rail)");
+	$('.row').each(function(index){
+          //first check to see if row has a rail
+          if($(this).find('.rail').length > 0){
+               var $rail = $(this).find('.rail'),
+                   $mainC = $(this).find('.mainContent');
+               var railHeight = $rail.height(),
+                   mainContentHeight = $mainC.height();
+               if(railHeight > mainContentHeight){
+				   $mainC.css('min-height',railHeight); 
+                              //$mainC.height(railHeight);               
+               }else if(railHeight < mainContentHeight){
+				   				$rail.css('min-height',mainContentHeight);
+                                //$rail.height(mainContentHeight);
+               }
 
-	// each replacement
-	var $rail, $railHeight, $mainContent, $mainContentHeight, thisHeight;
+          };
+     });
 
-	// This is a private function, unavailable outside fixPodHeights().
-	// Recursively calls itself as needed.
-	function _fixTheHeights(row) {
-		var $pods = $(".pod", row), // Grab the pods for this row
-			tallestHeight = 0; // Set this row's tallest height to zero for easy comparison of the first pod
-		
-		var $this, myHeight, $tempRows = null;
-
-		for (var i=0, l=$pods.length; i<l; i++) {
-			$this = $($pods[i]); // Cache the jQuery object of this pod
-			myHeight = null; // Height Cache
-			$tempRows = null; // Inner Row Cache.
-			// See if this pod has any inner rows.
-			if ($this.has('.row')) {
-
-				// Cache the inner rows
-				$tempRows = $('.row', $this);
-
-				// Recall this function on the inner row
-				_fixTheHeights($tempRows);
-
-				// Remove the pods of the inner row from this row's set.
-				$pods = $pods.not($tempRows.find('.pod'));
-			}
-
-			// Cache the height.
-			myHeight = $this.height()
-
-			// If this is the tallest one so far, set the current row's tallest height to this number.
-			if (myHeight > tallestHeight) {
-				tallestHeight = myHeight;
-			}
-		}
-
-		// Set the height of ONLY this row's pods to the tallest height.
-		$pods.height(tallestHeight);
-	}
-
-	// fix rows without rails
-	for (var i=0, l=$rowsWithoutRail.length; i<l; i++) {
-		_fixTheHeights($rowsWithoutRail[i]);
-	}
-	
-	// Fix Rows with rails
-	for (var i=0,l=$rowsWithRail.length; i<l; i++) {
-		$rail = $(".rail", $rowsWithRail[i]),
-		$railHeight = $rail.height(),
-		$mainContent = $(".mainContent", $rowsWithRail[i]),
-		$mainContentHeight = $mainContent.height();
-
-		if ($rail.length>1) {
-			for (var j=0,m=$rail.length; j<m; j++) {
-				thisHeight = $($rail[j]).height();
-				if ($railHeight<$rail[j]) {
-					$railHeight = thisHeight;
-				}
-			}
-		}
-
-		if ($railHeight<$mainContentHeight){
-			$rail.height($mainContentHeight);
-		} else {
-			$mainContent.height($railHeight);
-			$rail.height($railHeight);
-		}
-	}
-}
+     _EqualColHeights(".row",".pod");
+     _EqualColHeights(".pod",".pod");
+     $('.rail .pod').attr('style','');//remove all inline styles of rail pods quickfix
+};
 
 function attachOverlays(context) {
 	var $overlays = (context)?$('.overlayTrigger',context):$('.overlayTrigger');
@@ -380,12 +348,16 @@ function expandSAD (){
 	$('body.homepage .switches').addClass('expanded');
 };
 
+function stripedTables (){
+	$('table.tablePod tr:even').addClass('even');
+};
 
 
 $(window).load(function(){
 	fixPodHeights();
 	attachOverlays();
 	attachQuickViewButtons();
+	stripedTables();
 	//expandSAD();
 
 	// Add the fancybox close catcher

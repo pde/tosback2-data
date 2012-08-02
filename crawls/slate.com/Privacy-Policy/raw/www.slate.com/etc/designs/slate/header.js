@@ -9,7 +9,9 @@ SG_Utils = {};
 SG_Utils.loadScript = function(src, async) {
 	var po = document.createElement('script');
     po.type = 'text/javascript';
-    po.async = true;
+    if (typeof(async) !== "undefined" && async) {
+	    po.async = true;
+	}
     po.src = src;
 	document.getElementsByTagName("head")[0].appendChild(po);
 };
@@ -837,13 +839,14 @@ var commentCounter = {
         this.items[url].push(element);
         this.count++;
     },
-    // repeat items are when we display the comment count twice for one doc, in these cases
-    // need an array to hold the url and element, but we only query with the initial items list, then look
+    // repeat items are when we display the comment count twice for one doc,
+    //in these cases
+    // need an array to hold the url and element, but we only query with the
+    //initial items list, then look
     // at those results to populate this
     addRepeatUrl : function(url, element) {
         this.addUrl(url, element);
     },
-
     load : function() {
         var that = this;
         var count = 0;
@@ -863,10 +866,7 @@ var commentCounter = {
         if(this.isEmpty(bundle) ==false) {
             this.run(this.createArray(bundle));
         }
-      
     },
-    
-    
     isEmpty: function(obj) {
         for(var i in obj)
         { 
@@ -874,7 +874,6 @@ var commentCounter = {
         }
         return true;
     },
-    
     run : function(requests) {
       //  console.log({"requests": requests});
       // console.log(JSON.stringify(requests));
@@ -889,6 +888,7 @@ var commentCounter = {
             dataType: 'jsonp',
             success: function(results) {
                 for (var url in that.items) {
+                	if (results[url] != undefined) {
                     if (results[url] && parseInt(results[url]['count']) > -1) {
                         for (var elm in that.items[url]) {
                         //sometimes a function makes it's way into this urls object. When older IEs
@@ -903,7 +903,8 @@ var commentCounter = {
                                         commentText+="s";
                                     }
                                     if(parseInt(results[url]['count']) > 0) {
-                                        $(that.items[url][elm]).html("<span>" + results[url]['count'] + "</span> " + commentText);
+                                        $(that.items[url][elm]).html("<span>" +
+                                        		results[url]['count'] + "</span> " + commentText);
                                     } else {
                                         $(that.items[url][elm]).html("<br/>" + commentText);
                                     }
@@ -916,30 +917,33 @@ var commentCounter = {
                         //console.log(" in failure function");
                         var num = results[url]['errorMessage']/1000;
                         results['count'] = num +'k+';
-                    for (var elm in that.items[url]) {
-                    $(that.items[url][elm]).text(results['count']);
-                    }
-                 }
-                } 
+	                    for (var elm in that.items[url]) {
+	                    	if(typeof that.items[url][elm] == 'object') {
+		                    	$(that.items[url][elm]).text(results['count']);
+		                    }
+	                    }
+                    } 
+                	}
+                }
             }
         }); 
     },
-
     createArray : function(items) {
         var returnVals = [];
         for (var url in items) {
             returnVals.push({
                 'id':url,
                 'method':'count',
-                'q':'childrenof:' + url + ' type:comment -source:Twitter sortOrder:reverseChronological (state:ModeratorApproved OR (state:Untouched -user.state:ModeratorBanned,ModeratorDeleted)) children:3 (state:ModeratorApproved OR (state:Untouched -user.state:ModeratorBanned,ModeratorDeleted)) '
+                'q':'childrenof:' + url + ' type:comment -source:Twitter'+ 
+                ' sortOrder:reverseChronological (state:ModeratorApproved OR'+
+                ' (state:Untouched -user.state:ModeratorBanned,ModeratorDeleted))'+
+                ' children:3 (state:ModeratorApproved OR (state:Untouched'+
+                ' -user.state:ModeratorBanned,ModeratorDeleted)) '
             });
         }
         return returnVals;
     }
 };
-
-
-
 
 function loadCounts() {
     //var self = this;
@@ -951,7 +955,8 @@ function loadCounts() {
     $('.comment-count').each(function() {
         commentCounter.addUrl($(this).attr('uniq'), $(this));
     });
-    // used by post pages in second spot, for these, we just store a repeat url since we fetch data above for this page
+    // used by post pages in second spot, for these, we just store a repeat
+    //url since we fetch data above for this page
     $('.sl-chunky-comments-inner').each(function() {
         commentCounter.addRepeatUrl($(this).attr('uniq'), $(this));
     });

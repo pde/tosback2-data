@@ -31,6 +31,11 @@ function usa_showMenu(id)
 		usa_newAdBannerBgColor = $('.globalHeaderSubNavContents').css('background-color');
 	}*/
 	
+	if (typeof usa_setPositionForMenu != 'undefined')
+	{
+		usa_setPositionForMenu();
+	}
+	
 	clearTimeout(usa_t);
 	if (usa_menuOpen == id)
 	{
@@ -104,6 +109,19 @@ function usa_beginHideMenu(id)
 {
 	//console.log('usa_beginHideMenu: ' + id);
 	usa_t = setTimeout("usa_hideMenu(\'" + id + "\')", 1000);
+}
+
+function usa_setPositionForMenu()
+{
+	var url = window.location.href;
+	if (url.indexOf('characterchatter.usanetwork.com') != -1 || url.indexOf('chatter.usanetwork.com') != -1)
+	{
+		$('.globalHeaderSubNav .globalHeaderSubNavContents').css('margin-top', $('#ad728x90').height() + 16);
+	}
+	else
+	{
+		$('.globalHeaderSubNav .globalHeaderSubNavContents').css('margin-top', $('#usa_ad_728x90').height() + 16);
+	}
 }
 
 function usa_buildGlobalMenu()
@@ -283,7 +301,7 @@ function usa_buildGlobalMenu()
 					}
 				}
 				
-				html += '</div><div class="globalHeaderFooter">';
+				html += '<a href="javascript:void(0);" onclick="usa_hideMenuAll()" class="globalHeaderCloseBtn"><span>Close Menu</span></a></div><div class="globalHeaderFooter">';
 				
 				if (typeof usa_globalMenu.menu[lvl1obj].footerMoreButton != 'undefined')
 				{
@@ -298,7 +316,7 @@ function usa_buildGlobalMenu()
 	$('#usa_globalSubNavContainer').html(html);
 	
 	
-	$('#usa_globalNav a.sub').mouseover(function(event){
+	/*$('#usa_globalNav a.sub').mouseover(function(event){
 		var id = ($(this).attr('id')).replace('usa_menu_', '');
 		usa_showMenu(id);
 	});
@@ -316,7 +334,7 @@ function usa_buildGlobalMenu()
 	$('#usa_globalNav a#usa_menu_schedule').mouseout(function(event){
 		var id = ($(this).attr('id')).replace('usa_menu_', '');
 		usa_beginHideMenu(id);
-	});
+	});*/
 	
 	$('#usa_globalNav a.sub').click(function(event){
 		var id = ($(this).attr('id')).replace('usa_menu_', '');
@@ -379,6 +397,10 @@ var usa_globalMenu = {
 							"new" : true
 						},
 						{
+							"title" : "Political Animals",
+							"url" : usa_baseUrlDomain + "/series/politicalanimals/"
+						},
+						{
 							"title" : "Psych",
 							"url" : usa_baseUrlDomain + "/series/psych/"
 						},
@@ -398,11 +420,8 @@ var usa_globalMenu = {
 						{
 							"title" : "WWE Raw",
 							"url" : usa_baseUrlDomain + "/sports/wwe/"
-						},
-						{
-							"title" : "WWE Tough Enough",
-							"url" : usa_baseUrlDomain + "/series/toughenough/"
 						}
+						
 					]
 				},
 				{
@@ -410,33 +429,33 @@ var usa_globalMenu = {
 					"type" : "feature",
 					"title" : "",
 					"items" : [
-						/* Featured Slot */
+						/* Featured Slot 1 */
 						{
-							"title" : "Common Law",
-							"url" : usa_baseUrlDomain + "/series/commonlaw/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_commonlaw.png",
-							"tuneIn" : "FRIDAYS 10/9C"
+							"title" : "Political Animals",
+							"url" : usa_baseUrlDomain + "/series/politicalanimals/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_1.png",
+							"tuneIn" : "SUNDAYS 10/9C"
 						},
-						/* Featured Slot */
+						/* Featured Slot 2 */
 						{
-							"title" : "Fairly Legal",
-							"url" : usa_baseUrlDomain + "/series/fairlylegal/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_3.png",
-							"tuneIn" : "FRIDAYS 9/8C"
+							"title" : "White Collar",
+							"url" : usa_baseUrlDomain + "/series/whitecollar/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wc.png",
+							"tuneIn" : "TUESDAYS 9/8C"
 						},
-						/* Featured Slot */
+						/* Featured Slot 3 */
 						{
 							"title" : "Necessary Roughness",
 							"url" : usa_baseUrlDomain + "/series/necessaryroughness/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_nr.png",
-							"tuneIn" : "WEDNESDAY JUNE 6 10/9C"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_3.png",
+							"tuneIn" : "WEDNESDAYS 10/9C"
 						},
 						/* Featured Slot  - LAST */
 						{
-							"title" : "WWE RAW",
-							"url" : usa_baseUrlDomain + "/sports/wwe/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wwe.png",
-							"tuneIn" : "MONDAYS 9/8C"
+							"title" : "Burn Notice",
+							"url" : usa_baseUrlDomain + "/series/burnnotice/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_bn.png",
+							"tuneIn" : "THURSDAYS 9/8C"
 						}
 
 					]
@@ -502,24 +521,24 @@ var usa_globalMenu = {
 						},
 						/* Featured Slot 2 */
 						{
+							"title" : "Common Law",
+							"url" : usa_baseUrlDomain + "/videos/Common%20Law/Full%20Episodes"
+							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_cl.png",*/
+							/*"tuneIn" : "Fridays 10/9C"*/
+						},
+						/* Featured Slot 3 */
+						{
 							"title" : "Covert Affairs",
 							"url" : usa_baseUrlDomain + "/videos/Covert%20Affairs/Full%20Episodes"
 							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_ca.png",*/
 							/*"tuneIn" : "Tuesdays 9/8C"*/
 						},
-						/* Featured Slot 3 */
+						/* Featured Slot 4 */
 						{
 							"title" : "Fairly Legal",
 							"url" : usa_baseUrlDomain + "/videos/Fairly%20Legal/Full%20Episodes"
 							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_fl.png",*/
 							/*"tuneIn" : "Sundays 10/9C"*/
-						},
-						/* Featured Slot 4 */
-						{
-							"title" : "In Plain Sight",
-							"url" : usa_baseUrlDomain + "/videos/In%20Plain%20Sight/Full%20Episodes"
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_ips.png",*/
-							/*"tuneIn" : "Tune In Time"*/
 						},
 						/* Featured Slot 5 */
 						{
@@ -530,9 +549,9 @@ var usa_globalMenu = {
 						},
 						/* Featured Slot 6 */
 						{
-							"title" : "Psych",
-							"url" : usa_baseUrlDomain + "/videos/Psych/Full%20Episodes"
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_psych.png",*/
+							"title" : "Political Animals",
+							"url" : usa_baseUrlDomain + "/videos/Political%20Animals/Full%20Episodes"
+							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_pa.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						},
 						/* Featured Slot 7 */
@@ -560,24 +579,24 @@ var usa_globalMenu = {
 					"title" : "Exclusives",
 					"items" : [
 						{
-							"title" : "DAILY KATE VIDEOS",
-							"url" : "http://www.usanetwork.com/series/fairlylegal/features/dailykate/index.html",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/videos_5.png"
+							"title" : "GRAPHIC NOVEL",
+							"url" : "http://www.usanetwork.com/series/burnnotice/downloads/app/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_bngraphicnovel.png"
 						},
 						{
-							"title" : "CHECK OUT COMMON LAW",
-							"url" : "http://www.usanetwork.com/series/commonlaw",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/videos_6.png"
+							"title" : "SUITS RECRUITS",
+							"url" : "http://suitsrecruits.usanetwork.com/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_suitsrecruits.png"
 						},
 						{
-							"title" : "SEASON 5 CAST INTERVIEWS",
-							"url" : "http://www.usanetwork.com/videos/In%20Plain%20Sight/Season%20Five%20Interviews",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/videos_7.png"
+							"title" : "NEAL&rsquo;S STASH",
+							"url" : "http://nealsstash.usanetwork.com/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_nealsstash.png"
 						},
 						{
-							"title" : "NEW PSYCH-OUTS",
-							"url" : "http://www.usanetwork.com/series/psych/video/psychouts/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/videos_8.png"
+							"title" : "ROYAL PAINS CHATTER",
+							"url" : "http://characterchatter.usanetwork.com/show/royalpains",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_rpchatter.png"
 						}
 					]
 				}
@@ -664,29 +683,31 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [
 						{
-							"title" : "NATIONAL TREASURE 2",
-							"subtitle" : "SATURDAY MAY 19 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/nationaltreasure2",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_nationaltreasure2.png"
+							"title" : "INDIANA JONES AND THE TEMPLE OF DOOM",
+							"subtitle" : "SAT AUGUST 4 12:30/11:30C",
+							"url" : usa_baseUrlDomain + "/movies/indianajones/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_indianaTempleDoom.png"
 						},
 						{
-							"title" : "LAND OF THE LOST",
-							"subtitle" : "SATURDAY MAY 26 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/landofthelost",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_landofthelost.png"
+							"title" : "INDIANA JONES AND THE LAST CRUSADE",
+							"subtitle" : "SAT AUGUST 4 3:05/2:05C",
+							"url" : usa_baseUrlDomain + "/movies/indianajones/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_indianaLastCrusade.png"
 						},
 						{
 							"title" : "G.I. JOE: THE RISE OF COBRA",
-							"subtitle" : "SUNDAY MAY 27 8:30/7:30C",
-							"url" : usa_baseUrlDomain + "/movies/gijoe",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe.png"
+							"subtitle" : "SUN AUGUST 5 1:30/12:30C",
+							"url" : usa_baseUrlDomain + "/movies/gijoe/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
 						},
 						{
-							"title" : "FAST & FURIOUS",
-							"subtitle" : "SUNDAY MAY 27 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/fastandfurious",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_fastandfurious.png"
+							"title" : "SHUTTER ISLAND",
+							"subtitle" : "MON AUGUST 20 11:05/10:05C",
+							"url" : usa_baseUrlDomain + "/movies/shutterisland/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_shutterisland.png"
 						}
+
+
 						
 					]
 				}

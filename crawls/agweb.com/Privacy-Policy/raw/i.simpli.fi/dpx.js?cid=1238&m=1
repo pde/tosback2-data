@@ -9,28 +9,36 @@
 
     var dpx = {
         sifi_pixel_url: '//i.simpli.fi/dpx?',
+        pixels_url: 'http://i.simpli.fi/p?',
         pixels: [],
-        matching_pixels: [
-            '//um.simpli.fi/pm_match?http://image2.pubmatic.com/AdServer/Pug?vcode=bz0yJnR5cGU9MSZjb2RlPTgwNiZ0bD01MTg0MDA=&piggybackCookie=uid:$UID',
-            '//um.simpli.fi/ab_match',
-            '//cm.g.doubleclick.net/pixel?nid=simplifi',
-            '//um.simpli.fi/ox_match',
-            '//um.simpli.fi/rb_match',
-            '//um.simpli.fi/cw_match',
-            '//um.simpli.fi/lj_match',
-            '//ib.adnxs.com/getuid?http%3A//um.simpli.fi/an%3Fappnexus_uid%3D%24UID',
-            '//www.googleadservices.com/pagead/conversion/1026675585/?random='+(new Date()).getTime()+'&cv=7&fst='+(new Date()).getTime()+'&fmt=3&value=0&label=eGG0CO2U2AIQgafH6QM&guid=ON'
-        ],
-        protocol: (document && document.location && document.location.protocol) || "http:",
+        matching_pixels: [],
+        protocol: (location.protocol == 'https:') ? 'https:' : "http:",
         pixels_to_drop: [],
         dropping_pixels: false,
         rescue_pixel: null,
+
+        get_matching_pixels: function() {
+            var script = document.createElement('script');
+            script.src = dpx.pixels_url + 'cb=dpx_' + hostname_as_int + '._hp';
+            document.body.appendChild(script);
+        },
+
+        _hp: function(pixels) {
+            dpx.matching_pixels = pixels && pixels['pixels'] || [];
+            dpx._drop_matching_pixels();
+        },
 
         drop_pixels: function() {
             var sifi_pixels = dpx.get_pixels();
             for (var i = sifi_pixels.length-1; i >= 0; i--) {
                 dpx.drop_sifi_pixel(sifi_pixels[i]);
             }
+            if (dpx.does_allow_matching() && !dpx.already_dropped_matching) {
+                dpx.get_matching_pixels();
+            }
+        },
+
+        _drop_matching_pixels: function() {
             if (dpx.does_allow_matching() && !dpx.already_dropped_matching) {
                 for (var i = dpx.matching_pixels.length-1; i >= 0; i--) {
                     dpx.pixels_to_drop.push(dpx.matching_pixels[i]);
@@ -87,7 +95,7 @@
         does_allow_matching: function() {
             if (typeof dpx.allow_matching != 'undefined') return dpx.allow_matching;
 
-            if (location.protocol == 'https:') {
+            if (dpx.protocol == 'https:') {
                 dpx.allow_matching = false;
                 return false;
             }
@@ -105,7 +113,11 @@
         },
 
         run: function() {
-            dpx.drop_pixels();
+            if (!document.body) {
+                setTimeout(function() { dpx.run(); }, 13);
+            } else {
+                dpx.drop_pixels();
+            }
         }
     };
 

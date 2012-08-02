@@ -1,8 +1,379 @@
-
+ 
 
 var flag="default";
 var virtual="default";
-var menuHgtFlag="new";
+var menuHgtFlag = "new";
+
+/* New google analytics functions */
+$(document).ready(function() {
+    loadCookieDialog();
+    wireHeaderNav();
+    wireFooterNav();
+    wireFindAndBookHome();
+    wireFeaturedCruises();
+    wireRecentlyViewedCruises();
+    // wireCruiseSearch();
+    wireFindAndBookOffers();
+    wireCruiseSearchResultItem();
+});
+
+
+
+
+function wireHeaderNav() {
+    $("#main-nav").click(function(event) {
+        var tmp = $(event.target);
+        tmp = tmp.parentsUntil("#main-nav").last().attr("id");
+        tmp = tmp.replace("MainMenuUC_", "");
+        tmp = tmp.replace("LI", "");
+        var href = event.target.attributes[0];
+        if (href.value.indexOf("Cruise-Ships/Ship-Webcams") != -1) {
+            _gaq.push(['_trackEvent', 'WebCam in MainNav', 'Webcams', href.value]);
+        }
+        else {
+            _gaq.push(['_trackEvent', 'MainNav', tmp, href.value]);
+        }
+        // event.preventDefault(); // stops the link
+    });
+}
+
+function wireFooterNav() {
+    $("#footer-links").click(function(event) {
+        var tmp = $(event.target);
+        tmp = tmp.parentsUntil("#footer-links").last().attr("id");
+        var action = "unknown";
+        switch (tmp) {
+            case "footer-links-item-2": action = "Cruises"; break;
+            case "footer-links-item-3": action = "Ship"; break;
+            case "footer-links-item-4": action = "Destinations"; break;
+            case "footer-links-item-5": action = "Experience"; break;
+            case "footer-links-item-6": action = "Help"; break;
+        }
+        var href = event.target.attributes[0];     
+        _gaq.push(['_trackEvent', 'FooterNav', action, href.value]);
+    });
+
+    $("#footer .openfooter").click(function() {
+        _gaq.push(['_trackEvent', 'FooterNav', 'Open footer', location.href]);
+
+    });
+
+    $("#footer .closefooter").click(function() {
+        _gaq.push(['_trackEvent', 'FooterNav', 'Close footer', location.href]);
+
+    });
+    
+}
+
+function wireFindAndBookHome() {
+    if ($("#quickSrchBox").length > 0) {
+        // now find dropdowns within #quickSrchBox, need to use delegate as these are within an ASP.Net update panel
+        $("#quickSrchBox").delegate("SELECT","change", function() {
+            var val = $(this).val();
+            var ddtype = $(this).attr("id");
+            ddtype = ddtype.substring(ddtype.indexOf("_") + 1);
+            ddtype = ddtype.replace("ddn", "");
+            // alert(ddtype + " = " + val);
+            _gaq.push(['_trackEvent', 'QuickSearch', ddtype, val]);
+        });
+
+        $("#quickSrchBox").delegate(".qckSearchBtn", "click", function() {
+            console.log("search button pressed");
+            var cruisecount = $("#TotalCruises span").text();
+            cruisecount = cruisecount.replace(" cruises found", "");
+            var qsearchstring = "";
+            $("#quickSrchBox select").each(function() {
+                var val = $(this).val();
+                var ddtype = $(this).attr("id");
+                ddtype = ddtype.substring(ddtype.indexOf("_") + 1);
+                ddtype = ddtype.replace("ddn", "");
+                qsearchstring += ddtype + "=" + val + "&";
+            });
+            qsearchstring += "Value=" + cruisecount;
+            _gaq.push(['_trackEvent', 'QuickSearch', 'Search', qsearchstring]);
+        });
+        
+    }
+
+}
+
+function wireFindAndBookOffers() {
+    if ($(".CruiseTypeInner").length > 0) {
+        $(".CruiseTypeInner A").click(function() {
+            var offerType = $(this).text();
+            if (offerType.length == 0) {
+                offerType = $(this).attr("rel");
+            }
+            _gaq.push(['_trackEvent', 'FindAndBookOffers', 'Cruise Type', offerType]);
+        });
+    }
+
+    if ($(".latedealdetails").length > 0) {
+        $(".latedealdetails a.offermoredetail").click(function() {
+            var cruisecode = $(this).attr("data-cruisecode");
+            var bodyid = $("body").attr("id");
+            if (typeof bodyid != "undefined") {
+                if (bodyid == "CruiseOffers" || bodyid == "OffersHub") {
+                    _gaq.push(['_trackEvent', 'OffersHub', 'ViewCruiseDetails', cruisecode]);
+
+                }
+                else {
+                    _gaq.push(['_trackEvent', 'FindAndBookOffers', 'ViewCruiseDetails', cruisecode]);
+                }
+            }
+            else {
+                _gaq.push(['_trackEvent', 'FindAndBookOffers', 'ViewCruiseDetails', cruisecode]);
+            }
+        });
+        $(".latedealdetails a.offerbookdeal").click(function() {
+            var cruisecode = $(this).attr("data-cruisecode");
+            var bodyid = $("body").attr("id");
+            if (typeof bodyid != "undefined") {
+                if (bodyid == "CruiseOffers" || bodyid== "OffersHub") {
+                    _gaq.push(['_trackEvent', 'OffersHub', 'BookNow', cruisecode]);
+
+                }
+                else {
+                    _gaq.push(['_trackEvent', 'FindAndBookOffers', 'BookNow', cruisecode]);
+                }
+            }
+            else {
+                _gaq.push(['_trackEvent', 'FindAndBookOffers', 'BookNow', cruisecode]);
+            } 
+        });
+        // late deals on home page
+        $(".latedealdetails .latesbuttonsmall a").click(function() {
+            var cruisecode = $(this).attr("rel");
+            _gaq.push(['_trackEvent', 'Home', 'ViewCruiseDetails', cruisecode]);
+        });        
+    }
+
+    // view all offers (home page)
+    if ($(".home-page-right-promotions .allOfferLink a").length > 0) {
+        $(".home-page-right-promotions .allOfferLink a").click(function() {
+          _gaq.push(['_trackEvent', 'Home', 'ViewAllOffers', 'RightHandPromoColumn']);
+        });
+    }
+
+    // view all offers (offers hub)
+    if ($("a.moreCruiseOffersLink").length > 0) {
+        $("a.moreCruiseOffersLink").click(function() {
+        _gaq.push(['_trackEvent', 'OffersHub', 'ViewAllLateDeals', $(this).attr("href")]);
+        });
+    }
+}
+
+function wireFeaturedCruises() {
+    if ($("#featuredCruises").length > 0) {
+        $("#featuredCruises").delegate(".rhs-cruise", "click", function() {
+            // alert("got featured cruises");
+            // now get rel attribute for hyperlink
+            var cruisecode = $(this).children("a").attr("rel");
+            // alert(cruisecode);
+            _gaq.push(['_trackEvent', 'CruisePromo', 'Featured', cruisecode]);
+        });
+    }
+
+    if ($("#footerfeaturedcruises").length > 0) {
+        $("#footerfeaturedcruises").delegate(".footercruises-cruise", "click", function() {
+            // alert("got featured cruises");
+            // now get rel attribute for hyperlink
+            var cruisecode = $(this).children("a").attr("rel");
+            // alert(cruisecode);
+            _gaq.push(['_trackEvent', 'CruisePromo', 'Footer Featured', cruisecode]);
+        });
+    }    
+}
+
+function wireRecentlyViewedCruises() {
+    if ($("#viewedCruises").length > 0) {
+        $("#viewedCruises").delegate(".rhs-cruise", "click", function() {
+            // alert("got recently viewed cruises");
+            var cruisecode = $(this).children("a").attr("rel");    
+            _gaq.push(['_trackEvent', 'CruisePromo', 'RecentView', cruisecode]);
+        });
+    }
+
+    if ($("#savedplaceholder").length > 0) {
+        $("#savedplaceholder").delegate(".footercruises-cruise", "click", function() {
+            // alert("got recently viewed cruises");
+            var cruisecode = $(this).children("a").attr("rel");
+            _gaq.push(['_trackEvent', 'CruisePromo', 'Footer RecentView', cruisecode]);
+        });
+
+        $("#savedplaceholder").delegate(".removesaved", "click", function() {
+            // alert("got recently viewed cruises");
+            var pageid = $(this).attr("rel");
+            //            var cruisecode = "";
+            //            _gaq.push(['_trackEvent', 'Saved Cruises', 'remove', cruisecode]);
+            var savedcruises = getCookie("pocruises");
+            savedcruises = savedcruises.replace(pageid + ",", "");
+            savedcruises = savedcruises.replace(pageid, "");
+            setCookie("pocruises", savedcruises, 30);
+            $('.in-wishlist_cruisepage').hide();
+            $('.remove-wishlist_cruisepage').hide();
+            $('.qtip').hide();
+            getFooterCruises();
+            //window.location.href = window.location.href;
+        });        
+    }
+}
+
+function wireCruiseSearch() {
+    if ($("#NewSearchBoxUC_updtePnl").length > 0) {
+       
+        $("#NewSearchBoxUC_updtePnl").delegate(".clr", "click", function(event) {
+            event.preventDefault();
+            var clearedItem = $(event.target).attr("id");
+            clearedItem = clearedItem.substring(clearedItem.lastIndexOf("_") + 1);
+            // alert("clear clicked:" + clearedItem);
+        });
+        $("#NewSearchBoxUC_updtePnl").delegate(".inLowerSecFltr", "click", function(event) {
+            event.preventDefault();
+            var clickedItem = $(event.target).attr("id");
+            // clickedItem = clickedItem.substring(clickedItem.lastIndexOf("_") + 1);
+            // alert("item clicked:" + clickedItem);
+        });
+
+        if ($("#NewSearchBoxUC_leftSBContainer").length > 0) {
+            // alert("spotted results panel");
+            // itinerary
+            $("#NewSearchBoxUC_leftSBContainer").delegate(".ports p a", "click", function(event) {
+                event.preventDefault();
+                var clickedItem = $(event.target).parentsUntil(".item");
+                clickedItem = clickedItem.attr("rel");
+                // clickedItem = clickedItem.substring(clickedItem.lastIndexOf("_") + 1);
+                // alert("item clicked:" + clickedItem);
+            });
+
+            // view details / book now
+            $("#NewSearchBoxUC_leftSBContainer").delegate(".resultsButton", "click", function(event) {
+                event.preventDefault();
+                var clickedItem = $(event.target).attr("title");
+                // clickedItem = clickedItem.substring(clickedItem.lastIndexOf("_") + 1);
+                // alert("item clicked:" + clickedItem);
+            });
+                    
+        }
+        
+    }
+}
+
+function wireCruiseSearchPanelToggle(item,showing) {
+    // debugger;
+    var topitem = $(item).parentsUntil(".innerCont");
+    topitem = topitem.next();
+    topitem = topitem.children(".clr");
+    topitem = topitem.children("a");
+    var clearedItem = topitem.attr("id");
+    clearedItem = clearedItem.substring(clearedItem.lastIndexOf("_") + 1);
+    // alert("toggled:" + clearedItem + ", showing:"+showing);
+}
+
+function wireCruiseSearchResultItem() {
+    if ($("#NewSearchBoxUC_updtePnl").length > 0) {
+        $("#NewSearchBoxUC_updtePnl").delegate("A.searchresultheading", "click", function() {
+            // now get rel attribute for hyperlink
+            var cruisecode = $(this).attr("rel");
+            _gaq.push(['_trackEvent', 'SearchResults', 'ViewCruiseDetails-Header', cruisecode]);
+        });
+
+        $("#NewSearchBoxUC_updtePnl").delegate("A[title*='Book now']", "click", function() {
+            // now get rel attribute for hyperlink
+            var cruisecode = $(this).attr("rel");
+            _gaq.push(['_trackEvent', 'SearchResults', 'BookNow', cruisecode]);
+        });
+
+        $("#NewSearchBoxUC_updtePnl").delegate("A[title*='More detail']", "click", function() {
+            // now get rel attribute for hyperlink
+            var cruisecode = $(this).attr("rel");
+            _gaq.push(['_trackEvent', 'SearchResults', 'ViewCruiseDetails', cruisecode]);
+        });
+
+        $("#NewSearchBoxUC_updtePnl").delegate("A.searchresultsitinerary", "click", function() {
+            // now get rel attribute for hyperlink
+            var cruisecode = $(this).attr("rel");
+            _gaq.push(['_trackEvent', 'SearchResults', 'ViewCruiseItinerary', cruisecode]);
+        });
+
+        $("#NewSearchBoxUC_updtePnl").delegate("#searchCont input", "click", function() {
+            if ($(this).is(":checked") == true) {
+                var value = $(this).attr("id");
+                var name = $("label[for='" + value + "']").html();
+                name = name.substring(0, name.indexOf("<span>"));
+                var group = $(this).parents(".inLowerSecfFltr").attr("class");
+                group = group.replace("inLowerSecfFltr ", "");
+                group = group.replace("scndA", "Date");
+                group = group.replace("inLowerSecfFltr", "Destination");
+                // alert(name + ":" + group);
+                _gaq.push(['_trackEvent', 'SearchResults', 'FilterSelect', group + ":" + name]);
+            }
+        });
+    }
+}
+
+var bkg_pos;
+
+function toggleDisplayFooter() {
+    $(".closefooter").fadeToggle(0);
+
+    if ($('DIV#footer H2.footerquicklinks SPAN.sIFR-alternate').length == 0) {
+        $("#footer-links").slideToggle(0);
+        $(".footerquicklinks").click(function() {
+            $("#footer-links").slideToggle("fast");
+            $(".closefooter").fadeToggle(0, "swing", function() { $(".openfooter").fadeToggle(0); });
+
+        });
+    }      
+    
+
+    var ship = Math.floor(Math.random() * 7) + 1;
+    var shipconfigid = $("#footershipid").text();
+    if (shipconfigid.length > 0) {
+        if (shipconfigid == "1") { ship = 2; } // Arcadia
+        // if (shipconfigid == "2") { ship = 2; }
+        if (shipconfigid == "3") { ship = 3; } // Aurora
+        if (shipconfigid == "4") { ship = 5; } // Oceana
+        if (shipconfigid == "5") { ship = 6; } // Oriana
+        if (shipconfigid == "6") { ship = 7; } // Ventura
+        if (shipconfigid == "7") { ship = 4; } // Azura
+        if (shipconfigid == "8") { ship = 1; } // Adonia
+    }
+    var shipImage = "";
+    if (ship == 1) { shipImage = "/Images/footer_adonia.jpg"; }
+    if (ship == 2) { shipImage = "/Images/footer_arcadia.jpg"; }
+    if (ship == 3) { shipImage = "/Images/footer_aurora.jpg"; }
+    if (ship == 4) { shipImage = "/Images/footer_azura.jpg"; }
+    if (ship == 5) { shipImage = "/Images/footer_oceana.jpg"; }
+    if (ship == 6) { shipImage = "/Images/footer_oriana.jpg"; }
+    if (ship == 7) { shipImage = "/Images/footer_ventura.jpg"; }
+
+
+    $("#footer").css("background-image", "url(" + shipImage +")");
+
+    /*
+    var now = new Date();
+    bkg_pos = Math.floor((now.getHours() * 60) + (now.getMinutes()) * 0.875); // current minute * (1260/1440)
+    bkg_pos += 315;
+    bkg_pos = bkg_pos % 1260;
+    
+    $("#footer").css("background-position", bkg_pos + "px bottom");
+    setInterval(repositionFooterImage, 1000);   */
+}
+
+
+function repositionFooterImage() {
+    bkg_pos++;
+    // if (bkg_pos > 1260) { bkg_pos = 0; }
+    bkg_pos = bkg_pos % 1260;
+    $("#footer").css("background-position", bkg_pos + "px bottom");
+}
+
+$(document).ready(function() {
+    toggleDisplayFooter();
+});
+
+
 /*function airports()
 {
  if ($.browser.msie) {
@@ -629,13 +1000,13 @@ return false;
 //search-banner checkbox toggle for child-free ships
 function toggleCheckbox() {
   $("#search-panel-6 INPUT#child-free").click(function() {
-    if ($("#search-panel-6 INPUT#child-free").attr("checked") == true) {
-      $("INPUT#arcadia").attr("checked", true);
-      $("INPUT#artemis").attr("checked", true);
+    if ($("#search-panel-6 INPUT#child-free").prop("checked") == true) {
+      $("INPUT#arcadia").prop("checked", true);
+      $("INPUT#artemis").prop("checked", true);
       $("#search-panel-6 UL:first LI LABEL").addClass("disabled");
     } else {
-      $("INPUT#arcadia").attr("checked", false);
-      $("INPUT#artemis").attr("checked", false);
+      $("INPUT#arcadia").prop("checked", false);
+      $("INPUT#artemis").prop("checked", false);
       $("#search-panel-6 UL:first LI LABEL").removeClass("disabled");
     }
   });
@@ -828,7 +1199,7 @@ function overseasBookings() {
 function optIns() {
   $("DIV.opt-out DIV").hide();
   $(".form-check LABEL INPUT.checkbox").click(function() {
-    if ($("INPUT#" + this.id + " [checked]")) { // If checked
+    if ($("INPUT#" + this.id).prop("checked")) { // If checked
       $("#opt-out-" + this.id).toggle();    //show the hidden div
     }
   });
@@ -837,7 +1208,7 @@ function optIns() {
 function myAccountOptIns() {
   $("DIV.opt-out DIV").hide();
   $(".form-check LABEL SPAN.checkbox INPUT").click(function() {
-    if ($("INPUT#" + this.id + " [checked]")) { // If checked
+    if ($("INPUT#" + this.id).prop("checked")) { // If checked
       $("#opt-out-" + this.id).toggle();    //show the hidden div
     }
   });
@@ -845,9 +1216,9 @@ function myAccountOptIns() {
 
 //expanded opt-in & opt-out for manage-details page
 function expandOptIns() {
-  var chkPost = $("INPUT#postcomms").attr("checked");
-  var chkPhone = $("INPUT#phonecomms").attr("checked");
-  var chkEmail = $("INPUT#emailcomms").attr("checked");
+  var chkPost = $("INPUT#postcomms").prop("checked");
+  var chkPhone = $("INPUT#phonecomms").prop("checked");
+  var chkEmail = $("INPUT#emailcomms").prop("checked");
   if (chkPost == true) {
     $("#opt-out-postcomms").fadeIn("slow");
   }
@@ -861,9 +1232,9 @@ function expandOptIns() {
 
 function expandmyAccountOptIns() {
     
-    var chkPost = $("INPUT#livLogin_postcomms").attr("checked");
-    var chkPhone = $("INPUT#livLogin_phonecomms").attr("checked");
-    var chkEmail = $("INPUT#livLogin_emailcomms").attr("checked");
+    var chkPost = $("INPUT#livLogin_postcomms").prop("checked");
+    var chkPhone = $("INPUT#livLogin_phonecomms").prop("checked");
+    var chkEmail = $("INPUT#livLogin_emailcomms").prop("checked");
    
     if (chkPost == true) {
         $("#opt-out-livLogin_postcomms").fadeIn("slow");
@@ -900,12 +1271,12 @@ function accordionList() {
 
 //using a jquery slider as a horizontal scrollbar
 function handleSliderChange(e, ui) {
-  var maxScroll = $("#deckplan").attr("scrollWidth") - $("#deckplan").width();
+  var maxScroll = $("#deckplan").prop("scrollWidth") - $("#deckplan").width();
   $("#deckplan").animate({ scrollLeft: ui.value * (maxScroll / 100) }, 1000);
 }
 
 function handleSliderSlide(e, ui) {
-  var maxScroll = $("#deckplan").attr("scrollWidth") - $("#deckplan").width();
+  var maxScroll = $("#deckplan").prop("scrollWidth") - $("#deckplan").width();
   $("#deckplan").attr({scrollLeft: ui.value * (maxScroll / 100) });
 }
 
@@ -1156,7 +1527,7 @@ function showExcursionPages() {
 
 //eg: elemWidth("#banner-title H1");
 function elemWidth(elem) {
-  alert($(elem).outerWidth());
+  // alert($(elem).outerWidth());
 }
 
 //banner anim function
@@ -1411,7 +1782,7 @@ $(document).ready(function() {
 function myAccountOptIns() {
   $("DIV.opt-out DIV").hide();
   $(".form-check LABEL SPAN.checkbox INPUT").click(function() {
-      if ($("INPUT#" + this.id + " [checked]")) { // If checked
+      if ($("INPUT#" + this.id).prop("checked")) { // If checked
           $("#opt-out-" + this.id).toggle();  //show the hidden div
       }
   });
@@ -1525,23 +1896,199 @@ function webcamInfo() {
 }
 
 function getFeaturedCruises(pageQuery) {
-//alert("hi");
-//alert(pageQuery);
     $('#featuredCruises').load('/ajaxFeaturedCruises.aspx?' + pageQuery + ' #target', function() {
-        //sIFR.replace(praxis, { selector: '#right h2', css: '.sIFR-root {color: #5D5853;}', wmode: 'transparent' });
+        $(document).click(function(e) {
+            e = e || window.event;
+            var el = e.target || e.scrElement || null;
+            if (el && el.parentNode && !el.className || !/thickbox/.test(el.className))
+                el = el.parentNode;
+            if (!el || !el.className || !/thickbox/.test(el.className))
+                return;
+            var t = el.title || el.name || null;
+            var a = el.href || el.alt;
+            var g = el.rel || false;
+            tb_show(t, a, g);
+            el.blur();
+            return false;
+        });
     });
 }
 
 function getWishList() {
-    $('#wishList').load('/ajaxWishList.aspx #target', function() {
-       // sIFR.replace(praxis, { selector: '#right h2', css: '.sIFR-root {color: #5D5853;}', wmode: 'transparent' });
-    });
+    if (CookieController.CK1IsOptIn()) {
+        $('#wishList').load('/ajaxWishList.aspx #target');
+    }
 }
 
 function getViewedCruises() {
-    $('#viewedCruises').load('/ajaxViewedCruises.aspx #target', function() {
-       // sIFR.replace(praxis, { selector: '#right h2', css: '.sIFR-root {color: #5D5853;}', wmode: 'transparent' }); 
-    });
+    if (CookieController.CK1IsOptIn()) {    
+        $('#viewedCruises').load('/ajaxViewedCruises.aspx #target');
+    }
+}
+
+$(document).ready(function() {
+    getFooterCruises();
+});
+
+function getFooterCruises() {
+    if (CookieController.CK1IsOptIn()) {
+        var cookie;
+        cookie = getCookie("pocruises");
+        if ((typeof(cookie) != typeof(null)) && (cookie.length > 0)){
+            $('#savedplaceholder').load('/ajaxWishList.aspx?footer=yes #target-footer', function(response, status, xhr) {
+                if (status != "error") {
+
+                    // remove the last border from the list of cruises by adding .last
+                    // $('#savedplaceholder .footercruises-cruise:last').addClass('last');
+
+                    var keepbutton = $('#savedplaceholder #target-footer a.keepsaved').detach();
+                    keepbutton.prependTo('#savedplaceholder #target-footer');
+                    // move the h2 header out of the .footercruises-ad container so that we only have cruises there
+                    var h2 = $('#savedplaceholder #target-footer .footercruises-ad h2').detach();
+                    h2.prependTo('#savedplaceholder #target-footer');
+
+                    // wrap the cruises into groups of 4
+                    var items = $(".footercruises-ad div.footercruises-cruise");
+                    var numperslide = 4;
+
+                    if (items.length > 0) {
+                        $("#savedcruises").css("display", "block");
+                        if (items.length > numperslide) {
+                            for (var ti = 0; ti < items.length; ti += numperslide) {
+                                items.slice(ti, ti + numperslide).wrapAll("<div class='slide'></div>");
+                                $('#savedplaceholder .slide .footercruises-cruise:last').addClass('last');
+                            }
+
+
+                            // fire up the cycle pluging
+                            $(".footercruises-ad").cycle({
+                                next: '#savednext',
+                                prev: '#savedprev',
+                                timeout: 0,
+                                fx: 'scrollHorz'
+                            });
+                        }
+                        else {
+                            $("#savednext, #savedprev").hide(0);
+                            $("#savedplaceholder").css("margin-left", "10px");
+                            //$("#target-footer h2").css("margin-left", "-23px");
+                            $(".footercruises-ad").css("width", "847px");
+                        }
+                    }
+                    else {
+                        $('#savedcruises').css("display", "none");
+                    }
+
+
+                }
+                else {
+                    $('#savedcruises').css("display", "none");
+                }
+
+            });
+        }
+        else {
+            $('#savedplaceholder').load('/ajaxViewedCruises.aspx?footer=yes #target-footer', function(response, status, xhr) {
+                if (status != "error") {
+
+                    // remove the last border from the list of cruises by adding .last
+                    // $('#savedplaceholder .footercruises-cruise:last').addClass('last');
+
+                    // move the h2 header out of the .footercruises-ad container so that we only have cruises there
+                    var h2 = $('#savedplaceholder #target-footer .footercruises-ad h2').detach();
+                    h2.prependTo('#savedplaceholder #target-footer');
+
+
+                    // wrap the cruises into groups of 4
+                    var items = $(".footercruises-ad div");
+                    var numperslide = 4;
+
+                    if (items.length > 0) {
+                        $("#savedcruises").css("display", "block");
+                        if (items.length > numperslide) {
+                            for (var ti = 0; ti < items.length; ti += numperslide) {
+                                items.slice(ti, ti + numperslide).wrapAll("<div class='slide'></div>");
+                                $('#savedplaceholder .slide .footercruises-cruise:last').addClass('last');
+                            }
+
+
+                            // fire up the cycle pluging
+                            $(".footercruises-ad").cycle({
+                                next: '#savednext',
+                                prev: '#savedprev',
+                                timeout: 0,
+                                fx: 'scrollHorz'
+                            });
+                        }
+                        else {
+                            $("#savednext, #savedprev").hide(0);
+                            $("#savedplaceholder").css("margin-left", "10px");
+                            //$("#target-footer h2").css("margin-left", "-23px");
+                        }
+                    }
+                    else {
+                        $('#savedcruises').css("display", "none");
+                    }
+
+
+                }
+                else {
+                    $('#savedcruises').css("display", "none");
+                }
+            });
+        }
+    }
+}
+
+function getFooterFeaturedCruises(query) {
+    if (CookieController.CK1IsOptIn()) {
+        $('#footerplaceholder').load('/ajaxFeaturedCruises.aspx?' + query + '&footer=yes #lateoffersMinifooter', function(response, status, xhr) {
+        if (status != "error") {
+
+                // remove the last border from the list of cruises by adding .last
+                // $('#footerplaceholder .footercruises-cruise:last').addClass('last');
+                // $('#lateoffersMinifooter .lateitemmini:last').addClass('last');
+
+                // move the h2 header out of the .footercruises-ad container so that we only have cruises there
+                //                var h2 = $('#savedplaceholder #target-footer .footercruises-ad h2').detach();
+                //                h2.prependTo('#savedplaceholder #target-footer');
+
+                // wrap the cruises into groups of 4
+                var items = $("#lateoffersMinifooter .lateitemmini");
+                var numperslide = 4;
+
+                if (items.length > 0) {
+                    $("#footerfeaturedcruises").css("display", "block");
+                    if (items.length > numperslide) {
+                        for (var ti = 0; ti < items.length; ti += numperslide) {
+                            items.slice(ti, ti + numperslide).wrapAll("<div class='slide'></div>");
+                            $('#lateoffersMinifooter .slide .lateitemmini:last').addClass('last');
+
+                        }
+
+                        // $('#lateoffersMinifooter .slide .lateitemmini:last').addClass('last');
+                        // fire up the cycle pluging
+                        $("#lateoffersMinifooter").cycle({
+                            next: '#footernext',
+                            prev: '#footerprev',
+                            timeout: 0,
+                            fx: 'scrollHorz'
+                        });
+                    }
+                    else {
+                        $("#footerprev, #footernext").hide(0);
+                    }
+                }
+                else {
+                    $("#footerfeaturedcruises").css("display", "none");
+                }
+            }
+            else {
+                $("#footerfeaturedcruises").css("display", "none");
+            }
+        });
+        
+    }
 }
 
 function chkUnchkAllParks(allAirportID)
@@ -1549,16 +2096,16 @@ function chkUnchkAllParks(allAirportID)
         var strAllAirportID=allAirportID;
        
 //     var status=$("ul.ulDepartureAirports span input[name='All_airports']").attr('checked');
-        var status=$("ul.ulDepartureAirports span input#"+strAllAirportID).attr('checked');
+        var status=$("ul.ulDepartureAirports span input#"+strAllAirportID).prop('checked');
        
         if(status==true)
         {        
-            $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input").attr('checked',true);
+            $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input").prop('checked',true);
              
         }
         if(status==false)
         {
-            $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input").attr('checked',false);
+            $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input").prop('checked',false);
             $(".hdnCaribbeanFlyCruises").val("");   
             $(".hdnAirport").val(""); 
             $(".hdnAllAirports").val("");           
@@ -1570,14 +2117,14 @@ function unchkAllAirports(airportID)
         var strAirportID=airportID;
        
 //     var status=$("ul.ulDepartureAirports span input[name='All_airports']").attr('checked');
-        var status=$("ul.ulDepartureAirports span input#"+strAirportID).attr('checked');
+        var status=$("ul.ulDepartureAirports span input#"+strAirportID).prop('checked');
         
-        var allAirportStatus= $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input#FindBookCruisesUC_All_airports").attr('checked');
+        var allAirportStatus= $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input#FindBookCruisesUC_All_airports").prop('checked');
        
         if(status==false && allAirportStatus==true)
         {     
         
-            $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input#FindBookCruisesUC_All_airports").attr('checked',false);
+            $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input#FindBookCruisesUC_All_airports").prop('checked',false);
              
         }        
 }
@@ -1718,7 +2265,7 @@ function fancyBoxInit() {
           var left = (window.screen.width/2)-360;         
           var sFeatures = "location=no,menubar=no,resizable=no,scrollbars=yes,status=no,toolbar=no,titlebar=no,height=500,width=660,top="+top+",left="+left;        */
            
-            self.parent.tb_remove();
+            //self.parent.tb_remove();
             parent.location=url;
             //var x = window.open(url, 'mynewwin',sFeatures);            
             //x.focus();
@@ -2182,7 +2729,7 @@ function LaunchFileManagerBrowser(imagetextBoxClientId) {
    }
    function testFormBckgrnd(mtchimg)
    {
-   alert(mtchimg);
+   // alert(mtchimg);
    }
    /*function imgURL()
    {
@@ -2357,11 +2904,11 @@ function LaunchFileManagerBrowser(imagetextBoxClientId) {
   
   function yearChanged()
       {    
-      alert("hi");
+      // alert("hi");
       var year=$('select#year option:selected').val();
-      alert(year);
+      // alert(year);
       var currYear=$('#hdnYear').val(); 
-      alert(currYear);
+      // alert(currYear);
       //debugger;
       if(year==currYear)
       {
@@ -2375,7 +2922,7 @@ function LaunchFileManagerBrowser(imagetextBoxClientId) {
         else{
         id=i;
         }
-        alert(id);
+        // alert(id);
         if(i<month)
         {
             $("option[value='"+i+"']").remove();
@@ -2555,109 +3102,179 @@ function LaunchFileManagerBrowser(imagetextBoxClientId) {
               
 
         }
-       
-        
-        
-       function srchCat()
-       { 
-        
-        $("A.frstA").toggle(   
-        function() {
-     
-         $("DIV.frstA").slideDown();
-        $("A.frstA").css({ "background" : "url(/Images/arrow_FindAndBook_open.gif) left no-repeat"});
-  },
-  function() {
-      
-        $("DIV.frstA").slideUp();
-    $("A.frstA").css({ "background" : "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat"});
-  }
-  );
-  
-  $("A.scndA").toggle(   
-   
-  function() {
-         
-         $("DIV.scndA").slideDown();
-          $("A.scndA").css({ "background" : "url(/Images/arrow_FindAndBook_open.gif) left no-repeat"});
-  },
-   function() {
-       
-        $("DIV.scndA").slideUp();
-    $("A.scndA").css({ "background" : "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat"});
-  });
-  
-  
-  $("A.sixA").toggle(  
-  
-  function() {
-         
-         $("DIV.sixA").slideDown();
-          $("A.sixA").css({ "background" : "url(/Images/arrow_FindAndBook_open.gif) left no-repeat"});
-  },
-  function() {
-      
-        $("DIV.sixA").slideUp();
-    $("A.sixA").css({ "background" : "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat"});
-  });
-  
-  $("A.thrdA").toggle(   
-  
-  function() {
-         
-         $("DIV.thrdA").slideDown();
-          $("A.thrdA").css({ "background" : "url(/Images/arrow_FindAndBook_open.gif) left no-repeat"});
-  },
-  function() {
-       
-        $("DIV.thrdA").slideUp();
-    $("A.thrdA").css({ "background" : "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat"});
-  });
-  
-  $("A.frthA").toggle(   
- 
-  function() {
-        
-         $("DIV.frthA").slideDown();
-          $("A.frthA").css({ "background" : "url(/Images/arrow_FindAndBook_open.gif) left no-repeat"});
-  },
-   function() {
-       
-        $("DIV.frthA").slideUp();
-    $("A.frthA").css({ "background" : "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat"});
-  });
-  $("A.fthA").toggle(  
-  
-  function() {
-         
-         $("DIV.fthA").slideDown();
-          $("A.fthA").css({ "background" : "url(/Images/arrow_FindAndBook_open.gif) left no-repeat"});
-  },
-  function() {
-       
-        $("DIV.fthA").slideUp();
-    $("A.fthA").css({ "background" : "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat"});
-  });
-  if($(".hdnCatState").val() !="")
-  {
-  var hdnCatStateVal=$(".hdnCatState").val();
-  if(hdnCatStateVal.indexOf(",")>-1)
-  {
-  var catArray = hdnCatStateVal.split(",");
-for ( var i=0; i<catArray.length; i++ ) {
- var className = catArray[i];
- $("DIV."+className).show();
- $("A."+className).css({ "background" : "url(/Images/arrow_FindAndBook_open.gif) left no-repeat"});
-}
-}
-else{
-$("DIV."+hdnCatStateVal).show();
- $("A."+hdnCatStateVal).css({ "background" : "url(/Images/arrow_FindAndBook_open.gif) left no-repeat"});
-}
 
-  }
+        function searchCatTogggle() {
+            $(".innerCont A.catHead").click(function(ev) {
+                ev.preventDefault();
+                var $baseDiv = $(this).parents(".innerCont");
+                var $chkContainer = $($baseDiv).find(".inLowerSecfFltr");
+                if ($baseDiv.hasClass("fClose")) {
+                    //currently close to open
+                    $($chkContainer).slideDown(function() {
+                        $baseDiv.removeClass("fClose").addClass("fOpen");
+                        $chkContainer.css("display", "");
+                    });
+                }
+                else {
+                    // currently open -  to close
+                    $($chkContainer).slideUp(function() {
+                        $baseDiv.removeClass("fOpen").addClass("fClose");
+                        $chkContainer.css("display", "");
+                    });
+                }
+            }
+            );
+            
+            /*
+            $(".innerCont A.catHead").toggle(
+            function() {
+                 $(this).css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+                  var item = $(this).parents(".innerCont").find(".inLowerSecfFltr");
+                  $(item).slideDown();
+                    //wireCruiseSearchPanelToggle("A." + item,true);
+             },
+            function() {
+                $(this).css({ "background": "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat" });
+                var item = $(this).parents(".innerCont").find(".inLowerSecfFltr");
+                $(item).slideUp();
+               //wireCruiseSearchPanelToggle("A." + item,false);
+            }
+            );
+            //default opening
+            $(".innerCountgroup .innerCont").each(function() {
+                var $filterSec = $(this).find(".inLowerSecfFltr");
+                var n = $($filterSec).find("input:checked").length
+                if (n > 0) {
+                    //alert(n);
+                    //$($filterSec).slideDown();
+
+                    var $anchor = $($filterSec).parents(".innerCont").find("A.catHead");
+                    //$($anchor).css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+                    $($anchor).trigger('click');
+                }
+            });
+            */     
+            
+        }    
+       
+       
+
+   function srchCat() {
+       $("A.frstA, A.scndA, A.thrdA, A.frthA, A.fthA, A.sixA").toggle(
+       function() {
+           $(this).css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+           var item = $(this).attr("class");
+           $("DIV." + item).slideDown();
+           wireCruiseSearchPanelToggle("A." + item,true);
+       },
+       function() {
+           $(this).css({ "background": "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat" });
+           var item = $(this).attr("class");
+           $("DIV." + item).slideUp();
+           wireCruiseSearchPanelToggle("A." + item,false);
+       }
+       );
+       
+    /*
+    $("A.frstA").toggle(
+    function() {
+
+    $("DIV.frstA").slideDown();
+    $("A.frstA").css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+    },
+    function() {
+
+    $("DIV.frstA").slideUp();
+    $("A.frstA").css({ "background": "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat" });
+    }
+    );
+
+    $("A.scndA").toggle(
+
+    function() {
+
+    $("DIV.scndA").slideDown();
+    $("A.scndA").css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+    },
+    function() {
+
+    $("DIV.scndA").slideUp();
+    $("A.scndA").css({ "background": "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat" });
+    });
+
+
+    $("A.sixA").toggle(
+
+    function() {
+
+    $("DIV.sixA").slideDown();
+    $("A.sixA").css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+    },
+    function() {
+
+    $("DIV.sixA").slideUp();
+    $("A.sixA").css({ "background": "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat" });
+    });
+
+    $("A.thrdA").toggle(
+
+    function() {
+
+    $("DIV.thrdA").slideDown();
+    $("A.thrdA").css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+    },
+    function() {
+
+    $("DIV.thrdA").slideUp();
+    $("A.thrdA").css({ "background": "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat" });
+    });
+
+    $("A.frthA").toggle(
+
+    function() {
+
+    $("DIV.frthA").slideDown();
+    $("A.frthA").css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+    },
+    function() {
+
+    $("DIV.frthA").slideUp();
+    $("A.frthA").css({ "background": "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat" });
+    });
+    $("A.fthA").toggle(
+
+    function() {
+
+    $("DIV.fthA").slideDown();
+    $("A.fthA").css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+    },
+    function() {
+
+    $("DIV.fthA").slideUp();
+    $("A.fthA").css({ "background": "url(/Images/arrow_FindAndBook_closed.gif) left no-repeat" });
+    });
+    
+    */
+    
+    if ($(".hdnCatState").val() != "") {
+        var hdnCatStateVal = $(".hdnCatState").val();
+        if (hdnCatStateVal.indexOf(",") > -1) {
+            var catArray = hdnCatStateVal.split(",");
+            for (var i = 0; i < catArray.length; i++) {
+                var className = catArray[i];
+                $("DIV." + className).show();
+                $("A." + className).css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+            }
+        }
+        else {
+            $("DIV." + hdnCatStateVal).show();
+            $("A." + hdnCatStateVal).css({ "background": "url(/Images/arrow_FindAndBook_open.gif) left no-repeat" });
+        }
+
+    }
+
+}
   
-  }
   function maintainCatState()
   {  
   var catList="";
@@ -3520,7 +4137,7 @@ if ($(this).find("input:checked").length > 0)
 //alert($(this).find("input:checked").attr("id"));
 var filterMonthId = $(this).attr("id");
 filterMonthId = filterMonthId.replace("_div", "_chkBox");
-$('#'+filterMonthId).attr('checked', false);
+//$('#'+filterMonthId).attr('checked', false);
 }
 });
 
@@ -3535,15 +4152,15 @@ $(this).find(".shiptooltipoverlay").click();
 function chkFamilyFriendlyShips()
 {
 //alert("hi");
-$(".chkBoxShipChildFriendlyOuter input").attr('checked');
+$(".chkBoxShipChildFriendlyOuter input").prop('checked');
 
-if($(".chkBoxShipChildFriendlyOuter input").attr('checked'))
+if($(".chkBoxShipChildFriendlyOuter input").prop('checked'))
 {
 //alert("inside")
-$('.chkBoxShipChildFriendly input').attr('checked', true);
+$('.chkBoxShipChildFriendly input').prop('checked', true);
 }
 else{           
-               $('.chkBoxShipChildFriendly input').attr('checked', false);
+               $('.chkBoxShipChildFriendly input').prop('checked', false);
                }
                $('.hdnCategory').val("Ships");
   //          });
@@ -3553,15 +4170,15 @@ else{
 function chkOnlyAdultsShips()
 {
 //alert("hi");
-$(".chkBoxShipChildFree input").attr('checked');
+$(".chkBoxShipChildFree input").prop('checked');
 
-if($(".chkBoxShipChildFree input").attr('checked'))
+if($(".chkBoxShipChildFree input").prop('checked'))
 {
 //alert("inside")
-$('.chkBoxShipChildFreePad input').attr('checked', true);
+$('.chkBoxShipChildFreePad input').prop('checked', true);
 }
 else{           
-               $('.chkBoxShipChildFreePad input').attr('checked', false);
+               $('.chkBoxShipChildFreePad input').prop('checked', false);
                }
                $('.hdnCategory').val("Ships");
   //          });
@@ -3572,27 +4189,207 @@ function unchkFamilyFriendlyShips(id)
 {
 //alert(id);
 //alert("unchkFamilyFriendlyShips");
-if($("#"+id+" input").attr('checked'))
+if($("#"+id+" input").prop('checked'))
 {
 
 }
 else{      // alert("hi");    
-               $('.chkBoxShipChildFriendlyOuter input').attr('checked', false);
+               $('.chkBoxShipChildFriendlyOuter input').prop('checked', false);
                }
                $('.hdnCategory').val("Ships");
 }
-function unchkOnlyAdultsShips(id)
-{
+function unchkOnlyAdultsShips(id) {
+    if ($("#" + id + " input").prop('checked')) {
 
-//alert("unchkOnlyAdultsShips");
-if($("#"+id+" input").attr('checked'))
-{
-
+    }
+    else {
+        $('.chkBoxShipChildFree input').prop('checked', false);
+    }
+    $('.hdnCategory').val("Ships");
 }
-else{           
-               $('.chkBoxShipChildFree input').attr('checked', false);
-               }
-               $('.hdnCategory').val("Ships");
-           }
+
+function OptClicks() {
+    if (CookieController.CK1IsOptIn()) {
+        $('.OptClick').html('<img src="/images/btn_DisallowCookies.png" />');
+        $('.OptClick').unbind().click(function() {
+            CookieController.optOutCK1Cookie();
+            scrollToClass('OptClick');
+            OptClicks();
+        });
+    }
+    else {
+        $('.OptClick').html('<img src="/images/btn_AllowCookies.png" />');
+        $('.OptClick').unbind().click(function() {
+            CookieController.optInCK1Cookie();
+            scrollToClass('OptClick');
+            OptClicks();
+        });
+    }
+}
+
+function scrollToClass(ClassName) {
+    $('html,body').animate({ scrollTop: '+=' + $('.' + ClassName).offset().top + 'px' }, 'fast');
+}
+
+function loadCookieDialog() {
+    if (!CookieController.userHasCK1Cookie()) {
+        var djs = document.createElement('script');
+        djs.type = 'text/javascript';
+        djs.src = '/js/jquery-ui-1.8.20.custom.min.js';
+        djs.onreadystatechange = function() {
+            if (this.readyState == 'loaded' || this.readyState == 'complete') openDialog();
+        }
+        djs.onload = openDialog;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(djs, s);
+    }
+    else if((CookieController.CK1IsOptOut()) && (!CookieController.userHasSessionCookie()))
+    {
+        var djs = document.createElement('script');
+        djs.type = 'text/javascript';
+        djs.src = '/js/jquery-ui-1.8.20.custom.min.js';
+        djs.onreadystatechange = function() {
+            if (this.readyState == 'loaded' || this.readyState == 'complete') openSessionDialog();
+        }
+        djs.onload = openSessionDialog;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(djs, s);                
+    }
+}
+
+function openSessionDialog() {
+    $("#dialogsess").dialog({
+        position: ['right', 'bottom'],
+        minHeight: 10
+    });
+    setTimeout('closeDialog("dialogsess")', 10000);
+    CookieController.createSessionCookie();
+}
+
+function openDialog() {
+    $("#dialog").dialog({
+        position: ['right', 'bottom'],
+        minHeight: 10
+    });
+    setTimeout('closeDialog("dialog")', 10000);
+    CookieController.createCK1();
+}
+
+function closeDialog(dialogName) {
+    $("#" + dialogName).dialog('close');
+}
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+function setCookie(name, value, days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        var expires = "; expires=" + date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function setSessionCookie(name) {
+    document.cookie = name + "=0;expires=0;path=/";
+}
+
+function deleteCookie(name) {
+    setCookie(name, "", -1);
+}
 
 
+/* cookie controller class */
+(function(CookieController, $, undefined) {
+    "use strict";
+
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function setCookie(name, value, days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            var expires = "; expires=" + date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function setSessionCookie(name) {
+        document.cookie = name + "=0;expires=0;path=/";
+    }    
+
+    function deleteCookie(name) {
+        setCookie(name, "", -1);
+    }
+
+    //stage 2 functions
+    CookieController.createCK1 = function() {
+        setCookie("CK1", 1, 365);  //default behaviour to create a cookie that is opted in (1)
+    }
+
+    CookieController.createSessionCookie = function() {
+        setCookie("Sess");  //default behaviour to create a cookie that is opted in (1)
+    }    
+
+    CookieController.userHasCK1Cookie = function() {
+        if (getCookie("CK1") == null)
+            return false;
+        return true;
+    }
+
+    CookieController.userHasSessionCookie = function() {
+    if (getCookie("Sess") == null)
+            return false;
+        return true;
+    }    
+
+    CookieController.optInCK1Cookie = function() {
+        setCookie("CK1", 1, 365);
+    }
+
+    CookieController.optOutCK1Cookie = function() {
+        setCookie("CK1", 0, 365);
+    }
+
+    CookieController.CK1IsOptOut = function() {
+        if (getCookie("CK1") == null) {
+            return false; //if no cookie default is OptIn
+        }
+        else {
+            if (getCookie("CK1") == "1") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    }
+
+    CookieController.CK1IsOptIn = function() {
+        return !CookieController.CK1IsOptOut()
+    }
+
+    //stage 3 functions
+
+})(window.CookieController = window.CookieController || {}, jQuery);
+/* cookie controller class */

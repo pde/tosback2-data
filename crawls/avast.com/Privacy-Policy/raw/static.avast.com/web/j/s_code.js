@@ -37,6 +37,7 @@ More info available at http://www.omniture.com */
  *20/2/12 Add order tracking cookie code (Curtis)
  *13/4/12 Add eVar42 with p_pro and p_lqe (Adam)
  *20/4/12 BUGFIX#6 eVar42 added cookies definition + logic for case when cookies defined (Jarda)
+ *30/7/12 added evar6 - tests tracking
  **/
 
 /************************** STD VAR SECTION **************************/
@@ -144,6 +145,21 @@ function s_doPlugins(s) {
         s.eVar5=window.location.host + window.location.pathname
     }
     /*s.eVar6 - Test Cell (HTML)*/
+    /** trackign of s_tev, added by vena BEGIN*/
+    if(typeof s_tev == "undefined") {
+    	if (rc('osc_v6')){
+        	// 2. !s_tev && rc(osc_v6) =>  s.eVar6 = rc(osc_v6)
+    		s.eVar6 = rc('osc_v6');
+    	}  
+    } else { 
+    	// 1. s_tev => s.eVar6 = s_tev
+    	s.eVar6 = s_tev;
+    }
+    if (typeof s.eVar6 != "undefined"){
+    	// 3. !rc(osc_v6) => document.cookie="osc_v6="+s.eVar6+";domain=.avast.com;path=/;";
+		document.cookie="osc_v6="+s.eVar6+";domain=.avast.com;path=/;";
+	}
+    /** trackign of s_tev, added by vena END */
     /*s.eVar7 - Page URL - copy page URL to eVar7*/
     s.eVar7="D=g";
     /*s.eVar8 - Tracking Code - copy URL param 'tid' to eVar8*/
@@ -342,6 +358,7 @@ function s_doPlugins(s) {
     }else{
     	s.eVar42="web";
     }
+
 	
 	if(window.location.hostname.search("www.avast.co.jp") != -1)
             document.cookie="osc_v42="+s.eVar42+";domain=.avast.co.jp;path=/;";
@@ -442,7 +459,8 @@ function s_doPlugins(s) {
 		if(window.location.hostname.search("www.avast.co.jp") != -1) {
 			document.cookie="osc_ot="+c_ot+";domain=.avast.co.jp;path=/;";
 			document.cookie="x-otid="+c_ot+";domain=.avast.co.jp;path=/;";
-		} else {
+		}
+    else {
 			document.cookie="osc_ot="+c_ot+";domain=.avast.com;path=/;";
 			document.cookie="x-otid="+c_ot+";domain=.avast.com;path=/;";
 		}

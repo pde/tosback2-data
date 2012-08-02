@@ -23,7 +23,7 @@
 
 
 
-<!-- cmdversionid=20 -->
+<!-- cmdversionid=23 -->
  <!-- CSS -->
 <link rel="stylesheet" href="../Common/storefront/css/gbl.css" type="text/css" />
 <link rel="stylesheet" href="../Common/storefront/css/global.css" type="text/css" />
@@ -75,6 +75,7 @@ div.tab.selected  {
 
 <!-- SCRIPTS -->
 <script language="JavaScript" src="../Common/att_rev1/scripts/getStateSegCookie.js" type="text/javascript"></script>
+<script type="text/javascript" src="../Common/global/scripts/jquery.min.js"></script>
 <script type="text/javascript" src="../Common/global/scripts/jquery-1.5.2.min.js"></script>
 
 <script type="text/javascript" src="../Common/global/scripts/reporting.js"></script>
@@ -95,8 +96,21 @@ div.tab.selected  {
 					GeoLoc.initialize();
 				});
 			});
+			$(document).ready(function() {
+					$(".tabs .tab[id^=tab_menu]").hover(function(){
+						var curMenu=$(this);
+						$(".tabs .tab[id^=tab_menu]").removeClass("selected");
+						curMenu.addClass("selected");
+						
+						var index= curMenu.attr("id").split("tab_menu_")[1];
+						$(".curvedContainer .tabcontent").css("display","none");
+						$(".curvedContainer #tab_content_"+index).css("display","block");
+						
+						});
+				});
 		//-->
 	</script>
+    
 </head>
 <body id="page_" style="margin:0px;padding-top:170px;background-color:#EDEDED;" onLoad="Delete_Cookie('DTAB','/','att.com')">
 <!--[if lte IE 7]><div id="ie"><![endif]--> 
@@ -194,15 +208,15 @@ div.tab.selected  {
 			</div>
 		    </div>
 		    <div class="curvedContainer" style="width:471px; position:relative;margin-left:471px;margin-top:4px;">
-			<div class="tabcontent" id="tab_content_1" style="display:block"><img src="../Common/storefront/images/nav/seg/v2/segPageV2_banner_SMB.png" alt="block2" name="segPageV2_ENT_2" width="473" height="467" border="0" align="top"></div>
+			<div class="tabcontent" id="tab_content_1" style="display:block"><img src="http://www.test.att.com/Common/storefront/images/nav/seg/v2/segPageV2_banner_SMB.png" alt="block2" name="segPageV2_ENT_2" width="473" height="467" border="0" align="top"></div>
 			<div class="tabcontent" id="tab_content_2" >
-			    <img src="../Common/storefront/images/nav/seg/v2/segPageV2_banner_ENT.png" alt="block2" name="segPageV2_ENT_2" width="473" height="467" border="0" align="top">
+			    <img src="http://www.test.att.com/Common/storefront/images/nav/seg/v2/segPageV2_banner_ENT.png" alt="block2" name="segPageV2_ENT_2" width="473" height="467" border="0" align="top">
 			</div>
 			<div class="tabcontent" id="tab_content_3">
-			    <img src="../Common/storefront/images/nav/seg/v2/segPageV2_banner_WHL.png" alt="block3" name="segPageV2_WHL_3" width="473" height="467" border="0" align="top">
+			    <img src="http://www.test.att.com/Common/storefront/images/nav/seg/v2/segPageV2_banner_WHL.png" alt="block3" name="segPageV2_WHL_3" width="473" height="467" border="0" align="top">
 			</div>
 			<div class="tabcontent" id="tab_content_4">
-			    <img src="../Common/storefront/images/nav/seg/v2/segPageV2_banner_GOV.png" alt="block4" name="segPageV2_GOV_4" width="473" height="467" border="0" align="top">
+			    <img src="http://www.test.att.com/Common/storefront/images/nav/seg/v2/segPageV2_banner_GOV.png" alt="block4" name="segPageV2_GOV_4" width="473" height="467" border="0" align="top">
 			</div>
 		    </div>
                  

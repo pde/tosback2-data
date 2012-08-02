@@ -47,6 +47,11 @@ function s_doPlugins(s) {
 	s.prop14 = ppvArray[0]; //contains the previous page name
 	s.prop15 = ppvArray[1]; //contains the total percent viewed
 	
+	/*
+	* 404 tracking
+	*/
+	s.eVar17=s.getPreviousValue(s.pageName,'gpv_v5',''); 
+	
 	//Lowercase all variables:
 	s.manageVars("lowercaseVars")
 	

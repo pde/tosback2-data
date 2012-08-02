@@ -17,9 +17,9 @@ var numParams=params.length;var param;for(var j=0;j<numParams;j++){param=params[
 experience.params[param.name]=param.value;}
 if(experience.params.bgcolor!=undefined)experience.flashParams.bgcolor=experience.params.bgcolor;if(experience.params.wmode!=undefined)experience.flashParams.wmode=experience.params.wmode;if(experience.params.seamlessTabbing!=undefined)experience.flashParams.seamlessTabbing=experience.params.seamlessTabbing;return experience;};brightcove.copyUrlParams=function(experience,urlParams,numExperiences){if(experience.params.autoStart==undefined&&urlParams.autoStart!=undefined){experience.params.autoStart=urlParams.autoStart;}
 if(urlParams.debuggerID!=undefined){experience.params.debuggerID=urlParams.debuggerID;}
-if(urlParams.forceHTML!=undefined&&urlParams.forceHTML!=''){experience.params.forceHTML=urlParams.forceHTML;}
-if(urlParams.debug!=undefined&&urlParams.debug!=''){experience.params.debug=urlParams.debug;}
-if(urlParams.showNoContentMessage!=undefined){experience.params.showNoContentMessage=urlParams.showNoContentMessage;}
+if(urlParams.forceHTML!=undefined&&urlParams.forceHTML!==''){experience.params.forceHTML=urlParams.forceHTML;}
+if(urlParams.debug!=undefined&&urlParams.debug!==''){experience.params.debug=urlParams.debug;}
+if(urlParams.showNoContentMessage!=undefined&&urlParams.showNoContentMessage!=''){experience.params.showNoContentMessage=urlParams.showNoContentMessage;}
 var overrideContent=(urlParams.playerID.length<1&&urlParams.playerKey.length<1)||(urlParams.playerID==experience.params.playerID)||(urlParams.playerKey==experience.params.playerKey);if(overrideContent){if(urlParams.titleID.length>0){experience.params.videoID=urlParams.titleID;experience.params["@videoPlayer"]=urlParams.titleID;experience.params.autoStart=(experience.params.autoStart!="false"&&urlParams.autoStart!="false");}
 if(urlParams.lineupID.length>0){experience.params.lineupID=urlParams.lineupID;}}
 return experience;};brightcove.determinePlayerType=function(experience,flashSupport,htmlSupport){if(flashSupport==null&&htmlSupport==false){return brightcove.playerType.NO_SUPPORT;}

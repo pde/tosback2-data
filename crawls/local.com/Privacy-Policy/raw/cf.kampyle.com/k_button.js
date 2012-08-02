@@ -1,5 +1,5 @@
 
-var k_button_js_revision='$Rev: 17123 $';var k_button={"ff_link":document.getElementById("kampylink"),"host_server":document.getElementById("k_host_server"),"help_button":document.getElementById("k_help_button"),"k_slogan":document.getElementById("k_slogan"),"close_button":document.getElementById("k_close_button"),"extra_params":null,"use_colorbox":false,"newwindow":'',"popitup":function(url,longUrl){if(!this.newwindow.closed&&this.newwindow.location)
+var k_button_js_revision='$Rev: 18684 $';var k_button={"ff_link":document.getElementById("kampylink"),"host_server":document.getElementById("k_host_server"),"help_button":document.getElementById("k_help_button"),"k_slogan":document.getElementById("k_slogan"),"close_button":document.getElementById("k_close_button"),"extra_params":null,"use_colorbox":false,"newwindow":'',"popitup":function(url,longUrl){if(!this.newwindow.closed&&this.newwindow.location)
 this.newwindow.location.href=url;else
 {if(!this.window_width)
 this.window_width=440;if(!this.window_height)
@@ -23,11 +23,14 @@ return null;if(start==-1)
 return null;var end=document.cookie.indexOf(";",len);if(end==-1)end=document.cookie.length;return unescape(document.cookie.substring(len,end));},"get_main_domain":function()
 {var main_domain='';var domain=document.domain;if(document.domain!="undefined"&&document.domain!=="")
 {if(document.domain!='localhost')
-{var dots=domain.split(/\./g);var tld=dots[dots.length-1];var sTlds=['COM','EDU','NET','ORG','GOV','MIL','INT'];var mDotsLength=3;for(var i in sTlds)
+{var dots=domain.split(/\./g);var tld=dots[dots.length-1];var sTlds=['AERO','ASIA','BIZ','CAT','COM','COOP','INFO','INT','JOBS','MOBI','MUSEUM','NAME','NET','ORG','PRO','TEL','TRAVEL','XXX','EDU','GOV','MIL','TV'];var mDotsLength=3;for(var i in sTlds)
 {if(sTlds[i]==tld.toUpperCase())
 mDotsLength=2;}
 if(dots.length>mDotsLength)
-{main_domain=dots.slice(dots.length-mDotsLength).join('.');}
+{if(dots.length>3)
+{main_domain=dots.slice(1).join('.');}
+else
+{main_domain=dots.slice(dots.length-mDotsLength).join('.');}}
 else
 {main_domain=domain;}}}
 return main_domain;},"generate_pre_id":function()
@@ -37,6 +40,10 @@ return main_domain;},"generate_pre_id":function()
 {k_button.callSiteCatalyst(k_sc_param.instance,k_sc_param.evar);}}
 catch(e)
 {window.k_sc_error=e;}
+try
+{var js_element=document.createElement('script');js_element.setAttribute('type','text/javascript');js_element.setAttribute('src',k_track.getDomain()+'/track/k_track.js?site_code='+k_track.getSiteCode());document.body.appendChild(js_element);}
+catch(e)
+{window.k_track_error=e}
 var urlObject=this.create_ff_url(ff_params,url);this.popitup(urlObject.shortUrl,urlObject.longUrl);},"create_ff_url":function(ff_params,url,form_data)
 {var stats_kvp=[];var matches=false;if(typeof(k_button_js_revision)!='undefined')
 {matches=k_button_js_revision.match(/\d+/);if(matches!==false)
@@ -73,7 +80,7 @@ if(k_button.Get_Cookie("session_start_time")!==null)
 if(stats_string!=='')
 {ff_url=ff_url+'&stats='+encodeURIComponent(stats_string);}
 var ga_url='';if(k_button.Get_Cookie("__utmz")!==null)
-{ga_url='&utmz='+encodeURIComponent(k_button.Get_Cookie("__utmz"))+'&utma='+encodeURIComponent(k_button.Get_Cookie("__utma"))+'&utmv='+encodeURIComponent(k_button.Get_Cookie("__utmv"));}
+{ga_url='&utmb='+encodeURIComponent(k_button.Get_Cookie("__utmb"))+'&utma='+encodeURIComponent(k_button.Get_Cookie("__utma"));}
 else if(k_button.Get_Cookie("k_visit")!==null)
 {ga_url='&kvisit='+encodeURIComponent(k_button.Get_Cookie("k_visit"));}
 var ct_url='';var ct_pid='';if(typeof(ClickTaleGetPID)=='function')
@@ -124,4 +131,32 @@ k_button.ff_link.className=k_button.ff_link.className.replace("_sl","");if(k_but
 k_button.help_button.className=k_button.help_button.className.replace("_sl","");if(k_button.close_button)
 k_button.close_button.className=k_button.close_button.className.replace("_sl","");}
 if(typeof(k_sc)=="object"&&k_sc.vectors)
-{k_button.extra_params={'vectors':k_sc.vectors};}}};var k_button1=k_button;k_button.init();window.k_button_js_revision=k_button_js_revision;window.k_button=k_button;
+{k_button.extra_params={'vectors':k_sc.vectors};}}};var k_button1=k_button;k_button.init();window.k_button_js_revision=k_button_js_revision;window.k_button=k_button;var k_track={"init":function()
+{var track_allowed=k_button.Get_Cookie("k_track");if(track_allowed!=null)
+{k_track.trackCurrentPage();}},"getDomain":function()
+{var main_url='';if((k_button.host_server)&&k_button.host_server.value){main_url=k_button.host_server.value;}
+else if((k_button.ff_link)&&k_button.ff_link.getAttribute('ref_server')!==null){var urlParts=k_button.ff_link.getAttribute('ref_server').split("/");main_url=urlParts[2];}
+else{main_url='www.kampyle.com';}
+var protocol=document.location.protocol;if(protocol!="http:"&&protocol!="https:")
+{protocol="http:";}
+return protocol+'//'+main_url;},"startTracking":function()
+{k_button.Set_Cookie("k_track","1",1000,'/');},"stopTracking":function()
+{k_button.Set_Cookie("k_track","0",-1000,'/');},"getSiteCode":function()
+{var onclick_split=null;if((k_button.ff_link)&&k_button.ff_link.getAttribute('ref_server')!==null)
+onclick_split=k_button.ff_link.getAttribute('onclick').split("'");if(typeof(onclick_split)=="object"&&typeof(onclick_split[1])!='undefined')
+{onclick_split=onclick_split[1].split('&');if(typeof(onclick_split[0])!='undefined')
+{onclick_split=onclick_split[0].split('=');return onclick_split[1];}}
+return'';},"getVisitorID":function()
+{var utma=k_button.Get_Cookie('__utma');if(utma!=null)
+{utma_items=utma.split('.');if(typeof(utma_items[1])!='undefined')
+return utma_items[1];}
+return'';},"getVisitorSession":function()
+{var utma=k_button.Get_Cookie('__utma');if(utma!=null)
+{utma_items=utma.split('.');if(typeof(utma_items[4])!='undefined')
+return utma_items[4];}
+return'';},"trackCurrentPage":function()
+{var track_url=k_track.getDomain()+'/track/hit.php?visitor_type=google&site_code='+k_track.getSiteCode()
++'&visitor_id='+k_track.getVisitorID()
++'&visitor_session='+k_track.getVisitorSession()
++'&url='+encodeURIComponent(top.location.href);var img_element=document.createElement('img');img_element.setAttribute('src',track_url);document.body.appendChild(img_element);}}
+var k_track1=k_track;k_track.init();

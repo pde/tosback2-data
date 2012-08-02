@@ -1,0 +1,471 @@
+var UtilInit = {
+	newElement: function(tagName, style) {
+	  var doc = document;
+	  var newElement = UtilInit.createElement(doc,tagName);
+	  if (style) {
+	      for (key in style) {
+	        if (key == 'cssFloat' && UtilInit.isIE()) {
+	          newElement.style['styleFloat'] = style[key];
+	        }
+	        else {
+	          newElement.style[key] = style[key];
+	        }
+	      }
+	  }
+	  return newElement;
+	},
+	
+	createElement: function(doc,tagName) {
+	  var newElt = doc.createElement(tagName);
+	  if (typeof(newElt) != 'object') {newElt = doc.standardCreateElement(tagName);}
+	  return newElt;
+	},
+	
+	isIE: function() {
+	  return (navigator.appName == "Microsoft Internet Explorer");
+	},
+	
+	isIE6: function() {
+	  return (navigator.appVersion.indexOf("MSIE 6")!=-1);
+	},
+	
+	canUseFixedPosition: function() {
+		return (UtilInit.isIE6() || (UtilInit.isIE() && UtilInit.detectDoctype() == null))?false:true;
+	},
+	
+	getWindowWidth: function(){
+		var x = 0;
+      	if (self.innerHeight){
+      		x = self.innerWidth;
+      	} else if (document.documentElement && document.documentElement.clientHeight){
+      		x = document.documentElement.clientWidth;
+      	} else if (document.body){
+      		x = document.body.clientWidth;
+      	}
+      	return x;
+	},
+      
+	getWindowHeight: function(){
+      	var x = 0;
+      	if (self.innerHeight){
+      		x = self.innerHeight;
+      	} else if (document.documentElement && document.documentElement.clientHeight){
+      		x = document.documentElement.clientHeight;
+      	} else if (document.body){
+      		x = document.body.clientHeight;
+      	}
+      	return x;
+	},
+	
+	detectDoctype: function(){
+		var re=/\s+(X?HTML)\s+([\d\.]+)\s*([^\/]+)*\//gi;
+		var res=false;
+		if(typeof document.namespaces != "undefined")
+			res=document.all[0].nodeType==8 ? re.test(document.all[0].nodeValue) : false;
+		else
+			res=document.doctype != null ? re.test(document.doctype.publicId) : false;
+		if(res){
+			res=new Object();
+			res['xhtml']=RegExp.$1;
+			res['version']=RegExp.$2;
+			res['importance']=RegExp.$3;
+			if(res['xhtml'].toLowerCase() != 'xhtml')
+				return null;
+			return res;
+		}else{
+			return null;
+		}
+	},
+
+	getElementsByClassName: function(searchClass,node) {
+		if (node == null) node = document;
+	    if (node.getElementsByClassName) 
+			return node.getElementsByClassName(searchClass);
+			
+		var classElements = new Array();
+		var els = node.getElementsByTagName("*");
+		var elsLen = els.length;
+		var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+		for (i = 0, j = 0; i < elsLen; i++) {
+			if (pattern.test(els[i].className)) {
+			  classElements[j] = els[i];
+			  j++;
+			}
+		}
+		return classElements;
+	},
+	
+	getElementsByName: function(search,node) {
+		if (node == null) node = document;
+		var elements = new Array();
+		var els = node.getElementsByTagName("*");
+		var elsLen = els.length;
+		var pattern = new RegExp("(^|\\s)"+search+"(\\s|$)");
+		for (i = 0, j = 0; i < elsLen; i++) {
+			if (pattern.test(els[i].name)) {
+				elements[j] = els[i];
+			  j++;
+			}
+		}
+		return elements;
+	},
+	
+	 htmlDecode: function(input){
+		var e = document.createElement('div');
+		e.innerHTML = input;
+		var result = "";
+		for(var i=0;i<e.childNodes.length; i++) {
+			result += e.childNodes[i].nodeValue;
+		};
+		return result;
+	},
+	
+	contains: function(a, obj) {
+	    for (var i = 0; i < a.length; i++) {
+	        if (a[i] === obj) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+
+};
+
+
+
+
+var WidgetInit = new WidgetClass();
+function  WidgetClass() {		
+	var self = this;
+	this.WidgetHtml = null;
+	this.WidgetParams = null;
+	this.WidgetLocalizationProps = { day: 'd', hour: 'h', min: 'm', sec: 's' };
+	this.scroll = true;
+	this.seconds = new Array();
+	this.shortedUrlParams = new Array('wId','affId','site','utm_medium','utm_campaign','host');
+
+	this.gebi = function(elId) {
+		var wid = this.WidgetParams.id;
+		var result = document.getElementById(elId+wid);
+		if(null == result) {
+			result = document.getElementById(elId)
+		}
+		return result;
+	};
+
+	this.getWidgetLeft= function(){
+		var w = UtilInit.getWindowWidth();
+		var btn = this.gebi("nimbleBuyWidget");
+		if(!btn) return w;
+		if(btn.clientWidth) {
+			return w - btn.clientWidth;
+		}
+		else {
+			return w - btn.offsetWidth;
+		}
+	};
+	
+	this.getWidgetHeight= function(){
+		var btn = this.gebi("nimbleBuyWidget");
+		if (btn) {
+			if (btn.clientHeight) {
+				return btn.clientHeight;
+			}
+			else {
+				return btn.offsetHeight;
+			}
+		}
+		return 0;
+	};
+	
+	this.getParams = function(){
+		this.params = {};
+		
+		var s = null;
+		s = this.gebi("nimbleBuyWidgetScript");
+		
+		if (s) {
+			var src = s.getAttribute("src");
+			this.params.root = src.substring(0,src.indexOf("/widget.action"));
+			var c = src.indexOf("?");
+			if (c == -1) 
+				return;
+			
+			var ps = src.substr(c + 1);
+			var userPassedUrlParams = "";
+			if (ps.length > 3) {
+				var pp = ps.split("&");
+				for (var i = 0; i < pp.length; i++) {
+					var pa = pp[i].split("=");
+					this.params[pa[0]] = pa[1];
+					if(!UtilInit.contains(this.shortedUrlParams, pa[0])) {
+						userPassedUrlParams += "&" + pa[0] + "=" + pa[1];
+					}
+				}
+				if(userPassedUrlParams != "") {
+					this.WidgetParams.urlSuffixForIms = userPassedUrlParams;
+				}
+			}
+		}
+	};
+	
+	this.insertWidget = function(){ 
+		var nimbleBuyWidget = this.gebi("nimbleBuyWidget");
+		if(nimbleBuyWidget){
+			if(this.WidgetParams.widgetWidth != 0 && this.WidgetParams.widgetHeight !=0) {
+			    var widgetWidth = this.WidgetParams.widgetWidth;
+			    if (widgetWidth.indexOf("px") == -1){
+			    	widgetWidth += "px";
+			    }
+			    nimbleBuyWidget.style.width = widgetWidth;
+			    
+			    var widgetHeight = this.WidgetParams.widgetHeight;
+			    if (widgetHeight.indexOf("px") == -1){
+			    	widgetHeight += "px";
+			    }
+			    nimbleBuyWidget.style.height = widgetHeight;
+			}
+		    nimbleBuyWidget.style.position = "relative";
+		    nimbleBuyWidget.style.overflow = "hidden";
+		    nimbleBuyWidget.innerHTML = this.WidgetHtml.getNimbleBuyWidgetHTML();
+		    if(this.WidgetHtml.getNimbleBuyWidgetHTML() == "") {
+		    	nimbleBuyWidget.style.display = "none";
+		    }
+		    this._outerDiv = nimbleBuyWidget;
+		}
+		else {
+	        var prms = {
+		        	zIndex: 20001,
+		            scrolling: 'no',
+		            overflow: 'hidden',
+		            position: 'absolute',
+					width: this.WidgetParams.widgetWidth+'px',
+					height: this.WidgetParams.widgetHeight+'px'
+		        };
+		    var bd = document.body;
+		    if(!bd) return;
+		    this._outerDiv = UtilInit.newElement("div",prms);
+	        this._outerDiv.id = "nimbleBuyWidget"+this.WidgetParams.id;
+	        this._outerDiv.innerHTML = this.WidgetHtml.getNimbleBuyWidgetHTML();
+			bd.insertBefore(this._outerDiv, bd.firstChild);
+			this.setWidgetPosition();
+		}
+		
+		this.processWidgetLinks();
+    };
+    
+    this.isImshopping= function() {
+    	var url = document.location.href;
+    	if ('' != this.WidgetParams.imsAppUrl && url.indexOf(this.WidgetParams.imsAppUrl) > -1) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    };
+    
+    this.processWidgetLinks= function() {
+    	var isIms = this.isImshopping();
+    	var nimbleBuyWidget = this.gebi("nimbleBuyWidget");
+    	var links = UtilInit.getElementsByName("widgetNimbleBuyProductLink",nimbleBuyWidget);
+    	if (links.length > 0) {
+	    	for (var i = 0; i < links.length; i++) {
+	    		var link = links[i];
+    			var suffix = this.WidgetParams.urlSuffixForIms;
+    			if(suffix.length > 0){
+					if (link.href.indexOf("?") > -1) {
+						link.href += suffix;
+					} else {
+						link.href += "?" + suffix;
+					}
+    			}
+	    	}
+	    }
+    };
+    
+    this.startScroll = function(){
+		this.scroll = true;
+	};
+	
+	this.stopScroll = function(){
+		this.scroll = false;
+	};
+	
+	var children = typeof document
+	.createElement('div')
+	.children != 'undefined';
+	
+	this.childArray = children ? function(node) {
+		return node.children;
+	} : function(node) {
+		var list = node.childNodes,
+		length = list.length,
+		i = -1,
+		array = [];
+		while(++i < length)
+			if(list[i].nodeType == 1)
+				array.push(list[i]);
+		return array;
+	}
+	
+	this.scrollOffer = function(){
+    	var offers = this.gebi("nimbleBuyOffers");
+    	if(!offers) return;
+		if (this.scroll) {
+			var l = parseInt(offers.style.left, 10);
+			var w = offers.offsetWidth/this.childArray(offers).length;
+			if (l > -(this.WidgetParams.widgetOffersSize * w - w)) {
+				offers.style.left = l - w + "px";
+			}
+			else {
+				offers.style.left = 0;
+			}
+		}
+   		setTimeout(function(){self.scrollOffer();}, this.WidgetParams.rotateTimeInterval);
+    };
+
+    this.calcWidgetPosition = function(){
+    	var widgetHeight = 400;
+    	var widgetWidth = 450;
+        var winHeight = UtilInit.getWindowHeight();
+        var winWidth = UtilInit.getWindowWidth();
+    	var scrollTop = 0;
+    	var top = Math.round((winHeight/2) - (widgetHeight/2) +  scrollTop);
+		if(top<(10+scrollTop)) top = 10+scrollTop;
+    	var widgetPosH = top + 'px';
+    	var widgetPosW = Math.round((winWidth/2) - (widgetWidth/2)) + 'px';
+		return {top:widgetPosH, left:widgetPosW};
+	};
+    
+	this.setWidgetPosition = function(){
+		var btn = this.gebi("nimbleBuyWidget");
+		if(!btn) return;
+		
+        var winHeight = UtilInit.getWindowHeight();
+    	var WidgetHeight = this.getWidgetHeight();
+    	var btnTop = Math.round((winHeight/2) - (WidgetHeight/2));
+		btn.style.top = btnTop + "px";
+		btn.style.left = 0;
+    };
+    
+    this.showLoading = function(){
+		if(!this.gebi("imsLoading")){
+			var w = UtilInit.getWindowWidth();
+			var h = UtilInit.getWindowHeight();
+	    	var l = Math.round(w/2-100) + 'px';
+	    	var t = Math.round(h/2-50) + 'px';
+	        var prms = {
+		        	zIndex: 20001,
+		            display: 'block',
+		            position: 'absolute',
+		            left: l,
+		            top: t,
+		            textAlign: 'center',
+					padding: '20px',
+					border: '10px solid #acacac',
+					backgroundColor: '#fff',
+					width: '200px',
+					fontSize: '18px',
+					fontWeight: 'bold',
+					fontFamily: 'Arial'
+				};
+		    this.loading = UtilInit.newElement("div",prms);
+	        this.loading.id = "imsLoading"+this.WidgetParams.id;		
+	        this.loading.innerHTML = "Loading...";
+			document.body.insertBefore(this.loading, document.body.firstChild);
+		}
+		else {
+			this.gebi("imsLoading").innerHTML = "Loading...";
+			this.gebi("imsLoading").style.display = "block";
+		}
+		
+	};
+	
+	this.refreshDealTimeLeftArea = function() {
+		var times = UtilInit.getElementsByClassName("offerTimeLeft",this.gebi("nimbleBuyOffers"));
+		for(var i=0; i<times.length; i++){
+			if (this.seconds.length < i+1) {
+				this.seconds[i] = 0;
+			}
+			var timerText = times[i].innerHTML.toString();
+			if(timerText == "") { return; }
+			if(null != timerText) {
+				timerText = timerText.replace(/(<([^>]+)>)/ig,"");
+			} else {timerText = "";}
+			if (timerText == "Expired" || timerText == "00:00:00") {
+				times[i].innerHTML = "00" + this.WidgetLocalizationProps.hour + ":00" + this.WidgetLocalizationProps.min + ":00" + this.WidgetLocalizationProps.sec;
+			} else {
+				var timestrs = timerText.split(":");
+				var inDays = (timestrs[0].indexOf(this.WidgetLocalizationProps.day)!=-1) ? true : false;
+				
+				var daysStr = inDays == true ? timestrs[0].substr(0, timestrs[0].length-this.WidgetLocalizationProps.day.length) : null;
+				var hoursStr = inDays == true ? timestrs[1].substr(0, timestrs[1].length-this.WidgetLocalizationProps.hour.length) : timestrs[0].substr(0,  timestrs[0].length-this.WidgetLocalizationProps.hour.length);
+				var minStr = inDays == true ? timestrs[2].substr(0, timestrs[2].length-this.WidgetLocalizationProps.hour.length) : timestrs[1].substr(0, timestrs[1].length-this.WidgetLocalizationProps.min.length);
+				var secStr = inDays == true ? null : timestrs[2].substr(0, timestrs[2].length-this.WidgetLocalizationProps.sec.length);
+				
+				var seconds = inDays == true ? parseInt(daysStr, 10)*86400 + parseInt(hoursStr, 10)*3600 + parseInt(minStr, 10)*60 : parseInt(hoursStr, 10)*3600 + parseInt(minStr, 10)*60 + parseInt(secStr, 10) - 1;
+				if (this.seconds[i] == 0) {
+					this.seconds[i] = seconds;
+				}
+				this.seconds[i]--;
+				seconds = this.seconds[i];
+				
+				if (inDays == true) {
+					var days = Math.floor(seconds / 86400);
+					seconds -= days*86400;
+				}
+				var hours = Math.floor(seconds / 3600);
+				seconds -= hours*3600;
+				var minutes = Math.floor(seconds / 60);
+				seconds -= minutes*60;
+				if (inDays == false) {
+					times[i].innerHTML = hours + this.WidgetLocalizationProps.hour + ":" + ((minutes<10)?("0"+minutes):minutes) + this.WidgetLocalizationProps.min + ":" + ((seconds<10)?("0"+seconds):seconds)+this.WidgetLocalizationProps.sec; 
+				} else {
+					minutes++;
+					times[i].innerHTML = days + this.WidgetLocalizationProps.day + ":" + ((hours<10)?("0"+hours):hours) + this.WidgetLocalizationProps.hour + ":" + ((minutes<10)?("0"+minutes):minutes)+this.WidgetLocalizationProps.min;
+				}
+			}
+		}
+		setTimeout(function() {self.refreshDealTimeLeftArea();}, 1000);
+	};
+	
+	this.unInstall = function(){
+		var	s = this.gebi("nimbleBuyWidgetScript");
+		if (s) {
+			s.parentNode.removeChild(s);
+			var nimbleBuyWidget = this.gebi("nimbleBuyWidget");
+			if (nimbleBuyWidget)
+				nimbleBuyWidget.innerHTML = "";
+		}
+	};
+	
+	this.install = function(WidgetHtml,  WidgetParams, WidgetLocalizationProps){
+		this.WidgetHtml = WidgetHtml;
+		this.WidgetParams = WidgetParams;
+		if (WidgetLocalizationProps){
+			this.WidgetLocalizationProps = WidgetLocalizationProps;
+		}
+		this.getParams();
+		this.insertWidget();
+		if(this.WidgetParams.widgetOffersSize>1){
+			setTimeout(function(){ self.scrollOffer(); }, this.WidgetParams.rotateTimeInterval);
+		}
+		setTimeout(function() {self.refreshDealTimeLeftArea();}, 1000);
+	};
+	
+	this.installOnload = function(WidgetHtml,  WidgetParams){
+		if (window.addEventListener) {
+			window.addEventListener("load", function(){
+				self.install(WidgetHtml,  WidgetParams);
+			}, false);
+		} 
+		else if(window.attachEvent) {
+			window.attachEvent("onload", function(){
+				self.install(WidgetHtml,  WidgetParams);
+			}, false);
+		} 
+	};
+	
+};
+
+
+var WidgetHtml10281 = {	getNimbleBuyWidgetHTML: function(){		var s = '';		s = "&lt;div id=&quot;nimbleBuyOffers10281&quot; style=&quot;width:1800px; height:248px; position:relative;left:0;top:0;&quot;&gt; &lt;div style=&quot;float:left;width:300px;height:248px;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt; .button:hover { background-position: bottom !important; text-shadow: 0 1px 2px black; }&lt;/style&gt;&lt;div style=&quot;height:288px; padding:4px 8px 8px; font-family: Arial, Helvetica, sans-serif; color:white; background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/755060c0b1bf4cd18e3324663f8462b) no-repeat top left;&quot;&gt; &lt;div style=&quot;padding-top:7px; padding-left:5px; color:#d92040; font:bold 11px Helvetica, sans-serif; height:18px;&quot;&gt;Today&#39;s Deal&lt;/div&gt; &lt;div style=&quot;padding:0 0 3px 5px; height:36px; overflow:hidden; margin-bottom:6px;&quot;&gt; &lt;a style=&quot;color:#47141b; text-decoration:none; font-size:14px; font-weight:bold; line-height:19px;&quot; href=&quot;http://us2.nmb.ly/3gefu&quot; target=&quot;_blank&quot;&gt;$40 of Services for $20 at Cocoon Urban Day Spa with bubbly!&lt;/a&gt; &lt;/div&gt; &lt;div style=&quot;height:134px; margin-left:5px; margin-top:8px;&quot;&gt; &lt;a href=&quot;http://us2.nmb.ly/3gefu&quot; target=&quot;_blank&quot; style=&quot;border:none;float:left;&quot;&gt; &lt;img src=&quot;http://product-images.imshopping.com/nimblebuy/40ofservicesfor20atcocoonurbandayspa-748231-small_lv.jpg&quot; alt=&quot;&quot; title=&quot;&quot; border=&quot;0&quot; width=&quot;175&quot; height=&quot;134&quot; /&gt; &lt;/a&gt; &lt;div style=&quot;background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/607ac22863c971374415c319b73f63f) no-repeat top left; width: 78px; height:86px; padding:5px 6px; float:right;&quot;&gt; &lt;div style=&quot;color:#999999; text-transform: uppercase; font-size:9px; padding:0 0 2px;&quot;&gt;Sale Ends In&lt;/div&gt; &lt;div style=&quot;font-size:13px; font-weight:bold; padding:0 0 4px;&quot;&gt; &lt;div style=&quot;white-space:nowrap;&quot;&gt;&lt;span class=&quot;offerTimeLeft&quot;&gt;7d:10h:37m&lt;/span&gt;&lt;/div&gt; &lt;/div&gt; &lt;div style=&quot;padding-top: 5px; color:#999999; font-size:9px;&quot;&gt;PRICE&lt;/div&gt; &lt;div style=&quot;text-align:left;&quot;&gt; &lt;div style=&quot;float:left; height:35px; line-height:29px; text-align:left; font-size:20px; font-weight:bold;&quot;&gt;$20&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;a class=&quot;button&quot; href=&quot;http://us2.nmb.ly/3gefu&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; float:right; margin-top:6px; height:32px; width:87px; background-image: url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/dc51b2379728f038616a14bd8693b4a); background-repeat: no-repeat; background-position: top left;&quot;&gt;&lt;/a&gt; &lt;/div&gt; &lt;a href=&quot;http://dailydeals.sfgate.com&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; margin-top:15px; display:block; width:280px; height:20px;&quot;&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;float:left;width:300px;height:248px;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt; .button:hover { background-position: bottom !important; text-shadow: 0 1px 2px black; }&lt;/style&gt;&lt;div style=&quot;height:288px; padding:4px 8px 8px; font-family: Arial, Helvetica, sans-serif; color:white; background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/755060c0b1bf4cd18e3324663f8462b) no-repeat top left;&quot;&gt; &lt;div style=&quot;padding-top:7px; padding-left:5px; color:#d92040; font:bold 11px Helvetica, sans-serif; height:18px;&quot;&gt;Today&#39;s Deal&lt;/div&gt; &lt;div style=&quot;padding:0 0 3px 5px; height:36px; overflow:hidden; margin-bottom:6px;&quot;&gt; &lt;a style=&quot;color:#47141b; text-decoration:none; font-size:14px; font-weight:bold; line-height:19px;&quot; href=&quot;http://us2.nmb.ly/3fdzd&quot; target=&quot;_blank&quot;&gt;Tickets to &quot;Her Rebel Highness&quot; A boldy musical original revue at Harlot SF!&lt;/a&gt; &lt;/div&gt; &lt;div style=&quot;height:134px; margin-left:5px; margin-top:8px;&quot;&gt; &lt;a href=&quot;http://us2.nmb.ly/3fdzd&quot; target=&quot;_blank&quot; style=&quot;border:none;float:left;&quot;&gt; &lt;img src=&quot;http://product-images.imshopping.com/nimblebuy/herrebelhighnessmultipledates-744891-small_lv.jpg&quot; alt=&quot;&quot; title=&quot;&quot; border=&quot;0&quot; width=&quot;175&quot; height=&quot;134&quot; /&gt; &lt;/a&gt; &lt;div style=&quot;background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/607ac22863c971374415c319b73f63f) no-repeat top left; width: 78px; height:86px; padding:5px 6px; float:right;&quot;&gt; &lt;div style=&quot;color:#999999; text-transform: uppercase; font-size:9px; padding:0 0 2px;&quot;&gt;Sale Ends In&lt;/div&gt; &lt;div style=&quot;font-size:13px; font-weight:bold; padding:0 0 4px;&quot;&gt; &lt;div style=&quot;white-space:nowrap;&quot;&gt;&lt;span class=&quot;offerTimeLeft&quot;&gt;9d:10h:37m&lt;/span&gt;&lt;/div&gt; &lt;/div&gt; &lt;div style=&quot;padding-top: 5px; color:#999999; font-size:9px;&quot;&gt;PRICE&lt;/div&gt; &lt;div style=&quot;text-align:left;&quot;&gt; &lt;div style=&quot;float:left; height:35px; line-height:29px; text-align:left; font-size:20px; font-weight:bold;&quot;&gt;$24.50&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;a class=&quot;button&quot; href=&quot;http://us2.nmb.ly/3fdzd&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; float:right; margin-top:6px; height:32px; width:87px; background-image: url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/dc51b2379728f038616a14bd8693b4a); background-repeat: no-repeat; background-position: top left;&quot;&gt;&lt;/a&gt; &lt;/div&gt; &lt;a href=&quot;http://dailydeals.sfgate.com&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; margin-top:15px; display:block; width:280px; height:20px;&quot;&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;float:left;width:300px;height:248px;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt; .button:hover { background-position: bottom !important; text-shadow: 0 1px 2px black; }&lt;/style&gt;&lt;div style=&quot;height:288px; padding:4px 8px 8px; font-family: Arial, Helvetica, sans-serif; color:white; background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/755060c0b1bf4cd18e3324663f8462b) no-repeat top left;&quot;&gt; &lt;div style=&quot;padding-top:7px; padding-left:5px; color:#d92040; font:bold 11px Helvetica, sans-serif; height:18px;&quot;&gt;Today&#39;s Deal&lt;/div&gt; &lt;div style=&quot;padding:0 0 3px 5px; height:36px; overflow:hidden; margin-bottom:6px;&quot;&gt; &lt;a style=&quot;color:#47141b; text-decoration:none; font-size:14px; font-weight:bold; line-height:19px;&quot; href=&quot;http://us2.nmb.ly/3dd8r&quot; target=&quot;_blank&quot;&gt;Acqua Pazza - $20 for $40 in Food and Drinks | 5-course Pre Fixe menu for two $40 (up to 80)&lt;/a&gt; &lt;/div&gt; &lt;div style=&quot;height:134px; margin-left:5px; margin-top:8px;&quot;&gt; &lt;a href=&quot;http://us2.nmb.ly/3dd8r&quot; target=&quot;_blank&quot; style=&quot;border:none;float:left;&quot;&gt; &lt;img src=&quot;http://product-images.imshopping.com/nimblebuy/acquapazza-740101-small_lv.jpg&quot; alt=&quot;&quot; title=&quot;&quot; border=&quot;0&quot; width=&quot;175&quot; height=&quot;134&quot; /&gt; &lt;/a&gt; &lt;div style=&quot;background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/607ac22863c971374415c319b73f63f) no-repeat top left; width: 78px; height:86px; padding:5px 6px; float:right;&quot;&gt; &lt;div style=&quot;color:#999999; text-transform: uppercase; font-size:9px; padding:0 0 2px;&quot;&gt;Sale Ends In&lt;/div&gt; &lt;div style=&quot;font-size:13px; font-weight:bold; padding:0 0 4px;&quot;&gt; &lt;div style=&quot;white-space:nowrap;&quot;&gt;&lt;span class=&quot;offerTimeLeft&quot;&gt;4d:10h:37m&lt;/span&gt;&lt;/div&gt; &lt;/div&gt; &lt;div style=&quot;padding-top: 5px; color:#999999; font-size:9px;&quot;&gt;PRICE&lt;/div&gt; &lt;div style=&quot;text-align:left;&quot;&gt; &lt;div style=&quot;float:left; height:35px; line-height:29px; text-align:left; font-size:20px; font-weight:bold;&quot;&gt;$20&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;a class=&quot;button&quot; href=&quot;http://us2.nmb.ly/3dd8r&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; float:right; margin-top:6px; height:32px; width:87px; background-image: url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/dc51b2379728f038616a14bd8693b4a); background-repeat: no-repeat; background-position: top left;&quot;&gt;&lt;/a&gt; &lt;/div&gt; &lt;a href=&quot;http://dailydeals.sfgate.com&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; margin-top:15px; display:block; width:280px; height:20px;&quot;&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;float:left;width:300px;height:248px;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt; .button:hover { background-position: bottom !important; text-shadow: 0 1px 2px black; }&lt;/style&gt;&lt;div style=&quot;height:288px; padding:4px 8px 8px; font-family: Arial, Helvetica, sans-serif; color:white; background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/755060c0b1bf4cd18e3324663f8462b) no-repeat top left;&quot;&gt; &lt;div style=&quot;padding-top:7px; padding-left:5px; color:#d92040; font:bold 11px Helvetica, sans-serif; height:18px;&quot;&gt;Today&#39;s Deal&lt;/div&gt; &lt;div style=&quot;padding:0 0 3px 5px; height:36px; overflow:hidden; margin-bottom:6px;&quot;&gt; &lt;a style=&quot;color:#47141b; text-decoration:none; font-size:14px; font-weight:bold; line-height:19px;&quot; href=&quot;http://us2.nmb.ly/3bb1l&quot; target=&quot;_blank&quot;&gt;Delicious Sugarless, Organic, Low-Calorie Wines from Vino de la Cruz&lt;/a&gt; &lt;/div&gt; &lt;div style=&quot;height:134px; margin-left:5px; margin-top:8px;&quot;&gt; &lt;a href=&quot;http://us2.nmb.ly/3bb1l&quot; target=&quot;_blank&quot; style=&quot;border:none;float:left;&quot;&gt; &lt;img src=&quot;http://product-images.imshopping.com/nimblebuy/sugarlesswinescom25for50towardsthepurchaseofwine-739831-small_lv.jpg&quot; alt=&quot;&quot; title=&quot;&quot; border=&quot;0&quot; width=&quot;175&quot; height=&quot;134&quot; /&gt; &lt;/a&gt; &lt;div style=&quot;background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/607ac22863c971374415c319b73f63f) no-repeat top left; width: 78px; height:86px; padding:5px 6px; float:right;&quot;&gt; &lt;div style=&quot;color:#999999; text-transform: uppercase; font-size:9px; padding:0 0 2px;&quot;&gt;Sale Ends In&lt;/div&gt; &lt;div style=&quot;font-size:13px; font-weight:bold; padding:0 0 4px;&quot;&gt; &lt;div style=&quot;white-space:nowrap;&quot;&gt;&lt;span class=&quot;offerTimeLeft&quot;&gt;10h:37m:02s&lt;/span&gt;&lt;/div&gt; &lt;/div&gt; &lt;div style=&quot;padding-top: 5px; color:#999999; font-size:9px;&quot;&gt;PRICE&lt;/div&gt; &lt;div style=&quot;text-align:left;&quot;&gt; &lt;div style=&quot;float:left; height:35px; line-height:29px; text-align:left; font-size:20px; font-weight:bold;&quot;&gt;$25&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;a class=&quot;button&quot; href=&quot;http://us2.nmb.ly/3bb1l&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; float:right; margin-top:6px; height:32px; width:87px; background-image: url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/dc51b2379728f038616a14bd8693b4a); background-repeat: no-repeat; background-position: top left;&quot;&gt;&lt;/a&gt; &lt;/div&gt; &lt;a href=&quot;http://dailydeals.sfgate.com&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; margin-top:15px; display:block; width:280px; height:20px;&quot;&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;float:left;width:300px;height:248px;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt; .button:hover { background-position: bottom !important; text-shadow: 0 1px 2px black; }&lt;/style&gt;&lt;div style=&quot;height:288px; padding:4px 8px 8px; font-family: Arial, Helvetica, sans-serif; color:white; background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/755060c0b1bf4cd18e3324663f8462b) no-repeat top left;&quot;&gt; &lt;div style=&quot;padding-top:7px; padding-left:5px; color:#d92040; font:bold 11px Helvetica, sans-serif; height:18px;&quot;&gt;Today&#39;s Deal&lt;/div&gt; &lt;div style=&quot;padding:0 0 3px 5px; height:36px; overflow:hidden; margin-bottom:6px;&quot;&gt; &lt;a style=&quot;color:#47141b; text-decoration:none; font-size:14px; font-weight:bold; line-height:19px;&quot; href=&quot;http://us2.nmb.ly/3a2ls&quot; target=&quot;_blank&quot;&gt;$25 for 2 Tickets to the Modern Luxury Weddings Bridal Event&lt;/a&gt; &lt;/div&gt; &lt;div style=&quot;height:134px; margin-left:5px; margin-top:8px;&quot;&gt; &lt;a href=&quot;http://us2.nmb.ly/3a2ls&quot; target=&quot;_blank&quot; style=&quot;border:none;float:left;&quot;&gt; &lt;img src=&quot;http://product-images.imshopping.com/nimblebuy/modernbridalinc25for2ticketstomodernluxuryweddingbridaleventatri-730121-small_lv.jpg&quot; alt=&quot;&quot; title=&quot;&quot; border=&quot;0&quot; width=&quot;175&quot; height=&quot;134&quot; /&gt; &lt;/a&gt; &lt;div style=&quot;background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/607ac22863c971374415c319b73f63f) no-repeat top left; width: 78px; height:86px; padding:5px 6px; float:right;&quot;&gt; &lt;div style=&quot;color:#999999; text-transform: uppercase; font-size:9px; padding:0 0 2px;&quot;&gt;Sale Ends In&lt;/div&gt; &lt;div style=&quot;font-size:13px; font-weight:bold; padding:0 0 4px;&quot;&gt; &lt;div style=&quot;white-space:nowrap;&quot;&gt;&lt;span class=&quot;offerTimeLeft&quot;&gt;9d:10h:37m&lt;/span&gt;&lt;/div&gt; &lt;/div&gt; &lt;div style=&quot;padding-top: 5px; color:#999999; font-size:9px;&quot;&gt;PRICE&lt;/div&gt; &lt;div style=&quot;text-align:left;&quot;&gt; &lt;div style=&quot;float:left; height:35px; line-height:29px; text-align:left; font-size:20px; font-weight:bold;&quot;&gt;$25&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;a class=&quot;button&quot; href=&quot;http://us2.nmb.ly/3a2ls&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; float:right; margin-top:6px; height:32px; width:87px; background-image: url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/dc51b2379728f038616a14bd8693b4a); background-repeat: no-repeat; background-position: top left;&quot;&gt;&lt;/a&gt; &lt;/div&gt; &lt;a href=&quot;http://dailydeals.sfgate.com&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; margin-top:15px; display:block; width:280px; height:20px;&quot;&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;float:left;width:300px;height:248px;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt; .button:hover { background-position: bottom !important; text-shadow: 0 1px 2px black; }&lt;/style&gt;&lt;div style=&quot;height:288px; padding:4px 8px 8px; font-family: Arial, Helvetica, sans-serif; color:white; background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/755060c0b1bf4cd18e3324663f8462b) no-repeat top left;&quot;&gt; &lt;div style=&quot;padding-top:7px; padding-left:5px; color:#d92040; font:bold 11px Helvetica, sans-serif; height:18px;&quot;&gt;Today&#39;s Deal&lt;/div&gt; &lt;div style=&quot;padding:0 0 3px 5px; height:36px; overflow:hidden; margin-bottom:6px;&quot;&gt; &lt;a style=&quot;color:#47141b; text-decoration:none; font-size:14px; font-weight:bold; line-height:19px;&quot; href=&quot;http://us2.nmb.ly/31cxw&quot; target=&quot;_blank&quot;&gt;Bubble Sunday, an Afternoon Sparkling, Rose, &amp; Red Wine Event&lt;/a&gt; &lt;/div&gt; &lt;div style=&quot;height:134px; margin-left:5px; margin-top:8px;&quot;&gt; &lt;a href=&quot;http://us2.nmb.ly/31cxw&quot; target=&quot;_blank&quot; style=&quot;border:none;float:left;&quot;&gt; &lt;img src=&quot;http://product-images.imshopping.com/nimblebuy/vin12sundybubbles-1-728781-small_lv.jpg&quot; alt=&quot;&quot; title=&quot;&quot; border=&quot;0&quot; width=&quot;175&quot; height=&quot;134&quot; /&gt; &lt;/a&gt; &lt;div style=&quot;background: transparent url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/607ac22863c971374415c319b73f63f) no-repeat top left; width: 78px; height:86px; padding:5px 6px; float:right;&quot;&gt; &lt;div style=&quot;color:#999999; text-transform: uppercase; font-size:9px; padding:0 0 2px;&quot;&gt;Sale Ends In&lt;/div&gt; &lt;div style=&quot;font-size:13px; font-weight:bold; padding:0 0 4px;&quot;&gt; &lt;div style=&quot;white-space:nowrap;&quot;&gt;&lt;span class=&quot;offerTimeLeft&quot;&gt;59d:10h:37m&lt;/span&gt;&lt;/div&gt; &lt;/div&gt; &lt;div style=&quot;padding-top: 5px; color:#999999; font-size:9px;&quot;&gt;PRICE&lt;/div&gt; &lt;div style=&quot;text-align:left;&quot;&gt; &lt;div style=&quot;float:left; height:35px; line-height:29px; text-align:left; font-size:20px; font-weight:bold;&quot;&gt;$20&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;a class=&quot;button&quot; href=&quot;http://us2.nmb.ly/31cxw&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; float:right; margin-top:6px; height:32px; width:87px; background-image: url(https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/dc51b2379728f038616a14bd8693b4a); background-repeat: no-repeat; background-position: top left;&quot;&gt;&lt;/a&gt; &lt;/div&gt; &lt;a href=&quot;http://dailydeals.sfgate.com&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; margin-top:15px; display:block; width:280px; height:20px;&quot;&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;";		return UtilInit.htmlDecode(s);	}};var WidgetParams10281 = {	id: '10281',		rootUrl: 'http://us2widget.nimblecommerce.com',	imsAppUrl: 'http://www.imshopping.com',	widgetWidth: '300',	widgetHeight: '248',	widgetOffersSize: 6,	rotateTimeInterval: 10000, 	urlSuffixForIms: ''};var WidgetLocalizationProps10281 = {	day: 'd',	hour: 'h',	min: 'm',	sec: 's'};WidgetInit.install(WidgetHtml10281,  WidgetParams10281, WidgetLocalizationProps10281);

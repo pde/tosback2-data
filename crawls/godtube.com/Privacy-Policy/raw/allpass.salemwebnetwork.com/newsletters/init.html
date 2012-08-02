@@ -1,13 +1,16 @@
 
+
 var ShownTodayCookieName = "nlst";
 var BlockCookieName = "nlbd";
 var UniversalAllPassCookieName = "apu";
-var EmailLinkParam = "ref";
+var EmailLinkParam = "utm_medium";
 var EmailLinkValue = "email";
 var InitialEndpointParam = "nlie";
 var InitialEndpointValueThankYou = "1";
 var InitialEndpointValueThankYouMessage = "2";
 var DebugRefValue  = "99";
+var ignoreImpressionCountLimitPaths = [];
+var ignoreShownToday = false;
 
 
 function readCookie(name) {
@@ -74,6 +77,11 @@ function getQuerystring(key, default_)
 }
 
 
+function include(arr,obj) {
+    return (arr.indexOf(obj) != -1);
+}
+
+
 $(function () {
     var query = [getQuerystring(InitialEndpointParam), getQuerystring(EmailLinkParam)]
     
@@ -82,6 +90,17 @@ $(function () {
     var siteRef =  location.href.replace(protocol + domain,"");
     var path = window.path || encodeURIComponent(siteRef);;
     var receiveFromUrl = window.receiveFromUrl || 'http://allpass.salemwebnetwork.com';
+
+    
+    if(readCookie(ShownTodayCookieName))
+    {
+        for (var i = 0; i < ignoreImpressionCountLimitPaths.length; i++) {
+            if(include(path, ignoreImpressionCountLimitPaths[i]))
+            {
+               ignoreShownToday = true;
+            }
+        }
+    } 
 
     
     if(query[0])
@@ -95,7 +114,7 @@ $(function () {
             createCookie(UniversalAllPassCookieName, userId, null);
 
             var iFrameSourceBaseUrl = window.iFrameSourceBaseUrl ? window.iFrameSourceBaseUrl + "thankyouget" : "http://allpass.salemwebnetwork.com/newsletters/thankyouget"; 
-            var iFrameSourceUrl = iFrameSourceBaseUrl + "?u=" + userId + "&pr=" + protocol + "&d=" + domain + "&p=" + path;
+            var iFrameSourceUrl = iFrameSourceBaseUrl + "?u=" + userId + "&pr=" + protocol + "&d=" + domain + "&p=" + path + "&c=facebooktakeover";
 
             switch (messageType)
             {
@@ -108,7 +127,7 @@ $(function () {
             }
         }
     }
-    else if ((!readCookie(ShownTodayCookieName) && !readCookie(BlockCookieName)) ||getQuerystring(EmailLinkParam)=== DebugRefValue) {
+    else if ((!readCookie(ShownTodayCookieName) && !readCookie(BlockCookieName)) || getQuerystring(EmailLinkParam)=== DebugRefValue || ignoreShownToday) {
     
         
         var userId = window.userId || readCookie(UniversalAllPassCookieName) || ""; 
@@ -154,7 +173,7 @@ $(function () {
         var userId = dataArray[0];
         var expirationDate = dataArray[1];
         var style = dataArray[2];
-        var blockDisplayCookieName = dataArray[3];
+        var nonUserCookieName = dataArray[3];
 
         $('#IFrameToAdjust').attr("style", style);
 
@@ -163,8 +182,8 @@ $(function () {
             createCookie(UniversalAllPassCookieName, userId, null, expirationDate);
         }
 
-        if (blockDisplayCookieName && query[1]!= DebugRefValue) {
-            createCookie(blockDisplayCookieName, "true");
+        if (nonUserCookieName && query[1]!= DebugRefValue) {
+            createCookie(nonUserCookieName, "true");
         }
     }, receiveFromUrl);
 

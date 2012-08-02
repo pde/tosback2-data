@@ -4,6 +4,7 @@ div.text ul{list-style-type:disc;}
 div.text ol{list-style-type:decimal;}
 div.text ul.tabLinks,div.text ul.accordionItems{list-style-position:outside;}
 div.textimage{overflow:auto;}
+html.ie7 #certificate div.textimage{overflow-y:hidden;}
 div.textimage ul,div.textimage ol{overflow:hidden;margin-left:10px;padding-left:20px;}
 div.tab_display_end{width:100%;height:16px;background-color:#D4E1F2;border:1px solid #99BBE8;padding-left:5px;font-size:11px;}
 div.cq-tabs_display_end-placeholder-off{display:none;}
@@ -92,11 +93,6 @@ div.accordionComponent ul.accordionItems li div.accordionContent div.tab_content
 div.accordionComponent ul.accordionItems li.editMode div.accordionContent div.tab_content,div.accordionComponent ul.accordionItems li.current div.accordionContent div.tab_content{position:static;left:0;top:0;width:auto;*zoom:1;}
 li.current div.accordionComponent ul.accordionItems li div.accordionContent div.tab_content{position:absolute;left:-9999px;top:-9999px;font-size:1.0em;width:50%;}
 li.current div.accordionComponent ul.accordionItems li.editMode div.accordionContent div.tab_content,li.current div.accordionComponent ul.accordionItems li.current div.accordionContent div.tab_content{position:static;left:0;top:0;width:auto;*zoom:1;}
-div.accordionDefault ul.accordionItems li div.accordionContent,ul.accordionItems div.accordionDefault ul.accordionItems li div.accordionContent{padding:0 25px;}
-div.accordionDefault ul.accordionItems li div.toggleLink,ul.accordionItems div.accordionDefault ul.accordionItems li div.toggleLink{background:#fff url(../images/bg_accordionComponent_toggleLink.png) 0 0 repeat-x;}
-div.accordionDefault ul.accordionItems li div.toggleLink a,ul.accordionItems div.accordionDefault ul.accordionItems li div.toggleLink a{padding:5px 25px;color:#014664;background:transparent url(../images/bg_accordionComponent_toggleLink_off.png) 10px 50% no-repeat;font-size:1.33em;text-transform:uppercase;}
-div.accordionDefault ul.accordionItems li.current div.toggleLink a,ul.accordionItems div.accordionDefault ul.accordionItems li.current div.toggleLink a{background:transparent url(../images/bg_accordionComponent_toggleLink_on.png) 7px 50% no-repeat;}
-li.current ul.accordionItems div.accordionDefault ul.accordionItems li div.toggleLink a{background:transparent url(../images/bg_accordionComponent_toggleLink_off.png) 7px 50% no-repeat;}
 div.videoplayerdiv{overflow:hidden;width:100%;background-color:#fff;}
 div.smallvideoplayerdiv{overflow:hidden;width:288px;background-color:#fff;overflow:none;}
 div.smallvideoplayerdiv a#flowPlayer{display:block;width:288px;height:165px;overflow:none;}
@@ -149,20 +145,25 @@ div.image_slideshow div.imageScroller div.scrollerImages div{float:left;height:3
 .customRetweet:active{background-position:0 -42px;}
 div.lightbox div.lightboxTrigger{cursor:pointer;}
 .lightbox .lightboxTriggerContainer{float:left;}
-.navList{border-color:#EAEAEA;border-style:solid none;border-width:2px 0;margin:6px 0;}
-.orientationHorizontal{background:#F2F2F2 repeat-x;width:100%;}
-.orientationVertical{width:206px;}
+.navList{border-width:2px 2px;border-style:solid;border-color:#900;border-radius:4px;background-color:#900;margin:4px 0;}
 .navList .forward{font-size:1.5em;font-weight:bold;color:#AE0200;padding:0 13px;}
-.orientationHorizontal .navLevel1,.orientationHorizontal .forward{display:inline-block;*display:inline;*zoom:1;margin:0 -2px;padding:18px 13px 15px;}
-.orientationVertical .navLevel1,.orientationVertical .forward{width:180px;background:#F2F2F2 repeat-x;padding:4px 13px;}
-.orientationHorizontal .navLevel1{position:relative;}
-.navList .primaryItem{color:#686868;font-size:1.125em;}
-.navList .primaryItem:hover,.navList .highlight .primaryItem,.navList .active .primaryItem{color:#AE0200;text-decoration:none;}
-.orientationHorizontal .flyoutWrapper{display:none;font-size:1.125em;position:absolute;top:52px;left:11px;z-index:10;width:950px;}
-.orientationHorizontal .navLevel1:hover .flyoutWrapper,.orientationHorizontal .primaryItem:hover .flyoutWrapper,.orientationHorizontal .active .flyoutWrapper{display:block;}
-.orientationHorizontal .flyout{float:left;background:#F2F2F2;border-color:#F2F2F2 #EAEAEA #EAEAEA;border-style:solid;border-width:1px;}
-.orientationHorizontal .navLevel2{background-color:#F2F2F2;width:220px;*width:220px;}
+.navList .navLevel1{text-align:center;}
+.navList .navLevel1:hover{cursor:pointer;cursor:hand;}
+.navList .navLevel1 .primaryItem{color:#FFF;text-decoration:none;padding:.7em;margin:0 .125em;}
+.navList .navLevel1:hover .primaryItem,.navList .highlight .primaryItem{color:#900;background-color:#FFF;}
+.navList .primaryItem .caret{border:5px solid #900;border-top-color:#FFF;vertical-align:text-bottom;display:inline-block;}
+.ie6 .navList .primaryItem .caret,.ie7 .navList .primaryItem .caret{vertical-align:sub;height:3px;}
+.navList .navLevel1:hover .caret,.navList .highlight .caret{border:5px solid #FFF;border-top-color:#900;}
+.orientationHorizontal .navLevel1{display:table-cell;vertical-align:middle;}
+.ie6 .orientationHorizontal .navLevel1,.ie7 .orientationHorizontal .navLevel1{display:inline;zoom:1;}
+.orientationHorizontal .rdivider{border-right:1px solid #FFF;}
+.orientationHorizontal .navLevel1 .primaryItem{display:block;}
+.orientationHorizontal .flyoutWrapper{background-color:#FFF;display:none;position:absolute;margin-left:2px;box-shadow:0 0 1px 1px #F2F2F2;z-index:11;}
+.orientationHorizontal .navLevel1:hover .flyoutWrapper{display:block;}
+.orientationHorizontal .flyoutWrapper a{color:#900;font-weight:normal;}
+.orientationHorizontal .flyout{display:inline-block;text-align:left;padding:.5em .8em .5em 0;margin:0 16px;vertical-align:top;}
+.orientationHorizontal .navLevel2{padding:4px 18px 12px 0;border-bottom:1px solid #F2F2F2;vertical-align:top;}
+.orientationVertical{width:206px;}
 .orientationVertical .navLevel2{padding:4px 14px;}
 .orientationVertical .navLevel2:hover{background-color:#686868;}
-.navList .secondaryItem{display:block;font-weight:normal;border:none;}
-.orientationHorizontal .secondaryItem{padding:8px;*padding:8px 8px 4px;}
+.orientationVertical .navLevel1,.orientationVertical .forward{width:180px;background:#F2F2F2 repeat-x;padding:4px 13px;}

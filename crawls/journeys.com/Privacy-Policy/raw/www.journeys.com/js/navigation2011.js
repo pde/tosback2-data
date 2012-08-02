@@ -41,29 +41,31 @@ function setFlipper(){
     $('div#flip-hero a.lnk-flip:first').fadeIn().addClass('active');
 }
 function swapBrand(){
-    var random = Math.floor( Math.random()*10 );
-    var newGuy = hiddenBrands[0];
-    var oldGuy = $('div#dvBrandCrave a.lnk-brand:eq(' + random + ')');
-    var clone = $('div#dvBrandCrave a.lnk-brand:eq(' + random + ')').clone();
-    var fadeSpeed = randomXToY(600,900);
-    var swapTime = randomXToY(2500,3500);
-    //console.log('swap', ' new: ' + newGuy.attr('href'), ' old: ' + newGuy.attr('href'));
-    hiddenBrands.shift();
-    hiddenBrands.push(clone);
-    oldGuy.after(newGuy);
-    newGuy.hide().css({
-        'left': oldGuy.css('left'),
-        'z-index': 99
-    });
-    oldGuy.fadeOut(fadeSpeed).delay(fadeSpeed).remove();
-    newGuy.fadeIn(fadeSpeed).css('z-index',100);
-    brandTimer = setTimeout(swapBrand, swapTime);
-    var random = null;
-    var newGuy = null;
-    var oldGuy = null;
-    var clone = null;
-    var fadeSpeed = null;
-    var swapTime = null;
+    if ( $('div#dvBrandCrave').length > 0 ){
+        var random = Math.floor( Math.random()*10 );
+        var newGuy = hiddenBrands[0];
+        var oldGuy = $('div#dvBrandCrave a.lnk-brand:eq(' + random + ')');
+        var clone = $('div#dvBrandCrave a.lnk-brand:eq(' + random + ')').clone();
+        var fadeSpeed = randomXToY(600,900);
+        var swapTime = randomXToY(2500,3500);
+        //console.log('swap', ' new: ' + newGuy.attr('href'), ' old: ' + newGuy.attr('href'));
+        hiddenBrands.shift();
+        hiddenBrands.push(clone);
+        oldGuy.after(newGuy);
+        newGuy.hide().css({
+            'left': oldGuy.css('left'),
+            'z-index': 99
+        });
+        oldGuy.fadeOut(fadeSpeed).delay(fadeSpeed).remove();
+        newGuy.fadeIn(fadeSpeed).css('z-index',100);
+        brandTimer = setTimeout(swapBrand, swapTime);
+        var random = null;
+        var newGuy = null;
+        var oldGuy = null;
+        var clone = null;
+        var fadeSpeed = null;
+        var swapTime = null;
+    }
 }
 function setBrands(){
     $('div#dvBrandCrave a.lnk-brand').each(function(){

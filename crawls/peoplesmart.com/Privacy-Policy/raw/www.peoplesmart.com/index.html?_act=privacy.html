@@ -7,12 +7,11 @@
     <meta name="robots" content="noarchive" />
     <meta name="_dragotail.segment.search_type" content="" />
     <meta name="_dragotail.segment.split_test_assignment" content="" />
-    <link rel="stylesheet" href="css/globalrefresh.css%3Fver=storm-13594.css" type="text/css" />
-    <link rel="stylesheet" href="css/about.css%3Fver=storm-13594.css" type="text/css" />
-    <script src="waf/js/waf-jquery.js%3Fver=storm-13594" type="text/javascript"> </script>
-    <script src="waf/js/cookies.js%3Fver=storm-13594" type="text/javascript"> </script>
-    <script src="js/jquery-addons.js%3Fver=storm-13594" type="text/javascript"> </script>
-    <script src="waf/js/ClientSideValidation.js%3Fver=storm-13594" type="text/javascript"> </script>
+    <link rel="stylesheet" href="../ec-images.peoplesmart.com/css/about.css%3Fver=storm-14440.css" type="text/css" />
+    <script src="../ec-images.peoplesmart.com/waf/js/waf-jquery.js%3Fver=storm-14440" type="text/javascript"> </script>
+    <script src="../ec-images.peoplesmart.com/waf/js/cookies.js%3Fver=storm-14440" type="text/javascript"> </script>
+    <script src="../ec-images.peoplesmart.com/js/jquery-addons.js%3Fver=storm-14440" type="text/javascript"> </script>
+    <script src="../ec-images.peoplesmart.com/waf/js/ClientSideValidation.js%3Fver=storm-14440" type="text/javascript"> </script>
     <script type="text/javascript">
 			var isValidFormPrivacy = function()
 			{
@@ -75,6 +74,12 @@
               </li>
               <li>
                 <span class="active">Privacy Center</span>
+              </li>
+              <li>
+                <a href="http://www.peoplesmart.com/privacy-education">Privacy Education</a>
+              </li>
+              <li>
+                <a href="http://www.peoplesmart.com/how-we-think-about-privacy">How We Think About Privacy</a>
               </li>
               <li>
                 <a href="http://www.peoplesmart.com/optout">Manage Your Listing</a>
@@ -174,7 +179,7 @@
           </span>
         </div>
         <div id="footerdisclaim">
-    			PeopleSmart is designed to help you safely find people and learn about others. PeopleSmart is not a consumer reporting agency as defined by the Fair<br />Credit Reporting Act (FCRA). <a href="javascript:void(0);" onclick="FCRAlightbox()">Learn more</a> about FCRA restrictions. By using our website you agree to our <a href="http://www.peoplesmart.com/?_act=terms">Terms of Service</a> and <a href="index.html%3F_act=privacy.html">Privacy Policy</a>.
+			PeopleSmart is designed to help you safely find people and learn about others. Find someone by name, email, phone number, and address. PeopleSmart is not a consumer reporting agency as defined by the guidelines of the Fair Credit Reporting Act <a href="javascript:void(0);" onclick="FCRAlightbox()">(learn more)</a>. To learn more, read our <a href="http://www.peoplesmart.com/?_act=terms" class="font-brown">Terms of Service</a>  and <a href="index.html%3F_act=privacy.html" class="font-brown">Privacy Policy</a>.
     			<strong>All rights reserved © 2012 PeopleSmart</strong></div>
         <div id="footerseal">
           <span id="verisign">Verisign</span>
@@ -196,7 +201,6 @@
 			
 			// Prevents UI caching in firefox
 			$(window).unload(function(){});
-			
 				
 			// reset image source to display animated image (needed for some browsers)
 			function ResetSearching()
@@ -213,6 +217,23 @@
 			function ProcessingElement(element) 
 			{
 				ProcessingElementArray(true, jQuery(element));
+			}
+			
+			// Show processing element
+			//	 "animate" -- specifies if "submit" element should be replaced with "processing" image
+			//	 "identifierString" -- string containing IDs/CLASSes/etc of "submit" elements to disable (should be in jQuery-compatible format, for ex, ".class, #id, .class2")
+			//	 "element" -- "this" as the clicked element 
+			//                (if specified, all "submit" elements will be hidden, but only "this" will be replaced with "processing" image)
+			function ProcessingElementByIdentifier(animate, identifierString, element) 
+			{
+				var elementsByClass;
+				var elementClicked;
+				
+				elementsByIdentifier = jQuery(identifierString);
+				if (typeof element != 'undefined') {
+					elementClicked = jQuery(element);
+				}
+				ProcessingElementArray(animate, elementsByIdentifier, elementClicked);
 			}
 			
 			// Show processing element
@@ -237,38 +258,58 @@
 			//	 "elements" -- array of "submit" elements to disable
 			//	 "element" -- array of clicked element(s) (usually contains only 1 element)
 			//                (if specified, all "submit" elements will be hidden, but only "this" will be replaced with "processing" image)
+			var processingElementRunning = false;
 			function ProcessingElementArray(animate, elements, element) 
 			{
-				var disableSubmitElement = false;
-				// don't hide buttons, if page is not completely loaded
-				// ("wafPageLoaded" is set in DBFind/DBRecord.xslt)
-				try {
-					disableSubmitElement = eval(wafPageLoaded);
-				} catch (ex) {
-					// ignore error + allow "processing" display
-					disableSubmitElement = true;
-				}
-				
-				if (disableSubmitElement) {
-					// hide "processing" images
-					$('.processing').hide();
-					// hide all "submit" elements
-					elements.hide();
-					
-					if (animate) {
-						if (typeof element != 'undefined') {
-							// replace only specified "submit" element with "processing" image
-							element.after('<img class="processing" src="images/global/processing.gif" width="21" height="21" alt="Processing..." />');
-						} else {
-							// replace all "submit" elements with "processing" images
-							elements.after('<img class="processing" src="images/global/processing.gif" width="21" height="21" alt="Processing..." />');
-						}
+				// prevent multiple executions, as various elements on the page may trigger this
+				if (!processingElementRunning)
+				{	
+					var disableSubmitElement = false;
+					// don't hide buttons, if page is not completely loaded
+					// ("wafPageLoaded" is set in DBFind/DBRecord.xslt)
+					try {
+						disableSubmitElement = eval(wafPageLoaded);
+					} catch (ex) {
+						// ignore error + allow "processing" display
+						disableSubmitElement = true;
 					}
+				
+					if (disableSubmitElement) 
+					{
+						// set flag
+						processingElementRunning = true;
 					
-					// reset "img" source to display animated "img" (needed for some browsers)
-					setTimeout(ResetSearching, 300);
+						// hide "processing" images
+						$('.processing').hide();
+						// hide all "submit" elements
+						elements.hide();
+					
+						if (animate) {
+							if (typeof element != 'undefined') {
+								// replace only specified "submit" element with "processing" image
+								element.after('<img class="processing" src="../ec-images.peoplesmart.com/images/global/processing.gif" width="21" height="21" alt="Processing..." />');
+							} else {
+								// replace all "submit" elements with "processing" images
+								elements.after('<img class="processing" src="../ec-images.peoplesmart.com/images/global/processing.gif" width="21" height="21" alt="Processing..." />');
+							}
+						}
+					
+						// reset "img" source to display animated "img" (needed for some browsers)
+						setTimeout(ResetSearching, 300);
+					}
 				}
 			}
+			
+			// Show processing element (mobile-specific version)
+			//	 "element" -- "this" as the clicked element
+			function ProcessingElementMobile(element) 
+			{
+				$(element).hide();
+				$("div.jquery_processing").show();
+				$("div.jquery_processing img").fadeIn(400);
+			}
+			
+			
 			
 			// Timeout
 			/*(SetSessionTimeout = function()
@@ -290,7 +331,7 @@
 			
 		</script>
     <!--[if IE 6]>
-        <script src="js/DD_belatedPNG.js?ver=storm-13594">&#160;</script>
+        <script src="js/DD_belatedPNG.js?ver=storm-14440">&#160;</script>
         <script>
           DD_belatedPNG.fix('img, #header #navaccount,#header #navmore, .otherLinks');
         </script>
@@ -374,7 +415,7 @@
             </li>
           </ul>
         </div>
-        <p style="clear:both">By using PeopleSmart, you agree to our <a href="http://www.peoplesmart.com/?_act=terms">Terms of Service</a>.  To learn more about how we protect our users and those with information in our database please visit our <a href="index.html%3F_act=privacy.html">Privacy Policy</a>.</p>
+        <p style="clear:both">By using PeopleSmart, you agree to our <a href="http://www.peoplesmart.com/?_act=terms" target="_blank">Terms of Service</a>.  To learn more about how we protect our users and those with information in our database please visit our <a href="index.html%3F_act=privacy.html" target="_blank">Privacy Policy</a>.</p>
       </div>
     </div>
     <script type="text/javascript">
@@ -405,8 +446,21 @@
     <div style="display:none;">
 			WAF Profile info:
 			* search type: </div>
+    <script type="text/javascript">
+			// code to enable analytics (Bo Han)
+			var storm = storm || {};
+			storm.customer = '';									// customer (if available)	
+			storm.visit = '1405573194';											// visit (if available)
+			storm.campaign = '';										// campaign id (if available)
+			storm.affiliate = '';									// affiliate id (if available)
+			storm.activity_id = '';							// ATLAS search id (if available)
+			storm.splitTest =	{ 
+									'analyticsCode':'', 
+									'version':''
+								};
+		</script>
     <div style="display:none;">
-      <img class="processing" src="images/global/processing.gif" width="21" height="21" alt="Processing..." />
+      <img class="processing" src="../ec-images.peoplesmart.com/images/global/processing.gif" width="21" height="21" alt="Processing..." />
     </div>
   </body>
 </html>

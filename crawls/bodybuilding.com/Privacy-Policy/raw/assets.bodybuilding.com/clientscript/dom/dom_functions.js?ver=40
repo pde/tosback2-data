@@ -1,0 +1,1092 @@
+/*************************************************************
+* Document	: bwt_common.js
+* Author	: Wayne J. Earl
+* Created	: 2007-01-02
+* Purpose	: Common JavaScript functions for BWT
+* Comment	: Taken from ing_common.js
+*************************************************************/
+/*************************************************************
+* Revised by	: Wayne J. Earl
+* Revised date	: 2007-03-21
+* Description	: Added 'arraySize' function
+*					(copied from 'crud_junction.js')
+*************************************************************/
+/*************************************************************
+* Revised by	: Wayne J. Earl
+* Revised date	: 2007-06-12
+* Description	: Renamed 'arraySize' function to 'objSize'
+*************************************************************/
+/*************************************************************
+* Revised by	: 
+* Revised date	: 
+* Description	: 
+*************************************************************/
+
+
+function objSize(obj, pfx)
+{
+	var i = 0;
+//	alert(typeof(obj.propertyIsEnumerable));
+//	alert(pfx);
+	for (var j in obj) {
+
+		//alert(j);
+		if (typeof(obj.propertyIsEnumerable) == "function") {
+		
+			if (obj.propertyIsEnumerable(j)) i++;
+		}
+		else {
+		
+			if (typeof(pfx) == "undefined") {
+			
+				i++;
+			}
+			else {
+			
+				var pfx_length = pfx.length;
+				var test_pfx = j.substring(0, pfx_length);
+			//	alert(test_pfx);
+				if (test_pfx == pfx) i++;
+			}
+		}
+	}
+	return i;
+}
+
+
+function getTarget(evt)
+{
+	
+	if (evt.target) {
+		
+		var elem = (evt.target.nodeType == 3) ? evt.target.parentNode : evt.target;
+	}
+	else {
+		
+		var elem = evt.srcElement;
+	}
+	return elem;
+}
+
+/*
+function getIdElement(id, doc_ref)
+{
+	var debug = 0;
+	var elem;
+
+	if (typeof(doc_ref) == "undefined") {
+		
+		if (debug) alert("No document ref");
+		doc_ref = document;
+	}
+	else {
+		
+		if (debug) alert("Document ref included");
+	}
+	
+	if (debug) {
+	
+		alert("Document Title: " + doc_ref.title);
+		alert("getIdElement");
+		alert("ID: " + id);
+	}
+	
+	if (doc_ref.getElementById) {
+
+		elem = doc_ref.getElementById(id);
+		if (debug) alert("ByID: " + elem);
+	}
+	else if (doc_ref.all) {
+
+		elem = doc_ref.all[id];
+		if (debug) alert("All: " + elem);
+	}
+	return elem;
+}
+*/
+
+if (document.getElementById) {
+
+	getIdElement = function(id) {
+	
+		return document.getElementById(id);
+	}
+}
+else if (document.all) {
+
+	getIdElement = function(id) {
+	
+		return document.all[id];
+	}
+}
+else {
+
+	getIdElement = function() {
+	
+		alert("Browser Not Supported");
+		return null;
+	}
+}
+
+function getNameElement(name)
+{
+	//var elem;
+	if (document.getElementsByName) {
+
+		var elem = document.getElementsByName(name)[0];
+	}
+	else if (document.all) {
+
+		var elem = document.all[name];
+	}
+	return elem;
+}
+
+
+//adds or removes one or more class names to elem
+//elem is required
+//names is a space-delimited string of one or more class names
+//mode is optional, defaulting to 'add'
+function addRemoveClassName(elem, names, mode)
+{
+	var debug = 0;
+	
+	if (typeof(mode) == "undefined") mode = "add";
+	if (debug) alert("Mode: " + mode);
+
+	if (debug) alert("addRemoveClassName");
+	//var classes;
+	//var class_array;
+	//var name_array;
+	//var class_item;
+	//var name_item;
+	var f_class_found;
+	//var class_idx;
+	//var name_idx;
+	
+	if (elem) {
+	
+		var classes = elem.className;
+		if (names) {
+
+			if (debug) alert("Names: '" + names + "'");
+			names = names.replace(/^\s*(.*?)\s*$/, "$1");
+			if (debug) alert("Trimmed names: '" + names + "'");
+			
+			if (debug) alert("Classes (1): " + classes);
+			var name_array = names.split(" ");
+			var name_length = name_array.length;
+
+			if (classes) {
+					
+				var class_array = classes.split(" ");
+				var class_length = class_array.length;
+				for (var name_idx = 0; name_idx < name_length; name_idx ++) {
+				
+					f_class_found = false;
+					var name_item = name_array[name_idx];
+					for (var class_idx = 0; class_idx < class_length; class_idx ++) {
+						
+						var class_item = class_array[class_idx];
+						if (class_item == name_item) {
+								
+							f_class_found = true;
+							break;
+						}
+					}
+					if (! f_class_found) { //class not found in list
+	
+						if (mode == "add") {
+							
+							class_array.push(name_item);
+						}
+					}
+					else { //class found in list
+						
+						if (mode == "remove") {
+							
+							//remove class
+							class_array.splice(class_idx, 1);
+						}
+					}
+				}
+				if (debug) alert(class_array.length);
+				classes = class_array.join(" ");
+			}
+			else {
+				
+				if (mode == "add") {
+					
+					classes = names;
+				}
+			}
+			if (mode == "add") {
+			
+				if (classes) elem.className = classes;
+			}
+			if (mode == "remove") {
+			
+				if (f_class_found) elem.className = classes;
+			}
+		}
+	}
+}
+
+
+function addTableRow (table_name, elem_row, base_rows, elem_sender, mode)
+{
+	var debug = 0;
+	
+	var line_ref;
+	var line_ref_adjust = 0;
+	var row_num;
+	if (typeof(elem_row) == 'undefined') return false;
+	if (typeof(mode) == 'undefined') mode = "up";
+
+	if (mode == "down") {
+		
+		line_ref_adjust = 1;
+	}
+
+	if (debug) {
+		
+		alert(elem_sender);
+		alert(elem_sender.name);
+		alert(elem_sender.id);
+	}
+
+	if (typeof(elem_sender) != 'undefined') {
+
+		var field_parts = parseFieldName(elem_sender.id);
+		//line_ref = Number(elem_sender.getAttribute("line_ref")) + line_ref_adjust;
+		line_ref = Number(field_parts.row_sfx) + line_ref_adjust;
+	}
+
+	var elem_table = getIdElement(table_name);
+	if (elem_table) {
+
+		if ((typeof(line_ref) == 'undefined') || (String(line_ref) == 'null') || (line_ref === '')) {
+			
+			line_ref = elem_table.rows.length - base_rows - 1;
+			row_num = -1;
+		}
+		else {
+			
+			row_num = base_rows + line_ref;
+		}
+		if (debug) alert(line_ref);
+
+		if (row_num > elem_table.rows.length) {
+			
+			return false;
+		}
+		var elem_new_row = elem_table.insertRow(row_num);
+		//var elem_row_dupe = elem_row.cloneNode(true);
+		elem_new_row.parentNode.replaceChild(elem_row, elem_new_row);
+		return true;
+	}
+	else {
+	
+		return false;
+	}
+}
+
+
+function removeTableRow (table_name, base_rows, sender_ref, f_confirm)
+{
+	var debug = 0;
+
+	if (typeof(f_confirm) == 'undefined') f_confirm = true;
+
+	var line_ref;
+	var row_num;
+	
+	if (debug) {
+		
+		alert(sender_ref);
+		//alert(elem_sender);
+		//alert(elem_sender.name);
+		//alert(elem_sender.id);
+	}
+
+	var ref_type = typeof(sender_ref);
+	if (ref_type == 'object') {
+
+		var field_parts = parseFieldName(sender_ref.id);
+		//line_ref = Number(sender_ref.getAttribute("line_ref"));
+		line_ref = Number(field_parts.row_sfx);
+	}
+	else if (ref_type == 'number') {
+
+		line_ref = sender_ref;
+	}
+	if (typeof(base_rows) == 'undefined') base_rows = 0;
+	
+	var elem_table = getIdElement(table_name);
+	if (elem_table) {
+
+		if ((typeof(line_ref) == 'undefined') || (String(line_ref) == 'null') || (line_ref === '')) {
+			
+			line_ref = elem_table.rows.length - base_rows - 1;
+			row_num = -1;
+		}
+		else {
+			
+			row_num = base_rows + line_ref;
+		}
+		if (debug) alert(line_ref);
+
+		if (elem_table.rows.length > base_rows) { //only delete if > min_rows
+			
+			if (f_confirm) {
+				
+				if (!confirm('Delete this line?')) {
+					
+					return false;
+				}
+			}
+			elem_table.deleteRow(row_num); //delete row
+			return true;
+		}
+		else {
+		
+			return false;
+		}
+	}
+	else {
+	
+		return false;
+	}
+}
+
+
+function getVisibility(name_elem)
+{
+	var f_visible = false;
+	//var visibility;
+
+	//var elem;
+	if (typeof(name_elem) == "object") {
+	
+		var elem = name_elem;
+	}
+	else if (typeof(name_elem) == "string") {
+	
+		var elem = getIdElement(name_elem);
+	}
+	//check for element visibility
+	if (elem) { //elem found
+	
+		var visibility = elem.visibility;
+		if (!visibility) {
+			
+			visibility = elem.style.visibility;
+		}
+		if (visibility == 'visible') {
+		
+			f_visible = true;
+		}
+	}
+	return f_visible;
+}
+
+
+function setVisibility(name_elem, value)
+{
+	if (value === undefined) value = true;
+	var vis_val = (value) ? "visible" : "hidden";
+
+	//var elem;
+	if (typeof(name_elem) == "object") {
+	
+		var elem = name_elem;
+	}
+	else if (typeof(name_elem) == "string") {
+	
+		var elem = getIdElement(name_elem);
+	}
+	//set element visibility
+	if (elem) { //elem found
+	
+		elem.visibility = vis_val;
+		elem.style.visibility = vis_val;
+	}
+}
+
+
+function getAttrib(elem, attrib)
+{
+	var retval = null;
+
+	if (typeof(elem) == "object") {
+		
+		if (elem[attrib]) {
+		
+			retval = elem[attrib];
+		}
+		else if (elem.getAttribute(attrib)) {
+		
+			retval = elem.getAttribute(attrib);
+		}
+	}
+	return retval;
+}
+
+
+function setAttrib(elem, attrib, value)
+{
+	var retval;
+	
+	if (typeof(elem) == "object") {
+		
+		if (elem[attrib]) {
+		
+			elem[attrib] = value;
+			retval = true;
+		}
+		else {
+			
+			elem.setAttribute(attrib, value);
+			retval = false;
+		}
+	}
+	return retval;
+}
+
+
+function applyCaseType(text, case_type)
+{
+	var new_text = text;
+	
+	if (text) {
+		
+		switch(case_type) {
+		
+			case 'lower':
+			
+				new_text = text.toLowerCase();
+				break;
+				
+			case 'upper':
+			
+				new_text = text.toUpperCase();
+				break;
+				
+			case 'init':
+			case 'title':
+
+				var re;
+
+				if (case_type == 'init') {
+					
+					//for sentences... assume .?! as delims, followed by one or more spaces or eol
+					re = /[.?!]\s+/g;
+				}
+				else if (case_type == 'title') {
+					
+					//for words... assume one or more space, eol, opening paren, or hyphen
+					re = /[-(\s]+/g;
+				}
+				
+				//break string into array of sentences/words
+				var parts = text.split(re);
+				//capture delims
+				var delims = text.match(re);
+
+				//var idx;
+				var idx2 = 0;
+				var idx3 = 0;
+				//var part;
+				//var delim;
+				//var part_index;
+				if (parts) {
+				
+					var parts_delims = new Array();
+					for(var idx = 0; idx < parts.length; idx ++) {
+					
+						var part = parts[idx];
+						//skip blank parts
+						if (part == "") continue;
+						if (!idx3) { //first (valid) part
+							
+							//check to see whether parts or delims come first
+							var part_index = text.indexOf(part);
+							if (!part_index) { //part located at beginning of text
+							
+								f_parts_first = true;
+							}
+							else { //part NOT located at beginning of text
+							
+								f_parts_first = false;
+							}
+						}
+						if (f_parts_first) {
+							
+							parts_delims[idx3] = part;
+							idx3 ++;
+							
+							if (delims) { //delims exist
+								
+								if (typeof(delims[idx2]) != 'undefined') {
+								
+									var delim = delims[idx2];
+									parts_delims[idx3] = delim;
+									idx2 ++;
+									idx3 ++;
+								}
+							}
+						}
+						else {
+							
+							if (delims) { //delims exist
+								
+								if (typeof(delims[idx2]) != 'undefined') {
+								
+									var delim = delims[idx2];
+									parts_delims[idx3] = delim;
+									idx2 ++;
+									idx3 ++;
+								}
+							}
+							parts_delims[idx3] = part;
+							idx3 ++;
+						}
+					}
+					if (parts_delims.length) { //something here
+					
+						//capitalize first character in each sentence/word
+						//var temp;
+						//var idx_adj;
+						if (f_parts_first) {
+						
+							var idx_adj = 0;
+						}
+						else {
+						
+							var idx_adj = 1;
+						}
+						for(var idx = 0 + idx_adj; idx < parts_delims.length; idx += 2) {
+	
+							part = parts_delims[idx];
+							var temp = part.substring(0,1).toUpperCase();
+						//	temp += part.substr(1);
+							temp += part.substring(1, part.length);
+							parts_delims[idx] = temp;
+						}
+						//reassemble array into string
+						new_text = parts_delims.join("");
+					}
+				}
+				break;
+				
+			case 'none':
+			default:
+			
+				//do nothing
+		}
+	}
+	return new_text;
+}
+
+
+function parseFieldName(field_id)
+{
+	var field_parts = {field_base: "",
+					   row_sfx: "",
+					   col_sfx: "",
+					   seq_sfx: ""};
+	if (field_id) {
+		
+		//extract sfx info
+		var re = /(.+?)(?:_(\d+))(?:_(\d+))?(?:_(\d+))?$/;
+		var matches = field_id.match(re);
+		//if matching, extract suffix
+		if (matches) {
+			
+			if (matches[1] !== undefined) { //field name found
+			
+				field_parts.field_base = matches[1];
+			}
+			if (matches[2] !== undefined) { //row suffix found
+			
+				field_parts.row_sfx = matches[2];
+			}
+			if (matches[3] !== undefined) { //col suffix found
+			
+				field_parts.col_sfx = matches[3];
+			}
+			if (matches[4] !== undefined) { //seq suffix found
+			
+				field_parts.seq_sfx = matches[4];
+			}
+		}
+	}
+	return field_parts;
+}
+
+
+function encodeQuotes(text)
+{
+	var new_text = text;
+	
+	var test_str = String.fromCharCode(34);
+	var repl_str = "&quot;";
+	var re_repl = new RegExp(test_str, "gm");
+	new_text = text.replace(re_repl, repl_str);
+	
+	return new_text;
+}
+
+
+function decodeQuotes(text)
+{
+	var new_text = text;
+	
+	var test_str = "&quot;";
+	var repl_str = String.fromCharCode(34);
+	var re_repl = new RegExp(test_str, "gm");
+	new_text = text.replace(re_repl, repl_str);
+	
+	return new_text;
+}
+
+
+function stripCRLF(text)
+{
+	var new_text = text;
+	
+	//var test_str = String.fromCharCode(13);
+	var repl_str = "";
+	//var re_repl = new RegExp(test_str, "gm");
+	var re_repl = /[\r\n\t]/gm;
+	new_text = text.replace(re_repl, repl_str);
+	
+	return new_text;
+}
+
+
+function getOpacity (name_elem)
+{
+	var retval = null;
+	//var elem;
+	if (typeof(name_elem) == "object") {
+	
+		var elem = name_elem;
+	}
+	else if (typeof(name_elem) == "string") {
+	
+		var elem = getIdElement(name_elem);
+	}
+	if (elem) {
+		
+		if (elem.style['opacity']) {
+		  
+			retval = parseFloat(elem.style['opacity']);
+		}
+		else {
+			
+			if (elem.style['filter']) {
+				
+				matches = elem.style['filter'].match(/alpha\(opacity=(.*)\)/);
+				if (matches[1]) {
+					
+					retval = parseFloat(matches[1]) / 100;
+				}
+				else {
+				
+					retval = 1.0;
+				}
+			}
+		}
+	}
+	return retval;
+}
+
+
+function setOpacity (name_elem, value)
+{
+	//var setval;
+	//var elem;
+	if (typeof(name_elem) == "object") {
+	
+		var elem = name_elem;
+	}
+	else if (typeof(name_elem) == "string") {
+	
+		var elem = getIdElement(name_elem);
+	}
+	if (elem) {
+		
+		if (value == 1) {
+			
+			var setval = (/Gecko/.test(navigator.userAgent) && !/Konqueror|Safari|KHTML/.test(navigator.userAgent)) ?
+						  0.999999 : 1.0 ;
+			elem.style['opacity'] = setval;
+			if ((/MSIE/.test(navigator.userAgent)) && (!window.opera)) {
+				
+				elem.style['filter'] = elem.style['filter'].replace(/alpha\([^\)]*\)/gi,'');
+				
+			}
+		}
+		else {
+			
+			if (value < 0.00001) value = 0;
+			elem.style['opacity'] = value;
+			if ((/MSIE/.test(navigator.userAgent)) && (!window.opera)) {
+				
+			elem.style['filter'] = elem.style['filter'].replace(/alpha\([^\)]*\)/gi,'') +
+								   'alpha(opacity=' + value * 100 + ')';
+			}
+		}
+	}
+}  
+
+
+function PerfObj(idx)
+{
+	if (idx !== undefined) this.idx = idx;
+	
+	this.start_time;
+	this.stop_time;
+	this.elapsed_time;
+	
+	this.calcElapsed = function() {
+	
+		this.elapsed_time = this.stop_time - this.start_time;
+	}
+	this.start = function() {
+	
+		if (Date.now) {
+		
+			this.start_time = Date.now();
+		}
+		else {
+		
+			this.start_time = new Date().valueOf();
+		}
+	}
+	this.stop = function() {
+	
+		if (Date.now) {
+		
+			this.stop_time = Date.now();
+		}
+		else {
+		
+			this.stop_time = new Date().valueOf();
+		}
+		this.calcElapsed();
+	}
+	//getters
+	this.getIdx = function() { return this.idx; }
+	this.getStart = function() { return this.start_time; }
+	this.getStop = function() { return this.stop_time; }
+	this.getElapsed = function() { return this.elapsed_time; }
+}
+
+var perf_array = new Array();
+
+
+function perfTest(idx, mode)
+{
+	if ((idx === undefined) || (mode === undefined)) return false;
+	//get local object
+	if (typeof(perf_array[idx]) != "undefined") {
+	
+		perf_obj = perf_array[idx];
+	}
+	if (mode == "start") {
+
+		//create new element if doesn't exist
+		if (typeof(local) == "undefined") {
+		
+			perf_obj = new PerfObj(idx);
+			perf_array.push(perf_obj);
+		}
+		//set start time for this index
+		perf_obj.start();
+	}
+	else if (mode == "stop") {
+	
+		if (typeof(perf_obj) != "undefined") {
+		
+			//set stop time for this index
+			perf_obj.stop();
+		}
+	}
+	else {
+	
+		return false;
+	}
+}
+
+//option_refs	- defines which keys from opt_array s/b used for text and value
+//					option_refs.text = <text_key>; option_refs.value = <value_key>
+//extra_array	- defines an extra item to be prepended to option list
+//					extra_array.text = <text>; extra_array.value = <value>
+//for_mode		- defines type of for loop;
+//					'c' = count (default)
+//					'i' = iterate (for ... in)
+//					'x' = iterate w/o option refs (uses idx = value; value = text)
+function buildSelectOptions(elem, option_array, option_refs, extra_array, for_mode, sel_idx)
+{
+	if (typeof(elem) == "undefined") return false;
+	if (typeof(option_array) == "undefined") return false;
+	if (typeof(option_refs) == "undefined") return false;
+	if (typeof(extra_array) == "undefined") extra_array = new Array();
+	if (typeof(for_mode) == "undefined") for_mode = 'c';
+	if ((for_mode != 'c') && (for_mode != 'i') && (for_mode != 'x')) for_mode = 'c';
+	if (typeof(sel_idx) == "undefined") sel_idx = -1;
+	
+	//preserve current value
+	var current_value = elem.value;
+	//clear options
+	elem.options.length = 0;
+	if (extra_array) {
+	
+		var extra_text = extra_array.text;
+		var extra_value = extra_array.value;
+		addSelectOption(elem, extra_text, extra_value);
+	}
+	var text_key = option_refs.text;
+	var value_key = option_refs.value;
+	switch(for_mode) {
+	
+		case 'c':
+		
+			for (var idx = 0; idx < option_array.length; idx ++) {
+			
+				var option_item = option_array[idx];
+				if ((option_item) && (option_item[value_key])) {
+				
+					var value = option_item[value_key];
+					if (current_value == value) {
+					
+						var f_selected = true;
+					}
+					else {
+					
+						var f_selected = false;
+					}
+					var text = option_item[text_key];
+					addSelectOption(elem, text, value, false, f_selected);
+				}
+			}
+			break;
+			
+		case 'i':
+		case 'x':
+		
+			for (var idx in option_array) {
+			
+				var f_valid = false;
+				if (typeof(option_array.propertyIsEnumerable) == "function") {
+			
+					if (option_array.propertyIsEnumerable(idx)) f_valid = true;
+				}
+				else {
+				
+					if (!isNaN(Number(idx))) f_valid = true;
+				}
+			//	if (option_array.propertyIsEnumerable(idx)) {
+				if (f_valid) {
+				
+					if (for_mode == 'i') {
+					
+						var option_item = option_array[idx];
+						var value = option_item[value_key];
+						var text = option_item[text_key];
+					}
+					else {
+					
+						var value = idx;
+						var text = option_array[idx];
+					}
+					if (current_value == value) {
+					
+						var f_selected = true;
+					}
+					else {
+					
+						var f_selected = false;
+					}
+					addSelectOption(elem, text, value, false, f_selected);
+				}
+			}
+			break;
+	}
+}
+		
+
+function addSelectOption(elem, text, val, f_default, f_selected)
+{
+	if (typeof(elem) == "undefined") return false;
+	if (typeof(text) == "undefined") text = "";
+	if (typeof(val) == "undefined") val = 0;
+	if (typeof(f_default) == "undefined") f_default = false;
+	if (typeof(f_selected) == "undefined") f_selected = false;
+
+	if (elem.nodeName.toLowerCase() == "select") {
+	
+		var elem_option = new Option(text, val, f_default, f_selected);
+		if (elem_option) {
+		
+			var option_count = elem.options.length;
+			elem.options[option_count] = elem_option;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+function optionSearch(elem, value)
+{
+	var retval = "";
+	if (typeof(elem) == "undefined") return false;
+	if (elem.nodeName != "SELECT") return false;
+	if (typeof(value) != "undefined") {
+	
+		var options = elem.options;
+		for(var idx = 0; idx < options.length; idx ++) {
+		
+			var option = options[idx];
+			if (option.value == value) {
+			
+				retval = option.text;
+				break;
+			}
+		}
+	}
+	return retval;
+}
+
+
+function getElementPos(param_elem)
+{
+	if (typeof(param_elem) == "undefined") return false;
+	if (param_elem == null) return false;
+	
+	var elem = null;
+	if (typeof(param_elem) == "string") elem = document.getElementById(param_elem);
+	if (typeof(param_elem) == "object") elem = param_elem;
+	
+	var pos = {"top": 0,
+			   "left":0};
+	var top = 0;
+	var left = 0;
+	if (elem) {
+
+		if (elem.clientTop) top = elem.clientTop;
+		if (elem.clientLeft) left = elem.clientLeft;
+		if (elem.offsetParent) {
+		
+			top += elem.offsetTop;
+			left += elem.offsetLeft;
+			while (elem = elem.offsetParent) {
+			
+				top += elem.offsetTop;
+				left += elem.offsetLeft;
+			}
+			pos.top = top;
+			pos.left = left;
+		}
+	}
+	return pos;
+}
+
+//number	: initial value
+//decimals	: number of decimals in output (max = 10)
+function numberFormat(number, decimals, f_force_dec)
+{
+	//check values
+	number = Number(number);
+	if (typeof(number) != "number") return false;
+
+	decimals = Number(decimals);
+	if (typeof(decimals) != "number") decimals = 0;
+	if (decimals > 10) decimals = 10;
+
+	if (typeof(f_force_dec) == "undefined") f_force_dec = false;
+	var pad = "0000000000";
+	
+	var init_str = String(number);
+	var init_length = init_str.length;
+	var init_dec_pos = init_str.indexOf('.');
+	var init_dec_count = init_length - init_dec_pos - 1;
+	//alert("Number (orig): '" + number + "'");
+	var factor = Math.pow(10, decimals + 1);
+	var temp = number * factor + .5;
+	var temp_val = Math.floor(temp);
+	var temp_str = String(temp_val);
+	//alert("Number (after factor): '" + temp_str + "'");
+	var temp_length = temp_str.length;
+	var dec_pos = temp_length - decimals - 1;
+	//var dec_count = temp_length - dec_pos - 1;
+	if (dec_pos > -1) {
+	
+		var ret_str = temp_str.substr(0, dec_pos) + "." + temp_str.substr(dec_pos, temp_length - 1);
+	}
+	else {
+	
+		var ret_str = "." + pad.substr(0, Math.abs(dec_pos)) + temp_str;
+	}
+	//alert("Number (after reformat): '" + ret_str + "'");
+
+	var re = /^(\d*\.\d*?)0+$/;
+	var matches = ret_str.match(re);
+	if ((matches) && (typeof(matches[1]) == "string")) {
+
+		ret_str = matches[1];
+	}
+	var dec_pos = ret_str.indexOf('.');
+	if (!dec_pos) { //zero
+	
+		ret_str = "0" + ret_str;
+		dec_pos ++;
+	}
+	var ret_length = ret_str.length;
+	var dec_count = ret_length - dec_pos - 1;
+	if (!f_force_dec) { //display using fewest number of sig digs possible (<= decimals)
+	
+		if (dec_pos == (ret_length - 1)) {
+		
+			ret_str = ret_str.substr(0, ret_length - 1);
+		}
+		else if (dec_count > decimals) {
+		
+			ret_str = ret_str.substr(0, ret_length - (dec_count - decimals));
+		}
+		matches = ret_str.match(re);
+		if ((matches) && (typeof(matches[1]) == "string")) {
+
+			ret_str = matches[1];
+			ret_length = ret_str.length;
+			dec_pos = ret_str.indexOf('.');
+			if (dec_pos == (ret_length - 1)) {
+			
+				ret_str = ret_str.substr(0, ret_length - 1);
+			}
+		}
+	}
+	else { //display using exactly the number of decimals specified
+	
+		if (dec_pos == -1) {
+		
+			//no decimal found
+			ret_str += "." + pad.substr(0, decimals);
+		}
+		else if (dec_count > decimals) {
+		
+			ret_str = ret_str.substr(0, ret_length - (dec_count - decimals));
+		}
+		else if (dec_count < decimals) {
+		
+			ret_str += pad.substr(0, decimals - dec_count);
+		}
+	}
+	//var ret_val = Number(ret_str);
+	var ret_val = ret_str;
+	//alert("Number (after convert): '" + ret_val + "'");
+	return ret_val;
+}

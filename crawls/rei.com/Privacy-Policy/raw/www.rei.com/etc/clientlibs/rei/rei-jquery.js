@@ -1555,7 +1555,6 @@ a.length?this.activate(f,a):this.activate(f,this.element.children(b))}else this.
 c)}else this.activate(a,this.element.children(".ui-menu-item").filter(!this.active||this.last()?":first":":last"))},previousPage:function(a){if(this.hasScroll())if(!this.active||this.first())this.activate(a,this.element.children(".ui-menu-item:last"));else{var b=this.active.offset().top,f=this.element.height();result=this.element.children(".ui-menu-item").filter(function(){var c=d(this).offset().top-b+f-d(this).height();return c<10&&c>-10});result.length||(result=this.element.children(".ui-menu-item:first"));
 this.activate(a,result)}else this.activate(a,this.element.children(".ui-menu-item").filter(!this.active||this.first()?":last":":first"))},hasScroll:function(){return this.element.height()<this.element.attr("scrollHeight")},select:function(a){this._trigger("selected",a,{item:this.active})}})})(jQuery);
 ;
-/* $Id: jquery.fancybox-1.3.1.pack.js 2146 2012-04-09 21:08:46Z jowilso $ */
 /*
  * FancyBox - jQuery Plugin
  * Simple and fancy lightbox alternative
@@ -1563,8 +1562,9 @@ this.activate(a,result)}else this.activate(a,this.element.children(".ui-menu-ite
  * Examples and documentation at: http://fancybox.net
  * 
  * Copyright (c) 2008 - 2010 Janis Skarnelis
- *
- * Version: 1.3.1 (05/03/2010)
+ * That said, it is hardly a one-person project. Many people have submitted bugs, code, and offered their advice freely. Their support is greatly appreciated.
+ * 
+ * Version: 1.3.4 (11/11/2010)
  * Requires: jQuery v1.3+
  *
  * Dual licensed under the MIT and GPL licenses:
@@ -1572,33 +1572,35 @@ this.activate(a,result)}else this.activate(a,this.element.children(".ui-menu-ite
  *   http://www.gnu.org/licenses/gpl.html
  */
 
-(function(b){var m,u,x,g,D,i,z,A,B,p=0,e={},q=[],n=0,c={},j=[],E=null,s=new Image,G=/\.(jpg|gif|png|bmp|jpeg)(.*)?$/i,S=/[^\.]\.(swf)\s*$/i,H,I=1,k,l,h=false,y=b.extend(b("<div/>")[0],{prop:0}),v=0,O=!b.support.opacity&&!window.XMLHttpRequest,J=function(){u.hide();s.onerror=s.onload=null;E&&E.abort();m.empty()},P=function(){b.fancybox('<p id="fancybox_error">The requested content cannot be loaded.<br />Please try again later.</p>',{scrolling:"no",padding:20,transitionIn:"none",transitionOut:"none"})},
-K=function(){return[b(window).width(),b(window).height(),b(document).scrollLeft(),b(document).scrollTop()]},T=function(){var a=K(),d={},f=c.margin,o=c.autoScale,t=(20+f)*2,w=(20+f)*2,r=c.padding*2;if(c.width.toString().indexOf("%")>-1){d.width=a[0]*parseFloat(c.width)/100-40;o=false}else d.width=c.width+r;if(c.height.toString().indexOf("%")>-1){d.height=a[1]*parseFloat(c.height)/100-40;o=false}else d.height=c.height+r;if(o&&(d.width>a[0]-t||d.height>a[1]-w))if(e.type=="image"||e.type=="swf"){t+=r;
-w+=r;o=Math.min(Math.min(a[0]-t,c.width)/c.width,Math.min(a[1]-w,c.height)/c.height);d.width=Math.round(o*(d.width-r))+r;d.height=Math.round(o*(d.height-r))+r}else{d.width=Math.min(d.width,a[0]-t);d.height=Math.min(d.height,a[1]-w)}d.top=a[3]+(a[1]-(d.height+40))*0.5;d.left=a[2]+(a[0]-(d.width+40))*0.5;if(c.autoScale===false){d.top=Math.max(a[3]+f,d.top);d.left=Math.max(a[2]+f,d.left)}return d},U=function(a){if(a&&a.length)switch(c.titlePosition){case "inside":return a;case "over":return'<span id="fancybox-title-over">'+
-a+"</span>";default:return'<span id="fancybox-title-wrap"><span id="fancybox-title-left"></span><span id="fancybox-title-main">'+a+'</span><span id="fancybox-title-right"></span></span>'}return false},V=function(){var a=c.title,d=l.width-c.padding*2,f="fancybox-title-"+c.titlePosition;b("#fancybox-title").remove();v=0;if(c.titleShow!==false){a=b.isFunction(c.titleFormat)?c.titleFormat(a,j,n,c):U(a);if(!(!a||a==="")){b('<div id="fancybox-title" class="'+f+'" />').css({width:d,paddingLeft:c.padding,
-paddingRight:c.padding}).html(a).appendTo("body");switch(c.titlePosition){case "inside":v=b("#fancybox-title").outerHeight(true)-c.padding;l.height+=v;break;case "over":b("#fancybox-title").css("bottom",c.padding);break;default:b("#fancybox-title").css("bottom",b("#fancybox-title").outerHeight(true)*-1);break}b("#fancybox-title").appendTo(D).hide()}}},W=function(){b(document).unbind("keydown.fb").bind("keydown.fb",function(a){if(a.keyCode==27&&c.enableEscapeButton){a.preventDefault();b.fancybox.close()}else if(a.keyCode==
-37){a.preventDefault();b.fancybox.prev()}else if(a.keyCode==39){a.preventDefault();b.fancybox.next()}});if(b.fn.mousewheel){g.unbind("mousewheel.fb");j.length>1&&g.bind("mousewheel.fb",function(a,d){a.preventDefault();h||d===0||(d>0?b.fancybox.prev():b.fancybox.next())})}if(c.showNavArrows){if(c.cyclic&&j.length>1||n!==0)A.show();if(c.cyclic&&j.length>1||n!=j.length-1)B.show()}},X=function(){var a,d;if(j.length-1>n){a=j[n+1].href;if(typeof a!=="undefined"&&a.match(G)){d=new Image;d.src=a}}if(n>0){a=
-j[n-1].href;if(typeof a!=="undefined"&&a.match(G)){d=new Image;d.src=a}}},L=function(){i.css("overflow",c.scrolling=="auto"?c.type=="image"||c.type=="iframe"||c.type=="swf"?"hidden":"auto":c.scrolling=="yes"?"auto":"visible");if(!b.support.opacity){i.get(0).style.removeAttribute("filter");g.get(0).style.removeAttribute("filter")}b("#fancybox-title").show();c.hideOnContentClick&&i.one("click",b.fancybox.close);c.hideOnOverlayClick&&x.one("click",b.fancybox.close);c.showCloseButton&&z.show();W();b(window).bind("resize.fb",
-b.fancybox.center);c.centerOnScroll?b(window).bind("scroll.fb",b.fancybox.center):b(window).unbind("scroll.fb");b.isFunction(c.onComplete)&&c.onComplete(j,n,c);h=false;X()},M=function(a){var d=Math.round(k.width+(l.width-k.width)*a),f=Math.round(k.height+(l.height-k.height)*a),o=Math.round(k.top+(l.top-k.top)*a),t=Math.round(k.left+(l.left-k.left)*a);g.css({width:d+"px",height:f+"px",top:o+"px",left:t+"px"});d=Math.max(d-c.padding*2,0);f=Math.max(f-(c.padding*2+v*a),0);i.css({width:d+"px",height:f+
-"px"});if(typeof l.opacity!=="undefined")g.css("opacity",a<0.5?0.5:a)},Y=function(a){var d=a.offset();d.top+=parseFloat(a.css("paddingTop"))||0;d.left+=parseFloat(a.css("paddingLeft"))||0;d.top+=parseFloat(a.css("border-top-width"))||0;d.left+=parseFloat(a.css("border-left-width"))||0;d.width=a.width();d.height=a.height();return d},Q=function(){var a=e.orig?b(e.orig):false,d={};if(a&&a.length){a=Y(a);d={width:a.width+c.padding*2,height:a.height+c.padding*2,top:a.top-c.padding-20,left:a.left-c.padding-
-20}}else{a=K();d={width:1,height:1,top:a[3]+a[1]*0.5,left:a[2]+a[0]*0.5}}return d},N=function(){u.hide();if(g.is(":visible")&&b.isFunction(c.onCleanup))if(c.onCleanup(j,n,c)===false){b.event.trigger("fancybox-cancel");h=false;return}j=q;n=p;c=e;i.get(0).scrollTop=0;i.get(0).scrollLeft=0;if(c.overlayShow){O&&b("select:not(#fancybox-tmp select)").filter(function(){return this.style.visibility!=="hidden"}).css({visibility:"hidden"}).one("fancybox-cleanup",function(){this.style.visibility="inherit"});
-x.css({"background-color":c.overlayColor,opacity:c.overlayOpacity}).unbind().show()}l=T();V();if(g.is(":visible")){b(z.add(A).add(B)).hide();var a=g.position(),d;k={top:a.top,left:a.left,width:g.width(),height:g.height()};d=k.width==l.width&&k.height==l.height;i.fadeOut(c.changeFade,function(){var f=function(){i.html(m.contents()).fadeIn(c.changeFade,L)};b.event.trigger("fancybox-change");i.empty().css("overflow","hidden");if(d){i.css({top:c.padding,left:c.padding,width:Math.max(l.width-c.padding*
-2,1),height:Math.max(l.height-c.padding*2-v,1)});f()}else{i.css({top:c.padding,left:c.padding,width:Math.max(k.width-c.padding*2,1),height:Math.max(k.height-c.padding*2,1)});y.prop=0;b(y).animate({prop:1},{duration:c.changeSpeed,easing:c.easingChange,step:M,complete:f})}})}else{g.css("opacity",1);if(c.transitionIn=="elastic"){k=Q();i.css({top:c.padding,left:c.padding,width:Math.max(k.width-c.padding*2,1),height:Math.max(k.height-c.padding*2,1)}).html(m.contents());g.css(k).show();if(c.opacity)l.opacity=
-0;y.prop=0;b(y).animate({prop:1},{duration:c.speedIn,easing:c.easingIn,step:M,complete:L})}else{i.css({top:c.padding,left:c.padding,width:Math.max(l.width-c.padding*2,1),height:Math.max(l.height-c.padding*2-v,1)}).html(m.contents());g.css(l).fadeIn(c.transitionIn=="none"?0:c.speedIn,L)}}},F=function(){m.width(e.width);m.height(e.height);if(e.width=="auto")e.width=m.width();if(e.height=="auto")e.height=m.height();N()},Z=function(){h=true;e.width=s.width;e.height=s.height;b("<img />").attr({id:"fancybox-img",
-src:s.src,alt:e.title}).appendTo(m);N()},C=function(){J();var a=q[p],d,f,o,t,w;e=b.extend({},b.fn.fancybox.defaults,typeof b(a).data("fancybox")=="undefined"?e:b(a).data("fancybox"));o=a.title||b(a).title||e.title||"";if(a.nodeName&&!e.orig)e.orig=b(a).children("img:first").length?b(a).children("img:first"):b(a);if(o===""&&e.orig)o=e.orig.attr("alt");d=a.nodeName&&/^(?:javascript|#)/i.test(a.href)?e.href||null:e.href||a.href||null;if(e.type){f=e.type;if(!d)d=e.content}else if(e.content)f="html";else if(d)if(d.match(G))f=
-"image";else if(d.match(S))f="swf";else if(b(a).hasClass("iframe"))f="iframe";else if(d.match(/#/)){a=d.substr(d.indexOf("#"));f=b(a).length>0?"inline":"ajax"}else f="ajax";else f="inline";e.type=f;e.href=d;e.title=o;if(e.autoDimensions&&e.type!=="iframe"&&e.type!=="swf"){e.width="auto";e.height="auto"}if(e.modal){e.overlayShow=true;e.hideOnOverlayClick=false;e.hideOnContentClick=false;e.enableEscapeButton=false;e.showCloseButton=false}if(b.isFunction(e.onStart))if(e.onStart(q,p,e)===false){h=false;
-return}m.css("padding",20+e.padding+e.margin);b(".fancybox-inline-tmp").unbind("fancybox-cancel").bind("fancybox-change",function(){b(this).replaceWith(i.children())});switch(f){case "html":m.html(e.content);F();break;case "inline":b('<div class="fancybox-inline-tmp" />').hide().insertBefore(b(a)).bind("fancybox-cleanup",function(){b(this).replaceWith(i.children())}).bind("fancybox-cancel",function(){b(this).replaceWith(m.children())});b(a).appendTo(m);F();break;case "image":h=false;b.fancybox.showActivity();
-s=new Image;s.onerror=function(){P()};s.onload=function(){s.onerror=null;s.onload=null;Z()};s.src=d;break;case "swf":t='<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="'+e.width+'" height="'+e.height+'"><param name="movie" value="'+d+'"></param>';w="";b.each(e.swf,function(r,R){t+='<param name="'+r+'" value="'+R+'"></param>';w+=" "+r+'="'+R+'"'});t+='<embed src="'+d+'" type="application/x-shockwave-flash" width="'+e.width+'" height="'+e.height+'"'+w+"></embed></object>";m.html(t);
-F();break;case "ajax":a=d.split("#",2);f=e.ajax.data||{};if(a.length>1){d=a[0];if(typeof f=="string")f+="&selector="+a[1];else f.selector=a[1]}h=false;b.fancybox.showActivity();E=b.ajax(b.extend(e.ajax,{url:d,data:f,error:P,success:function(r){if(E.status==200){m.html(r);F()}}}));break;case "iframe":b('<iframe id="fancybox-frame" name="fancybox-frame'+(new Date).getTime()+'" frameborder="0" hspace="0" scrolling="'+e.scrolling+'" src="'+e.href+'"></iframe>').appendTo(m);N();break}},$=function(){if(u.is(":visible")){b("div",
-u).css("top",I*-40+"px");I=(I+1)%12}else clearInterval(H)},aa=function(){if(!b("#fancybox-wrap").length){b("body").append(m=b('<div id="fancybox-tmp"></div>'),u=b('<div id="fancybox-loading"><div></div></div>'),x=b('<div id="fancybox-overlay"></div>'),g=b('<div id="fancybox-wrap"></div>'));if(!b.support.opacity){g.addClass("fancybox-ie");u.addClass("fancybox-ie")}D=b('<div id="fancybox-outer"></div>').append('<div class="fancy-bg" id="fancy-bg-n"></div><div class="fancy-bg" id="fancy-bg-ne"></div><div class="fancy-bg" id="fancy-bg-e"></div><div class="fancy-bg" id="fancy-bg-se"></div><div class="fancy-bg" id="fancy-bg-s"></div><div class="fancy-bg" id="fancy-bg-sw"></div><div class="fancy-bg" id="fancy-bg-w"></div><div class="fancy-bg" id="fancy-bg-nw"></div>').appendTo(g);
-D.append(i=b('<div id="fancybox-inner"></div>'),z=b('<a id="fancybox-close"></a>'),A=b('<a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a>'),B=b('<a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a>'));z.click(b.fancybox.close);u.click(b.fancybox.cancel);A.click(function(a){a.preventDefault();b.fancybox.prev()});B.click(function(a){a.preventDefault();b.fancybox.next()});if(O){x.get(0).style.setExpression("height",
-"document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px'");u.get(0).style.setExpression("top","(-20 + (document.documentElement.clientHeight ? document.documentElement.clientHeight/2 : document.body.clientHeight/2 ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop )) + 'px'");D.prepend('<iframe id="fancybox-hide-sel-frame" src="javascript:\'\';" scrolling="no" frameborder="0" ></iframe>')}}};
-b.fn.fancybox=function(a){b(this).data("fancybox",b.extend({},a,b.metadata?b(this).metadata():{})).unbind("click.fb").bind("click.fb",function(d){d.preventDefault();if(!h){h=true;b(this).blur();q=[];p=0;d=b(this).attr("rel")||"";if(!d||d==""||d==="nofollow")q.push(this);else{q=b("a[rel="+d+"], area[rel="+d+"]");p=q.index(this)}C();return false}});return this};b.fancybox=function(a,d){if(!h){h=true;d=typeof d!=="undefined"?d:{};q=[];p=d.index||0;if(b.isArray(a)){for(var f=0,o=a.length;f<o;f++)if(typeof a[f]==
-"object")b(a[f]).data("fancybox",b.extend({},d,a[f]));else a[f]=b({}).data("fancybox",b.extend({content:a[f]},d));q=jQuery.merge(q,a)}else{if(typeof a=="object")b(a).data("fancybox",b.extend({},d,a));else a=b({}).data("fancybox",b.extend({content:a},d));q.push(a)}if(p>q.length||p<0)p=0;C()}};b.fancybox.showActivity=function(){clearInterval(H);u.show();H=setInterval($,66)};b.fancybox.hideActivity=function(){u.hide()};b.fancybox.next=function(){return b.fancybox.pos(n+1)};b.fancybox.prev=function(){return b.fancybox.pos(n-
-1)};b.fancybox.pos=function(a){if(!h){a=parseInt(a,10);if(a>-1&&j.length>a){p=a;C()}if(c.cyclic&&j.length>1&&a<0){p=j.length-1;C()}if(c.cyclic&&j.length>1&&a>=j.length){p=0;C()}}};b.fancybox.cancel=function(){if(!h){h=true;b.event.trigger("fancybox-cancel");J();e&&b.isFunction(e.onCancel)&&e.onCancel(q,p,e);h=false}};b.fancybox.close=function(){function a(){x.fadeOut("fast");g.hide();b.event.trigger("fancybox-cleanup");i.empty();b.isFunction(c.onClosed)&&c.onClosed(j,n,c);j=e=[];n=p=0;c=e={};h=false}
-if(!(h||g.is(":hidden"))){h=true;if(c&&b.isFunction(c.onCleanup))if(c.onCleanup(j,n,c)===false){h=false;return}J();b(z.add(A).add(B)).hide();b("#fancybox-title").remove();g.add(i).add(x).unbind();b(window).unbind("resize.fb scroll.fb");b(document).unbind("keydown.fb");i.css("overflow","hidden");if(c.transitionOut=="elastic"){k=Q();var d=g.position();l={top:d.top,left:d.left,width:g.width(),height:g.height()};if(c.opacity)l.opacity=1;y.prop=1;b(y).animate({prop:0},{duration:c.speedOut,easing:c.easingOut,
-step:M,complete:a})}else g.fadeOut(c.transitionOut=="none"?0:c.speedOut,a)}};b.fancybox.resize=function(wi,he){var a;if(!(h||g.is(":hidden"))){h=true;a=i.wrapInner("<div style='overflow:auto'></div>").children();if(he==undefined)he=a.height();if(wi!=undefined){g.css({width:wi+c.padding*2});i.css({width:wi});}g.css({height:he+c.padding*2+v});i.css({height:he});a.replaceWith(a.children());b.fancybox.center()}}; b.fancybox.center=function(){h=true;var a=K(),d=c.margin,f={};f.top=a[3]+(a[1]-(g.height()-v+40))*0.5;f.left=a[2]+(a[0]-(g.width()+40))*0.5;f.top=Math.max(a[3]+d,f.top);f.left=Math.max(a[2]+d,f.left);g.css(f);h=false};b.fn.fancybox.defaults={padding:10,margin:20,opacity:false,modal:false,cyclic:false,scrolling:"auto",width:560,height:340,autoScale:true,autoDimensions:true,centerOnScroll:false,ajax:{},swf:{wmode:"transparent"},hideOnOverlayClick:true,hideOnContentClick:false,overlayShow:true,overlayOpacity:0.3,overlayColor:"#666",titleShow:true,titlePosition:"outside",titleFormat:null,transitionIn:"fade",transitionOut:"fade",speedIn:300,speedOut:300,changeSpeed:300,changeFade:"fast",
-easingIn:"swing",easingOut:"swing",showCloseButton:true,showNavArrows:true,enableEscapeButton:true,onStart:null,onCancel:null,onComplete:null,onCleanup:null,onClosed:null};b(window).load(function(){aa()})})(jQuery);
+;(function(b){var m,t,u,f,D,j,E,n,z,A,q=0,e={},o=[],p=0,d={},l=[],G=null,v=new Image,J=/\.(jpg|gif|png|bmp|jpeg)(.*)?$/i,W=/[^\.]\.(swf)\s*$/i,K,L=1,y=0,s="",r,i,h=false,B=b.extend(b("<div/>")[0],{prop:0}),M=b.browser.msie&&b.browser.version<7&&!window.XMLHttpRequest,N=function(){t.hide();v.onerror=v.onload=null;G&&G.abort();m.empty()},O=function(){if(false===e.onError(o,q,e)){t.hide();h=false}else{e.titleShow=false;e.width="auto";e.height="auto";m.html('<p id="fancybox-error">The requested content cannot be loaded.<br />Please try again later.</p>');
+F()}},I=function(){var a=o[q],c,g,k,C,P,w;N();e=b.extend({},b.fn.fancybox.defaults,typeof b(a).data("fancybox")=="undefined"?e:b(a).data("fancybox"));w=e.onStart(o,q,e);if(w===false)h=false;else{if(typeof w=="object")e=b.extend(e,w);k=e.title||(a.nodeName?b(a).attr("title"):a.title)||"";if(a.nodeName&&!e.orig)e.orig=b(a).children("img:first").length?b(a).children("img:first"):b(a);if(k===""&&e.orig&&e.titleFromAlt)k=e.orig.attr("alt");c=e.href||(a.nodeName?b(a).attr("href"):a.href)||null;if(/^(?:javascript)/i.test(c)||
+c=="#")c=null;if(e.type){g=e.type;if(!c)c=e.content}else if(e.content)g="html";else if(c)g=c.match(J)?"image":c.match(W)?"swf":b(a).hasClass("iframe")?"iframe":c.indexOf("#")===0?"inline":"ajax";if(g){if(g=="inline"){a=c.substr(c.indexOf("#"));g=b(a).length>0?"inline":"ajax"}e.type=g;e.href=c;e.title=k;if(e.autoDimensions)if(e.type=="html"||e.type=="inline"||e.type=="ajax"){e.width="auto";e.height="auto"}else e.autoDimensions=false;if(e.modal){e.overlayShow=true;e.hideOnOverlayClick=false;e.hideOnContentClick=
+false;e.enableEscapeButton=false;e.showCloseButton=false}e.padding=parseInt(e.padding,10);e.margin=parseInt(e.margin,10);m.css("padding",e.padding+e.margin);b(".fancybox-inline-tmp").unbind("fancybox-cancel").bind("fancybox-change",function(){b(this).replaceWith(j.children())});switch(g){case "html":m.html(e.content);F();break;case "inline":if(b(a).parent().is("#fancybox-content")===true){h=false;break}b('<div class="fancybox-inline-tmp" />').hide().insertBefore(b(a)).bind("fancybox-cleanup",function(){b(this).replaceWith(j.children())}).bind("fancybox-cancel",
+function(){b(this).replaceWith(m.children())});b(a).appendTo(m);F();break;case "image":h=false;b.fancybox.showActivity();v=new Image;v.onerror=function(){O()};v.onload=function(){h=true;v.onerror=v.onload=null;e.width=v.width;e.height=v.height;b("<img />").attr({id:"fancybox-img",src:v.src,alt:e.title}).appendTo(m);Q()};v.src=c;break;case "swf":e.scrolling="no";C='<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="'+e.width+'" height="'+e.height+'"><param name="movie" value="'+c+
+'"></param>';P="";b.each(e.swf,function(x,H){C+='<param name="'+x+'" value="'+H+'"></param>';P+=" "+x+'="'+H+'"'});C+='<embed src="'+c+'" type="application/x-shockwave-flash" width="'+e.width+'" height="'+e.height+'"'+P+"></embed></object>";m.html(C);F();break;case "ajax":h=false;b.fancybox.showActivity();e.ajax.win=e.ajax.success;G=b.ajax(b.extend({},e.ajax,{url:c,data:e.ajax.data||{},error:function(x){x.status>0&&O()},success:function(x,H,R){if((typeof R=="object"?R:G).status==200){if(typeof e.ajax.win==
+"function"){w=e.ajax.win(c,x,H,R);if(w===false){t.hide();return}else if(typeof w=="string"||typeof w=="object")x=w}m.html(x);F()}}}));break;case "iframe":Q()}}else O()}},F=function(){var a=e.width,c=e.height;a=a.toString().indexOf("%")>-1?parseInt((b(window).width()-e.margin*2)*parseFloat(a)/100,10)+"px":a=="auto"?"auto":a+"px";c=c.toString().indexOf("%")>-1?parseInt((b(window).height()-e.margin*2)*parseFloat(c)/100,10)+"px":c=="auto"?"auto":c+"px";m.wrapInner('<div style="width:'+a+";height:"+c+
+";overflow: "+(e.scrolling=="auto"?"auto":e.scrolling=="yes"?"scroll":"hidden")+';position:relative;"></div>');e.width=m.width();e.height=m.height();Q()},Q=function(){var a,c;t.hide();if(f.is(":visible")&&false===d.onCleanup(l,p,d)){b.event.trigger("fancybox-cancel");h=false}else{h=true;b(j.add(u)).unbind();b(window).unbind("resize.fb scroll.fb");b(document).unbind("keydown.fb");f.is(":visible")&&d.titlePosition!=="outside"&&f.css("height",f.height());l=o;p=q;d=e;if(d.overlayShow){u.css({"background-color":d.overlayColor,
+opacity:d.overlayOpacity,cursor:d.hideOnOverlayClick?"pointer":"auto",height:b(document).height()});if(!u.is(":visible")){M&&b("select:not(#fancybox-tmp select)").filter(function(){return this.style.visibility!=="hidden"}).css({visibility:"hidden"}).one("fancybox-cleanup",function(){this.style.visibility="inherit"});u.show()}}else u.hide();i=X();s=d.title||"";y=0;n.empty().removeAttr("style").removeClass();if(d.titleShow!==false){if(b.isFunction(d.titleFormat))a=d.titleFormat(s,l,p,d);else a=s&&s.length?
+d.titlePosition=="float"?'<table id="fancybox-title-float-wrap" cellpadding="0" cellspacing="0"><tr><td id="fancybox-title-float-left"></td><td id="fancybox-title-float-main">'+s+'</td><td id="fancybox-title-float-right"></td></tr></table>':'<div id="fancybox-title-'+d.titlePosition+'">'+s+"</div>":false;s=a;if(!(!s||s==="")){n.addClass("fancybox-title-"+d.titlePosition).html(s).appendTo("body").show();switch(d.titlePosition){case "inside":n.css({width:i.width-d.padding*2,marginLeft:d.padding,marginRight:d.padding});
+y=n.outerHeight(true);n.appendTo(D);i.height+=y;break;case "over":n.css({marginLeft:d.padding,width:i.width-d.padding*2,bottom:d.padding}).appendTo(D);break;case "float":n.css("left",parseInt((n.width()-i.width-40)/2,10)*-1).appendTo(f);break;default:n.css({width:i.width-d.padding*2,paddingLeft:d.padding,paddingRight:d.padding}).appendTo(f)}}}n.hide();if(f.is(":visible")){b(E.add(z).add(A)).hide();a=f.position();r={top:a.top,left:a.left,width:f.width(),height:f.height()};c=r.width==i.width&&r.height==
+i.height;j.fadeTo(d.changeFade,0.3,function(){var g=function(){j.html(m.contents()).fadeTo(d.changeFade,1,S)};b.event.trigger("fancybox-change");j.empty().removeAttr("filter").css({"border-width":d.padding,width:i.width-d.padding*2,height:e.autoDimensions?"auto":i.height-y-d.padding*2});if(c)g();else{B.prop=0;b(B).animate({prop:1},{duration:d.changeSpeed,easing:d.easingChange,step:T,complete:g})}})}else{f.removeAttr("style");j.css("border-width",d.padding);if(d.transitionIn=="elastic"){r=V();j.html(m.contents());
+f.show();if(d.opacity)i.opacity=0;B.prop=0;b(B).animate({prop:1},{duration:d.speedIn,easing:d.easingIn,step:T,complete:S})}else{d.titlePosition=="inside"&&y>0&&n.show();j.css({width:i.width-d.padding*2,height:e.autoDimensions?"auto":i.height-y-d.padding*2}).html(m.contents());f.css(i).fadeIn(d.transitionIn=="none"?0:d.speedIn,S)}}}},Y=function(){if(d.enableEscapeButton||d.enableKeyboardNav)b(document).bind("keydown.fb",function(a){if(a.keyCode==27&&d.enableEscapeButton){a.preventDefault();b.fancybox.close()}else if((a.keyCode==
+37||a.keyCode==39)&&d.enableKeyboardNav&&a.target.tagName!=="INPUT"&&a.target.tagName!=="TEXTAREA"&&a.target.tagName!=="SELECT"){a.preventDefault();b.fancybox[a.keyCode==37?"prev":"next"]()}});if(d.showNavArrows){if(d.cyclic&&l.length>1||p!==0)z.show();if(d.cyclic&&l.length>1||p!=l.length-1)A.show()}else{z.hide();A.hide()}},S=function(){if(!b.support.opacity){j.get(0).style.removeAttribute("filter");f.get(0).style.removeAttribute("filter")}e.autoDimensions&&j.css("height","auto");f.css("height","auto");
+s&&s.length&&n.show();d.showCloseButton&&E.show();Y();d.hideOnContentClick&&j.bind("click",b.fancybox.close);d.hideOnOverlayClick&&u.bind("click",b.fancybox.close);b(window).bind("resize.fb",b.fancybox.resize);d.centerOnScroll&&b(window).bind("scroll.fb",b.fancybox.center);if(d.type=="iframe")b('<iframe id="fancybox-frame" name="fancybox-frame'+(new Date).getTime()+'" frameborder="0" hspace="0" '+(b.browser.msie?'allowtransparency="true""':"")+' scrolling="'+e.scrolling+'" src="'+d.href+'"></iframe>').appendTo(j);
+f.show();h=false;b.fancybox.center();d.onComplete(l,p,d);var a,c;if(l.length-1>p){a=l[p+1].href;if(typeof a!=="undefined"&&a.match(J)){c=new Image;c.src=a}}if(p>0){a=l[p-1].href;if(typeof a!=="undefined"&&a.match(J)){c=new Image;c.src=a}}},T=function(a){var c={width:parseInt(r.width+(i.width-r.width)*a,10),height:parseInt(r.height+(i.height-r.height)*a,10),top:parseInt(r.top+(i.top-r.top)*a,10),left:parseInt(r.left+(i.left-r.left)*a,10)};if(typeof i.opacity!=="undefined")c.opacity=a<0.5?0.5:a;f.css(c);
+j.css({width:c.width-d.padding*2,height:c.height-y*a-d.padding*2})},U=function(){return[b(window).width()-d.margin*2,b(window).height()-d.margin*2,b(document).scrollLeft()+d.margin,b(document).scrollTop()+d.margin]},X=function(){var a=U(),c={},g=d.autoScale,k=d.padding*2;c.width=d.width.toString().indexOf("%")>-1?parseInt(a[0]*parseFloat(d.width)/100,10):d.width+k;c.height=d.height.toString().indexOf("%")>-1?parseInt(a[1]*parseFloat(d.height)/100,10):d.height+k;if(g&&(c.width>a[0]||c.height>a[1]))if(e.type==
+"image"||e.type=="swf"){g=d.width/d.height;if(c.width>a[0]){c.width=a[0];c.height=parseInt((c.width-k)/g+k,10)}if(c.height>a[1]){c.height=a[1];c.width=parseInt((c.height-k)*g+k,10)}}else{c.width=Math.min(c.width,a[0]);c.height=Math.min(c.height,a[1])}c.top=parseInt(Math.max(a[3]-20,a[3]+(a[1]-c.height-40)*0.5),10);c.left=parseInt(Math.max(a[2]-20,a[2]+(a[0]-c.width-40)*0.5),10);return c},V=function(){var a=e.orig?b(e.orig):false,c={};if(a&&a.length){c=a.offset();c.top+=parseInt(a.css("paddingTop"),
+10)||0;c.left+=parseInt(a.css("paddingLeft"),10)||0;c.top+=parseInt(a.css("border-top-width"),10)||0;c.left+=parseInt(a.css("border-left-width"),10)||0;c.width=a.width();c.height=a.height();c={width:c.width+d.padding*2,height:c.height+d.padding*2,top:c.top-d.padding-20,left:c.left-d.padding-20}}else{a=U();c={width:d.padding*2,height:d.padding*2,top:parseInt(a[3]+a[1]*0.5,10),left:parseInt(a[2]+a[0]*0.5,10)}}return c},Z=function(){if(t.is(":visible")){b("div",t).css("top",L*-40+"px");L=(L+1)%12}else clearInterval(K)};
+b.fn.fancybox=function(a){if(!b(this).length)return this;b(this).data("fancybox",b.extend({},a,b.metadata?b(this).metadata():{})).unbind("click.fb").bind("click.fb",function(c){c.preventDefault();if(!h){h=true;b(this).blur();o=[];q=0;c=b(this).attr("rel")||"";if(!c||c==""||c==="nofollow")o.push(this);else{o=b("a[rel="+c+"], area[rel="+c+"]");q=o.index(this)}I()}});return this};b.fancybox=function(a,c){var g;if(!h){h=true;g=typeof c!=="undefined"?c:{};o=[];q=parseInt(g.index,10)||0;if(b.isArray(a)){for(var k=
+0,C=a.length;k<C;k++)if(typeof a[k]=="object")b(a[k]).data("fancybox",b.extend({},g,a[k]));else a[k]=b({}).data("fancybox",b.extend({content:a[k]},g));o=jQuery.merge(o,a)}else{if(typeof a=="object")b(a).data("fancybox",b.extend({},g,a));else a=b({}).data("fancybox",b.extend({content:a},g));o.push(a)}if(q>o.length||q<0)q=0;I()}};b.fancybox.showActivity=function(){clearInterval(K);t.show();K=setInterval(Z,66)};b.fancybox.hideActivity=function(){t.hide()};b.fancybox.next=function(){return b.fancybox.pos(p+
+1)};b.fancybox.prev=function(){return b.fancybox.pos(p-1)};b.fancybox.pos=function(a){if(!h){a=parseInt(a);o=l;if(a>-1&&a<l.length){q=a;I()}else if(d.cyclic&&l.length>1){q=a>=l.length?0:l.length-1;I()}}};b.fancybox.cancel=function(){if(!h){h=true;b.event.trigger("fancybox-cancel");N();e.onCancel(o,q,e);h=false}};b.fancybox.close=function(){function a(){u.fadeOut("fast");n.empty().hide();f.hide();b.event.trigger("fancybox-cleanup");j.empty();d.onClosed(l,p,d);l=e=[];p=q=0;d=e={};h=false}if(!(h||f.is(":hidden"))){h=
+true;if(d&&false===d.onCleanup(l,p,d))h=false;else{N();b(E.add(z).add(A)).hide();b(j.add(u)).unbind();b(window).unbind("resize.fb scroll.fb");b(document).unbind("keydown.fb");j.find("iframe").attr("src",M&&/^https/i.test(window.location.href||"")?"javascript:void(false)":"about:blank");d.titlePosition!=="inside"&&n.empty();f.stop();if(d.transitionOut=="elastic"){r=V();var c=f.position();i={top:c.top,left:c.left,width:f.width(),height:f.height()};if(d.opacity)i.opacity=1;n.empty().hide();B.prop=1;
+b(B).animate({prop:0},{duration:d.speedOut,easing:d.easingOut,step:T,complete:a})}else f.fadeOut(d.transitionOut=="none"?0:d.speedOut,a)}}};b.fancybox.resize=function(){u.is(":visible")&&u.css("height",b(document).height());b.fancybox.center(true)};b.fancybox.center=function(a){var c,g;if(!h){g=a===true?1:0;c=U();!g&&(f.width()>c[0]||f.height()>c[1])||f.stop().animate({top:parseInt(Math.max(c[3]-20,c[3]+(c[1]-j.height()-40)*0.5-d.padding)),left:parseInt(Math.max(c[2]-20,c[2]+(c[0]-j.width()-40)*0.5-
+d.padding))},typeof a=="number"?a:200)}};b.fancybox.init=function(){if(!b("#fancybox-wrap").length){b("body").append(m=b('<div id="fancybox-tmp"></div>'),t=b('<div id="fancybox-loading"><div></div></div>'),u=b('<div id="fancybox-overlay"></div>'),f=b('<div id="fancybox-wrap"></div>'));D=b('<div id="fancybox-outer"></div>').append('<div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div>').appendTo(f);
+D.append(j=b('<div id="fancybox-content"></div>'),E=b('<a id="fancybox-close"></a>'),n=b('<div id="fancybox-title"></div>'),z=b('<a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a>'),A=b('<a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a>'));E.click(b.fancybox.close);t.click(b.fancybox.cancel);z.click(function(a){a.preventDefault();b.fancybox.prev()});A.click(function(a){a.preventDefault();b.fancybox.next()});
+b.fn.mousewheel&&f.bind("mousewheel.fb",function(a,c){if(h)a.preventDefault();else if(b(a.target).get(0).clientHeight==0||b(a.target).get(0).scrollHeight===b(a.target).get(0).clientHeight){a.preventDefault();b.fancybox[c>0?"prev":"next"]()}});b.support.opacity||f.addClass("fancybox-ie");if(M){t.addClass("fancybox-ie6");f.addClass("fancybox-ie6");b('<iframe id="fancybox-hide-sel-frame" src="'+(/^https/i.test(window.location.href||"")?"javascript:void(false)":"about:blank")+'" scrolling="no" border="0" frameborder="0" tabindex="-1"></iframe>').prependTo(D)}}};
+b.fn.fancybox.defaults={padding:10,margin:40,opacity:false,modal:false,cyclic:false,scrolling:"auto",width:560,height:340,autoScale:true,autoDimensions:true,centerOnScroll:false,ajax:{},swf:{wmode:"transparent"},hideOnOverlayClick:true,hideOnContentClick:false,overlayShow:true,overlayOpacity:0.7,overlayColor:"#777",titleShow:true,titlePosition:"float",titleFormat:null,titleFromAlt:false,transitionIn:"fade",transitionOut:"fade",speedIn:300,speedOut:300,changeSpeed:300,changeFade:"fast",easingIn:"swing",
+easingOut:"swing",showCloseButton:true,showNavArrows:true,enableEscapeButton:true,enableKeyboardNav:true,onStart:function(){},onCancel:function(){},onComplete:function(){},onCleanup:function(){},onClosed:function(){},onError:function(){}};b(document).ready(function(){b.fancybox.init()})})(jQuery);
 /* $Id: jquery.sidebar_toggle.js 2146 2012-04-09 21:08:46Z jowilso $ */
 (function($) {
 /* sidebar_toggle adapted from menu_toggle_adder */
@@ -4134,165 +4136,929 @@ function log() {
 }
 
 })(jQuery);
-/*
- * JQuery URL Parser plugin
- * Developed and maintanined by Mark Perkins, mark@allmarkedup.com
- * Source repository: https://github.com/allmarkedup/jQuery-URL-Parser
- * Licensed under an MIT-style license. See https://github.com/allmarkedup/jQuery-URL-Parser/blob/master/LICENSE for details.
- */ 
+/******************************************************************************************************
 
-;(function($, undefined) {
-    
-    var tag2attr = {
-        a       : 'href',
-        img     : 'src',
-        form    : 'action',
-        base    : 'href',
-        script  : 'src',
-        iframe  : 'src',
-        link    : 'href'
-    },
-    
-	key = ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","fragment"], // keys available to query
-	
-	aliases = { "anchor" : "fragment" }, // aliases for backwards compatability
+	jQuery.ThreeDots
 
-	parser = {
-		strict  : /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*):?([^:@]*))?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,  //less intuitive, more accurate to the specs
-		loose   :  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*):?([^:@]*))?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/ // more intuitive, fails on relative paths and deviates from specs
-	},
+	Author Jeremy Horn
+	Version 1.0.10 (Developed in Aptana Studio 1.5.1)
+	Date: 1/25/2010
+
+	Copyright (c) 2010 Jeremy Horn- jeremydhorn(at)gmail(dot)c0m | http://tpgblog.com
+	Dual licensed under MIT and GPL.
+
+	For more detailed documentation, including the latest updates and links to more usage and 
+	examples, go to:
 	
-	querystring_parser = /(?:^|&|;)([^&=;]*)=?([^&;]*)/g, // supports both ampersand and semicolon-delimted query string key/value pairs
-	
-	fragment_parser = /(?:^|&|;)([^&=;]*)=?([^&;]*)/g; // supports both ampersand and semicolon-delimted fragment key/value pairs
-	
-	function parseUri( url, strictMode )
-	{
-		var str = decodeURI( url ),
-		    res   = parser[ strictMode || false ? "strict" : "loose" ].exec( str ),
-		    uri = { attr : {}, param : {}, seg : {} },
-		    i   = 14;
+			http://tpgblog.com/ThreeDots/
+
+	KNOWN BUGS
+		None
+
+	DESCRIPTION
+
+		Sometimes the text ...
+			... is too long ...
+			... won't fit within the number of rows you have available.
 		
-		while ( i-- )
-		{
-			uri.attr[ key[i] ] = res[i] || "";
+		Sometimes all you need is ... ThreeDots!
+		
+		ThreeDots is a customizable jQuery plugin for the smart truncation of text.  It shortens 
+		provided text to fit specified dimensions and appends the desired ellipsis style
+		if/when truncation occurs.  		
+		
+		For example ---
+		
+			This:
+				There was once a brown fox
+				that liked to eat chocolate
+				pudding.
+			
+			When restricted to 2 lines by ThreeDots, can become:
+				There was once a brown fox
+				that liked to eat ...
+				
+			Or:
+				There was once a brown fox
+				that liked to (click for more)
+
+			... and most any other permutation you desire.
+
+
+	BY DEFAULT
+		The three dots ellipsis ("...") is used, as shown in the prior example, and limits
+		text to a maximum of 2 lines.  These and many other characteristics are fully customizable,
+		and fully itemized and explained below.
+
+
+	IMPLEMENTATION
+
+		HTML:		<div class='text_here'><span class='ellipsis_text'>TEXT</span></div>
+		JS:			$('.text_here').ThreeDots(); // USE DEFAULTS
+					$('.text_here2').ThreeDots({ { max_rows:3 });
+		
+
+	COMPATIBILITY
+
+		Tested in FF3.5, IE7, Chrome
+		With jQuery 1.3.x, 1.4
+
+	METHODS
+
+		ThreeDots()
+		
+		When intialized the ThreeDots plugin creates and assigns the full set of provided text 
+		to each container element as a publically accessible attribute, 'threedots'.  Method 
+		implementation supports chaining and returns jQuery object.
+
+		Note that to implement, the text that you wish to ellipsize must be wrapped in a span
+		assigned either the default class 'ellipsis_text' or other custom class of your 
+		preference -- customizable via the options/settings.
+		
+		If the text becomes truncated to fit within the constrained space defined by the 
+		container element that holds the 'ellipsis_text' span then an additional span is
+		appended within the container object, and after the 'ellipsis_text' span.
+		
+		Note, that the span class of 'threedots_ellipsis' can also be customized via the 
+		options/settings and have it's own CSS/jQuery styles/actions/etc. applied to it as
+		desired.
+		
+		If any of the specified settings are invalid or the 'ellipsis_text' span is missing
+		nothing will happen.
+
+		IMPORTANT:	The horizontal constrains placed upon each row are controled by the 
+					container object.  The container object is the object specified in the 
+					primary selector.
+					
+						e.g. $('container_object').ThreeDots();
+					
+					So, remember to set container_object's WIDTH.
+						
+		ThreeDots.update()
+			Refreshes the contents of the text within the target object inline with the
+			options provided. Note, that the current implementation of options/settings
+			are destructive.  This means that whenever OPTIONS are specified they are
+			merged with the DEFAULT options and applied to the current object(s), and 
+			destroy/override any previously specified options/settings.
+			
+				example:
+					var obj = $('.text_here').ThreeDots();  // uses DEFAULT: max_rows = 2
+					obj.update({max_rows:3});				// update the text with max_rows = 3
+
+	CUSTOMIZATION
+
+		ThreeDots(OPTIONS)
+		e.g. $('.text_here').ThreeDots({ max_rows: 4 });
+					
+		
+		valid_delimiters:	character array of special characters upon which the text string may be broken up;
+							defines what characters can be used to express the bounds of a word
+							
+							all elements in this array must be 1 character in length; any delimiter less than 
+							or greater than	1 character will be ignored
+														
+							
+		ellipsis_string: 	defines what to display at the tail end of the text provided if the text becomes 
+							truncated to fit within the space defined by the container object
+												
+							
+		max_rows:			specifies the upper limit for the number of rows that the object's text can use
+				
+		
+		text_span_class:	by default ThreeDots will look within the specified object(s) for a span
+							of the class 'ellipsis_text'
+							
+		
+		e_span_class:		if an ellipsis_string is displayed at the tail end of the selected object's
+							text due to truncation of that text then it will be displayed wrapped within
+							a span associated with the class defined by e_span_class and immediately
+							following the text_span_class' span
+		
+		
+		whole_word:			when fitting the provided text to the max_rows within the container object
+							this boolean setting defines whether or not the 
+							
+								if true
+									THEN	don't truncate any words; ellipsis can ONLY be placed after 
+											the last whole word that fits within the provided space, OR
+											
+								if false
+									THEN	maximuze the text within the provided space, allowing the 
+											PARTIAL display of words before the ellipsis
+		
+		
+		allow_dangle:		a dangling ellipsis is an ellipsis that typically occurs due to words that
+							are longer than a single row of text, resulting, upon text truncation in
+							the ellipsis being displayed on a row all by itself
+													
+							if allow_dangle is set to false, whole_words is overridden ONLY in the 
+							circumstances where a dangling ellipsis occurs and the displayed text
+							is adjusted to minimize the occurence of such dangling
+									
+		
+		alt_text_e: 		alt_text_e is a shortcut to enabling the user of the product that 
+							made use of ThreeDots to see the full text, prior to truncation
+							
+							if the value is set to true, then the ellipsis span's title property
+							is set to the full, original text (pre-truncation)
+		
+		
+		alt_text_t: 		alt_text_t is a shortcut to enabling the user of the product that 
+							made use of ThreeDots to see the full text, prior to truncation
+							
+							if the value is set to true AND the ellipsis is displayed, then the 
+							text span's title property is set to the full, original text 
+							(pre-truncation) 
+	
+
+	MORE
+
+		For latest updates and links to more usage and examples, go to:
+			http://tpgblog.com/ThreeDots/
+			
+	FUTURE NOTE
+	
+		Do not write any code dependent on the c_settings variable.  If you don't know what this is
+		cool -- you don't need to. ;-)  c_settings WILL BE DEPRECATED.
+		
+		Further optimizations in progress...
+
+******************************************************************************************************/
+
+
+(function($) {
+
+	/**********************************************************************************
+
+		METHOD
+			ThreeDots {PUBLIC}
+
+		DESCRIPTION
+			ThreeDots method constructor
+			
+			allows for the customization of ellipsis, delimiters, etc., and smart 
+			truncation of provided objects' text
+					
+				e.g. $(something).ThreeDots();
+
+	**********************************************************************************/
+
+	$.fn.ThreeDots = function(options) {
+		var return_value = this;
+
+		// check for new & valid options
+		if ((typeof options == 'object') || (options == undefined)) {
+			$.fn.ThreeDots.the_selected = this;
+
+			var return_value = $.fn.ThreeDots.update(options);
+
 		}
 		
-		// build query and fragment parameters
-		
-		uri.param['query'] = {};
-		uri.param['fragment'] = {};
-		
-		uri.attr['query'].replace( querystring_parser, function ( $0, $1, $2 ){
-			if ($1)
-			{
-				uri.param['query'][$1] = $2;
-			}
-		});
-		
-		uri.attr['fragment'].replace( fragment_parser, function ( $0, $1, $2 ){
-			if ($1)
-			{
-				uri.param['fragment'][$1] = $2;
-			}
-		});
-				
-		// split path and fragement into segments
-		
-        uri.seg['path'] = uri.attr.path.replace(/^\/+|\/+$/g,'').split('/');
-        
-        uri.seg['fragment'] = uri.attr.fragment.replace(/^\/+|\/+$/g,'').split('/');
-        
-        // compile a 'base' domain attribute
-        
-        uri.attr['base'] = uri.attr.host ? uri.attr.protocol+"://"+uri.attr.host + (uri.attr.port ? ":"+uri.attr.port : '') : '';
-        
-		return uri;
+		return return_value;
 	};
+
+
+	/**********************************************************************************
+
+		METHOD
+			ThreeDots.update {PUBLIC}
+
+		DESCRIPTION
+			applies the core logic of ThreeDots
+			
+			allows for the customization of ellipsis, delimiters, etc., and smart 
+			truncation of provided objects' text
+			
+			updates the objects' visible text to fit within its container(s)
+		
+		TODO
+			instead of having all options/settings calls be constructive have 
+			settings associated w/ object returned also accessible from HERE 
+			[STATIC settings, associated w/ the initial call] 
+
+	**********************************************************************************/
+
+	$.fn.ThreeDots.update = function(options) {
+		// initialize local variables
+		var curr_this, last_word = null;
+		var lineh, paddingt, paddingb, innerh, temp_height;
+		var curr_text_span, lws; /* last word structure */
+		var last_text, three_dots_value, last_del;
+
+		// check for new & valid options
+		if ((typeof options == 'object') || (options == undefined)) {
+
+			// then update the settings
+			// CURRENTLY, settings are not CONSTRUCTIVE, but merged with the DEFAULTS every time
+			$.fn.ThreeDots.c_settings = $.extend({}, $.fn.ThreeDots.settings, options);
+			var max_rows = $.fn.ThreeDots.c_settings.max_rows;
+			if (max_rows < 1) {
+				return $.fn.ThreeDots.the_selected;
+			}
+
+			// make sure at least 1 valid delimiter
+			var valid_delimiter_exists = false;
+			jQuery.each($.fn.ThreeDots.c_settings.valid_delimiters, function(i, curr_del) {
+				if (((new String(curr_del)).length == 1)) {
+					valid_delimiter_exists = true; 
+				}
+			});
+			if (valid_delimiter_exists == false) {
+				return $.fn.ThreeDots.the_selected;
+			}
+			
+			// process all provided objects
+			$.fn.ThreeDots.the_selected.each(function() {
+
+				// element-specific code here
+				curr_this = $(this);
+		
+				// obtain the text span
+				if ($(curr_this).children('.'+$.fn.ThreeDots.c_settings.text_span_class).length == 0) { 
+					// if span doesnt exist, then go to next
+					return true;
+				}
+				curr_text_span = $(curr_this).children('.'+$.fn.ThreeDots.c_settings.text_span_class).get(0);
+
+				// pre-calc fixed components of num_rows
+				var nr_fixed = num_rows(curr_this, true);
+
+				// remember where it all began so that we can see if we ended up exactly where we started
+				var init_text_span = $(curr_text_span).text();
+
+				// preprocessor
+				the_bisector(curr_this, curr_text_span, nr_fixed);
+				var init_post_b = $(curr_text_span).text();
+
+				// if the object has been initialized, then user must be calling UPDATE
+				// THEREFORE refresh the text area before re-operating
+				if ((three_dots_value = $(curr_this).attr('threedots')) != undefined) {
+					$(curr_text_span).text(three_dots_value);						
+					$(curr_this).children('.'+$.fn.ThreeDots.c_settings.e_span_class).remove();
+				}
+
+				last_text = $(curr_text_span).text();
+				if (last_text.length <= 0) {
+					last_text = '';
+				}
+				$(curr_this).attr('threedots', init_text_span);
+
+				if (num_rows(curr_this, nr_fixed) > max_rows) {
+					// append the ellipsis span & remember the original text
+					curr_ellipsis = $(curr_this).append('<span style="white-space:nowrap" class="'	
+														+ $.fn.ThreeDots.c_settings.e_span_class + '">'
+														+ $.fn.ThreeDots.c_settings.ellipsis_string 
+														+ '</span>');
 	
-	function getAttrName( elm )
-	{
-		var tn = elm.tagName;
-		if ( tn !== undefined ) return tag2attr[tn.toLowerCase()];
-		return tn;
+					// remove 1 word at a time UNTIL max_rows
+					while (num_rows(curr_this, nr_fixed) > max_rows) {
+						
+						lws = the_last_word($(curr_text_span).text());// HERE
+						$(curr_text_span).text(lws.updated_string);
+						last_word = lws.word;
+						last_del = lws.del;
+
+						if (last_del == null) {
+							break;					
+						}
+					} // while (num_rows(curr_this, nr_fixed) > max_rows)
+
+					// check for super long words
+					if (last_word != null) {
+						var is_dangling = dangling_ellipsis(curr_this, nr_fixed);
+
+						if ((num_rows(curr_this, nr_fixed) <= max_rows - 1) 
+							|| (is_dangling) 
+							|| (!$.fn.ThreeDots.c_settings.whole_word)) {
+
+							last_text = $(curr_text_span).text();
+							if (lws.del != null) {
+								$(curr_text_span).text(last_text + last_del);
+							}
+									
+							if (num_rows(curr_this, nr_fixed) > max_rows) {
+								// undo what i just did and stop
+								$(curr_text_span).text(last_text);
+							} else {
+								// keep going
+								$(curr_text_span).text($(curr_text_span).text() + last_word);
+								
+								// break up the last word IFF (1) word is longer than a line, OR (2) whole_word == false
+								if ((num_rows(curr_this, nr_fixed) > max_rows + 1) 
+									|| (!$.fn.ThreeDots.c_settings.whole_word)
+									|| (init_post_b == last_word)
+									|| is_dangling) {
+									// remove 1 char at a time until it all fits
+									while ((num_rows(curr_this, nr_fixed) > max_rows)) {
+										if ($(curr_text_span).text().length > 0) {
+											$(curr_text_span).text(
+												$(curr_text_span).text().substr(0, $(curr_text_span).text().length - 1)
+											);
+										} else {
+											/* 
+											 there is no hope for you; you are crazy;
+											 either pick a shorter ellipsis_string OR
+											 use a wider object --- geeze!
+											 */
+											break;
+										}
+									}							
+								}
+							}
+						}
+					}
+				}	
+				
+				// if nothing has changed, remove the ellipsis
+				if (init_text_span == $($(curr_this).children('.' + $.fn.ThreeDots.c_settings.text_span_class).get(0)).text()) {
+					$(curr_this).children('.' + $.fn.ThreeDots.c_settings.e_span_class).remove();
+				} else {				
+					// only add any title text if the ellipsis is visible
+					if (($(curr_this).children('.' + $.fn.ThreeDots.c_settings.e_span_class)).length > 0) {
+						if ($.fn.ThreeDots.c_settings.alt_text_t) {
+							$(curr_this).children('.' + $.fn.ThreeDots.c_settings.text_span_class).attr('title', init_text_span);
+						}
+						
+						if ($.fn.ThreeDots.c_settings.alt_text_e) {
+							$(curr_this).children('.' + $.fn.ThreeDots.c_settings.e_span_class).attr('title', init_text_span);
+						}
+						
+					}
+				}
+			}); // $.fn.ThreeDots.the_selected.each(function() 
+		}
+
+		return $.fn.ThreeDots.the_selected;
+	};
+
+
+	/**********************************************************************************
+
+		METHOD
+			ThreeDots.settings {PUBLIC}
+
+		DESCRIPTION
+			data structure containing the max_rows, ellipsis string, and other
+			behavioral settings
+			
+			can be directly accessed by '$.fn.ThreeDots.settings = ...... ;'
+
+	**********************************************************************************/
+
+	$.fn.ThreeDots.settings = {
+		valid_delimiters: 	[' ', ',', '.'],		// what defines the bounds of a word to you?
+		ellipsis_string: 	'...',
+		max_rows:			2,
+		text_span_class:	'ellipsis_text',
+		e_span_class:		'threedots_ellipsis',
+		whole_word:			true,
+		allow_dangle:		false,
+		alt_text_e: 		false,					// if true, mouse over of ellipsis displays the full text
+		alt_text_t: 		false  					// if true & if ellipsis displayed, mouse over of text displays the full text
+	};
+
+
+	/**********************************************************************************
+
+		METHOD
+			dangling_ellipsis {private}
+
+		DESCRIPTION
+			determines whether or not the currently calculated ellipsized text
+			is displaying a dangling ellipsis (= an ellipsis on a line by itself)
+			
+			returns true if ellipsis is dangling, otherwise false
+
+	**********************************************************************************/
+
+	function dangling_ellipsis(obj, nr_fixed){
+		if ($.fn.ThreeDots.c_settings.allow_dangle == true) {
+			return false; // why do when no doing need be done?
+		}
+
+		// initialize variables
+		var ellipsis_obj 		= $(obj).children('.'+$.fn.ThreeDots.c_settings.e_span_class).get(0);
+		var remember_display 	= $(ellipsis_obj).css('display');
+		var num_rows_before 	= num_rows(obj, nr_fixed);
+
+		// temporarily hide ellipsis
+		$(ellipsis_obj).css('display','none');
+		var num_rows_after 		= num_rows(obj, nr_fixed);
+
+		// restore ellipsis
+		$(ellipsis_obj).css('display',remember_display);
+		
+		if (num_rows_before > num_rows_after) {
+			return true; 	// ASSUMPTION: 	removing the ellipsis changed the height
+							// 				THEREFORE the ellipsis was on a row all by its lonesome
+		} else {
+			return false;	// nothing dangling here
+		}
+	}
+
+
+	/**********************************************************************************
+
+		METHOD
+			num_rows {private}
+
+		DESCRIPTION
+			returns the number of rows/lines that the current object's text covers if
+			cstate is an object
+			
+			this function can be initially called to pre-calculate values that will 
+			stay fixed throughout the truncation process for the current object so
+			that the values do not have to be called every time; to do this the
+			num_rows function is called with a boolean value within the cstate
+			
+			when boolean cstate, an object is returned containing padding and line
+			height information that is then passed in as the cstate object on
+			subsequent calls to the function
+
+	**********************************************************************************/
+
+	function num_rows(obj, cstate){	
+		var the_type = typeof cstate;
+	
+		if (	(the_type == 'object') 
+			||	(the_type == undefined)	) {
+
+			// do the math & return
+			return $(obj).height() / cstate.lh;
+			
+		} else if (the_type == 'boolean') {
+			var lineheight	= lineheight_px($(obj));
+
+			return {
+				lh: lineheight
+			};
+		} 
+	}
+
+	
+	/**********************************************************************************
+
+		METHOD
+			the_last_word {private}
+
+		DESCRIPTION
+			return a data structure containing...
+			 
+				[word] 				the last word within the specified text	defined 
+									by the specified valid_delimiters, 
+				[del] 				the delimiter occurring	directly before the 
+									word, and 
+				[updated_string] 	the updated text minus the last word 
+			
+			[del] is null if the last word is the first and/or only word in the text 
+			string
+
+	**********************************************************************************/
+
+	function the_last_word(str){
+		var temp_word_index;
+		var v_del = $.fn.ThreeDots.c_settings.valid_delimiters;
+		
+		// trim the string
+		str = jQuery.trim(str);
+		
+		// initialize variables
+		var lastest_word_idx = -1;
+		var lastest_word = null;
+		var lastest_del = null;
+
+		// for all given delimiters, determine which delimiter results in the smallest word cut
+		jQuery.each(v_del, function(i, curr_del){
+			if (((new String(curr_del)).length != 1)
+				|| (curr_del == null)) {  // implemented to handle IE NULL condition; if only typeof could say CHAR :(
+				return false; // INVALID delimiter; must be 1 character in length
+			}
+
+			var tmp_word_index = str.lastIndexOf(curr_del);
+			if (tmp_word_index != -1) {
+				if (tmp_word_index > lastest_word_idx) {
+					lastest_word_idx 	= tmp_word_index;
+					lastest_word 		= str.substring(lastest_word_idx+1);
+					lastest_del			= curr_del;
+				}
+			}
+		});
+		
+		// return data structure of word reduced string and the last word
+		if (lastest_word_idx > 0) {
+			return {
+				updated_string:	jQuery.trim(str.substring(0, lastest_word_idx/*-1*/)),
+				word: 			lastest_word,
+				del: 			lastest_del
+			};
+		} else { // the lastest word
+			return {
+				updated_string:	'',
+				word: 			jQuery.trim(str),
+				del: 			null
+			};
+		}
+	}
+
+			
+	/**********************************************************************************
+
+		METHOD
+			lineheight_px {private}
+
+		DESCRIPTION
+			returns the line height of a row of the provided text (within the text 
+			span) in pixels
+
+	**********************************************************************************/
+
+	function lineheight_px(obj) {
+		// shhhh... show
+		$(obj).append("<div id='temp_ellipsis_div' style='position:absolute; visibility:hidden'>H</div>");
+		// measure
+		var temp_height = $('#temp_ellipsis_div').height();
+		// cut
+		$('#temp_ellipsis_div').remove();
+
+		return temp_height;
 	}
 	
-	$.fn.url = function( strictMode )
-	{
-	    var url = '';
-	    
-	    if ( this.length )
-	    {
-	        url = $(this).attr( getAttrName(this[0]) ) || '';
-	    }
-	    
-        return $.url( url, strictMode );
-	};
+	/**********************************************************************************
+
+		METHOD
+			the_bisector (private)
+
+		DESCRIPTION
+			updates the target objects current text to shortest overflowing string 
+			length (if overflowing is occurring) by adding/removing halves (like
+			binary search)
+
+			because...
+				taking some bigger steps at the beginning should save us some real 
+				time in the end
+
+	**********************************************************************************/
 	
-	$.url = function( url, strictMode )
-	{
-	    if ( arguments.length === 1 && url === true )
-        {
-            strictMode = true;
-            url = undefined;
-        }
-        
-        strictMode = strictMode || false;
-        url = url || window.location.toString();
-        	    	            
-        return {
-            
-            data : parseUri(url, strictMode),
-            
-            // get various attributes from the URI
-            attr : function( attr )
-            {
-                attr = aliases[attr] || attr;
-                return attr !== undefined ? this.data.attr[attr] : this.data.attr;
-            },
-            
-            // return query string parameters
-            param : function( param )
-            {
-                return param !== undefined ? this.data.param.query[param] : this.data.param.query;
-            },
-            
-            // return fragment parameters
-            fparam : function( param )
-            {
-                return param !== undefined ? this.data.param.fragment[param] : this.data.param.fragment;
-            },
-            
-            // return path segments
-            segment : function( seg )
-            {
-                if ( seg === undefined )
-                {
-                    return this.data.seg.path;                    
-                }
-                else
-                {
-                    seg = seg < 0 ? this.data.seg.path.length + seg : seg - 1; // negative segments count from the end
-                    return this.data.seg.path[seg];                    
-                }
-            },
-            
-            // return fragment segments
-            fsegment : function( seg )
-            {
-                if ( seg === undefined )
-                {
-                    return this.data.seg.fragment;                    
-                }
-                else
-                {
-                    seg = seg < 0 ? this.data.seg.fragment.length + seg : seg - 1; // negative segments count from the end
-                    return this.data.seg.fragment[seg];                    
-                }
-            }
-            
-        };
-        
+	function the_bisector(obj, curr_text_span, nr_fixed){
+		var init_text = $(curr_text_span).text();
+		var curr_text = init_text;
+		var max_rows = $.fn.ThreeDots.c_settings.max_rows;
+		var front_half, back_half, front_of_back_half, middle, back_middle;
+		var start_index;
+		
+		if (num_rows(obj, nr_fixed) <= max_rows) {
+			// do nothing
+			return;
+		} else {
+			// zero in on the solution
+			start_index = 0;
+			curr_length = curr_text.length;
+
+			curr_middle = Math.floor((curr_length - start_index) / 2);
+			front_half = init_text.substring(start_index, start_index+curr_middle);
+			back_half = init_text.substring(start_index + curr_middle);
+				
+			while (curr_middle != 0) {
+				$(curr_text_span).text(front_half);
+				
+				if (num_rows(obj, nr_fixed) <= (max_rows)) {
+					// text = text + front half of back-half
+					back_middle 		= Math.floor(back_half.length/2);
+					front_of_back_half 	= back_half.substring(0, back_middle);
+					
+					start_index = front_half.length;
+					curr_text 	= front_half+front_of_back_half;
+					curr_length = curr_text.length;
+
+					$(curr_text_span).text(curr_text);
+				} else {
+					// text = front half (which it already is)
+					curr_text = front_half;
+					curr_length = curr_text.length;
+				}
+				
+				curr_middle = Math.floor((curr_length - start_index) / 2);
+				front_half = init_text.substring(0, start_index+curr_middle);
+				back_half = init_text.substring(start_index + curr_middle);
+			}
+		}
+	}
+	
+})(jQuery);
+;(function($){
+/*******************************************************************************************/	
+// jquery.pajinate.js - version 0.2
+// A jQuery plugin for paginating through any number of DOM elements
+// 
+// Copyright (c) 2010, Wes Nolte (http://wesnolte.com)
+// Liscensed under the MIT License (MIT-LICENSE.txt)
+// http://www.opensource.org/licenses/mit-license.php
+// Created: 2010-04-16 | Updated: 2010-04-26
+/*******************************************************************************************/
+
+	$.fn.pajinate = function(options){
+		// Set some state information
+		var current_page = 'current_page';
+		var items_per_page = 'items_per_page';
+		
+		var meta;
+	
+		// Setup default option values
+		var defaults = {
+			item_container_id : '.content',
+			items_per_page : 10,			
+			nav_panel_id : '.page_navigation',
+			num_page_links_to_display : 20,			
+			start_page : 0,
+			nav_label_first : 'First',
+			nav_label_prev : 'Prev',
+			nav_label_next : 'Next',
+			nav_label_last : 'Last'
+		};
+		var options = $.extend(defaults,options);
+		var $item_container;
+		var $page_container;
+		var $items;
+		var $nav_panels;
+	
+		return this.each(function(){
+			$page_container = $(this);
+			$item_container = $(this).find(options.item_container_id);
+			$items = $page_container.find(options.item_container_id).children();
+			meta = $page_container;
+			
+			// Initialise meta data
+			meta.data(current_page,0);
+			meta.data(items_per_page, options.items_per_page);
+					
+			// Get the total number of items
+			var total_items = $item_container.children().size();
+			
+			// Calculate the number of pages needed
+			var number_of_pages = Math.ceil(total_items/options.items_per_page);
+			
+			// Construct the nav bar
+			var more = '<span class="ellipse more">...</span> ';
+			var less = '<span class="ellipse less">...</span> ';
+			
+			var navigation_html = '<a class="first_link" href="">'+ options.nav_label_first +'</a> ';
+			navigation_html += '<a class="arrowLeft" href="">'+ options.nav_label_prev +'</a> '+ less;
+			var current_link = 0;
+			while(number_of_pages > current_link){
+				navigation_html += '<a class="page_link" href="" longdesc="' + current_link +'">'+ (current_link + 1) +'</a> ';
+				current_link++;
+			}
+			navigation_html += more + '<a class="arrowRight" href="">'+ options.nav_label_next +'</a> ';
+			navigation_html += ' <a class="last_link" href="">'+ options.nav_label_last +'</a>';
+			
+			// And add it to the appropriate area of the DOM	
+			$nav_panels = $page_container.find(options.nav_panel_id);			
+			$nav_panels.html(navigation_html).each(function(){
+			
+				$(this).find('.page_link:first').addClass('first');
+				$(this).find('.page_link:last').addClass('last');
+				
+			});
+			
+			// Hide the more/less indicators
+			$nav_panels.children('.ellipse').hide();
+			
+			// Set the active page link styling
+			$nav_panels.find('.arrowLeft').next().next().addClass('active_page');
+			
+			/* Setup Page Display */
+			// And hide all pages
+			$items.hide();
+			// Show the first page			
+			$items.slice(0, meta.data(items_per_page)).show();
+
+			/* Setup Nav Menu Display */
+			// Page number slices
+			
+			var total_page_no_links = $page_container.children(options.nav_panel_id+':first').children('.page_link').size();
+			options.num_page_links_to_display = Math.min(options.num_page_links_to_display,total_page_no_links);
+
+			$nav_panels.children('.page_link').hide(); // Hide all the page links
+			
+			// And only show the number we should be seeing
+			$nav_panels.each(function(){
+				$(this).children('.page_link').slice(0, options.num_page_links_to_display).show();			
+			});
+			
+			/* Bind the actions to their respective links */
+			 
+			// Event handler for 'First' link
+			$page_container.find('.first_link').click(function(e){
+				e.preventDefault();
+				
+				movePageNumbersRight($(this),0);
+				goto(0);				
+			});			
+			
+			// Event handler for 'Last' link
+			$page_container.find('.last_link').click(function(e){
+				e.preventDefault();
+				var lastPage = total_page_no_links - 1;
+				movePageNumbersLeft($(this),lastPage);
+				goto(lastPage);				
+			});			
+			
+			// Event handler for 'Prev' link
+			$page_container.find('.arrowLeft').click(function(e){
+				e.preventDefault();
+				showPrevPage($(this));
+			});
+			
+			
+			// Event handler for 'Next' link
+			$page_container.find('.arrowRight').click(function(e){
+				e.preventDefault();				
+				showNextPage($(this));
+			});
+			
+			// Event handler for each 'Page' link
+			$page_container.find('.page_link').click(function(e){
+				e.preventDefault();
+				goto($(this).attr('longdesc'));
+			});			
+			
+			// Goto the required page
+			goto(parseInt(options.start_page));
+			toggleMoreLess();
+		});
+		
+		function showPrevPage(e){
+			new_page = parseInt(meta.data(current_page)) - 1;						
+			
+			// Check that we aren't on a boundary link
+			if($(e).siblings('.active_page').prev('.page_link').length==true){
+				movePageNumbersRight(e,new_page);
+				goto(new_page);
+			}
+				
+		};
+			
+		function showNextPage(e){
+			new_page = parseInt(meta.data(current_page)) + 1;
+			
+			// Check that we aren't on a boundary link
+			if($(e).siblings('.active_page').next('.page_link').length==true){		
+				movePageNumbersLeft(e,new_page);
+				goto(new_page);
+			}
+				
+		};
+			
+		function goto(page_num){
+			
+			var ipp = meta.data(items_per_page);
+			
+			var isLastPage = false;
+			
+			// Find the start of the next slice
+			start_from = page_num * ipp;
+			
+			// Find the end of the next slice
+			end_on = start_from + ipp;
+			// Hide the current page	
+			$items.hide()
+					.slice(start_from, end_on)
+					.show();
+			
+			// Reassign the active class
+			$page_container.find(options.nav_panel_id).children('.page_link[longdesc=' + page_num +']').addClass('active_page')
+													 .siblings('.active_page')
+													 .removeClass('active_page');										 
+			
+			// Set the current page meta data							
+			meta.data(current_page,page_num);
+			
+			// Hide the more and/or less indicators
+			toggleMoreLess();
+		};	
+		
+		// Methods to shift the diplayed index of page numbers to the left or right
+		function movePageNumbersLeft(e, new_p){
+			var new_page = new_p;
+			
+			var $current_active_link = $(e).siblings('.active_page');
+		
+			if($current_active_link.siblings('.page_link[longdesc=' + new_page +']').css('display') == 'none'){
+				
+				$nav_panels.each(function(){
+							$(this).children('.page_link')
+								.hide() // Hide all the page links
+								.slice(parseInt(new_page - options.num_page_links_to_display + 1) , new_page + 1)
+								.show();		
+							});
+			}
+			
+		} 
+		
+		function movePageNumbersRight(e, new_p){
+			var new_page = new_p;
+			
+			var $current_active_link = $(e).siblings('.active_page');
+			
+			if($current_active_link.siblings('.page_link[longdesc=' + new_page +']').css('display') == 'none'){
+												
+				$nav_panels.each(function(){
+							$(this).children('.page_link')
+								.hide() // Hide all the page links
+								.slice( new_page , new_page + parseInt(options.num_page_links_to_display))
+								.show();
+							});
+			}
+		}
+		
+		// Show or remove the ellipses that indicate that more page numbers exist in the page index than are currently shown
+		function toggleMoreLess(){
+													 
+			if(!$nav_panels.children('.page_link:visible').hasClass('last')){					
+				$nav_panels.children('.more').show();
+			}else {
+				$nav_panels.children('.more').hide();
+			}
+			
+			if(!$nav_panels.children('.page_link:visible').hasClass('first')){
+				$nav_panels.children('.less').show();
+			}else {
+				$nav_panels.children('.less').hide();
+			}			
+		}
+		
 	};
 	
 })(jQuery);
+( function( $ ) {
+    $.fn.loggedInScan = function() {
+
+        if ( arguments == null || arguments[0] == null ) return;
+        var data = arguments[0];
+        var loggedInSelector = data["loggedInSelector"];
+        var notLoggedInSelector = data["notLoggedInSelector"];
+        var isLoggedInFn = data["isLoggedInFn"];
+
+        if ( isLoggedInFn === null || isLoggedInFn === undefined ) return;
+
+        var isLoggedIn = isLoggedInFn();
+
+        if ( isLoggedIn ) {
+            var notLoggedIn = $( notLoggedInSelector );
+            $( notLoggedIn ).remove();
+            var loggedIn = $( loggedInSelector );
+            $( loggedIn ).each( function() {
+                var contents = $( this ).contents();
+                $( this ).replaceWith( contents );
+            } );
+        } else {
+            var loggedIn = $( loggedInSelector );
+            $( loggedIn ).remove();
+            var notLoggedIn = $( notLoggedInSelector );
+            $( notLoggedIn ).each( function() {
+                var contents = $( this ).contents();
+                $( this ).replaceWith( contents );
+            } );
+        }
+    };
+} )( jQuery );

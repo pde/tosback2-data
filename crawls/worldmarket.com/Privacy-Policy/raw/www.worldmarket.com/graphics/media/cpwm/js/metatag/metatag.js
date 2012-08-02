@@ -1,5 +1,35 @@
+setTimeout(function(){var a=document.createElement("script");var b=document.getElementsByTagName('script')[0];a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0012/7737.js?"+Math.floor(new Date().getTime()/3600000);a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+
+
+document.observe("dom:loaded", function () {
+	var pids = [12491196,12491182,12491195,12491184,11133374,12491271,12491142,12491140,12445306,11278976,12816018,12445365,10969875,10969874,10969876,10969871,10969870,10969869,12815962,12815960,12815958,12603078,12369820,3597584,12369812,12369808];
+
+	if (m=location.href.replace(/^.*\/product\/.*productId=([0-9]+).*/, "$1")) {
+		try {
+		if (("|"+pids.join("|")+"|").indexOf("|"+m+"|")>-1) {
+		$$('.availability').each(function (o,i) {o.update("<span style='font-size: 140%; font-weight: bold'>LIMITED AVAILABILTY - Select Stores Only</span>")}); 
+		if ($$("#prdSidebar2>img").length>0 && $$("#prdSidebar2>img")[0].title==="IN STORES ONLY") $$("#prdSidebar2>img")[0].remove();
+		}
+		} catch(e) {}
+	}
+});
+
+/* Q4 survey */
+setTimeout(function(){
+	var a=document.createElement("script");
+	var b=document.getElementsByTagName('script')[0];
+	a.src="//ips-invite.iperceptions.com/webValidator.aspx?sdfc=c64c6bad-108780-c13a9b19-db11-4fb6-a2fc-485cd7a19bb3&lID=1&loc=STUDY&cD=90&rF=False&iType=1&domainname=0";
+	a.defer="defer";
+	a.type="text/javascript";
+	b.parentNode.insertBefore(a,b)
+}, 1);
+
+
 /// use URL 	<script type="text/javascript" src="/graphics/media/cpwm/js/metatag/metatag.js"></script>
- 
+/* TODO 
+	all multiple generated tag URLs - if array step thru
+
+*/ 
 /* GWO tag - page tracking */
 /////////// DONT CHANGE BELOW //////////////
 
@@ -177,9 +207,11 @@ com.cpwm.tags.prototype = {
 	showAllTags: function () {
 		var t=""; 
 		for (i=0; i<this.pages.length; i++) {
-			if(!this.pages[i].name) continue; 
-			t+=this.pages[i].name+": "+this.pages[i].url+"\nsrc|type|cat: "+
-				this.pages[i].src+"|"+this.pages[i].type+"|"+this.pages[i].cat+"\n\n";
+			if(!this.pages[i].name) continue;
+			for (e in this.pages[i]) {
+				if (eval('this.pages[i].'+e)) t+=e+": "+eval('this.pages[i].'+e)+"\n";
+			} 
+			t+="\n\n";
 		} 
 		document.body.insert(
 			new Element('div',{
@@ -252,6 +284,7 @@ com.cpwm.tags.prototype = {
 					newImg.setStyle({visibility:'hidden'});
 					newImg.height=1;
 					newImg.src=src;
+					document.getElementsByTagName('body')[0].appendChild(newImg);
 					break;
 				case "html":
 					var newDiv=document.createElement('div');
@@ -264,8 +297,22 @@ com.cpwm.tags.prototype = {
 					break;
 				case "script":
 					try{
-						if (typeof(tag.content)=="function") tag.content();
-					} catch (e) {
+						var newScript=document.createElement('script');
+						if (typeof(tag.content)=="function") {
+							tag.content();
+						} else if (tag.tagUrl) {
+							switch (tag.location) {
+								case "top":
+									document.getElementsByTagName('head')[0].appendChild(newScript);
+									break;
+								default:
+									document.getElementsByTagName('body')[0].appendChild(newScript);
+									break;
+							}
+							newScript.src = tag.tagUrl;
+						}
+					} catch (e) { 
+						com.cpwm.errors.push("Writing script tag \nfor "+tag.name+":\n"+e);
 					}
 					break;
 			}
@@ -276,16 +323,19 @@ com.cpwm.tags.prototype = {
 //######## DEPENDS ON PROTOTYPE
 
 document.observe("dom:loaded", function () {
+
 	if (location.href.indexOf("catman1.remotetools.gsipartners.com")>-1 )
 		return;
 
-var datafile = '/graphics/media/cpwm/js/metatag/pagetags.json';
-//var datafile = '/other/sven/meta-tag-test/pagetags.json';
+var datafile = (location.href.indexOf("cmspreview")>-1)
+		? 'http://cmspreview.worldmarketcorp.us/rkg-pixels-test/pagetags-dev.json'
+		:'/graphics/media/cpwm/js/metatag/pagetags.json';
 
 
 if (typeof(Ajax)!=="undefined" && document.createElement && document.getElementById) {
 	new Ajax.Request(datafile, {
 	  asyncronous: false,
+	  method: 'get',
 	  onFailure: function (reponse) {
 		com.cpwm.errors.push( "Retrieveing \n"+datafile+"\n"+ response.status);
 	        },

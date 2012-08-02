@@ -146,7 +146,8 @@
     <script src="../blair/foresee/foresee-trigger.js" type="text/javascript"></script>
 
 
-<link rel="stylesheet" type="text/css"   href="../../content.atomz.com/sp1004cc0b/publish/autocomplete_styles.css%3Fsp_css_cache_ver=1.css">
+<link rel="stylesheet" type="text/css"
+      href="../../content.atomz.com/sp1004cc0b/publish/autocomplete_styles.css%3Fsp_css_cache_ver=1.css">
 
 <!-- Header Flagship Begins -->
 
@@ -237,8 +238,8 @@ function displaylogo2(){
         <div class="searchArea">
             <input class="text form-text" id="q" name="q" type="text" value="" size="12" maxlength="60"/>
             <input name="sp_cs" type="hidden" value="UTF-8"/>
-            <input id="items" name="items" type="hidden" value="0"/>
-            <input id="total" name="total" type="hidden" value="$0.00"/>      
+            <input name="items" type="hidden" value="0"/>
+            <input name="total" type="hidden" value="$0.00"/>
             <input class="button" id="search_button" title="Search" name="search" type="image" src="../../images.orchardbrands.com/blair/assets/images/btn/search_off.png" alt="Search"/>
             <div class="clr"></div>
             <div class="bottom-image"></div>
@@ -316,7 +317,7 @@ function displaylogo2(){
         </div>
 
         <div class="hdr-want-more-txt">
-            <div align="right"><img border="0" align="bottom" style="margin-bottom: -2px;" src="../../images.orchardbrands.com/blair/assets/images/img/feature/email_sign_up2.gif" alt="" /> <img border="0" align="bottom" src="../../images.orchardbrands.com/blair/assets/images/img/header_arrow.gif" alt="" /></div>
+            <div align="right"><img border="0" align="bottom" alt="" src="../../images.orchardbrands.com/blair/assets/images/img/feature/email_sign_up.gif" style="margin-bottom: -2px;" /> <img border="0" align="bottom" alt="" src="../../images.orchardbrands.com/blair/assets/images/img/header_arrow.gif" /></div>
         </div>
 
         <div class="header-email">
@@ -342,18 +343,25 @@ function displaylogo2(){
 
         //Alert user to enter a search term if default text or no text is in search box
         $("#search_button").click(function(evt) {
+
             if ($("#q").val() == "Search keyword or item #" || $("#q").val() == "") {
                 evt.preventDefault();
                 alert('Please enter a search term');
             } else {
-                var searchString = $("#q").val() + "&items=" + $("#items").val() + "&total=" + $("#total").val();
+                var searchString = $("#q").val() + "&items=" + $('input[name="items"]').val()  + "&total=" + $('input[name="total"]').val();
                 window.location.href = $("#searchForm").attr("action") + "?q=" + searchString;
             }
         });
 
         $("#searchForm").submit(function(evt) {
-            $("#search_button").trigger('click');
-            evt.preventDefault();
+
+            if ($("#q").val() == "Search keyword or item #" || $("#q").val() == "") {
+                evt.preventDefault();
+                alert('Please enter a search term');
+            } else {
+                var searchString = $("#q").val() + "&items=" + $('input[name="items"]').val() + "&total=" + $('input[name="total"]').val();
+                window.location.href = $("#searchForm").attr("action") + "?q=" + searchString;
+            }
         });
 
         //email sign up
@@ -685,7 +693,54 @@ One or more patents may apply to this Site or those of our affiliated brands, in
 
 <div id="footer">
 	<div class="footer-mc1">
-		<style type="text/css"> .footer-links {background:transparent url(../../images.orchardbrands.com/blair/assets/images/bkg/footer_links_mid.gif) repeat-y 0 0;} .footer-links .inner {background:transparent url(../../images.orchardbrands.com/blair/assets/images/bkg/footer_links_top2.gif) no-repeat 0 0; } .footer-links-bottom {background:transparent url(../../images.orchardbrands.com/blair/assets/images/bkg/footer_links_bot.gif) no-repeat 0 0; height:13px; width:945px;} .footer-links ul {display:inline; float:left; width:220px; margin:10px 0 0 15px; list-style-position:outside;} .footer-links ul li {line-height:2em;} .footer-links ul li a {color:#3f3f3f; font-size:1.2em; font-weight:normal;} .footer-links ul li.title {padding-bottom:10px;} .footer-links ul li.title span {color:#004596; font-size:1.2em; font-weight:bold;} </style> <div class="footer-links"> <div class="inner"> <ul> <li class="title"><span>Shop With Confidence</span></li> <li><a href="custserv.jsp%3FpageName=Privacy.html#" onClick="javascript:window.open('/content_popup.jsp?pageName=Returns', '', 'width=640, height=460, scrollbars=1'); return false">Our Guarantee/Return Policy</a></li> <li><a href="http://www.blair.com/custserv/custserv.jsp?pageName=PrivacyMain">Privacy &amp; Security Policy</a></li> <li><a href="http://www.blair.com/custserv/custserv.jsp?pageName=About">About Blair</a></li> <li><a href="http://www.blair.com/custserv/custserv.jsp?pageName=VisitStore">Visit our Stores</a></li> <li><a href="http://www.blair.com/custserv/custserv.jsp?pageName=Careers">Career Opportunities</a></li> </ul> <ul> <li class="title"><span>Customer Service</span></li> <li><a href="http://www.blair.com/custserv/custserv.jsp?pageName=FAQ">Contact Us/FAQ</a></li> <li><a href="https://www.blair.com/user/main.jsp">My Account</a></li> <li><a href="custserv.jsp%3FpageName=Privacy.html#" onClick="javascript:window.open('/content_popup.jsp?pageName=Shipping', '', 'width=640, height=460, scrollbars=1'); return false">Shipping &amp; Delivery</a></li> <li><a href="https://www.blair.com/checkout/order_status.jsp">Check Order Status</a></li> <li><a href="http://www.blair.com/user/gift_card.jsp">Check Gift Card Balance</a></li> </ul> <ul> <li class="title"><span>Catalogs &amp; Specials</span></li> <li><a href="custserv.jsp%3FpageName=Privacy.html#" onClick="javascript:window.open('http://pages.blair.com/subscription.jsp', '', 'width=640, height=460, scrollbars=1'); return false">Get E-mail Specials</a></li> <li><a href="http://www.blair.com/catalog/catalog_order.jsp">Place Catalog Order</a></li> <li><a href="http://www.blair.com/catalog/request_catalog.jsp">Request a Catalog</a></li> <li><a href="http://catalogs.shoplocal.com/blair">Interactive Catalog</a></li> <li><a href="http://www.blair.com/catalog/product.jsp?productId=64">Gift Cards</a></li> </ul> <ul> <li class="title"><span>The Blair Credit Card</span></li> <li><a href="http://www.blair.com/custserv/custserv.jsp?pageName=CCMore">Find Out More</a></li> <!--<li><a href="https://www.blair.com/checkout/pl_preapplication.jsp">Apply Now</a></li> --> <li><a href="https://onlineaccess.mycreditcard.cc/blair">Pay Your Bill</a></li> <li><a href="https://onlineaccess.mycreditcard.cc/blair">Manage Your Account</a></li><li><a href="https://www.blair.com/checkout/pl_preapplication.jsp">Pre-Approved? Click here</a></li><li><a href="https://www.blair.com/checkout/pl_preapplication.jsp">Apply now</a></li> <!--<li><a href="#">Pre-Approved? Click Here</a></li> --> </ul> <div class="clr"></div> </div> </div> <div class="footer-links-bottom"></div>
+		<script type='text/javascript' src='../../static.atgsvcs.com/js/atgsvcs.js'></script> <script type='text/javascript'>
+  ATGSvcs.setUOID(200106299364);
+</script>
+<div style="width:945px; height:80px "> 			<img width="945" height="18" src="../../images.orchardbrands.com/blair/assets/images/bkg/footer_042412_01.png" alt="" />
+<div style="float:left; margin:0px;"> <a href="http://www.blair.com/custserv/contactus.jsp"><img width="247" height="28" border="0" src="../../images.orchardbrands.com/blair/assets/images/bkg/footer_042412_02.png" alt="Email Us" /></a> </div>
+<div style="float:left; margin:0px;"> <a href="http://www.blair.com/custserv/custserv.jsp?pageName=FAQ"><img width="223" height="28" border="0" src="../../images.orchardbrands.com/blair/assets/images/bkg/footer_042412_03.png" alt="FAQs" /></a> </div>
+<div style="float:left; margin:0px;"> <a href="http://www.facebook.com/pages/Blair/149736994102" target="_blank"><img width="243" height="28" border="0" src="../../images.orchardbrands.com/blair/assets/images/bkg/footer_042412_04.png" alt="Facebook" /></a> </div>
+<div style="float:left; margin:0px;"> <a href="http://pinterest.com/blaircatalog/" target="_blank"><img width="232" height="28" border="0" src="../../images.orchardbrands.com/blair/assets/images/bkg/footer_042412_05.png" alt="Pinterest" /></a> </div>
+<div style="float:left; margin:0px;">    <img width="247" height="34" border="0" src="../../images.orchardbrands.com/blair/assets/images/bkg/footer_042412_06.png" alt="800-821-5744" /> </div>
+<div id="liveChat" style="background-image: url(../../images.orchardbrands.com/blair/assets/images/bkg/footer_042412_07_blank.png); float:left; margin:0px; width:223px; height:34px"> </div>
+<div style="float:left; margin:0px;"> <a href="http://twitter.com/#!/blairbargains" target="_blank"><img width="243" height="34" border="0" src="../../images.orchardbrands.com/blair/assets/images/bkg/footer_042412_08.png" alt="Twitter" /></a> </div>
+<div style="float:left; margin:0px;">  	<a onclick="javascript:window.open('http://pages.blair.com/subscription.jsp', '', 'width=640, height=460, scrollbars=1'); return false" href="custserv.jsp%3FpageName=Privacy.html#"><img width="232" height="34" border="0" src="../../images.orchardbrands.com/blair/assets/images/bkg/footer_042412_09.png" alt="Email Specials" /></a> </div>
+</div>
+<style type="text/css"> .footer-links {background:transparent url(../../images.orchardbrands.com/blair/assets/images/bkg/pixel.gif) repeat;} .footer-links ul {display:inline; float:left; width:220px; margin:10px 0 0 15px; list-style-position:outside;} .footer-links ul li {line-height:2em;} .footer-links ul li a {color:#3f3f3f; font-size:1.2em; font-weight:normal;} .footer-links ul li.title {padding-bottom:10px;} .footer-links ul li.title span {color:#004596; font-size:1.2em; font-weight:bold;} </style>
+<div class="footer-links">
+<div class="inner">
+<ul>
+    <li class="title"><span>Shop With Confidence</span></li>
+    <li><a onclick="javascript:window.open('/content_popup.jsp?pageName=Shipping', '', 'width=640, height=460, scrollbars=1'); return false" href="custserv.jsp%3FpageName=Privacy.html#">Shipping &amp; Delivery</a></li>
+    <li><a href="custserv.jsp%3FpageName=Privacy.html#" onclick="javascript:window.open('/content_popup.jsp?pageName=Returns', '', 'width=640, height=460, scrollbars=1'); return false">Guarantee/Return Policy</a></li>
+    <li><a href="http://www.blair.com/custserv/custserv.jsp?pageName=PrivacyMain">Privacy &amp; Security Policy</a></li>
+    <li><a href="http://www.blair.com/custserv/custserv.jsp?pageName=About">About Blair</a></li>
+</ul>
+<ul>
+    <li class="title"><span>Shopping Services</span></li>
+    <li><a href="https://www.blair.com/user/main.jsp">My Account</a></li>
+    <li><a href="http://www.blair.com/checkout/order_status.jsp" onclick="https://www.blair.com/checkout/order_status.jsp">Order Status</a></li>
+    <li><a href="http://www.blair.com/catalog/product.jsp?productId=64">Gift Cards</a></li>
+    <li><a href="http://www.blair.com/user/gift_card.jsp">Check Gift Card Balance</a></li>
+</ul>
+<ul>
+    <li class="title"><span>More Ways to Shop</span></li>
+    <li><a href="http://www.blair.com/catalog/catalog_order.jsp">Place Catalog Order</a></li>
+    <li><a href="http://www.blair.com/catalog/request_catalog.jsp">Request a Catalog</a></li>
+    <li><a href="http://catalogs.shoplocal.com/blair">Use Interactive Catalog</a></li>
+    <li><a href="http://www.blair.com/custserv/custserv.jsp?pageName=VisitStore">Visit Our Stores</a></li>
+</ul>
+<ul>
+    <li class="title"><span>The Blair Credit Card</span></li>
+    <li><a href="http://www.blair.com/custserv/custserv.jsp?pageName=CCMore">Find Out More</a></li>
+    <li><a href="https://onlineaccess.mycreditcard.cc/blair">Pay Your Bill</a></li>
+    <li><a href="https://onlineaccess.mycreditcard.cc/blair">Manage Your Account</a></li>
+    <li><a href="https://www.blair.com/checkout/pl_preapplication.jsp">Apply now</a></li>
+</ul>
+<div class="clr">&nbsp;</div>
+</div>
+</div>
+<div class="footer-links-bottom">&nbsp;</div>
 	</div>
 
 	<div id="glo-hackersafe-logo">
@@ -719,21 +774,23 @@ One or more patents may apply to this Site or those of our affiliated brands, in
 
     </div>
 </div>
-<div id="main-div-wrapper-bottom"></div>
+<div id="main-div-wrapper-bottom">
 
 
+    
+        <!-- For maximum performance, place these tags at the bottom of the body section of the page(s) containing this search form. -->
 
-    <!-- For maximum performance, place these tags at the bottom of the body section of the page(s) containing this search form. -->
-    <script type="text/javascript"
-            src="../../ajax.googleapis.com/ajax/libs/yui/2.8.0r4/build/utilities/utilities.js"></script>
-    <script type="text/javascript"
-            src="../../ajax.googleapis.com/ajax/libs/yui/2.8.0r4/build/datasource/datasource-min.js"></script>
-    <script type="text/javascript"
-            src="../../ajax.googleapis.com/ajax/libs/yui/2.8.0r4/build/autocomplete/autocomplete-min.js"></script>
-    <script type="text/javascript"
-            src="../../content.atomz.com/sp1004cc0b/publish/autocomplete_data.js%3Fsp_js_cache_ver=1"></script>
+        <script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/yui/2.8.0r4/build/utilities/utilities.js"></script>
 
+        <script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/yui/2.8.0r4/build/datasource/datasource-min.js"></script>
 
+        <script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/yui/2.8.0r4/build/autocomplete/autocomplete-min.js"></script>
+
+        <script type="text/javascript" src="../../content.atomz.com/sp1004cc0b/publish/autocomplete_data.js%3Fsp_js_cache_ver=1"></script>
+        
+   
+
+</div>
 
 </body>
 </html>

@@ -11,12 +11,98 @@
  
  <link rel="stylesheet" href="mlcomm/_styles/main.css" type="text/css" />
  <link rel="stylesheet" href="mlcomm/_styles/jquery.lightbox.css" type="text/css" /> 
+ <link rel="stylesheet" href="mlcomm/_styles/homepage.css" type="text/css" />
+
  
 <script type="text/javascript" language="JavaScript" src="mlcomm/_scripts/main.js"></script>    
 <script type="text/javascript" src="mlcomm/_scripts/jquery.js"> </script> 
 <script type="text/javascript" src="mlcomm/_scripts/menu.js"> </script> 
-<script type="text/javascript" src="mlcomm/_scripts/jquery.lightbox.js"> </script>
-<script src="Scripts/swfobject_modified.js" type="text/javascript"></script>
+<script type="text/javascript" src="mlcomm/_scripts/jquery.lightbox.js"> </script> 
+<script type="text/javascript" language="JavaScript" src="mlcomm/_scripts/language_select.js"> </script>
+<script type="text/javascript" language="JavaScript" src="mlcomm/_scripts/language_select_lightbox.js"> </script>
+<script type="text/javascript" language="JavaScript" src="mlcomm/_scripts/call_center_lightbox.js"> </script>
+
+<script type="text/javascript" src="mlcomm/_scripts/homepage_banner.js"> </script>
+
+
+
+<script type="text/javascript"> 
+
+
+
+
+$('#banner').cycle({
+		 fx: 'fade',
+		 speed: 2000,
+		 timeout: 10000,
+		 pager: '#banner-nav-frames',
+		 prev: '#prev',
+	     next: '#next'
+		 
+ });  
+	 
+function showLanguageDrop(sel) {
+  value = sel.options[sel.selectedIndex].value;
+  dropLang = '#' + value; 
+  $('#lang-drop option').removeClass('lightboxon');
+  $(dropLang).addClass('lightboxon');
+  $("#chooseLang").trigger('click');
+}
+
+$(document).ready(function() {
+	$('#banner-nav-frames a').html(' ').css('width','50px').css('height','50px').css('padding','2px 2px');
+$('#banner-nav-frames').click(function() { 
+    $('#banner').cycle('pause'); 
+});
+		
+	$('#banner-nav-frames a').mouseover(function() {
+		$('#banner-nav-frames a').removeClass('selectSlide');
+		$(this).addClass('selectSlide');
+	});		
+	$('#banner-nav-frames a').mouseout(function() {
+		$('#banner-nav-frames a').removeClass('selectSlide'); 
+	});
+	$('#banner-nav-controls-l').mouseover(function() { 
+		$('#banner-nav-controls-l img').attr('src','/mlcomm/_images/content/banner_navigation/button_pre_hover.png').css('cursor','pointer')
+	});
+	$('#banner-nav-controls-l').mouseout(function() { 
+		$('#banner-nav-controls-l img').attr('src','/mlcomm/_images/content/banner_navigation/button_pre.png')
+	});
+	$('#banner-nav-controls-r').mouseover(function() { 
+		$('#banner-nav-controls-r img').attr('src','/mlcomm/_images/content/banner_navigation/button_next_hover.png').css('cursor','pointer')
+	});
+	$('#banner-nav-controls-r').mouseout(function() { 
+		$('#banner-nav-controls-r img').attr('src','/mlcomm/_images/content/banner_navigation/button_next.png')
+	});
+		
+	$(function() {
+$('.lang-select').click(function() { 
+ 	$('#lang-drop option').removeClass('lightboxon');
+   $('.lang-select').removeClass('lightboxon'); 
+   $(this).addClass('lightboxon');
+    $("#chooseLang").trigger('click');
+	
+});
+	
+ $('#chooseLang').lightBoxLang();
+
+
+});
+	
+	
+	$('#call-centers').lightBoxCallCenters();
+ 
+});
+
+
+</script>
+<script type="text/javascript">
+  function recordOutboundLink(link, category, action) {
+    _gat._getTrackerByName()._trackEvent(category, action);
+    setTimeout('document.location = "' + link.href + '"', 100);
+  }
+</script>
+
 <script>
 
 $(document).ready(function() {
@@ -25,14 +111,16 @@ $(document).ready(function() {
 	
 });
 
+
+
+
 </script>
- 
-  
+
 <title>AT&amp;T World</title>
 </head>
 
 <body id="home">
- 
+<div id="chooseLang"></div> 
 
 
 <div id="wrapper">   
@@ -41,202 +129,291 @@ $(document).ready(function() {
 
  
 <ul id="top-nav"> 
- <li><a href="../espanol.att.com/index.html" title="Contact Us">AT&amp;T in Spanish</a></li> 
- <li><a href="http://att.com/gen/landing-pages?pid=3308" class="nb" title="AT&amp;T in English">AT&amp;T in English</a></li>  
+ <li><a id="contact2" class="lang-select" href="index.html#contactus" title="Contact Us">Contact Us</a></li> 
+ <li><a href="http://att.com/" title="AT&amp;T in English">AT&amp;T in English</a></li> 
+ <li><a href="../espanol.att.com/index.html" title="AT&amp;T en Espa&#241;ol">AT&amp;T en Espa&#241;ol</a></li>
+ <li><a href="http://world.att.com/index.html" class="nb" title="AT&amp;T World">AT&amp;T World</a></li>  
  </ul>  
  <div class="clear"></div> 
  
 <div id="inner-wrapper">
-
-<div id="body-content">
-
-		<div id="flash-content">
-          <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="973" height="412">
-            <param name="movie" value="/mlcomm/_flash/banner-world.swf" />
-            <param name="quality" value="high" />
-            <param name="wmode" value="opaque" />
-            <param name="swfversion" value="9.0.45.0" />
-            <!-- This param tag prompts users with Flash Player 6.0 r65 and higher to download the latest version of Flash Player. Delete it if you don’t want users to see the prompt. -->
-            <param name="expressinstall" value="/Scripts/expressInstall.swf" />
-            <!-- Next object tag is for non-IE browsers. So hide it from IE using IECC. -->
-            <!--[if !IE]>-->
-            <object type="application/x-shockwave-flash" data="mlcomm/_flash/banner-world.swf" width="973" height="412">
-              <!--<![endif]-->
-              <param name="quality" value="high" />
-              <param name="wmode" value="opaque" />
-              <param name="swfversion" value="9.0.45.0" />
-              <param name="expressinstall" value="/Scripts/expressInstall.swf" />
-              <!-- The browser displays the following alternative content for users with Flash Player 6.0 and older. -->
-             
-              <!--[if !IE]>-->
-            </object>
-            <!--<![endif]-->
-          </object>
-	  </div>
-        
-        <div id="main-content">
-        
-        		<div id="lang-nav">
-                		<ul id="lang-menu">
-                        		<li id="logo"><a href="http://world.att.com/index.html"><img src="mlcomm/_images/template/global_logo.jpg" width="42" height="54" alt="AT&amp;T" /></a></li>
-                        		<li id="nav-chinese" class="nav-link" >Chinese / &#20013;&#25991;</li>
-                        		<li id="nav-japanese" class="nav-link">Japanese / &#26085;&#26412;&#35486;</li>
-                        		<li id="nav-korean" class="nav-link">Korean / &#54620;&#44397;&#50612;</li>
-                        		<li id="nav-tagalog" class="nav-link">Tagalog</li>
-                        		<li id="nav-vietnamese" class="nav-link">Vietnamese / Ti&#7871;ng Vi&#7879;t</li>
-                        		<li id="nav-polish" class="nav-link">Polish / polski</li>
-                        		<li id="nav-russian" class="nav-link">Russian / &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; &#1103;&#1079;&#1099;&#1082;</li>
-                        </ul>
-                		<div class="clear"></div> 
-                        <div id="states-chinese" class="state-box">
-                        		<ul>
-                                		<li><a href="http://chinese.att.com/index.html?id=alabama" title="Alabama">Alabama</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=georgia" title="Georgia">Georgia</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=kentucky" title="Kentucky">Kentucky</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=missouri" title="Missouri">Missouri</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=southcarolina" title="South Carolina">South Carolina</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=arkansas" title="Arkansas">Arkansas</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=illinois" title="Illinois">Illinois</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=louisiana" title="Louisiana">Louisiana</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=northcarolina" title="North Carolina">North Carolina</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=tennessee" title="Tennessee">Tennessee</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=california" title="California">California</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=indiana" title="Indiana">Indiana</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=michigan" title="Michigan">Michigan</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=ohio" title="Ohio">Ohio</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=texas" title="Texas">Texas</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=florida" title="Florida">Florida</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=kansas" title="Kansas">Kansas</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=mississippi" title="Mississippi">Mississippi</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=oklahoma" title="Oklahoma">Oklahoma</a></li>
-                                		<li><a href="http://chinese.att.com/index.html?id=wisconsin" title="Wisconsin">Wisconsin</a></li> 
-                                </ul>
-                        </div>
-                        <div id="states-japanese" class="state-box">
-                        		<ul> 
-                                		<li><a href="http://japanese.att.com/index.html?id=arkansas" title="Arkansas">Arkansas</a></li> 
-                                		<li><a href="http://japanese.att.com/index.html?id=kansas" title="Kansas">Kansas</a></li> 
-                                		<li><a href="http://japanese.att.com/index.html?id=oklahoma" title="Oklahoma">Oklahoma</a></li> 
-                                		<li><a href="http://japanese.att.com/index.html?id=california" title="California">California</a></li> 
-                                		<li><a href="http://japanese.att.com/index.html?id=missouri" title="Missouri">Missouri</a></li> 
-                                		<li><a href="http://japanese.att.com/index.html?id=texas" title="Texas">Texas</a></li> 
-                                </ul>
-                        </div>
-                        <div id="states-korean" class="state-box">
-                        		<ul>
-                                		<li><a href="http://korean.att.com/index.html?id=alabama" title="Alabama">Alabama</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=georgia" title="Georgia">Georgia</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=kentucky" title="Kentucky">Kentucky</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=missouri" title="Missouri">Missouri</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=southcarolina" title="South Carolina">South Carolina</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=arkansas" title="Arkansas">Arkansas</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=illinois" title="Illinois">Illinois</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=louisiana" title="Louisiana">Louisiana</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=northcarolina" title="North Carolina">North Carolina</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=tennessee" title="Tennessee">Tennessee</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=california" title="California">California</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=indiana" title="Indiana">Indiana</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=michigan" title="Michigan">Michigan</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=ohio" title="Ohio">Ohio</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=texas" title="Texas">Texas</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=florida" title="Florida">Florida</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=kansas" title="Kansas">Kansas</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=mississippi" title="Mississippi">Mississippi</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=oklahoma" title="Oklahoma">Oklahoma</a></li>
-                                		<li><a href="http://korean.att.com/index.html?id=wisconsin" title="Wisconsin">Wisconsin</a></li> 
-                                </ul>
-                        </div>
-                        <div id="states-tagalog" class="state-box">
-                        		<ul> 
-                                		<li><a href="http://tagalog.att.com/index.html?id=california" title="California">California</a></li>
-                                		<li><a href="http://tagalog.att.com/index.html?id=michigan" title="Michigan">Michigan</a></li>
-                                		<li><a href="http://tagalog.att.com/index.html?id=illinois" title="Illinois">Illinois</a></li>
-                                		<li><a href="http://tagalog.att.com/index.html?id=ohio" title="Ohio">Ohio</a></li>
-                                		<li><a href="http://tagalog.att.com/index.html?id=indiana" title="Indiana">Indiana</a></li>
-                                		<li><a href="http://tagalog.att.com/index.html?id=wisconsin" title="Wisconsin">Wisconsin</a></li> 
-                                </ul>
-                        </div>
-                        <div id="states-vietnamese" class="state-box">
-                        		<ul>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=alabama" title="Alabama">Alabama</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=georgia" title="Georgia">Georgia</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=kentucky" title="Kentucky">Kentucky</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=missouri" title="Missouri">Missouri</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=southcarolina" title="South Carolina">South Carolina</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=arkansas" title="Arkansas">Arkansas</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=illinois" title="Illinois">Illinois</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=louisiana" title="Louisiana">Louisiana</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=northcarolina" title="North Carolina">North Carolina</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=tennessee" title="Tennessee">Tennessee</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=california" title="California">California</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=indiana" title="Indiana">Indiana</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=michigan" title="Michigan">Michigan</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=ohio" title="Ohio">Ohio</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=texas" title="Texas">Texas</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=florida" title="Florida">Florida</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=kansas" title="Kansas">Kansas</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=mississippi" title="Mississippi">Mississippi</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=oklahoma" title="Oklahoma">Oklahoma</a></li>
-                                		<li><a href="http://vietnamese.att.com/index.html?id=wisconsin" title="Wisconsin">Wisconsin</a></li> 
-                                </ul>
-                        </div>
-                        <div id="states-polish" class="state-box">
-                        		<ul>
-                                		<li><a href="http://polish.att.com/index.html?id=california" title="California">California</a></li>
-                                		<li><a href="http://polish.att.com/index.html?id=michigan" title="Michigan">Michigan</a></li>
-                                		<li><a href="http://polish.att.com/index.html?id=illinois" title="Illinois">Illinois</a></li>
-                                		<li><a href="http://polish.att.com/index.html?id=ohio" title="Ohio">Ohio</a></li>
-                                		<li><a href="http://polish.att.com/index.html?id=indiana" title="Indiana">Indiana</a></li>
-                                		<li><a href="http://polish.att.com/index.html?id=wisconsin" title="Wisconsin">Wisconsin</a></li> 
-                                </ul>
-                        </div>
-                        <div id="states-russian" class="state-box">
-                        		<ul> 
-                                		<li><a href="http://russian.att.com/index.html?id=california" title="California">California</a></li> 
-                                </ul>
-                        </div> 
+		<div id="header">
+			<div id="inner-header">
+				<div class="clear"></div>
+                <div id="top-buttons">
+				<a id="call-centers" href="index.html#callcenters" title="Call Now">CALL NOW</a> | <a  id="order-now" class="lang-select" href="index.html#" title="Order Now">ORDER NOW</a>
                 </div>
+
+<script>renderGlobalNav()</script>
+ 				
+         <!--       <div id="lang-drop">
+                		<form>
+                        		<select>
+                                		<option>Choose Your Language</option> 
+                                		<option  id="chinese-drop" class="lang-select">Chinese | &#20013;&#25991;</option>
+                                         <option id="japanese-drop" class="lang-select">Japanese | &#26085;&#26412;&#35486;</option>
+                                         <option id="korean-drop" class="lang-select">Korean | &#54620;&#44397;&#50612;</option>
+                                         <option id="polish-drop" class="lang-select">Polish | Polski</option>
+                                         <option id="russian-drop" class="lang-select">Russian | &#1088;&#1091;&#1089;&#1089;&#1082;&#1086;&#1084; &#1103;&#1079;&#1099;&#1082;&#1077;</option>
+                                         <option id="tagalog-drop" class="lang-select">Tagalog</option>
+                                         <option id="vietnamese-drop" class="lang-select">Vietnamese | Ti&#7871;ng Vi&#7879;t</option>
+                                </select>
+                        </form>
+                </div> -->
+                                            
+
+			</div>
+		</div>
+            <div class="clear">
+
+		<div id="body-content">
+			<div id="inner-content">
+				<div id="main-content">
                 
-                <div class="content-row">
+                	<div id="banner-side-bar">
+                	  <ul>
+                	    <li><a href="index.html#languageLines" id="chinese-drop2" class="lang-select"><strong>Chinese / &#20013;&#25991;</strong></a></li>
+                	    <li><strong><a href="index.html#languageLines" id="japanese-drop2" class="lang-select" title="">Japanese / &#26085;&#26412;&#35486;</a></strong></li>
+                	    <li><strong><a href="index.html#languageLines" id="korean-drop2" class="lang-select" title="">Korean / &#54620;&#44397;&#50612;</a></strong></li>
+                	    <li><strong><a href="index.html#languageLines" id="tagalog-drop2" class="lang-select" title="">Tagalog</a></strong></li>
+                	    <li><strong><a href="index.html#languageLines" id="vietnamese-drop2" class="lang-select" title="">Vietnamese / Ti&#7871;ng Vi&#7879;t</a></strong></li>
+                	    <li><strong><a href="index.html#languageLines" id="polish-drop2" class="lang-select" title="">Polish / polski</a></strong></li>
+                	    <li><strong><a href="index.html#languageLines" id="russian-drop2" class="lang-select" title="">Russian / &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; &#1103;&#1079;&#1099;&#1082;</a></strong></li>
+              	      </ul>
+                	</div> 
+					<div id="banner-box"> 
+                    
+                    
+		  <div id="banner">
+		    <!--frame 1-->
+		    <div class="banner-frame" id="frame01"><img src="mlcomm/_images/homepage/banner_home_01.png" alt="We Speak Your Language" class="background" />
+		     <div class="more-info-btn"> 
+		   <p><a href="index.html#languageLines" id="language-link" title="">More Information</a></p>
+           </div>
+            <div class="lang-line-1">
+		    <a href="index.html#" id="chinese-drop1" class="lang-select"><img src="mlcomm/_images/homepage/bn_bt_chinese.jpg" alt="Chinese" /></a><a href="index.html#languageLines" id="japanese-drop1" class="lang-select" title=""><img src="mlcomm/_images/homepage/bn_bt_japanese.jpg" alt="Japanese" /></a><br /><a href="index.html#languageLines" id="korean-drop1" class="lang-select" title=""><img src="mlcomm/_images/homepage/bn_bt_korean.jpg" alt="Korean" style="padding-left:55px;"/></a>
+	          </div>
+            <div class="lang-line-2">
+		    <a href="index.html#languageLines" id="tagalog-drop1" class="lang-select" title=""><img src="mlcomm/_images/homepage/bn_bt_tagalog.jpg" alt="Tagalog" /></a><a href="index.html#languageLines" id="vietnamese-drop1" class="lang-select" title=""><img src="mlcomm/_images/homepage/bn_bt_vietnamese.jpg" alt="Vietnamese" /></a>
+	          </div>
+              <div class="lang-line-3">
+		    <a href="index.html#languageLines" id="polish-drop1" class="lang-select" title=""><img src="mlcomm/_images/homepage/bn_bt_polish.jpg" alt="Polish" /></a><a href="index.html#languageLines" id="russian-drop1" class="lang-select" title=""><img src="mlcomm/_images/homepage/bn_bt_russian.jpg" alt="Russian" /></a>
+	          </div>
+	        </div>
+		    <!--frame 2-->
+		    <div class="banner-frame" id="frame02"><img src="mlcomm/_images/homepage/banner_home_02.png" alt="AT&amp;T Internet" class="background" />
+		      
+              <div class="org-grey-txt">
+                <p class="big-txt"><em>High speed.<br />
+                  Low price.</em></p>
                 
-                		<div id="promo-box">
-                        <img src="mlcomm/_images/bg_promo_box.gif" width="667" height="249" alt="AT&amp;T: Explore. Shop. Connect" />
-                        <div class="promo-content">
-                        <p>AT&amp;T offers various products and services to help you stay connected with family and friends in the U.S. and around the world. </p>
-                        <p>Select your language and state to explore the world of new technology, shop our offerings and get connected. </p>
-                        </div>
+                <p><strong>Get high speed Internet<br />
+                  at an amazing price. </strong></p>
+              </div>
+              
+              <div class="price-txt">
+                <p class="cost"><em>$14.95</em></p>
+                <p class="month"><em>per month</em></p>                
+                <p class="term">for a full 12 months!*</p>
+              </div>
+              
+              
+              
+	              <div class="splash-btn">
+                  <div class="left"> </div>
+                  <div class="center">
+                  	     <a href="index.html#internet" title="Internet More Information" class="lang-select" id="quickHSI">More Information</a></div>
+                         <div class="right"> 
+                         </div>
+	         <div class="clear"></div>
+	        </div>
+            </div>
+		    <!--frame 3-->
+		    <div class="banner-frame" id="frame03"><img src="mlcomm/_images/homepage/banner_home_03.png" alt="AT&amp;T Uverse" class="background" />
+            
+			      <div class="uverse">
+           	        <div class="top-line">
+                	   <p><em>U-verse<sup>&reg;</sup> TV for</em></p>
+               	    </div>
+         
+		            <div class="cost"><p><em>$29</em></p>
+		              <p>&nbsp;</p>
+		            </div>
+		            <div class="per"><p>mo. for <br />
+		              6
+months</p></div>
+                    <div class="clear"></div>
                   </div>
-                        
-                        <div id="language-lines">
-                        <h2>We Speak Your Language<br />
-                        <span class="upsize">Plus 160 more.</span></h2>
-                        <p><a href="index.html#languageLines" id="language-link" title="">Learn More</a></p>
-                        
-                        </div>
-                		<div class="clear"></div>
-                
-                
-                </div>
-                
-                <div id="footer"> 
-                		<ul>
-                        		<li>&copy; 2003 - 2011 AT&amp;T Intellectual Property.</li>
-                                <li>All right reserved.</li>
-                         </ul> 
-                 </div>
+        
+        
+	              <div class="dvr">
+		            <p>Total Home DVR<sup>&reg;</sup> included, plus HBO<sup>&reg;</sup><br /> 
+	                and Cinemax<sup>&reg;</sup> <strong>FREE for 3 months! </strong></p>
+		            
+                  </div>
+                  <div class="splash-btn">
+                  <div class="left"> </div>
+                  <div class="center">
+                  	     <a id="promo-uverse" class="lang-select" href="index.html#uversepromo" title="More information">More Information</a></div>
+                         <div class="right"> 
+                         </div>
+	         <div class="clear"></div>
+	        </div>
+                  
+                  
+	        </div>
+		    <!--frame 4-->
+		    <div class="banner-frame" id="frame04"><img src="mlcomm/_images/homepage/banner_home_04.png" alt="AT&amp;T Worldwide Value Calling" class="background" />
+            
+            <div class="calling">
+		          <p><em>AT&amp;T Worldwide<br />
+Value Calling<sup>SM</sup></em><sup></sup></p>
+		          <p>&nbsp;</p>
+	          </div>
+            
+            	<div class="discount">
+		          <p><em>Discounted international<br />
+		           rates on calls <sup></sup></em><sup></sup></p>
+	          </div>
+            
+            
+	              <div class="splash-btn">
+                  <div class="left"> </div>
+                  <div class="center">
+                  	     <a href="index.html#valuecalling" title="Internet More Information" class="lang-select" id="quickLDI">More Information</a></div>
+                         <div class="right"> 
+                         </div>
+	         <div class="clear"></div>
+	        </div>
+	        </div>
+	      </div>
+						<div id="banner-nav"><div id="banner-nav-controls-l"><img id="prev" src="mlcomm/_images/content/banner_navigation/button_pre.png" width="21" height="29" alt=""/></div>
+						  <div id="banner-nav-frames"></div>
+					<div id="banner-nav-controls-r"> <img id="next" src="mlcomm/_images/content/banner_navigation/button_next.png" width="21" height="29" alt=""/></div>
+                    <div class="clear"></div>
+						</div>
+					</div> 
+                    <div id="product-row">
+                    <a  id="advanced-tv" class="lang-select" href="index.html#tv" title="Television AT&amp;T"><img src="mlcomm/_images/homepage/product_television.jpg" width="243" height="137" alt="Television AT&amp;T" /></a>
+                    <a  id="internet" class="lang-select" href="index.html#net" title="AT&amp;T Internet"><img src="mlcomm/_images/homepage/product_internet.jpg" width="243" height="137" alt="AT&amp;T Internet" /></a>
+                    <a  id="telephone" class="lang-select" href="index.html#phone" title="Telephone AT&amp;T"><img src="mlcomm/_images/homepage/product_telephone.jpg" width="243" height="137" alt="Telephone AT&amp;T" /></a>
+                    <a  id="contact" class="lang-select" href="index.html#contactus" title="AT&amp;T Contact Us"><img src="mlcomm/_images/homepage/product_contact_us.jpg" width="243" height="137" alt="AT&amp;T Contact Us" /></a>
+                    </div>
+                    
+                    
+                   
+                   
+					<div id="promo-row">
+						<div class="promo-box" id="promo-box-01">
+                        <img src="mlcomm/_images/homepage/promo_homepage_01.jpg" alt="U-verse Espanol" width="121" height="121" style="float:left;" />
+						  <h3>AT&T U-verse</h3>
+                            <p>Get AT&T U-verse programming in your language. <br />
+                              <a id="promo-uverse1" class="lang-select" href="index.html#uversepromo" title="More information">More information </a></p>
+                      </div>
+						<div class="promo-box" id="promo-box-02">
+                    <img src="mlcomm/_images/homepage/promo_homepage_02.jpg" alt="AT&amp;T Latino" width="94" height="120" style="float:left !important;" />	
+                    <h3>Internet Safety for Seniors</h3>
+                            <p>It's important to put your security, privacy, and safety first when you are online.<br />
+                              <a id="safety-seniors" class="lang-select" href="index.html#safetyseniors" title="More information">More information</a></p>
+						</div>
+						<div class="promo-box " id="promo-box-03">
+							<img src="mlcomm/_images/homepage/promo_homepage_03.jpg" alt="AT&amp;T Casa Conectada" width="115" height="140" style="float:left !important;" />
+                       	  <h3>Newsroom</h3>
+                            <p>Be in the know<br />
+                              <a id="newsroom" class="lang-select" href="index.html#latest-news" title="Latest news from AT&T ">Latest news from AT&T </a></p>
+						</div>
+				
+                   
+                   
+	  </div>
+                   
+				</div>
+			
+			</div>
+			<div class="clear"></div>
+		</div>
+        
+        <div id="quick-links">     
+        
+        
+        <div class="quick-links-box" id="quick-links-box-01">
+        <h6>Quick Links...</h6>
+        <ul>
+        <li><a title="Select your state" href="index.html#languages" class="lang-select" id="quickLang">Select your state</a></li>
+        <li><a title="Promotions" href="index.html#promotions" class="lang-select" id="quickPromo">Promotions</a></li>
+        <li><a title="Legal Terms" href="index.html#legal" class="lang-select" id="quickLegal">Legal Terms</a></li>
+        <li><a title="Contact Us" href="index.html#contact" class="lang-select" id="quickContact">Contact Us</a></li>
+        </ul>
+
+        </div>
+        
+        <div class="quick-links-box" id="quick-links-box-02">
+        <h6>Internet...</h6>
+        <ul>
+        <li><a title="High Speed Internet" href="index.html#hsi" class="lang-select" id="quickHSI2">High Speed Internet</a></li>
+        <li><a title="Internet without phone" href="index.html#dsl" class="lang-select" id="quickDSL">Internet without phone</a></li>
+        <li><a title="U-verse Internet" href="index.html#uverse" class="lang-select" id="quickUverse">U-verse Internet</a></li>
+        </ul>
+        </div>
+        
+        <div class="quick-links-box" id="quick-links-box-03">
+        <h6>Telephone Service...</h6>
+        <ul>
+        <li><a title="Local Phone" href="index.html#localphone" class="lang-select" id="quickPhone">Local Phone</a></li>
+        <li><a title="Domestic Long Distance" href="index.html#longdistance" class="lang-select" id="quickDLD">Domestic Long Distance</a></li>
+        <li><a title="International long distance" href="index.html#longdistance" class="lang-select" id="quickLDI2">International long distance</a></li>
+        </ul>
+        </div>
+        
+        <div class="quick-links-box" id="quick-links-box-04">
+        <h6>AT&amp;T U-verse...</h6>
+        <ul>
+        <li><a title="U-verse TV" href="index.html#uverse" class="lang-select" id="quickUverseTV2">U-verse TV</a></li>
+        <li><a title="U-verse Voice" href="index.html#uverse" class="lang-select" id="quickUverseVoice">U-verse Voice</a></li>
+        <li><a title="U-verse Internet" href="index.html#uverse" class="lang-select" id="quickUverseInternet">U-verse Internet</a></li>
+        </ul>
+        </div>
+        
+        <div class="quick-links-box last" id="quick-links-box-05">
+        <h6> AT&amp;T digital television...</h6>
+        <ul>
+        <li><a title="U-verse" href="index.html#uverse" class="lang-select" id="quickUverseTV">U-verse TV</a></li>
+        <li><a title="U-verse International" href="index.html#uverse" class="lang-select" id="quickUverseProg">U-verse International Programming</a></li>
+        <li><a title="AT&amp;T | DIRECTV" href="index.html#dtv" class="lang-select" id="quickDTV">AT&amp;T | DIRECTV</a></li>
+     	<li><a title="DIRECTV International" href="index.html#dtv" class="lang-select" id="quickDTVProg">DIRECTV International Programming</a></li>
+        </ul>
+        </div>
         
         </div>
-
-
+		<div id="footer"> 
+		
+        
+        <div class="clear"></div>
+<div id="inner-footer">
+<ul id="footerNav">
+<li><a href="http://world.att.com/index.html" title="Home">Home</a></li>
+<li><a href="index.html#attaboutus" class="lang-select" id="about2" title="About AT&amp;T">About AT&amp;T </a></li>
+<li><a href="http://www.att.com/gen/careers?pid=1" target="_blank" title="Careers">Careers</a></li>
+<li><a href="http://www.wireless.att.com/find-a-store/" target="_blank" title="Store locator">Store locator</a></li>
+<li><a title="Contact Us" href="index.html#contactatt" class="lang-select" id="quickContact2">Contact us</a></li>
+<li><a href="http://www.att.com/privacy" target="_blank" title="Privacy policy">Privacy policy</a></li>
+<li><a href="../www.att.com/gen/general%3Fpid=11561.html" target="_blank" class="nb" title="Terms of use">Terms of use</a></li>
+</ul>
+<div class="clear"></div>
+<p><a href="../www.att.com/gen/privacy-policy%3Fpid=2587.html" class="nb" title="AT&amp;T Intellectual Property">© 2003-2012 AT&amp;T Intellectual Property.</a>  All rights reserved. <a href="../www.yellowpages.com/index.html" class="nb">YELLOWPAGES.COM</a></p>
 </div>
-
-</div>
+        
+        
+        
+        
+        
+		</div>
+	</div>
  
- 
+ </div>
 
 
- 
-<script language="JavaScript" src="http://csct.att.com/scripts/csct.js" type="text/javascript"></script>
+ <script language="JavaScript" src="http://csct.att.com/scripts/csct.js" type="text/javascript"></script>
 <noscript>
 <img src="http://csct.att.com/csct.gif?Log=1&v_jd=1" border="0" width="1" height="1" alt="" />
 </noscript> 
@@ -249,10 +426,9 @@ urchinTracker();
 </SCRIPT>
 
 
+
  
 </div>
-<script type="text/javascript">
-swfobject.registerObject("FlashID");
-</script>
+
 </body>
 </html>

@@ -120,7 +120,7 @@ if (fromMobileCookie != 'true') {
 	  }
 	  if (isMobile) {
 	    if (location.host.indexOf(website) != -1) {
-	        var host = "http://" + mobilesite + "/" + location.pathname + location.search;
+	        var host = "http://" + mobilesite + location.pathname + location.search;
 	        location.replace(host);
 	    }
 	  }

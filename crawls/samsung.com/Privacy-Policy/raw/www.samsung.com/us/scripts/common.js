@@ -1,4 +1,17 @@
-﻿function setDelay(delay)
+﻿(function(){
+  // if firefox 3.5+, hide content till load (or 3 seconds) to prevent FOUT
+  var d = document, e = d.documentElement, s = d.createElement('style');
+  if (e.style.MozTransform === ''){ // gecko 1.9.1 inference
+    s.textContent = 'body{visibility:hidden}';
+    e.firstChild.appendChild(s);
+    function f(){ s.parentNode && s.parentNode.removeChild(s); }
+    addEventListener('load',f,false);
+    setTimeout(f,3000); 
+  }
+})();
+
+
+function setDelay(delay)
 {
 var date = new Date();
 var currentDate = null;
@@ -1609,7 +1622,7 @@ $(document).ready(function () {
 	var urlValueSplit = urlValue.split('/'); /* product comparing */
 	if (urlValueSplit[4] == 'business' && urlValueSplit[5].indexOf('hospitality') == 0)
 		{
-			$('div.footer_b2b div.other_links ul.link1').html('<li>Contact Us (Phone 1-866-894-0524)</li>');
+			$('div.footer_b2b div.other_links ul.link1').html('<li>Contact Us (Phone 1-888-727-2664)</li>');
 			$('div.menus').html('<div class="stretch960"><div class="centerMe"><a class="btn" href="#hotelAnchor">Online Form</a><p>Find out how to get Samsung HDTVs for your hotel.</p></div></div>');
 			$('div.flagship-cta').html('<div class="stretch960"><div class="centerMe"><div style="float:left;"><a class="btn" href="#hotelAnchor">Online Form</a></div><div style="float:left;"><p>Find out how to get Samsung HDTVs for your hotel.</p></div></div></div>');
 			$('li.nav-shop').html('');
@@ -1719,6 +1732,9 @@ if( uriString.match( 'samsung.com/us/business/hospitality' + '$' ) == 'samsung.c
 var urlValue = String(window.location.href);
 var urlValueSplit = urlValue.split('/');
 
+
+
+
 if(urlValueSplit[5] == 'the-wonder-of-samsung-smart-tvs'){
     setTimeout(function(){window.location = 'http://www.samsung.com/us/smarttv'}, 50);
 }
@@ -1753,6 +1769,14 @@ $(document).ready(function(){
 	
 });
 
+//smart tv bundle topic page disclaimer injection 
+$(document).ready(function(){
+
+if(urlValueSplit[4].match('topic') && urlValueSplit[5].match('samsung-smart-tv-bundles')){
+
+	$("#container").append('<p style="font-size:12px;color:#666;margin: 20px auto;">*Participation may vary and is limited to only participating <a href="http://stgwebus.samsung.com/us/peaceofmind/authorized_resellers.html">authorized retailers</a> (at their sole discretion). Bonus products may vary and will be based on retailer in-stock inventory. Offer valid (subject to retailer participation) for purchases made after 12 a.m. EST on July 22nd 2012 through August 18th, 2012, 11:59pm EST or while supplies last. No rainchecks. Additional restrictions and limitations may apply so Samsung advises consumers to verify if and when an <a href="http://stgwebus.samsung.com/us/peaceofmind/authorized_resellers.html">authorized retailer</a> is participating in the promotion, and if a particular TV and/or bonus product is eligible before completing a purchase.</p>');
+}
+});
 
 //galaxy tab shop button hack
 $(document).ready(function(){
@@ -1785,7 +1809,7 @@ $(document).ready(function(){
 	if(!urlValueSplit[6] || $('body').attr('id') != 'products'){
 		return;
 	}
-	if (urlValueSplit[6].match('GT-P7510MAYXAB') || urlValueSplit[6].match('GT-P7510MAVXAB') || urlValueSplit[6].match('GT-P7510UWYXAB') || urlValueSplit[6].match('GT-P7510UWVXAB') || urlValueSplit[6].match('GT-P7310UWAXAR') || urlValueSplit[6].match('GT-P7310UWEXAR') || urlValueSplit[6].match('GT-P7310MAEXAR') || urlValueSplit[6].match('GT-P7310MAAXAR')){
+	if (urlValueSplit[6].match('GT-P7510MAYXAB') || urlValueSplit[6].match('GT-P7510MAVXAB') || urlValueSplit[6].match('GT-P7510UWYXAB') || urlValueSplit[6].match('GT-P7510UWVXAB') || urlValueSplit[6].match('GT-P7310UWAXAR') || urlValueSplit[6].match('GT-P7310UWEXAR') || urlValueSplit[6].match('GT-P7310MAEXAR') || urlValueSplit[6].match('GT-P7310MAAXAR') || urlValueSplit[6].match('YP-GS1CB') || urlValueSplit[6].match('YP-G70CWY') || urlValueSplit[6].match('GT-P3113TSYXAR') || urlValueSplit[6].match('GT-P5113TSYXAR') || urlValueSplit[6].match('YP-GI1CB') || urlValueSplit[6].match('HT-E6730W') || urlValueSplit[6].match('UN65ES8000FXZA') || urlValueSplit[6].match('UN60ES8000FXZA') || urlValueSplit[6].match('UN55ES8000FXZA') || urlValueSplit[6].match('UN46ES8000FXZA') || urlValueSplit[6].match('DA-E750') || urlValueSplit[6].match('DA-E751')){
 		$('.hero #flagship-content').append('<div id="underlay_nav"></div>');
 		$('.hero .underlay_list').cycle({
 			fx: 'fade',
@@ -1798,7 +1822,7 @@ $(document).ready(function(){
 		});
 	}
 	
-	if (urlValueSplit[6].match('SCH-I905MSAVZW') || urlValueSplit[6].match('SCH-I905ZWAVZW') || urlValueSplit[6].match('SCH-I905UKAVZW') || urlValueSplit[6].match('SCH-I905UWAVZW') || urlValueSplit[6].match('SPH-D710ZKASPR') || urlValueSplit[6].match('SGH-I777ZKAATT') || urlValueSplit[6].match('SCH-I405LKAVZW') || urlValueSplit[6].match('SGH-I677DAAATT') || urlValueSplit[6].match('SGH-T989ZKBTMB') || urlValueSplit[6].match('SCH-I405ZWBVZW') || urlValueSplit[6].match('SGH-T989ZWBTMB') || urlValueSplit[6].match('SCH-I515MSAVZW') || urlValueSplit[6].match('SGH-I727MSAATT') || urlValueSplit[6].match('SGH-I727ZWAATT') || urlValueSplit[6].match('SPH-D710ZWASPR') || urlValueSplit[6].match('SGH-I717RWAATT') || urlValueSplit[6].match('SGH-I717ZBAATT') || urlValueSplit[6].match('NP-NF310-A01US') || urlValueSplit[6].match('SCH-R760IBAUSC') || urlValueSplit[6].match('NP900X3B-A01US') || urlValueSplit[6].match('NP900X3B-A02US') || urlValueSplit[6].match('NP900X4B-A02US') || urlValueSplit[6].match('SPH-L700ZKASPR')){
+	if (urlValueSplit[6].match('SCH-I905MSAVZW') || urlValueSplit[6].match('SCH-I905ZWAVZW') || urlValueSplit[6].match('SCH-I905UKAVZW') || urlValueSplit[6].match('SCH-I905UWAVZW') || urlValueSplit[6].match('SPH-D710ZKASPR') || urlValueSplit[6].match('SGH-I777ZKAATT') || urlValueSplit[6].match('SCH-I405LKAVZW') || urlValueSplit[6].match('SGH-I677DAAATT') || urlValueSplit[6].match('SGH-T989ZKBTMB') || urlValueSplit[6].match('SCH-I405ZWBVZW') || urlValueSplit[6].match('SGH-T989ZWBTMB') || urlValueSplit[6].match('SCH-I515MSAVZW') || urlValueSplit[6].match('SGH-I727MSAATT') || urlValueSplit[6].match('SGH-I727ZWAATT') || urlValueSplit[6].match('SPH-D710ZWASPR') || urlValueSplit[6].match('SGH-I717RWAATT') || urlValueSplit[6].match('SGH-I717ZBAATT') || urlValueSplit[6].match('NP-NF310-A01US') || urlValueSplit[6].match('SCH-R760IBAUSC') || urlValueSplit[6].match('NP900X3B-A01US') || urlValueSplit[6].match('NP900X3B-A02US') || urlValueSplit[6].match('NP900X4B-A02US') || urlValueSplit[6].match('SPH-L700ZKASPR') || urlValueSplit[6].match('NP700G7C-S01US') || urlValueSplit[6].match('XE550C22-H01US') || urlValueSplit[6].match('XE550C22-H02US')  || urlValueSplit[6].match('XE550C22-A01US') || urlValueSplit[6].match('XE550C22-A02US') || urlValueSplit[6].match('XE300M22-A01US') || urlValueSplit[6].match('XE300M22-A02US') || urlValueSplit[6].match('PN64E8000GFXZA') || urlValueSplit[6].match('PN60E8000GFXZA') || urlValueSplit[6].match('PN51E8000GFXZA')){
 	$('.hero #flagship-content').append('<div id="underlay_nav"></div>');
 		$('.hero .underlay_list').cycle({
 			fx: 'fade',
@@ -1817,6 +1841,8 @@ if(urlValueSplit[6].match('SGH-I717ZBAATT') || urlValueSplit[6].match('SGH-I717R
 			noteModal(400, 250);
 		});
 	}
+
+
 
 
 //pixel tracking click events for home-theater/HT-E6730W/ZA
@@ -1890,7 +1916,130 @@ if(urlValueSplit[6].match('SGH-I717ZBAATT') || urlValueSplit[6].match('SGH-I717R
 		});
 	
 	}
+	
 
+//	sprint
+//	if( urlValueSplit[6].match('SPH-L710MBBSPR') || urlValueSplit[6].match('SPH-L710RWBSPR') ){
+//	
+//
+//		$('.flagship-cta').html('<ul id="sprint-buy-buttons">
+//<li><a href="/us/mobile/cell-phones/SPH-L710MBBSPR-buy" class="lg-btn" onclick="javascript:ss_link_click_track_2('','event20','Cell Phones;SPH-L710MBBSPR','','product header','o','shop');"><span>Buy Now</span></a></li>
+//<li><img src="/us/images/1517691_90_30.gif" /></li>
+//<li><a href="/us/mobile/cell-phones/SPH-L710MBBSPR-buy" class="lg-btn" onclick="javascript:ss_link_click_track_2('','event20','Cell Phones;SPH-L710MBBSPR','','product header','o','shop');"><span>Buy Now</span></a></li>
+//<li><img src="/us/images/sprint_v2.gif" /></li>
+//</ul>');
+//		
+//		$(".flagship-cta").delegate("a", "click", function() {
+//  			ss_link_click_track_2('','event33','','','overview>sprint','o','pre-order');
+//		});
+//	}
+	
+	
+	
+	//tmobile SGH-T999MBATMB
+	if( urlValueSplit[6].match('SGH-T999MBATMB') ){
+		$('.flagship-cta a span').text('Buy Now');
+		$('.flagship-cta a').attr("href", "http://www.t-mobile.com/shop/phones/Cell-Phone-Detail.aspx?cell-phone=Samsung-Galaxy-S-III-Pebble-Blue-32GB");
+		//$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','','','overview>sprint','o','buy now');");
+		$(".flagship-cta").delegate("a", "click", function() {
+  			ss_link_click_track_2('','event33','','','overview>sprint','o','buy now');
+		});
+	}
+	
+	//tmobile SGH-T999RWATMB
+	if( urlValueSplit[6].match('SGH-T999RWATMB') ){
+		$('.flagship-cta a span').text('Buy Now');
+		$('.flagship-cta a').attr("href", "http://www.t-mobile.com/shop/phones/Cell-Phone-Detail.aspx?cell-phone=Samsung-Galaxy-S-III-Marble-White-32GB");
+		//$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','','','overview>sprint','o','buy now');");
+		$(".flagship-cta").delegate("a", "click", function() {
+  			ss_link_click_track_2('','event33','','','overview>sprint','o','buy now');
+		});
+	}
+
+// function split out in 1920 - 1938
+//	if( urlValueSplit[6].match('SGH-T999MBATMB') || urlValueSplit[6].match('SGH-T999RWATMB') ){
+//		$('.flagship-cta a span').text('Buy Now');
+//		if(urlValueSplit[6].match('SGH-T999MBATMB')){$('.flagship-cta a').attr("href", "http://www.t-mobile.com/shop/phones/Cell-Phone-Detail.aspx?cell-phone=Samsung-Galaxy-S-III-Pebble-Blue-32GB");}else{
+//			$('.flagship-cta a').attr('http://www.t-mobile.com/shop/phones/Cell-Phone-Detail.aspx?cell-phone=Samsung-Galaxy-S-III-Marble-White-32GB');
+//		}	
+		
+//		$(".flagship-cta").delegate("a", "click", function() {
+//  			ss_link_click_track_2('','event20,event33','','','overview>t-mobile','o','shop');
+//		});
+//	}
+
+
+	//verizon
+
+	if( urlValueSplit[6].match('SCH-I535MBBVZW') || urlValueSplit[6].match('SCH-I535RWBVZW') ){
+		$('.flagship-cta a span').text('Pre-order');
+		$('.flagship-cta a').attr("href", "http://shop.verizonwireless.com/?id=galaxys3");
+		//$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','','','overview>verizon','o','pre-order');");
+		$(".flagship-cta").delegate("a", "click", function() {
+  			ss_link_click_track_2('','event33','','','overview>verizon','o','pre-order');
+		});
+	}
+
+	//at&t
+
+
+	// if( urlValueSplit[6].match('SGH-I747RWBATT') || urlValueSplit[6].match('SGH-I747MBBATT') ){
+	// 	$('.flagship-cta a span').text('Pre-order');
+	// 	$('.flagship-cta a').attr("href", "http://www.att.com/galaxysiii/?#fbid=bmgurRVTbiN");
+		
+	// 	$(".flagship-cta").delegate("a", "click", function() {
+ //  			ss_link_click_track_2('','event33','','','overview>at&t','o','pre-order');
+	// 	});
+
+	// }
+	
+	if( urlValueSplit[6].match('SGH-I747ZRBATT') ){
+		$('.flagship-cta a span').text('Visit Site');
+		$('.flagship-cta a').attr("href", "http://www.att.com/galaxysiii");
+		$('.flagship-cta a').attr("target", "_blank");
+		$(".flagship-cta").delegate("a", "click", function() {
+  			ss_link_click_track_2('','event33','','','overview>at&t','o','visit-site');
+		});
+
+	}
+
+
+	//us cellular
+
+	if( urlValueSplit[6].match('SCH-R530RWBUSC') || urlValueSplit[6].match('SCH-R530MBBUSC') ){
+		$('.flagship-cta a span').text('Pre-order');
+		$('.flagship-cta a').attr("href", "http://social.uscellular.com/");
+		//$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','','','overview>us cellular','o','pre-order');");
+		$(".flagship-cta").delegate("a", "click", function() {
+  			ss_link_click_track_2('','event33','','','overview>us cellular','o','pre-order');
+		});
+	}
+
+
+});
+
+
+
+
+$(document).ready(function(){
+	//monitor comparison chart modal function
+	if(urlValueSplit[4].match('computer') && (urlValueSplit[5].match('monitors') || urlValueSplit[5].match('led'))){
+
+		if(urlValueSplit[5].match('monitors')){
+			var $chartmod = $('.row2').find('div[ref=1002195]');
+			$chartmod.delegate('a', 'click', function(){
+				var modalHeight = $(window).height() - 80;
+				chartModal('/us/module/2012-monitor-specs/monitor_specs.html', 980, modalHeight);
+			});
+		}else{
+			var $chartmod = $('.right_module').find('div[ref=1002199]');
+			$chartmod.delegate('a', 'click', function(){
+				var modalHeight = $(window).height() - 80;
+				chartModal('/us/module/2012-monitor-specs/monitor_specs.html', 980, modalHeight);
+			});
+		}
+
+	}
 });
 
 //features link fix
@@ -1912,7 +2061,11 @@ function product_link_open(url, typeCode)
 
 $(document).ready(function(){
 if(urlValueSplit[6]  == 'RSG309AARS'|| urlValueSplit[6]  == 'RF4289HARS'){
-		swfobject.embedSWF("/us/flash/product/fridge_lcd_apps/fridgeLCD.swf", "visual2", "400", "400", "10.0.0");
+		var flashvars = {};
+		var params = {wmode:"opaque"};
+		params.wmode = "opaque";
+		attributes = {};
+		swfobject.embedSWF("/us/flash/product/fridge_lcd_apps/fridgeLCD.swf", "visual2", "400", "400", "10.0.0", flashvars, params, attributes);
 	}
 });
 
@@ -1926,6 +2079,9 @@ urlValueSplit[5]  == 'shop-our-tv-deals'|| urlValueSplit[5]  == 'shop-home-theat
 	$('.find-product-box').hide();
 
 	}
+
+
+
 });
 
 
@@ -1959,10 +2115,17 @@ $('#modal_wrapper').append("<div style='padding:30px;'><h1 style='margin: 20px 0
 $('body').append('<a href="javascript:void(0);" class="btn_close_popup" onclick="hide_Modal()" style="margin: -' + (height / 2 + 15) + 'px 0 0 -' + width / 2 + 'px; display:block; z-index:2147483647; position:fixed; top: 50%; left: 50%; color: #FFFFFF;">cancel</a>');
 } 
 
+function chartModal(filePath, width, height){
+	$('body').append('<div id="modal_cover" onclick="hide_Modal()" style="margin: 0; width:100%; height:100%; display:block; z-index:2147483602 !important; position:fixed; top: 0; left: 0; background: #000000; opacity: 0.8; filter: alpha(opacity=80);"></div>');
+	$('body').append('<div id="modal_wrapper" style="width:' + width + 'px; height:' + height + 'px; margin: -' + height / 2 + 'px 0 0 -' + width / 2 + 'px; display:block; z-index: 2147483647 !important; position:fixed; top: 50%; left: 50%; border:solid 1px black; background: #ffffff; overflow: hidden;"></div>');
+	$('#modal_wrapper').load(filePath);
+	$('body').append('<a href="javascript:void(0);" class="btn_close_popup" onclick="hide_Modal()" style="margin: -' + (height / 2 + 15) + 'px 0 0 -' + width / 2 + 'px; display:block; z-index:2147483647; position:fixed; top: 50%; left: 50%; color: #FFFFFF;">close layer</a>');
+}
+
+
 function hide_Modal(){
 $("#modal_wrapper").remove();
 $(".btn_close_popup").remove();
 $("#modal_cover").remove();
-$(".print_button").remove();
 } 
 	

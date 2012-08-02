@@ -1,6 +1,6 @@
 /* Copyright 1996-2011 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
-var sc_code_ver="h.24.2|03.31.2012" //SiteCatalyst code version
+var sc_code_ver="h.24.2|04.19.2012" //SiteCatalyst code version
 
 var s_account="paypalglobal"
 var s=s_gi(s_account)
@@ -179,7 +179,7 @@ function s_doPlugins(s) {
 	if(!s.eVar7)s.eVar7=s.prop7+':'+s.prop8+':'+s.prop9;
 	if(s.prop10)s.prop10=s.prop10.toLowerCase();
 	if(s.products)s.products=s.products.toLowerCase();
-	if(s.prop52)s.prop52=s.eVar42=s.prop52.toLowerCase()
+	if(s.prop52)s.prop52=s.eVar42=s.prop52.toLowerCase();
 	s.prop50=s.prop50?s.prop50.toLowerCase():"unknown";
 
   /* Code Version */
@@ -200,16 +200,18 @@ function s_doPlugins(s) {
 		
 		cookieCheck:function() {
 			var obj = s.c_r(this.cookieName);
-			s.prop43 = obj.substring(obj.indexOf('^')+1, obj.length);
-			s.eVar35 = s.prop26 = obj.substring(0, obj.indexOf('^'));
-			s.prop27 = s.prop43 + '|' + s.prop26;
-			s.c_w(this.cookieName, '');
+			if(obj){
+				s.prop43 = obj.substring(obj.indexOf('^')+1, obj.length);
+				s.eVar35 = s.prop26 = obj.substring(0, obj.indexOf('^'));
+				s.prop27 = s.prop43 + '|' + s.prop26;
+				s.c_w(this.cookieName,'',0);
+			}
 		},
         extraVars:function(obj){
         	if(obj && obj.searchable) {
         		s.prop43 = s.pageName;
         		s.eVar35 = s.prop26 = obj.linkName;
-        		s.prop27 = s.prop43 + '|' + s.prop26;
+					s.prop27 = s.prop43 + '|' + s.prop26;
         		if(obj.searchable == 'scTrack')
         			s.linkType = 'o';
         		else if(obj.searchable == 'scExit')

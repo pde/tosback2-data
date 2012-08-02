@@ -32,7 +32,6 @@ NAV.configuration = {
   iNavNGNOverrideLogout: false,
   iNavUserLoggedIn: false,
   omnitureFile: 'omniture/s_code.js?basis=inav_domestic',
-  omnitureCall: function() { s.t(); },
   iNavActiveSAN: 0
 };
 
@@ -687,15 +686,29 @@ var iNavNGI = function(){
         }
       },
       
+      iNavInitIOA: function(){
+        var iNAssets = ['H|Cards','Business|Open','MyAcct|Protections'];
+        var iNIOA = false;
+        for(i=0;i<iNAssets.length;i++){
+          if(window.s_TopNav.indexOf(iNAssets[i]) > -1){
+            $iN('#iNavSearch').remove();
+            iNIOA = true;
+          }
+        }
+        if(iNIOA) {
+          var iNIOADiv = $iN(document.createElement('div')).attr('id','ioaTool');
+          $iN('#iNavUtilitySection').append(iNIOADiv);
+        }
+      },
+      
       iNavLoadTrackingJS: function() {
+        if(window.s_TopNav) { iNavNGI.iNavInitIOA(); }
         if((typeof(excludeOmniture) == 'undefined') || (!excludeOmniture)) { initOmnDefault(); }
 
         iNavNGI.iNavBuildJS('amex/Bootstrap.js?ens_mk=us', null, 'iNavScripts', 'iNavITM', 'iNExt');  
 
         NAV.Watcher.removePrimaryLinks();    
       },
-      iNavInitOmn: function(){ try { s_code = NAV.configuration.omnitureCall(); } catch(e) {}; },
-      iNavInitAMU: function(){ amu_BeginTracking(); },
       iNavBuildJS: function (iNavFilename, iNavCallBackFunction, iNavDiv, iNavID, iNavDep){
         if(iNavDiv == '' || iNavDiv == null || iNavDiv == undefined) { iNavDiv = document.getElementById('iNavNGI_FooterMain'); }
         else { iNavDiv = document.getElementById(iNavDiv); }

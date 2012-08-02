@@ -1,0 +1,194 @@
+function pgUnload(){
+}
+
+function dcsVar(){
+  var dCurrent=new Date();
+  WT.tz=dCurrent.getTimezoneOffset()/60*-1;
+  if (WT.tz==0){
+    WT.tz="0";
+  }
+  WT.bh=dCurrent.getHours();
+  WT.ul=navigator.appName=="Netscape"?navigator.language:navigator.userLanguage;
+  if (typeof(screen)=="object"){
+    WT.cd=screen.colorDepth;
+    WT.sr=screen.width+"x"+screen.height;
+  }
+  if (typeof(navigator.javaEnabled())=="boolean"){
+    WT.jo=navigator.javaEnabled()?"Yes":"No";
+  }
+  if (document.title){
+    WT.ti=document.title;
+  }
+  WT.js="Yes";
+  if (typeof(gVersion)!="undefined"){
+    WT.jv=gVersion;
+  }
+  WT.sp="";
+  DCS.dcsdat=dCurrent.getTime();
+  DCS.dcssip=window.location.hostname;
+  DCS.dcsuri=window.location.pathname;
+  if (window.location.search){
+    DCS.dcsqry=window.location.search;
+  }
+  if ((window.document.referrer!="")&&(window.document.referrer!="-")){
+    if (!(navigator.appName=="Microsoft Internet Explorer"&&parseInt(navigator.appVersion)<4)){
+      DCS.dcsref=window.document.referrer;
+    }
+  }
+}
+
+function A(N,V){
+  return "&"+N+"="+dcsEscape(V);
+}
+
+function dcsEscape(S){
+  if (typeof(RE)!="undefined"){
+    var retStr = new String(S);
+    for (R in RE){
+      retStr = retStr.replace(RE[R],R);
+    }
+    return retStr;
+  } else {
+    return escape(S);
+  }
+}
+
+function dcsCreateImage(dcsSrc, ckVal){
+  if (ckVal != "" && ckLd ==0) {
+    dcsSrc+=ckVal;
+  }
+
+  if (dcsSrc.length > gMaxLen && navigator.userAgent.indexOf('MSIE')>=0){
+    dcsSrc=dcsSrc.substring(0,gTrimLen)+"&WT.tu=1";
+  }
+  if (document.images){
+    gImages[gIndex]=new Image;
+    gImages[gIndex].src=dcsSrc;
+    gIndex++;
+  }
+}
+
+function dcsMeta(){
+  var upsDocumentElements;
+  if (document.all){
+    upsDocumentElements=document.all.tags("meta");
+  }
+  else if (document.documentElement){
+    upsDocumentElements=document.getElementsByTagName("meta");
+  }
+  if (typeof(upsDocumentElements)!="undefined"){
+    for (var i=1,j=100;i<=upsDocumentElements.length && j>0;i++,j--){
+      upsMeta=upsDocumentElements.item(i-1);
+      if (upsMeta.name){
+        if (upsMeta.name.indexOf('WT.')==0){
+          WT[upsMeta.name.substring(3)]=upsMeta.content;
+        }
+        else if (upsMeta.name.indexOf('DCSext.')==0){
+          DCSext[upsMeta.name.substring(7)]=upsMeta.content;
+        }
+        else if (upsMeta.name.indexOf('DCS.')==0){
+          DCS[upsMeta.name.substring(4)]=upsMeta.content;
+        }
+        else if (upsMeta.name.indexOf('APPVARS.')==0){
+          gApps[upsMeta.name.substring(8)]=upsMeta.content;
+        }
+      }
+    }
+  }
+}
+
+function dcsTag(pDomain, appData){
+  var P="http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+pDomain+(gDcsId==""?'':'/'+gDcsId)+"/dcs.gif?x=1";
+
+  for (N in DCS){
+    if (DCS[N]) {
+      P+=A(N,DCS[N]);
+    }
+  }
+  for (N in WT){
+    if (WT[N]) {
+      P+=A("WT."+N,WT[N]);
+    }
+  }
+  for (N in DCSext){
+    if (DCSext[N]) {
+      P+=A(N,DCSext[N]);
+    }
+  }
+  var ckVal = getAppvars(appData);
+  dcsCreateImage(P,ckVal);
+}
+
+function getAppvars(appData){
+  var _getAppvars='';
+  if(appData != null) {
+    for (N in appData){
+      if (appData[N]) {
+        _getAppvars += A(N,appData[N]);
+      }
+    }
+  }
+  return _getAppvars;
+}
+
+function dcsMultiTrack(){
+  if (enable==1) {
+    for (var i=0;i<arguments.length;i++){
+      if (arguments[i].indexOf('WT.')==0){
+        WT[arguments[i].substring(3)]=arguments[i+1];
+        i++;
+      }
+      if (arguments[i].indexOf('DCS.')==0){
+        DCS[arguments[i].substring(4)]=arguments[i+1];
+        i++;
+      }
+      if (arguments[i].indexOf('DCSext.')==0){
+        DCSext[arguments[i].substring(7)]=arguments[i+1];
+        i++;
+      }
+      if (arguments[i].indexOf('gApps.')==0){
+        gApps[arguments[i].substring(6)]=arguments[i+1];
+        i++;
+      }
+    }
+    P="";
+    DCSext.WBPM_ac="1";
+    var dCurrent=new Date();
+    DCS.dcsdat=dCurrent.getTime();
+    dcsTag(gDomain, gApps);
+    getNextDateTime();
+  }
+}
+
+
+function getNextDateTime() {
+  var gNextDate = new Date();
+  var gNextTime=gNextDate.getTime();
+  for (var i=gNextTime;i<gNextTime+250;i++){gNextDate = new Date(); i=gNextDate.getTime();}
+}
+
+
+var enable=1;
+var ckLd=0;
+var gApps=new Object();
+var WT=new Object();
+var DCS=new Object();
+var DCSext=new Object();
+var gSaveStr = '';
+
+
+if (enable==1) {
+  var RE={"%09":/\t/g,"%20":/ /g,"%23":/\#/g,"%26":/\&/g,"%2B":/\+/g,"%3F":/\?/g,"%5C":/\\/g};
+  var gMaxLen=2048;
+  var gTrimLen=gMaxLen-8;
+  var gImages=new Array;
+  var gIndex=0;
+  var gDomain="ssdc.ups.com";
+  var gDcsId="dcslnrz6vne3g9s37bjvj8khc_2v8x";
+  DCSext.WBPM_ver="1.0.12";
+  DCSext.WBPM_ac="0";
+
+  dcsMeta();
+  dcsVar();
+  dcsTag(gDomain,gApps);
+}

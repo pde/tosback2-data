@@ -1,0 +1,5 @@
+/*
+* webTicker 1.3
+* 
+*/
+(function(a){a.configuredpartials={};a.configuredpartials.events={};a.configuredpartials.events={onListShown:function(){},onItemSelect:function(){}};var b=new Array();var c={init:function(f){function g(h){if(h.Type==="HTML"){d(h.Html,h.Element,h.Placement)}else{if(h.Type==="AJAX"){e(h.Name,h.Link,h.DeviceName,function(i){d(i,h.Element,h.Placement)})}}}function d(i,h,j){if(j==="top"){a(h).prepend(i)}else{if(j==="bottom"){a(h).append(i)}}}function e(k,j,i,h){a.ajax({url:"/layout.aspx/partial/?name="+k+"&link="+j+"&device="+i,cache:false,dataType:"HTML",success:function(l){h(l)}})}a.ajax({url:"/layout.aspx/partialconfiguration/",cache:false,dataType:"JSON",success:function(h){if(h.isenabled==true){for(var i=0;i<h.partials.length;i++){g(h.partials[i])}}}})}};a.fn.configuredpartials=function(d){if(c[d]){return c[d].apply(this,Array.prototype.slice.call(arguments,1))}else{if(typeof d==="object"||!d){return c.init.apply(this,arguments)}else{a.error("Method "+d+" does not exist on jQuery.configuredpartials")}}}})(jQuery);

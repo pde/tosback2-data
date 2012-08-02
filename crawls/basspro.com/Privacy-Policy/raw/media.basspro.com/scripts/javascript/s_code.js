@@ -103,8 +103,11 @@ function s_doPlugins(s)
 	}
 
 	// Internal Campaigns
-	if (s.getQueryParam('cm_sp')) 
+	if (s.getQueryParam('cm_sp')) {
 		s.eVar2=s.getQueryParam('cm_sp');
+		s.eVar2=s.getValOnce(s.eVar2,'s_evar2',0);
+		s.eVar34=s.eVar2;
+	}
 	
 	// Automate Search Keyword Variables and Events
 	if(s.prop1)
@@ -313,7 +316,7 @@ function s_doPlugins(s)
 		s.eVar5='D=v4';
 		s.eVar51='non-cross sell';
 	}
-	// Create nonproduct product for merchandising eVar binding
+	// Create nonproduct product for merchandising eVar binding 
 	if(s.eVar3 && (!s.products||(s.products&&s.products.indexOf(';nonproduct')>-1)||s.newProduct=='true') && (s.p_fo('onemerch')==1||(s.linkType!=''&&s.linkTrackVars.indexOf('eVar1')>-1)))
 	{
 		if(!s.c_r('productnum'))
@@ -326,6 +329,10 @@ function s_doPlugins(s)
 		s.c_w('productnum',s.productNum,e);
 		s.linkTrackVars=s.apl(s.linkTrackVars,'events,products',',',2);
 		s.linkTrackEvents=s.apl(s.linkTrackEvents,'event38',',',2);
+		s.events=s.apl(s.events,'event38',',',2);
+	}
+	if(s.eVar3&&(s.events.indexOf('prodView')>-1||s.events.indexOf('event1')>-1))
+	{
 		s.events=s.apl(s.events,'event38',',',2);
 	}
 	if(s.c_r('productnum')&&s.events.indexOf('purchase')>-1)
@@ -879,4 +886,3 @@ w.s_ft=new Function("c","c+='';var s,e,o,a,d,q,f,h,x;s=c.indexOf('=function(');w
 +"'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
 c=s_d(c);if(e>0){a=parseInt(i=v.substring(e+5));if(a>3)a=parseFloat(i)}else if(m>0)a=parseFloat(u.substring(m+10));else a=parseFloat(v);if(a<5||v.indexOf('Opera')>=0||u.indexOf('Opera')>=0)c=s_ft(c);if(!s){s=new Object;if(!w.s_c_in){w.s_c_il=new Array;w.s_c_in=0}s._il=w.s_c_il;s._in=w.s_c_in;s._il[s._in]=s;w.s_c_in++;}s._c='s_c';(new Function("s","un","pg","ss",c))(s,un,pg,ss);return s}
 function s_giqf(){var w=window,q=w.s_giq,i,t,s;if(q)for(i=0;i<q.length;i++){t=q[i];s=s_gi(t.oun);s.sa(t.un);s.setTagContainer(t.tagContainerName)}w.s_giq=0}s_giqf()
-

@@ -1,6 +1,6 @@
 /* Reporting and Ad Call Setup */
 /* comedycentral.com */
-<!-- RULE FIRED: Legal Pages -->
+///// RULE FIRED: Legal Pages /////
 
 
 //Omniture Setup
@@ -19,7 +19,13 @@ mtvn.btg.config.AdSettings.DoubleClick.autoDcopt=true;
 
 mtvn.btg.config.AdSettings.DoubleClick.positionThreshold = 3;
 mtvn.btg.config.AdSettings.DoubleClick.sections = "/legal/privacy-policy";
-mtvn.btg.config.AdSettings.DoubleClick.keyValues = '!category=comedycentral;!category=legal;mtfIFPath=/asm/doubleclick/;';
+
+// Must concatenate keyValues per BTG
+if (typeof mtvn.btg.config.AdSettings.DoubleClick.keyValues != 'string') {
+	mtvn.btg.config.AdSettings.DoubleClick.keyValues = ''; //Set as empty string if not already set
+}
+mtvn.btg.config.AdSettings.DoubleClick.keyValues += '!category=comedycentral;!category=legal;mtfIFPath=/asm/doubleclick/;';
+
 mtvn.btg.config.AdSettings.DoubleClick.contentType = "adj";
 
 //DART Served Page Ads Setup
@@ -50,7 +56,7 @@ if (typeof repCallObject.events == 'undefined' || repCallObject.events == '') {
 var siteSectionId = "";
 var pageName = 'legal/privacy-policy';
 var exclusionString = '!category=comedycentral;!category=legal;';
-var allKeyString = '!category=comedycentral;!category=legal;mtfIFPath=/asm/doubleclick/;';
+var allKeyString = mtvn.btg.config.AdSettings.DoubleClick.keyValues;
 var sectionString = "/legal/privacy-policy";
 var useSurveyString = true;
 var adCall6x6 = true;

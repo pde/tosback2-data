@@ -1,0 +1,2 @@
+
+function modifyCurrentSortStyle(){var currentClassRemoved=false;var container=$('.results-sort-dropdown');var lis=$(container).find('li');$(container).find('li:eq(0)').live('mouseout',function(){if(currentClassRemoved===false){$(lis).each(function(){if($(this).hasClass('current')){$(this).removeClass('current');}});currentClassRemoved=true;}});}

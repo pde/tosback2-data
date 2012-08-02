@@ -35,6 +35,7 @@ $('document').ready(function(){
         $( 'select' ).change( function(){
 
             var filter = $( this ).parents( 'div.resultsWrapper' ).find( 'div.filters select' ).val();
+            filter = escape(filter);
             var viewPerPage = $( this ).parents( 'div.resultsWrapper' ).find( 'div.viewPerPage select' ).val();
             var filterPerYear = $( this ).parents( 'div.resultsWrapper' ).find( 'div.filterPerYear select' ).val();
             var filterPerQ = $( this ).parents( 'div.resultsWrapper' ).find( 'div.filterPerQ select' ).val();

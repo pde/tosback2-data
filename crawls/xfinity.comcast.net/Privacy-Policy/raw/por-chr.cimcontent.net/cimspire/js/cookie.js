@@ -368,13 +368,12 @@ CIM.cookie = (function () {
          *
         */
         write: function (name, value, options) {
-            if(typeof value !== "string"){
-                return;
-            }
+            name = String(name || '');
+            value = String(value || '');
+            options = options || {};
 
             var cookieString, domain, expires = '', hostname = '', path = 'path=' + defaultOptions.path;
 
-            options = options || {};
 
              if (typeof options['days'] !== "undefined") {
                 expires = setExpiresString(options.days);
@@ -390,7 +389,7 @@ CIM.cookie = (function () {
                 domain = getDomainFromURLString();
             }
 
-            cookieString = name + "=" + value.replace(/;/g, '%3B') + expires + "; " + path + "; " + domain;
+            cookieString = name + "=" + String(value || '').replace(/;/g, '%3B') + expires + "; " + path + "; " + domain;
 
             document.cookie = cookieString;
 
@@ -558,6 +557,7 @@ CIM.cookie = (function () {
             var cookie = CIM.cookie.read(name), i, key, values;
 
             if (cookie) {
+                cookie = unescape(cookie);
                 values = cookie.split("&");
 				i = values.length;
                 while(i) {
@@ -609,12 +609,29 @@ CIM.cookie = (function () {
             		results.push([name, escapeValue(object[name])].join('=')); // join key/value pairs in object with "="
             }
             return results.join('&'); // join key=value pairs into ampersand delimited string
+        },
+        
+         /*
+         * Method: clear
+         *
+         * Removes all cookies from a domain.
+         *
+         * Returns:
+         *    
+        */
+        clear: function() {
+            var cookies = document.cookie.split(";");
+
+            for (var i = 0; i < cookies.length; i++) {
+                this.remove(cookies[i]);
+            }
         }
     };
 
     // Set aliases for CIM.storage
     object.get = object.read;
     object.set = object.write;
+    object.create = object.write;
     object.del = object.remove;
 
     return object;

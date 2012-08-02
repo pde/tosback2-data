@@ -7,7 +7,7 @@
  * implied, including fitness for a particular purpose. In no event shall
  * the author be liable for any damages arising in any way out of the use
  * of this software, even if advised of the possibility of such damage.
- * $Id: stream.js 38006 2012-04-05 07:26:19Z snaky $
+ *
  */
 
 (function($) {
@@ -28,6 +28,7 @@ if (!Echo.Vars) Echo.Vars = {
 	"regexps": {
 		"matchLabel": /{Label:([^:}]+[^}]*)}/g,
 		"matchData": /{Data:(([a-z]+\.)*[a-z]+)}/ig,
+		"matchSelf": /{Self:(([a-z_]+\.)*[a-z_]+)}/ig,
 		"mobileUA": /mobile|midp-|opera mini|iphone|ipad|blackberry|nokia|samsung|docomo|symbian|windows ce|windows phone|android|up\.browser|ipod|netfront|skyfire|palm|webos|audiovox/i,
 		"parseUrl": /^((([^:\/\?#]+):)?\/\/)?([^\/\?#]*)?([^\?#]*)(\?([^#]*))?(#(.*))?/,
 		"w3cdtf": /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)Z$/
@@ -586,6 +587,11 @@ Echo.Object.prototype.cssPrefix = "echo-";
 
 Echo.Object.prototype.substitute = function(template, data) {
 	var self = this;
+	template = template.replace(Echo.Vars.regexps.matchSelf, function($0, $1) {
+		return $.getNestedValue($1, self) ||
+			$.getNestedValue($1, self.data || {}) ||
+			self.config.get($1, "");
+	});
 	template = template.replace(Echo.Vars.regexps.matchLabel, function($0, $1) {
 		return self.label($1);
 	});
@@ -1183,7 +1189,7 @@ Echo.User.prototype.assemble = function() {
 	var account = accounts[0] || {};
 	return $.extend(this.data, {
 		"id": account.identityUrl || this.data.poco.entry.id || account.userid,
-		"name": this.data.poco.entry.displayName || account.username,
+		"name": account.displayName || account.username,
 		"avatar": $.foldl(undefined, account.photos || [], function(img) {
 			if (img.type == "avatar") return img.value;
 		}),
@@ -1371,7 +1377,98 @@ if (!Echo.UI) Echo.UI = {
 
 
 
+(function($) {
+
+// jQuery Mobile uses jQuery 1.6.4+
+if ($.fn.jquery && $.fn.jquery < "1.6.4") return;
+
+Echo.UI.MobileDialog = function(data) {
+	data.config = data.config || {};
+	this.init(data);
+	this.addCss();
+	this.contentElement = this.render().addClass('echo-ui');
+	this.contentElement.appendTo(document.body);
+	if (this.content) {
+		if ($.isFunction(this.content)) {
+			this.content($(".echo-mobiledialog-content", this.contentElement));
+		} else {
+			$(".echo-mobiledialog-content", this.contentElement).append(this.content);
+		}
+	}
+	if (this.hasTabs) {
+		// move tabs line to dialog header to prevent tabs scrolling
+		$('.echo-mobiledialog-header', this.contentElement).after($('.echo-tabs-header', this.contentElement));
+	}
+	$(":checkbox", this.contentElement).bind ("change", function (event) {
+		// set checked attribute for checkboxes
+		$(this).attr("checked", $(this).prop('checked'));
+	});
+	if (this.config.autoOpen) this.open();
+}
+
+Echo.UI.MobileDialog.prototype = new Echo.Object();
+
+Echo.UI.MobileDialog.prototype.cssPrefix = "echo-mobiledialog-";
+
+Echo.UI.MobileDialog.prototype.template =  function() {
+	return  '<div data-role="dialog" class="echo-mobiledialog">' +
+			'<div data-role="header" class="echo-mobiledialog-title"><h1>' + this.config.title + '</h1></div>' +
+			'<div data-role="content" class="echo-mobiledialog-container">' +
+				'<div class="echo-mobiledialog-header"></div>' +
+				'<div class="echo-mobiledialog-content"></div>' +
+			'</div>' +
+		'</div>';
+}
+
+Echo.UI.MobileDialog.prototype.open = function() {
+	$.mobile.changePage(this.contentElement, 'pop', false, true);
+}
+
+Echo.UI.MobileDialog.prototype.close = function() {
+	this.contentElement.is(":visible") && this.contentElement.dialog('close');
+};
+
+Echo.UI.MobileDialog.prototype.addCss = function() {
+	$.addCss(
+		'.echo-mobiledialog .ui-icon-delete { background: url(//cdn.echoenabled.com/images/container/closeWindow.png) no-repeat 4px 5px; border-radius: 0px; }' +
+		'.echo-mobiledialog .ui-select .ui-icon { height: 18px; width: 18px; }' +
+		'.echo-mobiledialog .ui-checkbox { position: static; margin: 0px; float: left; height: 18px; padding-top: 2px; }' +
+		'.echo-mobiledialog .ui-checkbox input { position: static; margin: 0px; margin-left: 5px; } ' +
+		'.echo-mobiledialog .ui-checkbox .ui-btn { margin: -25px 0px 0px 0px; }' +
+		'.echo-mobiledialog .ui-checkbox .ui-btn .ui-btn-inner { padding-left: 25px; padding-right: 10px; }' +
+		'.echo-mobiledialog .ui-checkbox .ui-btn-icon-left .ui-icon { left: 5px; }' +
+		'.echo-mobiledialog .echo-curation-queries-state .ui-checkbox span { margin: 0px;  padding-left: 0px; padding-right: 0px;}' +
+		'.echo-mobiledialog .echo-curation-queries-state .ui-checkbox .ui-icon { margin-top: -9px;}' +
+		'.echo-mobiledialog .echo-curation-queries-state .ui-checkbox .ui-btn-text { margin: 0px; padding-left: 0px; padding-right: 0px; }' +
+		'.echo-mobiledialog .echo-curation-queries-state .ui-checkbox .ui-btn-text  span { margin: 0px; padding-left: 18px }' +
+		'.echo-mobiledialog .ui-btn-icon-notext .ui-btn-inner { padding: 2px 1px 0px 3px; height: 16px; } ' +
+		'.echo-mobiledialog .ui-btn-icon-notext .ui-btn-inner .ui-icon { margin: 0px; float: left; } ' +
+		'.echo-mobiledialog .ui-btn .ui-icon { float: left }' +
+		'.echo-mobiledialog .ui-btn-hidden  { line-height: normal; }' +
+		'.echo-mobiledialog .ui-btn-inner  { border-top: none; }' +
+		'.echo-mobiledialog .echo-submit-content { border: none; background: none; } ' +
+		'.echo-mobiledialog .echo-submit-border { border: none; background: none; } ' +
+		'.echo-mobiledialog .echo-curation-queries-content { margin: 18px 0px; } ' +
+		'.echo-mobiledialog .echo-submit-metadata-wrapper { border: none; background: none; } ' +
+		'.echo-mobiledialog .echo-curation-queries-itemsPerPage { height: 22px; width: 48px; font-size: 12px; display: inline; } ' +
+		'.echo-mobiledialog .echo-curation-input { width: 100%; font-size: 12px; }' +
+		'.echo-mobiledialog .echo-curation-queries-query { height: 200px; }' +
+		'.echo-mobiledialog .echo-submit-metadata-label { margin-top: 8px; }' +
+		'.echo-mobiledialog .echo-submit-cancelButton { margin: 19px 15px 0px 0px; }' +
+		'.echo-mobiledialog .echo-submit-metadata-subwrapper input { width: 100%; }' +
+		'.echo-mobiledialog .echo-submit-text-area { width: 100%; height: 102px; }' +
+		'.echo-mobiledialog .echo-curation-queries-state { height: 38px; }' +
+		'.echo-mobiledialog .echo-curation-queries-left { margin-right: 10px; }' +
+		Echo.UI.cornersCss('7px', '.echo-mobiledialog ')
+	, 'ui-dialog');
+};
+})(jQuery);
+
+
+
 Echo.UI.Dialog = function(data) {
+	// if jquery mobile is used
+	if ($.mobile) return new Echo.UI.MobileDialog(data);
 	data.config = data.config || {};
 	this.init(data);
 	this.config.dialogClass = 'echo-ui echo-dialog ' + (this.config.dialogClass || '');
@@ -1512,13 +1609,56 @@ Echo.UI.Tabs.prototype.select = function(id) {
 	this.headerElement.tabs('select', this.tabIndexById[id]);
 }
 
+Echo.UI.Tabs.prototype.add = function(tab, index) {
+	index ? this.tabs.splice(index, 0, tab) : (index = this.tabs.push(tab) - 1);
+	tab = $.extend(tab, {
+		"classPrefix": this.classPrefix,
+		"idPrefix": this.idPrefix
+	});
+	var headerTemplate = this.substitute('<li>' +
+		'<a class="echo-{Data:classPrefix}{Data:id}" href="#{Data:idPrefix}{Data:id}">' +
+			'{Data:label}' +
+		'</a>' +
+	'</li>', tab);
+	// ATTENTION: Low level code hack. Make sure that you understand what you do!
+	var panels = this.panelsElement.data("tabs").panels;
+	this.tabIndexById[tab.id] = index;
+	this.headerElement.tabs("option", "tabTemplate", headerTemplate);
+	this.headerElement.tabs("add", "#" + this.idPrefix + tab.id, tab.label, index);
+	if (index >= panels.length) {
+		$("#" + this.idPrefix + tab.id, this.headerElement).remove().appendTo(this.panelsElement);
+	} else {
+		$("#" + this.idPrefix + tab.id, this.headerElement).remove().insertBefore(panels[index]);
+	}
+	this.headerElement.tabs($.extend(this.config, {
+		"tabs": this.tabs
+	}));
+	return index;
+};
+
+Echo.UI.Tabs.prototype.updateTabIndexById = function() {
+	var self = this;
+	$.each(this.tabs, function(i, tab) {
+		self.tabIndexById[tab.id] = i;
+	});
+};
+
+Echo.UI.Tabs.prototype.remove = function(id) {
+	if (typeof this.tabIndexById[id] == "undefined") return;
+	this.headerElement.tabs("remove", this.tabIndexById[id]);
+	this.tabs.splice(this.tabIndexById[id], 1);
+	this.updateTabIndexById();
+	$("#" + this.idPrefix + id, this.panelsElement).remove();
+	delete this.tabIndexById[id];
+};
+
 Echo.UI.Tabs.prototype.addCss = function() {
 	$.addCss(
 		'.echo-ui .ui-tabs { position: relative; padding: 0px; border: 0px; }' +
 		'.echo-tabs .echo-tabs-panels { background: #ffffff; }' +
 		'.echo-ui .ui-tabs .ui-tabs-nav { margin: 0; padding: 0px; }' +
 		'.echo-ui .ui-tabs .ui-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap; }' +
-		'.echo-ui .ui-tabs .ui-tabs-nav li a { float: left; padding: .3em .7em; text-decoration: none; font-size: 12px; font-family: Helvetica,sans-serif; }' +
+		'.echo-ui .ui-tabs .ui-tabs-nav li a { float: left; padding: .3em .7em; text-decoration: none; font-size: 12px; font-family: Helvetica,sans-serif; outline: none; }' +
 		'.echo-ui .ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }' +
 		'.echo-ui .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .echo-ui .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .echo-ui .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; color: #4a4a4a; }' +
 		'.echo-ui .ui-tabs .ui-tabs-nav li a, .echo-ui .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; color: #393939; }' +
@@ -1585,6 +1725,7 @@ Echo.Localization.extend({
 	"monthsAgo": "Months Ago",
 	"sharedThisOn": "I shared this on {service}...",
 	"userID": "User ID:",
+	"userIP": "User IP:",
 	"textToggleTruncatedMore": "more",
 	"textToggleTruncatedLess": "less",
 	"fromLabel": "from",
@@ -1649,6 +1790,12 @@ Echo.Item.prototype.template = function() {
 										'{Label:userID}' +
 									'</span>' +
 									'<span class="echo-item-metadata-value">{Data:actor.id}</span>' +
+								'</div>' +
+								'<div class="echo-item-metadata-userIP echo-item-metadataUserIP">' +
+									'<span class="echo-item-metadata-title echo-item-metadata-icon">' +
+										'{Label:userIP}' +
+									'</span>' +
+									'<span class="echo-item-metadata-value">{Data:ip}</span>' +
 								'</div>' +
 							'</div>' +
 							'<div class="echo-item-footer echo-secondaryColor echo-secondaryFont">' +
@@ -1732,6 +1879,10 @@ Echo.Item.prototype.renderers.container = function(element, dom) {
 	}
 };
 
+Echo.Item.prototype.renderers.metadataUserIP = function(element) {
+	if (!this.data.ip) element.hide();
+}
+
 Echo.Item.prototype.renderers.modeSwitch = function(element) {
 	var self = this;
 	element.hide();
@@ -1758,15 +1909,15 @@ Echo.Item.prototype.renderers.avatar = function() {
 	var self = this;
 	var size = (!this.depth ? 48 : 24);
 	var url = this.data.actor.avatar || this.user.get("defaultAvatar");
-	return $("<img>", { "src": url }).bind({
-			"error" : function(){
+	var img = $("<img>", { "src": url }).css({ "width": size, "height": size });
+	if (url != this.user.get("defaultAvatar")) {
+		img.one({
+			"error" : function() {
 				$(this).attr("src", self.user.get("defaultAvatar"));
 			}
-		})
-		.css({
-			"width": size,
-			"height": size
 		});
+	}
+	return img;
 };
 
 Echo.Item.prototype.renderers.childrenContainer = function(element, dom, config) {
@@ -3707,6 +3858,8 @@ Echo.Stream.prototype.addCss = function() {
 		'.echo-item-metadata-icon { display: inline-block; padding-left: 26px; }' +
 		'div.echo-item-metadata-userID { border-bottom: 1px solid #e1e1e1; border-top: 1px solid #e1e1e1;}' +
 		'span.echo-item-metadata-userID { background: url("//cdn.echoenabled.com/images/curation/metadata/user.png") no-repeat left center; }' +
+		'.echo-item-metadata-userIP { border-bottom: 1px solid #e1e1e1; }' +
+		'.echo-item-metadata-userIP .echo-item-metadata-icon { background: url("//cdn.echoenabled.com/images/curation/metadata/computer.png") no-repeat left center; }' +
 		'.echo-item-modeSwitch { float: right; width: 16px; height: 16px; background:url("//cdn.echoenabled.com/images/curation/metadata/flip.png") no-repeat 0px 3px; }' +
 		'.echo-item-childrenMarker { border-color: transparent transparent #ECEFF5; border-width: 0px 11px 11px; border-style: solid; margin: 3px 0px 0px 77px; height: 1px; width: 0px; display: none; }' + // This is magic "arrow up". Only color and margins could be changed
 		'.echo-item-container-root-thread .echo-item-childrenMarker { display: block; }' +

@@ -108,7 +108,7 @@
 					position: "absolute"
 				});
 			}
-			
+
 			$( "div.wrapActionContainer div.actionContainer" ).click( function( e ){
 				e.preventDefault();
 				if( options.hideOrRemove == 'hide' ){
@@ -123,13 +123,14 @@
 					}
 				}
 			});
-			if( typeof( Cufon ) == 'function' && Cufon.replace ){
+																														// ie7,8 throw errors on container close
+			if( typeof( Cufon ) == 'function' && Cufon.replace && (!$('html').hasClass('ie7') && !$('html').hasClass('ie8')) ){
 				Cufon.replace( 'div.shadedContainerPop h3:visible, div.shadedContainerPop div.actionContainer', {
 					fontFamily: 'gotham-bold',
 					hover: true
 				});
 			}
-			
+
 			// move to a callback function specific to the contact us page.
 			/*
 			if ($('body').is('#contactUs')) { 

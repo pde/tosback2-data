@@ -283,7 +283,7 @@ if (typeof $ != 'undefined') { $(function() {
  $dropdown.mouseenter(function() {
   $ad = $(this).find('ul .grid #cell3 div.ad iframe');
   $ad.hover( // prevent IE disappearing dropdown on ad hover
-   function() { $ad.closest('ul').css({'left': '0', 'top': $dropdown.parent().height(), 'z-index': '99'}); },
+   function() { $ad.closest('ul').css({'left': '0', 'top': $dropdown.parent().height(), 'z-index': '5000000'}); },
    function() { $ad.closest('ul').css({'left': '', 'top': '', 'z-index': ''}); }
   );
   if ($ad.length > 0) {
@@ -594,6 +594,13 @@ if (typeof $ != 'undefined') { $(function() {
  $golf.html($golf.text());
 
  showTvGrid();
+
+ $('#nbc-header #nav li h2 span').each(function() {
+  var $menu = $(this);
+  if ($menu.text() == 'Olympics') {
+   $menu.css({position: 'relative', paddingLeft: '53px'}).append($('<img src="http://nbcsportsmedia.msnbc.com/i/NBCSports/Redesign/SiteFrame/img/london-header-logo.png" style="width: 37px; height: 48px; position: absolute; top: -10px; left: 13px; z-index: 5000020;"/>'));
+  }
+ });
 });
 
 function showTvGrid() {

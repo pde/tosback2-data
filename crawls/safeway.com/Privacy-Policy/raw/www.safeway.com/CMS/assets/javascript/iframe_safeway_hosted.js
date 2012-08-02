@@ -337,6 +337,15 @@ function getFilePath(domain)
 	pathArray[71] = 'http://locator.dominicks.com/weekly720savelocation.html?extraHeight=0&';
 	pathArray[72] = 'http://locator.carrsqc.com/weekly720savelocation.html?extraHeight=0&';
 	pathArray[73] = 'http://rev.redreview.net/Safeway/DebiLilly_Holiday/index.html?extraHeight=0&';
+	pathArray[74] = 'http://stage.inserts2online.com/middleiframeNEW.html?extraHeight=0&';
+	pathArray[74] = 'http://stage.inserts2online.com/safewaycatalog/middleiframeNEW.html?extraHeight=0&';
+	pathArray[75] = 'http://corporate.safeway.com/safeway/middleiframeNEW.html?extraHeight=20&';
+	pathArray[76] = 'http://corporate.safeway.com/middleiframeNEW.html?extraHeight=20&';
+	pathArray[77] = 'http://shop.safeway.com/corporate/safeway/middleiframeNEW.html?extraHeight=20&';
+	pathArray[78] = 'http://shop.safeway.com/corporate/middleiframeNEW.html?extraHeight=20&';
+	pathArray[79] = 'https://corporate.safeway.com/safeway/rxrefill/middleiframeNEW.html?extraHeight=20&';
+	pathArray[80] = 'https://corporate.safeway.com/safeway/middleiframeNEW.html?extraHeight=20&';
+	pathArray[81] = 'https://corporate.safeway.com/middleiframeNEW.html?extraHeight=20&';
 
 	/// DO NOT EDIT BELOW
 	for (var i=0; i<pathArray.length; i++) {
@@ -513,6 +522,9 @@ function getWidth(viewName)
 	{
 		return 970
 	}else if(viewName == "Well-Good")
+	{
+		return 970
+	}else if(viewName == "Bakery-Catalog")
 	{
 		return 970
 	}else

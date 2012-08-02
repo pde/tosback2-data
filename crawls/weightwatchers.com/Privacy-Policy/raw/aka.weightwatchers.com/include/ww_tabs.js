@@ -559,6 +559,89 @@ function GLOBALmeetingSubmit(){
 		else { submit_mtgFinder(); }
 }//end function
 
+function ValidateMeetingSearchInput(){
+	var errMsg = "";
+	var timeDayQS;
+	var zipRe5digit = /^\d{5}$/;
+	//the variable tempShowHide is defined on the root\util\mtf\controls\uctr_MeetingFinder.ascx page.
+	//try catch is used to for trapping error in case this JS files is used in any other ASPX page
+	try
+	{
+		isExpand = eval("document." + arguments[0] + "." + tempShowHide); 
+		isExpand = isExpand.value
+	}
+	catch(err)
+	{
+	}
+	if(arguments.length == 1) {
+	genericZip = arguments[0];
+	submit_mtgFinder_ziponly(genericZip);
+	return;
+	}
+	if(arguments.length == 4 || arguments.length == 5) {
+	oFormMtf 	   = eval("document." + arguments[0] + ";");
+	
+	//This is needeed for aspx pages on different domains; formName & domain will be different
+	if(typeof(oFormMtf) == "undefined")
+    {
+        arguments[0] = document.forms[0].id;
+		oFormMtf 	   = document.getElementById(arguments[0]);
+        wwControlDomain = controlDomain;
+    }
+	    
+	inputControl1  = document.getElementById(arguments[1]);
+	countryZIPword = arguments[3];
+	
+  if(arguments.length == 5)
+	strSearchType  = arguments[4];
+  else if (arguments.length == 4)
+	strSearchType = null;
+	
+	GetSelectedCheckBoxes()
+	if(strSearchType == "z" || strSearchType == "SE" || strSearchType == true || strSearchType == null) { 		inputControl2  = document.getElementById(arguments[2]);}
+	if(strSearchType == "cs") { inputControl2  = document.getElementById(arguments[2]).options[document.getElementById(arguments[2]).selectedIndex]; }
+	if("undefined" != selectedTime && 0 < selectedTime.length ) {timeDayQS="t="+selectedTime.join()}else{timeDayQS = ""}
+	if("undefined" != selectedDay && 0 < selectedDay.length ) {if(undefined != timeDayQS) {timeDayQS += "&"} timeDayQS += "d="+selectedDay.join()}
+   }
+		//alert("arguments passed: " + arguments.length + "\nArguments expected: " + GLOBALmeetingSubmit.length);
+		//test for oneInput
+		if(inputControl2 == "undefined" || inputControl2 == null) {
+		meetingZip1 = inputControl1.value.split(" ").join("");
+		if (strSearchType == "SE")
+		{
+		    if (meetingZip1.length == 5 && meetingZip1.indexOf(" "))
+		    {		    
+		        var z1 = meetingZip1.substr(0,3);
+		        var z2 = meetingZip1.substr(3,2);
+		        meetingZip1 = z1 + " " + z2;
+		    } 
+		}
+		meetingZip2 = "";
+		delimiter = "";
+		formActionPage = wwControlDomain + "/util/mtf/location_results.aspx?pg=0&isExpand=" + isExpand + "&s=ZIP&z=" + escape(meetingZip1);
+		if(undefined != timeDayQS){formActionPage += "&" + timeDayQS;}
+		inputCOUNT = 1;
+		}
+		//else test for 2 inputs
+		else {
+		meetingZip1 = inputControl1.value;
+		meetingZip2 = inputControl2.value;
+		inputCOUNT = 2;
+		if(strSearchType == "z" || strSearchType == true || strSearchType == null)  { formActionPage = wwControlDomain + "/util/mtf/location_results.aspx?pg=0&isExpand=" + isExpand + "&s=ZIP&z=" + escape(meetingZip1.split(" ").join("")) + delimiter + escape(meetingZip2.split(" ").join("")); }
+		if(strSearchType == "cs") { formActionPage = wwControlDomain + "/util/mtf/location_results.aspx?pg=0&isExpand=" + isExpand + "&s=CS&c=" + meetingZip1.split("&").join("~").split(" ").join("%20") + "&st=" + meetingZip2.split("&").join("~").split(" ").join("%20"); }
+		if(undefined != timeDayQS){formActionPage += "&" + timeDayQS;}
+		}
+
+		
+	if (meetingZip1.length == 0 || !inputControl1.value.match(zipRe5digit) ) {
+      errMsg = msgEnterZipcode;
+		} 
+		
+	else if(strSearchType == "cs" && inputControl2.value == "") {
+    errMsg = msgSelectState;
+		}
+	return errMsg;
+}//end function
 
 function GetSelectedCheckBoxes()
 {
@@ -923,6 +1006,11 @@ function truncateInit(strMyDivID){
     strOriginalArray[strMyDivID]=document.getElementById(strMyDivID).innerHTML.toString();
 }
 
+function getGatewayName(){
+	var gatewaylevelname = document.getElementById('gatewaylevel1').value;
+	return gatewaylevelname;
+}
+
 function addLoadEvent(func) {
     var oldonload = window.onload;
     if (typeof window.onload != 'function') {
@@ -979,4 +1067,3 @@ function PushOmnitureLateBindingEvar(item, value) {
     omnitureTrackingLateBinding.eVars.push({ "item": item, "value": value });
 }
 //End Omniture Tracking
-

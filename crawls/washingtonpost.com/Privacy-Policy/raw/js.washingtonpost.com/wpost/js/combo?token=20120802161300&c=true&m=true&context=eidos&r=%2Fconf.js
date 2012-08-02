@@ -1,0 +1,1 @@
+TWP=window.TWP||{};TWP.Data=TWP.Data||{};TWP.Data={enviro:{"server":"http://www.washingtonpost.com"},environment:"prod",echo_appkey:"prod.washpost.com"};

@@ -5,9 +5,11 @@
 <html id="HTMLTag" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-GB" lang="en-GB">
 <head><title>
 	CareerRookie Privacy
-</title><meta http-equiv="Content-Language" content="en-GB"><meta name="google-site-verification" content="FPWKt6e3SsrSwYTgl1vezPZmueP1qMcox7KlaIk1s3A"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"><link rel="stylesheet" type="text/css" href="../../../../img.icbdr.com/v16.84/css/ccglobal.css" /><link rel="stylesheet" type="text/css" href="../../../../img.icbdr.com/v16.84/css/ccoverride.css" /><script type="text/javascript">    var ScriptVariables = function(){
+</title><meta http-equiv="Content-Language" content="en-GB"><meta name="google-site-verification" content="FPWKt6e3SsrSwYTgl1vezPZmueP1qMcox7KlaIk1s3A"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"><link rel="stylesheet" type="text/css" href="../../../../img.icbdr.com/v17.94/css/ccglobal.css" /><link rel="stylesheet" type="text/css" href="../../../../img.icbdr.com/v17.94/css/ccoverride.css" /><script type="text/javascript">    var ScriptVariables = function(){
         var _vars = new Array();
-            _vars['currentVer'] = 'v16.84';
+            _vars['currentVer'] = 'v17.94';
+            _vars['sAtlasTallyUrl'] = 'http://www.careerrookie.com/AJAX/JQueryTallyTimingError.aspx';
+            _vars['sPageNamePath'] = '/CC/JobSeeker/Resumes/Privacy.aspx';
         return{
             Contains: function(sVarName){
                      return (typeof(_vars[sVarName]) != 'undefined');
@@ -22,6 +24,8 @@
         };
     }();
 </script><script type="text/javascript">var ajaxRelativePrefix = '../../../AJAX/';</script><script type="text/javascript" src="../../../../img.icbdr.com/Common/js/cblibraryajaxbase.min.js"></script>
+        <script src="../../../../cdn.optimizely.com/js/83994349.js"></script>
+    
 
 </head>
 
@@ -30,7 +34,6 @@
 <body>
 
 
-    
     
     
     
@@ -50,6 +53,186 @@
     </td>
 	</tr>
 </table>
+
+        <style type="text/css">
+#_ctl0_RedirectPanel_RedPanel { display:block; }
+    .feedNotification b { color:#FD8923; }
+    .divReadFeed , .divUnReadFeed   {
+        float: left;
+        padding-right: 5px;
+        font-size: 17px;
+        margin-left: -15px;
+        margin-top: 10px;
+        font-weight: bold;
+		vertical-align:middle;
+    }
+    .divReadFeed { color:#ffffff; display:none; }
+    .divUnReadFeed  { color:#fc7578;  }
+	.divViewAllNoti {background-color:#f1f0f0; font-weight:bold; color:#feb123;}
+	#RedirectLink {font-weight:bold !important; color:#feb123 !important;}
+    #_ctl0_feedNav .feedNotification:hover
+    {
+        background-color:#E1E8F9;
+    }
+    #Notifications
+    {
+		background-color: #2C4FA3;
+		border-bottom: 1px solid #2C4FA3;
+		color: #FFFFFF;
+		cursor: pointer;
+		float: right;
+		font-weight: bold;
+		height: 25px;
+		margin-right: 5px;
+		padding-right: 5px;
+		text-align:center;
+		width: 13%;
+    }
+    #SubNotifications
+    {        
+	    background-color: #FFFFFF;
+		border-color: #ffffff #4a77a6 #4a77a6 #4a77a6;
+		border-style: solid;
+		border-width: 1px 1px 2px 1px;
+		font-size: 10px !important;
+		left: 0;
+		overflow: visible;
+		position: relative;
+		text-align: left;
+		width: 390px;
+		line-height:17px;
+		z-index: 99999;
+		margin-top: 2px;
+		padding-top: 4px !important;
+		box-shadow: 0 0 3px 0 #EFEFEF;
+		}
+    .spanclass{
+		background-color: #fc2f34;
+		border-radius: 0.4em 0.4em 0.4em 0.4em;
+		color: #FFFFFF;
+		font-size: 11px;
+		font-weight: bold;
+		padding: 1px 5px;
+    }
+    ul.subnav{
+        padding: 0;
+		font-size:10px;
+    }
+    ul.subnav li a{
+        float: left;
+        width: 300px;
+        padding-left: 20px;
+        text-align: left;
+        color: #1E3E8C !important;
+        font-weight: normal;
+        text-decoration: none;
+		font-size:10px;
+    }    
+    .feedNotification{
+		border-bottom: 1px solid #E1E8F9 !important;
+		color: black;
+		cursor: default;
+		font-size: 10px;
+		padding-left: 20px;
+		padding-top: 4px;
+		padding-bottom: 4px;
+		padding-right: 4px;
+    }    
+    #_ctl0_feedNav a{
+		color: #1b1b1b !important;
+		font-weight: normal;
+		text-decoration: none;
+		font-size: 10px !important;
+		line-height: 18px !important;
+    }
+    .feedPosted{color:gray;}
+</style>
+    
+
+<script type="text/javascript">
+    var feedsLoaded = false;
+    var makeFeedsAsRead = false;
+    var notiClicked = false;
+
+    function ClickMe() {
+        var dv = document.getElementById('SubNotifications');
+        dv.style.display = (dv.style.display != "block") ? "block" : "none";
+
+        if (!(notiClicked)) {
+            notiClicked = true;
+            CollectStats("Feeds", "NotificationOpened");
+        }
+
+        if (dv.style.display == "block") {
+            makeFeedsAsRead = true;
+            setTimeout(HideNumberOfFeeds, 2000);
+            setTimeout(MarkFeedsAsRead, 2000);
+        }
+        if (!feedsLoaded) {
+            LoadFeeds();
+        }
+    }
+
+    window.onload = LoadFeeds;
+    function LoadFeeds() {
+        jQuery.ajax({
+            //url: '/pbox/cbsys/cbweb/INTL/Feeds/Ajax/GetUserFeeds.aspx',
+            url: '/INTL/Feeds/Ajax/GetUserFeeds.aspx',
+            cache: false,
+            type: 'GET',
+            success: function (msg) {
+               if (!(msg.split("|")[0] == "0")) {
+                    document.getElementById('_ctl0_spnNotificationsCount').style.display = "inline";
+                }
+                document.getElementById('_ctl0_lblCount').innerHTML = msg.split("|")[0];
+                document.getElementById('_ctl0_feedNav').innerHTML = msg.split("|")[1]; 
+                feedsLoaded = true;
+            }
+        });
+    }
+
+    function MarkFeedsAsRead() {
+        if (makeFeedsAsRead) {
+            jQuery.ajax({
+                type: 'GET',
+                dataType: 'HTML',
+                //url: '/pbox/CbSys/Cbweb/INTL/Feeds/Ajax/GetUserFeeds.aspx',
+                url: "/INTL/Feeds/Ajax/GetUserFeeds.aspx",
+                data: "MarkAsRead=true&userDID=" + ScriptVariables.Get('sUserDID'),
+                success: function (msg) { },
+                error: function (xhr, status, error) { }
+            });
+        }
+    }
+
+    function HideNumberOfFeeds() {
+        if (makeFeedsAsRead) {
+            document.getElementById("_ctl0_spnNotificationsCount").style.display = "none";
+        }
+    }
+    function HideFeeds() {
+        makeFeedsAsRead = false;
+        document.getElementById("SubNotifications").style.display = "none";
+    }
+    function displayFeeds() {
+        makeFeedsAsRead = true;
+        document.getElementById("SubNotifications").style.display = "block";
+    }
+
+    function CollectStats(type, action) {
+        jQuery.ajax({
+            type: 'GET',
+            dataType: 'HTML',
+            //url: "/pbox/CbSys/CbWeb/INTL/Feeds/Ajax/FeedStats.aspx",
+            url: "/INTL/Feeds/Ajax/FeedStats.aspx",
+            data: "Type=" + type + "&Action=" + action,
+            success: function (msg) { }
+        });
+    }
+
+</script>
+
+
 <link id="_ctl0_icon1" rel="icon" type="image/ico" href="../../../../img.icbdr.com/images/cr_icon.ico"></link>
 <link id="_ctl0_icon2" rel="icon" type="image/vnd.microsoft.icon" href="../../../../img.icbdr.com/images/cr_icon.ico"></link>
 <link id="_ctl0_icon3" rel="SHORTCUT ICON" href="../../../../img.icbdr.com/images/cr_icon.ico"></link>
@@ -91,7 +274,7 @@
 
 <div id="_ctl0_pnlBannerAd" class="adspace clearfix">
 	
-    <IFRAME style="display: none;" class="Ad" MARGINWIDTH="0" MARGINHEIGHT="0" HSPACE="0" VSPACE="0" FRAMEBORDER="0" SCROLLING="NO" WIDTH="1" HEIGHT="1" SRC="../../../../adserver.adtechus.com/bind%3FexpiresDays=90%3Badct=text%252Fhtml%3B.html"></IFRAME><IFRAME class="Ad" MARGINWIDTH="0" MARGINHEIGHT="0" HSPACE="0" VSPACE="0" FRAMEBORDER="0" SCROLLING="NO" WIDTH="728" HEIGHT="90" SRC="../../../../adserver.adtechus.com/adiframe|3.0|5310.1|1404372|0|225|ADTECH%3Btarget=_blank%3Bcookie=info%3Bgrp=46051975.html"></IFRAME>
+    <IFRAME style="display: none;" class="Ad" MARGINWIDTH="0" MARGINHEIGHT="0" HSPACE="0" VSPACE="0" FRAMEBORDER="0" SCROLLING="NO" WIDTH="1" HEIGHT="1" SRC="../../../../adserver.adtechus.com/bind%3FexpiresDays=90%3Badct=text%252Fhtml%3B.html"></IFRAME><IFRAME class="Ad" MARGINWIDTH="0" MARGINHEIGHT="0" HSPACE="0" VSPACE="0" FRAMEBORDER="0" SCROLLING="NO" WIDTH="728" HEIGHT="90" SRC="../../../../adserver.adtechus.com/adiframe|3.0|5310.1|1404372|0|225|ADTECH%3Btarget=_blank%3Bcookie=info%3Bgrp=20719821.html"></IFRAME>
 
 </div>
 
@@ -121,6 +304,8 @@ background: url(http://www.careerrookie.com/CC/JobSeeker/images/cc/nav_bluebgsel
                 </div>
             </div>
             
+                
+
              
            
         </div> 
@@ -131,13 +316,14 @@ background: url(http://www.careerrookie.com/CC/JobSeeker/images/cc/nav_bluebgsel
         <div class="bannerwrap_left"><img src="../../../../img.icbdr.com/images/CC/cc-nav-leftend.gif" border="0" /></div>
             <ul class="clearfix">
                 <li id="_ctl0__ctl5_navHome"><a id="_ctl0__ctl5_CBhlHomeCC" href="http://www.careerrookie.com/CC/Default.aspx?sc_cmp1=JS_Nav_Home">HOME</a></li>
-                <li id="_ctl0__ctl5_navResume"><a id="_ctl0__ctl5_cbhlResumeCC" href="http://www.careerrookie.com/JobSeeker/Resumes/PostResumeNew/PostResumeStart.aspx?sc_cmp1=JS_Nav_Resume">RESUME</a></li>
+                <li id="_ctl0__ctl5_navResume"><a id="_ctl0__ctl5_cbhlResumeCC" href="http://www.careerrookie.com/JobSeeker/PostNewResume.aspx?sc_cmp1=JS_Nav_Resume">RESUME</a></li>
                 
                 
                 
                 <li id="_ctl0__ctl5_navJob"><a id="_ctl0__ctl5_CBhlJobCC" href="http://www.careerrookie.com/CC/JobSeeker/Jobs/JobResults.aspx?img2=1&amp;sc_cmp1=JS_NavFindJobs">FIND JOBS</a></li>
                 <li id="_ctl0__ctl5_navCareerAndAdv"><a id="_ctl0__ctl5_CBhlCnACC" href="http://www.careerrookie.com/CC/JobSeeker/AdviceAndResource/advice.aspx?img3=1&amp;sc_cmp1=JS_Nav_Advice">ADVICE & RESOURCES</a></li>
                 <li id="_ctl0__ctl5_navVideos"><a id="_ctl0__ctl5_CBhlVideoCC" href="http://www.careerrookie.com/CC/JobSeeker/AdviceAndResource/VideoResources.aspx?img4=1&amp;sc_cmp1=JS_Nav_Videos">VIDEOS</a></li>
+                <li id="navAllJobs"></li>
             </ul>
             <div class="bannerwrap_right"><img src="../../../../img.icbdr.com/images/CC/cc-nav-rightend.gif" border="0" /></div>
         </div>
@@ -326,7 +512,7 @@ margin:0 0 0.75em; font-weight:bold;}
 		<li><a href="http://www.careerrookie.com/s/allstate-insurance?sc_cmp1=JS_Foot_Vert_Ins">Insurance Careers</a></li>
 						
 		<li><a href="http://www.careerrookie.com/s/ann-taylor-retail?sc_cmp1=JS_Foot_Vert_AnnTaylor">Retail Careers</a></li>	
-<li><a href="http://viewer.zmags.com/publication/e140f278">CareerRookie Magazine</a></li>
+<li><a href="http://viewer.zmags.com/publication/b0a1bd2e">CareerRookie Magazine</a></li>
 </ul>
 <br />
 <h4>Job Seeker Services</h4>
@@ -348,8 +534,8 @@ margin:0 0 0.75em; font-weight:bold;}
     </div>        
 </div>
 
-<script type="text/javascript" language="javascript" src="../../../../img.icbdr.com/v16.84/Common/js/elqCfg.js"></script>
-<script type="text/javascript" language="javascript" src="../../../../img.icbdr.com/v16.84/Common/js/elqImg.js"></script>
+<script type="text/javascript" language="javascript" src="../../../../img.icbdr.com/v17.94/Common/js/elqCfg.js"></script>
+<script type="text/javascript" language="javascript" src="../../../../img.icbdr.com/v17.94/Common/js/elqImg.js"></script>
 
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -429,6 +615,7 @@ c15:""
         s_cb.eVar11='NotRegistered';
         s_cb.eVar15='NO_NotRegistered';
         s_cb.eVar21='JS_PostResumes - CV Privacy';
+        s_cb.eVar70='ApplyStartNewDesignExperiment_0_AV_RecHQOffPlatform_True_bTestNewPath_True_CNABReturnTwoFilesNames_True_SortOrderTest_+radius_-postdate_-totalapps_UseInterstitialEmailCapturePage_True';
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code=s_cb.t();if(s_code)document.write(s_code)//--></script>
 <script language="JavaScript"><!--
@@ -440,7 +627,26 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 
     
     
-    <!-- Begin comScore Tag --><script>var _comscore = _comscore || [];_comscore.push({ c1: "2", c2: "6035061" });(function() {var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";el.parentNode.insertBefore(s, el);})();</script><noscript><img src="../../../../b.scorecardresearch.com/p%3Fc1=2&amp;c2=6035061&amp;cv=2.0&amp;cj=1" /></noscript><!-- End comScore Tag -->
+    <!-- Begin comScore Tag -->
+<script>
+    document.write(unescape("%3Cscript src='" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js' %3E%3C/script%3E"));
+</script>
+
+<script>
+  COMSCORE.beacon({
+    c1:2,
+    c2:6035061,
+    c3:"",
+    c4:"",
+    c5:"",
+    c6:"",
+    c15:""
+  });
+</script>
+<noscript>
+  <img src="../../../../b.scorecardresearch.com/p%3Fc1=2&amp;c2=6035061&amp;c3=&amp;c4=&amp;c5=&amp;c6=&amp;c15=&amp;cj=1" />
+</noscript>
+<!-- End comScore Tag -->
     
     
     
@@ -470,7 +676,7 @@ hoverCaption: ''
 },
 disappearOnClick: true,
 customVariables : 
-{"UserDIDOL":""}});
+{"UserDIDOL":"","eVar70":"ApplyStartNewDesignExperiment_0_AV_RecHQOffPlatform_True_bTestNewPath_True_CNABReturnTwoFilesNames_True_SortOrderTest_+radius_-postdate_-totalapps_UseInterstitialEmailCapturePage_True"}});
 }
 </script>
 
@@ -484,8 +690,8 @@ customVariables :
 
 
 
-<!--[if lt IE 9]><script type="text/javascript" src="http://img.icbdr.com/v16.84/Common/js/pie.js"></script><script type="text/javascript">$(function(){if (window.PIE) {$('.css3').each(function() {PIE.attach(this);});}});</script><![endif]-->
-<!--[if lt IE 8]><script type="text/javascript" src="http://img.icbdr.com/v16.84/Common/js/table.js"></script><![endif]-->
+<!--[if lt IE 9]><script type="text/javascript" src="http://img.icbdr.com/v17.94/Common/js/pie.js"></script><script type="text/javascript">jQuery(function(){if (window.PIE) {jQuery('.css3').each(function() {PIE.attach(this);});}});</script><![endif]-->
+<!--[if lt IE 8]><script type="text/javascript" src="http://img.icbdr.com/v17.94/Common/js/table.js"></script><![endif]-->
 </body>
 
 

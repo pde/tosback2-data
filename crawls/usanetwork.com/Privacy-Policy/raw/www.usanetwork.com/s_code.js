@@ -1,7 +1,7 @@
 /* SiteCatalyst code version: H.24.
 Copyright 1996-2011 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
-/* UPDATED Oct 25,2011  B.Roden*/
+/* UPDATED June 21,2012  B.Roden*/
 
 s_account = "nbcuglobal,nbcuusanetworkd";                                                                   
 var s=s_gi(s_account,1)            
@@ -26,7 +26,10 @@ s.usePlugins=true
 function s_doPlugins(s) {
 	
 	if(s.oun.match('nbcucabled')||s.oun.match('nbcuusanetbu')){s.sa('nbcuglobal,nbcuusanetworkd');}	
-
+	
+	//bunchball genesis code
+	if (typeof(bunchball_nitro_id) != 'undefined') {s.visitorID = bunchball_nitro_id;}
+	
 	s.campaign=s.getQueryParam('cid,__source',':');  
 		if(s.campaign){s.c_w('campaignname', s.campaign, 0);}
 	s.server=window.location.host.toLowerCase();
@@ -84,6 +87,9 @@ function s_doPlugins(s) {
 	s.exit=s.exitLinkHandler();
 		if(s.exit){s.eVar24 = s.getQueryParam('o',':',s.exit);s.campaign=s.getQueryParam('cid,__source',':',s.exit);
 		s.linkTrackVars='eVar24,campaign';}
+	
+	//keep track of secure google searches	
+	var kr=document.referrer,kk=s.getQueryParam("q","",kr),ks=s.getQueryParam("esrc","",kr);if(kr.indexOf("www.google.com")&&!kk&&ks=="s"){var ksr=kr.split("q="),kq="q=Google%20Secure%20Search";s.referrer=ksr[0]+kq+ksr[1]};
 
 	
 }
@@ -377,5 +383,4 @@ w.s_ft=new Function("c","c+='';var s,e,o,a,d,q,f,h,x;s=c.indexOf('=function(');w
 +"'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
 c=s_d(c);if(e>0){a=parseInt(i=v.substring(e+5));if(a>3)a=parseFloat(i)}else if(m>0)a=parseFloat(u.substring(m+10));else a=parseFloat(v);if(a<5||v.indexOf('Opera')>=0||u.indexOf('Opera')>=0)c=s_ft(c);if(!s){s=new Object;if(!w.s_c_in){w.s_c_il=new Array;w.s_c_in=0}s._il=w.s_c_il;s._in=w.s_c_in;s._il[s._in]=s;w.s_c_in++;}s._c='s_c';(new Function("s","un","pg","ss",c))(s,un,pg,ss);return s}
 function s_giqf(){var w=window,q=w.s_giq,i,t,s;if(q)for(i=0;i<q.length;i++){t=q[i];s=s_gi(t.oun);s.sa(t.un);s.setTagContainer(t.tagContainerName)}w.s_giq=0}s_giqf()
-
 

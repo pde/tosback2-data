@@ -1,8 +1,7 @@
 /*
-Copyright (c) 2012, comScore Inc. All rights reserved. 
-version: 4.6.3
+Copyright (c) 2012, comScore Inc. All rights reserved.
+version: 5.0.3
 */
-//document.write('<h1 style="font-size:30px">host method</h1>');
 var _sr_config = "broker-config.js";
 var _sr_builder = "builder.js";
 var _sr_sql08_URL = false;
@@ -17,27 +16,29 @@ for (var i=0; i < URLrange.length; i++)
 	}
 }
 
-if(SR_url.search(/www\.microsoft\.com\/windows\/pc-selector/i) !== -1) {
+if(SR_url.search(/www\.microsoft\.com\/windows\/pc-selector/i) !== -1 || SR_url.search(/(www|js|i3)\.microsoft\.com\/library\/svy\/int_cle\.htm/i) !== -1) {
 		_sr_config = "broker-config_cle.js";
+}
+
+if(/[\w\.]+\/windowsphone\/en-us/i.test(SR_url)) {
+	
+	_sr_config = "broker-config_wp.js";
 	
 }
 
-if(SR_url.search("www.microsoft.com/en-us/family") != -1 && document.cookie.indexOf('cleflag') == -1){
-	var c = 'cleflag=1; path=/; domain=.microsoft.com';
-	document.cookie = c;	
-}else if(SR_url.search("www.microsoft.com/student") != -1 && document.cookie.indexOf('cleflag2') == -1){
+if(SR_url.search("www.microsoft.com/student") != -1 && document.cookie.indexOf('cleflag2') == -1){
 	var c = 'cleflag2=1; path=/; domain=.microsoft.com';
 	document.cookie = c;	
 }
-if(document.referrer.search("www.microsoft.com/en-us/family") !=-1){ var _cleHalt=true; }else{ var _cleHalt=false;}
-		
+
 if (typeof(COMSCORE) == "undefined") {
 	var COMSCORE = {};
 }
 
+
 if (typeof COMSCORE.SiteRecruit == "undefined") {
 	COMSCORE.SiteRecruit = {
-		version: "4.6.3",
+		version: "5.0.3",
 	
 		configUrl: _sr_config,	// full url to broker config
 	
@@ -134,8 +135,7 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 					{
 						url += '&' + (new Date()).getTime();
 					}
-								
-				
+											
 					var i = new Image();
 				
 					
@@ -265,6 +265,8 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
  Basic Cookie Functionality
  */
  COMSCORE.SiteRecruit.Utils.UserPersistence = {
+	maxNumberOfPids : 6,
+		//The maximum number of pids allowed at any time in the 'surveys' attribute
 	CONSTANTS: {
 			STATE_NAME: { IDLE: "IDLE", DDINPROGRESS: "DDINPROGRESS"}
 	},
@@ -295,7 +297,7 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 		
 		value = escape(value);
 		
-		if (options.duration && options.duration< 0) {
+		if (options.duration && options.duration < 0) {
 			var date = new Date();
 			date.setTime(date.getTime() + options.duration * 24 * 60 * 60 * 1000);
 			value += "; expires=" + date.toGMTString();
@@ -320,10 +322,12 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 		if (options.secure) {
 			value += "; secure";
 		}
-						
-		document.cookie = key + "=" + value;
-						
+		if (options.graceperiod) {
+			value += "; graceperiod=" + options.graceperiod; 
+		}
 		
+		document.cookie = key + "=" + value;
+
 		return true;
 	},
 
@@ -363,7 +367,7 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 			*/
 			
 			var date = new Date();
-			var inputpid= params.pid;
+			var inputpid = params.pid;
 			var inputurl = params.url;
 			var inputstate = this.CONSTANTS.STATE_NAME.IDLE;
 			if (params.statename){
@@ -382,21 +386,21 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 			}
 			
 			var userObj = {};
-			userObj.version = "4.6";
-			userObj.state={};
-			userObj.state.name=inputstate;
-			userObj.state.url=inputurl;
-			userObj.state.timestamp= inputtimestamp;
-			userObj.lastinvited=inputtimestamp;
-			userObj.userid=date.getTime().toString() + Math.floor(Math.random()*9999999999999999).toString() ;
-			userObj.vendorid= this.getVendorId();
-			userObj.surveys=new Array();
+			userObj.version = "5.0";
+			userObj.state = {};
+			userObj.state.name = inputstate;
+			userObj.state.url = inputurl;
+			userObj.state.timestamp = inputtimestamp;
+			userObj.lastinvited = inputtimestamp;
+			userObj.userid = date.getTime().toString() + Math.floor(Math.random()*9999999999999999).toString() ;
+			userObj.vendorid = this.getVendorId();
+			userObj.surveys = new Array();
 			userObj.surveys.push(inputpid);
+			userObj.graceperiod = 5;
 			
 			var cookieString = COMSCORE.SiteRecruit.Utils.JSONSerialize(userObj);
 			
 			this.createCookie(inputcookiename,cookieString,params.cookieoptions)
-			//alert("inputeCookie=" + inputcookiename + "; cookieString=" + cookieString + "; params=" + params.cookieoptions);
 			return userObj;
 			
 	},
@@ -407,64 +411,124 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				Public function to set values for the user object
 			*/
 			
-			var inputpid= params.pid;
-			var inputurl = params.url;
-			var date = new Date();
-			var inputstate = this.CONSTANTS.STATE_NAME.IDLE;
+			var inputpid, inputurl, inputstate, inputtimestamp;
+			var inputcookiename, inputgraceperiod, inputtrackertimestamp;
+			var date;
+			
+			var userObj = this.getUserObj(params);
+			if (!userObj)
+			{
+				userObj = this.createUserObj(params);
+			}
+	
+			date = new Date();
+			
+			//MP: default values
+			inputtimestamp = 0;//date.getTime();
+			inputcookiename = this.getCookieName();
+			inputgraceperiod = 5;
+			inputtrackertimestamp = 0;
+			inputstate = this.CONSTANTS.STATE_NAME.IDLE; 
+				
+			//MP: pid and url are directly read from the input object
+			inputpid = params.pid;
+			
+			if (params.url) {
+				inputurl = params.url;
+			}
+			else if (userObj.state.url) {
+				inputurl = userObj.state.url;
+			}
+			
+			/**MP:Read values from params object, if not set, read from current cookie (preserve existent value)**/
+			
+			//MP:state should always be explicitly set, if not, state value will be taken from current cookie
 			if (params.statename){
 				 inputstate = params.statename;
+			} 
+			else if (userObj.state && userObj.state.name) {
+				inputstate = userObj.state.name
 			}
-			var inputtimestamp = date.getTime();
-			if (params.timestamp){
-				 inputtimestamp = params.timestamp;
+			
+			if (params.timestamp) {
+				inputtimestamp = params.timestamp;
 			}
-			var inputcookiename = this.getCookieName();
+			else if (userObj.state && userObj.state.timestamp) {
+				inputtimestamp = userObj.state.timestamp;
+			}
+			
 			if (params.cookiename){
 				 inputcookiename = params.cookiename;
 			}
+				//MP: cookiename is always passed on the params object
+			
 			if (!params.cookieoptions){
 				 params.cookieoptions = this.getDefaultCookieOptions();
 			}
+			//MP: cookieoptions do not exist in the userObject, if those values need to be preserved, they should be explicitly read here, one by one
 			
-			var userObj = this.getUserObj(params);
 			
-			if (!userObj)
-			{
-				this.createUserObj(params);
+			if (params.graceperiod) {
+				inputgraceperiod = params.graceperiod;
 			}
-			else {
-				var date = new Date();
-				userObj.lastinvited=inputtimestamp
-				
-				if (inputpid)
-				{
-					var doespidexist = false;
-					for (i=0; i < userObj.surveys.length; i++) {
-						if (userObj.surveys[i] && userObj.surveys[i].toLowerCase() == inputpid.toLowerCase()) {
-							doespidexist = true;
-						}
+			else if (userObj.graceperiod) {
+				inputgraceperiod = userObj.graceperiod;
+			}
+			//MP: graceperiod is only set once, from then on, it should be preserved
+			
+			if (params.trackertimestamp)
+			{
+				inputtrackertimestamp = params.trackertimestamp
+			}
+			else if (userObj.trackertimestamp)
+			{
+				inputtrackertimestamp = userObj.trackertimestamp;
+			}
+
+			//userObj.lastinvited = inputtimestamp;
+			userObj.lastinvited = date.getTime();
+			
+			if (inputpid)
+			{
+				var doespidexist = false;
+				for (i=0; i < userObj.surveys.length; i++) {
+					if (userObj.surveys[i] && userObj.surveys[i].toLowerCase() == inputpid.toLowerCase()) {
+						doespidexist = true;
 					}
-					if (doespidexist==false){
+				}
+				if (doespidexist == false){
+					if (userObj.surveys.length) {
+						// if there are more than maxNumberOfPids elements on the array, only the last maxNumberOfPids-1 will be kept
+						// and the new element will be added to the end, thus maintaining maxNumberOfPids elements in the array
+						if (userObj.surveys.length < this.maxNumberOfPids) {
+							userObj.surveys.push(inputpid);
+						} else {
+							userObj.surveys.splice(0,1);
+							userObj.surveys.push(inputpid);
+						}
+					} else {
 						userObj.surveys.push(inputpid);
 					}
-					//remove nulls
-					for (i=0; i < userObj.surveys.length; i++) {
-						if (userObj.surveys[i] == null) {
-							userObj.surveys.splice(i,1);
-						}
+				}
+				//remove nulls
+				for (i=0; i < userObj.surveys.length; i++) {
+					if (userObj.surveys[i] == null) {
+						userObj.surveys.splice(i,1);
 					}
 				}
-				if (inputstate)
-				{
-					userObj.state.name = inputstate;
-					userObj.state.url = inputurl;
-					userObj.state.timestamp = inputtimestamp;
-				}
-				
-				var cookieString = COMSCORE.SiteRecruit.Utils.JSONSerialize(userObj);
-				//this.removeCookie(inputcookiename, { path: params.cookieoptions.path, domain: params.cookieoptions.domain });
-				this.createCookie(inputcookiename,cookieString,params.cookieoptions);
 			}
+			if (inputstate)
+			{
+				userObj.state.name = inputstate;
+				userObj.state.url = inputurl;
+				userObj.state.timestamp = inputtimestamp;
+				userObj.graceperiod = inputgraceperiod;
+				userObj.trackertimestamp = inputtrackertimestamp;
+			}
+			
+			var cookieString = COMSCORE.SiteRecruit.Utils.JSONSerialize(userObj);
+			//this.removeCookie(inputcookiename, { path: params.cookieoptions.path, domain: params.cookieoptions.domain });
+			this.createCookie(inputcookiename,cookieString,params.cookieoptions);
 			
 			return userObj;
 	},
@@ -483,9 +547,13 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 			//SR4.5 cookies do not store user objects, use this to overwrite
 			//For future dev, we probably want to increment this version number if we want
 			//to prevent scripts of different version from accessing certain cookies
-			if (userObj && userObj.version && userObj.version == "4.6")
+			if (userObj && userObj.version && !isNaN(userObj.version) && userObj.version >= 4.6)
 			{
 			    return userObj;
+			}
+			else 
+			{
+				
 			}
 		}
 		
@@ -507,11 +575,14 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				var that = this;
 				
 				_timeoutId = setInterval(function() {
-					if (_sr.Broker.isDDInProgress()) {
+					if (_sr.Broker.isDDInProgress() && that.isTrackerPageOpen()) {
 						that.setDDTrackerCookie();
 			        }
+			        else if (!that.isTrackerPageOpen()){
+						that.handleClosedTrackerPage();
+			        }
 					else {
-					
+						
 						that.stop();
 					}
 				}, _interval);
@@ -522,25 +593,88 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				
 			},
 			
-			setDDTrackerCookie: function() {
+			isTrackerPageOpen: function() {
+			
+				//see if the tracker page has been closed while DD has been in progress
+				var params = {};
+				params.cookiename = COMSCORE.SiteRecruit.Broker.config.cookie.name;
+				var userObj = _utils.UserPersistence.getUserObj(params);
+				var now = (new Date()).getTime();
+				var ret = true;
+				var withinGracePeriod = false;
+				var gracePeriod;
+				
+				if (userObj && userObj.state && userObj.state.name == _sr.CONSTANTS.STATE_NAME.DDINPROGRESS && userObj.state.timestamp && userObj.trackertimestamp) {
+					//(MPA) As a fix to the DDInProgress issue, now gracePeriod is compared to the trackerTimestamp instead of state.timestamp
+					//var timeDiff = now - userObj.state.timestamp;
+					
+					var timeDiff = now - userObj.trackertimestamp;
+					var timeDiffSeconds = timeDiff/1000;
+					if (COMSCORE.SiteRecruit.Builder && COMSCORE.SiteRecruit.Builder.invitation && COMSCORE.SiteRecruit.Builder.invitation.config)
+					{
+						gracePeriod = COMSCORE.SiteRecruit.Builder.invitation.config.trackerGracePeriod;
+					}
+					else if (userObj.gracePeriod) {
+						gracePeriod = userObj.gracePeriod;
+					}
+					
+					if (gracePeriod) {
+						
+						gracePeriod = parseInt(gracePeriod);
+						
+						//check if it has been more than 2 times the grace period
+						//if the update time is more than the grace period, the tracker was probably closed which 
+						//is why its still in a DDINPROGRESS but past the grace period
+						var timeWindow = 2 * gracePeriod * 1000;
+						withinGracePeriod = (timeDiff < timeWindow);
+						if (!withinGracePeriod) {
+							
+							ret = false;
+						}
+					}
+				}
+				return ret;
+				
+			},
+			
+			handleClosedTrackerPage: function() {
+				
+				var params = {};
 				var c = _sr.Broker.config.cookie;
-				//var val = _sr.CONSTANTS.COOKIE_TYPE.DD_IN_PROGRESS + ":" + 
-				//			escape(_utils.location) + ":" + 
-				//			(new Date()).getTime();
-				
-				// set session cookie
-				//_utils.UserPersistence.set(c.name, val, { path: c.path, domain: c.domain });	
-				
-				//set enhanced cookie
-				var params={};
-				params.cookieoptions = { path: c.path, domain: c.domain };
 				params.cookiename = c.name;
+				params.statename = _sr.CONSTANTS.STATE_NAME.IDLE;
+				params.cookieoptions = { path: c.path, domain: c.domain };
+				params.url = escape(_utils.location);
+				params.timestamp = (new Date()).getTime();
+				_utils.UserPersistence.setUserObj(params);
+				this.stop();
+			},
+			
+			setDDTrackerCookie: function() {
+			
+				var c = _sr.Broker.config.cookie;		
+				var params = {};
+				params.cookiename = c.name;
+				var userObj = _utils.UserPersistence.getUserObj(params);
+				
+				var params = {};
+				params.cookiename = c.name;
+				params.cookieoptions = { path: c.path, domain: c.domain };
 				params.url = escape(_utils.location);
 				params.statename = _sr.CONSTANTS.STATE_NAME.DDINPROGRESS;
+				params.timestamp = (new Date()).getTime();
+				
 				if (COMSCORE.SiteRecruit.Builder && COMSCORE.SiteRecruit.Builder.invitation && COMSCORE.SiteRecruit.Builder.invitation.config){
-				    //adding pid here so it gets passed to confirmit
-				    params.pid = COMSCORE.SiteRecruit.Builder.invitation.config.projectId
+					//adding pid here so it gets passed to confirmit
+					params.pid = COMSCORE.SiteRecruit.Builder.invitation.config.projectId
+					params.graceperiod = COMSCORE.SiteRecruit.Builder.invitation.config.trackerGracePeriod;
 				}
+				else if (userObj && userObj.gracePeriod)
+				{
+					//set gracePeriod from previous cookie value
+					params.graceperiod = userObj.graceperiod;
+				}
+
 				_utils.UserPersistence.setUserObj(params);	
 			}
 		};
@@ -554,6 +688,7 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 		var _utils = _sr.Utils;
 		
 		return {
+			
 			getTotalFreq: function() {
 				return _totalFreq;
 			},
@@ -567,13 +702,6 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				_totalFreq = 0;
 				// Iterate over each URL.
 				for (var i = 0; m && i < m.length; i++) {
-					
-					//CUSTOM CODE TO DISABLE PRIVACY PAGE RECRUITMENT
-					if(_utils.location.search(/privacy\.microsoft\.com/) != -1) {
-							halt = true;		
-							break;
-					}
-					
 					var matchPrereqs = false;
 							
 					var pm = m[i];
@@ -581,18 +709,14 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 						// Do the reg exp match.
 						var r = new RegExp(pm.m, 'i');			
 						if (_utils.location.search(r) != -1) {	// does current url match regex?
-							if (pm.halt) {
-								
-								halt = true;
-								break;
-							}
+							
 							// Now check the prereqs.
 							var pr = m[i].prereqs;
 							
 							matchPrereqs = true;
 							if (pr) {	
 								
-										
+
 								if (!this.isMatchContent(pr.content)) {
 									
 									matchPrereqs = false;
@@ -608,13 +732,29 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 									matchPrereqs = false;
 								}
 								
+								
+								// Third-party cookie reading pushed to the end of the sprint. Disabled till then
+								//if (!this.isMatchExternalCookie(pr.externalDomain)) {
+									
+								//	matchPrereqs = false;
+								//}
+								
 							}
 						}		
 						//cjones push match onto array
 						if (matchPrereqs) {
-							matchList.push(pm);
-							
-							_totalFreq += pm.f;
+						    if (pm.halt) {
+								
+								halt = true;
+								break;
+							}
+							else
+							{
+							    matchList.push(pm);
+							    
+							    //setting totalFreq to last matched as a precaution, freq should be adjusted when match is selected
+								_totalFreq = pm.f; 
+							}
 						}				
 					}
 				}
@@ -625,34 +765,21 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				}
 				
 				
-				
 				return this.choosePriority(matchList);
-			},
-			
-			//cjones new function to handle auto weight feature.
-			choose: function(matchList, totalFreq) {
-				var r = _utils.getRandom((totalFreq*100.0));  //get random between 1 nad total freq * 100?
-				var sum = 0;
-				for (var i = 0; i < matchList.length; i++) {
-					sum += (matchList[i].f * 100.0);
-					if (r <= sum) {
-						
-						return matchList[i];
-					}
-				}
-				
-				return null;
 			},
 		
 			choosePriority: function(matchList) {
 				var prevMatch = null;
 				for (var i = 0; i < matchList.length; i++) {
 					if (prevMatch == null) {
-						prevMatch = matchList[i];		
+						prevMatch = matchList[i];
+						_totalFreq = matchList[i].f; 
 					}
 					else {
 						if (prevMatch.p < matchList[i].p) {
 							prevMatch = matchList[i];
+							//set the private class variable so getTotalFreq returns the right value
+							_totalFreq = matchList[i].f; 
 						}
 						
 					}
@@ -662,7 +789,7 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 			
 			isMatchContent: function(content) {
 				var isMatch = true, i = 0;
-									
+				
 				while (isMatch && i < content.length) {
 					
 					var matchContent = false;
@@ -672,12 +799,19 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 					
 					if (c.element) {
 	                    var elements = document.getElementsByTagName(c.element);
+	                    var flag = true;
 	                    
 						for (var k = 0; k < elements.length; k++) {
-							var val = c.elementValue;
+							//var val = c.elementValue;
+							var val = new RegExp(c.elementValue);
 	                        
-							if (val && val.length) {
-	                            if (elements[k].innerHTML.search(val) != -1) {
+							if (val) {
+	                            //if (elements[k].innerHTML.search(val) != -1) {
+	                            if (val.test(elements[k].innerHTML)) {
+									if (flag) {
+										
+										flag = false;
+									}
 	                                matchContent = true;
 	                            }
 	                        }
@@ -687,9 +821,11 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 	                        
 							if (c.attrib && c.attrib.length) {
 								var a = elements[k].attributes.getNamedItem(c.attrib);
+								var val2 = new RegExp(c.attribValue);
 	                            if (a) {
 									if (c.attribValue && c.attribValue.length) {
-										if (a.value.search(c.attribValue) != -1) {
+										if (val2.test(a.value)) {
+										//if (a.value.search(c.attribValue) != -1) {
 											matchAttribute = true;
 	                                    }
 	                                }
@@ -723,7 +859,13 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 					var c = cookies[i], val = _utils.UserPersistence.getCookieValue(c.name);
 							
 					if (val && val !== null) {
-						isMatch = val.indexOf(c.value) != -1 ? true : false;
+					
+						//Treat c.value as RegExp
+						var regExp = new RegExp(c.value);
+						
+							
+
+						isMatch = regExp.test(val);
 						i++;
 					}
 					else {
@@ -740,13 +882,56 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				if  (!lang) {
 					return true;
 				}
-				if (n.indexOf(lang) != -1) {
+				var regExp = new RegExp(lang);
+				//if (n.indexOf(lang) != -1) {
+				if (regExp.test(n)) {
 					
 	                return true;
 	            }
 				
 				
 				return false;
+			},
+			
+			verifyExternalCookie: function(cookie) {
+				COMSCORE.SiteRecruit.Broker.extCookie = cookie;
+			},
+			
+			readExternalCookie: function(externalDomainPrereq) {
+				// Make a call to the rc.pli file
+				var domain = externalDomainPrereq[0].domain;
+				var cookieName = externalDomainPrereq[0].name;
+				var func = "COMSCORE.SiteRecruit.PagemapFinder.verifyExternalCookie"
+				var rUrl = domain + "?n=" + cookieName + "&func=" + func + "&";
+				_utils.loadScript(rUrl, false);			
+			},
+			
+			isMatchExternalCookie: function(externalDomainPrereq) {
+				//COMSCORE.SiteRecruit.PagemapFinder.readExternalCookie(externalDomainPrereq);
+			
+				var domain = externalDomainPrereq[0].domain;
+				var cookieName = externalDomainPrereq[0].name;
+				var func = "COMSCORE.SiteRecruit.PagemapFinder.verifyExternalCookie"
+				
+				var rUrl = domain + "?n=" + cookieName + "&func=" + func + "&";
+				var extScript;
+				//_utils.loadScript(rUrl, false);
+				
+				var scripts = document.getElementsByTagName( 'script' );
+				for (var i = 0; i < scripts.length; i++) {
+					if (scripts[i].src.search(domain) != -1) {
+						extScript = scripts[i];
+					}
+				}
+				
+				if (COMSCORE.SiteRecruit.Broker.extCookie && COMSCORE.SiteRecruit.Broker.extCookie != "") {
+					
+					return true;
+				} 
+				else {
+					
+					return false;
+				}
 			}
 		};
 	} )();
@@ -757,12 +942,23 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 		// for short hand
 		var _sr = COMSCORE.SiteRecruit;
 		var _utils = _sr.Utils;
-		
+		var _extCookie = "!";
+	
 		// public methods and properties
 		return {
-			init: function(cookie) {
+			/**
+			Events: {
+				
+				 * @param {Object} utils - a reference to COMSCORE.SiteRecruit.Utils class for quick access
+				 * @param {Object} options - contains the bool: IsLucky
+				 
+				beforeRecruit: function() {}
+			},
+			*/
+			
+			init: function(cookies) {
 				//CUSTOM CODE
-				this.arCookie = cookie;
+				if(cookies){ this.arCookie = cookies; }
 				
 				_sr.browser = _utils.getBrowser();
 				_sr.executingPath = _utils.getExecutingPath("broker.js");
@@ -778,10 +974,9 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				
 			start: function() {
 				//If Mobile browser NOT detected then run init() function
-				if((/iphone|android|opera mini|blackberry|windows(phone|ce)|iemobile|htc|nokia/i.test(navigator.userAgent)) && 			(/\/\/[\w\.]+\/windowsphone/i.test(SR_url))){
+				if((/iphone|android|opera mini|blackberry|windows(phone|ce)|iemobile|htc|nokia/i.test(navigator.userAgent)) && (/\/\/[\w\.]+\/windowsphone/i.test(SR_url))){
 				 //Disable recruitment for mobile
-				}
-				else if (/[\w\.]+\/en-us\/dynamics/i.test(SR_url)) {
+				}else if (/[\w\.]+\/en-us\/dynamics/i.test(SR_url)) {
 					// CUSTOM CODE - Check for AR Already Asked cookie
 					var projectId = "p100339422";
 					var cookieName = "ar_s_" + projectId;
@@ -789,23 +984,10 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 					var readCookieURL = "http://ar.voicefive.com/b/rc.pli?n=" + cookieName + "&func=" + callback + "&" + (new Date()).getTime();
 					_utils.loadScript(readCookieURL, false);
 					// END CUSTOM
-        }						
-        else if (/[\w\.]+\/education\/facultyconnection/i.test(SR_url)) {
-					// CUSTOM CODE - Check for AR Already Asked cookie
-					var projectId = "p143952289";
-					var cookieName = "ar_s_" + projectId;
-					var callback = "COMSCORE.SiteRecruit.Broker.init";
-					var readCookieURL = "http://ar.voicefive.com/b/rc.pli?n=" + cookieName + "&func=" + callback + "&" + (new Date()).getTime();
-					_utils.loadScript(readCookieURL, false);
-					// END CUSTOM
-        }		
-        else {
-        	//alert("mobile browser is NOT detected...loading scripts...");
+        }else {
+        	//mobile browser is NOT detected...loading scripts..
           this.init();
-        }
-        
-        
-					//this.init();		
+        }							
 			},
 			
 			run: function() {
@@ -813,6 +995,9 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				
 				//initialize IE user data persistence if and only if 
 				//this option has been enabled and the browser is ie
+				
+				this.config.Events.beforeRecruit();
+				
 				if (this.config.objStoreElemName) {
 					if (_sr.browser.ie) {
 						COMSCORE.SiteRecruit.Utils.UserPersistence.initialize();
@@ -825,21 +1010,27 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				//CUSTOM CODE
 				if (this.arCookie && this.arCookie != "") {
 						return;
-				
 				}
-				
-				
 				// verify versions match
 				if (_sr.version !== this.config.version) {
 					
 					return;
 				}
 				
+				//verify test mode
+				var testModeConfig = this.config.testMode;
+				var testModeURL;
+				var testMode;
+				
+				testModeURL = (_utils.UserPersistence.getCookieValue("tstMode") == 1)?true:false;
+				
+				testMode = (testModeConfig || testModeURL);
+				
 				if (this.isDDInProgress()) {
 					this.processDDInProgress();
 				}
 						
-				if (!this.config.testMode || this.isDDInProgress()) {
+				if (!testMode || this.isDDInProgress()) {
 					// if any site recruit exists, stop executing
 					//if (_utils.UserPersistence.get(this.config.cookie.name) !== false) {
 					//	
@@ -857,11 +1048,12 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 					var durationdays = this.config.cookie.duration;
 					var durationtimestamp = date.getTime() - ( durationdays * 24 * 60 * 60 * 1000);
 					
-					if (userObj)
-					{
+					if (userObj) {
 						if (userObj.lastinvited > durationtimestamp) {
-							
-							return;
+								
+
+								return;
+							//}
 						}
 					}
 					
@@ -869,7 +1061,13 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				
 				if (this.findPageMapping())
 				{
-					
+					if (testMode) {
+						
+						if (this.pagemap) {
+							this.loadBuilder();
+						}
+						return;
+					}
 					
 					// roll the dice
 					var r = _utils.getRandom();
@@ -896,25 +1094,26 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				//var c = _utils.UserPersistence.get(COMSCORE.SiteRecruit.Broker.config.cookie.name);
 				//return (c && c.indexOf(_sr.CONSTANTS.COOKIE_TYPE.DD_IN_PROGRESS) === 0);
 				
-				var ddinprogress= false;
+				var ddinprogress = false;
 				var params = {};
 				params.cookiename = COMSCORE.SiteRecruit.Broker.config.cookie.name;
 				var userObj = _utils.UserPersistence.getUserObj(params);
 				
-				if (userObj){
-					if (userObj.state.name == _sr.CONSTANTS.STATE_NAME.DDINPROGRESS){
+				if (userObj) {
+					if (userObj.state.name == _sr.CONSTANTS.STATE_NAME.DDINPROGRESS) {
 						ddinprogress = true
 						
 					}
 				}
-				
+
 				return ddinprogress;
 			},
 			
 			processDDInProgress: function() {
+				//Ensure this function is only called when state name is DDINPROGRESS
 				// launch dd keep alive
 				
-				_sr.DDKeepAlive.start();			
+				_sr.DDKeepAlive.start();
 			},
 			
 			findPageMapping: function() {

@@ -296,7 +296,12 @@ function ch_decision(render) {
         ch_add_script('http://scripts.chitika.net/eminimalls/osnap.js');
     }
 
-    ch_add_script(w.ch_mmhtml["js"]);
+    if (w.ch_mmhtml["js"]) {
+        for (var i = 0; i < w.ch_mmhtml.js.length; i++) {
+            var url = w.ch_mmhtml.js[i];
+            ch_add_script(url);
+        }
+    }
 
     if (w.ch_mmhtml["hover"]) {
         w.ch_hover_content = w.ch_mmhtml["hover"]["html"];
@@ -456,15 +461,19 @@ function ch_mm() {
         return;
     }
 
-    if(w.ch_pending_requests === undefined) { w.ch_pending_requests = 0; }
+    if (w.ch_pending_requests === undefined) {
+        w.ch_pending_requests = 0;
+    }
+    w.ch_pending_requests++;
+
     w.ch_host = ch_def(w.ch_host, 'mm.chitika.net');
     w.ch_ad_url = 'http://' + w.ch_host + '/minimall?';
     w.ch_cid = ch_def(ch_def(w.ch_cid, w.ch_sid), 'default');
     w.ch_impsrc = ch_def(w.ch_impsrc, 'amm-'+w.ch_amm_version);
-    w.ch_pending_requests++;
+
     w.ch_referrer = document.referrer;
 
-    var m = String(window.location.href).match(/#chitikatest(?:=(.+))?/);
+    var m = String(w.location.href).match(/#chitikatest(?:=(.+))?/);
     if (m) {
         var q = m[1];
         if (q == undefined) { q = 'mortgage'; }
@@ -497,7 +506,7 @@ function ch_mm() {
     if (navigator.appName.indexOf("Microsoft") != -1) {
         ch_window = "" + document.body.offsetWidth + "x" + document.body.offsetHeight;
     } else {
-        ch_window = "" + window.outerWidth + "x" + window.outerHeight;
+        ch_window = "" + w.outerWidth + "x" + w.outerHeight;
     }
     ch_canvas = "" + document.body.clientWidth + "x" + document.body.clientHeight;
 
@@ -551,25 +560,49 @@ function ch_mm() {
     ch_aue('url', w.ch_pu);
     ch_aue('ref', w.ch_referrer);
     ch_aue('cat_id', w.ch_cat_id);
+    ch_aue('dpr', w.devicePixelRatio);
 
     if (w.ch_demo_mode == 1) {
         ch_au('ip', '71.248.173.210');
         ch_au('demomode', '1');
     }
 
+    if (navigator.userAgent.match(/Chrome/) &&
+        document.webkitVisibilityState !== undefined &&
+        document.webkitVisibilityState == "prerender") {
+        ch_au('prerender', 1);
+    }
+
     var r = Math.round(Math.random() * 1000);
     ch_au('cb', r);
 
-    if (typeof(w.ch_dim) == "undefined") {
+    ch_get_snippet();
+
+    if (w.ch_dim === undefined) {
         w.ch_dim = {};
     }
-    if (typeof(w.ch_bright) == 'undefined') {
+
+    if (w.ch_bright === undefined) {
         w.ch_bright = {};
     }
+
     // For list units we pass a string for height, which IE just hates. So, if we're passing a string, we'll fake it out
     // by passing 0. Height is resized by fluidH anyway.
     _dHeight = (typeof(w.ch_height) == "string" || typeof(w.ch_height) == "undefined") ? 0 : w.ch_height;
-    w.ch_dim["ch_ad"+r] = [w.ch_width, _dHeight, w.ch_alternate_js_callback, w.ch_alternate_ad_js, w.ch_alternate_ad_html, w.ch_alternate_ad_blank, w.ch_fluidW, w.ch_fluidH, w.ch_extra_pins,w.ch_follow];
+
+    w.ch_dim["ch_ad"+r] = [
+        w.ch_width,
+        _dHeight,
+        w.ch_alternate_js_callback,
+        w.ch_alternate_ad_js,
+        w.ch_alternate_ad_html,
+        w.ch_alternate_ad_blank,
+        w.ch_fluidW,
+        w.ch_fluidH,
+        w.ch_extra_pins,
+        w.ch_follow
+    ];
+
     w.ch_bright['ch_ad'+r] = {
         client:         w.ch_client,
         cid:            w.ch_cid,
@@ -596,8 +629,6 @@ function ch_mm() {
 
     w.ch_ad_url = w.ch_ad_url.substring(0, 2048);
     w.ch_ad_url = w.ch_ad_url.replace(/%\w?$/, '');
-
-    ch_get_snippet();
 
     w.ch_ad_url += "&output=simplejs&callback=ch_ad_render_search";
     if (w.ch_hq){

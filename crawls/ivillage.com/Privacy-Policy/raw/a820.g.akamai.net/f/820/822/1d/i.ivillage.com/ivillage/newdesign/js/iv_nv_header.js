@@ -7,7 +7,7 @@ var iv_header_isLoaded = false;
 var isAstrologyPage = true;
 // load the new_s_code_iv.js file 
 if (window.location.href.toLowerCase().indexOf("astrology.com") == -1) {
-    document.write('<scr'+'ipt  language="javascript" type="text/javascript" src="http://a820.g.akamai.net/f/820/822/1d/i.ivillage.com/ivillage/newdesign/js/iv_nv_s_code.js"></scr'+'ipt>');
+    document.write('<scr'+'ipt  language="javascript" type="text/javascript" src="http://a820.g.akamai.net/f/820/822/1d/i.ivillage.com/ivillage/newdesign/js/iv_nv_s_code.js?070212"></scr'+'ipt>');
     isAstrologyPage = false;
 }
 //Omniture only stuff

@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,4,14,12,12,32,0);
+var tvgServerTimeUTC = new Date(2012,7,2,20,29,52,0);
 
-var dServerET = new Date(2012,4,14,8,12,32,0);
+var dServerET = new Date(2012,7,2,16,29,52,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,4,14);
-dSrvrTime.setUTCHours(12,12,32,0);
+dSrvrTime.setUTCFullYear(2012,7,2);
+dSrvrTime.setUTCHours(20,29,52,0);
 
-var dLocalTime = new Date(2012,4,14,8,12,32,0);
-var dGridStart = new Date(2012,4,14,8,0,0,0);
+var dLocalTime = new Date(2012,7,2,16,29,52,0);
+var dGridStart = new Date(2012,7,2,16,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= d9462f16e0dab339073c9ac94e4f16ef0bd9b547 1336997552';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= c19f23f1a24eaa5491490f6d9c1ddfe462d10aa0 1343939392';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,19 +50,19 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 5/14/2012 12:00:00 PM GMT */
+/* TVGSVC02 8/2/2012 8:15:00 PM GMT */
 
 /* Listings: In-Grid and Close-Up Ads */
 var GridAds = true;
-var MaxGridAds = 8;
+var MaxGridAds = 3;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/WP_Top_rev.jpg";
-var magicBotImage = "/listings/images/topchan/WP_Bottom_SUN.jpg";
-var magicLogo = "/listings/images/topchan/WP_Middle.jpg";
-var magicLink = "http://www.facebook.com/TVGuideNetwork#!/TVGuideNetwork/app_153855648022942";
+var magicTopImage = "/listings/images/topchan/SIS_Top.jpg";
+var magicBotImage = "/listings/images/topchan/SIS_Bottom_SAT.jpg";
+var magicLogo = "/listings/images/topchan/SIS_Middle.jpg";
+var magicLink = "http://www.facebook.com/TVGuideNetwork";
 var magicBkgnd = "#FFFFFF";
 var magicTextClr = "#FFFFFF";
 var magicLeftOffset = 640;
@@ -88,10 +88,14 @@ franchiseCheckin.ObjectUrl = "";
 franchiseCheckin.CallLetters = "";
 franchiseCheckin.StartTime = "198001011200";
 franchiseCheckin.BadgeUrl = "";
-franchiseCheckin.LeftOffset = 0;
+franchiseCheckin.LeftOffset = 500;
 
-var locationQueryString = location.search.substring(1, location.search.length);
-var locationRef = locationQueryString.substring(14, locationQueryString.length);
+//var locationQueryString = location.search.substring(1, location.search.length);
+var locationRef = grid_getQueryParam("billboard");
+if (locationRef === "") {
+	locationRef = grid_getQueryParam("clutterbuster");
+}
+
 var adlocation = (locationRef !== "" && locationRef === "true") ? true : 0;
 
 /* Moveable Ads */
@@ -111,8 +115,19 @@ var slot_banner_top_LST = 0;
 var bEnableDelayedAds = false;
 var iDelayedAdSeconds = 2;
 
-if (location.host === "qa.tvguide.com" || location.host === "qa-test.tvguide.com"){
-var locationQueryString = location.search.substring(1, location.search.length);
-var locationRef = locationQueryString.substring(14, locationQueryString.length);
-slot_banner_top_HP = (locationRef !== "" && locationRef === "true") ? true : 0;
-slot_banner_top_LST = (locationRef !== "" && locationRef === "true") ? true : 0;}
+if (location.host === "qa.tvguide.com" || location.host === "qa-test.tvguide.com" || location.host === "localhost.tvguide.com:2008"){
+	// var locationQueryString = location.search.substring(1, location.search.length);
+	slot_banner_top_HP = (locationRef !== "" && locationRef === "true") ? true : 0;
+	slot_banner_top_LST = (locationRef !== "" && locationRef === "true") ? true : 0;
+}
+
+function grid_getQueryParam(strName) {
+	var queryString = document.location.search.replace("?", "");
+	var params = queryString.split("&");
+	for (i = 0; i < params.length; i++) {
+		var param = params[i].split("=");
+		if (param[0] == strName) {
+			return param[1];
+		}
+	}
+}

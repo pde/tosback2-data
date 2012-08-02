@@ -3,6 +3,8 @@ Copyright 1996-2011 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 /* UPDATED Nov 01, 2011  J.Tippets*/
 
+//bravotv.com
+
 s_parsedQueryString = false;
 var s=s_gi(s_account,1)
 /************************** CONFIG SECTION **************************/
@@ -82,10 +84,45 @@ function s_doPlugins(s) {
 	//events
 	s.events=s.apl(s.events,'event6',',',1);
 
+	
+	s.eVar51 = s.getMonthVisitNum();
+	s.eVar52 = s.getQuarterVisitNum('January 1', 'April 1', 'July 1', 'October 1');
 }
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/
-/* You may insert any plugins you wish to use here.     
+/* You may insert any plugins you wish to use here. */
+
+s.getQuarterVisitNum=new Function("d1","d2","d3","d4",""
++"var s=this;var quarterStarts=new Array();var currentDate=new Date()"
++";quarterStarts[0]=new Date(d1+', '+new Date().getFullYear());quarte"
++"rStarts[1]=new Date(d2+', '+new Date().getFullYear());quarterStarts"
++"[2]=new Date(d3+', '+new Date().getFullYear());quarterStarts[3]=new"
++" Date(d4+', '+new Date().getFullYear());if(currentDate>=quarterStar"
++"ts[0]&&currentDate<quarterStarts[1])currentQuarter='Q1';else if(cur"
++"rentDate>=quarterStarts[1]&&currentDate<quarterStarts[2])currentQua"
++"rter='Q2';else if(currentDate>=quarterStarts[2]&&currentDate<quarte"
++"rStarts[3])currentQuarter='Q3';else currentQuarter='Q4';var myDate="
++"new Date();myDate.setDate(myDate.getDate()+10000);if(s.c_r('q_visit"
++"')=='')s.c_w('q_visit',currentQuarter+':'+new Date().getFullYear()+"
++"':1',myDate);else{if(s.split(s.c_r('q_visit'),':')[0]!=currentQuart"
++"er||s.split(s.c_r('q_visit'),':')[1]!=new Date().getFullYear())s.c_"
++"w('q_visit',currentQuarter+':'+new Date().getFullYear()+':1',myDate"
++");else{if(s.c_r('sesh_vis')!='same sesh')s.c_w('q_visit',currentQua"
++"rter+':'+new Date().getFullYear()+':'+(parseInt(s.split(s.c_r('q_vi"
++"sit'),':')[2])+1),myDate);}}s.c_w('sesh_vis','same sesh');return s."
++"split(s.c_r('q_visit'),':')[2];");
+
+s.getMonthVisitNum=new Function("",""
++"var s=this;var currentDate=new Date();var myDate=new Date();myDate."
++"setDate(myDate.getDate()+10000);if(s.c_r('m_visit')=='')s.c_w('m_vi"
++"sit',currentDate.getMonth()+':'+currentDate.getFullYear()+':1',myDa"
++"te);else{if(s.split(s.c_r('m_visit'),':')[0]!=currentDate.getMonth("
++")||s.split(s.c_r('m_visit'),':')[1]!=currentDate.getFullYear()){s.c"
++"_w('m_visit',currentDate.getMonth()+':'+currentDate.getFullYear()+'"
++":1',myDate);}else{if(s.c_r('sesh_vis_m')!='same sesh'){s.c_w('m_vis"
++"it',currentDate.getMonth()+':'+currentDate.getFullYear()+':'+(parse"
++"Int(s.split(s.c_r('m_visit'),':')[2])+1),myDate);}}}s.c_w('sesh_vis"
++"_m','same sesh');return s.split(s.c_r('m_visit'),':')[2];");
 
 /*
  * Plugin: getQueryParam 2.3

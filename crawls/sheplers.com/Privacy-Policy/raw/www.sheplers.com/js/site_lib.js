@@ -2,11 +2,36 @@
   Library of JavaScripts for Sheplers.
 */
 
-// if html.js, then assume javascript will work.
+// if <html class="js">, then assume javascript will work.
 //This allows us to style the site for JavaScript-enabled and disabled modes.
 $('html').addClass('js');
-var site = {}; //site namespace
 
+//site namespace
+var site = {
+	isEmpty: function(str) {
+		return (str === null || (str.replace(/\s*/g,"") == ""));
+	},
+	useHiDPI:true,
+	variants:{},
+	pdp:{}
+};
+
+//site.devicePixelRatio is used for calculating HiDPI images on screens that support it.
+site.devicePixelRatio = (site.useHiDPI ? window.devicePixelRatio || 1 : 1);
+
+/*
+site method getImageUrl
+
+Returns a url using your image provider with the specified file name, width and height.
+HiDPI is calculated here, so don't pass it in.
+ */
+
+site.getImageUrl = function(fileName, imageWidth, imageHeight){
+	var src = site.imageUrlTemplate.replace("{fileName}",fileName);
+	src = src.replace("{fileWidth}",imageWidth * site.devicePixelRatio);
+	src = src.replace("{fileHeight}",imageHeight * site.devicePixelRatio);
+	return src;
+};
 
 /***** WIDGET Core functionality *****/
 //BASE.JS
@@ -827,24 +852,27 @@ function removeSelectedRefinementValue(selectedRefinementValueId) {
 }
 // Remove Selected Refinement Part 2  - remove refinement handle multipart query string
 function refinementChangeMulti(refineVal) {
-		var removeRefinement = "refinementValueIds="+refineVal;
-		var myRefineQuery = window.location.search;
-    	if(myRefineQuery.indexOf(removeRefinement)) {
-			var removeSplit = myRefineQuery.split('&');
-			for(i = 0; i< removeSplit.length; i++) {
-				if(removeSplit[i] == removeRefinement) {
-				 removeSplit.splice(i,1);
-			  }
-			}
-			var refineNewQueryString = removeSplit.join('&');
-			var url = "";
-			if (refineNewQueryString.indexOf("?") >= 0) {
-				url = refineNewQueryString + "&removeRefinement=true";
-			}  else {
-				url = refineNewQueryString + "?removeRefinement=true";
-			}
-			window.location.search = url;
-		}
+    var removeRefinement = "refinementValueIds="+refineVal;
+    var seoRefinement = "-RefIds=" + refineVal;
+    var myRefineQuery = window.location.search;
+    if (myRefineQuery.indexOf(seoRefinement)) {
+        var removeSplit = myRefineQuery.split('&');
+        for (i = 0; i < removeSplit.length; i++) {
+            if (removeSplit[i] == removeRefinement || removeSplit[i].indexOf(seoRefinement) > -1) {
+                removeSplit.splice(i, 1);
+            }
+        }
+        var url = removeSplit.join('&');
+        if (url.indexOf("removeRefinement=true") == -1) {
+            if (url.indexOf("removeRefinement=true") == -1) {
+                if (url.indexOf("?") == -1) {
+                    url = "?" + url;
+                }
+                url += "&removeRefinement=true";
+            }
+        }
+        window.location.search = url;
+    }
 }
 
 function singleValueRefinement(refinementValueId) {
@@ -1341,6 +1369,41 @@ Dates: June 18, 2010 (v1.0) Oct 10, 2011 (v1.3)
 
 
 /* PRODUCT DETAIL PAGE */
+//backorder messages
+site.pdp.backorderEvents = function(event, variantId, productId, props) {
+	// If there is a message, display it
+	//this feature is disabled on Sheplers
+	if (1==2){
+		var msg = "";
+		if (props && props.stock === false && props.backorderable) {
+			// Item is not in stock, but it is backorderable
+			if (!site.isEmpty(props.backDate)) {
+				// Item has a backorder date
+				msg = site.variants.backorderableDate.replace("[DATE]", props.backDate);
+			} else {
+				// Item doesn't have a backorder date
+				msg = site.variants.backorderable;
+			}
+		}
+
+		if (site.isEmpty(msg)) {
+			$("div.variant-messages").removeClass("message").empty();
+		} else {
+			$("div.variant-messages").addClass("message").html(msg);
+		}
+	}
+
+	// Variable variant pricing
+	if (props && props.price) {
+		$("#variantPrice").html(props.price).show();
+		$("#serverPrice").hide();
+	} else {
+		$("#variantPrice").hide();
+		$("#serverPrice").show();
+
+	}
+};
+
 /* Hide the zoom panel and show the variant matrix drop downs */
 function hideZoom() {
 	$(".zoom-overlay").fadeOut(function() {
@@ -1359,184 +1422,52 @@ function updateMainImage(event, fileURL) {
 	if (typeof BaseZoomWidget != "undefined") { BaseZoomWidget.onUpdateImage("#ZoomPanel_EntityZoom_Zoom", event, fileURL); }
 }
 
-var persistentCartCommands = new Array(8);
-persistentCartCommands[0] = '/checkout/universal_cart.jsp';
-persistentCartCommands[1] = '/checkout/add_item_pc.cmd';
-persistentCartCommands[2] = '/checkout/add_items_pc.cmd';
-persistentCartCommands[3] = '/checkout/delete_item_in_cart.cmd';
-persistentCartCommands[4] = '/checkout/add_catalog_order_item_pc.cmd';
-persistentCartCommands[5] = '/user/add_wishlist_item_to_basket_pc.cmd';
-persistentCartCommands[6] = '/user/add_all_wishlist_items_to_basket_pc.cmd';
-persistentCartCommands[7] = '/user/instore_pickup_zip_json_pc.jsp';
-var persistentCartIsShowing = false;
 
-site.addToCart = function(prefix, container) {
-	var scope = $(prefix);
-	if (container) scope = $(container).parents(prefix);
-
-	var productVariantId = $("input[name=productVariantId]", scope).val();
-	if (productVariantId == "") {
-		productVariantId = $("input[name=productVariantId2]", scope).val();
-	}
-	productVariantId = productVariantId ? productVariantId : ""; //BUG00175 - IE7 fix to prevent undefined.
-	var colorSelectedValue = VariantMatrixWidget.getAxisSelection('div.COLOR_NAME', "COLOR_NAME");
-	var sizeSelectedValue = VariantMatrixWidget.getAxisSelection('div.SIZE_NAME', "SIZE_NAME");
-	if (colorSelectedValue == undefined || colorSelectedValue == "undefined") {
-		colorSelectedValue = "";
-	}
-	if (sizeSelectedValue == undefined || sizeSelectedValue == "undefined") {
-		sizeSelectedValue = "";
-	}
-	$("input[name=colorSelectedValue]", scope).val(colorSelectedValue);
-	$("input[name=sizeSelectedValue]", scope).val(sizeSelectedValue);
-	var personalization = $('#personalization').length;
-	var personalizationLabel = $('input[name=personalizationLabel]').length;
-	personalization = personalization ? $('#personalization').val() : false;
-	personalizationLabel = personalizationLabel ? $('input[name=personalizationLabel]').val() : false;
+site.addToCart = function(scope) {
 	var relationType = $("input[name=relationType]", scope).val();
 	var googleAnalyticsId =  $("input[name=googleAnalyticsId]", scope).val();
 
+	//Google Analytics
+	//Getting price of selected variant from widget.
+	var price = $("div.price").text().trim();
+	price = parseInt(price.replace("$",""));
 
-	params =
-			  "productName" +
-						 "" +
-						 "=" + $("input[name=productName]", scope).val() +
-						 "&productId=" + $("input[name=productId]", scope).val() +
-						 "&categoryId=" + $("input[name=categoryId]", scope).val() +
-						 "&parentCategoryId=" + $("input[name=parentCategoryId]", scope).val() +
-						 "&subCategoryId=" + $("input[name=subCategoryId]", scope).val() +
-						 "&quantity=" + $("input[name=quantity]", scope).val() +
-						 "&productVariantId=" + productVariantId +
-						 "&colorSelectedValue=" + colorSelectedValue +
-						 "&sizeSelectedValue=" + sizeSelectedValue +
-			          "&relationType=" + relationType +
-						 (personalization === false ? "" : ("&personalization=" + personalization)) +
-						 (personalizationLabel === false ? "" : ("&personalizationLabel=" + personalizationLabel));
-
-	//see if this is an update.
-	if ($("input[name=itemGUID]", scope).size() > 0) {
-		params = params + "&itemGUID=" + $("input[name=itemGUID]", scope).val() + "&isUpdate=1";
-	}
-
-	if ($("input[name=onBasketPage]", scope).size() > 0) {
-		params = params + "&onBasketPage=" + $("input[name=onBasketPage]", scope).val();
-	}
-
-	if (prefix != undefined) {
-		params = params + "&prefix=" + prefix;
-
-		//Google Analytics
-		//Getting price of selected variant from widget.
-		var price = $("div.price").text().trim();
-		price = parseInt(price.replace("$",""));
-		try {
-			if (colorSelectedValue) {
-				price = parseInt(VariantMatrixWidget.getSelectedVariantEntry('div.COLOR_NAME').props.cost);
-			} else if (sizeSelectedValue) {
-				price = parseInt(VariantMatrixWidget.getSelectedVariantEntry('div.SIZE_NAME').props.cost);
-			}
-		} catch(e) { /* problem with widget, but we'll fallback on product price, so no need to act here. */ }
-
-		var eventCategory = "Add to Cart";
-		var eventAction = "PDP Add to Cart";
-		var eventLabel = "PDP Add to Cart - " + $("input[name=productName]", scope).val();
-		if (relationType == "recentlyViewed") {
+	var eventCategory = "Add to Cart";
+	var eventAction = "PDP Add to Cart";
+	var eventLabel = "PDP Add to Cart - " + $("input[name=productName]", scope).val();
+	switch (relationType){
+		case "recentlyViewed":
 			eventAction = "PDP Recently Viewed Add to Cart";
 			eventLabel = "Recently Viewed Add to Cart  - " + $("input[name=productName]", scope).val();
-		} else if (relationType == "crossSell") {
+			break;
+		case "crossSell":
 			eventAction = "PDP People Who Bought Add to Cart";
 			eventLabel = "People Who Bought Add to Cart - " + $("input[name=productName]", scope).val();
-		} else if (relationType == "topSell") {
+			break;
+		case "topSell":
 			eventAction = "PDP Our Best Selling Items Add to Cart";
 			eventLabel = "Our Best Selling Items Add to Cart - " + $("input[name=productName]", scope).val();
-		} else if (relationType == "upSell") {
+			break;
+		case "upSell":
 			eventAction = "PDP UpSell Add to Cart";
 			eventLabel = "UpSell Add to Cart - " + $("input[name=productName]", scope).val();
-		} else if (relationType == "searchResults") {
+			break;
+		case "searchResults":
 			eventAction = "PDP Search Add to Cart";
 			eventLabel = "Search Add to Cart - " + $("input[name=productName]", scope).val();
-		} else if (relationType == "Browse") {
-			relationType = "Browse";
+			break;
+		case "Browse":
 			eventAction = "PDP Browse Add to Cart";
 			eventLabel = "Browse Add to Cart - " + $("input[name=productName]", scope).val();
-		}
-		var pageTracker = _gat._getTracker(googleAnalyticsId);
-		pageTracker._trackEvent(eventCategory, eventAction, eventLabel, price);
+			break;
 	}
-
-	persistentCartIsShowing = false;
-	site.showBasket('addProduct', params);
-};
-
-site.showBasket = function(action, params, refreshPage, refreshDelayTime) {
-	if (action == "addProduct") {
-		var submitURL = "/checkout/add_item_to_order.cmd";
-		params = "ts=" + new Date().getTime() + "&action=" + action + "&" + params;
-		window.location = submitURL + "?" + params;
-
-	} else {
-		if ((action == "show") || (action == "showFromQuickview")) {
-			showloading(ucartLoadingHTML);
-			requestURL = persistentCartCommands[0];
-		}
-		else if (action == "addEnsemble") {
-			showloading(ucartSimpleHTML);
-			requestURL = persistentCartCommands[2];
-		}
-		else if (action == "remove") {
-			showloading(ucartLoadingHTML);
-			requestURL = persistentCartCommands[3];
-		}
-		else if (action == "addCatalogItems") {
-			showloading(ucartSimpleHTML);
-			requestURL = persistentCartCommands[4];
-		}
-		else if (action == "addProductWishlist") {
-			showloading(ucartSimpleHTML);
-			requestURL = persistentCartCommands[5];
-		}
-		else if (action == "addAllProductsWishlist") {
-			showloading(ucartSimpleHTML);
-			requestURL = persistentCartCommands[6];
-		}
-
-		params = "ts=" + timestamp() + "&action=" + action + "&" + params;
-
-		$.ajax({
-			type: "POST",
-			url: requestURL,
-			data: params,
-			dataType: "html",
-			timeout: 15000
-		});
-	}
+	var pageTracker = _gat._getTracker(googleAnalyticsId);
+	pageTracker._trackEvent(eventCategory, eventAction, eventLabel, price);
 };
 
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-
-function addToWishList(theForm, addToType) {
-	if (typeof VariantMatrixWidget != "undefined") {
-		var colorSelectedValue = VariantMatrixWidget.getAxisSelection('div.COLOR_NAME', "COLOR_NAME");
-		var sizeSelectedValue = VariantMatrixWidget.getAxisSelection('div.SIZE_NAME', "SIZE_NAME");
-		/* Put to hidden form */
-		theForm.colorSelectedValue.value = (colorSelectedValue != undefined && colorSelectedValue != null) ? colorSelectedValue : "";
-		theForm.sizeSelectedValue.value = (sizeSelectedValue != undefined && sizeSelectedValue != null) ? sizeSelectedValue : "";
-	}
-
-	//Google Analytics
-	var googleAnalyticsId = theForm.googleAnalyticsId.value;
-	var pageTracker = _gat._getTracker(googleAnalyticsId);
-	pageTracker._trackEvent('Add to Wish List', 'PDP Add to Wish List', 'PDP Add to Wish List - ' + theForm.productName.value);
-
-	/* Add to wish list */
-	setAddTo(theForm, addToType);
-}
-
-
-function setAddTo(theForm, addToType) {
-	theForm.addTo.value = addToType;
-	theForm.submit();
+if (!document.getElementById('gaJsHost')) {
+	$('head').append('<script id="gaJsHost" src="' + gaJsHost + 'google-analytics.com/ga.js"></script>');
 }
 
 
@@ -1567,12 +1498,12 @@ function filenameParser(src){
 	path = (pathParts[2] ? pathParts[1] : pathParts[0]) + "/";
 	imgUrl = path + filePrefix + (fileExt || "");
 
-	if (search !== null && search.length > 0 && search.substr(0,1) === "?"){
+	if (typeof search === "string" && search.length > 0 && search.substr(0,1) === "?"){
 		search = search.substr(1, search.length);
 		searchParts = search.split("&amp;");
 		if (searchParts.length === 1){ searchParts = search.split("&"); }
-		for (attr in searchParts){
-			pair = searchParts[attr].split("=");
+		for (var i=0,l=searchParts.length;i<l;i++){
+			pair = searchParts[i].split("=");
 			if (pair.length === 2){
 				queryAttributes[pair[0]] = pair[1];
 			}

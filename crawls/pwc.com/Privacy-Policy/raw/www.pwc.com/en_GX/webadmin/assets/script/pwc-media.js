@@ -43,8 +43,8 @@
 
 
 // Following is PwC Media Player library
-// v10.2 Sept 23 2011
-// (c) 2011 PwC
+// v10.3 June 18 2012
+// (c) 2012 PwC
 
 function thisMovie(movieName) {
          if (navigator.appName.indexOf("Microsoft") != -1) {
@@ -123,20 +123,20 @@ jQuery.extend({
   
   //Determine if media should use UK's servers
 	var _mediaPageURL = window.location.href.toString();
-	var _mediaURLPrefix = "http://download.pwc.com";
+	var _mediaURLPrefix = "download.pwc.com";
 	if (_mediaPageURL.search(".co.uk") >=0 				|| 
 		_mediaPageURL.search("/uk/en") >=0 				||
 		_mediaPageURL.search("/en_UK/uk") >=0 			||
 		_mediaPageURL.search("/en_uk/uk") >=0 )
 	{
-		_mediaURLPrefix = "http://pwc-uk.edgesuite.net/pwc";
+		_mediaURLPrefix = "pwc-uk.edgesuite.net/pwc";
 	}
 	if (_mediaPageURL.search(".co.uk/careers") >=0 				|| 
 		_mediaPageURL.search("/uk/en/careers") >=0 				||
 		_mediaPageURL.search("/en_UK/uk/careers") >=0 			||
 		_mediaPageURL.search("/en_uk/uk/careers") >=0 )
 	{
-		_mediaURLPrefix = "http://download.pwc.com";
+		_mediaURLPrefix = "download.pwc.com";
 	}
   
   	//PATH TO ASSETS
@@ -223,11 +223,11 @@ jQuery.extend({
 			//Create HTML5 player with plain video link as fallback
 			switch (mediaType) {
 				case "video":
-					newHtml 	= "<video poster='"+mediaPoster+"' media-playbutton='"+imagePath+buttonSrc+"' src='"+_mediaURLPrefix + mediaSrc+".mp4' controls height='"+mediaHeight+"' width='"+mediaWidth+"' onerror='ShowThumb($(this),false);'><a href='" + _mediaURLPrefix + mediaSrc+".mp4'><img style='background-color: rgb(0,0,0)' src='"+mediaPoster+"' width='"+mediaWidth+"' height='"+mediaHeight+"' alt='Play media' /><img style='position:relative;top:-24px;left:0px;' src='"+imagePath+buttonSrc+"' alt='Play button' /></a></video>"
+					newHtml 	= "<video poster='"+mediaPoster+"' media-playbutton='"+imagePath+buttonSrc+"' src='http://"+_mediaURLPrefix + mediaSrc+".mp4' controls height='"+mediaHeight+"' width='"+mediaWidth+"' onerror='ShowThumb($(this),false);'><a href='http://" + _mediaURLPrefix + mediaSrc+".mp4'><img style='background-color: rgb(0,0,0)' src='"+mediaPoster+"' width='"+mediaWidth+"' height='"+mediaHeight+"' alt='Play media' /><img style='position:relative;top:-24px;left:0px;' src='"+imagePath+buttonSrc+"' alt='Play button' /></a></video>"
 				break;
 				
 				case "audio":
-					newHtml	= "<a href='" + _mediaURLPrefix + mediaSrc+"'><img style='background-color: rgb(0,0,0)' src='"+mediaPoster+"' width='"+mediaWidth+"' height='"+mediaHeight+"' alt='Play media' /><img style='position:relative;top:0px;left:-"+mediaWidth+"px;' src='"+imagePath+buttonSrc+"' alt='Play button' /></a>"
+					newHtml	= "<a href='http://" + _mediaURLPrefix + mediaSrc+"'><img style='background-color: rgb(0,0,0)' src='"+mediaPoster+"' width='"+mediaWidth+"' height='"+mediaHeight+"' alt='Play media' /><img style='position:relative;top:0px;left:-"+mediaWidth+"px;' src='"+imagePath+buttonSrc+"' alt='Play button' /></a>"
 		
 					
 				break;
@@ -285,7 +285,8 @@ jQuery.extend({
 						title				: reformattedMediaTitle,
 						poster				: mediaPoster,
 						stream 				: mediaStreaming,
-						cuepoints			: mediaCuepoints
+						cuepoints			: mediaCuepoints,
+						mediadomain			: _mediaURLPrefix
 					}); //END flashembed media player
 					
 				//	$(this).html(flashMediaPlayerHtml);
@@ -325,20 +326,20 @@ jQuery.extend({
   
   //Determine if media should use UK's servers
 	var _mediaPageURL = window.location.href.toString();
-	var _mediaURLPrefix = "http://download.pwc.com";
+	var _mediaURLPrefix = "download.pwc.com";
 	if (_mediaPageURL.search(".co.uk") >=0 				|| 
 		_mediaPageURL.search("/uk/en") >=0 				||
 		_mediaPageURL.search("/en_UK/uk") >=0 			||
 		_mediaPageURL.search("/en_uk/uk") >=0 )
 	{
-		_mediaURLPrefix = "http://pwc-uk.edgesuite.net/pwc";
+		_mediaURLPrefix = "pwc-uk.edgesuite.net/pwc";
 	}
 	if (_mediaPageURL.search(".co.uk/careers") >=0 				|| 
 		_mediaPageURL.search("/uk/en/careers") >=0 				||
 		_mediaPageURL.search("/en_UK/uk/careers") >=0 			||
 		_mediaPageURL.search("/en_uk/uk/careers") >=0 )
 	{
-		_mediaURLPrefix = "http://download.pwc.com";
+		_mediaURLPrefix = "download.pwc.com";
 	}
   
   	 //PATH TO ASSETS
@@ -437,7 +438,7 @@ jQuery.extend({
 			
 			$(this).click(function(){
 				//redirect to media
-				document.location = _mediaURLPrefix + mediaSrc;
+				document.location = "http://" + _mediaURLPrefix + mediaSrc;
 
 			});
 	
@@ -590,7 +591,8 @@ jQuery.extend({
 										title				: reformattedMediaTitle,
 										poster				: mediaPoster,
 										stream				: mediaStreaming,
-										cuepoints			: mediaCuepoints
+										cuepoints			: mediaCuepoints,
+										mediadomain			: _mediaURLPrefix
 									}); //END flashembed media player
 								} //END flashembed generic flash
 										
@@ -601,7 +603,7 @@ jQuery.extend({
 								if ((showmobileVersion) && (mediaType == "video")) { 
 									//HTML5
 									
-									var newHtml 	= "<video poster='"+mediaPoster+"' autoplay src='" + _mediaURLPrefix + mediaSrc+".mp4' controls height='"+mediaHeight+"' width='"+mediaWidth+"' onerror='ShowThumb($(this),true);'>You need Adobe Flash or HTML5 to view this content</video>"
+									var newHtml 	= "<video poster='"+mediaPoster+"' autoplay src='http://" + _mediaURLPrefix + mediaSrc+".mp4' controls height='"+mediaHeight+"' width='"+mediaWidth+"' onerror='ShowThumb($(this),true);'>You need Adobe Flash or HTML5 to view this content</video>"
 									$("#media-player").html(newHtml);
 								
 								} else {

@@ -23,7 +23,7 @@ s.linkTrackEvents="None"
 /************************** PLUGIN CONFIG  **************************/
 /* Channel Manager Config */
 s._channelDomain='Social Media Organic|facebook.com,flickr.com,twitter.com,youtube.com,myspace.com,blogspot.com>';
-s._channelPattern="Email|em>Affiliates|afl>Display|dis>Social Networks|soc>Comparison Shopping|cse>Paid Search|PS";
+s._channelPattern="Email|em>Affiliates|afl>Affiliates|aff_>Display|dis>Display|dsp_>Social Networks|soc>Comparison Shopping|cse>Social Media|sm_>Paid Search|PS>Paid Search|sem_";
 
 s.usePlugins=true
 function s_doPlugins(s) 
@@ -34,14 +34,23 @@ function s_doPlugins(s)
 	
 	/* Get the campaign variable and call channel manager*/
 	var ep_mid=s.getQueryParam("ep_mid");
-	var sssdmh = s.getQueryParam ("sssdmh")
+	var sssdmh = s.getQueryParam ("sssdmh");
+	var ep_rid=s.getQueryParam("ep_rid");
 	var cid = s.getQueryParam ('cid');
-	if(!s.campaign && ep_mid)
-		s.channelManager('ep_mid','','c_m','0','','1');
+	if(!s.campaign && ep_mid){
+		s.channelManager('ep_mid','','c_m','0','','1');		
+		s._channel="Email";
+	}
 	if(!s.campaign && sssdmh)
 		s.channelManager('sssdmh','','c_m','0','','1');
-	if(!s.campaign) 
+	if(!s.campaign && ep_rid){
+		s.channelManager('ep_rid','','c_m','0','','1');
+		s._channel="Email";
+	}
+	if(!s.campaign){
+		s.campaign = s.getQueryParam ('cid');
 		s.channelManager('cid','','c_m','0','','1');
+	}
 	s.campaign=s.getValOnce(s.campaign,"s_campaign",0);
 	
 	/* Get Channel With ChannelManager*/
@@ -58,14 +67,11 @@ function s_doPlugins(s)
 	if(s.campaign)
 		s.eVar23 = s.pageName;
 
-	/* Cross Visit Participation plugin*/
+	/* Cross Visit Participation plugin*/	
 	s.eVar24=s.crossVisitParticipation(s.campaign,'s_ev24','30','5','>','purchase',1);
 	if(s.eVar24)
 		s.eVar25=s.crossVisitParticipation(s.getDaysSinceLastVisit('s_lv'),'s_ev25','30','5','>','purchase',1);
-
-	/* Don't set browse section on a product detail page */
-	if(s.products&&s.eVar3)
-		s.eVar3='';
+	
 /****************************************************************/
 	//Determine bounce rate for all visits
 	s.visitstart=s.getVisitStart('s_vs');
@@ -75,21 +81,24 @@ function s_doPlugins(s)
 	}
 	s.clickPast(s.firstPage,'event22','event23');
 	
-	/* Determine Search Location, Add-to-Cart Location and Percentage of Page Viewed via previous page name*/
 	s.prop7=s.getPreviousValue(s.pageName,'gpv','');
+	
+	/* Determine Search Location, Add-to-Cart Location and Percentage of Page Viewed via previous page name
+	
 	if(s.events&&s.events.indexOf('scAdd')>-1)
 	{
 		s.linkTrackVars=s.apl(s.linkTrackVars,'eVar6',',',2);
 		if(s.prop7)
 			s.eVar6=s.prop7;
-	}
+	} */
 	if (s.prop7)
 		s.prop8=s.getPercentPageViewed();
 	
 	/* Automate Campaign Tracking Code Extraction based on the cid parameter*/
-	if(!s.campaign)
+	if(!s.campaign){
 		s.campaign=s.getQueryParam('cid');
-	s.campaign=s.getValOnce(s.campaign,'s_campaign',0);
+		s.campaign=s.getValOnce(s.campaign,'s_campaign',0);
+	}
 
 	/* Automate Internal Campaign Code Extraction based on icid parameter*/
 	if(!s.eVar5)
@@ -158,6 +167,17 @@ function s_doPlugins(s)
 	/* Determine whether visitor is New or a Repeat visitor within the last 365 days */
 	s.eVar29=s.getNewRepeat(365);
 	
+	/* Do not delete, this is for NY&CO to use the extCmp cookie value to control their marketing channel code firing on their side */
+	if(s.getQueryParam('cid'))
+		var lca = 'cid|'+s.getQueryParam('cid'); //lca - last click attribution
+	if(s.getQueryParam('ep_mid'))
+		var lca = 'ep_mid|'+s.getQueryParam('ep_mid')
+
+	if(s.eVar39 && s.eVar39.toLowerCase()=='natural search')
+		var lca = 'natural search';
+		
+	s.getAndPersistValue(lca,"extCmp",7);
+		
 	/* Automate Finding Method eVar if not set*/
 	var internalFlag = false;
 	if(document.referrer)
@@ -171,44 +191,35 @@ function s_doPlugins(s)
 				internalFlag = true;
 		}
 	}	
-	if(s.campaign&&!s.eVar28)
+	if((s.getQueryParam('cid') || s.eVar10 || s.eVar19)&&!s.eVar28)
 	{	
-		s.eVar28='external campaign referral';
+		s.eVar28='External Campaign';
 		s.eVar1='non-search';
 		s.eVar5='non-internal campaign';
 		s.eVar3='non-browse';
 		s.eVar26='non-cross sell';
 		s.eVar7=s.eVar8=s.eVar26;
 	}
-	else if(s.eVar10&&!s.eVar28)
-	{	
-		s.eVar28='email campaign referral';
-		s.eVar1='non-search';
-		s.eVar5='non-internal campaign';
-		s.eVar3='non-browse';
-		s.eVar26='non-cross sell';
-		s.eVar7=s.eVar8=s.eVar26;
-	}
-	else if(s.eVar28&&!s.eVar1)
+	else if(s.eVar1&&!s.eVar28)
 	{
-		s.eVar28='internal keyword search';
+		s.eVar28='Onsite Search';
 		s.eVar5='non-internal campaign';
 		s.eVar3='non-browse';
 		s.eVar26='non-cross sell';
 		s.eVar7=s.eVar8=s.eVar26;
 
 	}
-	else if(s.eVar3&&!s.eVar28)
+	else if(s.eVar5&&!s.eVar28)
 	{
-		s.eVar28='internal campaign';
+		s.eVar28='Internal Campaign';
 		s.eVar1='non-search';
 		s.eVar3='non-browse';
 		s.eVar26='non-cross sell';
 		s.eVar7=s.eVar8=s.eVar26;
 	}	
-	else if(s.eVar3&&!s.eVar28)
+	else if(s.eVar3 && s.eVar3!='' &&!s.eVar28 && (s.events+',').indexOf('prodView,')<0)
 	{
-		s.eVar28='browse';
+		s.eVar28='Browse';
 		s.eVar1='non-search';
 		s.eVar5='non-internal campaign';
 		s.eVar26='non-cross sell';
@@ -216,36 +227,50 @@ function s_doPlugins(s)
 	}
 	else if(s.eVar26&&!s.eVar28)
 	{
-	s.linkTrackVars=s.apl(s.linkTrackVars,'eVar28,eVar1,eVar3,eVar4,eVar26,eVar8',',',2);
-		s.eVar28='cross-sell';
+		s.linkTrackVars=s.apl(s.linkTrackVars,'eVar28,eVar1,eVar3,eVar5,eVar26,eVar8,eVar7,prop6',',',2);
+		if(s.prop6.toLowerCase()=="product details")
+			s.eVar28='May We Also Suggest - Prod details';
+		else if(s.prop6.toLowerCase()=="search results")
+			s.eVar28='May We Also Suggest - Null Searches';
+		else if(s.pageName.indexOf('cart')>-1)
+			s.eVar28='May We Also Suggest - Cart';
+			
 		s.eVar1='non-search';
-		s.eVar3='non-internal campaign';
-		s.eVar4='non-browse';
+		s.eVar5='non-internal campaign';
+		s.eVar3='browse';
 		if(!s.eVar8)
 			s.eVar8='unknown at time of cross-sell click';
 	}
-	else if(s.events.indexOf('purchase')>-1)
-	{	
-		s.eVar28='unknown at time of purchase';
-		s.eVar1=s.eVar3=s.eVar5=s.eVar26=s.eVar7=s.eVar8=s.eVar1;
-	}
-	else if(document.referrer&&!internalFlag&&!s.eVar28)
-	{	
-		s.eVar28='external natural referral';
+	else if(!s.eVar28 && (s.prop7.toLowerCase().indexOf('myaccount:giftlist')>-1 || document.referrer.indexOf("/nyco/myaccount/giftList") > -1))
+	{		
+		s.eVar28='Wish List';
 		s.eVar1='non-search';
-		s.eVar3='non-internal campaign';
-		s.eVar4='non-browse';
+		s.eVar5='non-internal campaign';
 		s.eVar26='non-cross sell';
-		s.eVar7=s.eVar8=s.eVar26;
-	}
-	else if(s.eVar28)
+		s.eVar7=s.eVar8=s.eVar26;		
+	}	
+	else if(!s.eVar28 && (s.events+',').indexOf('prodView,')<0)
 	{
-		s.eVar1='non-search';
-		s.eVar3='non-internal campaign';
-		s.eVar4='non-browse';
-		s.eVar26='non-cross sell';
-		s.eVar7=s.eVar8=s.eVar26;
+		if(!s.eVar1) s.eVar1='non-search';
+		if(!s.eVar5) s.eVar5='non-internal campaign';
+		if(!s.eVar3) s.eVar3='non-browse';
+		if(!s.eVar26) s.eVar26='non-cross sell';
+		if(!s.eVar7) s.eVar7=s.eVar26;
+		if(!s.eVar8) s.eVar8=s.eVar26;
+		s.eVar28='no PFM set';
 	}
+	
+	/* Don't set browse section on a product detail page */
+	if((s.events+',').indexOf('prodView,')>-1 && s.eVar3)
+		s.eVar3='';	
+	
+	if(s.prop14 && !s.eVar31) s.eVar31=s.prop14;
+	if(s.prop15 && !s.eVar32) s.eVar32=s.prop15;
+	if(s.prop16 && !s.eVar33) s.eVar33=s.prop16;
+	if(s.prop17 && !s.eVar34) s.eVar34=s.prop17;
+	if(s.prop18 && !s.eVar35) s.eVar35=s.prop18;
+	if(s.prop19 && !s.eVar36) s.eVar36=s.prop19;
+	if(s.prop20 && !s.eVar37) s.eVar37=s.prop20;
 
 	//time parting
 	s.eVar30=s.getTimeParting('d','-5') + ' - ' + s.getTimeParting('h','-5');
@@ -259,8 +284,98 @@ function s_doPlugins(s)
 	
 	//track Test & target
 	s.tnt=s.trackTNT();
+	
+	if(document.domain=="www.nyandcompany.com" || document.domain=="stage2.nyandcompany.com"){
+	    	s.prop22="Full Site";
+	    	s.eVar43=s.prop22;
+	    	s.linkTrackVars=s.apl(s.linkTrackVars,'eVar43,prop22',',',2);
+	}
+	else if (document.domain=="m.nyandcompany.com"){
+	    	s.prop22="Mobile site";
+	    	s.eVar43=s.prop22;
+	    	s.linkTrackVars=s.apl(s.linkTrackVars,'eVar43,prop22',',',2);
+	}
+
 }
 s.doPlugins=s_doPlugins
+/************************** CONVENIENCE FUNCTIONS *************************/
+
+/* s_crossSell: Record the referring product and cross-sell location
+ * when a recommended item is clicked
+ */
+function s_crossSell(targetProduct)
+{ 
+	s.linkTrackVars='prop6,eVar26,eVar7,eVar8,eVar28,eVar1,eVar3,eVar5,events,products';
+	s.linkTrackEvents='event24';
+	s.events='event24';
+	s.eVar26=s.pageName;
+	s.eVar7=targetProduct;
+	s.eVar1='non-search';
+	s.eVar3='non-browse';
+	s.eVar5='non-internal campaign';
+	
+	if(s.prop6.toLowerCase()=="product details")
+		s.eVar28='May We Also Suggest - Prod details';
+	else if(s.prop6.toLowerCase()=="search results")
+		s.eVar28='May We Also Suggest - Null Searches';
+	else if(s.pageName.indexOf('cart')>-1)
+		s.eVar28='May We Also Suggest - Cart';
+		
+	if(s.products)
+			s.eVar8=s.products.substring(1);
+		else 
+			s.eVar8='unknown at time of cross-sell click';
+	
+	s.tl(true,'o','cross-sell click');
+}
+
+/*
+ * Quick Shop Click
+ */
+function s_quickShop(styleNum){
+      //s_quickShop("12345"); // 12345 is the stylenum of the sku that is being clicked on
+	s.linkTrackVars='eVar1,eVar3,eVar5,eVar26,eVar7,eVar8,eVar28,events,products';
+	s.linkTrackEvents='event40';
+	s.events='event40';
+	s.eVar28='Quick View';
+	s.eVar1='non-search';
+	s.eVar3='non-browse';
+	s.eVar5='non-internal campaign';
+	s.eVar26='non-cross sell';
+	s.eVar7=s.eVar8=s.eVar26;
+      	s.products='';
+     	if(styleNum)
+        	s.products=";"+styleNum;
+	s.tl(true,'o','Quick View');
+}
+
+/*
+ * Homepage top navigation link clicks
+ */
+function s_topNavHomePage(label){
+      //s_topNavHomePage("Latest Trends"); // when Latest Trends is clicked
+	if(label){
+		s.linkTrackVars='eVar45';
+		s.linkTrackEvents='None';
+      		s.eVar45=label;
+     		s.tl(true,'o',label+" clicked from header");
+	}
+}
+/*
+ * Internal campaign link clicks
+ */
+function s_intCmpClick(){
+      //s_intCmpClick(); // when links with icid is clicked
+	s.linkTrackVars='events';
+	s.linkTrackEvents='event20';
+      	s.events='event20';
+     	s.tl(true,'o',"Internal Campaign Click");
+}
+
+/************************** END CONVENIENCE FUNCTIONS *************************/
+
+
+
 /************************** PLUGINS SECTION *************************/
 /* You may insert any plugins you wish to use here.                 */
 /*
@@ -269,23 +384,7 @@ s.doPlugins=s_doPlugins
 s.repl=new Function("x","o","n",""
 +"var i=x.indexOf(o),l=n.length;while(x&&i>=0){x=x.substring(0,i)+n+x."
 +"substring(i+o.length);i=x.indexOf(o,i+l)}return x");
- /* s_crossSell: Record the referring product and cross-sell location
- * when a recommended item is clicked
- */
-function s_crossSell(targetProduct)
-{ 
-	s.linkTrackVars='eVar26,eVar7,eVar8,events';
-	s.linkTrackEvents='event24'
-	s.eVar26=s.pageName;
-	s.eVar7=targetProduct;
-	if(s.products)
-		s.eVar8=s.products.substring(1);
-	else 
-		s.eVar8='unknown at time of cross-sell click';
-	s.events='event24';
-	s.eVar28='Cross-Sell';
-	s.tl(true,'o','cross-sell click');
-}
+ 
 /*
  * Plugin: getNewRepeat 1.2 - Returns whether user is new or repeat
  */
@@ -452,6 +551,15 @@ s.getTimeParting=new Function("t","z","y","l",""
 +"||D==0){A='Weekend'}W=B+':'+X+U;if(y&&y!=Y){return'Data Not Availab"
 +"le'}else{if(t){if(t=='h'){return W}if(t=='d'){return Z}if(t=='w'){r"
 +"eturn A}}else{return Z+', '+W}}}");
+
+/*
+ * Plugin: getAndPersistValue 0.3 - get a value on every page
+ */
+s.getAndPersistValue=new Function("v","c","e",""
++"var s=this,a=new Date;e=e?e:0;a.setTime(a.getTime()+e*86400000);if("
++"v)s.c_w(c,v,e?a:0);return s.c_r(c);");
+
+
 /*
  * Function - read combined cookies v 0.35
  */
@@ -792,4 +900,3 @@ w.s_ft=new Function("c","c+='';var s,e,o,a,d,q,f,h,x;s=c.indexOf('=function(');w
 +"f(h==q&&!x)q='';if(h=='\\\\')x=x?0:1;else x=0}else{if(h=='\"'||h==\"'\")q=h;if(h=='{')d++;if(h=='}')d--}if(d>0)e++}c=c.substring(0,s)+'new Function('+(a?a+',':'')+'\"'+s_fe(c.substring(o+1,e))+'\")"
 +"'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
 c=s_d(c);if(e>0){a=parseInt(i=v.substring(e+5));if(a>3)a=parseFloat(i)}else if(m>0)a=parseFloat(u.substring(m+10));else a=parseFloat(v);if(a<5||v.indexOf('Opera')>=0||u.indexOf('Opera')>=0)c=s_ft(c);if(!s){s=new Object;if(!w.s_c_in){w.s_c_il=new Array;w.s_c_in=0}s._il=w.s_c_il;s._in=w.s_c_in;s._il[s._in]=s;w.s_c_in++;}s._c='s_c';(new Function("s","un","pg","ss",c))(s,un,pg,ss);return s}
-

@@ -54,7 +54,7 @@ function s_doPlugins(s) {
     s.eVar2 = s.pageName;
     s.eVar3 = s.prop5;
     s.eVar4 = s.prop1;
-    s.eVar19 = s.prop17;
+    s.eVar19 = s.prop22;
     s.eVar20 = s.prop18;
     s.eVar10 = s.prop3;
     s.prop4 = s.eVar8;

@@ -20,7 +20,6 @@ s_cb.linkTrackEvents = "None"
 
 /* Plugin Config */
 s_cb.ActionDepthTest = true
-s_cb._channelPattern = "Email|cpruapple,cpwerd807,crm_,cpcrm,mm_,cprcapplyopt,FinishResumeEmail,CBResumeReviewCompleteEmail,cpru10drpoff,cpjbalrtrd3,thankyousc,cmrlwb017,cpsrdrpsremail,cpruexp,cpresrevemail1"
 s_cb.usePlugins = true
 function s_cb_doPlugins(s_cb) {
 
@@ -28,28 +27,25 @@ function s_cb_doPlugins(s_cb) {
 
     /* Set Page View Event */
     s_cb.events = s_cb.apl(s_cb.events, 'event18', ',', 2)
-
-    /* Set Landing Page and Second Page Event */
+   
+       /* Set Landing Page and Second Page Event */
     if (s_cb.ActionDepthTest) {
         s_cb.pdvalue = s_cb.getActionDepth("s_depth");
+        
+    s_cb.campaign=s_cb.getQueryParam('siteid');
+    s_cb.campaign=s_cb.getValOnce(s_cb.campaign,'s_campaign',30);
         if (s_cb.pdvalue == 1) {
-            s_cb.channelManager('siteid');
-            s_cb.eVar43 = s_cb._referrer
-            s_cb.eVar44 = s_cb._referringDomain
-            s_cb.eVar45 = s_cb._partner
-            s_cb.campaign = s_cb._campaignID
-            s_cb.eVar46 = s_cb._campaign
-            s_cb.eVar47 = s_cb._keywords
-            s_cb.eVar48 = s_cb._channel
             s_cb.events = s_cb.apl(s_cb.events, 'event19', ',', 2)
         }
         if (s_cb.pdvalue == 2)
             s_cb.events = s_cb.apl(s_cb.events, 'event20', ',', 2)
     }
     s_cb.ActionDepthTest = false;
+    
+    
 
     /* Plug-in Example: crossVisitParticipation v1.5*/
-    s_cb.eVar49 = s_cb.crossVisitParticipation(s_cb.eVar48, 's_ev49', '30', '5', '>', 'purchase', 1);
+    s_cb.eVar49 = s_cb.crossVisitParticipation(s_cb.campaign, 's_ev22', '30', '5', '>', 'purchase', 1);
 
     /* VISITOR  SEGMENTATION */
     s_cb.prop35 = s_cb.eVar35 = s_cb.getNewRepeat(30, 's_nr');
@@ -71,9 +67,7 @@ function s_cb_doPlugins(s_cb) {
     /* copy URL in prop60 and eVar60*/
     s_cb.prop60=s_cb.eVar60="D=g"
     
-    /************* LINK TRACKING *************/
- s_cb.hbx_lt = "auto"
-    s_cb.setupLinkTrack("prop61,prop62,prop63", "SC_LINKS");
+   
     }
 
 }
@@ -83,108 +77,6 @@ s_cb.doPlugins = s_cb_doPlugins
 /*
 * channelManager v2.2 - Tracking External Traffic
 */
-s_cb.channelManager = new Function("a", "b", "c", "V", ""
-+ "var s=this,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,t,u,v,w,x,y,z,A,B,C,D,E,F,"
-+ "G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,W,X,Y;g=s.referrer?s.referrer:documen"
-+ "t.referrer;g=g.toLowerCase();if(!g){h='1'}i=g.indexOf('?')>-1?g.ind"
-+ "exOf('?'):g.length;j=g.substring(0,i);k=s.linkInternalFilters.toLow"
-+ "erCase();k=s.split(k,',');l=k.length;for(m=0;m<l;m++){n=j.indexOf(k"
-+ "[m])==-1?'':g;if(n)o=n}if(!o&&!h){p=g;q=g.indexOf('//')>-1?g.indexO"
-+ "f('//')+2:0;r=g.indexOf('/',q)>-1?g.indexOf('/',q):i;t=g.substring("
-+ "q,r);t=t.toLowerCase();u=t;P='Referrers';v=s.seList+'>'+s._extraSea"
-+ "rchEngines;if(V=='1'){j=s.repl(j,'oogle','%');j=s.repl(j,'ahoo','^'"
-+ ");g=s.repl(g,'as_q','*');}A=s.split(v,'>');B=A.length;for(C=0;C<B;C"
-+ "++){D=A[C];D=s.split(D,'|');E=s.split(D[0],',');F=E.length;for(G=0;"
-+ "G<F;G++){H=j.indexOf(E[G]);if(H>-1){I=s.split(D[1],',');J=I.length;"
-+ "for(K=0;K<J;K++){L=s.getQueryParam(I[K],'',g);if(L){L=L.toLowerCase"
-+ "();M=L;if(D[2]){u=D[2];N=D[2]}else{N=t}if(V=='1'){N=s.repl(N,'#',' "
-+ "- ');g=s.repl(g,'*','as_q');N=s.repl(N,'^','ahoo');N=s.repl(N,'%','"
-+ "oogle');}}}}}}}O=s.getQueryParam(a,b);if(O){u=O;if(M){P='Paid Searc"
-+ "h'}else{P='Paid Non-Search';}}if(!O&&M){u=N;P='Natural Search'}f=s."
-+ "_channelDomain;if(f){k=s.split(f,'>');l=k.length;for(m=0;m<l;m++){Q"
-+ "=s.split(k[m],'|');R=s.split(Q[1],',');S=R.length;for(T=0;T<S;T++){"
-+ "W=j.indexOf(R[T]);if(W>-1)P=Q[0]}}}d=s._channelParameter;if(d){k=s."
-+ "split(d,'>');l=k.length;for(m=0;m<l;m++){Q=s.split(k[m],'|');R=s.sp"
-+ "lit(Q[1],',');S=R.length;for(T=0;T<S;T++){U=s.getQueryParam(R[T]);i"
-+ "f(U)P=Q[0]}}}e=s._channelPattern;if(e){k=s.split(e,'>');l=k.length;"
-+ "for(m=0;m<l;m++){Q=s.split(k[m],'|');R=s.split(Q[1],',');S=R.length"
-+ ";for(T=0;T<S;T++){X=O.indexOf(R[T]);if(X==0)P=Q[0]}}}if(h=='1'&&!O)"
-+ "{u=P=t=p='Direct Load'}T=M+u+t;U=c?'c':'c_m';if(c!='0'){T=s.getValO"
-+ "nce(T,U,0);}if(T)M=M?M:'n/a';s._referrer=T&&p?p:'';s._referringDoma"
-+ "in=T&&t?t:'';s._partner=T&&N?N:'';s._campaignID=T&&O?O:'';s._campai"
-+ "gn=T&&u?u:'';s._keywords=T&&M?M:'';s._channel=T&&P?P:'';");
-/* Top 130 - Grouped */
-s_cb.seList = "altavista.co,altavista.de|q,r|AltaVista>.aol.,suche.aolsvc"
-+ ".de|q,query|AOL>ask.jp,ask.co|q,ask|Ask>www.baidu.com|wd|Baidu>daum"
-+ ".net,search.daum.net|q|Daum>google.,googlesyndication.com|q,as_q|Go"
-+ "ogle>icqit.com|q|icq>bing.com|q|Microsoft Bing>myway.com|searchfor|"
-+ "MyWay.com>naver.com,search.naver.com|query|Naver>netscape.com|query"
-+ ",search|Netscape Search>reference.com|q|Reference.com>seznam|w|Sezn"
-+ "am.cz>abcsok.no|q|Startsiden>tiscali.it,www.tiscali.co.uk|key,query"
-+ "|Tiscali>virgilio.it|qs|Virgilio>yahoo.com,yahoo.co.jp|p,va|Yahoo!>"
-+ "yandex|text|Yandex.ru>search.cnn.com|query|CNN Web Search>search.ea"
-+ "rthlink.net|q|Earthlink Search>search.comcast.net|q|Comcast Search>"
-+ "search.rr.com|qs|RoadRunner Search>optimum.net|q|Optimum Search";
-
-/*
-* Plugin: setupLinkTrack 2.0 - return links for HBX-based link 
-*    
-tracking in SiteCatalyst (requires s.split and s.apl)
-*/
-s_cb.setupLinkTrack = new Function("vl", "c", ""
-+ "var s=this;var l=s.d.links,cv,cva,vla,h,i,l,t,b,o,y,n,oc,d='';cv=s."
-+ "c_r(c);if(vl&&cv!=''){cva=s.split(cv,'^^');vla=s.split(vl,',');for("
-+ "x in vla)s._hbxm(vla[x])?s[vla[x]]=cva[x]:'';}s.c_w(c,'',0);if(!s.e"
-+ "o&&!s.lnk)return '';o=s.eo?s.eo:s.lnk;y=s.ot(o);n=s.oid(o);if(s.eo&"
-+ "&o==s.eo){while(o&&!n&&y!='BODY'){o=o.parentElement?o.parentElement"
-+ ":o.parentNode;if(!o)return '';y=s.ot(o);n=s.oid(o);}for(i=0;i<4;i++"
-+ ")if(o.tagName)if(o.tagName.toLowerCase()!='a')if(o.tagName.toLowerC"
-+ "ase()!='area')o=o.parentElement;}b=s._LN(o);o.lid=b[0];o.lpos=b[1];"
-+ "if(s.hbx_lt&&s.hbx_lt!='manual'){if((o.tagName&&s._TL(o.tagName)=='"
-+ "area')){if(!s._IL(o.lid)){if(o.parentNode){if(o.parentNode.name)o.l"
-+ "id=o.parentNode.name;else o.lid=o.parentNode.id}}if(!s._IL(o.lpos))"
-+ "o.lpos=o.coords}else{if(s._IL(o.lid)<1)o.lid=s._LS(o.lid=o.text?o.t"
-+ "ext:o.innerText?o.innerText:'');if(!s._IL(o.lid)||s._II(s._TL(o.lid"
-+ "),'<img')>-1){h=''+o.innerHTML;bu=s._TL(h);i=s._II(bu,'<img');if(bu"
-+ "&&i>-1){eval(\"__f=/ src\s*=\s*[\'\\\"]?([^\'\\\" ]+)[\'\\\"]?/i\")"
-+ ";__f.exec(h);if(RegExp.$1)h=RegExp.$1}o.lid=h}}}h=o.href?o.href:'';"
-+ "i=h.indexOf('?');h=s.linkLeaveQueryString||i<0?h:h.substring(0,i);l"
-+ "=s.linkName?s.linkName:s._hbxln(h);t=s.linkType?s.linkType.toLowerC"
-+ "ase():s.lt(h);oc=o.onclick?''+o.onclick:'';cv=s.pageName+'^^'+o.lid"
-+ "+'^^'+s.pageName+' | '+(o.lid=o.lid?o.lid:'no &lid')+'^^'+o.lpos;if"
-+ "(t&&(h||l)){cva=s.split(cv,'^^');vla=s.split(vl,',');for(x in vla)s"
-+ "._hbxm(vla[x])?s[vla[x]]=cva[x]:'';}else if(!t&&oc.indexOf('.tl(')<"
-+ "0){s.c_w(c,cv,0);}else return ''");
-s_cb._IL = new Function("a", "var s=this;return a!='undefined'?a.length:0");
-s_cb._II = new Function("a", "b", "c", "var s=this;return a.indexOf(b,c?c:0)"
-);
-s_cb._IS = new Function("a", "b", "c", ""
-+ "var s=this;return b>s._IL(a)?'':a.substring(b,c!=null?c:s._IL(a))");
-s_cb._LN = new Function("a", "b", "c", "d", ""
-+ "var s=this;b=a.href;b+=a.name?a.name:'';c=s._LVP(b,'lid');d=s._LVP("
-+ "b,'lpos');r"
-+ "eturn[c,d]");
-s_cb._LVP = new Function("a", "b", "c", "d", "e", ""
-+ "var s=this;c=s._II(a,'&'+b+'=');c=c<0?s._II(a,'?'+b+'='):c;if(c>-1)"
-+ "{d=s._II(a,'&',c+s._IL(b)+2);e=s._IS(a,c+s._IL(b)+2,d>-1?d:s._IL(a)"
-+ ");return e}return ''");
-s_cb._LS = new Function("a", ""
-+ "var s=this,b,c=100,d,e,f,g;b=(s._IL(a)>c)?escape(s._IS(a,0,c)):esca"
-+ "pe(a);b=s._LSP(b,'%0A','%20');b=s._LSP(b,'%0D','%20');b=s._LSP(b,'%"
-+ "09','%20');c=s._IP(b,'%20');d=s._NA();e=0;for(f=0;f<s._IL(c);f++){g"
-+ "=s._RP(c[f],'%20','');if(s._IL(g)>0){d[e++]=g}}b=d.join('%20');retu"
-+ "rn unescape(b)");
-s_cb._LSP = new Function("a", "b", "c", "d", "var s=this;d=s._IP(a,b);return d"
-+ ".join(c)");
-s_cb._IP = new Function("a", "b", "var s=this;return a.split(b)");
-s_cb._RP = new Function("a", "b", "c", "d", ""
-+ "var s=this;d=s._II(a,b);if(d>-1){a=s._RP(s._IS(a,0,d)+','+s._IS(a,d"
-+ "+s._IL(b),s._IL(a)),b,c)}return a");
-s_cb._TL = new Function("a", "var s=this;return a.toLowerCase()");
-s_cb._NA = new Function("a", "var s=this;return new Array(a?a:0)");
-s_cb._hbxm = new Function("m", "var s=this;return (''+m).indexOf('{')<0");
-s_cb._hbxln = new Function("h", "var s=this,n=s.linkNames;if(n)return s.pt("
-+ "n,',','lnf',h);return ''");
 
 /*
 * Plugin: getPercentPageViewed v1.2

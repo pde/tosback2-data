@@ -12,6 +12,8 @@ if (typeof(noChatPlease) != "undefined") {
 
 
 
+
+
 try {
 //discount applying code
 var usi_win = window.top || window;
@@ -79,18 +81,18 @@ if (upsellitCookie == "nothin") {
 			}
 		}
 	} catch(e) {}
-	if (usi_cart_amt >= 125) {
+	if (usi_cart_amt >= 125) { //125
 	    createCookie('c-upsellit2793', 'giveChat', 86400);
 	    usi_giveChat = 1;
 	}
 	} else if (location.href.indexOf("/product/") != -1) {
 		if (upsellitCookie == null) {
-			if (Math.random() < .5) {
+			if (Math.random() <= .8) {
 				createCookie('c-upsellit2793', 'pageHitCount-1', 86400);
-				document.write('<scr'+'ipt src="https://www.upsellit.com/custom/split_test.jsp?siteID=1526&group=1"><\/scr'+'ipt>');
+				document.write('<scr'+'ipt src="http'+ (document.location.protocol=='https:'?'s://www':'://www')+ '.upsellit.com/custom/split_test.jsp?siteID=1526&group=1"><\/scr'+'ipt>');
 			} else {
 				createCookie('c-upsellit2793', 'nothin', 86400);
-				document.write('<scr'+'ipt src="https://www.upsellit.com/custom/split_test.jsp?siteID=1526&group=2"><\/scr'+'ipt>');
+				document.write('<scr'+'ipt src="http'+ (document.location.protocol=='https:'?'s://www':'://www')+ '.upsellit.com/custom/split_test.jsp?siteID=1526&group=2"><\/scr'+'ipt>');
 				//createCookie('c-upsellit2793', 'pageHitCount--500', 86400);
 			}
 		} else if (upsellitCookie.indexOf("pageHitCount") != -1) {
@@ -102,7 +104,8 @@ if (upsellitCookie == "nothin") {
 			}
 		}
 	}
-	if (usi_giveChat == 1) {
+
+    if (usi_giveChat == 1) {
 		var USItimerID = '';
 var properClickThrough = false;
 var USIdone = false;
@@ -288,6 +291,14 @@ function USI_grayOut(bool) {
 			var overlay_object = document.getElementById('USI_overlayDiv');
 			
             
+			var page_width= document.body.scrollWidth;
+			var page_height= document.body.scrollHeight;
+			if(page_height < document.body.clientHeight){
+				page_height = document.body.clientHeight;
+			}
+			if(page_width > 0)  overlay_object.style.width = page_width + 'px';
+			if(page_height > 0) overlay_object.style.height = page_height + 'px';
+            
 			overlay_object.style.display = 'inline';
 			overlay_object.onclick = function() {  }
 		} else {
@@ -300,7 +311,7 @@ function USI_grayOut(bool) {
 
 
 var usi_messageArray = new Array();
-var link1 = "javascript:usi_SetLink('UPNEW10');", link2 = "http://www.worldmarket.com/helpdesk/index.jsp?display=store&subdisplay=contact&stillHaveQuestion=yes", link3 = "http://www.worldmarket.com/category/index.jsp?categoryId=3672880", chatID = "388495550685015551099", usi_country = "us", agentName = "<div style='visibility:hidden'>:</div>", usi_remoteIP = "64.147.188.8";
+var link1 = "javascript:usi_SetLink('UPNEW10');", link2 = "http://www.worldmarket.com/category/index.jsp?categoryId=3912212", link3 = "http://www.worldmarket.com/category/index.jsp?categoryId=3672880", chatID = "1663123055616062047194", usi_country = "us", agentName = "<div style='visibility:hidden'>:</div>", usi_remoteIP = "64.147.188.8";
 
 	window_left = 10;
 	window_top = 100;
@@ -325,7 +336,7 @@ function usi_removeScript(usi_scriptRemoveID) {
 	}
 }
 var usi_chatDisplayerID = -1, usi_updateCheckerID = -1, usi_agentIsTypingID = -1, usi_BeenIdleID = -1, usi_lastTalker = 0, usi_customerHasTyped = 0, usi_isTyping = 0;
-var usi_updateFrequencyRate = 500, usi_idleTime=0.0, usi_currentlyTypingMsg = "", usi_session_id="0BBEDCC3FB6B8E1197042DB77A2110AA";
+var usi_updateFrequencyRate = 500, usi_idleTime=0.0, usi_currentlyTypingMsg = "", usi_session_id="6A55D181107A8F0E16BF7C90B6959DF7";
 
 var usi_aname = '', usi_hybrid_invite="null";
 var usi_idleMsg='', usi_extraHybridInfo = '';
@@ -722,7 +733,7 @@ function shutDown() {
 	}
 	
 	
-	usi_LoadDynamics('httpPost.jsp?command=DISCONNECTED&chatID=388495550685015551099&chatClosed=1&external=1');
+	usi_LoadDynamics('httpPost.jsp?command=DISCONNECTED&chatID=1663123055616062047194&chatClosed=1&external=1');
 	
 	clearInterval(usi_BeenIdleID);
 	clearInterval(usi_updateCheckerID);
@@ -759,7 +770,7 @@ function showChat() {
 	} catch(err2) {}
 }
 function registerDisplayAttempt() {
-	usi_LoadDynamics('upsellitChatLoaded.jsp?chatID=388495550685015551099');
+	usi_LoadDynamics('upsellitChatLoaded.jsp?chatID=1663123055616062047194');
 	
 	var date = new Date();
 	date.setTime(date.getTime()+(604800*1000));
@@ -768,7 +779,7 @@ function registerDisplayAttempt() {
 	
 }
 function usi_followDynamicLink(dynURL) {
-	top.location.href = 'http://www.upsellit.com/follow.jsp?sid=6747&cid=388495550685015551099&duration=1209600&dbupdate=1&url=' + escape(dynURL);
+	top.location.href = 'http://www.upsellit.com/follow.jsp?sid=6747&cid=1663123055616062047194&duration=1209600&dbupdate=1&url=' + escape(dynURL);
 }
 function followClickHereLink(whichLink) {
 
@@ -779,11 +790,11 @@ function followClickHereLink(whichLink) {
 	
 	} else if (whichLink == 2) {
 	
-		top.location.href = 'http://www.upsellit.com/follow.jsp?sid=6747&cid=388495550685015551099&duration=1209600&dbupdate=1&url=http%3A%2F%2Fwww.worldmarket.com%2Fhelpdesk%2Findex.jsp%3Fdisplay%3Dstore%26subdisplay%3Dcontact%26stillHaveQuestion%3Dyes';
+		top.location.href = 'http://www.upsellit.com/follow.jsp?sid=6747&cid=1663123055616062047194&duration=1209600&dbupdate=1&url=http%3A%2F%2Fwww.worldmarket.com%2Fcategory%2Findex.jsp%3FcategoryId%3D3912212';
 	
 	} else if (whichLink == 3) {
 	
-		top.location.href = 'http://www.upsellit.com/follow.jsp?sid=6747&cid=388495550685015551099&duration=1209600&dbupdate=1&url=http%3A%2F%2Fwww.worldmarket.com%2Fcategory%2Findex.jsp%3FcategoryId%3D3672880';
+		top.location.href = 'http://www.upsellit.com/follow.jsp?sid=6747&cid=1663123055616062047194&duration=1209600&dbupdate=1&url=http%3A%2F%2Fwww.worldmarket.com%2Fcategory%2Findex.jsp%3FcategoryId%3D3672880';
 	
 	}
 }
@@ -903,26 +914,54 @@ function usi_SetLink(val) {
 	}
 }
 
+function usi_checkForBlur() {
+	if (usi_currentFocus == 'blur') {
+		shutDown();
+		USIdone = false;
+		timedShowChatID = setTimeout("attachMouseEvent()", 0*500 );
+	}
+}
+
 tempShowChat = showChat;
 showChat = function() {
-tempShowChat();
-document.getElementById("usi_chatInputDiv").style.visibility= "hidden";
+	if (usi_currentFocus == 'blur') {
+		USIdone = false;
+		timedShowChatID = setTimeout("attachMouseEvent()", 0*500 );
+		return;
+	}
+	tempShowChat();
+	flashChatDivHandle = document.getElementById('flashChatDiv');
+	flashChatDivHandle.style.top = "100px";
+	document.getElementById("usi_chatInputDiv").style.visibility= "hidden";
+	setTimeout('usi_checkForBlur()', 1000);  
 } 
 
 if (usi_remoteIP.indexOf("65.160") != -1) {
- USI_suppress=true;
+	USI_suppress=true;
 } else {
- USI_suppress=true;
- function reeneableUSI() { USI_suppress = false; }
- setTimeout('reeneableUSI()', 7000);
+	//USI_suppress=true;
+	//function reeneableUSI() { USI_suppress = false; }
+	//setTimeout('reeneableUSI()', 5000);
 }
 
+var usi_currentFocus = 'focus';
+function windowFocusChange (evt) {
+	evt = evt || window.event;
+	if (usi_currentFocus != evt.type) {
+		if (evt.type == 'focus') {
+		} else if (evt.type == 'blur') {
+		}
+		usi_currentFocus = evt.type;
+	}
+}
 
-
+window.onfocus = windowFocusChange;
+window.onblur = windowFocusChange;
 
 }
 
 	}
+
 }
 
 

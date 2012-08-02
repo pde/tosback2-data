@@ -1200,6 +1200,15 @@ jQuery(document).ready(function(){
 
 	//uncomment below to provide browser back button functionality to the back button class
 	//jQuery('#back .back-button').click(function(){window.history.back(1);});
+	
+	// Added after 508 upgrade because the image use to have the text and when we upgraded the text was placed in the div.
+	// this became a problem with L3 and caching so we are cleaning this up using jquery to detect if they have text or not
+	// in the div.
+	// this can be removed after 11-07-2012 or if the site was puged
+	if( jQuery('#alert-box').text() === '' ){
+		jQuery('#alert-box').text("There are park alerts in effect.");
+	}
+	
 });
 
 jQuery(window).load(function(){

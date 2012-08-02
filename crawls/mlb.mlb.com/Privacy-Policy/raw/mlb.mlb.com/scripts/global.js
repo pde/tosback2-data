@@ -217,6 +217,7 @@ function launchGameday( params ) {
 	var gid         = params.gid       || "",
         mode        = params.mode      || "",
 	    c_id        = params.c_id      || "",
+	    lang        = params.lang      || "",
 	    lurl        = params.lurl      || "#",
 	    env         = params.env       || bam.url.Location( window.location ).getParam( "env" ) || "",
         feed_code   = params.feed_code || null,
@@ -273,7 +274,8 @@ function launchGameday( params ) {
                             + gid 
                             + ( mode !== '' ? '&mode='+mode : '' )
                             + ( c_id !== '' ? '&c_id='+c_id : '' )
-                            + ( env !== '' ? '&env='+env : '' )
+                            + ( env  !== '' ? '&env='+env : '' )
+                            + ( lang !== '' ? '&lang='+lang : '' )
                             + ( !!feed_code ? '&feed_code='+feed_code : '' )
                             + ( !!media_state ? '&media_state='+media_state : '' ),
 		    w       : !parentIsMini ? window.innerWidth  : 990,

@@ -1,15 +1,17 @@
 var MTVN = MTVN || {};
 MTVN.conf = MTVN.conf || {};
+MTVN.conf.sm4 = MTVN.conf.sm4 || {};
 MTVN.conf.flux4 = MTVN.conf.flux4 || {};
 
 MTVN.conf.flux4["ucid"] = "87F6FFFF0099CB900002FFFFF687";
+MTVN.conf.sm4["ucid"] = "87F6FFFF0099CB900002FFFFF687";
 
-MTVN.conf.flux4.ubElements = [{id: 'MyStuff',showThumbnail: true}];
+MTVN.conf.sm4.ubElements = [{id: 'MyStuff',showThumbnail: true}];
 
-jQuery('#fwidgetvh1').bind("Flux4.coreLoad", function(){
+jQuery('#fwidgetvh1').bind("sm4.coreLoad", function(){
     if(typeof window.Widgets4Context != 'undefined') 
         if (window.Widgets4Context.user) 
-        	MTVN.conf.flux4.ubElements.push( { 
+        	MTVN.conf.sm4.ubElements.push( { 
                 id: 'ActivityFeed',
                 settings: {
                     updateRequestInterval: 30,
@@ -20,12 +22,11 @@ jQuery('#fwidgetvh1').bind("Flux4.coreLoad", function(){
         
 });
 
-MTVN.conf.flux4["widgets"] = {
+MTVN.conf.sm4["widgets"] = {
 	"userBar": {
  		"name": "UserBar",
  		"opts": {
-			displayMode: 'EmbeddedTop',
-			elements: MTVN.conf.flux4.ubElements
+			displayMode: 'EmbeddedTop'
 		}
 	},
 	
@@ -49,7 +50,7 @@ MTVN.conf.flux4["widgets"] = {
  		"name": "Follow",
  		"opts": {
  		    title: '',
- 			contentUri: MTVN.conf.flux4.ucid,
+ 			contentUri: MTVN.conf.sm4.ucid,
 			layout: 'horizontal',
 			elements: [{ id: 'facebook', layout:'button_count'}, { id: 'twitter', width:'130px'}, { id: 'flux', title: 'My VH1', showCounter: false}]
 		},
@@ -66,7 +67,7 @@ MTVN.conf.flux4["widgets"] = {
  		"opts": {
  		    title: '',
  		    followParent: true,
- 			contentUri: MTVN.conf.flux4.ucid,
+ 			contentUri: MTVN.conf.sm4.ucid,
 			layout: 'horizontal',
 			elements: [{ id: 'facebook', layout:'button_count'}, { id: 'twitter', width:'130px'}, { id: 'flux', title: 'My VH1', showCounter: false}]
 		},
@@ -124,10 +125,17 @@ MTVN.conf.flux4["widgets"] = {
 			enableComments: true,
 			topOrder: true,
 			showPostToFacebook: false,
-			commentMessage: 'Join the conversation ...'
+			commentMessage: 'Join the conversation ...',
+			showPopularActivities: true,
+            popularActivitiesFilter: 'CommentContent',
+            popularActivitiesCount: 3,
+            popularHeaderText: 'Top Comments'
 		},
 		"onLoad": function(widget) {
 		    setTimeout(function() {
+		        $j('ol.popularActivitiesList .repliesContainer .replyLink').each(function(index) {
+                    $j(this).html('Reply');
+                }),	
 			    $j('ol.activityList .repliesContainer .replyLink').each(function(index) {
                     $j(this).html('Reply');
                 })				
@@ -226,6 +234,26 @@ MTVN.conf.flux4["widgets"] = {
                    { id: 'FollowersTab', visible: true }
                 ]
             }
+		}
+	},
+	
+	"fbShare": {
+ 		"name": "Share",
+ 		"opts": {
+			title: " ",
+			layout: 'horizontal',
+			elements: [
+	            { id: 'Facebook', type: 'fblike', colorScheme: 'light', send: false, width:450 }
+	        ]
+		}
+	},
+	
+	"fbLike": {
+ 		"name": "FacebookLike",
+ 		"opts": {
+			elements: [
+	            { layout: 'button_count', colorScheme: 'light', send: false }
+	        ]
 		}
 	},
 	

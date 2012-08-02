@@ -1,0 +1,9 @@
+CQ_Analytics.SegmentMgr.register("/etc/segmentation/geometrixx/male","( ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.profile, \'gender\', \'equals\', \'male\', \'\') ) )",0);
+CQ_Analytics.SegmentMgr.register("/etc/segmentation/geometrixx/female","( ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.profile, \'gender\', \'equals\', \'female\', \'\') ) )",0);
+CQ_Analytics.SegmentMgr.register("/etc/segmentation/geometrixx/samples","( ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.profile, \'age\', \'lessorequal\', \'25\', \'parseInt\') )  &&  ( ( ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.surferinfo, \'keywords\', \'contains\', \'music\', \'\') )  ||  ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.surferinfo, \'keywords\', \'contains\', \'mp3\', \'\') )  ||  ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.surferinfo, \'keywords\', \'contains\', \'itunes\', \'\') ) ) ) )",100);
+CQ_Analytics.SegmentMgr.register("/etc/segmentation/geometrixx/child","( ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.profile, \'age\', \'younger\', \'13\', \'parseInt\') ) )",0);
+CQ_Analytics.SegmentMgr.register("/etc/segmentation/geometrixx/teen","( ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.profile, \'age\', \'olderorequal\', \'13\', \'parseInt\') )  &&  ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.profile, \'age\', \'youngerorequal\', \'19\', \'parseInt\') ) )",0);
+CQ_Analytics.SegmentMgr.register("/etc/segmentation/geometrixx/adult","( ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.profile, \'age\', \'older\', \'19\', \'parseInt\') ) )",0);
+CQ_Analytics.SegmentMgr.register("/etc/segmentation/geometrixx/left","( ( clickstreamcloud.mouseposition.x < 400 ) )",0);
+CQ_Analytics.SegmentMgr.register("/etc/segmentation/geometrixx/right","( ( clickstreamcloud.mouseposition.x >= 400 ) )",0);
+

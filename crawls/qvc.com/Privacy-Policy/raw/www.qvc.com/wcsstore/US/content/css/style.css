@@ -1,0 +1,5224 @@
+@charset "utf-8";
+/*CSS Document:US style.css */
+/*Last Updated By:Scott Hine - 8/01/2012 4:00PM*/
+/* =Global
+--------------------------------------------------------------------- */
+html, body{margin:0;padding:0;}  
+body{font:12px Arial, Helvetica, sans-serif;padding:8px 10px;color:#333;background-color:#fff;min-width:917px;text-align:center;}
+body.watchQvcLive{min-width:855px;}
+body.productDetailPopup{min-width:650px;}
+p{line-height:15px;margin:0 0 12px 0;}
+div > p:last-child, div#divContent > :last-child, div#divContent > form:last-child > :last-child, div#divContent > div#divWishList > :last-child, div#divContent > div#divWishListShare > :last-child, div#divContent #frmEditPermanentShipToAddress > div, div#divContent > div#divCreateQvcAccountSignIn > :last-child, div#divContent > div#divExistingQvcAccountSignIn > :last-child, div#divContent > div#divPromotionActivation > :last-child, div#divContent > div#divOrderStatusResults > :last-child, div#divContent > div#divContactEmail > :last-child{margin-bottom:0;}
+div#divNavCommon > ul:last-child{padding-bottom:0;}
+fieldset{border:0;padding:0;margin:0;width:100%;}
+legend{font-weight:bold;line-height:15px;padding:15px 0 5px 0;color:#333;}
+table{margin:0 0 10px 0;}
+th, td{padding:7px;vertical-align:top;text-align:left;}
+th{padding:0 7px 7px 7px;}
+tfoot td{font-weight:bold;}
+a{color:#333;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a:active{outline:none;}
+a:focus{-moz-outline-style:none;}
+img{border:0;}
+acronym{text-decoration:none;border-bottom:1px dotted;}
+.hidden, .hide{display:none;}
+/* =Structural
+--------------------------------------------------------------------- */
+#divWrapper{margin:0 auto;width:917px;text-align:left;}
+.watchQvcLive #divWrapper{width:855px;}
+#divMenu, #divMenuText{margin:5px 0;}
+#divMiniBanner{padding:0;margin:5px 0 2px 0;}
+#divMiniBanner img{width:917px;height:34px;}
+/* Checkout Masthead */
+#divMastheadCheckout, .checkout #divBackToHome, .checkout #divMasthead, .checkout #divMenu, .checkout #divMenuText, .checkout #divMiniBanner, .checkout #breadCrumbs, .shoppingCart #breadCrumbs{display:none;}/*<-Probably can remove most of these */
+.checkout #divMastheadCheckout, .checkoutEditPersonalization #divMastheadCheckout{
+	display:block;
+	padding:13px 0 3px 0;
+	white-space:nowrap;
+}
+#divMastheadCheckout img{float:left;}
+#divMastheadCheckout ol{
+	float:left;
+	margin:33px 0 0 21px;
+	padding:0;
+	height:26px;
+	width:700px;
+}
+#divMastheadCheckout ol li, #divMastheadCheckout ol li a{
+	font-weight:bold;
+	font-size:15px;
+	color:#dbdbdb;
+	text-decoration:none;
+	text-transform:uppercase;
+}
+#divMastheadCheckout ol li{
+	list-style-type:none;
+	height:26px;
+	float:left;
+}
+#divMastheadCheckout ol li a{
+	display:inline-block;
+	padding:0 0 0 2px;
+}
+/*Updates color of tabs as you move through each step*/
+.checkoutStep1 #divMastheadCheckout ol #liMenuStep1 a, .checkoutStep2 #divMastheadCheckout ol #liMenuStep1 a, .checkoutStep2 #divMastheadCheckout ol #liMenuStep2 a, .checkoutStep3 #divMastheadCheckout ol #liMenuStep1 a, .checkoutStep3 #divMastheadCheckout ol #liMenuStep2 a, .checkoutStep3 #divMastheadCheckout ol #liMenuStep3 a, .checkoutStep4 #divMastheadCheckout ol #liMenuStep1 a, .checkoutStep4 #divMastheadCheckout ol #liMenuStep2 a, .checkoutStep4 #divMastheadCheckout ol #liMenuStep3 a, .checkoutStep4 #divMastheadCheckout ol #liMenuStep4 a, .checkoutEditPersonalization #divMastheadCheckout ol #liMenuStep1 a, .checkoutEditPersonalization #divMastheadCheckout ol #liMenuStep2 a, .checkoutEditPersonalization #divMastheadCheckout ol #liMenuStep3, .checkoutEditPersonalization #divMastheadCheckout ol #liMenuStep4 a{color:#e97400;}
+/*default background when step is not complete*/
+#divMastheadCheckout ol #liMenuStep1{width:145px;background:url(../images/checkoutStep1Gray.gif) no-repeat;}
+#divMastheadCheckout ol #liMenuStep2{width:197px;background:url(../images/checkoutStep2Gray.gif) no-repeat;}
+#divMastheadCheckout ol #liMenuStep3{width:192px;background:url(../images/checkoutStep3Gray.gif) no-repeat;}
+#divMastheadCheckout ol #liMenuStep4{width:166px;background:url(../images/checkoutStep4Gray.gif) no-repeat;}
+/* Show arrow when checkout step is selected */
+.checkoutStep1 #divMastheadCheckout ol #liMenuStep1{background:url(../images/checkoutStep1OrangeArrow.gif) no-repeat;}
+.checkoutStep2 #divMastheadCheckout ol #liMenuStep2{background:url(../images/checkoutStep2OrangeArrow.gif) no-repeat;}
+.checkoutStep3 #divMastheadCheckout ol #liMenuStep3{background:url(../images/checkoutStep3OrangeArrow.gif) no-repeat;}
+.checkoutStep4 #divMastheadCheckout ol #liMenuStep4, .checkoutEditPersonalization #divMastheadCheckout ol #liMenuStep4{
+background:url(../images/checkoutStep4OrangeArrow.gif) no-repeat;}
+/* Checkout Step 1 is completed and we're >= step 2 */
+.checkoutStep2 #divMastheadCheckout ol #liMenuStep1, .checkoutStep3 #divMastheadCheckout ol #liMenuStep1,.checkoutStep4 #divMastheadCheckout ol #liMenuStep1,.checkoutEditPersonalization #divMastheadCheckout ol #liMenuStep1{background:url(../images/checkoutStep1Orange.gif) no-repeat;}
+/* Checkout Step 2 is completed and we're >= step 3 */
+.checkoutStep3 #divMastheadCheckout ol #liMenuStep2, .checkoutStep4 #divMastheadCheckout ol #liMenuStep2, .checkoutEditPersonalization #divMastheadCheckout ol #liMenuStep2{background:url(../images/checkoutStep2Orange.gif) no-repeat;}
+/*checkout Step 3 is completed and we're >= step 4 */
+.checkoutStep4 #divMastheadCheckout ol #liMenuStep3, .checkoutEditPersonalization #divMastheadCheckout ol #liMenuStep3{background:url(../images/checkoutStep3Orange.gif) no-repeat;}
+/*Content Region*/
+#divContentWrapper{display:block;clear:both;}
+#divPageTitle{margin:0 0 12px 0;padding:0;}
+/* Defect #4219 */
+#divPageTitle .productTitle{visibility:hidden;}
+/* Defect #4569*/
+div#divPageTitle h1{display:inline;}
+#divPageTitle h1 sup{vertical-align:baseline;position:relative;top:-18px;font-size:11px;font-size:12px\9;}
+h1 span, h1 a, a#aboutLink{
+	font:bold 16px Arial, Helvetica, sans-serif;
+	color:#B8BAB0;
+	text-decoration:none;
+	text-transform:uppercase;
+	vertical-align:baseline;
+	margin:0 0 0 17px;
+	letter-spacing:0;
+}
+a#aboutLink, h1 a{
+	background:url(../images/carat_gr_lg.gif) no-repeat left center;
+	padding:0 0 0 11px;
+}
+a#aboutLink:hover, h1 a:hover{
+	background:url(../images/carat_or_lg.gif) no-repeat left center;
+	color:#E97400;
+	text-decoration:none;
+}
+h1 span{padding:0;}
+/* Used on the Shopping Cart for Back to Homepage link */
+.shoppingCart h1 a.arrow, .programGuide h1 a.arrow{
+	font:bold 12px Arial, Helvetica, sans-serif;
+	text-transform:none;
+	margin:18px 267px 0 0;
+	letter-spacing:0;
+	display:inline-block;
+	float:right;
+}
+/* =Structural Templates
+--------------------------------------------------------------------- */
+.home #divBackToHome, .home #divBreadCrumbsPageTitleWrapper, .home #divMetaNav, #divHomePageNav, .twoColumn-nav #divSidebar, .twoColumn-sidebar #divContentNav, .oneColumn #divContentNav, .oneColumn #divSidebar{display:none;}
+.home #divHomePageNav{display:block;}
+.twoColumn-nav #divContentNav{
+	width:224px;
+	float:left;
+	/*margin:0 7px 0 0;*/
+}
+.twoColumn-nav #divContent{
+	width:686px;
+	float:right;
+	margin:0;
+}
+.twoColumn-sidebar #divContent{
+	width:755px;/* size may need to be tweaked, #divContent + #divSidebar <= 917px */
+	float:left;
+	margin:0 0 20px 0;
+	*margin-bottom:0;
+}
+.twoColumn-sidebar #divSidebar{
+	width:155px;/* size may need to be tweaked, #divContent + #divSidebar <= 917px */
+	float:right;
+	margin:0;
+}
+.oneColumn #divContent{
+	/*float:left;*//* takes away a top and bottom gap in safari and ff */
+	clear:both;/* to make sure no containers float up next to it */
+	width:917px;
+}
+/*Build 2.01 - Print Return Label*/
+.printable .divButtons{padding:0;margin:0;}
+.printable #divReturnsReasonForReturn div{width:45%;}
+.printLogo{display:none;}
+/* =Content Area Templates
+--------------------------------------------------------------------- */
+#divTemplate{overflow:auto;*overflow:visible;}
+#divTemplate #div1, #divTemplate #div2, #divTemplate #div3, #divTemplate #div4, #divTemplate #div5, #divTemplate #div6, #divTemplate #div7, #divTemplate #div8, #divTemplate #div9, #divTemplate #div10, #divTemplate #div11, #divTemplate #div12, #divTemplate #div13, #divTemplate #div14, #divTemplate #div15, #divTemplate #div16, #divTemplate #div17, #divTemplate #div18, #divTemplate #div19, #divTemplate #div20, #divTemplate #div21, #divTemplate #div22, #divTemplate #div23, #divTemplate #div24, #divTemplate #div25, #divTemplate #div26, #divTemplate #div27, #divTemplate #div28, #divTemplate #div29, #divTemplate #div30, #divTemplate #div31, #divTemplate #div32, #divTemplate #div33, #divTemplate #div34, #divTemplate #div35, #divTemplate #div36, #divTemplate #div37, #divTemplate #div38, #divTemplate #div39, #divTemplate #div40{display:none;margin:0 10px 10px 0;padding:0;width:222px;height:185px;float:left;overflow:hidden;position:relative;}
+.templateMajor1, .templateMajor2, .templateMajor3, .templateMajor4, .templateSixBlock, .templateMerch, .templateBrady1, .templateBrady2, .templateBasic1, .templateBasic2, .templateSplit, .templateStack1, .templateStack2, .templateStack3, .templateStack4{overflow:auto;_overflow:hidden;}
+/*Home Page */
+.home #divTemplate #div1{width:686px;height:374px;}
+.home #divTemplate #div1, .home #divTemplate #div2, .home #divTemplate #div3{display:inline;margin:0 10px 7px 0;}
+.home #divTemplate #div1, .home #divTemplate #div4{display:inline;margin:0 0 7px 0;}
+/*Major Templates:1, 2, 3, 4*/
+.templateMajor1 #divTemplate #div1, .templateMajor2 #divTemplate #div1, .templateMajor3 #divTemplate #div1, .templateMajor4 #divTemplate #div1{display:inline;width:454px;height:380px;}
+.templateMajor1 #divTemplate #div2, .templateMajor3 #divTemplate #div2{display:inline;margin:0 0 10px 0;height:380px;}
+.templateMajor1 #divTemplate #div3, .templateMajor1 #divTemplate #div4, .templateMajor2 #divTemplate #div4, .templateMajor2 #divTemplate #div5, .templateMajor3 #divTemplate #div3, .templateMajor3 #divTemplate #div4, .templateMajor3 #divTemplate #div6, .templateMajor3 #divTemplate #div7, .templateMajor4 #divTemplate #div4, .templateMajor4 #divTemplate #div5, .templateMajor4 #divTemplate #div7, .templateMajor4 #divTemplate #div8{display:inline;}
+.templateMajor1 #divTemplate #div5, .templateMajor2 #divTemplate #div2, .templateMajor2 #divTemplate #div3, .templateMajor2 #divTemplate #div6, .templateMajor3 #divTemplate #div5, .templateMajor3 #divTemplate #div8, .templateMajor4 #divTemplate #div2, .templateMajor4 #divTemplate #div3, .templateMajor4 #divTemplate #div6, .templateMajor4 #divTemplate #div9{display:inline;margin:0 0 10px 0;}
+.templateMajor1 #divTemplate #div6, .templateMajor1 #divTemplate #div7, .templateMajor2 #divTemplate #div7, .templateMajor2 #divTemplate #div8, .templateMajor3 #divTemplate #div9, .templateMajor3 #divTemplate #div10, .templateMajor4 #divTemplate #div10, templateMajor4 #divTemplate #div11{display:inline;margin:0 0 10px 0;width:auto;height:auto;}
+/*templateSixBlock:Six Block Family*/
+.templateSixBlock #divTemplate #div1{width:686px;height:380px;display:inline;margin:0 0 10px 0;}
+.templateSixBlock #div1 .paragraph, .templateSixBlock #div1 .heading, .templateSixBlock #div1 .links{position:absolute;left:20px;overflow:hidden;}
+.templateSixBlock #div1 .heading{font:normal 36px "Century Gothic",Arial,Helvetica,sans-serif;top:20px;height:45px;width:646px;}
+.templateSixBlock #div1 .paragraph, .templateSixBlock #div1 .links{top:160px;height:195px;width:275px;}
+/*templateSixBlock1:Six Block */
+.templateSixBlock1 #divTemplate #div2, .templateSixBlock1 #divTemplate #div3{display:inline;margin:0 0 10px 0;}
+.templateSixBlock1 #divTemplate #div2, .templateSixBlock1 #divTemplate #div3{width:686px;height:auto;}
+/*templateSixBlock2:Six Block + Bottom Row*/
+.templateSixBlock2 #divTemplate #div4, .templateSixBlock2 #divTemplate #div5, .templateSixBlock2 #divTemplate #div6{display:inline;margin:0 0 10px 0;}
+.templateSixBlock2 #divTemplate #div2, .templateSixBlock2 #divTemplate #div3{display:inline;}
+.templateSixBlock2 #divTemplate #div5, .templateSixBlock2 #divTemplate #div6{width:auto;height:auto;}
+/*Template Merch */
+.templateMerch #divTemplate #div1, .templateMerch #divTemplate #div2{display:inline;}
+.templateMerch #divTemplate #div3, .templateMerch #divTemplate #div4, .templateMerch #divTemplate #div5{display:inline;margin:0 0 10px 0;}
+.templateMerch #divTemplate #div4, .templateMerch #divTemplate #div5{width:auto;height:auto;}
+/*Brady Templates:1, 2*/
+/*templateBrady1:*/
+.templateBrady1 #divTemplate #div1, .templateBrady1 #divTemplate #div8, .templateBrady1 #divTemplate #div9, .templateBrady2 #divTemplate #div1, .templateBrady2 #divTemplate #div11, .templateBrady2 #divTemplate #div12{display:inline;margin:0 0 10px 0;width:auto;height:auto;}
+.templateBrady1 #divTemplate #div2, .templateBrady1 #divTemplate #div3, .templateBrady1 #divTemplate #div5, .templateBrady1 #divTemplate #div6, .templateBrady2 #divTemplate #div2, .templateBrady2 #divTemplate #div3, .templateBrady2 #divTemplate #div5, .templateBrady2 #divTemplate #div6, .templateBrady2 #divTemplate #div8, .templateBrady2 #divTemplate #div9{display:inline;}
+.templateBrady1 #divTemplate #div4, .templateBrady1 #divTemplate #div7, .templateBrady2 #divTemplate #div4, .templateBrady2 #divTemplate #div7, .templateBrady2 #divTemplate #div10{display:inline;margin:0 0 10px 0;}
+/*Basic Templates:1, 2 */
+/* templateBasic1:1 tall banner on left, 1 tall banner on right */
+/* templateBasic2:1 tall banner on left, 2 short banners on right */
+.templateBasic1 #divTemplate #div1, .templateBasic2 #divTemplate #div1{display:inline;width:454px;height:380px;}
+.templateBasic1 #divTemplate #div2{height:380px;}
+.templateBasic1 #divTemplate #div2, .templateBasic2 #divTemplate #div2, .templateBasic2 #divTemplate #div3{display:inline;margin:0 0 10px 0;}
+.templateBasic1 #divTemplate #div3, .templateBasic1 #divTemplate #div4, .templateBasic2 #divTemplate #div4, .templateBasic2 #divTemplate #div5{display:inline;margin:0 0 10px 0;width:auto;height:auto;}
+.templateBasic1 .subheading, .templateBasic1 .paragraph{position:absolute;left:0;overflow:hidden;z-index:1;}
+.templateBasic1 a *{cursor:pointer;}
+.templateBasic1 .subheading{padding:0 18px 0 20px;top:330px;height:30px;text-decoration:none;}
+.templateBasic1 .subheading a{text-decoration:none;}
+.templateBasic1 .paragraph{left:20px;top:210px;height:150px;width:182px;}
+/* templateSplit:1 banner on left, 1 banner on right, 1 banner below both */
+.templateSplit #divTemplate #div1, .templateSplit #divTemplate #div2{display:inline;width:338px;height:auto;}
+.templateSplit #divTemplate #div2{margin:0 0 10px 0;}
+.templateSplit #divTemplate #div3{display:inline;margin:0 0 10px 0;width:auto;height:auto;}
+/* templateStack:Wide banners 1, 2, 3, or 4 high and Host*/
+/* Stack Templates need standard anchor formatting since they can contain text content.*/
+.templateStack1 #divTemplate a, .templateStack2 #divTemplate a, .templateStack3 #divTemplate a, .templateStack4 #divTemplate a{text-decoration:underline;}
+.templateStack1 #divTemplate #div1, .templateStack2 #divTemplate #div1, .templateStack3 #divTemplate #div1, .templateStack4 #divTemplate #div1, .templateStack2 #divTemplate #div2, .templateStack3 #divTemplate #div2, .templateStack4 #divTemplate #div2, .templateStack3 #divTemplate #div3, .templateStack4 #divTemplate #div3, .templateStack4 #divTemplate #div4, .host #divTemplate #div1, .host #divTemplate #div2, .host #divTemplate #div3{display:inline;margin:0 0 10px 0;width:auto;height:auto;}
+/*templateTwoColStack*/
+.templateTwoColStack  #divTemplate a{text-decoration:underline;}
+.templateTwoColStack #divTemplate #div1{display:inline;margin:0 0 10px 0;width:100%;height:auto;}
+.templateTwoColStack #divTemplate #div2, .templateTwoColStack #divTemplate #div3, .templateTwoColStack #divTemplate #div4, .templateTwoColStack #divTemplate #div5,  .templateTwoColStack #divTemplate #div6, .templateTwoColStack #divTemplate #div7, .templateTwoColStack #divTemplate #div8, .templateTwoColStack #divTemplate #div9, .templateTwoColStack #divTemplate #div10, .templateTwoColStack #divTemplate #div11, .templateTwoColStack #divTemplate #div12, .templateTwoColStack #divTemplate #div13{display:inline;margin:0 0 10px 0;width:auto;height:auto;}
+.templateTwoColStack .ContentFeatureWidget{height:160px;width:686px;}
+.templateTwoColStack #divTemplate a{font-weight:normal;}
+.templateTwoColStack .background{display:none;}
+.templateTwoColStack .image, .templateTwoColStack .paragraph{float:left;}
+.templateTwoColStack .image{width:160px;height:160px;margin:0 10px 0 0;}
+.templateTwoColStack .paragraph{position:static;width:483px;height:128px;border:1px solid #BEBDBD;border-radius:5px;padding:15px;overflow:hidden;}
+.templateTwoColStack .paragraph{width:485px\9;height:130px\9;border:0\9;padding:15px\9;background:url(../../../../../images-p.qvc.com/is/image/pic/qvc/colstack_iecorners.gif%3Fqlt=95,1) no-repeat\9;}
+.templateTwoColStack .paragraph p{margin:0 0 15px 0;}
+.templateTwoColStack .paragraph h3{margin:0 0 7px 0;}
+/*templateTSVMulti*/
+.templateTSVMulti{overflow:auto;_overflow:hidden;}
+.templateTSVMulti #divContent{width:875px;border:1px solid #BEBDBD;padding:20px;}
+.templateTSVMulti #divContentNav{display:none;}
+.templateTSVMulti .tsvBadge{position:absolute;display:block;width:81px;height:31px;background:url(../../../../../images-p.qvc.com/is/image/pic/qvc/TSVBadge.png) no-repeat;}
+.templateTSVMulti .divProductImage{float:left;width:184px;height:164px;position:relative;}
+.templateTSVMulti .singleBlock .divProductImage{width:218px;height:194px;}
+.templateTSVMulti .chooseOption{
+background:rgba(256,256,256,.8);background:#FFF\9;
+border:1px solid #333;
+position:absolute;_position:static;
+bottom:0;left:0;
+margin:5%;_margin:0;
+padding:5px 10%;
+width:70%;_width:80%;
+display:none;_display:block;
+}
+.templateTSVMulti .divProductImage a{display:block;}
+.templateTSVMulti .divProductImage:hover .chooseOption{display:block;}
+div.templateTSVMulti .divProductInfo{float:left;width:600px;padding:0 30px 15px;clear:none;margin:0;height:auto;}
+.templateTSVMulti .singleBlock .divProductInfo{width:566px;}
+.templateTSVMulti #divTemplate #div1{display:inline;margin:0;padding:0;width:auto;height:auto;}
+.templateTSVMulti .singleBlock{width:100%;height:194px;}
+.templateTSVMulti .multiBlock{width:100%;height:164px;border-bottom:1px solid #BEBDBD;
+margin:0 0 20px 0;padding:0 0 20px 0;clear:both;}
+.templateTSVMulti .lastBlock{border:0;margin:0;padding:0;}
+.templateTSVMulti #divTemplate .divProductButtons{float:left;margin:0;}
+.templateTSVMulti .divProductButtons a{text-decoration:none;display:block;}
+.templateTSVMulti .divProductButtons h3{margin:0 0 5px 5px;color:#E97400;}
+.templateTSVMulti .leftBtn{border-right:1px solid #BEBDBD;padding:0 20px 0 30px;}
+.templateTSVMulti .rightBtn{padding:0 0 0 20px;}
+.templateTSVMulti .secondaryButton{
+background:url(../../../../../images-p.qvc.com/is/image/pic/qvc/btn_bkg_wht.png) 5px 50% no-repeat;
+font:bold 11px Verdana, Geneva, sans-serif;
+border:1px solid #BEBDBD;
+border-radius:6px;
+text-transform:uppercase;
+letter-spacing:-1px;
+margin:0 0 10px 0;
+padding:8px 8px 8px 24px;
+width:215px;
+}
+.templateTSVMulti .leftBtn .secondaryButton{width:160px !important;} 
+/* =Masthead
+--------------------------------------------------------------------- */
+#divBackToHome a{
+	padding-left:10px;
+	font-size:10px;
+	text-decoration:none;
+	color:#7a7870;
+	background:url(../images/aro_lt_ltgry.gif) no-repeat 3px;
+}
+#divMastheadLinks a{color:#fff;text-decoration:none;}
+#divBackToHome a:hover, #divMastheadLinks a:hover{text-decoration:underline;}
+#divMasthead{height:82px;background:url(../images/bnr.jpg) no-repeat;}
+#divMastheadLogo, #divMastheadPromo, #divMastheadRight{float:left;height:82px;}
+#divMastheadLogo{width:90px;}
+#divMastheadLogo img{width:90px;height:82px;}
+#divMastheadPromo{width:380px;}
+#divMastheadPromo img{width:380px;height:82px;}
+#divMastheadRight{
+	position:relative;
+	width:440px;
+	height:72px;
+	padding:5px 7px 5px 0;
+}
+#divMastheadLinks{
+	margin:0;
+	padding:0;
+	width:440px;
+	text-align:right;
+	color:#fff;
+	font-size:90%;
+}
+#divMastheadLinks .spanDivider{padding:0 4px;}
+#divMastheadLinks #ancCart{padding-right:19px;background:url(../images/cart.gif) no-repeat 23px 1px;}
+#divMastheadSearch{
+	width:440px;
+	text-align:right;
+	position:absolute;
+	bottom:7px;
+	right:0;
+}
+#divMastheadSearch #frmMastheadSearch{margin:0;padding:0;}
+#divMastheadSearch *{line-height:22px;vertical-align:middle;}
+#divMastheadSearch label{
+	color:#fff;
+	width:55px;
+	text-align:left;
+}
+#divMastheadSearch #txtMastheadSearch{
+	margin:0;
+	height:20px;
+	width:240px;
+}
+#divMastheadSearch #btnMastheadSearch{margin:0 13px 0 5px;}
+#divMastheadSearch .primaryButton{height:22px;width:48px;*padding-bottom:0;}
+/* Removing for Beta launch*/
+#betaReturnToQVC{display:none;}
+/*New Feedback Button*/
+#divFeedback{
+	width:50%;
+	text-align:right;
+	position:absolute;
+	top:0;
+	right:0;
+}
+#divFeedback a{
+	margin:0 7px 0 0;
+	font-size:10px;
+	color:#7A7870;
+	background:url(../images/sm_000_oo.gif) left center no-repeat;
+	padding:0 0 0 12px;
+}
+#divTop{position:relative;width:100%;height:15px;padding:0 0 2px 0;}
+#printLogo{display:none;}
+/*Masthead Navigation Defaults-------------*/
+/* MenuText */
+#divMenuText{font:12px Arial, Helvetica, sans-serif;}
+#divMenuText a, #divMenuText a:hover{display:block;text-decoration:none;}
+#divMenuText ul{padding:0;margin:0;list-style:none;}
+/* Menu Header */
+#divMenuText #divMenuHeader{height:32px;width:917px;clear:both;}
+#divMenuText #divMenuHeader ul li{float:left;background-color:#666566;width:100px;margin:0;}
+#divMenuText #divMenuHeader ul li a{
+	font-weight:bold;
+	height:32px;
+	color:#fff;
+	line-height:32px;
+	text-align:center;
+	background:url(../images/hp_meta_bar_gray_dividerline.gif) no-repeat right;
+	margin:0;
+}
+#divMenuText #divMenuHeader ul li a.highlighted{background:#e4e3e3 none;color:#333;}
+/* Right/Left rounded corners */
+#divMenuText #divMenuHeader ul li.menuRight{background:#666566 url(../images/sitenav_bar_sprites.png) no-repeat;
+background-position:right -64px;}
+#divMenuText #divMenuHeader ul li.menuRight a{background:none;}
+#divMenuText #divMenuHeader ul li.menuRight a.highlighted{background:#e4e3e3 url(../images/sitenav_bar_sprites.png) no-repeat;
+background-position:right -96px;}
+#divMenuText #divMenuHeader ul li.menuLeft{background:#666566 url(../images/sitenav_bar_sprites.png) no-repeat 0 0;}
+#divMenuText #divMenuHeader ul li.menuLeft a.highlighted{background:#e4e3e3 url(../images/sitenav_bar_sprites.png) no-repeat;background-position:0 -32px;}
+/*Hide Craft's and Toys Metas*/
+#liMenuHeaderM228, #liMenuHeader1965{display:none;}
+/* Menu Widths */
+#divMenuText #divMenuHeader ul li#liMenuHeader0100{width:86px;}
+#divMenuText #divMenuHeader ul li#liMenuHeader9945{width:135px;}
+#divMenuText #divMenuHeader ul li#liMenuHeader1001{width:82px;}
+#divMenuText #divMenuHeader ul li#liMenuHeader6285{width:79px;}
+#divMenuText #divMenuHeader ul li#liMenuHeader0102{width:128px;}
+#divMenuText #divMenuHeader ul li#liMenuHeader0101{width:116px;}
+#divMenuText #divMenuHeader ul li#liMenuHeader0103{width:102px;}
+#divMenuText #divMenuHeader ul li#liMenuHeaderM227{width:90px;}
+#divMenuText #divMenuHeader ul li#liMenuHeader3279{width:99px;}
+/* Dropdowns */
+#divMenuText .dropdown{
+	position:absolute;
+	visibility:hidden;
+	z-index:1000;
+	background-color:#e4e3e3;
+	width:400px;
+}
+#divMenuText .dropdown li a{
+	color:#2e2d2d;
+	background:url(../images/bltSubNav_grey_101608.gif) 16px 6px no-repeat;
+	padding:2px 0 2px 26px;	
+	_width:162px;
+}
+#divMenuText .dropdown li a:hover{color:#fff;background:#666566 url(../images/bltSubNavOnRed_grey_101608.gif) 16px 6px no-repeat;}
+#divMenuText .spanDropdownHeader{display:block;font-weight:bold;color:#2e2d2d;padding:0 15px 10px 16px;}
+#divMenuText ul{padding:0 0 12px 0;}
+#divMenuText ul:last-child{padding:0;}
+#divMenuText .divDropdownColumn1, #divMenuText .divDropdownColumn2{float:left;width:190px;margin:16px 0 12px 0;}
+#divMenuText .divDropdownColumn2{width:209px;border-left:1px solid #666;background:none;}
+/*Bottom Row*/
+#divMenuText .divDropdownRow{display:inline-block;clear:both;background-color:#666566;width:400px;}
+#divMenuText .divDropdownRow .divMenuColumn{float:left;width:190px;}
+#divMenuText .divDropdownRow ul{padding:12px 0;}
+#divMenuText .divDropdownRow li a{font-weight:bold;color:#fff;background:url(../images/bltSubNavOnRed_grey_101608.gif) 16px 6px no-repeat;}
+#divMenuText .divDropdownRow li a:hover{color:#E97400;background:url(../images/ORANGE_arrow_grey_101608.gif) 16px 6px no-repeat;}
+/* =Headings
+--------------------------------------------------------------------- */
+h1{
+	margin:0 0 12px 0;
+	padding:0;
+	font:36px "Century Gothic", Arial, Helvetica, sans-serif;
+	color:#e97400;
+	letter-spacing:-1px;
+}
+h1 sup{font-size:18px;}
+.reviewSelection h1{margin-bottom:0;}
+/* Defect #4219 */
+.productTitle h1{font-size:0;}
+h2{font-size:14px;margin:30px 0 15px 0;}
+h2.firstChild, h3.firstChild{margin-top:0;}
+.h2RoundedBorderTop{
+	-moz-border-radius-topright:6px;
+	-moz-border-radius-topleft:6px;
+	-webkit-border-top-right-radius:6px;
+	-webkit-border-top-left-radius:6px;
+	border-top-right-radius:6px;
+	border-top-left-radius:6px;
+	background-color:#666566;
+}
+.h2RoundedBorderTop h2, .h2RoundedBorderAll h2{
+	color:#fff;
+	font:bold 12px Arial, Helvetica, sans-serif;
+	height:30px;
+	margin:0;
+	padding:5px 0 5px 22px;
+	line-height:24px;
+}
+.h2RoundedBorderTop h2 a{color:#fbca95;text-decoration:none;}
+.h2RoundedBorderTop h2 a:hover{text-decoration:underline;}
+.h2RoundedBorderAll{clear:both;}
+.h2RoundedBorderAll h2{
+	height:auto;	
+	background-color:transparent;
+	line-height:15px;
+	padding:10px 0 10px 22px;
+}
+h3{font:bold 12px Arial, Helvetica, sans-serif;margin-bottom:0;}
+#frmEditPermanentShipToAddress h2{
+	background:none;
+	color:#333;
+	font:bold 16px Arial, Helvetica, sans-serif;
+	padding:0;
+	margin:10px 0 15px;
+}
+/* =Breadcrumbs
+--------------------------------------------------------------------- */
+#breadCrumbs{
+color:#7B7A75;
+font-size:11px;
+font-weight:bold;
+margin:0;
+padding:4px 0 0 0;
+text-align:left;
+}
+.h2_style{display:inline;}
+#breadCrumbs{clear:both;width:100%;}
+#breadCrumbs a{color:#ec7300;text-decoration:none;}
+#breadCrumbs a:hover{text-decoration:underline;}
+/* =Lists
+--------------------------------------------------------------------- */
+/* My Account Landing Page, etc. */
+.roundedBorderBottom ul.outline{padding:13px 20px 10px 20px;}
+#divContent ul.arrowGray{padding:0;margin:0;}
+.roundedBorderBottom ul.outline li, #divContent ul.arrowGray li{
+	list-style:none;
+	background:url(../images/aro_rt_gry.gif) no-repeat left center;
+	margin:0;
+	padding:0 0 0 9px;
+	line-height:20px;
+}
+.roundedBorderBottom ul.outline li a, #divContent ul.arrowGray li a{color:#333;text-decoration:underline;}
+.oneColumn .columnsThree{
+	margin:0 0px 0 0;
+	width:281px;
+	float:left;
+}
+.oneColumn .columnsFour{
+	margin:0;
+	width:218px;
+	float:left;
+}
+.twoColumn-nav .columnsSix{
+	margin:0 8px 7px 0;
+	width:99px;
+	float:left;
+}
+/*LiquidHub Build 337 - My Account Enhancement */
+#floatLeft{
+      float:left !important;
+      width:450px !important;
+}
+#mostVisitedArea{
+      float:right !important;
+      width:450px !important;
+}
+#mostVisitedArea .roundedBorderBottom ul li{margin-bottom:15px !important;}
+#mostVisitedArea .roundedBorderBottom{
+      height:273px;
+      *height:271px;
+}
+#ulFaqs{
+	padding:0 0 20px 15px;
+	margin:0 0 20px 0;
+	border-bottom:2px solid #ccc;
+}
+#ulProductRecall{
+	padding-left:15px;
+	margin-top:0;
+	margin-left:0;
+}
+#ulFaqs li, #ulProductRecall li{padding-bottom:10px;}
+#ulFaqs li a, #ulProductRecall li a{text-decoration:underline;}
+/* Alphabetical lists as used on the View All Brands pages*/
+* html div#alphaList{padding:16px 0px 16px 19px;}
+#alphaList #alphaLinks{
+	border-bottom:1px solid #BEBDBD;
+	padding:0 19px 21px 19px;
+	margin:0 -19px 0 -19px;
+}
+#alphaList #alphaLinks .spanDivider{padding:0 5px 0 5px;}
+#alphaList h3{padding:15px 0 0 4px;margin:0;}
+#alphaList #alphaLinks a{
+	white-space:nowrap;
+	font-weight:bold;
+	color:#e97400;
+}
+#alphaList ul{
+	margin:0;
+	padding:0 0 0 4px;
+	list-style:none;
+}
+/* Site Map Lists */
+#siteMap h3{
+	padding:0;
+	margin:0 10px 0 0;
+	background-color:#ddd;
+	padding:5px;
+}
+#siteMap h4{
+	padding:2px 5px;
+	margin:0;
+	font:bold 12px Arial, Helvetica, sans-serif;
+	color:#666;
+}
+#siteMap ul{
+	margin:0;
+	padding:0 0 15px 13px;
+	list-style:none;
+}
+#alphaList ul li a, #siteMap ul li a{text-decoration:none;}
+#alphaList #alphaLinks a:hover, #alphaList ul li a:hover, #siteMap h3 a, #siteMap ul li a:hover{text-decoration:underline;}
+/* =Tables
+--------------------------------------------------------------------- */
+/* class used to right align subtotal and total columns on the Shopping Cart and Submit Order pages */
+.tdTotal, .thTotal{text-align:right;font-weight:bold;}
+/* special classes used for the Easy Pay Installment Table */
+.tdBodyHeading, .tdBodyFooter{background-color:#ebeae4;font-weight:bold;}
+/* defect 6151 */
+.tdBodyHeading_new{text-align:right;}
+.tdBodyHeading_div{background:#EBEAE4;padding:7px;border:1px solid #BEBDBD;}
+.esy_pagination{float:right;}
+/*LiquidHub Build 337 - EZPay by Month Layout issues*/
+.date_head{padding-bottom:0px !important;background:#666;height:auto;padding-top:5px;color:#fff;vertical-align:middle;}
+.date_head th{padding:7px;}
+table.border_sides{border:1px solid #BEBDBD;border-top:none;}
+td.bor_bot{border-bottom:1px solid #BEBDBD;}
+.trSubtotal{font-weight:bold;}
+.trPastDue{color:#f00;}
+/*Build 1.006:LiquidHub - Defect 10755*/
+.grid_bor_bot tr td{border-top:1px solid #ccc;}
+.grid_bor_top td{border-top:1px solid #ccc !important;}
+#h2RoundedBorderTop table{margin:0;padding:0;height:20px;}
+.rnd_grid_head{line-height:12px !important;margin-top:7px;margin-bottom:0px !important;}
+.border_top td{border-top:1px solid #EBEAE4;}
+/*Build 1.009:LiquidHub - Defect 14175*/
+.easy_pay_grid_col1{float:left;width:85px;text-align:center !important;}
+.easy_pay_grid_col2{float:left;width:83px;padding-left:14px;}
+.easy_pay_grid_col3{float:left;width:30px;padding-left:14px;}
+.easy_pay_grid_col4{float:left;width:330px;padding-left:14px;}
+.easy_pay_grid_col4 a{color:#000 !important;}
+.easy_pay_grid_col5{float:left;width:105px;padding-right:10px;font-weight:normal;}
+.easy_pay_grid_col6{float:left;width:33px;text-align:right;}
+.easy_pay_grid_col7{float:left;width:128px;padding-left:15px;_padding-left:5px;}
+.easy_pay_grid_col8{float:left;width:335px;padding-left:14px;_padding-left:24px;}
+.easy_pay_grid_col4_5{float:left;width:435px;padding-right:10px;padding-left:14px;text-align:right;} 
+.padd_lft_20_ie{_padding-left:15px;} 
+div.bor_bot1{border-bottom:1px solid #BEBDBD;}
+a.arrow_1{
+*background:url(../images/aro_rt_ora.gif) no-repeat left center;
+*color:#e97400;
+*padding:0 0 0 9px !important;
+*font-weight:bold;
+*text-decoration:none;
+*white-space:nowrap;
+*display:block;
+_margin-top:0 !important;
+}
+#h2OrderStatusTableTitle table tr th{_padding-top:5px;_padding-bottom:0;}
+.tdBodyHeading_leftspace, .trSubtotal .tdTotal{font-weight:bold;}
+
+/* END of special classes used for the Easy Pay Installment Table */
+.orderTable th, .orderTable td{
+	padding:0 7px 0 0;
+	line-height:normal;
+}
+.orderTable th{border-bottom:1px solid #c6c6c8;}
+#divContent #tblAddressBook tbody td ul{
+	padding:0;
+	margin:0;
+	border:0;
+}
+#divContent #tblAddressBook tbody td ul li{
+	line-height:17px;
+	list-style:none;
+	background:url(../images/aro_rt_gry.gif) no-repeat left center;
+	padding-left:9px;
+}
+#divContent #tblAddressBook td ul li a{
+	color:#333;
+	background:none;
+	text-decoration:none;
+	padding:0;
+}
+#divContent #tblAddressBook td{line-height:17px;}
+#tblAddressBook th{padding:5px;}
+#tblENewsletters a:hover, #divContent #tblAddressBook td ul li a:hover{text-decoration:underline;}
+/* Order Status */
+#divOrderStatusTable-all, #divOrderStatusTable-autoDeliveryPlans, #divOrderStatusTable-easyPayOrders, #divOrderStatusTable-easyPayOrders-installments, #divOrderStatusTable-waitlistOrders, #divOrderStatusTable-returnOrders, #divOrderStatusTable-byItemNumber, #divOrderStatusTable-byOrderNumber, #divEasyPayOrderStatusViewOptions{display:none;clear:both;}
+#frmAutoDeliveryPlanOrders{
+	display:none;
+	clear:both;
+	float:none;
+	padding:0 12px 0 10px;
+	margin:5px 0 5px 0;
+}
+#frmAutoDeliveryPlanOrders fieldset{
+	float:right;
+	margin:0;
+	white-space:nowrap;
+}
+#divOrderStatusOptions{padding:0 0 0 35px;}
+#divOrderStatusOptionsColumn1, #divOrderStatusOptionsColumn2, .column{
+	float:left;
+	padding-right:20px;
+}
+#divEasyPayOrderStatusViewOptions{float:left;}
+/* Order Details */
+#tblOrderDetailOrderTotal td{padding:0;line-height:normal;}
+#tblOrderDetailOrderTotal th{display:none;}
+#tblOrderDetailOrderTotal tfoot{font-weight:bold;}
+#tblOrderDetailsEasyPayTable-editable a{color:#e97400;}
+/*Returns*/
+.olListStep li{padding:10px 5px 0;}
+/* =Forms
+--------------------------------------------------------------------- */
+form{padding:0;margin:0;}
+form br{clear:both;}
+label{
+	width:160px;
+	display:inline-block;
+	padding-left:8px;
+	margin-left:7px;
+	font-weight:bold;
+	vertical-align:baseline;
+	*vertical-align:middle;
+}
+label.fullWidthLabel{width:auto;display:block;}
+label.inlineLabel, label.inlineLabelLeftOfSelect, label.inlineLabelLeftOfText, label.aboveLabel, label.cbLabel, label.rbLabel{
+	width:auto;
+	display:inline;
+	padding:0;
+	margin:0;
+}
+label.inlineLabel, label.cbLabel{font-weight:normal;}
+label.inlineLabelLeftOfSelect, label.inlineLabelLeftOfText{margin:0 13px 0 0;}
+label.required{background:url(../images/txt_asterisk.gif) no-repeat left top;}
+label#lblYourMessage, label#lblProductDescription{vertical-align:top;}
+.required.instructions{
+	margin-top:30px;
+	margin-bottom:0;
+	padding-top:0;
+	padding-bottom:0;
+	display:block;
+}
+label.taLabel{
+	vertical-align:top;
+	margin-top:1px;
+	_margin-top:2px;
+}
+span.taSpan{width:660px;}
+#frmEditShipment span.taSpan{width:300px;}
+input.cb{
+	height:13px;
+	width:13px;
+	margin:0 5px 4px 0;
+	padding:0;
+}
+label.rbLabel{
+	font-weight:normal;
+	margin:0 0 0 4px;
+}
+form fieldset span label.rbLabel{font-size:12px;}
+input.rb{
+	font-size:13px;
+	margin:0;
+	padding:0;
+}
+.cbGroup .access, .rbGroup .access{display:none;}
+.cbGroup label, .rbGroup label{
+	margin-bottom:5px;
+	display:inline-block;
+}
+.cbGroup label{
+	*display:inline;
+	*float:left;
+	position:relative;
+	*top:-2px;
+	width:840px;
+}
+.cbGroup input.cb{
+	vertical-align:top;
+	*float:left;
+}
+.rbGroup input.rb{
+	vertical-align:top;
+	_margin-top:-2px;
+}
+/* Checkout Bill-to Ship-to:Same as Bill-to Address, Ask Us Live Method screen, Watch QVC Live Method screen, Contact Email Would You Like A Reply Field */
+#divDifferentShipToAddress, #divRadioGroupSelectAFont, #divAskUsLiveItem, #divWatchQvcLiveItem, #divWouldYouLikeAReplyField{
+	margin:-15px 0 0 175px;
+	padding:0 0 5px 0;
+}
+#divDifferentShipToAddress label, #divAskUsLiveItem label.autoWidth, #divWatchQvcLiveItem label.autoWidth, #divMembershipAreaField label, #divOrderIdentificationField label, #divOrderQuestionField label, #divWouldYouLikeAReplyField label{width:auto;}
+/* Checkout Sign In screen */
+#divUseDefaults{
+	margin:-15px 0 0 258px;
+	padding:7px 0 0 7px;
+}
+#divUseDefaults label{width:200px;}
+/* Checkout Payment Method screen */
+#divPaymentCredit{padding:7px 0 7px 7px;}
+#divPaymentCredit label{width:840px;}
+#divAskUsLiveItem label{width:440px;}
+#divWatchQvcLiveItem label{width:400px;}
+#divContactEmail{display:none;}
+/* Contact Email Membership Area Field, Order Identification Field, and Would You Like A Reply Field*/
+#divMembershipAreaField, #divOrderIdentificationField, #divOrderQuestionField, #divGiftWrapOptionField{
+	margin:5px 0 0 175px;
+	padding:0 0 5px 0;
+}
+/* Shopping Cart Gift Wrap Option Field */
+#divGiftWrapOptionField{margin-top:0;}
+#divGiftWrapOptionField label{width:200px;}
+#divRadioGroupSelectAFont input.rb, #divRadioGroupSelectAFont label.rbLabel, #divRadioGroupSelectAFont span.inlineInstructions, #divRadioGroupSelectAFont span.inlineInstructions img{
+	display:inline;
+	width:auto;
+	padding:0;
+	vertical-align:middle;
+}
+#divRadioGroupSelectAFont label.rbLabel{margin-top:1px;}
+input.text, input.password, select{
+	padding:0 0 1px 0;
+	margin:0 0 5px 0;
+	_margin:0 0 3px 0;
+	border:1px solid #b6b2a6;
+	font-size:13px;
+	color:#333;
+	vertical-align:baseline;
+	_vertical-align:middle;
+	line-height:14px;
+}
+input.rbAdjacentToText{margin:0 0 0 7px;}
+textarea{
+	padding:0;
+	margin:0 0 5px 0;
+	border:1px solid #b6b2a6;
+	font-size:13px;
+	color:#333;
+}
+form fieldset span{
+	padding:1px 0;
+	display:inline-block;
+	margin:0 0 5px 0;
+	_margin:0 0 3px 0;
+	vertical-align:baseline;
+	_vertical-align:middle;
+}
+.instructions{font-weight:normal;}
+.instructions_green{color:#009900;font-weight:bold;}
+/* used for instructions that appear to the right of form fields */
+.inlineInstructions{
+	margin-left:7px;
+	vertical-align:baseline;
+	_vertical-align:middle;
+}
+span.inlineInstructions{
+	padding:0;
+	display:inline;
+	margin:0 0 0 7px;
+	font-size:12px;
+}
+span.inlineInstructions img{vertical-align:middle;}
+span.inlineExampleImage img{
+	padding:0;
+	display:inline;
+	margin:0;
+	vertical-align:top;
+}
+#frmCustomJeansStep1 .h2RoundedBorderTop, #frmCustomJeansStep2 .h2RoundedBorderTop, #frmCustomJeansStep3 .roundedBorderAll, #frmCustomJeansStep4 .h2RoundedBorderTop, #frmCustomJeansStep5 .h2RoundedBorderTop, #frmCustomJeansStep1 h3, #frmCustomJeansStep2 h3{clear:both;}
+#frmCustomJeansStep1 fieldset, #frmCustomJeansStep2 fieldset, #frmCustomJeansStep4 fieldset{
+	float:left;
+	width:136px;
+	margin:0 10px 10px 0;
+	_margin:0 5px 5px 0;
+}
+#frmCustomJeansStep1 .rbLabel, #frmCustomJeansStep2 .rbLabel, #frmCustomJeansStep3 .rbLabel, #frmCustomJeansStep4 .rbLabel{
+	display:inline-block;
+	width:116px;
+	_width:112px;
+	_margin-top:4px;
+}
+#frmCustomJeansStep1 .rb, #frmCustomJeansStep2 .rb, #frmCustomJeansStep3 .rb, #frmCustomJeansStep4 .rb{vertical-align:top;}
+.indent{margin-left:30px;}
+.indentedFields{margin:15px 0 15px 30px;}
+/* used for instructions that need to be indented like form fields and are associated with a particular form field */
+.indentedFieldInstructions{
+	clear:both;
+	margin:0 0 15px 179px;
+	*margin-top:5px;
+	_margin-top:0;
+}
+/* used for instructions that need to be indented like form fields, but are not associated with any particular form field */
+.indentedInstructions{margin:15px 0 15px 178px;}
+.indentedInstructionsSignIn{margin:15px 0 15px 265px;}
+#divCardApplicationThankYou h2{margin-top:0;}
+#tblNewPaymentMethod #divBillMeLater label.access{display:none;}
+#tblNewPaymentMethod #divBillMeLater fieldset{margin:0 0 5px 0;}
+#tblNewPaymentMethod #divBillMeLater #ifBillMeLaterTermsAndConditions{
+	width:100%;
+	_width:850px;
+	height:150px;
+	margin-top:5px;
+	border:1px solid #b6b2a6;
+	background-color:#e0dfe3;
+	overflow:auto;
+	_overflow:scroll;
+}
+/* =Buttons
+--------------------------------------------------------------------- */
+#divButtons, .divButtons, #divFormButtons, .divFormButtons{
+	clear:both;
+	padding:0;
+	margin:25px 0 0 0;
+}
+#frmApplyForQCardDisclaimer #divButtons{
+	margin-bottom:30px;
+	*margin-bottom:0;
+}
+#frmSignOut #divButtons, #frmEmailAddress #divButtons{*margin-bottom:30px;}
+/* 4934  */
+.divButtons{
+	padding-bottom:30px;
+	*padding:0;
+}	
+.outline #divButtons, .outline .divButtons, .outline #divFormButtons, .outline .divFormButtons, .roundedBorderBottom .outline #divButtons, .roundedBorderBottom .outline .divButtons, .roundedBorderBottom .outline #divFormButtons, .roundedBorderBottom .outline .divFormButtons{margin-bottom:3px;}
+#divFormButtons, .divFormButtons{margin-left:178px;}
+/* Sign in page */
+#divCreateQvcAccountSignIn #divButtons{margin:27px 0;}
+#frmSignIn #divFormButtons{margin:0 0 0 265px;}
+#divSpeedBuySignIn #divFormButtons{margin-bottom:15px;}
+#divContent .embeddedButtons{margin-bottom:22px;}
+/* Product Detail and Review Selection pages */
+#frmProductDetail #divButtons, #frmProductDetailReviewSelection #divButtons{margin:7px 0;}
+#frmProductDetail #divButtons input{margin:0;}
+/* Checkout Sumbit Order, Order Details Confirm Easy Pay Payment Change, Order Details Confirm Easy Pay Remaining Balance Change */
+.divOrderTotalButtons{
+	width:240px;
+	height:65px;
+	padding:0;
+	margin:10px 0;
+	float:right;
+}
+#divCheckoutSurvey{display:none;}
+/* Compare Selected Items buttons on the Product Listing pages */
+.divCompareItems input.primaryButton{margin:0 10px 0 6px;}
+input.primaryButton, input.secondaryButton, input.secondaryButton1, input.primaryButtonAlignVertical, input.secondaryButtonAlignVertical, input.buttonRemoveProduct, input.buttonClose{
+	background:url(../images/btn_bkg_grn.gif) left center no-repeat;
+	border:0;
+	height:25px;
+	text-align:left;
+	text-transform:uppercase;
+	font:bold 11px Verdana, Geneva, sans-serif;
+	letter-spacing:-1px;
+	color:#fff;
+	cursor:pointer;
+	margin:0 10px 0 0;
+	padding:0 8px 2px 24px;
+	*width:auto;
+	*overflow:visible;
+}
+input.secondaryButton, input.secondaryButton1{color:#333;background:url(../images/btn_bkg_wht.gif)  left center no-repeat;}
+input.secondaryButton1{margin:-6px 10px 0 0;} /* Defect 5177*/
+input.primaryButtonAlignVertical{margin:2px 0 3px 0;}
+input.secondaryButtonAlignVertical{
+	background:url(../images/btn_bkg_transparent_short.gif) left center no-repeat;
+	height:14px;
+	color:#333;
+	margin:2px 0 2px 0;
+	padding-top:1px;
+}
+input.buttonRemoveProduct{
+	background:url(../images/x_12_pixel.gif) no-repeat left center;
+	height:14px;
+	color:#333;
+	margin:0;
+	vertical-align:middle;
+	padding:0 8px 0 14px;
+	*padding:0 8px 0 18px;
+}
+input.buttonClose{
+	float:right;
+	display:inline;
+	background:url(../images/btnClose.gif) no-repeat left center;
+	color:#333;
+	margin:-4px 10px 0 0;
+	padding:0 8px 2px 14px;
+	*padding:1px 8px 0 18px;
+}
+input.calendarButton{
+	background:url(../images/ico_cal2.gif) no-repeat;
+	border:0;
+	width:21px;
+	height:18px;
+	line-height:25px;
+}
+input.arrowButton{
+	background:url(../images/arrowGrey.gif) no-repeat;
+	border:0;
+	width:13px;
+	height:13px;
+	vertical-align:middle;
+	margin:0 0 0 4px;
+}
+/* Wish List */
+#divWishList{
+	width:686px;
+	float:left;
+	padding-bottom:35px;
+	*padding-bottom:0;
+}
+#divWishListShare{width:225px;float:right;}
+/* Sign In */
+#divExistingQvcAccountSignIn{width:552px;float:left;}
+#divCreateQvcAccountSignIn{width:352px;float:right;}
+#divExistingQvcAccountSignIn .outline, #divCreateQvcAccountSignIn .outline{height:180px;}
+#divCreateQvcAccountSignIn p{margin:0;padding:0;}
+/*Build 1.007 - SignIn ER*/
+.signInRoundedBorderAll{
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #BEBDBD;
+}
+.signInRoundedBorderAll .outline{
+	padding:9px 0 10px 10px;
+	_padding:9px 0 10px 0;
+	margin:0;
+}
+#signIn .column{
+	float:left;
+	padding:10px 0 0 0;
+}
+.columnWidth{width:260px;}
+#frmSignIn .rbLabel{width:auto;}
+#divSignInDefaultShip_2b, #divSignInDefaultShip{
+	margin-left:265px;
+	display:block;
+	clear:both;
+	width:450px;
+}
+#divSignInDefaultShip{margin-left:381px;visibility:hidden;}
+.cbSignIn{
+	vertical-align:top;
+	margin:0;
+	padding:0;
+}
+#frmSignIn .cbText{
+	font-weight:normal;
+	margin:0 0 0 0px;
+	padding:0;
+	width:300px;
+}
+.customerAlert{
+	width:680px;
+	margin:5px auto 10px auto !important;
+	text-align:center;
+	padding:10px !important;
+	background-color:#FFFF99;
+	border:1px solid #BEBDBD;
+}
+.lblCustomerAlert{
+	font-weight:normal;
+	width:470px;
+	border:0;
+}
+.linkOverlayLinkRight{
+	border:0;
+	position:relative;
+	background:url(../images/aro_rt_gry.gif) no-repeat left 5px;
+	padding-left:18px;
+	margin-left:325px;
+	text-decoration:underline;
+}
+.pIndent{margin-left:8px;width:520px;}
+.fadeIn{background-color:#FFFF99;}
+.fadeOut{background-color:#FFF;}
+#parSecure{padding:8px 5px 5px 18px;}
+.linkUnderline{text-decoration:underline;}
+#frmSignIn{margin:5px 0 5px 2px;}
+#frmSignIn fieldset{padding-top:5px;}
+a.orangeArrow{
+	background:url(../images/aro_rt_ora.gif) no-repeat left 3px;
+	border:0;
+	text-align:left;
+	font:bold 12px Verdana, Geneva, sans-serif;
+	letter-spacing:-1px;
+	color:#e97400;
+	cursor:pointer;
+	margin:2px 10px 2px 5px;
+	padding:0 8px 2px 10px;
+	text-decoration:none;
+	text-transformation:lowercase;
+}
+a.orangeArrow:hover{text-decoration:underline;}
+/*LiquidHub Build 337 - InsideQ Member Enhancement */
+#divCreateQvcAccountSignIn div.insideQ{margin-top:5px !important;margin-bottom:15px !important;}
+.insideQNotMember{margin-top:40px !important;margin-bottom:8px !important;}
+/* extra long label on sign in */
+#frmSignIn label{width:250px;}
+#frmSignIn label#lblReviewOrderTotal{width:580px;}
+#frmSignIn #cbReviewOrderTotal{vertical-align:top;}
+#frmSignIn #lblUseDefaults{display:inline-block;width:200px;}
+/* =Tabs on Product Detail Description
+--------------------------------------------------------------------- */
+.tabWrapper{
+	position:relative;
+	overflow:visible;
+	clear:both;
+}
+.tabWrapper .tabContainer h3{
+	position:relative;
+	z-index:200;
+	font:bold 12px Arial, Helvetica, sans-serif;
+	float:left;
+	width:auto;
+	height:27px;
+	margin:0 1px 0 0;
+	border:1px solid #fff;
+	border-bottom:none;
+	background:#e4e3e3;
+}
+.tabWrapper .selected h3{
+	position:relative;
+	z-index:200;
+	border:1px solid #bebdbd;
+	border-bottom:none;
+	background-color:#fff;
+	height:28px;
+}
+.tabWrapper .tabContainer h3 a{
+	text-decoration:none;
+	color:#333;
+	display:inline-block;
+	width:auto;
+	height:27px;
+	line-height:27px;
+	padding:0 23px;
+}
+.tabWrapper .tabContent{
+	width:715px;
+	position:absolute;
+	overflow:hidden;
+	top:-9999px;
+	left:-9999px;
+	border:1px solid #bebdbd;
+	padding:19px;
+}
+.tabWrapper .selected .tabContent{
+	top:28px;
+	left:0;
+	z-index:1;
+}
+/* =Tabs on My Account Edit Permanent Ship To Addrees *and* Checkout Edit Shipping Address
+--------------------------------------------------------------------- */
+/* Edit Permanent Ship to */
+#divPermanentShipToAddress, #divSelectFromAddressBook, #divSameAsBillTo{padding-top:10px;}
+#divPermanentShipToAddress, #divSelectFromAddressBook, #divSameAsBillTo, #frmEditPermanentShipToAddress #spanNicknameInstructions, #spanBirthdayInstructions, #ancBirthdayWhyLink, #spanPrimaryPhoneWhy{display:none;}
+/* tab navigation *//* font size changed to 16px for the deffect 4965 */
+#divPermanentShipToAddressOptions{
+	display:block;
+	clear:right;
+	height:35px;
+	border-bottom:1px solid #bebdbd;
+	font-size:16px;
+}
+#divPermanentShipToAddressOptions a{
+	display:block;
+	float:left;
+	height:28px;
+	line-height:28px;
+	border:1px solid #fff;
+	border-bottom:none;
+	padding:3px 25px;
+	background-color:#e4e3e3;
+	color:#000000;
+	margin-right:1px;
+	font-size:12px !important;
+	font-weight:bold;
+}
+#divPermanentShipToAddressOptions a:hover{text-decoration:none;}
+#divPermanentShipToAddressOptions h2{
+	font-size:16px;
+	margin:10px 0 15px;
+}
+/*LiquidHub Build 337 - Address Standardization*/
+div.NewClass{padding-top:20px;} 
+.inputErrorNew{border:1px solid #c00 !important;} 
+#Address_Verification_Main{width:335px;float:left;}
+div.alignClass{float:left;width:450px;}
+span .spanStyle{margin-bottom :5px;*margin-bottom :0;*margin-top :0;}           
+.selstate{border :0;margin-bottom :0;}           
+.divSpace{*margin-top:20px;padding-top:20px;}
+/*selected tab */
+.selecttabInlineStyle{margin-top:0;padding:0;}
+.editCurrent #tabNav-editCurrent, .selectFromAddressBook #tabNav-selectFromAddressBook, .sameAsBillTo #tabNav-sameAsBillTo{
+	border:1px solid #bebdbd;
+	border-bottom:none;
+	background-color:#fff;
+	height:29px;
+	font-size:12px;
+	position:relative;
+	margin-bottom:-1px;
+}
+/* Which permanent ship to option to display */
+.editCurrent #divPermanentShipToAddress, .selectFromAddressBook #divSelectFromAddressBook, .sameAsBillTo #divSameAsBillTo{display:block}
+#divSelectFromAddressBook #divAddressBookAddresses div{
+	float:left;
+	width:218px;
+	height:85px;/* tall enough for a 5-line address */
+	margin-bottom:10px;
+}
+#divSelectFromAddressBook input.rb{
+	margin-right:5px;
+	vertical-align:top;
+}
+#divSelectFromAddressBook label.rbLabel{/* gets rid of the inherited padding-left for the required asterisk */
+	display:inline-block;
+	width:170px;
+	padding-left:0;
+	margin-left:0;
+}
+#divSelectFromAddressBook .divButtons{margin-top:20px;}
+#frmAddNewAddress #spanBirthdayInstructions, #frmPersonalInformation #spanBirthdayInstructions, #frmPersonalInformation #ancBirthdayWhyLink{display:inline;}
+#frmPersonalInformation #spanPrimaryPhoneWhy{display:inline;margin-left:5px;}
+/* Order Status */
+#fsOrderStatusOptions label{font-weight:normal;}
+#divOrderStatusResults{margin-top:15px;}
+/* remove margins in or */
+#divOrderStatusResults table p, #divAutoDeliveryPlanShipments table p{margin:0;padding:0;line-height:normal;}
+#divOrderStatusResults a, #tblAutoDeliveryPlanShipments a{color:#e97400;font-weight:bold;}
+/* hides Next Shipment Label on Auto Delivery Details */
+#lblAutoDeliveryNextShipmentDate, .receipt #divContent a, #divOrderInstructionsMessage, #divReceiptOrderNumber{display:none;}
+#imgAutoDeliveryDateCalendarWidget{vertical-align:text-bottom;padding-left:5px;}
+#tblAutoDeliveryPlanShipments .arrow{margin-right:10px;}
+#divOrderStatusResults td.tdText a, #tblAutoDeliveryPlanShipments td.tdText a{color:#333;}
+#divContent #lblByItemNumber, #divContent #lblByOrderNumber{display:inline-block;width:115px;}
+#divPagingResultsTop{padding-bottom:20px;text-align:right;}
+#divPagingResultsBottom{padding-top:20px;text-align:right;}
+#divOrderStatusResults .outline{padding:10px 20px;}
+#frmOrderTrackingStatus div{
+	_overflow:visible;
+	_height:1px;
+}
+#frmOrderTrackingStatus div p{
+	float:left;
+	margin-top:0;
+	width:auto;
+}
+/* Used to make the email address field wider than normal */
+.emailInput{width:216px;}
+/* Your receipt */
+.receipt #divOrderInstructionsMessage{
+	display:block;
+	clear:both;
+	margin-top:15px;
+}
+.receipt #divReceiptOrderNumber{
+	margin-top:20px;
+	display:block;
+}
+/* =Links
+--------------------------------------------------------------------- */
+a.arrow, a.arrow1{
+	background:url(../images/aro_rt_ora.gif) no-repeat left center;
+	color:#e97400;
+	padding:0 0 0 9px;
+	font-weight:bold;
+	text-decoration:none;
+}
+/*Defect 9432*/
+a.arrowOne{
+      color:#e97400;
+      padding:0 0 0 9px;
+      text-align:center;
+      white-space:nowrap;
+}
+/* Defect 5161 */
+a.arrow1{
+	background:url(../images/aro_rt_ora.gif) no-repeat left 4px;
+	width:121px;
+	display:block;
+}
+/*Defect 6829*/
+.arrow_1{
+ 	margin-top:15px !important;
+	overflow:hidden;
+	_margin-left:9px;
+}
+.arrow_bg{background:url(../images/aro_rt_gry.gif) no-repeat left 5px;padding-left:10px;}
+/*Defect 6478*/
+a.arrow2{
+	background:url(../images/aro_rt_gry.gif) no-repeat left center !important;
+	color:#333333;
+	padding:0 0 0 9px;
+	text-decoration:underline;
+	white-space:nowrap;
+}
+a.arrowSecondary{
+	background:url(../images/aro_rt_gry.gif) no-repeat left center;
+	padding:0 0 0 9px;
+	text-decoration:none;
+	white-space:nowrap;
+}
+a.arrowSecondary:hover{text-decoration:underline;}
+a.arrowEasyPay{
+	background:url(../images/aro_rt_grn.gif) no-repeat left center;
+	color:#88b220;
+	padding:0 0 0 9px;
+	font-weight:normal;
+	text-decoration:none;
+}
+#divTodaySpecialValueRssFeed p a{
+	background:url(../images/ico_rss.gif) no-repeat left top;
+	padding-left:30px;
+	display:inline-block;
+}
+a.arrowEasyPay:hover, a.arrowSecondary:hover, a.arrow1:hover, a.arrow:hover, .underline, a.underline{text-decoration:underline;}
+.center{text-align:center;}
+.bold, a.bold{font-weight:bold;}
+.normal, a.normal{font-weight:normal;}
+.color, a.color{color:#e97400;}
+.strikethrough{text-decoration:line-through;}
+#ancEditEmailAddress{margin-left:25px;}
+#ancEditEmailAddress img{vertical-align:bottom;}
+.print{
+	background:url(../images/ico_print.gif) no-repeat left center;
+	padding-left:20px;
+}
+.printQGuide{margin-right:10px;}
+.email{
+	background:url(../images/ico_email.gif) no-repeat left center;
+	padding-left:20px;
+}
+.spanDivider{padding:0 6px 0 6px;}
+.divPageLinks{text-align:right;}
+.divPageLinks span{color:#333;}
+.divPageLinks a{color:#e97400;}
+.divPageLinks span, .divPageLinks a{padding:0 2px;white-space:nowrap;font-weight:bold;}
+span.previous, a.previous{
+	color:#333;
+	background:url(../images/aro_lt_gry.gif) no-repeat left center;
+	padding:0 2px 0 9px;
+	font-weight:bold;
+}
+a.previous{
+	color:#e97400;
+	background:url(../images/aro_lt_ora.gif) no-repeat left center;
+}
+span.next, a.next{
+	color:#333;
+	background:url(../images/aro_rt_gry.gif) no-repeat right center;
+	padding:0 9px 0 2px;
+	font-weight:bold;
+}
+a.next{
+	color:#e97400;
+	background:url(../images/aro_rt_ora.gif) no-repeat right center;
+}
+/* =Footer
+--------------------------------------------------------------------- */
+#divFooter{
+	clear:both;
+	margin:31px 0 0 0;
+	padding:0;
+	width:917px;
+	font-size:11px;
+	color:#003;
+	text-align:left;
+}
+.home #divFooter{padding:0;margin:0;}
+#divFooter a{text-decoration:none;}
+#divFooter a.underline{text-decoration:underline;}
+#divFooter a:hover{text-decoration:underline;}
+#divFooter ul{list-style:none;}
+#divFooter li{line-height:15px;}
+#divFooter .footerTop ul, #divFooter .footerSeals ul{margin:0;padding-left:0;}
+#divFooter .footerMenuBox ul{padding-left:0;}
+#divFooter .footerSeals ul{margin:0;}
+.footerTop h5{margin:0 0 5px 0;font-size:16px;line-height:20px;color:#000;border-bottom:1px solid #C8C8C8;}
+#divFooter .footerTop{
+	background-color:#F3F3F3;
+	-webkit-border-radius:6px;
+	-moz-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #C3C3C3;
+	border-bottom-color:#DCDCDC;
+	-webkit-box-shadow:inset 2px 2px 3px 0 rgba(100,100,100,.2), inset -2px 0 3px 0 rgba(100,100,100,.2);
+	-moz-box-shadow:inset 2px 2px 3px 0 rgba(100,100,100,.2), inset -2px 0 3px 0 rgba(100,100,100,.2);
+	box-shadow:inset 2px 2px 3px 0 rgba(100,100,100,.2), inset -2px 0 3px 0 rgba(100,100,100,.2);
+	padding:10px;
+	margin:5px 0 10px 0;
+	font-size:12px;
+	line-height:12px;
+	zoom:1;
+}
+.footerTop .footerTopLeft{float:left;}
+#divFooter .footerTop .footerTopIconList{float:left;padding-left:20px;}
+.footerIconsLast{padding:0 0 0 55px !important;width:150px;}
+.footerTopIconList li, .footerTopIconGrid li{margin:6px 0 6px 8px;}
+.footerTopIconList li a{height:21px;line-height:21px;padding:4px 0 5px 28px;}
+.footerTopIconGrid{float:left;padding:0 30px 0 0;}
+.footerTopIconGrid li a{display:block;width:21px;height:21px;}
+.footerTopIconGrid span{display:none;}
+.footerTopIcon a{background:url(../images/footer-icons.gif) no-repeat;}
+.footerCommunity a{background-position:-1px -1px;font-weight:bold;}
+.footerBlogs a{background-position:-1px -27px;font-weight:bold;}
+.footerHosts a{background-position:-1px -53px;font-weight:bold;}
+.footerGiftCards a{background-position:-1px -79px;}
+.footerInsideQ a{background-position:-1px -105px;}
+.footerEmail a{background-position:-1px -131px;}
+.footerFacebook a{background-position:-1px -157px;}
+.footerYouTube a{background-position:-1px -183px;}
+.footerTwitter a{background-position:-1px -209px;}
+.footerPinterest a{background-position:-1px -235px;}
+.footerRSS a{background-position:-1px -261px;}
+.footerTumblr a{background-position:-1px -287px;}
+.footerTop .footerTopRight{width:310px;float:left;padding:0 0 0 40px;}
+.footerTopRight ul li{
+	background:url(../images/dark_arrow.gif) 0 5px no-repeat;
+	line-height:15px;
+	margin:13px 0 10px 10px;
+	padding-left:10px;
+}
+#divFooter .footerMenuBox{
+	-webkit-border-radius:6px;
+	-moz-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #C3C3C3;
+	border-bottom-color:#DCDCDC;
+	-webkit-box-shadow:inset 2px 2px 3px 0 rgba(100,100,100,.2), inset -2px 0 3px 0 rgba(100,100,100,.2);
+	-moz-box-shadow:inset 2px 2px 3px 0 rgba(100,100,100,.2), inset -2px 0 3px 0 rgba(100,100,100,.2);
+	box-shadow:inset 2px 2px 3px 0 rgba(100,100,100,.2), inset -2px 0 3px 0 rgba(100,100,100,.2);
+	padding:10px 10px 15px 10px;
+	margin:0 0 15px 0;
+	zoom:1;
+}
+.footerMenuBox ul{float:left;margin:0 68px 0 0;}
+.footerMenuBox ul.footerMenuQCard{width:140px;margin:0;}
+.footerMenuBox ul h5{font-size:12px;font-weight:normal;line-height:14px;margin:0 0 10px 0;border-bottom:1px solid #C8C8C8;}
+#divFooter .footerSeals{margin:0 0 15px 0;}
+.footerSeals .footerSealImg{width:700px;margin:0 auto;text-align:center;}
+.footerSeals li{display:inline;width:114px;}
+#divFooter .footerLinks{margin:0 0 15px 0;}
+.footerLinks .footerLinksMenu{
+	width:720px;
+	color:#666566;
+	margin:0 auto;
+	border:solid #E4E1D8;
+}
+.footerLinks .footerLinksTop{border-width:1px 0;}
+.footerLinks .footerLinksBottom{border-width:0 0 1px 0;}
+.footerLinksBottom div{float:left;width:360px;}
+#divFooter .footerLinksMenu a{color:#666566;}
+.footerLinksMenu ul{float:left;margin:0;padding:0 0 9px 0;width:180px;}
+.footerLinksMenu h5{font-size:11px;line-height:15px;font-weight:normal;margin:9px 0;}
+.footerMenuBox ul li, .footerLinksMenu ul li{
+	background:url(../images/footerarrow.gif) 0 5px no-repeat;
+	margin:1px 0 1px 9px;
+	padding-left:10px;
+}
+#divFooter .footerLegal{text-align:center;color:#666566;margin:0 0 8px 0;}
+.footerLegal .footerDisclaimer{font-size:10px;line-height:normal;width:700px;margin:0 auto;}
+.footerLegal .footerTrademark{margin:10px 0;}
+/* =Customer Service
+--------------------------------------------------------------------- */
+/* Used on the Corporate > About QVC > Media page */
+ul#ulCorporateAboutQvcMedia{list-style-type:none;margin:0;}
+ul#ulCorporateAboutQvcMedia li{
+	border-bottom:1px dashed #c4c0b4;
+	margin-top:10px;
+}
+ul#ulCorporateAboutQvcMedia li a{
+	display:block;
+	color:#7a7870;
+	padding-left:10px;
+	margin-bottom:10px;
+	text-decoration:underline;
+}
+/* Used on the Corporate > About QVC > Milestones page */
+ul.corporateAboutQvcMilestones li{margin-bottom:10px;}
+/* =Miscellaneous
+--------------------------------------------------------------------- */
+/* For My Account pages, may need to add .oneColumn for more specificity */
+h3+p{margin-top:0;}
+img.floatLeft{float:left;margin:0 10px 0 0;}
+img.floatRight{float:right;margin:0 0 10px 10px;}
+.clear{clear:both;}
+.fontSmall{font-size:10px;}
+.fontLarge{font-size:16px;}
+#fade{padding:15px;margin:0 0 15px 0;}
+#fade p{margin:0;}
+.highlight{background-color:#ff9;}
+span.required{color:#e97400;}
+span.or{
+	padding:0 17px;
+	display:inline-block;
+	font-weight:bold;
+}
+#tblOrderStatus-all span.or{
+	padding:0 8px;
+	display:inline-block;
+	font-weight:normal;
+}
+#tblOrderStatus-all .tdText{width:380px;}
+.pastDue{color:#f00;}
+a.productTour, a.pdfFile{
+	display:inline-block;
+	font-size:11px;
+	font-weight:bold;
+	line-height:21px;
+	background:url(../images/producttour_blue.jpg) no-repeat left center;
+	padding-left:20px;
+	color:#e97400;
+}
+a.pdfFile{background:url(../images/ico_pdf.gif) no-repeat left center;}
+/* My Account Auto Delivery Plan Detail structure */
+#divAutoDeliveryPlanDetails #divAutoDeliverPlanDetailsSummary div, #frmOrderDetail #divOrderDetailDetails div{
+	width:219px;
+	float:left;
+}
+#divOrderDetailDetails div{width:255px;float:left;}
+#divOrderDetailDetails div#divOrderDetailOrderTotal{width:111px;}
+#frmOrderDetail #divOrderDetailDetails div#divOrderDetailOrderTotal{width:219px;}
+#divOrderDetailOrderTotal h3, #divOrderDetailOrderTotal p{
+	text-align:right;
+	padding:0 36px 0 0;
+}
+#divAutoDeliveryPlanDetails h3, #divOrderDetailDetails h3{margin:0;}
+#divOrderDetailShippingAddress p, #divOrderDetailPaymentInformation p, #divOrderDetailBillingAddress p{
+	margin-bottom:0;
+	text-transform:uppercase;
+}
+.outline{padding:19px;margin:0 0 10px 0;}
+/* Defect 4550 */
+.nic_outline{padding:0;margin:0 0 10px 0;}
+.outlineNoTop{
+	border:1px solid #bebdbd;
+	border-top:none;
+	padding:19px;
+	margin:0 0 10px 0;
+}
+.outlineNoTopOrBottom{/*used on product detail */
+	border-left:1px solid #bebdbd;
+	border-right:1px solid #bebdbd;
+	padding:20px;
+	margin:0;
+}
+.outlineTopBottom{
+	border-top:1px solid #bebdbd;
+	border-bottom:1px solid #bebdbd;
+	padding:0 0 20px 0;
+	margin:0 0 15px 0;
+}
+.outlineNoBorder{
+	border:0;
+	padding:20px;
+	margin:0 0 10px 0;
+}
+.tuneInPromo{
+	margin:0 0 24px 0;
+	font-size:12px;
+	display:block;
+	_height:1px;/*fixes display in IE6*/
+}
+#divTemplate .tuneInPromo{margin:0;width:686px;}
+.noPromo .tuneInPromo{display:none;}
+.roundedBorderAll, .roundedBorderColorAll, .roundedBorderBottom, .roundedBorderTop{margin:0 0 10px 0;}
+.roundedBorderAll .outline, .roundedBorderTuneInPromo .outline{
+	border:0;
+	padding:16px 19px;
+	margin:0;
+}
+.watchQvcLive .roundedBorderAll .outline{padding:12px 4px;}
+.roundedBorderColorAll .outline{
+	background-color:#ddebbb;
+	margin:0;
+}
+.roundedBorderVideo .outline{
+	background-color:#e4e3e3;
+	border-left:1px solid #e4e3e3;
+	border-right:1px solid #e4e3e3;
+	margin:0;
+}
+.roundedBorderCardApplicationThankYou, .roundedBorderPaymentOptions{margin:10px 0;}
+.roundedBorderCardApplicationThankYou .outline, .roundedBorderPaymentOptions .outline, .roundedBorderBottom .outline{padding:16px 19px;margin:0;}
+.footerRoundedBorderAll .outline{
+	padding:9px 0 10px 10px;
+	_padding:9px 0 10px 0;
+	margin:0;
+}
+.roundedBorderTop .outline{
+	padding:24px 20px 20px 20px;
+	margin:0;
+}
+#divContent fieldset + p{margin-top:12px;}
+#parSecure{
+	background:url(../images/ico_lock.gif) no-repeat left center;
+	padding-left:18px;
+}
+.odd, .odd1{
+	background-color:#ebeae4;
+	padding:7px 7px;
+}
+.even, .even1{
+	background-color:#fff;
+	padding:7px 7px;
+}
+/*defect 4079*/
+.odd{_padding:0px 7px;}
+.even{_padding:2px 7px;}
+/* My Account Mobile Services */
+#divMyAccountMobileServicesQvcDotComNotifications div{padding:12px 13px;}
+#divMyAccountMobileServicesTsvOtoNotifications h3{
+	font-size:12px;
+	font-weight:bold;
+	padding:20px 0 10px 0;
+	clear:both;
+	display:block;
+	float:none;
+}
+#divMyAccountMobileServicesTsvOtoNotifications div{
+	float:left;
+	width:410px;
+	margin:0;
+	border:0;
+	padding:12px 13px;
+}
+select#MobilePhoneCarrier{margin-left:-3px;}
+#frmMobileServices fieldset{vertical-align:top;}
+/* My Account E-Mail Services */
+#divMyAccountEmailServicesTsvEmailNotifications h3{
+	font-size:12px;
+	font-weight:bold;
+	padding-top:20px;
+	clear:both;
+	display:block;
+	float:none;
+}
+#divMyAccountEmailServicesTsvEmailNotifications div, #divReturnsReasonForReturn div{
+	float:left;
+	width:423px;
+	margin:0;
+	border:0;
+	padding:7px 7px;
+}
+#divMyAccountEmailServicesTsvEmailNotifications p{clear:both;}
+.phoneNumber{white-space:nowrap;}
+.remindersLogo{
+	text-align:center;
+	float:right;
+	width:300px;
+}
+/*Build 1.006:LiquidHub - eNL Sign Up Enhancement */
+#frmEmailServices .divUnsubscribeMessage{
+	margin-bottom:8px;
+	margin-top:4px;
+	margin-left:10px;
+	font-weight:bold;
+}
+/* =Product Listing
+--------------------------------------------------------------------- */
+/* Tune In box above product listing*/
+#divTuneInPromoDesc{
+	float:left;
+	padding:0;
+	width:475px;
+}
+#divTuneInPromoEmail{
+	float:right;
+	padding:17px 0;
+	margin:0;
+	font-size:11px;
+}
+.divPageView, .divPageView1{
+	background-color:#666566 !important;
+	color:#fff;
+	height:35px;
+	line-height:35px;
+	margin:0;
+	padding:0 20px;
+	display:block;
+	float:none;
+	clear:both;
+	font-weight:bold;
+}
+/* ---- Defect:3929*/
+.divPageView1{
+	margin:-6px 0 0 0;	
+	*margin-top:-8px;
+	_margin-top:0;
+}
+.divPageViewText, .divPageViewText1{float:left;}
+.divItems{
+	float:right;
+	height:35px;
+	line-height:35px;
+	margin:0;
+	padding:0;
+}
+.divItems label{
+	display:inline-block;
+	vertical-align:baseline;
+}
+.divItems select{
+	vertical-align:middle;
+	margin-top:3px;
+}
+/* List Description and Sort by drop down */
+.listDescriptionProductSortWrapper{
+	display:block;
+	clear:both;
+	float:none;
+	padding:0 12px 6px 10px;
+	margin:0;
+}
+/*.noPromo #divContentNav{margin-top:40px;}*/ /*TBR*/
+.noPromo #divContentNav{margin-top:26px;}
+h2.listDescription{display:none;}/*Removing header from Gallery*/
+.divProductSort{float:right;}
+.divProductSort *{vertical-align:middle;}
+.divProductSort select{margin:0;padding:0;}
+/* Show and hide individual sections of the page */
+.listDescriptionProductSortWrapper.bottom{padding:6px 12px 0 10px;}
+.bottom .divPageView, .bottom .divProductSort, .divPageView1{display:block;}
+.banner{margin:0 0 10px 0;}
+/* Compare Items and Page Links */
+.divCompareItemsPageLinksWrapper{
+	padding:20px 0 20px 0;
+	clear:both;
+	margin:0;
+}
+.divCompareItems{float:left;}
+.gallery .divPageLinks, .list .divPageLinks, .textOnly .divPageLinks, .wishList .divPageLinks, .wishListShared .divPageLinks{
+	margin:0 0 20px 0;
+}
+.gallery .divPageLinks, .list .divPageLinks, .textOnly .divPageLinks{
+	margin:5px 0 0 0;
+	float:right;
+}
+#divOrderStatusResults #divOrderStatusResultsPagingLinksTop .divPageLinks{margin:6px 0 10px 0;}
+#divOrderStatusResults #divOrderStatusResultsPagingLinksBottom .divPageLinks{margin:10px 0 2px 0;}
+/* Left and Right Border surrounding product listing */
+.divBorder{
+	border-left:1px solid #bebdbd;
+	border-right:1px solid #bebdbd;
+	padding:0 19px 0 19px;
+	margin:0;
+	display:block;
+	float:none;
+	_height:1px;
+	_overflow:visible;
+	zoom:1;
+}	
+/* Gallery vs List vs Text Only */
+.ancGallery, .ancList, .ancTextOnly{
+	background:url(../images/uk_ico_txt.gif) no-repeat left center;	
+	padding-left:20px;
+	font-weight:bold;
+	color:#fbca95;
+}
+.ancGallery{
+	background:url(../images/uk_ico_gal.gif) no-repeat left center;	
+	margin-left:6px;
+}
+.gallery .ancGallery, div.programGuidePageView div.divPageView div.divPageViewText span.ancGallery{
+	background:url(../images/uk_ico_gal_sel.gif) no-repeat left center;	
+	color:#fff;
+	font-weight:bold;
+}
+.gallery a.ancGallery, .gallery span.ancList, .gallery span.ancTextOnly, .list span.ancGallery, .list a.ancList, .list span.ancTextOnly, .textOnly span.ancGallery, .textOnly span.ancList, .textOnly a.ancTextOnly{display:none;}
+.gallery a.ancList:hover, .gallery a.ancTextOnly:hover, .list a.ancGallery:hover, .list a.ancTextOnly:hover, .textOnly a.ancGallery:hover, .textOnly a.ancList:hover{
+	text-decoration:underline;
+	font-weight:bold;
+}
+.list .ancList, div.programGuidePageView div.divPageView div.divPageViewText span.ancList, .textOnly .ancTextOnly{
+	background:url(../images/uk_ico_lst_sel.gif) no-repeat left center;	
+	color:#fff;
+	font-weight:bold;
+}
+.textOnly .ancTextOnly{background:url(../images/uk_ico_txt_sel.gif) no-repeat left center;	}
+/* Product Information */
+.productName, .productInfoNew{
+	font-weight:bold;
+	margin:0;
+	padding:0;
+	clear:both;
+	word-wrap:break-word;
+}
+.productName a{color:#333;}
+.productInfoNew, .productOption a, .productTopRated a{color:#e97400;}
+.productOption{padding-bottom:2px;}	
+.productPrice{padding:0;margin:0;clear:both;}
+.productQvcPrice{clear:both;display:block;}
+.productSpecialPrice{
+	color:#e97400;
+	clear:both;
+	display:block;
+}
+#divContent .divProduct .divProductInfo .productRatings{
+	margin:6px 0 4px 0;
+	padding:0;
+}
+#divContent .divProduct .divProductInfo .productRatings img, .spanRatingStars img{vertical-align:middle;}
+#divContent .divProduct .divProductInfo .productRatings .productNumberOfReviews{
+	padding:0 0 0 7px;
+	vertical-align:middle;
+}
+.productEasyPayments{
+	color:#88b220;
+	font-weight:bold;
+	clear:both;
+}
+.spanStrike{
+	text-decoration:line-through;
+	*text-decoration:none;/*IE6-7 hack for strikethrough placement*/
+	*background:url("../../../../images/IEstrikethrough.gif") repeat-x center 65%;
+}
+.productSoldOut{
+	text-transform:uppercase;
+	font-weight:bold;
+	color:#e97400;
+	display:block;
+	padding:0 0 15px 0;
+}
+/* Gallery view */
+.gallery .divProduct{
+	float:left;
+	width:204px;
+	height:490px;
+	margin:0;
+	padding:10px 11px 10px 0;
+	border-bottom:1px solid #c4c0b4;
+}
+.gallery .divProductImageAbove{margin-bottom:7px;}
+.gallery .divItemNumberVideoWrapper, .quickCompare .divItemNumberVideoWrapper{
+	border-top:1px solid #F1F0EB;
+	margin-bottom:7px;
+	clear:both;
+}
+.gallery .divItemNumber, .gallery .divBrand, .list .divItemNumber, .list .divBrand, .textOnly .divItemNumber, .textOnly .divBrand, .wishListShared .divItemNumber, .list .divBrand, .quickCompare .divItemNumber, .quickCompare .divBrand, .wishList .divItemNumber, .list .divBrand, .shoppingCart .divItemNumber, .shoppingCart .divBrand{
+	float:left;
+	background-color:#F1F0EB;
+	font-weight:bold;
+	width:102px;
+	height:25px;
+	line-height:24px;
+	padding:0;
+	margin:0;
+}
+.list .divItemNumber, .list .divBrand, .textOnly .divItemNumber, .textOnly .divBrand{width:70px;}
+.quickCompare .divItemNumber, .quickCompare .divBrand{width:86px;}
+.wishListShared .divItemNumber, .wishListShared .divBrand, .wishList .divItemNumber, .wishList .divBrand{width:64px;}
+.shoppingCart .divItemNumber, .shoppingCart .divBrand{width:150px;}
+.gallery .divItemNumber a, .gallery .divBrand a{padding:0 0 0 15px;}
+.gallery .divVideo, .textOnly .divVideo, .list .divVideo,.quickCompare .divVideo, .wishList .divVideo, .wishListShared .divVideo{
+	float:right;
+	width:96px;
+	height:25px;
+	line-height:24px;
+	text-align:center;
+	padding:0;
+	margin:0;
+}
+.list .divVideo{width:58px;}
+.textOnly .divVideo{float:left;width:58px;}
+.quickCompare .divVideo{width:92px;}
+.wishList .divVideo, .wishListShared .divVideo{width:64px;}
+.gallery .divVideo a, .list .divVideo a, .textOnly .divVideo a, .quickCompare .divVideo a, .wishList .divVideo a, .wishListShared .divVideo a, 
+.shoppingCart .divVideo a{
+	color:#e97400;
+	font-size:11px;
+	font-weight:bold;
+	background:url(../images/ico_tv_or.gif) no-repeat left center;
+	padding:6px 0 0 18px;
+}
+.gallery .divProductInfo{
+	height:150px;
+	width:189px;
+	clear:both;
+	margin:7px 0 0 15px;
+	padding:12px 0 0 0;
+	*padding:5px 0 0 0;/*For Defect 8673*/
+}
+.gallery .divProductInfo .productOption, .gallery .divProductInfo .productQuantity, .gallery .divProductInfo .productComments, .gallery .divProductInfo .productQuantityShared, .gallery .divProductInfo .productCommentsShared, .gallery .productTable, .gallery .productSoldOut, gallery .divProductButtons .btnRemove, .gallery .divProductImageBottom, .gallery .divBrand, .list .divBrand, .list .divProductImageAbove, .list .divProductInfo .productOption, .list .divProductInfo .productQuantity, .list .divProductInfo .productComments, .list .divProductInfo .productQuantityShared, .list .divProductInfo .productCommentsShared, .list .productTable, .list .productSoldOut, .list .divProductButtons .btnRemove, .textOnly .divBrand, .textOnly .divProductImageAbove, .textOnly .divProductImageBottom, .textOnly .divProductInfo .productOption, .textOnly .divProductInfo .productQuantity, .textOnly .divProductInfo .productComments, .textOnly .divProductInfo .productQuantityShared, .textOnly .divProductInfo .productCommentsShared, .textOnly .productTable, .textOnly .productSoldOut, .textOnly .divProductButtons .btnRemove, .quickCompare .divBrand, .quickCompare .divProductInfo .productOption, .quickCompare .divProductInfo .productQuantity, .quickCompare .divProductInfo .productComments, .quickCompare .divProductInfo .productQuantityShared, .quickCompare .divProductInfo .productCommentsShared, .quickCompare #divContent div.productSelectToCompare, .quickCompare .productTable, .quickCompare .productSoldOut, .quickCompare .divProductButtons, .quickCompare .divProductButtons .btnRemove, .quickCompare #trCompareDescription .divProductImageItemNumberVideoWrapper, .quickCompare #trCompareDescription .divProductButtons, .quickCompare #trCompareButtons .divProductImageItemNumberVideoWrapper, .quickCompare #trCompareButtons .divProductInfoSelectToCompareWrapper, .quickCompare .divProductImageBottom, .wishList .divBrand, .wishList .divProductImageAbove, .wishList .divProductInfo .productQuantityShared, .wishList .divProductInfo .productCommentsShared, .wishList .divProductButtons .btnAddToWishList, .wishList .divProductButtons .btnRemove, .wishList #parShippingAndHandlingPrice, .wishList #divContent div.productSelectToCompare, .wishList .productTable, .wishList .productSoldOut, .wishListShared .divBrand, .wishListShared .divProductImageAbove, .wishListShared .divProductInfo .productQuantity, .wishListShared .divProductInfo .productComments, .wishListShared #divContent div.productSelectToCompare, .wishListShared .productTable, .wishListShared .productSoldOut, .wishListShared .divProductButtons .btnAddToWishList, .wishListShared .divProductButtons .btnRemove, .wishListShared #parShippingAndHandlingPrice, .shoppingCart .divProductInfo .productInfoNew, .shoppingCart .divProductInfo .productTopRated, .shoppingCart .divProductInfo .productPrice, .shoppingCart .divProductInfo .productEasyPayments, .shoppingCart .divProductInfo .productRatings, .shoppingCart .divProductInfo .productQuantity, .shoppingCart .divProductInfo .productComments, .shoppingCart .divProductInfo .productQuantityShared, .shoppingCart .divProductInfo .productCommentsShared, .shoppingCart #divContent div.productSelectToCompare, .shoppingCart #divSavedItems .productTable, .shoppingCart .divProductButtons .btnSpeedBuy, .shoppingCart #divShoppingCart .divProduct .divProductButtons, .shoppingCart .divBrand, .shoppingCart .divVideo, .shoppingCart .divProductImageAbove{display:none;}
+.gallery #divContent div.productSelectToCompare{
+	margin:7px 0 0 15px;
+	padding:7px 0 15px 0;
+}
+.gallery .divProductButtons{margin:0 0 0 15px;}
+/* List View */
+.list .divProduct, .textOnly .divProduct, .wishList .divProduct, .wishListShared .divProduct{
+	clear:both;
+	margin:0;
+	padding:0 0 17px 0;
+	border-top:1px solid #c4c0b4;
+	_height:1px;
+	_overflow:visible;
+}
+.list .divProductImageItemNumberVideoWrapper, .wishList .divProductImageItemNumberVideoWrapper, .wishListShared .divProductImageItemNumberVideoWrapper{
+	width:128px;
+	height:139px;
+	padding:0 0 17px 0;
+	float:left;
+}
+.wishListShared .divProductImageItemNumberVideoWrapper{padding:0;}
+.list .divItemNumber a, .list .divBrand a, .textOnly .divItemNumber a, .textOnly .divBrand a, .quickCompare .divItemNumber a, .quickCompare .divBrand a, .wishList .divItemNumber a, .wishList .divBrand a, .wishListShared .divItemNumber a, .wishListShared .divBrand a, .shoppingCart .divItemNumber a, .shoppingCart .divBrand a{padding:0 0 0 10px;}
+.list .divProductImageBottom{clear:both;padding:3px 0 0 0;}
+.list .divItemNumberVideoWrapper, .textOnly .divItemNumberVideoWrapper, .wishList .divItemNumberVideoWrapper, .wishListShared .divItemNumberVideoWrapper, .shoppingCart .divItemNumberVideoWrapper{
+	margin-bottom:7px;
+	clear:both;
+	height:25px;
+}
+.list .divProductInfoSelectToCompareWrapper{
+	width:280px;
+	padding:5px 0 0 10px;
+	float:left;
+}
+.list .divProductInfo{margin:0;padding:8px 0 0 10px;}
+.list #divContent .divProductInfo p, .textOnly #divContent .divProductInfo p, .wishList #divContent .divProductInfo p, .wishListShared #divContent .divProductInfo p, .shoppingCart #divContent .divProductInfo p{margin:0;padding:0;}
+/* new style in IROA for group items no compare */
+.list #divContent div.productSelectToCompare, .list #divContent div.productNoCompare{
+	margin:0;
+	padding:15px 0 15px 10px;
+}
+.list .divProductButtons, .textOnly .divProductButtons, .wishList .divProductButtons, .wishListShared .divProductButtons{
+	width:180px;
+	padding:25px 0 0 0;
+	margin:0;
+	float:right;
+}
+.textOnly .divProductButtons{padding:15px 0 0 0;}
+.list .tsvImg{width:56px;height:22px;top:19px;}
+/* Text Only View */
+.textOnly .divProduct{border:0px solid #c4c0b4\9;/* Defect no 4270,6305,6306 */}
+.textOnly .divProductImageItemNumberVideoWrapper{
+	width:420px;
+	height:25px;
+	padding:0;
+	float:left;
+	border-top:1px solid #c4c0b4\9;/* Defect no 4270,6305,6306 */
+	width:647px\9;/* Defect no 4270,6305,6306 */
+}
+.textOnly .divProductInfoSelectToCompareWrapper{
+	width:420px;
+	padding:5px 0 0 10px;
+	float:left;
+}
+.textOnly .divProductInfo{
+	margin:0;
+	padding:7px 0 0 0;
+}
+.textOnly #divContent div.productSelectToCompare{
+	margin:0;
+	padding:15px 0 15px 0;
+}
+/* Compare view */
+.quickCompare .divProduct{
+	float:left;
+	width:184px;
+	height:400px;
+	margin:0;
+	padding:10px 0 10px 0;
+}
+.quickCompare .divProductImageAbove{margin-bottom:7px;}
+.quickCompare .divProductInfo{
+	margin:7px 0 0 10px;
+	padding:12px 0 0 0;
+	height:190px;
+	clear:both;
+}
+.quickCompare .divProductButtons{margin:0 0 0 10px;}
+.quickCompare #trCompareDescription .divProduct, .quickCompare #trCompareDescription .divProductInfo{
+	height:auto;
+	margin:0;
+	padding:0;
+}
+.quickCompare #trCompareButtons .divProductButtons{
+	display:block;
+	margin:0;
+	padding:0;
+}
+.quickCompare #trCompareButtons .divProduct{height:auto;}
+.quickCompare a.remove{
+	background:url(../images/x_12_pixel.gif) no-repeat left center;
+	text-decoration:none;
+	padding-left:18px;
+}
+.quickCompare a:hover.remove{text-decoration:underline;}
+.quickCompare a.previous{margin:20px 0;}
+
+/* Wish List & Shared View */
+.wishList .divProductImageBottom, .wishListShared .divProductImageBottom{clear:both;padding:3px 0 0 0;}
+.wishList .divProductInfo, .wishListShared .divProductInfo{
+	width:280px;
+	padding:13px 0 0 10px;
+	float:left;
+}
+.wishList .divProductInfo .productOption, .wishListShared .divProductInfo .productOption, .shoppingCart .divProductInfo .productOption, .shoppingCart #divShoppingCart .productTable{display:block;}
+.wishList .divProductInfo .productQuantity, .wishListShared .divProductInfo .productQuantityShared{
+	display:block;
+	padding:15px 0 0 0;
+}
+.wishList .divProductInfo .productComments, .wishListShared .divProductInfo .productCommentsShared{
+	display:block;
+	padding:10px 0 15px 0;
+}
+/* Shopping Cart */
+.shoppingCart .divProduct{
+	clear:both;
+	margin:0;
+	padding:0 50px 17px 50px;
+	border-top:1px solid #c4c0b4;
+	_height:1px;
+	_overflow:visible;
+}
+.shoppingCart .divProductImageItemNumberVideoWrapper{
+	width:150px;
+	height:158px;
+	padding:0 0 15px 0;
+	float:left;
+}
+.shoppingCart .divProductImageBottom{
+	clear:both;
+	padding:3px 0 0 0;
+	text-align:center;
+}
+.shoppingCart #divSavedItems .divProductInfoSelectToCompareWrapper{
+	width:260px;
+	padding:5px 0 0 23px;
+	float:left;
+}
+.shoppingCart #divShoppingCart .divProductInfoSelectToCompareWrapper{
+	width:453px;
+	padding:5px 0 20px 10px;
+	float:left;
+}
+.shoppingCart .divProductInfo{
+	margin:0;
+	padding:8px 0 16px 0;
+}
+.shoppingCart .divButtonsShoppingCartSaveForLaterRemove{margin:0 0 0 -7px;}
+span.spanShoppingCartEditPersonalization{
+	display:inline-block;
+	float:right;
+	height:25px;
+	line-height:25px;
+}
+.shoppingCart .divProductButtons{
+	width:180px;
+	padding:13px 0 0 0;
+	margin:0;
+	float:right;
+}
+.shoppingCart .divShoppingCartTotal, .shoppingCart .divShoppingCartGrandTotal, #divCheckoutSubmitOrderGrandTotal{
+	background-color:#F1F0EB;
+	text-align:right;
+	font-weight:bold;
+	clear:both;
+	padding:10px 57px 10px 0;
+}
+.shoppingCart .divShoppingCartTotal{
+	margin-bottom:40px;
+	padding:10px 0 10px 370px;
+	text-align:left;
+}
+.shoppingCart #divContent #divShoppingCart .divShoppingCartTotal p{margin:0;padding:0;}
+.shoppingCart #divContent #divShoppingCart .divShoppingCartGrandTotal p, #divCheckoutSubmitOrderGrandTotal p{
+	margin:0;
+	padding:5px 0;
+}
+.totalType, .totalCurrency{
+	display:inline-block;
+	text-align:right;
+	width:200px;
+}
+.totalCurrency{width:80px;margin:0;}
+.shoppingCart #divContent #divShoppingCart p, .shoppingCart #divContent #divSavedItems p{margin:0 45px 15px 45px;}
+/*QA Test: ENH 1.1 - Add to cart overlay Enhancement */   
+/*.overlaySpeedBuy{
+float:left;
+font-weight:normal !important;
+background-color:#E4E3E3;
+margin-right:1px;
+padding:10px 0 0 0;
+width:536px;
+}
+.speedbuytextsignIn{text-decoration:none;display:none;}
+.divWrapperoverlay{width:550px !important;float:left;}
+.sel_overlay{font:normal 12px arial !important;}
+.overlaySpeedBuy label{font-weight:normal;}
+.spd_colm1, .spd_colm2{float:left;width:49%;text-align:left;padding:15px 0 10px;}
+.spd_colm2{float:right;text-align:right;}
+.no_mar_top{padding-top:0 !important;}
+.overlay_wraper{width:490px !important;float:left;text-align:left;}
+.div_cont_overlay{float:left;width:550px;text-align:left;}
+.overlaySpeedBuyExtend .instructions{margin-top:10px;}
+.overlaySpeedBuyExtend .indentedInstructionsSignIn{margin:5px 0 5px 265px;}
+.overlaySpeedBuyExtend #frmSignIn fieldset{padding-top:0;}
+.wrapperOverlay{margin:0;float:left;width:530px !important;}
+#divProductButtonsClass{height:26px;width:530px;position:relative;float:left;padding-top:10px;padding-bottom:10px;margin-top:0;margin-bottom:0;}  
+.divWLWrapperOverlay{width:550px;margin:0 !important;}
+#overlayTitleHeader{font:32px 'Century Gothic',Arial,Helvetica,sans-serif;}
+.no_pad_bottom{padding-bottom:0;}*/
+/* Add to cart overlay Enhancement */ 
+/* Items Recently On Air */
+#divAbout, .itemsRecentlyOnAir .divPageLinks, .itemsRecentlyOnAir .divItems, #divItemsRecentlyOnAirShowInfo, .itemsRecentlyOnAir .tuneInPromo, .searchResults .tuneInPromo, .asIs .tuneInPromo, .whatsNew .tuneInPromo, .clearance .tuneInPromo, .giftCards .tuneInPromo,.itemsRecentlyOnAir .listDescriptionProductSortWrapper h2, .searchResults .listDescriptionProductSortWrapper h2, .asIs .listDescriptionProductSortWrapper h2, .whatsNew .listDescriptionProductSortWrapper h2, .clearance .listDescriptionProductSortWrapper h2,.giftCards .listDescriptionProductSortWrapper h2, .itemsRecentlyOnAir #divTemplate{display:none;}
+.itemsRecentlyOnAir #divItemsRecentlyOnAirShowInfo, #divShowLinks a{display:block;}
+.itemsRecentlyOnAir .listDescriptionProductSortWrapper .divProductSort, .searchResults .listDescriptionProductSortWrapper .divProductSort, .asIs .listDescriptionProductSortWrapper .divProductSort, .whatsNew .listDescriptionProductSortWrapper .divProductSort, .clearance .listDescriptionProductSortWrapper .divProductSort,.giftCards .listDescriptionProductSortWrapper .divProductSort, .wishList .listDescriptionProductSortWrapper .divProductSort, .wishListShared .listDescriptionProductSortWrapper .divProductSort{margin-bottom:6px;_margin-bottom:1px;}
+.itemsRecentlyOnAir .roundedBorderTop{
+	margin:0;
+	border-style:solid solid none;
+}
+.itemsRecentlyOnAir .roundedBorderTop .outline{
+	margin:0;
+	padding:17px 20px 0 20px;
+	height:28px;
+}
+.itemsRecentlyOnAir #frmProductList .listDescriptionProductSortWrapper, .searchResults .listDescriptionProductSortWrapper, .asIs .listDescriptionProductSortWrapper, .whatsNew #frmProductList .listDescriptionProductSortWrapper, .clearance #frmProductList .listDescriptionProductSortWrapper,.giftCards #frmProductList .listDescriptionProductSortWrapper, .wishList .listDescriptionProductSortWrapper, .wishListShared .listDescriptionProductSortWrapper{
+	clear:both;
+	padding:0 12px 6px 10px;
+	margin:0;
+}
+.itemsRecentlyOnAir .listDescriptionProductSortWrapper.bottom, .searchResults .listDescriptionProductSortWrapper.bottom, .asIs .listDescriptionProductSortWrapper.bottom, .whatsNew .listDescriptionProductSortWrapper.bottom, .clearance .listDescriptionProductSortWrapper.bottom,.giftCards .listDescriptionProductSortWrapper.bottom, .wishList .listDescriptionProductSortWrapper.bottom, .wishListShared .listDescriptionProductSortWrapper.bottom{
+	padding-bottom:0;
+}
+.itemsRecentlyOnAir #frmProductList .listDescriptionProductSortWrapper{
+	border:1px solid #bebdbd;
+	border-top:none;
+	border-bottom:none;
+	background-color:#e4e3e3;
+	margin:0;
+}
+.itemsRecentlyOnAir #frmProductList .listDescriptionProductSortWrapper.bottom{
+	border-left:none;
+	border-right:none;
+	background-color:#fff;
+}
+#frmProductList input.secondaryButtonAlignVertical{color:#333333;}
+.itemsRecentlyOnAir #divContent .roundedBorderTop .outline h2{
+	float:left;
+	margin:0;
+	padding:0;
+	font-size:12px;
+	font-weight:bold;
+	color:#333;
+}
+#divShowLinks{
+	float:right;
+	margin:0;
+	font-size:11px;
+}
+.minimizeVerticalWhiteSpace #divContentNav{margin-top:-2px;}
+.minimizeVerticalWhiteSpace #divContent{margin-top:-43px;}
+
+/* =Shopping Cart
+--------------------------------------------------------------------- */
+#divGiftwrapOptionsDescription{float:left;width:630px;}
+#divGiftwrapOptionsImages{float:right;width:220px;}
+#divGiftCardOptionsDescription{float:left;width:575px;}
+#divGiftCardOptionsImages{float:right;width:275px;}
+#divMakeUpOptionsDescription{float:left;width:430px;}
+#divMakeUpOptionsImages{float:right;width:420px;}
+#divAromaTherapyOptionsDescription{float:left;width:570px;}
+#divAromaTherapyOptionsImages{float:right;width:280px;}
+#divContent p#parGiftwrapOptionsMessage{margin-top:15px;}
+/* Ensemble Listings */
+.ensembleDescription, .ensembleNumberOfItems{
+	margin:0 0 10px 0;
+	display:none;
+}
+.ensembleDescription a, .ensembleNumberOfItems a{text-decoration:underline;}
+.ensembleListing .ensembleDescription, .ensembleListing .ensembleNumberOfItems{display:block;}
+.ensembleListing .productInfoNew, .ensembleListing .productName, .ensembleListing .productOption, .ensembleListing .productTopRated, .ensembleListing .productPrice, .ensembleListing .productEasyPayments, .ensembleListing .productRatings, .ensembleListing .productQuantity, .ensembleListing .productComments, .ensembleListing .productQuantityShared, .ensembleListing .productCommentsShared, .ensembleListing .productSelectToCompare, .ensembleListing .productTable, .ensembleListing .divButtonsShoppingCartSaveForLaterRemove, .ensembleListing .divProductButtons, .ensembleListing .divItemNumber a, .ensembleListing .divVideo, .ensembleListing .divCompareItems{display:none;}
+
+/* =Product Detail
+--------------------------------------------------------------------- */
+/* IE6 overflow issue */
+.outline, .outlineTopBottom, .outlineNoTop, .outlineNoBottom, .outlineNoTopOrBottom,
+#frmProductDetail #divProductDetailSelectSize ul, #divProductDetailsCustomerReviewWrapper, #divContent, 
+#frmProductDetail #divProductDetailSelectColor ul, #divProductDetailSelectQuantityAndGiftOptions, #divProductDetailsWrapper, #divProductDetailDescriptionSelection, #divContent .indent, #divProgramInformationWrapper, #divOrderDetailDetails, #frmEditPermanentShipToAddress, #divSidebarBrowseMore div, #divMyAccountEmailServicesTsvEmailNotifications, .itemInformationWrapper, .itemDetails, #divOrderDetailItemInformation, .divOrderDetailItemInformation, #divWaitlistItemInformation, .listDescriptionProductSortWrapper, #frmAutoDeliveryPlanOrders, .divCompareItemsPageLinksWrapper, #divBrowsePrevious, #divBrowseNext, #divSidebar #divSidebarBrowseMore, #divTodaySpecialValuePromoMessageWrapper, #divLibertyLinksWrapper, #divMastheadCheckout, #frmProductDetailGroupItem ul li, #divProductDetailDescriptionAreaWrapper, #frmProductDetailReviewSelection #divProductDetailSelectSize ul, #frmProductDetailReviewSelection #divProductDetailSelectColor ul, #frmEnsemble .ensembleSelectSize ul, #frmEnsemble .ensembleSelectColor ul, #divEnsembleItemWrapper, .ensembleItem, #divAutoDeliverPlanDetailsSummary,  .roundedBorderCardGreen, #divReturnsReasonForReturn, #divEnsembleShortDescriptionWrapper{
+	overflow:auto;
+	_overflow:visible;
+	_height:1px;
+}
+#divProductShippingAndHandlingInfo{overflow:visible;_height:1px;}
+#divProductDetailDescriptionAreaWrapper{font-size:14px;clear:both;}
+#divProductDetailDescriptionAreaWrapper p{line-height:normal;}
+#divPrintEmailOptions, .adjustTextSize, .spanDivider{font-size:12px;line-height:14px;}
+#divProductDetailDescriptionAreaOptions{
+	font-size:12px;
+	line-height:14px;
+}
+#frmProductDetail, #frmProductDetailReviewSelection{color:#333;}
+#divProductDetailDescriptionAreaWrapper .outlineNoTopOrBottom{padding-top:5px;}
+#divProductDetailsWrapper{
+	background:#e4e3e3 url(../images/product_bg.gif) repeat-y right top;
+	margin-bottom:10px;
+	border-bottom:1px solid #bebdbd;
+	border-left:1px solid #bebdbd;
+}
+#frmEnsemble #divProductDetailsWrapper{
+	background:none #fff;
+	border-bottom:none;
+	border-left:none;
+}
+.reviewSelection #divProductDetailsWrapper{
+	background-color:#fff;
+	border-bottom:1px solid #bebdbd;
+	border-left:1px solid #bebdbd;
+}
+#frmProductDetailGroupItem #divProductDetailsWrapper{background:#e4e3e3;}
+#divProductIdNav a label, #frmProductDetail #divProductIdNavDe label, #frmProductDetailReviewSelection #divProductIdNavDe label{display:none;}
+#divProductIdNavDe{
+	float:right;
+	text-align:right;
+	font-weight:bold;
+	height:28px;
+	width:372px;
+	border-bottom:1px solid #bebdbd;
+	background-color:#fff;
+}
+#divProductIdNavDe a, #divProductIdNavDe span#tabProductDetailNavDe-itemNumber{
+	display:block;
+	float:right;
+	height:21px;
+	line-height:21px;
+	font-weight:bold;
+	padding:3px 23px;
+	border:1px solid #bebdbd;
+	border-bottom:none;
+	background-color:#fff;
+}
+#divProductIdNavDe span#tabProductDetailNavDe-itemNumber{
+	height:22px;
+	color:#333;
+	position:relative;
+	margin-bottom:-1px;
+}
+#spanTodaysSpecialValue{
+	float:left;
+	font-weight:bold;
+	color:#88b220;
+	margin-left:148px;/* allows for 30px space between this and the tab on the right */
+	padding-top:7px;
+}
+#divProductDetailDescriptionSelection{
+	float:right;
+	width:352px;
+	padding:0 9px 5px;
+	min-height:410px;
+	_height:410px;/* this could present an issue if there's more information than 395 high on the right */
+}
+
+/* =Ensembles
+--------------------------------------------------------------------- */
+#divEnsembleSideDescriptionImage, #divEnsembleSideDescriptionContainer, #divEnsembleShortDescriptionImage, #divEnsembleShortDescriptionContainer{display:none;}
+.ensembleSideImage #divEnsembleSideDescriptionImage, .ensembleSideContainer #divEnsembleSideDescriptionContainer, .ensembleTopImage #divEnsembleShortDescriptionImage, .ensembleTopContainer #divEnsembleShortDescriptionContainer{display:block;}
+#frmEnsemble h2{margin:0;}
+p.ensembleIntro{margin:15px 0;}
+#divEnsembleItemWrapper{
+	float:none;
+	width:auto;
+	padding:0;
+	border-top:1px solid #bebdbd;
+}
+.ensembleItemNoImage{float:left;}
+.ensembleSideImage #divEnsembleItemWrapper, .ensembleTopImage #divEnsembleShortDescription{
+	float:right;
+	width:492px;/* this will need to change if Ensemble Image is not there */
+}
+.ensembleItem{border-bottom:1px solid #bebdbd;}
+#divEnsembleSideDescriptionWrapper, #divEnsembleShortDescriptionImage{
+	float:left;
+	width:184px;
+	padding:0;
+}
+#divEnsembleSideDescriptionImage{padding:0 20px;}
+#divEnsembleShortDescriptionImage{	margin:0 0 10px 0;}
+#divEnsembleShortDescription{
+	float:none;
+	width:auto;
+	margin:0;
+}
+.ensembleItemDetail{
+	float:right;
+	width:480px;
+	padding:0 10px 10px;
+}
+.ensembleSideImage .ensembleItemDetail{width:280px;}
+.ensembleItemDetail a{
+	display:block;
+	padding:17px 0 0 0;
+	line-height:17px;
+	font-weight:bold;
+}
+.ensembleItemDetail .ensembleSelectColor a, .ensembleItemDetail .ensembleSelectSize a{
+	display:inline-block;
+	padding:0;
+	color:#e97400;
+}
+.ensembleIdImage{float:left;}
+.ensembleIdImage img{margin:5px 0 15px 0;}
+#spanColorWaitlist a, .specialPrice{color:#e97400;}
+#frmEnsemble #divButtons{margin-left:200px;}
+.ensembleItemNumber{
+	display:block;
+	font-weight:bold;
+	width:169px;
+	padding:8px 0 6px 15px;
+	background-color:#f1f0eb;
+}
+.ensemblePricingInfo{padding:0;}
+.ensembleSoldOut h3{
+	color:#c00;
+	text-transform:uppercase;
+	padding:0;
+}
+/* don't display on Review Selection Page */
+.ensembleSelectColor .waitlist, .ensembleSelectColor .soldOut, .ensembleSelectColor .advancedOrder, .ensembleSelectSize .waitlist, .ensembleSelectSize .soldOut, .ensembleSelectSize .advancedOrder, #frmProductDetailReviewSelection #divProductDetailViewThumbnailsImages, #frmProductDetailReviewSelection #divEnlarge, #frmProductDetailReviewSelection #tabProductDetailViewNav-video, #frmProductDetailReviewSelection #parIndividualPurchase{display:none;}
+.ensembleSelectedSizeTextDescription, .ensembleSelectedColorTextDescription{padding-left:5px;}
+.introductoryPrice span, .qvcPrice span, .specialPrice span{font-weight:bold;}
+#frmProductDetailReviewSelection #divProductDetailDescriptionSelection{min-height:1px;height:auto;}
+#divProductDetailDescriptionSelection h2{
+	margin:5px 0 0 0;
+	line-height:17px;
+}
+#divProductDetailDescriptionSelection p, #divEnsembleItemWrapper p{
+	padding:0;
+	margin:0;
+	line-height:normal;
+}
+#divProductDetailDescriptionSelection a, #divEnsembleItemWrapper a{
+	margin:0;
+	line-height:normal;
+}
+/* Customer Review Summary */
+#divCustomerReviewSummary .shareProduct a.email{margin-left:15px;padding-left:17px;}
+.shareProduct a{padding:0 2px;}
+#divCustomerReviewSummary .shareProduct{padding-top:13px;}
+#divCustomerReviewSummary p label, #spanRatingValue{display:none;}
+#divCustomerReviewSummary #BVCustomerRatings{margin-top:10px;}
+#divCustomerReviewSummary table, #divCustomerReviewSummary tr, #divCustomerReviewSummary td{padding:0;}
+.BVRRFieldContainer label{display:inline;}
+.BVRRSocialBookmarkingLinks{margin-bottom:-15px;}
+/* 5693 */
+.BVRRSecondaryRatingSummaryStyle1{width:690px;float:left;}
+.BVRRCustomProductRating{
+	margin-left:10px !important;
+	float:left;
+	width:575px !important;
+}
+.BVRRFieldset label{font-weight:normal;}
+body .BVRRHistogramContent{margin-left:375px;}
+.BVRRReviewDisplayStyle2, .BVRRReviewDisplayStyle3{border:0 !important;}
+.BVRRDisplayContentReviewFirst .BVRRReviewDisplayStyle2{border-top:1px solid #CCC !important;}
+#spanRatingLinks{padding-left:10px;}
+div.BVSYDisplayContentSubtitle{width:144px;}/*Share Stories btn*/
+/* Pricing in upper left of product details */
+#divProductPricingInfo{
+	float:left;
+	width:56%;
+	padding-bottom:10px;
+	padding-top:10px;
+}
+/* Defect :4019 */
+#parMarketingText{
+	color:#e97400;
+	font-style:italic;
+	padding-top:4px !important;
+}
+#frmProductDetail #parMarketingText{display:block;}
+#parProductDetailPrice{
+	font-size:25px;
+	font-weight:bold;
+	color:#e97400;
+	line-height:100%;/*Defect 14152*/
+}
+/* item end time */
+/*LiquidHub Build 337 - Defect 10792, 11371*/
+#parEndTimeText, #parEndTimeTextwl, .endTimeTxtWL, .endTimeTxt{font-size:8pt;color:#e97400;/*white-space:nowrap;*/}
+#parEndTimeTextwl, .endTimeTxtWL{margin-top:4px !important;*padding-top:10px !important;}
+.endTimeTxtWL, .endTimeTxt{padding-bottom:3px;}
+
+/* Reduced & included S&H end times*/
+.endTimeTxtBlack{
+    font-size:8pt;
+    white-space:nowrap;
+    margin-bottom:0;
+    padding-bottom:0;
+}
+/* Credit terms end time*/
+.endTimeTxtGreen{
+    color:#88B220;
+    font-size:8pt;
+    font-weight:normal;
+    display:block;
+}
+#parTodaysSpecialValuePrice{color:#e97400;}
+/* don't display the following for the CDR */
+#parPricePerVolume, #divProductDetailEasyPayInfo h2{display:none;}
+
+/* Shipping and Handling in upper right of product details */
+#parIndividualPurchase a{
+	border-top:1px solid #e3e1d8;
+	border-bottom:1px solid #e3e1d8;
+	padding:3px 0 3px 12px;
+	font-size:11px;
+	display:inline-block;
+}
+#divProductDetailDescriptionSelection #parIndividualPurchase{margin-bottom:10px;}
+#divProductShippingAndHandlingInfo{
+	float:right;
+	width:42%;
+	text-align:right;
+	padding-top:10px;
+}
+#parShippingAndHandlingDescription{
+	margin-left:40px;/* set this to whatever is needed */
+	border:1px solid #fff;/* for some reason when border is added, it obeys the margin/padding */
+}
+/* FRI:Free/Reduced/Included SHH Enhancement. FSun/ispwvo, 10/04/2010 */
+/* FRI:i.e:Product Detail:Reduced S&H */
+.shippingRegPrice{
+      text-decoration:line-through;
+      font-size:13px;
+}
+/*#parShippingAndHandlingPrice{white-space:nowrap;}*/
+
+/* FRI:i.e:Shopping Cart/Product Detail:FREE STANDARD S&H */
+.freeShipping{
+      color:#E97400;
+      display:block;
+      font-weight:bold;
+	  text-transform:uppercase;
+}
+/* FRI:i.e:Shopping Cart:Highlight Std S&H */
+.stdSH{
+      color:#E97400;
+      font-weight:normal;
+	  text-transform:uppercase;
+}
+#divProductDetailEasyPayInfo, .ensembleEasyPayInfo{
+	clear:both;
+	padding:10px 5px 10px 0;
+	color:#88b220;
+	font-weight:bold;
+}
+#divProductDetailEasyPayInfo p#parEasyPayDescription span{
+	display:block;
+	font-size:11px;
+	font-weight:normal;
+}
+#divProductDetailEasyPayInfo img{
+	float:left;
+	padding:0 5px 3px 0;
+}
+.ensembleEasyPayInfo, .ensembleMarketing{padding:0;}
+.ensembleMarketing{color:#e97400;}
+#divProductDetailEasyPayInfo a, .ensembleEasyPayInfo a, #divProductDetailGuaranteedDelivery a{font-size:11px;font-weight:normal;}
+#divProductDetailGuaranteedDelivery{
+	clear:both;
+	color:#e97400;
+	font-weight:bold;
+	padding:5px 0 10px 0;
+	border-top:1px solid #c8c8c6;
+}
+#divProductDetailWaitListMessage{
+	clear:both;
+	color:#e97400;
+	font-weight:bold;
+	padding-bottom:5px;
+	border-bottom:1px solid #c2c2c2;
+	margin-bottom:10px;
+}
+/*Sold Out Messaging*/
+#divProductDetailSoldOutMessage{
+	clear:both;
+	color:#C00;
+	font-weight:bold;
+	margin:25px;
+	padding:30px 20px;
+	border:1px solid #C00;
+	background-color:#FFF380;
+}
+*html #divProductDetailSoldOutMessage, *html #divProductDetailSoldOutMessage p{height:1%;}
+#frmProductDetail label, #frmProductDetailReviewSelection label, #frmEnsemble label{padding:0 5px 0 0;}
+#divProductDetailSelectQuantityAndGiftOptions, .ensembleSelectQuantity, .ensembleSelectGroup{padding-bottom:5px;}
+#ancBuyTwoAndSave{display:none;}
+/* adds border at bottom of divs in the description area and the clear shifts them to the next line */
+#divProductDetailEasyPayInfo, #divProductDetailSelectSize, #divProductDetailSelectColor, #divProductDetailSelectQuantityAndGiftOptions,  #divProductDetailWaitListMessage, .ensembleSelectSize, .ensembleSelectColor, .ensembleSelectQuantity, .ensembleSelectGroup{
+	clear:both;
+	border-top:1px solid #c8c8c6;
+	padding:5px 0;
+}
+.ensembleSelectSize, .ensembleSelectColor, .ensembleSelectQuantity, .ensembleSelectGroup{margin-top:5px;}
+#frmProductDetail ul, #frmProductDetailReviewSelection ul, #frmEnsemble ul{
+	margin:0;
+	padding:0 0 0 22px;
+}
+#frmProductDetail ul li, #frmProductDetailReviewSelection ul li, #frmEnsemble ul li{
+	margin:0;
+	padding:0;
+	line-height:17px;
+}
+#frmProductDetail ul li a{
+	color:#333;
+	display:block;
+}
+#divProductDetailDescriptionAreaWrapper .outlineNoTopOrBottom a{text-decoration:underline;}
+#divProductDetailDescriptionAreaWrapper ul li a{display:block;margin-bottom:10px;}
+/*#divProductDetailDescriptionAreaWrapper ul li a{display:inline;}*/
+#frmProductDetail #divProductDetailDescriptionAreaWrapper ul{margin:0 0 20px 0;}
+#frmProductDetail #divProductDetailSelectSize ul, #frmProductDetail #divProductDetailSelectColor ul, #frmProductDetailReviewSelection #divProductDetailSelectSize ul, #frmProductDetailReviewSelection #divProductDetailSelectColor ul, #frmEnsemble .ensembleSelectSize ul, #frmEnsemble .ensembleSelectColor ul{
+	padding-left:0;
+}
+#frmProductDetail #divProductDetailSelectSize ul li, #frmProductDetail #divProductDetailSelectColor ul li, #frmProductDetailReviewSelection #divProductDetailSelectSize ul li, #frmProductDetailReviewSelection #divProductDetailSelectColor ul li, #frmEnsemble .ensembleSelectSize ul li, #frmEnsemble .ensembleSelectColor ul li{
+	list-style-type:none;
+	float:left;
+	text-align:center;
+	margin:0 3px 3px 0;
+	padding:0;
+	cursor:pointer;
+}
+/* 4531 */
+#frmProductDetail #divProductDetailSelectSize ul li.selectSize{margin:0 0px 3px 0 !important;}
+#frmProductDetail #divProductDetailSelectSize ul li.selectSize, #frmProductDetailReviewSelection #divProductDetailSelectSize ul li.selectSize, #frmEnsemble .ensembleSelectSize ul li.selectSize{
+	width:49px;
+	height:29px;
+	line-height:28px;
+	background-image:url(../images/size_active.gif);
+}
+#frmProductDetail #divProductDetailSelectSize ul li.selectSizeLarge, #frmProductDetailReviewSelection #divProductDetailSelectSize ul li.selectSizeLarge, #frmEnsemble .ensembleSelectSize ul li.selectSizeLarge{
+	width:110px;
+	height:29px;
+	line-height:28px;
+	background-image:url(../images/size_active_lg.gif);
+}
+#frmProductDetail #divProductDetailSelectColor ul li, #frmProductDetailReviewSelection #divProductDetailSelectColor ul li, #frmEnsemble .ensembleSelectColor ul li{
+	width:29px;
+	height:29px;
+	line-height:28px;
+	cursor:pointer;
+	overflow:hidden;
+}
+#frmProductDetail #divProductDetailSelectColor ul li.selectColorLarge, #frmProductDetailReviewSelection #divProductDetailSelectColor ul li.selectColorLarge, #frmEnsemble .ensembleSelectColor ul li.selectColorLarge{
+	width:110px;
+	background-image:url(../images/size_active_lg.gif);
+}
+#frmProductDetail #divProductDetailSelectColor ul li img, #frmProductDetailReviewSelection #divProductDetailSelectColor ul li img, #frmEnsemble .ensembleSelectColor ul li img{margin-top:3px;z-index:1;}
+.imgOverlay{
+	z-index:2;
+	height:29px;
+	margin-top:-38px;
+	*margin-top:-28px;
+}
+#divProductDetailSelectSize .waitlist, #divProductDetailSelectColor .waitlist, #divProductDetailSelectSize .soldOut, #divProductDetailSelectColor .soldOut, #divProductDetailSelectSize .advancedOrder, #divProductDetailSelectColor .advancedOrder, .ensembleItemDetail .waitlist, .ensembleItemDetail .soldOut, .ensembleItemDetail .advancedOrder{
+	font-weight:bold;
+	text-align:right;
+	color:#e97400;
+	float:right;
+	display:none;
+}
+#divProductDetailSelectQuantityAndGiftOptions span{
+	display:block;
+	float:left;
+	width:50%;
+}
+#divProductDetailSelectQuantityAndGiftOptions #selProductQuantity, #selProductQuantityItem1, #selProductGroupItem1{
+	margin-top:3px;
+	margin-left:3px;
+}
+#spanColorSoldOut, #spanColorWaitlist #spanColorAdvancedOrder{display:none;}
+
+/* Links at the top of the Description Area */
+.productDetailDescriptionFileLinkArea p.adjustTextSize{
+	text-align:right;
+	line-height:17px;
+	padding-top:5px;
+}
+.adjustTextSize span, .adjustTextSize a{
+	vertical-align:top;
+	*vertical-align:middle;
+}
+/*Product Description Tab - Text Size adjustment tool is missing  & Text Size not remembered on Product Detail tabs*/
+.increaseTextSize, .decreaseTextSize, .cantIncreaseTextSize, .cantDecreaseTextSize{
+	display:inline-block;
+	width:17px;
+	height:17px;
+	padding:0;
+	margin:0;
+	outline:0;
+	cursor:pointer;
+	background:url(../images/ico_APlus_ora.gif) no-repeat center center;
+}
+.decreaseTextSize, .cantDecreaseTextSize{
+	margin:0 0 0 3px;
+	*margin:0 0 0 5px;
+	background:url(../images/ico_Aminus_ora.gif) no-repeat center center;
+}
+.cantIncreaseTextSize, .cantDecreaseTextSize{
+	display:none;
+	cursor:default;
+	background:url(../images/ico_APlus_gry.gif) no-repeat center center !important;
+}
+.cantDecreaseTextSize{background:url(../images/ico_Aminus_gry.gif) no-repeat center center !important;}
+.productDetailDescriptionFileLinkArea{
+clear:both;margin-bottom:10px;
+overflow:auto;
+overflow:hidden\9;
+*overflow:auto;
+_overflow:visible;
+_height:1px;
+}
+.productDetailDescriptionFileLinkArea p{margin:0;padding:0;}
+.productDetailDescriptionFileLinkArea .subTabs{
+	padding-top:3px;/* so it aligns with the adjust text size block */
+	float:left;
+	width:550px;
+}
+.productDetailDescriptionFileLinkArea .subTabs .spanDivider{
+	padding-left:14px;
+	padding-right:14px;
+}
+.productDetailDescriptionFileLinkArea .adjustTextSize{
+	float:right;
+	width:150px;
+}
+/* Product Detail and Customer Review Tabs */
+#divProductDetailDescriptionAreaDisplay1, #divProductDetailDescriptionAreaDisplay2, #divProductDetailDescriptionAreaDisplay3, 
+#divProductDetailDescriptionAreaDisplay4, #divProductDetailDescriptionAreaDisplay5, #divProductDetailDescriptionAreaDisplay6, 
+#divProductDetailDescriptionAreaDisplay7, #divProductDetailDescriptionAreaDisplay8, #divProductDetailDescriptionAreaDisplay9, 
+#divProductDetailDescriptionAreaDisplay10, #divProductDetailDescriptionAreaDisplay11, #divProductDetailDescriptionAreaDisplay12, 
+#divProductDetailDescriptionAreaDisplay13, #divProductDetailDescriptionAreaDisplay14, #divProductDetailDescriptionAreaDisplay15, 
+#divProductDetailDescriptionAreaDisplay16, #divProductDetailDescriptionAreaDisplay17, #divProductDetailDescriptionAreaDisplay18, 
+#divProductDetailDescriptionAreaDisplay19, #divProductDetailDescriptionAreaDisplay20, #divProductDetailCustomerReviewAreaDisplay1, 
+#divProductDetailCustomerReviewAreaDisplay2{display:none;}
+.productDetailDescriptionTab1 #divProductDetailDescriptionAreaDisplay1, .productDetailDescriptionTab2 #divProductDetailDescriptionAreaDisplay2, .productDetailDescriptionTab3 #divProductDetailDescriptionAreaDisplay3, .productDetailDescriptionTab4 #divProductDetailDescriptionAreaDisplay4, 
+.productDetailDescriptionTab5 #divProductDetailDescriptionAreaDisplay5, .productDetailDescriptionTab6 #divProductDetailDescriptionAreaDisplay6, 
+.productDetailDescriptionTab7 #divProductDetailDescriptionAreaDisplay7, .productDetailDescriptionTab8 #divProductDetailDescriptionAreaDisplay8, 
+.productDetailDescriptionTab9 #divProductDetailDescriptionAreaDisplay9, .productDetailDescriptionTab10 #divProductDetailDescriptionAreaDisplay10, .productDetailDescriptionTab11 #divProductDetailDescriptionAreaDisplay11, .productDetailDescriptionTab12 #divProductDetailDescriptionAreaDisplay12, 
+.productDetailDescriptionTab13 #divProductDetailDescriptionAreaDisplay13, .productDetailDescriptionTab14 #divProductDetailDescriptionAreaDisplay14, 
+.productDetailDescriptionTab15 #divProductDetailDescriptionAreaDisplay15, .productDetailDescriptionTab16 #divProductDetailDescriptionAreaDisplay16, 
+.productDetailDescriptionTab17 #divProductDetailDescriptionAreaDisplay17, .productDetailDescriptionTab18 #divProductDetailDescriptionAreaDisplay18, 
+.productDetailDescriptionTab19 #divProductDetailDescriptionAreaDisplay19, .productDetailDescriptionTab20 #divProductDetailDescriptionAreaDisplay20 
+{display:block;clear:both;border-top:1px solid #bebdbd;}
+.productDetailDescriptionCustomerReviewTab1 #divProductDetailCustomerReviewAreaDisplay1, .productDetailDescriptionCustomerReviewTab2 #divProductDetailCustomerReviewAreaDisplay2{display:block;}
+#divProductIdNav a{/*Might be able to Remove*/
+	display:block;
+	float:right;
+	height:28px;
+	font-weight:bold;
+	border:1px solid #fff;
+	border-bottom:none;
+	padding:3px 16px;
+	background-color:#e4e3e3;
+}
+#divProductDetailsCustomerReviewOptions, #divProductIdNav{
+	display:block;
+	clear:right;
+	height:28px;
+	border-bottom:1px solid #bebdbd;
+}
+#divProductDetailDescriptionAreaOptions a, #divProductDetailsCustomerReviewOptions a{
+	display:block;
+	_display:inline;
+	float:left;
+	height:21px;
+	font-weight:bold;
+	border:1px solid #fff;
+	border-bottom:none;
+	padding:6px 15px 0;
+	background-color:#e4e3e3;
+	margin-right:1px;
+}
+#divProductDetailViewOptions, #divProductDetailPopupViewOptions{
+	display:block;
+	clear:right;
+	height:28px;
+	border-bottom:1px solid #bebdbd;
+	background-color:#fff;
+}
+#divProductDetailPopupViewOptions{
+	border-bottom:none;
+    border-left:1px solid #BEBDBD;
+    position:relative !important;
+    width:auto !important;
+}
+#divProductDetailViewOptions a, #divProductDetailPopupViewOptions a{
+	display:block;
+	float:left;
+	height:21px;
+	line-height:21px;
+	font-weight:bold;
+	padding:3px 23px;
+	background-color:#E4E3E3;
+	color:#E97400;
+	border-top:1px solid #BEBDBD;
+	border-right:1px solid #BEBDBD;
+}
+#divProductDetailPopupViewOptions a{line-height:22px;margin-right:0;}
+#frmProductDetail #divProductIdNav a:hover, #divProductDetailPopupViewOptions a:hover, #divProductDetailViewOptions a:hover{text-decoration:none;}
+.productDetailViewTabPhoto #tabProductDetailViewNav-photo, .productDetailViewTabVideo #tabProductDetailViewNav-video{
+	background-color:#fff;
+	height:22px;
+	color:#333;
+	position:relative;
+	margin-bottom:-1px;
+}
+.productDetailPopupViewTabPhoto #tabProductDetailPopupViewNav-photo, .productDetailPopupViewTabVideo #tabProductDetailPopupViewNav-video{
+		background-color:#FFFFFF;
+		border-right:1px solid #BEBDBD;
+		border-top:1px solid #BEBDBD;
+		color:#3C3C3C;
+		height:22px;
+		line-height:23px;
+		margin-bottom:-1px;
+		position:relative;
+		_top:0;
+}
+/* Hide/Display Photo/Video Popup Tabs */
+#divProductDetailPhotoDisplay, #divProductDetailVideoDisplay, #divProductDetailPopupPhotoDisplay, #divProductDetailPopupVideoDisplay{display:none;}
+.productDetailViewTabPhoto #divProductDetailPhotoDisplay, .productDetailViewTabVideo #divProductDetailVideoDisplay, .productDetailPopupViewTabPhoto #divProductDetailPopupPhotoDisplay, .productDetailPopupViewTabVideo #divProductDetailPopupVideoDisplay, #divProductDetailPopupEnlargePhoto{display:block;}
+#divProductDetailPopupZoomContainer, #divProductDetailPopupEnlargePhoto{
+	margin:10px;
+	text-align:left;
+}
+#divZoomControls{
+	position:absolute;
+	top:350px;
+	right:130px;
+	*right:140px;
+}
+.zoomIn, .zoomOut, .zoomPan{
+	display:inline;
+	z-index:1;
+	position:absolute;
+	border:0;
+}
+.zoomIn{display:block;z-index:3;}
+.zoomPan{z-index:2;}
+
+/*selected tab -- the class will need to be added / removed from body */
+.productDetailItemNumberTabItemNumber #tabProductDetailNav-itemNumber, 
+.productDetailDescriptionTab1 #tabProductDetailNav1, 
+.productDetailDescriptionTab2 #tabProductDetailNav2, 
+.productDetailDescriptionTab3 #tabProductDetailNav3, 
+.productDetailDescriptionTab4 #tabProductDetailNav4, 
+.productDetailDescriptionTab5 #tabProductDetailNav5, 
+.productDetailDescriptionTab6 #tabProductDetailNav6, 
+.productDetailDescriptionTab7 #tabProductDetailNav7, 
+.productDetailDescriptionTab8 #tabProductDetailNav8, 
+.productDetailDescriptionTab9 #tabProductDetailNav9, 
+.productDetailDescriptionTab10 #tabProductDetailNav10, 
+.productDetailDescriptionTab11 #tabProductDetailNav11, 
+.productDetailDescriptionTab12 #tabProductDetailNav12, 
+.productDetailDescriptionTab13 #tabProductDetailNav13, 
+.productDetailDescriptionTab14 #tabProductDetailNav14, 
+.productDetailDescriptionTab15 #tabProductDetailNav15, 
+.productDetailDescriptionTab16 #tabProductDetailNav16, 
+.productDetailDescriptionTab17 #tabProductDetailNav17, 
+.productDetailDescriptionTab18 #tabProductDetailNav18, 
+.productDetailDescriptionTab19 #tabProductDetailNav19, 
+.productDetailDescriptionTab20 #tabProductDetailNav20, 
+.productDetailDescriptionCustomerReviewTab1 #tabProductDetailCustomerReviewNav1, 
+.productDetailDescriptionCustomerReviewTab2 #tabProductDetailCustomerReviewNav2{
+	border-top:1px solid #bebdbd;
+	border-right:1px solid #bebdbd;
+	border-left:1px solid #bebdbd;
+	background-color:#fff;
+	height:22px;
+	position:relative;
+	margin-bottom:-1px;
+}
+#divProductDetailDescriptionAreaOptions a:hover, #divProductDetailsCustomerReviewOptions a:hover{text-decoration:none;}
+h2#h2DeliveryDateEstimate{margin:0;}
+label#lblDeliveryZipCode{
+	padding-top:5px;
+	float:left;
+	height:20px;
+	vertical-align:baseline;
+}
+#frmProductDetail #divDeliveryDateEstimateResults{margin-top:12px;}
+#divPrintEmailOptions{
+	text-align:right;
+	border-top:1px solid #c3c3c3;
+	padding-right:20px;
+	padding-top:6px;
+	margin-bottom:10px;
+}
+#divPrintEmailOptions a{margin-left:15px;}
+#divProgramInformationWrapper{
+	background-color:#e4e3e3;
+	border:1px solid #000;	
+}
+#divProgramInformationWrapper h2{
+	padding:0;
+	margin:0;
+	line-height:normal;
+	font-size:12px;
+}
+#divProgramInformationWrapper p{
+	padding:0;
+	margin:0;
+}
+#divProgramInformationTuneIn{
+	float:left;
+	width:60%;
+}
+#divProgramInformationEmailReminder{
+	float:right;
+	width:40%;
+	text-align:right;
+}
+
+/* to be deleted, for CDR only */
+a.colorJade{background-color:#a8c3b2;}
+a.colorLightBabyBlue{background-color:#c0d7dd;}
+a.colorSoftGold{background-color:#e3ba82;}
+a.colorWhite{background-color:#e4e4e4;}
+/* Photo Video Area and Enlarge Popup*/
+#divProductDetailPhotoVideoWrapper{
+	float:left;
+	width:382px;
+}
+#divProductDetailViewThumbnails, #divProductDetailVideoThumbnails{border-top:1px solid #bebdbd;}
+#frmProductDetailReviewSelection #divProductDetailViewThumbnails{border-top:1px solid #fff;}
+#divProductDetailViewArea{
+	height:324px;
+	text-align:center;
+	padding:3px 0 16px;
+	background-color:#fff;
+}
+#divProductDetailVideoArea{
+	height:314px;
+	padding-top:10px;
+	text-align:center;
+	background-color:#fff;
+}
+#divProductDetailViewArea img{margin-top:20px;	}
+/*Added 'imgCaption' for Defect 4616*/
+#imgCaption #zoomImgCaption{
+	border:0pt solid blue;
+	padding:0 0 5px;
+	display:block;
+	text-align:center;
+	z-index:5 ! important;
+}
+.pdImgCaption{margin:-25px 0pt 10px;}
+#divProductDetailViewThumbnails{min-height:72px;}
+.reviewSelection #divProductDetailViewThumbnails{display:none;}
+#divProductDetailViewThumbnails #divProductDetailViewThumbnailsImages{line-height:0;}
+#divProductDetailViewThumbnailsImages a{
+	display:inline-block;
+	padding:0;
+	margin:6px 4px;
+}
+#divProductDetailViewThumbnailsImages a img{border:2px solid #e4e3e3;}
+#divProductDetailViewThumbnails #divEnlarge{
+	float:right;
+	height:50px;
+	width:144px;
+	padding:1px 0 2px 0;
+	margin:8px 6px 8px 0;
+	_margin:8px 3px 8px 0;
+	text-align:center;
+}
+#divProductDetailPopupPhotoDisplay, #divProductDetailPopupVideoDisplay{
+	text-align:center;
+	border:1px solid #bebdbd;
+}
+#divProductDetailVideoDisplay{
+	clear:both;
+	text-align:center;
+}
+#divProductDetailPopupPhotoArea, #divProductDetailPopupVideoArea{
+	border-bottom:1px solid #bebdbd;
+	height:492px;
+}
+#enlargedImageDiv, .hiddenImgCaption{display:none;}
+#enlargedImageDiv img{margin:auto;display:block;}
+.enlargedImgCaption{margin:auto;top:42px;}
+.zoomImgCaption{
+	margin:0px 0px 10px;
+	top:472px;
+}
+/*PopUp Photos*/
+#divProductDetailPopupPhotoThumbnails{
+	line-height:normal;
+	height:78px;
+}
+.productDetailPopup #divProductDetailPopupPhotoThumbnails img{
+	display:inline;
+	padding:0;
+	margin:10px 3px 0;/* allows for 8 images on the row */
+}
+/*Videos*/
+#divProductDetailVideoThumbnails{
+	height:188px;
+	background-color:#fff;
+}
+#divProductDetailVideoDisclaimer{margin:3px 5px 10px;font-size:11px;}
+#divProductDetailCurrentVideo{margin:6px 0;}
+#divProductDetailMoreVideos{
+	display:block;
+	text-align:left;
+	border:1px solid #BEBDBD;
+	height:96px;
+	width:364px;
+	padding:2px;
+	margin:0px 5px;
+}
+#spanProductDetailMoreVideos, #spanProductDetailSingleVideo{
+	float:left;
+	font-weight:bold;
+	color:#e97400;
+	width:75px;
+}
+#spanProductDetailSingleVideo{width:40px;}
+#divProductDetailVideoList{
+	text-align:left;
+	padding:0 0 0 5px;
+	float:left;
+	overflow:hidden;
+}
+#spanProductDetailCurrentlyViewing{font-weight:bold;}
+#divProductDetailVideoList br{display:none;}
+#spanProductDetailVideoList .video a{
+	font-weight:bold;
+	background:url(../images/ico_tv_gr.gif) no-repeat left center;
+	background-position:0 -2px;
+	padding:0 0 0 18px;
+}
+#spanProductDetailCurrentVideo, #spanProductDetailVideoList .activeVideo a, #divProductDetailPopupVideoThumbnails .video a{
+	color:#e97400;
+	font-weight:bold;
+	background:url(../images/ico_tv_or.gif) no-repeat left center;
+	background-position:0 -2px;
+	padding:0 0 0 18px;
+}
+/*Popup Videos*/
+#divProductDetailPopupVideoArea{padding:10px 0 0 0;}
+#divProductDetailPopupVideoThumbnails{
+	text-align:left;
+	color:#e97400;
+	margin:2px 0 0 20px;
+	height:76px;
+}
+/* Bonus Offer w Purchase */
+#ulBonusOffer li{padding-bottom:5px;}
+#ulBonusOffer li a{text-decoration:underline;}
+
+/* Nutrisystem page */
+#frmProductDetailNutrisystem label{
+	display:inline;
+	float:none;
+	width:auto;
+	height:15px;
+	padding:0 0 0 5px;
+	font-weight:normal;
+	vertical-align:middle;
+}
+#frmProductDetailNutrisystem input.text{width:25px;}
+#frmProductDetailNutrisystem fieldset{
+	float:left;
+	width:49%;
+}
+/* Personalization Templates */
+#frmProductDetailPersonalization h2{margin-bottom:0;}
+.superscript{font-size:15px;vertical-align:7px;}
+/* TSV promo 
+divTodaySpecialValuePromoMessageWrapper */
+/* start defect 7269  */
+#divTodaySpecialValuePromo{
+	width:530px;
+	float:left;
+}
+#divTodaySpecialValueRssFeed{
+	float:right;
+	width:210px;
+}
+
+/* end defect 7269  */
+#divTodaySpecialValuePromo .roundedBorderColorAll, #divTodaySpecialValueRssFeed .roundedBorderColorAll, #divTodaySpecialValuePromo p, #divTodaySpecialValueRssFeed p, #divCustomerReviewOverview p{margin:0;}
+#divProductDetailsCustomerReviewWrapper{
+	margin-top:10px;
+	margin-bottom:30px;
+}
+#frmProductDetailGroupItem #divTodaySpecialValuePromo{
+	float:none;
+	width:auto;
+	margin:20px 0;
+}
+#frmProductDetailGroupItem #divTodaySpecialValueRssFeed, #frmProductDetailGroupItem #divTodaySpecialValuePromo .specialitemboxRSS{display:none;}
+
+/* Customer Review section */
+#divCustomerReviewOverview{
+	padding-bottom:20px;
+	margin-bottom:20px;
+	border-bottom:1px solid #bebdbd;
+}
+#divCustomerReviewOverview fieldset{text-align:right;}
+#divCustomerReviewOverview #parCustomerReviewStarRating{margin-bottom:10px;}
+#divCustomerReviewOverview #parCustomerReviewWriteReview{margin-top:10px;}
+.customerReview{
+	border-bottom:1px solid #bebdbd;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+#divProductDetailCustomerReviewAreaDisplay1 .customerReview h2{
+	float:left;
+	margin:0;
+}
+.customerReviewPostInformation{
+	float:right;
+	text-align:right;
+	clear:right;
+}
+.customerReviewPostInformation a.readReviews{
+	background:url(http://www.qvc.com/wcsstore/US/content/images/more_reviews_icon.gif) no-repeat left center;/*TBR*/
+	padding:0 0 0 13px;
+}
+.customerReview p, .customerReviewOverallRating{clear:both;}
+.customerReview p a{font-weight:bold;}
+.customerReview p span a{color:#e97400;}
+.helpfulReview{margin-left:9px;}
+.customerReview p a.arrow{margin-left:20px;font-weight:normal;}
+#divCustomerReviewPaging{
+	background-color:#e4e3e3;
+	padding:5px 0;
+}
+#divCustomerReviewPaging div{
+	font-weight:bold;
+	text-align:center;
+}
+#divCustomerReviewPaging #divCustomerReviewPagingMore{
+	float:right;
+	margin:0 10px 0 0;
+}
+#divCustomerReviewPaging #divCustomerReivewPagingResults{
+	text-align:center;
+	margin:0;
+}
+
+/* Group Item */
+#frmProductDetailGroupItem #lblItemNumberDe, #frmProductDetailGroupItem #divProductIdNavDe a, #frmProductDetailGroupItem #spanTodaysSpecialValue{display:none;}
+#frmProductDetailGroupItem #divProductIdNavDe{width:534px;border-bottom:none;}
+#frmProductDetailGroupItem #divProductDetailDescriptionSelection{
+	float:right;
+	background-color:#fff;
+	width:512px;/* was 512px */
+	min-height:466px;/* was 395 */
+	_height:466px;/* may need to be adjusted if there are many items in a group;was 398px */
+	padding:0 10px 5px;
+	border:1px solid #bebdbd;
+	border-bottom:none;
+}
+#frmProductDetailGroupItem .groupItemMoreDetails{
+	float:right;
+	display:inline-block;
+	margin-top:-6px;/* Top aligns button text to top of text */
+	*margin-top:-3px;
+}
+#frmProductDetailGroupItem ul{
+	list-style-type:none;
+	margin-left:0;
+	padding-left:0;
+}
+#frmProductDetailGroupItem ul li{
+	clear:both;
+	padding-bottom:40px;
+	background:url(../images/aro_rt_gry.gif) 10px 4px no-repeat;
+	padding-left:19px;
+}
+#frmProductDetailGroupItem ul li a{font-weight:bold;}
+#frmProductDetailGroupItem ul li div{
+	float:left;
+	width:70%;
+}
+.groupItemPrice span{
+	font-weight:bold;
+	margin-left:5px;
+}
+/*QA Test: ENH 1.1 - Group Types2 Enhancement */
+/*.divGroupSnippet{
+position:relative;
+margin:0;
+padding:10px 0;
+top:0;
+overflow:visible;
+}
+.divGroupTopCopy{
+background:#E7E7E7;
+height:auto;
+border:1px solid #ccc;
+border-radius:6px;
+margin:20px 0 10px;
+float:left;
+width:500px;
+}
+.divGroupTopBorderGray{padding-bottom:10px;}
+.divGroupImg{float:left;margin:10px;}
+.divGroupImg img{border:0;}
+.divGroupCopy{
+float:left;
+margin:10px 5px;
+width:400px;
+}
+.divGroupChild{margin:10px;display:block;}
+.divGroupChildDesc{
+position:relative;
+float:left;
+margin:0 15px;
+}
+.divGroupChildPrice{
+margin:0 10px;
+padding:0 10px;
+color:#E97400;
+font-weight:bold;
+}
+.groupChildLink{
+background:url("http://images-p.qvc.com/is/image/pic/buttons/arrows/gray_right.gif") no-repeat scroll 0 4px transparent;
+padding-left:10px;
+text-decoration:underline;
+}
+.divGroupMktTxt{font-style:italic;padding:0 25px;}
+.divGroupDesc{
+border:1px solid #ccc;
+border-radius:6px;
+margin:30px 0 50px;
+padding:10px;  
+width:500px;
+}
+.divGroupDesc_TopMargin{
+border:1px solid #ccc;
+border-radius:6px;
+margin:150px 0 50px;
+padding:10px;  
+}
+#frmProductDetailGroupItem ul li{
+background:none;
+padding-bottom:5px;
+padding-left:20px;
+}
+#frmProductDetailGroupItem ul{margin:10px 0;}*/
+/* Group Types2 Enhancement */
+#frmProductDetailGroupItem ul li{background:none;padding-bottom:5px;padding-left:20px;}
+#frmProductDetailGroupItem ul{margin:10px 0;}
+/* Delivery Date Estimate dynamic table */
+.pderrors{/* this needs to be deleted and the proper error framework used */
+	margin:1px 0 0 0;
+	color:#e47106;
+	padding:0 0 0 9px;
+}
+.tblshipping{
+	width:700px;
+	margin:0 0 20px 0;
+}
+.tblshipping thead{
+	display:table-header-group;
+	background:#e3e1d8;
+}
+.tblshipping td, .tblshipping th{font-size:12px;}
+.tblshipping td{
+	padding:5px 0;
+	text-indent:20px;
+}
+.tblshipping th{
+	padding:2px 0 2px 0;
+	text-align:left;
+	font-weight:bold;
+	text-indent:20px;
+}
+.deliverydisclaim{
+	color:#333333;
+	font-size:11px;
+}
+.customerReview label{
+	margin-left:0;
+	margin-right:7px;
+	padding-left:0;
+	width:auto;
+}
+.customerReview .inlineInstructions{margin-left:33px;}
+
+/* =Sidebar
+--------------------------------------------------------------------- */
+#divSidebar #divSidebarWriteReview ul{padding-left:15px;}
+#divSidebar #divSidebarCrossSell, #divSidebar #divEnsemble{
+	margin:5px 0;
+	text-align:center;
+}
+.sidebarProductBrand{display:none;}
+#divSidebar #divSidebarBrowseMore{padding:15px 0 10px 0;}
+#divSidebar #divSidebarCrossSell div, #divSidebar #divEnsemble div{
+	padding-bottom:10px;
+	margin-bottom:10px;
+	border-bottom:1px solid #c8c8c6;
+}
+#divSidebar #divEnsemble div.lastEnsemble{
+	padding-bottom:0;
+	margin-bottom:10px;
+	border-bottom:none;
+}
+#divSidebar #divEnsemble div.divMore{border-bottom:none;}
+#divSidebar #divSidebarCrossSell div div, #divSidebar #divEnsemble div div{
+	border:0;
+	padding:0;
+	margin:0;
+}
+#divSidebar #divSidebarCrossSell div p{margin:0;}
+#divSidebar #divSidebarCrossSell div .sidebarProductDescription, #divSidebar #divEnsemble div .sidebarEnsembleTag, #divSidebar #divEnsemble div.divMore{
+	font-weight:bold;
+}
+#divSidebarCrossSell div{border-bottom:solid #c4c0b4 1px;}
+#divSidebar .h2RoundedBorderAll h2{
+	text-align:center;
+	padding-left:0;
+	padding-top:5px\9;
+}
+#divSidebar #divBrowsePrevious, #divSidebar #divBrowseNext{
+	width:64px;
+	float:left;
+	text-align:center;
+}
+#divSidebar #divBrowseNext{float:right;}
+#divSidebar a.previous{
+	display:inline-block;
+	color:#e97400;
+	background:url(../images/aro_lt_ora.gif) no-repeat left center;
+	padding-left:9px;
+}
+#divSidebar a.next{
+	display:inline-block;
+	color:#e97400;
+	background:url(../images/aro_rt_ora.gif) no-repeat right center;
+	padding-right:9px;
+}
+
+/* =Order Detail
+--------------------------------------------------------------------- */
+#frmOrderDetail h2, #frmShippingOptions h2, #frmSubmitOrder h2{
+	padding-bottom:0;
+	margin-bottom:0;
+	margin-top:0;
+	line-height:normal;
+	font-size:12px;
+}
+#frmSubmitOrder h2{
+	clear:both;
+	margin-top:5px;
+}
+.divOrderTotalInstructions{
+	width:300px;
+	height:56px;
+	padding:7px 7px 0 0;
+	_padding:8px 7px 0 0;
+	margin:10px 0 0 0;
+	float:right;
+	text-align:right;
+}
+div#sisepertator{border-bottom:1px solid #c8c8c6;}	
+.itemInformationWrapper{
+	padding:0 50px;
+	border-top:1px solid #c8c8c6;
+}
+/*Build 2.01 - Defect 14278 - LiquidHub*/
+#divOrderDetailItemInformation .itemInformationWrapper .itemDetails{
+	overflow:hidden !important;
+	*overflow:visible !important;
+}
+#divOrderDetailItemInformation{min-height:165px;}
+#divOrderDetailItemInformation div{float:left;}
+#divOrderDetailItemInformation img{margin:5px 0 15px 0;}
+.itemInfo{width:150px;text-align:center;}
+#divOrderDetailItemInformation h3{margin:0;padding:5px 10px 5px 10px;}
+#divOrderDetailItemInformation .itemDetails h3{padding:5px 10px 0px 0px;}
+#divOrderDetailItemInformation table{margin:16px 0 10px 0;}
+.itemInfo h3{
+	background-color:#efefe7;
+	text-align:left;
+}
+#frmOrderDetail table.orderTable.stripeTable, #frmShippingOptions table.orderTable.stripeTable, #frmSubmitOrder table.orderTable.stripeTable{
+	clear:both;	
+}
+.itemDetails{
+	/* 4632 */
+	width:647px;
+	padding:0 0 0 20px;
+}
+#divOrderDetailItemInformation .itemDetails p{
+	padding:0;
+	margin:0;
+}
+#divOrderDetailItemInformation .itemDetails p a{
+	color:#e97400;
+	font-weight:bold;
+	text-decoration:none;
+}
+#divOrderDetailItemInformation .itemDetails p a:hover{text-decoration:underline;}
+.itemDeliveryInformation{line-height:normal;}
+#divOrderDetailOrderInformation{
+	padding:10px 0 15px;
+	border-bottom:1px solid #c8c8c6;
+}
+
+#divOrderDetailOrderInformation label.inlineLabel{
+	font-weight:bold;
+	vertical-align:text-bottom;
+	line-height:normal;
+}
+#divContent .itemDeliveryInformation label.inlineLabel{
+	vertical-align:text-bottom;
+	line-height:normal;
+}
+#divOrderDetailOrderInformation span, .itemDeliveryInformation span{padding:0 30px 0 5px;}
+#divOrderDetailItemInformation div.itemLinks{
+	float:right;
+	clear:right;
+	line-height:normal;
+}
+#divOrderDetailItemInformation div.itemLinks ul, #divOrderDetailOrderChanges div.itemLinks ul{padding:0;margin:0;}
+#divOrderDetailItemInformation div.itemLinks li, #divOrderDetailOrderChanges div.itemLinks li{
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+#divOrderDetailOrderChanges, #divOrderDetailOrderChanges .itemLinks{text-align:right;}
+/* don't display table headings */
+#frmEditPaymentMethod table th, #frmEditPaymentMethod #required{display:none;}
+#frmEditPaymentMethod #divButtons{*margin:20px 0 0;}
+/*HideProd:This hides current pay method from edit payments page*/
+/*#divCurrentPaymentMethod{display:none;}*/
+/* removes normal label padding/margin from the Total Purchase and adds bold and right margin */
+#divTotalPurchaseSummary label.inlineLabel, #divNewPaymentMethod #lblTotalPurchaseAmount, #divCurrentPaymentMethod #lblCurrentPaymentMethod{
+	font-weight:bold;
+	padding-right:10px;
+}
+#divTotalPurchaseSummary span#spanTotalPurchaseAmount, #divNewPaymentMethod span#spanTotalPurchaseAmount, #divCurrentPaymentMethod span#spanCurrentPaymentMethod{
+	font-weight:bold;
+}
+span#spanTotalPurchaseAmount1{margin:0;padding:0;}
+#divTotalPurchaseSummary p, #divEasyPayOptions h3, #divDeferPayOptions h3, #divLongTermFinancingOptions h3, #divEasyPayOrLongTermFinancingOptions h3, #divNewPaymentMethod h3, #divQvcGiftCardsMethod h3{margin-top:0;}
+#divEasyPayOptions a, #divDeferPayOptions a, #divLongTermFinancingOptions a, #divEasyPayOrLongTermFinancingOptions a{
+	text-decoration:underline;
+}
+#divEasyPayOptions p, #divDeferPayOptions p, #divLongTermFinancingOptions p, #divEasyPayOrLongTermFinancingOptions p{margin:0;}
+#divGiftCardPaymentOption, #divPaymentCredit{padding:7px;}
+#tblNewPaymentMethod #divBillMeLater h3 a{
+	font-weight:normal;
+	text-decoration:underline;
+	background:none;
+}
+#divEasyPayOptions legend, #divDeferPayOptions legend, #divLongTermFinancingOptions legend, #divEasyPayOrLongTermFinancingOptions legend{
+	font-weight:bold;
+	line-height:normal;
+	padding-top:15px;
+	color:#333;
+}
+#divQvcGiftCardEntry{
+	padding:15px 0 0 17px;
+	margin-left:12px;
+}
+#divQvcGiftCardEntry #parAddedQvcGiftCards{margin-bottom:0;}
+#divQvcGiftCardEntry ul{
+	margin-top:0;
+	padding-top:0;
+	line-height:normal;
+}
+#divEnterNewCard, #divADEnterNewCard, #divBillMeLater, .divExpiredCard{padding-left:17px;}
+#divEnterNewCard, #divADEnterNewCard{margin:8px 0 0 0;}
+#divADEnterNewCard, #divADCreditCardLogos{float:left;}
+#divCreditCardLogos{float:right;}
+#divCreditCardLogos img, #divADCreditCardLogos img{width:351px;height:24px;}
+.expiredCreditCard{color:#f00;}
+
+/* Order Detail */
+#divOrderDetailNote, #divOrderDetailOrderChanges, #frmOrderDetail .divOrderTotalButtons, #frmShippingOptions .divOrderTotalButtons{
+	clear:both;
+	padding:10px 0;
+}
+/* Defect 5258. Added Width for FireFox and Height for IE7*/
+.receipt #frmSubmitOrder .divOrderTotalButtons{
+	padding:10px 0 0 0;
+	width:250px;
+    height:80px;
+}
+#divEditItemNote, #divEstimatedDeliveryDatesNote, #divPaymentMethodNote{margin:12px 0 0 0;}
+#frmOrderDetail #orderDetailsConfirmEasyPayButtons{padding:10px 0 0 0;}
+#divOrderDetailNote{border-bottom:1px solid #c8c8c6;}
+#divEstimatedDeliveryDatesNote a{text-decoration:underline;}
+.estimateddeliverydate{text-decoration:underline;}/* Defect 6039 */
+#divOrderDetailNote p{padding:0;margin:0;}
+#divOrderDetailOrderChanges p{
+	font-style:italic;
+	font-weight:bold;
+	padding:5px 0;
+	margin:0;
+}
+.orderDetailsConfirmEasyPayMessage{
+	background-color:#ddebba;
+	border:1px solid #bebdbd;
+	padding:7px;
+}
+/* =Checkout (some selectors are above in Order Details, if they are similar)
+--------------------------------------------------------------------- */
+#frmCheckoutAddresses #spanPrimaryPhoneWhy{display:inline;margin-left:5px;}
+#divShipToDifferentThanBillToAddress, #divInStockTotal table thead, #divWaitlistTotal table thead, #tblCheckoutSubmitOrderGrandTotal thead, .orderSubTotal table thead{display:none;}
+#divCheckoutOrderStatusMessage{margin:15px 0 25px;}
+#frmCheckout a{text-decoration:underline;}
+#frmCheckout a.inlineInstructions{
+	display:inline;
+	padding-left:9px;
+	text-decoration:underline;
+	color:#333;
+	background:url(../images/aro_rt_gry.gif) no-repeat left center;
+}
+#divCheckoutCreditCardInformation{margin-bottom:15px;}
+#divInStockTotal, #divWaitlistTotal, .orderSubTotal{
+	text-align:right;
+	margin:-1px 47px 15px 608px;
+	padding:10px;
+	border:1px solid #bebdbd;
+	border-top:1px solid #fff;
+}
+#divInStockTotal table, #divInStockTotal tr, #divInStockTotal td, #divWaitlistTotal table, #divWaitlistTotal tr, #divWaitlistTotal td, .orderSubTotal table, .orderSubTotal tr, .orderSubTotal td{padding:0;margin:0;}
+#divInStockTotal td.tdCurrency, #divWaitlistTotal td.tdCurrency, .orderSubTotal td.tdCurrency{text-align:right;}
+#tblCheckoutSubmitOrderGrandTotal td.tdCurrency{padding-right:10px;}
+#tblCheckoutSubmitOrderGrandTotal td{border-bottom:1px solid #bebdbd;}
+#divOrderDetailItemInformation .itemPersonalization, #divWaitlistItemInformation .itemPersonalization, .divOrderDetailItemInformation .itemPersonalization{
+	display:block;
+	float:none;
+	padding:0 0 10px;
+}
+#frmOrderDetail .itemPersonalization .giftCardEmailAddress a, #frmSubmitOrder .itemPersonalization .giftCardEmailAddress a{
+	font-weight:normal;
+	text-decoration:underline;
+}
+#divShippingDelayMessage{clear:both;}
+/* =Quick Compare
+--------------------------------------------------------------------- */
+#tblQuickCompare{
+	margin:0;
+	padding:0;
+	border-left:1px solid #bebdbd;
+}
+#tblQuickCompare td, #tblQuickCompare th{
+	border-right:1px solid #bebdbd;
+	border-bottom:1px solid #bebdbd;
+	margin:0;
+	padding:7px 0 7px 7px;
+}
+#tblQuickCompare th{padding:7px;}
+#tblQuickCompare td.barDark{
+	background-color:#656565;
+	border:0;
+}
+
+/* =Program Guide
+--------------------------------------------------------------------- */
+/* Time Zone Selection, Week/Day Calendar Selector, Search */
+.programGuideTimeZoneSearch{
+	display:block;
+	clear:both;
+	height:25px;
+}
+.programGuideTimeZoneSearch  div *{vertical-align:middle;margin-bottom:0;}
+.divProgramGuideTimeZone, .divProgramGuideTimeZone1{float:left;}
+.programGuideTimeZoneSearch fieldset{width:auto;display:inline;}
+.divProgramGuideSearch, .divProgramGuideSearch1{float:right;margin:3px 0 0 0;}
+/* Display Daily/Weekly view, Print Q Guide, and Save Reminders buttons */
+.programGuidePageView{clear:both;margin:10px 0;}
+.programGuidePageView.top{margin:5px 0 0 0;}
+.programGuidePageView.bottom{margin:0 0 10px 0;clear:both;padding:0;}
+.programGuidePageView .divPageView{position:relative;padding:0;}
+.programGuidePageView.bottom .programGuideSelectorDay{display:none;}
+.programGuidePageView .divPageView *{vertical-align:middle;}
+.programGuidePageView input.primaryButton{margin:0;}
+.programGuidePageView .divItems a{color:#fff;}
+/* Display current time period and permits navigation to previous and next time period */
+.programGuideSelectorWeek, .programGuideSelectorDay{
+	background-color:#e4e3e3;
+	padding:5px 0;
+	margin:1px 0;
+	position:relative;
+}
+.programGuideSelectorWeek div, .programGuideSelectorDay div{
+	line-height:15px;
+	font-weight:bold;
+	text-align:center;
+	padding:5px 0;
+}
+.programGuideSelectorWeekLeft, .programGuideSelectorDayLeft, .programGuidePageView .divPageViewText{position:absolute;left:15px;top:0;}
+.programGuideSelectorWeekRight, .programGuideSelectorDayRight, .programGuidePageView .divItems{position:absolute;right:15px;top:0;}
+.programGuideSelectorWeekLeft, .programGuideSelectorDayLeft, .programGuideSelectorWeekRight, .programGuideSelectorDayRight{margin:5px 0 0 0;}
+.programGuidePageView .divItems{line-height:15px;top:5px;height:30px;}
+/* Program Guide Daily */
+#divProgramGuideWrapper{border-bottom:1px solid #dde1ea;_height:1px;clear:both;}
+/* Headers */
+#divDateHeader, #divTimeHeader, #divShowsHeader, #divDateHeader1, #divTimeHeader1, #divShowsHeader1{
+	float:left;
+	background-color:#666566;	
+	border-bottom:1px solid #fff;
+	color:#fff;
+	font-weight:bold;
+	height:35px;
+	line-height:35px;
+	text-indent:20px;	
+}
+#divDateHeader, #divTimeHeader, divDateHeader1, #divTimeHeader1{
+	width:148px;
+	border-right:1px solid #fff;
+}
+#divDateHeader1{width:147px;border-right:1px solid #fff;}
+#divShowsHeader, #divShowsHeader1{width:768px;}
+.programGuideSearchResults #divShowsHeader, .programGuideSearchResults #divShowsHeader1{width:619px;}
+/* Rows */
+/* Sets colors for different segment types */
+.divDailyProgram{clear:both;_height:1px;}
+.divPastProgram .divProgramInformationWrapper{background-color:#efefef;}
+.divLongProgramDescription .divProgramInformationWrapper{background-color:#d9d8d8;height:73px;}
+.programGuideSearchResults .divLongProgramDescription .divProgramInformationWrapper, .programGuideSearchResults .divProgramTimeWrapper{background-color:#fff;}
+#divCurrentProgram .divProgramInformationWrapper{background-color:#ddebba;height:73px;}
+#divCurrentProgram .divLongProgramDescription{background-color:#ddebba;height:107px;}
+#divCurrentProgram .divDailyProgramDetailsWrapper{background-color:#ddebba;}
+.divProgramDateWrapper, .divProgramTimeWrapper{
+	float:left;
+	width:148px;
+	height:45px;
+	background-color:#e4e3e3;
+}
+.divLongProgramDescription .divProgramDateWrapper, .divLongProgramDescription .divProgramTimeWrapper{height:73px;}
+#divCurrentProgram .divProgramDateWrapper, #divCurrentProgram .divProgramTimeWrapper{
+	background-color:#94c329;
+	color:#fff;
+	height:73px;
+}
+#divCurrentProgram.divLongProgramDescription .divProgramDateWrapper, #divCurrentProgram.divLongProgramDescription .divProgramTimeWrapper{height:107px;}
+.programGuideSearchResults #divCurrentProgram.divLongProgramDescription .divProgramTimeWrapper{
+	background-color:#ddebba;
+	color:#333;
+}
+.divDailyProgram .divProgramInformationWrapper{
+	float:left;
+	width:768px;
+	height:45px;
+	border-right:1px solid #e4e3e3;
+}
+.programGuideSearchResults .divDailyProgram .divProgramInformationWrapper{width:619px;}
+.divBottomProgram .divProgramDateWrapper, .divBottomProgram .divProgramTimeWrapper, .divBottomProgram .divProgramInformationWrapper{border-bottom:none;}
+.divLongProgramDescription .divProgramInformationWrapper, .divDailyProgram #divCurrentProgram .divProgramInformationWrapper{height:73px;}
+#divCurrentProgram.divLongProgramDescription .divProgramInformationWrapper{height:107px;}
+.divProgramDate, .divProgramTime{
+	font-weight:bold;
+	padding:14px 0 0 22px;
+}
+/* Program Title Wrapper */
+.divDailyProgram .divProgramTitleWrapper{
+	float:left;
+	width:389px;
+	padding:14px 0 0 22px;
+	font-weight:bold;
+}
+.programGuideSearchResults .divDailyProgram .divProgramTitleWrapper{width:240px;}
+.divProgramTitleWrapper .divProgramTitle a:hover{padding-bottom:14px;}
+.divProgramTitleWrapper .divProgramTitle a:hover sup{
+*text-decoration:none;
+padding-bottom:14px;
+*background:url(../images/sup_hover.gif) repeat-x 1px;
+}
+.divDailyProgram .eventTitle, .spanNewShow{display:none;}
+/* New Show */
+.divNewProgram .spanNewShow, #tblProgramGuideWeekly .tdNewProgram .spanNewShow, .spanNewShow_1{
+	font-weight:bold;
+	color:#e97400;
+	font-size:13px;
+	display:inline;
+}
+.divNewProgram .spanNewShow{width:40px;}
+/* Defect 6249 */
+.spanNewShow_1{padding-right:13px;}
+/* Long Description beneath Program Title */
+.divProgramDescription{
+	font-weight:normal;
+	margin:15px 0 0 0;
+	display:none;
+}
+.divLongProgramDescription .divProgramDescription, #divCurrentProgram .divLaunchPlayer{display:block;}
+/* Launch Video Player*/
+.divLaunchPlayer{margin:0 0 0 10px;display:none;}
+.divLaunchPlayer a{
+	background:url(../images/ico_tv_or.gif) no-repeat left top;
+	color:#e97400;
+	font-weight:bold;
+	text-decoration:none;
+	display:inline-block;
+	padding:4px 0 0 21px;
+}
+/* Show Details */
+.divDailyProgram .divProgramShowDetails{
+	width:152px;
+	float:left;
+	padding:14px 0 0 0;
+}
+.divDailyProgram .divProgramShowDetails a, .divDailyProgram .divSeeItems a{
+	background:url(../images/btnShowDet.gif) no-repeat left top;
+	text-decoration:none;
+	display:inline-block;
+	padding:0 0 0 21px;
+}
+.divProgramShowDetails{background:none !important;}
+/* See Items from this show */
+.divDailyProgram .divSeeItems{display:none;}
+.divDailyProgram.divPastProgram .divSeeItems{
+	display:block;
+	float:left;
+	width:200px;
+	padding:14px 0 0 0;
+}
+.divDailyProgram .divSeeItems a{background:url(../images/arrowGrey.gif) no-repeat left top;}
+.divDailyProgram .divProgramShowDetails a:hover, .divLaunchPlayer a:hover, .divDailyProgram .divSeeItems a:hover{text-decoration:underline;}
+/* Add Daily Reminder */
+.divDailyProgram .divAddReminderDaily{
+	display:block;
+	float:left;
+	width:200px;
+	padding:14px 0 0 4px;
+	_padding:10px 0 0 4px;
+}
+.divPastProgram .divAddReminderDaily, #divCurrentProgram .divAddReminderDaily{display:none;}
+/* Details */
+.divShowHideWrapper{
+	border-bottom:1px solid #fff;
+	float:left;
+}
+.divBottomProgram .divShowHideWrapper{
+	border-bottom:1px solid #e4e3e3;
+	margin:0 0 1px 0;
+}
+.divDailyProgramDetailsWrapper{
+	clear:both;
+	display:block;
+	float:left;
+	background:#fff;
+	border-left:148px solid #e4e3e3;
+	border-right:1px solid #e4e3e3;
+	border-bottom:1px solid #fff;
+	border-right:1px solid #e4e3e3;
+	width:768px;
+	margin:0;
+	position:relative;
+	overflow:auto;
+}
+.divDailyProgramDetailsWrapper .divButtons, .divProgramDetailsInformation .divButtons{margin:0;text-align:right;}
+.divDailyProgramDetailsWrapper .divButtons input, .divProgramDetailsInformation .divButtons input{margin:0;}
+#divCurrentProgram .divDailyProgramDetailsWrapper{border-left:148px solid #94C329;}
+.divPastProgram .divDailyProgramDetailsWrapper{background:#efefef;}
+.divLongProgramDescription.divPastProgram .divDailyProgramDetailsWrapper{background:#d9d8d8;}
+divDailyProgramDetailsWrapper div{float:left;clear:both;}
+.divProgramMovie{
+	float:left;
+	width:230px;
+	padding:5px 0 0 20px;
+}
+.divDailyProgram .divProgramDetailsInformation{
+	float:left;
+	margin:0 0 0 20px;
+	font-size:12px;
+	width:450px;
+	padding:2px 0 15px 0;
+}
+.programGuideStandAloneProgramPage .divProgramMovie{
+	float:left;
+	width:230px;
+	padding:0;
+	margin:0;
+}
+.programGuideStandAloneProgramPage .divProgramDetailsInformation{
+	float:left;
+	margin:0 0 0 20px;
+	font-size:12px;
+	width:667px;
+	padding:2px 0 15px 0;
+}
+.programGuide.list .divProgramMovie{float:none;padding:0;}
+.programGuide.list .divDailyProgram .divProgramDetailsInformation{
+	float:none;
+	width:auto;
+	margin:0;
+	padding:0;
+}
+#divContent .divProgramDetailsInformation h2{margin:0;}
+#divContent .divProgramDetailsInformation p{margin:12px 0 0 0;}
+.tblUpcomingShows{margin-top:15px;width:100%;}
+div.divProgramDetailsInformation table.tblUpcomingShows{width:100%;}
+.tblUpcomingShows td{padding:8px 0 8px 20px;}
+/* Program Guide Weekly */
+#tblProgramGuideWeekly{margin:0;padding:0;}		
+#tblProgramGuideWeekly thead th{
+	background-color:#666566;
+	color:#fff;
+	border-right:1px solid #c7cfdc;
+	border-bottom:1px solid #fff;
+	text-align:center;
+	width:118px !important;
+	padding:4px 0;
+	overflow:hidden;
+}
+#tblProgramGuideWeekly thead .thTime{
+	border-right:1px solid #fff;
+	width:83px !important;
+	overflow:hidden;
+}
+#tblProgramGuideWeekly tbody .trHour th, #tblProgramGuideWeekly tbody .trHour td{
+	height:160px;
+	overflow:hidden;
+}
+#tblProgramGuideWeekly tbody .trHalfHour th, #tblProgramGuideWeekly tbody .trHalfHour td{
+	height:130px;
+	overflow:hidden;
+}
+#tblProgramGuideWeekly tbody th{
+	background-color:#e4e3e3;
+	border-right:1px solid #fff;
+	border-bottom:1px solid #fff;
+	padding:5px 10px;
+	width:83px !important;
+	vertical-align:middle;
+	color:#333;
+	white-space:normal;
+	text-align:left;
+	overflow:hidden;
+}
+#tblProgramGuideWeekly tbody td{
+	background-color:#fff;
+	font-weight:bold;
+	font-size:12px;
+	border-right:1px solid #e4e3e3;
+	border-bottom:1px solid #e4e3e3;
+	padding:5px 7px;
+	margin:0;
+	width:118px !important;
+	vertical-align:top;
+	overflow:hidden;
+	word-wrap:break-word;	
+}
+#tblProgramGuideWeekly .tdPastProgram{background-color:#efefef;}
+#tblProgramGuideWeekly #tdCurrentProgram{background-color:#ddebba;}
+#tblProgramGuideWeekly .tdEventProgram{
+	background-color:#d9d8d8;
+	border-bottom:1px solid #fff;
+}
+#tblProgramGuideWeekly .divEventTitleProgramTitleWrapper{height:120px;overflow:hidden;}
+#tblProgramGuideWeekly .trHalfHour .divEventTitleProgramTitleWrapper{height:90px;overflow:hidden;}
+/* Only display the Event Title when the class is present */
+#tblProgramGuideWeekly .divProgramTitle{width:98px;}
+#tblProgramGuideWeekly .eventTitle, .divLaunchPlayer, #tblProgramGuideWeekly .divSeeItems{display:none;}
+#tblProgramGuideWeekly .tdEventProgram .eventTitle{
+	display:block;
+	background-color:#878686;
+	color:#fff;
+	padding:5px 10px;
+}
+/* Only display the Launch Player for the Current Program */
+/* show the "See items from this show" link only for Past Programs */
+#tblProgramGuideWeekly #tdCurrentProgram .divLaunchPlayer, #tblProgramGuideWeekly .tdPastProgram .divSeeItems{display:block;}
+#tblProgramGuideWeekly .divLaunchPlayer{margin:0;}
+#tblProgramGuideWeekly .divSeeItems a{
+	background:url(../images/arrowGrey.gif) no-repeat left top;
+	padding:0 0 0 18px;
+	margin:4px 0 0 0;
+	display:inline-block;
+	font-weight:normal;
+	text-decoration:none;
+}
+#tblProgramGuideWeekly .divSeeItems a:hover{text-decoration:underline;}
+/* show the Add Reminder checkbox only for Future Programs */
+#tblProgramGuideWeekly .divAddReminderDaily{display:block;margin:3px 0 0 0;}
+#tblProgramGuideWeekly .tdPastProgram .divAddReminderDaily, #tblProgramGuideWeekly #tdCurrentProgram .divAddReminderDaily{display:none;}
+/* =Watch QVC Live
+--------------------------------------------------------------------- */
+.watchQvcLive h1{
+	background:url(../images/small_logo.jpg) no-repeat left center;
+	padding:8px 0 0 55px;
+	margin:0 0 3px 0;
+	height:45px;
+}
+.watchQvcLive #divShowTitle{float:left;}
+.watchQvcLive #divShowTitle h2{
+	display:inline;
+	margin:0 0 0 10px;
+	padding-left:8px;
+}
+.watchQvcLive #divShowTitle a{margin-left:15px;}
+.watchQvcLive #divMovieWrapper{padding:0;}
+.watchQvcLive #divMovieWrapper, .watchQvcLive #divAskQuestionWrapper{
+	float:left;
+	margin:15px 0 0 0;
+	width:640px;
+}
+.watchQvcLive #divProductInfoWrapper{
+	float:right;
+	width:185px;
+	margin:15px 0 0 0;
+}
+.watchQvcLive #divQVCLiveMovie{
+	width:640px;
+	height:515px;
+	margin-bottom:10px;
+}
+.watchQvcLive p#pAskUsLiveDesc, .watchQvcLive p#pAskYourQuestion{padding-left:19px;}
+.watchQvcLive #divAskUsLiveForm{display:none;}
+.watchQvcLive #divProductInfo, .watchQvcLive #divProductButtons, .watchQvcLive #divOtherButtons{
+	margin:0 0 5px 0;
+	padding:0 0 5px 0;
+	border-bottom:1px solid #c4c0b4;
+}
+.watchQvcLive #divProductNumber{
+	font-weight:bold;
+	margin:5px 0;
+}
+.watchQvcLive #divProductName{
+	font-weight:bold;
+	padding:0;
+	line-height:15px;
+	font-size:14px;
+	text-decoration:none;
+}
+.watchQvcLive .pricePrimary{
+	margin:0 0 3px 0;
+	color:#e97400;
+}
+.watchQvcLive .priceDollars{
+	font-size:25px;
+	font-weight:bold;
+	display:block;
+}
+.watchQvcLive .priceCents{
+	font-size:15px;
+	vertical-align:7px;
+}
+.watchQvcLive #divMoreDetails{margin:10px 0 10px -6px;}
+.watchQvcLive #divEasyPay{
+	color:#88b220;
+	font-weight:bold;
+}
+.watchQvcLive #divSeeEasyPayDetails{
+	font-size:11px;
+	margin:7px 0 0 0;
+}
+.watchQvcLive #divLivePlayerFooter{
+	background-color:#e4e1d8;
+	line-height:32px;
+	text-align:center;
+}
+
+/* =Navigation
+--------------------------------------------------------------------- */
+/* Common Nav */
+#divNavCommon .h2RoundedBorderAll{margin:0 0 21px 0;}
+#divNavCommon h3{
+	font-size:12px;
+	background:none;
+	font-weight:bold;
+	padding:0 0 3px 32px;
+	margin:0;
+}
+#divNavCommon ul{
+	margin:0;
+	padding:0 0 21px 32px;
+	list-style-type:none;
+}
+#divNavCommon #divMyAccountQCardFaqNav ul{/* QCard FAQ Navigation */
+	margin:21px 0 0;
+	padding:0 0 21px 32px;
+	list-style-type:none;
+}
+#divNavCommon ul li, #divMyAccountQCardFaqNav ul li{
+	background:url(../images/aro_rt_gry.gif) no-repeat left 4px;
+
+	padding:0 0 3px 9px;
+}
+#divNavCommon ul li a{text-decoration:none;}
+#divNavCommon ul li a:hover{text-decoration:underline;}
+#divNavCommon .seeAll{margin-top:21px;}
+#divNavCommon .divEnsemble{
+	text-align:center;
+	margin:7px;
+	padding:0 10px 10px 10px;
+	font-weight:bold;
+	border-bottom:1px solid #ddd;
+}
+#divNavCommon .divMore{
+	text-align:center;
+	padding:7px 0 20px 0;
+	font-weight:bold;
+}
+/* Home page nav */
+#divNavHomePage .homeNavRoundedBorderAll{
+	margin:0 0 7px 0;
+	padding:5px 0;
+}
+#divNavHomePage #divHomePageFirstNav{height:364px;}
+#divNavHomePage #divHomePageSecondNav{height:177px;}
+#divNavHomePage ul{
+	margin:8px 10px 8px 10px;
+	padding:0;
+	list-style-type:none;
+}
+#divNavHomePage #divHomePageSecondNav ul{margin:10px;}
+#divNavHomePage li{margin:5px 0 0 0;}
+#divNavHomePage #divHomePageSecondNav li{margin:7px 0 0 0;}
+#divNavHomePage li a{
+	display:block;
+	color:#2e2d2d;
+	font-weight:bold;
+	text-decoration:none;
+	text-transform:uppercase;
+	padding:7px 0 7px 20px;
+	background:#FFF;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	width:184px;
+}
+#divNavHomePage #divHomePageFirstNav .specialFeature a{color:#e97400;}
+#divNavHomePage #divHomePageSecondNav li a{padding:3px 0 3px 20px;}
+#divNavHomePage li a:hover, #divNavHomePage #divHomePageSecondNav li a:hover{background:none;}
+#divNavHomePage h1{
+	text-transform:uppercase !important;
+	font:bold 12px Arial,Helvetica,sans-serif !important;
+	color:#2e2d2d !important;
+	margin:0 !important;
+	letter-spacing:0px !important;
+	padding:10px 0 6px 30px !important;
+}
+#divNavHomePage #divHomePageSecondNav h1{padding:5px 0 2px 30px !important;}
+/* Faceted nav */
+#divNavFaceted{margin-bottom:11px;}
+#divNavFaceted h3{
+	height:26px;
+	line-height:26px;
+	font-size:12px;
+	font-weight:bold;
+	background-color:#f1f0eb;
+	margin:23px 8px 12px 9px;
+	padding:0 0 0 25px;
+	color:#333;
+}
+#divNavFaceted h3#h3SelectedFacets{margin:23px 8px 0 9px;}
+#divNavFaceted h3 a{
+	font-size:12px;
+	font-weight:normal;
+	text-decoration:underline;
+	color:#333;
+	display:block;
+	float:right;
+	padding:0 7px 0 0;
+}
+#divNavFaceted p{
+	margin:0 8px 15px 34px;
+	padding:0;
+}
+#divNavFaceted p.chooseMore{font-weight:bold;}
+#divNavFaceted p.chooseMore a{
+	background:url("../images/aro_rt_gry.gif") no-repeat scroll left 9px;
+	padding:5px 10px;
+	/* New style added for choosemore textwrap */
+	font-weight:bold;
+	font-size:12px;
+	text-decoration:none;
+	display:block;
+}
+#divNavFaceted p.chooseMore a:hover{
+	background:url("../images/aro_rt_ora.gif") no-repeat scroll left 9px;
+	color:#E97400;
+}
+#divNavFacetedPopup{
+	/* defect 11145 */
+	height:100%;
+	width:525px;
+	overflow:auto;
+	border:1px solid #e3e1d8;
+}
+/*Build 1.006:LiquidHub - Resizing Choosemore Overlay Enhancement */
+/* min-height and max-height added for Resizing choose more overlay */
+#divNavFacetedPopup{
+	min-height:150px;
+	max-height:350px;
+	height:auto;
+}
+#facetValuesForm #divButtons{
+	margin-top:20px !important;
+	margin-bottom:15px !important;
+	*margin:0px !important;
+	*padding-top:20px !important;
+	*padding-bottom:15px !important;
+}
+
+#divNavFaceted ul{
+	margin:15px 8px 8px 9px;
+	padding:0 0 0 20px;
+	list-style-type:none;
+}
+#divNavFaceted ul.noCheckBox{
+	margin:15px 8px 15px 9px;
+	padding:0 0 0 25px;
+}
+#divNavFacetedPopup ul{
+	margin:0;
+	padding:10px 0 0 15px;
+	list-style-type:none;
+	float:left;
+	width:235px;
+}
+#divNavFacetedPopup ul li{font-size:13px;}
+input.popupCb{
+	height:14px;
+	width:14px;
+	margin:4px 5px 1px 0;
+	*margin-top:0;
+}
+#divNavFaceted ul li, #divNavFacetedPopup ul li{
+	background:none;
+	padding:0 0 0 4px;
+	color:#333;
+	margin-left:20px;
+	text-indent:-20px;
+	*margin-left:0;
+	*text-indent:0;
+}
+#divNavFaceted ul.noCheckBox li{
+	background:url(../images/aro_rt_gry.gif) no-repeat left 4px;
+	padding:0 0 3px 9px;
+	margin-left:0;
+	text-indent:0;
+}
+#divNavFaceted ul#ulSelectedFacets, #divNavFaceted ul#ulSelectedFacetsForIE7{
+	margin:0 8px 15px 9px;
+	padding:15px 0 15px 25px;
+	background-color:#e4e1d8;
+}
+#divNavFaceted ul#ulSelectedFacets li, #divNavFaceted ul#ulSelectedFacetsForIE7 li{
+	padding:0;
+	margin-left:0;
+	text-indent:0;
+}
+#divNavFaceted ul#ulSelectedFacets li a{
+	background:url(../images/x_10_pixel.gif) no-repeat right 2px;
+	padding-right:13px;
+	text-decoration:none;
+	_display:inline-block;
+}
+#divNavFaceted ul#ulSelectedFacets li a:hover, #divNavFaceted ul#ulSelectedFacetsForIE7 li a:hover{text-decoration:underline;}
+#divNavFaceted ul li a, #divNavFacetedPopup ul li a{
+	color:#333;
+	text-decoration:none;
+}
+
+#divNavFaceted ul li a.RefineLink:hover{text-decoration:none;}
+#divNavFaceted ul li input.cb, #divNavFacetedPopup ul li input.cb{*vertical-align:top;}
+#divNavFaceted ul li label{
+	*display:inline;
+	*width:136px;
+	position:relative;
+	top:-2px;
+}
+#divNavFacetedPopup ul li{line-height:normal;}
+#divNavFacetedPopup ul li label{
+	*display:inline;
+	*width:190px;
+	margin-top:-2px;
+}
+#divNavFaceted ul li a:hover, #divNavFaceted ul.noCheckBox li a.RefineLink:hover, #divNavFacetedPopup ul li a:hover, #divNavFaceted ul li label:hover, #divNavFacetedPopup ul li label:hover{text-decoration:underline;cursor:pointer;} 
+/* Items Recently On Air Nav */
+#divNavItemsRecentlyOnAir{margin-bottom:11px;}
+#divNavItemsRecentlyOnAir .roundedBorderTop{
+	margin:0;
+	background-color:#e4e3e3;
+}
+#divNavItemsRecentlyOnAir .roundedBorderTop .outline{
+	margin:0;
+	padding:14px 14px 0 14px;
+	height:71px;
+}
+#divNavItemsRecentlyOnAir fieldset.firstChild{
+	margin:0 0 15px 0;
+	padding:0;
+}
+#divNavItemsRecentlyOnAir h2{
+	background-color:#666566;
+	color:#fff;
+	font:bold 12px Arial, Helvetica, sans-serif;
+	height:35px;
+	margin:0;
+	padding:0 0 0 22px;
+	line-height:35px;
+}
+#divNavItemsRecentlyOnAir ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+	border-bottom:1px solid #666566;
+	border-left:1px solid #666566;
+	border-right:1px solid #666566;
+	background-color:#e4e3e3;
+}
+#divNavItemsRecentlyOnAir ul li{
+	margin:0;
+	padding:7px 18px;
+}
+#divNavItemsRecentlyOnAir ul li.showCurrent{
+	padding:7px 18px 7px 10px;
+	border-left:8px solid #b4b4b4;
+	font-weight:bold;
+	background:#ddebbb url(../images/aro_gra_gre.gif) no-repeat right center;
+}
+#divNavItemsRecentlyOnAir ul li span.showTime{
+	display:inline-block;
+	width:34px;
+	padding:0;
+	margin:0;
+	text-align:right;
+	vertical-align:top;
+}
+#divNavItemsRecentlyOnAir ul li a.showTitle{
+	color:#333;
+	display:inline-block;
+	width:127px;
+	padding:0;
+	margin:0 0 0 25px;
+	text-align:left;
+	vertical-align:top;
+}
+#divNavItemsRecentlyOnAir ul li.moreShowsFromYesterday{text-align:center;}
+#divNavItemsRecentlyOnAir select{
+	font-size:12px;
+	color:#7A7870;
+}
+	
+/* =Popups
+--------------------------------------------------------------------- */
+/*Defect 11145*/
+#TB_ajaxContent{
+	overflow-x:hidden;
+	overflow-y:auto;
+}
+#TB_ajaxContent h2{
+	font-size:14px;
+	margin-bottom:0;
+}
+dt{
+	font-weight:bold;
+	float:left;
+	margin-left:40px;
+	_margin-left:20px;
+	margin-right:5px;
+}
+dd{margin-bottom:15px;}
+#imgGiftCardNumbers{float:right;}
+#divNeedHelp{margin-top:30px;}
+#divEmailToAFriendThankYou{display:none;}
+
+/* =Calendar Popup
+--------------------------------------------------------------------- */
+.calendar table{
+	font:bold 12px Arial, Helvetica, sans-serif;
+	border:1px solid #e97400;
+	background-color:#fff;
+	text-align:center;
+	width:150px;
+	border-spacing:0;
+	border-collapse:collapse;
+}
+.calendar td, .calendar th{width:30px;height:20px;text-align:center;padding:0;}
+.calendar th{background-color:#e97400;color:#fff;vertical-align:middle;}
+.calendar .hdrday{background-color:#fff;color:#e97400;}
+.calendar a{display:block;text-decoration:none;line-height:20px;border:1px solid #fff;}
+.calendar .today{background-color:#fcf2e8;}
+.calendar a.selected{border:1px solid #e97400;}
+.calendar .close{cursor:pointer;border-top:1px solid #ccc;}
+.calendar a.inactive{color:#c4c0b5;cursor:default;border:1px solid #fff;}
+.calendar-monthswitch a, .calendar-monthswitch a.inactive{border:0;}
+
+/* =Accessibility
+--------------------------------------------------------------------- */
+.access, #frmProductDetail label.access, #frmProductDetailReviewSelection label.access{
+	position:absolute;
+	left:-9999px;
+	width:999px;
+}
+caption{display:none;}
+/* =Page Messaging
+--------------------------------------------------------------------- */
+#parMessage{
+	color:#e97400;
+	font-weight:bold;
+	margin:0;
+	padding:0 0 12px 0;
+	clear:both;
+	display:none;
+}
+#parMessage a{color:#e97400;}
+#orderDetailCallout, #errConsole, .err, .errDowntime{
+	color:#c00;
+	font-weight:bold;
+	margin:0;
+	padding:0 0 12px 18px;
+	display:block;
+	background:url(../images/err_dot.gif) no-repeat 0 1px;
+	clear:both;
+}
+/* =Error Messaging
+--------------------------------------------------------------------- */
+#errConsole{display:none;}
+.err, #divEnsembleItemWrapper p.err{padding:0 0 0 18px;}
+#errConsole a, .err a{color:#c00;}
+/* Error Fields */
+#errAddress1, #errAddress1ShipTo, #errAddress2, #errAddress2ShipTo, #errAddressNickname, #errBbsChatUser, #errBirthday, #errCity, #errCityShipTo, #errComment, #errConfirmEmailAddress, #errCountry, #errCountryShipTo, #errCreditCardSecurityCode, #errDateOfBirth, #errDeferPayOption, #errDeliveryDate, #errDeliveryDateEstimateZipCode, #errEasyPayOrLongTermFinancingPaymentOption, #errEasyPayPaymentOption, #errEmailAddress, #errEmailAddresses, #errExchange, #errFirstName, #errFirstNameShipTo, #errGiftCardOptionsFrom, #errGiftCardOptionsMessage, #errGiftCardOptionsTo, #errGiftCategory, #errGiftWrapOptionsFrom, #errGiftWrapOptionsMessage, #errGiftWrapOptionsTo, #errItem, #errItemNumber, #errLastName, #errLastNameShipTo, #errLocation, #errLongTermFinancingOption, #errMakeUpOptionsBlush, #errMakeUpOptionsEyeShadow, #errMakeUpOptionsLipPolish, #errMemberNumber, #errMembershipArea, #errMobilePhone, #errMobilePhoneCarrier, #errMonth, #errName, #errNewCardExpDate, #errNewCardNumber, #errNewCardType, #errNewPin, #errNickname, #errNutrisystemBreakfast, #errNutrisystemDessert, #errNutrisystemDinner, #errNutrisystemLunch, #errOptionalPhone, #errOrderDetailItem1, #errOrderIdentification, #errOrderQuestion, #errOrderStatusByItemNumber, #errOrderStatusByOrderNumber, #errPaymentOption, #errPersonalizationMessage, #errPersonalizedMessage, #errPersonalizedMessageFirstInitial, #errPersonalizedMessageFirstLine, #errPersonalizedMessageLastInitial, #errPersonalizedMessageLine1, #errPersonalizedMessageLine2, #errPersonalizedMessageLine3, #errPersonalizedMessageLine4, #errPersonalizedMessageMonogramStyle, #errPersonalizedMessageSecondInitial, #errPersonalizedMessageSecondLine, #errPin, #errPrimaryPhone, #errProductCategory, #errProductDescription, #errQuestion, #errQvcGiftCardNumber, #errQvcGiftCardSecurityIdNumber, #errRecipientEmail, #errRecipientFirstName, #errRecipientLastName, #errRecipientPhone, #errRelationship, #errReminderDate, #errRemindMeAbout, #errRepeat, #errRequiredPhone, #errSecondaryPhone, #errSecurityCode, #errSelectAFont, #errSelectProductColor, #errSelectProductSize, #errSelectQuantityAndGiftOptions, #errSenderEmail, #errSenderFirstName, #errSenderLastName, #errShippingAddressOptions, #errShortMessage, #errShowGuest, #errShowHost, #errShowName, #errSpecialDates1, #errSpecialDates2, #errSsn, #errStateProvince, #errStateProvinceShipTo, #errTermsConditions, #errTitle, #errVerifyPin, #errWouldYouLikeAReply, #errYourIsp, #errYourMessage, #errZipPostalCode, #errZipPostalCodeShipTo, .errSelectGroupItem, .errSelectProductColorItem, .errSelectProductSizeItem, .errSelectQuantityItem, #errMeasurementsHeight, #errMeasurementsWeight, #errMeasurementsWaist, #errMeasurementsInseam, #errMeasurementsBraBandSize, #errMeasurementsBraCupSize, #errMeasurementsSizeCategory, #errMeasurementsPantSize, #errFabric, #errHemStyle, #errLegStyle, #errBackPockets, #errFly, #errRise, #errFit{
+	display:none;
+	margin:12px 0 6px 0;
+}
+
+p#errSelectProductSize, p#errSelectProductColor{
+	text-transform:uppercase;
+	color:rgb(204, 0, 0);
+	font-weight:bold;
+	padding:6px 0 6px 18px;
+	background:url(../images/err_dot.gif) no-repeat scroll 2px 7px #ffff99;
+	margin-bottom:3px;
+}
+#divProductDetailSelectSizeOptions.err, #divProductDetailSelectColorOptions.err{
+	border:2px dashed #C00;
+	padding:2px 0 2px 18px;
+	background:none;
+}
+#divProductDetailSelectSize div#divProductDetailSelectSizeOptions.err .waitlist, #divProductDetailSelectColor div#divProductDetailSelectColorOptions.err .waitlist, #divProductDetailSelectSize div#divProductDetailSelectSizeOptions.err .soldOut, #divProductDetailSelectColor div#divProductDetailSelectColorOptions.err .soldOut, .ensembleItemDetail .waitlist, .ensembleItemDetail .soldOut{margin-right:4px;}
+
+/* The following IDs were not placed in the DEMO code, but were coded into the JSP. */
+#errlogonId, #errlogonPassword, #errTitle, #errfirstName, #errlastName, #erraddress1, #erraddress2, #errcity, #errstate, #errzipCode, #errcountry, #errphone1, #errphone2, #errTvReception{
+	display:none;
+
+	margin:12px 0 6px 0;
+}
+.showErrConsole #errConsole{display:block;}
+div.roundedBorderAll, div.roundedBorderColorAll, .h2RoundedBorderAll, .footerRoundedBorderAll, .roundedBorderTuneInPromo, .roundedBorderCardApplicationThankYou, .roundedBorderPaymentOptions, .homeNavRoundedBorderAll, .footerRoundedBorderAll{-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px;}
+div.roundedBorderAll, div.roundedBorderColorAll, .roundedBorderTop, .roundedBorderBottom{border:1px solid #bebdbd;}
+div.roundedBorderColorAll{background-color:#DDEBBB;}
+div.roundedBorderColorAll .outline{
+	background-color:transparent;
+	border:0;
+}
+.h2RoundedBorderAll{background:#666566;}
+.footerRoundedBorderAll{border:1px solid #e4e1d8;}
+.footerRoundedBorderTop, .roundedBorderTop{
+	-moz-border-radius-topright:6px;
+	-moz-border-radius-topleft:6px;
+	-webkit-border-top-right-radius:6px;
+	-webkit-border-top-left-radius:6px;
+	border-top-right-radius:6px;
+	border-top-left-radius:6px;
+	background-color:#E4E3E3;
+}
+.roundedBorderBottom, .footerRoundedBorderBottom{
+	-moz-border-radius-bottomright:6px;
+	-moz-border-radius-bottomleft:6px;
+	-webkit-border-bottom-right-radius:6px;
+	-webkit-border-bottom-left-radius:6px;
+	border-bottom-right-radius:6px;
+	border-bottom-left-radius:6px;
+}
+.footerRoundedBorderTop, .footerRoundedBorderBottom{
+	border-color:none;
+	background-color:#E4E3E3;
+}
+.roundedBorderTuneInPromo{background:#e4e3e3;border:1px solid #333;}
+.roundedBorderCardApplicationThankYou{background:#f8f0e3;border:1px solid #c59c80;	}
+.roundedBorderPaymentOptions{background:#ddebba;border:1px solid #bebdbd;}
+.homeNavRoundedBorderAll{background:#d9d8d8;}
+.logonIncludeChekoutForm{margin-left:-3px;}
+/* #5031--5033 */
+.labelalign{vertical-align:top;}		
+.spaces{padding-left:178px;}
+
+/*Defect 5597*/
+#cancelPageTitle{margin:0;padding:0;}
+.orderCancelConfirmation, #cancelPageTitle h1, .nomarginbottom{margin-bottom:0;}
+#cancelPageTitle p{margin-bottom:12px;}
+
+/*Defect 4908*/
+.h2RoundedBorderTop h2{
+	color:#fff;
+	font:bold 12px Arial, Helvetica, sans-serif;
+	height:25px;
+	margin:0;
+	padding:5px 0 5px 22px;
+	line-height:24px;
+}
+/* defect 7955 */
+.tdCurrency1{text-align:right;}
+#divOrderDetailOrderTotal h3, #divOrderDetailOrderTotal p{
+	text-align:right;
+	_padding:0 18px 0 0;
+}
+*:first-child+html .divPageView{margin-top:-2px;}
+/*Defect 5265   */
+.text{font-weight:normal;}
+
+/* Custom HTML Pages */
+.centered{text-align:center;}
+.mobileColumn{
+	height:100%;
+	width:300px;
+	float:left;
+}
+.downloadButtons{text-align:center;font-size:11px;}
+.mobileIndent{margin:0 0 30px 50px;}
+.featuresList li{margin-bottom:12px;}
+table.standardTable{
+	border-top:1px solid #666566;
+	border-left:1px solid #666566;
+	border-collapse:collapse;
+	width:100%;
+	margin-bottom:30px;
+}
+table.standardTable td, table.standardTable th{
+	border-bottom:1px solid #666566;
+	border-right:1px solid #666566;
+	padding:5px;
+	vertical-align:top;
+}
+table.standardTable th{background-color:#E4E3E3;}
+td.keywordsFirstColumn{width:100px;}
+/*defect 3830*/
+.org_txt{color:#e97400 !important;}
+
+/* defect 4537 */
+.outlineNoTop1{
+	padding:19px;
+	margin:0 0 10px 0;
+}
+/* Defect 3930 */
+#divNavItemsRecentlyOnAir ul li.showCurrent1{
+	padding:7px 18px 7px 10px;
+	border-left:0px solid #b4b4b4;
+	font-weight:bold;	
+	background:#ddebbb url(../images/aro_gra_gre.gif) no-repeat right center;
+}
+/* Issues 4547,4552 */
+ul#helpArrow{
+	margin:0 0 0 6px;
+	padding-left:2px;
+	display:inline;
+}
+ul#helpArrow li{
+	font:12px Arial, Helvetica, sans-serif;
+	color:#393939;
+	background:url(../images/aro_rt_gry.gif) no-repeat 0 4px;	  
+	padding-left:9px;
+ 	display:inline;
+	list-style:none outside;
+}
+/* defect 4969, 4965 */
+h2.selecttabInlineStyleCreateNew{
+ 	padding:11px 0 20px 0 !important;
+ 	font-size:16px !important;
+ 	margin:0;
+}
+/* defect 4600 */
+.totalAllign{text-align:left;}
+.allignTotal{padding-left:35px !important;}
+
+/* Defect 4580 */
+.outlineNoTop1{
+	padding:19px;
+	margin:0 0 10px 0;
+}
+/* Defect 5880, 5888, and 6216
+This class is used to work around a
+"duplicate character" bug that affects IE */
+.ieDupCharFix{display:none;}
+/* End Defect 5880, 5888, and 6216 */
+/* Channel Finder table - Defect 5630 */
+.cf_providers, .cf_standarddef, .cf_highdef{font-weight:bold;}
+.cf_providers{
+	width:50% !important;
+	width:190px;
+}
+.cf_standarddef{
+	width:25% !important;
+	width:108px;
+}
+.cf_highdef{
+	width:25% !important;
+	width:90px;
+}
+#ChannelProvider tr.bggrey{background-color:#EFEFF7;}
+/* Defect 5229 */
+#bullets ul{
+	margin:0 0 10px 30px;
+	list-style-type:none;
+}
+#bullets ul li{
+	background:url(http://www.qvc.com/wcsstore/US/content/images/bullet_dot.gif) no-repeat left 7px;/*TBR*/
+	padding:2px 0 2px 15px;
+}
+#bulletsNew ul{
+	margin:0 0 10px 30px;
+	list-style-type:disc;
+}
+/* End of Defect 5229 */
+/* Defect 6035 */
+.imageDimensions{width:184px;height:164px;}
+/* Defect 6094 */
+.shows{
+	_width:768px !important;
+	_margin-right:-2px !important;
+}
+/* Defect 6019 */
+.required.instructions1{
+	color:#e97400;
+	margin-top:-16px;
+	margin-bottom:0;
+	padding-top:0;
+	padding-bottom:0;
+	display:block;
+	float:right;
+	font-weight:normal;
+	width:88px;
+}
+/* 3830 */
+.multiQuantityTextColor{color:#E97400;}
+/* Defect 6066 */
+.indentedFieldInstructions_1{
+	float:left;
+	width:180px;
+}
+.indentedFieldInstructions_2{
+	float:left;
+	width:400px;
+	margin-bottom:5px;
+}
+.indentedFieldInstructions_input{
+	float:left;
+	width:15px;
+	clear:both;
+	padding-top:2px;
+}
+.indentedFieldInstructions_lab{
+	float:left;
+	width:370px;
+	margin-bottom:5px;
+	padding:0;
+}
+.indentedFieldInstructions_lab label, .indentedFieldInstructions_input input{
+	padding:0 !important;
+	margin:0 !important;
+}
+.indentedFieldInstructions_input input{height:12px;width:12px;}
+/* Defect 6042 */
+#divCreditCardLogos1{
+	float:right;width:510px;
+	margin-top:-3px;
+	_position:absolute;
+	_margin-left:170px;
+}
+#divCreditCardLogos1 img{
+	width:341px;
+	height:24px;
+	padding-left:10px;
+}
+.divEnterNewCard{
+	margin:-8px 0 0 0 !important;
+	clear:both;
+	float:left;
+}
+.dropDownWidth{
+	width:150px;
+	_width:158px;
+	_margin:0 0 6px 0;
+	font:normal 12px arial;
+}
+/*Defect 3910*/
+.wishlist_li{
+	padding:0;
+	margin:0;
+	width:170px;
+}
+.wishlist_li li{
+	padding:0;
+	margin:0 0 0 20px;
+	word-wrap:break-word;
+	width:auto;
+}
+/*Defect 6162,6039*/
+.trackNumber_decoration, a#trackNumber_decoration_new{text-decoration:underline;}
+/* Defect 6228 */
+.margin_0{margin-top:0 !important;}
+/* Defect 4918,4935*/
+.columnsSix_1{
+	margin:0 8px 7px -3px;
+	width:124px ;
+	float:left;
+}
+/* Defect 5178 */
+.txt_color{color:#e97400;}
+/* Defect 6084 */
+.tblUpcomingShows, #tblUpcomingShows{
+	background:url(../images/weekly_guide_table.jpg) repeat left top;
+	height:50px;
+}
+#tblUpcomingShows{
+	margin-top:15px;
+	width:75%;
+}	
+#tblUpcomingShows td{
+	padding:0 0 0 20px;
+	line-height:25px;
+}
+/* Defect 5985 */
+.errConsoleForgotPin{
+	color:#000 !important;	
+	font-weight:normal !important;
+	margin:0;
+	padding:0 0 12px 0 !important;
+	background:none !important;
+}
+/* Defect 4087 */
+.errorTxt{
+	color:#E97400 !important;
+	font:12px Arial,Helvetica,sans-serif !important;
+	font-weight:normal !important;
+	padding:0 0 12px 0 !important;
+	background:none !important;
+}
+/* Defect 3756 */
+#divNavFaceted ul#ulSelectedFacetsForIE7 li a{
+	padding-right:13px;
+	text-decoration:none;
+	_display:inline-block;
+}
+#divNavFaceted ul#ulSelectedFacetsForIE7 li a:hover{text-decoration:underline;}
+ul#ulSelectedFacetsForIE7 li a.RefineLink img{margin-left:7px;}
+/* Defect 5041 */
+.ensembleItem1{margin-top:-15px;}
+.divEnsembleShortDescriptionWrapper1{margin-bottom:17px;}
+/* Defect 6206 */
+#divSignInMessage a:hover, #divSignInNote a:hover{text-decoration:none;}
+#divSignInNote a#SpeedBuyCreate{text-decoration:underline;}	
+/* End of Defect 6206 */
+/* Defect 6351 */
+.padding_0{padding-top:0 !important;}
+/* Defect 6382 */
+#EasyPayNoItemsTableHead th{padding:10px 5px 7px;}
+#EasyPayNoItemsTableHead th#col1{width:80px;}
+#EasyPayNoItemsTableHead th#col2{width:105px;}
+#EasyPayNoItemsTableHead th#col3{width:45px;}
+#EasyPayNoItemsTableHead th#col4{width:420px;}
+#EasyPayNoItemsTableHead th#col5{width:70px;}
+#EasyPayNoItemsTableHead th#col6{width:157px;}
+/* End of Defect 6382 */
+/* Defect 6350 */
+.margin_left{margin-left:-3px;}
+/* PD Includes */
+#pdIncludeHtml, #disclaimerHtml, #AdditionalHtml{
+	background-color:#EFEFF7;
+	margin:0 0 10px 0;
+	padding:20px 10px;
+	*padding:20px 10px 10px 10px;
+	overflow:auto;
+	_overflow:hidden;
+}
+#pdIncludeHtml{_clear:both;}
+#pdIncludeHtml .outline{position:relative;}
+#pdIncludeHtml #timerDivFrame{position:absolute;overflow:hidden;top:26px;left:44px;z-index:100;} 
+#disclaimerHtml{padding:0;}
+.pdIncludeCopy h3, .disclaimerHtmlCopy h3, .AdditionalHtmlCopy h3{margin:0 0 10px 0;}
+.disclaimerHtmlCopy *{font-size:12px;}
+.pdIncludeSign, .disclaimerHtmlSign, .AdditionalHtmlSign{text-align:right;}
+div#pdIncludeHtml div.pdIncludeCopy ul, div#disclaimerHtml div.disclaimerHtmlCopy ul, div#AdditionalHtml div.AdditionalHtmlCopy ul{
+	margin:0 0 10px 220px !important;
+	*padding-left:20px !important;
+}
+div#pdIncludeHtml div.pdIncludeCopy ul li a, div#disclaimerHtml div.disclaimerHtmlCopy ul li a, div#AdditionalHtml div.AdditionalHtmlCopy ul li a, #pdIncludeHtml a, #disclaimerHtml a, #AdditionalHtml a{color:#333;text-decoration:underline;display:inline;}
+#pdIncludeHtml br{clear:right;}
+div.threeImgAcross div.pdIncludeCopy, div.threeImgAcross div.disclaimerHtmlCopy, div.threeImgAcross div.AdditionalHtmlCopy{
+	clear:left;
+	padding:10px 0 0 0;
+	*padding:0;
+}
+div.threeImgAcross div.pdIncludeCopy p, div.singleImgAcross div.pdIncludeCopy p, div.threeImgAcross div.disclaimerHtmlCopy p, div.singleImgAcross div.disclaimerHtmlCopy p, div.threeImgAcross div.AdditionalHtmlCopy p, div.singleImgAcross div.AdditionalHtmlCopy p{
+	margin:10px 0 0 0;
+	*margin:10px 0;
+}
+div.singleImgAcross div.pdIncludeCopy, div.singleImgAcross div.disclaimerHtmlCopy, div.singleImgAcross div.AdditionalHtmlCopy{padding:10px 0 0 0;}
+/*Defect 6473*/
+#divAskUsLiveform{display:block;}
+#divAskUsLiveThankYou{
+	padding:15px 15px 20px 15px;
+	padding:15px 15px 5px 15px\9;
+}
+/*Defect 6161,6162:underline for tracking number*/
+.numberPadding{padding-left:1px;text-decoration:underline;}
+/*Defect 6351*/
+.padding_full{padding:0;}
+/*Defect 6632*/
+input.text_new{width:225px;}
+/*Defect 6151*/
+.align-rgt{text-align:right;	}
+.faqImg{float:right;}
+/*Defect 6634*/
+.ws_email{
+	border:1px solid #B6B2A6;
+	color:#333333;
+	font-size:13px;
+	line-height:15px;
+	margin:0 0 5px;
+	padding:0;
+	vertical-align:baseline;
+	font-weight:normal;
+	width:216px;
+}
+/* Defect 5111 */
+.returnnote{
+	text-align:right;
+	font-weight:bold;
+	font-style:italic;
+}
+/* Defect 7039 */
+.returnbackbutton{text-align:left;}
+/* Defect 6636 */
+#divSidebarBrowseMore .overflow_hidden{
+	overflow:hidden;
+	*overflow:visible;
+}
+div.divBorder .overflow_hidden{
+	overflow:hidden;
+	_overflow:visible;
+/*  changing the overflow visible from IE specific to IE6 specific to fix defect-9075 */
+}
+/* Defect 6475*/
+.vbottom td{vertical-align:bottom;}
+.vbottom select{
+	vertical-align:bottom;
+	margin-bottom:0;
+	padding-bottom:0;
+}
+/* Defect 6917*/
+.align_margin{margin-left:7px;}
+/* Defect 6923*/
+.outlineNoTop_1{
+	padding:19px;
+	margin:0 0 10px 0;
+}
+/* Defect 6969 */
+.divButtonWishList{
+	margin-top:0px ;
+	text-align:right;
+	margin-right:-8px;
+}
+/* Defect 6350 */
+#frmSignIn .divFormButtons1{margin-left:268px;}
+/*6350:alignment of emailtext field*/
+.text_promotion_txtemail{
+	margin-left:-3px !important;
+	*margin-left:0 !important;
+}
+/*Defect 6952 :alignmentof subtotal*/
+.divShoppingCartTotal_new{padding-right:0 !important;}
+.orderTable_new{width:443px;}
+/*6162:underline for  tracking no*/
+.numberPadding a{text-decoration:underline !important;}
+/* Defect 7169 */
+.ratingsclearboth{clear:both;}
+/* Defect 7162m 7701:alignment of return to myaccount button*/
+.buttonalignright, .buttonalignrightEmailConfirmation{text-align:right !important;}
+/*Defect 5702:remove of scroll bars*/
+.acc_over{overflow:hidden !important;}
+/* Defect 6779:stop falsing security div when page loaded */   
+.cvvdisplay{display:none !important;}
+/* Defect 6952*/         
+.totalAllign strong{padding-left:45px;}
+input.inputError, select.inputError, textarea.inputError{border:1px solid #c00;}
+label.labelError{color:#c00;}
+/* Defect 6194:Positioning of show info under image */
+.ReminderInfo{
+	width:100%;
+	height:215px;
+}
+.ReminderInfoData{
+	clear:both;
+	float:left;
+	width:65%;
+}
+.ReminderInfoImageContainer{
+	margin-top:0;
+	width:35%;
+	clear:none !important;
+	clear:both;
+	float:right;
+}
+.ReminderInfoImage, .ReminderInfoText{
+	clear:both;
+	float:left;
+	width:99%;
+	text-align:center;
+}
+/* Defect 7228 */
+.blacknormal{
+	color:#000000 !important;
+	font-weight:normal !important;
+}
+.space{
+	margin-top:12px !important;
+	margin-bottom:12px !important;
+}
+/* Defect 5139 */
+.divProductDetailDescriptionSelection_1{
+    width:534px\9 !important;
+    margin-top:-1px\9 !important;
+	margin-bottom:-13px\9 !important;
+}
+/* Defect 7408 */
+.marginspace{
+	margin-top:-15px;
+	_margin-bottom:12px !important;
+	color:#000000 !important;
+	font-weight:normal !important;
+}
+.nopadding{padding-left:4px !important;}
+/* Defect 5999 */
+.reviewSelection #divProductDetailDescriptionSelection{
+ 	min-height:290px;
+    height:auto;
+}
+* html .reviewSelection #divProductDetailDescriptionSelection{height:290px;}
+.reviewSelection #divProductDetailViewArea{
+	padding-bottom:0;
+    height:auto;
+}
+.reviewSelection #divProductDetailViewArea img{margin-top:10px;            }
+.reviewSelection #imgCaption{display:none;}
+/* Defect 7429 */
+#frmProductDetailNutrisystem a{color:#37569B;}
+/* Defect 6418*/
+.divWidth{width:570px;float:left;}
+.imageWidth{width:200px;float:right;}
+.instructionsWidth{width:573px;float:left;}
+/* Defect 6917 */
+.margin_7{margin-left:7px !important;}
+/* Defect 7524 */
+.soldout_form{margin-bottom:0 !important;}
+.soldout_btn, .return_to_qvc{margin-bottom:5px !important;}
+.foot_margin_top{*margin-top:-12px !important;}
+.return_to_qvc{_margin-bottom:6px !important;}
+/* 7546 */
+.edit_rem_form_row{clear:both;}
+input.text_edit_rem, select.select_edit_rem{
+	padding:0;
+	margin:0;
+	border:1px solid #b6b2a6;
+	font-size:13px;
+	color:#333;
+	vertical-align:baseline;
+	_vertical-align:middle;
+	line-height:14px;
+}
+.edit_rem_form_row_new{clear:both;padding-bottom:7px;	}
+/* 7524 */
+.sold_out #divFooter{
+	margin-top:0px !important;
+	_margin-top:-1px !important;
+	padding-top:30px;
+}
+/* Defect 7548 */
+.easypayerror{margin-top:8px !important;}
+.easypayitemlegend{padding-top:3px !important;}
+.waitlist_link{color:#E97400;}
+/* Defect 7726 */
+.spaceDate{*padding-left:3px !important;}
+/* Defect 7108 */
+.tdOrderNum_AD, .tdDate_AD{width:100px;}
+.tdOrderTotal_AD{width:75px;}
+#divButtonsAD{clear:none;float:left;}
+/* Defect 7546 */
+#frmAddReminder #lblComment{
+	*padding-top:4px;
+	_padding-top:0;
+}
+#frmAddReminder .indentedFieldInstructions{width:600px;}
+#frmAddReminder textarea{*margin:0;}
+/* Defect 7910 */
+.topspacer{margin-top:20px;}
+/* Defect 7956 */
+.chk-emergency a:hover{text-decoration:none;}
+/* Defect 7977 */
+.SSN_padding{padding-right:4px;}
+/* Defect 7940 */
+#divSignInNote sup{line-height:5px;line-height:auto\9;}
+#divSignInNote p{
+	*line-height:18px;
+	_line-height:17px;
+}
+/* Defect 7878*/
+.PGSingleShowView .divDailyProgramDetailsWrapper{
+ 	border-left:1px solid #e4e3e3;
+    width:914px;
+}
+/* Defect 7914 */
+.padding_total{padding-left :34px !important;}
+.currency_float{float:right !important;}
+/* Defect 7956 */
+.chk-emergency a:hover{text-decoration:none !important;}
+/* Defect 4633 */ 
+.divOrderDetailItemInformation_border{border-top:1px solid #c8c8c6;}
+.itemInformationWrapper_border{padding:0 50px;}
+/* Defect 4965 */
+#createPadding{padding-bottom:0 !important;}
+.displayBlock{display:block;}
+/* Defect 7925 */
+.divEventTitleProgramTitle .showTitle{font-size:13px;font-weight:bold;}
+/* Defect 7962 */
+input.rb_Order, #fsOrderStatusOptions input.rb{
+ 	font-size:13px;
+    padding:0;
+    margin:0 0 8px;
+}
+/* Defect 7962 */
+#fsOrderStatusOptions input.rb{*margin:0 0 2px;}
+#fsOrderStatusOptions #txtByItemNumber{margin:0 0 2px;*margin:0 0 3px;}
+/* Defect 6791 */
+.margin_top{margin-top:10px !important;}
+/* defect 7977 */
+.termsAndConditions{float:left;}
+.termsAndConditions1{margin-top:-1px;float:left;}
+.emailAdrressFieldNew{width:160px;}
+/* defect 8122 */
+.reinItem, #tblAutoDeliveryPlanShipments .tdRein a{color:#b8b8b8;}
+/*Defect 6709*/
+.indentedInstructionsAD{margin:0px 0 15px 213px !important;}
+.indentedInstructionsAD1{margin:20px 0 15px 213px !important;}
+.creditTermstxtReceipt{margin:0;padding:0;font-style:italic;}
+/* Styles for Garment Measurements in Product Detail*/
+table.gradedspecs th, table.gradedspecs td{
+	border-bottom:1px solid #666566;
+	border-right:1px solid #666566;
+	padding:2px 3px;
+	text-align:center;
+}
+table.gradedspecs th{border-top:1px solid #666566;}
+table.gradedspecs th.end, table.gradedspecs td.end{border-left:1px solid #666566;text-align:left;}
+table.gradedspecs td.shaded{background:#E4E3E3;}
+p.garmentStyle{margin:10px 0 0 0;}
+.garmentMessage a, .garmentMessage a:hover{color:#000000;}
+.clearSpace{clear:both;}
+#TB_closeWindowNew{right:0px !important;position:absolute !important;}
+/* Defect 4023 */
+#divProductDetailPopupViewOptions a#TB_closeWindowButtonNew{
+	background:url(../images/btnClose.gif) no-repeat 0 1px;
+	background-color:#FFFFFF;
+	border-right:0 solid #FFFFFF;
+	border-top:0 solid #FFFFFF;
+	color:#3C3C3C;
+	display:block;
+	float:right;
+	font-weight:normal;
+	height:21px;
+	line-height:15px;
+	margin-right:0;
+	padding:0 0 0 19px;
+}
+div.hideIt{display:none;}
+/* Defect 9855 */
+body.productDetailPopupOverflow{overflow-x:hidden;overflow-y:auto;}
+/* OnlineOpinion v4.1.7 */
+/* This product and other products of OpinionLab, Inc. are protected by U.S. Patent No. 6606581, 6421724, 6785717 B1 and other patents pending. */
+@media screen{
+/* [+] Floating Icon Elements */
+/* NOTE:To disable [+] Floating Icon rollover state in modern, non-IE browsers, comment out ".oo_feedback_float:hover .olUp" and ".oo_feedback_float:hover .olOver". For IE see the configuration file. */
+	#feedbackGutter{width:auto !important;}/*removes horizontal scroll*/
+	.oo_feedback_float{
+		visibility:hidden;
+		height:65px;width:120px;
+		padding:0 0 12px 0;
+		font:12px Arial, Helvetica, sans-serif;
+		text-align:center;
+		color:#000;
+		cursor:pointer;
+		z-index:1001;
+	}
+	.oo_feedback_float .olUp{position:relative;text-align:center;width:100px;padding:5px 10px;}
+	.oo_feedback_float .olUp *{z-index:1002;position:relative;}
+	.oo_feedback_float .olUp .oo_transparent{
+		display:block;
+		position:absolute;top:0;left:15px;z-index:1001;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter:alpha(opacity=50);opacity:.5;
+		height:50px;width:90px;
+	}
+	.oo_feedback_float .olUp .oo_transparent, .oo_feedback_float .olOver{-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;background:#FFF;}
+	.oo_feedback_float:hover .olUp, .oo_feedback_float .olOver, #onlineopinion_cc_overlay, .onlineopinion_cc_div{display:none;}
+	.oo_feedback_float .fbText{display:block;padding:3px;}
+	.oo_feedback_float .olOver{border:1px solid #CCC;padding:10px;text-align:center;width:100px;}
+	.oo_feedback_float:hover .olOver, a.onlineopinion_cc_closelink{display:block;}
+	/* Static Icon Elements */
+	#oo_feedback_static{cursor:pointer;}
+	/* On Page Card Elements */
+	#onlineopinion_cc_overlay{
+		position:fixed;top:0;left:0;z-index:1004;
+		height:100%;width:100%;
+		margin:0;padding:0;
+		background:#000 50% 80px no-repeat;
+		opacity:.3;
+		filter:alpha(opacity=30);
+	}
+	.onlineopinion_cc_div{
+		position:fixed;top:25px;left:0;z-index:1005;
+		padding:0;
+		background:transparent !important;
+		font:12px Arial, Helvetica, sans-serif;
+	}
+	a.onlineopinion_cc_closelink{
+		position:absolute;top:-10px;right:-5px;z-index:1006;
+		height:24px;width:24px;
+		text-decoration:none;
+	}
+	.onlineopinion_cc_frame{
+		position:relative;
+		width:535px;
+		border:0;
+		background-color:#FFF;
+		opacity:1.0;filter:alpha(opacity:100);
+		-moz-box-shadow:rgba(0, 0, 0, .6) 0 0 15px;
+		-webkit-box-shadow:rgba(0, 0, 0, .6) 0 0 15px;
+		z-index:1005;
+	}
+}
+/*  OnlineOpinion v4.1.7, Copyright 2010 Opinionlab, Inc. */
+/* Defect 8451 */
+.overflowNeedHelp{overflow:hidden;*overflow:visible;height:30px;}
+.parItemNumber, #pdMoreViews, .hiddenFieldset{display:none;}
+/*For Defect 7248 */
+.popupOutline{margin:0;padding:19px 19px 0 19px;}
+.popupOutline table{*margin-bottom:5px;}
+/*Q&A Updates*/
+.BVQAWidget h1 a, h1.BVQAQuestionSummary a, h1.BVQAQuestionSummary a:hover{
+    text-transform:none;
+	color:#3c3c3c;
+    font-size:14px;
+	padding:0;
+	margin:0;
+	background:none;
+}
+.BVQAToolbar{height:18px;}
+.over_hidden{*overflow:hidden !important;}
+* html .over_hidden{overflow:visible !important;}
+/* Defect 9168 */
+#tuneInLink{text-decoration:underline;}
+/* merch zone styles */
+#searchMerchZone{margin-bottom:50px;width:685px;}
+.BlankStyle{display:none;}
+#merchZoneBox{margin-top:40px;}
+#merchZoneBox #merchHeader{
+	background:url(../../../../../images-p.qvc.com/is/image/pic/hp/merchzone_header.gif) top left no-repeat;
+	height:21px;
+	*height:auto;
+	padding:6px 0 0 25px;
+	*padding:3px 0 0 25px;
+}
+#merchZoneBox #merchHeader h1{
+	color:#333;
+	font:bold 14px Arial,Helvetica,sans-serif;
+	letter-spacing:0;
+	line-height:normal;/*remove*/
+}
+#merchZoneBox #merchHeader span#view_more_link{
+	float:right;
+	margin:-25px 20px 0 0;
+	color:#333;
+	font:bold 12px Arial,Helvetica,sans-serif;
+	letter-spacing:0;
+	line-height:normal;/*remove*/
+}
+#merchZoneBox #merchHeader span#view_more_link a{
+	text-decoration:none;
+	padding-left:20px;
+	background:url(../../../../../images-p.qvc.com/is/image/pic/buttons/arrows/greenarrow.jpg) top left no-repeat;
+}
+#merchZoneBox #merchContent{
+	height:200px;
+	margin:0 0 10px 0;
+	*margin:-5px 0 0 0;
+}
+.merchContentHead{
+	background:url(../../../../../images-p.qvc.com/is/image/pic/hp/merchzone_content_head.gif%3Fqlt=100,1) left no-repeat;
+	height:10px;
+	border-top-color:#EFEFEF;
+}
+.merchContentFoot{
+	background:url(../../../../../images-p.qvc.com/is/image/pic/hp/merchzone_content_bottom.gif%3Fqlt=100,1) top left no-repeat;
+	height:10px;
+}
+#merchZoneBox #merchContent #prodHolder{
+	height:200px;
+	margin:0 0 -110px 15px;
+}
+#prodHolder .Merch_Prod_Container{
+	margin:5px 0;
+	text-align:center;
+	width:150px;
+}
+#prodHolder .Merch_Prod_Container img{border:1px solid #DCDCDA;}
+#prodMainHolder{
+	margin-top:-5px;
+	height:200px;
+	*height:210px;
+	border-left:solid 1px #E0E0DE;
+	border-right:solid 1px #E0E0DE;
+}
+#prodMainTableHolder{
+	border-top:solid 4px #EFEFEF;
+	*border-bottom:solid 4px #EFEFEF;	
+	background-color:#EFEFEF;
+	margin:0 2px;
+	height:auto;
+	*min-height:210px;
+}
+#prodHolder .Merch_Prod_Container img{border:1px solid #DCDCDA !important;}
+#prodHolder .Merch_Prod_Container_Text{
+	color:#333;
+	font:normal 12px Arial, Helvetica, sans-serif;
+	text-decoration:none;
+	width:150px;
+	margin-top:10px;	
+}
+#prodHolder .Merch_Prod_Container_Text a{text-decoration:none;}
+#prodHolder .Merch_Prod_specialprice{color:#F07226;}
+#prodHolder .Merch_Prod_shortDescTxt, #prodHolder .Merch_Prod_SellPrice{font-weight:bold;}
+#prodHolder .Merch_Prod_Container_Text a:hover .Merch_Prod_shortDescTxt, #prodHolder .Merch_Prod_Container_Text a:hover .Merch_Prod_SellPrice, .cookiesEnabledPage a{text-decoration:underline;}
+#merchZoneBanner{margin:0 0 10px 0;}
+/*QA Test: ENH 1.2 - Merch Zone Options Enhancement*/
+/*#merchZoneBox{margin-top:25px; margin-bottom:10px;}
+#merchZoneBox #merchContent{height:220px;}
+#merchZoneBox #merchContent #prodHolder{height:auto;}
+#prodHolder .Merch_Prod_Container{text-align:left;}
+#prodMainHolder{height:auto;*height:auto;}
+#prodHolder .Merch_Prod_Container_Text{width:160px;}
+#prodHolder .productRatings{width:165px !important;}
+#merchZoneBox #merchContent.two_Product_Merch_Content{height:130px !important;}*/
+/*Merch Zone Options Enhancement*/
+#adcolor{color:#000000;}
+#divNeedHelpedit{margin-top:30px;text-align:center;}
+/* defect 9869 */
+#divProductDetailDescriptionSelection h1{
+      font:bold 14px Arial,Helvetica,sans-serif !important;
+      color:#333 !important;
+      text-align:left !important;
+      letter-spacing:0 !important;
+      margin:5px 0 0 0 !important;
+	  word-wrap:break-word;
+}
+/*Build 2.01 - Defect 11125 - LiquidHub*/
+#divProductDetailDescriptionSelection  h1 sup{font-size:11px;}
+#BVQASummaryBoxID h1{margin:5px 10px 0 0 !important;}
+/* defect 10248 */
+.pdImgCaptionTextAlign{text-align:center;}
+/* defect 4117 */
+.compareAllign, .compareBorder{
+	background-color:#EBEAE4 !important;
+	border-bottom:none !important;           
+}
+.compareAllign{border-right:none !important;}
+/* Defect 9634 */
+.tbLoadingImage{
+      background:url(../../../images/PageLoading.gif) no-repeat right top;
+      *background:url(../../../images/PageLoading.gif) no-repeat top;
+      display:block !important;   
+}
+.tbLoadingImage label{color:#7B7A75;margin-top:35px !important;}
+/* Defect 10947 */
+.myoverlay{
+	position:absolute;
+	background-color:white;
+	z-index:1009;
+	-moz-opacity:0.01;
+	opacity:.001;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=01)";
+	filter:alpha(opacity=01);
+}
+#divLoadingImage{
+	margin-top:20px;
+	clear:both;
+	background:url(../../../images/PageLoading.gif) no-repeat top;
+}
+#divLoadingImage .label{
+	text-align:center;
+	color:#7B7A75;
+	font-size:11px;
+	font-weight:bold;
+	padding-top:5px !important;
+}
+/* --end-- Defect 10947 */
+/*SpinBack Overrides*/
+div.sb_overlay{background:#fff;filter:alpha(opacity=60);-moz-opacity:0.6;opacity:0.6;}
+div#sb_popup{border:7px solid #e3e1d8;padding:0;margin:10px;}
+div#sb_popup #sb_content{-moz-box-shadow:none;-webkit-box-shadow:none;box-shadow:none;border:0 !important;}
+div#sb_popup{background:none;}
+div#sb_popup #sb_content h3{background:none;padding:5px 0;}
+div#sb_popup #sb_content h3 span{color:#E97400;font:normal 24px "Century Gothic",Arial,Helvetica,sans-serif;background:none;padding:0;}
+div#sb_popup #sb_share_button_container div.sb_sharediv #sb_share_link{background:url(../../../../../images-p.qvc.com/is/image/pic/qvc/btn_submit.png);background-position:0 0 !important;}
+div#sb_popup #sb_share_button_container div.sb_sharediv #sb_share_link:hover{background-position:0 0 !important;}
+div#sb_popup #sb_canceldiv{position:absolute;top:5px;right:10px;margin:0;}
+div#sb_popup #sb_cancel_link{background-image:url(../../../../../images-p.qvc.com/is/image/pic/qvc/btnclosestatic.png);background-position:0 0;width:55px;height:20px;}
+div#sb_popup #sb_cancel_link:hover{background-position:0 0;}
+div#sb_popup #sb_share_button_container{background:none;}
+div#sb_popup #sb_content #sb_form #sb_message, div#sb_popup #sb_content #sb_form #sb_to_emails{width:382px;}
+div#sb_popup textarea{resize:none;}
+.printemaillnks li#emaillnk{display:none;}
+.fb-like iframe{width:350px;}/*Commerce fix*/
+/*Downtime Styles*/
+.downTotalPurchaseAmount, .downOrderTotal, .downInStockTotal{color:#C00;}
+.downConfirmTxt{margin-left:16px;}
+/*iPad and iPhone Styles*/
+@media only screen  and (device-width:768px), only screen  and (device-width:320px){
+/*Hide Video Tab*/
+#divProductDetailVideoDisplay, #tabProductDetailViewNav-video, #divProductDetailPopupVideoDisplay, #tabProductDetailPopupViewNav-video{display:none !important;}
+#divProductDetailPhotoDisplay{display:block !important;}
+#divProductDetailViewOptions #tabProductDetailViewNav-photo{
+background-color:#FFFFFF;
+color:#333333;
+height:22px;
+margin-bottom:-1px;
+position:relative;
+}
+/*Buttons*/
+input.primaryButton, input.primaryButtonAlignVertical,input.secondaryButton, input.secondaryButtonAlignVertical, input.buttonRemoveProduct, input.buttonClose{
+background:none;
+border-radius:6px;
+height:auto;
+padding:8px 12px 8px 26px;
+-webkit-appearance:none;
+}
+.divCompareItems input.secondaryButton{
+color:#333;
+border:0;
+padding:8px 5px 8px 9px;
+background:#FFF url(../images/aro_rt_gry.gif) left center no-repeat;
+margin:0;
+text-transform:none;
+font-weight:normal;
+}
+input.secondaryButton, input.secondaryButtonAlignVertical, #frmProductList input.secondaryButtonAlignVertical{
+background:#EEE url(../images/ipadbtnarrow.png) 10px 50% no-repeat;
+border:1px solid #CCC;
+border-right-width:2px;
+border-bottom-width:2px;
+color:#86b028;
+}
+input.primaryButton,input.primaryButtonAlignVertical, input.btnSpeedBuy, #frmProductList input.btnSpeedBuy{
+background:#86b028 url(../images/ipadbtnarrow.png) 10px 50% no-repeat;
+border:1px solid #5a771b;
+border-right-width:2px;
+border-bottom-width:2px;
+color:#FFFFFF;
+}
+.btnSpeedBuy, .btnAddToCart{width:120px;}
+/*Product Detail*/
+#frmProductDetail #divButtons input{margin:0 0 10px 0;}
+#divProductDetailsWrapper .primaryButton, #divProductDetailsWrapper .btnSpeedBuy{
+width:262px;
+padding:8px 0 8px 81px;
+font-size:13px;
+background-position:66px 50%;
+}
+#divProductDetailsWrapper .btnAddToWishList{
+margin:10px 0 !important;
+width:155px;
+padding:8px 0 8px 26px;
+font-size:13px;
+background-position:11px 50%;
+}
+.increaseTextSize, .decreaseTextSize, .cantIncreaseTextSize, .cantDecreaseTextSize{background-image:url(../images/tablet_APlus.png);height:25px;width:54px;}
+.decreaseTextSize{background-image:url(../images/tablet_AMinus.png);}
+.cantIncreaseTextSize{background-image:url(../images/tablet_APlus_gry.png) !important;}
+.cantDecreaseTextSize{background-image:url(../images/tablet_AMinus_gry.png) !important;}
+.productDetailDescriptionFileLinkArea .adjustTextSize{width:210px;}
+.productDetailDescriptionFileLinkArea .subTabs{width:490px;}
+.outline{padding:19px 16px;}
+/*Galleries*/
+.gallery .divProduct{height:515px;}
+.divProductButtons input{margin:0 0 5px 0;}
+.divPageViewText *{margin:0 0 0 10px;}
+.gallery .divPageLinks, .list .divPageLinks, .textOnly .divPageLinks{margin:3px 0 0 0;}
+.divPageView{padding-right:12px;line-height:32px;}
+.divPageLinks span, .divPageLinks a{padding:6px;}
+.divPageLinks span.previous, .divPageLinks span.next{color:#CCC;background:none;padding:0;}
+a.next, a.previous{
+display:inline-block;
+text-align:left;
+border:1px solid #E97400;
+padding:5px 16px 5px 5px;
+background-position:50% center;
+border-radius:6px;
+width:48px;
+}
+a.previous{padding:5px 5px 5px 16px;background-position:10% center;}
+.divVideo{display:none;}
+.gallery #divContent div.productSelectToCompare{padding:0;}
+div.productSelectToCompare *{vertical-align:middle;}
+input.cb{margin-bottom:0;}
+div.productSelectToCompare label.cbLabel{display:inline-block;padding:12px 0;}
+#divNavFaceted ul li label{top:0;}
+#divNavFaceted ul li{margin:0 0 8px 0;}
+/*Forms*/
+#divContent *{vertical-align:middle;}
+input.text, input.password, #divMastheadSearch #txtMastheadSearch, input.chinputbox, input.calpop{height:30px;padding-left:5px;font-size:14px;}
+#divMastheadSearch .primaryButton{width:55px;height:auto;line-height:15px;}
+select{
+background:#FFF url(../images/tabletselectarrow.png) top right no-repeat;
+padding:5px 35px 5px 5px !important;height:30px;
+-webkit-appearance:none;
+border-radius:6px;
+}
+input[type=checkbox]{
+-webkit-appearance:none;
+-moz-appearance:none;
+height:20px;
+width:20px;
+border:1px solid #333;
+border-radius:6px;
+vertical-align:middle;
+background:none;
+outline:none;
+}
+input[type='checkbox']:checked{background:url(../images/tabletcheckbox.png) 50% 50% no-repeat;border:1px solid #86b028;}
+#divMastheadSearch #txtMastheadSearch:focus, input.text:focus, input.password:focus, input.chinputbox:focus, input.calpop:focus{font-size:24px;}
+input.text, input.chinputbox{width:150px;}
+input.TextDateCalendar{height:18px;}
+/*Sign-in*/
+#txtEmailAddress{margin:0 0 10px 0;}
+#txtPin, #txtVerifyPin{width:80px;margin:0 30px 10px 0;}
+#frmSignIn, #frmSignIn .cbGroup label, .required.instructions{margin:0;}
+#divUseDefaults{padding-top:0;}
+#divExistingQvcAccountSignIn .outline, #divCreateQvcAccountSignIn .outline{height:190px;}
+/*Add Reminder*/
+.ReminderInfoData{width:70%;}
+.ReminderInfoImageContainer{width:29%;}
+/*Checkout*/
+#frmEditPaymentMethod #divButtons{margin-bottom:5px;}
+#divContent td{vertical-align:top;}
+.orderTable th{padding:0 7px 5px 0;}
+body.checkout, body.checkout h3{font-size:15px;}
+.itemInformationWrapper_border{padding:0 40px;}
+.divOrderTotalButtons{height:auto;}
+.divOrderTotalButtons input{margin-bottom:5px;}
+#divEasyPayOptions input.rb{margin:7px 0;}
+/*Program Guide*/
+.programGuideTimeZoneSearch{height:35px;}
+.programGuideTimeZoneSearch input.arrowButton, .pgbar3bottom input.arrowButton{
+background:url(../../../../../images-p.qvc.com/is/image/pic/qvc/btnSecondaryGo.gif);
+height:34px;
+width:63px;
+}
+.divProgramGuideSearch, .divProgramGuideSearch1{margin:0;}
+.programGuidePageView .divPageView{height:38px;line-height:38px;}
+.programGuidePageView .divItems{top:2px;}
+.programGuidePageView .divPageViewText *{margin:0 10px 0 0;}
+div.calendar{margin:15px 0 0 0;}
+.calendar table{width:auto;}
+input.calpop{width:175px;}
+input.calendarButton{background:url(../images/tablet_calendar_gray.png) no-repeat;width:30px;height:30px;}
+.calendar td, .calendar th{height:auto;font-size:16px;}
+.calendar a, td.close, .calendar thead th{padding:10px;}
+.programGuideSelectorDay div, .programGuideSelectorWeek div{margin:0;}
+.programGuidePageView a.next{width:90px;background-position:55% center;padding:5px 20px 5px 5px;}
+.programGuideSelectorWeek a.next{background-position:65% center;}
+.programGuidePageView a.previous{width:90px;padding:5px 5px 5px 20px;}
+#tblProgramGuideWeekly .divProgramTitle img{display:none;}
+#divNavItemsRecentlyOnAir fieldset.firstChild{margin:0;}
+}

@@ -12,14 +12,14 @@ if ( ( location.search.length > 0 && location.search.toLowerCase().indexOf( "sto
 }
 
 var sPath = window.location.pathname;
-var sPage = sPath.substring(sPath.lastIndexOf('/') + 1).toLowerCase();
+var sPage = sPath.substring( sPath.lastIndexOf('/') + 1 ).toLowerCase();
 
 if ( isMobile() && !bStopMobileRedirect )
 {
 	if ( sPage == "reghome.asp" || sPage == "rdreghome.asp" )
 		window.location = "https://m.bedbathandbeyond.com/bedbathbeyond/registry/registryForward.do";
-	else if ( sPage == "btshome.asp" || sPage == "rdbtshome.asp" )
-		window.location = "https://m.bedbathandbeyond.com/bedbathbeyond/catalog.do?cid=1523003";
+	else if ( sPage == "btshome.asp" || sPage == "rdbtshome.asp" || sPage == "btspracticalsolutionshome.asp" )
+		window.location = "http://bbby.apps.netbiscuits.com";
 	else if ( sPage == "trackorders.asp" || sPage == "rdtrackorders.asp" )
 		window.location = "https://m.bedbathandbeyond.com/bedbathbeyond/foot/trackorder.do";
 	else if ( sPage == "giftcardhome.asp" || sPage == "rdgiftcardhome.asp" )

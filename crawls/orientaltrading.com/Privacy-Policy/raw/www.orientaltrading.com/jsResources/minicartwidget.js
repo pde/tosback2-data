@@ -40,7 +40,7 @@
 		        	*/
 		        	self.isjScroll = true;
 		        }
-		    }).find('li>div').bgIframe();
+		    });
 			
 			this._initnewdetails();
 			this.cartIsOpen = false;

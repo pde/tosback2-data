@@ -591,7 +591,9 @@ function updateSwatchAlternateImage(alternateImage, alternateImageLayerId){
 			ImageWidget.setImageSrc(imgWidget, ImageWidget.getImageSrc(imgWidget), fileURL);
 			imsSwatchImageReplaced = true;
 			var zoomObjectName = "#ZoomPanel_" + alternateImageLayerId + "_EntityZoom_Zoom";
-			BaseZoomWidget.onUpdateImage(zoomObjectName , window.event, fileURL); // Event.CLICK
+            if(typeof BaseZoomWidget != "undefined"){
+			    BaseZoomWidget.onUpdateImage(zoomObjectName , window.event, fileURL); // Event.CLICK
+            }
 
 		}else{
 

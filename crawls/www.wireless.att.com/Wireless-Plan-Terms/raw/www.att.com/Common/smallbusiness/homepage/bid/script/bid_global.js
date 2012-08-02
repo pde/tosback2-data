@@ -194,3 +194,23 @@ function detectIpad() {
 		return false
 	}
 }
+
+function detectSafariChrome() {
+	var navAgent = navigator.userAgent;
+	var isChrome = navAgent.indexOf('Chrome') > -1;
+	var isSafari = navAgent.indexOf('Safari') > -1;
+	if (isChrome || isSafari) {
+		if (navAgent.match(/ipad/i) == null) {
+			return true;
+		}
+	} else {
+		return false;
+	}
+}
+
+//Safari and Chrome appear to misalign the carousel buttons. This fixes it.
+function adjustButton() {
+	if (detectSafariChrome()) {	
+		$jQuery('p.suggestProductItem_ShopNowBtn').css('backgroundPosition','34px 0px');
+	}
+}

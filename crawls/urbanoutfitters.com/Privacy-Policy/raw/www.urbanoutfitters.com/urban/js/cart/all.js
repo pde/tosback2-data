@@ -749,6 +749,8 @@ function cartLoading(msg) {
 	}	
 }	
 
+//TRAC 5050: Modifed the below function for displaying the paypal error codes as dynamically where it is displaying as static 
+//msg = payPalErrMsg;
 // show message
 function showMsg(msg, responseObj, panel) {
 	try {
@@ -766,7 +768,8 @@ function showMsg(msg, responseObj, panel) {
 		msg = msg.replace(/\u0092/g,"'");
 		// check if paypal error
 		if (msg.indexOf("PayPal")>=0) {
-			msg = payPalErrMsg;
+			//commenting the below line for TRAC 5050
+			//	msg = payPalErrMsg;
 			// launch billing panel 
 			launchBilling();
 		}
@@ -774,7 +777,11 @@ function showMsg(msg, responseObj, panel) {
 		if (panel == null) {
 			panel = "ajaxMsgContent";
 		}
-		$(panel).innerHTML = msg;
+		//Start : Added for trac 5050
+		if(msg != "PayPalErrorMsg"){
+		 $(panel).innerHTML = msg;
+		}
+		//End:Added for trac 5050
 		if (panel == "ajaxMsgContent") {
 			// fade cart processing message
 			if (msg.length > 50) {
@@ -801,6 +808,18 @@ function showErrorMsg(msg, responseObj, panel) {
 	}
 	// display message
 	showMsg(msg, responseObj, panel);
+}
+
+function showSubmitError(msg, lineItem) {
+	// replace encoded apostrophe
+	
+	var errorContainer = $(lineItem).getElementsByClassName('placeOrderError')[0];
+	var errorMessage = $(lineItem).getElementsByClassName('placeOrderErrorContent')[0];
+	msg = msg.replace(/\u0092/g,"'");
+	errorMessage.innerHTML = msg;
+	errorContainer.style.display = "block";
+	ajaxCartTimer = 50;
+	fadeCartMsg();
 }
 
 // reload cart
@@ -1267,3 +1286,103 @@ function setPersistantCat() {
 }
 // call on page load
 Event.observe(window,"load",setPersistantCat);
+
+
+(function($) {
+	
+	$(document).ready(function() {
+
+		// check if on a thank you page;  if so, generate RKG analytics images
+		if ( window.location.href.search("co_thankyou.jsp") > -1 ) {
+			
+			// pull sessionStorage info on order
+			var counter = sessionStorage.getItem( 'totalNumberofItems' );
+			var html = "";
+			var prodName = "";
+			var orderNo = "";
+			var lid = 0;
+
+			while ( counter > -1 ) {
+				// console.log (JSON.parse( sessionStorage.getItem( 'arr_' + counter ) ) );
+
+				obj = JSON.parse( sessionStorage.getItem( 'arr_' + counter ) );
+				
+				// remove HTML from prodName
+				prodName = obj.name;
+				
+				if (prodName != null && prodName.indexOf("<") > 0) {
+	   				prodName = prodName.substring(0, prodName.indexOf("<"));
+	   			}
+
+
+				//grab order number out of HTML, chop off first 7 characters
+				orderNo = $("div.orderNum strong").html();
+				orderNo = orderNo.substring(7);
+				
+				// convert price to # of pennies for RKG
+				obj.price = Math.round( obj.price * 100 );
+				
+				// remove spaces from the name so it doesn't break the query string
+				obj.name = obj.name.replace(/ /g, "%20");
+
+				// increment lid so there's no 0 value
+				lid = obj.index + 1;
+
+				html += "<img src=\"https://www.rkdms.com/order.gif?mid=urbanoutfitters&oid=";
+				html += orderNo;
+				html += "&lid="
+				html += lid;
+				html += "&iid=" + obj.sku;
+				html += "&icent=";
+				html += obj.price;
+				html += "&iqty=" + obj.quantity;
+				html += "&iname=" + prodName;
+
+				html += "\" height=\"1\" width=\"1\" />";
+
+				counter --;
+			}
+
+			// console.log ("html is " + html )
+			$("#footer").append(html);
+
+		}  // end RKG image generation
+
+
+		// store cart information in sessionStorage for analytics on Thank You page
+		$("#placeOrder").click( function() {
+			
+			// instantiate variables
+			var arr = [];
+			var counter = -1;
+			
+			// loop through each item in the commerceItems object
+			$.each( curCheckout.data.commerceItems, function( i, val ) {
+				
+				// increment counter;  if it =-1, then the array is empty
+				counter++;
+
+				// grab all necessary properties, assign them to a temporary object
+				var obj = {
+					name: val.productCatalogInformationCustomProperty.value.description,
+					sku: val.productCatalogInformationCustomProperty.value.id,
+					price: val.priceInfo.value.amount,
+					quantity: val.quantity,
+					index: counter,
+				};
+
+				obj.price = obj.price / obj.quantity;
+				
+				// push that object to sessionStorage
+				sessionStorage.setItem( 'arr_' + counter, JSON.stringify(obj) );
+				
+			});			
+
+			// set total number of items to sessionStorage;  need it for next page
+			sessionStorage.setItem( 'totalNumberofItems', counter );
+
+			// return false;
+		});	
+	});
+
+})(jQuery);

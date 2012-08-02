@@ -97,6 +97,7 @@ TSCM.ads.AdPlacerx = new function(){
    autotarget:true,
    protocol:"http://",
    server:"a.collective-media.net",
+   defaultServer:"a.collective-media.net",
    calltype:"adj",
    default_calltype:"adj",
    cmn:"ts",
@@ -622,6 +623,7 @@ TSCM.ads.AdPlacerx = new function(){
    writeTag:function(id){
       var tag = this.getScriptTag();
       document.write(tag);
+      this.server = this.defaultServer;
    },
 	getIframeName:function(){
 		var name = "iframe_ad" + this.sz + "t" + this.tile;

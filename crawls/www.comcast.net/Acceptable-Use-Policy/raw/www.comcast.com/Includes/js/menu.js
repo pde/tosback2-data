@@ -573,6 +573,8 @@ function displayMenuForLanguage() {
     // Remove menu when language set to Spanish
     //	var language =  getCookieVal("Language")
     //	if(window.location.pathname.indexOf("/" + language + "/") > 0)
+    if (menu == null)
+        return;
     if (window.location.pathname.indexOf("/es/") > 0) {
         menu.style.display = 'none';
     }
@@ -590,7 +592,9 @@ function navigateToLocalization() {
 }
 function navigationHover() {
     var menu = document.getElementById("topMenu");
-
+    if (menu == null) {
+        return;
+    }
     navItems = menu.getElementsByTagName("li");
 
     for (var i = 0; i < navItems.length; i++) {

@@ -59,8 +59,8 @@ var internalSearch = window.location.hash;
 mistats.InteractionTracker = function ()
 {
    var cEvent    = 'event21';
-   var cPagename = 'eVar11';
-   var cChannel  = 'eVar12';
+   var cPagename = 'eVar13';
+   var cChannel  = 'eVar14';
 
    var pending;
    var counts;
@@ -77,6 +77,11 @@ mistats.InteractionTracker = function ()
       'cs_hover':       {key: 'mi_csh', product: 'Poll Hover'},
       'gallery_views':  {key: 'mi_gvc', product: 'Gallery Views', eVar: 'eVar6'},
       'gallery_panel':  {key: 'mi_gpc', product: 'Gallery Panel Views'},
+      'gcs_another':    {key: 'mi_gan', product: 'GCS Ask Another'},
+      'gcs_signup':     {key: 'mi_gsu', product: 'GCS Signup'},
+      'gcs_survey':     {key: 'mi_gsv', product: 'GCS Answered Survey'},
+      'gcs_abandon':    {key: 'mi_gas', product: 'GCS Exited Site', event: 'event21'},
+      'gcs_navigate':   {key: 'mi_gap', product: 'GCS Exited Page', event: 'event21'},
       'view_more':      {key: 'mi_vmc', product: 'View More Stories'},
       'widget_show':    {key: 'mi_wsc', product: 'Widget Show'},
       'widget_hide':    {key: 'mi_whc', product: 'Widget Hide'},
@@ -98,6 +103,9 @@ mistats.InteractionTracker = function ()
          if (types[type].eVar && s[types[type].eVar])
             s[types[type].eVar] = '';
       }
+
+      s[cPagename] = '';
+      s[cChannel] = '';
 
       if (origEvents)
          s.events = origEvents;
@@ -138,17 +146,22 @@ mistats.InteractionTracker = function ()
 
    function sendCountsNow(pEvent)
    {
+      var evtStr;
       var newVars;
       var type;
 
       if (!pending)
          return;
 
+      evtStr = (s.events) ? [s.events] : [];
+      evtStr[evtStr.length] = cEvent;
+      evtStr = evtStr.join(',');
+
       newVars =
       {
          products:        generateProductsString(),
-         events:          cEvent,
-         linkTrackEvents: cEvent,
+         events:          evtStr,
+         linkTrackEvents: evtStr,
          linkTrackVars:   ['events', 'products', cPagename, cChannel].join(',')
       };
 
@@ -158,7 +171,8 @@ mistats.InteractionTracker = function ()
       includeOptionalVars(newVars, true);
       clearStoredStats();
 
-      s.tl(true, 'o', 'Interactions', newVars);
+      if (newVars.products)
+         s.tl(true, 'o', 'Interactions', newVars);
    };
 
    function sendCountsOnPageView()
@@ -170,11 +184,16 @@ mistats.InteractionTracker = function ()
       if (!pending || (typeof mitagsent !== 'undefined' && mitagsent))
          return false;
 
+      s.products = generateProductsString();
+      if (!s.products)
+         return clearStoredStats();
+      
       if (s.events && s.events.length)
          origEvents = s.events;
 
       s.events     = (origEvents) ? [origEvents, cEvent].join(',') : cEvent;
-      s.products   = generateProductsString();
+      s[cPagename] = s.c_r('mi_ppn');
+      s[cChannel]  = s.c_r('mi_pch');
 
       includeOptionalVars(s);
 
@@ -279,9 +298,6 @@ mistats.InteractionTracker = function ()
       pending   = false;
       counts    = {};
 
-      s[cPagename] = s.c_r('mi_ppn');
-      s[cChannel]  = s.getPreviousValue(s.channel, 'mi_pch');
-
       if (typeof window.sessionStorage === 'object')
          sessionStorage = window.sessionStorage;
       else
@@ -363,8 +379,7 @@ mistats.InteractionTracker = function ()
       if (!listeners)
          setupEvents();
 
-      if (pCount)
-         counts[pType] = pCount;
+      counts[pType] = pCount;
 
       sessionStorage.setItem(types[pType].key, counts[pType]);
 
@@ -372,6 +387,13 @@ mistats.InteractionTracker = function ()
          pending = true;
 
       return counts[pType];
+   };
+
+   this.getCount = function (pType)
+   {
+      if (pType in types && counts[pType])
+         return counts[pType];
+      return 0;
    };
 
    init();
@@ -405,8 +427,8 @@ mistats.GalleryTracker = function ()
       newVars =
       {
          channel:         mistats.sitename + ': ' + mistats.channel,
-         events:          'event21',
-         linkTrackEvents: 'event21',
+         events:          'event7,event21',
+         linkTrackEvents: 'event7,event21',
          linkTrackVars:   'events,products,channel,eVar4,eVar6',
          products:        ';' + ((mistats.sitename) ? mistats.sitename : 'Unknown') + ': Gallery Views;;;event21=' + count.toString(),
          eVar4:           mistats.pagename,
@@ -675,6 +697,244 @@ mistats.ViewTracker = function ()
 };
 
 mistats.viewTracker = new mistats.ViewTracker();
+
+mistats.GCSTracker = function ()
+{
+   var cPollLim = 500;
+   var cFrameId  = /prompt-iframe/i;
+   var cSurvey   = /task-form/i;
+   var cAnother  = /task-flag/i;
+
+   var first;
+   var origProps;
+   var pollPtr;
+   var pollCnt;
+   var prompt;
+   var responses;
+
+   function unbind(pObj, pType, pCallout)
+   {
+      if (pObj && pObj.removeEventListener)
+         pObj.removeEventListener(pType, pCallout, false);
+      else if (pObj && pObj.detachEvent)
+         pObj.detachEvent('on' + pType, pCallout);
+   };
+
+   function bind(pObj, pType, pCallout)
+   {
+      if (pObj && pObj.addEventListener)
+         pObj.addEventListener(pType, pCallout, false);
+      else if (pObj && pObj.attachEvent)
+         pObj.attachEvent('on' + pType, pCallout);
+   };
+
+   function getElementLikeId(pStr, pObj)
+   {
+      var a;
+      var allObjs;
+
+      pObj = pObj || document;
+      allObjs = pObj.getElementsByTagName('*');
+
+      for (a = 0; a < allObjs.length; a++)
+         if (allObjs[a].id && allObjs[a].id.match(pStr))
+            return allObjs[a];
+
+      return null;
+   };
+
+   function navigate()
+   {
+      mistats.interactionTracker.setCount('gcs_abandon', 0);
+      mistats.interactionTracker.setCount('gcs_navigate', 1);
+   };
+
+   function bindToAnchors(pState)
+   {
+      var a;
+      var anchors;
+      var binder;
+      var host;
+
+      binder = (pState)? bind : unbind;
+
+      host = location.hostname.split('.');
+      host.splice(0, ((host.length > 2) ? (host.length - 2) : 0));
+      host = new RegExp(host.join('.'), 'i');
+
+      anchors = document.getElementsByTagName('a');
+      for (a = 0; a < anchors.length; a++)
+         if (anchors[a].href && anchors[a].href.replace(/^https*\W{3}/, '').replace(/\/.*/, '').match(host))
+            binder(anchors[a], 'mouseup', navigate);
+   };
+
+   function askAnother()
+   {
+      if (pollPtr)
+         return;
+
+      mistats.interactionTracker.increment('gcs_another');
+      clearInterval(pollPtr);
+      pollCnt = 0;
+      pollPtr = setInterval(function ()
+      {
+         if (++pollCnt < cPollLim && !bindResponses())
+            return;
+
+         clearInterval(pollPtr);
+         pollPtr = null;
+      }, 1500);
+   };
+
+   function trackSignup(pEvent)
+   {
+      var evtType;
+      var thisDoc;
+      var thisObj;
+
+      thisObj = pEvent.srcElement || pEvent.target;
+      thisDoc = thisObj.ownerDocument;
+      evtType = pEvent.type;
+
+      if (pollPtr)
+         clearInterval(pollPtr);
+
+      pollCnt = 0;
+      pollPtr = setInterval(function ()
+      {
+         var msg;
+
+         if (++pollCnt > cPollLim)
+         {
+            clearInterval(pollPtr);
+            pollPtr = null;
+         }
+
+         msg = thisDoc.getElementById('et_msgBlock');
+
+         if (!msg || !msg.innerHTML.match || !msg.innerHTML.match(/confirmation/i))
+            return;
+
+         unbind(thisObj, evtType, trackSignup);
+         mistats.interactionTracker.increment('gcs_signup');
+         mistats.interactionTracker.setCount('gcs_abandon', 0);
+         bindToAnchors(false);
+
+         clearInterval(pollPtr);
+         pollPtr = null;
+      }, 500);
+   };
+
+   function surveyTrack(pEvent)
+   {
+      var r;
+
+      mistats.interactionTracker.increment('gcs_survey');
+      mistats.interactionTracker.setCount('gcs_abandon', 0);
+
+      if (responses && responses.length)
+         for (r = 0; r < responses.length; r++)
+            unbind(responses[r], pEvent.type, surveyTrack);
+
+      bindToAnchors(false);
+   };
+
+   function bindResponses()
+   {
+      var r;
+
+      responses = prompt.getElementsByTagName('*');
+      if (!responses.length)
+         return false;
+
+      for (r = 0; r < responses.length; r++)
+         if (responses[r].className && responses[r].className.match(/response|ratings|menuitem/i))
+         {
+            unbind(responses[r], 'mouseup', surveyTrack);
+            bind(responses[r], 'mouseup', surveyTrack);
+         }
+
+      return true;
+   };
+
+   function trackContents()
+   {
+      var a;
+      var signup;
+
+      mistats.interactionTracker.setCount('gcs_abandon', 1);
+
+      bindToAnchors(true);
+
+      signup = prompt.getElementsByTagName('iframe');
+      if (signup)
+         bind(getElementLikeId(/Submit/i, signup[0].contentWindow.document), 'click', trackSignup);
+
+      bind(getElementLikeId(cAnother, prompt), 'click', askAnother);
+      bindResponses();
+   };
+
+   function resetPoller()
+   {
+      clearTimeout(pollPtr);
+      pollPtr = null;
+      pollCnt = 0;
+   };
+
+   function track(pReset)
+   {
+      var p;
+
+      if (pReset)
+         resetPoller();
+
+      prompt = getElementLikeId(cFrameId);
+
+      if (!prompt)
+      {
+         if (++pollCnt < cPollLim)
+            pollPtr = setTimeout(track, 250);
+
+         return;
+      }
+
+      resetPoller();
+
+      s.pageName = 'GallerySurvey Form' + ((first) ? '' : ': First');
+      s.channel  = mistats.sitename + ': GallerySurvey: ' + mistats.channel;
+      s.prop3    = 'GallerySurvey';
+
+      s.t();
+
+      for (p in origProps)
+         s[p] = origProps[p];
+
+      first = true;
+      prompt = prompt.contentWindow.document;
+      trackContents();
+   };
+
+   function init()
+   {
+      origProps =
+      {
+         pageName: s.pageName,
+         channel:  s.channel,
+         prop3:    s.prop3
+      };
+
+      pollCnt = 0;
+
+      bind(window, 'load', function ()
+      {
+         if (typeof mi !== 'undefined' && mi.surveywall && mi.surveywall.getConf('enabled'))
+            track(true);
+      });
+   };
+
+   this.track = track;
+   init();
+};
 
 /* MI/Omniture Ajax Function Call */
 function mistats_resend()

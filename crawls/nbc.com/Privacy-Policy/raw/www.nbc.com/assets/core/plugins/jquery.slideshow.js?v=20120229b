@@ -34,12 +34,12 @@
 				} 
 				
 				//needs to exist outside of slidesLoad because used in ajax call below
-				$slides = $(document.createElement('a')).attr({'className':'slides'});
-				$layoutWrap = $(document.createElement('div')).attr('className','promoteInner'); 
+				$slides = $(document.createElement('a')).prop({'className':'slides'});
+				$layoutWrap = $(document.createElement('div')).prop('className','promoteInner'); 
 				$obj.html($layoutWrap);
 
 				//meta
-				$meta = $(document.createElement('div')).attr('className','meta');
+				$meta = $(document.createElement('div')).prop('className','meta');
 				$layoutWrap.append($(document.createElement('div')).html($meta));
 
 				//load slides to dom immediately
@@ -54,10 +54,10 @@
 				}
 				
 				//pager thumbs
-				$btns = $(document.createElement('div')).attr('className','btns');
-				$thumbs = $(document.createElement('div')).attr('className','thumbs'); 
+				$btns = $(document.createElement('div')).prop('className','btns');
+				$thumbs = $(document.createElement('div')).prop('className','thumbs'); 
 				$thumbs.append($btns);
-				$thumbs.prepend($(document.createElement('span')).attr('className','mask'));
+				$thumbs.prepend($(document.createElement('span')).prop('className','mask'));
 				$layoutWrap.append($thumbs);
 				
 				//ribbon ad
@@ -69,7 +69,7 @@
 					$showAd = $(document.createElement('a')).addClass('show').text('Show Ad');
 					$close = $(document.createElement('a')).addClass('close');
 					
-					$ribbonAdBtn = $(document.createElement('span')).attr('className','ribbonAdBtn noRibbonAd'); 
+					$ribbonAdBtn = $(document.createElement('span')).prop('className','ribbonAdBtn noRibbonAd'); 
 					$ribbonAdBtn.append($showAd);
 					$ribbonAdBtn.append($close);
 					$ribbonAdBtn.append($ribbonAd);
@@ -95,15 +95,15 @@
 				slidesLoad = function(){
 					
 					if(!slideSpecs.metaNode) {
-						slideSpecs.titleNode = $(document.createElement('div')).attr('className','title');
-						slideSpecs.descNode = $(document.createElement('div')).attr('className','description');
-						slideSpecs.moreNode = $(document.createElement('a')).attr('className','more').html("More &raquo;");
+						slideSpecs.titleNode = $(document.createElement('div')).prop('className','title');
+						slideSpecs.descNode = $(document.createElement('div')).prop('className','description');
+						slideSpecs.moreNode = $(document.createElement('a')).prop('className','more').html("More &raquo;");
 						 
-						$meta.html($(document.createElement('span')).attr('className','mask'));
+						$meta.html($(document.createElement('span')).prop('className','mask'));
 						$meta.append(slideSpecs.titleNode);
 						$meta.append(slideSpecs.descNode);
 						$meta.append(slideSpecs.moreNode);
-						$meta.append($(document.createElement('div')).attr('className','clear'));
+						$meta.append($(document.createElement('div')).prop('className','clear'));
 					}
 					
 					//cycle vars
@@ -121,18 +121,18 @@
 					//thumbs/pager builder
 					cycleParams.pagerAnchorBuilder = function(i, slide){
 						thmClass = "thumb ";
-						thmClass += ($(slide).attr('className'))? $(slide).attr('className')+'-thm' : 'thm-'+i; 
+						thmClass += ($(slide).prop('className'))? $(slide).prop('className')+'-thm' : 'thm-'+i; 
 						
-						title = ($(slide).attr('short') != undefined)? $(slide).attr('short'): $(slide).attr('title');
-						
+						title = ($(slide).attr('short') != undefined)? $(slide).attr('short'): $(slide).prop('title');
+	
 						$image = $(document.createElement('img')).attr("src", $(slide).attr('rel'));
-						$title = $(document.createElement('span')).attr("className", "title").html( title );
-						$marker = $(document.createElement('span')).attr("className", "activeMarker");
-						$anchor = $(document.createElement('a')).attr('className',$(slide).attr("className")).html($image).append($title).append($marker); 
-						$thumb = $(document.createElement('div')).attr('className',thmClass).html($anchor);
+						$title = $(document.createElement('span')).prop("className", "title").html( title );
+						$marker = $(document.createElement('span')).prop("className", "activeMarker");
+						$anchor = $(document.createElement('a')).prop('className',$(slide).prop("className")).html($image).append($title).append($marker); 
+						$thumb = $(document.createElement('div')).prop('className',thmClass).html($anchor);
 						
 						if(cycleParams.pagerEvent == "mouseenter") {
-							$thumb.click(function(){ window.open($(slide).attr("url"), (!$(slide).attr('target'))? '_top' : $(slide).attr('target')); }); 
+							$thumb.click(function(){ window.open($(slide).attr("url"), (!$(slide).prop('target'))? '_top' : $(slide).prop('target')); }); 
 						}
 						return $thumb; 
 					};
@@ -214,7 +214,7 @@
 												});
 
 												if(typeof response[i].link != "undefined" && response[i].link != "") {
-													$ribbonAd.append($(document.createElement('a')).attr("href",response[i].link));
+													$ribbonAd.append($(document.createElement('a')).prop("href",response[i].link));
 												}else {
 													for(var a in subs){
 														//enforce succession of title first - break loop if either items doesn't exist in order
@@ -228,7 +228,7 @@
 														else break; 
 													}
 													for(var b in ribbonLinks){
-														$ribbonAd.append($(document.createElement('a')).attr("href",ribbonLinks[b]).css("width",Math.floor(970/ribbonLinks.length)));
+														$ribbonAd.append($(document.createElement('a')).prop("href",ribbonLinks[b]).css("width",Math.floor(970/ribbonLinks.length)));
 													}
 												}
 											}
@@ -277,11 +277,11 @@
 											likeboxOptions : {
 												siteId:response[i].site_id
 												,facebookId:response[i].facebook_id
-												,twtrName:response[i].twitter_username
+												,twitterUsername:response[i].twitter_username
 											}
 										};
 										
-										$img.attr(imgAts).data('imgMeta', imgMeta);
+										$img.prop(imgAts).data('imgMeta', imgMeta);
 										$slides.append($img);
 									}
 								
@@ -308,13 +308,13 @@
 		,loadMeta: function($img, externalNode){
 			return this.each(function() {
 				var $obj = $(this), slideSpecs = $obj.data('slideshow');
-				var link = { href: $img.attr('url'),  target : (!$img.attr('target'))? '_top' : $img.attr('target') };
-				$(slideSpecs.slidesObj).attr(link);
+				var link = { href: $img.attr('url'),  target : (!$img.prop('target'))? '_top' : $img.prop('target') };
+				$(slideSpecs.slidesObj).prop(link);
 				
 				if(!externalNode) {
-					$(slideSpecs.descNode).html($img.attr('alt').replace(/\|/g,"<br/>"));
-					$(slideSpecs.titleNode).text($img.attr('title'));
-					$(slideSpecs.moreNode).attr(link);
+					$(slideSpecs.descNode).html($img.prop('alt').replace(/\|/g,"<br/>"));
+					$(slideSpecs.titleNode).text($img.prop('title'));
+					$(slideSpecs.moreNode).prop(link);
 				} else {
 					var imgMeta = $img.data("imgMeta");
 					if(imgMeta.stacked){
@@ -327,8 +327,8 @@
 					
 					$logo.find('.logoItem').hide();
 					if($logo.find('.'+imgCss).length == 0 && imgMeta.logo) {
-						$logoImg = $(document.createElement('img')).attr("src", imgMeta.logo);
-						$logoHold = $(document.createElement('span')).attr('className','logoItem '+imgCss);
+						$logoImg = $(document.createElement('img')).prop("src", imgMeta.logo);
+						$logoHold = $(document.createElement('span')).prop('className','logoItem '+imgCss);
 						$logo.append($logoHold);
 						$logoHold.html($logoImg).show().pngFix();
 						
@@ -345,16 +345,16 @@
 					} else {
 						$logo.find('.'+imgCss).show();
 					}
-					$logo.attr({"href":imgMeta.siteLink});
+					$logo.prop({"href":imgMeta.siteLink});
 					
 					$(externalNode).find(".tune-in").html(imgMeta.tunein+'');
-					$(externalNode).find(".description span").html($img.attr("alt")+'');
-					$(externalNode).find(".visit").attr({"href":imgMeta.siteLink}).show();
+					$(externalNode).find(".description span").html($img.prop("alt")+'');
+					$(externalNode).find(".visit").prop({"href":imgMeta.siteLink}).show();
 					
 					var LBcss = 'LB'+indexRef, $LBHold = $(externalNode).find(".likebox-holder");
-					$LBHold.find('.likebox').hide();
+					$LBHold.find('.socialbuttons').hide();
 					if($LBHold.find('.'+LBcss).length == 0) {
-						$LBHold.append($(document.createElement('div')).addClass(LBcss).likebox(imgMeta.likeboxOptions).show());
+						$LBHold.append($(document.createElement('div')).addClass(LBcss).socialbuttons(imgMeta.likeboxOptions).show());
 					} else {
 						$LBHold.find('.'+LBcss).show();
 					}
@@ -364,10 +364,10 @@
 					$promoteBox.find('.layer').hide();
 					if($promoteBox.find('.'+promotesCss).length == 0) {
 						
-						var $promotes = $(document.createElement('div')).attr('className','layer '+promotesCss);
+						var $promotes = $(document.createElement('div')).prop('className','layer '+promotesCss);
 						for(var j in imgMeta.promotes) {
 							var promote = imgMeta.promotes[j]; 
-							var $promote = $(document.createElement('a')).attr({
+							var $promote = $(document.createElement('a')).prop({
 								"className":"promote promote"+(Number(j)+1), 
 								href:promote.link
 								,target:''
@@ -409,3 +409,8 @@
 	};
 	
 })(jQuery);
+
+
+
+
+

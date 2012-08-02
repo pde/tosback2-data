@@ -1,4 +1,7 @@
-"use strict";
+/*jslint browser: true, nomen: true, plusplus: true, regexp: true, indent: 2, maxerr: 5 */
+/*global $: false, jQuery: false, dojo: false, $f: false, Scene7: false,
+  console: false, bec: false, eSiteIncludeDir: false,
+  cmCreateElementTag: false */
 
 /*********************************************************************************************************************/
 /* Error Handling                                                                                                    */
@@ -13,25 +16,27 @@ if (console !== undefined && console.error !== undefined) { jQuery.error = conso
 
 /**
  * Find nodes that match a criteria
- * 
+ *
  * @param {String} property the property to check
  * @param {Var} value null to match the existence of a property or the value to match
  * @param {Boolean} blnMatch false to use equality and true to use String.match
  * @param {node} node the DOM node to start searching from
  */
-function getNodes(property, value, blnMatch, node){
-  var results = [],
-      any = (value==null),
-      i, children, it, results;
-      
+function getNodes(property, value, blnMatch, node) {
+  "use strict";
+  var results, any, i, children, it;
+  results = [];
+  any = (value === null);
+
   node = node || document.documentElement;
   if (node.splice) { node = { childNodes: node }; }
-    
-  for (i = 0, children = node.childNodes; it = children[i]; i++){
+
+  for (i = 0, children = node.childNodes; children[i]; i++) {
+    it = children[i];
     if (it.childNodes.length) { results = results.concat(getNodes(property, value, blnMatch, it)); }
-    if ((any && it[property]) || (it[property]===value) || (blnMatch && !!String(it[property]).match(value))) { results.push(it); }
+    if ((any && it[property]) || (it[property] === value) || (blnMatch && !!String(it[property]).match(value))) { results.push(it); }
   }
-  
+
   return results;
 }
 
@@ -42,23 +47,25 @@ function getNodes(property, value, blnMatch, node){
  * @returns {Boolean} true if the target contains nothing excluding comments
  */
 function isEmpty(target) {
-  var i, result;
-  result = 0;
-  
+  "use strict";
+  var i, il;
+
   try {
-    for(i=0; i<target.childNodes.length; i++) {
-      if (target.childNodes[i].nodeType !== 8) { result++; }
+    for (i = 0, il = target.childNodes.length; i < il; i++) {
+      if (target.childNodes[i].nodeType !== 8) { return false; }
     }
-  } catch(e) {}
-  
-  return result == 0;
+  } catch (e) {}
+
+  return true;
 }
 
 var comment = {
   find: function (text) {
+    "use strict";
     return comment.findAll(text)[0];
   },
   findAll: function (text) {
+    "use strict";
     return $.map(getNodes('nodeType', 8), function (element, index) {
       return element.nodeValue === text ? element : null;
     });
@@ -66,18 +73,19 @@ var comment = {
 };
 
 var filterByDate = (function () {
+  "use strict";
   var obj, now;
   now = new Date();
-  
+
   obj = function (index, element) {
     var $element, start, end;
-    $element = $(element); 
+    $element = $(element);
     start    = $element.data('start');
     end      = $element.data('end');
     return (start === undefined || new Date(start) < now) && (end === undefined || new Date(end) > now);
-  }
-  obj.updateNow = function () { now = new Date(); }
- 
+  };
+  obj.updateNow = function () { now = new Date(); };
+
   return obj;
 }());
 
@@ -90,11 +98,12 @@ var filterByDate = (function () {
 // Make the buttons special
 var button = {
   enhance: function (obj) {
-    var $obj
+    "use strict";
+    var $obj;
     if (obj === undefined) { return; }
     $obj = $(obj);
     if ($obj.length === 0) { return; }
-    
+
     // Create the structure needed for the enhanced button
     $obj
       .wrapInner('<span class="btn-label"></span>')
@@ -105,15 +114,17 @@ var button = {
       .end();
   },
   reset: function (obj) {
-    var $obj
+    "use strict";
+    var $obj;
     if (obj === undefined) { return; }
     $obj = $(obj);
     if ($obj.length === 0) { return; }
-    
+
     // Remove the enhanced button structure
     $(obj).find('.btn-part').remove();
   },
   enhanceAll: function () {
+    "use strict";
     // Enhance any buttons that are not already enhanced
     button.enhance('.btn:not([dojoType="bec.widget.Button"]):not(:has(.btn-part))');
   }
@@ -128,23 +139,25 @@ $(button.enhanceAll);
 /*********************************************************************************************************************/
 
 var dialog = {};
+var popup = {};
 
 dojo.addOnLoad(function () {
+  "use strict";
   var defaults = {
     id:              'unnamed',
     contentType:     'href',
     titlebar:        true,
     backgroundClose: true
   };
-  
-  popup.create  = function (options) {
+
+  popup.create = function (options) {
     options = $.extend({}, defaults, options);
-    
+
     if (options.content === undefined) {
       options.content = eSiteIncludeDir + "/dialogs/" + options.id + '.html';
     }
     if (options.type === 'error') {
-      options.additionalProps = new bec.widget._ErrorDialog(); 
+      options.additionalProps = new bec.widget._ErrorDialog();
     }
     if (options.title === undefined) {
       if (options.type === 'coupon') {
@@ -153,7 +166,7 @@ dojo.addOnLoad(function () {
         options.title = '';
       }
     }
-    
+
     popup.doPopup(
       "dialog-" + options.id,
       options.title,
@@ -167,21 +180,21 @@ dojo.addOnLoad(function () {
       options.additionalProps
     );
   };
-  
+
   popup.loadPopups = function (popups) {
     var regex_dash = /-(\w)/g;
-    function dashToCamel (str, p1, offset, s) { return p1.toUpperCase(); }
+    function dashToCamel(str, p1, offset, s) { return p1.toUpperCase(); }
 
     $.each(popups, function (index, value) {
       var name;
-      
+
       if (value.name) {
         value.name = value.name.replace(regex_dash, dashToCamel);
         name = value.name;
       } else {
         name = value.id;
       }
-      
+
       try { dialog[name] = function () { popup.create(value); }; } catch (e) { $.error(e.message); }
     });
   };
@@ -193,8 +206,9 @@ dojo.addOnLoad(function () {
 /*********************************************************************************************************************/
 
 var video = (function ($) {
+  "use strict";
   var func;
-  
+
   func = {
     options: {
       overlay: {
@@ -205,8 +219,8 @@ var video = (function ($) {
       },
       player: {
         id:       'player',
-        swf:      document.location.protocol + '//' + document.location.hostname + '/content/common/include/flowplayer/flowplayer.commercial-3.2.5.swf',
-        controls: document.location.protocol + '//' + document.location.hostname + '/content/common/include/flowplayer/flowplayer.controls-3.2.3.swf',
+        swf:      document.location.protocol + '//' + document.location.hostname + '/content/common/include/flowplayer/flowplayer.commercial-3.2.11.swf',
+        controls: document.location.protocol + '//' + document.location.hostname + '/content/common/include/flowplayer/flowplayer.controls-3.2.11.swf',
         key:      '#$6a8e0125b5792e49020',
         size:     { width: 550, height: 309 }
       }
@@ -216,22 +230,22 @@ var video = (function ($) {
     create: function (options) {
       var $close;
       options = $.extend({}, video.options, options);
-      
+
       if (video.$player === undefined) {
         // Build the flash player
         video.$player  = $('<a></a>');
-        if (options.player.id) { video.$player.attr('id',options.player.id); }
+        if (options.player.id) { video.$player.attr('id', options.player.id); }
         if (options.player.size !== undefined) { video.$player.css(options.player.size); }
         video.$player.flowplayer(options.player.swf, { key: options.player.key, plugins: { controls: { url: options.player.controls } } });
       }
-        
+
       if (video.$overlay === undefined) {
         // Build the overlay container
         video.$overlay = $('<div></div>');
         // Build the close button
         $close = $('<a class="sprite-close-black-medium"></a>').click(video.close);
         // Set an ID if available
-        if (options.player.id) { video.$overlay.attr('id',options.player.id + '-overlay'); }
+        if (options.player.id) { video.$overlay.attr('id', options.player.id + '-overlay'); }
         if (options.overlay.size !== undefined) { video.$overlay.css(options.overlay.size); }
         // Bring it all together
         video.$overlay
@@ -239,15 +253,15 @@ var video = (function ($) {
           .append(video.$player)
           .appendTo('body');
       }
-      
-      return media.$player;
+
+      return video.$player;
     },
     open: function (options) {
       options = $.extend({}, video.options, options);
-      
+
       // Create the player if needed
       if (video.$player === undefined || video.$overlay === undefined) { video.create(options); }
-      
+
       // No reason to continue without a URL to load
       if (options.URL) {
         // prepare the overlay for this video
@@ -264,7 +278,7 @@ var video = (function ($) {
       video.$overlay.overlay().close();
     }
   };
-  
+
   return func;
 }(jQuery));
 
@@ -275,6 +289,7 @@ var video = (function ($) {
 
 // Make the slide shows controllable
 var slideshow = (function () {
+  "use strict";
   var ls;
   ls = window.localStorage;
   return {
@@ -293,6 +308,7 @@ var slideshow = (function () {
 /*********************************************************************************************************************/
 
 (function () {
+  "use strict";
   try {
     var value;
     $.Artare.QueryString.initialize();
@@ -313,7 +329,7 @@ var slideshow = (function () {
 /*********************************************************************************************************************/
 
 // Mark the last bread crumb as last
-$(function () { $('#breadcrumb .crumb:last').addClass('last'); });
+$(function () { "use strict"; $('#breadcrumb .crumb:last').addClass('last'); });
 
 
 /*********************************************************************************************************************/
@@ -321,6 +337,7 @@ $(function () { $('#breadcrumb .crumb:last').addClass('last'); });
 /*********************************************************************************************************************/
 
 function vrsn_splash(anchor) {
+  "use strict";
   var win;
   win = window.open(
     anchor.href,
@@ -337,24 +354,25 @@ function vrsn_splash(anchor) {
 /*********************************************************************************************************************/
 
 // Home page feature slide show
-function initHomeFeature () {
+function initHomeFeature() {
+  "use strict";
   var $container, $cycle, $preload, $pager, images, paused, loaded, target;
-  
+
   if (!slideshow.getState()) { return; }
-  
+
   $container = $('#content .homeFeature');
   $cycle     = $container.find('.slides');
   $pager     = $container.find('.pager');
   $preload   = $container.find('.preload');
   images     = [];
   paused     = false;
-  
+
   function initCycle() {
     var $pause;
-    
-    function pause () { $cycle.cycle('pause'); $pause.attr('class', 'sprite-slideshow-play'); paused = true; }
-    function resume () { $cycle.cycle('resume'); $pause.attr('class', 'sprite-slideshow-pause'); paused = false; }
-    
+
+    function pause() { $cycle.cycle('pause'); $pause.attr('class', 'sprite-slideshow-play'); paused = true; }
+    function resume() { $cycle.cycle('resume'); $pause.attr('class', 'sprite-slideshow-pause'); paused = false; }
+
     $cycle.cycle({
       delay:                 -2500,
       timeout:               8000,
@@ -367,9 +385,9 @@ function initHomeFeature () {
         $pager
           .find('.sprite-slideshow-active').attr('class', 'sprite-slideshow-normal').end()
           .find('.sprite-slideshow-normal').eq(index).attr('class', 'sprite-slideshow-active').end();
-      } 
+      }
     });
-      
+
     if ($pager.is(':empty')) {
       $pager.hide();
     } else {
@@ -377,11 +395,11 @@ function initHomeFeature () {
       $pause = $('<a class="sprite-slideshow-pause"></a>')
         .css('cursor', 'pointer')
         .appendTo($pager)
-        .click(function () { paused ? resume() : pause(); });
+        .click(function () { if (paused) { resume(); } else { pause(); } });
       $pager.show();
     }
   }
-  
+
   $(function () {
     function preload() {
       var $container, $image;
@@ -391,7 +409,7 @@ function initHomeFeature () {
       } else {
         $image = $container.find('img');
       }
-      if ($container.length != 0 && $image.length != 0) {
+      if ($container.length !== 0 && $image.length !== 0) {
         $image
           .bind('load', function () {
             $container.hide();
@@ -415,24 +433,11 @@ function initHomeFeature () {
 
 
 /*********************************************************************************************************************/
-/* Home Page Product Area                                                                                            */
-/*********************************************************************************************************************/
-
-//Remove any unneeded separators from the home page product list
-//$(function () {
-//  var $children;
-//  $children = $('#content .homeProductList').children();
-//  $children.filter('.seperator').nextUntil('.genericESpot').remove();
-//  $children.first().filter('.seperator').remove();
-//  $children.last().filter('.seperator').remove();
-//});
-
-
-/*********************************************************************************************************************/
-/* Product Page                                                                                                      */
+/* Media Class (Product/Category)                                                                                    */
 /*********************************************************************************************************************/
 
 var media = (function ($) {
+  "use strict";
   var object;
 
   object = {
@@ -465,52 +470,99 @@ var media = (function ($) {
         target:    '#content #productImage',
         show:      '.zoomText',
         hide:      '.image'
+      },
+      quickview: {
+        parent:    '#quickViewPopUp',
+        target:    '#productImage',
+        id:        'zoomer',
+        className: 'cloud-zoom',
+        cloud:     '"zoomHeight":300,"zoomWidth":300,"adjustX":20,"adjustY":0,"smoothMove":3',
+        show:      '.zoomText',
+        hide:      '.image'
       }
+    },
+    quickview: function (options) {
+      var $img;
+      options = $.extend({}, media.options.quickview, options);
+
+      if (navigator.userAgent.toLowerCase().indexOf('ipad') !== -1) { return; }
+
+      if (options.target !== undefined) {
+        if (options.id) {
+          options.regular = Scene7.createURL({ id: options.id, type: 'image', kind: 'regular', modifiers: options.modifiers});
+          options.large = Scene7.createURL({ id: options.id, type: 'image', kind: 'large' });
+        }
+
+        if ($((options.parent !== undefined ? options.parent + ' ' : '') + options.target).length !== 0) {
+          // Build the link with the zoomer options
+          media.quickview.$zoomer = $('<a></a>');
+          if (options.id) { media.quickview.$zoomer.attr('id',    options.id); }
+          if (options.className) { media.quickview.$zoomer.attr('class', options.className); }
+          if (options.large) { media.quickview.$zoomer.attr('href',  options.large); }
+          if (options.cloud) { media.quickview.$zoomer.attr('rel',   options.cloud); }
+          media.quickview.$zoomer.click(function () { return false; });
+
+          // Build the regular image
+          $img = $('<img src="/content/common/images/spacer.gif" />');
+          if (options.regular) { $img.attr('src', options.regular); }
+          media.quickview.$zoomer.append($img);
+        }
+
+        $(options.target)
+          .find(options.hide).hide().end()
+          .prepend(media.quickview.$zoomer)
+          .find(options.show).show().end();
+
+        // Activate the zoomer
+        $((options.parent !== undefined ? options.parent + ' ' : '') + '.cloud-zoom').CloudZoom();
+      }
+
+      return media.quickview.$zoomer;
     },
     zoomer: {
       activate: function (options) {
         options = $.extend({}, media.options.zoomer, options);
-        
+
         if (media.$zoomer !== undefined) {
           // Hide the placeholder and prepend the zoomer
           $(options.target)
             .find(options.hide).hide().end()
             .prepend(media.$zoomer)
             .find(options.show).show().end();
-    
+
           // Activate the zoomer
           $('.cloud-zoom,.cloud-zoom-gallery').CloudZoom();
         }
       },
       create: function (options) {
         var  $img;
-        
+
         if (media.$zoomer === undefined) {
           options = $.extend({}, media.options.zoomer, options);
-          
+
           if ($(options.target).length !== 0) {
             // Build the link with the zoomer options
             media.$zoomer = $('<a></a>');
-            if (options.id       ) { media.$zoomer.attr('id', options.id); }
+            if (options.id) { media.$zoomer.attr('id', options.id); }
             if (options.className) { media.$zoomer.attr('class', options.className); }
-            if (options.large    ) { media.$zoomer.attr('href', options.large); }
-            if (options.cloud    ) { media.$zoomer.attr('rel', options.cloud); }
+            if (options.large) { media.$zoomer.attr('href', options.large); }
+            if (options.cloud) { media.$zoomer.attr('rel', options.cloud); }
             media.$zoomer.click(function () { return false; });
-            
+
             // Build the regular image
             $img = $('<img src="/content/common/images/spacer.gif" />');
             if (options.regular) { $img.attr('src', options.regular); }
             media.$zoomer.append($img);
           }
         }
-        
+
         return media.$zoomer;
       }
     },
     scroller: {
       create: function (options) {
         options = $.extend({}, media.options.scroller, options);
-        
+
         if (media.$scroller === undefined && $(options.target).length !== 0) {
           media.$scroller = $(options.target).append(options.template);
         }
@@ -520,7 +572,7 @@ var media = (function ($) {
       activate: function (options) {
         var api, height, $scrollable, $items;
         options = $.extend({}, media.options.scroller, options);
-        
+
         // initialize the scrollable and find the elements we'll be using
         $scrollable = media.scroller.create();
         if ($scrollable !== undefined) {
@@ -528,22 +580,22 @@ var media = (function ($) {
           api = media.$scroller.data("scrollable");
           $items = media.$scroller.find(options.items);
           $scrollable = $items.parent();
-          
+
           // Only show the scroller navigational elements when needed and
-          // disable the previous otherwise since we aren't using circular 
+          // disable the previous otherwise since we aren't using circular
           if ($items.find(options.containers).length > 1) {
             api.getNaviButtons().filter('.prev').addClass('disabled');
           } else {
             api.getNaviButtons().css('visibility', 'hidden');
-            
+
           }
-          
+
           // Hide the scroller if there are not multiple alts
           if ($items.find(options.containers).children().length < 2) {
             media.$scroller.hide();
             $(options.hide).hide();
           }
-          
+
           // Adjust the height of the scroller to match the items
           height = $items.height();
           if (height > $scrollable.height()) { $scrollable.height(height); }
@@ -552,28 +604,28 @@ var media = (function ($) {
       getNextOpening: function (options) {
         var $result, $items, $last;
         options = $.extend({}, media.options.scroller, options);
-        
+
         $items = $(options.target).find(options.items);
         $last = $items.find(options.containers + ":last");
-        
+
         if ($last.children().length < options.threshold) {
           // If under the threshold, use the last container
           $result = $last;
         } else {
-          
+
           // Create a new container
           $result = $('<div />');
           $items.append($result);
         }
-        
-        return $result;        
+
+        return $result;
       }
     },
     alt: {
       loaded: [],
       exists: function (options) {
         var found;
-  
+
         // check for an already existing alt
         found = false;
         $.each(media.alt.loaded, function (index, value) {
@@ -583,13 +635,13 @@ var media = (function ($) {
             return false;
           }
         });
-        
+
         return found;
       },
       add: function () {
         var $alt, $text, options;
         options = $.extend({}, media.options.alt, arguments[arguments.length - 1]);
-        
+
         // If we have the ID, we can build any missing URLs
         if (options.id) {
           if (options.thumb   === undefined) { options.thumb   = Scene7.createURL({ id: options.id, type: 'image', kind: 'thumbnail' }); }
@@ -603,37 +655,40 @@ var media = (function ($) {
         // Build the anchor
         $alt = $('<a></a>');
         if (options.className) { $alt.attr('class', options.className[options.type]); }
-        if (options.thumb    ) { $alt.append($('<img src="/content/common/images/spacer.gif" />').attr('src', options.thumb)); }
-        else if (options.type) { $alt.append(options.type); }
+        if (options.thumb) {
+          $alt.append($('<img src="/content/common/images/spacer.gif" />').attr('src', options.thumb));
+        } else if (options.type) {
+          $alt.append(options.type);
+        }
         if (options.margin && options.index !== 0) { $alt.css('margin-left', options.margin); }
-        
+
         if (options.type) {
           // Customize by type
           switch (options.type) {
-            case 'image':
-              if (options.regular) { $alt.attr('rel', "\"useZoom\":\"" + options.zoomer + "\",\"smallImage\":\"" + options.regular + "\""); }
-              if (options.large  ) { $alt.attr('href', options.large); }
-              if (options.text) {
-                if (options.margin && options.index !== 0) { $alt.css('margin-left', ''); }
-                $text = $('<span>' + options.text + '</span>');
-                if (options.URL) { $text.wrap('<a href="' + options.URL + '"></a>'); }
-                $alt = $(options.textTemplate)
-                  .find(options.textTarget).append($text).end()
-                  .find(options.textImage).append($alt).end();
-                if (options.margin && options.index !== 0) { $alt.css('margin-left', options.margin); }
-              }
-              if (options.preload) { $.preload([options.regular, options.large]); }
-              break;
-              
-            case 'video':
-              if (options.regular) { $alt.attr('href', options.regular); }
-              // Setup the click handler to show the video
-              $alt.click(function () {
-                video.open({ URL: { url: options.regular, scaling: 'fit' } });
-                try { cmCreateElementTag('Play','Video: ' + options.regular.replace(/.*\/([^?#]*)(\?[^#]*)?(\#.*)?/i, '$1')); } catch(e) {}
-                return false;
-              });
-              break;
+          case 'image':
+            if (options.regular) { $alt.attr('rel', "\"useZoom\":\"" + options.zoomer + "\",\"smallImage\":\"" + options.regular + "\""); }
+            if (options.large) { $alt.attr('href', options.large); }
+            if (options.text) {
+              if (options.margin && options.index !== 0) { $alt.css('margin-left', ''); }
+              $text = $('<span>' + options.text + '</span>');
+              if (options.URL) { $text.wrap('<a href="' + options.URL + '"></a>'); }
+              $alt = $(options.textTemplate)
+                .find(options.textTarget).append($text).end()
+                .find(options.textImage).append($alt).end();
+              if (options.margin && options.index !== 0) { $alt.css('margin-left', options.margin); }
+            }
+            if (options.preload) { $.preload([options.regular, options.large]); }
+            break;
+
+          case 'video':
+            if (options.regular) { $alt.attr('href', options.regular); }
+            // Setup the click handler to show the video
+            $alt.click(function () {
+              video.open({ URL: { url: options.regular, scaling: 'fit' } });
+              try { cmCreateElementTag('Play', 'Video: ' + options.regular.replace(/.*\/([^?#]*)(\?[^#]*)?(\#.*)?/i, '$1')); } catch (e) {}
+              return false;
+            });
+            break;
           }
         }
 
@@ -641,7 +696,7 @@ var media = (function ($) {
         media.scroller.getNextOpening().append($alt);
         // Add a reference to the total list of alts
         media.alt.loaded.push({ thumb: options.thumb, regular: options.regular, large: options.large, text: options.text });
-        
+
         return $alt;
       },
       process: function (frames) {
@@ -659,21 +714,21 @@ var media = (function ($) {
     init: function (options) {
       var element;
       if (navigator.userAgent.toLowerCase().indexOf('ipad') !== -1) { return; }
-      
+
       // Combine all the defaults with any options passed in
       options = $.extend({}, media.options, options);
-      
+
       // Fill in any missing images if possible
       if (options.zoomer.thumb   === undefined) { options.zoomer.thumb   = Scene7.createURL({ id: options.id, type: 'image', kind: 'thumbnail' }); }
       if (options.zoomer.regular === undefined) { options.zoomer.regular = Scene7.createURL({ id: options.id, type: 'image', kind: 'regular', modifiers: options.modifiers}); }
       if (options.zoomer.large   === undefined) { options.zoomer.large   = Scene7.createURL({ id: options.id, type: 'image', kind: 'large' }); }
-      
+
       // Create the zoomer
       media.zoomer.create(options.zoomer);
-      
+
       // Create the scroller
       media.scroller.create(options.scroller);
-      
+
       if (media.queue.length !== 0) {
         // Process any queued alts
         while (media.queue.length !== 0) {
@@ -684,7 +739,7 @@ var media = (function ($) {
           // Add the element to the alts
           media.alt.add(element);
         }
-        media.activate();        
+        media.activate();
       } else if (!options.alt.enable) {
         media.activate();
       } else {
@@ -695,7 +750,7 @@ var media = (function ($) {
       }
     }
   };
-  
+
   return object;
 }(jQuery));
 
@@ -705,15 +760,16 @@ var media = (function ($) {
 /*********************************************************************************************************************/
 
 $(function () {
+  "use strict";
   var $breadcrumb, $image, $map;
   $breadcrumb     = $('#breadcrumb');
   $image          = $breadcrumb.find('> img[usemap]');
   $map            = $($image.attr('usemap'));
-  
-  if ($image.length == 1 && $map.length == 1) {
+
+  if ($image.length === 1 && $map.length === 1) {
     $map.find('area').each(function (index, element) {
       index++;
-      $(this).hover(function () { $breadcrumb.addClass('rollover-'+index); }, function () { $breadcrumb.removeClass('rollover-'+index); });
+      $(this).hover(function () { $breadcrumb.addClass('rollover-' + index); }, function () { $breadcrumb.removeClass('rollover-' + index); });
     });
   }
 });
@@ -723,92 +779,84 @@ $(function () {
 /* First Time Customer                                                                                               */
 /*********************************************************************************************************************/
 
-function isValidReferral(ref)
-{
-  var isValid = false;
-  var refUrls = new Array("google.com","yahoo.com","bing.com");       
-  
-  if(ref == "")  // Direct load?
-  {
+function parseQString(URL) {
+  "use strict";
+  var query = URL.substring(URL.indexOf("?") + 1, URL.length);
+  return dojo.queryToObject(query);
+}
+
+function countProperties(obj) {
+  "use strict";
+  var i, count = 0;
+  for (i in obj) { count++; }
+  return count;
+}
+
+function isValidReferral(ref) {
+  "use strict";
+  var isValid, refUrls;
+  isValid = false;
+  refUrls = ["google.com", "yahoo.com", "bing.com"];
+
+  if (ref === "") { // Direct load?
     console.debug("isValidReferral - Direct Load referring URL: " + ref);
     isValid = true;
-  }
-  else  // Natural Search?
-  {
-    dojo.forEach(refUrls, function(refUrl,idx) {        
-      if (ref.indexOf(refUrl) != -1)
-      {
+  } else { // Natural Search?
+    dojo.forEach(refUrls, function (refUrl, idx) {
+      if (ref.indexOf(refUrl) !== -1) {
         console.debug("isValidReferral - Natural Search referring URL: " + ref);
         isValid = true;
       }
     });
   }
-  
+
   return isValid;
 }
 
-function isValidLocation(loc)
-{
-  var isValid = false;      
-  var refParamFound = false;
-  var mmcParamFound = false;
-  var queryStringObj = parseQString(loc);  
-  var urlParamsCount = countProperties(queryStringObj);
-  var param;
-  
-  if(urlParamsCount > 0)
-  {                   
-    for(param in queryStringObj)
-    {
-      switch(param)
-      {
-        case "ref":
-          refParamFound = true;
-          break;
-        case "cm_mmc":
-          mmcParamFound = true;
-          break;                      
+function isValidLocation(loc) {
+  "use strict";
+  var isValid, refParamFound, mmcParamFound, queryStringObj, urlParamsCount, param;
+  isValid = false;
+  refParamFound = false;
+  mmcParamFound = false;
+  queryStringObj = parseQString(loc);
+  urlParamsCount = countProperties(queryStringObj);
+
+  if (urlParamsCount > 0) {
+    for (param in queryStringObj) {
+      switch (param) {
+      case "ref":
+        refParamFound = true;
+        break;
+      case "cm_mmc":
+        mmcParamFound = true;
+        break;
       }
     }
   }
-  
-  if(refParamFound === false && mmcParamFound === false)
-  {
+
+  if (refParamFound === false && mmcParamFound === false) {
     console.debug("isValidLocation - Location contains no ref or cm_mmc URL params: " + loc);
     isValid = true;
   }
-  
+
   return isValid;
 }
 
-function isRememberMe()
-{
-  var result = false;
-  var loggedInGreeting = dojo.query(".greeting");
-  
-  if(loggedInGreeting.length > 0)
-  {
+function isRememberMe() {
+  "use strict";
+  var result, loggedInGreeting;
+  result = false;
+  loggedInGreeting = dojo.query(".greeting");
+
+  if (loggedInGreeting.length > 0) {
     console.debug("isRememberMe - TRUE");
     result = true;
-  }
-  else
+  } else {
     console.debug("isRememberMe - FALSE");
-  
-  return result;
-}
-
-function parseQString(URL)
-{
-  var query = URL.substring(URL.indexOf("?") + 1, URL.length);    
-  return dojo.queryToObject(query);
-}
-
-function countProperties ( obj ) {
-  var count = 0;
-  for (var i in obj) {
-    count++
   }
-  return count;
+
+  return result;
 }
 
 
@@ -816,4 +864,4 @@ function countProperties ( obj ) {
 /* Google +1                                                                                                         */
 /*********************************************************************************************************************/
 
-$(function () { $.getScript('https://apis.google.com/js/plusone.js'); });
+$(function () { "use strict"; $.getScript('https://apis.google.com/js/plusone.js'); });

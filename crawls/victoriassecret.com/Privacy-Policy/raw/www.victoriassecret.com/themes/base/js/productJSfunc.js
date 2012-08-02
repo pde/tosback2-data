@@ -47,6 +47,65 @@ function setContinueBrowsingURL(){
 //	});
 //});
 
+if(typeof jQuery != "undefined"){
+	$.extend(VSD.Product, {'setProductPagination':
+		function setProductPagination(strURL,productId,catType,Docroot,Environment){
+			var paginationText="";
+			var jsonPsetId="";
+			var stringVal;
+			   $.ajax({
+					dataType: 'json',
+					url : unescape(strURL),
+					async: false,
+					success : function (data) {
+					collectionInfoJSON=data;
+					if(collectionInfoJSON.continueBrowsingURL!=""){
+					setContinueBrowsingURL();
+					}
+					var productIndex;	
+					if(collectionInfoJSON.AssetIDs.length==0){
+						return true
+					};
+
+					for(var i=0; i < collectionInfoJSON.AssetIDs.length;++i){
+						jsonPsetId=collectionInfoJSON.AssetIDs[i];
+						if(productId == jsonPsetId.split("|")[0]){
+							productIndex = i;
+						};
+						jsonPsetId="";
+					};
+					var prevProductId = collectionInfoJSON.AssetIDs[productIndex == 0 ? collectionInfoJSON.AssetIDs.length - 1 : productIndex - 1];
+					var nextProductId = collectionInfoJSON.AssetIDs[productIndex == (collectionInfoJSON.AssetIDs.length - 1) ? 0 : productIndex + 1];
+					var urlSimplePageName= collectionInfoJSON.SIMPLEPAGENAME;
+					if(urlSimplePageName.indexOf("|")!=-1){
+						urlSimplePageName=urlSimplePageName.split("|")[1];
+					};
+					var prevSEOText = collectionInfoJSON.SEOStrings[productIndex == 0 ? collectionInfoJSON.SEOStrings.length - 1 : productIndex - 1];
+					var nextSEOText = collectionInfoJSON.SEOStrings[productIndex == (collectionInfoJSON.SEOStrings.length - 1) ? 0 : productIndex + 1];
+					if(prevProductId.indexOf("|")!=-1){
+						prevProductId=prevProductId.split("|")[1];
+					};
+					if(nextProductId.indexOf("|")!=-1){
+						nextProductId=nextProductId.split("|")[1];
+					};
+					if("Authoring"==Environment){
+						paginationText=setAuthPagination(prevProductId,nextProductId);
+					}else{
+						var prevPSetUrl=Docroot+'/'+urlSimplePageName+'/'+prevSEOText+'?ProductID='+prevProductId;
+						var nextPSetUrl=Docroot+'/'+urlSimplePageName+'/'+nextSEOText+'?ProductID='+nextProductId;
+						if(""!=catType){
+							prevPSetUrl+='&CatalogueType='+catType;
+							nextPSetUrl+='&CatalogueType='+catType;
+						};
+					
+						paginationText = '<a id="the_prev_link" href="'+prevPSetUrl+'"><img width="15" height="13" src="'+Docroot+'/themes/base/images/arrowleft.jpg" alt="Previous"/>'+(productIndex+1)+'</a> of <a id="the_next_link" href="'+nextPSetUrl+'">'+collectionInfoJSON.AssetIDs.length+'<img width="15" height="13" src="'+Docroot+'/themes/base/images/arrowright.jpg" alt="Next" /></a>';  
+					};
+					$('#pagination').html(paginationText);
+				}
+		   });
+		}
+	});
+};
 var CatviewLink=null;
 var catviewURL=null;
 
@@ -959,8 +1018,7 @@ for(i=0;i<count.length;i++)
 	}
 
 }
-	function setFormUrlATW()
-	{		
+	function setFormUrlATW() {
 		document.SelectionForm.action=document.SelectionForm.action+"&ADDTOWISHLIST.X=49";
 		if(VSD.ABTesting.is("commerce")){
 			document.SelectionForm.action=document.SelectionForm.action.replace(VSD.www,VSD.swww);

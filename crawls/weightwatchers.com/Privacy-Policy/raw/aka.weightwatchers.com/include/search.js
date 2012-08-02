@@ -133,3 +133,50 @@ function RunSearchTextBox(textBoxId, catId, validationMessage)
 		}
 	}
 }
+
+// Handled show-hide states for Recipe Image and List views
+// Category: Recipe
+function ShowHideSearchView(category) {
+
+    if (category == "ViewImage") {
+
+        $('#divImgView').css("display", "block");
+        $('#divListView').css("display", "none");
+
+        $('#lnkListView').removeClass('disabledAnchor');
+        $('#lnkListView').addClass('activatedAnchor');
+
+        $('#lnkImageView').removeClass('activatedAnchor');
+        $('#lnkImageView').addClass('disabledAnchor');
+
+        if ($("#anchPre").length > 0) {
+            $("#anchPre").attr('href', $("#anchPre").attr("href").replace('[SEARCH_VIEW]', 'ViewImage'));
+            $("#anchPre").attr('href', $("#anchPre").attr("href").replace('ViewList', 'ViewImage'));
+        }
+        if ($("#anchNext").length > 0) {
+            $("#anchNext").attr('href', $("#anchNext").attr("href").replace('[SEARCH_VIEW]', 'ViewImage'));
+            $("#anchNext").attr('href', $("#anchNext").attr("href").replace('ViewList', 'ViewImage'));
+        }
+    }
+    else {
+
+        $('#divListView').css("display", "block");
+        $('#divImgView').css("display", "none");
+
+        $('#lnkListView').removeClass('activatedAnchor');
+        $('#lnkListView').addClass('disabledAnchor');
+        $('#lnkImageView').removeClass('disabledAnchor');
+        $('#lnkImageView').addClass('activatedAnchor');
+
+
+        if ($("#anchPre").length > 0) {
+            $("#anchPre").attr('href', $("#anchPre").attr("href").replace('[SEARCH_VIEW]', 'ViewList'));
+            $("#anchPre").attr('href', $("#anchPre").attr("href").replace('ViewImage', 'ViewList'));
+        }
+
+        if ($("#anchNext").length > 0) {
+            $("#anchNext").attr('href', $("#anchNext").attr("href").replace('[SEARCH_VIEW]', 'ViewList'));
+            $("#anchNext").attr('href', $("#anchNext").attr("href").replace('ViewImage', 'ViewList'));
+        }
+    }
+}

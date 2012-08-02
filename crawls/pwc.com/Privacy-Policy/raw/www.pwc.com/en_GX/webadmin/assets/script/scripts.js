@@ -33,6 +33,12 @@ $(document).ready(function(){
 		$("#intllayer").toggle();
 		if (document.getElementById('intllink').href == "#") { return false; }
 	});
+	if ($('meta[name=pwcCountry]').attr("content") == 'rm') {
+		if ($('meta[name=pwcDB]').attr("content") == 'homepage' || $('meta[name=pwcDB]').attr("content") == 'home') {
+			if (typeof followbar == 'undefined') { $('body').append(followbarhtml); }
+			$('#followhide').click(function() { $('#followbar').fadeOut(500); });
+		};
+	};
 	$('#morecontactsbutton').click(function() { 
 		$("#morecontacts").slideDown("medium");
 		$("#lesscontactsbutton").show();
@@ -297,6 +303,80 @@ function hidelivesearch(evt) {
 	}
 
 }
+
+/* Homepage Follow bar */
+var followbarhtml = "<div id='followbar'><div id='followinner'><span>Follow us:</span>";
+
+if ($('meta[name=pwcCountry]').attr("content") == 'rm') {
+
+	if (arr_follow [0] === undefined) {
+		// Twitter
+		arr_follow [0] = new Array()
+		arr_follow [0][0] = "/en_GX/webadmin/assets/image/follow-twitter.jpg";
+		arr_follow [0][1] = "https://twitter.com/PwC_LLP/"
+		arr_follow [0][2] = "";  // E.G. arr_ss [0][2] = "&param=something";
+		arr_follow [0][3] = "Follow us on Twitter";
+		arr_follow [0][4] = "";
+		arr_follow [0][5] = "_new";
+	}
+	if (arr_follow [1] === undefined) {
+		// LinkedIn
+		arr_follow [1] = new Array()
+		arr_follow [1][0] = "/en_GX/webadmin/assets/image/follow-linkedin.jpg";
+		arr_follow [1][1] = "http://www.linkedin.com/company/pwc"
+		arr_follow [1][2] = "";
+		arr_follow [1][3] = "Follow us on Linked In";
+		arr_follow [1][4] = "";
+		arr_follow [1][5] = "_new";
+	}
+	if (arr_follow [2] === undefined) {
+		// Youtube
+		arr_follow [2] = new Array()
+		arr_follow [2][0] = "/en_GX/webadmin/assets/image/follow-youtube.jpg";
+		arr_follow [2][1] = "http://www.linkedin.com/company/pwc"
+		arr_follow [2][2] = "";
+		arr_follow [2][3] = "Follow us on Youtube";
+		arr_follow [2][4] = "";
+		arr_follow [2][5] = "_new";
+	}
+	if (arr_follow [3] === undefined) {
+		// Facebook
+		arr_follow [3] = new Array()
+		arr_follow [3][0] = "/en_GX/webadmin/assets/image/follow-facebook.jpg";
+		arr_follow [3][1] = "https://www.facebook.com/pwcfanpage"
+		arr_follow [3][2] = "";
+		arr_follow [3][3] = "Follow us on Facebook";
+		arr_follow [3][4] = "";
+		arr_follow [3][5] = "_new";
+	}
+	if (arr_follow [4] === undefined) {
+		// RSS
+		arr_follow [4] = new Array()
+		arr_follow [4][0] = "/en_GX/webadmin/assets/image/follow-rss.jpg";
+		arr_follow [4][1] = "#"
+		arr_follow [4][2] = "";
+		arr_follow [4][3] = "Our RSS feed";
+		arr_follow [4][4] = "";
+		arr_follow [4][5] = "_new";
+	}
+	/*
+	if (arr_follow [5] === undefined) {
+		// Subscribe
+		arr_follow [5] = new Array()
+		arr_follow [5][0] = "/en_GX/webadmin/assets/image/follow-subscribe.jpg";
+		arr_follow [5][1] = "#"
+		arr_follow [5][2] = "";
+		arr_follow [5][3] = "Subscribe";
+		arr_follow [5][4] = "";
+		arr_follow [5][5] = "_new";
+	}
+	*/
+		
+	for (i=0;i<arr_follow.length; i++) {
+		 followbarhtml += "<a href='" + arr_follow[i][1] + "&title=" + arr_follow[i][2] + "' onclick='" + arr_follow[i][4] + "' target='_blank'><img src='" + arr_follow[i][0] + "' border='0' alt='" + arr_follow[i][3] + "' /></a>";
+	}
+}
+	followbarhtml += "<a id='followhide'>Hide</a></div></div>"
 
 /*** START Send & share global defaults ***/
 

@@ -841,7 +841,7 @@
 							}
 							else if (gamecode.substring(6,7) == 3) {
 								if (status1 == 'Top' || status1 == 'Bot') {
-									if (status2.substring(1,1) == 't') {
+									if (status2.substring(1,2) == 's' || status2.substring(1,2) == 'n' || status2.substring(1,2) == 'r' || status2.substring(1,2) == 't') {
 										status1 = status1 + ' ' + status2.substring(0,1);
 									} 
 									else {

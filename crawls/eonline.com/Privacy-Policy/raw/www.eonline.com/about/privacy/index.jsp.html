@@ -37,7 +37,7 @@
                     window.location = "http://t.eonline.com";
                     break;
                 default:
-                    window.location = "/mobile.choice.jsp";
+                
             }
         }
     })();
@@ -45,6 +45,7 @@
 </script>
 <link type="text/css" href="../../uberblog/includes/css/eol.css" rel="stylesheet" />
 <link type="text/css" href="../../uberblog/includes/css/jquery-ui/cupertino/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="../../resources/css/header-footer.css" />
 
 <script type="text/javascript" src="../../uberblog/includes/js/aculo/lib/prototype.js" ><!-- --></script>
 <script type="text/javascript" src="../../uberblog/includes/js/aculo/src/scriptaculous.js%3Fload=effects,controls"><!-- --></script>
@@ -64,7 +65,7 @@
         }
         var adPageCode = "about".split(".");
         eol.page.dartInit({ "keywords": "", "site" : adPageCode[0] || "home", "zone" : adPageCode[1] || "home", "zone2" : adPageCode[2] || "" });
-        eol.page.time( new Date( ( eol.uattr("date") || 1336997583709 ) ) );
+        eol.page.time( new Date( ( eol.uattr("date") || 1343939410953 ) ) );
     })(jQuery);
 </script>
 	</head>
@@ -81,32 +82,122 @@
 
 
 
+<script type="text/javascript">
+/* Searchbox Autocomplete -- [This is RAMP's code unless noted by comment] */
+
+//var ezAutocompleteServiceUrl = "http://://[base_ramp_url]/autocomplete/[sitetoken]?callbackName=queryExpansion_callback&q=";
+//var ezAutocompleteSearchUrl = "http://[base_ramp_url]/search?";
+
+queryExpansion_init = function(searchBox, listBox, serviceUrl, searchUrl){
+    
+    searchBox = jQuery(searchBox);
+    listBox = jQuery(listBox);
+    
+    if (searchUrl == null || searchUrl.length == 0){
+        searchUrl = ezAutocompleteSearchUrl;
+    }
+    
+    var searchTimer = null;
+    
+    var getData = function(){
+		var searchQ = jQuery(searchBox)[0].value.replace(/[<>;()]/g,'');
+		var url = serviceUrl + encodeURIComponent(searchQ);
+        var head = document.getElementsByTagName("head")[0];
+        var newScript = document.createElement("script");
+        newScript.type = "text/javascript";
+        newScript.src = url;
+        head.appendChild(newScript);
+    };
+    
+    var init = function(){
+        searchBox.attr("autocomplete", "off");
+        
+        searchBox.bind("blur", function(event){
+            listBox.css("display", "none");
+        });
+        
+        listBox.bind("blur", function(){
+            listBox.css("display", "none");
+        });
+        
+        searchBox.bind("keydown", function(event){
+            var selected = jQuery("a.selected", listBox);
+            
+            // The up/down key events
+            if (event.keyCode == 38 || event.keyCode == 40) {
+                if (selected.length > 0) {
+                    if (event.keyCode == 38) {
+                        selected = selected.prev();//up
+                    }
+                    else {
+                        selected = selected.next();//down
+                    }
+                }
+                
+                if (selected.length == 0) {
+                    if (event.keyCode == 38) {
+                        selected = jQuery("a:last-child", listBox);
+                    }
+                    else {
+                        selected = jQuery("a:first-child", listBox);
+                    }
+                }
+                
+                if (selected.length == 0) {
+                    return;
+                }
+                
+                listBox.css("display", "block");
+                selected.addClass("selected").siblings().removeClass("selected");
+                jQuery(searchBox)[0].value = jQuery(selected[0]).text();
+                
+            // Any other keys pressed
+            }
+            else {
+                if (searchTimer != null) {
+                    clearTimeout(searchTimer);
+                }
+                searchTimer = setTimeout(getData, 300);
+            }
+        });
+    };
+    
+    var callback = function(data){
+        var list = data.ac.q;
+        var content = "";
+        
+        if (list.length > 0){
+            listBox.css("display", "block");
+        }else{
+            listBox.css("display", "none");
+        }
+        
+        for (var i = 0; i < list.length; i+=1){
+			var encodedQ = encodeURIComponent(list[i]);
+        	var url = searchUrl + "query=" + encodedQ.replace(/'/g, "%27");  // E! changed q= to query= 
+        	content += "<a href='index.jsp.html' onmousedown='window.location=\""+ url + "\"'>" + list[i] + "</a>";
+        }
+        
+        listBox.each(function(){
+            this.innerHTML = content;
+        });
+    };
+    
+    init();
+    
+    return callback;
+};
+</script>
 
 
 
 
 
 
+    <!--NBC U 
+    <script src="//www.nbcudigitaladops.com/hosted/global_header.js"></script>
+    -->
 
-
-<div id="fb-root"></div>
-
-<!--NBC U -->
-<script src="../../../www.nbcudigitaladops.com/hosted/global_header.js"></script>
-
-
-
-	
-	
-	
-	
-		
-	
-	
-		
-		
-		
-	
 
 
 
@@ -140,277 +231,188 @@ pageTracker._initData();
 pageTracker._trackPageview();
 
 </script>
-<div id="eol_header" class="clear">
-	<div id="header_interior">
-		<div id="eonline_logo"><a href="http://www.eonline.com/">E! Online</a></div>
+
+<div id="HHeader" class="us">
+	
+		<div id="Skin_Left" class="split_skin" style="top: 0px; left: -260px; width: 260px; display: none; overflow: hidden;"></div>	
+	    <div id="Skin_Right" class="split_skin" style="top: 0px; right: -260px; width: 260px; display: none; overflow: hidden;"></div>
+	
+	<table id="Header_BannerBlock" cellspacing="0" cellpadding="0">
+		<tr>
+			<td width="100%" align="center">
+				
+					
+					
+					
+				
+			</td>
+		</tr>
+	</table>
+    
+	<div id="Header_Layout">
+	
 		
-                    
-                        
+	
+	    <a href="http://www.eonline.com/" data-omniture='trackWidgetClick|{"linkName":"nav:header:logo","products":"eVar16=\"nav\""}'><div id="Header_LogoBlock">
+	    	E! Online
+		</div></a>
+	    <div id="Header_NavBlock">
+	    	<ul id="Header_NavBlock_List" >
+	    		<li id="Header_NavItem_All" class = "Header_NavItem ">
+	    			<a href="http://www.eonline.com/" data-omniture='trackWidgetClick|{"linkName":"nav:header:all","products":"eVar16=\"nav\""}'>All</a>
+	    		</li>
+	    		<li id="Header_NavItem_News" class = "Header_NavItem ">
+	    			<a href="http://www.eonline.com/news" data-omniture='trackWidgetClick|{"linkName":"nav:header:news","products":"eVar16=\"nav\""}'>News</a> 
+	    		</li>
+	    		<li id="Header_NavItem_Photos" class = "Header_NavItem ">
+	    			<a href="http://www.eonline.com/photos" data-omniture='trackWidgetClick|{"linkName":"nav:header:photos","products":"eVar16=\"nav\""}'>Photos</a>
+	    		</li>
+	    		<li id="Header_NavItem_Videos" class = "Header_NavItem ">
+	    			<a href="http://www.eonline.com/videos" data-omniture='trackWidgetClick|{"linkName":"nav:header:videos","products":"eVar16=\"nav\""}'>Videos</a>
+	    		</li>
+	    		<li id="Header_NavItem_EShows" class = "Header_NavItem ">
+	    			<a href="http://www.eonline.com/shows" data-omniture='trackWidgetClick|{"linkName":"nav:header:shows","products":"eVar16=\"nav\""}'>E! Shows</a>
 
 
-        
-        
-        	
-				
-        		
-        		
-        			
-        			<div id="header_promo"><a href="http://www.eonline.com/videos/index.jsp">E! Online Videos</a></div> 
-
-        		
-        	
-       
-
-
-                    
-                    
-				
-        <div id="ad_leaderboard">
-            
-
-
-
-
-
-
-
-
-
-    
-
-
-
-<script type="text/javascript">
-(function($){
-    window.adBuffer = eol.page.dartRender( {"dimensions" : "728x90-900x250,960x50,728x250", "tile" : "1", "notCategory" : "default"  }) || [];
-    
-    document.write(adBuffer.pop()); 
-})(jQuery);
-</script>
-<script type="text/javascript">
-(function($){
-    if ( $.isArray(adBuffer) && adBuffer.length === 2 ) {
-        document.write(adBuffer.pop());
-    }
-})(jQuery);
-</script>
-<script type="text/javascript">
-(function($){
-    if ( $.isArray(adBuffer) && adBuffer.length === 1 ) {
-        document.write(adBuffer.pop());
-    }
-})(jQuery);
-</script>
-
-        </div>
-        <div class="aux">
-		    <div id="eol_account">
-			    <ul>
-			    
-				    
-				    
-					    <li><a href="http://www.eonline.com/account/signin/index.jsp?successpath=%2Fabout%2Fprivacy%2Findex.jsp">Sign In</a></li>
-					    <li class="last_child"><a href="http://www.eonline.com/account/register/index.jsp">Register</a></li>
-				    
-			    
-			    </ul>
-		    </div>		
-		    <div id="header_search">
-			    <form name="celebSearch" method="get" action="http://www.eonline.com/uberblog/celebbios/celebsearch.jsp">
-				    <input type="text" name="searchString" id="celeb_keywords" class="search_box" value="Search" autocomplete="off" />
-				    <input type="submit" value="" class="search_box_submit" />
-			    </form>
-			    <script type="text/javascript">
-			        (function($){
-			            $("input#celeb_keywords").one("click", function(){
-			                    if ( $(this).val() == "Search" ) { $(this).val(""); }
-			                    $.getJSON("/includes/feeds/search.autocomplete.jsp", function( data ) {
-			                        $("input#celeb_keywords").autocomplete(data.names);
-			                    });
-			                });
-			        })(jQuery);
-			    </script>		
-		    </div>
-		    <div id="aux_links">
-			    <ul>
-			    
-                                
-                                        <li><a href="http://shop.eonline.com?pa=eonline_shoptabnavbar" target="_blank">Shop</a></li>
-                                        <li><a href="http://www.eonline.com/everywhere/mobile/index.html">Mobile</a></li>
-                                        <li><a href="http://www.eonline.com/everywhere/podcasts/index.jsp">Podcasts</a></li>
-                                        <li><a href="http://www.eonline.com/everywhere/rss/index.jsp" class="rss">RSS Feeds</a></li>
-                                        <li class="last_child"><a href="http://boards.eonline.com/Insider/Boards/index.jspa">Boards</a></li>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-			    
-			    </ul>
-		    </div>
-		</div>
-		<div id="eol_navigation">
+	    		</li>
+	    		<li id="Header_NavItem_RedCarpet" class = "Header_NavItem ">
+	    			<a href="http://www.eonline.com/redcarpet" data-omniture='trackWidgetClick|{"linkName":"nav:header:redcarpet","products":"eVar16=\"nav\""}'>Red Carpet</a>
+	    		</li>
+	    	</ul>
+	    </div>
+	    <div id="Header_SecondaryNav">
 			
 
 
-        
-        
-        	
-				
-        		
-        		
-        			
-        			<ul id="top_navigation_links">
-	<li id="nav_news">
-		<a href="http://www.eonline.com/" class="tab">News</a>
-		<div id="sub_nav_1" class="sub_nav">
-			<ul class="main_sub_nav">
-				<li><a href="http://www.eonline.com/">Latest Stories</a></li>
-			</ul>
-			<ul class="secondary_sub_nav">
-				<li><a href="http://www.eonline.com/news/ask_the_answer_bitch">Ask the Answer B!tch</a></li>
-				<li><a href="http://www.eonline.com/news/conspiracy_corner">Conspiracy Corner</a></li>
-				<li><a href="http://www.eonline.com/news/counterpunch">Counterpunch</a></li>
-				<li><a href="http://www.eonline.com/news/marc_malkin">Marc Malkin</a></li>
-				<li><a href="http://www.eonline.com/news/hwood_party_girl">Party Girl</a></li>
-				<li><a href="http://www.eonline.com/news/so_true_so_false">So True So False</a></li>
-			</ul>
-			<ul class="secondary_sub_nav">
-				<li><a href="http://www.eonline.com/news/kim_kardashian">Kim Kardashian</a></li>
-				<li><a href="http://www.eonline.com/news/royals">The Royals</a></li>
-                <li><a href="http://www.eonline.com/news/green">Hollywood Goes Green</a></li>
-			</ul>
-			<ul class="secondary_sub_nav">
-				<li><a class="fandango_link" href="http://Fandango.com" target="_blank">Tickets and Showtimes</a></li>
-			</ul>
-		</div>
-	</li>
 
-	<li id="nav_photos">
-		<a href="http://www.eonline.com/photos" class="tab">Photos</a>
-		<div id="sub_nav_2" class="sub_nav">
-			<ul class="main_sub_nav">
-				<li><a href="http://www.eonline.com/photos/gallery.jsp?galleryUUID=6">The Big Picture</a></li>
-				<li><a href="http://www.eonline.com/fashion/fashionpolice/index.jsp">Fashion Police</a></li>
-				<li><a href="http://www.eonline.com/photos/gallery.jsp?galleryUUID=205">Movies</a></li>
-				<li><a href="http://www.eonline.com/gossip/partygirl/pics/index.jsp">Party Pics</a></li>
-				<li><a href="http://www.mystyle.com/mystyle/photos/gallery.jsp?galleryUUID=a02cc651-c811-4148-900a-fff42c858eb5" class="styleberry" target="_blank">Top Steals of the Week</a></li>
-				<li><a href="http://www.eonline.com/photos/gallery.jsp?galleryUUID=2986">So True So False Guessing Game</a></li>
-			</ul>
-			<ul class="secondary_sub_nav">
-				<li><a href="http://www.eonline.com/photos">All Photos &#187;</a></li>
-			</ul>
-		</div>
-	</li>
 
-	<li id="nav_video">
-		<a href="http://www.eonline.com/videos/" class="tab">Video</a>
-	</li>
 
-	<li id="nav_fashion">
-		<a href="http://www.eonline.com/news/fashion" class="tab">Fashion Police</a>
-	</li>
 
-	<li id="nav_red_carpet">
-		<a href="http://www.eonline.com/redcarpet" class="tab">Red Carpet</a>
-		<div id="sub_nav_4" class="sub_nav">
-			<ul class="main_sub_nav">
-				<li><a href="http://www.eonline.com/redcarpet/2012/oscars" onClick="sTrackWidgetClick('top-navigation:red-carpet:academy-awards')">Academy Awards</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/golden_globes" onClick="sTrackWidgetClick('top-navigation:red-carpet:golden-globes')">Golden Globes</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/grammys" onClick="sTrackWidgetClick('top-navigation:red-carpet:grammy-awards')">Grammy Awards</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/sag_awards" onClick="sTrackWidgetClick('top-navigation:red-carpet:sag-awards')">SAG Awards</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/bafta_awards" onClick="sTrackWidgetClick('top-navigation:red-carpet:bafta-awards')">BAFTA Awards</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2011/emmys" onClick="sTrackWidgetClick('top-navigation:red-carpet:emmy-awards')">Emmy Awards</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/sundance" onClick="sTrackWidgetClick('top-navigation:red-carpet:sundance-film-fest')">Sundance Film Fest</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/cannes" onClick="sTrackWidgetClick('top-navigation:red-carpet:cannes-film-fest')">Cannes Film Fest</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/premieres" onClick="sTrackWidgetClick('top-navigation:red-carpet:premieres-more')">Premieres &amp; More</a></li>
-			</ul>
-			<ul class="secondary_sub_nav">
-				<li><a href="http://www.eonline.com/poseoff">Play the Pose-Off</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/rtrc" onClick="sTrackWidgetClick('top-navigation:red-carpet:rtrc')">Rock the Red Carpet</a></li>
-				<li><a href="http://www.eonline.com/uberblog/redcarpet/bring_out_your_glam/index.jsp" onClick="sTrackWidgetClick('top-navigation:red-carpet:boyg')">Shop Red Carpet</a></li>
-				<li><a href="http://www.eonline.com/news/Download_the_Free__i_Live_From_the_Red_Carpet__i__App_For_iPad__iPhone_and_Android_/212244">Get the Free App</a></li>
-			</ul>
-		</div>
-	</li>
 
-	<li id="nav_movies">
-		<a href="http://www.eonline.com/news/movies" class="tab">Movies</a>
-	</li>
 
-	<li id="nav_awful">
-		<a href="http://www.eonline.com/news/the_awful_truth" class="tab">Awful Truth</a>
-	</li>
 
-	<li id="nav_kristin">
-		<a href="http://www.eonline.com/news/watch_with_kristin" class="tab">Watch <span>w/</span> Kristin</a>
-	</li>
 
-	<li id="nav_the_soup">
-		<a href="http://www.eonline.com/news/the_soup" class="tab">The Soup</a>
-	</li>
 
-	<li id="nav_chelsea">
-		<a href="http://www.eonline.com/shows/chelsea" class="tab">Chelsea Lately</a>
-	</li>
 
-	<li id="nav_shows">
-		<a href="http://www.eonline.com/on/index.jsp" class="tab last">E! Shows</a>
-		<div id="sub_nav_5" class="sub_nav">
 
-			<div class="multi_columnn first">
-				<ul class="main_sub_nav">
-					<li><a href="http://www.eonline.com/on/index.jsp">Schedule</a></li>
-					<li><a href="http://www.eonline.com/on/playapart/index.jsp">Play A Part</a></li>
-					<li><a href="http://www.eonline.com/on/shows/music/index.jsp">E! Tunes</a></li>
-					<li><a href="http://boards.eonline.com/Insider/Boards/index.jspa">Message Boards</a></li>
-				</ul>
-				<ul class="secondary_sub_nav">
-					<li><a href="http://www.eonline.com/redcarpet">Red Carpet</a></li>
-					<li><a href="http://www.eonline.com/sweepstakes">Sweepstakes</a></li>
-				</ul>
-			</div>
-			<div class="multi_columnn">
-				<ul class="main_sub_nav">
-					<li><a href="http://www.eonline.com/on/shows/after_lately/index.html">After Lately</a></li>
-					<li><a href="http://www.eonline.com/shows/chelsea">Chelsea Lately</a></li>
-					<li><a href="http://www.eonline.com/shows/enews/">E! News</a></li>
-					<li><a href="http://www.eonline.com/news/fashion">Fashion Police</a></li>
-					<li><a href="http://www.eonline.com/shows/ice_loves_coco">Ice Loves Coco</a></li>
-					<li><a href="http://www.eonline.com/shows/kardashians">Keeping Up with the Kardashians</a></li>
-                    <li><a href="http://www.eonline.com/shows/khloe_and_lamar">Khlo&#233; and Lamar</a></li>
-					<li><a href="http://www.eonline.com/on/shows/kourtney_and_kim_kardashian/index.html">Kourtney &amp; Kim Take New York</a></li>
-					<li><a href="http://www.eonline.com/on/shows/movies_we_love/index.jsp">Movies We Love</a></li>
-					<li><a href="http://www.eonline.com/shows/mrseastwoodandco">Mrs. Eastwood &amp; Company</a></li>
-					<li><a href="http://www.eonline.com/shows/opening_act">Opening Act</a></li>
-					<li><a href="http://www.eonline.com/on/shows/sex_and_the_city/index.html">Sex and the City</a></li>
-					<li><a href="http://www.eonline.com/news/the_soup">The Soup</a></li>
-					<li><a href="http://www.eonline.com/on/shows/ths/index.jsp">True Hollywood Story</a></li>
-				</ul>
-				<ul class="secondary_sub_nav">
-					<li><a href="http://www.eonline.com/on/shows/index.jsp">More &#187;</a></li>
-				</ul>
-			</div>
 
-		</div>
-	</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+.social-links{min-width:205px;}
+.social-links ul li{display:block;}
+.horizontal li{float:left}
+.horizontal .rss{margin-right:5px;margin-top:-2px}
+.vertical li{}
+
+.social-links .email { cursor:pointer;background-image: url('../../resources/images/misc/EOL_VIDEO_Detail_EMAIL.png'); display: block; width: 56px; height: 20px;  }
+.social-Send-Email{padding:10px;visibility:hidden;margin-top:20px;width:387px;height:329px;background-color: #fff;border: 1px solid #000;margin-left: 300px;position: absolute;z-index: 10000;display:block;}
+
+.social-links .embed a {background: url('../../resources/images/sprite_maps/EOL_VIDEO_Detail_EMBED.png') no-repeat scroll 0 0 transparent; display: block; width: 64px; height: 20px; }
+.social-links .embed a.copiedToClipboard {background-position: -64px 0px; }
+</style>
+
+
+
+
+
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
+
+
+
+
+<script type="text/javascript" src="../../../apis.google.com/js/plusone.js">
+			{parsetags: 'explicit'}
+</script>
+
+
+<ul class="social-links horizontal">
+	
+		<li class="rss">
+			<a id="" href="http://www.eonline.com/everywhere/rss/index.jsp" class="" title="RSS Feeds" ><img src="../../resources/images/header_footer/black-rss.png" alt="Mobile" /></a>
+		</li>
+	
+	
+		<li class="facebook-like">
+			<div class="fb-like" data-href="http://www.facebook.com/eonline" data-send="" data-layout="button_count" data-width="90" data-show-faces="false" data-font="arial" data-omniture="trackShares|{'linkName:nav:header:facebook_button'}"></div>
+		</li>
+	
+	
+	
+		<li class="twitter">
+			<a href="http://twitter.com/eonline" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false" data-omniture="trackShares|{'linkName:nav:header:twitter_button'}">Follow @twitter</a>
+		</li>
+	
+	
+	
+	
 </ul>
 
 
 
 
-        		
-        	
-       
-
-
-                        
+	    	
+	        
+		</div>
+		
+		<div id="Header_SearchBlock">
+			<div id="Header_SearchBox">
+		        <form id = "Header_Search_Form" action="http://www.eonline.com/search" method="get" onsubmit="return IsSearchValid();">
+		            <input id="Header_Search_Submit" type="submit" tabindex="2" value="" onclick=""/>
+		            <input id="Header_Search_Input" name="query" type="text" tabindex="1" autocomplete="off" />
+		        </form>
+	    	</div>
+	    	<div id="Header_Search_List"></div>
+	    	<script type="text/javascript">
+	    		if (!window.location.origin) window.location.origin = window.location.protocol+"//"+window.location.host;
+				headerAC = queryExpansion_init(jQuery("#Header_Search_Input"), jQuery("#Header_Search_List"),
+						"http://eonlineus.ramp.com/autocomplete?callbackName=headerAC&q=",
+						window.location.origin + "/search/?");
+			</script>
+    	</div>
+		
+		<div id="Header_OptionalBlock" style="">
+	        
 		</div>
 	</div>
 </div>
-
+<script type="text/javascript">
+	function IsSearchValid() {
+		if (jQuery('#Header_Search_Input').val() == '') {
+			jQuery('#Header_Search_Input').focus();
+			return false;
+		}else{
+			return true;
+		}
+	};
+</script>
+<script type="text/javascript">
+	function ActivateCallout(){
+		if ("" != "") {
+			if ( jQuery("#").length != 0 ) {
+				//we have a spot to align... 
+				jQuery("#Header_Callout").css("display", 'block');
+				//align the caret 
+			}
+		}
+	};
+	jQuery(window).load(ActivateCallout());
+</script>
 
 
 				<div id="content_interior" class="clear">
@@ -617,208 +619,283 @@ The information learned from the Website's users, members and customers helps E!
 
 
 
-
-
-        
-
-
-<!--
-edition in footer is: 
-footer parameter edition is: us
-
-footer parameter edition with JSTL is: us
-
-footer request URL is: http://www.eonline.com/about/privacy/index.jsp
-
-footer request query string is: null
-
--->
-
-
-
-
-	
-	
-	
-	
-		
-		
-	
-		
-		
-	
-
-
-<div id="eol_footer">    
-		<div id="footer_search" class="clear">
-		<a href="http://www.eonline.com/" title="E! Online" id="eonline_logo_footer">E! Online</a>
-		<div id="footer_feedback">
-			
-				
-					<a href="index.jsp.html#feedback" onclick="if(GSFN){GSFN.show();};return false;" rel="nofollow">Send Us Your Feedback &raquo;</a>
-				
-				
-				
-			
-		</div>
-		
-			<form name="formSearchTop" method="get" action="http://www.eonline.com/search/index.jsp">
-				<input type="text" onfocus="this.value='';" name="searchString" id="celeb_keywords" value="Search"/>
-				<input type="submit" value="" class="search_box_submit"/>
-		 	</form>
-		
-	</div>
-	
-
-
+    
+    
+    
+    
+    
+    
+    
         
         
-        	
-				
-        		
-        		
-        			
-        			<div class="clear" id="section_1">
-	<ul>
-		<li class="footer_section_1">
-			<ul id="footer_news">
-				<li class="title"><a class="title" href="http://www.eonline.com/">News</a></li>
-				<li><a href="http://www.eonline.com/">Latest Stories</a></li>
-				<li><a href="http://www.eonline.com/news/marc_malkin">Marc Malkin</a></li>
-				<li><a href="http://www.eonline.com/news/hwood_party_girl">Party Girl</a></li>
-				<li><a href="http://www.eonline.com/news/ask_the_answer_bitch">Answer Bitch</a></li>
-				<li><a href="http://www.eonline.com/news/movie_reviews">Movie Reviews</a></li>
-			</ul>
-		</li>
-		<li class="footer_section_2">
-			<ul id="footer_photos">
-				<li class="title"><a class="title" href="http://www.eonline.com/photos">Photos</a></li>
-				<li><a href="http://www.eonline.com/photos/gallery.jsp?galleryUUID=6">The Big Picture</a></li>
-				<li><a href="http://www.eonline.com/fashion/fashionpolice/index.jsp">Fashion Police</a></li>
-				<li><a href="http://www.eonline.com/gossip/partygirl/pics/index.jsp">Party Pics</a></li>
-				<li><a href="http://www.eonline.com/photos/gallery.jsp?galleryUUID=205">Movies</a></li>
-			</ul>
-		</li>
-		<li class="footer_section_3">
-			<ul id="footer_video">
-				<li class="title"><a class="title" href="http://www.eonline.com/videos">Video</a></li>
-			</ul>
-			<ul class="column_nowrap" id="footer_fashion">
-				<li class="title"><a class="title" href="http://www.eonline.com/news/fashion">Fashion Police</a></li>
-			</ul>
-		</li>
-		<li class="footer_section_4">
-			<ul id="footer_redcarpet">
-				<li class="title"><a class="title" href="http://www.eonline.com/redcarpet">Red Carpet</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/oscars">Academy Awards</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/golden_globes">Golden Globes</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/grammys">Grammy Awards</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/sag_awards">SAG Awards</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/bafta_awards">BAFTA Awards</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2011/emmys">Emmy Awards</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/sundance">Sundance Film Fest</a></li>
-			    <li><a href="http://www.eonline.com/redcarpet/2012/cannes">Cannes Film Fest</a></li>
-				<li><a href="http://www.eonline.com/redcarpet/2012/premieres">Premieres &amp; More</a></li>
-			</ul>
-		</li>
-		<li class="footer_section_5">
-			<ul id="footer_shows">
-				<li class="title"><a class="title" href="http://www.eonline.com/on/shows/index.jsp">E! Shows</a></li>
-				<li><a href="http://www.eonline.com/on/index.jsp">Schedule</a></li>
-				<li><a href="http://www.eonline.com/on/personalities/index.jsp">Personalities</a></li>
-				<li><a href="http://www.eonline.com/on/playapart/index.jsp">Play a Part</a></li>
-				<li><a href="http://www.eonline.com/on/shows/music/index.jsp">E! Tunes</a></li>
-				<li><a href="http://boards.eonline.com/Insider/Boards/index.jspa">Message boards</a></li>
-			</ul>
-		</li>
-		<li class="footer_section_6">
-			<ul id="footer_kristin">
-				<li class="title"><a class="title" href="http://www.eonline.com/news/watch_with_kristin">WATCH with KRISTIN</a></li>
-			</ul>
-			<ul class="column_nowrap" id="footer_awful">
-				<li class="title"><a class="title" href="http://www.eonline.com/news/the_awful_truth">AWFUL TRUTH</a></li>
-			</ul>
-			<ul class="column_nowrap" id="footer_shop">
-				<li class="title"><a class="title" href="http://shop.eonline.com/">SHOP E!</a></li>
-			</ul>
-		</li>
-		<li class="footer_section_8">
-			<ul id="footer_more">
-				<li class="title">MORE</li>
-				<li><a href="http://www.eonline.com/sweepstakes">Sweepstakes</a></li>
-				<li><a href="http://www.eonline.com/about/newsletters/index.jsp">Newsletters</a></li>
-				<li><a href="http://www.eonline.com/everywhere/mobile/index.html">Mobile</a></li>
-				<li><a href="http://www.eonline.com/everywhere/podcasts/index.jsp">Podcasts</a></li>
-				<li><a class="rss" href="http://www.eonline.com/everywhere/rss/index.jsp">RSS Feeds</a></li>
-				<li><a href="http://www.comcast.com/independentprogramming" target="_blank">Independent Programming Report</a></li>
-			</ul>
-		</li>
-	</ul>
-</div>
-<div id="section_2">
-	<ul class="clear">
-		<li class="title"><a class="title" href="http://www.eonline.com/about/index.jsp">About Us</a></li>
-		<li><a href="javascript:void window.open('https://www.hostedsupport.com/Support/Interface.cfm?C=1087','ProCSI','status=1,scrollbars=1,resizable=1');">Contact Us</a></li>
-		<li><a href="http://www.eonline.com/about/staff/index.jsp">Staff</a></li>
-		<li><a href="http://www.cegjobs.com">Careers</a></li>
-		<li><a href="http://www.eonline.com/about/faq/index.jsp">FAQ</a></li>
-		<li><a id="_bapw-link" style="color:#000000 !important;cursor:pointer !important;text-decoration:none !important"><img id="_bapw-icon" style="display:inline !important;vertical-align:middle !important"/> <span style="vertical-align:middle !important">AdChoices</span></a><script>(function(){var e=document,b,a=(e.location.protocol=="https:"?"https":"http"),c=(a=="https"?"https://info.evidon.com/c/betrad/pub/":"http://cdn.betrad.com/pub/");e.getElementById("_bapw-icon").src=c+"icon1.png";e.getElementById("_bapw-link").onclick=function(){var f=this;function d(i,l){var j=e.getElementsByTagName("head")[0]||e.documentElement,h=false,g=e.createElement("script");function k(){g.onload=g.onreadystatechange=null;j.removeChild(g);l()}g.src=i;g.onreadystatechange=function(){if(!h&&(this.readyState=="loaded"||this.readyState=="complete")){h=true;k()}};g.onload=k;j.insertBefore(g,j.firstChild)}this.onclick="return false";d(a+"://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js",function(){d(c+"pub1.js",function(){BAPW.i(f,{pid:208,ocid:908},false)})});return false};b=new Image();b.src=a+"://l.betrad.com/pub/p.gif?pid=208&ocid=908&ii=1&r="+Math.random()}());</script></li>		
-		<li><a href="http://www.comcastdigital.com/index.php" target="_blank">Advertise</a></li>
-		<li class="last"><a href="http://www.eonline.com/sitemap.jsp">Sitemap</a></li>
-	</ul>
-</div>
-
-        		
-        	
-       
-
-
-	<div id="footer_legalese">
-		Use of this site signifies your acceptance of the <a href="index.jsp.html" rel="nofollow">Privacy Policy</a> and <a href="http://www.eonline.com/about/terms/index.jsp" rel="nofollow">Terms of Use</a>.<br /><a href="http://www.eonline.com/about/copyright/index.jsp" rel="nofollow">Copyright</a> 2012 E! Entertainment Television, LLC. A Division of NBCUniversal.
-		
-	</div>
-	<div id="nbcu_logo_footer"></div>
-</div>
-
-<div id="footer_edition">
-	<div id="footer_edition_container" class="clear">
-		<div id="footer_edition_text">E! International Edition: </div>
-		<div id="footer_edition_dropdown">
-			<div id="footer_edition_nav" class="clear">
-				<img src="../../../images.eonline.com/static/uberblog/images/flag_usa.gif" class="navImg" />
-				<p>USA</p>
-				<ul id="footer_edition_selector" class="edition_selector">
-					<li><a href="http://au.eonline.com/" onclick="SetSessionCookie('override-geo', '-1', '/', '.eonline.com'); pageTracker._trackPageview('/events/edition_change_to_au')" class="edition_au">Australia</a></li>
-					<li><a href="http://de.eonline.com/" onclick="SetSessionCookie('override-geo', '-1', '/', '.eonline.com'); pageTracker._trackPageview('/events/edition_change_to_de')" class="edition_de">Germany</a></li>
-					<li><a href="http://it.eonline.com/" onclick="SetSessionCookie('override-geo', '-1', '/', '.eonline.com'); pageTracker._trackPageview('/events/edition_change_to_it')" class="edition_it">Italy</a></li>
-					<li><a href="http://fr.eonline.com/" onclick="SetSessionCookie('override-geo', '-1', '/', '.eonline.com'); pageTracker._trackPageview('/events/edition_change_to_fr')" class="edition_fr">France</a></li>
-					<li><a href="http://uk.eonline.com/" onclick="SetSessionCookie('override-geo', '-1', '/', '.eonline.com'); pageTracker._trackPageview('/events/edition_change_to_uk')" class="edition_uk">UK</a></li>
-					<li><a href="http://ca.eonline.com/" onclick="SetSessionCookie('override-geo', '-1', '/', '.eonline.com'); pageTracker._trackPageview('/events/edition_change_to_ca')" class="edition_ca">Canada</a></li>
-					<li><a href="http://www.eonline.com/" onclick="SetSessionCookie('override-geo', '-1', '/', '.eonline.com'); pageTracker._trackPageview('/events/edition_change_to_us')" class="edition_us">USA</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
+        
     
 
-        
+
+<div id = "HFooter">
+	<div id = "Footer_Layout">
+		<div id="Footer_SpotSection">
+			
+			<div class ="footerSpot">
+				<a href="http://www.eonline.com/shows/kardashians" data-omniture='trackWidgetClick|{"linkName":"nav:footer:spot_1","products":"eVar16=\"nav\""}'><img src="../../eol_images/Entire_Site/201265/FrontDoor_brick_kards.jpg" /></a>
+			</div>
+			
+			<div class ="footerSpot">
+				<a href="http://www.eonline.com/shows/opening_act" data-omniture='trackWidgetClick|{"linkName":"nav:footer:spot_2","products":"eVar16=\"nav\""}'><img src="../../eol_images/Entire_Site/2012610/FDbrick_OpeningAct_generic.jpg" /></a>
+			</div>
+			
+			<div class ="footerSpot">
+				<a href="http://www.eonline.com/news/watch_with_kristin" data-omniture='trackWidgetClick|{"linkName":"nav:footer:spot_3","products":"eVar16=\"nav\""}'><img src="../../eol_images/Entire_Site/2012611/FD_brick_WatchWKristin2.jpg" /></a>
+			</div>
+			
+		</div>
+		<div id = "Footer_Main">
+			<a href="http://www.eonline.com/" data-omniture='trackWidgetClick|{"linkName":"nav:footer:main","products":"eVar16=\"nav\""}'><div id = "Footer_LogoBlock">
+			</div></a>
+			<div id ="Footer_Stripes"></div>
+
+			<div id = "Footer_LogoRight"></div>
+
+
+ 
+
+			<div id = "Footer_NavBlock">
+				<ul>
+
+
+					<li class = "Footer_NavItem">
+		    			<a href="http://www.eonline.com/about" data-omniture='trackWidgetClick|{"linkName":"nav:footer:about","products":"eVar16=\"nav\""}'>About Us</a> 
+		    		</li>
+					<li class = "Footer_NavItem">
+		    			<a href="http://www.eonline.com/shows/schedule" data-omniture='trackWidgetClick|{"linkName":"nav:footer:shows_schedule","products":"eVar16=\"nav\""}'>Show Schedule</a> 
+		    		</li>
+					<li class = "Footer_NavItem">
+		    			<a href="http://www.cegjobs.com" data-omniture='trackWidgetClick|{"linkName":"nav:footer:careers","products":"eVar16=\"nav\""}' target="_blank">Careers</a> 
+		    		</li>
+		    		<li class = "Footer_NavItem">
+		    			<a href="http://www.cafepress.com/shopE" data-omniture='trackWidgetClick|{"linkName":"nav:footer:shop","products":"eVar16=\"nav\""}' target="_blank">Shop</a> 
+		    		</li>
+	
+
+					<li class = "Footer_NavItem">
+		    			<a href="http://www.eonline.com/everywhere/mobile/index.html" data-omniture='trackWidgetClick|{"linkName":"nav:footer:everywhere_mobile","products":"eVar16=\"nav\""}'>Mobile</a> 
+		    		</li>
+	
+
+					<li class = "Footer_NavItem">
+		    			<a id="_bapw-link" style="color:white!important;cursor:pointer !important;font:9pt Arial !important;text-decoration:none !important"><img id="_bapw-icon" style="display:inline !important;vertical-align:middle !important"/>
+		    				<span style="vertical-align:middle !important">AdChoices</span>
+		    			</a>
+		    			<script>(function(){var e=document,b,a=(e.location.protocol=="https:"?"https":"http"),c=(a=="https"?"https://info.evidon.com/c/betrad/pub/":"http://cdn.betrad.com/pub/");e.getElementById("_bapw-icon").src=c+"icon1.png";e.getElementById("_bapw-link").onclick=function(){var f=this;function d(i,l){var j=e.getElementsByTagName("head")[0]||e.documentElement,h=false,g=e.createElement("script");function k(){g.onload=g.onreadystatechange=null;j.removeChild(g);l()}g.src=i;g.onreadystatechange=function(){if(!h&&(this.readyState=="loaded"||this.readyState=="complete")){h=true;k()}};g.onload=k;j.insertBefore(g,j.firstChild)}this.onclick="return false";d(a+"://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js",function(){d(c+"pub1.js",function(){BAPW.i(f,{pid:208,ocid:908},false)})});return false};b=new Image();b.src=a+"://l.betrad.com/pub/p.gif?pid=208&ocid=908&ii=1&r="+Math.random()}());</script>
+		    		</li>
+	    		
+					<li class = "Footer_NavItem">
+		    			<a href="http://www.comcastdigital.com/index.php" data-omniture='trackWidgetClick|{"linkName":"nav:footer:Advertise","products":"eVar16=\"nav\""}' target="_blank">Advertise</a> 
+		    		</li>
+	
+					<li class = "Footer_NavItem">
+		    			<a href="http://www.eonline.com/sweepstakes" data-omniture='trackWidgetClick|{"linkName":"nav:footer:sweepstakes","products":"eVar16=\"nav\""}'>Sweepstakes</a> 
+		    		</li>
+
+
+    
+    
+	
+					<li class = "Footer_NavItem">
+		    			<a href="javascript:void(0);" onClick="window.open('https://www.hostedsupport.com/Support/Interface.cfm?C=1087','ProCSI','status=1,scrollbars=1,resizable=1');">Contact Us</a> 
+		    		</li>
+	
+
+					<li class = "Footer_NavItem Footer_NavItem_Last">
+		    			<a href="http://www.eonline.com/sitemap" data-omniture='trackWidgetClick|{"linkName":"nav:footer:sitemap","products":"eVar16=\"nav\""}'>Site Map</a> 
+		    		</li>
+		    	</ul>
+			</div>
+
+			<div id = "Footer_Tipline">
+				<div class="TipLineCallout"><b>Got a news tip?</b></div>
+				<div class="TipLineInfo">
+					<a href="http://www.eonline.com/static/uberblog/overlays/tipline/tipline.html" data-omniture='trackWidgetClick|{"linkName":"nav:footer:tip-line","products":"eVar16=\"nav\""}' target="_blank" class="eol-tipline override">
+						Call <strong>1-888-E-Online</strong> | Text &quot;<strong>tip</strong>&quot; + your tip to <strong>44264</strong> or <strong>Click Here</strong>
+					</a>
+				</div>
+			</div>
+
+			<div id = "Footer_TabBlock" style="">
+				<div id="Footer_TabBlock_TabBacking"></div>
+
+				<div id="Newsletters" class="Footer_TabBlock_Tab" style="">
+					<div class="Footer_TabBlock_Title Tab_Unselected" onclick="javascript:ShowTab('Newsletters')" style="width: 210px; left: 5px;">
+						Newsletters<div class="Tab_Arrow"></div>
+					</div>
+					<div id="Newsletter_Block" class="Footer_TabBlock_Body">
+				       <form name="Newsletter_Form" method="post" action="http://www.eonline.com/mvc/hudson/newsletter/submit">
+
+				           <input type="text" name="name"  value="Name (optional)" id="Newsletter_Name" class="Newsletter_Input"  autocomplete="off" onblur="if (this.value == '') {this.value = 'Name (optional)';jQuery(this).css('color','gray')}"  onfocus="if (this.value == 'Name (optional)') {this.value = '';jQuery(this).css('color','black')}" />
+				           <input type="text" name="email"  value="Email address" id="Newsletter_Email" class="Newsletter_Input"  autocomplete="off" onblur="if (this.value == '') {this.value = 'Email address';jQuery(this).css('color','gray')}"  onfocus="if (this.value == 'Email address') {this.value = '';jQuery(this).css('color','black')}"/>
+				           <input type="submit" value="Subscribe" id="Newsletter_Button" onclick="javascript: HandleNewsletterSubscribe(); return false;"  />
+
+				           <ul id = "Newsletter_List" class="clear-left">
+				           
+					           <li><input type="checkbox" class="Newsletter_Check" name="nids" id="chkNewsletter_1" value="42" /><label>E! News Now</label></li>
+					           <li><input type="checkbox" class="Newsletter_Check" name="nids" id="chkNewsletter_2" value="131" /><label>E! Online Breaking News Alerts</label></li>
+				           </ul>
+				       </form>
+					</div>
+				</div>
+
+
+				<div id="RSS-Feeds" class="Footer_TabBlock_Tab" >
+
+					<div class="Footer_TabBlock_Title Tab_Unselected" onclick="javascript:ShowTab('RSS-Feeds')" style="width: 210px; left: 220px;">
+						RSS Feeds<div class="Tab_Arrow"></div>
+					</div>
+
+
+					<div class="Footer_TabBlock_Body">
+						<span>Click an RSS Feed to Subscribe</span>
+						<section id="rssHolder">
+	
+
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:headlines","products":"eVar16=\"nav\""}'>Headlines</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/movienews.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:Movie_Headlines","products":"eVar16=\"nav\""}'>Movie Headlines</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/tvnews.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:tv_headlines","products":"eVar16=\"nav\""}'>TV Headlines</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/celebritynews.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:celebrity_headlines","products":"eVar16=\"nav\""}'>Celebrity Headlines</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/fashion.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:fashion","products":"eVar16=\"nav\""}'>Fashion</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/redcarpet.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:red_carpet_blog","products":"eVar16=\"nav\""}'>Red Carpet Blog</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/video/index.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:cebrity_videos","products":"eVar16=\"nav\""}'>Celebrity Videos</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/thesoup.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:the_soup_blog","products":"eVar16=\"nav\""}'>The Soup Blog</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/kristin.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:watch_with_kristin","products":"eVar16=\"nav\""}'>Watch with Kristin</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/everywhere/rss/index.jsp#ixzz1vAOqWOnV" data-omniture='trackWidgetClick|{"linkName":"nav:footer:read_more","products":"eVar16=\"nav\""}'>Read More...</a></div>
+						
+						</section>
+					</div>
+				</div>
+
+				<div id="Podcasts" class="Footer_TabBlock_Tab" >
+					<div class="Footer_TabBlock_Title Tab_Unselected" onclick="javascript:ShowTab('Podcasts')" style="width: 210px; left: 434px;">
+						Podcasts<div class="Tab_Arrow"></div>
+					</div>
+					<div class="Footer_TabBlock_Body">
+						<a class="PodcastLink" target="_blank" href="http://click.linksynergy.com/fs-bin/stat?id=WJrK1Rcdhpw&offerid=78941&type=3&subid=0&tmpid=1826&RD_PARM1=http%253A%252F%252Fphobos.apple.com%252FWebObjects%252FMZStore.woa%252Fwa%252FviewPodcast%253Fid%253D272241915%2526partnerId%253D30" data-omniture='trackWidgetClick|{"linkName":"nav:footer:podcast-ts","products":"eVar16=\"nav\""}'><div id="Podcast-TS" ></div></a>
+						<a class="PodcastLink" target="_blank" href="http://click.linksynergy.com/fs-bin/stat?id=WJrK1Rcdhpw&offerid=146261&type=3&subid=0&tmpid=1826&RD_PARM1=http%253A%252F%252Fitunes.apple.com%252FWebObjects%252FMZStore.woa%252Fwa%252FviewPodcast%253Fid%253D292227398%2526uo%253D6%2526partnerId%253D30" data-omniture='trackWidgetClick|{"linkName":"nav:footer:podcast-cl","products":"eVar16=\"nav\""}'><div id="Podcast-CL" ></div></a>
+						<a class="PodcastLink" target="_blank" href="http://click.linksynergy.com/fs-bin/stat?id=WJrK1Rcdhpw&offerid=78941&type=3&subid=0&tmpid=1826&RD_PARM1=http%253A%252F%252Fphobos.apple.com%252FWebObjects%252FMZStore.woa%252Fwa%252FviewPodcast%253Fid%253D117582683%2526partnerId%253D30" data-omniture='trackWidgetClick|{"linkName":"nav:footer:podcast-rc","products":"eVar16=\"nav\""}'><div id="Podcast-RC" ></div></a>
+					</div>
+				</div>
+							
+			</div>
+		</div>
+		<div id = "Footer_LastBar">
+		<a href="index.jsp.html" data-omniture='trackWidgetClick|{"linkName":"nav:footer:privacy-policy","products":"eVar16=\"nav\""}' rel="nofollow">Privacy Policy</a>&nbsp;|&nbsp;
+		<a href="http://www.eonline.com/about/terms/index.jsp" data-omniture='trackWidgetClick|{"linkName":"nav:footer:terms-of-use","products":"eVar16=\"nav\""}' rel="nofollow">Terms of Use</a>&nbsp;|&nbsp;
+		
+		<a href="http://www.comcast.com/independentprogramming" data-omniture='trackWidgetClick|{"linkName":"nav:footer:independent-programming-report","products":"eVar16=\"nav\""}' rel="nofollow"  target="_blank">Independent Programming Report</a>&nbsp;|&nbsp;
+
+		<a href="http://www.eonline.com/about/copyright/index.jsp" data-omniture='trackWidgetClick|{"linkName":"nav:footer:copyright","products":"eVar16=\"nav\""}' rel="nofollow">&copy;</a>&nbsp;E! Entertainment Television, LLC. A Division of NBCUniversal.&nbsp;
+		All rights reserved.		
+				
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function ShowTab(TabID) {
+		jQuery('.Footer_TabBlock_Tab').each(function (index) {
+			if (jQuery(this).prop('id') == TabID) {
+				jQuery(this).css('height', "115");
+				jQuery(this).children('.Footer_TabBlock_Title').removeClass('Tab_Unselected');
+				jQuery(this).children('.Footer_TabBlock_Title').addClass('Tab_Selected');
+			} else {
+				jQuery(this).css('height', "0");
+				jQuery(this).children('.Footer_TabBlock_Title').removeClass('Tab_Selected');
+				jQuery(this).children('.Footer_TabBlock_Title').addClass('Tab_Unselected');
+			}
+		})
+	};
+</script>
+
+<script type="text/javascript">
+	function HandleNewsletterSubscribe() {
+		jQuery('#Newsletter_Button').attr('disabled', true);
+		/* gather/validate */
+		var email_val = jQuery("#Newsletter_Email").val();
+		if (email_val == "" || email_val == "Email address") {
+			jQuery("#Newsletter_Email").focus();
+			return;
+			}
+		else {
+			/*
+			var email_regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i; 
+			if (!email_regex.test(email_val)){
+				jQuery("#Newsletter_Email").focus(function(){this.select();});
+				alert('NO REGEXT');
+				return;
+			}
+			*/
+		}
+		var newsletter_ids = "";
+		jQuery(".Newsletter_Check:checked").each(function(index){
+			if (newsletter_ids.length > 0) {
+				newsletter_ids += ',';
+			}
+			newsletter_ids += jQuery(this).val();
+		});
+		if (newsletter_ids == "") {
+			jQuery("#chkNewsletter_1").focus();
+			return;
+		}
+		/* post */
+		var name_val = jQuery("#Newsletter_Name").val();
+		if (name_val == "Name (optional)") {name_val = ""};
+		var theData = {
+			name : name_val,
+			email : email_val,
+			nids : newsletter_ids
+		};
+		jQuery('#Newsletter_Button').attr('disabled', false);
+		jQuery.post('/mvc/hudson/newsletter/submit' , theData, function(returnData) { 
+			jQuery("#Newsletter_Block").html("<p style='font-size: large; padding-top: 30px; text-align: center;'>Thank you for subcribing!</p>");
+		})
+	};
+</script> 
+
+<script type="text/javascript">
+    (function($){
+        $(".new-edition_selector li a").bind("click", function(e){
+            e.preventDefault();
+            var edition = $(this).attr("class").replace(/^.*?edition_/, "");
+            var subdomain = "";
+            if(edition == "us") {
+            	subdomain = "www";
+            } else {
+            	subdomain = edition + "";
+            }
+            eol.cookie("edition", edition, -1);  
+            SetSessionCookie('override-geo', '-1', '/', '.eonline.com'); 
+            window.location = "http://"+subdomain+".eonline.com";
+        });                      
+    })(jQuery);
+</script>               
+               
+               
+                        
+
+
 
 
 
 <style type='text/css'>@import url('../../../s3.amazonaws.com/getsatisfaction.com/feedback/feedback.css');</style>
 <script src='../../../s3.amazonaws.com/getsatisfaction.com/feedback/feedback.js'type='text/javascript'></script>
 <script type="text/javascript" charset="utf-8">
-  var tab_options = {}
-  tab_options.placement = "hidden";  // left, right, bottom, hidden
-  tab_options.color = "red"; // hex (#FF0000) or color (red)
+    var tab_options = {}
+    tab_options.placement = "hidden";  // left, right, bottom, hidden
+    tab_options.color = "red"; // hex (#FF0000) or color (red)
 
-  GSFN.feedback('http://getsatisfaction.com/eonline/feedback/topics/new?display=overlay&amp;style=question', tab_options);
+    GSFN.feedback('http://getsatisfaction.com/eonline/feedback/topics/new?display=overlay&amp;style=question', tab_options);
 </script>
 
-<!--NBC U -->
- <script src="../../../www.nbcudigitaladops.com/hosted/global.js"></script> 
-
+    <!--NBC U -->
+    <script src="../../../www.nbcudigitaladops.com/hosted/global.js"></script> 
 
 			
 <!-- Default footer -->

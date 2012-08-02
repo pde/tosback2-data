@@ -1,7 +1,7 @@
 var closeDelayTimer = null;
 var openDelayTimer = null; 
 $(document).ready(function(){
-	$( '.add_this .addthis_toolbox' ).css({ opacity: 0, top: 0, left: $( 'a#addThis_custom_link' ).outerWidth() - 24 }).hide();
+	$( '.add_this .addthis_toolbox' ).css({ opacity: 0,  left: $( 'a#addThis_custom_link' ).outerWidth() - 24 }).hide();
 	if( $( '.videoCaptionWrap .addthis_toolbox' ).length > 0 ){
 		$( '.videoCaptionWrap .addthis_toolbox' ).css({ top: -50, left: -25 }).hide();
 	} else if( $( '.modelpage .addthis_toolbox' ).length > 0 ){
@@ -11,9 +11,14 @@ $(document).ready(function(){
 	}
 	$('.add_this #addThis_custom_link, .videoCaptionWrap a').live( 'mouseenter', function(){
 		var $this = $( this );
-		$( '.add_this .addthis_toolbox, .videoCaptionWrap .addthis_toolbox' ).clearQueue();
-		$( '.add_this .addthis_toolbox, .videoCaptionWrap .addthis_toolbox' ).stop();
-		$( '.add_this .addthis_toolbox, .videoCaptionWrap .addthis_toolbox' ).show().animate({ opacity: 1 }, 'slow' );
+		//$( '.add_this .addthis_toolbox, .videoCaptionWrap .addthis_toolbox' ).clearQueue();
+		//$( '.add_this .addthis_toolbox, .videoCaptionWrap .addthis_toolbox' ).stop();
+		//$( '.add_this .addthis_toolbox, .videoCaptionWrap .addthis_toolbox' ).show().animate({ opacity: 1 }, 'slow' );
+		
+		// prevent page multiple "add this" activation
+		$this.next().clearQueue();
+		$this.next().stop();
+		$this.next().show().animate({ opacity: 1 }, 'slow' );
 	});
 	$('.add_this, .videoCaptionWrap .addthis_toolbox').live( 'mouseleave', function(){
 		$( '.add_this .addthis_toolbox, .videoCaptionWrap .addthis_toolbox' ).clearQueue();

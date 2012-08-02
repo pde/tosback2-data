@@ -103,6 +103,8 @@ var glossary = {
 	perm_remove_page: "Permanently remove this page?",
 	upgrade_to_premium: "Upgrade to Webs Premium",
 	this_page_has_been_moved_to: "This page has been moved to your ",
+    delete_confirm_spec: "Delete your ",
+    delete_confirm_gen: " and all of its contents?",
 	uninstall_confirm_spec: "Are you sure you want to uninstall",
 	uninstall_confirm_gen: "Are you sure you want to uninstall this app?",
 	Uninstalling: "Uninstalling",

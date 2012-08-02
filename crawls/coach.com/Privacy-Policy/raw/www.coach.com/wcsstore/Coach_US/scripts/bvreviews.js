@@ -121,9 +121,15 @@ userToken: uToken
 	 function populateRatingStars(productId) {
 		var divIdName = "reviewsSummaryContainer_"+productId;
 		if(document.getElementById(divIdName)){
-			if(document.getElementById("BVRRRatingOverall_Rating_Summary_1")){
-				document.getElementById("BVRRSummaryContainer").innerHTML = 		document.getElementById("BVRRRatingOverall_Rating_Summary_1").innerHTML;
-			}else if(document.getElementById("BVRRDisplayContentNoReviewsID")){
+			if(document.getElementById("BVRRRatingOverall_Rating_Summary_1")) {
+				var reviewCount = jQuery($('*[class*=BVRRCount]'));
+				var reviewStars = jQuery($('*[class*=BVRRRatingNormalImage]'));
+				var reviewRating = jQuery($('*[class*=BVRRRatingNormalOutOf]'));
+
+				document.getElementById("BVRRSummaryContainer").innerHTML = reviewStars[0].innerHTML + "&nbsp;" + reviewRating[0].innerHTML +
+					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + reviewCount[0].innerHTML;
+				
+			} else if(document.getElementById("BVRRDisplayContentNoReviewsID")){
 			
 				// Default location of the image
 				var emptyStarsUrl = getBazaarVoiceURL() + "/9059/0_0/5/rating.gif";

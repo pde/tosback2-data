@@ -454,8 +454,10 @@ s.linkTrackEvents = "None";
 s.usePlugins = true;
 function s_doPlugins(s) {
     /* Add calls to plugins here */
-    s.prop50 = "tvguide.com";
-    if (tvg_doc_host == "listings2go.tvguide.com" || tvg_doc_host == "widgets.tvguide.com" || tvg_doc_host.indexOf('ig.gmodules.com') > -1 || tvg_doc_host == "widgetsqa.tvguide.com" || tvg_doc_host.indexOf('googleusercontent.com') > -1) s.prop50 = "syndication";
+    if (typeof s.prop50 == "undefined") {
+        s.prop50 = "tvguide.com";
+        if (tvg_doc_host == "listings2go.tvguide.com" || tvg_doc_host == "widgets.tvguide.com" || tvg_doc_host.indexOf('ig.gmodules.com') > -1 || tvg_doc_host == "widgetsqa.tvguide.com" || tvg_doc_host.indexOf('googleusercontent.com') > -1) s.prop50 = "syndication";
+    }
     s.eVar50 = s.prop50;
 
 

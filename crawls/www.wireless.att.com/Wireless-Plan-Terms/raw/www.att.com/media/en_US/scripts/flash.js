@@ -166,7 +166,10 @@ if (typeof flash === 'undefined') {
 				jQuery('#marqueeHolder').css({'height':myHeight+'px', 'width':myWidth+'px', 'position':'relative'})
 					.append(loader);
 				if (typeof JSAM == 'undefined') {
-					jQuery.getScript('/media/en_US/scripts/JSAM/JSAM_min.js');
+					// load JSAM_min.js if this isn't the homepage
+					if(!(typeof (IS_HOMEPAGE) !== "undefined" && IS_HOMEPAGE === true)) {
+						jQuery.getScript('/media/en_US/scripts/JSAM/JSAM_min.js');
+					}
 				}
 				JSAM_loaded = true;
 			}

@@ -1,4 +1,4 @@
-﻿function showCountdown(main, category) {
+﻿function showCountdown(main, kicker_idx, category) {
     dateNow.setSeconds(dateNow.getSeconds() + 1);
     amount = dateFuture.getTime() - dateNow.getTime(); //calc milliseconds between dates
     delete dateNow;
@@ -32,8 +32,18 @@
         //out += secs + " seconds";
 
 		if(main == 'true'){
-			if(document.getElementById('CountDown'))
-		        document.getElementById('CountDown').innerHTML = out;
+		    if (kicker_idx == 0) {
+		        if (document.getElementById('CountDown1'))
+		            document.getElementById('CountDown1').innerHTML = out;
+		    }
+		    else if (kicker_idx == 1) {
+		        if (document.getElementById('CountDown2'))
+		            document.getElementById('CountDown2').innerHTML = out;
+		    }
+		    else {
+		        if (document.getElementById('CountDown3'))
+		            document.getElementById('CountDown3').innerHTML = out;
+		    }
 		}
 
 		if(category == 'true'){
@@ -42,7 +52,7 @@
 		}
 
 		setTimeout(function(){
-			showCountdown(main, category);
+		    showCountdown(main, kicker_idx, category);
 		},1000);
     }
 }

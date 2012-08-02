@@ -9,6 +9,20 @@ function getAccount() {
 			"dev.nature.org"	:"tncoucmdev",
 			"earthday.nature.org"	:"tncglobalprod1",
 			"help.nature.org"      	:"tncglobalprod1",
+			"m.nature.org"          :"tncmobile",
+			"m.support.nature.org"   :"tncmobile",
+			"m.help.nature.org"      :"tncmobile",
+			"m.my.nature.org"        :"tncmobile",
+			"m.blog.nature.org"      :"tncmobile",
+			"m.change.nature.org"    :"tncmobile",
+			"m.voice.nature.org"     :"tncmobile",
+			"mstage.nature.org" :"tncmobilestage",
+			"mstage.change.nature.org" :"tncmobilestage",
+			"mstage.blog.nature.org"   :"tncmobilestage",
+			"mstage.help.nature.org"   :"tncmobilestage",
+			"mstage.support.nature.org" :"tncmobilestage",
+			"mstage.my.nature.org" :"tncmobilestage",
+			"mstage.voice.nature.org" :"tncmobilestage",
 			"magazine.nature.org"	:"tncglobalprod1",
 			"magazinestage.nature.org" :"tncoucmtest",
 			"my.nature.org"		:"tncglobalprod1",
@@ -21,6 +35,7 @@ function getAccount() {
 			"voice.nature.org"	:"tncglobalprod1",
 			"vote.nature.org"	:"tncoucmtest",
 			"www.adoptanacre.org"	:"tncglobalprod1",
+			"www.greatriverspartnership.org"   : "tncgreatrivers",
 			"www.natureconservancy.planyourlegacy.org" :"tncoucmtest",
 			"www.plantabillion.org"	:"tncglobalprod1",
 			"www.nature.org"	:"tncglobalprod1"};
@@ -47,7 +62,7 @@ s.trackingServer="thenatureconservancy.112.2o7.net"
 /* Dynamically select report suite */
 s.dynamicAccountSelection=false;
 s.dynamicAccountMatch=window.location.hostname;
-s.dynamicAccountList="tncprod=nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org";
+s.dynamicAccountList="tncprod=nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org";
 
 s.charSet="UTF-8"
 /* Conversion Config */
@@ -57,7 +72,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,docx,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org"
+s.linkInternalFilters="javascript:,nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org"
 /* tncfire.org no longer in use -- now in Gateway.     */
 /* nature.planyourlegacy.org no longer in use     */
 
@@ -438,6 +453,10 @@ else
 if(s_link_id!="no value")
 	s.eVar46=s.prop46=s_link_id;
 
+/* set Editorial Theme from meta data */
+s.prop53 = getMetaValue('editorialtheme'); 
+s.eVar53 = s.prop53;
+
 
 /* Slideshow Events */
 if(s_slideshow_start) s_slideshow_start=s.getValOnce(s_slideshow_start,'slideshow_start',0);
@@ -628,6 +647,22 @@ s_buttonTest = function() {
                 s.linkTrackEvents = s_linkTrackEventsTemp;
  
 }
+
+/*
+ * Function - Get meta tag content
+ */
+
+function getMetaValue(metatag_name) {
+
+	var meta_array=document.getElementsByTagName("meta");
+		for (var i=0; i<meta_array.length; i++) 
+			{
+				if (meta_array[i].name.toLowerCase() == metatag_name.toLowerCase()) 
+				{
+				return meta_array[i].content.toLowerCase();
+				}
+			}
+	}
 
 
 /************************** PLUGINS SECTION *************************/

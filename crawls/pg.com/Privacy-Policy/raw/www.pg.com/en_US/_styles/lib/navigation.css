@@ -31,21 +31,94 @@ div#site-navigation {}
 		overflow: hidden;
 		cursor: pointer;
 	}
-		#site-navigation li#nav-company { background-image: url('http://www.pg.com/en_US/_images/spr-company.png'); }
-		#site-navigation li#nav-brands { background-image: url('http://www.pg.com/en_US/_images/spr-brands.png'); }
-		#site-navigation li#nav-sustainability { background-image: url('http://www.pg.com/en_US/_images/spr-sustainability.png'); }
-		#site-navigation li#nav-news-and-views { background-image: url('http://www.pg.com/en_US/_images/spr-news-and-views.png'); padding: 0; }
+		/* main nav headers */
+		#site-navigation li#nav-company,
+		#site-navigation li#nav-brands,
+		#site-navigation li#nav-sustainability,
+		#site-navigation li#nav-news-and-views { 
+			/* background-image: url('/en_US/_images/spr-company.png'); */
+			
+			background: none repeat scroll 0 0 transparent;
+			background-color: #575757;
+			
+			background-image: linear-gradient(bottom, rgb(87,87,87) 0%, rgb(124,124,124) 75%);
+			background-image: -o-linear-gradient(bottom, rgb(87,87,87) 0%, rgb(124,124,124) 75%);
+			background-image: -moz-linear-gradient(bottom, rgb(87,87,87) 0%, rgb(124,124,124) 75%);
+			background-image: -webkit-linear-gradient(bottom, rgb(87,87,87) 0%, rgb(124,124,124) 75%);
+			background-image: -ms-linear-gradient(bottom, rgb(87,87,87) 0%, rgb(124,124,124) 75%);
+			background-image: -webkit-gradient(
+				linear,
+				left bottom,
+				left top,
+				color-stop(0, rgb(87,87,87)),
+				color-stop(0.75, rgb(124,124,124))
+			);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#7c7c7c', EndColorStr='#575757'); /* IE6,IE7 */
+			-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#7c7c7c', EndColorStr='#575757')"; /* IE8 */
+			
+			margin-right: 1px;
+			width: 221px;
+			border-top: 1px solid none; 
+		}
+		#site-navigation #nav-company a span.move_,
+		#site-navigation #nav-brands a span.move_,
+		#site-navigation #nav-sustainability a span.move_,
+		#site-navigation #nav-news-and-views a span.move_ { 
+			color: white;
+			position: relative;
+			left: 10px;
+			top: 27px;
+			font-size: 1.2em; font-family: "Frutiger Next Bold";
+		} 
+		#site-navigation #nav-company:hover a span.move_,
+		#site-navigation #nav-brands:hover a span.move_,
+		#site-navigation #nav-sustainability:hover a span.move_,
+		#site-navigation #nav-news-and-views:hover a span.move_ { 
+			color: #666;
+		} 
+
+		#site-navigation li#nav-news-and-views { 
+			padding: 0;
+		}
 
 		/*use class="current", or default active states based on body ID*/
 		#company li#nav-company,
 		#brands li#nav-brands,
 		#sustainability li#nav-sustainability,
 		#news-and-views li#nav-news-and-views,
-		#site-navigation li.current { background-position: 0 -50px; }
-		
+		#site-navigation li.current { 
+			background: #444 none repeat scroll 0; 
+			margin-right: 1px;
+			width: 221px;
+		 }
+		 
+		#company li#nav-company a span.move_,
+		#brands li#nav-brands a span.move_,
+		#sustainability li#nav-sustainability a span.move_,
+		#news-and-views li#nav-news-and-views a span.move_,
+		#site-navigation li.current a span.move_ { 
+			color: white;
+			position: relative;
+			left: 10px;
+			top: 27px;
+			font-size: 1.2em; font-family: "Frutiger Next Bold";
+		 }
+		 
+		#company li#nav-company:hover a span,
+		#brands li#nav-brands:hover a span,
+		#sustainability li#nav-sustainability:hover a span,
+		#news-and-views li#nav-news-and-views:hover a span,
+		#site-navigation li.current:hover a span { 
+			color: #666;
+		 }
+			
+			
 		/*hover*/
 		#site-navigation li:hover,
 		#site-navigation li.hover_ { background-position: 0 0; }
+		
+		#site-navigation li:hover a span,
+		#site-navigation li.hover_ a span { color: #666; }
 
 		/*js-enabled
 		.js-enabled #site-navigation li:hover { background-position: 0 0; }
@@ -56,20 +129,28 @@ div#site-navigation {}
 		height: 50px;
 		float: left;
 		text-decoration: none;
-		cursor: hand;
+		cursor: pointer;
 		position: relative;
 		z-index: 90;
 	}
 
-		#site-navigation #nav-company a { color: #0046AD; }
-		#site-navigation #nav-brands a { color: #F06900; }
-		#site-navigation #nav-sustainability a { color: #6EB820; }
-		#site-navigation #nav-news-and-views a { color: #0046AD; }
+		#site-navigation #nav-company a,
+		#site-navigation #nav-company a span { color: #0046AD; }
+		#site-navigation #nav-brands a,
+		#site-navigation #nav-brands a span { color: #F06900; }
+		#site-navigation #nav-sustainability a,
+		#site-navigation #nav-sustainability a span { color: #6EB820; }
+		#site-navigation #nav-news-and-views a,
+		#site-navigation #nav-news-and-views a span { color: #0046AD; }
 
 		#site-navigation #nav-company a:hover,
+		#site-navigation #nav-company a:hover span,
 		#site-navigation #nav-brands a:hover,
+		#site-navigation #nav-brands a:hover span,
 		#site-navigation #nav-sustainability a:hover,
-		#site-navigation #nav-news-and-views a:hover { color: #333333; }
+		#site-navigation #nav-sustainability a:hover span,
+		#site-navigation #nav-news-and-views a:hover,
+		#site-navigation #nav-news-and-views a:hover span { color: #333333; }
 
 	/* sub nav blocks */
 	#site-navigation li div {
@@ -86,10 +167,10 @@ div#site-navigation {}
 		top: 0;
 		z-index: 89;
 	}
-		#site-navigation li#nav-company div { background-image: url('http://www.pg.com/en_US/_images/spr-company.png'); }
-		#site-navigation li#nav-brands div { background-image: url('http://www.pg.com/en_US/_images/spr-brands.png'); }
-		#site-navigation li#nav-sustainability div { background-image: url('http://www.pg.com/en_US/_images/spr-sustainability.png'); }
-		#site-navigation li#nav-news-and-views div { background-image: url('http://www.pg.com/en_US/_images/spr-news-and-views.png'); }
+		#site-navigation li#nav-company div { /*background-image: url('/en_US/_images/spr-company.png'); */}
+		#site-navigation li#nav-brands div { /*background-image: url('/en_US/_images/spr-brands.png');*/ }
+		#site-navigation li#nav-sustainability div { /* background-image: url('/en_US/_images/spr-sustainability.png'); */}
+		#site-navigation li#nav-news-and-views div { /* background-image: url('/en_US/_images/spr-news-and-views.png'); */}
 
 		#site-navigation li div a {
 			margin: 0; padding: 7px 0;
@@ -98,7 +179,7 @@ div#site-navigation {}
 			float: none;
 			font-size: 1.075em;
 			text-indent: 0;
-			cursor: hand;
+			cursor: pointer;
 		}
 		#site-navigation li div p { margin: 50px 0 30px 0; padding: 15px 0 0 0; line-height: 1; }
 		#site-navigation li div p a:link,
@@ -118,24 +199,28 @@ div#site-navigation {}
 			cursor: pointer;
 		}
 		#site-navigation li#nav-company div p a {
-			background-image: url('http://www.pg.com/en_US/_images/skin/navtxt-company.png');
+			/*background-image: url('/en_US/_images/skin/navtxt-company.png');*/
 		}
 		#site-navigation li#nav-brands div p a {
-			background-image: url('http://www.pg.com/en_US/_images/skin/navtxt-brands.png');
+			/*background-image: url('/en_US/_images/skin/navtxt-brands.png');*/
 		}
 		#site-navigation li#nav-sustainability div p a {
-			background-image: url('http://www.pg.com/en_US/_images/skin/navtxt-sustainability.png');
+			/*background-image: url('/en_US/_images/skin/navtxt-sustainability.png');*/
 		}
 		#site-navigation li#nav-news-and-views div p a {
-			background-image: url('http://www.pg.com/en_US/_images/skin/navtxt-news-and-views.png');
+			/*background-image: url('/en_US/_images/skin/navtxt-news-and-views.png');*/
 		}
 			#site-navigation li div p strong {
-				background: transparent;
+				background: none repeat scroll 0 0 transparent;
 				display: block;
-				height: 0;
+				font-family: 'Frutiger Next Bold';
+				font-size: 2.417em;
+				font-weight: normal;
+				letter-spacing: -0.7pt;
+				/* height: 0; */ 
 				overflow: hidden;
-				padding: 60px 0 0;
-				width: 203px;
+				padding-bottom: 5px;
+				width: 160px;
 			}
 			#site-navigation li div p span {
 				background: #fff;
@@ -158,7 +243,7 @@ div#site-navigation {}
 				float: none;
 				list-style: none;
 				line-height: 1.1;
-				cursor: hand;
+				cursor: pointer;
 			}
 
 	/* hover styles */
@@ -171,9 +256,9 @@ div#site-navigation {}
 	#site-navigation li.current:hover div { top: 0; }
 
 	/*js-enabled*/
-	.js-enabled #site-navigation li div { display: none; top:0 }  /*CK added top:0 to fix keyboard navigation*/
+	.js-enabled #site-navigation li div { display: none; top:0; border-top: 1px solid #ccc; }  /*CK added top:0 to fix keyboard navigation*/
 	.js-enabled #site-navigation li:hover div,
-	.js-enabled #site-navigation li.current:hover div { display: block; }
+	.js-enabled #site-navigation li.current:hover div { display: block; border-top: 1px solid #ccc; }
 
 
 /*	====================================
@@ -269,8 +354,11 @@ div#site-navigation {}
 		margin-top: 12px;
 		color: #444;
 		font-size: 1.5em;
-		font-weight: bold;
+		font-family: "Frutiger Next Heavy";
 		width: 203px;
+	}
+	.active-box .nav-header.current a {
+		color: #444;
 	}
 	.sifr-header { display: block; }
 		.nav-box a { color: #999; }
@@ -352,48 +440,49 @@ div#site-navigation {}
 			float: none;
 			font-weight: bold;
 			text-decoration: none;
-			text-indent: -9999px;
+			/*text-indent: -9999px;*/
 			overflow: hidden;			
 		}
 			/* company nav */
-			#category-navigation li.nav-core-strengths a { background-image: url('http://www.pg.com/en_US/_images/nav/spr-core-strengths.png'); }
-			#category-navigation li.nav-purpose-and-people a { background-image: url('http://www.pg.com/en_US/_images/nav/spr-purpose-and-people.png'); }
-			#category-navigation li.nav-global-structure a { background-image: url('http://www.pg.com/en_US/_images/nav/spr-global-structure.png'); }
-			#category-navigation li.nav-heritage a { background-image: url('http://www.pg.com/en_US/_images/nav/spr-heritage.png'); }
-			#category-navigation li.nav-external-recognition a { background-image: url('http://www.pg.com/en_US/_images/nav/spr-external-recognition.png'); }
+			/*#category-navigation li.nav-core-strengths a { background-image: url('/en_US/_images/nav/spr-core-strengths.png'); }
+			#category-navigation li.nav-purpose-and-people a { background-image: url('/en_US/_images/nav/spr-purpose-and-people.png'); }
+			#category-navigation li.nav-global-structure a { background-image: url('/en_US/_images/nav/spr-global-structure.png'); }
+			#category-navigation li.nav-heritage a { background-image: url('/en_US/_images/nav/spr-heritage.png'); }
+			#category-navigation li.nav-external-recognition a { background-image: url('/en_US/_images/nav/spr-external-recognition.png'); }*/
 			
 			/* sustainbility nav */
 			#sustainability #category-navigation li a strong { color: #6DB81F; }
-			#category-navigation li.nav-overview a {  background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_Overview.png'); }
-			#category-navigation li.nav-environmental-sustainability a {  background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_ER.png'); }
-			#category-navigation li.nav-social-responsibility a {  background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_SR.png'); }
-			#category-navigation li.nav-employee-engagement a {  background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_Employees.png'); }
-			#category-navigation li.nav-stakeholder-engagement a {  background-image: url('http://www.pg.com/en_US/_images/nav/spr-stakeholder-engagement.png'); }
-			#category-navigation li.nav-points-of-view a {  background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_POV.png'); }
-			#category-navigation li.nav-product-safety a {  background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_ProductSafety.png'); }			
-			#category-navigation li.nav-heritage-recognition a {  background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_Heritage.png'); }
-			#category-navigation li.nav-reports a {  background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_Reports.png'); }
-			#category-navigation li.nav-privacy a { background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_Privacy.png'); }	
-			#category-navigation li.nav-performance-at-a-glance a { background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_Performance.png'); }
-			#sustainability #category-navigation li.nav-health-wellbeing a {  background-image: url('http://www.pg.com/en_US/_images/nav/nav_sprite_Transparency.png'); }
+			/*#category-navigation li.nav-overview a {  background-image: url('/en_US/_images/nav/nav_sprite_Overview.png'); }
+			#category-navigation li.nav-environmental-sustainability a {  background-image: url('/en_US/_images/nav/nav_sprite_ER.png'); }
+			#category-navigation li.nav-social-responsibility a {  background-image: url('/en_US/_images/nav/nav_sprite_SR.png'); }
+			#category-navigation li.nav-employee-engagement a {  background-image: url('/en_US/_images/nav/nav_sprite_Employees.png'); }
+			#category-navigation li.nav-stakeholder-engagement a {  background-image: url('/en_US/_images/nav/spr-stakeholder-engagement.png'); }
+			#category-navigation li.nav-points-of-view a {  background-image: url('/en_US/_images/nav/nav_sprite_POV.png'); }
+			#category-navigation li.nav-product-safety a {  background-image: url('/en_US/_images/nav/nav_sprite_ProductSafety.png'); }			
+			#category-navigation li.nav-heritage-recognition a {  background-image: url('/en_US/_images/nav/nav_sprite_Heritage.png'); }
+			#category-navigation li.nav-reports a {  background-image: url('/en_US/_images/nav/nav_sprite_Reports.png'); }
+			#category-navigation li.nav-privacy a { background-image: url('/en_US/_images/nav/nav_sprite_Privacy.png'); }	
+			#category-navigation li.nav-performance-at-a-glance a { background-image: url('/en_US/_images/nav/nav_sprite_Performance.png'); }
+			#sustainability #category-navigation li.nav-health-wellbeing a {  background-image: url('/en_US/_images/nav/nav_sprite_Transparency.png'); }*/
 
-			
 			/* brands nav */
 			#brands #category-navigation li a strong { color: #f06800; }
-			#category-navigation li.nav-beauty-grooming a {  background-image: url('http://www.pg.com/en_US/_images/nav/spr-beauty-grooming.png'); }
-			#category-navigation li.nav-health-wellbeing a {  background-image: url('http://www.pg.com/en_US/_images/nav/spr-health-wellbeing.png'); }
-			#category-navigation li.nav-household-care a {  background-image: url('http://www.pg.com/en_US/_images/nav/spr-household-care.png'); }
-			#category-navigation li.nav-all-brands a {  background-image: url('http://www.pg.com/en_US/_images/nav/spr-all-brands.png'); }
-			#category-navigation li.nav-latest-innovations a {  background-image: url('http://www.pg.com/en_US/_images/nav/spr-latest-innovations.png'); }			
+			/*#category-navigation li.nav-beauty-grooming a {  background-image: url('/en_US/_images/nav/spr-beauty-grooming.png'); }
+			#category-navigation li.nav-health-wellbeing a {  background-image: url('/en_US/_images/nav/spr-health-wellbeing.png'); }
+			#category-navigation li.nav-household-care a {  background-image: url('/en_US/_images/nav/spr-household-care.png'); }
+			#category-navigation li.nav-all-brands a {  background-image: url('/en_US/_images/nav/spr-all-brands.png'); }
+			#category-navigation li.nav-latest-innovations a {  background-image: url('/en_US/_images/nav/spr-latest-innovations.png'); }*/			
 			
 			#category-navigation li a strong {
 				color: #0046AD;
-				font-weight: bold;
+				/*font-weight: bold;*/
+				font-family:'Frutiger Next Medium';
 			}
 			#category-navigation li a em {
 				color: #999999;
 				font-style: normal;
 				font-weight: normal;
+				font-family:'Frutiger Next Regular';
 				visibility: hidden;
 			}
 		#category-navigation li:hover {
@@ -417,7 +506,7 @@ div#site-navigation {}
 
 #footer .nav {
 	clear: both;
-	margin: 9px 0 9px 0;
+	margin: 0 20px 9px 0;
 	/*padding: 0 20px 0 0;*/
 	padding:0;
 	float: right;
@@ -460,4 +549,4 @@ div#site-navigation {}
 	
 	
 	
-	#footer .nav li:last-child {padding-right:50px\9; color:#00CC33\9;} /* for IE8, going last */*/
+	#footer .nav li:last-child {padding-right:50px\9; color:#00CC33\9;} /* for IE8, going last */

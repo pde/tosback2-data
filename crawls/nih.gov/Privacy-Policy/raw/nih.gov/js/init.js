@@ -47,7 +47,7 @@ function zebraStripeTable() {
 	}
 }
 
-// HIGHLIGHT LINK TO CURRENT PAGE (REPLACES <A> WITH <STRONG> SO THAT PAGE DOESN'T LINK TO ITSELF)
+// HIGHLIGHT LINK TO CURRENT PAGE (REPLACES <A> WITH <SPAN> SO THAT PAGE DOESN'T LINK TO ITSELF)
 /*
 CLCP v2.1 Clear Links to Current Page
 Jonathan Snook
@@ -71,10 +71,10 @@ function removeNode(n){
     if(n.hasChildNodes())
 	// gets the text from the link and moves it to the previous node.
         for(var i=0; i<n.childNodes.length; i++) {
-            	var strong = document.createElement('strong');
+            	var span = document.createElement('span');
 		var label = n.childNodes[i].cloneNode(true);
-		strong.appendChild(label);
-		n.parentNode.appendChild(strong);
+		span.appendChild(label);
+		n.parentNode.appendChild(span);
 	}
 		n.parentNode.removeChild(n);
 

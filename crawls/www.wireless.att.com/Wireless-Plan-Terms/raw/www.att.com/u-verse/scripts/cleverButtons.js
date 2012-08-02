@@ -204,4 +204,41 @@ function CleverButton() {
 	//this function is called at the end of validate()
 	this.postValidate = function() {}
 	
+	//Methods to disable and enable Continue button for Wireless CTN
+	this.validateAnchorCTN = function() {
+		var isValid = true;
+		var goButtons = buttons();
+		var noButtons = disabledButtons();
+		if (isValid){
+			for (var i=0; i < goButtons.length; i++) {
+				goButtons[i].style.display = "";
+				if (goButtons[i].tagName == "INPUT" && goButtons[i].disabled == true)goButtons[i].disabled = false;
+				noButtons[i].style.display = "none";
+			}
+		} else {
+			for (var i=0; i < goButtons.length; i++) {
+				goButtons[i].style.display = "none";
+				if (goButtons[i].tagName == "INPUT" && goButtons[i].disabled == false) goButtons[i].disabled = true;
+				noButtons[i].style.display = "";
+			}
+		}
+	}
+	this.validateTargetCTN = function() {
+		var isValid = false;
+		var goButtons = buttons();
+		var noButtons = disabledButtons();
+		if (isValid){
+			for (var i=0; i < goButtons.length; i++) {
+				goButtons[i].style.display = "";
+				if (goButtons[i].tagName == "INPUT" && goButtons[i].disabled == true)goButtons[i].disabled = false;
+				noButtons[i].style.display = "none";
+			}
+		} else {
+			for (var i=0; i < goButtons.length; i++) {
+				goButtons[i].style.display = "none";
+				if (goButtons[i].tagName == "INPUT" && goButtons[i].disabled == false) goButtons[i].disabled = true;
+				noButtons[i].style.display = "";
+			}
+		}
+	}
 }

@@ -447,7 +447,9 @@ $(function() {
 		site.init.megaMenu();
 	} else {
 		// if the header and footer are in an iframe, make forms and links break out of the iframe
-		$("#defaultHeader a").add("#defaultHeader form").add("#defaultFooter a").add("#defaultFooter form").attr('target', '_top');
+		$("#defaultHeader a").add("#defaultHeader form").add("#defaultFooter a").add("#defaultFooter form");
+		$("#defaultHeader a").not("[href*!='openWindowBig']").remove("a[target='_top']").attr('target', '_blank');
+		
 	}
 	
 	/* Initialize any Image Rotator Assets */

@@ -41,6 +41,7 @@
     //for farealert
     this.FromDate;
     this.ToDate;
+    this.SourceApplicationName;
 
     this.GetDataForSignUp = function () {        
         return "{'email_':'" + this.Email + "','currentAffCode_':'" + this.FPAffiliate + "','signupForPartner_':'" + this.SignupForPartner + "','pageComponent_':'" + this.PageComponent + "','firstName_':'" + this.FirstName + "','lastName_':'" + this.LastName + "','flowType_':'" + this.FlowType + "','address1_':'" + this.Address1 + "','address2_':'" + this.Address2 + "','city_':'" + this.City + "','state_':'" + this.State + "','zip_':'" + this.Zip + "','country_':'" + this.Country + "','phone_':'" + this.Phone + "','fax_':'" + this.Fax + "','originCity_':'" + this.OriginCity + "','dob_':'" + this.DOB + "','gender_':'" + this.Gender + "','favoriteDeals_':'" + this.FavoriteDeals + "','destinationCity_':'" + this.DestinationCity + "','destination_':'" + this.Destination + "','compaignId_':'" + this.CampaignId + "'}";
@@ -48,6 +49,18 @@
 
     this.GetDataForSignUpV2 = function () {
         return "{'email_':'" + this.Email + "','currentAffCode_':'" + this.FPAffiliate + "','signupForPartner_':'" + this.SignupForPartner + "','pageComponent_':'" + this.PageComponent + "','firstName_':'" + this.FirstName + "','lastName_':'" + this.LastName + "','flowType_':'" + this.FlowType + "','address1_':'" + this.Address1 + "','address2_':'" + this.Address2 + "','city_':'" + this.City + "','state_':'" + this.State + "','zip_':'" + this.Zip + "','country_':'" + this.Country + "','phone_':'" + this.Phone + "','fax_':'" + this.Fax + "','originCity_':'" + this.OriginCity + "','dob_':'" + this.DOB + "','gender_':'" + this.Gender + "','favoriteDeals_':'" + this.FavoriteDeals + "','destinationCity_':'" + this.DestinationCity + "','destination_':'" + this.Destination + "','compaignId_':'" + this.CampaignId + "','additionInfo_':'" + this.AdditionInfo + "'}";
+    };
+
+
+    this.GetDataForEncryptedSignUp = function () {
+        return "{'encryptedEmail_':'" + this.Email + "','currentAffCode_':'" + this.FPAffiliate + "','signupForPartner_':'" + this.SignupForPartner + "','pageComponent_':'" + this.PageComponent + "','firstName_':'" + this.FirstName + "','lastName_':'" + this.LastName + "','flowType_':'" + this.FlowType + "','address1_':'" + this.Address1 + "','address2_':'" + this.Address2 + "','city_':'" + this.City + "','state_':'" + this.State + "','zip_':'" + this.Zip + "','country_':'" + this.Country + "','phone_':'" + this.Phone + "','fax_':'" + this.Fax + "','originCity_':'" + this.OriginCity + "','dob_':'" + this.DOB + "','gender_':'" + this.Gender + "','favoriteDeals_':'" + this.FavoriteDeals + "','destinationCity_':'" + this.DestinationCity + "','destination_':'" + this.Destination + "','compaignId_':'" + this.CampaignId + "','additionInfo_':'" + this.AdditionInfo + "'}";
+    };
+
+    this.GetDataForUnSubsCribedSignUp = function () {
+        return "{'encryptedEmail_':'" + this.Email + "','sourceApplicationName_':'" + this.SourceApplicationName + "','flowType_':'" + this.FlowType + "'}";
+    };
+    this.GetDataForUnSubscribedEncryptedEmailAddress = function () {
+        return "{'encryptedEmail_':'" + this.Email + "','sourceApplicationName_':'" + this.SourceApplicationName + "','flowType_':'" + this.FlowType +"','additionalInfo_':'" + this.AdditionInfo + "'}";
     };
 
 
@@ -139,6 +152,73 @@ SignupService.prototype.FareAlertDataSave = function () {
 }
 
 
+SignupService.prototype.EncryptSignUp = function () {
+
+    var currentObj = this;
+    var dataForSignUp = this.GetDataForEncryptedSignUp();
+    jQuery.ajax({
+        type: "POST",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: "/DesktopModules/Misc/signupservice.asmx/EncryptSignUp",
+        data: dataForSignUp,
+        success: function (response) {
+            var jSonResponse = eval(" (" + response.d + ") ");
+            currentObj.IsSignupSuccessful = jSonResponse.IsSucceed;
+            if (jSonResponse.IsSucceed == false && jSonResponse.ErrorInfo != '') {
+                currentObj.ErrorInfo += "~" + jSonResponse.ErrorInfo;
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        }
+    });
+}
+
+SignupService.prototype.UnSubsCribedSignUp = function () {
+
+    var currentObj = this;
+    var dataForSignUp = this.GetDataForUnSubsCribedSignUp();
+    jQuery.ajax({
+        type: "POST",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: "/DesktopModules/Misc/signupservice.asmx/UnsubscribeEncryptSignUp",
+        data: dataForSignUp,
+        success: function (response) {
+            var jSonResponse = eval(" (" + response.d + ") ");
+            currentObj.IsSignupSuccessful = jSonResponse.IsSucceed;
+            if (jSonResponse.IsSucceed == false && jSonResponse.ErrorInfo != '') {
+                currentObj.ErrorInfo += "~" + jSonResponse.ErrorInfo;
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        }
+    });
+}
+SignupService.prototype.UnSubscribedWithEncryptedEmailAddress = function () {
+
+    var currentObj = this;
+    var dataForSignUp = this.GetDataForUnSubscribedEncryptedEmailAddress();
+    jQuery.ajax({
+        type: "POST",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: "/DesktopModules/Misc/signupservice.asmx/UnsubsCribedWithEncryptedEmailAddress",
+        data: dataForSignUp,
+        success: function (response) {
+            var jSonResponse = eval(" (" + response.d + ") ");
+            currentObj.IsSignupSuccessful = jSonResponse.IsSucceed;
+            if (jSonResponse.IsSucceed == false && jSonResponse.ErrorInfo != '') {
+                currentObj.ErrorInfo += "~" + jSonResponse.ErrorInfo;
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        }
+    });
+}
 
 SignupService.prototype.SignUpV2 = function () {
     if (this.IsValidateEmail)

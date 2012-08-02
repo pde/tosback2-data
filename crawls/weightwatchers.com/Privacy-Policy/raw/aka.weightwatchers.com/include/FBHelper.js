@@ -13,7 +13,7 @@ window.fbAsyncInit = function () {
         status: true, // check login status
         cookie: true, // enable cookies to allow the server to access the session
         xfbml: EnableFacebookLike, // parse XFBML
-		oauth: true
+        oauth: true
     });
     if (isTopNavLogin == 'true')
         ShowHideTopNavFBControls();
@@ -36,17 +36,21 @@ function LoadFBJSSdk() {
     document.getElementById('fb-root').appendChild(e);
 }
 
+function SetFbCookies(response) {
+    document.cookie = 'fb_access_token=' + response.authResponse.accessToken + ' path=/';
+    document.cookie = 'fb_user_id=' + response.authResponse.userID + ' path=/';
+} 
+
 function DoFacebookLogin(doValidation) {
     ResetControls();
     var validationResult = DoValidation(doValidation);
     if (validationResult == true) {
         FB.login(function (response) {
             if (response.authResponse) {
+                SetFbCookies(response);
                 DoLogin("yes");
-                //alert("logged in and app approved")
             } else {
                 DoLogin("no");
-                //alert("Not loged in or app not approved");
             }
         });
     }

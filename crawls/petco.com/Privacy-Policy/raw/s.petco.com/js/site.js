@@ -127,11 +127,13 @@ $j(".qv-sku-qty-input").each(function(index,obj){if(parseInt($j(obj).val())>0){s
 }});return selections.join("~");},getSelectedSkuParam:function(){var skus=new Array();
 $j(".qv-sku-qty-input").each(function(index,obj){if(parseInt($j(obj).val())>0){skus.push($j(obj).attr("data-sku"));
 }});return skus.join("|");},validateQtyInput:function(isBowl){var cartType=isBowl?"Bowl":"Cart";
-if($j(".qv-sku-qty-input[value!=]").length==0){showStandardizedAlert("Please enter a valid quantity and Add to "+cartType+".");
-return false;}var allAreNumeric=true;var hasPositiveValue=false;var inputs=$j(".qv-sku-qty-input");
+if($j(".qv-sku-qty-input[value!=]").length==0){if(isBowl){showStandardizedAlert('Please enter a valid quantity and select "Schedule Repeat Delivery".');
+}else{showStandardizedAlert("Please enter a valid quantity and Add to "+cartType+".");
+}return false;}var allAreNumeric=true;var hasPositiveValue=false;var inputs=$j(".qv-sku-qty-input");
 for(var i=0;i<inputs.length;i++){if($j(inputs[i]).val().length==0){continue;}if(!$pval.isNumeric($j(inputs[i]).val())){allAreNumeric=false;
-}else{if(parseInt($j(inputs[i]).val())!=0){hasPositiveValue=true;}}}if(!allAreNumeric||!hasPositiveValue){showStandardizedAlert("Please enter a valid quantity and Add to "+cartType+".");
-return false;}return true;},addToBowl:function(fid){if(!this.validateQtyInput(true)){return ;
+}else{if(parseInt($j(inputs[i]).val())!=0){hasPositiveValue=true;}}}if(!allAreNumeric||!hasPositiveValue){if(isBowl){showStandardizedAlert('Please enter a valid quantity and select "Schedule Repeat Delivery".');
+}else{showStandardizedAlert("Please enter a valid quantity and Add to "+cartType+".");
+}return false;}return true;},addToBowl:function(fid){if(!this.validateQtyInput(true)){return ;
 }var urlBase="/Secure/BowlAdd.aspx?skuList="+this.getSkuQtyParam();this.add(urlBase,fid);
 },addToCart:function(fid){if(!this.validateQtyInput()){return ;}var urlBase="/Cart/ShoppingCartAddMultiple.aspx?skuqtylist="+this.getSkuQtyParam();
 this.add(urlBase,fid);},add:function(urlBase,fid){var skuQtyParam=this.getSkuQtyParam();

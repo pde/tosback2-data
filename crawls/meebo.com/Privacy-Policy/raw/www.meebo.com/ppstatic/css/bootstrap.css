@@ -3276,7 +3276,7 @@ body.show-vertical-grid, body.grid {
   overflow: visible;
   margin-bottom: 36px;
 }
-.topbar a {
+.topbar .fill a {
   font-family: "OmnesSemibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: normal;
@@ -3387,18 +3387,21 @@ body.show-vertical-grid, body.grid {
 }
 
 .topbar div > ul,
+.topbar .fill div > ul,
 .nav {
   display: block;
   position: relative;
   left: 155px;
 }
 .topbar div > ul > li,
+.topbar .fill div > ul > li,
 .nav > li {
   display: block;
   float: left;
   margin-right: 16px;
 }
 .topbar div > ul a,
+.topbar .fill div > ul a,
 .nav a {
   display: block;
   float: none;
@@ -3408,17 +3411,20 @@ body.show-vertical-grid, body.grid {
   text-transform: capitalize;
 }
 .topbar div > ul a:hover,
+.topbar .fill div > ul a:hover,
 .nav a:hover {
   color: white;
   text-decoration: none;
 }
 .topbar div > ul a.selected,
+.topbar .fill div > ul a.selected,
 .nav a.selected {
   background: #333333;
   box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.5);
   color: white;
 }
 .topbar div > ul .active > a,
+.topbar .fill div > ul .active > a,
 .nav .active > a {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -3427,6 +3433,7 @@ body.show-vertical-grid, body.grid {
   background-color: rgba(0, 0, 0, 0.5);
 }
 .topbar div > ul.secondary-nav,
+.topbar .fill div > ul.secondary-nav,
 .nav.secondary-nav {
   float: right;
   margin-left: 10px;
@@ -3434,6 +3441,8 @@ body.show-vertical-grid, body.grid {
 }
 .topbar div > ul.secondary-nav .menu-dropdown,
 .topbar div > ul.secondary-nav .dropdown-menu,
+.topbar .fill div > ul.secondary-nav .menu-dropdown,
+.topbar .fill div > ul.secondary-nav .dropdown-menu,
 .nav.secondary-nav .menu-dropdown,
 .nav.secondary-nav .dropdown-menu {
   right: 0;
@@ -3443,6 +3452,10 @@ body.show-vertical-grid, body.grid {
 .topbar div > ul li.open .menu,
 .topbar div > ul .dropdown-toggle:hover,
 .topbar div > ul .dropdown.open .dropdown-toggle,
+.topbar .fill div > ul a.menu:hover,
+.topbar .fill div > ul li.open .menu,
+.topbar .fill div > ul .dropdown-toggle:hover,
+.topbar .fill div > ul .dropdown.open .dropdown-toggle,
 .nav a.menu:hover,
 .nav li.open .menu,
 .nav .dropdown-toggle:hover,
@@ -3452,6 +3465,8 @@ body.show-vertical-grid, body.grid {
 }
 .topbar div > ul .menu-dropdown,
 .topbar div > ul .dropdown-menu,
+.topbar .fill div > ul .menu-dropdown,
+.topbar .fill div > ul .dropdown-menu,
 .nav .menu-dropdown,
 .nav .dropdown-menu {
   background-color: #333;
@@ -3460,6 +3475,10 @@ body.show-vertical-grid, body.grid {
 .topbar div > ul .menu-dropdown .dropdown-toggle,
 .topbar div > ul .dropdown-menu a.menu,
 .topbar div > ul .dropdown-menu .dropdown-toggle,
+.topbar .fill div > ul .menu-dropdown a.menu,
+.topbar .fill div > ul .menu-dropdown .dropdown-toggle,
+.topbar .fill div > ul .dropdown-menu a.menu,
+.topbar .fill div > ul .dropdown-menu .dropdown-toggle,
 .nav .menu-dropdown a.menu,
 .nav .menu-dropdown .dropdown-toggle,
 .nav .dropdown-menu a.menu,
@@ -3470,6 +3489,10 @@ body.show-vertical-grid, body.grid {
 .topbar div > ul .menu-dropdown .dropdown-toggle.open,
 .topbar div > ul .dropdown-menu a.menu.open,
 .topbar div > ul .dropdown-menu .dropdown-toggle.open,
+.topbar .fill div > ul .menu-dropdown a.menu.open,
+.topbar .fill div > ul .menu-dropdown .dropdown-toggle.open,
+.topbar .fill div > ul .dropdown-menu a.menu.open,
+.topbar .fill div > ul .dropdown-menu .dropdown-toggle.open,
 .nav .menu-dropdown a.menu.open,
 .nav .menu-dropdown .dropdown-toggle.open,
 .nav .dropdown-menu a.menu.open,
@@ -3479,6 +3502,8 @@ body.show-vertical-grid, body.grid {
 }
 .topbar div > ul .menu-dropdown li a,
 .topbar div > ul .dropdown-menu li a,
+.topbar .fill div > ul .menu-dropdown li a,
+.topbar .fill div > ul .dropdown-menu li a,
 .nav .menu-dropdown li a,
 .nav .dropdown-menu li a {
   color: white;
@@ -3486,12 +3511,16 @@ body.show-vertical-grid, body.grid {
 }
 .topbar div > ul .menu-dropdown .active a,
 .topbar div > ul .dropdown-menu .active a,
+.topbar .fill div > ul .menu-dropdown .active a,
+.topbar .fill div > ul .dropdown-menu .active a,
 .nav .menu-dropdown .active a,
 .nav .dropdown-menu .active a {
   color: white;
 }
 .topbar div > ul .menu-dropdown .divider,
 .topbar div > ul .dropdown-menu .divider,
+.topbar .fill div > ul .menu-dropdown .divider,
+.topbar .fill div > ul .dropdown-menu .divider,
 .nav .menu-dropdown .divider,
 .nav .dropdown-menu .divider {
   background-color: #222;
@@ -3501,4 +3530,39 @@ body.show-vertical-grid, body.grid {
 .topbar ul .menu-dropdown li a,
 .topbar ul .dropdown-menu li a {
   padding: 4px 15px;
+}
+
+/* NOTIFICATION BAR */
+#notificationBar {
+  padding: 9px;
+  position: relative;
+  z-index: 1000;
+  background: #fffdd8;
+  background: -moz-linear-gradient(top, #fffdf7 0%, #fffdd8 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fffdf7), color-stop(100%, #fffdd8));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #fffdf7 0%, #fffdd8 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #fffdf7 0%, #fffdd8 100%);
+  /* Opera11.10+ */
+  background: -ms-linear-gradient(top, #fffdf7 0%, #fffdd8 100%);
+  /* IE10+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffdf7', endColorstr='#fffdd8',GradientType=0 );
+  /* IE6-9 */
+  background: linear-gradient(top, #fffdf7 0%, #fffdd8 100%);
+  /* W3C */
+}
+
+#notificationBar .notificationContent {
+  color: #444;
+  font-size: 12px;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+}
+
+#notificationBar strong {
+  font-weight: bold;
+  line-height: 1.7em;
 }

@@ -23,7 +23,6 @@
 		
 			//Define common widgets plugin target
 			var $e = $(this);
-		
 			
 			//Initiate jQuery UI Tabs for widgets
 			$e.find('.widget-tabs').tabs({
@@ -84,7 +83,24 @@
 					}
 				}
 			});
-		
+			
+			
+			// THIS IS NEW CODE FOR THE AUTOMATIC INFINITE CAROUSEL
+			var autoscrolling = true;
+			var $theCarousel = $e.find('.infinite-carousel');
+			
+			$theCarousel.infiniteCarousel().mouseover(function() {
+				autoscrolling = false;
+			}).mouseout(function() {
+				autoscrolling = true;
+			});
+						
+			setInterval(function() {
+				if (autoscrolling) {
+					$theCarousel.trigger('next');
+				}
+			}, 5000);
+			
 		});
 	};
 	$.fn.commonWidgetsLoadDivViaXml = function( sUrl ) {  
@@ -106,8 +122,61 @@
 
 
 
+//Short URL Menu
+$(document).ready(function() {
+	
+	var docHTML = $('html');
+	var shortUrl = $('.story-toolbar .share-url');
+	var shortUrlToggle = $('.story-toolbar .share-url a, .story-toolbar .share-url form button');
+	var shortUrlInput = $('.story-toolbar .share-url form input');
+	
+	//Hide short URL menu when clicking anywhere within the HTML element
+	docHTML.click(function() {
+		if (shortUrl.is('.share-url-visible')) {
+			shortUrl.removeClass('share-url-visible');
+		}
+	});
+	
+	//Prevents short URL menu from hiding when interacting with it by stopping the function from bubbling up
+	shortUrl.click(function(event){
+		event.stopPropagation();
+	});
+	
+	//Show or hide the short URL menu when clicking on the toggle elements, select input value, and disable the link behavior
+	shortUrlToggle.click(function(){
+		if ($(this).closest(shortUrl).is('.share-url-visible')) {
+			$(this).closest(shortUrl).removeClass('share-url-visible');
+		} else {
+			$(this).closest(shortUrl).addClass('share-url-visible');
+		}
+		return false;
+	});
+	
+	//Highlights full URL when input is clicked
+	shortUrlInput.click(function(){
+		$(this).select();
+	});
+	
+});
+
+
+
+
+//ANCHOR MENU FUNCTIONALITY
+$(document).ready(function(){
+	$('.anchor-menu').change(function() {
+		location.hash = $(this).find('option:selected').attr('value');
+	});
+});
+
+
+
+
+
+
 $(document).ready(function()						   
 {
+	
 	//REMOVE HIDDEN JS-CONTROLLED ITEMS
 	$('.js').removeClass('js');
 	
@@ -373,13 +442,6 @@ $(document).ready(function(){
 
 
 
-//LAUNCH COMMON WIDGETS PLUGIN
-$(document).ready(function(){
-	$(document).commonWidgetsJs();
-});
-
-
-
 //Reporter Alerts
 $(document).ready(function(){
 	var formToggle = $('.p-reporter-alert').find('.btn');
@@ -393,3 +455,25 @@ $(document).ready(function(){
 	});
 	
 });
+
+
+
+//LAUNCH COMMON WIDGETS PLUGIN
+$(document).ready(function(){
+	$(document).commonWidgetsJs();
+});
+
+//GLOBAL CACHEBUSTING HELPER
+function cacheBuster(secondsToCache) {
+	var returnedString = "";
+	var newDate = new Date();
+	var seconds = Math.ceil(newDate.getUTCSeconds()/secondsToCache)
+	var dateTime = newDate.getUTCFullYear().toString() + newDate.getUTCMonth().toString() + newDate.getUTCDate().toString();
+	if (secondsToCache <= 3600){dateTime += newDate.getUTCHours().toString();
+		if(secondsToCache > 60){dateTime += Math.ceil(newDate.getUTCMinutes()/(secondsToCache/60))*secondsToCache;}
+		else{dateTime += newDate.getUTCMinutes().toString();}}
+	dateTime += seconds.toString();
+	returnedString = "?cachebuster=" + dateTime;
+	return returnedString;
+}
+

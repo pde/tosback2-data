@@ -82,7 +82,7 @@ if((!fs && typeof(fFlag) != 'undefined' && fFlag == true && checkForeSeeValue("f
 else{
 	//alert("NOT foresee case");//debug
 	var iPerceptionRegulator = '\<script type="text/javascript" src="/us/scripts/survey/doIPerceptionsRegulator.js"\>\</script\>';
-	document.write(iPerceptionRegulator);
+	//document.write(iPerceptionRegulator);
 }
 
 

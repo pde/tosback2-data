@@ -33,21 +33,14 @@ else {return "dev";}
 resolveUrl : function(urlType) {
 var env = this.checkEnvironment();
 var returnUrl = "";
-if (typeof hostServ === 'undefined' || hostServ == "http://www.superpages.com"){
-returnUrl = "https://yellowpages.superpages.com";
-} else {
-returnUrl = hostServ;
-}
-return returnUrl;
-/*
 if(urlType === 'secure'){
 switch(env){
 case 'prod':
 returnUrl = "https://yellowpages.superpages.com";
 break;
 case 'test':
-//returnUrl = "https://sslgypsy-test.superpages.com";
-returnUrl = "http://jt0.superpages.com:9080";
+returnUrl = "https://sslgypsy-test.superpages.com";
+//returnUrl = "http://jt0.superpages.com:9080";
 break;
 case 'dev':
 //returnUrl = "https://sslgypsy-test.superpages.com";
@@ -63,21 +56,20 @@ case 'prod':
 returnUrl = "http://yellowpages.superpages.com";
 break;
 case 'test':
-//returnUrl = "http://gypsy-test.superpages.com";
-returnUrl = "http://jt0.superpages.com:9080";
+returnUrl = "http://gypsy-test.superpages.com";
+//returnUrl = "http://jt0.superpages.com:9080";
 break;
 case 'dev':
 //returnUrl = "http://gypsy-test.superpages.com";
-returnUrl = "http://wal2-rosadodd.supermedia.com:9080";
+returnUrl = "http://" + document.domain + ":9080";
 break;
 default:
-//returnUrl = "http://" + document.domain ;
-returnUrl = "http://wal2-rosadodd.supermedia.com:9080";
+returnUrl = "http://" + document.domain+ ":9080";
+//returnUrl = "http://wal2-rosadodd.supermedia.com:9080";
 break;
 } // End of switch
 return returnUrl;
 }
-*/
 },
 getBaseUrl : function() {
 return this.resolveUrl('unsecure');

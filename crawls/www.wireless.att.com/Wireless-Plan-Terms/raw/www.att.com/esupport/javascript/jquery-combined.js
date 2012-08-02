@@ -3573,7 +3573,8 @@ $.extend($.validator, {
 		rangelength: $.format("Please enter a value between {0} and {1} characters long."),
 		range: $.format("Please enter a value between {0} and {1}."),
 		max: $.format("Please enter a value less than or equal to {0}."),
-		min: $.format("Please enter a value greater than or equal to {0}.")
+		min: $.format("Please enter a value greater than or equal to {0}."),
+		alfaChars:"Please enter only characters [A-Z or a-z]."
 	},
 	
 	autoCreateRanges: false,
@@ -4039,7 +4040,8 @@ $.extend($.validator, {
 		number: {number: true},
 		numberDE: {numberDE: true},
 		digits: {digits: true},
-		creditcard: {creditcard: true}
+		creditcard: {creditcard: true},
+		alfaChars: {alfaChars: true}
 	},
 	
 	addClassRules: function(className, rules) {
@@ -4321,7 +4323,9 @@ $.extend($.validator, {
 		digits: function(value, element) {
 			return this.optional(element) || /^\d+$/.test(value);
 		},
-		
+		alfaChars:function(value,element){			
+			return this.optional(element) || /^[a-zA-Z]+$/.test(value);			 
+		},
 		// http://docs.jquery.com/Plugins/Validation/Methods/creditcard
 		// based on http://en.wikipedia.org/wiki/Luhn
 		creditcard: function(value, element) {

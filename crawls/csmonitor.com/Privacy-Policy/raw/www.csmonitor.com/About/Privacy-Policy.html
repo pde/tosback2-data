@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
 <head>
 
 
@@ -22,9 +22,8 @@
 	<meta property="og:image" content="http://www.csmonitor.com/extension/csm_base/design/csm_design/images/csm_logo_50x50.gif" />
 	<meta property="og:description" content="The Christian Science Monitor is an international news organization that delivers thoughtful, global coverage via its website, weekly magazine, daily news briefing, and email newsletters." />
 	<meta property="og:title" content="Privacy Policy" />
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="imagetoolbar" content="false" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="imagetoolbar" content="false" />
 
 <link rel="Home"   href="http://www.csmonitor.com/" title="CSMonitor.com front page" />
 <link rel="Index"  href="http://www.csmonitor.com/" />
@@ -39,7 +38,7 @@
 
 					
 				<link rel="Alternate" type="application/rss+xml" title="The Christian Science Monitor RSS" href="http://rss.csmonitor.com/feeds/csm" />
-			<link rel="stylesheet" type="text/css" href="../var/ezflow_site/cache/public/stylesheets/cac2799e8fdc0d380c62591c5323bc85_1336635694_all.css" />
+			<link rel="stylesheet" type="text/css" href="../var/ezflow_site/cache/public/stylesheets/cac2799e8fdc0d380c62591c5323bc85_1343205778_all.css" />
 
 
 
@@ -74,7 +73,10 @@
 			                 	
 			                 	if( redirectTarget != document.URL )
 			                 	{
-				                 	window.location = redirectTarget;
+		                            //it won't set a referer
+		                            //this.setReferrer();
+		                            
+				                    window.location = redirectTarget;
 				             	}
 		                     }
 		                     else
@@ -109,18 +111,20 @@
 							  }
 							  
 							  return false;
-		                  }
+		                  },
+		setReferrer      : function()
+		                   {
+		                   	document.cookie = 'cookie_referrer' + '=' + escape( document.referrer ) + ';path=/;domain=csmonitor.com';
+		                   }
 	};
 
 	mobileChecker.run();
 	
 
 </script>
-<script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="../var/ezflow_site/cache/public/javascript/7c31b8a9b227d38600d4c21fe57f45ae_1335945785.js" charset="utf-8"></script>
+<script type="text/javascript" src="../var/ezflow_site/cache/public/javascript/a36d7b2da24a3c2c94d6ea45bd99a228_1340182286.js" charset="utf-8"></script>
 
 <script type="text/javascript">jQuery.noConflict();</script>
-<script src="../../cdn.jquerytools.org/1.2.5/tiny/jquery.tools.min.js"></script>
             <script type='text/javascript'>
         
         var googletag = googletag || {};
@@ -142,12 +146,12 @@
 			googletag.cmd.push(function()
 		{																																																				googletag.defineSlot('/1010203/728x90B_General', [728, 90], 'div-gpt-ad-ad_footer_banner').addService(googletag.pubads());
 																																																										googletag.defineSlot('/1010203/300x250C_General', [300, 250], 'div-gpt-ad-ad_footer_1').addService(googletag.pubads());
-																																																																								googletag.defineSlot('/1010203/300x250A_General', [300, 250], 'div-gpt-ad-ad_block_1').addService(googletag.pubads());
+																																																										googletag.defineSlot('/1010203/300x250A_General', [300, 250], 'div-gpt-ad-ad_block_1').addService(googletag.pubads());
 																																																										googletag.defineSlot('/1010203/300x250B_General', [300, 250], 'div-gpt-ad-ad_block_2').addService(googletag.pubads());
 																																																										googletag.defineSlot('/1010203/300x100A_General', [300, 100], 'div-gpt-ad-ad_block_4').addService(googletag.pubads());
 																																																										googletag.defineSlot('/1010203/728x90A_General', [728, 90], 'div-gpt-ad-top_banner').addService(googletag.pubads());
 																																																										googletag.defineSlot('/1010203/1x1A', [1, 1], 'div-gpt-ad-footer_last_2').addService(googletag.pubads());
-																										googletag.pubads().collapseEmptyDivs();googletag.enableServices();
+																			googletag.pubads().collapseEmptyDivs();googletag.enableServices();
 		
 			
 						
@@ -248,7 +252,9 @@
 		
 		<div class="ui-mNav-right">
 			<div class="ui-facebook-like-fan-page" title="Follow us on Facebook. Click Like, and we'll send top stories to your News Feed.">
-				<iframe src="../../www.facebook.com/plugins/like.php%3Fhref=http%253A%252F%252Fwww.facebook.com%252FChristianScienceMonitor&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>
+				<div class="addthis_toolbox addthis_default_style ">
+				<a class="addthis_button_facebook_like" fb:like:layout="button_count" fb:like:href="http://www.facebook.com/christiansciencemonitor"></a>
+				</div>
 			</div>
 	
 			<div class="search">
@@ -339,33 +345,23 @@
 			
 						<div class="ui-newsticker-wrapper">
 											
-								<div id="newsticker" class="">
-		<div class="kicker">In the news:</div>
+										<div id="newsticker" class="color_red">
+		<div class="kicker">
+			<a href="http://www.pages03.net/christiansciencemonitor/Registration/">				Sign up for FREE E-Newsletters: 
+			</a>		</div>
 
 		<div class="content">
 			<ul>
-																					<li>					                                           
-			
-<a class=""  href="http://www.csmonitor.com/USA/Foreign-Policy/2012/0511/Suicide-bombings-in-Syria-Cease-fire-in-shambles-Al-Qaeda-role-is-feared">Suicide bombings in Syria: Cease-fire in shambles, Al Qaeda role is feared</a>
-</li>
-																	<li>					                                           
-			
-<a class=""  href="http://www.csmonitor.com/World/Asia-Pacific/2012/0511/China-s-standoff-with-the-Philippines-heats-up-with-travel-warnings-oil-drilling">China's standoff with the Philippines heats up with travel warnings, oil drilling</a>
-</li>
-																	<li>					                                           
-			
-<a class=""  href="http://www.csmonitor.com/World/Middle-East/2012/0511/Egyptian-presidential-debate-underscores-Islamist-vs.-establishment-divide-video">Egyptian presidential debate underscores Islamist vs. establishment divide (+video)</a>
-</li>
-																	<li>					                                           
-			
-<a class=""  href="http://www.csmonitor.com/Business/2012/0511/JP-Morgan-2-billion-loss-stirs-memories-of-2008-crisis-video">JP Morgan $2 billion loss stirs memories of 2008 crisis (+video)</a>
-</li>
-																	<li>					                                           
-			
-<a class=""  href="http://www.csmonitor.com/World/Europe/2012/0511/Has-Norway-given-Breivik-exactly-what-he-wanted">Has Norway given Breivik exactly what he wanted?</a>
-</li>
-											
-							</ul>
+						
+																										<li><a href="http://www.pages03.net/christiansciencemonitor/Registration/">Daily Top Stories</a></li>
+																	<li><a href="http://www.pages03.net/christiansciencemonitor/Registration/">Best of the Week - Editor's Picks</a></li>
+																	<li><a href="http://www.pages03.net/christiansciencemonitor/Registration/">Change Agent</a></li>
+																	<li><a href="http://www.pages03.net/christiansciencemonitor/Registration/">Books</a></li>
+																	<li><a href="http://www.pages03.net/christiansciencemonitor/Registration/">BizTech</a></li>
+																	<li><a href="http://www.pages03.net/christiansciencemonitor/Registration/">Opinion &amp; Commentary</a></li>
+																	<li><a href="http://www.pages03.net/christiansciencemonitor/Registration/">Politics</a></li>
+																	<li><a href="http://www.pages03.net/christiansciencemonitor/Registration/">Food (Stir It Up!)</a></li>
+												</ul>
 		</div>
 		
 		<div class="clear"></div>
@@ -578,33 +574,43 @@ jQuery("select.SearchableSelect").change(function()
 			<ol>
 							
 	
-<li class="c-article">					
-								
-<a class=""  href="http://www.csmonitor.com/World/Asia-Pacific/2012/0511/North-Korean-women-sold-into-slavery-in-China">North Korean women sold into 'slavery' in China</a>
+<li class="c-article">		        				
+				
+		
+																
+<a class="video-icon"  href="http://www.csmonitor.com/USA/Latest-News-Wires/2012/0802/Psychiatrist-tried-to-discuss-Holmes-with-security-staff-according-to-report-video">Psychiatrist tried to discuss Holmes with security staff, according to report (+video)</a>
 </li>
 							
 	
-<li class="c-article">					
-																										
-<a class=""  href="http://www.csmonitor.com/USA/Elections/President/2012/0513/Is-Obama-the-first-gay-president-as-Newsweek-proclaims">Is Obama the 'first gay president' as Newsweek proclaims?</a>
-</li>
-							
-	
-<li class="c-article">					
+<li class="c-article">		        				
+				
+		
 																							
-<a class=""  href="http://www.csmonitor.com/USA/Society/2012/0512/Did-Time-sexualize-breastfeeding-with-its-Are-you-mom-enough-cover">Did Time sexualize breastfeeding with its 'Are you mom enough' cover?</a>
+<a class=""  href="http://www.csmonitor.com/World/Olympics/2012/0802/Michael-Phelps-not-best-Olympian-ever-So-says-chief-of-London-Olympics">Michael Phelps not best Olympian ever? So says chief of London Olympics</a>
 </li>
 							
 	
-<li class="c-article">					
-											
-<a class=""  href="http://www.csmonitor.com/World/Americas/2012/0513/Massacre-in-Mexico-deepens-country-s-violent-image">Massacre in Mexico deepens country's violent image</a>
-</li>
-							
-	
-<li class="c-article">					
+<li class="c-article">		        				
+				
+		
 																									
-<a class="video-icon"  href="http://www.csmonitor.com/Science/2012/0509/How-a-humongous-garbage-patch-in-the-Pacific-breeds-new-bugs-video">How a humongous garbage patch in the Pacific breeds new bugs (+video)</a>
+<a class="video-icon"  href="http://www.csmonitor.com/Science/2012/0802/Will-NASA-s-2.5-billion-Mars-rover-crash-on-Sunday-video">Will NASA's $2.5 billion Mars rover crash on Sunday? (+video)</a>
+</li>
+							
+	
+<li class="c-article">		        				
+				
+		
+																									
+<a class="video-icon"  href="http://www.csmonitor.com/Science/2012/0802/Stephen-Colbert-offers-a-tip-of-the-hat-to-NASA-s-Mars-Rover-video">Stephen Colbert offers a tip of the hat to NASA's Mars Rover (+video)</a>
+</li>
+							
+	
+<li class="c-article">		        				
+				
+		
+																							
+<a class=""  href="http://www.csmonitor.com/World/Olympics/2012/0801/Michael-Phelps-who-Nathan-Adrian-leads-US-on-night-for-the-underdogs">Michael Phelps who? Nathan Adrian leads US on night for the underdogs.</a>
 </li>
 						</ol>
 		</div>
@@ -678,7 +684,7 @@ jQuery("select.SearchableSelect").change(function()
 		
 	    
 					    <div id="address-ffd780eda0d5bf1eade6a6eee7697e6f-c4b623bcab7f3d7b25f8114a4587b741">
-			    	 										<div id="address-4372f1b6c0331b981e6c26fa8778a3a1-6b098de76e386a8a7368b90c192eb5d0">
+			    	 													<div id="address-4372f1b6c0331b981e6c26fa8778a3a1-6b098de76e386a8a7368b90c192eb5d0">
 					<h3>Editors' Picks:</h3>	 
 	<div class="podBrdr">
 		<div class="pod">
@@ -690,68 +696,79 @@ jQuery("select.SearchableSelect").change(function()
     
         
     
-            <a href="http://www.csmonitor.com/USA/Society/2012/0512/Mother-s-Day-From-June-Cleaver-to-Gloria-Pritchett-5-great-TV-moms"><img src="../var/ezflow_site/storage/images/media/content/2012/0512-mother-s-day-tv-moms.jpg/12543679-1-eng-US/0512-mother-s-day-TV-moms.jpg_thumbnail_90_cropped.jpg" width="90" height="60"  alt="" title="" /></a>    
+            <a href="http://www.csmonitor.com/World/2012/0727/Turmoil-in-Mali-Is-it-another-Somalia"><img src="../var/ezflow_site/storage/images/media/content/2012/0806-weekly/0727-obriefing-mali-tuareg/13278096-1-eng-US/0727-obriefing-mali-tuareg_thumbnail_90_cropped.jpg" width="90" height="60"  alt="" title="" /></a>    
     
     
-    	</div><h4 class="ui-caption">		<a href="http://www.csmonitor.com/USA/Society/2012/0512/Mother-s-Day-From-June-Cleaver-to-Gloria-Pritchett-5-great-TV-moms">Mother’s Day: From June Cleaver to Gloria Pritchett, 5 great TV moms </a></h4>		
+    	</div>				<a href="http://www.csmonitor.com/tags/special/briefing"><span class="kicker storyKicker">Briefing</span></a>
+	<h4 class="ui-caption">		<a href="http://www.csmonitor.com/World/2012/0727/Turmoil-in-Mali-Is-it-another-Somalia">Turmoil in Mali: Is it another Somalia?</a></h4>		
 		<p class="ui-summary">					
-Why settle for one great mom when, as any TV viewer knows, you can adopt a series of them?			</p>						</li>
+Islamists hijacked a long-running Tuareg rebellion in Mali and have turned the north into a strict Islamist state. Here are four key questions about where things might go from here.			</p>						</li>
 																				
 
-<li class="c-article">						
-																							
-<a class=""  href="http://www.csmonitor.com/USA/Society/2012/0512/Did-Time-sexualize-breastfeeding-with-its-Are-you-mom-enough-cover">Did Time sexualize breastfeeding with its 'Are you mom enough' cover?</a>
+<li class="c-list">			
+<a href="http://www.csmonitor.com/USA/Military/2012/0802/Top-3-lessons-the-US-military-has-learned-in-Afghanistan-war/Watch-the-money" >Top 3 lessons the US military has learned in Afghanistan</a>
 </li>
 																				
 
-<li class="c-article">						
-																	
-<a class=""  href="http://www.csmonitor.com/USA/Society/2012/0511/Share-of-working-moms-nearing-all-time-high-but-has-it-gotten-any-easier">Share of working moms nearing all-time high, but has it gotten any easier?</a>
+<li class="c-article">		        				
+				
+					
+											
+<a class=""  href="http://www.csmonitor.com/World/Europe/2012/0802/Boris!-Mayor-of-London-is-biggest-winner-at-London-Olympics">Boris! Mayor of London is biggest winner at London Olympics</a>
 </li>
 																				
 
-<li class="c-article">						
-								
-<a class=""  href="http://www.csmonitor.com/World/Asia-Pacific/2012/0511/North-Korean-women-sold-into-slavery-in-China">North Korean women sold into 'slavery' in China</a>
+<li class="c-article">		        				
+				
+					
+																									
+<a class="video-icon"  href="http://www.csmonitor.com/Science/2012/0802/India-plans-2013-mission-to-Mars-video">India plans 2013 mission to Mars (+video)</a>
 </li>
 																				
 
 <li class="c-blogpost">			
-												<a href="http://www.csmonitor.com/World/Global-News"><span class="kicker">Global News Blog:</span></a>
+												<a href="http://www.csmonitor.com/World/Making-a-difference/Change-Agent"><span class="kicker">Change Agent:</span></a>
 				
-										
-<a class=""  href="http://www.csmonitor.com/World/Global-News/2012/0511/Italian-museum-sets-its-art-on-fire-to-protest-lack-of-government-funding">
-			Italian museum sets its art on fire to protest lack of government funding
+																						
+<a class=""  href="http://www.csmonitor.com/World/Making-a-difference/Change-Agent/2012/0802/12-innovations-that-could-combat-drought">
+			12 innovations that could combat drought
 	</a>
 </li>
 												</ul>
 		</div>
 	</div>				</div>
-											    </div>
+								    </div>
 		
 	    
 					    <div id="address-ffd780eda0d5bf1eade6a6eee7697e6f-c633607c582a6864018339c54a5eea8c">
-			    							    <div id="address-890841de99287fa09d6a04b3db2ea82b-0e51cb118be567dd741467f700803826">
-			    	    
-                                                           
+			    							    <div id="address-890841de99287fa09d6a04b3db2ea82b-89549902acb6ddd0ca5df13295b91caa">
+			    
 
+
+<div class="storyBlock tight btm">
+			<div class="storyBlock promo">
+			<h3>Today at the Olympics</h3>
+		
+		
+																															
 	
-							 
-
+	
+			    
+	<div class="podBrdr">
+		
 				
-					
-			
-																			
-			
-	<div class="storyBlock promo">
-		<h3><em>Photos of the day</em></h3>
-		<a class="potdDate gal" href="http://www.csmonitor.com/Photo-Galleries/Photos-of-the-Day/2012/Photos-of-the-day-05-12">05.13.12 &raquo;</a>
-		<div class="podBrdr" style="margin: 0px;">
-			<a href="http://www.csmonitor.com/Photo-Galleries/Photos-of-the-Day/2012/Photos-of-the-day-05-12"><img src="../var/ezflow_site/storage/images/media/content/csm-photo-galleries-images/photos-of-the-day-images/2012/0512/288/12543309-1-eng-US/288.jpg" alt="" /></a>
-		</div>
+    
+        
+    
+            <a href="http://www.csmonitor.com/Photo-Galleries/In-Pictures/Today-at-the-Olympics"><img src="../var/ezflow_site/storage/images/media/content/promos-images/today-olympics-promos/promo-0731-01-today-olympics-288x122/13318714-1-eng-US/promo-0731-01-today-olympics-288x122_thumbnail_288_cropped.jpg" width="288" height="122"  alt="" title="" /></a>    
+    
+    
+    	</div>
+	    
+    <a href="http://www.csmonitor.com/Photo-Galleries/In-Pictures/Today-at-the-Olympics">Today at the Olympics</a>    
+    </div>
 	</div>
-	
-	        		    </div>
+		    </div>
 		
 	    
 			    </div>
@@ -765,19 +782,17 @@ Why settle for one great mom when, as any TV viewer knows, you can adopt a serie
 	      <!-- facebook like -->
 		<div style="float: left; width: 160px; height: 41px; overflow: hidden; margin: 11px 0 0 0; padding: 0; background-color: #fff;">
 			<p style="width: auto; height: auto; margin: 0; padding: 1px 0 5px 0;"><a href="http://www.facebook.com/ChristianScienceMonitor" style="font-family: arial, sans-serif; font-size: 11px; color: #000; text-decoration: none; font-weight: normal; line-height: 1.15em;"><b>CSMonitor.com</b> on Facebook</a></p>
-			<iframe src="../../www.facebook.com/plugins/like.php%3Fhref=facebook.com%252FChristianScienceMonitor&amp;layout=button_count&amp;show_faces=true&amp;width=110&amp;action=like&amp;font=arial&amp;color.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:110px; height:21px;" allowTransparency="true"></iframe>
+			<fb:like href="http://facebook.com/ChristianScienceMonitor" send="false" layout="button_count" width="110" show_faces="false" font="arial"></fb:like>
 		</div>
 		<div style="float: none; clear: both; width: 0; height: 0; margin: 0; padding: 0;">&nbsp;</div>
 	</div>
 	<!-- divider solid line 01 -->
 	<div style="width:254px; border-bottom:1px solid #ccc; line-height:0px; padding:0; margin:11px 0 0 6px;"></div>
 	<!-- overflow -->	
-	<div style="width:296px; height: 255px; overflow:auto;">
-		<!-- facebook recommendations -->
-		<div style="width: 260px; height: 590px; overflow: hidden; margin: 0; padding: 0; background-color: #fff;">
-			<iframe src="../../www.facebook.com/plugins/recommendations.php%3Fsite=www.csmonitor.com&amp;width=270&amp;height=590&amp;header=false&amp;colorscheme=light&amp;font=arial&amp;border_color=%2523fff.html" scrolling="true" frameborder="0" style="border:none; overflow:hidden; width:278px; height:590px;" allowTransparency="true"></iframe>
-		</div>
-    </div>
+	<div style="width:296px; height: 255px; overflow:auto; position:relative;">
+	<!-- facebook recommendations -->
+		<fb:recommendations site="www.csmonitor.com" width="270" height="590" header="false" border_color="#fff" font="arial"></fb:recommendations>
+        </div>
 	<!--/overflow-->
 </div>
 				    </div>
@@ -810,35 +825,229 @@ Why settle for one great mom when, as any TV viewer knows, you can adopt a serie
 		
 	    
 					    <div id="address-ffd780eda0d5bf1eade6a6eee7697e6f-1c417bcf3d2272e7987a3f9173800702">
-			    				<!-- standard PMAD module -->
-<div style="width: 300px; margin: 0 0 30px 0; padding: 0;">
-	<div style="width: auto; height: auto; border: 2px solid #eaf2ee; padding: 4px 4px 4px 4px;">	
+			    				<style type="text/css">
+<!--
+
+.gg_clear {
+	clear: both;
+	float: none;
+	margin: 0;
+	padding: 0;
+	width: 0;
+	height: 0;
+	}
+	
+#gg_container {
+	width: auto;
+	height: auto;
+	margin: 0 0 30px 0;
+	padding: 0;
+	border: 7px solid #ff9933;
+	border-bottom: 14px solid #ff9933;
+	background-color: #ff9933;
+	}
+
+#gg_container p.gg_header {
+	display: block;
+	width: 286px;
+	width: auto;
+	height: 78px;
+	margin: 0;
+	padding: 0;
+	text-indent: -5000px;
+	background-image: url("../var/ezflow_site/storage/images/media/content/csm-publishing/sponsor-images/give-good-module/doing-good_header_v03/12523355-1-eng-US/doing-good_header_v03.png");
+	background-repeat: no-repeat;
+    background-position: 7px 20px;
+	background-color: #ff9933;
+	}
+
+#gg_container #gg_scroll_top {
+	width: auto;
+	height: 13px;
+	margin: 0 7px 0 7px;
+	padding: 0 7px 0 7px;
+	overflow: hidden;
+	background-color: #fff;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	}
+
+/* content scroll box */
+	
+#gg_container #gg_scroll { 
+	width: auto;
+	height: 275px;
+	overflow: auto;
+	margin: 0 7px 0 7px;
+	padding: 0 7px 7px 7px;
+	background-color: #fff;
+	}
+
+#gg_container #gg_scroll .gg_intro {
+	font-family: 'Georgia', 'Times New Roman', 'Times', serif;
+	font-style: italic;
+	font-size: 12px;
+	color: #666;
+	margin: 5px 10px 10px 7px;
+	padding: 0;
+	line-height: 1.5em;
+	}
+
+#gg_container #gg_scroll .gg_intro a {
+	color: #ff9933;
+	color: #fe7214;
+	text-decoration: none;
+	}
+	
+#gg_container #gg_scroll .gg_intro a:hover {
+	text-decoration: underline;
+	}
+	
+#gg_container #gg_scroll .gg_caption {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 11px;
+	color: #666;
+	line-height: 1.25em;
+	margin: 0 0 3px 0;
+	padding: 0;
+	}
+
+#gg_container #gg_scroll .gg_headline {
+	float: none;
+	clear: both;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 16px;
+	line-height: 1.25em;
+	font-weight: bold;
+	margin: 7px 0 7px 0;
+	padding: 0 6px 0 6px;
+	}
+
+#gg_container #gg_scroll .gg_headline a {
+    color: #205d87;
+    text-decoration: none;
+	}
+
+#gg_container #gg_scroll .gg_headline a:hover {
+    text-decoration: underline;
+	}
+			
+#gg_container #gg_scroll .gg_summary {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 1.25em;
+	color: #333;
+	margin: 0;
+	padding: 0 6px 5px 6px;
+	}
+	
+#gg_container #gg_scroll_btm {
+	width: auto;
+	height: 13px;
+	margin: 0 7px 0 7px;
+	padding: 0 7px 0 7px;
+	overflow: hidden;
+	background-color: #fff;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	}
+	}
+
+/* footer container */
+
+#gg_container #gg_footer_container {
+	width: auto;
+	height: auto;
+	margin: 0;
+	padding: 14px 0 7px 0;
+	background-color: #ff9933;
+	}
+	
+#gg_container #gg_footer_container p.gg_btyb {
+	float: right;
+	width: auto;
+	height: auto;
+	text-align: right;
+	margin: 0;
+	padding: 17px 0 0 0;
+	font-family: arial, helvetica, sans-serif;
+	color: #fff;
+	font-size: 10px;
+	font-weight: normal;
+	font-style: italic;
+	background-color: transparent;
+	}
+	
+#gg_container #gg_footer_container #gg_sponsor_logo_container {
+	float: right;
+	width: auto;
+	height: auto;
+	margin: 0 0 0 8px;
+	padding: 0;
+	background-color: transparent;
+	}
+	
+#gg_container #gg_footer_container #gg_sponsor_logo_container a.gg_sponsor {
+	display: block;
+	width: 200px;
+	height: 52px;
+	
+	width: 85px;
+	height: 46px;
+	
+	margin: 0;
+	padding: 0;
+	text-indent: -5000px;
+	background-image: url("../var/ezflow_site/storage/images/media/images/csm-publishing/sponsor-images/give-good-module/cws-logo_v01/11057872-2-eng-US/cws-logo_v01_large.jpg");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	}
 		
-		<!-- PMAD intro -->
-		<div style="width: auto; height: auto; padding: 10px 6px 10px 6px; margin: 0 0 4px 0; background-color: #f2f7f4;">
-			<p style="font-family: 'Georgia', 'Times New Roman', 'Times', serif; font-size: 11px; margin: 0; padding: 0; line-height: 1.5em;">What happens when ordinary people decide to pay it forward? Extraordinary change. See how <a style="color: #205d87; text-decoration: none; font-style: italic;" href="http://www.csmonitor.com/World/making-a-difference">individuals are making a difference</a>... <!-- , finding solutions, overcoming adversity, and giving back globally.--></p>
-		</div>	
+-->
+</style>
+
+<!-- gg container -->
+<div id="gg_container">
+
+	<p class="gg_header">Give Good</p>
+	
+	
+	<div id="gg_scroll_top">&nbsp;</div>
+	<div id="gg_scroll">
+        
+        <!-- PMAD intro -->
+		<p class="gg_intro">What happens when ordinary people decide to pay it forward? <a href="http://www.csmonitor.com/World/making-a-difference">Extraordinary change...</a></p>
 		
-		<!-- article image -->
+        <!-- article image -->
 		<div style="width: auto; height: auto; padding: 3px 6px 5px 6px; margin: 0; background-color: #fff;">
-			<a href="http://www.csmonitor.com/World/Making-a-difference/2012/0507/They-opened-their-home-and-hearts-to-South-Africa-s-abandoned-babies"><img style="float: left; border: 0; padding: 0 0 0 0; margin: 0 10px 7px 0; width: 132px; height: 88px;" src="../var/ezflow_site/storage/images/media/content/promos-images/pmad-promo/pmad_mdeklerk/12479527-1-eng-US/pmad_mdeklerk.jpg"></a>
+			<a href="http://www.csmonitor.com/World/Making-a-difference/2012/0727/Chepe-Ubaque-survived-Colombia-s-mean-streets.-Now-he-helps-others-do-the-same"><img style="float: left; border: 0; padding: 0 0 0 0; margin: 0 10px 7px 0; width: 132px; height: 88px;" src="../var/ezflow_site/storage/images/media/content/promos-images/pmad-promo/0727-pmad-ubaque-132/13276894-1-eng-US/0727-pmad-ubaque-132.jpg"></a>
 			<!-- image caption -->
-			<p style="font-family: 'Arial', 'Helvetica', sans-serif; font-size: 11px; color: #666; line-height: 1.25em; margin: 3px 0 3px 0; padding: 0;">Lanie and Christo de Klerk, directors of the Baby Moses Baby Sanctuary, in front of one of their houses for children near Johannesburg, South Africa.
-</p>
+			<p class="gg_caption">Jose ‘Chepe’ Ubaque runs workshops for at-risk teens and preteens in hip-hop, graffiti, break dancing, and journalism.</p>
 		</div>
-		
 		<!-- headline -->		
-		<p style="float: none; clear: both; font-family: Georgia, Times New Roman, serif; font-size: 11px; line-height: 1.25em; font-weight: bold; margin: 7px 0 2px 0; padding: 0 6px 0 6px;"><a style="color: #205d87; text-decoration: none;" href="http://www.csmonitor.com/World/Making-a-difference/2012/0507/They-opened-their-home-and-hearts-to-South-Africa-s-abandoned-babies">They opened their home – and hearts – to South Africa's abandoned babies</a></p>
-		
+		<p class="gg_headline"><a href="http://www.csmonitor.com/World/Making-a-difference/2012/0727/Chepe-Ubaque-survived-Colombia-s-mean-streets.-Now-he-helps-others-do-the-same">After surviving Colombia's mean streets, he helps others do the same</a></p>
 		<!-- summary -->
-		<p style="font-family: 'Arial', 'Helvetica', sans-serif; font-size: 12px; line-height: 1.25em; color: #333; margin: 0; padding: 0 6px 5px 6px;">Christo and Lanie de Klerk have founded the Baby Moses sanctuary for abandoned babies in South Africa.</p>
+		<p class="gg_summary">Hip-hop, graffiti, break dancing, and journalism programs give teens in Colombia a safe way to express themselves – and avoid violence.</p>
+
+	</div><!-- /igg scroll -->
+	
+	<div id="gg_scroll_btm">&nbsp;</div>
+    
+    <!-- 
+	<div id="gg_footer_container">
+		<div id="gg_sponsor_logo_container"><a class="gg_sponsor" href="http://www.churchworldservice.org">Church World Service</a></div>
+		<p class="gg_btyb">Underwritten by:</p>
+		<div class="gg_clear">&nbsp;</div>
 	</div>
-</div><!-- /standard PMAD module -->
+    -->
+
+	<div class="gg_clear">&nbsp;</div>
+</div><!-- /gg container -->
 				    </div>
 		
 	    
 					    <div id="address-ffd780eda0d5bf1eade6a6eee7697e6f-04ef6c85ee96b0606b6523c4dfd8fb96">
-			    				<style>
+			    				<style type="text/css">
 <!--
 
 #social-media_ad-container {
@@ -846,7 +1055,7 @@ border: 2px solid #eaf2ee;
 padding: 10px 10px 10px 10px;
 margin: 0 0 30px 0;
 width: auto;
-height: 73px;
+height: auto;
 overflow: hidden;
 }
 
@@ -868,8 +1077,8 @@ text-decoration: underline;
 width: 240px;
 height: 32px;
 padding: 0;
-margin: 10px auto 0 auto;
-align: center;
+margin: 10px auto 5px auto;
+text-align: center;
 /* border: 1px solid #000; */
 }
 
@@ -932,18 +1141,13 @@ margin: 0;
 </style>
 
 <div id="social-media_ad-container">
-    <div id="header">
-    	<p class="headline">Become part of the Monitor community</p>
-        <!-- <p class="summary">10,000 FB fans <span class="pipe">|</span> 4,300 on Twitter <span class="pipe">|</span> 50K Email subscribers <span class="pipe">( <a href="http://links.mkt1259.com/servlet/SignUpForm?f=227712">sign up!</a> )</span></p> -->
-		<p class="summary">36K on Facebook <span class="pipe">|</span> 12K on Twitter <span class="pipe">|</span> 2,250 on YouTube</p>
-    </div>
+    <div id="header"><p class="headline">Become part of the Monitor community</p></div>
     <div id="icons">
-        <a href="http://www.facebook.com/ChristianScienceMonitor" target="blank"><img class="icon" src="../var/ezflow_site/storage/images/media/images/csm-publishing/misc/social-media-icons-and-logos/facebook_32x32/7483344-1-eng-US/facebook_32x32.gif" alt="Become a fan!" title="Become a fan!" /></a>
-        <a href="http://www.twitter.com/CSMonitor" target="blank"><img class="icon" src="../var/ezflow_site/storage/images/media/images/csm-publishing/misc/social-media-icons-and-logos/twitter_32x32/7483310-1-eng-US/twitter_32x32.gif" alt="Follow us!" title="Follow us!" /></a>
-        <!-- buzz <a href="http://www.google.com/profiles/csmonitoronline#buzz" target="blank"><img class="icon" src="http://www.csmonitor.com/var/ezflow_site/storage/images/media/images/csm-publishing/misc/social-media-icons-and-logos/google-buzz_32x32/7483219-1-eng-US/google-buzz_32x32.gif" alt="Connect on Buzz!" title="Connect on Buzz!" /></a> -->
-        <a href="http://www.youtube.com/csmonitor" target="blank"><img class="icon" src="../var/ezflow_site/storage/images/media/images/csm-publishing/misc/social-media-icons-and-logos/youtube_32x32/9527530-1-eng-US/youtube_32x32.png" alt="YouTube" title="YouTube" /></a>
-        <a href="http://www.linkedin.com/groups?gid=119841&trk=myg_ugrp_ovr" target="blank"><img class="icon" src="../var/ezflow_site/storage/images/media/images/csm-publishing/misc/social-media-icons-and-logos/linked-in_32x32/7483327-1-eng-US/linked-in_32x32.gif" alt="Link up with us!" title="Link up with us!" /></a>
-        <a href="http://www.csmonitor.com/About/Subscriptions/RSS" target="blank"><img class="icon-last" src="../var/ezflow_site/storage/images/media/images/csm-publishing/misc/social-media-icons-and-logos/rss_32x32/7483236-1-eng-US/rss_32x32.gif" alt="See our feeds!" title="See our feeds!" /></a>
+        <a href="http://www.facebook.com/ChristianScienceMonitor" target="blank"><img class="icon" src="../var/ezflow_site/storage/images/media/content/csm-publishing/misc/social-media-icons-and-logos/csm-community/facebook_32x32/12967400-1-eng-US/facebook_32x32.png" alt="Become a fan!" title="Become a fan!" /></a>
+        <a href="http://www.twitter.com/CSMonitor" target="blank"><img class="icon" src="../var/ezflow_site/storage/images/media/content/csm-publishing/misc/social-media-icons-and-logos/csm-community/twitter_02_32x32/12975830-1-eng-US/Twitter_02_32x32.png" alt="Follow us!" title="Follow us!" /></a>
+        <a href="https://plus.google.com/u/0/b/106478337234414923781/106478337234414923781/posts" target="blank"><img class="icon" src="../var/ezflow_site/storage/images/media/content/csm-publishing/misc/social-media-icons-and-logos/csm-community/google_32x32/12967558-1-eng-US/Google_32x32.png" alt="Google+" title="Google+" /></a>
+        <a href="http://www.youtube.com/user/csmonitor100?feature=results_main" target="blank"><img class="icon" src="../var/ezflow_site/storage/images/media/content/csm-publishing/misc/social-media-icons-and-logos/csm-community/youtube_32x32/12967588-1-eng-US/Youtube_32x32.png" alt="YouTube" title="YouTube" /></a>
+        <a href="http://www.csmonitor.com/About/Subscriptions/RSS" target="blank"><img class="icon-last" src="../var/ezflow_site/storage/images/media/content/csm-publishing/misc/social-media-icons-and-logos/csm-community/rss_32x32/12967638-1-eng-US/RSS_32x32.png" alt="See our feeds!" title="See our feeds!" /></a>
 	</div>
 </div>
 				    </div>
@@ -974,23 +1178,78 @@ margin: 0;
 		
 					
 														
-										<div id="spotlights" class="column span-940 last" >
+							<div id="spotlights" class="column span-940 last" >
 			<ul id="spotLightcarousel_5fc0ae56afaba1720f79cfc0d2b52619" class="jcarousel-skin-csmonitorlong">
 									<li>
 						
-<div class="spotLCell">                        <h4><a class="header" href="http://www.csmonitor.com/The-Culture">The Culture &raquo;</a></h4>
-		        											<div class="thumbnail">
+<div class="spotLCell">						<h4><a class="header" href="http://www.csmonitor.com/Innovation">Innovation &raquo;</a></h4>
+																															<div class="thumbnail">
 		
 			
     
         
     
-            <a href="http://www.csmonitor.com/The-Culture/Movies/2012/0511/I-Wish-movie-review"><img src="../var/ezflow_site/storage/images/media/content/2012/05-11iwish/12540659-1-eng-US/05-11iwish_thumbnail_132.jpg" width="132" height="105"  alt="" title="" /></a>    
+            <a href="http://www.csmonitor.com/Innovation/Horizons/2012/0802/iPhone-5-displays-will-ship-this-month-says-Sharp-chief"><img src="../var/ezflow_site/storage/images/media/content/2012/0620-tongs/13344906-1-eng-US/0620-tongs_thumbnail_132.jpg" width="132" height="87"  alt="" title="" /></a>    
     
     
     	</div>
 <h5>
-	<a href="http://www.csmonitor.com/The-Culture/Movies/2012/0511/I-Wish-movie-review">I Wish: movie review</a>
+	<a href="http://www.csmonitor.com/Innovation/Horizons/2012/0802/iPhone-5-displays-will-ship-this-month-says-Sharp-chief">iPhone 5 displays will ship this month, says Sharp chief</a>
+</h5>
+</div>
+					</li>
+									<li>
+						
+<div class="spotLCell">					<h4><a class="header" href="http://www.csmonitor.com/Science">Science &raquo;</a></h4>
+																										<div class="thumbnail">
+		
+			
+    
+        
+    
+            <a href="http://www.csmonitor.com/Science/2012/0802/Google-creates-virtual-tour-of-Kennedy-Space-Center"><img src="../var/ezflow_site/storage/images/media/content/2012/08-02-kennedy-space-center/13343570-1-eng-US/08-02-KENNEDY-SPACE-CENTER_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
+    
+    
+    	</div>
+<h5>
+	<a href="http://www.csmonitor.com/Science/2012/0802/Google-creates-virtual-tour-of-Kennedy-Space-Center">Google creates virtual tour of Kennedy Space Center</a>
+</h5>
+</div>
+					</li>
+									<li>
+						
+<div class="spotLCell">						<h4><a class="header" href="http://www.csmonitor.com/Innovation">Innovation &raquo;</a></h4>
+																															<div class="thumbnail">
+		
+			
+    
+        
+    
+            <a href="http://www.csmonitor.com/Innovation/Horizons/2012/0801/Microsoft-puts-a-bow-on-Windows-8-sets-official-release-date"><img src="../var/ezflow_site/storage/images/media/content/2012/0728-surface/13331766-1-eng-US/0728-surface_thumbnail_132.jpg" width="132" height="83"  alt="" title="" /></a>    
+    
+    
+    	</div>
+<h5>
+	<a href="http://www.csmonitor.com/Innovation/Horizons/2012/0801/Microsoft-puts-a-bow-on-Windows-8-sets-official-release-date">Microsoft puts a bow on Windows 8, sets official release date</a>
+</h5>
+</div>
+					</li>
+									<li>
+						
+<div class="spotLCell">						<h4><a class="header" href="http://www.csmonitor.com/World">World &raquo;</a></h4>
+						<div class="thumbnail">
+		
+			
+    
+        
+    
+            <a href="http://www.csmonitor.com/World/Asia-Pacific/2012/0801/Inside-North-Korea-more-cellphones-and-traffic-lights-but-real-change-lags"><img src="../var/ezflow_site/storage/images/media/content/2012/0806-weekly/0806-onorthkorea-01-focus-north-korea/13312976-1-eng-US/0806-onorthkorea-01-focus-north-korea_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
+    
+    
+    	</div>
+<h5>
+			<a href="http://www.csmonitor.com/tags/special/focus"><span class="kicker storyKicker">Focus</span>:</a>
+	<a href="http://www.csmonitor.com/World/Asia-Pacific/2012/0801/Inside-North-Korea-more-cellphones-and-traffic-lights-but-real-change-lags">Inside North Korea, more cellphones and traffic lights, but real change lags</a>
 </h5>
 </div>
 					</li>
@@ -1003,96 +1262,61 @@ margin: 0;
 																						
 			<div class="thumbnail">
 			
-				
+			
     
         
     
-            <a href="http://www.csmonitor.com/Books/2012/0511/Yogi-Berra-21-quotes-for-his-birthday/Reciprocity"><img src="../var/ezflow_site/storage/images/media/content/2012/0123/1-23-yogi1/11534572-2-eng-US/1-23-yogi1_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
+            <a href="http://www.csmonitor.com/Books/2012/0802/James-Baldwin-10-insightful-quotes-on-his-birthday/Hatred-s-self-destruction"><img src="../var/ezflow_site/storage/images/media/content/2012/07-18baldwin/13181562-1-eng-US/07-18baldwin_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
     
     
     		</div>
 		
 	<h5>
-		<a href="http://www.csmonitor.com/Books/2012/0511/Yogi-Berra-21-quotes-for-his-birthday/Reciprocity">Yogi Berra: 21 quotes for his birthday</a>
+		<a href="http://www.csmonitor.com/Books/2012/0802/James-Baldwin-10-insightful-quotes-on-his-birthday/Hatred-s-self-destruction">James Baldwin: 10 insightful quotes on his birthday</a>
 	</h5>
 </div>
 					</li>
 									<li>
 						
-<div class="spotLCell">                        <h4><a class="header" href="http://www.csmonitor.com/The-Culture">The Culture &raquo;</a></h4>
-		        											<div class="thumbnail">
+<div class="spotLCell">						<h4><a class="header" href="http://www.csmonitor.com/World">World &raquo;</a></h4>
+																															<div class="thumbnail">
 		
 			
     
         
     
-            <a href="http://www.csmonitor.com/The-Culture/Movies/2012/0510/Dark-Shadows-movie-review-trailer"><img src="../var/ezflow_site/storage/images/media/content/2012/05-10dshadows/12523385-1-eng-US/05-10dshadows_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
+            <a href="http://www.csmonitor.com/World/Olympics/2012/0731/Michael-Phelps-wins-record-19th-medal-but-did-you-see-Chad-le-Clos"><img src="../var/ezflow_site/storage/images/media/content/2012/0731-phelps-medal-record.jpg/13320834-1-eng-US/0731-Phelps-medal-record.jpg_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
     
     
     	</div>
 <h5>
-	<a href="http://www.csmonitor.com/The-Culture/Movies/2012/0510/Dark-Shadows-movie-review-trailer">Dark Shadows: movie review (+trailer)</a>
+	<a href="http://www.csmonitor.com/World/Olympics/2012/0731/Michael-Phelps-wins-record-19th-medal-but-did-you-see-Chad-le-Clos">Michael Phelps wins record 19th medal, but did you see Chad le Clos?</a>
 </h5>
 </div>
 					</li>
 									<li>
-						
-<div class="spotLCell">                            <h4><a class="header" href="http://www.csmonitor.com/World">World &raquo;</a></h4>
-		        													<div class="thumbnail">
+						<div class="spotLCell">
+            <h4>Making a Difference</h4>
+        	    
+					
 		
+		   		
+				
+																						
+							
 			
     
         
     
-            <a href="http://www.csmonitor.com/World/Americas/Latin-America-Monitor/2012/0511/Rio-20-Rio-s-dry-run-for-the-Olympics-and-World-Cup"><img src="../var/ezflow_site/storage/images/media/content/2012/0511-rio-20-olympics-world-cup/12532535-1-eng-US/0511-rio-20-olympics-world-cup_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
+            <img src="../var/ezflow_site/storage/images/media/content/promos-images/0727-pmad-ubaque-132/13277110-1-eng-US/0727-pmad-ubaque-132_thumbnail_132_cropped.jpg" width="132" height="88"  alt="" title="" />    
     
     
-    	</div>
-<h5>
-	<a href="http://www.csmonitor.com/World/Americas/Latin-America-Monitor/2012/0511/Rio-20-Rio-s-dry-run-for-the-Olympics-and-World-Cup">Rio+20: Rio's dry run for the Olympics and World Cup</a>
-</h5>
-</div>
-					</li>
+    						    	    <h5><a href="http://www.csmonitor.com/World/Making-a-difference/2012/0727/Chepe-Ubaque-survived-Colombia-s-mean-streets.-Now-he-helps-others-do-the-same">After surviving Colombia's mean streets, he helps others do the same</a></h5>
+	</div><!-- /spotLCell -->					</li>
 									<li>
 						
-<div class="spotLCell">                        <h4><a class="header" href="http://www.csmonitor.com/The-Culture">The Culture &raquo;</a></h4>
-		        											<div class="thumbnail">
-		
-			
-    
-        
-    
-            <a href="http://www.csmonitor.com/The-Culture/TV/2012/0511/American-Idol-final-three-give-tearful-goodbye-to-Hollie-Cavanagh-video"><img src="../var/ezflow_site/storage/images/media/content/2012/american_idol051012/12531567-1-eng-US/American_Idol051012_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
-    
-    
-    	</div>
-<h5>
-	<a href="http://www.csmonitor.com/The-Culture/TV/2012/0511/American-Idol-final-three-give-tearful-goodbye-to-Hollie-Cavanagh-video">American Idol final three give tearful goodbye to Hollie Cavanagh (+video)</a>
-</h5>
-</div>
-					</li>
-									<li>
-						
-<div class="spotLCell">                        <h4><a class="header" href="http://www.csmonitor.com/Innovation">Innovation &raquo;</a></h4>
-		        											<div class="thumbnail">
-		
-			
-    
-        
-    
-            <a href="http://www.csmonitor.com/Innovation/Horizons/2012/0510/Facebook-App-Center-will-usher-in-era-of-paid-Facebook-apps"><img src="../var/ezflow_site/storage/images/media/content/2012/0420-facebookf/12524137-1-eng-US/0420-facebookf_thumbnail_132.jpg" width="132" height="93"  alt="" title="" /></a>    
-    
-    
-    	</div>
-<h5>
-	<a href="http://www.csmonitor.com/Innovation/Horizons/2012/0510/Facebook-App-Center-will-usher-in-era-of-paid-Facebook-apps">Facebook App Center will usher in era of paid Facebook apps </a>
-</h5>
-</div>
-					</li>
-									<li>
-						
-<div class="spotLCell">                <h4><a class="header" href="http://www.csmonitor.com/USA">USA &raquo;</a></h4>
-		        							<div class="thumbnail">
+<div class="spotLCell">				<h4><a class="header" href="http://www.csmonitor.com/USA">USA &raquo;</a></h4>
+																					<div class="thumbnail">
 		
 			
     
@@ -1108,98 +1332,75 @@ margin: 0;
 </div>
 					</li>
 									<li>
-						<div class="spotLCell">
-            <h4>Making a Difference</h4>
-        	    
-					
-		
-		   		
-				
-																														
 						
-								 								
-    
-        
-    
-            <a href="http://www.csmonitor.com/World/Making-a-difference/2012/0507/They-opened-their-home-and-hearts-to-South-Africa-s-abandoned-babies"><img src="../var/ezflow_site/storage/images/media/content/2012/0507-weekly/0507-mdeklerk-pmad-people-difference-christo_and_lanie_deklerk/12479031-3-eng-US/0507-mdeklerk-pmad-people-difference-Christo_and_Lanie_DeKlerk.jpg" width="132" height="88"  alt="" title="" /></a>    
-    
-    
-    									    	    <h5><a href="http://www.csmonitor.com/World/Making-a-difference/2012/0507/They-opened-their-home-and-hearts-to-South-Africa-s-abandoned-babies">They opened their home – and hearts – to South Africa's abandoned babies</a></h5>
-	</div><!-- /spotLCell -->					</li>
-									<li>
-						
-<div class="spotLCell">                        <h4><a class="header" href="http://www.csmonitor.com/World">World &raquo;</a></h4>
-		        											<div class="thumbnail">
+<div class="spotLCell">							<h4><a class="header" href="http://www.csmonitor.com/World">World &raquo;</a></h4>
+																																				<div class="thumbnail">
 		
 			
     
         
     
-            <a href="http://www.csmonitor.com/World/Americas/2012/0509/The-PTA-arrives-in-Mexico-s-schools"><img src="../var/ezflow_site/storage/images/media/content/2012/0509-opta-mexico-pta/12512615-1-eng-US/0509-OPTA-MEXICO-PTA_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
+            <a href="http://www.csmonitor.com/World/Making-a-difference/Change-Agent/2012/0801/Own-your-own-boda-motorcycle-taxi-empowers-Ugandans"><img src="../var/ezflow_site/storage/images/media/content/2012/0801cabodaprogram/13322248-1-eng-US/0801CABodaProgram_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
     
     
     	</div>
 <h5>
-	<a href="http://www.csmonitor.com/World/Americas/2012/0509/The-PTA-arrives-in-Mexico-s-schools">The PTA arrives in Mexico's schools</a>
+	<a href="http://www.csmonitor.com/World/Making-a-difference/Change-Agent/2012/0801/Own-your-own-boda-motorcycle-taxi-empowers-Ugandans">'Own your own boda' (motorcycle taxi) empowers Ugandans</a>
 </h5>
 </div>
 					</li>
 									<li>
 						
-		
-<div class="spotLCell">
-					    				    				    		        <h4><a class="header" href="http://www.csmonitor.com/Books">Books &raquo;</a></h4>
-		        		
-																						
-			<div class="thumbnail">
-			
-			
-    
-        
-    
-            <a href="http://www.csmonitor.com/Books/2012/0427/Mother-s-Day-gifts-4-great-e-readers-for-Mom/Apple-s-iPad-and-iPad2"><img src="../var/ezflow_site/storage/images/media/content/2012/04-26ereader2/12396854-1-eng-US/04-26ereader2_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
-    
-    
-    		</div>
-		
-	<h5>
-		<a href="http://www.csmonitor.com/Books/2012/0427/Mother-s-Day-gifts-4-great-e-readers-for-Mom/Apple-s-iPad-and-iPad2">Mother's Day gifts: 4 great e-readers for Mom  </a>
-	</h5>
-</div>
-					</li>
-									<li>
-						
-<div class="spotLCell">                        <h4><a class="header" href="http://www.csmonitor.com/Business">Business &raquo;</a></h4>
-		        											<div class="thumbnail">
+<div class="spotLCell">					<h4><a class="header" href="http://www.csmonitor.com/USA">USA &raquo;</a></h4>
+						<div class="thumbnail">
 		
 			
     
         
     
-            <a href="http://www.csmonitor.com/Business/new-economy/2012/0510/As-Chinese-wages-rise-US-manufacturers-head-back-home"><img src="../var/ezflow_site/storage/images/media/content/2012/0508-reshoring2/12500421-1-eng-US/0508-reshoring_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
+            <a href="http://www.csmonitor.com/USA/2012/0731/Public-sector-belt-tightening-thrift-or-long-term-drag-on-US-economy"><img src="../var/ezflow_site/storage/images/media/content/2012/0806-weekly/0806-aohio-01-economy-firefighter/13309472-1-eng-US/0806-AOHIO-01-ECONOMY-firefighter_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
     
     
     	</div>
 <h5>
-	<a href="http://www.csmonitor.com/Business/new-economy/2012/0510/As-Chinese-wages-rise-US-manufacturers-head-back-home">As Chinese wages rise, US manufacturers head back home</a>
+			<a href="http://www.csmonitor.com/tags/special/focus"><span class="kicker storyKicker">Focus</span>:</a>
+	<a href="http://www.csmonitor.com/USA/2012/0731/Public-sector-belt-tightening-thrift-or-long-term-drag-on-US-economy">Public-sector belt-tightening: thrift, or long-term drag on US economy?</a>
 </h5>
 </div>
 					</li>
 									<li>
 						
-<div class="spotLCell">                        <h4><a class="header" href="http://www.csmonitor.com/The-Culture">The Culture &raquo;</a></h4>
-		        											<div class="thumbnail">
+<div class="spotLCell">						<h4><a class="header" href="http://www.csmonitor.com/Innovation">Innovation &raquo;</a></h4>
+																															<div class="thumbnail">
 		
 			
     
         
     
-            <a href="http://www.csmonitor.com/The-Culture/Verbal-Energy/2012/0509/Motorists-are-advised-to-seek-alternatives"><img src="../var/ezflow_site/storage/images/media/content/2012/0509-boston-traffic-motorists-seek-alternatives/12505091-1-eng-US/0509-boston-traffic-motorists-seek-alternatives_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
+            <a href="http://www.csmonitor.com/Innovation/Horizons/2012/0730/iPhone-5-set-for-late-Sept.-launch-report"><img src="../var/ezflow_site/storage/images/media/content/2012/0728-apple/13300442-1-eng-US/0728-apple_thumbnail_132.jpg" width="132" height="86"  alt="" title="" /></a>    
     
     
     	</div>
 <h5>
-	<a href="http://www.csmonitor.com/The-Culture/Verbal-Energy/2012/0509/Motorists-are-advised-to-seek-alternatives">Motorists are advised to seek alternatives</a>
+	<a href="http://www.csmonitor.com/Innovation/Horizons/2012/0730/iPhone-5-set-for-late-Sept.-launch-report">iPhone 5 set for late Sept. launch: report</a>
+</h5>
+</div>
+					</li>
+									<li>
+						
+<div class="spotLCell">						<h4><a class="header" href="http://www.csmonitor.com/World">World &raquo;</a></h4>
+																															<div class="thumbnail">
+		
+			
+    
+        
+    
+            <a href="http://www.csmonitor.com/World/Olympics/2012/0731/London-2012-Artistic-gymnastics-men-s-rings-individual-event-is-up-for-grabs"><img src="../var/ezflow_site/storage/images/media/content/2012/0731_worldolympics_rings/13312498-1-eng-US/0731_WorldOlympics_Rings_thumbnail_132.jpg" width="132" height="88"  alt="" title="" /></a>    
+    
+    
+    	</div>
+<h5>
+	<a href="http://www.csmonitor.com/World/Olympics/2012/0731/London-2012-Artistic-gymnastics-men-s-rings-individual-event-is-up-for-grabs">London 2012: Artistic gymnastics men's rings individual event is up for grabs</a>
 </h5>
 </div>
 					</li>
@@ -1261,86 +1462,7 @@ margin: 0;
 		
 								</div>
 					
-									<div class="footerAdBox">
-										<div class="textAdBox">
-<h4 class="sponLinkHeader">Sponsored Links</h4>
-<!-- BEGIN COL 1 -->
-<div class="col1">
-  <ul>
-    <li>
-      <h4>Booking Agency</h4>
-      <ul>
-        <li>
-          <a href="http://www.grabow.biz/" target="_blank">Grabow Entertainment Agency</a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-  <ul>
-    <li>
-<h4>Business Resources</h4>
-      <ul>
-        <li>
-          <a href="http://www.allbusinesscards.com" target="_blank">Business Cards</a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-  <ul>
-    <li>
-</div>
-<!-- END COL 1 -->
-<!-- BEGIN COLUMN 2 -->
-<div class="col2">
-  <ul>
-    <li>
-<h4>Credit Cards</h4>
-      <ul>
-        <li>
-          <a href="http://www.consumerdaily.com/credit-cards/cash-back/" target="_blank">Get $355.00 Cash Back</a>
-         </li>
-      </ul>
-    </li>
-  </ul>
-  <ul>
-    <li>
-  </ul>
-</div>
-<!-- END COLUMN 2 -->
-<!-- BEGIN COL 3 -->
-<div class="col3">
-  <ul>
-    <li>
-      <h4>Speakers Bureau</h4>
-      <ul>
-        <li>
-          <a href="http://www.playingfieldpromotions.com/religious-speakers/christian-speakers.php" target="_blank">Christian Speakers</a>
-        </li>
-        <li>
-          <a href="http://www.athletepromotions.com" target="_blank">Sports Speakers Bureaus</a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-  <ul>
-    <li>
-      <h4>Web Services</h4>
-      <ul>
-          <a href="http://www.fatcow.com/" target="_blank">Hosting</a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</div>
-<!-- END COL 3 -->
-</div>
-						</div>
 					
-									<div class="footerAdBox ui-last">
-										<div style="width:178; height: 248; border: 1px solid #b4b4b4; overflow:hide;">
-<iframe src="../../www.topcareerschools.com/index.php%3Fmodule=searchbox&amp;tid=3&amp;id=12828088.html" frameborder="0" width="178" height="248" marginwidth="0" marginheight="0" scrolling="no"></iframe>
-</div>
-						</div>
 					
 				<div class="clear"></div>
 			</div>
@@ -1395,11 +1517,7 @@ margin: 0;
 		
 																					<script language="JavaScript">var zflag_nid="1639"; var zflag_cid="1"; var zflag_sid="0"; var zflag_width="160"; var zflag_height="600"; var zflag_sz="7"; var zflag_y_offset=30;</script>
 <script language="JavaScript" src="../../c4.zedo.com/jsc/c4/fhs.js"></script>
-																<script type="text/javascript">
-(function(){var
-ff=document.createElement('script');ff.type='text/javascript';ff.async=true;ff.src=('https:'==document.location.protocol?'https':'http')+'://liveviewer.ez.no/statjs/sst-10-75871675/stat.js';var
-s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ff,s);})();
-</script>				
+														
 	<script type="text/javascript">
 	  (function () {
 	    var d = new Image(1, 1);
@@ -1436,16 +1554,7 @@ _qevents.push( { qacct:"p-44NYiIzL-i6wg"} );
 	        if (d) { d.appendChild(s); }	    }());
 	</script>
 
-	<script src="../../cdn.media6degrees.com/static/cs6169.js" type="text/javascript"></script>	<script type="text/javascript" src="../../s7.addthis.com/js/250/addthis_widget.js#pub=csmtechstaff&async=1"></script>
-	<script type="text/javascript">
-	
-		jQuery(function()
-		{
-			var addthis_config = { data_track_clickback: true,  data_ga_property: 'UA-69821-1', services_exclude: 'print' };
-			addthis.init()
-		});
-	
-	</script>	<script type='text/javascript'>var pubId=27343; var pixId=37; </script>
+	<script src="../../cdn.media6degrees.com/static/cs6169.js" type="text/javascript"></script>	<script type='text/javascript'>var pubId=27343; var pixId=37; </script>
 	<script src='../../ads.pubmatic.com/AdServer/js/universalpixel.js' type='text/javascript'></script>	<script type="text/javascript">
 
 	var _sf_async_config={};
@@ -1490,6 +1599,40 @@ _qevents.push( { qacct:"p-44NYiIzL-i6wg"} );
 	     loadChartbeat : function() { oldonload(); loadChartbeat(); };
 	})();
 	</script>
+		<script type="text/javascript" src="../../s7.addthis.com/js/250/addthis_widget.js#pub=csmtechstaff&async=1"></script>
+	<script type="text/javascript">
+	
+		jQuery(function()
+		{
+			addthis_config = { data_track_clickback: true,  data_ga_property: 'UA-69821-1', services_exclude: 'print' };
+			addthis.init();
+		});
+	
+	</script>
+<div id="fb-root"></div>
+<script type="text/javascript">
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '179793002061452',
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+
+    // Additional initialization code here
+  };
+
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+
+</script>
 </div>
 
 </body>

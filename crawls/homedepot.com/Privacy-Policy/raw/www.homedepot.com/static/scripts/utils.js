@@ -84,19 +84,17 @@
 		The implication is that the value returned will NOT have
 		a leading period.
 	*/
-	function getCurrentDomain(defaultDomain) {
-		var currentDomain = defaultDomain;
-		var documentDomain = "." + document.domain;
-		
-		if(documentDomain.indexOf(currentDomain) == -1){
-			currentDomain = document.domain.substr(document.domain.indexOf("."));
-		}		
-		return currentDomain;
-	}
 	
-
-		
-		
+	function getCurrentDomain(defaultDomain) {
+               var currentDomain = defaultDomain;
+               var documentDomain = "." + document.domain;
+              
+               if(documentDomain.indexOf(currentDomain) == -1){
+                       currentDomain = document.domain.substr(document.domain.indexOf("."));
+               }             
+               return currentDomain;
+    }
+	
 	// Initialize the CookieManager
 	function initializeCookieManager(cookieDomain){
 		 	
@@ -143,6 +141,7 @@
 					+	"<crumb type=\"R\" alias=\"FEATURE_THROTTLE\"   name=\"C34\"  exp=\"86400\"></crumb>"
 					+	"<crumb type=\"R\" alias=\"THD_LIVEPERSON_ERRORCOUNT\"   name=\"C35\"  exp=\"86400\"></crumb>"
 					+   "<crumb type=\"R\" alias=\"THD_GEOLOCATION_INFO\" name=\"C36\" exp=\"-1\"></crumb>"
+					//+   "<crumb type=\"R\" alias=\"THD_CONTACTEMAIL\" name=\"C37\" exp=\"-1\"></crumb>" Can use this.  Sorry!
 					+"</crumbs>"
 				   +"</cookieJar>";
 		
@@ -728,16 +727,8 @@
 			var crumbBName = b.getName();		
 			var sortA = parseInt(crumbAName.substr(1));
 			var sortB = parseInt(crumbBName.substr(1));
-			
-			if(sortA < sortB){
-				return -1;
-			}
-			if(sortA == sortB){
-				return 0;
-			}
-			if(sortA > sortB){
-				return 1;
-			}
+						
+			return (sortA < sortB?-1:(sortA > sortB?1:0));
 		}		
 		
 	
@@ -1138,7 +1129,8 @@
 		
 	function goToOrderStatusFromJS() {
 		var nonRegisteredURL = 'http://' + getHostNameNonSecure() + '/webapp/wcs/stores/servlet/OrderTrackingForm?langId=-1&storeId=10051&catalogId=10053';
-		var registeredURL = 'https://' + getHostNameSecure() + '/webapp/wcs/stores/servlet/OrderSummary?langId=-1&storeId=10051&catalogId=10053&newPage=true&orderType=online';
+		var registeredURL = 'https://' + getHostNameSecure() + '/webapp/wcs/stores/servlet/OrderSummaryJSONView?storeId=10051&langId=-1&catalogId=10053&orderType=online&ParentPageName=OnlineOrdersPage';
+		//var registeredURL = 'https://' + getHostNameSecure() + '/webapp/wcs/stores/servlet/OrderSummary?langId=-1&storeId=10051&catalogId=10053&newPage=true&orderType=online';
 		//var registeredURL = 'https://' + getHostNameSecure() + '/webapp/wcs/stores/servlet/OrderStatusDisplay?langId=-1&storeId=10051&catalogId=10053';
 
 		goToLinkFromJSForCatalog(nonRegisteredURL,registeredURL);
@@ -1164,8 +1156,71 @@
 		var isLoggedOn = readCookie("THD_USERSTATUS") == '1';
 		if(isLoggedOn) {
 			cmd = RegisteredURL;
+			document.location.href = cmd;
+		}else if(nonRegisteredURL.indexOf('THDInterestItemVerify') != -1){
+			var splitIndex = nonRegisteredURL.indexOf('?');
+			//var ajaxURL = nonRegisteredURL.slice(0, splitIndex);
+			var ajaxURL = '/webapp/wcs/stores/servlet/THDInterestItemListOperation';
+			var postData =nonRegisteredURL.slice(splitIndex+1) ;
+
+			postData = postData + '&opCode=13'+ '&requestType=ajax';
+			var response = $.ajax({
+				url: ajaxURL, 
+				type:"POST", 		
+				data: postData,
+				success: function(data) {	 
+			//	$("#container").appendChild(data);
+								  
+				  var newdiv = document.createElement('div');
+
+				 newdiv.setAttribute('id','ajaxResponse');
+
+				  newdiv.innerHTML = data;
+				  document.body.appendChild(newdiv);
+				  
+				  $(".popupAddListClose").click(function(){
+				  					  if(popupStatus==1){
+				  					  $(".backgroundPopup").fadeOut("slow");
+				  					  popupStatus = 0;
+				  					  }
+					  });
+				 
+				loadPopup('popupSignIn'); 
+				$("#signIn").click(function(){	
+					var e = $("#email_id").attr('value');
+					var f = $(".backgroundPopup #password").attr('value'); 
+					var atpos=e.indexOf("@");
+					var dotpos=e.lastIndexOf(".");
+					$("#email_id, .backgroundPopup #password").css('border','1px solid gray');
+					if (atpos<1 || dotpos<atpos+2 || dotpos+2>=e.length) {
+						$(".signInError").css('display','none');
+						$("#email_id, .backgroundPopup #password").css('border','1px solid red');
+						$(".signInError").css({display:'block', color:'red'});
+						$(".signInError").html("The following field(s) are required: E-mail Address, Password.");
+					} 
+					
+					else if(f.length==0){
+						$(".backgroundPopup #password").css('border','1px solid red'); 
+						$(".signInError").css({display:'block', color:'red'});
+						$(".signInError").html("The following field(s) are required: Password.");
+					}
+					
+					else {
+						$("#email_id").css('border','1px solid gray');
+						$(".signInError").css('display','none');
+						$("#userLogin").submit();
+						//makeAjaxCall(posn,10);	  
+					}
+				});
+
+			},
+			error: function(data){
+				document.location.href="http://www.homedepot.com/webapp/wcs/stores/servlet/THDInterestItemListOperation";
+			}});	
+
+		}else{
+			document.location.href = cmd;
 		}
-		document.location.href = cmd;
 	}
 
 	function goToLinkFromJSForCatalog(nonRegisteredURL, registeredURL) {
@@ -2582,4 +2637,18 @@ function closeOverlayDisplayMessageDiv(divId) {
 	}
 	$(window).scrollTop(0);
 	displayMessageDiv(divId);
+}
+
+
+/* for PIP/Quick View - Add to My List - $updated 5.24.12 for all protocols $*/
+function goToTHDMyListDetailsFromPIP(listId){
+
+      	var HostName = window.location.hostname,
+      		url = document.location.protocol + '//' + HostName + '/webapp/wcs/stores/servlet/THDInterestItemListOperation?langId=-1&catalogId=10053&storeId=10051&listId=' + listId + '&opCode=7';
+      
+            if(parent.window.location == window.location){ // true if PIP , false when loaded in iframe like PLP
+            	window.location = url;
+            }else{
+            	parent.window.location = url;
+            }
 }

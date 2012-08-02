@@ -75,7 +75,7 @@ function loadProduct(index) {
 		removeditem = index;
 	}*/
 	
-	$("#quickorder_searchResultContainer").load(quickordersearchtemplate, {item: itemarray, coreMetricsDo: coreMetricsDo, cm_to_wishlist: cm_to_wishlist, qty: qtyarray, size: sizearray, selecteditem: selecteditemarray, coreMetricDoneAlready: coreMetricDoneAlready});
+	$("#quickorder_searchResultContainer").load(quickordersearchtemplate, {item: itemarray.join(','), coreMetricsDo: coreMetricsDo, cm_to_wishlist: cm_to_wishlist, qty: qtyarray, size: sizearray, selecteditem: selecteditemarray.join(','), coreMetricDoneAlready: coreMetricDoneAlready});
 }
 
 function addToCart() {

@@ -89,6 +89,21 @@ function showFormPopup(title, pwidth, closeButton, showSelect) {
 	}
 } // end of showFormPopup
 
+function showMsgModal(popupDivID,closeID,titleID,title, pwidth, closeButton, showSelect) {
+	try {
+		var overLayDiv_id;
+		overLayDiv_id = commonFunc.overLayDiv(true);
+		commonFunc.getElementObj(titleID).innerHTML = title;
+		commonFunc.getElementObj(popupDivID).style.width = pwidth + "px" ;
+		if (closeButton != undefined) {
+			commonFunc.visibleElement(closeID, closeButton);
+		}
+		commonFunc.divPopUp(popupDivID,true);
+	} catch(e) {
+	
+	}
+}
+
 function showPopupByStr(str,  title, blockBG, closeButton, buttonStr, pWidth, pHeight, pBorder, url) {
 	try {
 		var overLayDiv_id, popupDiv, popupBody, id, v_width = "700px", v_height = '500px'; 
@@ -236,7 +251,12 @@ function closeFormPopup() {
 	commonFunc.divPopUp('formPopupDiv',false);
 	hideSelectOption(false);
 }
-
+// close modal using ID
+function closeModal(modalId) {
+	overLayDiv_id = commonFunc.overLayDiv(false);
+	commonFunc.divPopUp(modalId,false);
+	hideSelectOption(false);
+}
 
 function showChannelLineUp() {
 	try {

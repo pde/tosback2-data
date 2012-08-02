@@ -1,0 +1,1253 @@
+// detect-zoom is dual-licensed under the WTFPL and MIT license,
+// at the recipient's choice.
+// https://github.com/yonran/detect-zoom/
+var DetectZoom = {
+  mediaQueryBinarySearch: function(
+      property, unit, a, b, maxIter, epsilon) {
+    var matchMedia, head, style, div, binarySearch;
+    binarySearch = function(a, b, maxIter) {
+      var mid = (a + b)/2;
+      if (maxIter == 0 || b - a < epsilon) return mid;
+      var query = "(" + property + ":" + mid + unit + ")";
+      if (matchMedia(query).matches) {
+        return binarySearch(mid, b, maxIter-1);
+      } else {
+        return binarySearch(a, mid, maxIter-1);
+      }
+    };
+    if (window.matchMedia) {
+      matchMedia = window.matchMedia;
+    } else {
+      head = document.getElementsByTagName('head')[0];
+      style = document.createElement('style');
+      div = document.createElement('div');
+      div.className = 'mediaQueryBinarySearch';
+      head.appendChild(style);
+      div.style.display = 'none';
+      document.body.appendChild(div);
+      matchMedia = function(query) {
+        style.sheet.insertRule('@media ' + query +
+                               '{.mediaQueryBinarySearch ' +
+                               '{text-decoration: underline} }', 0);
+        var matched = getComputedStyle(div, null).textDecoration
+            == 'underline';
+        style.sheet.deleteRule(0);
+        return {matches:matched};
+      };
+    }
+    var r = binarySearch(a, b, maxIter);
+    if (div) {
+      head.removeChild(style);
+      document.body.removeChild(div);
+    }
+    return r;
+  },
+  _zoomIe7: function() {
+    // the trick: body's offsetWidth was in CSS pixels, while
+    // getBoundingClientRect() was in system pixels in IE7.
+    // Thanks to http://help.dottoro.com/ljgshbne.php
+    var rect = document.body.getBoundingClientRect();
+    var z = (rect.right-rect.left)/document.body.offsetWidth;
+    z = Math.round(z * 100) / 100;
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  _zoomIe8: function() {
+    // IE 8+: no trick needed!
+    // TODO: MSDN says that logicalXDPI and deviceXDPI existed since IE6
+    // (which didn't even have whole-page zoom). Check to see whether
+    // this method would also work in IE7.
+    return {
+      zoom: screen.systemXDPI / screen.logicalXDPI,
+      devicePxPerCssPx: screen.deviceXDPI / screen.logicalXDPI
+    };
+  },
+  _zoomWebkitMobile: function() {
+    // the trick: window.innerWIdth is in CSS pixels, while
+    // screen.width and screen.height are in system pixels.
+    // And there are no scrollbars to mess up the measurement.
+    var devicePixelRatio = window.devicePixelRatio != null ? window.devicePixelRatio : 1
+      , deviceWidth;
+    if ( Math.abs(window.orientation) == 90 ) {
+      deviceWidth = screen.height;
+    } else {
+      deviceWidth = screen.width;
+    }
+    var z = deviceWidth / window.innerWidth;
+    // return immediately; don't round at the end.
+    return {zoom: z, devicePxPerCssPx: z*devicePixelRatio};
+  },
+  _zoomWebkit: function() {
+    // the trick: an element's clientHeight is in CSS pixels, while you can
+    // set its line-height in system pixels using font-size and
+    // -webkit-text-size-adjust:none.
+    // device-pixel-ratio: http://www.webkit.org/blog/55/high-dpi-web-sites/
+
+    // Previous trick (used before http://trac.webkit.org/changeset/100847):
+    // documentElement.scrollWidth is in CSS pixels, while
+    // document.width was in system pixels. Note that this is the
+    // layout width of the document, which is slightly different from viewport
+    // because document width does not include scrollbars and might be wider
+    // due to big elements.
+
+    var devicePixelRatio = window.devicePixelRatio != null ? window.devicePixelRatio : 1;
+
+    // The container exists so that the div will be laid out in its own flow
+    // while not impacting the layout, viewport size, or display of the
+    // webpage as a whole.
+    var container = document.createElement('div')
+      , div = document.createElement('div');
+    
+    // Add !important and relevant CSS rule resets
+    // so that other rules cannot affect the results.
+    var important = function(str){ return str.replace(/;/g, " !important;"); };
+    
+    container.setAttribute('style', important('width:0; height:0; overflow:hidden; visibility:hidden; position: absolute;'));
+    div.innerHTML = "1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>0";
+    div.setAttribute('style', important('font: 100px/1em sans-serif; -webkit-text-size-adjust: none; height: auto; width: 1em; padding: 0; overflow: visible;'));
+    
+    container.appendChild(div);
+    document.body.appendChild(container);
+    var z = 1000 / div.clientHeight;
+    z = Math.round(z * 100) / 100;
+    var r = {
+      zoom: z,
+      devicePxPerCssPx: devicePixelRatio * z
+    };
+    document.body.removeChild(container);
+    return r;
+  },
+  _zoomFF35: function() {
+    // the trick for FF3.5 ONLY: device-width gives CSS pixels, while
+    // screen.width gave system pixels. Thanks to QuirksMode's widths table,
+    // which called it a bug. http://www.quirksmode.org/m/widths.html
+    var z = screen.width /
+      this.mediaQueryBinarySearch('min-device-width', 'px', 0, 6000, 20, .0001);
+    z = Math.round(z * 100) / 100;
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  _zoomFF36: function() {
+    // the hack for FF3.6: you can measure scrollbar's width in CSS pixels,
+    // while in system pixels it's 15px (verified in Ubuntu).
+
+    // TODO: verify for every platform that a scrollbar is exactly 15px wide.
+    var container = document.createElement('div')
+      , outerDiv = document.createElement('div');
+    // The container exists so that the div will be laid out in its own flow
+    // while not impacting the layout, viewport size, or display of the
+    // webpage as a whole.
+    container.setAttribute('style', 'width:0; height:0; overflow:hidden;' +
+        'visibility:hidden; position: absolute');
+    outerDiv.style.width = outerDiv.style.height = '500px';  // enough for all the scrollbars
+    var div = outerDiv;
+    for (var i = 0; i < 10; ++i) {
+      var child = document.createElement('div');
+      child.style.overflowY = 'scroll';
+      div.appendChild(child);
+      div = child;
+    }
+    container.appendChild(outerDiv);
+    document.body.appendChild(container);
+    var outerDivWidth = outerDiv.clientWidth;
+    var innerDivWidth = div.clientWidth;
+    var scrollbarWidthCss = (outerDivWidth - innerDivWidth)/10;
+    document.body.removeChild(container);
+    var scrollbarWidthDevice = 15;  // Mac and Linux: scrollbars are 15px wide
+    if (-1 != navigator.platform.indexOf('Win')){
+      scrollbarWidthDevice = 17;
+    }
+    var z = scrollbarWidthDevice / scrollbarWidthCss;
+    z = Math.round(z * 100) / 100;
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  _zoomFF4: function() {
+    // no real trick; device-pixel-ratio is the ratio of device dpi / css dpi.
+    // (Note that this is a different interpretation than Webkit's device
+    // pixel ratio, which is the ratio device dpi / system dpi).
+    // TODO: is mozmm vs. mm promising?
+    var z = this.mediaQueryBinarySearch(
+            'min--moz-device-pixel-ratio',
+            '', 0, 10, 20, .0001);
+    z = Math.round(z * 100) / 100;
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  _zoomOperaOlder: function() {
+    // 10.00 (or before) to 11.01:
+    // the trick: a div with position:fixed;width:100%'s offsetWidth is the
+    // viewport width in CSS pixels, while window.innerWidth was in system
+    // pixels. Thanks to:
+    // http://virtuelvis.com/2005/05/how-to-detect-zoom-level-in-opera/
+    // TODO: fix bug: when there is a scrollbar, fixed div does NOT
+    // include the scrollbar, while window.outerWidth DOES. This causes the
+    // calculation to be off by a few percent.
+    var fixedDiv = document.createElement('div');
+    fixedDiv.style.position = 'fixed';
+    fixedDiv.style.width = '100%';
+    fixedDiv.style.height = '100%';
+    fixedDiv.style.top = fixedDiv.style.left = '0';
+    fixedDiv.style.visibility = 'hidden';
+    document.body.appendChild(fixedDiv);
+    var z = window.innerWidth / fixedDiv.offsetWidth;
+    document.body.removeChild(fixedDiv);
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  _zoomOpera11: function() {
+    // works starting Opera 11.11
+    // the trick: outerWidth is the viewport width including scrollbars in
+    // system px, while innerWidth is the viewport width including scrollbars
+    // in CSS px; 
+    var z = window.outerWidth / window.innerWidth;
+    z = Math.round(z * 100) / 100;
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  ratios: function() {
+    var r;
+    if (! isNaN(screen.logicalXDPI) && ! isNaN(screen.systemXDPI) ) {
+      return this._zoomIe8();
+    } else if ('ontouchstart' in window && document.body.style.webkitTextSizeAdjust != null) {
+      return this._zoomWebkitMobile();
+    } else if (document.body.style.webkitTextSizeAdjust != null) {  // webkit
+      return this._zoomWebkit();
+    } else if (-1 != navigator.userAgent.indexOf('Firefox/3.5')) {
+      return this._zoomFF35();
+    } else if (-1 != navigator.userAgent.indexOf('Firefox/3.6')) {
+      return this._zoomFF36();
+    } else if (-1 != navigator.appVersion.indexOf("MSIE 7.")) {
+      return this._zoomIe7();
+    } else if (-1 != navigator.userAgent.indexOf('Opera')) {
+      var versionIdx = navigator.userAgent.indexOf('Version/');
+      if (11.01 < parseFloat(navigator.userAgent.substr(versionIdx + 8)))
+        return this._zoomOpera11();
+      else
+        return this._zoomOperaOlder();
+    } else if (0.001 < (r = this._zoomFF4()).zoom) {
+      return r;
+    } else {
+      return {zoom: 1, devicePxPerCssPx: 1}
+    }
+  },
+  zoom: function() {
+    return this.ratios().zoom;
+  },
+  device: function() {
+    return this.ratios().devicePxPerCssPx;
+  }
+};
+
+var wpcom_img_zoomer = {
+	zoomed: false,
+	timer: null,
+	interval: 1000, // zoom polling interval in millisecond
+
+	// Should we apply width/height attributes to control the image size?
+	imgNeedsSizeAtts: function( img ) {
+		// Do not overwrite existing width/height attributes.
+		if ( img.getAttribute('width') !== null || img.getAttribute('height') !== null )
+			return false;
+		// Do not apply the attributes if the image is already constrained by a parent element.
+		if ( img.width < img.naturalWidth || img.height < img.naturalHeight )
+			return false;
+		return true;
+	},
+
+	init: function() {
+		var t = this;
+		try{
+			t.zoomImages();
+			t.timer = setInterval( function() { t.zoomImages(); }, t.interval );
+		}
+		catch(e){
+		}
+	},
+
+	stop: function() {
+		if ( this.timer )
+			clearInterval( this.timer );
+	},
+
+	getScale: function() {
+		var scale = DetectZoom.device();
+		// Round up to 1.5 or the next integer below the cap.
+		if      ( scale <= 1.0 ) scale = 1.0;
+		else if ( scale <= 1.5 ) scale = 1.5;
+		else if ( scale <= 2.0 ) scale = 2.0;
+		else if ( scale <= 3.0 ) scale = 3.0;
+		else if ( scale <= 4.0 ) scale = 4.0;
+		else                     scale = 5.0;
+		return scale;
+	},
+
+	shouldZoom: function( scale ) {
+		var t = this;
+		// Do not operate on hidden frames.
+		if ( "innerWidth" in window && !window.innerWidth )
+			return false;
+		// Don't do anything until scale > 1
+		if ( scale == 1.0 && t.zoomed == false )
+			return false;
+		return true;
+	},
+
+	zoomImages: function() {
+		var t = this;
+		var scale = t.getScale();
+		if ( ! t.shouldZoom( scale ) ){
+			return;
+		}
+		t.zoomed = true;
+		// Loop through all the <img> elements on the page.
+		var imgs = document.getElementsByTagName("img");
+
+		for ( var i = 0; i < imgs.length; i++ ) {
+			// Skip images that don't need processing.
+			var imgScale = imgs[i].getAttribute("scale");
+			if ( imgScale == scale || imgScale == "0" )
+				continue;
+
+			// Skip images that have no dimensions yet.
+			if ( ! ( imgs[i].width && imgs[i].height ) )
+				continue;
+
+			if ( t.scaleImage( imgs[i], scale ) ) {
+				// Mark the img as having been processed at this scale.
+				imgs[i].setAttribute("scale", scale);
+			}
+			else {
+				// Set the flag to skip this image.
+				imgs[i].setAttribute("scale", "0");
+			}
+		}
+	},
+
+	scaleImage: function( img, scale ) {
+		var t = this;
+		var newSrc = img.src;
+
+		// Scale gravatars that have ?s=
+		if ( img.src.match( /^https?:\/\/([^\/]*\.)?gravatar\.com\/.+[?&]s=/ ) ) {
+			newSrc = img.src.replace( /([?&]s=)(\d+)/, function( $0, $1, $2 ) {
+				// Stash the original size
+				var originalAtt = "originals",
+				originalSize = img.getAttribute(originalAtt);
+				if ( originalSize === null ) {
+					originalSize = $2;
+					img.setAttribute(originalAtt, originalSize);
+					if ( t.imgNeedsSizeAtts( img ) ) {
+						// Fix width and height attributes to rendered dimensions.
+						img.width = img.width;
+						img.height = img.height;
+					}
+				}
+				// Get the width/height of the image in CSS pixels
+				var size = img.clientWidth;
+				// Convert CSS pixels to device pixels
+				var targetSize = Math.ceil(img.clientWidth * scale);
+				// Don't go smaller than the original size
+				targetSize = Math.max( targetSize, originalSize );
+				// Don't go larger than the service supports
+				targetSize = Math.min( targetSize, 512 );
+				return $1 + targetSize;
+			});
+		}
+
+		// Scale resize queries (*.files.wordpress.com) that have ?w= or ?h=
+		else if ( img.src.match( /^https?:\/\/([^\/]+)\.files\.wordpress\.com\/.+[?&][wh]=/ ) ) {
+			var changedAttrs = {};
+			var matches = img.src.match( /([?&]([wh])=)(\d+)/g );
+			for ( var i = 0; i < matches.length; i++ ) {
+				var lr = matches[i].split( '=' );
+				var thisAttr = lr[0].replace(/[?&]/g, '' );
+				var thisVal = lr[1];
+
+				// Stash the original size
+				var originalAtt = 'original' + thisAttr, originalSize = img.getAttribute( originalAtt );
+				if ( originalSize === null ) {
+					originalSize = thisVal;
+					img.setAttribute(originalAtt, originalSize);
+					if ( t.imgNeedsSizeAtts( img ) ) {
+						// Fix width and height attributes to rendered dimensions.
+						img.width = img.width;
+						img.height = img.height;
+					}
+				}
+				// Get the width/height of the image in CSS pixels
+				var size = thisAttr == 'w' ? img.clientWidth : img.clientHeight;
+				var naturalSize = ( thisAttr == 'w' ? img.naturalWidth : img.naturalHeight );
+				// Convert CSS pixels to device pixels
+				var targetSize = Math.ceil(size * scale);
+				// Don't go smaller than the original size
+				targetSize = Math.max( targetSize, originalSize );
+				// Don't go bigger unless the current one is actually lacking
+				if ( scale > img.getAttribute("scale") && targetSize <= naturalSize )
+					targetSize = thisVal;
+				// Don't try to go bigger if the image is already smaller than was requested
+				if ( naturalSize < thisVal )
+					targetSize = thisVal;
+				if ( targetSize != thisVal )
+					changedAttrs[ thisAttr ] = targetSize;
+			}
+			var w = changedAttrs.w || false;
+			var h = changedAttrs.h || false;
+
+			if ( w ) {
+				newSrc = img.src.replace(/([?&])w=\d+/g, function( $0, $1 ) {
+					return $1 + 'w=' + w;
+				});
+			}			
+			if ( h ) {
+				newSrc = newSrc.replace(/([?&])h=\d+/g, function( $0, $1 ) {
+					return $1 + 'h=' + h;
+				});
+			}
+		}
+
+		// Scale mshots that have width
+		else if ( img.src.match(/^https?:\/\/([^\/]+\.)*(wordpress|wp)\.com\/mshots\/.+[?&]w=\d+/) ) {
+			newSrc = img.src.replace( /([?&]w=)(\d+)/, function($0, $1, $2) {
+				// Stash the original size
+				var originalAtt = 'originalw', originalSize = img.getAttribute(originalAtt);
+				if ( originalSize === null ) {
+					originalSize = $2;
+					img.setAttribute(originalAtt, originalSize);
+					if ( t.imgNeedsSizeAtts( img ) ) {
+						// Fix width and height attributes to rendered dimensions.
+						img.width = img.width;
+						img.height = img.height;
+					}
+				}
+				// Get the width of the image in CSS pixels
+				var size = img.clientWidth;
+				// Convert CSS pixels to device pixels
+				var targetSize = Math.ceil(size * scale);
+				// Don't go smaller than the original size
+				targetSize = Math.max( targetSize, originalSize );
+				// Don't go bigger unless the current one is actually lacking
+				if ( scale > img.getAttribute("scale") && targetSize <= img.naturalWidth )
+					targetSize = $2;
+				if ( $2 != targetSize )
+					return $1 + targetSize;
+			});
+		}
+
+		// Scale simple imgpress queries (s0.wp.com) that only specify w/h/fit
+		else if ( img.src.match(/^https?:\/\/([^\/.]+\.)*(wp|wordpress)\.com\/imgpress\?(.+)/) ) {
+			var imgpressSafeFunctions = ["zoom", "url", "h", "w", "fit", "filter", "brightness", "contrast", "colorize", "smooth", "unsharpmask"];
+			// Search the query string for unsupported functions.
+			var qs = RegExp.$3.split('&');
+			for ( var q in qs ) {
+				q = qs[q].split('=')[0];
+				if ( imgpressSafeFunctions.indexOf(q) == -1 ) {
+					return false;
+				}
+			}
+			// Fix width and height attributes to rendered dimensions.
+			img.width = img.width;
+			img.height = img.height;
+			// Compute new src
+			if ( scale == 1 )
+				newSrc = img.src.replace(/\?(zoom=[^&]+&)?/, '?');
+			else
+				newSrc = img.src.replace(/\?(zoom=[^&]+&)?/, '?zoom=' + scale + '&');
+		}
+
+		// Scale LaTeX images
+		else if ( img.src.match(/^https?:\/\/([^\/.]+\.)*(wp|wordpress)\.com\/latex\.php\?(latex|zoom)=(.+)/) ) {
+			// Fix width and height attributes to rendered dimensions.
+			img.width = img.width;
+			img.height = img.height;
+			// Compute new src
+			if ( scale == 1 )
+				newSrc = img.src.replace(/\?(zoom=[^&]+&)?/, '?');
+			else
+				newSrc = img.src.replace(/\?(zoom=[^&]+&)?/, '?zoom=' + scale + '&');
+		}
+
+		// Scale static assets that have a name matching *-1x.png
+		else if ( img.src.match(/^https?:\/\/([^\/.]+\.)*(wp|wordpress)\.com\/([^\/]+)\/.*-(1|2)x\.(gif|jpeg|jpg|png)(\?|$)/) ) {
+			// Skip uploads that have the -1x suffix (maybe we will do a HEAD check for -2x on these)
+			if ( RegExp.$3 == "files" || RegExp.$1.match(/(^|\.)files\.$/) ) {
+				return false;
+			}
+			// Fix width and height attributes to rendered dimensions.
+			img.width = img.width;
+			img.height = img.height;
+			var currentSize = RegExp.$4, newSize = currentSize;
+			if ( scale <= 1 )
+				newSize = 1;
+			else
+				newSize = 2;
+			if ( currentSize != newSize )
+				newSrc = img.src.replace(/-[12]x\.(gif|jpeg|jpg|png)(\?|$)/, '-'+newSize+'x.$1$2');
+		}
+
+		else {
+			return false;
+		}
+
+		// Don't reset img.src unless it has changed. This avoids unnecessary reloads.
+		if ( newSrc != img.src )
+			img.src = newSrc;
+
+		return true;
+	}
+};
+
+wpcom_img_zoomer.init();
+;
+jQuery(document).ready(function() {
+	// Find and iterate all pagers on the page. 
+	var pagers = jQuery('.go-post-pager');
+	
+	jQuery.each(pagers, function(i, e) {
+		// Get the current page and last page numbers from the pager. 
+		var currentPage = parseInt(jQuery('.current-page', e).text()); 
+		var maxPage = parseInt(jQuery('.max-page', e).text());  
+
+		// Don't bother with two-page posts.
+		if (3 > maxPage) {
+			return; 
+		}
+		
+		// Replace the .current-page span with the select form element. 
+		var baseUrl = jQuery('.first-page', e).attr('href');
+
+		jQuery('.current-page', e).replaceWith(function() {
+			var field = jQuery('<select></select>');
+			for (i = 1; i <= maxPage; i++) {
+				var option = jQuery('<option>' + i + '</option>');
+				if (i == currentPage) {
+					option.attr('selected', 'selected');
+				}
+				option.appendTo(field); 
+			}
+
+			// Add a handler to load the selected page.  
+			field.change(function(e) {
+				var targetPage = jQuery(e.target).val(); 
+				
+				if (targetPage == currentPage) {
+					return; 
+				}
+				
+				var url = window.location.href; 
+				if (1 != currentPage) {
+					url = url.replace(/\/\d+\/?$/, '/');  
+				}
+				if (1 != targetPage) {
+					url += targetPage + '/';
+				}
+				
+				window.location.assign(url);
+			}); 
+			
+			return field; 
+		}); 
+	}); 
+}); ;
+/*
+ * jQuery Cycle Plugin (core)
+ * Examples and documentation at: http://jquery.malsup.com/cycle/
+ * Copyright (c) 2007-2010 M. Alsup
+ * Version: 2.86 (05-APR-2010)
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ * Requires: jQuery v1.2.6 or later
+ */
+(function($){var ver="2.86";if($.support==undefined){$.support={opacity:!($.browser.msie)};}function debug(s){if($.fn.cycle.debug){log(s);}}function log(){if(window.console&&window.console.log){window.console.log("[cycle] "+Array.prototype.join.call(arguments," "));}}$.fn.cycle=function(options,arg2){var o={s:this.selector,c:this.context};if(this.length===0&&options!="stop"){if(!$.isReady&&o.s){log("DOM not ready, queuing slideshow");$(function(){$(o.s,o.c).cycle(options,arg2);});return this;}log("terminating; zero elements found by selector"+($.isReady?"":" (DOM not ready)"));return this;}return this.each(function(){var opts=handleArguments(this,options,arg2);if(opts===false){return;}opts.updateActivePagerLink=opts.updateActivePagerLink||$.fn.cycle.updateActivePagerLink;if(this.cycleTimeout){clearTimeout(this.cycleTimeout);}this.cycleTimeout=this.cyclePause=0;var $cont=$(this);var $slides=opts.slideExpr?$(opts.slideExpr,this):$cont.children();var els=$slides.get();if(els.length<2){log("terminating; too few slides: "+els.length);return;}var opts2=buildOptions($cont,$slides,els,opts,o);if(opts2===false){return;}var startTime=opts2.continuous?10:getTimeout(opts2.currSlide,opts2.nextSlide,opts2,!opts2.rev);if(startTime){startTime+=(opts2.delay||0);if(startTime<10){startTime=10;}debug("first timeout: "+startTime);this.cycleTimeout=setTimeout(function(){go(els,opts2,0,!opts2.rev);},startTime);}});};function handleArguments(cont,options,arg2){if(cont.cycleStop==undefined){cont.cycleStop=0;}if(options===undefined||options===null){options={};}if(options.constructor==String){switch(options){case"destroy":case"stop":var opts=$(cont).data("cycle.opts");if(!opts){return false;}cont.cycleStop++;if(cont.cycleTimeout){clearTimeout(cont.cycleTimeout);}cont.cycleTimeout=0;$(cont).removeData("cycle.opts");if(options=="destroy"){destroy(opts);}return false;case"toggle":cont.cyclePause=(cont.cyclePause===1)?0:1;checkInstantResume(cont.cyclePause,arg2,cont);return false;case"pause":cont.cyclePause=1;return false;case"resume":cont.cyclePause=0;checkInstantResume(false,arg2,cont);return false;case"prev":case"next":var opts=$(cont).data("cycle.opts");if(!opts){log('options not found, "prev/next" ignored');return false;}$.fn.cycle[options](opts);return false;default:options={fx:options};}return options;}else{if(options.constructor==Number){var num=options;options=$(cont).data("cycle.opts");if(!options){log("options not found, can not advance slide");return false;}if(num<0||num>=options.elements.length){log("invalid slide index: "+num);return false;}options.nextSlide=num;if(cont.cycleTimeout){clearTimeout(cont.cycleTimeout);cont.cycleTimeout=0;}if(typeof arg2=="string"){options.oneTimeFx=arg2;}go(options.elements,options,1,num>=options.currSlide);return false;}}return options;function checkInstantResume(isPaused,arg2,cont){if(!isPaused&&arg2===true){var options=$(cont).data("cycle.opts");if(!options){log("options not found, can not resume");return false;}if(cont.cycleTimeout){clearTimeout(cont.cycleTimeout);cont.cycleTimeout=0;}go(options.elements,options,1,1);}}}function removeFilter(el,opts){if(!$.support.opacity&&opts.cleartype&&el.style.filter){try{el.style.removeAttribute("filter");}catch(smother){}}}function destroy(opts){if(opts.next){$(opts.next).unbind(opts.prevNextEvent);}if(opts.prev){$(opts.prev).unbind(opts.prevNextEvent);}if(opts.pager||opts.pagerAnchorBuilder){$.each(opts.pagerAnchors||[],function(){this.unbind().remove();});}opts.pagerAnchors=null;if(opts.destroy){opts.destroy(opts);}}function buildOptions($cont,$slides,els,options,o){var opts=$.extend({},$.fn.cycle.defaults,options||{},$.metadata?$cont.metadata():$.meta?$cont.data():{});if(opts.autostop){opts.countdown=opts.autostopCount||els.length;}var cont=$cont[0];$cont.data("cycle.opts",opts);opts.$cont=$cont;opts.stopCount=cont.cycleStop;opts.elements=els;opts.before=opts.before?[opts.before]:[];opts.after=opts.after?[opts.after]:[];opts.after.unshift(function(){opts.busy=0;});if(!$.support.opacity&&opts.cleartype){opts.after.push(function(){removeFilter(this,opts);});}if(opts.continuous){opts.after.push(function(){go(els,opts,0,!opts.rev);});}saveOriginalOpts(opts);if(!$.support.opacity&&opts.cleartype&&!opts.cleartypeNoBg){clearTypeFix($slides);}if($cont.css("position")=="static"){$cont.css("position","relative");}if(opts.width){$cont.width(opts.width);}if(opts.height&&opts.height!="auto"){$cont.height(opts.height);}if(opts.startingSlide){opts.startingSlide=parseInt(opts.startingSlide);}if(opts.random){opts.randomMap=[];for(var i=0;i<els.length;i++){opts.randomMap.push(i);}opts.randomMap.sort(function(a,b){return Math.random()-0.5;});opts.randomIndex=1;opts.startingSlide=opts.randomMap[1];}else{if(opts.startingSlide>=els.length){opts.startingSlide=0;}}opts.currSlide=opts.startingSlide||0;var first=opts.startingSlide;$slides.css({position:"absolute",top:0,left:0}).hide().each(function(i){var z=first?i>=first?els.length-(i-first):first-i:els.length-i;$(this).css("z-index",z);});$(els[first]).css("opacity",1).show();removeFilter(els[first],opts);if(opts.fit&&opts.width){$slides.width(opts.width);}if(opts.fit&&opts.height&&opts.height!="auto"){$slides.height(opts.height);}var reshape=opts.containerResize&&!$cont.innerHeight();if(reshape){var maxw=0,maxh=0;for(var j=0;j<els.length;j++){var $e=$(els[j]),e=$e[0],w=$e.outerWidth(),h=$e.outerHeight();if(!w){w=e.offsetWidth||e.width||$e.attr("width");}if(!h){h=e.offsetHeight||e.height||$e.attr("height");}maxw=w>maxw?w:maxw;maxh=h>maxh?h:maxh;}if(maxw>0&&maxh>0){$cont.css({width:maxw+"px",height:maxh+"px"});}}if(opts.pause){$cont.hover(function(){this.cyclePause++;},function(){this.cyclePause--;});}if(supportMultiTransitions(opts)===false){return false;}var requeue=false;options.requeueAttempts=options.requeueAttempts||0;$slides.each(function(){var $el=$(this);this.cycleH=(opts.fit&&opts.height)?opts.height:($el.height()||this.offsetHeight||this.height||$el.attr("height")||0);this.cycleW=(opts.fit&&opts.width)?opts.width:($el.width()||this.offsetWidth||this.width||$el.attr("width")||0);if($el.is("img")){var loadingIE=($.browser.msie&&this.cycleW==28&&this.cycleH==30&&!this.complete);var loadingFF=($.browser.mozilla&&this.cycleW==34&&this.cycleH==19&&!this.complete);var loadingOp=($.browser.opera&&((this.cycleW==42&&this.cycleH==19)||(this.cycleW==37&&this.cycleH==17))&&!this.complete);var loadingOther=(this.cycleH==0&&this.cycleW==0&&!this.complete);if(loadingIE||loadingFF||loadingOp||loadingOther){if(o.s&&opts.requeueOnImageNotLoaded&&++options.requeueAttempts<100){log(options.requeueAttempts," - img slide not loaded, requeuing slideshow: ",this.src,this.cycleW,this.cycleH);setTimeout(function(){$(o.s,o.c).cycle(options);},opts.requeueTimeout);requeue=true;return false;}else{log("could not determine size of image: "+this.src,this.cycleW,this.cycleH);}}}return true;});if(requeue){return false;}opts.cssBefore=opts.cssBefore||{};opts.animIn=opts.animIn||{};opts.animOut=opts.animOut||{};$slides.not(":eq("+first+")").css(opts.cssBefore);if(opts.cssFirst){$($slides[first]).css(opts.cssFirst);}if(opts.timeout){opts.timeout=parseInt(opts.timeout);if(opts.speed.constructor==String){opts.speed=$.fx.speeds[opts.speed]||parseInt(opts.speed);}if(!opts.sync){opts.speed=opts.speed/2;}var buffer=opts.fx=="shuffle"?500:250;while((opts.timeout-opts.speed)<buffer){opts.timeout+=opts.speed;}}if(opts.easing){opts.easeIn=opts.easeOut=opts.easing;}if(!opts.speedIn){opts.speedIn=opts.speed;}if(!opts.speedOut){opts.speedOut=opts.speed;}opts.slideCount=els.length;opts.currSlide=opts.lastSlide=first;if(opts.random){if(++opts.randomIndex==els.length){opts.randomIndex=0;}opts.nextSlide=opts.randomMap[opts.randomIndex];}else{opts.nextSlide=opts.startingSlide>=(els.length-1)?0:opts.startingSlide+1;}if(!opts.multiFx){var init=$.fn.cycle.transitions[opts.fx];if($.isFunction(init)){init($cont,$slides,opts);}else{if(opts.fx!="custom"&&!opts.multiFx){log("unknown transition: "+opts.fx,"; slideshow terminating");return false;}}}var e0=$slides[first];if(opts.before.length){opts.before[0].apply(e0,[e0,e0,opts,true]);}if(opts.after.length>1){opts.after[1].apply(e0,[e0,e0,opts,true]);}if(opts.next){$(opts.next).bind(opts.prevNextEvent,function(){return advance(opts,opts.rev?-1:1);});}if(opts.prev){$(opts.prev).bind(opts.prevNextEvent,function(){return advance(opts,opts.rev?1:-1);});}if(opts.pager||opts.pagerAnchorBuilder){buildPager(els,opts);}exposeAddSlide(opts,els);return opts;}function saveOriginalOpts(opts){opts.original={before:[],after:[]};opts.original.cssBefore=$.extend({},opts.cssBefore);opts.original.cssAfter=$.extend({},opts.cssAfter);opts.original.animIn=$.extend({},opts.animIn);opts.original.animOut=$.extend({},opts.animOut);$.each(opts.before,function(){opts.original.before.push(this);});$.each(opts.after,function(){opts.original.after.push(this);});}function supportMultiTransitions(opts){var i,tx,txs=$.fn.cycle.transitions;if(opts.fx.indexOf(",")>0){opts.multiFx=true;opts.fxs=opts.fx.replace(/\s*/g,"").split(",");for(i=0;i<opts.fxs.length;i++){var fx=opts.fxs[i];tx=txs[fx];if(!tx||!txs.hasOwnProperty(fx)||!$.isFunction(tx)){log("discarding unknown transition: ",fx);opts.fxs.splice(i,1);i--;}}if(!opts.fxs.length){log("No valid transitions named; slideshow terminating.");return false;}}else{if(opts.fx=="all"){opts.multiFx=true;opts.fxs=[];for(p in txs){tx=txs[p];if(txs.hasOwnProperty(p)&&$.isFunction(tx)){opts.fxs.push(p);}}}}if(opts.multiFx&&opts.randomizeEffects){var r1=Math.floor(Math.random()*20)+30;for(i=0;i<r1;i++){var r2=Math.floor(Math.random()*opts.fxs.length);opts.fxs.push(opts.fxs.splice(r2,1)[0]);}debug("randomized fx sequence: ",opts.fxs);}return true;}function exposeAddSlide(opts,els){opts.addSlide=function(newSlide,prepend){var $s=$(newSlide),s=$s[0];if(!opts.autostopCount){opts.countdown++;}els[prepend?"unshift":"push"](s);if(opts.els){opts.els[prepend?"unshift":"push"](s);}opts.slideCount=els.length;$s.css("position","absolute");$s[prepend?"prependTo":"appendTo"](opts.$cont);if(prepend){opts.currSlide++;opts.nextSlide++;}if(!$.support.opacity&&opts.cleartype&&!opts.cleartypeNoBg){clearTypeFix($s);}if(opts.fit&&opts.width){$s.width(opts.width);}if(opts.fit&&opts.height&&opts.height!="auto"){$slides.height(opts.height);}s.cycleH=(opts.fit&&opts.height)?opts.height:$s.height();s.cycleW=(opts.fit&&opts.width)?opts.width:$s.width();$s.css(opts.cssBefore);if(opts.pager||opts.pagerAnchorBuilder){$.fn.cycle.createPagerAnchor(els.length-1,s,$(opts.pager),els,opts);}if($.isFunction(opts.onAddSlide)){opts.onAddSlide($s);}else{$s.hide();}};}$.fn.cycle.resetState=function(opts,fx){fx=fx||opts.fx;opts.before=[];opts.after=[];opts.cssBefore=$.extend({},opts.original.cssBefore);opts.cssAfter=$.extend({},opts.original.cssAfter);opts.animIn=$.extend({},opts.original.animIn);opts.animOut=$.extend({},opts.original.animOut);opts.fxFn=null;$.each(opts.original.before,function(){opts.before.push(this);});$.each(opts.original.after,function(){opts.after.push(this);});var init=$.fn.cycle.transitions[fx];if($.isFunction(init)){init(opts.$cont,$(opts.elements),opts);}};function go(els,opts,manual,fwd){if(manual&&opts.busy&&opts.manualTrump){debug("manualTrump in go(), stopping active transition");$(els).stop(true,true);opts.busy=false;}if(opts.busy){debug("transition active, ignoring new tx request");return;}var p=opts.$cont[0],curr=els[opts.currSlide],next=els[opts.nextSlide];if(p.cycleStop!=opts.stopCount||p.cycleTimeout===0&&!manual){return;}if(!manual&&!p.cyclePause&&((opts.autostop&&(--opts.countdown<=0))||(opts.nowrap&&!opts.random&&opts.nextSlide<opts.currSlide))){if(opts.end){opts.end(opts);}return;}var changed=false;if((manual||!p.cyclePause)&&(opts.nextSlide!=opts.currSlide)){changed=true;var fx=opts.fx;curr.cycleH=curr.cycleH||$(curr).height();curr.cycleW=curr.cycleW||$(curr).width();next.cycleH=next.cycleH||$(next).height();next.cycleW=next.cycleW||$(next).width();if(opts.multiFx){if(opts.lastFx==undefined||++opts.lastFx>=opts.fxs.length){opts.lastFx=0;}fx=opts.fxs[opts.lastFx];opts.currFx=fx;}if(opts.oneTimeFx){fx=opts.oneTimeFx;opts.oneTimeFx=null;}$.fn.cycle.resetState(opts,fx);if(opts.before.length){$.each(opts.before,function(i,o){if(p.cycleStop!=opts.stopCount){return;}o.apply(next,[curr,next,opts,fwd]);});}var after=function(){$.each(opts.after,function(i,o){if(p.cycleStop!=opts.stopCount){return;}o.apply(next,[curr,next,opts,fwd]);});};debug("tx firing; currSlide: "+opts.currSlide+"; nextSlide: "+opts.nextSlide);opts.busy=1;if(opts.fxFn){opts.fxFn(curr,next,opts,after,fwd,manual&&opts.fastOnEvent);}else{if($.isFunction($.fn.cycle[opts.fx])){$.fn.cycle[opts.fx](curr,next,opts,after,fwd,manual&&opts.fastOnEvent);}else{$.fn.cycle.custom(curr,next,opts,after,fwd,manual&&opts.fastOnEvent);}}}if(changed||opts.nextSlide==opts.currSlide){opts.lastSlide=opts.currSlide;if(opts.random){opts.currSlide=opts.nextSlide;if(++opts.randomIndex==els.length){opts.randomIndex=0;}opts.nextSlide=opts.randomMap[opts.randomIndex];if(opts.nextSlide==opts.currSlide){opts.nextSlide=(opts.currSlide==opts.slideCount-1)?0:opts.currSlide+1;}}else{var roll=(opts.nextSlide+1)==els.length;opts.nextSlide=roll?0:opts.nextSlide+1;opts.currSlide=roll?els.length-1:opts.nextSlide-1;}}if(changed&&opts.pager){opts.updateActivePagerLink(opts.pager,opts.currSlide,opts.activePagerClass);}var ms=0;if(opts.timeout&&!opts.continuous){ms=getTimeout(curr,next,opts,fwd);}else{if(opts.continuous&&p.cyclePause){ms=10;}}if(ms>0){p.cycleTimeout=setTimeout(function(){go(els,opts,0,!opts.rev);},ms);}}$.fn.cycle.updateActivePagerLink=function(pager,currSlide,clsName){$(pager).each(function(){$(this).children().removeClass(clsName).eq(currSlide).addClass(clsName);});};function getTimeout(curr,next,opts,fwd){if(opts.timeoutFn){var t=opts.timeoutFn(curr,next,opts,fwd);while((t-opts.speed)<250){t+=opts.speed;}debug("calculated timeout: "+t+"; speed: "+opts.speed);if(t!==false){return t;}}return opts.timeout;}$.fn.cycle.next=function(opts){advance(opts,opts.rev?-1:1);};$.fn.cycle.prev=function(opts){advance(opts,opts.rev?1:-1);};function advance(opts,val){var els=opts.elements;var p=opts.$cont[0],timeout=p.cycleTimeout;if(timeout){clearTimeout(timeout);p.cycleTimeout=0;}if(opts.random&&val<0){opts.randomIndex--;if(--opts.randomIndex==-2){opts.randomIndex=els.length-2;}else{if(opts.randomIndex==-1){opts.randomIndex=els.length-1;}}opts.nextSlide=opts.randomMap[opts.randomIndex];}else{if(opts.random){opts.nextSlide=opts.randomMap[opts.randomIndex];}else{opts.nextSlide=opts.currSlide+val;if(opts.nextSlide<0){if(opts.nowrap){return false;}opts.nextSlide=els.length-1;}else{if(opts.nextSlide>=els.length){if(opts.nowrap){return false;}opts.nextSlide=0;}}}}var cb=opts.onPrevNextEvent||opts.prevNextClick;if($.isFunction(cb)){cb(val>0,opts.nextSlide,els[opts.nextSlide]);}go(els,opts,1,val>=0);return false;}function buildPager(els,opts){var $p=$(opts.pager);$.each(els,function(i,o){$.fn.cycle.createPagerAnchor(i,o,$p,els,opts);});opts.updateActivePagerLink(opts.pager,opts.startingSlide,opts.activePagerClass);}$.fn.cycle.createPagerAnchor=function(i,el,$p,els,opts){var a;if($.isFunction(opts.pagerAnchorBuilder)){a=opts.pagerAnchorBuilder(i,el);debug("pagerAnchorBuilder("+i+", el) returned: "+a);}else{a='<a href="#">'+(i+1)+"</a>";}if(!a){return;}var $a=$(a);if($a.parents("body").length===0){var arr=[];if($p.length>1){$p.each(function(){var $clone=$a.clone(true);$(this).append($clone);arr.push($clone[0]);});$a=$(arr);}else{$a.appendTo($p);}}opts.pagerAnchors=opts.pagerAnchors||[];opts.pagerAnchors.push($a);$a.bind(opts.pagerEvent,function(e){e.preventDefault();opts.nextSlide=i;var p=opts.$cont[0],timeout=p.cycleTimeout;if(timeout){clearTimeout(timeout);p.cycleTimeout=0;}var cb=opts.onPagerEvent||opts.pagerClick;if($.isFunction(cb)){cb(opts.nextSlide,els[opts.nextSlide]);}go(els,opts,1,opts.currSlide<i);});if(!/^click/.test(opts.pagerEvent)&&!opts.allowPagerClickBubble){$a.bind("click.cycle",function(){return false;});}if(opts.pauseOnPagerHover){$a.hover(function(){opts.$cont[0].cyclePause++;},function(){opts.$cont[0].cyclePause--;});}};$.fn.cycle.hopsFromLast=function(opts,fwd){var hops,l=opts.lastSlide,c=opts.currSlide;if(fwd){hops=c>l?c-l:opts.slideCount-l;}else{hops=c<l?l-c:l+opts.slideCount-c;}return hops;};function clearTypeFix($slides){debug("applying clearType background-color hack");function hex(s){s=parseInt(s).toString(16);return s.length<2?"0"+s:s;}function getBg(e){for(;e&&e.nodeName.toLowerCase()!="html";e=e.parentNode){var v=$.css(e,"background-color");if(v.indexOf("rgb")>=0){var rgb=v.match(/\d+/g);return"#"+hex(rgb[0])+hex(rgb[1])+hex(rgb[2]);}if(v&&v!="transparent"){return v;}}return"#ffffff";}$slides.each(function(){$(this).css("background-color",getBg(this));});}$.fn.cycle.commonReset=function(curr,next,opts,w,h,rev){$(opts.elements).not(curr).hide();opts.cssBefore.opacity=1;opts.cssBefore.display="block";if(w!==false&&next.cycleW>0){opts.cssBefore.width=next.cycleW;}if(h!==false&&next.cycleH>0){opts.cssBefore.height=next.cycleH;}opts.cssAfter=opts.cssAfter||{};opts.cssAfter.display="none";$(curr).css("zIndex",opts.slideCount+(rev===true?1:0));$(next).css("zIndex",opts.slideCount+(rev===true?0:1));};$.fn.cycle.custom=function(curr,next,opts,cb,fwd,speedOverride){var $l=$(curr),$n=$(next);var speedIn=opts.speedIn,speedOut=opts.speedOut,easeIn=opts.easeIn,easeOut=opts.easeOut;$n.css(opts.cssBefore);if(speedOverride){if(typeof speedOverride=="number"){speedIn=speedOut=speedOverride;}else{speedIn=speedOut=1;}easeIn=easeOut=null;}var fn=function(){$n.animate(opts.animIn,speedIn,easeIn,cb);};$l.animate(opts.animOut,speedOut,easeOut,function(){if(opts.cssAfter){$l.css(opts.cssAfter);}if(!opts.sync){fn();}});if(opts.sync){fn();}};$.fn.cycle.transitions={fade:function($cont,$slides,opts){$slides.not(":eq("+opts.currSlide+")").css("opacity",0);opts.before.push(function(curr,next,opts){$.fn.cycle.commonReset(curr,next,opts);opts.cssBefore.opacity=0;});opts.animIn={opacity:1};opts.animOut={opacity:0};opts.cssBefore={top:0,left:0};}};$.fn.cycle.ver=function(){return ver;};$.fn.cycle.defaults={fx:"fade",timeout:4000,timeoutFn:null,continuous:0,speed:1000,speedIn:null,speedOut:null,next:null,prev:null,onPrevNextEvent:null,prevNextEvent:"click.cycle",pager:null,onPagerEvent:null,pagerEvent:"click.cycle",allowPagerClickBubble:false,pagerAnchorBuilder:null,before:null,after:null,end:null,easing:null,easeIn:null,easeOut:null,shuffle:null,animIn:null,animOut:null,cssBefore:null,cssAfter:null,fxFn:null,height:"auto",startingSlide:0,sync:1,random:0,fit:0,containerResize:1,pause:0,pauseOnPagerHover:0,autostop:0,autostopCount:0,delay:0,slideExpr:null,cleartype:!$.support.opacity,cleartypeNoBg:false,nowrap:0,fastOnEvent:0,randomizeEffects:1,rev:0,manualTrump:true,requeueOnImageNotLoaded:true,requeueTimeout:250,activePagerClass:"activeSlide",updateActivePagerLink:null};})(jQuery);;
+/* ------------------------------------------------------------------------
+	Class: videoLightbox
+	Use: Lightbox clone for jQuery
+	Author: Stephane Caron (http://www.no-margin-for-errors.com)
+	Modified by: Jeff Miller
+	Version: 3.0
+------------------------------------------------------------------------- */
+
+(function($){$.videoLightbox={version:'3.0'};$.fn.videoLightbox=function(pp_settings){pp_settings=jQuery.extend({animationSpeed:'fast',slideshow:false,autoplay_slideshow:false,opacity:0.90,showTitle:false,allowresize:true,default_width:480,default_height:320,theme:'light_rounded',hideflash:false,wmode:'opaque',autoplay:true,modal:false,changepicturecallback:function(){},callback:function(){},markup:'<div class="pp_pic_holder"> \
+      <div class="pp_top"> \
+       <div class="pp_left"></div> \
+       <div class="pp_middle"></div> \
+       <div class="pp_right"></div> \
+      </div> \
+      <div class="pp_content_container"> \
+       <div class="pp_left"> \
+       <div class="pp_right"> \
+        <div class="pp_content"> \
+         <div class="pp_loaderIcon"></div> \
+         <div class="pp_fade"> \
+          <div id="pp_full_res"></div> \
+          <div class="pp_details clearfix"> \
+           <a class="pp_close" href="#">Close</a> \
+           <p class="pp_description"></p> \
+          </div> \
+         </div> \
+        </div> \
+       </div> \
+       </div> \
+      </div> \
+      <div class="pp_bottom"> \
+       <div class="pp_left"></div> \
+       <div class="pp_middle"></div> \
+       <div class="pp_right"></div> \
+      </div> \
+     </div> \
+     <div class="pp_overlay"></div>',flash_markup:' <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="ooyalaPlayer" width="{width}" height="{height}" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab"><param name="movie" value=" http://www.ooyala.com/player.swf" /><param name="bgcolor" value="#000000" /><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="true" /><param name="flashvars" value="autoplay=1&embedCode={embedCode}" /><embed src="http://www.ooyala.com/player.swf" bgcolor="#000000" width="{width}" height="{height}" name="ooyalaPlayer" align="middle" play="true" loop="false" allowscriptaccess="always" type="application/x-shockwave-flash" allowfullscreen="true" flashvars="autoplay=1&embedCode={embedCode}" pluginspage="http://www.adobe.com/go/getflashplayer"></embed>'},pp_settings);var matchedObjects=this,percentBased=false,correctSizes,pp_contentHeight,pp_contentWidth,pp_containerHeight,pp_containerWidth,windowHeight=$(window).height(),windowWidth=$(window).width(),doresize=true,scrollPos=_getScroll();$(window).unbind('scroll').scroll(function(){scrollPos=_getScroll();});$(window).unbind('resize').resize(function(){_resizeOverlay();});$.videoLightbox.initialize=function(){settings=pp_settings;if($.browser.msie&&parseInt($.browser.version)==6)settings.theme="light_square";_buildOverlay(this);set_position=jQuery.inArray($(this).attr('href'),pp_images);$.videoLightbox.open();return false;}
+$.videoLightbox.open=function(){if(typeof settings=="undefined"){settings=pp_settings;_buildOverlay(this);pp_images=$.makeArray(arguments[0]);pp_titles=(arguments[1])?$.makeArray(arguments[1]):$.makeArray("");pp_descriptions=(arguments[2])?$.makeArray(arguments[2]):$.makeArray("");isSet=(pp_images.length>1)?true:false;set_position=0;}
+if($.browser.msie&&$.browser.version==6)$('select').css('visibility','hidden');if(settings.hideflash)$('object,embed').css('visibility','hidden');$('.pp_loaderIcon').show();if($ppt.is(':hidden'))$ppt.css('opacity',0).show();$pp_overlay.show().fadeTo(settings.animationSpeed,settings.opacity);$pp_pic_holder.find('.currentTextHolder').text((set_position+1)+settings.counter_separator_label+$(pp_images).size());$pp_pic_holder.find('.pp_description').show().html(unescape(pp_descriptions[set_position]));movie_width=(parseFloat(grab_param('width',pp_images[set_position])))?grab_param('width',pp_images[set_position]):settings.default_width.toString();movie_height=(parseFloat(grab_param('height',pp_images[set_position])))?grab_param('height',pp_images[set_position]):settings.default_height.toString();if(movie_width.indexOf('%')!=-1||movie_height.indexOf('%')!=-1){movie_height=parseFloat(($(window).height()*parseFloat(movie_height)/100)-100);movie_width=parseFloat(($(window).width()*parseFloat(movie_width)/100)-100);percentBased=true;}else{percentBased=false;}
+$pp_pic_holder.fadeIn(function(){imgPreloader="";correctSizes=_fitToViewport(movie_width,movie_height);embedCode=pp_images[set_position];embedCode=embedCode.substring(pp_images[set_position].indexOf('embedCode')+10,pp_images[set_position].length);toInject=settings.flash_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{wmode}/g,settings.wmode).replace(/{embedCode}/g,embedCode);if(!imgPreloader){$pp_pic_holder.find('#pp_full_res')[0].innerHTML=toInject;_showContent();};});return false;};$.videoLightbox.close=function(){$pp_pic_holder.stop().find('object,embed').css('visibility','hidden');$('div.pp_pic_holder,div.ppt,.pp_fade').fadeOut(settings.animationSpeed,function(){$(this).remove();});$pp_overlay.fadeOut(settings.animationSpeed,function(){if($.browser.msie&&$.browser.version==6)$('select').css('visibility','visible');if(settings.hideflash)$('object,embed').css('visibility','visible');$(this).remove();$(window).unbind('scroll');settings.callback();doresize=true;delete settings;});};_showContent=function(){$('.pp_loaderIcon').hide();$ppt.fadeTo(settings.animationSpeed,1);projectedTop=scrollPos['scrollTop']+((windowHeight/2)-(correctSizes['containerHeight']/2));if(projectedTop<0)projectedTop=0;$pp_pic_holder.find('.pp_content').animate({'height':correctSizes['contentHeight']},settings.animationSpeed);var hOffset=correctSizes['containerWidth']/2;var vOffset=correctSizes['containerHeight']/2;$pp_pic_holder.animate({'margin-top':-vOffset,'margin-left':-hOffset,'width':correctSizes['containerWidth']},settings.animationSpeed,function(){$pp_pic_holder.find('.pp_hoverContainer,#fullResImage').height(correctSizes['height']).width(correctSizes['width']);$pp_pic_holder.find('.pp_fade').fadeIn(settings.animationSpeed);if(correctSizes['resized'])$('a.pp_expand,a.pp_contract').fadeIn(settings.animationSpeed);settings.changepicturecallback();});$pp_pic_holder.find('.pp_content').unbind('mouseenter mouseleave');$pp_pic_holder.find('.pp_gallery').hide();};function _hideContent(callback){$pp_pic_holder.find('#pp_full_res object,#pp_full_res embed').css('visibility','hidden');$pp_pic_holder.find('.pp_fade').fadeOut(settings.animationSpeed,function(){$('.pp_loaderIcon').show();callback();});};function _fitToViewport(width,height){resized=false;_getDimensions(width,height);imageWidth=width,imageHeight=height;if(((pp_containerWidth>windowWidth)||(pp_containerHeight>windowHeight))&&doresize&&settings.allowresize&&!percentBased){resized=true,fitting=false;while(!fitting){if((pp_containerWidth>windowWidth)){imageWidth=(windowWidth-200);imageHeight=(height/width)*imageWidth;}else if((pp_containerHeight>windowHeight)){imageHeight=(windowHeight-200);imageWidth=(width/height)*imageHeight;}else{fitting=true;};pp_containerHeight=imageHeight,pp_containerWidth=imageWidth;};_getDimensions(imageWidth,imageHeight);};return{width:Math.floor(imageWidth),height:Math.floor(imageHeight),containerHeight:Math.floor(pp_containerHeight),containerWidth:Math.floor(pp_containerWidth)+40,contentHeight:Math.floor(pp_contentHeight),contentWidth:Math.floor(pp_contentWidth),resized:resized};};function _getDimensions(width,height){width=parseFloat(width);height=parseFloat(height);$pp_details=$pp_pic_holder.find('.pp_details');$pp_details.width(width);detailsHeight=parseFloat($pp_details.css('marginTop'))+parseFloat($pp_details.css('marginBottom'));$pp_details=$pp_details.clone().appendTo($('body')).css({'position':'absolute','top':-10000});detailsHeight+=$pp_details.height();detailsHeight=(detailsHeight<=34)?36:detailsHeight;if($.browser.msie&&$.browser.version==7)detailsHeight+=8;$pp_details.remove();pp_contentHeight=height+detailsHeight;pp_contentWidth=width;pp_containerHeight=pp_contentHeight+$ppt.height()+$pp_pic_holder.find('.pp_top').height()+$pp_pic_holder.find('.pp_bottom').height();pp_containerWidth=width;}
+function _getScroll(){if(self.pageYOffset){return{scrollTop:self.pageYOffset,scrollLeft:self.pageXOffset};}else if(document.documentElement&&document.documentElement.scrollTop){return{scrollTop:document.documentElement.scrollTop,scrollLeft:document.documentElement.scrollLeft};}else if(document.body){return{scrollTop:document.body.scrollTop,scrollLeft:document.body.scrollLeft};};};function _resizeOverlay(){windowHeight=$(window).height(),windowWidth=$(window).width();if(typeof $pp_overlay!="undefined")$pp_overlay.height($(document).height());};function _buildOverlay(caller){theRel=$(caller).attr('rel');galleryRegExp=/\[(?:.*)\]/;isSet=(galleryRegExp.exec(theRel))?true:false;pp_images=(isSet)?jQuery.map(matchedObjects,function(n,i){if($(n).attr('rel').indexOf(theRel)!=-1)return $(n).attr('href');}):$.makeArray($(caller).attr('href'));pp_titles=(isSet)?jQuery.map(matchedObjects,function(n,i){if($(n).attr('rel').indexOf(theRel)!=-1)return($(n).find('img').attr('alt'))?$(n).find('img').attr('alt'):"";}):$.makeArray($(caller).find('img').attr('alt'));pp_descriptions=(isSet)?jQuery.map(matchedObjects,function(n,i){if($(n).attr('rel').indexOf(theRel)!=-1)return($(n).attr('title'))?$(n).attr('title'):"";}):$.makeArray($(caller).attr('title'));$('body').append(settings.markup);$pp_pic_holder=$('.pp_pic_holder'),$ppt=$('.ppt'),$pp_overlay=$('div.pp_overlay');$pp_pic_holder.attr('class','pp_pic_holder '+settings.theme);$pp_overlay.css({'opacity':0,'height':$(document).height(),'width':$(document).width()}).bind('click',function(){if(!settings.modal)$.videoLightbox.close();});$('a.pp_close').bind('click',function(){$.videoLightbox.close();return false;});$('a.pp_expand').bind('click',function(e){if($(this).hasClass('pp_expand')){$(this).removeClass('pp_expand').addClass('pp_contract');doresize=false;}else{$(this).removeClass('pp_contract').addClass('pp_expand');doresize=true;};_hideContent(function(){$.videoLightbox.open();});return false;});};return this.unbind('click').click($.videoLightbox.initialize);};function grab_param(name,url){name=name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");var regexS="[\\?&]"+name+"=([^&#]*)";var regex=new RegExp(regexS);var results=regex.exec(url);return(results==null)?"":results[1];}})(jQuery);;
+function receiveOoyalaPlayerEvent(playerId,eventName,eventParams){var player=document.getElementById(playerId);switch(eventName){case"apiReady":var dlVideo=document.getElementById('dl-video');var videos=getInfoOfAllChannelItems(player);var thumbnailHTML=generateThumbnailHTML(videos,playerId);var dlVideoThumbnails=document.createElement('ul');var dlVideoThumbnailsId='dl-video-thumbnails';dlVideoThumbnails.setAttribute('id',dlVideoThumbnailsId);dlVideoThumbnails.innerHTML=thumbnailHTML;dlVideo.appendChild(dlVideoThumbnails);var video=player.getCurrentItemEmbedCode();changeHighlight(player,video);break;case"currentItemEmbedCodeChanged":var stepToIndex=0;var videos=getInfoOfAllChannelItems(player);changeHighlight(player,eventParams.embedCode);for(var i=0;i<videos.length;i++){if(videos[i].embedCode==eventParams.embedCode){stepToIndex=i+1;}}
+break;}}
+function getInfoOfAllChannelItems(player){var thumbnailWidth=87;var thumbnailHeight=57;var channelItems=player.getLineup();var urls=[];var embedCodes=[];var titles=[];var videos=[];for(var i=0;i<channelItems.length;i++){urls.push(player.getPromoFor(channelItems[i].embedCode,thumbnailWidth,thumbnailHeight));embedCodes.push(channelItems[i].embedCode);titles.push(channelItems[i].title);var video=new Object();video.embedCode=embedCodes[i];video.thumbnailURL=urls[i];video.title=titles[i];videos.push(video);}
+return videos;}
+function generateThumbnailHTML(videos,playerId){var maxVideos=6;var lastChild="";var html="";var changeVideo="";for(var i=0;i<maxVideos;i++){if(i==5){lastChild=' class="last-child"';}
+changeembed="changeEmbed('"+playerId+"', '"+videos[i].embedCode+"')";html+='<li'+lastChild+'><a href="#" onclick="'+changeembed+' ;return false;" class="panel">';html+='<img width="87px" height="57px" alt="'+videos[i].title+'" title="'+videos[i].title+'" id="'+videos[i].embedCode+'" src="'+videos[i].thumbnailURL+'" /></a></li>';}
+return html;}
+function changeHighlight(playerId,embedCode){var player=document.getElementById('player');var currentlySelected=jQuery("#dl-video-thumbnails .current");if(currentlySelected.length>0){currentlySelected[0].className="";}
+highlight(embedCode);}
+function changeEmbed(playerId,embedCode){var autoplay=true;var player=document.getElementById('player');player.changeCurrentItem(embedCode);if(autoplay)player.playMovie();}
+function highlight(embedCode){var element=document.getElementById(embedCode);element.className="current";};
+/*
+ * FancyBox - jQuery Plugin
+ * Simple and fancy lightbox alternative
+ *
+ * Copyright (c) 20010 Janis Skarnelis
+ * Examples and documentation at: http://fancybox.net
+ *
+ * Version: 1.3.0 (02/02/2010)
+ * Requires: jQuery v1.3+
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ */
+
+;(function(b){function H(){v.hide();r.onerror=r.onload=null;F&&F.abort();l.empty()}function Q(){b.fancybox('<p id="fancybox_error">The requested content cannot be loaded.<br />Please try again later.</p>',{scrolling:"no",padding:20,transitionIn:"none",transitionOut:"none"})}function B(){H();var a=q[s];e=b.extend({},b.fn.fancybox.defaults,typeof b(a).data("fancybox")=="undefined"?e:b(a).data("fancybox"));var d,f,o=a.title||b(a).title||e.title||"";if(a.nodeName&&!e.orig)e.orig=b(a).children("img:first").length?
+b(a).children("img:first"):b(a);if(o==""&&e.orig)o=e.orig.attr("alt");d=a.nodeName&&/^(?:javascript|#)/i.test(a.href)?e.href||null:e.href||a.href||null;if(e.type){f=e.type;if(!d)d=e.content}else if(e.content)f="html";else if(d)if(d.match(I))f="image";else if(d.match(T))f="swf";else if(b(a).hasClass("iframe"))f="iframe";else if(d.match(/#/)){a=d.substr(d.indexOf("#"));f=b(a).length>0?"inline":"ajax"}else f="ajax";else f="inline";e.type=f;e.href=d;e.title=o;if(e.autoDimensions&&e.type!=="iframe"&&e.type!==
+"swf"){e.width="auto";e.height="auto"}if(e.modal){e.overlayShow=true;e.hideOnOverlayClick=false;e.hideOnContentClick=false;e.enableEscapeButton=false;e.showCloseButton=false}if(b.isFunction(e.onStart))if(e.onStart(q,s,e)===false){h=false;return}l.css("padding",t+e.padding+e.margin);b(".fancybox-inline-tmp").unbind("fancybox-cancel").bind("fancybox-change",function(){b(this).replaceWith(i.children())});switch(f){case "html":l.html(e.content);G();break;case "inline":b('<div class="fancybox-inline-tmp" />').hide().insertBefore(b(a)).bind("fancybox-cleanup",
+function(){b(this).replaceWith(i.children())}).bind("fancybox-cancel",function(){b(this).replaceWith(l.children())});b(a).appendTo(l);G();break;case "image":h=false;b.fancybox.showActivity();r=new Image;r.onerror=function(){Q()};r.onload=function(){r.onerror=null;r.onload=null;U()};r.src=d;break;case "swf":var u="",w="";u+='<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="'+e.width+'" height="'+e.height+'"><param name="movie" value="'+d+'"></param>';b.each(e.swf,function(p,R){u+=
+'<param name="'+p+'" value="'+R+'"></param>';w+=" "+p+'="'+R+'"'});u+='<embed src="'+d+'" type="application/x-shockwave-flash" width="'+e.width+'" height="'+e.height+'"'+w+"></embed></object>";l.html(u);G();break;case "ajax":a=d.split("#",2);f=e.ajax.data||{};if(a.length>1){d=a[0];typeof f=="string"?(f+="&selector="+a[1]):(f.selector=a[1])}h=false;b.fancybox.showActivity();F=b.ajax(b.extend(e.ajax,{url:d,data:f,error:Q,success:function(p){if(F.status==200){l.html(p);G()}}}));break;case "iframe":b('<iframe id="fancybox-frame" name="fancybox-frame'+
+(new Date).getTime()+'" frameborder="0" hspace="0" scrolling="'+e.scrolling+'" src="'+e.href+'"></iframe>').appendTo(l);J();break}}function U(){h=true;e.width=r.width;e.height=r.height;b("<img />").attr({id:"fancybox-img",src:r.src,alt:e.title}).appendTo(l);J()}function G(){l.width(e.width);l.height(e.height);if(e.width=="auto")e.width=l.width();if(e.height=="auto")e.height=l.height();J()}function J(){v.hide();if(g.is(":visible")&&b.isFunction(c.onCleanup))if(c.onCleanup(j,n,c)===false){b.event.trigger("fancybox-cancel");
+h=false;return}j=q;n=s;c=e;i.get(0).scrollTop=0;i.get(0).scrollLeft=0;if(c.overlayShow){K&&b("select:not(#fancybox-tmp select)").filter(function(){return this.style.visibility!=="hidden"}).css({visibility:"hidden"}).one("fancybox-cleanup",function(){this.style.visibility="inherit"});y.css({"background-color":c.overlayColor,opacity:c.overlayOpacity}).unbind().show()}m=V();W();if(g.is(":visible")){b(z.add(C).add(D)).hide();var a=g.position();k={top:a.top,left:a.left,width:g.width(),height:g.height()};
+var d=k.width==m.width&&k.height==m.height;i.fadeOut(c.changeFade,function(){function f(){i.html(l.contents()).fadeIn(c.changeFade,L)}b.event.trigger("fancybox-change");i.css({top:c.padding,left:c.padding,width:Math.max(k.width-c.padding*2,1),height:Math.max(k.height-c.padding*2,1)}).empty().css("overflow","hidden");A.prop=0;b(A).animate({prop:1},{duration:d?0:c.changeSpeed,easing:c.easingChange,step:M,complete:f})})}else{g.css("opacity",1);if(c.transitionIn=="elastic"){k=S();i.css({top:c.padding,
+left:c.padding,width:Math.max(k.width-c.padding*2,1),height:Math.max(k.height-c.padding*2,1)}).html(l.contents());g.css(k).show();if(c.opacity)m.opacity=0;A.prop=0;b(A).animate({prop:1},{duration:c.speedIn,easing:c.easingIn,step:M,complete:L})}else{i.css({top:c.padding,left:c.padding,width:Math.max(m.width-c.padding*2,1),height:Math.max(m.height-c.padding*2-x,1)}).html(l.contents());g.css(m).fadeIn(c.transitionIn=="none"?0:c.speedIn,L)}}}function M(a){var d=Math.round(k.width+(m.width-k.width)*a),
+f=Math.round(k.height+(m.height-k.height)*a),o=Math.round(k.top+(m.top-k.top)*a),u=Math.round(k.left+(m.left-k.left)*a);g.css({width:d+"px",height:f+"px",top:o+"px",left:u+"px"});d=Math.max(d-c.padding*2,0);f=Math.max(f-(c.padding*2+x*a),0);i.css({width:d+"px",height:f+"px"});if(typeof m.opacity!=="undefined")g.css("opacity",a<0.5?0.5:a)}function L(){i.css("overflow",overflow=c.scrolling=="auto"?c.type=="image"||c.type=="iframe"||c.type=="swf"?"hidden":"auto":c.scrolling=="yes"?"auto":"visible");
+if(!b.support.opacity){i.get(0).style.removeAttribute("filter");g.get(0).style.removeAttribute("filter")}b("#fancybox-title").show();c.hideOnContentClick&&i.one("click",b.fancybox.close);c.hideOnOverlayClick&&y.one("click",b.fancybox.close);c.showCloseButton&&z.show();X();b(window).bind("resize.fb",b.fancybox.center);c.centerOnScroll?b(window).bind("scroll.fb",b.fancybox.center):b(window).unbind("scroll.fb");b.isFunction(c.onComplete)&&c.onComplete(j,n,c);h=false;Y()}function V(){var a=N(),d={},f=
+c.margin,o=c.autoScale,u=(t+f)*2,w=(t+f)*2,p=c.padding*2;if(c.width.toString().indexOf("%")>-1){d.width=a[0]*parseFloat(c.width)/100-t*2;o=false}else d.width=c.width+p;if(c.height.toString().indexOf("%")>-1){d.height=a[1]*parseFloat(c.height)/100-t*2;o=false}else d.height=c.height+p;if(o&&(d.width>a[0]-u||d.height>a[1]-w))if(e.type=="image"||e.type=="swf"){u+=p;w+=p;o=Math.min(Math.min(a[0]-u,c.width)/c.width,Math.min(a[1]-w,c.height)/c.height);d.width=Math.round(o*(d.width-p))+p;d.height=Math.round(o*
+(d.height-p))+p}else{d.width=Math.min(d.width,a[0]-u);d.height=Math.min(d.height,a[1]-w)}d.top=a[3]+(a[1]-(d.height+t*2))*0.5;d.left=a[2]+(a[0]-(d.width+t*2))*0.5;if(c.autoScale==false){d.top=Math.max(a[3]+f,d.top);d.left=Math.max(a[2]+f,d.left)}return d}function S(){var a=e.orig?b(e.orig):false,d={};if(a&&a.length){a=Z(a);d={width:a.width+c.padding*2,height:a.height+c.padding*2,top:a.top-c.padding-t,left:a.left-c.padding-t}}else{a=N();d={width:1,height:1,top:a[3]+a[1]*0.5,left:a[2]+a[0]*0.5}}return d}
+function X(){b(document).unbind("keydown.fb").bind("keydown.fb",function(a){if(a.keyCode==27&&c.enableEscapeButton){a.preventDefault();b.fancybox.close()}else if(a.keyCode==37){a.preventDefault();b.fancybox.prev()}else if(a.keyCode==39){a.preventDefault();b.fancybox.next()}});if(b.fn.mousewheel){g.unbind("mousewheel.fb");j.length>1&&g.bind("mousewheel.fb",function(a,d){a.preventDefault();h||d==0||(d>0?b.fancybox.prev():b.fancybox.next())})}if(c.showNavArrows){if(c.cyclic&&j.length>1||n!=0)C.show();
+if(c.cyclic&&j.length>1||n!=j.length-1)D.show()}}function Y(){if(j.length-1>n){var a=j[n+1].href;if(typeof a!=="undefined"&&a.match(I)){var d=new Image;d.src=a}}if(n>0){a=j[n-1].href;if(typeof a!=="undefined"&&a.match(I)){d=new Image;d.src=a}}}function $(){if(v.is(":visible")){b("div",v).css("top",O*-40+"px");O=(O+1)%12}else clearInterval(P)}function N(){return[b(window).width(),b(window).height(),b(document).scrollLeft(),b(document).scrollTop()]}function Z(a){var d=a.offset();d.top+=parseFloat(a.css("paddingTop"))||
+0;d.left+=parseFloat(a.css("paddingLeft"))||0;d.top+=parseFloat(a.css("border-top-width"))||0;d.left+=parseFloat(a.css("border-left-width"))||0;d.width=a.width();d.height=a.height();return d}function W(){b("#fancybox-title").remove();x=0;if(c.titleShow!=false){var a=c.title;a=b.isFunction(c.titleFormat)?c.titleFormat(a,j,n,c):aa(a);if(!(!a||a=="")){var d=m.width-c.padding*2;b('<div id="fancybox-title" class="'+("fancybox-title-"+c.titlePosition)+'" />').css({width:d,paddingLeft:c.padding,paddingRight:c.padding}).html(a).appendTo("body");
+switch(c.titlePosition){case "inside":x=b("#fancybox-title").outerHeight(true)-c.padding;m.height+=x;break;case "over":b("#fancybox-title").css("bottom",c.padding);break;default:b("#fancybox-title").css("bottom",b("#fancybox-title").outerHeight(true)*-1);break}b("#fancybox-title").appendTo(E).hide();K&&b("#fancybox-title span").fixPNG()}}}function aa(a){if(a&&a.length)switch(c.titlePosition){case "inside":return a;case "over":return'<span id="fancybox-title-over">'+a+"</span>";default:return'<span id="fancybox-title-wrap"><span id="fancybox-title-left"></span><span id="fancybox-title-main">'+
+a+'</span><span id="fancybox-title-right"></span></span>'}return false}function ba(){if(!b("#fancybox-wrap").length){b("body").append(l=b('<div id="fancybox-tmp"></div>'),v=b('<div id="fancybox-loading"><div></div></div>'),y=b('<div id="fancybox-overlay"></div>'),g=b('<div id="fancybox-wrap"></div>'));E=b('<div id="fancybox-outer"></div>').append('<div class="fancy-bg" id="fancy-bg-n"></div><div class="fancy-bg" id="fancy-bg-ne"></div><div class="fancy-bg" id="fancy-bg-e"></div><div class="fancy-bg" id="fancy-bg-se"></div><div class="fancy-bg" id="fancy-bg-s"></div><div class="fancy-bg" id="fancy-bg-sw"></div><div class="fancy-bg" id="fancy-bg-w"></div><div class="fancy-bg" id="fancy-bg-nw"></div>').appendTo(g);
+E.append(i=b('<div id="fancybox-inner"></div>'),z=b('<a id="fancybox-close"></a>'),C=b('<a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a>'),D=b('<a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a>'));z.click(b.fancybox.close);v.click(b.fancybox.cancel);C.click(function(a){a.preventDefault();b.fancybox.prev()});D.click(function(a){a.preventDefault();b.fancybox.next()});b.support.opacity||E.find(".fancy-bg").fixPNG();
+if(K){b(z.add(".fancy-ico").add("div",v)).fixPNG();y.get(0).style.setExpression("height","document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px'");v.get(0).style.setExpression("top","(-20 + (document.documentElement.clientHeight ? document.documentElement.clientHeight/2 : document.body.clientHeight/2 ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop )) + 'px'");E.prepend('<iframe id="fancybox-hide-sel-frame" src="javascript:\'\';" scrolling="no" frameborder="0" ></iframe>')}}}
+var l,v,y,g,E,i,z,C,D,s=0,e={},q=[],n=0,c={},j=[],F=null,r=new Image,I=/\.(jpg|gif|png|bmp|jpeg)(.*)?$/i,T=/[^\.]\.(swf)\s*$/i,P,O=1,k,m,h=false,t=20,A=b.extend(b("<div/>")[0],{prop:0}),x=0,K=!b.support.opacity&&!window.XMLHttpRequest;b.fn.fixPNG=function(){return this.each(function(){var a=b(this).css("backgroundImage");if(a.match(/^url\(["']?(.*\.png)["']?\)$/i)){a=RegExp.$1;b(this).css({backgroundImage:"none",filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod="+
+(b(this).css("backgroundRepeat")=="no-repeat"?"crop":"scale")+", src='"+a+"')"}).each(function(){var d=b(this).css("position");d!="absolute"&&d!="relative"&&b(this).css("position","relative")}).css("zoom",1)}})};b.fn.fancybox=function(a){b(this).data("fancybox",b.extend({},a));b(this).unbind("click.fb").bind("click.fb",function(d){d.preventDefault();if(!h){h=true;b(this).blur();q=[];s=0;d=b(this).attr("rel")||"";if(!d||d==""||d==="nofollow")q.push(this);else{q=b("a[rel="+d+"], area[rel="+d+"]");s=
+q.index(this)}B();return false}});return this};b.fancybox=function(a,d){if(!h){h=true;q=[];s=0;if(b.isArray(a)){for(var f=0,o=a.length;f<o;f++)if(typeof a[f]=="object")b(a[f]).data("fancybox",b.extend({},d,a[f]));else a[f]=b({}).data("fancybox",b.extend({content:a[f]},d));q=jQuery.merge(q,a)}else{if(typeof a=="object")b(a).data("fancybox",b.extend({},d,a));else a=b({}).data("fancybox",b.extend({content:a},d));q.push(a)}B()}};b.fancybox.showActivity=function(){clearInterval(P);v.show();P=setInterval($,
+66)};b.fancybox.hideActivity=function(){v.hide()};b.fancybox.next=function(){return b.fancybox.pos(n+1)};b.fancybox.prev=function(){return b.fancybox.pos(n-1)};b.fancybox.pos=function(a){if(!h){a=parseInt(a);if(a>-1&&j.length>a){s=a;B()}if(c.cyclic&&j.length>1&&a<0){s=j.length-1;B()}if(c.cyclic&&j.length>1&&a>=j.length){s=0;B()}}};b.fancybox.cancel=function(){if(!h){h=true;b.event.trigger("fancybox-cancel");H();e&&b.isFunction(e.onCancel)&&e.onCancel(q,s,e);h=false}};b.fancybox.close=function(){function a(){y.fadeOut("fast");
+g.hide();b.event.trigger("fancybox-cleanup");i.empty();b.isFunction(c.onClosed)&&c.onClosed(j,n,c);j=e=[];n=s=0;c=e={};h=false}if(!(h||g.is(":hidden"))){h=true;if(c&&b.isFunction(c.onCleanup))if(c.onCleanup(j,n,c)===false){h=false;return}H();b(z.add(C).add(D)).hide();b("#fancybox-title").remove();g.add(i).add(y).unbind();b(window).unbind("resize.fb scroll.fb");b(document).unbind("keydown.fb");i.css("overflow","hidden");if(c.transitionOut=="elastic"){k=S();var d=g.position();m={top:d.top,left:d.left,
+width:g.width(),height:g.height()};if(c.opacity)m.opacity=1;A.prop=1;b(A).animate({prop:0},{duration:c.speedOut,easing:c.easingOut,step:M,complete:a})}else g.fadeOut(c.transitionOut=="none"?0:c.speedOut,a)}};b.fancybox.resize=function(){if(!(h||g.is(":hidden"))){h=true;var a=i.wrapInner("<div style='overflow:auto'></div>").children(),d=a.height();g.css({height:d+c.padding*2+x});i.css({height:d});a.replaceWith(a.children());b.fancybox.center()}};b.fancybox.center=function(){h=true;var a=N(),d=c.margin,
+f={};f.top=a[3]+(a[1]-(g.height()-x+t*2))*0.5;f.left=a[2]+(a[0]-(g.width()+t*2))*0.5;f.top=Math.max(a[3]+d,f.top);f.left=Math.max(a[2]+d,f.left);g.css(f);h=false};b.fn.fancybox.defaults={padding:10,margin:20,opacity:false,modal:false,cyclic:false,scrolling:"auto",width:560,height:340,autoScale:true,autoDimensions:true,centerOnScroll:false,ajax:{},swf:{wmode:"transparent"},hideOnOverlayClick:true,hideOnContentClick:false,overlayShow:true,overlayOpacity:0.3,overlayColor:"#666",titleShow:true,titlePosition:"outside",
+titleFormat:null,transitionIn:"fade",transitionOut:"fade",speedIn:300,speedOut:300,changeSpeed:300,changeFade:"fast",easingIn:"swing",easingOut:"swing",showCloseButton:true,showNavArrows:true,enableEscapeButton:true,onStart:null,onCancel:null,onComplete:null,onCleanup:null,onClosed:null};b(document).ready(function(){ba()})})(jQuery);;
+jQuery.noConflict();
+
+om = {};
+cfct = {};
+
+jQuery(document).ready(function($){
+	om.ready($);
+	// After page is complete
+	jQuery(window).load(function() {
+		jQuery('body').addClass("loaded");
+		
+		// DL
+			var dlLinksId = "#dl-links";
+			var dlPhotosId = "#dl-photos";
+			var $dl = $(dlLinksId);
+			var $dlLinks = $(dlLinksId + " li a");
+			var goDL = {
+					refreshInterval: 5000,
+					index: 1,
+					anchor: $(dlLinksId + " li:eq(1) a"),
+					rotate: function () {
+							if(!intervalID)
+								goDL.update();
+
+							var intervalID = setInterval(goDL.update, goDL.refreshInterval);
+					},
+					update: function () {
+							var total = $dl.children().size();
+
+							if (goDL.index == total) {
+									goDL.index = 0;
+									goDL.anchor = $(dlLinksId + " li:eq(0) a");
+							}
+
+					$(dlPhotosId + " li.selected").stop().fadeTo("normal", 0).removeClass("selected");
+					$(dlPhotosId + " li:eq(" + goDL.index + ")").stop().fadeTo("normal", 1).addClass("selected");
+
+					$(dlLinksId + " li").removeClass("selected");
+					$(goDL.anchor).parent().addClass("selected");
+
+							goDL.index++;
+							goDL.anchor = $(dlLinksId + " li:eq(" + goDL.index + ") a");
+					}
+			};
+			if ($dl.children().size() > 1) {
+				//replace the span placeholders with img tags
+				jQuery('#dl-photos ul li a > span').each(function(i,el){
+					var url = jQuery(el).attr('href');
+					var new_img = jQuery('<img />')
+						.attr('src', url)
+						.attr('width', 352)
+						.attr('height', 234);
+					jQuery(el).replaceWith(new_img);
+				});
+				setTimeout(goDL.rotate, 200);
+			}
+			$dlLinks.mouseover(function() {
+			var $index = $(this).parent().index();
+			$(dlPhotosId + " li.selected").stop().fadeTo("normal", 0).removeClass("selected");
+			$(dlPhotosId + " li:eq(" + $index + ")").stop().fadeTo("normal", 1).addClass("selected");
+
+			$(dlLinksId + " li").removeClass("selected");
+			$(this).parent().addClass("selected");
+		});
+	});
+});
+
+
+// Ready function
+om.ready = function($) {
+	
+// CFCT jQuery Functions for AJAX
+	if ((!$.browser.msie || $.browser.version.substr(0,1) != '6') && typeof CFCT_AJAX_LOAD != 'undefined' && CFCT_AJAX_LOAD) {
+		//cfct.ajax_post_content();
+		cfct.ajax_post_comments();
+	}
+// Form Validation
+	/*if ((!$.browser.msie || $.browser.version.substr(0,1) != '6') ) {
+		jQuery("form.validate").validate();
+	}*/ //commented out for now because we're doing social identity
+// Add Classes
+	// Add class for browsers not supporting the pseudo :last class
+	jQuery("ul > li:last-child").addClass("last");
+	jQuery("ul > li:first-child").addClass("first");
+	jQuery("ol > li:last-child").addClass("last");
+	jQuery("ol > li:first-child").addClass("first");
+// Show Videos in Lightbox Window
+    $('#content a.showVideo').videoLightbox();
+// Trackback expansion
+	jQuery('.trackback-title a').click(function(event){
+		event.preventDefault();
+		jQuery(this).toggleClass("active");
+		jQuery('#trackbacks-wrap').toggle('fast');
+		
+	 });
+
+// Must Reads expansion ( topics below )
+	jQuery('.expand-excerpt-span').unbind('click');
+	jQuery('.expand-excerpt-span').click(function(event){
+		event.preventDefault();
+		jQuery(this).toggleClass("open");
+		var post_id = jQuery(this).attr('id').replace('expand-', '');
+		jQuery('#hidden-excerpt-' + post_id)
+			.toggle('fast')
+			.parents('.post').toggleClass('expanded');
+	 });
+
+// Post points
+	// Post Points Expansion
+	jQuery('.expand a').click(function(event){
+		event.preventDefault();
+		jQuery('#important-points-list').slideDown({duration:350,easing:'easeInOutExpo'});
+		jQuery.cookie('gigaomImportantPointsState', 'open', { path: '/' });
+		jQuery('.collapse').removeClass("hide");
+		jQuery('.expand').addClass("hide");
+		//alert( jQuery.cookie("gigaomImportantPointsState") );
+	 });
+	// Post points collapse
+	jQuery('.collapse a').click(function(event){
+		event.preventDefault();
+		jQuery('#important-points-list').slideUp({duration:200,easing:'easeInOutExpo'});
+		jQuery.cookie('gigaomImportantPointsState', 'closed', { path: '/' });
+		jQuery('.expand').removeClass("hide");
+		jQuery('.collapse').addClass("hide");
+		//alert( jQuery.cookie("gigaomImportantPointsState") );
+	 });
+	// Setting State for Points list
+	var gigaomImportantPointsState = jQuery.cookie('gigaomImportantPointsState');
+	if (gigaomImportantPointsState == 'open') {
+			jQuery('.collapse').removeClass("hide");
+			jQuery('#important-points-list').show();
+	} else {
+		jQuery('.expand').removeClass("hide");
+	};
+
+// Mega Menu and Brand Menu
+	if ((!$.browser.msie || $.browser.version.substr(0,1) != '6') && typeof CFCT_AJAX_LOAD != 'undefined' && CFCT_AJAX_LOAD) {
+		var mega_config = {    
+		     sensitivity: 1, // number = sensitivity threshold (must be 1 or higher)    
+		     interval: 20, // number = milliseconds for onMouseOver polling interval    
+		     over: mega_over, // function = onMouseOver callback (REQUIRED)    
+		     timeout: 100, // number = milliseconds delay before onMouseOut    
+		     out: mega_out // function = onMouseOut callback (REQUIRED)    
+		};
+		jQuery(".top-level").hoverIntent( mega_config ); // Main navigation
+	};
+	var brand_config = {sensitivity: 1,interval: 20,over: brand_over,timeout: 200,out: brand_out};
+	jQuery("#brand-menu").hoverIntent( brand_config ); // Brand Menu
+
+// Search 
+	$("#go-network-search .click-options a").click(function() {
+				
+		var $allCheckboxes = $("#go-network-search input[type=checkbox]");
+		
+		if ( $(this).hasClass("all") ) {
+			$allCheckboxes.attr("checked", true);
+		}
+		else if ( $(this).hasClass("this") ) {
+			$allCheckboxes.attr("checked", false);
+			$("#go-network-search input.current").attr("checked", true);
+		}
+		
+		return false;
+	});
+
+	// GigaOM Pro
+    var gpLinksId = "#gigaom-pro-links";
+    var gpPhotosId = "#gigaom-pro-photos";
+    var $gp = $(gpLinksId);
+    var $gpLinks = $(gpLinksId + " li a");
+    var goGP = {
+        refreshInterval: 5000,
+        index: 1,
+        anchor: $(gpLinksId + " li:eq(1) a"),
+        rotate: function () {
+            setInterval(goGP.update, goGP.refreshInterval);
+        },
+        update: function () {
+            var total = $gp.children().size();
+
+            if (goGP.index == total) {
+                goGP.index = 0;
+                goGP.anchor = $(gpLinksId + " li:eq(0) a");
+            }
+
+    		$(gpPhotosId + " li.selected").stop().fadeTo("normal", 0).removeClass("selected");
+    		$(gpPhotosId + " li:eq(" + goGP.index + ")").stop().fadeTo("normal", 1).addClass("selected");
+
+    		$(gpLinksId + " li").removeClass("selected");
+		    $(gpLinksId + " li .arrow").remove();
+    		$(goGP.anchor).parent().addClass("selected");
+
+            $('<span class="arrow"></span>').appendTo(goGP.anchor);
+
+            goGP.index++;
+            goGP.anchor = $(gpLinksId + " li:eq(" + goGP.index + ") a");
+        }
+    };
+    if ($gp.children().size() > 1) {
+        goGP.rotate();
+    }
+    $gpLinks.mouseover(function() {
+		var $index = $(this).parent().index();
+
+		$(gpLinksId + " li").removeClass("selected");
+		$(gpLinksId + " li .arrow").remove();
+		$(this).parent().addClass("selected");
+
+        $('<span class="arrow"></span>').appendTo(this);
+
+		$(gpPhotosId + " li.selected").stop().fadeTo("normal", 0).removeClass("selected");
+		$(gpPhotosId + " li:eq(" + $index + ")").stop().fadeTo("normal", 1).addClass("selected");
+	});
+	// gallery
+	var goGallery = {
+		thumbWidth: false,
+		init: false,
+		loading: true,
+		pagerAnchorBuilder: function(idx, slide) {
+			return "<a href='#"+idx+"'><img src='"+galleryData[idx].thumbnail+"' /></a>";
+		},
+		before: function(currSlideElement, nextSlideElement, options, forwardFlag) {
+			
+			var slideNumber = $(nextSlideElement).prevAll().length;
+			
+			//increment gallery count
+			$("#gallery-count").text(slideNumber+1);
+			
+			//change gallery title/description
+			$("#gallery-title").text(galleryData[slideNumber].title);
+			$("#gallery-caption").text(galleryData[slideNumber].caption);
+			
+			// we don't want to run the scrolling crap until after the gallery is init'd
+			if (!goGallery.init) {
+				goGallery.init = true;
+				return false;
+			}
+			
+			//establish our thumbnail total width
+			if (!goGallery.thumbWidth ) {
+				var $thumb = jQuery("#gallery-nav a:eq(0)");
+				if ($thumb.length > 0) {
+					goGallery.thumbWidth = $thumb.outerWidth() + parseInt($thumb.css("marginRight"), 10) + parseInt($thumb.css("marginLeft"), 10);
+					//console.log(goGallery.thumbWidth);
+				}
+			}
+			
+			//move the bottom thumbnails appropriately
+			var offset = $("#gallery-nav a:eq("+slideNumber+")").position();
+			
+			var totalItems = $("#gallery > ol").children().length;
+			var totalWidth = totalItems * goGallery.thumbWidth;
+			var parentWidth = $("#gallery-nav-inner").width();
+			var itemsPerWidth = parentWidth / goGallery.thumbWidth;
+			var left = offset.left - (itemsPerWidth / 2 * goGallery.thumbWidth );
+			var maxLeft = -(parentWidth - totalWidth);
+			
+			// set a maximum so that we stop moving once we hit the last thumb
+			if (left > maxLeft) {
+				left = maxLeft;
+			}
+			
+			if (left > 0 && totalWidth > parentWidth) {
+				$("#gallery-nav").animate({left: -left}, 150, "easeInOutExpo");
+			}
+			else if (left < 0) {
+				$("#gallery-nav").animate({left: 0}, 150, "easeInOutExpo");
+			}
+			
+			// get rid of loading gif
+			if (goGallery.init && goGallery.loading) {
+				$("#gallery-loading").hide();
+				goGallery.loading = false;
+			}
+		}
+	};
+	
+	$("#gallery ol").cycle({
+		timeout: 0,
+		speed: 500,
+		easing: "easeOutExpo",
+		before: goGallery.before,
+		pager: "#gallery-nav",
+		pagerAnchorBuilder: goGallery.pagerAnchorBuilder,
+		next: "#gallery-next",
+		prev: "#gallery-prev"
+	});
+	
+	// hide empty inline widget areas
+	jQuery("#content .horizontal-widget-area").each(function(){
+	    if (jQuery(this).children('div').size() < 1 ) {
+	        jQuery(this).hide();
+	    }
+	});
+	
+	// add a class of 'last' to last inline widget area
+	jQuery(".loop .horizontal-widget-area:visible:last").addClass("last");
+	
+	// add a class of 'first' to first footer widget area
+	jQuery(".loop .widget-area-footer:visible:first").addClass("first");
+	
+	// IE6 debug
+	if ( $.browser.msie && $.browser.version.substr(0,1) == '6' ) {
+		var problems = $("#crown-network-logo");
+		
+		problems.removeClass('first');
+		problems.removeClass('last');
+	}
+	
+	// Fancybox
+	fancyOpts = {
+		transitionIn: "elastic",
+		transitionOut: "elastic",
+		speedIn: 200,
+		speedOut: 200,
+		autoScale: false
+	};
+	// @todo Do we even need to filter for specific extensions?
+	$(".the-content a:has(img)")
+		.filter("[href$='jpeg']").fancybox(fancyOpts).end()
+		.filter("[href$='jpg']").fancybox(fancyOpts).end()
+		.filter("[href$='png']").fancybox(fancyOpts).end()
+		.filter("[href$='gif']").fancybox(fancyOpts);
+	
+};
+
+// Mega Menu and Brand Menu Variable Functions
+function mega_over(){
+	jQuery(this).addClass('over');
+	var mega_id = jQuery(this).attr('rev').replace('mega-', '');
+	jQuery('.menu-drop-' + mega_id).slideDown(100);
+	jQuery('.mega-menu-header-' + mega_id).slideDown(10);
+};
+function mega_out(){
+	jQuery(this).removeClass('over');
+	var mega_id = jQuery(this).attr('rev').replace('mega-', '');
+	jQuery('.menu-drop-' + mega_id).hide();
+	jQuery('.mega-menu-header-' + mega_id).hide();
+};
+function brand_over(){
+	jQuery("#brand-menu").addClass('active');
+	jQuery('#brand-menu-drop').slideDown(100);
+};
+function brand_out(){
+	jQuery("#brand-menu").removeClass('active');
+	jQuery('#brand-menu-drop').slideUp(100);
+};
+
+// hoverIntent r5 // 2007.03.27 // jQuery 1.1.2+
+(function($){$.fn.hoverIntent=function(f,g){var cfg={sensitivity:7,interval:100,timeout:0};cfg=$.extend(cfg,g?{over:f,out:g}:f);var cX,cY,pX,pY;var track=function(ev){cX=ev.pageX;cY=ev.pageY;};var compare=function(ev,ob){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);if((Math.abs(pX-cX)+Math.abs(pY-cY))<cfg.sensitivity){$(ob).unbind("mousemove",track);ob.hoverIntent_s=1;return cfg.over.apply(ob,[ev]);}else{pX=cX;pY=cY;ob.hoverIntent_t=setTimeout(function(){compare(ev,ob);},cfg.interval);}};var delay=function(ev,ob){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);ob.hoverIntent_s=0;return cfg.out.apply(ob,[ev]);};var handleHover=function(e){var p=(e.type=="mouseover"?e.fromElement:e.toElement)||e.relatedTarget;while(p&&p!=this){try{p=p.parentNode;}catch(e){p=this;}}if(p==this){return false;}var ev=jQuery.extend({},e);var ob=this;if(ob.hoverIntent_t){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);}if(e.type=="mouseover"){pX=ev.pageX;pY=ev.pageY;$(ob).bind("mousemove",track);if(ob.hoverIntent_s!=1){ob.hoverIntent_t=setTimeout(function(){compare(ev,ob);},cfg.interval);}}else{$(ob).unbind("mousemove",track);if(ob.hoverIntent_s==1){ob.hoverIntent_t=setTimeout(function(){delay(ev,ob);},cfg.timeout);}}};return this.mouseover(handleHover).mouseout(handleHover);};})(jQuery);
+
+// CFCT jQuery Functions for AJAX
+cfct.loading = function() {
+	return '<div class="loading"><span>Loading...</span></div>';
+};
+
+// AJAX Comments
+cfct.ajax_post_comments = function() {
+	jQuery('p.comments-link a').unbind().click(function() {
+		var a = jQuery(this);
+		var post_id = a.attr('rev').replace('post-', '');
+		var target = jQuery('#post-comments-' + post_id + '-target');
+		target.html(cfct.loading()).show().load(CFCT_URL + '/index.php?cfct_action=post_comments&id=' + post_id, function() {
+			jQuery(this).hide().slideDown(function() {
+				a.attr('rel', a.html()).html('Hide Comments').unbind().click(function() {
+					target.slideUp(function() {
+						a.html(a.attr('rel'));
+						cfct.ajax_post_comments();
+					});
+					return false;
+				});
+			});
+		});
+		return false;
+	});
+};
+/* ========================== jQuery Plugins/functions ========================== */
+/*
+ * From jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
+ * Open source under the BSD License. 
+ * Copyright 2008 George McGinley Smith
+*/
+jQuery.extend( jQuery.easing,
+{
+	easeInExpo: function (x, t, b, c, d) {
+		return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+	},
+	easeOutExpo: function (x, t, b, c, d) {
+		return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+	},
+	easeInOutExpo: function (x, t, b, c, d) {
+		if (t==0) return b;
+		if (t==d) return b+c;
+		if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+		return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+	}
+});
+
+/**
+ * TextAreaExpander plugin for jQuery
+ * v1.0
+ */
+(function($) {
+  
+  $.fn.validate = function(args) {
+
+  	/* Load the default options. */
+  	var options = $.extend({}, $.fn.validate.defaults, args);
+    var jQ = jQuery;
+    return this.each(function() {
+      /***** Plugin Goes Here *********/
+      jQ(this).submit(function(){
+        jQ(this).find(".error").remove();
+        var valid=true;
+        
+        jQ(this).find(".validate").each(function(){
+          el = jQ(this);
+          if(el.hasClass("valid-email")) {
+            if(!valid_email(el.val())) {
+              add_error(el, options.email_error_message);
+              valid=false;
+            }
+          }
+          if(el.hasClass("valid-required")) {
+            if(!valid_required(el.val())) {
+              add_error(el, options.required_error_message);
+              valid=false;
+            }
+          }
+        });
+        return valid;
+      });
+       
+    });
+  
+  };
+  
+  function add_error(el, message) {
+	el.parent().addClass("err");
+	el.before("<span class='error'>"+message+"</span>");
+  }
+  
+  function valid_email(email) {
+    var email_pattern  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(email.match(email_pattern)) return true;
+    return false;
+  };
+  
+  function valid_required(val) {
+    if(val.length>0) return true;
+    return false;
+  }
+  
+  $.fn.validate.defaults = {
+  	email_error_message: 'Please provide a valid email address.',
+  	required_error_message: 'Required field.'
+  };
+  
+})(jQuery);
+jQuery(document).ready(function($){
+	if(!read_cookie('gigaom_privacy_policy'))
+	{
+		var privacy_message = $('<div />')
+		.addClass('privacy-policy')
+	.html('<div class="privacy-policy-header">A note<br />to our readers</div>'
+		+ '<div class="privacy-policy-text">We have updated our Privacy Policy and Terms of Service. Review the updates <a href="http://gigaom.com/privacy-policy/">here</a>. '
+		+ 'By continuing to use the site, you are agreeing to our updated <a href="http://gigaom.com/privacy-policy/">Privacy Policy</a> and <a href="http://gigaom.com/terms-and-conditions/">Terms of Service</a>.'
+		+ '<p>This notice should appear only the first time you visit this site.</p></div>'
+		+ '<a href="#" class="privacy-policy-dismiss">Close  x</a><div class="clearfix"></div>');
+
+		$('#search-form').after(privacy_message);
+
+		$('.privacy-policy-dismiss').click(function(e){
+			e.preventDefault();
+			$('.privacy-policy').slideUp('fast');
+		});
+		
+		create_cookie('gigaom_privacy_policy', 1, 548);
+	}
+
+	function create_cookie(name,value,days) {
+		if (days) {
+			var date = new Date();
+			date.setTime(date.getTime()+(days * 1000 * 60 * 60 * 24));
+			var expires = "; expires="+date.toGMTString();
+		}
+		else var expires = "";
+		document.cookie = name+"="+value+expires+"; path=/";
+	}
+
+	function read_cookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		}
+		return null;
+	}
+});
+
+jQuery(document).ready(function($){
+	jQuery('table.zebra tr:odd').addClass('odd');
+});;
+/**
+ * Cookie plugin
+ *
+ * Copyright (c) 2006 Klaus Hartl (stilbuero.de)
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ *
+ */
+
+/**
+ * Create a cookie with the given name and value and other optional parameters.
+ *
+ * @example $.cookie('the_cookie', 'the_value');
+ * @desc Set the value of a cookie.
+ * @example $.cookie('the_cookie', 'the_value', { expires: 7, path: '/', domain: 'jquery.com', secure: true });
+ * @desc Create a cookie with all available options.
+ * @example $.cookie('the_cookie', 'the_value');
+ * @desc Create a session cookie.
+ * @example $.cookie('the_cookie', null);
+ * @desc Delete a cookie by passing null as value. Keep in mind that you have to use the same path and domain
+ *       used when the cookie was set.
+ *
+ * @param String name The name of the cookie.
+ * @param String value The value of the cookie.
+ * @param Object options An object literal containing key/value pairs to provide optional cookie attributes.
+ * @option Number|Date expires Either an integer specifying the expiration date from now on in days or a Date object.
+ *                             If a negative value is specified (e.g. a date in the past), the cookie will be deleted.
+ *                             If set to null or omitted, the cookie will be a session cookie and will not be retained
+ *                             when the the browser exits.
+ * @option String path The value of the path atribute of the cookie (default: path of page that created the cookie).
+ * @option String domain The value of the domain attribute of the cookie (default: domain of page that created the cookie).
+ * @option Boolean secure If true, the secure attribute of the cookie will be set and the cookie transmission will
+ *                        require a secure protocol (like HTTPS).
+ * @type undefined
+ *
+ * @name $.cookie
+ * @cat Plugins/Cookie
+ * @author Klaus Hartl/klaus.hartl@stilbuero.de
+ */
+
+/**
+ * Get the value of a cookie with the given name.
+ *
+ * @example $.cookie('the_cookie');
+ * @desc Get the value of a cookie.
+ *
+ * @param String name The name of the cookie.
+ * @return The value of the cookie.
+ * @type String
+ *
+ * @name $.cookie
+ * @cat Plugins/Cookie
+ * @author Klaus Hartl/klaus.hartl@stilbuero.de
+ */
+jQuery.cookie = function(name, value, options) {
+    if (typeof value != 'undefined') { // name and value given, set cookie
+        options = options || {};
+        if (value === null) {
+            value = '';
+            options = $.extend({}, options); // clone object since it's unexpected behavior if the expired property were changed
+            options.expires = -1;
+        }
+        var expires = '';
+        if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+            var date;
+            if (typeof options.expires == 'number') {
+                date = new Date();
+                date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+            } else {
+                date = options.expires;
+            }
+            expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
+        }
+        // NOTE Needed to parenthesize options.path and options.domain
+        // in the following expressions, otherwise they evaluate to undefined
+        // in the packed version for some reason...
+        var path = options.path ? '; path=' + (options.path) : '';
+        var domain = options.domain ? '; domain=' + (options.domain) : '';
+        var secure = options.secure ? '; secure' : '';
+        document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+    } else { // only name given, get cookie
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+};;

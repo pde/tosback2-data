@@ -348,7 +348,10 @@ var ShoppingCart = new function() {
 	
 	this.savePackageToken = function savePackageToken(pTokenStr, reverseEngineer, callBackFunc) {
 		showProcessBar();
-		DWRRequestManager.savePackageToken(pTokenStr, reverseEngineer, callBackFunc);
+		//fix for prod11-2355. adding null check.
+		if (pTokenStr != null){
+			DWRRequestManager.savePackageToken(pTokenStr, reverseEngineer, callBackFunc);
+		}
 	}
 	
 	this.applyUXOffers = function applyUXOffers(pObjArray) {

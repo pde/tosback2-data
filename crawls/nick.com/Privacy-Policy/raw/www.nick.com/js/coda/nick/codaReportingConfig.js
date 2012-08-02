@@ -8,13 +8,19 @@ KIDS.reporting.unityStatus;
 KIDS.reporting.domain;
 KIDS.reporting.site;
 KIDS.reporting.abTest;
+KIDS.reporting.badgeColorToggleCount;
+
+KIDS.reporting.baseCTMArray = ["TopNav1", "TopNav2", "TopNav3", "TopNav4", "TopNav5", "TopNav6", "TopNav7", "TopNav8", "CharNav1", "CharNav2", "CharNav3", "CharNav4", "CharNav5", "CharNav6", "CharNav7", "CharNav8", "CharNav9", "CharNav10", "CharNav11", "CharNav12", "CharNav13", "CharNav14", "CharNav15", "CharNav16", "CharNav17", "CharNav18", "CharNav19", "CharNav20", "CharNav21", "CharNav22", "CharNav23", "CharNav24", "CharNav25", "CharNav26", "CharNav27", "CharNav28", "CharNav29", "CharNav30", "CharNav31", "CharNav32"];
+KIDS.reporting.hpCTMArray = ["HomeALevel1", "Latest1", "Latest2", "Latest3", "Latest4", "TVSchedule", "FreeOnlineGames", "TopGame", "NowPlayed1", "NowPlayed2", "NowPlayed3", "NowPlayed4", "NowPlayed5", "NowPlayed6", "MoreGames", "FreeOnlineVideos", "TopVideo", "NowWatched1", "NowWatched2", "NowWatched3", "NowWatched4", "NowWatched5", "NowWatched6", "MoreVideos", "Explore1", "Explore2", "Explore3", "Explore4", "Explore5", "Explore6", "NowSaidName1", "NowSaidTitle1", "NowSaidName2", "NowSaidTitle2", "NowSaidName3", "NowSaidTitle3", "NowSaidName4", "NowSaidTitle4", "NowSaidName5", "NowSaidTitle5", "NowSaidName6", "NowSaidTitle6"];
+KIDS.reporting.gamesCTMArray = ["FeatToutGame1", "MoreGame1", "MoreGame2", "MoreGame3", "MoreGame4", "MoreGame5", "MoreGame6", "GameChar1", "GameChar2", "GameChar3", "GameChar4", "GameChar5", "GameChar6", "GameChar7", "GameChar8", "GameChar9", "AllGamesByShow", "VirtualWorld1", "VirtualWorld2", "VirtualWorld3", "FeatGame", "GameCat1", "GameCat2", "GameCat3", "GameCat4", "GameCat5", "GameCat6", "GameCat7", "GameCat8", "GameCat9", "GameCat10", "GameCat11", "GameCat12", "GameCat13", "GameCat14", "GameCat15", "GameCat16", "GameCat17", "GameCat18", "GamePodAtitle", "GamePodA1", "GamePodA2", "GamePodAmore", "GamePodBtitle", "GamePodB1", "GamePodB2", "GamePodBmore", "GamePodCtitle", "GamePodC1", "GamePodC2", "GamePodCmore", "GamePodDtitle", "GamePodD1", "GamePodD2", "GamePodDmore", "GamePodEtitle", "GamePodE1", "GamePodE2", "GamePodEmore", "GamePodFtitle", "GamePodF1", "GamePodF2", "GamePodFmore", "GamePodGtitle", "GamePodG1", "GamePodG2", "GamePodGmore", "GamePodHtitle", "GamePodH1", "GamePodH2", "GamePodHmore", "GamePodItitle", "GamePodI1", "GamePodI2", "GamePodImore", "GamePodJtitle", "GamePodJ1", "GamePodJ2", "GamePodJmore", "GamePodKtitle", "GamePodK1", "GamePodK2", "GamePodKmore", "GamePodLtitle", "GamePodL1", "GamePodL2", "GamePodLmore", "SpotlightTitle", "SpotlightAll", "TopGameSeeAllA", "TopGameSeeAllB", "TopGame1", "TopGame2", "TopGame3", "TopGame4", "TopGame5", "GameBuild1", "GameBuild2", "GameBuild3", "GameBuild4", "GameBuild5", "ShoutName1", "ShoutTitle1", "ShoutName2", "ShoutTitle2", "ShoutName3", "ShoutTitle3", "ShoutName4", "ShoutTitle4", "UniversalTout1", "UniversalTout2", "UniversalTout3"];
+KIDS.reporting.videosCTMArray = ["VideoNav1", "VideoNav2", "VideoNav3", "VideoNav4", "VideoNav5", "VideoALevel1", "VideoBLevel1", "VideoBLevel2", "VideoBLevel3", "VideoBLevelmore", "VideoCLevel1", "VideoCLevel2", "VideoCLevel3,VideoCLevelmore", "VideoDLevel1", "VideoDLevel2", "VideoDLevel3", "VideoDLevelmore", "VideoShow1", "VideoShow2", "VideoShow3", "VideoShow4", "VideoShow5", "VideoShow6", "VideoShow7", "VideoShow8", "VideoShow9", "VideoShow10", "VideoShow11", "VideoShow12", "VideoShow13", "VideoShow14", "VideoShow15", "VideoShow16", "VideoShow17", "VideoShow18", "VideoShow19", "VideoShow20", "VideoShow21", "VideoShow22", "VideoShow23", "VideoShow24"];
 
 Configuration.prototype.initialize = function(){
 	try{
 		this.init();
 		this.setting["name"]="nickvia";
-		this.setting["dynamicAccountSelection"] = true;
-		this.setting["dynamicAccountList"] = "nickviadev=nick-d.mtvi.com,nick-q.mtvi.com";
+		this.setting["dynamicAccountSelection"] = "true";
+		this.setting["dynamicAccountList"] = "nickviadev=mtvi.com,localhost,9090";
 		this.setting["linkInternalFilters"] = "javascript:,nick.com";
 		this.setting["trackExternalLinks"] = true;
 		this.setting["trackDownloadLinks"] = true;
@@ -22,10 +28,11 @@ Configuration.prototype.initialize = function(){
 		if(!this.isLink()){
 			this.setting.prop1 = KIDS.reporting.site;
 			this.setting.eVar1 = KIDS.reporting.site;
-			this.setting.pageName = KIDS.get("uri");
+			this.setting.pageName = KIDS.get("uri");			
+			this.setting.channel=KIDS.get("type");	
 			
-			this.setting.channel=KIDS.get("type");
-			
+			var list1 = KIDS.reporting.baseCTMArray;
+		
 			if(KIDS.get("uri").indexOf("thebighelp")>-1||KIDS.get("uri").indexOf("/clubhouses/big-help")>-1){
 				if (KIDS.get("uri").indexOf("/worldwide-day-of-play")>-1)this.setting.channel="WWDoP";
 				else if(KIDS.get("uri").indexOf("/clubhouses/big-help")<0)this.setting.channel="The Big Help";
@@ -81,7 +88,7 @@ Configuration.prototype.initialize = function(){
 				if(this.setting.events.length>0)this.setting.events += ",";
 				this.setting.events += "event2";
 			}
-
+ 
 			if(this.setting.pageName.indexOf("/kids-choice-awards")>-1||this.setting.pageName.indexOf("/kca")>-1||this.setting.pageName.indexOf("-kca-")>-1||this.setting.pageName.indexOf("-kcas-")>-1||this.setting.pageName.indexOf("/star-lounge")>-1){
 				KIDS.reporting.site = "kca";
 				this.setting.prop1 = KIDS.reporting.site;
@@ -115,13 +122,21 @@ Configuration.prototype.initialize = function(){
 			this.setting.hier2 = this.setting.pageName;	
 			
 			var ct = "";
-			if(KIDS.get("urlAlias")== "")ct = "Hub page";
-			else if(KIDS.get("isListingPage")=="true"){
-				if(KIDS.get("urlAlias").indexOf("builder")>-1)ct = "Game";
+			if(KIDS.get("urlAlias")== ""){
+				ct = "Hub page";
+				list1 = list1.concat(KIDS.reporting.hpCTMArray);
+			}else if(KIDS.get("isListingPage")=="true"){
+				if(KIDS.get("type")=="game"){
+					ct = "Hub page";
+					list1 = list1.concat(KIDS.reporting.gamesCTMArray);
+				}else if(KIDS.get("type")=="video"){
+					ct = "Hub page";
+					list1 = list1.concat(KIDS.reporting.videosCTMArray);
+				}else if(KIDS.get("urlAlias").indexOf("builder")>-1)ct = "Game";
 				else if(KIDS.get("primaryType")== ""&& KIDS.get("type")== "club"){
 					if (NICK.club != undefined){
 						var tmp = location.pathname.split("/");
-						if(tmp[2]=="main"||tmp[2]=="games" || tmp[2]=="videos" || tmp[2]=="shows" || tmp[2]=="buddies" || tmp[2]=="room" || tmp[2]=="awards"){
+						if(tmp[2]=="main"||tmp[2]=="games" || tmp[2]=="videos" || tmp[2]=="shows" || tmp[2]=="buddies" || tmp[2]=="room" || tmp[2]=="awards" || tmp[2]=="favs" || tmp[2]=="badges"){
 							this.setting.pageName = KIDS.reporting.domain+"/"+tmp[1]+"/"+tmp[2];
 							this.setting.hier2 = KIDS.reporting.domain+"/"+tmp[1]+"/profiles/"+tmp[2];
 							ct="Club Profile";
@@ -131,9 +146,10 @@ Configuration.prototype.initialize = function(){
 				else if(KIDS.get("urlAlias").indexOf("nominee")>-1 || KIDS.get("urlAlias").indexOf("winner")>-1 || KIDS.get("urlAlias").indexOf("host")>-1)
 						ct = "Host/nominees/winners";
 				else if(KIDS.get("uri").indexOf("/specials/valentines")>-1)ct = "Extras";
+				else if(KIDS.get("uri")=="/shows/ninja-turtles")ct = "Hub page";
 				else if(KIDS.get("urlAlias").indexOf("ninja-turtles")>-1)ct = "About-info";
 				else if(KIDS.get("uri").indexOf("/games/worlds/")>-1)ct = "Game";
-				else ct = "Hub page";
+				else ct = "Hub page";				
 			}
 			else if(KIDS.get("urlAlias")== "celebrity")ct = "Hub page";
 			else if(KIDS.get("type")=="blog")ct = "News";
@@ -163,19 +179,25 @@ Configuration.prototype.initialize = function(){
 			
 			this.setting.prop17 = ct;
 			this.setting.eVar17 = ct;
-			
+		
 			this.setting.eVar16 = this.setting.pageName;
-			this.setting.eVar13 = KIDS.reporting.qs.navid;
-			this.setting.prop2 = KIDS.reporting.qs.navid;
 			
+			var navid = KIDS.reporting.qs.navid?KIDS.reporting.qs.navid:"";
+			this.setting.eVar13 = navid;
+			this.setting.prop2 = navid;
+				
 			if(this.setting.prop2.length>0){
 				if(this.setting.events.length>0)this.setting.events += ",";
 				this.setting.events += "event13";
 			}
+
 			if(this.setting.prop4.length>0){
 				if(this.setting.events.length>0)this.setting.events += ",";
 				this.setting.events += "event14";
 			}
+			this.setting.list1 = list1.join();
+			this.setting.prop25 = this.setting.list1;
+			
 		}
 		
 		if(location.pathname.indexOf("/club")!=-1){
@@ -191,7 +213,6 @@ KIDS.reporting.init = function(){
 	KIDS.reporting.config.initialize();
 	btg.config.Omniture.account = 'nickvia';
 	btg.config.Omniture.dynamicAccountSelection = 'true';
-	btg.config.Omniture.dynamicAccountList = 'nickviadev=nick-d.mtvi.com,nick-q.mtvi.com';
 	btg.config.Omniture.linkInternalFilters = 'javascript:,nick.com';
 	btg.config.Omniture.trackInlineStats = true;
 	btg.config.Omniture.trackExternalLinks = true;
@@ -208,10 +229,11 @@ KIDS.reporting.init = function(){
 	if(typeof NICK.choicestream!="undefined"){
 		KIDS.reporting.abTest = {"abtestId":"CSAbTestID","abtestGroups":[{name:"Group ChoiceStream",weight:99},{name:"Control Group",weight:1}],"currentGroup":""};
 	}
-	mtvn.btg.config.ReportSettings.Omniture.percentPageViewedVarMap = {
+	btg.config.Omniture.percentPageViewedVarMap = {
 		previousPage: "prop54",
 		percentage:"prop55"
 	}
+	KIDS.reporting.badgeColorToggleCount = 0;
 }
 KIDS.reporting.firePageLoad = function(){
 	KIDS.reporting.omnifunctions.sendReportingCall();

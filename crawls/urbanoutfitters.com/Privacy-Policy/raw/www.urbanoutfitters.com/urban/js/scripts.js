@@ -483,9 +483,6 @@ function showAddedToBagWindow() {
 			// remove session data
 			sessionStorage.removeItem("itemsAdded");
 		}
-	} else if (window.location.href.indexOf("category.jsp") > 0) {
-		// set category referrer
-	    createCookie('lastCatURL',window.location.href,1);
 	}
 }
 function closeAddedToBagModalWin() {
@@ -1358,11 +1355,3 @@ function captureGoogleClickId() {
         } catch(e) {}
 	}
 }
-
-/* turn on coremetrics clicks for pinterest */
-(function($) {
-	
-	$(document).ready(function() {
-		$("#pinterestWrapper").attr("onclick","return(cmCreatePageElementTag('PINTEREST','PRODUCT DETAIL'));");
-	});
-})(jQuery);

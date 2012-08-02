@@ -229,6 +229,51 @@ jQuery.extend(netflix.utils, {
         }
 
         document.cookie = cookie;
+    },
+    getCookie: function(name) {
+        var i,x,y,cookies=document.cookie.split(";");
+        for (i=0;i<cookies.length;i++) {
+            x=cookies[i].substr(0,cookies[i].indexOf("="));
+            y=cookies[i].substr(cookies[i].indexOf("=")+1);
+            x=x.replace(/^\s+|\s+$/g,"");
+            if (x==name) {
+                return unescape(y);
+            }
+        }
+    },
+    loadScript: function (src, async, callback) {
+        if (typeof src != 'undefined') {
+            if (src.indexOf('http:') != -1) {
+                if (typeof console != 'undefined' && console.log) {
+                    console.log("ignoring script load directive: script's protocol is HTTP, not HTTPS");
+                }
+                jQuery.get("/beacons?loadScriptSkipped=" + escape(src));
+            } else {
+                var sNew = document.createElement("script");
+                sNew.async = typeof async == 'undefined' ? false : async;
+                sNew.src = src;
+                var s0 = document.getElementsByTagName('script')[0];
+
+                if (typeof callback != 'undefined') {
+                    // most browsers
+                    sNew.onload = function() {
+                        if ( ! sNew.onloadDone ) {
+                            sNew.onloadDone = true;
+                            callback();
+                        }
+                    };
+                    // IE 6 & 7
+                    sNew.onreadystatechange = function() {
+                        if ( ( "loaded" === sNew.readyState || "complete" === sNew.readyState ) && ! sNew.onloadDone ) {
+                            sNew.onloadDone = true;
+                            callback();
+                        }
+                    }
+                }
+
+                s0.parentNode.insertBefore(sNew, s0);
+            }
+        }
     }
 });netflix = typeof netflix != 'undefined' ? netflix : {};
 netflix.bootstrap = typeof netflix.bootstrap != 'undefined' ? netflix.bootstrap : {};
@@ -333,19 +378,6 @@ jQuery(document).ready(function($) {
             $('.delimitedList li:last-child span').css('display', 'none');
         }
         netflix.html5shim.placeholder();
-
-        /*** gift terms ***/
-        $("#gift_terms_legal").css("display", "none");
-        $(document).ready(function () {
-            $('.gift_terms_link').click(function(event) {
-                event.preventDefault();
-                $('#gift_terms_legal').slideToggle('fast', function() {
-                    if ($(this).is(':visible')) {
-                        $('html,body').animate({scrollTop: jQuery(this).offset().top}, 800);
-                    }
-                });
-            });
-        });
 
 });
 

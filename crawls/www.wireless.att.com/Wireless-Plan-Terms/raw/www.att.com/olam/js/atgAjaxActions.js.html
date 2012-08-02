@@ -1,0 +1,65 @@
+function uverseEligibilityAjaxAction(linkUrl)
+{
+	//window.location = "http://www.yahoo.com";
+	
+	var url="/olam/foresee/loading.gif";
+	jQuery.colorbox({iframe:false, height:75, width:75, scrolling:false, href: url, close:'', overlayClose:false})
+	
+	//invokeAJAX("/jsp/jsonStr.jsp");
+	invokeAJAX(linkUrl);
+}
+
+function invokeAJAX(url)
+{
+	jQuery.ajax( {
+		type : 'POST',
+		url : url,
+		async : true,
+		dataType: "text",
+		success : function(jsonStr) {
+			parseJson(jsonStr);
+			
+		},
+		error : function(jsonStr,textStatus, errorThrown) {
+			showError();
+		}
+	});
+}
+
+function parseJson(jsonStr)
+{
+	try
+	{
+		jsonObj = jQuery.parseJSON(jsonStr);
+		if(jsonObj != null){
+			
+			if(jsonObj.SuccessUrl!="" && jsonObj.SuccessUrl!="undefined")
+			{
+				window.location = jsonObj.SuccessUrl;
+			}
+			else if(jsonObj.IneligibleUrlForAlert!="" && jsonObj.IneligibleUrlForAlert!="undefined")
+			{
+				
+				jQuery.colorbox({iframe:true, height:200, width:706, scrolling:false, href: jsonObj.IneligibleUrlForAlert, close:""});
+			}
+			else if(jsonObj.FailureURL!="" && jsonObj.IneligibleUrlForAlert!="undefined")
+			{
+				// For Future Use
+			}
+		}
+		else
+		{
+			showError();
+		}
+	}
+	catch(e)
+	{
+		showError();
+	}
+}
+
+function showError()
+{
+	jQuery.colorbox.close();
+	// if AJAX request fails or the JSON string is null or couldnt be parsed. 
+}

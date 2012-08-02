@@ -4,10 +4,10 @@
 <head>
 <title>Privacy Policy - NYPOST.com</title>
 <meta name="eomportal-instanceid" content="10"/>
-<meta name="eomportal-id" content="78746"/>
+<meta name="eomportal-id" content="111440"/>
 <meta name="eomportal-loid" content="4.0.54651653"/>
 <meta name="eomportal-uuid" content="307eb884-73bb-11de-87ca-c3dabad9a33c"/>
-<meta name="eomportal-lastUpdate" content="Mon May 14 08:04:43 EDT 2012"/>
+<meta name="eomportal-lastUpdate" content="Thu Aug 02 16:00:34 EDT 2012"/>
 <meta name="description" content="   Effective as of November 11, 2011  "/>
 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 <meta name="copyright" content="Copyright 2012 NYP Holdings. All rights reserved."/>
@@ -86,6 +86,12 @@
 	})();
 </script>
 <!--END GOOGLE ANALYTICS CODE-->
+<!-- START CRITEO CODE -->
+<script type='text/javascript'> 
+var crtg_nid="1660"; 
+var crtg_cookiename="cto_nypost"; 
+function crtg_getCookie(c_name){var i,x,y,ARRcookies=document.cookie.split(";");for(i=0;i<ARRcookies.length;i++){x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);x=x.replace(/^\s+|\s+$/g,"");if(x==c_name){return unescape(y);}}return'';} var crtg_content=crtg_getCookie(crtg_cookiename);var crtg_rnd=Math.floor(Math.random()*99999999999);var crtg_url='http://rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);crtg_url+='&cookieName='+escape(crtg_cookiename);crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=crtg_content';var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);else if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script); </script>
+<!-- END CRITEO CODE -->
 </head>
 <body class="two_col_tpl static_story_tpl"><!-- Begin comScore Tag -->
 <script type="text/javascript">
@@ -109,37 +115,51 @@
 
 <div id="hat_wrap">
 <script type="text/javascript">
-	$(document).ready(function(){
+
+$(document).ready(function(){
 	
-	if( navigator.userAgent.match(/iPad/i) === null ) return false;
-	
-	var ipadCookieKey = 'i_welc_cookie';
+	var ipadCookieKey = 'ai_welcome_cookie';
 	var ipadCookieVal = getCookie(ipadCookieKey);
 
 	var i_c_val = false; //set to false
 	if((ipadCookieVal.length == 0 )){
-		setCookie(ipadCookieKey, true, 86400);
+		setCookie(ipadCookieKey, true, 2592000);
 		i_c_val = true;
 	}
 	if( i_c_val != true ) return false;
-	
-	$('body').append('<div id="ipad-welcome"><div id="ipad-welcome-inner"><a id="ipad-welcome-forward" href="http://bit.ly/k1OLwB"></a><span id="ipad-welcome-close"></span><span id="ipad-welcome-click"></span></div></div>');
-	setTimeout(function(){
-		$('#ipad-welcome-close, #ipad-welcome-click').click(function(){
-			$('#ipad-welcome').fadeOut();
-			setTimeout(function(){
-				$('#ipad-welcome').remove();
-			}, 300);
-		});
-	}, 0);
+
+	if(navigator.userAgent.match(/ipad/gi) !== null) {
+		var r=confirm("Download our app to view The Post optimized for your iPad");
+		if (r==true){
+			window.location = "http://click.linksynergy.com/fs-bin/click?id=x2qCbCo8eAE&subid=&offerid=146261.1&type=10&tmpid=5573&u1=Kronos&RD_PARM1=http%3A%2F%2Fitunes.apple.com%2Fus%2Fapp%2Fnew-york-post%2Fid378590820";
+		}
+	}
+	if ((navigator.userAgent.match(/android/gi) !== null) || (navigator.userAgent.match(/silk/gi) !== null)){
+		var r=confirm("Download our app to view The Post optimized for your tablet");
+		if (r==true){
+			window.location = " market://details?id=com.nypost.tablet"
+		}
+	} 
+	if ((navigator.userAgent.match(/chrome/gi) !== null) && (navigator.userAgent.match(/linux/gi) !== null)){
+		var r=confirm("Download our app to view The Post optimized for your tablet");
+		if (r==true){
+			window.location = " market://details?id=com.nypost.tablet"
+		}
+	} 
 });
+
 </script>
-<div id="hat"> 	
-		<!-- <div><a href="http://weather.nypost.com" class="sm" id="weather"><img src="http://10.238.88.31:31147/rw/SysConfig/WebPortal/nypost/images/nyp_logo_230x32.gif" width="80" height="50" alt="weather icon"/></a></div>-->
+<div id="hat">
 		<a id="weather" class="sm" href="http://weather.nypost.com">
 			<img alt="weather icon" src="../../rw/SysConfig/WebPortal/nypost/blocks/weather/images/weather_partlycloudy_day_sm.png" />
-			<span class="conditions">67 &deg; </span>
+			<span class="conditions">86 &deg; </span>
 		</a>
+		<script type="text/javascript">
+			var temp	= '86';
+			if (temp > 96) {
+		      kws.push('jetblueweather');
+			}
+		</script>
 	<ul id="hat_link_list" class="link_list">
 			<li id="hat_link_list_1" class="first"><a href="http://www.nypost.com/todays_paper">Today's Paper</a></li>
 			<li id="hat_link_list_1" ><a href="http://stlink.nypost.com/join/signup">Newsletters</a></li><!-- <li id="hat_link_list_1" ><a href="/Fragment/SysConfig/WebPortal/nypost/blocks/_user/blocks/login_standalone.jpt?redirect=/p/static/privacy_policy_PlyzvkFUzwURLgq0xv11cN" rel="facebox">Login</a></li> -->
@@ -166,7 +186,7 @@
 			</div>
 			</li>
 			<li id="hat_link_list_4"><a href="http://www.nypost.com/nypostarchives">Archives</a></li> 
-			<li id="hat_link_list_5" class="last"><a href="https://secure.nypost.com/homedelivery/signup.htm">Subscribe</a></li>
+			<li id="hat_link_list_5" class="last"><a href="https://pay.nypost.com">Subscribe</a></li>
 		</ul>
 		<form action="http://search.nypost.com/search" method="get" name="gs" id="search_form_hat" class="search_form">
 	<div>
@@ -302,10 +322,6 @@
     })();
 </script>
 <!--END SAILTHRU CODE-->
-
-<!-- START IFRAME : below is Opt In Smart Pixel (Nonsecure) for SailThru -->
-<iframe src='../../../pixel.fetchback.com/serve/fb/pdc%3Fcat=&amp;name=landing&amp;sid=3801.html' scrolling='no' width='1' height='1' marginheight='0' marginwidth='0' frameborder='0'></iframe>
-<!-- END IFRAME -->
 
 <!--START CHARTBEAT CODE -->
 <script type="text/javascript">

@@ -5,6 +5,7 @@ when it is loaded through Chameleon. It was developed in 2009FB2.
 Main function in this file: InitHeader()
 *****************************************************************************/
 //Main function in the file
+var parentCategoryForLeftNavHeader;
 function InitHeader() {
     HighlightCurrentTab();
 
@@ -282,10 +283,25 @@ function HighlightCurrentTab() {
         // find all header anchor tags for top level dept tabs and append classes with '-active'
         $('.main-site-header li.dept-' + GetTopLevelDepartment() + ' a').each(function () {
             $(this).attr('class', $(this).attr('class') + '-active');
-        });                                                                                 
+        });
+
+        var deptElement = $('.dept-' + GetTopLevelDepartment());
+        if (deptElement[0] != null && deptElement[0] != undefined && deptElement[0] != '') {
+            if (deptElement[0].innerText == undefined || deptElement[0].innerText == "" || deptElement[0].innerText == null) {
+                parentCategoryForLeftNavHeader = deptElement[0].textContent;
+            }
+            else {
+                parentCategoryForLeftNavHeader = deptElement[0].innerText;
+            }
+        }                                                                          
     }
 }
 
+function SetCurrentCategoryToLeftNavHeader() {
+    if (parentCategoryForLeftNavHeader != undefined && parentCategoryForLeftNavHeader != null) {
+        $('.nav-header').html(parentCategoryForLeftNavHeader);
+    }
+}
 
 function SetShoppingBagCount(ShoppingBagId) {
     if (document.getElementById(ShoppingBagId) != null) {
@@ -929,3 +945,41 @@ $(document).ready(function () {
     checkForOffers();
 })
 /** [END] ADS Header Offer  **********************************************************************/
+
+/* {Start} Joe's Tooltip */
+$(document).ready(function () {
+
+    //Select all anchor tag with rel set to tooltip
+    $('a[rel=tooltip]').mouseover(function (e) {
+
+        //Grab the title attribute's value and assign it to a variable
+        var tip = $(this).attr('title');
+
+        //Remove the title attribute's to avoid the native tooltip from the browser
+        $(this).attr('title', '');
+
+        //Append the tooltip template and its value
+        $('body').append('<div id="tooltip">' + tip + '</div>');
+
+        //Show the tooltip with faceIn effect
+        $('#tooltip').fadeIn('500');
+        $('#tooltip').fadeTo('10', 0.9);
+
+    }).mousemove(function (j) {
+
+        //Keep changing the X and Y axis for the tooltip, thus, the tooltip move along with the mouse
+        $('#tooltip').css('top', j.pageY + 10);
+        $('#tooltip').css('left', j.pageX + 10);
+
+    }).mouseout(function () {
+
+        //Put back the title attribute's value
+        $(this).attr('title', $('#tooltip').html());
+
+        //Remove the appended tooltip template
+        $('body').children('div#tooltip').remove();
+
+    });
+
+});
+/* {END} Joe's Tooltip */

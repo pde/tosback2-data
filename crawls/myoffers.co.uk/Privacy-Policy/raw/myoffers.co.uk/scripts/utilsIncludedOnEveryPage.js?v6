@@ -1,0 +1,23 @@
+﻿function submitOnce(myButton) {
+    if (typeof (Page_ClientValidate) == 'function') {
+        if (Page_ClientValidate() == false) {
+            return false;
+        }
+    }
+
+    if (myButton.getAttribute('type') == 'button') {
+        myButton.disabled = true;
+        myButton.value = "processing...";
+		if(myButton.id == 'Button1' && typeof window.recordSubmission == 'function') {
+			recordSubmission(myButton);
+		}
+    }
+
+    return true;
+}
+
+function submitQuestionnaire(button) {
+    $(button).SetPageValidators({ group: 'Questionnaire', depth: 4 }); 
+    submitOnce(button);
+}
+

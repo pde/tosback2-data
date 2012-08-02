@@ -138,9 +138,8 @@ function mmLoadMenus()
 
     window.mm_menu_0023012515_3 = new Menu("root",110,18,"Verdana, Arial, Helvetica, sans-serif",10,"#ffffff","#ffffff","#000000","#666666","left","middle",0,0,1000,-5,7,true,false,true,10,false,false);
     mm_menu_0023012515_3.addMenuItem("AIS","location='https://ais.linkline.com/'");
-	mm_menu_0023012515_3.addMenuItem("Webmail","location='http://webmail.linkline.com/nutsmail'");
-    mm_menu_0023012515_3.addMenuItem("Squirrel Mail","location='http://squirrel.linkline.com/'");
-	mm_menu_0023012515_3.addMenuItem("Classic Webmail","location='http://webmail.linkline.com/'");
+	mm_menu_0023012515_3.addMenuItem("Webmail","location='https://webmail.linkline.com/'");
+    mm_menu_0023012515_3.addMenuItem("Squirrel Mail","location='https://squirrel.linkline.com/'");
     mm_menu_0023012515_3.fontWeight="bold";
     mm_menu_0023012515_3.hideOnMouseOut=true;
     mm_menu_0023012515_3.menuBorder=0;

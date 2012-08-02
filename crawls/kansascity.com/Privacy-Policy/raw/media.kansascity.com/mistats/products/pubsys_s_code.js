@@ -41,6 +41,7 @@ function s_doPlugins(s)
 
 	// Get Previous Page Values
 	s.prop43 = s.getPreviousValue(s.pageName, 'mi_ppn');
+   s.getPreviousValue(s.channel, 'mi_pch');
 	mistats.prevPageLevel = s.getPreviousValue(s.prop3, 'mi_ppl');
 
    // Prepend site name if homepage

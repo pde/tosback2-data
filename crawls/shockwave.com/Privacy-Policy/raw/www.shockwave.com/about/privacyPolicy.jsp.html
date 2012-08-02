@@ -125,10 +125,12 @@
 <script type="text/javaScript">
 	var gamepageURL = /gamelanding/.test(self.location.href);
 	
+    
 	var gameID = "";
-	var gameType = ""; gameType="";
-	var tokenType = ""; 
-	var trophyType = ""; 
+    
+	var gameType="non-club";
+	var tokenType = "";
+	var trophyType = "";
 	var pageGroup = "online";
 	var pageType = "";
 	var categoryList= "";
@@ -142,19 +144,10 @@
 		
 		var loginState="notLoggedIn";
 	
-	if((gamepageURL || primaryCategory == 'jigsaw') && (pageGroup == 'online' || pageGroup == 'download')){
-		var recommendedGamesServed = true;
-        if (pageGroup == 'download'){ var downloadGame = true; } else { var downloadGame = false; }
-	} else {
-		var recommendedGamesServed = false;
-	}
+	if((gamepageURL || primaryCategory == 'jigsaw') && (pageGroup == 'online' || pageGroup == 'download')){ var recommendedGamesServed = true; if (pageGroup == 'download'){ var downloadGame = true; } else { var downloadGame = false; } 	} else { var recommendedGamesServed = false; }
     if (pageGroup == 'download'){var downloadGame = true;}else{var downloadGame = false;}
 	
-
-	
-
-	// Initialize page OmniVars object and pass it events set in the request.
-	// More variables may be added to pageOmniVars in Coda2_ConfigMap.js.
+    
 	var pageOmniVars = {};
     
 </script>
@@ -172,7 +165,7 @@
     sw.adSettings.DoubleClickAutoDcopt=true;
 </script>
 
-        
+
 
 
 		
@@ -327,13 +320,11 @@
             #wrapper {width: 1000px;}
             #mainContent { border: 1px solid #CCC; border-top: none; border-bottom: none; }
             .bannerWrapper { width: 998px; border: 1px solid #CCC; border-top: none; border-bottom: none; }
-            #mainNav .swTicker ul li.tickerNSI DIV.tickerData { margin-top: -15px; }
         </style>
         <![endif]-->
         <!--[if IE 7]>
         <style type="text/css">
             .wrapperie7 { width: 1000px; margin-top: -115px !important; }
-            #mainNav .swTicker ul li.tickerNSI DIV.tickerData { margin-top: 0px !important; }
             .swNavigator { margin-top: -45px !important; }
             .swNavigator7 { margin-top: -10px !important; }
         </style>
@@ -370,32 +361,35 @@
 
 
 	
-
-	var choicestreamRecs = new btg.ABTest(
+    var choicestreamRecs = new btg.ABTest(
 		"choicestreamRecs",
 		[
 			{ name: "choicestream", weight: 100 },
 			{ name: "other", weight: 0 }
 		]
 	);
-    
-    var swuUpsell = new btg.ABTest(
-        "swuUpsell",
+    var unlimitedUpsell = new btg.ABTest(
+		"unlimitedUpsell",
 		[
-			{ name: "swuButton", weight: 50 },
-			{ name: "swuBanner", weight: 50 }
+			{ name: "controlA", weight: 0 },
+			{ name: "controlB", weight: 100 }
 		]
 	);
 
 		sw_gameRecs();
 		btg.Controller.sendPageCall( pageOmniVars );
-        // ab test
+        
         $(document).ready(function(){
-            var swuTest = swuUpsell.getGroup() == 'swuBanner';
-            if(swuTest){
-               $('.swuBanner').show();
+            var unlimited = unlimitedUpsell.getGroup() == 'controlA';
+            var unlimitedCookie = document.cookie.indexOf("newSWU") == -1;
+//            console.log('-1: ' + unlimitedCookie);
+            if(unlimited){
+               $('.controlA').show();
             } else {
-               $('.swuButton').show();
+               $('.controlB').show();
+               if(unlimitedCookie){
+                   $.cookie('newSWU', 'uxSWU', {expires: 1});
+               }
             }
         });
 	</script>
@@ -431,7 +425,6 @@ position:'atf'
 			<li><a href="http://www.nicktoons.com">nicktoons</a></li>
 			<li><a href="http://www.neopets.com">neopets</a></li>
 			<li><a href="http://www.petpetpark.com">petpet park</a></li>
-			<li><a href="http://www.quizilla.com">quizilla</a></li>
 			<li><a href="http://www.spongebob.com">spongebob</a></li>
 			<li><a href="http://www.nickjr.com">nick jr.</a></li>
 			<li><a href="http://www.teennick.com">teennick</a></li>
@@ -545,42 +538,8 @@ position:'atf'
 
 
 <!--[if IE 9]>
-<style type="text/css">
-#myTools .dropmenu div {
-	left: -299px;
-}
-</style>
+<style type="text/css">#myTools .dropmenu div { left: -299px; }</style>
 <![endif]-->
-<script type="text/javascript">
-    $(document).ready(function(){
-        var windowsOS = navigator.appVersion.indexOf("Win")!=-1;
-        var mozBrowser = $.browser.mozilla;
-        $('.gameTime').hover(function(){
-          $('li.moreGames').show();
-           $(this).css({ 'cursor' : 'pointer' });
-        }, function(){
-           $('li.moreGames').hide();
-           $(this).css({ 'cursor' : 'default' });
-        });
-        if(windowsOS){
-            $('#mainNav .swTicker ul.tickerList li.gameTime ul li.moreGames').addClass('moreGamesWinOS');
-        }
-
-        
-        var dataTicker = ["1", "2" , "3"];
-        var myData = Math.floor(Math.random()*dataTicker.length);
-        if(myData == 0){
-            $('.data1').fadeIn(500);
-            $('.data2, .data3').hide();
-        } else if(myData == 1) {
-            $('.data2').fadeIn(500);
-            $('.data1, .data3').hide();
-        } else {
-            $('.data3').fadeIn(500);
-            $('.data1, .data2').hide();
-        }
-    });
-</script>
 <div class="headContainer ">
     <div id="logo">
         <a href="http://www.shockwave.com/home.jsp">
@@ -620,13 +579,11 @@ position:'atf'
             <li id="tab-3"><a title="Free Online Gaming Community" href="http://www.shockwave.com/myShockwave.jsp">my shockwave</a></li>
             
                 
-                <li class="swTicker swTickerNSI">
-                    <ul class="tickerList">
-                        <li class="tickerNSI">
-                            <div class="tickerData data1">975,656 Game Plays</div>
-                            <div class="tickerData data2">78,162 Downloads Today</div>
-                            <div class="tickerData data3">70,259,477 Total Downloads</div>
-                        </li>
+                <li class="swTicker">
+                    <ul class="tickerList tickerNSI">
+                        <li class="tickerData data1">1,002,503 Game Plays</li>
+                        <li class="tickerData data2">55,336 Downloads Today</li>
+                        <li class="tickerData data3">71,550,143 Total Downloads</li>
                     </ul>
                 </li>
                 
@@ -861,14 +818,6 @@ position:'atf'
                         <a title="Music & Photos" href="http://www.shockwave.com/online/music-photos-games.jsp">Music & Photos</a>
                     </li>
                 
-                    
-                    
-                        
-                    
-                    <li id="dressup">
-                        <a title="Dress Up" href="http://www.shockwave.com/games/dress-up-games.jsp">Dress Up</a>
-                    </li>
-                
             
             
         </ul>
@@ -928,12 +877,12 @@ loadOrder:1
 		<li ><a href="http://www.shockwave.com/about/index.jsp">About Shockwave</a></li>
 		<li ><a href="http://www.shockwave.com/about/advertising.jsp">Advertising</a></li>
 		<li ><a href="http://www.shockwave.com/about/developers.jsp">Game Developers</a></li>
-		<li ><a href="http://www.shockwave.com/about/affiliate.jsp">Become an Affiliate</a></li>
+		
 		<li ><a href="http://www.shockwave.com/about/careers.jsp">Careers</a></li>
 		<li ><a href="http://www.shockwave.com/about/terms.jsp">Terms of Use</a></li>
 		<li class="active"><a href="privacyPolicy.jsp.html">Privacy Policy</a></li>
 		<li ><a href="http://www.shockwave.com/about/virtualCurrencyAgreement.jsp">Virtual Currency Purchasing Agreement</a></li>
-		<li ><a href="http://www.shockwave.com/about/virtualCurrencyAgreement.jsp">Copyright and Trademark</a></li>
+		<li ><a href="http://www.shockwave.com/about/copyrightTrademark.jsp">Copyright and Trademark</a></li>
 		<li ><a href="http://www.shockwave.com/about/copyrightCompliance.jsp">Copyright Compliance Policy</a></li>
 		<li ><a href="http://www.shockwave.com/about/submissionAgreement.jsp">User Submission Agreement</a></li>
 		<li ><a href="http://www.shockwave.com/about/contact.jsp">Contact Us</a></li>
@@ -941,15 +890,134 @@ loadOrder:1
 
 </div>
 <div class="col col6 subSection nickFrame">
-	<img class="headline" src="../i/subSections/hdPrivacyAndLegal.png" alt="hdPrivacyAndLegal.png" width="436" height="59" />
-    <iframe src="../../www.nick.com/nick-assets/copy/privacy-policy.html" class="policyFrame" frameborder="0"></iframe>
+	<!-- <img class="headline" src="/i/subSections/hdPrivacyAndLegal.png" alt="hdPrivacyAndLegal.png" width="436" height="59" /> -->
+	<h1>Privacy and Legal</h1>
+    	<iframe src="../../www.nick.com/nick-assets/copy/privacy-policy.html" class="policyFrame" frameborder="0"></iframe>
 </div>
 
 				
 				
 			</div>
 
-												<div id="footerTop"></div>	<div id="footer" class="clearfix">											<div class="footer">				<h2>Free Online Games and More</h2>				<p>Shockwave is the ultimate destination to play games. Try our free <a href="http://www.shockwave.com/home.jsp">online games</a>, <a href="http://www.shockwave.com/download.jsp">download games</a>, <a href="http://www.shockwave.com/search/flashGames.jsp">flash games</a>, and multiplayer games.</p><p>Shockwave has <a href="http://www.shockwave.com/home.jsp">games</a> for everyone! Shockwave has games in great categories like <a href="http://www.shockwave.com/online/action-games.jsp">Action Games</a>, <a href="http://www.shockwave.com/download/adventure-games.jsp">Adventure Games</a>, <a href="http://www.shockwave.com/online/jigsaw-games.jsp">Jigsaw Games</a>, <a href="http://www.shockwave.com/download/hidden-object-games.jsp">Hidden Object Games</a>, <a href="http://www.shockwave.com/download/time-management-games.jsp">Time Management Games</a>, <a href="http://www.shockwave.com/online/matching-games.jsp">Matching Games</a>, <a href="http://www.shockwave.com/download/card-board-games.jsp">Card & Board Games</a>, <a href="http://www.shockwave.com/online/family-kids-games.jsp">Kids & Family Games</a>, <a href="http://www.shockwave.com/online/music-photos-games.jsp">Music & Photos Games</a>, <a href="http://www.shockwave.com/download/puzzle-games.jsp">Puzzle Games</a>, <a href="http://www.shockwave.com/online/racing-games.jsp">Racing Games</a>, <a href="http://www.shockwave.com/online/shooters-games.jsp">Shooter Games</a>, <a href="http://www.shockwave.com/online/sports-games.jsp">Sports Games</a>, <a href="http://www.shockwave.com/download/strategy-games.jsp">Strategy Games</a> , and <a href="http://www.shockwave.com/online/word-games.jsp">Word Games</a>. Shockwave adds games frequently so there are always new games available. Shockwave is the premier destination for <a href="http://www.shockwave.com/home.jsp">free online games</a> and premium download games.</p><p>Gamers looking to have some serious fun can subscribe to <a href="http://www.shockwave.com/unlimited.jsp">Shockwave&reg; <i>UNLIMITED</i></a>. As a member, you'll enjoy unlimited play on hundreds of download games, ads-free gaming, and brand new titles each week &mdash; as many as 20 new games per month!</p><p>Looking for more <a href="http://www.shockwave.com/games/dress-up-games.jsp">Dress up games</a>? Shockwave  has a large selection of fun online and download dress up games.</p> 				<div class="moreCoolGames">More Addicting Games!</div>				<ul class="footerLinks">                <li class="sw_mod_links">                    <ul class="extLinks">                         <li><a target="_blank" href="http://www.addictinggames.com" class="extLinksHeader">GAMES</a></li>                         <li><a target="_blank" href="http://www.shockwave.com/online/all-games.jsp">Free Online Games</a></li>                         <li><a target="_blank" href="http://www.shockwave.com/download.jsp">Download Games</a></li>                         <li><a target="_blank" href="http://www.addictinggames.com">Online Games</a></li>                         <li><a target="_blank" href="http://www.addictinggames.com/puzzle-games/index.jsp">Puzzle Games</a></li>                         <li><a target="_blank" href="http://www.addictinggames.com/strategy-games/index.jsp">Strategy Games</a></li>                         <li><a target="_blank" href="http://www.addictinggames.com/mobile-games.jsp">Mobile Games</a></li>                    </ul>                </li>				 <li class="sw_mod_links">					<ul class="extLinks exposeComments">						<!--						<li><a target="_blank" href="http://www.nickjr.com/games/index.jhtml" class="extLinksHeader">PRESCHOOL GAMES</a></li>						<li><a target="_blank" href="http://www.nickjr.com/games-activities/">Preschool Printables</a></li>						<li><a target="_blank" href="http://www.nickjr.com/crafts/index.jhtml">Kids Crafts</a></li>						<li><a target="_blank" href="http://www.nickjr.com/recipes/index.jhtml">Kids Recipes</a></li>						<li><a target="_blank" href="http://www.nickjr.com">Preschool Activities</a></li>						-->					</ul>				</li>				<li class="sw_mod_links">					<ul class="extLinks exposeComments">						<!--						<li><a target="_blank" href="http://www.nick.com/games/" class="extLinksHeader">KIDS GAMES</a></li>                        <li><a target="_blank" href="http://www.monkeyquest.com">Kids Virtual Worlds</a></li>						<li><a target="_blank" href="http://www.nick.com/celebrity">Teen Celebrities</a></li>						<li><a target="_blank" href="http://www.nick.com/celebrity/miranda-cosgrove.html">Miranda Cosgrove</a></li>						<li><a target="_blank" href="http://www.nick.com/celebrity/jennette-mccurdy.html">Jennette McCurdy</a></li>						<li><a target="_blank" href="http://www.nick.com/celebrity/victoria-justice.html">Victoria Justice</a></li>						<li><a target="_blank" href="http://www.nick.com/shows/avatar">Avatar</a></li>						-->					</ul>				</li>				<li class="sw_mod_links">					<ul class="extLinks exposeComments">						<!--						<li><a target="_blank" href="http://www.teennick.com/games" class="extLinksHeader">TEEN GAMES</a></li>						<li><a target="_blank" href="http://quizilla.teennick.com/quizzes/">Quizzes</a></li>						<li><a target="_blank" href="http://www.teennick.com/quizzes/">Fun Quizzes For Girls</a></li> -->                        <li><a target="_blank" href="http://www.facebook.com/apps/application.php?id=2998790650">Addicting Games</a></li>                        <li><a target="_blank" href="http://www.shockwave.com/online/racing-games.jsp">Racing Games</a></li>					</ul>				</li>				<li class="sw_gamesformom">					<ul class="extLinks exposeComments">						<!--						<li><a target="_blank" href="http://www.parentsconnect.com/games" class="extLinksHeader">GAMES FOR MOM</a></li>						<li><a target="_blank" href="http://www.parentsconnect.com/">Parenting</a></li>						<li><a target="_blank" href="http://babynamesworld.parentsconnect.com/">Baby Names</a></li>						<li><a target="_blank" href="http://www.parentsconnect.com/pregnancy/index.jhtml">Pregnancy</a></li>						<li><a target="_blank" href="http://www.parentsconnect.com/baby/index.jhtml">Baby</a></li>						<li><a target="_blank" href="http://3dpregnancy.parentsconnect.com/calendar/13-weeks-pregnant.html">Pregnant</a></li>						-->					</ul>				</li>				</ul>				<ul class="clear aboutUs corpLinks">					<li><a href="http://www.shockwave.com/help/contact_us.jsp" class="corpLinks btnOnlinePlain">CONTACT US</a></li>					<li><a href="http://www.shockwave.com/about/index.jsp" class="corpLinks">About Us</a></li>					<li><a href="http://blog.shockwave.com" class="corpLinks">Blog</a></li>					<li><a href="http://www.shockwave.com/help/index.jsp" class="corpLinks">Help</a></li>					<li><a href="http://www.shockwave.com/about/advertising.jsp" class="corpLinks">Advertising</a></li>					<li><a href="http://www.shockwave.com/tokenCentral/rules.jsp" class="corpLinks">Sweepstakes &amp; Instant Win Rules </a></li>					<li><a href="http://www.shockwave.com/about/affiliate.jsp" class="corpLinks">Become an Affiliate</a></li>										<!-- share icons -->					<li class="shareIconsFooter exposeComments">						<!--						<a href="http://blog.shockwave.com/" title="Follow our Blog" class="clearLink shareBlogFooter">Blog</a>						<a href="http://www.facebook.com/Shockwave" target="_new" title="Share on Facebook" class="clearLink shareFacebookFooter">Facebook</a>						<a href="http://twitter.com/shockwavegames" target="_new" title="Post on Twitter" class="clearLink shareTwitterFooter">Twitter</a>						-->					</li>				</ul>				<ul class="clear corpLinks">					<li><a href="http://www.shockwave.com/about/terms.jsp" class="corpLinks">Terms of Use</a></li>					<li><a href="http://www.shockwave.com/about/virtualCurrencyAgreement.jsp" class="corpLinks">Virtual Currency Purchasing Agreement</a></li>					<li><a href="privacyPolicy.jsp.html" class="corpLinks">Privacy Policy</a></li>					<li><a href="http://www.shockwave.com/about/copyrightCompliance.jsp" class="corpLinks">Copyright Compliance Policy</a></li>					<li><a class="icon16Lft icon16EmailUpdates corpLinks" href="http://www.shockwave.com/myShockwave/accountSettings.jsp">Get Email Updates</a></li>					<li class="exposeComments"><!-- <a class="icon16Rit icon16AdChoices corpLinks" href="http://srp.mtvn.com/sitefaq.html" target="_blank">Ad Choices</a> --></li>				</ul>				<div class="clear" id="footerLogo">&copy; 1999-2012 Atom Entertainment, Inc., a Viacom Media Networks Company. All rights reserved.<br />				Third-party trademarks are used solely for distributing the games indexed herein and no license or other affiliation is implied.</div>			</div>						</div><div id="dynamicContent" class="dimmerMessage"></div>	
+			
+	
+
+	
+	
+		
+		
+	
+
+	<div id="footerTop"></div>
+	<div id="footer" class="clearfix">
+
+		
+			
+			
+			<div class="footer">
+				<h2>Free Online Games and More</h2>
+				<p>Shockwave is the ultimate destination to play games. Try our free <a href="http://www.shockwave.com/home.jsp">online games</a>, <a href="http://www.shockwave.com/download.jsp">download games</a>, <a href="http://www.shockwave.com/search/flashGames.jsp">flash games</a>, and multiplayer games.</p><p>Shockwave has <a href="http://www.shockwave.com/home.jsp">games</a> for everyone! Shockwave has games in great categories like <a href="http://www.shockwave.com/online/action-games.jsp">Action Games</a>, <a href="http://www.shockwave.com/download/adventure-games.jsp">Adventure Games</a>, <a href="http://www.shockwave.com/online/jigsaw-games.jsp">Jigsaw Games</a>, <a href="http://www.shockwave.com/download/hidden-object-games.jsp">Hidden Object Games</a>, <a href="http://www.shockwave.com/download/time-management-games.jsp">Time Management Games</a>, <a href="http://www.shockwave.com/online/matching-games.jsp">Matching Games</a>, <a href="http://www.shockwave.com/download/card-board-games.jsp">Card & Board Games</a>, <a href="http://www.shockwave.com/online/family-kids-games.jsp">Kids & Family Games</a>, <a href="http://www.shockwave.com/online/music-photos-games.jsp">Music & Photos Games</a>, <a href="http://www.shockwave.com/download/puzzle-games.jsp">Puzzle Games</a>, <a href="http://www.shockwave.com/online/racing-games.jsp">Racing Games</a>, <a href="http://www.shockwave.com/online/shooters-games.jsp">Shooter Games</a>, <a href="http://www.shockwave.com/online/sports-games.jsp">Sports Games</a>, <a href="http://www.shockwave.com/download/strategy-games.jsp">Strategy Games</a> , and <a href="http://www.shockwave.com/online/word-games.jsp">Word Games</a>. Shockwave adds games frequently so there are always new games available. Shockwave is the premier destination for <a href="http://www.shockwave.com/home.jsp">free online games</a> and premium download games.</p><p>Gamers looking to have some serious fun can subscribe to <a href="http://www.shockwave.com/unlimited.jsp">Shockwave&reg; <i>UNLIMITED</i></a>. As a member, you'll enjoy unlimited play on hundreds of download games, ads-free gaming, and brand new titles each week &mdash; as many as 20 new games per month!</p><p>Looking for more <a href="http://www.shockwave.com/games/dress-up-games.jsp">Dress up games</a>? Shockwave  has a large selection of fun online and download dress up games.</p> 
+				<div class="moreCoolGames">More Addicting Games!</div>
+				<ul class="footerLinks">
+                <li class="sw_mod_links">
+                    <ul class="extLinks">
+                         <li><a target="_blank" href="http://www.addictinggames.com" class="extLinksHeader">GAMES</a></li>
+                         <li><a target="_blank" href="http://www.shockwave.com/online/all-games.jsp">Free Online Games</a></li>
+                         <li><a target="_blank" href="http://www.shockwave.com/download.jsp">Download Games</a></li>
+                         <li><a target="_blank" href="http://www.addictinggames.com">Online Games</a></li>
+                         <li><a target="_blank" href="http://www.addictinggames.com/puzzle-games/index.jsp">Puzzle Games</a></li>
+                         <li><a target="_blank" href="http://www.addictinggames.com/strategy-games/index.jsp">Strategy Games</a></li>
+                         <li><a target="_blank" href="http://www.addictinggames.com/mobile-games.jsp">Mobile Games</a></li>
+                    </ul>
+                </li>
+				 <li class="sw_mod_links">
+					<ul class="extLinks exposeComments">
+						<!--
+						<li><a target="_blank" href="http://www.nickjr.com/games/index.jhtml" class="extLinksHeader">PRESCHOOL GAMES</a></li>
+						<li><a target="_blank" href="http://www.nickjr.com/games-activities/">Preschool Printables</a></li>
+						<li><a target="_blank" href="http://www.nickjr.com/crafts/index.jhtml">Kids Crafts</a></li>
+						<li><a target="_blank" href="http://www.nickjr.com/recipes/index.jhtml">Kids Recipes</a></li>
+						<li><a target="_blank" href="http://www.nickjr.com">Preschool Activities</a></li>
+						-->
+					</ul>
+				</li>
+				<li class="sw_mod_links">
+					<ul class="extLinks exposeComments">
+						<!--
+						<li><a target="_blank" href="http://www.nick.com/games/" class="extLinksHeader">KIDS GAMES</a></li>
+                        <li><a target="_blank" href="http://www.monkeyquest.com">Kids Virtual Worlds</a></li>
+						<li><a target="_blank" href="http://www.nick.com/celebrity">Teen Celebrities</a></li>
+						<li><a target="_blank" href="http://www.nick.com/celebrity/miranda-cosgrove.html">Miranda Cosgrove</a></li>
+						<li><a target="_blank" href="http://www.nick.com/celebrity/jennette-mccurdy.html">Jennette McCurdy</a></li>
+						<li><a target="_blank" href="http://www.nick.com/celebrity/victoria-justice.html">Victoria Justice</a></li>
+						<li><a target="_blank" href="http://www.nick.com/shows/avatar">Avatar</a></li>
+						-->
+					</ul>
+				</li>
+				<li class="sw_mod_links">
+					<ul class="extLinks exposeComments">
+						<!--
+						<li><a target="_blank" href="http://www.teennick.com/games" class="extLinksHeader">TEEN GAMES</a></li>
+						<li><a target="_blank" href="http://www.teennick.com/quizzes/">Fun Quizzes For Girls</a></li> -->
+                        <li><a target="_blank" href="http://www.facebook.com/apps/application.php?id=2998790650">Addicting Games</a></li>
+                        <li><a target="_blank" href="http://www.shockwave.com/online/racing-games.jsp">Racing Games</a></li>
+					</ul>
+				</li>
+				<li class="sw_gamesformom">
+					<ul class="extLinks exposeComments">
+						<!--
+						<li><a target="_blank" href="http://www.parentsconnect.com/games" class="extLinksHeader">GAMES FOR MOM</a></li>
+						<li><a target="_blank" href="http://www.parentsconnect.com/">Parenting</a></li>
+						<li><a target="_blank" href="http://babynamesworld.parentsconnect.com/">Baby Names</a></li>
+						<li><a target="_blank" href="http://www.parentsconnect.com/pregnancy/index.jhtml">Pregnancy</a></li>
+						<li><a target="_blank" href="http://www.parentsconnect.com/baby/index.jhtml">Baby</a></li>
+						<li><a target="_blank" href="http://3dpregnancy.parentsconnect.com/calendar/13-weeks-pregnant.html">Pregnant</a></li>
+						-->
+					</ul>
+				</li>
+				</ul>
+				<ul class="clear aboutUs corpLinks">
+					<li><a href="http://www.shockwave.com/help/contact_us.jsp" class="corpLinks btnOnlinePlain">CONTACT US</a></li>
+					<li><a href="http://www.shockwave.com/about/index.jsp" class="corpLinks">About Us</a></li>
+					
+					<li><a href="http://www.shockwave.com/help/index.jsp" class="corpLinks">Help</a></li>
+					<li><a href="http://www.shockwave.com/about/advertising.jsp" class="corpLinks">Advertising</a></li>
+					<li><a href="http://www.shockwave.com/tokenCentral/rules.jsp" class="corpLinks">Sweepstakes &amp; Instant Win Rules </a></li>
+					
+					
+					<!-- share icons -->
+					<li class="shareIconsFooter exposeComments">
+						<!--
+						<a href="http://www.facebook.com/Shockwave" target="_new" title="Share on Facebook" class="clearLink shareFacebookFooter">Facebook</a>
+						-->
+					</li>
+				</ul>
+
+				<ul class="clear corpLinks">
+					<li><a href="http://www.shockwave.com/about/terms.jsp" class="corpLinks">Terms of Use</a></li>
+					<li><a href="http://www.shockwave.com/about/virtualCurrencyAgreement.jsp" class="corpLinks">Virtual Currency Purchasing Agreement</a></li>
+					<li><a href="privacyPolicy.jsp.html" class="corpLinks">Privacy Policy</a></li>
+					<li><a href="http://www.shockwave.com/about/copyrightCompliance.jsp" class="corpLinks">Copyright Compliance Policy</a></li>
+					
+					<li class="exposeComments"><!-- <a class="icon16Rit icon16AdChoices corpLinks" href="http://srp.mtvn.com/sitefaq.html" target="_blank">Ad Choices</a> --></li>
+				</ul>
+				<div class="clear" id="footerLogo">&copy; 1999-2012 Atom Entertainment, Inc., a Viacom Media Networks Company. All rights reserved.<br />
+				Third-party trademarks are used solely for distributing the games indexed herein and no license or other affiliation is implied.</div>
+			</div>
+			
+		
+	</div>
+
+
+<div id="dynamicContent" class="dimmerMessage">
+
+</div>
+
+	
+
+
+
+
 
 	
 		<script type="text/javascript" language="javascript" src="../min/js/globalFooter.min.js"></script>
@@ -965,7 +1033,36 @@ loadOrder:1
 <script type="text/javascript" src="../../apis.google.com/js/plusone.js"></script>
 <script type="text/javascript" language="javascript" src="../../api.choicestream.com/instr/csanywhere.js"></script>
 
-    <div id="fb-root"></div>    <script src="../../connect.facebook.net/en_US/all.js"></script><script type="text/javascript">    FB.init({appId: '166821186425', status: true, cookie: true, xfbml: true, oauth:true});$(document).ready(function() {			var disabledPermissions = new Array();	var cnt = 0;				var fbUserName = "";										var isFacebookConnected = false												var hasPublishPermission = false				setupFacebookVars(isFacebookConnected, hasPublishPermission, 'http://www.shockwave.com', disabledPermissions, fbUserName);});</script><!-- PAGEOK --><script type="text/javascript">	$(document).ready(function() {								        					});</script><iframe src="../../images.webads.nl/stir/shockwave_stir.htm" width="0" height="0" frameborder="no"></iframe>
+    <div id="fb-root"></div>    <script src="../../connect.facebook.net/en_US/all.js"></script><script type="text/javascript">    FB.init({appId: '166821186425', status: true, cookie: true, xfbml: true, oauth:true});$(document).ready(function() {			var disabledPermissions = new Array();	var cnt = 0;				var fbUserName = "";										var isFacebookConnected = false												var hasPublishPermission = false				setupFacebookVars(isFacebookConnected, hasPublishPermission, 'http://www.shockwave.com', disabledPermissions, fbUserName, '');});</script>
+
+
+
+
+
+<!-- PAGEOK -->
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		
+		
+		
+        
+		
+		
+	});
+</script>
+
+
+<iframe src="../../images.webads.nl/stir/shockwave_stir.htm" width="0" height="0" frameborder="no"></iframe>
+
+
+
+
+
+
+
+
 		</div>
 		
 		

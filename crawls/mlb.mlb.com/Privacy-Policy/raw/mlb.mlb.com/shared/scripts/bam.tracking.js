@@ -11,6 +11,7 @@ bam.extend({
 				s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.prop45 = s.prop58 = "";
 				s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar19 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = "";
 				s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar17 = s.eVar11 = s.prop44 = s.prop46 = s.prop56 = s.prop57 = "";
+				s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 				s.events = "";
 				//call pageview track
 				s.t();
@@ -21,6 +22,7 @@ bam.extend({
 				s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.prop45 = s.prop58 =  "";
 				s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar19 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = "";
 				s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar17 = s.eVar11 = s.prop44 = s.prop46 = s.prop56 = s.prop57 = "";
+				s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 				s.events = "";
 				if(omnitureJson) {
 					s.pageName = omnitureJson.pageName ? omnitureJson.pageName : "";
@@ -41,6 +43,7 @@ bam.extend({
 				s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.prop58 =  "";
 				s.prop38 = s.prop39 = s.eVar13 = s.eVar19 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = "";
 				s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar17 = s.prop44 = s.prop45 = s.prop46 = s.prop56 = s.prop57 = "";
+				s.prop58 = s.prop59 = s.prop60 = "";
 				if(pVars) {
 					s.events = pVars.events ? pVars.events : "";
 					s.pageName = pVars.pageName ? pVars.pageName : "";
@@ -49,6 +52,10 @@ bam.extend({
 					s.channel = pVars.channel ? pVars.channel : "";
 					s.prop40 = pVars.matchup ? pVars.matchup : "";
 					s.prop58 = pVars.club ? pVars.club : "";
+					s.prop61 = pVars.omniture_meta_title ? pVars.omniture_meta_title : "";
+					s.prop62 = pVars.omniture_meta_author ? pVars.omniture_meta_author : "";
+					s.prop63 = pVars.omniture_sponsor_name ? pVars.omniture_sponsor_name : "";
+					
 					if (/Scoreboard/.test(s.channel)) {
 						s.eVar11 = s.prop22;
 					}
@@ -65,6 +72,7 @@ bam.extend({
 				s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.events = "";
 				s.prop38 = s.prop39 = s.eVar13 = s.eVar19 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = s.prop58 = "";
 				s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar17 = s.prop44 = s.prop40 = s.prop46 = s.prop56 = s.prop57 = "";
+				s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 				if(pVars) {
 					s.events = "event4";
 					s.pageName = pVars.pageName ? pVars.pageName : "";
@@ -109,6 +117,7 @@ bam.extend({
 						s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = "";
 						s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 = "";
 						s.prop31 = s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.prop45 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = "";
+						s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 						s.events = "event2";
 						if (props.isDynamic == true) {
 							s.prop11 = "Dynamic Page View";
@@ -160,7 +169,8 @@ bam.extend({
         			var props_media = omJson.async_media;
          			s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.eVar17 = s.eVar11 = s.prop44 = s.eVar19 = s.eVar13 = "";
          			//s.prop38 = s.prop39 = s.prop40 = "";
-         			s.prop2 = s.prop38 = s.prop39 = s.prop45 = s.eVar23 = s.eVar26 = s.eVar27 = s.prop46 = s.prop56 = s.prop57 = s.prop58 = "";
+         			s.prop2 = s.prop38 = s.prop39 = s.prop45 = s.eVar23 = s.eVar26 = s.eVar27 = s.prop46 = s.prop56 = s.prop57 = "";
+         			s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
          			s.events = "event2,event27";
                                                   
          			s.prop25 = props_media.mediaID ? props_media.mediaID : ""; 
@@ -196,8 +206,9 @@ bam.extend({
 				
 				if(omJson.gamedayPremiumConversionTracker) {
 						var props = omJson.gamedayPremiumConversionTracker;
-						s.prop2 = s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = s.prop58 =  "";
+						s.prop2 = s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 =  "";
 						s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.prop45 = s.prop46 = s.prop56 = s.prop57 = "";
+						s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 						s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar13 = s.eVar19 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = "";
 						s.events = "";
 						
@@ -213,7 +224,8 @@ bam.extend({
 				
 				if (omJson.genericExternalLinkTracker) {
 					var props = omJson.genericExternalLinkTracker;
-						s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = s.prop46 = s.prop58 =  "";
+						s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = s.prop46 =  "";
+						s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 						s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.prop44 = s.eVar26 = s.eVar27 = "";
 						s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar13 = s.eVar17 = s.eVar11 = s.eVar19 = s.eVar23 = s.eVar28 = "";
 						s.prop2 = s.prop56 = s.prop57 = "";
@@ -228,10 +240,11 @@ bam.extend({
 				
 				if(omJson.gamedayLoginSuccess) {
 						var props = omJson.gamedayLoginSuccess;
-						s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = s.prop46 = s.prop58 =  "";
+						s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = s.prop46 =  "";
 						s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.eVar19 = s.eVar23 = s.eVar28 = "";
 						s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 = s.eVar26 = s.eVar27 = "";
 						s.prop2 = s.prop56 = s.prop57 = "";
+						s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 						s.events = "event2,event29";
 						
 						if (omJson.callback) {
@@ -241,9 +254,10 @@ bam.extend({
 				
 				if(omJson.async_scroll) {
 						var props_scroll = omJson.async_scroll;
-						s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 =  s.prop46 = s.prop58 =  "";
+						s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 =  s.prop46 = "";
 						s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.eVar19 = s.eVar23 = s.eVar28 = "";
 						s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 = s.eVar26 = s.eVar27 = "";
+						s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 						s.prop2 = s.prop56 = s.prop57 = "";
 						s.events = "";
 						
@@ -256,10 +270,11 @@ bam.extend({
 				} 
 				
 				if (omJson.wmpOptOut) {
-					s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = s.prop58 =  "";
+					s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 =  "";
 					s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.eVar19 = s.prop46 =  "";
 					s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = "";
 					s.prop32 = s.prop33 = s.prop34 =  s.prop43 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 = "";
+					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.prop2 = s.prop56 = s.prop57 = "";
 					s.events = "event5";
 					
@@ -268,10 +283,11 @@ bam.extend({
 					}
 				}
 				if (omJson.videoComplete) {
-					s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = s.prop58 = "";
+					s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = "";
 					s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.eVar19 =  s.prop46 = "";
 					s.prop38 = s.prop39 = s.prop40 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 = s.eVar23 = "";
 					s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar13 = s.eVar28 = s.eVar26 = s.eVar27 = "";
+					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.prop2 = s.prop56 = s.prop57 = "";
 					
 					//s.eVar13 = omJson.videoComplete.playerContext ? omJson.videoComplete.playerContext : "";
@@ -282,10 +298,11 @@ bam.extend({
 					}
 				}
 				if (omJson.flashDownload) {
-					s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = s.prop58 = "";
+					s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = "";
 					s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 =  s.eVar19 = "";
 					s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 = "";
 					s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = s.prop46 =  "";
+					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.prop2 = s.prop56 = s.prop57 = "";
 					s.events = "event6";
 					
@@ -294,10 +311,11 @@ bam.extend({
 					}
 				}
 				if (omJson.formSubmit) {
-					s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = s.prop58 = "";
+					s.prop9 = s.prop10 = s.prop11 = s.prop12 = s.prop13 = s.prop14 = s.prop15 = s.prop16 = s.prop17 = "";
 					s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 =  s.eVar19 = "";
 					s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 = "";
 					s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar28 = s.eVar26 = s.eVar27 = s.prop46 =  "";
+					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.prop2 = s.prop56 = s.prop57 = "";
 					s.eVar23 = omJson.formSubmit.formID ? omJson.formSubmit.formID : "";
 					s.events = "event45";
@@ -310,7 +328,8 @@ bam.extend({
 					s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.eVar19 = s.prop46 =  "";
 					s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 =  "";
 					s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = "";
-					s.prop2 = s.prop56 = s.prop57 = s.prop58 = "";
+					s.prop2 = s.prop56 = s.prop57 = "";
+					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.events = "event7";
 					
 					if (omJson.callback) {
@@ -322,7 +341,8 @@ bam.extend({
 					s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.eVar19 = "";
 					s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 =  "";
 					s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar23 = s.eVar28 =  s.eVar26 = s.eVar27 = s.prop46 =  "";
-					s.prop2 = s.prop56 = s.prop57 = s.prop58 = "";
+					s.prop2 = s.prop56 = s.prop57  = "";
+					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.events = "event8";
 					
 					if (omJson.callback) {
@@ -334,7 +354,8 @@ bam.extend({
 					s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.eVar19 = "";
 					s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 = "";
 					s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar23 = s.eVar28 =  s.eVar26 = s.eVar27 = s.prop46 =  "";
-					s.prop2 = s.prop56 = s.prop57 = s.prop58 =  "";
+					s.prop2 = s.prop56 = s.prop57 =  "";
+					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.events = "event9";
 					
 					if (omJson.callback) {
@@ -348,7 +369,8 @@ bam.extend({
 					s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.eVar19 = "";
 					s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 =  "";
 					s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 =  s.prop46 = "";
-					s.prop2 = s.prop56 = s.prop57 = s.prop58 = "";
+					s.prop2 = s.prop56 = s.prop57 = "";
+					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.events = "";
 					s.prop16 = sve.isVideo ? sve.isVideo : "";
 					
@@ -363,7 +385,8 @@ bam.extend({
 					s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.eVar19 = "";
 					s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 =  "";
 					s.prop32 = s.prop33 = s.prop34 =  s.prop43 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = "";
-					s.prop2 = s.prop56 = s.prop57 = s.prop58 =  "";
+					s.prop2 = s.prop56 = s.prop57  =  "";
+					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.events = "";
 					s.prop17 = sp.pageNum ? sp.pageNum : "";
 					
@@ -378,7 +401,8 @@ bam.extend({
 					s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = s.prop31 = s.eVar19 = "";
 					s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 =  "";
 					s.prop32 = s.prop33 = s.prop34 =  s.prop43 = s.eVar23 = s.eVar28 = s.prop46 =  "";
-					s.prop2 = s.prop56 = s.prop57 = s.prop58 =  "";
+					s.prop2 = s.prop56 = s.prop57  =  "";
+					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.events = "";
 					s.eVar27 = sr.searchType ? sr.searchType : "";
 					s.eVar26 = sr.searchPosition ? sr.searchPosition : "";

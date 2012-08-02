@@ -7,7 +7,9 @@
 		DASH = "-",
 		MODULE_RX = new RegExp("^([a-z\\-\\._]+)(?:\\-([\\d\\.]+))?$", "i"),
 		IS_NUMERIC = /^\-?(0|[1-9]\d{0,2}(,?\d{3})*)(\.\d+)?$/,
-		ModuleError, RequireError;
+		ModuleError, RequireError,
+		everythingAfterLastSlash = /\/([^\/]*)$/,
+		REQUIRE_VARIABLE_REGEX = /^function([\s]+)?\(([\s]+)?([\w]+)/;
 
 
 	/**
@@ -126,13 +128,26 @@
 			if (!(this instanceof Context)) {
 				return new Context();
 			}
+			var that = this;
 			this.config = {
 				timeout: 600000,
 				callback: $.noop,
 				useArguments: false,
 				pollInterval: 1
 			};
-			this.context = {};
+			this.context = function ctx(lib){ 
+				if (lib.indexOf('/') !== -1) {
+					lib = everythingAfterLastSlash.exec(lib)[1];
+				}
+				if (lib.indexOf('-')) {
+					lib = lib.split('-')[0];
+				}
+				if (ctx[lib]) {
+					return ctx[lib];
+				} else {
+					throw new Error('Tried to require '+lib+', which is not in the dependency list!');
+				}
+			};
 			this.deferred = $.Deferred();
 		};
 
@@ -369,4 +384,67 @@
 		var context = new Context();
 		return context.using.apply(context, arguments);
 	};
+
+	/**
+	 * Defines a commonjs module, loads its dependencies, and registers it.
+	 */
+	bam.define = function(identifier, dependencies, constructor) {
+
+		if (typeof identifier !== 'string') {
+			throw new TypeError('Module identifiers must be a string');
+		}
+
+		if (typeof dependencies === 'function') {
+			// get dependencies from constructor.toString();
+			constructor = dependencies;
+			var constructorString = constructor.toString();
+			var requireVariable = REQUIRE_VARIABLE_REGEX.exec(constructorString)[3];
+			if (requireVariable) {
+				var requireRegex = new RegExp("\\W"+requireVariable+"\\(['\"]([^'\"]+)['\"]\\)", 'gm');
+				var dependencies = constructorString.match(requireRegex) || [];
+				dependencies.forEach(function(dep, i){ dependencies[i] = dep.substring(requireVariable.length+3, dep.length-2)});
+			}
+		} else if (constructor === undefined) {
+			// dependencies was not passed in
+			// the constructor is not a function
+			// so it must be the literal value of the module
+			constructor = dependencies;
+			dependencies = [];
+		}
+
+		if (dependencies.length && !dependencies.every(function(dep){ return typeof dep === 'string'})) {
+			throw new TypeError('Dependencies must be a string!');
+		}
+			
+		// get the version from the identifier so it can be declared
+		var splitId = identifier.split('-');
+		identifier = splitId[0];
+		var version = +splitId[1] || null;
+		
+		// normalize dependency array
+		dependencies.forEach(function(dependency, i) {
+			if(typeof dependency === 'string' && dependency.indexOf('/') !== -1) {
+				var name = everythingAfterLastSlash.exec(dependency)[1];
+				dependencies[i] = {};
+				dependencies[i][name] = dependency;
+			}
+		});
+		
+		// require and register the new module
+		bam.require(dependencies).done(function(ctx) {
+			if (typeof constructor === 'function') {
+				// disable require['modulename'] for accessing modules
+				var moduleRequire = function(lib) { return ctx(lib) };
+				var moduleExports = {};
+				var moduleModule = {
+					id: identifier
+				};
+				// if the constructor returns something, that shall be the exports
+				moduleExports = constructor(moduleRequire, moduleExports, moduleModule) || moduleExports;
+				bam.register(identifier, version, moduleExports);
+			} else {
+				bam.register(identifier, version, constructor);
+			}
+		});
+	}
 })(jQuery, bam);

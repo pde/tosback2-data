@@ -191,6 +191,7 @@ $(document).ready (function() {
 		fireMetrics( 'click_to_chat', options);
 	});
 	
+	//vision(innovation) pages
 	if( uri.indexOf( "/content/gmcom/home/vision" ) != -1 ){
 		// visionconfigpage content links
 		$( 'body.visionconfigpage .cq-colctrl-lt1-c0 .text a, body.peoplepage .flexLeftContent .text a' ).live( 'click', function(){
@@ -201,6 +202,17 @@ $(document).ready (function() {
 			fireMetrics( 'video_close_button' );
 			$( "div.modalOffClick,div.shadedContainerPop" ).remove();
 		});
+		//video link
+		$('body.visionconfigpage div.galleryWraper li a').live('click', function(){
+			fireMetrics( 'VIDEO_HOMEPAGE_PLAY' );
+		});
+		//visionconfigpage promotile
+		/*$( 'body.visionconfigpage .cq-colctrl-lt0-c1 .flex_promo_tile a' ).live( 'click', function(){
+			fireMetrics( 'promo_tile', { 'destination_name' : $( this ).attr('href') });
+		});*/
+		$( '.flex_promo_tile a' ).live( 'click', function(){
+			fireMetrics( 'promo_tile', { 'destination_name' : $( this ).attr('href') });
+		});
 		// visionconfigpage relatedResources
 		$('.visionconfigpage .relatedResources a, body.peoplepage .relatedResources a').live('click', function() {
 			var href = $( this ).attr( 'href' ),
@@ -210,9 +222,10 @@ $(document).ready (function() {
 			if( test ){
 				fireMetrics( 'related_resources_exit', { destination_name : $( this ).text() });
 			} else {
-				fireMetrics( 'related_resources', { destination_name : $( this ).text() });
+				fireMetrics( 'related_resources_exit', { destination_name : $( this ).text() });
 			}
 		});
+				
 	}
 
 	//-------------------------------------------------------------
@@ -306,6 +319,33 @@ $(document).ready (function() {
 			});
 		}
 	}
+	//gallery for teamGM_cares
+	if( uri.indexOf( '/content/gmcom/home/vision/community_education/teamGM_cares' ) >= 0 && $( 'ul.slideshow').length > 0 ){
+		if( !$( 'body' ).hasClass( 'contentpagetwocolumn' )){
+			//console.log( 'in diversity tracking' );		//fire the up gallery initaly
+			/*$( 'ul.slideshow li.active' ).each( function(){
+				fireMetrics( 'image_gallery_image', { image_name : $( this ).find( 'img' ).attr( 'alt' )});
+			});*/
+			//previous click
+			$( 'div.galleryPrev' ).live( 'click', function(){
+				fireMetrics( 'image_gallery_prev_arrow' );
+				fireMetrics( 'image_gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+			});
+			//next click
+			$( 'div.galleryNext' ).live( 'click', function(){
+				fireMetrics( 'image_gallery_next_arrow' );
+				fireMetrics( 'image_gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+			});
+			//number click
+			$( 'div.controlNav a' ).live( 'click', function(){
+				var text = $( this ).text();
+				text = $( this ).index() == 0 ? "left-arrow" : text;
+				text = $( this ).index() == $( this ).parent().children().length - 1 ? "right-arrow" : text;
+				fireMetrics( 'image_gallery_number', { number_clicked : text });
+				fireMetrics( 'image_gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+			});
+		}
+	}
 
 	//-------------------------------------------------------------
 	// Pillar page - design_technology - environment1 - community_education - quality_safety
@@ -345,6 +385,10 @@ $(document).ready (function() {
 		$( '.relatedResources a, .actionContainer a' ).live( 'click', function(){
 			fireMetrics( 'exit', { 'destination_name' : $( this ).text() });
 		});
+		//to include promo tiles
+		//$( '.cq-colctrl-lt0-c1 a' ).live( 'click', function(){
+			//fireMetrics( 'promo_tile', { 'destination_name' : $( this ).attr('href') });
+		//});
 	}
 
 	//-------------------------------------------------------------
@@ -516,10 +560,18 @@ $(document).ready (function() {
 			var href = $( this ).attr( 'href' ),
 				pat = /www\.(\w*)\./,
 				result = pat.exec( href );
-			fireMetrics('global_sites_exit', { 'country' : 'United States', 'destination_name' : result[1] });
+			fireMetrics('content_link_exit', { 'country' : 'United States', 'destination_name' : result[1] });
 		});
 		$( 'div.global-sites-menu-block-mask a' ).live( 'click', function(){
-			fireMetrics('global_sites_exit', { 'country' : $( 'ul.global-sites-menu-block-country li.global-sites-menu-item-active' ).text(), 'destination_name' : $( this ).text() });
+			fireMetrics('content_link_exit', { 'destination_name' : $( this ).text() });
+		});
+		$( 'ul.global-sites-menu-block-country li.global-sites-menu-item-active' ).live( 'click', function(){
+			fireMetrics('content_link', { 'text_link_name' : $( this ).text() });
+			
+		});
+		$( 'ul.global-sites-menu-block-continent li.global-sites-menu-item-active' ).live( 'click', function(){
+			fireMetrics('content_link', { 'text_link_name' : $( this ).text() });
+			
 		});
 		$( 'div.branding_call_to_action a' ).live( 'click', function(){
 			var href = $( this ).attr( 'href' ),
@@ -532,7 +584,22 @@ $(document).ready (function() {
 			}
 		});
 	}
-
+    //--------------------------------------------------------------
+	//Alt Global sites
+	if( uri == "/content/gmcom/home/toolbar/allGMSites1" ){
+		
+		$( 'div.global-sites-menu-block-mask a' ).live( 'click', function(){
+			fireMetrics('content_link_exit', { 'destination_name' : $( this ).text() });
+		});
+		$( 'ul.global-sites-menu-block-country li.global-sites-menu-item-active' ).live( 'click', function(){
+			fireMetrics('content_link', { 'text_link_name' : $( this ).text() });
+			
+		});
+		$( 'ul.global-sites-menu-block-continent li.global-sites-menu-item-active' ).live( 'click', function(){
+			fireMetrics('content_link', { 'text_link_name' : $( this ).text() });
+			
+		});
+	}
 	//-------------------------------------------------------------
 	// Privacy
 	if( uri == "/content/gmcom/home/toolbar/privacyStatement" ){
@@ -585,13 +652,17 @@ $(document).ready (function() {
 			}
 			fireMetrics( page, { name : value });
 		});
-		//links weather thay are cta looking buttons or triditional links
+		//links whether thay are cta looking buttons or traditional links
 		$( 'ul.content li a:not(.modalPopOutTarget)' ).live( 'click', function(){
-			var href = $( this ).attr( 'href' ),
-				pat = /^http/,
-				test = pat.test( href ),
-				page = test ? 'exit' : 'internal';
-			fireMetrics( page, { link_text : $( this ).text() });
+			if($(this).parents('div').is('[class*="subsection_image_link"]')){
+				//the if statement was added to avoid the double firing of the brand_logos in the owner center
+			}else{
+				var href = $( this ).attr( 'href' ),
+					pat = /^http/,
+					test = pat.test( href ),
+					page = test ? 'exit' : 'internal';
+				fireMetrics( page, { link_text : $( this ).text() });
+			}
 		});
 		//links that trigger modals
 		$( 'ul.content li a.modalPopOutTarget' ).live( 'click', function(){
@@ -642,6 +713,15 @@ $(document).ready (function() {
 				fireMetrics( 'learn_more', { 'link_text' : 'learn_more' });
 			}
 		});
+		//for the brand logos
+		$( 'div.subsection_image_link a' ).live('click', function(){
+			var href = $( this ).attr( 'href' );
+			if( href ){
+				fireMetrics( 'brand_logo', { 'brand' : href });
+			} else {
+				fireMetrics( 'brand_logo', { 'brand' : 'brand_logo' });
+			}
+		});
 		
 		$( 'div#bottomTabContainer ul.tabs li' ).live( 'click', function(){
 			 
@@ -685,12 +765,17 @@ $(document).ready (function() {
 	if( uri.indexOf( "/investors" ) != -1 && $('body#investors').length ){		
 		// Map
 		$( 'div.investorMap div a' ).click( function(){
-			var href = $( this ).attr( 'href' ),
-			pat = /(^.*?)\.html/,
-			test = pat.test( href ),
-			result = pat.exec( href );
-			if( test ){
-				fireMetrics( 'map_link', { 'destination_name' : result[1] });
+			var href = $( this ).attr( 'href' );
+			//pat = /(^.*?)\.html/,
+			if ( href ){
+				var pat = /(.*\/company\/investors\/)(.*?)(~[^~].*)(\.html)/;
+				var test = pat.test( href );
+				if( test ){
+					var result = pat.exec( href );
+					fireMetrics( 'map_link', { 'destination_name' : result[2] });
+				}else{
+					fireMetrics( 'map_link', { 'destination_name' : href });
+				}
 			} else {
 				fireMetrics( 'map_link', { 'destination_name' : 'Map Link' });
 			}
@@ -873,6 +958,54 @@ $(document).ready (function() {
 		$( 'a[href*="www.youtube.com/user/gmblogs"]' ).click( function(){
 			fireMetrics('BRAND_SOCIAL_YOUTUBE');
 		});
+		//articles under earning releases
+		$( 'li p.articleTitleBlurb a[href*="/investors/earning-releases"]' ).click( function(){
+			var href = $( this ).attr( 'href' );		
+			if( href ){
+				var pat = /(.*\/investors\/earning-releases)(.*?)(~[^~].*)(\.html)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'all_earnings_releases_feed', { 'destination_name' : result[2] });
+				} else{
+					fireMetrics( 'all_earnings_releases_feed', { 'destination_name' : href });
+				}
+			} else {
+				fireMetrics( 'all_earnings_releases_feed', { 'destination_name' : 'all_earnings_releases_feed' });
+			}
+		});
+		//articles under announcements-events
+		$( 'li p.articleTitleBlurb a[href*="/investors/announcements-events"]' ).click( function(){
+			var href = $( this ).attr( 'href' );	
+			if( href ){
+				var pat = /(.*\/investors\/announcements-events)(.*?)(~[^~].*)(\.html)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'all_announcements_events_feed', { 'destination_name' : result[2] });
+				} else{
+					fireMetrics( 'all_announcements_events_feed', { 'destination_name' : href });
+				}
+			} else {
+				fireMetrics( 'all_announcements_events_feed', { 'destination_name' : 'all_announcements_events_feed' });
+			}
+		});
+		//articles under latest news
+		$( 'li p.articleTitleBlurb a[href*="/investors/latest-news"]' ).click( function(){
+			var href = $( this ).attr( 'href' );	
+			if( href ){
+				var pat = /(.*\/investors\/latest-news)(.*?)(~[^~].*)(\.html)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'all_investor_news_feed', { 'destination_name' : result[2] });
+				} else{
+					fireMetrics( 'all_investor_news_feed', { 'destination_name' : href });
+				}
+			} else {
+				fireMetrics( 'all_investor_news_feed', { 'destination_name' : 'all_investor_news_feed' });
+			}
+		});
 	}
 	// End Investor Home
 	
@@ -901,9 +1034,9 @@ $(document).ready (function() {
 		$( 'div.relatedResources ul li a' ).click( function(){
 			var href = $( this ).attr( 'href' );
 			if( href ){
-				fireMetrics( 'related_resources', { 'related_resource_name' : href });
+				fireMetrics( 'related_resources_investors', { 'related_resource_name' : href });
 			} else {
-				fireMetrics( 'related_resources', { 'related_resource_name' : 'related_resources' });
+				fireMetrics( 'related_resources_investors', { 'related_resource_name' : 'related_resources_investors' });
 			}
 		});
 		$( 'a[href*="/investors.html"]' ).click( function(){
@@ -1000,17 +1133,34 @@ $(document).ready (function() {
 		$( 'div.relatedResources ul li select' ).live( 'change', function(){
 			var href = $( this ).attr( 'href' );
 			if( href ){
-				fireMetrics( 'historical_release_quarter', { 'officers_board_link' : href });
-			} else {
+					fireMetrics( 'historical_release_quarter', { 'officers_board_link' : href });
+				}
+			else {
 				fireMetrics( 'historical_release_quarter', { 'officers_board_link' : 'historical_release_quarter' });
 			}
 		});
-		$( 'div.relatedResources ul li a' ).click( function(){
-			var href = $( this ).attr( 'href' );
+		$( 'div.relatedResources ul li[class^="Q"] a' ).click( function(){
+			var href = $( this ).attr('href');
 			if( href ){
-				fireMetrics( 'historical_release_stories', { 'historical_release_stories_link' : href });
+				var link_text = $("select").val() + " " + ($( this ).text());
+				fireMetrics( 'historical_release_stories', { 'historical_release_stories_link' : link_text });
 			} else {
 				fireMetrics( 'historical_release_stories', { 'historical_release_stories_link' : 'historical_release_stories' });
+			}
+		});
+		$( 'div.relatedResources div.contentContainer ul li a' ).click( function(){
+			var href = $( this ).attr( 'href' );
+			if( href ){
+				var pat = /(.*\/dam\/Media\/)(.*)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'additional_materials', { 'additional_materials_link' : result[2] });
+				}else{
+					fireMetrics( 'additional_materials', { 'additional_materials_link' : href });
+				}
+			} else {
+				fireMetrics( 'additional_materials', { 'additional_materials_link' : 'additional_materials' });
 			}
 		});
 		$( 'a[href*="/investors.html"]' ).click( function(){
@@ -1056,7 +1206,14 @@ $(document).ready (function() {
 		$( 'div.article h3 a' ).click( function(){
 			var href = $( this ).attr( 'href' );
 			if( href ){
-				fireMetrics( 'events', { 'event_link' : href });
+				var pat = /(.*\/investors\/announcements-events\/)(.*?)(~[^~].*)(\.html)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'events', { 'event_link' : result[2] });
+				} else{
+					fireMetrics( 'events', { 'event_link' : href });
+				}
 			} else {
 				fireMetrics( 'events', { 'event_link' : 'events' });
 			}
@@ -1064,7 +1221,14 @@ $(document).ready (function() {
 		$( 'div.callToAction a' ).click( function(){
 			var href = $( this ).attr( 'href' );
 			if( href ){
-				fireMetrics( 'events', { 'event_link' : href });
+				var pat = /(.*\/investors\/announcements-events\/)(.*?)(~[^~].*)(\.html)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'events', { 'event_link' : result[2] });
+				} else{
+					fireMetrics( 'events', { 'event_link' : href });
+				}
 			} else {
 				fireMetrics( 'events', { 'event_link' : 'events' });
 			}
@@ -1101,7 +1265,14 @@ $(document).ready (function() {
 		$( 'div.article h3 a' ).click( function(){
 			var href = $( this ).attr( 'href' );
 			if( href ){
-				fireMetrics( 'events', { 'event_link' : href });
+				var pat = /(.*\/investors\/latest-news\/)(.*?)(~[^~].*)(\.html)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'events', { 'event_link' : result[2] });
+				} else{
+					fireMetrics( 'events', { 'event_link' : href });
+				}
 			} else {
 				fireMetrics( 'events', { 'event_link' : 'events' });
 			}
@@ -1110,7 +1281,14 @@ $(document).ready (function() {
 		$( 'div.callToAction a' ).click( function(){
 			var href = $( this ).attr( 'href' );
 			if( href ){
-				fireMetrics( 'events', { 'event_link' : href });
+				var pat = /(.*\/investors\/latest-news\/)(.*?)(~[^~].*)(\.html)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'events', { 'event_link' : result[2] });
+				} else{
+					fireMetrics( 'events', { 'event_link' : href });
+				}
 			} else {
 				fireMetrics( 'events', { 'event_link' : 'events' });
 			}
@@ -1118,9 +1296,67 @@ $(document).ready (function() {
 	}
 	// End Investor News
 	
+	//International-salesproduction
+    if( uri.indexOf( "/investors/international_salesproduction" ) != -1 ){	
+		$( 'select#filtersSelect2' ).live( 'change', function(){
+			var label = $( this ).find("option:selected").text();
+			if( label ){
+				fireMetrics( 'country', { 'country' : label });
+			} else {
+				fireMetrics( 'country', { 'country' : 'country' });
+			}
+		});
+		$( 'select#filter-by-q-select' ).live( 'change', function(){
+			var label = $( this ).find("option:selected").text();
+			if( label ){
+				fireMetrics( 'quarter', { 'quarter' : label });
+			} else {
+				fireMetrics( 'quarter', { 'quarter' : 'quarter' });
+			}
+		});
+		$( 'select#filter-by-year-select' ).live( 'change', function(){
+			var label = $( this ).find("option:selected").text();
+			if( label ){
+				fireMetrics( 'year', { 'year' : label });
+			} else {
+				fireMetrics( 'year', { 'year' : 'year' });
+			}
+		});
+		$( 'div.article h3 a' ).click( function(){
+			var href = $( this ).attr( 'href' );
+			if( href ){
+				var pat = /(.*\/investors\/international_salesproduction\/)(.*?)(~[^~].*)(\.html)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'article', { 'link' : result[2] });
+				} else{
+					fireMetrics( 'article', { 'link' : href });
+				}
+			} else {
+				fireMetrics( 'article', { 'link' : 'article' });
+			}
+		});
+		
+		$( 'div.callToAction a' ).click( function(){
+			var href = $( this ).attr( 'href' );
+			if( href ){
+				var pat = /(.*\/investors\/international_salesproduction\/)(.*?)(~[^~].*)(\.html)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'read_more_article', { 'read_more_link' : result[2] });
+				} else{
+					fireMetrics( 'read_more_article', { 'read_more_link' : href });
+				}
+			} else {
+				fireMetrics( 'read_more_article', { 'read_more_link' : 'read_more_article' });
+			}
+		});
+	}
 	// Investor FAQ
-	if( uri.indexOf( "/investors/FAQs.html" ) != -1 ){
-		$( 'div.faq_link li a' ).click( function(){
+	if( uri.indexOf( "/investors/FAQs" ) != -1 ){
+		$( 'body#FAQs div.faq_link li a' ).click( function(){
 			fireMetrics( 'all_faq');
 		});
 	}
@@ -1168,27 +1404,73 @@ $(document).ready (function() {
 		$( 'a[href*="print.html"]' ).click( function(){
 			fireMetrics('print');
 		});
-		$( 'a[href*="FAQs.html"]' ).click( function(){
+		$( 'div.promoPopup' ).click( function(){
 			fireMetrics('promo_tile');
 		});
-		$( 'div.relatedResources ul.content li[class^="year_"] a' ).click( function(){
-			var href = $( this ).attr( 'href' );
-			if( href ){
-				fireMetrics( 'annual_report', { 'annual_report_link_name' : href });
-			} else {
-				fireMetrics( 'annual_report', { 'annual_report_link_name' : 'annual_report' });
+//		$( 'div.annualReports ul.content li[class^="year_"] a' ).click( function(){
+//			var href = $( this ).attr( 'href' );
+//			if( href ){
+//				var pat = /(.*\/COMPANY\/Investors\/)(.*)(\.pdf)/;
+//				var testResult = pat.test( href );
+//				if (testResult){
+//					var result = pat.exec( href );
+//					fireMetrics( 'annual_report', { 'annual_report_link_name' : result[2] });
+//				}else{
+//					fireMetrics( 'annual_report', { 'annual_report_link_name' : href });
+//				}
+//			}
+//			else {
+//				fireMetrics( 'annual_report', { 'annual_report_link_name' : 'annual_report' });
+//			}
+//		});
+		$( 'div.relatedResources ul li a' ).click(function(){
+			if($(this).parents('li').is('[class^="year_"]')){
+				var href = $( this ).attr('href');
+				if( href ){
+					var pat = /(.*\/COMPANY\/Investors\/)(.*)(\.pdf)/;
+					var testResult = pat.test( href );
+					if (testResult){
+						var result = pat.exec( href );
+						fireMetrics( 'annual_report', { 'annual_report_link_name' : result[2] });
+					}else{
+						fireMetrics( 'annual_report', { 'annual_report_link_name' : href });
+					}
+				}
+				else {
+					fireMetrics( 'annual_report', { 'annual_report_link_name' : 'annual_report' });
+				}
+
+			}else{
+				var href = $( this ).attr('href');
+				if( href ){
+					var pat = /(.*\/company\/investors\/)(.*?)(~[^~].*)(\.html)/;
+					var testResult = pat.test( href );
+					if (testResult){
+						var result = pat.exec( href );
+						fireMetrics( 'related_resources_investors', { 'related_resources_link_name' : result[2] });
+					}else{
+						fireMetrics( 'related_resources_investors', { 'related_resources_link_name' : href });
+					}
+				}
+				else {
+					fireMetrics( 'related_resources_investors', { 'related_resources_link_name' : 'related_resources_investors' });
+				}
+				
+				
+				
 			}
-		});
-		$( 'div.relatedResources ul li a.externalLink' ).click( function(){
-			var href = $( this ).attr( 'href' );
-			if( href ){
-				fireMetrics( 'related_resources', { 'related_resources_link_name' : href });
-			} else {
-				fireMetrics( 'related_resources', { 'related_resources_link_name' : 'related_resources' });
-			}
+//				if( href ){
+//					fireMetrics( 'related_resources_investors', { 'related_resources_link_name' : href });
+//				} else {
+//				fireMetrics( 'related_resources_investors', { 'related_resources_link_name' : 'related_resources_investors' });
+//				}
+//			
 		});
 		$( 'a[href*="/investors.html"]' ).click( function(){
-			fireMetrics('investors_menu');
+			fireMetrics('investor_menu');
+		});
+		$( 'a.button.externalLink' ).click( function(){
+			fireMetrics('interactive_report');
 		});
 	}
 	// End Investors Stockholder Information
@@ -1198,6 +1480,34 @@ $(document).ready (function() {
 		$( 'a[href*="/investors.html"]' ).click( function(){
 			fireMetrics('investors_menu');
 		});
+		// Thomson IFrame tracking events
+		$('input.ccbnButton').click( function() {
+			fireMetrics('form', { 'name_of_form' : 'Search' });
+		});
+		$( 'a[href*="excel.gif"]' ).click( function(){
+			var href = $( this ).html();
+			if( href ){
+				fireMetrics( 'excel_download', { 'name_of_excel_document' : href });
+			} else {
+				fireMetrics( 'excel_download', { 'name_of_excel_document' : 'excel_download' });
+			}
+		});
+		$( 'a[href*="pdf.gif"]' ).click( function(){
+			var href = $( this ).html();
+			if( href ){
+				fireMetrics( 'pdf_download', { 'name_of_pdf_document' : href });
+			} else {
+				fireMetrics( 'pdf_download', { 'name_of_pdf_document' : 'pdf_download' });
+			}
+		});
+		$( 'a[href*="xbrl.gif"]' ).click( function(){
+			var href = $( this ).html();
+			if( href ){
+				fireMetrics( 'library_list', { 'name_of_library_list' : href });
+			} else {
+				fireMetrics( 'library_list', { 'name_of_library_list' : 'library_list' });
+			}
+		});
 	}
 	// End Investors SEC
 	
@@ -1205,6 +1515,9 @@ $(document).ready (function() {
 	if( uri.indexOf( "/investors/sales-production" ) != -1 ){
 		$( 'a[href*="/investors/sales-production.print.html"]' ).click( function(){
 			fireMetrics('print');
+		});
+		$( 'div.flex_promo_tile' ).click( function(){
+			fireMetrics('promo_tile');
 		});
 		$( 'div.galleryPrev' ).click( function(){
 			fireMetrics('gallery_prev_arrow');
@@ -1239,8 +1552,14 @@ $(document).ready (function() {
 		$( 'select#filter-by-year-select' ).live( 'change', function(){
 			fireMetrics('year');
 		});
-		$( 'div.relatedResources ul li a' ).click( function(){
-			fireMetrics('historical_release_stories');
+		$( 'div.relatedResources ul li[class^="M"] a' ).click( function(){
+			var href = $(this).attr('href');
+			var link_text = $("select:eq(0) option:selected").text() + " " + $("select:eq(1) option:selected").text() + " " + $(this).text();
+			if (href){
+				fireMetrics( 'historical_release_stories', { 'story_link' : link_text });
+			}else{
+				fireMetrics( 'historical_release_stories', { 'story_link' : 'historical_release_stories' });
+			}
 		});
 		$( 'div.relatedResources div.contentContainer ul li.pdf a' ).click( function(){
 			var label = $( this ).text();
@@ -1252,6 +1571,14 @@ $(document).ready (function() {
 		});
 		$( 'a[href*="/investors.html"]' ).click( function(){
 			fireMetrics('investor_menu');
+		});
+		$('div.flexLeftContent div.body a').click(function(){
+			var href =$(this).text();
+			if ( href ){
+				fireMetrics( 'text_link_story', {'text_link_name' : href });
+			}else{
+				fireMetrics( 'text_link_story', {'text_link_name' : 'text_link_story' });
+			}
 		});
 	}
 	// End Investors Sales and Production
@@ -1269,10 +1596,17 @@ $(document).ready (function() {
 				fireMetrics( 'promo_tile', { 'promo_tile_link_name' : 'promo_tile' });
 			}
 		});
-		$( 'div.text p a' ).click( function(){
+		$( 'div.text p a[href*="COMPANY/Investors"]' ).click( function(){
 			var href = $( this ).attr( 'href' );
 			if( href ){
-				fireMetrics( 'request_materials_publications', { 'request_materials_publications_name' : href });
+				var pat = /(.*\/COMPANY\/Investors\/)(.*)(\.pdf)/;
+				var testResult = pat.test( href );
+				if (testResult){
+					var result = pat.exec( href );
+					fireMetrics( 'request_materials_publications', { 'request_materials_publications_name' : result[2] });
+				}else{
+					fireMetrics( 'request_materials_publications', { 'request_materials_publications_name' : href });
+				}
 			} else {
 				fireMetrics( 'request_materials_publications', { 'request_materials_publications_name' : 'request_materials' });
 			}

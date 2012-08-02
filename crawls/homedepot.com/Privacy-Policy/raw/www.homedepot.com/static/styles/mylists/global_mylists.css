@@ -1,0 +1,518 @@
+﻿/* This file created for my lists_landing & my lists detail page */
+
+#backgroundPopup{
+display:none;
+position:fixed;
+_position:absolute; /* hack for internet explorer 6*/
+height:100%;
+width:100%;
+top:0;
+left:0;
+background:#000000;
+border:1px solid #cecece;
+z-index:1;
+opacity:0.7; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"; filter: alpha(opacity=70);
+}
+#backgroundPopup1{
+display:none;
+position:fixed;
+_position:absolute; /* hack for internet explorer 6*/
+height:100%;
+width:100%;
+top:0;
+left:0;
+background:#000000;
+border:1px solid #cecece;
+z-index:1;
+}
+#popupAddList, #popupCreateNewList, #popupCreateNewList1, #popupSignIn, #popupDeleteList, #popupListToCart, #popupEmailList, #popupEmailConfirmation, #popupPartialList, #popupClearList{
+display:none;
+position:fixed;
+_position:absolute; /* hack for internet explorer 6*/
+height:auto;
+width:400px;
+background:#FFFFFF;
+z-index:9999;
+padding:20px;
+font-size:13px;
+/*04 June changes by guru*/
+box-shadow: 0 0 10px #999;
+/*filter:
+	progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=1, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=90, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=180, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=270, Color=#C4C4C4);
+-ms-filter:
+	progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=1, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=90, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=180, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=270, Color=#C4C4C4);*/
+} /* 13 June changes by Narayanan - removed for cursor mis-alignment */
+#popupCreateNewList, #popupDeleteList{
+width:340px !important;
+}
+#popupAddList{
+padding: 20px 30px !important;/*11 June Changes by Guru*/
+width:320px !important;/*11 June Changes by Guru*/
+/*filter:
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=1, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=180, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=270, Color=#C4C4C4)!important;
+-ms-filter:
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=1, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=180, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=270, Color=#C4C4C4)!important; */
+} /* 13 June changes by Narayanan - removed for cursor mis-alignment */
+#popupListToCart{
+width:390px !important;
+}
+#popupSignIn{
+padding:30px!important;
+}
+/*04 June changes by Guru - End*/
+#addToListResponse_pip
+{
+position:fixed;
+_position:absolute; /* hack for internet explorer 6*/
+height:auto;
+width:450px;
+z-index:9999;
+margin-top:50px;
+}
+#popupAddToYour{
+display:none;
+position:fixed;
+_position:absolute; /* hack for internet explorer 6*/
+height:auto;
+width:370px;
+background:#FFFFFF;
+z-index:2;
+padding:12px;
+font-size:13px;
+border:1px solid black;
+}
+.popupAddListClose{
+font-size:14px;
+line-height:14px;
+right:6px;
+top:4px;
+right:0px\9;/* 02 June - changes by Guru*/
+top:-15px\9;/* 02 June - changes by Guru*/
+position:absolute;
+position:relative\9;
+color:#6fa5fd;
+font-weight:700;
+display:block;
+z-index:10000;
+}
+.z-index-9999{
+z-index:9999 !important; 
+}
+.z-index-9998{z-index:9998 !important;}
+
+@charset "utf-8";
+
+.cursor {cursor:pointer}
+/*------------------Image CSS Starts------------------*/
+.addListToCart {background-image:url(../../images/mylists/AddListToCart.jpg); width:184px; height:32px; cursor:pointer;margin:0px !important;float:right;clear:right}
+.btnAdd {margin:50px 0px 0px 120px; *margin:50px 0px 0px 280px;}
+.deleteBtn {background-image:url(../../images/mylists/delete.jpg); width:65px; height:19px; cursor:pointer; float:right; margin-right:11px; }/*june 9 amudha*/
+.pdtDelete .deleteBtn {position:absolute; bottom:0; right:5px;}/*june 9 amudha*/
+.deleteListBtn {background-image:url(../../images/mylists/deleteList.jpg); background-repeat:no-repeat; width:92px; height:19px; cursor:pointer}/*june 9 amudha*/
+.emailBtn {background-image:url(../../images/mylists/email.jpg); width:18px; height:18px; float:left; cursor:pointer}
+.exportBtn {background-image:url(../../images/mylists/export.jpg); width:18px; height:18px; float:left; cursor:pointer}
+.printBtn {background-image:url(../../images/mylists/print.jpg); width:19px; height:19px; float:left; cursor:pointer}
+.clearBtn {background-image:url(../../images/mylists/clear.jpg); width:19px; height:19px; float:left; cursor:pointer}
+.emailGryBtn {background-image:url(../../images/mylists/email_gray.jpg); width:18px; height:18px; float:left; }
+.exportGryBtn {background-image:url(../../images/mylists/export_gray.jpg); width:18px; height:18px; float:left; }
+.printGryBtn {background-image:url(../../images/mylists/print_gray.jpg); width:19px; height:19px; float:left; }
+.clearGryBtn {background-image:url(../../images/mylists/clear_gray.jpg); width:19px; height:19px; float:left; }
+.closeBtn {background-image:url(../../images/mylists/close.jpg); width:61px; height:20px; float:right; cursor:pointer;text-decoration:none\9; *margin-top:5px;margin-top:5px\9;}/*05 June changes by Guru*/
+.noBtn {background-image:url(../../images/mylists/no.jpg); width:48px; height:31px; float:left; margin-right:10px; cursor:pointer}
+.yesBtn {background-image:url(../../images/mylists/yes_del.jpg); width:115px; height:31px; float:left; cursor:pointer}
+.yesClearBtn {background-image:url(../../images/mylists/yes_clear.jpg); width:115px; height:31px; float:left; cursor:pointer}
+.delConfirmBtn {margin-top:20px; cursor:pointer}
+.viewListBtn {background-image:url(../../images/mylists/viewList.jpg); width:99px; height:31px; float:center; margin-right:10px!important; cursor:pointer;}
+.viewListGryBtn {background-image:url(../../images/mylists/viewList_btn.png); width:97px; height:32px; float:left; margin-right:10px!important; cursor:pointer;text-decoration:none\9;}/*05 June changes by Guru*/
+.viewCartBtn {background-image:url(../../images/mylists/view_cart.jpg); width:107px; height:31px; float:left; cursor:pointer}
+.viewCartGryBtn {background-image:url(../../images/mylists/viewCart_gray.jpg); width:107px; height:31px; float:left; cursor:pointer; margin-right:10px}
+.warningIcon {background-image:url(../../images/mylists/warning.jpg); width:23px; height:23px; float:left; margin-right:5px; margin-top:5px;} 
+.warnTxt{float: left; padding:9px 0px 0px 0px; font-size:11px; font-family:arial;} /*june 9 amudha - width removed. if needed make it specific*/
+.width250{width:250px}/*june 9 amudha*/
+.total_lists .error{margin-top:-5px; display:block;} 
+.tickIcon {background-image:url(../../images/mylists/tick.jpg); width:21px; height:15px;float:left; margin-top:5px;margin-left:5px!important;background-repeat:no-repeat;}
+.tickIcon {*background:url(../../images/mylists/tick.jpg);width:21px; height:15px;*height:17px;margin-right:5px; float:left; margin-left:5px!important;background-repeat:no-repeat;}
+.itemrow  .updatedTick .tickIcon {margin-top:0px;} /*8 June changes by Narayanan*/
+#addToListResponse .tickIcon {margin-right:1px;} /*8 June changes by Narayanan*/
+.tickIcon_existList{background-image:url(../../images/mylists/tick.jpg); background-repeat:no-repeat; margin-top:15px;}
+.tickIcon_newList{background-image:url(../../images/mylists/tick.jpg); background-repeat:no-repeat; margin:3px 5px 0px 5px; height:15px; width:21px;}
+.tickMsg {margin-left:60px}
+.cancelGryBtn {background-image:url(../../images/mylists/cancel.jpg); width:79px; height:31px; float:left; margin-right:10px; cursor:pointer}
+.sendBtn {background-image:url(../../images/mylists/send.jpg); width:64px; height:31px; float:left; cursor:pointer; margin-right:26px}/*june 9 amudha*/
+.pickInBtn {background-image:url(../../images/mylists/PickInStore.jpg); width:156px; height:33px; cursor:pointer; margin:10px 0px 40px 0px}
+.pickInBtn {background-image:url(../../images/mylists/PickInStore.jpg); width:156px; height:33px; cursor:pointer; margin:10px 0px 10px 0px; display:none}
+.addToCartBtn {background-image:url(../../images/mylists/AddToCart.jpg); width:156px; height:32px; cursor:pointer;display:none; margin-bottom:10px;} /* 5 June Changes by Narayanan */
+.block{display:block !important;}
+.btnInternetOnly {background-image:url(../../images/mylists/onlineExclusive.jpg); background-repeat:no-repeat ; width:24px; height:24px; cursor:pointer;margin-bottom:10px; margin-top:5px; margin-left:5px; display:none}/*ie fix may 5*/
+.btnInternetOnly  *, .btnNotAvailable *, .btnNotSoldOnline *{vertical-align:middle;} /*8 June changes by Narayanan*/
+.btnCheckYourLocalStore {
+    background-image: url("../../images/mylists/checkYourLocalStore.jpg");
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: none;
+    height: 38px;
+    margin-bottom: 10px;
+    margin-left: -30px;
+    margin-top: 5px;
+    width: 156px;
+}
+/* 28 May changes - start */
+.btnNotSoldOnline {background-image:url(../../images/mylists/storeExclusive.jpg); background-repeat:no-repeat; width:24px; height:24px; cursor:pointer;margin-bottom:10px; display:none; margin-left:5px;}/*june 9 amudha*/
+.addBackordered {background-image:url(../../images/mylists/backordered_Online.jpg); background-repeat:no-repeat ; width:24px; height:24px; cursor:pointer;margin-bottom:10px; display:none}
+.btnNotAvailable {background-image:url(../../images/mylists/backordered_Online.jpg); background-repeat:no-repeat ; width:24px; height:24px; cursor:pointer;margin-bottom:10px; margin-left:5px; display:none}/*june 9 amudha*/
+/* 28 May changes - end */
+.btnShowStoreFinder{display:none;}
+.btnShowStoreFinder a {color:#777}
+.innerValuesbtn{width:85px; margin-left:30px; font-weight:bold;}/*june 9 amudha*/
+.continueShoppingBtn {background-image:url(../../images/mylists/continueShopping.jpg); width:168px; height:31px; cursor:pointer}
+.addItemsBtn {background-image:url(../../images/mylists/addItems2YourList_btn.png); width:220px; height:38px; cursor:pointer; float:right}
+.createListBtn {background-image:url(../../images/mylists/createList.jpg); width:115px; height:31px; cursor:auto; float:left; opacity:0.7; filter:Alpha(opacity=70);}
+.createListBtnOrange {background-image:url(../../images/mylists/createList.jpg);} 
+.createListGryBtn {background-image:url(../../images/mylists/createList_gray.jpg); width:148px; height:32px; cursor:pointer; float:left; margin-left:150px}
+.plusIcon {background-image:url(../../images/mylists/plus.jpg); width:9px; height:9px; cursor:pointer;}
+.mobile {background-image:url(../../images/mylists/mobile.gif); width:23px; height:23px; float:left; background-repeat:no-repeat; padding-right:5px; padding-top:0px!important;}
+.mobiTxt {padding:5px 0 0 0px; float:left; font-size:11px}/*june 9 amudha*/
+.mobiPanel {margin-top:10px}
+.listIcon {background-image:url(../../images/mylists/list_ico.jpg); background-repeat:no-repeat; height:auto; padding:6px 0px 0px 30px !important}
+.signinBtn {background-image:url(../../images/mylists/sign_in.jpg); width:85px; height:31px; cursor:pointer;}
+.createAcctBtn {background-image:url(../../images/mylists/create_account.jpg); width:151px;border:0px; height:31px; cursor:pointer;background-repeat:no-repeat;}/*05 June changes by Guru*/
+.createAcctBtn {*background:url(../../images/mylists/create_account.jpg);}/*05 June changes by Guru*/
+.saveBtn {background-image:url(../../images/mylists/save.jpg); width:62px; height:31px; cursor:pointer;}
+.storeBtn {background-image:url(../../images/mylists/store_excl.jpg); width:79px; height:24px; cursor:pointer;}
+.backOrderBtn{background-image:url(../../images/mylists/back_ordered.jpg); width:133px; height:23px; cursor:pointer; margin:10px 0px 40px 0px}
+.onlineBtn{background-image:url(../../images/mylists/online_excl.jpg); width:79px; height:24px; cursor:pointer; margin:10px 0px 40px 0px}
+.outStockBtn{background-image:url(../../images/mylists/OutOfStock.jpg); width:96px; height:23px; cursor:pointer;}
+.outStockPanel{padding-right:55px}
+/*------------------Image CSS Ends------------------*/
+/*------------------Tax Exempt Starts------------------*/
+.errorTxt {font-weight:normal; color:red}
+.taxIdPanel{padding-left:171px;}
+.taxIdPanel input {height:20px; vertical-align:middle;margin-right:8px;}
+.getPanel{margin-left:25px; margin-bottom:10px}
+.getPanel span,.getPanel1 span{color:#F63}
+.getPanel1{margin-left:19px; margin-top:10px}
+.getPanel1 label, .getPanel1 input{float:left}
+.taxExempt{padding-left:15px;}
+.taxExempt1{padding-left:5px;}
+#taxIdNum .taxExempt label {font-weight:normal}
+.taxExempt input {color:#666}
+.close-bar a.popup-closer {color:#fff !important;}
+/*------------------Tax Exempt Ends------------------*/
+/*------------------Model Windows starts------------------*/
+.Overlay_CloseBtn a {color: #333333;text-decoration: none;}
+.Overlay_CloseBtn {font-family: Arial,Helvetica,sans-serif;color: #333333;font-size: 11px;font-weight: bold;}
+.reqTxt {text-align: right; margin:0px 25px 0px 0px}
+.required, #popupSignIn  .required{font-family: Arial,Helvetica,sans-serif; color: #777777; font-size: 12px; padding:10px 0px 10px 0px; /*padding:15px 0px 0px 0px; removed MG (make class more specific if needed)*/ font-weight: 700;}/*02 June changes by Guru added padding*/ /* 6 June  Changes by Narayanan*/
+#popupSignIn  .required{font-weight: 700 !important; padding-top:0px !important;} /* 6 June  Changes by Guru*/
+.requiredPadding{padding:10px 0px 0px 0px;}/*02 June changes by Guru*/
+.mainLogonTitle { font-family: Arial,Helvetica,sans-serif; color: #333333; font-size: 23px; font-weight: bold;  height:25px;height:40px\9; padding:10px 0 13px !important;padding:10px 0px 0px 0px\9 !important;*padding:0px; border-bottom:1px solid #CCC; text-align:left; *width:100%; *padding-top:0px;}/*30 may changes by guru*/ /*12 June changes by Narayanan*/
+.mainLogonTitle.required{height:auto; padding-bottom:15px;}
+.required span{color:#F96302}
+.required a {color:#F96302}/*02 June Changes by Guru newely added for a tag*/
+.noBold{ font-weight:normal}
+#popupSignIn  .noBold{ font-weight:normal !important;} /* 6 June  Changes by Narayanan*/
+.newTitle { font-family: Arial,Helvetica,sans-serif; color: #333333; font-size: 18px; font-weight: bold; height:18px; padding:0px 0px 15px 0px !important;}
+.marTop5px{margin-top:5px; margin-right:5px;}
+.newTitleItem { font-family: Arial,Helvetica,sans-serif; color: #333333; font-size: 18px; font-weight: bold; height:18px; padding:0px 0px 15px 0px !important; border-bottom:1px solid #CCC}
+.newTitleItem div{ float:left;}
+.mainLogonTitle div{ padding:0px 0px 10px 0px ; }/*02 may changes by Guru*/
+.newTitle div{ float:left;}
+.mainLogonTitle div p{ padding-top:0px;padding-top:0px\9;padding-bottom:5px\9; margin:0px; font-weight:bold; font-size: 22px;}/*12 June changes by guru*/ /* 6 June changes by Narayanan*/
+.data { height:auto; margin:0px 0px 10px 0px !important; clear:left }
+.item_list{font-family: Arial,Helvetica,sans-serif; color: #000; height:176px; overflow-y:auto; margin-top:10px}
+.newitem_list{font-family: Arial,Helvetica,sans-serif; color: #000; overflow:auto; padding-top:15px; padding-bottom:3px; *padding-bottom:15px;}/*05 June changes by guru*/ /*12 June changes by Narayanan*/
+.item_list .item{ padding:10px 0px 5px 0px !important; font-size:14px; color:#000; font-weight:bold; text-align:left; cursor:pointer;}
+.item_list .item:hover{text-decoration:underline;}
+.fadingBackground{opacity:0.7; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"; filter: alpha(opacity=70);}
+a.model_window{text-decoration:none}
+.popButton { border-top: 1px solid #CCCCCC;margin-top: 15px !important; *margin-top:0px !important; text-align: justify !important;} /*07 june changes by Guru*/
+.createpopButton { margin:20px 0px 0px 0px; padding-top:2px;}
+.createButton {float:left;padding:15px 0px 10px 0px!important}/*02 June changes by guru*/
+.createButton input{height:25px; width:145px!important; color:#999;font-size:14px}/*02 June changes by guru*/
+.newpopButton { margin:0px; float:right; padding-right:45px!important}
+.error_msg{ font-family: Arial,Helvetica,sans-serif; color:#FF0000; font-size:12px; margin:15px 40px 10px 2px !important; display:none; text-align:left;}
+.error_msg img{padding:3px 10px 0px 0px;}
+.popButton input{margin-top:17px; width:235px !important; height:30px; border:1px solid #ccc; color:#999; padding-left:5px}
+#black-overlay { position:absolute; display:none; top:0; left:0; opacity:0.3; filter:alpha(opacity=30); -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; background:#fff; z-index:1000; }
+.float_left{float:left}
+.float_right{float:right}
+.btn_content{ padding:5px 5px 5px 5px; float:left; color:white; background:url(http://www.homedepot.com/static/styles/mylists/Images/btn_mid.gif) repeat-x; height:30px;}
+#createList_PIP{margin:15px 0 0 10px;margin:15px 0 0 0px\9 !important;}/*12 June changes by guru*/
+#createList_inPopup{margin:16px 0px 0px 10px;}
+#createList_cart{margin:17px 0px 0px 10px;margin:17px 0px 0px 0px\9 !important;}/*12 June changes by guru*/
+.model3, .model2{display:none;}
+#email_id, #password{height:20px; border:1px solid #ccc; color:#999; margin-left:5px; padding-left:5px;/* width:200px 05-29 removed width - MG (make class more specific if needed)*/}/*05 June changes by Guru*/
+#email_id  #popupSignIn , #popupSignIn  #password{padding-left:5px !important;} /* 6 June changes by Narayanan*/
+.email_width, .password_width, .superPIP__zoneE .grp_addToCart input.email_width, .superPIP__zoneE .grp_addToCart input.password_width{width:200px}/*included on may 30 - amudha*/ /* 31 May changes by Narayanan */
+.pad-right10px{padding-right:10px!important}
+.required ul{list-style-type: disc !important;padding-left:25px !important; margin: 0px !important;}/*07 june changes by Guru*/
+.required ul li{padding:0px 0px 10px 0px !important; text-align:left!important;display:list-item !important;}
+.createAccTxt span{float:right; padding:8px 10px 0px 0px;font-size: 17px; font-weight: 700;}/*07 june changes by Guru*/
+.signInError {padding-top:10px;display:none;}
+.mob_access_list {padding-bottom:7px}
+.mob_access_list div{padding-top:5px}
+.mob_access_listTxt{color:#999; padding-top:5px;}
+.noPadding{padding:0!important; margin-top:10px}
+.toShow{ padding-top:7px !important;}
+/*------------------Model Windows Ends------------------*/
+/*------------------MyAccount Landing page starts------------------*/
+#myListTotal .topGrayPanel {margin:20px 15px 0px 15px;background-color:#eeeeee; height:50px;}
+#myListTotal .topExportPanel {margin:0px 15px 0px 15px;background-color:#FFF; height:27px;}
+#myListTotal .topGrayPanel input{width:200px; height:22px; height:19px\9; padding-top:6px\9; border:1px solid #ccc; color:#999; padding-left:5px; font-size:11px}/* changed may 2 for look and feel- remvoed border MG for form HD VDS compliance*//*june 9 amudha*/
+#myListTotal .topGrayPanel input:focus, .edit_display input.newListName:focus{background-color:#fff;}
+#myListTotal .float_left{float:left; padding:15px;}
+#myListTotal span{ padding: 0 0 0 10px; vertical-align: middle;}
+#total_lists {font-size:24px;font-weight:bold}
+.total_lists{height: 30px; margin: 0; padding: 18px 10px 10px;  padding: 17px 10px 10px\9; *padding: 12px 10px 10px\9; font-size:10px;}/*june 9 amudha*/
+#createList_listLanding{ background:url(../../images/mylists/arrow_bg1.jpg) no-repeat scroll right center transparent; display: block; float: left; height: 30px; padding: 10px; width: 140px;} 
+.topGrayPanelTxt {max-width:480px; min-width:160px; width:auto; height:30px; font-weight:bold;float:left; padding:10px; text-indent:5px;} /* 6 June changes by Narayanan */
+.grayPanel {float:left;margin:40px 0px 0px 40px; padding:20px; background-color:#e5e5e5; height:auto;width:650px;}
+.grayPanel h1{color:#000;padding-botom:20px;font-weight:bold;font-size:22px}/*june 9 amudha*/
+.grayPanelTxt{ padding:12px 0px}/*june 9 amudha*/
+.grayPanelBtn {margin-right:10px;}/*june 9 amudha*/
+#landing_add1, #add_new_list{width:250px; height:25px; border:1px solid #ccc; color:#999; padding-left:5px;padding-top:12px\9 !important;height:auto\9 !important;}
+.nameExistError{display:none; padding-left:15px;}
+.nameExistError1{display:none; padding-left:15px; float:left; color:red}
+.nameExistError2{ display:none; padding-left:5px; color:red; clear:left; font-family: Arial,Helvetica,sans-serif; font-size:12px; vertical-align:middle; padding-top:10px;}
+.nameExistError3{display:none; padding-top:10px;*padding-top:0px;}
+.nameExistError3 div{color:red; font-family: Arial,Helvetica,sans-serif; font-size:12px; vertical-align:middle;}
+.nameExistError1 img, .nameExistError3 img{padding-right:10px;}
+.nameExistError2 img{padding-right:5px;}
+.ErrorWithoutIcon {padding:5px 0px 0px 30px; *padding:5px 0px 0px 0px; * float:left}
+#myListItems {margin:0px 15px 0px 15px;}
+.itemTitle {float:left;  width:100%; padding:20px 0px; border-bottom:1px solid #CCC}
+.itemTitle *{vertical-align:middle;}
+.itemName {float:left; width:550px; font-size:18px; font-weight:bold; color:#000000}/*june 9 amudha*/
+.itemDate {float:left; width:100px; padding-top:6px}/*june 9 amudha*/
+.itemDateTitle {float:left; width:176px; font-weight:bold; *margin-top:5px; padding-top:7px}/*june 9 amudha*/
+.itemSort {float:left; width:550px; font-size:11px; font-weight:bold; color:#666;}/*june 9 amudha*/
+.itemSort select{font-size: 11px; width:108px; height:20px; margin-top:6px; padding:0; color:#000; *margin-top:5px} /*june 9 amudha*/
+.sortBy {padding-right:10px; float:left; padding-top:8px; color:#777;} /*june 9 amudha*/
+.sortByTxt {padding-left:20px; float:left; width:230px; padding-top:0px;  *padding-bottom:8px; color:#777; }/*june 9 amudha*/
+.sortByTxtLocal{vertical-align:middle; display:table-cell; height:30px}/*june 9 amudha*/
+.padBot12{padding-bottom:12px!important}/*june 9 amudha*/
+.editTxt {font-size:12px; font-weight:normal;color:#f26522; clear:left; }/*june 9 amudha*/
+.grayTxt {font-size:11px; font-weight:normal;color:#666666; padding-top:10px}
+#myListItems a{color:#F96302; text-decoration:none;cursor:pointer;}/*02 June changes by Guru*/
+.listEdit a{text-decoration:none; cursor:pointer;
+ font-size:11px; font-weight:normal;color:#F96302; float:left; padding-top:2px; margin-left:5px;} /*12 June changes by Narayanan*/
+.listNameHover{padding:0px 5px 5px; float:left; background:#CCC; cursor:pointer;}
+#myListPdt .topGrayPanel .editCondn{padding:10px;}
+#myListPdt .topGrayPanel .editCondn .float_left{padding:0px;}
+#myListPdt .topGrayPanel .editCondn .float_left input.newLstNm{height:20px; background:#fff;}
+#myListPdt .topGrayPanel .editCondn .float_left input.newLstNm:hover{background:#fff;}
+.editCondn{float:left;}
+.editCondn input{width:200px; height:22px; border:1px solid #ccc; color:#999; padding-left:5px}
+.edit_display{display:none}
+.itemSave {float:left; padding:0px 10px}
+.itemCancel, .listCancel {float:left; font-size:12px; font-weight:normal;padding-top:10px}
+.listCancel a{text-decoration:none; color:#F96302; cursor:pointer;}/*02 June changes by Guru*/
+.listName, .fullListName{float:left; font-size:20px; white-space:pre; word-wrap:break-word;}/*june 9 amudha*/ /*13 June changes by Narayanan*/
+.updatedTick{float:left; margin-left:10px; display:none}
+#mobAccess{clear:both; width:100%}
+/*04 changes by Guru -Start*/
+#deleteList, #deleteItem{ display:none; z-index:9999; position:absolute; top: 200px; left:570px; border:1px solid #ccc; 
+box-shadow: 0 0 10px #999; /*5-24 MG*/ padding:20px 5px 20px 20px; background-color:#FFF; width:350px; width:335px\9;
+font-family: Arial,Helvetica,sans-serif; font-size:14px; font-weight:bold; color:black; cursor:pointer;
+/*filter:
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=1, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=180, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=270, Color=#C4C4C4);
+-ms-filter:
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=1, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=180, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=270, Color=#C4C4C4); */} /* 13 June changes by Narayanan - removed for cursor mis-alignment */
+	/*04 changes by Guru -End*/
+.deleteList{cursor:pointer; position: relative; margin-top:3px} /* 31 May changes by Narayanan *//*june 9 amudha*/
+#deleteList{*margin-left:10px;}/*june 9 amudha*/
+#deleteItem{left:379px; height:104px; width:290px; *margin-top:-12px } /* 28 May changes *//*june 9 amudha*/ 
+#deleteList img, #deleteItem img{margin:10px}
+#dynamicitems{padding-left:15px; padding-right:15px}/*june 9 amudha*/
+#dynamicitems .list_deleted{color:black; font-family: Arial,Helvetica,sans-serif; font-size:16px; font-weight:bold;margin-right:18px;}
+.list_deleted{color:black; font-family: Arial,Helvetica,sans-serif; font-size:18px; font-weight:bold; padding-right:10px}/*june 9 amudha*/
+.list_deleted img{padding-right:5px}
+/*------------------MyAccount Landing page Ends------------------*/
+/*------------------MyAccount Product page starts------------------*/
+#myListPdt  .topGrayPanel {margin:0px 15px 0px 15px;*margin:20px 15px 0px 15px;background-color:#eeeeee; height:50px; font-size:24px}/*12 June changes by Guru*/
+#myListPdt  .topGrayPanelTxt{ font-size:24px; background:url("../../images/mylists/arrow_bg1.jpg") no-repeat scroll right center transparent; white-space:pre; word-wrap:break-word; padding:15px 10px 5px;} /*12 June changes by Narayanan*/
+#myListPdt  .topExportPanel {margin:0px 15px 0px 15px;background-color:#FFF; height:27px;}
+#myListPdt  .topGrayPanel input{width:200px; height:30px; /* removed border MG border:1px solid gray;*/ color:#999; padding-left:5px}
+#myListPdt  .float_left{float:left; padding:15px;}
+.itemTotal  span{ padding: 0px 5px 0 2px;font-size:20px}/*june 9 amudha*/
+.itemPdtSort {float:left; width:400px; font-size:11px; font-weight:bold; color:#666}
+.itemPdtSort select{font-size: 11px; width:100px; margin-top:5px; padding:0; height:20px}/*june 9 amudha*/
+.itemUnitPrice{float:left; width:100px; text-align: center; padding-top:8px;  color:#777; font-size:11px; font-weight:bold}/*june 9 amudha*/
+.itemQty{float:left; width:50px; padding-top:8px; color:#777; font-size:11px; font-weight:bold}/*june 9 amudha*/
+.itemDelete{float:right; margin:5px 0px 0px 69px; padding-right:15px; }/*june 9 amudha*/
+.pdtTitle {float:left;  width:100%; padding:10px 0px; border-bottom:1px solid #CCC;padding-top:-20px\9;}/*june 9 amudha*/
+.pdtView {float:left;width:143px; height:143px;text-align:right;height:auto\9;}/*june 9 amudha*/
+.pdtModel {float:left; width:230px; padding-left:10px}
+.pdtPrice {float:left; width:123px; text-align:center}/*june 9 amudha*/
+.pdtQty {float:left; width:50px}
+.pdtQty input{float:left; width:33px; height:15px; margin-bottom:4px; font-weight:bold; font-size:11px; color:#000; }/*june 9 amudha*/
+.pdtDelete {float:right; padding-right:15px; min-height:140px;min-width:155px\9; min-width:155px;position:relative;}
+.pdtSubTotal {padding-top:15px; width:159px; text-align:right; font-size:11px; font-weight:bold}/*june 9 amudha*/
+.priceBox {height: 40px;}
+.perPiece {text-align:right; margin-right:20px; font-family:arial; font-size:14px; font-weight:bold; color:#666;}/*june 9 amudha*/
+.strikePrice {text-decoration: line-through; padding-top:5px; text-align:right; margin-right:20px;}
+.pdtSubTotal span{padding-left:5px;font-size:16px; font-weight:bold; color:#333333;font-style:italic;}/*june 9 amudha*/
+.pdtUpdate {color:#00AE4D; cursor:pointer; font-size:11px; font-weight:bold }/*june 9 amudha*/
+.addListCart {margin:0px 15px 40px 15px; *margin-bottom:20px!important;}
+.itemsIcon{float:left; text-align:center; color:#000000; cursor:pointer}
+.itemsIconTxt{float:left;padding:3px 15px 0px 5px; font-weight:bold}/*june 9 amudha*/
+.itemsIconPanel{float:left;padding-top:10px}
+.itemsIconPanel a:hover{text-decoration:none}
+.itemsGrayIcon{float:left; text-align:center; color:#999999;}
+.itemsGrayIcon span{padding:0px 10px 5px 5px}
+.itemTotal {font-size:10px;font-weight:bold; padding:15px 10px 5px; float:right; height:30px;}
+.itemTotal  *{vertical-align:middle;}
+.itemTotalTxt{font-size:10px!important; padding:0!important;}/*june 9 amudha*/
+.btmIconPanel{ float:right; margin-bottom:20px;}
+.topGrayTxt {font-size:14px; font-weight:normal;color:#000; padding-top:0px}/*june 9 amudha*/
+.pdtGrayTxt{padding-top:40px;color: #A4A4A4;font-size: 11px;font-weight: normal;}/*june 9 amudha*/
+.centerButtons{margin:15px 0px 60px 100px}/*02 June changes by guru*/
+.centerButtons img{margin-left:10px}
+.popText{ color:#A4A4A4; padding:10px 0 5px 0px; padding-bottom:15px\9!important;font-size:12px; font-weight:bold}/*02 June changes by guru*/
+p.deleteAsk{font-size:18px} /*5-24 MG*/
+div.deleteAsk {height:33px; margin:0 auto;} /*5-24 MG*/ /*28 May Changes*/
+#deleteItem .deleteAsk{ font-size:18px; padding-bottom:30px}/*june 9 amudha*/
+/*------------------MyAccount Product page Ends------------------*/
+/*------------------Email List CSS starts------------------*/
+.emailFields{margin-left:20px;*margin-top:60px;}
+.emailFields input{width:200px; height:26px; margin-bottom:10px; font-size:11px}/*june 9 amudha*/
+.emailTitle { font-family: Arial,Helvetica,sans-serif; color: #333333; font-size: 24px; font-weight: bold; height:18px; padding:15px 0px 25px 0px;*width:420px; }/*june 9 amudha*/
+.emailTitle .required{height:auto; padding-bottom:10px; }
+.emailTitle p{margin-bottom:10px; }/*june 9 amudha*/
+.emailTxt {width:65px; float:left; padding-bottom:10px; font-size:11px; padding-top:11px; padding-right:20px; text-align:right}/*02 June may changes by Guru*//*june 9 amudha*/
+#popupEmailList textarea {width: 250px; height: 58px; resize:none; margin-bottom:11px; font-size:10px; color:#777777; padding:5px}/*june 9 amudha*/
+.emailReq{color:#F96302; float:left; clear:both; padding-bottom:10px; padding-top:11px;}/*june 9 amudha*/
+.clear_both{clear:both}
+.reqTxt{text-align:right; margin-right:24px; font-size:11px; font-weight:bold}/*12 June may changes by Guru*/
+.reqTxt span{color:#F96302;}
+.emailRecipTxt {clear:both; padding-left:75px; font-size:12px; width:260px;}/*02 June may changes by Guru*/
+.maxchar {float:right; font-size:11px; padding-right:27px}
+.emailCopy input{float:left;width:0px;margin-bottom:10px; height:0px; float:none\9;width:13px\9;margin:0px 0px 0px 0px\9; height:13px\9}/* 29 May changes by Deepha*/
+.emailCopy {font-size:11px; font-weight:bold; padding:20px 61px 0 0; float:right}/*june 9 amudha*/
+.mar_top30{margin-top:30px}
+.recipientDetail{font-size:12px; margin-left:90px; padding-top:5px; width:260px}/*june 9 amudha*/
+.marLeft5px{margin-left:5px}/*june 9 amudha*/
+
+/*-------------------Email List CSS Ends------------------*/
+/*-------------------My cart page starts------------------*/
+.addToListFromCart{font-family: Arial,Helvetica,sans-serif; font-size:12px;padding-top: 0 !important; font-weight:bold; color:#333; width:100px; cursor:pointer; text-align:right; vertical-align:top !important}/*05 June changes by Guru*/
+/*04 changes by Guru -Start*/
+.cartPopup{display:none; z-index:10999; border:1px solid #ccc;
+ box-shadow: 0 0 10px #999; /*5-24 MG*/  background-color:#FFF;
+/*filter:
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=1, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=180, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=270, Color=#C4C4C4);
+-ms-filter:
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=1, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=180, Color=#C4C4C4),
+	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=270, Color=#C4C4C4); */
+ } /* 13 June changes by Narayanan - removed for cursor mis-alignment */
+ /*04 changes by Guru -End*/
+#popupCreateListFromCart{padding:23px 30px 19px; width:320px;position:absolute;}/*06 June changes by guru*/
+.item_copied{color:black; font-family: Arial,Helvetica,sans-serif; font-size:12px; font-weight:bold; padding:0px 10px 20px 0px; text-align: right;}
+.item_copied img{padding-left:10px}
+.item_copied span{color:#E6781E;font-weight:bold;}
+.item_copied a{text-decoration:none}
+.ClosePopup{float:right; position:relative;z-index: 999;} /* 31 May changes by Narayanan */
+.mar_top20{margin-top:20px !important}
+#add_new_list.newName{font-size:14px; height:25px; padding:2px !important;width:185px !important;height:auto\9 !important;padding-top:12px\9 !important;}/*12 June changes by Guru*/
+#add_new_list {margin-right:10px\9 !important;}
+.height30{height:30px}
+#addToListResponse{z-index:9999;}
+/*-------------------My cart page ends------------------*/
+/*-------------------Choose Store CSS starts------------------*/
+.storeTxt {color:#999999; padding-left:5px; cursor:pointer}
+#myListStore {margin:0px 15px 0px 15px;}
+#myListStore a{color:#F96302; text-decoration:none}
+#myListStore .pdtSubTotal span {font-style:normal; font-size:12px; font-weight:normal}
+#localStore{padding-left:50px; color:#F96302; font-weight:normal}
+#myListStore .deleteItem {margin-top:120px}
+
+/*-------------------Choose Store CSS Ends------------------*/
+/*-------------------Partial List CSS starts------------------*/
+.partialPanel {float:left; background-color:#eee;border-top:1px solid #ccc;border-bottom:1px solid #ccc; color:#333; padding:20px; line-height:15px; font-size:12px; margin:15px 0}
+.partialPanelTxt{padding-left:28px}
+.optionTxt {clear:both; padding:10px 0 0 10px; font-size:10px; color:#777}
+.optionTxt span{color:#F96302;}
+
+/*-------------------Partial List CSS Ends------------------*/
+.marBot30px{margin-bottom:30px}
+
+/*ToolTip CSS*/
+ #tooltip{position:absolute; border:1px solid #cccccc;background:#fff;padding:10px 20px;color:#333; display:none; width:170px;}
+  .itemsGrayIcon a{text-decoration:none; color:#999999 !important}
+/*----------------------Send Email Error-------------------*/
+.emailErrButtons{margin:40px 0px 10px 55px}
+.emailErrBtm{float:left; margin-right:10px}
+/*-----------------------End send email error------------------*/
+/*----------------------- IE Fixes starts-----------------------------*/
+#IE8 .marTop1IE2px{margin-top:12px;}
+/*----------------------- IE Fixes Ends-----------------------------*/
+/*temporary class for quickview add to list*/
+.addToList_btn{z-index:9999; background-color:white; font-size:13px; font-weight:bold;}
+.addToList_btn .plus{margin:0 10px 0 0;} 
+
+/* fix for update qty textbox height & width */
+.quantity {
+   
+          width:20px!important;
+  }
+
+/* addtoListGrey button class */
+.addItemsToList {background-image:url(../../images/mylists/AddItemsToList.jpg); width:198px; height:31px; cursor:auto}
+
+/*addtoListGrey button class */
+.addListToCartGrey {background-image:url(../../images/mylists/AddListToCartGrey.jpg); width:184px; height:32px; cursor:auto}
+
+#userMessage {font-family:Arial,"Helvetica Neue",Helvetica,sans-serif !important}
+
+
+#test{margin:auto !important;}
+.SSKU_Actions_Container  li *{vertical-align:middle;} /* 4 June fix by Narayanan*/
+.createTxt>:first-child{font-weight:bold !important; margin-top:10px;}/*06 changes by Guru*/
+.createTxt{margin-top:0px 25px 0px 10px !important;} /*07 June changes by guru*/
+.reqTxt>:first-child{margin-top:10px}
+.deleteAsk #no_delete{margin-left:70px}
+.createAccount{padding-right:12px;}/*07 June changes by guru*/
+.forgotPswd{float:right!important;padding-right:25px !important;margin-top:15px; *margin-top:0px;padding-bottom:0px!important;}/*07 June changes by guru*/
+
+/* Email modal View List button with out arrow button */
+.viewListBtnNoArrow {background-image:url(../../images/mylists/viewList_no_arrow.jpg); width:90px; height:31px; float:center; margin-right:10px!important; cursor:pointer;}
+.itemTotalTxt{font-size:10px!important; padding:0!important;}/*june 9 amudha*/
+.font11px_bold{font-size:11px!important; font-weight:bold;}/*12 June changes by guru*/
+.mar_bottom0px{margin-bottom:0px !important;}/*12 June changes by guru*/
+.noBorder{border-bottom:0px !important;}/*12 June changes by guru*/
+.padTopBotm{padding:10px 0px !important;}/*12 June changes by guru*/
+.height40px{height:40px !important;}/*12 June changes by guru*/
+.mar_right75px{margin-right:75px !important;}/*13 changes by Guru*/
+.width700px{width:700px;}/*13 changes by Guru*/
+
+/* bulk pricing info text*/
+.bulkPriceBlock {margin-top:15px; width:100%;} 
+.blkImgBlk{background-image: url("http://www.homedepot.com/static/images/mylists/bulkPricingInfo1.jpg");
+    background-repeat: no-repeat;
+    float: left;
+    padding-left: 29px;
+    width: 250px;}
+.bulkPriceTxt{color:#333333; font-weight:bold; font-size:12px; }

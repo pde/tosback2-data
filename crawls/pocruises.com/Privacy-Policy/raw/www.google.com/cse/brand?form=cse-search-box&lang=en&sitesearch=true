@@ -8,11 +8,18 @@ if (f && f['q']) {
 var q = f['q'];
 var n = navigator;
 var l = location;
+var du = function(n, v) {
+var u = document.createElement('input');
+u.name = n;
+u.value = v;
+u.type = 'hidden';
+f.appendChild(u);
+return u;
+};
 var su = function (n, t, v, l) {
 if (!encodeURIComponent || !decodeURIComponent) {
 return;
 }
-var u = document.createElement('input');
 var regexp = new RegExp('(?:[?&]' + n + '=)([^&#]*)');
 var existing = regexp.exec(t);
 if (existing) {
@@ -22,14 +29,25 @@ var delimIndex = v.indexOf('://');
 if (delimIndex >= 0) {
 v = v.substring(delimIndex + '://'.length, v.length);
 }
-u.name = n;
 var v_sub = v.substring(0, l);
 while (encodeURIComponent(v_sub).length > l) {
 v_sub = v_sub.substring(0, v_sub.length - 1);
 }
-u.value = v_sub;
-u.type = 'hidden';
-f.appendChild(u);
+du(n, v_sub);
+};
+var pl = function(he) {
+var ti = 0, tsi = 0, tk = 0, pt;
+return function() {
+var ct = (new Date).getTime();
+if (pt) {
+var i = ct - pt;
+ti += i;
+tsi += i*i;
+}
+tk++;
+pt = ct;
+he.value = [ti, tsi, tk].join('j');
+};
 };
 var append = false;
 if (n.appName == 'Microsoft Internet Explorer') {
@@ -50,6 +68,14 @@ for (var i = 0; i < s.length; i++) {
       var loc = document.location.toString(); var ref = document.referrer;
       su('siteurl', loc, loc, 250);
       su('ref', loc, ref, 750);
+
+      
+      
+      if (q.addEventListener) {
+        q.addEventListener('keyup', pl(du('ss', '')), false);
+      } else if (q.attachEvent) {
+        q.attachEvent('onkeyup', pl(du('ss', '')));
+      }
     }
 
     

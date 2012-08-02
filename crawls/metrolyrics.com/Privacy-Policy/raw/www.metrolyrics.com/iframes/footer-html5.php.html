@@ -57,8 +57,8 @@
 		sub { bottom: -0.25em; }
 
 		pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; padding: 15px; }
-		textarea { overflow: auto; } 
-		.ie6 legend, .ie7 legend { margin-left: -7px; } 
+		textarea { overflow: auto; }
+		.ie6 legend, .ie7 legend { margin-left: -7px; }
 		input[type="radio"] { vertical-align: text-bottom; }
 		input[type="checkbox"] { vertical-align: bottom; }
 		.ie7 input[type="checkbox"] { vertical-align: baseline; }
@@ -318,6 +318,18 @@
 
 	</style>
 	<script src="../js/modernizr.js"></script>
+	<script src="../../ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script>
+		$(function(){
+			$('#cbsi_footer_menu_go').click(function(){
+				var site = $('#cbsi_footer_menu option:selected').val();
+				if('' !== site)
+				{
+					window.top.location.href = site;
+				}
+			})
+		});
+	</script>
 </head>
 <body>
 
@@ -344,11 +356,11 @@
 				<div id="cbsi-logo">CBS Interactive Music Group</div>
 			</div>
 			<div class="footer-col">
-				<label class="cbsi_footer_lbl" for="cbsi_footer_menu">Visit other Sites</label>
+				<label class="cbsi_footer_lbl" for="cbsi_footer_menu">Visit other Sites
 				<select name="cbsi_footer_menu" id="cbsi_footer_menu" class="rb_visit_sel">
 					<option value="">Select Site</option><option value="http://www.bnet.com">BNET</option><option value="http://www.cbscares.com">CBS Cares</option><option value="http://www.cbsfilms.com">CBS Films</option><option value="http://www.cbsradio.com/streaming/index.html">CBS Radio</option><option value="http://www.cbs.com">CBS.com</option><option value="http://www.cbsinteractive.com">CBSInteractive</option><option value="http://www.cbsnews.com">CBSNews.com</option><option value="http://www.cbssports.com">CBSSports.com</option><option value="http://www.chow.com">CHOW</option><option value="http://www.cnet.com">CNET</option><option value="http://collegenetwork.cbssports.com">College Network</option><option value="http://findarticles.com">Find Articles</option><option value="http://www.gamespot.com">GameSpot</option><option value="http://www.help.com">Help.com</option><option value="http://www.last.fm">Last.fm</option><option value="http://www.maxpreps.com">MaxPreps</option><option value="http://www.metacritic.com">Metacritic.com</option><option value="http://moneywatch.bnet.com">Moneywatch</option><option value="http://www.mysimon.com">mySimon</option><option value="http://www.search.com">Search.com</option><option value="http://www.shopper.com">Shopper.com</option><option value="http://www.sho.com">Showtime</option><option value="http://www.smartplanet.com">SmartPlanet</option><option value="http://www.techrepublic.com">TechRepublic</option><option value="http://www.theinsider.com">The Insider</option><option value="http://www.tv.com">TV.com</option><option value="http://www.urbanbaby.com">UrbanBaby.com</option><option value="http://www.zdnet.com">ZDNet</option>
-				</select>
-				<input type="button" value="Go" onclick="window.parent.location=document.getElementById('cbsi_footer_menu').options[document.getElementById('cbsi_footer_menu').selectedIndex].value;" />
+				</select></label>
+				<input type="button" value="Go" id="cbsi_footer_menu_go"/>
 			</div>
 			<div class="footer-col-3" id="footer-std-links">
 				<ul>

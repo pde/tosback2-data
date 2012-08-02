@@ -18,6 +18,8 @@ dojo.require("bec.widget.PopupDialog");
 dojo.require("bec.product.AddToCart");
 dojo.require("bec.product.AddToCartButton");
 dojo.require("bec.product.AddToFavorites");
+dojo.require("bec.product.ProductMedia");
+dojo.require("bec.product.ProductQuickView");
 dojo.require("bec.order.CatalogQuickOrder");
 //Logon Panel Support (checkout version is included in checkout pages)
 dojo.require("bec.user.Logon");
@@ -65,7 +67,10 @@ dojo.addOnLoad(function()
  */
 function dojoParseButtons()
 {
-	dojo.forEach(dojo.query("[dojoType='bec.widget.Button'],[dojoType='bec.product.AddToCartButton']"), function(button)
+	// Nodelist of parseable buttons within the BODY element.
+	var parseableButtons = dojo.query("[dojoType='bec.widget.Button'],[dojoType='bec.product.AddToCartButton']", dojo.query("body")[0]);
+	
+	parseableButtons.forEach(function(button,idx,buttons)
 	{
 		dojo.parser.instantiate([button], {dojoType: dojo.attr(button, "dojoType")});
 	});

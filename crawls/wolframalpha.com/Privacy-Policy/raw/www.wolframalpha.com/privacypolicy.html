@@ -243,7 +243,7 @@ body #pageTitle {
 </div>
 
 
-<script>if (top !== self) top.location.replace(self.location.href+"unauthorized.html");</script> 
+<script>if (top !== self) top.location.replace(self.location.href+"unauthorized.html");</script>
 <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 
 <footer class="common">
@@ -265,7 +265,9 @@ body #pageTitle {
         <li class="noimg">&copy; 2012 Wolfram Alpha LLC&mdash;A <a href="http://www.wolfram.com/">Wolfram Research</a> Company</li>
         <li><a href="http://www.wolframalpha.com/termsofuse.html" title="Wolfram|Alpha Terms of Use">Terms</a></li>
         <li><a href="privacypolicy.html" title="Wolfram|Alpha Privacy Policy">Privacy</a></li>
-        <li><a href="http://www.wolframalpha.com/entities/index/" title="Wolfram|Alpha Entity Index">Entity Index</a></li>
+        <!--
+        <li><a href="/entities/index/" title="Wolfram|Alpha Entity Index">Entity Index</a></li>
+        -->
     </ul>
     
 
@@ -344,11 +346,14 @@ body #pageTitle {
 
 
 <script src="javascript/index.js"></script>
+<script src="Calculate/javascript/utilities.js"></script>
+<script src="Calculate/javascript/watrack.js"></script>
 <script src="Calculate/javascript/auth.js"></script>
 <script>
 $(document).ready(function() {
     $("#header #i").blur();
     queryBoxBlur($("#header #i"));
+    watrack.initDefaults();
 
     $("#header #i").blur(function() {
             queryBoxBlur($(this));
@@ -371,6 +376,20 @@ $(document).ready(function() {
           window.location.href = "/input/?i=" + encodeURIComponent(ctrl.val());
       });
     });
+/*
+    $(".pro-button #userEmail, #signinStatus #userEmail").live("click",function(e){
+      if ($("#authbox").length < 1) {
+        $.get("/input/authstatus.jsp", function(d,s){
+	    var pos = $(this).offset();
+	    $("body").append(d);
+	    $("#authbox").css({
+	      "top" : pos.top + 10,
+	      "left" : pos.left
+	    }).show();
+        });
+      }
+    });
+*/
 
 });
 

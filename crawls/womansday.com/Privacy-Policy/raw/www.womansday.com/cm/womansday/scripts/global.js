@@ -231,8 +231,10 @@ function initHRSEvent()
 }
 
 // DOC READY FUNCTIONS TO BE ADDED HERE
-$(document).ready(function(){
-	// prevent exec script in search box       
+$(document).ready(function(){	
+	eagAddSelectedClass();
+	
+	// prevent exec script in search box      
 	$("form[action='/search/'] a")
 		.attr("href","#")
 		.click(function(e){
@@ -309,7 +311,16 @@ $(document).ready(function(){
 	
 	//Horoscopes (Prefix: HRS)
 	initHRSEvent();
+	
+	
 });
+
+function eagAddSelectedClass(){
+	var url = window.location.href;
+	if ((url.indexOf("#category1-1") != -1) || (url.indexOf("#") == -1)){
+		$("#tab1").addClass("selected");	
+	}
+};
 
 function checkRFSearchTerm() {
 	var search_term = $.trim($('#recipeFinder form[name=recipeFinder] input[name=search_term]').val());

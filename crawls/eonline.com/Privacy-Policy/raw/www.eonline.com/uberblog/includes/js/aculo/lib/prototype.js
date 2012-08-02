@@ -4069,7 +4069,7 @@ Object.extend(Event, (function() {
 
       if (document.createEvent) {
         element.dispatchEvent(event);
-      } else {
+      } else if ((typeof(element.fireEvent) !== 'undefined')  && (typeof(element.eventType) !== 'undefined')  && (typeof(event) !== 'undefined')) {
         element.fireEvent(event.eventType, event);
       }
 
@@ -4276,7 +4276,11 @@ if (!document.getElementsByClassName) document.getElementsByClassName = function
   };
 
   return function(className, parentElement) {
-    return $(parentElement || document.body).getElementsByClassName(className);
+	var oDom = $(parentElement);
+	if (!oDom) oDom = $(document.body);
+	if ((typeof(oDom) !== 'undefined') && (oDom) && (typeof(oDom.getElementsByClassName) !== 'undefined')) {
+		return oDom.getElementsByClassName(className);
+	}
   };
 }(Element.Methods);
 

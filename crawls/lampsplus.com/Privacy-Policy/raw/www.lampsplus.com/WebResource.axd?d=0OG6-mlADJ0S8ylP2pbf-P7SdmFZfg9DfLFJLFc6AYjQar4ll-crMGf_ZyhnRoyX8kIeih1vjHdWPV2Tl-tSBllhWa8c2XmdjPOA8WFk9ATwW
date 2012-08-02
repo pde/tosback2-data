@@ -32,16 +32,21 @@ $(window).bind("message", function (event) {
 });
 
 $(function () {
+    var hasStorage = hasLocalStorage();
+    if (!hasStorage)
+        log('Local storage is not found');
     var hasGlobalIdentity = readCookie(GID.globalIdentityFlagCookieName);
     if (hasGlobalIdentity != null)
         log("Global identity flag found, value=" + hasGlobalIdentity);
-    log("Request is local=" + GID.isLocal);
-    if (!hasGlobalIdentity && !GID.isLocal) {
+
+    if(GID.isLocal)
+        log("Request is local");
+
+    if (!hasGlobalIdentity && !GID.isLocal && hasStorage) {
         log("Reading global session...");
         var src = 'https://secure.lampsplus.com/secure/auth/global/read.aspx';
         $("body").append("<iframe id='global-auth-frame' style='display:none' src='" + src + "'></iframe>");
     }
-
 });
 
 function setGlobalSessionCookie(authed) {
@@ -72,3 +77,11 @@ function log(text) {
         console.log("INFO: " + text);
     }
 };
+
+function hasLocalStorage() {
+    try {
+        return 'localStorage' in window && window['localStorage'] !== null;
+    } catch (e) {
+        return false;
+    }
+}

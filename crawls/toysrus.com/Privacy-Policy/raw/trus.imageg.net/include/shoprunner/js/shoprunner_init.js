@@ -6,6 +6,18 @@ _shoprunner_com.retailerID = 'TRUS';
 _shoprunner_com.sendOrderConfirm=true;
 _shoprunner_com.onLoadCallCustomFunction = "";
 
+/* ----------------------------------------
+ * SR Checkout
+---------------------------------------- */
+_shoprunner_com.checkout.singleProductBuyNowEnabled = true;
+_shoprunner_com.checkout.cartBuyNowEnabled = false;
+
+try {
+	_shoprunner_com.checkout.partnerAPIEndPoint = 'http://' + shopRunnerDocumentDomain + '/shoprunner/buyNow.jsp';
+} catch (er) {
+	_shoprunner_com.checkout.partnerAPIEndPoint = 'http://' + document.domain + '/shoprunner/buyNow.jsp';
+}
+
 /* -------------------------------------- */
 /* DO NOT MODIFY ANYTHING BELOW THIS LINE */
 /* -------------------------------------- */

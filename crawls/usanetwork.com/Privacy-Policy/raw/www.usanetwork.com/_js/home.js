@@ -5,7 +5,7 @@ var usa_currentUsaFeatureRotationItem;
 var usa_showNowUsaFeatureRotationItem;
 var usa_totalUsaFeatureRotationItems;
 var usa_featureRotationTimeout;
-var usa_featureRotationInterval = 20000;
+var usa_featureRotationInterval = 30000;
 var usa_currentBodyClass = '';
 var usa_videoPlaying = false;
 var usa_videoAdPlaying = false;

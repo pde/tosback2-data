@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $('#blog-select ol').hide();
-  $('#blog-select h2').live('click', function() {
+  $('#blog-select h2').click(function() {
     if ($('#blog-select ol').data("disabled")) {
       $('#blog-select ol').toggle(false);
     } else {
@@ -10,18 +10,24 @@ $(document).ready(function() {
   });
 
     $('#publisher-select ol').hide();
-  $('#publisher-select h2').live('click', function() {
+  $('#publisher-select h2').click(function() {
     $('#blog-select ol').hide();
     $('#publisher-select ol').toggle();
     return false;
   });
 
-  if ($('#blog-select ol').data("disabled")) {
+  if ($('div:not(.florida) #blog-select ol').data("disabled")) {
     $('#blog-select').css({
       'background-color' : '#597380',
       'opacity' : '0.7'
     });
   }
+  
+
+  if ($('.florida #blog-select ol').data("disabled")) {
+    $('#blog-select').addClass('off'); 
+  }
+
 
    // popup stats modal
 

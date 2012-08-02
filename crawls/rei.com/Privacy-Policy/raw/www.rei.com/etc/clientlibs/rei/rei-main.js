@@ -968,7 +968,7 @@ function loadMaps() {
     }
 }
 
-/* $Id: common_ultra.js 1914 2012-03-30 17:26:26Z jowilso $ */
+/* $Id: common_ultra.js 3304 2012-06-09 00:20:04Z sfleshe $ */
 
 /**
  * TODO
@@ -1305,7 +1305,7 @@ if ((affiliateID == "9048" || affiliateID == "11917" || affiliateID == "14028" |
 
 var numOfItems = getCookie("rei_cart");
 var multipleItems = (numOfItems == 1) ? 's':'';
-var loggedIn = getCookie("loggedin");
+var loggedIn = getCookie( "loggedin" );
 
 if (!numOfItems) numOfItems = 0;
 
@@ -1704,8 +1704,69 @@ function getUserInfoCookie(dIngredient){
 		}
 		
 }
+
+function ReadGRCookie (CookieName) {
+
+    var gr_id = 0;
+    var gr_event_type = "";
+    var gr_event_date = "";
+    var gr_personal_name = "";
+    var which_cookie = "";
+
+    var cook_obj = new Object();
+
+    which_cookie = CookieName;
+    
+    var CookieString = document.cookie;
+    var CookieSet = CookieString.split (';');
+    var SetSize = CookieSet.length;
+    var CookiePieces
+    var ReturnValue = "";
+    var x = 0;
+
+    for (x = 0; ((x < SetSize) && (ReturnValue == "")); x++) {
+
+        CookiePieces = CookieSet[x].split ('=');
+
+        if (CookiePieces[0].substring (0,1) == ' ') {
+            CookiePieces[0] = CookiePieces[0].substring (1, CookiePieces[0].length);
+        }
+
+        if (CookiePieces[0] == CookieName) {
+            ReturnValue = CookiePieces[1];
+        }
+    }
+
+    if (ReturnValue != "") {
+        CleanRetVal = unescape(ReturnValue);
+        RetArray = CleanRetVal.split(":");
+        gr_id = RetArray[0];
+        gr_event_type = RetArray[1];
+        gr_event_date = RetArray[2];
+        gr_personal_name = RetArray[3];
+
+        //if (gr_id) alert(gr_id);
+        //if (gr_personal_name) alert(gr_personal_name);
+
+        var alertStr = "ID: " + gr_id + "\n" +
+        "Name: " + gr_personal_name + "\n" +
+        "Type: " + gr_event_type + "\n" +
+        "Date: " + gr_event_date;
+        
+        cook_obj.cook_name = which_cookie;
+        cook_obj.id = gr_id;
+        cook_obj.event_type = gr_event_type ;
+        cook_obj.event_date = gr_event_date ;
+        cook_obj.personal_name = gr_personal_name ;
+
+        return cook_obj;
+        
+    } 
+        
+
+}
 /* $Id: mbox.js 1914 2012-03-30 17:26:26Z jowilso $ */var mboxCopyright = "Copyright 1996-2011. Adobe Systems Incorporated. All rights reserved.";mboxUrlBuilder = function(a, b) { this.a = a; this.b = b; this.c = new Array(); this.d = function(e) { return e; }; this.f = null;};mboxUrlBuilder.prototype.addParameter = function(g, h) { var i = new RegExp('(\'|")'); if (i.exec(g)) { throw "Parameter '" + g + "' contains invalid characters"; } for (var j = 0; j < this.c.length; j++) { var k = this.c[j]; if (k.name == g) { k.value = h; return this; } } var l = new Object(); l.name = g; l.value = h; this.c[this.c.length] = l; return this;};mboxUrlBuilder.prototype.addParameters = function(c) { if (!c) { return this; } for (var j = 0; j < c.length; j++) { var m = c[j].indexOf('='); if (m == -1 || m == 0) { continue; } this.addParameter(c[j].substring(0, m), c[j].substring(m + 1, c[j].length)); } return this;};mboxUrlBuilder.prototype.setServerType = function(n) { this.o = n;};mboxUrlBuilder.prototype.setBasePath = function(f) { this.f = f;};mboxUrlBuilder.prototype.setUrlProcessAction = function(p) { this.d = p;};mboxUrlBuilder.prototype.buildUrl = function() { var q = this.f ? this.f : '/m2/' + this.b + '/mbox/' + this.o; var r = document.location.protocol == 'file:' ? 'http:' : document.location.protocol; var e = r + "//" + this.a + q; var s = e.indexOf('?') != -1 ? '&' : '?'; for (var j = 0; j < this.c.length; j++) { var k = this.c[j]; e += s + encodeURIComponent(k.name) + '=' + encodeURIComponent(k.value); s = '&'; } return this.t(this.d(e));};mboxUrlBuilder.prototype.getParameters = function() { return this.c;};mboxUrlBuilder.prototype.setParameters = function(c) { this.c = c;};mboxUrlBuilder.prototype.clone = function() { var u = new mboxUrlBuilder(this.a, this.b); u.setServerType(this.o); u.setBasePath(this.f); u.setUrlProcessAction(this.d); for (var j = 0; j < this.c.length; j++) { u.addParameter(this.c[j].name, this.c[j].value); } return u;};mboxUrlBuilder.prototype.t = function(v) { return v.replace(/\"/g, '&quot;').replace(/>/g, '&gt;');};mboxStandardFetcher = function() { };mboxStandardFetcher.prototype.getType = function() { return 'standard';};mboxStandardFetcher.prototype.fetch = function(w) { w.setServerType(this.getType()); document.write('<' + 'scr' + 'ipt src="' + w.buildUrl() + '" language="JavaScript"><' + '\/scr' + 'ipt>');};mboxStandardFetcher.prototype.cancel = function() { };mboxAjaxFetcher = function() { };mboxAjaxFetcher.prototype.getType = function() { return 'ajax';};mboxAjaxFetcher.prototype.fetch = function(w) { w.setServerType(this.getType()); var e = w.buildUrl(); this.x = document.createElement('script'); this.x.src = e; document.body.appendChild(this.x);};mboxAjaxFetcher.prototype.cancel = function() { };mboxMap = function() { this.y = new Object(); this.z = new Array();};mboxMap.prototype.put = function(A, h) { if (!this.y[A]) { this.z[this.z.length] = A; } this.y[A] = h;};mboxMap.prototype.get = function(A) { return this.y[A];};mboxMap.prototype.remove = function(A) { this.y[A] = undefined;};mboxMap.prototype.each = function(p) { for (var j = 0; j < this.z.length; j++ ) { var A = this.z[j]; var h = this.y[A]; if (h) { var B = p(A, h); if (B === false) { break; } } }};mboxFactory = function(C, b, D) { this.E = false; this.C = C; this.D = D; this.F = new mboxList(); mboxFactories.put(D, this); this.G = typeof document.createElement('div').replaceChild != 'undefined' && (function() { return true; })() && typeof document.getElementById != 'undefined' && typeof (window.attachEvent || document.addEventListener || window.addEventListener) != 'undefined' && typeof encodeURIComponent != 'undefined'; this.H = this.G && mboxGetPageParameter('mboxDisable') == null; var I = D == 'default'; this.J = new mboxCookieManager( 'mbox' + (I ? '' : ('-' + D)), (function() { return mboxCookiePageDomain(); })()); this.H = this.H && this.J.isEnabled() && (this.J.getCookie('disable') == null); if (this.isAdmin()) { this.enable(); } this.K(); this.L = mboxGenerateId(); this.M = mboxScreenHeight(); this.N = mboxScreenWidth(); this.O = mboxBrowserWidth(); this.P = mboxBrowserHeight(); this.Q = mboxScreenColorDepth(); this.R = mboxBrowserTimeOffset(); this.S = new mboxSession(this.L, 'mboxSession', 'session', 31 * 60, this.J); this.T = new mboxPC('PC', 1209600, this.J); this.w = new mboxUrlBuilder(C, b); this.U(this.w, I); this.V = new Date().getTime(); this.W = this.V; var X = this; this.addOnLoad(function() { X.W = new Date().getTime(); }); if (this.G) { this.addOnLoad(function() { X.E = true; X.getMboxes().each(function(Y) { Y.setFetcher(new mboxAjaxFetcher()); Y.finalize(); }); }); this.limitTraffic(100, 10368000); if (this.H) { this.Z(); this._ = new mboxSignaler(function(ab, c) { return X.create(ab, c); }, this.J); } }};mboxFactory.prototype.isEnabled = function() { return this.H;};mboxFactory.prototype.getDisableReason = function() { return this.J.getCookie('disable');};mboxFactory.prototype.isSupported = function() { return this.G;};mboxFactory.prototype.disable = function(bb, cb) { if (typeof bb == 'undefined') { bb = 60 * 60; } if (typeof cb == 'undefined') { cb = 'unspecified'; } if (!this.isAdmin()) { this.H = false; this.J.setCookie('disable', cb, bb); }};mboxFactory.prototype.enable = function() { this.H = true; this.J.deleteCookie('disable');};mboxFactory.prototype.isAdmin = function() { return document.location.href.indexOf('mboxEnv') != -1;};mboxFactory.prototype.limitTraffic = function(db, bb) {};mboxFactory.prototype.addOnLoad = function(eb) { if (this.isDomLoaded()) { eb(); } else { var fb = false; var gb = function() { if (fb) { return; } fb = true; eb(); }; this.hb.push(gb); if (this.isDomLoaded() && !fb) { gb(); } }};mboxFactory.prototype.getEllapsedTime = function() { return this.W - this.V;};mboxFactory.prototype.getEllapsedTimeUntil = function(ib) { return ib - this.V;};mboxFactory.prototype.getMboxes = function() { return this.F;};mboxFactory.prototype.get = function(ab, jb) { return this.F.get(ab).getById(jb || 0);};mboxFactory.prototype.update = function(ab, c) { if (!this.isEnabled()) { return; } if (!this.isDomLoaded()) { var X = this; this.addOnLoad(function() { X.update(ab, c); }); return; } if (this.F.get(ab).length() == 0) { throw "Mbox " + ab + " is not defined"; } this.F.get(ab).each(function(Y) { Y.getUrlBuilder() .addParameter('mboxPage', mboxGenerateId()); Y.load(c); });};mboxFactory.prototype.create = function( ab, c, kb) { if (!this.isSupported()) { return null; } var e = this.w.clone(); e.addParameter('mboxCount', this.F.length() + 1); e.addParameters(c); var jb = this.F.get(ab).length(); var lb = this.D + '-' + ab + '-' + jb; var mb; if (kb) { mb = new mboxLocatorNode(kb); } else { if (this.E) { throw 'The page has already been loaded, can\'t write marker'; } mb = new mboxLocatorDefault(lb); } try { var X = this; var nb = 'mboxImported-' + lb; var Y = new mbox(ab, jb, e, mb, nb); if (this.H) { Y.setFetcher( this.E ? new mboxAjaxFetcher() : new mboxStandardFetcher()); } Y.setOnError(function(ob, n) { Y.setMessage(ob); Y.activate(); if (!Y.isActivated()) { X.disable(60 * 60, ob); window.location.reload(false); } }); this.F.add(Y); } catch (pb) { this.disable(); throw 'Failed creating mbox "' + ab + '", the error was: ' + pb; } var qb = new Date(); e.addParameter('mboxTime', qb.getTime() - (qb.getTimezoneOffset() * 60000)); return Y;};mboxFactory.prototype.getCookieManager = function() { return this.J;};mboxFactory.prototype.getPageId = function() { return this.L;};mboxFactory.prototype.getPCId = function() { return this.T;};mboxFactory.prototype.getSessionId = function() { return this.S;};mboxFactory.prototype.getSignaler = function() { return this._;};mboxFactory.prototype.getUrlBuilder = function() { return this.w;};mboxFactory.prototype.U = function(e, I) { e.addParameter('mboxHost', document.location.hostname) .addParameter('mboxSession', this.S.getId()); if (!I) { e.addParameter('mboxFactoryId', this.D); } if (this.T.getId() != null) { e.addParameter('mboxPC', this.T.getId()); } e.addParameter('mboxPage', this.L); e.addParameter('screenHeight', this.M); e.addParameter('screenWidth', this.N); e.addParameter('browserWidth', this.O); e.addParameter('browserHeight', this.P); e.addParameter('browserTimeOffset', this.R); e.addParameter('colorDepth', this.Q); e.setUrlProcessAction(function(e) { e += '&mboxURL=' + encodeURIComponent(document.location); var rb = encodeURIComponent(document.referrer); if (e.length + rb.length < 2000) { e += '&mboxReferrer=' + rb; } e += '&mboxVersion=' + mboxVersion; return e; });};mboxFactory.prototype.sb = function() { return "";};mboxFactory.prototype.Z = function() { document.write('<style>.' + 'mboxDefault' + ' { visibility:hidden; }</style>');};mboxFactory.prototype.isDomLoaded = function() { return this.E;};mboxFactory.prototype.K = function() { if (this.hb != null) { return; } this.hb = new Array(); var X = this; (function() { var tb = document.addEventListener ? "DOMContentLoaded" : "onreadystatechange"; var ub = false; var vb = function() { if (ub) { return; } ub = true; for (var i = 0; i < X.hb.length; ++i) { X.hb[i](); } }; if (document.addEventListener) { document.addEventListener(tb, function() { document.removeEventListener(tb, arguments.callee, false); vb(); }, false); window.addEventListener("load", function(){ document.removeEventListener("load", arguments.callee, false); vb(); }, false); } else if (document.attachEvent) { if (self !== self.top) { document.attachEvent(tb, function() { if (document.readyState === 'complete') { document.detachEvent(tb, arguments.callee); vb(); } }); } else { var wb = function() { try { document.documentElement.doScroll('left'); vb(); } catch (xb) { setTimeout(wb, 13); } }; wb(); } } if (document.readyState === "complete") { vb(); } })();};mboxSignaler = function(yb, J) { this.J = J; var zb = J.getCookieNames('signal-'); for (var j = 0; j < zb.length; j++) { var Ab = zb[j]; var Bb = J.getCookie(Ab).split('&'); var Y = yb(Bb[0], Bb); Y.load(); J.deleteCookie(Ab); }};mboxSignaler.prototype.signal = function(Cb, ab ) { this.J.setCookie('signal-' + Cb, mboxShiftArray(arguments).join('&'), 45 * 60);};mboxList = function() { this.F = new Array();};mboxList.prototype.add = function(Y) { if (Y != null) { this.F[this.F.length] = Y; }};mboxList.prototype.get = function(ab) { var B = new mboxList(); for (var j = 0; j < this.F.length; j++) { var Y = this.F[j]; if (Y.getName() == ab) { B.add(Y); } } return B;};mboxList.prototype.getById = function(Db) { return this.F[Db];};mboxList.prototype.length = function() { return this.F.length;};mboxList.prototype.each = function(p) { if (typeof p != 'function') { throw 'Action must be a function, was: ' + typeof(p); } for (var j = 0; j < this.F.length; j++) { p(this.F[j]); }};mboxLocatorDefault = function(g) { this.g = 'mboxMarker-' + g; document.write('<div id="' + this.g + '" style="visibility:hidden;display:none">&nbsp;</div>');};mboxLocatorDefault.prototype.locate = function() { var Eb = document.getElementById(this.g); while (Eb != null) { if (Eb.nodeType == 1) { if (Eb.className == 'mboxDefault') { return Eb; } } Eb = Eb.previousSibling; } return null;};mboxLocatorDefault.prototype.force = function() { var Fb = document.createElement('div'); Fb.className = 'mboxDefault'; var Gb = document.getElementById(this.g); Gb.parentNode.insertBefore(Fb, Gb); return Fb;};mboxLocatorNode = function(Hb) { this.Eb = Hb;};mboxLocatorNode.prototype.locate = function() { return typeof this.Eb == 'string' ? document.getElementById(this.Eb) : this.Eb;};mboxLocatorNode.prototype.force = function() { return null;};mboxCreate = function(ab ) { var Y = mboxFactoryDefault.create( ab, mboxShiftArray(arguments)); if (Y) { Y.load(); } return Y;};mboxDefine = function(kb, ab ) { var Y = mboxFactoryDefault.create(ab, mboxShiftArray(mboxShiftArray(arguments)), kb); return Y;};mboxUpdate = function(ab ) { mboxFactoryDefault.update(ab, mboxShiftArray(arguments));};mbox = function(g, Ib, w, Jb, nb) { this.Kb = null; this.Lb = 0; this.mb = Jb; this.nb = nb; this.Mb = null; this.Nb = new mboxOfferContent(); this.Fb = null; this.w = w; this.message = ''; this.Ob = new Object(); this.Pb = 0; this.Ib = Ib; this.g = g; this.Qb(); w.addParameter('mbox', g) .addParameter('mboxId', Ib); this.Rb = function() {}; this.Sb = function() {}; this.Tb = null;};mbox.prototype.getId = function() { return this.Ib;};mbox.prototype.Qb = function() { if (this.g.length > 250) { throw "Mbox Name " + this.g + " exceeds max length of " + "250 characters."; } else if (this.g.match(/^\s+|\s+$/g)) { throw "Mbox Name " + this.g + " has leading/trailing whitespace(s)."; }};mbox.prototype.getName = function() { return this.g;};mbox.prototype.getParameters = function() { var c = this.w.getParameters(); var B = new Array(); for (var j = 0; j < c.length; j++) { if (c[j].name.indexOf('mbox') != 0) { B[B.length] = c[j].name + '=' + c[j].value; } } return B;};mbox.prototype.setOnLoad = function(p) { this.Sb = p; return this;};mbox.prototype.setMessage = function(ob) { this.message = ob; return this;};mbox.prototype.setOnError = function(Rb) { this.Rb = Rb; return this;};mbox.prototype.setFetcher = function(Ub) { if (this.Mb) { this.Mb.cancel(); } this.Mb = Ub; return this;};mbox.prototype.getFetcher = function() { return this.Mb;};mbox.prototype.load = function(c) { if (this.Mb == null) { return this; } this.setEventTime("load.start"); this.cancelTimeout(); this.Lb = 0; var w = (c && c.length > 0) ? this.w.clone().addParameters(c) : this.w; this.Mb.fetch(w); var X = this; this.Vb = setTimeout(function() { X.Rb('browser timeout', X.Mb.getType()); }, 15000); this.setEventTime("load.end"); return this;};mbox.prototype.loaded = function() { this.cancelTimeout(); if (!this.activate()) { var X = this; setTimeout(function() { X.loaded(); }, 100); }};mbox.prototype.activate = function() { if (this.Lb) { return this.Lb; } this.setEventTime('activate' + ++this.Pb + '.start'); if (this.show()) { this.cancelTimeout(); this.Lb = 1; } this.setEventTime('activate' + this.Pb + '.end'); return this.Lb;};mbox.prototype.isActivated = function() { return this.Lb;};mbox.prototype.setOffer = function(Nb) { if (Nb && Nb.show && Nb.setOnLoad) { this.Nb = Nb; } else { throw 'Invalid offer'; } return this;};mbox.prototype.getOffer = function() { return this.Nb;};mbox.prototype.show = function() { this.setEventTime('show.start'); var B = this.Nb.show(this); this.setEventTime(B == 1 ? "show.end.ok" : "show.end"); return B;};mbox.prototype.showContent = function(Wb) { if (Wb == null) { return 0; } if (this.Fb == null || !this.Fb.parentNode) { this.Fb = this.getDefaultDiv(); if (this.Fb == null) { return 0; } } if (this.Fb != Wb) { this.Xb(this.Fb); this.Fb.parentNode.replaceChild(Wb, this.Fb); this.Fb = Wb; } this.Yb(Wb); this.Sb(); return 1;};mbox.prototype.hide = function() { this.setEventTime('hide.start'); var B = this.showContent(this.getDefaultDiv()); this.setEventTime(B == 1 ? 'hide.end.ok' : 'hide.end.fail'); return B;};mbox.prototype.finalize = function() { this.setEventTime('finalize.start'); this.cancelTimeout(); if (this.getDefaultDiv() == null) { if (this.mb.force() != null) { this.setMessage('No default content, an empty one has been added'); } else { this.setMessage('Unable to locate mbox'); } } if (!this.activate()) { this.hide(); this.setEventTime('finalize.end.hide'); } this.setEventTime('finalize.end.ok');};mbox.prototype.cancelTimeout = function() { if (this.Vb) { clearTimeout(this.Vb); } if (this.Mb != null) { this.Mb.cancel(); }};mbox.prototype.getDiv = function() { return this.Fb;};mbox.prototype.getDefaultDiv = function() { if (this.Tb == null) { this.Tb = this.mb.locate(); } return this.Tb;};mbox.prototype.setEventTime = function(Zb) { this.Ob[Zb] = (new Date()).getTime();};mbox.prototype.getEventTimes = function() { return this.Ob;};mbox.prototype.getImportName = function() { return this.nb;};mbox.prototype.getURL = function() { return this.w.buildUrl();};mbox.prototype.getUrlBuilder = function() { return this.w;};mbox.prototype._b = function(Fb) { return Fb.style.display != 'none';};mbox.prototype.Yb = function(Fb) { this.ac(Fb, true);};mbox.prototype.Xb = function(Fb) { this.ac(Fb, false);};mbox.prototype.ac = function(Fb, bc) { Fb.style.visibility = bc ? "visible" : "hidden"; Fb.style.display = bc ? "block" : "none";};mboxOfferContent = function() { this.Sb = function() {};};mboxOfferContent.prototype.show = function(Y) { var B = Y.showContent(document.getElementById(Y.getImportName())); if (B == 1) { this.Sb(); } return B;};mboxOfferContent.prototype.setOnLoad = function(Sb) { this.Sb = Sb;};mboxOfferAjax = function(Wb) { this.Wb = Wb; this.Sb = function() {};};mboxOfferAjax.prototype.setOnLoad = function(Sb) { this.Sb = Sb;};mboxOfferAjax.prototype.show = function(Y) { var cc = document.createElement('div'); cc.id = Y.getImportName(); cc.innerHTML = this.Wb; var B = Y.showContent(cc); if (B == 1) { this.Sb(); } return B;};mboxOfferDefault = function() { this.Sb = function() {};};mboxOfferDefault.prototype.setOnLoad = function(Sb) { this.Sb = Sb;};mboxOfferDefault.prototype.show = function(Y) { var B = Y.hide(); if (B == 1) { this.Sb(); } return B;};mboxCookieManager = function mboxCookieManager(g, dc) { this.g = g; this.dc = dc == '' || dc.indexOf('.') == -1 ? '' : '; domain=' + dc; this.ec = new mboxMap(); this.loadCookies();};mboxCookieManager.prototype.isEnabled = function() { this.setCookie('check', 'true', 60); this.loadCookies(); return this.getCookie('check') == 'true';};mboxCookieManager.prototype.setCookie = function(g, h, bb) { if (typeof g != 'undefined' && typeof h != 'undefined' && typeof bb != 'undefined') { var fc = new Object(); fc.name = g; fc.value = escape(h); fc.expireOn = Math.ceil(bb + new Date().getTime() / 1000); this.ec.put(g, fc); this.saveCookies(); }};mboxCookieManager.prototype.getCookie = function(g) { var fc = this.ec.get(g); return fc ? unescape(fc.value) : null;};mboxCookieManager.prototype.deleteCookie = function(g) { this.ec.remove(g); this.saveCookies();};mboxCookieManager.prototype.getCookieNames = function(gc) { var hc = new Array(); this.ec.each(function(g, fc) { if (g.indexOf(gc) == 0) { hc[hc.length] = g; } }); return hc;};mboxCookieManager.prototype.saveCookies = function() { var ic = new Array(); var jc = 0; this.ec.each(function(g, fc) { ic[ic.length] = g + '#' + fc.value + '#' + fc.expireOn; if (jc < fc.expireOn) { jc = fc.expireOn; } }); var kc = new Date(jc * 1000); document.cookie = this.g + '=' + ic.join('|') + '; expires=' + kc.toGMTString() + '; path=/' + this.dc;};mboxCookieManager.prototype.loadCookies = function() { this.ec = new mboxMap(); var lc = document.cookie.indexOf(this.g + '='); if (lc != -1) { var mc = document.cookie.indexOf(';', lc); if (mc == -1) { mc = document.cookie.indexOf(',', lc); if (mc == -1) { mc = document.cookie.length; } } var nc = document.cookie.substring( lc + this.g.length + 1, mc).split('|'); var oc = Math.ceil(new Date().getTime() / 1000); for (var j = 0; j < nc.length; j++) { var fc = nc[j].split('#'); if (oc <= fc[2]) { var pc = new Object(); pc.name = fc[0]; pc.value = fc[1]; pc.expireOn = fc[2]; this.ec.put(pc.name, pc); } } }};mboxSession = function(qc, rc, Ab, sc, J) { this.rc = rc; this.Ab = Ab; this.sc = sc; this.J = J; this.tc = false; this.Ib = typeof mboxForceSessionId != 'undefined' ? mboxForceSessionId : mboxGetPageParameter(this.rc); if (this.Ib == null || this.Ib.length == 0) { this.Ib = J.getCookie(Ab); if (this.Ib == null || this.Ib.length == 0) { this.Ib = qc; this.tc = true; } } J.setCookie(Ab, this.Ib, sc);};mboxSession.prototype.getId = function() { return this.Ib;};mboxSession.prototype.forceId = function(uc) { this.Ib = uc; this.J.setCookie(this.Ab, this.Ib, this.sc);};mboxPC = function(Ab, sc, J) { this.Ab = Ab; this.sc = sc; this.J = J; this.Ib = typeof mboxForcePCId != 'undefined' ? mboxForcePCId : J.getCookie(Ab); if (this.Ib != null) { J.setCookie(Ab, this.Ib, sc); }};mboxPC.prototype.getId = function() { return this.Ib;};mboxPC.prototype.forceId = function(uc) { if (this.Ib != uc) { this.Ib = uc; this.J.setCookie(this.Ab, this.Ib, this.sc); return true; } return false;};mboxGetPageParameter = function(g) { var B = null; var vc = new RegExp(g + "=([^\&]*)"); var wc = vc.exec(document.location); if (wc != null && wc.length >= 2) { B = wc[1]; } return B;};mboxSetCookie = function(g, h, bb) { return mboxFactoryDefault.getCookieManager().setCookie(g, h, bb);};mboxGetCookie = function(g) { return mboxFactoryDefault.getCookieManager().getCookie(g);};mboxCookiePageDomain = function() { var dc = (/([^:]*)(:[0-9]{0,5})?/).exec(document.location.host)[1]; var xc = /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/; if (!xc.exec(dc)) { var yc = (/([^\.]+\.[^\.]{3}|[^\.]+\.[^\.]+\.[^\.]{2})$/).exec(dc); if (yc) { dc = yc[0]; } } return dc ? dc: "";};mboxShiftArray = function(zc) { var B = new Array(); for (var j = 1; j < zc.length; j++) { B[B.length] = zc[j]; } return B;};mboxGenerateId = function() { return (new Date()).getTime() + "-" + Math.floor(Math.random() * 999999);};mboxScreenHeight = function() { return screen.height;};mboxScreenWidth = function() { return screen.width;};mboxBrowserWidth = function() { return (window.innerWidth) ? window.innerWidth : document.documentElement ? document.documentElement.clientWidth : document.body.clientWidth;};mboxBrowserHeight = function() { return (window.innerHeight) ? window.innerHeight : document.documentElement ? document.documentElement.clientHeight : document.body.clientHeight;};mboxBrowserTimeOffset = function() { return -new Date().getTimezoneOffset();};mboxScreenColorDepth = function() { return screen.pixelDepth;};if (typeof mboxVersion == 'undefined') { var mboxVersion = 40; var mboxFactories = new mboxMap(); var mboxFactoryDefault = new mboxFactory('recreationalequipmen.tt.omtrdc.net', 'recreationalequipmen', 'default');};if (mboxGetPageParameter("mboxDebug") != null || mboxFactoryDefault.getCookieManager() .getCookie("debug") != null) { setTimeout(function() { if (typeof mboxDebugLoaded == 'undefined') { alert('Could not load the remote debug.\nPlease check your connection' + ' to Test&amp;Target servers'); } }, 60*60); document.write('<' + 'scr' + 'ipt language="Javascript1.2" src=' + '"http://admin16.testandtarget.omniture.com/admin/mbox/mbox_debug.jsp?mboxServerHost=recreationalequipmen.tt.omtrdc.net' + '&clientCode=recreationalequipmen"><' + '\/scr' + 'ipt>');};mboxScPluginFetcher = function(b, Ac) { this.b = b; this.Ac = Ac;};mboxScPluginFetcher.prototype.Bc = function(w) { w.setBasePath('/m2/' + this.b + '/sc/standard'); this.Cc(w); var e = w.buildUrl(); e += '&scPluginVersion=1'; return e;};mboxScPluginFetcher.prototype.Cc = function(w) { var Dc = [ "dynamicVariablePrefix","visitorID","vmk","ppu","charSet", "visitorNamespace","cookieDomainPeriods","cookieLifetime","pageName", "currencyCode","variableProvider","channel","server", "pageType","transactionID","purchaseID","campaign","state","zip","events", "products","linkName","linkType","resolution","colorDepth", "javascriptVersion","javaEnabled","cookiesEnabled","browserWidth", "browserHeight","connectionType","homepage","pe","pev1","pev2","pev3", "visitorSampling","visitorSamplingGroup","dynamicAccountSelection", "dynamicAccountList","dynamicAccountMatch","trackDownloadLinks", "trackExternalLinks","trackInlineStats","linkLeaveQueryString", "linkDownloadFileTypes","linkExternalFilters","linkInternalFilters", "linkTrackVars","linkTrackEvents","linkNames","lnk","eo" ]; for (var j = 0; j < Dc.length; j++) { this.Ec(Dc[j], w); } for (var j = 1; j <= 75; j++) { this.Ec('prop' + j, w); this.Ec('eVar' + j, w); this.Ec('hier' + j, w); }};mboxScPluginFetcher.prototype.Ec = function(g, w) { var h = this.Ac[g]; if (typeof(h) === 'undefined' || h === null || h === '') { return; } w.addParameter(g, h);};mboxScPluginFetcher.prototype.cancel = function() { };mboxStandardScPluginFetcher = function(b, Ac) { mboxScPluginFetcher.call(this, b, Ac);};mboxStandardScPluginFetcher.prototype = new mboxScPluginFetcher;mboxStandardScPluginFetcher.prototype.getType = function() { return 'standard';};mboxStandardScPluginFetcher.prototype.fetch = function(w) { w.setServerType(this.getType()); var e = this.Bc(w); document.write('<' + 'scr' + 'ipt src="' + e + '" language="JavaScript"><' + '\/scr' + 'ipt>');};mboxAjaxScPluginFetcher = function(b, Ac) { mboxScPluginFetcher.call(this, b, Ac);};mboxAjaxScPluginFetcher.prototype = new mboxScPluginFetcher;mboxAjaxScPluginFetcher.prototype.fetch = function(w) { w.setServerType(this.getType()); var e = this.Bc(w); this.x = document.createElement('script'); this.x.src = e; document.body.appendChild(this.x);};mboxAjaxScPluginFetcher.prototype.getType = function() { return 'ajax';};function mboxLoadSCPlugin(Ac) { if (!Ac) { return null; } Ac.m_tt = function(Ac) { var Fc = Ac.m_i('tt'); Fc.H = true; Fc.b = 'recreationalequipmen'; Fc['_t'] = function() { if (!this.isEnabled()) { return; } var Y = this.Hc(); if (Y) { var Ub = mboxFactoryDefault.isDomLoaded() ? new mboxAjaxScPluginFetcher(this.b, this.s) : new mboxStandardScPluginFetcher(this.b, this.s); Y.setFetcher(Ub); Y.load(); } }; Fc.isEnabled = function() { return this.H && mboxFactoryDefault.isEnabled(); }; Fc.Hc = function() { var ab = this.Ic(); var Fb = document.createElement('DIV'); return mboxFactoryDefault.create(ab, new Array(), Fb); }; Fc.Ic = function() { var Jc = this.s.events && this.s.events.indexOf('purchase') != -1; return 'SiteCatalyst: ' + (Jc ? 'purchase' : 'event'); }; }; return Ac.loadModule('tt');};
-/* $Id: dropDown.js 2205 2012-04-11 01:55:37Z cromeis $ */
+/* $Id: dropDown.js 3024 2012-05-24 17:01:47Z agersho $ */
 
 /* All Dual licensed under the MIT and GPL licenses: http://www.opensource.org/licenses/mit-license.php, http://www.gnu.org/licenses/gpl.html */
 
@@ -1750,9 +1811,9 @@ function getUserInfoCookie(dIngredient){
 				if ($('.sfHover').length) {
 					var curLiPosition = $(".sfHover").position().left;
 				}
-				
+
 				//Calculate the amount of overhang of the catitemWrapper
-				var offsetWrapper =  hunt3Width - (curLiPosition + widthcatitemsWrapper);
+				var offsetWrapper =  hunt3Width - (curLiPosition + widthcatitemsWrapper - 9);
 								
 				//If the dropdown menu + location is greater than the overall width of the page...move the catitemWrapper to the left (pixel difference).
 				if ((curLiPosition + widthcatitemsWrapper) > hunt3Width) {
@@ -1928,7 +1989,7 @@ function O_GoT(_p) {
     _d.write('<a href=\'javascript:O_LC()\'>' + _p + '</a>');
     _fPe()
 }
-/* $Id: minicart.class.js 2525 2012-04-25 02:03:18Z jpieruc $ */
+/* $Id: minicart.class.js 3450 2012-06-18 21:49:54Z dalee $ */
 
 // Requirements: 
 //	jQuery
@@ -2519,6 +2580,7 @@ window-resize triggers error */
 			//Calling AJAX wrapper method of type GET
 			rei.services.Read(serviceCallURL,{},{
 						dataType: 'text',
+						cache: false,
 						success: function(data)
 						{
 							var returnedJson = null;
@@ -2563,7 +2625,32 @@ window-resize triggers error */
 								}
 							}
 						},
-						error: function(){
+						error: function(jqXHR, textStatus, errorThrown){
+							var errors =  $.parseJSON(jqXHR.responseText),
+								statusCode = jqXHR.status,
+								errorCodes = [];
+							
+							errors = (errors.error && $.isArray(errors.error)) ? errors.error : errors;
+							
+							if($.isArray(errors)){
+								for(var i = 0; i < errors.length; i++){
+									errorCodes.push(errors[i].code);
+								}
+							}
+
+							/*
+								FIX for ONLINE-12703 and INC203367 
+								@desc	We are emptying the cookies and reloading the page for a user when the REI_SESSION_ID is empty.
+							*/
+							if(statusCode === 400 && ( $.inArray(1400, errorCodes) > -1 || !$.cookie("REI_SESSION_ID") )){
+								setCookie("REI_SESSION_ID","");
+								setCookie("REI_SSL_SESSION_ID","");
+								setCookie("loggedin","");
+								setCookie("rei_cart","0");
+								setCookie("outlet_cart","");
+								window.location.reload();
+								return;
+							}
 							_showError(serviceCallURL);	
 						}
 					}
@@ -2597,6 +2684,7 @@ window-resize triggers error */
 			//rei.services.Create(serviceCallURL,{},{
 			jQuery.ajax({
 			    type: "POST",
+			    cache: false,
 			    url: serviceCallURL,
 			    dataType: "json",
 						beforeSend:function(){
@@ -2926,13 +3014,12 @@ window-resize triggers error */
 		 */
 		function prepareGiftCertificateAddToCart() {
 			
-			var giftCardButton = $("a[id=giftCard]");
-			var giftCardAnotherButton = $("a[id=giftCardAnother]");
-			
-			var eGiftCardButton = $("a[id=eGiftCard]");
-			var eGiftcardAnotherButton = $("a[id=eGiftCardAnother]");
-			
-			
+			var giftCardButton = $("a.btnStyle1[name=giftCard]");
+            var giftCardAnotherButton = $("a.btnStyle1[name=giftCardAnother]");
+
+            var eGiftCardButton = $("a.btnStyle1[name=eGiftCard]");
+            var eGiftcardAnotherButton = $("a.btnStyle1[name=eGiftCardAnother]");
+
 			if(giftCardButton)
 			{
 				var g_url= giftCardButton.attr("href");
@@ -3305,7 +3392,7 @@ window-resize triggers error */
 
 var minicart=0;
 // minicart is initialized from rei.js
-/* $Id: unvHeader.js 1914 2012-03-30 17:26:26Z jowilso $ */
+/* $Id: unvHeader.js 2946 2012-05-21 21:47:47Z agatlab $ */
 
 var setup_cook_obj = ReadGRCookie("GiftRegistrySetup");
 
@@ -3326,6 +3413,16 @@ var hdrObj = {
 		var miniCartHover ='miniCartHover';
 		var miniCartClick = 'miniCartClick';
 		testItemsAmt = parseInt((testItemsAmt||numOfItems), 10);
+
+		/*
+			FIX for ONLINE-12703 and INC203367 
+			@desc	We are emptying the rei_cart cookies for a user when the REI_SESSION_ID is empty.
+		*/
+		if(!$.cookie("REI_SESSION_ID")){
+			$.cookie("rei_cart", "0", { expires: 14, path: "/" });
+			testItemsAmt = 0;
+		}
+		
 		if (testItemsAmt > 0) {
 			if(document.body.className.indexOf('checkout') < 0){		
 				$('#ghCartNew').unbind('mouseover').bind('mouseover',function(e){
@@ -5850,8 +5947,7 @@ function initMarqueeImageSlideShow(componentId, imgCount, interval)
 			              if (c.totalRows >= c.minItemsForPaging) {
     			                  var multiPager = 
                                                                     "<div class='show' id='pages' style='padding-left:30px; padding-right:30px; top-margin:8px' >" +
-                                                                        "pages: " +
-                                                                        "<a href='#'  class='previousBtn' id='" + (c.page-1) + "'><img src='/pix/common/button_prev.gif' alt='previous page' title='previous page' border='0' class='previousBtn' /></a>";
+                                                                        "<a href='#'  class='previousBtn' id='" + (c.page-1) + "'><div class='arrowLeft'></div></a>";
                                                               for (var i = 0; i < c.totalPages; i++)  {
                                                                   if ((i  > (c.page - 5)) && (i  < (c.page + 5))) { 
                                                                     if (i  == c.page) {
@@ -5864,7 +5960,7 @@ function initMarqueeImageSlideShow(componentId, imgCount, interval)
                                                                   }
                                                               }
                                                                multiPager = multiPager +
-                                                                        "<a href='#' class='nextBtn' id='" + (c.page+1) + "'><img src='/pix/common/button_next.gif' alt='next page' title='next page' border='0' class='nextBtn' /></a>" +
+                                                                        "<a href='#' class='nextBtn' id='" + (c.page+1) + "'><div class='arrowRight'></div></a>" +
                                                                     "</div>" +
                                                                     "<div class='show' >" + 
                                                                         c.items + " per page: " +
@@ -5939,7 +6035,8 @@ function initMarqueeImageSlideShow(componentId, imgCount, interval)
 				    if(c.page < 0 || c.page > (c.totalPages-1)) {
 					c.page = 0;
 				    }
-				    $( 'html, body' ).delay(500).animate( { scrollTop: $('#sortableTable').offset().top - 300}, 'fast' );
+// In CQ5 we now deal with random unique IDs created for each table element.  The scrollTop must be placed within the JSP.
+//				    $( 'html, body' ).delay(500).animate( { scrollTop: $('#sortableTable').offset().top - 300}, 'fast' );
 				    renderTable(table,c.rowsCopy);
 				}
 			}

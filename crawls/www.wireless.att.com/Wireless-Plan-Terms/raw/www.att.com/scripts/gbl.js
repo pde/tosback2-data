@@ -169,23 +169,9 @@ GlobalNav = {
 			return thisAnchor.get()[0];
 		},
 		checkInitConditions: function(){if(GlobalNav.SegMenu.isLoaded && GlobalNav.UserInfo.isLoaded){GlobalNav.initialize()}},
-		XDsafe:function(options){
-			if (jQuery.browser.msie && window.XDomainRequest) {
-				if(typeof options.data.locale == "undefined"){options.data.locale = "en_US"}
-				if(typeof options.data.userGroups == "undefined" ){options.data.userGroups = ""}
-				var ajaxData = "?locale=" + options.data.locale + "&userGroups=" + options.data.userGroups;
-				var xdr = new XDomainRequest();
-				xdr.open("get", options.url + ajaxData);
-				xdr.onload = function() {options.success(xdr.responseText)};
-				xdr.onerror = function() {jQuery.ajax(options)}
-				xdr.send();
-			} else {
-				jQuery.ajax(options);
-			}
-		},
 		tieredMenuAjaxOptions:{},
 		tieredMenuAjaxMethods:{
-			error:function(jXHR, status, err){if(GlobalNav.util.tieredMenuAjaxOptions.url != GlobalNav.resources.failSafeJSON){GlobalNav.util.getTieredMenuJSON(GlobalNav.resources.failSafeJSON)}},
+			error:function(jXHR, status, err){if(typeof GlobalNav.resources.failSafeJSON != "undefined" && GlobalNav.util.tieredMenuAjaxOptions.url != GlobalNav.resources.failSafeJSON ){GlobalNav.util.getTieredMenuJSON(GlobalNav.resources.failSafeJSON)}},
 			success:function(data, status, jXHR){
 				data = jQuery.parseJSON(data);
 				if(!!data.length && data != null){
@@ -218,7 +204,7 @@ GlobalNav = {
 				error:GlobalNav.util.tieredMenuAjaxMethods.error,
 				success:GlobalNav.util.tieredMenuAjaxMethods.success
 			};
-			GlobalNav.util.XDsafe(GlobalNav.util.tieredMenuAjaxOptions);
+			jQuery.ajax(GlobalNav.util.tieredMenuAjaxOptions);
 		},
 		addSecondaryItemsFromJSON: function(primaryMenuList, JSON){
 		
@@ -979,7 +965,7 @@ jQuery(function(){
 var reporting_ready = window.reporting_ready || new jQuery.Deferred();
 jQuery.when(reporting_ready).then(function (reporting) {
 	reporting.capture([
-   		{selector: '#tieredNav a', type: 'wtparam', name: 'wtLinkName'},
+		{selector: '#tieredNav a', type: 'wtparam', name: 'wtLinkName'},
 		{selector: '#tieredNav a', type: 'wtparam', name: 'wtLinkLoc', value: 'GLBN'},
 		{selector: '#tieredNav a', type: 'wtlink', name: '', params: 'wtLinkName,wtLinkLoc', trigger: 'mousedown'},
 		{selector: '#segMenuBar a', type: 'wtparam', name: 'wtLinkName'},
@@ -992,10 +978,10 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		{selector: '#footer a', type: 'wtparam', name: 'wtLinkLoc', value: 'GLBN_FTR'},
 		{selector: '#footer a', type: 'wtlink', name: '', params: 'wtLinkName,wtLinkLoc', trigger: 'mousedown'},
 		{selector: 'form#searchForm', type: 'wtmeta', name: 'wtAutoSuggestInd', deferred: true,
-            value: function() {
-            	return jQuery('#autoSuggestBox:isvisible').length ? 'Y' : 'N';
-        	}
-        }
+			value: function() {
+				return jQuery('#autoSuggestBox:isvisible').length ? 'Y' : 'N';
+			}
+		}
 	]);
 });
 
@@ -1038,30 +1024,29 @@ jQuery(document).ready(function(){
 			self.val(initVal); //new to handle spanish
 		}
 	});
-	
 });
 
 function scriptLoader(url, callback){
-    var doc = document, script = doc.createElement("script");
-    script.type = "text/javascript";
+	var doc = document, script = doc.createElement("script");
+	script.type = "text/javascript";
 
 	if (callback == undefined) callback = function(){};
 	
-    if (script.readyState){//IE
-        script.onreadystatechange = function(){
-            if (script.readyState == "loaded" || script.readyState == "complete"){
-                script.onreadystatechange = null;
-                callback();
-            }
-        };
-    } else {//Others
-        script.onload = function(){
-            callback();
-        };
-    }
+	if (script.readyState){//IE
+		script.onreadystatechange = function(){
+			if (script.readyState == "loaded" || script.readyState == "complete"){
+				script.onreadystatechange = null;
+				callback();
+			}
+		};
+	} else {//Others
+		script.onload = function(){
+			callback();
+		};
+	}
 
-    script.src = url;
-    doc.getElementsByTagName("head")[0].appendChild(script);
+	script.src = url;
+	doc.getElementsByTagName("head")[0].appendChild(script);
 }
 
 function validateSearchForm(){
@@ -1119,14 +1104,14 @@ function validateSearchForm(){
 					jsonpCallback: "insertAutoSuggestions",
 					success: function(data) {
 						var ra = [];
- 	                	if(data.length == 0) {
-                    		jQuery("#autoSuggestBox").hide();
-                    		return false;
-                        } else {
-	 						jQuery.each(data, function(raindex, raval){
-	 							ra[raindex] = {"label": raval.short, "value": raval.short};
- 							});
- 							response(ra);
+						if(data.length == 0) {
+							jQuery("#autoSuggestBox").hide();
+							return false;
+						} else {
+							jQuery.each(data, function(raindex, raval){
+								ra[raindex] = {"label": raval["short"], "value": raval["short"]};
+							});
+							response(ra);
 						}
 					}
 				});

@@ -1,5 +1,5 @@
 // setup container for new divs
-$('#wrapper').prepend('<div id="DivContainer" style="position: relative; width:0px; top:0px; left:0px; z-index: 100000;"></div>');
+$('#wrapper').prepend('<div id="DivContainer" style="position: relative; width:0px; top:0px; left:0px; z-index: 10002;"></div>');
 
 //MEN TOP NAV SET BORDER	
 /*$(document).ready(function() {
@@ -9,12 +9,10 @@ $('#wrapper').prepend('<div id="DivContainer" style="position: relative; width:0
 });*/
 
 //willis	
-$(document).ready(function() {
+/*$(document).ready(function() {
 	$.getScript('/us/willis/js/jquery.scrollTo-min.js');
-	$.getScript('/us/willis/js/willis.js');
-
-	
-});
+	$.getScript('/us/willis/js/willis.js');	
+});*/
 
 function popWillis(){
 	//alert('willis shop');
@@ -37,6 +35,280 @@ function closeMe()
            	$('#divCon').html('');
 		   	$('#divCon').remove();
 		}
+
+//URL
+function goLink(linkwwcm){
+	switch(linkwwcm){
+		case 'ctg'://CTG Legacy Module
+		window.location = "/online/handbags/Legacy_Collection-10551-10051-en";
+		break;
+		
+		case 'down'://download
+		window.location = "/online/handbags/genWCM-10551-10051-en-/Coach_US/StaticPage/downloads?LOC=WWCM";
+		break;
+
+		case 'ecard'://ecard
+		window.location = "/online/handbags/genWCM-10551-10051-en-/Coach_US/StaticPage/gift_cards?LOC=LN?LOC=WWCM";
+		break;
+
+		case 'ship'://shipping info
+		//window.location = "/online/handbags/StoreLocatorGMView?storeId=10551&catalogId=10051&LOC=WWCM";
+		window.location = "/online/handbags/genWCM-10551-10051-en-/Coach_US/CustomerService/OrderInformation/SHIPPING+METHODS+AND+FEES?LOC=WWCM";
+		//window.location = "/online/handbags/genWCM-10551-10051-en-/Coach_US/StaticPage/gift_cards?LOC=LN?LOC=WWCM";
+		break;
+		
+		case 'allshoes'://view all shoes
+		window.location = "/online/handbags/-women_s_shoes-10551-10051-105-en?viewType=viewall&t1Id=105&t2Id=105&LOC=WWCM";
+		break;		
+		
+		case 'allwal'://view all wallet
+		window.location = "/online/handbags/-wallets_wristlets-10551-10051-5000000000000013510-en?viewType=viewall&t1Id=5000000000000013510&t2Id=5000000000000013510&LOC=WWCM";
+		break;
+		
+		case 'allhan'://view all handbags
+		window.location = "/online/handbags/-handbags_features_newarrivals_1-10551-10051-5000000000000015027-en?t1Id=62&t2Id=5000000000000015027&tier=2&LOC=LN1&LOC=WWCM";
+		break;
+
+		case 'vdaywomen'://vday women
+		window.location = "/online/handbags/-giftshop_vdayher-10551-10051-5000000000000218801-en?t1Id=5000000000000000007&t2Id=5000000000000218801&tier=2&LOC=WWCM";
+		break;		
+
+		case 'vdaymen':////vday men
+		window.location = "/online/handbags/-giftshop_vdayhim-10551-10051-5000000000000286301-en?t1Id=5000000000000000007&t2Id=5000000000000286301&tier=2&LOC=WWCM";
+		break;
+		
+		case 'tony':////tony duquette shop
+		window.location = "/online/handbags/-tony_duquette_collection-10551-10051-5000000000000283803-en?t1Id=5000000000000000001&t2Id=5000000000000283803&tier=2&LOC=WWCM";
+		break;
+
+		case 'techM':////men techcase shop
+		window.location = "/online/handbags/-men_s_tech_cases-10551-10051-5000000000000281301-en?t1Id=82&t2Id=5000000000000281301&tier=2&LOC=WWCM";
+		break;		
+
+		case 'mono': //monogramm men shop
+		window.location = "/online/handbags/-mens_monogramming-10551-10051-5000000000000286302-en?t1Id=82&t2Id=5000000000000286302&tier=2&LOC=WWCM";
+		break;
+		
+		case 'stripes': //stripes shop
+		window.location = "/online/handbags/-newatcoach_earnyourstripes-10551-10051-5000000000000295301-en?t1Id=5000000000000000001&t2Id=5000000000000295301&tier=2&LOC=WWCM";
+		break;
+		
+		case 'baseball': //men's baseball shop
+		window.location="/online/handbags/-men_heritage-10551-10051-5000000000000298301-en?t1Id=82&t2Id=5000000000000298301&tier=2&LOC=WWCM";
+		break;
+		
+		case 'nares': //james nares shop
+		window.location="/online/handbags/-men_jamesnares-10551-10051-5000000000000298302-en?t1Id=82&t2Id=5000000000000298302&tier=2&LOC=WWCM";
+		break;
+		
+		case 'momFB': //facebook you, your mom and coach
+		window.open('https://www.facebook.com/Coach/app_356975334348552','_blank');
+		break;
+
+		case 'route': 		//day trippers
+		case 'trippers': 
+		popDayTrippers();
+		break;	
+
+		case 'grad': //gifts for grad
+		window.location="/online/handbags/-giftshop-10551-10051-5000000000000000007-en?viewType=viewall&t1Id=5000000000000000007&t2Id=5000000000000000007&LOC=WWCM";
+		break;
+		
+	
+	}
+		
+}
+
+//Leg video
+function poplegVid(vid)	{
+$('#DivContainer').prepend('<div id="vidDiv" style="visibility:visible; width:960px; top: 60px; *top:-80px; height:540px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closelegVid()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><video width="960" height="540" controls="autoplay" id="video"><source src="http://assets.coach.com/media/02_timeless_style_iPad-iPhone4_1.6Mbps.mp4"  id="vidSrc" type="video/mp4"  /></video></div>');
+
+	switch(vid){
+		case '1':
+		$('#vidSrc').attr('src','http://assets.coach.com/media/03_coach_archives_extended_iPad-iPhone4_1.6Mbps.mp4');
+		break;
+
+
+		case '2':
+		$('#vidSrc').attr('src','http://assets.coach.com/media/04_heritage_iPad-iPhone4_1.6Mbps.mp4');
+		break;	
+	}
+	  
+	 // REPOSITION DIV
+	divname = 'vidDiv';
+	divwidth = 960;
+	divheight = 540;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "legacy mobile video";
+	s.eVar16 = "legacy mobile video";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closelegVid() {
+	$('#video').remove();
+	$('#vidDiv').remove();
+	window.onresize = null; 
+
+}	
+		
+//FATHER DAY SOCIAL
+//FB
+function popupFB(card){
+	var fbArr = new Array(0,228,229, 230, 231, 232, 233);
+	ecard = card +'?CID=Z_FBW'+fbArr[card];
+	var fburl = 'https://www.facebook.com/sharer.php?u=';
+	var url='http://www.coach.com/online/handbags/genWCM-10551-10051-en-/Coach_US/StaticPage/fathersday#';
+	var newfburl = fburl + escape(url+card);
+
+	var width  = 450,
+		height = 380,
+		left   = ($(window).width()  - width)  / 2,
+		top    = ($(window).height() - height) / 2,
+		url    = this.href,
+		opts   = 'status=0,menubar=0,toolbar=0' +
+				 ',width='  + width  +
+				 ',height=' + height +
+				 ',top='    + top    +
+				 ',left='   + left;
+
+	window.open(newfburl, 'fb', opts);
+	return false;				
+}
+		
+//Twitter		
+function popupTW(card){
+	var twurl='https://twitter.com/share?url=';
+	var twurl2='Check out the Things Organized Neatly project for @Coach Men\'s \n';
+	var url='http://bit.ly/KGaFt3';
+	//var newtwurl = twurl + escape(url+card)+'&text='+escape(twurl2);
+	var newtwurl = twurl + escape(url)+'&text='+escape(twurl2);
+
+	var width  = 480,
+		height = 350,
+		left   = ($(window).width()  - width)  / 2,
+		top    = ($(window).height() - height) / 2,
+		url    = this.href,
+		opts   = 'status=0,menubar=0,toolbar=0' +
+				 ',width='  + width  +
+				 ',height=' + height +
+				 ',top='    + top    +
+				 ',left='   + left;
+
+	window.open(newtwurl, 'twitter', opts);
+	return false;		
+}
+
+//Pinterest
+function getPinUrl(card){
+	var pturl = 'http://pinterest.com/pin/create/button/?url=';
+	var pturl2 = 'http://www.coach.com/online/handbags/MensLandingView?langId=-1&storeId=10551&catalogId=10051&contentName=/CompanyInformation/CoachNews/menslanding&LOC=WWCM';
+	var path= 'http://www.coach.com/us/201206/ecard/images/card_'+card+'.jpg';
+	var desc= 'My favorite portrait from the Things Organized Neatly project for Coach Men\'s';
+	var newpturl = pturl + escape(pturl2) + '&media=' + escape(path) + '&description=' + escape(desc);
+	console.log(newpturl);
+	return newpturl;
+	
+}
+function popupPT(card){
+	var newpturl = getPinUrl(card);
+	var width  = 600,
+		height = 350,
+		left   = ($(window).width()  - width)  / 2,
+		top    = ($(window).height() - height) / 2,
+		url    = this.href,
+		opts   = 'status=0,menubar=0,toolbar=0' +
+				 ',width='  + width  +
+				 ',height=' + height +
+				 ',top='    + top    +
+				 ',left='   + left;
+
+	window.open(newpturl, 'pinterest', opts);
+	return false;				
+}
+		
+		
+//dad ecard
+//function popupDadcard(card){
+function sendMail(card){
+	//alert(card);
+	if(card!=null){
+		$('#DivContainer').prepend('<div id="DadcardDiv" style="visibility:visible; width:853px; height:403px; top: 60px; *top:-80px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:1; border:none;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeDadcard()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/us/201206/ecard/images/close.jpg"/></a><iframe style="width:851px; height:401px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true; border:1px solid #000000;"" name="DadcardFrame" id="DadcardFrame" src="/us/201206/ecard/index.html#'+card+'" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');	
+		
+		//OMNITURE TRACKER	
+		s.pageName = ' fathersday ecard: select: '+card;
+		s.prop1 = ' fathersday ecard';
+		s.prop2 = ' fathersday ecard: select ';
+		s.prop3 = ' fathersday ecard: select: '+card;
+		s.prop4 = 'holiday campaign';	
+	
+	}else{
+		$('#DivContainer').prepend('<div id="DadcardDiv" style="visibility:visible; width:853px; height:403px; top: 60px; *top:-80px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:1; border:none;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeDadcard()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/us/201206/ecard/images/close.jpg"/></a><iframe style="width:851px; height:401px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true; border:1px solid #000000;"" name="DadcardFrame" id="DadcardFrame" src="/us/201206/ecard/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');		
+	
+		//OMNITURE TRACKER	
+		s.pageName = ' fathersday ecard: select: 1';
+		s.prop1 = ' fathersday ecard';
+		s.prop2 = ' fathersday ecard: select ';
+		s.prop3 = ' fathersday ecard: select: 1';
+		s.prop4 = 'holiday campaign';	
+	}
+	  
+	 // REPOSITION DIV
+	divname = 'DadcardDiv';
+	divwidth = 853;
+	divheight = 403;
+	window.onresize =  divPos;
+	divPos();		
+		
+	var s_code=s.t();
+	if(s_code)document.write(s_code);	
+}
+	
+
+function closeDadcard() {
+	$('#DadcardFrame').remove();
+	$('#DadcardDiv').remove();
+	window.onresize = null; 
+
+}
+
+		
+// DayTrippers Div
+function popDayTrippers(){
+$('#DivContainer').prepend('<div id="dayTrippersDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeDayTrippers()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="dayTrippersFrame" id="dayTrippersFrame" src="/us/201206/daytrippers/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'dayTrippersDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "dayTrippers";
+	s.eVar16 = "dayTrippers";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closeDayTrippers() {
+	$('#dayTrippersFrame').remove();
+	$('#dayTrippersDiv').remove();
+	window.onresize = null; 
+
+}
+		
+		
+	
 //Coach and The Glow div
 function popGlow(){
 $('#DivContainer').prepend('<div id="glowDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeGlow()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="glowFrame" id="glowFrame" src="/us/201205/glow/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
@@ -408,70 +680,6 @@ function closeStripes() {
 }
 
 
-//URL
-function goLink(linkwwcm){
-	switch(linkwwcm){
-		case 'down'://download
-		window.location = "/online/handbags/genWCM-10551-10051-en-/Coach_US/StaticPage/downloads?LOC=WWCM";
-		break;
-
-		case 'ecard'://ecard
-		window.location = "/online/handbags/genWCM-10551-10051-en-/Coach_US/StaticPage/gift_cards?LOC=LN?LOC=WWCM";
-		break;
-
-		case 'ship'://shipping info
-		window.location = "/online/handbags/StoreLocatorGMView?storeId=10551&catalogId=10051&LOC=WWCM";
-		//window.location = "/online/handbags/genWCM-10551-10051-en-/Coach_US/CustomerService/OrderInformation/SHIPPING+METHODS+AND+FEES?LOC=WWCM";
-		//window.location = "/online/handbags/genWCM-10551-10051-en-/Coach_US/StaticPage/gift_cards?LOC=LN?LOC=WWCM";
-		break;
-		
-		case 'allshoes'://view all shoes
-		window.location = "/online/handbags/-poppy_collection-10551-10051-105-en?viewType=viewall&t1Id=105&t2Id=105&LOC=WWCM";
-		break;		
-		case 'allwal'://view all wallet
-		window.location = "/online/handbags/-poppy_collection-10551-10051-5000000000000013510-en?viewType=viewall&t1Id=5000000000000013510&t2Id=5000000000000013510&LOC=WWCM";
-		break;
-
-		case 'vdaywomen'://vday women
-		window.location = "/online/handbags/-giftshop_vdayher-10551-10051-5000000000000218801-en?t1Id=5000000000000000007&t2Id=5000000000000218801&tier=2&LOC=WWCM";
-		break;		
-
-		case 'vdaymen':////vday men
-		window.location = "/online/handbags/-giftshop_vdayhim-10551-10051-5000000000000286301-en?t1Id=5000000000000000007&t2Id=5000000000000286301&tier=2&LOC=WWCM";
-		break;
-		
-		case 'tony':////tony duquette shop
-		window.location = "/online/handbags/-tony_duquette_collection-10551-10051-5000000000000283803-en?t1Id=5000000000000000001&t2Id=5000000000000283803&tier=2&LOC=WWCM";
-		break;
-
-		case 'techM':////men techcase shop
-		window.location = "/online/handbags/-men_s_tech_cases-10551-10051-5000000000000281301-en?t1Id=82&t2Id=5000000000000281301&tier=2&LOC=WWCM";
-		break;		
-
-		case 'mono': //monogramm men shop
-		window.location = "/online/handbags/-mens_monogramming-10551-10051-5000000000000286302-en?t1Id=82&t2Id=5000000000000286302&tier=2&LOC=WWCM";
-		break;
-		
-		case 'stripes': //stripes shop
-		window.location = "/online/handbags/-newatcoach_earnyourstripes-10551-10051-5000000000000295301-en?t1Id=5000000000000000001&t2Id=5000000000000295301&tier=2&LOC=WWCM";
-		break;
-		
-		case 'baseball': //men's baseball shop
-		window.location="/online/handbags/-men_heritage-10551-10051-5000000000000298301-en?t1Id=82&t2Id=5000000000000298301&tier=2&LOC=WWCM";
-		break;
-		
-		case 'nares': //james nares shop
-		window.location="/online/handbags/-men_jamesnares-10551-10051-5000000000000298302-en?t1Id=82&t2Id=5000000000000298302&tier=2&LOC=WWCM";
-		break;
-		
-		case 'momFB': //facebook you, your mom and coach
-		window.open('https://www.facebook.com/Coach/app_356975334348552','_blank');
-		break;
-		}
-		
-}
-
-
 //HANGTAG 
 function popupTag(){//gallery //intro
 	$('#DivContainer').prepend('<div id="tagDiv" style="visibility:visible; top: 60px; *top:-80px; width:741px; height:497px; background-color:#000000; position:fixed; _position: absolute; z-index:1; border:none;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeTag()" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:740px; height:480px; margin-left:0px; margin-top:17px; z-index:80000; _hasLayout:true; border:2px solid #000000;"" name="tagFrame" id="tagFrame" src="http://70th.coach.com/hangtag/us/app.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
@@ -569,14 +777,22 @@ function popContent(content){
 	//var content;
 		
 	$('#DivContainer').html('');
-	$('#DivContainer').prepend('<div id="contentDiv" style="width:850px; height:550px; background:none; position:absolute; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:90000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeContent()" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
+	$('#DivContainer').prepend('<div id="contentDiv" style="width:850px; height:550px; background:#fff; position:absolute; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:90000;background-image:url(\'/popup/loader.gif\'); background-color:#fff;background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeContent()" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
 	
 switch(content){ 
+	// replace Have to Have with Legacy C
+	/*case 'wardrobe':
+	$('#contentDiv').prepend('<iframe style="background: #fff; width:850px; height:550px; margin-left: 0px; margin-top: 0px; z-index: 80000; _hasLayout:true; border: 1px solid #000000;" src="/us/legacy/classic/index.html" name="contentFrame" id="contentFrame" scrolling="no" frameborder="0"></iframe>');	
+	s.pageName = "Legacy Workshop 2: Pop-Up";
+	s.eVar16 = "pop-up>legacy classic";
+	break;*/
+	
+	// true Have to Have 
 	case 'wardrobe':
-	$('#contentDiv').prepend('<iframe style="width:850px; height:550px; margin-left: 0px; margin-top: 0px; z-index: 80000; _hasLayout:true; border: 1px solid #000000;" src="/us/hbshape/index.html" name="contentFrame" id="contentFrame" scrolling="no" frameborder="0"></iframe>');	
+	$('#contentDiv').prepend('<iframe style="background: #fff; width:850px; height:550px; margin-left: 0px; margin-top: 0px; z-index: 80000; _hasLayout:true; border: 1px solid #000000;" src="/us/hbshape/index.html" name="contentFrame" id="contentFrame" scrolling="no" frameborder="0"></iframe>');	
 	s.pageName = "Handbags by Shape: Pop-Up";
 	s.eVar16 = "pop-up>handbags by shape";
-	break;		
+	break;
 	
 	case 'madison':
 	$('#contentDiv').prepend('<iframe style="width:850px; height:550px; margin-left: 0px; margin-top: 0px; z-index: 80000; _hasLayout:true; border: 1px solid #000000;" src="/201110/madison/index.html" name="contentFrame" id="contentFrame" scrolling="no" frameborder="0"></iframe>');	
@@ -1319,7 +1535,7 @@ function closeLook() {
 
 function popupWallets() {
 
-	$('#DivContainer').prepend('<div id="DivWallet" style="width:852px; height:552px; background:none; visibility:hidden; position:fixed; top: 60px; *top:-80px;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><iframe style="width:852px; height:552px;margin-left: 0px; margin-top: 0px; _hasLayout:true; border: 0px solid black;" src="/us/wallet_guide/index.html" name="walletFrame" id="walletFrame" frameborder="0px" scrolling="no"></iframe></div>');
+	$('#DivContainer').prepend('<div id="DivWallet" style="width:844px; height:559px; background:none; visibility:hidden; position:fixed; top: 60px; *top:-80px;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWallets()" style="position: absolute; right: 0px;_left:835;px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:844px; height:559px;margin-left: 0px; margin-top: 0px; _hasLayout:true; border: 0px solid black;" src="/us/wallet_guide/index.html" name="walletFrame" id="walletFrame" frameborder="0px" scrolling="no"></iframe></div>');
 	
 	document.getElementById('DivWallet').style.visibility='visible';
 	document.getElementById('DivWallet').style.zIndex='9000';
@@ -1624,7 +1840,7 @@ function closeMenLeather() {
 function popLeather(hb) {
 	document.getElementById('branding_wrapper').style.zIndex='-5000';
 	
-	$('#DivContainer').prepend('<div id="DivLeather" style="width: 850px; *width:847px;height:550px; top: 60px; *top: 80px;position:fixed;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;background-color: #FFFFFF;"><a href="javascript:closeLeather()" title="" target="" id="closeLink" style="position: absolute; background-color: #000000; height: 25px;*height: 29px; top: 1px; right: 3px;*right: 3px; width: 25px;_left:817px;_z-index:10000005"><img border="0" id="closing" src="/wcsstore/Coach_US/images/btn_detail_close.gif" style="padding-left:5px; padding-top:4px;*padding-top:6px;"/></a><iframe style="width: 850px;*width:847px; height: 550px; *margin-top: 0px; z-index: 8000; _hasLayout:true;border: none;" src="/leather-us/index.html" name="leatherFrame" id="leatherFrame" scrolling="no" frameborder="0"></iframe></div> ');
+	$('#DivContainer').prepend('<div id="DivLeather" style="width: 850px; *width:847px;height:550px; top: 60px; *top: 80px;position:fixed;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;background-color: #FFFFFF;border-bottom: 1px solid #666;"><a href="javascript:closeLeather()" title="" target="" id="closeLink" style="position: absolute; background-color: #000000; height: 25px;*height: 29px; top: 1px; right: 3px;*right: 3px; width: 25px;_left:817px;_z-index:10000005"><img border="0" id="closing" src="/wcsstore/Coach_US/images/btn_detail_close.gif" style="padding-left:5px; padding-top:4px;*padding-top:6px;"/></a><iframe style="width: 850px;*width:847px; height: 550px; *margin-top: 0px; z-index: 8000; _hasLayout:true;" src="/leather-us/index.html" name="leatherFrame" id="leatherFrame" scrolling="no" frameborder="0"></iframe></div> ');
 	
 	s.pageName = "Learn About This Leather Popup";
 	s.eVar16 = "learn about this leather popup";
@@ -1801,6 +2017,12 @@ window.onload = function () {
 				switch(popdiv){
 					case "jw_care":
 						popJw('care');
+						break;
+					case "daytrippers":
+						popDayTrippers();
+						break;
+					case "have2have":
+						popContent('wardrobe');
 						break;
 					case "spotted":
 						popSpot();

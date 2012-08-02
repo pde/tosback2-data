@@ -1,0 +1,331 @@
+var projX ={};
+projX.repeat = false;
+projX.test = false;
+projX.displayEventPre = function(){ return true;};
+projX.displayEventPost = function(){};
+projX.closeEvent = function(){};
+projX.layerindex = 9999999;
+projX.init = function(){
+// testurl for test param
+try{
+var fullUrl = document.location.toString();
+var strQ = fullUrl.split('?')[1];
+var nameValues = strQ.split("&");
+for(n=0; n < nameValues.length; n++ ){
+var name = nameValues[n].split('=')[0];
+var value = nameValues[n].split('=')[1];
+if(name=='_localAdvisoryTest' && value == 'true'){
+projX.test = true;
+projX.repeat = true;
+}
+}
+}catch(e){}
+try{
+var hz = projX.util.getNextHighestZindex();
+if(hz > projX.layerindex)
+projX.layerindex = hz
+}
+catch(e){}
+var projXcookie = projX.cookie.get('projxcookie');
+if(projXcookie == undefined || projX.test){
+var expir = projX.cookie.getExpDate(0,0,1);
+if(projX.cookie.set('projxcookie','yes',false,'/')){
+if(projX.test){
+//projX.displayOverlay(false, 'placeholder', 'placeholder', 'placeholder', 'placeholder.com', 'placeholder.com');
+projX.displayNewOverlay();
+}else{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+}
+}
+};
+projX.close = function(){
+document.getElementById('projxalert').style.display = 'none';
+projX.closeEvent();
+};
+projX.displayOverlay = function(phase2, operatorName, phoneMessage, affectedChannels, websiteUrl, websiteMessage){
+var eventcall = projX.displayEventPre();
+if(!eventcall)
+return;
+// create a modal pane in front of the entire window
+var alertwidth = 500;
+var pageSize = projX.util.getPageSize();
+var winSize = projX.util.getWindowSize();
+var scrDiv = document.createElement('div');
+scrDiv.setAttribute("id", "projxalert");
+scrDiv.setAttribute("class", "projxalert");
+scrDiv.setAttribute("style","position:absolute;top:0px; left:0px; text-align: center; z-index:"+projX.layerindex+"; width:"+pageSize[0]+"px; height:"+pageSize[1]+"px;");
+var alertleft = (pageSize[0]/2)-(alertwidth/2);
+var winH = projX.util.getWindowSize();
+var alerttop = (winSize[1]/2)-150;
+if(alerttop < 0)
+alerttop = 0;
+var htmlout = '';
+htmlout += '<div style="position:absolute; z-index: '+(projX.layerindex++)+'; top:0px; left:0px; text-align: center; Filter: Alpha(Opacity=75); opacity: .75; background-color:#000000; width:'+pageSize[0]+'px; height:'+pageSize[1]+'px;">&nbsp;</div>';
+htmlout += '<div style="position: absolute; text-align: left; padding: 15px; z-index: '+(projX.layerindex++)+'; left: '+alertleft+'px; top: '+alerttop+'px; width: '+alertwidth+'px; background-color:#ffffff; ">';
+if(phase2)
+htmlout += projX.message_phase2(operatorName, phoneMessage, affectedChannels, websiteUrl, websiteMessage);
+else
+htmlout += projX.message_phase1(operatorName, phoneMessage, affectedChannels, websiteUrl, websiteMessage);
+htmlout += '<br/>';
+htmlout += '<a href="projx.jhtml%3Fchannelname=Nickelodeon.html#" onclick="projX.close();return false;" style="position: relative; float:right; font-size: 12px; font-weight: bold; font-family: arial; color:#cc0000;">CLOSE</a>';
+htmlout += '</div>'
+scrDiv.innerHTML = htmlout;
+var alert_div = document.getElementsByTagName('body')[0].appendChild(scrDiv);
+projX.displayEventPost();
+};
+projX.displayNewOverlay = function(){
+var eventcall = projX.displayEventPre();
+if(!eventcall)
+return;
+// create a modal pane in front of the entire window
+var alertwidth = 974;
+var pageSize = projX.util.getPageSize();
+var winSize = projX.util.getWindowSize();
+var scrDiv = document.createElement('div');
+scrDiv.setAttribute("id", "projxalert");
+scrDiv.setAttribute("class", "projxalert");
+scrDiv.setAttribute("style","position:absolute;top:0px; left:0px; text-align:center; z-index:"+projX.layerindex+"; width:"+pageSize[0]+"px; height:"+pageSize[1]+"px;");
+var alertleft = (pageSize[0]/2)-(alertwidth/2);
+var winH = projX.util.getWindowSize();
+var alerttop = (winSize[1]/2)-286;
+if(alerttop < 12)
+alerttop = 12;
+var htmlout = '';
+
+htmlout += '<div style="position:absolute; z-index: '+(projX.layerindex++)+'; top:0px; left:0px; text-align:center; Filter: Alpha(Opacity=75); opacity: .75; background-color:#000000; width:'+pageSize[0]+'px; height:'+pageSize[1]+'px;">&nbsp;</div>';
+htmlout += '<div style="position: absolute; z-index: '+(projX.layerindex++)+'; left: '+alertleft+'px; top: '+alerttop+'px; width: '+alertwidth+'px; background-color:#000000 margin-left:auto; margin-right:auto; text-align:center;">';
+htmlout += '<div>';
+htmlout += '<div style="left:490px; position:relative; top:12px; text-align:center;"><a href="projx.jhtml%3Fchannelname=Nickelodeon.html#" onclick="projX.close();return false;"><img width="15" height="14" src="http://www.mtv.com/global/scripts/special/bet/art/vw_close.png"></a></div>';
+htmlout += '<div style="background-color:#000000; border:1px solid #3D3D3D; font-size:30px; margin-top:5px; padding: 0 0 0; width:974px; text-align:center;">';
+htmlout += '<p style="margin:0; text-align:center;"><img width="974" height="126" style="text-align:center" src="http://www.mtv.com/global/scripts/special/bet/art/post_top.gif"></p>';
+htmlout += '<div style="text-align:center; margin-top:25px;"><a href="http://whendirectvdrops.com/" target="_blank"><img width="456" height="211" style="border:1px solid #262626; margin: 0px 15px 26px 15px;" src="http://www.mtv.com/global/scripts/special/bet/art/vw_bet.gif"></a></div>';
+// htmlout += '<div style="background-color:#C4CF2E; color:#000000; font-size:24px; height:50px; padding-top:25px; text-align:center;"><img width="568" height="23" src="http://www.mtv.com/global/scripts/special/bet/art/vw_bet_uwont.gif"></div>';
+htmlout += '<a href="http://whendirectvdrops.com/" target="_blank"><img width="974" height="125" src="http://www.mtv.com/global/scripts/special/bet/art/bet_bot_switch.gif"></a>';
+htmlout += '</div>';
+htmlout += '</div>';
+htmlout += '</div>';
+
+scrDiv.innerHTML = htmlout;
+var alert_div = document.getElementsByTagName('body')[0].appendChild(scrDiv);
+projX.displayEventPost();
+};
+projX.displayPhase2Inline = function(operatorName, phoneMessage, affectedChannels, websiteUrl, websiteMessage){
+var htmlout = '';
+htmlout += '<div style="text-align: left; padding: 15px; background-color:#ffffff; ">';
+htmlout += projX.message_phase2(operatorName, phoneMessage, affectedChannels, websiteUrl, websiteMessage);
+htmlout += '</div>';
+document.write(htmlout);
+};
+projX.message_phase1 = function(operatorName, phoneMessage, affectedChannels, websiteUrl, websiteMessage){
+var html = '';
+html += '<span style="font-weight:bold; font-size: 16px; font-family: arial; color:#cc0000;">ATTENTION ';
+html += operatorName;
+html += ' CUSTOMERS:</span><br/><br/>';
+html += '<span style="font-weight:normal; font-size: 12px; font-family: Tahoma,Verdana,sans-serif; line-height: 20px; color:#000000;">';
+html += 'YOU COULD LOSE YOUR FAVORITE TV AND ONLINE PROGRAMMING.<br/><br/>TONIGHT, ';
+html += operatorName;
+html += ' COULD DROP ';
+html += affectedChannels;
+html += '.<br/><br/>';
+html += phoneMessage;
+html += ' AND ASK THEM TO KEEP THESE CHANNELS ON THE AIR. YOU MUST BE AT LEAST 18 YEARS OLD TO CALL.<br/><br/>';
+html += '<a href="http://www.mtv.com/global/scripts/special/';html&#32;+=&#32;websiteUrl;html&#32;+=&#32;'" target="_blank">';
+html += websiteMessage;
+html += '</a>';
+html += '</span>';
+return html;
+};
+projX.message_phase2 = function(operatorName, phoneMessage, affectedChannels, websiteUrl, websiteMessage){
+var html = '';
+html += '<span style="font-weight:bold; font-size: 16px; font-family: arial; color:#cc0000;">ATTENTION ';
+html += operatorName;
+html += ' CUSTOMERS!</span><br/><br/>';
+html += '<span style="font-weight:normal; font-size: 12px; font-family: Tahoma,Verdana,sans-serif; line-height: 20px; color:#000000;">';
+html += operatorName;
+html += ' HAS TAKEN AWAY YOUR FAVORITE SHOWS ON TV AND ONLINE. THEY NO LONGER CARRY ';
+html += affectedChannels;
+html += '.<br/><br/>YOU CAN CHANGE THIS! ';
+html += phoneMessage;
+html += ' NOW AND DEMAND THAT ';
+html += operatorName;
+html += ' RETURN YOUR FAVORITE CHANNELS AND SHOWS! You must be at least 18 years old to call.<br/><br/>';
+html += '<a href="http://www.mtv.com/global/scripts/special/';html&#32;+=&#32;websiteUrl;html&#32;+=&#32;'" target="_blank">';
+html += websiteMessage;
+html += '</a>';
+html += '</span>';
+return html;
+};
+projX.util ={
+trimString : function(str){
+if(typeof str != 'string')
+return str;
+var retString = str;
+// check begining of string for white spaces
+var character = retString.substring(0,1);
+while(character.charCodeAt(0) == 9 || character.charCodeAt(0) == 32 || character.charCodeAt(0) == 10){
+retString = retString.substring(1,retString.length);
+character = retString.substring(0,1);
+}
+// check end of string for white spaces
+character = retString.substring(retString.length-1,retString.length);
+while(character.charCodeAt(0) == 9 || character.charCodeAt(0) == 32 || character.charCodeAt(0) == 10){
+retString = retString.substring(0,retString.length-1);
+character = retString.substring(retString.length-1,retString.length);
+}
+return retString;
+},
+getPageSize : function(){
+if (window.innerHeight && window.scrollMaxY){// Firefox
+yWithScroll = window.innerHeight + window.scrollMaxY;
+xWithScroll = window.innerWidth + window.scrollMaxX;
+yWithoutScroll = window.innerHeight;
+}
+else if (document.body.scrollHeight > document.body.offsetHeight){ // all but Explorer Mac
+yWithScroll = document.body.scrollHeight;
+xWithScroll = document.body.scrollWidth;
+yWithoutScroll = document.body.clientHeight;
+} else if(window.innerHeight){ // ff3
+yWithScroll = document.body.offsetHeight;
+if(window.innerHeight > document.body.offsetHeight);
+yWithScroll = window.innerHeight
+xWithScroll = document.body.offsetWidth;
+yWithoutScroll = document.body.clientHeight;
+
+} else{ // works in Explorer 6 Strict, Mozilla (not FF) and Safari
+yWithScroll = document.body.offsetHeight;
+xWithScroll = document.body.offsetWidth;
+yWithoutScroll = document.body.clientHeight;
+}
+var tempArray = new Array(xWithScroll,yWithScroll,yWithoutScroll);
+return tempArray;
+},
+getWindowSize : function(){
+var myWidth = 0, myHeight = 0;
+if( typeof( window.innerWidth ) == 'number' ){
+//Non-IE
+myWidth = window.innerWidth;
+myHeight = window.innerHeight;
+}
+else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ){
+//IE 6+ in 'standards compliant mode'
+myWidth = document.documentElement.clientWidth;
+myHeight = document.documentElement.clientHeight;
+}
+else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ){
+//IE 4 compatible
+myWidth = document.body.clientWidth;
+myHeight = document.body.clientHeight;
+}
+var tempArray = new Array(myWidth,myHeight);
+return tempArray;
+},
+getNextHighestZindex : function(){
+var els = document.getElementsByTagName('DIV');
+var elslen = els.length;
+var highestZ = 0;
+for(var i = 0; i < elslen; i++){
+try{
+var level = parseFloat(els[i].currentStyle['zIndex']);
+if(level){
+if(level > highestZ)
+highestZ = level;
+}
+}catch(e){};
+}
+return (highestZ+1);
+}
+};
+projX.cookie ={
+cookieArray : [],
+set : function(name,value,expires,path,domain){
+document.cookie = name + "=" + value +((path) ? ";path=" + path : "") +((domain) ? ";domain=" + domain : "") + ((expires) ? ";expires="+ expires : "");
+var cookietest = projX.cookie.get(name);
+if(cookietest == value){
+return true;
+}
+else{
+return false;
+}
+},
+get : function(name){
+this.parsecookies();
+return this.cookieArray[name];
+},
+del : function(name, path, domain){
+if (this.cookieArray[name]){
+document.cookie = name + "=" +((path) ? ";path=" + path : "") +((domain) ? ";domain=" + domain : "") +";expires=Thu, 01-Jan-1970 00:00:01 GMT";
+}
+},
+parsecookies : function(){
+this.cookieArray.length = 0;
+var cookies = document.cookie;
+var namevalues = cookies.split(';');
+for(i=0; i < namevalues.length; i++){
+// the cookieParams will have multiple = signs
+if(namevalues[i].indexOf('cookieParams')>-1){
+var splitAt = namevalues[i].indexOf('=');
+var pairs = new Array();
+pairs[0] = namevalues[i].substring(0,splitAt);
+pairs[1] = namevalues[i].substring(splitAt+1);
+}
+else{
+var pairs = namevalues[i].split('=');
+}
+this.cookieArray[projX.util.trimString(pairs[0])] = pairs[1];
+}
+},
+getExpDate : function(days, hours, minutes){ // expires format "Thu, 01-Jan-1970 00:00:01 GMT"
+var expDate = new Date();
+if (typeof days == "number" && typeof hours == "number" && typeof hours == "number"){
+expDate.setDate(expDate.getDate() + parseInt(days));
+expDate.setHours(expDate.getHours() + parseInt(hours));
+expDate.setMinutes(expDate.getMinutes() + parseInt(minutes));
+return expDate.toGMTString();
+}
+}
+};
+
+if(window.attachEvent){
+window.attachEvent('onload',projX.init);
+}
+else if(document.addEventListener){
+// safari
+if (/WebKit/i.test(navigator.userAgent)){
+var projx_safari_timer = setInterval(function(){
+if (/loaded|complete/.test(document.readyState)){
+clearInterval(projx_safari_timer);
+projX.init();
+}
+}, 10);
+}
+else // not safari
+document.addEventListener('DOMContentLoaded',projX.init,null);
+}
+
+/**
+* Start Local Advisory!
+*/
+
+
+
+
+
+/**
+* End Local Advisory!
+*/
+

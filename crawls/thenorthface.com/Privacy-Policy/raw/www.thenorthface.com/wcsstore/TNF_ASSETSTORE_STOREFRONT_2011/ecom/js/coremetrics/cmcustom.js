@@ -1,1 +1,94 @@
-var cm_exAttr=new Array();var cmCheckCMEMFlag=true;var cmSendOSLinkClickTag=true;var cmAutoCopyAttributesToExtraFields=false;if(typeof (cmSetupOther)=="function"){cmSetupOther({cm_TrackImpressions:""})}function cmCreatePageviewTag(F,C,E,A,G,D,B){cmMakeTag(["tid","1","pi",F,"cg",C,"se",E,"sr",A,"pc","Y","pv11",G,"cmAttributes",D,"cmExtraFields",B])}function cmCreateDefaultPageviewTag(A){cmCreatePageviewTag(cmGetDefaultPageID(),A)}function cmCreateProductviewTag(D,I,A,J,G,C,F,H,E,B){if(H){if(H!="0"){J=H}}if((C==null)||C==""){C="Y"}if((D==null)||(D=="")||(C=="N")){D=cG7.cM0[cm_ClientID]}cmMakeTag(["tid","5","pi",D,"pr",I,"pm",A,"cg",J,"pc",C,"pv11",G,"cm_vc",B?B:cmExtractParameter("cm_vc",document.location.href),"cmAttributes",E])}function cmCreateShopAction5Tag(K,A,C,J,L,H,F,D,G,B,I){J=J.toString().replace(cmPricePattern,"");K=K.toString().replace(cmSpacePattern,"");if(G){if(G!="0"){L=G}}var E=""+(B?B+"|||":"")+(I?"extra"+I:"");cmAddShop(["pr",K,"pm",A,"qt",C,"bp",J,"cg",L,"cmAttributes",B,"cmExtraFields",I,"ha1",cm_hex_sha1(E),"at","5","tid","4","pc","N","sx11",H,"cc",F])}function cmCreateShopAction9Tag(P,B,F,O,A,D,H,Q,L,I,J,N,E,K,C,M){O=O.toString().replace(cmPricePattern,"");H=H.toString().replace(cmPricePattern,"");P=P.toString().replace(cmSpacePattern,"");if(K){if(K!="0"){Q=K}}var G=""+(C?C+"|||":"")+(M?"extra"+M:"");cmAddShop(["pr",P,"pm",B,"qt",F,"bp",O,"cg",Q,"cd",A,"cmAttributes",C,"cmExtraFields",M,"ha1",cm_hex_sha1(G),"on",D,"tr",H,"at","9","tid","4","pc","N","sx11",L,"cc",I,"sx13",J,"sx14",N]);cmCalcSKUString()}function cmCreateOrderTag(E,H,D,A,C,I,G,M,J,K,F,L,B,N){if(((L==null)||(L==""))&&K){L="No Code"}D=D.toString().replace(cmPricePattern,"");H=H.toString().replace(cmPricePattern,"");cmMakeTag(["tid","3","osk",cmCalcSKUString(),"on",E,"tr",H,"sg",D,"cd",A,"ct",C,"sa",I,"zp",G,"or11",M,"cc",J,"or13",K,"or14",F,"or15",L,"cmAttributes",B,"cmExtraFields",N])}function cmCreateRegistrationTag(D,L,R,N,Q,P,K,A,J,G,H,C,M,S,I,F,O,E){if(E){var B=new Array();B=E.split("-_-")}cmMakeTag(["tid","2","cd",D,"em",L,"ct",R,"sa",N,"zp",Q,"nl",P,"sd",K,"cy",J,"ag",G,"gd",H,"ml",O,"cm_exAttr",B])};
+/*
+ * cmcustom.js for IBM Websphere Commerce
+ * $Id: cmcustom_websphere_commerce.js 153071 2010-08-02 21:51:32Z wbird $
+ * $Revision: 153071 $
+ *
+ * Version 4.2.0
+ *
+ * Coremetrics Tag v4.0, 8/7/2006
+ * COPYRIGHT 1999-2002 COREMETRICS, INC. 
+ * ALL RIGHTS RESERVED. U.S.PATENT PENDING
+ *
+ * The following functions aid in the creation of Coremetrics data tags.
+ *
+ * 03/23/2011   ANAMAI      Disable impressions
+ * 04/18/2012   MISHRAK     Add the cmcleanParam Function for cleaning the HTML Entities and Special Characters    
+ */
+
+var cm_exAttr=new Array();  
+var cmCheckCMEMFlag = true;	
+var cmSendOSLinkClickTag = true;
+var cmAutoCopyAttributesToExtraFields = false;
+if (typeof(cmSetupOther) == "function") { cmSetupOther({"cm_TrackImpressions":""}); }
+
+function cmCreatePageviewTag(__pi,__cg,__se,__sr, store_id, attributes, extraFields) {	
+	cmMakeTag(["tid","1","pi",__pi,"cg",__cg,"se",__se,"sr",__sr,"pc","Y","pv11",store_id,"cmAttributes",attributes,"cmExtraFields",extraFields]);
+}
+
+function cmCreateDefaultPageviewTag(__cg) {
+	cmCreatePageviewTag(cmGetDefaultPageID(),__cg);
+}
+
+function cmCreateProductviewTag(__pi,__pr,__pm,__cg,store_id,pageCount,masterItemCategory,catIDoverride,attributes,cm_vc) {
+	if (catIDoverride)	{
+		if (catIDoverride != "0") {				// allows client to override WSC auto-catID value if catIDoverride is not null or "0"
+			__cg = catIDoverride;
+		}
+	}
+	if ((pageCount == null) || pageCount == "") {
+		pageCount = 'Y';
+	}
+	if ((__pi == null) || (__pi == "") || (pageCount == "N")) {
+		__pi = cG7.cM0[cm_ClientID];
+	}
+	cmMakeTag(["tid","5","pi",__pi,"pr",__pr,"pm",__pm,"cg",__cg,"pc",pageCount,"pv11",store_id,"cm_vc",cm_vc ? cm_vc : cmExtractParameter("cm_vc",document.location.href),"cmAttributes",attributes]);
+}
+
+function cmCreateShopAction5Tag(__pr,__pm,__qt,__bp,__cg,store_id,currency,masterItemCategory,catIDoverride,attributes,extraFields) {
+    __bp = __bp.toString().replace(cmPricePattern, "");
+	__pr = __pr.toString().replace(cmSpacePattern, "");
+	if (catIDoverride)	{
+		if (catIDoverride != "0") {		// allows client to override WSC auto-catID value if catIDoverride is not null or "0"
+			__cg = catIDoverride;
+		}
+	} 
+	var hashValue = "" + (attributes ? attributes + "|||" : "") + (extraFields ? "extra" + extraFields : "");
+	cmAddShop(["pr",__pr,"pm",__pm,"qt",__qt,"bp",__bp,"cg",__cg,"cmAttributes",attributes,"cmExtraFields",extraFields,"ha1",cm_hex_sha1(hashValue),"at","5","tid","4","pc","N","sx11",store_id,"cc",currency]);
+}
+
+function cmCreateShopAction9Tag(__pr,__pm,__qt,__bp,__cd,__on,__tr,__cg,store_id,currency,account_name,contract_name,masterItemCategory,catIDoverride,attributes,extraFields) {
+    __bp = __bp.toString().replace(cmPricePattern, "");
+	__tr = __tr.toString().replace(cmPricePattern, "");
+	__pr = __pr.toString().replace(cmSpacePattern, "");
+	if (catIDoverride)	{
+		if (catIDoverride != "0") {				// allows client to override WSC auto-catID value if catIDoverride is not null or "0"
+			__cg = catIDoverride;
+		}
+	}	  
+	var hashValue = "" + (attributes ? attributes + "|||" : "") + (extraFields ? "extra" + extraFields : "");
+	cmAddShop(["pr",__pr,"pm",__pm,"qt",__qt,"bp",__bp,"cg",__cg,"cd",__cd,"cmAttributes",attributes,"cmExtraFields",extraFields,"ha1",cm_hex_sha1(hashValue),"on",__on,"tr",__tr,"at","9","tid","4","pc","N","sx11",store_id,"cc",currency,"sx13",account_name,"sx14",contract_name]);
+	cmCalcSKUString();
+}
+
+function cmCreateOrderTag(__on,__tr,__sg,__cd,__ct,__sa,__zp, store_id, currency, promotion_name, promotion_discount, promotion_code,attributes,extraFields) {
+	if (((promotion_code == null) || (promotion_code == "")) && promotion_name) { promotion_code = "No Code"; } 
+    __sg = __sg.toString().replace(cmPricePattern, "");
+	__tr = __tr.toString().replace(cmPricePattern, "");
+	cmMakeTag(["tid","3","osk",cmCalcSKUString(),"on",__on,"tr",__tr,"sg",__sg,"cd",__cd,"ct",__ct,"sa",__sa,"zp",__zp,"or11",store_id,"cc",currency,"or13",promotion_name,"or14",promotion_discount,"or15",promotion_code,"cmAttributes",attributes,"cmExtraFields",extraFields]);
+}
+
+function cmCreateRegistrationTag(__cd,__em,__ct,__sa,__zp,__nl,__sd, store_id, customer_country, age, gender, marital_status, num_children, num_in_household, company_name, hobbies, income,attributes) {
+	 if (attributes){
+		var cm_exAttr=new Array();
+		cm_exAttr=attributes.split("-_-");
+	}
+	cmMakeTag(["tid","2","cd",__cd,"em",__em,"ct",__ct,"sa",__sa,"zp",__zp,"nl",__nl,"sd",__sd,
+	"cy",customer_country,"ag",age,"gd",gender,"ml",income,"cm_exAttr",cm_exAttr]);
+}
+
+function cmCleanParam(pPageId) {
+	if(pPageId != null){
+		pPageId = pPageId.replace(/&[^\s]*;/gi,"");
+	}
+	return (pPageId != null) ? pPageId.replace(/[^a-z0-9 -_+!\.,@#$%&\*]/gi, "") : null;
+}

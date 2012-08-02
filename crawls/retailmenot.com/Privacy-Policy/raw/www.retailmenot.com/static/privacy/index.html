@@ -16,6 +16,7 @@
 	<meta property="og:image" content="http://i.rmncdn.com/im/bigR.jpg" />
 	<meta property="og:site_name" content="RetailMeNot.com" />
 	<meta property="og:description" content="Find and share the latest coupon codes for great discounts at thousands of online stores!" />
+    <meta itemprop="image" content="http://i.rmncdn.com/im/bigR.jpg" />
 
 
     <meta name="keywords" content="coupon codes, code, discounts, coupons, promotional, promo, promotion, deal" />
@@ -32,15 +33,14 @@
             s.parentNode.insertBefore(g,s)}(document,'script'));
     </script>
     
-	
-    <link rel="stylesheet" type="text/css" href="../../../i.rmncdn.com/css/google-4b501e1.css" />
+    <link rel="stylesheet" type="text/css" href="../../../i.rmncdn.com/build/google-40b89292.min.css" />
 
     
     <link rel="shortcut icon" type="image/ico" href="../../favicon.ico" />
 
     
-    <link rel="canonical" href="index.html" />
-</head>
+        <link rel="canonical" href="index.html" />
+    </head>
 
 <body id="static" class="preload">
     <div id="wrapper">
@@ -52,11 +52,21 @@
                     <button class="submit">Search</button>
                     <label for="query">
                         <span>e.g.</span>
-                        <a href="http://www.retailmenot.com/coupons/travel" class="track" data-track-category="searchLinks-Click" data-track-action="travel-5/1">travel</a>
+                        <a href="http://www.retailmenot.com/view/nordstrom.com" class="track" data-track-category="searchLinks-Click" data-track-action="nordstrom - 7/20">nordstrom</a>
 
-<a href="http://www.retailmenot.com/offers/grads" class="track" data-track-category="searchLinks-Click" data-track-action="graduation-5/14-5/31">graduation gifts</a>
+<a href="http://www.retailmenot.com/view/bestbuy" class="track" data-track-category="searchLinks-Click" data-track-action="best buy - 7/29">best buy</a>
 
-<a href="http://www.retailmenot.com/view/pacsun.com" class="track" data-track-category="searchLinks-Click" data-track-action="pacsun-5/7-5/14">pacsun</a>                    </label>
+<a href="http://www.retailmenot.com/view/kohls.com" class="track" data-track-category="searchLinks-Click" data-track-action="kohls - 8/1">kohl's</a>
+
+<a href="http://www.retailmenot.com/view/sears.com" class="track" data-track-category="searchLinks-Click" data-track-action="sears - 8/1">sears</a>
+
+<a href="http://www.retailmenot.com/view/macys.com" class="track" data-track-category="searchLinks-Click" data-track-action="macy's - 8/1">macy's</a>
+
+<a href="http://www.retailmenot.com/coupons/travel" class="track" data-track-category="searchLinks-Click" data-track-action="travel - 8/1">travel</a>
+
+<a href="http://www.retailmenot.com/deals/backtoschool" class="track" data-track-category="searchLinks-Click" data-track-action="back to school - 7/1">back to school</a>
+
+<!--<a href="http://retailmenot.extole.com/m/1125380798" rel="nofollow" class="track" data-track-category="searchLinks-Click" data-track-action="Win $1,000 - 7/19">Win $1,000</a>-->                    </label>
                 </form>
             </div>
             <div class="clearfix">
@@ -212,6 +222,7 @@
             </div>
         </div>
 
+        
         <div id="content" class="clearfix">
             <div class="major notFullWidth">
 	<div class="summary">
@@ -224,7 +235,8 @@
 <p>WhaleShark Media, Inc.<br />
 	Attention: Legal Department<br />
 	301 Congress Avenue, Suite 700<br />
-	Austin, Texas 78701</p>
+	Austin, Texas 78701<br />
+        512-777-2970</p>
 <p><strong>Our Privacy Statement is organized as follows:</strong></p>
 <ol>
 	<li><a href="index.html#types-of-personal-information-we-collect">Types of Personal Information We Collect</a></li>
@@ -445,8 +457,7 @@
 		301 Congress Avenue, Suite 700<br />
 		Austin, Texas 78701</p>
 	<p>Please allow 30 days for a response.</p>
-</div>
-</div>
+</div></div>
 <div class="minor">
 	<div class="powerTools module">
 	<h3>Power Tools</h3>
@@ -473,13 +484,18 @@
         <div id="footer_cont">
             <div id="footer">
                 <h3>Get the most popular coupons delivered to your inbox each week.</h3>
-                <form id="newsletter_form" method="post" action="http://www.retailmenot.com/subscribe/index.php" novalidate>
-                    <input type="email" name="email" id="newsletter" value="" placeholder="Your email address" required data-errmsg="Please enter a valid email address." />
-                    <input type="hidden"
+                <form id="newsletter_form" method="post" class="newsletter_form" action="http://www.retailmenot.com/subscribe/index.php" novalidate>
+                                        <div class="centered newsletter_input">
+                        <input type="email" name="email" id="newsletter" value="" placeholder="Your email address"/>
+                        <div class="hidden email-invalid msg error" style="">Please enter a valid email address.</div>
+                        <input type="submit" class="submit" value="Subscribe"/>
+                    </div>
+                                        <input type="hidden"
                            value="footer-static-privacy"
                            name="source"
                            id="source" />
-                    <input type="submit" class="submit" value="Subscribe"/>
+                    <input type="hidden" value="newsletterOnly" name="signUpType" class="signUpType"/>
+                    <input type="hidden" value="LoginSignupRedirect" name="mode" class="mode"/>
                 </form>
             </div>
             <div id="sub_footer_cont">
@@ -510,22 +526,41 @@
     <script>
     var wsm = {
         serviceUrl: "http://services.retailmenot.com",
-        fbAppId: "199633336744629",
+        fb: {
+            appid: "199633336744629"
+        },
         staticPath: "http://i.rmncdn.com",
-        	serviceUrl: 'http://services.retailmenot.com',
-        user: {}
+        voucherCodesDomain: "",
+            user: {}
+    };
+
+    var require = {
+        paths: {
+            jquery: '//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min'
+        }
     };
 </script>
 
-<script data-main="http://i.rmncdn.com/scripts/google-7aa165a.js" src="../../../i.rmncdn.com/scripts/require-1.0.7-2089488.js"></script>
+    <script src="../../../i.rmncdn.com/build/main-c42db4fe.min.js"></script>
+
+
 
 <script>
-    wsm.fb = {
-        appid: 199633336744629    }
-</script>
+    require( [ 'doccomplete' ], function( onComplete ) {
+        onComplete( function(){
+            var bt = document.createElement( 'script' ),
+                s1 = document.getElementsByTagName( 'script' )[ 0 ];
 
-<!-- Generated Mon, 14 May 12 11:17:08 +0000 -->
+            bt.src = '//s.btstatic.com/tag.js';
+            bt.text = '{ "site": "6uWspcX" }';
+            s1.parentNode.insertBefore( bt, s1 )
+        } );
+    } );
+</script>
+<noscript><iframe src="../../../s.thebrighttag.com/iframe%3Fc=6uWspcX.html" width="1" height="1" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe></noscript>
+
+<!-- Generated Thu, 02 Aug 12 19:23:41 +0000 -->
 <a id="banStick" href="http://www.retailmenot.com/opening_this_will_get_you_banned.php?a81259cef8e959c624df1d456e5d3297"><!-- for spambots --></a>
 
-<!-- PARACHUTE --></body>
+</body>
 </html>

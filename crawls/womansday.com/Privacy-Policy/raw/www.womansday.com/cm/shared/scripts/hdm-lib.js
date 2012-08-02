@@ -42,6 +42,11 @@ throw new SyntaxError('JSON.parse');};}}());
 /* customSelect by Adam Coulombe - http://www.adamcoulombe.info/lab/jquery/select-box/ */
 (function($){$.fn.extend({customStyle:function(options){if(!$.browser.msie||($.browser.msie&&$.browser.version>6)){return this.each(function(){var currentSelected=$(this).find(':selected');$(this).after('<span class="customStyleSelectBox"><span class="customStyleSelectBoxInner">'+currentSelected.text()+'</span></span>').css({position:'absolute',opacity:0,fontSize:$(this).next().css('font-size')});var selectBoxSpan=$(this).next();var selectBoxWidth=parseInt($(this).width())-parseInt(selectBoxSpan.css('padding-left'))-parseInt(selectBoxSpan.css('padding-right'));var selectBoxSpanInner=selectBoxSpan.find(':first-child');selectBoxSpan.css({display:'inline-block'});selectBoxSpanInner.css({width:selectBoxWidth,display:'inline-block'});var selectBoxHeight=parseInt(selectBoxSpan.height())+parseInt(selectBoxSpan.css('padding-top'))+parseInt(selectBoxSpan.css('padding-bottom'));$(this).height(selectBoxHeight).change(function(){selectBoxSpanInner.text($(this).find(':selected').text()).parent().addClass('changed');});});}}});})(jQuery);
 
+// for all browsers that do not support console
+if (typeof console == "undefined") {
+    this.console = {log: function() {},warn: function() {},dir: function() {},error: function(msg) {throw msg}};
+}
+
 /************************************************
 HDM Javascript Library
 	See http://wiki.ops.hearstdigital.com/wiki/HDM_Javascript_Library
@@ -80,6 +85,33 @@ HDM.utils = {
 		expDate.setDate(expDate.getDate() + days);
 		cookieValue = encodeURIComponent(value) + ( (days == null) ? '' : ';expires=' + expDate.toUTCString() );
 		document.cookie = name + '=' + cookieValue;
+	},
+	setCookieAdvanced : function(name,value,options){
+		if (typeof value != 'undefined') { // name and value given, set cookie
+			options = options || {};
+			if (value === null) {
+				value = '';
+				options.expires = -1;
+			}
+			var expires = '';
+			if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+				var date;
+				if (typeof options.expires == 'number') {
+					date = new Date();
+					date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+				} else {
+					date = options.expires;
+				}
+				expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
+			}
+			// CAUTION: Needed to parenthesize options.path and options.domain
+			// in the following expressions, otherwise they evaluate to undefined
+			// in the packed version for some reason...
+			var path = options.path ? '; path=' + (options.path) : '';
+			var domain = options.domain ? '; domain=' + (options.domain) : '';
+			var secure = options.secure ? '; secure' : '';
+			document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+		}
 	},
 	getCookie: function(name){
 		var nameEQ = name + "=",
@@ -172,13 +204,34 @@ HDM.utils = {
 			return HDM.utils.getCookie(key);
 		}
 	},
+	getJSON : function(key){
+		var unparsed = this.getData(key);
+		try{
+			// seems wierd using a try/catch block to pass code, but I'm pressed for time
+			// I'll fix this later
+			return JSON.parse(unparsed);
+		} catch(e){
+			return {}
+		}
+	},
 	eraseData: function(key){
 		if (Modernizr.localstorage){
 			delete localStorage[key];
 		} else {
 			HDM.utils.eraseCookie(key);
 		}
-	}
+	},
+    processQueue: function (name, queue, params) {
+        var queuebuffer = queue.slice(0);
+        while (queuebuffer.length > 0) {
+            var func = queuebuffer.pop();
+            try {
+                func(params);
+            } catch (e) {
+                console.error("[HDM.utils.processQueue:"+name+"]" + e + "\n\n" + func);
+            }
+        }
+    }	
 };
 
 /*****************************
@@ -403,7 +456,18 @@ HDM.ads = {
 		});
 		return positionList.substring(0,positionList.length - 1); //return the list and get rid of the trailing comma
 	},
-	refreshAds: function(forceRefresh){
+    //this function will make all of our tracking calls
+    trackingCalls: function(pageName){
+        try {
+            if(typeof pageName === 'undefined') {
+                pageviewTracking();
+            } else {
+                pageviewTracking(pageName);
+            }
+        } catch(e) {}
+        try { _vrtrack(); } catch(e) {}
+    },
+	refreshAds: function(forceRefresh, pageName){
 		var self = HDM.ads,
 			//check to see if the dapMgr object exists and we're on delish.. if so we're gonna call a different function
 			isMSN = (typeof dapMgr === 'object') && window.location.hostname.match('delish.com');
@@ -411,19 +475,14 @@ HDM.ads = {
 		if (forceRefresh === true || self.viewCount >= self.refreshInterval){ //if we're forcing a refresh or we've reached the refresh interval..
 			self.getAds(function(adjson){ //get the new ads
 				self.renderAdJSON(adjson); //render the ads that come back
-				self.trackingCalls(); //execute the tracking calls
+				self.trackingCalls(pageName); //execute the tracking calls
 			});
 			self.viewCount = 1; //reset the view count
 			return true;
 		}
-		self.trackingCalls();
+		self.trackingCalls(pageName);
 		self.viewCount++; //if we didn't force a refresh or hit the refresh interval, increment the view count
 		return false;
-	},
-	//this function will make all of our tracking calls
-	trackingCalls: function(){
-		try { pageviewTracking(); } catch(e) {}
-		try { _vrtrack(); } catch(e) {}
 	},
 	refreshMSNAds: function(){
 		//call the MSN tracking functions
@@ -527,331 +586,51 @@ HDM.ads = {
 		});
 	}
 };
-
+// For IE8 and earlier version.
+if (!Date.now) {
+  Date.now = function() {
+    return new Date().valueOf();
+  }
+}
 /** HDM.registration **/
+
 HDM.registration = {
-	mag_user: null, //where mag_user is going to live
-	facebook: null, //where our facebook status and info will live
-	getMagUserURL: function(){
-		//if we're in high availability mode (does this still exist?..), then append ha=1
-		return ( HDM.utils.getParameter('ha') ? false : '/registration/get_mag_user.js' );
+	_vars : {
+		mag_user : null,
+		hearst_user : null,
+		fbAppID : null,
+		fbResponse : null,
+		fbUser : null, // need to fix this..
+		_event_queue : {
+			loggedin : [],
+			loggedout : []
+		},
+		loginstate : -1, // -1 == undefined..
+		processAttempt : 0
 	},
-	getMagUser: function(callback,forceUpdate){
-		var self = HDM.registration,
-			tempMagUser, magUserURL;
+	count : {
+		callstomag_user : 0
+	},
+	ha :{
+		mode : false,
+		check : function(){
 			
-		if (typeof callback !== 'function'){
-			callback = function(){};
-		}
-		//if this browser supports localStorage AND we're not forcing an update..
-		if ( Modernizr.localstorage && !forceUpdate ){
-			tempMagUser = ( localStorage.mag_user ) ? JSON.parse(localStorage.mag_user) : { logged_in: false }; //set the temp mag_user to the stored mag_user, or a logged_out version of it
-			self.updateMagUser(tempMagUser); //update mag_user with the stored mag_user
-			callback(tempMagUser); //execute the callback
-			return; //get out
-		}
-		magUserURL = self.getMagUserURL(); //check for ha and get the mag_user URL
-		if ( !magUserURL ){
-			tempMagUser = { logged_in: false };
-			self.updateMagUser(tempMagUser);
-			callback(tempMagUser);
-		}
-		//if there wasn't one, or we have to force an update..
-		if (!tempMagUser || forceUpdate === true){
-			//get the mag user script
-			if ( forceUpdate ){ //if we're forcing an update, we need to add a cachebust.. mostly for the browser
-				magUserURL += ( magUserURL.indexOf('?') > -1 ) ? '&cachebust=' : '?cachebust='; //if we've already added a parameter (ha), use '&'.. otherwise just use '?'
-				magUserURL += HDM.utils.cacheBust(); //teh random
-			}
-			HDM.utils.buildScriptTag(magUserURL,function(){
-				self.updateMagUser(window.mag_user); //get_mag_user script sets a global mag_user object.. lame, but w/e
-				callback(tempMagUser); //execute the callback
-			});
-		} else {
-			self.updateMagUser(tempMagUser); //set the global mag_user object too for legacy stuff
-			callback(tempMagUser); //execute the callback
 		}
 	},
-	updateMagUser: function(newMagUser){
-		//if this browser supports localStorage, update the mag_user there
-		if ( Modernizr.localstorage ){
-			localStorage.mag_user = JSON.stringify(newMagUser);
-		}
-		HDM.registration.mag_user = window.mag_user = newMagUser; //set the mag_users, setting global for legacy apps :(
-	},
-	checkEmailExists: function(emailToCheck, callback){
-		//check to see if the email exists in the db and return true or false to a callback function
-		$.ajax({
-			url: '/registration/email_exist',
-			data: { email: emailToCheck },
-			success: function(response){
-				var exists = (response !== 'Does not exist');
-				callback(exists);
-			}
-		});
-	},
-	isHDMLoggedIn: function(){
-		return !!HDM.registration.mag_user.logged_in; //check hdm logged in
-	},
-	isFacebookLoggedIn: function(){ //check facebook logged in
-		return HDM.registration.facebook.status !== 'unknown'; //if logged in, will be 'notConnected' or 'connected'
-	},
-	isFacebookConnected: function(){ //check if facebook account is connected with our app
-		return HDM.registration.facebook.status === 'connected'; //if not connected, will be 'unknown' or 'connected'
-	},
-	isFacebookLinked: function(){ //check if we've linked our HDM and facebook accounts
-		return !!HDM.registration.mag_user.facebook_id; //if unlinked, facebook_id will not exist
-	},
-	createLinkedAccount: function(email,callback){ //creates a linked account given the email address associated with the user's facebook account
-		if (typeof callback !== 'function'){
-			callback = function(){};
-		}
-		//hit FbLink with the email address.. we should get a valid mag_user back
-		$.ajax({
-			url: '/registration/FbLink',
-			data: { email: email },
-			dataType: 'json',
-			success: function(data){
-				HDM.registration.updateMagUser(data); //update the mag_users
-				HDM.utils.storeData('hdm_wasFBLinked',true); //store the "wasLinked" value for future checks
-				callback(data); //execute the callback with mag_user
-			}
-		});
-	},
-	linkFB: function(callback){
-		//links fb accounts
-		if (typeof callback !== 'function'){
-			callback = function(){};
-		}
-		//don't need to pass params.. it reads acocunt info from the session cookies
-		$.ajax({
-			url: '/registration/FbLink',
-			dataType: 'json',
-			success: function(data){ //we should get back a valid mag_user with facebook_id set
-				HDM.registration.updateMagUser(data); //update the mag_users
-				HDM.utils.storeData('hdm_wasFBLinked',true); //store the "wasLinked" value for future checks
-				callback(data); //execute the callback
-			}
-		});
-	},
-	//unlinks a facebook and hdm account
-	unlinkFB: function(callback){
-		var self = HDM.registration;
-		if (typeof callback !== 'function'){
-			callback = function(){};
-		}
-		//hit FbLink with delete=1.. will read account info from the session cookie
-		$.ajax({
-			url: '/registration/FbLink',
-			data: { 'delete': 1 },
-			dataType: 'json',
-			success: function(){
-				//this doesn't return a mag_user, so we have to delete facebook_id on our own
-				var magUser = self.mag_user; //get a pointer to mag_user
-				delete magUser.facebook_id; //delete the facebook_id
-				HDM.utils.eraseData('hdm_wasFBLinked'); //erase the "wasLinked" value so future checks know we're not linked anymore
-				self.updateMagUser(magUser); //update mag_user with the new object minus the facebook_id
-				callback(); //execute the callback.. don't really need to pass mag_user back for anything
-			}
-		});
-	},
-	//logs the user out of HDM ***AND*** Facebook
-	logout: function(){
-		var self = HDM.registration,
-			//get our current location, so we can redirect the user from logout
-			nextURL = ( window.location.href.match('/registration/') ) ? '/' : window.location.href;
-		//if this browser supports localStorage and we have a mag_user stored..
-		if ( Modernizr.localstorage && localStorage.mag_user ){
-			delete localStorage.mag_user; //delete it
-		}
-		//if facebook is logged in AND connected..
-		if ( self.isFacebookLoggedIn() && self.isFacebookConnected() ){
-			FB.Event.unsubscribe('auth.statusChange');
-			FB.Event.subscribe('auth.statusChange',function(){
-				//run logout, once the FB status has changed.. will change when we execute FB.logout below
-				window.location.href = '/registration/logout?next_url=' + nextURL;
-			});
-			FB.logout(); //logout.. when done, the auth.statusChange event above will fire, logging us out of HDM
-		} else {
-			//if the facebook account isn't logged in AND connected, just logout of HDM
-			window.location.href = '/registration/logout?next_url=' + nextURL;
-		}
-	},
-	updateLoginLinks: function(){
-		var self = HDM.registration,
-			$linkContainer, $newRegLink, $editProfileLink, $signoutLink, $signinLink,
-			$fbLink, fbLinkText, fbLoggedIn, fbConnected, hdmLoggedIn,
-			mag_user = self.mag_user,
-			fbStatus = self.facebook;
-			
-		$linkContainer = $('#hdmLoginLinks');
-		$linkContainer.fadeOut().empty(); //fade the link container out
-		//define our various states of logged in-ness
-		fbLoggedIn = self.isFacebookLoggedIn();
-		fbConnected = self.isFacebookConnected();
-		hdmLoggedIn = self.isHDMLoggedIn();
-		//fb link needs to say different stuff based on logged in ness
-		fbLinkText = (hdmLoggedIn) ? 'Connect with Facebook' : 'Sign In with Facebook';
-		$fbLink = $('<li><a class="fbLink trackSender" href="#">' + fbLinkText + '</a></li>');
-		$fbLink.click(function(){
-			FB.login(null,{scope:'email'});
-			return false;
-		});
-		if ( hdmLoggedIn ){
-			//logged in.. we'll need a signout link
-			$signoutLink = $('<li><a href="#">Sign out</a></li>'); //the sign out link
-			$signoutLink.click(function(){ //when you click signout, execute HDM.logout
-				self.logout();
-				return false;
-			});
-			//now lets figure out fb
-			if ( fbConnected ){
-				//fb is connected.. make the fb connected link
-				if ( self.facebook.info != null ){
-					$fbLink = $('<li><img src="https://graph.facebook.com/' + self.facebook.info.id + '/picture" width="15" height="15" /> Hi <a class="trackSender" href="/registration/editProfile.html">' + self.facebook.info.first_name + '</a></li>');
-				} else {
-					$fbLink = $('<li>Hi <a class="trackSender" href="/registration/editProfile.html">' + mag_user.first_name + '</a></li>'); //new fb link with profile link
-				}
+	init : function(fbAppID){// lives in here because I don't know where mike may call this elsewhere. In any case, this is more legacy than anything..
+		// make sure this code isn't run twice..
+		try{
+			if (!this._vars.initialized){
+				this._vars.initialized = true;
 			} else {
-				//if no fb, leave the fb link as-is
-				$editProfileLink = $('<li>Hi <a class="trackSender" href="/registration/editProfile.html">' + mag_user.first_name + '</a></li>'); //append the hdm edit profile link
-				$linkContainer.append($editProfileLink); //append the edit profile link
+				throw("[HDM.registration.init] initialization already invoked: aborting")
 			}
-			$linkContainer.append($fbLink); //append the facebook link
-			$linkContainer.append($signoutLink); //append the signout link
-		} else {
-			//not logged into hdm.. not much else matters
-			$newRegLink = $('<li><a class="trackSender" href="/registration/">JOIN FREE</a></li>'); //new reg link
-			$signinLink = $('<li><a class="trackSender" href="/login/">Sign In</a></li>'); //sign in link
-			$linkContainer.append($newRegLink); //append the join free
-			$linkContainer.append($fbLink); //append the facebook link
-			$linkContainer.append($signinLink); //append the sign in link
+		} catch(error){
+			return;
 		}
-		$linkContainer.fadeIn(); //fade the container back in
-	},
-	//updates HDM.registration.facebook with our status
-	updateFBStatus: function(fbResponse){
-		var self = HDM.registration;
-		self.facebook = fbResponse; //set facebook to the response
-		//if the user logged out, but we still have their info saved.. delete it
-		if (fbResponse.status === 'unknown' && Modernizr.localstorage && !!localStorage.hdmFBInfo){
-			delete localStorage.hdmFBInfo;
-		}
-		//if facebook is logged in, but not connected and we still see it as linked, they've probably removed the app at FB.. so unlink
-		if ( self.isFacebookLoggedIn() && !self.isFacebookConnected() && self.isFacebookLinked() ){
-			self.unlinkFB();
-		}
-	},
-	getFacebookInfo: function(callback){
-		var self = HDM.registration;
-		if (typeof callback !== 'function'){
-			callback = function(){};
-		}
-		//get the facebook user object and execute a callback when it's done
-		FB.api('/me',function(response){
-			self.facebook.info = response;
-			callback();
-		});
-	},
-	//linkFlow is for HDM logged in users linking their accounts
-	linkFlow: function(){
-		var self = HDM.registration, $linked = $('#accountsLinked'), modalAPI,
-			$modalAnchor = $('<div id="modalAnchor" />').appendTo('body').hide();
-			
-		self.linkFB(function(){
-			$modalAnchor.overlay({
-				target: '#accountsLinked',
-				load: true,
-				closeOnClick: false
-			});
-			modalAPI = $modalAnchor.data('overlay');
-			$linked.click(function(){
-				modalAPI.close();
-			});
-			self.getFacebookInfo(function(){
-				self.updateLoginLinks();
-			});
-		});
-	},
-	//connectFlow will be the flow for non HDM users
-	connectFlow: function(){
-		var self = HDM.registration,
-			proceedWithLink = HDM.utils.getData('hdm_linkProcess'),
-			wasLinked = HDM.utils.getData('hdm_wasFBLinked'),
-			$exists, $thanks, $accountsLinked,
-			modalAPI, $modalAnchor = $('<div id="hdmModalAnchor" />').appendTo('body').hide();
 		
-		if ( self.isFacebookLoggedIn() && self.isFacebookConnected() ){
-			//if facebook is logged in and connected
-			self.getFacebookInfo(function(){
-				//once we have the info
-				var info = self.facebook.info; //set a local pointer to it
-				self.checkEmailExists(info.email,function(exists){ //check to see if the email exists in the HDM database
-					if (exists){
-						//if it exists, pop the existing account modal
-						if ( proceedWithLink ){
-							$accountsLinked = $('#accountsLinked');
-							self.linkFB(function(){
-								$modalAnchor.overlay({
-									target: '#accountsLinked',
-									load: true
-								});
-								modalAPI = $modalAnchor.data('overlay');
-								$accountsLinked.find('a.continue').click(function(){
-									modalAPI.close();
-								});
-								self.updateLoginLinks();
-								HDM.utils.eraseData('hdm_linkProcess');
-							});
-							return;
-						}
-						$exists = $('#connectEmailExists');
-						$exists.find('.hdmFacebookPic').html('<img src="https://graph.facebook.com/' + info.id + '/picture" width="50" height="50" />');
-						$exists.find('.welcome').text('Welcome, ' + info.first_name);
-						$exists.find('input[name=user_name]').val(info.email);
-						$exists.find('form').submit(function(){
-							var $error = $(this).find('.loginError');
-							if ( ! $(this).find('[name=user_name]').val() || !$(this).find('[name=password]').val() ){
-								$error.text('Please fill out your username and password');
-								return false;
-							} else {
-								HDM.utils.storeData('hdm_linkProcess',true);
-								return true;
-							}
-						});
-						$modalAnchor.overlay({
-							target: '#connectEmailExists',
-							load: true,
-							closeOnEsc: false,
-							closeOnClick: false
-						});
-						modalAPI = $modalAnchor.data('overlay');
-						$exists.find('.cancelLink').click(function(){
-							modalAPI.close();
-						});
-					} else {
-						//if the email doesn't exist in the db, lets create an HDM account
-						self.createLinkedAccount(info.email,function(){
-							self.updateLoginLinks();
-							$thanks = $('#thanksForJoining');
-							$modalAnchor.overlay({
-								target: '#thanksForJoining',
-								load: true,
-								closeOnClick: false
-							});
-							modalAPI = $modalAnchor.data('overlay');
-							$thanks.find('a.continue').click(function(){
-								modalAPI.close();
-							});
-						});
-					}
-				});
-			});
-		}
-	},
-	init: function(fbAppID){
-		var self = HDM.registration,
-			forceMagUserUpdate = false; //we're going to check if any state variables are stored that need us to update mag_user
+		$(document).ready(function(){ // wrapping this in a document.ready because of certain placement
+			// lets do some reg prepwork..
 		
 		//event for tracking nextURL
 		$('a.trackSender').click(function(){
@@ -879,7 +658,7 @@ HDM.registration = {
 		$('select[name=dob_year]').each(function(){
 			var currentYear = (new Date()).getFullYear(),
 				startYear = currentYear - 100,
-				$select = $(this), selectedYear = $select.data('selectedyear'),
+				$select = $(this), selectedYear = $select.attr('data-selectedyear'),
 				$option = $('<option />'), $optionClone;
 				
 			for (var i = currentYear; i >= startYear; i--){
@@ -894,7 +673,7 @@ HDM.registration = {
 		});
 		//set the user's month if found
 		$('select[name=dob_month]').each(function(){
-			var $select = $(this), selectedMonth = $select.data('selectedmonth'),
+			var $select = $(this), selectedMonth = $select.attr('data-selectedmonth'),
 				$options = $select.find('option'), $selectedOption;
 			if (!!selectedMonth){
 				$selectedOption = $options.filter('[value='+ selectedMonth + ']');
@@ -903,7 +682,7 @@ HDM.registration = {
 		});
 		//set the user's dob day if found
 		$('select[name=dob_day]').each(function(){
-			var $select = $(this), selectedDay = $select.data('selectedday'),
+			var $select = $(this), selectedDay = $select.attr('data-selectedday'),
 				$options = $select.find('option'), $selectedOption;
 			if (!!selectedDay){
 				$selectedOption = $options.filter('[value=' + selectedDay + ']');
@@ -939,118 +718,869 @@ HDM.registration = {
 			if ( valid ){ HDM.utils.storeData('hdm_forceMagUserUpdate',true); }
 			return valid;
 		});
+		})
 		
-		if ( !Modernizr.localstorage || !!HDM.utils.getData('hdm_linkProcess') || !!HDM.utils.getData('hdm_forceMagUserUpdate') ){
+		if ( !Modernizr.localstorage || !!HDM.utils.getData('hdm_linkProcess') || !!HDM.utils.getData('hdm_forceMagUserUpdate') || (document.location.pathname == "/login/")){
 			forceMagUserUpdate = true;
+		}		
+		
+		
+		this.boot.start(fbAppID);
+	},
+	process : function(){
+		// now that we have all 3 states, lets begin!
+		HDM.registration._vars.processAttempt++;
+		if (HDM.registration._vars.processAttempt > 4){
+			console.error("[HDM.registration.process] loop detected! Aborting. Setting default")
+			if (!HDM.registration._vars.mag_user){
+				HDM.registration._vars.mag_user = { logged_in: false,tempstatus: true };
+			}
+			HDM.registration._vars.hearst_user = HDM.registration._vars.mag_user;
+
+			//HDM.utils.processQueue("queue.loggedin",HDM.registration._vars._event_queue.loggedout);
+			return false;
+		}
+		if (HDM.registration._vars.processAttempt == 1){
+			$("[action='/registration/login'],[action='/registration/logout']").submit(function(){
+				HDM.utils.storeData('hdm_forceMagUserUpdate',true);
+				return true;
+			});
 		}
 		
-		//First, lets make sure we have mag_user
-		self.getMagUser(function(){
-			if ( !!HDM.utils.getData('hdm_forceMagUserUpdate') ){
-				HDM.utils.eraseData('hdm_forceMagUserUpdate');
+		var fbLoggedin = HDM.registration._vars.fbResponse ? (HDM.registration._vars.fbResponse["status"] == "connected" ? true : false) : false
+		var mLoggedin = HDM.registration._vars.mag_user["logged_in"] ? !!HDM.registration._vars.mag_user["logged_in"] : false;//!!HDM.registration._vars.mag_user["logged_in"]
+		var hLoggedin = HDM.registration._vars.hearst_user["logged_in"] ? !! HDM.registration._vars.hearst_user["logged_in"] : false;//!!HDM.registration._vars.hearst_user["logged_in"]
+		
+		
+		if (!mLoggedin && hLoggedin){
+			console.log("*** autologin",HDM.registration._vars.mag_user,HDM.registration._vars.hearst_user)
+			var tdomain = "."+document.domain.replace(new RegExp(/^www\./i),"");
+			tdomain = tdomain.replace(".pp","").replace(".alphapreview","").replace(".betapreview","");// sanitizing for alpha/betapreview
+			
+			HDM.utils.setCookieAdvanced('fSpaceSSOUserId',HDM.registration._vars.hearst_user.user_name,{"path" : "/","domain" : tdomain});
+			HDM.utils.setCookieAdvanced('fSpaceSSOUserEmail',HDM.registration._vars.hearst_user.email,{"path" : "/","domain" : tdomain});
+			HDM.utils.setCookieAdvanced('fSpaceSSOUserCheck',HDM.registration._vars.hearst_user.encString,{"path" : "/","domain" : tdomain});
+			HDM.utils.setCookieAdvanced('fSpaceSSOExpires',HDM.registration._vars.hearst_user.expires,{"path" : "/","domain" : tdomain});
+
+			setTimeout(function(){ // adding timeout... because I don't really trust the browser to save the cookie settings fast enough..
+				HDM.registration._Maguser.generate({logged_in: false,tempstatus: true,cookieScan : "online"},HDM.registration.process)
+			},100)
+			return false;
+		} else if (mLoggedin && !hLoggedin){
+			// lets make sure this is correct..?
+			HDM.registration._Hearstuser.gethearstuser(function(_hearst_user){
+				setTimeout(function(){
+					if (window.hearst_user["logged_in"] == false){
+						HDM.registration._Maguser.generate({logged_in: true,tempstatus: true,cookieScan : "offline"},HDM.registration.process)
+					} else {
+						HDM.registration.process();
+					}
+				},100)
+			});
+			return false;
+			// hearst_user is NOT logged in, lets force invoke a logout..
+		}
+		// states should be in sync before we fire...
+		console.log("registration.process: event.fire is next[mLoggedin:"+mLoggedin+"][hLoggedin:"+hLoggedin+"]")
+		HDM.registration.event.fire();
+		
+		if (fbLoggedin && mLoggedin && hLoggedin && HDM.utils.getData('hdm_linkProcess')){
+			HDM.registration.action.linkFB(function(){
+				var $modalAnchor = $('<div id="hdmModalAnchor" />').appendTo('body').hide();
+				$modalAnchor.overlay({
+					target: '#accountsLinked',
+					load: true
+				});
+				$('#accountsLinked').find('a.continue').click(function(){
+					$modalAnchor.data('overlay').close();
+				});
+				HDM.registration._Fbuser.getfbUser(HDM.registration.ui.renderLoginLinks);// make sure to render loginlinks after fbUser is got
+				HDM.utils.eraseData('hdm_linkProcess');
+			});
+			return false;
+		}
+		HDM.registration.ui.renderLoginLinks();
+	},
+	ui : {
+		renderLoginLinks : function(){
+			this.changed = false;
+			
+			//define our various states of logged in-ness
+			if (this.fbLoggedIn != HDM.registration._Fbuser.isLoggedIn()){
+				this.fbLoggedIn = HDM.registration._Fbuser.isLoggedIn();
+				this.changed = true;
 			}
+			if (this.fbConnected !=  HDM.registration._Fbuser.isConnected()){
+				this.fbConnected =  HDM.registration._Fbuser.isConnected();
+				this.changed = true;
+			}
+			if (this.fbLinked !=  HDM.registration._Fbuser.isLinked()){
+				this.fbLinked =  HDM.registration._Fbuser.isLinked();
+				this.changed = true;
+			}
+			if (this.hdmLoggedIn != HDM.registration._vars.mag_user.logged_in){
+				this.hdmLoggedIn = HDM.registration._vars.mag_user.logged_in;
+				this.changed = true;
+			}
+			
+			
+			if (!this.changed){
+				// nothing changed, do nothing. bounce the f out
+				return false;
+			} else {
+				// okay! time to re-render our login links
+				var $newRegLink;
+				var $linkContainer;// = $('#hdmLoginLinks').fadeOut().empty();
+				var $editProfileLink;
+				var $signinLink;
+				var $signoutLink;
+				
+				$linkContainer = $('#hdmLoginLinks');
+				$linkContainer.hide().empty(); //fade the link container out
+				
+				//fb link needs to say different stuff based on logged in ness
+				var fbLinkText = (this.hdmLoggedIn) ? 'Connect with Facebook' : 'Sign In with Facebook';
+				var $fbLink = $('<li><a class="fbLink trackSender" href="#">' + fbLinkText + '</a></li>');
+				$fbLink.click(function(){
+					FB.login(function(response){
+						// no need to bind a callback, the event handler does it for us now..
+						if (HDM.registration._vars.fbResponse.status == "connected"){
+							// ok user is logged in, lets process it..
+							HDM.registration._Fbuser.processLogin(response);
+						} else {
+							// otherwise, we let the auth.statuschance event handler do the rest..
+						}
+					},{scope:'email'});
+					return false;
+				});
+				
+				if (this.hdmLoggedIn){
+					//logged in.. we'll need a signout link
+					$signoutLink = $('<li><a href="#">Sign out</a></li>'); //the sign out link
+					$signoutLink.click(function(){ //when you click signout, execute HDM.logout
+						HDM.registration.action.logout();
+						return false;
+					});
+					// lets figure out fb
+					if (this.fbConnected){
+						if (this.fbLinked){
+							if ( HDM.registration._vars.fbUser != null ){
+								$fbLink = $('<li><img src="https://graph.facebook.com/' + HDM.registration._vars.fbUser.id + '/picture" width="15" height="15" /> Hi <a class="trackSender" href="/registration/editProfile.html">' + HDM.registration._vars.fbUser.first_name + '</a></li>');
+							} else {
+								$fbLink = $('<li>Hi <a class="trackSender" href="/registration/editProfile.html">' + mag_user.first_name + '</a></li>'); //new fb link with profile link
+							}
+							
+						} else {
+							$editProfileLink = $('<li>Hi <a class="trackSender" href="/registration/editProfile.html">' + mag_user.first_name + '</a></li>'); //append the hdm edit profile link
+							$linkContainer.append($editProfileLink); //append the edit profile link
+							$fbLink = $('<li><a class="fbLink trackSender" href="#">' + fbLinkText + '</a></li>');
+							$fbLink.click(function(){
+								HDM.registration.action.linkFB(HDM.registration.ui.renderLoginLinks)
+								return false;
+							});
+							
+						}
+					} else {
+						//if no fb, leave the fb link as-is
+						$editProfileLink = $('<li>Hi <a class="trackSender" href="/registration/editProfile.html">' + mag_user.first_name + '</a></li>'); //append the hdm edit profile link
+						$linkContainer.append($editProfileLink); //append the edit profile link
+					}
+					$linkContainer.append($fbLink); //append the facebook link
+					$linkContainer.append($signoutLink); //append the signout link
+				} else {
+					//not logged into hdm.. not much else matters
+					$newRegLink = $('<li><a class="trackSender" href="/registration/">JOIN FREE</a></li>'); //new reg link
+					$signinLink = $('<li><a class="trackSender" href="/login/">Sign In</a></li>'); //sign in link
+					$linkContainer.append($newRegLink); //append the join free
+					$linkContainer.append($fbLink); //append the facebook link
+					$linkContainer.append($signinLink); //append the sign in link
+				}
+				$linkContainer.fadeIn(); //fade the container back in
+			}			
+		}
+	},
+	action : {
+		logout : function(){
+			// before we do anything, lets think about this for a sec.. how should we invoke a soft logout event...
+			HDM.registration._Hearstuser.com.parentSet({},function(){
+				HDM.registration._Maguser.generate({logged_in: true,tempstatus: true,cookieScan : "offline"},function(){
+					if (window.location.href.match('/registration/')){
+						// any locations to /registration get an autologout
+						window.location.href = '/';
+					} else {
+						HDM.registration.ui.renderLoginLinks();
+						HDM.registration.event.fire()
+					}
+				});
+			});
+		},
+		linkFB : function(callback){
+			//links fb accounts
+			if (typeof callback !== 'function'){
+				callback = function(){};
+			}
+			//don't need to pass params.. it reads acocunt info from the session cookies
+			$.ajax({
+				url: '/registration/FbLink',
+				dataType: 'json',
+				success: function(data){ //we should get back a valid mag_user with facebook_id set
+					HDM.registration._Maguser.set(data); // also has callback.. (window.mag_user,callback);
+					HDM.utils.storeData('hdm_wasFBLinked',true); //store the "wasLinked" value for future checks
+					callback(data); //execute the callback
+				}
+			});
+		},
+		unlinkFB : function(callback){
+			if (typeof callback !== 'function'){
+				callback = function(){};
+			}
+			//hit FbLink with delete=1.. will read account info from the session cookie
+			$.ajax({
+				url: '/registration/FbLink',
+				data: { 'delete': 1 },
+				dataType: 'json',
+				success: function(data){
+					//this doesn't return a mag_user, so we have to delete facebook_id on our own
+					var magUser = HDM.registration._vars.mag_user; //get a pointer to mag_user
+					console.log("MAGUSER UNLINKED::",window.mag_user,HDM.registration._vars.mag_user,data)
+					delete magUser.facebook_id; //delete the facebook_id
+					HDM.utils.eraseData('hdm_wasFBLinked'); //erase the "wasLinked" value so future checks know we're not linked anymore
+					HDM.registration._Maguser.set(data); //update mag_user with the new object minus the facebook_id
+					callback(); //execute the callback.. don't really need to pass mag_user back for anything
+				}
+			});
+		}
+	},
+	_Maguser : {
+		init : function(callback){
+			function fastScanCookies(c){
+				var c = c + "=",
+					d = document.cookie.split(";"),
+					b;
+				for (b = 0; b < d.length; b++) {
+					for (var a = d[b];
+					" " === a.charAt(0);) a = a.substring(1, a.length);
+					if (0 === a.indexOf(c)) return !0
+				}
+				return !1
+			};		
+			if (fastScanCookies("password")&&fastScanCookies("cgi-session-id")&&fastScanCookies("fSpaceSSOUserCheck")){
+				console.log("[HDM.registration._Maguser.init] cookiescan determines user is ONLINE")
+				var _mag_user = HDM.utils.getJSON("mag_user");
+				if (_mag_user["logged_in"] != 1){
+					// cookie data does not match storage data! grabbing a fresh copy..
+					HDM.registration._Maguser.generate(_mag_user,callback);
+				} else {
+					HDM.registration._Maguser.set(_mag_user,callback)
+				}
+			} else {
+				console.log("[HDM.registration._Maguser.init] cookiescan determines user is OFFLINE")
+				this.set({ logged_in: false,tempstatus: true,cookieScan : "offline"});// setting mag_user offline no exceptions
+				// this is where we also need to check if hearst_user is available...
+				if (typeof callback == "function"){callback();};
+			}
+		},
+		generate : function(_mag_user,callback){
+			// okay, lets check if _mag_user is whack..
+			function isEmpty(a){for(var b in a)if(a.hasOwnProperty(b))return!1;return!0}; // simple check to see if obj is empty
+			if (isEmpty(_mag_user)){// meaning nothing was found.. lets build out an offline object and store it
+				window["mag_user"] = { logged_in: false,tempstatus: true }; //set the temp mag_user to the stored mag_user, or a logged_out version of it
+				HDM.registration._Maguser.set(window.mag_user,callback);
+			} else if ((_mag_user.cookieScan == "offline") && (_mag_user.logged_in)){
+				console.warn("[_Maguser.generate] expensive logout call made to get_mag_user.js")
+				var url = "/registration/logout?next_url=/registration/get_mag_user.js?cachebust="+Date.now();
+				HDM.utils.buildScriptTag(url,function(){
+					HDM.registration._Maguser.set(window.mag_user,callback);
+				});
+				
+			} else {// object is just incorrect.. lets re-get_mag_user.js it!
+				HDM.registration.count.callstomag_user++; // just counting..
+				console.warn("[_Maguser.generate] expensive call made to get_mag_user.js")
+				var url;
+				if (!_mag_user.logged_in && (_mag_user.cookieScan == "online")){
+					url = "/registration/login?next_url=/registration/get_mag_user.js?cachebust="+Date.now();
+				} else {
+					url = "/registration/get_mag_user.js?cachebust="+Date.now();
+				}
+				HDM.utils.buildScriptTag(url,function(){
+//					console.log("is empty",isEmpty(window["mag_user"]),window["mag_user"],callback)
+					if (isEmpty(window["mag_user"])){// meaning nothing was found.. lets build out an offline object and store it
+						window["mag_user"] = { logged_in: false,tempstatus: true }; //set the temp mag_user to the stored mag_user, or a logged_out version of it
+					}
+					HDM.registration._Maguser.set(window.mag_user,callback);
+				});
+			}
+		},
+		set : function(_mag_user,callback){
+			HDM.utils.storeData("mag_user",_mag_user);// storing it in the browser
+			HDM.registration._vars.mag_user = _mag_user; // grabbing a local reference for fast access
+			window["mag_user"] = _mag_user;
+			if (typeof callback == "function"){callback();};
+		}
+	},
+	_Hearstuser : {
+		bootCallback : null,
+		previewHost : function(){
+			if (window.location.host.match('alphapreview')){
+				return "alphapreview.";
+			} else if (window.location.host.match('betapreview')){
+				return "betapreview.";
+			} else {
+				return "";
+			}
+		},
+		init : function(callback){
+			if (document.body == null){
+				// LOL SO GHETTO, but I'm pressed for time
+				/* okay so this needs an explanation
+				 * sometimes this is invoked before the page finishes loading
+				 * largely depends on _where_ in the html this is being called from
+				 * some sites have this script in the header
+				 * most of them in the footer
+				 * if in the header, it usually just barfed
+				 * but at least with this we can 'try again'
+				 */
+				setTimeout(function(){
+					HDM.registration._Hearstuser.init(callback);
+				},50)
+				return false
+			}
+			try{
+				/******************************************
+				 * Why in a try catch block? 
+				 * Because fudge IE 7/8. Fudge its problems. Fudge the king.
+				 *
+				 *
+				 */
+				this.bootCallback = callback;
+				
+				HDM.registration._Hearstuser.tunnel.address = "http://"+HDM.registration._Hearstuser.previewHost()+"services.hearstmags.com/cm/shared/hdm-lib_hearstuser_proxy.min.html"; // this is the address used for the proxy;
+				HDM.registration._Hearstuser.tunnel.address = "http://"+HDM.registration._Hearstuser.previewHost()+"services.hearstmags.com/cm/shared/hdm-lib_hearstuser_proxy.html"; // this is the address used for the proxy;
+				//alert(new RegExp("^https?://[^/]+/").exec(HDM.registration._Hearstuser.tunnel.address)[0]);
+				HDM.registration._Hearstuser.tunnel.origin = "http://"+HDM.registration._Hearstuser.previewHost()+"services.hearstmags.com"; // I wanna like, use a regexp but later on
+				
+				// build out iframe, begin tunneling info and get hearst_user via localstorage/cookie/jsfile
+				window.addEventListener("message",HDM.registration._Hearstuser.tunnel.receive,false)
+				HDM.registration._Hearstuser.tunnel.iframe = document.createElement('iframe')
+				
+				HDM.registration._Hearstuser.tunnel.iframe.style.position = "fixed";
+				HDM.registration._Hearstuser.tunnel.iframe.style.top = "-50px";
+				HDM.registration._Hearstuser.tunnel.iframe.style.left = "-50000px";
+				HDM.registration._Hearstuser.tunnel.iframe.style.height = "1px";
+				HDM.registration._Hearstuser.tunnel.iframe.style.width = "1px";
+				HDM.registration._Hearstuser.tunnel.iframe.style.border = "none";
+				HDM.registration._Hearstuser.tunnel.iframe.style.zIndex = "-1";
+				HDM.registration._Hearstuser.tunnel.iframe.style.float = "left";
+				HDM.registration._Hearstuser.tunnel.iframe.style.opacity = "0";
+				
+				
+				document.body.appendChild(HDM.registration._Hearstuser.tunnel.iframe);
+				HDM.registration._Hearstuser.tunnel.iframe.onload = function(){
+					HDM.registration._Hearstuser.com.init(false);
+				}
+				HDM.registration._Hearstuser.tunnel.iframe.src = HDM.registration._Hearstuser.tunnel.address;
+				
+				
+			} catch(e){
+				// my plan for this is to fall back and treat this like mag_user..
+				function fastScanCookies(c){
+				var c = c + "=",
+					d = document.cookie.split(";"),
+					b;
+				for (b = 0; b < d.length; b++) {
+					for (var a = d[b];
+					" " === a.charAt(0);) a = a.substring(1, a.length);
+					if (0 === a.indexOf(c)) return !0
+				}
+				return !1
+			};		
+				if (fastScanCookies("password")&&fastScanCookies("cgi-session-id")&&fastScanCookies("fSpaceSSOUserCheck")){
+					console.log("[HDM.registration._Hearstuser.init] cookiescan determines user is ONLINE")
+					var _hearst_user = HDM.utils.getJSON("mag_user");
+					if (_hearst_user["logged_in"] != 1){
+						// cookie data does not match storage data! grabbing a fresh copy..
+						HDM.registration._Maguser.generate(_hearst_user,function(){
+							window["hearst_user"] = window["mag_user"];
+							HDM.registration._vars.hearst_user = window["mag_user"];
+							if (typeof callback == "function"){callback();};
+						});
+					} else {
+						window["hearst_user"] = _hearst_user;
+						HDM.registration._vars.hearst_user = _hearst_user;
+						if (typeof callback == "function"){callback();};
+					}
+				} else {
+					console.log("[HDM.registration._Hearstuser.init] cookiescan determines user is OFFLINE")
+					HDM.registration._Maguser.set({ logged_in: false,tempstatus: true,cookieScan : "offline"});// setting mag_user offline no exceptions
+					HDM.registration._vars.hearst_user = HDM.registration._vars.mag_user;
+					window["hearst_user"] = HDM.registration._vars.mag_user;
+					// this is where we also need to check if hearst_user is available...
+					if (typeof callback == "function"){callback();};
+				}
+				
+				// lets override that logout button..
+				HDM.registration.action.logout = function(){
+					HDM.registration._Maguser.generate({logged_in: true,tempstatus: true,cookieScan : "offline"},function(){
+						HDM.registration._vars.hearst_user = HDM.registration._vars.mag_user;
+						window["hearst_user"] = HDM.registration._vars.mag_user;
+						if (window.location.href.match('/registration/')){
+							// any locations to /registration get an autologout
+							window.location.href = '/';
+						} else {
+							HDM.registration.ui.renderLoginLinks();
+							HDM.registration.event.fire()
+						}
+					});
+				}
+				
+				
+			}
+		},
+		synchronize : function(){
+			// console.log("[HDM.registration._Hearstuser.synchronize] begin syncprocess, sending syn")
+			this.com.init(true);
+		},
+		attemptLogin : function(callback){
+			var l = document.location;
+			var url = l.protocol+"//"+l.host+"/registration/login?next_url=http://"+HDM.registration._Hearstuser.previewHost()+"services.hearstmags.com/registration/get_hearst_user.js"
+			if (navigator.appName == "Microsoft Internet Explorer"){
+				window.location = "/registration/login?next_url="+document.location.href;
+			} else {
+				HDM.utils.buildScriptTag(url,function(){
+					console.warn("[_Hearstuser] expensive login requested hearst_user",window.hearst_user);
+					HDM.registration._vars.hearst_user = window.hearst_user;
+					HDM.registration._Hearstuser.com.parentSet(window.hearst_user);
+					if (typeof callback == "function"){callback();};
+				});
+			}
+		},
+		gethearstuser : function(callback){
+			var url = "http://"+HDM.registration._Hearstuser.previewHost()+"services.hearstmags.com/registration/get_hearst_user.js?cachebust="+Date.now();
+			HDM.utils.buildScriptTag(url,function(){
+				if (JSON.stringify(window.hearst_user) == '{"initial_login":1}'){
+					// ok see this little beaut here? This is the result of the servers' static file
+					window.hearst_user = { initial_login: 1, logged_in: false,tempstatus: true,cookieScan : "offline"};
+				}
+				HDM.registration._vars.hearst_user = window.hearst_user;
+				HDM.registration._Hearstuser.com.parentSet(window.hearst_user);
+				if (typeof callback == "function"){callback(window.hearst_user);};
+			});
+			
+		},
+		com : {
+			init : function(forced){
+				var forceUpdate = forced || !!HDM.utils.getData('hdm_forceMagUserUpdate');
+				HDM.utils.eraseData('hdm_forceMagUserUpdate');
+				HDM.registration._Hearstuser.tunnel.send({
+					command : "initialize",
+					force : forceUpdate
+				});
+			},
+			parentSet : function(_hearst_user,callback){
+				// time for ghetto check for empty obj
+				function isEmpty(a){for(var b in a)if(a.hasOwnProperty(b))return!1;return!0}; // simple check to see if obj is empty
+				if (isEmpty(_hearst_user)){// meaning nothing was found.. lets build out an offline object and store it
+					_hearst_user = { logged_in: false,tempstatus: true,cookieScan : "offline"};
+				}
+				window["hearst_user"] = _hearst_user;
+				HDM.registration._vars.hearst_user = _hearst_user;
+				HDM.registration._Hearstuser.tunnel.send({
+					command : "parentSet",
+					hearst_user : _hearst_user
+				});
+				if (typeof callback == "function"){callback();};
+			},
+			tearDown : function(){
+				// tear this entry down
+				HDM.registration._Hearstuser.tunnel.send({
+					command : "delete"
+				});
+			}
+		},
+		tunnel : {
+			iframe : null,
+			address : null, // this is the address used for the proxy
+			origin : null, // damn, I'm feeling lazy so here we go
+			send : function(message){
+				if (typeof message == "object"){
+					message = JSON.stringify(message);
+				}
+				HDM.registration._Hearstuser.tunnel.iframe.contentWindow.postMessage(message,HDM.registration._Hearstuser.tunnel.origin)
+			},
+			receive : function(e){
+				//console.warn("[HDM.registration._Hearstuser.tunnel.receive] received!",msg)
+				if ((e.origin == HDM.registration._Hearstuser.tunnel.origin) && (e.source == HDM.registration._Hearstuser.tunnel.iframe.contentWindow)){
+					//console.error("HDM.registration.hearst_user.messageReceived! LOOKS LEGIT",e,e.data)
+					var msg = JSON.parse(e.data);
+					if (msg.command == "save"){
+						//console.log("Lets save hearst_user",(msg.hearst_user == HDM.registration._vars.mag_user))
+						HDM.registration._vars.hearst_user = msg.hearst_user;
+						HDM.registration.boot._vars.hearst_isReady = true;
+					} else if (msg.command == "parentget"){
+						HDM.registration._Hearstuser.gethearstuser(function(){
+							HDM.registration.boot._vars.hearst_isReady = true;
+						})
+					} else if (msg.command == "ack"){
+						console.log("ack received!");
+					} else {
+						console.error("[HDM.registration._Hearstuser.tunnel.receive] unrecognized command",msg)
+					}
+				}
+			}
+		}
+	},
+	_Fbuser : {
+		init : function(callback){
 			HDM.utils.buildScriptTag('//connect.facebook.net/en_US/all.js',function(){
 				//init the facebook api..
 				FB.init({
-					appId: fbAppID, //pass in the Site object's app id
+					appId: HDM.registration._vars.fbAppID, //pass in the Site object's app id
 					status: true, //we want status
 					cookie: true, //we want fb to set cookies
 					xfbml: true, //we want to parse xfbml
 					channelUrl : document.location.protocol+"//"+document.location.host+"/cm/shared/channel.html" //this helps with issues in IE where we're getting hits from ?xd_fragment= or whatever it is
 				});
-				//get the login status
 				FB.getLoginStatus(function(response){
-					self.updateFBStatus(response); //update the facebook status
-					if ( self.isFacebookConnected() ){ //check to see if the facebook account is connected to this site's app
-						if ( self.isHDMLoggedIn() ){ //check to see if the HDM account is logged in
-							//if HDM is logged in, check to see if we're halfway through the link process
-							if ( !!HDM.utils.getData('hdm_linkProcess') ){
-								//if we have the cookie from the linking process, get back into the connect flow
-								self.connectFlow();
+					HDM.registration._vars.fbResponse = response;
+					if (response.status == "connected"){
+						HDM.registration._Fbuser.getfbUser(callback); // make sure not to execute it, but to pass it along..
+					} else {
+						FB.Event.subscribe('auth.statusChange',function(response){
+							HDM.registration._vars.fbResponse = response;
+							HDM.registration._Fbuser.processLogin(response);
+						})
+						// lets bind a status change event
+						if (typeof callback == "function"){callback();};
+					}
+				});
+				
+				$(document).ready(function(){
+					//set up the link/unlink button on the profile form
+					// eek, kinda messy but whatever works..
+					$('fieldset#facebookConnect').each(function linkUnlink(){
+						// mike is a big fan of self... and I don't feel like refactoring all this.. so I'll just be lazy
+						var self = HDM.registration._Fbuser
+						
+						var $this = $(this), $status = $('#editProfileFBStatus'),
+							$button = $this.find('.linkButton'),
+							statusText = '', buttonText = '';
+						//set the appropriate button based on whether we're linked or not
+						if ( self.isLinked() ){
+							$status.addClass('linked').text('linked');
+							$button.addClass('linked').text('unlink');
+						} else {
+							$status.addClass('unlinked').text('unlinked');
+							$button.addClass('unlinked').text('link');
+						}
+						$button.click(function(){
+							//when the button is clicked, check for existing link
+							if ( self.isLinked() ){
+								//if we're linked, unlink and switch the button
+								HDM.registration.action.unlinkFB(function(){
+									HDM.registration.ui.renderLoginLinks();
+									$status.removeClass('linked').addClass('unlinked').text('unlinked');
+									$button.removeClass('linked').addClass('unlinked').text('link');
+								});
 							} else {
-								//if we're not in the link process.. get fb info and update login links
-								self.getFacebookInfo(function(){
-									self.updateLoginLinks();
+								//if we're not linked, link and switch the button
+								HDM.registration.action.linkFB(function(){
+									HDM.registration.ui.renderLoginLinks();
+									$status.removeClass('unlinked').addClass('linked').text('linked');
+									$button.removeClass('unlinked').addClass('linked').text('unlink');
 								});
 							}
-						} else {
-							//if we weren't linked already.. start the link process
-							if ( !HDM.utils.getData('hdm_wasFBLinked') ){
-								//this should only run on test cases.. since this cookie should be set during the link process
-								self.linkFlow();
-								return;
-							}
-							//if HDM account is logged out, but FB Account is logged in, force mag_user to update which should log you into HDM
-							self.getFacebookInfo(function(){
-								self.getMagUser(function(){
-									//once it's updated get the info and update the links
-									self.updateLoginLinks();
-								},true);
+							return false;
+						});
+					});
+				})
+			});
+		
+		},
+		getfbUser : function(callback){
+			FB.api('/me',function(response){
+				HDM.registration._vars.fbUser = response;
+				if (typeof callback == "function"){callback();};
+			});
+		},
+		queryFBLinkisEmpty : function(callback){
+			if (typeof callback !== 'function'){callback = function(){};}
+			$.ajax({
+				url: '/registration/FbLink',
+				dataType: 'json',
+				success: function(data){
+					function isEmpty(a){for(var b in a)if(a.hasOwnProperty(b))return!1;return!0}; // simple check to see if obj is empty
+					callback(isEmpty(data));
+				}
+			});
+			
+		},
+		checkEmailExists : function(emailToCheck,callback){
+			if (typeof callback !== 'function'){callback = function(){};}
+			$.ajax({
+				url: '/registration/email_exist',
+				data: { email: emailToCheck },
+				success: function(response){
+					var exists = (response !== 'Does not exist');
+					callback(exists);
+				}
+			});
+		},
+		createLinkedAccount: function(email,callback){ //creates a linked account given the email address associated with the user's facebook account
+			if (typeof callback !== 'function'){
+				callback = function(){};
+			}
+			//hit FbLink with the email address.. we should get a valid mag_user back
+			$.ajax({
+				url: '/registration/FbLink',
+				data: { email: email },
+				dataType: 'json',
+				success: function(data){
+					HDM.registration._Maguser.set(data); //update the mag_users
+					HDM.utils.storeData('hdm_wasFBLinked',true); //store the "wasLinked" value for future checks
+					HDM.registration._Hearstuser.attemptLogin(function(){
+						HDM.registration.ui.renderLoginLinks();
+						HDM.registration.event.fire();
+					});
+				}
+			});
+		},
+		isLoggedIn : function(){
+			return (HDM.registration._vars.fbResponse) ? HDM.registration._vars.fbResponse.status !== "unknown" : false;
+		},
+		isConnected : function(){
+			return (HDM.registration._vars.fbResponse) ? HDM.registration._vars.fbResponse.status === "connected" : false;
+		},
+		isLinked : function(){
+			return !!HDM.registration._vars.mag_user.facebook_id;
+		},
+		initiateHDMSignin : function(){
+			var proceedWithLink = HDM.utils.getData('hdm_linkProcess');
+			var wasLinked = HDM.utils.getData('hdm_wasFBLinked'),
+			$exists, $thanks, $accountsLinked, modalAPI, $modalAnchor = $('<div id="hdmModalAnchor" />').appendTo('body').hide();
+			HDM.registration._Fbuser.getfbUser(function(){
+				// once we have the info...
+				var info = HDM.registration._vars.fbUser; //set a local pointer to it
+				HDM.registration._Fbuser.checkEmailExists(HDM.registration._vars.fbUser.email,function(exists){
+					if (exists){//if it exists, pop the existing account modal
+						if ( proceedWithLink ){
+							$accountsLinked = $('#accountsLinked');
+							
+							HDM.registration.action.linkFB(function(){
+								$modalAnchor.overlay({
+									target: '#accountsLinked',
+									load: true
+								});
+								modalAPI = $modalAnchor.data('overlay');
+								$accountsLinked.find('a.continue').click(function(){
+									modalAPI.close();
+								});
+								HDM.registration.ui.renderLoginLinks();
+								HDM.utils.eraseData('hdm_linkProcess');
 							});
+							return;
 						}
-					} else {
-						//if fb account isn't connected, just update the links
-						self.updateLoginLinks();
-						//subscribe to the status change event
-						FB.Event.subscribe('auth.statusChange',function(response){
-							self.updateFBStatus(response); //update the status object
-							//if we're not connected, update the login links and get out
-							if ( !self.isFacebookConnected() ){
-								self.updateLoginLinks();
-								return;
-							}
-							if ( self.isHDMLoggedIn() ){
-								self.linkFlow(); //if i'm already logged in link the accounts with the link flow
+						$exists = $('#connectEmailExists');
+						$exists.find('.hdmFacebookPic').html('<img src="https://graph.facebook.com/' + info.id + '/picture" width="50" height="50" />');
+						$exists.find('.welcome').text('Welcome, ' + info.first_name);
+						$exists.find('input[name=user_name]').val(info.email);
+						$exists.find('form').submit(function(){
+							var $error = $(this).find('.loginError');
+							if ( ! $(this).find('[name=user_name]').val() || !$(this).find('[name=password]').val() ){
+								$error.text('Please fill out your username and password');
+								return false;
 							} else {
-								//if i'm not logged in, get mag_user again to see if we're logged in now
-								self.getMagUser(function(){
-									//if i'm still not logged in, start the connect flow
-									if ( !self.isHDMLoggedIn() ){
-										self.connectFlow();
-									} else {
-										//if i'm logged in now, get the facebook info and update the links
-										self.getFacebookInfo(function(){
-											self.updateLoginLinks();
-										});
-									}
-								},true);
+								HDM.utils.storeData('hdm_linkProcess',true);
+								return true;
 							}
 						});
-					}
-				},true);
-				//set up the link/unlink button on the profile form
-				$('fieldset#facebookConnect').each(function linkUnlink(){
-					var $this = $(this), $status = $('#editProfileFBStatus'),
-						$button = $this.find('.linkButton'),
-						statusText = '', buttonText = '';
-					//set the appropriate button based on whether we're linked or not
-					if ( self.isFacebookLinked() ){
-						$status.addClass('linked').text('linked');
-						$button.text('unlink');
-					} else {
-						$status.addClass('unlinked').text('unlinked');
-						$button.text('link');
-					}
-					$button.click(function(){
-						//when the button is clicked, check for existing link
-						if ( self.isFacebookLinked() ){
-							//if we're linked, unlink and switch the button
-							self.unlinkFB(function(){
-								$status.removeClass('linked').addClass('unlinked').text('unlinked');
-								$button.text('link');
+						$modalAnchor.overlay({
+							target: '#connectEmailExists',
+							load: true,
+							closeOnEsc: false,
+							closeOnClick: false
+						});
+						modalAPI = $modalAnchor.data('overlay');
+						$exists.find('.cancelLink').click(function(){
+							modalAPI.close();
+						});
+						$("#hdmConnectLogin").append("<input type='hidden' name='next_url' value='"+(( window.location.href.match('/registration/') ) ? '/' : window.location.href)+"'>");
+						
+					} else {//if the email doesn't exist in the db, lets create an HDM account
+						HDM.registration._Fbuser.createLinkedAccount(info.email,function(){
+							HDM.registration.ui.renderLoginLinks();
+							$thanks = $('#thanksForJoining');
+							$modalAnchor.overlay({
+								target: '#thanksForJoining',
+								load: true,
+								closeOnClick: false
 							});
-						} else {
-							//if we're not linked, link and switch the button
-							self.linkFB(function(){
-								$status.removeClass('unlinked').addClass('linked').text('linked');
-								$button.text('unlink');
+							modalAPI = $modalAnchor.data('overlay');
+							$thanks.find('a.continue').click(function(){
+								modalAPI.close();
 							});
-						}
-						return false;
+						});
+						
+					}
+				});
+			});			
+		},
+		processLoginTimestamp : Date.now(),
+		processLogin : function(response){// 
+			if ((Date.now()-this.processLoginTimestamp)<200){
+				console.error("[processLogin] revoking calls made too soon")
+				return false;
+			}//console.log("[processLogin] timeStamp:",this.processLoginTimestamp,Date.now()-this.processLoginTimestamp)
+			this.processLoginTimestamp = Date.now();
+			
+			var oldResponse = HDM.registration._vars.fbResponse;
+			var newResponse = response;
+			//console.log("(( FB.login ))",oldResponse,newResponse)
+			function fastScanCookies(c){
+					var c = c + "=",
+						d = document.cookie.split(";"),
+						b;
+					for (b = 0; b < d.length; b++) {
+						for (var a = d[b];
+						" " === a.charAt(0);) a = a.substring(1, a.length);
+						if (0 === a.indexOf(c)) return !0
+					}
+					return !1
+				};		
+			
+			if ((newResponse.status == "connected") && fastScanCookies("password")&&fastScanCookies("cgi-session-id")&&fastScanCookies("fSpaceSSOUserCheck")){
+				
+				// user is logged in, and connecting...
+				HDM.registration.action.linkFB(function(newmag_user){
+					console.log("linked mag_user",newmag_user,HDM.registration._vars.mag_user,window["mag_user"])
+					HDM.registration._Hearstuser.attemptLogin(function(){
+						HDM.registration.ui.renderLoginLinks();
+						HDM.registration.event.fire();
+						// also popup thank you event
+						
+						var $linked = $('#accountsLinked'), modalAPI,
+							$modalAnchor = $('<div id="modalAnchor" />').appendTo('body').hide();
+								$modalAnchor.overlay({
+								target: '#accountsLinked',
+								load: true,
+								closeOnClick: false
+							});
+							modalAPI = $modalAnchor.data('overlay');
+							$linked.click(function(){
+								modalAPI.close();
+							});
 					});
 				});
-			});
-		},forceMagUserUpdate);
+			} else if (newResponse.status == "connected"){
+				// but NOT logged in... that's when we take action
+				HDM.registration._Fbuser.queryFBLinkisEmpty(function(FBLinkisEmpty){
+					// if FBLink returns empty, that means we begin the initiate signin process
+					if (FBLinkisEmpty){
+						console.log("initiateHDMSignin")
+						HDM.registration._Fbuser.initiateHDMSignin();
+					} else {
+						// otherwise we are logged in, set cookies and be on our way.
+						// rebooting the registration process...
+						console.log("[processLogin] attemptLogin");
+						HDM.registration._Hearstuser.attemptLogin(HDM.registration.process);
+					};
+				})
+			}
+		}
+	},
+	boot : {
+		_vars : {
+			started : false,
+			intervalID : null,
+			mag_isReady : false, // boot._vars.mag_isReady = true
+			hearst_isReady : false,
+			fb_isReady : false,
+			counter : 0,
+			loopstartdate : 0
+		},
+		start : function(fbAppID){
+			// build code here to get mag_user
+			HDM.registration._Maguser.init(function(){HDM.registration.boot._vars.mag_isReady = true});
+			
+			// build code here to get hearst_user
+			HDM.registration._Hearstuser.init(function(){HDM.registration.boot._vars.hearst_isReady = true});
+			
+			// build code here to get fb user
+			if (fbAppID){
+				HDM.registration._vars.fbAppID = fbAppID;
+				HDM.registration._Fbuser.init(function(){HDM.registration.boot._vars.fb_isReady = true});
+			} else {
+				HDM.registration.boot._vars.fb_isReady = true
+			}
+			// begin loop..
+			HDM.registration.boot._vars.loopstartdate = Date.now();
+			this._vars.intervalID = window.setInterval(HDM.registration.boot.scan,250);
+		},
+		scan : function(){
+			// wanna know why I have to do this?
+			// it's because 2 of the calls have to be made async
+			// fb needs to initialize via facebook's own fancypants code
+			// worse is that hearst_user is needed via an iframe, used to tunnel messages
+			// 4x a second isn't so bad tho..
+			if (HDM.registration.boot._vars.mag_isReady && HDM.registration.boot._vars.hearst_isReady && HDM.registration.boot._vars.fb_isReady){
+				window.clearInterval(HDM.registration.boot._vars.intervalID);
+				HDM.registration.process();
+			}
+			if ((HDM.registration.boot._vars.loopstartdate+15000) < Date.now()){
+				console.dir(HDM.registration._vars.mag_user)
+				console.dir(HDM.registration._vars.hearst_user)
+				console.dir(HDM.registration._vars.fbUser)
+				console.log("[HDM.registration error] data out of sync",HDM.registration._vars.mag_user,HDM.registration._vars.hearst_user,HDM.registration._vars.fbUser)
+				window.clearInterval(HDM.registration.boot._vars.intervalID);
+				HDM.registration.process();
+			}
+			HDM.registration.boot._vars.counter++;
+			if (HDM.registration.boot._vars.counter++ > 40){
+			}
+		}
+	},
+	event : {
+		_vars : {
+			fireInterval : null
+		},
+		loggedin : function(func){
+			if (typeof func == "function"){
+				HDM.registration._vars._event_queue.loggedin.push(func);
+			} else {
+				console.log("[event.loggedin] invalid function callback:"+(typeof func),func)
+			}
+		},
+		loggedout : function(func){
+			if (typeof func == "function"){
+				HDM.registration._vars._event_queue.loggedout.push(func);
+			} else {
+				console.log("[event.loggedin] invalid function callback:"+(typeof func),func)
+			}
+		},
+		sure : {
+			loggedin : function(){
+				if (HDM.registration._vars._event_queue.loggedin.length > 0){
+					window.clearInterval(HDM.registration.event._vars.fireInterval);
+					HDM.utils.processQueue("queue.loggedin",HDM.registration._vars._event_queue.loggedin);
+				}
+			},
+			loggedout : function(){
+				if (HDM.registration._vars._event_queue.loggedout.length > 0){
+					window.clearInterval(HDM.registration.event._vars.fireInterval);
+					HDM.utils.processQueue("queue.loggedin",HDM.registration._vars._event_queue.loggedout);
+				}
+			}
+		},
+		fire : function(){
+			var mLoggedin = !!HDM.registration._vars.mag_user["logged_in"]
+			var hLoggedin = !!HDM.registration._vars.hearst_user["logged_in"]
+			if (mLoggedin && hLoggedin){//console.error("[event.fire] user is logged IN!")
+				HDM.registration.event._vars.fireInterval = setInterval(HDM.registration.event.sure.loggedin,250);
+			} else if (!mLoggedin && !hLoggedin){//console.error("[event.fire] user is logged OUT!")
+				HDM.registration.event._vars.fireInterval = setInterval(HDM.registration.event.sure.loggedout,250);
+			} else {
+				console.error("[HDM.registration.event] login state out of sync",mLoggedin,hLoggedin)
+			}
+		}
 	}
 };
 /*****************************
@@ -1221,7 +1751,7 @@ slideModule - jQuery Plugin
 HDM.promoPlayer
 	Namespace for promo players
 ****************************/
-HDM.promoPlayer = function (id,interval,speed) {
+HDM.promoPlayer = function (id,interval,speed,pPlayerAd,afterSlide) {
 	//initialize vars than can be created without the needing the DOM ready
 	var playerContainerId = id;
 	var slideInterval = interval || 5000;
@@ -1236,6 +1766,16 @@ HDM.promoPlayer = function (id,interval,speed) {
 	var slides;
 	var total;
 	var width;
+	
+	function removePplayerAd() {
+		slides.remove('#ppad');
+		nav.generate();
+		if (current != 0) {
+			current = current - 1;
+		}
+		playerContainer.children(".navLayer").children("ul.pagination").children("li").removeClass("current");
+		playerContainer.children(".navLayer").children("ul.pagination").children("li").eq(current).addClass("current");
+	}
 
 	var slideTo = function(slide){
 		if (!slideContainer.is(':animated')) {
@@ -1255,6 +1795,11 @@ HDM.promoPlayer = function (id,interval,speed) {
 			$(slideContainer).animate({
 				left: slidePosition
 				},transitionSpeed,function() {
+					if ($('#ppad').length != 0 && current == afterSlide) {
+						HDM.ads.renderAd(pPlayerAd,$('#ppad'));
+					} else if ($('#ppad').length != 0 && current > afterSlide) {
+						removePplayerAd();
+					}
 				slidePosition = -(width * (current + 1));
 				nav.touch.position.init();
 				slideContainer.css("left",slidePosition);
@@ -1306,6 +1851,11 @@ HDM.promoPlayer = function (id,interval,speed) {
 			this.prev = this.navLayer.children("a.prev");
 			this.next = this.navLayer.children("a.next");
 			this.pagination = this.navLayer.children("ul.pagination");
+			
+			if (pPlayerAd && $('#ppad').length == 0){
+				this.pagination.children('li').remove();
+				total = slides.not('#ppad').length;			
+			}
 
 			//create pagination loop based on number of slides
 			for (var i = 0; i < total; i++) {
@@ -1342,10 +1892,32 @@ HDM.promoPlayer = function (id,interval,speed) {
 					
 					arrowDown.css("left",((popupWidth - arrowDown.outerWidth())/2)+"px");
 				}
+				if (slides.eq(afterSlide).is("#ppad")) {
+					this.pagination.children("li").eq(afterSlide).hide();
+				} 
+				if ($('#ppad').length == 0) {
+					this.pagination.children("li").eq(afterSlide).show();
+				}
 			}
-			
 			this.pagination.children("li").eq(current).addClass("current");
 			this.navLayer.css("visibility","visible");
+			
+			//click navigation event handlers
+			$(nav.prev).click(function(){
+				slideTo('prev');
+				nav.touch.position.init();
+			});
+			$(nav.next).click(function(){
+				slideTo('next');
+				nav.touch.position.init();
+			});
+			$(nav.pagination.children("li")).click(function(){
+				if ($(this).attr("page") !== current) {
+					slideTo($(this).attr("page"));
+					nav.touch.position.init();
+				}
+			});
+						
 		},
 		touch : {
 			position : {
@@ -1459,21 +2031,7 @@ HDM.promoPlayer = function (id,interval,speed) {
 					nav.touch.end()
 				});
 			});
-			//click navigation event handlers
-			$(nav.prev).click(function(){
-				slideTo('prev');
-				nav.touch.position.init();
-			});
-			$(nav.next).click(function(){
-				slideTo('next');
-				nav.touch.position.init();
-			});
-			$(nav.pagination.children("li")).click(function(){
-				if ($(this).attr("page") !== current) {
-					slideTo($(this).attr("page"));
-					nav.touch.position.init();
-				}
-			});
+
 			// clear all animations when window regains focus.  this resolves animation issue caused by reduced interval firing for background tabs in Chrome.
 			$(window).focus(function(){
 				stopSlideshow();
@@ -1484,7 +2042,6 @@ HDM.promoPlayer = function (id,interval,speed) {
 		$(slides).click(function(){
 			var url = appendClickTracker($(this).attr("href"));
 			var target = $(this).attr("target");
-			
 			if (url) {
 				if (target=="Yes") {
 					window.open(url);

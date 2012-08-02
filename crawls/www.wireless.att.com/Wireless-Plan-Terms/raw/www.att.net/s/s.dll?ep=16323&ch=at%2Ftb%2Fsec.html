@@ -30,7 +30,7 @@
 <body>
 <div id="siteWrap">
 <div id="site">
-<script type="text/javascript">
+<script type="text/javascript">  
 function fsubmit(){
 //alert(document.mfssfrm.memberID.value);
 document.mfssfrm.submit();
@@ -78,7 +78,7 @@ var PT = 7;
 <input type="hidden" id="Hidden2" name="channel" value="at/tb/sec"   />
 <div class="searchNav">
 <ul>
-<li><a href="s.dll%3Fep=16323&amp;ch=at%252Ftb%252Fsec.html#" id="web" name="srchm" title="Web Search" onclick="searchToggle(0); return false;">WebSearch</a></li>
+<li><a href="s.dll%3Fep=16323&amp;ch=at%252Ftb%252Fsec.html#" id="web" name="srchm" title="Web Search" onclick="searchToggle(0); return false;">Web</a></li>
 <li><a href="s.dll%3Fep=16323&amp;ch=at%252Ftb%252Fsec.html#" id="yp"  name="srchm" title="Local Search" onclick="searchToggle(1); return false;">Yellow Pages</a></li>
 <li><a href="s.dll%3Fep=16323&amp;ch=at%252Ftb%252Fsec.html#" id="ppl" name="srchm" title="People Search" onclick="searchToggle(2); return false;">People</a></li>
 <li><a href="s.dll%3Fep=16323&amp;ch=at%252Ftb%252Fsec.html#" id="img" name="srchm" title="Images Search" onclick="searchToggle(3); return false;">Images</a></li>
@@ -141,9 +141,16 @@ document.getElementById("url_login").href = '/s/context.dll?type=clickthru&id=13
 }
 if(document.getElementById("url_logout") != null)
 {
-if(Cond1 == -1 && Cond2 == -1)		
-document.getElementById("url_logout").href = 'http://www.att.net/s/context.dll?type=clickthru&id=56789&name=pclogin&userid=1&userpw=.&uh=1,0,&clientlogout=1&redirecturl=https://cprodx.att.net/apiserver/igate_web_dlom/logOut.do?style=yportal&returnurl=' + window.location.href;
-else if(Cond1 == 0 || Cond2 == 0)
+if (Cond1 == -1 && Cond2 == -1) {
+var strReturnURL = window.location.href;
+var strSearchString = "test=success";
+var strSearchResult = strReturnURL.search(strSearchString);
+if (strSearchResult != -1) {
+strReturnURL = strReturnURL.substring(0, strSearchResult + strSearchString.length);
+}
+document.getElementById("url_logout").href = 'http://www.att.net/s/context.dll?type=clickthru&id=56789&name=pclogin&userid=1&userpw=.&uh=1,0,&clientlogout=1&redirecturl=https://cprodx.att.net/apiserver/igate_web_dlom/logOut.do?style=yportal&returnurl=' + strReturnURL;
+}
+else if (Cond1 == 0 || Cond2 == 0)
 document.getElementById("url_logout").href = 'http://www.att.net/s/context.dll?type=clickthru&id=56789&name=pclogin&userid=1&userpw=.&uh=1,0,&clientlogout=1&redirecturl=https://cprodx.att.net/apiserver/igate_web_dlom/logOut.do?style=yportal';
 }
 </script>

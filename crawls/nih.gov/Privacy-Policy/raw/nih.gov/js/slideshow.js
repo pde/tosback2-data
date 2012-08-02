@@ -1,13 +1,10 @@
 $slideshow = {
     context: false,
     tabs: false,
-    timeout: 10000,      // time before next slide appears (in ms)
-    slideSpeed: 1000,   // time it takes to slide in each slide (in ms)
-    tabSpeed: 300,      // time it takes to slide in each slide (in ms) when clicking through tabs
-    //fx: 'scrollLeft',   // the slide effect to use
+    timeout: 10000,    // time before next slide appears (in ms) EXAMPLES: 1000=1sec, 10000=10sec
+    slideSpeed: 1000,  // time it takes to slide in each slide (in ms)
+    tabSpeed: 300,     // time it takes to slide in each slide (in ms) when clicking through tabs0
     fx: 'fade',
-	// Added by TimN //
-	containerResize: 1,
     
     init: function() {
         // set the context to help speed up selectors/improve performance
@@ -37,8 +34,10 @@ $slideshow = {
             pagerAnchorBuilder: $slideshow.prepareTabs,
             before: $slideshow.activateTab,
             pauseOnPagerHover: true,
-            pause: true
-            // autostop: 4 Added by RichardB
+            pause: true,
+            containerResize: 1,
+            autostopCount: 1,  // Number of slides to cycle through before stopping slideshow.
+            autostop: 0        // Change to 1 to freeze slideshow on first slide. Change to 0 to unfreeze.
         });            
     },
     

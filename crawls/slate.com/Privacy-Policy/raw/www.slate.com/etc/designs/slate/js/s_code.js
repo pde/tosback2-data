@@ -26,8 +26,8 @@ s.linkTrackEvents="None"
 // 2013 	03/10/2012 	11/03/2012
 // 2014 	03/09/2012 	11/02/2012
 // 2015 	03/08/2012 	11/01/2012
-s.dstStart="03/13/2011";
-s.dstEnd="11/06/2011";
+s.dstStart="03/11/2012";
+s.dstEnd="11/04/2012";
 
 /* WARNING: Changing the visitor namespace will cause drastic changes
 to how your visitor data is collected.  Changes should only be made
@@ -68,6 +68,11 @@ function s_doPlugins(s)
 			s.prop20=s.getQueryParam('fb_ref');
 		}
 		
+		if (s.getQueryParam('fb_action_types') && s.getQueryParam('fb_action_types') === "news.reads") {
+			s.prop20="sm_fb_social_reading";
+		}
+		
+		
 		if (document.referrer) {
 		  if (document.referrer.indexOf("google.com/url?sa=z") > -1) {
 		    s.eVar3="google_plus";
@@ -80,6 +85,15 @@ function s_doPlugins(s)
 			s.prop20=s.getQueryParam('tid');
 		}
 		s.eVar20=s.prop20;
+		
+		/* s.prop39 -- commercial node */
+		if (typeof(s.prop39) == "undefined" || s.prop39 == "") {
+			if (typeof(commercialNode) == "undefined" || commercialNode == "") {
+				s.prop39 = "N/A";
+			} else {
+				s.prop39 = commercialNode;
+			}
+		}
 	
 	/* Clear out eVar3, prop20 and eVar20 on ajax calls */
 	if (!s.called) {

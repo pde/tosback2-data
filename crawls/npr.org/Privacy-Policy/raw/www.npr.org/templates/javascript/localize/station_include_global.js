@@ -10,8 +10,9 @@ if(stationFind > -1){
 }
 
 if(window.station==""){
-    //do nothing
+    $('#stationLocalizationWrap').removeClass('localized');
 }
 else{
     $('head').append('<script src="/stations/js/global/' + (window.station).toLowerCase() + '.js" type="text/javascript"></script>');
+    $('#stationLocalizationWrap').addClass('localized');
 }

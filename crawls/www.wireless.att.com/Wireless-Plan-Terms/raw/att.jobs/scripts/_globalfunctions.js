@@ -60,8 +60,11 @@ $(document).ready(function() {
     /*Home page */
     $('#btn-slide, #btn-slideclose').click(function(e) {
         $('#slider').css("z-index", "999999");
-        if ($("#sd-facebook").html().length == 0)
-            $("#sd-facebook").html('<iframe src="http://www.facebook.com/plugins/likebox.php?id=122379087373&amp;width=421&amp;connections=50&amp;stream=true&amp;header=false&amp;height=480" title="from-facebook" scrolling="no" frameborder="0" id="frm-facebook" ></iframe>');
+        if ($("#sd-facebook").html().length == 0) {
+            _gaq.push(['_trackEvent', 'SOCIAL_ICON', "FaceBook", '']);
+
+            $("#sd-facebook").html('<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FATTCareers&amp;width=421&amp;height=480&amp;colorscheme=light&amp;show_faces=true&amp;border_color&amp;stream=true&amp;header=true&amp;appId=234912696553094" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:421px; height:480px;" allowTransparency="true"></iframe>');
+        }
 
         var sRight = -500;
         if ($("#slider").css("right") == "-500px")
@@ -112,6 +115,7 @@ $(document).ready(function() {
         'autoScale': false,
         'transitionIn': 'none',
         'transitionOut': 'none',
+        'overflow': 'hidden',
         'type': 'iframe'
     });
 
@@ -189,6 +193,9 @@ $(document).ready(function() {
     if ($('#military').length > 0) {
 
         $(".accordion").accordion({ autoHeight: false, active: 50 });
+    }
+    else if ($('#careercenter-default').length > 0) {
+        $(".accordion").accordion({ autoHeight: false, active: 2 });
     }
     else
         $(".accordion").accordion({ autoHeight: false, active: 0 });
@@ -311,16 +318,26 @@ $(document).ready(function() {
         $("#" + selID).addClass("active");
         selID = selID.replace("si", "sd");
         if (selID == "sd-twitter") {
+            _gaq.push(['_trackEvent', 'SOCIAL_ICON', "Twitter", '']);
             $("#sd-twitter").html('<iframe frameborder="0" src="/widget/twitter.aspx" id="frm-twitter"></iframe>');
         }
         else if (selID == "sd-linkedin") {
-            $("#sd-linkedin").html('<iframe frameborder="0" src="http://www.linkedin.com/companies/at%26t?" id="frm-linkedin"></iframe>');
+            _gaq.push(['_trackEvent', 'SOCIAL_ICON', "Linkedin", '']);
+            //$("#sd-linkedin").html('<iframe frameborder="0" src="http://www.linkedin.com/companies/at%26t?" id="frm-linkedin"></iframe>');
         }
         else if (selID == "sd-youtube") {
+            _gaq.push(['_trackEvent', 'SOCIAL_ICON', "YouTube", '']);
             $("#sd-youtube").html('<iframe frameborder="0" src="http://feedaggregator.att.centralcast.net/youtubedisplay.aspx?feedid=2&amp;count=10&amp;feedListName=none " id="frm-youtube"></iframe>');
         }
         else if (selID == "sd-facebook") {
-            $("#sd-facebook").html('<iframe src="http://www.facebook.com/plugins/likebox.php?id=122379087373&amp;width=421&amp;connections=50&amp;stream=true&amp;header=false&amp;height=480" title="from-facebook" scrolling="no" frameborder="0" id="frm-facebook" ></iframe>');
+            _gaq.push(['_trackEvent', 'SOCIAL_ICON', "FaceBook", '']);
+            $("#sd-facebook").html('<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FATTCareers&amp;width=421&amp;height=480&amp;colorscheme=light&amp;show_faces=true&amp;border_color&amp;stream=true&amp;header=true&amp;appId=234912696553094" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:421px; height:480px;" allowTransparency="true"></iframe>');
+        }
+
+        else if (selID == "sd-jobipedia") {
+        _gaq.push(['_trackEvent', 'SOCIAL_ICON', "Jobipedia", '']);
+        
+            $("#sd-jobipedia").html('<iframe src="http://www.jobipedia.org/social/att-social.aspx" style="height:480px;width:440px;" title="JOBipedia" scrolling="yes" frameborder="0" id="frm-jobipedia" ></iframe>');
         }
 
         $("#" + selID).show();
@@ -366,7 +383,7 @@ $(document).ready(function() {
         ActiveVideoThump = $(this).attr("id");
         //alert(isiPad);
 
-        
+
 
         if (isiPad) {
 
@@ -566,4 +583,40 @@ function switchMenu(obj,obj2) {
 		el.style.display = '';
 		rm.style.display = 'none';
 	}
+}
+
+
+// Resources for Career Centers page funtion for change class of inputs
+
+function changeClass(val){
+    if(val == 1)
+    {
+        document.getElementById("ctl00_CphContent_tbxemailTo").setAttribute("class", "form-input-dark toemail");
+    }
+    else if(val == 2)
+    {
+        document.getElementById("ctl00_CphContent_tbxemailFrom").setAttribute("class", "form-input-dark");
+    }
+    
+   else if(val == 3)
+    {
+        document.getElementById("ctl00_CphContent_tbxPersonalMsg").setAttribute("class", "form-textarea-dark");
+    }
+}
+
+
+function reverseclass(val){
+    if(val == 1)
+    {
+        document.getElementById("ctl00_CphContent_tbxemailTo").setAttribute("class", "form-input1 toemail");
+    }
+    else if(val == 2)
+    {
+        document.getElementById("ctl00_CphContent_tbxemailFrom").setAttribute("class", "form-input1");
+    }
+    
+   else if(val == 3)
+    {
+        document.getElementById("ctl00_CphContent_tbxPersonalMsg").setAttribute("class", "form-textarea");
+    }
 }

@@ -1,5 +1,5 @@
 ﻿
-var s_account="";if(window.location.host.indexOf('tarsin.com')>=0||window.location.host.indexOf('test1')>=0||window.location.host.indexOf('test2')>=0||window.location.host.indexOf('test3')>=0||window.location.host.indexOf('test4')>=0||window.location.host.indexOf('localhost')>=0||window.location.host.indexOf('stage')>=0||window.location.host.indexOf('contentstage')>=0||window.location.host.indexOf('mockstage')>=0||window.location.host.indexOf('prod')>=0||window.location.host.indexOf('perftest')>=0||window.location.host.indexOf('prodfix')>=0||window.location.host.indexOf('textbands')>=0||window.location.host=='')
+var s_account="";if(window.location.host.indexOf('tarsin.com')>=0||window.location.host.indexOf('test1')>=0||window.location.host.indexOf('test2')>=0||window.location.host.indexOf('test3')>=0||window.location.host.indexOf('test4')>=0||window.location.host.indexOf('localhost')>=0||window.location.host.indexOf('stage')>=0||window.location.host.indexOf('contentstage')>=0||window.location.host.indexOf('mockstage')>=0||window.location.host.indexOf('prod')>=0||window.location.host.indexOf('perftest')>=0||window.location.host.indexOf('prodfix')>=0||window.location.host=='')
 {s_account="staginghallmarkibmcom";}
 else
 {s_account="hallmarkibmcom";}
@@ -39,31 +39,24 @@ else
 var d=new Date();s.prop28=d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate();if(window.location.pathname.indexOf('PrxResults')>=0)
 {s.events=s.events?s.events+',event21':'event21';};if(typeof s.events=="undefined"||s.events==""){s.events='event33';}
 if(s.events.indexOf("event33")<0){s.events=s.events?s.events+',event33':'event33';}
-if(!s.campaign)
-{s.campaign=s.getQueryParam('siteID');s.campaign=s.getValOnce(s.campaign,'v0');}
-if(!s.campaign)
-{s.campaign=s.getQueryParam('mailID');s.campaign=s.getValOnce(s.campaign,'v0');}
-if(!s.campaign)
-{s.campaign=s.getQueryParam('mc');s.campaign=s.getValOnce(s.campaign,'v0');}
+if(!s.campaign){s.campaign=s.getQueryParam('siteID');s.campaign=s.getValOnce(s.campaign,'v0');}
+if(!s.campaign){s.campaign=s.getQueryParam('mailID');s.campaign=s.getValOnce(s.campaign,'v0');}
+if(!s.campaign){s.campaign=s.getQueryParam('mc');s.campaign=s.getValOnce(s.campaign,'v0');}
 if(!s.prop21)
 s.prop21=s.getQueryParam('lid');if(!s.eVar15)
 s.eVar15=s.getQueryParam('icamp');if(!s.eVar16)
 s.eVar16=s.getQueryParam('dircat');if(!s.prop11)
-s.prop11=s.eVar2=s.getQueryParam('isearch');if(!s.prop11)
-{s.eVar2=s.getQueryParam('rSearchTerm');s.eVar2=s.getValOnce(s.eVar2,'v2');s.prop11=s.eVar2;}
+s.prop11=s.eVar2=s.getQueryParam('isearch');if(!s.prop11){s.eVar2=s.getQueryParam('rSearchTerm');s.eVar2=s.getValOnce(s.eVar2,'v2');s.prop11=s.eVar2;}
 if(!s.eVar2)
 s.eVar2=s.getQueryParam('isearch');if(!s.eVar8)
 s.eVar8=s.getQueryParam('ecid');if(!s.eVar23)
 s.eVar23=s.getQueryParam('eng');if(!s.eVar24)
-s.eVar24=s.getQueryParam('kw');if(window.location.pathname.indexOf('PrxResults')>=0)
-{if(!s.prop33)
+s.eVar24=s.getQueryParam('kw');if(window.location.pathname.indexOf('PrxResults')>=0){if(!s.prop33)
 s.prop33=s.getQueryParam('ZIP');if(!s.prop34)
 s.prop34=s.getQueryParam('FC');};if(!s.campaign)
 {var s_cvp_val=""}
-else
-{var s_cvp_val=s.campaign.substring(0,9);s.eVar31=s.crossVisitParticipation(s_cvp_val,'v31','7','10',' > ','purchase');}
-var d=new Date();s.eVar25=s.getTimeParting('h','-6',d.getFullYear());s.eVar26=s.getTimeParting('d','-6',d.getFullYear());prevPage=s.getPreviousValue(s.pageName,'s_ppv','');if(prevPage=="")prevPage="unknown";if(s.prop21)
-{if(s.prop21.indexOf(">>",7)==-1)
+else{var s_cvp_val=s.campaign.substring(0,9);s.eVar31=s.crossVisitParticipation(s_cvp_val,'v31','7','10',' > ','purchase');}
+var d=new Date();s.eVar25=s.getTimeParting('h','-6',d.getFullYear());s.eVar26=s.getTimeParting('d','-6',d.getFullYear());prevPage=s.getPreviousValue(s.pageName,'s_ppv','');if(prevPage=="")prevPage="unknown";if(s.prop21){if(s.prop21.indexOf(">>",7)==-1)
 {s.prop21=s.prop21+">>"+prevPage;}
 s.eVar42=s.prop21;}
 if(s.prop11){s.events=s.events?s.events+',event57':'event57';s.eVar43=prevPage+">>"+s.eVar2;}}

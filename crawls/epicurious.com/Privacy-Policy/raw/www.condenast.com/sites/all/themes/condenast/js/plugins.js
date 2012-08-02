@@ -810,7 +810,9 @@ spinOptions.small = $.extend({}, spinOptions, {radius: 4, length: 4});
 
 		var playerReadyHandler = function(e) {
 			var player = e.target;
-			var data = plugin.players[player.getVideoData().video_id];
+
+			var videoId = (typeof player.getVideoData() === 'undefined') ? player.b.R.videoId : player.getVideoData().video_id;
+			var data = plugin.players[videoId];
 			data.ready = true;
 
 			if (data && data.autostart)

@@ -1,0 +1,462 @@
+/*jshint eqeqeq:true, forin:true, immed:true, latedef:true, newcap:true, noarg:true, nonew:true, regexp:true, strict:true, trailing:true, undef:true, browser:true, jquery:true, scripturl:true */
+/*global log:false, Modernizr:false, MBP:false, isDebugMode:true, CanvasLoader:false */
+
+
+// page types
+var PAGE_TYPE_UNKNOWN = "pageTypeUnknown";
+var PAGE_TYPE_HOME = "pageTypeHome";
+var PAGE_TYPE_SHOWCASE = "pageTypeShowcase";
+var PAGE_TYPE_BENEFITS = "pageTypeBenefits";
+var PAGE_TYPE_PRICING = "pageTypePricing";
+var PAGE_TYPE_HEARTS = "pageTypeHearts";
+var pageType = PAGE_TYPE_UNKNOWN;
+
+// cached selectors
+var _body;
+
+// debug mode
+var isDebugMode = false;
+
+
+/**
+ * prevents links from apps from opening in mobile safari
+ * this javascript must be the first script in your <head>
+ */
+(function(document, navigator, standalone) {
+    "use strict";
+
+    if((standalone in navigator) && navigator[standalone]) {
+        var curnode, location = document.location, stop = /^(a|html)$/i;
+
+        document.addEventListener("click", function(e) {
+            curnode = e.target;
+
+            while(!(stop).test(curnode.nodeName)) {
+                curnode = curnode.parentNode;
+            }
+
+            // Conditions to do this only on links to your own app
+            // if you want all links, use if('href' in curnode) instead.
+            if("href" in curnode && ( curnode.href.indexOf("http") || ~curnode.href.indexOf(location.host))) {
+                e.preventDefault();
+                location.href = curnode.href;
+            }
+        }, false);
+    }
+}(document, window.navigator, "standalone"));
+
+
+/**
+ * Add a spinner.
+ * @param id Element ID
+ * @param color Spinner color
+ */
+function addSpinner(id, color) {
+    "use strict";
+
+    var cl = new CanvasLoader(id);
+
+    cl.setColor(color);
+    cl.setShape("spiral");
+    cl.setDiameter(23);
+    cl.setDensity(15);
+    cl.setRange(1.1);
+    cl.setSpeed(1);
+    cl.setFPS(15);
+
+    cl.show();
+}
+
+/**
+ * Initializes live feeds widget in the sidebar
+ */
+function initLiveFeeds() {
+    "use strict";
+
+    $('.feeds-block').each(function(idx, obj) {
+        var $feedBlock = $(this);
+        var feedUrl = $feedBlock.data('feed-url');
+        if(!feedUrl) {
+            return;
+        }
+        var blockId = $feedBlock.attr('id');
+
+        if(blockId) {
+            addSpinner(blockId, "#333333");
+        }
+
+        $.ajax({
+            url: feedUrl,
+            dataType: 'json',
+            success: function(data) {
+                var postsCount = 0;
+                var html = '<div class="now-on-typepad-wrapper">';
+                html += '<ul class="now-on-typepad jcarousel">';
+                for(var i in data) {
+                    postsCount++;
+                    data[i]['short_title'] = data[i]['short_title'] ? data[i]['short_title'] : data[i]['title'];
+                    data[i]['author']['short_name'] = data[i]['author']['short_name'] ? data[i]['author']['short_name'] : data[i]['author']['displayName'];
+
+                    data[i]['short_title'] = data[i]['short_title'] ? data[i]['short_title'] : ' ';
+                    data[i]['author']['short_name'] = data[i]['author']['short_name'] ? data[i]['author']['short_name'] : ' ';
+
+                    var imgAttr = data[i]['author']['avatarLink']['width'] > data[i]['author']['avatarLink']['height'] ? 'height' : 'width';
+
+                    html += '<li>';
+                    html += '<a target="_blank" href="' + data[i]['shortUrl'] + '" title="' + data[i]['title'] + '">';
+                    html += '<span class="image-wrapper"><span class="image"><img ' + imgAttr + '="50" src="' + data[i]['author']['avatarLink']['url'] + '" alt="' + data[i]['title'] + '" /></span></span>';
+                    html += '<strong>' + data[i]['short_title'];
+                    html += '<span class="author">' + data[i]['author']['short_name'] + '</span>';
+                    html += '</strong>';
+                    html += '</a>';
+                    html += '</li>';
+                }
+                html += '</ul></div>';
+                $feedBlock.html(html);
+
+
+                var start = postsCount - 10;
+                var i = 1;
+                $feedBlock.find('ul.now-on-typepad li:lt(' + start + ')').hide();
+                start--;
+                while(start >= 0) {
+                    (function() {
+                        var tmp = start;
+                        setTimeout(function() {
+                            var blockHeight = $feedBlock.find('ul.now-on-typepad').height();
+                            $feedBlock.find('.now-on-typepad-wrapper').css({
+                                height: blockHeight + 'px',
+                                overflow: 'hidden'
+                            });
+                            var newElement = $feedBlock.find('ul.now-on-typepad li:eq(' + tmp + ')');
+                            var height = newElement.height();
+                            $feedBlock.find('ul.now-on-typepad').animate({marginTop: height + 'px'}, 500, function() {
+                                newElement.fadeIn('slow');
+                                $feedBlock.find('ul.now-on-typepad').css({
+                                    marginTop: 0
+                                });
+                                $feedBlock.find('ul.now-on-typepad li:visible:last').fadeOut('fast', function() {
+                                    $feedBlock.find('.now-on-typepad-wrapper').css({
+                                        height: 'auto'
+                                    });
+                                });
+                            });
+
+
+                        }, 5000 * i);
+                    }());
+                    i++;
+                    start--;
+                }
+
+            },
+            error: function(data) {
+
+            }
+        });
+
+    });
+}
+
+
+//noinspection OverlyComplexFunctionJS
+/**
+ * Document ready handler.
+ */
+function onDocumentReady() {
+    "use strict";
+
+    // initialize helpers
+    // ------------------
+
+    MBP.scaleFix();
+
+
+    // cache shortcuts to selectors
+    // ----------------------------
+
+    _body = $("body");
+
+
+    // select page type
+    // ----------------
+
+    if(_body.hasClass("node-slug-home")) pageType = PAGE_TYPE_HOME;
+    if(_body.hasClass("node-slug-showcase")) pageType = PAGE_TYPE_SHOWCASE;
+    if(_body.hasClass("node-slug-benefits")) pageType = PAGE_TYPE_BENEFITS;
+    if(_body.hasClass("node-slug-pricing")) pageType = PAGE_TYPE_PRICING;
+    if(_body.hasClass("node-slug-hearts")) pageType = PAGE_TYPE_HEARTS;
+
+
+    // process menu heart
+    // ------------------
+
+    if(!($.os.name === "win" && $.layout.webkit)) {
+        // Currently Webkit on Windows has problems with the heart symbol.
+        // It replaces that with square and uses serif font.
+        // See the screenshot here: http://bit.ly/zKRIov
+        // I think we should blame Typekit for this, it seems the font doesn't
+        // contain this symbol in this os/browser combination.
+        // FIXME: Enable when Webkit team or Typekit fixes this bug
+        $("#menu").find("li.hearts a").html("Who &#10084; s Typepad");
+    }
+
+
+    // process page updates
+    // --------------------
+
+    switch(pageType) {
+        case PAGE_TYPE_HOME:
+            var sectionHeight = $("#block-system-main section.cellgrid").height();
+
+            $("#block-system-main").css({height: sectionHeight + "px", position: "relative"});
+            $("#block-system-main section.cellgrid").css({position: "absolute", top: 0, left: 0}).fadeOut(0).filter(":eq(0)").fadeIn(0).addClass("active");
+
+            $("a.showcase-cat-link").on("click", function(e) {
+                if($(this).hasClass("active")) {
+                    return false;
+                }
+
+                $("a.showcase-cat-link").removeClass("active");
+                $(this).addClass("active");
+
+                var showcaseCatId = $(this).data("showcase-category");
+
+                $("#block-system-main section.cellgrid.active").fadeOut("fast").removeClass("active");
+                $("#posts-section-from-category-" + showcaseCatId).fadeIn("fast").addClass("active");
+
+                return false;
+            });
+
+            break;
+
+        case PAGE_TYPE_BENEFITS:
+
+            $("ul.handcrafted-list li:first").addClass("active");
+            $("ul.handcrafted-list li:gt(0)").fadeOut(0);
+
+            $("a.handcreafted-next").on("click", function(e) {
+                e.preventDefault();
+
+                var active = $("ul.handcrafted-list li.active");
+                var next = active.next();
+
+                if(next.size() === 0) next = $("ul.handcrafted-list li:first");
+
+                active.removeClass("active");
+                next.addClass("active");
+                active.fadeOut("slow");
+                next.fadeIn("slow");
+            });
+
+            break;
+
+        case PAGE_TYPE_PRICING:
+            $("#pricing-zone-1-detail-toggler").click(function() {
+                $("#pricing-zone-1-detail-content").find("div.more").toggle();
+
+                $(this).find("span.more").toggle();
+                $(this).find("span.fewer").toggle();
+
+                return false;
+            });
+
+            break;
+
+        default:
+    }
+
+    // real time feeds
+    // ---------------
+
+    initLiveFeeds();
+
+    $("img.lazy-2").lazyload({effect: "fadeIn"});
+    $("img.lazy").lazyload({effect: "fadeIn"});
+
+
+    // tooltip
+    // -------
+
+    $(".tooltip").bind("mouseenter", function() {
+        var target = $(this);
+        var parts = target.data("tooltip").split("|");
+        var tooltip = $("<div id=\"tooltip\"><div class=\"headline\">" + parts[0] + "</div><div class=\"content\">" + parts[1] + "</div></div>");
+
+        tooltip.css("opacity", 0).appendTo("body");
+
+        var tooltipInit = function() {
+            if($(window).width() < tooltip.outerWidth() * 1.5) {
+                tooltip.css("max-width", $(window).width() / 2);
+            }
+            else {
+                tooltip.css("max-width", 340);
+            }
+
+            var posLeft = target.offset().left + (target.outerWidth() / 2) - (tooltip.outerWidth() / 2);
+            var posTop = target.offset().top - tooltip.outerHeight() - 30;
+
+            if(posLeft < 0) {
+                posLeft = target.offset().left + target.outerWidth() / 2 - 20;
+                tooltip.addClass("left");
+            }
+            else {
+                tooltip.removeClass("left");
+            }
+
+            if(posLeft + tooltip.outerWidth() > $(window).width()) {
+                posLeft = target.offset().left - tooltip.outerWidth() + target.outerWidth() / 2 + 20;
+                tooltip.addClass("right");
+            }
+            else {
+                tooltip.removeClass("right");
+            }
+
+            if(posTop < 0) {
+                posTop = target.offset().top + target.outerHeight();
+                tooltip.addClass("top");
+            }
+            else {
+                tooltip.removeClass("top");
+            }
+
+            tooltip.css({left: posLeft, top: posTop}).animate({top: "+=20", opacity: 1}, 200);
+        };
+
+        var tooltipRemove = function() {
+            tooltip.animate({opacity: 0}, 100, function() {
+                $(this).remove();
+            });
+        };
+
+        tooltipInit();
+
+        $(window).resize(tooltipInit);
+
+        target.bind("mouseleave", tooltipRemove);
+        tooltip.bind("click", tooltipRemove);
+    });
+
+
+    // fancybox
+    // --------
+
+    $(".fancybox").fancybox({padding: 3, openEffect: "fade", closeEffect: "fade", nextEffect: "fade", prevEffect: "fade"});
+    $(".fancybox-iframe").fancybox({type: "iframe", width: 600, height: 400, padding: 3, openEffect: "fade", closeEffect: "fade", nextEffect: "fade", prevEffect: "fade"});
+
+    // showcase categories drop-down
+    // -----------------------------
+
+    $("section.showcase-categories span.active-category").on("click", function(e) {
+        e.preventDefault();
+
+        $("section.showcase-categories ul.major").toggle();
+    });
+
+    $(document).on("click", function(e) {
+        if($(e.target).parents("section.showcase-categories").size() === 0) {
+            $("section.showcase-categories ul.major").hide();
+        }
+    });
+
+    // showcase feed show more posts
+    // -----------------------------
+
+    $("#load-more-articles").on("click", function(e) {
+        e.preventDefault();
+
+        $(this).parent().hide();
+        $("div.more-articles").show();
+    });
+
+
+    // debug stuff
+    // -----------
+
+    if(isDebugMode) {
+        $(".instapaper_title").addClass("debug-instapaper-title");
+        $(".instapaper_body").addClass("debug-instapaper-body");
+        $(".instapaper_ignore").addClass("debug-instapaper-ignore");
+    }
+}
+
+
+/**
+ * Load main scripts and styles.
+ */
+function loadScripts() {
+    "use strict";
+
+    //log("Loading scripts" + (isDebugMode ? " IN DEBUG MODE" : ""));
+
+
+    // load stuff
+    // ----------
+
+    // noinspection AnonymousFunctionJS,JSUnusedLocalSymbols
+    Modernizr.load([
+        {
+            // if media queries are not available,
+            // load respond polyfil
+            // -----------------------------------
+
+            test: Modernizr.mq("(min-width)"),
+            nope: "/sites/all/themes/typepad/media/js/libs/min/respond.min.js",
+            callback: function(url, result, key) {
+                //log("Media queries were not available in this browser, respond.min.js loaded");
+            }
+        },
+
+        {
+            // the browser now should be able to work with media queries
+            // continue to load jQuery
+            // select debug or release version of jQuery
+            // ---------------------------------------------------------
+
+            test: isDebugMode,
+            yep: "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js",
+            nope: "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js",
+            callback: function(url, result, key) {
+                //log("jQuery " + (result ? "MAX" : "MIN") + " loaded and " + ($ ? "IS" : "IS NOT") + " initialized");
+            }
+        },
+
+        {
+            // jquery is now available
+            // continue loading other things
+            // -----------------------------
+
+            test: isDebugMode,
+            yep: [
+                "/sites/all/themes/typepad/media/js/libs/mobile-helpers.js",
+                "/sites/all/themes/typepad/media/js/libs/jquery.browser.js",
+                "/sites/all/themes/typepad/media/js/libs/heartcode-canvasloader.js",
+                "/sites/all/themes/typepad/media/js/libs/min/jquery.fancybox.min.js",
+                "/sites/all/themes/typepad/media/js/libs/min/jquery.lazyload.min.js",
+                "/sites/all/themes/typepad/media/js/libs/min/jquery.fancybox-buttons.min.js"
+            ],
+            nope: [
+                "/sites/all/themes/typepad/media/js/libs/min/mobile-helpers.min.js",
+                "/sites/all/themes/typepad/media/js/libs/min/jquery.browser.min.js",
+                "/sites/all/themes/typepad/media/js/libs/min/heartcode-canvasloader.min.js",
+                "/sites/all/themes/typepad/media/js/libs/min/jquery.fancybox.min.js",
+                "/sites/all/themes/typepad/media/js/libs/min/jquery.lazyload.min.js",
+                "/sites/all/themes/typepad/media/js/libs/min/jquery.fancybox-buttons.min.js"
+            ],
+            callback: function(url, result, key) {
+                //log("Loaded: " + url);
+            },
+            complete: function() {
+                $(document).ready(onDocumentReady);
+            }
+        }
+    ]);
+}
+
+
+// =============
+// = Bootstrap =
+// =============
+
+
+loadScripts();
