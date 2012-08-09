@@ -1,3 +1,7 @@
+if (!window.bam) {
+	window.bam = {};
+}
+
 // Enables required pattern for module loading
 (function($, bam, undef) {
 	var registry = {},
@@ -48,6 +52,25 @@
 			}
 		};
 	})();
+
+	function getDependenciesFromFunction(fn) {
+		var fnString = fn.toString();
+		var requireVariable = REQUIRE_VARIABLE_REGEX.exec(fnString)[3];
+		if (requireVariable) {
+			var requireRegex = new RegExp("[^\\w\\.]"+requireVariable+"\\(['\"]([^'\"]+)['\"]\\)", 'gm');
+			var dependencies = fnString.match(requireRegex) || [];
+			dependencies.forEach(function(dep, i){ dependencies[i] = dep.substring(requireVariable.length+3, dep.length-2)});
+		}
+		// normalize dependency array
+		dependencies.forEach(function(dependency, i) {
+			if(typeof dependency === 'string' && dependency.indexOf('/') !== -1) {
+				var name = everythingAfterLastSlash.exec(dependency)[1];
+				dependencies[i] = {};
+				dependencies[i][name] = dependency;
+			}
+		});
+		return dependencies;
+	}
 
 
 	/* Modules path - home path for all the modules */
@@ -135,19 +158,7 @@
 				useArguments: false,
 				pollInterval: 1
 			};
-			this.context = function ctx(lib){ 
-				if (lib.indexOf('/') !== -1) {
-					lib = everythingAfterLastSlash.exec(lib)[1];
-				}
-				if (lib.indexOf('-')) {
-					lib = lib.split('-')[0];
-				}
-				if (ctx[lib]) {
-					return ctx[lib];
-				} else {
-					throw new Error('Tried to require '+lib+', which is not in the dependency list!');
-				}
-			};
+			this.context = {};
 			this.deferred = $.Deferred();
 		};
 
@@ -241,6 +252,12 @@
 	 * @return {Deferred}
 	 */
 	Context.prototype.require = function(modules, opt) {
+		// if the first argument is a function, find its dependencies.
+		if ($.isFunction(modules)) {
+			opt = modules;
+			modules = getDependenciesFromFunction(opt);
+		}
+
 		//Second argument is now treated as configuration options if its an Object
 		if ($.isFunction(opt)) {
 			this.config.callback = opt;
@@ -397,13 +414,7 @@
 		if (typeof dependencies === 'function') {
 			// get dependencies from constructor.toString();
 			constructor = dependencies;
-			var constructorString = constructor.toString();
-			var requireVariable = REQUIRE_VARIABLE_REGEX.exec(constructorString)[3];
-			if (requireVariable) {
-				var requireRegex = new RegExp("\\W"+requireVariable+"\\(['\"]([^'\"]+)['\"]\\)", 'gm');
-				var dependencies = constructorString.match(requireRegex) || [];
-				dependencies.forEach(function(dep, i){ dependencies[i] = dep.substring(requireVariable.length+3, dep.length-2)});
-			}
+			dependencies = getDependenciesFromFunction(constructor);
 		} else if (constructor === undefined) {
 			// dependencies was not passed in
 			// the constructor is not a function
@@ -412,32 +423,31 @@
 			dependencies = [];
 		}
 
-		if (dependencies.length && !dependencies.every(function(dep){ return typeof dep === 'string'})) {
-			throw new TypeError('Dependencies must be a string!');
-		}
-			
 		// get the version from the identifier so it can be declared
 		var splitId = identifier.split('-');
 		identifier = splitId[0];
 		var version = +splitId[1] || null;
-		
-		// normalize dependency array
-		dependencies.forEach(function(dependency, i) {
-			if(typeof dependency === 'string' && dependency.indexOf('/') !== -1) {
-				var name = everythingAfterLastSlash.exec(dependency)[1];
-				dependencies[i] = {};
-				dependencies[i][name] = dependency;
-			}
-		});
-		
+				
 		// require and register the new module
 		bam.require(dependencies).done(function(ctx) {
 			if (typeof constructor === 'function') {
-				// disable require['modulename'] for accessing modules
-				var moduleRequire = function(lib) { return ctx(lib) };
+				var moduleRequire = function moduleRequire(lib){ 
+					if (lib.indexOf('/') !== -1) {
+						lib = everythingAfterLastSlash.exec(lib)[1];
+					}
+					if (lib.indexOf('-')) {
+						lib = lib.split('-')[0];
+					}
+					if (ctx[lib]) {
+						return ctx[lib];
+					} else {
+						throw new Error('Tried to require '+lib+', which is not in the dependency list!');
+					};
+				};
 				var moduleExports = {};
 				var moduleModule = {
-					id: identifier
+					id: identifier,
+					exports: moduleExports
 				};
 				// if the constructor returns something, that shall be the exports
 				moduleExports = constructor(moduleRequire, moduleExports, moduleModule) || moduleExports;
@@ -445,6 +455,9 @@
 			} else {
 				bam.register(identifier, version, constructor);
 			}
+
 		});
 	}
+
+	window.define = bam.define;
 })(jQuery, bam);

@@ -1,0 +1,408 @@
+/**
+ * Requires that there is an element with id #playerId on the page
+ */
+YoutubePlayer = function(playerId, $container, useHTML5)
+
+{
+    EventEmitter.apply(this);
+
+    this.youtube = null;
+    this.playerId = playerId;
+    this.isReady = false;
+    this.$container = $container;
+    this.useHTML5 = useHTML5;
+
+    var self = this;
+
+    if(this.useHTML5) {
+
+        this.addAPICallback(function() {
+
+            self.youtube = new YT.Player(playerId, {
+                width: 0,
+                height: 0,
+                videoId: '',
+                playerVars: {
+                    controls: 0
+                },
+                events: {
+                    'onReady': function() {
+                        self.playerReady();
+                    },
+                    'onStateChange': function(state) {
+                        self.playerStateChange(state);
+                    },
+                    'onError': function(code) {
+                        self.playerError(code);
+                    }
+                }
+            });
+
+        });
+    }
+    else {
+        this.addCallback('onYouTubePlayerReady', function() {
+            self.playerReady();
+        });
+
+        swfobject.embedSWF("http://www.youtube.com/apiplayer" +
+                           "?version=3" +
+                           "&enablejsapi=1" +
+                           "&playerapiid=" + this.playerId +
+                           "&controls=false" +
+                           "&wmode=transparent",
+                           this.playerId,
+                           "480",
+                           "295",
+                           "9",
+                           null,
+                           null,
+                           {allowScriptAccess: "always", wmode : "transparent"},
+                           {id: this.playerId}
+                          );
+    }
+
+};
+
+YoutubePlayer.prototype = extend(EventEmitter);
+
+YoutubePlayer.SEEK_TIME_ON_LOAD = 0; // seconds
+
+// alright i'm going back to prototype syntax. 'this.' syntax doesn't allow you
+// to call functions before they have been attached to the object further down
+// in the code, e.g. youcan' call this.addCallback() in the constructor of this
+// class.
+
+YoutubePlayer.prototype.playerReady = function()
+{
+    if(!this.useHTML5) {
+
+        this.youtube = $("#" + this.playerId)[0];
+
+        var self = this;
+        this.addEventListener('onError', function(code) {
+            self.playerError(code);
+        });
+        this.addEventListener('onStateChange', function(state) {
+            self.playerStateChange(state);
+        });
+    }
+
+    this.isReady = true;
+
+    // moving from old style to new style events
+    this.emit('ready');
+    this.onReady();
+};
+
+YoutubePlayer.prototype.hide = function()
+{
+    this.untrack();
+    this.$container.css("height", "0px");
+};
+
+YoutubePlayer.prototype.play = function()
+{
+    var promise = $.Deferred();
+    var player = this;
+    this.onPlaying = function() {
+        // TODO: do something proper about event handling
+        player.onPlaying = function() {
+        };
+        promise.resolve();
+    };
+    this.youtube.playVideo();
+    return promise;
+};
+
+YoutubePlayer.prototype.pause = function()
+{
+    console.log('pause');
+    this.youtube.pauseVideo();
+};
+
+YoutubePlayer.prototype.resume = function()
+{
+    this.play();
+};
+
+YoutubePlayer.prototype.stop = function()
+{
+    this.youtube.pauseVideo();
+    this.hide();
+};
+
+YoutubePlayer.prototype.load = function(youtubeId, autoPlay)
+{
+    var promise = $.Deferred();
+
+    var player = this;
+    this.onPaused = this.onPlaying = function() {
+        // TODO: do something proper about event handling
+        player.onPaused = player.onPlaying = function() { };
+        promise.resolve();
+    };
+
+    this.youtube.loadVideoById(youtubeId, 0);//, 'large');
+
+    if(!autoPlay)
+        this.youtube.pauseVideo();
+
+    return promise;
+};
+
+YoutubePlayer.prototype.seek = function(seconds)
+{
+    this.youtube.seekTo(seconds);
+};
+
+YoutubePlayer.prototype.mute = function()
+{
+    this.youtube.mute();
+};
+
+YoutubePlayer.prototype.unmute = function()
+{
+    // superdefensive
+    if(this.youtube)
+        this.youtube.unMute();
+};
+
+YoutubePlayer.prototype.track = function($tracked, showFullVideo)
+{
+    //console.log($tracked);
+
+    this.untrack();
+
+    var $player = $("#" + this.playerId);
+
+    var self = this;
+    this.trackFunction = function() {
+
+        self.$container.width($tracked.width());
+        self.$container.height($tracked.height());
+        var trackedOffset = $tracked.offset();
+        trackedOffset = {left: trackedOffset.left +
+                         parseInt($tracked.css("padding-left").replace(/px/, ''), 10),
+                         top: trackedOffset.top +
+                         parseInt($tracked.css("padding-top").replace(/px/, ''), 10)};
+        self.$container.offset(trackedOffset);
+
+        var trackedWidth = $tracked.width();
+        var trackedHeight = $tracked.height();
+
+        var playerWidth, marginLeft, playerHeight, marginTop;
+        if(true && showFullVideo) {
+            playerWidth = trackedWidth;
+            marginLeft = 0;
+            playerHeight = trackedHeight;
+            marginTop = 0;
+        }
+        else {
+            playerWidth = trackedWidth * 1.334;
+            marginLeft = - ((playerWidth - trackedWidth) / 2);
+            playerHeight = trackedHeight * 2;
+            marginTop = - ((playerHeight - trackedHeight) / 2);
+        }
+
+        $player.attr({
+            height: playerHeight,
+            width: playerWidth
+        });
+
+
+        if(self.useHTML5)
+            $("iframe", $player).attr({
+                height: playerHeight,
+                width: playerWidth
+            });
+
+
+        $player.css("margin-left", marginLeft + "px");
+        $player.css("margin-top", marginTop + "px");
+
+        // lol safari needs this to show the header correctly
+        //$("header").css({"position":"initial"});
+    };
+
+    this.trackFunction();
+    $(window).resize(this.trackFunction);
+
+    // track loop
+    if(window.ytTrackInterval)
+        window.clearInterval(ytTrackInterval);
+    window.ytTrackInterval = window.setInterval(function() {
+        window.ytTrack();
+    }, 500);
+};
+
+YoutubePlayer.prototype.untrack = function()
+{
+    if(this.trackFunction)
+        $(window).unbind('resize', this.trackFunction);
+    this.trackFunction = null;
+};
+
+YoutubePlayer.prototype.setVolume = function(volume)
+{
+    this.youtube.setVolume(volume);
+};
+
+// helper function. loads jam into jam holder, seeks 2 seconds in and tracks it.
+YoutubePlayer.prototype.loadCurrentJamThumb = function(youtubeId)
+{
+    var self = this;
+    var loadFunction = function() {
+        if($("#jamBackgroundYoutube").length) {
+            var data = function(name) {
+                return $("#jamBackgroundYoutube").attr('data-' + name);
+            };
+            self.load(data('youtubeid'));
+        }
+    };
+
+    if(this.isReady)
+        loadFunction();
+
+    else
+        this.onReady = loadFunction;
+};
+
+YoutubePlayer.prototype.addCallback = function(eventName, func)
+{
+    if(!window.youtubePlayerCallbacks[eventName])
+        window.youtubePlayerCallbacks[eventName] = {};
+
+    window.youtubePlayerCallbacks[eventName][this.playerId] = func;
+};
+
+
+YoutubePlayer.prototype.addAPICallback = function(func) {
+    window.youtubePlayerAPIReadyQueue.push(func);
+};
+
+
+YoutubePlayer.prototype.addEventListener = function(eventName, func)
+{
+    var functionName = 'youtube' + eventName + this.playerId;
+    window[functionName] = func;
+    this.youtube.addEventListener(eventName, functionName);
+};
+
+YoutubePlayer.prototype.playerError = function(code)
+{
+    if (code == 150 || 101) { // owner blocked
+        JamError.show('Sorry, that jam can\'t be played due to restrictions by its video owner.');
+    }
+    else if (code == 100) { // deleted
+        JamError.show('Sorry, that jam can\'t be played because its video owner has deleted it.');
+    }
+    else { // catch-all, leave code in to help with debugging should this case happen
+       JamError.show(sprintf('Sorry, something went wrong when trying to play that jam (error %s).', code));
+    }
+
+
+    /*
+    var jam = window.player.getCurrentJam();
+    var person = $("nav a img.avatar").attr("alt");
+    if(jam)
+        $.post('/error/jsdebug', {data: {playerError: code, jamId: jam.id,
+                        jamPerson: jam.person, person: person}});
+
+    else
+        $.post('/error/jsdebug', {data: {playerError: code, person: person}});
+
+    if (code == 150 || code == 100) {
+        $("#oneFiftyError").slideDown('fast');
+    }
+    */
+
+    this.onError(code);
+};
+
+YoutubePlayer.prototype.playerStateChange = function(state)
+{
+    // html5
+    if(typeof state == 'object')
+        state = state.data;
+        //console.log("new state",state);
+        //alert(state,'STATECHANGE');
+
+    switch(state) {
+    case -1:
+        this.onUnstarted();
+        break;
+    case 0:
+        this.onFinish();
+        break;
+    case 1:
+        this.onPlaying();
+        break;
+    case 2:
+        this.onPaused();
+        break;
+    case 3:
+        this.onBuffering();
+        break;
+    case 5:
+        this.onCued();
+        break;
+    default:
+        // unknown state
+        break;
+    }
+};
+
+YoutubePlayer.prototype.getDuration = function()
+{
+    return Math.floor(this.youtube.getDuration());
+};
+
+// to be overridden
+YoutubePlayer.prototype.onReady = function() { };
+YoutubePlayer.prototype.onError = function(error) { };
+YoutubePlayer.prototype.onCued = function() { };
+YoutubePlayer.prototype.onBuffering = function() { };
+YoutubePlayer.prototype.onPaused = function() { };
+YoutubePlayer.prototype.onPlaying = function() { };
+YoutubePlayer.prototype.onFinish = function() { };
+YoutubePlayer.prototype.onUnstarted = function() { };
+// SUPPORT FOR MULTIPLE PLAYERS:
+
+YoutubePlayer.prototype.getCurrentTime = function() {
+    //console.log("elapsed time", Math.floor(this.youtube.getCurrentTime()) );
+    return ( Math.floor(this.youtube.getCurrentTime()) );
+};
+
+
+// we only have one global onYouTubePlayerReady function, but that doesn't
+// mean that we can't call it for each individual YoutubePlayer object, just
+// means that the syntax becomes slightly cumbersome.
+window.youtubePlayerCallbacks = {};
+
+// create a new function on window with name @name@ that calls a
+// youtubePlayerCallback function.
+youtubePlayerCallbackFunction = function(name) {
+
+    window[name] = function(playerId) {
+
+        var f;
+        if(window.youtubePlayerCallbacks[name] &&
+           (f = window.youtubePlayerCallbacks[name][playerId])) {
+            f();
+        }
+    };
+};
+
+youtubePlayerCallbackFunction('onYouTubePlayerReady');
+
+// api ready doesn't take an argument and is only called once,
+// so we queue callbacks.
+window.onYouTubePlayerAPIReady = function() {
+    var queue = window.youtubePlayerAPIReadyQueue;
+    for(var i = 0; i < queue.length; i ++) {
+        queue[i]();
+    }
+};
+window.youtubePlayerAPIReadyQueue = [];
+

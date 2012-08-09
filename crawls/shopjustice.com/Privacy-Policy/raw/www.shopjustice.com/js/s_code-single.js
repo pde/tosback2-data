@@ -40,6 +40,38 @@ s.searchTermVariable = 'eVar4';
 s.prop14 = 'D=pageURL';
 s.eVar16 = 'D=pageURL';
 
+//Check if the referrer is not an internal url or paypal
+if (document.referrer.indexOf(location.hostname) == -1){
+     if (document.referrer.indexOf("paypal") == -1) {
+        document.cookie="omniReferrerValue="+document.referrer+";domain=.shopjustice.com;path=/";
+     }
+}
+
+//Extract cookie data
+function getCookie(c_name){
+	var i,x,y,ARRcookies=document.cookie.split(";");
+	for (i=0;i<ARRcookies.length;i++)     {
+	  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+	  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+	  x=x.replace(/^\s+|\s+$/g,"");
+	  if (x==c_name) {
+		   return unescape(y);
+		   }
+	}}
+	
+
+//Check if the referrer is paypal on the checkout page and overwrite it
+if (document.referrer.indexOf("paypal") >= 0){
+	if (document.URL.indexOf("/checkout/review") >= 0 ){ 
+		if (getCookie('omniReferrerValue') == "") {
+			s._1_referrer='1';
+		}
+		else{
+			s.referrer = getCookie('omniReferrerValue');
+		}
+	}
+}
+
 /* Plugin Config */
 s.usePlugins=true
 
@@ -455,4 +487,3 @@ w.s_ft=new Function("c","c+='';var s,e,o,a,d,q,f,h,x;s=c.indexOf('=function(');w
 +"'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
 c=s_d(c);if(e>0){a=parseInt(i=v.substring(e+5));if(a>3)a=parseFloat(i)}else if(m>0)a=parseFloat(u.substring(m+10));else a=parseFloat(v);if(a<5||v.indexOf('Opera')>=0||u.indexOf('Opera')>=0)c=s_ft(c);if(!s){s=new Object;if(!w.s_c_in){w.s_c_il=new Array;w.s_c_in=0}s._il=w.s_c_il;s._in=w.s_c_in;s._il[s._in]=s;w.s_c_in++;}s._c='s_c';(new Function("s","un","pg","ss",c))(s,un,pg,ss);return s}
 function s_giqf(){var w=window,q=w.s_giq,i,t,s;if(q)for(i=0;i<q.length;i++){t=q[i];s=s_gi(t.oun);s.sa(t.un);s.setTagContainer(t.tagContainerName)}w.s_giq=0}s_giqf()
-

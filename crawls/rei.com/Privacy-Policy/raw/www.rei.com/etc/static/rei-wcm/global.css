@@ -935,6 +935,13 @@ p { /* pageContent area only leading */
 	padding: 0;
 }
 
+.p2 {
+    font-weight:bold;
+    color:#333333;
+    padding-right:0px;
+    /* right padding is 0 for when p2 is used as a span within a p tag */
+}
+
 .fontDeco1 {
 	font-style: italic;
 }
@@ -944,7 +951,7 @@ h1,.hdr1 {
 	font-size: 2.0em;
 	font-weight: bold;
 	color: #333333;
-	margin: 0 10px 4px 0;
+	margin: 0 10px 10px 0;
 	padding: 0;
 	line-height: normal;
 }
@@ -1201,7 +1208,7 @@ ul.brandTOC li {
 }
 
 .breadcrumbs {
-	margin: 0 0 16px 0;
+	margin: 0 0 10px 0;
 	padding: 0;
 	font-size: 1em;
 	font-weight: normal;
@@ -1256,6 +1263,10 @@ tbody tr:nth-child(odd) {
 
 tbody tr:nth-child(even) {
 	background-color: #F5F5F5;
+}
+
+.oldie tbody tr {  /* for IE8 and older because nth-child isn't supported */
+	border-bottom:1px solid #e5e5e5;
 }
 
 table tr.tr0 {background-color:#ffffff;}
@@ -1507,6 +1518,30 @@ table tr.tr4Last td { /* should only be used if last tr is class tr0 */
 	padding: 0;
 	margin: 0;
 }
+
+.horizsolid {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #9C9C9C -moz-use-text-color -moz-use-text-color;
+    border-style: solid none none;
+    border-width: 1px medium medium;
+    clear: both;
+    display: block;
+    height: 10px;
+    width: 100%;
+}
+
+.solidRule{
+    background-color: #F3F3F3;
+    float: left;
+    height: 10px;
+    margin: 0 0 0 -25px;
+    width: 110%;
+}
+
 .blankspace { 
 	height: 21px;
 	padding: 0;
@@ -1981,32 +2016,38 @@ button[disabled].tertiary,input[type="button"][disabled].tertiary,input[type="re
 /* -------------------END:CHROME STYLES---------------------------------------- */
 /* BEGIN::mbox styles */
 /* ---------------- mbox styles no carousel---------- */
+#mboxCarouselRegion .mbox ul, 
 #mboxRegion .mbox ul {
 	display: block;
 	list-style: none;
 	margin: 0 auto 17px 82px;
 	padding: 0;
 }
-#mboxRegion .mbox.omniBelt ul {
+#mboxCarouselRegion .mbox.omniBelt ul,
+#mboxRegion .mbox.omniBelt ul{
 	margin: 0 auto 17px 60px;
 }
 
-#mboxRegion .mbox li {
+#mboxCarouselRegion .mbox li,
+#mboxRegion .mbox li{
 	float: left;
 	margin: 17px 19px 0 0;
-	padding: 0;
-	width: 125px;
+	padding: 3px 10px 3px 0;
+	width: 142px;
 }
-#mboxRegion .mbox.omniBelt li {
+#mboxCarouselRegion .mbox.omniBelt li,
+#mboxRegion .mbox.omniBelt li{
 	margin: 0 19px 0 0;
 }
 
-#mboxRegion .mbox li a {
+#mboxCarouselRegion .mbox li a,
+#mboxRegion .mbox li a{
 	display: block;
 	line-height: normal;
 }
 
-#mboxRegion .mbox li a img {
+#mboxCarouselRegion .mbox li a img,
+#mboxRegion .mbox li a img{
 	border: solid 1px #ccc;
 	display: block;
 	margin-bottom: 3px;
@@ -2119,31 +2160,39 @@ button[disabled].tertiary,input[type="button"][disabled].tertiary,input[type="re
 
 #mboxCarouselRegion .mbox .jcarousel-prev,#mboxCarouselRegion2 .mbox .jcarousel-prev,#mboxCarouselRegion3 .mbox .jcarousel-prev
 	{
-	background: #fff url('pix/common/carousel_buttons_brown_left.jpg')
-		no-repeat 0 45px;
-	height: 150px;
+	margin-top:48px;
 	left: 20px;
-	width: 46px;
+    display:inline-block;
+    clear:none;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-right: 20px solid #909295;
 }
 
 #mboxCarouselRegion .mbox .jcarousel-next,#mboxCarouselRegion2 .mbox .jcarousel-next,#mboxCarouselRegion3 .mbox .jcarousel-next
 	{
-	background: #fff url('pix/common/carousel_buttons_brown_right.jpg')
-		no-repeat 0 45px;
-	height: 150px;
+	margin-top:48px;
 	right: 20px;
-	width: 46px;
+    display:inline-block;
+    clear:none;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid #909295;
 }
 
 #mboxCarouselRegion .mbox .jcarousel-prev-disabled,#mboxCarouselRegion2 .mbox .jcarousel-prev-disabled,#mboxCarouselRegion3 .mbox .jcarousel-prev-disabled
 	{
-	background-image: url('pix/common/carousel_buttons_greyed_left.jpg');
+	border-right: 20px solid #e5e5e5;
 	cursor: default;
 }
 
 #mboxCarouselRegion .mbox .jcarousel-next-disabled,#mboxCarouselRegion2 .mbox .jcarousel-next-disabled,#mboxCarouselRegion3 .mbox .jcarousel-next-disabled
 	{
-	background-image: url('pix/common/carousel_buttons_greyed_right.jpg');
+	border-left: 20px solid #e5e5e5;
 	cursor: default;
 }
 /* ------ 'omniBelt' button styles ------ */
@@ -2253,7 +2302,7 @@ button[disabled].tertiary,input[type="button"][disabled].tertiary,input[type="re
 	height: auto;
 	margin: 0 0 0 100px;
 	overflow: hidden;
-	padding: 0;
+	padding: 10px 0;
 	position: relative;
 	width: 536px;
 	z-index: 2;
@@ -2277,7 +2326,7 @@ button[disabled].tertiary,input[type="button"][disabled].tertiary,input[type="re
 	{
 	float: left;
 	margin: 0;
-	padding: 0;
+	padding: 10px 0;
 	width: 134px;
 }
 
@@ -2320,9 +2369,9 @@ button[disabled].tertiary,input[type="button"][disabled].tertiary,input[type="re
 	height: auto;
 	margin: 0 0 0 100px;
 	overflow: hidden;
-	padding: 0;
+	padding: 10px 0;
 	position: relative;
-	width: 700px;
+	width: 800px;
 	z-index: 2;
 }
 
@@ -2346,8 +2395,8 @@ button[disabled].tertiary,input[type="button"][disabled].tertiary,input[type="re
 	{
 	float: left;
 	margin: 0;
-	padding: 0;
-	width: 140px;
+	padding: 3px 10px 3px 0;
+	width: 150px;
 }
 
 #mboxCarouselRegion .omniBelt .recommendations5 .jcarousel-clip li,#mboxCarouselRegion2 .omniBelt .recommendations5 .jcarousel-clip li,#mboxCarouselRegion3 .omniBelt .recommendations5 .jcarousel-clip li,#mboxRegion .omniBelt ul li
@@ -2406,9 +2455,9 @@ button[disabled].tertiary,input[type="button"][disabled].tertiary,input[type="re
 	border: 1px solid #ccc;
 	background: #fff;
 	overflow: hidden;
-	top: 98px;
-	margin-left: 10px;
-	left: 121px;
+	top: 0px;
+	margin-left: 00px;
+	left: 0px;
 	z-index: 9050;
 	height: 172px;
 }
@@ -2931,7 +2980,7 @@ a#helpMenuCloseButton.closeButton span {
 
 #gHMessaging {
 	color: #333;
-	float: right;
+	/*float: right;*/
 	font: 14px arial, sans-serif;
 	list-style: none outside none;
 	margin: 0;
@@ -2939,6 +2988,9 @@ a#helpMenuCloseButton.closeButton span {
 	width: 445px;
 	overflow: hidden;
 	white-space: nowrap;
+	position: absolute;
+	right: 0px;
+	top: 73px;
 }
 
 /* #gHMessaging span {
@@ -3381,7 +3433,7 @@ modal
 #fancybox-content {
 	height: auto;
 	width: auto;
-	padding: 0;
+	padding: 10px;
 	margin: 0;
 }
 
@@ -5036,7 +5088,7 @@ when and how it appears*/
 }
 
 #sidebarWrapper ul li {
-	padding: 2px 0 4px 0;
+	padding: 2px 5px 4px 0;
 	line-height: 1.4em;
 	list-style: none;
 }
@@ -6167,18 +6219,18 @@ aside#footerBase a:active{
 
 #actionBar li a,#actionBar li {
 	float: left;
-	padding: 0 6px 0 0;
+	padding: 0 0 0 0;
 	width: auto;
 }
 
 #actionBar li a.share {
 	background: url("img/prod_sprite1.png") no-repeat
-		scroll -34px 2px transparent;
+		scroll -39px 2px transparent;
 	display: block;
 	height: 16px;
 	line-height: 0.5em;
-	padding: 2px 0 2px 19px;
-	width: 70px;
+	padding: 2px 5px 2px 19px;
+	width: 65px;
 }
 
 #actionBar li a:link,#actionBar li a:hover,#actionBar li a:visited {
@@ -6194,7 +6246,7 @@ aside#footerBase a:active{
 		scroll -130px 2px transparent;
 	cursor: pointer;
 	height: 13px;
-	margin-right: 6px;
+	margin-right: 5px;
 	padding: 2px 0 2px 17px;
 }
 
@@ -6841,7 +6893,7 @@ a.notd:hover {text-decoration:underline;}
 	background-color: #46484a;
 }
 
-/* uofficial taupe color */
+/* unofficial taupe color */
 .bgTaupeTeaser {
 	background-color: #f7f3f2;
 }
@@ -6911,3 +6963,11 @@ a.notd:hover {text-decoration:underline;}
 }
 
 /* STOP GENERIC ROUNDED CORNERS */
+
+/*
+ * Used to hide both logged-in and logged-out
+ * sections before one is selected for display.
+ */
+.rei-loggedIn, .rei-notLoggedIn {
+    display: none;
+}

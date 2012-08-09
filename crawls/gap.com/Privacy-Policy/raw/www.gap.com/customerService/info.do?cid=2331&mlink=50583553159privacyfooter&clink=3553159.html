@@ -907,7 +907,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "08/02/2012 04:24 PM",
+            DATE_IN_USE: "08/09/2012 01:46 PM",
             PREVIOUS_LOCALE : "en_US",
 
             IS_NAV2_ENABLED: 'false' === 'true',
@@ -3558,6 +3558,19 @@ if (window['storeLocationsService']) {
 </script>
 <!-- contentOverride120 end -->
 
+<!-- contentOverride121 begin -->
+<script type="text/javascript">
+//<![CDATA[
+
+// Override to set the default number of cooklies allowed 
+// for all browsers to 150
+if (browserService) {
+	browserService.api.getCookieLimits = function() { return browserService.model.cookieLimits.controller.limits(150,4000,4000)}
+}
+ // ]]>
+</script>
+<!-- contentOverride121 end -->
+
 <!-- END Content Item File: /content/0004/476/209/cn4476209.html -->
 
 
@@ -4667,11 +4680,11 @@ Event.observe(window, "load", function() {
 
 
 <!-- container 10 -->
-<!-- BEGIN Content Item File: /content/0005/283/143/cn5283143.html -->
+<!-- BEGIN Content Item File: /content/0005/286/496/cn5286496.html -->
 
 <script type="text/javascript">
 //////////////////////////////////////////////////
-///////  Finds in Store A/B test  - 08.01.12 - Gap Internal///////////////
+///////  Finds in Store A/B test  - GOL 08.06.12 ///////////////
 /////// jim kwak  /////////////
 //////////////////////////////////////////////////
 var UniversalCookieCutter0723 = Class.create();
@@ -4767,14 +4780,14 @@ UniversalCookieCutter0723.prototype = {
 	}
 };
 /* /browse/division.do?cid=5001&forcedModeFIST=c */	
-var promoCookieCutter = new UniversalCookieCutter0723("0801FindInStoreAB","mktUniversalPersist","0801FindInStoreAB_SEG","forcedModeFIST","0-0-100","8","none");
+var promoCookieCutter = new UniversalCookieCutter0723("0730REALFindInStoreAB","mktUniversalPersist","0730REALFindInStoreAB_SEG","forcedModeFIST","10-10-80","8","none");
 
 	function VolControlABTestMain() {
 
-		var VolControlSegment = gidLib.getCookieVar("mktUniversalPersist", "0801FindInStoreAB");
+		var VolControlSegment = gidLib.getCookieVar("mktUniversalPersist", "0730REALFindInStoreAB");
 		
 		//SEGA &forcedModeFIST=a
-		if( VolControlSegment == "0801FindInStoreAB_SEGA" ) {
+		if( VolControlSegment == "0730REALFindInStoreAB_SEGA" ) {
 			if ($('findInStoreTabWindow')){
 				$('findInStoreTabWindow').setStyle({display: 'block'});
 			}
@@ -4782,19 +4795,28 @@ var promoCookieCutter = new UniversalCookieCutter0723("0801FindInStoreAB","mktUn
 				
 		
 		//SEGB &forcedModeFIST=b
-		if( VolControlSegment == "0801FindInStoreAB_SEGB" ) {
+		if( VolControlSegment == "0730REALFindInStoreAB_SEGB" ) {
 			if ($('findInStoreTabWindow')){
 				$('findInStoreTabWindow').setStyle({display: 'block'}); 
 			}
+			
 			// observe for new window
 			if ($('findInStoreButton')){
 			 $('findInStoreButton').observe('click', function (event) {
 				//console.log( "clicked me" )
+				
+				setTimeout(function(){if ($('surveyLink')){
+					var surveyLinkHTML = '<p style="padding-top:5px; font-size:11px;">Please <a href="https://websiteinsiders.com/survey/html.pro?ID=43" target="_new">complete a short survey</a> so we can make improvements to this new (BETA) feature.</p>';
+					$('surveyLink').innerHTML = surveyLinkHTML;
+				}},1000);
+			
 				//inject survey link and copy.
+				/*
 				if ($('surveyLink')){
 					var surveyLinkHTML = '<p style="padding-top:5px; font-size:11px;">Please <a href="https://websiteinsiders.com/survey/html.pro?ID=43" target="_new">complete a short survey</a> so we can make improvements to this new (BETA) feature.</p>';
 					$('surveyLink').innerHTML = surveyLinkHTML;
 				}
+				*/
 
 			});
 			} 
@@ -4803,7 +4825,7 @@ var promoCookieCutter = new UniversalCookieCutter0723("0801FindInStoreAB","mktUn
 		}
 
 		//SEGC &forcedModeFIST=c
-		if( VolControlSegment == "0801FindInStoreAB_SEGC" ) {
+		if( VolControlSegment == "0730REALFindInStoreAB_SEGC" ) {
 			//do nothing
 		}
 
@@ -4820,7 +4842,7 @@ if (location.pathname == "/browse/product.do") {
 
 
 
-<!-- END Content Item File: /content/0005/283/143/cn5283143.html -->
+<!-- END Content Item File: /content/0005/286/496/cn5286496.html -->
 
 
 
@@ -5997,209 +6019,168 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/299/214/cn5299214.html -->
-<div id="contentItemContainer10000395" class="5299214" >
+    	<!-- BEGIN Content Item File: /content/0005/300/002/cn5300002.html -->
+<div id="contentItemContainer10000395" class="5300002" >
 
 <style type="text/css">
-	.globalbanner {
-		width: 581px;
-		height: 62px;
-		position: relative;
-		display: block;
-		font-size: 10pt;
-	}
+#globalBanner {
+	width: 581px;
+	height: 62px;
+	position: relative;
+	display: block;
+	font-size: 10pt;
+	z-index: 50;
+}
 
-	.globalbanner.hide {
-		display: none;
-	}
-	
-	.globalbanner a:link, 
-	.globalbanner a:hover,
-	.globalbanner a:visited, 
-	.globalbanner a:active
-	{
-		color: #000000;
-    	text-decoration: none;
-	}
-	
-	.detailsLink {
-		font-size: 8pt; 
-		text-decoration: underline;
-	}
-	
-	.promoCode, 
-	.promoPercent 
-	{
-		font-weight: bold;
-	}
+#globalBanner a:link, 
+#globalBanner a:hover,
+#globalBanner a:visited, 
+#globalBanner a:active
+{
+	color: #000000;
+	text-decoration: none;
+}
 
-	#dropdownPromoWrapper  { width:581px; height:62px; float:left; overflow:hidden; z-index:45; position:absolute;}
-  	#dropdownPromoWrapper2  { width:315px; height:315px; float:left; overflow:hidden; z-index:99; position:absolute;left:-19px;}
-  
- 	#dropdownPromoClosed { width:581px; height:62px; }
-  
-  	#dropdownPromoClosedToOpen {float:left; width: 581px;height: 62px;}
+.detailsLink {
+	font-size: 8pt; 
+	text-decoration: underline;
+}
 
- 	#dropdownPromoClosedStayClosed { width:581px; height:62px; float:right }
-  
-  	#dropdownPromoOpen2 { width:315px; height:315px; float:left; position:absolute; z-index:99; top:0px; display:block;}
+.promoCode, 
+.promoPercent 
+{
+	font-weight: bold;
+}
+
+#globalBannerDisruptor {
+	position: absolute;
+	z-index: 99;
+	top: 0;
+	left: 0;
+}
 </style>
 
-<!-- 15% off gb -->
-<div id="gb15PercentOff" class="globalbanner hide">
-		<a href="javascript:void(0);" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/299/214/assets/legal_15off.html',id:'legal',width:350,height:300});"><br />YAY! <span class="promoPercent">15%</span> OFF YOUR PURCHASE. LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode">GAPGIFT.</span> <span class="detailsLink">Details</span></a>
-</div><!-- /15% off gb -->
-
-<!-- 25% off gb -->
-<div id="gb25PercentOff" class="globalbanner hide" style="position:relative;z-index:50;">
+<div id="globalBanner">
 
 	<!-- Global Banner Text -->
-	<div id="dropdownPromoWrapper" style="height:62px;padding-top: 6px;"> 
-		<div id="dropdownPromoClosed" class="dropdownLink">
-			<div id="dropdownPromoClosedToOpen">
-				<a class="dropdownLink" href="javascript:void(0);" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/299/214/assets/legal_25off.html',id:'legal',width:350,height:300});">
-					BACK TO SCHOOL EVENT! <span class="promoPercent">25% OFF</span> KIDS &amp; BABY STYLES. 
-					<br />ENDS 8/5. ONLINE ONLY. ENTER <span class="promoCode">GAPCOLOR</span>
-					<br /><span class="detailsLink">Details</span>
-				</a>              
-			</div>
-		</div>
+	<div id="globalBannerText">
+		<a href="javascript:void(0);" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/300/002/assets/legal.html',id:'legal',width:350,height:300});">
+			<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/300/002/assets/080912_GF_disruptor_US.png" alt="GAP FRIENDS EVENT! 30% OFF YOUR PURCHASE. ENDS 8/12. ONLINE AND IN STORES. ENTER GAPFRIENDS. CLICK FOR DETAILS" />
+		</a>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
-	<div id="dropdownPromoWrapper2" style="display:none;"> 
-		<div style="display:none;" id="dropdownPromoOpen2" class="dropdownLink">
-			<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/299/214/assets/080112_hp_disruptor_US.jpg" class="dropdownLink" alt="" usemap="#disruptorMap" />
-		</div>
-	</div>
-	<map name="disruptorMap">
-	    <area shape="rect" coords="287,1,314,30" alt="close" href="javascript:void(0);" class="dropdownLink" onClick="headlineDropdown.retractHeadline();" />
-	    <area shape="rect" class="dropdownLink" coords="-10,0,419,354" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/299/214/assets/legal_25off.html',id:'legal',width:350,height:250});" alt="details" />
-	</map><!-- /Global Banner Disruptor -->
+	<div id="globalBannerDisruptor" style="display:none;"> 
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/300/002/assets/080912_GF_disruptor_US.gif" alt="THE GAP FRIENDS EVENT! 30% OFF YOUR ENTIRE PURCHASE. EXCLUSIONS APPLY. ENDS SUNDAY, 8/12. ENTER GAPFRIENDS. ONLINE AND IN STORES. CLICK FOR DETAILS" usemap="#disruptorMap" />
+		<map name="disruptorMap">
+		    <area shape="rect" coords="286,1,314,29" alt="close" href="javascript:void(0);" onClick="globalBannerDisruptor.close();" class="noHideDisruptor" />
+		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/300/002/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
+		</map>
+	</div><!-- /Global Banner Disruptor -->
 
-</div><!-- /25% off gb -->
-
+</div>
 <script type="text/javascript">
-var currentDivision = wcdLib.getCurrentDivisionName().toLowerCase();
-
 Event.observe(window, 'load', function() {
-
-	if(currentDivision == "women" || currentDivision == "gapbody" || currentDivision == "gapfit" || currentDivision == "gapmaternity" || currentDivision == "men")
-	{
-		$('gb15PercentOff').style.display = 'block';
-	}
-	else if(currentDivision == "home" || currentDivision == "gapkids" || currentDivision == "babygap")
-	{
-		$('gb25PercentOff').style.display = 'block';
-
-		// Initiliaze function
-		headlineDropdown.init({cookieName: '080112GOLBannerCookie'});
-
-		//close layered popup to restore the default behavior of the headline retracting when moused out
-		gidLib.layeredPopup.closeLayeredPopup = gidLib.layeredPopup.closeLayeredPopup.wrap( function( om ) { 
-			om();
-			headlineDropdown.restoreDefaultBehavior();
-		});
-	}
-
+	// Initiliaze disruptor object
+	globalBannerDisruptor.init('globalBannerDisruptor','testingCookiesMan');
 });
 
-var headlineDropdown = {
-	
-	cookieName: 'GOLBannerCookie',
-	headlineHeight: '315px',
-	isExpanded: false,
+// Show disruptor when mouseover #globalBannerText
+$('globalBannerText').observe('mouseover', function()
+{
+	globalBannerDisruptor.disrupt();
+});
 
-	init: function() {
-		Event.observe(document.body, 'mouseover', function(event) {
-			var element = Event.findElement(event);
+// Hide disruptor
+Event.observe(document.body, 'mouseover', function(event) 
+{
+	var element = Event.findElement(event);
+	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
 
-			if (element.className != "dropdownLink" && 
-				element.id != "popupContent" && 
-				element.id != "Promo_DetailsPopupContent" && 
-				element.id != "layeredPopupFrameTop" && 
-				element.className != "topCloseButton" && 
-				element.className != "bottomMiddle") 
-			{
-				headlineDropdown.retractHeadline();
-			}
-		});
-
-		$('dropdownPromoClosedToOpen').observe('mouseover', function( event ) {
-			headlineDropdown.expandHeadline( true );
-		});
-		
-		// Checking if cookie exists
-		if( gidLib.getCookieVar("mktGlobalSession", headlineDropdown.cookieName) == 0 ){
-			headlineDropdown.expandHeadline.delay( 2, false );  //  x amount sec onload, delay drop down when cookie has not been set
-		}
-	},
-
-	// Function that expands headline asset
-	expandHeadline: function( wasRolledOver ) {
-
-		// Check whether popup is already expanded
-		if( headlineDropdown.isExpanded == false ) {
-			headlineDropdown.isExpanded = true;
-			gidLib.setCookieVar("mktGlobalSession", headlineDropdown.cookieName,"1");
-			
-			$('dropdownPromoWrapper2').show();
-			$('dropdownPromoOpen2').show();
-			
-			// Expands div to height
-			new Effect.Parallel([
-			  new Effect.Morph('dropdownPromoWrapper2', { sync: true, style: 'height:' + headlineDropdown.headlineHeight }), 
-			  new Effect.Morph('dropdownPromoOpen2', { sync: true, style: 'height:' + headlineDropdown.headlineHeight }) 
-			], { 
-			  duration: 1
-			});
-			
-			if( wasRolledOver == false ) {
-				headlineDropdown.retractHeadline.delay( 10 ); // show for x amount sec. when cookie has not been set
-			}
-		}
-	},
-	// Function to retract headline asset
-	retractHeadline: function() {		
-
-		if( headlineDropdown.isExpanded == true ) {
-			headlineDropdown.isExpanded = false;
-			//new
-			$('dropdownPromoWrapper2').hide();
-			$('dropdownPromoOpen2').hide();
-			$('dropdownPromoWrapper').show();
-			
-			$('dropdownPromoWrapper2').setStyle({ height:'62px' });
-			$('dropdownPromoOpen2').setStyle({ height:'62px' });
-
-		}
-	},
-	stayOpen: function() {
-		// Cancel out default behavior of the headline closing when moused off of
-		Event.stopObserving(document.body, 'mouseover');
-	},
-	restoreDefaultBehavior: function() {
-		// Restores the default behavior of the headline retracting when moused out
-		Event.observe(document.body, 'mouseover', function(event) {
-			var element = Event.findElement(event);
-			
-			if (element.className != "dropdownLink" && 
-				element.id != "popupContent" && 
-				element.id != "Promo_DetailsPopupContent" && 
-				element.id != "layeredPopupFrameTop" && 
-				element.className != "topCloseButton" && 
-				element.className != "bottomMiddle") 
-			{
-				headlineDropdown.retractHeadline();
-			}
-		});
+	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
+	{
+		globalBannerDisruptor.hide();
 	}
-}
+});
+
+// globalBannerDisruptor object
+var globalBannerDisruptor = {
+	
+	targetContainerID : '',
+	cookieName : '',
+	
+	init: function(targetContainerID, cookieName) {
+	
+		globalBannerDisruptor.targetContainerID = targetContainerID;
+		globalBannerDisruptor.cookieName = cookieName;
+		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+
+		if(hasSeenDisruptor != "1")
+		{
+			globalBannerDisruptor.autoDisrupt();
+			gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
+		}
+		
+	},
+	
+	/* auto hides itself */
+	autoDisrupt: function() {
+
+		new Effect.SlideDown(globalBannerDisruptor.targetContainerID,{duration:.35, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+		
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.hide();
+		}, 8000);
+
+	},
+	
+	hide: function() {
+		
+		var targetID = globalBannerDisruptor.targetContainerID;
+		var target = $(targetID);
+
+		if(target.style.display != "none") {
+			new Effect.SlideUp(targetID,{duration:.35, queue: {position: 'end', scope: 'gbDisruptor', limit: 1} });
+			return false;
+		}
+		
+	},
+	
+	/* disrupts but does NOT auto hide iteself */
+	disrupt: function() {
+		
+		var targetID = globalBannerDisruptor.targetContainerID;
+		var target = $(targetID);
+
+		if(target.style.display == "none") {
+			new Effect.SlideDown(globalBannerDisruptor.targetContainerID,{duration:.35, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+			return false;
+		}
+
+		return true;
+	},
+
+	/* closes disruptor and prevents disrupt from firing prematurely */
+	close: function() {
+
+		globalBannerDisruptor.hide();
+		$('globalBannerText').stopObserving('mouseover');
+
+		var timerID = setTimeout(function() {
+			$('globalBannerText').observe('mouseover', function()
+			{
+				globalBannerDisruptor.disrupt();
+			});
+		}, 3000)
+
+	}
+	
+};
 </script>
 
 
 </div>
-<!-- END Content Item File: /content/0005/299/214/cn5299214.html -->
+<!-- END Content Item File: /content/0005/300/002/cn5300002.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7946,7 +7927,7 @@ emailValidation = {
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5299214,5106701,5125298,2486833,5125295,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5300002,5106701,5125298,2486833,5125295,5217025";
 	 </script>
 	
 	<noscript>

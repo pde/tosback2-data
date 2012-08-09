@@ -5,7 +5,7 @@ function setVars()
 		_PKTtabParents = document.getElementById("PKTtabParents");
 		_PKTtabTeens = document.getElementById("PKTtabTeens");
 		_PKTtabKids = document.getElementById("PKTtabKids");
-		_PKTtabCollege = document.getElementById("PKTtabCollege");
+		//_PKTtabCollege = document.getElementById("PKTtabCollege");
 		_navTabsPKT = document.getElementById("navTabsPKT");
 		
 		// Fetch list bodies if available
@@ -36,14 +36,14 @@ function setVars()
 				_relatedArticlesListKids = document.getElementById("zeroTester");
 				}
 				
-		if(document.getElementById("relatedArticlesListCollege") != null)
+		/*if(document.getElementById("relatedArticlesListCollege") != null)
 			{
 			_relatedArticlesListCollege = document.getElementById("relatedArticlesListCollege");
 			}
 			else
 				{
 				_relatedArticlesListCollege = document.getElementById("zeroTester");
-				}
+				}*/
 	}
 	
 function setSectionVariables(Section)
@@ -56,12 +56,12 @@ function setSectionVariables(Section)
 		_PKTtabTeens.style.display = "block";
 		_PKTtabKids.style.display = "block";
 		_PKTtabParents.style.display = "block";
-		_PKTtabCollege.style.display = "block";
+		//_PKTtabCollege.style.display = "block";
 		
 		_relatedArticlesListParents.style.display = "none";
 		_relatedArticlesListTeens.style.display = "none";
 		_relatedArticlesListKids.style.display = "none";
-		_relatedArticlesListCollege.style.display = "none";
+		//_relatedArticlesListCollege.style.display = "none";
 	
 		if(Section.match("P") == null)
 			_PKTtabParents.style.display = "none";
@@ -72,8 +72,8 @@ function setSectionVariables(Section)
 		if (Section.match("T") == null)
 			_PKTtabTeens.style.display = "none";
 			
-		if(Section.match("C") == null)
-			_PKTtabCollege.style.display = "none";
+		/*if(Section.match("C") == null)
+			_PKTtabCollege.style.display = "none";*/
 			
 			
 	
@@ -96,11 +96,11 @@ function setSectionVariables(Section)
 			_PKTtabTeens.className = "current";
 			}
 		
-		else if (Section.match("C") != null)
+		/*else if (Section.match("C") != null)
 			{
 			_relatedArticlesListCollege.style.display = "block";
 			_PKTtabCollege.className = "current";
-			}
+			}*/
 		
 	}
 
@@ -109,11 +109,11 @@ function PKTJS(section)
 		_PKTtabTeens.className = "wascurrent";
 		_PKTtabParents.className = "wascurrent";
 		_PKTtabKids.className = "wascurrent";
-		_PKTtabCollege.classname = "wascurrent";
+		//_PKTtabCollege.classname = "wascurrent";
 		_relatedArticlesListParents.style.display = "none";
 		_relatedArticlesListTeens.style.display = "none";
 		_relatedArticlesListKids.style.display = "none";
-		_relatedArticlesListCollege.style.display = "none";
+		//_relatedArticlesListCollege.style.display = "none";
 				 
 		if(section == "Parents")
 			{                  
@@ -126,12 +126,12 @@ function PKTJS(section)
 				_PKTtabTeens.className = "current";
 				_relatedArticlesListTeens.style.display = "block";
 			}
-		else if(section  == "College")
+		/*else if(section  == "College")
 			{
 				_PKTtabCollege.className = "current";
 				_relatedArticlesListCollege.style.display = "block";
 			}	
-		
+		*/
 		
 		else
 			{
@@ -145,12 +145,12 @@ function noTabs()
 		_PKTtabTeens.style.display = "none";
 		_PKTtabKids.style.display = "none";
 		_PKTtabParents.style.display = "none";
-		_PKTtabCollege.style.display = "none";
+		//_PKTtabCollege.style.display = "none";
 		_PKTtabTeens.className = "current";
 		_relatedArticlesListParents.style.display = "none";
 		_relatedArticlesListTeens.style.display = "none";
 		_relatedArticlesListKids.style.display = "none";
-		_relatedArticlesListCollege.style.display = "none";
+		//_relatedArticlesListCollege.style.display = "none";
 		document.getElementById("moreOnThisTopicHeader").style.display = "none";
 		document.getElementById("boxBreaker").style.display = "none";
 	}
@@ -159,11 +159,11 @@ function noTabs()
 function PKTChoose(parentCount, kidsCount, teensCount, collegeCount )
 	{
 		var section ="";
-		if(parentCount > 0 && kidsCount > 0 && teensCount > 0)
+		/*if(parentCount > 0 && kidsCount > 0 && teensCount > 0)
 			{
 				collegeCount = 0;
 			}
-			
+			*/
 		if(parentCount > 0)
 			{
 				section = "P";
@@ -177,10 +177,10 @@ function PKTChoose(parentCount, kidsCount, teensCount, collegeCount )
 				section = section + "T";
 			}
 			
-		if(collegeCount > 0)
+		/*if(collegeCount > 0)
 			{
 				section= section +"C";
-			}
+			}*/
 		if(section == "")
 			{
 			noTabs();
@@ -192,4 +192,4 @@ function PKTChoose(parentCount, kidsCount, teensCount, collegeCount )
 	}
 
 	
-	
+	/**/

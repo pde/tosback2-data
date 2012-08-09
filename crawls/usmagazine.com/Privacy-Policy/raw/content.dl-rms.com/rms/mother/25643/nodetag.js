@@ -1,5 +1,9 @@
 (function(){
-var pfs={ "http://www.usmagazine.com/celebrity-moms":{"nid":31068,"tr":1} },d=document,w=window,u=(w.gm_fake_href)?w.gm_fake_href:w.location.href;
+var pfs={ "http://www.usmagazine.com/moviestvmusic/":{"nid":21491,"tr":1},
+"http://www.usmagazine.com/celebrity-moms":{"nid":31068,"tr":1},
+"http://www.usmagazine.com/style":{"nid":21490,"tr":1},
+"http://www.usmagazine.com/news":{"nid":21488,"tr":1},
+"http://www.usmagazine.com/":{"nid":21487,"tr":1} },d=document,w=window,u=(w.gm_fake_href)?w.gm_fake_href:w.location.href;
 
 function z(n){
 var s,u;

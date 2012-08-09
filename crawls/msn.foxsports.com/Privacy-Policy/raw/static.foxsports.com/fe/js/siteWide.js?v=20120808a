@@ -1,0 +1,1588 @@
+/* BEGIN: Fox Sports Namespace Declarations */
+
+/* BEGIN: [CHECK EVENT STATUS]
+ ** will return the TRUE event on the selected element and not anything inside of it due to event bubbling.
+ ** call fsCheckEvent and it will return the correct element you designated for your event
+ ** example: alertElement.onmouseout = function(){
+ var element = fsCheckEvent(this);
+ if(element){
+ 	element.className = element.className.replace("on", "");
+ }
+ */
+
+FsApps = FsApps || {};
+
+
+/**
+$DateTime: 2011/09/19 11:09:10 $
+$File: //live/ramp/themes/projects/root/base_main/scripts/m_check.js $.$Revision: #9 $.$Change: 45250 $
+**/
+/** BEGIN RAMP MOBILE code for story pages**/
+function ramp_SmartPhoneHandler(config) {
+
+	init = function() {
+		if ("undefined"==config || null==config)
+			config = {};
+
+            //the order these load in in important
+            //URL of the top-most mobile home page, typically m.domain.com
+		setDefault(config,"mobileHome",null);
+            //action to take if the redirect is unsuccessful in finding a mobile version of the landing page. Options are "home", meaning "redirect to the mobile home page" or ... anything else, which will simply leave the user on the originally requested URL
+		setDefault(config,"onNoMobileVersion","none");
+            //allow override of standard landing page redirect logic. Setting this value to "home" redirect all mobile requests to the mobile home page
+		setDefault(config,"onMobileDetect",null);
+        setDefault(config,"useExperimentalUserAgents",false); //This config setting must be inserted before getDeviceMap
+		setDefault(config,"deviceKeys",getDeviceMap());
+		setDefault(config,"hosted",false);
+		setDefault(config,"guid",fsGeneral.cms_id);
+		setDefault(config,"autoLoad",true);
+		setDefault(config,"mobilePreview","/preview");
+		setDefault(config,"rootPath",getRootPath());
+		setDefault(config,"pagePath",getPagePath());
+		setDefault(config,"test",false);
+		setDefault(config,"themeKey",null);//force a theme
+		setDefault(config,"nocookie",false);//Don't remember anything
+		setDefault(config,"sitename",null);//The name of the site that this page is for
+		setDefault(config,"noredir", getUrlParam("noredir",false));//Signal that an attempt to redir has already been made
+		setDefault(config,"m_n",getUrlParam("m_n",null));//Signal a redirect has already occured and a mobile version was not found
+
+
+		if (config.autoLoad)
+			load();
+	}; //end init
+
+	setDefault = function(obj,prop,d) {
+        if("undefined" == typeof(obj[prop]) || null == obj[prop]) {
+            obj[prop] = d;
+        }
+	}; //end setDefault
+
+	getPagePath = function () {
+		if (config.hosted) {
+			return window.location.pathname;
+		}
+		else {
+			var pageUrl = window.location.href;
+			pageUrl = pageUrl.replace(/localhost:8080|qa.foxsports.com|nqa.foxsports.com/, 'msn.foxsports.com');  //FS override on url for testing
+			var links = document.getElementsByTagName("link");
+			for (var i=0;i<links.length;i++){
+				if (links[i].rel=="canonical")
+					pageUrl = links[i].href; break;
+			}
+		
+			return config.mobilePreview+"?dispatch=true&curl=" + encodeURI(pageUrl);
+		}
+	}; //end getPagePath
+
+	getRootPath = function () {
+		return "http://msn.foxsports.com/";
+	}; //end getRootPath
+
+	getGUID = function () {
+		if (config.guid)
+			return config.guid;
+
+		if (document.getElementsByTagName) {
+
+			var metaNames = new Array("ramp.guid","guid","dc.identifier","fb.page_id");
+			var metaProps = new Array("fb:page_id"); //property is used by FB and is part of the RDFa spec
+
+			var metas = document.getElementsByTagName("meta");
+			for (var i=0; i<metas.length;i++) {
+				var meta = metas[i];
+				var name = meta.getAttribute("name");
+				var prop = meta.getAttribute("property");
+				var content = meta.content;
+
+				for (var n=0;n<metaNames.length;n++) {
+					if (metaNames[n]==name) {
+						return content;
+					}
+				}
+				for (var p=0;p<metaProps.length;p++) {
+					if (metaProps[p]==prop)
+						return content;
+				}
+			}
+
+		}
+
+		return window.location.href;
+
+	};//end getGUID
+
+	getDeviceMap = function() {
+		var deviceKeys = new Array();
+        var expUsrAgents = config.useExperimentalUserAgents ? "|BlackBerry(.*)WebKit" :"";
+
+        //set key to theme, value to device RegEx
+        var userAgents = "iPhone|Android" + expUsrAgents;
+		deviceKeys["mobile"] = new RegExp(userAgents,"i");
+		return deviceKeys;
+	};//end getDeviceMap
+
+	getUrlParam = function ( name,d ) {
+		name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+        var regexS = "[\\?&]"+name+"=([^&#]*)";
+        var regex = new RegExp( regexS );
+        var results = regex.exec( window.location.href );
+        if( results == null )
+            return d;
+        else
+            return results[1];
+	};
+
+	doRedirect = function (url) {
+		if (config.test)
+            alert("redirect to = \n" + url);
+        else if(config.noredir)
+            return;
+		else
+            window.location = url;
+        
+	};//end doRedirect
+
+	noMobileVersion = function () {
+		if (config.m_n) {
+                //see what the default is
+			if (config.onNoMobileVersion) {	
+				if (config.onNoMobileVersion && config.mobileHome) {
+					doRedirect(config.mobileHome);
+				}
+			}
+			return true;
+		}
+		return false;
+	};
+
+    load = function() {
+            //first thing, see if they're on a mobile device
+		if (!isMobile())
+			return;
+
+            //next, see if they should just be redirected to the top-level. This should be true on all non-indexed content
+		if (config.onMobileDetect=="home" || (noMobileVersion() && config.onNoMobileVersion=="home")) {
+			if (config.mobileHome && config.mobileHome!="")
+				doRedirect(config.mobileHome);
+			return;
+		} 
+
+
+            //check for existing redirect cookie
+		var cookieKey = "sp_redir"+config.guid;
+        var cookie = config.nocookie?null:getCookie(cookieKey);
+
+
+            //here just for testing
+		if (config.test && cookie) {
+			var what = prompt("Use cookie value, or redo?\n\nType: redo OR cookie","redo");
+			if (what=="redo") {rmCookie(cookieKey); cookie=null; }
+		};
+
+
+		if (cookie) {
+			doRedirect(unescape(cookie));
+		} else {
+			var themeKey = getThemeKey();
+			if (themeKey) {
+				var redir = getRedirectUrl(themeKey);
+				setCookie(cookieKey, redir);
+				doRedirect(redir);
+			}
+        }
+
+    }; // end load
+
+
+	getRedirectUrl = function (themeKey) {
+		var mobileUrl = config.rootPath + (config.sitename?"/"+config.sitename+"/":"") + themeKey + config.pagePath;
+		return mobileUrl;
+	};
+
+        //use this function to match a device to a theme
+    getThemeKey = function(agent) {
+		var key = config.themeKey;
+
+        if ("undefined"==agent || null==agent)
+            agent=navigator.userAgent;
+
+		if (!key) {
+			for (var key in config.deviceKeys) {
+				if(agent.match(config.deviceKeys[key])) { 
+                    config.themeKey=key;
+                    break; 
+                };
+			}
+		}
+
+        if(!config.themeKey) {
+            return null;
+        } else {
+            return "device/" + config.themeKey;
+        }
+    }; //end getThemeKey
+
+        //returns true/false
+    isMobile = function(agent) {
+            
+        if ("undefined"==agent || null==agent)
+            agent=navigator.userAgent;
+
+        for (var key in config.deviceKeys) {
+            if(agent.match(config.deviceKeys[key])) { return true; };
+        }
+            
+        return false;
+    };
+    ramp_SmartPhoneHandler.prototype.isMobile = isMobile;
+    ramp_SmartPhoneHandler.prototype.doRedirect = doRedirect;
+    
+    getCookie = function(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }                return null;
+    }; //end getCookie
+
+	setCookie = function (c_name,value,exdays) {
+		var exdate=new Date();
+		exdate.setDate(exdate.getDate() + exdays);
+		var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+		document.cookie=c_name + "=" + c_value;
+	}; //end setCookie
+
+
+	rmCookie = function (name) {
+		document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+	}; //end rmCookie
+
+
+        //initialize the config values
+	init();
+}
+
+function isMobile() {
+	  var index = navigator.appVersion.indexOf("Mobile");
+	  return (index > -1);
+}
+
+function isIPad() {
+	  if (navigator.platform == "iPad") 
+		  return true; 
+	  else
+		  return false; 
+}
+
+
+function fsCheckEventObject(e, p) {
+		window.console.warn("API Deprication - fsCheckEventObject UPDATE TO FsUtils.checkEventObject");
+		if (!e) var e = window.event;
+		e.cancelBubble = true;
+		if (e.stopPropagation) e.stopPropagation();
+		if (e.target) eobj = e.target;
+		else if (e.srcElement) eobj = e.srcElement;
+		if (eobj.nodeType == 3) eobj = eobj.parentNode;
+		var eobj = (e.relatedTarget) ? e.relatedTarget : (e.type == 'mouseout') ? e.toElement : e.fromElement;
+		if (!eobj || eobj == p) return false;
+		while (eobj.parentNode) {
+			if (eobj == p) return false;
+			eobj = eobj.parentNode;
+		}
+		return true;
+	}
+
+	/// Set the Mouse Out event
+	function fsCheckEvent(obj, func) {
+		window.console.warn("API Deprication - fsCheckEvent UPDATE TO FsUtils.checkEvent");
+		var e = window.event || arguments.callee.caller.arguments[0];
+		evElm = new Array(); // set return array
+		if (fsCheckEventObject(e, obj)) {
+			evElm[0] = obj;   // pass the HTML object itself
+			evElm[1] = e.type; // pass the event type (onclick, mouseover, etc.)
+			return evElm; // return it to the requestor
+		}
+
+	}
+
+
+	
+/* BEGIN: [STANDARD DATE FORMATER]
+** pass a timestamp to "formatDate(timestamp)" and it will return a formated date and time
+*/
+	function formatDate(seconds) {
+		FsUtils.formatDate(seconds);
+		window.console.warn("API Deprication - formatDate");
+	}
+/* END: [STANDARD DATE FORMATER] */
+
+/* BEGIN: [Global Header User Logged In Data]
+ ** Set's the user sign in | register or Hi [name] on the header/page
+*/
+	function fsUserInfo(){
+		FsRef.fsUserInfo();
+		window.console.warn("API Deprication - fsUserInfo");
+	}
+/* END: [Global Header User Logged In Data]
+
+/* BEGIN: [Auto Dropdown Script - Mainly for Navigations]
+ ** Example on calling this function:
+ ** rackEm("evergreen-nav", {trackLinks: true});
+ ** Used for list items
+*/
+	function rackEm(me, options) {
+		try {
+			var options = options || {}; // setup options
+			var trackLinks = options.trackLinks || false; // tracking of links
+			var trackLinkType = options.trackLinkType || 'link'; // type of link to track
+			var rackEmDesc = options.description || ''; // description of tracking set
+			var navSec = document.getElementById(me); // get the nav
+			var navUls = navSec.getElementsByTagName("ul"); // grab all of the list items
+			var subNav = document.getElementById("fs-sub-nav");
+			var subNavCont='';
+
+			if(trackLinks == true){    // check if these links should be tracked
+				FsUtils.analyticsListener(me, {description:rackEmDesc, type:trackLinkType});
+			}
+
+			for (i = 0, numUls = navUls.length; i <= numUls; i++) { // cycle throught the list items
+				node = navUls[i]; // setup the node handler
+				if (node && node.parentNode.nodeName == "LI" && node.parentNode.parentNode.id == me) { // check to see if the parent of the current ul is a list time
+				  if(node.parentNode.className.search("active")!= -1 && node.className.search("sub-nav")!= -1){ // get active nav and sub nav elements
+					 subNav.className = subNav.className +  " "+ node.parentNode.id; // set the class of the subnav div
+					 subNav.innerHTML = node.innerHTML;  // place the subnav content in it
+					 subNav.style.display="block"; // display it
+				  }
+
+					var mouseEv = function(ev) { // The mouse events for the list items.
+
+						var element = FsUtils.checkEvent(this); // check the even bubble and get the correct element
+						if (element) { // if the element is not "undefined", do the following script to that element on mouse out
+
+							var anch = element[0].getElementsByTagName('a');    // get all anchors in the list item
+							var ul = element[0].getElementsByTagName('ul'); // get all ULs in the list time
+							var li = ul[0].getElementsByTagName('li'); // get the LIs in the ULs in the list item
+							var elId = element[0].id.split("-")[1];
+
+
+							//if we want to show the dropdowns
+						   if(showDropDowns || elId == "more" || elId == "fantasy" || elId == "video" || elId == "community" || elId == "etc" || elId == "tv"){
+							if(element[1] == "mouseover"){ // if the event is a mouse over
+								this.fsAnalyticsCategory = anch[0].innerHTML; // set Category for Analytics (the top anchor before the list)
+									anch[0].className = anch[0].className.replace(new RegExp("openNavParent", "g"), ''); // remove the open state from the anchor if it's already open
+									anch[0].className = anch[0].className + ' openNavParent'; // reset the anchor class name
+									ul[0].className = ul[0].className + ' openNav'; // reset the ULs class to "open"
+								if (document.all) { // check for internet exporer
+									if (element[0].className != "nav-drop-down") {
+										ul[0].style.marginLeft = '-' + (Math.round(ul[0].parentNode.offsetWidth)) + 'px'; // set the positioning of the drop down
+									}
+								} else { // all other browser
+									ul[0].style.marginLeft = '-' + (Math.round(ul[0].parentNode.offsetWidth / ul[0].length)) + 'px'; //  set the positioning of the drop down
+								}
+							 }
+							if(element[1] == "mouseout"){ // if the event is a mouse out
+
+								anch[0].className = anch[0].className.replace(new RegExp("openNavParent", "g"), ''); // remove the open state from the anchors
+								ul[0].className = ul[0].className.replace(new RegExp("openNav", "g"), ''); // remove the class name from the internal ULs
+
+								if (anch[0].className == 'openNavParent') {
+									anch[0].className = '';
+								}
+							}
+						   }
+						}
+					};
+					node.parentNode.onmouseover = mouseEv; // set the mouse over event
+					node.parentNode.onmouseout = mouseEv; // set the mouse out event
+				}
+			}
+		} catch(e) {/*alert('nav error: '+e.message);*/}
+	}
+/* END: [Global Navigation Script] */
+	
+/* BEGIN: [Global Header Sub Nav Highlighting]
+ * Determines which sub nav to highlight by comparing the url path
+ */
+FsApps.highlightSubNav = function(){
+	
+	try{
+		var subNav = document.getElementById("fsGlobalSubNav");
+		
+		if(subNav)//if sub nav is available
+		{
+			var pathName = window.location.pathname;//get path from url
+			var parts = pathName.split('/');
+			var pathLabel = parts.slice(2).join('').toLowerCase();// set path label for comparison
+			var subNavLinks = subNav.getElementsByTagName('li'); // get child sub nav li
+			var linksLen = subNavLinks.length;
+			
+			for(var a = 0; a < linksLen; a++ ){ // cycle through the link ul
+				var linkName = subNavLinks[a].className; //get linklabel from class
+				if(linkName.indexOf('subnav-') > -1)// start with links with subnav- only
+				{
+					var linkParts = linkName.split('-');
+					linkParts.shift();
+					var linkLabel = linkParts.join('');
+					
+					//exceptions for different homepages
+					switch(linkLabel)
+					{
+						case 'ncaabk':case 'ncaabasketball':
+							linkLabel = 'cbk';
+							break;
+						case 'ncaafb': case 'ncaafootball':
+							linkLabel = 'cfb';
+							break;
+						case 'ufchome':
+							linkLabel = 'boxing';
+							break;
+						default:
+					}
+					
+					if(pathLabel == '' && linkLabel.indexOf(fsGeneral.category) > -1){ //if in home page
+						subNavLinks[a].className = subNavLinks[a].className + ' active';
+						break;
+					}
+					
+					if(pathLabel != '' && linkLabel.search(pathLabel) > -1){//compare if path and link match
+						subNavLinks[a].className = subNavLinks[a].className + ' active';
+						break;
+					}	
+				}
+			}
+			
+		}
+	}
+	catch(e){}
+}
+/* END: [Global Header Sub Nav Highlighting] */
+
+/* START: [Global Header SETUP Analytics] */
+FsApps.setHeaderAnalytics = function(){
+
+	FsUtils.analyticsListener("fsGlobalNav", {description:"", type:"link"});
+	FsUtils.analyticsListener("fsGlobalSubNav", {description:"", type:"link"});
+	FsUtils.analyticsListener("fsVerbalNav", {description:"", type:"link"});
+}
+/* END: [Global Header SETUP Analytics] */
+
+function fsDropDown(me, options) {
+	FsUtils.dropDownAction(me, options);
+	window.console.warn("API Deprication - fsDropDown");
+}
+
+function launchSiteSearch() {
+	FsApps.launchSiteSearch();
+	window.console.warn("API Deprication - launchSiteSearch");
+}
+
+function submitSearch(){ // For Dropdown Selected Search
+	FsApps.submitSearch();
+	window.console.warn("API Deprication - submitSearch");
+}
+
+function checkCookie(cookieName, length) {
+   window.console.warn("API Deprication - checkCookie");
+   return FsUtils.checkCookie(cookieName, length);
+}
+
+function setCookie(c_name,value,expiredays){
+	FsUtils.setCookie(c_name,value,expiredays);
+	window.console.warn("API Deprication - setCookie");
+}
+
+function fsLoadAds(options) {
+	FsApps.loadAds(options);
+	window.console.warn("API Deprication - fsLoadAds");
+}
+
+function callLoadAds(){
+	FsApps.callLoadAds();
+	window.console.warn("API Deprication - callLoadAds");
+}
+
+function openNewWin(me, options) {
+	FsUtils.openNewWin(me, options);
+	window.console.warn("API Deprication - openNewWin");
+}
+
+// Launch div overlay in an iframe
+var fs_iframe; // iframe doc holder
+function fsAlertPopUp(me, options){
+	var options = options || {}; // options setup
+	var frame = options.frame || false; // check for iframe
+	var height = options.height || 300; // set the height
+	var width = options.width || 500; // set the width
+	var top = options.top || 300; // set the top
+	var left = options.left || 350; // set the left
+	var frameId = options.fId || "fs-alert-frame";  // set the id
+	var frameName = options.fName || frameId; // set the name
+	var frameBorder = options.fBorder || "no"; // set the border (iframe only)
+	var exit = options.exit || false; // exit call
+	var params = options.params || ''; // any params to be passed (culd be passed in the src url as well)
+    var wResizable = options.resizable || "yes"; // Whether or not the window is resizable. Default is "yes".
+    var wScrollbars = options.scrollbars || "no"; // Whether or not to display scroll bars. Default is "no".
+	var url = options.url || "/account/regPopup?"; // default src url is "/account/regPopup?"
+
+	if(efsuid){ // check for enceripted id
+		url = url+params+"&efsuid="+encodeURIComponent(efsuid); // add params if any
+	}else{
+		url = url+params // add params if any
+	}
+
+	if(exit == true){ // IF it's an exit call
+		try{
+			window.parent.fs_iframe.style.display = "none"; // hide the open iframe
+			window.parent.takeOver(false); // turn the overlay off
+		}catch(e){
+			window.close(); // close the popup
+		}
+		return; // exit the script
+	}
+
+	if(frame == true){ // IF this is an iframe call
+		window.scroll(0,0);
+			takeOver(true); // turn the over lay on
+			if(!fs_iframe){ // if the frame hasn't been created yet
+				fs_iframe = document.createElement("iframe"); // create the iframe
+				fs_iframe.frameborder = frameBorder; // set the border
+				fs_iframe.name = frameName; // set the name
+				fs_iframe.id = frameId; // set the id
+				fs_iframe.src = url; // set the url
+				fs_iframe.width = width;
+
+			}else{ // if the frame HAS been created
+				fs_iframe.src = url; // reset the url
+				fs_iframe.style.display = "block"; // display it on the screen
+			}
+
+			var regPageBody = document.getElementById("fs-page-page-container"); // get a handle to the page container
+				regPageBody.appendChild(fs_iframe);  // Add it to the web page
+
+	}else{ // IF it's NOT an iframe call
+		openNewWin(this, { // open the window\
+			   url:url,  // set the url
+			   height: height, // set the height
+			   width: width, // set the width
+			   top: top, // set the top
+			   left: left, // set the left
+			   resizable: wResizable, // set the resizeable window feature
+			   scrollbars: wScrollbars // set the scrollbar window feature
+		});
+	}
+}
+/* END: [Global Open Window Script] */
+
+function launchMyFlash(options) {
+    FsUtils.launchMyFlash(options);
+	window.console.warn("API Deprication - launchMyFlash");
+}
+
+function sizeMyFlash(options){
+	FsUtils.sizeMyFlash(options);
+	window.console.warn("API Deprication - sizeMyFlash");
+}
+
+/* BEGIN: [Global Scorestrip Functions Block]
+** These block of functions are all used by the scorestrip
+*/
+var fsIE = document.all ? true : false; // quick IE check
+var mouseDown = false;
+var tempX = 0;
+var tempY = 0;
+var scoreStripHolder = '';
+
+
+/*  DOCKING OF SCORE STRIP */
+
+var topElems = '';
+var scoreStripVerticalOffset;
+function fsStartSSDock(){
+	var obj = document.getElementById('scoreStripHolder');
+
+	var fsUrlCheck = fsUrl_Parse({scriptFile: "partnerHeaders"}); // get the partnerheaders script call attrubutes if any
+
+	if(fsUrl("scoreStripLoc") != "bottom"){ // if this is NOT the radio page
+
+		//Calculate the pixel offset between the top of the screen and the score strip
+		if(typeof(scoreStripVerticalOffset) != "number") {
+			scoreStripVerticalOffset = 0;
+			do { scoreStripVerticalOffset += obj.offsetTop; } while (obj = obj.offsetParent);
+		}
+
+		if(navigator.userAgent.search("Firefox") == -1) {
+			window.onscroll = getIt; // start onscroll check for non-firefox browsers
+		} else {
+			window.onscroll = getItFF; // start onscroll check for firefox
+			scoreStripHolder.className += "ss-top"; // set the score strip holder to the top
+			getItFF(); // launch the FF flash fix
+		}
+
+	}else{
+		document.getElementById("siteHeaders").className += " ssBottom"; // set the site headers class name
+		if(document.getElementById("fs-page-bottom-bg")){ // check for page bottom thingy
+			document.getElementById("fs-page-bottom-bg").className += " ssBottom"; // set it's class if needed
+		}
+		obj.className += "ss-bottom"; // set the holder tot he bottom
+	}
+}
+function fsGetComputedHeight(theElt){
+	if(document.all){
+		ch = document.getElementById(theElt).offsetHeight;
+	}
+	else{
+		elem = document.getElementById(theElt);
+		ch = document.defaultView.getComputedStyle(elem, "").getPropertyValue("height");
+		ch = ch.split('px');
+		ch = ch[0];
+	}
+	return parseFloat(ch);
+}
+
+function getIt(){
+	var scrollPos = (document.all) ? document.documentElement.scrollTop : window.pageYOffset;
+	if(topElems == '') {
+		topElems = fsGetComputedHeight("siteHeaders");
+	}
+	if(scrollPos >= scoreStripVerticalOffset) {
+		if(scoreStripHolder.className != "ss-top"){
+				scoreStripHolder.className = "ss-top";
+		}
+	} else {
+		if(scoreStripHolder.className != ''){
+			scoreStripHolder.className = "";
+		}
+	}
+}
+
+function getItFF(){
+	var scrollPos = (document.all) ? document.documentElement.scrollTop : window.pageYOffset;
+	if(topElems == '') {
+		topElems = fsGetComputedHeight("siteHeaders");
+	}
+	if(scrollPos >= scoreStripVerticalOffset) {
+		scoreStripHolder.style.top = "0px";
+	} else {
+		scoreStripHolder.style.top = (scoreStripVerticalOffset - scrollPos) + 'px';
+	}
+}
+
+function fsScoreStrip(me, options) {
+
+	var options = options || {}; // setup the flash options
+    var page = document.body; // get a handle to the page body
+    var info = options.info || ''; // get the data for the list
+    var daList = document.getElementById('fsSSList'); // get a handle to the list container
+    var setListItemClass = true;
+
+    if (me == "ini") { // check for initiate flag for score strip
+    	window.console.warn("inside fsScoreStrip - ini");
+        if (typeof(user) != "undefined") { // get a handle to the user object
+            sportsBarUser = '';
+            for (name in user) { // get the variable information inside the object
+                sportsBarUser += "&" + name.toLowerCase() + "=" + user[name]; // set the variable name and data as a query string for flash.
+            }
+        }else{
+			sportsBarUser = ''; // clear sportsbar user data
+		}
+
+        scoreStripHolder = document.getElementById("scoreStripHolder"); // create the scorestrip holder
+
+        var scoreStrip = document.createElement("div"); // set the scorescript div
+        scoreStrip.id = "scoreStrip"; // set the scorescript ID
+
+        var scoreStripAd = document.createElement("div"); // create the scorestrip advertisment section
+        scoreStripAd.id = "ad120x30_sportsbar"; // set the adbox
+
+		var lists = document.createElement("ul"); // create the initial list for popup
+            lists.id = "fsSSList"; // set it's ID
+			lists.title = "score strip"; // set it's ID
+
+        //page.appendChild(scoreStripHolder); // put the holder on the page
+        scoreStripHolder.appendChild(scoreStrip); // put the scorestrip in the div
+        scoreStripHolder.appendChild(scoreStripAd); // put the scorestrip advertisement in the div
+		scoreStripHolder.appendChild(lists); // add the UL list to the page.
+		window.console.warn("inside fsScoreStrip - added scorestrip");
+		fsStartSSDock(); // dock the score strip.
+		window.console.warn("inside fsScoreStrip - docked scorestrip");
+		//special case for Poker since the sportsbar flash does not recoginze the poker domain
+		var currentDomain = "";
+		if(fsCurrentSport == "POKER"){
+        	currentDomain = "http://msn.foxsports.com";
+	     }
+        else{currentDomain = fsReqDomain;}
+
+		/* check for advertisements */
+		var ssAdvertisement = ''; // ad holder
+		if(ads){// if there are ads
+			for(var i=0; i<ads.length; i++){ // loop through them
+				if(ads[i][4] == "toolbar"){ // if you find one for the toolbar
+				ssAdvertisement = "rightPadding=120&"; // add the new flash variable
+				}
+			}
+		}
+
+
+        launchMyFlash({ // launch the flash file
+            contUrl: currentDomain + '/component/flash/Toolbar', // fsReqDomain is for partners
+            locId:"scoreStrip",
+            width:"100%",
+            height:42,
+            flashVars: ssAdvertisement+"gamesUrl=9240_49&domain=" + currentDomain + "&currentSport=" + fsCurrentSport + sportsBarUser,
+			finish: fsAnalyticsDescription += "&sportsbar=loaded" // flag that the sports bar was loaded on the page.
+        });
+        if(fsIE && document.getElementById("FS-header-slim") != undefined){ // if it's IE and a slim header call
+        	document.getElementById('scoreStrip-flash').style.styleFloat = "left"; // change float style
+        	document.getElementById('scoreStrip-flash').style.marginLeft = "-5px"; // reduce margin.
+        }
+
+    } else {
+
+        if (daList) { // see if the list container actually exists
+            daList.innerHTML = ""; // remove all list items
+            var lists = daList; // create the initial list for popup
+        }
+
+        for (i = 0; i < info[1].length; i++) { // loop through the array
+            listItem = document.createElement("li"); // create the list item
+            listAnchor = document.createElement("a"); // create the anchor
+
+			switch(info[1][i][0]){
+				case "CBK":
+					listAnchor.title = "NCAA BK";
+				break;
+				case "CFB":
+					listAnchor.title = "NCAA FB";
+				break;
+				case "PGA":
+					listAnchor.title = "GOLF";
+				break;
+				case "NFL_DRAFT_TRACKER":
+					listAnchor.title = "NFL";
+				break;
+				case "NBA_DRAFT_TRACKER":
+					listAnchor.title = "NBA";
+				break;
+				default:
+					listAnchor.title = info[1][i][0];
+			}
+
+
+		   if (info[0] == "alert") { // check for an alert call
+                listAnchor.href = info[1][i][1]; // set the url
+                listAnchor.innerHTML = "<strong>" + info[1][i][2] + ", <span>" + info[1][i][3] + "<\/span><\/strong><br \/>" + info[1][i][0]; // write out alert info
+				listAnchor.onclick = new Function("fsAnalytics(this, {type: 'link', description: '&link_ref=sportsbar - alert - "+info[1][i][0]+"'});"); // set analytics
+            } else if (info[0] == "edit") { // check for edit calls
+                listAnchor.href = info[1][i][1]; // set the url
+                listAnchor.innerHTML = info[1][i][0]; // set the text/html inside the anchor
+				listAnchor.onclick = new Function("fsAnalytics(this, {type: 'link', description: '&link_ref=sportsbar - edit - "+info[1][i][0].toLowerCase()+"'});"); // set analytics
+
+            } else { // for all other calls
+
+                listAnchor.href = "javascript:changeScoreStrip('" + info[1][i][0] + "', '" + info[1][i][1] + "');"; // set the url
+				listAnchor.onclick = new Function("fsAnalytics(this, {type: 'link', description: '&link_ref=sportsbar - "+listAnchor.title.toLowerCase()+" - scores'});"); // set analytics
+                listAnchor.innerHTML = listAnchor.title; // set the text/html inside the anchor
+                //listAnchor.title = stripSpecialCharacters(listAnchor.title);
+            }
+
+            if (info[0] == listAnchor.title) { // check for the current sport
+                listAnchor.className = "on"; // highlight that anchor
+                setListItemClass = false;
+            }
+
+            if (typeof(info[1][i][1]) == "object") { // check for sub-menu (array object)
+                var subLists = document.createElement("ul"); // create the initial list for popup
+                subLists.id = "fsSSsubList"; // set it's ID
+				subLists.title = "score strip"; // set it's ID
+
+                for (s = 0; s < info[1][i][1].length; s++) {
+                    subListItem = document.createElement("li"); // create the list item
+                    subListAnchor = document.createElement("a"); // create the anchor
+
+                    subListAnchor.title = info[1][i][1][s][0]; // set the title of the anchor
+                    subListAnchor.href = "javascript:changeScoreStrip('" + info[1][i][1][s][0] + "', '" + info[1][i][1][s][1] + "');"; // set the url
+                    subListAnchor.innerHTML = info[1][i][1][s][0]; // set the text/html inside the anchor
+					subListAnchor.onclick = new Function("fsAnalytics(this, {type: 'link', description: '&link_ref=sportsbar - soccer - "+info[1][i][1][s][0].toLowerCase()+" - scores'});"); // set analytics
+
+                    subListItem.appendChild(subListAnchor);
+                    subLists.appendChild(subListItem);
+                }
+                listItem.appendChild(subLists); // add to listItem
+                listItem.onmouseover = function() {this.className = "on"};
+                listItem.onmouseout = function() {this.className = ""};
+            }
+
+
+            listItem.appendChild(listAnchor); // put the anchor in the list item
+            lists.appendChild(listItem); // put the list item inside the UL
+        }
+
+        scoreStripHolder.appendChild(lists); // add the UL list to the page.
+
+
+        if (setListItemClass == false) {
+            lists.className = "on"; // turn the element on
+        } else {
+            document.getElementById("fsSSList").className = "fsSS" + info[0] + " on"; // to be passed into the function by the flash for positioning.
+        }
+
+        lists.onmouseout = function() { // set the mouse out event handler
+            var element = fsCheckEvent(this); // check the even bubble and get the correct element
+            if (element) { // if the element is not "undefined", do the following script to that element on mouse out
+                element[0].className = element[0].className.replace("on", ""); // do the event
+				document.getElementById('scoreStrip-flash').menuRollOut(); // tell flash we've rolled out.
+            }
+        }
+    }
+}
+
+function fsSportsMenu(me) {
+    me = document.getElementById(me);
+    me.className = me.className.replace(' on', ''); // remove the preset class
+
+}
+function fsScoreStripMakeRoom() {
+    document.getElementById('scoreStrip-flash').showAdSpace("120"); // call a function inside of the flash to change scorestrip.
+
+}
+
+function changeScoreStrip(league, url) {
+    document.getElementById('scoreStrip-flash').changeScoreStrip(url, league); // call a function inside of the flash to change scorestrip.
+}
+
+function fsScoreStripAnalytics(info){ // info includes the sport(0) and description(1)
+	var ss = document.getElementById('scoreStrip-flash'); // get a handle to the score strip
+	fsAnalytics(ss, {type: 'link', description: '&link_ref=sportsbar - '+info[0].toLowerCase()+' - '+info[1]}); // call the analytics
+}
+
+
+function launchRadio() {
+	FsApps.launchRadio();
+   	window.console.warn("API Deprication - launchRadio");
+}
+
+function showSportsMenu(data) { // data from flash
+     var data = data[0]; // grab the array from flash
+    if (data == "ini") { // check for initial call
+        var type = "ini"; // set the call type
+    } else {
+        var type = '';	// set it to null
+    }
+    fsScoreStrip(type, {info: data }); // call the score strip
+}
+
+function fsGetUserData(check) {
+	window.console.warn("API Deprication - fsGetUserData");
+	return FsRef.getUserData(check);
+}
+
+function randomizeMe(me, options) {
+   window.console.warn("API Deprication - randomizeMe");
+   return FsUtils.randomizeMe(me, options);
+}
+
+function evenOdd(me, options) {
+    FsUtils.evenOdd(me, options);
+	window.console.warn("API Deprication - evenOdd");
+}
+
+
+function fsAnalytics(me, options) {
+    FsApps.analytics(me, options);
+	window.console.warn("API Deprication - fsAnalytics");
+}
+
+function fsAnalyticsListener(rgn, options){
+	FsUtils.analyticsListener(rgn, options);
+	window.console.warn("API Deprication - fsAnalyticsListener");
+}
+
+function fsFlashAnalytics(info){ // info includes the sport(0) and description(1)
+	FsApps.flashAnalytics(info);
+	window.console.warn("API Deprication - fsFlashAnalytics");
+}
+
+function takeOver(vis, options) {
+   FsApps.takeOver(vis, options);
+   window.console.warn("API Deprication - takeOver");
+}
+
+function resizeHandler() { // handler
+   FsApps.resizeHandler();
+   window.console.warn("API Deprication - resizeHandler");
+}
+/* END: [Take over Div] */
+
+function startComments(fKey, tKey) {
+    FsApps.startComments(fKey, tKey);
+	window.console.warn("API Deprication - startComments");
+}
+
+function fsAddComments() {    // Add Comments Expander
+	FsApps.addComments();
+	window.console.warn("API Deprication - fsAddComments");
+}
+
+function showHidePagination(els, index, class1, class2, show){
+   FsApps.showHidePagination(els, index, class1, class2, show);
+   window.console.warn("API Deprication - showHidePagination");
+}
+
+function fsPageComments(me, showPage, refID) { // Page through comments
+	FsApps.pageComments(me, showPage, refID);
+	window.console.warn("API Deprication - fsPageComments");
+}
+
+function fsPostComments() { // Post a comment
+	FsApps.postComments();
+	window.console.warn("API Deprication - fsPostComments");
+}
+
+function fsReportComments(tid, pid) { // Report a comment
+    FsApps.reportComments(tid, pid);
+	window.console.warn("API Deprication - fsReportComments");
+}
+
+function fsRunComments(req) {    // Reload comments AFTER a new one has posted
+    FsApps.runComments(req);
+	window.console.warn("API Deprication - fsRunComments");
+}
+
+function fsUrl(key){
+	window.console.warn("API Deprication - fsUrl");
+	return FsUtils.getUrl(key);
+}
+
+function fsUrl_Parse(options) {
+    FsUtils.urlParse(options);
+	window.console.warn("API Deprication - fsUrl_Parse");
+}
+
+
+
+/***************************************
+OLD CODE BELOW TO BE REMOVED WHEN GAMETRAX IS UPDATED TO USE CODE ABOVE 10/7/2010
+****************************************/
+/* BEGIN: [OLD QUERY STRING RETRIEVEMENT]
+ ** retrieve arguments from url query string
+ */
+function GetArgs() {
+    var args = new Object();
+    var query = location.search.substring(1);
+    var pairs = query.split("&");
+    for (var i = 0; i < pairs.length; i++) {
+        var pos = pairs[i].indexOf('=');
+        if (pos == -1) continue;
+        var argname = pairs[i].substring(0, pos);
+        var value = pairs[i].substring(pos + 1);
+        args[argname] = unescape(value);
+    }
+    return args;
+}
+/***************************************
+OLD CODE  ABOVE TO BE REMOVED WHEN GAMETRAX IS UPDATE 10/7/2010
+****************************************/
+/* END: [URL Hash String] */
+
+/* BEGIN: [Return value of global JS object/variable]
+ ** Example on calling this function:
+ ** fsJsReturn(cmsId)
+ */
+function fsJsReturn(data){
+	if(data){ // check to make sure something is being passed through
+		return eval(data);	// return the value of the global data
+	}
+}
+/* END: [Return value of global JS object/variable] */
+
+/* BEGIN: [Check for breaking news and alerts on page]
+ ** Add class to header to accoutn for extra breaking news and alert header at top of page
+ ** Example on calling this function:
+ ** fsFoxSportsGeneral();
+ */
+var fsGeneral = new Object; // general page information
+var fsFoxSportsGeneralLoaded = 0; //check if fsFoxSportsGeneral has been run yet
+
+// Add analytics data for General FOXSports object
+try{
+	var fsAnaSplit = fsAnalyticsDescription.split("&"); // split out the attributes
+	for(i=0; i<fsAnaSplit.length; i++){ // loop through them
+		var fsGenDataSplit = fsAnaSplit[i].split("="); // split out the values
+		var fsGenNewData ="fsGeneral."+fsGenDataSplit[0]+ "='" +fsGenDataSplit[1]+"'"; // create the object string
+		eval(fsGenNewData); // add the new node to the object
+	}
+}catch(e){/* ignore */}
+
+function fsFoxSportsGeneral(){
+	try{
+		/* check for breaking news and alerts */
+		if(typeof(fsGeneral.breakingNews) != "undefined" && fsGeneral.breakingNews == true){ // make sure breaking news alerts is there
+			var pageContainer = document.getElementById("fs-page-page-container"); // get a handle to the page container
+				if(pageContainer){
+					pageContainer.className = pageContainer.className+" FSalert"; // add the class "alert" to it.
+				}
+		}
+
+		/* get/set user information */
+		fsFoxSportsGeneralLoaded = 1; //set fsFoxSportsGeneralLoaded = 1 when fsFoxSportsGeneral has run.
+		FsRef.fsUserInfo(); // get and set user info
+
+	}catch(e){/*ignore*/}
+}
+/* END: [Check for breaking news and alerts on page] */
+
+/* BEGIN: [Move location of HTML elements on page]
+ ** Used for MSN navigation
+ ** Example on calling this function:
+ ** placeContent("fs-msn-nav-content-holder", "fs-msn-bar");
+ */
+function placeContent(from, to){
+	var from = document.getElementById(from);
+	var to = document.getElementById(to);
+	if(from){
+		if(to){
+			to.innerHTML = from.innerHTML;
+		}
+	}
+}
+/* END: [Move location of HTML elements on page] */
+
+/* BEGIN: [Set form field w/ return page URL]
+ ** Set value of form field w/ URL of page to return
+ ** Example on calling this function:
+ ** fsSetReturnUrl("returnUrl", "http://msn.foxsports.com/nba/teams");
+ */
+function fsSetReturnUrl(me, options) {
+    window.console.warn("API Deprication - DONT USE fsSetReturnUrl");
+	var options = options || {}; // options setup
+    var fsField = options.field || ''; // get the type of call
+    var fsReturnUrl = options.url || document.location; // get the description of call
+
+	var formField = document.getElementById(fsField);
+
+	if(formField != ""){
+		formField.value = fsReturnUrl;
+	}
+}
+/* END: [Set form field w/ return page URL] */
+
+function fsLaunchGigya(){
+	//FsUtils.launchGigya();
+	window.console.warn("Removed Gigya launch");
+	window.console.warn("API Deprication - fsLaunchGigya");
+}
+
+function fsLaunchFB(){
+		FsUtils.launchFB();
+		window.console.warn("API Deprication - fsLaunchFB");
+}
+
+// Get user connection from Gigya
+function getUser(response){
+	window.console.warn("API Deprication - getUser");
+	return FsUtils.getUser(response);
+}
+
+//Get new user information for quick connect
+function fsQuickConnect(response){
+	FsUtils.gigyaQuickConnect(response);
+	window.console.warn("API Deprication - fsQuickConnect");
+}
+
+function fsHookMeUp(me,options){
+	FsUtils.hookMeUp(me,options);
+	window.console.warn("API Deprication - fsHookMeUp");
+}
+//Get response from social networking site
+function fsHookMeUpResponse(response){
+	FsUtils.hookMeUpResponse(response);
+	window.console.warn("API Deprication - fsHookMeUpResponse");
+}
+
+
+/*  --- START EMAIL A FRIEND FUNCTIONS ---
+  onSelectEmailField(obj) - Empty the text input if it receives focus while containing the default text
+  onBlurEmailField(obj) - If a text field is deselected while empty, restore its default value
+  emailOverlayVisible(bool) - Open or close the email overlay
+*/
+function onSelectEmailField(obj) { if(obj.value == obj.title) { obj.value = ''; } }
+function onBlurEmailField(obj) { if(obj.value == '') { obj.value = obj.title; } }
+function emailOverlayVisible(bool) {
+  document.body.appendChild(document.getElementById('fs-email-embed-container'));
+  document.getElementById('fs-email-embed-container').style.display = (bool) ? "block" : "none";
+  if(!bool) { document.getElementById('fs-email-embed-feedback-container').style.display = "none"; }
+}
+function onEmailAFriend(me) {
+  /* Submit the data via AJAX call */
+	var emailAjaxCall = null;
+	var emailAjaxPath = "/emailLink";
+  var formValues = "";
+
+	for(var i = 0; i < me.childNodes.length; i++){
+    if(me.childNodes[i].name != undefined && me.childNodes[i].value != undefined) {
+      if(formValues == "") {
+        formValues = me.childNodes[i].name + "=" + me.childNodes[i].value;
+      } else {
+        formValues += "&" + me.childNodes[i].name + "=" + me.childNodes[i].value;
+      }
+    }
+	}
+
+	if(window.XMLHttpRequest){  // code for all new browsers
+		emailAjaxCall = new XMLHttpRequest(); // create new xml request
+	} else if(window.ActiveXObject) {  // code for IE5 and IE6
+		emailAjaxCall = new ActiveXObject("Microsoft.XMLHTTP"); // create new xml request
+	}
+
+	if (emailAjaxCall != null) { // check ajax status
+		emailAjaxCall.open("POST",emailAjaxPath,true);
+		emailAjaxCall.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    emailAjaxCall.setRequestHeader("Content-length", formValues.length);
+    emailAjaxCall.setRequestHeader("Connection", "close");
+
+		emailAjaxCall.onreadystatechange = function(){
+			if(emailAjaxCall.readyState == 4 ){ // Make sure the document has been loaded(4 = "loaded")
+				if (emailAjaxCall.status == 200){ // Make sure the contents are good (200 = "OK")
+					if(emailAjaxCall.responseText == "OK") {
+            //hide the email popover and display the success message if the response is "OK"
+            emailOverlayVisible(false);
+            document.body.appendChild(document.getElementById('fs-email-embed-feedback-container'));
+            document.getElementById('fs-email-embed-feedback-container').style.display = "block";
+          } else {
+            //display the error message to the user
+            alert(emailAjaxCall.responseText);
+          }
+				}
+			}
+		}
+		emailAjaxCall.send(formValues); // initialize the ajax call
+	} else {
+		alert("Your browser does not support XMLHTTP."); // notify the user
+	}
+}
+
+/* --- END EMAIL A FRIEND FUNCTIONS --- */
+
+function stripSpecialCharacters(mString) {
+	window.console.warn("API Deprication - stripSpecialCharacters");
+	return FsUtils.trimSpecialCharacters(mString);
+
+}
+
+function stripWhiteSpace(mString) {
+	window.console.warn("API Deprication - stripWhiteSpace");
+	return FsUtils.trimWhiteSpace(mString);
+
+}
+
+function validateTextLength(el, maxLength) {
+	FsUtils.validateTextLength(el, maxLength);
+	window.console.warn("API Deprication - validateTextLength");
+}
+
+function setFocus(selection){
+	FsUtils.setFocus(selection);
+	window.console.warn("API Deprication - DON'T setFocus()");
+}
+
+function turnOff(divId){
+	try{
+		var div = document.getElementById(divId);
+		div.style.display="none";
+		div.className = "";
+		var el = $(div);
+		(el.hasClass("turnedOn")) ? el.removeClass("turnedOn") : '';
+		(!el.hasClass("turnedOff")) ? el.addClass("turnedOff") : '';
+			
+	}catch(e){/*ignore*/}
+	window.console.warn("API Deprication - DON'T turnOff()");
+}
+
+function turnOn(divId){
+	try{
+		var div = document.getElementById(divId);
+		div.style.display="block";
+		var el = $(div);
+		(el.hasClass("turnedOff")) ? el.removeClass("turnedOff") : '';
+		(!el.hasClass("turnedOn")) ? el.addClass("turnedOn") : '';
+	}catch(e){/*ignore*/}
+	window.console.warn("API Deprication - DON'T turnOn()");
+}
+
+function checkEmail(me){
+	window.console.warn("API Deprication - checkEmail");
+	return FsUtils.checkEmail(me);
+
+}
+
+
+/* This function loads the chartbeat js code on the page and used on our partner pages */
+function loadChartbeatJS(){
+
+    try{
+	  if (typeof(loadChartbeat) == "undefined" || typeof(_sf_async_config) == 'undefined'){
+			var _body = document.getElementsByTagName("body")[0];
+			var chScript = document.createElement('script');
+			chScript.src = fsReqDomain+'/fe/js/chartbeatCode.js' ;
+			chScript.type = "text/javascript";
+			chScript.defer = false;
+			try{
+				document.body.appendChild(chScript);
+			}catch(e){
+				_body.appendChild(chScript);
+			}
+	  }
+	    }catch(e){/*ignore */}
+
+}
+
+/* This function loads the YardBarker tracking code for nba only (temporarily) */
+function loadYardBarkerTrackingJS(){
+
+	var yb_src_url = "http://" + window.location.host + window.location.pathname;  // Getting the browser's url 
+	var yb_ph_url = "http://www.yardbarker.com/network/partner_hit" + ((typeof(yb_src_url) == "string") ? "?src_url=" + encodeURIComponent(yb_src_url) : ""); // Getting the YardBarker tracking url 
+	
+	  try{
+		var _body = document.getElementsByTagName("body")[0]; // Get reference to the body 
+		var chScript = document.createElement('script'); // create script tag 
+			chScript.src = yb_ph_url;					// set the YardBarker URL 
+			chScript.type = "text/javascript";
+			chScript.defer = false;
+		try{
+			document.body.appendChild(chScript);		// Append the script to the body
+		}catch(e){
+			_body.appendChild(chScript);
+   		}
+   		
+    }catch(e){/*ignore */}
+
+}
+
+
+
+/* BEGIN: [HTML SPORTSBAR SPECIFIC CODE] */
+/*
+
+Base.js, version 1.1a
+
+Copyright 2006-2010, Dean Edwards
+
+License: http://www.opensource.org/licenses/mit-license.php
+
+*/
+
+
+
+	Base=function(){};Base.extend=function(b,c){var d=Base.prototype.extend;Base._prototyping=true;var e=new this;d.call(e,b);e.base=function(){};delete Base._prototyping;var constructor=e.constructor;var f=e.constructor=function(){if(!Base._prototyping){if(this._constructing||this.constructor==f){this._constructing=true;constructor.apply(this,arguments);delete this._constructing}else if(arguments[0]!=null){return(arguments[0].extend||d).call(arguments[0],e)}}};f.ancestor=this;f.extend=this.extend;f.forEach=this.forEach;f.implement=this.implement;f.prototype=e;f.toString=this.toString;f.valueOf=function(a){return(a=="object")?f:constructor.valueOf()};d.call(f,c);if(typeof f.init=="function")f.init();return f};Base.prototype={extend:function(c,d){if(arguments.length>1){var e=this[c];if(e&&(typeof d=="function")&&(!e.valueOf||e.valueOf()!=d.valueOf())&&/\bbase\b/.test(d)){var f=d.valueOf();d=function(){var a=this.base||Base.prototype.base;this.base=e;var b=f.apply(this,arguments);this.base=a;return b};d.valueOf=function(a){return(a=="object")?d:f};d.toString=Base.toString}this[c]=d}else if(c){var g=Base.prototype.extend;if(!Base._prototyping&&typeof this!="function"){g=this.extend||g}var h={toSource:null};var j=["constructor","toString","valueOf"];var i=Base._prototyping?0:1;while(k=j[i++]){if(c[k]!=h[k]){g.call(this,k,c[k])}}for(var k in c){if(!h[k])g.call(this,k,c[k])}}return this}};Base=Base.extend({constructor:function(){this.extend(arguments[0])}},{ancestor:Object,version:"1.1",forEach:function(a,b,c){for(var d in a){if(this.prototype[d]===undefined){b.call(c,a[d],d,a)}}},implement:function(){for(var i=0;i<arguments.length;i++){if(typeof arguments[i]=="function"){arguments[i](this.prototype)}else{this.prototype.extend(arguments[i])}}return this},toString:function(){return String(this.valueOf())}});
+
+
+function scIncludes(){
+
+/*
+
+* jQuery Cookie plugin
+
+*
+
+* Copyright (c) 2010 Klaus Hartl (stilbuero.de)
+
+* Dual licensed under the MIT and GPL licenses:
+
+* http://www.opensource.org/licenses/mit-license.php
+
+* http://www.gnu.org/licenses/gpl.html
+
+*
+
+*/
+
+jQuery.cookie=function(a,b,c){if(arguments.length>1&&String(b)!=="[object Object]"){c=jQuery.extend({},c);if(b===null||b===undefined){c.expires=-1}if(typeof c.expires==='number'){var d=c.expires,t=c.expires=new Date();t.setDate(t.getDate()+d)}b=String(b);return(document.cookie=[encodeURIComponent(a),'=',c.raw?b:encodeURIComponent(b),c.expires?'; expires='+c.expires.toUTCString():'',c.path?'; path='+c.path:'',c.domain?'; domain='+c.domain:'',c.secure?'; secure':''].join(''))}c=b||{};var e,decode=c.raw?function(s){return s}:decodeURIComponent;return(e=new RegExp('(?:^|; )'+encodeURIComponent(a)+'=([^;]*)').exec(document.cookie))?decode(e[1]):null};
+
+
+
+
+
+/* 
+
+Timer
+
+http://jquery.offput.ca/timers/
+
+License http://sam.zoy.org/wtfpl/
+
+*/
+
+jQuery.fn.extend({everyTime:function(a,b,c,d,e){return this.each(function(){jQuery.timer.add(this,a,b,c,d,e)})},oneTime:function(a,b,c){return this.each(function(){jQuery.timer.add(this,a,b,c,1)})},stopTime:function(a,b){return this.each(function(){jQuery.timer.remove(this,a,b)})}});jQuery.extend({timer:{guid:1,global:{},regex:/^([0-9]+)\s*(.*s)?$/,powers:{'ms':1,'cs':10,'ds':100,'s':1000,'das':10000,'hs':100000,'ks':1000000},timeParse:function(a){if(a==undefined||a==null)return null;var b=this.regex.exec(jQuery.trim(a.toString()));if(b[2]){var c=parseInt(b[1],10);var d=this.powers[b[2]]||1;return c*d}else{return a}},add:function(a,b,c,d,e,f){var g=0;if(jQuery.isFunction(c)){if(!e)e=d;d=c;c=b}b=jQuery.timer.timeParse(b);if(typeof b!='number'||isNaN(b)||b<=0)return;if(e&&e.constructor!=Number){f=!!e;e=0}e=e||0;f=f||false;if(!a.$timers)a.$timers={};if(!a.$timers[c])a.$timers[c]={};d.$timerID=d.$timerID||this.guid++;var h=function(){if(f&&this.inProgress)return;this.inProgress=true;if((++g>e&&e!==0)||d.call(a,g)===false)jQuery.timer.remove(a,c,d);this.inProgress=false};h.$timerID=d.$timerID;if(!a.$timers[c][d.$timerID])a.$timers[c][d.$timerID]=window.setInterval(h,b);if(!this.global[c])this.global[c]=[];this.global[c].push(a)},remove:function(a,b,c){var d=a.$timers,ret;if(d){if(!b){for(b in d)this.remove(a,b,c)}else if(d[b]){if(c){if(c.$timerID){window.clearInterval(d[b][c.$timerID]);delete d[b][c.$timerID]}}else{for(var c in d[b]){window.clearInterval(d[b][c]);delete d[b][c]}}for(ret in d[b])break;if(!ret){ret=null;delete d[b]}}for(ret in d)break;if(!ret)a.$timers=null}}}});if(jQuery.browser.msie)jQuery(window).one("unload",function(){var a=jQuery.timer.global;for(var b in a){var c=a[b],i=c.length;while(--i)jQuery.timer.remove(c[i],b)}});
+
+
+
+}
+
+
+var FsScoreStrip = '';
+//var currentSport = fsCurrentSport;
+
+function launchSb(options) {
+	scIncludes(); // set includes
+	fsNotifier.widget.register({
+	  name: "sportsBar", // the name of this widget
+	  callback: "", // this widgets call back
+	  connectionType: "long", // the type of polling
+	  connectionDuration: 20000, // how often to poll
+	  feedID: 2010, // feed ID
+	  ver: 1, // version number
+	  bypassIni: true,
+	  bypassNotifier: true,
+	  isXML: true
+	});
+
+	FsScoreStrip = fsNotifier.widget.findMe({name: "sportsBar"}, true);
+	
+	try{
+		document.getElementById('scoreStripHolder').style.display="none"; // hide old sb
+	}catch(e){/* ignore */}
+	var options = {
+		domain: "",
+		menuXml: "/component/xml/scoresMenu",
+		soccerSubmenuXml: "/component/xml/soccerSubmenu",
+		id: "foxSportsToolbarContainer",
+		topBarId: "siteHeaders",
+		foxSportsDomain: "http://msn.foxsports.com",
+		teamsStyleXml: "/fe/data/teams_style.xml",
+		logoPathPrefix: "http://static.foxsports.com/fe/images/{sport}/TeamLogo/Medium/",
+		imagesPath: "/fe/images/sportsbar/",
+		noDataMessage: "no data is available at this time",
+		dataLoadingMessage: "data loading ...",
+		refreshTime: 20000,
+		defaultSport: ((fsGeneral.category != "home")?fsGeneral.category.toUpperCase():""),
+		scrollStep: 300,
+		scrollTime: 300,
+		redColor: "#db0000",
+		sponsorship: {
+			dataXml: "/component/xml/SBMarketingTakeOverPromos"
+		},
+		mlb: {
+			specialGameId: "310712132"
+		},
+		nascar: {
+			nascarXml: "/mnt/fscom/NASCAR/CUP/CUP_FILES.XML",
+			scoreboardUrl: "/nascar/cup/raceTrax",
+			scorePageUrlTemplate: "/nascar/cup/raceTrax"
+		},
+		golf: {
+			scoreboardUrl: "/golf/leaderboard",
+			scorePageUrlTemplate: "/golf/leaderboard"
+		},
+		soccer: {
+			pathPrefix: "/foxsoccer"
+		}
+		
+	}
+	if(fsSiteLang == 'es_LA'){
+		options.menuXml = "/component/xml/FSEscoresMenuNew";
+		options.soccerSubmenuXml="";
+	}
+	//Make a copy of getData before overriding it.
+//	FsApps.SportsBar.baseGetData = FsApps.SportsBar.getData;
+	// override getData function
+/*	FsApps.SportsBar.getData = function (url, successHandler, errorHandler) {
+		if (fsReqDomain) {
+			if (fsReqDomain != document.location) {
+				switch (url) {
+					case FsApps.SportsBar.defaults.menuXml:
+//						url = "/component/cssjs/scoresMenuWrapper";
+						url = "/component/xml/scoresMenu";
+ 						break;
+	
+					case FsApps.SportsBar.defaults.soccerSubmenuXml:
+//						url = "/component/xml/soccerSubmenu";
+						url = "/component/xml/soccerSubmenu";
+						break;
+				}
+			}
+		}
+		FsScoreStrip.url = url;
+		FsScoreStrip.callback = successHandler;
+		//fsNotifier.sendRequest(FsScoreStrip.connectionRequest, FsScoreStrip, true);
+		FsApps.SportsBar.baseGetData(url, successHandler, errorHandler);
+	}//*/
+	FsApps.SportsBar.render(options);
+	if((typeof(showAds) != "undefined" && showAds) || (typeof(window.ads) == 'object' && window.ads.length > 0)){
+		//FsApps.LoadFunctions.add({func:FsApps.loadAds}); // load the ads
+	}
+}
+
+
+/* END: [HTML SPORTSBAR SPECIFIC CODE] */
+
+
+/* BEGIN: [NUGGET DEBUGGING] */
+function getNuggets(){
+	if(FsUtils.getUrl("sn") == "true"){ // Check the URL for the sn=true parameter
+		FsApps.loadScriptFile({url:"/fe/js/debug.js", async:true}); //LOAD IN THE DEBUG TOOLS
+	}
+}
+/* END: [NUGGET DEBUGGING] */
+
+/* START: [added addTimeStamp for logout link] */
+function addTimeStamp(el) {
+	if (el.href.indexOf("logout") != -1) {
+		var timeStamp = new Date().getTime();
+		el.href += "&" + timeStamp;
+	}
+	  return true;
+}
+/* END: [added addTimeStamp for logout link] */
+
+/* This function loads the YB Story module on story pages */
+function loadYardBarkerStoryModule(){
+    try{	
+    		var ybBestofIframe = document.createElement('iframe');
+    		ybBestofIframe.setAttribute('id', 'yb-news-module');
+    		ybBestofIframe.setAttribute('frameBorder', '0');
+    		$("#yb-news-module-container").append(ybBestofIframe); 
+    		ybBestofIframe.setAttribute('src', 'http://www.yardbarker.com/widget/horizontal/44/17/1/4/foxsports');
+    }catch(e){/*ignore */}
+
+}
+
+
+function addBookmark(a) {
+    FsUtils.addBookmark(a);
+	window.console.warn("API Deprication - addBookmark");
+}
+
+/* Test for partner header flags before calling the lazy loader. */
+
+if(typeof(callFunctions) != "undefined" && callFunctions){
+FsApps.LoadFunctions.add({func:'FsRef.init()'});
+}
+if(typeof(showAnalytics) == "undefined" || showAnalytics){
+FsApps.LoadFunctions.add({func:'FsApps.analytics(this, {type: "ini"})'}); // launch Foxsports Analytics
+}
+if(typeof(callFunctions) != "undefined" && callFunctions){
+if(fsFoxSportsGeneralLoaded == 0){ FsApps.LoadFunctions.add({func:'fsFoxSportsGeneral()'}); } // launch foxsports general scripts
+// Launch Mobile Ramp Redirect for Story Pages
+if ((fsGeneral.page_type === "Story" || fsGeneral.page_type === "Feed Story") && ( isMobile() && isIPad() == false) && (location.href.match('m_n=true') == null) ) {
+	var config = {nocookie:true,hosted:false,rootPath:'http://msn.foxsports.com/topics/',mobileHome:'http://msn.foxsports.com/topics/device/mobile/search',onNoMobileVersion:'none',mobilePreview:'/search'};
+	var ramp_handler = new ramp_SmartPhoneHandler(config);
+}
+}
+
+if(typeof(callFunctions) != "undefined" && callFunctions){
+	//FsApps.LoadFunctions.add({func:"goMsnUdc('2414')"});  // change this number to the production code when available - this runs the MSN UDC tracking code on every page
+			
+	// load script using FsApps.loadScriptFile
+	FsApps.loadScriptFile({url : 'http://fonts.foxsports.com/bbj6wra.js',callback:'Typekit.load()',async : true});
+	
+	FsApps.LoadFunctions.add({func:'placeContent("fs-msn-nav-content-holder", "fs-msn-bar")'}); // setup the msn bar at the top of the page
+	
+	FsApps.LoadFunctions.add({func:'rackEm("global-nav", {trackLinks: true})'}); // launch global nav1
+	
+	FsApps.LoadFunctions.add({func:'rackEm("global-nav-expanded", {trackLinks: true})'}); // launch global nav2
+	
+	FsApps.LoadFunctions.add({func:"FsApps.launchSiteSearch()"}); // load MSN Bing Search
+	
+	FsApps.LoadFunctions.add({func:'rackEm("fs-sub-nav", {trackLinks: true})'}); // for subnav
+	
+	//FsApps.LoadFunctions.add({func:'rackEm("msn-menu-items", {trackLinks: true, description: "msnnav", trackLinkType: "external"})'}); // load msn nav after window launches
+	
+	FsApps.LoadFunctions.add({func:"FsApps.highlightSubNav()"}); // launch subnav highlighting for new nav
+	
+	FsApps.LoadFunctions.add({func:"FsApps.setHeaderAnalytics()"}); // set header analytics
+	if (fsGeneral.page_type === "Story" || fsGeneral.page_type === "Feed Story") {
+			FsApps.LoadFunctions.add({func:"FsUtils.launchFB()"}); //Launch Facebook API
+			FsApps.LoadFunctions.add({func:"FsUtils.launchTwitterAPI()"});
+			FsApps.LoadFunctions.add({func:"FsUtils.launchGoogleAPI()"});
+			FsApps.LoadFunctions.add({func:'FsUtils.analyticsInlineTracking()'});
+	} 
+	
+	FsApps.LoadFunctions.add({func:'rackEm("evergreen-nav", {trackLinks: true})'}); // for subnav
+	
+	  // loading the chartbeat code -- changed out from scripts tags to this controlled loader
+	if(showTealium){//do not load if tealium is loaded
+	}else{
+	 FsApps.LoadFunctions.add({func:'loadChartbeatJS()'}); 
+	}
+	
+	//FsApps.LoadFunctions.add({func:'initJanrainSocialWidget()'});//added social widget init
+	
+	//FsApps.LoadFunctions.add({func:'makeTweets()'}); // for gametrax tweet tab - dynamically generate script tag and load it late -- GVD
+	
+	//FsApps.LoadFunctions.add({func:'Nielsen_Event()'});  // loading the Nielsen ranking code -- changed out from scripts tags to this controlled loader
+	
+	if (fsGeneral.page_type === "Story" || fsGeneral.page_type === "Feed Story") { FsApps.LoadFunctions.add({func:"loadYardBarkerTrackingJS()"}); }
+	
+	if ((fsGeneral.page_type === "Story" || fsGeneral.page_type === "Feed Story") && $("#yb-news-module-container")) { FsApps.LoadFunctions.add({func:'loadYardBarkerStoryModule()'});}// load the YB Moule Ads for stories only 
+	
+	//if (fsGeneral.page_type === "Story" || fsGeneral.page_type === "Feed Story") { FsApps.LoadFunctions.add({func:'loadSocialAPIs()'});}
+
+	/* The following two functions are used to lazy-load the HTML Sportsbar. */
+	function onJqLoaded() { FsApps.loadScriptFile({url:"http://static.foxsports.com/fe/js/sportsbar/sportsbar.js", callback:launchSb}); }
+	function launchSportsBar() {
+		if(typeof(jQuery) == "undefined") {
+			FsApps.loadScriptFile({url:"/fe/js/jQuery/jquery-1.6.1.min.js", callback:onJqLoaded});
+		} else {
+			onJqLoaded();
+		}
+	}
+	function locationIsFS(){
+		if(location.hostname.match(/ /ig))
+			return true;
+		return false;
+	}
+	var loadIFrameScoreStrip = function(){
+		var holder = document.getElementById('scoreStripHolder');
+		if($.browser.msie){
+			if(holder.innerHTML.length == 0){
+				var frame = document.createElement('iframe');
+				frame.src = "http://msn.foxsports.com/component/html/scorestrip-iframe?category=olympics";
+				frame.width = '100%';
+				frame.height = '50px';
+				frame.frameBorder = 0;
+				holder.appendChild(frame);
+			}
+		}else{
+			var createScoreStripIframe = function(){
+				var frame = document.createElement('iframe');
+				frame.src = "http://msn.foxsports.com/component/html/scorestrip-iframe?category=olympics";
+				frame.width = '100%';
+				frame.height = '50px';
+				frame.frameBorder = 0;
+				if(holder != null){
+					document.body.removeEventListener('DOMSubtreeModified',createScoreStripIframe,false);
+					if(holder.innerHTML.length == 0){
+						holder.appendChild(frame);
+						var path = location.pathname.replace('\/olympics\/','').replace('.asp','').toUpperCase();
+						var nav = $('#fsGlobalNav');
+						nav.find('li').each(function(e){$(this).removeClass('active')});
+						nav.find('#nav-'+path).addClass('active');
+					}			
+				}else{
+					holder = document.getElementById('scoreStripHolder');
+				}
+			}
+			document.body.addEventListener('DOMSubtreeModified',createScoreStripIframe,false);
+		}
+	};
+
+	if(fsSiteLang == 'es_LA' || location.href.match(/\/fantasy\//))// || location.href.match(/\/foxsoccer\//)) 	
+		FsApps.LoadFunctions.add({func:'fsScoreStrip("ini")'});//fallback to flash for soccer/deportes
+	else if(!location.host.match(/msn.foxsports.com/) && !location.host.match(/qa.foxsports.com/)){
+		
+		if(typeof(jQuery) == "undefined") {
+			FsApps.loadScriptFile({url:"http://msn.foxsports.com/fe/js/jQuery/jquery-1.6.1.min.js", callback:loadIFrameScoreStrip});
+		}else{
+			loadIFrameScoreStrip();
+		}
+	}else//*/
+		FsApps.LoadFunctions.add({func:launchSportsBar});
+}
+
+if((typeof(showAds) != "undefined" && showAds) || (typeof(window.ads) == 'object' && window.ads.length > 0)){
+	FsApps.LoadFunctions.add({func:"FsApps.loadAds()"}); // load the ads
+}
+FsApps.LoadFunctions.add({func:getNuggets});//load up nugget check for Dev.
+/*if(typeof(fsCurrentSport) != "undefined" && fsCurrentSport == "NHL") FsApps.LoadFunctions.add({func:'FsApps.loadScriptFile({url: "http://tealium.hs.llnwd.net/o43/utag/foxsports/main/qa/utag.js", defer: true})'}); */ //loads the Tealium js file

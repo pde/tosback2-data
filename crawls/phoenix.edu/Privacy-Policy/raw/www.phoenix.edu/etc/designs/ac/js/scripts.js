@@ -465,7 +465,13 @@ xhr.send(strParams)
 try{resp=eval("("+xhr.responseText+")")
 }catch(error){resp={error:error}
 }}return resp
-};
+}CQ_Analytics.SegmentResolved=function(a){if(CQ_Analytics.SegmentMgr){var c=CQ_Analytics.SegmentMgr.getResolved();
+var b=false;
+$.each(c,function(d,e){if(c[d]==a){b=true
+}});
+return b
+}else{return"CQ_Analytics.SegmentMgr Is Not Available"
+}};
 var UPX_topNav=function(){var b={};
 var a={highlighted:"highlighted",highlightedPrev:"highlightedPrev"};
 return{init:function(){UPX_topNav.cacheVariables();
@@ -850,7 +856,8 @@ G(revisionCookie,U,365,H,"/")
 }else{Q.push(an)
 }},dump:function(an){if(an==="session"){return S
 }else{if(an==="data"){return ad
-}}},bind:function(ap,an,ao){if(typeof ao==="function"){if(typeof ap==="undefined"&&typeof an==="undefined"){throw new B(I.call(arguments))
+}}},bind:function(ap,an,ao){if(typeof ao==="function"){if(typeof ap==="undefined"&&typeof an==="undefined"){throw new B(I.call(arguments),"bind")
+}if(ap&&jQuery.type(ap)!=="string"&&jQuery.type(ap)!=="array"){throw new B(I.call(arguments),"bind")
 }}else{if(typeof an==="function"){ao=an;
 an=ap;
 ap=b
@@ -865,19 +872,24 @@ function ah(){var an;
 while(Q.length>0){an=Q.pop();
 an()
 }Q=[]
-}function N(aq,ao,ap){var an;
-if(typeof aq==="string"){aq=aq.split(" ")
-}if(typeof ao==="string"){ao=ao.split(" ")
-}if(jQuery.type(ao)!=="array"){return
-}jQuery.each(aq,function(at,ar){var av,au;
-an=ad[ar]||(ad[ar]={});
-for(au=ao.length-1;
-au>=0;
-au=au-1){av=ao[au];
-if(jQuery.type(an[av])!=="array"){an[av]=[]
-}(an[av]).push(ap)
-}});
-return
+}function N(at,ap,ar){var an,aq,ao;
+if(typeof at==="string"){at=at.split(" ")
+}if(typeof ap==="string"){ap=ap.split(" ")
+}if(jQuery.type(ap)!=="array"){return
+}if(jQuery.type(at)==="array"){jQuery.each(at,function(av,au){an=ad[au]||(ad[au]={});
+for(ao=ap.length-1;
+ao>=0;
+ao=ao-1){aq=ap[ao];
+if(jQuery.type(an[aq])!=="array"){an[aq]=[]
+}(an[aq]).push(ar)
+}})
+}else{an=ad;
+for(ao=ap.length-1;
+ao>=0;
+ao=ao-1){aq=ap[ao];
+if(jQuery.type(an[aq])!=="array"){an[aq]=[]
+}(an[aq]).push(ar)
+}}return
 }function s(ao,ap){var an,aq;
 if(typeof ao==="undefined"){an=ad;
 aq=S
@@ -894,8 +906,8 @@ ar++){(fnsArray[ar]).call(this,aw,aq[aw])
 }}})
 }function B(an,ao){this.arg=an;
 this.method=ao;
-this.message=" does not match expected type for method ";
-this.toString=function(){return this.arg+this.message+this.method
+this.message=" arguments passed are not in expected format/type for the method ";
+this.toString=function(){return this.arg+this.message+'"'+this.method+'"'
 }
 }function v(an){var ao;
 if(an){ao="Passed in arguments:"+an+"; missing one/more of required parameters"
@@ -947,8 +959,8 @@ if(typeof at!=="undefined"&&at!=="profile"){if(jQuery.inArray(at,k.pageComponent
 jQuery.ajax(y+ac+"/keys/"+at,{success:function(az,aA,ay){if(jQuery.inArray(at,k.pageComponents)==-1){k.pageComponents.push(at);
 if(az.$curRevision){S[at]=az[at]
 }}Z(at,av,ap)
-},error:function(ay,aA,az){k.pageComponents.push(at);
-if(F.call(ap,"defaults")&&ap.defaults===true){Z(at,av,ap)
+},error:function(ay,aA,az){if(jQuery.inArray(at,k.pageComponents)==-1){k.pageComponents.push(at)
+}if(F.call(ap,"defaults")&&ap.defaults===true){Z(at,av,ap)
 }if(F.call(ap,"callback")&&typeof ap.callback==="function"){ap.callback.call(this,az,ap.data)
 }},dataType:"json",type:"GET",cache:false});
 return
@@ -991,13 +1003,13 @@ aB++){(aK[aB]).call(this,aq,aA)
 }}}}if(!aw){if(typeof an!=="undefined"){aL[an]=aI;
 jQuery.extend(S.essentials,aI);
 aL.essentials=S.essentials
-}else{aL.essentials=aI.essentials
+}else{aL.essentials=aI
 }aL=JSON.stringify(aL)
 }}else{aI[az]=ao;
-if(!aw){S.essentials[az]=ao;
-if(typeof an!=="undefined"){aL[an]=aI;
+if(!aw){if(typeof an!=="undefined"){aL[an]=aI;
+S.essentials[az]=ao;
 aL.essentials=S.essentials
-}else{aL.essentials=aI.essentials
+}else{aL.essentials=aI
 }aL=JSON.stringify(aL)
 }if(an==="profile"&&Y.authenticated&&F.call(ProfileService.profile,az)){if(!jQuery.inArray(az,aC)){S.essentials[az]=ao
 }ProfileService.profile[az]=ao;
@@ -1229,8 +1241,8 @@ $("#flyoutWrapper").live("mouseleave",function(){if(undefined!=f){clearTimeout(f
 }if(d){f=setTimeout(h,200)
 }});
 $(".header a#chatLive").live("click",function(){cmCreateManualLinkClickTag("?cm_sp=CTA-_-Chat Live-_-Header","Chat Live",strCmTitle);
-pageTracker._trackPageview("/virtual/link/CTA/Chat Live/Header");
-var j="uopx",k="student",l=window.location.pathname;
+if(typeof pageTracker==="function"){pageTracker._trackPageview("/virtual/link/CTA/Chat Live/Header")
+}var j="uopx",k="student",l=window.location.pathname;
 if($("body.homepageContEd").length||$("body.secondary").length||$("body.superHub").length||$("body.hub").length||$("body.certificates").length){k="Single_Course"
 }window.location=window.location.protocol+"//"+window.location.host+"/chat/chatNow?uri="+l+"&tenant="+j+"&queue="+k
 })

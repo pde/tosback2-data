@@ -1,0 +1,13 @@
+CQ_Analytics.PageDataMgr.addInitProperty( "scPageName", "help:privacy policy" );
+CQ_Analytics.PageDataMgr.addInitProperty( "scChannel", "help" );
+CQ_Analytics.PageDataMgr.addInitProperty( "scSubSection1", "" );
+CQ_Analytics.PageDataMgr.addInitProperty( "scSubSection2", "" );
+CQ_Analytics.PageDataMgr.addInitProperty( "scSubSection3", "" );
+CQ_Analytics.PageDataMgr.addInitProperty( "scSubSection4", "" );
+CQ_Analytics.PageDataMgr.addInitProperty( "scSubSection5", "" );
+CQ_Analytics.PageDataMgr.addInitProperty( "scTemplateType", "help" );
+CQ_Analytics.PageDataMgr.addInitProperty( "scSiteId", "rei" );
+CQ_Analytics.PageDataMgr.addInitProperty( "scContentType", "non-commerce" );
+CQ_Analytics.PageDataMgr.addInitProperty( "scProducts", "" );
+CQ_Analytics.PageDataMgr.addInitProperty( "enableBodyTracking", "false" );
+CQ_Analytics.PageDataMgr.addInitProperty( "pageViewTrackingRate", "1.00" );

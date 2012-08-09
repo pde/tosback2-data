@@ -173,8 +173,17 @@ function s_doPlugins(s) {
 	s.setupFormAnalysis();
 	
 	/* collect internal campaign parameters */
-	if(!s.eVar4)
-		s.eVar4=s.getQueryParam('iid');
+	var iid = s.getQueryParam('iid'),
+		iidSplit = s.getQueryParam('iid').split("|");
+	if (iidSplit.length > 0 && iidSplit[0] === "HP Slide") {
+		if(!s.eVar53) {
+			s.eVar53=iid;
+		}		
+		iid = "";
+	}
+	if(!s.eVar4) {
+		s.eVar4=iid;
+	}
 
 	/* set internal campaign finding method */
 	if(s.eVar4 && !s.eVar18)

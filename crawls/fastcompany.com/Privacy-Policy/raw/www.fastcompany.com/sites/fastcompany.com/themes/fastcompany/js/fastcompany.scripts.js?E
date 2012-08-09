@@ -1,0 +1,79 @@
+Drupal.behaviors.sidebarVideo = function(context) {
+  // attach iframe for video playback
+  var $block = $('#block-blockqueue-featured_video');
+
+  // get first item in playlist
+  var embed = $('figure', $block)[0];
+
+  // embed url
+  var url = $(embed).children('a').attr('href');
+  $('#sidebar-video-player').attr('src', url + '?p=fc_playlist_homepage');
+
+  // video info
+  var info = $(embed).children('figcaption').html();
+  $('#sidebar-video-info').html(info);
+
+  $(embed).parents('li').addClass('active');
+
+  $('a.video-embed', $block).hover(
+    function(e) {
+      var info = $(this).next('figcaption').html();
+      $('#sidebar-video-info').html(info);
+    }
+  );
+
+  $('a.video-embed', $block).on('click', function(e) {
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $('#sidebar-video-player').attr('src', url + '?p=fc_playlist_homepage');
+
+    $('li', $block).removeClass('active');
+    $(this).parents('li').addClass('active');
+  });
+
+};
+
+Drupal.behaviors.galleria = function(context) {
+  Drupal.galleria.init({
+      'container': '.inline-galleria'
+  });
+}
+
+Drupal.galleria = (function() {
+    var config = {
+        container: '.slideshow-items'
+    },
+
+    $container = {},
+
+    init = function(options) {
+        config = $.extend(config, options);
+
+        $container = $(config.container);
+
+        // If we have no container, return.
+        if ($container.length === 0) {
+            return;
+        }
+
+        $container.each(function() {
+            $(this).galleria({
+                //_toggleInfo: false,
+                showCounter: false,
+
+                dataConfig: function(img) {
+                    return {
+                        description: $(img).parent().siblings('.galleria-desc').html(),
+                        credit: $(img).parent().siblings('.galleria-credit').html()
+                    };
+                }
+            });
+
+        });
+    };
+
+    return {
+        init: init
+    };
+
+}());

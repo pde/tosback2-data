@@ -18,7 +18,7 @@ function faq(client,nav) {
       faq_popup = window.open("http://faq.gmx.de/search/go.php?t=" + nav ,"faq", "toolbar=yes,resizable=yes,width=700,height=500,scrollbars=yes");
     break;
     case 'gmx2':
-      faq_popup = window.open("http://hilfe.gmx.net/classic/content/resources/" + nav ,"faq", "toolbar=no,resizable=yes,width=700,height=500,scrollbars=yes");
+      faq_popup = window.open("http://hilfe2.gmx.net/classic/content/resources/" + nav ,"faq", "toolbar=no,resizable=yes,width=700,height=500,scrollbars=yes");
     break;
     case '1u1':
       faq_popup = window.open("http://hilfe-center.1und1.de/access/gesamt/fragen_zur_nutzung_der_leistungen_z_b_domain_e_mail/11_mediacenter?t=" + nav ,"faq", "toolbar=yes,resizable=yes,width=895,height=500,scrollbars=yes");

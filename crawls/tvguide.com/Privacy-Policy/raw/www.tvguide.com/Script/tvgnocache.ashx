@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,7,2,20,29,52,0);
+var tvgServerTimeUTC = new Date(2012,7,9,17,51,39,0);
 
-var dServerET = new Date(2012,7,2,16,29,52,0);
+var dServerET = new Date(2012,7,9,13,51,39,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,7,2);
-dSrvrTime.setUTCHours(20,29,52,0);
+dSrvrTime.setUTCFullYear(2012,7,9);
+dSrvrTime.setUTCHours(17,51,39,0);
 
-var dLocalTime = new Date(2012,7,2,16,29,52,0);
-var dGridStart = new Date(2012,7,2,16,0,0,0);
+var dLocalTime = new Date(2012,7,9,13,51,39,0);
+var dGridStart = new Date(2012,7,9,13,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= c19f23f1a24eaa5491490f6d9c1ddfe462d10aa0 1343939392';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 336dd195a6feec6eabdeceba842944e174bbd11e 1344534699';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,19 +50,19 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 8/2/2012 8:15:00 PM GMT */
+/* TVGSVC02 8/9/2012 5:45:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads */
+/* Listings: In-Grid and Close-Up Ads (2012-08-09)*/
 var GridAds = true;
 var MaxGridAds = 3;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/SIS_Top.jpg";
-var magicBotImage = "/listings/images/topchan/SIS_Bottom_SAT.jpg";
-var magicLogo = "/listings/images/topchan/SIS_Middle.jpg";
-var magicLink = "http://www.facebook.com/TVGuideNetwork";
+var magicTopImage = "/listings/images/topchan/NailFiles_Top_080812a.jpg";
+var magicBotImage = "/listings/images/topchan/NailFiles_Bottom_PREM_AUG.jpg";
+var magicLogo = "/listings/images/topchan/NailFiles_Middle.jpg";
+var magicLink = "http://www.facebook.com/TVGuideNetwork/app_153855648022942";
 var magicBkgnd = "#FFFFFF";
 var magicTextClr = "#FFFFFF";
 var magicLeftOffset = 640;

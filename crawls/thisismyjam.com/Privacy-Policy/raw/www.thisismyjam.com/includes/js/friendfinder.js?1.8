@@ -1,0 +1,399 @@
+var FriendFinder = function()
+{
+    // called the first time we create the FF instance
+    this.init = function()
+    {
+        var promise = $.Deferred();
+
+        var friendFinder = this;
+        // fetch both templates in parallel
+        $.when(template('friendfinder/main.hbs'),
+               template('friendfinder/suggestion.hbs'))
+            .done(function(main, suggestion) {
+                Handlebars.registerPartial('suggestion', suggestion);
+                friendFinder.template = Handlebars.compile(main);
+                promise.resolve();
+            });
+
+        return promise;
+    };
+
+    // called every time we get to the home page
+    this.build = function(elementID)
+    {
+        this.$el = $('#' + elementID);
+        this.bindShowMore();
+        this.bindSearchField();
+        this.setFetcher(new SuggestionsFetcher());
+        this.refreshPeople();
+    };
+
+    this.showSpinner = function()
+    {
+        //console.log('showSpinner');
+        $('#befriender-inner').addClass('loading-center-spinner');
+        $('#befriender-inner ul').css('visibility', 'hidden');
+    };
+
+    this.hideSpinner = function()
+    {
+        //console.log('hideSpinner');
+        $('#befriender-inner').removeClass('loading-center-spinner');
+        $('#befriender-inner ul').css('visibility', 'visible');
+    };
+
+    this.disableFeed = function()
+    {
+        // TODO: come up with a way to disable it properly
+        $('#playAllJamsSpinner').show();
+        $('#homepagePlaylist, #playAllJams').css('opacity', '0.4');
+    };
+
+    this.enableFeed = function()
+    {
+        $('#homepagePlaylist, #playAllJams').css('opacity', '1');
+        $('#playAllJamsSpinner').hide();
+        $('#playAllJams').removeClass("disabled");
+    };
+
+    this.refreshPeople = function()
+    {
+        this.showSpinner();
+        this.showShowMore();
+
+        this.getNewItems(3)
+            .then(this.setPeople.bind(this))
+            .then(this.hideSpinner.bind(this));
+    };
+
+    this.setPeople = function(items)
+    {
+        var html = this.template({suggested: items});
+        this.$el.html(html);
+
+        this.bindFollowButtons();
+    };
+
+    // TODO: rename this function to something like
+    // "thisIsWhatHappensAfterWeHaveChangedTheListOfPeople"
+     this.bindFollowButtons = function() {
+        var friendFinder = this;
+
+        // enable search input again
+        $('#homeUserSearchInput').removeAttr('disabled');
+
+        // Ajaxify all links and add tooltips
+        this.$el.ajaxify(); //find(".tipsy").tipsy();
+
+        this.$el.find('a.button.follow:not(".following")').off('click').on("click",function(){
+
+            var $this = $(this);
+            var $parent_li = $this.parentsUntil("li").parent();
+            var user = this.id.split("||").pop();
+            $this.addClass('done');
+            // there's basically no nice way to turn off events added with live()
+            // I tried replacing live() with on(), so off() would work, but that broke ajax-loaded follow btns for now, so. 
+            //$this.unbind();
+            $parent_li.find('.username').append('&nbsp;<span style="background:#feff99">has been added to your playlist!</span>');
+            
+            // disable homepage playlist
+            friendFinder.disableFeed();
+            
+            // Bind click handlers for following
+            friendFinder.getNewItems(1).then(function(items) {
+                setTimeout(function(){
+                    friendFinder.setItem(items[0], $parent_li);
+
+                    // insert into playing playlist and any visible playlists
+                    // on page
+                    $.when(window.player.insert(user),
+                           window.playlistBag.insertJamByUsername(user))
+                        .then(friendFinder.enableFeed.bind(friendFinder));
+                        
+                }, 1200);
+            });  
+        });
+        
+    };
+
+    this.bindShowMore = function()
+    {
+        var friendFinder = this;
+        $('#refreshSuggestionsResults').click(function() {
+
+            StatsD.increment('befriender_showmore_' + friendFinder.fetcher.getName());
+
+            if(!$(this).hasClass('disabled'))
+                friendFinder.refreshPeople();
+            return false;
+        });
+    };
+
+    this.showShowMore = function()
+    {
+        //console.log('showShowMore');
+        $('#refreshSuggestionsResults')
+            .removeAttr('disabled')
+            .removeClass('disabled')
+            .css('opacity', '1');
+    };
+
+    this.hideShowMore = function()
+    {
+        //console.log('hideShowMore');
+        $('#refreshSuggestionsResults')
+            .attr('disabled', 'disabled')
+            .addClass('disabled')
+            .css('opacity', '0.3');
+    };
+
+    this.bindSearchField = function()
+    {
+        var friendFinder = this;
+        $input = $('#homeUserSearchInput');
+        $clear = false;
+        if ($input.next().hasClass('js-clearsearch')) {
+            $clear = $input.next();
+        }
+        
+        $input.keydown(function(e) {
+        
+            if ($clear) {
+                $clear.show();
+            }
+            
+            if(e.which === 27){
+                friendFinder.clearSearch();
+            }
+            else if(e.which == 13) {
+                friendFinder.search();
+                e.preventDefault();
+                return false;
+            }
+
+            return true;
+        });
+        
+        /* optionally bind clearsearch control if it exists */
+        if ($clear) {
+            $clear.bind("click", function() {
+                friendFinder.clearSearch();
+            });
+        }
+    };
+
+    this.clearSearch = function() {
+        //console.log("CLEARSEARCH");
+        $input = $('#homeUserSearchInput');
+        $input.val("");
+        $input.blur();
+        if ($input.next().hasClass('js-clearsearch')) {
+            $input.next().hide();
+        } 
+
+        // if we typed something and haven't hit return yet,
+        // don't refresh the results.
+        if(this.fetcher instanceof SearchFetcher) {
+            this.setFetcher(new SuggestionsFetcher());
+            this.refreshPeople();
+        }
+    }
+    
+    
+    this.search = function(query)
+    {
+        if(typeof query == 'undefined')
+            query = $('#homeUserSearchInput').val();
+
+        if(!query)
+            return;
+
+        this.setFetcher(new SearchFetcher(query));
+        this.refreshPeople();
+    };
+
+    this.getNewItems = function(count)
+    {
+        // disable input, otherwise you might search, then get results,
+        // then get these old results async
+        $('#homeUserSearchInput').attr('disabled', 'disabled');
+
+        var promise = $.Deferred();
+        var items = [];
+        while(this.people.length && count) {
+            items.push(this.people.splice(0, 1)[0]);
+            count --;
+        }
+
+        // so this bit is a bit hairy and higher order recursive.
+        // all it does is, if we're out of people in our local cache,
+        // we go to the server and grab some new ones. if we get any,
+        // we call this function again, until we either run out of people
+        // or have reached count
+
+        var friendFinder = this;
+        if(this.people.length == 0) {
+
+            if(this.fetcher.hasMore()) {
+                this.fetcher.fetch().then(function(people) {
+
+                    if(people.length) {
+                        friendFinder.people = people;
+                        friendFinder.getNewItems(count).then(function(items2) {
+                            promise.resolve(items.concat(items2));
+                        });
+                    }
+                    else {
+                        friendFinder.hideShowMore();
+                        promise.resolve(items);
+                    }
+                });
+            }
+            else {
+                this.hideShowMore();
+                promise.resolve(items);
+            }
+        }
+        else
+            promise.resolve(items);
+
+        return promise;
+    };
+
+    this.setItem = function(item, $container)
+    {
+        //console.log($container);
+
+        if(item)
+            var newSuggestion = Handlebars.partials.suggestion(item);
+
+        var friendFinder = this;
+        $container.delay(400).fadeOut(300,function(){
+            if(item) {
+                $container
+                    .replaceWith(newSuggestion)
+                    .fadeIn(300, friendFinder.bindFollowButtons.bind(friendFinder));
+            }
+            else {
+                $container.remove();
+                if(!FriendFinder.getVisibleUserIDs().length) {
+                    // this is getting spaghetty, but anyway.
+                    // we've arrived here if we followed someone, and it was the
+                    // last one in the list. in this case we re-render, so that
+                    // we show the error message
+                    $('#homeUserSearchInput').removeAttr('disabled');
+                    friendFinder.$el.html(friendFinder.template({suggested: []}));
+                }
+            }
+        });
+    };
+
+    this.setFetcher = function(fetcher)
+    {
+        // need to flush local people cache
+        this.people = [];
+        this.fetcher = fetcher;
+    };
+
+};
+
+FriendFinder.instance = null;
+
+FriendFinder.getInstance = function(elementID)
+{
+    if(!FriendFinder.instance) {
+        FriendFinder.instance = new FriendFinder();
+        FriendFinder.instance.init()
+            .then(FriendFinder.instance.build.bind(FriendFinder.instance, elementID));
+    }
+    else
+        FriendFinder.instance.build(elementID);
+
+    return FriendFinder.instance;
+};
+
+FriendFinder.getVisibleUserIDs = function()
+{
+    var ids = $.map($('.befrienderItem'), function(item) {
+        return $(item).attr('id');
+    });
+    return ids;
+};
+
+var SuggestionsFetcher = function()
+{
+    var hasMore = true;
+    // currently unused. we should increment and return
+    // new results
+    var page = 1;
+
+    this.fetch = function()
+    {
+        //console.log(FriendFinder.getVisibleUserIDs());
+        var promise = $.Deferred();
+        $.ajax({
+            url: 'suggestions/getSuggestions',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                exclude: FriendFinder.getVisibleUserIDs().join(',')
+            },
+            success: function(data) {
+                hasMore = data.hasMore;
+                promise.resolve(data.suggested);
+            },
+            error: function() {
+                promise.reject();
+            }
+        });
+        return promise;
+    };
+
+    this.hasMore = function()
+    {
+        return hasMore;
+    };
+
+    this.getName = function() {
+        return 'suggestions';
+    };
+};
+
+var SearchFetcher = function(query)
+{
+    var query = query;
+    var page = 1;
+    var hasMore = true;
+
+    this.fetch = function()
+    {
+        var promise = $.Deferred();
+        $.ajax({
+            url: 'suggestions/search',
+            data: {
+                query: query,
+                page: page,
+                exclude: FriendFinder.getVisibleUserIDs().join(',')
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function(data) {
+                page ++;
+                hasMore = data.hasMore;
+                promise.resolve(data.suggested);
+            },
+            error: function() {
+                promise.reject();
+            }
+        });
+        return promise;
+    };
+
+    this.hasMore = function() {
+        return hasMore;
+    };
+
+    this.getName = function() {
+        return 'search';
+    };
+};

@@ -1,9 +1,21 @@
 (function(){
-var pfs={ "http://www.discovery.com/radio/podcasts.html":{"nid":30672,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+var pfs={ "http://dsc.discovery.com/convergence/sharkweek/ultimate-quiz/ultimate-quiz.html":{"nid":12408,"tr":1},
+"http://dsc.discovery.com/convergence/sharkweek/view-vote/view-vote.html":{"nid":12410,"tr":1},
+"http://dsc.discovery.com/convergence/sharkweek/news/sharknews.html":{"nid":12407,"tr":1},
+"http://dsc.discovery.com/convergence/sharkweek/games/games.html":{"nid":12427,"tr":1},
+"http://dsc.discovery.com/tv/shark-week/tv-shows.html":{"nid":31712,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://dsc.discovery.com/sharks/shark-facts.html":{"nid":31711,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://dsc.discovery.com/sharks/shark-pictures/":{"nid":31708,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://dsc.discovery.com/sharks/shark-o-nator/":{"nid":31710,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://www.discovery.com/radio/podcasts.html":{"nid":30672,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://dsc.discovery.com/sharks/shark-games/":{"nid":31709,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://dsc.discovery.com/sharks/shark-cam/":{"nid":31707,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://news.discovery.com/sharks/":{"nid":31713,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
 "http://curiosity.discovery.com/":{"nid":30670,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://news.discovery.com/":{"nid":7401,"tr":1},
 "http://news.discovery.com/":{"nid":30669,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
-"http://dhd.discovery.com/":{"nid":30671,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
 "http://dsc.discovery.com/":{"nid":30668,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://dhd.discovery.com/":{"nid":30671,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
 "http://dsc.discovery.com/":{"nid":3481,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"} },d=document,w=window,u=(w.gm_fake_href)?w.gm_fake_href:w.location.href;
 
 function z(n){
@@ -13,7 +25,7 @@ if (Math.random()>=n['tr']) {
 	return;
 }
 
-var ar_nodes = ":30672:30670:30669:30671:";
+var ar_nodes = ":30672:30670:30671:";
 if (ar_nodes.indexOf(":"+n['nid']+":") >= 0) {	// adradar only
 	(new Image).src="//amch.questionmarket.com/adscgen/adrad.php?survey_num=0&aicode=0&site="+n['nid'];
 	return;

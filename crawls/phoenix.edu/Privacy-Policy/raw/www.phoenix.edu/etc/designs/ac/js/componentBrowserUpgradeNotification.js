@@ -1,4 +1,4 @@
-var UPX_browserUpgradeNotification=(function(){var b={Windows:{Firefox:3.5,Safari:5,Chrome:10,Explorer:7},Mac:{Firefox:3.5,Safari:5,Chrome:10}},a=$("#browserUpgradeNotification");
+UPX.browserUpgradeNotification=(function(){var b={Windows:{Firefox:3.5,Safari:5,Chrome:10,Explorer:7},Mac:{Firefox:3.5,Safari:5,Chrome:10}},a=$("#browserUpgradeNotification");
 var c={init:function(){this.browser=this.searchString(this.dataBrowser)||"An unknown browser";
 this.version=this.searchVersion(navigator.userAgent)||this.searchVersion(navigator.appVersion)||"an unknown version";
 this.OS=this.searchString(this.dataOS)||"an unknown OS"
@@ -28,3 +28,4 @@ if(d==="true"){return false
 }else{return true
 }}}
 }());
+UPX.browserUpgradeNotification.init();

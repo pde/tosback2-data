@@ -1,0 +1,76 @@
+var $content = $("#content");
+
+$content.on("contentReady",function(){
+
+    var $send_panel = $("#sendPanel");
+
+    if($send_panel.length){
+        var $message = $("#message"),
+            $eSubmit = $("#emailSubmitter"),
+            $emails = $("#email_recipients"),
+            $errorMessage = $("#emailsMissing");
+
+
+        // Focus on Emails field
+        $emails.focus();
+
+        // Set countable on the message field
+        //$message.countable();
+
+        //Cache SendPanel original data
+        $send_panel.data("html",$send_panel.html());
+
+        $eSubmit.on("click",function(e){
+            e.preventDefault();
+            var $this = $(this),
+                emails = $emails.val().trim(),
+                message = $message.val().trim();
+
+            if($this.hasClass("disabled")) return false;
+
+            if(!emails.length){
+                $errorMessage.show();
+                $emails.focus();
+                $emails.on("keydown",function(){$errorMessage.hide();});
+
+                return false;
+            }
+
+            $.ajax({
+                url: '/invite/email',
+                type: 'post',
+                dataType: 'json',
+                beforeSend : function(){
+                    $this.addClass("disabled");
+                },
+                data: {
+                    emails: emails,
+                    message: message
+                },
+                success: function(data) {
+
+                    $send_panel.html(data.html).fadeIn().find(".tipsy").tipsy();
+
+                    var $send_more = $(".js-sendmore");
+
+                    $send_more.on("click",function(e){
+                        e.preventDefault();
+                        $send_panel.html($send_panel.data("html")).fadeIn();
+                        $content.trigger("contentReady");
+                    });
+
+
+                },
+                error : function(a,b,c){
+                    alert("Something went wrong with your invitation, please check you are connected to the internet and try again.");
+                },
+                complete : function () {
+                    $this.removeClass("disabled");
+                }
+            });
+
+            return false;
+        });
+    }
+
+});

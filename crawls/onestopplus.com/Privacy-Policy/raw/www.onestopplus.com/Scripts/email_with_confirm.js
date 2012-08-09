@@ -253,7 +253,7 @@
                     'top': 0,
                     'left': 0,
                     'border': 'none',
-                    'background-color' : 'none'
+                    'background-color' : '#fff'
                 });
 
                 $wrapperParent.find($errMsgWrapper).empty();
@@ -323,7 +323,7 @@
 					    //width: '710px',
 					    'z-index': '900',
 					    // height: '420px',
-					    background: 'transparent',
+					    background: '#fff',
 					    border: '1px solid #333'
 					})
                     .load('/Catalog/email_confirm_popup.aspx', updatePopup);

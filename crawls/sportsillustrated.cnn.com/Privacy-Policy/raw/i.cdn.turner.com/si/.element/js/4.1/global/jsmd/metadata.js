@@ -886,6 +886,16 @@ if ( $hostname === "sports.sportsillustrated.cnn.com" && $isStatsHosted ) {
 			if ( cnnPageInfo_pageType === 'section' ) {
 				cnn_metadata.template_type = 'section front';
 				cnn_metadata.content_type = 'none';
+			} else if ( adFactory.zone == 'olympics/photos' ) {
+				var galleryWrapper = document.getElementById("photoContainer");
+				var galleryContainer = (galleryWrapper !== null) ? galleryWrapper.getElementsByTagName("h1") : 
+									   ( document.getElementsByClassName('cnnGalleryImgHdr').length > 0 ) ? document.getElementsByClassName('cnnGalleryImgHdr') :
+									   ( document.getElementsByClassName('title').length > 0 ) ? document.getElementsByClassName('title') : [];
+				var galleryName = ( galleryContainer.length > 0 ) ? galleryContainer[0].innerHTML : '';//document.title.replace('SI.com - Photo Gallery - ', '');
+
+				cnn_metadata.section = [ 'olympics2012', 'photos:' + galleryName.toLowerCase() ];
+				cnn_metadata.template_type = 'other:photo gallery';
+				cnn_metadata.content_type = 'none';
 			} else {
 				cnn_metadata.template_type = 'other:photo gallery';
 				cnn_metadata.content_type = 'none';
@@ -894,16 +904,6 @@ if ( $hostname === "sports.sportsillustrated.cnn.com" && $isStatsHosted ) {
 		} else if ($pathname.substring(1).split("/").length <= 3){
 			cnn_metadata.section = [ 'si photos', 'photo gallery' ];
 			cnn_metadata.template_type = 'section front';
-			cnn_metadata.content_type = 'none';
-		} else if ( adFactory.zone == 'olympics/photos' ) {
-			var galleryWrapper = document.getElementById("photoContainer");
-			var galleryContainer = (galleryWrapper !== null) ? galleryWrapper.getElementsByTagName("h1") : 
-								   ( document.getElementsByClassName('cnnGalleryImgHdr').length > 0 ) ? document.getElementsByClassName('cnnGalleryImgHdr') :
-								   ( document.getElementsByClassName('title').length > 0 ) ? document.getElementsByClassName('title') : [];
-			var galleryName = ( galleryContainer.length > 0 ) ? galleryContainer[0].innerHTML : '';//document.title.replace('SI.com - Photo Gallery - ', '');
-
-			cnn_metadata.section = [ 'olympics2012', 'photos:' + galleryName.toLowerCase() ];
-			cnn_metadata.template_type = 'other:photo gallery';
 			cnn_metadata.content_type = 'none';
 		} else if ($pathname.substring(1).split("/").length > 3) {
 			/* Note: Makes use of the DOM object to obtain the gallery name */

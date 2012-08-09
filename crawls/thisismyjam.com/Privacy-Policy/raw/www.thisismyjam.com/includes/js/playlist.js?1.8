@@ -1,0 +1,408 @@
+Playlist = function(jams)
+{
+    this.index = 0;
+    this.jams = [];
+    this.view = null;
+};
+
+Playlist.prototype.hasPrev = function()
+{
+    return this.index > 0;
+};
+
+Playlist.prototype.hasNext = function()
+{
+    return this.nextIsLoaded() || this.hasMore();
+};
+
+Playlist.prototype.nextIsLoaded = function()
+{
+    return this.index < this.jams.length - 1;
+};
+
+Playlist.prototype.prev = function()
+{
+    if(!this.hasPrev())
+        return null;
+    return this.jams[this.index - 1];
+};
+
+Playlist.prototype.next = function(step)
+{
+    if(typeof step == 'undefined')
+        step = 1;
+
+    if(!this.hasNext())
+        return null;
+
+    if(!this.jams[this.index + step])
+        return null;
+
+    // TODO: bug if last jam before load more is not
+    // transcoded and you press next
+    if(this.jams[this.index + step].playable) {
+        return this.jams[this.index + step];
+    }
+    else {
+        return this.next(step + 1);
+    }
+};
+
+Playlist.prototype.jamIDToIndex = function(jamID)
+{
+    for(var i = 0; i < this.jams.length; i ++) {
+        if(this.jams[i].id == jamID)
+            return i;
+    }
+    return null;
+
+};
+
+Playlist.prototype.usernameToIndex = function(username)
+{
+    for(var i = 0; i < this.jams.length; i ++) {
+        if(this.jams[i].username == username)
+            return i;
+    }
+    return null;
+
+};
+
+Playlist.prototype.setCurrent = function(jamID)
+{
+    var index = this.jamIDToIndex(jamID);
+    if(index === null) {
+        this.index = -1;
+        return null;
+    }
+    this.index = index;
+    return this.current();
+};
+
+Playlist.prototype.current = function()
+{
+    return this.jams[this.index];
+};
+
+Playlist.prototype.setView = function(view)
+{
+    this.view = view;
+    if(this.jams && this.jams.length)
+        view.appendJams(this.jams);
+
+    console.log(view);
+
+    this.view.on('loadMore', this.load.bind(this));
+};
+
+Playlist.prototype.insertJamByUsername = function(username)
+{
+    var promise = $.Deferred();
+
+    // don't insert it twice. first check here so we don't even
+    // do a http request. second check later in case two requests
+    // fire at the same time.
+    if(this.usernameToIndex(username) !== null)
+        return promise.resolve();
+
+    var currentJamID = null;
+    if(player.current())
+        currentJamID = player.current().id;
+
+    var playlist = this;
+    $.ajax({url: '/home/feedSingle',
+            dataType: 'json',
+            data: {username: username},
+            success: function(data) {
+
+                // don't insert it twice.
+                if(playlist.usernameToIndex(username) !== null)
+                    return promise.resolve();
+
+                console.log(data);
+                if(data.previousID) {
+                    var index = playlist.jamIDToIndex(data.previousID);
+                    if(index !== null) {
+                        playlist.jams.splice(index + 1, 0, data.jam);
+                        playlist.view &&
+                            playlist.view.insertJamAfter(data.previousID, data.jam);
+                    }
+                }
+                else {
+                    playlist.jams.splice(0, 0, data.jam);
+                    playlist.view &&
+                        playlist.view.insertFirst(data.jam);
+                }
+
+                playlist.setCurrent(currentJamID);
+
+                promise.resolve();
+            },
+            error: promise.fail.bind(promise)
+           });
+
+    return promise;
+};
+
+Playlist.prototype.removeJamByUsername = function(username)
+{
+    var index = this.usernameToIndex(username);
+    if(!index)
+        return;
+
+    var currentJamID = null;
+    if(player.current())
+        currentJamID = player.current().id;
+
+    var jams = this.jams.splice(index, 1);
+    if(!jams.length)
+        return;
+
+    var jam = jams[0];
+    if(this.view && this.view.removeJam)
+        this.view.removeJam(jam);
+
+    this.setCurrent(currentJamID);
+};
+
+// I was drunk when i wrote this code.
+Playlist.prototype.setLiked = function(jam, liked)
+{
+    if(this.view)
+        this.view.setLiked(jam, liked);
+};
+
+
+HomePlaylist = function()
+{
+    Playlist.call(this);
+
+    this._lastID = null;
+    this._hasMore = false;
+    this.newJams = null;
+    this.isLoading = false;
+};
+HomePlaylist.prototype = extend(Playlist);
+
+HomePlaylist.prototype.load = function(count)
+{
+    if(this.isLoading)
+        return false;
+
+    this.isLoading = true;
+
+    if(this.view && this.view.beforeLoad)
+        this.view.beforeLoad();
+
+    if(typeof count == 'undefined')
+        count = Player.JAMS_PER_PAGE;
+
+    var promise = $.Deferred();
+    var ajaxData = {count: count};
+    if(this._lastID)
+        ajaxData.lastID = this._lastID;
+    var playlist = this;
+
+    $.ajax({url: '/home/feed',
+            dataType: 'json',
+            data: ajaxData})
+        .then(function(data) {
+            playlist.jams = playlist.jams.concat(data.jams);
+            playlist._hasMore = data.hasMore;
+            if(playlist.jams.length)
+                playlist._lastID = playlist.jams[playlist.jams.length - 1].id;
+
+            if(playlist.view)
+                playlist.view.appendJams(data.jams);
+
+            if(playlist.view && playlist.view.updateControls)
+                playlist.view.updateControls(playlist.jams.length, playlist.hasMore());
+            
+            playlist.isLoading = false;
+
+            promise.resolve(data.jams);
+        })
+        .fail(promise.fail.bind(promise));
+
+    return promise;
+};
+
+HomePlaylist.prototype.hasMore = function()
+{
+    return this._hasMore;
+};
+
+
+LikesPlaylist = function(username) {
+    Playlist.call(this);
+
+    this.username = username;
+    this._lastHeartID = null;
+    this._hasMore = false;
+    this.newJams = null;
+};
+LikesPlaylist.prototype = extend(Playlist);
+
+// TODO: make HomePlaylist and LikesPlaylist extend FeedPlaylist, and stick
+// load() in there instead?
+LikesPlaylist.prototype.load = function()
+{
+    if(this.view && this.view.beforeLoad)
+        this.view.beforeLoad();
+
+    if(typeof count == 'undefined')
+        count = Player.JAMS_PER_PAGE;
+
+    var promise = $.Deferred();
+    var ajaxData = {count: count};
+    if(this._lastHeartID)
+        ajaxData.lastHeartID = this._lastHeartID;
+    var playlist = this;
+
+    $.ajax({url: '/' + this.username + '/likesFeed',
+            dataType: 'json',
+            data: ajaxData})
+        .then(function(data) {
+            playlist.jams = playlist.jams.concat(data.jams);
+            playlist._hasMore = data.hasMore;
+            if(playlist.jams.length)
+                playlist._lastHeartID = playlist.jams[playlist.jams.length - 1].heartID;
+
+            if(playlist.view)
+                playlist.view.appendJams(data.jams);
+
+            if(playlist.view && playlist.view.updateControls)
+                playlist.view.updateControls(playlist.jams.length, playlist.hasMore());
+
+            promise.resolve(data.jams);
+        })
+        .fail(promise.fail.bind(promise));
+
+    return promise;
+};
+
+LikesPlaylist.prototype.hasMore = function()
+{
+    return this._hasMore;
+};
+
+
+SinglePlaylist = function(jamID)
+{
+    this.load = function()
+    {
+        var promise = $.Deferred();
+        var playlist = this;
+
+        // TODO: embed all the stuff we get from /ajax/feedSingle
+        //       in the html returned from the server instead (optimisation)
+        $.ajax({url: '/ajax/feedSingle',
+                dataType: 'json',
+                data: {jamID: jamID}})
+            .then(function(data) {
+                playlist.jams = [data.jam];
+
+                if(playlist.view)
+                    playlist.view.appendJams(playlist.jams);
+
+                promise.resolve(playlist.jams);
+            })
+            .fail(promise.fail.bind(promise));
+        return promise;
+    };
+
+    this.hasMore = function()
+    {
+        return false;
+    };
+
+    this._jamID = jamID;
+};
+SinglePlaylist.prototype = extend(Playlist);
+
+
+PlaylistBag = function() {
+
+    this.empty = function()
+    {
+        /* this doesn't actually work since it destroys the current playlist too
+        // collect garbage
+        for(name in this.playlists) {
+            var playlist = this.playlists[name];
+            if(playlist.destroy)
+                playlist.destroy();
+        }
+        */
+
+        this.playlists = {};
+    };
+
+    // the name must be the same as the data-playlist attribute
+    // on the play button.
+    this.register = function(name, playlist)
+    {
+        playlist.name = name;
+        playlist.url = locationPathname();
+        this.playlists[name] = playlist;
+    };
+
+    this.get = function(name)
+    {
+        return this.playlists[name];
+    };
+
+    this.loadAll = function()
+    {
+        var promise = $.Deferred();
+        var promises = [];
+        for(name in this.playlists) {
+            var playlist = this.playlists[name];
+            // if the playlist already have jams in it we don't need to load it,
+            // but we do need to instantiate the controls. this usually happens in
+            // the load method
+            if(playlist.jams && playlist.jams.length) {
+                if(playlist.view && playlist.view.updateControls)
+                    playlist.view.updateControls(playlist.jams.length, playlist.hasMore());
+            }
+            else {
+                promises.push(playlist.load());
+            }
+        }
+
+        $.when.apply(null, promises)
+            .done(promise.resolve.bind(promise))
+            .fail(promise.fail.bind(promise));
+        return promise;
+    };
+
+    this.setLiked = function(jam, liked)
+    {
+        for(name in this.playlists) {
+            var playlist = this.playlists[name];
+            playlist.setLiked(jam, liked);
+        }
+    };
+
+    // remove from all visible playlists
+    this.removeJamByUsername = function(username)
+    {
+        for(name in this.playlists) {
+            var playlist = this.playlists[name];
+            playlist.removeJamByUsername(username);
+        }
+    };
+
+    // add to all visible playlists
+    this.insertJamByUsername = function(username)
+    {
+        var promises = [];
+        for(name in this.playlists) {
+            var playlist = this.playlists[name];
+            promises.push(playlist.insertJamByUsername(username));
+        }
+
+        return $.when.apply($, promises);
+    };
+
+    this.playlists = {};
+};

@@ -596,8 +596,8 @@ if (!Date.now) {
 
 HDM.registration = {
 	_vars : {
-		mag_user : null,
-		hearst_user : null,
+		mag_user : {},
+		hearst_user : {},
 		fbAppID : null,
 		fbResponse : null,
 		fbUser : null, // need to fix this..
@@ -731,7 +731,7 @@ HDM.registration = {
 		// now that we have all 3 states, lets begin!
 		HDM.registration._vars.processAttempt++;
 		if (HDM.registration._vars.processAttempt > 4){
-			console.error("[HDM.registration.process] loop detected! Aborting. Setting default")
+//			console.error("[HDM.registration.process] loop detected! Aborting. Setting default")
 			if (!HDM.registration._vars.mag_user){
 				HDM.registration._vars.mag_user = { logged_in: false,tempstatus: true };
 			}
@@ -753,7 +753,7 @@ HDM.registration = {
 		
 		
 		if (!mLoggedin && hLoggedin){
-			console.log("*** autologin",HDM.registration._vars.mag_user,HDM.registration._vars.hearst_user)
+//			console.log("*** autologin",HDM.registration._vars.mag_user,HDM.registration._vars.hearst_user)
 			var tdomain = "."+document.domain.replace(new RegExp(/^www\./i),"");
 			tdomain = tdomain.replace(".pp","").replace(".alphapreview","").replace(".betapreview","");// sanitizing for alpha/betapreview
 			
@@ -781,7 +781,7 @@ HDM.registration = {
 			// hearst_user is NOT logged in, lets force invoke a logout..
 		}
 		// states should be in sync before we fire...
-		console.log("registration.process: event.fire is next[mLoggedin:"+mLoggedin+"][hLoggedin:"+hLoggedin+"]")
+//		console.log("registration.process: event.fire is next[mLoggedin:"+mLoggedin+"][hLoggedin:"+hLoggedin+"]")
 		HDM.registration.event.fire();
 		
 		if (fbLoggedin && mLoggedin && hLoggedin && HDM.utils.getData('hdm_linkProcess')){
@@ -799,6 +799,7 @@ HDM.registration = {
 			});
 			return false;
 		}
+		
 		HDM.registration.ui.renderLoginLinks();
 	},
 	ui : {
@@ -942,7 +943,7 @@ HDM.registration = {
 				success: function(data){
 					//this doesn't return a mag_user, so we have to delete facebook_id on our own
 					var magUser = HDM.registration._vars.mag_user; //get a pointer to mag_user
-					console.log("MAGUSER UNLINKED::",window.mag_user,HDM.registration._vars.mag_user,data)
+//					console.log("MAGUSER UNLINKED::",window.mag_user,HDM.registration._vars.mag_user,data)
 					delete magUser.facebook_id; //delete the facebook_id
 					HDM.utils.eraseData('hdm_wasFBLinked'); //erase the "wasLinked" value so future checks know we're not linked anymore
 					HDM.registration._Maguser.set(data); //update mag_user with the new object minus the facebook_id
@@ -965,7 +966,7 @@ HDM.registration = {
 				return !1
 			};		
 			if (fastScanCookies("password")&&fastScanCookies("cgi-session-id")&&fastScanCookies("fSpaceSSOUserCheck")){
-				console.log("[HDM.registration._Maguser.init] cookiescan determines user is ONLINE")
+//				console.log("[HDM.registration._Maguser.init] cookiescan determines user is ONLINE")
 				var _mag_user = HDM.utils.getJSON("mag_user");
 				if (_mag_user["logged_in"] != 1){
 					// cookie data does not match storage data! grabbing a fresh copy..
@@ -974,7 +975,7 @@ HDM.registration = {
 					HDM.registration._Maguser.set(_mag_user,callback)
 				}
 			} else {
-				console.log("[HDM.registration._Maguser.init] cookiescan determines user is OFFLINE")
+//				console.log("[HDM.registration._Maguser.init] cookiescan determines user is OFFLINE")
 				this.set({ logged_in: false,tempstatus: true,cookieScan : "offline"});// setting mag_user offline no exceptions
 				// this is where we also need to check if hearst_user is available...
 				if (typeof callback == "function"){callback();};
@@ -987,7 +988,7 @@ HDM.registration = {
 				window["mag_user"] = { logged_in: false,tempstatus: true }; //set the temp mag_user to the stored mag_user, or a logged_out version of it
 				HDM.registration._Maguser.set(window.mag_user,callback);
 			} else if ((_mag_user.cookieScan == "offline") && (_mag_user.logged_in)){
-				console.warn("[_Maguser.generate] expensive logout call made to get_mag_user.js")
+//				console.warn("[_Maguser.generate] expensive logout call made to get_mag_user.js")
 				var url = "/registration/logout?next_url=/registration/get_mag_user.js?cachebust="+Date.now();
 				HDM.utils.buildScriptTag(url,function(){
 					HDM.registration._Maguser.set(window.mag_user,callback);
@@ -995,7 +996,7 @@ HDM.registration = {
 				
 			} else {// object is just incorrect.. lets re-get_mag_user.js it!
 				HDM.registration.count.callstomag_user++; // just counting..
-				console.warn("[_Maguser.generate] expensive call made to get_mag_user.js")
+//				console.warn("[_Maguser.generate] expensive call made to get_mag_user.js")
 				var url;
 				if (!_mag_user.logged_in && (_mag_user.cookieScan == "online")){
 					url = "/registration/login?next_url=/registration/get_mag_user.js?cachebust="+Date.now();
@@ -1095,7 +1096,7 @@ HDM.registration = {
 				return !1
 			};		
 				if (fastScanCookies("password")&&fastScanCookies("cgi-session-id")&&fastScanCookies("fSpaceSSOUserCheck")){
-					console.log("[HDM.registration._Hearstuser.init] cookiescan determines user is ONLINE")
+//					console.log("[HDM.registration._Hearstuser.init] cookiescan determines user is ONLINE")
 					var _hearst_user = HDM.utils.getJSON("mag_user");
 					if (_hearst_user["logged_in"] != 1){
 						// cookie data does not match storage data! grabbing a fresh copy..
@@ -1110,7 +1111,7 @@ HDM.registration = {
 						if (typeof callback == "function"){callback();};
 					}
 				} else {
-					console.log("[HDM.registration._Hearstuser.init] cookiescan determines user is OFFLINE")
+//					console.log("[HDM.registration._Hearstuser.init] cookiescan determines user is OFFLINE")
 					HDM.registration._Maguser.set({ logged_in: false,tempstatus: true,cookieScan : "offline"});// setting mag_user offline no exceptions
 					HDM.registration._vars.hearst_user = HDM.registration._vars.mag_user;
 					window["hearst_user"] = HDM.registration._vars.mag_user;
@@ -1147,7 +1148,7 @@ HDM.registration = {
 				window.location = "/registration/login?next_url="+document.location.href;
 			} else {
 				HDM.utils.buildScriptTag(url,function(){
-					console.warn("[_Hearstuser] expensive login requested hearst_user",window.hearst_user);
+//					console.warn("[_Hearstuser] expensive login requested hearst_user",window.hearst_user);
 					HDM.registration._vars.hearst_user = window.hearst_user;
 					HDM.registration._Hearstuser.com.parentSet(window.hearst_user);
 					if (typeof callback == "function"){callback();};
@@ -1221,9 +1222,9 @@ HDM.registration = {
 							HDM.registration.boot._vars.hearst_isReady = true;
 						})
 					} else if (msg.command == "ack"){
-						console.log("ack received!");
+//						console.log("ack received!");
 					} else {
-						console.error("[HDM.registration._Hearstuser.tunnel.receive] unrecognized command",msg)
+//						console.error("[HDM.registration._Hearstuser.tunnel.receive] unrecognized command",msg)
 					}
 				}
 			}
@@ -1427,7 +1428,7 @@ HDM.registration = {
 		processLoginTimestamp : Date.now(),
 		processLogin : function(response){// 
 			if ((Date.now()-this.processLoginTimestamp)<200){
-				console.error("[processLogin] revoking calls made too soon")
+//				console.error("[processLogin] revoking calls made too soon")
 				return false;
 			}//console.log("[processLogin] timeStamp:",this.processLoginTimestamp,Date.now()-this.processLoginTimestamp)
 			this.processLoginTimestamp = Date.now();
@@ -1451,7 +1452,7 @@ HDM.registration = {
 				
 				// user is logged in, and connecting...
 				HDM.registration.action.linkFB(function(newmag_user){
-					console.log("linked mag_user",newmag_user,HDM.registration._vars.mag_user,window["mag_user"])
+//					console.log("linked mag_user",newmag_user,HDM.registration._vars.mag_user,window["mag_user"])
 					HDM.registration._Hearstuser.attemptLogin(function(){
 						HDM.registration.ui.renderLoginLinks();
 						HDM.registration.event.fire();
@@ -1475,12 +1476,12 @@ HDM.registration = {
 				HDM.registration._Fbuser.queryFBLinkisEmpty(function(FBLinkisEmpty){
 					// if FBLink returns empty, that means we begin the initiate signin process
 					if (FBLinkisEmpty){
-						console.log("initiateHDMSignin")
+//						console.log("initiateHDMSignin")
 						HDM.registration._Fbuser.initiateHDMSignin();
 					} else {
 						// otherwise we are logged in, set cookies and be on our way.
 						// rebooting the registration process...
-						console.log("[processLogin] attemptLogin");
+//						console.log("[processLogin] attemptLogin");
 						HDM.registration._Hearstuser.attemptLogin(HDM.registration.process);
 					};
 				})
@@ -1525,11 +1526,11 @@ HDM.registration = {
 				window.clearInterval(HDM.registration.boot._vars.intervalID);
 				HDM.registration.process();
 			}
-			if ((HDM.registration.boot._vars.loopstartdate+15000) < Date.now()){
-				console.dir(HDM.registration._vars.mag_user)
-				console.dir(HDM.registration._vars.hearst_user)
-				console.dir(HDM.registration._vars.fbUser)
-				console.log("[HDM.registration error] data out of sync",HDM.registration._vars.mag_user,HDM.registration._vars.hearst_user,HDM.registration._vars.fbUser)
+			if ((HDM.registration.boot._vars.loopstartdate+5000) < Date.now()){
+//				console.dir(HDM.registration._vars.mag_user)
+//				console.dir(HDM.registration._vars.hearst_user)
+//				console.dir(HDM.registration._vars.fbUser)
+//				console.log("[HDM.registration error] data out of sync",HDM.registration._vars.mag_user,HDM.registration._vars.hearst_user,HDM.registration._vars.fbUser)
 				window.clearInterval(HDM.registration.boot._vars.intervalID);
 				HDM.registration.process();
 			}

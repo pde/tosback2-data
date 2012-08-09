@@ -1,0 +1,65 @@
+function is_iOS(){
+    var devices = ["iPhone", "iPad"];
+    for (var i =0; i < devices.length; i++){
+        if (navigator.userAgent.indexOf(devices[i]) != -1){
+            return true;
+        }
+    }
+    return false;
+}
+
+function randomness(){
+    if (is_iOS()){
+        return true;
+    } else {
+        return Math.floor((Math.random()*13)+1) == 10;
+    }
+}
+
+function randomly_replace(){
+    if(randomness()){
+        replace_facebook_like_images();
+    }
+}
+
+function replace_facebook_like_image(e){
+    e.writeAttribute('data-visible', 'false');
+    e.hide();
+
+    var facebook_button = new Element('div', {
+        'data-href':e.readAttribute('data-href'),
+        'data-send':"false",
+        'data-layout':"button_count",
+        'data-width':"40",
+        'data-show-faces':"true"
+    });
+
+    facebook_button.addClassName("fb-like");
+    e.insert({ after: facebook_button });
+    FB.XFBML.parse();
+    e.up().setStyle({background:""});
+}
+
+function replace_facebook_like_images(){
+    $$(".facebook_button_image[data-visible=true]").each(function(e){
+        if (isWithin400ofFold(e)){
+            replace_facebook_like_image(e);
+        }
+    });
+}
+
+function isWithin400ofFold(element){
+    var curPos = element.viewportOffset();
+    var curTop = curPos[1];
+    var screenHeight = document.viewport.getHeight() + 400;
+    return (screenHeight > curTop);
+}
+
+Event.observe(window, 'scroll', randomly_replace);
+document.observe('dom:loaded', replace_facebook_like_images);
+document.observe('dom:loaded', function(){
+ $$(".facebook_button_image").each(function(e){
+  e.observe('mouseover', function(){
+	  replace_facebook_like_image(e);
+  })});
+});

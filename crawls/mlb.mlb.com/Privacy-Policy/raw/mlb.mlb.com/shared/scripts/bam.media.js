@@ -218,6 +218,11 @@ bam.extend({
                     clickOrigin: _clickOrigin,
                     affiliateId: _clickOrigin
                 };
+                
+                //enable start time on fullcount only for now
+                if (props.source === "FULLCOUNT"){
+                	_mediaProps.start_time = "";
+                }
 
                 $.extend(_mediaProps, props);
 

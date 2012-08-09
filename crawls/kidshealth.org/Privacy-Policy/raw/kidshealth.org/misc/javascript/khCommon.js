@@ -271,13 +271,16 @@ function submit_contact_us_form(){
 	}
 	else
 	{
-		if (document.referrer && document.referrer!="")
-			document.mailForm.parent_win_url.value = document.referrer;
+		if(document.mailForm.parent_win_url.value == null || document.mailForm.parent_win_url.value == "" || document.mailForm.parent_win_url.value == "null")
+		{
+			if (document.referrer && document.referrer!="")
+				document.mailForm.parent_win_url.value = document.referrer;
+		}
 //		if( document.layers )
 //			document.mailForm.parent_win_url.value = window.opener.location.href;
 //		else
 //			document.mailForm.parent_win_url.value = window.opener.location;
-
+		document.mailForm.mode.value = "sendmail";
 		document.mailForm.submit(); 
 		return true;
 	}
@@ -404,3 +407,4 @@ function licTabSwitcher(section)
 } 
 
 // End LHR Specifics
+

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="UTF-8">
+	<title>Fox Sports Login</title> 
+		
+		<script type="text/javascript">
+		   var hostServer = location.host; 
+		   var win = window.parent || window;
+			
+		 /*  var head= document.getElementsByTagName('head')[0];
+		   var script= document.createElement('script');
+		   script.type= 'text/javascript';
+		   script.src= win.janrainSSOServer+'/sso.js';
+		   head.appendChild(script); */
+		</script>	
+			
+		<script type="text/javascript">
+		
+		 var hostName = location.host;
+		 if ( hostName != "localhost:8080" && hostName != "127.0.0.1:8080" &&  hostName != "qa.foxsports.com" && hostName !=  "nqa.foxsports.com" ) { // clean this up with regex...
+			 hostName = 'msn.foxsports.com';  // for random sites
+		 } 
+		 
+			function backplaneInitDone() {
+					win.JANRAIN.SSO.CAPTURE.check_login({
+			    	sso_server: win.janrainSSOServer, 
+			    	client_id: win.fsJanrainClientId,
+			    	redirect_uri:'http://' + hostServer + '/html/janrain/oauth-foxsports.html', 
+			    	xd_receiver: 'http://' + hostServer + '/html/janrain/xdcomm.html', 
+			    	response_type : 'token',
+			    	logout_uri : 'http://' + hostName + '/html/janrain/sso_logout.html', 
+			    	bp_channel : win.Backplane.getChannelID()
+				});
+				
+				win.CAPTURE.init(); 
+			}	
+			
+			function fsBPInit () {
+			    win.Backplane(backplaneInitDone);
+							
+			    win.Backplane.init({
+			        serverBaseURL: 'http://backplane1.janrainbackplane.com/v1.2',
+			        busName: win.janrainBusName,
+			        "initFrameFilter" : win.Backplane.identityServices.init,
+					"cacheMax" : 5
+			    });	    
+	
+			}
+			
+			/* This is needed for a comments loading fix */ 
+			if (win.addEventListener) {
+				win.addEventListener('load', fsBPInit, false);
+			}
+		    else if (win.attachEvent) {
+				win.attachEvent('onload', fsBPInit);
+			}
+				
+		</script>
+  </head>
+  <body></body>
+</html>

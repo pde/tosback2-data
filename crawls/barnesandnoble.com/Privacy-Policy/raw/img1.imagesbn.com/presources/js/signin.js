@@ -1,15 +1,17 @@
 var siteURL;
-
 if (document.location.protocol=="https:") {
-	if (document.location.host=="cart2.barnesandnoble.com") {
-		siteURL = "https://cart2.barnesandnoble.com";
-	} else {
-		siteURL = "https://secure.barnesandnoble.com";
-	}
+	siteURL = "https://simg1.imagesbn.com";	 
 } else {
-	siteURL = "http://images.barnesandnoble.com";
-}
+	siteURL = "http://img1.imagesbn.com";
+};
+ 
+var signin_yui;
+signin_yui = document.createElement("script");
+signin_yui.type = "text/javascript";
+signin_yui.src = document.location.protocol+"//img3.imagesbn.com/resources?type=JS&r=|y|yui/yui-min.js&r=bn-yui-config";
+document.getElementsByTagName("head")[0].appendChild(signin_yui);
 
+/*
 var signin_css;
 signin_css = document.createElement("link");
 signin_css.type = "text/css";
@@ -22,6 +24,7 @@ signin_iframe = document.createElement("script");
 signin_iframe.type = "text/javascript";
 signin_iframe.src = siteURL + "/presources/global/js/legacy/iframe.js";
 document.getElementsByTagName("head")[0].appendChild(signin_iframe);
+*/
 
 var signin_widget;
 signin_widget = document.createElement("script");

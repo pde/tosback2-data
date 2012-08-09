@@ -22,7 +22,7 @@
 
     <link href="http://www.livingsocial.com/cities/15-san-francisco.atom" rel="alternate" title="LivingSocial - San Francisco" type="application/atom+xml" />
 
-    <link href="../a1.lscdn.net/deals/system/stylesheets/bingy-a006024e39aef910f83c0aec174cd722.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../a1.lscdn.net/deals/system/stylesheets/bingy-27bcc4952eab95b7c845a9645b08d999.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="../a1.lscdn.net/deals/system/stylesheets/pages-2c7473214b694ff85f3de813bfdb6ead.css" media="screen" rel="stylesheet" type="text/css" />
 
       <!--[if IE]><link href="http://a1.lscdn.net/deals/system/stylesheets/bingy_ie-ddf54a7b21709274fcc3adf87b91b921.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
@@ -46,12 +46,12 @@
   dls.viewer = {};
   dls.mePresent = false;
 
-  dls.preferredCity = {"image":"http://a5.ak.lscdn.net/imgs/18ccb622-5673-485d-b72e-c3679fe49466/original_q60.jpg","thumb":"http://a5.ak.lscdn.net/imgs/18ccb622-5673-485d-b72e-c3679fe49466/100.jpg","name":"San Francisco","id":15};
+  dls.preferredCity = {"thumb":"http://a5.ak.lscdn.net/imgs/18ccb622-5673-485d-b72e-c3679fe49466/100.jpg","image":"http://a5.ak.lscdn.net/imgs/18ccb622-5673-485d-b72e-c3679fe49466/original_q60.jpg","name":"San Francisco","id":15};
 
-  dls.i18n = {currency: {"delimiter":",","separator":".","unit":"$","format":"%u%n","precision":2,"escapes":"$"} };
+  dls.i18n = {currency: {"delimiter":",","format":"%u%n","separator":".","unit":"$","escapes":"$","precision":2} };
 </script>
 
-<script src="../a1.lscdn.net/deals/system/javascripts/stached-529798724569e54da4c607e63cfe5741.js" type="text/javascript"></script><script src="../a1.lscdn.net/deals/system/javascripts/journal-0a5adc12c7b2f1285ab5c9880edcf5fe.js" type="text/javascript"></script>
+<script src="../a1.lscdn.net/deals/system/javascripts/stached-0dc5a856e5ecac22584b7ba4a3c0bd39.js" type="text/javascript"></script><script src="../a1.lscdn.net/deals/system/javascripts/journal-0a5adc12c7b2f1285ab5c9880edcf5fe.js" type="text/javascript"></script>
       <style>
     .privacy ul { margin-bottom: 15px; margin-left: 25px; }
     .privacy ul li { list-style-position: outside; list-style-type: disc; }
@@ -89,19 +89,89 @@
 
     
 
-    <div id="masthead" class="span12">
+    <div id="masthead" class="span12" style="background-color: transparent; margin-bottom: 0;">
   <div class="nest">
     <div id="new-badge" class="clearfix">
+  
+<span id="target-4d60b8fa20287ce2">
+  <ul class="actions">
+    
 
-<span id="target-28ee6fcb0e03fac5">    <ul class="actions">
-      
-
-      <li class="my-account"><a href="http://www.livingsocial.com/vouchers">my vouchers</a></li>
-      <li><a href="http://www.livingsocial.com/login">Log in</a></li>
-      <li><a href="http://www.livingsocial.com/signup">Sign up</a></li>
-    </ul>
+    <li class="my-account"><a href="http://www.livingsocial.com/vouchers">my vouchers</a></li>
+    <li><a href="http://www.livingsocial.com/login">Log in</a></li>
+    <li><a href="http://www.livingsocial.com/signup">Sign up</a></li>
+  </ul>
 </span>
-<script id="template-28ee6fcb0e03fac5" type="text/mustache">  {{#me.loggedIn}}
+<script id="template-4d60b8fa20287ce2" type="text/mustache">
+{{#me.loggedIn}}
+<ul class="actions">
+  
+{{#toggle_languages}}
+  <li class="locale-picker">
+    <a href="http://www.livingsocial.com/privacy_policy?locale={{code}}">{{name}}</a>
+  </li>
+{{/toggle_languages}}
+
+
+  <li id="notifications-tab">
+    <span class="notifications-count"></span>
+  </li>
+
+  {{#me.merchant}}
+  <li class="merchant-center">
+    <a href="http://livingsocial.com/merchant" class="merchant-center">Merchant Center</a>
+  </li>
+  {{/me.merchant}}
+
+  <li class="my-account">
+    <a href="http://www.livingsocial.com/vouchers">my vouchers</a>
+  </li>
+
+  <li class="user{{#me.isfbVisible}} fb-badge{{/me.isfbVisible}}">
+    <div class="user-content">
+<a href="http://www.livingsocial.com/purchases" class="user-name" id="my-account-handle">        {{#me.isfbVisible}}
+          <span class="thumb" id="facebook-icon"> 
+          </span>
+        {{/me.isfbVisible}}
+        <span class="name" {{#me.isfbVisible}}id="facebook_display_name"{{/me.isfbVisible}}>{{ me.display_name }}&nbsp;</span>
+        <span class="arrow">&nbsp;</span>
+</a>    </div>
+  </li>
+</ul>
+
+<ul id="my-account" class="unstyled my-account" style="display:none">
+  <li class="carrot">&nbsp;</li>
+  <li class="my-vouchers first">
+    <a href="http://www.livingsocial.com/vouchers">my vouchers</a>
+  </li>
+  {{#me.is_beta}}
+  <li class="local-feed-tab">
+    <a href="http://www.livingsocial.com/deals/beta/feed">Local Feed</a>
+  </li>
+  {{/me.is_beta}}
+  <li class="deal-bucks">
+    <a href="http://www.livingsocial.com/deals/people/deal_bucks">deal bucks</a>
+  </li>
+  <li class="purchase-history">
+    <a href="http://www.livingsocial.com/purchases">purchase history</a>
+  </li>
+  <li class="subscriptions">
+    <a href="http://www.livingsocial.com/deals/people/subscriptions">subscriptions</a>
+  </li>
+  <li class="account-settings">
+    <a href="http://www.livingsocial.com/deals/people/settings">my account</a>
+  </li>
+  <li class="log-out last">
+    {{#me.isfb}}
+      <a href="privacy_policy.html#" onclick="return dls.fbConnect.logout();">sign out</a>
+    {{/me.isfb}}
+    {{^me.isfb}}
+      <a href="privacy_policy.html#" onclick="return dls.logout();">sign out</a>
+    {{/me.isfb}}
+  </li>
+</ul>
+{{/me.loggedIn}}
+{{^me.loggedIn}}
   <ul class="actions">
     
 {{#toggle_languages}}
@@ -110,87 +180,19 @@
   </li>
 {{/toggle_languages}}
 
-
-    <li id="notifications-tab">
-      <span class="notifications-count"></span>
-    </li>
-
-    {{#me.merchant}}
-    <li class="merchant-center">
-      <a href="http://livingsocial.com/merchant" class="merchant-center">Merchant Center</a>
-    </li>
-    {{/me.merchant}}
-
-    <li class="my-account">
-      <a href="http://www.livingsocial.com/vouchers">my vouchers</a>
-    </li>
-
-    <li class="user{{#me.isfbVisible}} fb-badge{{/me.isfbVisible}}">
-      <div class="user-content">
-<a href="http://www.livingsocial.com/purchases" class="user-name" id="my-account-handle">          {{#me.isfbVisible}}
-            <span class="thumb" id="facebook-icon"> 
-            </span>
-          {{/me.isfbVisible}}
-          <span class="name" {{#me.isfbVisible}}id="facebook_display_name"{{/me.isfbVisible}}>{{ me.display_name }}&nbsp;</span>
-          <span class="arrow">&nbsp;</span>
-</a>      </div>
-    </li>
+    <li class="my-account"><a href="http://www.livingsocial.com/vouchers">my vouchers</a></li>
+    <li><a href="http://www.livingsocial.com/login">Log in</a></li>
+    <li><a href="http://www.livingsocial.com/signup">Sign up</a></li>
   </ul>
-
-  <ul id="my-account" class="my-account" style="display:none">
-    <li class="carrot">&nbsp;</li>
-    <li class="my-vouchers first">
-      <a href="http://www.livingsocial.com/vouchers">my vouchers</a>
-    </li>
-    {{#me.is_beta}}
-    <li class="local-feed-tab">
-      <a href="http://www.livingsocial.com/deals/beta/feed">Local Feed</a>
-    </li>
-    {{/me.is_beta}}
-    <li class="deal-bucks">
-      <a href="http://www.livingsocial.com/deals/people/deal_bucks">deal bucks</a>
-    </li>
-    <li class="purchase-history">
-      <a href="http://www.livingsocial.com/purchases">purchase history</a>
-    </li>
-    <li class="subscriptions">
-      <a href="http://www.livingsocial.com/deals/people/subscriptions">subscriptions</a>
-    </li>
-    <li class="account-settings">
-      <a href="http://www.livingsocial.com/deals/people/settings">my account</a>
-    </li>
-    <li class="log-out last">
-      {{#me.isfb}}
-        <a href="privacy_policy.html#" onclick="return dls.fbConnect.logout();">sign out</a>
-      {{/me.isfb}}
-      {{^me.isfb}}
-        <a href="privacy_policy.html#" onclick="return dls.logout();">sign out</a>
-      {{/me.isfb}}
-    </li>
-  </ul>
-  {{/me.loggedIn}}
-  {{^me.loggedIn}}
-    <ul class="actions">
-      
-{{#toggle_languages}}
-  <li class="locale-picker">
-    <a href="http://www.livingsocial.com/privacy_policy?locale={{code}}">{{name}}</a>
-  </li>
-{{/toggle_languages}}
-
-      <li class="my-account"><a href="http://www.livingsocial.com/vouchers">my vouchers</a></li>
-      <li><a href="http://www.livingsocial.com/login">Log in</a></li>
-      <li><a href="http://www.livingsocial.com/signup">Sign up</a></li>
-    </ul>
-  {{/me.loggedIn}}
+{{/me.loggedIn}}
 </script>
 
 <script>
 (function() {
   Stached.expireCheck();
-    // {"template_key":"control_bar_v2","when":{"cookie":"viewer"},"name":"me","hide":true}
-  var options = {"template_key":"control_bar_v2","name":"me","hide":true};
-  var frame   = ["28ee6fcb0e03fac5", {"me":[{"ts":true,"url":"/me/info.json","when":{"cookie":"viewer"},"cache":"page"},{"object":{"loggedIn":false}},{"object":"Me"},{"object":"FbMe"}]}, options];
+    // {"name":"me","template_key":"control_bar_v2","hide":true,"when":{"cookie":"viewer"}}
+  var options = {"name":"me","template_key":"control_bar_v2","hide":true};
+  var frame   = ["4d60b8fa20287ce2", {"me":[{"ts":true,"url":"/me/info.json","cache":"page","when":{"cookie":"viewer"}},{"object":{"loggedIn":false}},{"object":"Me"},{"object":"FbMe"}]}, options];
   var when    = {"cookie":"viewer"};
 
   if (when && typeof(when) == 'object' && when.cookie && document.cookie.match(when.cookie) && Cache.Cookie.Helpers.readFor(when.cookie)) {
@@ -201,8 +203,9 @@
   }
 })();
 </script>
+<form action="http://www.livingsocial.com/deals/people/logout" id="sign-out-form" method="post" style="display:none"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="bs1wrX5Ku/+XU3g2pPd8bp6/Gwp/FL4WxIX472WGNuc=" /></div></form>
+
 </div>
-<form action="http://www.livingsocial.com/deals/people/logout" id="sign-out-form" method="post" style="display:none"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="srlvAraqO8A7I7jwGh/u9sOhSSuHG+diZKUAGdokhqU=" /></div></form>
 
   </div>
 </div>
@@ -215,6 +218,8 @@
           <h1 id="brand">
   <a href="http://www.livingsocial.com/" class="ir livingsocial-logo ">LivingSocial</a></h1>
 <div id="left-navigation">
+  
+  <div class="city-picker">
   <script type="text/javascript" charset="utf-8">
   City = {
     id: 15,
@@ -297,67 +302,67 @@
   var stached_render_city_picker = 0;
   Stached.on("render:city_picker", function(evt) { ++stached_render_city_picker; });
 </script>
-<h2 id="current-city">
-  <a href="http://www.livingsocial.com/cities/15-san-francisco" class="market">San Francisco</a>
-</h2>
-
-
-<span id="target-5cf272c3cd0d9277"><div id="market-nav" class="market-nav change-city">
-  <ul>
-    <li class="my-cities">
-      <a href="http://www.livingsocial.com/login?dest=%2Fdeals%2Fpeople%2Fsubscriptions" class="my-cities">Log in to view my cities &#187;</a>
-      <ul>
-      </ul>
-    </li>
-    <li class="nearby-cities">
-      <a href="http://www.livingsocial.com/" class="nearby-cities">Near san francisco</a>
-      <ul>
-          <li><a href="http://www.livingsocial.com/cities/343-marin-county">marin county</a></li>
-          <li><a href="http://www.livingsocial.com/cities/44-oakland">oakland / east bay</a></li>
-          <li><a href="http://www.livingsocial.com/cities/491-sf-peninsula">sf peninsula</a></li>
-        <li><a href="http://www.livingsocial.com/cities/15-san-francisco/more_cities" class="view-all">Browse all cities &#38; countries &#187;</a></li>
-      </ul>
-    </li>
-  </ul>
-</div>
-</span>
-<script id="template-5cf272c3cd0d9277" type="text/mustache"><div id="market-nav" class="market-nav change-city">
-  {{#city.valid_home_city}}
-  <h2 id="set-market" class="set-market {{city.home_city_button_css}}">
-    <a href='privacy_policy.html#' class='market-button'>{{city.home_city_button_text}}</a>
+  <h2 class="current-city">
+    <a href="http://www.livingsocial.com/cities/15-san-francisco" class="market">San Francisco</a>
   </h2>
-  {{/city.valid_home_city}}
-  <ul>
-    <li class="my-cities">
-    {{#me.loggedIn}}
-      <a href="http://www.livingsocial.com/" class="my-cities">My cities</a>
-    {{/me.loggedIn}}
-    {{^me.loggedIn}}
-      <a href="http://www.livingsocial.com/login?dest=%2Fdeals%2Fpeople%2Fsubscriptions" class="my-cities">Log in to view my cities &#187;</a>
-    {{/me.loggedIn}}
-      <ul>
-    {{#city.has_my_cities}}
-        {{#city.show_home_city}}
-        <li class='home city-id-{{city.home_city_id}}'><a href="http://www.livingsocial.com/">{{city.home_city_name}} <span class="home-market">&nbsp;</span></a></li>
-        {{/city.show_home_city}}
-        {{{city.my_cities}}}
-        {{#me.loggedIn}}
-        <li><a href="http://www.livingsocial.com/deals/people/subscriptions" class="view-all">View all my cities &#187;</a></li>
-        {{/me.loggedIn}}
-    {{/city.has_my_cities}}
-      </ul>
-    </li>
-    <li class="nearby-cities">
-      <a href="http://www.livingsocial.com/" class="nearby-cities">Near san francisco</a>
-      <ul>
-          <li><a href="http://www.livingsocial.com/cities/343-marin-county">marin county</a></li>
-          <li><a href="http://www.livingsocial.com/cities/44-oakland">oakland / east bay</a></li>
-          <li><a href="http://www.livingsocial.com/cities/491-sf-peninsula">sf peninsula</a></li>
-        <li><a href="http://www.livingsocial.com/cities/15-san-francisco/more_cities" class="view-all">Browse all cities &#38; countries &#187;</a></li>
-      </ul>
-    </li>
-  </ul>
-</div>
+
+
+<span id="target-59c389e2b7be83ac">  <div class="market-nav change-city">
+    <ul>
+      <li class="my-cities">
+        <a href="http://www.livingsocial.com/login?dest=%2Fdeals%2Fpeople%2Fsubscriptions" class="my-cities">Log in to view my cities &#187;</a>
+        <ul>
+        </ul>
+      </li>
+      <li class="nearby-cities">
+        <a href="http://www.livingsocial.com/" class="nearby-cities">Near san francisco</a>
+        <ul>
+            <li><a href="http://www.livingsocial.com/cities/343-marin-county">marin county</a></li>
+            <li><a href="http://www.livingsocial.com/cities/44-oakland">oakland / east bay</a></li>
+            <li><a href="http://www.livingsocial.com/cities/491-sf-peninsula">sf peninsula</a></li>
+          <li><a href="http://www.livingsocial.com/cities/15-san-francisco/more_cities" class="view-all">Browse all cities &#38; countries &#187;</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</span>
+<script id="template-59c389e2b7be83ac" type="text/mustache">  <div class="market-nav change-city">
+    {{#city.valid_home_city}}
+    <h2 class="set-market {{city.home_city_button_css}}">
+      <a href='privacy_policy.html#' class='market-button'>{{city.home_city_button_text}}</a>
+    </h2>
+    {{/city.valid_home_city}}
+    <ul>
+      <li class="my-cities">
+      {{#me.loggedIn}}
+        <a href="http://www.livingsocial.com/" class="my-cities">My cities</a>
+      {{/me.loggedIn}}
+      {{^me.loggedIn}}
+        <a href="http://www.livingsocial.com/login?dest=%2Fdeals%2Fpeople%2Fsubscriptions" class="my-cities">Log in to view my cities &#187;</a>
+      {{/me.loggedIn}}
+        <ul>
+      {{#city.has_my_cities}}
+          {{#city.show_home_city}}
+          <li class='home city-id-{{city.home_city_id}}'><a href="http://www.livingsocial.com/">{{city.home_city_name}} <span class="home-market">&nbsp;</span></a></li>
+          {{/city.show_home_city}}
+          {{{city.my_cities}}}
+          {{#me.loggedIn}}
+          <li><a href="http://www.livingsocial.com/deals/people/subscriptions" class="view-all">View all my cities &#187;</a></li>
+          {{/me.loggedIn}}
+      {{/city.has_my_cities}}
+        </ul>
+      </li>
+      <li class="nearby-cities">
+        <a href="http://www.livingsocial.com/" class="nearby-cities">Near san francisco</a>
+        <ul>
+            <li><a href="http://www.livingsocial.com/cities/343-marin-county">marin county</a></li>
+            <li><a href="http://www.livingsocial.com/cities/44-oakland">oakland / east bay</a></li>
+            <li><a href="http://www.livingsocial.com/cities/491-sf-peninsula">sf peninsula</a></li>
+          <li><a href="http://www.livingsocial.com/cities/15-san-francisco/more_cities" class="view-all">Browse all cities &#38; countries &#187;</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </script>
 
 <script>
@@ -365,7 +370,7 @@
   Stached.expireCheck();
     // {"name":"city_picker","hide":false}
   var options = {"name":"city_picker","hide":false};
-  var frame   = ["5cf272c3cd0d9277", {"city":[{"object":"City"}],"me":[{"ts":true,"url":"/me/info.json","when":{"cookie":"viewer"},"cache":"page"},{"object":{"loggedIn":false}},{"object":"Me"},{"object":"FbMe"}]}, options];
+  var frame   = ["59c389e2b7be83ac", {"city":[{"object":"City"}],"me":[{"ts":true,"url":"/me/info.json","cache":"page","when":{"cookie":"viewer"}},{"object":{"loggedIn":false}},{"object":"Me"},{"object":"FbMe"}]}, options];
   var when    = null;
 
   if (when && typeof(when) == 'object' && when.cookie && document.cookie.match(when.cookie) && Cache.Cookie.Helpers.readFor(when.cookie)) {
@@ -376,7 +381,7 @@
   }
 })();
 </script>
-
+</div>
     <ul>
         <li class="daily-deal">
           <a href="http://www.livingsocial.com/cities/15-san-francisco">today's deals</a>
@@ -402,9 +407,6 @@
           <a href="http://www.livingsocial.com/cities/15-san-francisco/adventures">adventures</a>
         </li>
 
-        <li class="gourmet">
-          <a href="http://www.livingsocial.com/cities/15-san-francisco/gourmet">gourmet</a>
-        </li>
 
         <li class="takeout-delivery">
           <a href="http://www.livingsocial.com/instant?preferred_city=15-san-francisco&amp;ref=nav">takeout &amp; delivery</a>
@@ -627,15 +629,18 @@
       </div> 
     </div> 
 
-    <script src="../a1.lscdn.net/deals/system/javascripts/bingy-c14f3206b6c35ef35a1cf22383e2b631.js" type="text/javascript"></script>      <script type="text/javascript" charset="utf-8">
+    <script src="../a1.lscdn.net/deals/system/javascripts/bingy-f563dc55b1900d05f1af753f1b4ab02e.js" type="text/javascript"></script>    
+  <script type="text/javascript" charset="utf-8">
     setHomeCity = {
       currentCity: {id: '15', name: 'San Francisco' },
       locale: "en",
       updateHomeCityPeoplePath: "http://www.livingsocial.com/deals/update_home_city",
       isHomeCityText: "This is your home city",
+      _init : true,
       init: function() {
-        if (this.locale.match(/en|fr|ar/)) {
+        if (this.locale.match(/en|fr|ar/) && setHomeCity._init ) {
           var self = this;
+          setHomeCity,_init = false;
           dls.setHomeCity.init(self);
         }
       },
@@ -745,6 +750,6 @@ if(NREUMQ.a)NREUMQ.a();
 };
 NREUMQ.a=window.onload;window.onload=NREUMQ.f;
 };
-NREUMQ.push(["nrf2","beacon-1.newrelic.com","01dcf4d414",18408,"IA0KFRRcXFlXShZIVwQHF04WQVlDU1tAZ0YMDg0CHw==",0,303293,new Date().getTime(),"","","","",""])</script>
+NREUMQ.push(["nrf2","beacon-1.newrelic.com","01dcf4d414",18408,"IA0KFRRcXFlXShZIVwQHF04WQVlDU1tAZ0YMDg0CHw==",0,34205050,new Date().getTime(),"","","","",""])</script>
   </body>
 </html>

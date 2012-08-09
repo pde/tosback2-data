@@ -1989,7 +1989,7 @@ function O_GoT(_p) {
     _d.write('<a href=\'javascript:O_LC()\'>' + _p + '</a>');
     _fPe()
 }
-/* $Id: minicart.class.js 3450 2012-06-18 21:49:54Z dalee $ */
+/* $Id: minicart.class.js 4490 2012-08-06 16:12:58Z jspires $ */
 
 // Requirements: 
 //	jQuery
@@ -2691,7 +2691,7 @@ window-resize triggers error */
 							//If user isn't logged in and guest cookie not set,
 							//then make sure guest user token is generated using web service and is set in cookie before calling add to cart web service
 							var loggedInUser = Get_Cookie("REI_SESSION_ID");
-							if (loggedInUser == null)
+							if (loggedInUser == null || loggedInUser === "")
 							{
 								rei.services.Create('/rest/user/guest',{},{
 					    	  		dataType: "text",
@@ -2866,6 +2866,23 @@ window-resize triggers error */
 									goWithTheOldFlow(serviceCallURL);
 									return;
 					    		}
+					    		// If the user's cookie is out of sync with REI.com we will clear out the cookie and recall this function and let the ajax beforeSend callback get a set a new user cookie (ONLINE-14256)
+					    		else if(status == '400' && errorCode == 1400)
+					    		{
+					    			setCookie("loggedin","");
+					    			setCookie("REI_SESSION_ID","");
+									setCookie("REI_SSL_SESSION_ID","");
+					    			/*setCookie("WCS_SESSION_ID","");
+									setCookie("WCS_AUTHENTICATION_ID","");
+									setCookie("rei_ila_appids","");
+									setCookie("guestAddess","");
+									setCookie("rei_cart","");
+									setCookie("outlet_cart","");
+									setCookie("GiftRegistrySetup","");
+									setCookie("GiftRegistryPurchase", "");*/
+					    			_updateCartUsingWebService(serviceCallURL, successCallBack);
+					    			return;
+					    		}
 							}
 							//Show error page for any other errors
 				    		window.location.href = "/Error";
@@ -2922,7 +2939,7 @@ window-resize triggers error */
 		}		
 
 		function reiOrderItemUpdateAnchor(anchor) {
-			if ($("body#shoppingBasket").length==0) { // Don't change links on shopping cart page
+			if ($("#shoppingBasket").length==0) { // Don't change links on shopping cart page
 				var a = $(anchor);
 				var url = $(anchor).attr("href");
 				var re1 = /^\/REIOrderItemUpdate?.+/;
@@ -3014,11 +3031,11 @@ window-resize triggers error */
 		 */
 		function prepareGiftCertificateAddToCart() {
 			
-			var giftCardButton = $("a.btnStyle1[name=giftCard]");
-            var giftCardAnotherButton = $("a.btnStyle1[name=giftCardAnother]");
+			var giftCardButton = $("a.button[name=giftCard]");
+            var giftCardAnotherButton = $("a.button[name=giftCardAnother]");
 
-            var eGiftCardButton = $("a.btnStyle1[name=eGiftCard]");
-            var eGiftcardAnotherButton = $("a.btnStyle1[name=eGiftCardAnother]");
+            var eGiftCardButton = $("a.button[name=eGiftCard]");
+            var eGiftcardAnotherButton = $("a.button[name=eGiftCardAnother]");
 
 			if(giftCardButton)
 			{
@@ -3084,7 +3101,7 @@ window-resize triggers error */
 		 */
 		function modifyAddItemToCartForm(i,form) {
 			var f = $(form);
-			if (($("body.prodPageStyle").length>=1)&&($("#prodInventoryView").length==0)&&($("body#termsSplash").length==0)) {
+			if (($("#product #productSelect").length>=1)&&($("#prodInventoryView").length==0)&&($("body#termsSplash").length==0)) {
 				if (f.attr("id")!="productSelectForm2") {
 					// Product Page Context
 					var onsubmit = f.attr("onsubmit");
@@ -3392,8 +3409,13 @@ window-resize triggers error */
 
 var minicart=0;
 // minicart is initialized from rei.js
-/* $Id: unvHeader.js 2946 2012-05-21 21:47:47Z agatlab $ */
-
+/* $Id: unvHeader.js 4012 2012-07-13 23:20:09Z cromeis $ */
+ReiUserLogin = {
+	helloUserNameLabel  : "Hello ",
+    welcomeUserLabel    : "Welcome to REI!",
+    notUserLabel        : "Not "
+};
+	
 var setup_cook_obj = ReadGRCookie("GiftRegistrySetup");
 
 //these vars are for the JSP side of things where we don't have those variables at times.
@@ -3424,7 +3446,7 @@ var hdrObj = {
 		}
 		
 		if (testItemsAmt > 0) {
-			if(document.body.className.indexOf('checkout') < 0){		
+			if((document.body.className.indexOf('checkout') < 0) && ($('#shoppingBasket').length == 0)){		
 				$('#ghCartNew').unbind('mouseover').bind('mouseover',function(e){
 					$('#ghCartNew').addClass(miniCartHover);
 					e.preventDefault();	
@@ -3460,6 +3482,8 @@ var hdrObj = {
 			}
 			//Disable checkout button for checkout
 			if(typeof rei.analytics[0] == "object" && rei.analytics[0].site_section == 'checkout'){
+				hdrObj.checkoutBtnDisable();
+			}else if ($('.checkout').length > 0){
 				hdrObj.checkoutBtnDisable();
 			}else{
 				hdrObj.checkoutBtnEnable();
@@ -4283,411 +4307,6 @@ function getPreferredPageSize() {
 	}
     return pageSize;
 }       
-/* $Id: compare.js 1918 2012-03-30 17:55:27Z jowilso $ */
-
-/**
- * This function is for updating the Compare bucket with the items in cookie. It
- * is called on load of the search result page ( i.e. when ever search result
- * page refreshes/reloads)
- * 
- * @returns {Boolean}
- */
-function updateCompBucketOnLoad() {
-	
-	var href= window.location.href;
-	Set_Cookie("searchURL",href);
-	
-	var cookieValue = readCookie("userproduct");
-	if (cookieValue != null) {
-		var valuePieces = new Array();
-		valuePieces = cookieValue.split('%2C');
-		if (valuePieces && valuePieces != "" && valuePieces.length > 0) {
-			var style;
-			// Updating bucket with only the first four items in cookie ( this
-			// is for existing users who may have more than 4 items)
-			Delete_Cookie('userproduct','/');
-			Delete_Cookie('compExtAccess','/');
-			Delete_Cookie('removeuserproduct','/');
-			for ( var x = 0; x < 4; x++) {
-				if (valuePieces[x]) {
-					style = valuePieces[x];
-					// Adding item to compare bucket and back into the cookie
-					toggleCompButton(style, 'add');
-				} 
-			}
-		}
-	}
-	return false;
-}
-function isStyleInCompareCookie(cookieName, Style) {
-	var isInCompList = false;
-	var cookieValue = readCookie(cookieName);
-	if (cookieValue != null) {
-		var SetSize = cookieValue.length;
-		var valuePieces = new Array();
-		valuePieces = cookieValue.split('%2C');
-		for (var x = 0; ((x < SetSize) && (!isInCompList)); x++) {
-			if (valuePieces[x] == Style) {
-				isInCompList = true;
-			}
-		}
-	}
-	return isInCompList;
-}
-
-function removeFromCompareCookie(cookieName, style) {
-	var cookieValue = readCookie(cookieName);
-	if (cookieValue != null) {
-		cookieValue = cookieValue.replace('%2C' + style, '');
-		cookieValue = cookieValue.replace(style, '');
-		if (cookieValue.length == 9) {
-			cookieValue = cookieValue.replace('%2C', '');
-		}
-	}
-	cookieValue = unescape(cookieValue);
-	Set_Cookie(cookieName,cookieValue,'21');
-}
-
-function addToCompareCookie(cookieName, style)
-{
-	var cookieValue = readCookie(cookieName);
-	var cookieLength;
-	if (cookieValue != null) {
-		cookieLength = cookieValue.length;
-	} else {
-		cookieLength = 0;
-	}
-
-	if (isStyleInCompareCookie(cookieName, style) == false)
-	{
-		var updatedList="";
-		if (cookieLength == 0) {
-			 updatedList = style;
-		} else if (cookieLength > 0
-				&& (cookieValue.substring(cookieLength - 3, cookieLength) == '%2C')) {
-			//var updatedList = cookieValue + style;
-			 updatedList = style;
-		} else if (cookieLength > 0) {
-			 updatedList = cookieValue + ',' + style;
-		}
-		//Cookie expires after 21 days, the items added to bucket will be there for 21 days only
-		updatedList = unescape(updatedList);
-		Set_Cookie(cookieName,updatedList,'21');
-	}	
-}
-
-function addStyle(style) {
-	addToCompareCookie("userproduct", style);
-	removeFromCompareCookie("removeuserproduct",style);
-}
-
-
-function removeStyle(style) {
-	if (isStyleInCompareCookie('userproduct',style) == true) {
-		removeFromCompareCookie('userproduct',style);
-	}
-	addToCompareCookie("removeuserproduct", style);
-}
-
-function removeStyleFromList(style, styleList) {
-	var styleArray = styleList.value.split(",");
-	var styleCount = 0;
-	styleList.value = "";
-	while (styleCount < styleArray.length) {
-		if (styleArray[styleCount] != "" && style != styleArray[styleCount]) {
-			styleList.value = styleList.value + "," + styleArray[styleCount];
-		}
-		styleCount++;
-	}
-}
-
-/**
- * This function is getting the comparison results. It is called on click of
- * Compare button that exists as part of Compare bucket
- */
-function compare() {
-	document.getElementById('userProductUpdate').submit();
-}
-
-/**
- * This function is for toggling Compare button from 'Add' to 'Remove' state and vice-versa.
- * It also updates the Compare bucket accordingly. 
- * @param style - required parameter, it is the sku value.
- * @param inMode - optional parameter and is used to handle the case where items in
- * cookie don't exist on search result page. Ex: User adds 'shoes' to compare
- * bucket and then searches for 'shirt', so the 'shoe' items in cookie would not
- * exist on 'shirt' search result page.
- */
-function toggleCompButton(style, inMode) {
-	if (style != null && style != '' && style.match(/[0-9]/) != null) {
-		var buttonElem = $('#'.concat(style, 'Compare'));
-		if (buttonElem && buttonElem.attr('mode')) {
-			var mode = buttonElem.attr('mode');
-			// Add item to cookie and change add button to remove
-			if (mode == 'add') {
-				var cookieValue = readCookie("userproduct");
-				if (cookieValue != null && cookieValue != "") {
-					var cookieArray = new Array();
-					cookieArray = cookieValue.split('%2C');
-					if (cookieArray[0] == "") {
-						cookieArray.splice(0, 1);
-					}
-					else if (cookieArray[cookieArray.length -1] == "") 
-					{
-							cookieArray.splice(cookieArray.length -1, 1);
-						
-					}
-					var cookieLength = cookieArray.length;
-					if (cookieLength > 3) {
-						$
-								.fancybox({
-									content : '<p></p><p class="compareMsg compareMsgTitle"><b>You can compare up to four items at a time.</b></p><p class="compareMsg">Remove one or more items before adding another item to compare.</p><p class="compareMsg"><a href="javascript:$.fancybox.close();">Close</a></p>',
-									autoScale : false,
-									autoDimensions : false,
-									width : 210,
-									height : 145
-								});
-						return;
-					}
-				}
-				// Add item to cookie
-				addStyle(style);
-				// Change add button to remove
-				buttonElem.unbind('mouseover');
-				buttonElem.unbind('mouseout');
-				buttonElem.unbind('mousedown');	
-				buttonElem.attr('src', '/pix/common/CompareRemove_ON.gif');
-				buttonElem.attr('class', 'compareBtnRem');
-				buttonElem.attr('mode', 'remove');
-				buttonElem.attr('title', 'Remove item from compare list.');
-				buttonElem.bind('mouseover',function(event)
-						{
-								updateCompAddBtn(event);
-						}
-				);
-				buttonElem.bind('mouseout',function(event)
-						{
-								updateCompAddBtn(event);
-						}
-				);
-				buttonElem.bind('mousedown',function(event)
-						{
-								updateCompAddBtn(event);
-						}
-				);
-			}
-			// Remove item from cookie and change remove button to add
-			else if (mode == 'remove') {
-				// Remove item from cookie
-				removeStyle(style);
-				// Change remove button to add
-				// Change add button to remove
-				buttonElem.unbind('mouseover');
-				buttonElem.unbind('mouseout');
-				buttonElem.unbind('mousedown');
-				buttonElem.attr('src', '/pix/common/Compare_ON.gif');
-				buttonElem.attr('class', 'compareBtnAdd');
-				buttonElem.attr('mode', 'add');
-				buttonElem.attr('title', 'Add item to compare list.');
-				buttonElem.bind('mouseover',function(event)
-						{
-								updateCompRemBtn(event);
-						}
-				);
-				buttonElem.bind('mouseout',function(event)
-						{
-								updateCompRemBtn(event);
-						}
-				);
-				buttonElem.bind('mousedown',function(event)
-						{
-								updateCompRemBtn(event);
-						}
-				);
-			
-			}
-			// Update compare bucket for the item
-			updateCompBucket(style, mode);
-		} 
-		else if (inMode) {
-			if (inMode == 'add') {
-				// Add item to cookie
-				addStyle(style);
-				// Update compare bucket for the item
-				updateCompBucket(style, 'add', true);
-			} else if (inMode == 'remove') {
-				// Add item to cookie
-				removeStyle(style);
-				// Update compare bucket for the item
-				updateCompBucket(style, 'remove', true);
-			}
-		}
-		//window.scrollTo(0, 0);
-	}
-
-}
-
-/**
- * This function adds/removes items to/from Compare bucket.
- * @param inStyle - required param, it is the sku value.
- * @param inMode -  required param, allowed values are 'add' and 'remove'.
- * @param prodNotOnCurrPage - optional parameter and is used to handle the case where items in
- * cookie don't exist on search result page. Ex: User adds 'shoes' to compare
- * bucket and then searches for 'shirt', so the 'shoe' items in cookie would not
- * exist on 'shirt' search result page.
- */
-function updateCompBucket(inStyle, inMode, prodNotOnCurrPage) {
-	var cookieValue = readCookie("userproduct");
-	
-	if (cookieValue != null) {
-		var cookieLength = cookieValue.split('%2C').length;
-		// Enable compare button if 2 or more items have been added to bucket.
-		if (cookieLength > 1) {
-			$('#compareBucket').attr('src', '/pix/common/compare_items.gif');
-			$('#compareBucket').attr('disabled', false);
-		} else {
-			$('#compareBucket').attr('src',
-					'/pix/common/compare_items_disabled.gif');
-			$('#compareBucket').attr('disabled', true);
-		}
-	}
-	if (inStyle && inMode && inStyle != '' && inMode != '') {
-		// Adding/removing items to/from compare bucket
-		// Looping through all the place holders for thumb nails in bucket to,
-		// 1> find an empty spot in case of adding item to bucket
-		// 2> shift items to left in case of removal of an item from bucket
-		for ( var i = 1; i < 5; i++) {
-			var thumbnail = $('#thumbnail_'.concat(i));
-			var closeElem = $('#thumbnail_close_'.concat(i));
-			if (inMode == 'add' && thumbnail.attr('available') == 'yes') {
-				// Get the image for adding to compare bucket thumb nail
-				var img = 'url(/zoom/' + inStyle + '/40)';
-				var alt = $('#'.concat(inStyle, 'Image')).attr('alt');
-				if (img) {
-					// Add image to thumb nail
-					thumbnail.css('background-image', img);
-					thumbnail.attr('title', alt);
-					thumbnail.attr('available', 'no');
-					thumbnail.attr('removeId', inStyle);
-					// Show the close image on thumb nail
-					closeElem.css('display', 'block');
-					closeElem.bind('click', function(event) {
-						removeItemFromBucket(event);
-					});
-					closeElem.attr('closeId', inStyle);
-					if (prodNotOnCurrPage) {
-						closeElem.attr('prodNotOnCurrPage', prodNotOnCurrPage);
-					}
-				}
-				break; // out of outer for loop
-			} else if (inMode == 'remove'
-					&& thumbnail.attr('removeId') == inStyle) {
-				var j;
-				// Left shift all the items that exist to the right of target(item
-				// to be removed)
-				for (j = i; j < 5; j++) {
-					var k = j + 1;
-					var currElem = $('#thumbnail_'.concat(j));
-					var nextElem = $('#thumbnail_'.concat(k));
-					var currCloseElem = $('#thumbnail_close_'.concat(j));
-					var nextCloseElem = $('#thumbnail_close_'.concat(k));
-					if (currElem) {
-						if (nextElem && nextElem.attr('removeId') != null
-								&& nextElem.attr('removeId') != '') {
-							currElem.css('background-image', nextElem
-									.css('background-image'));
-							currElem.attr('title', nextElem.attr('title'));
-							currElem.attr('available', 'no');
-							currElem
-									.attr('removeId', nextElem.attr('removeId'));
-							currCloseElem.unbind('click');
-							currCloseElem.attr('closeId', nextCloseElem
-									.attr('closeId'));
-							currCloseElem.attr('prodNotOnCurrPage',
-									nextCloseElem.attr('prodNotOnCurrPage'));
-							currCloseElem.bind('click', function(event) {
-								removeItemFromBucket(event);
-							});
-						} else {
-							currElem.css('background-image', 'none');
-							currElem.attr('title', '');
-							currElem.attr('available', 'yes');
-							currElem.attr('removeId', '');
-							currCloseElem.css('display', 'none');
-							currCloseElem.unbind('click');
-							currCloseElem.attr('closeId', '');
-							currCloseElem.attr('prodNotOnCurrPage', '');
-							break;// out of "j" for loop
-						}
-					}
-				}
-				break; // out of outer for loop
-			}
-		}
-	}
-}
-
-/**
- * This function handles the click of 'x' present on thumbnail
- * @param event
- */
-function removeItemFromBucket(event) {
-	var id="";
-	if (event.srcElment)
-		id = event.srcElement.id;
-	else if (event.target) // For firefox
-		id = event.target.id;
-
-	var closeElemId = $('#'.concat(id)).attr('closeId');
-	var prodNotExists = $('#'.concat(id)).attr('prodNotOnCurrPage');
-	if (prodNotExists) {
-		toggleCompButton(closeElemId, 'remove');
-	} else {
-		toggleCompButton(closeElemId);
-	}
-}
-
-function updateCompAddBtn(event)
-{
-	var id="";
-	if (event.srcElment)
-		id = event.srcElement.id;
-	else if (event.target) // For firefox
-		id = event.target.id;
-	if(event.type == 'mouseover')
-	{
-		$('#'.concat(id)).attr('src','/pix/common/CompareRemove_OVER.gif');
-	}
-	else if(event.type == 'mouseout')
-	{
-		$('#'.concat(id)).attr('src','/pix/common/CompareRemove_ON.gif');
-	}
-	else if(event.type == 'mousedown')
-	{
-		$('#'.concat(id)).attr('src','/pix/common/CompareRemove_OnCLICK.gif');
-	}
-}
-
-function updateCompRemBtn(event)
-{
-	var id="";
-	if (event.srcElment)
-		id = event.srcElement.id;
-	else if (event.target) // For firefox
-		id = event.target.id;
-	if(event.type == 'mouseover')
-	{
-		$('#'.concat(id)).attr('src','/pix/common/CompareOVER.gif');
-	}
-	else if(event.type == 'mouseout')
-	{
-		$('#'.concat(id)).attr('src','/pix/common/Compare_ON.gif');
-	}
-	else if(event.type == 'mousedown')
-	{
-		$('#'.concat(id)).attr('src','/pix/common/Compare_OnCLICK.gif');
-	}
-}
 /* $Id: helpShared.js 1914 2012-03-30 17:26:26Z jowilso $ */
 
 var url = window.location.toString();
@@ -5986,17 +5605,27 @@ function initMarqueeImageSlideShow(componentId, imgCount, interval)
 			                    // events
 			                    $('.MultiPager #pages a').click( function() {
 			                        var pageNum = $(this).attr('id');
-    			                        if (pageNum) {
-			                            c.page = parseInt(pageNum);
-				             moveToPage(table);
-				         }
-				        return false;
-				    });
+    		                        if (pageNum) {
+      		                            c.page = parseInt(pageNum);
+      			                        moveToPage(table);
+      			                        
+      			                        var o = $('.MultiPager').offset();
+                                        $('html, body').animate({
+                                          scrollTop: o.top - 60
+                                        }, 1000);
+            			           }
+            			         return false;
+				                });
 			                 
-				$(".MultiPager select[name='itemsPerPage']").change(function() { 
-               		                  setPageSize(table, parseInt($(this).find('option:selected').val(), 10));
-               		                  return false;
-               		              });
+                                $(".MultiPager select[name='itemsPerPage']").change(function() { 
+                                    setPageSize(table, parseInt($(this).find('option:selected').val(), 10));
+                                    
+                                    var o = $('.MultiPager').offset();
+                                    $('html, body').animate({
+                                      scrollTop: o.top - 60
+                                    }, 1000);
+                                    return false;
+                                });
                                                     }
 			}
 			

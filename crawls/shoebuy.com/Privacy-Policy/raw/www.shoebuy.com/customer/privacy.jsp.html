@@ -35,9 +35,9 @@
 
 <link rel="stylesheet" href="../../i.shoebuy.com/css/global.css" type="text/css" media="all">
 <link rel="stylesheet" href="../../i.shoebuy.com/css/designer-base.css" type="text/css" media="all">
-<link rel="stylesheet" href="../../i.shoebuy.com/css/shoebuy-new.css" type="text/css" media="all">
+<link rel="stylesheet" href="../../i.shoebuy.com/css/shoebuy-new_v2.css" type="text/css" media="all">
 <script type="text/javascript" src="../../i.shoebuy.com/jscript/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="../../i.shoebuy.com/jscript/common.js"></script>
+<script type="text/javascript" src="../../i.shoebuy.com/jscript/common_v2.js"></script>
 
 
 
@@ -62,6 +62,13 @@ special_links : [
 </script>
 
 
+
+
+
+
+
+<script type="text/javascript" src="../../d3aa0ztdn3oibi.cloudfront.net/javascripts/ff.loyalty.widget.js" ></script>
+<script type="text/javascript" src="../../i.shoebuy.com/jscript/rewards.js" ></script>
 
 
 </head>
@@ -109,22 +116,7 @@ loadFacebookScriptFrameworkAsync({appId: 146327295405912, xfbml: true
 	<img alt="" src="../../srv.amadesa.com/Interaction2/app%3Fpid=336&amp;ppid=5575&amp;us=1&amp;slot=amTop" width="1" height="1" border="0" style="visibility:hidden" />
 </noscript>
 
- 
 
-<script src="../../www.popularmedia.net/site/66b3c220-cfc4-012b-5ce4-f06dc1b0ff64" type="text/javascript"></script>
-<script type="text/javascript">
-	var c = document.cookie;
-	var openPanelOnLoad = 'false';
-	if (c != null && c.indexOf('Friends=') != -1 && c.indexOf('Friends=enroll') != -1) {
-		openPanelOnLoad = 'true';
-		var expire = new Date();
-		expire.setDate(-1000);
-		document.cookie='Friends=;expires='+expire.toGMTString();
-	}
-	var pmDiv = document.getElementById('popMedWidget');
-	document.write('<div style="display:none;" id="popMedWidget" ><scr'+'ipt type="text/javascript" src="http://www.popularmedia.net/widget/17ce4f5bf0fa8a4925058b25f1615836?openPanelOnLoad='+openPanelOnLoad+'&redirectAfterSharing=false"></scr'+'ipt></div>');
-</script>
- 
 <div id="container">
 <div id="header">
 <table cellspacing="0"><tbody><tr>
@@ -144,13 +136,53 @@ loadFacebookScriptFrameworkAsync({appId: 146327295405912, xfbml: true
 
 	</div>
 
+	<div id="toplinks2-wrapper">
 	<div id="toplinks2" class="toplinks2">
 		
 
 
 
- <a href="https://www.shoebuy.com/cust"   >My Account</a>
 
+
+
+
+	</div>
+
+	<div id="usermsg"></div>
+
+
+		
+
+
+
+
+
+
+
+
+<div id="toplinks-rewards">
+<span id="rewards-loading">
+	<span class="rewards-logo"><img src="../../i.shoebuy.com/images/siteimgs/shoebuy/rewards-header-logo.png"></span>
+	<span><img src="../images/loading.gif" /></span>
+</span>
+<span id="rewards-member-info" style="display: none">
+	<a href="http://www.shoebuy.com/cust/rewards">
+		<span class="rewards-logo"><img src="../../i.shoebuy.com/images/siteimgs/shoebuy/rewards-header-logo.png"></span>
+		<span id="redeem-reward-phrase"><strong>$<span id="max-reward"></span></strong> off on your next purchase</span>
+		<span id="next-reward-phrase"><strong><span id="next-reward"></span></strong> point<span id="next-reward-plural">s</span> to your next reward</span>
+	</a>
+</span>
+<span id="rewards-learn" style="display: none">
+	<a href="http://www.shoebuy.com/info/rewards">
+		<span class="rewards-logo"><img src="../../i.shoebuy.com/images/siteimgs/shoebuy/rewards-header-logo.png"></span>
+		<span>Learn More</span>
+	</a>
+</span>
+</div>
+<script type="text/javascript" src="../../i.shoebuy.com/jscript/json2.js"></script>
+<script type="text/javascript">
+populate_rewards_member_info();
+</script>
 
 
 	</div>
@@ -160,7 +192,6 @@ loadFacebookScriptFrameworkAsync({appId: 146327295405912, xfbml: true
 	setCartItemCount('cartqty', 'item', 'items');
 </script>
 
-		<div id="usermsg"></div>
 		<script type="text/javascript">
 			loginMsg({
 				baseurl_ssl:'https://www.shoebuy.com',
@@ -168,6 +199,7 @@ loadFacebookScriptFrameworkAsync({appId: 146327295405912, xfbml: true
 				logoutphrase:'Sign Out',
 				registerphrase:'Sign Up',
 				accountphrase:'My Account',
+				hello_extra:'<span id="signed-in-extra"><a href="http://www.shoebuy.com/cust">Your Account</a></span>',
 				compact:true
 			});
 		</script>
@@ -273,8 +305,7 @@ var pbarIHeight = 'auto'; var pbarIBackground = 'url(http://i.shoebuy.com/images
 
 <!-- Left START -->
 <ul id="home-col-left" class="home-col widget-col">
-    
-
+	
 
 
 
@@ -283,77 +314,38 @@ var pbarIHeight = 'auto'; var pbarIBackground = 'url(http://i.shoebuy.com/images
 
 
 <li  class="left-outline first" >
-                <p class="left-heading pcolor1">Browse Shoes
-
-		</p>
-  
-
-            
+			<p class="left-heading pcolor1">Browse Shoes</p>
 
 
 
- <MAP NAME="flora-map"><AREA SHAPE="rect" ALT="Flora" COORS="14,63,56,75" HREF="http://www.floraflora.com/flowers" target="_blank"></MAP>  <ul id="left_box1_list1" class="">  <li id="left_box1_list1-item-1" class="left_box1_list1-class " >  <a href="http://www.shoebuy.com/womens-shoes.htm"   >Women's Shoes</a> </li>  <li id="left_box1_list1-item-2" class="left_box1_list1-class " >    <a href="http://www.shoebuy.com/mens-shoes.htm"   >Men's Shoes</a> </li>  <li id="left_box1_list1-item-3" class="left_box1_list1-class " >    <a href="http://www.shoebuy.com/teens-shoes.htm"   >Teens' Shoes</a> </li>  <li id="left_box1_list1-item-4" class="left_box1_list1-class " >    <a href="http://www.shoebuy.com/girls-shoes.htm"   >Girls' Shoes</a> </li>  <li id="left_box1_list1-item-5" class="left_box1_list1-class " >    <a href="http://www.shoebuy.com/boys-shoes.htm"   >Boys' Shoes</a> </li>  <li id="left_box1_list1-item-6" class="left_box1_list1-class " >    <a href="http://www.shoebuy.com/baby-shoes.htm"   >Infants/Toddlers Shoes</a> </li>  </ul> 
+ <ul id="left_box1_list1" class="">  <li id="left_box1_list1-item-1" class="left_box1_list1-class " >  <a href="http://www.shoebuy.com/womens-shoes.htm"   >Women's Shoes</a> </li>  <li id="left_box1_list1-item-2" class="left_box1_list1-class " >    <a href="http://www.shoebuy.com/mens-shoes.htm"   >Men's Shoes</a> </li>  <li id="left_box1_list1-item-3" class="left_box1_list1-class " >    <a href="http://www.shoebuy.com/teens-shoes.htm"   >Teens' Shoes</a> </li>  <li id="left_box1_list1-item-4" class="left_box1_list1-class " >    <a href="http://www.shoebuy.com/girls-shoes.htm"   >Girls' Shoes</a> </li>  <li id="left_box1_list1-item-5" class="left_box1_list1-class " >    <a href="http://www.shoebuy.com/boys-shoes.htm"   >Boys' Shoes</a> </li>  <li id="left_box1_list1-item-6" class="left_box1_list1-class " >    <a href="http://www.shoebuy.com/baby-shoes.htm"   >Infants/Toddlers Shoes</a> </li>  </ul> 
 
 
 
-
-        
-            
 
 
 
  <ul id="left_box1_list2" class="secondary">  <li id="left_box1_list2-item-1" class="left_box1_list2-class " >  <a href="http://www.shoebuy.com/wide-shoes.htm"   >Wide Shoes</a> </li>  <li id="left_box1_list2-item-2" class="left_box1_list2-class " >  |  <a href="http://www.shoebuy.com/narrow-shoes.htm"   >Narrow Shoes</a> </li>  <li id="left_box1_list2-item-3" class="left_box1_list2-class " >  |  <a href="http://www.shoebuy.com/new-shoe-styles.htm"   >New Styles</a> </li>  <li id="left_box1_list2-item-4" class="left_box1_list2-class sale" >  |  <a href="http://www.shoebuy.com/sale.htm"   >Sale Shoes</a> </li>  <li id="left_box1_list2-item-5" class="left_box1_list2-class br" >  |  <a href="http://www.shoebuy.com/all-shoes-categories.htm"   >All Shoes Categories</a> </li>  </ul> 
 
 
-
-
-        
-</li>
-
-<li  class="left-outline" >
-                <p class="left-heading pcolor1">Browse More Categories
-
-		</p>
-  
-
-            
+</li><li  class="left-outline" >
+			<p class="left-heading pcolor1">Browse More Categories</p>
 
 
 
  <MAP NAME="leftnav-map"><AREA SHAPE="rect"  COORDS="5,33,21,46" HREF="http://www.shoebuy.com/bags.htm"><AREA SHAPE="rect"  COORDS="5,47,62,60" HREF="http://www.shoebuy.com/backpacks.htm"><AREA SHAPE="rect"  COORDS="5,61,58,74" HREF="http://www.shoebuy.com/handbags.htm"><AREA SHAPE="rect"  COORDS="5,75,88,88" HREF="http://www.shoebuy.com/computer-cases.htm"><AREA SHAPE="rect"  COORDS="5,89,51,103" HREF="http://www.shoebuy.com/luggage.htm"><AREA SHAPE="rect"  COORDS="4,109,33,126" HREF="http://www.shoebuy.com/bags-new.htm"><AREA SHAPE="rect"  COORDS="36,109,83,126" HREF="http://www.shoebuy.com/discount-bags.htm"><AREA SHAPE="rect"  COORDS="87,109,168,126" HREF="http://www.shoebuy.com/all-bags-categories.htm"><AREA SHAPE="rect"  COORDS="5,163,22,175" HREF="http://www.shoebuy.com/apparel-outerwear.htm"><AREA SHAPE="rect"  COORDS="5,177,47,189" HREF="http://www.shoebuy.com/bottoms.htm"><AREA SHAPE="rect"  COORDS="5,191,30,204" HREF="http://www.shoebuy.com/hats.htm"><AREA SHAPE="rect"  COORDS="5,204,35,217" HREF="http://www.shoebuy.com/pants.htm"><AREA SHAPE="rect"  COORDS="5,218,40,232" HREF="http://www.shoebuy.com/shorts.htm"><AREA SHAPE="rect"  COORDS="5,231,33,246" HREF="http://www.shoebuy.com/tops.htm"><AREA SHAPE="rect"  COORDS="5,247,62,261" HREF="http://www.shoebuy.com/outerwear.htm"><AREA SHAPE="rect"  COORDS="3,266,34,281" HREF="http://www.shoebuy.com/apparel-new.htm"><AREA SHAPE="rect"  COORDS="34,266,82,281" HREF="http://www.shoebuy.com/discount-apparel.htm"><AREA SHAPE="rect"  COORDS="83,266,166,281" HREF="http://www.shoebuy.com/all-apparel-categories.htm"><AREA SHAPE="rect"  COORDS="5,318,21,330" HREF="http://www.shoebuy.com/accessories.htm"><AREA SHAPE="rect"  COORDS="5,331,32,344" HREF="http://www.shoebuy.com/belts.htm"><AREA SHAPE="rect"  COORDS="5,346,44,358" HREF="http://www.shoebuy.com/insoles.htm"><AREA SHAPE="rect"  COORDS="5,360,60,372" HREF="http://www.shoebuy.com/jewelry.htm"><AREA SHAPE="rect"  COORDS="5,373,66,385" HREF="http://www.shoebuy.com/shoe-care.htm"><AREA SHAPE="rect"  COORDS="5,387,39,400" HREF="http://www.shoebuy.com/socks.htm"><AREA SHAPE="rect"  COORDS="5,400,67,414" HREF="http://www.shoebuy.com/sunglasses.htm"><AREA SHAPE="rect"  COORDS="5,416,44,428" HREF="http://www.shoebuy.com/wallets.htm"><AREA SHAPE="rect"  COORDS="5,429,54,443" HREF="http://www.shoebuy.com/watches.htm"><AREA SHAPE="rect"  COORDS="5,449,34,464" HREF="http://www.shoebuy.com/accessories-new.htm"><AREA SHAPE="rect"  COORDS="34,449,83,464" HREF="http://www.shoebuy.com/discount-accessories.htm"><AREA SHAPE="rect"  COORDS="82,449,168,464" HREF="http://www.shoebuy.com/all-accessories-categories.htm"></MAP>  <ul id="left_box2_list1" class="">  <li id="left_box2_list1-item-1" class="left_box2_list1-class " > <img src="../../i.shoebuy.com/images/siteimgs/shoebuy/left_nav3.gif" alt="" usemap="#leftnav-map"/> </li>  </ul> 
 
 
-
-
-        
-</li>
-
-<li id="flora" class="box" >
-                <p >
-
-		</p>
-  
-
-            
+</li><li id="flora" class="box" >
+			<p ></p>
 
 
 
- <a href="http://www.floraflora.com"   target="_blank"><img src="../../i.shoebuy.com/images/flora_leftnav.gif" alt="" usemap="#flora-map"/></a>
+ <a href="http://www.cozyboots.com"   target="_blank"><img src="../../i.shoebuy.com/images/cozy_leftnav.jpg" alt=""/></a>
 
 
-
-
-        
-</li>
-
-<li id="home-confidence" class="box" style="margin-bottom:0;">
-                <p >Shop with confidence. Shoebuy is brought to you by the same company that brings you these great brands. <img src="../../i.shoebuy.com/images/confidence2.gif"/>
-
-		</p>
-  
-
-</li>
-
+</li><li id="home-confidence" class="box" style="margin-bottom:0;">
+			<p >Shop with confidence. Shoebuy is brought to you by the same company that brings you these great brands. <img src="../../i.shoebuy.com/images/confidence2.gif"/></p></li>
 </ul>
 
 
@@ -486,7 +478,7 @@ below:</p>
  | <a href="http://www.shoebuy.com/">Back to Homepage</a> 
 </p>
 <script type="text/javascript" src="../../libs.coremetrics.com/eluminate.js"></script>
-<script language="javascript1.1" type="text/javascript" src="../../i.shoebuy.com/coremetrics/cmcustom.js"></script>
+<script language="javascript1.1" type="text/javascript" src="../../i.shoebuy.com/shoebuy-new.com/coremetrics/cmcustom.js"></script>
 <script language="javascript1.1" type="text/javascript">
 <!--
 cmSetClientID("90068756",true,"data.coremetrics.com","shoebuy.com");
@@ -663,9 +655,8 @@ $(document).ready(function($) {
 
 <script type="text/javascript" src="../pbar/pj.jsp%3Fb=&amp;c=&amp;d=&amp;i=&amp;p=.html"></script>
 
-<!-- site-info www7 / shoebuy-new3 / j2012-06-26b / [islive] -->
+<!-- site-info www3 / shoebuy-new2 / j2012-07-12a / [islive] -->
 
-</body>
 
 
 
@@ -676,7 +667,9 @@ loadFacebookScriptFrameworkAsync({appId: 146327295405912, xfbml: true
 }
 </script>
 
-</html>
 
+
+</body>
+</html>
 
 

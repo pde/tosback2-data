@@ -53,6 +53,13 @@ body {
 	zoom: 1; /* Hack for float clear in IE */
 	overflow:hidden;
 }
+/* Safari Hack re 26966 */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	#pagebody { overflow:visible }
+}
+#basket_container #pagebody {
+	overflow:visible;
+}
 .homepage #pagebody,
 .staticnolhs #pagebody {
 	padding: 10px 10px 20px 10px;
@@ -478,17 +485,20 @@ ul#navigation li li li.sfHover ul {
 ****************************************************************/
 
 #breadcrumb {
-	margin:10px 10px 10px 10px;
-	width:960px;
+	float: left; 
+	margin: 10px 10px 10px 10px;
+	width: 960px;
 	list-style: none;
 	font-size: 1.2em;
   	background: url(../images/Master1_1/breadcrumb-bg.gif) repeat-y -970px 0;
 	color: #fff;
 }
+
 #breadcrumbwrapper {
 	background: url(../images/Master1_1/breadcrumb-bg.gif) no-repeat 0 0;
 	padding-top: 7px;
 }
+
 #breadcrumb ul {
 	padding: 0 20px 9px;
   	background: url(../images/Master1_1/breadcrumb-bg.gif) no-repeat -1940px 100%;
@@ -500,8 +510,8 @@ ul#navigation li li li.sfHover ul {
   display: inline;
   margin-right: 6px;
   background: url(../images/Master1_1/arrow_breadcrumb.gif) no-repeat 0px 6px;
-  padding-left:16px;
-  font-weight:normal;
+  padding-left: 16px;
+  font-weight: normal;
   padding-top: 2px;
 }
 
@@ -509,7 +519,7 @@ ul#navigation li li li.sfHover ul {
   width: auto;
   font-weight: bold;
   padding-left: 0;
-  background:none;
+  background: none;
 }
 
 #breadcrumb li.first {
@@ -518,7 +528,7 @@ ul#navigation li li li.sfHover ul {
 }
 
 #breadcrumb li.active {
-  font-weight:bold;
+  font-weight: bold;
 }
 
 #breadcrumb li a,
@@ -526,7 +536,7 @@ ul#navigation li li li.sfHover ul {
 #breadcrumb li a:visited {
   color: #fff;
   text-decoration: none;
- }
+}
 
 #breadcrumb li a:hover,
 #breadcrumb li a:active {
@@ -1243,11 +1253,19 @@ span.resultsnumber{
 }
 
 .newsletter-link {
-	height:120px;
-	position:absolute;
-	right:0;
-	bottom:-30px;
-	width:120px;
+	/* position: absolute;
+	width: 120px;
+	right: 0;
+	bottom: -30px; */
+	float: right; 
+	height: 104px;
+	margin: 0 0 0 10px;
+	overflow: hidden; 
+}
+
+.newsletter-link a img {
+	position: relative;
+	top: -9px; 
 }
 
 /*************************************
@@ -1493,9 +1511,20 @@ option.promohighlight {
 	list-style-type:square;
 }
 
-#delivery-info {
-	padding: 0 0 10px;
+.detailsdisplay #delivery-info, 
+.detailsdisplay #reviews {
+	margin-bottom: 20px;
 }
+
+.detailsdisplay #reviews:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
 #delivery-info span.twoManVan {
 	float:left;
 	width:95px;
@@ -1504,15 +1533,16 @@ option.promohighlight {
 	clear:left;
 }
 #delivery-info span.label {
-	float:left;
-	width:95px;
-	font-weight:bold;
-	font-size:1.2em;
+	float: left;
+	width: 85px;
+	font-weight: bold;
+	font-size: 1.2em;
 }
+
 #delivery-info div.info {
-	clear:none;
-	margin-left:95px;
-	margin-bottom:3px;
+	clear: none;
+	margin-left: 85px;
+	margin-bottom: 3px;
 }            
 
 /* Alternative Products */
@@ -2396,7 +2426,7 @@ div.customerReviewText {
 #basket_display thead th img.tableImBord {
 	position:absolute;
 	top:-49px;
-	_left:0;	
+	left:40px;	
 }
 #basket_display thead th.reserve img.tableImBord {
 	left:40px;
@@ -2413,11 +2443,7 @@ div.customerReviewText {
 	display:block;
 	text-align:center;
 }
-
-
-
 /* CR13: jamie end */
-
 
 #basket_display tbody td {
 	padding: 10px 0 0 0;
@@ -4010,8 +4036,7 @@ div#basket_actions ul li {
 #checkout_container #address_actions li {
 	display: block;
 	clear: both;
-	padding-bottom:5px;
-	}
+}
 
 #checkout_container #page_actions {
 	list-style-type: none;
@@ -4104,6 +4129,10 @@ div#basket_actions ul li {
 
 #checkout_container div.action {
 	margin-bottom: 15px;
+}
+#checkout_container .formsection.editBilling div.action {
+	margin-left: 330px;
+	float:left
 }
 /* End Delivery Instructions specific styles */
 
@@ -4205,7 +4234,6 @@ div#basket_actions ul li {
 #checkout_container #display tr.products td {
 	vertical-align: top;
 	line-height: 1.5;
-	padding-bottom: 12px !important;
 	}
 
 #checkout_container #display tr.headers th.image, 
@@ -4284,17 +4312,21 @@ div#basket_actions ul li {
 	text-align:left;
 	}
 
-#checkout_container #display tr.products td {
+#checkout_container #WC_ShippingInstructionsDisplay_Form_1 #display tr.products td {
 	padding: 10px 0 0 0;
-	border-bottom:1px solid #b3b3b3;
+	border-bottom: 1px solid #B3B3B3;
 }
-
+#checkout_container #display tr.removeRow td {
+	border-bottom:1px solid #b3b3b3;
+	padding:0 0 10px;
+}
+#checkout_container #display.list tr.products td {
+	border-bottom: none;
+}
 
 /* Start table content styles */
 
 /* table generic list styles */
-#checkout_container #display tr.products td {
-}
 
 #checkout_container #display tr.products td ul {
 	float: right;
@@ -4303,7 +4335,11 @@ div#basket_actions ul li {
 	padding-left: 0;
 	width:100%
 	}
-
+.formsectioninner .doubleColumn .txtassist.man {
+	position:absolute;
+	right:40px;
+	margin-top: -60px;
+}
 #checkout_container #display tr.products td ul li {
 	margin-left: 0;
 	padding-left: 0;
@@ -4388,14 +4424,17 @@ div.pcodeouter {
 /* table delivery address styles / delivery options styles */
 
 #checkout_container #display tr.products td.address ul {
-	margin-bottom: 12px;
 	float:left;
 	}
 	
-#checkout_container #display tr.products td.options ul li.type {
-	margin-bottom: 90px;
-	}
-	
+#checkout_container #display tr.products td.options ul li.remove {
+	position:absolute;
+	bottom:0;
+}
+#checkout_container #display tr.products td.options ul {
+	padding-bottom: 25px;
+	float:none;
+}	
 #checkout_container #display tr.products td.options ul li.remove,
 #checkout_container #display tr.products td.options ul li.reviewpersonalisation {
 	padding: 0;
@@ -4457,13 +4496,13 @@ div.pcodeouter {
 
 /*  Start card logos  */
 #checkout_container .card_logos {
-	margin: 7px 0 10px;
+	margin: 0 0 5px;
 }
 #checkout_container .payment_method .card_logos {
 	margin-left:10px;
 }
 #checkout_container p.security_info {
-	margin: 0 0 1.5em;
+	margin: 0 0 0.5em;
 	*margin-bottom:0;	
 }
 #checkout_container .card_logos_container{
@@ -4514,6 +4553,9 @@ div.pcodeouter {
 }
 #checkout_container table.summary_totals tr.discount td,
 #checkout_container table.summary_totals tr.total td {
+    color: #f00;
+}
+#checkout_container table.summary_totals tr.delivery td span.free {
     color: #f00;
 }
 #checkout_container table.summary_totals tr.order_subtotal th, 
@@ -5105,4 +5147,406 @@ div.action:after,#checkout_container div.cards_and_security,
                 width:540px;
                 margin:-30px 0 0;
 				_margin: 0;
+}
+
+
+/*********************************************************/
+/* New/changed stuff for CR96 DTS & Saved Cards */
+
+.addressdetails div.field,
+.storeaddressdetails div.field {
+	float: left;
+	width: 406px;
+}
+.addressdetails div.field input.text,
+.storeaddressdetails div.field input.text {
+	width: 400px;
+}
+
+.addressdetails div.mobile {
+	clear: left;
+	margin-right: 15px;
+}
+
+.addressdetails .formsection div.mobile.txtassist {
+	bottom: 15px;
+}
+
+
+/*********************************************************/
+/* Store Details in Delivery Pages */
+
+#deliverystorelist {
+    width: 602px;
+}
+#deliverystorelist div.store {
+    clear: left;
+    float: left;
+    font-size: 0.9em;
+    margin: 0 10px 10px 0;
+    padding: 0 5px;
+    width: 500px;
+}
+#deliverystorelist div.store ul.storeinfo li.storecheck {
+	width: 20px;
+	float: left;
+}
+#deliverystorelist div.store ul.storeinfo li.storeaddress {
+	width: 320px;
+	float: left;
+}
+#deliverystorelist div.store ul.storeinfo li.storedist {
+	width: 80px;
+	float: left;
+}
+#deliverystorelist div.store ul.storeinfo li.storedetailslink {
+	width: 80px;
+	float: left;
+}
+
+
+/*********************************************************/
+/* Store Details pop-up */
+
+#storedetails-holder {
+	width:600px;
+	padding:0 10px 0 10px;
+	position:relative;
+	left:-10px;
+	background-color:#fff;
+	border-top:1px solid #cccccc;
+	border-bottom:1px solid #cccccc;
+}	
+.deliveryaddress #storedetails-popup.jqmWindow {
+	margin-left: 100px;
+}
+.deliveryaddress #storedetails-popup.jqmWindow,
+.deliveryaddress #storedetails-popup #storedetails-holder {
+	width:300px;
+}
+.deliveryaddress #storedetails-popup #storedetails-holder {
+	border:1px solid #d1d0d1;
+	padding:20px;
+	-moz-border-radius:15px;
+	-khtml-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+}
+.deliveryaddress #storedetails-popup #storedetails-holder li {
+	line-height:1.9em
+}
+#deliverToStoreHolder .storeaddress {
+	position:relative;
+	padding-right:100px;
+}
+#deliverToStoreHolder .storedetailslink {
+	position:absolute;
+	right:0;
+	top:20px;
+	cursor: pointer;
+	color:#50b644;
+	text-decoration:underline;
+}
+#ShipAddressForm h2 {
+	font-weight:normal
+}
+.deliveryaddress #storedetails-popup #storedetails-holder .storedetails-popup-name,
+.deliveryaddress #storedetails-popup #storedetails-holder .storedetails-popup-events {
+	display:none
+}
+.deliveryaddress #storedetails-popup #storedetails-holder .storedetails-popup-attrs {
+	padding-top:10px
+}
+.deliveryaddress #storedetails-popup #storedetails-holder ul,
+.deliveryaddress #storedetails-popup #storedetails-holder #storeImg {
+	width:140px;
+	float:right;
+}
+.deliveryaddress #storedetails-popup #storedetails-holder #storeImg {
+	margin-top:15px
+}
+.deliveryaddress #storedetails-popup #storedetails-holder ul {
+	margin-right:10px;
+}
+.deliveryaddress #storedetails-popup #storedetails-holder .overflow {
+	overflow:hidden
+}
+.deliveryaddress #storedetails-popup #storedetails-holder .storedetails-popup-postcode {
+	font-weight:bold;
+	color:#50b644
+}
+.deliveryaddress #storedetails-popup #storedetails-holder .storedetails-popup-postcode span {
+	font-weight:normal;
+	color:#808080
+}
+.deliveryaddress #storedetails-popup .jqmClose {
+	left:300px
+}
+#storedetails-link {
+	left:450px;
+	_left:455px;
+	bottom:-30px;
+	position:absolute;
+	cursor: pointer;
+}
+div.storedetails-popup ul li {
+	padding:3px 0 3px 0;
+}
+.storedetails-popup-attrs img {
+	padding-right:8px;
+}
+.storedetails-popup-name a,
+.storedetails-popup-events a {
+	font-size:13px;
+	font-weight:bold;
+	color:#54b948;
+}
+.storedetails-popup-postcode,
+.storedetails-popup-phone,
+.storedetails-popup-hours,
+.storedetails-popup-attrtext,
+.storedetails-popup-attrs {
+	color:#808080;
+	font-size:13px;
+}
+/****************************************************************
+* CR096
+****************************************************************/
+
+#checkout_container.shippingAddress .txtassist,
+#checkout_container.shippingAddress .requiredmessage {
+	display:none;
+}
+.strongGreen {
+	color:#54B948;
+	font-size:19px;
+}
+#checkout_container.shippingAddress #ShipAddressForm,
+#checkout_container.shippingAddress #AddressForm,
+#checkout_container.shippingAddress #deliverToStoreHolder {
+	width:450px;
+	float:left;
+}
+#checkout_container.shippingAddress .formsection,#checkout_container.shippingAddress .formsectioninner {
+	background:none;
+	width:auto;
+}
+#checkout_container.shippingAddress .formsection .field {
+	width:350px;
+	float:none;
+}
+#checkout_container.shippingAddress .formsection .field input.text {
+	width:100%;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-khtml-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.introBorder {
+	padding-bottom:20px;
+	margin-bottom: 20px;
+}
+#checkout_container.shippingAddress h2 {
+	color:#808080;
+	font-size:1.8em;
+}
+#checkout_container.shippingAddress #AddressForm .action {
+	margin-left: 110px;
+    margin-top: 20px;
+    width: 255px;
+}
+#checkout_container.shippingAddress #AddressForm .action li a {
+	padding:0;
+}
+#checkout_container.shippingAddress .normalWeight {
+	font-weight:normal;
+}
+#checkout_container.shippingAddress .button {
+    padding: 5px 0;
+	font-size:15px;
+	font-weight:bold;
+	text-align:center;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	-khtml-border-radius:5px;
+	border-radius:5px;
+	cursor:pointer;
+	display: inline-block;
+}
+#checkout_container.shippingAddress .action {
+	overflow:hidden
+}
+#checkout_container.shippingAddress #btnSearchAgain {
+	margin-right:15px;
+}
+#checkout_container.shippingAddress .button:hover {
+	text-decoration:none;
+}
+#checkout_container.shippingAddress #btnFindStore {
+	margin-left: 227px;
+}
+#checkout_container.shippingAddress #DeliverToStoreForm .requiredmessage.shown {
+	display:block;
+	margin-bottom:15px;
+}
+#checkout_container.shippingAddress #country {
+	width:100%
+}	
+#checkout_container.shippingAddress #deliverystorelist {
+	clear: both;
+    padding-top: 20px;
+    width: 910px;
+}
+#checkout_container.shippingAddress #deliverystorelist .action {
+	padding-top:20px;
+	clear:left;
+}
+#checkout_container.shippingAddress #deliverystorelist .storeaddress h3 {
+	margin-top:0;
+}
+#checkout_container.shippingAddress #deliverystorelist .storecheck input {
+	position:relative;
+	top:2px;
+}
+#checkout_container.shippingAddress #btnFindStore,
+#checkout_container.shippingAddress #deliverystorelist .storeaddress label,
+#checkout_container.shippingAddress .storedist,
+#checkout_container.shippingAddress #deliverystorelist h2,
+#checkout_container.shippingAddress .addlistiteminner h2 label,
+#checkout_container.shippingAddress #deliverToStoreHolder .storeaddress h3 {
+	color:#54B948;
+}
+#checkout_container.shippingAddress .storedetailslink a {
+	text-decoration:underline;
+	cursor:pointer
+}
+#checkout_container.shippingAddress .storeaddress label {
+	display:block;
+	padding-bottom:7px
+}
+#checkout_container.shippingAddress .storedist,
+#checkout_container.shippingAddress .storedetailslink,
+#checkout_container.shippingAddress .storeaddress label {
+	font-size: 12px;
+    font-weight: bold;
+}
+#checkout_container.shippingAddress .addlistiteminner {
+	padding:0 15px;
+}
+#checkout_container.shippingAddress .introBorder,
+#checkout_container.shippingAddress .addlistiteminner {
+	border-bottom: 1px solid #e6e6e6;
+}
+#checkout_container.shippingAddress .contact {
+	margin-bottom:0;
+}
+#checkout_container.shippingAddress .addlistiteminner h2 label {
+	font-size:18px;
+}
+#checkout_container.shippingAddress .addlistiteminner,
+#checkout_container.shippingAddress .addlistitem {
+	background:none;
+}
+#checkout_container.shippingAddress .contact ul {
+	margin-left:20px;
+}
+#checkout_container.shippingAddress #deliverToStoreHolder .storeaddress h3 {
+	font-weight:normal;
+}
+#checkout_container.shippingAddress #deliverToStoreHolder .storeinfo {
+	margin-bottom:15px;
+}
+/*#youHaveSelected {
+	padding:15px 0;
+	border-top: 1px solid #e6e6e6
+}*/
+.formsection .formsectioninner .doubleColumn .field {
+	width:270px;
+	padding-left:10px;
+}
+#textAssistArea {
+	float:right;
+	width:300px;
+	height:500px;
+	position:relative
+}
+.formsection.editBilling {
+	background:none;
+	width:100%;
+	overflow: hidden;
+}
+.formsection.editBilling .formsectioninner {
+	border:2px solid #DEDBDE;
+	background:none;
+	float:left;
+	clear:none;
+	width:572px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px;
+}
+.formsection.editBilling .formsectioninner .doubleColumn .field {
+	width:278px;
+}
+.formsection.editBilling #textAssistArea .second {
+	margin-top:175px
+}
+.formsection.editBilling .doubleColumn .field {
+	float:left;
+}
+.formsection.editBilling .doubleColumn .field.country select,
+.formsection.editBilling .doubleColumn .field.title select {
+	width:278px;
+} 
+.formsection.editBilling #WC_BillingAddressDisplay_FormInput_nickName_In_AddressForm_1 {
+	width:275px;
+} 
+.formsection.editBilling .action {
+	padding:20px 0;
+}
+#checkout_container .formsection.editBilling .action #page_actions li {
+	float:right;
+	margin-left:15px;
+}
+.formsection.editBilling .formsectioninner .doubleColumn .field.title {
+	clear:both;
+	width:100%
+}
+.formsection.editBilling .field.title, .formsection.editBilling .formstyle .field {
+	padding-left:0;
+}
+#checkout_container .formsection.editBilling .field.postcode .txtassist {
+	display:none;
+}
+.formsection.editBilling .action.lookupaction li {
+	float: right;
+    margin-right: 10px;
+}
+.formsection .formsectioninner .doubleColumn .field.firstname,
+.formsection .formsectioninner .doubleColumn .field.house,
+.formsection .formsectioninner .doubleColumn .field.street,
+.formsection .formsectioninner .doubleColumn .field.county,
+.formsection .formsectioninner .doubleColumn .field.telephone {
+	padding-left:0;
+}
+.formsection.editBilling .doubleColumn .field.firstname,
+.formsection.editBilling .doubleColumn .field.house,
+.formsection.editBilling .doubleColumn .field.street,
+.formsection.editBilling .doubleColumn .field.county,
+.formsection.editBilling .doubleColumn .field.telephone {
+	clear:left
+}
+.formsection .formsectioninner .doubleColumn .field input.text {
+	width:270px;
+}
+
+/****************************************************************
+* CR096 DTS select/confirm/validate flow visual changes
+****************************************************************/
+#checkout_container.shippingAddress .field.address {
+	padding:0 15px 0 0;
 }

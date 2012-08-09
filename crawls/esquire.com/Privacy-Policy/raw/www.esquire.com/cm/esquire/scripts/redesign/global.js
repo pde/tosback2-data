@@ -31,3 +31,14 @@ $(function() {
 	});
 
 });
+
+$(document).ready(function(){
+	if ($("#site_container").length > 0){
+		$('<div id="site_container_before"></div>').prependTo("#site_container");
+	}else if ($("#MASTER_Scontainer").length > 0){
+		$('<div id="site_container_before"></div>').prependTo("#MASTER_Scontainer");
+	}else if ($("#container").length > 0){
+		$('<div id="site_container_before"></div>').prependTo("#container");
+	}
+	$('#site_container_before').css('top', $("#main_nav").offset().top + 'px');
+});

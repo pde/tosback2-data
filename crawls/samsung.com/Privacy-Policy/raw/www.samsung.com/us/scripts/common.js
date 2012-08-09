@@ -1778,14 +1778,33 @@ if(urlValueSplit[4].match('topic') && urlValueSplit[5].match('samsung-smart-tv-b
 }
 });
 
-//galaxy tab shop button hack
 $(document).ready(function(){
 
 	if(!urlValueSplit[6] || $('body').attr('id') != 'products'){
 		return;
 		}
 		
+	//galaxy note T-Mobile shop button change
+	if(urlValueSplit[6].match('SGH-T879ZBBTMB')){
 		
+		$('.flagship-cta').html('<a onclick="ss_link_click_track_2(\'\',\'event33, event20\',\'Cell Phones;SGH-T879ZBBTMB\',\'\',\'product header\',\'o\',\'buy now\');" class="lg-btn" href="https://samsungdirect.bbymsolutions.com/detail/1954?utm_source=SAM&utm_medium=link&utm_campaign=DeepLinks"><span>Buy Now</span></a>');
+		
+		$('.nav-shop').hide();
+	}
+
+
+
+
+	//inject shop buttons for developer GS3 phones
+	// if(urlValueSplit[6].match('SCH-I535MBCVZW')){
+	// 	$('.flagship-cta').append('<a onclick="ss_link_click_track_2(\'\',\'event20\',\'Cell Phones;SCH-I535MBCVZW\',\'\',\'product header\',\'o\',\'shop\');" class="lg-btn" href="https://mobile.samsung.com/accessories/addtocart.do?productid=ETC-I535MBCVZW&returnurl=http://www.samsung.com/us/mobile/cell-phones-accessories"><span>Shop</span></a>');
+	// }
+
+	// if(urlValueSplit[6].match('SCH-I535MBDVZW')){
+	// 	$('.flagship-cta').append('<a onclick="ss_link_click_track_2(\'\',\'event20\',\'Cell Phones;SCH-I535MBDVZW \',\'\',\'product header\',\'o\',\'shop\');" class="lg-btn" href="https://mobile.samsung.com/accessories/addtocart.do?productid=ETC-I535MBDVZW&returnurl=http://www.samsung.com/us/mobile/cell-phones-accessories"><span>Shop</span></a>');
+	// }
+
+
 
 	//hide shop button and show coming soon button
 	if(urlValueSplit[6].match('NP700Z5A-S01US') || urlValueSplit[6].match('NP700Z3A-S01US') || urlValueSplit[6].match('NP700Z5A-S02US')){
@@ -1809,7 +1828,7 @@ $(document).ready(function(){
 	if(!urlValueSplit[6] || $('body').attr('id') != 'products'){
 		return;
 	}
-	if (urlValueSplit[6].match('GT-P7510MAYXAB') || urlValueSplit[6].match('GT-P7510MAVXAB') || urlValueSplit[6].match('GT-P7510UWYXAB') || urlValueSplit[6].match('GT-P7510UWVXAB') || urlValueSplit[6].match('GT-P7310UWAXAR') || urlValueSplit[6].match('GT-P7310UWEXAR') || urlValueSplit[6].match('GT-P7310MAEXAR') || urlValueSplit[6].match('GT-P7310MAAXAR') || urlValueSplit[6].match('YP-GS1CB') || urlValueSplit[6].match('YP-G70CWY') || urlValueSplit[6].match('GT-P3113TSYXAR') || urlValueSplit[6].match('GT-P5113TSYXAR') || urlValueSplit[6].match('YP-GI1CB') || urlValueSplit[6].match('HT-E6730W') || urlValueSplit[6].match('UN65ES8000FXZA') || urlValueSplit[6].match('UN60ES8000FXZA') || urlValueSplit[6].match('UN55ES8000FXZA') || urlValueSplit[6].match('UN46ES8000FXZA') || urlValueSplit[6].match('DA-E750') || urlValueSplit[6].match('DA-E751')){
+	if (urlValueSplit[6].match('GT-P7510MAYXAB') || urlValueSplit[6].match('GT-P7510MAVXAB') || urlValueSplit[6].match('GT-P7510UWYXAB') || urlValueSplit[6].match('GT-P7510UWVXAB') || urlValueSplit[6].match('GT-P7310UWAXAR') || urlValueSplit[6].match('GT-P7310UWEXAR') || urlValueSplit[6].match('GT-P7310MAEXAR') || urlValueSplit[6].match('GT-P7310MAAXAR') || urlValueSplit[6].match('YP-GS1CB') || urlValueSplit[6].match('YP-G70CWY') || urlValueSplit[6].match('GT-P3113TSYXAR') || urlValueSplit[6].match('GT-P5113TSYXAR') || urlValueSplit[6].match('YP-GI1CB') || urlValueSplit[6].match('HT-E6730W') || urlValueSplit[6].match('UN65ES8000FXZA') || urlValueSplit[6].match('UN60ES8000FXZA') || urlValueSplit[6].match('UN55ES8000FXZA') || urlValueSplit[6].match('UN46ES8000FXZA') || urlValueSplit[6].match('DA-E750') || urlValueSplit[6].match('DA-E751') || urlValueSplit[6].match('UN75ES9000FXZA')){
 		$('.hero #flagship-content').append('<div id="underlay_nav"></div>');
 		$('.hero .underlay_list').cycle({
 			fx: 'fade',

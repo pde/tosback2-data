@@ -1,0 +1,39 @@
+var Realtime = function(host, port) {
+    EventEmitter.apply(this);
+
+    if(typeof io == 'undefined') {
+        this.socket = null;
+    }
+    else {
+        this.socket = io.connect(sprintf('http://%s:%d', host, port));
+
+        var realtime = this;
+        this.socket.on('trigger', function(data) {
+            realtime.emit(data.type, data.data);
+        });
+    }
+};
+
+Realtime.prototype = extend(EventEmitter);
+
+Realtime.prototype.addListener = function(type)
+{
+    if(typeof io == 'undefined')
+        return this;
+
+    this.socket.emit('listen', type);
+    return EventEmitter.prototype.addListener.apply(this, arguments);
+};
+
+Realtime.prototype.on = Realtime.prototype.addListener;
+
+Realtime.prototype.removeListener = function(type)
+{
+    if(typeof io == 'undefined')
+        return this;
+
+    this.socket.emit('unlisten', type);
+    return EventEmitter.prototype.removeListener.apply(this, arguments);
+};
+
+Realtime.prototype.off = Realtime.prototype.removeListener;

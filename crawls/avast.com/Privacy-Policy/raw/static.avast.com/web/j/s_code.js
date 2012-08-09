@@ -156,8 +156,12 @@ function s_doPlugins(s) {
     	s.eVar6 = s_tev;
     }
     if (typeof s.eVar6 != "undefined"){
-    	// 3. !rc(osc_v6) => document.cookie="osc_v6="+s.eVar6+";domain=.avast.com;path=/;";
-		document.cookie="osc_v6="+s.eVar6+";domain=.avast.com;path=/;";
+    	// 3. !rc(osc_v6) => document.cookie="osc_v6="+s.eVar6+";domain=.avast.com;path=/;";		
+        if(window.location.hostname.search("www.avast.co.jp") != -1) {
+            document.cookie="osc_v6="+s.eVar6+";domain=.avast.co.jp;path=/;";
+        } else {
+            document.cookie="osc_v6="+s.eVar6+";domain=.avast.com;path=/;";
+        }
 	}
     /** trackign of s_tev, added by vena END */
     /*s.eVar7 - Page URL - copy page URL to eVar7*/

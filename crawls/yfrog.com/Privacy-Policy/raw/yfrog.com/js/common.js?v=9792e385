@@ -1,0 +1,2849 @@
+/**
+ * Site wide common js stuff
+ * @author Moe Hosseini
+ */
+
+var imageChecker = null;
+//var MAX_POPUP_IMG_HEIGHT = 600;
+var MAX_POPUP_IMG_HEIGHT = 465;
+var NETWORK_NAMES = ['site-twitter'];
+var SOCIAL_NETWORKS = [];
+SOCIAL_NETWORKS['site-twitter'] = {enabled: true, name: 'twitter', serviceId: 1};
+
+//Uploader options
+var Uploader = {
+	uploaded: [],
+	removed: [],
+	maxPerRow: 5,
+	heightInc: 87,
+	minHeight: 42,
+	maxHeight: 63,
+	informerDelay: null,		//number of seconds to hide the informer after the upload completes
+	global: true,				//set this to false if there is another instance of uploader in the page
+	renderUploadResult: false,	//set this to true to render the upload results
+	beforeSend: function(){},	//function to call before posting upload
+	afterSend: function(){},	//function to call after posting upload
+    inputLengthWatcherBound: false,
+    flashEnabled: swfobject.getFlashPlayerVersion().major > 0
+};
+
+$(document).ready(function() {
+    if (CUSTOM_SKIN_ACTIVATED) {
+        Site.adjustUserStripSkin(true);
+    } else {
+        Site.adjustUserStrip(true);
+    }
+    if (!Uploader.flashEnabled) {
+        Site.HTMLUploader.start();
+    }
+    Site.adjustFooterHeight();
+    Site.assignAutoGrowTextListener();
+    Site.preventDeadLinks();
+    Site.assignEventTracking();
+	Site.assignMenuEvents();
+    Site.fetchNotifications();
+	Site.assignPostButtonListener();
+	Site.assignSearchListeners();
+	Site.assignStatusAreaUploaderListeners();
+	Site.preventUnwantedLinks();
+	Utils.loadAnyUserAvatars();
+	Site.assignLoginButtonsPopup();
+//	Utils.watchInputLength('#statusArea_message', '#statusArea_flash .count');
+//	$('#statusArea_flash textarea').change();
+	Site.assignUploadSitesListeners();
+    Site.assignFollowButtonListener();
+    Site.UserDropDown.start();
+});
+
+Array.prototype.shuffle = function() {
+	return this.sort(function() {return 0.5 - Math.random()});
+};
+
+//site wide stuff
+var Site = {
+	targetUser: '',
+    currentUserId: '',
+    footerHeight: 225,
+    maxVideoWidth: 640,
+    maxVideoHeight: 480,
+    url: 'http://yfrog.com',
+    uploaderSwfPath: '',
+    hideAdsOnMenuClick: false,
+    publicCaptcha: '',
+    userStripBackground: 'url("/images/top-strip-bg.png") repeat-x scroll 0 0 #E9ECEC',
+    codes: {
+        loggedOut: 400,
+        unAuthorized: 401
+    },
+    isIE: $.browser.msie,
+    notificationListenersBound: false,
+    notificationInterval: 30,
+    notificationIntervalVar: null,
+    APIs: {
+        search: 'http://api.yfrog.com/imageshack/nameSearch',
+        elasticSearch: 'http://yfrog.com/yfrog2_message_2/message/_search'
+    },
+    popupImageLoadCallback: function(img){},
+
+    loggedOut: function(r) {
+        return r && r.result && r.result.code && (r.result.code == this.codes.loggedOut);
+    },
+    
+    banned: function(r) {
+        return r && r.result && r.result.code && (r.result.code == this.codes.unAuthorized);
+    },
+
+    showLoginLink: function() {
+        Utils.triggerGlobalInformer("You have been logged out, please <a href='/' class='login-button-anchor' rel='" + window.location.pathname + "'>login</a> again.", 9999, { isError: true });
+    },
+    
+    showBannedLink: function() {
+        Utils.triggerGlobalInformer("Your account has been suspended. <a href='/user/suspended'>Click here</a> for more information.", 9999, { isError: true });
+    },
+
+    fetchNotifications: function() {
+        if(!Utils.getLoggedInUsername())
+            return;
+        if (!this.notificationListenersBound) {
+            this.assignNotificationSummaryListeners();
+            this.notificationListenersBound = true;
+        }
+        var that = this;
+        $.when(Utils.getNotifications())
+            .then(function(r) {
+                if (r && r.result && r.result.length) {
+                    //there are some results
+                    $('#notifications-summary .nothing').hide();
+                    //remove old results
+                    $('#notifications-summary .notification-result').remove();
+                    var html = "",
+                        newCount = 0;
+                    $.each(r.result, function(k, v) {
+                        if ( !v ) { return true; }
+                        newCount += parseInt(v.seen) == 0 ? 1 : 0;
+                        html += that.getNotificationHtml(v);
+                    });
+                    if (newCount > 0) {
+                        that.updateNotificationCount({ count: newCount });
+                    } else {
+                        that.resetNotificationCount();
+                    }
+                    $('#notifications-summary').prepend(html);
+                } else {
+                    //no (new) results
+                    $('#notifications-summary .nothing').show();
+                    that.resetNotificationCount();
+                }
+                if (!that.notificationIntervalVar) {
+                    that.notificationIntervalVar = setInterval(function() {
+                        that.fetchNotifications();
+                    }, that.notificationInterval * 1000);
+                }
+            });
+    },
+
+    updateNotificationCount: function(args) {
+        $('#notifications-link a').removeClass('nothing').addClass('full').html(args.count);
+    },
+
+    resetNotificationCount: function() {
+        $('#notifications-link a').removeClass('full').addClass('nothing').html('0');
+    },
+
+    getNotificationHtml: function(candid) {
+        var html = "",
+            user = candid.subject[0],
+            print = "",
+            type = parseInt(candid.type),
+            extras = "";
+        if (candid.subject.length > 1) {
+            extras = "and " + candid.subject[1].name + " ";
+        }
+        if (type == 7) {
+            //unfollow
+            print = "<a class='screen-name' href='" + user.url + "'>" + user.name + "</a> " + extras + ( extras ? candid.verb.replace('is no', 'are no') : candid.verb ) + " <a class='target' href='" + candid.target.url + "'>" + candid.target.name.toLowerCase() + "</a>.";
+        } else if (type == 6) {
+            //follow
+            print = "<a class='screen-name' href='" + user.url + "'>" + user.name + "</a> " + extras + ( extras ? candid.verb.replace('is ', 'are ') : candid.verb ) + " <a class='target' href='" + candid.target.url + "'>" + candid.target.name.toLowerCase() + "</a>.";
+        } else if (type == 3) {
+            //mention
+            print = "<a class='screen-name' href='" + user.url + "'>" + user.name + "</a> " + extras + candid.verb + " you in this <a class='target' href='" + candid.target.url + "'>" + candid.target.name.toLowerCase() + "</a>.";
+        } else if (type == 9) {
+            //someone tagged you in a photo
+            print = "You have been " + candid.verb + " in a <a class='target' href='" + candid.target.url + "'>" + candid.target.name.toLowerCase() + "</a> by <a class='screen-name' href='" + user.url + "'>" + user.name + "</a>.";
+        } else if (type == 10) {
+            //someone tagged a photo of yours
+            print = "<a class='screen-name' href='" + user.url + "'>" + user.name + "</a> has " + candid.verb + " <a class='target' href='" + candid.target.url + "'>one</a> of your photos.";
+        } else {
+            print = "<a class='screen-name' href='" + user.url + "'>" + user.name + "</a> " + extras + candid.verb + ( type == 8 ? " on" : "" ) + " your <a class='target' href='" + candid.target.url + "'>" + candid.target.name.toLowerCase() + "</a>.";
+        }
+        html += "<div class='notification-result clearfix " + (parseInt(candid.seen) == 0 ? "new" : "") + "' data-url='" + candid.target.url + "'>";
+        html +=     "<div class='avatar'><a href='" + user.url + "'><img src='" + user.avatar_url + "' /></a></div>";
+        html +=     "<div class='text'>" + print;
+        html +=         "<div class='date'>" + Utils.getDateString(parseInt(candid.created_time) * 1000) + " ago</div>";
+        html +=     "</div>";
+        html += "</div>";
+        return html;
+    },
+
+    assignNotificationSummaryListeners: function() {
+        $(document).click(function(e){
+            if(e.target.className.indexOf("notification-button")<0) {
+//                $('.hideable-flash').removeClass('invisible');
+                $("div#notifications-summary").slideUp(350);
+            }
+        });
+
+        $('#notifications-link a').click(function() {
+            var opening = $('#notifications-summary:visible').length == 0;
+            _e.l({ section: _e.sections.notifications, action: opening ? _e.actions.open : _e.actions.close, label: _e.labels.select });
+            $('#notifications-summary').slideToggle(350);
+            if (opening && $('#notifications-summary .notification-result').not('.cleared').length > 0) {
+                $.when(Utils.clearNotifications())
+                    .then(function() {
+                        $('#notifications-summary .notification-result').addClass('cleared');
+                        Site.resetNotificationCount();
+                    });
+            }
+        });
+
+        $('#notifications-past').click(function() {
+            _e.l({ section: _e.sections.notifications, action: _e.actions.pastUpdates, label: _e.labels.select });
+        });
+
+        $('#notifications-summary a').live('click', function(e) {
+            e.stopPropagation();
+        });
+
+        $('#notifications-summary .notification-result').live('click', function() {
+            _e.l({ section: _e.sections.notifications, action: _e.actions.notification, label: _e.labels.select });
+            window.location = $(this).data('url');
+        });
+
+        $('#notifications-summary .avatar a').live('click', function() {
+            _e.l({ section: _e.sections.notifications, action: _e.actions.avatar, label: _e.labels.select });
+        });
+
+        $('#notifications-summary a.screen-name').live('click', function() {
+            _e.l({ section: _e.sections.notifications, action: _e.actions.username, label: _e.labels.select });
+        });
+
+        $('#notifications-summary a.target').live('click', function() {
+            _e.l({ section: _e.sections.notifications, action: _e.actions.post, label: _e.labels.select });
+        });
+    },
+
+//    submitSearch: function() {
+//        var elem = $('#global-search-input'),
+//            val = elem.prop('value');
+//        if(!val)
+//            return;
+//        window.top.location = '/search/search/term/' + encodeURIComponent(val);
+//    },
+
+    assignAutoGrowTextListener: function() {
+        $('.autogrow-textarea').live('keyup keydown blur update change focus', function() {
+            var $this = $(this),
+                stringWidth = parseInt($this.data('stringWidth')),
+                minHeight = parseInt($this.data('minHeight')),
+                heightInc = parseInt($this.data('heightInc')),
+                maxHeight = $this.data('maxHeight') ? parseInt($this.data('maxHeight')) : 99999999;
+
+            var val = $this.val();
+            if (!val)
+                return;
+            //how many lines it has
+            var lines = val.split('\n');
+            //determine how much to increase/decrease the height
+            var change = Math.ceil((val.length / stringWidth) + 0.00001) + Math.max(0, lines.length - 1);
+            //if only one line of text or textarea is big enough to cover the text dont do anything
+            if (change * heightInc < minHeight)
+                return;
+            var newHeight = Math.max(minHeight, change * heightInc);
+            if (newHeight >= maxHeight) {
+                $this.css({ overflow: 'auto' });
+                return;
+            }
+            $this.css({ overflow: 'hidden' });
+            var parent = $this.parents('.autogrow-textarea-parent:eq(0)');
+            parent.css({ height: newHeight + 6 });
+            $this.css({ height: newHeight });
+            $('.autogrow-textarea-related', parent).css({ height: newHeight });
+        });
+    }
+};
+
+Site.adjustUserStripSkin = function(bindEvent) {
+    $('#user-strip').css({ left: $('#main').offset().left - 5, width: $('#main').innerWidth(true) + 10, background: Site.userStripBackground });
+    $('#menu-search-wrapper').css({ width: $('#main').innerWidth(true) + 10 });
+    $('#menu-search-wrapper-big-daddy').css({ left: $('#main').offset().left - 5, width: $('#main').innerWidth(true) + 10, backgroundColor: '#fff', position: 'absolute', top: 0 });
+    $('#body').css({ paddingTop: 43 });
+    if (bindEvent) {
+        $(window).resize(function() {
+            Site.adjustUserStripSkin(false);
+        });
+    }
+};
+
+Site.adjustUserStrip = function(bindEvent) {
+    var wWidth = $(window).width(),
+        dWidth = $(document).width();
+    $('#user-strip').css({ width: wWidth < dWidth ? dWidth : '100%' });
+    if (bindEvent) {
+        $(window).resize(function() {
+            Site.adjustUserStrip(false);
+        });
+    }
+};
+
+Site.showPasswordReset = function() {
+    Utils.showOverlayBox('', { width: 600 } );
+    $('#yfrog-popup-content').load('/password/remind', function() {
+        $('#reset-password-email input').focus();
+    });
+    this.assignPasswordResetListeners();
+};
+
+Site.assignPasswordResetListeners = function() {
+    $('#reset-password-cancel').live('click', function(e) {
+        e.preventDefault();
+        Utils.closeOverlayBox();
+    });
+
+    $('#reset-password-submit a').live('click', function(e) {
+        e.preventDefault();
+        var email = $('#reset-password-email input').val(),
+            $this = $(this);
+
+        if ($this.hasClass('disabled-button')) {
+            return;
+        }
+
+        $('#reset-password-error').slideUp(350);
+
+        if (!email || !email.isValidEmail()) {
+            $('#reset-password-error').html('Please enter a valid email address.').slideDown(350);
+            return;
+        }
+
+        $this.addClass('disabled-button');
+        _e.l({ section: ( _e.section + '/' + _e.sections.login ), action: _e.actions.password, label: _e.labels.retrieve });
+
+        $.when(Site.submitForgotPassword({ email: email }))
+            .then(function(r) {
+                $this.removeClass('disabled-button');
+                if (r && r.error) {
+                    $('#reset-password-error').html(r.error).slideDown(350);
+                    return;
+                }
+                Utils.closeOverlayBox();
+                Utils.triggerGlobalInformer('You will shortly receive an email with further instructions.', 6);
+            }).fail(function(r) {
+                $this.removeClass('disabled-button');
+                Utils.triggerGlobalInformer('We could not complete your password request. Please try again later.', 5, { isError: true });
+            })
+    });
+};
+
+Site.submitForgotPassword = function(data) {
+    return $.ajax({
+        url:    '/password/remind.json',
+        type:   'POST',
+        cache:  false,
+        data: data
+    });
+};
+
+Site.preventDeadLinks = function() {
+    $('.yfrog-like-button, .yfrog-unlike-button, #notifications-link a').live('click', function(e){e.preventDefault();});
+};
+
+Site.adjustFooterHeight = function() {
+    $('#footer').css({ height: Math.max(Site.footerHeight, $(document).height() - $('#footer').offset().top) })
+};
+
+Site.assignFollowButtonListener = function() {
+    $('#yfrog-follow-button, .yfrog-follow-button').live('click', function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        if($this.hasClass('disabled-button') || $this.hasClass('login-button-anchor'))
+            return;
+        $this.addClass('disabled-button');
+        var followMode = $this.hasClass('follow');
+        $.getJSON('/twitter/' + (followMode ? 'follow' : 'unfollow') + '.json', {screen_name: $this.attr('author')}, function(r) {
+            if(r.success) {
+                $this.fadeOut(350, function() {
+                    var elem = $this.find('span');
+                    if (elem.length == 0) {
+                        $this.html(followMode ? 'Unfollow' : 'Follow');
+                        $this.removeClass('disabled-button');
+                        $this.toggleClass('follow');
+                        $this.fadeIn(350);
+                    } else {
+                        elem.html(followMode ? 'Unfollow' : 'Follow');
+                        elem = elem.parent();
+                        elem.removeClass('disabled-button');
+                        elem.toggleClass('follow');
+                        elem.fadeIn(350);
+                    }
+                })
+            }
+        });
+    });
+};
+
+Site.assignUploadSitesListeners = function() {
+    $("#statusArea_flash .upload-sites div[rel], #globalArea_flash .upload-sites div[rel], #commentBox_flash .upload-sites div[rel]").live('mouseenter', function(e) {
+		var site = SOCIAL_NETWORKS[$(this).attr('rel')];
+        $(this).siblings('.' + $(this).attr('rel') + '-status').html(site.name + " posting is: <span class='bold'>" + (site.enabled ? "ON"  : "OFF") + "</span>").show();
+	}).live('mouseleave', function(e) {
+        $(this).siblings('.' + $(this).attr('rel') + '-status').hide();
+	}).live('click', function(e) {
+		var site = SOCIAL_NETWORKS[$(this).attr('rel')];
+		site.enabled = !site.enabled;
+		$(this).toggleClass('disabled-button');
+        $(this).siblings('.' + $(this).attr('rel') + '-status').html(site.name + " posting is: <span class='bold'>" + (site.enabled ? "ON"  : "OFF") + "</span>");
+        _e.l({
+            action: _e.actions.post,
+            label: site.enabled ? _e.labels.twitterOn : _e.labels.twitterOff
+        });
+	});
+};
+
+Site.assignLoginButtonsPopup = function() {
+    $('.login-button-anchor-menu').live('click', function(e){
+        e.preventDefault();
+        var $this = $(this),
+            base = window.location.protocol + '//' + window.location.host,
+            page = null;
+        if ($this.attr("rel")) {
+            page = $this.attr("rel").replace("//", "/")
+        } else {
+            if ($this.data('redirect')) {
+                page = base + window.location.pathname;
+            } else {
+                page = '/user/home';
+            }
+        }
+        url = base + "/twitter/login?loc=" + encodeURIComponent(page) + "&reload=1";        
+        window.open (url,"mywindow","location=no,top=200,left=500,menubar=1,resizable=1,width=850,height=550");
+    });
+    $('#global-signin-button').click(function(e){
+    	e.preventDefault();
+        Site.doLogin($(this));
+    });
+    $('.login-button-anchor').live('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        Site.LoginPopup.start({ elem: $(this) });
+    });
+};
+
+Site.doLogin = function(button) {
+    if(button.hasClass('disabled-button'))
+        return;
+    $('#login-email-error').slideUp(350);
+    $('#login-password-error').slideUp(350);
+
+    var username = $.trim($('#singin-username').val()),
+        password = $.trim($('#signin-password').val()),
+        stayLoggedIn = $('#stay-logged-in:checked').length,
+        errors = false;
+
+    if (!username || !username.isValidEmail()) {
+        $('#login-email-error').html('Please specify a valid email.').slideDown(350);
+        errors = true;
+    }
+    if (!password) {
+        $('#login-password-error').html('Please specify a password.').slideDown(350);
+        errors = true;
+    }
+    if (errors) {
+        return;
+    }
+
+    button.addClass('disabled-button');
+    _e.l({ section: ( _e.section + '/' + _e.sections.login ), action: _e.actions.yfrog, label: _e.labels.login });
+
+    var formData = {
+        "email" : username,
+        "password": password,
+        "stay-logged-in": stayLoggedIn
+    };
+
+    var result = $.ajax({
+        type:	'POST',
+        url:	'/user/login',
+        dataType: 'json',
+        data: 	formData,
+        success: function(data, textStatus) {
+            if (data.error) {
+                button.removeClass('disabled-button');
+                var div;
+                if (data.meta.message == 'password') {
+                    div = $('#login-password-error');
+                }
+                else if (data.meta.message == 'email') {
+                    div = $('#login-email-error');
+                }
+                else {
+                    div = $('#login-random-error');
+                }
+                div.html(data.error).slideDown(350);
+                return;
+            }
+            if (data.result.page) {
+                window.top.location = data.result.page;
+            }
+        }
+    });
+};
+
+Site.preventUnwantedLinks = function() {
+    $('#arrow-link .logged').bind('click', function(e){
+		e.preventDefault();
+	});
+};
+
+Site.assignStatusAreaUploaderListeners = function() {
+    $('#statusArea_flash textarea.large, #globalArea_flash textarea.large').live('focus', function(e) {
+		e.preventDefault();
+        _e.l({ action: _e.actions.post, label: _e.labels.select });
+        var $this = $(this);
+        if ($this.hasClass('login-button-anchor'))
+            return;
+		$this.removeClass('large').addClass('no-bg');
+        if(!$this.val())
+            $this.val(' ');
+		var parent = $(this).parents('.status-area:eq(0)');
+        if (!Uploader.inputLengthWatcherBound) {
+            Uploader.inputLengthWatcherBound = true;
+            if ($('#statusArea_message').length > 0) {
+                Utils.showInputLength($('#statusArea_message'), $('#upload-input-count'));
+            } else {
+                Utils.showInputLength($('#globalArea_message'), $('.upload-input-count'));
+            }
+        }
+        $('.upload-input-count').removeClass('invisible');
+		$('.wrapper', parent).stop().animate({height:Uploader.maxHeight}, 350, null, function() {
+			$('.post-button', parent).slideDown(350, function() {
+				$(this).fadeTo(350, 1, function() {
+					$(this).removeClass('faded-out');
+				});
+			});
+		});
+	});
+	$('#statusArea_flash textarea, #globalArea_flash textarea').live('blur', function(e) {
+		if(!$(this).val()) {
+			var parent = $(this).parents('.status-area:eq(0)');
+            $('.upload-input-count').addClass('invisible').html('');
+			$('.post-button', parent).fadeTo(350, 0, function() {
+				$(this).slideUp(350, function() {
+					$('textarea', parent).addClass('large').removeClass('no-bg');
+					$('.wrapper', parent).stop().animate({height:Uploader.minHeight}, 350);
+				});
+			});
+		}
+	});
+	$('#statusArea_flash .uploaded-images a.close, #globalArea_flash .uploaded-images a.close').live('click', function(e) {
+		e.preventDefault();
+        _e.l({ action: _e.actions.post, label: _e.labels.mediaRemoved });
+		//first hide the parent
+		$(this).parent().animate({'opacity':0}, 500, null, function() {
+			//then slide it to left by decreasing width
+			$(this).animate({'width':0}, 300, null, function() {
+				var params = $('img', $(this)).attr('rel').split('||');
+				var message_id = params[0];
+				var index = parseInt(params[1]);
+				var candid = Uploader.uploaded[message_id][index];
+				//add to the list of removed images, in case needed
+				Uploader.removed.push(candid);
+				if(index == Uploader.uploaded[message_id].length - 1) {
+					//if the last image in the list is removed then replace the url in the textarea (if exists)
+					var textarea = $('#' + message_id + '_flash textarea');
+					textarea.val($.trim(textarea.val().replace(/http:\/\/yfrog.com\/\w{3,}/, Uploader.uploaded[message_id].length == 1 ? '' : Uploader.uploaded[message_id][index-1].url)));
+				}
+				//get rid of the deleted image
+				Uploader.uploaded[message_id].splice(index, 1);
+				if(Uploader.uploaded[message_id].length % Uploader.maxPerRow == 0)
+					$('#' + message_id + '_flash .uploaded-images').animate({'height': $('#' + message_id + '_flash .uploaded-images').height()-Uploader.heightInc}, 500);
+				$(this).remove();
+				//adjust the indexes of existing images
+				$('#' + message_id + '_flash .uploaded-images img').each(function(index) {
+					params = $(this).attr('rel').split('||');
+					$(this).attr('rel', params[0] + '||' + index);
+				});
+			});
+		});
+	});
+	$('#statusArea_flash .post-button a, #globalArea_flash .post-button a').live('click', function(e) {
+		e.preventDefault();
+		if($('#recent-counter').is(':visible'))
+			$('#see_newer').click();
+        var $this = $(this);
+		var parent = $this.parents('.status-area:eq(0)');
+		var textarea = $('textarea', parent);
+		var text = $.trim(textarea.val());
+		if($this.hasClass('disabled-button') || $this.hasClass('login-button-anchor') || $('.textarea textarea', parent).hasClass('large') || !text)
+			return;
+		Uploader.beforeSend();
+		$this.addClass('disabled-button');
+        _e.l({ action: _e.actions.post, label: _e.labels.post });
+		var message_id = $this.parent().attr('rel');
+		if(Uploader.uploaded[message_id] && Uploader.uploaded[message_id].length > 0)
+			text = textarea.val().replace(/http:\/\/yfrog.com\/\w{3,}/, Uploader.uploaded[message_id][Uploader.uploaded[message_id].length-1].url);
+		var inform = "Your post has been sent.";
+		if(!Uploader.renderUploadResult && (typeof Uploader.uploaded[message_id] != 'undefined') && Uploader.uploaded[message_id].length>0)
+			inform += " Click <a href='"+Uploader.uploaded[message_id][Uploader.uploaded[message_id].length-1].url+"'>here</a> to view the post.";
+		var uploadedImages = Uploader.uploaded[message_id];
+        var videoCount = 0;
+        $.each(uploadedImages || [], function(k, v) {
+            videoCount += Utils.isVideo(v.url) ? 1 : 0;
+        });
+        var services = [];
+		Uploader.uploaded[message_id] = [];
+		$.each(NETWORK_NAMES, function(index, name) {
+			var site = SOCIAL_NETWORKS[name];
+			if(site.enabled) {
+                services.push(site.name);
+			}
+		});
+        $.when(Utils.post({ message: text, services: services, media: uploadedImages} ))
+                .then(function(r) {
+                    if(r.result) {
+                        if (Site.loggedOut(r)) {
+                            //user is logged out
+                            Site.showLoginLink();
+                            return;
+                        }
+                        else if (Site.banned(r)) {
+                            Site.showBannedLink();
+                            return;
+                        }
+                        var obj = null;
+                        var informed = false;
+                        $.each(r.result, function(k, v) {
+                            if(obj)
+                                return false;
+                            obj = v;
+                        });
+                        Site.resetUploadArea(message_id);
+                        if ( Site.targetUser && Utils.getLoggedInUsername() == Site.targetUser ) {
+                            Utils.updateMediaCount(uploadedImages);
+                        }
+                        if(Uploader.global) {
+                            Utils.triggerGlobalInformer(inform);
+                            return;
+                        }
+                        if(services.length == 0) {
+                            Utils.triggerGlobalInformer(inform, Uploader.informerDelay);
+                            return;
+                        }
+                        if(videoCount > 0) {
+                            inform = "We are processing your " + ( videoCount == 1 ? "video" : "videos" ) + ", " + ( videoCount == 1 ? "it" : "they" ) + " will be available soon.";
+                            Utils.triggerGlobalInformer(inform, 10);
+                            informed = true;
+                        }
+                        if (Uploader.renderUploadResult)
+                            renderUploadResult(message_id, obj.message_id, obj.service_id, $.trim(text), uploadedImages);
+                        else if (!informed)
+                            Utils.triggerGlobalInformer(inform, Uploader.informerDelay || 3);
+                    } else if(r.success === false && r.meta && r.meta.message) {
+                        $this.removeClass('disabled-button');
+                        Utils.triggerGlobalInformer(r.meta.message, 5, { isError: true });
+                    }
+                })
+                .fail(function(r) {
+                    Utils.triggerGlobalInformer("We were unable to upload your photos/videos. Please try again later.", 5, { isError: true });
+                });
+		Uploader.afterSend();
+	});
+};
+
+Site.assignSearchListeners = function() {
+    var that = this;
+
+    $('#global-search-button').click(function(e){
+		e.preventDefault();
+        if (!$('#global-search-box').hasClass('active')) {return;}
+        var val = $('#global-search-input').prop('value');
+        if (!val) {return;}
+        _e.l({ action: _e.actions.userSearch, label: _e.labels.submit });
+        window.top.location = Utils.getSearchURL(val);
+	});
+
+//	$('#global-search-input').bind('keypress', function(e){
+//		if(e.keyCode == 13 || e.which == 13)
+//			that.submitSearch();
+//	});
+
+	$('#global-search-box').one('click', function(e){
+        var $this = $(this);
+        if (!$this.hasClass('active')) {
+            $('input', $this).prop('value', '');
+        }
+        new Site.UserSearch({
+            top: 4,
+            left: -2,
+            selectCallback: function(args) {
+                _e.l({ action: _e.actions.userSearch, label: _e.labels.select });
+                window.top.location = args.target.attr('href');
+            }
+        });
+        if ($this.hasClass('active')) {
+            return;
+        }
+		$this.addClass('active');
+	});
+};
+
+Site.assignPostButtonListener = function() {
+    $('#post-upload-link a').bind('click', function(e) {
+		e.preventDefault();
+		if($(this).hasClass('login-button-anchor'))
+			return;
+		if(!Uploader.global) {
+			//there is a status area in the page that can take care of uploading
+			Utils.smoothScroll('statusArea_anchor', 1000, function() {
+				$('#statusArea_flash textarea').focus();
+			});
+			return;
+		}
+		//put the uploader in the overlay
+		Utils.showOverlayBox($('#yfrog-global-upload'), {
+			width: 655,
+			top: 75,
+			closeCallback: function() {
+				$('#yfrog-global-upload').html('');
+				$('#yfrog-global-upload').append($('#yfrog-popup-content').html());
+				$('#yfrog-popup-content').html('');
+				Utils.unbindKeyListener('#globalArea_message');
+				Site.resetUploadArea('globalArea');
+				$('#globalArea_flash .post-button').hide();
+			}
+		});
+		$('#yfrog-global-upload').html('');
+//		Utils.watchInputLength('#globalArea_message', '#globalArea_flash .count');
+	});
+};
+
+Site.assignMenuEvents = function() {
+    $("#arrow-link a.logged").bind('click', function(e){
+        e.preventDefault();
+        $(this).toggleClass('active');
+        $("div.drop-down-menu").slideToggle(200);
+        if (Site.hideAdsOnMenuClick)
+            $('.promo-area').toggleClass('invisible');
+    });
+    
+    $('#signin-link a.logged').bind('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $this = $(this),
+            isVisible = !$this.hasClass('active');
+        _e.l({ section: _e.sections.globalNavigationLoggedOut, action: _e.section, label: _e.labels.login });
+        $this.toggleClass('active');
+        $('div.drop-down-menu-signin').slideToggle(200);
+        $('#singin-username').focus();
+        if (isVisible) {
+            Utils.bindKeyListener('#singin-username, #signin-password', 13, function() {
+                Site.doLogin($('#global-signin-button'));
+            });
+        } else {
+            Utils.unbindKeyListener('#singin-username, #signin-password');
+        }
+    });
+
+    $(document).bind('click', function(e) {
+        if (e.target.className.indexOf("logged")<0) {
+            $("div.drop-down-menu").slideUp(200);
+            $("#arrow-link a.logged").removeClass('active');
+//            $('.hideable-flash').show();
+            if (Site.hideAdsOnMenuClick)
+                $('.promo-area').removeClass('invisible');
+        }
+    });
+
+    $('#login-forgot-password').click(function(e) {
+        e.preventDefault();
+        _e.l({ section: ( _e.section + '/' + _e.sections.login ), action: _e.actions.password, label: _e.labels.select });
+        Site.showPasswordReset();
+    });
+};
+
+Site.assignEventTracking = function() {
+    $('#new-logo').live('click', function(e) {
+        _e.l({
+            section: !Utils.getLoggedInUsername() ? _e.sections.globalNavigationLoggedOut : _e.sections.globalNavigationLoggedIn,
+            action: _e.section,
+            label: _e.labels.logo
+        });
+    });
+
+    $('#explore-link a').live('click', function(e) {
+        _e.l({
+            section: !Utils.getLoggedInUsername() ? _e.sections.globalNavigationLoggedOut : _e.sections.globalNavigationLoggedIn,
+            action: _e.section,
+            label: _e.labels.popular
+        });
+    });
+
+    $('#post-upload-link a').live('click', function(e) {
+        _e.l({
+            section: !Utils.getLoggedInUsername() ? _e.sections.globalNavigationLoggedOut : _e.sections.globalNavigationLoggedIn,
+            action: _e.section,
+            label: _e.labels.post
+        });
+    });
+
+    $('#home-link a').live('click', function(e) {
+        _e.l({
+            section: _e.sections.globalNavigationLoggedIn,
+            action: _e.section,
+            label: _e.labels.home
+        });
+    });
+
+    $('#profile-link a').live('click', function(e) {
+        _e.l({
+            section: _e.sections.globalNavigationLoggedIn,
+            action: _e.section,
+            label: _e.labels.profile
+        });
+    });
+
+    $('#arrow-link a.trackable').live('click', function(e) {
+        var $this = $(this);
+        _e.l({
+            section: _e.sections.globalNavigationLoggedIn,
+            action: _e.section,
+            label: _e.labels.profile + '_' + $this.attr('rel')
+        });
+    });
+
+    $('#not-logged-banner').click(function() {
+        _e.l({ section: ( _e.section + '/' + _e.sections.login ), action: _e.actions.twitterOnly, label: _e.labels.login });
+    });
+
+    $('#signin-with-twitter').click(function() {
+        _e.l({ section: ( _e.section + '/' + _e.sections.login ), action: _e.actions.twitter, label: _e.labels.login });
+    });
+
+    $('#footer a.trackable').live('click', function(e) {
+        var $this = $(this);
+        _e.l({
+            section: _e.sections.footer,
+            action: _e.actions.footer,
+            label: _e.labels[$this.attr('rel')]
+        });
+    });
+
+    $('#user-stats .avatar a:first-child').live('click', function(e) {
+        _e.l({
+            action: _e.actions.profile,
+            label: _e.labels.avatar
+        });
+    });
+
+    $('#user-stats .name a').live('click', function(e) {
+        _e.l({
+            action: _e.actions.profile,
+            label: _e.labels.username
+        });
+    });
+
+    $('#user-stats-counts a').live('click', function(e) {
+        var $this = $(this);
+        if(!$this.attr('rel'))
+            return;
+        _e.l({
+            action: _e.actions.profile,
+            label: _e.labels[$this.attr('rel')]
+        });
+    });
+
+    $('.timeline-source-twitter, .timeline-comment-source-twitter, .lp-comment-source-twitter, .lp-source-twitter, .media-overlay-source-twitter').live('click', function() {
+        if ($(this).hasClass('media-overlay-source-twitter'))
+            _e.l({ section: _e.sections.lightBox, action: _e.actions.share, label: _e.labels.twitterBird });
+        else
+            _e.l({ action: _e.actions.share, label: _e.labels.twitterBird });
+    });
+
+    $('#yfrog-follow-button').click(function() {
+        _e.l({ action: _e.actions.follow, label: $(this).hasClass('follow') ? _e.labels.follow : _e.labels.unfollow });
+    });
+};
+
+Site.resetUploadArea = function(message_id) {
+	$('#' + message_id + '_flash .post-button a').removeClass('disabled-button');
+	$('#' + message_id + '_flash .uploaded-images').animate({'height': 0}, 500);
+	$('#' + message_id + '_flash .uploaded-images li').each(function() {
+		if(!$(this).hasClass('list-start'))
+			$(this).remove();
+	});
+	$('#' + message_id + '_flash .textarea textarea').val("").blur();
+	$('#' + message_id + '_flash .count').html(140);
+};
+
+function renderUploadResult(message_id, response_id, service_id, text, images) {
+    if(!response_id)
+        return;
+    if(response_id.indexOf('_') == 1)
+        response_id = response_id.substring(2);
+	if(Uploader.renderUploadResult) {
+		var obj = {
+			service_id: service_id,	//0 = yfrog, 1 = twitter
+			screen_name: Utils.getLoggedInUsername(),
+			user_id: 1,	//does not matter
+			created_time: (new Date().getTime() - 1000)/1000,
+			message: text,
+			comments: [],
+            thread: [],
+			message_id: response_id,
+			images: images || [],
+			avatar_url: Utils.LOADED_AVATARS[Utils.getLoggedInUsername()],
+            isViewer: true,
+            faded: true,
+            forcedTab: 'live-feed'
+		};
+//		FeedHandler.feeds[obj.service_id + '_' + response_id] = obj;
+        Site.Timeline.addFeed(obj.service_id + '_' + response_id, obj);
+	}
+}
+
+function uploadCallback(response) {
+	if(response.server) {
+        _e.l({
+            action: _e.actions.post,
+            label: _e.labels.mediaAdded
+        });
+		$('#' + response.message_id + '_flash textarea').focus();
+		//add to the list of images
+		if(typeof Uploader.uploaded[response.message_id] == 'undefined')
+			Uploader.uploaded[response.message_id] = [];
+		Uploader.uploaded[response.message_id].push({
+			url: response.yfrog_url,
+			server: response.server, 
+			filename: response.filename, 
+			bucket: response.bucket,
+			message_id: response.message_id
+		});
+		if(Uploader.uploaded[response.message_id].length % Uploader.maxPerRow == 1) {
+			$('#' + response.message_id + '_flash .uploaded-images').animate({'height': $('#' + response.message_id + '_flash .uploaded-images').height()+Uploader.heightInc}, 500, null, function() {
+				renderUploadedThumbnail(Uploader.uploaded[response.message_id], Uploader.uploaded[response.message_id].length-1);
+			});
+		} else
+			renderUploadedThumbnail(Uploader.uploaded[response.message_id], Uploader.uploaded[response.message_id].length-1);
+		var textarea = $('#' + response.message_id + '_flash textarea');
+		textarea.removeClass('large');
+		if(textarea.val().match(/http:\/\/yfrog.com\/\w{3,}/))
+			textarea.val(textarea.val().replace(/http:\/\/yfrog.com\/\w{3,}/, response.yfrog_url));
+	} else if(response.error) {
+		alert('Error : ' + response.error.general.message);
+	}
+}
+
+function renderUploadedThumbnail(images, index) {
+	var image = images[index];
+	var html = ""; 
+	html +=	"<li class='faded-out'>";
+	html +=		"<a href='/' class='close'>Close</a>"
+	html +=		"<img rel='"+image.message_id+"||"+index+"' author='"+Utils.getThumbnailURL(image.server, image.filename)+"' onload='imageLoaded(this);' onerror='imageFailed(this);' class='image-th' src='"+Utils.getThumbnailURL(image.server, image.filename)+"' />";
+	html +=	"</li>";
+	$('#' + image.message_id + '_flash .uploaded-images').append(html);
+}
+
+function flash_upload_started() {}
+
+function flash_upload_ended(server, bucket, filename, yfrog_url, threadId) {
+	//not the best way to distuinguish between status area upload or comment upload
+	if(threadId.indexOf('statusArea') >=0 || threadId.indexOf('globalArea') >=0) {
+		uploadCallback({
+			server: server,
+			bucket: bucket,
+			filename: filename,
+			yfrog_url: yfrog_url,
+			message_id: threadId
+		});
+	} else if(threadId.indexOf('commentBox') >=0) {
+		//landing page comment box
+		Site.SharedCommentHandler.uploadCallback({
+			server: server,
+			bucket: bucket,
+			filename: filename,
+			yfrog_url: yfrog_url,
+			message_id: threadId
+		});
+	} else {
+		Site.Timeline.triggerUploadCallback({
+			server: server,
+			bucket: bucket,
+			filename: filename,
+			yfrog_url: yfrog_url,
+			message_id: threadId
+		});
+	}
+}
+
+function file_added(a, b, threadId) {
+	var lpCommentBox = threadId.indexOf('commentBox') >=0;
+	var inStatusArea = threadId.indexOf('statusArea') >=0 || threadId.indexOf('globalArea') >=0;
+	var parent = $('#' + threadId + '_flash' + ((!inStatusArea && !lpCommentBox) ? '_' + Site.Timeline.getActiveTab() : ''));
+    $('textarea', parent).focus();
+	if(!lpCommentBox && !$('textarea', parent).val().match(/http:\/\/yfrog.com\/\w{3,}/))
+		$('textarea', parent).val('http://yfrog.com/picsy ' + $.trim($('textarea', parent).val()));
+	$('a.medium-button', parent).addClass('disabled-button');
+}
+
+function uploadcomplete(response, b, threadId) {
+	var lpCommentBox = threadId.indexOf('commentBox') >=0;
+	var inStatusArea = threadId.indexOf('statusArea') >=0 || threadId.indexOf('globalArea') >=0;
+	var parent = $('#' + threadId + '_flash' + ((!inStatusArea && !lpCommentBox) ? '_' + Site.Timeline.getActiveTab() : ''));
+    if (!lpCommentBox && !$('textarea', parent).val().match(/http:\/\/yfrog\.(com|us){1}\/\w{3,}/)) {
+        //upload is done but the textbox has no yfrog url in it
+        var params = response.split('/');
+        var server = params[0].replace('img', '');
+        var filename = params[2];
+		$('textarea', parent).val(Site.url + Utils.yfrogURL(server, filename) + ' ' + $.trim($('textarea', parent).val()));
+    }
+	$('a.medium-button', parent).removeClass('disabled-button');
+}
+
+function cancel_click() {}
+
+$(window).bind('beforeunload', function() {
+	window.__flash__removeCallback = (function() {
+		return function(instance, name) {
+		if (instance) instance[name] = null;
+		};
+	})();
+});
+
+$(window).bind('beforeunload', function() {
+	$('.flash-uploader').each(function(i, elem) {
+		if($(this).attr('id'))
+			swfobject.removeSWF($(this).attr('id'));
+	});
+});
+
+function imageLoaded(img) {
+	if($(img).attr('src').indexOf('loading')<0)
+		$(img).removeClass('image-failed');
+	$(img).parent().fadeTo(500, 1 , function() {
+		$(img).parent().removeClass('faded-out').attr('style', '');
+	});	
+	if($('img.image-failed').length == 0)
+		stopFailedImageChecker();
+}
+
+function imageFailed(img) {
+	$(img).attr('src', '/images/loading-thumbnail.png').addClass('image-failed');
+	if(!imageChecker)
+		startFailedImageChecker();
+}
+
+function startFailedImageChecker() {
+	imageChecker = setInterval(function() {
+		$('img.image-failed').each(function() {
+			$(this).attr('src', $(this).attr('author'));
+		});
+	}, 3000);
+}
+
+function stopFailedImageChecker() {
+	if(imageChecker) {
+		clearInterval(imageChecker);
+		imageChecker = null;
+	}
+}
+
+function popupImageLoaded(img) {
+	$(img).css({top: Math.max(0, (MAX_POPUP_IMG_HEIGHT-($(img).height() == 0 ? MAX_POPUP_IMG_HEIGHT : $(img).height()))/2)}).fadeIn(300, function(){
+        Site.popupImageLoadCallback(img);
+    });
+}
+
+function uploadcancel(threadId) {
+	var lpCommentBox = threadId.indexOf('commentBox') >=0;
+	var inStatusArea = threadId.indexOf('statusArea') >=0 || threadId.indexOf('globalArea') >=0;
+	var parent = $('#' + threadId + '_flash' + ((!inStatusArea && !lpCommentBox) ? '_' + Site.Timeline.getActiveTab() : ''));
+	$('a.medium-button', parent).removeClass('disabled-button');
+//	$('a.medium-button span', parent).html('Post');
+	
+//	var uploaded = [];
+//
+//	if(threadId.indexOf('statusArea') >=0 || threadId.indexOf('globalArea') >=0 || threadId.indexOf('commentBox') >=0) {
+//		uploaded = Uploader.uploaded;
+//	} else {
+//		uploaded = Site.Timeline.getImages();
+//	}
+//
+	var textarea = $('textarea', parent);
+//	if(uploaded && uploaded[threadId].length && uploaded[threadId].length==0)
+    textarea.val($.trim(textarea.val().replace(/http:\/\/yfrog.com\/picsy/, '')));
+}
+
+function upload_error(threadId, error_message) {
+    uploaderror(threadId, error_message);
+}
+
+function uploaderror(threadId, error_message) {
+    Utils.triggerGlobalInformer(error_message, 5, { isError: true });
+    var lpCommentBox = threadId.indexOf('commentBox') >=0;
+	var inStatusArea = threadId.indexOf('statusArea') >=0 || threadId.indexOf('globalArea') >=0;
+	var parent = $('#' + threadId + '_flash' + ((!inStatusArea && !lpCommentBox) ? '_' + Site.Timeline.getActiveTab() : ''));
+	$('a.medium-button', parent).removeClass('disabled-button');
+    var textarea = $('textarea', parent);
+    textarea.val(textarea.val().replace(/http:\/\/yfrog.com\/picsy/, ' '));
+}
+
+// Log a log
+function _l(m) {
+    if (!console || !console.log) {
+        return;
+    }
+    console.log(m);
+}
+
+// Log an error message
+function _le(m) {
+    if (!console || !console.error) {
+        return;
+    }
+    console.error(m);
+}
+
+String.prototype.isValidEmail = function() {
+    var pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return this.match(pattern)
+};
+
+/**
+ * image error callback
+ * sets the src to default placeholder
+ * @param img IMG DOM element
+ */
+function _err(img) {
+    if (!img)
+        return;
+    $(img).attr('src', Utils.getPhotoPlaceholder());
+}
+
+Site.HideHandler = (function() {
+    var sid = null;
+
+    var assignListeners = function() {
+        $('.yfrog-hide-user').live('click', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            sid = $this.data('serviceid') + '_' + $this.data('userid');
+            Utils.showOverlayBox(getHtml(), {
+				width: 350,
+				top: 160
+			});
+        });
+
+        $('#yfrog-hide-hide').live('click', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            if ($this.hasClass('disabled-button')) {
+                return;
+            }
+            $this.addClass('disabled-button');
+            _e.l({action: _e.actions.user, label: _e.labels.hide});
+            $.when( Utils.hideUser(sid) )
+                .then(function(r) {
+                    if (r.error) {
+                        Utils.triggerGlobalInformer(r.error, 5, { isError: true });
+                        return;
+                    }
+                    $('div[data-serviceuserid="' + sid + '"]').slideUp(350, function() {
+                        $(this).remove();
+                    });
+                }).fail(function(r) {
+                    Utils.triggerGlobalInformer('Could not complete your hide request, try again later.', 4, { isError: true });
+                }).always(function() {
+                    Utils.closeOverlayBox();
+                    $this.removeClass('disabled-button');
+                });
+        });
+
+        $('#yfrog-hide-cancel').live('click', function(e) {
+            e.preventDefault();
+            Utils.closeOverlayBox();
+        });
+    };
+
+    var getHtml = function() {
+        var html = "";
+		html += "<div id='yfrog-hide-popup'>";
+		html +=		"<div class='title'>Are you sure you want to hide this user?</div>";
+		html +=		"<div id='yfrog-confirm-buttons' class='clearfix'>";
+		html +=			"<a id='yfrog-hide-cancel' href='/' title='Cancel'>Cancel</a>";
+		html +=			"<a id='yfrog-hide-hide' href='/' class='medium-button' title='Hide'><span>Hide</span></a>";
+		html +=		"</div>";
+		html += "</div>";
+		return html;
+    };
+
+    return {
+        start: function() {
+            assignListeners();
+        }
+    };
+})();
+
+Site.UserDropDown = (function() {
+    var canHide = false,        //flag to check for hiding
+        canShow = false,        //flag to check for showing
+        hideTimeOut = null,     //setTimeOut hide id holder
+        showTimeOut = null,     //setTimeOut show id holder
+        arrowLeftShift = 40,    //number of pixels the drop down arrow is shifted to right
+        arrowLeftCSS = 30,
+        hideInterval = 500,     //number of miliseconds to wait before hiding the dropdown
+        showInterval = 500,
+        defaultWidth = 320,
+        rightGap = 10,
+        cachedScreenName = '',
+        baseWidth = 52,
+        basePadding = 20,
+        widthIncrement = 8,
+        trackingBound = false,
+        cache = {};
+
+    var assignListeners = function() {
+        $('.user-mouse-over').live('mouseenter', function() {
+            var screenName = $(this).data('screenName');
+            cachedScreenName = screenName;
+            var that = $('img', $(this)).length > 0 ? $('img', $(this)) : this;
+            canShow = true;
+            showTimeOut = setTimeout(function() {
+                if (canShow) {
+                    $.when(loadedPage()).then(function() {
+                        if (cachedScreenName != screenName) {
+                            return;
+                        }
+                        var $this = $(that),    //the element that was moused over
+                            box = $('#yfrog-user-drop-down'),   //the drop down box
+                            wWidth = $('#main').offset().left + $('#main').width(),
+                            left = $this.offset().left,
+                            halfWidth = Math.round($this.width() / 2),
+                            diff = arrowLeftShift > halfWidth ? halfWidth - arrowLeftShift : arrowLeftShift - halfWidth,
+                            shift = left + defaultWidth + rightGap > wWidth ? left + defaultWidth - wWidth + rightGap : 0;
+                        $('#user-drop-down-loading').show();
+                        $('#user-drop-down-container .main-area').hide();
+                        $('#yfrog-user-drop-down .arrow').css({ left: shift > 0 ? arrowLeftCSS + shift : arrowLeftCSS });
+                        box.css({ top: $this.offset().top + $this.height() + 10, left: left + diff - shift, width: defaultWidth }).show();
+                        $.when(getData(screenName)).then(function(r) {
+                            renderDropDown.call(that, r.result || r, $this);
+                        });
+                    });
+                }
+                clearInterval(showTimeOut);
+            }, showInterval);
+        }).live('mouseleave', function() {
+            canHide = true;
+            canShow = false;
+            startHideTimeout();
+        });
+
+        $('#yfrog-user-drop-down').live('mouseenter', function() {
+            canHide = false;
+        }).live('mouseleave', function() {
+            canHide = true;
+            canShow = false;
+            startHideTimeout();
+        });
+    };
+
+    var loadedPage = function() {
+        var dfd = new $.Deferred();
+        if ($('#yfrog-user-drop-down').length > 0) {
+            return dfd.resolve();
+        } else {
+            $('<div id="yfrog-user-drop-down"></div>').appendTo('div#main');
+            $('#yfrog-user-drop-down').load('/page/dropdown', function() {
+                return dfd.resolve();
+            });
+        }
+        return dfd.promise();
+    };
+
+    var getData = function(screenName) {
+        var dfd = new $.Deferred();
+        if (cache[screenName]) {
+            dfd.resolve(cache[screenName]);
+        } else {
+            $.ajax({
+                url:        '/user/get_info.json',
+                type:       'GET',
+                dataType:   'json',
+                data:       { screen_name: screenName },
+                success:    function(r) {
+                    cache[screenName] = r.result;
+                    dfd.resolve(cache[screenName]);
+                }
+            });
+        }
+        return dfd.promise();
+    };
+
+    var renderDropDown = function(candid, starter) {
+        _e.l({ action: _e.actions.userInfo, label: starter.hasClass('at-mention') ? _e.labels.mention : _e.labels.show });
+        if (!candid || !candid.screen_name) {
+            $('#yfrog-user-drop-down').hide().css({ width: defaultWidth });
+            return;
+        }
+        canHide = false;
+        var screenName = candid.screen_name,
+            name = candid.name,
+            avatar_url = candid.avatar_url,
+            is_friend = candid.is_friend,
+            photos = candid.photos + '',
+            videos = candid.videos + '',
+            following = candid.following + '',
+            followers = candid.followers + '',
+            pWidth = Math.max(0, photos.length - 1) * widthIncrement,
+            vWidth = Math.max(0, videos.length - 1) * widthIncrement,
+            fgWidth = Math.max(0, following.length - 1) * widthIncrement,
+            fsWidth = Math.max(0, followers.length - 1) * widthIncrement;
+        $('#user-drop-down-bottom a.photos').css({ width: baseWidth + pWidth, left: 0, top: 0 });
+        $('#user-drop-down-bottom a.videos').css({ width: baseWidth + vWidth, left: baseWidth + basePadding + pWidth + 1, top: 0 });
+        $('#user-drop-down-bottom a.following').css({ width: baseWidth + fgWidth, left: baseWidth * 2 + basePadding * 2 + pWidth + vWidth + 2, top: 0 });
+        $('#user-drop-down-bottom a.followers').css({ width: baseWidth + fsWidth, left: baseWidth * 3 + basePadding * 3 + pWidth + vWidth + fgWidth + 3, top: 0 });
+        $('#yfrog-user-drop-down').css({ width: baseWidth * 4 + basePadding * 4 + pWidth + vWidth + fgWidth + fsWidth + 5 });
+        $('#user-drop-down-top .content a').attr('href', Utils.getFroggyURL(screenName));
+        $('#user-drop-down-top .avatar img').attr('src', avatar_url);
+        $('#user-drop-down-top .info a').html(screenName);
+        $('#user-drop-down-top .info span').html('(' + name + ')');
+        $('#user-drop-down-bottom a.photos').attr('href', '/user/' + screenName + '/photos');
+        $('#user-drop-down-bottom a.photos .user-count-bubble span').text(photos);
+        $('#user-drop-down-bottom a.videos').attr('href', '/user/' + screenName + '/videos');
+        $('#user-drop-down-bottom a.videos .user-count-bubble span').text(videos);
+        $('#user-drop-down-bottom a.following').attr('href', '/user/' + screenName + '/following');
+        $('#user-drop-down-bottom a.following .user-count-bubble span').text(following);
+        $('#user-drop-down-bottom a.followers').attr('href', '/user/' + screenName + '/followers');
+        $('#user-drop-down-bottom a.followers .user-count-bubble span').text(followers);
+        if (screenName != Utils.getLoggedInUsername()) {
+            $('#user-drop-down-follow').html('<a author="' + screenName + '" class="yfrog-follow-button medium-button' + (!is_friend ? ' follow' : '') + (!Utils.getLoggedInUsername() ? ' login-button-anchor' : '') + '" href="/" rel="' + window.location.pathname + '"><span>' + (is_friend ? 'Unfollow' : 'Follow') + '</span></a>').show();
+        } else {
+            $('#user-drop-down-follow').hide();
+        }
+        $('#user-drop-down-loading').hide();
+        $('#user-drop-down-container .main-area').show();
+    };
+
+    var startHideTimeout = function() {
+        hideTimeOut = setTimeout(function() {
+            if (canHide) {
+                $('#yfrog-user-drop-down').hide().css({ width: defaultWidth });
+            }
+            clearTimeout(hideTimeOut);
+        }, hideInterval);
+    };
+
+    var bindEventTrackings = function() {
+        $('#user-drop-down-follow a').live('click', function(){
+            var following = $(this).hasClass('follow');
+            _e.l({ action: _e.actions.userInfo, label: following ? _e.labels.follow : _e.labels.unfollow });
+            if (cache[cachedScreenName]) {
+                cache[cachedScreenName].is_friend = following;
+            }
+        });
+        $('#user-drop-down-top .avatar a').live('click', function(){_e.l({ action: _e.actions.userInfo, label: _e.labels.avatar });});
+        $('#user-drop-down-top .name a').live('click', function(){_e.l({ action: _e.actions.userInfo, label: _e.labels.username });});
+        $('#user-drop-down-bottom a.photos').live('click', function(){_e.l({ action: _e.actions.userInfo, label: _e.labels.photos });});
+        $('#user-drop-down-bottom a.videos').live('click', function(){_e.l({ action: _e.actions.userInfo, label: _e.labels.videos });});
+        $('#user-drop-down-bottom a.following').live('click', function(){_e.l({ action: _e.actions.userInfo, label: _e.labels.following });});
+        $('#user-drop-down-bottom a.followers').live('click', function(){_e.l({ action: _e.actions.userInfo, label: _e.labels.followers });});
+    };
+
+    return {
+        start: function() {
+            assignListeners();
+            if (!trackingBound) {
+                trackingBound = true;
+                bindEventTrackings();
+            }
+        }
+    };
+})();
+
+Site.HTMLUploader = (function() {
+    var formAction = '/index/upload_media',
+        formClass = 'html-upload-form',
+        cache = {};
+
+    var assignListeners = function() {
+        $('.html-upload-form input').live('change', function() {
+            var $this = $(this),
+                origin = $this.data('origin'),
+                lpCommentBox = origin.indexOf('commentBox') >=0,
+	            inStatusArea = origin.indexOf('statusArea') >=0 || origin.indexOf('globalArea') >=0,
+	            parent = $('#' + origin + '_flash' + ((!inStatusArea && !lpCommentBox) ? '_' + Site.Timeline.getActiveTab() : ''));
+                form = $('form', parent),
+                parentContainer = $((!inStatusArea && !lpCommentBox) ? '.comment-upload-button' : '.upload-button', parent);
+            if (Site.isIE && cache[$this.val()]) {
+                return;
+            }
+            cache[$this.val()] = true;
+            (function(o, f, p){
+                form.ajaxSubmit({
+                    dataType: 'json',
+                    success: function(r) {
+                        p.removeClass('uploading');
+                        cache = {};
+                        if (r && r.error) {
+                            uploaderror(o, r.error);
+                            return;
+                        }
+                        if (r && !r.success && r.meta && r.meta.message && r.meta.message.message) {
+                            uploaderror(o, r.meta.message.message);
+                            return;
+                        }
+                        if (r && r.result && r.result.image) {
+                            var server = r.result.server,
+                                bucket = r.result.bucket,
+                                filename = r.result.image,
+                                url = Site.url + Utils.yfrogURL(server, filename);
+                            flash_upload_ended(server, bucket, filename, url, o);
+                            uploadcomplete(server + '/' + bucket + '/' + filename, null, o);
+                        }
+                    },
+                    error: function(r) {
+                        p.removeClass('uploading');
+                        cache = {};
+                        uploaderror(o, r && r.error ? r.error : 'Could not complete your upload, try again later.');
+                    },
+                    beforeSubmit: function(arr, $form, options) {
+                        p.addClass('uploading');
+                        file_added(null, null, o);
+                    },
+                    resetForm: true
+                });
+            })(origin, form, parentContainer);
+        });
+
+        if (Site.isIE) {
+            //IE is a piece of shit
+            $('.html-upload-form input').live('click', function() {
+                var $this = $(this);
+                setTimeout(function() {
+                    $this.change();
+                }, 0);
+            });
+        }
+    };
+
+    var render = function() {
+        $('#statusArea_flash .upload-button, #globalArea_flash .upload-button').each(function() {
+            var $this = $(this);
+            $this.html(getHtml({ origin: $this.data('origin') }));
+            $('input', $this).get(0);
+            SI.Files.stylize($('input', $this).get(0));
+        });
+    };
+
+    var getHtml = function(args) {
+        args.className = args.className || formClass;
+        var html = '';
+        html += '<form class="' + args.className + '" action="' + formAction + '" method="post">';
+        html +=     '<label class="cabinet">';
+        html +=         '<input type="file" class="file" name="file" data-origin="' + args.origin + '" />';
+        html +=     '</label>';
+        html += '</form>';
+        return html;
+    };
+
+    var loadRequirements = function() {
+        var scripts = ['/js/si.files.js', '/js/jquery/jquery.form.js'],
+            head = document.getElementsByTagName('script')[0],
+            dfd = new $.Deferred(),
+            interval = null;
+        $.each(scripts, function(k, v) {
+            var t = document.createElement('script');
+            t.type = 'text/javascript';
+            t.async = true;
+            t.src = v;
+            head.parentNode.insertBefore(t, head);
+        });
+        interval = setInterval(function() {
+            if (window.SI) {
+                clearInterval(interval);
+                return dfd.resolve();
+            }
+        }, 300);
+        return dfd.promise();
+    };
+
+    return {
+        start: function() {
+            $.when(loadRequirements()).then(function() {
+                render();
+                assignListeners();
+            });
+        },
+
+        getFormHtml: function(args) {
+            return getHtml(args);
+        }
+    };
+})();
+
+Site.LoginPopup = (function() {
+    var trackingBound = false,
+        elem = null;
+
+
+    var show = function() {
+        $('.interactive-box-dimmed-bg').hide();
+        //hide the done tagging
+        $('.done-tagging-parent').hide();
+        Utils.showOverlayBox(getHtml(), {
+            width: 450,
+            closeCallback: function() {
+                $('.interactive-box-dimmed-bg').show();
+                //restore done tagging
+                $('.done-tagging-parent').show();
+            }
+        });
+        $('#login-popup-email').focus();
+    };
+
+    var getHtml = function() {
+        var html = "";
+        html += "<div class='main-title'>Log In</div>";
+        html += "<div class='main-wrapper'>";
+        html +=     "<div id='login-popup-container'>";
+        html +=         "<div class='sub-title'>Email:</div>";
+        html +=         "<div class='popup-input'><input type='text' id='login-popup-email' /></div>";
+        html +=         "<div class='sub-title'>Password:</div>";
+        html +=         "<div class='popup-input'><input type='password' id='login-popup-password' /></div>";
+        html +=         "<div id='login-popup-checkbox'><input type='checkbox' /><span>Keep me logged in</span></div>";
+        html +=         "<div id='login-popup-error'></div>";
+        html +=         "<div class='clearfix' id='login-popup-signin'><a href='/' class='medium-button'><span>Sign In</span></a></div>";
+        html +=         "<div id='login-popup-border'><div>or</div></div>";
+        html +=         "<a href='/' id='login-popup-twitter'>Sign in with Twitter</a>";
+        html +=     "</div>";
+        html += "</div>";
+        return html;
+    };
+
+    var assignEventListeners = function() {
+        $('#login-popup-signin a').live('click', function(e) {
+            e.preventDefault();
+            var email = $('#login-popup-email').val(),
+                pass = $('#login-popup-password').val(),
+                stayLoggedIn = $('#login-popup-checkbox input:checked').length,
+                $this = $(this);
+            hideError();
+            if (!email || !email.isValidEmail()) {
+                showError('Please specify a valid email.');
+                return;
+            }
+            if (!pass) {
+                showError('Please specify a password.');
+                return;
+            }
+
+            $this.addClass('disabled-button');
+            _e.l({ section: ( _e.section + '/' + _e.sections.login ), action: _e.actions.yfrog, label: _e.labels.login });
+
+            $.when(loggedIn({ "email": email, "password": pass, "stay-logged-in": stayLoggedIn }))
+                .then(function(r) {
+                    if (r.error) {
+                        showError(r.error);
+                        return;
+                    }
+                    if (r && r.result && r.result.screen_name) {
+                        preparePage(r.result.screen_name);
+                    } else {
+                        Utils.triggerGlobalInformer('We could not complete your sign in request. Please try again later.', 5, { isError: true });
+                    }
+                }).fail(function() {
+                    Utils.triggerGlobalInformer('We could not complete your sign in request. Please try again later.', 5, { isError: true });
+                }).always(function() {
+                    $this.removeClass('disabled-button');
+                });
+        });
+        $('#login-popup-twitter').live('click', function(e) {
+            e.preventDefault();
+            _e.l({ section: ( _e.section + '/' + _e.sections.login ), action: _e.actions.twitter, label: _e.labels.login });
+            var base = window.location.protocol + '//' + window.location.host,
+                url = base + "/twitter/login";
+            window.open (url,"mywindow","location=no,top=200,left=500,menubar=1,resizable=1,width=850,height=550");
+        });
+    };
+
+    var preparePage = function(screenName) {
+        $('<input type="hidden" id="current_logged_user" value="' + screenName + '" />').appendTo('#main');
+        $('.login-button-anchor').removeClass('login-button-anchor');
+        Utils.closeOverlayBox();
+        if (elem) {
+            elem.click().focus();
+        }
+    };
+
+    var showError = function(err) {
+        $('#login-popup-error').html(err).slideDown(350);
+    };
+
+    var hideError = function() {
+        $('#login-popup-error').slideUp(350);
+    };
+
+    var loggedIn = function(data) {
+        return $.ajax({
+            type:	    'POST',
+            url:	    '/user/login',
+            dataType:   'json',
+            data: 	    data
+        });
+    };
+
+    return {
+        start: function(args) {
+            args = args || {};
+            elem = args.elem;
+            if (!trackingBound) {
+                trackingBound = true;
+                assignEventListeners();
+            }
+            show();
+        },
+
+        viaTwitter: function(screenName) {
+            preparePage(screenName);
+        }
+    };
+})();
+
+Site.UserSearch = function(args) {
+    var settings = {
+            url:            Site.APIs.search,
+            count:          7,
+            resultClass:    'user-search-result',
+            parentClass:    'user-search-parent',
+            customParentClass : '',
+            selectCallback: function(d){},
+            beforeRenderCallback:   function(d){},
+            focusCallback:  function(d){},
+            blurCallback:   function(d){},
+            noTextCallback: function(d){},
+            analyticsEnabled:   true,
+            showSeeMore:    true,
+            searchInput:    $('#global-search-input'),
+            delay:          200,
+            timeout:        null,
+            top:            0,
+            left:           0,
+            extraPrependedElems: 0,
+            keys:           { tab:9, enter:13, up:38, down:40, esc: 27 }
+        },
+        parent = $('<div />'),
+        root = $('#main'),
+        ignoreNextBlur = false;
+
+    if (args) {
+        $.extend(settings, args);
+    }
+
+    parent.addClass(settings.parentClass + ' ' + settings.customParentClass + ' ' + 'hidden')
+        .css({ top: settings.searchInput.offset().top + settings.searchInput.height() + settings.top, left: settings.searchInput.offset().left + settings.left })
+//        .mouseenter(function(){ $(this).find('a.active').removeClass('active'); })
+        .appendTo( root );
+
+    $(window).resize(function() { adjustPosition(); });
+
+    if (!Utils.getLoggedInUsername()) {
+        $(window).scroll(function() { adjustPosition(); });
+    }
+
+    var hide = function() {
+        parent.hide();
+    };
+
+    var show = function() {
+        parent.show();
+    };
+
+    var adjustPosition = function() {
+        parent.css({ top: settings.searchInput.offset().top + settings.searchInput.height() + settings.top, left: settings.searchInput.offset().left + settings.left });
+    };
+
+    this.adjustPosition = function() {
+        adjustPosition();
+    };
+
+    var start = function(q) {
+        $.when(query(q))
+            .then(function(r) {
+                if (!r) {
+                    hide();
+                    return;
+                }
+                parent.children().remove();
+                settings.beforeRenderCallback.call(this);
+                $.each( $.merge( r.friends || [], r.others || [] ), function(k, v) {
+                    render(k, v);
+                });
+                if (settings.showSeeMore) {
+                    parent.append(
+                        $('<a />')
+                            .addClass('see-more')
+                            .html('See more results')
+                            .attr('href', Utils.getSearchURL(settings.searchInput.prop('value')))
+                            .click(function(e) {
+                                e.stopPropagation();
+                                if (settings.analyticsEnabled) {
+                                    _e.l({ action: _e.actions.userSearch, label: _e.labels.more });
+                                }
+                                window.top.location = $(this).attr('href');
+                            })
+                            .mouseenter(function() { parent.find('a.active:eq(0)').removeClass('active'); $(this).addClass('active'); })
+                    );
+                }
+                show();
+            });
+    };
+
+    var render = function(index, result) {
+        var a,
+            location = result.location;
+        a = $('<a />')
+            .addClass(settings.resultClass + ( index == 0 ? ' active' : '' ))
+            .attr('href', Utils.getFroggyURL( result.screen_name ) )
+            .click(function(e) { e.preventDefault(); e.stopPropagation(); settings.selectCallback({ data: result, target: $(this) }); })
+            .mouseenter( function() {
+                var $this = $(this);
+                if( $this.hasClass('active') ) {
+                    return;
+                }
+                parent.find('a.active:eq(0)').removeClass('active');
+                $this.addClass('active');})
+            .append($('<img />'))
+            .find('img')
+                .attr('src', Utils.getTwitterDesmondUrl(result.avatar_url))
+                .error(function() { $(this).attr('src', Utils.getSmallDefaultProfileImage()); })
+                .end()
+            .append($('<span />'))
+            .find('span')
+                .addClass('name')
+                .html(result.name)
+                .end();
+        if (location && !/^iphone:/i.test(location)) {
+            a.append( $('<span />').addClass('loc').html(location) );
+        }
+        parent.append(a);
+    };
+
+    var query = function(q) {
+        var data = { prefix: q, n: settings.count, lowercase: true };
+        if ( Site.currentUserId ) {
+            data.uid = Site.currentUserId;
+        }
+        return $.ajax({
+            url:        settings.url,
+            dataType:   'jsonp',
+            type:       'GET',
+            data:       data
+        });
+    };
+
+    settings.searchInput.keyup(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        ignoreNextBlur = false;
+
+        var $this = $(this),
+            val = $this.prop('value'),
+            child,
+            current,
+            total;
+
+        if (settings.timeout) {
+            clearTimeout(settings.timeout);
+        }
+
+        switch( e.keyCode || e.which ) {
+            case settings.keys.up:
+                if(parent.is(':visible')) {
+                    settings.searchInput[0].selectionStart = settings.searchInput[0].selectionEnd = val.length;
+                    child = parent.find('a.active');
+                    current = child.index();
+                    if (current - settings.extraPrependedElems == 0) { return false; }
+                    child.removeClass('active').prev().addClass('active');
+                    return false;
+                }
+                break;
+            case settings.keys.down:
+                if(parent.is(':visible')) {
+                    child = parent.find('a.active');
+                    current = child.index();
+                    total = parent.find('a').length;
+                    if (current + 1 - settings.extraPrependedElems == total) { return false; }
+                    child.removeClass('active').next().addClass('active');
+                    return false;
+                }
+                break;
+            case settings.keys.enter:
+                child = parent.find('a.active');
+                if (child.length == 0) {
+                    child = parent.find('a:first-child');
+                }
+                child.click();
+                settings.searchInput.blur();
+                return false;
+                break;
+            case settings.keys.tab:
+                return false;
+                break;
+            case settings.keys.esc:
+                settings.searchInput.blur();
+                return false;
+                break;
+        }
+
+        if (!val) {
+            settings.noTextCallback({ searchInput: settings.searchInput });
+            hide();
+            return;
+        }
+
+        settings.focusCallback({ searchInput: settings.searchInput });
+
+        settings.timeout = setTimeout(function() {
+            clearTimeout(settings.timeout);
+            start(val);
+        }, settings.delay);
+
+        return false;
+    }).focus(function() {
+        ignoreNextBlur = false;
+        $(this).keyup();
+    }).blur(function(e) {
+        clearTimeout(settings.timeout);
+        setTimeout(function() {
+            if ( ignoreNextBlur ) {
+                ignoreNextBlur = false;
+                return;
+            }
+            settings.blurCallback({ searchInput: settings.searchInput });
+            hide();
+        }, 200);
+    });
+
+    this.setIgnoreNextBlur = function(flag) {
+        ignoreNextBlur = flag;
+    };
+
+    this.forceInputFocus = function() {
+        settings.searchInput.focus();
+    };
+
+    this.remove = function() {
+        clearTimeout(settings.timeout);
+        parent.remove();
+        settings.selectCallback = function(d){};
+        settings.beforeRenderCallback = function(d){};
+        settings.focusCallback = function(d){};
+        settings.blurCallback = function(d){};
+        settings.noTextCallback = function(d){};
+        parent = $('<div />');
+    };
+};
+
+var InteractiveBox = function(args) {
+
+    // default settings
+    var settings = {
+            parentClass:        'interactive-box-parent',
+            childClass:         'interactive-box',
+            topLeftClass:       'ib-tl',
+            topRightClass:      'ib-tr',
+            bottomRightClass:   'ib-br',
+            bottomLeftClass:    'ib-bl',
+            borderWidth:        3,
+            minHeight:          75,
+            minWidth:           75,
+            padding:            10,
+            draggable:          true,
+            resizable:          true,
+            boundary:           null,   //if box's size is limited to certain area pass the area's jQuery object
+            dimBoundary:        true,
+            boundaryPadding:    0,
+            event:              null,   //event that triggered the box, to be passed when instantiated
+            loadCallback:       function(d){},
+            dragCallback:       function(d){},
+            dragEndCallback:    function(d){},
+            resizeCallback:     function(d){}
+        },
+        root = $('#main'),
+        dimElement = null,
+        parent = null,
+        initialX = 0,
+        initialY = 0;
+
+    // custom settings
+    if (args) {
+        $.extend(settings, args);
+    }
+
+    // boundary properties
+    var bHeight = settings.boundary ? settings.boundary.height() : 0,
+        bWidth = settings.boundary ? settings.boundary.width() : 0,
+        bTop = settings.boundary ? Math.round(settings.boundary.offset().top) : 0,
+        bLeft = settings.boundary ? Math.round(settings.boundary.offset().left) : 0,
+    // event coordinates
+        eX = settings.event.pageX,
+        eY = settings.event.pageY;
+
+    var getFarLeft = function() {
+        return bLeft + settings.boundaryPadding - settings.padding;
+    };
+
+    var getFarRight = function() {
+        return bLeft + bWidth + settings.padding - settings.borderWidth * 2;
+    };
+
+    var getFarTop = function() {
+        return bTop + settings.boundaryPadding - settings.padding;
+    };
+
+    var getFarBottom = function() {
+        return bTop + bHeight + settings.padding - settings.borderWidth * 2;
+    };
+
+    var outsideOfLeft = function(eventX, eventY) {
+        eventX = eventX || eX;
+        eventY = eventY || eY;
+        return eventX - ( settings.minWidth / 2 ) - settings.padding < getFarLeft();
+    };
+
+    var outsideOfRight = function(eventX, eventY) {
+        eventX = eventX || eX;
+        eventY = eventY || eY;
+        return eventX + ( settings.minWidth / 2 ) + settings.padding > getFarRight();
+    };
+
+    var outsideOfTop = function(eventX, eventY) {
+        eventX = eventX || eX;
+        eventY = eventY || eY;
+        return eventY - ( settings.minHeight / 2 ) - settings.padding < getFarTop();
+    };
+
+    var outsideOfBottom = function(eventX, eventY) {
+        eventX = eventX || eX;
+        eventY = eventY || eY;
+        return eventY + ( settings.minHeight / 2 ) + settings.padding > getFarBottom();
+    };
+
+    var mouseMoved = function(e) {
+        e.stopPropagation();
+        var $this = e.data.elem,
+            diffX = e.pageX - e.data.x,
+            diffY = e.pageY - e.data.y,
+            newX = e.data.originX + diffX,
+            newY = e.data.originY + diffY;
+        if ( newX <= getFarLeft() ) {
+            newX = getFarLeft();
+        } else if ( newX >= getFarRight() - $this.width() - settings.padding * 2) {
+            newX = getFarRight() - $this.width() - settings.padding * 2;
+        }
+        if ( newY <= getFarTop() ) {
+            newY = getFarTop();
+        } else if ( newY >= getFarBottom() - $this.height() - settings.padding * 2) {
+            newY = getFarBottom() - $this.height() - settings.padding * 2;
+        }
+        $this.parent().css({ left: newX, top: newY });
+        initialX = newX;
+        initialY = newY;
+        settings.dragCallback({ elem: parent.find( '.' + settings.childClass ), padding: settings.padding });
+    };
+
+    var topLeftMoving = function(e) {
+        e.stopPropagation();
+        var newX = e.pageX,
+            newY = e.pageY;
+        if ( newX <= getFarLeft() + settings.padding ) {
+            newX = getFarLeft() + settings.padding;
+        }
+        if ( newY <= getFarTop() + settings.padding ) {
+            newY = getFarTop() + settings.padding;
+        }
+        var width = Math.max( settings.minWidth, e.data.rightEdge - newX ),
+            height = Math.max( settings.minHeight, e.data.bottomEdge - newY );
+        e.data.parent.css({ width: width, height: height })
+            .parent().css({
+                top: e.data.bottomEdge - height - settings.padding,
+                left: e.data.rightEdge - width - settings.padding });
+        initialX = e.data.rightEdge - width - settings.padding;
+        initialY = e.data.bottomEdge - height - settings.padding;
+        settings.resizeCallback({ elem: parent.find( '.' + settings.childClass ), padding: settings.padding });
+    };
+
+    var topRightMoving = function(e) {
+        e.stopPropagation();
+        var newX = e.pageX,
+            newY = e.pageY;
+        if ( newX >= getFarRight() - settings.padding ) {
+            newX = getFarRight() - settings.padding;
+        }
+        if ( newY <= getFarTop() + settings.padding) {
+            newY = getFarTop() + settings.padding;
+        }
+        var width = Math.max( settings.minWidth, newX - e.data.leftEdge ),
+            height = Math.max( settings.minHeight, e.data.bottomEdge - newY );
+        e.data.parent.css({ width: width, height: height })
+            .parent().css({
+                top: e.data.bottomEdge - height - settings.padding });
+        initialY = e.data.bottomEdge - height - settings.padding;
+        settings.resizeCallback({ elem: parent.find( '.' + settings.childClass ), padding: settings.padding });
+    };
+
+    var bottomRightMoving = function(e) {
+        e.stopPropagation();
+        var newX = e.pageX,
+            newY = e.pageY;
+        if ( newX >= getFarRight() - settings.padding ) {
+            newX = getFarRight() - settings.padding;
+        }
+        if ( newY >= getFarBottom() - settings.padding) {
+            newY = getFarBottom() - settings.padding;
+        }
+        var width = Math.max( settings.minWidth, newX - e.data.leftEdge ),
+            height = Math.max( settings.minHeight, newY - e.data.topEdge );
+        e.data.parent.css({ width: width, height: height });
+        settings.resizeCallback({ elem: parent.find( '.' + settings.childClass ), padding: settings.padding });
+    };
+
+    var bottomLeftMoving = function(e) {
+        e.stopPropagation();
+        var newX = e.pageX,
+            newY = e.pageY;
+        if ( newX <= getFarLeft() + settings.padding ) {
+            newX = getFarLeft() + settings.padding;
+        }
+        if ( newY >= getFarBottom() - settings.padding) {
+            newY = getFarBottom() - settings.padding;
+        }
+        var width = Math.max( settings.minWidth, e.data.rightEdge - newX ),
+            height = Math.max( settings.minHeight, newY - e.data.topEdge );
+        e.data.parent.css({ width: width, height: height })
+            .parent().css({
+                left: e.data.rightEdge - width - settings.padding });
+        initialX = e.data.rightEdge - width - settings.padding;
+        settings.resizeCallback({ elem: parent.find( '.' + settings.childClass ), padding: settings.padding });
+    };
+
+    var getParent = function() {
+        return $('<div />')
+                .addClass( settings.parentClass )
+                .append(
+                    $('<div />')
+                        .addClass( settings.childClass )
+                        .css({ width: settings.minWidth, height: settings.minHeight }));
+    };
+
+    // add the basic box to the page
+    parent = getParent();
+
+    if ( settings.resizable ) {
+        parent.find( '.' + settings.childClass ).append(
+                $('<div />').addClass( settings.topLeftClass ),
+                $('<div />').addClass( settings.topRightClass ),
+                $('<div />').addClass( settings.bottomLeftClass ),
+                $('<div />').addClass( settings.bottomRightClass ))
+            .find('div')
+                .mousedown(function(e) {
+                    e.stopPropagation();
+                    var $this = $(this),
+                        parent = $this.parent(),
+                        left = parent.offset().left,
+                        top = parent.offset().top,
+                        callback = $this.hasClass( settings.topLeftClass ) ? topLeftMoving : ( $this.hasClass( settings.topRightClass ) ? topRightMoving : ( $this.hasClass( settings.bottomRightClass ) ? bottomRightMoving : bottomLeftMoving ) );
+                    $(document).mousemove({
+                        elem: $this,
+                        parent: parent,
+                        rightEdge: parent.width() + left,
+                        bottomEdge: parent.height() + top,
+                        leftEdge: left,
+                        topEdge: top
+                    }, callback );
+                    $(document).mouseup( { elem: $this }, function(e) {
+                        e.stopPropagation();
+                        $(document).unbind('mousemove', callback);
+                    });
+            }).end();
+    }
+
+    if ( settings.draggable ) {
+        parent.find( '.' + settings.childClass )
+            .mousedown(function(e) {
+                e.stopPropagation();
+                var $this = $(this),
+                    x = e.pageX,
+                    y = e.pageY,
+                    originX = $this.offset().left - settings.padding,
+                    originY = $this.offset().top - settings.padding;
+                $this.addClass('grabbing');
+                $(document).mousemove( { x: x, y: y, elem: $this, originX: originX, originY: originY }, mouseMoved );
+                $(document).mouseup( { elem: $this }, function(e) {
+                    e.stopPropagation();
+                    settings.dragEndCallback({ elem: parent.find( '.' + settings.childClass ), padding: settings.padding });
+                    e.data.elem.removeClass('grabbing');
+                    $(document).unbind('mousemove', mouseMoved);
+                });
+            });
+    }
+
+    // check if image is too close to the boundary edges
+    if (settings.boundary) {
+        // check left
+        if ( outsideOfLeft() ) {
+            eX = bLeft + settings.padding + settings.boundaryPadding + ( settings.minWidth / 2 );
+        }
+        // check right
+        if ( outsideOfRight() ) {
+            eX = bLeft + bWidth - settings.padding - settings.boundaryPadding - ( settings.minWidth / 2 );
+        }
+        // check top
+        if ( outsideOfTop() ) {
+            eY = bTop + settings.padding + settings.boundaryPadding + ( settings.minHeight / 2 );
+        }
+        //check bottom
+        if ( outsideOfBottom() ) {
+            eY = bTop + bHeight - settings.padding - settings.boundaryPadding - ( settings.minHeight / 2 );
+        }
+    }
+
+    // position the box
+    parent.css({ top: eY - ( settings.minHeight / 2 ) -  settings.padding , left: eX - ( settings.minWidth / 2 ) - settings.padding });
+
+    // add to page
+    root.append(parent);
+
+    initialX = parent.offset().left;
+    initialY = parent.offset().top;
+
+    settings.loadCallback({ elem: parent.find( '.' + settings.childClass ), padding: settings.padding });
+
+    this.remove = function() {
+        parent.remove();
+        parent = getParent();
+        settings.loadCallback = function(d){};
+        settings.dragCallback = function(d){};
+        settings.dragEndCallback = function(d){};
+        settings.resizeCallback = function(d){};
+    };
+
+    /**
+     * Returns [width, height] of the box
+     */
+    this.getDimensions = function() {
+        var a = parent.find( '.' + settings.childClass );
+        return [ a.width(), a.height() ];
+    };
+
+    /**
+     * Returns [x, y] of the box
+     * If the box is inside a boundary the coordinates are relative to the boundary
+     */
+    this.getCoords = function() {
+        var o = parent.find( '.' + settings.childClass ).offset(),
+            x = o.left,
+            y = o.top;
+        if ( settings.boundary ) {
+            o = settings.boundary.offset();
+            x -= o.left + settings.boundaryPadding;
+            y -= o.top + settings.boundaryPadding;
+        }
+        return [ x, y ];
+    };
+
+    this.shiftPosition = function(coords) {
+        bTop = settings.boundary ? Math.round(settings.boundary.offset().top) : 0;
+        bLeft = settings.boundary ? Math.round(settings.boundary.offset().left) : 0;
+        parent.css({ top: initialY + coords.y, left: initialX + coords.x });
+        settings.dragCallback({ elem: parent.find( '.' + settings.childClass ), padding: settings.padding });
+    };
+};
+
+Site.MediaTagging = function(args) {
+
+    var settings = {
+            updateApiUrl:       '/tag/update_tags.json',
+            retrieveApiUrl:     '/tag/get_tags.json',
+            elem:               null,   // jQuery object of the element doing tagging for
+            hash:               '',
+            rawWidth:           0,
+            rawHeight:          0,
+            padding:            0,      // total padding + border around this element
+            infoArea:           $('.tagging-row:eq(0)'),
+            infoTagResultsClass:'media-tagger-results',
+            infoTagResultClass: 'media-tagger-result',
+            infoTagResultsTip:  'media-tagger-results-tip',
+            infoTagResultsText: 'People in this photo:',
+            infoTagThisClass:   'tag-this',
+            infoTagThisText:    'Tag This Photo',
+            infoTagDoneParentClass:  'done-tagging-parent',
+            infoTagDoneParentHeight: 30,
+            infoTagDonePadding: 5,
+            infoTagDoneClass:   'done-tagging',
+            infoTagDoneText:    'Done Tagging',
+            infoTagTipClass:    'media-tagger-tip',
+            infoTagTipText:     'Click on photo to begin tagging.',
+            infoTagTipText2:    'Click \'Done Tagging\' when finished.',
+            dimClass:           'interactive-box-dimmed-bg',
+            tagBoxClass:        'media-tagger-box',
+            buttonClass:        'media-tagger-button',
+            checkBoxClass:      'media-tagger-checkbox',
+            searchClass:        'media-tagger-search',
+            taggedBoxParentClass: 'media-tagger-tagged-parent',
+            taggedBoxControlsClass: 'media-tagger-tagged-controls',
+            taggedBoxClass:     'media-tagger-tagged',
+            checkBoxLabel:      '@mention tagged user',
+            inputDefaultText:   'Tag a person',
+            dimBoundary:        true,
+            eventSection:       '',
+            mediaOwner:         '',
+            disableInfoArea:    false
+        },
+        root = $('#main'),
+        dimElement = null,
+        bHeight = 0,
+        bWidth = 0,
+        bTop = 0,
+        bLeft = 0,
+        initialX = 0,
+        initialY = 0,
+        theBox = null,
+        inProgress = false,
+        tagBox = null,
+        tagDone = null,
+        userSearch = null,
+        visible = false,
+        checkBox = null,
+        destroyed = false,  //set to true when an instance is no longer wanted
+        tags = {};      // object to hold possible tags
+
+    if (args) {
+        $.extend(settings, args);
+    }
+
+    settings.eventSection = settings.eventSection || _e.section;
+
+    initialX = settings.elem.offset().left;
+    initialY = settings.elem.offset().top;
+
+    var adjustTopRelativeTo = function(args) {
+        tagBox.css({ top: args.elem.offset().top + args.elem.innerHeight() + args.padding });
+    };
+
+    var adjustLeftRelativeTo = function(args) {
+        tagBox.css({ left: args.elem.offset().left + ( ( args.elem.innerWidth() - tagBox.innerWidth() ) / 2 ) });
+    };
+
+    var renderCheckbox = function() {
+        if ( checkBox ) { return; }
+        checkBox = $('<div />').append( $('<div />')
+                        .addClass( settings.checkBoxClass )
+                        .append(
+                            $('<input />')
+                                .attr({ type: 'checkbox', checked: 'checked' }))
+                                .click(function() {
+                                    userSearch.setIgnoreNextBlur(true);
+                                    setTimeout(function() {
+                                        userSearch.forceInputFocus();
+                                    }, 300);
+                                })
+                        .append(
+                            $('<span />').html( settings.checkBoxLabel )))
+                        .hide();
+        tagBox.append( checkBox );
+    };
+
+    var hideCheckBox = function() {
+        checkBox.hide();
+    };
+
+    var showCheckBox = function() {
+        checkBox.show();
+    };
+
+    var searchBlurCallback = function(args) {
+        if ( checkBox ) {
+            hideCheckBox();
+            if ( !args.searchInput.val() ) {
+                args.searchInput
+                    .prop('value', settings.inputDefaultText)
+                    .one('focus', function() {
+                        $(this).val('').prop('value', '');
+                    });
+            }
+        }
+    };
+
+    var searchFocusCallback = function(args) {
+        if ( checkBox ) {
+            showCheckBox();
+        }
+    };
+
+    var searchNoTextCallback = function(args) {
+        if ( checkBox ) {
+            hideCheckBox();
+        }
+    };
+
+    var clickOnBoundary = function(e) {
+        _e.l({ section: settings.eventSection, action: _e.actions.tagging, label: _e.labels.clickToTag });
+        e.preventDefault();
+        if ( inProgress ) { return; }
+        inProgress = true;
+        theBox = new InteractiveBox({
+            event: e,
+            boundary:           dimElement,
+            loadCallback:       boxLoaded,
+            dragCallback:       boxDragged,
+            dragEndCallback:    boxDragEnded,
+            resizeCallback:     boxResized
+        });
+    };
+
+    var clickOnElem = function(e) {
+        e.preventDefault();
+        if ( inProgress ) { return; }
+        inProgress = true;
+        theBox = new InteractiveBox({
+            event: e,
+            boundary:           settings.elem,
+            boundaryPadding:    settings.padding,
+            loadCallback:       boxLoaded,
+            dragCallback:       boxDragged,
+            dragEndCallback:    boxDragEnded,
+            resizeCallback:     boxResized
+        });
+    };
+
+    var cancelTag = function() {
+        inProgress = false;
+        if ( tagBox ) {
+            tagBox.remove();
+        }
+        tagBox = null;
+        if ( userSearch ) {
+            userSearch.remove();
+        }
+        userSearch = null;
+        if ( checkBox ) {
+            checkBox.remove();
+        }
+        checkBox = null;
+        if ( theBox ) {
+            theBox.remove();
+        }
+        theBox = null;
+        // unbind click event and bind again
+        if ( settings.dimBoundary && dimElement ) {
+            dimElement.unbind('click', clickOnBoundary).click( clickOnBoundary );
+        } else {
+            settings.elem.unbind('click', clickOnElem).click( clickOnElem );
+        }
+    };
+
+    var removeTag = function(e) {
+        _e.l({ section: settings.eventSection, action: _e.actions.tagging, label: _e.labels.deleteTag });
+        e.preventDefault();
+        var $this = $(this),
+            screenName = $this.data('screenName');
+        tags[screenName].box.addClass('gone').hide();
+        tags[screenName].removed = true;
+        tags[screenName].changed = true;
+        renderTagsAsList();
+        $.when( saveChanges() )
+            .then(function(){})
+            .fail(function(msg){
+                msg = msg || 'We could not complete your request. Please try again later.';
+                Utils.triggerGlobalInformer( msg, 5, { isError: true } );
+                resetArea();
+                renderTagsAsList();
+            });
+    };
+
+    var canDelete = function( screenName ) {
+        return Utils.getLoggedInUsername() == settings.mediaOwner || Utils.getLoggedInUsername() == screenName;
+    };
+
+    var canTag = function( screenName ) {
+        if ( !Utils.getLoggedInUsername() ) { return true; }
+        return Utils.getLoggedInUsername() == settings.mediaOwner || Utils.getLoggedInUsername() == screenName;
+    };
+
+    var renderTaggedBox = function(args) {
+        if ( !args || !args.screen_name ) { return ''; }
+        var a = $('<div />')
+                    .data('left', args.left)
+                    .data('top', args.top)
+                    //parent
+                    .addClass( settings.taggedBoxParentClass )
+                    .css({ left: args.left, top: args.top })
+                    .append(
+                        //first div child
+                        $('<div />')
+                            .append(
+                                //bordered frame
+                                $('<div />')
+                                    .addClass( settings.taggedBoxClass )
+                                    .css({ width: args.width, height: args.height }),
+                                //controls
+                                $('<div />')
+                                    .addClass( 'clearfix ' + settings.taggedBoxControlsClass )
+                                    .append(
+                                        $('<a />')
+                                            .html( args.screen_name )
+                                            .attr('href', Utils.getFroggyURL( args.screen_name ))
+                                            .click( function() { _e.l({ section: settings.eventSection, action: _e.actions.tagging, label: _e.labels.clickOnTag }); } ))));
+        if ( canDelete( args.screen_name ) ) {
+            a.find( '.' + settings.taggedBoxControlsClass )
+                .append(
+                    $('<a />')
+                        .addClass( settings.buttonClass )
+                        .html('remove')
+                        .data('screenName', args.screen_name)
+                        .click( removeTag ))
+                .end();
+        }
+        root.append(a);
+        return a;
+    };
+
+    var userSelected = function(args) {
+        var xy = theBox.getCoords(),
+            wh = theBox.getDimensions(),
+            data = args.data,
+            screenName = data.screen_name,
+            doMention = checkBox ? checkBox.find( 'input:checked' ).length == 1 : false;
+        if ( !canTag( screenName ) ) {
+            Utils.triggerGlobalInformer('You can only tag yourself in other people\'s photo.', 5, { isError: true });
+            setTimeout(function() {
+                showCheckBox();
+            }, 200);
+            return;
+        }
+        if ( tags[screenName] && !tags[screenName].removed ) {
+            Utils.triggerGlobalInformer('This person has already been tagged in this photo.', 5, { isError: true });
+            setTimeout(function() {
+                showCheckBox();
+            }, 200);
+            return;
+        }
+        _e.l({ section: settings.eventSection, action: _e.actions.tagging, label: _e.labels.addTag });
+        cancelTag();
+        var width = wh[0],
+            height = wh[1],
+            left = xy[0],
+            top = xy[1];
+        if ( settings.elem ) {
+            left += settings.elem.offset().left + settings.padding;
+            top += settings.elem.offset().top + settings.padding;
+        }
+        tags[screenName] = $.extend( data, {
+            changed: true,
+            brand_new: true,
+            raw_x: xy[0],
+            raw_y: xy[1],
+            box: renderTaggedBox({
+                width:  width,
+                height: height,
+                left:   left,
+                top:    top,
+                screen_name: screenName
+            }),
+            at_mention: doMention
+        });
+        renderTagsAsList();
+    };
+
+    var boxLoaded = function(args) {
+        tagBox = $('<div />')
+                    .addClass( settings.tagBoxClass )
+                    .append(
+                        // search input
+                        $('<input />')
+                            .attr({ type: 'text' })
+                            .addClass( settings.searchClass )
+                            .val(settings.inputDefaultText)
+                            .prop('value', settings.inputDefaultText)
+                            .one('focus', function() {
+                                var $this = $(this);
+                                $this.val('').prop('value', '');
+                                userSearch = new Site.UserSearch({
+                                    selectCallback: userSelected,
+                                    focusCallback:  searchFocusCallback,
+                                    blurCallback:   searchBlurCallback,
+                                    noTextCallback: searchNoTextCallback,
+                                    showSeeMore:    false,
+                                    count:          4,
+                                    searchInput:    $this,
+                                    customParentClass:  'lp-media-tag-search',
+                                    top:            35
+                                });
+                        }))
+                    .append(
+                        // cancel button
+                        $('<div />').append(
+                            $('<a />')
+                                .html('Cancel')
+                                .addClass( settings.buttonClass )
+                                .click(function(e) { e.preventDefault(); _e.l({ section: settings.eventSection, action: _e.actions.tagging, label: _e.labels.cancelTag }); cancelTag(); })));
+        root.append( tagBox );
+        renderCheckbox();
+        adjustTopRelativeTo(args);
+        adjustLeftRelativeTo(args);
+        settings.infoArea.find( '.' + settings.infoTagTipClass ).hide();
+        if ( tagDone ) {
+            tagDone.find( '.' + settings.infoTagTipClass ).html( settings.infoTagTipText2 );
+        }
+    };
+
+    var boxDragged = function(args) {
+        adjustTopRelativeTo(args);
+        adjustLeftRelativeTo(args);
+        if ( userSearch ) {
+            userSearch.adjustPosition();
+        }
+    };
+
+    var boxDragEnded = function(args) {
+        adjustTopRelativeTo(args);
+        adjustLeftRelativeTo(args);
+        if ( userSearch ) {
+            userSearch.adjustPosition();
+            userSearch.forceInputFocus();
+        }
+    };
+
+    var boxResized = function(args) {
+        adjustTopRelativeTo(args);
+        adjustLeftRelativeTo(args);
+        if ( userSearch ) {
+            userSearch.adjustPosition();
+        }
+    };
+
+    var positionDimmedBox = function() {
+        visible = true;
+
+        // boundary properties
+        bHeight = settings.elem ? settings.elem.height() : 0,
+        bWidth = settings.elem ? settings.elem.width() : 0,
+        bTop = settings.elem ? Math.round(settings.elem.offset().top) : 0,
+        bLeft = settings.elem ? Math.round(settings.elem.offset().left) : 0;
+
+        if ( settings.dimBoundary && dimElement ) {
+            dimElement.css({ top: bTop + settings.padding , left: bLeft + settings.padding });
+            return;
+        }
+
+        // position the dimmed background
+        if ( settings.dimBoundary ) {
+            dimElement = $('<div />')
+                .addClass( settings.dimClass )
+                .css({ top: bTop + settings.padding , left: bLeft + settings.padding , width: bWidth, height: bHeight })
+                .click( clickOnBoundary );
+            root.append(dimElement);
+        } else {
+            settings.elem.click( clickOnElem );
+        }
+    };
+
+    var resetArea = function() {
+        //reset the area
+        cancelTag();
+        visible = false;
+        if ( tagDone ) {
+            tagDone.remove();
+            tagDone = null;
+        }
+        settings.infoArea
+            .find( '.' + settings.infoTagThisClass )
+                .removeClass('invisible')
+                .show()
+                .end();
+        if ( settings.dimBoundary && dimElement ) {
+            dimElement.remove();
+            dimElement = null;
+        } else {
+            settings.elem.unbind( 'click', clickOnElem );
+        }
+    };
+
+    var getAdjustedHorizontalValue = function(args) {
+        if ( args.reverse ) {
+            return Math.round( settings.elem.width() * args.val / settings.rawWidth );
+        } else {
+            return Math.round( settings.rawWidth * args.val / settings.elem.width() );
+        }
+    };
+
+    var getAdjustedVerticalValue = function(args) {
+        if ( args.reverse ) {
+            return Math.round( settings.elem.height() * args.val / settings.rawHeight );
+        } else {
+            return Math.round( settings.rawHeight * args.val / settings.elem.height() );
+        }
+    };
+
+    var save = function(data) {
+        return $.ajax({
+            url:    settings.updateApiUrl,
+            type:   'POST',
+            dataType: 'json',
+            data:   data
+        });
+    };
+
+    var saveChanges = function() {
+        var t = { additions: { face: [] }, removals: { face: [] }, hash: settings.hash },
+            dfd = new $.Deferred();
+        $.each( tags, function(key, tag) {
+            if ( !( !tag || !tag.changed || ( tag.removed && tag.brand_new )) ) {
+                tag.changed = false;
+                tag.brand_new = false;
+                var box = tag.box.find( '.' + settings.taggedBoxClass ),
+                    w = box.width(),
+                    h = box.height(),
+                    x1 = getAdjustedHorizontalValue( { val: tag.raw_x } ),
+                    y1 = getAdjustedVerticalValue( { val: tag.raw_y } ),
+                    x2 = x1 + getAdjustedHorizontalValue( { val: w } ),
+                    y2 = y1 + getAdjustedVerticalValue( { val: h } ),
+                    o = tag.goem ? tag : {
+                        geom: {
+                            type: 'rectangle',
+                            coordinates: [ [x1,y1], [x2,y2] ]
+                        },
+                        service_id: tag.service_id,
+                        user_id: tag.user_id
+                    };
+                o.at_mention = tag.at_mention || false;
+                ( tag.removed ? t.removals.face : t.additions.face ).push( o );
+            }
+        });
+        if ( t.additions.face.length > 0 || t.removals.face.length > 0 ) {
+            $.when( save(t) )
+                .then( function(r) {
+                    if ( r && r.error ) {
+                        dfd.reject(r.error);
+                    } else {
+                        dfd.resolve();
+                    }
+                }).fail( function(r) {
+                    dfd.reject('');
+                });
+        } else {
+            dfd.resolve();
+        }
+        return dfd.promise();
+    };
+
+    var renderTagsAsList = function() {
+        if ( destroyed || settings.disableInfoArea ) { return; }
+        var t = settings.infoArea.find( '.' + settings.infoTagResultsClass ),
+            count = 0,
+            i = 1;
+        $.each( tags, function(k, tag) { count += ( tag && !tag.removed ) ? 1 : 0 });
+        // empty the area
+        t.children().remove();
+        // check if there are results to be rendered
+        if ( count == 0 ) { return; }
+        t.append(
+            // text for the results
+            $('<span />')
+                .addClass( settings.infoTagResultsTip )
+                .html( settings.infoTagResultsText ));
+
+        $.each( tags, function(key, tag) {
+            if ( !tag || tag.removed || !tag.screen_name ) { return true; }
+            // result itself
+            var a = $('<div />')
+                        .addClass( settings.infoTagResultClass )
+                        .append(
+                            $('<a />')
+                                .html( tag.screen_name )
+                                .click( function() { _e.l({ section: settings.eventSection, action: _e.actions.tagging, label: _e.labels.clickOnTag }); } )
+                                .attr('href', Utils.getFroggyURL( tag.screen_name )))
+                        .hover( function(){ tag.box.addClass('hover'); }, function(){ tag.box.removeClass('hover'); } );
+            if ( canDelete( tag.screen_name ) ) {
+                a.append(
+                    $('<span />').html('('),
+                    $('<a />')
+                        .data('screenName', tag.screen_name)
+                        .html('remove')
+                        .click( removeTag ),
+                    $('<span />').html(')'));
+            }
+            if ( i++ < count) {
+                a.append( $('<span />').html(',') );
+            }
+            t.append(a);
+        });
+    };
+
+    var retrieve = function() {
+        return $.ajax({
+            url:    settings.retrieveApiUrl,
+            type:   'GET',
+            dataType: 'json',
+            data:   { hash: settings.hash }
+        });
+    };
+
+    var getTags = function() {
+        $.when( retrieve() )
+            .then( function(r) {
+                if ( destroyed ) { return; }
+                if ( settings.rawHeight == 0 || settings.rawWidth == 0 ) {
+                    settings.rawHeight = r.result.height;
+                    settings.rawWidth = r.result.width;
+                }
+                if ( destroyed || !r || !r.result || !r.result.faces || r.result.faces.length == 0 ) { return; }
+                $.each( r.result.faces, function(i, face) {
+                    if ( !r.result.users[face.service_id] || !r.result.users[face.service_id][face.user_id] ) { return true; }
+                    $.extend( face, r.result.users[face.service_id][face.user_id] );
+                    var x1 = face.geom.coordinates[0][0],
+                        y1 = face.geom.coordinates[0][1],
+                        w = face.geom.coordinates[1][0] - x1,
+                        h = face.geom.coordinates[1][1] - y1;
+                    var left = x1 = getAdjustedHorizontalValue( { val: x1, reverse: true } );
+                    var top = y1 = getAdjustedVerticalValue( { val: y1, reverse: true } );
+                    if ( settings.elem ) {
+                        left += settings.elem.offset().left + settings.padding;
+                        top += settings.elem.offset().top + settings.padding;
+                    }
+                    tags[face.screen_name] = $.extend( face, {
+                        raw_x: x1,
+                        raw_y: y1,
+                        box: renderTaggedBox({
+                            width:  getAdjustedHorizontalValue( { val: w, reverse: true } ),
+                            height: getAdjustedVerticalValue( { val: h, reverse: true } ),
+                            left:   left,
+                            top:    top,
+                            screen_name: face.screen_name
+                        })
+                    });
+                });
+                renderTagsAsList();
+            });
+    };
+
+    var windowResized = function() {
+        if ( settings.dimBoundary && dimElement ) {
+            positionDimmedBox();
+        }
+        var o = settings.elem.offset(),
+            x = o.left - initialX,
+            y = o.top - initialY;
+        if ( theBox ) {
+            theBox.shiftPosition({ x: x, y: y });
+        }
+        $( '.' + settings.taggedBoxParentClass ).each(function() {
+            var $this = $(this);
+            $this.css({ top: $this.data('top') + y, left: $this.data('left') + x });
+        });
+        if ( tagDone ) {
+            positionDoneTagging();
+        }
+    };
+
+    var positionDoneTagging = function() {
+        var o = settings.elem.offset();
+        tagDone.css({
+            left: o.left + settings.padding,
+            top: o.top + settings.elem.height() - settings.infoTagDoneParentHeight - ( settings.padding == 0 ? 2 * settings.infoTagDonePadding : settings.infoTagDonePadding - 1 )
+        });
+    };
+
+    var renderDoneTagging = function() {
+        tagDone = $('<div />')
+                    .addClass( settings.infoTagDoneParentClass + ' clearfix' )
+                    .css({ width: settings.elem.width() - 2 * settings.infoTagDonePadding })
+                    .append(
+                        // done tagging link
+                        $('<a />')
+                            .html( settings.infoTagDoneText )
+                            .addClass( settings.infoTagDoneClass + ( Utils.getLoggedInUsername() ? '' : ' login-button-anchor' ) )
+                            .click(function(e) {
+                                e.preventDefault();
+                                if ( !Utils.getLoggedInUsername() ) { return; }
+                                var $this = $(this);
+                                if ( $this.hasClass('disabled-button') ) { return; }
+                                $this.addClass('disabled-button').html('Saving...');
+                                $.when( saveChanges() )
+                                    .then(function(){ resetArea(); })
+                                    .fail(function(msg){
+                                        $this.removeClass('disabled-button').html( settings.infoTagDoneText );
+                                        msg = msg || 'We could not complete your request. Please try again later.';
+                                        Utils.triggerGlobalInformer( msg, 5, { isError: true } );
+                                        resetArea();
+                                        renderTagsAsList();
+                                    });
+                            }),
+                        $('<div />')
+                            .html( settings.infoTagTipText )
+                            .addClass( settings.infoTagTipClass ));
+        root.append( tagDone );
+        positionDoneTagging();
+        tagDone.show();
+    };
+
+    var renderInfoArea = function() {
+        if ( destroyed ) { return; }
+        settings.infoArea
+            .append(
+                // results area
+                $('<div />')
+                    .addClass( settings.infoTagResultsClass ),
+                // tag this link
+                $('<a />')
+                    .html( settings.infoTagThisText )
+                    .addClass( settings.infoTagThisClass )
+                    .click(function(e) {
+                        e.preventDefault();
+                        var $this = $(this);
+                        positionDimmedBox();
+                        $this.addClass('invisible');
+                        renderDoneTagging();
+                    }));
+    };
+
+    this.start = function() {
+        renderInfoArea();
+        getTags();
+        $(window).resize( windowResized );
+    };
+
+    this.isInProgress = function() {
+        return inProgress;
+    };
+
+    this.isVisible = function() {
+        return visible;
+    };
+
+    this.setDestroyed = function(flag) {
+        destroyed = true;
+    };
+
+    this.reset = function() {
+        $(window).unbind( 'resize', windowResized );
+        resetArea();
+        // remove all tags
+        $.each( tags, function(k, tag) {
+            if ( tag && tag.box ) { tag.box.remove(); }
+        });
+        tags = {};
+        settings.infoArea.children().remove();
+    };
+};

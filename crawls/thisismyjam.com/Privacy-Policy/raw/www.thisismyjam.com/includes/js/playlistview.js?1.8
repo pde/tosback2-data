@@ -1,0 +1,550 @@
+PlaylistView = function($container)
+{
+    EventEmitter.apply(this);
+
+    this.$container = $container;
+    this.likes = {};
+    this.$playAllJams = $("#playAllJams");
+};
+PlaylistView.prototype = EventEmitter.extend();
+
+PlaylistView.prototype.appendJams = function(jams)
+{
+    for(var i = 0; i < jams.length; i ++) {
+        this.$container.append($(jams[i].html));
+    }
+    this.$container.ajaxify();
+};
+
+PlaylistView.prototype.insertJamAfter = function(previousJamID, jam)
+{
+    $(jam.html).insertAfter($('#' + previousJamID)).ajaxify();
+};
+
+PlaylistView.prototype.insertFirst = function(jam)
+{
+    var $jam = $(jam.html);
+    this.$container.prepend($jam);
+    $jam.ajaxify();
+};
+
+PlaylistView.prototype.getCurrentTime = function(){
+    return window.player.view.getCurrentTime();
+};
+
+PlaylistView.prototype.removeJam = function(jam)
+{
+    $('#' + jam.id).remove();
+};
+
+// profile pages are special
+PlaylistView.prototype.beforePlay = function()
+{
+    if(window.playerView.isOnCurrentlyPlayingProfilePage()) {
+        return ProfilePlaylistView.prototype.beforePlay.call(this);
+    }
+    return $.Deferred().resolve();
+};
+
+PlaylistView.prototype.afterStop = function()
+{
+    if(window.playerView.isOnCurrentlyPlayingProfilePage()) {
+        return ProfilePlaylistView.prototype.afterStop.call(this);
+    }
+    return $.Deferred().resolve();
+};
+
+PlaylistView.prototype.updateControls = function(hasJams, hasMore)
+{
+    $('#playAllJams').disable(!hasJams);
+
+    var $loadMore = $('#feedPagination');
+    $loadMore.loaded();
+    if(hasMore)
+        $loadMore.show();
+    else
+        $loadMore.hide();
+};
+
+PlaylistView.prototype.beforeLoad = function()
+{
+    $('#feedPagination').loading();
+};
+
+PlaylistView.prototype.init = function()
+{
+    var playlist = this;
+    $('#feedPagination').click(function() {
+        playlist.emit('loadMore');
+        return false;
+    });
+};
+
+PlaylistView.prototype.updatePlayCount = function(jam, playCount)
+{
+    var $newsItem = $('#' + jam.id),
+        $counter = $('.playCounter', $newsItem),
+        str = (playCount > 1) ? " plays" : " play";
+    $counter.text(playCount+str);
+};
+
+PlaylistView.prototype.setLiked = function(jam, liked)
+{
+    var like = this.likes[jam.id];
+    if(like) {
+        if(liked)
+            like.like();
+        else
+            like.unlike();
+    }
+};
+
+
+HomePlaylistView = function()
+{
+    PlaylistView.apply(this, arguments);
+
+    this.$container.addClass('loading');
+    $("#noobExplain").hide();
+
+    this.shownButNotPlaying = null;
+
+    this.bind();
+    this.init();
+};
+
+HomePlaylistView.prototype = new PlaylistView();
+
+HomePlaylistView.prototype.bind = function()
+{
+    $(window)
+        .off('scroll', HomePlaylistView.loadMore)
+        .on('scroll', {view: this}, HomePlaylistView.loadMore);
+
+
+};
+
+// a bit dirty, but need to do this for $.off() to work properly
+// (unless you do some crazy underscore bind magic)
+HomePlaylistView.loadMore = function(e)
+{
+    var $paginate = $('.paginate');
+    if(!$paginate.length || !$paginate.is(':visible'))
+        return;
+
+    var view = e.data.view;
+    var scrollTop = $(document).scrollTop();
+    var windowHeight = $(window).height();
+    var loadMoreTop = $paginate.position().top;
+
+    if(loadMoreTop - (scrollTop + windowHeight) < 0)
+        $paginate.click();
+};
+
+HomePlaylistView.prototype.appendJams = function(jams)
+{
+	  this.$container.removeClass('loading');
+
+    var $jam;
+    for(var i = 0; i < jams.length; i ++) {
+        $jam = $(jams[i].html);
+        this.$container.append($jam);
+
+        var $like = $('.like', $jam);
+        var like = new Like($like);
+        like.setView(new PlaylistLikeView($like));
+        this.likes[jams[i].id] = like;
+
+        $('.comments', $jam).objectify(Commenter, CommenterView);
+        $('.share', $jam).off('click').on('click', function(e) {
+            var $target = $(e.target);
+            var sharePanel = new ModalSharePanel($target.data('username'));
+            sharePanel.show();
+            return false;
+        });
+
+        $('.rejam', $jam).on('click', boxyConfirm);
+
+        $jam.ajaxify();
+
+        if (i == 0 && this.$container.children().length == 1 && !player.current()) {
+            /* autoexpand the very first jam only, if no music is playing etc */
+            this.show(jams[i]);
+            this.shownButNotPlaying = jams[i];
+        }
+
+    }
+    var self = this;
+    self.$playAllJams.on('click', function(e) {
+        e.preventDefault();
+        self.$playAllJams.addClass("working");
+        $('.itemPlayButton:first').mousedown();
+        $('.itemPlayButton:first').parent().ScrollTo({
+            offsetIncrease: -55,
+            callback: function(){
+                self.$playAllJams.removeClass("working");
+            }
+        });
+
+        return false;
+    });
+
+    $("#noobExplain").show();
+};
+
+HomePlaylistView.prototype.beforePlay = function()
+{
+    // implode first jam, if shown.
+    if(this.shownButNotPlaying) {
+        if(this.shownButNotPlaying.id != player.current().id) {
+            var $el = $('#' + this.shownButNotPlaying.id);
+            if($el.length)
+                this.implodeOnPlaylist($el);
+        }
+
+        this.shownButNotPlaying = null;
+    }
+
+    if(window.playerView.isOnCurrentlyPlayingProfilePage())
+        return ProfilePlaylistView.prototype.beforePlay.call(this);
+
+    var $el = $('#' + player.current().id);
+
+    if($el.length)
+        return this.explodeOnPlaylist($el);
+
+    return $.Deferred().resolve();
+};
+
+HomePlaylistView.prototype.afterStop = function()
+{
+    if(window.playerView.isOnCurrentlyPlayingProfilePage())
+        return ProfilePlaylistView.prototype.afterStop.call(this);
+
+    var jamID = player.current().id;
+    var $el = $('#' + jamID);
+
+    var $commentInput = $(sprintf('.comments[data-jamid=%s] .newComment', jamID));
+    // check if we're writing a comment
+    if($commentInput.is(':focus')) {
+        var view = this;
+        $commentInput.blur(function() {
+            window.setTimeout(function() {
+                view.implodeOnPlaylist($el)
+            }, 1000);
+        });
+    }
+    else {
+        if($el.length)
+            return this.implodeOnPlaylist($el);
+    }
+
+    return $.Deferred().resolve();
+};
+
+HomePlaylistView.prototype.show = function(current)
+{
+    if(window.playerView.isOnCurrentlyPlayingProfilePage()) {
+        ProfilePlaylistView.prototype.show.call(this, current);
+        return;
+    }
+
+    var $element = $('#' + current.id);
+
+    if(!$element.length)
+        return;
+
+    $element.addClass('expanded');
+    var $jam = $element.find('.jamVatar');
+    var $stage = $element.find('.outerStage, .playStage');
+    var $playStage = $jam.parent();
+    var $outerStage = $playStage.parent();
+    var $thumbnail = $jam.find('img');
+
+    var dimensions = this.getExpandedDimensions(current);
+
+    $thumbnail.attr('src', $thumbnail.data('big'));
+    $thumbnail.height('185').width('185');
+    $thumbnail.show().css('opacity',1);
+
+    $jam.addClass('fancyJamBorder');
+    $playStage.css("padding", '20px 0');
+    $stage.css("width", '100%');
+
+    if ($outerStage.data('bg') && !window.isiPhone()) {
+        if(!$outerStage.data("bg-set")){
+            $outerStage.css('background-image', "url('"+$outerStage.data('bg')+"')");
+            $outerStage.data("bg-set",true);
+        }
+    }
+    if ($outerStage.data('bg-hex')) {
+        $outerStage.css('background-color', '#'+$outerStage.data('bg-hex'));
+    }
+    else {
+        $outerStage.css('background-color', '#e4e5e0');
+    }
+
+    $jam.css("width", dimensions[0]).css("height", dimensions[1]);
+    $playStage.css('background','transparent');
+
+    if (current.type != 'youtube') {
+        $thumbnail.css("width", dimensions[0]).css("height", dimensions[1]);
+    }
+
+    if (window.player.playbackHandler)
+        window.player.playbackHandler.show($jam);
+};
+
+HomePlaylistView.prototype.explodeOnPlaylist = function(element)
+{
+    // don't need to do this is already expanded, like if it's the first item
+    if (element.hasClass('expanded'))
+        return;
+
+    var promise = $.Deferred();
+
+    var $jam = element.find('.jamVatar');
+    var $stage = element.find('.outerStage, .playStage');
+    var $playStage = $jam.parent();
+    var $outerStage = $playStage.parent();
+    var $thumbnail = $jam.find('img');
+
+    // TODO: different aspect ratios for different types of jamz
+    var dimensions = HomePlaylistView.prototype.getExpandedDimensions();
+
+    // animation promisehelpers
+    var a1 = $.Deferred();
+    var a2 = $.Deferred();
+    var a3 = $.Deferred();
+    var a4 = $.Deferred();
+
+    var view = this;
+
+    // Set up backgrounds
+    if ($outerStage.data('bg-hex')) {
+        $outerStage.css('background-color', '#'+$outerStage.data('bg-hex'));
+    }
+    else {
+        $outerStage.css('background-color', '#e4e5e0');
+    }
+    if ($outerStage.data('bg') && !window.isiPhone()) {
+            var img = $outerStage.data('bg');
+            $('<img/>').attr('src', img).load(function() {
+                $outerStage.css('background-image', 'url('+img+')');
+                    if ($outerStage.data('bg') && !window.isiPhone()) {
+                       $outerStage.data("bg-set",true);
+                    }
+                a4.resolve(); /* not currently used */
+            });
+    }
+    else {
+        a4.resolve();
+    }
+
+    // Do video animation
+    if (player.current().type == 'youtube') {
+
+        g_e = element;
+
+        $thumbnail.fadeTo('fast', 0, function(){
+            //debugger;
+            element.addClass('expanded');
+            $thumbnail.attr('src', $thumbnail.data('big'));
+            $jam.addClass('fancyJamBorder');
+
+            $stage.animate({"width":'100%'}, 'fast', function() {
+                a2.resolve();
+                $playStage.animate({"padding":'20px 0'}, 'fast', function() { a1.resolve(); });
+            });
+
+            $jam.animate({"width":dimensions[0],"height":dimensions[1]}, 'fast', function(){
+                a3.resolve();
+            });
+
+        });
+    }
+    // Or, do audio animation
+    else {
+        element.addClass('expanded');
+        $jam.addClass('fancyJamBorder');
+
+        $stage.animate({"width":'100%'}, 'fast', function() { a2.resolve();
+            $playStage.animate({"padding":'20px 0'}, 'fast',function() { a1.resolve(); });
+            });
+
+        $thumbnail.animate({"width":dimensions[0],"height":dimensions[1]}, function(){
+            $thumbnail.attr('src', $thumbnail.data('big'));
+        });
+
+        $jam.animate({"width":dimensions[0],"height":dimensions[1]}, 'fast',function() { a3.resolve(); });
+    }
+
+     // resolve once everything's done wiggling
+    var animationPromise = $.when(a1, a2, a3);
+
+    animationPromise.then(function() {
+        promise.resolve();
+        if (!window.isiPhone()){
+            view.fadeInBackground(element);
+        }
+    });
+
+    // all done
+    this.explodePromise = promise;
+    return promise;
+
+};
+
+HomePlaylistView.prototype.implodeOnPlaylist = function(element)
+{
+    if (!this.explodePromise) {
+        this.explodePromise = $.Deferred().resolve();
+    }
+    this.explodePromise.then(function(){
+        var $jam = element.find('.jamVatar');
+        var $stage = element.find('.outerStage, .playStage');
+        var $playStage = $jam.parent();
+        var $outerStage = $playStage.parent();
+        var $thumbnail = $jam.find('img');
+
+        // promise animation helpers
+        var a1 = $.Deferred();
+        var a2 = $.Deferred();
+
+        // implode animation for audio and video
+        $jam.removeClass('fancyJamBorder');
+        //$stage.animate({"width":'110px', "padding":'0'});
+        $stage.animate({"width":'145px', "padding":'0'});
+        $jam.animate({"width":'145px',"height":'145px'}, function(){ a1.resolve(); });
+        $thumbnail.animate({"width":'145px',"height":'145px'}, function(){ a2.resolve(); });
+        $.when(a1, a2).then(function() {
+            //$playStage.css('background', '#e4e5e0');
+            $outerStage.css('background-image','').css('background-color', 'transparent');
+             //$playStage.$outerStage.css('background','');
+             $thumbnail.attr('src', $thumbnail.data('thumb'));
+             $thumbnail.css('opacity', 1);
+             element.removeClass('expanded');
+        });
+    });
+
+};
+
+HomePlaylistView.prototype.getExpandedDimensions = function(jam) {
+    if (window.isIOS()) {
+        return ['185px', '185px'];
+    }
+    if (jam) {
+        var aR = jam.aspectRatio;
+    }
+    else {
+        var aR = player.current().aspectRatio;
+    }
+    if (aR && aR == "4:3") {
+        return ['268px','201px'];
+    }
+    else if (aR && aR == "16:9") {
+        return ['357px','201px'];
+    }
+    else {
+        return ['185px','185px'];
+    }
+};
+
+HomePlaylistView.prototype.fadeInBackground = function(element, playstage, opacity) {
+    if (!playstage) { // first time called
+        playstage = element.find('.playStage');
+
+        var bg = playstage.css("background-color");
+        if (bg && bg == "transparent") {
+            return true;
+        }
+
+        opacity = 1;
+    }
+    opacity -= 0.1;
+
+    playstage.css('background', 'rgba(228, 229, 224, '+opacity+')');
+    if (opacity > 0) {
+        var view = this;
+        window.setTimeout(function(){ view.fadeInBackground(element, playstage, opacity); }, 60);
+    }
+};
+
+
+ProfilePlaylistView = function()
+{
+    PlaylistView.apply(this, arguments);
+    this.init();
+};
+
+ProfilePlaylistView.prototype = new PlaylistView();
+
+ProfilePlaylistView.prototype.show = function(current)
+{
+    // for now. in the future, try to make showOnProfilePage and show
+    // one function.
+    if(window.playerView.isOnCurrentlyPlayingProfilePage() &&
+       window.player.playbackHandler.showOnProfilePage) {
+        player.playbackHandler.showOnProfilePage();
+    }
+};
+
+ProfilePlaylistView.prototype.beforePlay = function()
+{
+    if(window.player.playbackHandler.explodeOnProfilePage)
+        return window.player.playbackHandler.explodeOnProfilePage();
+    else
+        return $.Deferred().resolve();
+};
+
+ProfilePlaylistView.prototype.afterStop = function()
+{
+    if(window.playerView.isOnCurrentlyPlayingProfilePage() &&
+       window.player.playbackHandler &&
+       window.player.playbackHandler.implodeOnProfilePage)
+        return window.player.playbackHandler.implodeOnProfilePage();
+    else
+        return $.Deferred().resolve();
+};
+
+ProfilePlaylistView.prototype.updatePlayCount = function(jam, playCount)
+{
+    var $playCounter = $('#plays'),
+        str = (playCount > 1) ? " plays" : " play";
+    $playCounter.find(".large.number").fadeOut(100,function(){
+        $(this).text(playCount).next("span").text(str);
+    }).fadeIn();
+};
+
+
+ProfilePlaylistView.prototype.appendJams = function(jams)
+{
+    // should only get one jam. the jam.
+    var jam = jams[0];
+
+    // only likeable if we're signed in
+    if(!$('.button.like').hasClass('sign-up')) {
+        var $like = $('.like');
+        var like = new Like($like);
+        like.setView(new ProfileLikeView($like));
+        this.likes[jam.id] = like;
+    }
+
+    if(isIOS() && jam.type == 'youtube') {
+        this.setupYoutubeForIOS(jam);
+    }
+};
+
+ProfilePlaylistView.prototype.setupYoutubeForIOS = function(jam)
+{
+    var setup = function() {
+            window.youtubePlaybackHandler.createPlayer(
+                jam.youtubeID, jam.username, jam.id, $('#jamHolder'));
+    };
+
+    if(window.ytPlayer.isReady)
+        setup();
+    else
+        window.ytPlayer.on('ready', setup);
+};
+

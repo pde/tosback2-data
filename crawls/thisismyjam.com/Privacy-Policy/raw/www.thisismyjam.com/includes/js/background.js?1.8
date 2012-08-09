@@ -1,0 +1,454 @@
+/**
+ * Functions for the control of profile customisation through modal dialogue
+ **/
+
+var Control = function (){
+
+    // Settings
+    this.backgroundImage = null;
+    this.backgroundRepeat = null;
+    this.backgroundColour = null;
+    this.backgroundPosition = null;
+    this.hideImage = null;
+    this.imagesDisabled = null;
+    this.activeThumb = null;
+    this.defaultPath = "/bg/";
+    this.bgHidden = null;
+    // i want to keep all properties visible in the constructor
+    // so i know what i'm dealing with. but we also need to re-attach
+    // all of these after we've boxy'd everything.
+    this.attachElements = function() {
+        this.$editButton = $("#backgroundEditLink");
+        this.$closeButton = $("#closeModal");
+        this.$saveButton = $("#saveBackground");
+        this.$saveSpinner = $("#saveSettings");
+        this.$imageLoadSpinner = $("#preImage");
+
+        this.$repeatButton = $("#repeatImage");
+        this.$hideImage = $("#hideImage");
+        this.$loadingSpinner = $("#imageProgress");
+        this.$screenBacking = $(".screenBacking");
+        //console.log('backing', this.$screenBacking);
+        this.$screenBacking.data('visual', {
+            html : this.$screenBacking.html(),
+            style : this.$screenBacking.attr("style")
+        });
+        this.$imageList = $("#imageSelectList");
+        this.backingMemory = false;
+        this.username = $("#meAvatar").attr("alt");
+        this.$imageSelections = $("#imageSelections");
+    };
+
+    this.attachElements();
+    this.setupModal();
+
+    this.setupSubmitHandler();
+    this.setupUploadHandler();
+    this.listenClick();
+    this.findActiveThumb();
+
+    if(this.$hideImage.prop("checked")){
+        this.enableImageClicking(false);
+        this.bgHidden = true;
+    }
+};
+
+Control.prototype.findActiveThumb = function(){
+    // console.log(this.$imageSelections,"thumber");
+    var $active = this.$imageSelections.find(".active");
+    // console.log("we got an active?",$active);
+    if($active.length){
+        this.activeThumb = $active.attr("id");
+    }
+
+    //this.$hideImage.prop("checked");
+
+    // console.log("setting active thumb to",this.activeThumb);
+
+    if(this.$hideImage.prop("checked")){
+        this.enableImageClicking(false);
+    }
+};
+
+Control.prototype.destroy = function() {
+    if($(".boxy-wrapper").length)
+        $(".boxy-wrapper").remove();
+};
+
+Control.prototype.listenClick = function() {
+    var $bgEdit = $("#backgroundEditLink");
+    var self = this;
+
+    this.$hideImage.on("click", function() {
+        self.imageToggle();
+    });
+    this.$repeatButton.on("click", function() {
+        self.repeatToggle();
+    });
+    this.$imageList.find("li").on("click", function() {
+        self.setSelectBgImage($(this));
+    });
+    $("#imageUploadHolder").on("click", function() {
+        self.setSelectBgImage($(this));
+    });
+};
+
+Control.prototype.getStyleString = function(){
+    var self = this;
+    img = ( self.backgroundImage &&
+            self.backgroundImage !== "none") ?
+        asset(bg(self.defaultPath + self.backgroundImage)) + "?" + Math.random() : "none";
+    var backgroundImageCss = self.hideImage ? 'none' :
+        'url(' + img + ')';
+
+    var styleString = 'background-image:' + backgroundImageCss + ';' +
+        'background-repeat:'+self.backgroundRepeat+";" +
+        'background-position:'+self.backgroundPosition + ";" +
+        'background-color: #'+self.backgroundColour;
+    
+    return styleString;
+};
+
+Control.prototype.applyStyle = function(image_url) {
+    var styleString = this.getStyleString();
+    //console.log("style gonna be set to: ", styleString);
+    this.$screenBacking.attr("style",styleString);
+};
+
+Control.prototype.repeatToggle = function(){
+    if(this.$repeatButton.prop("checked")){
+        this.backgroundRepeat = "repeat";
+    } else {
+        this.backgroundRepeat = "no-repeat";
+    }
+    this.applyStyle();
+};
+
+Control.prototype.imageToggle = function(){
+    if(this.$hideImage.prop("checked")){
+        this.hideBacking();
+    } else {
+        this.showBacking();
+    }
+
+};
+
+Control.prototype.showBacking = function(){
+
+
+
+    if(this.backgroundImage != "none"){
+        this.hideImage = false;
+    }
+
+    
+    this.applyStyle();
+
+    this.enableImageClicking(true);
+
+
+};
+
+Control.prototype.hideBacking = function(){
+    var self = this;
+    self.hideImage = true;
+
+    self.applyStyle();
+    self.enableImageClicking(false);
+
+};
+
+Control.prototype.enableImageClicking = function (enable) {
+    this.$imageSelections = $("#imageSelections"); //Gah having to redefine?
+    this.$repeatButton = $("#repeatImage");
+    this.$uploadButton = $("#imageupload2");
+    
+    if(enable){
+        this.$imageSelections.removeClass("disabled");
+        this.$imageSelections.children().removeClass("disabled");
+        this.$uploadButton.removeClass("disabled");
+        this.$repeatButton.removeAttr("disabled");
+        this.imagesDisabled = false;
+    } else {
+        this.$imageSelections.addClass("disabled");
+        this.$imageSelections.children().addClass("disabled");
+        this.$uploadButton.addClass("disabled");
+        this.$repeatButton.attr("disabled", true);
+        this.imagesDisabled = true;
+    }
+};
+
+Control.prototype.setSelectBgImage = function($thumb){
+    var self = this;
+    if(self.imagesDisabled)
+        return;
+    
+    if($thumb.hasClass("active"))
+        return;
+
+    self.backgroundImage = $("img", $thumb).attr("data-large-url");
+    //console.log("Thumb", $thumb);
+    //console.log("self.backgroundImage", self.backgroundImage);
+
+    var styleString = this.getStyleString();
+    
+    //TODO - figure a way of doing this with a cached selector
+    $("#imageSelectList").children().removeClass("active"); // unset previous actives
+    $("#imageUploadHolder").removeClass("active");
+
+    //load with spinner
+    //self.$screenBacking.fadeOut(200);
+    self.$imageLoadSpinner.fadeIn(function(){
+        /*
+        // who needs preloaders anyway
+        $.ajax({
+           url : self.defaultPath + self.backgroundImage,
+           success : function(){
+           */
+                    //self.$screenBacking.attr("style", styleString).hide().fadeIn(300);
+                    self.$screenBacking.attr("style", styleString).fadeIn(300);
+        /*
+           },
+           error : function(a,b,c){
+               console.log(a,b,c,"error loading image");
+               alert('error loading image: "', c + '". Please try again.');
+           },
+           complete : function  () {
+           */
+               self.$imageLoadSpinner.fadeOut();
+        /*
+           }
+        );
+        */
+
+    });
+
+    $thumb.toggleClass("active"); // set this as active
+    self.hideImage = false;
+};
+
+Control.prototype.updateBackgroundColour = function(hex){
+    this.backgroundColour = hex;
+    this.applyStyle();
+};
+
+
+Control.prototype.setupModal = function(){
+
+    var self = this;
+
+    // console.log(this.$screenBacking.data());
+    
+    if(this.$editButton.length){
+        
+        // console.log(this.$editButton,"before");
+        if($(".boxy-wrapper").length)
+            $(".boxy-wrapper").remove();
+
+        this.$editButton.boxy({
+            hideFade : 100,
+            hideShrink : false,
+            title:$(this).attr("title"),
+            closeText : "",
+            afterShow : function(){
+                var $closer = $(".boxy-inner .close");
+                $closer.on("click",function(e){
+                   // console.log("got closer event",e);
+                   $("#closeModal").click();
+                });
+                self.attachElements();
+                $('.colorPicker').css('backgroundColor',"#"+self.backgroundColour).ColorPicker({
+                    color: self.backgroundColour,
+                    onChange: function (hsb, hex, rgb) {
+                        $('.colorPicker').css('backgroundColor', '#' + hex);
+                        self.updateBackgroundColour(hex);
+                    }
+                });
+
+
+
+            },
+            afterHide : function(){
+                $("body").removeClass("unselectable");
+            }
+        }).mousedown(function(){
+            $("body").toggleClass("unselectable");
+        }).click(function(e){
+            $(document).live("keyup",function(e) {
+                var box = $(".boxy-wrapper").data("boxy");
+                if (e.keyCode == 27) { // esc
+                    if(box.visible){
+                        //this.$closeButton.click();
+                        $("#closeModal").click(); // ARGHHHHH!
+                    }
+                }
+            });
+        }); // not sure why this isn't being called outta boxy?;
+
+        //console.log(this.$editButton,"after");
+
+        this.$closeButton.on("click",function(e){
+            e.preventDefault();
+            //self.$screenBacking.html("");
+            //self.$screenBacking.html(self.$screenBacking.data('visual').html);
+            self.$screenBacking.attr("style",self.$screenBacking.data('visual').style);
+            
+            if(self.activeThumb && self.activeThumb.length){
+                //Remove active class from any selections...
+                self.$imageList.find(".active").removeClass("active");
+                $("#imageUploadHolder").removeClass("active");
+                //Re-apply active class to previous active thumb
+                // console.log(self.activeThumb,"to apply to");
+                $("#"+self.activeThumb).addClass("active");
+            }
+
+            // address conflicting states between bg being visible whilst hidebg checkbox is checked
+            self.checkBgHidden();
+
+
+            Boxy.get(this).hide();
+        });
+
+    }
+};
+
+Control.prototype.checkBgHidden = function()
+{
+    var self = this;
+    // console.log(self.bgHidden,"is bg hidden?");
+    if(self.bgHidden){
+        self.$hideImage.prop("checked",true);
+        self.enableImageClicking(false);
+    } else {
+        self.$hideImage.prop("checked",false);
+        self.enableImageClicking(true);
+    }
+};
+
+
+Control.prototype.save = function(){
+    var tile = (this.backgroundRepeat == "no-repeat") ? 0 : 1;
+
+    $.ajax({
+        url : "/profile/background",
+        type : "json",
+        data : {
+            tile: tile,
+            hexColour : this.backgroundColour,
+            backgroundImage : this.backgroundImage
+        }
+    });
+};
+
+Control.prototype.setupUploadHandler = function() {
+    var self = this;
+    try
+    {
+        $("#imageupload2").ajaxUpload('/' + this.username + '/backgroundImage', {
+            maxSize: 2 * 1024 * 1024, // 2M
+            allowedTypes: ['image/jpeg', 'image/gif', 'image/png', 'image/pjpeg'],
+            beforeSend : function(){
+                $(".loading-spinner#imageProgress").fadeIn();
+            },
+            success: function(data) {
+                data = $.parseJSON(data);
+
+                if(data.success) {
+                    self.backgroundImage = data.image;
+                    // console.log(data.image);
+                    var img = data.image,
+                    thumb = asset(bg(self.defaultPath + data.image));
+                    sexyPreloadAnImg(img); //TODO
+                    $("#imageUploadHolder").html(
+                        '<img src="'+asset(bg(self.defaultPath + data.thumb)) + "?" + Math.random() + '"' +
+                            'alt=""' +
+                            'data-large-url="'+img+'">'
+                    ).fadeIn().removeClass("active").click();
+
+                }
+                else
+                    alert(data.error);
+
+                // console.log(data);
+                $(".loading-spinner#imageProgress").fadeOut();
+
+            },
+
+            // checks maxSize and allowedTypes before sending to server
+            clientError: function(message) {
+                alert(message);
+                $(".loading-spinner#imageProgress").fadeOut();
+            }
+        }).live("click",function(e){
+            var $this = $(this);
+            if($this.hasClass("disabled")) return false;
+        });
+    } catch (e){
+        // console.log(e);
+
+        $.post('/error/jsdebug', {data: e});
+    }
+};
+
+Control.prototype.setupSubmitHandler = function() {
+    var self = this;
+
+    self.$saveButton.on("ajaxSaveComplete",function(e){
+        // console.log("got ajaxSaveComplete",e);
+
+        self.$saveSpinner.addClass("complete");
+        setTimeout(function(){
+            self.$saveSpinner.fadeOut(100,function(){
+                $(this).removeClass("complete");
+            });
+            Boxy.get(self.$saveButton).hide();
+        },800);
+        self.findActiveThumb();
+        if(self.$hideImage.prop("checked")){
+            self.bgHidden = true;
+        } else{
+            self.bgHidden = false;
+        }
+
+    });
+
+    this.$saveButton.on("click",function(e) {
+        e.preventDefault();
+
+        var data = {},
+        success = false;
+        data.tile = (self.backgroundRepeat == "no-repeat") ? 0 : 1;
+        data.hexColour = self.backgroundColour;
+
+        //This is kind of stupid
+        if(!self.hideImage &&
+            self.backgroundImage !="none" &&
+            self.backgroundImage !="/bg/"){
+            data.image = self.backgroundImage;
+        }
+
+        $.ajax({
+            url: '/' + self.username + '/background',
+            dataType: 'JSON',
+            type: 'POST',
+            data: data,
+            beforeSend : function(){
+                self.$saveSpinner.fadeIn();
+            },
+            success: function(data) {
+
+                if(data.success) {
+
+                    $("#saveBackground").trigger("ajaxSaveComplete");
+                }
+                else
+                    alert(data.error);
+
+            },
+            error: function() {
+                // server error, http error, or something like that
+                alert('Something went wrong, please try again');
+            }
+        });
+    });
+};

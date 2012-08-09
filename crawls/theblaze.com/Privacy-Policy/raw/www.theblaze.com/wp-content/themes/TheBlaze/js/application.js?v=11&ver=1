@@ -1,0 +1,480 @@
+var blazeuser = null;
+jQuery.fn.popIn = function (options) {
+	  var hasScrolled = false;
+	  jQuery(document).scroll(function() {
+	    hasScrolled = true;
+	  });
+	  setInterval(function() {
+		  if(hasScrolled === true) {
+			  showHideFlyout();
+			  hasScrolled = false;
+		  }
+	  }, 250);
+
+	  options = jQuery.extend({speed: 200, scroll: 1300}, options);
+	  var element = this;
+	  var nextStoryStatus = 'hidden';
+
+	  element.css('right', -element.outerWidth()).css('display', 'block');
+
+	  function fly(direction, newStatus) {
+	    element.animate({right: direction + '=' + element.outerWidth()}, options.speed, function () {
+	      if(typeof(_gaq) === "object") {
+	    	  element_link = element.find('ul a.title').attr('href');
+	    	  if(newStatus === "hidden") _gaq.push(['_trackEvent', 'NextStoryFlyout', 'close', element_link]);
+	    	  else if(newStatus === "shown") _gaq.push(['_trackEvent', 'NextStoryFlyout', 'open', element_link]);
+	      }
+	      nextStoryStatus = newStatus;
+	    });
+	  }
+
+	  element.find('.close').click(function (event) {
+	    event.preventDefault();
+	    element.hide();
+	  });
+
+	  function showHideFlyout() {
+	      if (nextStoryStatus !== 'locked') {
+	        if (jQuery(this).scrollTop() > options.scroll) {
+	          if (nextStoryStatus === 'hidden') {
+	            nextStoryStatus = 'locked';
+	            fly('+', 'shown');
+	          }
+	        } else {
+	          if (nextStoryStatus === 'shown') {
+	            nextStoryStatus = 'locked';
+	            fly('-', 'hidden');
+	          }
+	        }
+	      }
+	  };
+	};
+
+/**
+ * TheBlaze Refresher function
+ * Author: Edwin J. Mejia A.
+ * usage:
+ * 	var threshold = 2;// mins(default) if user does not scroll every threshold mins or less the page will refresh at 
+ *  var reload_after 10;// mins(default) at which time the page will reload .
+ *  $.blazereFresher({'threadhtime':threshold,'reloadtime':reload_after});
+ *  jQuery.blazereFresher({'threadhtime':.1,'reloadtime':.7});
+ */
+(function( $ ){
+	var blazerefresher = function( options ) {
+		var sttns = { 
+				loadtime : 0 
+				, lastscrll : 0
+				, reloadtime : 10
+				, threadhtime : 2
+				, getTime : function(){ return new Date().getTime();}
+		};
+		sttns = $.extend( sttns , options);
+		sttns = $.extend( sttns , {lastscrll:sttns.getTime(), loadtime:sttns.getTime(),  reloadtime: (sttns.reloadtime  * 60 * 1000), threadhtime: (sttns.threadhtime  * 60 * 1000)  });
+		$(window).bind('scroll',function () {
+			if ( sttns.getTime() - sttns.lastscrll > 300) { // more than 200 ms elapsed
+				sttns.lastscrll = sttns.getTime();
+			}
+		});
+		var timeoutObj=null,attempts=0;
+		var refreshPage = function() {
+			if (((sttns.getTime() - sttns.lastscrll)  >= sttns.threadhtime ) && ( (sttns.getTime() - sttns.loadtime) > sttns.reloadtime) ) {
+				clearTimeout(timeoutObj);
+				window.location.reload();
+			} else if (attempts<50) {
+				attempts++;
+				if(typeof window.console != 'undefined' ){console.log("[attempting reload ]: "+ attempts);}
+				clearTimeout(timeoutObj);
+				timeoutObj = setTimeout(function(){ refreshPage(); },sttns.threadhtime);
+			} else {
+				clearTimeout(timeoutObj);
+				if(typeof window.console != 'undefined' ){console.log("[warning]: Maximum of attempts exceeded"); window.location.reload(); } 
+			} 
+		};
+		try{
+			
+		refreshPage();
+		}catch(e){/**/}
+	};
+	jQuery.extend({ blazereFresher:blazerefresher });
+})( jQuery );
+
+jQuery(document).ready(function($) {
+
+	if($('#homepage_web').size() === 1) {
+		var adBlank = '<li class="story storypos-3"><div class="advertorial-wrap"><h4><div>sponsored message</div></h4><a href="###LINK###"><img src="###IMAGE###" width="270" height="178" alt="###TITLE###"></a><a class="title" href="###LINK###"><h5>###TITLE###</h5></a><br /><a href="###LINK###">Read&nbsp;More&nbsp;&raquo;</a></div></li>';
+
+		$.getJSON('http://api.content.ad/api.svc/Ads/ce2553b3-1951-4ed8-8370-588b53e60f72/534?ref&dc=1&did=160&imgsize=lg&callback=?', function(data) {
+			if(typeof(data.result) !== undefined && data.result === 'success') {
+				ad = data.ads[0];
+				link = '/advertorials-b/?ag_id=' + ad.ag_id + '&aw_guid=' + ad.aw_guid;
+				adBlank = adBlank.replace(/###IMAGE###/g, ad.image).replace(/###LINK###/g, link).replace(/###TITLE###/g, ad.title);
+			}
+			$('.story-col:eq(1) .story:eq(1)').after(adBlank);
+		});
+	}
+	headlineObj = $('#headline-close');
+	if(headlineObj.size() === 1) {
+		headlineObj.bind('click', function() {
+			$(this).parent('p').hide();
+		});
+	}
+	
+	if($('#sponsored_stories_placeholder').size() === 1) {
+		var adContainer = '<div class="widget widget-container" id="sponsored_stories"><h3>Sponsored Stories</h3><ul class="posts">###CONTENT###</ul></div>';
+		var adItem = '<li><a href="###LINK###"><img width="70" height="50" alt="" class="attachment-post-thumbnail wp-post-image" src="###IMAGE###" /></a> <a href="###LINK###">###TITLE###</a></li>';
+		var adItems = '';
+
+		$.getJSON('http://api.content.ad/api.svc/Ads/ce2553b3-1951-4ed8-8370-588b53e60f72/535?dc=8&imgsize=md&did=160&callback=?', function(data) {
+			if(typeof(data.result) !== undefined && data.result === 'success') {
+				for(i=0; i<data.ads.length; i++) {
+					var ad = data.ads[i];
+					link = '/advertorials-b/?ag_id=' + ad.ag_id + '&aw_guid=' + ad.aw_guid;
+					adItems = adItems + adItem.replace(/###LINK###/g, link).replace(/###TITLE###/, ad.title).replace(/###IMAGE###/, ad.image);
+				}
+				adContainer = adContainer.replace(/###CONTENT###/, adItems);
+			}
+			$('#sponsored_stories_placeholder').after(adContainer);
+		});
+	}
+
+	// Scrolling callback
+	  var hasScrolled = false;
+	  $(document).scroll(function() {
+	    hasScrolled = true;
+	  });
+	  setInterval(function() {
+		  if(hasScrolled === true) {
+			  showHideBackToTop();
+			  hasScrolled = false;
+		  }
+	  }, 250);
+	
+	// Tips Actions
+	jQuery('#tipform form').submit(function(e){
+		e.preventDefault();
+
+		var p = jQuery(this).serialize();
+		jQuery('#tip-submittion-inprogress').slideDown().fadeIn();
+		jQuery('input[type=submit]',this).attr('disabled','disabled').addClass('secondary');
+			
+		jQuery.post( jQuery(this).attr('action'), p, function(data) {
+			if(data.status == 'success') {
+				jQuery('#tip-submittion-success').slideToggle().fadeIn().delay(5000).slideToggle().fadeOut();
+				jQuery('#tipform').slideUp().fadeOut();
+			} else {
+				jQuery('#tipform .error').slideToggle().fadeIn().delay(5000).slideToggle().fadeOut();
+				jQuery('#tipform form input[type=submit]').removeClass('secondary').removeAttr('disabled');
+			}
+			jQuery('#tip-submittion-inprogress').slideUp().fadeOut();
+		}, "json");
+
+		return false;
+	});
+
+	
+	//Lazy-Load specific containers. Don't enable lazy loading on iOS, Android, or webOS
+	if (!(navigator.userAgent.match(/webOS/i) ||
+	 	navigator.userAgent.match(/iPhone/i) ||
+	 	navigator.userAgent.match(/iPod/i)
+	 ) && (screen.width > 500)) {
+		$(".story-col img, div#postContent img").lazyload({
+			effect : "fadeIn",
+			failure_limit : 100
+		});
+	}
+	var dd_width = 100;
+
+	$('.hide-if-js').hide();
+	$('.show-if-js').show();
+
+
+	$('body').attr('class', '').addClass(returnBrowserString());
+	
+	//User Functions
+	blazeuser = unescape($.cookie("theblaze_user"));
+	if(blazeuser != null && blazeuser != 'null' && blazeuser != "") {
+		
+		$('#logincontroller #not_logged_in').hide();
+		$('#logincontroller #logged_in').show().find('.username').text(blazeuser);
+				
+		$('#respond .logged-out').hide();
+		$('#respond #leave-comment').show().find('#reply-title').prepend(blazeuser + ", ");
+
+		$('a.comment-reply-login').hide();
+		$('a.comment-reply-link').show().click(function(e){
+			e.preventDefault();
+			$('h2#reply-title').text(blazeuser + ', Leave A Reply to ' + $(this).prevAll('h5').eq(0).text());
+			var list_id = $(this).parent('li').attr('id');
+			list_id = list_id.replace('li-comment-', '');
+			$('#post-comment #comment_parent').val(list_id);
+			$('#cancel-comment-reply-link').show();
+			$('#comment-post-button').removeClass('red').addClass('secondary').text('Reply');
+
+			window.location.hash = "respond";
+		});
+		$('#cancel-comment-reply-link').click(function(e){
+			e.preventDefault();
+			$('h2#reply-title').text(blazeuser + ', Speak Your Mind');
+			$('#post-comment #comment_parent').val('0');
+			$('#cancel-comment-reply-link').hide();
+			$('#comment-post-button').addClass('red').removeClass('secondary').text('Post');
+			
+		});
+
+		blazerole = unescape($.cookie('theblaze_role'));
+		if (blazerole != 'readonly')
+			$('#comments ul.commentlist li.comment a.report').show();
+	} else {
+		$('#logincontroller #not_logged_in').show();
+		$('#logincontroller #logged_in').hide();
+	}
+
+  	if(!(navigator.userAgent.match(/Android/i) ||
+  		 	navigator.userAgent.match(/webOS/i) ||
+  		 	navigator.userAgent.match(/iPhone/i) ||
+  		 	navigator.userAgent.match(/iPod/i) ||
+  		 	navigator.userAgent.match(/iPad/i)
+		 ) && (screen.width > 500)){
+  		//Make sure we don't show the next story flyout on an iPad
+  		$('#nextStory').popIn({scroll: 1300, speed: 400});
+  	}
+
+  	
+	$('.slides').cycle({ 
+	    fx:     'fade', 
+	    speed:  'slow', 
+	    timeout: 15000, 
+	    pager:  '#pager' 
+	});
+
+	if($.browser.msie){
+		$('#homeHeader.slideshow').cycle({ 
+		    fx:     'fade', 
+		    prev:   '.left-icon', 
+		    next:   '.right-icon', 
+		    timeout: 0,
+		    speed: 0 
+		});
+	} else { 
+		$('#homeHeader.slideshow').cycle({ 
+		    fx:     'fade', 
+		    prev:   '.left-icon', 
+		    next:   '.right-icon', 
+		    timeout: 0
+		});
+	}
+
+	//Make sure the last LI always has the correct class.
+	$(".widget, .commentlist, .commentlist .children, .latest .posts")
+		.find("li:last")
+		.addClass('last');
+	$(".widget-inline")
+		.find("span:last")
+		.addClass('last');
+
+	//Actions for form fields
+	$('#searchform #s, #footer input:text, #footer textarea, .newsletter_form #user_email')
+		.clearDefault();
+	$('#comment')
+		.clearDefault({'expand':false});
+	$('.placeholder-text')
+		.clearDefault();
+
+	//Link the widget titles after the fact.
+	$('.widget_execphp h3').each(function(){
+		if($(this).text() == "The Blog") {
+			$(this).html('<a href="http://www.theblaze.com/blog/">The Blog</a>');
+		} else if($(this).text() == "The Wire") {
+			$(this).html('<a href="http://www.theblaze.com/the-wire/">The Wire</a>');
+		}
+	});
+	
+	$('#rememberme, #register input#newsletter, #register input#partners').attr('checked', 'checked');
+
+	$('#post-comment').submit(function(e){
+		var comment = $('#comment', this).val();
+		if(comment == comment.toUpperCase()) {
+			$('#comment', this).val(comment.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g,function(c){return c.toUpperCase()}))
+			alert("Please do not submit a comment in all-caps.");
+			return false;
+		} else {
+			return true;
+		}
+	});
+	
+	if(document.domain == "theblaze.com" || document.domain == "www.theblaze.com") {
+		$('a').attr('target', function() {
+			var regexp = /(javascript|https?:\/\/(\w+).theblaze.com)/i;
+			if (regexp.test(this.href))
+				return '_self';
+			return '_blank';
+		});
+	}
+
+	//Latest Stories logic to make sure that they stay within the container.
+	//Get the height of the container and then the list of stories
+	var latestContainerHeight = $('#homeHeader').innerHeight() - $('#homeHeader h3').outerHeight(true);
+	var latestListHeight = $('#homeHeader .latest ul').outerHeight(true);
+	//Keep popping stories off the end of the list till the list outerHeight is smaller than the continer innerHeight
+	if(latestContainerHeight <  latestListHeight) {
+		while(latestListHeight > latestContainerHeight) {
+			//Pull one off at a time from the bottom of the LI till it fits:
+			$('#homeHeader .latest ul li:last').remove();
+			latestListHeight = $('#homeHeader .latest ul').outerHeight(true);
+		}
+	}
+	//Make sure the last LI has the .last class applied for the bordering CSS
+	$('#homeHeader .latest ul li:last').addClass('last');
+	//Show the div once it's been processed and animate over 1 second.
+	$('#homeHeader .latest ul li').css({backgroundColor:'#FFFFFF'}); //IE8 Fix for bold text
+	$('#homeHeader .latest ul').animate({'opacity' : 1}, 1000);
+
+	//Hovers on the main stories page for categories -- old
+	$('.the-stories-drop, .arrow-drop, .the-stories-drop-down').mouseenter(function(){
+		$('.the-stories-drop-down').show()
+	}).mouseleave(function() {
+		$('.the-stories-drop-down').hide();	
+	});
+
+	//Hovers on the primary navigation area -- old
+	$('#menu-primary-nav li.stories-drop').mouseenter(function(){
+		$('ul.sub-menu', this).show()
+	}).mouseleave(function() {
+		$('ul.sub-menu', this).hide();	
+	});
+	
+	var menu_height = $('#menu-primary-nav .menu-with-sub').first().height();
+	$('#menu-primary-nav .menu-with-sub').hover(function(){
+		$(this).css({
+			'height' : 'auto',
+			'overflow' : 'visible'
+		});
+	}, function(){
+		$(this).css({
+			'height' : menu_height + 'px',
+			'overflow' : 'hidden'
+		});	
+	});
+
+	
+	//Login Controller
+	var logincontroller_height = $('#logincontroller').height();
+	var logincontroller_width = $('#logincontroller').width();
+	$('#logincontroller').hover(function(){
+		if($('#not_logged_in', this).css('display') != 'none')return;
+		$(this).css({
+			'height' : 'auto',
+			'overflow' : 'visible'
+		});
+	}, function(){
+		if($('#not_logged_in', this).css('display') != 'none')return;
+		$(this).css({
+			'height' : logincontroller_height + 'px',
+			'overflow' : 'hidden'
+		});	
+	});
+	//End Login controller
+
+	// Comment ordering
+	$('select[name="corder"]').change(function(){
+		$(this).closest('form').submit();
+	});
+	
+	//Back to top
+	$('body').append('<div id="back_to_top" style="display:none;"><a href="#wrapper"><img src="http://' + window.location.hostname + '/wp-content/themes/TheBlaze/images/icons/BackToTop.png" alt="Back to Top" /></a></div>');
+	$('#back_to_top a').click(function(e){
+		e.preventDefault();
+		$('html, body').stop().animate({
+			scrollTop: $($(this).attr('href')).offset().top
+		}, 1000);
+		});
+	$('#back_to_top').css({
+		position:'fixed',
+		right:0,
+		top:'150px'
+	});
+	
+	$('ul.author_social li:empty').remove(); //Remove empty li elements for unneeded author social networks.
+
+	function showHideBackToTop () {
+		if($(document).scrollTop() > 500 && $(window).width() >= 1080) {
+			$('#back_to_top:hidden').fadeIn();
+		} else {
+			$('#back_to_top:visible').fadeOut();
+		}
+	}
+});
+
+(function($){
+	$.fn.clearDefault = function(settings){
+		var config = {'expand': true, 'growto': 100};
+     	if (settings) $.extend(config, settings);
+     	
+     	return this.each(function(){
+			var default_value = $(this).val();
+			var default_height = $(this).height();
+			$(this).focus(function(){
+				if ($(this).val() == default_value){
+					$(this).val("");
+					if($(this).is('textarea') && config.expand != false)$(this).animate({height:config.growto+'px'});
+				}
+			});
+			$(this).blur(function(){
+				if ($(this).val() == "") {
+					$(this).val(default_value);
+					if($(this).is('textarea') && config.expand != false){
+						$(this).animate({height: default_height+'px'});
+					}
+				}
+			});
+		});
+	};
+
+})(jQuery);
+
+function returnBrowserString() {
+	//Browser Detection
+	var browser_ua = navigator.userAgent;
+	var browser_string = '';
+	if (browser_ua.indexOf('Firefox/2') != -1){
+		browser_string = "ff ff2";
+	} else if (browser_ua.indexOf('Firefox/3') != -1) {
+		browser_string = "ff ff3";
+		dd_width = 102;
+	} else if (browser_ua.indexOf('Firefox/4') != -1) {
+		browser_string = "ff ff4";
+	} else if (browser_ua.indexOf('Firefox/5') != -1) {
+		browser_string = "ff ff4 ff5";
+	} else if (browser_ua.indexOf('Firefox/6') != -1) {
+		browser_string = "ff ff4 ff5 ff6";
+	} else if (browser_ua.indexOf('MSIE 9') != -1) {
+		browser_string = "ie ie9";
+	} else if (browser_ua.indexOf('MSIE 8') != -1) {
+		browser_string = "ie ie8";
+	} else if (browser_ua.indexOf('MSIE 7') != -1) {
+		browser_string = "ie ie7";
+	} else if (browser_ua.indexOf('MSIE 6') != -1) {
+		browser_string = "ie ie6";
+	} else if (browser_ua.indexOf('iPad') != -1) {
+		browser_string = "ipad";
+	} else if (browser_ua.indexOf('iPod') != -1) {
+		browser_string = "iphone ipod";
+	} else if (browser_ua.indexOf('iPhone') != -1) {
+		browser_string = "iphone ipod";
+	} else if (browser_ua.indexOf('Safari') != -1) {
+		browser_string = "safari";
+	} else {
+		browser_string = "in_unknown";
+	}
+
+	//Append the OS as well since FF 4 acts differently on Mac and Windows
+	if (browser_ua.indexOf('Linux') != -1){
+		browser_string += " lin";
+	} else if (browser_ua.indexOf('Macintosh') != -1) {
+		browser_string += " mac";
+	} else if (browser_ua.indexOf('Windows') != -1) {
+		browser_string += " win";
+	}
+	
+	return browser_string;
+}

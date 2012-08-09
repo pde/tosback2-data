@@ -1,0 +1,105 @@
+VolumeControl = function(barsCount) {
+    EventEmitter.apply(this);
+
+    if(typeof barsCount == 'undefined')
+        barsCount = 8;
+
+    this.$el = $('<div class="volumeControl"></div>');
+    this.barsCount = barsCount;
+
+    this.setup();
+};
+VolumeControl.prototype = extend(EventEmitter);
+
+VolumeControl.prototype.setup = function()
+{
+    var control = this;
+
+    this.$muteButton = $('<div href="#" class="muteButton"></div>');
+    this.$el.append(this.$muteButton);
+    this.$muteButton.on('click', function() {
+        control.emit('toggleMute');
+        return false;
+    });
+
+    this.$barWrapper = $('<div class="volume-bar-wrapper"></div>');
+    this.$el.append(this.$barWrapper);
+
+    this.bars = [];
+    for(var i = 0; i < this.barsCount; i ++) {
+        var bar = new VolumeBar(i);
+        this.bars[i] = bar;
+        bar.appendTo(this.$barWrapper);
+    }
+
+    var width = 3 * 2 * this.barsCount;
+    this.$barWrapper.css('width', width + 'px');
+    this.$barWrapper.on('mousedown', function(e) {
+        var x = e.pageX - control.$barWrapper.offset().left;
+        control.emit('change', 100 * x / width);
+
+        var move = function(e) {
+            var x = e.pageX - control.$barWrapper.offset().left;
+            control.emit('change', 100 * x / width);
+        };
+
+        control.$barWrapper.on('mousemove', move);
+
+        $(window).one('mouseup', function(e) {
+            control.$barWrapper.off('mousemove', move);
+        });
+
+        return false;
+    });
+};
+
+VolumeControl.prototype.appendTo = function($el)
+{
+    $el.append(this.$el);
+};
+
+// 1 - 100
+VolumeControl.prototype.set = function(volume)
+{
+    var cutOffIndex = Math.round(volume / 100 * this.barsCount);
+    for(var i = 0; i < this.barsCount; i ++) {
+        var bar = this.bars[i];
+        if(i < cutOffIndex)
+            bar.turnOn();
+        else
+            bar.turnOff();
+    }
+};
+
+VolumeControl.prototype.mute = function()
+{
+    this.$muteButton.addClass('muted');
+};
+
+VolumeControl.prototype.unmute = function()
+{
+    this.$muteButton.removeClass('muted');
+};
+
+VolumeBar = function(index)
+{
+    this.index = index;
+    this.$el = $('<span class="volume-bar"></span>');
+
+    var bar = this;
+};
+
+VolumeBar.prototype.appendTo = function($el)
+{
+    $el.append(this.$el);
+};
+
+VolumeBar.prototype.turnOn = function()
+{
+    this.$el.addClass('on');
+};
+
+VolumeBar.prototype.turnOff = function()
+{
+    this.$el.removeClass('on');
+};

@@ -21,24 +21,32 @@
 
             // Add segments from rev_sci cookie to OAS_query.
             OAS_query += (function() {
-                var maxSegs = 100;
+                var res_segs_cookie = null;
+                                var maxSegs = 100;
                 var rsi_segs = [];
                 var cookies = document.cookie;
                 var start = cookies.indexOf('rsi_segs=');
                 var end;
+                var tmp_segs;
 
-                if (start >= 0) {
-                    start = cookies.indexOf('=', start) + 1;
-                    if (start > 0) {
-                        end = cookies.indexOf(';', start);
-                        if (end == -1) { end = cookies.length; }
+                if (res_segs_cookie){
+                    tmp_segs = res_segs_cookie.split(/E0/);
+                }
+                else {
+                    if (start >= 0) {
+                        start = cookies.indexOf('=', start) + 1;
+                        if (start > 0) {
+                            end = cookies.indexOf(';', start);
+                            if (end == -1) { end = cookies.length; }
+                        }
+                        tmp_segs = cookies.substring(start, end).split(/E0/);
                     }
+                }
 
-                    var tmp_segs = cookies.substring(start, end).split(/E0/);
+                if (tmp_segs){
                     for (var i = 0, j = tmp_segs.length; i < j; i++) {
                         if (tmp_segs[i]) { rsi_segs.push('E0' + tmp_segs[i]); }
                     }
-                    rsi_segs = rsi_segs.slice(0, maxSegs);
                 }
                 var retSegs = 'a=' + rsi_segs.join('&a=') + '&';
                 try {
@@ -142,10 +150,10 @@
     <script type="text/javascript">
 //<![CDATA[
 	if (!commonStaticRoot) {	
-		var commonStaticRoot = "http://static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/";
+		var commonStaticRoot = "http://static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/";
 	}
 	if (!sectionStaticRoot) {	
-		var sectionStaticRoot = "http://static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/info/";
+		var sectionStaticRoot = "http://static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/info/";
 	}
 	if (!staticHost) {	
 		var staticHost="http://www.guardian.co.uk/";
@@ -153,44 +161,53 @@
 	if (!sitePrefixUrl) {
 		var sitePrefixUrl = "http://www.guardian.co.uk";
 	}
+    if(!discussionApiUrl) {
+        var discussionApiUrl = "http://discussion.guardianapis.com";
+    }
+
 //]]>
 </script>
-						<link rel="stylesheet" type="text/css" href="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/styles/article-top.css" media="screen" />
-			<link rel="stylesheet" type="text/css" href="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/styles/print.css" media="print" class="contrast" />
+						<link rel="stylesheet" type="text/css" href="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/styles/article-top.css" media="screen" />
+			<link rel="stylesheet" type="text/css" href="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/styles/print.css" media="print" class="contrast" />
 		
-		<link rel="stylesheet" type="text/css" href="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/zones/info/styles/zone-accent.css" media="screen" class="contrast" />
+		<link rel="stylesheet" type="text/css" href="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/zones/info/styles/zone-accent.css" media="screen" class="contrast" />
 		
-			<link rel="stylesheet" type="text/css" href="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/styles/base-typography.css" media="screen" />
+			<link rel="stylesheet" type="text/css" href="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/styles/base-typography.css" media="screen" />
 
 
 			
 
 		<!--[if ie 7]>
-		    <link rel="stylesheet" type="text/css" href="http://static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/styles/ie7.css" media="screen" class="ie" />
+		    <link rel="stylesheet" type="text/css" href="http://static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/styles/ie7.css" media="screen" class="ie" />
 		<![endif]-->
 		
 		<!--[if ie 8]>
-			<link rel="stylesheet" type="text/css" href="http://static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/styles/ie8.css" media="screen" class="ie" />
+			<link rel="stylesheet" type="text/css" href="http://static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/styles/ie8.css" media="screen" class="ie" />
 		<![endif]-->
 		
 		<!--[if lte IE 6]>
-			<link rel="stylesheet" type="text/css" href="http://static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/styles/ie-scratch.css" media="screen" class="ie" />
-    		<link rel="stylesheet" type="text/css" href="http://static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/zones/info/styles/zone-navigation-ie.css" media="screen" class="contrast" />
+			<link rel="stylesheet" type="text/css" href="http://static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/styles/ie-scratch.css" media="screen" class="ie" />
+    		<link rel="stylesheet" type="text/css" href="http://static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/zones/info/styles/zone-navigation-ie.css" media="screen" class="contrast" />
 		<![endif]-->
 		
 		<!--[if lte IE 9]>
-			<script src="http://static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/external-scripts/html5enable.js"></script>
+			<script src="http://static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/external-scripts/html5enable.js"></script>
 		<![endif]-->
 		
-	<link rel="stylesheet" type="text/css" href="../../combo.guim.co.uk/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/badge+content-actions+content-share-tools+default-ad-placeholders+floating-share-tools+header-local-info+page-toolbox+related-k.css" />
-<link rel="stylesheet" type="text/css" href="../../combo.guim.co.uk/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/m-1541~static/css/gigantic.css" />
-    	<link rel="stylesheet" type="text/css" href="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/styles/article-page-typography.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="../../combo.guim.co.uk/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/badge+content-actions+content-share-tools+default-ad-placeholders+floating-share-tools+header-local-info+page-toolbox+related-k.css" />
+<link rel="stylesheet" type="text/css" href="../../combo.guim.co.uk/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/m-1541~static/css/gigantic.css" />
+    	<link rel="stylesheet" type="text/css" href="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/styles/article-page-typography.css" media="screen" />
     
 
+<script type='text/javascript'>
+    // Chartbeat timing variable
+    var _sf_startpt=(new Date()).getTime();
+</script>
+
 <script src="../../ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/scripts/libs/jquery/1.6.4/jquery.min.js">\x3C/script>')</script>
-<script src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/scripts/libs/jquery/cookie/1.0.0/jquery.cookie.js"></script>
-<script src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/scripts/libs/jquery/writeCapture/1.0.5/jquery.writeCapture.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/scripts/libs/jquery/1.6.4/jquery.min.js">\x3C/script>')</script>
+<script src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/scripts/libs/jquery/cookie/1.0.0/jquery.cookie.js"></script>
+<script src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/scripts/libs/jquery/writeCapture/1.0.5/jquery.writeCapture.min.js"></script>
 <script>
 	var jQ = jQuery.noConflict();
 	jQ.ajaxSetup({ cache: true });
@@ -200,7 +217,7 @@
 
     
 
-<script src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/scripts/gu-core.js"></script>
+<script src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/scripts/gu-core.js"></script>
 <script>
 	var thirdPartyReferralCookieService = new guardian.r2.ThirdPartyReferralCookieService();
 	thirdPartyReferralCookieService.setThirdPartyReferralCookie();
@@ -218,8 +235,8 @@
 </script>
 
     
-<script src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/scripts/libs/requirejs/1.0.2/requirejs.js"
-			data-main="http://static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/scripts/main.js"
+<script src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/scripts/libs/requirejs/1.0.2/requirejs.js"
+			data-main="http://static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/scripts/main.js"
 			data-modules="gu/author-twitter-handles, init"
 			data-callback=""
 			id="require-js"></script>
@@ -239,10 +256,10 @@
 	insertPluckStylesheet = true;
 	//]]>
 </script>
-	<script type="text/javascript" src="../../combo.guim.co.uk/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/scripts/button-facebook+common/scripts/button-google-plus+common/scripts/button-tweet+common/scripts/floating-share-tools+common/scripts/formChecker+common/scripts/glossaryPopupView+common/scripts/guardian.r2.EmailToAFriend+common/scripts/guardian.r2.OmnitureTracking+common/scripts/guardian.r2.ShareThis+common/scripts/modules/sticky-sidebar+common/scripts/sendtoafriend+common/scripts/signinTopNav.js"></script>
+	<script type="text/javascript" src="../../combo.guim.co.uk/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/scripts/button-facebook+common/scripts/button-google-plus+common/scripts/button-tweet+common/scripts/floating-share-tools+common/scripts/formChecker+common/scripts/glossaryPopupView+common/scripts/guardian.r2.EmailToAFriend+common/scripts/guardian.r2.OmnitureTracking+common/scripts/guardian.r2.ShareThis+common/scripts/modules/sticky-sidebar+common/scripts/sendtoafriend+common/scripts/signinTopNav.js"></script>
 
 
-    <script src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/external-scripts/mvt/cm_loader.js"></script>
+    <script src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/external-scripts/mvt/cm_loader.js"></script>
 
 <script type='text/javascript'>
 ensurePackage('guardian.r2.omniture');
@@ -502,7 +519,7 @@ guardian.r2.omniture.isAvailable = function(){
 					    	    	    	    
 
 	<div id="guardian-logo">
-			    			    		<a href="http://www.guardiannews.com"><img src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/images/logos/the-guardian/info.gif" width="115" height="22" alt="The Guardian home" /></a>
+			    			    		<a href="http://www.guardiannews.com"><img src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/images/logos/the-guardian/info.gif" width="115" height="22" alt="The Guardian home" /></a>
         					</div>
 	
 					
@@ -611,7 +628,7 @@ guardian.r2.omniture.isAvailable = function(){
 
 					</div>
 				
-						    	    
+				    	    
 
 
 
@@ -712,7 +729,7 @@ guardian.r2.omniture.isAvailable = function(){
     </li>
     
     <li class="full-line email">
-	<a class="rollover send-email" href="http://www.guardian.co.uk/email/1373773"  title="Send to a friend" ><img src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/images/icon-email.png" alt="" class="trail-icon" />Email</a>
+	<a class="rollover send-email" href="http://www.guardian.co.uk/email/1373773"  title="Send to a friend" ><img src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/images/icon-email.png" alt="" class="trail-icon" />Email</a>
     </li>
     
     
@@ -810,11 +827,11 @@ guardian.r2.omniture.isAvailable = function(){
 	<ul id="article-toolbox-side" class="b4 trackable-component left" data-component="comp: r2: RHS icon tools">
 	
 
-							<li class="printable" data-link-name="icon-print"><a href="http://www.guardian.co.uk/help/privacy-policy/print" rel="nofollow" id="printlink" class="printable rollover" title="Link to a printer-friendly version" ><img src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/images/icon-print.png" alt="Print this" class="trail-icon" /><span>Print this</span></a></li>
+							<li class="printable" data-link-name="icon-print"><a href="http://www.guardian.co.uk/help/privacy-policy/print" rel="nofollow" id="printlink" class="printable rollover" title="Link to a printer-friendly version" ><img src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/images/icon-print.png" alt="Print this" class="trail-icon" /><span>Print this</span></a></li>
 		
-			<li data-link-name="icon-share"><a class="rollover send-share"   href="http://www.guardian.co.uk/share/1373773" title="Opens a share this page in a new window" ><img src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/images/icon-share.png" alt="" class="trail-icon" /><span>Share</span></a></li>
+			<li data-link-name="icon-share"><a class="rollover send-share"   href="http://www.guardian.co.uk/share/1373773" title="Opens a share this page in a new window" ><img src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/images/icon-share.png" alt="" class="trail-icon" /><span>Share</span></a></li>
 	
-			<li data-link-name="icon-contact"><a href="http://www.guardian.co.uk/contactus/1373773"  class="rollover contact-link" title="Displays contact data for guardian.co.uk"><img src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/images/icon-email-us.png" alt="" class="trail-icon" /><span>Contact us</span></a></li>
+			<li data-link-name="icon-contact"><a href="http://www.guardian.co.uk/contactus/1373773"  class="rollover contact-link" title="Displays contact data for guardian.co.uk"><img src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/images/icon-email-us.png" alt="" class="trail-icon" /><span>Contact us</span></a></li>
 		
 	
 	
@@ -829,7 +846,7 @@ guardian.r2.omniture.isAvailable = function(){
 	<div class="send-inner">
 		<div class="share-top">
 			<h3>Send to a friend</h3>
-			<span class="js-show"><a class="close-toolbox" href="privacy-policy.html#send-email"><img src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/images/close-popup.png" alt="Close this popup" title="Close this popup" /></a></span>
+			<span class="js-show"><a class="close-toolbox" href="privacy-policy.html#send-email"><img src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/images/close-popup.png" alt="Close this popup" title="Close this popup" /></a></span>
 		</div>
 		<div>
 		
@@ -871,7 +888,7 @@ guardian.r2.omniture.isAvailable = function(){
 	<div class="send-inner">
 		<div class="share-top">
 			<h3>Share</h3>
-			<span class="js-show"><a class="close-toolbox" href="privacy-policy.html#send-share-box"><img src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/images/close-popup.png" alt="Close this popup" title="Close this popup" /></a></span>
+			<span class="js-show"><a class="close-toolbox" href="privacy-policy.html#send-share-box"><img src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/images/close-popup.png" alt="Close this popup" title="Close this popup" /></a></span>
 		</div>
 
 					<div class="shortlink">
@@ -959,7 +976,7 @@ guardian.r2.omniture.isAvailable = function(){
 	<div class="send-inner">
 		<div class="share-top">
 			<h3>Contact us</h3>
-			<span class="js-show"><a class="close-toolbox" href="privacy-policy.html#contact"><img src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/images/close-popup.png" alt="Close this popup" title="Close this popup" /></a></span>
+			<span class="js-show"><a class="close-toolbox" href="privacy-policy.html#contact"><img src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/images/close-popup.png" alt="Close this popup" title="Close this popup" /></a></span>
 		</div>
 		
 		<div class="col first">
@@ -1013,7 +1030,7 @@ guardian.r2.omniture.isAvailable = function(){
 	<div class="send-inner">
 		<div class="share-top">
 			<h3>About this article</h3>
-			<span class="js-show"><a class="close-toolbox" href="privacy-policy.html#history-link-box"><img src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/images/close-popup.png" alt="Close this popup" title="Close this popup" /></a></span>
+			<span class="js-show"><a class="close-toolbox" href="privacy-policy.html#history-link-box"><img src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/images/close-popup.png" alt="Close this popup" title="Close this popup" /></a></span>
 		</div>
 		        	        			
 					   	   	   
@@ -1219,7 +1236,7 @@ guardian.r2.omniture.isAvailable = function(){
     </li>
     
     <li class="full-line email" data-link-name="email this story">
-	<a class="rollover send-email" href="http://www.guardian.co.uk/email/1373773"  title="Send to a friend" ><img src="../../static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/images/icon-email.png" alt="" class="trail-icon" />Email</a>
+	<a class="rollover send-email" href="http://www.guardian.co.uk/email/1373773"  title="Send to a friend" ><img src="../../static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/images/icon-email.png" alt="" class="trail-icon" />Email</a>
     </li>
     
     </ul>
@@ -1474,7 +1491,7 @@ img.tinythumb { width: 140px }
 jQ(function($){$('.about-zeit').each(function(){var distance=-10;var time=250;var hideDelay=500;var hideDelayTimer=null;var beingShown=false;var shown=false;var trigger=$('.what-is',this);var info=$('.zeit-popup',this).css('opacity',0);$([trigger.get(0),info.get(0)]).mouseover(function(){if(hideDelayTimer)clearTimeout(hideDelayTimer);if(beingShown||shown){return;}else{beingShown=true;info.css({top:-97,right:0,display:'block'}).animate({top:'-='+distance+'px',opacity:1},time,'swing',function(){beingShown=false;shown=true;});}return false;}).mouseout(function(){if(hideDelayTimer)clearTimeout(hideDelayTimer);hideDelayTimer=setTimeout(function(){hideDelayTimer=null;info.animate({top:'-='+distance+'px',opacity:0},time,'swing',function(){shown=false;info.css('display','none');});},hideDelay);return false;});});});
 </script>
 
-  <!------ widget old rhs: global : 2012-08-02 20:19:25.429872 ------>
+  <!------ widget old rhs: global : 2012-08-09 17:44:10.891918 ------>
   <div class="m-zeitgeist promo-component four-col attention-data">
 
     <div class="hd">
@@ -1507,40 +1524,40 @@ jQ(function($){$('.about-zeit').each(function(){var distance=-10;var time=250;va
               <li class="l1 thumb">
                 
                   
-                    <img class="tinythumb" src="../../static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/8/2/1343918418931/Composite-of-Baillie-and--002.jpg" />
+                    <img class="tinythumb" src="../../static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/8/8/1344427536538/Mens-cycling-road-race-sp-011.jpg" />
                   
                 
                 <span class="rank">1.&nbsp;</span>
                 <strong>Sport:</strong> 
-								<a href="http://www.guardian.co.uk/sport/london-2012-olympics-blog/2012/aug/02/london-2012-olympics-day-six-live-blog">London 2012 Olympics: day six – live blog</a>
+								<a href="http://www.guardian.co.uk/uk/2012/aug/08/olympics-spectator-parkinsons-arrest-smiling">Olympics spectator with Parkinson's wants 'exoneration' after arrest</a>
               </li>
               
               <li class="l1">
                 
                 <span class="rank">2. </span>
-                <strong>Business:</strong> 
-								<a href="http://www.guardian.co.uk/business/2012/aug/02/gm-profits-slip-european-struggles">GM profits slip 41% as European struggles take their toll</a>
+                <strong>Sport:</strong> 
+								<a href="http://www.guardian.co.uk/sport/london-2012-olympics-blog/2012/aug/09/london-2012-olympics-day-13-live-blog">London 2012 Olympics, day 13 – live!</a>
               </li>
               
               <li class="l1">
                 
                 <span class="rank">3. </span>
                 <strong>News:</strong> 
-								<a href="http://www.guardian.co.uk/world/2012/aug/01/somali-comedian-islamists-shot-dead">Somali comedian who mocked Islamists is shot dead</a>
+								<a href="http://www.guardian.co.uk/world/2012/aug/09/islamist-fayzarahmanist-sect-underground-kazan">Islamist sect found living underground near Russian city for nearly 10 years</a>
               </li>
               
               <li class="l1">
                 
                 <span class="rank">4. </span>
-                <strong>Sport:</strong> 
-								<a href="http://www.guardian.co.uk/sport/2012/aug/02/london-2012-australia-swimmers-tears">Australia left wishing its Olympic athletes cried tears of gold</a>
+                <strong>Football:</strong> 
+								<a href="http://www.guardian.co.uk/football/2012/aug/08/liverpool-joe-allen-swansea-city">Liverpool close to signing Joe Allen from Swansea City for £15m</a>
               </li>
               
               <li class="l1">
                 
                 <span class="rank">5. </span>
-                <strong>Sport:</strong> 
-								<a href="http://www.guardian.co.uk/sport/2012/aug/02/olympic-track-cycling-hoy-pendleton-live">Olympic track cycling: Hindes, Kenny and Hoy win gold – as it happened</a>
+                <strong>News:</strong> 
+								<a href="http://www.guardian.co.uk/uk/2012/aug/08/boris-johnson-aide-extreme-pornography-cleared">Former Boris Johnson aide cleared of possession of 'extreme pornography'</a>
               </li>
               
               <li class="more-most-viewed l1 footer">
@@ -1557,23 +1574,23 @@ jQ(function($){$('.about-zeit').each(function(){var distance=-10;var time=250;va
             <ol>
               
               <li class="l1 sport fade-1">
-                <div class="zeit-link"><strong>Sport:</strong> <a href="http://www.guardian.co.uk/sport/2012/aug/02/england-south-africa-live">England v South Africa – as it happened</a></div>
+                <div class="zeit-link"><strong>Sport:</strong> <a href="http://www.guardian.co.uk/sport/gallery/2012/aug/09/london-2012-synchronised-swimming-in-pictures">London 2012 synchronised swimming - in pictures</a></div>
               </li>
               
-              <li class="l1 sport fade-2">
-                <div class="zeit-link"><strong>Sport:</strong> <a href="http://www.guardian.co.uk/sport/2012/aug/02/olympic-track-cycling-hoy-pendleton-live">Olympic track cycling: Hindes, Kenny and Hoy win gold – as it happened</a></div>
+              <li class="l1 film fade-2">
+                <div class="zeit-link"><strong>Film:</strong> <a href="http://www.guardian.co.uk/film/video/2012/aug/09/guardian-film-show-bourne-legacy-brave-video">The Guardian Film Show: The Bourne Legacy and Brave - video</a></div>
               </li>
               
               <li class="l1 sport fade-3">
-                <div class="zeit-link"><strong>Sport:</strong> <a href="http://www.guardian.co.uk/sport/datablog/interactive/2012/aug/02/london-olympic-medals-2008-2012-compared">London Olympics 2012: how does each major team's performance compare to Beijing 2008?</a></div>
+                <div class="zeit-link"><strong>Sport:</strong> <a href="http://www.guardian.co.uk/sport/london-2012-olympics-blog/2012/aug/09/london-2012-olympics-day-13-live-blog">London 2012 Olympics, day 13 – live!</a></div>
               </li>
               
               <li class="l1 commentisfree fade-4">
-                <div class="zeit-link"><strong>Comment:</strong> <a href="http://www.guardian.co.uk/commentisfree/video/2012/aug/02/david-mitchell-soapbox-problems-challenges-video">David Mitchell's Soapbox: problems and challenges - video</a></div>
+                <div class="zeit-link"><strong>Comment:</strong> <a href="http://www.guardian.co.uk/commentisfree/video/2012/aug/09/david-mitchell-soapbox-loving-hating-marmite-video">David Mitchell's Soapbox: loving or hating Marmite - video</a></div>
               </li>
               
-              <li class="l1 news fade-5">
-                <div class="zeit-link"><strong>News:</strong> <a href="http://www.guardian.co.uk/world/middle-east-live/2012/aug/02/syria-crisis-damascus-massacres-live">Syria crisis: Kofi Annan resigns as peace envoy</a></div>
+              <li class="l1 money fade-5">
+                <div class="zeit-link"><strong>Money:</strong> <a href="http://www.guardian.co.uk/money/blog/2012/aug/09/cut-grocery-bills-avoiding-supermarkets">How I cut my grocery bills by avoiding supermarkets</a></div>
               </li>
               
               <li class="l1 footer about-zeit">
@@ -1596,35 +1613,35 @@ jQ(function($){$('.about-zeit').each(function(){var distance=-10;var time=250;va
               <li class="l1 thumb">
                 
                   
-                    <img class="tinythumb" src="../../static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/8/2/1343933478368/Otto-illustration-for-Sim-003.jpg" />
+                    <img class="tinythumb" src="../../static.guim.co.uk/sys-images/Sport/Pix/pictures/2012/8/9/1344532980837/Tony-McCoy-wins-at-Herefo-003.jpg" />
                   
                 
                 <span class="rank">1.&nbsp;</span>
-                <a href="http://www.guardian.co.uk/commentisfree/2012/aug/02/rio-2016-santa-claus-olympic-profit">The London Olympics has much to delight – but&nbsp;forget any talk of a legacy | Simon Jenkins</a>
+                <a href="http://www.guardian.co.uk/sport/2012/aug/09/racings-rulers-fixtures-hereford-2013">Racing's rulers confirm no fixtures will be held at Hereford in 2013</a>
               </li>
               
               <li class="l1">
                 
                 <span class="rank">2. </span>
-                <a href="http://www.guardian.co.uk/uk/2012/aug/02/families-backing-custody-deaths">Families need backing over custody deaths</a>
+                <a href="http://www.guardian.co.uk/sport/london-2012-olympics-blog/2012/aug/09/keri-anne-payne-swimming-olympics">London 2012: Keri-Anne Payne's plan of attack comes back to daunt her</a>
               </li>
               
               <li class="l1">
                 
                 <span class="rank">3. </span>
-                <a href="http://www.guardian.co.uk/theguardian/2012/aug/02/business-as-usual">Business as usual</a>
+                <a href="http://www.guardian.co.uk/uk/2012/aug/09/magistrates-banned-police-commissioner-elections">Magistrates banned from standing in police commissioner elections</a>
               </li>
               
               <li class="l1">
                 
                 <span class="rank">4. </span>
-                <a href="http://www.guardian.co.uk/politics/2012/aug/02/two-wheels-louder">Two wheels louder</a>
+                <a href="http://www.guardian.co.uk/technology/2012/aug/09/ouya-open-source-game-console">Ouya ready to revitalise open-source gaming after $8.5m fundraising haul</a>
               </li>
               
               <li class="l1">
                 
                 <span class="rank">5. </span>
-                <a href="http://www.guardian.co.uk/politics/2012/aug/02/search-outstanding-schools-results">Gove's agenda for academy schools</a>
+                <a href="http://www.guardian.co.uk/theguardian/2012/aug/09/lyn-gambles-obituary">Lyn Gambles obituary</a>
               </li>
               
               <li class="more-latest l1 footer">
@@ -1679,34 +1696,34 @@ jQ(function($){$('.about-zeit').each(function(){var distance=-10;var time=250;va
         </div>
         <ol>
             <li>
-                <a href="http://www.guardian.co.uk/business/2012/aug/02/gm-profits-slip-european-struggles">
-                    <div class="image-clip"><span class="section-name business">Business</span><img alt="GM profits slip 41% as European struggles take their toll" src="../../static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2012/8/2/1343913382978/General-Motors-008.jpg" height="180" width="300"></div>
-                    <h3 class="business">GM profits slip 41% as European struggles take their toll</h3>
+                <a href="http://www.guardian.co.uk/music/2012/aug/09/randy-travis-arrested">
+                    <div class="image-clip"><span class="section-name music">Music</span><img alt="Randy Travis arrested after trying to buy cigarettes while naked" src="../../static.guim.co.uk/sys-images/Music/Pix/pictures/2012/8/9/1344503668564/Randy-Travis-police-photo-008.jpg" height="180" width="300"></div>
+                    <h3 class="music">Randy Travis arrested after trying to buy cigarettes while naked</h3>
                 </a>
             </li><li>
-                <a href="http://www.guardian.co.uk/sport/2012/aug/02/england-south-africa-live">
-                    <div class="image-clip"><span class="section-name sport">Sport</span><img alt="England v South Africa &#x2013; as it happened" src="../../static.guim.co.uk/sys-images/Sport/Pix/pictures/2012/8/2/1343913577881/Englands-Steven-Finn-and--008.jpg" height="180" width="300"></div>
-                    <h3 class="sport">England v South Africa – as it happened</h3>
+                <a href="http://www.guardian.co.uk/football/blog/2012/aug/09/premier-league-previews-manchester-city">
+                    <div class="image-clip"><span class="section-name football">Football</span><img alt="Premier League preview No7: Manchester City" src="../../static.guim.co.uk/sys-images/Sport/Pix/pictures/2012/8/8/1344431739964/Manchester-Citys-Sergio-A-006.jpg" height="180" width="300"></div>
+                    <h3 class="football">Premier League preview No7: Manchester City</h3>
                 </a>
             </li><li>
-                <a href="http://www.guardian.co.uk/sport/2012/aug/02/london-2012-australia-swimmers-tears">
-                    <div class="image-clip"><span class="section-name sport">Sport</span><img alt="Australia left wishing its Olympic athletes cried tears of gold" src="../../static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/8/2/1343873718611/Australian-Olympic-swimme-008.jpg" height="180" width="300"></div>
-                    <h3 class="sport">Australia left wishing its Olympic athletes cried tears of gold</h3>
+                <a href="http://www.guardian.co.uk/technology/gamesblog/2012/aug/09/london-2012-canoeing-google-doodle">
+                    <div class="image-clip"><span class="section-name technology">Technology</span><img alt="London 2012 slalom canoe: Thursday's Google doodle game" src="../../static.guim.co.uk/sys-images/Technology/Pix/pictures/2012/8/9/1344497240710/Google-doodle-canoe-008.jpg" height="180" width="300"></div>
+                    <h3 class="technology">London 2012 slalom canoe: Thursday's Google doodle game</h3>
                 </a>
             </li><li>
-                <a href="http://www.guardian.co.uk/commentisfree/2012/aug/02/chick-fil-a-us-politics-lives">
-                    <div class="image-clip"><span class="section-name commentisfree">Comment is free</span><img alt="Chick-fil-A is where American politics really lives, so eat it" src="../../static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/8/2/1343902456096/customers-queue-outside-a-006.jpg" height="180" width="300"></div>
-                    <h3 class="commentisfree">Chick-fil-A is where American politics really lives, so eat it</h3>
+                <a href="http://www.guardian.co.uk/uk/2012/aug/08/olympics-spectator-parkinsons-arrest-smiling">
+                    <div class="image-clip"><span class="section-name sport">Sport</span><img alt="Olympics spectator with Parkinson's wants 'exoneration' after arrest" src="../../static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/8/8/1344427539878/Mens-cycling-road-race-sp-014.jpg" height="180" width="300"></div>
+                    <h3 class="sport">Olympics spectator with Parkinson's wants 'exoneration' after arrest</h3>
                 </a>
             </li><li>
-                <a href="http://www.guardian.co.uk/world/2012/aug/02/obama-order-supporting-syria-rebels">
-                    <div class="image-clip"><span class="section-name world">World news</span><img alt="Obama signs order supporting Syria's rebels, reports say" src="../../static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/8/2/1343895865635/Barack-Obama-on-the-phone-006.jpg" height="180" width="300"></div>
-                    <h3 class="world">Obama signs order supporting Syria's rebels, reports say</h3>
+                <a href="http://www.guardian.co.uk/world/2012/aug/09/islamist-fayzarahmanist-sect-underground-kazan">
+                    <div class="image-clip"><span class="section-name world">World news</span><img alt="Islamist sect found living underground near Russian city for nearly 10 years" src="../../static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/8/9/1344498994070/A-member-of-the-Fayzarahm-006.jpg" height="180" width="300"></div>
+                    <h3 class="world">Islamist sect found living underground near Russian city for nearly 10 years</h3>
                 </a>
             </li><li>
-                <a href="http://www.guardian.co.uk/world/2012/aug/01/romney-israel-comments-lags-polls">
-                    <div class="image-clip"><span class="section-name world">World news</span><img alt="Mitt Romney defends Israel 'culture' comments as he lags in the polls" src="../../static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2012/8/1/1343846324717/Mitt-Romney-in-Warsaw-008.jpg" height="180" width="300"></div>
-                    <h3 class="world">Mitt Romney defends Israel 'culture' comments as he lags in the polls</h3>
+                <a href="http://www.guardian.co.uk/world/2012/aug/09/miami-face-chewing-victim-attack">
+                    <div class="image-clip"><span class="section-name world">World news</span><img alt="Miami face-chewing victim: attacker Rudy Eugene 'ripped me to ribbons'" src="../../static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/5/31/1338479071180/Rudy-Eugene-and-Ronald-Po-008.jpg" height="180" width="300"></div>
+                    <h3 class="world">Miami face-chewing victim: attacker Rudy Eugene 'ripped me to ribbons'</h3>
                 </a>
             </li>
         </ol>
@@ -2024,7 +2041,7 @@ jQ(function($){$('.about-zeit').each(function(){var distance=-10;var time=250;va
 	//<![CDATA[
 	if(true) {
 		var s_account="guardiangu-info,guardiangu-network";
-		writeScript('http://static.guim.co.uk/static/70fb0b28ed6260573c38d0cc54ddc4d95f6d7476/common/scripts/omniture-H.24.1.1.js', false, function(){});
+		writeScript('http://static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/scripts/omniture-H.24.1.1.js', false, function(){});
 	}
 	//]]>
 	</script>
@@ -2049,7 +2066,7 @@ jQ(function($){$('.about-zeit').each(function(){var distance=-10;var time=250;va
 		}
 		s.channel = "Info";
 		s.pageType="";
-		s.server='07';
+		s.server='08';
 		s.prop2='GUID:(none)';
 
 
@@ -2093,7 +2110,7 @@ jQ(function($){$('.about-zeit').each(function(){var distance=-10;var time=250;va
 	//]]>
 	</script>
 	<noscript id="omnitureNoScript">
-		<div><img alt="" src='../../hits.guardian.co.uk/b/ss/guardiangu-info,guardiangu-network/1/H.24.1.1/13822%3Fns=guardian&amp;pageName=Privacy+policy%253AArticle%253A1373773&amp;ch=Info&amp;c3=GU.co.uk&amp;c4=Privacy+z%2528information+section%2529%252CInfor' width="1" height="1" /></div>
+		<div><img alt="" src='../../hits.guardian.co.uk/b/ss/guardiangu-info,guardiangu-network/1/H.24.1.1/80660%3Fns=guardian&amp;pageName=Privacy+policy%253AArticle%253A1373773&amp;ch=Info&amp;c3=GU.co.uk&amp;c4=Privacy+z%2528information+section%2529%252CInfor' width="1" height="1" /></div>
 	</noscript>
 
 	    		    		    
@@ -2176,12 +2193,14 @@ if (true) {
 	if(true) {
 		ensurePackage("guardian.r2.revsci");
 
+        guardian.r2.revsci.revSciLocalStorage = false;
+
 		guardian.r2.revsci.siteName = 'Info';
 					guardian.r2.revsci.commercialFolder = 'Global+%28temp+commercial%29'
 		
 		addEvent(null, 'load', function () {
 			writeScript('http://js.revsci.net/gateway/gw.js?csid=E05516', true, function() {
-				writeScript('http://static.guim.co.uk/static/c9f90b3c5bbf96869cb84487a1f269cdfddea69a/common/scripts/revsci.js', true, function() {
+				writeScript('http://static.guim.co.uk/static/d898d2a14fb947dee6c228fb6e1ccab2d8a04f3a/common/scripts/revsci.js', true, function() {
 					rs_initTracking();
 				});	
 			})
@@ -2307,5 +2326,37 @@ if (true) {
  </div>
 </noscript>
 <!-- END Nielsen Online SiteCensus V6.0 -->
+<script type='text/javascript'>
+
+    if (true) {
+        var _sf_async_config = {};
+        /** CONFIGURATION START **/
+        _sf_async_config.uid = 30676;
+        _sf_async_config.domain = document.domain;
+        _sf_async_config.sections = 'Info,Help (Tone),Article (Content type),Privacy z(information section),Information,Help,Article';
+        _sf_async_config.authors = '';
+        _sf_async_config.useCanonical = true;
+        /** CONFIGURATION END **/
+        (function() {
+            function loadChartbeat() {
+                window._sf_endpt = (new Date()).getTime();
+                var e = document.createElement('script');
+                e.setAttribute('language', 'javascript');
+                e.setAttribute('type', 'text/javascript');
+                e.setAttribute('src',
+                        (('https:' == document.location.protocol) ? 'https://a248.e.akamai.net/chartbeat.download.akamai.com/102508/' : 'http://static.chartbeat.com/') +
+                                'js/chartbeat.js');
+                document.body.appendChild(e);
+            }
+
+            var oldonload = window.onload;
+            window.onload = (typeof window.onload != 'function') ?
+                    loadChartbeat : function() {
+                oldonload();
+                loadChartbeat();
+            };
+        })();
+    }
+</script>
 </body>
 </html>

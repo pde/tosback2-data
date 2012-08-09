@@ -1,19 +1,154 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta name="keywords" content=""/><meta name="description" content=""/><meta name="notify" content="N"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><link href="../../css/khcontent_style.css" type="text/css" rel="stylesheet"/><link href="../../css/khcontent_printstyle.css" media="print" type="text/css" rel="stylesheet"/><link href="../../licensees/standard_licensee/css/moreResourcesStyles.css" type="text/css" rel="stylesheet"/><title>Privacy Policy and Terms of Use </title><link href="../../licensees/licensee1/css/reset.css" rel="stylesheet" type="text/css"/><!--[if IE 6]>
-				<link rel="stylesheet" type="text/css" href="/css/IE6Styles.css" />
+<html xmlns="http://www.w3.org/1999/xhtml"><head><script type="text/javascript" src="../../misc/javascript/mobDesk.js"> </script><script type="text/javascript">
+							mothershipDesktopURL='';
+							
+							
+							
+							
+							
+							mothershipMobileURL = 'http://m.kidshealth.org/parent/kh_misc/policy.html';
+						</script>
+	
+	<script>
+			// Set common mobile vars
+		arrivingURL=window.location.href;
+		lowercaseURL=arrivingURL.toLowerCase();
+		insert2URL="";
+		hashLocation=lowercaseURL.indexOf("#");
+		
+		function createCookie22(name,value,days) 
+			{
+				//if(name=="khStickyCat"){ location.hash = "khsc";}
+				if (days) 
+				{
+					var date = new Date();
+					date.setTime(date.getTime()+(days*24*60*60*1000));
+					var expires = "; expires="+date.toGMTString();
+				}
+				else var expires = "";
+				document.cookie = name+"="+value+expires+"; path=/";
+			}
+			
+		function readCookie22(name) 
+			{
+				var nameEQ = name + "=";
+				var ca = document.cookie.split(';');
+				for(var i=0;i < ca.length;i++) 
+				{
+					var c = ca[i];
+					while (c.charAt(0)==' ') c = c.substring(1,c.length);
+					if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+				}
+				return null;
+			}
+			
+		function dynamicWellnessCenter2Category() {
+			// check if wellness center and switch pageset
+			/*if(lowercaseURL.indexOf("ps=180")!=-1 || lowercaseURL.indexOf("ps=280")!=-1 || lowercaseURL.indexOf("ps=380")!=-1) {
+				arrivingURL=arrivingURL.replace("ps=180","ps=103");
+				arrivingURL=arrivingURL.replace("ps=280","ps=203");
+				arrivingURL=arrivingURL.replace("ps=380","ps=303");
+			}*/
+			/* Newest version pre WC lookup removal... removing this to nullify wc js redirect/rewrite
+			if(mobileWcURL!='') { mobileURL = mobileWcURL; }
+			*/
+		}
+
+		function urlify() {
+		//mobileURL=arrivingURL.substr(0,7)+insert2URL+arrivingURL.substr(7);
+		//alert("the lcurl is"+lowercaseURL+"and the hash location is"+hashLocation);
+			
+		
+			if(lowercaseURL.indexOf("pagemanager")!=-1 && lowercaseURL.indexOf("#")!=-1) {
+					mobileURL=arrivingURL.substr(0,hashLocation)+"\&m=y"+arrivingURL.substr(hashLocation);
+					dynamicWellnessCenter2Category();
+			}
+			
+			else if(lowercaseURL.indexOf("pagemanager")!=-1) {
+					mobileURL=arrivingURL+"\&m=y";
+					dynamicWellnessCenter2Category();
+			}
+			
+			else {
+				//mobileURL=arrivingURL.substr(0,7)+insert2URL+arrivingURL.substr(7);
+				mobileURL=mothershipMobileURL;
+			}
+			
+			if(mobileURL.indexOf("lic=1&")!=-1) {
+				mobileURL=mobileURL.replace('lic=1','lic=152');	
+			//document.write(mobileURL);
+			}
+			
+		}
+	
+		function mobileDesktop() {
+			//alert("mobile Desktop function run");
+			thisScreen=screen.width;
+			thisUA=navigator.userAgent;
+			thisUA=thisUA.toLowerCase();
+		if(thisUA.indexOf("iphone")!=-1||thisUA.indexOf("android")!=-1||thisUA.indexOf("iemobile")!=-1||thisUA.indexOf("blackberry")!=-1||thisUA.indexOf("opera m")!=-1||thisUA.indexOf("symbian")!=-1||thisUA.indexOf("dsi")!=-1) {
+				window.device="mobile";	
+			}
+			else if(thisScreen<=599) {
+				window.device="mobile";
+			}
+			else{ window.device="desktop"};
+			
+			if(device=="mobile") {
+				urlify();
+				document.location=mobileURL;
+			}
+			else {desktop152To1();}
+		}
+	
+		function desktopPrefCookieCheck() {
+			var desktopPreferred = readCookie22('desktopPref');
+			if(desktopPreferred==1) {
+				// do nothing unless licensee is 152
+				desktop152To1();
+			}
+			else {
+				//alert("mobile"+desktopPreferred);
+				mobileDesktop();
+			}
+		}
+	
+		function linkToMobile() {
+			urlify();
+			document.location=mobileURL;
+			alert("hey, this is used!");
+		}
+		
+		function desktop152To1() {
+			if(device=="desktop" && lowercaseURL.indexOf("lic=152") !=-1) {
+				mothershipDesktopFrom152=arrivingURL.replace('lic=152','lic=1');
+				document.location=mothershipDesktopFrom152;
+			}
+		}
+		
+		desktopPrefCookieCheck();
+	
+		</script>
+		
+	<meta name="robots" content="NOODP"/><meta name="keywords" content=""/><meta name="description" content=""/><meta name="notify" content="N"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><link href="../../css/khcontent_style.css" type="text/css" rel="stylesheet"/><link href="../../licensees/standard_licensee/css/moreResourcesStyles.css" type="text/css" rel="stylesheet"/><link href="../../licensees/licensee1/css/reset.css" rel="stylesheet" type="text/css"/><!--[if IE 6]>
+					<link rel="stylesheet" type="text/css" href="/css/IE6Styles.css" />
 				<![endif]--><!--[if IE 7]>
-				<link rel="stylesheet" type="text/css" href="/css/IE7Styles.css" />
-				<![endif]--><script src="../../licensees/standard_licensee/js/functions.js" language="JavaScript" type="text/javascript"> </script><script src="../../misc/javascript/khCommon.js" language="JavaScript" type="text/javascript"> </script><script src="../../misc/javascript/readSpeaker.js" language="JavaScript" type="text/javascript"> </script><script type="text/javascript" src="../../misc/movie/flashobject.js"> </script><script type="text/javascript" src="../../licensees/standard_licensee/js/moreResourcesJS.js"> </script><script src="../../licensees/standard_licensee/js/pageNavigate.js" type="text/javascript"> </script><link type="text/css" rel="stylesheet" href="../../css/wellnessCenterMain.css"/><meta name="site" content="MOTHERSHIP"/><script src="../../licensees/standard_licensee/js/common_functions_mothership.js" language="JavaScript" type="text/javascript"> </script><script src="../../licensees/licensee1/js/whatOthersAreReading.js" language="JavaScript" type="text/javascript"> </script><script type="text/javascript">
-					function clearText(field){
-						if (field.defaultValue == field.value) field.value = '';
-						else if (field.value == '') field.value = field.defaultValue;
-						}
-						
-					function articleFontSize(changedFontSize) {
-						fontSize = document.getElementById('khcontent');
-						fontSize.style.fontSize = changedFontSize;
-						}
-				</script><script type="text/javascript">
+					<link rel="stylesheet" type="text/css" href="/css/IE7Styles.css" />
+				<![endif]--><link type="text/css" rel="stylesheet" href="../../css/wellnessCenterMain.css"/><!--[if IE 6]>
+					<link rel="stylesheet" type="text/css" href="/licensees/standard_licensee/css/moreResourcesStylesIE6.css" />
+					<![endif]--><!--[if IE 7]>
+					<link rel="stylesheet" type="text/css" href="/licensees/standard_licensee/css/moreResourcesStylesIE7.css" />
+					<![endif]--><link href="../../css/khcontent_printstyle.css" media="print" type="text/css" rel="stylesheet"/><title>Privacy Policy and Terms of Use </title><script src="../../licensees/standard_licensee/js/functions.js" language="JavaScript" type="text/javascript"> </script><script src="../../misc/javascript/khCommon.js" language="JavaScript" type="text/javascript"> </script><script type="text/javascript" src="../../misc/movie/flashobject.js"> </script><script type="text/javascript" src="../../licensees/standard_licensee/js/moreResourcesJS.js"> </script><script src="../../licensees/standard_licensee/js/pageNavigate.js" type="text/javascript"> </script><meta name="site" content="MOTHERSHIP"/><meta name="MSL" content="%26ps=109%26article_set=23595%26cat_id=20538"/><script src="../../licensees/standard_licensee/js/common_functions_mothership.js" language="JavaScript" type="text/javascript"> </script><script src="../../licensees/licensee1/js/whatOthersAreReading.js" language="JavaScript" type="text/javascript"> </script><script type="text/javascript">
+						function clearText(field){
+							if (field.defaultValue == field.value) field.value = '';
+							else if (field.value == '') field.value = field.defaultValue;
+							}
+							
+						function articleFontSize(changedFontSize) {
+							fontSize = document.getElementById('khcontent');
+							fontSize.style.fontSize = changedFontSize;
+							}
+					</script><script type="text/javascript">
 			var KHAdSection = "parent";
 			var KHAdCat = "parent_kh_misc";
 			var KHAdSubCat = "";
@@ -29,14 +164,10 @@
 			Article: _23595
 			??
 		--><link href="../../licensees/licensee1/css/parentStyles.css" rel="stylesheet" type="text/css"/><!--[if IE 6]>
-								<link rel="stylesheet" type="text/css" href="/licensees/licensee1/css/parentIE6styles.css" />
-								<![endif]--><!--[if IE 7]>
-								<link rel="stylesheet" type="text/css" href="/licensees/licensee1/css/parentIE7styles.css" />
-								<![endif]--><!--[if IE 6]>
-				<link rel="stylesheet" type="text/css" href="/licensees/standard_licensee/css/moreResourcesStylesIE6.css" />
-				<![endif]--><!--[if IE 7]>
-				<link rel="stylesheet" type="text/css" href="/licensees/standard_licensee/css/moreResourcesStylesIE7.css" />
-				<![endif]--></head><body onload="KH_loadFunctions(); reInitializeCookie();" onunload="KH_unloadFunctions()"> <div class="hider"><p><a href="policy.html#mainContentContainer">Skip Navigation</a></p></div><div id="mainContainer"><div id="outerLeft"> </div><div id="mainSite"><div id="mainHeader"><div id="logoImage"> </div><div id="logoContainer"><h1><a href="http://kidshealth.org"><span class="hider">KidsHealth</span></a></h1><h2><a href="http://www.nemours.org" target="_blank"><span class="hider">from Nemours</span></a></h2></div><div id="tabsImage"> </div><div id="tabsContainer"><h3><a href="http://kidshealth.org/parent/index.jsp?tracking=P_Home"><span class="hider">for Parents</span></a></h3><h4><a href="http://kidshealth.org/kid/index.jsp?tracking=K_Home"><span class="hider">for Kids</span></a></h4><h5><a href="http://kidshealth.org/teen/index.jsp?tracking=T_Home"><span class="hider">for Teens</span></a></h5></div></div><div id="mainBody"><div id="leftNav"><div id="leftNavSearch"><form name="SeekForm" method="post" action="http://kidshealth.org/Search01.jsp" onsubmit="return validateQT();" id="KLNseekForm"><input type="hidden" name="SearchSection" value="1"/><input type="hidden" name="Mode" value="Search"/><input type="text" alt="Enter Search Text Here" name="SearchTextArea" maxlength="250" value="Search here..." onclick="clearText(this)" onblur="clearText(this)"/><input type="submit" value="Search Submit" id="searchButton"/></form></div><div id="mainNav"><ul><li id="homeLink"><a href="http://kidshealth.org/parent">Parents Home</a></li><li><a href="http://kidshealth.org/parent/general/index.html">General Health</a></li><li><a href="http://kidshealth.org/parent/infections/index.html">Infections</a></li><li><a href="http://kidshealth.org/parent/emotions/index.html">Emotions &amp; Behavior</a></li><li><a href="http://kidshealth.org/parent/growth/index.html">Growth &amp; Development</a></li><li><a href="http://kidshealth.org/parent/nutrition_center/index.html">Nutrition &amp; Fitness</a></li><li><a href="http://kidshealth.org/parent/recipes/index.html">Recipes</a></li><li><a href="http://kidshealth.org/parent/pregnancy_newborn/index.html">Pregnancy &amp; Newborns</a></li><li><a href="http://kidshealth.org/parent/medical/index.html">Medical Problems</a></li><li><a href="http://kidshealth.org/parent/question/index.html">Q&amp;A</a></li><li><a href="http://kidshealth.org/parent/positive/index.html">Positive Parenting</a></li><li><a href="http://kidshealth.org/parent/firstaid_safe/index.html">First Aid &amp; Safety</a></li><li><a href="http://kidshealth.org/parent/system/index.html">Doctors &amp; Hospitals</a></li><li><a href="http://kidshealth.org/parent/medications/index.html">Medications</a></li><li><a href="http://kidshealth.org/parent/centers/spanish_center_esp.html">En Espa&#241;ol</a></li></ul><div id="mainNavExtraLink"><a href="http://classroom.kidshealth.org"><span class="hider">Teachers - Looking for Health Lessons? Visit KidsHealth in the Classroom</span></a></div></div><div id="whatOthersAreReading"><h4><span class="hider">What Other Parents Are Reading</span></h4><ul id="whatOthersWant"><li class="999test"><a href="http://kidshealth.org/parent/firstaid_safe/outdoor/fireworks.html">Stay Safe This 4th</a></li><li class="999test"><a href="http://kidshealth.org/parent/infections/bacterial_viral/swimmer_ear.html">Swimmer's Ear</a></li><li class="999test"><a href="http://kidshealth.org/parent/nutrition_center/healthy_eating/myplate.html">Make 'MyPlate' Yours</a></li><li class="999test"><a href="http://kidshealth.org/parent/firstaid_safe/home/job.html">Summer Job? Put Safety First</a></li><li class="999test"><a href="http://kidshealth.org/parent/positive/all_reading/summer_reading.html">5 Tips to Get Kids Reading</a></li><li class="999test"><a href="http://kidshealth.org/parent/pregnancy_calendar/pregnancy_calendar_intro.html">Pregnant? Your Baby's Growth</a></li> </ul></div><script type="text/javascript" language="JavaScript">setWhatOthersWant('Parents')</script><script type="text/javascript" src="../../licensees/licensee1/js/kh_parentsLeftNavInclude.js"> </script><br clear="all"/></div><div id="mainContentContainer"><div id="articleHeaderGraphic"><img alt="Privacy Policy and Terms of Use" src="headers_68295/PrivacyPolicy.gif"/><h1>Privacy Policy and Terms of Use</h1></div><div id="breadcrumbsContainer"><div id="breadcrumbs"><a href="http://kidshealth.org/index.html">KidsHealth</a>&gt;
+									<link rel="stylesheet" type="text/css" href="/licensees/licensee1/css/parentIE6styles.css" />
+									<![endif]--><!--[if IE 7]>
+									<link rel="stylesheet" type="text/css" href="/licensees/licensee1/css/parentIE7styles.css" />
+									<![endif]--><script src="../../misc/javascript/readSpeaker.js" language="JavaScript" type="text/javascript"> </script><script type="text/javascript" src="../../licensees/standard_licensee/js/tsClear.js"> </script></head><body onload="KH_loadFunctions(); reInitializeCookie();" onunload="KH_unloadFunctions()"> <div class="hider"><p><a href="policy.html#mainContentContainer">Skip Navigation</a></p></div><div id="mainContainer"><div id="outerLeft"> </div><div id="mainSite"><div id="mainHeader"><div id="logoImage"> </div><div id="logoContainer"><h1><a href="http://kidshealth.org"><span class="hider">KidsHealth</span></a></h1><h2><a href="http://www.nemours.org" target="_blank"><span class="hider">from Nemours</span></a></h2></div><div id="tabsImage"> </div><div id="tabsContainer"><h3><a href="http://kidshealth.org/parent/index.jsp?tracking=P_Home"><span class="hider">for Parents</span></a></h3><h4><a href="http://kidshealth.org/kid/index.jsp?tracking=K_Home"><span class="hider">for Kids</span></a></h4><h5><a href="http://kidshealth.org/teen/index.jsp?tracking=T_Home"><span class="hider">for Teens</span></a></h5></div></div><div id="mainBody"><div id="leftNav"><div id="leftNavSearch"><form name="SeekForm" method="post" action="http://kidshealth.org/Search01.jsp" onsubmit="return validateQT();" id="KLNseekForm"><input type="hidden" name="SearchSection" value="1"/><input type="hidden" name="Mode" value="Search"/><input type="text" alt="Enter Search Text Here" name="SearchTextArea" maxlength="250" value="Search here..." onclick="clearText(this)" onblur="clearText(this)"/><input type="submit" value="Search Submit" id="searchButton"/></form></div><div id="mainNav"><ul><li id="homeLink"><a href="http://kidshealth.org/parent">Parents Home</a></li><li><a href="http://kidshealth.org/parent/general/">General Health</a></li><li><a href="http://kidshealth.org/parent/growth/">Growth & Development</a></li><li><a href="http://kidshealth.org/parent/infections/">Infections</a></li><li><a href="http://kidshealth.org/parent/medical/">Diseases & Conditions</a></li><li><a href="http://kidshealth.org/parent/pregnancy_newborn/">Pregnancy & Baby</a></li><li><a href="http://kidshealth.org/parent/nutrition_center/">Nutrition & Fitness</a></li><li><a href="http://kidshealth.org/parent/emotions/">Emotions & Behavior</a></li><li><a href="http://kidshealth.org/parent/positive/">School & Family Life</a></li><li><a href="http://kidshealth.org/parent/firstaid_safe/">First Aid & Safety</a></li><li><a href="http://kidshealth.org/parent/system/">Doctors & Hospitals</a></li><li><a href="http://kidshealth.org/parent/medications/">Medications</a></li><li><a href="http://kidshealth.org/parent/question/">Q&A</a></li><li><a href="http://kidshealth.org/parent/recipes/">Recipes</a></li><li><a href="http://kidshealth.org/parent/centers/spanish_center_esp.html">En Espa&#241;ol</a></li></ul><div id="mainNavExtraLink"><a href="http://classroom.kidshealth.org"><span class="hider">Teachers - Looking for Health Lessons? Visit KidsHealth in the Classroom</span></a></div></div><div id="whatOthersAreReading"><h4><span class="hider">What Other Parents Are Reading</span></h4><ul id="whatOthersWant"><li class="999test"><a href="http://kidshealth.org/parent/positive/talk/news.html">Scary News Report? What to Say</a></li><li class="999test"><a href="http://kidshealth.org/parent/centers/summer_center.html">Summer Safety Smarts</a></li><li class="999test"><a href="http://kidshealth.org/parent/recipes/pregnant/greek_salad.html">Recipe: Greek Salad</a></li><li class="999test"><a href="http://kidshealth.org/parent/firstaid_safe/outdoor/right_bike.html">Finding the Right Bike</a></li><li class="999test"><a href="http://kidshealth.org/parent/pregnancy_calendar/pregnancy_calendar_intro.html">Pregnant? Your Child's Growth</a></li> </ul></div><script type="text/javascript" language="JavaScript">setWhatOthersWant('Parents')</script><script type="text/javascript" src="../../licensees/licensee1/js/kh_parentsLeftNavInclude.js"> </script><br clear="all"/></div><div id="mainContentContainer"><div id="articleHeaderGraphic"><img alt="Privacy Policy and Terms of Use" src="headers_68295/PrivacyPolicy.gif"/><h1>Privacy Policy and Terms of Use</h1></div><div id="breadcrumbsContainer"><div id="breadcrumbs"><a href="http://kidshealth.org/index.html">KidsHealth</a>&gt;
 				<a href="http://kidshealth.org/parent/">Parents</a>&gt;
 		<a href="http://kidshealth.org/parent/kh_misc/">KH Misc.</a>&gt;
 		Privacy Policy and Terms of Use</div><div id="breadcrumbsExtras"><ul><li id="breadcrumbsExtraPrintButton"><a href="javascript:printWindow('/PageManager.jsp?dn=KidsHealth&amp;lic=1&amp;ps=107&amp;cat_id=20538&amp;article_set=23595')">
@@ -132,16 +263,37 @@ Wilmington, DE 19803<br />
 
 <p>These Terms and Conditions are governed by the substantive laws of the State of Delaware, without respect to its conflict of laws principles. You agree to submit to the jurisdiction of the courts situated in the State of Delaware with respect to any dispute, disagreement, or cause of action related to or involving this site. If any provision is found to be invalid by any court having competent jurisdiction, the invalidity of such provision shall not affect the validity of the remaining provisions of these Terms and Conditions, which shall remain in full force and effect. No waiver of any of these Terms and Conditions shall be deemed a further or continuing waiver of such term or any other term. Except as expressly provided elsewhere in this site, these Terms and Conditions constitute the entire agreement between You and The Nemours Foundation with respect to Your use of this site.</p>
 
-<p>KidsHealth and KidsHealth.org are trademarks of The Nemours Foundation.</p></div></div><br/><br clear="all"/><br clear="all"/><div id="newsletterBannerLink"><a href="javascript:NewCPNNPNWindow('https://websrv01.kidshealth.org/khcontent/jsp/npn_cpn.jsp?lic=1&amp;cpn_prog_id=1', 'NPNCPNNews')"><span class="hider">Sign up for our free weekly eNewsletters here</span></a><br clear="all"/></div></div><br clear="all"/></div></div><div id="outerRight"><script type="text/javascript" src="../../licensees/licensee1/js/kh_parentsRightBanners.js"> </script></div><div id="kidsHealthFooter"><ul><li><a href="http://kidshealth.org/parent/kh_misc/about.html">
-						About KidsHealth</a></li><li><a href="http://kidshealth.org/parent/kh_misc/nemours.html">
-						About Nemours</a></li><li><a target="_blank" href="http://kidshealth.org/parent/kh_misc/send_mail.html">
-						Contact Us</a></li><li><a href="http://kidshealth.org/misc/partners">
-						Partners</a></li><li><a href="http://kidshealth.org/parent/kh_misc/editorial_policy.html">
-						Editorial Policy</a></li><li id="footerLastLink"><a href="policy.html">
-						Privacy Policy &amp; Terms of Use</a></li></ul><div id="NemoursLink"><a href="http://www.nemours.org" target="_blank"><span class="hider">Visit the Nemours Web site.</span></a></div><p>Note: All information on KidsHealth&#174; is for educational purposes only. For specific medical advice, diagnoses, and treatment, consult your doctor.</p><p>&#169; 1995-<script type="text/javascript" language="javascript">document.write(KHcopyDate);</script> The Nemours Foundation. All rights reserved.</p><script type="text/javascript">
+<p>KidsHealth and KidsHealth.org are trademarks of The Nemours Foundation.</p></div></div><br/><br clear="all"/><br clear="all"/><div id="newsletterBannerLink"><a href="javascript:NewCPNNPNWindow('https://websrv01.kidshealth.org/khcontent/jsp/npn_cpn.jsp?lic=1&amp;cpn_prog_id=1', 'NPNCPNNews')"><span class="hider">Sign up for our free weekly eNewsletters here</span></a><br clear="all"/></div></div><br clear="all"/></div></div><div id="outerRight"><script type="text/javascript" src="../../licensees/licensee1/js/kh_parentsRightBanners.js"> </script></div><div id="kidsHealthFooter"><ul><li><a href="http://kidshealth.org/parent/kh_misc/about.html">About KidsHealth</a></li><li><a href="http://kidshealth.org/parent/kh_misc/nemours.html">About Nemours</a></li><li><a href="http://kidshealth.org/contact_us.jsp?p=refp" target="_blank">Contact Us</a></li><li><a href="http://kidshealth.org/parent/kh_misc/partners.html">Partners</a></li><li><a href="http://kidshealth.org/parent/kh_misc/editorial_policy.html">Editorial Policy</a></li><li id="footerLastLink"><a href="policy.html">Privacy Policy & Terms of Use</a></li></ul><div id="NemoursLink"><a href="http://www.nemours.org" target="_blank"><span class="hider">Visit the Nemours Web site.</span></a></div><p>Note: All information on KidsHealth&#174; is for educational purposes only. For specific medical advice, diagnoses, and treatment, consult your doctor.</p><p>&#169; 1995-<script type="text/javascript" language="javascript">document.write(KHcopyDate);</script> The Nemours Foundation. All rights reserved.</p><script type="text/javascript">
 			function getCurrentDate(){
 			var nwDate = new Date();
 			return nwDate.getFullYear();
 			//test
 			}
-		</script></div></div><script type="text/javascript" src="../../misc/javascript/stats.js"> </script></body></html>
+		</script></div></div>
+	
+		<!-- Quantcast Tag -->
+<script type="text/javascript">
+var _qevents = _qevents || [];
+
+(function() {
+var elem = document.createElement('script');
+elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+elem.async = true;
+elem.type = "text/javascript";
+var scpt = document.getElementsByTagName('script')[0];
+scpt.parentNode.insertBefore(elem, scpt);
+})();
+
+_qevents.push({
+qacct:"p-T4Ks3kAYmHaDA"
+});
+</script>
+
+<noscript>
+<div style="display:none;">
+<img src="../../../pixel.quantserve.com/pixel/p-T4Ks3kAYmHaDA.gif" border="0" height="1" width="1" alt="Quantcast"/>
+</div>
+</noscript>
+<!-- End Quantcast tag -->
+			
+	</body></html>

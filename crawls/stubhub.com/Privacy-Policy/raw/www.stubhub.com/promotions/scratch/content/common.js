@@ -324,6 +324,8 @@ function getUSxml(d) {
 						}
 						
 						
+
+
 						
 						
 					}
@@ -540,7 +542,7 @@ function getGenreFeed(){
 						else {
 							
 					//	document.getElementById('sports').style.width = "351px";
-						$("#sports").append('<ul style="height: 117px;padding:15px 0 0 !important;"><li style="padding:0px !important" class="mmDivider_top"></li><li style="padding:0px !important"  class="mmDivider_bot"></li></ul>');						
+						$("#sports").append('<ul style="height: 170px;padding:15px 0 0 !important;"><li style="padding:0px !important" class="mmDivider_top"></li><li style="padding:0px !important"  class="mmDivider_bot"></li></ul>');						
 						$("#sports").append('<ul id= "cont'+cno3+'" ><li style="color:#444444;"><b>Popular</b></li>');
 						$.each(sroot3,function(k, dataitem) {
 						desc2 =dataitem.DisplayDescription;
@@ -586,7 +588,7 @@ var descCheck="";
 		 else 	
 					 		{
 			 								//document.getElementById('concerts').style.width = "391px";
-			 								$("#concerts").append('<ul style="height: 117px;padding:15px 0 0 !important;"><li style="padding:0px !important" class="mmDivider_top"></li><li style="padding:0px !important" class="mmDivider_bot"></li></ul>');						
+			 								$("#concerts").append('<ul style="height: 170px;padding:15px 0 0 !important;"><li style="padding:0px !important" class="mmDivider_top"></li><li style="padding:0px !important" class="mmDivider_bot"></li></ul>');						
 			 								$("#concerts").append('<ul id= "conc'+cno+'" ><li style="color:#444444;"><b>Popular</b></li>');
 			 								$.each(sroot1, function(k, item) {
 			 								desc =item.DisplayDescription; 
@@ -637,7 +639,7 @@ var descCheck="";
 					else{
 						//document.getElementById('comedy').style.width = "351px";
 					    cno1=1;
-						$("#comedy").append('<ul style="height: 117px;padding:15px 0 0 !important;"><li style="padding:0px !important" class="mmDivider_top"></li><li style="padding:0px !important" class="mmDivider_bot"></li></ul>');					
+						$("#comedy").append('<ul style="height: 170px;padding:15px 0 0 !important;"><li style="padding:0px !important" class="mmDivider_top"></li><li style="padding:0px !important" class="mmDivider_bot"></li></ul>');					
 						$("#comedy").append('<ul id= "cond'+cno1+'" ><li style="color:#444444;"><b>Popular</b></li>');
 						$.each(sroot2,function(k, itemset) {
 						desc1 =itemset.DisplayDescription;

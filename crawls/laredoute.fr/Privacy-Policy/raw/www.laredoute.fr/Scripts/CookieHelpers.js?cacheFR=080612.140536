@@ -1,0 +1,37 @@
+﻿
+function setNoEscapeCookie(name,value,expires,path,domain,secure){var thisCookie=name+"="+value+
+((expires)?"; expires="+expires.toGMTString():"")+
+((path)?"; path="+path:";  path=/")+
+((domain)?"; domain="+domain:"")+
+((secure)?"; secure":"");document.cookie=thisCookie;}
+function setCookie_New(name,value,expires,path,domain,secure){setCookie(name,value,expires,path,domain,secure);}
+function setCookie(name,value,expires,path,domain,secure){var expires_date=new Date(expires);var dt=new Date();var thisCookie=name+"="+escape(value)+
+((expires)?"; expires="+expires_date.toGMTString():"")+
+((path)?"; path="+path:"")+
+((domain)?"; domain="+domain:"")+
+((secure)?"; secure":"");document.cookie=thisCookie;}
+function SetTempCookie(name,value){document.cookie=name+"="+escape(value);}
+function showCookie(){alert(unescape(document.cookie));}
+function getCookieVal(offset){var endstr=document.cookie.indexOf(";",offset);if(endstr==-1)
+endstr=document.cookie.length;return unescape(document.cookie.substring(offset,endstr));}
+function getCookie(sName){return GetCookie(sName);}
+function GetCookie(name){var arg=name+"=";var alen=arg.length;var clen=document.cookie.length;var i=0;while(i<clen){var j=i+alen;if(document.cookie.substring(i,j)==arg)
+return getCookieVal(j);i=document.cookie.indexOf(" ",i)+1;if(i==0)break;}
+return null;}
+function DeleteCookie(name){var path="/";var domain="";if(GetCookie(name)){var expires=new Date();expires.setUTCFullYear(expires.getUTCFullYear()-1);document.cookie=name+'=; expires='+expires.toUTCString()+'; path=/';}}
+function setSubCookieAndCookie(cookieName,subCookieName,subCookieValue){var cookieValue=GetCookie(cookieName);if(cookieValue==null||cookieValue.length==0){cookieValue=subCookieName+'='+subCookieValue;}
+else{var posStart=cookieValue.indexOf(subCookieName+'=');var posEnd=cookieValue.indexOf('&',posStart+1);if(posEnd==-1){posEnd=cookieValue.length;}
+if(posStart>=0&&posEnd>0){cookieValue=cookieValue.substring(0,posStart)+
+subCookieName+'='+subCookieValue+
+cookieValue.substring(posEnd,cookieValue.length);}
+else{if(cookieValue.length>0){cookieValue=cookieValue+'&'+subCookieName+'='+subCookieValue;}}}
+setNoEscapeCookie(cookieName,cookieValue);}
+function deleteSubCookieAndCookie(cookieName,subCookieName,subCookieValue){var cookieValue=GetCookie(cookieName);if(cookieValue==null||cookieValue.length==0){return;}
+else{var posStart=cookieValue.indexOf('&'+subCookieName+'=');if(posStart<0){posStart=cookieValue.indexOf(subCookieName+'=');}
+var posEnd=cookieValue.indexOf('&',posStart+1);if(posEnd==-1){posEnd=cookieValue.length;}
+if(posStart>=0&&posEnd>0){cookieValue=cookieValue.substring(0,posStart)+
+cookieValue.substring(posEnd,cookieValue.length);}
+else{if(cookieValue.length>0){cookieValue=cookieValue;}}}
+setNoEscapeCookie(cookieName,cookieValue);}
+function GetSubCookieValue(cookieName,subCookieName){var cookieValue=GetCookie(cookieName);if(cookieValue!=null){if(cookieValue.length>0){var arrSubCookies=cookieValue.split('&');for(var i=0;i<arrSubCookies.length;i++){if(arrSubCookies[i].indexOf(subCookieName)==0){return arrSubCookies[i].substring(subCookieName.length+1,arrSubCookies[i].length);}}}}
+return null;}

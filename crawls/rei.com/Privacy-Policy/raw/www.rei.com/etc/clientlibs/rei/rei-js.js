@@ -9,7 +9,7 @@ $(document).ready(function(){
 		'type': 'iframe'
 	});
 });
-/* $Id: videobelt.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id: videobelt.js 4074 2012-07-18 18:23:57Z agersho $ */
 
 $(document).ready(function(){
 	var volVideoSlide = new Object();
@@ -48,17 +48,17 @@ $(document).ready(function(){
 	}
 	
 	function checkBtns(){
-		$('#leftBtn img').attr('src','/etc/static/rei-wcm/pix/common/carousel_buttons_brown_left.jpg');
-		$('#rightBtn img').attr('src','/etc/static/rei-wcm/pix/common/carousel_buttons_brown_right.jpg');
+		$('#leftBtn div').removeClass().addClass("btnOn");
+		$('#rightBtn div').removeClass().addClass("btnOn");
 		
 		if (volVideoSlide.indx == 0){
-			$('#leftBtn img').attr('src','/etc/static/rei-wcm/pix/common/carousel_buttons_greyed_left.jpg');
+			$('#leftBtn div').removeClass().addClass("btnOff");
 		}
 		if (volVideoSlide.indx == volVideoSlide.slideCount) {
-			$('#rightBtn img').attr('src','/etc/static/rei-wcm/pix/common/carousel_buttons_greyed_right.jpg');
+        	$('#rightBtn div').removeClass().addClass("btnOff");
 		}
 		if (volVideoSlide.indx > volVideoSlide.slideCount) {
-			$('#rightBtn img').attr('src','/etc/static/rei-wcm/pix/common/carousel_buttons_greyed_right.jpg');
+            $('#rightBtn div').removeClass().addClass("btnOff");
 		}
 	}
 	
@@ -213,11 +213,11 @@ $(document).ready(function(){
 	});
 	
 });
-/* $Id: versiona.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id: versiona.js 3823 2012-07-03 18:18:05Z rray $ */
 
 $(document).ready(function() {
 	// Tab Control
-	$('.tabs li').click(function() {
+	$('.versiona .tabs li').click(function() {
 		// Tabs
 		$(this).siblings().removeClass('active');
 		$(this).addClass('active');
@@ -233,6 +233,1214 @@ $(document).ready(function() {
 		$('.'+target).addClass('active');
 	});
 });
+// set a cookie for a particular name
+function setCookie(name, value) {
+   var docLocation = document.URL;
+   var docLocationLen = docLocation.length;
+   document.cookie = name + "=" + docLocationLen + "~" + escape(document.location) + escape(value) + ";PATH=/" ;
+}
+function readCookie (CookieName) {
+  var lf = "\n";
+  var CookieString = document.cookie;
+  var CookieSet = CookieString.split (';');
+  var SetSize = CookieSet.length;
+  var CookiePieces
+  var cookieValue = "";
+  var x = 0;
+  for (x = 0; ((x < SetSize) && (cookieValue == "")); x++) {
+    CookiePieces = CookieSet[x].split ('=');
+    if (CookiePieces[0].substring (0,1) == ' ') {
+      CookiePieces[0] = CookiePieces[0].substring (1, CookiePieces[0].length);
+    }
+    if (CookiePieces[0] == CookieName) {
+     if(CookiePieces[1])
+     {
+    	 cookieValue = CookiePieces[1];
+     }
+    }
+  }
+  return cookieValue;
+}
+
+function Get_Cookie( check_name ) {
+	// first we'll split this cookie up into name/value pairs
+	// note: document.cookie only returns name=value, not the other components
+	var a_all_cookies = document.cookie.split( ';' );
+	var a_temp_cookie = '';
+	var cookie_name = '';
+	var cookie_value = '';
+	var b_cookie_found = false; // set boolean t/f default f
+
+	for ( i = 0; i < a_all_cookies.length; i++ )
+	{
+		// now we'll split apart each name=value pair
+		a_temp_cookie = a_all_cookies[i].split( '=' );
+
+
+		// and trim left/right whitespace while we're at it
+		cookie_name = a_temp_cookie[0].replace(/^\s+|\s+$/g, '');
+
+		// if the extracted name matches passed check_name
+		if ( cookie_name == check_name )
+		{
+			b_cookie_found = true;
+			// we need to handle case where cookie has no value but exists (no = sign, that is):
+			if ( a_temp_cookie.length > 1 )
+			{
+				cookie_value = unescape( a_temp_cookie[1].replace(/^\s+|\s+$/g, '') );
+			}
+			// note that in cases where cookie is initialized but no value, null is returned
+			return cookie_value;
+			break;
+		}
+		a_temp_cookie = null;
+		cookie_name = '';
+	}
+	if ( !b_cookie_found )
+	{
+		return null;
+	}
+}
+
+function Set_Cookie( name, value, expires)
+{
+    // set time, it's in milliseconds
+    var today = new Date();
+    today.setTime( today.getTime() );
+    
+    /*
+    if the expires variable is set, make the correct expires time, the current script below will set it for x number of days, to make it for hours,
+    delete * 24, for minutes, delete * 60 * 24
+    */
+    if ( expires ){
+        expires = parseInt(expires) * 1000 * 60 * 60 * 24;
+    }
+    var expires_date = new Date( today.getTime() + (expires) );
+    
+    document.cookie = name + "=" + escape( value ) + ";path=/" +( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" );
+}
+
+// this deletes the cookie when called
+function Delete_Cookie( name, path, domain ) {
+    if ( Get_Cookie( name ) ) document.cookie = name + "=" +
+    ( ( path ) ? ";path=" + path : "") +
+    ( ( domain ) ? ";domain=" + domain : "" ) +
+    ";expires=Thu, 01-Jan-1970 00:00:01 GMT";
+}
+
+/*HELPER FUNCTIONS*/
+
+
+/*--------------------------------------------------------------------------------------------------------------
+BEGIN: helper functions
+----------------------------------------------------------------------------------------------------------------*/
+function readArray(theArray) {
+	//this function takes param:{theArray} and returns string value
+	var returnVal;
+
+	if(theArray.length > 1){
+		returnVal = theArray.join(', ');
+		return returnVal;
+	}
+	else{
+		return theArray[0];
+	}
+}
+function pushArrCookie(key, val) {
+	if (val != '') {
+		arrCookie.push(key + val);
+	}
+}
+function getUserQueryData(dataIn) {
+	var startIx = dataIn.indexOf(':') + 1;
+	var dataOut = dataIn.substring(startIx, dataIn.length);
+	if (dataIn.indexOf('state') > - 1) {
+		dataOut = dataIn.substring(startIx, startIx + 2);
+	}
+	return dataOut;
+}
+
+
+
+
+//func used to fill form fields with data from cookies: userSearchQuery (Find A Store Click)
+function fillFormFields(dCookie, frmFind, clearFlds, fromWhere) {
+	debugAlert('enter func fillformFields: ' + fromWhere);
+	var userData =[];
+	userData = dCookie.split(', ');
+	if(clearFlds){
+		$('input', '.frmFindAStore').val('');
+	}
+	
+	for (var ix = 0; ix < userData.length; ix++) {
+		if (frmFind) {
+			if (userData[ix].indexOf('city:') > - 1) {
+				$('#cityInput', '.frmFindAStore').val(getUserQueryData(userData[ix]));
+			} else if (userData[ix].indexOf('state:') > - 1) {
+				$('#stateInput', '.frmFindAStore').val(getUserQueryData(userData[ix]));
+			} else if (userData[ix].indexOf('zipCode:') > - 1) {
+				$('#zipInput', '.frmFindAStore').val(getUserQueryData(userData[ix]));
+			} else {
+				if(parseInt(userData[ix]) > 0){
+					$('#zipInput', '.frmFindAStore').val(getUserQueryData(userData[ix]));
+				}
+				else{ alert('foreign data in cookie: ' + userData[ix]); }
+			}
+		} else {
+			if (userData[ix].indexOf('street:') > - 1) {
+				$('#txtStreet', '.frmDirections').val(getUserQueryData(userData[ix]));
+			} else if (userData[ix].indexOf('city:') > - 1) {
+				$('#txtCity', '.frmDirections').val(getUserQueryData(userData[ix]));
+			} else if (userData[ix].indexOf('state:') > - 1) {
+				$('#txtState', '.frmDirections').val(getUserQueryData(userData[ix]));
+			} else if (userData[ix].indexOf('zipCode:') > - 1) {
+				$('#txtZip', '.frmDirections').val(getUserQueryData(userData[ix]));
+			} else {
+				alert('foreign data in cookie: ' + userData[ix]);
+			}
+		}
+	}
+}
+function startFromReDo() {
+	$('.directionsInfo').hide();
+	$('.frmDirections').show();
+	$('.startOverLink').hide();
+	$('.userTravelModeMsg').text('Starting Point:');
+}
+function resetMap() {
+	Delete_Cookie('userSearchQuery', '/');
+	Delete_Cookie('lastStartingPoint', '/');
+	Delete_Cookie('memberZipCode', '/');
+	stateSearch = false;
+	var oldLoc = new String(window.location.href);
+	var indexOfHash = oldLoc.indexOf('#');
+	if (indexOfHash > 0) {
+		var newLoc = oldLoc.substring(0, indexOfHash);
+		window.location.href = newLoc;
+	}
+}
+function switchMaps(isStatic, fromWhere) {
+	debugAlert('enter func switchMaps(): ' + fromWhere);
+	
+	if (! isStatic) {
+		$('.staticMap').hide();
+		$('.staticMapTitle').hide();
+		$('.store_listing').show();
+		$('.mapTitle').show();
+	} else {// 'view state map' link click
+		if(Get_Cookie('useCookies')){//need to check4Cookies first before going into endless while loop
+			Set_Cookie('stateMap', 'showIt', 1);
+			var check4Cookie = true;
+			while(check4Cookie){
+				if(Get_Cookie('stateMap')){
+					check4Cookie = false;
+					var oldLoc = new String(window.location.href);
+					var indexOfHash = oldLoc.indexOf('#');
+					if (indexOfHash > 0) {
+						var newLoc = oldLoc.substring(0, indexOfHash);
+						window.location.href = newLoc;
+					}
+				}
+			}
+		}
+		else{//cookies are disabled or user deleted cookie that was set at docReady
+			var oldLoc = new String(window.location.href);
+			var indexOfHash = oldLoc.indexOf('#');
+			if (indexOfHash > 0) {
+				var newLoc = oldLoc.substring(0, indexOfHash);
+				window.location.href = newLoc;
+			}
+		}
+	}
+}
+
+
+function getStoreInfo(storeNumber) {
+	var arrStoreNfo;
+	for (var rr = 0; rr < arrStoreInfo.length; rr++) {
+		if (arrStoreInfo[rr][14] == storeNumber) {
+			arrStoreNfo = arrStoreInfo[rr];
+			break;
+		}
+	}
+	return arrStoreNfo;
+}
+function findStore(storeName) {
+	var foundStore = false;
+	for (var ix = 0; ix < arrStoreInfo.length; ix++) {
+		if (arrStoreInfo[ix][0].toLowerCase() == storeName.toLowerCase()) {
+			foundStore = true;
+			break;
+		}
+	}
+	if (foundStore) {
+		alert('index: ' + ix);
+	}
+}
+function setMarkers(storeNumber, stateCode) {
+	for (var ix = 0; ix < arrStoreInfo.length; ix++) {
+	
+		//clear marker first
+		arrMarkers[ix].setMap(null);		
+		
+		if(storeNumber == '' || storeNumber < 1){
+			if(arrStoreInfo[ix][6] == stateCode){
+				arrMarkers[ix].setMap(map);
+				arrMarkers[ix].visible = 'true';
+			}
+		}
+		else if(!storeNumber){
+			arrMarkers[ix].setMap(map);
+		}
+		else{
+			if(arrMarkers[ix].title == storeNumber){
+				arrMarkers[ix].setMap(map);
+				arrMarkers[ix].visible = 'true';
+				map.setCenter(arrMarkers[ix].position);
+				switchMaps(false, 'from setMarkers - storeNumber present');			
+			}
+			
+		}
+	}
+}
+
+
+
+/***************************************************************************/
+function toRad(deg) {
+ 	return deg * Math.PI/180;
+}
+function calculateDistance(start, end){
+	if(startPt != ''){
+		var R = 6371;
+		var startLat = parseFloat(start.lat());
+		var startLng = parseFloat(start.lng());
+		var endLat = parseFloat(end.lat());
+		var endLng = parseFloat(end.lng());
+		
+		var dLat = toRad(endLat - startLat);
+		var dLon = toRad(endLng - startLng);
+		var dLat1 = toRad(startLat);
+		var dLat2 = toRad(endLat);
+		var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+		Math.cos(dLat1) * Math.cos(dLat1) *
+		Math.sin(dLon/2) * Math.sin(dLon/2);
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		var d = R * c;
+		
+		debugAlert('\rreturn val: ' + d + '\r');
+		return parseFloat(d);
+	}
+	else{ return; }
+}
+function numOrdA(a, b){ return (a-b); }
+
+
+/***************************************************************************/
+
+
+function StopTheClock()
+{
+    debugAlert('seconds past: ' + secs);
+    if(timerRunning)
+        clearTimeout(timerID);
+    timerRunning = false;
+}
+
+function StartTheTimer()
+{
+	debugAlert('starting timer now..');
+        self.status = secs;
+        secs = secs + 1;
+        debugAlert('secs?: ' + secs);
+        timerRunning = true;
+        timerID = self.setTimeout("StartTheTimer()", delay);
+}
+/***************************************************************************/
+
+
+
+function selectTab(tabsId, ix){
+	alert(tabsId);
+	//$('#' + tabsId).triggerTab(ix);
+}
+
+function trim(str, chars) {
+    return ltrim(rtrim(str, chars), chars);
+}
+ 
+function ltrim(str, chars) {
+    chars = chars || "\\s";
+    return str.replace(new RegExp("^[" + chars + "]+", "g"), "");
+}
+ 
+function rtrim(str, chars) {
+    chars = chars || "\\s";
+    return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
+}
+
+function debugAlert(inParam){
+	if(navigator.appCodeName.toLowerCase().indexOf('mozilla') > -1 && debugMode){
+		if(typeof(console) !== 'undefined' && console != null) {
+			console.log(inParam);
+		}
+	}
+	return;
+}
+
+
+/*--------------------------------------------------------------------------------------------------------------
+END: helper functions
+----------------------------------------------------------------------------------------------------------------*/
+/*FUNCS FOR DISPLAYING DIRECTIONS.*/
+
+
+/*---------------------------------------------------------------------------------------------
+this function gets its value from Find A Store Form in left column
+---------------------------------------------------------------------------------------------*/
+function getFrmDirectionsInfo() {
+	var street = '', city = '', state = '', zipCode = '', theForm = null, curStorePoint;
+		
+	theForm = document.frmDirections;
+	street = theForm.txtStreet.value;
+	city = theForm.txtCity.value;
+	state = theForm.txtState.value;
+	zipCode = theForm.txtZip.value;
+	
+	//-- write cookie lastStartingPoint for 'select new starting point' click()
+	if (street != '' || city != '' || state != '' || zipCode != '') {
+		arrCookie =[];
+		pushArrCookie('street:', street);
+		pushArrCookie('city:', city);
+		pushArrCookie('state:', state);
+		pushArrCookie('zipCode:', zipCode);
+		
+		Set_Cookie('lastStartingPoint', readArray(arrCookie), 2);
+		arrCookie = [];
+	}
+
+	
+	var arrTemp =[];	
+		if (street != '') { arrTemp.push(street); }
+		if (city != '') { arrTemp.push(city); }
+		if (state != '') { arrTemp.push(state); }
+		if (zipCode != '') { arrTemp.push(zipCode); }
+	
+	return arrTemp;
+}
+
+
+/*------------------------------------------------------------------------------------------
+func used when user clicks on [Get Directions] Link in Store Results Listing
+--------------------------------------------------------------------------------------------*/
+function getDirections(storeName, storeNumber) {
+	debugAlert('enter func getDirections: ' +storeName);
+	var storeInfo = getStoreInfo(storeNumber);
+	
+	var storeDetails = "<span class=\"p2\">" + storeInfo[0] + " REI Store</span>" + "<br/>" + storeInfo[4] + "<br/>" +
+	storeInfo[5] + ', ' + storeInfo[6] + ' ' + storeInfo[7] + "<br/>" + storeInfo[9];
+	curStoreAddress = storeInfo[4] + " " + storeInfo[5] + ', ' + storeInfo[6] + ' ' + storeInfo[7];
+	curStorePoint = new google.maps.LatLng(storeInfo[2], storeInfo[3]);
+	
+	$('.storeInfo_print', '.printHead').html(storeDetails);
+	$('.storeDetails', '.storeInfo').html(storeDetails);
+	$('.storeName', '.storeInfo').html(storeInfo[0] + ' ');
+	$('.storeInfo_NAME', '.frmDirections').val(storeInfo[0]);
+	$('.storeLat', '.frmDirections').val(storeInfo[2]);
+	$('.storeLng', '.frmDirections').val(storeInfo[3]);	
+	
+	document.getElementById('storePage').href = storeInfo[8];
+	$('.hdrBar', '.leftSideBar').html(storeName + ' REI Store');
+	
+	$('.userTravelModeMsg').html('Get Directions:');
+	$('.findDiv').hide();
+	$('.directionsDiv').show();
+	$('.frmDirections', '.directionsDiv').show();
+	$('.directionsInfo', '.directionsDiv').hide();
+	$('.stepDirections', '.directionsDiv').html('');	
+	
+	if (Get_Cookie('lastStartingPoint')) {
+		fillFormFields(Get_Cookie('lastStartingPoint'), false, false, 'from getDirections :: if(lastStartingPoint');
+	} 
+}
+
+
+/*--------------------------------------------------------------------------------------------
+func used when user clicks on [Get Directions] button in Store Details (Get Directions FORM)
+----------------------------------------------------------------------------------------------*/
+function calcRoute(travelMode) {
+	debugAlert('enter func calcRoute: ' + curStoreAddress);
+	var dirStep, mapRoute, stepDirectionsHdr, stepDirectionsFtr;
+	var start = readArray(getFrmDirectionsInfo());
+	var end = curStorePoint;
+	var userTravelMode, travelModeDesc, streetRoute = false;
+	var frmDirections_ddlTravelMode = document.frmDirections.travelMode; 
+	var ddlTravelModeType = document.getElementById('travelModeType');
+	
+	frmDirections_ddlTravelMode.selectedIndex = travelMode;
+	ddlTravelModeType.selectedIndex = travelMode;
+	
+	switch (document.frmDirections.travelMode.value) {
+		case "Driving":
+			userTravelMode = google.maps.DirectionsTravelMode.DRIVING;
+			travelModeDesc = "Driving Directions: ";
+			break;
+		
+		case "Walking":
+			userTravelMode = google.maps.DirectionsTravelMode.WALKING;
+			travelModeDesc = "Walking Directions: ";
+			streetRoute = true;
+			break;
+		
+		case "Bicycling":
+			userTravelMode = google.maps.DirectionsTravelMode.BICYCLING;
+			travelModeDesc = "Bicycling Directions:";
+			streetRoute = true;
+			break;
+	}
+	
+	var request = {
+		origin: start, destination: end, travelMode: userTravelMode, avoidHighways: streetRoute, region: region
+	};
+	
+	directionsService.route(request, function (result, status) {
+		if (status == google.maps.DirectionsStatus.OK) {
+			$('.travelModeType').show();
+			directionsDisplay.setMap(map);
+			directionsDisplay.setDirections(result);
+			
+			$('.startOverLink').show();
+			mapRoute = result.routes[0].legs[0];
+			stepDirectionsHdr = "<tr style=\"background-color:#eee;\">" +
+			"<td style=\"padding:4px 0 0 5px;vertical-align:middle;width:20px;border:1px solid #999;border-right:0px;\"><img src=\"http://maps.gstatic.com/intl/en_us/mapfiles/icon_greenA.png\"></td>" +
+			"<td colspan=\"2\" style=\"width:255px;vertical-align:middle;border:1px solid #999;border-left:0px;\">" + start + "</td></tr>";
+			$('.stepDirections', '.directionsDiv').html(stepDirectionsHdr);
+			$('.userTravelModeMsg').text(travelModeDesc + "(" + mapRoute.distance.text + ")");
+			
+			for (var ii = 0; ii < mapRoute.steps.length; ii++) {
+				//-- output step directions
+				if (ii == 0) {
+					dirStep = "<tr class=\"tblStepDir\"><td class=\"p2\" style=\"padding-top:7px;\">" + (ii + 1) + ".</td><td class=\"dirStep\">" + mapRoute.steps[ii].instructions +
+					"</td><td class=\"dirStepDistance\">" + mapRoute.steps[ii].distance.text + "</td></tr>";
+				} else {
+					dirStep = "<tr class=\"tblStepDir\"><td class=\"p2\">" + (ii + 1) + ".</td><td class=\"dirStep\">" + mapRoute.steps[ii].instructions +
+					"</td><td class=\"dirStepDistance\">" + mapRoute.steps[ii].distance.text + "</td></tr>";
+				}
+				$('.stepDirections', '.directionsDiv').append(dirStep);
+				$('.frmDirections', '.directionsDiv').hide();
+				$('.directionsInfo', '.directionsDiv').show();
+			}
+			
+			stepDirectionsFtr = getStoreInfo(document.frmDirections.storeInfo_NAME.value);
+			stepDirectionsFtr = "<tr style=\"background-color:#eee;\">" +
+			"<td style=\"padding:4px 0 0 5px;vertical-align:middle;width:20px;border:1px solid #999;border-right:0px;\"><img src=\"http://maps.gstatic.com/intl/en_us/mapfiles/icon_greenB.png\"></td>" +
+			"<td colspan=\"2\" style=\"width:255px;vertical-align:middle;border:1px solid #999;border-left:0px;\">" + stepDirectionsFtr[4] + "</td></tr>";
+			
+			$('.stepDirections', '.directionsDiv').append(stepDirectionsFtr);
+			
+			/*http://code.google.com/apis/maps/documentation/v3/services.html#Steps*/
+			/*http://www.experts-exchange.com/Programming/Languages/Scripting/JavaScript/Q_23996682.html*/
+		} else if (status = google.maps.DirectionsStatus.NOT_FOUND) {
+			alert('LOCATION NOT FOUND: Please enter a new starting point.');
+		} else {
+			alert("status: " + status);
+		}
+	});
+	
+	return false;
+}
+
+
+function roundNumber(num, dec) {
+	var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+	return result;
+}
+
+
+
+
+
+
+
+/*search functions*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------------
+BEGIN: these funcs are used to update the leftSideBar Store Listing as the map is zoomed/panned
+------------------------------------------------------------------------------------------------------------------------------*/	
+	
+	searchState = function (dState, fromWhere) {
+		debugAlert('enter func searchState: ' + fromWhere);		
+		var bounds = map.getBounds();
+		var isValidState = false;
+		directionsDisplay.setMap(null);
+		setMarkers('', dState);
+		$('input', '.frmFindAStore').val('');
+		$('#stateInput', '.frmFindAStore').val(dState);
+		stateSearch = true;
+		//$.get("/etc/clientlibs/rei/rei-storelocator/source/reiStores_v3.xml", {
+		$.get("/cemservices/stores.xml", {
+		},
+		function (reiStores) {
+			$(reiStores).find("stateCodeZoomLevels").each(function () {
+				
+				var stateNode = $(this).find(dState);
+				
+				if (stateNode.attr('zoom')) {
+					geoCodeAddress(trim(stateNode.text()), true, stateNode.attr('zoom'));
+				} else {
+					for (var ii = 0; ii < arrStoreInfo.length; ii++) {
+						if (arrStoreInfo[ii][6] == dState) {
+							map.setCenter(new google.maps.LatLng(arrStoreInfo[ii][2], arrStoreInfo[ii][3]));
+							map.setZoom(parseInt(stateNode.text()));
+							switchMaps(false, 'from searchState()');
+							isValidState = true;
+							break;
+						}
+					}
+					if(!isValidState){
+						alert('No stores found in that U.S. State.');
+					}
+				}
+			});
+		});
+		searchStoresFlag = false;
+		setTimeout( function(){ searchStores('from searchState()'); }, 1200);
+	};
+
+
+	searchStores = function (fromWhere) {
+		debugAlert('enter func searchStores: ' + fromWhere);		
+		var arrStoreList =[], arrStoreNames =[];
+		
+		isFirstStore = true;
+		if (! hideList) {
+			$('.store_listing').show();
+		}
+		var bounds = map.getBounds();
+		
+		if(!stateSearch){
+			var dStart, dEnd;
+			for (var ii = 0; ii < arrStoreInfo.length; ii++) {
+				if (bounds.contains(new google.maps.LatLng(arrStoreInfo[ii][2], arrStoreInfo[ii][3])) && arrMarkers[ii].map != null) {
+					if (! document.getElementById('store_' + arrStoreInfo[ii][14])) {
+						dStart = startPt;
+						dEnd = new google.maps.LatLng(arrStoreInfo[ii][2], arrStoreInfo[ii][3]);
+						arrStoreInfo[ii][18] = roundNumber(calculateDistance(dStart, dEnd), 1);
+						arrStoreList.push(arrStoreInfo[ii]);
+						arrStoreNames.push(arrStoreInfo[ii][0]);
+					}
+				}
+			}
+		}
+		else{
+			for (var ii = 0; ii < arrStoreInfo.length; ii++) {
+				if (bounds.contains(new google.maps.LatLng(arrStoreInfo[ii][2], arrStoreInfo[ii][3])) && arrMarkers[ii].map != null) {
+					if (! document.getElementById('store_' + arrStoreInfo[ii][14])) {
+						arrStoreList.push(arrStoreInfo[ii]);
+						arrStoreNames.push(arrStoreInfo[ii][0]);
+					}
+				}
+			}
+		}		
+		
+		if (resetZoom) {
+			resetZoom = false;
+			map.setZoom(8);
+		}
+		sortStoreList(arrStoreList, arrStoreNames, stateSearch);
+	};
+	
+	function sortStoreList(storeInfo, storeNames) {
+		debugAlert('enter func: sortStoreList()\t\tisStateSearch?: ' + stateSearch);
+		debugAlert('storeNames: ' + storeNames);
+		var arrLen = storeInfo.length;
+		
+		storeNames = storeNames.sort();
+		
+		if(!stateSearch){
+			//build distance array, sort that one
+			var arrDists = [], distSort = 0;
+			for(var adIX = 0; adIX < storeInfo.length; adIX++){
+				arrDists.push( storeInfo[adIX][18] );
+			}		
+			arrDists.sort(numOrdA);			
+			
+			for (var xx = 0; xx < arrLen; xx++) {		
+				for (var yy = 0; yy < storeInfo.length; yy++) {				
+					if (arrDists[xx] == storeInfo[yy][18]) {
+						updateStoreListing(storeInfo[yy], false);
+						storeInfo.splice(yy, 1);
+						distSort += 1;
+						break;
+					}
+				}
+			}
+		}
+		else{
+			var alphabeticalSort = 0;
+			for (var xx = 0; xx < arrLen; xx++) {
+				for (var yy = 0; yy < storeInfo.length; yy++) {
+					if (storeNames[xx] == storeInfo[yy][0]) {
+						updateStoreListing(storeInfo[yy], true);
+						storeInfo.splice(yy, 1);
+						alphabeticalSort += 1;
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	function updateStoreListing(storeInfo) {
+		storeResultsFound = true;
+		var storeWrapper = document.createElement('div');
+			storeWrapper.id = 'store_' + storeInfo[14];
+			storeWrapper.className = 'reiStore';
+			
+	
+		if (isFirstStore) {
+			isFirstStore = false;
+			storeWrapper.className = 'reiStore noTopMarg';
+		}
+		
+		var storeLink = document.createElement('a');
+			storeLink.href = storeInfo[8];
+			storeLink.className = 'storeLink';
+			storeLink.innerHTML = storeInfo[0].toString() + ' REI Store';
+		
+		var storeAddress = document.createElement('div');
+			storeAddress.innerHTML = storeInfo[4] + '<br/>' + storeInfo[5] + ', ' + storeInfo[6] + ' ' + storeInfo[7];
+		
+		var storePhone = document.createElement('div');
+			storePhone.innerHTML = storeInfo[9];		
+		
+		var directionsLink = document.createElement('a');
+			directionsLink.id = 'dirLink_' + storeInfo[14];
+			directionsLink.style.marginRight = '10px'; 
+			directionsLink.href = '#mapTop';
+			if(!stateSearch){
+				directionsLink.innerHTML = 'Get Directions&nbsp;&nbsp;(' + storeInfo[18] + ' mi.)';
+			}
+			else{
+				directionsLink.innerHTML = 'Get Directions';
+			}
+			$(directionsLink).click(function (e) {
+				getDirections(storeInfo[0], storeInfo[14]);
+			});
+			
+			/*directionsLink.addEventListener('click', function () {
+				getDirections('' + storeInfo[0] + '');
+			}, false);*/
+		
+		storeWrapper.appendChild(storeLink);
+		storeWrapper.appendChild(storeAddress);
+		storeWrapper.appendChild(storePhone);
+		storeWrapper.appendChild(directionsLink);
+		
+		//check specialty shop availability
+		if(storeInfo[15] == 'true'){		
+			var shopIcon = document.createElement('img');
+				shopIcon.title = 'Bike Shop';
+				shopIcon.alt = '';
+				shopIcon.className = 'shopIcon';
+				shopIcon.src = '/etc/static/rei-wcm/pix/common/bike_Icon.gif';
+				storeWrapper.appendChild(shopIcon);
+		}		
+		if(storeInfo[16] == 'true'){
+			var shopIcon = document.createElement('img');
+				shopIcon.title = 'Ski Shop';
+				shopIcon.alt = '';
+				shopIcon.className = 'shopIcon';
+				shopIcon.src = '/etc/static/rei-wcm/pix/common/ski_Icon.gif';
+				storeWrapper.appendChild(shopIcon);
+		}		
+		
+		//check rentals availability		
+		if(storeInfo[17]){
+			var rentalsIcon = document.createElement('img');
+				rentalsIcon.title = storeInfo[17];
+				rentalsIcon.alt = '';
+				rentalsIcon.className = 'shopIcon';
+				rentalsIcon.src = '/etc/static/rei-wcm/pix/common/rentals_icon.gif';
+				storeWrapper.appendChild(rentalsIcon);
+		}
+		
+
+		var storeListing = document.getElementById('store_listing');
+			storeListing.appendChild(storeWrapper);
+	}
+
+
+/*------------------------------------------------------------------------------------------
+this function takes frmFindAStore fldVals >> cookie
+--------------------------------------------------------------------------------------------*/
+function getFrmFindInfo(formLoad, fromWhere){
+	debugAlert('enter func getFrmFindInfo: ' + fromWhere);
+	
+	var street = '', city = '', state = '', zipCode = '', theForm = null;
+	theForm = document.frmFindAStore;
+	city = theForm.cityInput.value;
+	state = document.frmFindAStore.stateInput.value.toUpperCase();
+	zipCode = document.frmFindAStore.zipInput.value;
+	
+	if (city != '' || state != '' || zipCode != '') {	
+		//-- build string to GeoCode the address
+		userSearchQuery ='';
+			if (city != '') { userSearchQuery += city + ','; }
+			if (state != '') {
+				if(city != ''){ userSearchQuery += ','; }
+				userSearchQuery += state;
+			}
+			if (zipCode != '') {
+				if(city!='' || state!=''){ userSearchQuery += ','; }
+				userSearchQuery += zipCode; 
+			}
+			
+		resetZoom = true;
+		
+		if (city == '' && zipCode == '' && state != '') {
+			stateSearch = true;
+		} else {
+			stateSearch = false;
+		}
+		
+		if(formLoad){
+			debugAlert('sending userSearchQuery bck to frmLoad: ' + userSearchQuery);
+			return userSearchQuery;
+		}
+		else{
+			//-- build cookie from form field values
+			arrCookie =[];
+			pushArrCookie('city:', city);
+			pushArrCookie('state:', state);
+			pushArrCookie('zipCode:', zipCode);
+			
+			if(Get_Cookie('userSearchQuery')){
+				if(arrCookie != Get_Cookie('userSearchQuery')){
+					$('.store_listing').html('');					
+				}
+			}
+			Set_Cookie('userSearchQuery', readArray(arrCookie), 2);
+			arrCookie = null;
+		}
+		
+		if (stateSearch) {
+			resetZoom = false;
+			searchState(state, 'from getFrmFindInfo');
+		}
+		else{//full user query here
+			geoCodeAddress(userSearchQuery, true, 8, true);
+			setMarkers();
+			stateSearch = false;
+			searchStores('getFrmFindInfo - full user query');
+		}
+
+	}
+}
+var arrStoreInfo =[];
+var arrCookie =[];
+var arrMarkers =[];
+var searchStores, curStoreAddress = '', geoCoder, hideList = false, storeResultsFound = false;
+var directionDisplay, map, isFirstStore = true;
+var directionsService = (typeof(google) != 'undefined' ? new google.maps.DirectionsService() : null);
+var resetZoom = false;
+var searchStoresFlag = true;
+var useLastSearchQuery = false;
+var linkedStore = '';
+var hashStateCode = '', hashZipCode = '';
+var stateSearch = false;
+var possibleStoreRentals = new Array('Mountaineering Gear', 'Camping Stoves', 'Tents', 'Backpacks', 'Sleeping Bags/Pads', 'Paddling Gear', 'Alpine Skiing', 'Snowboarding', 'Nordic Skiing', 'Snowshoes');
+
+/*	DEBUG VARS	*/
+var debugMode = false;
+var secs = 0;
+var timerID = null;
+var timerRunning = false;
+var delay = 1000;
+var doOnce = true;
+
+/*
+	0	'Mountaineering Gear', 
+	1	'Camping Stoves', 
+	2	'Tents', 
+	3	'Backpacks', 
+	4	'Sleeping Bags/Pads', 
+	5	'Paddling Gear', 
+	6	'Alpine Skiing', 
+	7	'Snowboarding', 
+	8	'Nordic Skiing', 
+	9	'Snowshoes'
+*/
+
+var startPt = '';
+
+
+
+/*	FOR SOME REASON THE REGION CODE DOES NOT WORK AS EXPECTED
+	http://code.google.com/apis/maps/documentation/v3/services.html#Geocoding	*/
+var region = "US";
+
+
+
+/* rei:request_information/rei:curent_url */
+$(document).ready(function () {
+	if(!$("#storeLocatorMap").is('*')){
+		return;
+	}
+	Set_Cookie('useCookies', 'yes', 1);
+	
+	Delete_Cookie('userSearchQuery', '/');
+	
+	var infowindow, userLatLng;
+	
+	linkedStore = document.location.href;
+	linkedStore = linkedStore.substring(linkedStore.lastIndexOf('/')+1, linkedStore.length);
+
+	$(".frmFindAStore").keydown(function (event) {
+		if (event.keyCode == "13") { getFrmFindInfo(false, 'keydown event'); }
+	});
+	
+	$(".frmDirections").keydown(function (event){
+		if (event.keyCode == "13") { calcRoute(document.frmDirections.travelMode.selectedIndex); }
+	});
+	
+	function initialize() {      
+			      
+		var showMarkers  = true;
+		var callSetMarkers = false;
+		
+		directionsDisplay = new google.maps.DirectionsRenderer();
+		geoCoder = new google.maps.Geocoder();
+		
+		//need to get starting userLatLng
+		if(document.location.hash){
+			var hashVal = document.location.hash;
+
+			if(!isNaN(hashVal.substring(1,6))){//--	#{zipCode}: from storeFinder in footer or url
+				hashZipCode = hashVal.substring(1, 6);
+				fillFormFields(hashZipCode, true, true, 'init :: hash check - zipCode');
+				userLatLng = hashZipCode;
+				switchMaps(false, 'init :: hash check - zipCode');
+			}
+			else{//--	#{stateCode}: ie WA, CA, AZ
+				userLatLng = 'Seattle,WA,98101';
+				hideList = true;
+				
+				if(isNaN(hashVal) && hashVal.substring(1, 3).length == 2){//stateSearch
+					stateSearch = true;
+					hashStateCode = hashVal.substring(1, hashVal.length).toUpperCase();
+					userLatLng = hashStateCode;
+				}
+			}
+		}
+		/*else if (Get_Cookie('userSearchQuery') && Get_Cookie('userSearchQuery') != 'undefined' && !Get_Cookie('stateMap')) {
+			fillFormFields(Get_Cookie('userSearchQuery'), true, false, 'init :: use savedQuery');
+			 var savedQuery = userLatLng = getFrmFindInfo(true, 'init :: use savedQuery');
+		}*/
+		else if (Get_Cookie('memberZipCode') && !Get_Cookie('stateMap')) {
+			fillFormFields(Get_Cookie('memberZipCode'), true, false, 'init :: use memberZipCode');						
+			userLatLng = getUserQueryData(Get_Cookie('memberZipCode'));			
+			switchMaps(false, 'init :: use memberZipCode');
+		}
+		else if(parseInt(linkedStore) > 0){
+			hideList = true;
+			userLatLng = 'Seattle,WA,98101';
+			showMarkers = false;
+		}
+		else {
+			//arbitrarily set map to seattle and add all markers
+			hideList = true;
+			userLatLng = 'Seattle,WA,98101';
+		}
+		
+		if (geoCoder) {
+			geoCoder.geocode({ 'address': userLatLng, 'region': region
+			},
+			function (results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					userLatLng = startPt = results[0].geometry.location;
+					
+					//need to run an address through the geoCoder upon first load to make sure that the service is available.
+					var userOptions = {
+						zoom: 9,
+						center: userLatLng,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+					}
+					
+					map = new google.maps.Map(document.getElementById("mapCanvas"), userOptions);
+					directionsDisplay.setMap(map);
+					
+					//-- grab the xml from reiStores, create an array and store the vars for each child node of item in it
+					//$.get("/etc/clientlibs/rei/rei-storelocator/source/reiStores_v3.xml", {
+					$.get("/cemservices/stores.xml", {
+					},
+					function (reiStores) {
+						$(reiStores).find("item").each(function (xx) {
+							var arrStore =[];
+							arrStore[0] = $(this).find('title').text();
+							arrStore[1] = $(this).find('description').text();
+							
+							arrStore[2] = $(this).find('lat').text();
+							arrStore[3] = $(this).find('lng').text();
+							
+							arrStore[4] = $(this).find('street').text();
+							arrStore[5] = $(this).find('city').text();
+							arrStore[6] = $(this).find('state').text();
+							arrStore[7] = $(this).find('zip').text();
+							arrStore[8] = $(this).find('link').text();
+							arrStore[9] = $(this).find('phone').text();
+							arrStore[10] = $(this).find('stateRadius').text();
+							arrStore[11] = $(this).find('weekdays').text();
+							arrStore[12] = $(this).find('saturday').text();
+							arrStore[13] = $(this).find('sunday').text();
+							arrStore[14] = arrStore[8].substring(8, arrStore[8].length);	//store number
+							arrStore[15] = 'false';	//bike shop
+							arrStore[16] = 'false';	//ski shop
+							arrStore[17] = false;	//rentals append string
+							arrStore[18] = '';		//this is a holder cell for distance sorting
+							
+							var storeSvcs = $(this).find('services').text().toLowerCase();
+							if (storeSvcs.indexOf('bike') > - 1) {
+								arrStore[15] = 'true';
+							}
+							if (storeSvcs.indexOf('ski') > - 1) {
+								arrStore[16] = 'true';
+							}
+														
+							var storeIcon = {
+								satellite: {
+									icon: '/etc/static/rei-wcm/pix/common/rei_icon.png'
+								},
+								flagship: {
+									icon: 'http://google-maps-icons.googlecode.com/files/bigcity.png'
+								}
+							};
+							
+							//-- Make the Marker
+							latlng = new google.maps.LatLng(arrStore[2], arrStore[3]);
+								var newIcon = storeIcon[$(this).find('icon').attr('type')] || {};
+							
+							
+							//-- if storePageLink sent the request
+							if(parseInt(linkedStore)>0){
+								/*if( parseInt(arrStore[8].substring(arrStore[8].lastIndexOf('/')+1, arrStore[8].length)) == parseInt(linkedStore) ){*/
+								if( parseInt(arrStore[14]) == parseInt(linkedStore) ){
+									linkedStore = arrStore[14];
+									callSetMarkers = true;
+								}
+							}
+							
+							var marker = new google.maps.Marker({
+								position: latlng,
+								map: map,
+								icon: newIcon.icon,
+								title: arrStore[0] + ' REI Store',
+								visible: showMarkers
+							});
+							
+							
+							
+							
+							//-- check store rental info and save it to storeRentals >> arrStore[17]							
+							var storeRentalsXml = [], storeRentals = '', rentalFlag = false;
+							
+							$(this).find('rentals').each( function(xx){
+								storeRentalsXml.push($(this).text());
+							});
+							
+							for(var cnt=0; cnt<possibleStoreRentals.length; cnt++){
+							
+								for(var ix=0; ix<storeRentalsXml.length; ix++){
+								
+									if(possibleStoreRentals[cnt] == storeRentalsXml[ix]){
+										rentalFlag = true;
+										storeRentals += possibleStoreRentals[cnt];
+										
+										if( (cnt > -1) && (cnt < possibleStoreRentals.length-1) ){
+											storeRentals += ', ';
+										}
+									}
+								}
+							}
+							if(rentalFlag){	arrStore[17] = 'Store Rentals: ' + storeRentals; }
+							
+							//add Markers to array
+							arrMarkers[xx] = marker;
+							//-- now add storeArr to array
+							arrStoreInfo[xx] = arrStore;														
+								
+							var contentString = '<div class="infoWrapper">' + 
+								'<div class="infoContent">' + 
+								'<div class="infoDiv"><strong>' +
+								'<a href="' + arrStore[8] + '">' + arrStore[0] + ' REI Store</a>' + '</strong> <br/>' +
+								arrStore[4] + '<br/>' + arrStore[5] + ', ' + arrStore[6] + ' ' + arrStore[7] + '<br/>' + arrStore[9] +
+								'<br/><a href="#mapTop" onClick="getDirections(\'' + arrStore[0] + '\', \'' + arrStore[14] + '\');">Get Directions</a><br/><br/>' +
+								'<b>Store Hours:</b>' +
+								'<ul class="linkList bullets"><li>' + arrStore[11] + '</li>' + '<li>' + arrStore[12] + '</li><li>' + arrStore[13] + '</li></ul>' +
+								'<a href="/stores/store_events.jsp?store=' + arrStore[14] + '">Store Events</a><br/>' +
+								'<a href="/stores/' + arrStore[14] + '">More About this REI Store</a><br/><br/></div>' +
+								'<a class="storeImgLink" href="' + arrStore[8] + '">' +
+								'<img src="/pix/stores/storePictures/email/' + arrStore[14] + '.jpg" height="127" width="127" border="0" />' +
+								'</a>'
+								'</div></div>';
+							
+
+							google.maps.event.addListener(marker, 'click', function () {
+								if (infowindow) infowindow.close();
+								infowindow = new google.maps.InfoWindow({
+									content: contentString
+								});
+								infowindow.open(map, marker);
+							});
+						});
+						//end find	
+						
+					
+						//storeLink was clicked so handle that
+						if(callSetMarkers){
+							setMarkers(linkedStore, 'init :: if(callSetMarkers)');
+						}
+						
+						//checking to see if stateCode is in hash
+						if(hashStateCode != '' && hashStateCode != 'MAPTOP'){
+							searchState(hashStateCode, 'init :: hashStateCode');
+						}
+					});
+					//end get
+
+					//ADD EVENT LISTENERS NOW THAT THE MAP OBJECT IS AVAILABLE
+					google.maps.event.addListener(map, 'bounds_changed', function () {
+						$('.store_listing').html('');
+						storeResultsFound = false;
+						/*if(stateSearch){//handles form load with savedQuery instances
+							searchState(savedQuery, 'event listener for bounds_changed');
+						}
+						else*/ if (searchStoresFlag) {
+							searchStores('searchStoresFlag in event listener for bounds_changed');
+						} else {
+							searchStoresFlag = true;
+						}
+					});
+						
+					/*http://911-need-code-help.blogspot.com/2009/03/zoom-to-fit-all-markers-polylines-or.html*/
+					$('area').click(function (e) {
+						var dInfo = e.target.href;
+						var toSplit = dInfo.substring(dInfo.lastIndexOf('/'), dInfo.length);
+						var state = toSplit.split('#');
+						dInfo = state[1];
+						searchState(dInfo, 'stateMap click handler');
+					});
+					$('#btnFindAStore').click(function(e){
+						getFrmFindInfo(false, 'click');
+					});				
+					
+					
+					//delete cookie for viewing state map, it will get re-set when user clicks on viewStateMap link
+					if(Get_Cookie('stateMap')){
+						Delete_Cookie('stateMap', '/'); 
+					}
+					
+					/*if(savedQuery){
+						geoCodeAddress(savedQuery, true);
+					}*/
+					
+					
+					
+				} else {
+					var errMsg = "Geocode was not successful for the following reason: " + status;
+					window.location.href = '/content/rei/en_us/site/store-locator.html';
+				}
+			});
+		} else {
+			alert('GeoCoder service not available at this time. \n Please. refresh your browser and try again.');
+		}
+		
+	}
+	//end init
+	
+	google.setOnLoadCallback(initialize);
+});
+//end document.ready
+
+
+
+
+/*------------------------------------------------------------------------------------------
+this function maps an address from param:theAddress
+--------------------------------------------------------------------------------------------*/
+function geoCodeAddress(theAddress, centerMap, zoomLevel, userSearch) {
+	debugAlert('enter func geoCodeAddress: ' + theAddress);
+	if (geoCoder) {
+		
+		//TO DO: this is not the proper fix, find the set or get of cookie:userSearchQuery 
+		if(theAddress.lastIndexOf(',') == theAddress.length-1){
+			//theAddress = theAddress.substring(theAddress, theAddress.lastIndexOf(','));
+		}
+		
+		geoCoder.geocode({ 'address': theAddress
+		},
+		function (results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+			
+				//this is for distanceCalcs in mapsV3_searchFuncs > updateStoreListing()
+				startPt = results[0].geometry.location;
+				
+				if (centerMap) {
+					if (zoomLevel) {
+						map.setCenter(results[0].geometry.location);
+						map.setZoom(parseInt(zoomLevel));
+					} else {
+						map.setCenter(results[0].geometry.location);
+					}
+					return;
+				} else {
+					return results[0].geometry.location;
+				}
+			} else {
+				var errMsg = "Geocode was not successful for the following reason: " + status;
+				alert(errMsg);
+			}
+		});
+		switchMaps(false, 'geoCodeAddress');
+	} else {
+		alert('GeoCoder service not available at this time. \n Please. refresh your browser and try again.');
+	}
+}
+
+
+$(window).load(function () {
+	if(!$("#storeLocatorMap").is('*')){
+		return;
+	}
+	$('.mapDirections', '.frmDirections').click(function () {
+		calcRoute(document.frmDirections.travelMode.selectedIndex);
+	});
+});
+/* $Id: ticker.js 1918 2012-03-30 17:55:27Z jowilso $ */
+
+$(document).ready(function() {
+	$('.tickerContainer').each(function() {
+		$(this).ticker();
+	});
+});
+/* $Id: featuredstore.js 2270 2012-04-12 19:27:33Z rray $ */
+
+/**
+ * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights 
+ * reserved.
+ * 
+ * @author rray
+ */
+/* $Id: posterprofile.js 2270 2012-04-12 19:27:33Z rray $ */
+
+/**
+ * @(#)posterprofile.js
+ * 
+ * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights reserved.
+ * 
+ * @author rray
+ */
 /* $Id: posterprofile.js 2270 2012-04-12 19:27:33Z rray $ */
 
 /**
@@ -281,6 +1489,18 @@ $( document ).ready( function() {
 } );
 
 $.userprofile = {};
+
+$.userprofile.checkForUserId = function() {
+	var includesUserId=location.href.search(/userprofile.html\/\d+/);
+	var isUserProfilePage=location.href.search(/userprofile.html/);
+	if(isUserProfilePage > 0 && includesUserId < 0){
+		var REI_SESSION_ID = Get_Cookie("REI_SESSION_ID");
+		if (REI_SESSION_ID) {
+			var userId = REI_SESSION_ID.split(',')[0];
+			location.href = location.href+"/"+userId;
+		}
+	}
+};$.userprofile.checkForUserId();
 
 $.userprofile.showAllComments = function() {
     $( "#comments_short" ).css( "display", "none" );
@@ -419,7 +1639,7 @@ $(document).ready(function() {
 	});
 	
 });
-/* $Id: questionform.js 2527 2012-04-25 16:09:54Z rray $ */
+/* $Id: questionform.js 4373 2012-08-02 19:04:40Z sfleshe $ */
 
 /**
  * @(#)questionform.js
@@ -436,7 +1656,7 @@ $(document).ready(function() {
 		var REI_SESSION_ID = Get_Cookie("REI_SESSION_ID");
 		if (REI_SESSION_ID) {
 			var userId = REI_SESSION_ID.split(',')[0];
-			var userScreenName = getUserInfoCookie('userName');
+			var userScreenName = Get_Cookie('REI_USERNAME');
 			var userProfileHref = '/share/socialprofile/profile.html/' + userId;
 			var userImgSrc = '/socialprofile.socialprofileimage.jpg/' + userId;
 			$('#questionform-user-img-link').attr('href', userProfileHref);
@@ -448,40 +1668,61 @@ $(document).ready(function() {
 		}
 	}
 	
-	// Activate Submit button
-	$('#questionform-submit').click(function(event) {
-		event.preventDefault();
-		$('#questionform-form').submit();
-	});
-	
-	$('#questionform-form').submit(function() {
-		// submit the form 
-	    $(this).ajaxSubmit({
-	    	'dataType': 'json',
-	    	'success': function(responseObj, statusText, xhr, elem) {
-	    		if (responseObj.response == 'success') {
-	    			window.location.href = responseObj.targetURL;
-	    		} else {
-	    			if (responseObj.errorCode == 'missing_category') {
-	    				$('#questionform-errormessage').text($('#questionform-missing-category-error-msg').attr('value'));
-	    			} else if (responseObj.errorCode == 'missing_question') {
-	    				$('#questionform-errormessage').text($('#questionform-missing-question-error-msg').attr('value'));
-	    			} else if (responseObj.errorCode == 'question_too_long') {
-	    				$('#questionform-errormessage').text($('#questionform-question-too-long-error-msg').attr('value'));
-	    			} else if (responseObj.errorCode == 'general_error') {
-	    				$('#questionform-errormessage').text($('#questionform-general-error-msg').attr('value'));
-	    			}
-	    			$('#questionform-errormessage').show();
-	    		}
-	    	},
-		    'error': function() {
-		    	$('#questionform-errormessage').text($('#questionform-general-error-msg').attr('value'));
-	    		$('#questionform-errormessage').show();
-	    	}
-	    }); 
-	    // return false to prevent normal browser submit and page navigation 
-	    return false;
-	});	
+	$('#questionform-form').bind('submit', function(e) {
+        e.preventDefault(); // <-- important
+        $(this).ajaxSubmit({
+            'dataType': 'json',
+            'iframe': true,
+            'type': 'POST',
+            'success': function(responseObj, statusText, xhr, elem) {
+                if ( responseObj.response == 'success' ) {
+
+                    $( "#questionprompt-form-section" ).slideUp( 400, function() {
+
+                        $( "#questionform-errormessage" ).hide();
+
+                        $(  "#questionform-form input, " +
+                            "#questionform-form textarea, " +
+                            "#questionform-form select" ).val( "" );
+
+                        var _newCommentLink = $( "#newCommentLink" );
+                        _newCommentLink.attr( "href", responseObj.targetURL );
+                        _newCommentLink.text(
+                            window.location.protocol + "//" +
+                            window.location.hostname +
+                            responseObj.targetURL );
+
+                        var _fantomLink = $( "<a href='#questionSuccessPopup'></a>" );
+                        _fantomLink.fancybox( {
+                            type: "inline",
+                            titleShow: false
+                        } ).trigger( 'click' );
+
+                    } );
+
+                } else {
+                    if (responseObj.errorCode == 'missing_category') {
+                        $('#questionform-errormessage').text($('#questionform-missing-category-error-msg').attr('value'));
+                    } else if (responseObj.errorCode == 'missing_question') {
+                        $('#questionform-errormessage').text($('#questionform-missing-question-error-msg').attr('value'));
+                    } else if (responseObj.errorCode == 'question_too_long') {
+                        $('#questionform-errormessage').text($('#questionform-question-too-long-error-msg').attr('value'));
+                    } else if (responseObj.errorCode == 'general_error') {
+                        $('#questionform-errormessage').text($('#questionform-general-error-msg').attr('value'));
+                    }
+                    $('#questionform-errormessage').show();
+                }
+            },
+            'error': function() {
+                $('#questionform-errormessage').text($('#questionform-general-error-msg').attr('value'));
+                $('#questionform-errormessage').show();
+            }
+        });
+    });
+
+    $( "#questionSubmitPopupClose" ).click( function() {
+        $.fancybox.close();
+    } );
 	
 	// Activate Add Photo Button
 	$('#questionform-add-photo-button').click(function(event) {
@@ -489,14 +1730,8 @@ $(document).ready(function() {
 		$('.uploadPhoto').toggle();
 	});
 	
-	// Activate Add Video Button
-//	$('#questionform-add-video-button').click(function(event) {
-//		event.preventDefault();
-//		$('.uploadVideo').toggle();
-//	});
-	
 });
-/* $Id: postedquestion.js 2527 2012-04-25 16:09:54Z rray $ */
+/* $Id: postedquestion.js 4087 2012-07-18 21:54:16Z rray $ */
 
 /**
  * @(#)postedquestion.js
@@ -513,7 +1748,7 @@ $(document).ready(function() {
 		var REI_SESSION_ID = Get_Cookie("REI_SESSION_ID");
 		if (REI_SESSION_ID) {
 			var userId = REI_SESSION_ID.split(',')[0];
-			var userScreenName = getUserInfoCookie('userName');
+			var userScreenName = Get_Cookie('REI_USERNAME');
 			var userProfileHref = '/share/socialprofile/profile.html/' + userId;
 			var userImgSrc = '/socialprofile.socialprofileimage.jpg/' + userId;
 			$('#postedquestion-user-img-link').attr('href', userProfileHref);
@@ -581,10 +1816,10 @@ $(document).ready(function() {
 //	});
 	
 });
-/* $Id: listing.js 2609 2012-04-27 21:00:47Z rthatch $ */
+/* $Id: listing.js 3823 2012-07-03 18:18:05Z rray $ */
 $(document).ready(function() {
 	// Tab Control
-	$('.tabs li').click(function() {
+	$('.listing .tabs li').click(function() {
 		// Tabs
 		$(this).siblings().removeClass('active');
 		$(this).addClass('active');
@@ -604,30 +1839,32 @@ $( document ).ready( function() {
     }
 
     $.helpfulRating.processResults = function( data , percentHelpfulId) {
-    	if (data && data['response'] === 'true') {
-	        var hasUserVoted = data[ "user_vote" ];
-	        hasUserVoted = ( hasUserVoted === "true" );
-	        var thumbsUpCount = new Number(data[ "total_up" ]);
-	        var thumbsDownCount = new Number(data[ "total_down" ]);
-	        var totalVoteCount = new Number(thumbsDownCount + thumbsUpCount);
-	        totalVoteCount = totalVoteCount;
-	        var percentThumbsUp = thumbsUpCount.toFixed(2) / totalVoteCount.toFixed(2);
-	        percentThumbsUp = percentThumbsUp.toFixed(2);
-	        percentThumbsUp *= 100;
-	
-	        if (!isNaN(percentThumbsUp)) {
-		        $('#' + percentHelpfulId).text(percentThumbsUp + '%');  
-	        }
-	        var notVotedId = percentHelpfulId.replace('percentHelpful', 'rating_notVoted');
-	        var alreadyVotedId = percentHelpfulId.replace('percentHelpful', 'rating_alreadyVoted');
-	        if ( hasUserVoted ) {
-	            $( '#' + alreadyVotedId ).css( "display", "block" );
-	            $( '#' + notVotedId ).css( "display", "none" );
-	        } else {
-	            $( '#' + alreadyVotedId ).css( "display", "none" );
-	            $( '#' + notVotedId ).css( "display", "inline" );
-	        }
-    	}
+
+        if ( typeof( data ) == "string" ) data = $.parseJSON( data );
+
+        if ( data['response'] != 'true' ) return;
+
+        var hasUserVoted = ( data[ "user_vote" ] == "true" );
+        var thumbsUpCount = parseInt( data[ "total_up" ] );
+        var thumbsDownCount = parseInt( data[ "total_down" ] );
+        var totalVoteCount = parseInt( thumbsDownCount + thumbsUpCount );
+
+        var percentThumbsUp = thumbsUpCount / totalVoteCount;
+        percentThumbsUp = percentThumbsUp.toFixed( 2 );
+        percentThumbsUp *= 100;
+
+        if ( !isNaN( percentThumbsUp ) ) {
+            $( '#' + percentHelpfulId ).text( percentThumbsUp + '%' );
+        }
+        var notVotedId = percentHelpfulId.replace( 'percentHelpful', 'rating_notVoted' );
+        var alreadyVotedId = percentHelpfulId.replace( 'percentHelpful', 'rating_alreadyVoted' );
+        if ( hasUserVoted ) {
+            $( '#' + alreadyVotedId ).css( "display", "block" );
+            $( '#' + notVotedId ).css( "display", "none" );
+        } else {
+            $( '#' + alreadyVotedId ).css( "display", "none" );
+            $( '#' + notVotedId ).css( "display", "inline" );
+        }
     }
     
     $('.helpfulratings-helpfulButton').each(function (i, elem) {
@@ -752,11 +1989,11 @@ $(document).ready(function() {
 	
 });
 /* $Id: answerform.js 2270 2012-04-12 19:27:33Z rray $ */
-/* $Id: answerdetail.js 2274 2012-04-12 21:16:58Z rray $ */
+/* $Id: answerdetail.js 3823 2012-07-03 18:18:05Z rray $ */
 
 $(document).ready(function() {
 	// Tab Control
-	$('.tabs li').click(function() {
+	$('.answerdetail .tabs li').click(function() {
 		// Tabs
 		$(this).siblings().removeClass('active');
 		$(this).addClass('active');
@@ -808,8 +2045,24 @@ $(document).ready(function() {
 		'titleShow': false,
 		'type': 'iframe',
 		'href': $('#sharewizard-modal-href').attr('value'),
-		'modal': true
+		'modal': true,
+        'onClosed': function() {
+            var _newPhotoLink = $( "#newPhotoLink" );
+            if ( _newPhotoLink.attr( "href" ) != "" ) {
+                setTimeout( function() {
+                    var _fantomLink = $( "<a href='#photoSuccessPopup'></a>" );
+                    _fantomLink.fancybox( {
+                        type: "inline",
+                        titleShow: false
+                    } ).trigger( 'click' );
+                }, 300);
+            }
+        }
 	});
+
+    $( "#photoSubmitPopupClose" ).click( function() {
+        $.fancybox.close();
+    } );
 	
 	// Decide which interface to display
 	if (loggedIn) {
@@ -846,6 +2099,18 @@ $(document).ready(function() {
 		}
 		return false;
 	});
+	
+	// Tab Control
+	$('.photogallery .tabs li').click(function() {
+		// Tabs
+		$(this).siblings().removeClass('active');
+		$(this).addClass('active');
+		
+		// Panels
+		var target = $(this).attr('target');
+		$('.'+target).siblings().removeClass('active');
+		$('.'+target).addClass('active');
+	});
 });
 /* $Id: login.js 1918 2012-03-30 17:55:27Z jowilso $ */
 /**
@@ -860,9 +2125,9 @@ $( document ).ready( function () {
 
     $( ".flagAsInappropriate" ).each( function() {
         $( this ).click( function ( e ) {
-            var postUrl = $( this ).data( "postUrl" );
+            var resourcePath = $( this ).data( "resourcePath" );
             var formSubmitLink = $( "#flag_submit a" );
-            formSubmitLink.data( "postUrl", postUrl );
+            formSubmitLink.data( "resourcePath", resourcePath );
             var originalLinkId = $( this ).attr( "id" );
             formSubmitLink.data( "originalLinkId", originalLinkId );
             $( this ).fancybox( {
@@ -882,10 +2147,11 @@ $( document ).ready( function () {
     } );
 
     $( "#flag_submit a" ).click( function( e ) {
+        $( "#flagResourcePath" ).val( $( this ).data( "resourcePath" ) );
         var formData = $( "#flagPopupForm" ).serialize();
         var originalLinkId = $( this ).data( "originalLinkId" );
         $.ajax( {
-            url: $( this ).data( "postUrl" ),
+            url: "/bin/social/flag.json",
             type: "POST",
             data: formData,
             success: function( data ) {
@@ -930,52 +2196,63 @@ CQ_Analytics.record({event: 'blogPageClicked',
     });
     return false;
 }
-/* $Id: ratings.js 3443 2012-06-18 20:00:00Z sfleshe $ */
+/* $Id: ratings.js 4279 2012-07-30 22:06:15Z sfleshe $ */
 
 function reiRatingProcessResults( data, isLoggedIn ) {
-    var response = data;
-    if ( typeof( data ) == "string" ) {
-        response = $.parseJSON( data );
-    }
-
-    var hasUserVoted = response[ "user_vote" ];
-    hasUserVoted = ( hasUserVoted === "true" );
-    var thumbsUpCount = response[ "total_up" ];
-    var thumbsDownCount = response[ "total_down" ];
-
-    $( "#thumbs_1" ).html( "(" + thumbsUpCount + ")" );
-    $( "#thumbs_0" ).html( "(" + thumbsDownCount + ")" );
-
-    if ( isLoggedIn ) {
-        if ( hasUserVoted ) {
-            $( "#rating_alreadyVoted" ).css( "display", "block" );
-            $( "#rating_notVoted" ).css( "display", "none" );
-        } else {
-            $( "#rating_alreadyVoted" ).css( "display", "none" );
-            $( "#rating_notVoted" ).css( "display", "inline" );
+    try {
+        var response = data;
+        if ( typeof( data ) == "string" ) {
+            try {
+                response = $.parseJSON( data );
+            } catch ( e ) {
+                console.log( "Unable to parse ratings JSON response." );
+            }
         }
+
+        var hasUserVoted = response[ "user_vote" ];
+        hasUserVoted = ( hasUserVoted == "true" );
+        var thumbsUpCount = response[ "total_up" ];
+        var thumbsDownCount = response[ "total_down" ];
+
+        if ( thumbsUpCount != null && typeof thumbsUpCount != "undefined" ) {
+            $( ".commentsUp" ).html( "(" + thumbsUpCount + ")" );
+        }
+        if ( thumbsDownCount != null && typeof thumbsDownCount != "undefined" ) {
+            $( ".commentsDown" ).html( "(" + thumbsDownCount + ")" );
+        }
+
+        if ( isLoggedIn ) {
+            if ( hasUserVoted ) {
+                $( "#rating_alreadyVoted" ).css( "display", "block" );
+                $( "#rating_notVoted" ).css( "display", "none" );
+            } else {
+                $( "#rating_alreadyVoted" ).css( "display", "none" );
+                $( "#rating_notVoted" ).css( "display", "inline" );
+            }
+        }
+    } catch ( e ) {
+        console.log( "Unable to process ratings result." );
     }
 }
 
 $( document ).ready( function() {
 
-    if ( $.isEmptyObject( $.reishare ) ) return;
+    if ( $.reishare == null || typeof $.reishare == "undefined" ) return;
     var isLoggedIn = $.reishare( "loggedIn" );
 
-    if ( $.isEmptyObject( $.blogRating ) ) {
+    if ( $.blogRating == null || typeof $.blogRating == "undefined" ) {
         $.blogRating = {};
     }
 
-    $.ajax( {
-        url: $.blogRating.getUrl,
-        type: "GET",
-        data: {
-            _charset_: $.blogRating.charset
-        },
-        success: function( data ) {
-            reiRatingProcessResults( data, isLoggedIn );
-        }
-    } );
+    if ( $.blogRating && $.blogRating.getUrl ) {
+        $.ajax( {
+            url: $.blogRating.getUrl,
+            type: "GET",
+            success: function( data ) {
+                reiRatingProcessResults( data, isLoggedIn );
+            }
+        } );
+    }
 
     if ( !isLoggedIn ) {
         $( "#rating_alreadyVoted" ).css( "display", "none" );
@@ -983,8 +2260,10 @@ $( document ).ready( function() {
     }
 
     if ( isLoggedIn ) {
-        $( "#rating_thumbsUp" ).click( function() {
+        $( "#rating_thumbsUp a" ).click( function( e ) {
+            e.preventDefault();
             var postUrl = $( this ).data( "postUrl" );
+            if ( ! postUrl ) return;
             $.ajax( {
                 url: postUrl,
                 type: "POST",
@@ -995,8 +2274,10 @@ $( document ).ready( function() {
             } );
         } );
 
-        $( "#rating_thumbsDown" ).click( function() {
+        $( "#rating_thumbsDown a" ).click( function( e ) {
+            e.preventDefault();
             var postUrl = $( this ).data( "postUrl" );
+            if ( ! postUrl ) return;
             $.ajax( {
                 url: postUrl,
                 type: "POST",
@@ -1012,14 +2293,6 @@ $( document ).ready( function() {
 
 /* $Id: featuredpost.js 1918 2012-03-30 17:55:27Z jowilso $ */
 $( document ).ready( function() {
-
-    $( ".commentNav" ).loggedInScan( {
-        loggedInSelector: ".rei-loggedIn",
-        notLoggedInSelector: ".rei-notLoggedIn",
-        isLoggedInFn: function() {
-            return Boolean( loggedIn );
-        }
-    } );
 
     if ( /commentSortOrder=oldest/.exec( location.href ) ) {
         $('#commentSortOrder').val('oldest');
@@ -1067,7 +2340,7 @@ $( document ).ready( function() {
 	e.stopPropagation();
  });
 
- function toggleReplyForm( buttonId, formId, url ) {
+ function toggleReplyForm( buttonId, formId ) {
      var form = document.getElementById( formId );
      var button = document.getElementById( buttonId );
      if ( $( form ).is(":visible") ) {
@@ -1080,6 +2353,102 @@ $( document ).ready( function() {
      }
  }
 
+$( function() {
+    $( "form.comment input.addComment" ).click( function( e ) {
+        e.preventDefault();
+
+        var clickFunction = arguments.callee;
+
+        var _this = $( this );
+        var _form = _this.closest( "form" );
+        var _formContainer = _form.closest( ".commentFormContainer" );
+        var _commentNav = _formContainer.closest( ".commentWidgets" );
+        var _window = $( window );
+
+        var id = _formContainer.data( "commentContainer" );
+        if ( id == null || ( typeof id == "undefined" ) ) return false;
+        var _container = $( "#" + id );
+        if ( _container == null || ( typeof _container == "undefined" ) ) return false;
+
+        var action = _form.attr( "action" );
+        var data = _form.serialize();
+
+        $.ajax( {
+            url: action,
+            type: "GET",
+            data: data,
+            success: function( result ) {
+                $( _form ).closest( ".rei-postcommentform" ).slideUp( 'fast', function() {
+
+                    // Clear form
+                    _form.find( "textarea" ).val( "" );
+                    $( _commentNav ).find( ".commentReplyLink" ).text( "Reply" );
+
+                    // Build new comment div.
+                    var newId = new Date().getTime();
+                    var newDiv = $( '<div id="' + newId + '"></div>' );
+                    _container.append( newDiv );
+                    var _newDiv = $( "#" + newId );
+
+                    // Scroll to new comment position.
+                    var currentOffset = _window.scrollTop();
+                    var windowHeight = _window.height();
+                    var commentOffset = _newDiv.offset();
+                    var newOffset;
+                    if ( commentOffset != null ) {
+                        newOffset = commentOffset.top - ( windowHeight / 2 );
+                    } else {
+                        newOffset = currentOffset;
+                    }
+                    var distance = Math.abs( currentOffset - newOffset );
+                    var duration = distance * 0.7;
+                    if ( duration > 1500 ) duration = 1500;
+                    $( 'html' ).animate( { scrollTop: newOffset }, duration, 'swing', function() {
+
+                        _newDiv.hide();
+                        _newDiv.append( result );
+
+                        // Set up comment div now that it's in place.
+                        _container.find( ".rei-notLoggedIn" ).remove();
+                        _container.find( ".rei-loggedIn" ).each( function() {
+                            var contents = $( this ).contents();
+                            $( this ).replaceWith( contents );
+                        } );
+                        _container
+                            .find( "form.comment input.addComment" )
+                            .unbind( "click" )
+                            .click( clickFunction );
+
+                        _newDiv.fadeIn( 'slow' );
+                    } );
+                } );
+            },
+            error: function( result, status, error ) {
+
+                $( _form ).closest( ".rei-postcommentform" ).slideUp( 'fast', function() {
+
+                    $( _commentNav ).find( ".commentReplyLink" ).text( "Reply" );
+
+                    console.log( "Unable to post comment." );
+                    console.log( "Status text: " + status );
+                    console.log( "Error message: " + error );
+
+                    // Show error message
+                    var _fantomLink = $( "<a href='#commentErrorPopup'></a>" );
+                    _fantomLink.fancybox( {
+                        type: "inline",
+                        titleShow: false
+                    } ).trigger( 'click' );
+                } );
+            }
+        } );
+        return false;
+    } );
+
+    $( "#commentErrorPopupClose" ).click( function() {
+        $.fancybox.close();
+    } );
+} );
 $( document ).ready( function() {
     if ( $.popuptemplate === undefined ) return;
 
@@ -1098,6 +2467,15 @@ $( document ).ready( function() {
 
     window.resizeTo( width, height );
 } );
+/* $Id: posterprofile.js 2270 2012-04-12 19:27:33Z rray $ */
+
+/**
+ * @(#)posterprofile.js
+ * 
+ * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights reserved.
+ * 
+ * @author rray
+ */
 /* $Id: videottt.js 1918 2012-03-30 17:55:27Z jowilso $ */
 
 $(document).ready(function() {
@@ -1111,23 +2489,42 @@ $(document).ready(function() {
 	'type': 'iframe'
 	});
 });
+$( document ).ready( function() {
+    jQuery( '.reiDifference-popupLauncher' ).fancybox( {
+        'height': 600,
+        'padding': 10,
+        'width': 690,
+        'scrolling':'no',
+        'autoScale': false,
+        'titleShow': false,
+        'type': 'iframe'
+    } );
+} );
 
 /* $Id:  $ */
 /* $Id: popupgameteaser.js 1958 2012-04-02 21:29:19Z rray $ */
 $(document).ready(function(){
 	$("#Lookup").validate();
 });
+var REIFunctions = (typeof REIFunctions != "undefined"?REIFunctions:{});
+REIFunctions.setActiveTab = function(el){
+	// Tabs
+	$(el).siblings().removeClass('active');
+	$(el).addClass('active');
+	
+	// Panels
+	var target = $(el).attr('target');
+	$('.'+target).siblings().removeClass('active');
+	$('.'+target).addClass('active');
+}
 
 $(document).ready(function() {
+	if(window.location.hash){
+		REIFunctions.setActiveTab(window.location.hash)
+	}
+	
 	$('#EACategories.tabs li').click(function() {
-		// Tabs
-		$(this).siblings().removeClass('active');
-		$(this).addClass('active');
-		
-		// Panels
-		var target = $(this).attr('target');
-		$('.'+target).siblings().removeClass('active');
-		$('.'+target).addClass('active');
+		REIFunctions.setActiveTab(this);
 	});
 	
 	$('.seeAll').click(function() {
@@ -1168,54 +2565,7 @@ $(document).ready(function(){
 		'titleShow': false,
 		'type': 'iframe'
 	});
-	
-		// Tab Control
-	$('#EACategories.tabs li').click(function() {
-		// Tabs
-		$(this).siblings().removeClass('active');
-		$(this).addClass('active');
-		
-		// Panels
-		var target = $(this).attr('target');
-		$('.'+target).siblings().removeClass('active');
-		$('.'+target).addClass('active');
-	});
-	
-	$('.seeAll').click(function() {
-		var $table = $(this).parent("div").find("table");
-		var seeAllText = $('div.active .seeAll').text();
-		var currTabText = $('li.active').text();
-		if (seeAllText.indexOf('All') > -1) {
-        	$table.find("tr[id = 'hidden']").removeClass("hide");
-			$('div.active .seeAll').text('See First 10 ' + currTabText + ' Articles');
-		} else {
-        	$table.find("tr[id = 'hidden']").addClass("hide");
-			$('div.active .seeAll').text('See All ' + currTabText + ' Articles');
-		}
-		$table.find("tr:visible")
-        .filter(':even')
-        .removeClass('even').addClass('odd')
-        .end().filter(':odd')
-        .removeClass('odd').addClass('even');
-		return false;
-	});
-
-	$(function() {
-        $("div.sortableEACategories").each(function() {
-            var $table = $(this).find("table");
-            $table.tablesorter({widthFixed: true, widgets: ['zebra']});
-            $table.find("th#initialSort").trigger('click');
-        });
-
-	});
 });
-/* $Id: loginarea.js 1918 2012-03-30 17:55:27Z jowilso $ */
-
-	ReiUserLogin = {
-    	helloUserNameLabel  : "Hello ",
-        welcomeUserLabel    : "Welcome to REI!",
-        notUserLabel        : "Not "
-	};
 /* $Id: ticker.js 1918 2012-03-30 17:55:27Z jowilso $ */
 
 $(document).ready(function() {
@@ -1267,7 +2617,6 @@ $( function() {
     } );
 } );
 $( document ).ready( function() {
-    console.log( "difference popup" );
     jQuery( '.reiDifference-popupLauncher' ).fancybox( {
         'height': 600,
         'padding': 10,
@@ -1388,6 +2737,15 @@ $(document).ready(function() {
 		}
 	});
 });
+/* $Id: posterprofile.js 2270 2012-04-12 19:27:33Z rray $ */
+
+/**
+ * @(#)posterprofile.js
+ * 
+ * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights reserved.
+ * 
+ * @author rray
+ */
 /* $Id: accordion.js 1918 2012-03-30 17:55:27Z jowilso $ */
 
 $(document).ready(function(){
@@ -1616,834 +2974,35 @@ function _CF_checkinteger(object_value) {
 		return false;
 }
 
-/* ajax for search
-required: jquery
-*/
-// allows you to remove an item from an array based on its index, thanks to Jeff Walden whereswalden.com, ejohn.org/blog/javascript-array-remove/#postcomment
-Array.prototype.remove = function (from, to) {
-    this.splice(from, !to || 1 + to - from + (!(to < 0 ^ from >= 0) && (to < 0 || -1) * this.length));
-    return this.length;
-};
-$(function () {
-    $('div.titleStyle').click(function () {
-        var toggler = $(this).children('span');
-        if (toggler.attr('class') == 'bigTogglerDown') {
-            $(this).nextAll("ul").slideUp("fast");
-            $(this).nextAll("a.facetReset").slideUp("fast");
-            toggler.removeClass('bigTogglerDown').addClass('bigTogglerRight');
-            return false;
-        } else {
-            $(this).nextAll("ul").slideDown("fast");
-            $(this).nextAll("a.facetReset").slideDown("fast");
-            toggler.removeClass('bigTogglerRight').addClass('bigTogglerDown');
-            return false;
-        }
-    });
-    $("span[class *= 'smallToggler']").click(function () {
-        var toggler = $(this);
-        if (toggler.attr('class') == 'smallTogglerRight') {
-            $(this).nextAll("ul").slideDown("fast");
-            toggler.removeClass('smallTogglerRight').addClass('smallTogglerDown');
-            return false;
-        } else {
-            $(this).nextAll("ul").slideUp("fast");
-            toggler.removeClass('smallTogglerDown').addClass('smallTogglerRight');
-            return false;
-        }
-    });
-    // switch out product image with click on color swatch below image
-    $('ul.productTile li.productColors .prodColorBlock').click(function (event) {
-        event.preventDefault();
-        var $e = $(event.target);
-        if ($e.attr('sku')) {
-            var sku = $e.attr('sku');
-            $e.siblings('.selected').removeClass('selected').end().addClass('selected');
-			$e.parents('.productColors').siblings('.productImage').find('img').attr('src', 'http://www.rei.com/zoom/' + sku + '/230');
-        }
-    });
-    //switch out product image with click on color swatch below image
-    $('ul.productTile li a div.prodColors').click(function (event) {
-        event.preventDefault();
-        var $e = $(event.target);
-        if ($e.attr('sku')) {
-            var sku = $e.attr('sku');
-            $e.siblings('.selected').removeClass('selected').end().addClass('selected').closest('.prodColors').prev('img').attr('src', '/zoom/' + sku + '/150');
-        }
-    });
-    // fancy hover functionality for ratings in sidebar
-    var currentStarClass = $('#stars').attr('class');
-    $('a.available').live({
-        mouseover: function () {
-            var starNum = $(this).children('img').attr('alt');
-            var newClass = 'star' + starNum;
-            $('#stars').attr('class', newClass);
-            return false;
-        },
-        mouseout: function () {
-            $('#stars').attr('class', currentStarClass);
-            return false;
-        }
-    });
-});
-rei.searchTiles = {
-    ready: function () {
-        try {
-            if ($('.productRating').length > 0) {
-                $('.searchResults').addClass('newTiles');
-            }
-        } catch (err) {}
-        rei.searchTiles.groupProductTiles();
-        try {
-            if ($('.productTile').length > 0) {
-                $('#sortShowTop, #sortShowBottom').css({
-                    visibility: 'visible'
-                });
-            }
-        } catch (err) {}
-        try {
-            if ($('.onlyOnline').length > 0) {
-                $('.onlyOnline').eq(0).show();
-            }
-            if ($('.onlyInStore').length > 1) {
-                $('.onlyInStore').eq(1).show();
-            }
-        } catch (err) {}
-    },
-    load: function () {
-        rei.searchTiles.alignProductTiles();
-    },
-    groupProductTiles: function () {
-        var offsetIndex = 0;
-        if ($('#bannerZone3').length > 0) {
-            $('.productTile').eq(0).addClass('productGroup0');
-            $('.productTile').eq(1).addClass('productGroup0');
-            offsetIndex = 2;
-        }
-        for (var i = 0; i <= Math.ceil($('.productTile').length / 3); i++) {
-            var startIndex = i * 3 + offsetIndex - 1;
-            var $productsNo1 = $('.productTile').eq(startIndex + 1);
-            var $productsNo2 = $('.productTile').eq(startIndex + 2);
-            var $productsNo3 = $('.productTile').eq(startIndex + 3);
-            $productsNo1.addClass('productGroup' + (i + 1));
-            $productsNo2.addClass('productGroup' + (i + 1));
-            $productsNo3.addClass('productGroup' + (i + 1));
-        }
-    },
-    alignProductTiles: function () {
-        for (var i = 0; i <= Math.ceil($('.productTile').length / 3); i++) {
-            var $productGroup = $('.productGroup' + i);
-            var maxColorHeight = 0;
-            var maxPriceHeight = 0;
-            var maxDescHeight = 0;
-            var maxRatingHeight = 0;
-            var maxPromoHeight = 0;
-            var maxBadgeHeight = 0;
-            var maxSizeHeight = 0;
-            $productGroup.each(function (index) {
-                maxColorHeight = rei.searchTiles.getMaxHeight($('.productColors', $(this)), maxColorHeight);
-                maxPriceHeight = rei.searchTiles.getMaxHeight($('.productPrice', $(this)), maxPriceHeight);
-                maxDescHeight = rei.searchTiles.getMaxHeight($('.productDescription', $(this)), maxDescHeight);
-                maxRatingHeight = rei.searchTiles.getMaxHeight($('.productRating', $(this)), maxRatingHeight);
-                maxPromoHeight = rei.searchTiles.getMaxHeight($('.productPromo', $(this)), maxPromoHeight);
-                maxBadgeHeight = rei.searchTiles.getMaxHeight($('.productBadge', $(this)), maxBadgeHeight);
-                maxSizeHeight = rei.searchTiles.getMaxHeight($('.productSize', $(this)), maxSizeHeight);
-            });
-            rei.searchTiles.adjustHeights($('.productColors', $productGroup), maxColorHeight);
-            rei.searchTiles.adjustHeights($('.productPrice', $productGroup), maxPriceHeight);
-            rei.searchTiles.adjustHeights($('.productDescription', $productGroup), maxDescHeight);
-            rei.searchTiles.adjustHeights($('.productRating', $productGroup), maxRatingHeight);
-            rei.searchTiles.adjustHeights($('.productPromo', $productGroup), maxPromoHeight);
-            if (maxBadgeHeight > 0) {
-                if ($.browser.msie == false) {
-                    maxBadgeHeight += 10;
-                }
-            }
-            rei.searchTiles.adjustHeights($('.productBadge', $productGroup), maxBadgeHeight);
-            rei.searchTiles.adjustHeights($('.productSize', $productGroup), maxSizeHeight);
-            $('.productSize', $productGroup).attr({
-                maxSizeHeight: maxSizeHeight
-            });
-        }
-    },
-    getMaxHeight: function ($element, maxHeight) {
-        if ($element.html() != '') {
-            var elementHeight = $element.height();
-            if (elementHeight > maxHeight) {
-                maxHeight = elementHeight;
-            }
-        }
-        return maxHeight;
-    },
-    adjustHeights: function ($elements, height) {
-        if (height > 0) {
-            $elements.css({
-                height: height
-            });
-        } else {
-            try {
-                if ($.browser.msie && $.browser.version <= 7) {
-                    $elements.hide().css({
-                        display: 'none'
-                    }).addClass('hidden');
-                }
-            } catch (err) {}
-        }
-    }
-};
-rei.searchLocation = {
-    ready: function () {
-        $('.notAvailable').bind('click', function (e) {
-            try {
-                e.preventDefault();
-                e.stopPropagation();
-            } catch (err) {}
-        });
-        if (rei.siv != null) {
-            rei.siv.pageNameA = 'search_retail';
-            rei.siv.hideCallBack = window.parent.hideMyStores;
-            rei.siv.initialize(rei.searchLocation.reformatStoreDisplay);
-            rei.siv.showMyStoresCallback = function (noStoresWithin50miles) {
-                rei.searchLocation.reformatStoreDisplay();
-                if (noStoresWithin50miles != null && noStoresWithin50miles == true) {
-                    $('#showing').text('No');
-                } else {
-                    $('#showing').text('Showing');
-                    rei.searchLocation.filterResults();
-                }
-            };
-            rei.siv.saveSelectionCallback = function () {
-                rei.searchLocation.filterResults();
-            };
-            if ($.browser.mozilla == true || $.browser.msie == true) {
-                $('.d4').css({
-                    'margin-top': 0
-                });
-                $('#zipCode, #city').css({
-                    padding: $.browser.mozilla == true ? 4 : 3
-                });
-                if ($.browser.mozilla == true) {
-                    $('.d5').css({
-                        margin: '0 0 0 7px'
-                    });
-                }
-            }
-            var pageNameA = 'pagecontent-_-search_retail-_-change location_';
-            $('#updateStores').bind('click', function () {
-                rei.analytics.sendSpEvent(pageNameA + 'update');
-            });
-            rei.siv.locationFoundCallback = function (zipCode) {
-                var location = $('#zipCode').val();
-                if (location == '' || location.toLowerCase() == 'zip code') {
-                    location = $('#city').val().concat(' ', $('#cfState').val());
-                }
-                var s = s_gi(s_account);
-                s.linkTrackVars = 'eVar38,eVar59,eVar39';
-                s.eVar38 = pageNameA + 'go_' + location;
-                s.eVar39 = rei.analytics.options.page_name;
-                rei.analytics.push(function () {
-                    try {
-                        s.tl(true, 'o', 'SP Event');
-                    } catch (err) {}
-                });
-                s.linkTrackEvents = s.events = '';
-                s.linkTrackVars = '';
-                //end analytics
-            }
-        }
-    },
-    reformatStoreDisplay: function () {
-        $('ul.stores').remove();
-        $('#zipCode').val('Zip code');
-        $('#city').val('City');
-        $('#cfState').val('');
-        $('li.st-cc').each(function (index) {
-            var parentIndex = Math.ceil((index + 1) / 4);
-            if ($('#ulSC' + parentIndex).length == 0) {
-                $('#storesList').append('<ul id="ulSC' + parentIndex + '" class="fl width60 stores"></ul>');
-            }
-            $('#ulSC' + parentIndex).append($(this));
-        });
-        $('#ulSC li').remove();
-        $('#ulSC').hide();
-    },
-    filterResults: function () {
-        if ($('div.onlyInStore').length > 0 && (typeof rei.siv.currentStores != 'undefined' && rei.siv.currentStores != null)) {
-            $('div.onlyInStore').each(function () {
-                var $productBadge = $(this).parent();
-                var $productBox = $productBadge.parents('.productTile');
-                var styleNumber = $(this).attr('styleno');
-                var storesWhereAvailable = inStore[styleNumber];
-                var isAvailableInThisLocation = false;
-                $.each(rei.siv.currentStores, function (index, value) {
-                    var storeNumber = value.store.storeNumber;
-                    var storeNumberF = ',' + storeNumber + ',';
-                    if (storesWhereAvailable.indexOf(storeNumberF) > -1) {
-                        isAvailableInThisLocation = true;
-                        return false;
-                    }
-                });
-                var isAvailVisibility = isAvailableInThisLocation == true ? 'hidden' : 'visible';
-                $('.notAvailable', $productBadge).css({
-                    visibility: isAvailVisibility
-                }).css({
-                    height: $productBox.height()
-                });
-            });
-        }
-    }
-};
-$(document).ready(rei.searchTiles.ready);
-$(window).load(rei.searchTiles.load);
-$(document).ready(rei.searchLocation.ready);
-$(window).load(rei.searchLocation.filterResults);
-/**
- * This function is for updating the Compare bucket with the items in cookie. It
- * is called on load of the search result page ( i.e. when ever search result
- * page refreshes/reloads)
- *
- * @returns {Boolean}
- */
-
-/*$(document).ready(function(){
-    var compareBucketCookie = readCookie("compareBucket");
-
-    if ($('.abTest').css('display') != 'none'){
-        if (compareBucketCookie == 'on'){
-            $('li.compare ').show();
-            $('#compareWrapper').show();
-            $('#compareTab').css('border-top', 'none');
-            $('#compareTab b').removeClass('compareDownArrow');
-            $('#compareTab b').addClass('compareUpArrow');
-        } else {
-            $('li.compare ').hide();
-            $('#compareWrapper').hide();
-            $('#compareTab').css('border-top', '1px solid #CCC');
-            $('#compareTab b').removeClass('compareUpArrow');
-            $('#compareTab b').addClass('compareDownArrow');
-        }
-    }
-
-    $('#compareTab').click(function() {
-        $('li.compare').toggle();
-        $('#compareWrapper').animate({
-            height: 'toggle'
-            }, 200);
-        if ($('#compareWrapper').css('height') == '1px') {
-            Set_Cookie("compareBucket", "on");
-            $('#compareTab b').removeClass('compareDownArrow');
-            $('#compareTab b').addClass('compareUpArrow');
-            $('#compareTab').css('border-top', 'none');
-        } else {
-            Set_Cookie("compareBucket", "off");
-            $('#compareTab b').removeClass('compareUpArrow');
-            $('#compareTab b').addClass('compareDownArrow');
-            $('#compareTab').css('border-top', '1px solid #CCC');
-        }
-
-    });
-});*/
-
-function updateCompBucketOnLoad() {
-
-	var href= window.location.href;
-	Set_Cookie("searchURL",href);
-
-	var cookieValue = readCookie("userproduct");
-	if (cookieValue != null) {
-		var valuePieces = new Array();
-		valuePieces = cookieValue.split('%2C');
-		if (valuePieces && valuePieces != "" && valuePieces.length > 0) {
-			var style;
-			// Updating bucket with only the first four items in cookie ( this
-			// is for existing users who may have more than 4 items)
-			Delete_Cookie('userproduct','/');
-			Delete_Cookie('compExtAccess','/');
-			Delete_Cookie('removeuserproduct','/');
-			for ( var x = 0; x < 4; x++) {
-				if (valuePieces[x]) {
-					style = valuePieces[x];
-					// Adding item to compare bucket and back into the cookie
-					toggleCompButton(style, 'add');
-				}
-			}
-		}
-	}
-	return false;
-}
-function isStyleInCompareCookie(cookieName, Style) {
-	var isInCompList = false;
-	var cookieValue = readCookie(cookieName);
-	if (cookieValue != null) {
-		var SetSize = cookieValue.length;
-		var valuePieces = new Array();
-		valuePieces = cookieValue.split('%2C');
-		for (var x = 0; ((x < SetSize) && (!isInCompList)); x++) {
-			if (valuePieces[x] == Style) {
-				isInCompList = true;
-			}
-		}
-	}
-	return isInCompList;
-}
-
-/*function findParamInQuerySt(name)
-{
-	var url = window.location.search.substring(1);
-	var keyValues = url.split("&amp;");
-	var key;
-	for (i=0;i < keyValues.length;i++)
-	{
-		key = keyValues[i].split("=");
-		if (key[0] == name) {
-			return key[1];
-		}
-	}
-}
-
-function remove(){
-	var mode = findParamInQuerySt('styles');
-	var styles ='%20';
-	if(mode)
-	{
-		Set_Cookie("compExtAccess","true");
-	}
-	if(readCookie("compExtAccess") == 'true' && mode)
-	{
-		document.userProductUpdate.action = document.userProductUpdate.action + '&styles='+styles ;
-		document.userProductUpdate.method = 'post';
-	}
-	else
-	{
-		//Delete_Cookie('userproduct','/');
-		Set_Cookie('userproduct',"");
-		Delete_Cookie('removeuserproduct','/');
-	}
-	document.userProductUpdate.submit();
-}*/
-
-function removeFromCompareCookie(cookieName, style) {
-	var cookieValue = readCookie(cookieName);
-	if (cookieValue != null) {
-		cookieValue = cookieValue.replace('%2C' + style, '');
-		cookieValue = cookieValue.replace(style, '');
-		if (cookieValue.length == 9) {
-			cookieValue = cookieValue.replace('%2C', '');
-		}
-	}
-	cookieValue = unescape(cookieValue);
-	Set_Cookie(cookieName,cookieValue,'21');
-}
-
-function addToCompareCookie(cookieName, style)
-{
-	var cookieValue = readCookie(cookieName);
-	var cookieLength;
-	if (cookieValue != null) {
-		cookieLength = cookieValue.length;
-	} else {
-		cookieLength = 0;
-	}
-
-	if (isStyleInCompareCookie(cookieName, style) == false)
-	{
-		var updatedList="";
-		if (cookieLength == 0) {
-			 updatedList = style;
-		} else if (cookieLength > 0
-				&& (cookieValue.substring(cookieLength - 3, cookieLength) == '%2C')) {
-			//var updatedList = cookieValue + style;
-			 updatedList = style;
-		} else if (cookieLength > 0) {
-			 updatedList = cookieValue + ',' + style;
-		}
-		//Cookie expires after 21 days, the items added to bucket will be there for 21 days only
-		updatedList = unescape(updatedList);
-		Set_Cookie(cookieName,updatedList,'21');
-	}
-}
-
-function addStyle(style) {
-	addToCompareCookie("userproduct", style);
-	removeFromCompareCookie("removeuserproduct",style);
-}
-
-
-function removeStyle(style) {
-	if (isStyleInCompareCookie('userproduct',style) == true) {
-		removeFromCompareCookie('userproduct',style);
-	}
-	addToCompareCookie("removeuserproduct", style);
-}
-
-function removeStyleFromList(style, styleList) {
-	var styleArray = styleList.value.split(",");
-	var styleCount = 0;
-	styleList.value = "";
-	while (styleCount < styleArray.length) {
-		if (styleArray[styleCount] != "" && style != styleArray[styleCount]) {
-			styleList.value = styleList.value + "," + styleArray[styleCount];
-		}
-		styleCount++;
-	}
-}
-
-/**
- * This function is getting the comparison results. It is called on click of
- * Compare button that exists as part of Compare bucket
- */
-function compare() {
-	document.getElementById('userProductUpdate').submit();
-}
-
-/**
- * This function is for toggling Compare button from 'Add' to 'Remove' state and vice-versa.
- * It also updates the Compare bucket accordingly.
- * @param style - required parameter, it is the sku value.
- * @param inMode - optional parameter and is used to handle the case where items in
- * cookie don't exist on search result page. Ex: User adds 'shoes' to compare
- * bucket and then searches for 'shirt', so the 'shoe' items in cookie would not
- * exist on 'shirt' search result page.
- */
-function toggleCompButton(style, inMode) {
-	if (style != null && style != '' && style.match(/[0-9]/) != null) {
-		var buttonElem = $('#'.concat(style, 'Compare'));
-		if (buttonElem && buttonElem.attr('mode')) {
-			var mode = buttonElem.attr('mode');
-			// Add item to cookie and change add button to remove
-			if (mode == 'add') {
-				var cookieValue = readCookie("userproduct");
-				if (cookieValue != null && cookieValue != "") {
-					var cookieArray = new Array();
-					cookieArray = cookieValue.split('%2C');
-					if (cookieArray[0] == "") {
-						cookieArray.splice(0, 1);
-					}
-					else if (cookieArray[cookieArray.length -1] == "")
-					{
-							cookieArray.splice(cookieArray.length -1, 1);
-
-					}
-					var cookieLength = cookieArray.length;
-					if (cookieLength > 3) {
-						$
-								.fancybox({
-									content : '<p></p><p class="compareMsg compareMsgTitle"><b>You can compare up to four items at a time.</b></p><p class="compareMsg">Remove one or more items before adding another item to compare.</p><p class="compareMsg"><a href="javascript:$.fancybox.close();">Close</a></p>',
-									autoScale : false,
-									autoDimensions : false,
-									width : 210,
-									height : 145
-								});
-						return;
-					}
-				}
-				// Add item to cookie
-				addStyle(style);
-				// Change add button to remove
-				buttonElem.unbind('mouseover');
-				buttonElem.unbind('mouseout');
-				buttonElem.unbind('mousedown');
-				buttonElem.attr('src', '/etc/static/rei-wcm/pix/common/CompareRemove_ON.gif');
-				buttonElem.attr('class', 'compareBtnRem');
-				buttonElem.attr('mode', 'remove');
-				buttonElem.attr('title', 'Remove item from compare list.');
-				buttonElem.bind('mouseover',function(event)
-						{
-								updateCompAddBtn(event);
-						}
-				);
-				buttonElem.bind('mouseout',function(event)
-						{
-								updateCompAddBtn(event);
-						}
-				);
-				buttonElem.bind('mousedown',function(event)
-						{
-								updateCompAddBtn(event);
-						}
-				);
-			}
-			// Remove item from cookie and change remove button to add
-			else if (mode == 'remove') {
-				// Remove item from cookie
-				removeStyle(style);
-				// Change remove button to add
-				// Change add button to remove
-				buttonElem.unbind('mouseover');
-				buttonElem.unbind('mouseout');
-				buttonElem.unbind('mousedown');
-				buttonElem.attr('src', '/etc/static/rei-wcm/pix/common/Compare_ON.gif');
-				buttonElem.attr('class', 'compareBtnAdd');
-				buttonElem.attr('mode', 'add');
-				buttonElem.attr('title', 'Add item to compare list.');
-				buttonElem.bind('mouseover',function(event)
-						{
-								updateCompRemBtn(event);
-						}
-				);
-				buttonElem.bind('mouseout',function(event)
-						{
-								updateCompRemBtn(event);
-						}
-				);
-				buttonElem.bind('mousedown',function(event)
-						{
-								updateCompRemBtn(event);
-						}
-				);
-
-			}
-			// Update compare bucket for the item
-			updateCompBucket(style, mode);
-		}
-		else if (inMode) {
-			if (inMode == 'add') {
-				// Add item to cookie
-				addStyle(style);
-				// Update compare bucket for the item
-				updateCompBucket(style, 'add', true);
-			} else if (inMode == 'remove') {
-				// Add item to cookie
-				removeStyle(style);
-				// Update compare bucket for the item
-				updateCompBucket(style, 'remove', true);
-			}
-		}
-		//window.scrollTo(0, 0);
-	}
-
-}
-
-/**
- * This function adds/removes items to/from Compare bucket.
- * @param inStyle - required param, it is the sku value.
- * @param inMode -  required param, allowed values are 'add' and 'remove'.
- * @param prodNotOnCurrPage - optional parameter and is used to handle the case where items in
- * cookie don't exist on search result page. Ex: User adds 'shoes' to compare
- * bucket and then searches for 'shirt', so the 'shoe' items in cookie would not
- * exist on 'shirt' search result page.
- */
-function updateCompBucket(inStyle, inMode, prodNotOnCurrPage) {
-	var cookieValue = readCookie("userproduct");
-
-	if (cookieValue != null) {
-		var cookieLength = cookieValue.split('%2C').length;
-		// Enable compare button if 2 or more items have been added to bucket.
-		if (cookieLength > 1) {
-			/*$('#compareBucket').attr('src', '/etc/static/rei-wcm/pix/common/compare_items.gif');*/
-			$('#compareBucket').attr('disabled', false);
-			$('#compareBucket').removeClass('disabled');
-		} else {
-			/*$('#compareBucket').attr('src',
-					'/etc/static/rei-wcm/pix/common/compare_items_disabled.gif');*/
-			$('#compareBucket').attr('disabled', true);
-			$('#compareBucket').addClass('disabled');
-		}
-	}
-	if (inStyle && inMode && inStyle != '' && inMode != '') {
-		// Adding/removing items to/from compare bucket
-		// Looping through all the place holders for thumb nails in bucket to,
-		// 1> find an empty spot in case of adding item to bucket
-		// 2> shift items to left in case of removal of an item from bucket
-		for ( var i = 1; i < 5; i++) {
-			var parentThumbnail = $('#compareThumbnail_'.concat(i));
-			var thumbnail = $('#thumbnail_'.concat(i));
-			var closeElem = $('#thumbnail_close_'.concat(i));
-			if (inMode == 'add' && thumbnail.attr('available') == 'yes') {
-				// Get the image for adding to compare bucket thumb nail
-				var img = 'url(http://www.rei.com/zoom/' + inStyle + '/40)';
-				var alt = $('#'.concat(inStyle, 'Image')).attr('alt');
-				if (img) {
-					parentThumbnail.attr('closeId', inStyle);
-					parentThumbnail.bind('click', function(event) {
-						removeItemFromBucket(event);
-					});
-					if (prodNotOnCurrPage) {
-						/*closeElem.attr('prodNotOnCurrPage', prodNotOnCurrPage);*/
-						parentThumbnail.attr('prodNotOnCurrPage', prodNotOnCurrPage);
-					}
-					parentThumbnail.attr('hoverId', i);
-					parentThumbnail.bind('mouseover',function(event)
-							{
-									updateHover(event);
-							}
-					);
-					parentThumbnail.bind('mouseout',function(event)
-							{
-									updateHover(event);
-							}
-					);
-					// Add image to thumb nail
-					thumbnail.css('background-image', img);
-					thumbnail.attr('title', alt);
-					thumbnail.attr('available', 'no');
-					thumbnail.attr('removeId', inStyle);
-
-					// Show the close image on thumb nail
-					closeElem.css('display', 'block');
-					closeElem.css('background','url(/etc/static/rei-wcm/pix/common/remove_x.png)');
-				}
-				break; // out of outer for loop
-			} else if (inMode == 'remove'
-					&& thumbnail.attr('removeId') == inStyle) {
-				var j;
-				// Left shift all the items that exist to the right of target(item
-				// to be removed)
-				for (j = i; j < 5; j++) {
-					var k = j + 1;
-					var currParElem = $('#compareThumbnail_'.concat(j));
-					var nextParElem = $('#compareThumbnail_'.concat(k));
-					var currElem = $('#thumbnail_'.concat(j));
-					var nextElem = $('#thumbnail_'.concat(k));
-					var currCloseElem = $('#thumbnail_close_'.concat(j));
-					//var nextCloseElem = $('#thumbnail_close_'.concat(k));
-					if (currElem) {
-						if (nextElem && nextElem.attr('removeId') != null
-								&& nextElem.attr('removeId') != '') {
-							currParElem.unbind('click');
-							currParElem.unbind('mouseover');
-							currParElem.unbind('mouseout');
-							currParElem.attr('closeId', nextParElem
-									.attr('closeId'));
-							currParElem.attr('prodNotOnCurrPage',
-									nextParElem.attr('prodNotOnCurrPage'));
-							currParElem.bind('click', function(event) {
-								removeItemFromBucket(event);
-							});
-							currParElem.bind('mouseover',function(event)
-									{
-											updateHover(event);
-									}
-							);
-							currParElem.bind('mouseout',function(event)
-									{
-											updateHover(event);
-									}
-							);
-							currElem.css('background-image', nextElem
-									.css('background-image'));
-							currElem.attr('title', nextElem.attr('title'));
-							currElem.attr('available', 'no');
-							currElem.attr('removeId', nextElem.attr('removeId'));
-						} else {
-							currParElem.unbind('click');
-							currParElem.unbind('mouseover');
-							currParElem.unbind('mouseout');
-							currParElem.attr('closeId', '');
-							currParElem.attr('hoverId', '');
-							currParElem.attr('prodNotOnCurrPage', '');
-							currElem.css('background-image', 'none');
-							currElem.attr('title', '');
-							currElem.attr('available', 'yes');
-							currElem.attr('removeId', '');
-							currCloseElem.css('display', 'none');
-							currCloseElem.css('background','')
-							break;// out of "j" for loop
-						}
-					}
-				}
-				break; // out of outer for loop
-			}
-		}
-	}
-}
-
-/**
- * This function handles the click of 'x' present on thumbnail
- * @param event
- */
-function removeItemFromBucket(event) {
-	var id="";
-	if (event.srcElment)
-		id = event.srcElement.id;
-	else if (event.currentTarget) // For firefox
-		id = event.currentTarget.id;
-
-	var closeElemId = $('#'.concat(id)).attr('closeId');
-	var prodNotExists = $('#'.concat(id)).attr('prodNotOnCurrPage');
-	if (prodNotExists) {
-		toggleCompButton(closeElemId, 'remove');
-	} else {
-		toggleCompButton(closeElemId);
-	}
-}
-/**
- * This function is for updating the Add state of Compare button present on Search result page.
- * @param event
- */
-function updateCompAddBtn(event)
-{
-	var id="";
-	if (event.srcElment)
-		id = event.srcElement.id;
-	else if (event.target) // For firefox
-		id = event.target.id;
-	if(event.type == 'mouseover')
-	{
-		$('#'.concat(id)).attr('src','/etc/static/rei-wcm/pix/common/CompareRemove_OVER.gif');
-	}
-	else if(event.type == 'mouseout')
-	{
-		$('#'.concat(id)).attr('src','/etc/static/rei-wcm/pix/common/CompareRemove_ON.gif');
-	}
-	else if(event.type == 'mousedown')
-	{
-		$('#'.concat(id)).attr('src','/etc/static/rei-wcm/pix/common/CompareRemove_OnCLICK.gif');
-	}
-}
-/**
- * This function is for updating the Remove state of Compare button present on Search result page.
- * @param event
- */
-function updateCompRemBtn(event)
-{
-	var id="";
-	if (event.srcElment)
-		id = event.srcElement.id;
-	else if (event.target) // For firefox
-		id = event.target.id;
-	if(event.type == 'mouseover')
-	{
-		$('#'.concat(id)).attr('src','/etc/static/rei-wcm/pix/common/CompareOVER.gif');
-	}
-	else if(event.type == 'mouseout')
-	{
-		$('#'.concat(id)).attr('src','/etc/static/rei-wcm/pix/common/Compare_ON.gif');
-	}
-	else if(event.type == 'mousedown')
-	{
-		$('#'.concat(id)).attr('src','/etc/static/rei-wcm/pix/common/Compare_OnCLICK.gif');
-	}
-}
-
-/**
- * This function is for changing the state of x button in compare bucket on hovering over the image
- * @param event
- */
-
-function updateHover(event)
-{
-	var id="";
-	if (event.srcElment)
-		id = event.srcElement.id;
-	else if (event.currentTarget) // For firefox
-		id = event.currentTarget.id;
-
-	id = $('#'.concat(id)).attr('hoverId');
-	var closeElemId = $('#thumbnail_close_'.concat(id));
-
-	if(event.type == "mouseover")
-	{
-		closeElemId.css('background','url(/etc/static/rei-wcm/pix/common/remove_x.png) no-repeat 0 -28px');
-	}
-
-	if(event.type == "mouseout")
-	{
-		closeElemId.css('background','url(/etc/static/rei-wcm/pix/common/remove_x.png)');
-	}
-}
-
-$(window).load(function() {
-    updateCompBucketOnLoad();
+//  collections grid UI script
+jQuery(document).ready(function($) {
+	// use function to keep $thumbs variable enclosed
+	function initCollections(){
+	// store all thumbs, so you don't have to select it each time it's called
+	var $thumbs = $('.thumb', '.mainWrap');
+	// on mouse enter, if the thumb is not the active thumb, add hover class
+	$thumbs.mouseenter(function(){
+	if (!$(this).hasClass('active')){
+	$(this).addClass('hover');
+	} });
+	// remove hover class when mouse leaves thumb
+	$thumbs.mouseleave(function(){
+	$(this).removeClass('hover');
+	});
+	// click event for handling fading panels and converting thumb to active state
+	$thumbs.click(function(e){
+	// prevent browser from jumping to div called out in thumb href
+	e.preventDefault();
+	var $this = $(this), // store the clicked thumb
+	$tar = $($this.attr('href')), // use thumb href to find panel div you want to fade in
+	$prev = $('.main_prod:visible'); // find the visible panel and store it. so you can fade it out
+	$thumbs.removeClass('active'); // remove active state from previous button clicked
+	$this.addClass('active'); // add active class to button clicked
+	$prev.fadeOut('fast'); // fade out previous panel div
+	$tar.fadeIn('fast'); // fade in new panel div
+	}); }
+	// start collection
+	initCollections();
 });
 $(document).ready(function() {
 	$('.sizechart').fancybox({
@@ -2463,13 +3022,11 @@ $( document ).ready( function() {
         var earliest = $( selection ).attr( "earliestDate" );
         var latest = $( selection ).attr( "latestDate" );
 
-        var isUndefined = ( earliest === undefined && latest === undefined );
-        var isNull = ( earliest == null && latest == null );
-        var isEmpty = ( earliest == "" && latest == "" );
+        var isEmpty = $.isEmptyObject( earliest ) && $.isEmptyObject( latest );
 
         var dateDisplay = $( "#rspuSelectorDatesDisplay" );
 
-        if ( isUndefined || isNull || isEmpty ) {
+        if ( isEmpty ) {
             dateDisplay.slideUp( "fast" );
             return;
         }

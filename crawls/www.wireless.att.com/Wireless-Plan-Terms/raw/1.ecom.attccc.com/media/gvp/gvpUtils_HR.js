@@ -13,7 +13,6 @@ function gvpUtils() {
 	var isIE = (version.indexOf("MSIE") != -1) ? true : false;
 	var isWin = (version.toLowerCase().indexOf("win") != -1) ? true : false;
 	var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
-	var isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
 	var aminCtr = 0;
 	var pSku;
 	var pVidSrc;
@@ -23,7 +22,6 @@ function gvpUtils() {
 	var gvpVersion = '';
 	var headerStr = '';
 	var contentStr = '';
-	var h264PathMarker = 'http://www.wireless.att.com/home/video_progressive/gvp/mp4/';	
 	var metaData = {};
 	
 	this.popOnLoad = function popOnLoad(p_QArray) {
@@ -882,15 +880,8 @@ function gvpUtils() {
 					} else {
 						p_locEnv = '/media/gvp/';
 					}
-					if(isMobile) {
-						var nameStart = pConfig.lastIndexOf('/')+1;
-						var nameEnd = pConfig.indexOf('.',nameStart);
-						var h264FileName = pConfig.substring(nameStart, nameEnd);
-						if (h264FileName !== '') {
-							contentStr='<video id="currEmbStream" style="display:none; position:absolute;" src="'+h264PathMarker+h264FileName+'.mp4" poster="'+p_locEnv+'global_resources/defaultMedia/GVP_iPhone.jpg" controls="controls" width="512" height="288" onended="jQuery.colorbox.close();" onsuspend="gvp.onSuspend();" /> <img id="gvp_loadImg" src="/images/global/ajaxLoader.gif" style="display:block; position:absolute; margin:122px 0 0 234px;">';
-						} else {
-							contentStr='<img src="'+p_locEnv+'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="jQuery.colorbox.close();" />';
-						}
+					if(this.mobile.isMobile) {	
+						this.mobile.setContentStr(pConfig, p_locEnv);
 						shouldShow = true;
 					}
 					else if (!this.getFlashVersion()) {
@@ -925,12 +916,8 @@ function gvpUtils() {
 										}
 									});
 				} else {
-					if (isMobile) {
-						
-						jQuery.colorbox({html: headerStr+'<div id="gvp_modalInjection" style="width:512px; height:288px;">'+ contentStr +'</div>', 
-							close: ''
-						});
-						
+					if (this.mobile.isMobile) {	
+						this.mobile.openModal(headerStr);
 					} 
 					else {
 						jQuery.colorbox({html: headerStr+'<div id="gvp_modalInjection" style="padding-top:10px;"><center>'+contentStr+'</center></div>', 
@@ -954,17 +941,75 @@ function gvpUtils() {
 		}
 	};	
 	
-	this.onSuspend = function () {
+}
+
+/*
+The subclass gvpUtils.mobile is defined below.  It encapsulates all mobile functionality of gvpUtils, and is available in the gvpUtils function scope through referencing this.mobile.  Specific devices are detected via their user agents, but this information is private to this class.  A simpler isMobile variable is provided as part of the public interface.
+
+The two main functions of this class are setContentStr and openModal.  setContentStr runs first and creates the appropriate HTML containing a video tag for the detected device and stores it in the contentStr variable.  The contents of this function are exactly the same for gvpUtils and gvpUtils_HR.  openModal opens a modal window and injects the HTML stored in the contentStr into it.  Adding support for a new device entails adding device detection, adding a case to the if/else block in setContentStr for the device, and possibly adding device-specific behavior to openModal.
+
+Currently Android devices are being detected and being shown the default "no video available" image.  This will be replaced with proper Android support in the future.
+*/
+gvpUtils.prototype.mobile = new function () {
+
+	//device detection
+	var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+	var isAndroid = /android/i.test(navigator.userAgent);
+	this.isMobile = isIOS || isAndroid;
+	
+	//other variables
+	var h264PathMarker = 'http://www.wireless.att.com/home/video_progressive/gvp/mp4/';
+	var closeModal = 'jQuery.colorbox.close();';
+	var contentStr;
+	
+	//Store the appropriate video HTML in contentStr
+	this.setContentStr = function (pConfig, p_locEnv) {
+		var nameStart = pConfig.lastIndexOf('/')+1;
+		var nameEnd = pConfig.indexOf('.',nameStart);
+		var h264FileName = pConfig.substring(nameStart, nameEnd);
+
+		if (h264FileName === '') {
+			contentStr = '<img src="' + p_locEnv + 'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="' + closeModal + '" />';
+		}
+		else if(isIOS) {
+			//video tag
+			contentStr = '<video id="currEmbStream" style="display:none; position:absolute;" src="' + h264PathMarker + h264FileName + '.mp4" poster="' + p_locEnv + 'global_resources/defaultMedia/GVP_iPhone.jpg" controls="controls" width="512" height="288" onended="' + closeModal + '" onsuspend="gvp.mobile.iosOnSuspend();"></video>';
+			//loading image
+			contentStr += '<img id="gvp_loadImg" src="/images/global/ajaxLoader.gif" style="display:block; position:absolute; margin:122px 0 0 234px;">';
+		}
+		else if(isAndroid) {
+			contentStr = '<img src="' + p_locEnv + 'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="' + closeModal + '" />';
+		}
+	};
+	
+	//Open a modal and inject the contentStr
+	this.openModal = function (headerStr) {
+		jQuery.colorbox({html: headerStr + '<div id="gvp_modalInjection" style="width:512px; height:288px;">' + contentStr + '</div>', 
+			close: ''
+		});
+		
+		/*
+		// MFM 2012 JUL 24 - Attach a click listener to the video element after the video element has been inserted into the page.
+		if(isAndroid) {
+			var androidVideo = document.getElementById("currEmbStream");
+			androidVideo.addEventListener("click",function(){currEmbStream.play();},false);
+		}
+		 */
+	};
+	
+	//IOS 'ready to play video' event, hides loading image and shows video
+	this.iosOnSuspend = function () {
 		var jqVideo = jQuery('#currEmbStream');
 		var video = jqVideo[0];
 		if (video.readyState == 0 && video.networkState == 1) {
 			jQuery('#gvp_loadImg').hide();
 			jqVideo.show();
 		}
-	}
-	
-}
+	};
+}();
+
 gvp = new gvpUtils();
+
 if(typeof colorbox === 'undefined') {
 	//jQuery.getScript('//www.att.com/scripts/jquery.colorbox.js');
 }

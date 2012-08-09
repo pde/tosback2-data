@@ -39,10 +39,13 @@ function kwMatch(d,c){var b=decodeURIComponent,a=RegExp(/\badurl=([^&]+)/),e=Reg
     {name:'emb',phase:1,url:/^\/d\/(?!zappos\-homepage|homepage\-c)\b/,assign:function(){if(this.assignment.active||/\/d\/(?:shoes|dresses|clothing)\b/.test(window.zfcUPU))return!0},timestamp:!0,variants:[{chance:0.9},{chance:0.1,setup:function(){window.emb=1}}]},
     {name:'bse',phase:1,url:/^\/brand\/(?:11|111|272)\b/,variants:[{chance:0.3334},{chance:0.3333,setup:function(){window.showBrandSaleEmail=1;}},{chance:0.3333,setup:function(){window.showBrandSaleEmail=2;}}]},
     {name:'sen',phase:2,url:/^\/(?:search|[a-z\-]+\/[\w\-]*\.zso)\b/,assign:function(){return /\bmaxi[\s\+\-]+dress/i.test(zfcUPU);},variants:[{chance:0.5},{chance:0.5,setup:function(){document.write('<style>div.searchEnsembles{display:block;}</style>');}}]},
-    {name:'sb',phase:1,url:/^\/product\/\d/,variants:[{chance:0.99},{chance:0.005,setup:function(){window.sbv='sidebar';}},{chance:0.005,setup:function(){window.sbv='stage';}}]}
+    {name:'sb',phase:1,url:/^\/product\/\d/,variants:[{chance:0.99},{chance:0.005,setup:function(){window.sbv='sidebar';}},{chance:0.005,setup:function(){window.sbv='stage';}}]},
+    {name:'asp',url:/^\/product\/\d/,variants:[{chance:0.5},{chance:0.5,setup:function(){window.assProducts=1;}}]},
+    {name:'vid',phase:2,url:/^\/product\/(?:108000|7158233|7525636|7784861|7864635|7925831|107999|103787|109117|109573|117623|118479|118989|125424|126799|7128854|7128865|7128876|7144819|7153812|7155963|7156062|7166861|7168495|7170383|7171208|7196336|7197293|7209689|7209690|7209856|7212450|7217113|7221216|7221217|7221220|7226411|7244114|7267535|7289975|7289976|7293802|7293817|7293837|7294254|7295008|7297245|7322472|7322474|7322484|7326650|7329896|7329937|7338375|7342997|7344781|7372934|7383357|7397035|7414346|7414348|7420600|7423619|7434985|7439193|7454672|7459704|7459724|7460781|7465965|7487787|7490207|7490240|7490245|7501925|7502046|7505095|7508725|7530233|7536389|7567505|7568870|7578538|7579772|7588242|7588295|7593648|7596612|7597231|7600107|7604863|7609984|7613470|7615490|7616338|7620266|7626306|7626931|7627324|7630111|7631215|7634074|7644176|7644180|7644376|7654374|7656060|7667036|7667415|7669336|7676758|7679685|7679738|7693820|7696427|7707745|7710897|7716507|7718407|7718429|7718971|7720633|7729796|7729845|7732962|7735449|7747809|7748277|7749078|7749154|7755792|7755823|7759990|7761531|7763319|7763349|7784870|7786243|7786291|7786315|7786504|7786527|7787234|7787369|7787388|7788144|7789958|7789998|7790180|7790630|7792384|7805123|7810758|7811030|7818420|7864574|7864595|7864626|7873374|7881400|7881519|7881625|7881690|7881709|7881893|7881924|7883223|7888122|7888470|7888473|7891836|7891955|7892250|7892278|7894455|7894521|7895964|7901585|7901596|7909884|7911347|7925061|7925387|7925413|7928750|7931227|7931507|7937799|7944390|7949889|7976191|7976581|7977422|7977427|7987392|7988203|7992968|8059260)\b/,variants:[{chance:0.3334},{chance:0.3333,setup:function(){window.videoTest='360video'}},{chance:0.3333,setup:function(){window.videoTest='noVideo'}}]},
+    {name:'aja',url:/^\/product\/\d/,variants:[{chance:0.5},{chance:0.5,setup:function(){window.ajaxAdd=1;}}]}
   ];
   var zfc = [];
-  zfc.push(['initialize', '1343939575270', (new Date).getTime(), 'dcache', 'zetadrupal.zappos.net', zfcUPU, '3d574872-dce1-11e1-8c03-00215e22e1de', zfcUUID]);
+  zfc.push(['initialize', '1344534877041', (new Date).getTime(), 'dcache', 'zetadrupal.zappos.net', zfcUPU, '48d8b91e-e24b-11e1-acee-00145e157f03', zfcUUID]);
   zfc.push(['setEventUrl', '/event.cgi']);
 </script><script type="text/javascript">
 var todo=[];(function(e,t){var n,r,i,s,o,u,a=e.zfcUPU||e.location.toString(),f="/karakoram/js/main.fe38773.js",l=e.hydraTests||[];e.zfc&&zfc.push(["createWindowId",zfcUUID]),e.K2={cookieDomain:e.zfcCookieDomain,clickCookie:"click",clickAckCookie:"clickAck"};for(n=0,r=l.length;n<r;n++){u=l[n],u.url&&(i=new RegExp(u.url),o=i.test(a));if(o||!u.url&&u.assign){t.write('<script src="http://www.zappos.com/'+f+'" type="text/javascript"></scr'+"ipt>");return}}s=t.createElement("script"),s.type="text/javascript",s.src=f,s.async=!0,(t.getElementsByTagName("head")[0]||t.getElementsByTagName("body")[0]).appendChild(s)})(window,document);</script>
@@ -74,7 +77,7 @@ for (var i = 0; i < names.length; ++i) w.console[names[i]] = function() {};
 }
 })(window);
 </script>
-<link rel="stylesheet" href="styles/main.p.20120730145140.css" type="text/css" media="all" />
+<link rel="stylesheet" href="styles/main.p.20120802140338.css" type="text/css" media="all" />
 <!--[if IE 6]>
 <meta http-equiv="imagetoolbar" content="no"/>
 <![endif]-->
@@ -85,7 +88,7 @@ for (var i = 0; i < names.length; ++i) w.console[names[i]] = function() {};
 // From /js/z/z.js
 var z = {init:[],choiceStreamQueue:[],runChoiceStreamQueue:function(){var q=z.choiceStreamQueue;for(var i=0;i<q.length;i++)q[i]();}};
 // global perpetual cart object
-z.globalPerp = {apiToken:'4fd01eb2727b220c84809bc3f98f3ecb808f9662abb8d40bef465efe77494787fedb579a343e217d24321d8bbaa1b7c84dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06',motto:'Free Shipping Both Ways - 24/7 Customer Service',cartName:'My Cart'};
+z.globalPerp = {apiToken:'4fd01eb2727b220c84809bc3f98f3ecbd33703f447ce2994d3999af125d863e7662ce3f9c4d5f331408e90ce51bd889e4dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06',motto:'Free Shipping Both Ways - 24/7 Customer Service',cartName:'My Cart'};
 // From /js/z/cookies.js
 //the reference to ticket in this readCookie function is for sandbox, which may not be receive the Tryst treatment
 z.readCookie=function z_readCookie(c){c=c+"=";for(var d=document.cookie.split(";"),b=0;b<d.length;b++){for(var a=d[b];a.charAt(0)==" ";)a=a.substring(1,a.length);if(a.indexOf(c)==0)return a.substring(c.length,a.length)}return null};z.writeCookie=function z_writeCookie(c,d,b,a){if(b){var e=new Date;e.setTime(e.getTime()+b*24*60*60*1000);b="; expires="+e.toGMTString()}else b="";document.cookie=c+"="+d+b+"; path=/"+(a&&a!=""?"; domain="+a:"")};z.deleteCookie=function z_deleteCookie(name,domain){var date=new Date();date.setTime(date.getTime() - 1);document.cookie = name + "=; expires=" + date.toGMTString() + "; path=/; domain=" + domain + ";";};// Include json2 for unsupported browsers.
@@ -157,15 +160,15 @@ h,false);document.readyState="complete"},false)}})("addEventListener","DOMConten
 <script type="text/javascript" src="js/LAB.2.0.3.src.js"></script>
 <script type="text/javascript">
 $LAB
-.script('/js/main.p.20120730145137.js')
+.script('/js/main.p.20120802140335.js')
 .wait()
-.script('/js/drupal.p.20120730145137.js')
+.script('/js/drupal.p.20120802140335.js')
 .wait();
 $LAB
 .script('http://api.choicestream.com/instr/csanywhere.js')
 .wait(z.runChoiceStreamQueue);
 </script>
-<link rel="stylesheet" href="styles/drupal.p.20120730145140.css" type="text/css" media="all" />
+<link rel="stylesheet" href="styles/drupal.p.20120802140338.css" type="text/css" media="all" />
 <script>(function(){var a=location.search;if(a.indexOf("nav=")!==-1){if(a.indexOf("nav=none")===-1){if(a.indexOf("nav=clothing")!==-1)document.write("<style>#nav .clothing a{background-color:#FF5300;background-image:none !important;}</style>");if(a.indexOf("nav=sale")!==-1)window.navTestShowSale=1}}else if(a.indexOf("searchEnsembles")!==-1){document.write('<style>.searchEnsembles{display:block;}</style>');}})();//remove after test DEV-28318</script>
 <link rel="canonical" href="privacy-policy.html" /><style type="text/css" media="screen">
 a.zph:link {color:#369; text-decoration:none;}
@@ -313,7 +316,7 @@ if (window.navTestShowSale) document.write('<li class="sale"> <a href="http://ww
 <!-- [content] -->
 <div id="content" class="standard clear cs">
 
-  <h1 class="hKufi">Zappos.com's Privacy Policy</h1>      <ul class="secNav"><li class="first"><a title="Click to view Shop With Confidence!" href="http://www.zappos.com/shop-with-confidence">Shop With Confidence!</a></li><li><a title="Click to view Protecting Your Personal Information" href="http://www.zappos.com/protecting-your-personal-information">Protecting Your Personal Information</a></li><li>Privacy Policy</li></ul>      
+  <h1 class="hKufi">Zappos.com's Privacy Policy</h1>      <!-- zfc autolink off --><ul class="secNav"><li class="first"><a title="Click to view Shop With Confidence!" href="http://www.zappos.com/shop-with-confidence">Shop With Confidence!</a></li><li><a title="Click to view Protecting Your Personal Information" href="http://www.zappos.com/protecting-your-personal-information">Protecting Your Personal Information</a></li><li>Privacy Policy</li></ul><!-- zfc autolink on -->      
 
 
 
@@ -580,8 +583,15 @@ Gift certificates and gift cards sold on Zappos.com are sold by Zappos Gift Card
 	  
 <script type="text/javascript">z.t=z.t||{};z.t.perpCart='<div id=\"myCartProducts\" class=\"myCartProducts\"\> {{#items}} <a class=\"gae-click*Global*Cart-pop-up*Product-Click\" href="http://www.zappos.com/\&quot;{{productUrl}}\&quot;\"> {{#imageUrl}}<img src=\"{{imageUrl}}\" /\>{{/imageUrl}} <b\>{{brandName}}</b\> <em\>{{productName}}</em\> <strong\>{{#quantity}}<span class=\"quantity\"\>{{quantity}} x</span\> {{/quantity}}{{unitPrice}}</strong\> {{#color}}<p\><strong\>Color:</strong\>{{color}}</p\>{{/color}} {{#size}}<p\><strong\>Size:</strong\>{{size}}</p\>{{/size}} {{#width}}<p\><strong\>Width:</strong\>{{width}}</p\>{{/width}} </a\> {{/items}} {{#giftCertificates}} <a class=\"gae-click*Global*Cart-pop-up*Product-Click\" href="http://www.zappos.com/\&quot;{{productUrl}}\&quot;\"> {{#imageUrl}}<img src=\"{{imageUrl}}\" /\>{{/imageUrl}} <b\>e-Gift Certificate</b\> <strong\>{{amount}}</strong\> <p\><strong\>Recipient:</strong\>{{recipientName}}</p\> <p\><strong\>Email:</strong\>{{recipientEmail}}</p\> </a\> {{/giftCertificates}} </div\> <div id=\"cartTotal\"\> <span class=\"sub\"\>Subtotal <strong\>{{subtotal}}</strong\></span\> <a class=\"btn secondary gae-click*Global*Cart-pop-up*View-Cart-Click\" href="http://www.zappos.com/\&quot;/cart\&quot;\">View {{cartName}}</a\> <a class=\"btn action addToCart gae-click*Global*Cart-pop-up*Proceed-to-Checkout\" href="http://www.zappos.com/\&quot;/checkout\&quot;\">Proceed to Checkout<span\></span\></a\> {{#motto}}<p\>{{motto}}</p\>{{/motto}} </div\>';</script>
 <script type="text/javascript">
+var cj = !!~(window.location.href.indexOf('zlfid=2')), // check if zlfid is set to 2 - true if it is, false if it isn't
+time = new Date().getTime();
+if (cj) {
+z.writeCookie('aff', 't&' + time + 'zlfid&2', 365, '.zappos.com');
+}
+</script>
+<script type="text/javascript">
 $LAB
-.script('/js/tealeaf.p.20120730145137.js')
+.script('/js/tealeaf.p.20120802140335.js')
 .wait();
 </script>
 <!-- [closure] -->
@@ -596,6 +606,6 @@ afterEverything();
 zfc.push(["leaveBody",(new Date).getTime()]),function(){function t(t,n){var r=window[t];window[t]=function(){typeof r=="function"&&r(),e||(e=!0,zfc.push(["onload","/onload.cgi",(new Date).getTime(),n]))}}var e=!1;t("onload",!1),t("onunload",!0)}(),zfc.push(["tracker","/track.cgi"]),todo.push(function(){var e=this,t=e.K2;e.LazyEye?new LazyEye(Protobuf.Messages.zfcLazyEye,"zfc.LazyEye",{maxDataLength:700,listenDuration:1e3,textNodeMaxLength:64,cookieDomain:t.cookieDomain,clickCookie:t.clickCookie,clickAckCookie:t.clickAckCookie}):e.Annapurna&&Annapurna.error("Lazy Eye was not found on "+zfcUPU+" at "+ +(new Date))});</script></body>
 <!-- -->
 <!-- -->
-<!-- zfc01 www dcache 2012/08/02 13:32:55 1 ms uplat 0.858 ms rwlat 14 execs 6050 trans 55183 bytes 163 lrw 168 lex 232 texts 2892 words 14 links 3d574872-dce1-11e1-8c03-00215e22e1de --></html>
+<!-- zfc04 www dcache 2012/08/09 10:54:37 1 ms uplat 0.917 ms rwlat 14 execs 6085 trans 55502 bytes 163 lrw 168 lex 231 texts 2890 words 14 links 48d8b91e-e24b-11e1-acee-00145e157f03 --></html>
 
 

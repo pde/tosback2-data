@@ -17,39 +17,23 @@
         dropping_pixels: false,
         rescue_pixel: null,
 
-        get_matching_pixels: function() {
-            var script = document.createElement('script');
-            script.src = dpx.pixels_url + 'cb=dpx_' + hostname_as_int + '._hp';
-            document.body.appendChild(script);
-        },
-
-        _hp: function(pixels) {
-            dpx.matching_pixels = pixels && pixels['pixels'] || [];
-            dpx._drop_matching_pixels();
+        run: function() {
+            dpx.drop_pixels();
         },
 
         drop_pixels: function() {
-            var sifi_pixels = dpx.get_pixels();
+            var sifi_pixels = dpx.get_sifi_pixels();
             for (var i = sifi_pixels.length-1; i >= 0; i--) {
-                dpx.drop_sifi_pixel(sifi_pixels[i]);
+                dpx.add_sifi_pixel(sifi_pixels[i]);
             }
             if (dpx.does_allow_matching() && !dpx.already_dropped_matching) {
                 dpx.get_matching_pixels();
+            } else {
+                dpx._drop_matching_pixels();
             }
         },
 
-        _drop_matching_pixels: function() {
-            if (dpx.does_allow_matching() && !dpx.already_dropped_matching) {
-                for (var i = dpx.matching_pixels.length-1; i >= 0; i--) {
-                    dpx.pixels_to_drop.push(dpx.matching_pixels[i]);
-                }
-                dpx.already_dropped_matching = true;
-            }
-            if (!dpx.dropping_pixels) dpx._next_pixel();
-            dpx.dropping_pixels = true;
-        },
-
-        get_pixels: function() {
+        get_sifi_pixels: function() {
             var nodes = document.scripts || document.getElementsByTagName('script'),
                 pixels = [];
             for (var i = nodes.length-1; i >= 0; i--) {
@@ -65,15 +49,36 @@
             return pixels;
         },
 
+        add_sifi_pixel: function(params) {
+            params += "&cbri=" + Math.floor(Math.random()*(new Date().getTime()));
+            params += "&referrer=" + escape(document.referrer);
+            dpx.pixels_to_drop.push(dpx.sifi_pixel_url + params);
+        },
+
+        get_matching_pixels: function() {
+            var script = document.createElement('script');
+            script.src = dpx.pixels_url + 'cb=dpx_' + hostname_as_int + '._hp';
+            document.body.appendChild(script);
+        },
+
         get_query_string: function(src) {
             var str = src.substr(src.indexOf('dpx.js?')+7);
             return str;
         },
 
-        drop_sifi_pixel: function(params) {
-            params += "&cbri=" + Math.floor(Math.random()*(new Date().getTime()));
-            params += "&referrer=" + escape(document.referrer);
-            dpx.pixels_to_drop.push(dpx.sifi_pixel_url + params);
+        _hp: function(pixels) {
+            dpx.matching_pixels = pixels && pixels['pixels'] || [];
+            dpx._drop_matching_pixels();
+        },
+
+        _drop_matching_pixels: function() {
+            if (dpx.does_allow_matching() && !dpx.already_dropped_matching) {
+                for (var i = dpx.matching_pixels.length-1; i >= 0; i--) {
+                    dpx.pixels_to_drop.push(dpx.matching_pixels[i]);
+                }
+                dpx.already_dropped_matching = true;
+            }
+            dpx._next_pixel();
         },
 
         _next_pixel: function() {
@@ -110,19 +115,19 @@
 
             dpx.allow_matching = true;
             return true;
-        },
-
-        run: function() {
-            if (!document.body) {
-                setTimeout(function() { dpx.run(); }, 13);
-            } else {
-                dpx.drop_pixels();
-            }
         }
     };
 
     win['dpx_'+hostname_as_int] = dpx;
 
-    dpx.run();
+    if (!document.body) {
+        if (window.addEventListener) {
+            window.addEventListener('load', dpx.run, false);
+        } else if (window.attachEvent) {
+            window.attachEvent('onload', dpx.run);
+        }
+    } else {
+        dpx.run();
+    }
 
 })(window);

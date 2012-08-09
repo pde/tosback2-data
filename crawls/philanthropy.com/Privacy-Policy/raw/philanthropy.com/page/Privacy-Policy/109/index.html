@@ -13,7 +13,7 @@ Privacy Policy - About The Chronicle of Philanthropy - The Chronicle of Philanth
 <link href="../../../css/smoothness/jquery-ui-1.8.12.custom.css" type="text/css" rel="stylesheet" />
 <link href="../../../css/jquery-ui-overrides.css" type="text/css" rel="stylesheet" />
 
-<link href="../../../css/cop_global.css" type="text/css" rel="stylesheet" />
+<link href="../../../css/cop_global2.css" type="text/css" rel="stylesheet" />
 <link href="../../../css/crm-forms.css" type="text/css" rel="stylesheet" />
 
 
@@ -92,7 +92,7 @@ Privacy Policy - About The Chronicle of Philanthropy - The Chronicle of Philanth
 		<div class="chronicle-banner">
 			<a class="chronicle-logo" href="http://philanthropy.com/"><img id="chronicle-logo" src="../../../img/cop-logo.gif" alt="The Chronicle of Philanthropy" /></a>
 			<ul>
-				<li>Thursday, August 2, 2012</li>
+				<li>Thursday, August 9, 2012</li>
 				</ul>
 			<a class="subscribe-header" href="http://philanthropy.com/subscribe?PK=MPXWH3">Subscribe Today</a>
 		</div>
@@ -110,9 +110,11 @@ Privacy Policy - About The Chronicle of Philanthropy - The Chronicle of Philanth
 
 
 
+
+
+
+    
 <ul class="nav">
-
-
 
 	<li class="">
 			<a href="http://philanthropy.com/section/Home/172/">Home</a>
@@ -575,6 +577,19 @@ var acmgt_dialog_close = {
 var show_close = true;
 
 $().ready(function() {
+    
+    $('a[href^="/subscriptions/subscribe"]').click(function (e) {
+        // check to see current page is not "subscriptions"
+        var pattern = /^\/subscriptions/;
+        if( ! pattern.test(window.location.pathname) ) {
+            e.preventDefault();
+            
+            // check to see if there are any params on goto url
+            var qpattern  = /\?/;
+            var q = ( qpattern.test( $(this).attr('href') ) ) ? '&' : '?';
+            window.location = $(this).attr('href') + q +'cf=' + window.location.pathname;
+        }
+    });
 
     $('.account-trigger').click(function(e) {
         e.preventDefault();

@@ -33,7 +33,7 @@ if( !urlCheck('no_ads') && (typeof wpAds === 'undefined' || !wpAds.textlinks) ){
 }
 
 //19882 - Criteo Implementation
-if(/criteo_test/.test(location.search) && !/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
+if(!/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
   document.write('<scr' + 'ipt type="text/javascript" src="http://js.washingtonpost.com/wp-srv/ad/criteo.js"></sc' + 'ript>');
 }
 
@@ -374,14 +374,16 @@ if(/js_tiff/.test(location.search)){
     when : ['']
   };
 }
+
 //19980-KZ
-wpniAds.templates.initRule('bestbuy_tile');
+/*wpniAds.templates.initRule('bestbuy_tile');
 wpniAds.templates.rules.bestbuy_tile = {
   what : ['nav_tile'],
   where : ['lifestyle','entertainment','local','sports'],
   when : ['201207200000/201208042359'],
   hardcodes : '<a href="http://clk.atdmt.com/AVE/go/399416815/direct;wi.1;hi.1/01/" target="_blank"> <img src="http://img.wpdigital.net/wp-adv/advertisers/bestbuy/2012/BestBuy_201207_Lifestyle_88x31.png" width="80" height="28" alt="Click here for more information!" style="border: none; margin-top: 3px" /></a><img src="http://view.atdmt.com/AVE/view/399416815/direct;wi.1;hi.1/01/" height="1" width="1" alt="" style="border: none; display: none" />'
-};
+};*/
+
 //19970-CD
 wpniAds.templates.initRule('opa_pushdown');
 wpniAds.templates.rules.opa_pushdown = {
@@ -394,7 +396,7 @@ wpniAds.templates.initRule('jc_penney_pushdown');
 wpniAds.templates.rules.jc_penney_pushdown = {
   what : ['pushdown'],
   where : ['washingtonpost.com'],
-  when : ['201208010000/201208012359']
+  when : ['201208030000/201208032359']
 };
 //19779-CD-LEVERS
 /*

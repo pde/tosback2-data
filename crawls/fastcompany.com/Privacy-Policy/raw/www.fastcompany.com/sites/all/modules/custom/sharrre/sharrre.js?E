@@ -1,0 +1,42 @@
+(function ($) {
+    // Use strict mode to avoid errors: https://developer.mozilla.org/en/JavaScript/Strict_mode
+    "use strict";
+
+    Drupal.behaviors.sharrre = function (context) {
+        if (typeof(Drupal.settings.sharrre) !== 'undefined') {
+            Drupal.sharrre.init({instances:Drupal.settings.sharrre.instances});
+        }
+    };
+
+    Drupal.sharrre = (function () {
+        var config = {},
+
+            sharrreInstance = function (id, settings) {
+                $('#' + id).sharrre(settings);
+            },
+
+            init = function (options) {
+                // Extend config with options
+                config = $.extend(config, options);
+
+                var instances = config.instances;
+
+                $.each(instances, function (idx) {
+                    sharrreInstance(this.id, this.settings);
+                });
+
+                // Move the Fb and Twitter like counts into position above their buttons
+                setTimeout(function () {
+                    $('.round-counters .facebook').attr("title", $('#count-facebook').text());
+                    $('.round-counters .twitter').attr("title", $('#count-twitter').text());
+                }, 1500);
+
+            };
+
+        return {
+            init:init
+        }
+
+    }());
+
+})(jQuery);

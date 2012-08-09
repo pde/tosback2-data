@@ -1,6 +1,6 @@
 var googol={},fyre = fyre || {};(function(goog, fyre) {var COMPILED = !0, goog = goog || {};
 goog.global = this;
-goog.DEBUG = !0;
+goog.DEBUG = !1;
 goog.LOCALE = "en";
 goog.provide = function $goog$provide$($name$$) {
   if(!COMPILED) {
@@ -602,6 +602,7 @@ fyre.conv.config = {bootstrapS3Prefix:"", bootstrapS3Host:"http://data.bootstrap
 fyre.v1.config = fyre.conv.config;
 fyre.conv.config.setDomain("livefyre.com");
 fyre.conv.config.servers.livecount = "http://lc.livefyre.com";
+fyre.conv.config.servers.sentry_dsn = "http://adddd0ed5d9f4c8cabbee0abc84f0814@usea1d6gpht1.livefyre.com:9000/7";
 fyre.conv.config.servers.tracking = "http://admin.livefyre.com";
 fyre.v1.util = {};
 fyre.v1.util.ScriptLoader = {};
@@ -1535,7 +1536,7 @@ goog.array.shuffle = function $goog$array$shuffle$($arr$$, $opt_randFn$$) {
   }
 };
 fyre.conv.modules = {};
-fyre.conv.modules.main = {bootstrap:!0, init:!0, opts:"articleId siteId el collectionMeta checksum authDelegate betaBanner".split(" ")};
+fyre.conv.modules.main = {bootstrap:!0, init:!0, opts:"articleId siteId el collectionMeta checksum authDelegate betaBanner postToButtons".split(" ")};
 fyre.conv.modules.DEFAULT = "main";
 goog.uri = {};
 goog.uri.utils = {};
@@ -4181,7 +4182,7 @@ fyre.conv.Loader.prototype.getAppConfig = function $fyre$conv$Loader$$getAppConf
   return $app_appConfig$$
 };
 fyre.conv.Loader.prototype.initPage = function $fyre$conv$Loader$$initPage$() {
-  this.handleVersion("10001")
+  this.handleVersion("10003")
 };
 fyre.conv.Loader.prototype.handleInit = function $fyre$conv$Loader$$handleInit$($data$$) {
   this.initData = $data$$;

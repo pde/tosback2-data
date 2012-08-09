@@ -507,7 +507,7 @@ if (hasClass(bodyEl,'personalInfo')){
 }
 
 /* Left Nav Show/Hide Refinement Section */
-if (bodyId === 'category' || bodyId === 'thumbnail' ){
+if (bodyId === 'category' || bodyId === 'thumbnail' || bodyId === 'search' ){
     $('#refinementContainer').delegate( "h3.refinementHeading","click", function(event){
         var headerParent = $(this).parent().attr('class');
         if(headerParent == "refViewState" || headerParent == "ErefViewState"){

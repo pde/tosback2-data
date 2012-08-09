@@ -3,6 +3,59 @@
 // If key pressed was "enter", call function to perform service qual (equivalent of "submitting the form").
 // If some other key was pressed call commonFunc.autoTab to tab forward to next input if current input has been filled.
 //
+	function validateAndSubmit()
+	{	
+			var tnForm = $('tnForm');
+			var userOptionChosenFlag = false;
+			var errorMap = new Object();
+			var userOptionTypeDiv1 = $('user_option1_div');
+			var userOptionTypeDiv2 = $('user_option2_div');
+			//var serviceTypeDiv = $('service_type_div_radio_buttons');
+			
+			clearErrorMessagesTN();		
+			lastErrorType='';
+			
+			userOptionTypeDiv1.className ="";
+			userOptionTypeDiv2.className ="";
+			
+			for (var r=0; r < tnForm.user_option.length; r++) {
+				if (tnForm.user_option[r].checked) {
+					userOptionChosenFlag = true;
+					break;
+				}
+			}
+			
+			if (!userOptionChosenFlag) {
+				userOptionTypeDiv1.addClassName('focusInputRadio');
+				userOptionTypeDiv2.addClassName('focusInputRadio');
+				errorMap.err7="Please choose phone or address validation";
+			} 	
+			
+			var errCount = 0;
+			for (k in errorMap) {
+				if (errorMap.hasOwnProperty(k)) errCount++;
+			}
+			if (errCount > 0) {
+				displayErrorMessages1(errorMap);
+				lastErrorType = 'newAddress';		
+				// Re-center the modal
+				commonFunc.centerDiv("mainPopupDiv");		
+				return false;		
+			} else {				
+				if(document.tnForm.user_option[0].checked == true)
+				{
+					addsubmitFormWT(((flowType != null && flowType == 'shared') ? 'DSL_Shared_Qual_TN_Check_Avail_Submit' : 'DSL_Upgrade_Qual_Check_Avail_Submit'),'1');
+					doServiceQualificationTN();
+				}
+				else
+				{
+					addsubmitFormWT('DSL_Direct_Address_Qual_Check_Avail_Submit','1');
+					doServiceQualificationByAddress('NORMAL', '${v_multiTitle}', '${v_rangedTitle}');
+				}
+				return true;
+			}
+	}
+
 function keyUpOnTN(textbox, e) {
 		
 	var keycode;
@@ -56,17 +109,21 @@ function testErrorMessagesTestTN(){
 function clearErrorMessagesTN(){
 
 	//alert('now in clearErrorMessages1');
-
+	
 	var errorMsgsList = commonFunc.getElementObj("errorMsgsList");
-
+	var errorsArray = $$('.focusInput');
     // remove all child nodes - shouldn't be any, but do it just in case
 	while(errorMsgsList.hasChildNodes()){
 		errorMsgsList.removeChild(errorMsgsList.lastChild);
 	}
 	
 	commonFunc.displayElement("error_div", false);
-
+	for(var i=0; i < errorsArray.length; i++) {
+		errorsArray[i].removeClassName('focusInput');
+		errorsArray[i].removeClassName('padLeft');
+	}
 }
+
 
 function displayErrorMessagesTN(data){
 
@@ -91,13 +148,6 @@ function displayErrorMessagesTN(data){
 
 }
 
-/*
-function validationErrorsCallbackTN(resp) {
-
-	alert('TODO: add code to display validation errors');
-
-}
-*/
 
 var planIdForQual = '';
 function setPlanIdForQual(plan) {
@@ -115,16 +165,11 @@ function setModalFlowType(flow) {
 
 var phoneFormInputsObj = new Object();
 
-function doServiceQualificationTN(){
-	
-	//alert('in doServiceQualificationTN');
-	
+function doServiceQualificationTN(){	
 	//
 	// Clear any error messages so we're starting with a clean slate
 	//
 	clearErrorMessagesTN();
-	
-	//alert('cleared errors');
 	
 	var phoneAreaCode = commonFunc.Trim(document.getElementById('phoneAreaCode').value);
 	var phoneMiddle3 = commonFunc.Trim(document.getElementById('phoneMiddle3').value);
@@ -140,12 +185,6 @@ function doServiceQualificationTN(){
 		phoneFormInputsObj.successUrl = "/dsl/shop/plandetails.jsp?q_repId=" + planIdForQual;
 	}
 	
-	//alert('phoneFormInputsObj.phoneNumber=' + phoneFormInputsObj.phoneNumber);
-	//alert('phoneFormInputsObj.prospectPlanId=' + phoneFormInputsObj.prospectPlanId);
-	//alert('phoneFormInputsObj.successUrl=' + phoneFormInputsObj.successUrl);
-			
-	//phoneFormInputsObj.flowType='shared';
-	//alert('flowType set to ' + flowType);
 	phoneFormInputsObj.flowType = flowType;
 	
 			
@@ -155,16 +194,8 @@ function doServiceQualificationTN(){
 		
 		commonFunc.divPopUp("mainPopupDiv", false);
 		commonFunc.visibleElement("popCloseButton", false);
-		
-		//commonFunc.divPopUp("checkoutprogressbar", true);
-		//if (v_url.indexOf('https') == 0) {
-		//	showProgressPopupByUrl('/dsl/modals/loadingPlansProgress_SSL.jsp', 'Thank You!', 450);
-		//} else {
-		//	showProgressPopupByUrl('/dsl/modals/loadingPlansProgress.jsp', 'Thank You!', 450);
-		//}
-		showProgressPopupByUrl('/dsl/modals/loadingPlansProgress.jsp', 450);
-		
-		
+
+		showProgressPopupByUrl('/dsl/modals/loadingPlansProgress.jsp', 450);		
 		DWRRequestManager.getServiceQualificationEligibilityByPhone(phoneFormInputsObj, serviceQualTN);
 	}
 		
@@ -190,8 +221,6 @@ function validateInputsTN(item) {
 	//
 	// Currently only checking for missing required values here on client side
 	//
-	
-	//alert('now in validateInputsTN')
 		
 	var areaCodeObj = document.getElementById('phoneAreaCode');
 	var middle3Obj = document.getElementById('phoneMiddle3');
@@ -220,22 +249,8 @@ function validateInputsTN(item) {
 		phoneWrapperObj.className = "";
 		return true;
 	}
-	
-	/*
-	var errCount = 0;
-	for (k in errorMap) {
-		if (errorMap.hasOwnProperty(k)) errCount++;
-	}
-	if (errCount > 0) {
-		displayErrorMessagesTN(errorMap);
-		return false;
-	} else {
-		return true;
-	}
-	*/
-	
+		
 }
-
 
 function displayServerSideValidationErrorsTN(errors) {
 	
@@ -261,10 +276,87 @@ function displayServerSideValidationErrorsTN(errors) {
 	DWRRequestManager.getErrorMessagesByCodes(errorCodeArray,displayErrorMessagesTN);
 }
 
+/*
+ * This is is new function introduced to validate the address fields in the combined modal.
+ * Refer jira ticket # B2C-118172
+ * 
+ */
+
+function doServiceQualificationByAddress(thisModalType, multiTitle, rangedTitle) {
+	multipleAddressTitle = multiTitle;
+	rangedAddressTitle = rangedTitle;
+	clearErrorMessages1();
+	lastErrorType='';
+	validateNewAddress();
+}
+
+function validateNewAddress() {
+	var addr1WrapperObj = $('address_line_1_div');
+	var addr2WrapperObj = $('address_line_2_div');
+	var cityWrapperObj = $('city_div');
+	var stateWrapperObj = $('state_div');
+	var zipWrapperObj = $('zip_div');
+	var addrForm = $('address_form');
+	var addr1 = commonFunc.Trim($('streetAddress').value);
+	var addr2Type = commonFunc.Trim($('unitTypeName').options[$('unitTypeName').selectedIndex].value);
+	var addr2 = commonFunc.Trim($('unitNumber').value);
+	var city = commonFunc.Trim($('city').value);
+	var state =commonFunc.Trim($('stateName').options[$('stateName').selectedIndex].value);
+	var zip = commonFunc.Trim($('zip').value);
+	var serviceTypeChosenFlag = false;	
+	var errorMap = new Object();
+	var superNurl = "https://connect.att.com/apps/supern/StartAction.form";
+	
+	if (addr1 == null || addr1 == '') {
+		addr1WrapperObj.addClassName('focusInput');
+		errorMap.err1 = "Please enter address line 1";
+	} 
+	if (addr1.charAt(0) == '-'){
+		addr1WrapperObj.addClassName('focusInput');
+		errorMap.err1 = "Please enter a valid address line 1";
+	}	
+
+	if (city == null || city == '') {
+		cityWrapperObj.addClassName('focusInput');
+		errorMap.err3 = "Please enter city";
+	}	
+	if (state == null || state == '' || state == '0') {
+		stateWrapperObj.addClassName('focusInput');
+		errorMap.err4="Please select a state";
+	}	
+	if (zip == null || zip == '') {
+		zipWrapperObj.addClassName('focusInput');
+		errorMap.err5="Please enter ZIP code";
+	}	
+	
+	var errCount = 0;
+	for (k in errorMap) {
+		if (errorMap.hasOwnProperty(k)) errCount++;
+	}
+	if (errCount > 0) {
+		displayErrorMessages1(errorMap);
+		lastErrorType = 'newAddress';		
+		// Re-center the modal
+		commonFunc.centerDiv("mainPopupDiv");		
+		return false;		
+	} else {	
+		
+		showProgressPopupByUrl('/dsl/modals/loadingPlansProgress.jsp', 450);
+		
+		superNurl += "?addressLine1="+addr1;
+		superNurl += "&addressLine2="+addr2Type;
+		superNurl += "%20"+addr2;
+		superNurl += "&addressCity="+city;
+		superNurl += "&addressState="+state;
+		superNurl += "&zipCode="+zip;
+		
+		//superNurl = encodeURIComponent(superNurl);
+		window.location = superNurl;
+		return true;		
+	}	
+}
 
 function serviceQualTN(data){
-	
-	//alert('now in serviceQualTN');
 	
 	//commonFunc.divPopUp("checkoutprogressbar", false);
 	closeProgressPopup();
@@ -273,52 +365,13 @@ function serviceQualTN(data){
 	var newUrl = data.url;
 	var errors = data.errors;
 	
-	if (errors != null) {
-	
-		//alert('errors found: phoneNumber=' + errors.phoneNumber);
-		
+	if (errors != null) {	
 		displayServerSideValidationErrorsTN(errors);
 
 	} else {
-		
-		//alert('in serviceQual callback: no validation errors, redirect=' + redirectFlag + ', url=' + newUrl);
 	
 		if (redirectFlag == true) {
-			
-				//
-				// Response from server indicates we need to redirect to new page.  Grab url sent by server and
-			    // go there.  Note that this could be either a success or error condition - we're trusting the back end
-			    // to send us to the right page regardless of what is going on here.
-				//
-	
-				//alert('setting window location to ' + newUrl);
-				window.location = newUrl;
-			
-		} 
-		/*
-		else {
-	
-			//
-			// Response from server indicates we do not need to redirect to a new page.  For BTN modal, this
-			// should mean that we have validation errors.
-			//
-			
-			idx = newUrl.indexOf("testErrors");
-			if (idx > -1) {
-	
-				//
-				// URL returned from Ajax call indicates validation errors.  Get the errors and update the
-				// modal to display them and highlight problem field(s).
-				//
-				
-				//alert('doing Ajax with validationErrorsCallback');
-	
-				ShoppingCart.AjaxRequest(v_contextRoot + newUrl, validationErrorsCallbackTN);
-			}	
-	
-		}
-		*/
-	
-	}	 
+				window.location = newUrl;			
+		} 	
+	} 
 }
-

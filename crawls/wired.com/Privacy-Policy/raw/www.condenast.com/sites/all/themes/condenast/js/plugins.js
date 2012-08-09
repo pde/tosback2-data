@@ -809,9 +809,11 @@ spinOptions.small = $.extend({}, spinOptions, {radius: 4, length: 4});
 		}
 
 		var playerReadyHandler = function(e) {
+
 			var player = e.target;
 
-			var videoId = (typeof player.getVideoData() === 'undefined') ? player.b.R.videoId : player.getVideoData().video_id;
+			// extract video id from embed code
+			var videoId = $(player.getVideoEmbedCode()).attr('id').replace('video_', '');
 			var data = plugin.players[videoId];
 			data.ready = true;
 
@@ -854,7 +856,7 @@ spinOptions.small = $.extend({}, spinOptions, {radius: 4, length: 4});
 			init();
 		}
 
-		window.onYouTubePlayerAPIReady = function() {
+		window.onYouTubeIframeAPIReady = function() {
 			init();
 		}; //.bind(plugin);
 

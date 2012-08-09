@@ -10,6 +10,7 @@ body.popup { min-height:0; min-width:0; padding:5px }
 table { border-collapse: collapse }
 iframe { border:0 }
 br.separator { display:block; clear: both; width: 100%; height: 0 }
+.clear {clear: both;}
 h3 { font: bold 13px Tahoma; color: #333; margin: 10px 0 10px 0 }
 a { color: #000 }
 p { margin:1em 0; }
@@ -20,6 +21,7 @@ input.button:hover, #filemanager .button:hover, #depositbox .button:hover, .ui-d
 input[type=text], input[type=password] { border: 1px solid #ccc; padding: 2px }
 .error_message { color:red; margin:0.5em 0 }
 .red { color: #f30 !important }
+.border_box {-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
 
 #main { width: 990px; margin: 0 auto; position: relative; padding: 80px 0 40px; zoom:1; }
 body.has_support #main { width: 990px; margin: 0 auto; position: relative; /*padding: 80px 0 170px 0;*/}
@@ -220,10 +222,18 @@ body.has_support #main { width: 990px; margin: 0 auto; position: relative; /*pad
 fieldset {margin: 0 0 10px 0; padding: 5px 10px; border: 1px solid #ccc;}
 fieldset legend {padding: 0 5px;}
 
+.sprite_folders {display: inline-block; background: url(../images/icons/sprite_folders.png) no-repeat;}
+.ss_icon {width: 25px; height: 15px; background-position: -50px 50%;}
+
+
 #filemanager .filelist_s, #filemanager .noss_info {float: right; width: 78%; margin-right: 5px;}
 #filemanager .noss_info {}
 #filemanager .noss_info .create_info {text-align: center;}
 #filemanager .noss_info .create_info .msg {margin: 0 0 20px 0; font-weight: bold;}
+
+#filemanager .filelist_s .menu .upload {width: 29px; height: 29px; padding: 0; vertical-align: top; background: url(../images/icons/upload.png) no-repeat 50% 0;}
+#filemanager .filelist_s .menu .uploadifive-button {float: left; width: 29px !important; height: 29px; margin: 0; padding: 0; border: 0; background: url(../images/icons/upload.png) no-repeat 50% 0; text-indent: -500px;}
+#filemanager .filelist_s .menu .uploadifive-button input {cursor: pointer;}
 
 #filemanager .filelist_s .menu a.create {background: url(../images/white/btn_folder_create.gif) no-repeat 50% 0%;}
 #filemanager .filelist_s .menu a.remove {background: url(../images/white/btn_folder_remove.gif) no-repeat 50% 0%;}
@@ -245,19 +255,18 @@ fieldset legend {padding: 0 5px;}
 .filelist_tab tbody tr {border-top: 1px solid transparent; border-bottom: 1px solid transparent;}
 
 .filelist_tab th, .filelist_tab td {padding: 8px; text-align: center;}
-.filelist_tab td * {vertical-align: middle;}
+.filelist_tab td * {/*vertical-align: middle;*/}
 .filelist_tab thead tr th:first-child, .filelist_tab tbody tr td:first-child {text-align: left;}
 .filelist_tab thead tr th.first {padding-top: 0; padding-bottom: 0;}
 .filelist_tab tbody tr.nofiles td {text-align: center;}
 
 .filelist_tab tbody tr.odd {background: #f2f2f2;}
 .filelist_tab tbody tr.even {background: #fff;}
-/*.filelist_tab tbody tr.checked {background: #e6e6e6; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc;}*/
-.filelist_tab tbody tr.ui-selected {background: #88ceff; border-top: 1px solid #4fb6fd; border-bottom: 1px solid #4fb6fd;}
+.filelist_tab tbody tr.ui-selected {background: #afdeff; border-top: 1px solid #6bc2ff; border-bottom: 1px solid #6bc2ff;}
 
 .folder_icon, .file_icon {display: inline-block; width: 16px; height: 16px; margin: 0 8px 0 0; background-repeat: no-repeat;}
 .folder_icon {background-image: url(../images/icons/tree_icon_folder.png);}
-.file_icon {background-image: url(http://img3.depositfiles.com/images/file_type/data.png); background-repeat: no-repeat !important;}
+.file_icon {background-image: url(../images/file_type/data.gif); background-repeat: no-repeat !important;}
 
 .filelist_tab tbody td .name {display: inline-block; width: 420px; overflow: hidden; white-space: nowrap;}
 .filelist_tab tbody td .name a {display: inline-block; border-bottom: 1px dotted transparent; text-decoration: none;}
@@ -265,23 +274,33 @@ fieldset legend {padding: 0 5px;}
 
 .filelist_tab thead .name {float: left;}
 .filelist_tab thead a {color: #666; cursor: pointer;}
-.filelist_tab thead .size span, .filelist_tab thead .created span {}
+
+
+.filelist_tab .uploadifive-queue-item .progress {float: left; display: inline-block; width: 70px; height: 8px; margin: 3px 5px 0 0; border: 1px solid #ccc; background: #fff; text-align: left;}
+.filelist_tab .uploadifive-queue-item .progress-bar {display: inline-block; width: 0; height: 8px; background: url(../images/progress_bar_green_bg.gif) repeat-x;}
+.filelist_tab .uploadifive-queue-item .fileinfo {float: right; display: inline-block; /*min-width: 60px;*/}
+.filelist_tab .uploadifive-queue-item .status {color: #5a9d00;}
+.filelist_tab .uploadifive-queue-item .status.error {color: #f0370e;}
+
 
 
 
 .breadcrumbs, .breadcrumbs ul {margin: 0; list-style: none;}
 .breadcrumbs {width: 450px; white-space: nowrap;}
+.breadcrumbs a {color: #666; cursor: pointer;}
 .breadcrumbs li {float: left; position: relative; border: 1px solid transparent;}
-.breadcrumbs li a, .breadcrumbs li .arrow {vertical-align: middle; line-height: 20px;}
+.breadcrumbs li a, .breadcrumbs li .arrow {display: inline-block; vertical-align: middle; line-height: 20px;}
 
-.breadcrumbs li a {display: inline-block; padding: 0 5px; max-width: 150px; overflow: hidden;}
-.breadcrumbs li a span {vertical-align: top; line-height: normal;}
-.breadcrumbs li .arrow {display: inline-block; width: 12px; border-left: 1px solid transparent; background: url(../images/icons/arrows_small.png) no-repeat 50% -1px; cursor: pointer;}
+.breadcrumbs li a {padding: 0 5px; max-width: 150px; overflow: hidden; text-overflow: ellipsis;}
+.breadcrumbs li a span {display: inline-block; vertical-align: middle;}
+.breadcrumbs li a span.sort_arrow {}
+.breadcrumbs li a span.empty {text-indent: -50px; line-height: 20px;}
+.breadcrumbs li .arrow {width: 12px; border-left: 1px solid transparent; background: url(../images/icons/arrows_small.png) no-repeat 50% -1px; cursor: pointer;}
 .breadcrumbs li .arrow_bottom {background-position: 50% -24px;}
 
 .breadcrumbs li ul {display: none; width: 250px; max-height: 300px; border: 1px solid #646464; position: absolute; top: 20px; left: -1px; background: #fcfcfc; overflow: auto;}
 .breadcrumbs li ul li {float: none; margin: 0; position: static;}
-.breadcrumbs li ul li a {display: block; max-width: none; padding: 2px 5px; overflow: hidden;}
+.breadcrumbs li ul li a {display: block; max-width: none; padding: 2px 5px;}
 .breadcrumbs li ul li a:hover {background: #d7effc;}
 
 /* over, active */
@@ -291,18 +310,35 @@ fieldset legend {padding: 0 5px;}
 .breadcrumbs li.active .arrow  {border-left: 1px solid #3c7fb1;}
 
 
-#select_diag .breadcrumbs {float: left; width: 100%; margin: 0 0 10px 0;}
-.dir_list {list-style: none; margin: 0; max-height: 189px; border: 1px solid #ccc; overflow: auto;}
-.dir_list li {padding: 4px; white-space: nowrap; overflow: hidden; cursor: pointer; border-top: 1px solid #ccc;}
-.dir_list li:first-child {border: none;}
+.ui-select-dialog {overflow: visible !important;}
+#select_diag {background: #fff; border-left: 1px solid #666; border-right: 1px solid #666;}
+#select_diag .breadcrumbs {float: left; width: 100%; padding: 4px; background: #ccc;}
+#select_diag .breadcrumbs li ul {max-height: 233px;}
+#select_diag .tools {margin: 0 0 10px 0;}
+
+#select_diag .tools .create {float: left; width: 32px; height: 32px; background: url(../images/white/btn_folder_create.gif) no-repeat 50% 50%;}
+#select_diag .tools .create.disabled {background-image: url(../images/off/btn_folder_create.gif); cursor: default;}
+
+#select_diag .tools .search_info {float: left; margin: 5px 0 0 0; font-weight: bold;}
+#select_diag .tools .search {float: right; width: 50%; margin: 0 0 6px 0;}
+
+.dir_list_header {padding: 5px; background: #ccc; font-weight: bold;}
+
+.dir_list {list-style: none; margin: 0; height: 200px; border: 1px solid #ccc; overflow: auto;}
+.dir_list li {padding: 5px; white-space: nowrap; overflow: hidden; cursor: pointer;}
 .dir_list li * {vertical-align: middle;}
 .dir_list li a {display: inline-block; border-bottom: 1px dotted transparent; text-decoration: none;}
 .dir_list li a:hover {border-color: #444;}
 
+.dir_list li .name, .dir_list_header .name {float: left; width: 49%; overflow: hidden;}
+.dir_list li .location, .dir_list_header .location {float: right; width: 49%; overflow: hidden;}
+
 .dir_list li:nth-of-type(odd) {background: #fff;}
 .dir_list li:nth-of-type(even) {background: #f6f6f6;}
 .dir_list li:hover {background: #f0f0f0;}
-.dir_list li.selectable {background: #88CEFF;}
+.dir_list li.ui-selected {background: #afdeff;}
+
+.diag_inner .dir_list li input {width: auto; padding: 1px; background: transparent;}
 
 /* --- */
 
@@ -335,7 +371,7 @@ fieldset legend {padding: 0 5px;}
 .diag_inner .show_links .tabs a {margin: 0 15px; color: #333; border-bottom: 1px dotted #333; text-decoration: none;}
 .diag_inner .show_links .tabs a.active {color: #f0370e;}
 .diag_inner .show_links .links_area {padding: 0 5px;}
-.diag_inner .show_links .links_area textarea {width: 100%; height: 100px; padding: 3px 5px; border: 1px solid #999; background: #fff; font: 11px normal Andale Mono, Courier New, monospace; resize: none; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; overflow-y: auto; overflow-x: hidden;}
+.diag_inner .show_links .links_area textarea {width: 100%; height: 100px; padding: 3px 5px; border: 1px solid #999; background: #fff; font: 11px normal Andale Mono, Courier New, monospace; resize: none; overflow-y: auto; overflow-x: hidden;}
 
 
 
@@ -998,17 +1034,17 @@ ol.agreement li { font-weight: bold }
 .uploadform_new .info {float: left; margin: 5px 0 0 20px; color: #999;}
 
 .htmlupload_queue {margin : 15px 0 0 0;}
-.uploadifive-queue-item {float: left; width: 100%; padding: 15px 0; border-top: 1px solid #ccc;}
-.uploadifive-queue-item .filename, .uploadifive-queue-item .filesize, .uploadifive-queue-item .fileinfo {float: left; margin-right: 10px; overflow: hidden; white-space: nowrap;}
-.uploadifive-queue-item .filename {width: 335px;}
-.uploadifive-queue-item .filesize {width: 85px;}
-.uploadifive-queue-item .fileinfo {width: 75px;}
+.htmlupload_queue .uploadifive-queue-item {float: left; width: 100%; padding: 15px 0; border-top: 1px solid #ccc;}
+.htmlupload_queue .uploadifive-queue-item .filename, .htmlupload_queue .uploadifive-queue-item .filesize, .htmlupload_queue .uploadifive-queue-item .fileinfo {float: left; margin-right: 10px; overflow: hidden; white-space: nowrap;}
+.htmlupload_queue .uploadifive-queue-item .filename {width: 335px;}
+.htmlupload_queue .uploadifive-queue-item .filesize {width: 85px;}
+.htmlupload_queue .uploadifive-queue-item .fileinfo {width: 75px;}
 
-.uploadifive-queue-item .fileinfo .status {color: #5a9d00; font-weight: bold; cursor: pointer; text-decoration: underline;}
-.uploadifive-queue-item .fileinfo .status.error {color: #f0370e;}
-.uploadifive-queue-item .close {display: block; float: right; width: 17px; height: 12px; margin-top: 2px; background: url(../images/btn_upload_progress_cancel.gif) no-repeat; text-indent: -9999px;}
-.uploadifive-queue-item .progress {float: left; width: 174px; height: 10px; margin-top: 3px; border-top: 1px solid #ccc; background: #fff;}
-.uploadifive-queue-item .progress-bar {width: 0; height: 10px; background: url(../images/progress_bar_green_bg.gif) repeat-x;}
+.htmlupload_queue .uploadifive-queue-item .fileinfo .status {color: #5a9d00; font-weight: bold; cursor: pointer; text-decoration: underline;}
+.htmlupload_queue .uploadifive-queue-item .fileinfo .status.error {color: #f0370e;}
+.htmlupload_queue .uploadifive-queue-item .close {display: block; float: right; width: 17px; height: 12px; margin-top: 2px; background: url(../images/btn_upload_progress_cancel.gif) no-repeat; text-indent: -9999px;}
+.htmlupload_queue .uploadifive-queue-item .progress {float: left; width: 174px; height: 10px; margin-top: 3px; border-top: 1px solid #ccc; background: #fff;}
+.htmlupload_queue .uploadifive-queue-item .progress-bar {width: 0; height: 10px; background: url(../images/progress_bar_green_bg.gif) repeat-x;}
 /* --- */
 
 
@@ -2072,9 +2108,8 @@ div.aug2011d_one_year {
 .diag_inner .diag_tab th, .diag_inner .diag_tab th {padding: 0 0 0 0;}
 .diag_inner .diag_tab th {padding-right: 10px; text-align: left; font-weight: normal;}
 .diag_inner .diag_tab td {text-align: right;}
-.diag_inner .diag_tab input[type=text], .diag_inner .diag_tab input[type=password] {padding: 4px; border: 1px solid #999; width: 280px;}
+.diag_inner input[type=text], .diag_inner input[type=password] {padding: 4px; border: 1px solid #999; width: 280px;}
 .diag_inner .buttons button {padding: 5px 10px;}
-
 
 
 .button-facebook	{display:inline-block; width:24px; height:24px; margin: 5px 1px 1px 1px; background-image:url(../images/facebook_sbt.png); }

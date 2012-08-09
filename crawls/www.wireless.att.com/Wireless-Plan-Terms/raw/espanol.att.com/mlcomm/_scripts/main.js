@@ -556,6 +556,10 @@ function renderLatestReleases() {
 document.write('<div class="section nbb">');
 document.write('<h6>Titulares</h6>');
 document.write('<div class="rc-release-box">');
+document.write('<p>27 de julio de 2012<br />');
+document.write('<a href="/newsroom/news_releases/dallas_olympics_mj_7_30_12.html?id=' + state + '" title="AT&#38;T apoya a Team USA y a los deportistas Ol&#237;mpicos patrocinados&#44; como la legendaria familia L&#243;pez&#44; en su trayecto de Beijing a Londres">AT&#38;T apoya a Team USA y a los deportistas Ol&#237;mpicos patrocinados&#44; como la legendaria familia L&#243;pez&#44; en su trayecto de Beijing a Londres</a></p>');
+document.write('</div>');
+document.write('<div class="rc-release-box">');
 document.write('<p>26 de julio de 2012<br />');
 document.write('<a href="/newsroom/news_releases/miami_4g_lte_7_24_12.html?id=' + state + '" title="4G LTE de AT&amp;T ahora en Miami">4G LTE de AT&amp;T ahora en Miami</a></p>');
 document.write('</div>');

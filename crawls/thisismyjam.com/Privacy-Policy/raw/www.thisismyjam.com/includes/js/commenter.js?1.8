@@ -1,0 +1,301 @@
+Commenter = function($el)
+{
+    this.jamID = $el.data('jamid');
+    this.username = $el.data('username');
+};
+
+Commenter.prototype.setView = function(view)
+{
+    this.view = view;
+
+    var commenter = this;
+    this.view.on('addComment', this.addComment.bind(this));
+    this.view.on('deleteComment', this.deleteComment.bind(this));
+
+    var addedEvent = 'commentAdded:' + this.jamID;
+    var deletedEvent = 'commentDeleted:' + this.jamID;
+
+    window.realtime.off(addedEvent).on(addedEvent, function(data) {
+        if(data.commentID && data.text)
+            view.addComment(data.commentID, data.text, data.user,
+                            false, false, data.tempID);
+    });
+    window.realtime.off(deletedEvent).on(deletedEvent, function(data) {
+        if(data.commentID)
+            view.deleteComment(data.commentID);
+    });
+
+};
+
+Commenter.prototype.addComment = function(comment)
+{
+    var promise = $.Deferred();
+
+    // statistically bug free ;)
+    var tempCommentID = 'tmp' + Math.floor(Math.random() * 1000000);
+    this.view.addComment(tempCommentID, comment, window.user, true);
+    this.view.setInputText('',true);
+
+    var commenter = this;
+    $.ajax({
+        url: sprintf('/%s/addComment', this.username),
+        type: 'post',
+        dataType: 'json',
+        data: {
+            text: comment,
+            tempID: tempCommentID
+        },
+        success: function(data) {
+            commenter.view.updateCommentID(tempCommentID, data.commentID);
+            commenter.view.setText(data.commentID, data.prettyText);
+            promise.resolve();
+        },
+        error: function() {
+            JamError.show('Oops, something went wrong when adding your comment. Please try again.');
+            commenter.view.deleteComment(tempCommentID);
+            commenter.view.setInputText(comment);
+            promise.fail();
+        }
+    });
+
+    return promise;
+};
+
+Commenter.prototype.deleteComment = function(commentID)
+{
+    var promise = $.Deferred();
+
+    this.view.hideComment(commentID);
+
+    var commenter = this;
+    $.ajax({
+        url: sprintf('/%s/deleteComment', this.username),
+        type: 'post',
+        dataType: 'json',
+        data: {
+            commentID: commentID
+        },
+        success: function(data) {
+            commenter.view.deleteComment(commentID);
+            promise.resolve();
+        },
+        error: function() {
+            JamError.show('Oops, something went wrong when deleting your comment. Please try again.');
+            commenter.view.showComment(commentID);
+            promise.fail();
+        }
+    });
+
+    return promise;
+};
+
+
+CommenterView = function($el)
+{
+    EventEmitter.apply(this);
+    this.$el = $el;
+    this.$input = $('.newComment', $el);
+
+    this.$input.countable({maxLength: 500});
+    this.bind();
+
+    CommenterView.fetchCommentTemplate();
+};
+CommenterView.prototype = extend(EventEmitter);
+
+CommenterView.commentTemplate = null;
+
+CommenterView.fetchCommentTemplate = function() {
+    var promise = $.Deferred();
+
+    if(CommenterView.commentTemplate)
+        return promise.resolve();
+
+    template('playlist/comment.hbs').then(function(text) {
+        CommenterView.commentTemplate = Handlebars.compile(text);
+        promise.resolve();
+    }).fail(function() {
+        promise.fail();
+    });
+
+    return promise;
+};
+
+CommenterView.prototype.bind = function()
+{
+    var view = this;
+
+    var $input = this.$input;
+    this.$input.unbind('keydown').keydown(function(e) {
+        if(e.which === 27) { // escape
+            $input.val('');
+        }
+        else if(e.which == 13) { // return
+            var text = $.trim($input.val());
+            if(text) {
+                view.emit('addComment', text);
+                $input.blur();
+            }
+            return false;
+        }
+
+        return true;
+    });
+
+    var $delete = $('.delete-comment', this.$el);
+    $delete.unbind('click').click(function(e) {
+        var $target = $(e.target);
+        if(confirm('Really delete this comment?'))
+            view.emit('deleteComment', $target.attr('data-commentid'));
+
+        return false;
+    });
+
+    var $reply = $('.reply-comment', this.$el);
+    $reply.unbind('click').click(function(e) {
+        var $target = $(e.target);
+        $input.val('@' + $target.attr('href') + ' ' + $input.val());
+        $input.focus();
+
+        return false;
+    });
+
+    var $showMore = $('.showMore', this.$el);
+    $showMore.unbind('click').click(function(e) {
+        var $target = $(e.target);
+        // TODO: make this animation NOT SHIT
+
+        var isDone = {done: false};
+        doUntil(ytTrack, function() { return isDone.done; }, 50);
+        $target.next('.hiddenComments').slideDown(function() { isDone.done = true; });
+
+        $target.fadeOut();
+        return false;
+    });
+};
+
+CommenterView.prototype.addComment = function(commentID, text, user, userCanDelete,
+                                              userCanComment, tempID)
+{
+    var comments = this.getCommentsOrdered();
+
+    var $next = null;
+    if(comments.length !== 0) {
+
+        for(var i = 0; i < comments.length; i ++) {
+            var $comment = $(comments[i]);
+            var currentID = $comment.attr('data-id');
+
+            if(!currentID)
+                continue;
+
+            // already exists in list
+            if(currentID == commentID || currentID == tempID) {
+                return;
+            }
+
+            if(currentID > commentID && !tempID) {
+                console.log(sprintf('%s > %s', currentID, commentID));
+                $next = $comment;
+                break;
+            }
+        }
+    }
+
+    var view = this;
+    CommenterView.fetchCommentTemplate().then(function() {
+        var html = CommenterView.commentTemplate(
+            {id: commentID,
+             text: text,
+             author: user,
+             userCanDelete: userCanDelete}
+        );
+        var $comment = $(html);
+        if($next)
+            $comment.insertBefore($next);
+        else
+            $comment.insertBefore($('.newCommentWrapper', view.$el));
+
+        view.bind();
+        ytTrack();
+    });
+};
+
+CommenterView.prototype.deleteComment = function(commentID)
+{
+    var comments = this.getCommentsOrdered();
+
+    for(var i = 0; i < comments.length; i ++) {
+        var $comment = $(comments[i]);
+        var currentID = $comment.attr('data-id');
+        if(currentID == commentID) {
+            $comment.remove();
+            ytTrack();
+        }
+    }
+};
+
+CommenterView.prototype.hideComment = function(commentID)
+{
+    this.getComment$(commentID).hide();
+    ytTrack();
+};
+
+CommenterView.prototype.showComment = function(commentID)
+{
+    this.getComment$(commentID).show();
+    ytTrack();
+};
+
+CommenterView.prototype.setText = function(commentID, text)
+{
+    $('.text', this.getComment$(commentID)).html(text);
+    ytTrack();
+};
+
+CommenterView.prototype.updateCommentID = function(oldID, newID)
+{
+    var $comment = this.getComment$(oldID);
+
+    $comment.attr('data-id', newID);
+    $('.delete-comment', $comment).attr('data-commentid', newID);
+    $('.reply-comment', $comment).attr('data-commentid', newID);
+};
+
+CommenterView.prototype.setInputText = function(text, focus)
+{
+    console.log("setting on",this.$input,text,'focus',focus);
+    this.$input.val(text);
+    // focus workaround for firefox ala http://stackoverflow.com/questions/7046798/jquery-focus-fails-on-firefox
+    if(focus){
+        this.$input.focusout(function() {
+            setTimeout(function() {
+                this.$input.focus();
+            }, 100);
+        });
+    }
+    ytTrack();
+};
+
+CommenterView.prototype.getComment$ = function(commentID)
+{
+    return $(sprintf('.comment[data-id=%s]', commentID));
+};
+
+CommenterView.prototype.getCommentsOrdered = function()
+{
+    var comments = $('.comment');
+    for(var i = 0; i < comments.length; i ++) {
+        comments[i]._id = $(comments[i]).attr('data-id');
+    }
+
+    comments.sort(function(a, b) {
+        if(a._id < b._id)
+            return -1;
+        if(a._id > b._id)
+            return 1;
+        return 0;
+    });
+
+    return comments;
+};

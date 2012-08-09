@@ -7,11 +7,6 @@ var baynoteActiveSection = "none";
 		foo = foo.replace( "header-nav-", "");
 		baynoteActiveSection = foo;
 	}
-/* create div for baynote recs*/
-  var w = window.location;
-   if (w.href.indexOf('catalog/category.jsp') > 0 && w.search.indexOf('BRANDS') === -1 && $('#bn_justforyou').length == 0 ) {
-      $('#category-content').append('<div id="bn_justforyou"></div>')
-    }
 	
 })(jQuery);
 

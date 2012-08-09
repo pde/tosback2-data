@@ -237,8 +237,9 @@ function renderQuickLinksMenu() {
 			 + '<li><a target="_blank" href="http://www.att.com/guidebook/" title="Guidebooks">Guidebooks</a></li>'
 //	         + '<li><a target="_blank" href="http://cpr.bellsouth.com/bst/product_line.htm" title="Price Lists (Southeast)">Price Lists (Southeast)</a></li>'
 			 + '<li><a href="/gen/public-affairs?pid=11970" title="Service Guides">Service Guides</a></li>'
-			 + '<li><a href="/gen/public-affairs?pid=11972" title="Tariffs">Tariffs</a></li>'
-			 + '<li><a href="/gen/public-affairs?pid=11973" title="For Additional Information">For Additional Information</a></li>');
+			 + '<li><a href="http://www.att.com/tariffs" title="Tariffs">Tariffs</a></li>'
+			 + '<li><a href="/gen/public-affairs?pid=11973" title="For Additional Information">For Additional Information</a></li>'
+			 + '<li><a href="/gen/public-affairs?pid=22134" title="Other Services">Other Services</a></li>');
 	if ( pid == "9700" ) {
 		residential = '/gen/public-affairs?pid=13512'; 
 		business = '/gen/public-affairs/pid_13512';

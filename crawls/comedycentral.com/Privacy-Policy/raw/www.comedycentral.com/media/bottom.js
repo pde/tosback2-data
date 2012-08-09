@@ -4069,6 +4069,9 @@ function autoLinkTrackEvent(promoName, destinationUrl){
 		destinationUrl = window.location.protocol + "//" + window.location.host + destinationUrl;
 	}
 	
+	promoName = promoName.toLowerCase();
+	destinationUrl = destinationUrl.toLowerCase();
+	
 	if (typeof(mtvn) != 'undefined') {
 			mtvn.btg.Controller.sendLinkEvent({
 			linkName:promoName + '|' + pageName,
@@ -4129,7 +4132,7 @@ $(function() {
 	});
 
 	// Schedule Strip links	
-	$('ul#schedule_list a').click(function (){
+	$('ul.schedule_list a').click(function (){
 		var destinationUrl = $(this).attr('href');
 		autoLinkTrackEvent('schedule', destinationUrl);
 	});
@@ -4179,11 +4182,26 @@ $(function() {
 		autoLinkTrackEvent('workaholics_halfxmas_submit', destinationUrl);
 	});
 	
+	// Click Tracking
+    $('.overlay_wrapper a').click(function() {
+    	var destinationUrl = $(this).attr('href');
+    	autoLinkTrackEvent('overlay_clickthru', destinationUrl);
+    });
+    
+    $('.stay_here').click(function() {
+    	var destinationUrl = document.URL;
+    	autoLinkTrackEvent('overlay_redirect_skipped', destinationUrl);
+    });
+    
+    
 	// All other auto link tracking
 	skipTheseClasses = /(noAutoLinkTracking|ad_|visible_header|video_player_module|hpcarousel)/; // div classes to skip autolink tracking
 	skipTheseAClasses = /\s*mute\s*/i; //a tag Classes to skip
 	
 	moduleRemove = /\s*module\s+/i; //To remove module from potential class names
+	
+	moduleTabs = /mod_tab/i; // For tabs on the page
+	
 	$('#content_holder div.module, div.global_footer').filter(function() { // Filter out known modules where auto link tracking is not wanted
 		
 		if ( skipTheseClasses.test($(this).attr('class')) ) {
@@ -4205,11 +4223,22 @@ $(function() {
 			promo_name = classNameArray[0];
 		}
 	
-		$(this).find('a').click(function (){	
+		
+		// Get all a tags except those that are a decendent of an element with class=noAutoLinkTracking class
+		$(this).find('a').not('.noAutoLinkTracking a').click(function (){	
 			// skip a tags with classes that are to be skipped
 			//console.log( $(this).parent().attr('class') + ' --> ' + $(this).attr('class') );
 			if ( !skipTheseAClasses.test($(this).attr('class')) ) {
-				autoLinkTrackEvent(promo_name, $(this).attr('href'));
+				
+				// add tab names to promo_name
+				if ( moduleTabs.test( $(this).attr('class') ) ) {
+					tabname = $(this).text();
+				    reported_link_name = promo_name + '|' + tabname.replace(/[^a-zA-Z]+/g, ''); 
+				} else {
+					reported_link_name = promo_name;
+				}
+
+				autoLinkTrackEvent(reported_link_name, $(this).attr('href'));
 			}
 		});
 		
@@ -4472,156 +4501,199 @@ $(function () {
 $(function () {
 	$CC('.follow .tweetriver').tweetriver({feedUrl: $CC('.follow .tweetriver').data('feed')});
 });/* hpcarousel.js */
-$(function() {		
-	var player_ready = false;
-	function init()
-	{
-		$carousel = $('#carousel');		
-		if ($('#video_player_box').length) {		
-			$video_player = $Crabapple.playerA.player.video_player_box;
-			$video_player.events.onReady = function() {
-				player_ready = true;							
-			}	
-			$video_player.events.onMetadata = function() {					
-				if ($.cookie('playerSound') != 'true') {			
-					$('#carouser_wrapper a.mute').removeClass('on');
-					$video_player.mute();
-					$.cookie('playerSound','false');
-				} else {
-					$('#carouser_wrapper a.mute').addClass('on');
-					$video_player.unmute();
-					$.cookie('playerSound','true');			
-				}	
-				$video_player.events.onMetadata = function() {};
-			}				
-			$video_player.events.onPlaylistComplete	= function() {
-				if (player_ready == true) { 
-					hidePlayer();
-				}
-				goNext();				
-				if ($autoplay_time == "0")
-				{
-					$carousel.attr('data-autoplay',5000);
-				}
-			}													
-		} else {
-			player_ready = false;
-		}	
-		//autoplay detect
-		if (!$('#adExpand').length)
-		{		
-			autoplay($carousel);
-			$autoplay_time = $carousel.attr('data-autoplay');
-		}				
-		$carousel.find('li a').click(function() {
-			// stop rotation
-			$carousel.attr('data-autoplay',0);			
-			//hide the player
-			if (player_ready == true) { 
-				hidePlayer();				
-			}			
-			// make current li active
-			$active = $(this).parent();		
-			animate($active);		
-			return false;				
-		});			
-		$('#carouser_wrapper a.mute').click(function() {
-			if ($.cookie('playerSound') == 'true') {			
-				$(this).removeClass('on');
-				$video_player.mute();
-				$.cookie('playerSound','false');
-			} else {
-				$(this).addClass('on');
-				$video_player.unmute();
-				$.cookie('playerSound','true');			
-			}
-			return false;
-		})
-		$('.hpcarousel .video_wrapper .link_overlay_disabled, .hpcarousel ul li:last .full_info, .hpcarousel .video_wrapper #video_player_box').live({mouseenter:
-			function() {
-				$carousel.find('li:last').addClass('hovered');},
-			mouseleave: function() {
-				$carousel.find('li:last').removeClass('hovered');}	
-		});
-	}	
-	function autoplay($carousel) {			
-		//console.log("autoplay");		
-		$autoplay_seconds = $carousel.attr('data-autoplay');		
-		if ($autoplay_seconds != 0) {
-			setTimeout(function() {
-				if ($carousel.attr('data-autoplay') > 0) {					
-					goNext();
-				}
-			}, 5000);
-		}
-	}
-	
-	function animate($active) {
-		//console.log("animate");
-		$active.animate({
-			width: 480
-		}, 150, function() {move($active)});								
-	}
-	
-	function move($active) {	
-		//console.log("move");
-		//remove all active classes
-		$('li').removeClass('active');				
-		$active.addClass('active');				
-		$active.nextAll().css('width','34').prependTo('#carousel');
-		$active_link = $active.find('a').attr('href');
-		$('.link_overlay_disabled').attr('href',$active_link);		
-	        
-		// do we have a video?
-		mgid = $active.attr('data-mgid');
-		
-		if(typeof(mgid) != "undefined" && mgid !== null) {	
-	    	player_state = $video_player.state;	
-	    	//console.log(player_state);
-			if (player_ready == true) {
-				$carousel.attr('data-autoplay', '0');
-				showPlayer();
-				
-				if (player_state == "playing") {
-					$video_player.playURI(mgid);
-				} else if (player_state == "stopped") {
-					$video_player.playURI(mgid);
-				} else if (player_state == "paused") {
-					$video_player.playURI(mgid);
-				} else {
-					$video_player.play();
-				}		
-			} 
-		} else {	
-			$autoplay_time = $carousel.attr('data-autoplay');
-			autoplay($carousel);
-			if ($autoplay_time == "0")
-			{
-				$carousel.attr('data-autoplay',5000);
-			}		
-		}	
-	}
-	function goNext() {
-		//console.log("goNext");
-		$carousel.attr('data-autoplay',5000);		
-		animate($carousel.find('li:eq(4)'));
-	}
-	function hidePlayer() {
-		//console.log("hidePlayer");
-		if (player_ready == true) { 
-			$video_player.pause();					
-		}
-		$('#carouser_wrapper').css('opacity','0.01');
-	}
-	function showPlayer() {
-		//console.log("showPlayer");
-		setTimeout(function(){
-		    $('#carouser_wrapper').css('opacity','1');
-		},500);
-	}
-	if 	($('.hpcarousel').length) {
-		init();
-	}	
+$(function () {
+
+        var player_ready = false;
+
+        function init()
+        {
+                $carousel = $('#carousel');
+
+
+                if ($('#video_player_box').length) {
+                        $video_player = $Crabapple.playerA.player.video_player_box;
+                        player_ready = true;
+                } else {
+                        player_ready = false;
+                }
+
+                $(window).focus(function(){
+                        $('#carousel li:last').addClass('active');
+                });
+
+                //autoplay detect
+                if (!$('#adExpand').length)
+                {
+                        autoplay($carousel);
+                        $autoplay_time = $carousel.attr('data-autoplay');
+                }
+
+
+                if (player_ready == true)
+                {
+                        $video_player = $Crabapple.playerA.player.video_player_box;
+
+                        //player ready detect and hide when ready                               
+                        $video_player.events.onMetadata = function(){
+                                player_ready = true;
+                                hidePlayer();
+                                        if($.cookie('playerSound') != 'true')
+                                        {
+                                                $('#carouser_wrapper a.mute').removeClass('on');
+                                                $video_player.mute();
+                                                $.cookie('playerSound','false');
+                                        }
+                                        else
+                                        {
+                                                $('#carouser_wrapper a.mute').addClass('on');
+                                                $video_player.unmute();
+                                                $.cookie('playerSound','true');
+                                        }
+
+
+                                $video_player.events.onMetadata = function(){};
+                        }
+
+                        $video_player.events.onPlaylistComplete = function(){
+                                hidePlayer();
+                                goNext();
+                                //continue autoplay after video stop
+                                if ($autoplay_time)
+                                {
+                                        $carousel.attr('data-autoplay', $autoplay_time);
+                                        autoplay($carousel);
+                                }
+                        }
+                }
+
+                $carousel.find('li a').click(function(){
+                        $active = $(this).parent();
+                        //make video player clickable
+                        $('.link_overlay_disabled').attr('href',$(this).attr('href'));
+                        $carousel.attr('data-autoplay',0);
+
+                        if ($(this).parent().hasClass('active'))
+                        {
+                                return;
+                        }
+                        else
+                        {
+                                hidePlayer();
+                                animate($active);
+                                return false;
+                        }
+
+                });
+
+                $('#carouser_wrapper a.mute').click(function(){
+                        if($.cookie('playerSound') == 'true')
+                        {
+                                $(this).removeClass('on');
+                                $video_player.mute();
+                                $.cookie('playerSound','false');
+                        }
+                        else
+                        {
+                                $(this).addClass('on');
+                                $video_player.unmute();
+                                $.cookie('playerSound','true');
+                        }
+
+                        return false;
+                })
+
+                $('.hpcarousel .video_wrapper .link_overlay_disabled, .hpcarousel ul li:last .full_info, .hpcarousel .video_wrapper #video_player_box').live({mouseenter:
+                        function(){
+                                $carousel.find('li:last').addClass('hovered');},
+                        mouseleave: function(){
+                                $carousel.find('li:last').removeClass('hovered');}
+                });
+        }
+
+        function autoplay($carousel){
+                if($carousel.attr('data-autoplay')>0)
+                {
+                        setTimeout(function(){
+                                if($carousel.attr('data-autoplay')>0)
+                                {
+                                        goNext();
+                                        autoplay($carousel);
+                                }
+                        }, $carousel.attr('data-autoplay'));
+                }
+        }
+
+                $('#carousel li:hover a').click(function(){
+                $carousel.attr('data-autoplay', '0');
+        });
+
+
+
+        function animate($active)
+        {
+                $active.animate({
+                        width: 480
+                }, 150, function(){move($active)}).addClass('active');
+        }
+
+        function move($active)
+        {
+                hidePlayer();
+                $active.nextAll().css('width','34').prependTo('#carousel').removeClass('active');
+
+                $active_link = $active.find('a').attr('href');
+                $('.link_overlay_disabled').attr('href',$active_link);
+
+            $active_id =$active.attr('data-mgid');
+                //alert(player_ready);  
+
+                if (player_ready == true) {
+                        if ($active_id)
+                        {
+                                $video_player.playURI($active_id);
+                                showPlayer();
+                                //$video_player.play();                 
+                                //console.log($video_player.state);
+                                $carousel.attr('data-autoplay', '0');
+                        }
+                        else{
+                                if (player_ready == true) {
+                                        $video_player.pause();
+                                        hidePlayer();
+                                }
+                        }
+                }
+
+        }
+
+        function goNext(){
+                $carousel.attr('data-autoplay',5000);
+                animate($carousel.find('li:eq(4)'));
+        }
+
+        function hidePlayer()
+        {
+                if (player_ready) {
+                        $('#carouser_wrapper').css('opacity','0.01');
+                }
+        }
+
+        function showPlayer()
+        {
+                $video_player.events.onPlayheadUpdate = function(){
+                        if ($Crabapple.playerA.player.video_player_box.state == 'playing')
+                        {
+                                $('#carouser_wrapper').css('opacity','1');
+                                $video_player.events.onPlayheadUpdate = function(){};
+                        }
+                }
+        }
+
+        if      ($('.hpcarousel').length)
+        {
+                init();
+        }
+
 });/* latest_photo.js */
 $(function() {
 	// setup div.scrollable as a container for our carousel
@@ -4643,7 +4715,101 @@ $(function() {
 });
 
 	
-/* search.js */
+/* overlay.js */
+
+var overlayOn = getCookie('cc_overlay')? false: true;
+//Disables cookie: //var overlayOn = true;
+
+if (overlayOn) { // Only serve Overlay if cookie is not set
+
+	//Only show Overlay once
+	setCookie('cc_overlay','true', 1);
+
+	//Display Overlay
+	$('#screen').css({opacity: 0.5, "width":$(document).width(),"height":$(document).height()});
+	$("#screen, .overlay_wrapper").fadeIn('slow')
+	$('.close').css({"display": "block"});
+	valignOverlay();
+	var redirect = true;
+
+	//Stay on current pate
+	$('.stay_here').click(function(event){
+		$(".overlay_wrapper, #screen").css("display", "none");
+		$(this).css("display", "none");		
+		preventBubbledEvents(event)
+	});
+	
+	//For Tracking purposes, stop event propegation
+	//(so that clickthru and stay_here aren't tracked at the same time)
+	$("a[href]").click(function(event){ preventBubbledEvents(event)	});  
+}	
+
+$(window).resize(function(){
+	$('.overlay_wrapper').css("display") == 'block'?$("#screen").css("width", "100%"):"";
+	valignOverlay()
+});
+
+function redirectOverlay(redirectUrl) {
+	//Redirect after cmsOverlayTimer seconds
+	if (redirect) {
+	   	var audio = $("audio").get(0);
+
+		// if there is an audio file, it will redirect when it ends (onended), if not, just redirect
+	   	(isNaN(audio.duration) )?callRedirect(redirectUrl):audio.play();
+	}
+}
+
+function callRedirect(redirectUrl) 
+{	
+	if (redirect) //Checking again JIC they stopped redirect during sound clip
+	{	
+		window.location.href = redirectUrl;
+		preventBubbledEvents();
+
+		//Tracking: Users who are redirected
+		autoLinkTrackEvent('overlay_redirected', redirectUrl);
+	}	
+}
+function setCookie(c_name,value,exdays)
+{
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+	document.cookie=c_name + "=" + c_value;
+}
+
+function getCookie(c_name)
+{
+	var i,x,y,ARRcookies=document.cookie.split(";");
+	for (i=0;i<ARRcookies.length;i++)
+	{
+	  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+	  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+	  x=x.replace(/^\s+|\s+$/g,"");
+	  if (x==c_name)
+	    {
+	    return unescape(y);
+	    }
+	  }
+}
+
+function valignOverlay() {
+	var valign = ($(window).height() - $(".overlay_wrapper").outerHeight())/2;
+	valign = (valign > 0)?valign: 0;
+	$(".overlay_wrapper").css("top", valign);
+}
+
+//Disabling other clicking for tracking purposes
+function preventBubbledEvents(event) {
+	if (event)
+		event.stopPropagation();
+	
+	redirect=false;
+	
+	//Disabling other clicking for tracking purposes 
+	$('.stay_here, .overlay_wrapper, .overlay_wrapper a').unbind('click');
+	$(".overlay_wrapper").children("a[href]").click(function(event) {event.preventDefault();});
+}/* search.js */
 $(function () {
 	$Crabapple('input.query').search({
 		webSearchSelector: 'input.web',

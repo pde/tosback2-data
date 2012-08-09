@@ -14,7 +14,7 @@
   <link rel="Shortcut Icon" href="../static/shared/img/o2.ico" /> 
   <script type="text/javascript" src="../static/shared/js/jquery-1.7.min.js"></script> 
   <script type="text/javascript" src="../static/shared/js/base.js%3Fts=201205290800"></script> 
-  <link rel="stylesheet" href="../static/shared/css/base.css%3Fts=201207181630.css" type="text/css" media="all" /> 
+  <link rel="stylesheet" href="../static/shared/css/base.css%3Fts=201208061037.css" type="text/css" media="all" /> 
   <!--[if (gt IE 6)&(lt IE 9)]>
 <link rel="stylesheet" href="//www.o2.co.uk/static/shared/css/ielt9base.css?ts=20120702" type="text/css" media="all" charset="utf-8" />
 <script type="text/javascript" src="//www.o2.co.uk/static/shared/js/ielt9base.js?ts=20120702"></script>
@@ -83,10 +83,13 @@
   });
 
    </script> 
-   <div id="msgUpdate"> 
-    <img src="../static/shared/img/serviceupdatelogo.jpg" alt="" /> 
-    <p>For more information on our recent network disruption please <a target="_blank" title="Read more information on the O2 blog" href="http://blog.o2.co.uk/">click here</a></p> 
-   </div> 
+   <script src="../static/shared/js/jquery.cookie.js" type="text/javascript"></script> 
+   <script type="text/javascript">
+  var $jq_1_7 = jQuery.noConflict();
+
+   </script> 
+   <script src="../static/shared/js/p13n.js" type="text/javascript"></script> 
+   <script src="../static/shared/js/p13n_www.js" type="text/javascript"></script> 
    <div class="o2header"> 
     <div id="quickLinks"> 
      <ul>
@@ -100,7 +103,9 @@
     <div class="row row1"> 
      <div class="welcome"> 
       <script type="text/javascript">
-	  
+
+	
+	 
         function getCookie(name) {
           var start = document.cookie.indexOf( name + "=" );
           var len = start + name.length + 1;
@@ -125,7 +130,7 @@
         name=name.replace(/script/ig, " ");
         name=name.replace(/javascript/ig, " ");
       
-        var htmlStr='<div>Welcome</div> <a href="https://www.o2.co.uk/login?sendTo=http://www.o2.co.uk/myo2" title="Sign In" id="signInLink">Sign In</a> or <a href="http://www.o2.co.uk/register" title="Register">Register</a>';
+        var htmlStr='<div>Welcome</div> <a href="https://www.o2.co.uk/login?sendTo=http://www.o2.co.uk/myo2" class="p13n-o2customer" title="Sign In" id="signInLink">Sign In</a> or <a href="http://www.o2.co.uk/register" title="Register">Register</a>';
         if (name != "null")    {       
           htmlStr = '<span>Hello</span> ' +name+ ' <a href="http://zarkov.shop.o2.co.uk/logout.html?dest=http://www.o2.co.uk/" title="Sign out of your account" id="signOutLink">Sign Out</a>';
         }                    
@@ -309,7 +314,7 @@
            <li> <a href="http://www.o2.co.uk/accessforall/mobilephones" title="Access for all">Access for all</a></li> 
            <li> <a href="http://o2.asymmetry.co.uk" title="Find an O2 store">Find an O2 store</a></li> 
            <li> <a href="http://swapmysim.o2.co.uk/" title="Swap my sim">Swap my sim</a></li> 
-           <li> <a href="https://service.o2.co.uk/IQ/SRVS/CGI-BIN/WEBCGI.EXE/,/?St=441,E=0000000005648745979,K=9723,Sxi=19,Problem=Obj(19321),T=vanillaCase,VARSET_WhichFolder=PandSnew,VARSET_BBTOPIC=PandServices,VARSET_COBJID=39222,Problem=Obj(39222)" title="Keeping you secure">Keeping you secure</a></li> 
+           <li> <a href="https://service.o2.co.uk/IQ/SRVS/CGI-BIN/WEBCGI.EXE/,/?New,KB=Companion,question=ref(User):str(Mobile),Problem=Obj(19321),T=vanillaCase,VARSET_WhichFolder=PandSnew,VARSET_BBTOPIC=PandServices,VARSET_COBJID=39222,Problem=Obj(39222)" title="Keeping you secure">Keeping you secure</a></li> 
           </ul> 
          </div> 
         </div> 
@@ -322,22 +327,22 @@
         <div class="menu"> 
          <div class="col1"> 
           <ul> 
-           <li> <a href="http://www.o2.co.uk/myo2account" title="Your mobile account">Your mobile account</a> 
+           <li> <a href="http://www.o2.co.uk/myo2account" title="Your mobile account" class="p13n-o2customer">Your mobile account</a> 
             <ul> 
-             <li> <a href="http://www.o2.co.uk/myo2/viewmybill" title="View / pay mobile bill">View / pay mobile bill</a></li> 
-             <li> <a href="http://www.o2.co.uk/myo2account" title="View your Pay &amp; Go balance">View your Pay &amp; Go balance</a></li> 
+             <li> <a href="http://www.o2.co.uk/myo2/viewmybill" title="View / pay mobile bill" class="p13n-o2customer">View / pay mobile bill</a></li> 
+             <li> <a href="http://www.o2.co.uk/myo2account" title="View your Pay &amp; Go balance" class="p13n-o2customer">View your Pay &amp; Go balance</a></li> 
              <li> <a href="http://www.o2.co.uk/upgrade" title="Upgrade / renew">Upgrade / renew</a></li> 
-             <li> <a href="https://registration.o2.co.uk/o2/webtopup/mobiledetailsprepare.do" title="Top up your Pay &amp; Go phone">Top up your Pay &amp; Go phone</a></li> 
-             <li> <a href="http://yourfamily.o2.co.uk/familyowner" title="O2 Family Bolt On members">O2 Family Bolt On members</a></li> 
-             <li> <a href="http://www.o2.co.uk/myo2/mypersonaldetails" title="Update personal details">Update personal details</a></li> 
+             <li> <a href="https://registration.o2.co.uk/o2/webtopup/mobiledetailsprepare.do" title="Top up your Pay &amp; Go phone" class="p13n-o2customer">Top up your Pay &amp; Go phone</a></li> 
+             <li> <a href="http://yourfamily.o2.co.uk/familyowner" title="O2 Family Bolt On members" class="p13n-o2customer">O2 Family Bolt On members</a></li> 
+             <li> <a href="http://www.o2.co.uk/myo2/mypersonaldetails" title="Update personal details" class="p13n-o2customer">Update personal details</a></li> 
             </ul> </li> 
-           <li> <a href="http://mybroadband.o2.co.uk" title="Your broadband account">Your broadband account</a> 
+           <li> <a href="http://mybroadband.o2.co.uk" title="Your broadband account" class="p13n-o2customer">Your broadband account</a> 
             <ul> 
-             <li> <a href="https://www.o2broadband.o2.co.uk/customerChangePackage.do" title="Change package">Change package</a></li> 
-             <li> <a href="https://www.o2broadband.o2.co.uk/o2GetContactDetails.do" title="Update personal details">Update personal details</a></li> 
-            </ul> <a style="margin-top:20px;" href="http://www.o2.co.uk/money" title="Your money">Your money</a> 
+             <li> <a href="https://www.o2broadband.o2.co.uk/customerChangePackage.do" title="Change package" class="p13n-o2customer">Change package</a></li> 
+             <li> <a href="https://www.o2broadband.o2.co.uk/o2GetContactDetails.do" title="Update personal details" class="p13n-o2customer">Update personal details</a></li> 
+            </ul> <a style="margin-top:20px;" href="http://www.o2.co.uk/money" title="Your money" class="p13n-o2customer">Your money</a> 
             <ul> 
-             <li> <a href="http://www.o2.co.uk/myo2/o2wallet" title="Manage your O2 Wallet">View/manage your O2 Wallet</a></li> 
+             <li> <a href="http://www.o2.co.uk/myo2/o2wallet" title="Manage your O2 Wallet" class="p13n-o2customer">View/manage your O2 Wallet</a></li> 
             </ul> </li> 
            <li> <a href="http://www.o2.co.uk/myo2" title="Other services">Other services</a> 
             <ul> 
@@ -353,7 +358,7 @@
          <div class="col2"> 
           <ul> 
            <li> <a href="http://www.o2.co.uk/myo2/myo2onyourmobile" title="Get My O2 on your phone">Get My O2 on your phone</a></li> 
-           <li> <a href="https://registration.o2.co.uk/Identity/ManageIdentity" title="Link/view your o2.co.uk accounts">Link/view your o2.co.uk accounts</a></li> 
+           <li> <a href="https://registration.o2.co.uk/Identity/ManageIdentity" title="Link/view your o2.co.uk accounts" class="p13n-o2customer">Link/view your o2.co.uk accounts</a></li> 
            <li> <a href="https://o2businessaccount.o2.co.uk" title="Your Business account">Your Business account</a></li> 
            <li> <a href="http://community.o2.co.uk" title="Get help from the O2 Community">Get help from the O2 Community</a></li> 
           </ul> 

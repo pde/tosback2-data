@@ -1,0 +1,217 @@
+@charset "utf-8";
+
+/*
+ * sprout back end
+ */
+
+/**
+ * console and status ============================================================
+ */
+
+div#console {
+  position: relative;
+}
+
+div.messages
+{
+  margin: 6px 0;
+  padding: 6px;
+  color: #333;
+  background-color: #eee;
+  border: 6px solid #fff;
+  -moz-box-shadow: #ddd 0 1px 3px;
+  -webkit-box-shadow: #ddd 0 1px 3px;
+
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+
+  cursor: pointer;
+}
+
+div.messages:after {
+  content: '\274e';
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+table tr.warning th, div.warning
+{
+  color: #a84;
+  background-color: #fff4c0;
+}
+
+table tr.error th, div.error
+{
+  color: #965;
+  background-color: #ffe4e0;
+}
+
+table tr.ok th, table tr.info th, div.status
+{
+  color: #687;
+  background-color: #ecf8f4;
+}
+
+div.warning { border-color: #fffce4; }
+div.error { border-color: #fff8f4; }
+div.status { border-color: #f8fffc; }
+
+/**
+ * primary tabs ===============================================================
+ */
+
+ul.primary-tabs
+{
+  overflow: hidden;
+  height: 36px;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  z-index: 100;
+}
+
+ul.primary-tabs li {
+  padding: 3px;
+  float: left;
+}
+
+ul.primary-tabs li a
+{
+  font-family: "Lucida","Lucida Grande","Trebuchet MS",Tahoma,Verdana,sans-serif;
+  color: #444;
+  font-size: .9em;
+
+  padding: 3px 12px;
+  border: 1px solid #eee;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: #aaa 0 1px 3px;
+  -moz-box-shadow: #aaa 0 1px 3px;
+  box-shadow: #666 0 2px 3px;
+  background: -webkit-gradient(linear, 0 0, 0 bottom, from(#eee), to(#ddd));
+  background: -moz-linear-gradient(#eee, #ddd);
+  background: linear-gradient(#eee, #ddd);
+  filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#eeeeee', EndColorStr='#dddddd', GradientType=0);
+}
+
+ul.primary-tabs li a:hover
+{
+  background: #aaa;
+  filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#aaaaaa', EndColorStr='#999999', GradientType=0);
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid #aaa;
+}
+
+ul.primary-tabs li.active a, ul.primary-tabs li.active a.active {
+  background: #aaa;
+  color: #fff;
+  border: 1px solid #aaa;
+}
+
+/**
+ * secondary tabs ===============================================================
+ */
+
+ul.secondary-tabs
+{Add block
+  overflow: hidden;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 5px;
+
+  -webkit-box-shadow: #aaa 0 1px 3px;
+  -moz-box-shadow: #aaa 0 1px 3px;
+  box-shadow: #666 0 2px 3px;
+}
+
+ul.secondary-tabs li { padding: 3px; }
+
+ul.secondary-tabs li a
+{
+  padding: 1px 9px;
+  border: 1px solid transparent;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  background: transparent;
+}
+
+ul.secondary-tabs li a:hover
+{
+  background: #eee;
+  border-color: #ccc #ddd #eee;
+  text-decoration: none;
+}
+
+ul.secondary-tabs li a.active, ul.secondary-tabs li.active a
+{
+  -moz-box-shadow: #fff 0 1px 0;
+  -webkit-box-shadow: #fff 0 1px 0;
+  border-color: #999 #bbb #aaa;
+  background: #bbb;
+  color: #fff;
+}
+
+/**
+ * convenience teaser admin ===================================================
+ */
+
+div.node-admin-tools {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  z-index: 100;
+  height: 25px;
+
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 1px #333;
+  background: rgba(0,0,0,0.2);
+  opacity: .4;
+  padding: 4px 10px;
+  width: 25px;
+}
+
+:hover > div.node-admin-tools {
+  opacity: 1;
+}
+
+div.node-admin-tools a,
+div.node-admin-tools a span {
+  display: inline-block;
+}
+
+div.node-admin-tools a span.text {
+  display: none;
+}
+
+div.node-admin-tools a,
+div.node-admin-tools a span {
+  font-family: arial;
+  color: #fff !important;
+  font-size: 16px;
+  margin-right: 2px;
+
+}
+
+div.node-admin-tools a:hover {
+  text-decoration: none !important;
+  color: magenta !important;
+}
+
+div.node-admin-tools a.admin-tool-edit span.inner:after {
+ content: '\270E';
+}
+
+div.node-admin-tools a.admin-tool-unpublish  span.inner:after {
+ content: '\2612';
+}

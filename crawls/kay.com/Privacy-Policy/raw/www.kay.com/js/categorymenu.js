@@ -9,7 +9,6 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|1505
 document.writeln('<li><a href="javascript: getR2netRedirectUrl(\'//design.kay-diamonds.com/engagement-rings/?\');">&nbsp; Kay Design-A-Ring&#x2122;</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15058|15051|15051.15058|Y">&nbsp; Wedding and Anniversary</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15059|0|1|Category|15059|15051|15051.15059">&nbsp; 3-Stone Diamond Rings</a></li>');
-document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|22284|0|1|Category|22284|15051|15051.22284">&nbsp; Promise</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProductsAll|10101|10001|-1|15051|0|1|Category|15051|15051|15051">&nbsp; View All</a></li>');
 document.writeln('</ul>');
 document.writeln('</ul>');
@@ -28,6 +27,7 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|2218
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22364|22137|22137.22364|Y">&nbsp; Triton</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22939|22137|22137.22939|Y">&nbsp; Scott Kay</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22188|22137|22137.22188|Y">&nbsp; Sea Magic Cultured Pearls&#174; by Mikimoto</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|23135|22137|22137.23135|Y">&nbsp; Music Rocks&#x2122; by Lyric Culture&#x2122;</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22957|22137|22137.22957|Y">&nbsp; Shades of Australia&#x2122;</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|23056|0|1|Category|23056|22137|22137.23056">&nbsp; Diamond Revelations</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22200|22137|22137.22200|Y">&nbsp; Birthstone Collection</a></li>');

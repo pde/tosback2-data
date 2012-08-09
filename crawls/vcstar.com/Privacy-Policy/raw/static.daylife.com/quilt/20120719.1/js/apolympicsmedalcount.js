@@ -22,9 +22,9 @@
             analytics: matchProtocol(["http://daylife-analytics.com/"])
         },
         paths: {
-            quiltJS: 'quilt/20120731.0/js/',
-            quiltCSS: 'quilt/20120731.0/css/',
-            quiltIMG: 'quilt/20120731.0/img/',
+            quiltJS: 'quilt/20120803.0/js/',
+            quiltCSS: 'quilt/20120803.0/css/',
+            quiltIMG: 'quilt/20120803.0/img/',
             analyticsGIF: '_.gif',
             customerAd: 'customer_ads/ad'
         },

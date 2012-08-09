@@ -1,0 +1,439 @@
+PlayerView = function()
+{
+    EventEmitter.apply(this);
+
+    this.$playerBar = $('#player-bar');
+    this.$playerBarButton = $('#playPause');
+    this.$footer = $("footer");
+    this.volumeControl = new VolumeControl();
+    this.volumeControl.appendTo($('#volumeControlWrapper'));
+    this.volumeControl.set($('#volumeControlWrapper').data('volume'));
+
+    this.bind();
+
+    var playerView = this;
+    if($('#volumeControlWrapper').data('muted')) {
+        playerView.volumeControl.mute();
+        playerView.volumeControl.set(0);
+    }
+};
+
+PlayerView.prototype = extend(EventEmitter);
+
+PlayerView.prototype.setTitle = function (modifier) {
+    var title = document.title,
+        checkForModifiers = function(){
+            var modifiers = ["\u25B6","\u275A\u275A"];
+            for (var i=0; modifiers.length > i; i++)
+                if( title.indexOf(modifiers[i]) !== -1 )
+                    return modifiers[i];
+            return false;
+        };
+
+    if(checkForModifiers()){
+        var charsToStrip = checkForModifiers();
+        title  = title.substring(charsToStrip.length + 1);
+    }
+    title = modifier + " " + title;
+
+    document.title = $.trim(title);
+};
+
+PlayerView.prototype.getCurrentProfileJamvatar$ = function()
+{
+    var current = window.player.current();
+    console.log(current);
+    if(!current)
+        return null;
+    var $jamvatar = $(sprintf('.jamvatar-%s:has([data-playlist=profile])', current.id));
+    if($jamvatar.length)
+        return $jamvatar;
+    return null;
+};
+
+PlayerView.prototype.getCurrentJamvatar$ = function()
+{
+    var current = window.player.current();
+    if(current) {
+        if(this.isOnCurrentlyPlayingProfilePage())
+            return this.getCurrentProfileJamvatar$();
+
+        var playlist = window.player.playlist;
+        var $jamvatar = $(sprintf('.jamvatar-%s:has([data-playlist=%s])',
+                                  current.id, playlist.name));
+        if($jamvatar.length)
+            return $jamvatar;
+    }
+    return null;
+};
+
+PlayerView.prototype.getCurrentPlayButton$ = function()
+{
+    var current = window.player.current();
+    if(current) {
+        if(this.isOnProfilePage()) {
+            return $(sprintf('[data-id=%s]', current.id));
+        }
+        else {
+            var playlist = window.player.playlist;
+            return $(sprintf('[data-id=%s][data-playlist=%s]', current.id,
+                             playlist.name));
+        }
+    }
+    return null;
+};
+
+PlayerView.prototype.getJamvatar$ = function(jamID)
+{
+    var $jam = $(sprintf('.jamvatar-%s', jamID));
+    if(!$jam.length)
+        return null;
+    return $jam;
+};
+
+PlayerView.prototype.isOnCurrentlyPlayingProfilePage = function()
+{
+    //console.log(this.isOnProfilePage(), this.getCurrentProfileJamvatar$());
+    return this.isOnProfilePage() && this.getCurrentProfileJamvatar$();
+};
+
+PlayerView.prototype.isOnMetaPage = function()
+{
+    return document.location.href.indexOf("jam/meta") !== -1;
+};
+
+// TODO: get this into general (backbone-powered?) architecture
+PlayerView.prototype.isOnProfilePage = function()
+{
+    // dirt
+    return $('#profile-top').length > 0;
+};
+
+PlayerView.prototype.newPage = function()
+{
+    this.updateState(window.player.getStateName(), true);
+};
+
+PlayerView.prototype.hideAll = function()
+{
+    if(window.player.playbackHandler)
+        window.player.playbackHandler.hide();
+};
+
+PlayerView.prototype.updateState = function(stateName)
+{
+    switch(stateName) {
+    case 'playing':
+        this._updatePlaying();
+        break;
+    case 'paused':
+        this._updatePaused();
+        break;
+    case 'stopped':
+        this._updateStopped();
+        break;
+    case 'working':
+        this._updateWorking();
+        break;
+    }
+
+    this.updatePlayerBar();
+};
+
+PlayerView.prototype._updatePlaying = function()
+{
+    window.player.playlist.view.show(window.player.current());
+
+    /*
+      var $current = this.getCurrentJamvatar$();
+      if(this.isOnCurrentlyPlayingProfilePage() &&
+      window.player.playbackHandler.showOnProfilePage)
+      window.player.playbackHandler.showOnProfilePage($current);
+      else if($current)
+
+      //window.player.playbackHandler.show($current);
+      */
+
+    this.setClass('playing');
+    this.showPlayerBar();
+};
+
+PlayerView.prototype._updatePaused = function()
+{
+    window.player.playlist.view.show(window.player.current());
+
+    /*
+    var $current = this.getCurrentJamvatar$();
+    if(this.isOnCurrentlyPlayingProfilePage() &&
+       window.player.playbackHandler.showOnProfilePage)
+        window.player.playbackHandler.showOnProfilePage($current);
+    else if($current)
+        window.player.playbackHandler.show($current);
+        */
+
+    this.setClass('paused');
+    this.showPlayerBar();
+};
+
+PlayerView.prototype._updateStopped = function()
+{
+    this.setClass(null);
+    this.hidePlayerBar();
+};
+
+PlayerView.prototype._updateWorking = function()
+{
+    this.setClass('working');
+    this.showPlayerBar();
+};
+
+PlayerView.prototype.setClass = function(clazz)
+{
+    $('.paused').removeClass('paused');
+    $('.playing').removeClass('playing');
+    $('.working').removeClass('working');
+
+    var $current = this.getCurrentPlayButton$();
+    if(clazz && $current) {
+        $current.addClass(clazz);
+        $current.parent().addClass(clazz);
+        this.$playerBarButton.addClass(clazz);
+    }
+};
+
+PlayerView.prototype.setPlayerBarLiked = function(jamID, liked)
+{
+    if(window.player.current() && jamID != window.player.current().id)
+        return;
+
+    var $controlLike = $('#controlLike');
+    if(liked)
+        $controlLike.addClass('liked');
+    else
+        $controlLike.removeClass('liked');
+};
+
+PlayerView.prototype.showPlayerBar = function()
+{
+    this.$playerBar.show();
+    this.$footer.css("paddingBottom","80px");
+
+};
+
+PlayerView.prototype.hidePlayerBar = function()
+{
+    this.$playerBar.hide();
+    this.$footer.css("paddingBottom",0);
+
+};
+
+PlayerView.prototype.updatePlayerBar = function()
+{
+    var hasPrev = false;
+    var hasNext = false;
+    if(player.playlist) {
+        hasPrev = player.playlist.hasPrev();
+        hasNext = player.playlist.hasNext();
+    }
+
+    $('#backwards').disable(!hasPrev);
+    $('#forwards').disable(!hasNext);
+
+    var current = window.player.current();
+    if(current) {
+        $('#artist-name').text(current.artist);
+        $('#track-title').text(current.title);
+        $('.js-jamlink').attr('href', '/' + current.username);
+        $('#jammer').html(current.username + "&rsquo;s jam");
+        $('#player-inner .now-playing').ajaxify();
+    }
+};
+
+PlayerView.prototype.clockTime = function (number){
+    var minutes = Math.floor(number / 60);
+    var seconds = Math.floor(number) % 60;
+    if(seconds < 10)
+        seconds = "0" + seconds.toString();
+    var time = {
+        "minutes" : minutes,
+        "seconds" : seconds
+    };
+
+    return time;
+};
+
+PlayerView.prototype.setElapsedTime = function(time){
+    //console.log(time);
+    var $currentTime = $("#currentTime");
+    var humanTime = this.clockTime(time);
+    if(humanTime)
+        $currentTime.text(humanTime.minutes + ":" + humanTime.seconds);
+};
+
+PlayerView.prototype.setDuration = function(duration)
+{
+    if(!duration) {
+        $('#totalTime').text('');
+        return;
+    }
+
+    var time = this.clockTime(duration);
+    $('#totalTime').text(" / " + time.minutes + ":" + time.seconds);
+
+    /* TODO
+    if(this.scrobbler){
+        this.scrobbler.setDuration(durationMillis/1000);
+    }
+    */
+};
+
+PlayerView.prototype.gotoCurrent = function(url, jamID)
+{
+    var go = (function() {
+        var $jamvatar = this.getJamvatar$(jamID);
+        if(!$jamvatar)
+            return;
+        $('html, body').stop().animate({
+            scrollTop: $jamvatar.offset().top - 70
+        }, 1000);
+    }).bind(this);
+
+    var playerView = this;
+    if(url !== locationPathname()) {
+        History.pushState(null, null, url);
+        $('#content').one('contentReady', go);
+    }
+    else
+        go();
+};
+
+PlayerView.prototype.setVolume = function(volume)
+{
+    this.volumeControl.set(volume);
+};
+
+PlayerView.prototype.mute = function()
+{
+    this.volumeControl.mute();
+};
+
+PlayerView.prototype.unmute = function()
+{
+    this.volumeControl.unmute();
+};
+
+PlayerView.prototype.setLiked = function(liked)
+{
+    var $controlLike = $('#controlLike');
+    if(liked)
+        $controlLike.addClass('liked');
+    else
+        $controlLike.removeClass('liked');
+};
+
+PlayerView.prototype.bind = function()
+{
+    if(isIOS()) {
+        $('#player-bar').on('click', function() {
+            // wtf this is a hack from hell.
+            // without this the live events on the player bar controls
+            // don't work. it's stupid and hacky.
+        });
+    }
+
+    // TODO: live(mousedown) is slow to trigger on ipad,
+    //       do some experiments with touchstart, touch, etc.
+    var liveLeftMouseDown = function($el, func) {
+        // prevent default click behaviour
+
+        if(!isIOS()) {
+            $el.live('click', function() {
+                return false;
+            });
+        }
+
+        var mouseEvent = isIOS() ? 'click' : 'mousedown';
+
+        $el.live(mouseEvent, function(e) {
+            if(mouseEvent == 'mouseDown' && ("which" in e) && e.which != 1)
+                return;
+            func.call(this);
+            return false;
+        });
+    };
+
+    var playerView = this;
+
+    liveLeftMouseDown($('.itemPlayButton:not(.playing, .paused)'), function() {
+        var jamID = $(this).attr('data-id');
+        var playlistName = $(this).attr('data-playlist');
+        playerView.emit('play', jamID, playlistName);
+    });
+
+    //Google Analytics event tracking shorthand
+    var eTrack = function(type,action,comment){
+        if(window._gaq !==undefined){
+            //e.g. window._gaq.push(['_trackEvent',"Playback","Followed on Twitter (side panel)"]);
+            if(comment)
+                window._gaq.push(['_trackEvent',type,action,comment]);
+            else
+                window._gaq.push(['_trackEvent',type,action]);
+        }
+    };
+
+    // TODO: figure out why the controls in the player bar don't work
+    // on ios
+    liveLeftMouseDown($('.itemPlayButton.playing, #controls .playing'), function() {
+        playerView.emit('pause');
+        eTrack("Playback","PauseClick",false);
+    });
+
+    liveLeftMouseDown($('.itemPlayButton.paused, #controls .paused'), function() {
+        playerView.emit('resume');
+        eTrack("Playback","ResumeClick",false);
+    });
+
+    liveLeftMouseDown($('.itemPlayButton.stop, #controls .stop'), function() {
+        playerView.emit('stop');
+        eTrack("Playback","StopClick",false);
+    });
+
+    liveLeftMouseDown($('#backwards'), function() {
+        playerView.emit('prev');
+        eTrack("Playback","RewindClick",false);
+    });
+
+    liveLeftMouseDown($('#forwards'), function() {
+        playerView.emit('next');
+        eTrack("Playback","FFClick");
+    });
+
+    liveLeftMouseDown($('.js-gotoCurrent'), function() {
+        playerView.emit('gotoCurrent');
+        eTrack("Playback","GotoCurrent",false);
+    });
+
+    var $controlLike = $('#controlLike');
+    liveLeftMouseDown($('#controlLike'), function() {
+        if($controlLike.hasClass('liked')){
+            playerView.emit('unlike');
+            eTrack("Playback","Unlike", "From Player Bar");
+        } else {
+            playerView.emit('like');
+            eTrack("Playback","Like", "From Player Bar");
+        }
+    });
+
+    this.volumeControl.on('change', function(volume) {
+        playerView.emit('volumeChange', volume);
+        window.callWhenStable('GA_EVENT_PING',500,function(){
+            eTrack("Playback","VolumeChange",false);
+        });
+    });
+
+    this.volumeControl.on('toggleMute', function() {
+        playerView.emit('toggleMute');
+        eTrack("Playback","MuteToggle",false);
+    });
+};
+

@@ -1,12 +1,12 @@
 var $$FSR = {
    'timestamp': 'June 4, 2012 @ 12:10 PM',
    'version': '12.3.0',
-   'configuration_version': '103A',
+   'configuration_version': '104A',
    'enabled': true,
    'sessionreplay': true,
    'auto' : true,
-   'encode' : true,
-   'files': '//www.att.com/scripts/foresee_global/vx/',
+   'encode' : false,
+   'files': '//www.att.com/scripts/foresee_global/',
    //'swf_files': '__swf_files_' needs to be sef when foresee-transport.swf is not located at 'files'
    'id': 'JxTg9PsUYKor4P5i9ne0Ug==',
    'definition': 'foresee-surveydef.js',

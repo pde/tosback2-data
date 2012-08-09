@@ -1,0 +1,199 @@
+// https://gist.github.com/854622
+(function(window,undefined){
+    
+    // Prepare our Variables
+    var
+    History = window.History,
+    $ = window.jQuery,
+    document = window.document;
+
+    // Check to see if History.js is enabled for our Browser
+    if ( !History.enabled ) {
+        return false;
+    }
+
+    // Wait for Document
+    $(function(){
+        // Prepare Variables
+        var
+        /* Application Specific Variables */
+        contentSelector = '#content',
+        $content = $(contentSelector).filter(':first'),
+        contentNode = $content.get(0),
+        $menu = $('#menu,#nav,nav:first,.nav:first').filter(':first'),
+        activeClass = 'active selected current youarehere',
+        activeSelector = '.active,.selected,.current,.youarehere',
+        menuChildrenSelector = '> li,> ul > li',
+        loaderDiv = '<div id="loading"></div>',
+        $header = $("header"),
+        $body = $(document.body),
+        rootUrl = History.getRootUrl();
+        // Ensure Content
+        if ( $content.length === 0 ) {
+            $content = $body;
+        }
+        
+        // Internal Helper
+        $.expr[':'].internal = function(obj, index, meta, stack){
+            // Prepare
+            var
+            $this = $(obj),
+            url = $this.attr('href')||'',
+            isInternalLink;
+            
+            // Check link
+            isInternalLink = url.substring(0,rootUrl.length) === rootUrl || url.indexOf(':') === -1;
+            
+            // Ignore or Keep
+            return isInternalLink;
+        };
+        
+        // HTML Helper
+        var documentHtml = function(html){
+            // Prepare
+            var result = String(html)
+                .replace(/<\!DOCTYPE[^>]*>/i, '')
+                .replace(/<(html|head|body|title|meta|script)([\s\>])/gi,'<div class="document-$1"$2')
+                .replace(/<\/(html|head|body|title|meta|script)\>/gi,'</div>')
+            ;
+            
+            // Return
+            return result;
+        };
+        
+        // Ajaxify our Internal Links
+        $body.ajaxify();
+
+        // Hook into State Changes
+        $(window).bind('statechange',function(data){
+
+            if(window.beforeAjaxLoad)
+                window.beforeAjaxLoad();
+
+            //console.log("customchange could be called here");
+
+            // Prepare Variables
+            var
+            State = History.getState(),
+            url = State.url,
+            relativeUrl = url.replace(rootUrl,'');
+            window.relative = '/' + relativeUrl;
+
+            //tabs return false
+            if(State.data.type === "tab") {
+                //console.log(State.data.type,'before');
+                State.data.type = null;
+                //console.log(State.data.type,'after');
+                return;
+            }
+
+            window.loading = true;
+
+            //console.log('below state fix');
+            
+            // Very blunt, temporary enforcement of normal page load for jam upload
+            if(relativeUrl.indexOf("jam/create") !==-1) return (function(){document.location.href = url;})();
+            if(relativeUrl.indexOf("jam/upload") !==-1) return (function(){document.location.href = url;})();
+            // ...and of stats pages
+            if(relativeUrl.indexOf("stats/") !==-1) return (function(){document.location.href = url;})();
+            
+            // Set Loading
+            //$body.addClass('loading');
+            $header.addClass("loadingState");
+            $(loaderDiv).insertAfter(contentSelector).center();
+            
+
+            // Start Fade Out
+            // Animating to opacity to 0 still keeps the element's height intact
+            // Which prevents that annoying pop bang issue when loading in new content
+            $content.find(":not(#loading)").animate({opacity:0},1);
+            
+            // Ajax Request the Traditional Page
+            $.ajax({
+                url: url,
+                success: function(data, textStatus, jqXHR){
+                    // Prepare
+                    var
+                    $data = $(documentHtml(data)),
+                    $dataBody = $data.find('.document-body:first'),
+                    $dataContent = $dataBody.find(contentSelector).filter(':first'),
+                    $contentClasses = $dataBody.find(contentSelector).attr('class'),
+                    $menuChildren, contentHtml, $scripts,
+                    $profileBacking = $data.find(".backing"),
+                    $profilePage = $data.find("#profilePage");
+
+                    //console.log($profilePage,"profile",$profileBacking,"backing");
+                    
+                    // Fetch the scripts
+                    //console.log($data,"data");
+                    $scripts = $data.find('.document-script');
+                    if ( $scripts.length ) {
+                        //console.log("scripts found",$scripts);
+                        $scripts.detach();
+                    }
+
+                    // Fetch the content
+                    contentHtml = $dataContent.html()||$data.html();
+                    if ( !contentHtml ) {
+                        document.location.href = url;
+                        return false;
+                    }
+                    
+                    // Update the menu
+                    $menuChildren = $menu.find(menuChildrenSelector);
+                    $menuChildren.filter(activeSelector).removeClass(activeClass);
+                    $menuChildren = $menuChildren.has('a[href^="'+relativeUrl+'"],a[href^="/'+relativeUrl+'"],a[href^="'+url+'"]');
+                    if ( $menuChildren.length === 1 ) { $menuChildren.addClass(activeClass); }
+
+                    // Update the content
+                    $content.stop(true,true);
+
+                    // Update the title
+                    document.title = $data.find('.document-title:first').text();
+                    try {
+                        document.getElementsByTagName('title')[0].innerHTML = document.title.replace('<','&lt;').replace('>','&gt;').replace(' & ',' &amp; ');
+                    }
+                    catch ( Exception ) { }
+
+                    if($('.backing').length){
+                        $(".backing").hide(100,function(){
+                            $content.html(contentHtml).css('opacity',1).trigger("contentReady"); /* fade in here */
+                            
+                            if($profileBacking.length){
+                                //console.log($profileBacking,"appending to ",$dataContent);
+                                $profileBacking.detach();
+                                $('.backing').remove(); // remove any other backing
+                                $profileBacking.insertBefore($content);
+                            } else {
+                                $('.backing').hide();
+                            }
+                            
+                        });
+                    } else {
+                        $content.html(contentHtml).css('opacity',1).trigger("contentReady"); /* fade in here */
+                        if($profileBacking.length){
+                            //console.log($profileBacking,"appending to ",$dataContent);
+                            $profileBacking.detach();
+                            $('.backing').remove(); // remove any other backing
+                            $profileBacking.insertBefore($content);
+                        } else {
+                            $('.backing').hide();
+                        }
+                        
+                    }
+                    $content.attr('class',$contentClasses);
+                    $body.removeClass('loading');
+                    window.loading = false;
+                    
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    document.location.href = url;
+                    return false;
+                }
+            }); // end ajax
+
+        }); // end onStateChange
+
+    }); // end onDomLoad
+
+})(window); // end closure

@@ -1,0 +1,537 @@
+Player = function()
+{
+    this.muted = false;
+    this.playlist = null;
+    this.playbackHandler = null;
+    this.scrobbler = null;
+    this._state = null;
+    this._nextState = null;
+};
+
+Player.prototype.setPlaylist = function(playlist)
+{
+    this.playlist = playlist;
+};
+
+Player.prototype.counter = null;
+
+Player.prototype.loadMore = function()
+{
+    var player = this;
+    return this.playlist.load(Player.JAMS_PER_PAGE);
+};
+
+
+// TODO: accept username as well as jamID, default to currently visible playlist
+//       in it's current state the JS API is not useful
+Player.prototype.play = function(jamID, playlistName, onlyLoad)
+{
+
+    if(typeof onlyLoad == 'undefined')
+        onlyLoad = false;
+
+    // anti-squirm
+    // TODO: get this into the state itself...maybe
+    if(this.current() && jamID == this.current().id && this._state.name != 'stopped')
+        return false;
+
+    if(!this._state.canPlay())
+        return false;
+
+    if(!window.ytPlayer.isReady) {
+        this._setState(new Player.WorkingState());
+        window.ytPlayer.once('ready', this.play.bind(this, jamID, playlistName));
+        return false;
+    }
+
+    if(this.current()) {
+        this.stop();
+        this.playbackHandler.stop();
+    }
+
+    // if we pass a playlistName, we can use that to set a new
+    // context for the player.
+    if(playlistName) {
+        var playlist = window.playlistBag.get(playlistName);
+        if(!playlist)
+            throw sprintf("No such playlist: %s", playlistName);
+
+        if(playlist != this.playlist)
+            this.setPlaylist(playlist);
+    }
+
+    var jam = this.playlist.setCurrent(jamID);
+    if(!jam)
+        throw sprintf('jam with ID %s does not exist in playlist', jamID);
+
+    this._setCurrentPlaybackHandler();
+    this.playbackHandler.setVolume(this.muted ? 0 : this.volume);
+
+    var player = this;
+
+    // Timing
+    console.log(player.playlist.view);
+    clearInterval(Player.counter);
+    Player.counter = setInterval(function(){
+        window.playerView.setElapsedTime(player.playbackHandler.getElapsedTime());
+    },500);
+
+    this._incrementPlays(jam).then(function(playCount) {
+        if(player.playlist && player.playlist.view){
+            player.playlist.view.updatePlayCount(jam, playCount);
+        }
+    });
+
+    if(window.user_scrobbles) {
+        // if we haven't scrobbled already, do it!
+        if(this.scrobbler)
+            this.scrobbler.scrobble();
+
+        this.scrobbler = new Scrobbler(this.current().id);
+    }
+
+    var playbackPromise;
+    if(onlyLoad) {
+        this._queueState(new Player.PausedState());
+        playbackPromise = this.playbackHandler.load(this.current());
+    }
+    else {
+        this._queueState(new Player.PlayingState());
+        playbackPromise = this.playbackHandler.play(this.current());
+    }
+    var beforePlayPromise = this.playlist.view.beforePlay();
+
+    window.playerView.setLiked(jam.liked);
+
+    $.when(beforePlayPromise, playbackPromise)
+        .then(this._resolveState.bind(this))
+        .fail(this._errorSkip.bind(this));
+};
+
+Player.prototype.pause = function()
+{
+    if(!this._state.canPause())
+        return false;
+
+    clearInterval(Player.counter);
+    this.playbackHandler.pause();
+    this._setState(new Player.PausedState());
+};
+
+Player.prototype.resume = function()
+{
+    if(!this._state.canResume())
+        return false;
+    clearInterval(Player.counter);
+    Player.counter = setInterval(function(){
+        window.playerView.setElapsedTime(player.playbackHandler.getElapsedTime());
+    },500);
+    this.playbackHandler.resume();
+    this._setState(new Player.PlayingState());
+};
+
+Player.prototype.next = function()
+{
+    clearInterval(Player.counter);
+    if(!this._state.canSkip())
+        return false;
+
+    if(!this.playlist.hasNext())
+        return false;
+
+    var doSkip = (function() {
+        this._skipTo(this.playlist.next().id);
+    }).bind(this);
+
+    if(this.playlist.nextIsLoaded())
+        doSkip();
+    else
+        this.loadMore().then(doSkip);
+};
+
+Player.prototype.prev = function()
+{
+    if(!this._state.canSkip())
+        return false;
+
+    if(!this.playlist.hasPrev())
+        return false;
+
+    this._skipTo(this.playlist.prev().id);
+};
+
+Player.prototype.stop = function()
+{
+    this.playbackHandler.stop();
+    this.playlist.view.afterStop();
+    this._setState(new Player.StoppedState());
+    window.playerView.setDuration(); // reset duration
+};
+
+Player.prototype.setVolume = function(volume)
+{
+    this.volume = volume;
+
+    if(this.muted) {
+        this.muted = false;
+        window.playerView.unmute();
+        $.post('/ajax/unmute');
+    }
+
+    window.playerView.setVolume(volume);
+
+    // store volume in session, after it's been stable for
+    // half a second.
+    callWhenStable('setVolume', 500, function() {
+        $.post('/ajax/volume', {volume: volume});
+    });
+
+    if(!this.muted)
+        this.playbackHandler.setVolume(volume);
+};
+
+Player.prototype.mute = function()
+{
+    this.muted = true;
+    if(this.playbackHandler)
+        this.playbackHandler.setVolume(0);
+    if(window.playerView) {
+        window.playerView.mute();
+        window.playerView.setVolume(0);
+    }
+
+    $.post('/ajax/mute');
+};
+
+Player.prototype.unmute = function()
+{
+    this.muted = false;
+    if(this.playbackHandler)
+        this.playbackHandler.setVolume(this.volume);
+    if(window.playerView) {
+        window.playerView.unmute();
+        window.playerView.setVolume(this.volume);
+    }
+
+    $.post('/ajax/unmute');
+};
+
+Player.prototype.current = function()
+{
+    if(!this.playlist)
+        return null;
+
+    return this.playlist.current();
+};
+
+Player.prototype.gotoCurrent = function()
+{
+    if(!this.playlist)
+        return false;
+
+    if(this.current())
+        window.playerView.gotoCurrent(this.playlist.url, this.current().id);
+};
+
+Player.prototype.insert = function(username)
+{
+    if(this.playlist)
+        return this.playlist.insertJamByUsername(username);
+    return $.Deferred().resolve();
+};
+
+Player.prototype.remove = function(username)
+{
+    if(this.playlist)
+        this.playlist.removeJamByUsername(username);
+};
+
+Player.prototype.init = function()
+{
+    this._setState(new Player.StoppedState());
+
+    var player = this;
+
+    window.playerView.on('play', this.play.bind(this));
+    window.playerView.on('pause', this.pause.bind(this));
+    window.playerView.on('resume', this.resume.bind(this));
+    window.playerView.on('prev', this.prev.bind(this));
+    window.playerView.on('next', this.next.bind(this));
+    window.playerView.on('loadMore', this.loadMore.bind(this));
+    window.playerView.on('gotoCurrent', this.gotoCurrent.bind(this));
+    window.playerView.on('like', function() {
+        player.current().liked = true;
+        window.playlistBag.setLiked(player.current(), true);
+        player.playlist.setLiked(player.current(), true);
+    });
+    window.playerView.on('unlike', function() {
+        player.current().liked = false;
+        window.playlistBag.setLiked(player.current(), false);
+        player.playlist.setLiked(player.current(), false);
+    });
+    window.playerView.on('volumeChange', this.setVolume.bind(this));
+    window.playerView.on('toggleMute', function() {
+        if(player.muted)
+            player.unmute();
+        else
+            player.mute();
+    });
+
+    if(isIOS())
+        this._bindIOS();
+};
+
+Player.prototype.getStateName = function()
+{
+    return this._state ? this._state.name : null;
+};
+
+Player.prototype._setCurrentPlaybackHandler = function()
+{
+    var player = this;
+
+    if(this.current()) {
+        var type = this.current().type;
+        switch(type) {
+        case 'youtube':
+            this.playbackHandler = window.youtubePlaybackHandler;
+            break;
+        default:
+            this.playbackHandler = window.audioPlaybackHandler;
+            break;
+        }
+        this.playbackHandler.onError = this._errorSkip.bind(this);
+        this.playbackHandler.onFinish = this._jamFinish.bind(this);
+        this.playbackHandler.once('duration', function(duration) {
+            if(player.scrobbler)
+                player.scrobbler.setDuration(
+                    duration, player.playbackHandler.getElapsedTime());
+            window.playerView.setDuration(duration);
+        });
+    }
+};
+
+/**
+ * Helper used by prev and next.
+ */
+Player.prototype._skipTo = function(jamID)
+{
+    this._resolveState();
+    var wasPlaying = this._state.isPlaying();
+
+    this._showTryNextH4xx();
+
+    if(wasPlaying) {
+        this.play(jamID);
+    }
+    else {
+        this.play(jamID, undefined, true);
+    }
+};
+
+Player.prototype._showTryNextH4xx = function()
+{
+    // temp hack -- show our magical "next" arrow if it exists
+    if ($('#tryNextArrow a').length) {
+        $('#tryNextArrow a').animate({opacity:0.9});
+        if(window._gaq !==undefined){
+            window._gaq.push(['_trackEvent',"TryNext","ProfileShownAfterPlayback"]);
+        }
+    }
+};
+
+Player.prototype._queueState = function(state)
+{
+    this._setState(new Player.WorkingState());
+    this._nextState = state;
+};
+
+Player.prototype._resolveState = function()
+{
+    if(this._nextState) {
+        this._setState(this._nextState);
+        this._nextState = null;
+    }
+};
+
+Player.prototype._setState = function(state)
+{
+    this._state = state;
+    window.playerView.updateState(state.name);
+};
+
+Player.prototype._incrementPlays = function(jam)
+{
+    var promise = $.Deferred();
+
+    $.ajax({
+        url: sprintf('/%s/play', jam.username),
+        type: 'POST',
+        dataType: 'JSON',
+        success: function(data) {
+            promise.resolve(data.playcount);
+        },
+        error: promise.fail.bind(this)
+    });
+
+    return promise;
+};
+
+Player.prototype._jamFinish = function()
+{
+    this._showTryNextH4xx();
+
+    if(this.scrobbler) {
+        this.scrobbler.scrobble();
+        this.scrobbler = null;
+    }
+
+    if(this.playlist.hasNext())
+        this.next();
+    else
+        this.stop();
+};
+
+/**
+ * IOS is still pretty dirty. That's because it's radically different
+ * from our normal players in that the youtube iframe player is directly
+ * controlled by it's own conrols.
+ */
+Player.prototype._bindIOS = function()
+{
+    var player = this;
+    window.youtubePlaybackHandler.on('playing', function(jamID, playlist) {
+
+        if(player.current() && player.current().id == jamID)
+            player._setState(new Player.PlayingState());
+        else {
+            player.play(jamID, playlist);
+        }
+    });
+
+    window.youtubePlaybackHandler.on('paused', this._setState.bind(this, new Player.PausedState()));
+    window.youtubePlaybackHandler.on('finished', function() {
+        window.youtubePlaybackHandler.clear();
+        if(player.playlist && player.playlist.view && player.playlist.view.setupYoutubeForIOS)
+            player.playlist.view.setupYoutubeForIOS(player.current());
+        player._jamFinish.call(player);
+    });
+};
+
+Player.prototype._error = function(message)
+{
+    this.next();
+    this._setState(new Player.StoppedState());
+
+    JamError.show(message);
+};
+
+Player.prototype._errorSkip = function(message, isBackwards)
+{
+    // silently resolve state if a state was queued up
+    if(this._nextState) {
+        this._state = this._nextState;
+        this._nextState = null;
+    }
+
+    if((isBackwards && !this.playlist.hasPrev()) ||
+       (!isBackwards && !this.playlist.hasNext())) {
+        this.stop();
+        return;
+    }
+
+    if(isBackwards)
+        this.prev();
+    else
+        this.next();
+};
+
+Player.JAMS_PER_PAGE = 10;
+
+Player.State = function()
+{
+    this.canPlay = function()
+    {
+        return this.capabilities['play'];
+    };
+
+    this.canPause = function()
+    {
+        return this.capabilities['pause'];
+    };
+
+    this.canResume = function()
+    {
+        return this.capabilities['resume'];
+    };
+
+    this.canSkip = function()
+    {
+        return this.capabilities['skip'];
+    };
+
+    this.isPlaying = function()
+    {
+        return false;
+    };
+};
+
+Player.WorkingState = function()
+{
+    this.capabilities = {
+        'play':   true,
+        'pause':  false,
+        'skip':   true,
+        'resume': false
+    };
+
+    this.name = 'working';
+};
+Player.WorkingState.prototype = new Player.State();
+
+Player.PlayingState = function()
+{
+    this.capabilities = {
+        'play':   true,
+        'pause':  true,
+        'skip':   true,
+        'resume': false
+    };
+
+    this.name = 'playing';
+
+    window.playerView.setTitle("\u25B6");
+
+    this.isPlaying = function() { return true; };
+};
+Player.PlayingState.prototype = new Player.State();
+
+Player.PausedState = function()
+{
+    this.capabilities = {
+        'play':   true,
+        'pause':  false,
+        'skip':   true,
+        'resume': true
+    };
+
+    window.playerView.setTitle("\u275A\u275A");
+
+    this.name = 'paused';
+};
+Player.PausedState.prototype = new Player.State();
+
+Player.StoppedState = function()
+{
+    this.capabilities = {
+        'play':   true,
+        'pause':  false,
+        'skip':   false,
+        'resume': false
+    };
+
+    window.playerView.setTitle("");
+
+    this.name = 'stopped';
+};
+Player.StoppedState.prototype = new Player.State();

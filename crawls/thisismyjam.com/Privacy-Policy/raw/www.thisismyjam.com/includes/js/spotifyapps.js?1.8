@@ -1,0 +1,28 @@
+var $oldSlideShow = null;
+window.setupSpotifyApps = function() {
+
+    waitUntil(function() {
+        return typeof $('#slideShow ul').cycle != 'undefined';
+    }, 100, 1.2).then(function() {
+
+        if($oldSlideShow)
+            $oldSlideShow.cycle('please_please_please_terminate'); // 'destroy' and 'stop' don't work, but any unrecognised option kills it.
+
+        if(window.outerWidth > 480){
+
+            $oldSlideShow = $('#slideShow ul');
+            $oldSlideShow.cycle({
+                fx: 'fade', // choose your transition type, ex: fade, scrollUp, shuffle, etc...
+                pager : ".js-nav",
+                activePagerClass : "active",
+                pagerAnchorBuilder : function(i,slide){
+                    return '<a tipsy-gravity="s" tipsy-offset="15" class="gradient-trans-to-grey tipsy larger relative" title="'+slide.title+'" href="#">' + i + '</a>'
+                }
+            });
+            $(".js-nav").delay(800).fadeIn(function() { $('.tipsy').tipsy(); });
+        } else {
+            $("#slideShow li").css({"display":"block","margin-bottom":"25px"});
+        }
+    });
+
+};

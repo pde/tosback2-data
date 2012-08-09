@@ -6,13 +6,16 @@ jQuery(document).ready(function(){
 	
 	jQuery.ajax({ url: "/mapview/is_premium", type:'GET', async: false, cache: false, success: function(text) { response = text; } });
 
-	if (response == 'true') {
+	if (response !== 'false') {
 		jQuery('.header_nav_logged_in').css({display: 'block'});	
 		jQuery('.header_nav_logged_out').css({display: 'none'});
 		jQuery('#header_search_friends').css({display: 'block'});
 		jQuery('#button_settings').css({display: 'block'});
 		jQuery('#premium_content').css({display:'block'});
 		jQuery('#nonpremium_content').css({display:'none'});
+		if (jQuery('#hidden_input').length) {
+			jQuery('#hidden_input').val(response);
+		}
 	}
 
 	jQuery('.faq_list a').click(function(event){

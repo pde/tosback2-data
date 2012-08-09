@@ -1,0 +1,2617 @@
+
+/**
+ * Returns the pathname, as it would be without hashbang.
+ */
+locationPathname = function(href) {
+    if(typeof href == 'undefined')
+        href = location.href;
+
+    var path = href.replace(/^http:\/\/.+\.com/, '');
+
+    if(path.indexOf("#.") != -1) {
+        return path
+            .replace(/\/?#\./, '')
+            .split(/[\?#]/)[0];
+    }
+    else if(path.indexOf("#") == 0) {
+        return path
+            .replace(/\/?#/, '')
+            .split(/[\?#]/)[0];
+    }
+    else {
+        return location.pathname;
+    }
+};
+
+
+// fb
+if (window.location.hash == '#_=_')window.location.hash = '';
+
+
+var unbang = function(bang){
+    var path = bang.replace(/^http:\/\/.+\.com/, '');
+    return path.replace(/^\/.*\#\.?/, '');
+};
+
+if(window.location.hash){
+    newURL = unbang(window.location.href);
+
+    window.location.href = newURL;
+}
+
+//sign-content
+var runSpotifyCheck = function(){
+    var spotMessage = "Nice to see you here from Spotify!</br>Join up to share your favourite song and get the best music from friends.";
+    
+    if(getQueryVariable("utm_source") === "spotify"){
+        if(getQueryVariable("utm_campaign") === "signup" && $(".sign-up").length){
+            $(".sign-up").attr("extra-message",spotMessage).click();
+        }
+        if(getQueryVariable("follow")){
+            // Scroll to follow button and e.g. click it
+            scrollOveride = true;
+            setTimeout(function(){
+                $(".follow").attr("extra-message",spotMessage).ScrollTo().click();
+            },400);
+        }
+    }
+}
+// check for generic signup shower thing
+var runSignupCheck = function() {
+    if(getQueryVariable("signup") == "1"){
+        $(".sign-up").click();
+    }
+    else if (getQueryVariable("signin") == "1") {
+        $(".sign-in").click();
+    }
+};
+
+// called by ajaxify
+window.beforeAjaxLoad = function()
+{
+    window.playerView.hideAll();
+    if(isIOS()) {
+        window.youtubePlaybackHandler.hide();
+    }
+    window.ytPlayer.untrack();
+};
+
+function ensureFaker(){
+    if($('body').hasClass("faker"))
+        $("body").removeClass("no-bg");
+}
+
+// TODO: need to refactor and turn this into backbone or similar architecture
+// this is fucking dirty, relying on specific item ids.
+function setupPage()
+{
+
+
+    window.playerView.removeAllListeners('beforePlay');
+    window.playerView.removeAllListeners('afterStop');
+
+    window.playlistBag.empty();
+
+    if($('#newsFeed').length)
+        setupHomePage();
+    else if($('#profile-top').length && !(window.playerView.isOnMetaPage()))
+        setupProfilePage();
+    else if( (window.playerView && window.playerView.isOnMetaPage()) )
+        setupMetaPage();
+    else if ($('#aboutMain').length)
+        setupAboutPage();
+    else if ($('#spotifypage').length)
+        setupSpotifyPage();
+    else
+        ensureFaker();
+
+            // HACK! to repro bug this fixes:
+            // 1. (on browser without history, or hacked to not have history):
+            //    start on yt profile page, e.g. http://local.thisismyjam.com/#./ndreasa
+            // 2. start playing jam
+            // 3. navigate to home page
+            // Expected: no visible youtube jam
+            // Actual: youtube jam at full profile size isn't hidden.
+            // I *think* this has to do with the fact that (for some reason),
+            // when you don't have history, pages are init'ed twice. baffling.
+            if(!Modernizr.history)
+                window.playerView.hideAll();
+
+    window.playlistBag.loadAll().then(function() {
+        if(window.playerView) {
+            window.playerView.newPage();
+        }
+    });
+}
+
+function trackElement($element, threshold, func){
+    //TODO - make less super specific
+
+    var $metaPanel = $("#metaPanel"),
+        $lastElement = $("#metaPanel").find("section:last");
+
+    var $window = $(window);
+        track = function(){
+            var threshold = Math.floor($lastElement.position().top + $lastElement.outerHeight(true));
+                $sTop = $window.scrollTop();
+
+            //console.log($sTop, threshold);
+            if($sTop > threshold && window.innerWidth > 768){
+                $element.addClass("fixed");
+            } else {
+                $element.removeClass("fixed");
+            }
+        };
+
+    $window.scroll(function(){
+        //callWhenStable('track', 300, track());
+        track();
+    });
+
+}
+
+function setupHomePage()
+{
+    // todo: bring back the playlist toggler but for real
+    /*
+    includeHTML$('/includes/js/templates/test/playlistshowcase.html')
+        .then(function($el) { $('#content > .container').prepend($el); });
+    */
+    var $fixedSide = $("#fixTrack");
+
+    trackElement($fixedSide);
+
+    var $faker = $("body.faker");
+    if($faker.length){
+        $faker.removeClass("no-bg");
+    } else{
+        $("body").addClass("faker");
+    }
+
+    console.log(window.playerView);
+    var homePlaylist;
+
+    // don't load again if we have the playlist in recent memory.
+    // this will also make it easier to implement "jump to".
+    if(window.player.playlist && window.player.playlist.name == 'home') {
+        homePlaylist = window.player.playlist;
+    }
+    else {
+        homePlaylist = new HomePlaylist();
+    }
+
+    homePlaylist.setView(new HomePlaylistView($('#homepagePlaylist')));
+    window.playlistBag.register('home', homePlaylist);
+};
+
+function setupAboutPage()
+{
+    $("body").removeClass("faker");
+ 
+}
+
+function setupSpotifyPage()
+{
+    $("body").removeClass("faker");
+    include('plugins/jquery.cycle.all.js');
+    setupSpotifyApps();
+}
+
+function setupProfilePage()
+{
+    var $faker = $("body.faker");
+    if($faker.length){
+        $faker.addClass("no-bg");
+    } else {
+        $("body").addClass("faker no-bg");
+    }
+
+    if($('#artPlayer').length) {
+        console.log("setting up artplayer innit");
+        var profilePlaylist = new SinglePlaylist($('#artPlayer .itemPlayButton').attr('data-id'));
+        profilePlaylist.setView(new ProfilePlaylistView());
+        window.playlistBag.register('profile', profilePlaylist);
+
+        // embiggen the player click area if it's youtube
+        $('#artPlayer').live("click",function (e) {
+            e.preventDefault();
+            $('#artPlayer .itemPlayButton').mousedown();
+        });
+
+    }
+}
+
+function setupMetaPage()
+{
+    var profilePlaylist = new SinglePlaylist($('#artPlayer .itemPlayButton').attr('data-id'));
+    profilePlaylist.setView(new ProfilePlaylistView());
+    window.playlistBag.register('profile', profilePlaylist);
+    $("body").removeClass("faker no-bg");
+}
+
+$(function(){
+
+
+    var $content = $("#content"),
+    scrollOptions = {
+        duration: 400,
+        easing:'linear'
+    },
+    $body = $(document.body),
+    scrollOveride = scrollOveride || false,
+    searchVal,searching;
+
+    /* TODO:
+        * make this generic for all disconnecitons, pass through message
+        */
+
+    var confirmFacebookDisconnect = function(){
+
+        if(confirm('Are you sure you want to disconnect your Facebook account?\n\nThis will also remove all of your pages.')){
+            return true;
+        } else return false;
+    };
+
+    var dismisserInit = function(){
+
+        // Init Twit
+        var $tBlock = $("#twitterFollowPanel"),
+            $fBlock = $("#facebookLikePanel");
+
+        if($tBlock.length){
+
+            window.twttr.ready(function (twttr) {
+
+                //alert("ready twwttt");
+                if(window.twttr.events.length){
+                    log("events",window.twttr.events);
+                    window.twttr.events.unbind();
+                }
+                window.twttr.events.bind('follow', function(event) {
+                    //var followed_user_id = event.data.user_id,
+                    //followed_screen_name = event.data.screen_name;
+
+                    //Google Analytics event
+                    if(window._gaq !==undefined){
+                        window._gaq.push(['_trackEvent',"Actions","Followed on Twitter (side panel)"]);
+                    }
+
+                    // Now do some kind of ajax call to dismisser.
+                    callDismisser($tBlock,"twitter",false);
+                });
+
+            });
+        }
+
+        if($fBlock.length){
+            fbEnsureInit(function(){
+                window.FB.Event.subscribe('edge.create',
+                    function(response) {
+                        //Google Analytics event
+                        if(window._gaq !==undefined){
+                            window._gaq.push(['_trackEvent',"Actions","Liked on facebook (side panel)"]);
+                        }
+                        callDismisser($fBlock,"facebook",false);
+                    }
+                );
+
+            });
+
+        }
+
+        $dismissableBlock.find(".close").on("click",function(e){
+            e.preventDefault();
+            var $this = $(this),
+                type = this.id.split("_")[0];
+
+            if(window._gaq !==undefined){
+                window._gaq.push(['_trackEvent',"Actions","Dismissed " + type + " panel"]);
+            }
+
+            // Call ajax dismisser
+            callDismisser($this.parent(),type,true);
+
+            return false;
+        });
+    };
+
+    var tipsyInit = function( $tipper ){
+
+        $tipper = $tipper || $(".tipsy");
+
+        if($tipper.length){
+            $('div.tipsy').remove(); // Strip out previous instances of the tipsy div
+            $tipper.each(function(){
+                var $this = $(this);
+
+                if($this.is(".larger, .html, .manual")){
+                    $this.tipsy({
+                        html:   ($this.hasClass("html")) ? true : false,
+                        trigger: $this.attr("tipsy-trigger"),
+                        tipSize:($this.attr("tipsy-size")) ? $this.attr("tipsy-size") : "larger", //extend this to something like .tipsize-larger
+                        gravity: $this.attr("tipsy-gravity"),
+                        opacity: $this.attr("tipsy-opacity"),
+                        horizontalOffset: $this.attr("tipsy-horizontal-offset"),
+                        offset : $this.attr("tipsy-offset")
+
+                    });
+                    if($this.hasClass("dismissed"))
+                        return false;
+
+                    if($this.hasClass("home") && !$this.hasClass("dismissed")){
+                        var $pTop = $("#profile-top");
+
+                        if($pTop.length && $pTop.hasClass("isYou")){
+                            $this.tipsy("show");
+
+                            $dismissableBlock = $(".dismissable"); // ensure we get the dismissable block ref
+                            dismisserInit();
+                            // TODO Maybe change this into a closer collection, e.g. home link, tipsy link etc?
+
+                            $this.data("tipsy").$tip.find(".tipsy-inner a").on("click",function(){
+                                $this.addClass("dismissed").tipsy("hide");
+                                $this.data("tipsy","");
+                            });
+                            $this.on("click",function(){
+                                $this.addClass("dismissed");
+                                $this.data("tipsy","");
+                            });
+
+                        }
+
+                    } else {
+
+                        $this.on("mouseover click",function(){
+                            var $this = $(this);
+
+                            $("body").not(".tipsy, .tipsy-inner").on("click",function(){
+                                $this.tipsy("hide");
+                            }); //hide tipsy on click anywhere else
+
+                            $(".tipsy").each(function(){
+                                $(this).tipsy("hide"); // Hide all other tipsys, IMPROVE THIS
+                            });
+
+                            $this.tipsy("show");
+                        });
+
+                    }
+
+
+                } else {
+                    $this.tipsy();
+                }
+
+            });
+        }
+    };
+
+    // Sign up flow
+    var showResend = function() {
+        var $ajaxContent = $('#ajax-content')
+
+        $ajaxContent.slideDown('fast')
+        .load("/welcome/resendverifyemail", function() {
+            $("#resendForm").submit(function(e) {
+                $.post("/welcome/resendverifyemail",
+                       {resendEmail: $("#resendEmail").val()},
+                       function(data) {
+                           if(data.success) {
+
+                               // TODO: do something nicer?
+                               location.reload();
+                           }
+                           else {
+
+                               // TODO: something nicer
+                               alert(data.message);
+                           }
+                       },
+                       'json');
+                e.preventDefault();
+                return false;
+            });
+        });
+    };
+
+
+    /*
+        Re-call facebook if we can't find it
+                                            */
+
+    function fbEnsureInit(callback) {
+        if(!window.FB_API_READY) {
+            setTimeout(function() {fbEnsureInit(callback);}, 100);
+        } else {
+            if(callback) {
+                callback();
+            }
+        }
+    }
+
+
+    /*
+        Dismisser Ajax call - can set and remove elements, or just log dismiss in DB
+                                                                                        */
+
+    function callDismisser($elem,type,fadeOut){
+        $.ajax({
+            url : 'ajax/dismisser',
+            type : "POST",
+            dataType : "JSON",
+            data : { type : type },
+            success : function(d){
+                if(d.success){
+                    if(fadeOut){
+                        $elem.fadeOut();
+                    }
+                } else return;
+            },
+            error : function(a,b,c){
+                log(a,b,c);
+                return;
+            }
+        });
+    }
+
+    /*
+        User Search Functions
+                                */
+
+    function getRowHTML(user,method){
+        //log("found user",user);
+        var type = (user.active) ? "Current" : "Last",
+            jamSpan = (user.jam) ? type + " jam: " + user.jam.artist : "No jam yet...";
+
+            if(method === "artist"){
+                type = (user.searchJam) ? "Previous" : "Current";
+                if(!user.searchJam && !user.active){
+                    type = "Last";
+                }
+                span = (user.searchJam) ? ' jams include ' +user.searchJam.artist : ' jam by ' + user.jam.artist;
+                jamSpan = '<span class="highlight">'+type+span+'</span>';
+            }
+
+            str = '<li>' +
+            '<a href="'+user.url+'">' +
+                '<img width="30" height="30" src="'+user.avatar+'" alt="'+user.username+'">' +
+                '<div class="wrapper left">' +
+                    '<h3 class="Gibson-Bold gold">'+user.username+'</h3><span class="fullname">'+user.fullname+'</span>' +
+                    '<p class="userMusic smaller topless left">'+jamSpan+'</p>' +
+                '</div>' +
+            '</a>' +
+        '</li>';
+
+        return str;
+
+    }
+
+    var noResultsBlock = function(msg){
+        return '<li class="no-results clearfix left"><p class="smaller">We couldn&rsquo;t find anything for &ldquo;'+$.trim(msg)+'&rdquo;</p></li>';
+    };
+
+    function checkUserResults(value,$userSearchResults,method){
+        //log(value,searchVal,searching);
+        if (value == searchVal || value.length < 2 || searching) return false;
+
+        $.ajax({
+            url : "/search/user?q=" + encodeURIComponent($.trim(value)) + "&method="+method,
+            dataType : "JSON",
+            beforeSend : function(){
+                // Set searching to true so we don't allow multiple searches
+                searching = true;
+                $userSearchResults.html('<li class="loader clearfix left"></li>');
+            },
+            success :  function(data){
+                //log(data);
+                if(!data.error){
+                    updateUserResults(data,$userSearchResults,false);
+                } else updateUserResults("",$userSearchResults,noResultsBlock(value));
+            },
+            error : function(a,b,c){
+                log(a,b,c);
+            },
+            complete : function(){
+                //Set search term to current search, let search know we're ready again
+                searchVal = value;
+                searching = false;
+            }
+        });
+
+
+        return false;
+    }
+
+    function updateUserResults(results,$userSearchResults,noresults){
+
+
+        var htmlChunk = "";
+
+        if(noresults)
+        {
+            htmlChunk = noresults;
+        }
+        else if(results.users)
+        {
+
+            for(var i=0; results.users.length > i; i++){
+                htmlChunk += getRowHTML(results.users[i],results.method);
+            }
+
+        }
+
+        $userSearchResults.html(htmlChunk,function(){
+            $userSearchResults.first("li a").addClass("active");
+        }).ajaxify();
+    }
+
+    /* I'm not proud of this, to say the least */
+
+    var $jamEditLink = $("#jamEditLink"),
+        editUrl;
+
+    var toggleEdit = function (toggle) {
+        var $jamTitle = $("#jamTitle"),
+            $jamArtist = $("#jamArtist"),
+            $userDescription = $(".userDescription p");
+        if(toggle){
+            $jamEditLink.hide().parent().prev().hide();
+            $(".jamDescription h1, .userDescription p").attr('contentEditable',true);
+            $(".jamDescription br").remove();
+            $jamArtist.find(".by").remove();
+            $(".jamDescription").append(
+            '<div id="jamProfileEdit" class="five columns offset-by-one flush">' +
+                '<ul class="rightLinks">' +
+                    '<li><a href="/jam/cancel" id="cancel" class="button">Cancel</a></li>' +
+                    '<li><a class="button yellow" id="saveDescription">Save</a></li>' +
+                '</ul>' +
+            '</div>');
+
+        //Copied from upload js, needs copy pasta pass
+        $('[contenteditable]').each(function(){
+            var $this = $(this);
+            $this.data('original', $this.html());
+
+        }).live("keydown", function(e){
+            var limit = (140 - (window.location.href.length)),
+                $this = $(this);
+
+            //user presses escape
+            if(e.which === 27){
+                $this.html($this.data("original")).blur();
+            }
+
+
+            //if user presses enter
+
+            if(e.which === 13){
+                $this.data('edited', $this.html());
+                $this.blur();
+            }
+            //or has typed too much prev def baby...
+            if(e.which != 8 && $this.text().length >= limit){
+                e.preventDefault();
+            }
+        }).live('blur', function() {
+            var $this = $(this);
+            //return;
+            if($this.html() === ""){
+                $this.html($this.data('original'));
+            }
+
+            $this.data('edited', $this.html());
+
+            return $this;
+        }).live('paste',function(e){
+            var $this = $(this);
+            //txt = e.originalEvent.clipboardData.getData('text/plain');
+            //if(!txt){
+                //$this.html($this.text());
+            //} else{
+
+            if(Modernizr.firefox) // Terrible temporary fix for moz contenteditable issues
+                return false;
+
+
+                return setTimeout(function(){ $this.html($this.text()); }, 100); // Wait and pray if we don't have the clipboard data accessible to us
+            //}
+
+        });
+
+        } else {
+
+            $jamEditLink.show().parent().prev().show();
+            $("#jamProfileEdit").remove();
+            $(".jamDescription h1, .userDescription p").attr('contentEditable',null);
+            $("<br />").insertAfter("#jamTitle");
+            if(!$jamArtist.find("span").length){
+                $jamArtist.prepend('<span class="by">by</span>');
+            }
+        }
+
+        $("#cancel").click(function(e){
+            e.preventDefault();
+            $('[contenteditable]').each(function(){
+                var $this = $(this);
+                $this.html($this.data('original'));
+                //log($this.data("original"));
+            });
+            toggleEdit(false);
+            return;
+        });
+
+        $("#saveDescription").click(function(){
+            $.ajax({
+                url : editUrl,
+                type : "post",
+                dataType : "json",
+                data : {
+                    "caption" : $.trim($userDescription.text().toString()),
+                    "title": $.trim($jamTitle.text().toString()),
+                    "artist": $.trim($jamArtist.text().toString())
+                },
+                success : function(data){
+                    //log(data);
+                    if(data.success){
+                        $(".jamDescription");
+                        $("#jamProfileEdit").html("<h1 class='topless right'>"+data.message+"</h1>").fadeOut("slow");
+                    } else {
+                        alert("Something went wrong: " + data.message + " Please try again later.");
+                    }
+                    setTimeout(function(){ toggleEdit(false); },1000);
+                },
+                error : function (a,b,c) {
+                    $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                    log(a,b,c);
+                    alert("something went wrong, please try again");
+                }
+            });
+        });
+    };
+
+    $jamEditLink.live("click",function(e){
+        e.preventDefault();
+        editUrl = $(this).attr("href"); //set editurl on click
+        if($("#jamProfileEdit").length) return false;
+        toggleEdit(true);
+        return false;
+    });
+
+    /*
+        Header dropdown
+                        */
+    var actif = $("#account"),
+        ddBox = $(".dropdownBox");
+
+    actif.bind("click",function(e){
+        var $this = $(this);
+        e.preventDefault();
+        $this.toggleClass("active");
+        ddBox.toggle();
+    });
+
+    //hat-tip to old Janko. http://www.jankoatwarpspeed.com/post/2009/07/28/reinventing-drop-down-with-css-jquery.aspx
+    $(document).bind('click', function(e) {
+        var $clicked = $(e.target);
+        if (! $clicked.parents().hasClass("dropdown")){
+            ddBox.hide();
+            actif.removeClass("active");
+        }
+    });
+
+
+    /** COMMENTS **/
+
+    var $comment_form = $("#comment-form"),
+        $comment_error = $("#comment-error"),
+        $comment_stream = $("#stream"),
+        $last_comment_id = $("#last_comment_id");
+
+
+    /*
+        In Page Actions
+                            */
+    function in_page_action(action,actionString){
+
+        var currentUrl = History.getState().url,
+            type = (typeof(action) === "undefined") ? "scroll" : action,
+            target = (currentUrl.indexOf(actionString) !== -1) ? currentUrl.split(actionString).pop() : false,
+            $elem;
+
+        if (target && target.indexOf('&') !== -1) // ignore additional params
+            target = target.substr(0, target.indexOf('&'));
+        if (target && target.indexOf('=') !== -1) // remove '=' sign if present
+            target = target.replace(/=/g, '');
+
+        if(action === "scroll")
+        {
+
+            //log("got scroll",target);
+            //actionString will e.g. be ?=comment
+            //log(currentUrl,"cur url",target,"target");
+
+            if(target){
+                $elem = $("[name='"+target+"']");
+                scrollOveride = true;
+                if (target == "text" && $elem.length) $elem.focus(); // comment box
+                return ($elem.length) ? $elem.ScrollTo() : false;
+            }
+        } else {
+            //We're in tab land
+            $elem = $("ul.tabs li a[href*="+target+"]");
+            //log("We're in tab land",$elem,"elem");
+            $elem.click();
+        }
+
+    }
+
+    //HTML and DOM push for successfully posted comments
+    function addComment (comment,selector) {
+
+        var comment_already_in = selector.find(".comment#"+comment.id);
+
+        //log(comment,selector);
+
+        //log(comment_already_in);
+
+        if(comment_already_in.length){
+            //log("found in the comments");
+
+            return;
+        }
+
+        /** TODO make this less mega-compile-a-string-y **/
+        var bgCol = '#'+Math.floor(Math.random()*16777215).toString(16),
+            fadeCss = {'-webkit-transition':'background-color 0.5s linear', 'background-color':'white'},
+            commentHTML = '<section class="comment six columns flush clearfix pulse" id="'+comment.id+'" name="'+comment.id+'">';
+            commentHTML += '    <div class="avatarWrapper relative">';
+            commentHTML += '        <a href="'+comment.userUrl+'">';
+            commentHTML += '            <img src="' + asset(comment.avatar) + '">';
+            commentHTML += '            <div class="avatarMask"></div>';
+            commentHTML += '        </a>';
+            commentHTML += '    </div>';
+            commentHTML += '    <div class="commentWrap">';
+            commentHTML += '        <span class="timestamp uppercase letter-spaced greyed Gibson-Regular smaller">'+comment.timeAgo+'</span>';
+            commentHTML += '        <h3 class="Gibson-Bold"><a href="'+comment.userUrl+'">'+comment.username+'</a></h3>';
+            commentHTML += '            <p>'+comment.text+'</p>';
+            commentHTML += '    </div>';
+            //commentHTML += '  <section class="commentMeta">Comment by: '+comment.username+', posted '+comment.timeAgo+' ago</section>';
+            commentHTML += '    <ul class="commentActions">';
+
+                if(comment.canDelete) commentHTML += '<li><a class="delete-comment" href="'+comment.pageUrl+'/comment?action=delete&amp;comment='+comment.id+'" id="del_'+comment.id+'">Delete</a></li>';
+                if(!comment.isViewer) commentHTML += '<li><a class="reply-comment" href="'+comment.username+'" id="reply_'+comment.id+'">Reply</a></li>';
+
+            commentHTML += '    </ul>';
+
+            commentHTML += '</section>';
+
+        $last_comment_id.val(comment.id); //update last_comment_id
+        selector.append(commentHTML);
+        var $nid = $("#"+comment.id);
+            $nid.addClass("pulse").not(".delete-comment,.reply-comment").ajaxify();
+        //$nid.css({'background-color':bgCol});
+        //setTimeout(function(){ $nid.css(fadeCss); },1000);
+        //setTimeout(function(){ $nid.css({"background":"white"}).addClass("pulse"); },1000);
+
+    }
+
+
+    //Quick polling operation for new comments...
+    function poll_for_comments(url){
+
+        if(!$comment_stream.length) return; // don't keep bloody polling if there's no comment stream, innit
+
+        var original_time = 5e3,
+            response = false,
+            profile = document.location.href.split("/").slice(-2).pop(); // WHATEVER.
+
+            //log("Profile we're looking at...",profile,document.location.href.indexOf(profile));
+
+        function ajax_poll(){
+
+            var lcID = $last_comment_id.val();
+
+            if(document.location.href.indexOf(profile) == -1) return; // don't keep polling if we're not on that profile page
+
+
+            $.ajax({
+                url : url,
+                type : "POST",
+                dataType : "JSON",
+                data : {"last_comment_id":lcID,"action":"poll"},
+                success : function (data) {
+                    //log("polled comments, got ", data);
+
+                    //if the response is the same as before, double the polling interval
+                    //log(response,data.comments)
+                    if (response.length == data.comments.length){
+                        //log("the same");
+                         checkTime = (checkTime *2);
+                    } else {
+                        //otherwise we're polling for the first time or resetting it
+                        checkTime = original_time;
+                    }
+
+                    response = data.comments;
+
+                    if(data.success){
+                        var comD = data.comments;
+                        for(var i=0; i<comD.length; i++){
+                            addComment(comD[i],$comment_stream);
+                        }
+                    } else {
+                        $comment_error.text(data.message);
+                    }
+                    //log(checkTime);
+                    if($comment_stream.length){
+                        setTimeout(function() { ajax_poll(); }, checkTime); // 10 seconds before polling again
+                    }
+                },
+                error : function (a,b,c){
+                    $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                    log("errors: ",a,b,c);
+                }
+            });
+        }
+        ajax_poll();
+    }
+
+
+/** END COMMENTS **/
+
+    var toggleCallout = function(id){
+        //log(id),$(id);
+        $(id).fadeToggle("fast");
+    };
+
+    /**
+        Stuff that needs re-initialising when the content is reloaded
+                                                                        **/
+
+    $content.bind("contentReady",function(){
+
+
+        $content.ajaxify(); //Ajaxify our internal links
+
+        // z-index fix for msie
+        //$(".header").fixZIndex({msieOnly:true});
+
+    /*
+        Google Analytics pageview tracking, cos the page has changed
+    */
+        if ( typeof window._gaq !== 'undefined') {
+            var relativeUrl = window.relative || false;
+            var manualPageViewUrl = $("#pageViewUrl").data('value');
+            if (manualPageViewUrl) { /* manual override case */
+                window._gaq.push(['_trackPageview', manualPageViewUrl]);
+            }
+            else if (relativeUrl){ /* ajax loaded page */
+                window._gaq.push(['_trackPageview', +relativeUrl]);
+            }
+            else { /* traditional page load */
+                window._gaq.push(['_trackPageview']);
+            }
+        }
+
+
+        // TODO: stick this in setupProfilePage when we've merged in
+        // player_refactor
+        if($('#tryNextArrow').length) {
+            // try next on profile page
+            var url = $('#tryNextArrow').data('url') + '/singletrynext';
+            $('#tryNextArrow').load(url, function() {
+                $('#tryNextArrow a').click(function(){
+                    if(window._gaq !==undefined){
+                        window._gaq.push(['_trackEvent',"TryNext","ProfileClicked"]);
+                    }
+                    return true;
+                });
+                $('#tryNextArrow').ajaxify();
+            });
+        }
+
+        // TODO: stick this in setupHomePage when we've merged in
+        // player_refactor
+        if($('#youMightLike').length) {
+            $('#youMightLike').hide();
+            $('#youMightLike').load('/home/youmightlike', function() {
+                var mightLinks = $('#youMightLike').find('a');
+                if (mightLinks.length) {
+                    mightLinks.click(function(){
+                        if(window._gaq !==undefined){
+                            window._gaq.push(['_trackEvent',"TryNext","HomeClicked"]);
+                        }
+                    });
+                    mightLinks.tipsy();
+                    $('#youMightLike').ajaxify();
+                    $('#youMightLike').slideToggle('fast');
+                    if(window._gaq !==undefined){
+                        window._gaq.push(['_trackEvent',"TryNext","HomeShown"]);
+                    }
+                }
+            });
+        }
+
+    /*
+        Re-establish selectors
+    */
+        var $paginateLink = $(".paginate"),
+            $comment_form = $("#comment-form"),
+            $comment_stream = $("#stream"),
+            tabs = $("ul.tabs"),
+            tabLinks = tabs.find("li a"),
+            $ddBox = $(".dropdownBox"),
+            $loader = $("#loading"),
+            $header = $("header"),
+            $footer = $("footer"),
+            $newsFeed = $("#newsFeed"),
+            $itemPlayButton = $('.itemPlayButton'),
+            $jamHolder = $("#jamHolder"),
+            $editLink = $("#backgroundEditLink"),
+            $editBgData = $("#editBgData"),
+            $saveAppSettings = $("#saveAppSettings"),
+            $comment_delete = $(".delete-comment"),
+            $comment_reply = $(".reply-comment"),
+            $comment_box = $("#comment_box"),
+            $load_suggestions = $("#loadedSuggestions"),
+            $attached_content = $(".attachedContent"),
+            $newsLike = $(".newsActions a.like"),
+            $sharePanelCaller = $("#sharePanelCaller"),
+            $customizeTweet = $("#customizeTweet"),
+            $customizeTwitter = $("#customizeTwitter"),
+            $expandSymbol = $("#expandSymbol"),
+            $twitterShare = $("#twitterShare"),
+            $ilikenotes = $("#ilikenotes"),
+            $mynewjam = $("#mynewjam"),
+            $tweet1 = $("#tweet1"),
+            $tweet2 = $("#tweet2"),
+            $tweet3 = $("#tweet3"),
+            $tweet4 = $("#tweet4"),
+            $profileCounter = $(".profile-counter"),
+            $anchorList = $(".anchorList"),
+            $fbBoxyCall = $("#fbPagesBoxyCall"),
+            $pageDisconnecter = $(".disconnect-page"),
+            $connectionsList = $(".page-connections"),
+            $loadingSpan = $("#waiting"),
+            $confirmDisconnect = $(".confirmDisconnect"),
+            $appsForm = $("#appsForm");
+
+        var $cols = $(".layer-left, .layer-right");
+
+        /*
+            Placehold
+                        */
+
+        var $placeholder = $("input,textarea");
+        if($placeholder.length){
+            $placeholder.placeholder();
+        }
+
+        /*
+            Modules and toggles
+                        */
+
+        // disable befriender search auto-focus for a bit
+        /*
+        if($('#befrienderModule').length &&
+           $('#befrienderModule').hasClass('expanded') &&
+           !$('#befriender-inner').children().length) // last one = if the befriender module is not open
+            $('#homeUserSearchInput').focus();
+        */
+
+        var $expander = $(".js-module-expander");
+            $expander.bind("click",function(e){
+                var $this = $(this);
+                var $module = $this.parent().parent();
+                if ($module.hasClass("moving")) return false; // sorry, busy right now
+                if ($module.hasClass("module")) { // sanity check
+
+                    var trackInterval = window.setInterval(function() {
+                        if(window.ytPlayer && window.ytPlayer.trackFunction)
+                            window.ytPlayer.trackFunction();
+                    }, 20);
+
+                    if($module.hasClass("expanded")){
+                        $module.addClass("moving");
+                        if (window.friendFinder) window.friendFinder.clearSearch();
+                        $this.parent().children("input").hide(); // hide any search inputs
+
+                        $this.parent().next().slideToggle('fast', function() {
+                            $module.css('width',$this.width()+70+"px");
+                            $module.removeClass("expanded");
+                            $module.removeClass("moving");
+                            window.clearInterval(trackInterval);
+                            window.ytPlayer && window.ytPlayer.trackFunction &&
+                                window.ytPlayer.trackFunction();
+                        });
+
+                        // log any dismissers
+                        if ($this.data('dismisser')) {
+                            $.ajax({
+                                url: 'ajax/dismisser',
+                                type: 'post',
+                                dataType: 'json',
+                                data: {
+                                    "type": $this.data("dismisser")
+                                }
+                            });
+                        }
+
+                    } else {
+
+                        StatsD.increment('befriender_shown');
+
+                        $module.addClass("moving");
+                        $module.css('width','100%');
+                         $this.parent().next().slideToggle('fast', function() {
+                             $this.parent().children("input").show(); // show any search inputs
+                             $module.addClass("expanded");
+                             $module.removeClass("moving");
+
+                             //$('#homeUserSearchInput').focus();
+
+                             window.clearInterval(trackInterval);
+                             window.ytPlayer && window.ytPlayer.trackFunction &&
+                                 window.ytPlayer.trackFunction();
+                         });
+                    }
+                }
+                e.preventDefault();
+                return false;
+            });
+            // Handle any existing expanders that need to be width-adj or hidden
+            if ($expander.length) {
+                $.each($expander, function() {
+                    var $ex_module = $(this).parent().parent();
+                    if ($ex_module.hasClass('module') && !$ex_module.hasClass('expanded')) { // do the width magic
+                        $ex_module.css('width', $(this).width()+70+"px");
+                    }
+                });
+            }
+
+        var $searchhint = $(".js-searchhint");
+        if ($searchhint.length) {
+            if ($($searchhint.data('for')).length) {
+                $($searchhint.data('for')).on('focusin', function() { $searchhint.show(); }).on('focusout', function() { $searchhint.hide(); });
+            }
+        }
+
+        /**
+         * Friend Finding component on home page
+        **/
+
+        // if we have the befriender template handlebars html anywhere on the page, and we're not already showing it
+        // TODO: this is a hack and it's pretty inefficient (especially the children()
+        // call), so let's just not fire contentReady when ajaxing in jams
+        // (see comment below)
+        if($('#newsFeed').length && !$('#befriender-inner').children().length) {
+            window.friendFinder = FriendFinder.getInstance('befriender-inner');
+        }
+
+        /*
+            Show Resend link (verify email flow)
+        */
+            var $resendShowingLink = $("#resendShowingLink");
+
+            if(($resendShowingLink).length){
+                $resendShowingLink.on("click",function(e){
+                    e.preventDefault();
+                    showResend();
+                });
+            }
+
+
+        $(".boxy-confirm").on("click", boxyConfirm);
+
+
+        /*
+            Settings with page connections etc, still in work
+                                                                */
+
+        /* TODO: Have one function that deals with connecting and disconnecting */
+
+    var disconnectPage = function(page_id,$context){
+        $.ajax({
+            url : "/settings/fbDisconnectPage",
+            data : {id:page_id},
+            type : "POST",
+            dataType : "JSON",
+            context : $context,
+            success : function(){
+                //log($(this));
+                $(this).parent().fadeOut(300,function(){
+                    $(this).remove();
+                });
+            },
+            error : function(){
+                log(arguments);
+            }
+
+        });
+
+    };
+
+    var showPagesSelector = function(pages){
+        //log(pages);
+        $fbBoxyCall.data("boxy").show();
+            var $fbPageChoices = $("#fb-page-choice"),
+            $fbPageConfirm = $("#pagesConfirm"),
+            html;
+
+        for(var i=0;pages.length>i;i++){
+
+            //log(pages[i]);
+            html +='<option value="'+pages[i].id+'">'+pages[i].name+'</option>\n';
+        }
+        //log(html);
+        $fbPageChoices.html(html);
+
+        $fbPageConfirm.unbind().on("click",function(){
+            var page_id = $fbPageChoices.find(":selected").val(),
+            page_name = $fbPageChoices.find(":selected").text();
+
+
+            return connectFacebookPage(page_id,page_name);
+        });
+    };
+
+    var connectFacebookPage = function(id,name){
+        var $connectionLoader = $("#connectLoader");
+
+        $.ajax({
+            type: 'post',
+            url: '/settings/fbConnectPage',
+            dataType: 'json',
+            data: {'id': id, 'name': name},
+            beforeSend : function(){
+                $("#pagesBox").find(".sign-content fieldset").hide();
+                $connectionLoader.show();
+            },
+            success: function(data) {
+                log(data);
+                if(data && typeof(data.html !=="undefined")){
+                    var htmlSnip = data.html;
+                    $fbBoxyCall.data("boxy").hide();
+                    $connectionsList.append(htmlSnip);
+                }
+
+            },
+            error: function() {
+                log(arguments);
+            },
+            complete : function(){
+                $connectionLoader.hide();
+                $("#pagesBox").find(".sign-content fieldset").fadeIn();
+            }
+        });
+    };
+
+    $confirmDisconnect.on("click",function(e){
+        e.preventDefault();
+        return confirmFacebookDisconnect();
+    });
+
+    $pageDisconnecter.die().live("click",function(e){
+        e.preventDefault();
+        var page_id = this.id.split("_").pop();
+        if(confirm("Are you sure you want to remove this page?"))
+            return disconnectPage(page_id,$(this));
+    });
+
+
+    $fbBoxyCall.boxy({
+        hideFade : 100,
+        hideShrink : false,
+        closeText : "",
+        draggable : true, // doesn't seem to be working?
+        unloadOnHide : true,
+        modal : true,
+        show: false,
+        cssClass: "white",
+        title:"Add A Facebook Page",
+        afterShow : function(){
+            // This is the point at which our functions take over from templating stuff...
+            $("body").addClass("unselectable");
+        },
+        afterHide : function(){
+            $("body").removeClass("unselectable");
+        }
+    }).on("click",function(){
+        var $this = $(this);
+
+        if($this.hasClass("disabled"))
+            return false;
+
+        $this.addClass("disabled");
+
+        fbLogin(fbDefaultScope + ",manage_pages",
+            function(data){
+                $.ajax({
+                    url         : "/settings/fbPagesList",
+                    dataType    : "JSON",
+                    beforeSend  : function(){
+                        $loadingSpan.fadeIn();
+                    },
+                    success     : function(data){
+                        log(data);
+                        if(typeof(data.error) !=="undefined"){
+                            log(data.error);
+                            return false;
+                        } else if(typeof(data.accounts) !=="undefined"){
+                            if(data.accounts.length > 0){
+                                return showPagesSelector(data.accounts);
+                            } else {
+                                alert("Hmm, it looks like you don't have any accounts to post to.\nAre you sure you gave This Is My Jam permission to post to your pages?\nPlease try again.");
+                            }
+                        }
+                    },
+                    error       : function(A,B,C){
+                        log(A,B,C);
+                    },
+                    complete : function(){
+                        $loadingSpan.fadeOut();
+                        $this.removeClass("disabled");
+                    }
+                });
+            }
+        );
+
+    });
+
+
+
+
+
+        /*
+        if($cols.length){
+            $windowHeight = $(window).height();
+            $cols.css({"min-height":$windowHeight+"px"});
+        }
+        */
+     /*
+            User Search
+                        */
+
+/*
+        var searchControls = function(e,$list){
+            var keyCode = e.keyCode || e.which,
+            action = {left: 37, up: 38, right: 39, down: 40, enter : 13, escape : 27 },
+            active = $list.index("active");
+
+            log(keyCode,active);
+            return;
+
+            switch (keyCode) {
+
+                case action.left :
+                    break;
+                case action.up :
+                      //..
+                    break;
+                case action.right :
+                      //..
+                    break;
+                case action.down :
+                      //..
+                    break;
+                case action.enter :
+                    //..
+                    break;
+                case action.escape :
+                    //..
+                    break;
+            }
+
+        };
+*/
+    /*
+        Edit link hover fix
+                            */
+
+        $jamHolder.hover(function(){
+            if($editLink.hasClass("editLink")){
+                $editLink.css({"visibility":"hidden"});
+            }
+        },function(){
+
+            if($editLink.hasClass("editLink") && !$('.playing').length){
+                $editLink.css({"visibility":"visible"});
+            }
+
+        });
+
+        /*
+            Sign up welcome screen guff
+                                        */
+        var $welcomeForm = $("#welcomeForm");
+        if($welcomeForm.length){
+
+            var $uName = $('input#username');
+
+            $.get("/welcome/grabAvatar");
+            $uName.focus();
+
+        }
+
+        /*
+            Profile-counter clicks gon toggle callouts
+                                                        */
+        $profileCounter.on("mouseenter",function(e){
+            e.preventDefault();
+            var $this = $(this),
+                calloutId = $this.data("callout");
+
+                $(".callout").not(calloutId).hide();
+
+            $("body").unbind().not(".callout").bind("click",function(){
+                if($(calloutId).is(":visible")){
+                    return toggleCallout(calloutId);
+                }
+            });
+
+            //$this.toggleClass("active");
+            if(!$(calloutId).is(":visible")){
+
+                return toggleCallout(calloutId);
+            }
+        });
+
+        //TODO - change this into a plugin
+        var $userSearchForm = $("#userSearchForm");
+
+        if($userSearchForm.length){
+
+            var $userSearchSubmit = $("#userSearchSubmit"),
+                $userSearchInput = $("#userSearchInput"),
+                $userSearchResults = $("#userSearchResults"),
+                $icon = $(".search-icon"),
+                $toggler = $("#searchMethodToggle");
+
+            $toggler.find("li a").on("click",function(e){
+                e.preventDefault();
+
+                var $this = $(this),
+                    method = $this.data("method"),
+                    placheholderText = (method === "artist") ? "e.g. Duran Duran"
+                        : "Username or full name";
+                    //log("click",$this,method);
+
+                $toggler.find("li a").removeClass("active");
+                $this.addClass("active");
+                $userSearchForm.attr("data-method",method);
+                $userSearchInput.val("").attr("placeholder",placheholderText);
+
+
+
+            });
+
+            //Reset Search Values on contentReady
+            searchVal = null;
+            searching = false;
+
+                $userSearchInput.on("focus",function(){
+                    if(!searching){
+                        //$userSearchForm.delay(1000).submit();
+                        $("body").not(".search-icon,#userSearchResults,#userSearchInput,#userSearchResults li a").click(function(e){
+                            //e.preventDefault();
+                            if(e.metaKey) return; // allow control clicks to happen
+                            //log(e);
+                            //return;
+                            $userSearchResults.html("");
+                            //$userSearchInput.val("");
+                            searchVal = null;
+                            searching = false;
+                        });
+                    }
+                }).on("keydown",function(e){
+
+                    //searchControls(e,$userSearchResults);
+
+                    //user presses escape
+                    if(e.which === 27){
+                        $userSearchInput.val("");
+                        $userSearchResults.html("");
+                        searchVal = null;
+                        searching = false;
+                    }
+                });
+
+                $userSearchSubmit.on("click",function(){
+                    if(!searching){
+                        $userSearchForm.delay(1000).submit();
+                    }
+                });
+
+                $userSearchForm.on("submit", function(e){
+                    //log("submitted");
+                    e.preventDefault();
+
+                    var value = $userSearchInput.val();
+
+                    if(value === ""){
+                        $userSearchResults.html("");
+                        return;
+                    }
+                    //log(value,$userSearchResults);
+                    checkUserResults(value,$userSearchResults,$userSearchForm.attr("data-method"));
+
+                    if(window._gaq !==undefined){
+                        window._gaq.push(['_trackEvent',"Actions","User search by " + $userSearchForm.attr("data-method") ]);
+                    }
+
+                    return false;
+                });
+
+        }
+
+            // Dismissing
+
+            $dismissableBlock = $(".dismissable");
+
+            if($dismissableBlock.length){
+                // call dismisser event function
+                dismisserInit();
+            }
+
+
+
+
+            // Sharing
+
+            if($sharePanelCaller.length){
+                var $sharePanel = $(".sharePanel"),
+                    sharePanelUrl = $sharePanelCaller.attr("href");
+
+                var sharePanel = new InPageSharePanel($sharePanelCaller.data('username'));
+                sharePanel.loadInto($sharePanel);
+                $('.shareLink').toggle(
+                    function() {
+                        sharePanel.show();
+                        if(window._gaq !==undefined){
+                            window._gaq.push(['_trackEvent',"Actions","Share Button Clicked"]);
+                        }
+                        return false;
+                    },
+                    function() {
+                        sharePanel.hide();
+                        return false;
+                    }
+                );
+            }
+
+        // BOXY
+
+            // Modal boxes
+            var $popLink = $(".sign-up, .sign-in");
+
+            //Set initial data for sign in boxes
+                // TODO: make less awful
+
+
+            if($popLink.length){
+
+                var popType = false,
+                //$signInBox = $('#sign-in-box'),
+                //$signUpBox = $('#sign-up-box'),
+                $uData = null,
+                $iData = null;
+
+                //setBoxes();
+                createPoppers($popLink);
+
+                // query string stuff
+                runSpotifyCheck();
+                runSignupCheck();
+
+            }
+
+
+            if($newsLike.length){
+                //log("GOT SOME NEWS LIKES ", $newsLike);
+                $newsLike.on("click",function(e){
+                    log("gertting clikkrd");
+                    e.preventDefault();
+
+                    var $this = $(this),
+                        action = ($this.hasClass("active")) ? "unlove" : "love",
+                        person = $this.data("profileperson"),
+                        num_id = $this.attr("id").split("_").pop();
+
+
+                    if($this.hasClass("disabled"))
+                        return false;
+
+
+                    //log($this,person,"got person?");
+
+                    $.ajax({
+                        url : "/" + person + "/" + action,
+                        type : "POST",
+                        dataType : "JSON",
+                        beforeSend : function(){
+                            $this.addClass("disabled");
+                        },
+                        success : function(d){
+                            log(d);
+                            if(d.success){
+                                $this.toggleClass("active");
+
+                                if(action === "unlove"){
+                                    $this.text("Like");
+                                    $this.attr("title", "Like this jam");
+                                } else {
+                                    $this.text("Liked");
+                                    $this.attr("title", "Unlike this jam?");
+                                }
+                                //Update count
+                                var $likeList = $this.parentsUntil(".newsActions").find(".lovers");
+                                    $likeList.html(d.loveCount + '<span class="likeList"></span>');
+                                    $likeList.attr("title",d.loversList);
+                                    $likeList.attr("original-title",d.loversList);
+                                $("#flap_"+num_id).toggle();
+                                var activate = (action === "love");
+                                window.player.updateLoveButton(person,activate);
+
+                            }
+                        },
+                        error : function(a,b,c){
+                            $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                            log(a,b,c);
+                        }, complete : function (){
+                            $this.removeClass("disabled");
+                            if(window._gaq !==undefined){
+                                window._gaq.push(['_trackEvent',"Actions",action]);
+                            }
+                        }
+                    });
+
+                    return false;
+                });
+
+            }
+
+            if($attached_content.length){
+                $attached_content.on("click",function(){
+                    var $this = $(this);
+                    $this.find(".username").click();
+                });
+            }
+
+            if($saveAppSettings.length && $appsForm.length){
+                $appsForm.on("change",function(){
+                    $saveAppSettings.removeClass("disabled");
+                });
+
+            }
+
+            // twitter settings
+            if ($customizeTweet.length) {
+
+                $customizeTweet.click(function(){
+                    if ($(this).hasClass('disabled'))
+                        return false;
+                    if ($customizeTwitter.is(":visible"))
+                        $expandSymbol.html('▶');
+                    else
+                        $expandSymbol.html('▼');
+                    $customizeTwitter.slideToggle('fast');
+                });
+
+                $twitterShare.change(function(){
+                    if ($(this).is(":checked"))
+                        $customizeTweet.removeClass('disabled');
+                    else {
+                        $customizeTweet.addClass('disabled');
+                        $customizeTwitter.slideUp('fast');
+                        $expandSymbol.html('▶');
+                    }
+                });
+
+                // todo: make these element or something, ugh
+                $ilikenotes.change(function(){
+                    $(".tweets").hide();
+                    if ($(this).is(":checked")) {
+                        if ($mynewjam.is(":checked"))
+                            $tweet1.show();
+                        else
+                            $tweet2.show();
+                    }
+                    else {
+                        if ($mynewjam.is(":checked"))
+                            $tweet3.show();
+                        else
+                            $tweet4.show();
+                    }
+                });
+                $(".twitterType").change(function(){
+                    $(".tweets").hide();
+                    if ($ilikenotes.is(":checked")) {
+                        if ($mynewjam.is(":checked"))
+                            $tweet1.show();
+                        else
+                            $tweet2.show();
+                    }
+                    else {
+                        if ($mynewjam.is(":checked"))
+                            $tweet3.show();
+                        else
+                            $tweet4.show();
+                    }
+                });
+            }
+
+
+        if($editBgData.length){
+
+            control = new Control();
+            control.backgroundImage = $editBgData.attr("data-bgImage");
+            control.backgroundRepeat = $editBgData.attr("data-bgRepeat");
+            control.backgroundPosition = $editBgData.attr("data-bgPosition");
+            control.backgroundColour = $editBgData.attr("data-bgColour");
+
+            if(location.href.match(/editBackground=1/)) {
+                window.setTimeout(function() {
+                    $("#backgroundEditLink").click();
+                }, 800);
+            }
+        }
+        else {
+            if(window.control)
+                control.destroy();
+        }
+
+
+        // Fade out the loader then remove it
+        $header.removeClass("loadingState");
+        $loader.fadeOut(300,function(){
+            $loader.remove();
+            if($("#loader").length){
+                $("#loader").remove();
+            }
+        });
+
+        // Hide dropdown box if it's showing
+        if($ddBox.is(":visible")){
+            actif.toggleClass("active");
+            $ddBox.toggle();
+        }
+
+
+        if(tabLinks.length){
+            //log("thinks we have tabs");
+            $("#errorMessage").not(".show").hide();
+            $("#successMessage").not(".show").hide();
+
+            tabs.each(function(i) {
+
+                //Get all tabs
+                var tab = $(this).find('li a');
+                //log(tab);
+                tab.live("click",function(e) {
+                    e.preventDefault();
+
+                    // applies to settings page
+                    $("#errorMessage").not(".show").hide();
+                    $("#successMessage").not(".show").hide();
+
+
+                    var $this = $(this),
+                    url = $this.attr("href"),
+                    contentSelector = "#" + url.split("?t=").pop(); // create a selector
+
+                    //History.replaceState({state:3}, "State 3", "?state=3"); // logs {state:3}, "State 3", "?state=3"
+
+                    //log(contentSelector,'contentSelector');
+                    //log($this);
+
+                    //Make Tab Active
+                    tab.removeClass('active');
+                    $this.addClass('active');
+
+                    $(contentSelector).show().addClass('active').siblings().hide().removeClass('active');
+                    /*
+                        Marking this as TODO becuase there's a bit too much going on with History at the moment
+                        if(History.enabled) History.pushState({"type":"tab"},null,url); //update the location
+                    */
+
+                    return false;
+
+                });
+            });
+            in_page_action("tabs","?t=");
+        }
+
+        /* Scroll arbitrarily */
+        if(window.location.href.indexOf("?scroll=") !== -1){
+            in_page_action("scroll","?scroll");
+        }
+
+        if($paginateLink.length){
+            checkPos(paginateSelector);
+        }
+
+        if($comment_form.length){
+            $comment_form.ajaxForm({
+            dataType: 'JSON',
+                success: function(data) {
+                    //log(data,data.length);
+                    if(data.success){
+                        var tA = $comment_form.find(".countable");
+                            comD = data.comments;
+                        tA.val("");
+                        for(var i=0; i<comD.length; i++){
+                            addComment(comD[i],$comment_stream);
+                        }
+                        /* Notify Google Analytics of a comment */
+                        if(window._gaq !==undefined){
+                            window._gaq.push(['_trackEvent',"Actions","Comment"]);
+                        }
+                    } else {
+                        $comment_error.text(data.message);
+                    }
+                }
+            });
+        }
+
+        /* No flash messages gon' noflash */
+        if (!window.hasFlash() && !Modernizr.audio && !Modernizr.video) {
+            /* flash isn't installed, show any relevant disclaimers */
+            $(".noflashmsg").show();
+            $(".itemPlayButton.youtube").addClass("disabled").removeClass("loading");
+        }
+        else if(!window.hasFlash() && !window.isIOS()) {
+            $(".noflashmaybemsg").show();
+        }
+
+        /*
+            Pollers Gon Poll
+                                */
+        if( $comment_stream.length && !$comment_stream.hasClass("closed") ){
+            var urlToPoll = $("#comment-form").attr("action");
+            in_page_action("scroll","?comment="); //get ? from history and scrollto if necessary.
+            poll_for_comments(urlToPoll);
+        }
+
+        /*
+            Comments again
+                            */
+
+        $comment_reply.live("click", function(e){
+
+            e.preventDefault();
+
+            var $this = $(this),
+                usrStr = "@" + $this.attr("href"),
+                val = $comment_box.val();
+
+            $comment_box.focus().val(usrStr + " " + val);
+
+            return false;
+        });
+
+        // Temporary fix to bubbling
+            // TODO - get to the bottom of multiple attachments
+        $comment_delete.die("click");
+
+        $comment_delete.live("click", function(e){
+            e.preventDefault();
+            var $this = $(this),
+                href = $this.attr("href"), // K...
+                split = href.split("?"), //Eh?
+                url = split[0], //wah?
+                postData = split[1]; //Ah!
+                id = this.id.split("del_").pop(); //Gah
+
+            if(confirm("Are you sure you want to delete this comment?"))
+            {
+                $.ajax({
+                    url: url,
+                    type : 'post',
+                    dataType: 'json',
+                    data: postData,
+                    context : $("#"+id),
+                    success: function(data) {
+                        if(data.success){
+                            $(this).fadeOut(300,function(){
+                                $(this).remove();
+                            });
+                        } else {
+                          $comment_error.text(data.message);
+                        }
+                    }
+                });
+
+                return false;
+
+            } else return false;
+        });
+
+
+
+        /*
+            Scrollers Gon Scroll
+            http://balupton.com/projects/jquery-scrollto
+                                                        */
+
+        if ( $body.ScrollTo ) {
+
+            if(!scrollOveride){
+                try {
+                    if (window.location.hash && $(window.location.hash).length)
+                        $(window.location.hash).ScrollTo(scrollOptions);
+                    else
+                        $body.ScrollTo(scrollOptions);
+                }
+                catch(e) {
+                    // failed to scroll.
+                }
+                $("#loading").remove();
+            } else {
+                scrollOveride = false; //reset
+            }
+        }
+
+        var $scroller = $(".scroller");
+            $scroller.on("click",function(e){
+                e.preventDefault();
+                var $this = $(this),
+                where = $this.attr("scroll-to") || $this.attr("href");
+                $(where).ScrollTo();
+                return false;
+            });
+
+        /*
+            iPhone hack replacer thing bootstrap
+            taken from jamvatar preview page
+                                                */
+        var $previewPlayer = $("#iphonePreviewPlayer"),
+            $holder = $("#jamHolder");
+
+        if( $previewPlayer.length ){
+            $previewPlayer.attr("width", $holder.width());
+            $previewPlayer.attr("height", $holder.height());
+        }
+
+        if ( $anchorList.length ) { // attach some scrollto mojo
+            $(".anchorList a").click(
+                function(){
+                    var target = $(this).attr('href');
+                    if ($(target).length) {
+                        $(target).ScrollTo();
+                        return false;
+                    }
+                }
+            );
+        }
+
+
+        /* Dropdowns like Last.fm
+                                    */
+
+        var $dropSelector = $(".dropdown_selector"),
+            $lastLists = $("#lastLists");
+        $dropSelector.dropdown($lastLists);
+
+
+        /*
+            Tooltips Gon Tip
+                                */
+        var $tipper = $(".tipsy");
+
+        if($tipper.length)
+            tipsyInit($tipper);
+
+        //TODO remove this and fix the CSS instead ffs
+        var $loggedOutLike = $(".button.like.loggedout");
+        if( $loggedOutLike.length ){
+            $loggedOutLike.tipsy();
+        }
+
+        /*
+            Stripes Gon Stripe
+                                */
+        var $loggedoutStripe = $loggedoutStripe || $("#data-loggedoutprofile");
+        if ($loggedoutStripe.length) {
+            $("#stripeUsername").html($loggedoutStripe.attr('data-username'));
+            // check if a dismissal cookie has been set, don't show if it has been dismissed
+            if ($(".dismiss-stripe").length) {
+                var cookiename = $(".dismiss-stripe").attr('id');
+                if (!$.cookie(cookiename))
+                    $("#messageStripe").show();
+            }
+            else {
+                $("#messageStripe").show();
+            }
+        }
+        else {
+            $("#messageStripe").hide();
+        }
+
+        /*
+            Poppers gon pop
+                            */
+        var $popper = $(".popper");
+        if($popper.length){
+            selector = $popper.attr("href");
+            log("selector stuff",selector,$(selector).html());
+            $popper.bootstrapPopover({
+                //popover_html : $(selector).html()
+                //autoshow : $popper.attr("data-autoshow"),
+                //autodismiss : $popper.attr("data-autodismiss")
+            });
+            $popper.on("click",function (e) {
+                e.preventDefault();
+            });
+        }
+
+        /*
+          Headers (don't show on home, show everywhere else)
+          */
+        if($("#bigHomeLogo").length)
+            $("header").addClass("loggedOutHome");
+        else
+            $("header").removeClass("loggedOutHome");
+        /*
+            Footers (only show the sidebar one on the logged-in homepage)
+        */
+        if ($newsFeed.length) {
+            $footer.hide();
+        }
+        else {
+            $footer.show();
+        }
+
+        /* Dismissers gon dismiss */
+        if($(".dismiss-stripe").length) {
+            $(".dismiss-stripe").click(function(){
+                var cookiename = $(this).attr('id');
+                $.cookie(cookiename, "dismissed", { expires: 365, path: '/' });
+                $("#messageStripe").slideToggle('fast');
+            });
+        }
+
+
+      /*
+        Forms
+        */
+
+      var $profileForm = $("#profileForm");
+      if($profileForm.length) {
+          $profileForm.ajaxForm({
+              success: function(message) {
+
+                  // if there is a response, there was an error.
+                  if(message) {
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#errorMessage").text(message);
+                      $("#errorMessage").fadeIn();
+                  }
+                  else {
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#successMessage").text('Thanks! Your profile settings have been saved.').fadeIn();
+                      $("input[type=file]").val('');
+
+                      // update avatar all over the place, force cache refresh
+                      // by adding arbitrary number to the end of the url
+                      var username = $("#settingsMain").attr("data-username");
+                      var hash = '&' + Math.floor(Math.random() * 100000);
+                      $("#profileForm .avatar img")
+                          .attr("src", "/" + username + "/avatar?size=normal" + hash);
+                      $("nav img.avatar")
+                          .attr("src", "/" + username + "/avatar?size=header" + hash);
+                  }
+              },
+              error: function(data) {
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#errorMessage").text("Oh dear, something's gone wrong. Please try again!");
+                      $("#errorMessage").fadeIn();
+              }, complete : function(){
+                    setTabsToHideMessages();
+              }
+          });
+      }
+      var $notificationsForm = $("#notificationsForm");
+      if($notificationsForm.length) {
+          $notificationsForm.ajaxForm({
+              success: function(data) {
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#successMessage").text('Thanks! Your notification settings have been saved.').fadeIn();
+              },
+              error: function(data) {
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#errorMessage").text("Oh dear, something's gone wrong. Please try again!");
+                      $("#errorMessage").fadeIn();
+              }, complete : function(){
+                    setTabsToHideMessages();
+              }
+          });
+      }
+      var $passwordForm = $("#passwordForm");
+      if($passwordForm.length) {
+          $passwordForm.ajaxForm({
+
+              success: function(data) {
+
+                  $("#errorMessage").hide(); // if not already hidden
+                  $("#successMessage").hide(); // if not already hidden
+
+                  if(data == "") {
+                      $("#successMessage").text('Thanks! Your password has been changed.').fadeIn();
+                  }
+                  else {
+                      $("#errorMessage").text(data).fadeIn();
+                  }
+              },
+              error: function(data) {
+
+                  log(data);
+
+                      $("#errorMessage").hide(); // if not already hidden
+                      $("#successMessage").hide(); // if not already hidden
+                      $("#errorMessage").text("Oh dear, something's gone wrong. Please try again!");
+                      $("#errorMessage").fadeIn();
+              }, complete : function(){
+                    setTabsToHideMessages();
+              }
+          });
+      }
+
+
+    if($appsForm.length) {
+        $appsForm.ajaxForm({
+            success: function(data) {
+                    $("#errorMessage").hide(); // if not already hidden
+                    $("#successMessage").hide(); // if not already hidden
+                    $("#successMessage").text('Thanks! Your app settings have been saved.').fadeIn();
+                    $saveAppSettings.addClass("disabled");
+            },
+            error: function(data) {
+                    $("#errorMessage").hide(); // if not already hidden
+                    $("#successMessage").hide(); // if not already hidden
+                    $("#errorMessage").text("Oh dear, something's gone wrong. Please try again!");
+                    $("#errorMessage").fadeIn();
+            }, complete : function(){
+                  setTabsToHideMessages();
+            }
+        });
+    }
+
+    function setTabsToHideMessages(){
+        $("#errorMessage").removeClass("show");
+        $("#successMessage").removeClass("show");
+    }
+
+
+      /*
+
+
+        Welcome forms gon' welcome
+      */
+    /**/
+      var $usernameInput = $("#welcomeForm #username");
+      if ($usernameInput.length) {
+          $usernameInput.keyup(function() {
+              $("#profileUrl span").html('thisismyjam.com/'+encodeURIComponent($usernameInput.val()));
+          });
+      }
+    /**/
+
+
+      // delete confirm checkbox
+          var $confirmBox = $("#confirmDelete");
+      if($confirmBox.length) {
+          $submitButton = $("#submitDelete");
+                $confirmBox.click(function(){
+                      if($confirmBox.prop("checked")){
+                            $submitButton.attr("disabled",false).removeClass('disabled');
+                      } else {
+                            $submitButton.attr("disabled",true).addClass('disabled');
+                      }
+          });
+      }
+
+        if(window.somethingIsPlayingAndItShouldStopOnNewPage) {
+            window.soundManager.stopAll();
+            window.somethingIsPlayingAndItShouldStopOnNewPage = false;
+        }
+
+      // hide player from meta / search youtube
+      if(window.videoIsVisible) {
+          window.videoIsVisible = false;
+          window.ytPlayer.stop();
+      }
+
+      window.ytPlayer.untrack();
+
+      // kill soundmanager from search page
+      if(window.searchPageSoundManagerPlaying)
+          soundManager.stopAll();
+
+
+        // show suggestions on home page, but not when logged out
+        if(window.location.pathname === '/' && $("#meAvatar").length) {
+            if (!$("#befrienderModule").length || !$("#befrienderModule").hasClass('expanded')) {
+                $.ajax({
+                    url : '/home/suggestions',
+                    context : $load_suggestions,
+                    success : function(data){
+                        $(this).html(data);
+                        $(this).ajaxify();
+                    },
+                    error : function(a,b,c){
+                        log(a,b,c);
+                    }
+                });
+            }
+        }
+
+
+        // TODO: move to backbone
+        setupPage();
+    });
+
+/** ADDING IN OUR SELECTORS HERE **/
+
+    var $fLink = $('.follow:not(.following)'),
+        $ufLink = $('.following'),
+        $like = $('.like a, a.like'),
+        paginateSelector = ".paginate",
+        $paginateLink = $(".paginate"),
+        $pagination  = $(".pagination");
+
+    /*
+        Follow & Unfollow
+        //TODO make unified controller for these with proper states, not dom representations.
+                        */
+
+    function updateFollowLink(type, link)
+    {
+        if(type === "follow"){
+            if ($(link).hasClass('done')) {
+                $(link).removeClass().addClass("follow button following tipsy done").find("span").text("following").tipsy();
+
+            } else {
+
+                $(link).removeClass().addClass("follow button following tipsy").find("span").text("following").tipsy();
+            }
+        } else {
+            $(link).removeClass().addClass("follow button tipsy").find("span").text("follow").tipsy();
+        }
+        var oldTitle = $(link).attr("original-title");
+        $(link).attr("original-title", $(link).attr("data-alt-title"));
+        $(link).attr("data-alt-title", oldTitle);
+        if(window._gaq !==undefined){
+            window._gaq.push(['_trackEvent',"Actions",type]);
+        }
+    }
+
+    function follow(type,user,link)
+    {
+        // any data-statsd attribute gets passed to the server, and gets
+        // recorded in our stats.
+        var data = {};
+        if($(link).attr('data-statsd'))
+            data.statsd = $(link).attr('data-statsd');
+
+        updateFollowLink(type, link);
+
+        var failType = type == 'follow' ? 'unfollow' : 'follow'
+
+        $.ajax({
+            url : "/"+user+"/"+type,
+            type : "POST",
+            dataType : "JSON",
+            data: data,
+            success : function(d){
+                //log(d);
+                if(d.success) {
+                    if(type == 'follow') {
+                        // insert into playing playlist and any visible playlists
+                        // on page
+                        window.player.insert(user);
+                        window.playlistBag.insertJamByUsername(user);
+                    }
+                    else {
+                        // insert into playing playlist and any visible playlists
+                        // on page
+                        window.player.remove(user);
+                        window.playlistBag.removeJamByUsername(user);
+                    }
+                }
+                else {
+                    updateFollowLink(failType, link);
+                    alert("Sorry we couldn't " + type + " that person. Please try again.")
+                }
+            },
+            error : function(a,b,c){
+                //log(a,b,c);
+                $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                updateFollowLink(failType, link);
+                alert("Sorry we couldn't " + type + " that person. Please try again.")
+            }
+        });
+    }
+
+    $fLink.live("click",function(e){
+
+        if($(this).hasClass("disabled"))
+            return false;
+
+        //TODO disable on click until data returned
+        // TODO increment user's follower count on page, add avatar if appropriate
+        e.preventDefault();
+        var t = 'follow',
+            u = $(this).attr('id').split('||').pop();
+        follow(t,u,this);
+    });
+    //$(selector).mouseenter(handlerIn).mouseleave(handlerOut);
+    $ufLink.live("mouseenter",function(){
+        if ($(this).hasClass("done")) return false;
+        var $sp = $(this).children("span");
+        $sp.html("Unfollow");
+        return false;
+    }).live("mouseleave",function(){
+        if ($(this).hasClass("done")) return false;
+        $(this).find("span").html("Following");
+    });
+
+    $ufLink.live("click",function(e){
+        //TODO disable on click until data returned
+        //TODO decrement user's follower count on page, remove avatar if appropriate
+        if ($(this).hasClass("done")) return false;
+        e.preventDefault();
+        var t = 'unfollow',
+            u = $(this).attr('id').split('||').pop();
+        follow(t,u,this);
+    });
+
+
+    window.updateLikeList = function(profilePerson, html, count) {
+        var $likeButton = $('.like a, a.like');
+        if($likeButton.length) {
+            var currentProfilePerson = $likeButton.attr('id').split('||').pop();
+
+            //If we're on a profile page
+            if(profilePerson == currentProfilePerson) {
+                var $likesCounter = $("#likesCounter"),
+                    $likesCallout = $("#loversCallout"),
+                    $likeHolder = $likesCallout.find("#likeHolder"),
+                    cntr = (count > 1) ? "Likes" : "Like";
+
+                // Add the number and 'like/likes' to the counter
+                $likesCounter.find(".number").html(count);
+                $likesCounter.find("span").last().html(cntr);
+
+
+                $likeHolder.fadeOut(30,function(){
+                    $likeHolder.html(html).ajaxify(); // Add in the list of likers
+                    if(!$likesCounter.is(":visible")){
+                        $likesCounter.fadeIn();
+                    }
+                    // if the callout is hidden and count > 0, fade it in
+                    if(!$likesCallout.is(":visible") && count > 0){
+                        $likesCallout.fadeIn();
+                    }
+                    if(count === 0){
+                        $likesCounter.fadeOut();
+                        $likesCallout.fadeOut();
+                    }
+                }).fadeIn();
+
+            }
+        }
+    };
+
+
+
+
+
+    /*
+        Paginators gon paginate
+                                */
+    $paginateLink.live("click",function(e){
+        e.preventDefault();
+        paginate(this);
+
+        return false;
+    });
+
+    function checkPos(selector){
+
+        var $element = $(selector); // re-set each time
+
+        //log("beginning to check",$element);
+
+        if(!$element.length){
+            return; // If we can't find the element then let's just fallback to the click method
+        }
+
+        var elementPosition = $element.position(),
+            top = elementPosition.top;
+            pos = (top - $(window).scrollTop());
+            //log(pos,"relative position");
+
+        if(top === 0){
+            return; //We've removed the link because there's no more paginating tuh be dun
+
+        }
+
+        if(pos < 900 && pos > 0)
+            return paginate($element);
+
+        return setTimeout(function(){checkPos(selector);},600);
+    }
+
+    var paginate = function (element) {
+        var $this = $(element),
+            url = $this.attr("href"),
+            page = url.substr(url.indexOf("page"),url.length),
+            num = parseFloat(page.substr((page.indexOf("=")+1),page.length))||1;
+
+            //log(num);
+
+        $this.addClass("loading").attr("disabled",true);
+
+        $.ajax({
+            url : url,
+            dataType : "json",
+            success : function(data){
+                //log("feed data",data);
+                addPageContent(data,element);
+            },
+            error : function(a,b,c){
+                $.post('/error/jsdebug', {data: {editError: {"a":a,"b":b,"c":c}}});
+                log("error",a,b,c);
+            }
+        });
+
+        var addPageContent = function (pageData,element) {
+            var $pagination = $(element).parent();
+                $paginateLink = $('.paginate'); // re-select the paginate link
+            scrollOveride = true;
+            if(pageData){
+                var feed = pageData.renderedFeed;
+                $(feed).insertBefore($pagination);
+                if(pageData.hasMore){
+
+                    var lastID = $(".newsItem:last").attr("id");
+
+                    //log(pageData,pageData.hasMore);
+                    $paginateLink.attr({"href":"home/feed?lastID=" + lastID});
+                    reenableLink($paginateLink,"loading"); // remove class loading and reenable link
+                } else {
+                    $pagination.remove();
+                }
+            } else {
+                $pagination.remove();
+            }
+
+            //fire contentReady so we re-tip tooltip elems etc
+            //
+            // TODO: let's change this. lots of things happen on contentReady,
+            //       most of which shouldn't happen when we just grab a new list
+            //       of jams.
+            $content.trigger("contentReady");
+        },
+        reenableLink = function ($link,extra){
+            $link.removeClass("disabled").attr("disabled",false);
+            if(typeof(extra) !="undefined"){
+                $link.removeClass(extra);
+            }
+        };
+
+
+    };
+
+
+    /*
+        Countables
+                    */
+
+    var cntr = $(".countable");
+        cntr.focus(function(){
+
+            //log($(this).next("span.counter").length);
+            if($(this).next("span.counter").length){
+                return false;
+            } else{
+                $(this).countable();
+            }
+
+        }).blur(function(){
+            //this is a hack, should really extend countable to have a destroy method
+                //e.g. $(this).countable({destroy:true});
+
+            var $this = $(this),
+                cnt = $this.next("span");
+
+            if(!cnt.hasClass("maxed")){
+                $(this).next("span").fadeOut(300,function(){
+                    $(this).remove();
+                });
+            }
+        });
+
+    $content.trigger("contentReady");
+
+});
+
+
+window.hasFlash = function() {
+    //return false;
+    return(swfobject.hasFlashPlayerVersion('9'));
+};
+
+Modernizr.addTest('ipad', function () {
+  return !!navigator.userAgent.match(/iPad/i);
+});
+
+Modernizr.addTest('iphone', function () {
+  return !!navigator.userAgent.match(/iPhone/i);
+});
+
+Modernizr.addTest('ipod', function () {
+  return !!navigator.userAgent.match(/iPod/i);
+});
+
+Modernizr.addTest('appleios', function () {
+    return (Modernizr.ipad || Modernizr.ipod || Modernizr.iphone);
+});
+
+Modernizr.addTest('firefox', function () {
+  return !!navigator.userAgent.match(/Firefox/i);
+});
+
+
+window.isIOS = function (){
+    //return true;
+    return Modernizr.appleios;
+};
+
+window.isiPhone = function (){
+    //return true;
+    return Modernizr.iphone;
+}
+
+$(document).ajaxComplete(function(){
+    try{FB.XFBML.parse();}catch(ex){}
+    try{window.twttr.widgets.load();}catch(ex){}
+});
+
+
+function fbLogin(scope, callback) {
+    // if we've been disconnected, try logging in again
+    //FB.getLoginStatus(function(response) {
+    //log(response);
+    //if(!response.authResponse) {
+    FB.login(function(response) {
+        if (!response.authResponse) {
+            $.post('/error/jsdebug', {data: {fbNotLoggedIn: JSON.stringify(response)}});
+        }
+
+        if(callback)
+            callback(response);
+
+    }, {scope: scope});
+    //}
+    //});
+}
+
+
+// reload without breaking playback (if html5 history exists)
+locationReload = function() {
+    if(History.replaceState)
+        History.replaceState(null, Array(Math.floor(Math.random() * 100)).join(' '), '/settings');
+    else
+        location.reload();
+}
+
+// enables you to extend objects without having to call Y.prototype = new X();
+// instead, call Y.prototype = extend(X);
+// stolen from EventEmitter
+function extend(clazz) {
+		// First thing we need to do is create our new prototype
+		// Then we loop over the current one copying each method out
+		// When done, simply return the clone
+		var clone = {},
+		current = clazz.prototype,
+		key = null;
+
+		for(key in current) {
+			  // Make sure this is actually a property of the object before copying it
+			  // We don't want any default object methods leaking though
+			  if(current.hasOwnProperty(key)) {
+				    clone[key] = current[key];
+			  }
+		}
+
+		// All done, return the clone
+		return clone;
+};
+
+// implements a sort of throttling. built for the volume control store
+// in session ajax call
+function callWhenStable(key, timeout, func)
+{
+    if(!window._callWhenStableIDs)
+        window._callWhenStableIDs = {};
+
+    if(key in window._callWhenStableIDs)
+        window.clearTimeout(window._callWhenStableIDs[key]);
+
+    window._callWhenStableIDs[key] = window.setTimeout(func, timeout);
+};
+
+function ytTrack() {
+    window.ytPlayer && window.ytPlayer.trackFunction &&
+        window.ytPlayer.trackFunction();
+};
+
+function boxyConfirm(e){
+    e.preventDefault();
+    var $this = $(this),
+    confirmTitle = $this.attr("original-title") || $this.attr("title"),
+    confirmLink = $this.data("confirmlink"),
+    confirmText = $this.data("confirmtext"),
+    customOk = $this.data("customok"),
+    customCancel = $this.data("customcancel"),
+    autoConfirm = $this.data("autoconfirm");
+
+    if (autoConfirm) {
+        window.location.href = confirmLink;
+        return false;
+    }
+
+    Boxy.confirm(confirmText,
+                 function() {
+                     if(confirmLink){
+                         window.location.href = confirmLink;
+                     }
+                 },
+                 {
+                     title : confirmTitle,
+                     closeText:"",
+                     cssClass : "white",
+                     hideShrink : false,
+                     afterShow : function(){
+                         // Add appropriate classes to the inputs
+                         $(this.boxy).find(".answers input").each(function(){
+                             var $this = $(this);
+
+                             $this.addClass("button bottomless");
+
+                             // NOTE: Custom ok and cancel won't work yet, requires changes to Boxy (so don't enable)
+                             if($this.val() == "OK"){
+                                 $this.addClass("yellow");
+                                 //if (customOk) {
+                                 //    $this.val(customOk);
+                                 //}
+                             }
+                             else if($this.val() == "Cancel" && customCancel) {
+                                 //$this.val(customCancel);
+                             }
+                         });
+                         $("body").addClass("unselectable");
+                     },
+                     afterHide : function(){
+                         $("body").removeClass("unselectable");
+                     }
+                 });
+
+    return false;
+};
+
+function basename(path) {
+    return path.replace(/\\/g, '/').replace( /.*\//, '');
+}
+
+function dirname(path) {
+    return path.replace(/\\/g, '/').replace(/\/[^\/]*$/, '');
+}
+
+

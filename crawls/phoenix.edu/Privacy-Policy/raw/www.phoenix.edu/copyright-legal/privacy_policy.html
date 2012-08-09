@@ -6,6 +6,10 @@
         <title>Privacy Policy - University of Phoenix
         </title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        
         <meta name="robots" content="noodp,noydir">
             
              
@@ -22,8 +26,6 @@
     
     
     <meta property="og:image" content="/etc/designs/ac/img/logo_header_upx.png">
-    <link href="../etc/designs/ac.css" rel="stylesheet" type="text/css">
-
     
     
     
@@ -32,8 +34,8 @@
 	<!-- RSS INCLUDE -->
     
     <!-- END RSS INCLUDE -->
-    
 	
+    
 	
 <link rel="stylesheet" type="text/css" href="../etc/designs/common/css/component.css">
 <link rel="stylesheet" type="text/css" href="../etc/designs/common/css/bootstrap.css">
@@ -47,18 +49,22 @@
     
 
     
+    
+	
+	
+	
+    
     <link rel="stylesheet" type="text/css" href="../etc/designs/ac/css/print.css" media="print">
     <!--[if lte IE 7]>
       <link rel="stylesheet" type="text/css" href="/etc/designs/ac/css/iehacks_print.css" media="print">
     <![endif]-->
-    
 	
 	
     <link rel="icon" href="../etc/designs/ac/img/favicon.ico.html" type="image/x-icon">
     <link rel="shortcut icon" href="../etc/designs/ac/img/favicon.ico.html" type="image/x-icon">
     <!-- BEGIN: VERSION INFO -->
     <script type="text/javascript">
-        var acVersion = "4.16.17";
+        var acVersion = "4.17.30";
     </script>                  
     <!-- END: VERSION INFO -->
     
@@ -69,6 +75,10 @@
 
 
 <script type="text/javascript">
+if ( typeof COMMON === 'undefined' ) {
+    COMMON = {};
+}
+
 if ( typeof UPX === 'undefined' ) {
     UPX = {};
 }
@@ -82,6 +92,11 @@ UPX.sessionservice = true;
 UPX.editmode = false;
 </script>
     <!-- END: LIST PAGE COMPONENTS -->
+	
+    <script type="text/javascript" src="../etc/designs/common/js/jquery.min.js"></script>
+    
+    
+    
 </head>
 
 <body id="contentpage" class="contentpage privacy_policy alternate">
@@ -169,19 +184,7 @@ function override(origclass, overrides) {
           }
       } 
 }
-/*
-override(ClickstreamcloudManager, {
-    "loadConfig": function() {
-        this.config = "";
-        this.isConfigLoaded = true;
-        this.fireEvent("configloaded");
-        this.fireEvent("storesloaded");
-        this.areStoresLoaded = true;
-        if (this.isMode(CQ_Analytics.CCM.POST_MODE_PAGELOAD)) {
-            this.post();
-        }
-    }
-}); */
+
 
   
 </script><script type="text/javascript" src="../etc/clientlibs/foundation/librarymanager.js"></script>
@@ -444,7 +447,6 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
           
             <div class="quickLinksColContainer quickLinks1ColContainer">
             
-            
                 
                 
                 
@@ -486,6 +488,8 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/programs/continuing-education.html" name="headeralternate_secondarynavlinks_quicklinks_meganav_continuing_education">Continuing Education</a>
+
+
                                              
                                          </li>
                              
@@ -504,6 +508,8 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/alumni.html" name="headeralternate_secondarynavlinks_quicklinks_meganav_alumni">Alumni</a>
+
+
                                              
                                          </li>
                              
@@ -522,6 +528,8 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/about_us/contact_us.html" name="headeralternate_secondarynavlinks_quicklinks_meganav_support">Support</a>
+
+
                                              
                                          </li>
                              
@@ -573,8 +581,13 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
 
 
 
+
+
+
 <script type="text/javascript">
-    // Load up the design properties
+
+(function(){
+ // Load up the design properties
     var mDesignProps = new Array();
     
         mDesignProps['prevPage1'] = '5.0';
@@ -596,15 +609,32 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
         mDesignProps['prevPage2'] = '4.0';
         mDesignProps['enablePageHistory'] = 'true';
         mDesignProps['prevPage3'] = '3.0';
-
     // takes care of &, <, >, etc values in the search query
-    var strQ = "";
-    var strQ = "";
+    //var strQ = "";
+    	strQ = "",
 
-    var bSortPopularity = ("true" == "");
+    	bSortPopularity = ("true" == ""),
+
+		params = {
+			numResPerPage: 10,
+			numPages: 10,
+			solrSearchUrl: '//www.phoenix.edu/find/search',
+			solrSuggestUrl: '//www.phoenix.edu/find/suggest',
+			strQuery: strQ,
+			sortPopularity: bSortPopularity,
+			blurbLengthFromProp: '160',
+			prefix: '',
+			mDesignProps: mDesignProps		
+		};
+
+	// Function that returns all the required attributes from that UPX_searchResults
+	// need on load for init function.
+	UPX.getSearchResultsInitializationParams = function(){
+		return params;
+	};
+
+})();
 </script>
-
-
 
 
 
@@ -631,8 +661,8 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
         </div>
         <div id="LiveChatLink">
             <p>Help:</p>
-            <a href="privacy_policy.html#" id="chatLive" name="header_chat-live" title="Chat live" onclick="javascript:cmCreateManualLinkClickTag('/LiveChat?cm_sp=Header%20Test-_-Control-_- Live%20Chat');">
-                <img src="../etc/designs/ac/img/homepageAlternate/chat-live-icon.png" width="81" height="18" alt="Chat live"/>
+            <a href="privacy_policy.html#" id="chatLive" name="header_chat-live" title="Live Chat" onclick="javascript:cmCreateManualLinkClickTag('/LiveChat?cm_sp=Header%20Test-_-Control-_- Live%20Chat');">
+                <img src="../etc/designs/ac/img/homepageAlternate/chat-live-icon.png" width="81" height="18" alt="Live Chat"/>
             </a>
             <p class="phoneNumber"></p>
             <script type="text/javascript">
@@ -1285,7 +1315,7 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
         }   
     });
    
-</script></div> <!-- end content-altcloud-en-headerAlternate--><script type="text/javascript">var exclude = setMboxCookie("EDU-Header-Navigation", "");mboxCreate("EDU-Header-Navigation", exclude ? "CampaignEntered=true" : "")</script></div>
+</script></div> <!-- end content-altcloud-en-headerAlternate--><script type="text/javascript">var exclude = setMboxCookie("EDU-Header-Navigation", "");mboxCreate("EDU-Header-Navigation","pagePath=" + window.location.pathname + "","student=" + (document.cookie.indexOf('euopx') > 0) + "", exclude ? "CampaignEntered=true" : "")</script></div>
 </div>
     <div id="headerPrint">
         <img alt="University of Phoenix" src="../etc/designs/ac/img/logo_header_upx_print.png">
@@ -1828,12 +1858,12 @@ $(function(){
         <div class="downloads">
             <h3>Upgrade your browser</h3>
             <ul>
-                <li class="ie"><a href="http://windows.microsoft.com/en-US/internet-explorer/downloads/ie"><span class="icn"></span><span class="action">Download Internet explorer</span></a></li>
-                <li class="ff"><a href="http://www.mozilla.org/en-US/firefox/new/"><span class="icn"></span><span class="action">Download Firefox</span></a></li>
+                <li class="ie"><a href="http://www.phoenix.edu/copyright-legal/windows.microsoft.com/en-US/internet-explorer/downloads/ie"><span class="icn"></span><span class="action">Download Internet explorer</span></a></li>
+                <li class="ff"><a href="http://www.phoenix.edu/copyright-legal/www.mozilla.org/en-US/firefox/new/"><span class="icn"></span><span class="action">Download Firefox</span></a></li>
             </ul>
             <ul>
-                <li class="safari"><a href="http://www.apple.com/safari/download/"><span class="icn"></span><span class="action">Download Safari</span></a></li>        
-                <li class="chrome"><a href="http://www.google.com/chrome"><span class="icn"></span><span class="action">Download Google Chrome</span></a></li>
+                <li class="safari"><a href="http://www.phoenix.edu/copyright-legal/www.apple.com/safari/download/"><span class="icn"></span><span class="action">Download Safari</span></a></li>        
+                <li class="chrome"><a href="http://www.phoenix.edu/copyright-legal/www.google.com/chrome"><span class="icn"></span><span class="action">Download Google Chrome</span></a></li>
             </ul>
         </div>
         
@@ -1885,7 +1915,6 @@ $(function(){
           
             <div class="quickLinksColContainer quickLinks2ColContainer">
             
-            
                 
                 
                 
@@ -1927,6 +1956,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/about_us/contact_us.html" name="footeralternate_footerlinks_quicklinks_meganav_contact_us">Contact us</a>
+
+
                                              
                                          </li>
                              
@@ -1945,6 +1976,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/about_us/media-center.html" name="footeralternate_footerlinks_quicklinks_meganav_media_relations">Media relations</a>
+
+
                                              
                                          </li>
                              
@@ -1963,6 +1996,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/about_us/employment.html" name="footeralternate_footerlinks_quicklinks_meganav_careers">Careers</a>
+
+
                                              
                                          </li>
                              
@@ -1995,6 +2030,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/campus-locations.html" name="footeralternate_footerlinks_quicklinks_meganav_campus_locations">Campus locations</a>
+
+
                                              
                                          </li>
                              
@@ -2013,6 +2050,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/about_us/campus_safety.html" name="footeralternate_footerlinks_quicklinks_meganav_campus_safety">Campus safety</a>
+
+
                                              
                                          </li>
                              
@@ -2031,6 +2070,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/programs/degree-programs/academic-catalog.html" name="footeralternate_footerlinks_quicklinks_meganav_academic_catalog">Academic catalog</a>
+
+
                                              
                                          </li>
                              
@@ -2098,7 +2139,6 @@ $(function(){
           
             <div class="quickLinksColContainer quickLinks2ColContainer">
             
-            
                 
                 
                 
@@ -2140,6 +2180,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/colleges_divisions/workforce-solutions.html" name="footeralternate_footerlinks_quicklinks_0_meganav_footer_nav_workforce_solutions">Workforce Solutions</a>
+
+
                                              
                                          </li>
                              
@@ -2157,7 +2199,9 @@ $(function(){
                                                  
                                                  
                                               
-                                                 <a href="http://www.phoenix.edu/colleges_divisions/global.html" name="footeralternate_footerlinks_quicklinks_0_meganav_footer_nav_global_education">Global education</a>
+                                                 <a href="http://www.phoenix.edu/colleges_divisions/global.html" name="footeralternate_footerlinks_quicklinks_0_meganav_footer_nav_international_division">International Division</a>
+
+
                                              
                                          </li>
                              
@@ -2176,6 +2220,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/colleges_divisions/military.html" name="footeralternate_footerlinks_quicklinks_0_meganav_footer_nav_military_division">Military Division</a>
+
+
                                              
                                          </li>
                              
@@ -2208,6 +2254,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/about_us/regulatory.html" name="footeralternate_footerlinks_quicklinks_0_meganav_footer_nav_regulatory_information">Regulatory information</a>
+
+
                                              
                                          </li>
                              
@@ -2226,6 +2274,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/about_us/regulatory/consumer-information.html" name="footeralternate_footerlinks_quicklinks_0_meganav_footer_nav_consumer_information">Consumer information</a>
+
+
                                              
                                          </li>
                              
@@ -2244,6 +2294,8 @@ $(function(){
                                                  
                                               
                                                  <a href="http://www.phoenix.edu/students/disability-services.html" name="footeralternate_footerlinks_quicklinks_0_meganav_footer_nav_disability_services">Disability services</a>
+
+
                                              
                                          </li>
                              
@@ -2326,12 +2378,8 @@ $(function(){
   
   <script type="text/javascript">
     $(function(){
-        UPX_searchResults.init(10, 10, '//www.phoenix.edu/find/search', '//www.phoenix.edu/find/suggest', strQ, bSortPopularity, '160', '');
-COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_searchResults', moduleArguments: [10, 10, '//www.phoenix.edu/find/search', '//www.phoenix.edu/find/suggest', strQ, bSortPopularity, '160', '']});
-UPX_socialLinks.init();
+        UPX_socialLinks.init();
 COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
-UPX_browserUpgradeNotification.init();
-COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_browserUpgradeNotification'});
 
     });
   </script>
@@ -2425,7 +2473,7 @@ CQ_Analytics.ClickstreamcloudMgr.addListener("storesloaded", function(e) {
   </body>
 
 <!--
-[Instance=cq02.dc1.aptimus.net; Elapsed=56 ms; Last Generated=Thu Aug 02 20:25:26 GMT+00:00 2012; ]
+[Instance=cq02.dc3.aptimus.net; Elapsed=36 ms; Last Generated=Thu Aug 09 17:26:19 GMT+00:00 2012; ]
 -->
 
 

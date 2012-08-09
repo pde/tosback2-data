@@ -5,7 +5,7 @@
 :::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
 
-//Dropdown Menu
+// DROPDOWN MENU
 function dropDownMenu() {
 	
 	var dropdownLinks = $(".dropdown-link");
@@ -51,7 +51,7 @@ function dropDownMenu() {
 $(document).ready(function() {
 	
 	
-	//MAIN NAV
+	// MAIN NAV
 	$(".dropdown-link").bind("click",dropDownMenu); //bind dropdown menu function
 	
 	$(".close").click(function(){ //close menu
@@ -66,11 +66,11 @@ $(document).ready(function() {
 	});
 
 	
-	//HOME IMAGE SLIDESHOW
+	// HOME IMAGE SLIDESHOW
 	$('#main-slideshow').flexslider({animationDuration: 400, directionNav: false, controlsContainer: "#main-slideshow"});
 		
 	
-	//FEATURED STORIES CAROUSEL
+	// FEATURED STORIES CAROUSEL
 	$('#featured-stories').tinycarousel({duration: 400});
 	
 	if ($('#logo a').css('display') == 'block') {
@@ -79,11 +79,11 @@ $(document).ready(function() {
 	}
 	
 
-	//RESPONSIVE VIDEOS
+	// RESPONSIVE VIDEOS
 	$('#main-content').fitVids();
 	
 	
-	//FANCYBOX GALLERIES
+	//::::: FANCYBOX GALLERIES
 	$('.gallery li a').fancybox({
 		scrolling : 'no',
 		helpers: {
@@ -97,15 +97,24 @@ $(document).ready(function() {
 	});
 	
 	
-	//DEPARTMENTS A-Z NAV
+	// DEPARTMENTS & PROGRAMS NAVIGATION
 	$('.dept-list-group').each(function(key, value) {
 		var letter = $(this).text().toLowerCase();
 		$("#dept-list-" + letter).removeClass("dept-list-inactive").addClass("dept-list-active");
 	});
 	
 
-	//TABLE STRIPES
+	// TABLE STRIPING
 	$(".stripe").find("tbody tr:odd").addClass("alt");
+	
+	
+	// iOS4 DETECTION TO REMOVE FIXED FOOTER
+	if ( /iPad/i.test(navigator.userAgent) ) {
+		if ( /OS [2-4]_\d(_\d)? like Mac OS X/i.test(navigator.userAgent) ) {
+			$('#page-wrap').css('margin-bottom','-30px');
+			$('#footer').css('position','relative');
+		}
+	}
 	
 	
 });

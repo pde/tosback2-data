@@ -3611,34 +3611,34 @@ $.fn.tnfBrandItemBuilder = function () {
     Locale.prototype.locales = [
       {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T20:09:27Z",
+        "created_at": "2011-08-18T15:09:27-05:00",
         "id": 2,
         "lang_identifier": "-12",
         "language": "en",
         "name": "en-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-21T20:24:13Z"
+        "updated_at": "2011-09-21T15:24:13-05:00"
       }, {
         "catalog_identifier": "10201",
-        "created_at": "2011-03-04T21:31:30Z",
+        "created_at": "2011-03-04T15:31:30-06:00",
         "id": 1,
         "lang_identifier": "-1",
         "language": "en",
         "name": "en-US",
         "region": "US",
         "store_identifier": "207",
-        "updated_at": "2011-08-19T18:12:06Z"
+        "updated_at": "2011-08-19T13:12:06-05:00"
       }, {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T20:09:27Z",
+        "created_at": "2011-08-18T15:09:27-05:00",
         "id": 3,
         "lang_identifier": "-13",
         "language": "fr",
         "name": "fr-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-23T22:11:13Z"
+        "updated_at": "2011-09-23T17:11:13-05:00"
       }
     ];
     Locale.prototype.current = function() {

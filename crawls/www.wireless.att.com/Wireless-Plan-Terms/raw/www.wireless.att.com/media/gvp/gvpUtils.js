@@ -13,9 +13,6 @@ function gvpUtils() {
 	var isIE = (version.indexOf("MSIE") != -1) ? true : false;
 	var isWin = (version.toLowerCase().indexOf("win") != -1) ? true : false;
 	var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
-	var isIphone = (navigator.userAgent.indexOf("iPhone") != -1) ? true : false;
-	var isAndroid = (navigator.userAgent.indexOf("android") != -1) ? true : false;
-	var isIpad = (navigator.userAgent.indexOf("iPad") != -1) ? true : false;
 	var aminCtr = 0;
 	var pSku;
 	var pVidSrc;
@@ -23,7 +20,6 @@ function gvpUtils() {
 	var body;
 	var mFooterButton = '';
 	var gvpVersion = '';
-	
 	var metaData = {};
 	
 	this.popOnLoad = function popOnLoad(p_QArray) {
@@ -100,11 +96,6 @@ function gvpUtils() {
 			return false;
 		}
 	};
-	
-	if( window.location.search.indexOf('android') != -1) {
-		isAndroid = true;
-		if ( typeof(console) != 'undefined' && v_debug ) console.log('is android');
-	}
 	
 	this.getFlashVersion = function getFlashVersion() {
 		return this.DetectFlashVer(9, 1, 2);
@@ -768,79 +759,12 @@ function gvpUtils() {
         return window.location;
     };
 	
-	this.iphone_vidCallback = function iphone_vidCallback(vidName, trust) {
-		var h264PathMarker = 'http://www.wireless.att.com/home/video_progressive/gvp/mp4/';
-		var pathToIphoneVid = h264PathMarker+vidName;
-		if(trust) {
-			gvp.iphoneStatusUpdater(200, pathToIphoneVid);
-			return true
-		}
-		if(isIphone) {
-			this.getElementObj('gvp_popCloseButton').style.fontSize = 28 + 'px';
-			this.getElementObj('gvp_mainPopUpTitle').style.fontSize = 28 + 'px';
-			this.getElementObj('gvp_popCloseButton').style.fontWeight = 200;
-			this.getElementObj('gvp_mainPopUpTitle').style.fontWeight = 200;
-			this.getElementObj('gvp_pPopDivTitle').style.marginTop = -14 + 'px';
-		}
-		this.getElementObj('gvp_mainPopupDiv').style.width = 666+'px';
-		this.getElementObj("gvp_mainPopupBody").innerHTML = '<img src="'+p_locEnv+'global_resources/defaultMedia/GVP_iPhone_checking.jpg" border="0" onload="gvp.divPopUp(\'mainPopupDiv\',true);" />';
-		try {
-			if ( typeof(console) != 'undefined' && v_debug ) console.log('in vid_Callback');
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("GET" ,pathToIphoneVid+'.html');
-			xmlhttp.onreadystatechange = function()	{
-				if (xmlhttp.readyState == 4) {
-					if ( typeof(console) != 'undefined' && v_debug ) console.log(xmlhttp.status);
-					if ( typeof(console) != 'undefined' && v_debug ) console.log('SUCCESS');
-					gvp.iphoneStatusUpdater(xmlhttp.status, pathToIphoneVid);
-				} else {
-					if ( typeof(console) != 'undefined' && v_debug ) console.log('ERROR');
-					gvp.iphoneStatusUpdater('error', pathToIphoneVid);
-				}
-			}
-			xmlhttp.send(null);
-		} catch(e) {
-			gvp.iphoneStatusUpdater('error', pathToIphoneVid);
-		}
-	};
-	
-	this.iphoneStatusUpdater = function iphoneStatusUpdater(status, vidPath) {
-		if ( typeof(console) != 'undefined' && v_debug ) console.log('in iphoneStatusUpdater with status: '+status);
-		if(status == 0) {
-			this.getElementObj("gvp_mainPopupBody").innerHTML = '<img src="'+p_locEnv+'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="gvp.closePopup();" onload="gvp.divPopUp(\'gvp_mainPopupDiv\',true);" />';
-		} else if(status == 200) {
-			this.getElementObj('gvp_mainPopupDiv').style.width = 535+'px';
-			this.centerDiv('gvp_mainPopupDiv');
-			// if(isIphone) {
-			// 				this.getElementObj("gvp_mainPopupBody").innerHTML = '<center><video id="currEmbStream" src="'+vidPath+'.mp4" poster="'+p_locEnv+'global_resources/defaultMedia/GVP_iPhone.jpg" controls="controls" width="512" height="288" onended="gvp.closePopup();"/></center>';
-			// 				gvp.divPopUp('gvp_mainPopupDiv',true);
-			// 				
-			// 			} else if(isIpad) {
-				this.getElementObj("gvp_mainPopupBody").innerHTML = '<center><video id="currEmbStream" src="'+vidPath+'.mp4" poster="'+p_locEnv+'global_resources/defaultMedia/GVP_iPhone.jpg" controls="controls" width="512" height="288" onended="gvp.closePopup();" /></center>';
-				this.centerDiv('gvp_mainPopupDiv');
-				gvp.divPopUp('gvp_mainPopupDiv',true);
-			//}
-		} else {
-			this.getElementObj("gvp_mainPopupBody").innerHTML = '<img src="'+p_locEnv+'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="gvp.closePopup();" onload="gvp.divPopUp(\'gvp_mainPopupDiv\',true);" />';
-		}
-	};
-	
 	this.rplFlash = function rplFlash(rplCode) {
 		if ( typeof(console) != 'undefined' && v_debug ) console.log("rplFlash() called with error code: "+rplCode);
         if(typeof rplCode != 'undefined') {
         	if(rplCode == 'noFlash') {
 				// user has no flash
 				this.getElementObj("gvp_mainPopupBody").innerHTML = '<a href="//www.adobe.com/products/flashplayer/" target="_Fp"><img src="'+p_locEnv+'global_resources/defaultMedia/GVP_NoFlash.jpg" border="0" onload="gvp.divPopUp(\'gvp_mainPopupDiv\',true);" border="0" /></a>';
-        	} else if(rplCode.indexOf('iPhone')!= -1) {
-        		// iphone user
-					var trust = false;
-        			var p_argSplit = rplCode.split('|');
-        			var vidName = p_argSplit[1];
-        			if ( typeof(console) != 'undefined' && v_debug ) console.log('vidname= '+vidName);
-					if(window.location.href.indexOf('rethinkpossible' != -1)) {
-						trust = true;
-					}
-        			this.iphone_vidCallback(vidName, trust); 
         	} else {
         		// error
 				this.getElementObj("gvp_mainPopupBody").innerHTML = '<img src="'+p_locEnv+'global_resources/defaultMedia/GVP_GeneralError.jpg" border="0" onload="gvp.divPopUp(\'gvp_mainPopupDiv\',true);" />';
@@ -1115,11 +1039,9 @@ function gvpUtils() {
 					} else {
 						p_locEnv = '/media/gvp/';
 					}
-					if(isIphone || isIpad || isAndroid) {
-						var nameStart = pConfig.lastIndexOf('/')+1;
-						var nameEnd = pConfig.indexOf('.',nameStart);
-						var h264FileName = pConfig.substring(nameStart, nameEnd);
-						this.rplFlash('iPhone|'+h264FileName);
+					if(this.mobile.isMobile) {
+						this.mobile.setContentStr(pConfig, p_locEnv);
+						this.mobile.openModal(this);
 					} else if (!this.getFlashVersion()) {
 						this.rplFlash('noFlash');
 					} else {
@@ -1379,8 +1301,75 @@ function gvpUtils() {
 		return p_isCustomer;
 	};
 
-
 }
+
+/*
+The subclass gvpUtils.mobile is defined below.  It encapsulates all mobile functionality of gvpUtils, and is available in the gvpUtils function scope through referencing this.mobile.  Specific devices are detected via their user agents, but this information is private to this class.  A simpler isMobile variable is provided as part of the public interface.
+
+The two main functions of this class are setContentStr and openModal.  setContentStr runs first and creates the appropriate HTML containing a video tag for the detected device and stores it in the contentStr variable.  The contents of this function are exactly the same for gvpUtils and gvpUtils_HR.  openModal opens a modal window and injects the HTML stored in the contentStr into it.  Adding support for a new device entails adding device detection, adding a case to the if/else block in setContentStr for the device, and possibly adding device-specific behavior to openModal.
+
+Currently Android devices are being detected and being shown the default "no video available" image.  This will be replaced with proper Android support in the future.
+*/
+gvpUtils.prototype.mobile = new function () {
+
+	//device detection
+	var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+	var isAndroid = /android/i.test(navigator.userAgent);
+	this.isMobile = isIOS || isAndroid;
+	
+	//other variables
+	var h264PathMarker = 'http://www.wireless.att.com/home/video_progressive/gvp/mp4/';
+	var closeModal = 'gvp.closePopup();';
+	var contentStr;
+	
+	//Store the appropriate video HTML in contentStr
+	this.setContentStr = function (pConfig, p_locEnv) {
+		var nameStart = pConfig.lastIndexOf('/')+1;
+		var nameEnd = pConfig.indexOf('.',nameStart);
+		var h264FileName = pConfig.substring(nameStart, nameEnd);
+
+		if (h264FileName === '') {
+			contentStr = '<img src="' + p_locEnv + 'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="' + closeModal + '" />';
+		}
+		else if(isIOS) {
+			//video tag
+			contentStr = '<video id="currEmbStream" style="display:none; position:absolute;" src="' + h264PathMarker + h264FileName + '.mp4" poster="' + p_locEnv + 'global_resources/defaultMedia/GVP_iPhone.jpg" controls="controls" width="512" height="288" onended="' + closeModal + '" onsuspend="gvp.mobile.iosOnSuspend();"></video>';
+			//loading image
+			contentStr += '<img id="gvp_loadImg" src="/images/global/ajaxLoader.gif" style="display:block; position:absolute; margin:122px 0 0 234px;">';
+		}
+		else if(isAndroid) {
+			contentStr = '<img src="' + p_locEnv + 'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="' + closeModal + '" />';
+		}
+	};
+	
+	//Open a modal and inject the contentStr
+	this.openModal = function (parent) {
+		parent.getElementObj('gvp_mainPopupDiv').style.width = '534px';
+		parent.getElementObj("gvp_mainPopupBody").style.width = '512px';
+		parent.getElementObj("gvp_mainPopupBody").style.height = '288px';
+		parent.getElementObj("gvp_mainPopupBody").innerHTML = contentStr;
+		parent.centerDiv('gvp_mainPopupDiv');
+		parent.divPopUp('gvp_mainPopupDiv',true);
+		
+		/*
+		// MFM 2012 JUL 24 - Attach a click listener to the video element after the video element has been inserted into the page.
+		if(isAndroid) {
+			var androidVideo = document.getElementById("currEmbStream");
+			androidVideo.addEventListener("click",function(){currEmbStream.play();},false);
+		}
+		 */
+	};
+	
+	//IOS 'ready to play video' event, hides loading image and shows video
+	this.iosOnSuspend = function () {
+		var video = document.getElementById('currEmbStream');
+		if (video.readyState == 0 && video.networkState == 1) {
+			document.getElementById('gvp_loadImg').style.display = 'none';
+			video.style.display = 'block';
+		}
+	};
+}();
+
 gvp = new gvpUtils();
 //var gvpVerRand = (Math.random() * 6);
 //gvp.incFile('/media/gvp/global_resources/gvpver.json?'+gvpVerRand);

@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "tbs.115.1870.20120229",
+	version: "tbs.154.1870.20120731",
 	release: "0",
 	dictionary: {
 		init: {
@@ -12,8 +12,9 @@ var _jsmd_default={
 			"business.friendly_name":			"tbs",					        		//prop30,eVar30,hier1
 			"page.clean_url":					"raw:gADBPURL|",		        		//prop26
 			"page.domain":						"raw:gADBPURL|domain",	        		//server,eVar29
-			"page.url_section":					"raw:gADBPURL|hier",	//prop41,eVar44,prop42,eVar45 - url hierarchy
+			"page.url_section":					"raw:gADBPURL|hier",					//prop41,eVar44,prop42,eVar45 - url hierarchy
 			"page.transaction_id":				(_w.cnnad_transactionID?_w.cnnad_transactionID+"":""),	//prop46,eVar46 - Transaction ID
+			"page.gu_id":						"raw:gCookie|ug",						//prop47,eVar47 - GU ID
 			"page.section[0]":              	"gJObj|tbs_metadata,section[0]",        //channel,eVar27
 			"page.section[1]":              	"gJObj|tbs_metadata,section[1]",        //prop28,eVar28
 			"video.franchise":					"gJObj|tbs_metadata,franchise",			//prop31,eVar31
@@ -23,7 +24,7 @@ var _jsmd_default={
 			"page.name":						"raw:gADBPPageName|",	        		//pageName,eVar26
 			"promo.internal.id":				"",			        					//eVar43
 			"promo.internal.implied":			"",					        			//eVar48
-			"promo.external.id":				"gQuery|o_cid,sr",			        		//campaign
+			"promo.external.id":				"gQuery|o_cid,sr",			        	//campaign
 			"search.internal.keyword":			"gQuery|query",	                        //prop39,eVar39
 			"search.internal.number_results":	"",	                            		//prop27
 			"page.type":						"errorPage",			        		//pageType
@@ -55,6 +56,9 @@ var _jsmd_default={
 			"tve.player_location":			"onsite",//prop11,eVar11
 			"tve.video.progress":			"0",
 			"tve.video.c3.marker":			"0:content",//prop13,eVar13
+			"tve.video.live.stream":		"",//prop14,eVar14
+			"tve.video.adload":				"",//prop15,eVar15
+			"tve.video.authentication":		"",//prop16,eVar16
 			"tve.user_id":					"Unspecified UserId",//prop19,eVar19
 			"tve.video.c4.marker":			"0:content",//prop20,eVar20
 			"tve.page.full_url":			window.location.href,//prop21
@@ -69,16 +73,18 @@ var _jsmd_default={
 			,
 			/* Business-Specific Standards */
 
-	"business.tbs.vid_type":		"",											//prop1,eVar1
-	"business.tbs.microsite":		"gTBSMicro|",								//prop2,eVar2
-	"business.tbs.lateral_nav":		"gJObj|tbs_metadata,lateral_nav",			//prop3,eVar3
-	"business.tbs.friendly_name":	"gJObj|tbs_metadata,friendly_name",			//prop4,eVar4
-	"business.tbs.research_cat":	"",											//prop5,eVar5
-	"business.tbs.full_ep":			"",											//prop6,eVar6
-	"business.tbs.full_url":		window.location.href,						//prop7,eVar7
-	"business.tbs.vid_segment":		"",											//prop8,eVar8
-	"business.tbs.link_name":		"",											//prop9,eVar9
-	"business.tbs.socialType":		""											//prop10,eVar10
+			"business.tbs.vid_type":		"",											//prop1,eVar1
+			"business.tbs.microsite":		"gTBSMicro|",								//prop2,eVar2
+			"business.tbs.lateral_nav":		"gJObj|tbs_metadata,lateral_nav",			//prop3,eVar3
+			"business.tbs.friendly_name":	"gJObj|tbs_metadata,friendly_name",			//prop4,eVar4
+			"business.tbs.research_cat":	"",											//prop5,eVar5
+			"business.tbs.full_ep":			"",											//prop6,eVar6
+			"business.tbs.full_url":		window.location.href,						//prop7,eVar7
+			"business.tbs.vid_segment":		"",											//prop8,eVar8
+			"business.tbs.link_name":		"",											//prop9,eVar9
+			"business.tbs.socialType":		"",											//prop10,eVar10
+			"business.tbs.game_title":		"",											//prop13,eVar13
+			"business.tbs.game_activity":	""											//prop14,eVar14
 
 			,
 			/* Pre-Metadata Collection Routines */
@@ -90,6 +96,7 @@ var _jsmd_default={
 			postinit: function() {
 
 	var tt=this.get("m:page.template_type")||"",ct=this.get("m:page.content_type")||"";
+
 	if(tt!=null) {
 		tt=tt.replace(/adbp./,"");
 		if(tt.match("other:") || tt.match("adbp:")){
@@ -97,7 +104,14 @@ var _jsmd_default={
 		} else {
 			this.set("m:page.template_type","adbp:" + tt);
 		};
+		if(tt.indexOf("misc") > -1){
+			var pn = this.get("page.name");
+			var pn_array = pn.split(":");
+			pn_array[1] = "mi";
+			this.set("page.name",pn_array.join(":"));
+		}
 	}
+
 	if(ct) {
 		ct=ct.replace(/adbp./,"");
 		this.set("m:page.content_type","adbp:"+ct);
@@ -105,20 +119,10 @@ var _jsmd_default={
 		var t = this.plugin.gADBPContentType("adbp:none");
 		this.set("m:page.content_type",t);
 	}
-	if(tt.indexOf("misc") > -1){
-		var pn = this.get("page.name");
-		var pn_array = pn.split(":");
-		pn_array[1] = "mi";
-		this.set("page.name",pn_array.join(":"));
-	}
+
 	if(ct.indexOf("article read") > -1){
 		this.push("page.events","article.read");
 	}
-	/*
-	if(this.get("page.url_section[0]") == ""){ //we follow the new format
-		this.set("page.url_section[0]","home");
-	}
-	*/
 
 	/* Default value for Channel/eVar27 */
 	if(this.get("m:page.section[0]") == ""){
@@ -156,7 +160,7 @@ var _jsmd_default={
 
 	/* Sends the registration event */
 	if((window.location.href.indexOf("flowExecutionKey=e1s2") > -1) &&
-	   (document.referrer.indexOf("flowExecutionKey=e1s1") > -1)){
+	(document.referrer.indexOf("flowExecutionKey=e1s1") > -1)){
 		this.push("page.events","registration.complete");
 	}
 
@@ -173,77 +177,22 @@ var _jsmd_default={
 		}
 		this.set("page.name",pn_array.join(":"));
 
-		/* search.internal.number_results : prop27 */
-		if (window.location.pathname.indexOf("apachesolr_search") != -1) {
-			var searchResultNumber, j = document.getElementsByTagName("strong");
-			for (var i = 0; i < j.length; i++) {
-				var r = j[i].innerHTML;
-				if (r.indexOf(" results") != -1) {
-					r = r.replace(" results","");
-					if ((parseFloat(r) == parseInt(r)) && !isNaN(r)) {
-						searchResultNumber = r;
-						break;
-					}
-				}
-			}
-			if(!searchResultNumber) { searchResultNumber = "zero"; }
-			this.set("search.internal.number_results",searchResultNumber);
-			/* search.internal.keyword : prop39,eVar39 */
-			var searchTerm = pathname.split("apachesolr_search/");
-			if (searchTerm[1]) {
-				searchTerm = searchTerm[1].toLowerCase();
-				searchTerm = searchTerm.replace("%20"," ");
-				this.set("search.internal.keyword",searchTerm);
-			}
-			/* search.internal.page : event27 */
-			var q = this.plugin.gQuery("page");
-			if (!q) { this.push("page.events","search.internal.page"); }
+		/* search code using TeamCocoOmniture JSON object */
+		var coco_search = _jsmd.plugin.gJObj("TeamCocoOmniture","search");
+		if(coco_search){
+			this.push("page.events","search.internal.page");
+			this.set("search.internal.keyword",coco_search.keywords);
+			this.set("search.internal.number_results",(coco_search.results == "0" ? "zero" : coco_search.results));
 		}
 
-		/* registration.complete : event28 */
-		if((document.referrer.indexOf("/user/register") != -1) && (window.location.href.indexOf("/user/login?message=reg") != -1)) {
+		/* registration event uses TeamCocoOmniture.postRegister */
+		if(TeamCocoOmniture && TeamCocoOmniture.postRegister == true) {
 			this.push("page.events","registration.complete");
 		}
 
-		/* user.login : event37 */
-		if((document.referrer.indexOf("/user/login") != -1) && (window.location.href.indexOf("/users/") != -1)) {
+		/* login event uses TeamCocoOmniture.postLogin */
+		if(TeamCocoOmniture && TeamCocoOmniture.postLogin == true){
 			this.push("page.events","user.login");
-		}
-	}
-	/* override for lopez tonight */
-	if (window.location.hostname.indexOf("lopeztonight.com") != -1) {
-		/* pageName,eVar26 */
-		var pn = this.get("page.name");
-		var pn_array = pn.split(":");
-		if (pn_array[2].indexOf("/") != -1) {
-			pn_array[3] = pn_array[2];
-			pn_array[2] = "lopeztonight.com";
-		} else {
-			pn_array[2] = pn_array[2] + ".lopeztonight.com";
-		}
-		this.set("page.name",pn_array.join(":"));
-
-		/* search.internal.number_results : prop27 */
-		if (window.location.pathname.indexOf("/search") != -1) {
-			var searchResultNumber, j = document.getElementsByTagName("strong");
-			for (var i = 0; i < j.length; i++) {
-				var r = j[i].innerHTML;
-				if ((parseFloat(r) == parseInt(r)) && !isNaN(r)) {
-					searchResultNumber = r;
-					break;
-				}
-			}
-			if(!searchResultNumber) { searchResultNumber = "zero"; }
-			this.set("search.internal.number_results",searchResultNumber);
-			/* search.internal.keyword : prop39,eVar39 */
-			var searchTerm = this.plugin.gQuery("q");
-			if (searchTerm) {
-				searchTerm = searchTerm.replace("+"," ");
-				this.set("search.internal.keyword",searchTerm);
-			}
-			/* search.internal.page : event27 */
-			var q = this.plugin.gQuery("submit.x");
-			if (q) { this.push("page.events","search.internal.page"); }
 		}
 	}
 
@@ -295,7 +244,8 @@ var _jsmd_default={
 			},
 			tbs: {
 				filters: {
-					"dynamic-link":						{ include: ["link_name"] }
+					"dynamic-link":						{ include: ["link_name"] },
+					"game-click":						{ include: ["game_title","game_activity"] }
 				},
 				account: function() {
 					var host = window.location.hostname;
@@ -310,7 +260,9 @@ var _jsmd_default={
 						(host.indexOf("tbstntallaccess.com") > -1) ||
 						(host.indexOf("teamcoco") > -1) ||
 						(host.indexOf("trendswithbenefits.com") > -1) ||
-						(host.indexOf("theconanblimp.com") > -1) ){
+						(host.indexOf("theconanblimp.com") > -1) ||
+						(host.indexOf("conan.xxx") > -1)
+					){
 						return "tcm-tbs-adbp";
 					}else{
 						return "tcm-tbs-adbp-dev";
@@ -339,14 +291,16 @@ var _jsmd_default={
 					"business.tbs.full_url":                ["prop7","eVar7"],
 					"business.tbs.vid_segment":				["prop8","eVar8"],
 					"business.tbs.link_name":				["prop9","eVar9"],
-					"business.tbs.socialType":				["prop10","eVar10"]
+					"business.tbs.socialType":				["prop10","eVar10"],
+					"business.tbs.game_title":				["prop13","eVar13"],
+					"business.tbs.game_activity":			["prop14","eVar14"]
 				},
 				eventmap: {
 					"social.interaction":					["event1"]
 				},
 				premap: function() { },
 				postmap: function() {
-					if(this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("click") > -1){
+					if(this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("social-click") > -1){
 						this.v.events = "event1";
 						this.v.linkTrackVars = "events,prop10,eVar10";
 					};
@@ -370,26 +324,31 @@ var _jsmd_default={
 					}
 
 					/* team coco : pageType = errorPage */
-					if (window.location.hostname.indexOf("coco") != -1 && document.title.indexOf("Oops! There was a problem.") != -1) {
+					if (window.location.hostname.indexOf("coco") > -1 && _jsmd.plugin.gJObj("TeamCocoOmniture","page") == "404") {
 						this.v.pageType = "errorPage";
 					}
 					if(this.v.pageType == "errorPage"){
 						var pn = this.get("page.name");
 						var pn_array = pn.split(":");
-						pn_array[1] = "mi";
+						pn_array[1] = "err";
 						this.v.pageName = pn_array.join(":");
 						this.v.eVar26 = "D=pageName";
-						this.v.prop32 = "adbp:misc";
+						this.v.prop32 = "adbp:error";
 						this.v.eVar32 = "D=c32";
 					}
 
 					/* Enable and Disable necessary video variables * /
 					/*  */ if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("preroll") > -1) {
-						this.v.linkTrackVars = "events,products,eVar1,eVar2,eVar5,eVar6,eVar8,eVar29,eVar30,eVar41,eVar42";
+						this.v.eVar2 = this.v.prop2;
+						this.v.eVar6 = this.v.prop6;
+						this.v.eVar41 = this.v.prop29;
+						this.v.eVar31 = this.v.prop31;
+						this.v.linkTrackVars = "events,products,eVar1,eVar2,eVar5,eVar6,eVar8,eVar29,eVar30,eVar31,eVar41,eVar42";
 					} else if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("progress") > -1) {
 						this.v.linkTrackVars = "events,products";
 					} else if (this.config.map.isDynamic != null && (this.config.map.isDynamic.indexOf("autostart") > -1 || this.config.map.isDynamic.indexOf("start") > -1)) {
-						this.v.linkTrackVars = "events,products,prop1,prop2,prop5,prop6,prop8,prop29,prop31,prop33,prop35,eVar1,eVar2,eVar5,eVar6,eVar8,eVar27,eVar29,eVar30,eVar31,eVar32,eVar33,eVar41,eVar42";
+						this.v.eVar31 = this.v.prop31; this.v.prop31 = "";
+						this.v.linkTrackVars = "events,products,prop1,prop2,prop5,prop6,prop8,prop29,prop33,prop35,eVar1,eVar2,eVar5,eVar6,eVar8,eVar27,eVar29,eVar30,eVar31,eVar32,eVar33,eVar41,eVar42";
 					} else if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("complete") > -1) {
 						this.v.eVar1 = this.v.prop1; this.v.prop1 = "";
 						this.v.eVar2 = this.v.prop2; this.v.prop2 = "";
@@ -446,11 +405,25 @@ var _jsmd_default={
 
 						}catch(e){}
 					}
+
+					if(this.v && this.v.prop31){
+						if(this.v.prop31.indexOf("conan") > -1){
+							this.v.prop31 = "conan";
+						}
+					}
+
+					/* Forces props 35,46,and 47 and eVars 46 and 47 to show up on every call */
+					this.v.prop35 = _jsmd_default.version + ":" + _jsmd_default.release;
+					if (_w.cnnad_transactionID) { this.v.prop46 = _w.cnnad_transactionID; this.v.eVar46 = "D=c46"; }
+					var guid = _jsmd.plugin.gCookie("ug");
+					if (guid) { this.v.prop47 = guid; this.v.eVar47 = "D=c47"; }
+					if(this.config.map.isDynamic != null){ this.v.linkTrackVars = this.v.linkTrackVars+",prop35,prop46,prop47,eVar46,eVar47";}
 				}
 			},
 			adbp: {
 				filters: {
-					"dynamic-link":						{ include: ["nothing"] }
+					"dynamic-link":						{ include: ["nothing"] },
+					"game-click":						{ include: ["code.version"] }
 				},
 				settings: {
 					"trackInlineStats":						true,
@@ -477,6 +450,7 @@ var _jsmd_default={
 					"m:video.id":							["eVar42"],
 					"m:promo.internal.id":					["eVar43"],
 					"m:page.transaction_id":				["prop46","eVar46"],
+					"m:page.gu_id":							["prop47","eVar47"],
 					"m:promo.internal.implied":				["eVar48"],				//Campaign Stacking (SEO Driven)
 					"m:promo.external.id":					["campaign"],			//Marketing/External Campaigns
 					"m:video.products":						["products"],
@@ -529,6 +503,9 @@ var _jsmd_default={
 					"tve.video_title":				["prop12"],
 					"tve.products":					["products"],
 					"tve.video.c3.marker":			["prop13","eVar13"],
+					"tve.video.live.stream":		["prop14","eVar14"],
+					"tve.video.adload":				["prop15","eVar15"],
+					"tve.video.authentication":		["prop16","eVar16"],
 					"tve.user_id":					["prop19","eVar19"],
 					"tve.video.c4.marker":			["prop20","eVar20"],
 					"tve.page.full_url":			["prop21"],
@@ -546,7 +523,11 @@ var _jsmd_default={
 					"tve.video.c3.video_progress":		["event6,event20,event22"],
 					"tve.video.c3a.video_start":	["event9,event13,event15,event21"],
 					"tve.video.c3a.video_progress":		["event5,event20,event22"],
-					"tve.video.c3a.video_complete":		["event5,event14,event20,event22"]
+					"tve.video.c3a.video_complete":		["event5,event14,event20,event22"],
+					"tve.video.live.video_start":		["event13,event27"],
+					"tve.video.offair.video_start":		["event13,event25"],
+					"tve.video.live.video_progress":	["event16,event20"],
+					"tve.video.live.video_complete":	["event14,event16,event26"]
 				},
 				premap: function() { },
 				postmap: function() {
@@ -555,7 +536,7 @@ var _jsmd_default={
 			},
 			"adbp-video": {
 				filters: {
-					"video-preroll":                    	{ include: ["video.title","video.id","business.friendly_name","video.preroll"] },
+					"video-preroll":                    	{ include: ["video.title","video.franchise","page.domain","video.id","business.friendly_name","video.preroll"] },
 					"video-complete":                   	{ include: ["business.tbs.vid_type","business.tbs.microsite","business.tnt.research_cat","business.tbs.full_ep","business.tbs.vid_segment","video.franchise","page.section[0]","page.domain","page.template_type","page.content_type","video.title","video.id","business.friendly_name","video.duration_watched","video.complete"] }
 				},
 				variablemap: {
@@ -619,24 +600,26 @@ var _jsmd_default={
 		/* Authentication - prop34,eVar34 */
 		gTBSAuthenticated:function() {
 			if (window.location.hostname.indexOf("coco") != -1) { //team coco
-				var dv = "anonymous";
-				/* check for isRegistered cookie */
-				var regCookie = _jsmd.plugin.gCookie("isRegistered");
-				if (regCookie != null && regCookie != "") {
-					if (regCookie == 1) {
-						dv = "reg:not logged in";
-						this.cookie.set("isRegistered",1,365);
+				var isLoggedIn = false;
+				var isRegistered = false;
+				/* Team Coco uses a parameter in the TeamCocoOmniture object called 'user' for authentication state */
+				var auth_state = _jsmd.plugin.gJObj("TeamCocoOmniture","user");
+				if(auth_state){
+					if(auth_state.isLoggedIn == true){
+						isLoggedIn = true;
+					}
+					if(auth_state.isRegistered == true){
+						isRegistered = true;
 					}
 				}
-				/* check for is_logged_in cookie */
-				var loginCookie = _jsmd.plugin.gCookie("is_logged_in");
-				if (loginCookie != null && loginCookie != "") {
-					if (loginCookie == "TRUE") {
-						dv = "reg:logged in";
-						this.cookie.set("isRegistered",1,365);
-					}
+				/* In Team Coco's case, if you're logged in, you're registered */
+				if(isLoggedIn == true){
+					return "reg:logged in";
+				} else if(isLoggedIn == false && isRegistered == true){
+					return "reg:not logged in";
+				} else {
+					return "anonymous";
 				}
-				return dv;
 			} else {
 				var rValue = 0;
 				if (this.gCookie("displayname")) {
@@ -808,7 +791,7 @@ var _jsmd_default={
 
 		,
 /**
- *Description: The plugins object contains helper methods, these methods have been broken up in the core library into an ABDP specific methods file (ï¿½plugins_adbp.jsï¿½) and Global methods file (ï¿½plugins_global.jsï¿½) ï¿½ All the methods in both files belong to the same plugins object and are compiled together in the build process.
+ *Description: The plugins object contains helper methods, these methods have been broken up in the core library into an ABDP specific methods file (�plugins_adbp.js�) and Global methods file (�plugins_global.js�) � All the methods in both files belong to the same plugins object and are compiled together in the build process.
  *
  */
 
@@ -1613,7 +1596,7 @@ var _jsmd_default={
 				var t=this.get("mb:video.player");
 				this.set("mb:video.player",v.video_player_name||t);
 			},
-			/*
+
 			"video-preroll": function(data, map) {
 				var v=data.video||{};
 				this.set("action","link");
@@ -1622,7 +1605,7 @@ var _jsmd_default={
 				this.send();
 				sendComscoreVideoMetrixBeacon(v.id,2); // Ad-related comscore call
 			},
-			*/
+
 			"video-start": function(data, map) {
 				var v=data.video||{};
 
@@ -1713,13 +1696,45 @@ var _jsmd_default={
 				this.set("action","link");
 				this.set("link",{name: "video-complete: "+ v.headline, type: "o"});
 				this.push("page.events","video.complete");
-				if(duration == ""){
+				if(window.location.hostname.indexOf("veryfunnyads") > -1){
+						if(timeSpent > 59 || timeSpent < 0){
+								timeSpent = 59;
+						}
 				} else {
-					if(timeSpent > duration * 2){
-						timeSpent = duration * 2;
-					};
-					this.send();
-				};
+
+						try { //check video time spent value
+
+							if ((parseFloat(timeSpent) == parseInt(timeSpent)) && !isNaN(timeSpent)) { //valid time spent value
+
+								if (timeSpent > 3600 || timeSpent < 0) { //video watched longer than an hour
+
+									if (duration && !isNaN(duration) && (parseFloat(duration) == parseInt(duration))) { //valid video length
+
+										timeSpent = parseFloat(duration) * 2;
+
+									} else { //invalid video length
+
+									timeSpent = 0;
+
+									}
+
+								}
+
+							} else { //invalid time spent value
+
+							timeSpent = 0;
+
+							}
+
+							} catch(e) { timeSpent = 0; }
+
+
+
+
+				}
+
+
+				this.send();
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"complete",v.id,timeSpent);
 
 				/* Code used in executing video progress */
@@ -1737,9 +1752,17 @@ var _jsmd_default={
 				this.push("page.events","social.interaction");
 				this.send();
 			},
+			"game-click": function(data,map) {
+				if (data.game_title) data.game_title = data.game_title.toLowerCase();
+				if (data.game_activity) data.game_activity = data.game_activity.toLowerCase();
+				this.set("business.tbs.game_title",data.game_title);		//prop13,eVar13
+				this.set("business.tbs.game_activity",data.game_activity);	//prop14,eVar14
+				this.set("action","link");
+				this.set("link",{name: "game-click: " + data.game_title, type: "o"});
+				this.send();
+			},
 			/* TVE Dyanmic Actions */
 			"tve-C4_video-start": function(data, map) {
-				clearInterval(setinterval_id);
 
 				var MSO = jsmd.tveMSO;
 				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
@@ -1751,13 +1774,19 @@ var _jsmd_default={
 				this.set("tve.video_title", data.title);//prop12
 				var brand = this.get("tve.brand");
 				var distribName = MSO;
-				if (MSO == "Unauthorized"){distribName = "unspecified mvpd"}
+				var authState = "authenticated";
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						authState = "not authenticated";
+				}
 				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
 				this.set("tve.content_id", data.contentId);//prop5,eVar5
-				this.set("tve.publication_date", data.airdate);//prop6,eVar6
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
 				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
 				this.set("tve.mode", data.tveMode);//prop8,eVar8
 				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				this.set("tve.video.authentication", authState);//prop16,eVar16
 
 
 				var grossLength = (data.grossLength)?data.grossLength:(data.trt)?data.trt:"";
@@ -1786,7 +1815,7 @@ var _jsmd_default={
 				var playerLocation = jsmd.get("tve.player_location");
 				try {
 					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation, prop20:"0:content", eVar20:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,eVar19,prop19,prop20,eVar20"};
+					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, prop20:"0:content", eVar20:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop16,eVar16,eVar19,prop19,prop20,eVar20"};
 	            	if(adTotal){
 	            		s_data["linkTrackEvents"] = "event13,event15,event23,event21";
 	            	}else { s_data["linkTrackEvents"] = "event13,event15,event23"; }
@@ -1800,7 +1829,6 @@ var _jsmd_default={
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",data.contentId,data.title);
 			},
 			"tve-C3_video-start": function(data, map) {
-				clearInterval(setinterval_id);
 
 				var MSO = jsmd.tveMSO;
 				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
@@ -1812,13 +1840,19 @@ var _jsmd_default={
 				this.set("tve.video_title", data.title);
 				var brand = this.get("tve.brand");
 				var distribName = MSO;
-				if (MSO == "Unauthorized"){distribName = "unspecified mvpd"}
+				var authState = "authenticated";
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						authState = "not authenticated";
+				}
 				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
 				this.set("tve.content_id", data.contentId);//prop5,eVar5
-				this.set("tve.publication_date", data.airdate);//prop6,eVar6
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
 				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
 				this.set("tve.mode", data.tveMode);//prop8,eVar8
 				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				this.set("tve.video.authentication", authState);//prop16,eVar16
 
 				var prodFranchise = data.franchise+"";
 				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
@@ -1846,7 +1880,7 @@ var _jsmd_default={
 				var playerLocation = jsmd.get("tve.player_location");
 				try {
 					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation, prop13:"0:content", eVar13:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop13,eVar13,eVar19,prop19"};
+					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, prop13:"0:content", eVar13:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop13,eVar13,prop16,eVar16,eVar19,prop19"};
 	            	if(adTotal){
 	            		s_data["linkTrackEvents"] = "event8,event13,event15,event21";
 	            	}else { s_data["linkTrackEvents"] = "event8,event13,event15"; }
@@ -2170,13 +2204,19 @@ var _jsmd_default={
 				this.set("tve.video_title", data.title);
 				var brand = this.get("tve.brand");
 				var distribName = MSO;
-				if (MSO == "Unauthorized"){distribName = "unspecified mvpd"}
+				var authState = "authenticated";
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						authState = "not authenticated";
+				}
 				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
 				this.set("tve.content_id", data.contentId);//prop5,eVar5
-				this.set("tve.publication_date", data.airdate);//prop6,eVar6
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
 				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
 				this.set("tve.mode", "C3A");//prop8,eVar8
 				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				this.set("tve.video.authentication", authState);//prop16,eVar16
 
 				var prodFranchise = data.franchise+"";
 				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
@@ -2204,7 +2244,7 @@ var _jsmd_default={
 				var playerLocation = jsmd.get("tve.player_location");
 				try {
 					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation, prop13:"0:content", eVar13:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop13,eVar13,eVar19,prop19"};
+					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, prop13:"0:content", eVar13:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop13,eVar13,prop16,eVar16,eVar19,prop19"};
 	            	if(adTotal){
 	            		s_data["linkTrackEvents"] = "event9,event13,event15,event21";
 	            	}else { s_data["linkTrackEvents"] = "event9,event13,event15"; }
@@ -2302,6 +2342,56 @@ var _jsmd_default={
 				this.send();
 
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"complete",data.contentId,data.title,data.trt);
+			},
+			"tve-live_video-start": function(data, map) {
+				var MSO = jsmd.tveMSO;
+				this.push("page.events","tve.video.live.video_start");
+				this.set("tve.page.name", data.sPageName);//"tve.brand" prop1,eVar1
+				var brand = this.get("tve.brand");
+				var distribName = MSO;
+				var authState = "authenticated";
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						authState = "not authenticated";
+				}
+				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
+				this.set("tve.content_id", data.contentId);//prop5,eVar5
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
+				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
+				this.set("tve.mode", "live");//prop8,eVar8
+				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				this.set("tve.video.live.stream", data.omnitureVideoName);//prop14,eVar14
+				this.set("tve.video.authentication", authState);//prop16,eVar16
+
+
+				this.set("tve.products", (";"+data.sPageName));
+				var playerLocation = jsmd.get("tve.player_location");
+
+				var act_rsid = jsmd.tveRSID;
+				var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, eVar26:"", linkTrackVars:"pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop11,eVar11,prop14,eVar14,prop16,eVar16,products,events", linkTrackEvents:"event13,event25"};
+	            this.set("business.vendor.sitecatalyst", s_data);
+
+				this.send();
+
+				sendComscoreVideoMetrixBeacon(data.contentId,1);	//content-related comscore call
+				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",data.contentId,data.sPageName);
+			},
+			"tve-live_video-complete": function(data, map) {
+			},
+			"tve-live_video-progress": function(data, map) {
+				var MSO = jsmd.tveMSO;
+				this.push("page.events","tve.video.live.video_progress");
+				this.set("tve.products", (";"+data.sPageName+";;;event16=60"));
+
+				this.set("action","link");
+				this.set("link",{name: "video progress", type: "o"});
+
+				var act_rsid = jsmd.tveRSID;
+				var s_data = {account:act_rsid, linkTrackVars:"products,events", linkTrackEvents:"event16,event20"};
+	            this.set("business.vendor.sitecatalyst", s_data);
+
+				this.send();
 			}
 		}
 
@@ -3215,12 +3305,6 @@ function sendNielsenVideoCensusBeacon(config,state,videoId,videoTitle,duration) 
 	}
 }
 
-/* Crowd Science Tag */
-(function(){
-    var cs = document.createElement('script'); cs.type = 'text/javascript'; cs.async = true;    cs.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'eabd3b6ed1.static.crowdscience.com/start-eabd3b6ed1.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cs, s);
-})();
-
 
 function TVE_VideoEvent(_data, _event){
 	var isJSON = false;
@@ -3274,20 +3358,31 @@ function TVE_VideoEvent(_data, _event){
     	if(vidObj.precent){dataObj.precent = vidObj.precent;}
     	if(vidObj.progressMarker){dataObj.progressMarker = vidObj.progressMarker;}
     	if(vidObj.totalPlayTime){dataObj.totalPlayTime = vidObj.totalPlayTime;}
+    	if(vidObj.seasonNumber){dataObj.seasonNumber = vidObj.seasonNumber;}
+    	if(vidObj.episodeNumber){dataObj.episodeNumber = vidObj.episodeNumber;}
+    	if(vidObj.lastAirDate){dataObj.lastAirDate = vidObj.lastAirDate;}
+    	if(vidObj.sPageName){dataObj.sPageName = vidObj.sPageName;}
+    	if(vidObj.omnitureVideoName){dataObj.omnitureVideoName = vidObj.omnitureVideoName;}
+    	if(vidObj.omnitureFranchise){dataObj.omnitureFranchise = vidObj.omnitureFranchise;}
+    	if(vidObj.franchiseId){dataObj.franchiseId = vidObj.franchiseId;}
+    	if(vidObj.isLive){dataObj.isLive = vidObj.isLive;}
     }catch(e){}
 	try{
         var action = vidObj.tveMode;
         if(_event === "video-complete"){
-        	if(vidObj.PullOutAdv=="true"){action = "tve-C3A_video-complete";}
+        	if(vidObj.isLive=="true"){action = "tve-live_video-complete"}
+        	else if(vidObj.PullOutAdv=="true"){action = "tve-C3A_video-complete";}
         	else if(action == "C4"){action = "tve-C4_video-complete";
 	        }else if(action == "C3"){ action = "tve-C3_video-complete"; }
         }else if(_event === "video-progress"){
-        	if(vidObj.PullOutAdv=="true"){action = "tve-C3A_video-progress"}
+        	if(vidObj.isLive=="true"){action = "tve-live_video-progress"}
+        	else if(vidObj.PullOutAdv=="true"){action = "tve-C3A_video-progress"}
         	else if(action == "C4"){action = "tve-C4_video-progress";
 	        }else if(action == "C3"){ action ="tve-C3_video-progress";}
         }else if(_event === "video-pause"){ action = "tve_video-pause";
         }else if( _event === "video-start" ){
-        	if(vidObj.PullOutAdv=="true"){action = "tve-C3A_video-start"}
+        	if(vidObj.isLive=="true"){action = "tve-live_video-start"}
+        	else if(vidObj.PullOutAdv=="true"){action = "tve-C3A_video-start"}
         	else if(action == "C4"){ action = "tve-C4_video-start";
         	}else if (action == "C3"){ action = "tve-C3_video-start";}
         }else if (_event === "ad-start") {
@@ -3353,7 +3448,7 @@ _jsmd.JSMD.prototype.tveRSIDList = {
     }
 };
 
-_jsmd.JSMD.prototype.tveRSID = (window.location.host === "www.tbs.com")?"tvenotauthtbs":"tvenotauthtbsdev";
+_jsmd.JSMD.prototype.tveRSID = (window.location.host === "www.tbs.com")?"tveglobal,tvenotauthtbs":"tveglobaldev,tvenotauthtbsdev";
 
 _jsmd.JSMD.prototype.sTVE_MSO = function(_MSO){
 	var MSO = _MSO;
@@ -3598,4 +3693,3 @@ var NielsenHybridTag=function(){
 }();
 
 /* END Nielsen Online SiteCensus V6.0 */
-

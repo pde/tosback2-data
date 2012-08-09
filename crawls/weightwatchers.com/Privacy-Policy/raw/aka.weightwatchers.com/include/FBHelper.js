@@ -95,9 +95,20 @@ function DoValidation(doValidation) {
     if (doValidation && doValidation == 'true') {
         validationResult = IsLoginCredentialsExist();
         if (!validationResult) {
+            var ctl;
+            ctl = document.getElementById("login_module_txtlogin");
             var missingFBUserNamePwdErr = document.getElementById(lblMissingUserNamePwdId);
             var errorMessages = document.getElementById("divErrorMessage");
             if (missingFBUserNamePwdErr) missingFBUserNamePwdErr.style.display = "inline";
+
+            if (missingFBUserNamePwdErr) {
+                missingFBUserNamePwdErr.setAttribute("TabIndex", -1);
+                var facebookText = missingFBUserNamePwdErr.innerHTML;
+                missingFBUserNamePwdErr.innerHTML = facebookText;
+                ctl.setAttribute("TabIndex", 0);
+                missingFBUserNamePwdErr.focus();
+            }
+
             if (errorMessages) errorMessages.style.display = "none";
         }
     }

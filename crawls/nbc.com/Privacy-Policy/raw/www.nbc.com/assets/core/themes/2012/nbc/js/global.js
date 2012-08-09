@@ -123,7 +123,14 @@ function loadGlobalDropdown() {
 }
 function loadGlobalDropdownShop() {
     var shopHeader = NBC('#dropdown-global-extras .shop'),
+        url;
+        
+    if (document.domain == "www.nbc.com") {
+        url = "/api/shop/products.php?cnt=3&thumbnailimgsize=107&description=1&format=json";        
+    } else {
         url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26thumbnailimgsize%3D107%26description%3D1%26format%3Djson";
+    }
+        
     NBC.ajax({
         url: url,
         contentType : "application/json",
@@ -239,7 +246,7 @@ function loadSiteDropdown() {
         var url = SITE.absoluteUrl + 'partials/dropdowns-site.shtml';
         dropdown_site_request = NBC.ajax({
             url: url,
-            cache: false
+            cache: true
         }).done(function(data) {
             dropdown_site = data;
             NBC('#dropdowns-site').html(dropdown_site);
@@ -298,44 +305,52 @@ function slideContentLoaded(args) {
     NBC(args.sliderObject).parent().parent().find('.slider-buttons .button:eq(' + args.currentSlideNumber + ')').addClass('selected');
 }
 function showSiteSliderButtons() {
-    NBC('header.site .slider-buttons .button .button-image').animate({top: "0px"}, 200, 'easeOutExpo');
+    NBC('header.site .slider-buttons .button .button-image').animate({top: "0px"}, 600, 'easeOutExpo');
 }
 function hideSiteSliderButtons() {
-    NBC('header.site .slider-buttons .button .button-image').animate({top: "90px"}, 800, 'easeOutExpo');
+    NBC('header.site .slider-buttons .button .button-image').animate({top: "90px"}, 900, 'easeOutExpo');
 }
 /* INIT */
 function initSlider() {
-    if (NBC('.slider-container .slider').length > 0){
+    var slider = NBC('.slider-container .slider');
+    if (slider.length > 0){
         var autoSlide = false,
             numSlides = NBC('.slider-container .slider .slide').length;
         if (numSlides > 1) {
             autoSlide = true;
         }
         NBC('header.site .logo').hide(0);
-        NBC('.slider-container .slider').iosSlider({
+        slider.iosSlider({
             snapToChildren: true,
             autoSlide: autoSlide,
-            infiniteSlider: true,
+            infiniteSlider: autoSlide,
+            desktopClickDrag: true,
             navSlideSelector: NBC('.slider-buttons .button'),
-            navPrevSelector: NBC('.slider-container .icons-arrow-slider-left'),
-            navNextSelector: NBC('.slider-container .icons-arrow-slider-right'),
+            // navPrevSelector: NBC('.slider-container .icons-arrow-slider-left'),
+            // navNextSelector: NBC('.slider-container .icons-arrow-slider-right'),
             responsiveSlideContainer: false,
             responsiveSlides: false,
             onSlideChange: slideContentChange,
             onSliderLoaded: slideContentLoaded
         });
+        if (numSlides <= 1) {
+            NBC('header.site .slider-buttons').hide(0);
+            slider.iosSlider('lock');
+        } else {
+            NBC('header.site .slider-container').hover(function (e) {
+                e.stopPropagation();
+                // NBC('.slider-container .icons-arrow-slider-left, .slider-container .icons-arrow-slider-right').fadeIn(200, 'easeOutExpo');
+            //    showSiteSliderButtons();
+            }, function (e) {
+                e.stopPropagation();
+                // NBC('.slider-container .icons-arrow-slider-left, .slider-container .icons-arrow-slider-right').fadeOut(200, 'easeOutExpo');
+            //    hideSiteSliderButtons();
+            });
+        }
+        NBC('header.site .slider-buttons').hover(showSiteSliderButtons, hideSiteSliderButtons);
+        NBC('.slider-container .icons-arrow-slider-left, .slider-container .icons-arrow-slider-right').hide();
+        setTimeout(hideSiteSliderButtons, 3000);
     }
-    if (numSlides <= 1) {
-        NBC('header.site .slider-buttons').hide(0);
-    } else {
-        NBC('header.site .slider-container').hover(function () {
-            NBC('.slider-container .icons-arrow-slider-left, .slider-container .icons-arrow-slider-right').fadeIn(200, 'easeOutExpo');
-        }, function () {
-            NBC('.slider-container .icons-arrow-slider-left, .slider-container .icons-arrow-slider-right').fadeOut(200, 'easeOutExpo');
-        });
-    }
-    NBC('header.site .slider-buttons').hover(showSiteSliderButtons, hideSiteSliderButtons);
-    setTimeout(hideSiteSliderButtons, 3000);
 }
 /* -------------------------------------------------------------------------*/
 /* Footer */
@@ -360,11 +375,13 @@ function loadGlobalFooter() {
 }
 function loadGlobalFooterShop() {
     var shopFooter = NBC('footer.global #shop-footer'),
-        url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26thumbnailimgsize%3D77%26format%3Djson";
-        
-    if (SITE.id != '69') {
-        url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26keywords%3D" + SITE.id + "%26thumbnailimgsize%3D77%26format%3Djson";
-    }   
+        url;
+    
+    if (document.domain == "www.nbc.com") {
+        url = "/api/shop/products.php?cnt=3&thumbnailimgsize=77&format=json" + ((SITE.id != '69') ? "&keywords=" + SITE.id : "");
+    } else {
+        url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26thumbnailimgsize%3D77%26format%3Djson" + ((SITE.id != '69') ? "%26keywords%3D" + SITE.id : "");
+    }
      
     NBC.ajax({
         url: url,
@@ -575,7 +592,7 @@ function initTransitional() {
         el.css('background', 'none');
         el.css('background-image', 'none');
     }
-}
+} 
 /* -------------------------------------------------------------------------*/
 /* Show homepage videos */
 function initShowsMainVideo() {
@@ -584,6 +601,7 @@ function initShowsMainVideo() {
     
     NBC.ajax({
         dataType : 'script',
+        cache: true,
         url : "/assets/core/plugins/video/jquery.video.js",
         error:function(a,b,c){ if(typeof console != 'undefined' && console.log){ console.log('initShowsMainVideo', c); } },
         complete: function(){

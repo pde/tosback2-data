@@ -1,0 +1,154 @@
+AudioPlaybackHandler = function(player)
+{
+    EventEmitter.call(this);
+
+    this.soundId = 'jam';
+    this.currentSound = null;
+    this.player = player;
+    this.volume = 100;
+};
+
+AudioPlaybackHandler.prototype = extend(EventEmitter);
+
+AudioPlaybackHandler.prototype.load = function(jam, autoPlay, secondTry)
+{
+    var promise = $.Deferred();
+
+    var playbackHandler = this;
+
+    var endPoint = secondTry ? 'tempfile2' : 'tempfile';
+
+    if(window.playerView.isOnMetaPage())
+        endPoint += "?isDraft=true";
+
+    $.ajax(
+        {url: "/" + jam.username + "/" + endPoint,
+         type: "POST",
+         async: false,
+         dataType: "JSON",
+
+         success: function(data) {
+             var audioUrl = data.tempfile;
+
+             // canPlayURL is stupid and only checks filename. doesn't work with SC
+             if(playbackHandler.currentSound)
+                 playbackHandler.currentSound.destruct();
+
+             playbackHandler.currentSound = window.soundManager.createSound({
+                 id: playbackHandler.soundId,
+                 url: audioUrl,
+                 autoLoad: true,
+                 autoPlay: true,
+                 volume: playbackHandler.volume,
+                 onload: function(success) {
+                      if(success) {
+                         playbackHandler.emit('duration', playbackHandler.currentSound.duration / 1000);
+                     }
+                     else {
+                         $.post('/error/jsdebug', {data: {errorInPlayingJamFirstTry: jam.id, person: jam.person}});
+                         if(secondTry) {
+                             $.post('/error/jsdebug', {data: {errorInPlayingJamSecondTry: jam.id, person: jam.person}});
+                             playbackHandler.onError();
+                             promise.fail('Oops, we had a problem playing that jam. Please try again.');
+                         }
+                         else
+                             return playbackHandler.load(jam, autoPlay, true);
+                     }
+
+                 },
+                 onplay: function() {
+                     promise.resolve();
+                 },
+                 onfinish: function() {
+                     playbackHandler.onFinish();
+                 }
+             });
+             if(!autoPlay)
+                 playbackHandler.pause();
+         },
+         error: function(data, textStatus, errorThrown) {
+             JamError.show('Oops, we had a problem playing that jam. Please try again.');
+             playbackHandler.onError();
+             promise.fail('Oops, we had a problem playing that jam. Please try again.');
+         }
+        }
+    );
+
+    return promise;
+};
+
+AudioPlaybackHandler.prototype.play = function(jam)
+{
+
+    var promise = $.Deferred();
+
+    var playbackHandler = this;
+    this.load(jam, true).then(function(isPlaying) {
+        // we've actually started playing
+        promise.resolve();
+    }).fail(promise.fail.bind(promise));
+
+    return promise;
+};
+
+AudioPlaybackHandler.prototype.pause = function()
+{
+    window.soundManager.pause(this.soundId);
+};
+
+AudioPlaybackHandler.prototype.resume = function()
+{
+    if(this.currentSound.position === null) {
+        this.currentSound.play({
+            onfinish: function() {
+                playbackHandler.onFinish();
+            }
+        });
+    }
+    else {
+        this.currentSound.resume();
+    }
+};
+
+AudioPlaybackHandler.prototype.stop = function()
+{
+    //console.log(this.currentSound);
+    if(this.currentSound) {
+        window.soundManager.stopAll();
+        this.currentSound.destruct();
+        this.currentSound = null;
+    }
+};
+
+AudioPlaybackHandler.prototype.isAndroid = function()
+{
+    return navigator.userAgent.toLowerCase().indexOf("android") > -1;
+};
+
+// called on newPage on feed
+AudioPlaybackHandler.prototype.show = function()
+{
+    null;
+};
+AudioPlaybackHandler.prototype.hide = function()
+{
+    null;
+};
+AudioPlaybackHandler.prototype.getName = function()
+{
+    return 'soundmanager';
+};
+AudioPlaybackHandler.prototype.getElapsedTime = function()
+{
+    return window.soundManager.sounds.jam.position / 1000;
+};
+
+
+AudioPlaybackHandler.prototype.setVolume = function(volume)
+{
+    if(this.currentSound)
+        this.currentSound.setVolume(volume);
+    this.volume = volume;
+};
+
+AudioPlaybackHandler.prototype.onError = function() { }

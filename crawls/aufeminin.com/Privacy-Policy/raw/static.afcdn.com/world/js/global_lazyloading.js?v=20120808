@@ -1,0 +1,68 @@
+﻿
+function af_findPos(o){
+	if (!o || o==document.body) return { l:0, t:0 };
+	var l = t = 0, b = document.body, w = o.offsetWidth, h = o.offsetHeight;
+	if (o.offsetParent) {
+		l = o.offsetLeft - o.scrollLeft;
+		t = o.offsetTop - o.scrollTop;
+		while (o = o.offsetParent) {
+			l += o.offsetLeft - (o!=b ? o.scrollLeft : 0);
+			t += o.offsetTop - (o!=b ? o.scrollTop : 0);
+		}
+	}
+	return { l:l, t:t, r:l+w, b:t+h, w:w, h:h };
+}
+
+function af_windowSize() {
+	var i = window, e = document.documentElement, b = document.body;
+	var w = ( i.innerWidth ? i.innerWidth : ( e && e.clientWidth ? e.clientWidth : (b &&  b.clientWidth ? b.clientWidth : 0) ) );
+	var h = ( i.innerHeight ? i.innerHeight : ( e && e.clientHeight ? e.clientHeight : (b &&  b.clientHeight ? b.clientHeight : 0) ) );
+	var l = ( i.pageXOffset ? i.pageXOffset : ( e && e.scrollLeft ? e.scrollLeft : (b &&  b.scrollLeft ? b.scrollLeft : 0) ) );
+	var t = ( i.pageYOffset ? i.pageYOffset : ( e && e.scrollTop ? e.scrollTop : (b &&  b.scrollTop ? b.scrollTop : 0) ) );
+	return { l:l, t:t, r:l+w, b:t+h, w:w, h:h };
+}
+
+/* images lazyloading */
+var af_lazyloading_timeout = null;
+var af_lazyloading_dist = 200;
+var af_lazyloading_imgs = document.getElementsByTagName('img');
+
+//TODO : utiliser une classe pour cibler les images à bencher ?
+function af_lazyloading() {
+	if (af_lazyloading_timeout == null) {
+		af_lazyloading_timeout = setTimeout(af_lazyloading_real, 50);
+	}
+}
+function af_lazyloading_real() {
+	var w = af_windowSize();
+	var len = af_lazyloading_imgs.length;
+	for (var i = 0; i < len; i++) {
+		var img = af_lazyloading_imgs[i];
+		var d = img.getAttribute('dataorigin');
+		if (d && d != '') {
+			if (w.b + af_lazyloading_dist >= af_findPos(img).b) {
+				img.src = d;
+				img.setAttribute('dataorigin', '');
+			}
+		}
+	}
+	af_lazyloading_timeout = null;
+}
+if (window.addEventListener) {
+	window.addEventListener('load', af_lazyloading, false);
+	window.addEventListener('scroll', af_lazyloading, false);
+} else if(window.attachEvent) {
+	window.attachEvent('onload', af_lazyloading);
+	window.attachEvent('onscroll', af_lazyloading);
+} else {
+	var onloadorig = window.onload;
+	window.onload = function() {
+		if (onloadorig) onloadorig();
+		af_lazyloading();
+	}
+	var onscrollorig = window.onscroll;
+	window.onscroll = function() {
+		if (onscrollorig) onscrollorig();
+		af_lazyloading();
+	}
+}

@@ -331,7 +331,7 @@ var wpAd, placeAd2;
         return types[wpAd.briefcase.delivery] ? types[wpAd.briefcase.delivery] : 'adi';
       },
       dcUrl: function () {
-        return 'http://ad.doubleclick.net/' + wpAd.tools.dcFileType() + '/' + wpAd.constants.wpniSite + '.' + wpAd.briefcase.where + ';' + wpAd.exec.keysval() + '?';
+        return 'http://ad.doubleclick.net/' + (/n701/i.test(location.search) ? 'N701/' : '') + wpAd.tools.dcFileType() + '/' + wpAd.constants.wpniSite + '.' + wpAd.briefcase.where + ';' + wpAd.exec.keysval() + '?';
       },
       debug: function () {
         if(wpAd.flags.debug) {

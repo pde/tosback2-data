@@ -439,6 +439,8 @@ var LoadMastHead = function(country,language) {
 					});
 				
 				}
+				
+				addCartIcon();
 			}
 		});
 	};
@@ -485,6 +487,14 @@ var LoadMastHead = function(country,language) {
 		$(".site_search").find('input[name="lang"]').attr('value',language);
 		$(".site_search").find('input[name="cc"]').attr('value',country);
 		$(".site_search").attr('action',searchAction);
+	};
+	
+	this.addCartIcon=function() {
+		// add cart icon
+		$('#masthead #utility-menu li a[href*="cart.workflow"]').css({
+			'background': 'url("//shop.lenovo.com/SEUILibrary/lenovo-portal/images/icons/cart.gif") no-repeat 0 -1px transparent',
+			'padding-left': '17px'
+		});
 	};
 	
 	

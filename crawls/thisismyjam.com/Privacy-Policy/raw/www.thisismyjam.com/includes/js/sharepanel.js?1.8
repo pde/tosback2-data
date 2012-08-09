@@ -1,0 +1,156 @@
+SharePanel = function(username)
+{
+    EventEmitter.apply(this);
+
+    this.username = username;
+    this.$el = null;
+    this.$shareURL = null;
+};
+SharePanel.prototype = extend(EventEmitter);
+
+SharePanel.prototype.loadInto = function($el)
+{
+    this.$el = $el;
+    var sharePanel = this;
+    $el.load(this.getURL(), function() {
+        sharePanel.listen();
+        sharePanel.emit('load');
+    });
+};
+
+SharePanel.prototype.listen = function()
+{
+    // Init Twit
+    var js=document.createElement("script");
+    js.id="twitter-wjs";
+    js.src="//platform.twitter.com/widgets.js";
+    $('#content').remove("#twitter-wjs").prepend(js);
+
+    window.twttr = window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f); } });
+
+    var $shareUrl = $(".share-url");
+    this.$shareURL = $shareUrl;
+    var $close = this.$el.find(".close");
+    var $poster = $(".fb-post a");
+
+    $poster.on("click",function(e){
+        e.preventDefault();
+        var $this = $(this),
+        url = this.href,
+        permalink = $this.data("permalink"),
+        caption = $this.data("caption"),
+        $status = $(".fb-posting-status");
+
+        if($this.hasClass("disabled") || $this.hasClass("posted"))
+            return false;
+
+        $.ajax({
+            url : url,
+            dataType : "JSON",
+            type : "POST",
+            beforeSend : function(){
+                $poster.addClass("disabled");
+                $status.fadeIn();
+            },
+            data : {
+                "permalink" : permalink,
+                "caption" : caption
+            },
+            success : function(data){
+                //log(data);
+                $this.addClass("posted").text("Posted to Facebook");
+            },
+            error : function(a,b,c){
+                log(a,b,c);
+                alert("Sorry there was an error with posting your Jam. Please try again.");
+            },
+            complete : function(){
+                $status.hide();
+            }
+
+        });
+
+        //Google Analytics event
+        if(window._gaq !==undefined){
+            window._gaq.push(['_trackEvent',"Actions","Shared to Facebook Timeline"]);
+        }
+
+        return false;
+    });
+
+    $shareUrl.on("click",function(){
+        $(this).select();
+
+        //Google Analytics event
+        if(window._gaq !==undefined){
+            window._gaq.push(['_trackEvent',"Actions","Share Url Clicked"]);
+        }
+    });
+    
+    $close.on("click", this.hide.bind(this));
+};
+
+SharePanel.prototype.getURL = function()
+{
+    return sprintf('/%s/sharepanel', this.username);
+};
+
+
+InPageSharePanel = function()
+{
+    SharePanel.apply(this, arguments);
+}
+InPageSharePanel.prototype = extend(SharePanel);
+
+InPageSharePanel.prototype.show = function()
+{
+    this.$el.fadeIn("fast");
+    this.$shareURL.focus().select();
+    sharePanel.emit('show');
+};
+
+InPageSharePanel.prototype.hide = function()
+{
+    this.$el.fadeOut("fast");
+    sharePanel.emit('hide');
+};
+
+
+ModalSharePanel = function()
+{
+    SharePanel.apply(this, arguments);
+}
+ModalSharePanel.prototype = extend(SharePanel);
+
+ModalSharePanel.prototype.show = function()
+{
+    var $el = $('<div id="shareModalWrapper"></div>');
+    $el.appendTo('body');
+    var sharePanel = this;
+    this.once('load', function() {
+        $el.fadeIn("fast");
+
+        var boxy = new Boxy($el, {
+            title: 'Share This Jam',
+            closeText : "",
+            hideFade : 100,
+            hideShrink : false,
+            draggable : true, // doesn't seem to be working?
+            unloadOnHide : true,
+            modal : true,
+            cssClass: "white"
+        });
+
+        sharePanel.$shareURL.focus().select();
+        sharePanel.emit('show');
+    });
+    this.loadInto($el);
+};
+
+ModalSharePanel.prototype.hide = function()
+{
+    this.$el.fadeOut("fast");
+    this.$el.remove();
+    sharePanel.emit('hide');
+};
+

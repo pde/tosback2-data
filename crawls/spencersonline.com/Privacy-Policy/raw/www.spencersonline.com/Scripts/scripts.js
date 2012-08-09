@@ -187,14 +187,14 @@ function typeChange(s, sType, sColor, sSize, indx, isCheck) {
                     skuId = options[indx][i].SkuId;
                     for (var y = 0; y < options[indx].length; y++) {
                         if (options[indx][y].SkuId == skuId && options[indx][y].OptionId != selected && options[indx][y].Name == 'Color') {
-                            $('#' + sColor).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + '</option');
+                            $('#' + sColor).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + '</option>');
                         }
                     }
                 }
             }
             if ($('#' + sColor).find('option').length > 0) {
                 if ($('#' + sColor + ' option').length == 2) {
-                    $('#' + sColor).prepend('<option value="">Select color</option');
+                    $('#' + sColor).prepend('<option value="">Select color</option>');
                 }
                 $('#' + sColor).removeAttr('disabled');
                 $('#' + sColor + ' :selected').removeAttr('selected');
@@ -228,15 +228,15 @@ function colorChange(s, sType, sColor, sSize, indx, isCheck) {
                 skuId = options[indx][i].SkuId;
                 for (var y = 0; y < options[indx].length; y++) {
                     if (options[indx][y].SkuId == skuId && options[indx][y].OptionId != selected && options[indx][y].Name == 'Size') {
-                        $('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option');
-                        //$('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + '</option');
+                        $('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option>');
+                        //$('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + '</option>');
                     }
                 }
             }
         }
         if ($('#' + sSize).find('option').length > 0) {
             if ($('#' + sSize + ' option').length == 2) {
-                $('#' + sSize).prepend('<option value="">Select size</option');
+                $('#' + sSize).prepend('<option value="">Select size</option>');
             }
             $('#' + sSize).removeAttr('disabled');
             $('#' + sSize + ' :selected').removeAttr('selected');
@@ -343,6 +343,12 @@ function GetRV() {
 ///////////distinct options/////////////////////////////////////
 function getOptionName(name, indx) {
     var arr = new Array();
+//    options.sort(function (a, b) {
+
+//        if (a.DisplayOrder < b.DisplayOrder) return -1;
+//        if (a.DisplayOrder > b.DisplayOrder) return 1;
+//        return 0;
+//    });
     for (var i = 0; i < options[indx].length; i++) {
         for (var y = 0; y < options[indx].length; y++) {
             if (options[indx][y].Name == name) {
@@ -359,7 +365,7 @@ function checkIsSoldOut(name, indx) {
     for (var i = 0; i < options[indx].length; i++) {
         for (var y = 0; y < options[indx].length; y++) {
             if (options[indx][y].OptionAliasName == name) {
-                if (options[indx][y].StatusId == '0') return '';
+                if (options[indx][y].StatusId == '0' || options[indx][y].StatusId == '1') return '';
             }
         }
     }
@@ -377,7 +383,7 @@ function fillOptions2(sType, sColor, sSize, indx) {
         arr = getOptionName('Type', indx);
         for (i = 0; i < arr.length; i++) {
             keyValuePair = arr[i].split('=');
-            $('#' + sType).append('<option value="' + keyValuePair[1] + '">' + keyValuePair[0] + checkIsSoldOut(keyValuePair[0], indx) + '</option');
+            $('#' + sType).append('<option value="' + keyValuePair[1] + '">' + keyValuePair[0] + checkIsSoldOut(keyValuePair[0], indx) + '</option>');
         }
         if ($('#' + sType).find('option').length > 1) {
             $('#' + sType).prepend('<option value="">Select type</option>');
@@ -392,7 +398,7 @@ function fillOptions2(sType, sColor, sSize, indx) {
                         skuId = options[indx][i].SkuId;
                         for (y = 0; y < options[indx].length; y++) {
                             if (options[indx][y].SkuId == skuId && options[indx][y].OptionId != optionId) {
-                                $('#' + sColor).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option');
+                                $('#' + sColor).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option>');
                             }
                         }
                     }
@@ -405,7 +411,7 @@ function fillOptions2(sType, sColor, sSize, indx) {
                         skuId = options[indx][i].SkuId;
                         for (y = 0; y < options[indx].length; y++) {
                             if (options[indx][y].SkuId == skuId && options[indx][y].OptionId != optionId) {
-                                $('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option');
+                                $('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option>');
                             }
                         }
                     }
@@ -418,7 +424,7 @@ function fillOptions2(sType, sColor, sSize, indx) {
         arr = getOptionName('Color', indx);
         for (i = 0; i < arr.length; i++) {
             keyValuePair = arr[i].split('=');
-            $('#' + sColor).append('<option value="' + keyValuePair[1] + '">' + keyValuePair[0] + checkIsSoldOut(keyValuePair[0], indx) + '</option');
+            $('#' + sColor).append('<option value="' + keyValuePair[1] + '">' + keyValuePair[0] + checkIsSoldOut(keyValuePair[0], indx) + '</option>');
         }
         if ($('#' + sColor).find('option').length > 1) {
             $('#' + sColor).prepend('<option value="">Select type</option>');
@@ -433,7 +439,7 @@ function fillOptions2(sType, sColor, sSize, indx) {
                         skuId = options[indx][i].SkuId;
                         for (y = 0; y < options[indx].length; y++) {
                             if (options[indx][y].SkuId == skuId && options[indx][y].OptionId != optionId) {
-                                $('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option');
+                                $('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option>');
                             }
                         }
                     }
@@ -446,7 +452,7 @@ function fillOptions2(sType, sColor, sSize, indx) {
         arr = getOptionName('Size', indx);
         for (i = 0; i < arr.length; i++) {
             keyValuePair = arr[i].split('=');
-            $('#' + sSize).append('<option value="' + keyValuePair[1] + '">' + keyValuePair[0] + checkIsSoldOut(keyValuePair[0], indx) + '</option');
+            $('#' + sSize).append('<option value="' + keyValuePair[1] + '">' + keyValuePair[0] + checkIsSoldOut(keyValuePair[0], indx) + '</option>');
         }
         if ($('#' + sSize).find('option').length > 1) {
             $('#' + sSize).prepend('<option value="">Select size</option>');
@@ -477,7 +483,7 @@ function typeChange2(s, sType, sColor, sSize, indx, isCheck) {
                     skuId = options[indx][i].SkuId;
                     for (y = 0; y < options[indx].length; y++) {
                         if (options[indx][y].SkuId == skuId && options[indx][y].OptionId != optionId) {
-                            $('#' + sColor).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option');
+                            $('#' + sColor).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option>');
                         }
                     }
                 }
@@ -491,7 +497,7 @@ function typeChange2(s, sType, sColor, sSize, indx, isCheck) {
                     skuId = options[indx][i].SkuId;
                     for (y = 0; y < options[indx].length; y++) {
                         if (options[indx][y].SkuId == skuId && options[indx][y].OptionId != optionId) {
-                            $('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option');
+                            $('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option>');
                         }
                     }
                 }
@@ -513,7 +519,7 @@ function colorChange2(s, sType, sColor, sSize, indx, isCheck) {
                 skuId = options[indx][i].SkuId;
                 for (y = 0; y < options[indx].length; y++) {
                     if (options[indx][y].SkuId == skuId && options[indx][y].OptionId != optionId) {
-                        $('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option');
+                        $('#' + sSize).append('<option value="' + options[indx][y].OptionId + '">' + options[indx][y].OptionAliasName + (options[indx][y].Status == 'unavailable' ? ' (Sold Out)' : '') + '</option>');
                     }
                 }
             }

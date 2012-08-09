@@ -2411,23 +2411,18 @@ $(document).ready(function(){
 						if(document.getElementById('QtyDDValue').value !=null && document.getElementById('QtyDDValue').value!='' ){							
 							Quantity= document.getElementById('QtyDDValue').value;						
 							amount = parseFloat(amount.replace('$','') * Quantity);							
-							//document.getElementById('GrandTotal').innerHTML ='$'+amount.toFixed(2);		
 							$('#GrandTotal').html('$'+amount.toFixed(2));							
 						}
 					else if(document.getElementById('qtyLbl').value !=null && document.getElementById('qtyLbl').value!='' ){
 							Quantity= document.getElementById('QtyDDValue').value;						
 							amount = parseFloat(amount.replace('$','') * Quantity);								
-							//document.getElementById('GrandTotal').innerHTML ='$'+amount.toFixed(2);					
-							//document.getElementById('GrandTotal').innerHTML =amount;	
 							$('#GrandTotal').html('$'+amount.toFixed(2));	
 						}						
 						else{
-							//document.getElementById('GrandTotal').innerHTML ='$'+amount;	
 							$('#GrandTotal').html('$'+amount);	
 						}
 					}else{					
 						document.getElementById('QtyDDValue').disabled = true;
-						//document.getElementById('GrandTotal').innerHTML = '$00.00';
 						$('#GrandTotal').html('$00.00');	
 					}
 					
@@ -2439,8 +2434,6 @@ $(document).ready(function(){
 		function EnableQty(QuantityCount,totalItems){	
 				if(QuantityCount >1 && (document.getElementById('QtyLbl')!=null)){
 				document.getElementById('QtyLbl').style.display = '';
-				//document.getElementById('QtyCount').style.display = '';
-				//document.getElementById('QtyCount').innerHTML =QuantityCount;
 				$('#QtyCount').html(QuantityCount);
 				document.getElementById('QtyDD').style.display = '';
 				document.getElementById('QtyDDValue').style.display = ''
@@ -2484,7 +2477,6 @@ $(document).ready(function(){
 					if(radioButtonsVal[rdx].value !='0') {
 						var serviceAgriment = document.getElementById(radioButtonsVal[rdx].value);						
 						planAmount = parseFloat(serviceAgriment.innerHTML.replace('$','') * quantity);						
-						//document.getElementById('GrandTotal').innerHTML = '$' + planAmount.toFixed(2);	
 						$('#GrandTotal').html('$'+planAmount.toFixed(2));	
 						break;
 					}					
@@ -2513,18 +2505,12 @@ $(document).ready(function(){
 		document.getElementById('qtyLbl').style.display = '';
 		document.getElementById('qtyLbl').innerHTML =planCount;		
 	}
-//$(document).ready(function(){	
-//$(".ajaxclass").click(function(){
-	//$.get("/sams/cart/protectionPlanSelector.jsp", function(result){
-		//$(".Protectionplan-Overlay-Container").html(result);
-	//});
-   //}); 	  	
-    //}); 
 
 	//StartPA Support  for 12.8
 	$('#addtocartsingleajax').live('click',function() {
 		$('.loadPPOverlayCircle').css('display','block');
 	      var dataString = "/sams" + $("#addToCartSingleForm").serialize();
+		   var action = $("#addToCartSingleForm").attr("action");
 		  $('.Protectionplan-Overlay-Container').css('display','block');
 		  $('.Protectionplan-Overlay-Container').empty();
 	      var res = false;		  
@@ -2535,9 +2521,9 @@ $(document).ready(function(){
 				$('.loadPPOverlayCircle').css("position","absolute");
 				$('.loadPPOverlayCircle').css("top", Math.max(0, (($(window).height() - $('.loadPPOverlayCircle').outerHeight()) / 2) + $(window).scrollTop()) + "px");
 				$('.loadPPOverlayCircle').css("left", "100px");
-				//$('span.Protectionplan-OverlayBG').css('opacity','0.28');		
 	      $.ajax({                
-	        type: "POST",	        
+	        type: "POST",
+		url:action,
 	        data: dataString,
 	        dataType: "json",
 	        cache: false,
@@ -2549,21 +2535,31 @@ $(document).ready(function(){
 				window.location.href= zipcodepageurl;
 				 }else {
 					 if(data.isOverlay && data.isSuccess){
-		     	$('.Protectionplan-Overlay-Container').load('/sams/cart/protectionPlanSelector.jsp?productid='+prdId);
-		        $('.Protectionplan-Overlay-Container').ready(function(){
-		        	$('.loadPPOverlayCircle').hide();
-					$('.Protectionplan-Overlay-Container').css('top', overlayPos+ "px");
-					$('.Protectionplan-Overlay-Container').css('position','absolute');	
-					$('.Protectionplan-Overlay-Container').css("left","5px");
-					$('.Protectionplan-Overlay-Container').css("z-index","99999");	
-					//$('.Protectionplan-Overlay-Container').focus();	
-					$('.Protectionplan-Overlay-Content').css('position','fixed');						
-				});
-		         $('#rithSide').load('/sams/common/rightNav.jsp');
-		     	$(this).css({
-		     		"display" : "block",
-		     		"left" : ($("body").width()-$(this).width())/2
-		     	});	
+				//Here is the nested Ajax call to load the actual protection plan upon Success...
+				var urlCartPath = '/sams/cart/protectionPlanSelector.jsp';
+				var cartDataString = 'productid='+prdId;
+					$.ajax({
+						type: 'GET',
+						url : urlCartPath,
+						cache:false,				
+						data: cartDataString,						
+						success:function(result){				
+							$('.Protectionplan-Overlay-Container').html(result); 
+							$('.Protectionplan-Overlay-Container').ready(function(){
+								$('.loadPPOverlayCircle').hide();
+								$('.Protectionplan-Overlay-Container').css('top', overlayPos+ "px");
+								$('.Protectionplan-Overlay-Container').css('position','absolute');	
+								$('.Protectionplan-Overlay-Container').css("left","5px");
+								$('.Protectionplan-Overlay-Container').css("z-index","99999");							
+								$('.Protectionplan-Overlay-Container').css('display','block');
+							});					
+							 $('#ajaxCartLoad').load('/sams/common/myCart.jsp');					 
+							$(this).css({
+								"display" : "block",
+								"left" : ($("body").width()-$(this).width())/2
+							});
+						}					 
+				});		        
 		     }else if(data.isSuccess && !data.isOverlay){
 				window.location.href="/sams/cart/addToCartConfirmPage.jsp";
 			 }else{
@@ -2591,22 +2587,21 @@ $(document).ready(function(){
 				//$(document).ready(function(){	
 				//$('.searchAddtocart').click(function(){		
 				var formId=this.form.id;
+				var action = $("#"+formId).attr("action");
 				var overlayPos = Math.max(0, (($(window).height() - $('.Protectionplan-Overlay-Container').outerHeight()) / 2) + $(window).scrollTop()) - 70;
 				var popupRePosition = $(document).scrollTop() +10;
 						overlayPos = popupRePosition +40;
 				$('.loadPPOverlayCircle').css('display','block');
 				$('.loadPPOverlayCircle').css("position","absolute");
 				$('.loadPPOverlayCircle').css("top", Math.max(0, (($(window).height() - $('.loadPPOverlayCircle').outerHeight()) / 2) + $(window).scrollTop()) + "px");
-				//$('.loadPPOverlayCircle').css("left", Math.max(0, (($(window).width() - $('.loadPPOverlayCircle').outerWidth()) / 2) + $(window).scrollLeft()) + "px");
 				$('.loadPPOverlayCircle').css("left", "100px");
-					//$('span.Protectionplan-OverlayBG').css('opacity','0.28');		
 				var dataString = "/sams" + $("#"+formId).serialize();
-				$('.Protectionplan-Overlay-Container').css('display','block');
 				$('.Protectionplan-Overlay-Container').empty();
 				var res = false;		
 				$.ajax({
 				  context: this,	
-				  type: "POST",	        
+				  type: "POST",
+				   url:action,
 				  data: dataString,
 				  dataType: "json",
 				  cache: false,
@@ -2618,23 +2613,32 @@ $(document).ready(function(){
 					window.location.href= zipcodepageurl;
 					 }else {
 					 if(data.isOverlay && data.isSuccess){
-						 
-					$('#'+prdId).load('/sams/cart/protectionPlanSelector.jsp?productid='+prdId);
-					  $('.Protectionplan-Overlay-Container').ready(function(){
-						$('.loadPPOverlayCircle').hide();
-						$('.Protectionplan-Overlay-Container').css('top',popupRePosition);
-						//$('.Protectionplan-Overlay-Container').css('top',Math.max(0, (($(window).height() - $('.Protectionplan-Overlay-Container').outerHeight()) / 2) + $(window).scrollTop()) + "px");
+					//Here is the nested Ajax call to load the actual protection plan upon Success...
+					var urlSearchtoCartPath = '/sams/cart/protectionPlanSelector.jsp';
+					var searchDataString = 'productid='+prdId;
+					$('#'+prdId).html('');
+					$.ajax({
+						type: 'GET',
+						url : urlSearchtoCartPath,
+						cache:false,				
+						data: searchDataString,						
+						success:function(result){				
+							$('#'+prdId).html(result); 
+							 $('.Protectionplan-Overlay-Container').ready(function(){
+							$('.loadPPOverlayCircle').hide();
+							$('.Protectionplan-Overlay-Container').css('top',popupRePosition);
 							$('.Protectionplan-Overlay-Container').css('position','absolute');	
 							$('.Protectionplan-Overlay-Container').css("left","5px");
 							$('.Protectionplan-Overlay-Container').css("z-index","99999");	
-							//$('.Protectionplan-Overlay-Container').focus();	
-							$('.Protectionplan-Overlay-Content').css('position','fixed');								
-						});
-					   $('#rithSide').load('/sams/common/rightNav.jsp');
-					$(this).css({
-						"display" : "block",
-						"left" : ($("body").width()-$(this).width())/2
-					});				
+							$('#'+prdId).css('display','block');							
+							});
+							$('#ajaxCartLoad').load('/sams/common/myCart.jsp');
+							$(this).css({
+								"display" : "block",
+								"left" : ($("body").width()-$(this).width())/2
+							});
+						}					 
+					});
 				   }else if(data.isSuccess && !data.isOverlay){
 						window.location.href="/sams/cart/addToCartConfirmPage.jsp";
 					 }					 
@@ -2664,19 +2668,26 @@ $(document).ready(function(){
 
 	function callProtectionplanOverlay(commerceItemId){		
 		var newTopPostion = $(document).scrollTop();
-		newTopPostion = newTopPostion + 80;	
-		$('.Protectionplan-Overlay-Container').css('display','block');		
-		$('#'+commerceItemId).empty();			
-		$.get('/sams/cart/cartProtectionplanSelctor.jsp?commerceItemId='+commerceItemId, function(result){
-			$('#'+commerceItemId).html(result); 
+		newTopPostion = newTopPostion + 80;					
+		$('#'+commerceItemId).empty();
+		$('#'+commerceItemId).css('display','none');
+		var urlPath = '/sams/cart/cartProtectionplanSelctor.jsp';
+		$.ajax({
+		type: 'GET',
+		url : urlPath,
+		cache:false,                                                        
+		data: "commerceItemId="+commerceItemId,                                                                                    
+		success:function(result){                                                             
+				$('#'+commerceItemId).html(result);
+				$('#'+commerceItemId).css("top",newTopPostion);
+				$('#'+commerceItemId).css("left","5px");
+				$('#'+commerceItemId).css("position","absolute");
+				$('#'+commerceItemId).css("z-index","99999");                                
+				$('#'+commerceItemId).css('display','block');	
+			}                                                                              
 		});
-		$('#'+commerceItemId).css("top",newTopPostion);
-		//$('#'+commerceItemId).css('top',Math.max(0, (($(window).height() - $('#'+commerceItemId).outerHeight()) / 2) + $(window).scrollTop()) + "px");
-		$('#'+commerceItemId).css("left","5px");
-		$('#'+commerceItemId).css("position","absolute");
-		$('#'+commerceItemId).css("z-index","99999");		
-		//$('#'+commerceItemId).focus();	
-		$('.Protectionplan-Overlay-Content').css('position','fixed');	
+										
+
 }
 
 function fnOpenPPDetailsOverlay(protectionPlanItemId){	
@@ -2688,7 +2699,6 @@ function fnOpenPPDetailsOverlay(protectionPlanItemId){
 		$('.ProtectionplanDetails-Overlay-Container').html(ppContent); 
 	});
 		$('.ProtectionplanDetails-Overlay-Container').css("top",ppDetailsPostion);		
-		//$('.ProtectionplanDetails-Overlay-Container').css('top',Math.max(0, (($(window).height() - $('.ProtectionplanDetails-Overlay-Container').outerHeight()) / 2) + $(window).scrollTop()) + "px");
 		$('.ProtectionplanDetails-Overlay-Container').css("position","absolute");
 		$('.ProtectionplanDetails-Overlay-Container').css("z-index","99999");
 }

@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "cartoon.133.1050.20120608",
+	version: "cartoon.152.1050.20120731",
 	release: "0",
 	dictionary: {
 		init: {
@@ -54,7 +54,8 @@ var _jsmd_default={
 			"tve.video.progress":	"0",
 			"tve.video.c3.marker":			"0:content",//prop13,eVar13
 			"tve.video.live.stream":		"",//prop14,eVar14
-			"tve.video.adload":				"",//prop14,eVar14
+			"tve.video.adload":				"",//prop15,eVar15
+			"tve.video.authentication":		"",//prop16,eVar16
 			"tve.user_id":					"Unspecified UserId",//prop19,eVar19
 			"tve.video.c4.marker":			"0:content",//prop20,eVar20
 			"tve.page.full_url":			window.location.href,//prop21
@@ -229,6 +230,7 @@ var _jsmd_default={
 						"nbakidsp1dev1.turner.com":					"carnetnmtest",
 						*/
 						"www.cartoonnetwork.com":					"carnetnmprod",
+						"blog.cartoonnetwork.com":					"carnetnmprod",
 						"fusionfall.cartoonnetwork.com":			"carnetnmprod",
 						"gamecreator.cartoonnetwork.com":			"carnetnmprod",		//redirect
 						"ben10gamecreator.cartoonnetwork.com":		"carnetnmprod",
@@ -490,6 +492,22 @@ var _jsmd_default={
 						}catch(e){}
 					}
 
+					/* add code version prop35 for all calls */
+					this.v.prop35 = _jsmd_default.version + ":" + _jsmd_default.release;
+
+					/* add transaction ID prop46,eVar46 for all calls */
+					if (_w.cnnad_transactionID) {
+						this.v.prop46 = _w.cnnad_transactionID;
+						this.v.eVar46 = "D=c46";
+					}
+
+					/* add GUID prop47,eVar47 for all calls */
+					var guid = _jsmd.plugin.gCookie("ug");
+					if (guid) {
+						this.v.prop47 = guid;
+						this.v.eVar47 = "D=c47";
+					}
+
 				}
 			},
 			adbp: {
@@ -572,6 +590,7 @@ var _jsmd_default={
 					"tve.video.c3.marker":			["prop13","eVar13"],
 					"tve.video.live.stream":		["prop14","eVar14"],
 					"tve.video.adload":				["prop15","eVar15"],
+					"tve.video.authentication":		["prop16","eVar16"],
 					"tve.user_id":					["prop19","eVar19"],
 					"tve.video.c4.marker":			["prop20","eVar20"],
 					"tve.page.full_url":			["prop21"],
@@ -1933,6 +1952,7 @@ var _jsmd_default={
 				if (vFranchise) videoTitle =  vFranchise + ": " + videoTitle;	//add show name to video title
 				this.set("video.title",videoTitle);					//prop29,eVar41
 				this.set("business.cnt.video.type",v.type);			//prop12,eVar12
+				v.segment = v.segment + "";
 				if (v.segment) this.set("business.cnt.video.segment",videoTitle+": "+v.segment);	//prop13,eVar13
 				this.set("page.template_type","adbp:video");		//prop32,eVar32
 				this.set("page.content_type","adbp:video start");	//prop33,eVar33
@@ -1949,13 +1969,14 @@ var _jsmd_default={
 				vc.start(v.id,v.title);
 				this.set("action","link");
 				var tl_name = "video-start";
-				if (v.autoplayed && v.autoplayed == true) {
+				if (v.autoplayed && (v.autoplayed == true || v.autoplayed == "true")) {
 					tl_name = "video-autostart";
 					this.push("page.events","video.autostart");
 				}
 				this.set("link",{name: tl_name + ": " + v.title, type: "o"});
 				this.push("page.events","video.start");
-				if (v.type && v.type.indexOf("EPI") != -1 && v.segment && v.segment == 0) this.push("page.events","video.episode_start");	//event4
+				v.segment = v.segment + "";
+				if (v.type && v.type.toLowerCase().indexOf("epi") != -1 && v.segment && (v.segment == "0" || v.segment == "")) this.push("page.events","video.episode_start");	//event4
 				this.send();
 				sendComscoreVideoMetrixBeacon(v.id,1);	//content-related comscore call
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id,v.title);
@@ -1968,7 +1989,8 @@ var _jsmd_default={
 				this.set("link",{name: "video-autostart: " + v.title, type: "o"});
 				this.push("page.events","video.start");
 				this.push("page.events","video.autostart");
-				if (v.type && v.type.indexOf("EPI") != -1 && v.segment && v.segment == 0) this.push("page.events","video.episode_start");	//event4
+				v.segment = v.segment + "";
+				if (v.type && v.type.toLowerCase().indexOf("epi") != -1 && v.segment && (v.segment == "0" || v.segment == "")) this.push("page.events","video.episode_start");	//event4
 				this.send();
 				sendComscoreVideoMetrixBeacon(v.id,1);	//content-related comscore call
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id,v.title);
@@ -2012,13 +2034,19 @@ var _jsmd_default={
 				this.set("tve.video_title", data.title);//prop12
 				var brand = this.get("tve.brand");
 				var distribName = MSO;
-				if (MSO == "Unauthorized"){distribName = "unspecified mvpd"}
+				var authState = "authenticated";
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						authState = "not authenticated";
+				}
 				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
 				this.set("tve.content_id", data.contentId);//prop5,eVar5
-				this.set("tve.publication_date", data.airdate);//prop6,eVar6
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
 				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
 				this.set("tve.mode", data.tveMode);//prop8,eVar8
 				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				this.set("tve.video.authentication", authState);//prop16,eVar16
 
 
 				var grossLength = (data.grossLength)?data.grossLength:(data.trt)?data.trt:"";
@@ -2047,7 +2075,7 @@ var _jsmd_default={
 				var playerLocation = jsmd.get("tve.player_location");
 				try {
 					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation, prop20:"0:content", eVar20:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,eVar19,prop19,prop20,eVar20"};
+					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, prop20:"0:content", eVar20:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop16,eVar16,eVar19,prop19,prop20,eVar20"};
 	            	if(adTotal){
 	            		s_data["linkTrackEvents"] = "event13,event15,event23,event21";
 	            	}else { s_data["linkTrackEvents"] = "event13,event15,event23"; }
@@ -2072,13 +2100,19 @@ var _jsmd_default={
 				this.set("tve.video_title", data.title);
 				var brand = this.get("tve.brand");
 				var distribName = MSO;
-				if (MSO == "Unauthorized"){distribName = "unspecified mvpd"}
+				var authState = "authenticated";
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						authState = "not authenticated";
+				}
 				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
 				this.set("tve.content_id", data.contentId);//prop5,eVar5
-				this.set("tve.publication_date", data.airdate);//prop6,eVar6
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
 				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
 				this.set("tve.mode", data.tveMode);//prop8,eVar8
 				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				this.set("tve.video.authentication", authState);//prop16,eVar16
 
 				var prodFranchise = data.franchise+"";
 				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
@@ -2106,7 +2140,7 @@ var _jsmd_default={
 				var playerLocation = jsmd.get("tve.player_location");
 				try {
 					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation, prop13:"0:content", eVar13:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop13,eVar13,eVar19,prop19"};
+					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, prop13:"0:content", eVar13:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop13,eVar13,prop16,eVar16,eVar19,prop19"};
 	            	if(adTotal){
 	            		s_data["linkTrackEvents"] = "event8,event13,event15,event21";
 	            	}else { s_data["linkTrackEvents"] = "event8,event13,event15"; }
@@ -2374,13 +2408,19 @@ var _jsmd_default={
 				this.set("tve.video_title", data.title);
 				var brand = this.get("tve.brand");
 				var distribName = MSO;
-				if (MSO == "Unauthorized"){distribName = "unspecified mvpd"}
+				var authState = "authenticated";
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						authState = "not authenticated";
+				}
 				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
 				this.set("tve.content_id", data.contentId);//prop5,eVar5
-				this.set("tve.publication_date", data.airdate);//prop6,eVar6
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
 				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
 				this.set("tve.mode", "C3A");//prop8,eVar8
 				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				this.set("tve.video.authentication", authState);//prop16,eVar16
 
 				var prodFranchise = data.franchise+"";
 				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
@@ -2408,7 +2448,7 @@ var _jsmd_default={
 				var playerLocation = jsmd.get("tve.player_location");
 				try {
 					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation, prop13:"0:content", eVar13:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop13,eVar13,eVar19,prop19"};
+					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, prop13:"0:content", eVar13:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop13,eVar13,prop16,eVar16,eVar19,prop19"};
 	            	if(adTotal){
 	            		s_data["linkTrackEvents"] = "event9,event13,event15,event21";
 	            	}else { s_data["linkTrackEvents"] = "event9,event13,event15"; }
@@ -2513,21 +2553,27 @@ var _jsmd_default={
 				this.set("tve.page.name", data.sPageName);//"tve.brand" prop1,eVar1
 				var brand = this.get("tve.brand");
 				var distribName = MSO;
-				if (MSO == "Unauthorized"){distribName = "unspecified mvpd"}
+				var authState = "authenticated";
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						authState = "not authenticated";
+				}
 				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
 				this.set("tve.content_id", data.contentId);//prop5,eVar5
-				this.set("tve.publication_date", data.airdate);//prop6,eVar6
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
 				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
 				this.set("tve.mode", "live");//prop8,eVar8
 				this.set("tve.franchise", data.franchise);//prop9,eVar9
 				this.set("tve.video.live.stream", data.omnitureVideoName);//prop14,eVar14
+				this.set("tve.video.authentication", authState);//prop16,eVar16
 
 
 				this.set("tve.products", (";"+data.sPageName));
 				var playerLocation = jsmd.get("tve.player_location");
 
 				var act_rsid = jsmd.tveRSID;
-				var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation, eVar26:"", linkTrackVars:"pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop11,eVar11,prop14,eVar14,products,events", linkTrackEvents:"event13,event25"};
+				var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, eVar26:"", linkTrackVars:"pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop11,eVar11,prop14,eVar14,prop16,eVar16,products,events", linkTrackEvents:"event13,event25"};
 	            this.set("business.vendor.sitecatalyst", s_data);
 
 				this.send();
@@ -3523,7 +3569,7 @@ _jsmd.JSMD.prototype.tveRSIDList = {
     }
 };
 
-_jsmd.JSMD.prototype.tveRSID = (window.location.host === "www.cartoonnetwork.com")?"tvenotauthcartoon":"tvenotauthcartoondev";
+_jsmd.JSMD.prototype.tveRSID = (window.location.host === "www.cartoonnetwork.com")?"tveglobal,tvenotauthcartoon":"tveglobaldev,tvenotauthcartoondev";
 
 _jsmd.JSMD.prototype.sTVE_MSO = function(_MSO){
 	var MSO = _MSO;

@@ -29,7 +29,7 @@ Event.observe(window, 'load', function(e){
 			}
 			var dialog = Df.e('div', $(holder) ,{className: 'dialog'})
 			var title = Df.e('div', dialog ,{className: 'titleDialog'})
-			var close = Df.e('span', title ,{innerHTML: '<img src="../images/pixel.gif" width="18" hieght="16" border="0" />'})
+			var close = Df.e('span', title ,{innerHTML: '<img src="../images/pixel.gif" width="26" height="24" border="0" />'})
 			close.observe('click', Df.Lightbox.hide)
 			var content = Df.e('div', dialog)
 
@@ -58,7 +58,7 @@ Event.observe(window, 'load', function(e){
 	/*Omniturecustom link tracking start */
 		RugbyOverlayView(true, 'global_rugby_lightbox')
 	/*Omniturecustom link tracking end */	
-		Df.Lightbox.setContent('<div><a href="javascript:window.open(\'' + linkURL + '\', \'Rugby\');void(df_lightbox_hide());"><img src="../images/0909_RgbyMessage_sm.jpg" width="310" height="270" border="0" /></a></div>')	
+		Df.Lightbox.setContent('<div><a href="javascript:window.open(\'' + linkURL + '\', \'Rugby\');void(df_lightbox_hide());"><img src="../images/rugby_interstitial_080312.jpg" width="312" height="273" border="0" /></a></div>')	
 		return Df.Lightbox.show()
 	
 	}

@@ -2,13 +2,13 @@ var breakingNews = { "items": [
 
 /* Begin */
     {
-        "startTime": "1343921400",
-        "endTime": "1343932200",
+        "startTime": 1344535200,
+        "endTime": 1344547800,
         "timeType": "absolute",
         "platforms": [
         {
             "platform": "web",
-            "headline": "Watch live: women's gymnastics all-around finals, and swimming with Franklin & Phelps vs. Lochte!",
+            "headline": "Watch LIVE: Usain Bolt races for 200 meter gold, plus see the 800 meter and beach volleyball finals!",
             "link": {
                 "href": "http://www.nbcolympics.com/liveextra/index.html",
                 "target": "_blank"
@@ -19,30 +19,13 @@ var breakingNews = { "items": [
 
 /* Begin */
     {
-        "startTime": "1143932200",
-        "endTime": "1143939400",
+        "startTime": 1344614400,
+        "endTime": 1344634200,
         "timeType": "absolute",
         "platforms": [
         {
             "platform": "web",
-            "headline": "Special live event: All four swimming finals LIVE, including Phelps vs. Lochte.",
-            "link": {
-                "href": "http://www.nbcolympics.com/liveextra/video-watch.html?video=day-6-swim-finals-phelps-lochte-more",
-                "target": "_blank"
-            }
-        }
-    ]},
-/* End */
-
-/* Begin */
-    {
-        "startTime": "1344018600",
-        "endTime": "1344029400",
-        "timeType": "absolute",
-        "platforms": [
-        {
-            "platform": "web",
-            "headline": "Watch live online as it happens: Michael Phelps and Missy Franklin pursue swimming world records!",
+            "headline": "Watch LIVE: women's 4x100-meter finals, plus U.S. men's basketball, pole vault, water polo & more!",
             "link": {
                 "href": "http://www.nbcolympics.com/liveextra/index.html",
                 "target": "_blank"
@@ -53,19 +36,36 @@ var breakingNews = { "items": [
 
 /* Begin */
     {
-        "startTime": "1344105000",
-        "endTime": "1344119400",
+        "startTime": 1344706200,
+        "endTime": 1344749400,
         "timeType": "absolute",
         "platforms": [
         {
             "platform": "web",
-            "headline": "See it live online: Phelps' final race, plus women's 100m dash and the men's long jump for gold!",
+            "headline": "Watch LIVE: women's volleyball, high jump & basketball finals, and men's diving, 4x100-meter finals!",
             "link": {
                 "href": "http://www.nbcolympics.com/liveextra/index.html",
                 "target": "_blank"
             }
         }
-    ]}
+    ]},
 /* End */
 
-]};
+/* Begin */
+    {
+        "startTime": 1344769200,
+        "endTime": 1344790800,
+        "timeType": "absolute",
+        "platforms": [
+        {
+            "platform": "web",
+            "headline": "Watch live online as it happens: men's marathon, basketball, boxing and water polo finals!",
+            "link": {
+                "href": "http://www.nbcolympics.com/liveextra/index.html",
+                "target": "_blank"
+            }
+        }
+    ]},
+/* End */
+
+{ "startTime": 0, "endTime": 0, "timeType": "absolute" }]};

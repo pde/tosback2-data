@@ -1,0 +1,107 @@
+/**
+ * Scrobbler class, because why do everything in one place?
+ * Duration checker
+ *
+ */
+Scrobbler = function(id) {
+    this.id = id;
+    this.duration = null;
+    this.timer = null;
+    this.hasScrobbled = false;
+    this.willScrobble = false;
+    this.scrobblePoint  = 120; //Work in seconds
+    this.startTime = new Date().getTime();
+
+    this.startTimer(this.scrobblePoint);
+};
+
+// little timer helper
+function Timer(callback, delay) {
+    var timerId, start, remaining = (delay * 1000); // Keep working in seconds, innit.
+
+    this.pause = function() {
+        window.clearTimeout(timerId);
+        remaining -= new Date() - start;
+    };
+
+    this.resume = function() {
+        start = new Date();
+        timerId = window.setTimeout(callback, remaining);
+    };
+
+    this.stop = function(){
+        window.clearTimeout(timerId);
+    };
+
+    this.resume();
+}
+
+Scrobbler.prototype.startTimer = function(time){
+    // either 2mins in, or 50% of track length played;
+    //console.log("got a startTimer call");
+    var self = this;
+        self.scrobblePoint = time;
+    this.timer = new Timer(
+        function(){
+            if(!self.hasScrobbled){
+                self.willScrobble = true;
+                //console.log("timer has pinged, willScrobble = true");
+            }
+        }, time
+    );
+};
+
+Scrobbler.prototype.stopTimer = function(){
+    this.timer.stop();
+};
+
+Scrobbler.prototype.pauseTimer = function(){
+    this.timer.pause();
+};
+
+Scrobbler.prototype.resumeTimer = function(){
+    this.timer.resume();
+};
+
+Scrobbler.prototype.setDuration = function(duration, elapsedTime){
+    this.duration = duration;
+    // Here we're checking to see if the current point of the song
+    // has passed the half way mark, and if so we'll send a scrobble regardless
+
+    if(duration && elapsedTime > duration / 2){
+        // Stop timer
+        //console.log("elapsed time has passed the half way point");
+        this.stopTimer();
+        this.willScrobble = true;
+    }
+    // in this case we have a track that's less than 4mins long, so we'll need
+    // to scrobble from half way through instead of 2mins in.
+    else if(duration && (duration/2 < this.scrobblePoint)) {
+        //console.log("duration",duration,"scrobblePoint",this.scrobblePoint);
+        this.stopTimer();
+        this.startTimer(duration / 2 - elapsedTime);
+    }
+};
+
+Scrobbler.prototype.scrobble = function(){
+    var self = this;
+    if(!self.hasScrobbled && self.willScrobble){
+        self.hasScrobbled = true;
+        self.willScrobble = false;
+        $.ajax({
+            url : "/" + window.user.username + "/scrobble",
+            type : "POST",
+            dataType : "JSON",
+            data : {"track_id":self.id,"timestamp":parseInt(self.startTime/1000,10)},
+            success : function(d){
+                //console.log(d);
+
+            },
+            error : function(a,b,c){
+                $.post('/error/jsdebug', {data: {"scrobbleError":self.id}});
+                self.hasScrobbled = false;
+                self.willScrobble = true;
+            }
+        });
+    }
+};

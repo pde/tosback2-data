@@ -1,0 +1,106 @@
+.boxy-wrapper { position: absolute; }
+.boxy-wrapper.fixed { position: fixed; }
+
+  /* Modal */
+  
+  .boxy-modal-blackout { position: absolute; background-color: black; left: 0; top: 0; }
+  
+  /* Border */
+
+  .boxy-wrapper { empty-cells: show; background: transparent; }
+	.boxy-wrapper .boxy-top-left,
+	.boxy-wrapper .boxy-top-right,
+	.boxy-wrapper .boxy-bottom-right,
+	.boxy-wrapper .boxy-bottom-left { width: 10px; height: 10px; padding: 0 }
+	
+	:root .boxy-wrapper .boxy-top-left { background: url('http://www.thisismyjam.com/includes/images/boxy-nw.png'); }
+	:root .boxy-wrapper .boxy-top-right { background: url('http://www.thisismyjam.com/includes/images/boxy-ne.png'); }
+	:root .boxy-wrapper .boxy-bottom-right { background: url('http://www.thisismyjam.com/includes/images/boxy-se.png'); }
+	:root .boxy-wrapper .boxy-bottom-left { background: url('http://www.thisismyjam.com/includes/images/boxy-sw.png'); }
+	
+	/* IE6-8 hacks for the border. IE7+8 should support this natively but fails in conjuction with modal blackout bg. */
+	/* NB: these must be absolute paths or URLs to your images */
+	.boxy-wrapper .boxy-top-left {
+		#filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-nw.png');
+		-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-nw.png')";
+	}
+	.boxy-wrapper .boxy-top-right {
+		#filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-ne.png');
+		-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-ne.png')";
+	}
+	.boxy-wrapper .boxy-bottom-right {
+		#filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-se.png');
+		-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-se.png')";
+	}
+	.boxy-wrapper .boxy-bottom-left {
+		#filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-sw.png');
+		-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-sw.png')";
+	}
+	
+	.boxy-wrapper .boxy-top,
+	.boxy-wrapper .boxy-bottom { height: 10px; background-color: black; opacity: 0.6; filter: alpha(opacity=60); padding: 0 }
+	
+	.boxy-wrapper .boxy-left,
+	.boxy-wrapper .boxy-right { width: 10px; background-color: black; opacity: 0.6; filter: alpha(opacity=60); padding: 0 }
+	
+	/* Title bar */
+	
+	.boxy-wrapper .title-bar { background-color: black; padding: 14px 16px; position: relative;cursor: move; 
+-moz-border-radius: 6px;
+-webkit-border-radius: 6px;
+border-radius: 6px 6px 0 0;
+	border-bottom: 1px solid #2c2c2c; }
+	  .boxy-wrapper .title-bar.dragging,.boxy-wrapper .title-bar.dragging h2 { cursor: move; }
+	    .boxy-wrapper .title-bar h2 { font-size: 14px; color: #959595; line-height: 1; margin: 0; padding: 0; font-weight: normal; cursor:move;}
+	    .boxy-wrapper .title-bar .close {
+	    	background:url("../image/close_dark_dialog.png") no-repeat 0 0;
+	    	height:30px;width:30px;color: white; position: absolute; top: 6px; right: 6px;}
+		.boxy-wrapper .title-bar .close:hover{background-position:0 -71px;}
+		
+	/* Content Region */
+	
+	.boxy-inner { overflow: hidden;
+	float:left;color: #cecece;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 5px 12px rgba(50, 50, 50, 0.75);
+-moz-box-shadow:    0 5px 12px rgba(50, 50, 50, 0.75);
+box-shadow:         0 5px 12px rgba(50, 50, 50, 0.75);
+
+background: #282727; /* colorzilla follows */
+background: -moz-linear-gradient(top,  #282727 0%, #171717 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#282727), color-stop(100%,#171717));
+background: -webkit-linear-gradient(top,  #282727 0%,#171717 100%);
+background: -o-linear-gradient(top,  #282727 0%,#171717 100%);
+background: -ms-linear-gradient(top,  #282727 0%,#171717 100%);
+background: linear-gradient(top,  #282727 0%,#171717 100%); }
+/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#282727', endColorstr='#171717',GradientType=0 );*/
+.boxy-wrapper.white .boxy-inner {
+	color: #000000;
+	background: #ffffff; 
+	border: 2px solid #7a7a7a;
+	padding:0;
+}
+	.boxy-wrapper.white .title-bar{
+		border-radius:4px 4px 0 0;background: url("../../../static01.thisismyjam.com/bg/default_00.jpg") repeat 0 0;
+		height:14px;padding-top:18px;
+		border-bottom:1px solid #ccc;
+	}
+	.boxy-wrapper.white .title-bar h2{
+		color:black;
+	}
+	.boxy-wrapper.white .title-bar .close{
+		top:9px;
+		background-image:url("../image/overlay_close.png");}
+	.boxy-wrapper.white .title-bar .close:hover{
+		background-position: 0 -32px;
+	}
+
+
+	.boxy-content { padding: 15px; }
+	
+	/* Question Boxes */
+
+    .boxy-wrapper .question { width: 350px; min-height: 80px; text-align:left; margin-bottom: 10px;}
+    .boxy-wrapper .answers { text-align: right; }

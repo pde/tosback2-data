@@ -251,3 +251,16 @@ thirdPartyCookie("source","linkconn","linkconn",1,30,domain); // if source==link
 
 var pr_facebook_like_button_url="";
 
+
+function setClickID(){
+	if(navigator.doNotTrack!=undefined && navigator.doNotTrack!="unspecified")
+	{
+		return;
+	}
+	var clickid=window.location.search.replace(/\?.*clickid=([a-fA-F0-9]+)&?.*/,"$1");
+	if(clickid!=window.location.search)
+	{
+		setCookie("GANclickid",clickid,0,domain,0,0,false,false);
+	}
+}
+setClickID();

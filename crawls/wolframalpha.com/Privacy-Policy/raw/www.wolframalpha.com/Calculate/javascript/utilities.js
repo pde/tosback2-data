@@ -250,5 +250,15 @@ function removeURLAnchor(str){
   return str.substring(0, str.lastIndexOf("#"));
 }
 
-
+function getAuthCookiesParamsObj(){
+	  var ins = getAuthIns();
+	  var auths = $.cookie("wa_pro_s"+ins);
+	  var authu = $.cookie("wa_pro_u"+ins);
+	  var autht = $.cookie("wa_pro_t"+ins);
+	  return {
+	    "as" : auths,
+	    "au" : authu,
+	    "at" : autht
+	  };
+}
 

@@ -1,0 +1,860 @@
+// usage: log('inside coolFunc', this, arguments);
+window.log = function(){
+  log.history = log.history || [];   // store logs to an array for reference
+  log.history.push(arguments);
+  if(this.console) {
+      arguments.callee = arguments.callee.caller;
+      console.log( Array.prototype.slice.call(arguments) );
+  }
+};
+
+var Logger = function() {
+    var log = [];
+    this.add = function(string) {
+        log.push(string);
+    };
+    this.toString = function() {
+        return log.join('; ');
+    };
+    this.postAsError = function(prefix) {
+        if(typeof prefix == 'undefined')
+            prefix = 'js_log';
+        var data = {};
+        data[prefix] = this.toString();
+        $.post('/error/jsdebug', {data: data});
+    };
+};
+window.logger = new Logger();
+
+window.getLogString = function() {
+    if(!window.log || !log.history)
+        return '';
+
+    var strings = [];
+    for(var i = 0; i < log.history.length; i ++) {
+        var item = log.history[i];
+        var string = '';
+        for(var j = 0; j < item.length; j ++) {
+            string += item[j];
+        }
+        strings.push(string);
+    }
+    return strings.join('; ');
+};
+
+(function(b){function c(){}for(var d="assert,count,debug,dir,dirxml,error,exception,group,groupCollapsed,groupEnd,info,log,markTimeline,profile,profileEnd,time,timeEnd,trace,warn".split(","),a;a=d.pop();)b[a]=b[a]||c})(window.console=window.console||{});
+
+$.fn.selectRange = function(start, end) {
+    return this.each(function() {
+        if(this.setSelectionRange) {
+            this.focus();
+            this.setSelectionRange(start, end);
+        } else if(this.createTextRange) {
+            var range = this.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', end);
+            range.moveStart('character', start);
+            range.select();
+        }
+    });
+};
+
+/*! Copyright (c) 2010 Brandon Aaron (http://brandonaaron.net)
+ * Licensed under the MIT License (LICENSE.txt).
+ *
+ * Version 1.0
+ *
+ * Contributions by:
+ *   - Neil Monroe (neil.monroe[at]gmail.com)
+ */
+
+(function($) {
+
+$.fn.extend({
+    countable: function(givenOptions) {
+        return this.each(function() {
+            var $this = $(this), interval, prev_char_diff, $el,
+                options = $.extend({
+                    destroy : false,
+                    threshold: 0.25,
+                    appendMethod: 'insertAfter', // insertBefore || insertAfter || prependTo || appendTo
+                    target: $this, // relative element with which to place the counter
+                    startOpacity: 0.35,
+                    maxLength: parseInt( $this.attr('maxlength'), 10 ) || 0,
+                    cautionClassName : 'caution',
+                    warningClassName : 'warning',
+                    healthyClassName : 'healthy',
+                    maxClassName: 'maxed',
+                    className: 'counter',
+                    tagName: 'span',
+                    interval: 750,
+                    positiveCopy: '{n}&nbsp;characters left.',
+                    negativeCopy: '-{n}&nbsp;characters.',
+                    fadeDuration: 'slow',
+                    enforceMaximum : false,
+                    defaultText: '' // text to disregard in the character count
+                }, givenOptions);
+
+            // create counter element
+            $el = $('<'+options.tagName+'/>')
+                .html( options.positiveCopy.replace('{n}', '<span class="num"></span>') )
+                .addClass( options.className );
+
+            // set initial opacity to 0 if opacity is supported
+            if ( $.support.opacity ) $el.css({ opacity: 0 }); // don't set opacity for IE to avoid clear text issues.
+
+            // sppend counter element to the DOM
+            $el[options.appendMethod](options.target);
+
+            // hook up events for the input/textarea being monitored
+            $this
+                .bind('keyup', check)
+                .bind('focus blur', function(event) {
+                    if ( event.type == 'blur' ) clearInterval( interval );
+                    if ( event.type == 'focus' && !interval ) setInterval(check, options.interval);
+                });
+            /*
+            if(options.enforceMaximum){
+                $this.bind('keydown',validate);
+            } else {
+                $this.unbind('keydown',validate);
+            }
+            */
+            /*
+            if(typeof(options.destroy) != undefined && options.destroy){
+              $this.bind("blur",destroy);
+            }
+            */
+
+            /** RC destroy method (TODO)**/
+            /*
+            function destroy(){
+              $this.unbind();
+              $el.fadeOut(options.fadeDuration,function(){
+                $(this).remove();
+              });
+              return;
+            }*/
+            /** added validate and isSpecialKeyCode to enforce max limits **/
+              /** see https://github.com/brandonaaron/jquery-countable/issues/1 **/
+            function validate(e, b)
+            {
+                var val = $this.val(),
+                    length = (val == options.defaultText ? 0 : val.length),
+                    keyCode = (e.which !== null) ? e.which : e.keyCode;
+
+                if (length >= options.maxLength && !isSpecialKeyCode(keyCode))
+                {
+                    e.returnValue = false;
+                    return false;
+                } else {
+                    e.returnValue = true;
+                    return true;
+                }
+            }
+
+            function isSpecialKeyCode(code){
+                var specialKeyCodes =
+                [8, 9, 16, 17, 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 44, 46, 91, 92, 93, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 144, 145];
+                return jQuery.inArray(code, specialKeyCodes) > -1;
+            }
+
+            // actual function to do the character counting and notification
+            function check() {
+                var val = $this.val(),
+                    length = (val == options.defaultText ? 0 : val.length),
+                    percentage_complete = length/options.maxLength,
+                    char_diff = options.maxLength - length,
+                    opacity;
+
+                // return if we haven't made any progress
+                if ( prev_char_diff !== undefined && char_diff == prev_char_diff ) return;
+
+                // if counter element is hidden and we are past the given threshold, show it
+                if ( $el.is(':hidden') && percentage_complete >= options.threshold )
+                    $el.show();
+                // if the counter element is visible and we are now under the given threshold, hide it
+                if ( $el.is(':visible') && percentage_complete < options.threshold )
+                    $el.hide();
+
+                if ( $.support.opacity ) { // don't set opacity for IE to avoid clear type issues.
+                    // calculate the correct opacity
+                    opacity = options.startOpacity + ((options.threshold - percentage_complete) * ((options.startOpacity * 2) - 2));
+                    // animate to the correct opacity
+                    $el.stop().fadeTo( options.fadeDuration, percentage_complete >= options.threshold ? opacity : 0 );
+                }
+
+                // set the correct copy if under or over the max number of characters
+                if ( char_diff >= 0 ) {
+                    if ( $el.is( '.'+options.maxClassName ) )
+                        $el.html( options.positiveCopy.replace('{n}', '<span class="num"></span>') );
+                } else {
+                    if ( !$el.is( '.'+options.maxClassName ) )
+                        $el.html( options.negativeCopy.replace('{n}', '<span class="num"></span>') );
+
+                }
+
+                // add or remove the max class name
+                $el[ (char_diff < 0 ? 'add' : 'remove') + 'Class' ]( options.maxClassName );
+                /* RC this is rad, adding in some more */
+                  /** todo - change to percentage values? **/
+                $el[ (char_diff <= 10 && char_diff >= 0 ? 'add' : 'remove') + 'Class' ]( options.warningClassName );                /* RC this is rad, adding in some more */
+                $el[ (char_diff <= 40 && char_diff > 10 ? 'add' : 'remove') + 'Class' ]( options.cautionClassName );
+                $el[ (char_diff <= 100 && char_diff > 40 ? 'add' : 'remove') + 'Class' ]( options.healthyClassName );
+
+                // set the number of characters left or number of characters over the limit
+                $el.find('.num').text( Math.abs(char_diff) );
+
+                // make sure the plural is necessary or not
+                if ( char_diff == -1 || char_diff == 1 )
+                    $el.html( $el.html().replace(/characters\b/, 'character') );
+                else
+                    $el.html( $el.html().replace(/character\b/, 'characters') );
+
+                prev_char_diff = char_diff;
+            }
+            // run an initial check
+            check();
+        });
+    }
+});
+
+})(jQuery);
+
+/*
+    Blupton jquery scrollto
+ GNU Affero General Public License version 3 {@link http://www.gnu.org/licenses/agpl-3.0.html}
+*/
+
+
+
+
+
+
+
+// non-minified version here because soundmanager dies when you set position
+// to relative. (search "TODO" in this file) (did try vanilla js instead of $, same
+// result). if we can't just remove that line, i supposed we'll have to look at
+// an alternative to this ScrollTo.
+(function($){
+
+    /**
+     * jQuery ScrollTo (balupton edition)
+     * @version 1.0.1
+     * @date August 31, 2010
+     * @since 0.1.0, August 27, 2010
+     * @package jquery-scrollto {@link http://www.balupton/projects/jquery-scrollto}
+     * @author Benjamin "balupton" Lupton {@link http://www.balupton.com}
+     * @copyright (c) 2010 Benjamin Arthur Lupton {@link http://www.balupton.com}
+     * @license GNU Affero General Public License version 3 {@link http://www.gnu.org/licenses/agpl-3.0.html}
+     */
+    if ( !($.ScrollTo||false) ) {
+        $.ScrollTo = {
+            /**
+             * The Default Configuration
+             */
+            config: {
+                duration: 400,
+                easing: 'swing',
+                callback: undefined,
+                durationMode: 'each',
+                offsetIncrease : false
+            },
+
+            /**
+             * Configure ScrollTo
+             */
+            configure: function(options){
+                var ScrollTo = $.ScrollTo;
+
+                // Apply Options to Config
+                $.extend(ScrollTo.config, options||{});
+
+                // Chain
+                return this;
+            },
+
+            /**
+             * Perform the Scroll Animation for the Collections
+             * We use $inline here, so we can determine the actual offset start for each overflow:scroll item
+             * Each collection is for each overflow:scroll item
+             */
+            scroll: function(collections, config){
+                var ScrollTo = $.ScrollTo;
+
+                // Determine the Scroll
+                var collection = collections.pop(),
+                $container = collection.$container,
+                $target = collection.$target;
+
+                // Prepare the Inline Element of the Container
+                var $inline = $('<span/>').css({
+                    'position': 'absolute',
+                    'top': '0px',
+                    'left': '0px'
+                });
+                var position = $container.css('position');
+
+                // Insert the Inline Element of the Container
+
+                // TODO: can we survive without this line? it breaks
+                // constant playback.
+
+//                $container.css('position','relative');
+                $inline.appendTo($container);
+
+                // Determine the Offsets
+                var startOffset = $inline.offset().top,
+                targetOffset = $target.offset().top,
+                offsetDifference = targetOffset - startOffset;
+                if(config.offsetIncrease)
+                    offsetDifference = offsetDifference + config.offsetIncrease;
+
+                // Reset the Inline Element of the Container
+                $inline.remove();
+//                $container.css('position',position);
+
+                // Prepare the callback
+                var callback = function(event){
+                    // Check
+                    if ( collections.length === 0 ) {
+                        // Callback
+                        if ( typeof config.callback === 'function' ) {
+                            config.callback.apply(this,[event]);
+                        }
+                    }
+                    else {
+                        // Recurse
+                        ScrollTo.scroll(collections,config);
+                    }
+                    // Return true
+                    return true;
+                };
+
+                // Perform the Scroll
+                $container.animate({
+                    'scrollTop': offsetDifference+'px'
+                }, config.duration, config.easing, callback);
+
+                // Return true
+                return true;
+            },
+
+            /**
+             * ScrollTo the Element using the Options
+             */
+            fn: function(options){
+                var ScrollTo = $.ScrollTo;
+
+                // Prepare
+                var $target = $(this);
+                if ( $target.length === 0 ) {
+                    // Chain
+                    return this;
+                }
+
+                // Fetch
+                var $container = $target.parent(),
+                collections = [];
+
+                // Handle Options
+                config = $.extend({},ScrollTo.config,options);
+
+                // Cycle through the containers
+                while ( $container.length === 1 && !$container.is('body') && !($container.get(0) === document) ) {
+                    // Check Container
+                    var container = $container.get(0);
+                    if ( $container.css('overflow-y') !== 'visible' && container.scrollHeight !== container.clientHeight ) {
+                        // Push the Collection
+                        collections.push({
+                            '$container': $container,
+                            '$target': $target
+                        });
+                        // Update the Target
+                        $target = $container;
+                    }
+                    // Update the Container
+                    $container = $container.parent();
+                }
+
+                // Add the final collection
+                collections.push({
+                    '$container': $($.browser.msie ? 'html' : 'body'),
+                    '$target': $target
+                });
+
+                // Adjust the Config
+                if ( config.durationMode === 'all' ) {
+                    config.duration /= collections.length;
+                }
+
+                // Handle
+                ScrollTo.scroll(collections,config);
+
+                // Chain
+                return this;
+            },
+
+            /**
+             * Construct
+             */
+            construct: function(options){
+                var ScrollTo = $.ScrollTo;
+
+                // Apply our jQuery Function
+                $.fn.ScrollTo = ScrollTo.fn;
+
+                // Apply our Options to the Default Config
+                ScrollTo.config = $.extend(ScrollTo.config,options);
+
+                // Chain
+                return this;
+            }
+        };
+
+        // Construct It
+        $.ScrollTo.construct();
+    }
+    else {
+        window.console.warn("$.ScrollTo has already been defined...");
+    }
+
+})(jQuery);
+
+
+
+
+
+
+
+
+/*(function(b){if(b.ScrollTo)window.console.warn("$.ScrollTo has already been defined...");else{b.ScrollTo={config:{duration:400,easing:"swing",callback:undefined,durationMode:"each"},configure:function(c){b.extend(b.ScrollTo.config,c||{});return this;},scroll:function(c,d){var f=b.ScrollTo,a=c.pop(),e=a.$container,g=a.$target;a=b("<span/>").css({position:"absolute",top:"0px",left:"0px"});var h=e.css("position");e.css("position","relative");a.appendTo(e);var i=a.offset().top;g=g.offset().top-i;a.remove();e.css("position",h);e.animate({scrollTop:g+"px"},d.duration,d.easing,function(j){if(c.length===0)typeof d.callback==="function"&&d.callback.apply(this,[j]);else f.scroll(c,d);return true});return true},fn:function(c){var d=b.ScrollTo,f=b(this);if(f.length===0)return this;var a=f.parent(),e=[];for(config=b.extend({},d.config,c);a.length===1&&!a.is("body")&&a.get(0)!==document;){c=a.get(0);if(a.css("overflow-y")!=="visible"&&c.scrollHeight!==c.clientHeight){e.push({$container:a,$target:f});f=a}a=a.parent()}e.push({$container:b(b.browser.msie?
+"html":"body"),$target:f});if(config.durationMode==="all")config.duration/=e.length;d.scroll(e,config);return this},construct:function(c){var d=b.ScrollTo;b.fn.ScrollTo=d.fn;d.config=b.extend(d.config,c);return this}};b.ScrollTo.construct()}})(jQuery);*/
+
+
+// Internal Helper
+$.expr[':'].internal = function(obj, index, meta, stack){
+    // Prepare
+    var
+        $this = $(obj),
+        url = $this.attr('href')||'',
+        isInternalLink,
+        rootUrl = History.getRootUrl();
+
+    // Check link
+    isInternalLink = url.substring(0,rootUrl.length) === rootUrl || url.indexOf(':') === -1;
+
+    // Ignore or Keep
+    return isInternalLink;
+};
+
+// Ajaxify Helper
+$.fn.ajaxify = function(){
+    // Prepare
+    var $this = $(this);
+
+    // Ajaxify
+    $this.find('a:internal:not(a[target="_blank"],.no-ajax,ul.tabs li a,a[href*="#"],a[href*="jam/create"],a[href*="signout"],.delete-comment,.reply-comment,#artPlayer a, a.button,a.playButton,a#account,a.paginate,a#jamEditLink,a.signerUpper,a#soundcloudLink,.newsActions a.like,.fb-post a,#backToRecoverPassword)')
+        .click(function(event){
+        // Prepare
+        var
+            $this = $(this),
+            url = $this.attr('href'),
+            title = $this.attr('title')||null;
+
+        // Continue as normal for cmd clicks etc
+        if ( event.which == 2 || event.metaKey ) { return true; }
+
+        // Ajaxify this link
+        History.pushState(null,title,url);
+
+        // Small hack to ensure same-page reloads are possible on click
+        //console.log(window.location.pathname, "vs", url, window.loading);
+            //window.loading is in the history handler to ensure we don't ever make a call during a load cycle.
+        if(window.location.pathname === url && !window.loading) {
+            $(window).trigger("statechange");
+            //console.log("triggered statechange here");
+            return false;
+        }
+
+        event.preventDefault();
+        return false;
+    });
+
+    // Chain
+    return $this;
+};
+
+// Quick helper for submits
+$.fn.disable = function(disable){
+    var $this = $(this),
+        check = (typeof(disable) === "undefined") ? true : disable;
+    if(check) //so you can pass true or nothing
+    {
+        $this.addClass("disabled").attr("disabled",true);
+    } else {
+        //Pass false
+        $this.removeClass("disabled").attr("disabled",false);
+    }
+    return $this; //Chain it
+};
+
+// for completeness
+$.fn.enable = function(disable){
+    var $this = $(this),
+        check = (typeof(disable) === "undefined") ? true : disable;
+    $this.disable(false);
+    return $this; //Chain it
+};
+
+
+$.fn.loading = function() {
+    var $this = $(this);
+    $this.addClass('loading');
+    return $this;
+}
+$.fn.loaded = function() {
+    var $this = $(this);
+    $this.removeClass('loading');
+    return $this;
+}
+
+
+$.fn.objectify = function(modelClass, viewClass) {
+
+    g_l = [];
+
+    for(var i = 0; i < this.length; i ++) {
+        var $el = $(this[i]);
+
+        if(!modelClass || typeof modelClass != 'function')
+            throw 'modelClass must be a function';
+        if(!viewClass || typeof viewClass != 'function')
+            throw 'viewClass must be a function';
+
+        var model = new modelClass($el);
+        var view = new viewClass($el);
+        model.setView(view);
+
+        g_l.push(model);
+    }
+
+    return $(this);
+};
+
+
+// Centering helper
+    //Ala http://stackoverflow.com/questions/4461247/centering-a-div-with-a-loading-spinner-gif-using-jquery-and-ajax-beginform
+$.fn.center = function () {
+    var $this = $(this);
+    $this.css("position", "absolute");
+    $this.css("top", ($(window).height() - $this.height())/ 2 + $(window).scrollTop() + "px");
+    $this.css("left", ($(window).width() - $this.width()) / 2 + $(window).scrollLeft() + "px");
+    return $this;
+};
+
+/**
+ * $.ajaxUpload(url [, settings])
+ * settings (all fields optional):
+ *   success(data, xhr)
+ *   error(xhr)
+ *   maxSize
+ *   allowedTypes
+ *   clientError(message)
+ */
+$.fn.ajaxUpload = function(url, settings) {
+    var $this = $(this);
+
+    if(!url)
+        throw "ajaxUpload(): No action provided";
+
+    if(!(new XMLHttpRequest()).upload)
+        throw "ajaxUpload(): XMLHttpRequest::upload() is not defined";
+
+    if($this[0].tagName.toLowerCase() != 'input' || $this.attr('type') != 'file')
+        throw "ajaxUpload(): Not a valid file input";
+
+    $this.change(function(e) {
+        var files = e.target.files || e.dataTransfer.files;
+        var file = files[0];
+
+        if(settings.beforeSend){
+            settings.beforeSend();
+        }
+
+        // attempting to keep consistent with the server responses
+
+        if(settings.allowedTypes && file.type && $.inArray(file.type, settings.allowedTypes) == -1)
+            // file.type sometimes returns ""
+            return settings.clientError && settings.clientError('Image format not recognised');
+
+        if(settings.maxSize && file.size > settings.maxSize)
+            return settings.clientError && settings.clientError('Sorry, that file is too large. The maximum size for images is 2MB');
+
+        var xhr = new XMLHttpRequest();
+
+        // file.type, file.size
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("X_FILENAME", file.name);
+        xhr.onload = function(event) {
+            if(xhr.status == 200) {
+
+
+                settings && settings.success && settings.success(event.target.responseText, xhr);
+            }
+            else {
+                settings && settings.error && settings.error(xhr);
+            }
+        };
+
+        xhr.send(file);
+    });
+    return $this;
+};
+
+/**
+ *
+ * Search keys helper, attach to e.g. a form element
+ * To be scoped and extended, here as a placeholder for full search UI stuff.
+ **/
+
+$.fn.searchKeys = function($element){
+    // Prepare
+    var $this = $(this);
+
+    if(!$element){
+        $element = $this.find("input[type='text']") || $this.find("input[type='search']");
+        if(!$element || typeof($element) == "undefined") return $this;
+    }
+
+    $element.on("keydown",function(e){
+
+        if(e.which === 27){
+            $(this).val("");
+        }
+    });
+
+
+
+
+    // Chain
+    return $this;
+};
+
+
+/**
+ *
+ * Dropdown helper
+ *
+ */
+
+$.fn.dropdown = function($targetDiv){
+    // Prepare
+    var $this = $(this);
+
+    // Hide target div by default
+    $targetDiv.hide();
+
+    // Toggles
+    $this.on("click",function(e){
+        e.preventDefault();
+        $this.toggleClass("open");
+        $targetDiv.slideToggle("fast");
+        return;
+    });
+
+    // Chain
+    return $this;
+};
+
+/**
+ *
+ * Color picker
+ * Author: Stefan Petre www.eyecon.ro
+ *
+ * Dual licensed under the MIT and GPL licenses
+ *
+ */
+(function(a){var b=function(){var b={},c,d=65,e,f='<div class="colorpicker"><div class="colorpicker_color"><div><div></div></div></div><div class="colorpicker_hue"><div></div></div><div class="colorpicker_new_color"></div><div class="colorpicker_current_color"></div><div class="colorpicker_hex"><input type="text" maxlength="6" size="6" /></div><div class="colorpicker_rgb_r colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_rgb_g colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_rgb_b colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_hsb_h colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_hsb_s colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_hsb_b colorpicker_field"><input type="text" maxlength="3" size="3" /><span></span></div><div class="colorpicker_submit"></div></div>',g={eventName:"click",onShow:function(){},onBeforeShow:function(){},onHide:function(){},onChange:function(){},onSubmit:function(){},color:"ff0000",livePreview:true,flat:false},h=function(b,c){var d=O(b);a(c).data("colorpicker").fields.eq(1).val(d.r).end().eq(2).val(d.g).end().eq(3).val(d.b).end()},i=function(b,c){a(c).data("colorpicker").fields.eq(4).val(b.h).end().eq(5).val(b.s).end().eq(6).val(b.b).end()},j=function(b,c){a(c).data("colorpicker").fields.eq(0).val(Q(b)).end()},k=function(b,c){a(c).data("colorpicker").selector.css("backgroundColor","#"+Q({h:b.h,s:100,b:100}));a(c).data("colorpicker").selectorIndic.css({left:parseInt(150*b.s/100,10),top:parseInt(150*(100-b.b)/100,10)})},l=function(b,c){a(c).data("colorpicker").hue.css("top",parseInt(150-150*b.h/360,10))},m=function(b,c){a(c).data("colorpicker").currentColor.css("backgroundColor","#"+Q(b))},n=function(b,c){a(c).data("colorpicker").newColor.css("backgroundColor","#"+Q(b))},o=function(b){var c=b.charCode||b.keyCode||-1;if(c>d&&c<=90||c==32){return false}var e=a(this).parent().parent();if(e.data("colorpicker").livePreview===true){p.apply(this)}},p=function(b){var c=a(this).parent().parent(),d;if(this.parentNode.className.indexOf("_hex")>0){c.data("colorpicker").color=d=M(K(this.value))}else if(this.parentNode.className.indexOf("_hsb")>0){c.data("colorpicker").color=d=I({h:parseInt(c.data("colorpicker").fields.eq(4).val(),10),s:parseInt(c.data("colorpicker").fields.eq(5).val(),10),b:parseInt(c.data("colorpicker").fields.eq(6).val(),10)})}else{c.data("colorpicker").color=d=N(J({r:parseInt(c.data("colorpicker").fields.eq(1).val(),10),g:parseInt(c.data("colorpicker").fields.eq(2).val(),10),b:parseInt(c.data("colorpicker").fields.eq(3).val(),10)}))}if(b){h(d,c.get(0));j(d,c.get(0));i(d,c.get(0))}k(d,c.get(0));l(d,c.get(0));n(d,c.get(0));c.data("colorpicker").onChange.apply(c,[d,Q(d),O(d)])},q=function(b){var c=a(this).parent().parent();c.data("colorpicker").fields.parent().removeClass("colorpicker_focus")},r=function(){d=this.parentNode.className.indexOf("_hex")>0?70:65;a(this).parent().parent().data("colorpicker").fields.parent().removeClass("colorpicker_focus");a(this).parent().addClass("colorpicker_focus")},s=function(b){var c=a(this).parent().find("input").focus();var d={el:a(this).parent().addClass("colorpicker_slider"),max:this.parentNode.className.indexOf("_hsb_h")>0?360:this.parentNode.className.indexOf("_hsb")>0?100:255,y:b.pageY,field:c,val:parseInt(c.val(),10),preview:a(this).parent().parent().data("colorpicker").livePreview};a(document).bind("mouseup",d,u);a(document).bind("mousemove",d,t)},t=function(a){a.data.field.val(Math.max(0,Math.min(a.data.max,parseInt(a.data.val+a.pageY-a.data.y,10))));if(a.data.preview){p.apply(a.data.field.get(0),[true])}return false},u=function(b){p.apply(b.data.field.get(0),[true]);b.data.el.removeClass("colorpicker_slider").find("input").focus();a(document).unbind("mouseup",u);a(document).unbind("mousemove",t);return false},v=function(b){var c={cal:a(this).parent(),y:a(this).offset().top};c.preview=c.cal.data("colorpicker").livePreview;a(document).bind("mouseup",c,x);a(document).bind("mousemove",c,w)},w=function(a){p.apply(a.data.cal.data("colorpicker").fields.eq(4).val(parseInt(360*(150-Math.max(0,Math.min(150,a.pageY-a.data.y)))/150,10)).get(0),[a.data.preview]);return false},x=function(b){h(b.data.cal.data("colorpicker").color,b.data.cal.get(0));j(b.data.cal.data("colorpicker").color,b.data.cal.get(0));a(document).unbind("mouseup",x);a(document).unbind("mousemove",w);return false},y=function(b){var c={cal:a(this).parent(),pos:a(this).offset()};c.preview=c.cal.data("colorpicker").livePreview;a(document).bind("mouseup",c,A);a(document).bind("mousemove",c,z)},z=function(a){p.apply(a.data.cal.data("colorpicker").fields.eq(6).val(parseInt(100*(150-Math.max(0,Math.min(150,a.pageY-a.data.pos.top)))/150,10)).end().eq(5).val(parseInt(100*Math.max(0,Math.min(150,a.pageX-a.data.pos.left))/150,10)).get(0),[a.data.preview]);return false},A=function(b){h(b.data.cal.data("colorpicker").color,b.data.cal.get(0));j(b.data.cal.data("colorpicker").color,b.data.cal.get(0));a(document).unbind("mouseup",A);a(document).unbind("mousemove",z);return false},B=function(b){a(this).addClass("colorpicker_focus")},C=function(b){a(this).removeClass("colorpicker_focus")},D=function(b){var c=a(this).parent();var d=c.data("colorpicker").color;c.data("colorpicker").origColor=d;m(d,c.get(0));c.data("colorpicker").onSubmit(d,Q(d),O(d),c.data("colorpicker").el)},E=function(b){var c=a("#"+a(this).data("colorpickerId"));c.data("colorpicker").onBeforeShow.apply(this,[c.get(0)]);var d=a(this).offset();var e=H();var f=d.top+this.offsetHeight;var g=d.left;if(f+176>e.t+e.h){f-=this.offsetHeight+176}if(g+356>e.l+e.w){g-=356}c.css({left:g+"px",top:f+"px"});if(c.data("colorpicker").onShow.apply(this,[c.get(0)])!=false){c.show()}a(document).bind("mousedown",{cal:c},F);return false},F=function(b){if(!G(b.data.cal.get(0),b.target,b.data.cal.get(0))){if(b.data.cal.data("colorpicker").onHide.apply(this,[b.data.cal.get(0)])!=false){b.data.cal.hide()}a(document).unbind("mousedown",F)}},G=function(a,b,c){if(a==b){return true}if(a.contains){return a.contains(b)}if(a.compareDocumentPosition){return!!(a.compareDocumentPosition(b)&16)}var d=b.parentNode;while(d&&d!=c){if(d==a)return true;d=d.parentNode}return false},H=function(){var a=document.compatMode=="CSS1Compat";return{l:window.pageXOffset||(a?document.documentElement.scrollLeft:document.body.scrollLeft),t:window.pageYOffset||(a?document.documentElement.scrollTop:document.body.scrollTop),w:window.innerWidth||(a?document.documentElement.clientWidth:document.body.clientWidth),h:window.innerHeight||(a?document.documentElement.clientHeight:document.body.clientHeight)}},I=function(a){return{h:Math.min(360,Math.max(0,a.h)),s:Math.min(100,Math.max(0,a.s)),b:Math.min(100,Math.max(0,a.b))}},J=function(a){return{r:Math.min(255,Math.max(0,a.r)),g:Math.min(255,Math.max(0,a.g)),b:Math.min(255,Math.max(0,a.b))}},K=function(a){var b=6-a.length;if(b>0){var c=[];for(var d=0;d<b;d++){c.push("0")}c.push(a);a=c.join("")}return a},L=function(a){var a=parseInt(a.indexOf("#")>-1?a.substring(1):a,16);return{r:a>>16,g:(a&65280)>>8,b:a&255}},M=function(a){return N(L(a))},N=function(a){var b={h:0,s:0,b:0};var c=Math.min(a.r,a.g,a.b);var d=Math.max(a.r,a.g,a.b);var e=d-c;b.b=d;if(d!=0){}b.s=d!=0?255*e/d:0;if(b.s!=0){if(a.r==d){b.h=(a.g-a.b)/e}else if(a.g==d){b.h=2+(a.b-a.r)/e}else{b.h=4+(a.r-a.g)/e}}else{b.h=-1}b.h*=60;if(b.h<0){b.h+=360}b.s*=100/255;b.b*=100/255;return b},O=function(a){var b={};var c=Math.round(a.h);var d=Math.round(a.s*255/100);var e=Math.round(a.b*255/100);if(d==0){b.r=b.g=b.b=e}else{var f=e;var g=(255-d)*e/255;var h=(f-g)*(c%60)/60;if(c==360)c=0;if(c<60){b.r=f;b.b=g;b.g=g+h}else if(c<120){b.g=f;b.b=g;b.r=f-h}else if(c<180){b.g=f;b.r=g;b.b=g+h}else if(c<240){b.b=f;b.r=g;b.g=f-h}else if(c<300){b.b=f;b.g=g;b.r=g+h}else if(c<360){b.r=f;b.g=g;b.b=f-h}else{b.r=0;b.g=0;b.b=0}}return{r:Math.round(b.r),g:Math.round(b.g),b:Math.round(b.b)}},P=function(b){var c=[b.r.toString(16),b.g.toString(16),b.b.toString(16)];a.each(c,function(a,b){if(b.length==1){c[a]="0"+b}});return c.join("")},Q=function(a){return P(O(a))},R=function(){var b=a(this).parent();var c=b.data("colorpicker").origColor;b.data("colorpicker").color=c;h(c,b.get(0));j(c,b.get(0));i(c,b.get(0));k(c,b.get(0));l(c,b.get(0));n(c,b.get(0))};return{init:function(b){b=a.extend({},g,b||{});if(typeof b.color=="string"){b.color=M(b.color)}else if(b.color.r!=="undefined"&&b.color.g!=="undefined"&&b.color.b!=="undefined"){b.color=N(b.color)}else if(b.color.h!=="undefined"&&b.color.s!=="undefined"&&b.color.b!=="undefined"){b.color=I(b.color)}else{return this}return this.each(function(){if(!a(this).data("colorpickerId")){var c=a.extend({},b);c.origColor=b.color;var d="collorpicker_"+parseInt(Math.random()*1e3);a(this).data("colorpickerId",d);var e=a(f).attr("id",d);if(c.flat){e.appendTo(this).show()}else{e.appendTo(document.body)}c.fields=e.find("input").bind("keyup",o).bind("change",p).bind("blur",q).bind("focus",r);e.find("span").bind("mousedown",s).end().find(">div.colorpicker_current_color").bind("click",R);c.selector=e.find("div.colorpicker_color").bind("mousedown",y);c.selectorIndic=c.selector.find("div div");c.el=this;c.hue=e.find("div.colorpicker_hue div");e.find("div.colorpicker_hue").bind("mousedown",v);c.newColor=e.find("div.colorpicker_new_color");c.currentColor=e.find("div.colorpicker_current_color");e.data("colorpicker",c);e.find("div.colorpicker_submit").bind("mouseenter",B).bind("mouseleave",C).bind("click",D);h(c.color,e.get(0));i(c.color,e.get(0));j(c.color,e.get(0));l(c.color,e.get(0));k(c.color,e.get(0));m(c.color,e.get(0));n(c.color,e.get(0));if(c.flat){e.css({position:"relative",display:"block"})}else{a(this).bind(c.eventName,E)}}})},showPicker:function(){return this.each(function(){if(a(this).data("colorpickerId")){E.apply(this)}})},hidePicker:function(){return this.each(function(){if(a(this).data("colorpickerId")){a("#"+a(this).data("colorpickerId")).hide()}})},setColor:function(b){if(typeof b=="string"){b=M(b)}else if(b.r!=="undefined"&&b.g!=="undefined"&&b.b!=="undefined"){b=N(b)}else if(b.h!=="undefined"&&b.s!=="undefined"&&b.b!=="undefined"){b=I(b)}else{return this}return this.each(function(){if(a(this).data("colorpickerId")){var c=a("#"+a(this).data("colorpickerId"));c.data("colorpicker").color=b;c.data("colorpicker").origColor=b;h(b,c.get(0));i(b,c.get(0));j(b,c.get(0));l(b,c.get(0));k(b,c.get(0));m(b,c.get(0));n(b,c.get(0))}})}}}();a.fn.extend({ColorPicker:b.init,ColorPickerHide:b.hidePicker,ColorPickerShow:b.showPicker,ColorPickerSetColor:b.setColor})})(jQuery)
+
+
+
+/* z-index fixing from http://www.davidtong.me/z-index-misconceptions-bugs-fixes/ */
+
+$.fn.fixZIndex = function(params) {
+    params = params || {};
+    if (params.msieOnly && !$.browser.msie) return this;
+    var num_of_jobj = this.length;
+    for (var i = num_of_jobj; i--;) {
+        var curr_element = this[i];
+        var config_recursive = params.recursive || true;
+        var config_exclude = params.exclude || null;
+        while (curr_element != document.body) {
+            if (!$(curr_element).hasClass(config_exclude) && ($(curr_element).css('position') == 'relative' || $(curr_element).css('position') == 'absolute')) {
+                if ($.data(curr_element, 'zIndex') == undefined) {
+                    $.data(curr_element, 'zIndex', curr_element.style.zIndex || '-1');
+                }
+                curr_element.style.zIndex = params.zIndex || '9999';
+            }
+            curr_element = curr_element.parentNode;
+            if (!config_recursive) break;
+        }
+    }
+    return this;
+};
+
+// optional function to restore z-index if needed
+$.fn.restoreZIndex = function(params) {
+    params = params || {};
+    if (params.msieOnly && !$.browser.msie) return this;
+    var num_of_jobj = this.length;
+    for (var i = num_of_jobj; i--;) {
+        var curr_element = this[i];
+        var config_exclude = params.exclude || null;
+        while (curr_element && curr_element != document.body) {
+            var currZIndex = $.data(curr_element, 'zIndex');
+            if (currZIndex > -1 && !$(curr_element).hasClass(config_exclude)) {
+                curr_element.style.zIndex = currZIndex;
+                $.removeData(curr_element, 'zIndex');
+            }
+            else if (currZIndex == -1) {
+                curr_element.style.zIndex = '';
+            }
+            curr_element = curr_element.parentNode;
+        }
+    }
+    return this;
+};
+
+
+/*! http://mths.be/placeholder v2.0.6 by @mathias */
+(function(window,document,$){var isInputSupported="placeholder"in document.createElement("input"),isTextareaSupported="placeholder"in document.createElement("textarea"),prototype=$.fn,valHooks=$.valHooks,hooks,placeholder;if(isInputSupported&&isTextareaSupported){placeholder=prototype.placeholder=function(){return this};placeholder.input=placeholder.textarea=true}else{placeholder=prototype.placeholder=function(){var $this=this;$this.filter((isInputSupported?"textarea":":input")+"[placeholder]").not(".placeholder").bind({"focus.placeholder":clearPlaceholder,
+"blur.placeholder":setPlaceholder}).data("placeholder-enabled",true).trigger("blur.placeholder");return $this};placeholder.input=isInputSupported;placeholder.textarea=isTextareaSupported;hooks={"get":function(element){var $element=$(element);return $element.data("placeholder-enabled")&&$element.hasClass("placeholder")?"":element.value},"set":function(element,value){var $element=$(element);if(!$element.data("placeholder-enabled"))return element.value=value;if(value==""){element.value=value;if(element!=
+document.activeElement)setPlaceholder.call(element)}else if($element.hasClass("placeholder"))clearPlaceholder.call(element,true,value)||(element.value=value);else element.value=value;return $element}};isInputSupported||(valHooks.input=hooks);isTextareaSupported||(valHooks.textarea=hooks);$(function(){$(document).delegate("form","submit.placeholder",function(){var $inputs=$(".placeholder",this).each(clearPlaceholder);setTimeout(function(){$inputs.each(setPlaceholder)},10)})});$(window).bind("beforeunload.placeholder",
+function(){$(".placeholder").each(function(){this.value=""})})}function args(elem){var newAttrs={},rinlinejQuery=/^jQuery\d+$/;$.each(elem.attributes,function(i,attr){if(attr.specified&&!rinlinejQuery.test(attr.name))newAttrs[attr.name]=attr.value});return newAttrs}function clearPlaceholder(event,value){var input=this,$input=$(input),hadFocus;if(input.value==$input.attr("placeholder")&&$input.hasClass("placeholder")){hadFocus=input==document.activeElement;if($input.data("placeholder-password")){$input=
+$input.hide().next().show().attr("id",$input.removeAttr("id").data("placeholder-id"));if(event===true)return $input[0].value=value;$input.focus()}else{input.value="";$input.removeClass("placeholder")}hadFocus&&input.select()}}function setPlaceholder(){var $replacement,input=this,$input=$(input),$origInput=$input,id=this.id;if(input.value==""){if(input.type=="password"){if(!$input.data("placeholder-textinput")){try{$replacement=$input.clone().attr({"type":"text"})}catch(e){$replacement=$("<input>").attr($.extend(args(this),
+{"type":"text"}))}$replacement.removeAttr("name").data({"placeholder-password":true,"placeholder-id":id}).bind("focus.placeholder",clearPlaceholder);$input.data({"placeholder-textinput":$replacement,"placeholder-id":id}).before($replacement)}$input=$input.removeAttr("id").hide().prev().attr("id",id).show()}$input.addClass("placeholder");$input[0].value=$input.attr("placeholder")}else $input.removeClass("placeholder")}})(this,document,jQuery);
+
+// as seen on jsPerf, http://jsperf.com/get-url-variables
+var getQueryVariable = function(variable) {
+    var query = window.location.search.substring(1),
+        vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) {
+            return pair[1];
+        }
+    }
+    return (false);
+};
+
+// reference implementation from https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function (oThis) {
+    if (typeof this !== "function") {
+      // closest thing possible to the ECMAScript 5 internal IsCallable function
+      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+    }
+
+    var aArgs = Array.prototype.slice.call(arguments, 1),
+        fToBind = this,
+        fNOP = function () {},
+        fBound = function () {
+          return fToBind.apply(this instanceof fNOP
+                                 ? this
+                                 : oThis,
+                               aArgs.concat(Array.prototype.slice.call(arguments)));
+        };
+
+    fNOP.prototype = this.prototype;
+    fBound.prototype = new fNOP();
+
+    return fBound;
+  };
+};
+
+
+function include(path, type)
+{
+    if(typeof type == 'undefined')
+        type = 'text/javascript';
+    var $tag = $('<script type="' + type + '" src="/includes/js/' + path + '"></script>');
+    $tag.appendTo(document.body);
+    return $tag;
+};
+
+function includeHTML$(path)
+{
+    var promise = $.Deferred();
+    $.ajax({url: path,
+            success: function(data) {
+                promise.resolve($(data));
+            },
+            error: function() {
+              promise.fail();
+            }});
+    return promise;
+};
+
+// literally just fetches a string from the server, asynchronously.
+function template(path)
+{
+    var promise = $.Deferred();
+    $.ajax({url: '/includes/js/templates/' + path,
+            success: function(data) {
+                promise.resolve(data);
+            },
+            error: function() {
+              promise.fail();
+            }});
+    return promise;
+};
+
+
+var StatsD = {};
+
+StatsD.increment = function(key, sample)
+{
+    if(typeof sample == 'undefined')
+        sample = 1;
+    $.post('/statsd/increment', {key: key, sample: sample});
+};
+
+var JamError = {};
+JamError.show = function(message)
+{
+    var $jamError = $('#jamError');
+    $jamError.text(message);
+    $jamError.slideDown().delay(4000).slideUp();
+};
+
+function doUntil(func, cond, pollTime, pollTimeIncrease)
+{
+    var promise = $.Deferred();
+
+    if(typeof pollTime == 'undefined')
+        pollTime = 100;
+    if(typeof pollTimeIncrease == 'undefined')
+        pollTimeIncrease = 1;
+
+    var pollFunction;
+    pollFunction = function(pollTime) {
+        if(cond()) {
+            promise.resolve();
+        }
+        else {
+            window.setTimeout(function() {
+                pollFunction(pollTime * pollTimeIncrease);
+            }, pollTime);
+        }
+    };
+
+    pollFunction(pollTime);
+
+    return promise;
+};
+
+function waitUntil(cond, pollTime, pollTimeIncrease)
+{
+    return doUntil(function() { }, cond, pollTime, pollTimeIncrease);
+};

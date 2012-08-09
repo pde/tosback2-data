@@ -1,0 +1,230 @@
+function dv_Args() {
+    this._caller = this._findCaller();
+    if (!this._caller) {
+        this._isHttps = window.location.href.match("^https") == "https";
+        this._queryString = "no_match_script";
+    }
+    else {
+        this._isHttps = this._caller.src.match("^https") == "https" && window.location.toString().match("^https") == "https";
+        var qString = this._caller.src.replace(/^[^\?]+\??/, '');
+		if (qString) { this._queryString = qString; }
+    }	
+}
+
+function dv_createIframe() {
+    var iframe;
+    if (document.createElement && (iframe = document.createElement('iframe'))) {
+        iframe.name = iframe.id = 'iframe_' + Math.floor((Math.random() + "") * 1000000000000);
+        iframe.width = 0;
+        iframe.height = 0;
+        iframe.style.display = 'none';
+        iframe.src = 'about:blank';
+    }
+
+    return iframe;
+}
+
+function dv_findWindowDepth(currWin) {
+    var i = 0;
+    while (i < 10 && currWin != window.top) {
+        i++;
+        currWin = currWin.parent;
+    }
+    return i;
+}
+
+function dv_findAddUrl(tpWin) {
+    try {
+        if (tpWin.depth <= 1)
+            return { url: '', depth: '' };
+        var len;
+        var q = new Array();
+        q.push({ win: window.top, depth: 0 });
+        var curr;
+        var queueSize = 1;
+        var loopCounter = 0;
+        while (queueSize > 0 && loopCounter < 100) {
+            try {
+                loopCounter++;
+                curr = q.shift();
+                queueSize--;
+                var loc = curr.win.location.toString();
+                if (loc.length > 0 && curr.win != tpWin) {
+                    if (curr.win.document.referrer.length == 0 || curr.depth == 0) {
+                        return { url: curr.win.location, depth: curr.depth };
+                    }
+                    else {
+                        return { url: curr.win.document.referrer, depth: curr.depth - 1 };
+                    }
+                }
+            }
+            catch (e) {
+            }
+
+            len = curr.win.frames.length;
+            for (var idx = 0; idx < len; idx++) {
+                q.push({ win: curr.win.frames[idx], depth: curr.depth + 1 });
+                queueSize++;
+            }
+        }
+        return { url: '', depth: '' };
+    }
+    catch (e) {
+        return { url: '', depth: '' };
+    }
+}
+
+function dv_GetParam(url, name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(url);
+    if (results == null)
+        return null;
+    else
+        return results[1];
+}
+
+function dv_GetRnd(){
+	return ((new Date()).getTime() + "" + Math.floor(Math.random() * 1000000)).substr(0, 16);
+}
+
+
+if (!dv_Args._SeenScriptCache) dv_Args._SeenScriptCache = new Array();
+dv_Args.prototype._findCaller = function () {
+    var scripts = document.getElementsByTagName('script');
+    for (var i = scripts.length - 1; i >= 0; i--) {
+        var src = scripts[i].src;
+
+        if (src.match(/^[^\?]+\?/) && src.match(/doubleverify\.com/) && !dv_Args._SeenScriptCache[i]) {
+            if (src.match('script84.js')) {
+                dv_Args._SeenScriptCache[i] = 1;
+                return scripts[i];
+            }
+        }
+        else {
+            dv_Args._SeenScriptCache[i] = 1;
+        }
+    }
+    return null;
+}
+
+try {
+    window.parentIsPermitted = false;
+    window.DVCurWin = window;
+	var dv_referrerOffset = 0;
+	var dv_minus = false;
+    try {
+        for (var dv_i = 0; dv_i <= 10; dv_i++) {
+            if ((window.DVCurWin.parent != null) && (window.DVCurWin.parent != window.DVCurWin)) {
+                var dv_loc = window.DVCurWin.parent.location.toString();
+                var dv_x = dv_loc.length;
+                if (dv_x > 0) {
+                    window.DVCurWin = window.DVCurWin.parent;
+					dv_referrerOffset++;
+                    window.parentIsPermitted = true;
+                }
+                else {
+                    window.parentIsPermitted = false;
+                    break;
+                }
+            }
+            else {
+                if (dv_i == 0) {
+                    window.parentIsPermitted = true;
+                }
+                break;
+            }
+        }
+    }
+    catch (e)
+    { window.parentIsPermitted = false; }
+
+    if (window.DVCurWin.document.referrer.length == 0) {
+        window.DVURL = window.DVCurWin.location;
+    }
+    else {
+        if (window.parentIsPermitted) {
+            window.DVURL = window.DVCurWin.location;
+        }
+        else {
+            window.DVURL = window.DVCurWin.document.referrer;
+			dv_minus = true;
+        }
+    }
+
+    			var dv_serverName = 'tps31.doubleverify.com';		
+		
+    var dv_qPageID = null;
+    var dv_cUrl = null;
+    if (window.external != null) {
+        dv_qPageID = window.external.QueuePageID != undefined ? window.external.QueuePageID : null;
+        dv_cUrl = window.external.CrawlerUrl != undefined ? window.external.CrawlerUrl : null;
+    }
+	
+	var dv_args = new dv_Args();
+    if (false == (!dv_args._isHttps && window.location.toString().match("^https") == "https")){
+        
+        var dv_iframe = dv_createIframe();
+		if(dv_args._caller!=null){
+			dv_args._caller.id = dv_iframe.id.replace('iframe', 'script');
+		}
+        document.body.insertBefore(dv_iframe,document.body.firstChild);
+
+        var dv_iframeDocument = (dv_iframe.contentDocument || dv_iframe.contentWindow.document || window.frames[dv_iframe.name].document);
+		var dv_protocol = "http:";
+		var dv_ssl = '0';
+		if (dv_args._isHttps) {
+			dv_protocol = "https:";
+			dv_ssl = '1';
+        }
+		  
+		try{
+			window.DVCurWin.depth = dv_findWindowDepth(window.DVCurWin);
+			var dv_additionalUrl = dv_findAddUrl(window.DVCurWin);
+			var dv_additionalUrlParam = '&aUrl=' + encodeURIComponent(dv_additionalUrl.url) + '&aUrlD=' + dv_additionalUrl.depth;
+			var dv_referrerDepth = window.DVCurWin.depth + dv_referrerOffset;
+			if (dv_minus) {
+				window.DVCurWin.depth--;
+			}
+		}
+		catch (e){
+			window.DVCurWin.depth = '';
+            var dv_additionalUrlParam = '';
+            var dv_referrerDepth = '';
+		}
+		
+		var dv_src = dv_protocol + '//' + dv_serverName + '/visit.js?' + dv_args._queryString.replace("agnc=", "ctx=") + '&num=84&srcurl=' + encodeURIComponent(DVURL)  + '&srcurlD=' + window.DVCurWin.depth + '&curl=' + (dv_cUrl == null ? '' : encodeURIComponent(dv_cUrl)) + '&qpgid=' + (dv_qPageID == null ? '' : dv_qPageID) + '&ssl=' + dv_ssl + '&refD=' + dv_referrerDepth;
+		var dv_uidParam = dv_GetParam(dv_src, "uid");
+		if(dv_uidParam == null){//param doesn't exist
+			var dv_uid = dv_GetRnd();
+			dv_src = dv_src + "&uid=" + dv_uid;
+		}
+		else if(dv_uidParam == ""){//param exists w/o value
+			var dv_uid = dv_GetRnd();
+			dv_src = dv_src.replace("&uid=", "&uid=" + dv_uid);
+		}
+		
+		var dv_charLimit = 4000;
+		if (/MSIE (\d+\.\d+);/.test(navigator.userAgent) && (new Number(RegExp.$1) <= 7)) {
+			dv_charLimit = 2000;
+		}
+
+		var dv_userAgent = navigator.userAgent.toLowerCase();
+		if (dv_userAgent.indexOf('webkit') > -1 || dv_userAgent.indexOf('chrome') > -1) {
+			var dv_referrerParam = '&referrer=' + encodeURIComponent(dv_iframeDocument.referrer);
+			if (dv_src.length+dv_referrerParam.length <= dv_charLimit) {
+				dv_src += dv_referrerParam;
+			}
+		}
+		
+		if (dv_additionalUrlParam.length + dv_src.length <= dv_charLimit) {
+			dv_src += dv_additionalUrlParam;
+		}
+                		
+        dv_iframeDocument.open();
+        dv_iframeDocument.write('<html><head><\/head><body><scr' + 'ipt type="text/javascript" src="' + dv_src + '"><\/scr' + 'ipt><scr' + 'ipt type="text/javascript">var script = document.getElementsByTagName("script")[0]; if (script.readyState) { script.onreadystatechange = function() { if (script.readyState == "complete") document.close(); } } else document.close();<\/scr' + 'ipt><\/body><\/html>');
+    }
+}
+catch (ex) { } 
+

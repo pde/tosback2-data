@@ -1,0 +1,142 @@
+YoutubePlaybackHandler = function()
+{
+    EventEmitter.call(this);
+};
+
+YoutubePlaybackHandler.prototype = extend(EventEmitter);
+
+YoutubePlaybackHandler.prototype.load = function(jam, autoPlay)
+{
+    return window.ytPlayer.load(jam.youtubeID, autoPlay);
+};
+
+// TODO: animation
+YoutubePlaybackHandler.prototype.play = function(jam)
+{
+    var promise = $.Deferred();
+
+    var handler = this;
+    this.load(jam, true)
+        .then(promise.resolve.bind(promise))
+        .then(function() { handler.emit('duration', window.ytPlayer.getDuration()); })
+        .fail(function(errorCode) {
+            promise.fail(sprintf('Oops, something went wrong with that jam. Please try again. (error %s)', errorCode));
+        });
+
+    window.ytPlayer.onFinish = this.onFinish.bind(this);
+    var playbackHandler = this;
+    // TODO: use better event system
+    window.ytPlayer.onError = this.onError.bind(this);
+
+    return promise;
+};
+
+YoutubePlaybackHandler.prototype.pause = function()
+{
+    window.ytPlayer.pause();
+};
+
+YoutubePlaybackHandler.prototype.stop = function(jam)
+{
+    window.ytPlayer.stop();
+};
+
+YoutubePlaybackHandler.prototype.resume = function()
+{
+    window.ytPlayer.resume();
+};
+
+YoutubePlaybackHandler.prototype.getWidthForHeight = function(height, aspectRatio) {
+    if(aspectRatio == "4:3") {
+        return Math.round(height * (4/3));
+    }
+    else {
+        return Math.round(height * (16/9));
+    }
+};
+
+YoutubePlaybackHandler.prototype.explodeOnProfilePage = function()
+{
+    var $artPlayer = $('#artPlayer');
+    var height = $artPlayer.height();
+    var width = this.getWidthForHeight(height, window.player.current().aspectRatio);
+
+    var $editlink = $(".editLink");
+
+    if($editlink.length){
+        $editlink.css({"visibility":"hidden"});
+    }
+
+    this.oldBackground = $("#artPlayer").css("background");
+    return this.animateSize(width + "px", height + "px");
+};
+
+YoutubePlaybackHandler.prototype.implodeOnProfilePage = function(force)
+{
+    var $artPlayer = $('#artPlayer');
+    var self = this;
+    var $editlink = $(".editLink");
+    var height = $artPlayer.height();
+
+    if($editlink.length)
+        $editlink.css({"visibility":"visible"});
+
+    return this.animateSize(height, height, force).then(function() {
+        $("#jamBackgroundYoutube img").show();
+        $("#artPlayer").css("background", self.oldBackground);
+    });
+};
+
+YoutubePlaybackHandler.prototype.animateSize = function(width, height, force) {
+    var promise = $.Deferred();
+
+    var self = this;
+    $("#jamBackgroundYoutube img").hide();
+    $("#artPlayer").css("background", "none");
+    var $playButton = window.playerView.getCurrentPlayButton$();
+    $playButton.css("visibility", "hidden"); // .hide() seems to break show on hover
+    $("#jamHolder, #artPlayer, #jamBackgroundYoutube").animate({"width":width,"height":height},function(){
+        $playButton.css("visibility", "visible");
+        promise.resolve();
+    });
+
+    return promise;
+};
+
+YoutubePlaybackHandler.prototype.showOnProfilePage = function()
+{
+    var $artPlayer = $('#artPlayer');
+    var height = $artPlayer.height();
+    var width = this.getWidthForHeight(height, window.player.current().aspectRatio);
+
+    $("#jamHolder, #artPlayer, #jamBackgroundYoutube").
+        css({"width": width + "px", "height": height + "px"});
+
+    this.oldBackground = $("#artPlayer").css("background");
+    window.ytPlayer.track($artPlayer, true);
+};
+
+YoutubePlaybackHandler.prototype.show = function($el)
+{
+    window.ytPlayer.track($el, true);
+};
+
+YoutubePlaybackHandler.prototype.hide = function()
+{
+    window.ytPlayer.hide();
+};
+
+/**
+ * 0 <= volume <= 100
+ */
+YoutubePlaybackHandler.prototype.setVolume = function(volume)
+{
+    window.ytPlayer.setVolume(volume);
+};
+
+YoutubePlaybackHandler.prototype.getElapsedTime = function() {
+    return Math.floor(window.ytPlayer.getCurrentTime());
+};
+
+YoutubePlaybackHandler.prototype.onFinish = function() { };
+YoutubePlaybackHandler.prototype.onError = function() { };

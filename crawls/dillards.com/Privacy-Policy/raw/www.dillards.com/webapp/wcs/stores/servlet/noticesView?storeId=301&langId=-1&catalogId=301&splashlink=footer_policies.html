@@ -32,13 +32,6 @@
 	<script language="javascript" src="../../../../javascript/compressed/global.js" ></script>
 	<script type="text/javascript" src="../../../../javascript/dropdown.js"></script>
 	<script type="text/javascript" src="../../../../javascript/compressed/foresee-trigger.js"></script>   
-	<!--[if lte IE 6]><script type="text/javascript" src="/javascript/ie6/warning.js"></script>
-	  	<script>
-			  window.onload=function(){
-			  	e("/javascript/ie6/");
-			  }
-		</script>
-	<![endif]-->
 </head>
 
 <body>
@@ -51,7 +44,100 @@
 	<noscript>
 		<iframe src="../../../../../fls.doubleclick.net/activityi%3Bsrc=2916446%3Btype=count884%3Bcat=templ517%3Bord=1.html" width="1" height="1" frameborder="0"></iframe>
 	</noscript>
-<!-- Start of JSTLEnvironmentSetup.jspf --><!-- End - JSPF File Name: JSTLEnvironmentSetup.jspf --><!-- BEGIN HeaderDisplay.jsp  --> 
+<script type="text/javascript" src="../../../../javascript/compressed/browserDetect.js"></script>
+
+<style type="text/css">
+	div#blackOut { display:none; position:fixed; left:0px; top:0px; width:100%; height:3000px; background-color:#000; z-index:9998;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+		filter:alpha(opacity=80);
+		-moz-opacity:0.8;
+		-khtml-opacity:0.8;
+		opacity:0.8;
+		}
+	* html div#blackOut { position:absolute; }	// ie6 hack to allow fixed position for #blackOut
+
+	div#warningBox a, div#warningBox img, div#warningBox a img { border:0; outline:0; }
+	div#warningBox h1, div#warningBox h2, div#warningBox h3 { font-family:"Century Gothic", Helvetica, Arial, sans-serif; margin-left:21px; margin-right:21px; }
+	div#warningBox h1 { font-size:18px; color:#000; }
+	div#warningBox h2 { font-size:15px; color:#222; }
+	div#warningBox h3 { font-size:12px; color:#444; }
+
+	div#warningBox { display:none; z-index:9999; position:fixed; left:50%; top:50%; margin-left:-345px; margin-top:-150px; width:690px; height:290px; background-color:#e2e2e2; border:0; background-image:url(../../../../images/browser_gradientBackground.png); background-repeat:repeat-x; background-position:left top; }
+	div#browsersContainer { margin-left:15px; }
+	div#browserChrome, div#browserFirefox, div#browserIE, div#browserSafari, div#browserOpera { width:120px; height:120px; margin:5px; margin-bottom:19px; border:1px solid #ccc; float:left; font-family:tahoma; font-size:10px; text-align:center; }
+		div#browserChrome:hover, div#browserFirefox:hover, div#browserIE:hover, div#browserSafari:hover, div#browserOpera:hover { border-bottom:4px solid #3c3d3f; margin-bottom:15px; }
+</style>
+
+<div id="blackOut"></div>
+
+<div id="warningBox">
+	<div id="hgroup">
+		<h1>Did you know that your internet browser is out of date?</h1>
+		<h2>To get the best possible experience using our website, we recommend that you upgrade to a newer version or other web browser. A list of the most popular web browsers can be found below.</h2>
+		<h3>Just click on an icon to go to the download page:</h3>
+	</div>
+	
+	<div id="browsersContainer">
+		<div id="browserChrome"><a href="http://www.google.com/chrome/"><img src="../../../../images/browser_chrome.png" alt="Google Chrome"/></a></div>
+		<div id="browserFirefox"><a href="http://www.mozilla.com/firefox/"><img src="../../../../images/browser_firefox.png" alt="Firefox"/></a></div>
+		<div id="browserIE"><a href="http://www.microsoft.com/windows/Internet-explorer/default.aspx"><img src="../../../../images/browser_ie.png" alt="Internet Explorer"/></a></div>
+		<div id="browserSafari"><a href="http://www.apple.com/safari/download/"><img src="../../../../images/browser_safari.png" alt="Safari"/></a></div>
+		<div id="browserOpera"><a href="http://www.opera.com/download/"><img src="../../../../images/browser_opera.png" alt="Opera"/></a></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	if (BrowserDetect.browser === "Firefox" && BrowserDetect.version < 6) {
+		showWarningBox();
+	}
+	
+	if (BrowserDetect.browser === "Explorer" && BrowserDetect.version < 7) {
+		showWarningBox();
+	}
+	
+	function showWarningBox() {
+		var warningBox = document.getElementById('warningBox');
+		var blackOut = document.getElementById('blackOut');
+		warningBox.style.display = "block";
+		blackOut.style.display = "block";
+		
+		changeBlackOutHeight();
+	}
+	
+	function changeBlackOutHeight() {
+		var blackOut = document.getElementById("blackOut");
+		var blackOutHeight = returnHeight(blackOut);
+		var documentHeight = returnHeight(document);
+		
+		if (documentHeight > blackOutHeight) {
+			documentHeight += 100;
+			blackOut.style.height = documentHeight+"px";
+		}
+	}
+	
+	function returnHeight(source) {
+		var scan = source;
+		
+		if (scan == document) {
+			return Math.max(
+				Math.max(scan.body.scrollHeight, scan.documentElement.scrollHeight),
+				Math.max(scan.body.offsetHeight, scan.documentElement.offsetHeight),
+				Math.max(scan.body.clientHeight, scan.documentElement.clientHeight)
+			);
+		} else {
+			return Math.max(scan.scrollHeight, scan.offsetHeight, scan.clientHeight);
+		}
+	}
+		
+	/*
+	function closeWarningBox() {
+		var warningBox = document.getElementById('warningBox');
+		var blackOut = document.getElementById('blackOut');
+		warningBox.style.display = "none";
+		blackOut.style.display = "none";
+	}
+	*/
+</script><!-- Start of JSTLEnvironmentSetup.jspf --><!-- End - JSPF File Name: JSTLEnvironmentSetup.jspf --><!-- BEGIN HeaderDisplay.jsp  --> 
 
 <script type="text/javascript">
 	
@@ -3859,7 +3945,7 @@ More info available at http://www.omniture.com -->
 	s.server=document.domain;
 	s.prop7=document.domain;
 	
-	s.prop15="68B6EA00DCE010DC18FAF2C8E9F8E6FF";
+	s.prop15="7F33EDAEE24A10E20BBBEB925F1DAEF2";
 	s.campaign=s.getQueryParam('campaign');
 	s.eVar9=s.getQueryParam('Catalog');
 	s.eVar29=s.getQueryParam('ezine');
@@ -3986,7 +4072,7 @@ More info available at http://www.omniture.com -->
 		    async: false,
 			url: "/webapp/wcs/stores/servlet/DdsSearchEngineAcq",
 			dataType: "json",
- 			data: "storeId="+storeId+"&langId="+langId+"&catalogId="+catalogId+"&cm_mmc="+cmMmc+"&ref="+referer
+ 			data: "storeId=301&langId=-1&catalogId=-1&cm_mmc="+cmMmc+"&ref="+referer
 		};
 		$.ajaxQueue(ajaxOptions);
 	};
@@ -4479,16 +4565,18 @@ $(document).ready(function() {
 </div>
 <!--Start: Google Analytics(trackPageView)-->
 		<script type="text/javascript"> 
+		$(document).ready(function() {
 		  var _gaq = _gaq || []; 
 		  	  _gaq.push(['_setAccount', 'UA-18183560-1']);
 		 	  _gaq.push(['_trackPageview']);
 	 
 	 	   (function() { 
 		     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; 
-		    ga.src = 'https://ssl.google-analytics.com/ga.js'; 
-		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); 
+		    //ga.src = 'https://ssl.google-analytics.com/ga.js'; 
+		    ga.src = 'https://stats.g.doubleclick.net/dc.js'; 
+	 	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); 
 		  })(); 
- 
+ 		});
  		</script> 
 		<!--End: Google Analytics(trackPageView)-->   
 </body>

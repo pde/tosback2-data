@@ -1,0 +1,211 @@
+var Like = function($el)
+{
+    this.jamID = $el.data('jamid');
+    this.username = $el.data('username');
+    this.isLiked = $el.data('liked');
+    this.isLoading = false;
+
+    window.realtime.on('like:'+this.jamID, function(){
+        // Shout about liking here
+    });
+
+};
+
+Like.prototype.setView = function(view)
+{
+    this.view = view;
+    this.view.on('toggleLike', (function() {
+        if(this.isLiked)
+            this.unlike.call(this);
+        else
+            this.like.call(this);
+    }).bind(this));
+};
+
+Like.prototype.like = function()
+{
+    if(this.isLoading)
+        return false;
+
+    if(this.view)
+        this.view.updateLiked(true);
+
+    console.log(this.jamID);
+    window.playerView.setPlayerBarLiked(this.jamID, true);
+
+    var like = this;
+
+    var likeError = function() {
+        like.isLoading = false;
+        JamError.show('Sorry, something went wrong liking that jam. Please try again.');
+        like.view.updateLiked(false);
+        window.playerView.setPlayerBarLiked(this.jamID, false);
+    };
+
+    $.ajax({url: sprintf('/%s/love', this.username),
+            type: 'post',
+            dataType: 'json',
+            success: function(data) {
+
+                like.setLoading(false);
+
+                if(!data.success)
+                    likeError();
+
+                like.isLiked = true;
+                like.view.updateLikers(data.html, data.loveCount, data.loversList);
+            },
+            error: likeError
+           });
+
+    this.setLoading(true);
+};
+
+Like.prototype.setLoading = function(set){
+    if(set){
+        this.isLoading = true;
+        //this.$el.addClass("disabled");
+    } else {
+        this.isLoading = false;
+        //this.$el.removeClass("disabled");
+    }
+};
+
+Like.prototype.unlike = function()
+{
+    if(this.isLoading)
+        return false;
+
+    if(this.view)
+        this.view.updateLiked(false);
+
+    window.playerView.setPlayerBarLiked(this.jamID, false);
+
+    var like = this;
+
+    var unlikeError = function() {
+        like.isLoading = false;
+        JamError.show('Sorry, something went wrong unliking that jam. Please try again.');
+        like.view.updateLiked(true);
+        window.playerView.setPlayerBarLiked(this.jamID, true);
+    };
+
+    $.ajax({url: sprintf('/%s/unlove', this.username),
+            type: 'post',
+            dataType: 'json',
+            success: function(data) {
+
+                like.setLoading(false);
+
+                if(!data.success)
+                    unlikeError();
+
+                like.isLiked = false;
+                like.view.updateLikers(data.html, data.loveCount, data.loversList);
+            },
+            error: unlikeError
+           });
+
+    this.setLoading(true);
+};
+
+var LikeView = function($el)
+{
+    EventEmitter.apply(this);
+
+    this.$el = $el;
+
+    var view = this;
+    this.$el.click(function() {
+        view.emit('toggleLike');
+        return false;
+    });
+};
+LikeView.prototype = EventEmitter.extend();
+
+
+ProfileLikeView = function($el)
+{
+    LikeView.call(this, $el);
+};
+ProfileLikeView.prototype = extend(LikeView);
+
+ProfileLikeView.prototype.updateLiked = function(isLiked)
+{
+    if(isLiked)
+        this.$el.addClass('active').find(".action").html("liked");
+    else
+        this.$el.removeClass('active').find(".action").html("like");
+};
+
+ProfileLikeView.prototype.updateLikers = function(html, likeCount, likersList)
+{
+    var $likesCounter = $("#likesCounter");
+    var $likesCallout = $("#loversCallout");
+    var $likeHolder = $likesCallout.find("#likeHolder");
+    var cntr = (likeCount > 1) ? "Likes" : "Like";
+
+    // Add the number and 'like/likes' to the counter
+    $likesCounter.find(".number").html(likeCount);
+    $likesCounter.find("span").last().html(cntr);
+
+    $likeHolder.fadeOut(30,function(){
+        $likeHolder.html(html).ajaxify(); // Add in the list of likers
+        if(!$likesCounter.is(":visible")){
+            $likesCounter.fadeIn();
+        }
+        // if the callout is hidden and count > 0, fade it in
+        if(!$likesCallout.is(":visible") && likeCount > 0){
+            $likesCallout.fadeIn();
+        }
+
+        if(!likeCount){
+            $likesCounter.fadeOut();
+            $likesCallout.fadeOut();
+        }
+    }).fadeIn();
+};
+
+
+PlaylistLikeView = function($el)
+{
+    LikeView.call(this, $el);
+};
+
+PlaylistLikeView.prototype = extend(LikeView);
+
+PlaylistLikeView.prototype.updateLiked = function(isLiked)
+{
+    if(isLiked){
+        this.$el.addClass('active').attr('title','You like this jam').find('.action').text('liked');
+    }
+    else{
+        this.$el.removeClass('active').attr('title','Like this jam').find('.action').text('like');
+    }
+};
+
+PlaylistLikeView.prototype.updateLikers = function(html, likeCount)
+{
+    var $likesDiv = $('#likesList-' + this.$el.data('jamid'));
+    var $likesList = $('.names', $likesDiv);
+    var $likesThis = $('.likesThis', $likesDiv);
+    var $likesBullet = $likesDiv.prev('.likesBullet');
+    if(html) {
+        $likesList.html(html).ajaxify();
+
+        $likesBullet.fadeIn();
+        $likesDiv.fadeIn();
+
+        if(likeCount > 1) {
+            $likesThis.text('like this');
+        }
+        else {
+            $likesThis.text('likes this');
+        }
+    }
+    else {
+        $likesDiv.fadeOut();
+        $likesBullet.fadeOut();
+    }
+
+};

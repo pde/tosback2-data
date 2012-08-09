@@ -163,7 +163,35 @@ bam.extend({
 						if (omJson.callback) {
 							omJson.callback();
 						}								
-				} 				
+				} 		
+
+				if(omJson.async_social) {
+						var props = omJson.async_social;
+						s.prop2 = s.prop4 = s.prop9 = s.prop10 = s.prop16 = s.prop17 = "";
+						s.prop25 = s.prop26 = s.prop27 = s.prop28 = s.prop29 = s.prop30 = "";
+						s.prop38 = s.prop39 = s.prop40 = s.eVar13 = s.eVar17 = s.eVar11 = s.prop44 = s.prop45 = s.prop46 = "";
+						s.prop31 = s.prop32 = s.prop33 = s.prop34 = s.prop43 = s.prop45 = s.eVar23 = s.eVar28 = s.eVar26 = s.eVar27 = "";
+						s.prop56 = s.prop57 = s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
+						s.events = "event2";
+
+						if (props.isDynamic == true) {
+							s.prop11 = "Dynamic Page View";
+						} else {
+							s.prop11 = "";
+						}
+						s.prop12 = props.compName ? props.compName : ""; 
+						s.pageName = "";
+						s.prop13 = "";
+						s.prop14 = props.compActivity ? props.compActivity : "";
+						if (props.actionGen == true) {
+							s.prop15 = "User Generated";
+						} else {
+							s.prop15 = "System Generated";
+						}
+						if (omJson.callback) {
+							omJson.callback();
+						}								
+				} 			
 				
 				if(omJson.async_media) {
         			var props_media = omJson.async_media;

@@ -27,7 +27,7 @@ function fixHeight() {
 $(document).ready(function() {
 	fixHeight();
 });
-/* $Id: analytics.js 2169 2012-04-10 16:31:02Z rray $ */
+/* $Id: analytics.js 4369 2012-08-02 17:43:42Z dbertra $ */
 
 /* Google Analytics, setup then load below */
 var _gaq = _gaq||[];
@@ -936,7 +936,11 @@ function reiAnalytics() {
 		}else if(s.prop31 > '1'){
 			a.events("event22");
 		}
-
+		if($("#container[pagetype='expertAdviceArticle']").length > 0){
+			a.events("event26");
+			a.events("event36");
+			s.eVar29 = s.pageName;
+		}	
 		//Keep track of the last page's omniture pagename
 		$(window).unload(function() { a.save("prev_omni_pagename", options.page_name.toLowerCase()); });
 	};
@@ -1130,6 +1134,71 @@ function reiAnalytics() {
 			l.bind('click.analytics',fn);
 		}
 	});
+}
+/**
+ * @(#)username.js
+ *
+ * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights reserved.
+ *
+ * @author Scott Flesher
+ */
+$( function() {
+    $.isUsernamePopupSetUp = false;
+    var username = $.cookie( 'REI_USERNAME' );
+    username = $.trim( username );
+
+    var retrieveScreenName = true;
+    var userIdCookie = $.cookie( "REI_SESSION_ID" );
+    if ( !$.isEmptyObject( userIdCookie ) ) {
+        var tokens = userIdCookie.split( ',' );
+        var userId = tokens[0];
+        if ( $.isEmptyObject( userId ) ) retrieveScreenName = false;
+    }
+
+    if ( retrieveScreenName ) {
+        var url = "/socialprofile.username.json/" + userId;
+        $.ajax( {
+            url: url,
+            success: function( data ) {
+                if ( typeof( data ) == "string" ) data = $.parseJSON( data );
+                if ( data.success != "true" ) return;
+                $.cookie( "REI_USERNAME", data.username, {
+                    path: '/',
+                    domain: 'rei.com'
+                } );
+
+                if ( !$.isUsernamePopupSetUp ) {
+                    setUpUsernamePopup( data.username );
+                }
+            },
+            error: function() {
+                console.log( "An error occurred while retrieving screen name" );
+            }
+        } );
+    }
+
+    var isEmptyUsername = username == "" || username == null || ( typeof username == "undefined" );
+    if ( !$.isUsernamePopupSetUp && !isEmptyUsername ) {
+        setUpUsernamePopup( username )
+    }
+} );
+
+function setUpUsernamePopup( username ) {
+    if ( $.reishare ) var isLoggedIn = $.reishare( "loggedIn" );
+    username = $.trim( username );
+    var isEmpty = username == "" || username == null || ( typeof username == "undefined" );
+    if ( isLoggedIn && isEmpty ) {
+        $( ".requiresUsername" ).each( function() {
+
+            var _this = $( this );
+            _this.unbind( "click" );
+            if ( _this.attr( "onclick" ) ) _this.attr( "onclick", null );
+            _this.attr( "href", "#missingUsernamePopup" );
+
+            _this.fancybox( { type: "inline", titleShow: false } );
+        } );
+    }
+    $.isUsernamePopupSetUp = true;
 }
 /* $Id: pageLoadTimeTracking.js 1913 2012-03-30 17:17:40Z jowilso $ */
 

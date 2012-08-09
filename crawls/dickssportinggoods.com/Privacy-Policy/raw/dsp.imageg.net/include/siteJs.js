@@ -46,7 +46,6 @@ function showCustomPopUp(thisUrl,thisName,theseParams)
 	remote = open(thisUrl, thisName, theseParams);
 }
 
-
 //	verisign POP-UP WINDOW
 function popUp(url)
 {
@@ -62,10 +61,3 @@ function jump(url)
 	}
 }
 
- window.onload=function(){
-	if(navigator.userAgent.toLowerCase().indexOf("msie")>1){
-			jQuery('#cart-cross-sells-container #cart-cross-sells table tr td label').css({
-		float:"left"
-		});
-	}
-}

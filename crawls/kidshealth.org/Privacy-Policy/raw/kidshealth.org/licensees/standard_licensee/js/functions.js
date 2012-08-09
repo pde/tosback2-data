@@ -4,6 +4,75 @@
 //funcNm1 = "customFunctionName";
 //funciton customFunctionName() { //do stuff here..... }
 
+/* Start Mobile Additions */
+/* Moved to common_header_elements.xsl for faster execution
+function addElementBefore(node,tag,id,htm)
+      {
+        var ne = document.createElement(tag);
+        if(id) ne.id = id;
+        if(htm) ne.innerHTML = htm;
+        node.parentNode.insertBefore(ne,node);
+      }
+
+      function addElementAfter(node,tag,id,htm)
+      {
+        var ne = document.createElement(tag);
+        if(id) ne.id = id;
+        if(htm) ne.innerHTML = htm;
+        node.parentNode.insertBefore(ne,node.nextSibling);
+      }
+
+	function mobileDesktop() {
+		thisScreen=screen.width;
+		thisUA=navigator.userAgent;
+		thisUA=thisUA.toLowerCase();
+		if(thisUA.indexOf("iphone")!=-1||thisUA.indexOf("android")!=-1||thisUA.indexOf("iemobile")!=-1||thisUA.indexOf("blackberry")!=-1||thisUA.indexOf("opera m")!=-1||thisUA.indexOf("symbian")!=-1) {
+			window.device="mobile";	
+		}
+		else if(thisScreen<=599) {
+			window.device="mobile";
+		}
+		else{ window.device="desktop"};
+		//document.write(device);
+		if(device=="mobile") {
+		//document.write("It appears that you are viewing KidsHealth from a mobile device.");
+		whereWrite=document.getElementsByTagName('body');
+		urlify();
+		//document.location="http://kidshealth.org";
+		writeThis="\<a href=\""+mobileURL+"\"\>click here to visit the mobile version of this page\<\/a\>";
+		
+		addElementAfter(document.body.firstChild,'div','mobileLink',writeThis);
+		//document.getElementsByTagName('body').appendChild(writeThis);
+			}
+	}
+	
+	function urlify() {
+		arrivingURL=window.location.href;
+		insert2URL="m.";
+		//mobileURL=arrivingURL.substr(0,7)+insert2URL+arrivingURL.substr(7);
+		
+		lowercaseURL=arrivingURL.toLowerCase();
+		hashLocation=lowercaseURL.indexOf("#");
+		//alert("the lcurl is"+lowercaseURL+"and the hash location is"+hashLocation);
+		if(lowercaseURL.indexOf("pagemanager")!=-1 && lowercaseURL.indexOf("#")!=-1) {
+				mobileURL=arrivingURL.substr(0,hashLocation)+"\&amp;m=y"+arrivingURL.substr(hashLocation);
+		}
+		
+		else if(lowercaseURL.indexOf("pagemanager")!=-1) {
+				mobileURL=arrivingURL+"\&amp;m=y";
+		}
+		
+		else {
+			mobileURL=arrivingURL.substr(0,7)+insert2URL+arrivingURL.substr(7);
+		}
+		//document.write(mobileURL);
+	}
+	
+	function hasHash() {
+			
+	}
+/* End Mobile Additions */
+
 var funcNm1 = "";
 var funcNm2 = "";
 var funcNm3 = "";
@@ -21,6 +90,9 @@ function KH_loadFunctions() {
 	anchorsAway();
 	checkCookieTextSize();
 	initializeFirstPageNumberBold();
+	runOnLoad();
+	
+	//mobileDesktop();
 	//thisCatGotCooked('relatedPrinterButton');
 
 	// following function added for testing only
@@ -300,3 +372,4 @@ function readCookie(name)
 		}
 		return null;
 	}
+	

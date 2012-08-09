@@ -1,0 +1,2943 @@
+/**
+* @cinema.css
+* css pour la section Cinéma
+*/
+
+body.cinema #wrapper .filariane h1 {border-left:5px solid #9958a1;}
+body.cinema .rail-right .boxChroniqueursSection ul li {border-bottom:4px solid #9958a1;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Module d'horaire
+/* ---------------------------------------------------------------------------------- */
+#horaires {
+    float:left;
+    position:relative;
+    width:954px;
+    margin:0 0 10px 0;
+	z-index:999;
+}
+#horaires .txtOu {
+    float:left;
+    width:38px;
+    margin:29px 0 0 0;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:16px;
+    font-weight:bold;
+    line-height:16px;
+    line-height:52px;
+    text-transform:uppercase;
+    text-align:center;
+}
+
+/* Boite NO JavaScript */
+#horaires .noJS {
+    position:absolute;
+    top:0;
+    left:0;
+    float:left;
+    width:952px;
+    height:90px;
+    border-left:1px solid #ccc;
+    border-top:1px solid #ccc;
+    border-right:1px solid #ccc;
+    background:#f2f2f2;
+    z-index:99;
+}
+#horaires .noJS div {
+    float:left;
+    padding:17px 0 0 305px;
+}
+#horaires .noJS div.ie {padding:17px 0 0 225px;}
+#horaires .noJS p {
+    float:left;
+    padding:5px 0 5px 70px;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:17px;
+    font-weight:normal;
+    line-height:26px;
+    color:#9c54a5;
+    text-transform:uppercase;
+    background:url(../img/cinema/img_noJS.png) no-repeat 0 0;
+}
+#horaires .noJS p strong {
+    font-size:28px;
+    font-weight:normal;
+}
+
+/* Options top */
+#horaires .contentHoraire {
+    float:left;
+    width:952px;
+    border-left:1px solid #ccc;
+    border-top:1px solid #ccc;
+    border-right:1px solid #ccc;
+   	z-index:10;
+}
+#horaires .boxHoraire {
+    float:left;
+    width:934px;
+    height:82px;
+    padding:6px 6px 5px 12px;
+    background:#f2f2f2;
+}
+#horaires .boxHoraireOptions {
+    float:left;
+    width:934px;
+}
+
+/* Localisation */
+#horaires .boxHoraireOptions .localisation {
+    position:relative;
+    float:left;
+    width:344px;
+    font-family:Verlag, Helvetica, Arial, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+    line-height:18px;
+    text-transform:uppercase;
+}
+#horaires .boxHoraireOptions .localisation h2 {
+    float:left;
+    width:344px;
+    padding:5px 0 12px 0;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:20px;
+    font-weight:normal;
+    line-height:20px;
+    text-transform:uppercase;
+}
+#horaires .boxHoraireOptions .localisation a {
+    float:left;
+    display:inline-block;
+    width:93px;
+    height:39px;
+    padding:0 0 0 10px;
+    background:url(../img/cinema/btn_horaires.png) no-repeat 0 0;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14px;
+    font-weight:bold;
+    line-height:40px;
+    color:#fff;
+    cursor:pointer;
+}
+#horaires .boxHoraireOptions .localisation a:hover {
+    text-decoration:none;
+    background:url(../img/cinema/btn_horaires.png) no-repeat 0 -50px;
+}
+#horaires .boxHoraireOptions .localisation span {
+    font-size:16px;
+    color:#9c54a5;
+}
+#horaires .boxHoraireOptions .localisation.on a {background:url(../img/cinema/btn_horaires.png) no-repeat 0 -50px;}
+#horaires .boxHoraireOptions .localisation.on span {color:#999;}
+#horaires .boxHoraireOptions .localisation div {
+    position:absolute;
+    top:31px;
+    right:5px;
+    height:42px;
+    font-size:42px;
+    line-height:42px;
+    color:#c2c2c2;
+}
+
+/* Menu déroulant Cinéma et Films */
+#horaires .boxHoraireOptions .cinemas,
+#horaires .boxHoraireOptions .films {
+    float:left;
+    width:260px;
+    padding:8px;
+    background:#e5e5e5;
+}
+#horaires .boxHoraireOptions .cinemas {
+    height:36px;
+    margin:29px 0 0 0;
+}
+#horaires .boxHoraireOptions .films {height:65px;}
+#horaires .boxHoraireOptions .films form {
+    float:left;
+    padding:10px 0 5px 0;
+    margin:0;
+    height:14px;
+    font-size:12px;
+    color:#616161;
+}
+#horaires .boxHoraireOptions .films form label {padding:0 0 0 10px;}
+#horaires .boxHoraireOptions h3 {
+    float:left;
+    position:relative;
+    width:243px;
+    height:24px;
+    padding:5px 5px 5px 10px;
+    border:1px solid #ccc;
+    font-size:14px;
+    font-weight:normal;
+    line-height:24px;
+    background:#fbfbfb url(../img/cinema/bg_selectHoraire.png) repeat-x bottom;
+    overflow:hidden;
+}
+#horaires .boxHoraireOptions h3 a {
+    float:left;
+    display:block;
+    width:243px;
+    color:#333;
+    outline:none;
+    cursor:pointer;
+}
+#horaires .boxHoraireOptions h3 span {
+    position:absolute;
+    top:5px;
+    right:5px;
+    display:block;
+    width:22px;
+    height:22px;
+    border:1px solid #ccc;
+}
+#horaires .boxHoraireOptions h3 a.down span {background:#9958a1 url(../img/cinema/select_fleche.png) no-repeat 0 0;}
+#horaires .boxHoraireOptions h3 a.up span {background:#9958a1 url(../img/cinema/select_fleche.png) no-repeat 0 -30px;}
+#horaires .boxHoraireOptions h3 a.up {background:none;}
+#horaires .boxHoraireOptions h3 a:hover {text-decoration:none;}
+#horaires .boxHoraireOptions .selectList {
+    float:left;
+    position:relative;
+    width:260px;
+    height:375px;
+    display:none;
+    overflow-y:scroll;
+    overflow-x:hidden; 
+    z-index:9999;
+    border-bottom:1px solid #ccc;
+}
+#horaires .boxHoraireOptions ul {
+    float:left;
+    position:relative;
+    top:-1px;
+    width:260px;
+    background:#fff;
+    overflow-y:hidden;
+}
+#horaires .boxHoraireOptions ul li {
+    padding:1px 0 0 0;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+    border-top:1px solid #ccc;
+    font-size:12px;
+    font-weight:bold;
+}
+#horaires .boxHoraireOptions ul li a {
+    display:block;
+    padding:8px 15px;
+    color:#333;
+    cursor:pointer;
+}
+#horaires .boxHoraireOptions ul li a:hover {
+    text-decoration:none;
+    background:url(../img/cinema/bg_selectOver.png) repeat-y right;
+}
+#horaires .boxHoraireOptions ul li .newMovie {
+    color:#9958a1;
+    text-transform:uppercase;
+}
+#horaires .boxHoraireOptions ul li.title {
+    padding:8px;
+    font-size:13px;
+    color:#fff;
+    border-left:1px solid #7c4383;
+    border-right:1px solid #7c4383;
+    border-top:1px solid #7c4383;
+    background:#9958a1;
+}
+#horaires .boxHoraireOptions ul li.subtitle {
+    padding:3px 15px;
+    font-size:13px;
+    color:#fff;
+    border-left:1px solid #7f7f7f;
+    border-right:1px solid #aeaeae;
+    border-top:1px solid #7f7f7f;
+    background:#aeaeae;
+}
+#horaires .boxHoraireOptions ul li.title:hover {background:#9958a1;}
+
+/* Cinémas */
+#horaires .boxHoraireOptions .cinemas .selectList {height:369px;}
+
+/* Films */
+#horaires .boxHoraireOptions div#movieInTheaterList_fr,
+#horaires .boxHoraireOptions div#movieInTheaterList_en {display:none;}
+
+/* --------------------------------- */
+/* Modifier ma localisation 
+/* --------------------------------- */
+#horaires .modifLocalisation {
+    float:left;
+    width:952px;
+    background:#dcdcdc; 
+    display:none;
+}
+#horaires .modifLocalisation .fleche {
+    float:left;
+    width:952px;
+    height:13px;
+    position:relative;
+    top:-6px;
+    background:url(../img/cinema/bg_modifLocalisation.png) repeat 5px 0;
+}
+#horaires .modifLocalisation .boxModifLocalisation {
+    float:left;
+    width:952px;
+    padding:0 0 9px 0;
+}
+#horaires .modifLocalisation form {
+    float:left;
+    padding:0 0 0 35px;
+}
+#horaires .modifLocalisation form label {display:none;}
+#horaires .modifLocalisation #txtLocal {
+    float:left;
+    width:235px;
+    height:34px;
+    padding:0 0 0 10px;
+    background:#fff;
+    border-top:1px solid #999;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+    font-size:13px;
+    line-height:34px;
+    color:#666;
+}
+#horaires .modifLocalisation #submitLocal,
+#horaires .modifLocalisation .meLocaliser {
+    float:left;
+    height:37px;
+    padding:0 10px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14px;
+    font-weight:bold;
+    color:#fff;
+    text-transform:uppercase;
+    line-height:37px;
+    border:0 none;
+    background:url(../img/cinema/btn_bgMauve.png) repeat-x bottom;
+    cursor:pointer;
+}
+#horaires .modifLocalisation #submitLocal:focus{outline:none;}
+#horaires .modifLocalisation .txtOu {
+    margin:0;
+    width:49px;
+    font-size:14px;
+    line-height:34px;
+}
+#horaires .modifLocalisation .meLocaliser a {
+    display:inline-block;
+    padding:0 3px 0 22px;
+    line-height:37px;
+    color:#fff;
+    background:url(../img/cinema/ico_localiser.png) no-repeat 0 8px;
+}
+#horaires .modifLocalisation a:hover {text-decoration:none;} 
+#horaires .modifLocalisation .btnFermer {
+    float:right;
+    padding:13px 10px 0 0;
+    font-size:10px;
+    color:#666;
+    text-transform:uppercase;
+    cursor:pointer;
+}
+#horaires .modifLocalisation .btnFermer span {
+    font-family:Verlag, Helvetica, Arial, sans-serif;
+    font-size:9px;
+    font-weight:bold;
+}
+
+/* Gestion des erreurs */
+#horaires .boxErreurLocalisation {
+    float:left;
+    padding:10px 0 20px 35px;
+    display:none;
+}
+#horaires .boxErreurLocalisation p {
+    float:left;
+    width:850px;
+    font-size:15px;
+    font-weight:bold;
+    color:#000;
+}
+#horaires .boxErreurLocalisation div {
+    float:left;
+    padding:12px 0 0 0;
+    font-style:italic;
+    line-height:18px;
+    color:#666;
+}
+#horaires .boxErreurLocalisation div.suggestions {font-style:normal;}
+#horaires .boxErreurLocalisation div strong {
+    line-height:26px;
+    color:#9c54a5;
+}
+#horaires .boxErreurLocalisation ul {
+    width:338px;
+    margin:0 70px 0 0;
+    background:#fff;
+    border:1px solid #ccc;
+}
+#horaires .boxErreurLocalisation ul li {padding:3px 10px;}
+#horaires .boxErreurLocalisation ul li:hover {
+    background:#f2f2f2;
+    cursor:pointer;
+}
+#horaires .boxErreurLocalisation ul li a {color:#666;}
+#horaires .boxErreurLocalisation ul li a:hover {text-decoration:none;}
+
+/* --------------------------------- */
+/* Boite expand 
+/* --------------------------------- */
+#horaires #boxExpand {
+    float:left;
+    position:relative;
+    width:952px;
+    height:380px;
+    border-top:1px solid #ccc;
+    overflow:hidden;
+}
+
+#horaires #boxExpand #loadingScreen {
+    margin:0; 
+    padding: 0;
+    position:absolute;
+    top:0; 
+    left:0;
+    width:952px;
+    height:380px;
+    overflow:hidden;
+    z-index:7777;
+    display: none;
+    background:#000 url(../img/loading.gif) no-repeat center center;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+}
+#horaires #boxExpand.miniExpand #loadingScreen {
+    height:130px;
+}
+
+
+#horaires #boxExpand.noScroll .boxRight {overflow-y:hidden;}
+#horaires #boxExpand h4 {
+    font-size:16px;
+    line-height:18px;
+}
+#horaires #boxExpand h4 a {color:#333;}
+#horaires #boxExpand.off {display:none;}
+#horaires #boxExpand.on,
+#horaires #boxExpand.on .boxLeft,
+#horaires #boxExpand.on .boxRight {display:block;}
+#horaires #boxExpand.default .contentLeft {display:none;}
+#horaires #boxExpand .boxLeft {
+    float:left;
+    width:312px;
+    height:380px;
+    position:relative;
+    display:none;
+}
+#horaires #boxExpand.miniExpand {
+    height:130px;
+    display:block;
+}
+#horaires #boxExpand.miniExpand .boxRight {height:130px;}
+#horaires #boxExpand .boxRight {
+    float:left;
+    position:relative;
+    width:639px;
+    height:380px;
+    background:#f2f2f2;
+    border-left:1px solid #ccc;
+    overflow-x:hidden;
+    overflow-y:scroll;
+    display:none;
+}
+#horaires #boxExpand.miniExpand .boxLeft,
+#horaires #boxExpand.miniExpand .boxRight {display:block;}
+#horaires #boxExpand.overflowHidden .boxRight {overflow-y:hidden;}
+
+/* Map - Default */
+#horaires #boxExpand.default .mapCinema {
+    height:380px;
+    position:relative;
+}
+#horaires #boxExpand .mapCinema {
+    float:left;
+    width:312px;
+    position:absolute;
+    bottom:0;
+    left:0;
+}
+#horaires #boxExpand .mapCinema .titleMap {
+    font-size:14px;
+    color:#333;
+    cursor:pointer;
+}
+#horaires #boxExpand .mapCinema .infoBulleGoogle {
+    width:235px;
+    font-size:12px;
+}
+
+/* Contenu gauche - Default */
+#horaires #boxExpand .contentLeft {
+    float:left;
+    position:relative;
+    width:312px;
+    height:189px;
+    background:#f2f2f2;
+    border-bottom:1px solid #ccc;
+    z-index:999;
+}
+
+/* Liste d'items à droite - Default */
+#horaires #boxExpand .boxRight ul li {
+	float:left;
+    width:630px;
+    padding:12px 10px 12px 0;
+    border-top:1px solid #fff;
+    border-bottom:1px solid #ccc;
+}
+#horaires #boxExpand .boxRight ul li .pos {
+    float:left;
+    width:46px;
+    padding:23px 0 0 0;
+    font-size:9px;
+    color:#666;
+    text-transform:uppercase;
+    text-align:center;
+    background:url(../img/cinema/ico_localisation.png) no-repeat 15px -230px;
+}
+#horaires #boxExpand .boxRight ul li:hover .pos {background:url(../img/cinema/ico_localisation.png) no-repeat 15px -300px;}
+#horaires #boxExpand .boxRight ul li .txtInfos {
+    float:left;
+    width:458px;
+    font-size:12px;
+    line-height:18px;
+}
+#horaires #boxExpand .boxRight ul li .txtInfos strong {font-size:16px;}
+#horaires #boxExpand .boxRight ul li .txtInfos a {
+    cursor:pointer;
+    color:#333;
+}
+#horaires #boxExpand .boxRight ul li .txtInfos a.lienItineraire {color:#003399;}
+#horaires #boxExpand .boxRight ul li .btn {
+    float:left;
+    padding:4px 10px;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:12px;
+    line-height:19px;
+    text-transform:uppercase;
+    background:url(../img/cinema/bg_btnVoirFilms.png) repeat-x 0 0;
+    -moz-border-radius:2px;
+	border-radius:2px;
+}
+#horaires #boxExpand .boxRight ul li .btn:hover {background:#606060;}
+#horaires #boxExpand .boxRight ul li .btn a {
+    cursor:pointer;
+    color:#fff;
+}
+#horaires #boxExpand .boxRight ul li .btn a:hover {text-decoration:none;}
+#horaires #boxExpand .boxRight ul li.tag {background:url(../img/cinema/ico_localisation-over.png) no-repeat 15px 11px;}
+#horaires #boxExpand .boxRight ul li.tag .txtInfos a,
+#horaires #boxExpand .boxRight ul li.title {
+    padding:8px;
+    font-size:14px;
+    font-weight:bold;
+    color:#fff;
+    border-top:0 none;
+    border-bottom:1px solid #7c4383;
+    background:#94509d;
+}
+
+/* --------------------------------- */
+/* Box expand Cinema 
+/* --------------------------------- */
+
+/* Google map */
+#horaires #boxExpand.cinemas .mapCinema {height:190px;}
+
+/* Lien cinéma à proximité */
+#horaires #boxExpand .lienCinemaProx {
+    width:298px;
+    padding:6px 0 6px 14px;
+    margin:0 0 8px 0;
+    background:#afaaaf;
+    border-bottom:1px solid #948d94;
+}
+#horaires #boxExpand .lienCinemaProx span {
+    position:relative;
+    top:1px;
+    padding:0 10px 0 0;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:18px;
+    line-height:12px;
+    color:#fff;
+}
+#horaires #boxExpand .lienCinemaProx a {
+    font-size:12px;
+    color:#333;
+    text-transform:uppercase;
+    cursor:pointer;
+}
+#horaires #boxExpand.cinemas .lienCinemaProx a:hover {text-decoration:none;}
+
+/* Infos Cinéma - gauche */
+#horaires #boxExpand.cinemas .infosFilms {display:none;}
+#horaires #boxExpand .contentLeft .pinMap {
+    float:left;
+    width:36px;
+    padding:23px 7px 0 7px;
+    font-size:9px;
+    color:#666;
+    text-transform:uppercase;
+    background:url(../img/cinema/ico_localisation-over.png) no-repeat 18px 0;
+    text-align:center;
+}
+#horaires #boxExpand .contentLeft .infosCinema {
+    float:left;
+    width:240px;
+    padding:0 0 14px 0;
+    margin:0;
+}
+#horaires #boxExpand .contentLeft .infosCinema p {
+    font-size:12px;
+    line-height:16px;
+}
+#horaires #boxExpand .contentLeft .infosCinema p .lienItineraire {cursor:pointer;}
+#horaires #boxExpand .contentLeft .infosCinema p.tel {
+    display:inline-block;
+    width:220px;
+    padding:6px 0 2px 18px;
+    margin:0 0 15px 0;
+    background:url(../img/cinema/ico_servicesCinemas.png) no-repeat -2px 6px;
+}
+#horaires #boxExpand .contentLeft .infosCinema p.tel span {width:100px;}
+#horaires #boxExpand .contentLeft .infosCinema p.web {
+    height:12px;
+    padding:0 0 7px 0;
+    font-size:13px;
+    overflow:hidden;
+}
+#horaires #boxExpand .contentLeft .infosCinema span {
+    float:left;
+    display:inline-block;
+    width:25px;
+    height:20px;
+}
+#horaires #boxExpand .malentendant {background:url(../img/cinema/ico_servicesCinemas.png) no-repeat 0 -26px;}
+#horaires #boxExpand .parking {background:url(../img/cinema/ico_servicesCinemas.png) no-repeat 0 -56px;}
+#horaires #boxExpand .handicape {background:url(../img/cinema/ico_servicesCinemas.png) no-repeat 0 -86px;}
+#horaires #boxExpand .metro {background:url(../img/cinema/ico_servicesCinemas.png) no-repeat 0 -116px;}
+#horaires #boxExpand .contentLeft .infosCinema span.metro {
+    padding:0 0 0 24px;
+    line-height:22px;
+}
+
+/* Films à l'affiche - droite */
+#horaires #boxExpand.cinemas .boxRight ul li {
+    width:610px;
+    padding:15px;
+    background:none;
+    position:relative;
+}
+#horaires #boxExpand.cinemas .boxRight ul li .newMovie {
+    display:block;
+    position:absolute;
+    top:-1px;
+    left:0;
+    width:58px;
+    height:57px;
+    background:url(../img/cinema/films_tagNouveau.png) no-repeat 0 0;
+    overflow:hidden;
+}
+#horaires #boxExpand.cinemas .boxRight ul li .newMovie a {
+    display:block;
+    width:58px;
+    height:57px;
+}
+#horaires #boxExpand .boxRight .poster {
+    float:left;
+    width:60px;
+    height:87px;
+    background:#ccc;
+}
+#horaires #boxExpand .boxRight .infosFilm {
+    float:left;
+    position:relative;
+    width:520px;
+    padding:0 0 0 14px;
+}
+#horaires #boxExpand .titre {
+    float:left;
+	width:305px;
+    padding:0 0 20px 0;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size:12px;
+}
+#horaires #boxExpand .titre span {color:#666;}
+#horaires #boxExpand .titre strong {
+    font-weight:normal;
+    color:#333;
+}
+
+/* Classement et cotes */
+#horaires #boxExpand .cotes {
+    float:right;
+    height:30px;
+    overflow:hidden;
+}
+#horaires #boxExpand .cotes span.rates {
+    float:left;
+    display:block;
+    width:24px;
+    height:25px;
+}
+#horaires #boxExpand .cotes span.rateGé {background:url(../img/cinema/ico_classementSmall.png) no-repeat 0 2px;}
+#horaires #boxExpand .cotes span.rate18 {background:url(../img/cinema/ico_classementSmall.png) no-repeat 0 -60px;}
+#horaires #boxExpand .cotes span.rate16 {background:url(../img/cinema/ico_classementSmall.png) no-repeat 0 -121px;}
+#horaires #boxExpand .cotes span.rate13 {background:url(../img/cinema/ico_classementSmall.png) no-repeat 1px -183px;}
+#horaires #boxExpand .cotes span.rateEn {background:url(../img/cinema/ico_classementSmall.png) no-repeat 0 -247px;}
+#horaires #boxExpand .cotes div {
+    float:left;
+    padding:0 0 0 15px;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:10px;
+    font-weight:normal;
+    text-transform:uppercase;
+}
+#horaires #boxExpand .cotes div.coteLP {width:80px;}
+#horaires #boxExpand .cotes div.cotePublic {width:75px;}
+#horaires #boxExpand .cotes div.cotePublic img {
+    width:13px;
+    height:13px;
+}
+#horaires #boxExpand .cotes div span {
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    text-transform:none;
+    color:#666;
+}
+
+/* Horaires */
+#horaires #boxExpand .boxRight .horaire {float:left;}
+#horaires #boxExpand .boxRight .horaireItem {
+    float:left;
+    width:520px;
+}
+#horaires #boxExpand .boxRight .horaireItem strong {
+    display:block;
+    padding:5px 0 3px 0;
+    color:#9c54a5;
+}
+#horaires #boxExpand .boxRight .horaireItem.original {border-top:0 none;}
+#horaires #boxExpand .boxRight .horaireItem.original strong {display:none;}
+#horaires #boxExpand .boxRight .horaireItem p {display:inline-block;}
+#horaires #boxExpand .boxRight .horaireItem p.jour {
+    float:left;
+    width:520px;
+    font-size:12px;
+    line-height:18px;
+    color:#666;
+    text-transform:uppercase;
+}
+#horaires #boxExpand .boxRight .horaireItem p.hres {
+    position:relative;
+    width:520px;
+    padding:0 0 10px 0;
+    line-height:16px;
+    overflow:hidden;
+}
+#horaires #boxExpand .boxRight .horaireItem p.hres span {
+    position:relative;
+    display:inline-block;
+    left:-7px;
+    padding:0 5px 0 6px;
+    margin:0 0 2px 0;
+    font-weight:bold;
+    border-left:1px dotted #333;
+}
+#horaires #boxExpand .boxRight .seeAll {
+    float:left;
+    width:520px;
+    text-align:right;
+}
+#horaires #boxExpand .boxRight .seeAll a {
+    color:#404040;
+    cursor:pointer;
+}
+#horaires #boxExpand .boxRight .seeAll a:hover {color:#e2001a;}
+
+
+/* --------------------------------- */
+/* Box expand Films 
+/* --------------------------------- */
+#horaires #boxExpand.films .contentLeft .lienCinemaProx,
+#horaires #boxExpand.films .contentLeft .pinMap,
+#horaires #boxExpand.films .contentLeft .infosCinema,
+#horaires #boxExpand.films .boxRight li.title {display:none;}
+#horaires #boxExpand.films .contentLeft {
+    position:relative;
+    width:284px;
+    height:auto;
+    min-height:110px;
+    padding:14px;
+}
+#horaires #boxExpand.films .contentLeft .newMovie {
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    width:58px;
+    height:57px;
+    background:url(../img/cinema/films_tagNouveau.png) no-repeat 0 0;
+    overflow:hidden;
+}
+#horaires #boxExpand.films .contentLeft .newMovie a {
+    display:block;
+    width:58px;
+    height:57px;
+}
+#horaires #boxExpand.films .mapCinema {height:241px;}
+#horaires #boxExpand.films .infosFilms {
+    float:left;
+    width:284px;
+}
+#horaires #boxExpand.films .infosFilms .titre {
+    width:210px;
+    padding:0 0 0 14px;
+}
+#horaires #boxExpand.films .infosFilms .titre .lang select {
+    width:210px;
+    padding:1px 0;
+    margin:8px 0;
+    font-size:10px;
+}
+#horaires #boxExpand.films .infosFilms .titre .lang span {
+    display:inline-block;
+    padding:10px 0;
+}
+#horaires #boxExpand.films .infosFilms .img {
+    float:left;
+    width:60px;
+    height:87px;
+    background:#ccc;
+}
+#horaires #boxExpand.films .infosFilms .cotes {
+    float:left;
+    width:210px;
+    height:inherit;
+}
+#horaires #boxExpand.films .cotes img {
+    float:inherit;
+    padding:0;   
+}
+#horaires #boxExpand.films .contentLeft p {
+    float:left;
+    padding:10px 0 0 0;
+    border-top:1px dotted #cbcbcb;
+}
+#horaires #boxExpand.films p select {margin:10px 0 0 0;}
+#horaires #boxExpand.films .boxRight ul li .txtInfos {width:565px;}
+#horaires #boxExpand.films .boxRight .txtInfos div.txtInfosTitle {float:left;}
+#horaires #boxExpand.films .boxRight .txtInfos div.txtInfosMore {float:right;}
+#horaires #boxExpand.films .boxRight .txtInfos div.txtInfosMore p.tel {
+    padding:0 0 8px 18px;
+    background:url(../img/cinema/ico_servicesCinemas.png) no-repeat -2px 0;
+}
+#horaires #boxExpand.films .boxRight .txtInfos div.txtInfosMore p.web {padding:0 0 30px 0;}
+#horaires #boxExpand.films .boxRight .txtInfos div.txtInfosMore span {
+    float:right;
+    display:block;
+    width:25px;
+    height:20px;
+}
+#horaires #boxExpand.films .boxRight .horaireItem {margin:10px 0 0 46px;}
+#horaires #boxExpand.films .boxRight .seeAll {width:605px;}
+
+
+/* --------------------------------- */
+/* Controle pour la boite Expand
+/* --------------------------------- */
+#horaires .controlExpand {
+    float:left;
+    width:954px;
+    border-top:4px solid #9958a1;
+    text-align:center;
+}
+#horaires .controlExpand a {
+    display:inline-block;
+    width:37px;
+    height:14px;
+    outline:none;
+    cursor:pointer;
+}
+#horaires .controlExpand a.down {background:url(../img/cinema/btn_expandHoraire.png) no-repeat 0 0;}
+#horaires .controlExpand a.up {background:url(../img/cinema/btn_expandHoraire.png) no-repeat 0 -22px;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Fiche cinema
+/* ---------------------------------------------------------------------------------- */
+.cinema .colspan {overflow: visible;}
+
+/* Permet de fixer plusieurs problemes css inter-navigateur du au box model */
+.cinema .wrapDiv {
+	float:left;
+	width:100%;
+	zoom:1;
+	margin:0;
+	padding:0;
+	position:relative;
+}
+
+/* sous-titres */
+#ficheFilm h2, 
+#ficheBas h2 {
+	color:#fff;
+	font-family:Verlag, Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:normal;
+	line-height:14px;
+	text-transform:uppercase;
+}
+#ficheResume {
+    min-height:426px;
+    position:relative;
+    zoom:1;
+}
+#ficheResume, 
+#ficheBas {
+	background:#333;
+	color:#fff;
+}
+#afficheFilmGauche, 
+#ficheCotezGauche, 
+#ficheBasGauche {width:285px;}
+#ficheCotezDroit, 
+#afficheFilmDroite, 
+#ficheBasDroite {width:348px;}
+#afficheFilmDroite .wrapDiv {
+	border-bottom:#242424 solid 1px;
+	border-left:#525252 solid 1px;
+	border-top:#525252 solid 1px;
+	padding:14px;
+	width:318px;
+}
+#afficheFilmGauche {
+	background:url(../img/cinema/bg_poster.png) no-repeat top left; 
+	width:286px;
+	height:426px;
+    overflow:hidden;
+    text-align: center;
+}
+
+/* Statut */
+#ficheStatut {
+	background:#9c54a5;
+	color:#fff;
+	font-size:14px;
+	font-weight:bold;
+	margin:0 0 1px;
+	text-align:center;
+	text-transform:uppercase;
+}
+#ficheStatut div {text-align:center;}
+#ficheStatut p {
+	padding:10px;
+	width:614px;
+}
+
+/* Classement du film */
+#icoClassement {
+	background:url(../img/cinema/ico_classement.png) no-repeat -185px -10px;
+	min-height:35px;
+}
+#ficheTitre #icoClassement span {
+    display:block;
+    width:49px;
+    height:35px;
+    padding:0;
+}
+.general#icoClassement {background:url(../img/cinema/ico_classement.png) no-repeat -10px -10px;}
+.plus18#icoClassement {background:url(../img/cinema/ico_classement.png) no-repeat -10px -470px;}
+.plus16#icoClassement {background:url(../img/cinema/ico_classement.png) no-repeat -10px -930px;}
+.plus13#icoClassement {background:url(../img/cinema/ico_classement.png) no-repeat -10px -1389px;}
+.noncote#icoClassement {background:url(../img/cinema/ico_classement.png) no-repeat -10px -1892px;}
+
+/* Titre du film */
+#ficheTitre {min-height:87px;}
+#ficheTitre {
+	float:left;
+	font-family:Verlag, Arial, Helvetica, sans-serif;
+	font-size:20px;
+	font-weight:normal;
+	line-height:24px;
+	text-transform:uppercase;
+	width:270px;
+}
+#ficheTitre span, #ficheTitre p {
+	color:#999;
+	float:left;
+	font-family:Helvetica, sans-serif;
+	font-size:14px;
+	font-style:italic;
+	line-height:14px;
+	padding-top:7px;
+	text-transform:none;
+}
+
+/* Synopsis */
+#stResume {height:14px;}
+#afficheFilmDroite #synopsis {
+	height: 175px;
+	width:346px;
+	padding:0px;
+	overflow: hidden;
+}
+#synopsis p {
+	color:#ccc;
+	font-family:Helvetica, Arial, sans-serif;
+	font-size:14px;
+	font-weight:normal;
+	line-height:16px;
+	padding:0 0 14px 0;
+}
+
+/* Vertical scrollbar du synopsis */
+#mcs_container {
+	position:relative;
+	height:175px;
+	width:346px;
+	padding:0;
+	margin:0;
+}
+#mcs_container .customScrollBox {
+	position:relative;
+	height:100%;
+	overflow:hidden;
+}
+#mcs_container .customScrollBox .container {
+	position:relative;
+	width:334px;
+	top:0;
+    left:0;
+	float:left;
+}
+#synopsis #mcs_container .customScrollBox .content { 
+    clear:both; 
+    padding:14px;
+	width: auto;
+}
+#mcs_container .dragger_container {
+	position:relative;
+	width:10px;
+	height:176px;
+	float:left;
+	margin:0;
+	background:#303030;
+	cursor:pointer;
+	border-left:1px #525252 solid;
+	border-right:1px #525252 solid;
+	display:none;
+}
+#mcs_container .dragger,
+#mcs_container .dragger_pressed {
+	position:absolute;
+	width:10px;
+	height:44px;
+	background:#9c54a5;
+	text-align:center;
+	line-height:44px;
+	color:#666;
+	overflow:hidden;
+	cursor:pointer;
+	border-bottom:1px solid #7b467f;
+}
+
+/* quick fix temporaire */
+.ficheCinema #wrapper .content {
+    padding:0;
+    width:auto;
+}
+
+/* Cote / etoiles */
+#coteLaPresse, 
+#coteUsagers {height:14px;}
+#coteLaPresse h2, 
+#coteUsagers h2, 
+#ficheCotezDroit h2 {
+	float:left;
+	width:170px;
+}
+#coteLaPresse div, 
+#coteUsagers div {float:left;}
+#coteLaPresse p, 
+#coteUsagers p {display:none;}
+#coteLaPresse p {
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:bold;
+	line-height:16px;
+	width:50px;
+}
+#coteUsagers p {
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:bold;
+	line-height:16px;
+}
+#coteUsagers .reviewCount {
+	color:#969;
+	font-family:Helvetica, sans-serif;
+	font-size:12px;
+	line-height:12px;
+	margin:0 0 0 10px;
+}
+#coteLaPresse p span, 
+#coteUsagers p .ratingValue {color:#9c54a5;}
+#starLaPresse, 
+#starPublic {
+	position:absolute;
+	right:16px;
+	top:10px;
+}
+#ficheCotez {
+	background:#411541;
+	border-bottom:#414141 solid 1px;
+	border-top:#414141 solid 1px;
+	color:#fff;
+	height:68px;
+	width:634px;
+}
+
+/* pour bug ie7 avec la galerie photo */
+#ficheCotez, 
+#ficheCotez .wrapdiv {
+	position:static;
+	z-index:5;
+}
+
+/* ficheBasGauche et ficheBasDroite */
+#ficheBasGauche {
+    border-right:1px solid #525252;
+    color:#999;
+}
+#ficheBasGauche p {
+	padding:10px 15px;
+	width:254px;
+}
+#ficheBasGauche p.even {background:#242424;}
+#ficheBasGauche p a#siteOfficiel {
+	border-bottom:2px #666 solid;
+	color:#fff;
+	text-decoration: none;
+}
+#ficheBasDroite {
+    left:-1px;
+    color:#999;
+}
+#ficheBasGauche p span, 
+#ficheBasDroite p span {color:#ccc;}
+
+/* sous-titre et contenu */
+#stDetails {
+	border-bottom:1px solid #242424;
+	border-top:1px solid #525252;
+	padding:15px;
+	width:254px;
+}
+#ctDetails {
+	border-bottom:1px solid #242424;
+	border-left:1px solid #525252;
+	border-top:1px solid #525252;
+	width:284px;
+}
+#stCredits, 
+#ctCredits, 
+#stActeurs, 
+#ctActeurs {
+	border-bottom:1px solid #242424;
+	border-left:1px solid #525252;
+	border-top:1px solid #525252;
+	padding:15px;
+	width:316px;
+}
+#ctActeurs {border-bottom:0 none;}
+#ctCredits p, 
+#ctActeurs p {line-height:26px;}
+
+/* ficheCotezDroit */
+#ficheCotezDroit {
+	height:40px;
+	padding:14px;
+	width:320px;
+}
+#ficheCotezDroit h2 {line-height:40px;}
+#ficheCotezDroit #starVote {
+	position:absolute;
+	right:11px;
+	top:18px;
+}
+
+/* ficheCotezGauche */
+#ficheCotezGauche {padding:14px 0;}
+#ficheCotezGauche p {
+	color:#fff;
+	font-family:Verlag, Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:normal;
+	line-height:18px;
+	text-transform:uppercase;
+	padding: 0 0 0 14px;
+}
+#ficheCotezGauche p span {
+	color:#bc8ec2;
+	font-family:Helvetica, Arial, sans-serif;
+	text-transform:none;
+}
+
+/* Bande annonce bouton */
+#voirBandeAnnonce {
+	background:url(../img/cinema/bg_voirBandeAnnonce.png) repeat 0 0;
+	bottom:0;
+	display:block;
+	height:45px;
+	left:0;
+	position:absolute;
+	width:100%;
+}
+#voirBandeAnnonce a {
+	bottom:6px;
+	color:#ccc;
+	display:block;
+	font-family:Verlag, Arial, Helvetica, sans-serif;
+	font-size:14px;
+	height:33px;
+	left:26px;
+	line-height:33px;
+	margin:0;
+	padding:0;
+	position:absolute;
+	text-align:center;
+	text-decoration:none;
+	text-transform:uppercase;
+	width:222px;
+	focus:0;
+}
+.petitButtonVideo {background:url(../img/cinema/ico_player.png) no-repeat 0 0;}
+.petitButtonVideo:hover {background:url(../img/cinema/ico_player.png) no-repeat 0 -33px;}
+
+/* BandeAnnonce et galerie photo */
+#bandeAnnonce, 
+#galeriePhoto,
+#slideshow,
+#videos {
+	background:#333;
+	font-family:Arial, Helvetica, sans-serif;
+	left:0;
+	position:absolute;
+	top:0;
+	z-index:10;
+	display:none;
+	zoom:1;
+}
+
+div.videoPreload {
+	display:none;
+}
+
+#videos .LimelightEmbeddedPlayer {position:relative;} 
+#galeriePhoto p.titleVisual,
+#slideshow p.titleVisual,
+#videos p.titleVisual {
+    color:#999999;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:14px;
+    text-transform: uppercase;
+    position:absolute;
+    top:18px;
+    left:33px;
+}
+#bandeAnnonce p.captionVisual, 
+#galeriePhoto p.captionVisual,
+#slideshow p.captionVisual,
+#videos p.captionVisual {
+    color:#999999;
+	font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    float:left;
+    width:100%;
+    padding: 0 0 8px 0;
+}
+#bandeAnnonce p.creditVisual, 
+#galeriePhoto p.creditVisual,
+#slideshow p.creditVisual,
+#videos p.creditVisual {
+    color:#999999;
+	font-family:Helvetica, Arial, sans-serif;
+    font-size:10px;
+    float:left;
+    width:100%;
+}
+.infosPhotos {
+    position:relative;
+    float:left;
+    text-align:left;
+    width:568px;
+    padding:8px 0 0 33px;
+}
+#bandeAnnonce .chapitreVideo, 
+#videos .chapitreVideo {
+    height:345px;
+    text-align:center;
+    padding:12px 0 0 0;
+}
+#galeriePhoto {
+	height:100%;
+	width:634px;
+    text-align: center;
+    zoom:1;
+}
+#bandeAnnonce {
+	height:426px;
+	width:634px;
+	zoom:1;
+	text-align:center;
+}
+#bandeAnnonce .bandeAnnonceInfos,
+#videos .bandeAnnonceInfos {
+    float:left;
+    width:634px;
+}
+#videos .bandeAnnonceInfos {height:40px;}
+#bandeAnnonce .bandeAnnonceInfos #fermer {
+     float:right;
+     padding:12px;
+     color:#999;
+     font-size:10px;
+     text-transform:uppercase;
+}
+#bandeAnnonce .bandeAnnonceInfos #fermer:hover {text-decoration:none;}
+#bandeAnnonce .bandeAnnonceInfos #fermer span {
+    color:#fff;
+    font-weight:bold;
+}
+#bandeAnnonce .titleVisual {
+    padding:35px 0 3px 16px;
+    text-align:left;
+    font-size:18px;
+}
+#bandeAnnonce .titleVisual span {font-style:italic;}
+#bandeAnnonce object {
+	z-index:15;
+	zoom:1;
+	width:604px;
+	height:345px;
+}
+#videos {
+	height:426px;
+	width:634px;
+	zoom:1;
+	text-align:center;
+}
+#videos object {
+	z-index:15;
+	zoom:1;
+	width:604px;
+	height:345px;
+}
+#galeriePhoto img {
+    z-index:15;
+    zoom:1;
+    padding:60px 0 0;
+} 
+#galeriePhoto #fermerGalerie,
+#videos #fermerVideo {
+	background:url(../img/cinema/ico_close.png) no-repeat right top;
+	color:#999;
+	display:block;
+	font-size:10px;
+	height:8px;
+	line-height:8px;
+	position:absolute;
+	right:8px;
+	text-align:left;
+	top:8px;
+	width:56px;
+	zoom:1;
+}
+#bandeAnnonce p span {font-style:italic;}
+
+/* object slideshow (galleria) */
+.ficheFilm .galleria-stage {
+    height:526px;
+    position:absolute;
+    top:10px;
+    bottom:60px;
+    left:10px;
+    right:10px;
+    overflow:hidden;
+    z-index:14;
+    zoom:1;
+}
+.ficheFilm #slideshow img {
+    top:86px;
+    left:0px;
+    position:relative;
+    z-index:15;
+    vertical-align:middle;
+}
+.ficheFilm #slideshow #fermerSlideshow {
+    background:url(../img/cinema/ico_close.png) no-repeat right top;
+	color:#999;
+	display:block;
+	font-size:10px;
+	height:8px;
+	line-height:8px;
+	position:absolute;
+	right:8px;
+	text-align:left;
+	top:8px;
+	width:56px;
+	z-index:50;
+}
+.ficheFilm #slideshow p {
+	color:#fff;
+	font-size:16px;
+	left:16px;
+	line-height:18px;
+	position:absolute;
+	text-align:left;
+	top:37px;
+	z-index:50;
+}
+.ficheFilm #slideshow p span {font-style:italic;}
+
+/* BandeAnnonce et galerie photo */
+#slideshow {
+	background:#000;
+	display:none;
+	font-family:Arial, Helvetica, sans-serif;
+	left:0;
+	position:absolute;
+	top:0;
+	height:496px;
+	width:634px;
+    text-align: center;
+}
+#slideshow #galleria {
+    height:608px;
+	width:634px;
+}
+
+/* tooltipStar */
+#tooltipStar {
+	background:url(../img/cinema/bg_starTooltip.png) no-repeat right top;
+	color:#333;
+	display:none;
+	font-family:Helvetica, Arial, sans-serif;
+	font-size:10px;
+	font-weight:normal;
+	height:140px;
+	left:194px;
+	position:absolute;
+	top:-218px;
+	width:140px;
+}
+#tooltipStar p {
+	font-size:14px;
+	font-weight:bold;
+	padding:7px 10px;
+}
+#tooltipStar li {
+	border-bottom:1px solid #cecece;
+	font-size:10px;
+	height:19px;
+	line-height:19px;
+	margin:0 1px;
+	padding:0 10px;
+	text-transform:uppercase;
+}
+#tooltipStar li.last {border-bottom:0;}
+#tooltipStar li span {color:#e2001a;}
+
+/* Slider */
+#ficheSlider {
+	background:#000;
+	height:112px;
+	width:634px;
+}
+#ficheSlider .listePhotos {
+	float:left;
+	margin:0;
+	width:634px;
+}
+#ficheSlider .listePhotos .btnPrec {
+	background:url(../img/fleche_left.png) no-repeat -31px 0;
+	float:left;
+	height:40px;
+	left:-4px;
+	margin:36px 0 0;
+	overflow:hidden;
+	position:relative;
+	width:22px;
+}
+#ficheSlider .listePhotos .btnNext {
+	background:url(../img/fleche_right.png) no-repeat 0 0;
+	float:right;
+	height:40px;
+	left:inherit;
+	margin:36px 0 0;
+	overflow:hidden;
+	position:relative;
+	right:-4px;
+	width:22px;
+}
+#ficheSlider .listePhotos .disabled {visibility:hidden;}
+#ficheSlider .listePhotos .btnPrec a, #ficheSlider .listePhotos .btnNext a {
+	background:none;
+	border:0 none;
+	cursor:pointer;
+	display:block;
+	height:0;
+	overflow:hidden;
+	padding:40px 0 0;
+	width:22px;
+}
+#ficheSlider .listePhotos .btnPrec a {background:url(../img/fleche_left.png) no-repeat -1px 0;}
+#ficheSlider .listePhotos .btnNext a {background:url(../img/fleche_right.png) no-repeat -30px 0;}
+#ficheSlider .listePhotos .listePhotosContent {
+	float:left;
+	height:112px;
+	left:8px;
+	overflow:hidden;
+	position:relative;
+	width:582px;
+}
+#ficheSlider .listePhotos .listePhotosContent ul {
+	float:left;
+	overflow:hidden;
+	padding:13px 0;
+	position:absolute;
+	width:2000em;
+	height:88px;
+}
+#ficheSlider .listePhotos .listePhotosContent li {
+	float:left;
+	width:582px;
+	line-height:87px;
+	height:87px;
+}
+#ficheSlider .listePhotos .listePhotosContent li div.photoSlider,
+#ficheSlider .listePhotos .listePhotosContent li div.videoSlider,
+#ficheSlider .listePhotos .listePhotosContent li div.slideshowSlider {
+	float:left;
+	padding:0 7px;
+	width:130px;
+	text-align:center;
+	line-height:87px;
+	height:87px;
+	position:relative;
+}
+
+#ficheSlider .listePhotos .listePhotosContent li div.photoSlider a,
+#ficheSlider .listePhotos .listePhotosContent li div.videoSlider a,
+#ficheSlider .listePhotos .listePhotosContent li div.slideshowSlider a,
+#ficheSlider .listePhotos .listePhotosContent li div.videoSlider a {
+	display:inline; 
+	line-height: 87px;
+	height:87px;
+	vertical-align: middle;
+	position:relative;
+}
+#ficheSlider .listePhotos .listePhotosContent li div.photoSlider a,
+#ficheSlider .listePhotos .listePhotosContent li div.videoSlider a,
+#ficheSlider .listePhotos .listePhotosContent li div.slideshowSlider a,
+#ficheSlider .listePhotos .listePhotosContent li div.videoSlider a {display:block;}
+#ficheSlider .listePhotos .listePhotosContent li img {vertical-align:middle;}
+#ficheSlider .slideshowIcon {
+    position:absolute;
+    top:29px;
+    left:54px;
+}
+#ficheSlider .videoIcon {
+    position:absolute;
+    top:28px;
+    left:57px;
+}
+
+/* Gallerie photo */
+div.contentWrap {
+	height:441px;
+	overflow-y:auto;
+}
+
+/* Class pour jQuery */
+#ficheCotezDroit h2.merciDavoirVote {
+	font-family:Helvetica, Arial, sans-serif;
+	font-size:14px;
+	font-weight:normal;
+	line-height:45px;
+	text-transform:none;
+}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Fiche cinema - Critique
+/* ---------------------------------------------------------------------------------- */
+#critiquesContent {
+    float:left;
+    width:634px;
+    padding:24px 0 0 0;
+}
+
+/* Critique La Presse */
+#critiquesContent .colRightCritique {padding:0 0 0 20px;}
+#critiquesContent .colRightCritique .blocLibre175 strong {font-weight:normal;}
+#critiquesContent .critiqueLaPresse h2.titleBox {width:417px;}
+#critiquesContent .critiqueLaPresse .auteurCritique {
+    float:left;
+    padding:0 22px 14px 0;
+}
+#critiquesContent .critiqueLaPresse .auteurCritique img {padding:0 0 3px 0;}
+#critiquesContent .critiqueLaPresse .auteurCritique a {font-weight:bold;}
+#critiquesContent .critiqueLaPresse span {   
+    font-size:11px;
+    color:#666;
+}
+#critiquesContent .critiqueLaPresse h3 {
+    padding:5px 0 10px 0;
+    font-size:20px;
+    font-weight:bold;
+}
+#critiquesContent .critiqueLaPresse p {
+    padding:0 0 25px 0;
+    line-height:16px;
+}
+#critiquesContent .critiqueLaPresse p span {text-decoration:underline;}
+.critiqueLaPresse {padding-bottom:22px;}
+#critiquesContent .datesCritiques {color:#666;}
+
+/* Critiques publiques */
+#critiquesContent .critiquesPublic h2 span#titleCp {
+    font-size: 20px;
+    padding: 0 0 0 10px;
+    position: relative;
+    top: 0px;
+    float:left;
+}
+#critiquesContent .critiquesPublic h2 a {
+    padding:0 0 0 122px;
+    font-size:12px;
+    line-height:26px;
+    float:left;
+}
+#critiquesContent .critiquesPublic h2 a span {
+    top:5px;
+    padding: 0 0 0 10px;
+}
+#critiquesContent .critiquesPublic ul.actions {display:none;}
+#critiquesContent .critiquesPublic ul,
+#critiquesContent .critiquesPublic ul li {
+    float:left;
+    width:634px;
+}
+#critiquesContent .critiquesPublic ul li {
+    padding:12px 0 0 0;
+    border-bottom:1px dotted #9d9d9d;
+}
+#critiquesContent .critiquesPublic ul li h5 {
+    float:left;
+    font-size:16px;
+}
+#critiquesContent .critiquesPublic ul li p {
+    float:left;
+ 	padding:12px 0;
+ 	width:100%;
+}
+#critiquesContent .critiquesPublic ul li strong {line-height:22px;}
+#critiquesContent .critiquesPublic ul li .rates {
+    float:right;
+    padding:0 0 5px 0;
+}
+#critiquesContent .critiquesPublic p.plus {
+    float:left;
+    padding:8px 0 38px 0;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+    text-transform:uppercase;
+}
+#critiquesContent .critiquesPublic p.plus a {color:#333;}
+.critiquesPublic .article-comment {border-top:0 none;}
+.critiquesPublic .ratingWrapperContent {
+    float:left;
+    width:565px;
+    padding:0 0 10px 0;
+    font:80%/1.3em Verdana,Arial,sans-serif;
+}
+.critiquesPublic .ratingWrapperContent span {display:block;}
+.critiquesPublic .comment-header {display:none;}
+.critiqueVideo {min-height:164px;}
+.critiqueVideo .thumbnailVideoWrapper {position:relative;}
+.critiqueVideo ul li a.thumbnailVideo {position:relative;}
+.critiqueVideo ul li a.thumbnailVideo {
+    width:180px;
+    text-align:center;
+    display:block;
+}
+.centerbar .blocLibre175.critiqueVideo ul li img {width:180px;}
+.centerbar .blocLibre175.critiqueVideo ul li.first img {float:none;}
+.centerbar .blocLibre175.critiqueVideo ul li.first p {width:100%;}
+.videoCriticLm {display:none;}
+.critiqueVideo .petitButtonVideo {
+    background:url(../img/cinema/ico_player.png) no-repeat 0 0;
+	display:block;
+	z-index:99;
+	position:absolute;
+	width:33px;
+	height:33px;
+	top:20px;
+	left:74px;
+}
+.critiqueVideo .petitButtonVideo:hover {background:url(../img/cinema/ico_player.png) no-repeat 0 -33px;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* H2 pour boites 430 et 630
+/* ---------------------------------------------------------------------------------- */
+body.cinema h2.titleBox, 
+body.cinema #galeriePhotos434.main-box h2 {
+	position:relative;
+    width:419px;
+    height:40px;
+    padding:0 0 0 10px;
+    margin:0 0 8px 0;
+    background:#e5e5e5;
+    border-bottom:0 none;
+    border-left:5px solid #9958a1;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:20px;
+    font-weight:normal;
+    line-height:40px;
+    text-transform:uppercase;
+	float:left;
+}
+body.cinema .colspan .leftbar h2.titleBox {width:417px;}
+body.cinema .colspan h2.titleBox {width:619px;}
+body.cinema h2.titleBox a, 
+body.cinema h2.titleBox a:hover, 
+body.cinema h2.titleBox a:visited,
+body.cinema #galeriePhotos434.main-box h2 a,
+body.cinema #galeriePhotos434.main-box h2 a:hover,
+body.cinema #galeriePhotos434.main-box h2 a:visited {
+    font-size:20px;
+    line-height:32px;
+    color:#333;
+    text-decoration:none;
+}
+body.cinema h2.titleBox span, 
+body.cinema #galeriePhotos434.main-box h2 span {
+    position:relative; 
+    padding:0 0 0 10px;
+    top:2px;
+    font-family:Verlag,Arial,Helvetica,sans-serif;
+    font-size:32px;
+    color:#4b4b4b;
+}
+body.cinema #galeriePhotos434.main-box h2 span {float:none;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Boite 430 et 630 Standard 
+/* ---------------------------------------------------------------------------------- */
+.boxStandard {
+	float:left;
+	width:432px;
+	margin:0 0 30px 0;
+}
+.boxStandard ul {
+	float:left;
+	width:432px;
+	margin:0 0 5px 0;
+	border-bottom:1px solid #999;
+    overflow:hidden;
+}
+.boxStandard ul li {
+	float:left;
+	position:relative;
+	width:432px;
+	padding:20px 0 20px 0;
+	border-bottom:1px solid #e2e2e2;
+	font-size:12px;
+    overflow:hidden;
+}
+.boxStandard ul li.last,
+.boxStandard ul li.last p,
+.boxCritiques630 ul li.last,
+.boxCritiques630 ul li.last p {border-bottom:0 none;}
+.boxStandard ul li img,
+.boxCritiques630 ul li img {
+	float:left;
+	margin:0 10px 0 0;
+}
+.boxStandard ul li .video,
+.boxCritiques630 ul li .video {
+	float:left;
+	display:inline-block;
+	width:20px;
+	height:15px;
+	line-height:21px;
+	background:url(../img/cinema/ico_video.png) no-repeat 0 2px;
+	font-size:10px;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+.boxStandard ul li .video a {color:#333;}
+.boxStandard ul li.noImg.last {padding-bottom:10px;}
+.boxStandard ul li.noImg .video {float:none;}
+.boxStandard ul li.noImg {
+	padding:4px 0;
+	margin:0;
+	border-bottom:0;
+}
+.boxStandard ul li div {
+	float:left;
+	width:292px;
+}
+.boxStandard ul li h3,
+.boxCritiques630 ul li h3 {
+	font-size:16px;
+	line-height:18px;
+}
+.boxStandard p.plus,
+.boxCritiques630 p.plus,
+.boxStandard300 p.plus {
+	float:right;
+	font-size:12px;
+	font-weight:bold;
+	text-transform:lowercase;
+}
+.boxStandard p.plus a span,
+.boxCritiques630 p.plus a span,
+.boxStandard300 p.plus a span {color:#333;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Boite manchette Cinéma
+/* ---------------------------------------------------------------------------------- */
+#manchetteCinema .manchette.complete {
+    min-height:237px;
+    background:#000;
+}
+#manchetteCinema h1 {padding-top:10px;}
+#manchetteCinema .manchette.complete p.amorce,
+#manchetteCinema .manchette.complete a {color:#fff;}
+#manchetteCinema .rates {
+    float:left;
+    padding:0 0 0 10px;
+}
+#manchetteCinema .rates p {
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:14px;
+    font-weight:normal;
+    padding:0 0 3px 0;
+    text-transform:uppercase;
+    color:#fff;
+}
+#manchetteCinema .sub-news {border-bottom:0 none;}
+#manchetteCinema .sub-news-box.last {padding-right:0;}
+#manchetteCinema .sub-news-box h2 {padding-top:5px;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Boite Critiques 630
+/* ---------------------------------------------------------------------------------- */
+.boxCritiques630 {
+	float:left;
+	width:634px;
+	margin:0 0 30px 0;
+}
+.boxCritiques630 ul {
+	float:left;
+	width:634px;
+	margin:0 0 5px 0;
+	border-bottom:1px solid #999;
+    overflow:hidden;
+}
+.boxCritiques630 ul li {
+	float:left;
+	position:relative;
+	width:634px;
+	padding:20px 0 20px 0;
+	border-bottom:1px solid #e2e2e2;
+	font-size:12px;
+    overflow:hidden;
+}
+.boxCritiques630 ul li div {
+    float:left;
+	width:330px;
+	padding:0 20px 0 0;
+}
+.boxCritiques630 ul li div.img {
+    position:relative;
+    width:80px;
+    height:120px;
+    padding:0;
+    margin:0 10px 0 0;
+    border:1px solid #d0d0d0;
+    overflow:hidden;
+}
+.boxCritiques630 ul li div.noImg {background:#303030 url(../img/cinema/bg_posterSmall.png) no-repeat 10px 24px;}
+.boxCritiques630 ul li div.img img {height:120px;}
+.boxCritiques630 ul li div.img a {
+    position:absolute;
+    top:0;
+    left:0;
+    display:block;
+    width:80px;
+    height:0;
+    padding:120px 0 0 0;
+    background:url(../img/spacer.gif);
+}
+.boxCritiques630 ul li div.img a:hover {background:url(../img/cinema/bg_overPoster.png);}
+.boxCritiques630 ul li h3 {
+	display:block;
+	padding:5px 0 7px 0;
+}
+.boxCritiques630 ul li .video {
+	width:auto;
+	padding:8px 0 0 20px;
+    background:url(../img/cinema/ico_video.png) no-repeat 0 6px;
+	line-height:inherit;
+	cursor:pointer;
+    color:#333;
+}
+.boxCritiques630 ul li .popUpVideo {display:none;}
+.boxCritiques630 ul li div.cotes {
+	width:192px;
+	padding:0;
+}
+.boxCritiques630 ul li div.cotes img { 
+	float:none;
+	border:0 none; 
+    margin:0 5px 0 0;
+}
+.boxCritiques630 ul li div.cotes p {
+	display:inline-block;
+    width:100%;
+	padding:0 0 3px 0;
+	font-family:Verlag, Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:normal;
+	text-transform:uppercase;
+}
+.boxCritiques630 ul li div.cotes div {
+	width:192px;
+	display:inline-block;
+	padding:0;
+}
+.boxCritiques630 ul li div.cotes div.lp {padding:0 0 12px 0;}
+.boxCritiques630 ul li div.cotes span {
+    float:right;
+    width:50px;
+	font-size:10px;
+	font-weight:bold;
+	text-transform:uppercase;
+	line-height:10px;
+}
+.boxCritiques630 ul li div.cotes div.cotezOn span {display:block;}
+.boxCritiques630 ul li .cotes .off {display:none;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Boites Films à l'affiche, sorties, dvd, etc.
+/* ---------------------------------------------------------------------------------- */
+.boxFilms630 {
+    float:left;
+    width:634px;
+    margin:0 0 20px 0;
+}
+.boxFilms630 ul {
+    float:left;
+    width:644px;
+    overflow:hidden;
+}
+.boxFilms630 ul li {
+    float:left;
+    position:relative;
+    width:120px;
+    height:225px;
+    margin:0 8px 0 0;
+    text-align:center;
+    overflow:hidden;
+    background:#e8e8e8;
+}
+.boxFilms630 ul li.noRating {height:208px;}
+.boxFilms630 ul li.noRating div.img {border:1px solid #cdcdcd;}
+.boxFilms630 ul li.noRating img {
+    width:118px;
+    height:168px;
+}
+.boxFilms630 ul li div.img {
+    float:left;
+    position:relative;
+    width:120px;
+    height:170px;
+}
+.boxFilms630 ul li div.noImg {background:#303030 url(../img/cinema/bg_posterSmall.png) no-repeat 30px 30px;}
+.boxFilms630 ul li div.img img {
+    width:120px;
+    height:170px;
+}
+.boxFilms630 ul li div.img a {
+    position:absolute;
+    top:0;
+    left:0;
+    display:block;
+    width:120px;
+    height:0;
+    padding:212px 0 0 0;
+    background:url(../img/spacer.gif);
+}
+.boxFilms630 ul li div.img a:hover {background:url(../img/cinema/bg_overPoster.png);}
+.boxFilms630 ul li div.infosFilm {
+    width:120px;
+    position:absolute;
+    left:0;
+    top:170px;
+    background:#fff;
+    line-height:14px;
+}
+.boxFilms630 ul li div.infosFilm img {float:left;}
+.boxFilms630 ul li div.infosFilm div.rates {
+    height:15px;
+    padding:3px 0;
+    background:#e8e8e8;
+}
+.boxFilms630 ul li div.infosFilm a {
+    display:block;
+    height:47px;
+    padding:5px 0 0 0;
+}
+.boxFilms630 ul li div.infosFilm div.rates img {float:none;}
+
+/* Redéfinition pour grosses affiches */
+.boxFilms630 ul.big li {height:345px;}
+.boxFilms630 ul.big li div.img {
+    width:206px;
+    height:290px;
+}
+.boxFilms630 ul.big li div.noImg {background:url(../img/cinema/bg_poster.png) no-repeat -40px -60px;}
+.boxFilms630 ul.big li div.img img {
+    width:205px;
+    height:290px;
+}
+.boxFilms630 ul.big li div.img a {
+    width:206px;
+    padding:325px 0 0 0;
+}
+.boxFilms630 ul.big li div.infosFilm {
+    width:206px;
+    top:291px;
+}
+.boxFilms630 ul.big {padding:0 0 10px 0;}
+.boxFilms630 ul.big li {width:206px;}
+.boxFilms630 ul.big li a {font-weight:bold;}
+.boxFilms630 ul.big li div.infosFilm div.rates {width:206px;}
+
+/* Bande annonce */
+.boxFilms630 ul li p.bandeAnnonce a {
+    display:block;
+    width:56px;
+    height:0;
+    padding:56px 0 0 0;
+    position:absolute;
+    left:34px;
+    top:61px;
+    background:url(../img/cinema/ico_mediumplaybuttonvideo_sprite.png) no-repeat 0 0;
+    z-index:99;
+    overflow:hidden;
+}
+.boxFilms630 ul li p.bandeAnnonce a:hover {background:url(../img/cinema/ico_mediumplaybuttonvideo_sprite.png) no-repeat 0 -56px;}
+.boxFilms630 ul li .bandeAnnonceContent {display:none;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Boite Box Office
+/* ---------------------------------------------------------------------------------- */
+.boxOffice630 {
+    float:left;
+    width:634px;
+    margin:0 0 20px 0;
+    position:relative;
+    top:-7px;
+}
+.boxOffice630 p.source {
+    float:left;
+    padding:7px 0;
+    font-size:11px;
+    color:#666;
+}
+.boxOffice630 .legend {
+    float:left;
+    width:634px;
+    padding:15px 0;
+    background:#ccc;
+    color:#666;
+    text-align:right;
+}
+.boxOffice630 .legend p,
+.boxOffice630 .legend span {
+    display:inline-block;
+    text-align:center;
+}
+.boxOffice630 .legend .semaine {width:49px;}
+.boxOffice630 .legend .cetteSemaine {width:128px;}
+.boxOffice630 .legend .cumul {
+    width:100px;
+    padding:0 0 0 36px;
+}
+.boxOffice630 ul li {
+    float:left;
+    width:630px;
+    height:45px;
+    padding:0 1px;
+    margin:1px 0 0 0;
+    border-bottom:1px solid #999;
+    border-right:1px dotted #999;
+    border-left:1px dotted #999;
+    overflow:hidden;
+}
+.boxOffice630 ul li div {
+    float:left;
+    margin:0 0 1px 0;
+}
+.boxOffice630 ul li p {
+    float:left;
+	padding:14px 0;
+    border-left:1px dotted #999;
+}
+.boxOffice630 ul li .rang {
+    width:40px;
+    margin:0 0 1px 0;
+    border-left:0 none;
+    background:#f5eef6;
+    color:#9c54a5;
+    text-align:center;
+}
+.boxOffice630 ul li .film {
+    width:265px;
+    padding-left:10px;
+    margin:0 0 0 1px;
+    font-weight:bold;
+}
+.boxOffice630 ul li .film a {
+    display:block;
+    height:17px;
+    color:#333;
+    overflow:hidden;
+}
+.boxOffice630 ul li .semaine {
+    width:40px;
+    text-align:center;
+}
+.boxOffice630 ul li .cetteSemaine {
+    width:135px;
+    text-align:center;
+}
+.boxOffice630 ul li .cumul {
+    width:125px;
+    padding-right:10px;
+    text-align:right;
+}
+.boxOffice630 ul li.dark div {background:#f2f2f2;}
+.boxOffice630 ul li.dark .rang {background:#ecdeee;}
+
+/* Boite du centre et col droite */
+.boxOffice ul li {font-size:11px;}
+.boxOffice ul li.first {border-bottom:0 none;}
+.boxOffice ul li p {
+    font-size:13px;
+    text-transform:uppercase;
+}
+.boxOffice ul li a {
+    display:block;
+    padding:0 0 5px 0;
+    font-size:13px;
+}
+.rail-right .boxOffice {float:300px;}
+.rail-right .boxOffice h4 {margin:0;}
+.rail-right .boxOffice ul {width:300px;}
+.rail-right .boxOffice ul li {width:280px;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Boite Liste des films à l'affiche 630
+/* ---------------------------------------------------------------------------------- */
+.listeFilms630 {
+    float:left;
+    width:634px;
+    margin:0 0 20px 0;
+}
+body.cinema .listeFilms630 h2.titleBox {margin:0px;}
+.listeFilms630 ul {
+    float:left;
+    width:634px;
+    padding:10px 0 0 0;
+}
+.listeFilms630 ul li {
+    float:left;
+    width:300px;
+    height:200px;
+    padding:0 17px 0 0;
+    overflow:hidden; 
+}
+.listeFilms630 ul li div.img {
+    float:left;
+    position:relative;
+    width:118px;
+    height:175px;
+    border:1px solid #cdcdcd;
+    overflow:hidden;
+}
+.listeFilms630 ul li div.noImg {background:#303030 url(../img/cinema/bg_posterSmall.png) no-repeat 30px 30px;}
+.listeFilms630 ul li div.img img {height:178px;}
+.listeFilms630 ul li div.img a {
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    width:118px;
+    height:0;
+    padding:175px 0 0 0;
+}
+.listeFilms630 ul li div.img a:hover {background:url(../img/cinema/bg_overPoster.png);}
+.listeFilms630 ul li .descFilm {
+    float:left;
+    width:170px;
+    height:178px;
+    padding:0 0 0 10px;
+    position:relative;
+}
+.listeFilms630 ul li .descFilm h3 {
+    padding:0 0 10px 0;
+    font-size:14px;
+    color:#003399;
+    font-weight:bold;
+    font-family:Arial,Helvetica,sans-serif;
+}
+.listeFilms630 ul li .rates {
+    position:absolute;
+    height:56px;
+    bottom:0;
+    left:10px;
+    font-size:14px;
+}
+.listeFilms630 ul li .rates img {float:none;}
+.listeFilms630 ul li .rates p {
+    padding:10px 0 3px 0;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-weight:normal;
+    text-transform:uppercase;
+}
+.listeFilms630 hr {
+    color:#999;
+    background-:#999;
+    height:1px;
+    marging:0 0 8px 0;
+}
+.listeFilms630 .plusFilm {
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    font-weight:bold;
+    text-align:right;
+}
+.listeFilms630 .plusFilm a {text-decoration:none;}
+.listeFilms630 .plusFilm span {color:#003399;}
+.listeFilms630 .boiteRecherche {
+    width:634px;
+    height:42px;
+    background:#ccc;
+    border-top:1px solid #fff;
+    float:left;
+    margin:0 0 8px;
+    position:relative;
+}
+.listeFilms630 .boiteRecherche .innerBox {padding:10px;}
+.listeFilms630 .coteLaPresse,
+.listeFilms630 .dateDeSortie,
+.listeFilms630 .filtresStatus {
+    background:url(../img/cinema/btn_mauve.png) no-repeat 0 0;
+    color:#fff;
+    cursor:pointer;
+    display:inline-block;
+    float:left;
+    font-size:12px;
+    font-weight:bold;
+    height:22px;
+    line-height:1px;
+    margin:0 20px 0 0;
+    width:117px;
+    text-align:center;
+    text-decoration:none;
+}
+.listeFilms630 .filtresStatus {
+    background:url(../img/cinema/btn_tousLesFilms.png) no-repeat 0 0;
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:14px;
+    line-height:24px;
+}
+
+.listeFilms630 .dateDeSortie {line-height:21px;}
+.genre {
+    height:22px;
+    width:128px;
+    margin:0 20px 0 0;
+    padding:0;
+    background:url(../img/cinema/btn_menuBox_vide.png) no-repeat 0 0;
+    float:left; 
+    text-align:left;
+    color:#2f2f2f;
+    font-size:12px;
+    position:relative; 
+}
+.genre span {
+    height:22px;
+    width:26px;
+    border-left:1px solid #bfcdde;
+    margin:0;
+    padding:0;
+    background:url(../img/cinema/ico_flecheBleuSprite.png) no-repeat 0 0;
+    position:absolute;
+    top:0;
+    right:0;
+}
+.genre a {
+    text-align:left;
+    color:#2f2f2f;
+    font-size:12px;
+    text-decoration:none;
+    display:inline-block;
+    float:left;
+    height:22px;
+    line-height:21px;
+    padding:0 0 0 8px;
+    width:128px;
+}
+#genreListBox {
+    display:none;
+    float:left;
+    position:relative;
+    width:128px;
+    z-index:999;
+}
+ul#genreList {
+    background:#fff;
+    border-bottom:1px solid #ccc;
+    float:left;
+    position:relative;
+    top:-1px;
+    width:128px;
+    z-index:9999;
+}
+ul#genreList li {
+    width:128px;
+    float:left;
+    height:21px;
+    line-height:22px;
+    overflow:hidden;
+    padding:0 0 0 8px;
+}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Page recherche cinema
+/* ---------------------------------------------------------------------------------- */
+.rechercheCinema #boiteRecherche {
+    width:614px;
+    background:#ccc;
+    float:left;
+    position:relative;
+    margin:1px 0 10px 0;
+    padding:10px;
+    z-index:99;
+}
+.rechercheCinema #boiteRecherche #cocheBandeAnnonce {
+    width:100%;
+    height:20px;
+    line-height:20px;
+    float:left;
+    display:block;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:13px;
+    color:#333;
+    padding: 0 0 10px 0;
+}
+.rechercheCinema #boiteRecherche #cocheBandeAnnonce a {
+    width:13px;
+    height:20px;
+    line-height:20px;
+    float:left;
+    display:block;
+    padding:0 5px 0 0;
+    background:url(../img/cinema/ico_coche_sprite.png) no-repeat -1px 2px;
+}
+.rechercheCinema #boiteRecherche #cocheBandeAnnonce a.coche {background:url(../img/cinema/ico_coche_sprite.png) no-repeat -1px -42px;}
+.rechercheCinema #boiteRecherche .select {
+    height:34px;
+    width:182px;
+    margin:0;
+    padding:0 10px 0 0;
+    float:left; 
+    text-align:left;
+    color:#2f2f2f;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    position:relative; 
+    display:inline-block;
+}
+.rechercheCinema #boiteRecherche .select.hideStatus{
+    display : none;
+}
+.rechercheCinema #boiteRecherche .select h3 {
+    background:#fbfbfb url(../img/cinema/bg_selectHoraire.png) repeat-x center bottom;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+    float:left;
+    font-size:12px;
+    font-weight:normal;
+    height:24px;
+    line-height:24px;
+    padding:5px 5px 5px 10px;
+    position:relative;
+    width:165px;
+    text-align:left;
+}
+.rechercheCinema #boiteRecherche .select h3 a.up {background:none;}
+.rechercheCinema #boiteRecherche .select h3 a.down {background:none;}
+.rechercheCinema #boiteRecherche .select h3 a.down span {background:#9958a1 url(../img/cinema/select_fleche.png) no-repeat 0 0;}
+.rechercheCinema #boiteRecherche .select h3 a.up span {background:#9958a1 url(../img/cinema/select_fleche.png) no-repeat 0 -30px;}
+.rechercheCinema #boiteRecherche .select h3 span {
+    border:1px solid #ccc;
+    display:block;
+    height:22px;
+    position:absolute;
+    right:5px;
+    top:5px;
+    width:22px;
+}
+.rechercheCinema #boiteRecherche .select h3 a {
+    color:#333;
+    cursor:pointer;
+    display:block;
+    float:left;
+    outline:none;
+    width:138px;
+    text-decoration:none;
+}
+.rechercheCinema #boiteRecherche ul li a {
+    color:#333;
+    cursor:pointer;
+    display:block;
+    text-decoration:none;
+}
+.rechercheCinema #boiteRecherche ul li a:hover {
+    text-decoration:none;
+    background:url(../img/cinema/bg_selectOver.png) repeat-y right;
+}
+.rechercheCinema #boiteRecherche .select ul {
+    background:none;
+    border-bottom:1px solid #ccc;
+    border-top:1px solid #ccc;
+    float:left;
+    position:relative;
+    top:-1px;
+    width:182px;
+    z-index:9999;
+}
+.rechercheCinema #boiteRecherche div.select {position:relative;}
+.rechercheCinema #boiteRecherche #filtresStatusList,
+.rechercheCinema #boiteRecherche #filtresGenresList,
+.rechercheCinema #boiteRecherche #trisList {
+    display:none;
+    float:left;
+    overflow-x:hidden;
+    overflow-y:hidden;
+    position:relative;
+}
+.rechercheCinema ul.resultats {
+    float:left;
+    position:relative;
+    border-bottom:solid 1px #999;
+    width:100%;
+}
+.rechercheCinema ul.resultats li {
+    float:left;
+    position:relative;
+    width:298px;
+    height:170px;
+    padding: 0 18px 30px 0;
+    overflow:hidden;
+}
+.rechercheCinema ul.resultats li div.img {
+    position:relative;
+    padding: 0 10px 0 0;
+    float:left;
+}
+.rechercheCinema ul.resultats li div.img img {
+    width:120px;
+    height:170px;
+    border:1px solid #cdcdcd;
+}
+.rechercheCinema ul.resultats li .descFilm {
+    float:left;
+    padding:8px 0 0 0;
+    width:166px;
+    height:166px;
+    position:relative;
+}
+.rechercheCinema ul.resultats li .descFilm h3 {
+    float:left;
+    width:166px;
+    padding:0 0 2px 0;
+}
+.rechercheCinema ul.resultats li .descFilm p {
+    float:left;
+    width:166px;
+}
+.rechercheCinema ul.resultats li .descFilm .rates {
+    float:left;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:10px;
+    text-transform:uppercase;
+    width:80px;
+}
+.rechercheCinema ul.resultats li .descFilm .rates p {line-height:17px;}
+.rechercheCinema ul.resultats li .descFilm .lapresse {
+    position:absolute;
+    bottom:0px;
+    left:0px;
+}
+.rechercheCinema ul.resultats li .descFilm .public {
+    position:absolute;
+    bottom:0px;
+    left:92px;
+}
+.rechercheCinema ul.resultats li .descFilm .public img {
+    width:13px;
+    height:13px;
+}
+.rechercheCinema .lettres {
+	width:624px;
+	height:18px;
+	float:left;
+	line-height:18px;
+	font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#333;
+    padding:10px 0 6px 0;
+    top:0;
+    left:-2px;
+    z-index:999;
+}
+.rechercheCinema .lettre {
+	width:19px;
+	height:19px;
+	background:#dadada;
+	text-align:center;
+	float:left;
+	line-height:18px;
+	font-family:Arial, Helvetica, sans-serif;
+    font-size:13px;
+    color:#333;
+    margin:0 4px 0 0;
+    display:block;
+    text-decoration:none;
+}
+.rechercheCinema .lettre:hover {background:#fff;}
+.rechercheCinema .lettre.selected {background:#fff;}
+.rechercheCinema #boiteRecherche ul li {
+    float:left;
+    width:172px;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+    border-top:1px solid #ccc;
+    font-size:12px;
+    font-weight:bold;
+    height:32px;
+    background-color:#fff;
+    line-height:31px;
+    padding-left:8px; 
+}
+.rechercheCinema #boiteRecherche ul li.title {
+    background:none;
+    border-left:1px solid #7c4383;
+    border-right:1px solid #7c4383;
+    border-top:1px solid #7c4383;
+    color:#fff;
+    font-size:13px;
+    padding:8px;
+}
+.rechercheCinema .separateur {
+   width:634px;
+   height:42px;
+   background:#ccc;
+   float:left;
+   margin:1px 0 10px;
+}
+.rechercheCinema .separateur p {
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14px;
+    color:#333;
+    font-weight:bold;
+    line-height:42px;
+    padding: 0 0 0 14px;
+}
+.rechercheCinema .btnok a {
+    background:url(../img/cinema/btn_ok.png) repeat-x -1px -171px;
+    float:left;
+    height:34px;
+    line-height:34px;
+    width:36px;
+    font-size:13px;
+    text-align:center;
+    color:#000;
+    text-transform:uppercase;
+    display:block;
+    cursor:default;
+}
+.rechercheCinema .btnok a:hover {text-decoration:none;}
+.rechercheCinema .btnok.active a {
+    background:url(../img/cinema/btn_ok.png) repeat-x 0 -86px;
+    color:#FFF;
+    cursor:pointer;
+}
+.rechercheCinema a.btnVideo {
+    background:url(../img/cinema/ico_mediumplaybuttonvideo_sprite.png) 0 0;
+    display:block;
+    height:56px;
+    width:56px;
+    position:absolute;
+    top:58px;
+    left:34px
+}
+.rechercheCinema a.btnVideo:hover {background:url(../img/cinema/ico_mediumplaybuttonvideo_sprite.png) 0 56px;}
+.rechercheCinema .pagination span {color:#999;}
+.rechercheCinema .pagination span.color {color:#333;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Boites recherche statique - FILM
+/* ---------------------------------------------------------------------------------- */
+.rechercheCinema.cinemaRechercheStatique.films #boiteRecherche .filtresStatus {display:none;}
+.rechercheCinema.cinemaRechercheStatique.films #boiteRecherche #cocheBandeAnnonce,
+.rechercheCinema.cinemaRechercheStatique.films #boiteRecherche #filtresLettres {display:none;}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Articles dans Cinéma
+/* ---------------------------------------------------------------------------------- */
+.relatedMovie {
+    float:left;
+    width:614px;
+    padding:9px;
+    margin:0 0 10px 0;
+    background:#f2f2f2;
+    border:1px solid #ccc;
+}
+.relatedMovie .img {
+    float:left;
+    position:relative;
+    width:60px;
+    height:87px;
+    margin:0 14px 0 0;
+    overflow:hidden;
+    background:#303030 url(../img/cinema/bg_posterSmall.png) no-repeat 0 14px;
+}
+.relatedMovie .img img {height:88px;}
+.relatedMovie .img a {
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    width:60px;
+    height:0;
+    padding:87px 0 0 0;
+    overflow:hidden;
+    background:url(../img/spacer.gif);
+}
+.relatedMovie .img a:hover {background:url(../img/cinema/bg_overPoster.png);}
+.relatedMovie .title {
+    float:left;
+    width:195px;
+    padding:0 10px 0 0;
+}
+.relatedMovie .title a {
+    font-weight:bold;
+    font-size:16px;
+}
+.relatedMovie .title span {color:#666;}
+.relatedMovie .coteLP {font-size:14px;}
+.relatedMovie .coteLP p {
+    font-family:Verlag, Arial, Helvetica,sans-serif;
+    font-weight:normal;
+    padding:10px 0 3px;
+    text-transform:uppercase;
+}
+.relatedMovie .desc {
+    float:left;
+    width:205px;
+    padding:3px 10px 0 0;
+}
+.relatedMovie .btn {
+    float:right;
+    padding:4px 10px; 
+    margin:30px 0 0 0;  
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-size:12px;
+    line-height:19px;
+    text-transform:uppercase;
+    background:url(../img/cinema/bg_btnVoirFilms.png) repeat-x 0 0;
+    -moz-border-radius:2px 2px 2px 2px;
+    color:#fff;
+}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* TOC movie 630
+/* ---------------------------------------------------------------------------------- */
+body.cinema .header_toc {border-bottom:1px solid #ccc;}
+body.cinema .header_toc h3 {display:none;}
+body.cinema .toc_full .header_toc .pagination {border-top:0 none;}
+body.cinema .toc_full ul.stories li {
+    float:left;
+    width:630px;
+    padding:10px 0;
+    border-bottom:1px solid #ccc;
+}
+body.cinema .toc_full ul.stories li .img img {height:auto;}
+body.cinema .toc_full ul.stories li .img {
+    float:left;
+    width:130px;
+    height:87px;
+    margin:0 10px 0 0;
+    overflow:hidden;
+}
+body.cinema .toc_full ul.stories li h3,
+body.cinema .toc_full ul.stories li p {
+    float:left;
+    width:480px;
+}
+body.cinema .toc_full ul.stories li .imgMovie {
+    float:left;
+    position:relative;
+    width:120px;
+    height:180px;
+    margin:0 10px 0 0;
+    overflow:hidden;
+    border:1px solid #ccc;
+    overflow:hidden;
+}
+body.cinema .toc_full ul.stories li .imgMovie a {
+    display:block;
+    width:120px;
+    height:0;
+    padding:180px 0 0 0;
+    overflow:hidden;
+    position:absolute;
+    top:0;
+    left:0;
+}
+body.cinema .toc_full ul.stories li .imgMovie a:hover {background:url(../img/cinema/bg_overPoster.png);}
+body.cinema .toc_full ul.stories li .imgMovie img {height:180px;}
+body.cinema .toc_full ul.stories li .noImgMovie {background:#303030 url(../img/cinema/bg_posterSmall.png) no-repeat 10px 24px;}
+body.cinema .toc_full ul.stories li .contentInfos {
+    float:left;
+    width:495px;
+}
+body.cinema .toc_full ul.stories li .contentInfos h3 {
+    height:40px;
+    font-size:16px;
+    font-weight:bold;
+}
+body.cinema .toc_full ul.stories li .contentInfos p.amorce {
+    height:68px;
+    padding:0 0 10px 0;
+}
+body.cinema .toc_full ul.stories li .contentInfos .lp {
+    display:inline-block;   
+    font-weight:normal;
+    padding:15px 0 0 0;    
+    width:180px;
+}
+body.cinema .toc_full ul.stories li .contentInfos .lp p {
+    padding:0;
+    font-family: Verlag,Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+body.cinema .toc_full .pagination {
+    padding-top:5px;
+    border-top:1px solid #ccc;
+}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* Boite 300 Standard 
+/* ---------------------------------------------------------------------------------- */
+.boxStandard300 {
+    float:left;
+    width:300px;
+    margin:0 0 20px 0;
+}
+.boxStandard300 h4,
+.rail-right .boxOffice h4 {
+    float:left;
+    width:300px;
+    margin:0 0 10px 0;
+    font-family:Verlag, Arial, Helvetica, sans-serif;
+    font-weight:normal;
+    text-transform:uppercase;
+    line-height:22px;
+    border-bottom:5px solid #999;
+}
+.boxStandard300 h4 a,
+.boxStandard300 h4 a:hover,
+.boxStandard300 h4 a:visited,
+.rail-right .boxOffice h4 a,
+.rail-right .boxOffice h4 a:hover,
+.rail-right .boxOffice h4 a:visited {
+    color:#000;
+    text-decoration:none;
+}
+.boxStandard300 h4 a span,
+.rail-right .boxOffice h4 span {
+    padding:0 0 0 5px;
+    font-size:16px;
+    color:#000;
+}
+.boxStandard300 ul,
+.boxStandard300 ul li {
+    float:left;
+    width:300px;
+    color:#000;
+}
+.boxStandard300 ul li {padding:0 0 10px 0;}
+.boxStandard300 ul li img {
+    float:left;
+    margin:0 8px 0 0;
+}
+.boxStandard300 ul li div {
+    float:left;
+    width:160px;
+}
+.boxStandard300 ul li h5 {
+    font-weight:bold;
+    font-size:14px;
+}
+.boxStandard300 ul li h5 a,
+.boxStandard300 ul li h5 a:hover,
+.boxStandard300 ul li h5 a:visited {color:#000;}
+.boxStandard300 p.plus {
+    width:300px;
+    padding:5px 0 0 0;
+    border-top:1px solid #999;
+    text-align:right;
+}
+
+/* ---------------------------------------------------------------------------------- */
+/* Pour overlay
+/* ---------------------------------------------------------------------------------- */
+.videooverlay .ui-resizable-handle {display:none;}
+.videooverlay .ui-corner-all, 
+.videooverlay .ui-corner-bottom, 
+.videooverlay .ui-corner-right, 
+.videooverlay .ui-corner-br {border-bottom-right-radius:0px;}
+.videooverlay .ui-corner-all, 
+.videooverlay .ui-corner-bottom, 
+.videooverlay .ui-corner-left, 
+.videooverlay .ui-corner-bl {border-bottom-left-radius:0px;}
+.videooverlay .ui-corner-all, 
+.videooverlay .ui-corner-top, 
+.videooverlay .ui-corner-right, 
+.videooverlay .ui-corner-tr {border-top-right-radius:0px;}
+.videooverlay .ui-corner-all, 
+.videooverlay .ui-corner-top, 
+.videooverlay .ui-corner-left, 
+.videooverlay .ui-corner-tl {border-top-left-radius:0px;}
+
+/* reset background jquery-ui */
+.videooverlay .ui-widget-overlay {background:none;}
+.videooverlay .ui-widget-overlay { 
+    background:#fff; 
+    opacity:.80;
+    filter:Alpha(Opacity=80); 
+}
+.videooverlay .ui-dialog { 
+    background:#fff;
+    color:#000;
+    height:630px;
+    overflow:hidden;
+    width:954px;
+    border-bottom:4px solid #9c54a5;
+    -moz-box-shadow:0 0 8px #acacac;
+    -webkit-box-shadow:0 0 8px #acacac;
+    box-shadow:0 0 8px #acacac;
+}
+
+/* header */
+.videooverlay .ui-widget-header { 
+    background:none;
+    border:none;
+    padding:14px 14px 0 14px;
+}
+.videooverlay .ui-dialog .ui-dialog-title { 
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:bold;
+    font-size:22px;
+    line-height:23px;
+    color:333;
+}
+
+/* bouton fermer */
+.ui-dialog .ui-dialog-titlebar-close {
+    height:22px;
+    line-height:22px;
+    margin:-10px 0 0;
+    padding:1px;
+    position:absolute;
+    right:0.3em;
+    top:50%;
+    width:64px;
+}
+.videooverlay .ui-widget-header .ui-icon {background:url(../img/cinema/ico_close_black.png) no-repeat right top;}
+.videooverlay .ui-dialog .ui-dialog-titlebar-close span {
+    text-indent:0;
+    width:56px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:bold;
+    font-size:10px;
+    line-height:10px;
+    color:#666;
+}
+.videooverlay .ui-widget-header .ui-state-hover { 
+    border:none;
+    background:none; 
+    font-weight:bold; 
+    color:#666;
+    text-decoration:none;
+    padding:1px; 
+}
+
+/* Content */
+.videooverlay .ui-dialog .ui-dialog-content {padding:14px;}
+.videooverlay .ui-dialog-content .chapitreVideo {
+	text-align:center;
+	padding:22px 0 0 0;
+}

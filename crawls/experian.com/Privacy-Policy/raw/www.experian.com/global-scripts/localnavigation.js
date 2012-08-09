@@ -28,15 +28,15 @@ var pageSection = $("#nav > li[class='active'] > a").html();
 
 function addPageSectionAsTitle(){
 var pageSection = $("#nav > li[class='active'] > a").html();
-var leftnavtitle = $('#leftnav_inc > ul').html();
+var leftnavtitle = $('#leftnav_inc').find("ul").html();
 if(leftnavtitle != null && pageSection != null){
 leftnavtitle = leftnavtitle.indexOf('h4');
 pageSection = pageSection.replace("<br>"," ");	
 if(pageSection.length > 0 && leftnavtitle < 0){ // check if there is already a title in the form of an h4
-	$('#leftnav_inc > ul').prepend('<li style="background: none; margin: 0;"><h4 style="margin: 0 0 0 5px;">'+ pageSection +'</h4></li>');
+	$('#leftnav_inc').find("ul").eq(0).prepend('<li style="background: none; margin: 0;"><h4 style="margin: 0 0 0 5px;">'+ pageSection +'</h4></li>');
 }
 }
-$('#leftnav_inc>ul>li>h4>br').replaceWith('&nbsp;');
+$('#leftnav_inc h4>br').replaceWith('&nbsp;');
 }
 
 
@@ -52,9 +52,19 @@ function activePage(){
 				groupLabel = "Enterprise Services";
 			}
 		}
+		if(document.location.hostname == 'www.experian.dk' || document.location.hostname == 'stg1-denmark.experian.com' || document.location.hostname == 'stg1-france.experian.com' || document.location.hostname == 'www.experian.fr' || document.location.hostname == 'stg1-norway.experian.com' || document.location.hostname == 'www.experian.no'){
+		$("#globalNav li a:contains("+groupLabel.substring(0,3)+"):first").parents('li').addClass('active');
+		$("#globalNav li a:contains("+groupLabel.substring(0,3)+"):first").parents('li').prev('li').css({'background':'none','padding-right':'0'});
+		} 
+		else if(document.location.hostname == 'www.experian.be' || document.location.hostname == 'stg1-belgium.experian.com' || document.location.hostname == 'www.experian.de' || document.location.hostname == 'stg1-germany.experian.com' || document.location.hostname == 'www.experian.co.ma' || document.location.hostname == 'stg1-morocco.experian.com' || document.location.hostname == 'www.experian.cz' || document.location.hostname == 'stg1-czechrep.experian.com'|| document.location.hostname == 'stg1-austria.experian.com' || document.location.hostname == 'www.experian.at'){
+			var groupLabel1 = groupLabel.slice(-4);
+		$("#globalNav li a:contains("+groupLabel1+"):last").parents('li').addClass('active');
+		$("#globalNav li a:contains("+groupLabel1+"):last").parents('li').prev('li').css({'background':'none','padding-right':'0'});
+		}
 		
 		$("#globalNav li a:contains("+groupLabel+")").parents('li').addClass('active');
 		$("#globalNav li a:contains("+groupLabel+")").parents('li').prev('li').css({'background':'none','padding-right':'0'});
+		
 	};
 	
 	function capLtr(){
@@ -211,12 +221,17 @@ function activePage(){
 		setPageSection(); // sets pageId.section for site catalyst
 		
 		if(typeof expChannel != 'undefined' && ($("#leftnav_inc").find("#ems-left-nav-v1").length < 1)){
-			if((document.URL.match(/[stg1|www].experian.com/)) && (expChannel == 'Enterprise')){ // US pages where expChannel = Enterprise only
+			if((document.URL.match(/[stg1|www].experian.com/)) && (expChannel == 'Enterprise')){// US pages where expChannel = Enterprise only
 				addPageSectionAsTitle();
 			}
 		}
 		return false;
 	}
+	
+		if(typeof expChannel != 'undefined' && ($("#leftnav_inc").find("#ems-left-nav-v1").length < 1)){
+			if((document.URL.match(/[stg1|www].experian.com/)) && (expChannel == 'Enterprise')){ // US pages where expChannel = Enterprise only
+			$("head").append($("<link rel='stylesheet' href='http://www.experian.com/site-styles/navigation/nav-white-full.css'type='text/css' media='screen' />"));}
+			}
 	  
 	if(location.search.match(/cat1=/g)){ // swaps left nav on product pages that have req params
 		var leftNavURL;

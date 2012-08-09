@@ -19,5 +19,5 @@ if(!window['BN']){
 
 loadLib(imgSrvHostPath+'/pimages/js/XmlUtil.js');
 loadLib(imgSrvHostPath+'/pimages/js/XslStyleSheet.js');
-loadLib(imgSrvHostPath + '/pimages/js/product-preview-core.js');
+//loadLib(imgSrvHostPath + '/pimages/js/product-preview-core.js');
 loadLib(imgSrvHostPath + '/presources/global/js/legacy/buynow_0001.js');

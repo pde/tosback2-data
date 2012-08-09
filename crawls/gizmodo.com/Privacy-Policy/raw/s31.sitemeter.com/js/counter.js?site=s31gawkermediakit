@@ -8,7 +8,7 @@ var SiteMeter =
 		SiteMeter.CodeName = sCodeName;
 		SiteMeter.ServerName = sServerName;
 		SiteMeter.SecurityCode = sSecurityCode;
-		SiteMeter.IP = "10.144.128.23";
+		SiteMeter.IP = "64.147.188.8";
 		SiteMeter.trackingImage = new Image();
 		SiteMeter.trackingImage2 = new Image();
 		SiteMeter.dgOutlinkImage = new Image();
@@ -62,7 +62,7 @@ var SiteMeter =
 
 		newImage.border = "0";
 		newImage.alt = "Site Meter";
-		
+
 		var sImage = "http://" + SiteMeter.ServerName + "/meter.asp?site=" + SiteMeter.CodeName;
 		sImage += "&refer="+SiteMeter.getReferral();
 		if (SiteMeter.IP != "")
@@ -88,52 +88,6 @@ var SiteMeter =
 		}
 		else
 			SiteMeter.trackingImage.src = sImage;
-
-		var newImage2  = document.createElement("img");
-		var newHref2   = document.createElement("a")
-		var scriptRef2 = SiteMeter.getScriptElement();
-
-		var today=new Date();
-		var sTZO=(typeof(today.getTimezoneOffset)!='undefined') ? today.getTimezoneOffset() : '';
-
-		newHref2.target = "_top";
-		newHref2.href = "http://www.sitemeter.com/stats.asp?site=" + SiteMeter.CodeName;
-		newHref2.id = "idSiteMeterHREF";
-
-		newImage2.border = "0";
-		newImage2.alt = "Site Meter";
-		newImage2.height = "0";
-		newImage2.width = "0";
-		
-		var numberPattern = /[a-z]+([0-9]+)/i;
-		var serverNumber = SiteMeter.ServerName.match(numberPattern)[1];
-		var migrationBecaon = 'bm' + serverNumber + '.sitemeter.com';
-
-		var sImage2 = "http://" + migrationBecaon + "/meter.asp?site=" + SiteMeter.CodeName;
-		sImage2 += "&refer="+SiteMeter.getReferral();
-		if (SiteMeter.IP != "")
-			sImage2 += "&ip="+SiteMeter.IP;
-		sImage2 += "&w="+window.screen.width;
-		sImage2 += "&h="+window.screen.height;
-		sImage2 += "&clr="+window.screen.colorDepth;
-		sImage2 += "&tzo=" + sTZO;
-		sImage2 += "&lang="+escape(navigator.language ? navigator.language : navigator.userLanguage);
-		if (SiteMeter.SecurityCode != "")
-			sImage2 += "&sc="+escape(SiteMeter.SecurityCode);
-		sImage2 += "&pg="+escape(document.location);
-		sImage2 += "&js=1&rnd="+Math.random();
-		sImage2 += "&zyxver=1.120524";
-
-		newImage2.src = sImage2;
-		newHref2.appendChild(newImage2);
-		var parentOfScript = SiteMeter.getParent( scriptRef2 );
-
-		if (parentOfScript){
-			parentOfScript.insertBefore(newHref2, scriptRef2);
-			
-		}
-		else
-			SiteMeter.trackingImage2.src = sImage2;
 	},
 
 	logEvent:function(sEvent, sText, sURL )

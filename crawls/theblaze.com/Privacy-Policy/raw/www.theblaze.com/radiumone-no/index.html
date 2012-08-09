@@ -7,10 +7,8 @@
 
 <SCRIPT language="JavaScript">
 
-function createCookie(name,value,days)
-{
-	if (days)
-	{
+function createCookie(name,value,days) {
+	if (days) {
 		var date = new Date();
 		date.setTime(date.getTime()+(days*24*60*60*1000));
 		var expires = "; expires="+date.toGMTString();
@@ -19,43 +17,29 @@ function createCookie(name,value,days)
 	document.cookie = name+"="+value+expires+"; path=/; domain=";
 }
 
-function getCookie(c_name)
-{
-var i,x,y,ARRcookies=document.cookie.split(";");
-for (i=0;i<ARRcookies.length;i++)
-{
-  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-  x=x.replace(/^\s+|\s+$/g,"");
-  if (x==c_name)
-    {
-    return unescape(y);
-    }
-  }
-}
-
-var bl_want = 0;
-if(bl_want == 0) { bl_want = 'No'; } else { bl_want = 'Yes'; }
-
-
-var radiumoneval=jQuery.cookie("TheBlazeRA");
-
-if (radiumoneval)
-{
-	if (radiumoneval=="Yes")
-	{
-		//deleteCookie('TheBlazeRA','',-1);
-		createCookie('TheBlazeRA', bl_want, 7);
-
+function getCookie(c_name) {
+	var i,x,y,ARRcookies=document.cookie.split(";");
+	for (i=0;i<ARRcookies.length;i++) {
+		x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+		y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+		x=x.replace(/^\s+|\s+$/g,"");
+		if (x==c_name) {
+			return unescape(y);
+		}
 	}
 }
-else
-{
+
+var bl_want = 'No';
+var radiumoneval=jQuery.cookie("TheBlazeRA");
+
+if (radiumoneval) {
+	if (radiumoneval==="Yes") {
+		//deleteCookie('TheBlazeRA','',-1);
+		createCookie('TheBlazeRA', bl_want, 7);
+	}
+} else {
 	createCookie('TheBlazeRA', bl_want, 7);
 }
-
-//createCookie('TheBlazeRA', bl_want, 7);
-//jQuery.cookie('BLAP', bl_want, { expires: 7*24*60*60, path: '/', domain:'' , secure: true });
 </SCRIPT>
 
 </body>

@@ -5030,35 +5030,29 @@ function log() {
 	};
 	
 })(jQuery);
-( function( $ ) {
-    $.fn.loggedInScan = function() {
+$.loggedInScan = function() {
 
-        if ( arguments == null || arguments[0] == null ) return;
-        var data = arguments[0];
-        var loggedInSelector = data["loggedInSelector"];
-        var notLoggedInSelector = data["notLoggedInSelector"];
-        var isLoggedInFn = data["isLoggedInFn"];
+    if ( arguments == null || arguments[0] == null ) return;
+    var data = arguments[0];
+    var loggedInSelector = data[ "loggedInSelector" ];
+    var notLoggedInSelector = data[ "notLoggedInSelector" ];
+    var isLoggedInFn = data[ "isLoggedInFn" ];
 
-        if ( isLoggedInFn === null || isLoggedInFn === undefined ) return;
+    if ( isLoggedInFn == null || typeof isLoggedInFn === "undefined" ) return;
 
-        var isLoggedIn = isLoggedInFn();
+    var isLoggedIn = isLoggedInFn();
 
-        if ( isLoggedIn ) {
-            var notLoggedIn = $( notLoggedInSelector );
-            $( notLoggedIn ).remove();
-            var loggedIn = $( loggedInSelector );
-            $( loggedIn ).each( function() {
-                var contents = $( this ).contents();
-                $( this ).replaceWith( contents );
-            } );
-        } else {
-            var loggedIn = $( loggedInSelector );
-            $( loggedIn ).remove();
-            var notLoggedIn = $( notLoggedInSelector );
-            $( notLoggedIn ).each( function() {
-                var contents = $( this ).contents();
-                $( this ).replaceWith( contents );
-            } );
-        }
-    };
-} )( jQuery );
+    if ( isLoggedIn ) {
+        $( notLoggedInSelector ).remove();
+        $( loggedInSelector ).each( function() {
+            var contents = $( this ).contents();
+            $( this ).replaceWith( contents );
+        } );
+    } else {
+        $( loggedInSelector ).remove();
+        $( notLoggedInSelector ).each( function() {
+            var contents = $( this ).contents();
+            $( this ).replaceWith( contents );
+        } );
+    }
+};

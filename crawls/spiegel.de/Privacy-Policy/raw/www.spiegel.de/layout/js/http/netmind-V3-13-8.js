@@ -410,11 +410,11 @@ function remotepixel_getHashParameter () {
 function remotepixel_getVcParameter () {
 
 	var vcTimeoutCookie = this.m_oConfig.m_VcTimeout;
-	var to=spGetCookie(vcTimeoutCookie);
+	var to=spNmGetCookie(vcTimeoutCookie);
 	var isValidVisit=false;
 	if (to == null) {
-		spSetCookie(vcTimeoutCookie, 1, this.m_oConfig.m_VcTimeout_ttl, "/", ".spiegel.de")
-		to=spGetCookie(vcTimeoutCookie);
+		spNmSetCookie(vcTimeoutCookie, 1, this.m_oConfig.m_VcTimeout_ttl, "/", ".spiegel.de")
+		to=spNmGetCookie(vcTimeoutCookie);
 		if (to != null)
 			isValidVisit=true;
 	}
@@ -423,10 +423,10 @@ function remotepixel_getVcParameter () {
 		var viewMonth = new Date().getMonth()+1;
 		
 		var vcDataCookie = this.m_oConfig.m_VcData;
-		var data=spGetCookie(vcDataCookie);
+		var data=spNmGetCookie(vcDataCookie);
 		if (data == null) {
-			spSetCookie(vcDataCookie, viewMonth+"-0;null", this.m_oConfig.m_VcData_ttl, "/", ".spiegel.de")
-			data=spGetCookie(vcDataCookie);
+			spNmSetCookie(vcDataCookie, viewMonth+"-0;null", this.m_oConfig.m_VcData_ttl, "/", ".spiegel.de")
+			data=spNmGetCookie(vcDataCookie);
 		}
 		
 		if (data != null) {
@@ -459,7 +459,7 @@ function remotepixel_getVcParameter () {
 				if (pool != null && pool != cookiePool)
 					this.addParameter("sp.vc",pool);
 					
-				spSetCookie(vcDataCookie, viewMonth+"-"+cookieCount+";"+pool, this.m_oConfig.m_VcData_ttl, "/", ".spiegel.de")
+				spNmSetCookie(vcDataCookie, viewMonth+"-"+cookieCount+";"+pool, this.m_oConfig.m_VcData_ttl, "/", ".spiegel.de")
 			}
 		}
 	}
@@ -790,4 +790,38 @@ function spIvwReload() {
 }
 
 
+function spNmSetCookie(name, value, daystoexpire, path, domain, secure) {
+
+	var expires = new Date();
+	expires.setTime(expires.getTime() + (daystoexpire * 86400000));
+
+	document.cookie= name + "=" + escape(value) +
+		((expires) ? "; expires=" + expires.toGMTString() : "") +
+		((path) ? "; path=" + path : "") +
+		((domain) ? "; domain=" + domain : "") +
+		((secure) ? "; secure" : "");
+} 
+
+function spNmGetCookie (name)
+{
+	function SPONgetCookieVal (offset)
+	{
+		var endstr = document.cookie.indexOf (";", offset);
+		if (endstr == -1)
+			endstr = document.cookie.length;
+		return unescape(document.cookie.substring(offset, endstr));
+	}
+	var arg = name + "=";
+	var alen = arg.length;
+	var clen = document.cookie.length;
+	var i = 0;
+	while (i < clen) {
+		var j = i + alen;
+		if (document.cookie.substring(i, j) == arg)
+			return SPONgetCookieVal (j);
+		i = document.cookie.indexOf(" ", i) + 1;
+		if (i == 0) break;
+	}
+	return null;
+}
 

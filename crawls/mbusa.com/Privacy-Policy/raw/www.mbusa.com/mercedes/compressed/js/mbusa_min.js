@@ -6548,6 +6548,9 @@ mb.metrics.trackGAInteraction({trackType:"_trackEvent",category:"Dealer Selects"
 c("#zipInput").click(function(){var A=c("#zipInput").attr("value");
 if(isNaN(A)){c("#zipInput").attr("value","")
 }});
+c(".gsa-suggest-form").submit(function(){if(c.trim(c(".gsa-suggest-form input[name='q']").val())==""){return false
+}return true
+});
 var y='<div id="modal" class="modal-container"><div class="modal-shield-alpha"></div></div>';
 var j=c(".class-link.active").parent().parent().prev();
 c(j).addClass("hLight");
@@ -6829,7 +6832,11 @@ a.init=function(){mb.logger.info("mb.ga.track.init")
 };
 a.track=function(d){mb.logger.info("mb.ga.track");
 if(d&&d.type=="GA"){if(d.trackType!=null){var c=new Array();
-for(var b in d){if(b!="type"&&b!="model"&&b!="class"&&b!="year"&&b!="bodyStyle"){c.push(d[b])
+for(var b in d){if(b!="type"&&b!="model"&&b!="class"&&b!="year"&&b!="bodyStyle"){if(b=="optionValue"&&typeof d[b]=="string"){c.push(parseInt(d[b]));
+continue
+}if(b=="nonInteractive"&&typeof d[b]=="string"){c.push((d[b]=="true"));
+continue
+}c.push(d[b])
 }}_gaq.push(c);
 mb.logger.info("mb.ga.track.fired")
 }}};
@@ -9395,7 +9402,7 @@ h.onFragmentLoaded=function(A){var p=A.getProperty("section"),B=A.getProperty("s
 if(mb.logger.level<=DEBUG){c.debug("mb.preferredDealer.onFragmentLoaded("+p+","+B+")")
 }if(p==="dealers"&&B==="widget"){var l=d(".dealer-id",v),k=l.length,u=d(v).hasClass("nested-results");
 if(mb.logger.level<=DEBUG){c.debug(k+" dealer(s) retrieved")
-}if(k===1&&!u){var o=l.text();
+}if(k<=1&&!u){var o=l.text();
 mb.broadcaster.dispatchEvent(mb.events.PREFERRED_DEALER_UPDATED,"dealerUpdatedFragmentLoaded",{result:v,id:o})
 }else{var t=h.getWidgets(),C=t.length;
 if(mb.logger.level<=DEBUG){c.debug("mb.dealerWidgerWrapper.onFragmentLoaded(numWidgets = "+C+")")

@@ -281,10 +281,10 @@ jQuery('document').ready(function(){
 			jQuery("#add-address-notify").hide();
 			
 			jQuery.fancybox({
-				'autoDimensions'	: true,
+				'autoSize'	: true,
 				'fitToView'			: false,
 				'type'				: 'inline',
-				'scrolling'			: 'visible',
+				'scrolling'			: 'auto',
 				'content'			: content
 			});
 		});

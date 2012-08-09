@@ -5895,7 +5895,7 @@ break;case'id':case'swf':case'width':case'height':attr[p]=vars[p];break;default:
 if(attr.swf&&attr.height&&attr.width){swfobject.embedSWF(attr.swf,ele.id,attr.width,attr.height,ver,"/expressInstall.swf",flashvars,params,attr,success);}else{el.css('visibility','visible');}};var success=function(e){if(e.success)
 $j('#'+e.id).removeClass('nonflash').addClass('flash');else
 $j('#'+e.id).css('visibility','visible');}
-return{init:function(){replaceFlash($j('#canvas div.nonflash'));},generic:function(){replaceFlash($j('#content_wrapper div.nonflash'));}};}();if(!YAHOO.ebauer){YAHOO.namespace("ebauer");}
+return{init:function(){replaceFlash($j('#canvas div.nonflash'));},generic:function(){replaceFlash($j('#content_wrapper div.nonflash'))||replaceFlash($j('#diary .sizeModule .tabs #tabs-4 .content #billboard_wrapper .nonflash'));}};}();if(!YAHOO.ebauer){YAHOO.namespace("ebauer");}
 YAHOO.ebauer.ieselect=function(){if(!document.getElementById){return;}
 var $E=YAHOO.util.Event;var $D=YAHOO.util.Dom;var $=$D.get;var calculateOptionWidth=true;var originalWidth='';var expand=function(e){$E.stopEvent(e);var el=$E.getTarget(e);if(calculateOptionWidth)
 {var maxChars=20;var newWidth=0;var oldWidth=$D.getStyle(el,'width');var opts=el.getElementsByTagName('OPTION');for(var i=0;i<opts.length;i++){maxChars=Math.max(maxChars,opts[i].firstChild.length);}

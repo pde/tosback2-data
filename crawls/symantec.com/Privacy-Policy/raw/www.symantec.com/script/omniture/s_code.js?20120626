@@ -23,7 +23,8 @@ Changes 2012-4-10: Removing Norton,verisign domains from internalfilters. Needed
 					Connect Community Stacking prop61; Connect Utility Stacking prop62
 Changes 2012-4-24: Connect Utility Stacking prop62 - remove connect_utility: to reduce image size
 Changes 2012-6-19: Updated prop59/evar59 to not set page name to None when missing meta data.
-Changes 2012-7-12: evar15 changed to evar63  prop51 to prop65 for Demandbase. comment out prop61&62, enough data to analyze
+Changes 2012-7-12: evar15 changed to evar63  prop51 to prop65 for Demandbase. comment out prop61&62, enough data to analyze.
+also removed om_sem_copy prop28 due conflict with demand base setup.
 */
 
 var s_account=metaData['repsuite']
@@ -38,7 +39,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,gz,gg,iso,kmz,xml,mp4,m4a,air,ppt,pptx,docx,xlsx,m4v,tar,txt,jpg,jpeg,png,gif,tiff,bmp,rar,msi"
-s.linkInternalFilters="javascript:,symantec.com,symantecstore.com,symantecstore.jp,symantec.co,digitalriver.com,veritas.com,altiris.com,enterprisevault.com,brightmail.com,backup.com,symantecvision2011.com,itindustrytrends.com,symanteccloud.com,messagelabs.com,pctools.com,verite.com,backupexec.com,messagelabs.co.uk,messagelabs.com.au,messagelabs.co.jp,messagelabs.com.sg,messagelabs.co.nz,messagelabs.in,messagelabs.it,de.messagelabs.com,messagelabs.de,messagelabs.com.hk,messagelabs.se,messagelabs.no,messagelabs.nl,messagelabs.fr,messagelabs.dk,messagelabs.be,messagelabs.tw,messagelabs.es,messagelabs.org,messagelabs.ch,betterbackupforall.com,techcenter.symantec.com,symantecpartners.vportal.net,symantec-corporation.com,symantec.partnermarketing.com,symantecenterprise.rsys3.net,symantec1.secure" 
+s.linkInternalFilters="javascript:,symantec.com,symantecstore.com,symantecstore.jp,symantec.co,digitalriver.com,veritas.com,altiris.com,enterprisevault.com,brightmail.com,backup.com,symantecvision2011.com,itindustrytrends.com,symanteccloud.com,messagelabs.com,pctools.com,verite.com,backupexec.com,messagelabs.co.uk,messagelabs.com.au,messagelabs.co.jp,messagelabs.com.sg,messagelabs.co.nz,messagelabs.in,messagelabs.it,de.messagelabs.com,messagelabs.de,messagelabs.com.hk,messagelabs.se,messagelabs.no,messagelabs.nl,messagelabs.fr,messagelabs.dk,messagelabs.be,messagelabs.tw,messagelabs.es,messagelabs.org,messagelabs.ch,betterbackupforall.com,techcenter.symantec.com,symantecpartners.vportal.net,symantec-corporation.com,symantec.partnermarketing.com,symantecenterprise.rsys3.net,symantec1.secure"
 s.linkLeaveQueryString=false
 s.linkTrackVars="None"
 s.linkTrackEvents="None"
@@ -46,39 +47,39 @@ s.linkTrackEvents="None"
 
 /* Plugin Config */
 s.usePlugins=true
-	
+
 
 
 function s_doPlugins(s) {
 	var url=s.linkHandler('.exe|.zip|.wav|.mp3|.mov|.mpg|.avi|.wmv|.doc|.pdf|.xls|.gz|.gg|.iso|.kmz|.xml|.mp4|.m4a|.air|.ppt|.pptx|.docx|.xlsx|.m4v|.tar|.txt|.jpg|.jpeg|.png|.gif|.tiff|.bmp|.rar','d');
-	
+
 	if(url) {
 		s.events="event1";
-		var start1= "";	
+		var start1= "";
 		var start2= "";
-		var start3 = "";	
-		var start4 = "";	
-																										
-		start1= url.indexOf("trackDownload('");	
+		var start3 = "";
+		var start4 = "";
+
+		start1= url.indexOf("trackDownload('");
 		start2= url.indexOf('trackDownload("');
-		start3 = url.indexOf("trackDownloadFileOpen('");	
-		start4 = url.indexOf('trackDownloadFileOpen("');	
-		
-		if(start1 != -1) {			
-		var end = url.indexOf("'" , start1 + 15);		
-		url = url.substring(start1 + 15, end);		
-		}	
-		if(start2 != -1) {			
-		var end = url.indexOf('"' , start2 + 15);		
-		url = url.substring(start2 + 15, end);		
-		}	
+		start3 = url.indexOf("trackDownloadFileOpen('");
+		start4 = url.indexOf('trackDownloadFileOpen("');
+
+		if(start1 != -1) {
+		var end = url.indexOf("'" , start1 + 15);
+		url = url.substring(start1 + 15, end);
+		}
+		if(start2 != -1) {
+		var end = url.indexOf('"' , start2 + 15);
+		url = url.substring(start2 + 15, end);
+		}
 		 if(start3 != -1) {
 			var end = url.indexOf("'", start3 + 23);
-			url = url.substring(start3 + 23, end);			
+			url = url.substring(start3 + 23, end);
 		}
 		 if(start4 != -1) {
 			var end = url.indexOf('"', start4 + 23);
-			url = url.substring(start4 + 23, end);			
+			url = url.substring(start4 + 23, end);
 		}
 
 		var tmpArray = url.split('/');
@@ -92,41 +93,41 @@ function s_doPlugins(s) {
 		s.eVar57 = "download";
 		s.prop48 = filename;
 		s.eVar49 = filename;
-		
+
 		s.linkTrackVars="";
 		s.linkTrackEvents="";
 	}
-	
-	// Prop 33 page URL VISTA Rule	
+
+	// Prop 33 page URL VISTA Rule
 	s.prop33 = "";
 
 	// Internal Tracking Parameter
 	s.prop21 = s.getQueryParam('inid');
 	s.eVar21 = s.prop21;
-	
-	
+
+
 	s.prop35 = s.pageName;
 
 
 	// MATT 201203 Pagname without lg/ct. If lg/ct is present in page name then capture page name through 100 characters
 	// Dynamic Variables will capture evar59 if prop59 is populated
 	s.pageName=((s.pageName == "none") || (s.pageName == "") || (s.pageName == undefined)) ? "" : s.pageName;
-	if(s.pageName.substr(2,1) == "/") s.prop59 = s.pageName.substr(7,100);
-	
+	if(s.pageName.substr(2,1) == "/") s.prop59 = s.pageName.substr(7,255);
+
 	// KK 20111101 for support
 	if(s.prop41=='Support') s.prop65 = s.getQueryParam('question_box');
-	
+
 	// KK 2012021 for support
 	if(s.prop41=='Support') s.prop66 = s.getQueryParam('wizardid');
 
 	// KK 20111031 set via dymanic variables
 	if(s.prop21) s.prop35 = '> ' + s.prop21 + ' ' + s.prop35;
 
-	/**********************************/	
+	/**********************************/
 	/***** campaign tracking code *****/
 
 	s.prop22 = s.getQueryParam('om_em_cid');
-	
+
 	if(!s.prop22) s.prop22 = s.getQueryParam('om_sem_cid');
 	if(!s.prop22) s.prop22 = s.getQueryParam('om_rssid');
 	if(!s.prop22) s.prop22 = s.getQueryParam('om_ext_cid');
@@ -141,7 +142,7 @@ function s_doPlugins(s) {
 	s.eVar35 = s.prop22;
 	s.campaign = s.prop22;
 	s.eVar61 = s.prop22;
-	
+
 	s.prop24 = s.getQueryParam('om_em_emid');
 	s.prop24 = s.getValOnce(s.prop24,'s_prop24',30);
 	s.eVar44 = s.prop24;
@@ -150,10 +151,6 @@ function s_doPlugins(s) {
 	s.prop26 = s.getValOnce(s.prop26,'s_prop26',30);
 	s.eVar45 = s.prop26;
 
-	s.prop28 = s.getQueryParam('om_sem_copy');
-	s.prop28 = s.getValOnce(s.prop28,'s_prop28',30);
-	s.eVar23 = s.prop28;
-	
 	s.prop56 = s.getQueryParam('aid');
 	s.eVar2 = s.prop56
 
@@ -164,11 +161,11 @@ function s_doPlugins(s) {
 
 	/***** campaign tracking code *****/
 	/**********************************/
-	
-	
+
+
 	/*********** Dynamic Variables**********/
-	
-	
+
+
 	s.prop2=((s.prop2 == "none") || (s.prop2 == "") || (s.prop2 == undefined)) ? "n/a" : s.prop2;
 	s.prop3=((s.prop3 == "none") || (s.prop3 == "") || (s.prop3 == undefined)) ? "n/a" : s.prop3;
 	s.channel=((s.channel == "none") || (s.channel == "") || (s.channel == undefined)) ? "n/a" : s.channel;
@@ -183,74 +180,74 @@ function s_doPlugins(s) {
 	s.prop49=((s.prop49 == "none") || (s.prop49 == "") || (s.prop49 == undefined)) ? "n/a" : s.prop49;
 	s.prop58=((s.prop58 == "none") || (s.prop58 == '') || (s.prop58 == undefined)) ? "n/a" : s.prop58;
 	s.prop59=((s.prop59 == "none") || (s.prop59 == "") || (s.prop59 == undefined)) ? "n/a" : s.prop59;
-	
-	
+
+
 	s.eVar18  = "D=pageName";
 	s.eVar68  = "D=pageName" ;
 
 	s.eVar29  = "D=channel" ;
-	if(s.prop2 != "n/a")  s.eVar27 = "D=c2" ;		
-	if(s.prop3 != "n/a")  s.eVar28 = "D=c3" ;		
+	if(s.prop2 != "n/a")  s.eVar27 = "D=c2" ;
+	if(s.prop3 != "n/a")  s.eVar28 = "D=c3" ;
 	if(s.prop27 != "n/a") s.eVar50 = "D=c27" ;
 	if(s.prop30 != "n/a") s.eVar32 = "D=c30" ;
-	if(s.prop41 != "n/a") s.eVar41 = "D=c41" ;	
-	if(s.prop41 != "n/a") s.eVar71 = "D=c41" ;	
-	if(s.prop54 != "n/a") s.eVar54 = "D=c54" ;		
-	if(s.prop42 != "n/a") s.eVar42 = "D=c42" ;	
-	if(s.prop43 != "n/a") s.eVar43 = "D=c43" ;	
-	if(s.prop47 != "n/a") s.eVar57 = "D=c47" ;	
-	if(s.prop48 != "n/a") s.eVar49 = "D=c48" ;	
+	if(s.prop41 != "n/a") s.eVar41 = "D=c41" ;
+	if(s.prop41 != "n/a") s.eVar71 = "D=c41" ;
+	if(s.prop54 != "n/a") s.eVar54 = "D=c54" ;
+	if(s.prop42 != "n/a") s.eVar42 = "D=c42" ;
+	if(s.prop43 != "n/a") s.eVar43 = "D=c43" ;
+	if(s.prop47 != "n/a") s.eVar57 = "D=c47" ;
+	if(s.prop48 != "n/a") s.eVar49 = "D=c48" ;
 	if(s.prop49 != "n/a") s.eVar48 = "D=c49" ;
 	if(s.prop58 != "n/a") s.eVar58 = "D=c58" ;
 	if(s.prop59 != "n/a") s.eVar59 = "D=c59" ;
 
-		
-	/***** KK 20111031 added for reviousvalue tacking *****/	
+
+	/***** KK 20111031 added for reviousvalue tacking *****/
 	s.prop60=s.getPreviousValue(s.pageName,'s_gpv','');
 	/********************/
 	/********************/
 	/********************/
 	/********************/
-    
+
 	/***** cross visit participation *****/
 	// Campaign stacking - 0712 - moved from evar15 to evar63
 	s.eVar63=s.crossVisitParticipation(s.campaign,'s_eVar15','90','10',',','purchase',0);
-	
+
     // Site Section Stacking
 	if(s.prop41 != "n/a") s.eVar72=s.crossVisitParticipation(s.prop41,'s_eVar72','1','20',',','purchase',0);
-	
+
 	/*Connect Community Stacking - 07-12 commented out 61&62, have enough data to analyze
 	if(s.prop49 != "n/a") s.prop61=s.crossVisitParticipation(s.prop49,'s_prop61','1','20',',','purchase',0);
-	
+
 	//Connect Utility Stacking does not capture prefix
 	s.prop18=((s.prop18 == "none") || (s.prop18 == "") || (s.prop18 == undefined)) ? "" : s.prop18;
 	if(s.prop18.substr(0,17) == "connect_utility: ")
 	s.prop62=s.crossVisitParticipation(s.prop18.substr(17,100),'s_prop62','1','20',',','purchase',0);
 	*/
-	
-	
+
+
 	// Internal Parameter Stacking
 	s.eVar4=s.crossVisitParticipation(s.eVar21,'s_eVar4','90', '10',',','purchase',0);
-	
+
 	/***** KK added for repeat visitor *****/
 	 /* First Time Visitor  */
 	 if(s.getNewRepeat(240) == 'New') {
 		var event69="event69";
- 
+
 		if(s.getValOnce(event69,'event69',240)){
 			s.events=s.events?s.events+",event69":"event69";
 		}
 	 }
-	 
+
 	/****kk added for survey**************/
 	s.loadModule("Survey")
 	var s_sv_dynamic_root = "survey.112.2o7.net/survey/dynamic"
-	var s_sv_gather_root = "survey.112.2o7.net/survey/gather"	
+	var s_sv_gather_root = "survey.112.2o7.net/survey/gather"
 	s.Survey.suites = "veritasnonconsumer"
-	
-		 
+
+
 	// Test and Target
-	s.tnt=s.trackTNT(); 
+	s.tnt=s.trackTNT();
 }
 s.doPlugins=s_doPlugins
 
@@ -294,7 +291,7 @@ s.inlineStatsHandleMovie("ghpFlash")
 /************************** PLUGINS SECTION *************************/
 /* You may insert any plugins you wish to use here.                 */
 
- 
+
 /*
 * Utility manageVars v1.4 - clear variable values (requires split 1.5)
 */
