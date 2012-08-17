@@ -296,9 +296,11 @@ if(qecd!=""){
 	s_md.prop43=qecd; s_md.eVar43=qecd; s_md.campaign=qecd;
 }
 
-if (qctr!=""){
-	s_ctr_loc = qctr;
-}
+if (qctr!=""){s_ctr_loc = qctr;}
+
+var _haiq=_readC("HAIQ");
+if (_haiq=="") {_readC("haiq");}
+_haiq=unescape(_haiq).split("|")[0];
 
 var uPermC=String(_readC("WBMD_PERM"));
 
@@ -436,6 +438,7 @@ s_md.prop46=(typeof s_page_state!=_ud&& s_page_state!="")? s_page_state.toLowerC
 var regId=String(_readC("WBMD_P47"));
 s_md.prop47=(typeof regId!=_ud&& regId!="")? regId.toLowerCase():ntc;
 try{s_md.prop49=s_visitor;}catch(e){}
+s_md.evar46=_haiq;
 try{s_md.server=s_server_type.toLowerCase();}catch(e){try{s_md.server=s_server.toLowerCase();}catch(e){}}
 try{s_md.server=s_md.server+s_server_location;}catch(e){}
 try{s_md.server=s_md.server+s_server_number.toLowerCase();}catch(e){}

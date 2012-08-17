@@ -1,3 +1,4 @@
+//LIVE
 (function($) { 
     $.ad = {
 		_tile: 0,
@@ -115,6 +116,10 @@
 				var col = "";
 				if (d.ptype==="column"||d.ctype==="column"){var col = "-" + d.channel.split('/').slice(-1)[0].replace("-","");}
 				var url = "http://ads.foxnews.com/api/"+$.ad.util.enc(d.channel)+"-"+d.ptype.toLowerCase()+col+"-data_inline.js";
+				if(window.isBeta){
+					var url = "http://beta.ads.foxnews.com/api/"+$.ad.util.enc(d.channel)+"-"+d.ptype.toLowerCase()+col+"-data_inline.js";
+				}			
+			
 				document.write("<scr"+"ipt src=\""+url+"\"></scr"+"ipt>");
 			},
 			url: function(u) {
@@ -327,7 +332,7 @@
 				}
 			},					
 			init: function(data) {
-				var meta = $.ad._meta;
+				var meta = $.ad._meta, host = window.location.host;
 				
 				var isShow = function(elm) { // to accommodate more no-show conditions
 					var show = true;
@@ -546,7 +551,7 @@
 		},		
 		niel: {
 			pre: function(d) {
-				var channel = d.raw.channel;
+				var channel = typeof d != "undefined" ? d.raw.channel: $.ad._meta.raw.channel;
 				var niel_map = {
 					"fnc": "us-801796h",
 					"fnl": "us-801796h",
@@ -704,6 +709,22 @@
 					"fsb/.+": "foxnewssmallbusinesscenter",
 					"fbn/.+": "foxnewsbusinessprod"
 				};
+				
+				if(window.isBeta){
+					var omniture_rsid_map = {
+						"fnc/imag": "foxnewsimagstaging",
+						"fnc/nation": "foxnewsfoxnationstaging",
+						"fnc/radio": "foxnewsradiostaging",
+						"fnc/insider": "foxnewsinsiderstaging",
+						"fnc/junior-reporters": "foxnewsjuniorreportersstaging",	
+						"fnc/magazine": "foxnewsmagazinestaging",
+						"fnc/.+": "foxnewsstaging",
+						"fnl/.+": "foxnewsfoxlatinostaging",
+						"fsb/.+": "foxnewssmallbusinesscenterstaging",
+						"fbn/.+": "foxnewsbusinessstaging"
+					};
+				}
+	
 				s_account = (function(o,p) {
 					for (var i in o) {
 						if (p.match(new RegExp(i))) {
@@ -712,7 +733,13 @@
 					}
 				})(omniture_rsid_map,path)||s_account;
 				window.s_account = s_account;
-				$.ad.util.include("http://ads.foxnews.com/js/omtr_code.js",1);					
+
+				if(window.isBeta){
+					$.ad.util.include("http://beta.ads.foxnews.com/js/omtr_code.js",1);				
+				}else{
+					$.ad.util.include("http://ads.foxnews.com/js/omtr_code.js",1);						
+				}
+							
 			},
 			init: function(d) {
 
@@ -923,7 +950,7 @@
 				"externalLinks":function(obj){window.prop6 = "exit: extlink|" + obj.url; window.omtr.linkTrackVars = "prop5,prop6,prop7,prop8";window.omtr.events = ""; window.omtr.tl('http://foxnews.com','e',obj.url);},
 				"registration": function(obj){window.omtr.prop21 = obj.userid; window.omtr.eVar21 = obj.userid; window.omtr.linkTrackEvents="event7";window.omtr.events="event7";window.omtr.tl('','o','registration');},				
 				"login": function(obj){window.omtr.prop21 = obj.userid; window.omtr.eVar21 = obj.userid; window.omtr.linkTrackEvents="event8";window.omtr.events="event8";window.omtr.tl('','o','login');},	
-				"link-track": function(obj){window.omtr.prop8 = obj["link-location"] + "_" + obj.section + "_" + obj.url; omtr.t(); window.omtr.events="";},				
+				"link-track": function(obj){window.omtr.prop8 = obj["link-location"] + "_" + obj.section + "_" + obj.url; omtr.tl(obj.url,"o", obj["link-location"] + "_" + obj.section + "_" + obj.url); window.omtr.events="";},			
 				"share": function(obj){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,prop29,eVar29,events";window.omtr.linkTrackEvents="event6";window.omtr.events="event6";window.omtr.prop29 ='network share';window.omtr.eVar29="D=c29";omtr.t();},																					
 				"newsletter": function(obj){window.omtr.linkTrackVars="eVar1,eVar2,eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event28";window.omtr.events="event28";omtr.t();},				
 				"twitter":function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event40";window.omtr.events="event40";window.omtr.tl('','o','tweet');},												
@@ -943,6 +970,7 @@
 				window._sf_startpt=(new Date()).getTime();
 			},
 			init: function(id, dom) {
+				if(window.isBeta){dom = location.host;}
 				window._sf_endpt=(new Date()).getTime();			
 				window._sf_async_config = {uid:id, domain:dom, pingServer:"pfox.chartbeat.net" };					
 				var authors = $.grep([$.ad.meta().raw.creator, $.ad.meta().raw.contributor], function(n,i){return(n);}).join(',');				
@@ -1616,6 +1644,10 @@
 			var col = "";
 			if (d.ptype==="column"||d.ctype==="column") { var col = "-" + d.channel.split('/').slice(-1)[0]; }
 			var url = "http://ads.foxnews.com/api/"+$.ad.util.enc(d.channel)+"-"+d.ptype.toLowerCase()+"-data.js?callback=jQuery.ad.callback&jsonp=?";
+			if(window.isBeta){
+				var url = "http://beta.ads.foxnews.com/api/"+$.ad.util.enc(d.channel)+"-"+d.ptype.toLowerCase()+col+"-data.js?callback=jQuery.ad.callback&jsonp=?";
+			}
+			
 			if (m=="server") {
 				$.getJSON(url);
 			}

@@ -12,7 +12,7 @@ var $$FSR = {
     'enabled': true,
     'sessionreplay': true,
     'auto': true,
-    'encode': false,
+    'encode': true,
     'files': '/JS/foresee/',
     'id': '8pw4ksVphM055IJAFdJZhw==',
     'definition': 'foresee-surveydef.js',

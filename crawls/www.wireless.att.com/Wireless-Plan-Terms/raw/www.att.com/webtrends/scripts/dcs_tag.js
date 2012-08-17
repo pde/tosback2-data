@@ -1,6 +1,7 @@
 // -- START WebTrends --
 //  DATE     MODIFICATION                                                                       Author
 //===========================================================================================================
+//  08/14/2012 use 'DashboardAction.olamexecute' for source code impression                         ms
 //  07/23/2012 1) Ignore the erroneous parms coming through from B2C's 'reporting.js'               ms
 //             2) append leading slash if it is missing
 //  02/21/2012 per jira ECAP-1446 added function dcsSrcImpExt to support 'wtSourceUID' & 'wtExtndSource'   ms 
@@ -855,9 +856,15 @@ else
 
 	// 04/12/2011 source code impressions (only for this page)...
 	// 07/27/2011 added '/olam/uverseDashboardAction.olamexecute' for source code impression
-	if ( (window.location.pathname.indexOf('/olam/dashboardAction.olamexecute') != -1) || (window.location.pathname.indexOf('/olam/uverseDashboardAction.olamexecute') != -1) ) {
-		dcsSrcImp();
-	}
+	// 08/14/2012 use 'DashboardAction.olamexecute' for source code impression                         ms
+	 if ( (window.location.pathname.indexOf('dashboardAction.olamexecute') != -1) || (window.location.pathname.indexOf('DashboardAction.olamexecute') != -1) ) {  
+	     /*if ((window.location.pathname.indexOf('/olam/dashboardAction.olamexecute') != -1) || 
+	     (window.location.pathname.indexOf('/olam/uverseDashboardAction.olamexecute') != -1) ||
+		 (window.location.pathname.indexOf('/olam/wirelessDashboardAction.olamexecute') != -1)) 
+	     */ 
+		 dcsSrcImp();
+	 }
+		
 
 	//  11/12/2008 added dcsChkIP() to convert the test to a case statement:
 	dcsChkIP();

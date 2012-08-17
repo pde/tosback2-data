@@ -85,31 +85,24 @@ if (!($.browser.msie)) {
 			case "pdp":
 					
 				// main product
-				productUrl = $.trim($('#pdpProdImg').find('a').find('img').attr('src'));
-				if ( productUrl ) {
-					productId = productUrl.replace(imageRegex, '$1');
-					productIds.push( productId );
+				var mainProduct = $('#main-product-detail').data('product-id');
+				if ( mainProduct ) {
+					productIds.push( mainProduct );
 				}
 				
-				productList = $('#pr_rightProductPageColumn').find('.crosssellProd');
+				productList = $('#suggested-products').find('.product');
 				if ( productList.length !== 0 ) {
 					productList.each( function( index ) {
-				    	productUrl = $(this).find('div').find('a').find('img').attr('src');
-						if ( productUrl ) {
-							productId = productUrl.replace(imageRegex, '$1');
-							productIds.push( productId );
-						}
+						productId = $(this).data('product-id');
+						productIds.push( productId );
 					});
 				}
 				
-				productList = $('#pr_productCrossSellBox2').find('.crosssellProd');
+				productList = $('#other-recommendations').find('.product');
 				if ( productList.length !== 0 ) {
 					productList.each( function( index ) {
-				    	productUrl = $(this).find('div').find('a').find('img').attr('src');
-						if ( productUrl ) {
-							productId = productUrl.replace(imageRegex, '$1');
-							productIds.push( productId );
-						}
+						productId = $(this).data('product-id');
+						productIds.push( productId );
 					});
 				}
 				

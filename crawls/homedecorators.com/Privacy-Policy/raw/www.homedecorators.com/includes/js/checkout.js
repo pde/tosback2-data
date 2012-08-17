@@ -1,10 +1,284 @@
+$(document).ready(function(){
+	$(".checkoutNow").overlay({ mask:{ color: '#cccccc' }, top:'center', fixed:false});
+	
+	$(".editBillTo, .editShipTo").overlay({ target:'#checkoutOverlay', mask:{ color: '#cccccc' }, fixed:false,
+		onBeforeLoad: function(){
+			 var wrap = this.getOverlay().find(".overlayContent");
+       wrap.load(this.getTrigger().attr("href"));
+			 
+		}
+		
+	});
+	
+	$("#billToSubmit, #shipToSubmit").live("click", ajaxCustomerForm );
+	
+	$("#guestButton").click(function(){
+		$("#nextPage").val("1");
+		$("#cartForm").submit();
+	});
+	
+	$("#loginButton").click( ajaxLoginForm );
+	$("#loginForm").submit( ajaxLoginForm );
+	
+	$("#saveCustomer").click( function(){
+		$("#nextPage").val("0");
+		$("#customerInformationForm").submit();
+	});
+	
+	$("#shipSame").click( function(){
+		$("#SHname").val( $("#name").val() );
+		$("#SHstreetAddress").val( $("#streetAddress").val() );
+		$("#SHapt").val( $("#apt").val() );
+		$("#SHzip").val( $("#zip").val() );
+		$("#SHcity").val( $("#city").val() );
+		$("#SHstate").val( $("#state").val() );
+		$("#SHphoneNumber").val( $("#phoneNumber").val() );
+	});
+	
+	$("#zip").live("change", function(){
+		$.get('/zip2.php?zip='+$("#zip").val(), function(data){
+  			dataArray = data.split("\n");
+				$("#city").val( dataArray[0] );
+				$("#state").val( dataArray[1] );
+			});
+	});
+	$("#SHzip").change( function(){
+		$.get('/zip2.php?zip='+$("#SHzip").val(), function(data){
+  			dataArray = data.split("\n");
+				$("#SHcity").val( dataArray[0] );
+				$("#SHstate").val( dataArray[1] );
+			});
+	});
+	
+	// Add Fancy ShipTo Drop Downs
+	var $fancyST = $('.shipToFancySelect');
+	if ($fancyST.length>0) { // Only work if you find the shipTos
+		$fancyST.find('option').each(function(){
+			$this = $(this);
+			$this.text($this.data('address'));
+		});
+		$fancyST.select2({
+			formatResult: function(theOpt){
+				var d=theOpt.text.split('|'),
+				    output='';
+				output = d[0]+'<br />'+d[1]+' '+d[2]+'<br />'+d[3]+', '+d[4]+' '+d[5];
+				return output;
+			},
+			formatSelection: function(theOpt) {
+				var d=theOpt.text.split('|');
+				return d[0];
+			}
+		});
+	}
+
+	
+
+	// Only do this next part if the customerInformationForm exists.
+	var $custForm = $('#customerInformationForm');
+	
+		var fvIcons={
+			good:'/images/media2/icons/16x16_check.gif',
+			bad:'/images/media2/icons/16x16_X.gif',
+			clear:'/images/media2/clear.gif'
+		};
+		var emailRegex = /^(([^<>()[\]\\.,;:\s@\"\/]+(\.[^<>()[\]\\.,;:\s@\"\/]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		var $chEmails = $('.fvEmail',$custForm);
+		$chEmails.blur(function (){
+			var $this = $(this),
+			theText = $this.val(),
+			$reporter = $this.parent().find('img.fvRes'),
+			$errorTextHolder = $this.parent().find('p.nowPrice'),
+			showErr = false;
+			
+			if ($reporter.length==0) { $reporter = $('<img src="'+fvIcons.clear+'" class="fvRes" />').insertAfter($this); }
+			if ($errorTextHolder.length==0) { $errorTextHolder = $('<p class="nowPrice"></p>').insertAfter($reporter); }
+			
+			if (theText) {
+				if (!emailRegex.test($this.val())) {
+					$reporter[0].src=fvIcons.bad;
+					$errorTextHolder.text('The email address you entered is not valid. Please verify and re-enter your email address.');
+				} else {
+					
+					// Trip the good
+					$reporter[0].src=fvIcons.good;
+					$this.parent().find('p.nowPrice').text('');
+					
+					// Now check the matches
+					if ($this.attr('id')=='emailAddress2') {
+						var $theOther = $('#emailAddress1'),
+						$theErrorMsgHolder = $errorTextHolder,
+						$theErrorImg = $reporter,
+						$confirmE = $this;
+					} else {
+						var $theOther = $('#emailAddress2'),
+						$theErrorMsgHolder = $theOther.parent().find('p.nowPrice'),
+						$theErrorImg = $theOther.parent().find('img.fvRes');
+						if ($theErrorImg.length==0) { $theErrorImg = $('<img src="'+fvIcons.clear+'" class="fvRes" />').insertAfter($theOther); }
+						$confirmE = $theOther;
+					}
+					var theOtherText = $theOther.val();
+					if (theOtherText && (theText != theOtherText)) {
+						$theErrorMsgHolder.text('Does not match. Please try again.');
+						$theErrorImg[0].src=fvIcons.bad;
+					}
+					
+				}
+			} else {
+				$reporter[0].src=fvIcons.clear;
+				$errorTextHolder.text('');
+			}
+		});
+		
+		$('.fvPhone').live('blur',function (){
+			var $this = $(this),
+			theText = $this.val(),
+			$theErrorMsgHolder = $this.parent().find('p.nowPrice'),
+			$theErrorImg = $this.parent().find('img.fvRes');
+			if ($theErrorImg.length==0) { $theErrorImg = $('<img src="'+fvIcons.clear+'" class="fvRes" />').insertAfter($this); };
+			if (theText) {
+				// strip everything BUT the numbers
+				theText = theText.replace(/[^0-9]/g, '');
+				if (theText.length<10 || theText.match(/^0|^1/)) {
+					$theErrorImg[0].src=fvIcons.bad;
+					$theErrorMsgHolder.text('Please enter a 10 digit phone number.');
+				} else {
+					$theErrorImg[0].src=fvIcons.clear;
+					$theErrorMsgHolder.text('');
+				}
+			}
+		});
+		
+		$('#newPassword1').blur(function(){
+			var $this = $(this), 
+			$reporter = $(this).parent().find('img.fvRes'),
+			theText = $this.val();
+			if ($reporter.length==0) { $reporter = $('<img src="'+fvIcons.clear+'" class="fvRes" />').insertAfter($this); }			
+			
+			if (theText && theText.length<6) {
+				$reporter[0].src=fvIcons.bad;
+			} else {
+				$reporter[0].src=fvIcons.clear;
+				$otherPW = $('#newPassword2');
+				if ($otherPW.val() != '') {
+					$otherPW.focus();
+					$otherPW.blur();
+				}
+			}
+		});
+		
+		$('#newPassword2').blur(function(){
+			var $this = $(this), 
+			$reporter = $(this).parent().find('img.fvRes'),
+			$theErrorMsgHolder = $this.parent().find('p.nowPrice'),
+			theText = $this.val();
+			if ($reporter.length==0) { $reporter = $('<img src="'+fvIcons.clear+'" class="fvRes" />').insertAfter($this); }			
+			
+			otherText = $('#newPassword1').val();
+			if (theText) {
+				if (theText != otherText) {
+					$theErrorMsgHolder.text('Does not match. Please try again.');
+					$this.val('');
+					$reporter[0].src=fvIcons.bad;
+				} else {
+					$theErrorMsgHolder.text('');
+					$reporter[0].src=fvIcons.good;
+				}
+			} else {
+				$theErrorMsgHolder.text('');
+				$reporter[0].src=fvIcons.clear;
+			}
+		});
+		
+	
+	$('#cartBtnRemAll').click(function(e){
+		if (!confirm('Are you sure you want to remove all items from your cart?')) {
+			e.preventDefault();
+			e.stopPropagation();
+			return false;
+		} else {
+			return true;
+		}
+	});
+	
+	// Payment Cancel Buttons
+	$('.gcCanceler, .ccCanceler').click(function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var $this = $(this),
+		    theSelId = '';
+		if ($this.hasClass('ccCanceler')) {
+			theSelId = 'CCpaymentTypeId';
+		} else {
+			theSelId = 'GCpaymentTypeId';
+		}
+		$('#'+theSelId).val('').change();
+		return false;
+	});
+	
+	$('.closeOverlay').live('click',function (){
+		$(this).parents('.overlay').find('a.close').trigger('click');
+		return false;
+	})
+	
+	$('.continueShoppingTrigger').on('mouseenter',function(){
+			$('#continueShoppingPayload').show();
+		}).on('mouseleave',function(){
+			$('#continueShoppingPayload').hide();
+		});
+	
+});  // DOC READY
+
+ajaxLoginForm = function(){
+		formElement = $("#loginForm");
+		url = formElement.attr('action');
+		$.post( url, formElement.serialize(), function(data){
+			var results = jQuery.parseJSON( data );
+			if( results.status == "error" ){
+				$("#loginErrors").html(results.message);
+			}
+			else{
+				$("#nextPage").val("2");
+				$("#cartForm").submit();
+			}
+		});
+		
+		return false;
+	};
+	
+ajaxCustomerForm = function(){
+		formElement = $("#customerInformationForm");
+		url = formElement.attr('action');
+		$.post( url, formElement.serialize(), function(data){
+			formElement.find('p.nowPrice').text('');
+			var results = jQuery.parseJSON( data );
+			if( results.status == "error" ){
+				$.each(results.errors, function(key, value) {
+					var $theEle = $("#"+key),
+					errorHolder = $theEle.parent().find('p.nowPrice');
+					if (errorHolder.length==0) {
+						errorHolder = $('<p class="nowPrice"></p>').insertAfter($theEle);
+					}
+					errorHolder.text(value);
+				});
+			}
+			else{
+				window.location.reload();
+			}
+		});
+		
+		return false;
+	};
+
 //checks to make sure customer wanted to put 0 for an item quantity
 //submits form or focuses on the item quantity
-	function updateCart(field){
+	function updateCart(field, forceUpdate){
 		focusedForm=field.form;
+		if (forceUpdate == true) {
+			focusedForm.submit();
+			return;
+		}
 		if(field.value == "0"){
-			if(confirm("Are you sure you want to remove this item from your cart?")){
-				lpSendData("session","conversionAction","removed");
+			if(confirmItemRemoval()){
 				focusedForm.submit();
 			}
 			else{
@@ -15,6 +289,21 @@
 			focusedForm.submit();
 		}
 	}//end updateCart()
+
+function removeLineItem(field) {
+	if (confirmItemRemoval()) {
+		field.value = 0;
+		updateCart(field,true);
+	}
+}
+
+function confirmItemRemoval() {
+	$retVal = confirm("Are you sure you want to remove this item from your cart?");
+	if ($retVal) {
+		lpSendData("session","conversionAction","removed");
+	}
+	return $retVal;
+}
 
 //checks shipTo drop down on change
 //submits cart or redirects to shipping.php
@@ -57,13 +346,14 @@
 
 //empies the payment fields and submits the form
 //called when changing the type of payment method
-	function changePaymentMethod(field){
-		thisIndex = getElementIndex(field);
-		for(x=thisIndex+1;x<field.form.length;x++){
-			field.form.elements[x].value="";
-		}
-		if(field.form.elements['nextPage']){field.form.elements['nextPage'].value="-1";}
-		field.form.submit();
+	function changePaymentMethod(otherField){
+		$("#paymentChoices input").val("");
+		$("#"+otherField).val("");
+		$("#nextPage").val("-1");
+		$("#paymentForm").submit();
+		
+		//if(field.form.elements['nextPage']){field.form.elements['nextPage'].value="-1";}
+		//field.form.submit();
 	}//end changePaymentMethod()
 
 //changes the form action, submits the form
@@ -113,100 +403,6 @@
 			return true;
 		}
 	}//end isPOBox()
-
-//tests payment entered and updates next page value
-//returns bool
-	function applyPayment(field, amountDue){
-		formObject = field.form;
-		field.disbled = true;
-		regularExpression = /(^payment[0-9]{1,4})/;
-		oldPayments = 0.0;
-		newPayment = 0.0
-		for(x=0; x<formObject.length; x++){//build payment data
-			if(regularExpression.test(formObject.elements[x].name)){
-				oldPayments+=formObject.elements[x].value - 0.0;
-			}
-			else if(formObject.elements[x].name=="payment"){
-				oldPayments+=formObject.elements[x].value - 0.0;
-			}
-			else if(formObject.elements[x].name == "Amountpayment"){
-				newPayment = formObject.elements[x].value-0.0;
-			}
-		}
-		if(field.type == "image"){//adding a payment
-			amountPaid = oldPayments + newPayment;
-		}
-		else{//updating payment
-			if(formObject.elements['Amountpayment']){formObject.elements['Amountpayment'].value="";}
-			if(formObject.elements['IdNumberpayment']){formObject.elements['IdNumberpayment'].value="";}
-			amountPaid = oldPayments;
-			oldPayments = oldPayments - field.value - 0.0;
-			updatedPayment = field.value - 0.0;
-			if((updatedPayment*100)<1){//if the customer entered less than a penny
-				if(!confirm("Do you want to remove this payment?")){//if the customer says no undo what they did
-					formObject.reset();
-					field.focus();
-					return false;
-				}
-			}
-		}//end else
-		difference = decimalToString(amountDue,2) - decimalToString(amountPaid,2) -0;
-		if((difference*100)>=1){//if the customer isn't paying the full amount with this payment just continue
-			return true;
-		}
-		//the customer is paying the total or more
-		if(field.type == "image"){//adding a payment
-			//check if difference is negative
-			if(difference < 0){
-				confirmString = "You entered $"+decimalToString(newPayment, 2)+".\n";
-				confirmString+= "You only owe $"+decimalToString((amountDue - oldPayments), 2)+".\n";
-				confirmString+= "Do you want to apply $";
-				confirmString+= decimalToString((amountDue - oldPayments), 2);
-				confirmString+= " to this payment method?";
-				if(formObject.elements['paymentTypeId'][formObject.elements['paymentTypeId'].selectedIndex].innerHTML=="Cash"){
-					confirmString= "Please give the customer $"+decimalToString(Math.abs(difference),2)+" change.";
-				}
-				if(confirm(confirmString)){
-					formObject.elements['Amountpayment'].value =  decimalToString((amountDue - oldPayments), 2);
-					formObject.elements['nextPage'].value=0;
-					return true;
-				}
-				else{
-					formObject.elements['Amountpayment'].focus();
-					return false;
-				}
-			}
-			//if difference matches amount due continue
-			if((difference*100)<1){
-				formObject.elements['nextPage'].value=0;
-				return true;
-			}
-		}//if(field.type == "image")
-		else{//this is an old payment getting altered
-			if(difference < 0){
-				confirmString = "You entered $"+decimalToString(updatedPayment, 2)+".\n";
-				confirmString+= "You only owe $"+decimalToString((amountDue - oldPayments), 2)+".\n";
-				confirmString+= "Do you want to apply $";
-				confirmString+= decimalToString((amountDue - oldPayments), 2);
-				confirmString+= " to this payment method?";
-			}
-			else{
-				confirmString = "Do you want to put the remaining $";
-				confirmString+= decimalToString((amountDue - oldPayments), 2);
-				confirmString+= " on this payment?";
-			}
-			if(confirm(confirmString)){
-				field.value =  decimalToString((amountDue - oldPayments), 2);
-				formObject.elements['nextPage'].value=0;
-				return true;
-			}
-			else{
-				field.focus();
-				return false;
-			}
-		}
-		return false;
-	}
 
 	function decimalToString(floatToConvert, decimalPlaces){
 		floatToConvert= floatToConvert+"";
@@ -339,12 +535,12 @@
 		
 	}
 
-  function selectPayment(desc){
-    selectObj = document.getElementById('paymentTypeId');
+  function selectPayment(desc, id, otherId){
+    selectObj = document.getElementById(id);
     for(x=0;x<selectObj.options.length;x++){
         if(desc==selectObj.options[x].text){
           selectObj.selectedIndex = x;
-          changePaymentMethod(selectObj);
+          changePaymentMethod(otherId);
           break;
         }
     }
@@ -356,3 +552,26 @@
   function hideSubSwatches(divName){
     document.getElementById(divName).style.display="none";
   }
+
+	function removeAPayment(inId) {
+		var payField =  document.getElementById(inId),
+		$theForm = $('#paymentForm'),
+		$paymentTypeId = $('#paymentTypeId');
+		if (payField) { payField.value=0; }
+		if ($paymentTypeId.length>0) {
+			$paymentTypeId.val('');
+		}
+		$('#payRecord').val('');
+		$theForm.submit();
+	}
+	
+	//empies the payment fields and submits the form
+//called when changing the type of payment method
+	function changeMyAccountPaymentMethod(field){
+		thisIndex = getElementIndex(field);
+		for(x=thisIndex+1;x<field.form.length;x++){
+			field.form.elements[x].value="";
+		}
+		if(field.form.elements['nextPage']){field.form.elements['nextPage'].value="-1";}
+		field.form.submit();
+	}//end changeMyAccountPaymentMethod()

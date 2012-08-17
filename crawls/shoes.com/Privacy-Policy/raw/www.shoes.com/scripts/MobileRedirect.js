@@ -1,4 +1,4 @@
-﻿var mobileRedirect = getCookie("mobileRedirect");
+﻿/* var mobileRedirect = getCookie("mobileRedirect");
 if (mobileRedirect != "0") {
 
     var smartDeviceList = /iphone|ipod|series60|symbian|android|windows ce|blackberry|palm|windows phone os|iemobile/;
@@ -55,3 +55,4 @@ function setCookie(c_name, value, expiredays) {
     document.cookie = c_name + "=" + escape(value) +
             ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString()) + ";path=/";
 }
+*/

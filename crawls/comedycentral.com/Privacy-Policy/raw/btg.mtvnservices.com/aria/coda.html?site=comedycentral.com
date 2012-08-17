@@ -55,7 +55,7 @@ btg.config={
 		enabled:       false,
 		cid:      '',
 		videoCensusId: '',
-		idSynchFreq: 'never'
+		idSynchFreq: 'always'
 	},
 	GoogleAnalytics:{
 		enabled:    false,

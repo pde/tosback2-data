@@ -51,7 +51,7 @@ function getCurrentUserTime() {
             currentAdjustedTime += (gmtOffset + 7) * 3600;
         }
 
-        currentAdjustedTime += (gmtOffset + 8) * 3600;
+        currentAdjustedTime += 3600;
     }
 
     //nbcu.log('currentAdjustedTime (Cleaned): ' + currentAdjustedTime);

@@ -6548,7 +6548,7 @@ mb.metrics.trackGAInteraction({trackType:"_trackEvent",category:"Dealer Selects"
 c("#zipInput").click(function(){var A=c("#zipInput").attr("value");
 if(isNaN(A)){c("#zipInput").attr("value","")
 }});
-c(".gsa-suggest-form").submit(function(){if(c.trim(c(".gsa-suggest-form input[name='q']").val())==""){return false
+c("#header .gsa-suggest-form").submit(function(){if(c.trim(c(".gsa-suggest-form input[name='q']").val())==""){return false
 }return true
 });
 var y='<div id="modal" class="modal-container"><div class="modal-shield-alpha"></div></div>';

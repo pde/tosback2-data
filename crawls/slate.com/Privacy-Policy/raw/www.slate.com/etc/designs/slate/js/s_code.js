@@ -50,6 +50,9 @@ function s_doPlugins(s)
         else if(window.location.href.indexOf('bfsrc')>=0){
         	s.campaign = 'buzzfeed';
         }
+        else if(document.location.search.match(/GT1=38001/i)) {
+        	s.campaign = "msn";
+        }
 
     /* Internal Campaigns: getQueryParam */
 		if (s.getQueryParam('onswipe_redirect')) {
@@ -126,6 +129,14 @@ function s_doPlugins(s)
        var temp1=s.getQueryParam('reload');
        if(temp1=="true"){s.prop31="site reload"};
 	   
+	/* Check commercial node */
+	if (!s.prop39) {
+		if (typeof(commercialNode) !== "undefined" && commercialNode !== "") {
+			s.prop39 = commercialNode;
+		} else {
+			s.prop39 = "Missing commercial node";
+		}
+	}
 	/* Set DSLV & New vs Repeat  */
 	   try { s.prop18=s.getNewRepeat();	}
 	   catch(e) { s.prop18="nocategory";}

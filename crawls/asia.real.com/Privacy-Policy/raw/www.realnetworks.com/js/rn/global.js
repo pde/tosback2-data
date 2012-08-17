@@ -13,6 +13,19 @@ function getBackgroundPosition(element) {
     return oBgPosition;
 }
 
+function strToObj(str, propertyDelimiter, valueDelimiter) {
+    var parts = str.split(propertyDelimiter),
+        part = [],
+        obj = {};
+
+    for (var i = 0; i < parts.length; i++) {
+        part = parts[i].split(valueDelimiter);
+        obj[part[0]] = part[1];
+    }
+
+    return obj;
+}
+
 $(function () {
     $.easing.def = "easeOutQuint";
 

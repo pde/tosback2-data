@@ -72,7 +72,7 @@ $.addBrowser(V.getBrowserById("opera10-linux-win2003-win7plus-winvista-winxp"));
 $.addBrowser(V.getBrowserById("safariany-ipad5plus-iphone5plus"));$.setFontFilterSet(W);if(Z&&Z.ca.__webfonttypekitmodule__){Z.K($);Z.load()}else window.Typekit.addKit($);
 })(this,document);
 window.Typekit.config={"p":"//p.typekit.net/p.gif?s=1&k=dug3qwh&ht=tk&h={host}&f=2030.2036.2032.2029.2028.2034.2031.2008.2007&a=182661&_={_}"};
-/*{"created":"2012-08-06T22:41:05Z","mac":"1:87e372f470357348a98546f4f6196a4d46f6a130ad53e4766b712c28098ab951","k":"1.0.0"}*/
+/*{"created":"2012-08-14T00:37:18Z","k":"1.0.1"}*/
 ;(function(window,document,undefined){
 function e(a){this.a=a}e.prototype=function(a){this.a=a}.prototype;function f(a){var b=new Image(1,1);b.src=a;b.onload=function(){b.onload=null}}function g(){this.c=window.Typekit.config.p}function h(a,b,c){var d=c||{},a=a.c.replace(/\{\/?([^*}]*)(\*?)\}/g,function(a,b,c){return c&&d[b]?"/"+d[b].join("/"):d[b]||""});a.match(/^\/\//)&&(a=(b?"https:":"http:")+a);return a.replace(/\/*\?*($|\?)/,"$1")}window.Typekit||(window.Typekit={});var i=new e(document),j=new function(){this.b=new g},k=!1;
 function l(){if(!k)for(var a=document.getElementsByTagName("link"),b=0;b<a.length;b++){var c=a[b].getAttribute("href");if(c&&0<=c.indexOf("use.typekit")){a=j;b=i;a.b&&(c=(c=window.__adobewebfontsappname__)?c.toString().substr(0,20):"",f(h(a.b,"https:"==b.a.location.protocol,{host:encodeURIComponent(b.a.location.hostname),app:encodeURIComponent(c),_:(+new Date).toString()})));k=!0;break}}}var m=window.Typekit.load;window.Typekit.load=function(){m&&m.apply(window.Typekit,arguments);l()};

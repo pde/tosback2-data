@@ -3,7 +3,7 @@
  */
 var $wpjQ = typeof $wpjQ && $wpjQ || jQuery;
 
-eval($wpjQ('script[src$="wapolabs.nojq.full.js"]').html());
+//eval($wpjQ('script[src$="wapolabs.nojq.full.js"]').html());
 // set global variable
 var wapoUtilities,
 

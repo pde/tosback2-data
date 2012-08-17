@@ -32,7 +32,14 @@ function initMyNBC() {
         $loginBox.addClass("logged-in");
         /* myNBC login text (name/title login) */
         $loginBox.find(".welcome").html("Welcome Back");
-        $loginBox.find(".username").html(nbcu.sn.session.getUsername() + ' <a class="logout" onclick="javascript:location.href=\'/assets/esp/social/accounts/logout?redirect=\'+location.href+\'&_=\'+Math.random()*10000000000000000;">Log Out</a><b class="caret"></b>');
+
+        if (nbcu.sn.session.getUsername().length > 12) {
+            var short_username  = nbcu.sn.session.getUsername().substring(0,12) + '...';
+        } else {
+            var short_username  = nbcu.sn.session.getUsername();
+        }
+
+        $loginBox.find(".username").html(short_username + ' <a class="logout" onclick="javascript:location.href=\'/assets/esp/social/accounts/logout?redirect=\'+location.href+\'&_=\'+Math.random()*10000000000000000;">Log Out</a><b class="caret"></b>');
     } else {
         $loginBox.find(".welcome").html("Welcome to NBC");
         $loginBox.find(".username").html('Log In or Sign Up <b class="caret"></b>');
@@ -126,9 +133,9 @@ function loadGlobalDropdownShop() {
         url;
         
     if (document.domain == "www.nbc.com") {
-        url = "/api/shop/products.php?cnt=3&thumbnailimgsize=107&description=1&format=json";        
+        url = "/api/shop/products.php?cnt=3&thumbnailimgsize=107&format=json";        
     } else {
-        url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26thumbnailimgsize%3D107%26description%3D1%26format%3Djson";
+        url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26thumbnailimgsize%3D107%26format%3Djson";
     }
         
     NBC.ajax({
@@ -143,9 +150,9 @@ function loadGlobalDropdownShop() {
                     var node = data.products[i];
           
                     output += '<div class="featured row">';
-                    output += '<a href="' + node.url + '"><img src="' + node.thumbnailImg + '" width="107" height="107" alt="' + node.name + '" /></a>';
+                    output += '<a href="' + node.url + '" target="_blank"><img src="' + node.thumbnailImg + '" width="107" height="107" alt="' + node.name + '" /></a>';
                     output += '<h5>' + node.name + '</h5>';
-                    output += '<p>$' + node.salePrice + '<br /><a href="' + node.url + '">Buy &raquo;</a></p>';
+                    output += '<p>$' + node.salePrice + '<br /><a href="' + node.url + '" target="_blank">Buy &raquo;</a></p>';
                     output += '</div>';
                                        
                     if (i == 2) {
@@ -243,7 +250,12 @@ function loadSiteDropdown() {
         if (dropdown_site_request) {
             dropdown_site_request.abort();
         }
-        var url = SITE.absoluteUrl + 'partials/dropdowns-site.shtml';
+        var url;
+        if (SITE.dropdownUrl !== undefined && SITE.dropdownUrl !== "") {
+            url = SITE.dropdownUrl;
+        } else {
+            url = SITE.absoluteUrl + 'partials/dropdowns-site.shtml';
+        }
         dropdown_site_request = NBC.ajax({
             url: url,
             cache: true
@@ -323,6 +335,7 @@ function initSlider() {
         slider.iosSlider({
             snapToChildren: true,
             autoSlide: autoSlide,
+            autoSlideTimer: 7500,
             infiniteSlider: autoSlide,
             desktopClickDrag: true,
             navSlideSelector: NBC('.slider-buttons .button'),
@@ -394,8 +407,8 @@ function loadGlobalFooterShop() {
                 for (var i in data.products) {
                     var node = data.products[i];
                     output += '<li class="shop">';
-                    output += '<a href="' + node.url + '"><img src="' + node.thumbnailImg + '" width="77" height="77" alt="' + node.name + '" /></a>';
-                    output += '<p>' + node.name + ' <a href="' + node.url + '">Buy &raquo;</a></p>';
+                    output += '<a href="' + node.url + '" target="_blank"><img src="' + node.thumbnailImg + '" target="_blank" width="77" height="77" alt="' + node.name + '" /></a>';
+                    output += '<p>' + node.name + ' <a href="' + node.url + '" target="_blank">Buy &raquo;</a></p>';
                     output += '</li>';
                     
                     if (i == 2) {

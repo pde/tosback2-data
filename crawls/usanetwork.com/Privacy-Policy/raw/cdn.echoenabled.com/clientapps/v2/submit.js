@@ -1876,6 +1876,9 @@ Echo.Submit.prototype.post = function() {
 			});
 			publish("Error", data);
 		} else {
+			if (data.objectID) {
+				content.objectID = data.objectID;
+			}
 			publish("Complete", content);
 		}
 	};

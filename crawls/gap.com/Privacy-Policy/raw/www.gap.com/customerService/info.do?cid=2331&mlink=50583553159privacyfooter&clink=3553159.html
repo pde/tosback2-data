@@ -457,7 +457,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" media="screen, print" href="http://www.gap.com/gzip_N240551523/optimizedBundles/globalOptimized.css" />
+<link rel="stylesheet" type="text/css" media="screen, print" href="http://www.gap.com/gzip_391700170/optimizedBundles/globalOptimized.css" />
 
 
 
@@ -631,6 +631,13 @@
 
 
 
+
+
+<meta name = "viewport" content = "width = 1024">
+<link rel="apple-touch-icon" href="http://www.gap.com/gid/assets/common/en/apple-touch-icon.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="http://www.gap.com/gid/assets/common/en/apple-touch-icon.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="http://www.gap.com/gid/assets/common/en/apple-touch-icon-retina.png" />
+<link rel="apple-touch-icon" sizes="144x144" href="http://www.gap.com/gid/assets/common/en/apple-touch-icon-retina.png" />
 
 
 
@@ -851,7 +858,13 @@
             mapsApiLoadFailMsg : "We are sorry Google Maps did not load. Please try again.",
             zipNotFoundMsg : "Sorry, we can not find that ZIP code in our database. <br/>Please change your ZIP code and try again.",
             noStoresFoundMsg : "Sorry, we have no stores that fit your search criteria. <br/> Please change your search and try again.",
-            storeLocatorName : "Store Locator"
+            storeLocatorName : "Store Locator",
+
+            // These will be dynamic later
+            onlyAvailableOnline : 'This item is not currently available in stores.',
+            selectASize : 'Please select a size above to see store availability.',
+            noStoresInList : 'Sorry, we have no stores that fit your search criteria. Please edit your search above to try again.',
+            unavailableInStores: 'Sorry, your selection is currently unavailable in the stores. Please change your selection and try again.'
         }
        	
 
@@ -865,17 +878,28 @@
 </script>
 
 
-	<script type="text/javascript" src="http://www.gap.com/gzip_N1315186373/optimizedBundles/globalOptimized.js" ></script>
+	<script type="text/javascript" src="http://www.gap.com/gzip_1197907967/optimizedBundles/globalOptimized.js" ></script>
 
 	<script type="text/javascript">
 		// Activation of the navigationService and associated Managers
-		navigationService.model.isActive = 'false' === 'true'
-                || 'false' === 'true'
-                || 'false' === 'true';
+		navigationService.model.isActive = ('false' === 'true')
+                || ('false' === 'true')
+                || ('false' === 'true')
+                || ('false' === 'true');
 		navigationService.paginationHelper.constants.MAX_PRODUCTS_PER_PAGE = 100;
 	</script>
 
 
+
+
+<script src='http://www.gap.com/gid/js/common/layouts/en/iPad2.js'></script>
+<script type="text/javascript">
+	var browserUserAgent = navigator.userAgent;
+	if (browserUserAgent.indexOf("iPad") != -1) {
+		iPadInit();
+		window.addEventListener('touchstart', function(evt) { imageLoader.fetch(); }, false);
+	}
+</script>
 
 <script type="text/javascript">
 	// <![CDATA[
@@ -907,7 +931,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "08/09/2012 01:46 PM",
+            DATE_IN_USE: "08/17/2012 02:23 PM",
             PREVIOUS_LOCALE : "en_US",
 
             IS_NAV2_ENABLED: 'false' === 'true',
@@ -948,7 +972,7 @@
 <!-- localCacheActive  = true -->
 <!-- isLocalCacheDisabled  = false -->
 <!-- isPageContentDataActive  = true -->
-
+<!-- isKeywordSearchDrivenByEaskAsk  = false -->
 
 <!-- pageTemplateInfo: pageId: 317759
 			isTileOverrideDefinedFromParameter: false
@@ -3520,43 +3544,6 @@ if (window['checkout'] && checkout.controller && checkout.controller.modules.sig
 </script>
 <!-- contentOverride113 end -->
 
-<!-- contentOverride120 begin -->
-<script type="text/javascript">
-if (window['storeLocationsService']) {
-	storeLocationsService.controller.getPostalCodeFromPersonalizationServiceModel = function() {
-		var howToLocate = "10007";
-		
-		var akamaiLocation = personalizationService.model.personalizationData.personalizationInfoV1.marketingMessageInfo.geoLocation;
-		var cookieLocation = gidLib.getCookieVar("globalSession", "pcode");
-
-		if (storeLocationsService.model.postalCode) {
-			return storeLocationsService.model.postalCode;
-		}
-
-		if (cookieLocation) {
-			howToLocate = cookieLocation;
-		} else if (akamaiLocation) {
-			var zipMatches = akamaiLocation.match(/zip=([\d\w-]+)/);
-			var latitudeMatches = akamaiLocation.match(/lat=([0-9\.-]+)/);
-			var longitudeMatches = akamaiLocation.match(/long=([0-9\.-]+)/);
-			
-			if (zipMatches && latitudeMatches && longitudeMatches) {
-				storeLocationsService.model.postalCode = zipMatches[1];
-				storeLocationsService.model.latitude = latitudeMatches[1];
-				storeLocationsService.model.longitude = longitudeMatches[1];
-				
-				howToLocate = storeLocationsService.model.postalCode;
-			}
-		}
-		
-		storeLocationsService.model.postalCode = howToLocate;
-		return howToLocate;
-	};
-}
-
-
-</script>
-<!-- contentOverride120 end -->
 
 <!-- contentOverride121 begin -->
 <script type="text/javascript">
@@ -3570,6 +3557,52 @@ if (browserService) {
  // ]]>
 </script>
 <!-- contentOverride121 end -->
+
+<!-- contentOverride123 begin-->
+<style type="text/css">
+	#tryFIST { display: none; }
+</style>
+<!-- contentOverride123 end-->
+
+<!-- Begin IT Override #122 - omniture url length mitigation -->
+
+<script type="text/javascript">
+if (
+	reportingService && 
+	reportingService.controller &&
+	reportingService.controller.viewManagers &&
+	reportingService.controller.viewManagers.commonViewManager.model
+) {
+	reportingService.controller.viewManagers.commonViewManager.model.getMerchandisingVariablesForProdcutString = function(merchandising) {
+		var commonModel = reportingService.controller.viewManagers.commonViewManager.model;
+		var pattern = /^\w+=[0\.]*$/;
+		var strMerchandisingVariables ;
+		strMerchandisingVariables = commonModel.parseMerchandisingVariable(merchandising.strBrand) + ";" +
+			commonModel.parseMerchandisingVariable(merchandising.strProductName) + ";" +
+			commonModel.parseMerchandisingVariable(merchandising.strQuantity) + ";" +
+			commonModel.parseMerchandisingVariable(merchandising.strPrice) + ";" +
+			commonModel.parseMerchandisingVariable(merchandising.strEventIncrementor) ;
+		if (pattern.exec(merchandising.strPLCCDiscount)==null){ // Process only if the RegEx pattern does not match (if it returns null).
+			strMerchandisingVariables = strMerchandisingVariables + "|" + commonModel.parseMerchandisingVariable(merchandising.strPLCCDiscount);
+		}
+		if (pattern.exec(merchandising.strLineBrandDiscount)==null){
+			strMerchandisingVariables = strMerchandisingVariables + "|" + commonModel.parseMerchandisingVariable(merchandising.strLineBrandDiscount);
+		}
+		if (pattern.exec(merchandising.strOrderLevelDiscount)==null){
+			strMerchandisingVariables = strMerchandisingVariables + "|" + commonModel.parseMerchandisingVariable(merchandising.strOrderLevelDiscount);
+		}
+		if (pattern.exec(merchandising.strMarkdownAmount)==null){
+			strMerchandisingVariables = strMerchandisingVariables + "|" + commonModel.parseMerchandisingVariable(merchandising.strMarkdownAmount);
+		}
+		strMerchandisingVariables = strMerchandisingVariables + ";" + commonModel.parseMerchandisingVariable(merchandising.strMerchandisingEvar);
+		// alert("strMerchandisingVariables = " + strMerchandisingVariables);
+		return strMerchandisingVariables.replace("||||","");
+	};
+}
+
+</script>
+<!-- End IT Override #122 - omniture url length mitigation -->
+
 
 <!-- END Content Item File: /content/0004/476/209/cn4476209.html -->
 
@@ -4424,254 +4457,34 @@ else {
 
 
 <!-- container 8 -->
-<!-- BEGIN Content Item File: /content/0005/190/275/cn5190275.html -->
+<!-- BEGIN Content Item File: /content/0005/381/504/cn5381504.html -->
 
+<!-- Retina Display Reporting by Jeff H/WCD -->
 <script type="text/javascript">
-// GOL PLOL EBB A/B Test 7/12/2012
-
-/*
-	Universal Cookie Cutter
-	Version 2.1
-	Created to streamline cross-brand A/B testing
-	New version modularizes variables
-	
-	instantiate new object:
-	
-	MyCookieCutter = new universalCookieCutterGOL([CookieVarName],      // name of your cookie variable
-											   [CookieUsedName],     // name of cookie used (usually 'mktUniversalPersist')
-											   [CookieValueBase],    // name of base cookie value so AB tests can be distinguished (ONOctFSEG)
-											   [ForcedModeBaseName], // distinct base string for forced mode, (oldnavyabmode), etc
-											   [SegmentBreakdown]    // segment breakdowns separated by "-" (80-10-10) highest to lowest values
-											   [eVar you are using]  // OPTIONAL can be either ABTestVariables.eVar24 or ABTestVariables.eVar36 - enter either "24", "36" or "" (blank)
-											   [Piperlime-only segment] // Piperlime often doesn't segment, scan for this variable and overwrite it. 
-											   );
-	A sample instantiation:
-	
-	ONBRABCookieCutter = new universalCookieCutterGOL("ONBRAB","mktUniversalPersist","ONBRDecXSEG","onbrabmode","70-10-10-5-5","24","0625FSSegE");
-											   
-	*/
-	
-	var universalCookieCutterGOL = Class.create();
-	
-	
-	universalCookieCutterGOL.prototype = {
-	
-		initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
-	
-			//Keeping it neat by having two discreet variables that check for and gather cookie information
-			this.EvarToUse = theEvar!= ""? theEvar: false;
-			this.CookieVariableName = CookieVarName;
-			this.CookieUsed = CookieUsedName;
-			this.CookieValueBase = CookieValueBase;
-			this.SegBreakdown = SegmentBreakdown.split("-");
-			this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-			this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-			this.QuickSegment = '';
-			this.piperlimeException = plExcept;
-			this.userNeedsSync = false;
-			this.ForcedModeBase = ForcedModeBaseName;
-			this.ModeArrayIndex = this.SegBreakdown.length; //segment breakdown determines how many segments too!
-			this.modeArray = new Array();
-			this.modeArray[0] = "a";
-			this.modeArray[1] = "b";
-			this.modeArray[2] = "c";
-			this.modeArray[3] = "d";
-			this.modeArray[4] = "e";
-			this.modeArray[5] = "f";
-			this.modeArray[6] = "g";
-			//alert(this.piperlimeException);
-			
-			
-			if (location.href.indexOf(this.ForcedModeBase) >= 1) {
-				this.forcedMode();
-			}else{
-				this.cookieScanner();
-			}
-		},
-	
-	
-		forcedMode:function() {
-			
-			for (i = 0; i < this.ModeArrayIndex; i++) {
-			
-				//allow forced mode only to qa.
-				if (location.href.indexOf("gidapps.com") >= 1) {
-					if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
-						//alert('you are in segment ' + this.modeArray[i].toUpperCase() + ' / ' + this.SegBreakdown[i] + '% of the population');
-						this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-						this.QuickSegment = this.modeArray[i].toUpperCase();
-					}
-				}
-				
-			}
-			
-			
-			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-			if (this.EvarToUse) {
-				
-				this.setABTestVariable(this.UserSegment);
-			}
-	
-			userNeedsSync = true;
-			
-			//alert("Forced: Cookie set.");
-			
-		
-		},
-	
-		cookieScanner:function() {
-			
-			//If the cookie isn't available, bake one!
-			if (this.DoesTheCookieExist) {
-	
-				if (this.EvarToUse) {
-					this.setABTestVariable(this.RetrievedCookieValue);
-				}
-	
-				for (i = 0; i < this.ModeArrayIndex; i++) {
-					if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
-						this.QuickSegment = this.modeArray[i].toUpperCase();
-						break;
-					}
-				}
-	
-			} else {
-				this.tagManager();
-			}
-	
-		},
-	
-	
-		tagManager:function() {
-	
-		
-			//Breaking out the segmentation into specified percentages
-			
-			this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
-			//alert("Seg: " + this.Segmentation);	
-			this.FloorThreshold = 0;
-			this.TopThreshold = 0;
-			
-			for (i = 0; i < this.ModeArrayIndex; i++){
-	
-				this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
-	
-				if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
-					// put me in this segment
-					this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-					this.QuickSegment = this.modeArray[i].toUpperCase();
-					break;
-				} else {
-					// add top to floor and try next segment
-					this.FloorThreshold = this.TopThreshold;
-				}
-					
-			}
-			if(location.protocol == "http:") {
-			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-			}
-	
-			if (this.EvarToUse) {
-				this.setABTestVariable(this.UserSegment);
-			}
-	
-			//userNeedsSync = true;
-			//alert("Tag Manager: Cookie set.");
-			
-		},
-		
-			setABTestVariable: function(setValue) {
-			thisEvar = 'eVar' + this.EvarToUse;
-			ABTestVariables[thisEvar] = setValue;
-		}
-	
-		
-	}; 
-	
-/******************
-evar 42
-
-Segment A: Control: No Banners
-GOLEBBSEGA
-
-Segment B: Display Wide Marketing Banner on Women's Directory and Women's Shoe Category
-GOLEBBSEGB
-
-Segment C: Display Wide Marketing Banner on Women's Directory Only
-GOLEBBSEGC
-
-Segment D: Display Wide Marketing Banner on Women's Directory Only
-GOLEBBSEGD
-
-*******************/
- 
-EBBCookieCutter0712 = new universalCookieCutterGOL("EBBTEST0712","mktUniversalPersist","GOLEBBSEG","bannermode","25-25-25-25","42","none");	
-
-
-
-/*
-function GOLBannerABTestMain() {
-
-var EBBSegment = gidLib.getCookieVar("mktUniversalPersist", "EBBTEST0712");
-
-	
-if( (location.pathname == "/browse/category.do?cid=34758") || (location.pathname == "/browse/subDivision.do?cid=5646") ) {
-	
-		if (EBBSegment == "GOLEBBSEGA") {
-			// Seg A: no banners
-
-		} else if (EBBSegment == "GOLEBBSEGB") {
-		
-			// Seg B: show banner in Division and Category
-			if ($('marketingBannerWideDir')){
-				$('marketingBannerWideDir').setStyle({display:'block'});
-			}
-			if ($('marketingBannerWideEBB')){
-				$('marketingBannerWideEBB').setStyle({display:'block'});
-			}
-			
-		} else if (EBBSegment == "GOLEBBSEGC") {
-			// Seg C: show banner in Division Only
-			if ($('marketingBannerWideDir')){
-				$('marketingBannerWideDir').setStyle({display:'block'});
-			}
-			
-		} else if (EBBSegment == "GOLEBBSEGD") {
-			// Seg D: show banner in Category Only
-			if ($('marketingBannerWideEBB')){
-				$('marketingBannerWideEBB').setStyle({display:'block'});
-			}
-			
-		}
-}	
-	
+var omnitureRetinaReporting = function() {
+    var pixelRatio = !!window.devicePixelRatio ? window.devicePixelRatio : 1;
+    var thisEvar = 'eVar' + 42;
+    if (pixelRatio > 1) {
+        if (navigator.userAgent.indexOf('iPhone')) {
+            ABTestVariables[thisEvar] = "RETINA_DISPLAY_iPhone";
+        } else if (navigator.userAgent.indexOf('iPad')) {
+            ABTestVariables[thisEvar] = "RETINA_DISPLAY_iPad";
+        } else if (navigator.userAgent.indexOf('iPod')) {
+            ABTestVariables[thisEvar] = "RETINA_DISPLAY_iPhone";
+        } else {
+            ABTestVariables[thisEvar] = "RETINA_DISPLAY_Mac";
+        }
+    } else {
+        ABTestVariables[thisEvar] = "STANDARD_DISPLAY";
+    }    
 }
-*/
-
-/*
-Event.observe(window, "load", function() {
-//Event.observe(document, 'categoryProductGrid:ready', function() {
-
-	var EBBGOLUserAgent = navigator.userAgent;
-	// IE 6 & IE 7 delay
-	if ( (EBBGOLUserAgent.indexOf('MSIE 6') != -1) || (EBBGOLUserAgent.indexOf('MSIE 7') != -1) ) {
-
-		setTimeout( "GOLBannerABTestMain()", 1500 );
-	
-	} else { // all others are in
-
-		GOLBannerABTestMain();
-	}
-	
-	
-});
-*/
-
-
-
+omnitureRetinaReporting();
 </script>
+<!-- End Retina Display Reporting by Jeff H/WCD -->
 
-<!-- END Content Item File: /content/0005/190/275/cn5190275.html -->
+
+
+<!-- END Content Item File: /content/0005/381/504/cn5381504.html -->
 
 
 
@@ -4780,7 +4593,7 @@ UniversalCookieCutter0723.prototype = {
 	}
 };
 /* /browse/division.do?cid=5001&forcedModeFIST=c */	
-var promoCookieCutter = new UniversalCookieCutter0723("0730REALFindInStoreAB","mktUniversalPersist","0730REALFindInStoreAB_SEG","forcedModeFIST","10-10-80","8","none");
+var promoCookieCutter = new UniversalCookieCutter0723("0730REALFindInStoreAB","mktUniversalPersist","0730REALFindInStoreAB_SEG","forcedModeFIST","40-20-40","8","none");
 
 	function VolControlABTestMain() {
 
@@ -4943,6 +4756,16 @@ if (window['ProductImages']) {
 
 
 <!-- container 12 -->
+<!-- BEGIN Content Item File: /content/0004/918/646/cn4918646.html -->
+
+<!-- iPad Patches -->
+<meta name = "viewport" content = "width = 1024">
+<link rel="apple-touch-icon" href="http://www.gap.com/Asset_Archive/GPWeb/content/0004/918/646/assets/apple-touch-icon.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="http://www.gap.com/Asset_Archive/GPWeb/content/0004/918/646/assets/apple-touch-icon.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="http://www.gap.com/Asset_Archive/GPWeb/content/0004/918/646/assets/apple-touch-icon-retina.png" />
+<link rel="apple-touch-icon" sizes="144x144" href="http://www.gap.com/Asset_Archive/GPWeb/content/0004/918/646/assets/apple-touch-icon-retina.png" />
+
+<!-- END Content Item File: /content/0004/918/646/cn4918646.html -->
 
 
 
@@ -6019,8 +5842,8 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/300/002/cn5300002.html -->
-<div id="contentItemContainer10000395" class="5300002" >
+    	<!-- BEGIN Content Item File: /content/0005/387/619/cn5387619.html -->
+<div id="contentItemContainer10000395" class="5387619" >
 
 <style type="text/css">
 #globalBanner {
@@ -6058,23 +5881,31 @@ Event.observe(window,"load",function(){
 	top: 0;
 	left: 0;
 }
+
+#globalBannerText.passive {
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
+}
 </style>
 
 <div id="globalBanner">
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<a href="javascript:void(0);" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/300/002/assets/legal.html',id:'legal',width:350,height:300});">
-			<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/300/002/assets/080912_GF_disruptor_US.png" alt="GAP FRIENDS EVENT! 30% OFF YOUR PURCHASE. ENDS 8/12. ONLINE AND IN STORES. ENTER GAPFRIENDS. CLICK FOR DETAILS" />
+		<a href="javascript:void(0);" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/387/619/assets/legal.html',id:'legal',width:350,height:300});">
+			<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/387/619/assets/081612_ALL_25off_GB_US.png" alt="25% off your purchase. Ends 8/18. Online only. Enter GAPFALL25. Details" usemap="#gbImageMap" />
+			<map name="gbImageMap">
+				<area id="globalBannerActivator" shape="rect" coords="235,10,384,59" href="javascript:void(0);" alt="details">
+			</map>
 		</a>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
 	<div id="globalBannerDisruptor" style="display:none;"> 
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/300/002/assets/080912_GF_disruptor_US.gif" alt="THE GAP FRIENDS EVENT! 30% OFF YOUR ENTIRE PURCHASE. EXCLUSIONS APPLY. ENDS SUNDAY, 8/12. ENTER GAPFRIENDS. ONLINE AND IN STORES. CLICK FOR DETAILS" usemap="#disruptorMap" />
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/387/619/assets/081612_ALL_25off_DISRUPTOR_US.jpg" alt="25% off your purchase. Online only. Ends Saturday, 8/18. Enter GAPFALL30 at checkout. Details" usemap="#disruptorMap" />
 		<map name="disruptorMap">
 		    <area shape="rect" coords="286,1,314,29" alt="close" href="javascript:void(0);" onClick="globalBannerDisruptor.close();" class="noHideDisruptor" />
-		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/300/002/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
+		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/387/619/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
 		</map>
 	</div><!-- /Global Banner Disruptor -->
 
@@ -6082,16 +5913,16 @@ Event.observe(window,"load",function(){
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('globalBannerDisruptor','testingCookiesMan');
+	globalBannerDisruptor.init('globalBannerDisruptor','08162012_GB');
 });
 
-// Show disruptor when mouseover #globalBannerText
-$('globalBannerText').observe('mouseover', function()
+// Show disruptor when mouseover #globalBannerActivator
+$('globalBannerActivator').observe('mouseover', function()
 {
 	globalBannerDisruptor.disrupt();
 });
 
-// Hide disruptor
+// Hide disruptor when out of activation area
 Event.observe(document.body, 'mouseover', function(event) 
 {
 	var element = Event.findElement(event);
@@ -6118,7 +5949,6 @@ var globalBannerDisruptor = {
 		if(hasSeenDisruptor != "1")
 		{
 			globalBannerDisruptor.autoDisrupt();
-			gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
 		}
 		
 	},
@@ -6130,6 +5960,7 @@ var globalBannerDisruptor = {
 		
 		var timerID = setTimeout(function() {
 			globalBannerDisruptor.hide();
+			gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
 		}, 8000);
 
 	},
@@ -6141,6 +5972,7 @@ var globalBannerDisruptor = {
 
 		if(target.style.display != "none") {
 			new Effect.SlideUp(targetID,{duration:.35, queue: {position: 'end', scope: 'gbDisruptor', limit: 1} });
+			$('globalBannerText').removeClassName('passive');
 			return false;
 		}
 		
@@ -6154,6 +5986,7 @@ var globalBannerDisruptor = {
 
 		if(target.style.display == "none") {
 			new Effect.SlideDown(globalBannerDisruptor.targetContainerID,{duration:.35, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+			$('globalBannerText').addClassName('passive');
 			return false;
 		}
 
@@ -6164,14 +5997,17 @@ var globalBannerDisruptor = {
 	close: function() {
 
 		globalBannerDisruptor.hide();
-		$('globalBannerText').stopObserving('mouseover');
+
+		// Stop observing mouseover
+		// Set a timer so disruptor doesn't get activated right away
+		$('globalBannerActivator').stopObserving('mouseover');
 
 		var timerID = setTimeout(function() {
-			$('globalBannerText').observe('mouseover', function()
+			$('globalBannerActivator').observe('mouseover', function()
 			{
 				globalBannerDisruptor.disrupt();
 			});
-		}, 3000)
+		}, 1500);
 
 	}
 	
@@ -6180,7 +6016,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0005/300/002/cn5300002.html -->
+<!-- END Content Item File: /content/0005/387/619/cn5387619.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -6279,6 +6115,7 @@ var globalBannerDisruptor = {
 	
 	
 	
+
 
 
 
@@ -7927,7 +7764,7 @@ emailValidation = {
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5300002,5106701,5125298,2486833,5125295,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5387619,5106701,5125298,2486833,5125295,5217025";
 	 </script>
 	
 	<noscript>

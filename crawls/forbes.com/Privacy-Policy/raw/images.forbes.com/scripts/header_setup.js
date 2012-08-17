@@ -1626,23 +1626,7 @@ var main_tab;
         document.write('<span class="searchbutton"><a href="javascript:document.SearchMain.submit()" onclick="javascript:formSubmitted()">Search</a></span>');
         document.write('<div style="clear:both;"></div>');
         document.write('</form>');
-        document.write('</td>');
-        document.write('<td width="180">');
-        document.write('<form id="searchbox_ticker" name="SearchHedform" action="http://finapps.forbes.com/finapps/jsp/finance/compinfo/CIAtAGlance.jsp" onsubmit="return submitTkr(\'SearchHedform\');"/>');
-        document.write('<input name="tab" value="searchtabquotesdark" type="hidden" />');
-
-        if (pageTypeForSlide)
-                document.write('<input id="search_panel2" class="textbox" name="tkr" type="text" autocomplete="off" onBlur="termChanged(this.value,\'panel2\');"  onChange="termChanged(this.value,\'panel2\');" onkeyup ="termChanged(this.value,\'panel2\');" onkeypress ="termChanged(this.value,\'panel2\');" onfocus="stopSlideshow();"/>');
-        else
-                document.write('<input id="search_panel2" class="textbox" name="tkr" type="text" autocomplete="off" onBlur="termChanged(this.value,\'panel2\');"  onChange="termChanged(this.value,\'panel2\');" onkeyup ="termChanged(this.value,\'panel2\');" onkeypress ="termChanged(this.value,\'panel2\');"/>');
-
-        if (main_tab == 'panel2' && main_srch!=null && main_srch!= 'undefined')
-                document.SearchHedform.tkr.value = main_srch;
-
-        document.write('<span class="searchbutton"><a href="javascript:document.SearchHedform.submit()" onclick="return submitTkr(\'SearchHedform\');">Stock Quote</a></span>');
-        document.write('<div style="clear:both;"></div>');
-        document.write('</form>');
-        document.write('</td>');
+        document.write('</td>');        
         document.write('</tr>');
 }
 

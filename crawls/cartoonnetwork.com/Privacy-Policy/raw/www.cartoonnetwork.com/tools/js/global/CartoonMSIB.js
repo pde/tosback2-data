@@ -39,6 +39,19 @@ CartoonMSIB.displayName = "";
 CartoonMSIB.avatarPath 	= "";
 CartoonMSIB.pid 		= typeof(cartoonMSIB_pid) != "undefined" ? cartoonMSIB_pid : "cn.general";
 
+	/*
+	 * Decorator
+	 *
+	 * selects a random character image for the login and registration modal
+	 *
+	*/
+	
+CartoonMSIB.decoImgs = new Array('ben10','at','rs');
+CartoonMSIB.decoMem = Math.floor((Math.random()*3));
+CartoonMSIB.decoRegPath = 'url(/accounts/tools/img/' + CartoonMSIB.decoImgs[CartoonMSIB.decoMem] + '.reg.png)';
+CartoonMSIB.decoLoginPath = 'url(/accounts/tools/img/' + CartoonMSIB.decoImgs[CartoonMSIB.decoMem] + '.login.png)';
+
+
 CartoonMSIB.isLoggedIn = function (){
 	
 	var isAccountPage = (document.URL.indexOf("cartoonnetwork.com/accounts") > -1) ? true : false;
@@ -94,6 +107,11 @@ CartoonMSIB.loadMSIB = function (the_div, the_page){
 	document.getElementById(the_div).style.top    			= window.pageYOffset != undefined ? String(window.pageYOffset+50) + "px" : (document.documentElement.scrollTop+50) + "px";
 	
 	CartoonMSIB.resizeRegWindow(the_div);
+	if (jQuery(document.getElementById(the_div)).attr('id')== "msib_login") {
+		jQuery(document.getElementById(the_div)).css('background-image',CartoonMSIB.decoLoginPath);
+	} else {
+		jQuery(document.getElementById(the_div)).css('background-image',CartoonMSIB.decoRegPath);
+	}
 }
 
 

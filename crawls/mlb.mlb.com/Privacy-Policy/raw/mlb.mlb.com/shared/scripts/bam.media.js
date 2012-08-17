@@ -34,7 +34,7 @@ bam.extend({
              * @param       props {Object} Configuration hash
              */
             launchPlayer: function(props) {
-
+	            
                 var _env_vp, _checkcache, _checkprod, _checkbeta, _checkqa, _mp4_baseurl = (bam.env.host.getWebCacheServerURL) ? bam.env.host.getWebCacheServerURL() : "http://mlb.mlb.com",
                     _mediaProps, _fullPlayerUrl, curParam, _clickOrigin = "",
 
@@ -107,12 +107,18 @@ bam.extend({
                         async: false,
                         cache: true,
                         url: "/media/player/mp4_flat_map.js",
-                        dataType: "json",
+                        dataType: "script",
                         success: function(data) {
+                        	data = eval(data);
                             if (data[props.calendar_event_id]) {
                                 _flatMode = true;
-                                window.open("http://mlb.mlb.com/media/ext/play.html?url=" + data[props.calendar_event_id] + "&w=640&h=390", "mp4_flat", "height=500,width=660,resizable=0");
+                                window.open("http://mlb.mlb.com/media/ext/play.html?url=" + data[props.calendar_event_id] + "&w=640&h=360", "mp4_flat", "height=500,width=660,resizable=0");
                             }
+                        },
+                        error:function(errorResponse) {
+	                        if (typeof console !== "undefined") {
+                                    console.log("bam.media.launchPlayer(): couldn't load /media/player/mp4_flat_map.js");
+                                }
                         }
                     });
                 }
@@ -1014,6 +1020,7 @@ bam.extend({
                     };
                 //------Methods
                 self.constructor.prototype.play = function(o) {
+
                     if (inPlayer) {
                         if (typeof console != "undefined") {
                             console.log("!!!!!!!!!!!! calling override !!!!!!!!!!!!");

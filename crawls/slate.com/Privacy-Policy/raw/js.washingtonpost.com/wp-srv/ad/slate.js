@@ -1,14 +1,9 @@
 /*global commercialNode:true, wp_quantcast, wp_meta_data, estNowWithYear, placeAd2, wpAd*/
-(function (window, wpAd, undefined) {
+(function (win, doc, wpAd, undefined) {
   
   'use strict';
  
   wpAd.config = wpAd.config || {};
-
-  if(!wpAd.flags.no_ads) {
-    //ADD THE TEMPLATES - generated via flight manager tool:
-    document.write('<scr' + 'ipt type="text/javascript" src="' + (document.domain ? 'http://js.washingtonpost.com/wp-srv/ad' : 'wp-ad-scripts') + '/slate_config.js"></scr' + 'ipt>');
-  }
 
   //Friendly Iframe supported domains and URL's:
   wpAd.config.fifDomains = {
@@ -19,15 +14,16 @@
   };
 
   wpAd.constants = {
+    'ad_config_url': /ad_config_url\=/.test(location.search) ? location.search.split(/ad_config_url\=/)[1].split(/&/)[0] : 'http://js.washingtonpost.com/wp-srv/ad/slate_config.js',
     'wpniSite': 'slate',
     'wpniDomain': 'slate.com',
     'fifURL': (function () {
-      if(!document.domain) {
+      if(!doc.domain) {
         return './fif.html'; //local test pages
       }
       var d = wpAd.config.fifDomains, key;
       for(key in d) {
-        if(new RegExp(key, 'i').test(document.domain)) {
+        if(new RegExp(key, 'i').test(doc.domain)) {
           return d[key];
         }
       }
@@ -37,8 +33,14 @@
     })()
   };
   
+  if(!wpAd.flags.no_ads) {
+    //ADD THE TEMPLATES - generated via flight manager tool:
+    wpAd.tools.writeScript(wpAd.constants.ad_config_url);
+  }
+
+  
   //legacy quantcast code - may still be on some older pages:
-  if(window.wp_quantcast) {
+  if(win.wp_quantcast) {
     try {
       wp_quantcast.exec('p-5cYn7dCzvaeyA');
     } catch(e) {}
@@ -78,7 +80,7 @@
     },
     dept: function () {
       return wpAd.cache.hasOwnProperty('dept') ? wpAd.cache.dept : (function () {
-        wpAd.cache.dept = window.PStax ? [window.PStax] : [];
+        wpAd.cache.dept = win.PStax ? [win.PStax] : [];
         return wpAd.cache.dept;
       })();
     },
@@ -110,12 +112,12 @@
 
   //need to rewrite this or include in pushdown template in dfp:
   /*if(typeof commercialNode!='undefined' && commercialNode=='homepage'){
-    document.write("<style type=\"text\/css\">#slug_pushdown { background-color:#660033 } #pushdown_ad { width:970px;margin:0 auto;text-align:center }<\/style>");
+    doc.write("<style type=\"text\/css\">#slug_pushdown { background-color:#660033 } #pushdown_ad { width:970px;margin:0 auto;text-align:center }<\/style>");
   }*/
 
   //ad refresh on gallery pages
-  window.wpniAds = window.wpniAds || {};
-  window.wpniAds.gallery = {
+  win.wpniAds = win.wpniAds || {};
+  win.wpniAds.gallery = {
     count: 0,
     picViews : estNowWithYear <= '201207020600' ? 1 : 5,
     refresh: function () {
@@ -137,11 +139,11 @@
     }
 
     //18477-CD-CRITEO implementation
-    if(window.crtg_content){
-      tempcase.keyvalues.onTheFly += window.crtg_content;
+    if(win.crtg_content){
+      tempcase.keyvalues.onTheFly += win.crtg_content;
     }
 
     return tempcase;
   };
 
-})(window, wpAd);
+})(window, document, wpAd);

@@ -1,0 +1,52 @@
+// use this variable to see if command runs at all
+ISB050112 = false;
+
+le.uxd.ui.abtest.manager.execute('ISB050112', {
+	allocation: [0,50,50],
+	eVar: 'eVar20',
+	eVarFormat: function(testName, group){
+		return testName + "-_-" + group;
+	},
+	kioskGroup: 'A',
+	duration: 45,
+	command: function(group){
+		
+		// if we made it here, the ab-test error handling should take over
+		ISB050112 = true;
+		
+		$(document).ready(function(){
+
+			if (group == 'C'){
+				
+				printBagContainer = 'C';
+				
+				if ($('#product-page').length > 0) {
+				
+					var textChange = setInterval ( function() {
+					
+					    if ($('#add-to-bag-test .pp-continue-shopping').text().length > 0 && $('#add-to-bag-test .pp-continue-shopping').text() != 'PROCEED TO CHECKOUT')
+					    	{
+					    		$('#add-to-bag-test .pp-continue-shopping').text('PROCEED TO CHECKOUT');
+					    	};
+					}, 100);
+				};
+				
+				return;
+			}
+
+			// Default behavior - nothing
+
+		});
+		
+	},
+	error: function(){
+		// Default behavior - nothing
+	}
+});
+
+// if error anywhere on the page show dropdowns
+$(window).error(function(){
+	setTimeout(function(){
+		// Default behavior - nothing
+	},5000);
+})

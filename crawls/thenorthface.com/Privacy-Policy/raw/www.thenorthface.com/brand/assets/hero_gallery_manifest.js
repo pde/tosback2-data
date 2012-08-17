@@ -868,6 +868,13 @@ var Class = (function() {
     build: function() {
       // find all the items that we can page through
       var items = this.element.find('div.hero-gallery-item');
+
+      // So that we can reliably interact with any gallery's API, we fire an
+      // event once we've heard back from all HeroSpots (via an event each
+      // fires) that they are all finished loading
+      this.heroSpotLoadCountdown = items.length;
+      this.element.bind('loaded_TNF_heroSpot', this.countDownHeroSpotLoaders.bind(this));
+
       this.items = [];
       items.each(function(i, element) {
         var type = $(element).data('type');
@@ -925,7 +932,7 @@ var Class = (function() {
         try{
           var element = $(e.target);
           if (element.hasClass('hero-gallery-item') || element.hasClass('hero-gallery-content')) {
-            $("body").trigger({type: 'hero_gallery_paged', page: this.currentPage});
+            $("body").trigger('hero_gallery_paged', {page: this.currentPage});
           }
         } catch (e) {}
       }.bind(this));
@@ -965,6 +972,15 @@ var Class = (function() {
       }.bind(this));
     },
 
+    countDownHeroSpotLoaders: function() {
+      this.heroSpotLoadCountdown -= 1;
+
+      if(this.heroSpotLoadCountdown < 1) {
+        this.element.trigger('loaded_TNF_heroGallery');
+        this.fullyLoaded = true;
+      }
+    },
+
     prevPage: function() {
       this.jumpToPage(this.currentPage - 1);
     },
@@ -979,7 +995,7 @@ var Class = (function() {
       this.currentPage = page;
 
       // trigger an event so items can clean themselves up
-      $("body").trigger({type: 'hero_gallery_paged', page: page});
+      $(".hero-gallery").trigger('hero_gallery_paged', {page: page});
 
       // move the scroller and the page indicator
       this.scroller.animate({'left': -(page * this.itemWidth)}, 500, 'easeInOutSine');
@@ -1010,13 +1026,91 @@ var Class = (function() {
 
     initialize: function(element) {
       this.element = element;
+      this.id = this.element.attr('id').split('herospot-')[1]
 
       this.build();
+
+      this.buildCtas();
+      this.buildHotRegions();
+
       this.setupObservers();
       this.gallery = $(this.element).parent().parent('.hero-gallery');
       this.galleryHeight = this.gallery.outerHeight();
       this.videoInterfaceContainer = $('.hero-gallery-video-interface', this.gallery );
       this.embedCode = '';
+    },
+
+    // Adds a newly-initialized cta to collection of ctas
+    //
+    // Arguments:
+    //  - index (optional) - Accepts index argument only to conform to iterator
+    //                       callback expected signature.
+    //  - element          - DOM element from which to build the cta.
+    //
+    addCta: function(index, el) {
+      if (arguments.length == 1) { el = arguments[0]; }
+      this.ctas.push(el);
+      return el;
+    },
+
+    // Adds a newly-initialized HotRegion to collection of HotRegions
+    //
+    // Arguments:
+    //  - index (optional) - Accepts index argument only to conform to iterator
+    //                       callback expected signature.
+    //  - element          - DOM element from which to build the HotRegion.
+    //
+    addHotRegion: function(index, el) {
+      if (arguments.length == 1) { el = arguments[0]; }
+      this.hotRegions.push(el);
+      return el;
+    },
+
+    activateCtaRollover: function() {
+      var ctas = $(this.element).find('.hero-cta a');
+
+      ctas.bind('mouseover', this.handleCtaRollover);
+      ctas.bind('mouseout', this.handleCtaRollout);
+    },
+
+    handleCtaRollover: function(event) {
+      var anchor = $(event.target).parent(),
+          color  = anchor.data('text-color-rollover');
+
+      anchor.find('.hero-text').css('color', color);
+    },
+
+    handleCtaRollout: function(event) {
+      var anchor = $(event.target).parent(),
+          color  = anchor.data('text-color');
+
+      anchor.find('.hero-text').css('color', color);
+    },
+
+    activateRollover: function() {
+      if ((rolloverImageSrc = this.element.attr('data-rollover-image')) !== undefined) {
+        // preload the image
+        var rolloverImage = new Image();
+            rolloverImage.src = rolloverImageSrc;
+
+        this.rolloverImage = 'url(' + rolloverImageSrc + ')';
+        this.defaultImage  = this.element.css('background-image');
+
+        $(rolloverImage).load(this.setupRolloverObservers.bind(this));
+      }
+    },
+
+    setupRolloverObservers: function() {
+      this.element.bind('mouseover', this.revealRolloverImage.bind(this));
+      this.element.bind('mouseout', this.restoreDefaultImage.bind(this));
+    },
+
+    revealRolloverImage: function(event) {
+      this.element.css('background-image', this.rolloverImage);
+    },
+
+    restoreDefaultImage: function(event) {
+      this.element.css('background-image', this.defaultImage);
     },
 
     showFlyoutIEBranch: function() {
@@ -1135,7 +1229,32 @@ var Class = (function() {
 
       this.element = null;
       delete(this); // no idea if this works
+    },
+
+    // Find all the callouts and instantiate them
+    //
+    buildCallouts: function() {
+      var callouts = this.element.find('div.hero-gallery-callout');
+      this.callouts = [];
+      callouts.each(this.addCallout.bind(this));
+    },
+
+    // Find all the HotRegions and instantiate them
+    //
+    buildHotRegions: function() {
+      var hotRegions = this.element.find('.hot-region');
+      this.hotRegions = [];
+      hotRegions.each(this.addHotRegion.bind(this));
+    },
+
+    // Find all the ctas and instantiate them
+    //
+    buildCtas: function() {
+      var ctas = this.element.find('.hero-cta');
+      this.ctas = [];
+      ctas.each(this.addCta.bind(this));
     }
+
   };
 
   var AbstractCalloutLogic = {
@@ -1191,15 +1310,28 @@ var Class = (function() {
         this.flyoutSide = this.flyout.hasClass('hero-gallery-flyout-left') ? 'left' : 'right';
       }
 
-      // find all the callouts and instantiate them
-      var callouts = this.element.find('div.hero-gallery-callout');
-      this.callouts = [];
-      callouts.each(function(i, element) {
-        this.callouts.push(new Standard.Callout($(element)));
-      }.bind(this));
+      this.buildCallouts();
+      this.element.trigger('loaded_TNF_heroSpot', this);
+    },
+
+    // Adds a newly-initialized callout to collection of callouts
+    //
+    // Arguments:
+    //  - index (optional) - Accepts index argument only to conform to iterator
+    //                       callback expected signature.
+    //  - element          - DOM element from which to build the callout.
+    //
+    addCallout: function(index, el) {
+      if (arguments.length == 1) { el = arguments[0]; }
+      var callout = new Standard.Callout($(el));
+      this.callouts.push(callout);
+      return callout;
     },
 
     setupObservers: function() {
+      this.activateRollover();
+      this.activateCtaRollover();
+
       // make the call to action open the flyout
       $('.cta a.arrow-box, .hero-cta a.hero-arrow-box', this.element).click(function(e) {
         var element = $(e.currentTarget);
@@ -1316,8 +1448,8 @@ var Class = (function() {
         .css('left', this.markerSize / 2);
 
       // fill the popup and position it
-      var contentElement = this.element.clone().css('top', 0).css('left', 0).css('visibility', 'visible').css('position', 'static');
-      this.popup.find('div.hero-gallery-callout-popup-content').append(contentElement);
+      this.contentElement = this.element.clone().css('top', 0).css('left', 0).css('visibility', 'visible').css('position', 'static');
+      this.popup.find('div.hero-gallery-callout-popup-content').append(this.contentElement);
       this.positionPopup();
     },
 
@@ -1490,6 +1622,9 @@ var Class = (function() {
     },
 
     setupObservers: function() {
+      this.activateRollover();
+      this.activateCtaRollover();
+
       // make the call to action open the flyout
       $('.cta a.arrow-box, .hero-cta a.hero-arrow-box', this.element).click(function(e) {
         var element = $(e.currentTarget);
@@ -1516,21 +1651,32 @@ var Class = (function() {
     },
 
     finishLoading: function() {
-
-      var center = this.image.width() / 2;
       this.stepDistance = 30;
-
-      // find all the callouts and instantiate them
-      var callouts = this.element.find('div.hero-gallery-callout');
-      this.callouts = [];
-      callouts.each(function(i, element) {
-        this.callouts.push(new Rotator.Callout($(element), center, this));
-        $(element).css({top: '', left: '', visibility: 'visible', display: 'none'});
-      }.bind(this));
-
+      this.buildCallouts()
       this.loader.hide();
+      this.element.trigger('loaded_TNF_heroSpot', this);
     },
 
+    // Adds a newly-initialized callout to collection of callouts
+    //
+    // Arguments:
+    //  - index (optional) - Accepts index argument only to conform to iterator
+    //                       callback expected signature.
+    //  - element          - DOM element from which to build the callout.
+    //
+    addCallout: function(index, el) {
+      if (arguments.length == 1) { el = arguments[0]; }
+
+      var center = this.image.width() / 2,
+          element = $(el),
+          rotator = new Rotator.Callout(element, center, this);
+
+      element.css({top: '', left: '', visibility: 'visible', display: 'none'});
+
+      this.callouts.push(rotator);
+
+      return rotator;
+    },
 
     isTracking: function(e, b) {
       if (b) e.preventDefault();

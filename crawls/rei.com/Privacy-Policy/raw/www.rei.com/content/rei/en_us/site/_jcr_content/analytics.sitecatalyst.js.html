@@ -47,7 +47,7 @@
         CQ_Analytics.registerAfterCallback(function(options) {
             if( $CQ.inArray( options.componentPath, CQ_Analytics.Sitecatalyst.frameworkComponents) < 0 )
                 return false;    // component not in framework, skip SC callback
-            s = s_gi("reidev");
+            s = s_gi("rei-testprod1");
             if (s.linkTrackVars == "None") {
                 s.linkTrackVars = "events";
             } else {
@@ -99,7 +99,7 @@
                                 serviceUrl = serviceUrl.replace(/\{SESSION\}/gi, (data.ssSession ? data.ssSession : ""));
                                 serviceUrl = serviceUrl.replace(/\{JPJ\}/gi, (data.jpj ? data.jpj : ""));
                                 serviceUrl = serviceUrl.replace(/\{PAGEID\}/gi, (data.pageid ? data.pageid : ""));
-                                serviceUrl = serviceUrl.replace(/\{REPORTSUITE\}/gi, "reidev");
+                                serviceUrl = serviceUrl.replace(/\{REPORTSUITE\}/gi, "rei-testprod1");
                                 CQ.shared.Util.open(serviceUrl);
                             }
                         }
@@ -286,7 +286,7 @@
 
         };
 
-        var s_account = "reidev"
+        var s_account = "rei-testprod1"
         var s = s_gi(s_account)
 /************************** CONFIG SECTION **************************/
         s.fpCookieDomainPeriods = "2"
@@ -347,6 +347,11 @@ if(!s.pageName)
 s.pageName=s.getPageName();
 
 s.eVar13=s.getNewRepeat();
+
+// Fix for CEM-1770 - see comment in ExpertAdviceArticle/additionalanalyticsvariables.jsp for details
+if (!(typeof eaPageName === 'undefined') && eaPageName) {
+    s.eVar29=eaPageName;
+}
 
 /* TimeParting Variables */
 var theDate=new Date()

@@ -127,5 +127,5 @@ $(document).ready(function(){
 				}
 			});				
 		};
-	}
+	}	
 });

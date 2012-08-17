@@ -1,0 +1,122 @@
+//Depends
+// $jq_1_7-1.7.2.js
+// $jq_1_7.cookie.js
+
+var p13n = {
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Personalisation can be disabled by setting this to false
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+enabled: true,
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   initialisation
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+init: function(){
+    if(p13n.enabled) {
+        var cookieValue = p13n.obtainCookie('GTC');
+        if (cookieValue == null || cookieValue == "" ){
+            p13n.ajaxGet("/" + p13n.obtainContextRoot() + "/personalisation/trackingId",function(jsonString){
+            p13n.assignCookie('GTC', jsonString.trackingId , { expires: 3650, path: '/',domain: p13n.buildDomainForCookie(p13n.documentDomain()) });
+            });
+        }
+    }
+},
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Personalisation calls
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+trackInterest: function(tag) {
+    if(p13n.enabled) {
+      var cookieValue = p13n.obtainCookie('GTC');
+      if(cookieValue != null && cookieValue != "") {
+        p13n.ajaxPost("/" + p13n.obtainContextRoot() + "/personalisation/customerInfo/"+p13n.obtainCookie('GTC')+ "/registerInterest/" + tag);
+      }
+    }
+},
+
+personalise: function(resource, callBack)
+{
+    if(p13n.enabled) {
+      var cookieValue = p13n.obtainCookie('GTC');
+      if(cookieValue != null && cookieValue != "") {
+        p13n.ajaxGet(resource, function(html, status){
+        //personalisation will return an empty string when there is no associated data on the request.  The status code is actually 204.
+            if (status == "success" && $jq_1_7.trim(html).length > 0){
+                callBack(html)
+            }
+        });
+      }
+    }
+},
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Utilities
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+obtainContextRoot: function()
+{
+    var contextRoot=/[^/]*\/\/[^/]*\/([^/]*)/.exec(p13n.documentLocation())
+
+    if (contextRoot[1] == "www") {
+        return "www";
+    } else {
+        return ".";
+    }
+},
+
+
+buildDomainForCookie: function(domainName)
+{
+    var cookie_domain = '';
+    var tokens = domainName.split(/\./g);
+    var size = tokens.length;
+    for (var i = 0; i < size && i < 3; i++)
+    {
+        cookie_domain = '.' + tokens[size-i-1] + cookie_domain;
+    }
+    return cookie_domain;
+},
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Test delegates
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//these functions exist so that we can unit test this code by replacing these method implementations.
+
+obtainCookie: function(name) {
+    return $jq_1_7.cookie(name);
+},
+
+documentLocation: function(){
+    return document.location;
+},
+
+documentDomain: function() {
+    return document.domain;
+},
+
+ajaxGet: function(url, callback) {
+    $jq_1_7.get(url,callback);
+},
+
+assignCookie: function(name, value, properties) {
+     $jq_1_7.cookie(name, value, properties);
+},
+
+removeCookie: function(name) {
+     p13n.assignCookie(name, '', { expires: -1, path: '/',domain: p13n.buildDomainForCookie(p13n.documentDomain()) });
+},
+
+ajaxPost: function(url) {
+    $jq_1_7.post(url);
+}
+
+
+};
+
+p13n.init();
+

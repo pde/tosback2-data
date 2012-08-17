@@ -155,55 +155,38 @@
 							<h1 class="gatewayNewOrExistingCustomers">New or Existing Customers</h1>
 							<p>If you don't have a home phone number, enter your ZIP code.</p>
 				
-							<script language="JavaScript" type="text/javascript">
-							<!--
-								document.write("<form action=\"/loc/controller?ltype=res&prod-snip=res_lifeline\" name=\"formB\" id=\"formB\" method=\"post\" onSubmit=\"javascript:return submitFormB(this);\">");
-								document.write("<input type=\"hidden\" name=\"noform\" value=\"true\">");
-								document.write("<input type=\"hidden\" name=\"cameFromForm\" value=\"true\">");
-							-->
-							</script>
-							<noscript>
-																	
-								<form action="controller%3Fltype=res&amp;prod-snip=res_lifeline.html" name="formB" id="formB" method="post">
-								<input type="hidden" name="action" value="formB" />
-								<input type="hidden" name="noform" value="true" />
-								<input type="hidden" name="cameFromForm" value="true" />
-							</noscript>
-								<fieldset>
+							<!--  Updated for the User Story US33927 --> 
+							<form action="controller%3Fltype=res&amp;prod-snip=res_lifeline.html" name="formB" id="formB" method="post" onsubmit="javascript:return submitFormB(this);">
+							    <input type="hidden" name="action" value="formB" />
+								<input type="hidden" name="noform" value="true"/>
+								<input type="hidden" name="cameFromForm" value="true"/>
+                            	<fieldset>
 									<legend>ZIP Code</legend>
-									<label for="zipcode" style="margin-bottom:3px;">ZIP Code</label>
+									<label for="zip Code" style="margin-bottom: 3px;">ZIP Code</label>
 									<input type="text" name="zip" id="zip Code" size="10" maxlength="5" title="Zip Code" value="" />
-									<input type="image" name="submit" class="go_button" src="../Common/att_rev1/images/btn_blue_go.gif" alt="submit" align="top" />
+                            		<input type="image" name="submit" class="go_button" src="../Common/att_rev1/images/btn_blue_go.gif" alt="submit" align="top" />
 									<p class="exTxt">Ex: 78734</p>
 								</fieldset>
-							</form>		
-						
+							</form>						
+									
 							<h1 class="gatewayExistingCustomers">Existing Customers</h1>
 							<p>Enter the area code and first 3 digits of your home phone number <br />
                      		(for wireless phone please enter ZIP Code above).</p>
 							
-							<script language="JavaScript" type="text/javascript">
-							<!--
-								document.write("<form action=\"/loc/controller?ltype=res&prod-snip=res_lifeline\" name=\"formA\" id=\"formA\" method=\"post\" onSubmit=\"javascript:return submitFormA(this);\">");
-							-->
-							</script>																
-							<noscript>
-								
-								<form action="controller%3Fltype=res&amp;prod-snip=res_lifeline.html" name="formA" id="formA" method="post">
-								<input type="hidden" name="action" value="formA" />															
-							</noscript>
-								<input type="hidden" name="noform" value="true" />
+							<!--  Updated for the User Story US33927 --> 
+							<form action="controller%3Fltype=res&amp;prod-snip=res_lifeline.html" name="formA" id="formA" method="post" onsubmit="javascript:return submitFormA(this);" style="margin-bottom:20px">
+                            	<input type="hidden" name="action" value="formA" />															
+							    <input type="hidden" name="noform" value="true" />
 								<input type="hidden" name="cameFromForm" value="true" />
 								<fieldset> 
-									<legend>Home Phone Number</legend> 
-									<label for="phonenumber" style="margin-bottom:3px;">Home Phone Number</label> 
+									<legend>Phone Number</legend> 
+									<label for="prefix" style="margin-bottom: 3px;">Phone Number</label> 
 									<input type="text" name="area" id="area" title="area code" size="3" maxlength="3" value="" /><span class="numTxt"> - </span>
 									<input type="text" name="pre" id="prefix" title="prefix" size="3" maxlength="3" value="" /><span class="numTxt" style="margin-right:0"> - XXXX</span>
 									<input type="image" name="submit" class="go_button" src="../Common/att_rev1/images/btn_blue_go.gif" alt="submit" align="top" />
 									<p class="exTxt">Ex: 512&nbsp;&nbsp;&nbsp;&nbsp;555</p>
 								</fieldset> 
-							</form>	
-			
+							</form>
 						</div>	
 					</div>
 				</div>
@@ -231,7 +214,11 @@
 				  Contact Us</a> | <a href="../../www.att.com/gen/general%3Fpid=11561.html">Terms of Use</a> | <a href="../../www.att.com/sitemap/index.html">Site Map</a> | <a href="../../www.att.com/gen/general%3Fpid=10190.html">Accessibility</a>
 				  | <a href="../../www.att.com/internal/adchoices.html" target="_blank">Advertising Choices</a> | <a href="../../www.att.com/internal/broadbandinfo.html" target="_blank">Broadband Information </a>
 				 </div>
-				 <a href="../../www.att.com/gen/privacy-policy%3Fpid=2587.html">&#169; <script type="text/javascript">document.write(new Date().getFullYear());</script> AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies.<br /><span class="mute">AT&amp;T 36USC220506</span> 
+				 <a href="../../www.att.com/gen/privacy-policy%3Fpid=2587.html">&#169; <span id="cprdate"></span> AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies.<br /><span class="mute">AT&amp;T 36USC220506</span> 
+			  		<script type="text/javascript">
+					var crpdate=document.getElementById("cprdate");
+					crpdate.appendChild(document.createTextNode(new Date().getFullYear()));			  
+					</script>
 			  </div>
 			  <div class="logoBlock">
 					<a href="../../www.ctia.org/index.html" target="_blank"><img src="../Common/indc/homepage/images/footer/CTIA.gif" alt="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org" /></a>

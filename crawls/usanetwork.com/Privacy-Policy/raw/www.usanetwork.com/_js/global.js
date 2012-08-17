@@ -1,3 +1,4 @@
+var webspectator = true;
 var chatterAdTimeout;
 var pageScroll;
 var chatterScroll;
@@ -794,6 +795,10 @@ $(document).ready(function() {
 	usa_loaded();
 	usa_columnAlign();
 	usa_setupMeebo();
+	if (webspectator == true)
+	{
+		usa_setupWebspectator();
+	}
 });
 
 $(window).resize(function() {
@@ -1084,7 +1089,26 @@ function usa_setupMeebo()
 }
 
 
-
+function usa_setupWebspectator()
+{
+	$('#ad300x250').addClass('wsz');
+	$('#ad300x250').attr('data-pid', '547');
+	
+	$('#usa_ad_728x90').addClass('wsz');
+	$('#usa_ad_728x90').attr('data-pid', '548');
+	
+	$('#ad160x600').addClass('wsz');
+	$('#ad160x600').attr('data-pid', '549');
+	
+	
+	var wid = 'WS-USNET';
+	var scr = document.createElement('script');
+	scr.type = 'text/javascript';
+	scr.async = true;
+	scr.src = 'http://services.webspectator.com/init/' + wid + '/' + +new Date;
+	var x = document.getElementsByTagName('script')[0];
+	x.parentNode.insertBefore(scr, x);
+}
 
 
 

@@ -114,7 +114,7 @@ wpAd.gog_search_skin = function($){
 };
 
 wpniAds.templates.initRule('defaultTemplate');
-wpniAds.templates.rules.defaultTemplate.what = ['!336x35','!336x30','!bigad','!leaderboard_2','!extra_bb','!featurebar','!tiffany_tile','!tiffany_tile_2','!336x60','!pushdown','!sponsor','!sponsor_realtor','!deal','!marketing','!nav_tile','!nn','!nn_hp','!nn_sidebar','!nn_footer','!nn_rr','!promo','!sponsor_prem_rental','!tooltile','!agoogleaday','!300x100', '!88x31','!600x130', '!336x35_top'];
+wpniAds.templates.rules.defaultTemplate.what = ['!336x35','!336x30','!bigad','!leaderboard_2','!extra_bb','!featurebar','!tiffany_tile','!tiffany_tile_2','!336x60','!pushdown','!sponsor','!sponsor_realtor','!deal','!marketing','!nav_tile','!nn','!nn_hp','!nn_sidebar','!nn_footer','!nn_rr','!promo','!sponsor_prem_rental','!tooltile','!agoogleaday','!300x100', '!88x31','!600x130', '!336x35_top', '!marketing_2'];
 
 if(!location.href.match('suppress_fb'))
 {
@@ -138,7 +138,7 @@ wpniAds.templates.rules.local_page.what = ['!leaderboard','!sponsor'];
 wpniAds.templates.rules.local_page.where = ['^metro/front$'];
 
 wpniAds.templates.initRule('realestate');
-wpniAds.templates.rules.realestate.what = ['sponsor_community','sponsor_new_home_builder'];
+wpniAds.templates.rules.realestate.what = ['sponsor_community', 'sponsor_condo', 'sponsor_new_home_builder'];
 wpniAds.templates.rules.realestate.where = ['realestate/front'];
 
 wpniAds.templates.initRule('rentals');
@@ -375,29 +375,6 @@ if(/js_tiff/.test(location.search)){
   };
 }
 
-//19980-KZ
-/*wpniAds.templates.initRule('bestbuy_tile');
-wpniAds.templates.rules.bestbuy_tile = {
-  what : ['nav_tile'],
-  where : ['lifestyle','entertainment','local','sports'],
-  when : ['201207200000/201208042359'],
-  hardcodes : '<a href="http://clk.atdmt.com/AVE/go/399416815/direct;wi.1;hi.1/01/" target="_blank"> <img src="http://img.wpdigital.net/wp-adv/advertisers/bestbuy/2012/BestBuy_201207_Lifestyle_88x31.png" width="80" height="28" alt="Click here for more information!" style="border: none; margin-top: 3px" /></a><img src="http://view.atdmt.com/AVE/view/399416815/direct;wi.1;hi.1/01/" height="1" width="1" alt="" style="border: none; display: none" />'
-};*/
-
-//19970-CD
-wpniAds.templates.initRule('opa_pushdown');
-wpniAds.templates.rules.opa_pushdown = {
-  what : ['pushdown'],
-  where : ['washingtonpost.com'],
-  when : ['201207270000/201207272359']
-};
-//20025-CD
-wpniAds.templates.initRule('jc_penney_pushdown');
-wpniAds.templates.rules.jc_penney_pushdown = {
-  what : ['pushdown'],
-  where : ['washingtonpost.com'],
-  when : ['201208030000/201208032359']
-};
 //19779-CD-LEVERS
 /*
 if(window.wp_meta_data && wp_meta_data.contentType && wp_meta_data.contentType[0]==='CompoundStory' && /C\=1/i.test(wpAd.getWPATC())){
@@ -409,10 +386,17 @@ if(window.wp_meta_data && wp_meta_data.contentType && wp_meta_data.contentType[0
   }
 }
 */
+//20039-CD
+wpniAds.templates.initRule('capital_one_tt');
+wpniAds.templates.rules.capital_one_tt = {
+  what : ['tiffany_tile','tiffany_tile_2'],
+  where : ['washingtonpost.com'],
+  when : ['201208130000/201208132359']
+};
 
 }
-function initAdType(what)
-{
+
+function initAdType(what){
  var thisAdType = new AdInstance();
  thisAdType.testFlagArray = ['test_ads','test_' + what];
  thisAdType.debugFlagArray = ['debugAdCode','debug' + what];
@@ -1075,6 +1059,11 @@ function hackBin(_arg,currentLoc,what,delivery,onTheFly){
             if(currentLoc === 'realestate' && typeof commercialPageType !== 'undefined' && commercialPageType === 'front'){
               hackReturnValue+='/front';
             }
+            
+            //20074-CD
+            if(what === 'flex_ss_bb_hp' && (currentLoc === 'lifestyle/home' || currentLoc === 'lifestyle/home/front' || currentLoc === 'lifestyle/home-garden')){
+              hackReturnValue+='/flex';
+            }
 
         break;
 
@@ -1101,20 +1090,4 @@ if ( (typeof PIGGY_BACK_ALREADY_CALLED == "undefined" || !PIGGY_BACK_ALREADY_CAL
    } else {
       wpniAds.addScript('http://js.washingtonpost.com/wp-srv/javascript/piggy-back-on-ads.js');
    }
-}
-
-
-
-//19878
-if(window.jQuery && /test_ads\=mmoverlay/.test(location.search)){
-  wpAd.mmChecker = function(){
-    if($('#wp-ad-slug').length){
-      $(document.createElement('script')).attr({src:'http://www.washingtonpost.com/wp-srv/ad/mm.js',type:'text/javascript'}).appendTo('head');
-    }else{
-      setTimeout(wpAd.mmChecker, 500);
-    }
-  };
-  jQuery(window).load(function(){
-    wpAd.mmChecker();
-  });
 }

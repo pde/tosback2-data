@@ -528,21 +528,34 @@ SlateNav.createFlyout = function(stories, sectId) {
 		// $(li).addClass('sl-nav-menu-item-first');
 		// }
 		ul.append(li);
-		p = $(document.createElement('p'));
-		p.addClass('sl-nav-byline');
-		li.append(p);
-		// Add rubric and author data
-		span = $(document.createElement('span'));
-        span.addClass('sl-to-uppercase');
-		span.html(entry.rubric);
-		p.append(span);
-		p.append(authors);
-
+		a = $(document.createElement('a'));
+		//Add the sponsered line
+		if ((i == (stories.length-1)) && entry.isEmbeddedContent) {
+			sp = $(document.createElement('p'));
+			sp.addClass('sl-nav-byline');
+			li.append(sp);
+			sp_span = $(document.createElement('span'));
+			sp_span.attr('style', 'color:' + entry.hexcode);
+			sp_span.html("<span class='sl-to-uppercase'>Sponsored Content</span> | " +
+					entry.sponsor);
+			sp.append(sp_span);
+			a.attr('style', 'color:' + entry.hexcode + '!important');
+			entry.link = entry.link + "?wpisrc=slate_embeddedflyout";
+		} else {
+			p = $(document.createElement('p'));
+			p.addClass('sl-nav-byline');
+			li.append(p);
+			// Add rubric and author data
+			span = $(document.createElement('span'));
+	        span.addClass('sl-to-uppercase');
+			span.html(entry.rubric);
+			p.append(span);
+			p.append(authors);
+		}
 		h5 = $(document.createElement('h5'));
 		h5.addClass('sl-nav-hed');
 		li.append(h5);
 		// add menuline and link data
-		a = $(document.createElement('a'));
 		a.addClass('sl-nav-link');
 		a.attr('href', entry.link);
 		a.html(entry.menuline);
@@ -1534,7 +1547,6 @@ $(window).bind('MySlateData.Fetch', MySlateData.populateControls);
 $(document).ready(function() {
 	$(document).track();
 });
-
 /**
 * hoverIntent r6 // 2011.02.26 // jQuery 1.5.1+
 * <http://cherne.net/brian/resources/jquery.hoverIntent.html>
@@ -1563,7 +1575,7 @@ $(document).ready(function() {
 	var osmuv = 0;
 	var url = $("link[rel=\"canonical\"]").attr('href');
 	var referrer = document.referrer;
-    if (!document.location.search.match(/GT38001/) && s.getVisitNum('m','s_vmonthnum','s_monthinvisit') == 1 && s.getVisitStart("s_visit") == 1 && $("link[rel=\"canonical\"]").size() == 1)  {
+    if (!document.location.search.match(/GT1=38001/i) && s.getVisitNum('m','s_vmonthnum','s_monthinvisit') == 1 && s.hier3 == 1 && $("link[rel=\"canonical\"]").size() == 1)  {
     	osmuv = 1;
     }
     wapoEvent.logEvent('View','SGLOG', { "url": url, "osmuv": osmuv, "ref" : referrer });
@@ -1586,7 +1598,7 @@ $(document).ready(function() {
  * http://bassistance.de/jquery-plugins/jquery-plugin-validation/
  * http://docs.jquery.com/Plugins/Validation
  *
- * Copyright (c) 2006 - 2011 J????rn Zaefferer
+ * Copyright (c) 2006 - 2011 JÃ¶rn Zaefferer
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php

@@ -201,7 +201,7 @@
 														<div class="trayContentItem trayFiveCol"> 
 															<div class="firstColumn"> 
 																<div class="columnContent"> 
-																	<img src='http://www.att.com/media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' /> 
+																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' /> 
 																</div> 
 															</div> 
 																<div class="secondColumn "> 
@@ -258,7 +258,7 @@
 														<div class="trayContentItem trayFourCol"> 
 															<div class="firstColumn"> 
 																<div class="columnContent"> 
-																	<img src='http://www.att.com/media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' /> 
+																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' /> 
 																</div> 
 															</div> 
 																<div class="secondColumn "> 
@@ -298,7 +298,7 @@
 														<div class="trayContentItem trayFourCol"> 
 															<div class="firstColumn"> 
 																<div class="columnContent"> 
-																	<img src='http://www.att.com/media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' /> 
+																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' /> 
 																</div> 
 															</div> 
 																<div class="secondColumn "> 
@@ -339,7 +339,7 @@
 														<div class="trayContentItem trayFiveCol"> 
 															<div class="firstColumn"> 
 																<div class="columnContent"> 
-																	<img src='http://www.att.com/media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' /> 
+																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' /> 
 																</div> 
 															</div> 
 																<div class="secondColumn "> 
@@ -389,7 +389,7 @@
 														<div class="trayContentItem trayFourCol"> 
 															<div class="firstColumn"> 
 																<div class="columnContent"> 
-																	<img src='http://www.att.com/media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' /> 
+																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' /> 
 																</div> 
 															</div> 
 																<div class="secondColumn "> 
@@ -1109,10 +1109,19 @@
 		<div class="parsys sessionexpire modal"> 
 <div id="sessionExpire" style="display:none;">  
 	<div class="inlineModalHeader" title="SessionExpireModal"> 
-<h1 class="authWarn scenarioContent" title="sessionExpire">Session Timeout</h1>  
-<h1 class="unauthWarn scenarioContent" title="sessionExpire">Session Timeout</h1> 
-<h1 class="authExpire scenarioContent" title="sessionExpire">Session Timeout</h1> 
-<h1 class="unauthExpire scenarioContent" title="sessionExpire">Session Timeout</h1> 
+<style type="text/css"> 
+	.fauxH1 { 
+		font-size: 2em; 
+		font-weight: normal; 
+		color: #333333; 
+		line-height:1.7em; 
+		padding: 0 0 0 25px; 
+	} 
+</style>" 
+<div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
+<div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
+<div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
+<div class="fauxH1 unauthExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
 <a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" class="closeModal authWarn unauthWarn scenarioContent" data-cqpath="/content/att/shop/en/index/jcr:content/globalfooter/sessionexpire">Close</a> 
 <a href="wireless.html" class="closeModal unauthExpire scenarioContent" data-cqpath="/content/att/shop/en/index/jcr:content/globalfooter/sessionexpire">Close</a> 
 <a href="../accounts/index.html%3Fsource=IC4425j4900s2000.html" class="closeModal authExpire scenarioContent" data-cqpath="/content/att/shop/en/index/jcr:content/globalfooter/sessionexpire">Close</a> 
@@ -1206,7 +1215,7 @@
 			(function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })(); 
 		</script> 
         <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 128178561451908822532893462202615938246 --> 
+		 <!--X-Renderer: 72240986602187654337575497946730586533 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1253,7 +1262,9 @@ ATT.globalVars.wtFull = function(){
 	var urival = location.pathname.split('/'), href = location.href, wtsku, $ = jQuery,   
     	regnolist = /\/login\.html|\/bundles\.html|\/wireless\.html|\/internet\.html|\/availability\.html|\/cellphone|\/tablets|\/mobilebroadband|\/packageslist|\/individualplans|\/familyplans|\/prepaidplans|\/dataplans|\/serviceslist|\/cartsummary|\/accessorieslist|\/checkout\//, 
        teaserid = function () { 
-                var $r = jQuery("div[data-teaserid]"), teaser =[], i = $r.length; 
+                var $r = jQuery("div[data-teaserid]"), teaser =[], 
+                	i = $r.length, href = location.href,temp, 
+                	prodid, urlpart1, urlpart2, fullurl, fullpath; 
                 while(i--){ 
                     teaser[i] = $($r[i]).data('teaserid');// jQuery($r[i]).data('cqpath'); 
                 } 
@@ -1264,6 +1275,16 @@ ATT.globalVars.wtFull = function(){
         }; 
         $('<meta/>', {name: 'DCSext.wtCQDynId', content: teaserid()}).appendTo('head'); 
         ATT.log('regex block'); 
+        if(~href.indexOf('/accessorieslist') && ~href.indexOf('.prod')){ 
+        	temp = location.pathname.split('/').slice(-1).join('').split('.'); 
+        	prodid = temp[1]; 
+        	urlpart1 = temp[0]; 
+        	fullurl = urlpart1+'.html'; 
+        	fullpath = location.pathname.split('/').slice(0,-1).join('/')+'/' + fullurl; 
+        	$('<meta/>', {name: 'DCS.dcsuri', content:fullpath}).appendTo('head'); 
+        	$('<meta/>', {name: 'DCS.wtFullUri', content:location.href}).appendTo('head'); 
+        	$('<meta/>', {name: 'DCS.wtProdId', content:prodid}).appendTo('head'); 
+        } 
         if ($('meta[name*=detailPage]').length){ 
         	if($('meta[name*=detailPage]').attr('content') === 'package' || $('meta[name*=detailPage]').attr('content') === 'service'){ 
         		$('<meta/>', {name: 'DCS.dcsuri', content:urival.slice(0,-1).join('/')}).appendTo('head'); 
@@ -1369,6 +1390,7 @@ lpMTagConfig.lpTagSrv = lpMTagConfig.lpServer;
 lpMTagConfig.lpNumber = "26709415";	 
 if(~location.href.indexOf('/international')){ 
 	lpMTagConfig.deploymentID = "international"; 
+	jQuery('#lpButtonDiv-2').css('top', '20px'); 
 }else{ 
 	lpMTagConfig.deploymentID = "att"; 
 } 
@@ -1384,7 +1406,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","2hDQQj1ckvgyhKyT3JC91Qvm!1434465229!1344533948899"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","L3HLQnKYz9wDH3JsXp1xQrdm!361696121!1345227416813"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1412,4 +1434,18 @@ if(jQuery('meta[name*=wtUverseAvailResult]').attr('content') === 'green'){
 	<div class="atlastag"> 
 </div> 
 </body> 
+	<script type="text/javascript">  
+		jQuery(window).load(function(){  
+			var element = document.createElement('script');   
+			element.type='text/javascript';   
+			element.async = true;   
+			element.src='https://view.atdmt.com/jaction/cntcin_GeneralVisitorsUAT_10';   
+			document.body.appendChild(element);  
+		});  
+	</script>  
+	<noscript style="display:none">  
+		<iframe src="http://www.att.com/shop/'https://view.atdmt.com/jaction/cntcin_GeneralVisitorsUAT_10"   
+			width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">  
+		</iframe>  
+	</noscript> 
 </html> 

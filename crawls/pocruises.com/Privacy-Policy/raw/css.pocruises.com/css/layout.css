@@ -48,6 +48,11 @@ IMG {
     *display: block;
 }
 
+/* remove orange border from input controls in Chrome */
+INPUT:focus {
+  outline:none;
+}
+
 #wrapper {
     width: 100%;
     height: 100%;
@@ -82,7 +87,8 @@ IMG {
     height: 100px;
     padding: 0px 0px 0px 0px;
     margin: 0px 0px 0px 0px;
-    background: #00579e url(../Images/bg-header.gif) top left repeat-x; 
+    background: #00579e url(../Images/bg-header.gif) top left repeat-x;
+    position:relative; 
 }
 
 #print-logo {
@@ -303,14 +309,14 @@ IMG {
 /* header styles start */
 #header .left {
     float: left;
-    width: 415px;
+    width: 400px;
     margin: 0px 0px 0px 45px;
     padding-top: 7px;
 }
 
 #header .right {
     float: right;
-    width: 455px;
+    width: 470px;
     margin: 0px 45px 0px 0px;
 }
 
@@ -338,7 +344,7 @@ IMG {
     color: #FFFFFF;
     position:absolute;
     top:56px;
-    right:0px;
+    /* right:0px; */
 }
 /*
 #header-search {
@@ -366,6 +372,17 @@ IMG {
 .headersearch LABEL {
   color:#ffffff;
   padding:4px 3px 0 0;
+}
+
+.newheadersearch {
+    clear: none;
+    float: right;
+    margin: 2px 0px 0px 0px;
+    /* 
+    background-color:#709DC1;
+    padding: 3px 6px; 
+    */
+    width:auto;
 }
 
 #header-cruise-search.headersearch
@@ -475,15 +492,18 @@ INPUT.headersearchbutton:hover {
 
 #header .right #header-links {
     float: right;
-    margin: -7px 0px 0px 0px;
-    width: 450px;
+    margin: 7px 5px 0px 0px;
+/*    width: 300px; */
+    position:absolute;
+    width:auto;
+    right:190px;
 }
 
 #header .right #header-links UL {
     float: right;
     clear: both;
     list-style: none;
-    margin: 40px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
 }
 
 #header .right #header-links UL LI {
@@ -1019,6 +1039,7 @@ H2.boxlink {
     width: 660px;
     height: 50px;
     margin-top: -12px;
+    position:relative;
 }
 
 #secondary-nav UL {
@@ -1028,6 +1049,10 @@ H2.boxlink {
     height: 38px;
     border-left: 1px solid #CDD8E6;
     background: url(../Images/bg-secondary-nav.gif) top left repeat-x;
+}
+
+BODY.worldCruisePage #secondary-nav UL {
+    border-left: none;
 }
 
 #secondary-nav UL.leftUL
@@ -1042,6 +1067,22 @@ H2.boxlink {
 	float:right !important;
 	clear: none !important;
 }
+
+.BannerNavSocailMedia
+{
+    position:absolute;
+    top:0;
+    right:0;
+    font-size: 0.8em;
+    height: 38px;
+    width: 400px;
+}
+
+.BannerNavSocailMedia .buddyMedia
+{
+    width: 400px;
+}
+
 
 DIV.new-programme-nav
 {
@@ -1065,6 +1106,20 @@ DIV.new-programme-nav
     list-style: none;
     margin: 0px;
     display: inline;
+}
+
+.worldCruisePage #secondary-nav UL LI.active A, #worldCruises #secondary-nav UL LI.active A
+{
+    background-color:#074391 !important;
+    color:#fff !important;
+}
+
+.worldCruisePage #secondary-nav UL LI A SPAN
+{
+    background:#e30613;
+    padding:0 2px 0 2px;
+    margin:0 3px 0 0;
+    color:#fff;
 }
 
 #secondary-nav UL LI A {
@@ -5455,7 +5510,7 @@ width : 134px !important;
 {
 	float:right;
 	width:256px;
-	background-color:#FFECB2;
+	background-color:#e4eef4;
 	display:inline;
 	margin: 10px 0 0 0;
 }
@@ -5889,7 +5944,7 @@ A.ships-Video
 	width:660px !important;
 }
 
-#rtCont
+#rtCont, .rtCont
 {
 	float:right;
 	width:179px;
@@ -5915,6 +5970,7 @@ A.ships-Video
     padding-bottom: 7px;
     width: 180px;
     letter-spacing: 0.1px;
+    white-space:normal;
 }
 .divCont
 {
@@ -6025,6 +6081,13 @@ BODY#CruiseLanding .CTmoreDeal
 	float:left;
 	margin-right:5px;
 }
+
+.hiddenProp
+{
+    display:none !important;
+}
+
+
 BODY#CruiseLanding .CTShowCruise
 {
 	margin:0px;
@@ -6041,8 +6104,13 @@ BODY#CruiseLanding #right
 {
 width:200px;
 float:left;
-padding-left:3px;
 margin:0px;
+padding:0 0 0 3px !important;
+}
+
+BODY#CruiseLanding #right #search-box
+{
+    margin:0 !important;
 }
 
 
@@ -6075,7 +6143,7 @@ margin-top:-70px;
     /*margin-top: -35px !important;*/
     margin:0px !important;
     padding:0px !important;
-    margin-top: -50px !important;
+    margin-top: -12px !important;
     
 }
 .worldCruisePage #content #right
@@ -6151,15 +6219,21 @@ visibility:visible !important;
 
 
 
-.divCruiseOffersIntroLeft h1
+.divCruiseOffersIntroLeft h1, .worldCruiseShipsOverview h1
 {
 	color:#074391;
 	margin-bottom:5px;
 	margin-top:17px;
 }
+
+.worldCruiseShipsOverviewRight
+{
+    margin-top:20px;
+}
+
 .divCruiseOffersIntroLeft h2, .divCruiseOffersIntroRight h2
 {
-	color:#5D5853;
+	color:#074391;
 
 }
 #worldCruises #right
@@ -6379,6 +6453,7 @@ text-decoration:none;
 
 #bannerVideo {
  position:relative;
+ z-index:1000;
 }
 
 #bannerVideo DIV {
@@ -6388,8 +6463,9 @@ text-decoration:none;
 
 #worldCruises #bannerVideo DIV {
   position:absolute;
-  left:256px;
+/*  left:256px;
   top: -388px;
+*/
 }
 
 /*
@@ -6398,16 +6474,26 @@ text-decoration:none;
 }
 */
 .ieBannerVideo {
-  position:inherit;
+  /* position:inherit; */
   /* margin-top:-369px; */
   margin-top:-1px;
   z-index:5;
-}
+  position:absolute;
+  height:369px;
+  width:656px;}
 
 #bannerVideo.ieBannerVideo {
-  position:inherit;
+  /* position:inherit; */
   z-index:5;
 /*  margin-top:-369px; */
+  position:absolute;
+  height:369px;
+  width:656px;
+}
+
+
+#worldCruises #bannerVideo.ieBannerVideo A#banner-load-video {
+  top:140px;
 }
 
 
@@ -6436,8 +6522,14 @@ background: url("../Images/video_background.jpg") no-repeat scroll 40% 20% #528C
   top:150px;
   left:485px;
   */
-  margin-top:-388px;
+  margin-top:-369px;
   margin-left:256px;
+}
+
+#worldCruises #bannerVideo.jquery-youtube-tubeplayer.ieBannerVideo {
+  position:absolute;
+  z-index:5000;
+  margin-top:-379px;
 }
 
 #worldCruises #bannerVideo.ieBannerVideo A.BannerVideoCloseLink {
@@ -6552,7 +6644,7 @@ width:150px;
 }
 #ExperienceItem H1
 {
-	color:#5D5853;
+	color:#074391;
 	float:left;
 }
 
@@ -6796,6 +6888,12 @@ font-family:Arial;
 	font-size:12px !important;
 	margin-bottom:23px !important;
 }
+
+#navitem2Bin ul#divFindBook1  p.secondtitle
+{
+    margin-bottom: 13px !important;
+}
+
 #navitem2Bin p.titleHeader
 {	
 	margin-top:10px !important;
@@ -6919,7 +7017,7 @@ padding-left:17px;
 #worldCruises #content #right #search-box
 {
 	
-	margin-top:18px !important;
+	margin-top:32px !important;
 }
 .inLowerSec a:hover
 {
@@ -6962,6 +7060,18 @@ width:auto !important;
     margin-bottom:0 !important;
 width:80% !important;
 }
+
+.divCruiseOffersIntroRight TABLE
+{
+    margin:0 0 10px 0;
+}
+
+.divCruiseOffersIntroRight TABLE TD
+{
+    padding:0 10px 0 0;
+    font-size:0.9em;
+}
+
 .divCruiseOffersIntroRightEBS
 {
 	background-color:#af9846;
@@ -7291,12 +7401,12 @@ font-weight:400;
 }
 .earlyDetails p
 {
-	color:#FFFFFF !important;
+	color:#5D5853 !important;
 font-family:Arial;
 font-size:12px;
 line-height:16px;
-margin:0;
-padding:0 0 0px 12px !important;
+margin:-3px 0 0 0 !important;
+padding:0 !important;
 float:left;
 width:120px !important;
 font-weight:400;
@@ -8461,7 +8571,7 @@ height:0px;
 	float:left;
 	background:url('../Images/home_SearchPanel.png') no-repeat 0 0;
 	width:267px;
-	height:215px;
+	height:192px;
 	padding:6px 15px 4px 15px;
 position:absolute;
 top:40px;
@@ -8481,7 +8591,7 @@ left:643px;
 	top:0px;
 	left:0px;
 	width:177px;
-	height:237px;
+	height:204px;
 	padding-bottom:15px;
 	background:url("../Images/FindBook_SearchPanel.png") no-repeat scroll 0 0 transparent !important;
 }
@@ -8566,6 +8676,57 @@ font-weight:300 !important;
 	/*width:269px !important;*/
 	background: #005ca2;
 	
+}
+
+.searchholidaynumber
+{
+  float:right;
+  z-index:10;
+  line-height:24px;
+  height:24px;
+  position:relative; 
+  width:267px;
+  /* margin-top:-24px; */
+  /* margin-bottom:2px; */
+  padding-right:1px;
+}
+
+.QuickSearchBox .searchholidaynumber
+{
+  width:179px;
+}
+
+.QuickSearchBox .searchholidaynumber INPUT#cq
+{
+}
+
+.searchholidaynumber input, .searchholidaynumber INPUT#strSearchStringSubmit
+{
+  float:right;
+  background-color:#fff;
+  border:0;
+  height:20px;
+  line-height:20px;
+  margin-top:2px;
+  padding-left:2px;
+}
+
+.searchholidaynumber INPUT#strSearchStringSubmit {
+  background:#fff url(../Images/btn_SearchHoliday.png) no-repeat center;
+  -moz-border-radius: 0 2px 2px 0;
+  -webkit-border-radius: 0 2px 2px 0;
+  -o-border-radius: 0 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  width:24px;
+}
+
+INPUT#cq, INPUT#cq:focus {
+  -moz-border-radius: 2px 0 0 2px;
+  -webkit-border-radius: 2px 0 0 2px;
+  -o-border-radius: 2px 0 0 2px;
+  border-radius: 2px 0 0 2px;
+  outline:none;
+  width:50px;
 }
 
 /*.QuickSearchBox select option
@@ -9179,7 +9340,7 @@ A.chooseCabin
 	display:block;
 }
 
-.cruiseOverviewLeft .backToSearch, .cruiseShipsLifeOnBoard .backToSearch, #cruiseItinerary .backToSearch, #cruiseShoreExcusions .backToSearch
+.cruiseOverviewLeft .backToSearch, .cruiseShipsLifeOnBoard .backToSearch, #cruiseItinerary .backToSearch, #cruiseShoreExcusions .backToSearch, .cruiseOverviewContent .backToSearch
 {
 	margin:25px 0 0 0;
 	font-size:0.8em;
@@ -9471,9 +9632,33 @@ A.btnAddWishList
 
 DIV.buddyMedia
 {
-    width:395px;
+    width:415px;
     float:left;
 }
+
+DIV.buddyMediaRHS
+{
+    width:190px;
+    float:left;
+    margin:15px 0 0 15px;
+}
+
+DIV.buddyMediaTitleRHS
+{
+    float:left;
+    font-size:0.8em;
+    width:190px;
+}
+
+DIV.buddyMediaRHSIcons
+{
+    float:left;
+    width:190px;
+    margin:5px 0 5px 0;
+    line-height:18px;
+    position:relative;
+}
+
 
 
 span.printSpan IMG
@@ -9829,7 +10014,7 @@ span.printSpan
 
 #cruiseSocialMediaContent span#btnRemoveWishListDiv
 {
-	padding-top:2px;
+	/*padding-top:2px;*/
 }
 
 
@@ -10344,7 +10529,7 @@ DIV#dialog A, DIV#dialog A:link, DIV#dialog A:active, DIV#dialog A:visited
 
 span.redhighlight
 {
-	background:red;
+	background:#e30613;
 	color:#fff;
 	padding:1px 2px 1px 2px;
 	text-decoration:none;
@@ -10676,7 +10861,7 @@ DIV.moreOffersCruise DIV.latedetailsmini
 
 SPAN.latesgetaway
 {
-    color:#00AAE7;
+    color:#00AAE7 !important;
     
 } 
 
@@ -11374,6 +11559,17 @@ DIV.imageoffers
 DIV.imageoffer
 {
     margin:0 0 10px 0;
+    position:relative;    
+}
+
+SPAN.ImageOfferText
+{
+    position:absolute;
+    bottom:35px;
+    left:10px;
+    color:#fff;
+    font-size:0.8em;
+    font-weight:bold;
 }
 
 .footershim
@@ -11731,6 +11927,329 @@ DIV#container DIV.wishListButtons DIV.helpBox DIV.closeBaloon
 
 /*wishlist tooltip*/
 
+/* world cruise pages */
+
+.cruiseTabs DIV
+{
+    float:left;
+    padding:0 10px 10px 0;
+}
+
+.cruiseTabContent
+{
+    clear:both;
+}
+
+.WorldCruiseLanding .CTimage img
+{
+    height:108px;
+    width:180px;
+}
+
+.cruiseTabInfo
+{
+    padding:12px;
+}
+
+
+#WorldCruiseTabs
+{
+    float:left;
+}
+
+#WorldCruiseTabs #pageTabs
+{
+    height:30px;
+    margin:0 10px 0 15px;
+    padding:0;
+    border-bottom:solid 1px #074391;
+    width:630px;
+}
+
+#WorldCruiseTabs #pageTabs UL LI
+{
+	padding:5px 10px 5px 10px;
+	color:#ffffff;
+	height:20px;
+}
+
+#WorldCruiseTabs #pageTabs UL LI.Active
+{
+    background-color:#074391;
+}
+
+#WorldCruiseTabs #pageTabs UL LI
+{
+    background-color:#B4C6DE;
+}
+
+#WorldCruiseTabs #pageTabs UL LI.Active SPAN
+{
+    background-color:#e30613;
+}
+
+#WorldCruiseTabs #pageTabs UL LI SPAN
+{
+    background-color:#f7b4b8;
+}
+
+#WorldCruiseTabs #pageTabs UL LI:hover
+{
+    cursor:pointer;
+}
+
+#WorldCruiseTabs #pageTabs UL LI SPAN
+{
+    background:#e30613;
+    padding:2px 2px 0 2px;
+    margin:0 3px 0 0;
+    font-size:14px;
+}
+
+.WorldCruiseLandingExperience .item
+{
+    margin-left:0px !important;
+    padding-left:10px;
+}
+
+DIV.cruiseTabInfo DIV.halfWidth
+{
+    width:50%;
+    float:left;
+}
+
+.importantFloatLeft
+{
+    float:left !important;
+}
+
+DIV.cruiseTabInfo DIV.halfWidth UL, DIV.cruiseTabInfo DIV.halfWidthBoxRight UL
+{
+    clear: both;
+    float: left;
+    font-size: 0.8em;
+    list-style: none outside none;
+}
+
+DIV.cruiseTabInfo DIV.halfWidth UL LI, DIV.cruiseTabInfo DIV.halfWidthBoxRight UL LI
+{
+    background: url("../Images/lates/tick_DarkBlue.png") no-repeat scroll left center transparent;
+    margin: 0;
+    padding: 0 0 4px 15px;
+}
+
+
+DIV.WorldCruiseLanding
+{
+    clear:both;
+    padding:20px 0 0 0;
+}
+
+DIV.cruiseTabInfo H3
+{
+    font-family:cronos-pro,sans-serif;
+    color:#074391;
+    font-size:1.2em;
+    font-weight:300;
+}
+
+DIV.extraInfoContainer
+{
+    padding:0 0 20px 0 !important;
+    float:left;
+}
+
+DIV.extraInfo
+{
+    width:50%;
+    float:left;
+}
+
+
+DIV.WorldCruiseSocailMedia
+{
+    margin:0 0 0 -15px !important;
+    width:672px !important;    
+}
+
+DIV.WorldCruiseSocailMedia DIV#cruiseSocialMediaContent
+{
+    padding:9px 0 0 25px;
+}
+
+DIV.cruiseTabContent H2
+{
+    color:#074391 !important;
+    
+}
+
+DIV.cruiseTabContent .CTdetails
+{
+    padding:0 0 10px 0;
+}
+
+DIV.WorldCruisePageRight DIV.SelectedReviewsTitle
+{
+    background-color:#FFECB2;
+    float:left;
+    margin:0 0 0 15px !important;
+    padding: 10px; 
+    width:175px;    
+   
+}
+DIV.WorldCruisePageRight DIV.SelectedReviewsTitle H2
+{
+    color:#074391;
+}
+
+DIV.WorldCruisePageRight DIV.SelectedReviews
+{
+    margin:0 0 0 15px !important;
+    padding: 0 10px 10px 10px;
+    width:175px;
+    float:left;
+}
+
+DIV.WorldCruisePageRight DIV.SelectedReviews P
+{
+    font-size:0.8em;
+}
+
+DIV.bannerButtons
+{
+    padding: 0;
+    position: absolute;
+    width: 345px;
+    z-index: 11;
+    top:333px;
+    left:532px;
+}
+
+DIV.bannerButtons .leftBannerButton
+{
+    display:block;
+    float:left;
+}
+
+DIV.bannerButtons .rightBannerButton
+{
+    display:block;
+    float:right;
+}
+
+
+/* world cruise pages */
+
+
+/* Half width box */
+
+DIV.HalfWidthBox
+{
+    float:left;
+    width:46%;
+    padding:2%;
+}
+
+DIV.HalfBoxBlue
+{
+    background-color:#e4eef4;
+}
+
+DIV.halfWidthBoxLeft
+{
+    float:left;
+    width:25%;
+}
+
+DIV.halfWidthBoxRight
+{
+    float:right;
+    width:75%;
+}
+
+DIV.divCruiseOffersIntroRight DIV.HalfWidthBox
+{
+    width:100%;
+}
+
+DIV.divCruiseOffersIntroRight DIV.halfWidthBoxFull
+{
+    margin:10px 0 0 0;
+}
+
+DIV.divCruiseOffersIntroRight DIV.halfWidthBoxFull IMG
+{
+    margin:0 10px 10px 0;
+}
+
+DIV.divCruiseOffersIntroRight DIV.halfWidthBoxFull P
+{
+    clear:none !important;
+    float:none !important;
+    line-height:1.5em !important;
+}
+
+DIV.divCruiseOffersIntroRight DIV.HalfWidthBox h3
+{
+    float:none !important;
+    font-family:cronos-pro,sans-serif;
+    color:#074391;
+    font-size:1.2em;
+    font-weight:300;    
+}
+
+
+/* Half width box */
+
+
+/* RightSideImageLinkContainer */
+
+DIV.RightSideImageLinkContainer
+{
+    float:left;
+    padding:0;
+    margin:0 0 11px 15px;
+    position:relative;
+}
+
+DIV.RightSideImageLinkPad
+{
+    height:15px;
+    float:left;
+    padding-left:15px;
+}
+
+DIV.ButtonImageContainer
+{
+    position:absolute;
+    bottom:10px;
+    left:10px;
+    width:175px;
+    
+}
+
+A.RSLLeftButton
+{
+    float:left;
+}
+
+A.RSLRightButton
+{
+    float:right;
+}
+
+
+div.virtualtoursidebar {
+  background-color:#FFECB2;
+  margin:18px 0;
+  padding:10px;
+}
+
+#content-two #right div.virtualtoursidebar P {
+  font-size:12px !important;
+}
+
+/* RightSideImageLinkContainer */
 
 
 /*

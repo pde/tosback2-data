@@ -1,7 +1,7 @@
 /*global commercialNode:true,wp_meta_data:true,escape,unescape,TWP,estNowWithYear,dfpcomp,spec_ord,console*/
 var wpAd, placeAd2;
 
-(function (window, undefined) {
+(function (win, doc, undefined) {
 
   'use strict';
 
@@ -16,16 +16,20 @@ var wpAd, placeAd2;
     exec: {
       adj: function () {
         //this is lame, but we have no choice:
-        document.write(wpAd.tools.tagBuilder());
+        doc.write(wpAd.tools.tagBuilder());
       },
       pfadx: function () {
         //this is lame, but we have no choice at the moment:
-        document.write(wpAd.tools.tagBuilder('adj'));
+        doc.write(wpAd.tools.tagBuilder('adj'));
+      },
+      pfadxjs: function(){
+        //append script to the head
+        wpAd.tools.addScript(wpAd.briefcase.dcUrl);
       },
       adi: function () {
         var pos = wpAd.briefcase.pos,
           what = wpAd.briefcase.what,
-          slug = document.getElementById('wpni_adi_' + pos) || document.getElementById('slug_' + pos);
+          slug = doc.getElementById('wpni_adi_' + pos) || doc.getElementById('slug_' + pos);
         if(slug) {
           wpAd.tools.removeChildren(slug);
           slug.appendChild(wpAd.tools.iframeBuilder({
@@ -36,13 +40,13 @@ var wpAd, placeAd2;
             "height": wpAd.config.adtypes[what].size[0][1]
           }));
         } else {
-          document.write(wpAd.tools.tagBuilder());
+          doc.write(wpAd.tools.tagBuilder());
         }
       },
       fif: function () {
         wpAd.briefcase.fif = true;
         var pos = arguments[0] || wpAd.briefcase.pos,
-          slug = document.getElementById('wpni_adi_' + pos) || document.getElementById('slug_' + pos);
+          slug = doc.getElementById('wpni_adi_' + pos) || doc.getElementById('slug_' + pos);
 
         if(slug) {
           //wpAd.tools.removeChildren(slug);
@@ -52,7 +56,7 @@ var wpAd, placeAd2;
             "name": "fif_" + pos
           }));
         } else {
-          document.write(wpAd.tools.tagBuilder());
+          doc.write(wpAd.tools.tagBuilder());
         }
       },
       hardcode: function () {
@@ -62,22 +66,21 @@ var wpAd, placeAd2;
         if(hc) {
           //else if hc is an html element, append it,
           if(typeof hc === 'object' && hc.tagName) {
-            slug = document.getElementById('slug_' + wpAd.briefcase.pos);
+            slug = doc.getElementById('slug_' + wpAd.briefcase.pos);
             if(slug) {
               slug.appendChild(hc);
             }
           }
           //else we need to just document.write it.
           else if(typeof hc === 'string') {
-            //replace < with \x3C
-            document.write(wpAd.tools.escapeScriptTags(hc));
+            doc.write(wpAd.tools.escapeScriptTags(hc));
           }
         }
       },
       ajax: function () {
         var pos = wpAd.briefcase.pos,
           what = wpAd.briefcase.what,
-          slug = document.getElementById('wpni_adi_' + pos) || document.getElementById('slug_' + pos);
+          slug = doc.getElementById('wpni_adi_' + pos) || doc.getElementById('slug_' + pos);
         if(slug) {
           wpAd.tools.removeChildren(slug);
           slug.appendChild(wpAd.tools.iframeBuilder({
@@ -115,7 +118,7 @@ var wpAd, placeAd2;
       var ad = wpAd.tools.adsToBeCleaned.length,
         s, slug, scripts;
       while(ad--) {
-        slug = document.getElementById('slug_' + wpAd.tools.adsToBeCleaned[ad]);
+        slug = doc.getElementById('slug_' + wpAd.tools.adsToBeCleaned[ad]);
         if(slug) {
           scripts = slug.getElementsByTagName('script');
           s = scripts.length;
@@ -130,16 +133,16 @@ var wpAd, placeAd2;
     tools: {
       adsToBeCleaned: [],
       addCSS: function (b) {
-        var a = document.createElement('link');
+        var a = doc.createElement('link');
         a.href = b;
         a.rel = 'stylesheet';
         a.type = 'text/css';
-        document.getElementsByTagName('head')[0].appendChild(a);
+        doc.getElementsByTagName('head')[0].appendChild(a);
         return true; //this needs to return a true value because of the way that the google ads are written via the hardcode
       },
       addElement: function (el, o) {
         var key;
-        el = typeof el === 'string' ? document.createElement(el) : el;
+        el = typeof el === 'string' ? doc.createElement(el) : el;
 
         if(arguments[1] && typeof arguments[1] === 'object') {
           if(o.css) {
@@ -151,7 +154,7 @@ var wpAd, placeAd2;
             delete o.css;
           }
           if(o.appendTo) {
-            var appendTo = typeof o.appendTo === 'string' ? document.getElementById(o.appendTo) : o.appendTo;
+            var appendTo = typeof o.appendTo === 'string' ? doc.getElementById(o.appendTo) : o.appendTo;
             if(appendTo) {
               appendTo.appendChild(el);
             }
@@ -165,18 +168,20 @@ var wpAd, placeAd2;
         }
         return el;
       },
-      addScript: function (b) {
-        var a = document.createElement("script");
-        a.type = "text/javascript";
-        a.src = b;
-        if(arguments[1]) {
-          a.onload = arguments[1];
+      addScript: function(){
+        var l = arguments.length,
+          h = doc.getElementsByTagName('head')[0],
+          i = 0, s;
+        for(i;i<l;i++){
+          s = doc.createElement('script');
+          s.type = 'text/javascript';
+          s.src = arguments[i];
+          h.appendChild(s);
         }
-        document.getElementsByTagName("head")[0].appendChild(a);
       },
       adopsDebug: function () {
         if(wpAd.flags.debug) {
-          if(!document.getElementById('adopsDebugDiv')) {
+          if(!doc.getElementById('adopsDebugDiv')) {
             var d = wpAd.tools.addElement('div', {
               css: {
                 fontSize: '9px',
@@ -197,7 +202,7 @@ var wpAd, placeAd2;
               id: 'adopsDebugDiv'
             });
 
-            document.body.insertBefore(d, document.body.firstChild);
+            doc.body.insertBefore(d, doc.body.firstChild);
           }
           wpAd.tools.addElement('div', {
             css: {
@@ -206,13 +211,13 @@ var wpAd, placeAd2;
               borderTop: '1px dashed #aaa'
             },
             innerHTML: '<div style="margin-bottom:4px;"><span style="color:#360;font-size:12px;font-weight:bold;">' + wpAd.briefcase.pos + ': </span><span style="color:#000;font-size:14px;">placeAd2("' + wpAd.briefcase.defaults.where + '","' + wpAd.briefcase.defaults.what + '","' + wpAd.briefcase.defaults.delivery + '","' + wpAd.briefcase.defaults.onTheFly + '");</span></div>' + (wpAd.briefcase.id ? '<div style="font-weight:bold;">Successful Template: <span style="color:#369;">' + wpAd.briefcase.id + '</span></div>' : '') + '<div>' + ((wpAd.briefcase.keyvalues || wpAd.briefcase.hardcode) ? (!wpAd.briefcase.hardcode ? wpAd.briefcase.dcUrl : '<span style="color:#770077;font-weight:bold;">Hardcoded: </span><textarea cols="150" rows="3" style="display:block;padding:3px;">' + wpAd.briefcase.hardcode + '</textarea>') : '<span style="font-style:italic;color:#a00">Failed template check.</div>') + '</div>',
-            appendTo: document.getElementById('adopsDebugDiv')
+            appendTo: doc.getElementById('adopsDebugDiv')
           });
         }
       },
       adopsDebugToggle: function () {
-        var toggleButton = document.getElementById('adopsDebugToggle'),
-          adopsDebugDiv = document.getElementById('adopsDebugDiv');
+        var toggleButton = doc.getElementById('adopsDebugToggle'),
+          adopsDebugDiv = doc.getElementById('adopsDebugDiv');
         adopsDebugDiv.style.display = (toggleButton.innerHTML === 'Show Data') ? 'block' : 'none';
         toggleButton.innerHTML = (toggleButton.innerHTML === 'Show Data') ? 'Hide Data' : 'Show Data';
       },
@@ -245,8 +250,8 @@ var wpAd, placeAd2;
         exec: function (template) {
           var val, rule;
           for(rule in wpAd.tools.checks) {
-            if(template[rule]) {
-              if(typeof template[rule] === 'string') {
+            if(wpAd.tools.checks.hasOwnProperty(rule) && template[rule]){
+              if(typeof template[rule] === 'string' || typeof template[rule] === 'boolean') {
                 template[rule] = [template[rule]];
               }
               val = template[rule].length;
@@ -280,13 +285,19 @@ var wpAd, placeAd2;
           var dates = template_value.split('/');
           return estNowWithYear >= dates[0] && estNowWithYear <= dates[1] ? true : false;
         },
-        cookie: function (template_value) {
+        cookie_check: function (template_value, obj) {
           for(var key in template_value) {
-            if(!wpAd.tools.checkCookieVal(key, template_value[key])) {
+            if(template_value.hasOwnProperty(key) && !wpAd.tools.checkCookieVal(key, template_value[key])) {
               return false;
             }
           }
           return true;
+        },
+        url_check: function(template_value, obj){
+          return !!(typeof template_value === 'string' ? new RegExp(template_value) : template_value).test(location.href);
+        },
+        is_local: function(template_value, obj){
+          return template_value === wpAd.flags.is_local;
         },
         what: function (what, obj) {
           if(/^\!/.test(what)) {
@@ -326,7 +337,8 @@ var wpAd, placeAd2;
           'fif': 'adj',
           'ajax': 'adi',
           'adi': 'adi',
-          'pfadx': 'pfadx'
+          'pfadx': 'pfadx',
+          'pfadxjs': 'pfadx'
         };
         return types[wpAd.briefcase.delivery] ? types[wpAd.briefcase.delivery] : 'adi';
       },
@@ -335,7 +347,7 @@ var wpAd, placeAd2;
       },
       debug: function () {
         if(wpAd.flags.debug) {
-          var a = document.getElementById('wpni_adi_' + wpAd.briefcase.pos) || document.getElementById('slug_' + wpAd.briefcase.pos),
+          var a = doc.getElementById('wpni_adi_' + wpAd.briefcase.pos) || doc.getElementById('slug_' + wpAd.briefcase.pos),
             html = '<div style="line-height:normal;position:absolute;float:left;z-index:10000000"><div style="border:1px solid #000;text-align:left;text-transform:none;letter-spacing:normal;line-spacing:normal;padding:8px;width:320px;background-color:#FA0;color:#5B24FF5B24FF;font-family:verdana;font-size:10px;word-wrap:break-word;text-wrap:unrestricted;font-weight:normal;"><div style="font-weight:bold;line-height:14px;">' + wpAd.briefcase.pos + ':</div><div>' + (!wpAd.briefcase.hardcode ? wpAd.briefcase.dcUrl : '<div>Hardcoded:</div><textarea cols="56" rows="8" style="font-size:10px;display:block;padding:3px;width:310px;background-color:#eeeeee;border:1px solid #333;">' + wpAd.briefcase.hardcode + '</textarea>') + '</div></div></div>';
 
           if(a) {
@@ -349,7 +361,7 @@ var wpAd, placeAd2;
               }
             });
           } else {
-            document.write(html);
+            doc.write(html);
           }
         }
       },
@@ -364,7 +376,8 @@ var wpAd, placeAd2;
           'iframe': 'adi',
           'inline': 'adi',
           'fif': 'fif',
-          'pfadx': 'pfadx'
+          'pfadx': 'pfadx',
+          'pfadxjs': 'pfadxjs'
         };
         delivery = delivery.toLowerCase();
         return types[delivery] ? types[delivery] : 'adj';
@@ -386,7 +399,7 @@ var wpAd, placeAd2;
         return obj;
       },
       escapeScriptTags: function (str) {
-        return str.replace(/<script/g, '<s'+'cript').replace(/<\/script/g, '</s'+'cript');
+        return str.replace(/<\/script/g, '<\/script');
       },
       estNowWithYear: typeof estNowWithYear !== 'undefined' ? estNowWithYear : (function () {
         var a = new Date(),
@@ -400,8 +413,8 @@ var wpAd, placeAd2;
           m = (a.getTimezoneOffset() - ((n < 3 || n > 11) ? 300 : (n > 3 && n < 11) ? 240 : (n === 3) ? (t > (s + 7) || (t === (s + 7) && a.getHours() >= 2)) ? 240 : 300 : (t > s || (t === s && a.getHours() >= 2)) ? 300 : 240)) * 60000,
           b = new Date(e + m),
           d = '' + ((b.getYear() < 1900) ? b.getYear() + 1900 : b.getYear()) + (((b.getMonth() + 1) < 10) ? "0" + (b.getMonth() + 1) : (b.getMonth() + 1)) + ((b.getDate() < 10) ? "0" + b.getDate() : b.getDate()) + ((b.getHours() < 10) ? "0" + b.getHours() : b.getHours()) + ((b.getMinutes() < 10) ? "0" + b.getMinutes() : b.getMinutes());
-        window.estNowWithYear = d.toString();
-        return window.estNowWithYear;
+        win.estNowWithYear = d.toString();
+        return win.estNowWithYear;
       })(),
       generateTemplate: function () {
         if(!wpAd.flags.demoAds) {
@@ -417,7 +430,7 @@ var wpAd, placeAd2;
         }
       },
       getCookie: function (name) {
-        var cookie = " " + document.cookie,
+        var cookie = " " + doc.cookie,
           search = " " + name + "=",
           str = null,
           offset = 0,
@@ -436,7 +449,7 @@ var wpAd, placeAd2;
         return(str);
       },
       iframeBuilder: function (atts) {
-        var i = document.createElement('iframe'),
+        var i = doc.createElement('iframe'),
           key;
 
         atts = atts || {};
@@ -458,7 +471,7 @@ var wpAd, placeAd2;
         return i;
       },
       interstitial : function(){
-        if(document.cookie && !/no_interstitials|reload\=true/gi.test(location.search)){
+        if(doc.cookie && !/no_interstitials|reload\=true/gi.test(location.search)){
           var name = 'wp_pageview', 
           cookieVal = wpAd.tools.getCookie(name), 
           rv = true, 
@@ -514,7 +527,7 @@ var wpAd, placeAd2;
         return what;
       },
       postLoadDebug: function () {
-        var s = document.getElementsByTagName('script'),
+        var s = doc.getElementsByTagName('script'),
           a = s.length;
 
         while(a--) {
@@ -545,7 +558,7 @@ var wpAd, placeAd2;
       },
       removeChildren: function (slug) {
         if(typeof slug === 'string') {
-          slug = document.getElementById(slug);
+          slug = doc.getElementById(slug);
         }
         if(slug && slug.hasChildNodes()) {
           var l = slug.childNodes.length;
@@ -556,10 +569,10 @@ var wpAd, placeAd2;
         }
       },
       setCookie: function (name, val, expires, path, domain, secure) {
-        document.cookie = name + "=" + escape(val) + (expires ? "; expires=" + expires : "") + (path ? "; path=" + path : "") + (domain ? "; domain=" + domain : "") + (secure ? "; secure" : "");
+        doc.cookie = name + "=" + escape(val) + (expires ? "; expires=" + expires : "") + (path ? "; path=" + path : "") + (domain ? "; domain=" + domain : "") + (secure ? "; secure" : "");
       },
       slugDisplay: function () {
-        var slug = document.getElementById('slug_' + wpAd.briefcase.pos);
+        var slug = doc.getElementById('slug_' + wpAd.briefcase.pos);
         if(slug) {
           slug.style.display = 'block';
         }
@@ -590,7 +603,7 @@ var wpAd, placeAd2;
         return c.replace(/</gi, '&lt;').replace(/>/gi, '&gt;');
       },
       urlCheck: function (arg) {
-        var loc = parent.window.location.href || document.referrer,
+        var loc = parent.window.location.href || doc.referrer,
           obj = (arguments[1] && typeof arguments[1] === 'object') ? arguments[1] : null,
           regex = (obj !== null && obj.type === 'variable') ? new RegExp("[\\?&;]" + arg + "=([^&#?]*)") : new RegExp(arg),
           results = regex.exec(loc);
@@ -618,6 +631,12 @@ var wpAd, placeAd2;
         }
         return false;
       },
+      writeScript: function(){
+        var l = arguments.length, i = 0;
+        for(i;i<l;i++){
+          doc.write('<script type="text/javascript" src="' + arguments[i] + '"><\/script>');
+        }
+      },
       zoneBuilder: {
         contentType: {
           AudioStory: "audio",
@@ -630,7 +649,7 @@ var wpAd, placeAd2;
           VideoStory: "video"
         },
         subsection: function(){
-          return window.wp_meta_data && wp_meta_data.subsection ? '/' + wp_meta_data.subsection.toString() : '';
+          return win.wp_meta_data && wp_meta_data.subsection ? '/' + wp_meta_data.subsection.toString() : '';
         },
         name: function () {
           return wp_meta_data.contentName ? '/' + this.valid() + wp_meta_data.contentName : '';
@@ -666,7 +685,7 @@ var wpAd, placeAd2;
               return typeof wp_meta_data.keywords === 'object' ? wp_meta_data.keywords.join(",").toLowerCase() : wp_meta_data.keywords.toLowerCase();
             } else {
               //non-methode pages and pages where wp_meta_data.keywords is not defined:
-              var meta = document.getElementsByTagName('meta'),
+              var meta = doc.getElementsByTagName('meta'),
                 l = meta.length || 0;
 
               while(l--) {
@@ -790,7 +809,8 @@ var wpAd, placeAd2;
             'ajax': 'iframe',
             'adi': 'iframe',
             'fif': 'js',
-            'pfadx': 'pfadx'
+            'pfadx': 'pfadx',
+            'pfadxjs': 'pfadxjs'
           };
         if(wpAd.exec[del] && types.hasOwnProperty(del)) {
           return types[del];
@@ -838,7 +858,7 @@ var wpAd, placeAd2;
       u: function () {
         return wpAd.cache.hasOwnProperty('u') ? wpAd.cache.u : (function () {
           var s_vi = wpAd.tools.getCookie('s_vi'),
-            m = window.wp_meta_data || {},
+            m = win.wp_meta_data || {},
             rv = '';
 
           //pass in s_vi cookie value:
@@ -849,7 +869,7 @@ var wpAd, placeAd2;
               rv = 'o*' + s_vi[0] + ',' + s_vi[1];
 
               //get page name, replace spaces with underscores and then limit the string to 100 characters
-              rv += (window.TWP && TWP.Data && TWP.Data.Tracking && TWP.Data.Tracking.props && TWP.Data.Tracking.props.page_name ? ',' + TWP.Data.Tracking.props.page_name.replace(/ /g, '_').slice(0, 100) : '');
+              rv += (win.TWP && TWP.Data && TWP.Data.Tracking && TWP.Data.Tracking.props && TWP.Data.Tracking.props.page_name ? ',' + TWP.Data.Tracking.props.page_name.replace(/ /g, '_').slice(0, 100) : '');
 
               //",,,", then get page type and then need to append ",abc" to the end
               rv += ',,,' + (m.contentType && wpAd.tools.zoneBuilder.contentType[m.contentType.toString()] ? wpAd.tools.zoneBuilder.contentType[m.contentType.toString()] : 'article') + ',abc';
@@ -868,7 +888,7 @@ var wpAd, placeAd2;
       ref: function () {
         return wpAd.cache.hasOwnProperty('ref') ? wpAd.cache.ref : (function () {
           wpAd.cache.ref = [];
-          var d = document.referrer || '';
+          var d = doc.referrer || '';
           if(/facebook\.com|digg\.com|reddit\.com|myspace\.com|newstrust\.net|twitter\.com|delicious\.com|stumbleupon\.com/i.test(d)) {
             wpAd.cache.ref.push('social');
           }
@@ -921,7 +941,13 @@ var wpAd, placeAd2;
         return typeof dfpcomp !== 'undefined' ? dfpcomp : '';
       },
       dcmt: function () {
-        return wpAd.briefcase.delivery === 'pfadx' ? ['text/html'] : [];
+        if(wpAd.briefcase.delivery === 'pfadx'){
+          return ['text/html'];
+        }
+        if(wpAd.briefcase.delivery === 'pfadxjs'){
+          return ['text/javascript'];
+        }
+        return [];
       },
       tile: function () {
         wpAd.tile = wpAd.tile ? wpAd.tile + 1 : 1;
@@ -982,10 +1008,9 @@ var wpAd, placeAd2;
     wpAd.briefcase.pos = wpAd.briefcase.what + (wpAd.briefcase.pos_override ? '_' + wpAd.briefcase.pos_override : '');
 
     //a bit hacky but temporary, until we phase out tile flight manager for opening/closing tiffany tiles:
-    if(wpAd.briefcase.pos === 'tiffany_tile' && wpAd.constants && wpAd.constants.wpniSite === 'wpni') {
+    if(wpAd.briefcase.pos === 'tiffany_tile' && wpAd.constants && wpAd.constants.wpniSite === 'wpni' && !/js_tiff/.test(location.search)) {
       //would be interesting to try figure out a way to just include tile_flights.js, and integrate it into  wpAd.templates...
-      document.write('<scri'+'pt type="text/javascript" src="http://js.washingtonpost.com/wp-srv/ad/tiffany_manager.js"></scri'+'pt>');
-      document.write('<scri'+'pt type="text/javascript" src="http://js.washingtonpost.com/wp-srv/ad/tile_flights.js"></scri'+'pt>');
+      wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/tiffany_manager.js', 'http://js.washingtonpost.com/wp-srv/ad/tile_flights.js');
 
       return false;
     }
@@ -1032,20 +1057,21 @@ var wpAd, placeAd2;
     allAds: !!/allAds/i.test(location.search),
     IE: !!/msie/i.test(navigator.userAgent),
     test_fif: !!/test_fif/i.test(location.search),
-    debugAds: !!/debugAds/i.test(location.search)
+    debugAds: !!/debugAds/i.test(location.search),
+    is_local: wpAd.tools.checkCookieVal('WPATC', 'C=1:')
   };
 
   //Legacy functions that may still have calls made to them (ie: urlCheck in tiffany_manager.js). Defining/Redefining them here:
-  window.urlCheck = window.urlCheck || wpAd.tools.urlCheck;
-  window.getCookie = window.getCookie || wpAd.tools.getCookie;
-  window.setCookie = window.setCookie || wpAd.tools.setCookie;
-  window.postLoadDebug = window.postLoadDebug || wpAd.tools.postLoadDebug;
-  window.placeAd = window.placeAd || wpAd.tools.placeAd;
+  win.urlCheck = win.urlCheck || wpAd.tools.urlCheck;
+  win.getCookie = win.getCookie || wpAd.tools.getCookie;
+  win.setCookie = win.setCookie || wpAd.tools.setCookie;
+  win.postLoadDebug = win.postLoadDebug || wpAd.tools.postLoadDebug;
+  win.placeAd = win.placeAd || wpAd.tools.placeAd;
 
   //safety check for wp_meta_data:
-  window.wp_meta_data = window.wp_meta_data || {};
+  win.wp_meta_data = win.wp_meta_data || {};
 
   //redefine commercialNode:
   commercialNode = wpAd.tools.zoneBuilder.exec();
 
-})(window);
+})(window, document);

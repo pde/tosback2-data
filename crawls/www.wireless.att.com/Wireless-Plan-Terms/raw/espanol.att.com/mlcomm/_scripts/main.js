@@ -555,20 +555,28 @@ document.write(' </div>     ');
 function renderLatestReleases() {
 document.write('<div class="section nbb">');
 document.write('<h6>Titulares</h6>');
+
+document.write('<div class="rc-release-box">'); 
+document.write('<p>15 de agosto	 de 2012<br />');
+document.write('<a href="/newsroom/news_releases/twd_8-15-12.html?id=' + state + '" title="Llamado de AT&amp;T a los conductores: comprom&eacute;tanse a no textear al conducir">Llamado de AT&amp;T a los conductores: comprom&eacute;tanse a no textear al conducir</a></p>');
+document.write('</div>');
+
 document.write('<div class="rc-release-box">');
 document.write('<p>27 de julio de 2012<br />');
 document.write('<a href="/newsroom/news_releases/dallas_olympics_mj_7_30_12.html?id=' + state + '" title="AT&#38;T apoya a Team USA y a los deportistas Ol&#237;mpicos patrocinados&#44; como la legendaria familia L&#243;pez&#44; en su trayecto de Beijing a Londres">AT&#38;T apoya a Team USA y a los deportistas Ol&#237;mpicos patrocinados&#44; como la legendaria familia L&#243;pez&#44; en su trayecto de Beijing a Londres</a></p>');
 document.write('</div>');
+
 document.write('<div class="rc-release-box">');
 document.write('<p>26 de julio de 2012<br />');
 document.write('<a href="/newsroom/news_releases/miami_4g_lte_7_24_12.html?id=' + state + '" title="4G LTE de AT&amp;T ahora en Miami">4G LTE de AT&amp;T ahora en Miami</a></p>');
 document.write('</div>');
+
 document.write('<div class="rc-release-box">');
 document.write('<p>18 de julio de 2012<br />');
 document.write('<a href="/newsroom/news_releases/shared_data_7_18_12.html?id=' + state + '" title="AT&#38;T ofrece m&#225;s opciones con los nuevos planes de datos compartidos del servicio m&#243;vil">AT&#38;T ofrece m&#225;s opciones con los nuevos planes de datos compartidos del servicio m&#243;vil</a></p>');
 document.write('</div>');
-document.write('<div class="rc-release-box">');
-//<<<<<<< .mine
+
+document.write('<div class="rc-release-box">'); 
 document.write('<p>11 de julio de 2012<br />');
 document.write('<a href="/newsroom/news_releases/philly_network_excellence_7_2_12.html?id=' + state + '" title="Aumentan las mejoras al servicio m&#243;vil de AT&#38;T gracias a nuevas torres en Filadelfia">Las inversiones de AT&#38;T en el &#225;rea metropolitana de Filadelfia redundan en mejor rendimiento de los servicios de voz y datos</a></p>');
 document.write('</div>');
@@ -578,32 +586,7 @@ document.write('<p>2 de julio de 2012<br />');
 document.write('<a href="/newsroom/news_releases/tampa_network_upgrade_7_2_12.html?id=' + state + '" title="AT&#38;T ampl&#237;a sus servicios de internet m&#243;vil en el &#225;rea de Tampa Bay">AT&#38;T ampl&#237;a sus servicios de internet m&#243;vil en el &#225;rea de Tampa Bay</a></p>');
 document.write('</div>');
 
-document.write('<div class="rc-release-box">');
-//=======
-document.write('<p>1 de julio de 2012<br />');
-document.write('<a href="/newsroom/news_releases/dallas_network_excellence_7_2_12.html?id=' + state + '" title="Nuevas mejoras al servicio m&#243;vil de AT&T gracias a la instalaci&#243;n de nuevas torres en Dallas">Las inversiones de AT&#38;T en Dallas&#45;Fort Worth redundan en mejor rendimiento de los servicios de voz y datos</a></p>');
-document.write('</div>');
 
-document.write('<div class="rc-release-box">');
-//>>>>>>> .r71
-document.write('<p>23 de mayo de 2012<br />');
-document.write('<a href="/newsroom/news_releases/galaxy_appeal_5-23-12.html?id=' + state + '" title="AT&amp;T anuncia su primer equipo smartphone slider prepagado, el Samsung Galaxy Appeal&trade;">AT&amp;T anuncia su primer equipo smartphone slider prepagado, el Samsung Galaxy Appeal&trade;</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">');
-document.write('<p>16 de mayo de 2012<br />');
-document.write('<a href="/newsroom/news_releases/los_riesgos_de_textear_y_conducir_05_16_12.html?id=' + state + '" title="Nueva encuesta: los adolescentes hispanos est&aacute;n claramente conscientes de los peligros de enviar mensajes de texto al conducir, pero incluso as&iacute;, un 54% incurre en esta riesgosa conducta">Nueva encuesta: los adolescentes hispanos est&aacute;n claramente conscientes de los peligros de enviar mensajes de texto al conducir, pero incluso as&iacute;, un 54% incurre en esta riesgosa conducta</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">');
-document.write('<p>24 de abril de 2012<br />');
-document.write('<a href="/newsroom/news_releases/los_clientes_en_san_diego_04_24_12.html?id=' + state + '" title="Las inversiones de AT&amp;T en la red del &aacute;rea de San Diego reducen la tasa de llamadas ca&iacute;das en un 25%">Las inversiones de AT&amp;T en la red del &aacute;rea de San Diego reducen la tasa de llamadas ca&iacute;das en un 25%</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">');
-document.write('<p>11 de abril de 2012<br />');
-document.write('<a href="/newsroom/news_releases/el_poder_del_cliente_04_11_12.html?id=' + state + '" title="El poder del cliente al Frente de la nueva campa&ntilde;a publicitaria de AT&amp;T, que Incluye avisos a nivel nacional en las principales cadenas en Espa&ntilde;ol">El poder del cliente al Frente de la nueva campa&ntilde;a publicitaria de AT&amp;T, que Incluye avisos a nivel nacional en las principales cadenas en Espa&ntilde;ol</a></p>');
-document.write('</div>');
  
 document.write('<div class="rc-release-box">');
 document.write('<p class="arrow"> <a href="/newsroom/news_archive.html?id=' + state + '" title="Ver archivos">Ver archivos</a></p>');

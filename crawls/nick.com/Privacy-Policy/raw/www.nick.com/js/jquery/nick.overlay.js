@@ -70,27 +70,16 @@ NICK.overlay.create = function() {
 }
 
 
-NICK.overlay.doLogInOverlay = function(obj){
-	if(obj == undefined){ obj = { msg: "", obj:"unknown" } };
-	if(obj.msg == undefined){ obj.msg = ""};
-	if(obj.trackLoc != undefined){ 
-		NICK.login.userLocation = obj.trackLoc;
-	}else{
-		obj.trackLoc = "unknown"
-		NICK.login.userLocation = obj.trackLoc;
-	}
-	
+
+NICK.overlay.doLogInOverlay = function(){
 	var title = "Please Sign In";
 	var url = "/overlay/login.html";
 	var wrapperClass = "";
-	NICK.overlay.open(title, url, { method: "ajax" ,wrapperClass:wrapperClass, message: obj.msg});
-
-	KIDS.reporting.omnifunctions.sendLogin('Popup',NICK.login.userLocation);
-	NICK.utils.doLog("sendLogin Popup "+ NICK.login.userLocation);
-	NICK.overlay.watchOverlayClose();
+	NICK.overlay.open(title, url, { method: "ajax" ,wrapperClass:wrapperClass});
+	
 	// Add support for hitting the enter key to submit.
 	$(document).bind('overlayLoaded', function () {
-		$("form").find("#nickUsername").focus().select();
+		
 		$("form.allowEnterKey").bind("keypress", function(e) {
 			if (e.keyCode == 13) {
 				e.preventDefault();
@@ -103,31 +92,6 @@ NICK.overlay.doLogInOverlay = function(obj){
 	return false;	
 }
 
-NICK.overlay.doRegisterOverlay = function(obj){
-	NICK.overlay.open('Registration', '/overlay/registration.html');
-
-	if(obj == undefined){ obj = { msg: "", obj:"unknown" } };
-	if(obj.trackLoc != undefined){ 
-		NICK.login.userLocation = obj.trackLoc;
-	}else{
-		obj.trackLoc = "unknown"
-		NICK.login.userLocation = obj.trackLoc;
-	}
-	KIDS.reporting.omnifunctions.sendReg('Popup',NICK.login.userLocation);
-	NICK.utils.doLog("sendReg Popup "+ NICK.login.userLocation);
-	NICK.overlay.watchOverlayClose();
-	
-	return false;
-}
-
-NICK.overlay.watchOverlayClose = function(){
-	$('body').unbind('overlayClose.doLogInOverlay');
-	$('body').bind('overlayClose.doLogInOverlay', function () {
-		NICK.utils.doLog("overlayClose clear out");
-		NICK.login.userLocation = "";
-		$('body').unbind('overlayClose.doLogInOverlay');
-	});
-}
 /*
  * Replace the close button temporarily with a loading icon
  */
@@ -245,15 +209,11 @@ NICK.overlay.open = function(title, url, options) {
 	//}
 
 	// Load content based on given method
-
 	switch( options.method ) {
 		case "ajax":
 			$(".o_popup_content_loader").load(url, function() {
 				var w = $(this).width() + options.padding;
 				var h = 0;
-				if(options.message != undefined && options.message.length > 0){
-					$(this).find("div.popupMessage").html(options.message).show();
-				}
 				var html = $(this).html();
 				
 				// if content empty avoid breaking the overlay

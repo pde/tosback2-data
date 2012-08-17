@@ -1,0 +1,276 @@
+/* -----------------------------------------------------------------------------------------------
+	Utility method to Read or Update llbgn Cookie
+	
+	Private variables:
+	------------------
+	cookieDomain - holds server host name
+	
+	Public Methods: (Methods which are exposed/avaibale for access)
+	---------------
+	read - For reading the llbgn cookie, and update the core global vars (i.e gnCookie)
+	update - constructs cookie string with updated core global vars and stores in session
+	buildCookieStr - builds cookie string with '~' as delimeter. Global vars that are empty, are set to -1.
+ ----------------------------------------------------------------------------------------------------- */
+var gn_Cookie = (function () {
+
+		var _populated = false,
+		
+		gnCookieObj = {
+			"gnFeat": '',
+			"gnPosition": '',
+			"gnThumbType": '',
+			"gnSortField": '',
+			"gnRefine": '',
+			"gnCompare": '',
+			"gnBreadcrumb": '',
+			"gnFreeText": '',
+			"gnAttr": ''
+		},
+		
+		/* The current cookie object */
+		_gnCookie,
+		
+		/* the current value of the LLBGN cookie */
+		_gnCookieVal,
+		
+		/* The current navigation cookie object */
+		_navCookie,
+		
+		/* The current value of navigation cookie object */
+		_navCookieVal,
+		
+		/* how long to check to see if the data has changed  */
+		_intIntervalTime = 1000,
+		
+		_hasChanged = function(){
+		    if(typeof gnJsonData != 'undefined' && (gnCookieObj['gnFeat'] != gnJsonData.gnFeat ||
+				gnCookieObj['gnPosition'] != gnJsonData.gnPosition ||
+				gnCookieObj['gnSortField'] != gnJsonData.gnSortField ||
+				gnCookieObj['gnRefine'] != gnJsonData.gnRefine ||
+				gnCookieObj['gnBreadcrumb'] != gnJsonData.gnBreadcrumb ||
+				gnCookieObj['gnFreeText'] != gnJsonData.gnFreeText ||
+				gnCookieObj['gnAttr'] != gnJsonData.gnAttr ||
+				gnCookieObj['gnThumbType'] != gnJsonData.gnThumbType)
+				//(gnCookieObj['gnThumbType'] != 10 && gnCookieObj['gnThumbType'] != gnJsonData.gnThumbType))
+				){
+					return true;
+				} else {
+					return false;
+				}
+		},
+		
+		_checkGnCookie = function () {
+			if(_hasChanged() && (typeof gnJsonData != 'undefined')){
+
+				gnCookieObj['gnFeat'] = gnJsonData.gnFeat;
+				gnCookieObj['gnPosition'] = gnJsonData.gnPosition;
+				gnCookieObj['gnSortField'] = gnJsonData.gnSortField;
+				gnCookieObj['gnRefine'] = gnJsonData.gnRefine;
+				//gnCookieObj['gnCompare'] = (gnCompare == '') ? '-1' :gnCompare;
+				gnCookieObj['gnBreadcrumb'] = gnJsonData.gnBreadcrumb;
+				gnCookieObj['gnFreeText'] = gnJsonData.gnFreeText;
+				gnCookieObj['gnAttr'] = gnJsonData.gnAttr;
+				
+				//do not persist gnCookieObj.gnThumbType if grouped/five up views
+				if(gnJsonData.gnThumbType != 10 && gnJsonData.gnThumbType != 16){
+				    gnCookieObj['gnThumbType'] = gnJsonData.gnThumbType;    
+				}
+				
+				_updateCookie();
+			}
+		},
+		
+		/* method reads the contents of the cookie and populates our object */
+		_populateCookieObj = function () {
+			if (!_populated) {
+				_gnCookieVal = strGetCookie("LLBGN");
+				if (_gnCookieVal != null) {
+					var gnCookieAry = _gnCookieVal.split("~");
+					if (gnCookieAry.length == 9) {
+						gnCookieObj['gnFeat'] = gnCookieAry[0];
+						gnCookieObj['gnPosition'] = gnCookieAry[1];
+						gnCookieObj['gnThumbType'] = gnCookieAry[2];
+						gnCookieObj['gnSortField'] = gnCookieAry[3];
+						gnCookieObj['gnRefine'] = gnCookieAry[4];
+						gnCookieObj['gnCompare'] = gnCookieAry[5];
+						gnCookieObj['gnBreadcrumb'] = gnCookieAry[6];
+						gnCookieObj['gnFreeText'] = gnCookieAry[7];
+						gnCookieObj['gnAttr'] = gnCookieAry[8];
+					}
+					_populated = true;
+				}
+			}
+		},
+	
+		_updateCookie = function (skipGnCompareRead) {
+			//if skipCompareRead is passed as true then skip reading gnCompare(in prod page we dont have c,im arrys)
+			if(typeof skipGnCompareRead == 'undefined' || skipGnCompareRead != true){
+			    gn_CompareCookie.read();
+			}
+			_gnCookie = new Cookie(document, 'LLBGN', '', '/');
+			_gnCookie.setSessionValue(_buildCookieStr());
+			_gnCookieVal = strGetCookie("LLBGN");
+			_populateCookieObj();
+			
+			// Update the LLBNavURL cookie
+			_navCookie = new Cookie(document, 'LLBNavURL', 3, '/', '.llbean.com');
+			_navCookie.setSessionValue('0|' + window.location.href);
+			_navCookieVal = strGetCookie("LLBNavURL");
+
+
+		},
+
+		_buildCookieStr = function () {
+			var gnCookieArr = [];
+			for (var key in gnCookieObj) {
+				if (gnCookieObj[key] != '') {
+					gnCookieArr.push(gnCookieObj[key]);
+				} else {
+					gnCookieArr.push(-1);
+				}
+			}
+			return gnCookieArr.join('~');
+		};
+
+	return {
+		init: function(){
+			this.get();
+			setInterval(_checkGnCookie, _intIntervalTime );
+		},
+	
+		gnCookieObj : gnCookieObj,
+		
+		get: function (key) {
+			_populateCookieObj();
+			if (typeof key !== 'undefined') {
+				return gnCookieObj[key];
+			} else {
+				return gnCookieObj;
+			}
+		},
+
+		set: function (keyValueObj, skipGnCompareRead) {
+			if (typeof keyValueObj === 'object') {
+				for (var key in gnCookieObj) {
+					if (keyValueObj.hasOwnProperty(key)) {
+						gnCookieObj[key] = keyValueObj[key];
+					}
+				}
+				_updateCookie(skipGnCompareRead);
+			}
+		}
+	}
+})();
+
+/* ---------------------------------------------------------------------------------
+	Utility method to Read or Update gnCompare Cookie value
+	
+	Public Methods: (Methods which are exposed/avaibale for access)
+	---------------
+	read - reads gnCompare from LLBGN cookie, process it to populate c, t, im arrays
+	update - updates gnCompare cookie value.
+ ----------------------------------------------------------------------------------- */
+//var selSwatchArray = new Array();
+var gn_CompareCookie = (function () {
+	return {
+		 read: function () {
+			c = [], t = [], im = [];
+			gnCompare = gn_Cookie.get('gnCompare');
+			if (gnCompare != "-1") {
+				var gnCompareAry = gnCompare.split("^");
+				for (var x = 0; x != gnCompareAry.length; x++) {
+					var gnCompareValAry = gnCompareAry[x].split("*");
+					if (gnCompareValAry[0] !== "") {
+						var compareId = gnCompareValAry[0];
+						var gnCompareImg = gnCompareValAry[1].split("$");
+						var gnCompareSelectedSwatch = gnCompareImg[1];
+						var compareImg = imageServer + "/is/image/" + gnCompareImg[0] + "?wid=32&hei=36";
+						c[c.length] = compareId;
+						t[t.length] = " ";
+						im[im.length] = compareImg;
+						selSwatchArray[selSwatchArray.length] = gnCompareSelectedSwatch;
+					}
+				}
+			}
+		},
+
+		update: function () {
+
+			var currentGnCompare = "";
+			$("div.searchCompareWrapper ul li").each(function () {
+				if ($(this).children().hasClass("full")) {
+					var compareId = $(this).children("div").attr("compare_id");
+					var compareImg = $(this).children("div").children("img").attr("src");
+					var compareSwatchSelected = compareImg.replace("_42?", "_43?");
+					compareSwatchSelected = compareSwatchSelected.substring(compareSwatchSelected.indexOf("wim/"), compareSwatchSelected.indexOf("?"));
+					var compareSwatchSelectedAry = compareSwatchSelected.split("/");
+					compareSwatchSelected = compareSwatchSelectedAry[1];
+
+					if (compareImg.indexOf("_not") == -1) {
+
+						var compareImgAry = compareImg.split("?");
+						compareImgAry = compareImgAry[0].split("is/image/");
+
+						if (compareImgAry) {
+							compareImg = compareImgAry[1];
+						}
+
+						if (!currentGnCompare.match(compareImg)) {
+							currentGnCompare += "^" + compareId + '*' + compareImg + '$' + compareSwatchSelected;
+						}
+					}
+				}
+			});
+			gn_Cookie.set({
+				'gnCompare': currentGnCompare
+			});
+		},
+
+		/***** Updates gnCompare by removing the compare item for the given comapreId *****/
+		removeByCompareId: function (compareId) {
+			if (typeof compareId !== 'undefined') {
+				var _gnCompare = gn_Cookie.get('gnCompare');
+				if (_gnCompare != '-1' && _gnCompare != '') {
+					var gnCompareArr = _gnCompare.split('^');
+					for (var i = 0; i < gnCompareArr.length; i++) {
+						if (gnCompareArr[i].indexOf(compareId) > -1) {
+							gnCompareArr.splice(i, 1);
+						}
+					}
+					gn_Cookie.set({
+						'gnCompare': gnCompareArr.join('^')
+					}, true);
+				}
+			}
+		}
+	}
+})();
+
+
+
+var cookieDomain = ".llbean.com";
+var selSwatchArray = new Array();
+
+function updateGuidedNavCookie() {
+    gnCookieObj = gn_Cookie.get();
+    gnCookieObj['gnFeat'] = (gnJsonData.gnFeat) ? gnJsonData.gnFeat : 1;
+    gnCookieObj['gnPosition'] = (gnJsonData.gnPosition) ? gnJsonData.gnPosition : 1;
+    gnCookieObj['gnThumbType'] = (gnJsonData.gnThumbType) ? gnJsonData.gnThumbType : 0;
+    gnCookieObj['gnSortField'] = (gnJsonData.gnSortField) ? gnJsonData.gnSortField : "Relevance";
+    gnCookieObj['gnRefine'] = (gnJsonData.gnRefine) ? gnJsonData.gnRefine : -1;
+    gnCookieObj['gnCompare'] = (gnCompare) ? gnCompare : -1;
+    gnCookieObj['gnBreadcrumb'] = (escape(gnJsonData.gnBreadcrumb)) ? escape(gnJsonData.gnBreadcrumb) : -1;
+    gnCookieObj['gnFreeText'] = (escape(gnJsonData.gnFreeText)) ? escape(gnJsonData.gnFreeText) : -1;
+    gnCookieObj['gnAttr'] = (gnJsonData.gnAttr) ? gnJsonData.gnAttr : -1;
+    
+    gn_Cookie.set(gnCookieObj);
+}
+
+function readGnCompare() {
+    gn_CompareCookie.read();
+}
+
+function updateGnCompare() {
+    gn_CompareCookie.update();
+
+}

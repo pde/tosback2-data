@@ -4,7 +4,7 @@ var flag="default";
 var virtual="default";
 var menuHgtFlag = "new";
 
-/* New google analytics functions */
+/* New google analytics functions - need to wire in on a per page basis */
 $(document).ready(function() {
     loadCookieDialog();
     wireHeaderNav();
@@ -15,6 +15,7 @@ $(document).ready(function() {
     // wireCruiseSearch();
     wireFindAndBookOffers();
     wireCruiseSearchResultItem();
+    wireCruiseDetailsPage();
 });
 
 
@@ -27,11 +28,13 @@ function wireHeaderNav() {
         tmp = tmp.replace("MainMenuUC_", "");
         tmp = tmp.replace("LI", "");
         var href = event.target.attributes[0];
-        if (href.value.indexOf("Cruise-Ships/Ship-Webcams") != -1) {
-            _gaq.push(['_trackEvent', 'WebCam in MainNav', 'Webcams', href.value]);
-        }
-        else {
-            _gaq.push(['_trackEvent', 'MainNav', tmp, href.value]);
+        if (typeof (href) != 'undefined') {
+            if (href.value.indexOf("Cruise-Ships/Ship-Webcams") != -1) {
+                _gaq.push(['_trackEvent', 'WebCam in MainNav', 'Webcams', href.value]);
+            }
+            else {
+                _gaq.push(['_trackEvent', 'MainNav', tmp, href.value]);
+            }
         }
         // event.preventDefault(); // stops the link
     });
@@ -49,8 +52,10 @@ function wireFooterNav() {
             case "footer-links-item-5": action = "Experience"; break;
             case "footer-links-item-6": action = "Help"; break;
         }
-        var href = event.target.attributes[0];     
-        _gaq.push(['_trackEvent', 'FooterNav', action, href.value]);
+        var href = event.target.attributes[0];
+        if (typeof (href) != 'undefined') {
+            _gaq.push(['_trackEvent', 'FooterNav', action, href.value]);
+        }
     });
 
     $("#footer .openfooter").click(function() {
@@ -156,11 +161,40 @@ function wireFindAndBookOffers() {
     }
 
     // view all offers (offers hub)
-    if ($("a.moreCruiseOffersLink").length > 0) {
+    if ($("#OffersHub a.moreCruiseOffersLink").length > 0) {
         $("a.moreCruiseOffersLink").click(function() {
         _gaq.push(['_trackEvent', 'OffersHub', 'ViewAllLateDeals', $(this).attr("href")]);
         });
     }
+
+    if ($("#OffersHub a.moreCruiseOffersLink").length > 0) {
+        $("a.moreCruiseOffersLink").click(function() {
+            _gaq.push(['_trackEvent', 'OffersHub', 'ViewAllLateDeals', $(this).attr("href")]);
+        });
+    }
+
+    if ($("#OffersHub .imageoffer a").length > 0) {
+        $("#OffersHub .imageoffer a").click(function() {
+            _gaq.push(['_trackEvent', 'OffersHub', 'ViewOfferDetailsSide', $(this).attr("href")]);
+        });
+    }
+
+    if ($("#OffersHub .offersby a").length > 0) {
+        $("#OffersHub .offersby a").click(function() {
+            _gaq.push(['_trackEvent', 'OffersHub', 'ViewOfferDetailsSide', $(this).attr("href")]);
+        });
+    }
+
+    if ($("#OffersHub .moreOffer a.moreOffersLinkTrack").length > 0) {
+        $("#OffersHub .moreOffer a.moreOffersLinkTrack").click(function() {
+            _gaq.push(['_trackEvent', 'OffersHub', 'ViewOfferDetailsMiddle', $(this).attr("href")]);
+        });
+    }
+    if ($("#OffersHub .moreOffersCruise a").length > 0) {
+        $("#OffersHub .moreOffersCruise a").click(function() {
+            _gaq.push(['_trackEvent', 'OffersHub', 'ViewOfferDetailsMini', $(this).attr("rel")]);
+        });
+    }       
 }
 
 function wireFeaturedCruises() {
@@ -210,13 +244,53 @@ function wireRecentlyViewedCruises() {
             savedcruises = savedcruises.replace(pageid + ",", "");
             savedcruises = savedcruises.replace(pageid, "");
             setCookie("pocruises", savedcruises, 30);
-            $('.in-wishlist_cruisepage').hide();
-            $('.remove-wishlist_cruisepage').hide();
-            $('.qtip').hide();
+            if (typeof pageCode != 'undefined') {
+                if (pageid == pageCode) {
+                    toggleWishListButtons();
+                    hideQTip();
+                }
+            }
             getFooterCruises();
             //window.location.href = window.location.href;
         });        
     }
+}
+
+function hideQTip() {
+    $('.qtip').hide();
+}
+
+function toggleWishListButtons() {
+    $('.btnAddWishList').toggle();
+    $('span#btnRemoveWishListDiv').toggle();
+    $('a.remove-wishlist_cruisepage').toggle();
+}
+
+function displaySavedToolTip(toolTipContent) {
+
+    $('SPAN.in-wishlist_cruisepage').unbind().qtip({
+        content: toolTipContent,
+        show: { ready: true },
+        position: {
+            corner: {
+                target: 'topMiddle',
+                tooltip: 'bottomMiddle'
+            }
+        },
+        style: {
+            tip: 'bottomMiddle',
+            border: {
+                width: 3,
+                radius: 3,
+                color: '#cfcfcf'
+            }
+        },
+        hide: {
+            when: 'mouseout',
+            fixed: true 
+        }
+    });
+    setTimeout("hideQTip()", 10000);
 }
 
 function wireCruiseSearch() {
@@ -310,6 +384,82 @@ function wireCruiseSearchResultItem() {
             }
         });
     }
+}
+
+function wireCruiseDetailsPage() {
+    // in page tabs
+    if ($(".wrapperCruiseItem #pageTabs a").length > 0) {
+        $(".wrapperCruiseItem #pageTabs a").click(function() {
+        var label = $(this).attr("title");
+        _gaq.push(['_trackEvent', 'CruiseDetails', 'Tab', label]);
+        });
+    }
+
+    // top right book now button
+    if ($(".wrapperCruiseItem .cruiseBookNow a").length > 0) {
+        $(".wrapperCruiseItem .cruiseBookNow a").click(function() {
+            var link = window.location.href;
+            _gaq.push(['_trackEvent', 'CruiseDetails', 'BookNow', link]);
+        });
+    }
+
+    // choose cabin & book from prices box
+    if ($(".wrapperCruiseItem .cruiseOverviewLeft a.chooseCabin").length > 0) {
+        $(".wrapperCruiseItem .cruiseOverviewLeft a.chooseCabin").click(function() {
+            var link = window.location.href;
+            _gaq.push(['_trackEvent', 'CruiseDetails', 'ShowPricing - LeftColumn', link]);
+        });
+    }
+
+    // choose cabin & book from left hand column
+    if ($(".wrapperCruiseItem #cruisePricingContent a.chooseCabin").length > 0) {
+        $(".wrapperCruiseItem #cruisePricingContent a.chooseCabin").click(function() {
+            var link = window.location.href;
+            _gaq.push(['_trackEvent', 'CruiseDetails', 'ShowPricing - PricesBox', link]);
+        });
+    }
+
+    // print page button
+    if ($(".wrapperCruiseItem .printSpan a").length > 0) {
+        $(".wrapperCruiseItem .printSpan a").click(function() {
+            var link = window.location.href;
+            _gaq.push(['_trackEvent', 'CruiseDetails', 'PrintPage', link]);
+        });
+    }
+
+    // add to wishlist button
+    if ($(".wrapperCruiseItem a.btnAddWishList").length > 0) {
+        $(".wrapperCruiseItem a.btnAddWishList").click(function() {
+            var link = window.location.href;
+            _gaq.push(['_trackEvent', 'CruiseDetails', 'Wishlist', link]);
+        });
+    }
+
+    // offer panel on right hand side
+    if ($(".wrapperCruiseItem .cruisePageRight .special-offer").length > 0) {
+        $(".wrapperCruiseItem .cruisePageRight .special-offer").click(function() {
+            var link = window.location.href;
+            _gaq.push(['_trackEvent', 'CruiseDetails', 'OfferTerms', link]);
+        });
+    }
+
+    // cabins metagrade
+    if ($(".wrapperCruiseItem .cabinsSelector").length > 0) {
+        $(".wrapperCruiseItem .cabinsSelector").click(function() {
+            // var link = window.location.href;
+            var meta = $(this).attr("id");
+            meta = meta.replace("CabinsSelector", "");
+            _gaq.push(['_trackEvent', 'CruiseDetails', 'Metagrade', meta]);
+        });
+    }
+    
+    // cabins deckplan
+    if ($(".wrapperCruiseItem .CabinTypePricingLink a").length > 0) {
+        $(".wrapperCruiseItem .CabinTypePricingLink a").click(function() {
+            _gaq.push(['_trackEvent', 'CruiseDetails', 'Deckplan', $(this).attr("rel")]);
+        });
+    }
+     
 }
 
 var bkg_pos;
@@ -616,18 +766,7 @@ function clearInput(elemId) {
       });
     }
   });
-  if (elemId == "q") {
-      $("INPUT#cq").focus(function() {
-          $(this).val("");
-      });
-      
-      $("INPUT#cq").keydown(function(e) {
-        if (e.which == 13) {
-            e.preventDefault(); 
-            handleGoogleSearchBox();
-        }
-      });
-  }
+
 }
 
 //bookmarker
@@ -1967,6 +2106,8 @@ function getFooterCruises() {
                                 timeout: 0,
                                 fx: 'scrollHorz'
                             });
+                            $("#savednext, #savedprev").show(0);
+                            $("#savedplaceholder").css("margin-left", "0px");
                         }
                         else {
                             $("#savednext, #savedprev").hide(0);
@@ -3447,27 +3588,63 @@ var submitGoogleSearch = false;
 $(document).ready(function() {
     // wire in click on search button
 
-    $("#strCruiseSearchStringSubmit").click(handleGoogleSearchBox);
-    $("#strCruiseSearchStringSubmit").submit(handleGoogleSearchBox);
-    $("#cse-search-box").submit(function(e) {
-        var searchval;
-        searchval = $("input#cq").val();
-        if (searchval != "enter holiday number") {
-            e.preventDefault();
-            getCruisePageFromSearchBox(searchval);
-            return false; 
+    $("#strSearchStringSubmit").click(handleGoogleSearchBox);
+    $("#strSearchStringSubmit").submit(handleGoogleSearchBox);
+    $("INPUT#cq").focus(function() {
+        $(this).val("");
+    });
+
+    $("INPUT#cq").keydown(function(e) {
+        if (e.which == 13) {
+            // e.preventDefault(); 
+            handleGoogleSearchBox(e);
         }
     });
+
+    //    $("#cse-search-box").submit(function(e) {
+    //        var searchval;
+    //        searchval = $("input#cq").val();
+    //        if (searchval != "enter holiday number") {
+    //            e.preventDefault();
+    //            getCruisePageFromSearchBox(searchval);
+    //            return false; 
+    //        }
+    //    });
+    $("#strAskSearchStringSubmit").click(handleAskSearchBox);
+    $("#strAskSearchStringSubmit").submit(handleAskSearchBox);
+    $("input#ask").click(function() {
+        var searchval;
+        searchval = $("input#ask").val();
+        if (searchval == "Ask a question...") {
+            $("input#ask").val("");
+        }
+    });
+
+
 });
 
-function handleGoogleSearchBox(event){
+function handleAskSearchBox(event) {
+    var searchval;
+    searchval = $("input#ask").val();
+    if (searchval != "Ask a question...") {
+        _gaq.push(['_trackEvent', 'AskAQuestion', window.location.href, searchval]);
+        _gaq.push(['_trackPageview', '/virtual/FAQResults/?FAQ_query=' + searchval]);
+        _gaq.push(function() {
+        window.location.href = "https://ask.pocruises.com/help/PO/search?nlpq=" + escape(searchval);
+        });
+
+    }
+    return false;
+}
+
+function handleGoogleSearchBox(event) {
     if (!submitGoogleSearch)
     {
-        // event.preventDefault(); 
+        event.preventDefault(); 
         var searchval; 
         searchval = $("input#cq").val();
         getCruisePageFromSearchBox(searchval);
-        return false;
+        // return false;
     }
 }
 
@@ -4279,6 +4456,63 @@ function closeDialog(dialogName) {
     $("#" + dialogName).dialog('close');
 }
 
+function setCruiseTabs() {
+    $('.cruiseTabContent DIV').hide();
+    $('#pageTabs UL LI').unbind().click(function() {
+        var clicked = $(this).attr('class');
+        clicked = clicked.replace('Title', 'Content');
+        //ie fix for pie class additions
+        var classEnd = clicked.indexOf(" ");
+        if (classEnd != -1) {
+            clicked = clicked.substring(0, classEnd);
+        }
+        //ie fix for pie class additions
+        $('.cruiseTabContent DIV').hide();
+        $("." + clicked).show();
+        $("." + clicked + " DIV").show();
+        $("#pageTabs UL LI").removeClass("Active");
+        $(this).addClass("Active");
+
+        var Maxheight = 0;
+        $("." + clicked).find("DIV.CTdetails").each(function() {
+            if ($(this).height() > Maxheight) {
+                Maxheight = $(this).height();
+            }
+        });
+        $("." + clicked).find("DIV.CTdetails").css("height", Maxheight);
+//        var MaxHeadingheight = 0;
+//        $("." + clicked).find("DIV.CTHeadingInner").each(function() {
+//            if ($(this).height() > MaxHeadingheight) {
+//                MaxHeadingheight = $(this).height();
+//            }
+//        });
+//        $("." + clicked).find("DIV.CTHeadingInner").css("height", MaxHeadingheight);
+    });
+
+ 
+   
+    if (getParameterByName("PageTabMiddle") == "2")
+        $('DIV#pageTabs LI.TabTitle2').click();
+    else if(getParameterByName("PageTabMiddle") == "3")
+        $('DIV#pageTabs LI.TabTitle3').click();
+    else if(getParameterByName("PageTabMiddle") == "4")
+        $('DIV#pageTabs LI.TabTitle4').click();        
+    else
+        $('DIV#pageTabs LI.TabTitle1').click();
+
+}
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(window.location.search);
+    if (results == null)
+        return "";
+    else
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -4324,6 +4558,72 @@ function deleteCookie(name) {
         return null;
     }
 
+    function addToCookie(name, newVal) {
+        var cookieVal;
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) cookieVal = c.substring(nameEQ.length, c.length);
+        }
+        if (cookieVal == null) {
+            setCookie(name, newVal, 30);
+        }
+        else if (cookieVal.indexOf(newVal) == -1) {//if newVal is not in cookie
+            if (cookieVal) {//if the cookie already contains data
+                setCookie(name, cookieVal + "," + newVal, 30)
+            }
+            else {
+                setCookie(name, newVal, 30)
+            }
+        }
+    }
+
+
+    function removeFromCookie(name, deleteVal) {
+        var cookieVal;
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) cookieVal = c.substring(nameEQ.length, c.length);
+        }
+        var re1 = new RegExp(deleteVal + ",", "g");
+        var re2 = new RegExp(deleteVal, "g");
+        cookieVal = cookieVal.replace(re1, "");
+        cookieVal = cookieVal.replace(re2, "");
+        setCookie(name, cookieVal, 30)
+    }
+
+    function pageInCookie(name, pageVal) {
+        var cookieVal;
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) cookieVal = c.substring(nameEQ.length, c.length);
+        }
+        if (cookieVal.indexOf(pageVal) == -1)//if pageVal is not in cookie
+            return false;
+        return true;
+    }
+
+    function countPagesInCookie(name) {
+        var cookieVal;
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) cookieVal = c.substring(nameEQ.length, c.length);
+        }
+        var n = cookieVal.split(",");
+        return n.length;
+    }
+
     function setCookie(name, value, days) {
         if (days) {
             var date = new Date();
@@ -4336,7 +4636,7 @@ function deleteCookie(name) {
 
     function setSessionCookie(name) {
         document.cookie = name + "=0;expires=0;path=/";
-    }    
+    }
 
     function deleteCookie(name) {
         setCookie(name, "", -1);
@@ -4349,7 +4649,7 @@ function deleteCookie(name) {
 
     CookieController.createSessionCookie = function() {
         setCookie("Sess");  //default behaviour to create a cookie that is opted in (1)
-    }    
+    }
 
     CookieController.userHasCK1Cookie = function() {
         if (getCookie("CK1") == null)
@@ -4358,10 +4658,10 @@ function deleteCookie(name) {
     }
 
     CookieController.userHasSessionCookie = function() {
-    if (getCookie("Sess") == null)
+        if (getCookie("Sess") == null)
             return false;
         return true;
-    }    
+    }
 
     CookieController.optInCK1Cookie = function() {
         setCookie("CK1", 1, 365);
@@ -4390,6 +4690,43 @@ function deleteCookie(name) {
     }
 
     //stage 3 functions
+
+    CookieController.addtoRecentlyViewed = function(newVal) {
+        if (!CookieController.pageInSavedCruises()) {
+            addToCookie("pocruisesRecentlyViewed", newVal);
+        }
+    }
+
+    CookieController.removefromRecentlyViewed = function(delVal) {
+        removeFromCookie("pocruisesRecentlyViewed", delVal);
+    }
+
+    CookieController.pageInRecentlyViewed = function(pageVal) {
+        if (getCookie("pocruisesRecentlyViewed"))
+            return pageInCookie("pocruisesRecentlyViewed", pageVal);
+        else
+            return false;
+    }
+
+    CookieController.addtoSavedCruises = function(newVal) {
+        addToCookie("pocruises", newVal);
+        CookieController.removefromRecentlyViewed(newVal);
+    }
+
+    CookieController.removefromSavedCruises = function(delVal) {
+        removeFromCookie("pocruises", delVal);
+    }
+
+    CookieController.pageInSavedCruises = function(pageVal) {
+        if (getCookie("pocruises"))
+            return pageInCookie("pocruises", pageVal);
+        else
+            return false;
+    }
+
+    CookieController.countSavedCruises = function() {
+        return countPagesInCookie("pocruises");
+    }
 
 })(window.CookieController = window.CookieController || {}, jQuery);
 /* cookie controller class */

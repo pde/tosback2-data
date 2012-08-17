@@ -54,7 +54,7 @@ function deleteCookie(name, path, domain)
 }
 
 /**
-* 로그인 check
+* ??? check
 */
 function isLogin(){
 	var result = false;
@@ -65,7 +65,7 @@ function isLogin(){
 }
 
 /**
-* 로그아웃
+* ????
 */
 function clearCookiesAndMakeFinalURL(hrefValue)
 {
@@ -80,6 +80,7 @@ function clearCookiesAndMakeFinalURL(hrefValue)
 
      var finalURL=hrefValue+"?url="+mainURL;
      document.getElementById('logout').href=finalURL;
+    
 
      deleteCookie("prof_country", "/", document.domain);
      deleteCookie("prof_id", "/", document.domain);
@@ -91,9 +92,35 @@ function clearCookiesAndMakeFinalURL(hrefValue)
      deleteCookie("bvauthenticateuser", "/", "");
      deleteCookie("bzv_url", "/", "");
      deleteCookie("auth_flag", "/", "");
+     
+     $.ajax({
+
+	url: "http://shop.us.samsung.com/store?Action=Logout&Locale=en_US&SiteID=samsung&sout=json",
+	dataType:'jsonp',
+	data:'jsonp=callbackLogout'
+
+	  
+     });
      return true;
 }
 
+function callbackLogout(data){
+
+/*
+var mainURL=document.URL;
+
+	 if(mainURL.indexOf("/us/appstore") >= 0){ 
+		 mainURL = mainURL.substring(0,mainURL.indexOf("/us/appstore"))+"/us/appstore";
+		 if(mainURL.indexOf("https://secureus") == 0){
+			 mainURL = mainURL.replace("https://secureus", "http://www");
+		 }
+	 }
+
+     var finalURL=hrefValue+"?url="+mainURL;
+     
+location.href = finalURL;
+*/
+}
 /**
 * get UserName
 */

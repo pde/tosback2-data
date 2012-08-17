@@ -1,4 +1,4 @@
-//$Revision: 453031 $, $Date: 2012-07-09 15:56:55 -0700 (Mon, 09 Jul 2012) $ and $Author: bh4634 $
+//$Revision: 456459 $, $Date: 2012-07-19 17:43:05 -0700 (Thu, 19 Jul 2012) $ and $Author: pl8911 $
 /*jslint bitwise: false, eqeqeq: true, newcap: true, nomen:true, onevar: true, regexp: false, white: false, plusplus: false */
 /*global window $ jQuery ATT lpMTagConfig reporting_ready*/
 
@@ -60,7 +60,7 @@ ATT.c2c = function () {
         
         if(typeof results.orderTotal === 'string' && results.orderTotal){
         	results.orderTotal = results.orderTotal.replace('$','').replace(',','');
-        	results.orderTotal = results.orderTotal && typeof(results.orderTotal.toFixed(2) === 'string') ?  parseFloat(results.orderTotal.toFixed(2)) : '';
+        	results.orderTotal = parseFloat(results.orderTotal);
         	results.orderTotal = parseFloat(results.orderTotal.toFixed(2));
      	
         }
@@ -307,6 +307,13 @@ jQuery(document).ready(function(){
       ATT.c2c();
     });
 
+    //not the correct place but have to find a better place 
+    jQuery('#minicart-link').click(function(e){
+    	  e.preventDefault();
+    	  ATT.CartSummary.showCartPreview();
+    	  return false;
+    });
+    
 });
 
 

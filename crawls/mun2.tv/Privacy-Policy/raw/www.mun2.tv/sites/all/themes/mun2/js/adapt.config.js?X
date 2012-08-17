@@ -1,0 +1,505 @@
+Function.prototype.later = function (msec) {
+  var fn = this,
+     args = Array.prototype.slice.call(arguments,1);
+  return window.setTimeout(
+    function(){fn.apply(this,args)},
+    msec
+  );
+}
+
+var Mun2Responsive = {};
+Mun2Responsive.events = {};
+Mun2Responsive.bSetupLogin = false;
+Mun2Responsive.bSetupNav = false;
+Mun2Responsive.bSetupUI = false;
+Mun2Responsive.nAdaptIndex = 2;
+Mun2Responsive.bDebug = 0;
+Mun2Responsive.screenWidth = 0;
+Mun2Responsive.orientation = 0;
+Mun2Responsive.defaultOrientation = 'portrait';
+Mun2Responsive.defaultWindowWidth = window.innerWidth;
+Mun2Responsive.nParseFBXML = 0;
+Mun2Responsive.isMobile = {
+  Android: function() {
+    return navigator.userAgent.match(/Android/i) ? true : false;
+  },
+  BlackBerry: function() {
+    return navigator.userAgent.match(/BlackBerry/i) ? true : false;
+  },
+  iOS: function() {
+    return navigator.userAgent.match(/iPhone|iPad|iPod/i) ? true : false;
+  },
+  Windows: function() {
+    return navigator.userAgent.match(/IEMobile/i) ? true : false;
+  },
+  any: function() {
+    return (Mun2Responsive.isMobile.Android() 
+         || Mun2Responsive.isMobile.BlackBerry()
+         || Mun2Responsive.isMobile.iOS() 
+         || Mun2Responsive.isMobile.Windows());
+  }
+};
+Mun2Responsive.isIOS = Mun2Responsive.isMobile.iOS();
+
+if ( (window.location.href.match(/debug=1/) && window.location.href.match(/debug=1/).length > 0)
+||   (window.location.href.match(/dev\.mun2/) && window.location.href.match(/dev\.mun2/).length > 0)
+||   (window.location.href.match(/mun\.local/) && window.location.href.match(/mun\.local/).length > 0)
+&&   (window.console)) {
+  Mun2Responsive.bDebug = 1;
+}
+
+Mun2Responsive.log = function () {
+  if (Mun2Responsive.bDebug !== 1) return;
+  if (window.location.href.match(/alert=1/) && (window.location.href.match(/alert=1/).length > 0)) {
+    // Will only work for simple string values
+    if (typeof arguments === 'string') { alert(arguments) }
+  } else {
+    console.log(arguments);
+  }
+};
+
+Mun2Responsive.parseFBXML = function () {
+  Mun2Responsive.log('-- Mun2Responsive.parseFBXML called');
+  try {
+    FB.XFBML.parse(); 
+
+    if($('#fbconnect_button-wrapper iframe').length === 0 && Mun2Responsive.nParseFBXML < 5) {
+      Mun2Responsive.parseFBXML.later(800);
+      Mun2Responsive.nParseFBXML++;
+    }
+  } catch(ex) {
+    Mun2Responsive.log('-- Mun2Responsive.parseFBXML exception', ex);
+  }
+};
+
+Mun2Responsive.getAdVal = function () {
+  var value = null,
+      v;
+  if (Drupal.settings.mun2_ad === 'undefined') return;
+  for (v in Drupal.settings.mun2_ad) {
+    if (v !== 'undefined')  {
+      if (Drupal.settings.mun2_ad[v] !== 'undefined'
+      &&  Drupal.settings.mun2_ad[v].match('300x250')
+      &&  Drupal.settings.mun2_ad[v].match('300x250').length > 0) {
+        value = Drupal.settings.mun2_ad[v];
+      }
+    }
+  }
+  return value || null;
+};
+
+Mun2Responsive.loadAds = function (nAdaptIndex) {
+  Mun2Responsive.log('-- Mun2Responsive.loadAds( nAdaptIndex, Mun2Responsive.screenWidth)', [nAdaptIndex, Mun2Responsive.screenWidth]);
+  var oConfig = {
+    tablet: [
+      {
+        page: 'body.front',
+        selectors: ['#block-views-mun2_shows_shows-block_1', '#block-views-mun2_shows_shows-block_6'],
+        insert: 'insertAfter'
+      },
+      {
+        page: 'body.page-shows',
+        selectors: ['#content-area .show-list:eq(6)', '#content-area .show-list:last'],
+        insert: 'insertAfter'
+      },
+      {
+        page: 'body.page-watch',
+        selectors: ['#footer'],
+        insert: 'insertBefore'
+      },
+      {
+        page: 'body.page-news',
+        selectors: ['.news-category:last', '.news-category:eq(1)'],
+        insert: 'insertAfter'
+      },
+      {
+        page: 'body.node-type-episode',
+        selectors: ['#carousel'],
+        insert: 'insertBefore'
+      }
+    ],
+    mobile: [
+      {
+        page: 'body.front',
+        selectors: ['#block-views-mun2_highlights-block_1', '#block-views-mun2_shows_shows-block_6'],
+        insert: 'insertAfter'
+      },
+      {
+        page: 'body.page-news',
+        selectors: ['.news-category:last', '.news-category:eq(1)'],
+        insert: 'insertAfter'
+      },
+      {
+        page: 'body.page-shows',
+        selectors: ['#content-area .show-list:eq(6)', '#content-area .show-list:last'],
+        insert: 'insertAfter'
+      },
+      {
+        page: 'body.page-watch',
+        selectors: ['#footer'],
+        insert: 'insertBefore'
+      },
+      {
+        page: 'body.node-type-episode',
+        selectors: ['#carousel'],
+        insert: 'insertBefore'
+      }
+    ]
+  },
+  adSrc = Mun2Responsive.getAdVal(),
+  style = '<style type="text/css">html, body, div { margin: 0; padding: 0; }</style>',
+  script = '<scr' + 'ipt src="' + eval(adSrc) + '"></scri' + 'pt>',
+  i = 0,
+  nData = 0,
+  aData = [],
+  tmplSource;
+
+  if (adSrc === null) return;
+  if (nAdaptIndex === 0) {
+    aData = oConfig.mobile;
+  } else if (nAdaptIndex === 1) {
+    aData = oConfig.tablet;
+  }
+  nData = aData.length;
+  if (nData) {
+    for (; i < nData; i++) {
+      var idx = i;
+      // If we're dealing with a valid page
+      if( $(aData[i].page).length ) {
+        $('page found', idx);
+        $(aData[i].selectors.join(', ')).each(function (j, v) {
+            var adId = 'mun2-ad-mobile-' + j,
+                tmplSource = '<div class="mun2-ad-mobile '+ adId +'"><div class="inner" id="'+adId+'"></div></div>',
+                iframe;
+
+            $(tmplSource)[aData[i].insert](this); 
+            iframe = new IFrame( document.getElementById($('.mun2-ad-mobile').eq(j).find('.inner').attr('id')) );
+            iframe.width = 300;
+            iframe.height = 250;
+            iframe.frameBorder = false;
+            if (iframe.doc.body.innerHTML)  {
+              iframe.doc.body.innerHTML = '&nbsp';
+            }
+            iframe.doc.write(script);
+            iframe.doc.write(style);
+        });
+      }
+    }
+  }
+};
+
+Mun2Responsive.listenAdaptCallback = function (i ,width) {
+  Mun2Responsive.log('-- Mun2Responsive.listenAdaptCallback(i, width)', [i, width]);
+  Mun2Responsive.screenWidth = arguments[1];
+  Mun2Responsive.nAdaptIndex = arguments[0];
+  $(Mun2Responsive.events).trigger('listenAdapt', [Mun2Responsive.nAdaptIndex, Mun2Responsive.screenWidth]); // Fire event
+};
+
+Mun2Responsive.setupLogin = function () {
+  Mun2Responsive.log('-- Mun2Responsive.setupLogin', Mun2Responsive.bSetupLogin);
+
+  if (Mun2Responsive.bSetupLogin === true) return;
+  
+  var sLoginText = 'Login',
+      jqLoginAnchor = $('.comments-login a:contains('+ sLoginText +')');
+
+  jqLoginAnchor.bind('click', function (e) {
+    if ($('#nav-extra').is(':visible')) {
+      e.preventDefault();
+      $(document).scrollTo(0, 1000, function () {
+        $('#nav-extra-login a').trigger('click');
+      });
+    }
+  });
+  Mun2Responsive.bSetupLogin = true;
+};
+
+Mun2Responsive.getOrientation = function () {
+  var orientation;
+  switch(window.orientation) {  
+    case -90:
+    case 90:
+      orientation = 'landscape';
+      break; 
+    default:
+      orientation = 'portrait';
+      break;
+  } 
+  Mun2Responsive.orientation = orientation;
+  Mun2Responsive.log('-- Mun2Responsive.getOrientation(orientation)', Mun2Responsive.orientation);
+  return orientation;
+};
+Mun2Responsive.defaultOrientation = Mun2Responsive.getOrientation();
+
+Mun2Responsive.videoMeta = function () {
+  if ($('body.episode-video, body.node-type-episode').length === 0) return;
+  Mun2Responsive.log('-- Mun2Responsive.videoMeta');
+  /* Need a less generic ID */
+  var summaryTitle = $('#block-views-mun2_shows_shows-block_4 .views-row .field-content a').html() || '',
+      summaryDesc = $('#block-views-mun2_shows_shows-block_4 .views-row p').parent().html() || '',
+      fbLike = '<div class="fb-like"><fb:like send="false" layout="button_count" width="110" show_faces="true"></fb:like></div>',
+      jqContent = $('<div id="video-meta" />').html('<div class="inner">' + summaryTitle + summaryDesc + fbLike + '</div>');
+
+  $('#content-bottom > .region:first').prepend(jqContent);
+  Mun2Responsive.parseFBXML.later(800);
+};
+
+Mun2Responsive.setupComments = function () {
+  if ($('#block-views-mun2_comments-block_1 .views-row').length > 2) {
+    Mun2Responsive.log('-- Mun2Responsive.setupComments');
+    var jqOverflow = $('#block-views-mun2_comments-block_1 .views-row:nth-child(n+5), #block-views-mun2_comments-block_1 .pager');
+    // Hide pager, hide extra comments
+    jqOverflow.hide();
+    $('<div id="see-all-comments"><span>read all comments</span></div>')
+      .bind('click', function () { $(this).hide(); jqOverflow.show(); })
+      .insertAfter('#block-views-mun2_comments-block_1 .views-row:visible:last');
+  }
+};
+
+Mun2Responsive.replaceJSLinks = function () {
+  Mun2Responsive.log('-- Mun2Responsive.replaceJSLinks');
+  var aLinks = [{ selector: '#_bapw-link', destination: 'http://info.evidon.com/pub_info/197?v=1' }],
+      nLinks = aLinks.length,
+      i = 0,
+      el;
+
+  for (; i < nLinks; i++) {
+    el = aLinks[i];
+    $(el.selector).replaceWith($(el.selector).clone());
+    $(el.selector).bind('click', function() { document.location = el.destination });
+  }
+};
+
+Mun2Responsive.expander = function () {
+  Mun2Responsive.log('-- Mun2Responsive.replaceJSLinks');
+  if ($('body.front.responsive').length > 0) {
+    $('.front.responsive #content-top .region .block-views:not(#block-views-mun2_shows_shows-block_6) .views-field-title a').expander({
+      slicePoint:       25,  // default is 100
+      expandPrefix:     '...', // default is '... '
+      expandText:       '', // default is 'read more'
+      userCollapseText: ''  // default is 'read less'
+    });
+  } else if ($('body.page-news.responsive').length > 0) {
+    $('body.page-news.responsive .views-field-title a').expander({
+      slicePoint:       40,
+      expandPrefix:     '...',
+      expandText:       '',
+      userCollapseText: ''
+    });
+  }
+};
+
+Mun2Responsive.linkTitles = function () {
+  Mun2Responsive.log('-- Mun2Responsive.linkTitles');
+  $('.responsive.front #content-top section').each(function () {
+    var jqMoreLink = $(this).find('.more-link a'),
+        jqMoreLinkHref = jqMoreLink.attr('href'),
+        jqTitle = $(this).find('h2.title');
+
+    if (jqTitle && jqMoreLink && jqMoreLinkHref) { 
+      jqTitle.css({ cursor: 'pointer' });
+      jqTitle.bind('click', function () { 
+        window.location = jqMoreLinkHref;
+      });
+    }
+  });
+};
+
+Mun2Responsive.setupNav = function () {
+  // Steal some stuff from the DOM to create
+  if (Mun2Responsive.bSetupNav === true) return;
+  Mun2Responsive.log('-- Mun2Responsive.setupNav');
+  var jqLogin = $('#user-login-form'),
+      bLogin = (jqLogin.length > 0),
+      srcSearch = $('#search-block-form').clone(),
+      srcLogin =  bLogin > 0 ? $('#user-login-form').clone() : '',
+      srcFBLogin = '<fb:login-button size="large" onlogin="facebook_onlogin_ready();">\
+                      Login with Facebook\
+                    </fb:login-button>',
+      srcNav = '<ul>\
+                 <li class="button-watch"><a href="/watch"><span></span>watch</a><span class="ui-button-arrow"></span></li>\
+                 <li class="button-news"><a href="/news"><span></span>news</a><span class="ui-button-arrow"></span></li>\
+                 <li class="button-shows"><a href="/shows"><span></span>shows</a><span class="ui-button-arrow"></span></li>\
+                 <li class="button-logout" id="nav-extra-logout"><a href="/logout"><span></span>logout</a><span class="ui-button-arrow"></span></li>\
+               </ul>';
+
+  Mun2Responsive.log('-- Mun2Responsive.setupNav [bLogin]', bLogin);
+
+  $('#nav-extra li:first').removeClass('hidden');
+  $('#nav-extra-slide-search').append(srcSearch);
+  $('#nav-extra-slide-login').append(srcLogin);
+  // Replace with new fb button
+  $('#fbconnect_button-wrapper').html(srcFBLogin);
+
+  $(window).trigger('fbAsyncInit');
+
+  $('#nav-extra-slide').append('<div id="nav-extra-menu-slide">' +  srcNav  + '</div>');
+      
+  if (bLogin === true) { $('#nav-extra-slide-login, #nav-extra-login').removeClass('hidden') } 
+  else { 
+    $('#nav-extra-menu-slide').addClass('login-active');
+    $('#nav-extra-logout, #nav-extra-messages').removeClass('hidden');
+    
+    $('#nav-extra-logout a').bind('click', function (e) {
+      e.preventDefault();
+      $.ajax({
+         beforeSend: function(){
+           Mun2Responsive.log(' --GET before send: shows throbber / state change');
+         },
+         complete: function(){
+           Mun2Responsive.log(' --GET complete, redirecting to same page.', document.location.href);
+           window.location = document.location.href;
+         }
+      });
+      $.get('/logout', function (oResponse) { 
+        Mun2Responsive.log(' --GET response', oResponse);
+      });
+    })
+  }
+
+  // Bind click actions to #nav-extra buttons
+  $('#nav-extra li:not(#nav-extra-logout, #nav-extra-messages) a').click( function (e) {
+    var jqThis = $(this),
+        jqSlideId = jqThis.attr('data-slide'),
+        jqSlide = $(jqSlideId);
+
+    e.preventDefault();
+
+    if ($(this).hasClass('active')) {
+      jqSlide.slideUp();
+      $(this).add('#nav-extra-slide > .active').removeClass('active');
+    } else {
+      $('#nav-extra a').removeClass('active');
+      $('#nav-extra-slide > div').hide().removeClass('active');
+      $(this).addClass('active');
+      jqSlide.addClass('active').slideDown();
+    }
+    if (e.currentTarget.id === 'nav-extra-login-click') {
+      Mun2Responsive.parseFBXML.later(1500);      
+    }
+  });
+  Mun2Responsive.bSetupNav = true;
+};
+
+Mun2Responsive.goto = function (url) {
+  Mun2Responsive.log('Mun2Responsive.goto: ' + url);
+  document.location = url;
+};
+
+Mun2Responsive.forceDesktop = function() {
+  var bForceDesktop = ($.cookie('force_desktop') && $.cookie('force_desktop') === 'true'),
+      jqSiteToggleLink = $('<a class="fullsite-toggle" />').attr({ href: document.location.href }),
+      initialMessage = (bForceDesktop) ? 'view mobile site' : 'view full site',
+      desktopLayoutWidth = 1042,
+      desktopViewportZoom = Mun2Responsive.defaultWindowWidth / desktopLayoutWidth;
+      srcViewportFullsite = '<meta name="viewport" content="width='+ desktopLayoutWidth +', initial-scale=' + desktopViewportZoom + ', maximum-scale=10, user-scalable=yes" />';
+
+  Mun2Responsive.log('-- Mun2Responsive.forceDesktop: loaded', bForceDesktop);
+
+  if (bForceDesktop) {
+    $('body').removeClass('responsive');
+    $('meta[name~=viewport]').replaceWith(srcViewportFullsite);
+  }
+  if ($('body .fullsite-toggle').length === 0) {
+    jqSiteToggleLink
+      .html(initialMessage)
+      .bind('click', function (e) {
+        e.preventDefault();
+        bForceDesktop = ($.cookie('force_desktop') === 'true') ? 'false' : 'true';
+        Mun2Responsive.log('-- Mun2Responsive.forceDesktop: click', bForceDesktop);
+        $.cookie('force_desktop', bForceDesktop, { expires: 7, path: '/' });
+        $(this).unbind(e.type);
+        window.location.reload();
+      }).insertAfter('#footer');
+  }
+};
+
+Mun2Responsive.mobile = function () {
+  Mun2Responsive.log('-- Mun2Responsive.mobile');
+  // Change "See all" text for mobile
+  $('body.page-news #content .more-link a').text('See All');
+  // Add news title on news page
+  if ($('body.page-watch').length > 0) {
+    $('<h1 class="hidden">Watch</h1>').insertBefore('body.page-watch #block-views-mun2_shows_shows-block_7');
+    $('h2.title').each(function () {  
+      var jqThis = $(this),
+          sText = jqThis.text(),
+          sHref;
+      if (sText === "What's New") {
+        sHref = '/watch/full-episodes';
+      } else if (sText === "Music Videos") {
+        sHref = '/watch/music-videos';
+      } else if (sText === "Watch Shorts") {
+        sHref = '/watch/mun2-originals';
+      } else if (sText === "Full Episodes") {
+        sHref = '/watch/full-episodes';
+      }
+      jqThis.html($('<a />').text(sText).attr({ href: sHref }))
+    });
+  }
+};
+
+Mun2Responsive.setupUI = function () {
+  if (Mun2Responsive.bSetupUI !== false) return;
+  Mun2Responsive.bSetupUI = true;
+  Mun2Responsive.log('-- Mun2Responsive.setupUI');
+
+  var originalWidth = $('.BrightcoveExperience').width(),
+    originalHeight = $('.BrightcoveExperience').height();
+  // Execute functions for tablet or mobile.
+  Mun2Responsive.setupNav();
+  Mun2Responsive.setupLogin();
+  Mun2Responsive.videoMeta();
+  Mun2Responsive.replaceJSLinks();
+  Mun2Responsive.loadAds(Mun2Responsive.nAdaptIndex);
+  Mun2Responsive.forceDesktop();
+  Mun2Responsive.linkTitles();
+  if (Mun2Responsive.nAdaptIndex === 0) {
+    Mun2Responsive.setupComments();
+    Mun2Responsive.expander();
+    Mun2Responsive.mobile();
+  }
+  if (Mun2Responsive.isIOS) {
+    $('body').addClass('iOS');
+  }
+  // Listen for orientation changes and adapt.
+  $(Mun2Responsive.events).bind('listenAdapt listenOrientationChange', function (e) {
+    var currentWidth = $('.player-embed').width(),
+        newHeight;
+    Mun2Responsive.log('listenAdapt listenOrientationChange', e, arguments);
+    if (originalWidth !== currentWidth) {
+      newHeight = originalHeight / originalWidth * currentWidth;
+      resizeExperience(currentWidth, newHeight);
+    }
+  });
+};
+
+var supportsOrientationChange = "onorientationchange" in window,
+    orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+
+window.addEventListener(orientationEvent, function() {
+  var orientation = Mun2Responsive.getOrientation(); // Fire event
+  Mun2Responsive.orientation = orientation;
+  $(Mun2Responsive.events).trigger('listenOrientationChange', orientation);
+}, false);
+
+$(function () {
+  if ($('body.responsive') && $.cookie('force_desktop') === 'true') {
+    Mun2Responsive.forceDesktop();      
+  } else {
+    Mun2Responsive.setupUI();    
+  }
+});
+
+// This is a constant.. Used in adapt.js
+var ADAPT_CONFIG = {
+  path: 'sites/all/themes/mun2/css/',
+  dynamic: true,
+  callback: Mun2Responsive.listenAdaptCallback,
+  range: [
+    '0px    to 767px  = responsive/tablet.css',
+    '767px  to 1024px = responsive/tablet.css',
+    '1025px to 1280px = responsive/tablet.css',
+    '1281px to 1660px = responsive/tablet.css'
+  ]
+};

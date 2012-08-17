@@ -186,6 +186,12 @@ if (document.URL.match(/rogerebert\./i)) {
 } else if (document.URL.match(/yourseason\./i)) {
 	s_account='digchyourseason';	communityName='yourseason';
 	linkInternalFilters="javascript:,yourseason.suntimes.com";
+} else if (document.URL.match(/highschoolsports\./i)) {
+	s_account='digchyourseason';	communityName='yourseason';
+	linkInternalFilters="javascript:,highschoolsports.suntimes.com";
+} else if (document.URL.match(/seasonpass\./i)) {
+	s_account='digchseasonpass';	communityName='yourseason';
+	linkInternalFilters="javascript:,seasonpass.suntimes.com";
 } else if (document.URL.match(/crwnchicago\./i) || document.URL.match(/localreigns\./i)) {
 	s_account='digchcrwn';
 	linkInternalFilters="javascript:,crwnchicago.com,localreigns.com";
@@ -961,6 +967,8 @@ switch (window.location.host) {
 case "www.suntimes.com": chartbeat_on = window.location.host;
 	break;
 case "blogs.suntimes.com": chartbeat_on = window.location.host;
+	break;
+case "highschoolsports.suntimes.com": chartbeat_on = window.location.host;
 	break;
 default: 
 	chartbeat_on = '';

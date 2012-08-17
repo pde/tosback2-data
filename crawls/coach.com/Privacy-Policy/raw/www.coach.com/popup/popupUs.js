@@ -119,6 +119,32 @@ function goLink(linkwwcm){
 		
 }
 
+// Natalie Joos
+function popNatScroll(){
+	if (navigator.userAgent.indexOf('iPad') != -1) {
+		$('#DivContainer').prepend('<div id="NatScrollDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeNatScroll()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="NatScrollFrame" id="NatScrollFrame" src="/us/201209/natalie_joos/nat_scroll/indexIpad.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	} else {
+		$('#DivContainer').prepend('<div id="NatScrollDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeNatScroll()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="NatScrollFrame" id="NatScrollFrame" src="/us/201209/natalie_joos/nat_scroll/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	}
+	 // REPOSITION DIV
+	divname = 'NatScrollDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Natalie Joos Scroll";
+	s.eVar16 = "Natalie Joos Scroll";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeNatScroll() {
+	$('#NatScrollFrame').remove();
+	$('#NatScrollDiv').remove();
+	window.onresize = null; 
+}
+
 //Leg video
 function poplegVid(vid)	{
 $('#DivContainer').prepend('<div id="vidDiv" style="visibility:visible; width:960px; top: 60px; *top:-80px; height:540px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closelegVid()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><video width="960" height="540" controls="autoplay" id="video"><source src="http://assets.coach.com/media/02_timeless_style_iPad-iPhone4_1.6Mbps.mp4"  id="vidSrc" type="video/mp4"  /></video></div>');

@@ -25,35 +25,138 @@
 
 var jsonLinksOnload = [];
 
+var hln_nav_css = "<style type='text/css'> .navPageFrame { padding:0; border:0; margin:0; height:100%; width:100%; background:#fff url(http://nav.healthline.com/healthstat/images/navigator/spinner.gif) no-repeat center center; } \
+    .navPageFrame { background:transparent url(http://nav.healthline.com/healthstat/images/navigator/spinner.gif) no-repeat center center; } \
+    .navPageBox { position:relative; width:100%; margin:0 auto 0 auto; padding:0; z-index:999999;} \
+    #navFrameContainer {background:#fff; } \
+    .tracer { opacity:0.75; background:#ff0; position:absolute; top:0; left:0; font-weight:bolder; z-index:99999; overflow:scroll; width:100%; } \
+    .shadowBox {border-top:1px solid silver; border-left:1px solid silver; border-bottom:2px solid #cccc; border-left:2px solid #ccc; } \
+    #tracer { text-align:left; padding:5px; opacity:0.90; background:#ff0; position:fixed; top:0; left:0; font-weight:bolder; z-index:99999; overflow:auto; width:99%; max-height:250px; font-size:10px; }";
+
+if (jsonLinksOnload.length > 0) {
+    hln_nav_css += ".hlNavWin { z-index:2147483647; width:390px; text-align:left; position:absolute; padding:0; margin:0; } \
+    .hlNavWin * { line-height:auto; } \
+    .hlNavWin img, .hlNavWin a, .hlNavWin a:hover { border:0 none; text-decoration:none; } \
+    .hlNavWin table, .hlNavWin tr, .hlNavWin td, .hlNavWin th, .hlNavWin tbody { padding:0; margin:0; border:0 none; border-collapse:collapse; vertical-align:middle; } \
+    .hlNavWin .spr { background:transparent url('http://www.healthline.com/corporate/ads/NavDefault/skins/hl_sprite.png') no-repeat 0 0; overflow:hidden; margin:0; padding:0; clear:none;} \
+    .hlNavWin #hlNavigBot, #hlNavigTop, #nav-center { width:100%; margin:0; padding:0;} \
+    .navLoader { position:absolute; margin:0; width:30px; height:30px; z-index:9999; background:transparent url(http://nav.healthline.com/healthstat/images/navigator/spinner.gif) no-repeat top left; } \
+    .hlNavWin .navPopFrame { padding:0; border:0; margin:0; height:100%; width:100%; background:#fff url(http://nav.healthline.com/healthstat/images/navigator/spinner.gif) no-repeat center center; } \
+    .hlNavWin #navTitleLink { position:absolute; margin:-5px 0 0 5px; font-family:arial; font-weight:bold; color:#575757; font-size:16px; text-transform:capitalize; } \
+    .hlNavWin .partner_logo { position:absolute; margin:-13px 0 0 0; right:25px; width:150px; height:38px; background-position:-225px 0; cursor:pointer; border:0 none; } \
+    .hlNavWin .navhl_logo { margin:10px 0 0 0;  } \
+    .hlNavWin .nav_close { position:absolute; margin:-22px 0 0 0; right:3px; width:25px; height:25px; background-position:-73px 0; border:0 none; text-decoration:none; cursor:pointer; } \
+    .hlNavWin .nav_close:hover { background-position:-73px -29px; text-decoration:none; } \
+    .hlNavWin .nav_close:focus{outline:0; } \
+    .hlNavWin .searchBox { float:right; width:95%; height:25px; background-position: 0 -176px; background-repeat:repeat-x; color:#717171; border:0 none; margin-top:7px; } \
+    .hlNavWin #search_inp { width:100%; border:0 none; background:none; height:25px; padding:4px 0 0 4px; overflow:none; } \
+    .hlNavWin #search_btn { height:25px; width:70px; cursor:pointer; background-position: 0 0; border:0 none; margin-top:7px; } \
+    .hlNavWin #search_btn:blur, #search_btn:focus{ outline:0 } \
+    .hlNavWin #searchFooter td { vertical-align:top; } \
+    .hlNavWin .navTL { width:15px; height:48px; background-position:-102px 0; float:left; } \
+    .hlNavWin .navTR { width:15px; height:48px; background-position:-120px 0; float:right; } \
+    .hlNavWin .navBL { width:15px; height:48px; background-position: -139px 0; float:left; } \
+    .hlNavWin .navBR { width:15px; height:48px; background-position: -159px 0; float:right; } \
+    .hlNavWin .navMidTopHorz { background-repeat: repeat-x; background-position: 0 -59px; height:48px; width:100%; } \
+    .hlNavWin .navMidBotHorz { background-repeat: repeat-x; background-position: 0 -121px; height:48px; width:100%; } \
+    .hlNavWin .navMidLeftVert { background:transparent url('http://www.healthline.com/corporate/ads/NavDefault/skins/hl_vert_sprite.png') repeat-y 0 0; width:10px; height:100%; } \
+    .hlNavWin .navMidRightVert { background:transparent url('http://www.healthline.com/corporate/ads/NavDefault/skins/hl_vert_sprite.png') repeat-y -20px 0; width:10px; height:100%; } \
+    .hlNavWin .navArrowLT { width:20px; height:20px; background-position:-178px 0; } \
+    .hlNavWin .navArrowRT { width:20px; height:20px; background-position:-202px 0; } \
+    .hlNavWin .navArrowLB { width:20px; height:20px; background-position:-178px -24px; } \
+    .hlNavWin .navArrowRB { width:20px; height:20px; background-position:-202px -24px; } \
+    .hlNavWin #noFooter td { height:10px; } \
+    .hlNavWin #noFooter .navMidBotHorz { background-position:0 -159px; } \
+    .hlNavWin #noFooter .navBL { background-position:-139px -38px; } \
+    .hlNavWin #noFooter .navBR { background-position:-159px -38px; } \
+    .hl-navLink:focus { outline:0 color:#006599; } \
+    .hl-navLink {color:#006599;zoom:1;white-space:nowrap;text-decoration:none;background:transparent url(http://nav.healthline.com/healthstat/images/navigator/healthline_link.jpg) no-repeat right 3px; padding-right:14px; margin-right:2px; cursor:pointer; } \
+    .hlLink-rss {background:transparent url(http://nav.healthline.com/healthstat/images/navigator/hlLink-rss-2.jpg ) right 3px no-repeat; } \
+    .hlLink-blog {background:transparent url(http://nav.healthline.com/healthstat/images/navigator/hlLink-bubble-3.jpg ) right 3px no-repeat; } \
+    .hlLink-video {background:transparent url(http://nav.healthline.com/healthstat/images/navigator/hlLink-video.jpg ) right 3px no-repeat; } \
+    .hlLink-buy {background:transparent url(http://nav.healthline.com/healthstat/images/navigator/hlLink-cart.jpg ) right 3px no-repeat; } \
+    .hlLink-photo {background:transparent url(http://nav.healthline.com/healthstat/images/navigator/hlLink-photo.jpg ) right 3px no-repeat; } \
+    .hlLink-healthmap {background:transparent url(http://nav.healthline.com/healthstat/images/navigator/hlLink-man.jpg ) right 3px no-repeat; } \
+    *.nobg { background:none; border:none; }";
+};
+
+hln_nav_css += "</style>";
+document.write(hln_nav_css);
+
 if (roadblockId == null) var roadblockId = 0; //  since -1 is DB default, a negative condition against 0 will pass and NOT roadblock any ads
 
-var adAreasOnload = [];
+var adAreasOnload = { regions: [{"action" : "getkvalues", "area_name" : "getkvalues", "area_id" : "7",
+                    "atype" : "0", "aentry" : "0",
+                    "ctype" : "1", "cref" : "TextPop", "cwidth" : "370",  "cheight" : "283",
+                    "node_name" : "script,img,a,window", "node_attr" : "src,src,href,", "node_value" : "k1=-;|k2=-;|k3=-;,kw=-;,utm=;,g_cfn", "node_instance" : 0,
+                    "put_method" : "",
+                    "box_style" : "","tag_params" : "","maxOnload" : 1,
+                    "width_max" : 0,"height_max" : 0,"width_min" : 0,"height_min" : 0
+                }],
+    "global" : { "overridePageLinks":true, "maxPageAds" : 10 },
+    "loaded" : { "_7":0 },
+    "pageks" : { "k1":"none", "k2" : "none", "k3" : "unknown", "styg":"", "fromDOM":[],
+        "terms":[],
+        "imuids":[] },
+    "setTypes" : [] // reference to prevent duplicates or at least rotate them
+};
 
 var configOnload = {
-    "pageInfo" : { "k1":"othermentalhealth", "k2" : "mentalhealth", "k3" : "health", "styg":"symptoms",
-        "terms":["Automatism"],
-        "imuids":["8118217","8098995","8101731"] },
-    "fromDOM":[],
-    "loaded" : {  },
-    "setTypes" : {}, // reference to prevent duplicates or at least rotate them
     "prefix" : "hl",
     "search_url" : "http://www.healthline.com/search?q1=",
     "search_text" : "Search Healthline",
     "logo_url" : "http://www.healthline.com",
     "clr1" : "006599",
     "clr2" : "c84414",
-    "buildtime" : new Date().getTime(),
+    "buildtime" : new Date().getTime(), 
     "processTime" : 33,
     "spriteType" : "png",
     "rdblk" : "' roadblockId '",
     "navigatorServer" : "http://nav.healthline.com",
     "isDashboard" : false,
     "pageUrl" : encodeURIComponent("http://www.healthline.com/privacypolicy.jsp"),
-    "pageId" : "4051761",
+    "pageId" : "14513943",
     "partnerId" : "28",
+    "uuid" : "31a86f67-b1b6-4fd7-8b98-8caeee8d3078",
     "lookup":{"pagePartnerId":0,"pageId":1,"pageUrl":2,"k1":3,"linkId":4,"linkName":5,"linkImuid":6,"linkText":7,"linkStyGroup":8,"linkPosition":9,"contentPartnerId":10,"contentName":11,"contentImuid":12,"contentText":13,"contentStyGroup":14,"contentUrl":15,"contentPosition":16,"deltaTime":17,"userAgent":18,"sessionId":19,"usageTime":20,"paramNum":21,"paramStr":22,"eventType":23}
 };
 
+function hmn_okToLookAtNode(el) {
+	if (el.nodeType != 1) { return true; }
+	var nn = el.nodeName.toUpperCase();
+	// 12: (.)
+	// Rule 1: Positive@<h1> -> Skip
+	if (nn == "H1") { return false;}
+	// Rule 1: Positive@<h2> -> Skip
+	if (nn == "H2") { return false;}
+	// Rule 1: Positive@<h3> -> Skip
+	if (nn == "H3") { return false;}
+	// Rule 1: Positive@<h4> -> Skip
+	if (nn == "H4") { return false;}
+	// Rule 1: Positive@<img> -> Skip
+	if (nn == "IMG") { return false;}
+	// Rule 1: Positive@<noscript> -> Skip
+	if (nn == "NOSCRIPT") { return false;}
+	// Rule 1: Positive@<script> -> Skip
+	if (nn == "SCRIPT") { return false;}
+	// Rule 1: Positive@<form> -> Skip
+	if (nn == "FORM") { return false;}
+	// Rule 1: Positive@<input> -> Skip
+	if (nn == "INPUT") { return false;}
+	// Rule 1: Positive@<select> -> Skip
+	if (nn == "SELECT") { return false;}
+	// Rule 1: Positive@<hr> -> Skip
+	if (nn == "HR") { return false;}
+	// Rule 2: Positive@<a class="hllink"> -> RestrictToPositive
+	if (nn == "A") { if (el.className.match(/\bhllink\b/)) {return true;}}
+	// Rule 3: Positive@<a> -> Skip
+	if (nn == "A") { return false;}
+	// Rule 5: Ambiguous@<div class="hl-navLink"> -> Skip
+	if (nn == "DIV") { if (el.className.match(/\bhl-navLink\b/)) {return false;}}
+	// Rule 16: Ambiguous@<div id="centerWell"> -> Traverse
+	if (nn == "DIV") { if (el.id == "centerWell") {return true;}}
+	return true;
+};
 
 
 
@@ -62,6 +165,8 @@ var configOnload = {
 
 
 
+
+    
 
 
 

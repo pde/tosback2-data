@@ -521,9 +521,7 @@ siNav.load({
 	"video" : [
 		{ "u": "/specials/futuregamechangers/?eref=sinav",			"l":"Future Game Changers" },
 		{ "u": "/behindthemic/?eref=sinav",			"l":"Behind The Mic" },
-		{ "u": "/specials/just-askin/?eref=sinav",			"l":"Just Askin'" },
-		{ "u": "/video/inside_report/?eref=sinav",			"l":"Inside Report" },
 		{ "u": "/2012_swimsuit/video/kate-upton-profile.html?eref=sinav",			"l":"Swimsuit" },
-		{ "u": "/video/the-daily-fix/?eref=sinav",			"l":"The Daily Fix" }
+		{ "u": "/theshow/?eref=sinav",			"l":"SI on NBC" }
 	]
 });

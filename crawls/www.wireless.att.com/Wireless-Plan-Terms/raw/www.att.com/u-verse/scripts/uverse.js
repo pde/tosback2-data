@@ -940,3 +940,9 @@ var printPackageChannels = function(){
 commonFunc.addOnload("roundedCorners();");
 commonFunc.addOnload("getTooltips();");
 commonFunc.addOnload("getDefaultText();");
+
+function showIPTVOffer(param) {
+	commonFunc.displayElement('iptvPremiumOffers', false);
+	commonFunc.displayElement('iptvInternationalOffers', false);
+	commonFunc.displayElement(param, true); 
+}

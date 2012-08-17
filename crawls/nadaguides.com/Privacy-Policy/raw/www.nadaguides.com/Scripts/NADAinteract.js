@@ -59,6 +59,9 @@ function clearVINText(VINjqObject) {
     if ($(VINjqObject).val() == "Press GO or Enter VIN") {
         $(VINjqObject).val('');
     }
+    if ($(VINjqObject).val() == "Enter VIN (optional)") {
+        $(VINjqObject).val('');
+    }
 };
 //takes in a jquery input object.  i.e. $('#idofinput')
 function clearHINText(HINjqObject) {

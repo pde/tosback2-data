@@ -682,29 +682,30 @@ var usa_globalMenu = {
 					"type" : "video_feature",
 					"title" : "Movies &amp; Specials",
 					"items" : [
-						{
-							"title" : "THE MUMMY",
-							"subtitle" : "MON AUG 13 11:05/10:05C",
-							"url" : usa_baseUrlDomain + "/movies/themummy/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_themummy.png"
-						},
-						{
-							"title" : "BLUE CRUSH 2",
-							"subtitle" : "WED AUG 22 8/7C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_bluecrush2.png"
-						},
+						
 						{
 							"title" : "G.I. JOE: THE RISE OF COBRA",
-							"subtitle" : "MON AUG 20 11:05/10:05C",
+							"subtitle" : "MONDAY AUG 20 11:05/10:05C",
 							"url" : usa_baseUrlDomain + "/movies/gijoe/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
 						},
 						{
+							"title" : "BLUE CRUSH 2",
+							"subtitle" : "WEDNESDAY AUG 22 8AM/7C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_bluecrush2.png"
+						},
+						{
 							"title" : "COUPLES RETREAT",
-							"subtitle" : "MON AUG 20 11:05/10:05C",
+							"subtitle" : "MONDAY AUG 27 11:05/10:05C",
 							"url" : usa_baseUrlDomain + "/movies/couplesretreat/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
+						},
+						{
+							"title" : "BAD BOYS 2",
+							"subtitle" : "SATURDAY SEPT 1 8/7C",
+							"url" : usa_baseUrlDomain + "/movies/badboys2/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_badboys2.png"
 						}
 
 

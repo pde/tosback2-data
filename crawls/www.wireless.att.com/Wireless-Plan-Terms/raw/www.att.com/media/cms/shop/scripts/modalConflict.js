@@ -291,6 +291,7 @@
 				jQuery.colorbox.close();
 			});
 			jQuery("div#colorbox").find("#modalConflictContinue").click(ATT.conflictModal.handleContinue);
+			jQuery("div#colorbox").find("#modalConflictNewLine").click(ATT.conflictModal.handleNewLine);
 			
 			// iterate through the list of cart items, account items, and conflicting
 			// add items and write them to the appropriate dom locations to inform the
@@ -363,6 +364,15 @@
 			}
 			jQuery.colorbox.resize();
 		}
+
+		ATT.conflictModal.handleNewLine = function(){
+			var conflictData = ATT.conflictModal.conflictData;
+			var originOrder = conflictData.originatingOrder;
+			originOrder.params = originOrder.params || "";
+			originOrder.params = originOrder.params + "&startNew=true";			
+			ATT.ShoppingCart.executeOrder(originOrder);
+		}
+		
 		ATT.conflictModal.handleContinue = function(){
 			var conflictData = ATT.conflictModal.conflictData;
 			var originOrder = conflictData.originatingOrder;

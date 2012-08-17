@@ -8,6 +8,7 @@ if (suggestionsfilelocal === undefined) { var suggestionsfilelocal = ""; }
 var ccode = "";
 var lcode = "";
 var lccode = "";
+var jsdevice = "desktop";
 
 function addscript() {
 	// check to see that the browser supports the getElementById method
@@ -77,12 +78,12 @@ $(document).ready(function(){
 	$("#accordion > h2").click(function(){
 	     if (this.className == "current") {
 	         $(this).removeClass("current");
-	         $(this).next("div.pane").slideToggle("slow");
+	         $(this).next("div.pane").slideToggle("slow", function(){ $("#accordion h2").css("overflow","hidden")});
 	     } else {
 	         $(this).parent().children("h2").removeClass("current");
 	         $(this).parent().children("div.pane").slideUp("slow");
 	         $(this).toggleClass("current");
-	         $(this).next("div.pane").slideToggle("slow");
+	         $(this).next("div.pane").slideToggle("slow", function(){ $("#accordion h2").css("overflow","hidden")});
 	     }
 	});
 	

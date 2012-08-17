@@ -1,1 +1,1 @@
-if(!window['googleNDT_']){window['googleNDT_']=(new Date()).getTime();}window.googleAltLoader=true;document.write('<script src="//www.google.com/ads/search/module/ads/3.0/adc80352be9150660908b9f54a6a3a577df94061/n/search.js" type="text/javascript"></script>');
+if(!window['googleNDT_']){window['googleNDT_']=(new Date()).getTime();}window.googleAltLoader=true;document.write('<script src="//www.google.com/ads/search/module/ads/3.0/ec82db8d741881b0381326c3c232318a6205778c/n/search.js" type="text/javascript"></script>');

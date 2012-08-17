@@ -9,21 +9,21 @@ $.ajaxSetup ({
 
 //update the cart count when page is ready
 $(document).ready(function(){
-    
+
   if( $("#bannerRotator div.banners div").length > 1){
     $("#bannerRotator").scrollable({ vertical: true, circular: true, keyboard: false }).autoscroll(5000);
   }
-	
+
 	//update the cart count
 	var baseUrl = "https:" == document.location.protocol?secureBase:base;
 	$('#cartCountSpan').load(baseUrl+'cartCount.php');
-	
+
 	//Search Bar stuff
 	$('#formSearch').submit(function(){ if($('#search').attr("value")=='' || $('#search').attr("value")=='Keyword, Item #'){return false;} s.doSearch(); });
 	$('#search').blur(function(){ if($(this).attr("value")=='') $(this).attr("value",'Keyword, Item #');});
 	$('#search').focus(function(){if($(this).attr("value")=='Keyword, Item #') $(this).attr("value","");});
-	
-	
+
+
 	$('a[href=#top]').click(function(){
     $('html, body').animate({scrollTop:0}, 'slow');
     return false;
@@ -37,7 +37,7 @@ $(document).ready(function(){
 		});
 		//check to see if we have a right navbar
 		var hasRightNav=$('#narrowOptions').length;
-		
+
 		//this runs when the hashtag changes
 		$(window).bind( "hashchange", function(e) {
 			//get current states from the hashtag
@@ -47,7 +47,7 @@ $(document).ready(function(){
 			var filters = $.bbq.getState( "f" ); //filters
 			var sort = $.bbq.getState("s");
 			var rows = $.bbq.getState("rows");
-			
+
 			// setup the url parameters
 			var sendUrl=oldQS+'&page='+page;
 			if (sort!=undefined){
@@ -60,7 +60,7 @@ $(document).ready(function(){
 			if (priceRange!=undefined){sendUrl+="&priceRange="+priceRange;}
 			if (filters!=undefined){sendUrl+="&filters="+filters;}
 			if (rows!=undefined){sendUrl+="&rowsShown="+rows;}
-			
+
 			//make the ajax calls
 			$('#thumbnails').fadeTo('fast','0.2',function(){
 				$.post(baseUrl+'ajaxThumbHandler.php', sendUrl+'&data=thumbs', function(data){
@@ -73,6 +73,10 @@ $(document).ready(function(){
 					$('#thumbnails').html(data);
 					$('#thumbnails').fadeTo('fast','1');
 					//$("div.thumbImageWrap").quickLookButton("testNarrow.php");
+					
+					// Display the ql Button
+					$('.qlPLPButton, .qlCartButton').css({visibility:'visible'});
+					
 					equalHeight('#sidebar','#content');
 					//alert($('#narrowOptions:in-view'));
 					if(rows!='all' && !elementInViewport('#narrowOptions') ){
@@ -84,9 +88,9 @@ $(document).ready(function(){
 			if(hasRightNav){
 				$('#narrowOptions').load(baseUrl+'ajaxThumbHandler.php?'+sendUrl.replace(/ /g,'%20')+'&data=fullRightNav');
 			}
-			
+
 		});
-		
+
 		if($.bbq.getState( "p" ) != undefined){
 			$(window).trigger( "hashchange" );
 		}
@@ -103,7 +107,7 @@ $(document).ready(function(){
 				$(this).removeClass("narrowHover");
 			}
 		});
-			
+
 		$(".narrowChoices li").live('click',function(){
 			if($(this).hasClass('priceOption')){
 				changePriceRange($(this).find('a:first').attr('href'));
@@ -112,7 +116,7 @@ $(document).ready(function(){
 				addFilter($(this).text());
 			}
 		});
-		
+
 		//$("select.narrowChoices").live('change',function(){
 		//	if($(this).hasClass('priceOption')){
 		//		changePriceRange($(this).val());
@@ -121,7 +125,7 @@ $(document).ready(function(){
 		//		addFilter($(this).text());
 		//	}
 		//});
-		
+
 		$(".narrowSelected li").live('click',function(){
 			if($(this).hasClass('priceOption')){
 				changePriceRange('none');
@@ -131,7 +135,7 @@ $(document).ready(function(){
 			}
 		});
 	}
-	
+
 	if ($('.swatchSlider').length) {
 		$(".swatchSlider").scrollable();
 	}
@@ -142,15 +146,15 @@ $(document).ready(function(){
 	//					autoOpen: false
 	//});
 	//$("#detailTabs").tabs();
-	
+
 	$("#detailImagePanel a[rel]").overlay({ mask:{ color: '#cccccc' }, top:'center', fixed:false });
 	$("ul.css-tabs").tabs("div.css-panes > div");
-	
+
 	$("#gcAmount").change(function(){
 			var dollarAmount=$(this).val();
 			$("#price").html(dollarAmount);
 		});
-	
+
 	//$("#addToCartButton").button({ icons: {primary: "ui-icon-locked"}});
 	$("#detailOrderForm").live('submit',function(){
 		$("#ajaxForm").val("1");
@@ -178,11 +182,178 @@ $(document).ready(function(){
 					$('#cartCountSpan').load(baseUrl+'cartCount.php');
 				}
 			});
-		
+
 		return false;
 	});
+
+
+	// QuickLook - jxj4280
+	window.QUICKLOOK_INITED = false;
 	
-});
+	$('.thumbnail').live({
+        mouseenter:
+           function()
+           {
+						var theButton = $('.quickLookBtnCon',this);
+								//console.log(theButton)
+								theButton.show();
+           },
+        mouseleave:
+           function()
+           {
+						var theButton = $('.quickLookBtnCon',this);
+						//console.log(theButton)
+						theButton.hide();
+           }
+       }
+    );
+
+	$('.qlPLPButton, .qlCartButton').css({visibility:'visible'}).live('click',function(e) {
+		e.preventDefault();
+		var theUrl = this.href;
+
+		// This will help ensure that the elements we need are on the page.
+		// QuickLook Overlay
+		var $qlOverlay  = $('#qlOverlay');
+		if ($qlOverlay.length == 0) {
+			$('body').append('<div id="qlOverlay" class="overlay"><div id="qlOverlayContent"></div></div>');
+			var $qlOverlay  = $('#qlOverlay');
+		}
+		
+		// Clear the contents.
+		$qlOverlay.find('#qlOverlayContent').html('');
+		
+		// Add to Cart post submit overlay
+		if ($('#addPopUp').length == 0) {
+			$('body').append('<div id="addPopUp" class="overlay suggestionsPopUp" ></div>');
+		}
+		
+		// The QuickLook Element
+		$(this).overlay({
+				target:'#qlOverlay',
+				mask:{ color: '#cccccc' },
+				top: 'center',
+				load: true,
+				onBeforeLoad: function() {
+					// grab wrapper element inside content
+					var wrap = this.getOverlay().find("#qlOverlayContent");
+					// load the page specified in the trigger
+					wrap.find("#qlOverlayContent").html('');
+					wrap.load(theUrl, function(){
+						
+						// Attach the tab functionality - Needs to be done for each load of the overlay
+						$("ul.css-tabs",'#qlOverlay').tabs("div.css-panes > div");
+						
+						// Attach the Swatch slider
+						if ($('.swatchSlider','#qlOverlay').length) {
+							$(".swatchSlider",'#qlOverlay').scrollable();
+						}
+						
+						// Some events can be attached a single time. Put them here.
+						if (!window.QUICKLOOK_INITED) {
+							window.QUICKLOOK_INITED = true;
+
+							// Add to cart Overlay
+							$("#qlDetailOrderForm").live('submit',function(){
+								var hasQty = parseInt($('#qlQty').val(),10);
+								if (!hasQty || hasQty<=0) {
+									alert('You must specify a quantity.');
+									return false;
+								}
+								
+								$.mask.getMask().css({display:"none"});
+								$("#qlAjaxForm").val("1");
+								var popUpElem = $('#addPopUp');
+								popUpElem.html(" ").activity( { color: "#fff"}) ;
+								if ( popUpElem.data("overlay") ){
+									popUpElem.data("overlay").load();
+								}
+								else{
+									
+									popUpElem.overlay({
+										mask:{ color: '#cccccc'},
+										top: 'center',
+										load: true
+									});
+								}
+								
+								$.post("detail.php", $("#qlDetailOrderForm").serialize(), function(data){
+										popUpElem.activity(false);
+										responseAction = $(data).find('action').text();
+										if( responseAction == 'redirect'){
+											window.location = $(data).find('content').text();
+										}
+										else{
+											popUpElem.html($(data).find('content').text());
+											$('#cartCountSpan').load(baseUrl+'cartCount.php');
+										}
+									});
+								return false;
+							}); // Add-to-cart
+
+							// Gift Card change
+							$('#qlGcAmount','#qlOverlay').live('change',function(){
+								$("#qlPrice").html($(this).val());
+							});
+							
+							// Clicking thumbnail swaps the larger image
+							$('.qlAlternateViewImage img', '#qlOverlay').live('click',function(){
+								changeQLLargeImage(this.src);
+							})
+							
+							// Hovering of a Swatch changes name above swatch group 
+							$('.swatchImg', '#qlOverlay').live({
+								mouseenter:function(){
+									var $this = $(this);
+									$this.parents('.qlSwatchBox').find('.swatchDescription').html($this.attr('title'));
+								},
+								mouseleave:function(){
+									var $this = $(this);
+									$this.parents('.qlSwatchBox').find('.swatchDescription').html('&nbsp;');
+								}
+							});
+							
+							// Attach Swatch click events
+							$('#qlSwtachBox_one .swatchImg', '#qlOverlay').live('click',function(){
+								qlSwatchClick(window.QLData.parentID,$(this).attr('hdc-spec'),$('#qlSpecTwo').val());
+							});
+							$('#qlSwtachBox_two .swatchImg', '#qlOverlay').live('click',function(){
+								qlSwatchClick(window.QLData.parentID,$('#qlSpecOne').val(),$(this).attr('hdc-spec'));
+							});
+							// Attach Selectbox change events.
+							$('#qlSpecOne', '#qlOverlay').live('change',function(){
+								qlSwatchClick(window.QLData.parentID,$(this).val(),$('#qlSpecTwo').val());
+							});
+							$('#qlSpecTwo', '#qlOverlay').live('change',function(){
+								qlSwatchClick(window.QLData.parentID,$('#qlSpecOne').val(),$(this).val());
+							});
+							
+							// Wishlist link
+							$('#qlWishListLink').live('click',function(){
+								e.preventDefault();
+								$('#qlWishList').val('1');
+								//$('#qlDetailOrderForm').die('submit.ql_ajax');
+								document.qlDetailOrderForm.submit(); // This appears to by-passes the jQuery Event.
+								return false;
+							});
+
+							//Edit Item Button
+							$('#qlEditCart','#qlOverlay').live('click',function(){
+								e.preventDefault();
+								$('#qlDetailOrderForm').submit();
+								return false;
+								});
+							
+							
+						}
+					});
+					
+				},
+				onLoad: function () { $('#qlOverlay').data("overlay",this) }
+			});
+		return false;
+	});
+}); // End doc.ready()
 
 //Need this to load after whole page is loaded to take into account image sizes in Chrome
 $(window).bind("load", function() {
@@ -202,7 +373,7 @@ var handleFailure = function callBack(o) {
 
 //*********Detail Page ajax functions
 function swatchClick(item,spec1,spec2){
-	//alert("spec="+spec+"|item="+item+"|");	
+	//alert("spec="+spec+"|item="+item+"|");
 	$('#detailMain').fadeTo('slow','0.2',function(){
 		$.get('detailRequest.php', {'item': item, 'spec1': spec1, 'spec2': spec2, 'outletFlag': outletFlag}, function(data){
 				$('#detailImagePanel').html($(data).find('image').text());
@@ -399,7 +570,7 @@ $.fn.quickLookButton = function(url) {
 				var parentEl=$(this).parents(".thumbnail");
 				var title=parentEl.find(".thumbDetails a.itemDesc").text();
 				var sku=parentEl.find(".thumbPopSku").text();
-        
+
         var $tempButton = $("<a />", {
             "href": "#",
             "text": "Quick Look",
@@ -410,7 +581,7 @@ $.fn.quickLookButton = function(url) {
 								"left": "55px"
             }
         }).button().click(function(){  //.appendTo($el);
-					
+
 					$("#quickLook").dialog({
 						modal: true,
 						draggable: false,
@@ -424,18 +595,18 @@ $.fn.quickLookButton = function(url) {
 					});
 					return false;
 				});
-            
+
 				$tempButton.appendTo($el);
-      
+
     }, function(e) {
         $(".qlButton").fadeOut("fast", function() {
             $(this).remove();
         });
-		 
+
 		});
-    
+
 	}
-	
+
 function detailPop(){
 	$("#detailImagePopUp").dialog("open");
 	return false;
@@ -509,8 +680,116 @@ function elementInViewport(element) {
 	}
 
 	return true;
-	
+
 }
 
 
+/* Quicklook - jxj4280 */
+function changeQLLargeImage(newSrc) {
+	document.getElementById('qlLargeImage').src=newSrc;
+}
 
+function qlSwatchClick(item,spec1,spec2){
+	var theProp = item+''+spec1+''+spec2;
+	var notAvailableStatus = ["N/A","DISCONTINUED","SOLD OUT"];
+
+	var _updateQuickLook = function(d) {
+		var addToCartTweaker = 'visible';
+		if ($.inArray(d.stockStatus.toUpperCase(),notAvailableStatus)!=-1) {
+			addToCartTweaker = 'hidden';
+		}
+
+		$('#qlOverlayContent','#qlOverlay').fadeTo('slow','0.2',function(){
+			
+			$('#qlLargeImage','#qlOverlay').attr('src',d.largePic).attr('alt',d.name+' #'+d.sku10+' #'+d.sku8+' #'+d.sku7+' #'+d.sku5);
+			/*
+			altViewImgs = [];
+			for (var i=0,l=d.images.length;i<l;i++) {
+				altViewImgs[i] = '<div class="qlAlternateViewImage"><div class="qlAlternateViewImageWrap wraptocenter"><img src="'+d.images[i].img+'" width="90" alt="'+d.images[i].type+'" /></div></div>'
+			}
+			$('#qlAlternateViews','#qlOverlay').html(altViewImgs.join('\n'));*/
+			$('#qlAlternateViews','#qlOverlay').html(d.altView);
+			$('#qlProductOrderForm','#qlOverlay').html(d.optionsHtml);
+			$('.detailCopy','#qlOverlay').html(d.productCopy);
+			$('#qlOverlayContent').fadeTo('fast','1');
+			$('.qlProductLink').attr('href',d.productLink);
+			$('#qlAddToCartImg').css('visibility',addToCartTweaker);
+			//$('#qlReviewImg').attr('src',d.ratingImg);
+		});
+	};
+	
+	if (window.QLData.cache === undefined) { window.QLData.cache = {}; }
+	if (window.QLData.cache[theProp] === undefined) {
+		$.get('item_service.php', {
+			'item': item,
+			'spec1': spec1,
+			'spec2': spec2,
+			'outletFlag': window.outletFlag,
+			context:'quicklook',
+			qty:$('#qlQty').val()
+		}, function(data){
+			window.QLData.cache[theProp] = data;
+			_updateQuickLook(window.QLData.cache[theProp]);
+		});
+	} else {
+		_updateQuickLook(window.QLData.cache[theProp]);
+	}
+	return false;
+}
+
+function checkPromoCode(theForm) {
+	var $cMsg = 'Are you sure you want to replace this discount?\nOnly one discount per order is allowed.',
+	newEle = theForm.promoCodeTemp,
+	oldEle = theForm.promoCode,	
+	nVal = theForm.promoCodeTemp.value;
+	oVal = theForm.promoCode.value,
+	retVal = true;
+	
+	// Only work if we have a something in the temp promo code
+	if (nVal != '' && oVal !='') {
+		// Now check to see if promo codes match.
+		if (nVal != oVal) {
+			// So they are different, now confirm that the user wants to change them.
+			if (!confirm($cMsg)) {
+				retVal = false;
+			}
+		} // They do, stop processing
+	}
+	if (retVal) {
+		oldEle.value = nVal;
+	} else {
+		newEle.value = oVal;
+	}
+	return retVal;
+}
+
+function applyPromoCode(theForm){
+	if (theForm.promoCodeTemp.value !="" && checkPromoCode(theForm)) {
+		$("#payRecord").val("");
+		$("#GCpaymentTypeId").val("");
+		$("#CCpaymentTypeId").val("");
+		$("#nextPage").val("-1");
+		
+		// This is the list of elements that need to be cleared on Discount "Apply"
+		var fields = ['savedAmount','IdNumberpayment','Amountpayment','PINpayment',''],
+		selects = ['monthExpDatepayment','yearExpDatepayment','CCpaymentTypeId','GCpaymentTypeId'],
+		cbs = ['saveCC','tcAccept','ignore'];
+		
+		// handle fields
+		for (var i=fields.length; i>-1 ; --i) {
+			var ele = theForm[fields[i]];
+			if (ele) { ele.value=""; }
+		}
+		
+		for (var i=selects.length; i>-1 ; --i) {
+			var ele = theForm[selects[i]];
+			if (ele) { ele.selectedIndex=0; }
+		}
+		
+		for (var i=cbs.length; i>-1 ; --i) {
+			var ele = theForm[cbs[i]];
+			if (ele) { ele.checked=false; }
+		}
+		$("#paymentForm").submit();
+	}
+}

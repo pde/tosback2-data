@@ -634,11 +634,9 @@ if(s.eVar22){
 
 
 s.prop30=s.getFlash('s_fv');
-s.eVar50=s.getFlash('s_fv');
-	if(!s.prop30 && !s.eVar50){
+	if(!s.prop30){
 		s.detectFlash('s_fv','10');
 		s.prop30=s.getFlash('s_fv');
-    s.eVar50=s.getFlash('s_fv');
 	} 
   
  /* s.eVar53="{$GLBDOC}"; */  
@@ -696,14 +694,12 @@ if(s.eVar22){
 if ((s.eVar22.indexOf('avg.com')>=0) && (s.eVar22.indexOf('free.avg.com')<=0) ) 
 {
 s.prop42 = "corporate-website";
-s.eVar59 = "corporate-website";
 s.events=s.apl(s.events,'event77',',',1);
 }         
      
 if(s.eVar22.indexOf('free.avg.com')>=0) 
 {
 s.prop42 = "free-website";
-s.eVar59 = "free-website";
 s.events=s.apl(s.events,'event78',',',1);
 }
 }                                  

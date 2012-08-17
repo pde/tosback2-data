@@ -15,7 +15,7 @@
 
 <link rel="icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" /> 
-<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=137.css" rel="stylesheet" type="text/css" />
+<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=138.css" rel="stylesheet" type="text/css" />
 <!--[if lte IE 7]>
 	<link href="http://cdn1.static.tube8.phncdn.com/style/ie-style.css?cache=042" rel="stylesheet" type="text/css" />
 <![endif]-->
@@ -264,7 +264,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 						<a href="http://www.tube8.com/tags.html" onclick="pageTracker._trackEvent('Header', 'Click Tags Tab');" style="padding-right:15px;">Tags<span class="new"></span></a>
 					</li>
 					<li class="float-left tm-border">
-						<a href='http://enter.t8premium.com/track/MTU5NTU6MjU6MzQ,588/' target='_blank' rel="nofollow" onclick="pageTracker._trackEvent('Header', 'Click Premium Tab');">Premium</a>
+						<a href='http://enter.t8premium.com/track/MTU5NTQ6MjU6MzQ,587/' target='_blank' rel="nofollow" onclick="pageTracker._trackEvent('Header', 'Click Premium Tab');">Premium</a>
 					</li>
 					<li class="float-left tm-border "><a href="http://mbs.tube8live.com/xtarc/595444/435/0/?mta=338099" rel="nofollow" target="_blank" onclick="pageTracker._trackEvent('Header', 'Click Live Girls Tab');">Live Girls</a></li>
 					<li class="float-left tm-border"><a href="http://ads.genericlink.com/ads/site/tube8/dispatcher/t8_na_datingtab.php" rel="nofollow" target="_blank" onClick="pageTracker._trackEvent('Header', 'Click T8 date');">Fuck Date</a></li>
@@ -1199,32 +1199,38 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 			$j('.videoThumbs').live('mouseout', function(){
 				endThumbChange(currentThumbnailFlip.attr('id'));
 			});
-
-			
-			var skinLive;
-			$j(document).ready(function (){
-				// Skin live // note that time is in UTC, so consider -5 (or -4 when early day light savings time)
-				skinLive = {
-					'start'	: Date.parse("July 17, 2012 13:00 UTC"),
-					'end'	: Date.parse("July 19, 2012 13:00 UTC"),
-					'now'	: Date.parse( (new Date).toUTCString() )
-				}
-				if( skinLive.start < skinLive.now && skinLive.end > skinLive.now )  {
-					// Display the background skin:
-					$('body').css('background-color','#000');
-					$('.home-message').hide().prev().css('height','3px');		
-					if(typeof $j('.videopage')[0] == 'undefined') {
-						$j('body').prepend('<div class="skin"></div>');
-						$j('.content-wrapper').css('marginTop', '100px');
-					} else {
-						$j('body').prepend('<div class="videoPageSkin"></div>');
-					}
-				}
-			});
-
 		});
 
-//]]>
+				var skinEvent;
+		$j(document).ready(function (){
+			// Skin events // note that time is in UTC, so consider -5 (or -4 when early day light savings time)
+			skinEvent = {
+				'start'	: Date.parse("August 20, 2012 00:00 UTC"),
+				'end'	: Date.parse("August 26, 2012 23:59 UTC"),
+				'now'	: Date.parse( (new Date).toUTCString() )
+			}
+			if( skinEvent.start < skinEvent.now && skinEvent.end > skinEvent.now )  {
+				skinEvent.key = Math.ceil((skinEvent.now - skinEvent.start) / 86400000);
+				$('body').css('background-color','#000');
+				$('.home-message').hide().prev().css('height','3px');		
+				if( typeof $j('.videopage')[0] == 'undefined' ) {
+					$j('body').prepend('<div class="skin'+skinEvent.key+'"><a href="http://www.fuck.com" target="_blank" class="skinLink" /></div>');
+					$j('.content-wrapper').first().css({
+						'marginTop': '100px',
+						'-webkit-box-shadow':  '0px 0px 6px 1px rgba(0, 0, 0, .8)',
+						'box-shadow':  '0px 0px 6px 1px rgba(0, 0, 0, .8)'
+					});
+				} else {
+					$j('body').prepend('<div class="videoPageSkin'+skinEvent.key+'"></div>');
+					$j('.content-wrapper').css({
+						'-webkit-box-shadow':  '0px 0px 6px 1px rgba(0, 0, 0, .8)',
+						'box-shadow':  '0px 0px 6px 1px rgba(0, 0, 0, .8)'
+					});
+					$j("div#navbar").css('z-index',5);
+				}
+			}
+		});
+		//]]>
 	</script>
 	<div class="reset"></div>
 </div>

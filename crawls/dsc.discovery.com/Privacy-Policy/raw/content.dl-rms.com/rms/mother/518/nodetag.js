@@ -1,5 +1,6 @@
 (function(){
-var pfs={ "http://dsc.discovery.com/convergence/sharkweek/ultimate-quiz/ultimate-quiz.html":{"nid":12408,"tr":1},
+var pfs={ "http://dsc.discovery.com/tv/fearless-planet/adventure-sports/adventure-sports.html":{"nid":28268,"tr":1,"ex":"http://dsc.discovery.com/tv/life/life-the-game.html|http://dsc.discovery.com/games/games.html"},
+"http://dsc.discovery.com/convergence/sharkweek/ultimate-quiz/ultimate-quiz.html":{"nid":12408,"tr":1},
 "http://dsc.discovery.com/convergence/sharkweek/view-vote/view-vote.html":{"nid":12410,"tr":1},
 "http://dsc.discovery.com/convergence/sharkweek/news/sharknews.html":{"nid":12407,"tr":1},
 "http://dsc.discovery.com/convergence/sharkweek/games/games.html":{"nid":12427,"tr":1},
@@ -25,7 +26,7 @@ if (Math.random()>=n['tr']) {
 	return;
 }
 
-var ar_nodes = ":30672:30670:30671:";
+var ar_nodes = ":30672:";
 if (ar_nodes.indexOf(":"+n['nid']+":") >= 0) {	// adradar only
 	(new Image).src="//amch.questionmarket.com/adscgen/adrad.php?survey_num=0&aicode=0&site="+n['nid'];
 	return;

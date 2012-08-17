@@ -1,0 +1,121 @@
+jQuery(function() {
+
+	var categ_urls = [
+		"/category/furniture.do",
+		"/category/code/100504.do",
+
+		"/category/home-decorating.do",
+		"/category/code/100505.do",
+
+		"/category/kitchen-entertaining.do",
+		"/category/code/100506.do",
+
+		"/category/gifts-accessories.do",
+		"/category/code/100507.do",
+
+		"/category/food-and-drink.do",
+		"/category/code/100508.do",
+
+		"/category/seasonal.do",
+		"/category/code/100509.do",
+
+		"/content/inspirations.do",
+
+		"/category/sale.do",
+		"/category/code/Sale.do"
+	];
+
+if ( ("|"+categ_urls.join("|")+"|").indexOf(location.pathname)>-1 ) {
+	var dclk_iframe_p = document.createElement('iframe');
+	dclk_iframe_p.style.width="1px";
+	dclk_iframe_p.style.height="1px";
+	var dclkpUrl = "http://fls.doubleclick.net/activityi;"+
+			"src=3168996;"+
+			"type=pageview;cat=;ord="+ts+"?";
+	dclk_iframe_p.src = dclkpUrl;
+	document.getElementsByTagName('body')[0].appendChild(dclk_iframe_p);
+}
+
+
+
+/*
+Start of DoubleClick Floodlight Tag: Please do not remove
+Activity name of this tag: Create an Account
+URL of the webpage where the tag is expected to be placed: https://www.worldmarket.com/checkout/index.jsp?process=login
+This tag must be placed between the <body> and </body> tags, as close as possible to the opening tag.
+Creation Date: 05/10/2011
+*/
+
+if ( location.pathname=="/account/registeraddress.do" && getQueryArgs("method")[0]=="view" && jQuery(".errorblock h1").size()==0) {
+	var dclk_iframe_a = document.createElement('iframe');
+	dclk_iframe_a.style.width="1px";
+	dclk_iframe_a.style.height="1px";
+	var dclkaUrl = "http://fls.doubleclick.net/activityi;"+
+			"src=3168996;"+
+			"type=conve502;cat=creat747;ord="+ts+"?";
+	dclk_iframe_a.src = dclkaUrl;
+	document.getElementsByTagName('body')[0].appendChild(dclk_iframe_a);
+}
+
+
+
+
+/*
+Start of DoubleClick Floodlight Tag: Please do not remove
+Activity name of this tag: Store Locator - Go Button
+URL of the webpage where the tag is expected to be placed: http://www.worldmarket.com/storeLocator/index.jsp?ab=header:storelocator
+This tag must be placed between the <body> and </body> tags, as close as possible to the opening tag.
+Creation Date: 08/10/2011
+*/
+
+cnt=0
+if ( (location.pathname=="/store-locator.do") ) {
+
+	function trackStoreLocatorSearch () {
+		var ts=new Date().getTime();
+	
+		s = jQuery("form#eslSearchForm1 input[name=eslSearchInput1]").val();
+		_gaq.push(['_trackEvent', 'UserAction', 'StoreLocator', s]); 
+
+		var dclk_iframe_p = document.createElement('iframe');
+		dclk_iframe_p.style.width="1px";
+		dclk_iframe_p.style.height="1px";
+		var dclkpUrl = "http://fls.doubleclick.net/activityi;"+
+				";src=3168996;type=conve502;cat=store229;"+
+				"ord="+ts+"?";
+		dclk_iframe_p.src = dclkpUrl;
+		document.getElementsByTagName('body')[0].appendChild(dclk_iframe_p);
+
+
+		var storelocpxl=document.createElement('img');
+		storelocpxl.style.height = 1;
+		storelocpxl.style.width = 1;
+		storelocpxl.src= '//www.rkdms.com/order.gif?'+
+				'mid=worldmarket'+
+				'&iid=0'+
+				'&iname=store'+
+				'&ts='+ts;
+		document.getElementsByTagName('body')[0].appendChild(storelocpxl);
+
+	};
+
+	// initial landing on page
+//	trackStoreLocatorSearch(); // not needed because apparently there is a form submit on load...
+	jQuery("form#eslSearchForm1").submit(function () {
+		console.log("form submit")
+		trackStoreLocatorSearch();
+	});
+
+
+
+} // end if on store locator results
+
+if ( location.pathname.indexOf("/product/")==0 ) {
+/* RKG- COMPARISON SHOPPING TAG */
+   var a = document.createElement("script");
+    a.src = "/text/pixels/maq30.js";
+    a.type = "text/javascript";
+	document.getElementsByTagName('body')[0].appendChild(a)
+}
+
+}); // end jQuery wrapper

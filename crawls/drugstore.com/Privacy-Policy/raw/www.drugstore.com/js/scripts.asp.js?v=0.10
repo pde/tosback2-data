@@ -1,0 +1,4618 @@
+/* extend javascript array functions */
+
+/* Add filtering capability to Array objects that don't have that capability 
+//This prototype is provided by the Mozilla foundation and
+//is distributed under the MIT license.
+//http://www.ibiblio.org/pub/Linux/LICENSES/mit.license
+*/
+if (!Array.prototype.filter) {
+	Array.prototype.filter = function(fun /*, thisp*/) {
+		var len = this.length;
+		if (typeof fun != "function")
+			throw new TypeError();
+
+		var res = new Array();
+		var thisp = arguments[1];
+		for (var i = 0; i < len; i++) {
+			if (i in this) {
+				var val = this[i]; // in case fun mutates this
+				if (fun.call(thisp, val, i, this))
+					res.push(val);
+			}
+		}
+
+		return res;
+	};
+}
+
+//This prototype is provided by the Mozilla foundation and
+//is distributed under the MIT license.
+//http://www.ibiblio.org/pub/Linux/LICENSES/mit.license
+
+if (!Array.prototype.some) {
+	Array.prototype.some = function(fun /*, thisp*/) {
+		var len = this.length;
+		if (typeof fun != "function")
+			throw new TypeError();
+
+		var thisp = arguments[1];
+		for (var i = 0; i < len; i++) {
+			if (i in this &&
+          fun.call(thisp, this[i], i, this))
+				return true;
+		}
+
+		return false;
+	};
+}
+
+//This prototype is provided by the Mozilla foundation and
+//is distributed under the MIT license.
+//http://www.ibiblio.org/pub/Linux/LICENSES/mit.license
+
+if (!Array.prototype.indexOf) {
+	Array.prototype.indexOf = function(elt /*, from*/) {
+		var len = this.length;
+
+		var from = Number(arguments[1]) || 0;
+		from = (from < 0)
+         ? Math.ceil(from)
+         : Math.floor(from);
+		if (from < 0)
+			from += len;
+
+		for (; from < len; from++) {
+			if (from in this &&
+          this[from] === elt)
+				return from;
+		}
+		return -1;
+	};
+}
+
+/*
+remove element at given index
+*/
+Array.prototype.removeAt = function(index) {
+	this.splice(index, 1);
+}
+
+/*
+return index of element in the array
+*/
+Array.prototype.remove = function(obj) {
+	var index = this.indexOf(obj);
+	if (index >= 0) {
+		this.removeAt(index);
+	}
+}
+
+/*
+append to end of array, optionally checking for duplicates
+*/
+Array.prototype.append = function(obj, nodup) {
+	if (!(nodup && this.contains(obj))) {
+		this[this.length] = obj;
+	}
+}
+
+/*
+return true if element is in the array
+*/
+Array.prototype.contains = function(obj) {
+	return (this.indexOf(obj) >= 0);
+}
+
+var isIE = (navigator.appName == "Microsoft Internet Explorer");
+
+//For ingredients glossary descriptions
+var ingredientDescShown = false;
+
+//overlay close button
+var gOverlayAssets = new Object();
+var gOverlayEvtHandlers = new Object();
+var gLastOverlayId = "";
+//positioning coordinates for overlay
+gOverlayAssets["initx"] = 400;
+gOverlayAssets["inity"] = 348;
+var gLastOverlaySource;
+var gWinMgr;
+var gSearch;
+
+
+// Purpose      : To block form submit, if search box value is empty. 
+//                It will get fired during onsubmit of FORM
+// Arguments    : Control Id [Auto Complete Searchbox]
+// Date         : July 2007
+function IsSearchBoxEmpty(p_oSearchBox) {
+	try {
+
+		var l_oSearchBox, l_szSearchValue;
+		if (typeof (p_oSearchBox) == "object")
+			l_oSearchBox = p_oSearchBox;
+		else
+			l_oSearchBox = document.getElementById(p_oSearchBox);
+
+		var isDefaultTerm = SearchInputHasDefaultTerm(l_oSearchBox);
+		if (isDefaultTerm) {
+			SearchInputAlert(l_oSearchBox);
+			return false;
+		}
+
+		//This string pattern will Trim the whitespaces    
+		l_szSearchValue = l_oSearchBox.value.replace(/^\s+|\s+$/g, "");
+		if (l_szSearchValue == "" || l_szSearchValue == null) {
+			SearchInputAlert(l_oSearchBox);
+			return false; //will block form submit
+		}
+		else if (isGlobalNav == true && l_szSearchValue == "search keyword") {
+			SearchInputAlert(l_oSearchBox);
+			return false; //will block form submit
+		}
+		else
+			l_oSearchBox.value = l_oSearchBox.value.replace(/;/g, "");
+			//Clearing the cookie which stores search list view type.
+			ClearProductListCookie("searchlistViewType");
+			return true;   // allow form submit
+	}
+	catch (e) { return true; }
+
+	function SearchInputHasDefaultTerm(el) {
+		if (gSearch) {
+			var fieldDefinition = gSearch.GetFieldDefinition(el.id);
+			if (fieldDefinition) {
+				if (el.value.toLowerCase() == fieldDefinition.inputFieldDefaultText.toLowerCase()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	function SearchInputAlert(el) {
+		alert("Search value is empty!");
+		el.focus();
+	}
+}
+
+// Purpose      : To add onsubmit event to FORM 
+//                This function will be called after rendering AutoComplete search box
+// Arguments    : Control Id [Auto Complete Searchbox]
+// Date         : July 2007
+function AddFormSubmitEvent(p_oSearchBox) {
+	try {
+		var l_oSearchBox, l_oForm;
+		if (typeof (p_oSearchBox) == "object")
+			l_oSearchBox = p_oSearchBox;
+		else
+			l_oSearchBox = document.getElementById(p_oSearchBox);
+		l_oForm = l_oSearchBox.form;
+		
+		l_oForm.onsubmit = function() { return IsSearchBoxEmpty(p_oSearchBox); };
+	}
+	catch (e) { }
+}
+
+// Purpose      : To set the style properties for the source element
+// Arguments    : Property, Value and Object
+// Date         : jun 5 2007
+function SetElementProperty(p_oProperty, p_szValue, p_oSource) {
+	try {
+		var l_oSource = p_oSource;
+		if ((l_oSource != null) && (l_oSource.style != null)) {
+			l_oSource = l_oSource.style;
+			l_oSource[p_oProperty] = p_szValue;
+		}
+	}
+	catch (e) { }
+}
+
+// Purpose      : To get the position info [left,top,height] of Autocommitcontrol
+// Arguments    : AutoCommitControl Object
+// Date         : jun 5 2007
+function PositionInfo(p_oSource) {
+	this.sourceElement = p_oSource;
+}
+
+PositionInfo.prototype.getElementWidth = function() {
+	try {
+		var l_nWidth = 0;
+		if (this.sourceElement != null) {
+			l_nWidth = this.sourceElement.offsetWidth;
+		}
+		return parseInt(l_nWidth);
+	}
+	catch (e) { }
+}
+
+PositionInfo.prototype.getElementHeight = function() {
+	try {
+		var l_nHeight = 0;
+		if (this.sourceElement != null) {
+			l_nHeight = this.sourceElement.offsetHeight;
+		}
+		return parseInt(l_nHeight);
+	}
+	catch (e) { }
+}
+
+PositionInfo.prototype.getElementLeft = function() {
+	try {
+		var l_nLeft = 0;
+		var l_oTemp = this.sourceElement;
+		while (l_oTemp != null) {
+			l_nLeft += l_oTemp.offsetLeft;
+			l_oTemp = l_oTemp.offsetParent;
+		}
+		return parseInt(l_nLeft);
+	}
+	catch (e) { }
+}
+
+PositionInfo.prototype.getElementTop = function() {
+	try {
+		var l_nTop = 0;
+		var l_oTemp = this.sourceElement;
+		while (l_oTemp != null) {
+			l_nTop += l_oTemp.offsetTop;
+			l_oTemp = l_oTemp.offsetParent;
+		}
+		return parseInt(l_nTop);
+	}
+	catch (e) { }
+}
+
+// cross browser event fetch
+function GetEvent(e) {
+	if (!e)
+		var e = window.event;
+	return e.target || e.srcElement;
+}
+
+/*Javascript dictionary object implementation - Start*/
+
+function KeyValuePair(p_oKey, p_oValue) {
+	this.Key = p_oKey;
+	this.Value = p_oValue;
+}
+
+function KeyValueCollection() {
+	this.arList = []; //empty array
+	this.Items = this.arList;
+}
+
+KeyValueCollection.prototype.Count = function() {
+	return this.arList.length;
+}
+
+KeyValueCollection.prototype.Add = function(p_szKey, p_szValue) {
+	var objKeyValuePair = new KeyValuePair(p_szKey, p_szValue);
+	this.arList.push(objKeyValuePair);
+}
+
+KeyValueCollection.prototype.Remove = function(p_strKey) {
+	for (i = 0; i < arList.length; i++) {
+		if (this.arList[i].Key.toLowerCase() == p_strKey.toLowerCase()) {
+			switch (i) {
+				case 0:
+					this.arList.shift();
+					break;
+				case arList.length - 1:
+					this.arList.pop();
+					break;
+				default:
+					var arHead = this.arList.slice(0, i);
+					var arTail = this.arList.slice(i + 1);
+					this.arList = arHead.concat(arTail);
+					break;
+			}
+		}
+	}
+}
+
+KeyValueCollection.prototype.Item = function(p_szKey) {
+	var l_oValue = "";
+	for (i = 0; i < this.arList.length; i++) {
+		if (this.arList[i].Key.toLowerCase() == p_szKey.toLowerCase()) {
+			l_oValue = this.arList[i].Value;
+		}
+	}
+	return l_oValue;
+}
+
+KeyValueCollection.prototype.Exists = function(p_szKey) {
+	var l_fItemExists = false
+	for (i = 0; i < this.arList.length; i++) {
+		if (this.arList[i].Key.toLowerCase() == p_szKey.toLowerCase()) {
+			l_fItemExists = true;
+			break;
+		}
+	}
+	return l_fItemExists;
+}
+
+// To show/hide tabs
+function ShowPDetailsTabContent(p_szActiveDivId, p_szAllDivIds, p_szActiveTabImgURL, p_szHiddenTabImgURL) {
+	try {
+		// Hide ingredient description div if it's being displayed.
+		if (ingredientDescShown) {
+			showIngredientDescription(null, null, null, false, null);
+		}
+
+		var l_rgszDivIds = p_szAllDivIds.split(',');
+		for (i = 0; i < l_rgszDivIds.length; i++) {
+			var divTemp;
+			divTemp = document.getElementById(l_rgszDivIds[i]);
+			if (divTemp) {
+				if (p_szActiveDivId != l_rgszDivIds[i]) {
+					divTemp.style.visibility = 'hidden';
+					divTemp.style.display = 'none';
+					// Will extract only the key value
+					MakeTabActive(l_rgszDivIds[i].substring(3, l_rgszDivIds[i].length), p_szHiddenTabImgURL, false);
+				}
+				else {
+					divTemp.style.visibility = 'visible';
+					divTemp.style.display = 'block';
+					MakeTabActive(l_rgszDivIds[i].substring(3, l_rgszDivIds[i].length), p_szActiveTabImgURL, true);
+				}
+			}
+		}
+	}
+	catch (e) { }
+}
+//To include IMG for tab and apply styles b/w tabs
+function MakeTabActive(p_szKey, p_szTabImgURL, p_fVisible) {
+	try {
+		var l_oTabButton, l_oImgButton, l_oTab;
+		l_oTabButton = document.getElementById('btn' + p_szKey);
+		l_oImgButton = document.getElementById('img' + p_szKey);
+		l_oTab = document.getElementById('td' + p_szKey);
+		if (p_fVisible) {
+			l_oTabButton.className = 'TblPDetailsSelectedBtn';
+			l_oImgButton.src = p_szTabImgURL;
+			l_oImgButton.alt = p_szKey;
+			l_oTab.className = 'selectedTab';
+		}
+		else {
+			l_oTabButton.className = 'TblPDetailsBtn';
+			l_oImgButton.src = p_szTabImgURL;
+			l_oImgButton.alt = p_szKey;
+			l_oTab.className = 'hiddenTab';
+		}
+	}
+	catch (e) { }
+}
+
+// To show/hide tabs
+function ShowTabContent(p_szActiveDivId, p_szAllDivIds, p_szActiveTabImgURL, p_szHiddenTabImgURL, p_szStyleNameSuffix) {
+	try {
+		// Hide ingredient description div if it's being displayed.
+		if (ingredientDescShown) {
+			showIngredientDescription(null, null, null, false, null);
+		}
+
+		var l_rgszDivIds = p_szAllDivIds.split(',');
+		for (i = 0; i < l_rgszDivIds.length; i++) {
+			var divTemp;
+			divTemp = document.getElementById(l_rgszDivIds[i]);
+			if (divTemp) {
+				if (p_szActiveDivId != l_rgszDivIds[i]) {
+					divTemp.style.visibility = 'hidden';
+					divTemp.style.display = 'none';
+					// Will extract only the key value
+					ToggleTab(l_rgszDivIds[i].substring(3, l_rgszDivIds[i].length), p_szHiddenTabImgURL, false, p_szStyleNameSuffix);
+				}
+				else {
+					divTemp.style.visibility = 'visible';
+					divTemp.style.display = 'block';
+					ToggleTab(l_rgszDivIds[i].substring(3, l_rgszDivIds[i].length), p_szActiveTabImgURL, true, p_szStyleNameSuffix);
+				}
+			}
+		}
+	}
+	catch (e) { }
+}
+//To include IMG for tab and apply styles b/w tabs
+function ToggleTab(p_szKey, p_szTabImgURL, p_fVisible, p_szStyleNameSuffix) {
+	try {
+		var l_oTabButton, l_oImgButton, l_oTab, l_szKey;
+		l_szKey = p_szKey
+		if (p_szKey.substring(p_szKey.length - p_szStyleNameSuffix.length) == p_szStyleNameSuffix)
+			l_szKey = p_szKey.substring(0, p_szKey.length - p_szStyleNameSuffix.length)
+		l_oTabButton = document.getElementById('btn' + l_szKey + p_szStyleNameSuffix);
+		l_oImgButton = document.getElementById('img' + l_szKey + p_szStyleNameSuffix);
+		l_oTab = document.getElementById('td' + l_szKey + p_szStyleNameSuffix);
+		if (p_fVisible) {
+			l_oTabButton.className = 'tdPDetailsSelectedBtn' + p_szStyleNameSuffix;
+			l_oImgButton.src = p_szTabImgURL;
+			l_oImgButton.alt = l_szKey;
+			l_oTab.className = 'selectedTab' + p_szStyleNameSuffix;
+		}
+		else {
+			l_oTabButton.className = 'tdPDetailsBtn' + p_szStyleNameSuffix;
+			l_oImgButton.src = p_szTabImgURL;
+			l_oImgButton.alt = l_szKey;
+			l_oTab.className = 'hiddenTab' + p_szStyleNameSuffix;
+		}
+	}
+	catch (e) { }
+}
+
+//To make all SELECT elements as hidden which is inside the DIV area - in order to avoid select overlap DIV pbm with IE
+function DisableFormElements(p_oSource, p_szTagName, p_fHidden) {
+	try {
+		var l_oCollection;
+		//Get the collection for select tag
+		l_oCollection = document.getElementsByTagName(p_szTagName);
+		var l_oSrc = new PositionInfo(document.getElementById(p_oSource));
+
+		if (l_oSrc) {
+			for (var i = 0; i <= l_oCollection.length - 1; i++) {
+				if (l_oCollection[i]) {
+					var l_oDes = new PositionInfo(l_oCollection[i]);
+					//To check whether the SELECT element is residing inside DIV area
+					if ((l_oDes.getElementLeft() + l_oDes.getElementWidth()) >= l_oSrc.getElementLeft() && l_oDes.getElementLeft() <= (l_oSrc.getElementLeft() + l_oSrc.getElementWidth()) && (l_oDes.getElementTop() + l_oDes.getElementHeight()) >= l_oSrc.getElementTop() && l_oDes.getElementTop() <= (l_oSrc.getElementTop() + l_oSrc.getElementHeight())) {
+						SetElementProperty('visibility', (p_fHidden == true ? 'hidden' : 'visible'), l_oCollection[i]);
+					}
+				}
+			}
+		}
+	}
+	catch (e) { }
+}
+
+function handleCloseClick(p_oSource) {
+	try {
+		DisableFormElements(p_oSource, 'select', false);
+		SetElementProperty('visibility', 'hidden', document.getElementById(p_oSource));
+	}
+	catch (e) { }
+}
+
+function handlePickColorClick(oDiv, url, evnt) {
+	try {
+		pickColor(oDiv, url, evnt);
+		DisableFormElements(oDiv, 'select', true);
+	}
+	catch (e) { }
+}
+
+// PopUp Menu for pick color option
+function pickColor(myDiv, url, evt) {
+	try {
+		var e = (window.event) ? window.event : evt;
+		var myWidth = 0, myHeight = 0;
+		if (typeof (window.innerWidth) == 'number') {
+			//Non-IE
+			myWidth = window.innerWidth;
+			myHeight = window.innerHeight;
+		} else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+			//IE 6+ in 'standards compliant mode'
+			myWidth = document.documentElement.clientWidth;
+			myHeight = document.documentElement.clientHeight;
+		} else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+			//IE 4 compatible
+			myWidth = document.body.clientWidth;
+			myHeight = document.body.clientHeight;
+		}
+
+		var myY = (myHeight / 2) - 285 + document.body.scrollTop;
+		if (myY < 0) myY = 0;
+
+		var myX = (myWidth / 2) - 165;
+		if (myX < 0) myX = 0
+
+		var oDiv = document.getElementById(myDiv);
+		oDiv.style.display = 'block';
+		oDiv.style.visibility = 'visible';
+		oDiv.style.top = myY;
+		oDiv.style.left = myX;
+		oDiv.style.height = 'auto';
+		oDiv.style.width = 'auto';
+		oDiv.innerHTML = "<div style='width:625px;text-align:right;padding:10px 16px 10px 10px '><span style='text-decoration:underline;cursor:pointer;' onclick=handleCloseClick('pcolor');>close</span></div><iframe title='Pick Color Overlay Frame' src=" + url + " width='625' height='610' scrolling='no' frameborder='no' style='margin:0px;padding:0px;'></iframe>";
+	}
+	catch (e) { }
+}
+
+// function to filter the given set of chars from a given text
+function FilterTextIncluding(p_szVal, p_szIncludeList) {
+	var l_szNew, i, l_nLength, l_szChar, l_szCharList;
+
+	if (p_szIncludeList.length = 0) {
+		l_szNew = p_szVal;
+	}
+	else {
+		l_szCharList = p_szIncludeList.toLowerCase();
+		l_szNew = "";
+
+		for (i = 0; i < p_szVal.length; i++) {
+			l_szChar = p_szVal.charAt(i);
+			if (l_szCharList.indexOf(l_szChar.toLowerCase()) > -1) {
+				l_szNew = l_szNew + l_szChar;
+			}
+		}
+	}
+	return l_szNew;
+}
+
+//The following function has been written for WA
+// This fuction used to track the checkout button click
+function TrackCheckoutClick(p_szCName, p_szAccount, p_szSite, p_szProducts) {
+	var s_account = p_szAccount;
+	var l_oClickObject = document.getElementById(p_szCName);
+	s.linkTrackVars = 'events,products';
+	s.linkTrackEvents = 'scCheckout';
+	s.events = 'scCheckout';
+	s.products = p_szProducts;
+	s.tl(l_oClickObject, 'o', 'Checkout Button');
+}
+
+// This fuction used to track the checkout button click
+function TrackGoogleCheckoutClick(p_szCName, p_szAccount, p_szProducts) {
+	var s = s_gi(p_szAccount);
+	var l_oClickObject = document.getElementById(p_szCName);
+	s.linkTrackVars = 'events,products';
+	s.linkTrackEvents = 'event7';
+	s.events = 'event7';
+	s.products = p_szProducts;
+	s.tl(l_oClickObject, 'o', 'Google Checkout');
+}
+
+// This fuction used to track the checkout button click
+function TrackRenewCheckoutClick(p_szCName) {
+	if (!(document.all || document.getElementById)) return;
+	var l_szProducts;
+	l_szProducts = "";
+	var l_oElements = document.getElementsByTagName('input');
+	for (var i = 0; i < l_oElements.length; i++) {
+		var l_oElt = l_oElements[i];
+		if (l_oElt.type == "checkbox") {
+			if (l_oElt.checked) {
+				var l_oHdn = gE("hdn" + l_oElt.name);
+				if (l_oHdn != undefined && l_oHdn != null) {
+					l_szProducts = l_szProducts + l_oHdn.value;
+				}
+			}
+		}
+	}
+	var l_oAccount = gE("hdnAccount");
+	var s = s_gi(l_oAccount.value);
+	var l_oClickObject = document.getElementById(p_szCName);
+	s.linkTrackVars = 'events,products';
+	s.linkTrackEvents = 'scCheckout,scAdd';
+	s.events = 'scCheckout,scAdd';
+	s.products = l_szProducts;
+	s.tl(l_oClickObject, 'o', 'Checkout Button');
+}
+
+// This fuction used to track the Paypal button click
+function TrackPaypalClick(p_szCName, p_szAccount, p_szProducts) {
+	var s = s_gi(p_szAccount);
+	var l_oClickObject = document.getElementById(p_szCName);
+	s.linkTrackVars = 'events,products';
+	s.linkTrackEvents = 'event12';
+	s.events = 'event12';
+	s.products = p_szProducts;
+	s.tl(l_oClickObject, 'o', 'Paypal');
+}
+
+function TrackEnlargeImageClick(p_szCName, p_szAccount) {
+	var s = s_gi(p_szAccount);
+	s.linkTrackVars = 'pageName,prop4';
+	s.pageName = 'bcom: larger photo'
+	s.prop4 = 'larger photo'
+	s.tl(null, 'o', 'larger photo');
+}
+
+function gE(id) {
+	if (document.all) {
+		return document.all[id];
+	}
+	else if (document.getElementById) {
+		return document.getElementById(id);
+	}
+}
+//The End of code for WA
+
+
+    // Get ingredient description using an AJAX call and show it
+    function showIngredientDescription(p_pageLocation, p_ingredientName, p_ingredientId, p_bShowDiv, evt) {
+    var l_oAJAXReq, l_szRes
+
+    if (p_pageLocation != null && p_ingredientId != null) {
+    // The ingr ID and tracking params are added to the URL for later tracking purposes.
+    l_oAJAXReq = new dsLib.AJAX.Request(p_pageLocation + '?id=' + p_ingredientId + '&trx=ingrdesc&trxp1=' + p_ingredientId, null, null, "GET", null, "text/html", false);
+    l_szRes = l_oAJAXReq.responseText;
+    }
+    
+    var ingrDescBox, ingrDescText, ingrHeaderText;
+
+    if (document.all) {
+    ingrDescBox = document.all.IngDescrBox;
+    ingrDescText = document.all.IngrDescText;
+    ingrHeaderText = document.all.IngrHeaderText;    
+    }
+    else if (document.getElementById) {
+    ingrDescBox = document.getElementById('IngDescrBox');
+    ingrDescText = document.getElementById('IngrDescText');
+    ingrHeaderText = document.getElementById('IngrHeaderText');
+    }
+
+    if (p_bShowDiv == true) {
+    if (!evt)
+    eventVariable = window.event;
+    else
+    eventVariable = evt;
+
+    var positionInfo = new PositionInfo(document.getElementById('TblProdForkIngredients'));
+    var containerLeft, containerTop, containerWidth, containerHeight;
+
+    containerLeft = positionInfo.getElementLeft();
+    containerTop = positionInfo.getElementTop();
+    containerWidth = positionInfo.getElementWidth();
+    containerHeight = positionInfo.getElementHeight();
+
+    ingrDescText.innerHTML = l_szRes;
+    ingrHeaderText.innerHTML = p_ingredientName;    
+
+    // For IE, do special positioning
+    // Bug #32011 - the top and left needs to be set correctly since absolute positioning is set in the css
+    if (document.getElementById('prodInfoTab') == null) {  // present only if beauty.com 
+        ingrDescBox.style.top = containerTop + 1 + "px";
+        ingrDescBox.style.left = containerLeft + 1 + "px";
+        ingrDescBox.style.height = containerHeight + "px";
+        ingrDescBox.style.width = containerWidth + "px"
+    }
+    else {
+        ingrDescBox.style.top ="0px";
+        ingrDescBox.style.left = "0px";
+        ingrDescBox.style.height = containerHeight + "px";
+        ingrDescBox.style.width = containerWidth + "px";
+    }
+
+    if (eventVariable.pageX) {
+    ingrDescBox.style.width = containerWidth - 25 + "px"; // subtract the padding - firefox clones are weird with that.
+    }		
+
+    ingrDescBox.style.visibility = 'visible';
+    ingrDescText.style.visibility = 'visible';
+    ingrHeaderText.style.visibility = 'visible';
+    ingredientDescShown = true;
+    }
+    else {
+    ingrDescText.innerHTML = "";
+    ingrHeaderText.innerHTML = "";
+    ingrDescBox.style.visibility = 'hidden';
+    ingrDescText.style.visibility = 'hidden';
+    ingrHeaderText.style.visibility = 'hidden';
+    ingredientDescShown = false;
+}
+if (document.getElementById('prodInfoTab') != null) { // only in beauty.com
+
+    var heightPane = 212;
+    var jspPaneHt = jQuery('#ingredients > div.jspContainer > div.jspPane').height();
+
+    if (ingredientDescShown) {
+        heightPane = jQuery('#IngDescrBox > table').height();        
+    }
+    else {
+        heightPane = jQuery('.tab-content-wrapper .contenttd').height();
+    }
+
+    if (heightPane >= jspPaneHt) {
+        jQuery('#ingredients > div.jspContainer > div.jspPane').css('height', heightPane+10);
+    }
+
+    var ingrDiv = jQuery('#ingredients > div.jspContainer > div.jspVerticalBar > div.jspTrack > div.jspDrag');
+    
+    if (ingrDiv != null && ingrDiv.length > 0) {
+        jQuery('#ingredients > div.jspContainer > div.jspPane').css('top', '0px');
+        jQuery('#ingredients > div.jspContainer > div.jspVerticalBar > div.jspTrack > div.jspDrag').css('top', '0px');
+    }
+}
+
+}
+
+
+    /* overlay related script - start */
+
+    //init with an possibly higher value so that even when used for then first time, it puts the element (e.g. div/overlay) upfront.
+    var oDragon = null;
+    var zIndex = 6000;
+
+    function Dragon() {
+        this.currX = 0;
+        this.currY = 0;
+        this.startX = 0;
+        this.startY = 0;
+        this.startCursorX = 0;
+        this.startCursorY = 0;
+        this.actionElement = null;
+        this.movingElement = null;
+    }
+
+    function initADragon(evt, elementToMove) {
+
+        var oPos, cursorPos, actionElement, movingElement;
+        // init the elements and their positions
+        actionElement = (evt.srcElement || evt.target);
+        movingElement = ((elementToMove) ? elementToMove : actionElement);
+        oDragon = new Dragon();
+        oPos = new PositionInfo(movingElement);
+
+        // init the dragon object
+        oDragon.actionElement = actionElement;
+        oDragon.movingElement = movingElement;
+
+        oDragon.startX = oPos.getElementLeft();
+        oDragon.startY = oPos.getElementTop();
+        cursorPos = getCursorPos(evt);
+        oDragon.startCursorX = cursorPos.x;
+        oDragon.startCursorY = cursorPos.y;
+        oDragon.movingElement.style.zIndex = ++zIndex; //assigning the highest possible z-index value
+
+        attachEventHandlers();
+        cancelDefaultEventActions(evt);
+    }
+
+    function moveADragon(evt) {
+        var cursorPos, x, y, padding, oPos;
+        if (oDragon != undefined) {
+            cursorPos = getCursorPos(evt);
+            oPos = new PositionInfo(oDragon.movingElement);
+            x = (cursorPos.x - (oDragon.startCursorX - oDragon.startX));
+            y = (cursorPos.y - (oDragon.startCursorY - oDragon.startY));
+            padding = 10;
+            x = (x < padding) ? padding : (x + oPos.getElementWidth() + padding > screen.availWidth) ? screen.availWidth - padding - oPos.getElementWidth() : x;
+            y = (y < padding) ? padding : y;
+            oDragon.movingElement.style.left = x + "px";
+            oDragon.movingElement.style.top = y + "px";
+            hideWindowedElements(oDragon.movingElement);
+            cancelDefaultEventActions(evt);
+        }
+    }
+
+    // this function is a hack to overcome an iE6.x only bug.
+    // Bug: combo box and list box html elements are windowed in IE6.x and so they appear on top of all the elements regardless of z-index.
+    // Fix: IFrame can hide the windowed elements. So, using the iframe to hide those elements.
+    function hideWindowedElements(overlayObj) {
+        if (isIE && overlayObj) {
+            var ieVersion = getIEVersion();
+            if (ieVersion > -1 && ieVersion < 7) {
+                var iFrameObj;
+                // first check for associated one, if not available, use the generic one.
+                // however using the generic one will cause issues when you have more than one active overlays in the same page.
+                iFrameObj = gE("iFrmIE6Hack_" + overlayObj.id);
+                if (!iFrameObj) iFrameObj = gE("iFrmIE6Hack");
+                if (!iFrameObj) iFrameObj = self.parent.document.all["iFrmIE6Hack"];
+                if (iFrameObj) {
+                    var pos = new PositionInfo(overlayObj);
+                    var visible = (overlayObj.style.visibility == "visible");
+                    iFrameObj.style.display = (visible) ? "block" : "none";
+                    if (visible) {
+                        iFrameObj.style.zIndex = overlayObj.style.zIndex - 1;
+                        iFrameObj.style.top = (pos.getElementTop()) + "px";
+                        iFrameObj.style.left = (pos.getElementLeft()) + "px";
+                        iFrameObj.style.height = (pos.getElementHeight()) + "px";
+                        iFrameObj.style.width = (pos.getElementWidth()) + "px";
+                    }
+                }
+            }
+        }
+    }
+
+    //from msdn
+    function getIEVersion() {
+        var version = -1;
+        if (navigator.appName == 'Microsoft Internet Explorer') {
+            var regEx = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+            if (regEx.exec(navigator.userAgent) != null)
+                version = parseFloat(RegExp.$1);
+        }
+        return version;
+    }
+
+
+    function stopMoving(evt) {
+        detachEventHandlers();
+    }
+
+    function cancelDefaultEventActions(evt) {
+        if (isIE) {
+            window.event.cancelBubble = true;
+            window.event.returnValue = false;
+        }
+        else {
+            evt.preventDefault();
+        }
+    }
+
+    function attachEventHandlers() {
+        // attach events
+        if (isIE) {
+            document.attachEvent("onmousemove", moveADragon);
+            document.attachEvent("onmouseup", stopMoving);
+        }
+        else {
+            document.addEventListener("mousemove", moveADragon, true);
+            document.addEventListener("mouseup", stopMoving, true);
+        }
+    }
+
+    function detachEventHandlers() {
+        // detach events
+        if (isIE) {
+            document.detachEvent("onmousemove", moveADragon);
+            document.detachEvent("onmouseup", stopMoving);
+        }
+        else {
+            document.removeEventListener("mousemove", moveADragon, true);
+            document.removeEventListener("mouseup", stopMoving, true);
+        }
+    }
+
+    function putMeFront(obj) {
+        if (obj) {
+            obj.style.zIndex = ++zIndex;
+            gLastOverlayId = obj.id;
+        }
+    }
+
+    /* helpers - start */
+    function getCursorPos(evt) {
+        return new Point(evt.clientX, evt.clientY);
+    }
+
+    function submitoverlay() {
+        var l_oEle = self.parent.document.all['hdnPostBackOverlay']
+        if (l_oEle) {
+            l_oEle.value = '1';
+        }
+    }
+
+    function showpickColorOverlay(obj, url, evt) {
+        try {
+            var pcOverlayName = "PCOverlay";
+            var exists = false;
+            var myDiv
+            var e = (window.event) ? window.event : evt;
+            var myWidth = 0, myHeight = 0;
+            if (typeof (window.innerWidth) == 'number') {
+                //Non-IE
+                myWidth = window.innerWidth;
+                myHeight = window.innerHeight;
+            } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+                //IE 6+ in 'standards compliant mode'
+                myWidth = document.documentElement.clientWidth;
+                myHeight = document.documentElement.clientHeight;
+            } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+                //IE 4 compatible
+                myWidth = document.body.clientWidth;
+                myHeight = document.body.clientHeight;
+            }
+            var myY = (myHeight / 2) - 285 + getScrollOffset().y;
+            if (myY < 0) myY = 0;
+
+            var myX = (myWidth / 2) - 165;
+            if (myX < 0) myX = 0
+
+            myDiv = gE('PCOverlay');
+            if ((myDiv != null) && (gLastOverlaySource === obj)) {
+                exists = true;
+            }
+            if (exists) {
+                showOverlay(obj, pcOverlayName, true, false);
+            }
+            else {
+                var html
+                html = "<div class=\"PCOverlaybody\"><iframe title=\"Pick Color Overlay\" id=\"PCOverlayiFrame\" src=\"" + url + "\" scrolling=\"no\" frameborder=\"no\"></iframe></div>"
+                createOverlay(html, 'Pick Color(s)', pcOverlayName, obj, false, false);
+                myDiv = gE('PCOverlay');
+            }
+            if (myDiv) {
+                myDiv.style.top = myY + "px";
+                myDiv.style.left = myX + "px";
+            }
+            hideWindowedElements(myDiv);
+            DisableFormElements(pcOverlayName, 'select', true);
+        }
+        catch (e) { }
+    }
+
+    function showBMLOverlay(obj, url) {
+        var html, myFrame
+        html = "<div class=\"BMLOverlaybody\"><iframe title=\"Bill me later Overlay\" id=\"BMLOverlayiFrame\" src=\"" + url + "\" width=\"530\" height=\"345\" scrolling=\"auto\" frameborder=\"no\"></iframe></div>"
+        var name = "BMLOverlay", title = "Bill Me Later";
+        var newOverlay = new Overlay(name, title, -1);
+        newOverlay.bodyContent = html;
+        newOverlay.showShadow = false;
+        newOverlay.render();
+
+        //position the overlay to center of the page
+        var width = 0, height = 0, x = 0, y = 0;
+        if (typeof (window.innerWidth) == "number") {
+            //Non-IE
+            width = window.innerWidth;
+            height = window.innerHeight;
+        } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+            //IE 6+ in 'standards compliant mode'
+            width = document.documentElement.clientWidth;
+            height = document.documentElement.clientHeight;
+        } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+            //IE 4 compatible
+            width = document.body.clientWidth;
+            height = document.body.clientHeight;
+        }
+
+        var y = (height / 2) - 300 + getScrollOffset().y;
+        if (y < 0) y = 0;
+        var x = (width / 2) - 270;
+        if (x < 0) x = 0
+        var overlayElement = gE(name);
+        overlayElement.style.left = x + "px";
+        overlayElement.style.top = y + "px";
+
+        showOverlay(obj, name, true, false);
+
+        //This is hack for IE 6. The IFrame content is not refreshing
+        myFrame = gE("BMLOverlayiFrame");
+        if (isIE && myFrame) {
+            myFrame.src = myFrame.src;
+        }
+    }
+
+    /* 
+    function to show/hide overlay
+    positionNearBy - flag to position the overlay near by event triggering object.
+    */
+    function showOverlay(obj, id, flag, positionNearBy, wgflag) {
+        gLastOverlaySource = obj;
+        var ele = gE(id);
+        if (ele) {
+            //only one overlay is active at a time.
+            if (flag && gLastOverlayId.length > 0)
+                if (gLastOverlayId != ele.id)
+                    closeOverlay(gLastOverlayId);
+            // position the overlay based on the trigger object
+            if (flag && obj && positionNearBy != undefined) {
+                if (positionNearBy) {
+                    var triggerX, triggerY, width, height, x, y;
+                    var triggerPos = new PositionInfo(obj);
+                    var overlayPos = new PositionInfo(ele);
+                    var scrollOffset = getScrollOffset();
+
+                    triggerX = triggerPos.getElementLeft();
+                    triggerY = triggerPos.getElementTop();
+                    height = overlayPos.getElementHeight();
+                    width = overlayPos.getElementWidth();
+
+                    //repositioning the overlay so that it displayed within user's view area
+                    if ((triggerX + width) > (scrollOffset.x + document.body.clientWidth)) {
+                        x = triggerX - ((triggerX + width) - (scrollOffset.x + document.body.clientWidth));
+                        if (x < 0)
+                            x = triggerX; // if the calculated "left" position is taking the overlay out of view, reposition it.
+                    }
+                    else
+                        x = triggerX;
+
+                    if ((triggerY + height + 20) > (scrollOffset.y + document.body.clientHeight)) {
+                        y = triggerY - height - 10; //position it above the trigger object
+                        if (y < 0)
+                            y = triggerY + 20; // if the calculated "top" position is taking the overlay out of view, reposition it.
+                    }
+                    else
+                        y = triggerY + 20;
+
+
+                    ele.style.left = triggerX - 200 + "px";
+
+                    if (triggerX - 200 < 0) {
+                        ele.style.left = Math.abs(triggerX - 200) + "px";
+                    }
+                    //to repostion the walgreen overlay
+                    if (wgflag == 'wgoverlay' && ele.getAttribute("closeontimeout") == "false") {
+                        ele.style.left = triggerX - 581 + "px";
+                        ele.style.top = triggerY - 150 + "px";
+                        if (isIE) {
+                            ele.style.left = triggerX - 481 + "px";
+                        }
+                    }
+                    else if (id == 'ylconfirm' && ele.getAttribute("closeontimeout") == "false") {
+                        ele.style.top = triggerY - 150 + "px"; //on shopping bag
+                    }
+                    else if (id == 'ylconfirm' && ele.getAttribute("closeontimeout") == "true") {
+                        ele.style.top = triggerY - 100 + "px"; //on category page
+                    }
+                    else if (id == 'ylconfirmSC' && ele.getAttribute("closeontimeout") == "true") {
+                        ele.style.top = triggerY - 100 + "px"; //on Beauty shopping page
+                    }
+                    else {
+                        ele.style.top = triggerY - 200 + "px";
+                    }
+                }
+            }
+            ele.style.visibility = ((flag == true) ? "visible" : "hidden");
+            ele.style.display = ((flag == true) ? "block" : "none");
+            putMeFront(ele);
+            hideWindowedElements(ele); //An IE only fix
+            //save the id of the current overlay so that it can be hidden when any other overlay is shown.
+            gLastOverlayId = ele.id;
+            //attach ontimeout/onblur event handlers for the overlay 
+            if (flag) {
+                if (ele.getAttribute("closeonblur") == "true")
+                    attachOverlayOnBlurEventHandlers();
+                if (ele.getAttribute("closeontimeout") == "true") {
+                    var timer = getOverlayEvtHandler("timer", ele.id);
+                    if (timer) window.clearTimeout(timer); //clear the existing timer, if one exists for the current overlay.
+                    setOverlayEvtHandler("timer", ele.id, window.setTimeout(function () { closeOverlay(ele.id) }, overLayTimeOut));
+                }
+            }
+            else {
+                if (ele.getAttribute("closeonblur") == "true")
+                    detachOverlayOnBlurEventHandlers();
+            }
+            //call the onshow/onhide event handlers for the current overlay, if available.
+            var evtHandler = getOverlayEvtHandler((flag ? "onshow" : "onhide"), ele.id);
+            if (evtHandler) evtHandler();
+        }
+    }
+
+    function getOverlayEvtHandler(evtId, overlayId) {
+        return gOverlayEvtHandlers[evtId + "_" + overlayId];
+    }
+
+    function setOverlayEvtHandler(evtId, overlayId, fn) {
+        gOverlayEvtHandlers[evtId + "_" + overlayId] = fn;
+    }
+
+    function attachOverlayOnBlurEventHandlers() {
+        // attach event handler
+        if (isIE)
+            document.attachEvent("onmousedown", closeLastShownOverlay);
+        else
+            document.addEventListener("mousedown", closeLastShownOverlay, true);
+    }
+
+    function detachOverlayOnBlurEventHandlers() {
+        // detach event handler
+        if (isIE)
+            document.detachEvent("onmousedown", closeLastShownOverlay);
+        else
+            document.removeEventListener("mousedown", closeLastShownOverlay, true);
+    }
+
+    function closeLastShownOverlay(evt) {
+        if (gLastOverlayId) {
+            var lastOverlayObj = gE(gLastOverlayId);
+            if ((lastOverlayObj.style.visibility != "hidden") && (lastOverlayObj.getAttribute("closeonblur") == "true")) {
+                var evtX, evtY, left, top, height, width, oPos, cursorPos = getCursorPos(evt), scrollOffset = getScrollOffset();
+                oPos = new PositionInfo(lastOverlayObj);
+                left = oPos.getElementLeft(); top = oPos.getElementTop(); width = oPos.getElementWidth(); height = oPos.getElementHeight();
+                evtX = cursorPos.x + scrollOffset.x; evtY = cursorPos.y + scrollOffset.y;
+                if (!(evtX >= left && evtX <= (left + width) && evtY >= top && evtY <= (top + height))) {
+                    closeOverlay(gLastOverlayId);
+                    detachOverlayOnBlurEventHandlers();
+                }
+            }
+        }
+    }
+
+    function closeOverlay(overlayId) {
+      
+        var ele = gE(overlayId);
+        if (!ele) {
+            ele = self.parent.document.all[overlayId];
+        }
+        if (ele) {
+            if (ele.style.visibility != "hidden") {
+                ele.style.visibility = "hidden";
+                ele.style.display = "none";
+                hideWindowedElements(ele); //hiding the iframe
+                //call the onhide event handlers for the current overlay, if available.
+                var evtHandler = getOverlayEvtHandler("onhide", ele.id);
+                if (evtHandler) evtHandler();
+            }
+           
+        }
+    }
+
+    function getScrollOffset() {
+        var scrollOffsetX = 0, scrollOffsetY = 0;
+        if (window.pageXOffset != undefined) {
+            scrollOffsetX = window.pageXOffset;
+            scrollOffsetY = window.pageYOffset;
+        }
+        else if (document.body && (document.body.scrollLeft || document.body.scrollTop)) {
+            scrollOffsetX = document.body.scrollLeft;
+            scrollOffsetY = document.body.scrollTop;
+        }
+        else if (document.documentElement && (document.documentElement.scrollLeft || document.documentElement.scrollTop)) {
+            scrollOffsetX = document.documentElement.scrollLeft;
+            scrollOffsetY = document.documentElement.scrollTop;
+        }
+        return new Point(scrollOffsetX, scrollOffsetY);
+    }
+
+    /* tiny utility class to store a x and y position*/
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    /* helpers - end */
+
+    /*
+    client side class to create an overlay on the fly.
+    css classes are created to match the common needs for the overlay.
+    if you are customizing (e.g. no header, no footer etc.) your overlay, you need to add the css classes against the overlay id.
+    */
+    function Overlay(id, title, width) {
+        this.id = id;
+        this.title = title;
+        this.bodyContent = "";
+        this.footerContent = "";
+        this.headerContent = "";
+        this.showHeader = true;
+        this.showFooter = true;
+        this.showShadow = true;
+        this.movable = false;
+        this.closeOnTimeout = false;
+        this.closeOnBlur = false;
+        this.width = width;
+        this.initX = -1;
+        this.initY = -1;
+        this.faceID = this.id + "_face"
+        this.titleID = this.id + "_face_title"
+        this.headerID = this.id + "_face_header"
+        this.contentID = this.id + "_face_content"
+        this.contentInnID = this.id + "_face_content_inn"
+        this.footerID = this.id + "_face_footer"
+        this.footerInnID = this.id + "_face_footer_inn"
+        this.className = "overlay";
+        this.footerCloseBtn = true;
+    }
+
+    Overlay.prototype.render = function () {
+        try {
+            var overlayObj;
+            overlayObj = gE(this.id);
+            if (!overlayObj) {
+                overlayObj = document.createElement("div");
+                overlayObj.id = this.id;
+                overlayObj.name = this.id;
+                overlayObj.className = this.className;
+                overlayObj.style.zIndex = ++zIndex;
+                overlayObj.onclick = function () { putMeFront(this) };
+                document.body.appendChild(overlayObj);
+            }
+
+            //add the custom attributes
+            overlayObj.setAttribute("closeontimeout", (this.closeOnTimeout ? "true" : "false"));
+            overlayObj.setAttribute("closeonblur", (this.closeOnBlur ? "true" : "false"));
+            //add style	
+            if (this.width > -1) overlayObj.style.width = this.width + "px";
+            if (this.initX > -1) overlayObj.style.left = this.initX + "px"
+            if (this.initY > -1) overlayObj.style.top = this.initY + "px";
+
+            overlayObj.innerHTML = this.scriptIt(); //create the content only for the first time
+        }
+        catch (e)
+	{ }
+    }
+
+    Overlay.prototype.scriptIt = function () {
+        try {
+            var html;
+            html = "<div id=\"" + this.faceID + "\" class=\"" + (this.showShadow ? "face_shadow" : "face") + "\">";
+            // css classes are created to match the common needs for the overlay.
+            // if you are customizing (e.g. no header, no footer etc.) your overlay, you need to add the css classes against the overlay id.
+
+            //header
+            if (this.showHeader) {
+                html = html + "<div id=\"" + this.headerID + "\" class=\"header\" " + (this.movable ? "onmousedown=\"javascript:initADragon(event,gE('" + this.id + "'));\" style=\"cursor:move;\"" : "") + ">";
+                html = html + "<div class=\"close\" onclick=\"javascript:showOverlay(this, '" + this.id + "', false);\"><img src=\"" + gOverlayAssets["closebtnsrc"] + "\" class=\"headclosebtn\" border=\"0\" hspace=\"0\" vspace=\"0\" alt=\"close\" /></div>";
+                html = html + "<div class=\"lc\" ></div>";
+                html = html + "<div class=\"rc\" ></div>";
+                html = html + "<div id=\"" + this.titleID + "\" class=\"title\">" + this.title + "</div>";
+                html = html + "</div>";
+            }
+
+            var contentCSS;
+            contentCSS = "content";
+            contentCSS = contentCSS + (this.showHeader ? "" : " noheader");
+            contentCSS = contentCSS + (this.showFooter ? "" : " nofooter");
+
+            //body
+            html = html + "<div id=\"" + this.contentID + "\" class=\"" + contentCSS + "\" >";
+            html = html + "<div id=\"" + this.contentInnID + "\" class=\"inn\">";
+            html = html + this.bodyContent;
+            html = html + "</div>";
+            html = html + "</div>";
+
+            //footer
+            if (this.showFooter) {
+                html = html + "<div id=\"" + this.footerID + "\" class=\"footer\">";
+                html = html + "<div class=\"bl\"></div>";
+                html = html + "<div class=\"br\"></div>";
+                html = html + "<div id=\"" + this.footerInnID + "\" class=\"inn\">";
+                if (this.footerContent.length == 0) {
+                    if (this.footerCloseBtn) {
+                        html = html + "<span class=\"close\" onclick=\"javascript:showOverlay(this, '" + this.id + "', false);\">";
+                        if (gOverlayAssets) {
+                            var closeBtn = gOverlayAssets["closebtnsrc"]
+                            if (closeBtn) {
+                                html = html + "<img src=\"" + gOverlayAssets["closebtnsrc"] + "\" class=\"closebtn\" border=\"0\" hspace=\"0\" vspace=\"0\" alt=\"close\" />";
+                            }
+                            else {
+                                html = html + "close";
+                            }
+                        }
+                        html = html + "</span>";
+                    }
+                }
+                else {
+                    html = html + this.footerContent;
+                }
+                html = html + "</div>";
+                html = html + "</div>";
+            }
+            html = html + "</div>";
+            return html;
+        }
+        catch (e)
+	{ }
+    }
+
+
+    function handleCheckOutClick(sHREF) {
+        try {
+            // Consider if our window is modal
+            var winMgr = GetWinMgr();
+            if (winMgr) {
+                if (winMgr.IsModal()) {
+                    return false;
+                }
+            }
+        }
+        catch (e) { }
+
+        if (document.frmRecalc && document.frmRecalc.hdnRedirect) {
+            document.frmRecalc.hdnRedirect.value = sHREF;
+            document.frmRecalc.submit();
+        }
+    }
+
+
+    /*
+    simple function to display alert/confirm messages. it uses the overlay object to display the message.
+    if "obj" parameter is NOT passed,
+    the alert box is positioned based on the top,left coordinates defined in style sheet
+    usage:
+    dsAlert("alert box");
+    dsAlert("alert box", "drugstore.com");
+    dsAlert("alert box", "drugstore.com", "mybox");
+    dsAlert("alert box", "drugstore.com", "mybox", hlnkDOMObj);
+    dsAlert("alert box", "drugstore.com", "mybox", hlnkDOMObj, false);
+    */
+    function dsAlert(msg, title, name, obj, closeOnTimeout, closeOnBlur) {
+        var tempTitle = title, tempName = name;
+        var wgflag = tempTitle;
+
+        if (tempTitle == 'wgoverlay') {
+            wgflag = tempTitle;
+            tempTitle = "";
+        }
+
+        if (tempTitle == undefined) tempTitle = "";
+        if (tempName == undefined) tempName = "dsalert";
+        else if (tempName.length == 0) tempName = "dsalert";
+
+        var popup = new Overlay(tempName, tempTitle, -1);
+        popup.bodyContent = msg;
+        popup.showShadow = false;
+        if (tempName != 'ylconfirmSC') {
+            popup.className = "confirmoverlay";
+        }
+
+        /*
+        Generally, alert boxes are supposed to be closed after specified amount of time (12 secs).
+        Incase, there are exceptions where the alert box shouldn't be auto closed, 
+        "closeOnTimeout" flag can be set to false by the calling routine (e.g yourlist.js -> deleteConfirm)
+        */
+        if (closeOnTimeout != undefined)
+            popup.closeOnTimeout = closeOnTimeout;
+        else
+            popup.closeOnTimeout = true;
+
+        if (closeOnBlur != undefined)
+            popup.closeOnBlur = closeOnBlur;
+        else
+            popup.closeOnBlur = true;
+
+        popup.render();
+        if (wgflag == 'wgoverlay') {
+            showOverlay(obj, tempName, true, true, wgflag);
+        }
+        else {
+            showOverlay(obj, tempName, true, true);
+        }
+
+        //IE 6 hack, introduing the IFrame to show the overlay in IE6
+        hideWindowedElements(obj);
+    }
+
+
+    //wrapper function to create an overlay
+    function createOverlay(msg, title, name, obj, closeOnTimeout, closeOnBlur) {
+        var tempTitle = title, tempName = name;
+
+        if (tempTitle == undefined) tempTitle = "";
+        if (tempName == undefined) tempName = "dsalert";
+        else if (tempName.length == 0) tempName = "dsalert";
+
+        var newOverlay = new Overlay(tempName, tempTitle, -1);
+        newOverlay.bodyContent = msg;
+
+        if (closeOnTimeout != undefined)
+            newOverlay.closeOnTimeout = closeOnTimeout;
+        if (closeOnBlur != undefined)
+            newOverlay.closeOnBlur = closeOnBlur;
+
+        newOverlay.showShadow = false;
+
+        newOverlay.render();
+
+        showOverlay(obj, tempName, true, true);
+    }
+
+    /* overlay related script - end */
+
+    //function (called from email overlay) to confirm "Email Sending Action" to the user
+    function confirmEmailSend() {
+        if (self.name == "iFrmProdRec") {
+            parent.closeOverlay(parent.gLastOverlayId);
+            parent.gReloadProdRecOverlay = true;
+            var html = "<div class=\"prodrecconfirmbody\"><b>Thank you.</b>&nbsp;We've sent email to your friend about this product.</div>";
+            parent.dsAlert(html, "", "ProdRecConfirm");
+        }
+    }
+    //This function is the onkeydown event for the text are used in product_recommnder.asp
+    function emailmsgCounter(e) {
+        return msgCounter(e, this, 500);
+    }
+    //This function is used to restrict the max character for given any control. 
+    //e is the event parameter which is passed by when user key on the control. 
+    // This function shouldnot be assigned directly to onkeydown event rather it should be called from the onkeydown event function 
+    function msgCounter(e, obj, p_nMax) {
+        var nMax = p_nMax;
+        var nLength = obj.value.length;
+        var nKey = -1;
+        var nBackSpaceKeyCode = 8;
+        var nTabKeyCode = 9;
+        var nDeleteKeyCode = 46;
+        if (e && e.which) // Netscape keycode
+            nKey = e.which;
+        else if (window.event && window.event.keyCode) // IE keycode
+            nKey = window.event.keyCode;
+        // always allow deletion keys (backspace/delete)
+        if ((nKey == nBackSpaceKeyCode) || (nKey == nDeleteKeyCode)) {
+            if (nLength <= nMax)
+                nLength = nLength - 1;
+            if (nLength >= 0)
+                return true;
+            else
+                return false;
+        }
+        // always allow neutral keys (just don't update the counter)
+        else if (((nKey >= 33) && (nKey <= 40)) || (nKey == nTabKeyCode))
+            return true;
+        else {
+            if (nLength < nMax) {
+                nLength = nLength + 1;
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+
+    function f_clientWidth() {
+        return f_filterResults(
+		window.innerWidth ? window.innerWidth : 0,
+		document.documentElement ? document.documentElement.clientWidth : 0,
+		document.body ? document.body.clientWidth : 0
+	);
+    }
+
+    function f_clientHeight() {
+        return f_filterResults(
+		window.innerHeight ? window.innerHeight : 0,
+		document.documentElement ? document.documentElement.clientHeight : 0,
+		document.body ? document.body.clientHeight : 0
+	);
+    }
+
+    function f_scrollLeft() {
+        return f_filterResults(
+		window.pageXOffset ? window.pageXOffset : 0,
+		document.documentElement ? document.documentElement.scrollLeft : 0,
+		document.body ? document.body.scrollLeft : 0
+	);
+    }
+
+    function f_scrollTop() {
+        return f_filterResults(
+		window.pageYOffset ? window.pageYOffset : 0,
+		document.documentElement ? document.documentElement.scrollTop : 0,
+		document.body ? document.body.scrollTop : 0
+	);
+    }
+
+    function f_filterResults(n_win, n_docel, n_body) {
+        var n_result = n_win ? n_win : 0;
+        if (n_docel && (!n_result || (n_result > n_docel)))
+            n_result = n_docel;
+        return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
+    }
+
+    function GetWinMgr() {
+        if (!gWinMgr) {
+            gWinMgr = new WindowManager();
+        }
+        return gWinMgr;
+    }
+
+    function WindowManager() {
+        var _isModal = false;
+        this.IsModal = function () {
+            return _isModal;
+        }
+        this.SetModal = function (fModal) {
+            _isModal = fModal;
+            try {
+                if (_isModal) {
+                    document.body.onclick = function () { return false; }
+                }
+                else {
+                    document.body.onclick = null;
+                }
+            }
+            catch (e) { }
+        }
+    }
+
+    var SearchInput = new function () {
+        this.Setup = function (runtimeConfig) {
+            try {
+                this.InitHelper();
+                var fieldDefinition = new Object();
+                fieldDefinition.inputFieldDefaultText = runtimeConfig.inputFieldDefaultText;
+                fieldDefinition.element = document.getElementById(runtimeConfig.inputFieldId);
+                fieldDefinition.useSearchTermEvents = true;
+                gSearch.AddInputField(fieldDefinition);
+            }
+            catch (e) { /*eat it*/ }
+        }
+        this.InitHelper = function () {
+            if (!gSearch) {
+                gSearch = new SearchHelper();
+            }
+        }
+    }
+
+    function SearchHelper() {
+        this.InputFields = new Array();
+    }
+    SearchHelper.prototype.AddInputField = function (fieldDefinition) {
+        try {
+            this.InputFields.push(fieldDefinition);
+            if (fieldDefinition.useSearchTermEvents) {
+                this.WireSearchTermEvents(fieldDefinition);
+            }
+        }
+        catch (e) { throw e; }
+    }
+    SearchHelper.prototype.WireSearchTermEvents = function (fieldDefinition) {
+        try {
+            attachEventListener(fieldDefinition.element, "focus", this.SearchTermFocus);
+            //attachEventListener(fieldDefinition.element, "blur", this.SearchTermBlur);
+        }
+        catch (e) { throw e; }
+    }
+    SearchHelper.prototype.SearchTermFocus = function (e) {
+        try {
+            var evnt = GetEvent(e);
+            if (evnt) {
+                var fieldDefinition = gSearch.GetFieldDefinition(evnt.id);
+                if (fieldDefinition) {
+                    var elText = fieldDefinition.element;
+                    if (elText.value.toLowerCase() == fieldDefinition.inputFieldDefaultText.toLowerCase()) {
+                        elText.value = '';
+                    }
+                }
+            }
+        }
+        catch (e) { throw e; }
+    }
+    SearchHelper.prototype.SearchTermBlur = function (e) {
+        try {
+            var evnt = GetEvent(e);
+            if (evnt) {
+                var fieldDefinition = gSearch.GetFieldDefinition(evnt.id);
+                if (fieldDefinition) {
+                    var elText = fieldDefinition.element.value;
+                    if (elText.length == 0) {
+                        fieldDefinition.element.value = fieldDefinition.inputFieldDefaultText;
+                    }
+                }
+            }
+        }
+        catch (e) { throw e; }
+    }
+    SearchHelper.prototype.GetFieldDefinition = function (elId) {
+        try {
+            for (var i = 0; i <= gSearch.InputFields.length - 1; i++) {
+                if (gSearch.InputFields[i].element.id == elId) {
+                    return gSearch.InputFields[i];
+                    break;
+                }
+            }
+        }
+        catch (e) { throw e; }
+    }
+
+    function attachEventListener(el, eventName, handler) {
+        if (!el)
+            return;
+
+        if (el.attachEvent) {
+            el.attachEvent('on' + eventName, handler);
+        }
+        else if (el.addEventListener) {
+            el.addEventListener(eventName, handler, true);
+        }
+    }
+
+    function GetQSArgs() {
+        var sSearch = document.location.search;
+        var arArgs = "";
+
+        if (sSearch) {
+            if (sSearch.charAt(0) == "?") {
+                sSearch = sSearch.substr(1);
+            }
+            arArgs = sSearch.split("&")
+        }
+
+        return arArgs;
+    }
+
+    //function to highlight the item row in "browse" nav bar
+    function setBrowseHoverStyle(obj, e, onMouseOverClass) {
+        if (e) {
+            var cssClassName = obj.className;
+            var isMouseOver = (e.type == "mouseover");
+            //assign/append the css class name
+            if (isMouseOver) {
+                if (cssClassName.indexOf(onMouseOverClass) == -1) {
+                    if (cssClassName == "")
+                        cssClassName = onMouseOverClass;
+                    else
+                        cssClassName = cssClassName + " " + onMouseOverClass;
+                }
+            }
+            //remove or replace the css class name
+            else {
+                if (cssClassName.indexOf(" " + onMouseOverClass) > -1) {
+                    cssClassName = cssClassName.replace(" " + onMouseOverClass, "");
+                }
+                else if (cssClassName == onMouseOverClass) {
+                    cssClassName = "";
+                }
+                else {
+                    //do nothing
+                }
+            }
+            obj.className = cssClassName;
+        }
+    }
+
+    function resizeContainerFrame(iFrameID) {
+        var iFrm = gE(iFrameID);
+        if (iFrm) {
+            //adding 15px to fix IE issue. Need to find a cleaner one later.
+            iFrm.style.height = window.frames[iFrameID].document.body.scrollHeight + 15 + "px";
+        }
+    }
+
+
+    function showHideGridListView(gridViewID, listViewID, showGridView, showListView, gridImageID, listImageID, gridImage, listImage, gridItemCount, cookieName, cookieDomain) {
+        var gridView = document.getElementById(gridViewID);
+        var listView = document.getElementById(listViewID);
+
+        if (showGridView) {
+            for (i = 1; i <= gridItemCount; i++) {
+                if (document.getElementById(gridViewID + i) != null) {
+                    document.getElementById(gridViewID + i).style.display = "block";
+                    document.getElementById(listViewID + i).style.display = "none";
+                }
+            }
+
+            if (document.getElementById("BottomNavSeperator") != null) {
+                document.getElementById("BottomNavSeperator").style.display = "none";
+            }
+
+            document.cookie = cookieName + "=" + "gridview" + "; path=/";
+        }
+        else if (showListView) {
+
+            for (i = 1; i <= gridItemCount; i++) {
+                if (document.getElementById(gridViewID + i) != null) {
+                    document.getElementById(gridViewID + i).style.display = "none";
+                    document.getElementById(listViewID + i).style.display = "block";
+                }
+            }
+
+            if (document.getElementById("BottomNavSeperator") != null) {
+                document.getElementById('BottomNavSeperator').style.display = "block";
+            }
+
+            document.cookie = cookieName + "=" + "listview" + "; path=/";
+        }
+
+        document.getElementById(gridImageID).src = gridImage;
+        document.getElementById(listImageID).src = listImage;
+        document.getElementById(gridImageID + "1").src = gridImage;
+        document.getElementById(listImageID + "1").src = listImage;
+    }
+
+    function ClearProductListCookie(cookieName) {
+        var expiredate = new Date();
+        expiredate.setTime(expiredate.getTime() - 1);
+        document.cookie = cookieName + "=; expires=" + expiredate.toGMTString() + "; path=/";
+    }
+
+    function GetTopLeft(elm) {
+        if (elm == null) return null;
+        var x, y = 0;
+        x = elm.offsetLeft;
+        y = elm.offsetTop;
+        elm = elm.offsetParent;
+        while (elm != null) {
+            x = parseInt(x) + parseInt(elm.offsetLeft);
+            y = parseInt(y) + parseInt(elm.offsetTop);
+            elm = elm.offsetParent;
+        }
+        return { Top: y, Left: x };
+    }
+    function setFramePosition(skyscrappercontainerID) {
+        var dim = GetTopLeft(document.getElementById('gnColThree'));
+        if (dim == null) return;
+        var scrapperIds = skyscrappercontainerID.split(',');
+        for (var counter = 0; counter < scrapperIds.length; counter++) {
+            var scrapperId = scrapperIds[counter];
+            var frm = document.getElementById(scrapperId);
+            if (frm == null) continue;
+            frm.style.left = (parseInt(dim.Left) + 10) + 'px';
+        }
+    }
+
+    function showHideRVA_DSCM(p_szContentId, p_fShow, p_szExpandImgId, p_szCollapseImgId) {
+        var objContent = document.getElementById(p_szContentId);
+        var imgExpand = document.getElementById(p_szExpandImgId);
+        var imgCollapse = document.getElementById(p_szCollapseImgId);
+        if (objContent) {
+            objContent.className = (p_fShow) ? "contentvisible" : "contenthidden";
+        }
+        if (imgExpand) {
+            imgExpand.src = (p_fShow) ? "/img/buttons/button_expand_off.gif" : "/img/buttons/button_expand_on.gif";
+        }
+        if (imgCollapse) {
+            imgCollapse.src = (p_fShow) ? "/img/buttons/button_contract_on.gif" : "/img/buttons/button_contract_off.gif";
+        }
+    }
+
+    function validateEmail(txtemail) {
+        var filter = /^[\w-\+\.]{1,}\@([\da-zA-Z-]{1,}\.){1,}[\da-zA-Z-]{1,10}$/;
+        if (filter.test(txtemail)) {
+            document.getElementById('btnSubmit').value = "0";
+            return true;
+        }
+        else {
+            document.getElementById('btnSubmit').value = "";
+            alert("Please enter a valid email address");
+            return false;
+        }
+    }
+
+
+    function showHideRVA(p_szContentId, p_fShow, p_szExpandImgId, p_szCollapseImgId, p_szRightClickButtonDiv) {
+        var objContent = document.getElementById(p_szContentId);
+        var imgExpand = document.getElementById(p_szExpandImgId);
+        var imgCollapse = document.getElementById(p_szCollapseImgId);
+        var dvRightclickmsg = document.getElementById(p_szRightClickButtonDiv);        
+        if (objContent) {
+            objContent.className = (p_fShow) ? "contentvisible" : "contenthidden";
+        }
+        if (imgExpand) {
+            imgExpand.src = (p_fShow) ? "/img/icons/expand_inactive.gif" : "/img/icons/expand_active.gif";           
+        }
+        if (imgCollapse) {
+            imgCollapse.src = (p_fShow) ? "/img/icons/collapse_active.gif" : "/img/icons/collapse_inactive.gif";
+        }
+        if (dvRightclickmsg) {
+            dvRightclickmsg.className = (p_fShow) ? "contenthidden" : "contentvisible";
+        }        
+    }
+
+    function enableDropdown(checkbox, frequency, month) {
+        var control = document.getElementById('btnPlaceAutoReorder');
+        if (document.frmAutoReorder.chkAutoReorder.checked == true) {
+            document.frmAutoReorder.chkAutoReorder.value = "True";
+            document.frmAutoReorder.selMonths.disabled = false;
+            document.frmAutoReorder.selBeginMonths.disabled = false;
+            document.cookie = checkbox + "=" + document.frmAutoReorder.chkAutoReorder.value + "; path=/";
+            document.cookie = frequency + "=" + document.frmAutoReorder.selMonths.options[document.frmAutoReorder.selMonths.selectedIndex].value + "; path=/";
+            document.cookie = month + "=" + document.frmAutoReorder.selBeginMonths.options[document.frmAutoReorder.selBeginMonths.selectedIndex].value + "; path=/";
+            if (document.frmIVDPlaceOrderTop) {
+                document.frmIVDPlaceOrderTop.chkAutoReorder.value = "True";
+                document.frmIVDPlaceOrderTop.selMonths.value = document.frmAutoReorder.selMonths.options[document.frmAutoReorder.selMonths.selectedIndex].value;
+                document.frmIVDPlaceOrderTop.selBeginMonths.value = document.frmAutoReorder.selBeginMonths.options[document.frmAutoReorder.selBeginMonths.selectedIndex].value;
+            }
+
+            if (document.frmIVDPlaceOrderBottom) {
+                document.frmIVDPlaceOrderBottom.chkAutoReorder.value = "True";
+                document.frmIVDPlaceOrderBottom.selMonths.value = document.frmAutoReorder.selMonths.options[document.frmAutoReorder.selMonths.selectedIndex].value;
+                document.frmIVDPlaceOrderBottom.selBeginMonths.value = document.frmAutoReorder.selBeginMonths.options[document.frmAutoReorder.selBeginMonths.selectedIndex].value;
+            }
+
+            if (control != null) {
+                control.style.visibility = "hidden"; control.style.visibility = "visible";
+            }
+        }
+        else {
+            document.frmAutoReorder.chkAutoReorder.value = "False";
+            document.frmAutoReorder.selMonths.disabled = true;
+            document.frmAutoReorder.selBeginMonths.disabled = true;
+            document.cookie = checkbox + "=" + document.frmAutoReorder.chkAutoReorder.value + "; path=/";
+            if (control != null) {
+                control.style.visibility = "hidden"; control.style.visibility = "hidden";
+            }
+
+            if (document.frmIVDPlaceOrderTop) {
+                document.frmIVDPlaceOrderTop.chkAutoReorder.value = "False";
+                document.frmIVDPlaceOrderTop.selMonths.value = document.frmAutoReorder.selMonths.options[document.frmAutoReorder.selMonths.selectedIndex].value;
+                document.frmIVDPlaceOrderTop.selBeginMonths.value = document.frmAutoReorder.selBeginMonths.options[document.frmAutoReorder.selBeginMonths.selectedIndex].value;
+            }
+
+            if (document.frmIVDPlaceOrderBottom) {
+                document.frmIVDPlaceOrderBottom.chkAutoReorder.value = "False";
+                document.frmIVDPlaceOrderBottom.selMonths.value = document.frmAutoReorder.selMonths.options[document.frmAutoReorder.selMonths.selectedIndex].value;
+                document.frmIVDPlaceOrderBottom.selBeginMonths.value = document.frmAutoReorder.selBeginMonths.options[document.frmAutoReorder.selBeginMonths.selectedIndex].value;
+            }
+
+            ClearProductListCookie(checkbox);
+        }
+    }
+
+    function setCookiesCheckout(id, cookieName) {
+        if (id) {
+            document.cookie = cookieName + "=" + document.frmAutoReorder.selMonths.options[document.frmAutoReorder.selMonths.selectedIndex].value + "; path=/";
+        }
+        else {
+            document.cookie = cookieName + "=" + document.frmAutoReorder.selBeginMonths.options[document.frmAutoReorder.selBeginMonths.selectedIndex].value + "; path=/";
+        }
+    }
+
+    function OpenSpecialOfferHelpOverlay(obj, gcHelpUrl, specialOfferUrl) {
+
+        var htmlContent;
+        htmlContent = "<div id=\"HelpTopicGift\" class=\"HelpWindowDialogue\" >";
+        htmlContent = htmlContent + "<div class=\"gcHeader\"><span >REDEEMING GIFT CARDS</span></div>";
+        htmlContent = htmlContent + "<div>&nbsp;</div>";
+        htmlContent = htmlContent + "<div>Upon redeeming your gift card, the total value will be credited to your account. If you don't use all your available gift card funds, unused portions will be automatically applied to future purchases until the value is exhausted. More than one gift card can be added to an account.</div>";
+        htmlContent = htmlContent + "<div>&nbsp;</div>";
+        htmlContent = htmlContent + "<div>Please follow the instructions below to redeem your gift card:</div>";
+        htmlContent = htmlContent + "<div><ul>";
+        htmlContent = htmlContent + "<li>Enter the gift card code in the promotion code/gift card section of your shopping bag. This section is located below the products you're purchasing.</li>";
+        htmlContent = htmlContent + "<li>Click the \"apply\" button.</li>";
+        htmlContent = htmlContent + "<li>Your account will be credited with the gift card value.</li>";
+        htmlContent = htmlContent + "</ul></div>";
+        var winOpen = "onclick=\"window.open('" + gcHelpUrl + "','dshelp','width=800,height=550,scrollbars=yes,resizable=yes,status=no,menubar=yes,toolbar=no,location=no')\"";
+        htmlContent = htmlContent + "<div id=\"gcHelpLink\">For complete details about using a gift card, please read our <a href=\"" + gcHelpUrl + "\" target=\"dshelp\" " + winOpen + " > Gift Card</a> policy.</div>";
+
+        htmlContent = htmlContent + "<div><hr></div>";
+        htmlContent = htmlContent + "<div class=\"gcHeader\">USING PROMOTION CODES</div>";
+        htmlContent = htmlContent + "<div>&nbsp;</div>";
+        htmlContent = htmlContent + "<div>Beauty.com frequently offers many valuable promotional offers. These special offers often have conditions or limits, so be sure to read the limitations carefully before trying to redeem the offer.</div>";
+        htmlContent = htmlContent + "<div>&nbsp;</div>";
+        htmlContent = htmlContent + "<div>Please follow the instructions below to redeem promotional offers with a promotion code.</div>";
+        htmlContent = htmlContent + "<div><ul>";
+        htmlContent = htmlContent + "<li>Verify you have met the conditions of the promotional offer.</li>";
+        htmlContent = htmlContent + "<li>Enter the promotion code in the promotion code/gift card section of your shopping bag. This section is located below the products you're purchasing.</li>";
+        htmlContent = htmlContent + "<li>Click the \"apply\" button.</li>";
+        htmlContent = htmlContent + "<li>Your shopping bag will be updated with the promotional offer if you've met the requirements.</li>";
+        htmlContent = htmlContent + "</ul></div>";
+        winOpen = "onclick=\"window.open('" + specialOfferUrl + "','dshelp','width=800,height=550,scrollbars=yes,resizable=yes,status=no,menubar=yes,toolbar=no,location=no')\"";
+        htmlContent = htmlContent + "<div id=\"specialOfferLink\">For complete details about using a promotion code, please read our <a href=\"" + specialOfferUrl + "\" target=\"dshelp\" " + winOpen + " > Special Offers</a> policy.</div></div>";
+
+        var closeOnTimeout = false;
+        dsAlert(htmlContent, "", "gcSplOfferHelp", obj, closeOnTimeout);
+    }
+
+    function SubmitCode(id) {
+        var pageUrl = window.location.href;
+        if (document.frmRecalc) {
+            pageUrl = document.frmRecalc.action;
+            if (pageUrl.indexOf(id) == -1) {
+                document.frmRecalc.action = pageUrl + "#" + id;
+            }
+        }
+        else if (document.frmPlaceOrder) {
+            if (document.frmPlaceOrder.action == "") {
+                if (pageUrl.indexOf(id) == -1) {
+                    document.frmPlaceOrder.action = pageUrl + "#" + id;
+                }
+                else {
+                    document.frmPlaceOrder.action = pageUrl;
+                }
+
+            }
+        }
+    }
+
+    function SetScrollPositionToBottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    var parentelementStyle = '';
+    function ChangeProductCard(obj,productId, productImage, prodName, prodDesc, customerRating, customerReviewCount, effectivePrice) {
+        var html;
+        var htmlHomePage;
+
+        var pdetails;
+        var pdetailsHomePage;
+
+        var productPrice;
+        var productPriceHomePage;
+
+        var parentDivElement = obj.parentNode;
+        parentelementStyle = obj.parentNode.className;
+
+        if (parentelementStyle != 'selectedCarouselColors') {
+            obj.parentNode.className = 'selectedCarouselColors'
+        }
+
+        html = '<div id="PListHover">';
+        html += '<img class="hoverPlistImage" src=' + productImage + ' border="0"/><br />';
+        html += '</div>';
+
+        //' PList
+        pdetails = '<div class="customerRating"><span class="rating">';
+        if (customerRating.length > 0) {
+            pdetails += '<img vspace="0" hspace="0" src="' + customerRating + '"></img>';
+        }
+        pdetails += '</span>';
+
+        if (customerRating.length > 0) {
+            pdetails += '<span class="prodReviewCount">(' + customerReviewCount + ')</span>';
+        }
+        pdetails += '</div>';
+
+        pdetails += '<div class="info">';
+        pdetails += '<span>';
+        pdetails += '<span class="brandName">' + prodName + '</span><br/><span class="prodinfo">' + prodDesc + '</span><br/>';
+        pdetails += '</span>';
+        pdetails += '</div>';
+
+        //' Home Page
+        pdetailsHomePage = '<div class="customerRating"><span class="rating">';
+        if (customerRating.length > 0) {
+            pdetailsHomePage += '<img vspace="0" hspace="0" src="' + customerRating + '"></img>';
+        }
+        pdetailsHomePage += '</span>';
+
+        if (customerRating.length > 0) {
+            pdetailsHomePage += '<span class="prodReviewCount">(' + customerReviewCount + ')</span>';
+        }
+        pdetailsHomePage += '</div>';
+
+        pdetailsHomePage += '<h2>';
+        pdetailsHomePage += '<strong>';
+        pdetailsHomePage += prodName;
+        pdetailsHomePage += '</strong>';
+        pdetailsHomePage += '&nbsp;' + prodDesc;
+        pdetailsHomePage += '</h2>';
+
+
+        //productPrice += '<div class="price">';
+        productPrice = '<div class="hoverPrice">';
+        if (effectivePrice.length > 0) {
+            productPrice += '<span>' + effectivePrice + '</span>';
+        }
+        productPrice += '</div>';
+
+        var mainElementName = "prodImg" + productId;
+        var hoverElementName = "hoverProductImage" + productId;
+        document.getElementById(hoverElementName).innerHTML = html;
+        document.getElementById(mainElementName).style.display = "none";
+        document.getElementById(hoverElementName).style.display = "block";
+
+
+        var mainProductElement = "productDetails" + productId;
+        var hoverProductElement = "hoverProductDetails" + productId;
+
+        var homePageProductElm = "prodInformation" + productId;
+        if (document.getElementById(mainProductElement)) {
+            document.getElementById(hoverProductElement).innerHTML = pdetails;
+            document.getElementById(mainProductElement).style.display = "none";
+            document.getElementById(hoverProductElement).style.display = "block";
+        }
+        else {
+            document.getElementById(hoverProductElement).innerHTML = pdetailsHomePage;
+            document.getElementById(homePageProductElm).style.display = "none";
+            document.getElementById(hoverProductElement).style.display = "block";
+        }
+
+        var mainProductPrice = "productPrice" + productId;
+        var hoverProductPrice = "hoverProductPrice" + productId;
+        document.getElementById(hoverProductPrice).innerHTML = productPrice;
+        document.getElementById(mainProductPrice).style.display = "none";
+        document.getElementById(hoverProductPrice).style.display = "block";
+                
+    }
+
+
+    function ResetProductCard(obj,productId) {
+
+        var parentDivElement = obj.parentNode;
+       // parentelementStyle = this.parentNode.className;
+
+        if (parentelementStyle != 'selectedCarouselColors') {
+            obj.parentNode.className = 'carouselColors';
+        }
+
+        var mainElementName = "prodImg" + productId;
+        var hoverElementName = "hoverProductImage" + productId;
+        document.getElementById(hoverElementName).style.display = "none";
+        document.getElementById(mainElementName).style.display = "block";
+
+        var mainProductElement = "productDetails" + productId;
+        var hoverProductElement = "hoverProductDetails" + productId;
+        var homePageProductElm = "prodInformation" + productId;
+        
+        if (document.getElementById(mainProductElement)) {
+            document.getElementById(hoverProductElement).style.display = "none";
+            document.getElementById(mainProductElement).style.display = "block";
+        }
+        else {
+            document.getElementById(hoverProductElement).style.display = "none";
+            document.getElementById(homePageProductElm).style.display = "block";
+        }
+
+        var mainProductPrice = "productPrice" + productId;
+        var hoverProductPrice = "hoverProductPrice" + productId;
+        document.getElementById(hoverProductPrice).style.display = "none";
+        document.getElementById(mainProductPrice).style.display = "block";
+    }
+
+    // Reusable Overlay Code
+
+    function inlineOverlay(msg, title, name, obj, closeOnTimeout, closeOnBlur, width, shadowBackground) {
+
+        var tempTitle = title;
+        var tempName = name;
+
+        if (tempTitle == undefined) tempTitle = "";
+        if (shadowBackground == undefined) shadowBackground = true;
+        if (tempName == undefined) tempName = "dsalert";
+        else if (tempName.length == 0) tempName = "dsalert";
+
+        var popup = new Overlay(tempName, tempTitle, -1);
+
+        popup.bodyContent = msg;
+        popup.showShadow = false;
+        popup.className = "inlineOverlay";
+        popup.width = -1;
+        popup.initX = -1;
+        popup.initY = -1;
+
+
+        if (closeOnTimeout != undefined)
+            popup.closeOnTimeout = closeOnTimeout;
+        else
+            popup.closeOnTimeout = true;
+
+
+        if (closeOnBlur != undefined)
+            popup.closeOnBlur = closeOnBlur;
+        else
+            popup.closeOnBlur = true;
+
+        setOverlayEvtHandler("onhide", name, function () { closeInlineOverlay(shadowBackground); });
+
+        popup.render();
+
+        if (shadowBackground) {
+
+
+
+            if (jQuery.browser.msie) {
+                jQuery("#backgroundShadowForOverlays").css({ "display": "block", "opacity": "0.2" })
+                showOverlay(obj, tempName, true, true);
+            }
+            else {
+                jQuery("#backgroundShadowForOverlays").css({ "opacity": "0.2" }).fadeIn(function () {
+                    showOverlay(obj, tempName, true, true);
+                });
+            }
+
+        }
+        else {
+            showOverlay(obj, tempName, true, true);
+        }
+
+
+        jQuery("#" + name).css({ "width": width }).center();
+    }
+
+    function closeInlineOverlay(shadowBackground) {
+        if (shadowBackground) {
+
+
+            if (jQuery.browser.msie)
+                jQuery("#backgroundShadowForOverlays").css({ "display": "none", "opacity": "0" })
+            else
+                jQuery("#backgroundShadowForOverlays").css({ "opacity": "0" }).fadeOut();
+        }
+    }
+
+    function showHelpOverlay(obj, url, titleName) {
+        var html, myFrame
+        html = "<div class=\"HelpOverlaybody\"><iframe title=\"Help Overlay\" id=\"HelpOverlayiFrame\" src=\"" + url + "\" width=\"530\" height=\"330\" scrolling=\"auto\" frameborder=\"no\"></iframe></div>"
+        var name = "HelpOverlay", title = titleName;
+        var newOverlay = new Overlay(name, title, -1);
+        newOverlay.bodyContent = html;
+        newOverlay.showShadow = false;
+        newOverlay.closeOnBlur = true;
+        newOverlay.render();
+
+        //position the overlay to center of the page
+        var width = 0, height = 0, x = 0, y = 0;
+        if (typeof (window.innerWidth) == "number") {
+            //Non-IE
+            width = window.innerWidth;
+            height = window.innerHeight;
+        } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+            //IE 6+ in 'standards compliant mode'
+            width = document.documentElement.clientWidth;
+            height = document.documentElement.clientHeight;
+        } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+            //IE 4 compatible
+            width = document.body.clientWidth;
+            height = document.body.clientHeight;
+        }
+
+        var y = (height / 2) - 300 + getScrollOffset().y;
+        if (y < 0) y = 0;
+        var x = (width / 2) - 270;
+        if (x < 0) x = 0
+        var overlayElement = gE(name);
+        overlayElement.style.left = x + "px";
+        overlayElement.style.top = y + "px";
+
+
+        showOverlay(obj, name, true, false);
+
+        //This is hack for IE 6. The IFrame content is not refreshing
+        myFrame = gE("HelpOverlayiFrame");
+        if (isIE && myFrame) {
+            myFrame.src = myFrame.src;
+        }
+    }
+
+// web analytics globals with default values
+var gWAEnabled = false;
+var gWAAccount = "";
+var gWACatId = -1;
+
+function recalc() {
+	if(!(document.all || document.getElementById)) return;
+	
+	var total = 0;
+	var savings = 0;
+	var fsEligibleSubtotal = 0;
+	var dsDollarsEligibleSubtotal = 0;
+	
+	for(var i = 0; i < productDataSet.length; i++) {
+		var product = productDataSet[i];
+		var szCheckEltId = 'chkPid' + product.pid;
+		var eltCheck = gE(szCheckEltId);
+		var szQtyEltId = 'qty' + product.pid;
+		var eltQty = gE(szQtyEltId);
+		
+		if (eltQty != null) cleanQty(eltQty);
+			
+		if((eltCheck != null) && (eltCheck.checked)) {
+			var quantity = Math.abs(parseInt(eltQty.value));
+			
+			if(!isNaN(quantity)) {
+				var price = 0;
+				
+				if (product.salespricelimit > 0) {
+					if (quantity > product.salespricelimit) {
+						// (promo pricing) + (non promo pricing)
+						price = ((product.salespricelimit * product.effective) + ((quantity - product.salespricelimit) * product.overlimitprice));
+						// calculate savings w/promo pricing first
+						savings = (product.salespricelimit * (product.base - product.effective));
+						// now calculate everything beyond the promo qty
+						savings += ((quantity - product.salespricelimit) * (product.base - product.overlimitprice));
+					}
+				}
+				
+				if (price == 0) {
+					price = (quantity * product.effective);
+					savings += (quantity * (product.base - product.effective));
+				}
+				
+				total += price;
+				
+				if(product.dsDollarsEligible) {
+					dsDollarsEligibleSubtotal = dsDollarsEligibleSubtotal + price;
+				}
+				//savings = savings + (quantity * (product.base - price));
+				if(product.fsEligible) {
+					fsEligibleSubtotal = fsEligibleSubtotal + price;
+				}
+			}
+		}
+	}
+
+	try {
+		gE("txtSubTotal").innerHTML = '$' +  numberFormat(total);
+		gE("txtSavings").innerHTML = '$' + numberFormat(savings);
+		gE("txtDollars").innerHTML = '$' + numberFormat(0.05 * dsDollarsEligibleSubtotal);
+	} catch(e) {}
+
+}
+
+/* Function to recalculate the total price whenever user changes group purchase qty. */
+function recalcGP(p_oQty)
+{
+	try
+	{
+		if (gproductDataSet)
+		{
+			var l_oProduct = gproductDataSet[0];
+			var l_nBase = l_oProduct.base;
+			var l_nPrice = l_oProduct.effective;
+			var l_nQty;
+			if(isNaN(p_oQty.value))
+			{
+				p_oQty.value=1;
+			}		
+			l_nPrice = (p_oQty.value * l_nPrice);
+			l_nBase = (p_oQty.value * l_nBase);	
+			
+			if(gE("rprice"))		
+				gE("rprice").innerHTML = '$' + numberFormat(l_nPrice);
+			if(gE("sprice"))
+				gE("sprice").innerHTML = '$' + numberFormat(l_nBase);
+			if(gE("dprice"))
+				gE("dprice").innerHTML = '$' + numberFormat(l_nPrice);
+		}
+	}		
+	catch(e){}
+}
+
+function cleanQty(eltQty)
+{
+	var val = eltQty.value;
+	var clean='';
+	if (val)
+	{
+		for(var i = 0; i < val.length; i++)
+			if(!isNaN(val.charAt(i)))
+				clean = clean + val.charAt(i);
+		eltQty.value = clean;
+	}
+}
+
+function addhandlers() 
+{
+	try
+	{
+		//do not need these event handlers for your list ver3
+		if (document.frmYourList && gE("YLCntr") == null && gE("YLMiniCntr") == null){
+			var elts = document.frmYourList.elements;		
+			for(var i = 0; i < elts.length; i++){
+				var elt = elts[i];
+				if(elt.name.substring(0,3) == 'qty'){
+					elt.onkeyup = function() {recalc();};
+					elt.onchange = function() {recalc();}; 
+				}
+				if(elt.name == 'chkPid'){
+					elt.onclick = function() {recalc();}; 
+				}
+			}	
+			recalc();
+		}
+		var elt = gE('anOrder');
+		if((elt != undefined) && (elt != null)) {
+		elt.onclick = function() {TrackAddToBagClickForWA(elt);}; 
+		}
+		/* 
+			Attach handler to vpack group purchase module to update the price total 
+			whenever user changes group purchase qty.
+		*/
+		if (document.frmVPackModule)
+		{
+			var elts = document.frmVPackModule.elements;
+			for(var i = 0; i < elts.length; i++)
+			{
+				var elt = elts[i];			
+				if(elt.name == 'VPackQTY')
+				{
+					elt.onkeyup = function() {recalcGP(this);};
+					elt.onchange = function() {recalcGP(this);}; 
+				}		
+			}
+		}
+	}
+	catch(e)
+	{
+		alert(e);
+	}
+}
+
+/* Tracking the add to bag button click for the Web Analytics reporting */
+function TrackAddToBagClickForWA(p_oControl) {
+	if(!gWAEnabled) return;
+	if(!(document.all || document.getElementById)) return;
+	var productsForWATrx = new Array();
+	
+	for(var i = 0; i < productDataSet.length; i++) {
+		var product = productDataSet[i];
+		var check = gE('chkPid' + product.pid);
+		var qty = gE('qty' + product.pid);
+		if (qty != null) cleanQty(qty);
+			
+		if((check != null) && (check.checked)) {
+			var quantity = 1;
+			if(qty)
+				quantity = Math.abs(parseInt(qty.value));
+			productsForWATrx[productsForWATrx.length] = new productDataForWA(product.pid, product.effective, quantity, product.site);
+		}
+	}
+	if(productsForWATrx.length > 0)
+		trackYLAddToBag(p_oControl, productsForWATrx);
+}
+
+/*
+Description: tracks "AddToBag" button click for Web Analytics reporting
+ p_oControl - trigger object (AddToBag button)
+ products - array of productDataForWA objects.
+*/
+function trackYLAddToBag(p_oControl, productsForWATrx) {
+	if(!gWAEnabled) return;
+	if(!(document.all || document.getElementById)) return;
+	if(productsForWATrx.length == 0) return;
+	
+	try
+	{
+		var l_szProducts;
+		l_szProducts = "";
+		
+		for(var i = 0; i < productsForWATrx.length; i++)
+		{
+			var l_oProduct = productsForWATrx[i];
+			l_szProducts = l_szProducts + ";" + l_oProduct.pid + ";" + l_oProduct.price + ";" + l_oProduct.quantity + ";;eVar5=" + l_oProduct.site + ",";
+		}
+		l_szProducts = l_szProducts.substring(0, l_szProducts.length - 1);
+		var s = s_gi(gWAAccount);
+		s.linkTrackVars = 'events,eVar3,eVar5,eVar25,products';
+		s.linkTrackEvents = 'event13';
+		s.events = 'event13';
+		s.products = l_szProducts;
+		if (gWACatId == 60 || gWACatId == 9730 || gWACatId == 59875 || gWACatId == 103804 || gWACatId == 60880)
+		{
+			s.eVar3 = 'Home Page'; 
+			s.eVar25 = 'Add to Cart from YL on Homepage';
+			s.tl(p_oControl,'o','Add to Cart from YL on Homepage');
+		}
+		else
+		{
+			s.eVar3 = 'Your List'; 
+			s.eVar25 = 'Add to Cart from YL page';
+			s.tl(p_oControl,'o','Add to Cart from YL page');
+		}
+	}
+	catch(e){/* catching the error here so as to avoid throwing errors to the user from external script.*/}
+}
+
+/* Javascript object to hold group purchase price details */
+function vpGproductData(base, effective)
+{	
+	this.base = base;
+	this.effective = effective;
+}
+
+
+function productData(pid, base, effective, fsEligible, dsDollarsEligible, nSalesPriceLimit, nOverLimitPrice, site) {
+	this.pid = pid;
+	this.base = base;
+	this.effective = effective; // price_effective (includes tpr price)
+	this.fsEligible = fsEligible;
+	this.dsDollarsEligible = dsDollarsEligible;
+	this.salespricelimit = nSalesPriceLimit; // limit for tpr promotions
+	this.overlimitprice = nOverLimitPrice; // price after tpr limit has been reached
+	this.site = site;
+	return this;
+}
+
+//custom object for Web Anaytics tracking
+function productDataForWA(pid, price, quantity, site) {
+	this.pid = pid;
+	this.price = price
+	this.quantity = quantity
+	this.site = site;
+	return this;
+} 
+	
+function cartData(otcSubtotal, fsHurdle, dollarsPct, fsShortText) {
+	this.otcSubtotal = otcSubtotal;
+	this.fsHurdle = fsHurdle;
+	this.dollarsPct = dollarsPct;
+	this.fsShortText = fsShortText;
+}
+
+function doListDelete(pid, itemstatus)	{
+	document.frmYourList.hdnSubmitted.value = '';
+	document.frmYourList.hdnFormAction.value = 'FormActionDelete';
+	document.frmYourList.product.value = pid;
+	document.frmYourList.productstatus.value = itemstatus;
+	document.frmYourList.submit();
+}
+	
+function doSplit() {
+	document.frmYourList.hdnSubmitted.value = '';
+	document.frmYourList.hdnFormAction.value = 'FormActionOrganize';
+	document.frmYourList.submit();
+}
+
+function doPrivacyCheck() {
+	document.frmYourList.hdnSubmitted.value = '';
+	document.frmYourList.hdnFormAction.value = 'FormActionPrivacyCheck';
+	document.frmYourList.submit();
+}
+
+// Ensure that each number printed as a string 
+// is in 0.00 format
+function numberFormat(amount) {
+	var rawNumStr = round(amount) + '';
+	rawNumStr = (rawNumStr.charAt(0) == '.' ? '0' + rawNumStr : rawNumStr);
+	if (rawNumStr.charAt(rawNumStr.length - 3) == '.') {
+		return rawNumStr
+	}
+	else if (rawNumStr.charAt(rawNumStr.length - 2) == '.') {
+		return rawNumStr + '0';
+	}
+	else { return rawNumStr + '.00'; }
+}
+
+// Round all passed numbers to two 
+// decimal places (hundredths place)
+function round(number,decPlace) {
+	decPlace = (!decPlace ? 2 : decPlace);
+	return Math.round(number * Math.pow(10,decPlace)) / Math.pow(10,decPlace);
+}
+
+function gE(id) {
+	if (document.all){
+		return document.all[id];
+	}
+	else if (document.getElementById){
+		return document.getElementById(id);
+	}
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////// Your List Enhancements - Start //////////////////
+/////////////////////////////////////////////////////////////////
+var LISTITEM_FLAGS = {DEAD: 2, ONSALE: 4, FSA: 8, EFS: 16, DSDOLLARS: 32, VOLUMEDISCOUNT: 64, AUTODELIVERY: 128, OUTOFSTOCK: 256, BTY: 512, PRIVATE:1024};
+var LISTITEM_PROPS = {ID: "id", NAME: "name", TCATNAME: "tCatName", TCATID: "tCatId", PCATNAME: "pCatName", PCATID: "pCatId", BRANDNAME: "brandName", BPRICE: "bPrice", EPRICE: "ePrice", SAVINGS: "savings", TPRPRICE: "tprPrice", TPRQTYLMT: "tprQtyLimit", LASTPURCHASEDATE: "lastPurchaseDate", RATING: "rating", ISONSALE: "isOnSale", ISDEAD: "isDead", ISOUTOFSTOCK: "isOutOfStock", ISPRIVATE: "isPrivate", FSAELIGIBLE: "fsaEligible", EFSELIGIBLE: "efsEligible", DSDOLLARELIGIBLE: "dsDollarEligible", VOLUMEDISCOUNTELIGIBLE: "volumeDiscountEligible", AUTODELIVERABLE: "autoDeliverable", SELECTED: "selected", BTY: "isBeauty"};
+var LISTITEM_FILTERS = {ALL: "all", FSA: "FSA", VOLUMEDISCOUNT: "VolumeDiscount", AUTODELIVERY: "AutoDelivery"};
+var SITE_DSCM = "0";
+var SITE_BTY = "1";
+
+var gYLHandler;
+var gCheckedItemsCache = new Object();
+var gSortImages = new Object();
+var gImageURLs = new Object();
+var isIE = (navigator.appName == "Microsoft Internet Explorer");
+var gListItems = new Array();
+
+window.onunload = cleanUp;
+
+function cleanUp()
+{
+	gYLHandler = null; //clear the main guy, your list handler
+	gSortImages = null; // clear the sort image associative array(just an object)
+	gImageURLs = null; // clear the image urls associative array(just an object)
+	gCheckedItemsCache = null;//clear the checkbox cache
+	gListItems = []; //clear the list item array
+}
+
+function initYL(totalItemCount, filteredItemCount, displayThreshold)
+{
+	//populate image array
+	gSortImages[LISTITEM_PROPS.BRANDNAME] = gE('imgBrandSort');
+	gSortImages[LISTITEM_PROPS.LASTPURCHASEDATE] = gE('imgPurchaseDateSort');
+	gSortImages[LISTITEM_PROPS.RATING] = gE('imgRatingSort');
+	gSortImages[LISTITEM_PROPS.ISONSALE] = gE('imgSaleSort');
+	gSortImages[LISTITEM_PROPS.EPRICE] = gE('imgPriceSort');
+	gSortImages[LISTITEM_PROPS.SELECTED] = gE('imgCheckedSort');
+
+	gYLHandler = new ListHandler(gE("frmYourList"), "list", gE("TblListItems"), gE("ItemWrapper"), gE("EmptyPanel"), gE("divPrivacySettings"), gE("ProgressPanel"), totalItemCount, filteredItemCount, displayThreshold);
+	gYLHandler.initEx();
+}
+
+function removeSelectedYLItems(obj, trx){if(obj && gYLHandler) gYLHandler.removeSelectedItems(obj, trx);}
+function clearYLFilters(obj){if(obj && gYLHandler) gYLHandler.clearYLFilters(obj);}
+function removeOneYLItem(obj, prodId, trx){if(obj && gYLHandler) gYLHandler.removeItem(obj, prodId, trx);}
+function recalcYL3(){if(gYLHandler) gYLHandler.calcTotal();}
+function selectAll(obj){if(obj && gYLHandler)	gYLHandler.selectAll(obj.checked);}
+function showPrivateItems(obj, flag){if(obj && gYLHandler) gYLHandler.showPrivateItems(obj, flag);}
+function addToBag(obj){if(obj && gYLHandler) gYLHandler.addToBag(obj);}
+function saveYLFilter(obj){if(obj && gYLHandler) gYLHandler.saveFilters(obj);}
+
+function sortYL(obj, sortBy)
+{
+	if(obj)
+	{
+		if (gYLHandler.filteredItemCount <= gYLHandler.list.items.length)
+		{
+			gYLHandler.updateCheckboxCache();
+			gYLHandler.sort(sortBy);
+			gYLHandler.render();
+		}
+		else
+		{
+			gYLHandler.sort(sortBy, undefined, true);
+		}
+	}
+}
+
+function filterYL(obj)
+{
+	if(obj)
+	{
+		if ((gYLHandler.totalItemCount <= gYLHandler.displayThreshold) || (gYLHandler.hasAllItems == true))
+		{
+			gYLHandler.list.reset();
+			gYLHandler.filter();
+			gYLHandler.render();
+			if (document.getElementById('main') == null) {
+			    gE("ItemWrapper").style.height = gYLHandler.filteredItemCount * 80 + 'px';
+			}
+			else {
+			    var ht = gYLHandler.filteredItemCount * 100;
+			    if (ht > 435)
+			        gE("ItemWrapper").style.height = 435+'px';
+			    else
+			        gE("ItemWrapper").style.height = ht+'px';
+             }
+		}
+		else
+		{
+			gYLHandler.filter(true);
+		}
+	}
+}
+
+function viewAllItems()
+{
+	gYLHandler.form.hdnAction.value = "viewall";
+	gYLHandler.form.viewall.value = "yes";
+	gYLHandler.form.submit();
+}
+
+
+function ListHandler(frmList, viewType, tblListItems, divItemContainer, divEmptyPanel, divPrivacySettings, divProgressPanel, totalItemCount, filteredItemCount, displayThreshold)
+{
+	this.form = frmList;
+	this.viewType = viewType;
+	this.tblListItems = tblListItems;
+	this.cmbAttrFilter = this.form.cmbFilters;
+	this.cmbCatFilter = this.form.cmbCatFilters;
+	this.chkAll = this.form.chkAll;
+	this.hdnAction = this.form.hdnAction;
+	this.hdnSortBy = this.form.hdnSortBy;
+	this.hdnSortOrder = this.form.hdnSortOrder;
+	this.hdnShowPrivateItems = this.form.hdnShowPrivateItems;
+	this.lastSortImg = (this.hdnSortBy ? gSortImages[this.hdnSortBy.value] : null);
+	this.updateFilters = false;
+	if (gE("YLMiniCntr") == null) {
+		this.noItemsSelectedMsg = "Sorry, no items have been selected. Please choose some items to remove from list or add to bag.";
+	}
+	else { this.noItemsSelectedMsg = "Please select items to add to bag."; }
+	this.noQtyMsg = "Please check the quantity of the product you have selected.";
+	this.divEmptyPanel = divEmptyPanel;
+	this.divItemContainer = divItemContainer;
+	this.divPrivacySettings = divPrivacySettings;
+	this.divProgressPanel = divProgressPanel;
+	this.totalItemCount = (totalItemCount != undefined ? totalItemCount : 0);
+	this.filteredItemCount = (filteredItemCount != undefined ? filteredItemCount : 0);
+	this.displayThreshold = (displayThreshold != undefined ? displayThreshold : 0);
+	this.hasAllItems = false;
+	this.init();
+}
+
+ListHandler.prototype.attrFilter = function(){return ((this.cmbAttrFilter)? this.cmbAttrFilter.value : LISTITEM_FILTERS.ALL);};
+ListHandler.prototype.catFilter = function(){return ((this.cmbCatFilter)? this.cmbCatFilter.value : LISTITEM_FILTERS.ALL);};
+
+ListHandler.prototype.init = function()
+{
+	this.sortBy = ((this.hdnSortBy) ? ((this.hdnSortBy.value.length > 0) ? this.hdnSortBy.value : LISTITEM_PROPS.BRANDNAME) : LISTITEM_PROPS.BRANDNAME);
+	this.sortOrder = ((this.hdnSortOrder) ? ((this.hdnSortOrder.value.length > 0) ? this.hdnSortOrder.value : "asc") : "asc");
+	this.list = new ListItemCollection();
+	this.list.init(gListItems);
+	if(this.hdnSortBy) this.hdnSortBy.value = this.sortBy;
+	if(this.hdnSortOrder) this.hdnSortOrder.value = this.sortOrder;
+}
+
+ListHandler.prototype.reset = function()
+{
+	this.sortBy = LISTITEM_PROPS.BRANDNAME;
+	this.sortOrder = "asc"
+	this.cmbAttrFilter.selectedIndex = 0;
+	this.cmbCatFilter.selectedIndex = 0;
+	this.viewType = "list";
+	//this.lastSortImg = null;
+	this.list.reset();
+}
+/*
+x= total # of yl items
+y= total # of items matching the current filter
+z= item display threshold count
+if(x > z) then filteratserver, clearfilter and send to server
+if(y <= z) then sort at client else sort at server
+*/
+ListHandler.prototype.clearYLFilters = function(obj)
+{
+	this.cmbCatFilter.selectedIndex = 0;
+	this.cmbAttrFilter.selectedIndex = 0;
+	if ((gYLHandler.totalItemCount <= gYLHandler.displayThreshold) || (gYLHandler.hasAllItems == true))
+	{
+		this.list.reset();
+		this.updateFilters = true;
+		this.filter();
+		this.render();
+	}
+	else
+	{
+		this.form.submit();
+	}
+}
+
+ListHandler.prototype.addToBag = function(obj)
+{
+	try
+	{
+		var selectedItems = this.selectedItems();
+		if (selectedItems.length > 0)
+		{
+			var productsForWATrx = new Array();
+			for(i = 0; i < selectedItems.length; i++)
+			{
+				var item = selectedItems[i];
+				var qty = 1;
+				if(item.qty) { cleanQty(item.qty); qty = Math.abs(parseInt(item.qty.value));}
+					if(qty > 0)
+					{
+						productsForWATrx[productsForWATrx.length] = new productDataForWA(item.id, item.ePrice, qty, item.site);
+					}
+					else
+					{
+						var html;
+						html = "<div class=\"ylconfirmbody\">" + this.noQtyMsg + "</div>";
+						dsAlert(html, "", "ylconfirm", obj);
+						return;
+					}
+			}
+			// web analytics tracking
+			trackYLAddToBag(obj, productsForWATrx);
+			this.hdnAction.value = "addtobag";
+			this.form.submit();
+		}
+		else
+		{		
+			var html;
+			html = "<div class=\"ylconfirmbody\">" + this.noItemsSelectedMsg + "</div>";
+			dsAlert(html, "", "ylconfirm", obj);
+		}
+	}
+	catch(e){}
+}
+
+ListHandler.prototype.saveFilters = function(obj)
+{
+	try
+	{
+		this.hdnAction.value = "save";
+		this.form.submit();
+	}
+	catch(e){}
+}
+
+ListHandler.prototype.showPrivateItems = function(obj, flag)
+{
+	try
+	{		
+		this.hdnAction.value = "";
+		this.hdnShowPrivateItems.value = (flag ? "1" : "0");
+		this.form.submit();
+	}
+	catch(e){}
+}
+
+ListHandler.prototype.sort = function(sortBy, sortOrder, postBack)
+{
+	if(this.list.items.length > 0)
+	{
+		if (postBack != undefined && postBack == true)
+		{
+			if(sortOrder != undefined)
+			{
+				this.sortOrder = sortOrder;
+			}
+			else
+			{
+				if(sortBy == this.sortBy) this.sortOrder = ((this.sortOrder == "asc") ? "desc" : "asc");
+				else if(sortBy == LISTITEM_PROPS.BRANDNAME || sortBy == LISTITEM_PROPS.ISONSALE || sortBy == LISTITEM_PROPS.SELECTED) this.sortOrder = "asc";
+				else this.sortOrder = "desc";
+			}
+			
+			this.sortBy = sortBy;
+			this.hdnSortBy.value = this.sortBy;
+			this.hdnSortOrder.value = this.sortOrder;
+			this.hdnAction.value = "";
+			this.form.submit();
+		}
+		else
+		{
+			var sortImg;
+			sortImg = gSortImages[sortBy];
+			if(sortOrder != undefined)
+			{
+				this.sortOrder = sortOrder;
+			}
+			else
+			{
+				if(sortBy == this.sortBy) this.sortOrder = ((this.sortOrder == "asc") ? "desc" : "asc");
+				else if(sortBy == LISTITEM_PROPS.BRANDNAME || sortBy == LISTITEM_PROPS.ISONSALE || sortBy == LISTITEM_PROPS.SELECTED) this.sortOrder = "asc";
+				else this.sortOrder = "desc";
+			}
+			
+			this.sortBy = sortBy;
+			
+			this.list.sort(this.sortBy, this.sortOrder);
+			
+			//cosmetics: update the arrow image sort
+			if(sortImg)
+			{
+				if(sortBy == LISTITEM_PROPS.ISONSALE || sortBy == LISTITEM_PROPS.SELECTED)
+					sortImg.src = ((this.sortOrder == "asc") ? gImageURLs["sort_down"] : gImageURLs["sort_up"]);
+				else
+					sortImg.src = ((this.sortOrder == "desc") ? gImageURLs["sort_down"] : gImageURLs["sort_up"]);
+			}
+			if(this.lastSortImg) 
+				if (this.lastSortImg != sortImg) this.lastSortImg.src = gImageURLs["sort_right"];
+			
+			if(sortImg) this.lastSortImg = sortImg;
+			
+			this.hdnSortBy.value = this.sortBy;
+			this.hdnSortOrder.value = this.sortOrder;
+		}
+	}
+}
+
+ListHandler.prototype.filter = function(postBack)
+{
+	if (postBack != undefined && postBack == true)
+	{
+		this.hdnAction.value = "";
+		this.form.submit();
+	}
+	else if(this.list.items.length > 0)
+	{
+		var opt;
+		var catFilter, attrFilter;
+		this.updateCheckboxCache();
+		/*	
+			Conditional update of combo options:
+			we want to display the selected filter option even if it does not fetch any items and 
+			we want to remove this filter option from the combo when the user chooses to clear the filtering, 
+			if the list does not contain any matching items for the filter.
+		*/
+		if(this.updateFilters == true) this.updateFilterCombos();
+			
+		catFilter = this.catFilter();
+		attrFilter = this.attrFilter();
+		
+		// filter by category
+		if (catFilter == SITE_DSCM) this.list.filterByProp(LISTITEM_PROPS.BTY, false);
+		else if (catFilter == SITE_BTY) this.list.filterByProp(LISTITEM_PROPS.BTY, true);
+		else if (catFilter != LISTITEM_FILTERS.ALL) this.list.filterByProp(LISTITEM_PROPS.TCATID, Number(catFilter));
+		
+		// filter by product attribute
+		if (attrFilter != LISTITEM_FILTERS.ALL) this.list.filterByProp(attrFilter, true);
+		
+		/* sorting is required after each filtering as the list items are re-loaded with items from global cache each time*/
+		if(this.list.items.length > 0) this.sort(this.sortBy, this.sortOrder);
+		
+		this.calcTotal();
+		this.filteredItemCount = this.list.items.length;
+	}
+	else
+	{
+		// do nothing
+	}
+}
+
+ListHandler.prototype.preProcess = function()
+{
+	//add pre-processing steps, if any
+	/*	
+	turn it on so that the scrollheight property will be updated and 
+	so can be used to adjust the width of "checkbox" column when overflow occurs.
+	*/
+	if(this.divItemContainer) this.divItemContainer.className = "show"; 
+	//hide the list items table before rearranging to avoid the "compress & expand" UX
+	this.tblListItems.style.visibility = "hidden";
+	if(this.divProgressPanel) this.divProgressPanel.className = ((this.list.items.length > 0) ? "show" : "hide");
+}
+
+ListHandler.prototype.updateCheckboxCache = function()
+{
+	if(isIE) // To correct IE only bug where it forgets the status of check boxes after removing/adding the container rows to the list table.
+	{
+		var lineItem, chk;
+		for(var i=0; i<this.list.items.length; i++)
+		{
+			lineItem = this.list.items[i];
+			chk = gE(lineItem.checkId);
+			if(chk) gCheckedItemsCache[lineItem.checkId] = chk.checked;
+		}
+	}
+}
+
+ListHandler.prototype.render = function()
+{
+	if(this.tblListItems)
+	{
+		var lineItem, tBody = this.tblListItems.tBodies[0];
+		
+		this.preProcess();
+		
+		if(tBody)
+		{
+			if (this.viewType == "cat")
+			{
+				var cats = this.list.getPCats();
+				var newList;
+				for(i = 0; i < cats.length; i++)
+				{
+					newList = new ListItemCollection();
+					newList.loadItems(this.list.fetchItemsByProp(LISTITEM_PROPS.PCATID, cats[i].id));
+					ListHandler.addItemRows.apply(this);
+					newList.removeAll();
+				}
+			}
+			else
+			{
+				ListHandler.addItemRows.apply(this);
+			}
+		}
+		this.postProcess();
+	}
+}
+
+ListHandler.prototype.initEx = function()
+{
+	this.preProcess();
+	//this does not add rows...instead just adjust the row width based on the availability of vertical scroll bar
+	ListHandler.addItemRows.call(this, true); 
+	this.postProcess();
+	this.hasAllItems = (this.list.items.length == this.totalItemCount);
+}
+
+ListHandler.prototype.postProcess = function()
+{
+	//adjust sort and filter dropdowns based on the current user selected sort and filter options
+	this.tblListItems.style.visibility = "visible";
+	if(this.divProgressPanel) this.divProgressPanel.className = "hide";
+	if(this.divEmptyPanel) this.divEmptyPanel.className = ((this.list.items.length == 0) ? "show" : "hide");
+	this.divItemContainer.className = ((this.list.items.length == 0) ? "hide" : "show");
+	
+	if(this.chkAll)
+	{
+		if(this.list.items.length > 0)
+			this.chkAll.checked = !this.list.hasItems(LISTITEM_PROPS.SELECTED, false);
+		else
+			this.chkAll.checked = false;
+	}
+}
+
+ListHandler.addItemRows = function(doNotAddRows)
+{
+	var lineItem, tBody = this.tblListItems.tBodies[0];
+	var justAdjustRowWidth = false;
+	if (doNotAddRows != undefined) justAdjustRowWidth = doNotAddRows;
+	if (!justAdjustRowWidth)
+	{
+		for (i = tBody.childNodes.length - 1; i >= 0; i--)
+			tBody.removeChild(tBody.childNodes[i]); //start clean
+	}
+	var noScrollItems = [];
+	var listScrolling = false;
+	for(i=0; i<this.list.items.length; i++)
+	{
+		lineItem = this.list.items[i];
+		
+		if(lineItem.row)
+		{		
+			if (!justAdjustRowWidth)
+			{
+				tBody.appendChild(lineItem.row);
+				lineItem.row.className = "lineitem";
+			}
+			if(isIE)// To correct IE only bug where it forgets the status of check boxes after removing/adding the container rows to the list table.
+				if(lineItem.check) lineItem.check.checked = gCheckedItemsCache[lineItem.checkId];
+			
+			if(this.divItemContainer)
+			{
+				if(!listScrolling)
+				{
+					listScrolling = (this.divItemContainer.scrollHeight > this.divItemContainer.clientHeight);
+					noScrollItems[noScrollItems.length] = lineItem;
+				}
+				var clsName = (listScrolling ? "checkScroll" : "check");
+				if(listScrolling && noScrollItems.length > 0)
+				{
+					for(j=0; j<noScrollItems.length;j++)
+					{
+						var tmpItem = noScrollItems[j];
+						if(!tmpItem.isDead && tmpItem.row) tmpItem.row.lastChild.className = clsName;
+					}
+					noScrollItems.clear();
+				}
+				else
+				{
+					if(!lineItem.isDead && lineItem.row) lineItem.row.lastChild.className = clsName;
+				}
+			}
+		}
+	}
+}
+
+ListHandler.prototype.updateFilterCombos = function()
+{
+	var opt;
+	// remove attr filters that are not applicable
+	for (i = this.cmbAttrFilter.options.length-1; i >=0; i--)
+	{
+		opt = this.cmbAttrFilter.options[i];
+		if(opt.value != LISTITEM_FILTERS.ALL)
+			if(!this.list.hasItems(opt.value, true))
+				this.cmbAttrFilter.removeChild(opt);
+	}
+	
+	var hasBtyItems = this.list.hasItems(LISTITEM_PROPS.BTY, true);
+	var hasNonBtyItems = this.list.hasItems(LISTITEM_PROPS.BTY, false);
+	// remove cat filters that are not applicable
+	for (i = this.cmbCatFilter.options.length-1; i >=0 ; i--)
+	{
+		opt = this.cmbCatFilter.options[i];
+		if(opt.value != LISTITEM_FILTERS.ALL)
+		{
+			if (opt.value == SITE_DSCM)
+			{
+				if(!(hasNonBtyItems && hasBtyItems))
+					this.cmbCatFilter.removeChild(opt);
+			}
+			else if(opt.value == SITE_BTY)
+			{
+				if(!(hasBtyItems && hasNonBtyItems))
+					this.cmbCatFilter.removeChild(opt);
+			}
+			else if(!this.list.hasItems(LISTITEM_PROPS.TCATID, Number(opt.value)))
+				this.cmbCatFilter.removeChild(opt);
+		}
+	}
+
+	opt = null;
+	this.updateFilters = false; // switch it back after updating the filters
+}
+
+ListHandler.prototype.removeItem = function(obj, itemId, trx)
+{
+	var trackingCode = ((trx) ? trx : "");
+	//passing "null" here to position the delete confirm box based on css positions for "remove from list" action
+	ListHandler.deleteConfirm(obj, new Array(itemId), trackingCode);
+}
+
+ListHandler.deleteConfirm = function(obj, itemIds, trx)
+{
+	var html, deleteDeadItem = (itemIds.length == 1 && obj.id == "remove_" + itemIds[0]), overlayId;
+	if(deleteDeadItem)
+		overlayId = "yldelconfirmver2";
+	else
+		overlayId = "yldelconfirm";
+
+	html = "Are you sure you want to remove " + itemIds.length + " item(s)?<br/><br/>"
+	html = html + "<span class=\"cancel\">";
+		html = html + "<a href=\"javascript:showOverlay(this, '" + overlayId + "', false);\" >"
+			html = html + "<img title=\"cancel\" src=\"" + gImageURLs["cancelbtn"] + "\" border=\"0\" hspace=\"0\" vspace=\"0\" alt=\"cancel\"/>"
+		html = html + "</a>";
+	html = html + "</span>";
+	html = html + "<span class=\"delete\">";
+		html = html + "<a href=\"#\" onclick=\"javascript:gYLHandler.removeItems([" + itemIds.join(",") + "], '" + trx + "');showOverlay(this, '" + overlayId + "', false);\">"
+			html = html + "<img title=\"remove\" src=\"" + gImageURLs["deletebtn"] + "\" border=\"0\" hspace=\"0\" vspace=\"0\" alt=\"remove\"/>"
+		html = html + "</a>";
+	html = html + "</span>";
+	html = "<div class=\"deleteconfirmbody\">" + html + "</div>";
+	
+	setOverlayEvtHandler("onshow", overlayId, function(){gYLHandler.abilifyActionControls(false);});
+	setOverlayEvtHandler("onhide", overlayId, function(){gYLHandler.abilifyActionControls(true);});
+	
+    dsAlert(html, "", overlayId, obj, false);
+}
+
+ListHandler.prototype.removeSelectedItems = function(obj, trx)
+{
+	var itemsToRemove = new Array();
+	var selectedItems = this.selectedItems();
+	var trackingCode = ((trx) ? trx : "");
+	
+	if(selectedItems.length > 0)
+	{
+		for(i = 0; i < selectedItems.length; i++)
+			itemsToRemove[itemsToRemove.length] = selectedItems[i].id;
+		
+		ListHandler.deleteConfirm(obj, itemsToRemove, trackingCode);
+	}
+	else
+	{
+		var html;
+		html = "<div class=\"ylconfirmbody\">" + this.noItemsSelectedMsg + "</div>";
+		dsAlert(html, "", "ylconfirm", obj);
+	}
+}
+
+ListHandler.prototype.removeItems = function (itemIds, trx) {
+    var removedItems, msg, html;
+
+    removedItems = removeFromYL(itemIds.join(","), trx); // calling the function that makes ajax request
+    if (removedItems.length > 0) {
+        // update the global items cache
+        for (i = 0; i < removedItems.length; i++) {
+            for (j = 0; j < gListItems.length; j++) {
+                if (removedItems[i] == gListItems[j].id.toString()) {
+                    gListItems.splice(j, 1);
+                    break;
+                }
+            }
+        }
+        if (gListItems.length > 0) {
+            // re-render the list items table
+            this.list.reset();
+            this.filter();
+            this.render();
+            this.updateFilters = true; //update the filters after the removing items from the list
+            this.totalItemCount -= removedItems.length;
+            if (document.getElementById('main') == null) {
+                if ((this.totalItemCount * 80) > 1600) {
+                    gE("ItemWrapper").style.height = '1600px';
+                }
+                else {
+                    gE("ItemWrapper").style.height = this.totalItemCount * 80 + 'px';
+                }
+            }
+            
+            if (this.divPrivacySettings)
+                if (!this.list.hasItems(LISTITEM_PROPS.ISPRIVATE, true))
+                    this.divPrivacySettings.className = "hide";
+        }
+        else {
+            this.hdnAction.value = "";
+            this.form.submit();
+        }
+    }
+    else {
+        msg = "We are experiencing issues while trying to remove selected item(s) from <b>your list&#8482;</b>. Please try again later.";
+        html = "<div class=\"ylconfirmbody\">" + msg + "</div>";
+        dsAlert(html, "", "ylconfirm");
+    }
+    return removedItems;
+}
+
+ListHandler.prototype.selectedItems = function()
+{
+	return this.list.fetchItemsByProp(LISTITEM_PROPS.SELECTED, true);
+}
+
+ListHandler.prototype.selectAll = function(flag)
+{
+	for(var i = 0; i < this.list.items.length; i++) 
+	{
+		var item = this.list.items[i];
+		if(item.check)
+			item.check.checked = flag;
+	}
+	this.calcTotal();
+}
+
+ListHandler.prototype.calcTotal = function()
+{
+	if(!(document.all || document.getElementById)) return;
+	
+	var total = 0;
+	var savings = 0;
+	var fsEligibleSubtotal = 0;
+	var dsDollarsEligibleSubtotal = 0;
+	
+	for(var i = 0; i < this.list.items.length; i++) {
+		var item = this.list.items[i];
+		var qty = item.qty;
+		var check = item.check;
+		
+		if (item.qty != null) cleanQty(qty);
+			
+		if((check != null) && (check.checked)) {
+			var quantity = Math.abs(parseInt(qty.value));
+			
+			if(!isNaN(quantity)) {
+				var price = 0;
+				
+				if (item.tprQtyLimit > 0) {
+					if (quantity > item.tprQtyLimit) {
+						// (promo pricing) + (non promo pricing)
+						price = ((item.tprQtyLimit * item.tprPrice) + ((quantity - item.tprQtyLimit) * item.ePrice));
+						// calculate savings w/promo pricing first
+						savings = (item.tprQtyLimit * (item.bPrice - product.ePrice));
+						// now calculate everything beyond the promo qty
+						savings += ((quantity - item.tprQtyLimit) * (item.base - item.ePrice));
+					}
+				}
+				
+				if (price == 0) {
+					price = (quantity * item.ePrice);
+					savings += (quantity * (item.bPrice - item.ePrice));
+				}
+				
+				total += price;
+				
+				if(item.dsDollarEligible) {
+					dsDollarsEligibleSubtotal = dsDollarsEligibleSubtotal + price;
+				}
+				//savings = savings + (quantity * (product.base - price));
+				if(item.efsEligible) {
+					fsEligibleSubtotal = fsEligibleSubtotal + price;
+				}
+			}
+		}
+	}
+
+	try {
+		var obj;
+		obj = gE("txtSubTotal");
+		if(obj) obj.innerHTML = numberFormat(total);
+		
+		obj = gE("txtSavings");
+		if(obj) obj.innerHTML = numberFormat(savings);
+		
+		obj = gE("txtDollars");
+		if(obj) obj.innerHTML = numberFormat(0.05 * dsDollarsEligibleSubtotal);
+		
+		obj = gE("txtSubTotal2");
+		if(obj) obj.innerHTML = '$' +  numberFormat(total);
+		
+		obj = gE("txtSavings2");
+		if(obj) obj.innerHTML = '$' + numberFormat(savings);
+		
+		obj = gE("txtDollars2");
+		if(obj) obj.innerHTML = '$' + numberFormat(0.05 * dsDollarsEligibleSubtotal);
+	} catch(e) {}
+}
+
+ListHandler.prototype.abilifyActionControls = function(flag)
+{
+	var listItem;
+	for(i=0; i<this.list.items.length; i++)
+	{
+		listItem = this.list.items[i];
+		if(listItem.check) listItem.check.disabled = !flag;
+	}
+	if(this.chkAll) this.chkAll.disabled = !flag;
+	this.cmbAttrFilter.disabled = !flag;
+	this.cmbCatFilter.disabled = !flag;
+	gE("btnYLOrder").disabled = !flag; gE("btnYLOrder2").disabled = !flag;
+}
+
+function ListItemCollection()
+{
+	/// member declaration
+	this.items = [];
+	this.sortBy = LISTITEM_PROPS.BRANDNAME;
+	this.sortOrder = "asc";
+}
+
+ListItemCollection.prototype.init = function(lineItems)
+{
+	this.items = ((lineItems != undefined) ? lineItems.slice() : gListItems.slice());
+	this.sortBy = LISTITEM_PROPS.BRANDNAME;
+	this.sortOrder = "asc";
+}
+
+/* a override to load items array with custom item array */
+ListItemCollection.prototype.loadItems = function(items)
+{
+	var temp = this.items;
+	this.items = items;
+	temp.clear();
+}
+
+ListItemCollection.prototype.add = function(lineItem)
+{
+	this.items[this.items.length] = lineItem;
+}
+
+ListItemCollection.prototype.itemIndex = function(id)
+{
+	for (var i=0;i<this.items.length;i++) 
+		if(this.items[i].id == id) 
+			return i;
+}
+
+ListItemCollection.prototype.getItemByID = function(id)
+{
+	return this.items[this.itemIndex(id)];
+}
+
+ListItemCollection.prototype.removeById = function(id)
+{
+	this.items.splice(this.itemIndex(id),1);
+}
+
+ListItemCollection.prototype.removeAll = function()
+{
+	this.items.clear();
+}
+
+ListItemCollection.prototype.reset = function()
+{
+	var temp = this.items;
+	temp.clear(); // clear it
+	this.init();
+}
+
+ListItemCollection.prototype.sort = function(sortBy, sortOrder)
+{
+	// update the object members
+	this.sortBy = sortBy;
+	if (sortOrder != undefined)
+		this.sortOrder = sortOrder;
+	
+	// special handling for sorting selected items
+	if(this.sortBy == LISTITEM_PROPS.SELECTED) 
+		this.updateSelectedProp();
+	
+	if(this.items.length > 0)
+	{
+		var tmpItems, deadItems;
+		var dataType = typeof(this.items[0][sortBy]);
+		// sort the filtered items based on brand so that the sorted items are arranged by brand
+		this.items = ListItemCollection.sort(this.items, LISTITEM_PROPS.BRANDNAME, "asc");
+		
+		// filter the dead items
+		deadItems = this.fetchItemsByProp(LISTITEM_PROPS.ISDEAD, true);
+		if(deadItems.length > 0)
+			this.filterByProp(LISTITEM_PROPS.ISDEAD, false);
+		
+		// special case handling for boolean values
+		if(dataType == "boolean")
+		{			
+			// get the NOT matching ones for the current sort order
+			tmpItems = this.fetchItemsByProp(this.sortBy, (sortOrder != "asc"));
+
+			// get the matching ones for the current sort order
+			this.filterByProp(this.sortBy, (sortOrder == "asc"));
+			
+			// append the non-matching ones to the end of matching ones.
+			for(i = 0; i < tmpItems.length; i++)
+			{
+				this.add(tmpItems[i]); //append an item to the end of current list.
+			}
+			tmpItems.clear();
+		}
+		else if(dataType == "number")
+		{
+			// get all them items that do not have the value for the property
+			tmpItems = this.fetchItemsByProp(this.sortBy, 0);
+			
+			// get all them items that do have the value for the property
+			this.filterByProp(this.sortBy, 0, "!=");
+			// sort the filtered items based property value and sort order
+			this.items = ListItemCollection.sort(this.items, this.sortBy, this.sortOrder);
+			// append the non-matching ones to the end of matching ones.
+			for(i = 0; i < tmpItems.length; i++)
+			{
+				this.add(tmpItems[i]); //append an item to the end of current list.
+			}
+			tmpItems.clear();
+		}
+		else
+		{
+			this.items = ListItemCollection.sort(this.items, this.sortBy, this.sortOrder);
+		}
+		// append dead items to end of the list
+		if(deadItems.length > 0)
+		{
+			for(i = 0; i < deadItems.length; i++)
+			{
+				this.add(deadItems[i]); //append an item to the end of current list.
+			}
+			deadItems.clear();
+		}
+	}
+}
+
+/* the default Array.Sort([function]) provided by browsers are not consistent 
+(i.e. the index order of same valued items are not same after the sorting.)
+so, writing my own bubble sorting here.
+*/
+ListItemCollection.sort = function(items, sortBy, sortOrder)
+{
+	return ListItemCollection.mergesort(items, sortBy, sortOrder);
+}
+
+ListItemCollection.mergesort = function(array, sortBy, sortOrder)
+{
+	if(array.length < 2)
+		return array;
+	var middle = Math.ceil(array.length/2);
+	return ListItemCollection.merge(ListItemCollection.mergesort(array.slice(0,middle), sortBy, sortOrder),
+			ListItemCollection.mergesort(array.slice(middle), sortBy, sortOrder), sortBy, sortOrder);
+}
+
+ListItemCollection.merge = function(left, right, sortBy, sortOrder)
+{
+	var result = new Array();
+	while((left.length > 0) && (right.length > 0))
+	{
+		if(ListItemCollection.comparison(left[0][sortBy], right[0][sortBy], sortOrder) < 0)
+			result.push(left.shift());
+		else
+			result.push(right.shift());
+	}
+	while(left.length > 0)
+		result.push(left.shift());
+	while(right.length > 0)
+		result.push(right.shift());
+	return result;
+}
+
+ListItemCollection.comparison = function(left, right, sortOrder)
+{
+	if (typeof(left) == "string")
+	{
+		left = left.toLowerCase(); right = right.toLowerCase();
+	}
+	if(left == right) return 0;
+	if(sortOrder == "desc")
+	{
+		if (left > right) return -1;
+		else return 1;
+	}
+	else
+	{
+		if (left < right) return -1;
+		else return 1;
+	}
+	
+}
+
+
+ListItemCollection.prototype.fetchItemsByProp = function(propName, propValue, compareOperator)
+{
+	var opr = "==";
+	if(propName == LISTITEM_PROPS.SELECTED)// spl treatment for selected item property
+		this.updateSelectedProp();
+	if (compareOperator != undefined) opr = compareOperator;
+	return this.items.filter(function(listItem){return ListItemCollection.exprPasses(listItem, propName, propValue, opr);});
+}
+
+ListItemCollection.exprPasses = function(listItem, propName, propValue, opr)
+{
+	var retVal;
+	switch(opr)
+	{
+		case "==":
+			retVal = (listItem[propName] == propValue);
+			break;
+		case "!=":
+			retVal = (listItem[propName] != propValue);
+			break;
+		case ">":
+			retVal = (listItem[propName] > propValue);
+			break;
+		case "<":
+			retVal = (listItem[propName] < propValue);
+			break;
+		case ">=":
+			retVal = (listItem[propName] >= propValue);
+			break;
+		case "<=":
+			retVal = (listItem[propName] <= propValue);
+			break;
+		default:
+			retVal = (listItem[propName] == propValue);
+			break;
+	}
+	return retVal;
+}
+
+ListItemCollection.prototype.filterByProp = function(propName, propValue, compareOperator)
+{
+	var temp = this.items, opr = "==";
+	if (compareOperator != undefined) opr = compareOperator;
+	this.items = this.fetchItemsByProp(propName, propValue, opr);
+	temp.clear();
+}
+
+ListItemCollection.prototype.hasItems = function(propName, propValue)
+{
+	if(propName == LISTITEM_PROPS.SELECTED)// spl treatment for selected item property
+		this.updateSelectedProp();
+	return this.items.some(function(listItem){return ListItemCollection.exprPasses(listItem, propName, propValue);});
+}
+
+ListItemCollection.prototype.getPCats = function()
+{
+	var cats = [], item;
+	for(i=0;i<this.items.length;i++)
+	{
+		item = this.items[i];
+		if(cats[item.pCatId] == undefined)
+			cats[cats.length] = {id: item.pCatId, name: item.pCatName};
+	}
+	return cats;
+}
+
+ListItemCollection.prototype.updateSelectedProp = function()
+{
+	for(i = 0; i < this.items.length; i++)
+	{
+		if(this.items[i].check)
+			this.items[i].selected = this.items[i].check.checked;
+	}
+}
+
+function ListItem(id, tcId, bName, bPrice, ePrice, tprPrice, tprQtyLimit, lastPurchaseDate, rating, site, flags)
+{
+	this.id = id;
+	this.tCatId = tcId;
+	this.brandName = bName;
+	this.bPrice = bPrice;
+	this.ePrice = ePrice;
+	this.tprPrice = tprPrice;
+	this.tprQtyLimit = tprQtyLimit;
+	this.lastPurchaseDate = 0;
+	if(lastPurchaseDate.length > 0)
+	{
+		var dt = new Date(lastPurchaseDate);
+		this.lastPurchaseDate = dt.getTime();
+	}
+	this.rating = rating;
+	this.site = site;
+	this.flags = flags;
+	this.isOnSale = ((flags & LISTITEM_FLAGS.ONSALE) == LISTITEM_FLAGS.ONSALE); //bitwise AND operation
+	this.isDead = ((flags & LISTITEM_FLAGS.DEAD) == LISTITEM_FLAGS.DEAD);
+	this.isOutOfStock = ((flags & LISTITEM_FLAGS.OUTOFSTOCK) == LISTITEM_FLAGS.OUTOFSTOCK);
+	this.fsaEligible = ((flags & LISTITEM_FLAGS.FSA) == LISTITEM_FLAGS.FSA);
+	this.efsEligible = ((flags & LISTITEM_FLAGS.EFS) == LISTITEM_FLAGS.EFS);
+	this.dsDollarEligible = ((flags & LISTITEM_FLAGS.DSDOLLARS) == LISTITEM_FLAGS.DSDOLLARS);
+	this.autoDeliverable = ((flags & LISTITEM_FLAGS.AUTODELIVERY) == LISTITEM_FLAGS.AUTODELIVERY);
+	this.volumeDiscountEligible = ((flags & LISTITEM_FLAGS.VOLUMEDISCOUNT) == LISTITEM_FLAGS.VOLUMEDISCOUNT);
+	this.isBeauty = ((flags & LISTITEM_FLAGS.BTY) == LISTITEM_FLAGS.BTY);
+	this.isPrivate = ((flags & LISTITEM_FLAGS.PRIVATE) == LISTITEM_FLAGS.PRIVATE);
+	this.checkId = "chkPidYL3_" + id;
+	this.qtyId = "qtyYL3_" + id;
+	this.row = gE("trYL_" + id);
+	this.check = gE(this.checkId);
+	this.qty = gE(this.qtyId);
+	if(this.check)
+	{
+		gCheckedItemsCache[this.checkId] = this.check.checked;
+		this.check.onclick = function(){recalcYL3();if(gYLHandler.chkAll && gYLHandler.chkAll.checked) gYLHandler.chkAll.checked = this.checked;};
+	}
+	if(this.qty)
+	{
+		this.qty.onchange = recalcYL3;
+		this.qty.onkeyup = recalcYL3;
+	}
+	this.selected = ((this.check) ? (this.check.checked) : false);
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////// Your List Enhancements - End ////////////////////
+/////////////////////////////////////////////////////////////////
+
+// dsLib - the common JavaScript library (global)
+// Contains an AJAX library and other libraries yet to be defined
+// To do: create a loader for the dsLib and dynamic method to load other libraries to this at runtime
+
+var dsLib = new Object(); // Common object
+dsLib.AJAX = new Object(); // AJAX objects
+dsLib.JS = new Object(); // All other javascript objects
+
+dsLib.AJAX.READY_STATE_UNINITIALIZED = 0;
+dsLib.AJAX.READY_STATE_LOADING = 1;
+dsLib.AJAX.READY_STATE_LOADED = 2;
+dsLib.AJAX.READY_STATE_INTERACTIVE = 3;
+dsLib.AJAX.READY_STATE_COMPLETE = 4;
+
+dsLib.AJAX.Request = function (url, callback, onError, requestMethod, requestArgs, contentType, async) {
+
+    this.request = null;
+    this.responseXML = null;
+    this.responseText = null;
+    this.callback = callback;
+    this.onError = (onError) ? onError : this.defaultError;
+    this.loadXMLDoc(url, requestMethod, requestArgs, contentType, async);
+}
+
+dsLib.AJAX.Request.prototype.loadXMLDoc = function (url, requestMethod, requestArgs, contentType, async) {
+    if (!requestMethod)
+        requestMethod = 'GET';
+
+    if (!contentType && requestMethod == "POST")
+        contentType = 'application/x-www-form-urlencoded';
+
+    if (async == null)
+        async = true;
+
+    if (window.XMLHttpRequest) {
+        this.request = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        this.request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    if (this.request) {
+        try {
+            var loader = this;
+            if (async == true) {
+                this.request.onreadystatechange = function () {
+                    dsLib.AJAX.Request.onReadyState.call(loader);
+                }
+            }
+
+            this.request.open(requestMethod, url, async);
+
+            if (contentType)
+                this.request.setRequestHeader('Content-Type', contentType);
+
+            this.request.send(requestArgs);
+
+            if (async == false) //FF does not fire onreadystate event handler for synchronous calls
+            {
+                dsLib.AJAX.Request.onReadyState.call(loader);
+            }
+        }
+        catch (err) {
+            this.onError.call(this);
+        }
+    }
+}
+
+dsLib.AJAX.Request.onReadyState = function () {
+    var request = this.request;
+    var ready = request.readyState;
+    if (ready == dsLib.AJAX.READY_STATE_COMPLETE) {
+        var httpStatus = request.status;
+        if (httpStatus == 200 || httpStatus == 0) {
+            this.responseXML = this.request.responseXML;
+            this.responseText = this.request.responseText;
+        } else {
+            this.onError.call(this);
+        }
+    }
+}
+
+dsLib.AJAX.Request.prototype.defaultError = function () {
+    // Need error handling for production use
+
+    //alert("error fetching data!"
+    //  +"\n\nreadyState:"+this.request.readyState
+    //  +"\nstatus: "+this.request.status
+    //  +"\nheaders: "+this.request.getAllResponseHeaders());
+}
+
+//===============End of AJAX Scripts=======
+
+//================Start of TabModule Scripts =============//
+dsLib.JS.TabScriptMgr = function () {
+    this.TabConfigs = new KeyValueCollection();
+    this.ModuleIdField = null;
+}
+
+dsLib.JS.TabScriptMgr.prototype.AddTabConfig = function (p_oTab, p_oConfig) {
+    try {
+        this.TabConfigs.Add(p_oTab.name, p_oConfig);
+        var loader = this;
+        p_oTab.onclick = function () { dsLib.JS.TabScriptMgr.RenderTabContent.call(loader); }
+    }
+    catch (e) { }
+}
+
+dsLib.JS.TabScriptMgr.RenderTabContent = function () {
+    try {
+        var l_szURL, l_oModuleProp, l_oContentPanel, l_szJoinModuleProps, l_oTab, p_oTab, p_oTabConfig;
+        p_oTab = null;
+        p_oTabConfig = null;
+
+        var e = window.event || arguments.callee.caller.arguments[0];
+        p_oTab = e.srcElement || e.target;
+
+        if (this.TabConfigs.Exists(p_oTab.name)) {
+            p_oTabConfig = this.TabConfigs.Item(p_oTab.name);
+        }
+        if (p_oTab && p_oTabConfig) {
+            l_oContentPanel = document.getElementById(p_oTabConfig.ContentPanelId);
+
+            if (l_oContentPanel && p_oTabConfig.WebServiceURL != "") {
+                // request only when the content is not available
+                if (l_oContentPanel.innerHTML == "") {
+                    l_szURL = p_oTabConfig.WebServiceURL;
+                    if (l_szURL.indexOf("?") < 0) {
+                        l_szURL = l_szURL + "?catid=" + p_oTabConfig.CatId;
+                    }
+                    else {
+                        l_szURL = l_szURL + "&catid=" + p_oTabConfig.CatId;
+                    }
+
+                    l_szURL = l_szURL + "&brandid=" + p_oTabConfig.BrandId;
+                    l_szURL = l_szURL + "&modid=" + p_oTabConfig.ModuleId;
+                    l_szURL = l_szURL + "&type=module"
+                    l_szURL = l_szURL + "&ct=text/html"
+                    l_szJoinModuleProps = ""
+                    for (i = 0; i < p_oTabConfig.ModuleProps.Items.length; i++) {
+                        l_oModuleProp = p_oTabConfig.ModuleProps.Items[i];
+                        l_szJoinModuleProps = l_szJoinModuleProps + l_oModuleProp.Key + "$" + l_oModuleProp.Value + "~";
+                    }
+                    if (l_szJoinModuleProps.length) {
+                        l_szURL = l_szURL + "&customprops=" + l_szJoinModuleProps;
+                    }
+                    // Use AJAX library to make AJAX request to server side API
+                    var l_oAJAXReq = new dsLib.AJAX.Request(l_szURL, this.WebServiceCallBackEventHandler, null, "GET", null, null, false);
+                    if (l_oAJAXReq.responseText != null && l_oAJAXReq.responseText != "") {
+                        l_oContentPanel.innerHTML = l_oAJAXReq.responseText;
+                    }
+                }
+
+                if (l_oContentPanel.innerHTML != "") {
+                    // Highlight the selected tab and panel
+                    for (i = 0; i < this.TabConfigs.Count(); i++) {
+                        l_oTab = document.getElementById(this.TabConfigs.Items[i].Value.ContentPanelId);
+
+                        if (l_oTab.id == l_oContentPanel.id) {
+                            document.getElementById(this.TabConfigs.Items[i].Value.ContentPanelId).className = "modcontainervisible";
+                            document.getElementById(this.TabConfigs.Items[i].Key).className = "moduletabselect";
+                            var l_szImgId = "img" + (this.TabConfigs.Items[i].Key);
+                            document.getElementById(l_szImgId).src = "/img/arrow/white_down.gif";
+                            var l_oImagearrow = "imgarr" + (this.TabConfigs.Items[i].Key);
+                            document.getElementById(l_oImagearrow).className = "ModuleTabImageSelect";
+                            var l_oSpanImage = "imgspan" + (this.TabConfigs.Items[i].Key);
+                            document.getElementById(l_oSpanImage).className = "ModuleTabSpanImage"
+
+                        }
+                        else {
+                            document.getElementById(this.TabConfigs.Items[i].Value.ContentPanelId).className = "modcontainerhidden";
+                            document.getElementById(this.TabConfigs.Items[i].Key).className = "moduletabhide";
+                            var l_szImgId = "img" + (this.TabConfigs.Items[i].Key);
+                            document.getElementById(l_szImgId).src = "/img/arrow/arrow_right.gif";
+                            var l_oImagearrow = "imgarr" + (this.TabConfigs.Items[i].Key);
+                            document.getElementById(l_oImagearrow).className = "ModuleTabImageHidden";
+                            var l_oSpanImage = "imgspan" + (this.TabConfigs.Items[i].Key);
+                            document.getElementById(l_oSpanImage).className = "ModuleTabSpanImage"
+
+                        }
+                    }
+                    //Update selected module id field
+                    if (this.ModuleIdField) {
+                        this.ModuleIdField.value = p_oTabConfig.ModuleId;
+                    }
+                }
+            }
+        }
+    }
+    catch (e) { }
+}
+function TabClientConfig() {
+    this.ModuleProps = new KeyValueCollection();
+    this.EventHandlers = new KeyValueCollection();
+    this.WebServiceURL = "";
+    this.WebServiceCallBackEventHandler = null;
+    this.CatId = "";
+    this.BrandId = "";
+    this.ModuleId = "";
+    this.ContentPanelId = "";
+}
+function TabClientConfig(p_szModuleCatId, p_szBrandId, p_szModuleId, p_szContentPanelId, p_szWebserviceUrl, p_oModuleProps) {
+    // initialize member variables
+    this.ModuleProps = new KeyValueCollection();
+    this.EventHandlers = new KeyValueCollection();
+    this.WebServiceURL = "";
+    this.WebServiceCallBackEventHandler = null;
+    this.CatId = "";
+    this.BrandId = "";
+    this.ModuleId = "";
+    this.ContentPanelId = "";
+
+    // assign values to member variables
+    if (p_szWebserviceUrl != "") { this.WebServiceURL = p_szWebserviceUrl; }
+    if (p_szModuleCatId != "") { this.CatId = p_szModuleCatId; }
+    if (p_szBrandId != "") { this.BrandId = p_szBrandId; }
+    if (p_szModuleId != "") { this.ModuleId = p_szModuleId; }
+    if (p_szContentPanelId != "") { this.ContentPanelId = p_szContentPanelId; }
+
+    if (p_oModuleProps) {
+        this.ModuleProps = p_oModuleProps;
+    }
+}
+
+TabClientConfig.prototype.AddModuleProp = function (p_szPropName, p_szPropValue) {
+    this.ModuleProps.Add(p_szPropName, p_szPropValue);
+}
+
+TabClientConfig.prototype.AddEventHandler = function (p_szEvtName, p_EvtHandler) {
+    this.EventHandlers.Add(p_szEvtName, p_EvtHandler);
+}
+//================End of TabModule Scripts =============//
+
+/* save to your list - start */
+var g_YLAddStatus = new Object();
+
+function addToYL(obj, pId, catId, szList, trx, ylHref, retUrl,siteID) {
+    try {
+        var ylText = "<span class=\"capitalize\"><b>" + szList + "</b><span>.";
+        var errMsg = "We are experiencing issues while adding this item to " + ylText + "&nbsp;Please try again later.";        
+
+        if (g_YLAddStatus[pId] == undefined) {
+            var ajaxURL = "/ajax/ajax.asp?type=list&ct=xml&action=add&product=" + pId + "&catid=" + catId + "&trx=" + trx;
+            var ajaxReq = new dsLib.AJAX.Request(ajaxURL, null, null, "GET", null, null, false);
+            var respText = ajaxReq.responseText;
+            if (respText == null)
+                respText = "";
+
+            if (respText.toLowerCase() == "not a valid request.") {
+                location.href = ylHref;
+            }
+            else if (ajaxReq.responseXML != null) {
+                var respXMLDoc, added, existing, failed;
+                added = existing = failed = false;
+                respXMLDoc = ajaxReq.responseXML;
+
+                if (respXMLDoc.getElementsByTagName("PassedItems")[0].childNodes[0] != null)
+                    added = (respXMLDoc.getElementsByTagName("PassedItems")[0].childNodes[0].nodeValue.split(",").indexOf(pId) >= 0);
+                if (respXMLDoc.getElementsByTagName("ExistingItems")[0].childNodes[0] != null)
+                    existing = (respXMLDoc.getElementsByTagName("ExistingItems")[0].childNodes[0].nodeValue.split(",").indexOf(pId) >= 0);
+                if (respXMLDoc.getElementsByTagName("FailedItems")[0].childNodes[0] != null)
+                    failed = (respXMLDoc.getElementsByTagName("FailedItems")[0].childNodes[0].nodeValue.split(",").indexOf(pId) >= 0);
+              
+                if (added) {
+                	g_YLAddStatus[pId] = "added";                	
+                	showYLAddConfirmation(obj, "This item has been added to " + ylText, siteID);                	
+                }
+                else if (existing) {
+                    g_YLAddStatus[pId] = "existing";
+                    showYLAddConfirmation(obj, "This item is already on " + ylText, siteID);
+                }
+                else if (failed) {
+                	showYLAddConfirmation(obj, "System failure while adding this item to " + ylText, siteID);
+                }
+            }
+            else {
+            	showYLAddConfirmation(obj, "System failure while adding this item to " + ylText, siteID);
+            }
+        }
+        else {
+        	showYLAddConfirmation(obj, "This item is already on " + ylText, siteID);
+        }
+
+    }
+    catch (e) {
+    }
+}
+
+function showYLAddConfirmation(obj, msg, siteID) {    
+    var html, url;    
+	if (siteID == "") {
+	    html = "<div class=\"ylconfirmbody\">" + msg + "</div>";	    
+		dsAlert(html, "", "ylconfirm", obj);
+	}
+    else if (siteID == 1) {
+        var ylConfMsgClose = "<a href=\"#\" onclick=\"javascript:showOverlay(this, 'pDetailsyl', false); \" ><img class=\"ylconfirmcloseButton\" src=\"/img/buttons/close-btn.gif\"/></a>";
+        html = ylConfMsgClose + "<div class=\"ylconfirmMsg\">" +  msg + "</div>";	    
+		inlineOverlay(html, "", "pDetailsyl", null, true, true, 331, true);    
+    }
+	else {
+		//var closeOnBlur = true;
+	    html = "<div class=\"ylconfirmbodySC\">" + msg + "</div>";	   
+		dsAlert(html, "", "ylconfirmSC", obj, false, false);		
+	}
+}
+
+//@abhishek Display overlay for navigating  to walgreen site.
+
+function showWalgreensOverlay(obj, msg, searchTerm, imgUrl) {
+    
+    var html, url, buttonURL, backURL;
+    //create link of Walgreens search to the button
+    buttonURL = "http://www.walgreens.com/search/results.jsp?Ntt=" + searchTerm + "&recType=content";
+    
+    html = "<div class=\"header2\"><br/>" + msg + "</font></div>";
+    backURL = "<br/><a  href=\"#\"onclick =\"javascript:showOverlay(this, 'ylconfirm', false);return false;\"><div class=\"anchorlink\">continue shopping at drugstore.com >></div></br>";
+    html = html + backURL;
+    url = "<div><a href=\"" + buttonURL + "\"><center><img src=\"" + imgUrl + "\" alt=\"Go to Walgreens.com\" border=\"0\" /><br/></a></div>";
+    html = html + url;
+    dsAlert(html, "wgoverlay", "ylconfirm", obj, false);
+
+}
+/* save to your list - end */
+
+/* remove from your list - start */
+function removeFromYL(prodIds, trx) {
+    var removedItems = new Array();
+    try {
+
+        var ajaxURL = "/ajax/ajax.asp?type=list&ct=xml&action=remove&product=" + prodIds + "&trx=" + trx;
+        var ajaxReq = new dsLib.AJAX.Request(ajaxURL, null, null, "GET", null, null, false);
+        var respText = ajaxReq.responseText;
+
+        if (respText == null)
+            respText = "";
+
+        if (respText.toLowerCase() != "not a valid request." && ajaxReq.responseXML != null) {
+            var respXMLDoc, removedCount, failedCount, msg;
+            removedCount = failedCount = 0;
+            respXMLDoc = ajaxReq.responseXML;
+            msg = "";
+
+            if (respXMLDoc.getElementsByTagName("PassedItems")[0].childNodes[0] != null) {
+                removedItems = respXMLDoc.getElementsByTagName("PassedItems")[0].childNodes[0].nodeValue.split(",");
+                removedCount = removedItems.length;
+            }
+            if (respXMLDoc.getElementsByTagName("FailedItems")[0].childNodes[0] != null)
+                failedCount = respXMLDoc.getElementsByTagName("FailedItems")[0].childNodes[0].nodeValue.split(",").length;
+        }
+        else {
+            //add code, if needed.
+        }
+    }
+    catch (e) {
+    }
+    return removedItems;
+}
+
+/* remove from your list - end */
+
+
+/* update druginteraction checker value */
+
+function updateDrugSafetyCheckValue(preferenceCode) {
+
+    try {
+        var ajaxURL = "/ajax/ajax.asp?type=user&ct=xml&action=update&preference=" + preferenceCode;
+        var ajaxReq = new dsLib.AJAX.Request(ajaxURL, null, null, "GET", null, null, false);
+        var respText = ajaxReq.responseText;
+
+        if (respText == null)
+            respText = "";
+    }
+    catch (e) {
+    }
+
+}
+
+
+
+/* save for later - start */
+
+function format(str) {
+    for (i = 1; i < arguments.length; i++) {
+        str = str.replace('{' + (i - 1) + '}', arguments[i]);
+    }
+    return str;
+}
+
+var g_YLAddStatus = new Object();
+
+function saveForLater(obj, pId, catId, szList, trx, ylHref, retUrl, lineItemID,siteID,loggedIn) {
+
+	try {
+		if (siteID == null) {
+			var saveToULText = "You can save this item to ";
+			var ylText = "<b>" + szList + "</b>.";
+			saveToULText = saveToULText + ylText + "<br/>";
+			saveToULText = saveToULText + " and it will be there when " + "<br/>";
+			saveToULText = saveToULText + " you're ready to buy.";
+			//saveToULText = saveToULText + "<br/>";
+
+
+			var l_szBuyImgSrc = "/img/buttons/btn_save_to_your_list.gif";
+			var l_szPath = format("/cart.asp?delete={0}&catid={1}&saveforlater={2}", (lineItemID), catId, 'true');
+
+			var SaveForLaterButton =
+                    format(
+                        "<a title=\"save for later {3} \" href=\"{0}\"><img src=\"{1}\" border=\"0\" hspace=\"1\" vspace=\"0\" alt=\"save to your list\" title=\"save to your list&#8482;\"  align=\"absmiddle\"/></a>",
+                        l_szPath,
+                        l_szBuyImgSrc,
+                        ylHref,
+                        ylHref);
+
+			var imgCancel = "/img/buttons/btn_cancel.gif";
+			var cancelJS = "javascript:showOverlay(this, 'ylconfirm', false);"
+			var cancelLink = "<div class=\"cart\" align=left>";
+			var cancelLink = cancelLink +
+                    format(
+                        "<a title=\"cancel\" onclick = \"{0}\" href=\"#\"><img src=\"{1}\" border=\"0\" hspace=\"1\" vspace=\"0\" alt=\"cancel\" title=\"cancel\"  align=\"absmiddle\"/></a>",
+                        cancelJS, imgCancel);
+			cancelLink = cancelLink + "</div>";
+
+
+			SaveForLaterButton += "<div class=\"cart\" align=left>";
+			SaveForLaterButton = SaveForLaterButton;
+			SaveForLaterButton = format("<div style=\"font-weight:bold;\">{0}</div>", SaveForLaterButton);
+			SaveForLaterButton = format("<span class=\"buyButton\">{0}</span>", SaveForLaterButton);
+			SaveForLaterButton += "</div>";
+
+
+			//Create Table and put buttons in it.
+			var spacer = "<img title=\"\" class=\"spacer1\" src=\"/img/spacer.gif\" alt=\"\"/>";
+			var table = "<table border=\"0\">";
+			table = table + "<tr>";
+
+
+			table = table + "<td align=\"left\">";
+			table = table + spacer;
+			table = table + "</td>";
+			table = table + "<td align=\"left\">";
+			table = table + spacer;
+			table = table + "</td>";
+
+			table = table + "<td align=\"left\">";
+			table = table + cancelLink;
+			table = table + "</td>";
+
+			table = table + "<td align=\"left\">";
+			table = table + spacer;
+			table = table + "</td>";
+
+			table = table + "<td align=\"left\">";
+			table = table + SaveForLaterButton;
+			table = table + "</td>";
+
+			table = table + "</tr>";
+			table = table + "</table>";
+
+
+			var buttonHtml = cancelLink + SaveForLaterButton;
+			//saveToULText = saveToULText + cancelLink + SaveForLaterButton;
+
+			var errMsg = "We are experiencing issues while adding this item to " + ylText + "&nbsp;Please try again later.";
+			if (g_YLAddStatus[pId] == undefined) {
+				showSFLAddConfirmation(obj, saveToULText, table);
+			}
+		}
+		else{
+		    var ylText = "<span class=\"capitalize\"><b>" + szList + "</b><span>.";
+		    if (g_YLAddStatus[pId] == undefined) {
+		            if (loggedIn == 0) {
+		                showYLAddConfirmation(obj, "This item has been moved to " + ylText, siteID);
+		        }
+		        var x = 1; 
+                var y = null;
+                window.setTimeout(function ()
+                { x = x * 3 + 2; y = x / 2; }, 100);                
+				var l_szPath = format("/cart.asp?delete={0}&catid={1}&saveforlater={2}", (lineItemID), catId, 'true');
+				document.location = l_szPath;							
+			}
+        }
+    }
+    catch (e) {
+    }
+}
+
+function showSFLAddConfirmation(obj, msg, btnHtml) {
+    var html, url;
+    html = "<div class=\"ylconfirmbody\" text-align:center >" + msg + btnHtml + "</div>";
+	var closeOnTimeout = false;
+	dsAlert(html, "", "ylconfirm", obj, closeOnTimeout);
+}
+
+/* save for later - end */
+
+var firstsubmenuleft = 0;
+var firstmenuitem;
+
+var currentMobile;
+var currentMobileNum = -1;
+
+var ismobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
+
+var WebstoreMenu = {
+    baseItemIDs: [], //array containing ids of all the primary menus on the page
+    baseItems: {}, //object array containing all top menu item links
+    subULItems: {}, //object array containing all ULs
+    lastActiveSubULItem: {}, //object object containing info for last mouse out menu item's UL
+    baseItemsIndex: -1,
+    ULItemIndex: -1,
+    hideTimers: {}, //object array timer
+    shimAdded: false,
+    nonFF: !/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent), //detect non FF browsers
+    GetOffset: function (el, offsetType) {
+        return (el.offsetParent) ? el[offsetType] + this.GetOffset(el.offsetParent, offsetType) : el[offsetType];
+    },
+
+    GetOffsetOf: function (el) {
+        el._offsets = { left: this.GetOffset(el, "offsetLeft"), top: this.GetOffset(el, "offsetTop") };
+    },
+
+    GetWindowSize: function () {
+        this.docWidth = window.innerWidth ? window.innerWidth - 10 : this.docElement.clientWidth - 10;
+        this.docHeight = window.innerHeight ? window.innerHeight - 15 : this.docElement.clientHeight - 18;
+    },
+
+    GetTopItemsDimensions: function () {
+        for (var m = 0; m < this.baseItemIDs.length; m++) {
+            var topMenuID = this.baseItemIDs[m];
+            for (var i = 0; i < this.baseItems[topMenuID].length; i++) {
+                var header = this.baseItems[topMenuID][i];
+                var subMenu = document.getElementById(header.getAttribute('subMenu'));
+                header._dimensions = { w: header.offsetWidth, h: header.offsetHeight, submenuw: subMenu.offsetWidth, submenuh: subMenu.offsetHeight };
+            }
+        }
+    },
+
+    IsContained: function (m, e) {
+        var e = window.event || e;
+        var c = e.relatedTarget || ((e.type == "mouseover") ? e.fromElement : e.toElement);
+        while (c && c != m)
+            try {
+                c = c.parentNode;
+            } catch (e) {
+                c = m;
+            }
+        if (c == m)
+            return true;
+        else
+            return false;
+    },
+
+    CSS: function (el, targetClass, action) {
+        var needle = new RegExp("(^|\\s+)" + targetClass + "($|\\s+)", "ig");
+        if (action == "check")
+            return needle.test(el.className);
+        else if (action == "remove")
+            el.className = el.className.replace(needle, "");
+        else if (action == "add" && !needle.test(el.className))
+            el.className += " " + targetClass;
+    },
+
+    AddBGShim: function (target) {
+        var bgShim = (!window.opera) ? document.createElement("iframe") : document.createElement("div"); //Opera 9.24 doesnt seem to support transparent IFRAMEs
+        bgShim.className = "iframeshim";
+        bgShim.setAttribute("src", location.protocol == "https:" ? this.httpsIFrameSrc : "about:blank");
+        bgShim.setAttribute("frameborder", "0");
+        target.appendChild(bgShim);
+        try {
+            bgShim.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)';
+        } catch (e) {
+        }
+        return bgShim;
+    },
+
+    PositionShim: function (header, subMenu, scrollX, scrollY) {
+        if (header._isBaseLevel) {
+            var scrollY = window.pageYOffset ? window.pageYOffset : this.docElement.scrollTop;
+            var topGap = header._offsets.top - scrollY;
+            var bottomGap = scrollY + this.docHeight - header._offsets.top - header._dimensions.h;
+            if (topGap > 0) {
+                this.bgShim.topShim.style.left = scrollX + "px";
+                this.bgShim.topShim.style.top = scrollY + "px";
+                this.bgShim.topShim.style.width = "99%";
+                this.bgShim.topShim.style.height = topGap + "px"; //distance from top window edge to top of menu item
+            }
+            if (bottomGap > 0) {
+                this.bgShim.bottomShim.style.left = scrollX + "px";
+                this.bgShim.bottomShim.style.top = header._offsets.top + header._dimensions.h + "px";
+                this.bgShim.bottomShim.style.width = "99%";
+                this.bgShim.bottomShim.style.height = bottomGap + "px"; //distance from bottom of menu item to bottom window edge
+            }
+        }
+    },
+
+    HideShim: function () {
+        this.bgShim.topShim.style.width = this.bgShim.bottomShim.style.width = 0;
+        this.bgShim.topShim.style.height = this.bgShim.bottomShim.style.height = 0;
+    },
+
+    GetTarget: function (e) {
+        var e = window.event || e;
+        if (e.target) targ = e.target;
+        else if (e.srcElement) targ = e.srcElement;
+        if (targ.nodeType == 3) // defeat Safari bug
+            targ = targ.parentNode;
+        return targ;
+    },
+
+    HandleItemActivate: function (e, context, header) {
+        if (!WebstoreMenu.IsContained(context, e)) {
+            if (ismobile) {
+                if (currentMobileNum == 0) {
+                    WebstoreMenu.HideMenu(WebstoreMenu.subULItems[context._master][0]);
+                }
+            }
+            var subMenu = WebstoreMenu.subULItems[context._master][parseInt(context._pos)];
+            if (context._isBaseLevel) {
+                WebstoreMenu.CSS(context, "selected", "add");
+                clearTimeout(WebstoreMenu.hideTimers[context._master][context._pos]);
+            }
+            WebstoreMenu.GetOffsetOf(header);
+            var scrollX = window.pageXOffset ? window.pageXOffset : WebstoreMenu.docElement.scrollLeft;
+            var scrollY = window.pageYOffset ? window.pageYOffset : WebstoreMenu.docElement.scrollTop;
+            var subMenuRightEdge = context._offsets.left + context._dimensions.submenuw + (context._isBaseLevel ? 0 : context._dimensions.w);
+            var subMenuBottomEdge = context._offsets.top + context._dimensions.submenuh;
+            //Sub menu starting left position
+            var menuLeft = (context._isBaseLevel ? context._offsets.left : context._dimensions.w);
+            var tempmenuLeft = menuLeft;
+            if (subMenuRightEdge - scrollX > WebstoreMenu.docWidth) {
+                tempmenuLeft += -context._dimensions.submenuw + (context._isBaseLevel ? context._dimensions.w : -context._dimensions.w);
+            }
+            if (tempmenuLeft > 0)
+                menuLeft = tempmenuLeft;
+
+            if (siteID == 1) {
+                if (context._pos == 0) {
+                    firstsubmenuleft = menuLeft;
+                } else {
+                    WebstoreMenu.FirstSubMenuLeft();
+                }
+                menuLeft = firstsubmenuleft;
+            }
+
+            subMenu.style.left = menuLeft + "px";
+
+            /*
+            * The global variables 'isGlobalNav and siteID' are used to tell 
+            * the webstoremenu.js file that the site is running for globalnav
+            * and the siteID value. Based on this value, the submenu's left position
+            * is adjusted to the dropshadow strength (only in Internet Explorer browsers).
+            * e.g. if the drop shadow strength is 4, then the left is decreased by 4 in the 
+            * webstoremenu.js file.
+            * siteID = 0 is Drugstore.com
+            * 
+            * submenu.filters[2].strength (filters[2] index starts from 0)
+            * will give value of strength property of third filter 
+            * given in css/site/1/default.css - .submenustyle, .submenustyle ul class
+            * 3rd filter - direction : 270 (left side shadow)
+            */
+            if (navigator.appName == 'Microsoft Internet Explorer' && isGlobalNav == true) {
+                subMenu.style.left = (menuLeft - subMenu.filters[2].strength) + "px";
+            }
+
+            //Sub menu starting top position
+            var menuTop = (context._isBaseLevel ? context._offsets.top + context._dimensions.h : context.offsetTop);
+
+            if (siteID == 1) {
+                menuTop -= 2;
+            }
+
+            subMenu.style.top = menuTop + "px";
+
+            if (WebstoreMenu.enableShim && (WebstoreMenu.effects.enableSwipe == false || WebstoreMenu.nonFF)) { //apply bgShim immediately only if animation is turned off, or if on, in non FF2.x browsers
+                WebstoreMenu.PositionShim(header, subMenu, scrollX, scrollY);
+            } else {
+                subMenu.FFscrollInfo = { x: scrollX, y: scrollY };
+            }
+
+            currentMobileNum = context._pos;
+
+            WebstoreMenu.ShowMenu(header, subMenu);
+        }
+        if (siteID == 1) {
+            WebstoreMenu.HideDropdown();
+        }
+    },
+
+    HandleItemDeactivate: function (e, context) {
+
+        //Code specific to ipad/mobile
+        if (ismobile) {
+            if (event.type != "mouseout") {
+                // ignore blur and the rest 
+                return;
+            }
+            if (WebstoreMenu.IsContained(WebstoreMenu.subULItems[context._master][parseInt(context._pos)])) {
+                // this is for menu flyouts with ajax, like brand.
+                return;
+            }
+        }
+
+        var subMenu = WebstoreMenu.subULItems[context._master][parseInt(context._pos)];
+        if (context._isBaseLevel) {
+
+            if (!WebstoreMenu.IsContained(context, e) && !WebstoreMenu.IsContained(subMenu, e)) { //hide drop down ul if mouse moves out of menu bar item but not into drop down ul itself
+                WebstoreMenu.CSS(context, "selected", "remove");
+                WebstoreMenu.HideMenu(subMenu);                
+            }
+        } else if (!context._isBaseLevel && !WebstoreMenu.IsContained(context, e)) {
+            WebstoreMenu.HideMenu(subMenu);            
+        }        
+        return;
+    },
+
+    BuildMenu: function (mainMenuID, header, subMenu, subMenuPosition, isBaseLevel) {
+        header._master = mainMenuID; //Indicate which top menu this header is associated with
+        header._pos = subMenuPosition; //Indicate pos of sub menu this header is associated with
+        header._isBaseLevel = isBaseLevel;
+        if (isBaseLevel) {
+            this.AddEvent(header, function (e) {
+                if (ismobile) {
+
+                    var submenu = header.getAttribute("submenu");
+
+                    if (submenu != currentMobile) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        currentMobile = submenu;
+
+                        return false;
+                    }
+
+
+
+                } else {
+                    WebstoreMenu.HideMenu(WebstoreMenu.subULItems[this._master][parseInt(this._pos)]);
+                }
+
+
+                return true;
+            }, "click");
+        }
+        this.subULItems[mainMenuID][subMenuPosition] = subMenu;
+        header._dimensions = { w: header.offsetWidth, h: header.offsetHeight, submenuw: subMenu.offsetWidth, submenuh: subMenu.offsetHeight };
+        this.GetOffsetOf(header);
+
+        var menuitems = subMenu.getElementsByTagName("a");
+        for (var i = 0; i < menuitems.length; i++) {
+            this.AddEvent(menuitems[i], function (e) {
+                var target = WebstoreMenu.GetTarget(e);
+                target.className = "hoverOn";
+            }, "mouseover");
+
+            this.AddEvent(menuitems[i], function (e) {
+                var target = WebstoreMenu.GetTarget(e);
+                target.className = "hoverOff";
+            }, "mouseout");
+        }
+
+        subMenu.style.left = 0;
+        subMenu.style.top = 0;
+        subMenu.style.visibility = "hidden";
+        this.AddEvent(header, function (e) { WebstoreMenu.HandleItemActivate(e, this, header); }, "mouseover");
+        this.AddEvent(header, function (e) { WebstoreMenu.HandleItemActivate(e, this, header); }, "focus");
+        this.AddEvent(header, function (e) { WebstoreMenu.HandleItemDeactivate(e, this); }, "mouseout");
+        this.AddEvent(header, function (e) { WebstoreMenu.HandleItemDeactivate(e, this); }, "blur");
+    },
+
+    SetOpacity: function (el, value) {
+        el.style.opacity = value;
+        if (typeof el.style.opacity != "string") { //if it's not a string (ie: number instead), it means property not supported
+            el.style.MozOpacity = value;
+            if (el.filters) {
+                el.style.filter = "progid:DXImageTransform.Microsoft.alpha(opacity=" + value * 100 + ")";
+            }
+        }
+    },
+
+    ShowMenu: function (header, subMenu) {
+        if (this.effects.enableSwipe || this.effects.enableFade) {
+            if (this.effects.enableSwipe) {
+                var endPoint = (header._isBaseLevel) ? header._dimensions.submenuh : header._dimensions.submenuw;
+                subMenu.style.width = subMenu.style.height = 0;
+                subMenu.style.overflow = "hidden";
+            }
+            if (this.effects.enableFade) {
+                this.SetOpacity(subMenu, 0); //set opacity to 0 so menu appears hidden initially
+            }
+            subMenu._currentAnimateDegree = 0;
+            subMenu.style.visibility = "visible";
+            clearInterval(subMenu._animateTimer);
+            subMenu._startTime = new Date().getTime(); //get time just before animation is run
+            subMenu._animateTimer = setInterval(function () { WebstoreMenu.RevealMenu(header, subMenu, endPoint); }, 10);
+        } else {
+            subMenu.style.visibility = "visible";
+        }
+    },
+
+    //to suppress the dropdownmenu in the current page
+    HideDropdown: function () {
+        // following code to fix issue in IE9
+        // moving focus to a span element in the page
+        if (navigator.appName == 'Microsoft Internet Explorer') {            
+            if (document.getElementsByTagName('a').length) { document.getElementsByTagName('a')[0].focus(); }
+        }
+
+        var customselectboxes = document.getElementsByTagName('select');
+        if (customselectboxes.length > 0) {
+            for (var idx = 0; idx < customselectboxes.length; idx++) {
+                if (customselectboxes[idx].getAttribute('class') == 'customddl') {
+                    customselectboxes[idx].setAttribute('class', 'customddlhide');
+                }
+            }
+        }       
+    },
+
+    ShowDropdown: function () {
+        var customselectboxes = document.getElementsByTagName('select');
+        if (customselectboxes.length > 0) {
+            for (var idx = 0; idx < customselectboxes.length; idx++) {
+                if (customselectboxes[idx].getAttribute('class') == 'customddlhide') {
+                    customselectboxes[idx].setAttribute('class', 'customddl');
+                }
+            }
+        }
+
+    },
+
+    RevealMenu: function (header, subMenu, endPoint) {
+        var elapsed = new Date().getTime() - subMenu._startTime; //get time animation has run
+        if (elapsed < this.effects.duration) {
+            if (this.effects.enableSwipe) {
+                if (subMenu._currentAnimateDegree == 0) { //reset either width or height of sub menu to "auto" when animation begins
+                    subMenu.style[header._isBaseLevel ? "width" : "height"] = "auto";
+                }
+                subMenu.style[header._isBaseLevel ? "height" : "width"] = (subMenu._currentAnimateDegree * endPoint) + "px";
+            }
+            if (this.effects.enableFade) {
+                this.SetOpacity(subMenu, subMenu._currentAnimateDegree);
+            }
+        } else {
+            clearInterval(subMenu._animateTimer);
+            if (this.effects.enableSwipe) {
+                subMenu.style.width = "auto";
+                subMenu.style.height = "auto";
+                subMenu.style.overflow = "visible";
+            }
+            if (this.effects.enableFade) {
+                this.SetOpacity(subMenu, 1);
+                subMenu.style.filter = "";
+            }
+            if (this.enableShim && subMenu.FFscrollInfo) //if this is FF browser (meaning bgShim hasn't been applied yet
+                this.PositionShim(header, subMenu, subMenu.FFscrollInfo.x, subMenu.FFscrollInfo.y);
+        }
+        subMenu._currentAnimateDegree = (1 - Math.cos((elapsed / this.effects.duration) * Math.PI)) / 2;
+    },
+
+    HideMenu: function (subMenu) {
+        if (typeof subMenu._pos != "undefined") { //if subMenu is outermost UL drop down menu
+            this.CSS(this.baseItems[subMenu._master][parseInt(subMenu._pos)], "selected", "remove");
+            if (this.enableShim)
+                this.HideShim();
+        }
+        clearInterval(subMenu._animateTimer);
+        subMenu.style.left = 0;
+        subMenu.style.top = "-1000px";
+        subMenu.style.visibility = "hidden";
+        if (siteID == 1) {
+            WebstoreMenu.ShowDropdown();
+        }
+    },
+
+    FirstSubMenuLeft: function () {
+
+        var scrollX = window.pageXOffset ? window.pageXOffset : WebstoreMenu.docElement.scrollLeft;
+        var scrollY = window.pageYOffset ? window.pageYOffset : WebstoreMenu.docElement.scrollTop;
+        var subMenuRightEdge = firstmenuitem._offsets.left + firstmenuitem._dimensions.submenuw + (firstmenuitem._isBaseLevel ? 0 : firstmenuitem._dimensions.w);
+        var subMenuBottomEdge = firstmenuitem._offsets.top + firstmenuitem._dimensions.submenuh;
+        //Sub menu starting left position       
+        var menuLeft = (firstmenuitem._isBaseLevel ? firstmenuitem._offsets.left : firstmenuitem._dimensions.w);
+        var tempmenuLeft = menuLeft;
+        if (subMenuRightEdge - scrollX > WebstoreMenu.docWidth) {
+            tempmenuLeft += -firstmenuitem._dimensions.submenuw + (firstmenuitem._isBaseLevel ? firstmenuitem._dimensions.w : -firstmenuitem._dimensions.w);
+        }
+        menuLeft = tempmenuLeft > 0 ? tempmenuLeft : menuLeft;
+        firstsubmenuleft = menuLeft;
+    },
+
+    AddEvent: function (target, referenceFunction, taskType) {
+        if (target.addEventListener)
+            target.addEventListener(taskType, referenceFunction, false);
+        else if (target.attachEvent)
+            target.attachEvent('on' + taskType, function () { return referenceFunction.call(target, window.event); });
+    },
+
+    Init: function (config) {
+
+        this.enableShim = config.enableShim;
+        this.hideInterval = config.hideInterval;
+        this.effects = new Object();
+        this.effects.enableSwipe = config.effects.enableSwipe;
+        this.effects.enableFade = config.effects.enableFade;
+        this.effects.duration = config.effects.duration;
+        this.arrowIcons = new Object();
+        this.arrowIcons.rightArrow = config.arrowIcons.rightArrow;
+        this.arrowIcons.showArrowIcons = config.arrowIcons.showArrowIcons;
+        this.httpsIFrameSrc = config.httpsIFrameSrc;
+        var mainMenuID = config.mainMenuID;
+
+        this.docElement = (document.compatMode == "CSS1Compat") ? document.documentElement : document.body;
+        this.baseItemsIndex = -1;
+        this.ULItemIndex = -1;
+        this.baseItemIDs.push(mainMenuID);
+        this.baseItems[mainMenuID] = []; //declare array on object
+        this.subULItems[mainMenuID] = []; //declare array on object
+        this.hideTimers[mainMenuID] = []; //declare hide entire menu timer
+        if (this.enableShim && !this.shimAdded) {
+            this.bgShim = {};
+            this.bgShim.topShim = this.AddBGShim(document.body); //create top iframe bgShim obj
+            this.bgShim.bottomShim = this.AddBGShim(document.body); //create bottom iframe bgShim obj
+            this.shimAdded = true;
+        }
+        var menuBase = document.getElementById(mainMenuID);
+        var linkCollection = menuBase.getElementsByTagName("a");
+        this.GetWindowSize();
+        for (var i = 0; i < linkCollection.length; i++) {
+            var menuitem = linkCollection[i];
+            if (menuitem.getAttribute('subMenu')) {
+                this.baseItemsIndex++;
+                this.ULItemIndex++;
+                var menuitem = linkCollection[i];
+                if (i == 0) {
+                    firstmenuitem = menuitem;
+                }
+                this.baseItems[mainMenuID][this.baseItemsIndex] = menuitem; //store ref to main menu links
+                var dropULId = menuitem.getAttribute('subMenu');
+                var dropUL = document.getElementById(menuitem.getAttribute('subMenu'));
+                document.body.appendChild(dropUL) //move main ULs to end of document
+                dropUL.style.zIndex = 2000; //give drop down menus a high z-index
+                dropUL._master = mainMenuID; //Indicate which main menu this main UL is associated with
+                dropUL._pos = this.baseItemsIndex; //Indicate which main menu item this main UL is associated with
+                if (siteID != 1 || dropULId != 'brandsubMenu') {
+                    this.AddEvent(dropUL, function () { WebstoreMenu.HideMenu(this); }, "click");
+                }
+                this.BuildMenu(mainMenuID, menuitem, dropUL, this.ULItemIndex, true); //build top level menu
+                if (ismobile != null) {
+                    dropUL.ontouchstart = function () {
+                        clearTimeout(WebstoreMenu.hideTimers[this._master][this._pos]);
+                    };
+                } else {
+                    dropUL.onmouseover = function () {
+                        clearTimeout(WebstoreMenu.hideTimers[this._master][this._pos]);
+                    };
+                }
+                this.AddEvent(dropUL, function (e) { //hide menu if mouse moves out of main UL element into open space
+                    if (!WebstoreMenu.IsContained(this, e) && !WebstoreMenu.IsContained(WebstoreMenu.baseItems[this._master][parseInt(this._pos)], e)) {
+                        var dropUL = this;
+                        if (WebstoreMenu.enableShim)
+                            WebstoreMenu.HideShim();
+                        WebstoreMenu.hideTimers[this._master][this._pos] = setTimeout(function () {
+                            WebstoreMenu.HideMenu(dropUL);
+                        }, WebstoreMenu.hideInterval);
+                    }
+                }, "mouseout");
+                var subULItems = dropUL.getElementsByTagName("ul");
+                for (var c = 0; c < subULItems.length; c++) {
+                    this.ULItemIndex++;
+                    var parentLI = subULItems[c].parentNode;
+                    this.BuildMenu(mainMenuID, parentLI, subULItems[c], this.ULItemIndex, false); //build sub level menus
+                }
+            } else {
+                // For those top menu items that don't have a submenu, add focus/blur handler
+                // so that they also respond to receiving or losing focus.
+                this.AddEvent(menuitem, function () {
+                    WebstoreMenu.CSS(this, "selected", "add");
+                }, "focus");
+                this.AddEvent(menuitem, function () {
+                    WebstoreMenu.CSS(this, "selected", "remove");
+                }, "blur");
+            }
+        } //end for loop
+        this.AddEvent(window, function () {
+            WebstoreMenu.GetWindowSize();
+            WebstoreMenu.GetTopItemsDimensions();
+        }, "resize");
+    },
+
+    Setup: function (mainMenuID) {
+        this.AddEvent(window, function () { WebstoreMenu.Init(mainMenuID); }, "load");
+        this.AddEvent(window, function () { WebstoreMenu.Init(mainMenuID); }, "resize");
+    }
+};
+
+function OnBrandLetterClicked(brandtype, maxcol, maxcolitems, maxbrandnewcol, maxbrandnewitems) {
+	var qrystring = 'brandtype=' + brandtype + '&maxcol=' + maxcol + '&maxcolitems=' + maxcolitems + '&brandnewcols=' + maxbrandnewcol + '&brandnewitems=' + maxbrandnewitems;
+	getBrandItems('/BrandsFlyoutMenu.asp?' + qrystring);
+	return false;
+}
+
+function getBrandItems(sUrl) {
+
+	var xmlhttp;
+	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp = new XMLHttpRequest();
+	}
+	else {// code for IE6, IE5
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            updateBrandFlyout(xmlhttp.responseText);
+        }
+    };	
+	xmlhttp.open("GET", sUrl, true);
+	xmlhttp.send();
+}
+
+function updateBrandFlyout(items) {
+	try {
+		document.getElementById('brandsflyout').innerHTML = items;		
+	}
+	catch (e) { }
+}
+
+<!--
+function ScriptMgr()
+{
+	this.rgOnload = [];
+	this.addWinOnloadEvent = function(fn)
+	{
+		this.rgOnload.push(fn);
+	}
+	this.addWinOnloadShowcase = function(srcId, elId, args)
+	{
+		this.addWinOnloadEvent(new Showcase(srcId, elId, args));
+	}
+	this.loadWinOnloadEvents = function()
+	{
+		try{
+			for(var i = 0; i <= this.rgOnload.length-1; i++)
+			{
+			        if(this.rgOnload[i] == null)
+			               continue;			
+		       
+				if(typeof this.rgOnload[i] == 'function')
+				{
+					this.rgOnload[i]();
+				}
+				else
+				{
+					this.rgOnload[i].init();
+				}
+			}
+		}catch(e){}
+	}
+}
+ScriptMgr.prototype.cleanUp = function()
+{
+    try{
+	    this.rgOnload.clear();
+	}catch(e){}
+}
+
+Array.prototype.clear = function()
+{
+	this.length = 0;
+}
+
+function Showcase(elementId, showcaseId, args)
+{
+	this.elementID = elementId;
+	this.showcaseID = showcaseId;
+	this.arguments = args;
+	this.init = function()
+	{
+		try
+		{
+			var el = document.getElementById(this.elementID);
+			if(el)
+			{
+				var s = '/showcase.asp?scid=' + this.showcaseID;
+				if(this.arguments)
+					s += '&' + FormatArgs(this.arguments);
+				this.SetIframeWinURL(el, s);
+			}			
+		}
+		catch(e){}
+		finally
+		{
+			this.elementID = null;
+			this.showcaseID = null;
+			this.arguments = null;
+		}
+	}
+}
+
+    function FormatArgs(args) {
+        try {
+            if (args.toLowerCase().indexOf('txtccnumber') >= 0) {
+                //Do extra work only if the arguments contain the credit card
+                return RemoveCCArgs(args);
+            }
+            else {
+                //else return as it is
+                return (args);
+            }
+        }
+        catch (err) {
+            //return the arguments as it is
+            return (args);
+        }        
+    }
+
+    function RemoveCCArgs(args) {
+        //CC arguments to remove txtCCNumber,selCCExpMonth,selCCExpYear,txtCCNameOnCard
+
+        var returnArgs;
+        var tmpArgs;
+        var i;
+        
+        tmpArgs = args.split('&');
+        returnArgs = "";
+
+        for (i = 0; i < tmpArgs.length; i++) {
+            if ((tmpArgs[i].toLowerCase().indexOf('txtccnumber') < 0) && (tmpArgs[i].toLowerCase().indexOf('selccexpmonth') < 0) && (tmpArgs[i].toLowerCase().indexOf('selccexpyear') < 0) && (tmpArgs[i].toLowerCase().indexOf('txtccnameoncard') < 0)){
+                returnArgs = returnArgs + tmpArgs[i] + "&";
+            }
+        }        
+        
+        return returnArgs;
+    }
+    
+Showcase.prototype.SetIframeWinURL = function(elIframe, sURL) {
+	var iFrameWin;
+	if (elIframe.contentWindow)
+	{
+		iFrameWin = elIframe.contentWindow.document;
+	}
+	else if (elIframe.contentDocument)
+	{
+		iFrameWin = elIframe.contentDocument;
+	}
+	else if (elIframe.document)
+	{
+		iFrameWin = elIframe.document;
+	}
+	if (iFrameWin)
+	{
+		iFrameWin.location.replace(sURL);
+	}
+}
+
+var winOnload = window.onload;
+window.onload = function()
+{
+	try
+	{
+		window.scriptMgr.loadWinOnloadEvents();
+		if(typeof winOnload == 'function'){winOnload();}
+	}
+	catch(e){}
+	finally
+	{
+		if(window.scriptMgr){window.scriptMgr.cleanUp();}
+	}
+};
+//-->
+

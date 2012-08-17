@@ -7,9 +7,12 @@ AddNamespace('NPR.ServerConstants');NPR.ServerConstants.webHost='www.npr.org';NP
 AddNamespace('NPR.PageInfo');NPR.PageInfo.page={};NPR.PageInfo.page.web_host='http://'+NPR.ServerConstants.webHost;
 AddNamespace('NPR.PageInfo');NPR.PageInfo.getUrlParameter=function(pname,pdefault){try{pname=pname.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");var regexS="[\\?&]"+pname+"=([^&#]*)";var regex=new RegExp(regexS);var results=regex.exec(window.location.href);if(results===null){return pdefault;}
 else{return results[1];}}catch(e){NPR.messaging.exception(e,' pname = '+pname+' pdefault = '+pdefault,'NPR.community.getUrlParameter',NPR.messaging.constants.COMMUNITY_JS_ERROR);}};
-AddNamespace('NPR.Devices');if($('html').hasClass('touch')){if(Modernizr.mq('only screen and (min-device-width: 768px) and (max-device-width: 1024px)')){$('html').addClass('NPRtablet');}}
+AddNamespace('NPR.Devices');if($('html').hasClass('touch')){if(Modernizr.mq('only screen and (min-device-width: 768px) and (max-device-width: 1024px)')){$('html').addClass('NPRtablet');}
+if(Modernizr.mq('only screen and (max-device-width: 767px)')){$('html').addClass('NPRphone');}}
 if(NPR.PageInfo.getUrlParameter('device')=='tablet'){$('html').addClass('NPRtablet');}
+if(NPR.PageInfo.getUrlParameter('device')=='phone'){$('html').addClass('NPRphone');}
 NPR.Devices.isOnTablet=function(){if($('html').hasClass('NPRtablet')){return true;}
+else{return false;}};NPR.Devices.isOnPhone=function(){if($('html').hasClass('NPRphone')){return true;}
 else{return false;}};
 $(document).ready(function(){if(NPR.Devices.isOnTablet()){bodyCssClasses=$('body').attr('class');if(bodyCssClasses.indexOf('Story')>0)
 {if(Modernizr.mq('only screen and (orientation:portrait)')){$("head").append('<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />');}}

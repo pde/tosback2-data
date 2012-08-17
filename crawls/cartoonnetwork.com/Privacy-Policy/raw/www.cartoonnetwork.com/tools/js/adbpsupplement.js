@@ -11,7 +11,19 @@ function adbpTrayNav(state){
 		});
 	} catch(e){}
 }
-
+//Add click tracking to end slate thumbnails
+function adbpTVEndSlate(showName, index){
+	attrStr = "tve_thumb" + index +"_"+ showName;
+	typeStr = "cnt-allshow";
+	try {
+		trackMetrics({
+			type: typeStr,
+			data: {
+				attribution: attrStr	//current prop14
+			}
+		});
+	} catch(e){}
+}
 
 function adbpGnav(state){
 	attrStr = "cn_miniprofile" + state;
@@ -143,7 +155,8 @@ domain = domain.replace("staging.cartoonnetwork.com","www.cartoonnetwork.com");
 var patterns = {
 		err:[1,(/Error Page/),(/Page not found/)], //uses document.title
 		sf:[0,(/\.com\/(games|video|schedule|tv_shows)\/index\.html/),(/fusionfall\.cartoonnetwork\.com[\/]?(index\.php)?$/),(/nbahooptroop\.com[\/]?$/)
-			,(/\/(around|games|leaders|scores|standings|tour|forums)[\/]?$/)],
+			,(/\/(around|games|leaders|scores|standings|tour|forums)[\/]?$/),(/blog\.cartoonnetwork\.com[\/]?$/)],
+		b:[0,(/blog\.cartoonnetwork\.com\//)],
 		o:[0,(/\/video\/(problemsolverz|tvmadness)/),(/downloads/),(/\/sweepstakes/),(/\/vote\//),(/\/host\/index/)
 			,(/\/evo\.htm/),(/\/third_two\.htm/),(/\/thankyou\.htm/),(/\/map\.htm/),(/\/casefiles\.htm/),(/\/gear\.htm/)
 			,(/\/joinTeam\.htm/),(/\/photos\.htm/),(/\/pictures\/index\.htm/),(/\/whatweknow\.htm/),(/\/maskmaker\.htm/)
@@ -203,6 +216,9 @@ if (domain.indexOf("fusionfall") != -1) {
 	if (path1) path2 = path1;
 	if (pathname.match(/^\/(topper|content)/)) path2 = "";
 	path1 = "nbahooptroop";
+} else if (domain.indexOf("blog.cartoonnetwork.com") != -1) {
+	path1 = "blog";
+	path2 = path_array[4]||"";
 } else if (domain.indexOf("help.") != -1) {
 	path1 = "help", path2 = "";
 } else if (pathname.match(/^\/tdi\//)) {

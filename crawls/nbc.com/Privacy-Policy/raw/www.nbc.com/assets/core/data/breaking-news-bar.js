@@ -2,16 +2,24 @@ var breakingNews = { "items": [
 
 /* Begin */
     {
-        "startTime": 1344535200,
-        "endTime": 1344547800,
-        "timeType": "absolute",
+        "startTime": 1344919500,
+        "endTime": 1344920400,
+        "timeType": "relative",
         "platforms": [
         {
             "platform": "web",
-            "headline": "Watch LIVE: Usain Bolt races for 200 meter gold, plus see the 800 meter and beach volleyball finals!",
+            "headline": "Connect with fans on NBC Live during Grimm. Click here to learn more.",
             "link": {
-                "href": "http://www.nbcolympics.com/liveextra/index.html",
-                "target": "_blank"
+                "href": "http://www.nbc.com/nbc-live/?__source=breaking-news-bar",
+                "target": "_self"
+            }
+        },
+        {
+            "platform": "ipad",
+            "headline": "Connect with fans on NBC Live during Grimm. Click here to learn more.",
+            "link": {
+                "href": "http://itunes.apple.com/us/app/nbc-live/id424728329?mt=8",
+                "target": "_self"
             }
         }
     ]},
@@ -19,16 +27,51 @@ var breakingNews = { "items": [
 
 /* Begin */
     {
-        "startTime": 1344614400,
-        "endTime": 1344634200,
-        "timeType": "absolute",
+        "startTime": 1344920400,
+        "endTime": 1344924000,
+        "timeType": "relative",
         "platforms": [
         {
             "platform": "web",
-            "headline": "Watch LIVE: women's 4x100-meter finals, plus U.S. men's basketball, pole vault, water polo & more!",
+            "headline": "The Grimm NBC Live event is on NOW! Connect with fans plus see trivia, polls and more. Join now!",
             "link": {
-                "href": "http://www.nbcolympics.com/liveextra/index.html",
-                "target": "_blank"
+                "href" : "javascript:void(window.open('/nbc-live/flash/?__source=breaking-news-bar','nbclive','width=1024,height=748,menubar=0,location=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0,top=0,left=0'));",
+                "target": "_self"
+            }
+        },
+        {
+            "platform": "ipad",
+            "headline": "The Grimm NBC Live event is on NOW! Connect with fans plus see trivia, polls and more. Download the app!",
+            "link": {
+                "href": "http://itunes.apple.com/us/app/nbc-live/id424728329?mt=8",
+                "target": "_self"
+            }
+        }
+    ]},
+/* End */
+
+
+
+/* Begin */
+    {
+        "startTime": 1344998700,
+        "endTime": 1344999600,
+        "timeType": "relative",
+        "platforms": [
+        {
+            "platform": "web",
+            "headline": "Connect with fans on NBC Live during America's Got Talent. Click here to learn more.",
+            "link": {
+                "href": "http://www.nbc.com/nbc-live/?__source=breaking-news-bar",
+                "target": "_self"
+            }
+        },
+        {
+            "platform": "ipad",
+            "headline": "Connect with fans on NBC Live during America's Got Talent. Download the app.",
+            "link": {
+                "href": "http://itunes.apple.com/us/app/nbc-live/id424728329?mt=8",
+                "target": "_self"
             }
         }
     ]},
@@ -36,16 +79,24 @@ var breakingNews = { "items": [
 
 /* Begin */
     {
-        "startTime": 1344706200,
-        "endTime": 1344749400,
-        "timeType": "absolute",
+        "startTime": 1344999600,
+        "endTime": 1345006500,
+        "timeType": "relative",
         "platforms": [
         {
             "platform": "web",
-            "headline": "Watch LIVE: women's volleyball, high jump & basketball finals, and men's diving, 4x100-meter finals!",
+            "headline": "The AGT NBC Live event is on NOW! Connect with fans plus see trivia, polls and more. Join now!",
             "link": {
-                "href": "http://www.nbcolympics.com/liveextra/index.html",
-                "target": "_blank"
+                "href" : "javascript:void(window.open('/nbc-live/flash/?__source=breaking-news-bar','nbclive','width=1024,height=748,menubar=0,location=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0,top=0,left=0'));",
+                "target": "_self"
+            }
+        },
+        {
+            "platform": "ipad",
+            "headline": "The AGT NBC Live event is on NOW! Connect with fans plus see trivia, polls and more. Download the app!",
+            "link": {
+                "href": "http://itunes.apple.com/us/app/nbc-live/id424728329?mt=8",
+                "target": "_self"
             }
         }
     ]},
@@ -53,16 +104,16 @@ var breakingNews = { "items": [
 
 /* Begin */
     {
-        "startTime": 1344769200,
-        "endTime": 1344790800,
-        "timeType": "absolute",
+        "startTime": 1345006500,
+        "endTime": 1345021200,
+        "timeType": "relative",
         "platforms": [
         {
             "platform": "web",
-            "headline": "Watch live online as it happens: men's marathon, basketball, boxing and water polo finals!",
+            "headline": "VOTE NOW for your favorite AGT acts from Tuesday night's show! Voting open until 5:00 AM ET.",
             "link": {
-                "href": "http://www.nbcolympics.com/liveextra/index.html",
-                "target": "_blank"
+                "href" : "http://www.nbc.com/americas-got-talent/vote/?__source=breaking-news-bar",
+                "target": "_self"
             }
         }
     ]},

@@ -9,7 +9,7 @@ var g_client=google_ad_client = "ca-pub-2694630391511205";google_kw_type="broad"
 var google_afs_client = "pub-2694630391511205", afs_pageOptions = null, ch_c="8922314704";
 google_num_radlinks = '10';google_max_radlink_len = '17';
 var ImgAd='<I'+'FRAME FRAMEBORDER=0 MARGINWIDTH=0 MARGINHEIGHT=0 SCROLLING=NO WIDTH=300 HEIGHT=70 SRC="http:/'+'/a.thefreedictionary.com/get.aspx?site=dictionary&size=120x60"></IFRAME>';
-var ad_channel='';
+var ad_channel='', ads_blocked=1;
 var CanonicalURL = URL = location.href.replace(location.hash, '')
 var loc = encodeURIComponent(URL);
 var IE=(navigator.appName=='Microsoft Internet Explorer' && navigator.userAgent.indexOf("Opera")==-1?1:0);
@@ -247,8 +247,9 @@ function g_attr(){
 var g_fburl=(google_info && google_info.feedback_url?google_info.feedback_url:'http:/'+'/services.google.com/feedback/online_hws_feedback');
 return '<a onMouseOver="return m_over(\''+g_fburl+'\')" onMouseOut="m_out()" href="/_/gr.aspx?url='+encodeURIComponent(g_fburl)+'">Ads by Google</a>';
 }
-function google_radlink_request_done(radlinks) {if (radlinks.length) RAd=radlinks};
+function google_radlink_request_done(radlinks) {if(radlinks.length) RAd=radlinks;ads_blocked=0};
 function google_ad_request_done(google_ads) {
+	ads_blocked=0;
 	google_ad_client = g_client; google_kw_type = "broad"; google_ad_output = "js"; google_encoding = "utf-8"; google_page_url = CanonicalURL;google_ad_channel = ad_channel;
 	if (!google_ads || google_ads.length == 0) {
 		if (g_kw && Ads.length == 0 && !OvResults) {
@@ -279,17 +280,19 @@ function write_ad(ad,pos) {
 		res+=link+'<span class=OvTitle>'+t1+'</span><br><span class=OvDescr>'+t2+'</span><br><span class=OvURL>'+ad.visible_url+'</span></a>';
  	return res +'</div>';
  }
- function write_ads(AdsNum, Br, pos) {
- 	if (afs_pageOptions) {
- 		dw('<div id="afs_adcontainer' + AdBlocks.length + '"></div>');
- 		if (Br) dw('<br clear=all>');
- 		AdBlocks.push({ 'container': 'afs_adcontainer' + AdBlocks.length, 'lines': 3, 'width': (pos < 3 ? 550 : 250), 'number': AdsNum, 'fontSizeDomainLink': 11, 'colorDomainLink': '#000000', 'colorTitleLink': '#1d4994' });
+ function write_ads(AdsNum,Br,pos) {
+ 	if(!IsMob&&ads_blocked&&google_kw)
+ 		dw('<div id="alt_ad_'+pos+'"></div>');
+ 	else if(afs_pageOptions) {
+ 		dw('<div id="afs_adcontainer'+AdBlocks.length+'"></div>');
+ 		if(Br) dw('<br clear=all>');
+ 		AdBlocks.push({ 'container': 'afs_adcontainer'+AdBlocks.length,'lines': 3,'width': (pos<3?550:250),'number': AdsNum,'fontSizeDomainLink': 11,'colorDomainLink': '#000000','colorTitleLink': '#1d4994' });
  	}
- 	else dw(populate_ads(AdsNum, Br, pos));
+ 	else dw(populate_ads(AdsNum,Br,pos));
  }
 
- function populate_ads(AdsNum, Br, pos) {
-	if (IsMSN && pos == 2) return;
+ function populate_ads(AdsNum,Br,pos) {
+	if (IsMSN && pos == 2) return '';
 	if (Ads.length && Ads.length>CurrentAd){
 	var attr='Sponsored links';
 	if (IsMSN || IsY) {
@@ -342,19 +345,17 @@ function WriteRAd1(p){
 } 
 }
 function MobileSelfPromo() {
-	var a=navigator.userAgent;
+	var n=navigator.userAgent;
 	function aml() {
-		if (a.indexOf('NOOK')>0) return '/_/gr.aspx?url='+escape('http://www.barnesandnoble.com/w/dictionary-farlex-inc/1112166663');
-		if (a.indexOf('Silk-Accelerated')>0) return '/_/gr.aspx?url='+escape('http://www.amazon.com/Farlex-Dictionary/dp/B004I744AS');
+		if (n.indexOf('NOOK')>0) return '/_/gr.aspx?url='+escape('http://www.barnesandnoble.com/w/dictionary-farlex-inc/1112166663');
+		if (n.indexOf('Silk-Accelerated')>0) return '/_/gr.aspx?url='+escape('http://www.amazon.com/Farlex-Dictionary/dp/B004I744AS');
 		return 'market://details?id=com.tfd.mobile.TfdSearch';
 	}
 	function a(u,t){return '<a href="'+u+'" style="font-weight:bold;color:darkred">'+t+'</a>'};
 	function mbad(l){dw('<div style="margin-bottom:14px;margin-top:3px">'+l+'</div>')}
-	if(a.indexOf('Android')>0) mbad(a(aml(),'Install TheFreeDictionary Android App. It\'s Free!'))
-	else if(a.indexOf('like Mac OS')>0) {
-		function itl(id) {return '/_/gr.aspx?url='+escape('http:/'+'/itunes.apple.com/us/app/'+id+'?mt=8&ls=1')}
-		mbad(a(itl('free-dictionary/id379450383'),'Install a FREE version of TheFreeDictionary Mobile App')+' <b>or</b> '+a('http:'+'//up.thefreedictionary.com/trc.ashx?target=iOSPRO&sender=farlex&info=tfdwebsite&url=http%3A%2F%2Fapp.appsflyer.com%2Fid492085918%2F%3Fpid%3Dfarlex%26c%3Dtfdwebsite','an ad-free version for just $3.99'));
-		//mbad(a('http:'+'//up.thefreedictionary.com/trc.ashx?target=iOSPRO&sender=farlex&info=tfdwebsite&url=http%3A%2F%2Fapp.appsflyer.com%2Fid492085918%2F%3Fpid%3Dfarlex%26c%3Dtfdwebsite','Install TheFreeDictionary App - Ad Free and Instant Access'));
+	if(n.indexOf('Android')>0) mbad(a(aml(),'Install TheFreeDictionary Android App. It\'s Free!'))
+	else if(n.indexOf('like Mac OS')>0) {
+		mbad(a('http:/'+'/up.thefreedictionary.com/trc.ashx?target=iOSFREE&sender=farlex&info=tfdwebsite&url=http%3A%2F%2Fapp.appsflyer.com%2Fid379450383%2F%3Fpid%3Dfarlex%26c%3Dtfdwebsite','Install a FREE version of TheFreeDictionary Mobile App')+' <b>or</b> '+a('http:'+'//up.thefreedictionary.com/trc.ashx?target=iOSPRO&sender=farlex&info=tfdwebsite&url=http%3A%2F%2Fapp.appsflyer.com%2Fid492085918%2F%3Fpid%3Dfarlex%26c%3Dtfdwebsite&altURL=http%3A%2F%2Fitunes.apple.com%2Fus%2Fapp%2Fdictionary!!%2Fid492085918','an ad-free version for just $3.99'));
 	}
 }
 function m_over(url){
@@ -706,6 +707,7 @@ function KWTrack(wl){
 var otp = ById('onthispage');if (otp) {var ht = (ById('Thesaurus')? '<a href="' + URL + '#Thesaurus"><span class="img A ico" style="background-position:-120px -52px;"></span>' + OnThisPage_th + '</a><br>' : '') + (ById('Translations')? '<a href="' + URL + '#Translations"><span class="img A ico" style="background-position:-120px -68px;"></span>' + OnThisPage_tr + '</a><br>' : ''); if(ht) otp.innerHTML=ht}
 var brtd = ById('toggle_td_11'); if (brtd) {toggle_retrieve(11); toggle_retrieve(12); var brh = Math.max(ById('toggle_td_11').parentNode.clientHeight - 40, 250) + 'px'; ById('flow_main1').style.height = brh; ById('flow_main2').style.height = brh;setTimeout('flowSM(1);flowSM(2)', 10)}
 UpdadeSearchForms();
+if(!IsMob&&ById('alt_ad_1')) {AsyncRequest('/_/search/a-srv.ashx?AdsNum='+AdsNum+'&word='+encodeURIComponent(google_kw)+'&r='+Math.random()); };
 if (AdBlocks.length) {
 	if(AdBlocks.length==1) new google.ads.search.Ads(afs_pageOptions,AdBlocks[0])
 	else if(AdBlocks.length==2) new google.ads.search.Ads(afs_pageOptions,AdBlocks[0],AdBlocks[1])
@@ -713,7 +715,7 @@ if (AdBlocks.length) {
 	ById(AdBlocks[0].container).firstChild.onload = delayedads;
 	delayedads_req= setTimeout('delayedads2()', 4000);
 }
-if (document.f1 && !document.location.hash) window.setTimeout('if (scrollPos()==0) document.f1.Word.focus()', 300);
+if(document.f1&&!document.location.hash) window.setTimeout('if (scrollPos()==0) document.f1.Word.focus()',300);
 if (wl && WordListHost && ById('word_list')) AsyncRequest('http://'+WordListHost+'/_/wordList.ashx?r='+Math.random());
 if (!getCookie('track')) AsyncRequest('http:/' + '/www.thefreedictionary.com/_/misc/track.ashx?ref=' + encodeURIComponent(document.referrer) + '&loc=' + loc + '&r=' + Math.random());
 //dw('<s' + 'cript src="https:/'+'/apis.google.com/js/plusone.js">{"lang": "' + PageLang + '"}</s' + 'cript>');
@@ -730,6 +732,7 @@ function delayedads2() {
 		} 
 	}
 }
+
 var tm=null,arrnext=' <span class="img A imgnext"></span>&nbsp;',LangNone='-----------------------';
 function LangHideUnhide(Node, l){
 	if (Node.getAttribute && Node.getAttribute('lang')) {Node.style.display=(Node.getAttribute('lang')==l?'inline':'none');return};

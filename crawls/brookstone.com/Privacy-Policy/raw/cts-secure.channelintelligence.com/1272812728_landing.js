@@ -2,7 +2,7 @@
 var ci_vid= 12728;
 var ci_cookieDomain=".brookstone.com";
 var ci_refDomain=".brookstone.com";
-var ci_testDomains=new Array("novator", "stage.", "dev.");
+var ci_testDomains=new Array("localhost.", "stage.", "dev.");
 var ci_imgs=[];
 
 //ci_ITD is used to test if order is from production or test environment.  False = production, True = test order
@@ -82,11 +82,6 @@ if(window.location.protocol.toLowerCase() == 'http:'){
 		}else if(ci_cmven===null&&ci_bkeid!==null) {
 			ci_CC('ci_pixmgr',ci_bkeid,7);
 		}
-		
-		//Marin
-		try{
-			ci_FP("tracker.marinsm.com/tp?act=1&cid=n4j5h4wfx0&script=no");
-		}catch(err){}
 		
 		//Mercent Pixel
 		CI_ExternalJS('http://cdn.mercent.com/js/tracker.js');

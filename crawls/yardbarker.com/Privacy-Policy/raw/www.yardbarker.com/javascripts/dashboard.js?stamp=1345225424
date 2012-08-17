@@ -1,0 +1,775 @@
+function loadAsset(asset_id, url){
+	// N.B. ord= still required by DFP, changed to ?= as asset_id has been moved to a routed parameter
+	window.ord = Number(window.ord) || Math.floor(Math.random() * 1E10);
+	$('asset_iframe_' + asset_id).src = url + '?ord=' + window.ord;
+}
+
+function loadYBTV(url){
+	$('yb_tv_frame').src = url;
+}
+
+function loadIFrame(domId, url){
+	$(domId).src = url;
+}
+
+function submitSearch(a, b) {
+		document.location = '/yard_search/?query=' + $F('search_name').gsub(/\&/, '%26');
+	return false;
+}	
+
+function loadArts() {
+	var artUrl = '/dash/display_articles/' + cId + '?type='  + cType + '&type2=' + cType2 + '&id2=' + cId2 + '&page=' + cPage + '&sort=' + cSort + '&expand=' + cExpand;
+	if ($('progInd')) {
+		$('progInd').innerHTML = "<img src='/images/indicator.gif' width='16' height='16'>";
+	}
+	new Ajax.Updater('art_list_container', artUrl, {asynchronous:true, evalScripts:true});
+}
+
+function newSort(s) {
+	cSort = s;
+	cPage = 1;
+	loadArts();
+	return false;
+}
+
+function newPage(p) {
+	cPage = p;
+	loadArts();
+	return true;
+}
+
+function dispContacts(ownerid, isFanBase) {
+	new Ajax.Updater('contacts_div', '/author/contact_list/' + ownerid + '/?is_fan_base=' + isFanBase, {asynchronous:true});
+	return false;
+}
+
+function displaySigninForm() {
+	new Ajax.Updater('hidden_content_register_inline_account', '/account/register_inline?type=signin', {asynchronous:true, evalScripts:true, onComplete:function(request){RedBox.addHiddenContent('hidden_content_register_inline_account'); }, onLoading:function(request){RedBox.loading();}});
+	return false;
+}
+
+function displayRegisterForm() {
+	new Ajax.Updater('hidden_content_register_inline_account', '/account/register_inline?type=register', {asynchronous:true, evalScripts:true, onComplete:function(request){RedBox.addHiddenContent('hidden_content_register_inline_account'); }, onLoading:function(request){RedBox.loading();}});
+	return false;
+}
+
+function teamList(sportid) {
+	new Ajax.Updater('teamList_div', '/nav/teams_for_sport/' + sportid, {asynchronous:true, evalScript:true});
+	return false;
+}
+
+function sportScoreList(sportid, dateYear, dateMonth, dateDay, isSingleSport) {
+	new Ajax.Updater('scoreList_div', '/stats/scores_sport/' + sportid + "?year=" + dateYear + "&month=" + dateMonth + "&day=" + dateDay + "&is_popup=true" + (isSingleSport ? "&is_single=true" : ""), {asynchronous:true, evalScript:true});
+	return false;
+}
+
+function addFavorite(destList, itemUrl, itemDescription) {
+	var htmlContent = "<li style='background: #af011d;'><div><a href='" + itemUrl + "'>" + itemDescription + "</a></div></li>";
+	new Insertion.Bottom(destList, htmlContent);
+
+	new Effect.Shake('my_fav');
+	return false;
+}
+
+function togTh(aId, val, type) {
+	if (val > 0) {
+		if (type == 0) {
+			img = ($('tu_' + aId)).src='/images/tup_small.gif';
+		} else {
+			img = ($('tu_' + aId)).src='/images/tup_small.gif';
+		}
+	} else {
+		if (type == 0) {
+			img = ($('td_' + aId)).src='/images/tdown_small.gif';
+		} else {
+			img = ($('td_' + aId)).src='/images/tdown_small.gif';
+		}
+	}
+	return false;
+}
+
+var oldElementPrefix = null; 
+
+function insertCommentForm(objectid, obj_type, commentid, is_anon, show_ads) {
+	var marginLeft = 0;
+	var divName = "comment_" + commentid;
+	if (commentid == 0) {
+		divName = "comment_box_" + objectid;
+	} else {
+		marginLeft = $(divName).style.marginLeft;
+	}
+	var newDivName = "comment_" + objectid + "_" + commentid;
+	if (show_ads){
+		ad_string = "";
+	} else {
+		ad_string = ""
+	}
+
+	if ($(newDivName) == null) {
+		
+		if (!is_anon) {
+			new Insertion.After(divName, 
+					"<div class='comment_form' id='" + newDivName + "' style='display: none; margin-left: " + marginLeft + "'>" +
+					ad_string + 
+					"<b>Your reply:</b>" +
+					"<form action='/comment/new_comment/' method='post' id='comment_form_"+commentid+"' onsubmit=\"new Ajax.Updater('comment_list_" + objectid + "', '/comment/new_comment/', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this), onSuccess: function() {}, onLoading: function() {$('progressInd').innerHTML = 'Submitting...'; }}); return false;\">" +
+					"<textarea class='new_comment_text' style='width: 99%; height: 100; overflow: auto;' id='comment_content' name='content'></textarea>" + 
+					"<input type='hidden' name='objectid' value='" + objectid + "'>" +
+					"<input type='hidden' name='obj_type' value='" + obj_type + "'>" +							
+					"<input type='hidden' name='commentid' value='" + commentid + "'>" +
+					"<input type='hidden' id='hidden_media_bool_"+ commentid +"' name='has_media' value='false'>" +
+					"<input type='hidden' id='hidden_media_id_"+ commentid +"' name='mediaid' value=''>" +
+					"</form>" +
+					"<div id='comment_photo_"+ commentid +"'></div>" + 
+					"<div style='text-align: right; width: 100%;'>" + 
+					"<form name='fileupload_"+ commentid + "' id='fileupload_"+ commentid +"' action='/comment/new_comment_media?objectid="+ objectid +"' enctype='multipart/form-data' method='post' target='frame'>" + 
+					"<input type='hidden' name='commentid' value='" + commentid + "'>" +
+					"<div style='width:100%; text-align: left;'><div style='padding: 5px;'><label style='font-size: 11px;'><strong>Rules of the Yard.</strong></label> <nobr><label style='font-size: 11px;'><strong>1. Keep it clean</strong> (no cursing). <strong>2. Be civil</strong> (no personal attacks). <strong>3. Make a point!</strong></label></nobr></div></div>" + 				
+					"<div class='clearfix'>&nbsp;</div>" + 
+					"<a href='#' onClick='toggleDiv(\"file_upload_field_"+ commentid +"\"); changeMediaStatus(\"has_media_bool_"+ commentid +"\"); return false;' style='font-size:8pt;'>Attach a Photo</a><br><br>" + 
+					"<div id='file_upload_field_"+ commentid +"' style='display:none;'><br><input id='media_"+ commentid +"_image_temp' name='media_"+ commentid +"[image_temp]' type='hidden' /><input id='media_"+ commentid +"_image' name='media_"+ commentid +"[image]' size='30' type='file' /><br><br>" +
+					"<input id='has_media_bool_"+ commentid +"' name='has_media_bool_"+ commentid +"' type='hidden' value='false'><input id='sport_id' type='hidden' value=''><div id='progressInd' style='font-size:9pt;'>" +
+					"<span style='float:left;'>" + 
+					"<br><span style='font-size: 7pt;padding-bottom:5px; font-family: arial;'>By submitting this photo you accept the <a href='#' onclick=\"window.open('/help/photo_tos',null,'height=250,width=585,scrollbars=yes,resizable=yes'); return false;\" target='_new'>Photo Terms of Service</a></span></span></div></div>" +
+					"<input type='Submit' value='Submit'><input type='button' value='Cancel' onclick='Effect.BlindUp(\"comment_" + objectid + "_" + commentid + "\" , {duration: 0.4});'></form>" +
+					"</div>" + 
+					"</div>"
+			);
+		} else {
+			new Insertion.After(divName, 
+					"<div class='comment_form' id='" + newDivName + "' style='display: none; margin-left: " + marginLeft + "'>" +
+					"<div id='anon_comment_box_" + commentid + "'>" +
+					"<form action='/comment/anon_comment?object_id=" + objectid + "&obj_type=" + obj_type + "' method='post' onsubmit=\"new Ajax.Updater('anon_comment_box_" + commentid + "', '/comment/anon_comment?object_id=" + objectid + "&obj_type=" + obj_type + "', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;\">" +
+					ad_string + 
+					"<b>Your reply:</b><br>" +
+					"<textarea class='new_comment_text' id='comment_content' name='content' style='width: 99%; height: 100;'></textarea>" +
+					"<br>" +
+					"<div style='width:100%; text-align: left;'><div style='padding: 5px;'><label style='font-size: 11px;'><strong>Rules of the Yard.</strong></label> <nobr><label style='font-size: 11px;'><strong>1. Keep it clean</strong> (no cursing). <strong>2. Be civil</strong> (no personal attacks). <strong>3. Make a point!</strong></nobr></div></div>" + 									
+					"<br>" + 
+					"<input type='hidden' name='type' value='first_submit'> " +
+					"<input type='hidden' name='parent_id' value='" + commentid + "'> " +
+					"<input type='Submit' value='Save and Continue' id='submit_button'>" +
+					"</form>" +
+					"</div>" +
+					"</div>"
+			);
+		}
+	}
+
+
+	if ($(newDivName).style.display == "none") {
+		Effect.BlindDown(newDivName, {duration: 0.4});
+	} else {
+		Effect.BlindUp(newDivName, {duration: 0.4});
+	}
+	return false;
+}
+
+function insertArticleRatingDiv(articleId, isArtPage){
+	var divName = "rater_" + articleId;
+	if ($('flag_article_' + articleId)) {
+		$('flag_article_' + articleId).remove();
+	} else {
+		new Insertion.Bottom(divName, 	
+			"<div id='flag_article_" + articleId + "' class='rating_div'>" + 
+			"Please specify:" + 
+			"<div class='flag_option first'>&#8226;&nbsp;" + 
+			"<a href='#' onclick=\"new Ajax.Request('/author/rate_article?reason_code=2&amp;obj_id=" + articleId + "&amp;rating=-1&amp;obj_type=12&amp;is_article_page=" + isArtPage + "', {asynchronous:true, evalScripts:true}); return false;\">Miscategorized</a></div>" + 
+			"<div class='flag_option'>&#8226;&nbsp;" + 
+			"<a href='#' onclick=\"new Ajax.Request('/author/rate_article?reason_code=1&amp;obj_id=" + articleId + "&amp;rating=-1&amp;obj_type=12&amp;is_article_page=" + isArtPage + "', {asynchronous:true, evalScripts:true}); return false;\">Inappropriate</a></div>" + 
+			"<div class='flag_option'>&#8226;&nbsp;" + 
+			"<a href='#' onclick=\"new Ajax.Request('/author/rate_article?reason_code=4&amp;obj_id=" + articleId + "&amp;rating=-1&amp;obj_type=12&amp;is_article_page=" + isArtPage + "', {asynchronous:true, evalScripts:true}); return false;\">Spam</a></div>" + 
+			"<div class='flag_close'>" + 
+			"<a href='#' onClick=\"$('flag_article_" + articleId + "').remove(); return false;\">" + 
+			"<font style='color: red; text-decoration: underline; font-size: 7pt; font-family: arial;'>CLOSE</font></a></div></div>"
+		);
+	}
+}
+
+function toggleDiv (divName){		
+	if ($(divName).style.display == "none") {
+		Effect.BlindDown(divName, {duration: 0.4});
+	} else {
+		Effect.BlindUp(divName, {duration: 0.4});
+ 	}
+	return false;
+}
+
+function changeMediaStatus (elementid){		
+	if (document.getElementById(elementid).value == 'false') {
+		document.getElementById(elementid).value = 'true';
+	} else {
+		document.getElementById(elementid).value = 'false';
+	}
+}
+
+        function clearText(thefield) {
+	if (thefield.defaultValue == thefield.value) {
+		thefield.value = "";
+	}
+}
+
+function containsDOM (container, containee) {
+	var isParent = false;
+	do {
+		if ((isParent = container == containee))
+			break;
+		containee = containee.parentNode;
+	}
+	while (containee != null);
+	return isParent;
+}
+
+function checkMouseEnter (element, evt) {
+	if (element.contains && evt.fromElement) {
+		return !element.contains(evt.fromElement);
+	}
+	else if (evt.relatedTarget) {
+		return !containsDOM(element, evt.relatedTarget);
+	}
+}
+
+function checkMouseLeave (element, evt) {
+	if (element.contains && evt.toElement) {
+		return !element.contains(evt.toElement);
+	}
+	else if (evt.relatedTarget) {
+		return !containsDOM(element, evt.relatedTarget);
+	}
+} 
+
+function addSearchableField() {
+	var newIndex = ($F('num_new') - 0) + 1;
+	var htmlContent = 
+		"<tr>" + 
+			"<td valign='top'><input type='checkbox' name='new_check_" + newIndex + "' ></td>" +
+			"<td valign='top'><input type='text' name='new_st_" + newIndex + "' style='width: 110' value=''></td>" + 
+			"<td valign='top'><input type='text' name='new_us_" + newIndex + "' style='width: 110' value=''></td>" + 
+			"<td valign='top'><input type='text' name='new_priority_" + newIndex + "' style='width: 100%' value='0'></td>" + 
+		"</tr>";
+	new Insertion.Bottom('search_table', htmlContent);
+
+	$('num_new').value = newIndex;
+
+	return false;
+}
+
+function statBar(message) {
+	window.status = message;
+}
+
+function goToAthlete() {
+	var val = document.getElementById('athlete_select').value
+	if (!val || val.length < 3) {
+		return false;
+	} else {
+		document.location = '/users/' + val;
+	}
+}
+
+var currentTickerIndex = 0;
+var currentOffset = 0;
+var tickTimer = 0;
+function nextStory(indexDiff, numItems) {
+	window.clearTimeout(tickTimer);
+
+	if (numItems <= 1 || indexDiff == 0) {
+		return false;
+	}
+
+	var nextIndex;
+	if (indexDiff > 0) {
+		nextIndex = currentTickerIndex + 1;
+	} else {
+		nextIndex = currentTickerIndex - 1;
+	}
+	if (nextIndex >= numItems) {
+		nextIndex = 0;
+	} else if (nextIndex < 0) {
+		return false;
+	}
+
+	var currentDiv = $('ticker_' + currentTickerIndex);
+	var currentImgDiv = $('ticker_img_' + currentTickerIndex);
+	var nextDiv = $('ticker_' + nextIndex);
+	var nextImgDiv = $('ticker_img_' + nextIndex);
+	var nextOffset;
+	if (indexDiff > 0) {
+		nextOffset = currentOffset + (currentDiv.getHeight());
+		if (nextIndex == 0) {
+			currentOffset = 0;
+			nextOffset = 0;
+		}
+	} else {
+		nextOffset = currentOffset - (nextDiv.getHeight());
+	}
+
+	new Effect.ScrollVertical('related_scroll', {duration: 0.6, from: currentOffset, to: nextOffset});
+	new Effect.Fade(currentImgDiv, {duration: 0.3, queue: {position: 'end', scope: 'tickimgscope'}});
+	new Effect.Appear(nextImgDiv, {duration: 0.3, queue: {position: 'end', scope: 'tickimgscope'}});
+
+	$('related_status').innerHTML = '<b>' + (nextIndex + 1) + '</b> of <b>' + numItems + '</b>';
+
+	currentTickerIndex = nextIndex;
+	currentOffset = nextOffset;
+	tickTimer = setTimeout("nextStory(true, " + numItems + ");", 6300);
+	return false;
+}
+
+var currentPlacIndex = 1;
+var placTimer = 0;
+var usePlacTimer = true;
+function movePlac(indexDiff, isManual) {
+	window.clearTimeout(placTimer);
+
+	var effectDuration;
+	if (isManual) {
+		effectDuration = 0.01;
+		usePlacTimer = false;
+	} else {
+		effectDuration = 0.3;
+	}
+
+	var numItems = $$(".placard_text").length;
+	if (numItems <= 1 || indexDiff == 0) {
+		return false;
+	}
+
+	var nextIndex;
+	if (indexDiff > 0) {
+		nextIndex = currentPlacIndex + 1;
+	} else {
+		nextIndex = currentPlacIndex - 1;
+	}
+	if (nextIndex > numItems) {
+		nextIndex = 1;
+	} else if (nextIndex < 1) {
+		return false;
+	}
+
+	var currentDiv = $('plac_' + currentPlacIndex);
+	var nextDiv = $('plac_' + nextIndex);
+	if (indexDiff > 0) {
+		if (nextIndex == 1) {
+			usePlacTimer = false;
+		}
+	}
+
+
+	new Effect.Fade(currentDiv, {duration: effectDuration, queue: 'end'});
+	new Effect.Appear(nextDiv, {duration: effectDuration, queue: 'end'});
+
+	currentPlacIndex = nextIndex;
+
+	if (usePlacTimer) {
+		placTimer = setTimeout("movePlac(1, false);", 9900);
+	}
+	return false;
+}
+
+var currentFeedIndex = 1;
+var feedTimer = 0;
+var useFeedTimer = true;
+function jumpFeed(nextIndex, isManual) {
+	window.clearTimeout(feedTimer);
+	if (isManual) {
+		useFeedTimer = false;
+	}
+
+	var numItems = $$(".hff_section").length;
+	if (numItems <= 1) {
+		return false;
+	}
+
+	if (nextIndex > numItems) {
+		nextIndex = numItems;
+	} else if (nextIndex < 1) {
+		nextIndex = 1;
+	}
+
+	var effects = new Array();
+	if (currentFeedIndex != nextIndex) {
+		var currentDiv = $('hff_section_' + currentFeedIndex);
+		var nextDiv = $('hff_section_' + nextIndex);
+
+		if (currentDiv) {
+			currentDiv.down('.hff_arrow').show();
+			currentDiv.removeClassName('selected');
+			effects.push(new Effect.BlindUp(currentDiv.down('.hff_transitory'), {sync: true, transition: Effect.Transitions.sinoidal}));
+		}
+		if (nextDiv) {
+			nextDiv.down('.hff_arrow').hide();
+			nextDiv.down('.hff_yard_link').hide();
+			nextDiv.addClassName('selected');
+			effects.push(new Effect.BlindDown(nextDiv.down('.hff_transitory'), {sync: true, transition: Effect.Transitions.sinoidal}));
+		}
+
+		new Effect.Parallel(
+			effects
+		, {
+			duration: 0.3,
+			queue: { position: 'end', scope: 'accordion' }
+		});
+		if (nextDiv) {
+			new Effect.Appear(nextDiv.down('.hff_yard_link'), {duration: 0.1, queue: {position: 'end', scope: 'accordion'}});
+		}
+	}
+
+	if ($('hff_stat')) {
+		$('hff_stat').innerHTML = (nextIndex) + ' of ' + numItems;
+	}
+
+	currentFeedIndex = nextIndex;
+
+	if (useFeedTimer) {
+		feedTimer = setTimeout("moveFeed(1, false);", 9300);
+	}
+	return false;
+}
+
+function moveFeed(indexDiff, isManual) {
+	window.clearTimeout(feedTimer);
+
+	var numItems = $$(".hff_section").length;
+	if (numItems <= 1 || indexDiff == 0) {
+		return false;
+	}
+
+	var nextIndex;
+	if (indexDiff > 0) {
+		nextIndex = currentFeedIndex + 1;
+	} else {
+		nextIndex = currentFeedIndex - 1;
+	}
+	if (nextIndex > numItems) {
+		useFeedTimer = false;
+		nextIndex = 1;
+	} else if (nextIndex < 1) {
+		nextIndex = numItems;
+	}
+
+	jumpFeed(nextIndex, isManual);
+
+	return false;
+}
+
+function toggleFeed() {
+	window.clearTimeout(feedTimer);
+	useFeedTimer = false;
+	Effect.BlindUp('hff_container', {duration: 0.3});
+	setTimeout("finishToggleFeed();", 400);
+}
+
+function finishToggleFeed() {
+	if ($('hff_container').hasClassName("expanded")) {
+		$$(".hff_transitory").each(function(x){
+			x.hide();
+		})
+		$$(".hff_arrow").each(function(x){
+			x.show();
+		})
+		$('hff_container').removeClassName("expanded");
+		$('hff_toggle_text').innerHTML = 'expand all';
+		$('hff_next').show();
+		$('hff_prev').show();
+		Cookie.unset('hff_expanded');  
+		Effect.BlindDown('hff_container', {duration: 0.3});
+
+		var numItems = $$(".hff_section").length;
+		if ($('hff_stat')) {
+			$('hff_stat').innerHTML = '1 of ' + numItems;
+		}
+
+		currentFeedIndex = 0;
+	} else {
+		$$(".hff_transitory").each(function(x){
+			x.show();
+		})
+		$$(".hff_arrow").each(function(x){
+			x.hide();
+		})
+		$$(".hff_section.selected").each(function(x){
+			x.removeClassName('selected');
+		})
+		$('hff_container').addClassName("expanded");
+		$('hff_toggle_text').innerHTML = 'collapse all';
+		$('hff_next').hide();
+		$('hff_prev').hide();
+		Cookie.set('hff_expanded', 'true');  
+		Effect.BlindDown('hff_container', {duration: 0.3});
+	}
+}
+
+function set_class_name(element, class_name){
+	new Element.ClassNames(element).set(class_name);
+}
+
+function tns_sport(sport_id) {
+	var tnsSports = $$(".tns_sport");
+	for (var j=0; j<tnsSports.length; j++) {
+		tnsSports[j].removeClassName('selected');
+	}
+	$('tns_s_' + sport_id).addClassName('selected');
+	$('tns_scores').innerHTML = '<div style="padding: 5;"><img src="/images/indicator.gif" width="16" height="16"> Loading scores...</div>';
+	new Ajax.Updater('tn_scores', '/stats/top_nav_scores/' + sport_id, {asynchronous:true, evalScripts:true});
+}
+
+var tnsRow = 1;
+function tns_move(isUp, numRows) {
+	var rowHeight = ($$(".tns_game"))[0].getHeight() + 3;
+	var currentOffset = (tnsRow - 1) * rowHeight;
+	if (isUp && tnsRow > 1) {
+		new Effect.ScrollVertical('tns_scores', {duration: 0.4, from: currentOffset, to: (currentOffset - rowHeight)});
+		tnsRow -= 1;
+	} else if (!isUp && (tnsRow < (numRows - 1))) {
+		new Effect.ScrollVertical('tns_scores', {duration: 0.4, from: currentOffset, to: (currentOffset + rowHeight)});
+		tnsRow += 1;
+	}
+	if (numRows > 2) {
+		if (tnsRow <= 1) {
+			$('tns_a_up').removeClassName('active');
+		} else {
+			$('tns_a_up').addClassName('active');
+		}
+		if (tnsRow >= (numRows - 1)) {
+			$('tns_a_down').removeClassName('active');
+		} else {
+			$('tns_a_down').addClassName('active');
+		}
+	}
+}
+
+function resetSeqnos() {
+	var seqnos = $$('.answer_seqno');
+	var nextSeqno = 1;
+	seqnos.each( function(x) {
+		x.value = nextSeqno; 
+		nextSeqno += 1;
+	});
+	
+	var seqnos = $$('.seqno_label');
+	var nextSeqno = 1;
+	seqnos.each( function(x) {
+		x.innerHTML = nextSeqno;
+		nextSeqno += 1;
+	});
+	
+	// $('answer_total_div').innerHTML = 'Number of Answers: ' + seqnos.length; 
+	return false;
+}
+
+function hideColumn(colName, doHide) {
+	var cells = $$('.' + colName + '_cell');
+	cells.each( function(x) {
+		if (doHide) {
+			x.hide();
+		} else {
+			x.show();
+		}
+	});
+}
+function toggleComment(el, onName){
+	if($(el).hasClassName(onName))
+		$(el).removeClassName(onName);
+	else
+		$(el).addClassName(onName);
+}
+
+function toggleReply(commentId){
+	if (isSignedIn()) {
+		Effect.toggle('inline_comment_' + commentId, 'blind', { duration: 0.25, queue: 'end' });
+	} else {
+		valid = new lightbox($('comment_signin_popup'));
+		valid.displayLightbox('block');
+	}
+	return false;
+}
+
+function toggleCommentOptions(commentId){
+	if (isSignedIn()) {
+		$('c_opt_' + commentId).innerHTML = "loading... <img src='/images/loading.gif' width='12' height='12'>";
+		reloadCommentOptions(commentId, '/comment/comment_options/' + commentId);
+	} else {
+		valid = new lightbox($('comment_signin_popup'));
+		valid.displayLightbox('block');
+	}
+	return false;
+}
+
+function displayAppropriateCommentBox() {
+	if (isSignedIn()) {
+		$('add_comment_signed_in').show();
+	} else {
+		$('add_comment_signed_out').show();
+	}
+}
+
+function recComment(commentId){
+	$('c_opt_' + commentId).innerHTML = "saving... <img src='/images/loading.gif' width='12' height='12'>";
+	reloadCommentOptions(commentId, '/comment/rec_comment/' + commentId);
+}
+
+function flagComment(commentId){
+	$('c_opt_' + commentId).innerHTML = "saving... <img src='/images/loading.gif' width='12' height='12'>";
+	reloadCommentOptions(commentId, '/comment/flag_comment/' + commentId);
+}
+
+function reloadCommentOptions(commentId, commentUrl) {
+	new Ajax.Request(commentUrl, {
+		method:'get',
+		onSuccess: function(transport){
+			   var response = transport.responseText || "";
+			   $('c_opt_' + commentId).innerHTML = response;
+		},
+		onFailure: function(){ $('c_opt_' + commentId).innerHTML = ""; }
+	});
+}
+
+function getUserName() {
+	var userName = null;
+	var ptCookie = Cookie.get("ptoken");
+	if (ptCookie) {
+		var ptArray = ptCookie.split("%21");
+		userName = ptArray[0];
+	}
+
+	return userName;
+}
+
+function isSignedIn() {
+	if (getUserName() == null) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+// This allows us to keep user-specific info out of the nav (to enable better caching)
+function writeNavLinks() {
+	var userName = getUserName(); 
+	if (userName) {
+		document.write('<div id="username-drop" class="subnav_menu" style="display:none"></div>');
+		document.write('<a href="#" onclick="toggleUserDrop();">Welcome, ' + userName + '&nbsp;<img src="/images/arrow_open.gif"></a>');
+		document.write('&nbsp;|&nbsp;');
+		document.write('<a href="/account/signout">Sign Out</a>');
+	} else {
+		document.write('<a href="/account/signin" class="lbOn" rel="nofollow">Log In</a>');
+		document.write('&nbsp;|&nbsp;');
+		document.write('<a href="/account/register" rel="nofollow">Sign Up</a>');
+	}
+}
+
+function isProbablyAdmin() {
+	if (Cookie.get("prisos")) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+if (isProbablyAdmin()) {
+	domHead = $$('head')[0];
+	if (domHead) {
+		script = new Element('script', { type: 'text/javascript', src: '/javascripts/admin.js' });
+		domHead.appendChild(script);
+		link = new Element('link', { type: 'text/css', href: '/stylesheets/admin.css', media: 'screen', rel: 'stylesheet' });
+		domHead.appendChild(link);
+	}
+}
+
+function adminCheck() {
+	if (isProbablyAdmin()) {
+		domIds = new Array();
+		$$(".aalc").each(function(x){
+			domIds.push(Element.identify(x));
+		})
+		new Ajax.Request('/admin/adorn_page?domIds=' + Object.toJSON(domIds), {asynchronous:true, evalScripts:true});
+	}
+}
+
+function adjustLinks() {
+	if (isSignedIn()) {
+		$$("a").each(function(x){
+			if (x.href.indexOf("linksrc") > 0) {
+				x.href = x.href.gsub(/linksrc=home/, "linksrc=home_x");
+			}
+		})
+	}
+}
+
+function toggleUserDrop() {
+	if (!($("user_drop_inner"))) {
+		$('username-drop').innerHTML = "<div class='sm_inner'><ul><li><img src='/images/indicator.gif' width='16' height='16'></li></ul></div>";
+		new Ajax.Updater('username-drop', "/account/user_drop", {asynchronous:true, evalScripts:true});
+	}
+	Effect.toggle('username-drop', 'blind', { duration: 0.0, queue: 'end' });
+	return false;
+}
+
+function insertCommentRatingDiv(commentId, objType){
+	var divName = "comment_flag_box_" + commentId;
+	if ($('flag_' + commentId)) {
+		$('flag_' + commentId).remove();
+	} else {
+	
+		new Insertion.Top(divName, 	
+			"<div id='flag_" + commentId + "' class='standard_text' style='display: block; width: 92px; font-size: 11px; text-align: left; position:absolute; top:18px; left: 20px; color: #333; background: #ffffff; border: 1px solid #999999; padding:5px; z-index: 1000000;'>" +
+			"<span style='color: #999; padding: 4px;'>Please specify</span>" + 
+			"<div style='width:86px; padding: 5px 5px 0px 5px;'>" + 		
+			"<a href='#' onclick=\"new Ajax.Request('/author/rate_comment?from_blog=1&rating=-1&obj_id=" + commentId + "&obj_type=" + objType + "&reason_code=0', {asynchronous:true, evalScripts:true}); return false;\">I didn't like it</a>" + 
+			"</div>" + 
+			"<div style='width:86px; padding: 5px 5px 0px 5px;'>" + 
+			"<a href='#' onclick=\"new Ajax.Request('/author/rate_comment?from_blog=1&rating=-1&obj_id=" + commentId + "&obj_type=" + objType + "&reason_code=1', {asynchronous:true, evalScripts:true}); return false;\">Inappropriate</a>" + 
+			"</div>" + 
+			"<div style='width:86px; padding: 5px 5px 0px 5px;'>" + 
+			"<a href='#' onclick=\"new Ajax.Request('/author/rate_comment?from_blog=1&rating=-1&obj_id=" + commentId + "&obj_type=" + objType + "&reason_code=4', {asynchronous:true, evalScripts:true}); return false;\">Spam</a>" + 
+			"</div>" + 
+			"<div style='width: 100%; margin-right: 10px; text-align: right;'>" + 
+			"<a href='#' onclick=\"$('flag_" + commentId + "').remove(); return false;\">" + 
+			"<font style='color: red; text-decoration: none; font-size: 11px; font-family: arial;'>Cancel</font>" + 
+			"</a>" + 
+			"</div>" + 
+			"</div>"
+		);
+	}
+}
+
+function viewMoreComments(objId, objType, lastSeqPath) {
+	$('view_more_comments').innerHTML = "<img src='/images/loading.gif'>";
+	new Ajax.Request('/comment/comment_page?obj_id=' + objId + '&obj_type=' + objType + '&prev_seq_path=' + lastSeqPath, {
+		method:'get',
+		onSuccess: function(transport){
+			var response = transport.responseText || "";
+			$('new_comment_placeholder').remove();
+			$('view_more_comments').remove();
+			new Insertion.Bottom($('comment_ul'), response);
+		},
+		onFailure: function(){}
+	});
+}
+
+function clearText(el) {
+	$(el).value = '';
+}
+
+function clearOnce(el) {
+	$(el).value = '';
+	$(el).onfocus = '';
+}
+
+function _trackEvent(location, action) {
+	try {
+		var pageTracker = _gat._getTracker("UA-472911-1");
+		pageTracker._trackPageview();
+		pageTracker._trackEvent(location, action);
+		
+		mpmetrics.track(action, {"location": location});
+	} catch(err) {}
+}
+
+var mbPopBox;
+function mbPop() {
+	mbPopBox = new lightbox($('mb_pop_box'));
+	setTimeout("mbPopBox.displayLightbox('block');", 7000);
+	Cookie.set('mb_pop_limit', 'true', 3600 * 24 * 42);  
+}

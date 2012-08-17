@@ -1,0 +1,43 @@
+// show scroll to top
+$(function () {
+	window.hasscrolled = false;
+	window.isresized = false;
+	var winHeight = $(window).height();
+	var pageWidth = 960;
+	var pageHeight = $('body').height();
+	var showAt = 1.5;
+	// create div
+		var div = $('<div/>', {id:"scrollToTop"})
+				.css({zIndex: 9999,background:"url(/images/misc/scroll_to_top.png) no-repeat center bottom",height: 60, width: 160,display:"none",position:"fixed",bottom:0,cursor:"pointer"})
+				.appendTo($('body'));
+		div.hover( 
+			function(){jQuery(this).css({ backgroundPosition:"center top" })},
+			function(){jQuery(this).css({  backgroundPosition:"center bottom"  })}
+		);
+		div.click(function () {jQuery('html,body').stop().animate({scrollTop:0}, 1000)});
+
+		$(window).resize(function () { window.isresized = true; })
+		$(window).scroll(function () { window.hasscrolled = true; })
+
+		setInterval(function() {
+			if ( window.isresized ) {
+				window.isresized = false;
+				winHeight = jQuery(window).height();
+				var winWidth = jQuery(window).width();
+				var divWidth = div.width();
+				var divR = (((winWidth-pageWidth)/2>divWidth+10)?(winWidth-pageWidth)/2-divWidth-10:0);
+				div.css("right",divR+"px");		
+			}
+		},250);
+
+		setInterval(function() {
+			if ( window.hasscrolled ) {
+				window.hasscrolled = false;
+				if (winHeight*showAt<jQuery(window).scrollTop()) { !div.is(":visible") && div.fadeIn(); } else { div.is(":visible") && div.fadeOut(); }
+			}
+		}, 250);
+
+		window.isresized = true;
+
+}());
+

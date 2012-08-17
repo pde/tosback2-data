@@ -306,7 +306,7 @@ var ratingWrapper = {
      * @param idRating int Id of the UserRating to apply the score to
      */
     postScore : function ( score, idRating ){
-        $j.post('/rate/ratethis.php?s=4&c=162&o=MovieEntity&r='+score+'&oi='+idRating);
+        $j.post('/rate/ratethis.php?s=4&c=3453&o=MovieEntity&r='+score+'&oi='+idRating);
     },
     /**
      * Static-like method to set a read-only flag on a rating

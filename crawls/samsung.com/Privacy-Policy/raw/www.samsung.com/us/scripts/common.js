@@ -1814,10 +1814,10 @@ $(document).ready(function(){
 	}	
 	
 	//hide shop buttons for nx cameras -apr'12
-	if(urlValueSplit[6].match('EV-NX20ZZBSBUS') || urlValueSplit[6].match('EV-NX210ZBSBUS') || urlValueSplit[6].match('EV-NX1000BABUS') || urlValueSplit[6].match('EV-NX1000BFWUS')){
-		$('.flagship-cta').hide();
-		$('.nav-shop').hide();
-	}
+	// if(urlValueSplit[6].match('EV-NX20ZZBSBUS') || urlValueSplit[6].match('EV-NX210ZBSBUS') || urlValueSplit[6].match('EV-NX1000BABUS') || urlValueSplit[6].match('EV-NX1000BFWUS')){
+	// 	$('.flagship-cta').hide();
+	// 	$('.nav-shop').hide();
+	// }
 
 	
 });
@@ -1953,7 +1953,15 @@ if(urlValueSplit[6].match('SGH-I717ZBAATT') || urlValueSplit[6].match('SGH-I717R
 //		});
 //	}
 	
-	
+	//tmobile SGH-T769NKBTMB
+	if( urlValueSplit[6].match('SGH-T769NKBTMB')){
+		$('.flagship-cta a span').text('Buy Now');
+		$('.flagship-cta a').attr("href", "https://samsungdirect.bbymsolutions.com/detail/1221?utm_source=SAM&utm_medium=link&utm_campaign=DeepLinks");
+		$('.flagship-cta a').attr("onclick", "");
+		$(".flagship-cta").delegate("a", "click", function() {
+  			ss_link_click_track_2('','event20, event33','','','overview>t-mobile','o','buy now');
+		});
+	}
 	
 	//tmobile SGH-T999MBATMB
 	if( urlValueSplit[6].match('SGH-T999MBATMB') ){

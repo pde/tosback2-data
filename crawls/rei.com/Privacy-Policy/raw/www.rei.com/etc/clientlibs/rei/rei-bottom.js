@@ -27,7 +27,7 @@ function fixHeight() {
 $(document).ready(function() {
 	fixHeight();
 });
-/* $Id: analytics.js 4369 2012-08-02 17:43:42Z dbertra $ */
+/* $Id: analytics.js 4448 2012-08-04 21:44:00Z pmcmaho $ */
 
 /* Google Analytics, setup then load below */
 var _gaq = _gaq||[];
@@ -939,7 +939,6 @@ function reiAnalytics() {
 		if($("#container[pagetype='expertAdviceArticle']").length > 0){
 			a.events("event26");
 			a.events("event36");
-			s.eVar29 = s.pageName;
 		}	
 		//Keep track of the last page's omniture pagename
 		$(window).unload(function() { a.save("prev_omni_pagename", options.page_name.toLowerCase()); });

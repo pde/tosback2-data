@@ -895,7 +895,7 @@ checkCookie();
 	<!-- <h4>Content</h4> -->
   
  
-	<a href="http://www.dillards.com/information/dillards-pin-and-win-your-wedding-registry?cm_sp=Header-_-PromoLink-_-header_promo_Pin2Win2012"> Dillard's Pin & Win Your Wedding Registry > </a><!--
+	<a href="http://www.dillards.com/content/Dillards-wedding-dresses-style-sites?cm_sp=Header-_-PromoLink-_-header_promo_BridalShop2012"> Dillard's Bridal Shop > </a><!--
         1: 73331ES_Header_Promo_Cnt_D
 			<table>
 				<tr><td>Name:</td> <td> ES_Header_Promo_Cnt_D </td></tr>
@@ -907,7 +907,7 @@ checkCookie();
 			  	<tr><td>ActivityPriority:</td> <td> 0 </td></tr>
 		        <tr><td>Url Link:</td> <td>  </td></tr>	
 		        			
-	        		<tr><td>Marketing Text:</td> <td> &lt;a href=&#034;/information/dillards-pin-and-win-your-wedding-registry?cm_sp=Header-_-PromoLink-_-header_promo_Pin2Win2012&#034;&gt; Dillard&#039;s Pin &amp; Win Your Wedding Registry &gt; &lt;/a&gt; </td></tr>
+	        		<tr><td>Marketing Text:</td> <td> &lt;a href=&#034;/content/Dillards-wedding-dresses-style-sites?cm_sp=Header-_-PromoLink-_-header_promo_BridalShop2012&#034;&gt; Dillard&#039;s Bridal Shop &gt; &lt;/a&gt; </td></tr>
 	        		<tr><td>Location:</td> <td>  </td></tr>
 		         
 		        <tr><td>Format UniqueID:</td> <td> 2 </td></tr>
@@ -3945,7 +3945,7 @@ More info available at http://www.omniture.com -->
 	s.server=document.domain;
 	s.prop7=document.domain;
 	
-	s.prop15="7F33EDAEE24A10E20BBBEB925F1DAEF2";
+	s.prop15="F0E779EEE89810E848B882E5CC224014";
 	s.campaign=s.getQueryParam('campaign');
 	s.eVar9=s.getQueryParam('Catalog');
 	s.eVar29=s.getQueryParam('ezine');
@@ -4384,14 +4384,13 @@ $(document).ready(function() {
 
 <h2>Connect & Follow</h2>
 <div id="email-signup">
-<div id="emailSignUpError"></div>
-<p>Sign-up for Dillard's fashion, news & savings emails:</p>
+<div id="emailSignUpError"><p>Sign-up for Dillard's fashion, news & savings emails:</p></div>
 	<form name="emailSignUpFormSubmit" action="http://www.dillards.com/catalogrequest/EmailRequestStartServlet?splashlink=footer_email"  method="post">
         <input type="hidden" name="storeId" value="301"/> 
         <input type="hidden" name="catalogId" value="301"/> 
         <input type="hidden" name="langId" value="-1"/>
 		<input class="sign-text" type="text" maxlength="254" id="recipientEmail" name="recipient" title="recipient" onblur="javascript:trimMe(this);" onfocus="javascript:this.value='';javascript:cmCreateConversionEventTag ('Email Signup','1','Special Emails','10')" value="Enter your email to receive special offers" />		
-        <button onclick="submitEmailSignUpForm()">SUBMIT</button>
+        <button onclick="return submitEmailSignUpForm();">SUBMIT</button>
 	</form>
 	<script language="javascript">
 		function submitEmailSignUpForm() 
@@ -4399,16 +4398,17 @@ $(document).ready(function() {
 			var email = document.getElementById("recipientEmail").value;			
 			if (email == '')
 			{
-				document.getElementById("emailSignUpError").innerHTML = '<font color="red"><fmt:message key="FOOT_SIGNUP_EMAIL_INVALID" bundle="${cvStoreText}" /></font><br><br>' ;
-				return;
+				document.getElementById("emailSignUpError").innerHTML = '<p style="color:#c00;">* Please enter your email address.</p>' ;
+				return false;
 			}
 			else if(!isValidEmail(email)) 
 			{ 
-				document.getElementById("emailSignUpError").innerHTML = '<font color="red"><fmt:message key="FOOT_SIGNUP_EMAIL_INVALID" bundle="${cvStoreText}" /></font><br><br>' ;
-				return;
+				document.getElementById("emailSignUpError").innerHTML = '<p style="color:#c00;">* Please verify that you entered a valid email.</p>' ;
+				return false;
 			}
 			else
 			{
+				document.emailSignUpFormSubmit.recipient.value=email.toLowerCase();
 				document.emailSignUpFormSubmit.submit();
 			}
 		}
@@ -4457,14 +4457,13 @@ $(document).ready(function() {
 
 &lt;h2&gt;Connect &amp; Follow&lt;/h2&gt;
 &lt;div id=&#034;email-signup&#034;&gt;
-&lt;div id=&#034;emailSignUpError&#034;&gt;&lt;/div&gt;
-&lt;p&gt;Sign-up for Dillard&#039;s fashion, news &amp; savings emails:&lt;/p&gt;
+&lt;div id=&#034;emailSignUpError&#034;&gt;&lt;p&gt;Sign-up for Dillard&#039;s fashion, news &amp; savings emails:&lt;/p&gt;&lt;/div&gt;
 	&lt;form name=&#034;emailSignUpFormSubmit&#034; action=&#034;/catalogrequest/EmailRequestStartServlet?splashlink=footer_email&#034;  method=&#034;post&#034;&gt;
         &lt;input type=&#034;hidden&#034; name=&#034;storeId&#034; value=&#034;301&#034;/&gt; 
         &lt;input type=&#034;hidden&#034; name=&#034;catalogId&#034; value=&#034;301&#034;/&gt; 
         &lt;input type=&#034;hidden&#034; name=&#034;langId&#034; value=&#034;-1&#034;/&gt;
 		&lt;input class=&#034;sign-text&#034; type=&#034;text&#034; maxlength=&#034;254&#034; id=&#034;recipientEmail&#034; name=&#034;recipient&#034; title=&#034;recipient&#034; onblur=&#034;javascript:trimMe(this);&#034; onfocus=&#034;javascript:this.value=&#039;&#039;;javascript:cmCreateConversionEventTag (&#039;Email Signup&#039;,&#039;1&#039;,&#039;Special Emails&#039;,&#039;10&#039;)&#034; value=&#034;Enter your email to receive special offers&#034; /&gt;		
-        &lt;button onclick=&#034;submitEmailSignUpForm()&#034;&gt;SUBMIT&lt;/button&gt;
+        &lt;button onclick=&#034;return submitEmailSignUpForm();&#034;&gt;SUBMIT&lt;/button&gt;
 	&lt;/form&gt;
 	&lt;script language=&#034;javascript&#034;&gt;
 		function submitEmailSignUpForm() 
@@ -4472,16 +4471,17 @@ $(document).ready(function() {
 			var email = document.getElementById(&#034;recipientEmail&#034;).value;			
 			if (email == &#039;&#039;)
 			{
-				document.getElementById(&#034;emailSignUpError&#034;).innerHTML = &#039;&lt;font color=&#034;red&#034;&gt;&lt;fmt:message key=&#034;FOOT_SIGNUP_EMAIL_INVALID&#034; bundle=&#034;${cvStoreText}&#034; /&gt;&lt;/font&gt;&lt;br&gt;&lt;br&gt;&#039; ;
-				return;
+				document.getElementById(&#034;emailSignUpError&#034;).innerHTML = &#039;&lt;p style=&#034;color:#c00;&#034;&gt;* Please enter your email address.&lt;/p&gt;&#039; ;
+				return false;
 			}
 			else if(!isValidEmail(email)) 
 			{ 
-				document.getElementById(&#034;emailSignUpError&#034;).innerHTML = &#039;&lt;font color=&#034;red&#034;&gt;&lt;fmt:message key=&#034;FOOT_SIGNUP_EMAIL_INVALID&#034; bundle=&#034;${cvStoreText}&#034; /&gt;&lt;/font&gt;&lt;br&gt;&lt;br&gt;&#039; ;
-				return;
+				document.getElementById(&#034;emailSignUpError&#034;).innerHTML = &#039;&lt;p style=&#034;color:#c00;&#034;&gt;* Please verify that you entered a valid email.&lt;/p&gt;&#039; ;
+				return false;
 			}
 			else
 			{
+				document.emailSignUpFormSubmit.recipient.value=email.toLowerCase();
 				document.emailSignUpFormSubmit.submit();
 			}
 		}
@@ -4565,7 +4565,7 @@ $(document).ready(function() {
 </div>
 <!--Start: Google Analytics(trackPageView)-->
 		<script type="text/javascript"> 
-		$(document).ready(function() {
+		//$(document).ready(function() {
 		  var _gaq = _gaq || []; 
 		  	  _gaq.push(['_setAccount', 'UA-18183560-1']);
 		 	  _gaq.push(['_trackPageview']);
@@ -4576,7 +4576,7 @@ $(document).ready(function() {
 		    ga.src = 'https://stats.g.doubleclick.net/dc.js'; 
 	 	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); 
 		  })(); 
- 		});
+ 		//});
  		</script> 
 		<!--End: Google Analytics(trackPageView)-->   
 </body>

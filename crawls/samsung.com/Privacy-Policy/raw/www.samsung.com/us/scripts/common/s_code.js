@@ -3,7 +3,7 @@ Copyright 1996-2010 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 
 /*
-S_CODE FILE VERSION::   S 1_0 : 1.0.0
+S_CODE FILE VERSION::   S 1_0 : 1.0.0 Samsung version 09 7_3_12
 */
 
 var s_account=""; 
@@ -258,6 +258,23 @@ if(typeof(omn_ss_supportSection) != 'undefined' && omn_ss_supportSection.length 
 {
     s.prop27 = omn_ss_supportSection.toLowerCase();
 }
+
+
+if(typeof(omn_ss_prodbundle) != 'undefined' && omn_ss_prodbundle.length > 0)
+{
+    s.eVar12 = omn_ss_prodbundle.toLowerCase();
+}
+
+if(typeof(omn_ss_outofstock) != 'undefined' && omn_ss_outofstock.length > 0)
+{
+    s.eVar57 = omn_ss_outofstock.toLowerCase();
+}
+
+if(typeof(omn_ss_billingpagestate) != 'undefined' && omn_ss_billingpagestate.length > 0)
+{
+    s.prop48 = omn_ss_billingpagestate.toLowerCase();
+}
+
 
 /*1.0.2*/
 if(typeof(omn_ss_prodregcounter) != 'undefined' && omn_ss_prodregcounter.length > 0)
@@ -1827,3 +1844,17 @@ function trackFormAbandon()
 	     }
 	  }
 	} 
+
+/*exception for shopping cart mouseover */
+
+var did_mouseover = true;
+
+function do_mouseover_cart(productID)
+{
+	if(did_mouseover)
+	{
+	ss_link_click_track_2('','event42',productID,'', 'top nav', 'o', 'cart_mouseover');
+	did_mouseover = false;
+	}
+}		
+		

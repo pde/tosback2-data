@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,7,9,17,51,39,0);
+var tvgServerTimeUTC = new Date(2012,7,17,18,28,27,0);
 
-var dServerET = new Date(2012,7,9,13,51,39,0);
+var dServerET = new Date(2012,7,17,14,28,27,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,7,9);
-dSrvrTime.setUTCHours(17,51,39,0);
+dSrvrTime.setUTCFullYear(2012,7,17);
+dSrvrTime.setUTCHours(18,28,27,0);
 
-var dLocalTime = new Date(2012,7,9,13,51,39,0);
-var dGridStart = new Date(2012,7,9,13,0,0,0);
+var dLocalTime = new Date(2012,7,17,14,28,27,0);
+var dGridStart = new Date(2012,7,17,14,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 336dd195a6feec6eabdeceba842944e174bbd11e 1344534699';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 6f36a21b6aa6a4eeb4f34fc240c0d86c8cbb717d 1345228107';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,11 +50,11 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 8/9/2012 5:45:00 PM GMT */
+/* TVGSVC02 8/17/2012 6:15:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2012-08-09)*/
+/* Listings: In-Grid and Close-Up Ads (2012-08-17)*/
 var GridAds = true;
-var MaxGridAds = 3;
+var MaxGridAds = 8;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
@@ -88,7 +88,7 @@ franchiseCheckin.ObjectUrl = "";
 franchiseCheckin.CallLetters = "";
 franchiseCheckin.StartTime = "198001011200";
 franchiseCheckin.BadgeUrl = "";
-franchiseCheckin.LeftOffset = 500;
+franchiseCheckin.LeftOffset = 0;
 
 //var locationQueryString = location.search.substring(1, location.search.length);
 var locationRef = grid_getQueryParam("billboard");
@@ -109,7 +109,7 @@ var slot_banner_top_HP = 0;
 var slot_box_300x250_HP = 0;
 var bEnableWallpaperAds_LST = true;
 var bEnableRichmediaAds_LST = true;
-var slot_banner_top_LST = 0;
+var slot_banner_top_LST = 1;
 
 /* Delayed Ad Loading */
 var bEnableDelayedAds = false;
